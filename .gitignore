@@ -14,5 +14,12 @@ gradle-app.setting
 # Eclipse Gradle plugin generated files
 # Eclipse Core
 .project
+**/bin/
+**/.settings/
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
+
+# Ignore Gradle build output directory
+build
+*.bak
+*.launch

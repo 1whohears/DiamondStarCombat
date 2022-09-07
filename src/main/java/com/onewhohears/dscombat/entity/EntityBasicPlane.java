@@ -334,11 +334,11 @@ public class EntityBasicPlane extends Entity {
     public void positionRider(Entity passenger) {
 		if (!this.hasPassenger(passenger)) return;
 		Vec3 pos = new Vec3(getX(), getY(), getZ());
-		Vec3 seatPos = new Vec3(0, 0, 0);
+		Quaternion seat = new Quaternion(0, 1, 0, 0);
+		seat.mul(getQ());
+		seat.normalize();
+		Vec3 seatPos = new Vec3(seat.i(), seat.j(), seat.k());
 		passenger.setPos(pos.add(seatPos));
-		/*passenger.setYBodyRot(-getYRot());
-		passenger.setYHeadRot(-getYRot());
-		passenger.setXRot(-getXRot());*/
 	}
 	
 	@Override

@@ -1,0 +1,211 @@
+[06Sep2022 22:39:39.656] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher running: args [--launchTarget, forgeclientuserdev, --version, MOD_DEV, --assetIndex, 1.18, --assetsDir, C:\Users\1whoh\.gradle\caches\forge_gradle\assets, --gameDir, ., --fml.forgeVersion, 40.0.54, --fml.mcVersion, 1.18.2, --fml.forgeGroup, net.minecraftforge, --fml.mcpVersion, 20220404.173914]
+[06Sep2022 22:39:39.660] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher 9.1.3+9.1.3+main.9b69c82a starting: java version 17.0.1 by Eclipse Adoptium
+[06Sep2022 22:39:39.763] [main/INFO] [mixin/]: SpongePowered MIXIN Subsystem Version=0.8.5 Source=union:/C:/Users/1whoh/.gradle/caches/modules-2/files-2.1/org.spongepowered/mixin/0.8.5/9d1c0c3a304ae6697ecd477218fa61b850bf57fc/mixin-0.8.5.jar%2322!/ Service=ModLauncher Env=CLIENT
+[06Sep2022 22:39:40.965] [main/INFO] [cpw.mods.modlauncher.LaunchServiceHandler/MODLAUNCHER]: Launching target 'forgeclientuserdev' with arguments [--version, MOD_DEV, --gameDir, ., --assetsDir, C:\Users\1whoh\.gradle\caches\forge_gradle\assets, --assetIndex, 1.18]
+[06Sep2022 22:39:45.400] [Render thread/WARN] [net.minecraft.server.packs.VanillaPackResources/]: Assets URL 'union:/C:/Users/1whoh/.gradle/caches/forge_gradle/minecraft_user_repo/net/minecraftforge/forge/1.18.2-40.0.54_mapped_parchment_1.18.1-2022.03.06-1.18.2/forge-1.18.2-40.0.54_mapped_parchment_1.18.1-2022.03.06-1.18.2-recomp.jar%2376!/assets/.mcassetsroot' uses unexpected schema
+[06Sep2022 22:39:45.401] [Render thread/WARN] [net.minecraft.server.packs.VanillaPackResources/]: Assets URL 'union:/C:/Users/1whoh/.gradle/caches/forge_gradle/minecraft_user_repo/net/minecraftforge/forge/1.18.2-40.0.54_mapped_parchment_1.18.1-2022.03.06-1.18.2/forge-1.18.2-40.0.54_mapped_parchment_1.18.1-2022.03.06-1.18.2-recomp.jar%2376!/data/.mcassetsroot' uses unexpected schema
+[06Sep2022 22:39:45.418] [Render thread/INFO] [com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService/]: Environment: authHost='https://authserver.mojang.com', accountsHost='https://api.mojang.com', sessionHost='https://sessionserver.mojang.com', servicesHost='https://api.minecraftservices.com', name='PROD'
+[06Sep2022 22:39:45.423] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Setting user: Dev
+[06Sep2022 22:39:45.574] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Backend library: LWJGL version 3.2.2 SNAPSHOT
+[06Sep2022 22:39:47.441] [modloading-worker-0/INFO] [net.minecraftforge.common.ForgeMod/FORGEMOD]: Forge mod loading, version 40.0.54, for MC 1.18.2 with MCP 20220404.173914
+[06Sep2022 22:39:47.442] [modloading-worker-0/INFO] [net.minecraftforge.common.MinecraftForge/FORGE]: MinecraftForge v40.0.54 Initialized
+[06Sep2022 22:39:49.385] [Render thread/INFO] [com.mojang.text2speech.NarratorWindows/]: Narrator library for x64 successfully loaded
+[06Sep2022 22:39:49.492] [Render thread/INFO] [net.minecraftforge.gametest.ForgeGameTestHooks/]: Enabled Gametest Namespaces: [dscombat]
+[06Sep2022 22:39:49.991] [Render thread/INFO] [net.minecraft.server.packs.resources.ReloadableResourceManager/]: Reloading ResourceManager: Default, Mod Resources
+[06Sep2022 22:39:50.051] [Worker-Main-12/INFO] [com.onewhohears.dscombat.DSCombatMod/]: HELLO FROM PREINIT
+[06Sep2022 22:39:50.697] [Forge Version Check/INFO] [net.minecraftforge.fml.VersionChecker/]: [forge] Starting version check at https://files.minecraftforge.net/net/minecraftforge/forge/promotions_slim.json
+[06Sep2022 22:39:51.185] [Forge Version Check/INFO] [net.minecraftforge.fml.VersionChecker/]: [forge] Found status: OUTDATED Current: 40.0.54 Target: 40.1.0
+[06Sep2022 22:40:00.632] [Render thread/INFO] [com.mojang.blaze3d.audio.Library/]: OpenAL initialized on device OpenAL Soft on Speakers (4- High Definition Audio Device)
+[06Sep2022 22:40:00.633] [Render thread/INFO] [net.minecraft.client.sounds.SoundEngine/SOUNDS]: Sound engine started
+[06Sep2022 22:40:00.818] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x512x4 minecraft:textures/atlas/blocks.png-atlas
+[06Sep2022 22:40:00.829] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x128x4 minecraft:textures/atlas/signs.png-atlas
+[06Sep2022 22:40:00.830] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x512x4 minecraft:textures/atlas/banner_patterns.png-atlas
+[06Sep2022 22:40:00.831] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x512x4 minecraft:textures/atlas/shield_patterns.png-atlas
+[06Sep2022 22:40:00.832] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x4 minecraft:textures/atlas/chest.png-atlas
+[06Sep2022 22:40:00.833] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x4 minecraft:textures/atlas/beds.png-atlas
+[06Sep2022 22:40:00.833] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x4 minecraft:textures/atlas/shulker_boxes.png-atlas
+[06Sep2022 22:40:01.952] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x0 minecraft:textures/atlas/particles.png-atlas
+[06Sep2022 22:40:01.954] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x0 minecraft:textures/atlas/paintings.png-atlas
+[06Sep2022 22:40:01.954] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 128x128x0 minecraft:textures/atlas/mob_effects.png-atlas
+[06Sep2022 22:40:02.375] [Realms Notification Availability checker #1/INFO] [com.mojang.realmsclient.client.RealmsClient/]: Could not authorize you against Realms server: Invalid session id
+[06Sep2022 22:40:11.493] [Render thread/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, location] and [teleport, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
+[06Sep2022 22:40:11.494] [Render thread/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, location] and [teleport, targets] with inputs: [0.1 -0.5 .9, 0 0 0]
+[06Sep2022 22:40:11.496] [Render thread/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, destination] and [teleport, targets] with inputs: [Player, 0123, @e, dd12be42-52a9-4a91-a8a1-11c01849e498]
+[06Sep2022 22:40:11.497] [Render thread/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, targets] and [teleport, destination] with inputs: [Player, 0123, dd12be42-52a9-4a91-a8a1-11c01849e498]
+[06Sep2022 22:40:11.498] [Render thread/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, targets, location] and [teleport, targets, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
+[06Sep2022 22:40:12.574] [Render thread/INFO] [net.minecraft.world.item.crafting.RecipeManager/]: Loaded 7 recipes
+[06Sep2022 22:40:13.310] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 1141 advancements
+[06Sep2022 22:40:13.542] [Render thread/INFO] [com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService/]: Environment: authHost='https://authserver.mojang.com', accountsHost='https://api.mojang.com', sessionHost='https://sessionserver.mojang.com', servicesHost='https://api.minecraftservices.com', name='PROD'
+[06Sep2022 22:40:13.561] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Starting integrated minecraft server version 1.18.2
+[06Sep2022 22:40:13.562] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Generating keypair
+[06Sep2022 22:40:13.736] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing start region for dimension minecraft:overworld
+[06Sep2022 22:40:14.127] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 0%
+[06Sep2022 22:40:14.267] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 0%
+[06Sep2022 22:40:14.774] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 0%
+[06Sep2022 22:40:15.260] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 6%
+[06Sep2022 22:40:15.767] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 33%
+[06Sep2022 22:40:16.409] [Server thread/INFO] [net.minecraftforge.server.permission.PermissionAPI/]: Successfully initialized permission handler forge:default_handler
+[06Sep2022 22:40:16.420] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Time elapsed: 2680 ms
+[06Sep2022 22:40:16.473] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing view distance to 16, from 10
+[06Sep2022 22:40:16.474] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing simulation distance to 12, from 0
+[06Sep2022 22:40:17.179] [Netty Local Client IO #0/INFO] [net.minecraftforge.network.NetworkHooks/]: Connected to a modded server.
+[06Sep2022 22:40:17.220] [Server thread/INFO] [net.minecraftforge.common.AdvancementLoadFix/]: Using new advancement loading for net.minecraft.server.PlayerAdvancements@22d65a26
+[06Sep2022 22:40:17.231] [Server thread/INFO] [net.minecraft.server.players.PlayerList/]: Dev[local:E:42e60655] logged in with entity id 124 at (829.1312980511874, 103.0, 2014.8580471911596)
+[06Sep2022 22:40:17.255] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev joined the game
+[06Sep2022 22:40:18.202] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 87 advancements
+[06Sep2022 22:40:39.861] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Saving and pausing game...
+[06Sep2022 22:40:39.880] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
+[06Sep2022 22:40:39.897] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
+[06Sep2022 22:40:39.898] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
+[06Sep2022 22:40:40.816] [Server thread/INFO] [net.minecraft.server.network.ServerGamePacketListenerImpl/]: Dev lost connection: Disconnected
+[06Sep2022 22:40:40.817] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev left the game
+[06Sep2022 22:40:40.826] [Server thread/INFO] [net.minecraft.server.network.ServerGamePacketListenerImpl/]: Stopping singleplayer server as player logged out
+[06Sep2022 22:40:40.877] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Stopping server
+[06Sep2022 22:40:40.878] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving players
+[06Sep2022 22:40:40.878] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving worlds
+[06Sep2022 22:40:42.470] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
+[06Sep2022 22:40:42.568] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
+[06Sep2022 22:40:42.569] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
+[06Sep2022 22:40:42.585] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (New World): All chunks are saved
+[06Sep2022 22:40:42.585] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[06Sep2022 22:40:42.585] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[06Sep2022 22:40:42.585] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage: All dimensions are saved
+[06Sep2022 22:40:56.911] [Render thread/INFO] [net.minecraft.client.gui.screens.ConnectScreen/]: Connecting to mc.hypixel.net, 25565
+[06Sep2022 22:41:02.786] [Render thread/INFO] [net.minecraft.client.gui.screens.ConnectScreen/]: Connecting to mc.hypixel.net, 25565
+[06Sep2022 22:41:24.252] [Netty Client IO #2/ERROR] [net.minecraftforge.network.NetworkRegistry/NETREGISTRY]: Channels [minecraft:dscombat] rejected vanilla connections
+[06Sep2022 22:41:26.276] [Render thread/INFO] [net.minecraft.client.gui.screens.ConnectScreen/]: Connecting to mc.hypixel.net, 25565
+[06Sep2022 22:41:27.661] [Render thread/INFO] [net.minecraft.client.gui.screens.ConnectScreen/]: Connecting to mc.hypixel.net, 25565
+[06Sep2022 22:41:28.639] [Render thread/INFO] [net.minecraft.client.gui.screens.ConnectScreen/]: Connecting to mc.hypixel.net, 25565
+[06Sep2022 22:41:32.351] [Render thread/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, location] and [teleport, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
+[06Sep2022 22:41:32.352] [Render thread/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, location] and [teleport, targets] with inputs: [0.1 -0.5 .9, 0 0 0]
+[06Sep2022 22:41:32.352] [Render thread/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, destination] and [teleport, targets] with inputs: [Player, 0123, @e, dd12be42-52a9-4a91-a8a1-11c01849e498]
+[06Sep2022 22:41:32.353] [Render thread/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, targets] and [teleport, destination] with inputs: [Player, 0123, dd12be42-52a9-4a91-a8a1-11c01849e498]
+[06Sep2022 22:41:32.353] [Render thread/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, targets, location] and [teleport, targets, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
+[06Sep2022 22:41:33.388] [Render thread/INFO] [net.minecraft.world.item.crafting.RecipeManager/]: Loaded 7 recipes
+[06Sep2022 22:41:34.025] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 1141 advancements
+[06Sep2022 22:41:34.261] [Render thread/INFO] [com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService/]: Environment: authHost='https://authserver.mojang.com', accountsHost='https://api.mojang.com', sessionHost='https://sessionserver.mojang.com', servicesHost='https://api.minecraftservices.com', name='PROD'
+[06Sep2022 22:41:34.265] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Starting integrated minecraft server version 1.18.2
+[06Sep2022 22:41:34.266] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Generating keypair
+[06Sep2022 22:41:34.302] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing start region for dimension minecraft:overworld
+[06Sep2022 22:41:34.475] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 0%
+[06Sep2022 22:41:34.850] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 0%
+[06Sep2022 22:41:35.323] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 9%
+[06Sep2022 22:41:35.836] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 43%
+[06Sep2022 22:41:36.143] [Server thread/INFO] [net.minecraftforge.server.permission.PermissionAPI/]: Successfully initialized permission handler forge:default_handler
+[06Sep2022 22:41:36.149] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing view distance to 16, from 10
+[06Sep2022 22:41:36.150] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing simulation distance to 12, from 0
+[06Sep2022 22:41:36.156] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Time elapsed: 1833 ms
+[06Sep2022 22:41:36.401] [Netty Local Client IO #1/INFO] [net.minecraftforge.network.NetworkHooks/]: Connected to a modded server.
+[06Sep2022 22:41:36.411] [Server thread/INFO] [net.minecraftforge.common.AdvancementLoadFix/]: Using new advancement loading for net.minecraft.server.PlayerAdvancements@840a552
+[06Sep2022 22:41:36.416] [Server thread/INFO] [net.minecraft.server.players.PlayerList/]: Dev[local:E:9846c1f9] logged in with entity id 690 at (829.1312980511874, 102.0, 2017.5)
+[06Sep2022 22:41:36.419] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev joined the game
+[06Sep2022 22:41:37.015] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 87 advancements
+[06Sep2022 22:42:00.944] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Saving and pausing game...
+[06Sep2022 22:42:00.950] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
+[06Sep2022 22:42:00.957] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
+[06Sep2022 22:42:00.958] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
+[06Sep2022 22:42:01.499] [Server thread/INFO] [net.minecraft.server.network.ServerGamePacketListenerImpl/]: Dev lost connection: Disconnected
+[06Sep2022 22:42:01.499] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev left the game
+[06Sep2022 22:42:01.510] [Server thread/INFO] [net.minecraft.server.network.ServerGamePacketListenerImpl/]: Stopping singleplayer server as player logged out
+[06Sep2022 22:42:01.559] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Stopping server
+[06Sep2022 22:42:01.560] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving players
+[06Sep2022 22:42:01.560] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving worlds
+[06Sep2022 22:42:03.261] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
+[06Sep2022 22:42:03.349] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
+[06Sep2022 22:42:03.350] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
+[06Sep2022 22:42:03.365] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (New World): All chunks are saved
+[06Sep2022 22:42:03.365] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[06Sep2022 22:42:03.365] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[06Sep2022 22:42:03.365] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage: All dimensions are saved
+[06Sep2022 22:42:08.354] [Render thread/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, location] and [teleport, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
+[06Sep2022 22:42:08.355] [Render thread/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, location] and [teleport, targets] with inputs: [0.1 -0.5 .9, 0 0 0]
+[06Sep2022 22:42:08.355] [Render thread/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, destination] and [teleport, targets] with inputs: [Player, 0123, @e, dd12be42-52a9-4a91-a8a1-11c01849e498]
+[06Sep2022 22:42:08.356] [Render thread/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, targets] and [teleport, destination] with inputs: [Player, 0123, dd12be42-52a9-4a91-a8a1-11c01849e498]
+[06Sep2022 22:42:08.356] [Render thread/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, targets, location] and [teleport, targets, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
+[06Sep2022 22:42:09.377] [Render thread/INFO] [net.minecraft.world.item.crafting.RecipeManager/]: Loaded 7 recipes
+[06Sep2022 22:42:09.992] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 1141 advancements
+[06Sep2022 22:42:10.236] [Render thread/INFO] [com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService/]: Environment: authHost='https://authserver.mojang.com', accountsHost='https://api.mojang.com', sessionHost='https://sessionserver.mojang.com', servicesHost='https://api.minecraftservices.com', name='PROD'
+[06Sep2022 22:42:10.240] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Starting integrated minecraft server version 1.18.2
+[06Sep2022 22:42:10.241] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Generating keypair
+[06Sep2022 22:42:10.271] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing start region for dimension minecraft:overworld
+[06Sep2022 22:42:10.440] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 0%
+[06Sep2022 22:42:10.815] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 0%
+[06Sep2022 22:42:11.322] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 8%
+[06Sep2022 22:42:11.796] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 39%
+[06Sep2022 22:42:12.080] [Server thread/INFO] [net.minecraftforge.server.permission.PermissionAPI/]: Successfully initialized permission handler forge:default_handler
+[06Sep2022 22:42:12.086] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Time elapsed: 1797 ms
+[06Sep2022 22:42:12.086] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing view distance to 16, from 10
+[06Sep2022 22:42:12.087] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing simulation distance to 12, from 0
+[06Sep2022 22:42:12.342] [Netty Local Client IO #2/INFO] [net.minecraftforge.network.NetworkHooks/]: Connected to a modded server.
+[06Sep2022 22:42:12.352] [Server thread/INFO] [net.minecraftforge.common.AdvancementLoadFix/]: Using new advancement loading for net.minecraft.server.PlayerAdvancements@71358bbd
+[06Sep2022 22:42:12.356] [Server thread/INFO] [net.minecraft.server.players.PlayerList/]: Dev[local:E:143f9f07] logged in with entity id 1243 at (830.6907637735063, 102.0, 2018.1724662125457)
+[06Sep2022 22:42:12.359] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev joined the game
+[06Sep2022 22:42:12.939] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 87 advancements
+[06Sep2022 22:47:16.607] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev fell out of the world
+[06Sep2022 22:47:16.611] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] Dev fell out of the world
+[06Sep2022 22:47:16.611] [Server thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Nitwit'/7416, l='ServerLevel[New World]', x=1077.67, y=67.00, z=1760.67] died, message: 'Nitwit fell out of the world'
+[06Sep2022 22:47:16.614] [Server thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Villager'/7436, l='ServerLevel[New World]', x=1091.63, y=68.00, z=1760.99] died, message: 'Villager fell out of the world'
+[06Sep2022 22:47:16.614] [Server thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Butcher'/7438, l='ServerLevel[New World]', x=1087.82, y=66.00, z=1728.56] died, message: 'Butcher fell out of the world'
+[06Sep2022 22:47:16.614] [Server thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Nitwit'/7439, l='ServerLevel[New World]', x=1065.53, y=63.00, z=1725.58] died, message: 'Nitwit fell out of the world'
+[06Sep2022 22:47:16.615] [Server thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Villager'/7448, l='ServerLevel[New World]', x=1098.37, y=65.56, z=1737.72] died, message: 'Villager fell out of the world'
+[06Sep2022 22:47:16.615] [Server thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Villager'/7467, l='ServerLevel[New World]', x=1114.45, y=65.00, z=1729.70] died, message: 'Villager fell out of the world'
+[06Sep2022 22:47:16.615] [Server thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Nitwit'/7468, l='ServerLevel[New World]', x=1115.84, y=64.00, z=1740.30] died, message: 'Nitwit fell out of the world'
+[06Sep2022 22:47:16.616] [Server thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Weaponsmith'/7469, l='ServerLevel[New World]', x=1114.83, y=65.00, z=1728.17] died, message: 'Weaponsmith fell out of the world'
+[06Sep2022 22:47:16.616] [Server thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Villager'/7475, l='ServerLevel[New World]', x=1116.68, y=64.00, z=1740.48] died, message: 'Villager fell out of the world'
+[06Sep2022 22:47:16.617] [Server thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Villager'/7485, l='ServerLevel[New World]', x=1119.17, y=63.00, z=1705.60] died, message: 'Villager fell out of the world'
+[06Sep2022 22:47:16.617] [Server thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Villager'/7486, l='ServerLevel[New World]', x=1122.81, y=63.00, z=1707.12] died, message: 'Villager fell out of the world'
+[06Sep2022 22:47:16.617] [Server thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Farmer'/7487, l='ServerLevel[New World]', x=1123.31, y=63.79, z=1710.57] died, message: 'Farmer fell out of the world'
+[06Sep2022 22:47:16.617] [Server thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Villager'/7492, l='ServerLevel[New World]', x=1122.18, y=63.00, z=1707.70] died, message: 'Villager fell out of the world'
+[06Sep2022 22:47:16.618] [Server thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Villager'/7502, l='ServerLevel[New World]', x=1112.30, y=65.00, z=1746.55] died, message: 'Villager fell out of the world'
+[06Sep2022 22:47:16.619] [Server thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Villager'/7503, l='ServerLevel[New World]', x=1116.67, y=64.00, z=1741.22] died, message: 'Villager fell out of the world'
+[06Sep2022 22:47:16.619] [Render thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Nitwit'/7416, l='ClientLevel', x=1077.38, y=67.00, z=1760.39] died, message: 'Nitwit died'
+[06Sep2022 22:47:16.619] [Server thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Villager'/7520, l='ServerLevel[New World]', x=1138.42, y=63.56, z=1716.21] died, message: 'Villager fell out of the world'
+[06Sep2022 22:47:16.619] [Render thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Villager'/7436, l='ClientLevel', x=1091.63, y=68.00, z=1760.99] died, message: 'Villager died'
+[06Sep2022 22:47:16.619] [Render thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Butcher'/7438, l='ClientLevel', x=1087.82, y=66.00, z=1728.56] died, message: 'Butcher died'
+[06Sep2022 22:47:16.619] [Render thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Nitwit'/7439, l='ClientLevel', x=1065.81, y=63.00, z=1725.87] died, message: 'Nitwit died'
+[06Sep2022 22:47:16.620] [Render thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Villager'/7448, l='ClientLevel', x=1098.37, y=65.56, z=1737.72] died, message: 'Villager died'
+[06Sep2022 22:47:16.620] [Render thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Villager'/7467, l='ClientLevel', x=1114.45, y=65.00, z=1729.70] died, message: 'Villager died'
+[06Sep2022 22:47:16.620] [Render thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Nitwit'/7468, l='ClientLevel', x=1115.84, y=64.00, z=1740.30] died, message: 'Nitwit died'
+[06Sep2022 22:47:16.620] [Render thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Weaponsmith'/7469, l='ClientLevel', x=1114.83, y=65.00, z=1728.17] died, message: 'Weaponsmith died'
+[06Sep2022 22:47:16.621] [Render thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Villager'/7475, l='ClientLevel', x=1116.68, y=64.00, z=1740.48] died, message: 'Villager died'
+[06Sep2022 22:47:16.621] [Render thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Villager'/7485, l='ClientLevel', x=1119.18, y=63.00, z=1705.61] died, message: 'Villager died'
+[06Sep2022 22:47:16.621] [Render thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Villager'/7486, l='ClientLevel', x=1122.81, y=63.00, z=1707.12] died, message: 'Villager died'
+[06Sep2022 22:47:16.621] [Render thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Farmer'/7487, l='ClientLevel', x=1123.31, y=63.83, z=1710.63] died, message: 'Farmer died'
+[06Sep2022 22:47:16.621] [Render thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Villager'/7492, l='ClientLevel', x=1122.57, y=63.00, z=1707.82] died, message: 'Villager died'
+[06Sep2022 22:47:16.622] [Render thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Villager'/7502, l='ClientLevel', x=1112.45, y=64.28, z=1746.45] died, message: 'Villager died'
+[06Sep2022 22:47:16.622] [Render thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Villager'/7503, l='ClientLevel', x=1116.67, y=64.00, z=1741.22] died, message: 'Villager died'
+[06Sep2022 22:47:16.622] [Render thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Villager'/7520, l='ClientLevel', x=1138.42, y=63.56, z=1716.21] died, message: 'Villager died'
+[06Sep2022 22:47:16.626] [Server thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Villager'/8079, l='ServerLevel[New World]', x=857.51, y=67.00, z=1874.49] died, message: 'Villager fell out of the world'
+[06Sep2022 22:47:16.627] [Server thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Farmer'/8087, l='ServerLevel[New World]', x=845.45, y=68.00, z=1875.13] died, message: 'Farmer fell out of the world'
+[06Sep2022 22:47:16.627] [Server thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Cartographer'/8088, l='ServerLevel[New World]', x=833.06, y=71.00, z=1877.50] died, message: 'Cartographer fell out of the world'
+[06Sep2022 22:47:16.627] [Render thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Villager'/8079, l='ClientLevel', x=857.51, y=67.00, z=1874.49] died, message: 'Villager died'
+[06Sep2022 22:47:16.627] [Server thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Villager'/8089, l='ServerLevel[New World]', x=844.09, y=64.00, z=1897.44] died, message: 'Villager fell out of the world'
+[06Sep2022 22:47:16.627] [Render thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Farmer'/8087, l='ClientLevel', x=845.45, y=68.00, z=1875.13] died, message: 'Farmer died'
+[06Sep2022 22:47:16.628] [Render thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Cartographer'/8088, l='ClientLevel', x=833.06, y=71.00, z=1877.50] died, message: 'Cartographer died'
+[06Sep2022 22:47:16.628] [Render thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Villager'/8089, l='ClientLevel', x=844.09, y=64.00, z=1897.44] died, message: 'Villager died'
+[06Sep2022 22:47:16.629] [Server thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Farmer'/8115, l='ServerLevel[New World]', x=802.41, y=69.94, z=1830.86] died, message: 'Farmer fell out of the world'
+[06Sep2022 22:47:16.629] [Server thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Villager'/8118, l='ServerLevel[New World]', x=808.80, y=65.00, z=1913.51] died, message: 'Villager fell out of the world'
+[06Sep2022 22:47:16.629] [Server thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Farmer'/8124, l='ServerLevel[New World]', x=812.82, y=69.00, z=1870.96] died, message: 'Farmer fell out of the world'
+[06Sep2022 22:47:16.630] [Server thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Farmer'/8132, l='ServerLevel[New World]', x=790.39, y=67.00, z=1883.41] died, message: 'Farmer fell out of the world'
+[06Sep2022 22:47:16.630] [Server thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Butcher'/8139, l='ServerLevel[New World]', x=795.56, y=70.00, z=1854.56] died, message: 'Butcher fell out of the world'
+[06Sep2022 22:47:16.630] [Server thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Farmer'/8140, l='ServerLevel[New World]', x=799.98, y=69.70, z=1868.57] died, message: 'Farmer fell out of the world'
+[06Sep2022 22:47:16.631] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Killed 421 entities]
+[06Sep2022 22:47:16.636] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] Killed 421 entities
+[06Sep2022 22:47:28.632] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Saving and pausing game...
+[06Sep2022 22:47:28.640] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
+[06Sep2022 22:47:28.643] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
+[06Sep2022 22:47:28.644] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
+[06Sep2022 22:47:29.184] [Server thread/INFO] [net.minecraft.server.network.ServerGamePacketListenerImpl/]: Dev lost connection: Disconnected
+[06Sep2022 22:47:29.184] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev left the game
+[06Sep2022 22:47:29.191] [Server thread/INFO] [net.minecraft.server.network.ServerGamePacketListenerImpl/]: Stopping singleplayer server as player logged out
+[06Sep2022 22:47:29.234] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Stopping server
+[06Sep2022 22:47:29.234] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving players
+[06Sep2022 22:47:29.234] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving worlds
+[06Sep2022 22:47:29.906] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
+[06Sep2022 22:47:30.003] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
+[06Sep2022 22:47:30.004] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
+[06Sep2022 22:47:30.018] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (New World): All chunks are saved
+[06Sep2022 22:47:30.018] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[06Sep2022 22:47:30.018] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[06Sep2022 22:47:30.018] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage: All dimensions are saved
+[06Sep2022 22:47:31.293] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Stopping!

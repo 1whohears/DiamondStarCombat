@@ -1,6 +1,7 @@
 .gradle
 **/build/
 !src/**/build/
+**/src/generated/
 
 # Ignore Gradle GUI config
 gradle-app.setting

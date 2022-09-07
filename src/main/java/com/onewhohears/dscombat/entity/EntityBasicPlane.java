@@ -43,10 +43,12 @@ public class EntityBasicPlane extends Entity {
 	
 	public boolean inputThrottleUp, inputThrottleDown, inputPitchUp, inputPitchDown;
 	public boolean inputRollLeft, inputRollRight, inputYawLeft, inputYawRight;
+	public boolean inputMouseMode, inputFlare;
 	public float prevXRot, prevYRot, zRot, prevZRot;
 	
 	private int lerpSteps;
 	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot, lerpRotRoll;
+	private boolean prevInputMouseMode;
 	
 	public EntityBasicPlane(EntityType<? extends EntityBasicPlane> entity, Level level) {
 		super(entity, level);
@@ -93,7 +95,28 @@ public class EntityBasicPlane extends Entity {
         } else {
             q = getQ();
         }
-		if (this.isControlledByLocalInstance()) {
+		controlDirection(q);
+		EulerAngles a = getAngles(q);
+		double pitchRad = Math.toRadians(a.pitch);
+    	double yawRad = Math.toRadians(a.yaw);
+    	double rollRad = Math.toRadians(a.roll);
+    	System.out.println("########");
+    	System.out.println("is client "+level.isClientSide);
+    	System.out.println("Q = "+q);
+    	Vec3 motion = getDeltaMovement();
+    	System.out.println("prev motion: "+motion);
+    	Vec3 newForce = getWeightForce();
+    	newForce = newForce.add(getLiftForce(pitchRad, yawRad, rollRad, motion));
+    	newForce = newForce.add(getThrustForce(pitchRad, yawRad));
+    	newForce = newForce.add(getDragForce(motion));
+    	motion = motion.add(newForce);
+		if (onGround && motion.y < 0) motion = new Vec3(motion.x, 0, motion.z);
+		double speed = motion.length();
+		if (speed > getMaxSpeed()) motion = motion.scale(getMaxSpeed() / speed);
+		System.out.println("new motion = "+motion);
+		setDeltaMovement(motion);
+		move(MoverType.SELF, getDeltaMovement());
+		/*if (this.isControlledByLocalInstance()) {
 			if (level.isClientSide) {
 				this.controlDirection(q);
 			}
@@ -119,24 +142,24 @@ public class EntityBasicPlane extends Entity {
 			messageToPlayer("Pit = "+a.pitch);
 			messageToPlayer("Rol = "+a.roll);
 			messageToPlayer("Yaw = "+a.yaw);*/
-		} else {
+		//} else {
 			/*EulerAngles a = getAngles(q);
 			double pitchRad = Math.toRadians(a.pitch);
 	    	double yawRad = Math.toRadians(a.yaw);
 	    	double rollRad = Math.toRadians(a.roll);*/
-			Vec3 motion = getDeltaMovement();
 			/*motion = motion.add(getDragForce(motion));
 			motion = motion.add(getLiftForce(pitchRad, yawRad, rollRad));
 			motion = motion.add(getWeightForce());
 			if (onGround) motion = new Vec3(motion.x, 0, motion.z);*/
-			this.setDeltaMovement(motion);
-		}
+			//Vec3 motion = getDeltaMovement();
+			//this.setDeltaMovement(motion);
+		//}
         q = UtilAngles.normalizeQuaternion(q);
         setPrevQ(getClientQ());
         setQ(q);
         if (level.isClientSide && isControlledByLocalInstance()) {
         	setClientQ(q);
-        	// send packet
+        	// send packet not needed?
         }
 		tickLerp();
 	}
@@ -187,17 +210,21 @@ public class EntityBasicPlane extends Entity {
 	
 	public Vec3 getDragForce(Vec3 motion) {
 		Vec3 direction = motion.normalize();
-		Vec3 dragForce = direction.scale(-getDrag());
+		Vec3 dragForce = direction.scale(-getDrag(motion));
 		System.out.println("drag force = "+dragForce);
 		return dragForce;
 	}
 	
-	public double getDrag() {
-		if (onGround) return 0.01;
+	public double getDrag(Vec3 motion) {
+		double speed = motion.length();
+		if (onGround && getCurrentThrottle() <= 0) {
+			if (speed > 0.1) return 0.1;
+			return speed;
+		}
 		// Drag = (drag coefficient) * (air pressure) * (speed)^2 * (wing surface area) / 2
 		double dc = 0.01;
 		double air = 1;
-		double speedSqr = getDeltaMovement().lengthSqr();
+		double speedSqr = speed * speed;
 		double wing = 1;
 		return dc * air * speedSqr * wing / 2;
 	}
@@ -208,14 +235,15 @@ public class EntityBasicPlane extends Entity {
 		Vec3 u = motion;
 		Vec3 v = UtilAngles.getRollAxis(pitchRad, yawRad);
 		double vl2 = v.lengthSqr();
-		Vec3 liftForce = direction.scale(getLift(v.scale(u.dot(v) / vl2).lengthSqr()));
+		double zSpeedSqr = v.scale(u.dot(v) / vl2).lengthSqr();
+		Vec3 liftForce = direction.scale(getLift(zSpeedSqr));
 		System.out.println("lift force = "+liftForce);
 		return liftForce;
 	}
 	
 	public double getLift(double zSpeedSqr) {
 		// Lift = (angle of attack coefficient) * (air density) * (speed)^2 * (wing surface area) / 2
-		double ac = 0.04;
+		double ac = 0.05;
 		double air = 1;
 		double speedSqr = zSpeedSqr;
 		double wing = 1;
@@ -257,7 +285,8 @@ public class EntityBasicPlane extends Entity {
 	}
 	
 	public void updateControls(boolean throttleUp, boolean throttleDown, boolean pitchUp, boolean pitchDown,
-			boolean rollLeft, boolean rollRight, boolean yawLeft, boolean yawRight) {
+			boolean rollLeft, boolean rollRight, boolean yawLeft, boolean yawRight,
+			boolean mouseMode, boolean flare) {
 		this.inputThrottleUp = throttleUp;
 		this.inputThrottleDown = throttleDown;
 		this.inputPitchUp = pitchUp;
@@ -266,6 +295,10 @@ public class EntityBasicPlane extends Entity {
 		this.inputRollRight = rollRight;
 		this.inputYawLeft = yawLeft;
 		this.inputYawRight = yawRight;
+		this.inputMouseMode = mouseMode;
+		this.inputFlare = flare;
+		if (!prevInputMouseMode && inputMouseMode) setFreeLook(!isFreeLook());
+		prevInputMouseMode = inputMouseMode;
 	}
 	
 	public void resetControls() {
@@ -277,6 +310,8 @@ public class EntityBasicPlane extends Entity {
 		this.inputRollRight = false;
 		this.inputYawLeft = false;
 		this.inputYawRight = false;
+		this.inputMouseMode = false;
+		this.inputFlare = false;
 	}
 	
 	@Override

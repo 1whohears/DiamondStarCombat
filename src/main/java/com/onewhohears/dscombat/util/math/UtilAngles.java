@@ -67,28 +67,36 @@ public class UtilAngles {
         return vec.scale(size / vec.length());
     }
 
-    public static EulerAngles toEulerAngles(Quaternion q) {
+    public static EulerAngles toRadians(Quaternion q) {
         EulerAngles angles = new EulerAngles();
-
+        
         // roll (x-axis rotation)
         double sinr_cosp = 2 * (q.r() * q.k() + q.i() * q.j());
         double cosr_cosp = 1 - 2 * (q.k() * q.k() + q.i() * q.i());
-        angles.roll = Math.toDegrees(Math.atan2(sinr_cosp, cosr_cosp));
+        angles.roll = Math.atan2(sinr_cosp, cosr_cosp);
 
         // pitch (z-axis rotation)
         double sinp = 2 * (q.r() * q.i() - q.j() * q.k());
         if (Math.abs(sinp) >= 0.999) {
-            angles.pitch = -Math.toDegrees(Math.signum(sinp) * Math.PI / 2); // use 90 degrees if out of range
+            angles.pitch = -Math.signum(sinp) * Math.PI / 2; // use 90 degrees if out of range
         } else {
-            angles.pitch = -Math.toDegrees(Math.asin(sinp));
+            angles.pitch = -Math.asin(sinp);
         }
 
         // yaw (y-axis rotation)
         double siny_cosp = 2 * (q.r() * q.j() + q.k() * q.i());
         double cosy_cosp = 1 - 2 * (q.i() * q.i() + q.j() * q.j());
-        angles.yaw = Math.toDegrees(Math.atan2(siny_cosp, cosy_cosp));
+        angles.yaw = Math.atan2(siny_cosp, cosy_cosp);
 
         return angles;
+    }
+    
+    public static EulerAngles toDegrees(Quaternion q) {
+    	EulerAngles angles = toRadians(q);
+    	angles.roll = Math.toDegrees(angles.roll);
+    	angles.pitch = Math.toDegrees(angles.pitch);
+    	angles.yaw = Math.toDegrees(angles.yaw);
+    	return angles;
     }
 
     public static float fastInvSqrt(float number) {
@@ -214,11 +222,21 @@ public class UtilAngles {
         }
     }
     
+    public static Vec3 getRollAxis(Quaternion q) {
+    	EulerAngles a = toRadians(q);
+    	return getRollAxis(a.pitch, a.yaw);
+    }
+    
     public static Vec3 getRollAxis(double pitchRad, double yawRad) {
 		return new Vec3(Math.sin(yawRad)*Math.cos(pitchRad), 
 							Math.sin(pitchRad), 
 							Math.cos(yawRad)*Math.cos(pitchRad));
 	}
+    
+    public static Vec3 getPitchAxis(Quaternion q) {
+    	EulerAngles a = toRadians(q);
+    	return getPitchAxis(a.pitch, a.yaw, a.roll);
+    }
     
     public static Vec3 getPitchAxis(double pitchRad, double yawRad, double rollRad) {
 		double CP = Math.cos(pitchRad);
@@ -231,6 +249,11 @@ public class UtilAngles {
 						-CP*SR,
 						-CY*SP*SR-SY*CR);
 	}
+    
+    public static Vec3 getYawAxis(Quaternion q) {
+    	EulerAngles a = toRadians(q);
+    	return getYawAxis(a.pitch, a.yaw, a.roll);
+    }
     
     public static Vec3 getYawAxis(double pitchRad, double yawRad, double rollRad) {
     	double CP = Math.cos(pitchRad);

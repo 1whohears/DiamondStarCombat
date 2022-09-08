@@ -6,7 +6,7 @@ import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.renderer.model.EntityModelBasicPlane;
-import com.onewhohears.dscombat.entity.EntityAbstractPlane;
+import com.onewhohears.dscombat.entity.EntityAbstractAircraft;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.client.model.EntityModel;
@@ -16,7 +16,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
-public class RendererEntityBasicPlane<T extends EntityAbstractPlane> extends EntityRenderer<T> {
+public class RendererEntityBasicPlane<T extends EntityAbstractAircraft> extends EntityRenderer<T> {
 	
 	private static final ResourceLocation TEXTURE = new ResourceLocation(DSCombatMod.MODID, "textures/entities/basic_plane.png");
 	

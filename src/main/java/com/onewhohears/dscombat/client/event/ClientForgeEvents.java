@@ -5,7 +5,7 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.KeyInit;
 import com.onewhohears.dscombat.common.PacketHandler;
 import com.onewhohears.dscombat.common.network.ServerBoundFlightControlPacket;
-import com.onewhohears.dscombat.entity.EntityAbstractPlane;
+import com.onewhohears.dscombat.entity.EntityAbstractAircraft;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.client.Minecraft;
@@ -32,7 +32,7 @@ public final class ClientForgeEvents {
 		if (event.phase != Phase.START) return;
 		final var player = Minecraft.getInstance().player;
 		if (player == null) return;
-		if (!(player.getRootVehicle() instanceof EntityAbstractPlane plane)) return;
+		if (!(player.getRootVehicle() instanceof EntityAbstractAircraft plane)) return;
 		if (plane.getControllingPassenger() != player) return;
 		boolean throttleUp = KeyInit.throttleUpKey.isDown();
 		boolean throttleDown = KeyInit.throttleDownKey.isDown();
@@ -75,7 +75,7 @@ public final class ClientForgeEvents {
 	public static void playerRender(RenderPlayerEvent.Pre event) {
 		//System.out.println("render player");
 		Player player = event.getPlayer();
-		if (!(player.getRootVehicle() instanceof EntityAbstractPlane plane)) return;
+		if (!(player.getRootVehicle() instanceof EntityAbstractAircraft plane)) return;
 		if (plane.getControllingPassenger() != player) return;
 		//System.out.println("player model "+plane.getQ());
 		//PoseStack stack = event.getPoseStack();
@@ -95,7 +95,7 @@ public final class ClientForgeEvents {
 	public static void cameraSetup(EntityViewRenderEvent.CameraSetup event) {
 		final var player = Minecraft.getInstance().player;
 		if (player == null) return;
-		if (!(player.getRootVehicle() instanceof EntityAbstractPlane plane)) return;
+		if (!(player.getRootVehicle() instanceof EntityAbstractAircraft plane)) return;
 		if (plane.getControllingPassenger() != player) return;
 		if (plane.isFreeLook()) return;
 		Vec3 pos = event.getCamera().getPosition();

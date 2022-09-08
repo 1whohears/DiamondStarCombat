@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.init;
 
 import com.google.common.collect.ImmutableSet;
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.entity.EntityAbstractPlane;
+import com.onewhohears.dscombat.entity.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.EntityTestPlane;
 
 import net.minecraft.world.entity.Entity;
@@ -18,7 +18,7 @@ public class ModEntities {
 	
 	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, DSCombatMod.MODID);
 	
-	public static final RegistryObject<EntityType<EntityAbstractPlane>> TEST_PLANE = ENTITIES.register("test_plane", 
+	public static final RegistryObject<EntityType<EntityTestPlane>> TEST_PLANE = ENTITIES.register("test_plane", 
 			() -> createEntityType(EntityTestPlane::new, EntityDimensions.scalable(1F, 1F)));
 	
 	private static <T extends Entity> EntityType<T> createEntityType(EntityType.EntityFactory<T> factory, EntityDimensions size) {

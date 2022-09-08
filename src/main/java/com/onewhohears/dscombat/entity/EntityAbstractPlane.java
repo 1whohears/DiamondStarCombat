@@ -6,6 +6,8 @@ import javax.annotation.Nullable;
 
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
+import com.onewhohears.dscombat.common.PacketHandler;
+import com.onewhohears.dscombat.common.network.ServerBoundQPacket;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
@@ -30,14 +32,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class EntityBasicPlane extends Entity {
+public abstract class EntityAbstractPlane extends Entity {
 	
-	public static final EntityDataAccessor<Integer> MAX_HEALTH = SynchedEntityData.defineId(EntityBasicPlane.class, EntityDataSerializers.INT);
-    public static final EntityDataAccessor<Integer> HEALTH = SynchedEntityData.defineId(EntityBasicPlane.class, EntityDataSerializers.INT);
-	public static final EntityDataAccessor<Float> MAX_SPEED = SynchedEntityData.defineId(EntityBasicPlane.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> THROTTLE = SynchedEntityData.defineId(EntityBasicPlane.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Quaternion> Q = SynchedEntityData.defineId(EntityBasicPlane.class, DataSerializers.QUATERNION);
-	public static final EntityDataAccessor<Boolean> FREE_LOOK = SynchedEntityData.defineId(EntityBasicPlane.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Integer> MAX_HEALTH = SynchedEntityData.defineId(EntityAbstractPlane.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> HEALTH = SynchedEntityData.defineId(EntityAbstractPlane.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Float> MAX_SPEED = SynchedEntityData.defineId(EntityAbstractPlane.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> THROTTLE = SynchedEntityData.defineId(EntityAbstractPlane.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Quaternion> Q = SynchedEntityData.defineId(EntityAbstractPlane.class, DataSerializers.QUATERNION);
+	public static final EntityDataAccessor<Boolean> FREE_LOOK = SynchedEntityData.defineId(EntityAbstractPlane.class, EntityDataSerializers.BOOLEAN);
 	public Quaternion clientQ = new Quaternion(Quaternion.ONE);
 	public Quaternion prevQ = new Quaternion(Quaternion.ONE);
 	
@@ -50,12 +52,14 @@ public class EntityBasicPlane extends Entity {
 	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot, lerpRotRoll;
 	private boolean prevInputMouseMode;
 	
-	public EntityBasicPlane(EntityType<? extends EntityBasicPlane> entity, Level level) {
+	private List<EntitySeat> seats;
+	
+	public EntityAbstractPlane(EntityType<? extends EntityAbstractPlane> entity, Level level) {
 		super(entity, level);
 		this.blocksBuilding = true;
 	}
 	
-	public EntityBasicPlane(EntityType<? extends EntityBasicPlane> entity, Level level, double x, double y, double z) {
+	public EntityAbstractPlane(EntityType<? extends EntityAbstractPlane> entity, Level level, double x, double y, double z) {
 		this(entity, level);
 		setPos(x, y, z);
 	}
@@ -160,6 +164,7 @@ public class EntityBasicPlane extends Entity {
         if (level.isClientSide && isControlledByLocalInstance()) {
         	setClientQ(q);
         	// send packet not needed?
+        	PacketHandler.INSTANCE.sendToServer(new ServerBoundQPacket(q));
         }
 		tickLerp();
 	}
@@ -334,10 +339,8 @@ public class EntityBasicPlane extends Entity {
     public void positionRider(Entity passenger) {
 		if (!this.hasPassenger(passenger)) return;
 		Vec3 pos = new Vec3(getX(), getY(), getZ());
-		Quaternion seat = new Quaternion(0, 1, 0, 0);
-		seat.mul(getQ());
-		seat.normalize();
-		Vec3 seatPos = new Vec3(seat.i(), seat.j(), seat.k());
+		Vec3 seat = new Vec3(0, 0, 0);
+		Vec3 seatPos = UtilAngles.rotateVector(seat, getQ());
 		passenger.setPos(pos.add(seatPos));
 	}
 	

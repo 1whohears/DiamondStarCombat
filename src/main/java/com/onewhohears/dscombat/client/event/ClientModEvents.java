@@ -31,6 +31,6 @@ public class ClientModEvents {
 	
 	@SubscribeEvent
 	public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
-		event.registerEntityRenderer(ModEntities.BASIC_PLANE.get(), RendererEntityBasicPlane::new);
+		event.registerEntityRenderer(ModEntities.TEST_PLANE.get(), RendererEntityBasicPlane::new);
 	}
 }

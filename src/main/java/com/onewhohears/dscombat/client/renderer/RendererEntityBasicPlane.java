@@ -6,7 +6,7 @@ import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.renderer.model.EntityModelBasicPlane;
-import com.onewhohears.dscombat.entity.EntityBasicPlane;
+import com.onewhohears.dscombat.entity.EntityAbstractPlane;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.client.model.EntityModel;
@@ -16,7 +16,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
-public class RendererEntityBasicPlane<T extends EntityBasicPlane> extends EntityRenderer<T> {
+public class RendererEntityBasicPlane<T extends EntityAbstractPlane> extends EntityRenderer<T> {
 	
 	private static final ResourceLocation TEXTURE = new ResourceLocation(DSCombatMod.MODID, "textures/entities/basic_plane.png");
 	
@@ -32,16 +32,11 @@ public class RendererEntityBasicPlane<T extends EntityBasicPlane> extends Entity
 	@Override
 	public void render(T entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
 		poseStack.pushPose();
-        poseStack.scale(1.0F, -1.0F, 1.0F);
-        poseStack.mulPose(Vector3f.YP.rotationDegrees(180));
-        //poseStack.mulPose(Vector3f.YP.rotationDegrees(-entityYaw));
-        //poseStack.mulPose(Vector3f.XP.rotationDegrees(180f-entity.getXRot()));
-        //poseStack.mulPose(Vector3f.ZP.rotationDegrees(entity.rotRoll));
 		Quaternion q = UtilAngles.lerpQ(partialTicks, entity.getPrevQ(), entity.getClientQ());
         poseStack.mulPose(q);
-        
-        double radius = 1.55;
-        poseStack.translate(0, -radius, 0);
+        poseStack.translate(0, 1.55, 0);
+        poseStack.scale(1.0F, -1.0F, 1.0F);
+        poseStack.mulPose(Vector3f.YP.rotationDegrees(180));
 		
         VertexConsumer vertexconsumer = multiBufferSource.getBuffer(this.model.renderType(this.getTextureLocation(entity)));
 		model.renderToBuffer(poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);

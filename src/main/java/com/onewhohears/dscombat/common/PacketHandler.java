@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.common;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.network.ClientboundUpdateBoostPacket;
 import com.onewhohears.dscombat.common.network.ServerBoundFlightControlPacket;
+import com.onewhohears.dscombat.common.network.ServerBoundQPacket;
 import com.onewhohears.dscombat.common.network.ServerboundBoostUpdatePacket;
 
 import net.minecraft.resources.ResourceLocation;
@@ -35,6 +36,12 @@ public final class PacketHandler {
 			.encoder(ServerBoundFlightControlPacket::encode)
 			.decoder(ServerBoundFlightControlPacket::new)
 			.consumer(ServerBoundFlightControlPacket::handle)
-			.add();;
+			.add();
+		INSTANCE.messageBuilder(ServerBoundQPacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
+			.encoder(ServerBoundQPacket::encode)
+			.decoder(ServerBoundQPacket::new)
+			.consumer(ServerBoundQPacket::handle)
+			.add();
 	}
+	
 }

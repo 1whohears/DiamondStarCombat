@@ -3,13 +3,13 @@ package com.onewhohears.dscombat.common.network;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
-import com.onewhohears.dscombat.entity.EntityBasicPlane;
+import com.onewhohears.dscombat.entity.EntityAbstractPlane;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
 
-public class ServerBoundFlightControlPacket {
+public class ServerBoundFlightControlPacket implements IServerBoundPacket {
 	
 	public final boolean throttleUp;
 	public final boolean throttleDown;
@@ -37,16 +37,16 @@ public class ServerBoundFlightControlPacket {
 	}
 	
 	public ServerBoundFlightControlPacket(FriendlyByteBuf buffer) {
-		this.throttleUp = buffer.readBoolean();
-		this.throttleDown = buffer.readBoolean();
-		this.pitchUp = buffer.readBoolean();
-		this.pitchDown = buffer.readBoolean();
-		this.rollLeft = buffer.readBoolean();
-		this.rollRight = buffer.readBoolean();
-		this.yawLeft = buffer.readBoolean();
-		this.yawRight = buffer.readBoolean();
-		this.mouseMode = buffer.readBoolean();
-		this.flare = buffer.readBoolean();
+		throttleUp = buffer.readBoolean();
+		throttleDown = buffer.readBoolean();
+		pitchUp = buffer.readBoolean();
+		pitchDown = buffer.readBoolean();
+		rollLeft = buffer.readBoolean();
+		rollRight = buffer.readBoolean();
+		yawLeft = buffer.readBoolean();
+		yawRight = buffer.readBoolean();
+		mouseMode = buffer.readBoolean();
+		flare = buffer.readBoolean();
 	}
 	
 	public void encode(FriendlyByteBuf buffer) {
@@ -66,7 +66,7 @@ public class ServerBoundFlightControlPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			ServerPlayer player = ctx.get().getSender();
-			if (player.getRootVehicle() instanceof EntityBasicPlane plane) {
+			if (player.getRootVehicle() instanceof EntityAbstractPlane plane) {
 				if (plane.getControllingPassenger() == player) {
 					plane.updateControls(throttleUp, throttleDown, pitchUp, pitchDown, 
 							rollLeft, rollRight, yawLeft, yawRight,

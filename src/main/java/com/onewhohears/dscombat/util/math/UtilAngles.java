@@ -243,4 +243,19 @@ public class UtilAngles {
 						CP*CR,
 						-CY*SP*CR+SY*SR);
 	}
+    
+    public static Vec3 rotateVector(Vec3 v, Quaternion q) {
+    	System.out.println("ROTATE VECTOR");
+    	System.out.println(v);
+    	System.out.println(q);
+    	Vec3 n = v.normalize();
+    	Quaternion nq = new Quaternion((float)n.x, (float)n.y, (float)n.z, 0);
+    	Quaternion cq = q.copy(); cq.conj();
+    	Quaternion q1 = q.copy();
+    	q1.mul(nq);
+    	q1.mul(cq);
+    	Vec3 a = new Vec3(q1.i(), q1.j(), q1.k());
+    	System.out.println(a);
+    	return a;
+    }
 }

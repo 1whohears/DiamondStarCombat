@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.client.renderer.model.EntityModelBasicPlane;
+import com.onewhohears.dscombat.client.renderer.model.EntityModelTestPlane;
 import com.onewhohears.dscombat.entity.EntityAbstractAircraft;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
@@ -16,17 +16,17 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
-public class RendererEntityBasicPlane<T extends EntityAbstractAircraft> extends EntityRenderer<T> {
+public class RendererEntityAbstractAircraft<T extends EntityAbstractAircraft> extends EntityRenderer<T> {
 	
 	private static final ResourceLocation TEXTURE = new ResourceLocation(DSCombatMod.MODID, "textures/entities/basic_plane.png");
 	
 	protected final EntityModel<T> model;
 	
-	public RendererEntityBasicPlane(Context context) {
+	public RendererEntityAbstractAircraft(Context context) {
 		//super(context, new EntityModelBasicPlane<>(context.bakeLayer(EntityModelBasicPlane.LAYER_LOCATION)), 0.5f);
 		super(context);
 		this.shadowRadius = 0.8f;
-		model = new EntityModelBasicPlane<>(context.bakeLayer(EntityModelBasicPlane.LAYER_LOCATION));
+		model = new EntityModelTestPlane<>(context.bakeLayer(EntityModelTestPlane.LAYER_LOCATION));
 	}
 	
 	@Override

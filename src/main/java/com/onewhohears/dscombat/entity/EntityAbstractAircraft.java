@@ -10,6 +10,7 @@ import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.common.PacketHandler;
 import com.onewhohears.dscombat.common.network.ServerBoundQPacket;
 import com.onewhohears.dscombat.init.DataSerializers;
+import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 
@@ -25,7 +26,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -256,7 +256,16 @@ public abstract class EntityAbstractAircraft extends Entity {
 	}
 	
 	protected void addSeat(Vec3 pos) {
-		EntitySeat seat = new EntitySeat(EntityType.MARKER, level);
+		List<Entity> passengers = getPassengers();
+		for (Entity p : passengers) if (p instanceof EntitySeat seat) 
+			if (seat.getRelativeSeatPos().equals(pos)) {
+				System.out.println("seat already at "+pos);
+				return;
+			}
+		EntitySeat seat = new EntitySeat(ModEntities.SEAT.get(), level);
+		level.addFreshEntity(seat);
+		this.addPassenger(seat);
+		System.out.println("added seat at "+pos);
 	}
 	
 	@Override
@@ -272,7 +281,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	@Override
     protected void addPassenger(Entity passenger) {
-        super.addPassenger(passenger);
+        passenger.startRiding(this);
 	}
 	
 	@Override
@@ -297,9 +306,11 @@ public abstract class EntityAbstractAircraft extends Entity {
 	@Nullable
 	@Override
     public Entity getControllingPassenger() {
-		// TODO get the rider of this seat
         List<Entity> list = getPassengers();
-        return list.isEmpty() ? null : list.get(0);
+        if (list.isEmpty()) return null;
+        if (!(list.get(0) instanceof EntitySeat seat)) return null;
+        List<Entity> list2 = seat.getPassengers();
+        return list2.isEmpty() ? null : list2.get(0);
     }
 	
 	@Override

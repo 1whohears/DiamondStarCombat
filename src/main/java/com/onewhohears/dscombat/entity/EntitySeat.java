@@ -121,5 +121,15 @@ public class EntitySeat extends Entity {
     public boolean hurt(DamageSource source, float amount) {
 		return false;
 	}
+	
+	@Override
+	public boolean shouldRender(double x, double y, double z) {
+		return false;
+	}
+	
+	@Override
+	public boolean shouldRenderAtSqrDistance(double d) {
+		return false;
+	}
 
 }

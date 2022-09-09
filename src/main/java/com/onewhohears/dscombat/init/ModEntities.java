@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.init;
 
 import com.google.common.collect.ImmutableSet;
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.entity.EntitySeat;
 import com.onewhohears.dscombat.entity.EntityTestPlane;
 
 import net.minecraft.world.entity.Entity;
@@ -19,6 +20,9 @@ public class ModEntities {
 	
 	public static final RegistryObject<EntityType<EntityTestPlane>> TEST_PLANE = ENTITIES.register("test_plane", 
 			() -> createEntityType(EntityTestPlane::new, EntityDimensions.scalable(1F, 1F)));
+	
+	public static final RegistryObject<EntityType<EntitySeat>> SEAT = ENTITIES.register("seat", 
+			() -> createEntityType(EntitySeat::new, EntityDimensions.scalable(1F, 0.1F)));
 	
 	private static <T extends Entity> EntityType<T> createEntityType(EntityType.EntityFactory<T> factory, EntityDimensions size) {
         return new EntityType<>(factory, MobCategory.MISC, true, true, false, true, ImmutableSet.of(), size, 5, 3);

@@ -2,8 +2,9 @@ package com.onewhohears.dscombat.client.event;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.KeyInit;
-import com.onewhohears.dscombat.client.renderer.RendererEntityBasicPlane;
-import com.onewhohears.dscombat.client.renderer.model.EntityModelBasicPlane;
+import com.onewhohears.dscombat.client.renderer.RendererEntityAbstractAircraft;
+import com.onewhohears.dscombat.client.renderer.RendererEntitySeat;
+import com.onewhohears.dscombat.client.renderer.model.EntityModelTestPlane;
 import com.onewhohears.dscombat.init.ModEntities;
 
 import net.minecraftforge.api.distmarker.Dist;
@@ -26,11 +27,12 @@ public class ClientModEvents {
 	
 	@SubscribeEvent
 	public static void registerLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
-		event.registerLayerDefinition(EntityModelBasicPlane.LAYER_LOCATION, EntityModelBasicPlane::createBodyLayer);
+		event.registerLayerDefinition(EntityModelTestPlane.LAYER_LOCATION, EntityModelTestPlane::createBodyLayer);
 	}
 	
 	@SubscribeEvent
 	public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
-		event.registerEntityRenderer(ModEntities.TEST_PLANE.get(), RendererEntityBasicPlane::new);
+		event.registerEntityRenderer(ModEntities.TEST_PLANE.get(), RendererEntityAbstractAircraft::new);
+		event.registerEntityRenderer(ModEntities.SEAT.get(), RendererEntitySeat::new);
 	}
 }

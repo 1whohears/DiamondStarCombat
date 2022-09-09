@@ -15,12 +15,12 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 
-public class EntityModelBasicPlane<T extends Entity> extends EntityModel<T> {
+public class EntityModelTestPlane<T extends Entity> extends EntityModel<T> {
 	
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("modid", "basic_plane"), "main");
 	private final ModelPart body;
 
-	public EntityModelBasicPlane(ModelPart root) {
+	public EntityModelTestPlane(ModelPart root) {
 		this.body = root.getChild("body");
 	}
 

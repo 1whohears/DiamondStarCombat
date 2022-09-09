@@ -59,11 +59,6 @@ public abstract class EntityAbstractAircraft extends Entity {
 		seats = new ArrayList<EntitySeat>();
 	}
 	
-	public EntityAbstractAircraft(EntityType<? extends EntityAbstractAircraft> entity, Level level, double x, double y, double z) {
-		this(entity, level);
-		setPos(x, y, z);
-	}
-	
 	@Override
 	protected void defineSynchedData() {
 		entityData.define(MAX_HEALTH, 10);
@@ -260,12 +255,16 @@ public abstract class EntityAbstractAircraft extends Entity {
 		this.inputFlare = false;
 	}
 	
+	protected void addSeat(Vec3 pos) {
+		EntitySeat seat = new EntitySeat(EntityType.MARKER, level);
+	}
+	
 	@Override
 	public InteractionResult interact(Player player, InteractionHand hand) {
 		if (player.isSecondaryUseActive()) {
 			return InteractionResult.PASS;
 		} else if (!this.level.isClientSide) {
-			return player.startRiding(this) ? InteractionResult.CONSUME : InteractionResult.PASS;
+			return InteractionResult.SUCCESS;
 		} else {
 			return InteractionResult.SUCCESS;
 		}
@@ -278,26 +277,27 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	@Override
     public void positionRider(Entity passenger) {
-		if (!this.hasPassenger(passenger)) return;
-		Vec3 pos = new Vec3(getX(), getY(), getZ());
-		Vec3 seat = new Vec3(0, 0, 0);
-		Vec3 seatPos = UtilAngles.rotateVector(seat, getQ());
+		//if (!this.hasPassenger(passenger)) return;
+		if (!(passenger instanceof EntitySeat seat)) return;
+ 		Vec3 pos = new Vec3(getX(), getY(), getZ());
+		Vec3 seatPos = UtilAngles.rotateVector(seat.getRelativeSeatPos(), getQ());
 		passenger.setPos(pos.add(seatPos));
 	}
 	
-	@Override
+	/*@Override
     public Vec3 getDismountLocationForPassenger(LivingEntity livingEntity) {
 		return super.getDismountLocationForPassenger(livingEntity);
-	}
+	}*/
 	
 	@Override
     protected boolean canAddPassenger(Entity passenger) {
-		return getPassengers().size() < 1;
+		return passenger instanceof EntitySeat;
 	}
 	
 	@Nullable
 	@Override
     public Entity getControllingPassenger() {
+		// TODO get the rider of this seat
         List<Entity> list = getPassengers();
         return list.isEmpty() ? null : list.get(0);
     }
@@ -309,12 +309,12 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	@Override
     protected boolean canRide(Entity entityIn) {
-        return true;
+        return entityIn instanceof EntitySeat;
     }
 
     @Override
     public boolean canBeRiddenInWater(Entity rider) {
-        return false;
+        return true;
     }
     
     @Override
@@ -326,7 +326,6 @@ public abstract class EntityAbstractAircraft extends Entity {
     public boolean canBeCollidedWith() {
         return true;
     }
-
 	
 	@Override
     public boolean hurt(DamageSource source, float amount) {
@@ -334,12 +333,12 @@ public abstract class EntityAbstractAircraft extends Entity {
 	}
 
 	@Override
-	protected void readAdditionalSaveData(CompoundTag p_20052_) {
+	protected void readAdditionalSaveData(CompoundTag compound) {
 		
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag p_20139_) {
+	protected void addAdditionalSaveData(CompoundTag compound) {
 		
 	}
 

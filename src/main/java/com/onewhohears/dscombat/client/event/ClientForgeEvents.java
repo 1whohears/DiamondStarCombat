@@ -96,8 +96,8 @@ public final class ClientForgeEvents {
 		final var player = Minecraft.getInstance().player;
 		if (player == null) return;
 		if (!(player.getRootVehicle() instanceof EntityAbstractAircraft plane)) return;
-		if (plane.getControllingPassenger() != player) return;
-		if (plane.isFreeLook()) return;
+		//if (plane.getControllingPassenger() != player) return;
+		//if (plane.isFreeLook()) return;
 		Vec3 pos = event.getCamera().getPosition();
 		//event.getCamera().getEntity().setPos(UtilAngles.rotateVector(pos, plane.getQ()));
 		event.setRoll(plane.zRot);

@@ -2,7 +2,6 @@ package com.onewhohears.dscombat.init;
 
 import com.google.common.collect.ImmutableSet;
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.entity.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.EntityTestPlane;
 
 import net.minecraft.world.entity.Entity;

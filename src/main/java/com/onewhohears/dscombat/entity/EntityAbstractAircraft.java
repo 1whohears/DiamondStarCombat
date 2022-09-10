@@ -51,12 +51,11 @@ public abstract class EntityAbstractAircraft extends Entity {
 	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot, lerpRotRoll;
 	private boolean prevInputMouseMode;
 	
-	private List<EntitySeat> seats;
+	public List<Vec3> seatPos = new ArrayList<Vec3>();
 	
 	public EntityAbstractAircraft(EntityType<? extends EntityAbstractAircraft> entity, Level level) {
 		super(entity, level);
 		this.blocksBuilding = true;
-		seats = new ArrayList<EntitySeat>();
 	}
 	
 	@Override
@@ -70,8 +69,24 @@ public abstract class EntityAbstractAircraft extends Entity {
 	}
 	
 	@Override
+	protected void readAdditionalSaveData(CompoundTag compound) {
+		
+	}
+
+	@Override
+	protected void addAdditionalSaveData(CompoundTag compound) {
+		
+	}
+	
+	public void init() {
+		for (Vec3 s : seatPos) this.addSeat(s);
+	}
+	
+	@Override
 	public void tick() {
+		System.out.println("client side "+this.level.isClientSide);
 		super.tick();
+		if (this.tickCount == 1) init();
 		if (Double.isNaN(getDeltaMovement().length())) {
             setDeltaMovement(Vec3.ZERO);
         }
@@ -257,15 +272,19 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	protected void addSeat(Vec3 pos) {
 		List<Entity> passengers = getPassengers();
-		for (Entity p : passengers) if (p instanceof EntitySeat seat) 
+		for (Entity p : passengers) {
+			System.out.println("CHECK SEAT "+p);
+			if (p instanceof EntitySeat seat) {
 			if (seat.getRelativeSeatPos().equals(pos)) {
-				System.out.println("seat already at "+pos);
+				System.out.println("ALREADY SEAT "+pos);
 				return;
-			}
+			} }
+		}
 		EntitySeat seat = new EntitySeat(ModEntities.SEAT.get(), level);
+		seat.setRelativeSeatPos(pos);
+		seat.startRiding(this);
 		level.addFreshEntity(seat);
-		this.addPassenger(seat);
-		System.out.println("added seat at "+pos);
+		System.out.println("ADDED SEAT "+pos);
 	}
 	
 	@Override
@@ -281,12 +300,14 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	@Override
     protected void addPassenger(Entity passenger) {
-        passenger.startRiding(this);
+        super.addPassenger(passenger);
+        System.out.println("AIRCRAFT ADDED PASSENGER "+passenger);
 	}
 	
 	@Override
     public void positionRider(Entity passenger) {
 		//if (!this.hasPassenger(passenger)) return;
+		System.out.println("POSITION RIDER "+passenger);
 		if (!(passenger instanceof EntitySeat seat)) return;
  		Vec3 pos = new Vec3(getX(), getY(), getZ());
 		Vec3 seatPos = UtilAngles.rotateVector(seat.getRelativeSeatPos(), getQ());
@@ -300,6 +321,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	@Override
     protected boolean canAddPassenger(Entity passenger) {
+		System.out.println("CAN ADD PASSENGER "+passenger);
 		return passenger instanceof EntitySeat;
 	}
 	
@@ -320,6 +342,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	@Override
     protected boolean canRide(Entity entityIn) {
+		System.out.println("CAN RIDE "+entityIn);
         return entityIn instanceof EntitySeat;
     }
 
@@ -341,16 +364,6 @@ public abstract class EntityAbstractAircraft extends Entity {
 	@Override
     public boolean hurt(DamageSource source, float amount) {
 		return false;
-	}
-
-	@Override
-	protected void readAdditionalSaveData(CompoundTag compound) {
-		
-	}
-
-	@Override
-	protected void addAdditionalSaveData(CompoundTag compound) {
-		
 	}
 
 	@Override

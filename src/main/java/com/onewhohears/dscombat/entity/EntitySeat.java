@@ -4,9 +4,13 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.onewhohears.dscombat.init.DataSerializers;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -19,7 +23,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class EntitySeat extends Entity {
 	
-	private Vec3 seatPos = Vec3.ZERO;
+	public static final EntityDataAccessor<Vec3> POS = SynchedEntityData.defineId(EntityAbstractAircraft.class, DataSerializers.VEC3);
 	
 	public EntitySeat(EntityType<?> type, Level level) {
 		super(type, level);
@@ -27,17 +31,29 @@ public class EntitySeat extends Entity {
 
 	@Override
 	protected void defineSynchedData() {
-		
+		entityData.define(POS, Vec3.ZERO);
 	}
 
 	@Override
 	protected void readAdditionalSaveData(CompoundTag compound) {
-		
+		double x = compound.getDouble("relposx");
+		double y = compound.getDouble("relposy");
+		double z = compound.getDouble("relposz");
+		setRelativeSeatPos(new Vec3(x, y, z));
 	}
 
 	@Override
 	protected void addAdditionalSaveData(CompoundTag compound) {
-		
+		Vec3 pos = getRelativeSeatPos();
+		compound.putDouble("relposx", pos.x);
+		compound.putDouble("relposy", pos.y);
+		compound.putDouble("relposz", pos.z);
+	}
+	
+	@Override
+	public void tick() {
+		super.tick();
+		//System.out.println("SEAT POS "+this.position());
 	}
 
 	@Override
@@ -57,16 +73,17 @@ public class EntitySeat extends Entity {
 	}
 	
 	public Vec3 getRelativeSeatPos() {
-		return seatPos;
+		return entityData.get(POS);
 	}
 	
-	public void setRelativeeSeatPos(Vec3 pos) {
-		seatPos = pos;
+	public void setRelativeSeatPos(Vec3 pos) {
+		entityData.set(POS, pos);
 	}
 	
 	@Override
     protected void addPassenger(Entity passenger) {
         super.addPassenger(passenger);
+        System.out.println("SEAT ADDED PASSENGER "+passenger);
 	}
 	
 	@Override
@@ -99,7 +116,7 @@ public class EntitySeat extends Entity {
 	
 	@Override
     protected boolean canRide(Entity entityIn) {
-        return entityIn instanceof EntitySeat;
+        return getPassengers().size() < 1;
     }
 
     @Override
@@ -123,13 +140,8 @@ public class EntitySeat extends Entity {
 	}
 	
 	@Override
-	public boolean shouldRender(double x, double y, double z) {
-		return false;
-	}
-	
-	@Override
-	public boolean shouldRenderAtSqrDistance(double d) {
-		return false;
+	public String toString() {
+		return "seat "+this.getRelativeSeatPos();
 	}
 
 }

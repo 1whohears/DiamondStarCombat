@@ -5,6 +5,7 @@ import com.onewhohears.dscombat.DSCombatMod;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataSerializer;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DataSerializerEntry;
 import net.minecraftforge.registries.DeferredRegister;
@@ -40,7 +41,31 @@ public class DataSerializers {
 		}
     	
     };
+    
+    public static final EntityDataSerializer<Vec3> VEC3 = new EntityDataSerializer<>() {
+
+		@Override
+		public void write(FriendlyByteBuf buffer, Vec3 v) {
+			buffer.writeDouble(v.x);
+			buffer.writeDouble(v.y);
+			buffer.writeDouble(v.z);
+		}
+
+		@Override
+		public Vec3 read(FriendlyByteBuf buffer) {
+			return new Vec3(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
+		}
+
+		@Override
+		public Vec3 copy(Vec3 v) {
+			return new Vec3(v.x, v.y, v.z);
+		}
+    	
+    };
 
     public static final RegistryObject<DataSerializerEntry> SERIALIZER_ENTRY_QUATERNION = DATA_SERIALIZERS
         .register("quaternion", () -> new DataSerializerEntry(QUATERNION));
+    
+    public static final RegistryObject<DataSerializerEntry> SERIALIZER_ENTRY_VEC3 = DATA_SERIALIZERS
+            .register("vec3", () -> new DataSerializerEntry(VEC3));
 }

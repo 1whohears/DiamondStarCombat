@@ -22,7 +22,7 @@ public class ModEntities {
 			() -> createEntityType(EntityTestPlane::new, EntityDimensions.scalable(1F, 1F)));
 	
 	public static final RegistryObject<EntityType<EntitySeat>> SEAT = ENTITIES.register("seat", 
-			() -> createEntityType(EntitySeat::new, EntityDimensions.scalable(1F, 0.1F)));
+			() -> createEntityType(EntitySeat::new, EntityDimensions.scalable(1.1F, 1.1F)));
 	
 	private static <T extends Entity> EntityType<T> createEntityType(EntityType.EntityFactory<T> factory, EntityDimensions size) {
         return new EntityType<>(factory, MobCategory.MISC, true, true, false, true, ImmutableSet.of(), size, 5, 3);

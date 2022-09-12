@@ -51,8 +51,6 @@ public abstract class EntityAbstractAircraft extends Entity {
 	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot, lerpRotRoll;
 	private boolean prevInputMouseMode;
 	
-	public List<Vec3> seatPos = new ArrayList<Vec3>();
-	
 	public EntityAbstractAircraft(EntityType<? extends EntityAbstractAircraft> entity, Level level) {
 		super(entity, level);
 		this.blocksBuilding = true;
@@ -79,7 +77,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	}
 	
 	public void init() {
-		for (Vec3 s : seatPos) this.addSeat(s);
+		setupAircraftParts();
 	}
 	
 	@Override
@@ -278,6 +276,10 @@ public abstract class EntityAbstractAircraft extends Entity {
 		this.inputYawRight = false;
 		this.inputMouseMode = false;
 		this.inputFlare = false;
+	}
+	
+	protected void setupAircraftParts() {
+		
 	}
 	
 	protected void addSeat(Vec3 pos) {

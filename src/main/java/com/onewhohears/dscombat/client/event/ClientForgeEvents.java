@@ -7,11 +7,11 @@ import com.onewhohears.dscombat.common.PacketHandler;
 import com.onewhohears.dscombat.common.network.ServerBoundFlightControlPacket;
 import com.onewhohears.dscombat.entity.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.EntitySeat;
+import com.onewhohears.dscombat.entity.EntitySeatCamera;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
@@ -27,11 +27,11 @@ public final class ClientForgeEvents {
 	
 	private ClientForgeEvents() {}
 	
-	@SuppressWarnings("resource")
 	@SubscribeEvent
 	public static void clientTick(ClientTickEvent event) {
 		if (event.phase != Phase.START) return;
-		final var player = Minecraft.getInstance().player;
+		Minecraft m = Minecraft.getInstance();
+		final var player = m.player;
 		if (player == null) return;
 		//System.out.println("VEHICLE "+player.getVehicle());
 		//System.out.println("ROOT "+player.getRootVehicle());
@@ -55,56 +55,98 @@ public final class ClientForgeEvents {
 				rollLeft, rollRight, yawLeft, yawRight, mouseMode, flare);
 	}
 	
-	@SuppressWarnings("resource")
 	@SubscribeEvent
 	public static void renderClient(RenderTickEvent event) {
 		/*if (event.phase != Phase.START) return;
-		final var player = Minecraft.getInstance().player;
+		Minecraft m = Minecraft.getInstance();
+		final var player = m.player;
 		if (player == null) return;
-		if (!(player.getRootVehicle() instanceof EntityBasicPlane plane)) return;
-		if (plane.getControllingPassenger() != player) return;
-		if (plane.isFreeLook()) return;
-		float xo = player.getXRot();
-		float yo = player.getYRot();
-		float xn = -plane.getXRot();
-		float yn = -plane.getYRot();
-		float xi = xo + (xn - xo) * event.renderTickTime;
-		float yi = yo + (yn - yo) * event.renderTickTime;
-		player.setXRot(xi);
-		player.setYHeadRot(yi);*/
+		if (player.getVehicle() instanceof EntitySeat seat 
+				&& seat.getVehicle() instanceof EntityAbstractAircraft plane) {
+			EntitySeatCamera camera = seat.getCamera();
+			float xo, xn, yo, yn;
+			if (plane.isFreeLook()) {
+				xo = player.xRotO;
+				xn = player.getXRot();
+				yo = player.yRotO;
+				yn = player.getYRot();
+			} else {
+				xo = -plane.prevXRot;
+				xn = -plane.getXRot();
+				yo = -plane.prevYRot;
+				yn = -plane.getYRot();
+			}
+			float xi = xo + (xn - xo) * event.renderTickTime;
+			float yi = yo + (yn - yo) * event.renderTickTime;
+			camera.setXRot(xi);
+			camera.setYRot(yi);
+		}*/
 	}
 	
 	@SubscribeEvent
 	public static void playerRender(RenderPlayerEvent.Pre event) {
 		//System.out.println("render player");
+		Minecraft m = Minecraft.getInstance();
+		final var playerC = m.player;
 		Player player = event.getPlayer();
-		if (!(player.getRootVehicle() instanceof EntityAbstractAircraft plane)) return;
-		if (plane.getControllingPassenger() != player) return;
-		//System.out.println("player model "+plane.getQ());
-		//PoseStack stack = event.getPoseStack();
-		//stack.pushPose();
-		Quaternion q = UtilAngles.lerpQ(event.getPartialTick(), plane.getPrevQ(), plane.getQ());
-		//Quaternion q = plane.getQ();
-		//Quaternion q = UtilAngles.toQuaternion(plane.getYRot()-player.getYRot(), plane.getXRot()-player.getXRot(), plane.zRot);
-		event.getPoseStack().mulPose(q);
-		//stack.mulPose(Vector3f.ZP.rotationDegrees(90));
-		/*stack.pushPose();
-		stack.popPose();
-		stack.popPose();*/
+		if (player.getVehicle() instanceof EntitySeat seat 
+				&& seat.getVehicle() instanceof EntityAbstractAircraft plane) {
+			if (player.equals(playerC) &&
+					m.options.getCameraType().isFirstPerson()) {
+				event.setCanceled(true);
+				return;
+			}
+			Quaternion q = UtilAngles.lerpQ(event.getPartialTick(), plane.getPrevQ(), plane.getQ());
+			event.getPoseStack().mulPose(q);
+		}
 	}
 	
-	@SuppressWarnings("resource")
 	@SubscribeEvent
 	public static void cameraSetup(EntityViewRenderEvent.CameraSetup event) {
-		final var player = Minecraft.getInstance().player;
+		Minecraft m = Minecraft.getInstance();
+		final var player = m.player;
+		boolean playerCam = m.getCameraEntity().equals(player);
 		if (player == null) return;
-		if (!(player.getVehicle() instanceof EntitySeat seat)) return;
-		//if (plane.getControllingPassenger() != player) return;
-		//if (plane.isFreeLook()) return;
-		//Vec3 pos = event.getCamera().getPosition();
-		//event.getCamera().getEntity().setPos(UtilAngles.rotateVector(pos, plane.getQ()));
-		//event.setRoll(plane.zRot);
-		Minecraft.getInstance().setCameraEntity(seat.getCamera());
+		if (player.getVehicle() instanceof EntitySeat seat 
+				&& seat.getVehicle() instanceof EntityAbstractAircraft plane) {
+			EntitySeatCamera camera = seat.getCamera();
+			float xo, xn, yo, yn, zo, zn;
+			if (plane.isFreeLook()) {
+				xo = player.xRotO;
+				//xo = player.getXRot();
+				//xo = event.getPitch();
+				xn = player.getXRot();
+				yo = player.yRotO;
+				//yo = player.getYRot();
+				//yo = event.getYaw();
+				yn = player.getYRot();
+				zo = plane.prevZRot;
+				//zo = event.getRoll();
+				zn = plane.zRot;
+			} else {
+				xo = -plane.prevXRot;
+				//xo = event.getPitch();
+				xn = -plane.getXRot();
+				yo = -plane.prevYRot;
+				//yo = event.getYaw();
+				yn = -plane.getYRot();
+				zo = plane.prevZRot;
+				//zo = event.getRoll();
+				zn = plane.zRot;
+			}
+			float xi = xo + (xn - xo) * (float)event.getPartialTicks();
+			float yi = yo + (yn - yo) * (float)event.getPartialTicks();
+			float zi = zo + (zn - zo) * (float)event.getPartialTicks();
+			event.setPitch(xi);
+			event.setYaw(yi);
+			event.setRoll(zi);
+			// TODO third person camera angle shakes. no idea how to fix
+			camera.setXRot(xn);
+			camera.setYRot(yn);
+			if (playerCam) m.setCameraEntity(camera);
+		} else {
+			if (!playerCam) m.setCameraEntity(player);
+		}
 	}
 	
 }

@@ -14,7 +14,12 @@ public class EntityTestPlane extends EntityAbstractPlane {
 	@Override
 	protected void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
-		this.seatPos.add(new Vec3(0, 0, 0));
+	}
+	
+	@Override
+	protected void setupAircraftParts() {
+		super.setupAircraftParts();
+		this.addSeat(new Vec3(0, 0, 0));
 	}
 
 }

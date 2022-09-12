@@ -6,6 +6,7 @@ import com.onewhohears.dscombat.client.input.KeyInit;
 import com.onewhohears.dscombat.common.PacketHandler;
 import com.onewhohears.dscombat.common.network.ServerBoundFlightControlPacket;
 import com.onewhohears.dscombat.entity.EntityAbstractAircraft;
+import com.onewhohears.dscombat.entity.EntitySeat;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.client.Minecraft;
@@ -32,6 +33,8 @@ public final class ClientForgeEvents {
 		if (event.phase != Phase.START) return;
 		final var player = Minecraft.getInstance().player;
 		if (player == null) return;
+		//System.out.println("VEHICLE "+player.getVehicle());
+		//System.out.println("ROOT "+player.getRootVehicle());
 		if (!(player.getRootVehicle() instanceof EntityAbstractAircraft plane)) return;
 		if (plane.getControllingPassenger() != player) return;
 		boolean throttleUp = KeyInit.throttleUpKey.isDown();
@@ -95,12 +98,13 @@ public final class ClientForgeEvents {
 	public static void cameraSetup(EntityViewRenderEvent.CameraSetup event) {
 		final var player = Minecraft.getInstance().player;
 		if (player == null) return;
-		if (!(player.getRootVehicle() instanceof EntityAbstractAircraft plane)) return;
+		if (!(player.getVehicle() instanceof EntitySeat seat)) return;
 		//if (plane.getControllingPassenger() != player) return;
 		//if (plane.isFreeLook()) return;
-		Vec3 pos = event.getCamera().getPosition();
+		//Vec3 pos = event.getCamera().getPosition();
 		//event.getCamera().getEntity().setPos(UtilAngles.rotateVector(pos, plane.getQ()));
-		event.setRoll(plane.zRot);
+		//event.setRoll(plane.zRot);
+		Minecraft.getInstance().setCameraEntity(seat.getCamera());
 	}
 	
 }

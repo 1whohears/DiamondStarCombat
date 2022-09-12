@@ -5,6 +5,8 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.init.DataSerializers;
+import com.onewhohears.dscombat.init.ModEntities;
+import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -50,8 +52,25 @@ public class EntitySeat extends Entity {
 		compound.putDouble("relposz", pos.z);
 	}
 	
+	public void init() {
+		List<Entity> passengers = getPassengers();
+		for (Entity p : passengers) {
+			System.out.println("CHECK CAMERA "+p);
+			if (p instanceof EntitySeatCamera camera) {
+				System.out.println("ALREADY CAMERA");
+				return;
+			}
+		}
+		EntitySeatCamera cam = new EntitySeatCamera(ModEntities.CAMERA.get(), level);
+		cam.setPos(position());
+		cam.startRiding(this);
+		level.addFreshEntity(cam);
+		System.out.println("ADDED CAMERA "+cam);
+	}
+	
 	@Override
 	public void tick() {
+		if (this.tickCount == 1) init();
 		super.tick();
 		//System.out.println("SEAT POS "+this.position());
 	}
@@ -81,15 +100,40 @@ public class EntitySeat extends Entity {
 	}
 	
 	@Override
+    public void positionRider(Entity passenger) {
+		//System.out.println("SEAT POSITION "+passenger);
+		if (passenger instanceof Player player) {
+			player.setPos(position());
+		} else if (passenger instanceof EntitySeatCamera camera) {
+			//System.out.println("SEAT ROOT "+getVehicle());
+			if (!(this.getVehicle() instanceof EntityAbstractAircraft craft)) return;
+			Vec3 pos = position();
+			Vec3 seatPos = UtilAngles.rotateVector(new Vec3(0, 1.62, 0), craft.getQ());
+			camera.setPos(pos.add(seatPos));
+		} else {
+			super.positionRider(passenger);
+		}
+	}
+	
+	@Override
     protected void addPassenger(Entity passenger) {
         super.addPassenger(passenger);
         System.out.println("SEAT ADDED PASSENGER "+passenger);
 	}
 	
 	@Override
-    public void positionRider(Entity passenger) {
-		super.positionRider(passenger);
+    protected boolean canAddPassenger(Entity passenger) {
+		System.out.println("CAN SEAT ADD "+passenger);
+		if (passenger instanceof Player) return getPlayer() == null;
+		if (passenger instanceof EntitySeatCamera) return getCamera() == null;
+		return false;
 	}
+	
+	@Override
+    protected boolean canRide(Entity entityIn) {
+		System.out.println("CAN RIDE SEAT "+entityIn);
+		return entityIn instanceof EntityAbstractAircraft;
+    }
 	
 	@Override
     public Vec3 getDismountLocationForPassenger(LivingEntity livingEntity) {
@@ -97,27 +141,28 @@ public class EntitySeat extends Entity {
 		return super.getDismountLocationForPassenger(livingEntity);
 	}
 	
-	@Override
-    protected boolean canAddPassenger(Entity passenger) {
-		return getPassengers().size() < 1;
+	public Player getPlayer() {
+		List<Entity> list = getPassengers();
+		for (Entity e : list) if (e instanceof Player p) return p;
+		return null;
+	}
+	
+	public EntitySeatCamera getCamera() {
+		List<Entity> list = getPassengers();
+		for (Entity e : list) if (e instanceof EntitySeatCamera c) return c;
+		return null;
 	}
 	
 	@Nullable
 	@Override
     public Entity getControllingPassenger() {
-        List<Entity> list = getPassengers();
-        return list.isEmpty() ? null : list.get(0);
+		return getPlayer();
     }
 	
 	@Override
 	public boolean isPickable() {
 		return !this.isRemoved();
 	}
-	
-	@Override
-    protected boolean canRide(Entity entityIn) {
-        return getPassengers().size() < 1;
-    }
 
     @Override
     public boolean canBeRiddenInWater(Entity rider) {

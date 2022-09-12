@@ -84,9 +84,9 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	@Override
 	public void tick() {
-		System.out.println("client side "+this.level.isClientSide);
-		super.tick();
+		//System.out.println("client side "+this.level.isClientSide);
 		if (this.tickCount == 1) init();
+		super.tick();
 		if (Double.isNaN(getDeltaMovement().length())) {
             setDeltaMovement(Vec3.ZERO);
         }
@@ -107,6 +107,8 @@ public abstract class EntityAbstractAircraft extends Entity {
         }
 		controlDirection(q);
     	tickMovement(q);
+    	motionClamp();
+    	//System.out.println("MOTION "+getDeltaMovement());
 		move(MoverType.SELF, getDeltaMovement());
 		q = UtilAngles.normalizeQuaternion(q);
 		EulerAngles angles = UtilAngles.toDegrees(q);
@@ -120,6 +122,14 @@ public abstract class EntityAbstractAircraft extends Entity {
         	PacketHandler.INSTANCE.sendToServer(new ServerBoundQPacket(q));
         }
 		tickLerp();
+	}
+	
+	public void motionClamp() {
+		Vec3 motion = getDeltaMovement();
+		double vel = motion.length();
+		double max = getMaxSpeed();
+		if (vel > max) motion = motion.scale(max / vel);
+		setDeltaMovement(motion);
 	}
 	
 	public void controlDirection(Quaternion q) {
@@ -149,17 +159,17 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public void tickGround(Quaternion q) {
 		Vec3 motion = getDeltaMovement();
 		if (motion.y < 0) motion = new Vec3(motion.x, 0, motion.z);
-		motion.add(getWeightForce());
-		motion.add(getThrustForce(q));
-		motion.add(getFrictionForce());
+		motion = motion.add(getWeightForce());
+		motion = motion.add(getThrustForce(q));
+		motion = motion.add(getFrictionForce());
 		setDeltaMovement(motion);
 	}
 	
 	public void tickAir(Quaternion q) {
 		Vec3 motion = getDeltaMovement();
-		motion.add(getWeightForce());
-		motion.add(getThrustForce(q));
-		motion.add(getDragForce(q));
+		motion = motion.add(getWeightForce());
+		motion = motion.add(getThrustForce(q));
+		motion = motion.add(getDragForce(q));
 		setDeltaMovement(motion);
 	}
 	
@@ -280,7 +290,9 @@ public abstract class EntityAbstractAircraft extends Entity {
 				return;
 			} }
 		}
+		// TODO not riding???
 		EntitySeat seat = new EntitySeat(ModEntities.SEAT.get(), level);
+		seat.setPos(position());
 		seat.setRelativeSeatPos(pos);
 		seat.startRiding(this);
 		level.addFreshEntity(seat);
@@ -299,17 +311,11 @@ public abstract class EntityAbstractAircraft extends Entity {
 	}
 	
 	@Override
-    protected void addPassenger(Entity passenger) {
-        super.addPassenger(passenger);
-        System.out.println("AIRCRAFT ADDED PASSENGER "+passenger);
-	}
-	
-	@Override
     public void positionRider(Entity passenger) {
 		//if (!this.hasPassenger(passenger)) return;
-		System.out.println("POSITION RIDER "+passenger);
+		//System.out.println("POSITION RIDER "+passenger);
 		if (!(passenger instanceof EntitySeat seat)) return;
- 		Vec3 pos = new Vec3(getX(), getY(), getZ());
+ 		Vec3 pos = position();
 		Vec3 seatPos = UtilAngles.rotateVector(seat.getRelativeSeatPos(), getQ());
 		passenger.setPos(pos.add(seatPos));
 	}
@@ -318,12 +324,6 @@ public abstract class EntityAbstractAircraft extends Entity {
     public Vec3 getDismountLocationForPassenger(LivingEntity livingEntity) {
 		return super.getDismountLocationForPassenger(livingEntity);
 	}*/
-	
-	@Override
-    protected boolean canAddPassenger(Entity passenger) {
-		System.out.println("CAN ADD PASSENGER "+passenger);
-		return passenger instanceof EntitySeat;
-	}
 	
 	@Nullable
 	@Override
@@ -341,9 +341,21 @@ public abstract class EntityAbstractAircraft extends Entity {
 	}
 	
 	@Override
+    protected void addPassenger(Entity passenger) {
+        super.addPassenger(passenger);
+        System.out.println("AIRCRAFT ADDED PASSENGER "+passenger);
+	}
+	
+	@Override
+    protected boolean canAddPassenger(Entity passenger) {
+		System.out.println("CAN ADD PASSENGER "+passenger);
+		return passenger instanceof EntitySeat;
+	}
+	
+	@Override
     protected boolean canRide(Entity entityIn) {
 		System.out.println("CAN RIDE "+entityIn);
-        return entityIn instanceof EntitySeat;
+        return false;
     }
 
     @Override

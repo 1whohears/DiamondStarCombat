@@ -15,9 +15,9 @@ public abstract class EntityAbstractPlane extends EntityAbstractAircraft {
 	
 	@Override
 	public void tickGround(Quaternion q) {
-		super.tickAir(q);
+		super.tickGround(q);
 		Vec3 motion = getDeltaMovement();
-		motion.add(getLiftForce(q));
+		motion = motion.add(getLiftForce(q));
 		setDeltaMovement(motion);
 	}
 	
@@ -25,7 +25,7 @@ public abstract class EntityAbstractPlane extends EntityAbstractAircraft {
 	public void tickAir(Quaternion q) {
 		super.tickAir(q);
 		Vec3 motion = getDeltaMovement();
-		motion.add(getLiftForce(q));
+		motion = motion.add(getLiftForce(q));
 		setDeltaMovement(motion);
 	}
 	
@@ -43,7 +43,7 @@ public abstract class EntityAbstractPlane extends EntityAbstractAircraft {
 	
 	public double getLift(double zSpeedSqr) {
 		// Lift = (angle of attack coefficient) * (air density) * (speed)^2 * (wing surface area) / 2
-		double ac = 0.05;
+		double ac = 0.02;
 		double air = 1;
 		//double speedSqr = zSpeedSqr;
 		double wing = 1;

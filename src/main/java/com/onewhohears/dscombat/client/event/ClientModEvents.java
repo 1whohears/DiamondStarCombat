@@ -4,6 +4,7 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.KeyInit;
 import com.onewhohears.dscombat.client.renderer.RendererEntityAbstractAircraft;
 import com.onewhohears.dscombat.client.renderer.RendererEntitySeat;
+import com.onewhohears.dscombat.client.renderer.RendererEntitySeatCamera;
 import com.onewhohears.dscombat.client.renderer.model.EntityModelTestPlane;
 import com.onewhohears.dscombat.init.ModEntities;
 
@@ -34,5 +35,6 @@ public class ClientModEvents {
 	public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
 		event.registerEntityRenderer(ModEntities.TEST_PLANE.get(), RendererEntityAbstractAircraft::new);
 		event.registerEntityRenderer(ModEntities.SEAT.get(), RendererEntitySeat::new);
+		event.registerEntityRenderer(ModEntities.CAMERA.get(), RendererEntitySeatCamera::new);
 	}
 }

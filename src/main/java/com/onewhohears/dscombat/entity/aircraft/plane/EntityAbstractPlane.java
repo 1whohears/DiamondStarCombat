@@ -8,7 +8,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public abstract class EntityAbstractPlane extends EntityAbstractAircraft {
+public class EntityAbstractPlane extends EntityAbstractAircraft {
 
 	public EntityAbstractPlane(EntityType<? extends EntityAbstractAircraft> entity, Level level) {
 		super(entity, level);

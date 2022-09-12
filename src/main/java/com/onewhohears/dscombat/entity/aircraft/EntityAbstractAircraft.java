@@ -32,7 +32,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 
-public abstract class EntityAbstractAircraft extends Entity {
+public class EntityAbstractAircraft extends Entity {
 	
 	public static final EntityDataAccessor<Integer> MAX_HEALTH = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> HEALTH = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.INT);
@@ -40,8 +40,8 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public static final EntityDataAccessor<Float> THROTTLE = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Quaternion> Q = SynchedEntityData.defineId(EntityAbstractAircraft.class, DataSerializers.QUATERNION);
 	public static final EntityDataAccessor<Boolean> FREE_LOOK = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.BOOLEAN);
-	public Quaternion clientQ = new Quaternion(Quaternion.ONE);
-	public Quaternion prevQ = new Quaternion(Quaternion.ONE);
+	public Quaternion clientQ = Quaternion.ONE.copy();
+	public Quaternion prevQ = Quaternion.ONE.copy();
 	
 	public boolean inputThrottleUp, inputThrottleDown, inputPitchUp, inputPitchDown;
 	public boolean inputRollLeft, inputRollRight, inputYawLeft, inputYawRight;
@@ -63,7 +63,7 @@ public abstract class EntityAbstractAircraft extends Entity {
         entityData.define(HEALTH, 10);
 		entityData.define(MAX_SPEED, 2.0f);
 		entityData.define(THROTTLE, 0.0f);
-		entityData.define(Q, Quaternion.ONE);
+		entityData.define(Q, Quaternion.ONE.copy());
 		entityData.define(FREE_LOOK, false);
 	}
 	
@@ -99,7 +99,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	@Override
 	public void tick() {
-		//System.out.println("client side "+this.level.isClientSide);
+		System.out.println("client side "+this.level.isClientSide);
 		if (this.firstTick) init();
 		super.tick();
 		if (Double.isNaN(getDeltaMovement().length())) {
@@ -120,6 +120,7 @@ public abstract class EntityAbstractAircraft extends Entity {
         } else {
             q = getQ();
         }
+		System.out.println(q);
 		controlDirection(q);
     	tickMovement(q);
     	motionClamp();
@@ -305,6 +306,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		this.inputYawRight = false;
 		this.inputMouseMode = false;
 		this.inputFlare = false;
+		this.setCurrentThrottle(0);
 	}
 	
 	protected void setupAircraftParts() {
@@ -321,7 +323,6 @@ public abstract class EntityAbstractAircraft extends Entity {
 				return;
 			} }
 		}
-		// TODO not riding???
 		EntitySeat seat = new EntitySeat(ModEntities.SEAT.get(), level);
 		seat.setPos(position());
 		seat.setRelativeSeatPos(pos);

@@ -21,7 +21,7 @@ public class EntitySeatCamera extends Entity {
 
 	@Override
 	protected void readAdditionalSaveData(CompoundTag p_20052_) {
-
+		
 	}
 
 	@Override
@@ -32,6 +32,12 @@ public class EntitySeatCamera extends Entity {
 	@Override
 	public Packet<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
+	}
+	
+	@Override
+	public void tick() {
+		super.tick();
+		if (this.getVehicle() == null) this.kill();
 	}
 
 }

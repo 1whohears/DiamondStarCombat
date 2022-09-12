@@ -210,8 +210,8 @@ public abstract class EntityAbstractAircraft extends Entity {
 		double x = getDeltaMovement().x;
 		double z = getDeltaMovement().z;
 		double speed = Math.sqrt(x*x + z*z);
-		if (speed < 0.1) return speed;
-		return 0.1;
+		if (speed < 0.05) return speed;
+		return 0.05;
 	}
 	
 	public Vec3 getWeightForce() {

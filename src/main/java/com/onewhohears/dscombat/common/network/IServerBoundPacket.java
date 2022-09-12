@@ -5,10 +5,14 @@ import java.util.function.Supplier;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
-public interface IServerBoundPacket {
+public abstract class IServerBoundPacket {
 	
-	public void encode(FriendlyByteBuf buffer);
+	public IServerBoundPacket() {}
 	
-	public boolean handle(Supplier<NetworkEvent.Context> ctx);
+	public IServerBoundPacket(FriendlyByteBuf buffer) {}
+	
+	public abstract void encode(FriendlyByteBuf buffer);
+	
+	public abstract boolean handle(Supplier<NetworkEvent.Context> ctx);
 	
 }

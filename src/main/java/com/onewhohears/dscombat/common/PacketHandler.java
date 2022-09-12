@@ -22,16 +22,6 @@ public final class PacketHandler {
 	
 	public static void init() {
 		int index = 0;
-		INSTANCE.messageBuilder(ServerboundBoostUpdatePacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ServerboundBoostUpdatePacket::encode)
-			.decoder(ServerboundBoostUpdatePacket::new)
-			.consumer(ServerboundBoostUpdatePacket::handle)
-			.add();
-		INSTANCE.messageBuilder(ClientboundUpdateBoostPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ClientboundUpdateBoostPacket::encode)
-			.decoder(ClientboundUpdateBoostPacket::new)
-			.consumer(ClientboundUpdateBoostPacket::handle)
-			.add();
 		INSTANCE.messageBuilder(ServerBoundFlightControlPacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
 			.encoder(ServerBoundFlightControlPacket::encode)
 			.decoder(ServerBoundFlightControlPacket::new)

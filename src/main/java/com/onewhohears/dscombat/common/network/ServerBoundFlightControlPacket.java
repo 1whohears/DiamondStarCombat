@@ -9,7 +9,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
 
-public class ServerBoundFlightControlPacket implements IServerBoundPacket {
+public class ServerBoundFlightControlPacket extends IServerBoundPacket {
 	
 	public final boolean throttleUp;
 	public final boolean throttleDown;

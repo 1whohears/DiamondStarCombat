@@ -2,9 +2,10 @@ package com.onewhohears.dscombat.init;
 
 import com.google.common.collect.ImmutableSet;
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.entity.EntitySeat;
-import com.onewhohears.dscombat.entity.EntitySeatCamera;
-import com.onewhohears.dscombat.entity.EntityTestPlane;
+import com.onewhohears.dscombat.entity.aircraft.EntitySeat;
+import com.onewhohears.dscombat.entity.aircraft.EntitySeatCamera;
+import com.onewhohears.dscombat.entity.aircraft.plane.EntityTestPlane;
+import com.onewhohears.dscombat.entity.weapon.EntityBullet;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
@@ -26,13 +27,12 @@ public class ModEntities {
 			() -> createEntityType(EntitySeat::new, EntityDimensions.scalable(1.1F, 1.1F)));
 	
 	public static final RegistryObject<EntityType<EntitySeatCamera>> CAMERA = ENTITIES.register("seat_camera", 
-			() -> createEntityType2(EntitySeatCamera::new, EntityDimensions.scalable(0.1f, 0.1f)));
+			() -> createEntityType(EntitySeatCamera::new, EntityDimensions.scalable(0.1f, 0.1f)));
+	
+	public static final RegistryObject<EntityType<EntityBullet>> BULLET = ENTITIES.register("bullet", 
+			() -> createEntityType(EntityBullet::new, EntityDimensions.scalable(0.2f, 0.2f)));
 	
 	private static <T extends Entity> EntityType<T> createEntityType(EntityType.EntityFactory<T> factory, EntityDimensions size) {
-        return new EntityType<>(factory, MobCategory.MISC, true, true, false, true, ImmutableSet.of(), size, 5, 3);
-    }
-	
-	private static <T extends Entity> EntityType<T> createEntityType2(EntityType.EntityFactory<T> factory, EntityDimensions size) {
         return new EntityType<>(factory, MobCategory.MISC, true, true, false, true, ImmutableSet.of(), size, 5, 3);
     }
 	

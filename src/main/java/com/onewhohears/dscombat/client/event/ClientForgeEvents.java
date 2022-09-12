@@ -5,9 +5,9 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.KeyInit;
 import com.onewhohears.dscombat.common.PacketHandler;
 import com.onewhohears.dscombat.common.network.ServerBoundFlightControlPacket;
-import com.onewhohears.dscombat.entity.EntityAbstractAircraft;
-import com.onewhohears.dscombat.entity.EntitySeat;
-import com.onewhohears.dscombat.entity.EntitySeatCamera;
+import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntitySeat;
+import com.onewhohears.dscombat.entity.aircraft.EntitySeatCamera;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.client.Minecraft;

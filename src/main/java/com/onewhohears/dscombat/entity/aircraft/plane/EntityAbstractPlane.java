@@ -1,6 +1,7 @@
-package com.onewhohears.dscombat.entity;
+package com.onewhohears.dscombat.entity.aircraft.plane;
 
 import com.mojang.math.Quaternion;
+import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.world.entity.EntityType;

@@ -6,7 +6,7 @@ import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.renderer.model.EntityModelTestPlane;
-import com.onewhohears.dscombat.entity.EntityAbstractAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.client.model.EntityModel;

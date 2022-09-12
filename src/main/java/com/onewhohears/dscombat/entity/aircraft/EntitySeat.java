@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.entity;
+package com.onewhohears.dscombat.entity.aircraft;
 
 import java.util.List;
 
@@ -22,6 +22,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.network.NetworkHooks;
 
 public class EntitySeat extends Entity {
 	
@@ -77,7 +78,7 @@ public class EntitySeat extends Entity {
 
 	@Override
 	public Packet<?> getAddEntityPacket() {
-		return new ClientboundAddEntityPacket(this);
+		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 	
 	@Override

@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.client.event;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.KeyInit;
 import com.onewhohears.dscombat.client.renderer.RendererEntityAbstractAircraft;
+import com.onewhohears.dscombat.client.renderer.RendererEntityAbstractWeapon;
 import com.onewhohears.dscombat.client.renderer.RendererEntitySeat;
 import com.onewhohears.dscombat.client.renderer.RendererEntitySeatCamera;
 import com.onewhohears.dscombat.client.renderer.model.EntityModelTestPlane;
@@ -36,5 +37,6 @@ public class ClientModEvents {
 		event.registerEntityRenderer(ModEntities.TEST_PLANE.get(), RendererEntityAbstractAircraft::new);
 		event.registerEntityRenderer(ModEntities.SEAT.get(), RendererEntitySeat::new);
 		event.registerEntityRenderer(ModEntities.CAMERA.get(), RendererEntitySeatCamera::new);
+		event.registerEntityRenderer(ModEntities.BULLET.get(), RendererEntityAbstractWeapon::new);
 	}
 }

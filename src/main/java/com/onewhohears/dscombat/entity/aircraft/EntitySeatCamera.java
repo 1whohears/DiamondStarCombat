@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.entity;
+package com.onewhohears.dscombat.entity.aircraft;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -6,6 +6,7 @@ import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.network.NetworkHooks;
 
 public class EntitySeatCamera extends Entity {
 
@@ -30,7 +31,7 @@ public class EntitySeatCamera extends Entity {
 
 	@Override
 	public Packet<?> getAddEntityPacket() {
-		return new ClientboundAddEntityPacket(this);
+		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 
 }

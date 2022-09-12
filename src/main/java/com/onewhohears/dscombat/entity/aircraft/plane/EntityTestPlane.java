@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.entity;
+package com.onewhohears.dscombat.entity.aircraft.plane;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;

@@ -4,7 +4,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.entity.EntityAbstractAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
@@ -34,15 +34,13 @@ public class ServerBoundQPacket extends IServerBoundPacket {
 		ctx.get().enqueueWork(() -> {
 			ServerPlayer player = ctx.get().getSender();
 			if (player.getRootVehicle() instanceof EntityAbstractAircraft plane) {
-				if (plane.getControllingPassenger() == player) {
-					plane.setQ(Q);
-					plane.setClientQ(Q);
-					EulerAngles angles = UtilAngles.toDegrees(Q);
-					plane.setXRot((float)angles.pitch);
-					plane.setYRot((float)angles.yaw);
-					plane.zRot = (float)angles.roll;
-					// TODO other clients not seeing rotate
-				}
+				plane.setQ(Q);
+				plane.setClientQ(Q);
+				EulerAngles angles = UtilAngles.toDegrees(Q);
+				plane.setXRot((float)angles.pitch);
+				plane.setYRot((float)angles.yaw);
+				plane.zRot = (float)angles.roll;
+				// TODO other clients not seeing rotate
 			}
 			success.set(true);
 		});

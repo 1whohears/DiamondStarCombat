@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.client.renderer;
 
-import com.onewhohears.dscombat.entity.EntitySeat;
+import com.onewhohears.dscombat.entity.aircraft.EntitySeat;
 
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;

@@ -1,10 +1,8 @@
 package com.onewhohears.dscombat.common;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.common.network.ClientboundUpdateBoostPacket;
 import com.onewhohears.dscombat.common.network.ServerBoundFlightControlPacket;
 import com.onewhohears.dscombat.common.network.ServerBoundQPacket;
-import com.onewhohears.dscombat.common.network.ServerboundBoostUpdatePacket;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkDirection;

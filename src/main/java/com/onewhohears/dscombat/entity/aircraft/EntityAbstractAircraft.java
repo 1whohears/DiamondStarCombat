@@ -1,6 +1,5 @@
-package com.onewhohears.dscombat.entity;
+package com.onewhohears.dscombat.entity.aircraft;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -9,6 +8,8 @@ import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.common.PacketHandler;
 import com.onewhohears.dscombat.common.network.ServerBoundQPacket;
+import com.onewhohears.dscombat.entity.weapon.EntityBullet;
+import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.util.math.UtilAngles;
@@ -16,7 +17,6 @@ import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -30,6 +30,7 @@ import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.network.NetworkHooks;
 
 public abstract class EntityAbstractAircraft extends Entity {
 	
@@ -48,7 +49,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public float prevXRot, prevYRot, zRot, prevZRot;
 	
 	private int lerpSteps;
-	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot, lerpRotRoll;
+	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot, lerpZRot;
 	private boolean prevInputMouseMode;
 	
 	public EntityAbstractAircraft(EntityType<? extends EntityAbstractAircraft> entity, Level level) {
@@ -67,6 +68,22 @@ public abstract class EntityAbstractAircraft extends Entity {
 	}
 	
 	@Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
+        super.onSyncedDataUpdated(key);
+        if (Q.equals(key) && level.isClientSide() && !isControlledByLocalInstance()) {
+            if (firstTick) {
+                //lerpStepsQ = 0;
+            	//lerpSteps = 0;
+                setClientQ(getQ());
+                setPrevQ(getQ());
+            } else {
+                //lerpStepsQ = 10;
+            	//lerpSteps = 10; // TODO lerp Q?
+            }
+        }
+    }
+	
+	@Override
 	protected void readAdditionalSaveData(CompoundTag compound) {
 		
 	}
@@ -83,7 +100,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	@Override
 	public void tick() {
 		//System.out.println("client side "+this.level.isClientSide);
-		if (this.tickCount == 1) init();
+		if (this.firstTick) init();
 		super.tick();
 		if (Double.isNaN(getDeltaMovement().length())) {
             setDeltaMovement(Vec3.ZERO);
@@ -119,6 +136,7 @@ public abstract class EntityAbstractAircraft extends Entity {
         	setClientQ(q);
         	PacketHandler.INSTANCE.sendToServer(new ServerBoundQPacket(q));
         }
+        controlSystem();
 		tickLerp();
 	}
 	
@@ -220,6 +238,17 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	public double getWeight() {
 		return 0.05;
+	}
+	
+	public void controlSystem() {
+		Entity controller = this.getControllingPassenger();
+		if (controller == null) return;
+		if (this.inputFlare) {
+			EntityAbstractWeapon bullet = new EntityBullet(level, controller);
+			bullet.shoot(position(), this.getLookAngle());
+			level.addFreshEntity(bullet);
+			System.out.println("LAUNCHED "+bullet);
+		}
 	}
 	
 	@Override
@@ -333,8 +362,7 @@ public abstract class EntityAbstractAircraft extends Entity {
         List<Entity> list = getPassengers();
         if (list.isEmpty()) return null;
         if (!(list.get(0) instanceof EntitySeat seat)) return null;
-        List<Entity> list2 = seat.getPassengers();
-        return list2.isEmpty() ? null : list2.get(0);
+        return seat.getPlayer();
     }
 	
 	@Override
@@ -382,7 +410,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 
 	@Override
 	public Packet<?> getAddEntityPacket() {
-		return new ClientboundAddEntityPacket(this);
+		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 	
     public float getMaxSpeed() {
@@ -412,15 +440,15 @@ public abstract class EntityAbstractAircraft extends Entity {
     }
     
     public float getMaxDeltaPitch() {
-    	return 4.0f;
+    	return 5.0f;
     }
     
     public float getMaxDeltaYaw() {
-    	return 4.0f;
+    	return 2.0f;
     }
     
     public float getMaxDeltaRoll() {
-    	return 4.0f;
+    	return 10.0f;
     }
     
     public void increaseThrottle() {

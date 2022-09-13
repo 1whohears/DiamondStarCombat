@@ -32,15 +32,23 @@ public abstract class EntityAbstractWeapon extends Projectile {
 	@Override
 	public void tick() {
 		super.tick();
+		if (this.tickCount > 100) { kill(); return; }
 		if (Double.isNaN(getDeltaMovement().length())) {
             setDeltaMovement(Vec3.ZERO);
         }
-		move(MoverType.SELF, getDeltaMovement()); // TODO bullet isn't moving
+		System.out.println(this);
+		move(MoverType.SELF, getDeltaMovement());
+		setPacketCoordinates(this.getX(), this.getY(), this.getZ());
 	}
 	
 	public void shoot(Vec3 pos, Vec3 direction) {
 		this.setPos(pos);
 		this.setDeltaMovement(direction.scale(speed));
+	}
+	
+	public void shoot(Vec3 pos, Vec3 direction, Vec3 initMove) {
+		this.setPos(pos);
+		this.setDeltaMovement(initMove.add(direction.scale(speed)));
 	}
 	
 	@Override

@@ -225,7 +225,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		if (controller == null) return;
 		if (this.inputFlare) {
 			EntityAbstractWeapon bullet = new EntityBullet(level, controller);
-			bullet.shoot(position(), this.getLookAngle());
+			bullet.shoot(position(), UtilAngles.getRollAxis(getQ()), getDeltaMovement());
 			level.addFreshEntity(bullet);
 			System.out.println("LAUNCHED "+bullet);
 		}

@@ -143,6 +143,8 @@ public final class ClientForgeEvents {
 			// TODO third person camera shakes probably because no lerp
 			camera.setXRot(xi);
 			camera.setYRot(yi);
+			player.setXRot(xi);
+			player.setYRot(yi);
 			if (playerCam) m.setCameraEntity(camera);
 		} else {
 			if (!playerCam) m.setCameraEntity(player);

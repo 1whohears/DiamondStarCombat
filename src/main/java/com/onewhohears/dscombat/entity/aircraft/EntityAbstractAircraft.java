@@ -46,7 +46,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public boolean inputMouseMode, inputFlare;
 	public float prevXRot, prevYRot, zRot, prevZRot;
 	
-	private int lerpSteps;
+	private int lerpSteps, lerpStepsQ;
 	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot, lerpZRot;
 	private boolean prevInputMouseMode;
 	
@@ -68,6 +68,15 @@ public abstract class EntityAbstractAircraft extends Entity {
 	@Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
         super.onSyncedDataUpdated(key);
+        if (Q.equals(key) && level.isClientSide() && !isControlledByLocalInstance()) {
+            if (firstTick) {
+                lerpStepsQ = 0;
+                //setClientQ(getQ());
+                setPrevQ(getQ());
+            } else {
+                lerpStepsQ = 10;
+            }
+        }
     }
 	
 	@Override
@@ -75,6 +84,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		Quaternion q = new Quaternion(getXRot(), getYRot(), 0, true);
 		setQ(q);
 		setPrevQ(q);
+		//setClientQ(q);
 	}
 
 	@Override
@@ -104,6 +114,12 @@ public abstract class EntityAbstractAircraft extends Entity {
 			tickLerp();
 		}
 		Quaternion q = getQ();
+		/*Quaternion q;
+        if (level.isClientSide) {
+            q = getClientQ();
+        } else {
+            q = getQ();
+        }*/
 		setPrevQ(q);
 		controlDirection(q);
     	tickMovement(q);
@@ -115,9 +131,17 @@ public abstract class EntityAbstractAircraft extends Entity {
 		setXRot((float)angles.pitch);
 		setYRot((float)angles.yaw);
 		zRot = (float)angles.roll;
+		//setPrevQ(getClientQ());
         setQ(q);
+        /*if (level.isClientSide && isControlledByLocalInstance()) {
+            setClientQ(q);
+        }*/
         controlSystem();
 		tickLerp();
+		/*System.out.println("######### client "+this.level.isClientSide);
+		System.out.println("P "+this.getPrevQ());
+		System.out.println("C "+this.getClientQ());
+		System.out.println("Q "+this.getQ());*/
 	}
 	
 	public void motionClamp() {
@@ -242,6 +266,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	private void tickLerp() {
 		if (this.isControlledByLocalInstance()) {
 			this.lerpSteps = 0;
+			this.lerpStepsQ = 0;
 	        this.setPacketCoordinates(this.getX(), this.getY(), this.getZ());
 		}
 		if (this.lerpSteps > 0) {
@@ -255,6 +280,15 @@ public abstract class EntityAbstractAircraft extends Entity {
 	        this.setPos(d0, d1, d2);
 	        this.setRot(this.getYRot(), this.getXRot());
 		}
+		/*if (lerpStepsQ > 0) {
+			this.setPrevQ(this.getClientQ());
+			this.setClientQ(UtilAngles.lerpQ(1f / lerpSteps, this.getClientQ(), this.getQ()));
+			--lerpStepsQ;
+		} else if (lerpStepsQ == 0) {
+			this.setPrevQ(this.getClientQ());
+			this.setClientQ(this.getQ());
+			--lerpStepsQ;
+		}*/
 	}
 	
 	public void updateControls(boolean throttleUp, boolean throttleDown, boolean pitchUp, boolean pitchDown,

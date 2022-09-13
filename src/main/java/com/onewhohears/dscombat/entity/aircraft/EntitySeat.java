@@ -72,7 +72,7 @@ public class EntitySeat extends Entity {
 	public void tick() {
 		if (this.tickCount == 1) init();
 		super.tick();
-		if (this.getVehicle() == null) this.kill();
+		if (!this.level.isClientSide && this.getVehicle() == null) this.discard();
 		//System.out.println("SEAT POS "+this.position());
 	}
 

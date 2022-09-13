@@ -31,8 +31,8 @@ public class RendererEntityAbstractAircraft<T extends EntityAbstractAircraft> ex
 	@Override
 	public void render(T entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
 		//System.out.println("RENDER "+entity);
-		Quaternion q = UtilAngles.lerpQ(partialTicks, entity.getPrevQ(), entity.getQ()); // TODO shake at start and end of movement
-		
+		Quaternion q = UtilAngles.lerpQ(partialTicks, entity.getPrevQ(), entity.getQ()); // TODO shakes at start and end of movement
+		//Quaternion q = UtilAngles.lerpQ(partialTicks, entity.getPrevQ(), entity.getClientQ());
 		poseStack.pushPose();
         poseStack.mulPose(q);
         poseStack.translate(0, 1.55, 0);

@@ -13,9 +13,7 @@ public class EntitySeatCamera extends Entity {
 	public EntitySeatCamera(EntityType<? extends EntitySeatCamera> p_19870_, Level p_19871_) {
 		super(p_19870_, p_19871_);
 		this.setInvulnerable(true);
-		this.blocksBuilding = false;
 		this.noPhysics = true;
-		// TODO this entity kills client if punched
 	}
 
 	@Override

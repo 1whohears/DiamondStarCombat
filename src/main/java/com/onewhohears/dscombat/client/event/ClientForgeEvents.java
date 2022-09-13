@@ -14,6 +14,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
+import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
@@ -145,6 +146,14 @@ public final class ClientForgeEvents {
 			if (playerCam) m.setCameraEntity(camera);
 		} else {
 			if (!playerCam) m.setCameraEntity(player);
+		}
+	}
+	
+	@SubscribeEvent
+	public static void onClick(InputEvent.ClickInputEvent event) {
+		// TODO cancel attack actions/tool uses when not in free look
+		if (event.isAttack()) {
+			
 		}
 	}
 	

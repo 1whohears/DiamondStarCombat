@@ -27,7 +27,7 @@ public class ModEntities {
 			() -> createEntityType(EntitySeat::new, EntityDimensions.scalable(1.1F, 1.1F)));
 	
 	public static final RegistryObject<EntityType<EntitySeatCamera>> CAMERA = ENTITIES.register("seat_camera", 
-			() -> createEntityType(EntitySeatCamera::new, EntityDimensions.scalable(0.1f, 0.1f)));
+			() -> createEntityType(EntitySeatCamera::new, EntityDimensions.scalable(0f, 0f)));
 	
 	public static final RegistryObject<EntityType<EntityBullet>> BULLET = ENTITIES.register("bullet", 
 			() -> createEntityType(EntityBullet::new, EntityDimensions.scalable(0.2f, 0.2f)));

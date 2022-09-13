@@ -10,7 +10,6 @@ import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.InteractionHand;
@@ -26,7 +25,7 @@ import net.minecraftforge.network.NetworkHooks;
 
 public class EntitySeat extends Entity {
 	
-	public static final EntityDataAccessor<Vec3> POS = SynchedEntityData.defineId(EntityAbstractAircraft.class, DataSerializers.VEC3);
+	public static final EntityDataAccessor<Vec3> POS = SynchedEntityData.defineId(EntitySeat.class, DataSerializers.VEC3);
 	
 	public EntitySeat(EntityType<?> type, Level level) {
 		super(type, level);

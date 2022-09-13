@@ -64,8 +64,8 @@ public class DataSerializers {
     };
 
     public static final RegistryObject<DataSerializerEntry> SERIALIZER_ENTRY_QUATERNION = DATA_SERIALIZERS
-        .register("quaternion", () -> new DataSerializerEntry(QUATERNION));
+    		.register("quaternion", () -> new DataSerializerEntry(QUATERNION));
     
     public static final RegistryObject<DataSerializerEntry> SERIALIZER_ENTRY_VEC3 = DATA_SERIALIZERS
-            .register("vec3", () -> new DataSerializerEntry(VEC3));
+    		.register("vec3", () -> new DataSerializerEntry(VEC3));
 }

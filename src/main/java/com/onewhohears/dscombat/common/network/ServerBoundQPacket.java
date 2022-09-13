@@ -35,12 +35,11 @@ public class ServerBoundQPacket extends IServerBoundPacket {
 			ServerPlayer player = ctx.get().getSender();
 			if (player.getRootVehicle() instanceof EntityAbstractAircraft plane) {
 				plane.setQ(Q);
-				plane.setClientQ(Q);
+				//plane.setClientQ(Q); 
 				EulerAngles angles = UtilAngles.toDegrees(Q);
 				plane.setXRot((float)angles.pitch);
 				plane.setYRot((float)angles.yaw);
 				plane.zRot = (float)angles.roll;
-				// TODO other clients not seeing rotate
 			}
 			success.set(true);
 		});

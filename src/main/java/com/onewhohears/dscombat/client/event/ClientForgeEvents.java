@@ -17,7 +17,6 @@ import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.event.TickEvent.RenderTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -55,9 +54,9 @@ public final class ClientForgeEvents {
 				rollLeft, rollRight, yawLeft, yawRight, mouseMode, flare);
 	}
 	
-	@SubscribeEvent
+	/*@SubscribeEvent
 	public static void renderClient(RenderTickEvent event) {
-		/*if (event.phase != Phase.START) return;
+		if (event.phase != Phase.START) return;
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
 		if (player == null) return;
@@ -80,8 +79,8 @@ public final class ClientForgeEvents {
 			float yi = yo + (yn - yo) * event.renderTickTime;
 			camera.setXRot(xi);
 			camera.setYRot(yi);
-		}*/
-	}
+		}
+	}*/
 	
 	@SubscribeEvent
 	public static void playerRender(RenderPlayerEvent.Pre event) {
@@ -140,9 +139,9 @@ public final class ClientForgeEvents {
 			event.setPitch(xi);
 			event.setYaw(yi);
 			event.setRoll(zi);
-			// TODO third person camera angle shakes. no idea how to fix
-			camera.setXRot(xn);
-			camera.setYRot(yn);
+			// TODO third person camera shakes probably because no lerp
+			camera.setXRot(xi);
+			camera.setYRot(yi);
 			if (playerCam) m.setCameraEntity(camera);
 		} else {
 			if (!playerCam) m.setCameraEntity(player);

@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.entity.aircraft;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -12,6 +12,10 @@ public class EntitySeatCamera extends Entity {
 
 	public EntitySeatCamera(EntityType<? extends EntitySeatCamera> p_19870_, Level p_19871_) {
 		super(p_19870_, p_19871_);
+		this.setInvulnerable(true);
+		this.blocksBuilding = false;
+		this.noPhysics = true;
+		// TODO this entity kills client if punched
 	}
 
 	@Override
@@ -38,6 +42,16 @@ public class EntitySeatCamera extends Entity {
 	public void tick() {
 		super.tick();
 		if (this.getVehicle() == null) this.kill();
+	}
+	
+	@Override
+    public boolean hurt(DamageSource source, float amount) {
+		return false;
+	}
+	
+	@Override
+	public boolean isAttackable() {
+		return false;
 	}
 
 }

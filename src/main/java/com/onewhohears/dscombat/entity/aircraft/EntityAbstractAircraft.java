@@ -6,10 +6,8 @@ import javax.annotation.Nullable;
 
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
-import com.onewhohears.dscombat.common.PacketHandler;
-import com.onewhohears.dscombat.common.network.ServerBoundQPacket;
-import com.onewhohears.dscombat.entity.weapon.EntityBullet;
 import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
+import com.onewhohears.dscombat.entity.weapon.EntityBullet;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.util.math.UtilAngles;
@@ -32,7 +30,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 
-public class EntityAbstractAircraft extends Entity {
+public abstract class EntityAbstractAircraft extends Entity {
 	
 	public static final EntityDataAccessor<Integer> MAX_HEALTH = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> HEALTH = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.INT);
@@ -40,7 +38,7 @@ public class EntityAbstractAircraft extends Entity {
 	public static final EntityDataAccessor<Float> THROTTLE = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Quaternion> Q = SynchedEntityData.defineId(EntityAbstractAircraft.class, DataSerializers.QUATERNION);
 	public static final EntityDataAccessor<Boolean> FREE_LOOK = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.BOOLEAN);
-	public Quaternion clientQ = Quaternion.ONE.copy();
+	//public Quaternion clientQ = Quaternion.ONE.copy();
 	public Quaternion prevQ = Quaternion.ONE.copy();
 	
 	public boolean inputThrottleUp, inputThrottleDown, inputPitchUp, inputPitchDown;
@@ -63,29 +61,20 @@ public class EntityAbstractAircraft extends Entity {
         entityData.define(HEALTH, 10);
 		entityData.define(MAX_SPEED, 2.0f);
 		entityData.define(THROTTLE, 0.0f);
-		entityData.define(Q, Quaternion.ONE.copy());
+		entityData.define(Q, Quaternion.ONE);
 		entityData.define(FREE_LOOK, false);
 	}
 	
 	@Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
         super.onSyncedDataUpdated(key);
-        if (Q.equals(key) && level.isClientSide() && !isControlledByLocalInstance()) {
-            if (firstTick) {
-                //lerpStepsQ = 0;
-            	//lerpSteps = 0;
-                setClientQ(getQ());
-                setPrevQ(getQ());
-            } else {
-                //lerpStepsQ = 10;
-            	//lerpSteps = 10; // TODO lerp Q?
-            }
-        }
     }
 	
 	@Override
 	protected void readAdditionalSaveData(CompoundTag compound) {
-		
+		Quaternion q = new Quaternion(getXRot(), getYRot(), 0, true);
+		setQ(q);
+		setPrevQ(q);
 	}
 
 	@Override
@@ -99,7 +88,7 @@ public class EntityAbstractAircraft extends Entity {
 	
 	@Override
 	public void tick() {
-		System.out.println("client side "+this.level.isClientSide);
+		//System.out.println("client side "+this.level.isClientSide);
 		if (this.firstTick) init();
 		super.tick();
 		if (Double.isNaN(getDeltaMovement().length())) {
@@ -114,13 +103,8 @@ public class EntityAbstractAircraft extends Entity {
 		if (level.isClientSide && !isControlledByLocalInstance()) {
 			tickLerp();
 		}
-		Quaternion q;
-		if (level.isClientSide) {
-            q = getClientQ();
-        } else {
-            q = getQ();
-        }
-		System.out.println(q);
+		Quaternion q = getQ();
+		setPrevQ(q);
 		controlDirection(q);
     	tickMovement(q);
     	motionClamp();
@@ -131,12 +115,7 @@ public class EntityAbstractAircraft extends Entity {
 		setXRot((float)angles.pitch);
 		setYRot((float)angles.yaw);
 		zRot = (float)angles.roll;
-        setPrevQ(getClientQ());
         setQ(q);
-        if (level.isClientSide && isControlledByLocalInstance()) {
-        	setClientQ(q);
-        	PacketHandler.INSTANCE.sendToServer(new ServerBoundQPacket(q));
-        }
         controlSystem();
 		tickLerp();
 	}
@@ -469,27 +448,27 @@ public class EntityAbstractAircraft extends Entity {
     }
     
     public Quaternion getQ() {
-        return new Quaternion(entityData.get(Q));
+        return entityData.get(Q).copy();
     }
 
     public void setQ(Quaternion q) {
-        entityData.set(Q, q);
+        entityData.set(Q, q.copy());
     }
 
-    public Quaternion getClientQ() {
-        return new Quaternion(clientQ);
+    /*public Quaternion getClientQ() {
+        return clientQ.copy();
     }
 
     public void setClientQ(Quaternion q) {
-        clientQ = q;
-    }
+        clientQ = q.copy();
+    }*/
 
     public Quaternion getPrevQ() {
         return prevQ.copy();
     }
 
     public void setPrevQ(Quaternion q) {
-        prevQ = q;
+        prevQ = q.copy();
     }
     
     public boolean isFreeLook() {

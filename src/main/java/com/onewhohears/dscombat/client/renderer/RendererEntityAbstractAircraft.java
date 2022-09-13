@@ -23,7 +23,6 @@ public class RendererEntityAbstractAircraft<T extends EntityAbstractAircraft> ex
 	protected final EntityModel<T> model;
 	
 	public RendererEntityAbstractAircraft(Context context) {
-		//super(context, new EntityModelBasicPlane<>(context.bakeLayer(EntityModelBasicPlane.LAYER_LOCATION)), 0.5f);
 		super(context);
 		this.shadowRadius = 0.8f;
 		model = new EntityModelTestPlane<>(context.bakeLayer(EntityModelTestPlane.LAYER_LOCATION));
@@ -31,8 +30,10 @@ public class RendererEntityAbstractAircraft<T extends EntityAbstractAircraft> ex
 	
 	@Override
 	public void render(T entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
+		//System.out.println("RENDER "+entity);
+		Quaternion q = UtilAngles.lerpQ(partialTicks, entity.getPrevQ(), entity.getQ()); // TODO shake at start and end of movement
+		
 		poseStack.pushPose();
-		Quaternion q = UtilAngles.lerpQ(partialTicks, entity.getPrevQ(), entity.getClientQ());
         poseStack.mulPose(q);
         poseStack.translate(0, 1.55, 0);
         poseStack.scale(1.0F, -1.0F, 1.0F);

@@ -2,10 +2,13 @@ package com.onewhohears.dscombat.entity.weapon;
 
 import javax.annotation.Nullable;
 
+import com.onewhohears.dscombat.data.WeaponData;
 import com.onewhohears.dscombat.init.ModEntities;
 
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -19,15 +22,16 @@ import net.minecraft.world.phys.Vec3;
 
 public abstract class EntityAbstractWeapon extends Projectile {
 	
-	public double speed = 1;
+	public WeaponData data;
 	
 	public EntityAbstractWeapon(EntityType<? extends EntityAbstractWeapon> type, Level level) {
 		super(type, level);
 	}
 	
-	public EntityAbstractWeapon(Level level, Entity owner) {
+	public EntityAbstractWeapon(Level level, Entity pilot, WeaponData data) {
 		super(ModEntities.BULLET.get(), level);
-		this.setOwner(owner);
+		this.setOwner(pilot);
+		this.data = data;
 	}
 
 	@Override
@@ -44,7 +48,7 @@ public abstract class EntityAbstractWeapon extends Projectile {
 			return; 
 		}
 		if (Double.isNaN(getDeltaMovement().length())) {
-            setDeltaMovement(Vec3.ZERO);
+			setDeltaMovement(Vec3.ZERO);
         }
 		//System.out.println(this);
 		Vec3 vec3 = this.getDeltaMovement();
@@ -52,9 +56,8 @@ public abstract class EntityAbstractWeapon extends Projectile {
         Vec3 vec33 = vec32.add(vec3);
         HitResult hitresult = this.level.clip(new ClipContext(vec32, vec33, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
         if (hitresult.getType() != HitResult.Type.MISS) {
-           vec33 = hitresult.getLocation();
+        	vec33 = hitresult.getLocation();
         }
-
         while(!this.isRemoved()) {
            EntityHitResult entityhitresult = this.findHitEntity(vec32, vec33);
            if (entityhitresult != null) {
@@ -89,21 +92,30 @@ public abstract class EntityAbstractWeapon extends Projectile {
 	
 	public void shoot(Vec3 pos, Vec3 direction, Vec3 initMove) {
 		this.setPos(pos);
-		this.setDeltaMovement(initMove.add(direction.scale(speed)));
+		this.setDeltaMovement(initMove.add(direction.scale(data.getSpeed())));
 	}
 	
 	@Override
 	public void onHitBlock(BlockHitResult result) {
 		super.onHitBlock(result);
 		System.out.println("BULLET HIT "+result.getBlockPos());
-		this.kill();
+		this.discard();
 	}
 	
 	@Override
 	public void onHitEntity(EntityHitResult result) {
 		super.onHitEntity(result);
 		System.out.println("BULLET HIT "+result.getEntity());
-		this.kill();
+		DamageSource source = null;
+		if (getOwner() instanceof Player player) {
+			source = DamageSource.playerAttack(player);
+		} else if (getOwner() instanceof LivingEntity living) {
+			source = DamageSource.mobAttack(living);
+		}
+		if (source != null) {
+			result.getEntity().hurt(source, data.getDamage());
+		}
+		this.discard();
 	}
 	
 	@Nullable

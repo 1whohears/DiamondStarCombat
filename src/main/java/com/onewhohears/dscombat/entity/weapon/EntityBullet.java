@@ -1,5 +1,7 @@
 package com.onewhohears.dscombat.entity.weapon;
 
+import com.onewhohears.dscombat.data.BulletData;
+
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -10,8 +12,8 @@ public class EntityBullet extends EntityAbstractWeapon {
 		super(type, level);
 	}
 	
-	public EntityBullet(Level level, Entity owner) {
-		super(level, owner);
+	public EntityBullet(Level level, Entity owner, BulletData data) {
+		super(level, owner, data);
 	}
 
 }

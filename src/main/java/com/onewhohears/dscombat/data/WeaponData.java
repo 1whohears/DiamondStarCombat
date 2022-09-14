@@ -1,9 +1,15 @@
 package com.onewhohears.dscombat.data;
 
+import java.nio.charset.Charset;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.phys.Vec3;
 
 public abstract class WeaponData {
+	
+	private String id;
+	private Vec3 pos;
 	
 	public static enum WeaponType {
 		BULLET,
@@ -11,27 +17,60 @@ public abstract class WeaponData {
 		BOMB
 	}
 	
-	protected WeaponData() {
+	protected WeaponData(String id, Vec3 pos) {
+		this.id = id;
+		this.pos = pos;
 	}
 	
 	public WeaponData(CompoundTag tag) {
+		id = tag.getString("id");
+		double x, y, z;
+		x = tag.getDouble("posx");
+		y = tag.getDouble("posy");
+		z = tag.getDouble("posz");
+		pos = new Vec3(x, y, z);
 	}
 	
-	public abstract CompoundTag write();
+	public CompoundTag write() {
+		CompoundTag tag = new CompoundTag();
+		tag.putInt("type", this.getType().ordinal());
+		tag.putString("id", getId());
+		tag.putDouble("posx", getLaunchPos().x);
+		tag.putDouble("posy", getLaunchPos().y);
+		tag.putDouble("posz", getLaunchPos().z);
+		return tag;
+	}
 	
 	public WeaponData(FriendlyByteBuf buffer) {
+		// type int is read in DataSerializers
+		int idLength = buffer.readInt();
+		id = buffer.readCharSequence(idLength, Charset.defaultCharset()).toString();
+		double x, y, z;
+		x = buffer.readDouble();
+		y = buffer.readDouble();
+		z = buffer.readDouble();
+		pos = new Vec3(x, y, z);
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
 		buffer.writeInt(this.getType().ordinal());
+		buffer.writeInt(getId().length());
+		buffer.writeCharSequence(getId(), Charset.defaultCharset());
+		buffer.writeDouble(getLaunchPos().x);
+		buffer.writeDouble(getLaunchPos().y);
+		buffer.writeDouble(getLaunchPos().z);
 	}
 	
 	public abstract WeaponData copy();
 	
 	public abstract WeaponType getType();
 	
-	public abstract float getDamage();
+	public String getId() {
+		return id;
+	}
 	
-	public abstract double getSpeed();
+	public Vec3 getLaunchPos() {
+		return pos;
+	}
 	
 }

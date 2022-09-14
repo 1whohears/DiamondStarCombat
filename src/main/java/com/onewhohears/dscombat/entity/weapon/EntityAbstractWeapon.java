@@ -44,7 +44,7 @@ public abstract class EntityAbstractWeapon extends Projectile {
 		this.entityData.define(DATA, BulletData.getDefault());
 	}
 	
-	@Override
+	/*@Override
 	protected void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
 	}
@@ -52,17 +52,17 @@ public abstract class EntityAbstractWeapon extends Projectile {
 	@Override
 	protected void addAdditionalSaveData(CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
-	}
+	}*/
 	
 	@Override
 	public void tick() {
-		/*if (data == null) {
-			System.out.println("ENTITY WEAPON NO DATA (client side)"+this.level.isClientSide);
-			this.discard();
-			return;
-		}*/
+		if (!this.level.isClientSide && touchingUnloadedChunk()) {
+			System.out.println("bullet unloaded");
+			discard(); 
+			return; 
+		}
 		super.tick();
-		if (!this.level.isClientSide && this.tickCount > 100) { 
+		if (!this.level.isClientSide && this.tickCount > 600) { 
 			System.out.println("bullet to old");
 			discard(); 
 			return; 

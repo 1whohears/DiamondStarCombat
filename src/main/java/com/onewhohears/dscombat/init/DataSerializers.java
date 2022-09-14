@@ -2,6 +2,8 @@ package com.onewhohears.dscombat.init;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.data.BulletData;
+import com.onewhohears.dscombat.data.WeaponData;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataSerializer;
@@ -62,10 +64,42 @@ public class DataSerializers {
 		}
     	
     };
+    
+    public static final EntityDataSerializer<WeaponData> WEAPON_DATA = new EntityDataSerializer<>() {
+
+		@Override
+		public void write(FriendlyByteBuf buffer, WeaponData w) {
+			w.write(buffer);
+		}
+
+		@Override
+		public WeaponData read(FriendlyByteBuf buffer) {
+			int index = buffer.readInt();
+			WeaponData.WeaponType type = WeaponData.WeaponType.values()[index];
+			switch (type) {
+			case BOMB:
+				return null;
+			case BULLET:
+				return new BulletData(buffer);
+			case ROCKET:
+				return null;
+			}
+			return null;
+		}
+
+		@Override
+		public WeaponData copy(WeaponData w) {
+			return w.copy();
+		}
+    	
+    };
 
     public static final RegistryObject<DataSerializerEntry> SERIALIZER_ENTRY_QUATERNION = DATA_SERIALIZERS
     		.register("quaternion", () -> new DataSerializerEntry(QUATERNION));
     
     public static final RegistryObject<DataSerializerEntry> SERIALIZER_ENTRY_VEC3 = DATA_SERIALIZERS
     		.register("vec3", () -> new DataSerializerEntry(VEC3));
+    
+    public static final RegistryObject<DataSerializerEntry> SERIALIZER_ENTRY_WEAPONDATA = DATA_SERIALIZERS
+    		.register("weapondata", () -> new DataSerializerEntry(WEAPON_DATA));
 }

@@ -2,9 +2,15 @@ package com.onewhohears.dscombat.entity.weapon;
 
 import javax.annotation.Nullable;
 
+import com.onewhohears.dscombat.data.BulletData;
 import com.onewhohears.dscombat.data.WeaponData;
+import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModEntities;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -22,7 +28,7 @@ import net.minecraft.world.phys.Vec3;
 
 public abstract class EntityAbstractWeapon extends Projectile {
 	
-	public WeaponData data;
+	public static final EntityDataAccessor<WeaponData> DATA = SynchedEntityData.defineId(EntityAbstractWeapon.class, DataSerializers.WEAPON_DATA);
 	
 	public EntityAbstractWeapon(EntityType<? extends EntityAbstractWeapon> type, Level level) {
 		super(type, level);
@@ -31,16 +37,31 @@ public abstract class EntityAbstractWeapon extends Projectile {
 	public EntityAbstractWeapon(Level level, Entity pilot, WeaponData data) {
 		super(ModEntities.BULLET.get(), level);
 		this.setOwner(pilot);
-		this.data = data;
+		this.setWeaponData(data);
 	}
 
 	@Override
 	protected void defineSynchedData() {
-		
+		this.entityData.define(DATA, BulletData.getDefault());
+	}
+	
+	@Override
+	protected void readAdditionalSaveData(CompoundTag compound) {
+		super.readAdditionalSaveData(compound);
+	}
+
+	@Override
+	protected void addAdditionalSaveData(CompoundTag compound) {
+		super.addAdditionalSaveData(compound);
 	}
 	
 	@Override
 	public void tick() {
+		/*if (data == null) {
+			System.out.println("ENTITY WEAPON NO DATA (client side)"+this.level.isClientSide);
+			this.discard();
+			return;
+		}*/
 		super.tick();
 		if (!this.level.isClientSide && this.tickCount > 100) { 
 			System.out.println("bullet to old");
@@ -92,7 +113,7 @@ public abstract class EntityAbstractWeapon extends Projectile {
 	
 	public void shoot(Vec3 pos, Vec3 direction, Vec3 initMove) {
 		this.setPos(pos);
-		this.setDeltaMovement(initMove.add(direction.scale(data.getSpeed())));
+		this.setDeltaMovement(initMove.add(direction.scale(getWeaponData().getSpeed())));
 	}
 	
 	@Override
@@ -113,7 +134,7 @@ public abstract class EntityAbstractWeapon extends Projectile {
 			source = DamageSource.mobAttack(living);
 		}
 		if (source != null) {
-			result.getEntity().hurt(source, data.getDamage());
+			result.getEntity().hurt(source, getWeaponData().getDamage());
 		}
 		this.discard();
 	}
@@ -121,6 +142,14 @@ public abstract class EntityAbstractWeapon extends Projectile {
 	@Nullable
 	protected EntityHitResult findHitEntity(Vec3 p_36758_, Vec3 p_36759_) {
 		return ProjectileUtil.getEntityHitResult(this.level, this, p_36758_, p_36759_, this.getBoundingBox().expandTowards(this.getDeltaMovement()).inflate(1.0D), this::canHitEntity);
+	}
+	
+	public void setWeaponData(WeaponData data) {
+		entityData.set(DATA, data);
+	}
+	
+	public WeaponData getWeaponData() {
+		return entityData.get(DATA);
 	}
 
 }

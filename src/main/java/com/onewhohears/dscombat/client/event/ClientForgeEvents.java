@@ -71,10 +71,10 @@ public final class ClientForgeEvents {
 				yo = player.yRotO;
 				yn = player.getYRot();
 			} else {
-				xo = -plane.prevXRot;
-				xn = -plane.getXRot();
-				yo = -plane.prevYRot;
-				yn = -plane.getYRot();
+				xo = plane.prevXRot;
+				xn = plane.getXRot();
+				yo = plane.prevYRot;
+				yn = plane.getYRot();
 			}
 			float xi = xo + (xn - xo) * event.renderTickTime;
 			float yi = yo + (yn - yo) * event.renderTickTime;
@@ -124,12 +124,12 @@ public final class ClientForgeEvents {
 				//zo = event.getRoll();
 				zn = plane.zRot;
 			} else {
-				xo = -plane.prevXRot;
+				xo = plane.prevXRot;
 				//xo = event.getPitch();
-				xn = -plane.getXRot();
-				yo = -plane.prevYRot;
+				xn = plane.getXRot();
+				yo = plane.prevYRot;
 				//yo = event.getYaw();
-				yn = -plane.getYRot();
+				yn = plane.getYRot();
 				zo = plane.prevZRot;
 				//zo = event.getRoll();
 				zn = plane.zRot;

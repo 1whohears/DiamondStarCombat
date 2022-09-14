@@ -129,8 +129,8 @@ public abstract class EntityAbstractAircraft extends Entity {
 		move(MoverType.SELF, getDeltaMovement());
 		q = UtilAngles.normalizeQuaternion(q);
 		EulerAngles angles = UtilAngles.toDegrees(q);
-		setXRot((float)angles.pitch);
-		setYRot((float)angles.yaw);
+		setXRot(-(float)angles.pitch);
+		setYRot(-(float)angles.yaw);
 		zRot = (float)angles.roll;
 		//setPrevQ(getClientQ());
         setQ(q);

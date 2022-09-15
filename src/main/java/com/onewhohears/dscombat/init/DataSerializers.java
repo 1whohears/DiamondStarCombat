@@ -4,6 +4,7 @@ import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.BulletData;
 import com.onewhohears.dscombat.data.WeaponData;
+import com.onewhohears.dscombat.data.WeaponSystem;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataSerializer;
@@ -89,7 +90,26 @@ public class DataSerializers {
 
 		@Override
 		public WeaponData copy(WeaponData w) {
-			return w.copy();
+			return w;
+		}
+    	
+    };
+    
+    public static final EntityDataSerializer<WeaponSystem> WEAPON_SYSTEM = new EntityDataSerializer<>() {
+
+		@Override
+		public void write(FriendlyByteBuf buffer, WeaponSystem w) {
+			w.write(buffer);
+		}
+
+		@Override
+		public WeaponSystem read(FriendlyByteBuf buffer) {
+			return new WeaponSystem(buffer);
+		}
+
+		@Override
+		public WeaponSystem copy(WeaponSystem w) {
+			return w;
 		}
     	
     };
@@ -102,4 +122,7 @@ public class DataSerializers {
     
     public static final RegistryObject<DataSerializerEntry> SERIALIZER_ENTRY_WEAPONDATA = DATA_SERIALIZERS
     		.register("weapondata", () -> new DataSerializerEntry(WEAPON_DATA));
+    
+    public static final RegistryObject<DataSerializerEntry> SERIALIZER_ENTRY_WEAPONSYSTEM = DATA_SERIALIZERS
+    		.register("weaponsystem", () -> new DataSerializerEntry(WEAPON_SYSTEM));
 }

@@ -1,7 +1,14 @@
 package com.onewhohears.dscombat.data;
 
+import com.mojang.math.Quaternion;
+import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
+import com.onewhohears.dscombat.entity.weapon.EntityBullet;
+import com.onewhohears.dscombat.util.math.UtilAngles;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class BulletData extends WeaponData {
@@ -10,11 +17,11 @@ public class BulletData extends WeaponData {
 	private double speed;
 	
 	public static BulletData getDefault() {
-		return new BulletData(null, Vec3.ZERO, 1, 1);
+		return new BulletData(null, Vec3.ZERO, 600, 1, 1);
 	}
 	
-	public BulletData(String id, Vec3 launchPos, float damage, double speed) {
-		super(id, launchPos);
+	public BulletData(String id, Vec3 launchPos, int maxAge, float damage, double speed) {
+		super(id, launchPos, maxAge);
 		this.damage = damage;
 		this.speed = speed;
 	}
@@ -47,12 +54,6 @@ public class BulletData extends WeaponData {
 	}
 	
 	@Override
-	public WeaponData copy() {
-		return new BulletData(this.getId(), this.getLaunchPos(), 
-				this.getDamage(), this.getSpeed());
-	}
-	
-	@Override
 	public WeaponType getType() {
 		return WeaponType.BULLET;
 	}
@@ -63,6 +64,15 @@ public class BulletData extends WeaponData {
 	
 	public double getSpeed() {
 		return speed;
+	}
+
+	@Override
+	public EntityAbstractWeapon shoot(Level level, Entity vehicle, Entity owner, Vec3 direction, Quaternion vehicleQ) {
+		EntityBullet bullet = new EntityBullet(level, owner, this);
+		bullet.setPos(vehicle.position().add(UtilAngles.rotateVector(direction, vehicleQ)));
+		bullet.setDeltaMovement(direction.scale(speed).add(vehicle.getDeltaMovement()));
+		level.addFreshEntity(bullet);
+		return bullet;
 	}
 
 }

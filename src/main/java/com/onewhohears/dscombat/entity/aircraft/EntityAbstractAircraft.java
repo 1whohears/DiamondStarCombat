@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.data.BulletData;
-import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
 import com.onewhohears.dscombat.entity.weapon.EntityBullet;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModEntities;
@@ -249,9 +248,8 @@ public abstract class EntityAbstractAircraft extends Entity {
 		Entity controller = this.getControllingPassenger();
 		if (controller == null) return;
 		if (this.inputFlare) {
-			EntityAbstractWeapon bullet = new EntityBullet(level, controller, new BulletData(2f, 1d));
-			bullet.shoot(position(), UtilAngles.getRollAxis(getQ()), getDeltaMovement());
-			level.addFreshEntity(bullet);
+			BulletData bdata = new BulletData("test", new Vec3(0, 0.5, -1), 600, 1, 1);
+			EntityBullet bullet = (EntityBullet)bdata.shoot(level, this, this.getControllingPassenger(), UtilAngles.getRollAxis(getQ()), this.getQ());
 			System.out.println("LAUNCHED "+bullet);
 		}
 	}

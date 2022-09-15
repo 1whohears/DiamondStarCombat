@@ -2,14 +2,20 @@ package com.onewhohears.dscombat.data;
 
 import java.nio.charset.Charset;
 
+import com.mojang.math.Quaternion;
+import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public abstract class WeaponData {
 	
 	private String id;
 	private Vec3 pos;
+	private int maxAge;
 	
 	public static enum WeaponType {
 		BULLET,
@@ -17,9 +23,10 @@ public abstract class WeaponData {
 		BOMB
 	}
 	
-	protected WeaponData(String id, Vec3 pos) {
+	protected WeaponData(String id, Vec3 pos, int maxAge) {
 		this.id = id;
 		this.pos = pos;
+		this.maxAge = maxAge;
 	}
 	
 	public WeaponData(CompoundTag tag) {
@@ -29,6 +36,7 @@ public abstract class WeaponData {
 		y = tag.getDouble("posy");
 		z = tag.getDouble("posz");
 		pos = new Vec3(x, y, z);
+		maxAge = tag.getInt("maxAge");
 	}
 	
 	public CompoundTag write() {
@@ -38,6 +46,7 @@ public abstract class WeaponData {
 		tag.putDouble("posx", getLaunchPos().x);
 		tag.putDouble("posy", getLaunchPos().y);
 		tag.putDouble("posz", getLaunchPos().z);
+		tag.putInt("maxAge", maxAge);
 		return tag;
 	}
 	
@@ -50,6 +59,7 @@ public abstract class WeaponData {
 		y = buffer.readDouble();
 		z = buffer.readDouble();
 		pos = new Vec3(x, y, z);
+		maxAge = buffer.readInt();
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
@@ -59,11 +69,12 @@ public abstract class WeaponData {
 		buffer.writeDouble(getLaunchPos().x);
 		buffer.writeDouble(getLaunchPos().y);
 		buffer.writeDouble(getLaunchPos().z);
+		buffer.writeInt(maxAge);
 	}
 	
-	public abstract WeaponData copy();
-	
 	public abstract WeaponType getType();
+	
+	public abstract EntityAbstractWeapon shoot(Level level, Entity vehicle, Entity owner, Vec3 direction, Quaternion vehicleQ);
 	
 	public String getId() {
 		return id;
@@ -71,6 +82,10 @@ public abstract class WeaponData {
 	
 	public Vec3 getLaunchPos() {
 		return pos;
+	}
+	
+	public int getMaxAge() {
+		return maxAge;
 	}
 	
 }

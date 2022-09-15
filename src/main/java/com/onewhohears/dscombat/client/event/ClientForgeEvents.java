@@ -99,6 +99,7 @@ public final class ClientForgeEvents {
 			Quaternion q = UtilAngles.lerpQ(event.getPartialTick(), plane.getPrevQ(), plane.getQ());
 			event.getPoseStack().mulPose(q);
 		}
+		// TODO player inventory not rendering
 	}
 	
 	@SubscribeEvent

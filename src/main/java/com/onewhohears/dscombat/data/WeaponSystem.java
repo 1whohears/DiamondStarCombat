@@ -3,6 +3,8 @@ package com.onewhohears.dscombat.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.onewhohears.dscombat.init.DataSerializers;
 
 import net.minecraft.nbt.CompoundTag;
@@ -47,8 +49,19 @@ public class WeaponSystem {
 	}
 	
 	public boolean addWeapon(WeaponData data) {
+		if (get(data.getId()) != null) return false;
 		weapons.add(data);
 		return true;
+	}
+	
+	public void removeWeapon(String id) {
+		weapons.remove(get(id));
+	}
+	
+	@Nullable
+	public WeaponData get(String id) {
+		for (WeaponData w : weapons) if (w.getId().equals(id)) return w;
+		return null;
 	}
 	
 }

@@ -28,7 +28,7 @@ public abstract class EntityAbstractWeapon extends Projectile {
 
 	@Override
 	protected void defineSynchedData() {
-		this.entityData.define(DATA, BulletData.getDefault());
+		this.entityData.define(DATA, null);
 	}
 	
 	/*@Override

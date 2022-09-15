@@ -16,10 +16,6 @@ public class BulletData extends WeaponData {
 	private float damage;
 	private double speed;
 	
-	public static BulletData getDefault() {
-		return new BulletData(null, Vec3.ZERO, 600, 1, 1);
-	}
-	
 	public BulletData(String id, Vec3 launchPos, int maxAge, float damage, double speed) {
 		super(id, launchPos, maxAge);
 		this.damage = damage;

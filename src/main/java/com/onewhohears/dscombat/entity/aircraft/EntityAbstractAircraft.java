@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.data.BulletData;
+import com.onewhohears.dscombat.data.WeaponSystem;
 import com.onewhohears.dscombat.entity.weapon.EntityBullet;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModEntities;
@@ -38,6 +39,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public static final EntityDataAccessor<Float> THROTTLE = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Quaternion> Q = SynchedEntityData.defineId(EntityAbstractAircraft.class, DataSerializers.QUATERNION);
 	public static final EntityDataAccessor<Boolean> FREE_LOOK = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<WeaponSystem> WEAPON_SYSTEM = SynchedEntityData.defineId(EntityAbstractAircraft.class, DataSerializers.WEAPON_SYSTEM);
 	//public Quaternion clientQ = Quaternion.ONE.copy();
 	public Quaternion prevQ = Quaternion.ONE.copy();
 	
@@ -63,6 +65,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		entityData.define(THROTTLE, 0.0f);
 		entityData.define(Q, Quaternion.ONE);
 		entityData.define(FREE_LOOK, false);
+		entityData.define(WEAPON_SYSTEM, null);
 	}
 	
 	@Override
@@ -85,11 +88,12 @@ public abstract class EntityAbstractAircraft extends Entity {
 		setQ(q);
 		setPrevQ(q);
 		//setClientQ(q);
+		this.setWeaponSystem(new WeaponSystem(compound));
 	}
 
 	@Override
 	protected void addAdditionalSaveData(CompoundTag compound) {
-		
+		this.getWeaponSystem().write(compound);
 	}
 	
 	public void init() {
@@ -247,10 +251,10 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public void controlSystem() {
 		Entity controller = this.getControllingPassenger();
 		if (controller == null) return;
+		WeaponSystem system = this.getWeaponSystem();
 		if (this.inputFlare) {
-			BulletData bdata = new BulletData("test", new Vec3(0, 0.5, -1), 600, 1, 1);
-			EntityBullet bullet = (EntityBullet)bdata.shoot(level, this, this.getControllingPassenger(), UtilAngles.getRollAxis(getQ()), this.getQ());
-			System.out.println("LAUNCHED "+bullet);
+			BulletData bdata = (BulletData) system.get("test_bullet");
+			bdata.shoot(level, this, controller, UtilAngles.getRollAxis(getQ()), this.getQ());
 		}
 	}
 	
@@ -510,5 +514,13 @@ public abstract class EntityAbstractAircraft extends Entity {
     
     public void setFreeLook(boolean freeLook) {
     	entityData.set(FREE_LOOK, freeLook);
+    }
+    
+    public WeaponSystem getWeaponSystem() {
+    	return entityData.get(WEAPON_SYSTEM);
+    }
+    
+    public void setWeaponSystem(WeaponSystem system) {
+    	entityData.set(WEAPON_SYSTEM, system);
     }
 }

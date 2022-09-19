@@ -47,15 +47,12 @@ public final class ClientForgeEvents {
 		boolean yawRight = KeyInit.yawRightKey.isDown();
 		boolean mouseMode = KeyInit.mouseModeKey.isDown();
 		boolean flare = KeyInit.flareKey.isDown();
-		boolean shoot = KeyInit.shootKey.isDown();
-		boolean select = KeyInit.weaponSelectKey.isDown();
 		PacketHandler.INSTANCE.sendToServer(new ServerBoundFlightControlPacket(
 				throttleUp, throttleDown, pitchUp, pitchDown, 
 				rollLeft, rollRight, yawLeft, yawRight,
-				mouseMode, flare, shoot, select));
+				mouseMode, flare));
 		plane.updateControls(throttleUp, throttleDown, pitchUp, pitchDown, 
-				rollLeft, rollRight, yawLeft, yawRight, 
-				mouseMode, flare, shoot, select);
+				rollLeft, rollRight, yawLeft, yawRight, mouseMode, flare);
 	}
 	
 	/*@SubscribeEvent

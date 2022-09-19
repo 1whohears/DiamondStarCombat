@@ -8,6 +8,7 @@ import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.data.BulletData;
 import com.onewhohears.dscombat.data.WeaponSystem;
+import com.onewhohears.dscombat.entity.weapon.EntityBullet;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.util.math.UtilAngles;
@@ -37,19 +38,19 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public static final EntityDataAccessor<Float> MAX_SPEED = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> THROTTLE = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Quaternion> Q = SynchedEntityData.defineId(EntityAbstractAircraft.class, DataSerializers.QUATERNION);
-	//public static final EntityDataAccessor<Boolean> FREE_LOOK = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Boolean> FREE_LOOK = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<WeaponSystem> WEAPON_SYSTEM = SynchedEntityData.defineId(EntityAbstractAircraft.class, DataSerializers.WEAPON_SYSTEM);
 	//public Quaternion clientQ = Quaternion.ONE.copy();
 	public Quaternion prevQ = Quaternion.ONE.copy();
 	
 	public boolean inputThrottleUp, inputThrottleDown, inputPitchUp, inputPitchDown;
 	public boolean inputRollLeft, inputRollRight, inputYawLeft, inputYawRight;
-	public boolean inputMouseMode, inputFlare, inputShoot, inputSelect;
+	public boolean inputMouseMode, inputFlare;
 	public float prevXRot, prevYRot, zRot, prevZRot;
 	
 	private int lerpSteps, lerpStepsQ;
 	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot, lerpZRot;
-	private boolean prevInputMouseMode, prevInputSelect;
+	private boolean prevInputMouseMode;
 	
 	public EntityAbstractAircraft(EntityType<? extends EntityAbstractAircraft> entity, Level level) {
 		super(entity, level);
@@ -63,6 +64,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		entityData.define(MAX_SPEED, 2.0f);
 		entityData.define(THROTTLE, 0.0f);
 		entityData.define(Q, Quaternion.ONE);
+		entityData.define(FREE_LOOK, false);
 		entityData.define(WEAPON_SYSTEM, null);
 	}
 	
@@ -294,7 +296,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	public void updateControls(boolean throttleUp, boolean throttleDown, boolean pitchUp, boolean pitchDown,
 			boolean rollLeft, boolean rollRight, boolean yawLeft, boolean yawRight,
-			boolean mouseMode, boolean flare, boolean shoot, boolean select) {
+			boolean mouseMode, boolean flare) {
 		this.inputThrottleUp = throttleUp;
 		this.inputThrottleDown = throttleDown;
 		this.inputPitchUp = pitchUp;
@@ -303,12 +305,10 @@ public abstract class EntityAbstractAircraft extends Entity {
 		this.inputRollRight = rollRight;
 		this.inputYawLeft = yawLeft;
 		this.inputYawRight = yawRight;
+		this.inputMouseMode = mouseMode;
 		this.inputFlare = flare;
-		if (!prevInputMouseMode && inputMouseMode) this.inputMouseMode = !this.inputMouseMode;
+		if (!prevInputMouseMode && inputMouseMode) setFreeLook(!isFreeLook());
 		prevInputMouseMode = inputMouseMode;
-		this.inputShoot = shoot;
-		if (!this.prevInputSelect && this.inputSelect) this.inputSelect = !this.inputSelect;
-		this.prevInputSelect = this.inputSelect;
 	}
 	
 	public void resetControls() {
@@ -506,6 +506,14 @@ public abstract class EntityAbstractAircraft extends Entity {
 
     public void setPrevQ(Quaternion q) {
         prevQ = q.copy();
+    }
+    
+    public boolean isFreeLook() {
+    	return entityData.get(FREE_LOOK);
+    }
+    
+    public void setFreeLook(boolean freeLook) {
+    	entityData.set(FREE_LOOK, freeLook);
     }
     
     public WeaponSystem getWeaponSystem() {

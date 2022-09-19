@@ -22,8 +22,6 @@ public final class KeyInit {
 	public static KeyMapping yawRightKey;
 	public static KeyMapping flareKey;
 	public static KeyMapping mouseModeKey;
-	public static KeyMapping shootKey;
-	public static KeyMapping weaponSelectKey;
 	
 	public static void init() {
 		throttleUpKey = registerKey("throttle_up_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_W);
@@ -36,8 +34,6 @@ public final class KeyInit {
 		yawRightKey = registerKey("yaw_right_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_D);
 		flareKey = registerKey("flare_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_V);
 		mouseModeKey = registerKey("mouse_mode_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_LCONTROL);
-		shootKey = registerKey("shoot_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.MOUSE_BUTTON_RIGHT);
-		weaponSelectKey = registerKey("weapon_select_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_X);
 	}
 	
 	private static KeyMapping registerKey(String name, String category, int keycode) {

@@ -16,6 +16,8 @@ public abstract class WeaponData {
 	private String id;
 	private Vec3 pos;
 	private int maxAge;
+	private int currentAmmo;
+	private int maxAmmo;
 	
 	public static enum WeaponType {
 		BULLET,
@@ -23,10 +25,11 @@ public abstract class WeaponData {
 		BOMB
 	}
 	
-	protected WeaponData(String id, Vec3 pos, int maxAge) {
+	protected WeaponData(String id, Vec3 pos, int maxAge, int maxAmmo) {
 		this.id = id;
 		this.pos = pos;
 		this.maxAge = maxAge;
+		this.maxAmmo = maxAmmo;
 	}
 	
 	public WeaponData(CompoundTag tag) {
@@ -37,6 +40,8 @@ public abstract class WeaponData {
 		z = tag.getDouble("posz");
 		pos = new Vec3(x, y, z);
 		maxAge = tag.getInt("maxAge");
+		currentAmmo = tag.getInt("currentAmmo");
+		maxAmmo = tag.getInt("maxAmmo");
 	}
 	
 	public CompoundTag write() {
@@ -47,6 +52,8 @@ public abstract class WeaponData {
 		tag.putDouble("posy", getLaunchPos().y);
 		tag.putDouble("posz", getLaunchPos().z);
 		tag.putInt("maxAge", maxAge);
+		tag.putInt("currentAmmo", currentAmmo);
+		tag.putInt("maxAmmo", maxAmmo);
 		return tag;
 	}
 	
@@ -60,6 +67,8 @@ public abstract class WeaponData {
 		z = buffer.readDouble();
 		pos = new Vec3(x, y, z);
 		maxAge = buffer.readInt();
+		currentAmmo = buffer.readInt();
+		maxAmmo = buffer.readInt();
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
@@ -70,6 +79,8 @@ public abstract class WeaponData {
 		buffer.writeDouble(getLaunchPos().y);
 		buffer.writeDouble(getLaunchPos().z);
 		buffer.writeInt(maxAge);
+		buffer.writeInt(currentAmmo);
+		buffer.writeInt(maxAmmo);
 	}
 	
 	public abstract WeaponType getType();
@@ -86,6 +97,30 @@ public abstract class WeaponData {
 	
 	public int getMaxAge() {
 		return maxAge;
+	}
+
+	public int getCurrentAmmo() {
+		return currentAmmo;
+	}
+
+	public void setCurrentAmmo(int currentAmmo) {
+		if (currentAmmo < 0) currentAmmo = 0;
+		if (currentAmmo > maxAmmo) currentAmmo = maxAmmo;
+		this.currentAmmo = currentAmmo;
+	}
+	
+	public boolean useAmmo(int num) {
+		if (currentAmmo < num) return false;
+		currentAmmo -= num;
+		return true;
+	}
+	
+	public int getMaxAmmo() {
+		return maxAmmo;
+	}
+	
+	public void setMaxAmmo(int max) {
+		maxAmmo = max;
 	}
 	
 }

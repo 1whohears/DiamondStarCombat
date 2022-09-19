@@ -16,8 +16,8 @@ public class BulletData extends WeaponData {
 	private float damage;
 	private double speed;
 	
-	public BulletData(String id, Vec3 launchPos, int maxAge, float damage, double speed) {
-		super(id, launchPos, maxAge);
+	public BulletData(String id, Vec3 launchPos, int maxAge, int maxAmmo, float damage, double speed) {
+		super(id, launchPos, maxAge, maxAmmo);
 		this.damage = damage;
 		this.speed = speed;
 	}
@@ -64,6 +64,7 @@ public class BulletData extends WeaponData {
 
 	@Override
 	public EntityAbstractWeapon shoot(Level level, Entity vehicle, Entity owner, Vec3 direction, Quaternion vehicleQ) {
+		if (!this.useAmmo(1)) return null;
 		EntityBullet bullet = new EntityBullet(level, owner, this);
 		bullet.setPos(vehicle.position().add(UtilAngles.rotateVector(direction, vehicleQ)));
 		bullet.setDeltaMovement(direction.scale(speed).add(vehicle.getDeltaMovement()));

@@ -1,4 +1,6 @@
-package com.onewhohears.dscombat.entity.aircraft;
+package com.onewhohears.dscombat.entity.aircraft.parts;
+
+import com.onewhohears.dscombat.init.ModEntities;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -10,10 +12,14 @@ import net.minecraftforge.network.NetworkHooks;
 
 public class EntitySeatCamera extends Entity {
 
-	public EntitySeatCamera(EntityType<? extends EntitySeatCamera> p_19870_, Level p_19871_) {
-		super(p_19870_, p_19871_);
+	public EntitySeatCamera(EntityType<? extends EntitySeatCamera> type, Level level) {
+		super(type, level);
 		this.setInvulnerable(true);
 		this.noPhysics = true;
+	}
+	
+	public EntitySeatCamera(Level level) {
+		super(ModEntities.CAMERA.get(), level);
 	}
 
 	@Override

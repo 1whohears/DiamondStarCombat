@@ -1,9 +1,10 @@
-package com.onewhohears.dscombat.entity.aircraft;
+package com.onewhohears.dscombat.entity.aircraft.parts;
 
 import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.util.math.UtilAngles;
@@ -11,6 +12,7 @@ import com.onewhohears.dscombat.util.math.UtilAngles;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -23,36 +25,50 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 
-public class EntitySeat extends Entity {
+public class EntitySeat extends EntityAbstractPart {
 	
 	public static final EntityDataAccessor<Vec3> POS = SynchedEntityData.defineId(EntitySeat.class, DataSerializers.VEC3);
+	public static final EntityDataAccessor<String> ID = SynchedEntityData.defineId(EntitySeat.class, EntityDataSerializers.STRING);
 	
 	public EntitySeat(EntityType<?> type, Level level) {
 		super(type, level);
 	}
+	
+	public EntitySeat(Level level, String seatId, Vec3 pos) {
+		super(ModEntities.SEAT.get(), level);
+		this.setRelativeSeatPos(pos);
+		this.setSeatId(seatId);
+	}
 
 	@Override
 	protected void defineSynchedData() {
+		super.defineSynchedData();
 		entityData.define(POS, Vec3.ZERO);
+		entityData.define(ID, "");
 	}
 
 	@Override
 	protected void readAdditionalSaveData(CompoundTag compound) {
+		super.readAdditionalSaveData(compound);
 		double x = compound.getDouble("relposx");
 		double y = compound.getDouble("relposy");
 		double z = compound.getDouble("relposz");
 		setRelativeSeatPos(new Vec3(x, y, z));
+		this.setSeatId(compound.getString("seatid"));
 	}
 
 	@Override
 	protected void addAdditionalSaveData(CompoundTag compound) {
+		super.addAdditionalSaveData(compound);
 		Vec3 pos = getRelativeSeatPos();
 		compound.putDouble("relposx", pos.x);
 		compound.putDouble("relposy", pos.y);
 		compound.putDouble("relposz", pos.z);
+		compound.putString("seatid", this.getSeatId());
 	}
 	
 	public void init() {
+		super.init();
 		List<Entity> passengers = getPassengers();
 		for (Entity p : passengers) {
 			System.out.println("CHECK CAMERA "+p);
@@ -61,7 +77,7 @@ public class EntitySeat extends Entity {
 				return;
 			}
 		}
-		EntitySeatCamera cam = new EntitySeatCamera(ModEntities.CAMERA.get(), level);
+		EntitySeatCamera cam = new EntitySeatCamera(level);
 		cam.setPos(position());
 		cam.startRiding(this);
 		level.addFreshEntity(cam);
@@ -70,10 +86,7 @@ public class EntitySeat extends Entity {
 	
 	@Override
 	public void tick() {
-		if (this.tickCount == 1) init();
 		super.tick();
-		if (!this.level.isClientSide && this.getVehicle() == null) this.discard();
-		//System.out.println("SEAT POS "+this.position());
 	}
 
 	@Override
@@ -188,6 +201,14 @@ public class EntitySeat extends Entity {
 	@Override
 	public String toString() {
 		return "seat "+this.getRelativeSeatPos();
+	}
+	
+	public String getSeatId() {
+		return entityData.get(ID);
+	}
+	
+	public void setSeatId(String id) {
+		entityData.set(ID, id);
 	}
 
 }

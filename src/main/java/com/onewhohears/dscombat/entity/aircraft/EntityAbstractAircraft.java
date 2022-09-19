@@ -7,7 +7,9 @@ import javax.annotation.Nullable;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.data.BulletData;
+import com.onewhohears.dscombat.data.PartsManager;
 import com.onewhohears.dscombat.data.WeaponSystem;
+import com.onewhohears.dscombat.entity.aircraft.parts.EntitySeat;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.util.math.UtilAngles;
@@ -37,8 +39,8 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public static final EntityDataAccessor<Float> MAX_SPEED = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> THROTTLE = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Quaternion> Q = SynchedEntityData.defineId(EntityAbstractAircraft.class, DataSerializers.QUATERNION);
-	//public static final EntityDataAccessor<Boolean> FREE_LOOK = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<WeaponSystem> WEAPON_SYSTEM = SynchedEntityData.defineId(EntityAbstractAircraft.class, DataSerializers.WEAPON_SYSTEM);
+	public static final EntityDataAccessor<Boolean> FREE_LOOK = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<PartsManager> PARTS_MANAGER = SynchedEntityData.defineId(EntityAbstractAircraft.class, DataSerializers.PARTS_MANAGER);
 	//public Quaternion clientQ = Quaternion.ONE.copy();
 	public Quaternion prevQ = Quaternion.ONE.copy();
 	
@@ -63,7 +65,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		entityData.define(MAX_SPEED, 2.0f);
 		entityData.define(THROTTLE, 0.0f);
 		entityData.define(Q, Quaternion.ONE);
-		entityData.define(WEAPON_SYSTEM, null);
+		entityData.define(PARTS_MANAGER, null);
 	}
 	
 	@Override
@@ -86,12 +88,12 @@ public abstract class EntityAbstractAircraft extends Entity {
 		setQ(q);
 		setPrevQ(q);
 		//setClientQ(q);
-		this.setWeaponSystem(new WeaponSystem(compound));
+		this.setPartsManager(new PartsManager(compound));
 	}
 
 	@Override
 	protected void addAdditionalSaveData(CompoundTag compound) {
-		this.getWeaponSystem().write(compound);
+		this.getPartsManager().write(compound);
 	}
 	
 	public void init() {
@@ -249,8 +251,8 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public void controlSystem() {
 		Entity controller = this.getControllingPassenger();
 		if (controller == null) return;
-		WeaponSystem system = this.getWeaponSystem();
-		if (this.inputFlare) {
+		WeaponSystem system = this.getPartsManager().getWeapons();
+		if (this.inputShoot) {
 			BulletData bdata = (BulletData) system.get("test_bullet");
 			bdata.shoot(level, this, controller, UtilAngles.getRollAxis(getQ()), this.getQ());
 		}
@@ -304,10 +306,13 @@ public abstract class EntityAbstractAircraft extends Entity {
 		this.inputYawLeft = yawLeft;
 		this.inputYawRight = yawRight;
 		this.inputFlare = flare;
-		if (!prevInputMouseMode && inputMouseMode) this.inputMouseMode = !this.inputMouseMode;
+		this.inputMouseMode = mouseMode;
+		if (!prevInputMouseMode && inputMouseMode) 
+			setFreeLook(!isFreeLook());
 		prevInputMouseMode = inputMouseMode;
 		this.inputShoot = shoot;
-		if (!this.prevInputSelect && this.inputSelect) this.inputSelect = !this.inputSelect;
+		if (!this.prevInputSelect && this.inputSelect) 
+			getPartsManager().getWeapons().selectNextWeapon();
 		this.prevInputSelect = this.inputSelect;
 	}
 	
@@ -325,11 +330,19 @@ public abstract class EntityAbstractAircraft extends Entity {
 		this.setCurrentThrottle(0);
 	}
 	
+	public boolean isFreeLook() {
+    	return entityData.get(FREE_LOOK);
+    }
+    
+    public void setFreeLook(boolean freeLook) {
+    	entityData.set(FREE_LOOK, freeLook);
+    }
+	
 	protected void setupAircraftParts() {
 		
 	}
 	
-	protected void addSeat(Vec3 pos) {
+	/*protected void addSeat(Vec3 pos) {
 		List<Entity> passengers = getPassengers();
 		for (Entity p : passengers) {
 			System.out.println("CHECK SEAT "+p);
@@ -345,7 +358,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		seat.startRiding(this);
 		level.addFreshEntity(seat);
 		System.out.println("ADDED SEAT "+pos);
-	}
+	}*/
 	
 	@Override
 	public InteractionResult interact(Player player, InteractionHand hand) {
@@ -508,11 +521,11 @@ public abstract class EntityAbstractAircraft extends Entity {
         prevQ = q.copy();
     }
     
-    public WeaponSystem getWeaponSystem() {
-    	return entityData.get(WEAPON_SYSTEM);
+    public PartsManager getPartsManager() {
+    	return entityData.get(PARTS_MANAGER);
     }
     
-    public void setWeaponSystem(WeaponSystem system) {
-    	entityData.set(WEAPON_SYSTEM, system);
+    public void setPartsManager(PartsManager manager) {
+    	entityData.set(PARTS_MANAGER, manager);
     }
 }

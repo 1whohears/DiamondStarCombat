@@ -21,9 +21,9 @@ public class EntityTestPlane extends EntityAbstractPlane {
 	@Override
 	protected void setupAircraftParts() {
 		super.setupAircraftParts();
-		this.addSeat(new Vec3(0, 0, 0));
-		this.getWeaponSystem().addWeapon(new BulletData(
-				"test_bullet", new Vec3(0, 0.5, -1), 600, 1, 1));
+		//this.addSeat(new Vec3(0, 0, 0));
+		this.getPartsManager().getWeapons()
+			.addWeapon(new BulletData("test_bullet", new Vec3(0, 0.5, -1), 600, 10, 1, 1));
 	}
 
 }

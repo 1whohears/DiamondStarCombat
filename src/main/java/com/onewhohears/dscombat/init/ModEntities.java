@@ -2,8 +2,8 @@ package com.onewhohears.dscombat.init;
 
 import com.google.common.collect.ImmutableSet;
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.entity.aircraft.EntitySeat;
-import com.onewhohears.dscombat.entity.aircraft.EntitySeatCamera;
+import com.onewhohears.dscombat.entity.aircraft.parts.EntitySeat;
+import com.onewhohears.dscombat.entity.aircraft.parts.EntitySeatCamera;
 import com.onewhohears.dscombat.entity.aircraft.plane.EntityTestPlane;
 import com.onewhohears.dscombat.entity.weapon.EntityBullet;
 

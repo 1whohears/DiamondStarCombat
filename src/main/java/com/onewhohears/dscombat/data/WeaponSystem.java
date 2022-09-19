@@ -15,6 +15,8 @@ public class WeaponSystem {
 	
 	private List<WeaponData> weapons = new ArrayList<WeaponData>();
 	
+	private int weaponIndex = 0;
+	
 	public WeaponSystem(CompoundTag compound) {
 		ListTag list = compound.getList("weapons", 10);
 		for (int i = 0; i < list.size(); ++i) {
@@ -23,11 +25,12 @@ public class WeaponSystem {
 			WeaponData.WeaponType type = WeaponData.WeaponType.values()[index];
 			switch (type) {
 			case BOMB:
-				
+				break;
 			case BULLET:
 				weapons.add(new BulletData(tag));
+				break;
 			case ROCKET:
-				
+				break;
 			}
 		}
 	}
@@ -62,6 +65,21 @@ public class WeaponSystem {
 	public WeaponData get(String id) {
 		for (WeaponData w : weapons) if (w.getId().equals(id)) return w;
 		return null;
+	}
+	
+	public WeaponData get() {
+		if (weapons.size() == 0) return null;
+		checkIndex();
+		return weapons.get(weaponIndex);
+	}
+	
+	public void selectNextWeapon() {
+		++weaponIndex;
+		checkIndex();
+	}
+	
+	private void checkIndex() {
+		if (weaponIndex >= weapons.size() || weaponIndex < 0) weaponIndex = 0;
 	}
 	
 }

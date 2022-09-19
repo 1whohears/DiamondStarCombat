@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.client.renderer;
 
-import com.onewhohears.dscombat.entity.aircraft.EntitySeatCamera;
+import com.onewhohears.dscombat.entity.aircraft.parts.EntitySeatCamera;
 
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;

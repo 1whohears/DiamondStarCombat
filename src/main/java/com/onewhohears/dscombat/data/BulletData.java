@@ -71,7 +71,8 @@ public class BulletData extends WeaponData {
 		System.out.println(this.getId()+" ammo pre shoot "+this.getCurrentAmmo());
 		if (!this.useAmmo(1)) return null;
 		EntityBullet bullet = new EntityBullet(level, owner, this);
-		bullet.setPos(vehicle.position().add(UtilAngles.rotateVector(direction, vehicleQ)));
+		bullet.setPos(vehicle.position()
+				.add(UtilAngles.rotateVector(this.getLaunchPos(), vehicleQ)));
 		bullet.setDeltaMovement(direction.scale(speed).add(vehicle.getDeltaMovement()));
 		level.addFreshEntity(bullet);
 		return bullet;

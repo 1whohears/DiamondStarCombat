@@ -24,7 +24,7 @@ public class EntityTestPlane extends EntityAbstractPlane {
 	protected void setupAircraftParts() {
 		PartsManager pm = this.getPartsManager();
 		pm.addPart(new SeatData("pilot_seat", Vec3.ZERO));
-		BulletData test = new BulletData("test_bullet", new Vec3(0, 0.5, -1), 600, 100, 1, 1);
+		BulletData test = new BulletData("test_bullet", new Vec3(0, 0.5, 1), 600, 100, 1, 1);
 		test.setCurrentAmmo(test.getMaxAmmo());
 		pm.getWeapons().addWeapon(test);
 		pm.getWeapons().get("test_bullet").setMaxAmmo(100);

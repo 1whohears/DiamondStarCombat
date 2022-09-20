@@ -10,6 +10,7 @@ import com.onewhohears.dscombat.entity.aircraft.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.aircraft.parts.EntitySeatCamera;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
+import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
@@ -141,9 +142,15 @@ public final class ClientForgeEvents {
 			float xi = xo + (xn - xo) * (float)event.getPartialTicks();
 			float yi = yo + (yn - yo) * (float)event.getPartialTicks();
 			float zi = zo + (zn - zo) * (float)event.getPartialTicks();
-			event.setPitch(xi);
-			event.setYaw(yi);
-			event.setRoll(zi);
+			if (m.options.getCameraType() == CameraType.THIRD_PERSON_FRONT) {
+				event.setPitch(xi*-1f);
+				event.setYaw(yi+180f);
+				event.setRoll(zi*-1f);
+			} else {
+				event.setPitch(xi);
+				event.setYaw(yi);
+				event.setRoll(zi);
+			}
 			// TODO third person camera shakes probably because no lerp
 			camera.setXRot(xi);
 			camera.setYRot(yi);

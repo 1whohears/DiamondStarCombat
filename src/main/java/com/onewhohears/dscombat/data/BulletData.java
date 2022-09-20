@@ -13,6 +13,10 @@ import net.minecraft.world.phys.Vec3;
 
 public class BulletData extends WeaponData {
 	
+	public static BulletData basic() {
+		return new BulletData("basic", Vec3.ZERO, 600, 10, 1, 1);
+	}
+	
 	private float damage;
 	private double speed;
 	
@@ -64,6 +68,7 @@ public class BulletData extends WeaponData {
 
 	@Override
 	public EntityAbstractWeapon shoot(Level level, Entity vehicle, Entity owner, Vec3 direction, Quaternion vehicleQ) {
+		System.out.println(this.getId()+" ammo pre shoot "+this.getCurrentAmmo());
 		if (!this.useAmmo(1)) return null;
 		EntityBullet bullet = new EntityBullet(level, owner, this);
 		bullet.setPos(vehicle.position().add(UtilAngles.rotateVector(direction, vehicleQ)));

@@ -163,4 +163,6 @@ public final class ClientForgeEvents {
 		}
 	}
 	
+	//TODO prevent player from attacking a camera entity
+	
 }

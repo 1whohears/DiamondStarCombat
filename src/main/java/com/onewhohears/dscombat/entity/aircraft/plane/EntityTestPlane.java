@@ -1,6 +1,8 @@
 package com.onewhohears.dscombat.entity.aircraft.plane;
 
 import com.onewhohears.dscombat.data.BulletData;
+import com.onewhohears.dscombat.data.PartsManager;
+import com.onewhohears.dscombat.data.SeatData;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
@@ -20,10 +22,14 @@ public class EntityTestPlane extends EntityAbstractPlane {
 	
 	@Override
 	protected void setupAircraftParts() {
+		PartsManager pm = this.getPartsManager();
+		pm.addPart(new SeatData("pilot_seat", Vec3.ZERO));
+		BulletData test = new BulletData("test_bullet", new Vec3(0, 0.5, -1), 600, 100, 1, 1);
+		test.setCurrentAmmo(test.getMaxAmmo());
+		pm.getWeapons().addWeapon(test);
+		pm.getWeapons().get("test_bullet").setMaxAmmo(100);
+		pm.getWeapons().get("test_bullet").setCurrentAmmo(10);
 		super.setupAircraftParts();
-		//this.addSeat(new Vec3(0, 0, 0));
-		this.getPartsManager().getWeapons()
-			.addWeapon(new BulletData("test_bullet", new Vec3(0, 0.5, -1), 600, 10, 1, 1));
 	}
 
 }

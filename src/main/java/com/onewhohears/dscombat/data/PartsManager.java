@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.init.DataSerializers;
 
 import net.minecraft.nbt.CompoundTag;
@@ -12,7 +13,10 @@ import net.minecraft.network.FriendlyByteBuf;
 public class PartsManager {
 	
 	private List<PartData> parts = new ArrayList<PartData>();
-	private WeaponSystem weapons;
+	private WeaponSystem weapons = new WeaponSystem();
+	
+	public PartsManager() {
+	}
 	
 	public PartsManager(CompoundTag compound) {
 		weapons = new WeaponSystem(compound);
@@ -54,8 +58,25 @@ public class PartsManager {
 		return weapons;
 	}
 	
-	public void setupParts() {
-		
+	public void setupParts(EntityAbstractAircraft craft) {
+		for (PartData p : parts) p.setup(craft);
+	}
+	
+	public void addPart(PartData part) {
+		for (PartData p : parts) if (p.getId().equals(part.getId())) return;
+		parts.add(part);
+	}
+	
+	public void removePart(String id) {
+		for (PartData p : parts) if (p.getId().equals(id)) {
+			parts.remove(p);
+			return;
+		}
+	}
+	
+	public PartData get(String id) {
+		for (PartData p : parts) if (p.getId().equals(id)) return p;
+		return null;
 	}
 	
 }

@@ -6,12 +6,10 @@ import javax.annotation.Nullable;
 
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
-import com.onewhohears.dscombat.data.BulletData;
 import com.onewhohears.dscombat.data.PartsManager;
 import com.onewhohears.dscombat.data.WeaponSystem;
 import com.onewhohears.dscombat.entity.aircraft.parts.EntitySeat;
 import com.onewhohears.dscombat.init.DataSerializers;
-import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 
@@ -65,7 +63,8 @@ public abstract class EntityAbstractAircraft extends Entity {
 		entityData.define(MAX_SPEED, 2.0f);
 		entityData.define(THROTTLE, 0.0f);
 		entityData.define(Q, Quaternion.ONE);
-		entityData.define(PARTS_MANAGER, null);
+		entityData.define(FREE_LOOK, false);
+		entityData.define(PARTS_MANAGER, new PartsManager());
 	}
 	
 	@Override
@@ -249,12 +248,13 @@ public abstract class EntityAbstractAircraft extends Entity {
 	}
 	
 	public void controlSystem() {
+		if (level.isClientSide) return;
 		Entity controller = this.getControllingPassenger();
 		if (controller == null) return;
 		WeaponSystem system = this.getPartsManager().getWeapons();
 		if (this.inputShoot) {
-			BulletData bdata = (BulletData) system.get("test_bullet");
-			bdata.shoot(level, this, controller, UtilAngles.getRollAxis(getQ()), this.getQ());
+			System.out.println("shooting client side "+level.isClientSide);
+			system.getSelected().shoot(level, this, controller, UtilAngles.getRollAxis(getQ()), this.getQ());
 		}
 	}
 	
@@ -338,27 +338,12 @@ public abstract class EntityAbstractAircraft extends Entity {
     	entityData.set(FREE_LOOK, freeLook);
     }
 	
+    /**
+     * register parts before calling super
+     */
 	protected void setupAircraftParts() {
-		
+		this.getPartsManager().setupParts(this);
 	}
-	
-	/*protected void addSeat(Vec3 pos) {
-		List<Entity> passengers = getPassengers();
-		for (Entity p : passengers) {
-			System.out.println("CHECK SEAT "+p);
-			if (p instanceof EntitySeat seat) {
-			if (seat.getRelativeSeatPos().equals(pos)) {
-				System.out.println("ALREADY SEAT "+pos);
-				return;
-			} }
-		}
-		EntitySeat seat = new EntitySeat(ModEntities.SEAT.get(), level);
-		seat.setPos(position());
-		seat.setRelativeSeatPos(pos);
-		seat.startRiding(this);
-		level.addFreshEntity(seat);
-		System.out.println("ADDED SEAT "+pos);
-	}*/
 	
 	@Override
 	public InteractionResult interact(Player player, InteractionHand hand) {
@@ -377,7 +362,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		//System.out.println("POSITION RIDER "+passenger);
 		if (!(passenger instanceof EntitySeat seat)) return;
  		Vec3 pos = position();
-		Vec3 seatPos = UtilAngles.rotateVector(seat.getRelativeSeatPos(), getQ());
+		Vec3 seatPos = UtilAngles.rotateVector(seat.getRelativePos(), getQ());
 		passenger.setPos(pos.add(seatPos));
 	}
 	

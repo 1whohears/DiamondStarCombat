@@ -2,6 +2,8 @@ package com.onewhohears.dscombat.data;
 
 import java.nio.charset.Charset;
 
+import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.phys.Vec3;
@@ -34,9 +36,9 @@ public abstract class PartData {
 		CompoundTag tag = new CompoundTag();
 		tag.putInt("type", this.getType().ordinal());
 		tag.putString("id", getId());
-		tag.putDouble("posx", getLaunchPos().x);
-		tag.putDouble("posy", getLaunchPos().y);
-		tag.putDouble("posz", getLaunchPos().z);
+		tag.putDouble("posx", getRelativePos().x);
+		tag.putDouble("posy", getRelativePos().y);
+		tag.putDouble("posz", getRelativePos().z);
 		return tag;
 	}
 	
@@ -55,9 +57,9 @@ public abstract class PartData {
 		buffer.writeInt(this.getType().ordinal());
 		buffer.writeInt(getId().length());
 		buffer.writeCharSequence(getId(), Charset.defaultCharset());
-		buffer.writeDouble(getLaunchPos().x);
-		buffer.writeDouble(getLaunchPos().y);
-		buffer.writeDouble(getLaunchPos().z);
+		buffer.writeDouble(getRelativePos().x);
+		buffer.writeDouble(getRelativePos().y);
+		buffer.writeDouble(getRelativePos().z);
 	}
 	
 	public abstract PartType getType();
@@ -66,8 +68,10 @@ public abstract class PartData {
 		return id;
 	}
 	
-	public Vec3 getLaunchPos() {
+	public Vec3 getRelativePos() {
 		return pos;
 	}
+	
+	public abstract void setup(EntityAbstractAircraft craft);
 	
 }

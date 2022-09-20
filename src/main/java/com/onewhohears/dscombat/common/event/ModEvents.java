@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.event;
+package com.onewhohears.dscombat.common.event;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.PacketHandler;

@@ -17,6 +17,9 @@ public class WeaponSystem {
 	
 	private int weaponIndex = 0;
 	
+	public WeaponSystem() {
+	}
+	
 	public WeaponSystem(CompoundTag compound) {
 		ListTag list = compound.getList("weapons", 10);
 		for (int i = 0; i < list.size(); ++i) {
@@ -67,7 +70,7 @@ public class WeaponSystem {
 		return null;
 	}
 	
-	public WeaponData get() {
+	public WeaponData getSelected() {
 		if (weapons.size() == 0) return null;
 		checkIndex();
 		return weapons.get(weaponIndex);

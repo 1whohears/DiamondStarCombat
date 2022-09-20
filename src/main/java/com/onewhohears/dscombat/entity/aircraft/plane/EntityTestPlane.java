@@ -28,7 +28,7 @@ public class EntityTestPlane extends EntityAbstractPlane {
 		test.setCurrentAmmo(test.getMaxAmmo());
 		pm.getWeapons().addWeapon(test);
 		pm.getWeapons().get("test_bullet").setMaxAmmo(100);
-		pm.getWeapons().get("test_bullet").setCurrentAmmo(10);
+		pm.getWeapons().get("test_bullet").setCurrentAmmo(100);
 		super.setupAircraftParts();
 	}
 

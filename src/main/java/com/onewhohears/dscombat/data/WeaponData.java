@@ -18,6 +18,7 @@ public abstract class WeaponData {
 	private int maxAge;
 	private int currentAmmo;
 	private int maxAmmo;
+	// TODO add fire rate
 	
 	public static enum WeaponType {
 		BULLET,

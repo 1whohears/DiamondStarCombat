@@ -79,6 +79,7 @@ public class WeaponSystem {
 	public void selectNextWeapon() {
 		++weaponIndex;
 		checkIndex();
+		System.out.println("new weapon index "+weaponIndex);
 	}
 	
 	private void checkIndex() {

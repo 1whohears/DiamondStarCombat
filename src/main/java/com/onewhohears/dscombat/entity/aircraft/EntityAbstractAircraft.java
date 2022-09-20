@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.data.PartsManager;
+import com.onewhohears.dscombat.data.WeaponData;
 import com.onewhohears.dscombat.data.WeaponSystem;
 import com.onewhohears.dscombat.entity.aircraft.parts.EntitySeat;
 import com.onewhohears.dscombat.init.DataSerializers;
@@ -252,9 +253,11 @@ public abstract class EntityAbstractAircraft extends Entity {
 		Entity controller = this.getControllingPassenger();
 		if (controller == null) return;
 		WeaponSystem system = this.getPartsManager().getWeapons();
+		WeaponData data = system.getSelected();
+		if (data == null) return;
 		if (this.inputShoot) {
 			System.out.println("shooting client side "+level.isClientSide);
-			system.getSelected().shoot(level, this, controller, UtilAngles.getRollAxis(getQ()), this.getQ());
+			data.shoot(level, this, controller, UtilAngles.getRollAxis(getQ()), this.getQ());
 		}
 	}
 	
@@ -311,7 +314,8 @@ public abstract class EntityAbstractAircraft extends Entity {
 			setFreeLook(!isFreeLook());
 		prevInputMouseMode = inputMouseMode;
 		this.inputShoot = shoot;
-		if (!this.prevInputSelect && this.inputSelect) 
+		this.inputSelect = select;
+		if (!this.prevInputSelect && this.inputSelect && !this.level.isClientSide) 
 			getPartsManager().getWeapons().selectNextWeapon();
 		this.prevInputSelect = this.inputSelect;
 	}
@@ -325,8 +329,10 @@ public abstract class EntityAbstractAircraft extends Entity {
 		this.inputRollRight = false;
 		this.inputYawLeft = false;
 		this.inputYawRight = false;
-		this.inputMouseMode = false;
 		this.inputFlare = false;
+		this.inputMouseMode = false;
+		this.inputShoot = false;
+		this.inputSelect = false;
 		this.setCurrentThrottle(0);
 	}
 	

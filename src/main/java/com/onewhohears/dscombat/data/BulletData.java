@@ -19,6 +19,11 @@ public class BulletData extends WeaponData {
 	
 	private float damage;
 	private double speed;
+	private boolean explosive;
+	private boolean destroyTerrain;
+	private boolean causesFire;
+	private double explosiveDamage; // TODO doesn't do anything
+	private float explosionRadius;
 	
 	public BulletData(String id, Vec3 launchPos, int maxAge, int maxAmmo, float damage, double speed) {
 		super(id, launchPos, maxAge, maxAmmo);
@@ -26,10 +31,26 @@ public class BulletData extends WeaponData {
 		this.speed = speed;
 	}
 	
+	public BulletData(String id, Vec3 launchPos, int maxAge, int maxAmmo, float damage, double speed,
+			boolean explosive, boolean destroyTerrain, boolean causesFire, 
+			double explosiveDamage, float explosionRadius) {
+		this(id, launchPos, maxAge, maxAmmo, damage, speed);
+		this.explosive = explosive;
+		this.destroyTerrain = destroyTerrain;
+		this.causesFire = causesFire;
+		this.explosiveDamage = explosiveDamage;
+		this.explosionRadius = explosionRadius;
+	}
+	
 	public BulletData(CompoundTag tag) {
 		super(tag);
 		this.damage = tag.getFloat("damage");
 		this.speed = tag.getDouble("speed");
+		this.explosive = tag.getBoolean("explosive");
+		this.destroyTerrain = tag.getBoolean("destroyTerrain");
+		this.causesFire = tag.getBoolean("causesFire");
+		this.explosiveDamage = tag.getDouble("explosiveDamage");
+		this.explosionRadius = tag.getFloat("explosionRadius");
 	}
 	
 	@Override
@@ -37,6 +58,11 @@ public class BulletData extends WeaponData {
 		CompoundTag tag = super.write();
 		tag.putFloat("damage", damage);
 		tag.putDouble("speed", speed);
+		tag.putBoolean("explosive", explosive);
+		tag.putBoolean("destroyTerrain", destroyTerrain);
+		tag.putBoolean("causesFire", causesFire);
+		tag.putDouble("explosiveDamage", explosiveDamage);
+		tag.putFloat("explosionRadius", explosionRadius);
 		return tag;
 	}
 	
@@ -44,6 +70,11 @@ public class BulletData extends WeaponData {
 		super(buffer);
 		this.damage = buffer.readFloat();
 		this.speed = buffer.readDouble();
+		this.explosive = buffer.readBoolean();
+		this.destroyTerrain = buffer.readBoolean();
+		this.causesFire = buffer.readBoolean();
+		this.explosiveDamage = buffer.readDouble();
+		this.explosionRadius = buffer.readFloat();
 	}
 	
 	@Override
@@ -51,19 +82,16 @@ public class BulletData extends WeaponData {
 		super.write(buffer);
 		buffer.writeFloat(damage);
 		buffer.writeDouble(speed);
+		buffer.writeBoolean(explosive);
+		buffer.writeBoolean(destroyTerrain);
+		buffer.writeBoolean(causesFire);
+		buffer.writeDouble(explosiveDamage);
+		buffer.writeFloat(explosionRadius);
 	}
 	
 	@Override
 	public WeaponType getType() {
 		return WeaponType.BULLET;
-	}
-	
-	public float getDamage() {
-		return damage;
-	}
-	
-	public double getSpeed() {
-		return speed;
 	}
 
 	@Override
@@ -76,6 +104,34 @@ public class BulletData extends WeaponData {
 		bullet.setDeltaMovement(direction.scale(speed).add(vehicle.getDeltaMovement()));
 		level.addFreshEntity(bullet);
 		return bullet;
+	}
+	
+	public float getDamage() {
+		return damage;
+	}
+	
+	public double getSpeed() {
+		return speed;
+	}
+
+	public boolean isExplosive() {
+		return explosive;
+	}
+
+	public boolean isDestroyTerrain() {
+		return destroyTerrain;
+	}
+
+	public double getExplosiveDamage() {
+		return explosiveDamage;
+	}
+
+	public float getExplosionRadius() {
+		return explosionRadius;
+	}
+
+	public boolean isCausesFire() {
+		return causesFire;
 	}
 
 }

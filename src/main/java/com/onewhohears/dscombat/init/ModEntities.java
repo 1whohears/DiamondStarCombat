@@ -6,6 +6,7 @@ import com.onewhohears.dscombat.entity.aircraft.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.aircraft.parts.EntitySeatCamera;
 import com.onewhohears.dscombat.entity.aircraft.plane.EntityTestPlane;
 import com.onewhohears.dscombat.entity.weapon.EntityBullet;
+import com.onewhohears.dscombat.entity.weapon.EntityRocket;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
@@ -30,7 +31,10 @@ public class ModEntities {
 			() -> createEntityType(EntitySeatCamera::new, EntityDimensions.scalable(0f, 0f)));
 	
 	public static final RegistryObject<EntityType<EntityBullet>> BULLET = ENTITIES.register("bullet", 
-			() -> createEntityType(EntityBullet::new, EntityDimensions.scalable(0.2f, 0.2f)));
+			() -> createEntityType(EntityBullet::new, EntityDimensions.scalable(0.15f, 0.15f)));
+	
+	public static final RegistryObject<EntityType<EntityBullet>> ROCKET = ENTITIES.register("rocket", 
+			() -> createEntityType(EntityRocket::new, EntityDimensions.scalable(0.25f, 0.25f)));
 	
 	private static <T extends Entity> EntityType<T> createEntityType(EntityType.EntityFactory<T> factory, EntityDimensions size) {
         return new EntityType<>(factory, MobCategory.MISC, true, true, false, true, ImmutableSet.of(), size, 5, 3);

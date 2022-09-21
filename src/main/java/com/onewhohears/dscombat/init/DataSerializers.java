@@ -2,9 +2,11 @@ package com.onewhohears.dscombat.init;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.data.BombData;
 import com.onewhohears.dscombat.data.BulletData;
 import com.onewhohears.dscombat.data.PartData;
 import com.onewhohears.dscombat.data.PartsManager;
+import com.onewhohears.dscombat.data.RocketData;
 import com.onewhohears.dscombat.data.SeatData;
 import com.onewhohears.dscombat.data.WeaponData;
 
@@ -81,11 +83,11 @@ public class DataSerializers {
 			WeaponData.WeaponType type = WeaponData.WeaponType.values()[index];
 			switch (type) {
 			case BOMB:
-				return null;
+				return new BombData(buffer);
 			case BULLET:
 				return new BulletData(buffer);
 			case ROCKET:
-				return null;
+				return new RocketData(buffer);
 			}
 			return null;
 		}

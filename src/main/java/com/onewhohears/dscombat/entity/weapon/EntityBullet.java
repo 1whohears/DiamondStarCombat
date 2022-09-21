@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.entity.weapon;
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.data.BulletData;
+import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.damagesource.DamageSource;
@@ -49,35 +50,44 @@ public class EntityBullet extends EntityAbstractWeapon {
 		//System.out.println(this);
 		Vec3 vec3 = this.getDeltaMovement();
 		Vec3 vec32 = this.position();
-        Vec3 vec33 = vec32.add(vec3);
-        HitResult hitresult = this.level.clip(new ClipContext(vec32, vec33, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
-        if (hitresult.getType() != HitResult.Type.MISS) {
-        	vec33 = hitresult.getLocation();
-        }
-        while(!this.isRemoved()) {
-           EntityHitResult entityhitresult = this.findHitEntity(vec32, vec33);
-           if (entityhitresult != null) {
-              hitresult = entityhitresult;
-           }
-           if (hitresult != null && hitresult.getType() == HitResult.Type.ENTITY) {
-              Entity entity = ((EntityHitResult)hitresult).getEntity();
-              Entity entity1 = this.getOwner();
-              if (entity instanceof Player && entity1 instanceof Player && !((Player)entity1).canHarmPlayer((Player)entity)) {
-                 hitresult = null;
-                 entityhitresult = null;
-              }
-           }
-           if (hitresult != null && hitresult.getType() != HitResult.Type.MISS && !noPhysics 
-        		   && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, hitresult)) {
-              this.onHit(hitresult);
-              this.hasImpulse = true;
-              break;
-           }
-           if (entityhitresult == null /*|| this.getPierceLevel() <= 0*/) {
-              break;
-           }
-           hitresult = null;
-        }
+		Vec3 vec33 = vec32.add(vec3);
+		HitResult hitresult = this.level.clip(new ClipContext(vec32, vec33, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+		if (hitresult.getType() != HitResult.Type.MISS) {
+			vec33 = hitresult.getLocation();
+		}
+		while(!this.isRemoved()) {
+			EntityHitResult entityhitresult = this.findHitEntity(vec32, vec33);
+			if (entityhitresult != null) {
+				hitresult = entityhitresult;
+			}
+			if (hitresult != null && hitresult.getType() == HitResult.Type.ENTITY) {
+				Entity hit = ((EntityHitResult)hitresult).getEntity();
+				Entity owner = this.getOwner();
+				if (owner instanceof Player) {
+					if (hit instanceof Player && !((Player)owner).canHarmPlayer((Player)hit)) {
+						hitresult = null;
+						entityhitresult = null;
+					} else if (hit instanceof EntityAbstractAircraft plane) {
+						Entity c = plane.getControllingPassenger();
+						if (c != null && c instanceof Player 
+								&& !((Player)owner).canHarmPlayer((Player)c)) {
+							hitresult = null;
+							entityhitresult = null;
+						}
+					}
+				}
+			}
+			if (hitresult != null && hitresult.getType() != HitResult.Type.MISS && !noPhysics 
+					&& !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, hitresult)) {
+				this.onHit(hitresult);
+				this.hasImpulse = true;
+				break;
+			}
+			if (entityhitresult == null /*|| this.getPierceLevel() <= 0*/) {	
+				break;
+			}
+			hitresult = null;
+		}
 		move(MoverType.SELF, getDeltaMovement());
 		setPacketCoordinates(this.getX(), this.getY(), this.getZ());
 	}

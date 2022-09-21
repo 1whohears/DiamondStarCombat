@@ -28,11 +28,13 @@ public class WeaponSystem {
 			WeaponData.WeaponType type = WeaponData.WeaponType.values()[index];
 			switch (type) {
 			case BOMB:
+				weapons.add(new BombData(tag));
 				break;
 			case BULLET:
 				weapons.add(new BulletData(tag));
 				break;
 			case ROCKET:
+				weapons.add(new RocketData(tag));
 				break;
 			}
 		}

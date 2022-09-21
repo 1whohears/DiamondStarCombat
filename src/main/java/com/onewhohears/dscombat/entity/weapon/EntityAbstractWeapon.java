@@ -6,12 +6,14 @@ import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModEntities;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.network.NetworkHooks;
 
 public abstract class EntityAbstractWeapon extends Projectile {
 	
@@ -80,6 +82,12 @@ public abstract class EntityAbstractWeapon extends Projectile {
 	public boolean canCollideWith(Entity entity) {
 		if (entity instanceof EntityAbstractWeapon) return false;
 		return true;
+	}
+	
+	@Override
+	public Packet<?> getAddEntityPacket() {
+		if (this.isRemoved()) return null;
+		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 
 }

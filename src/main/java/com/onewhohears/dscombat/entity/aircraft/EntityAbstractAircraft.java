@@ -61,7 +61,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	protected void defineSynchedData() {
 		entityData.define(MAX_HEALTH, 10);
         entityData.define(HEALTH, 10);
-		entityData.define(MAX_SPEED, 1.0f);
+		entityData.define(MAX_SPEED, 1.5f);
 		entityData.define(THROTTLE, 0.0f);
 		entityData.define(Q, Quaternion.ONE);
 		entityData.define(FREE_LOOK, false);
@@ -222,7 +222,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	public double getDrag(Quaternion q) {
 		// Drag = (drag coefficient) * (air pressure) * (speed)^2 * (wing surface area) / 2
-		double dc = 0.01;
+		double dc = 0.015;
 		double air = 1;
 		double speedSqr = getDeltaMovement().lengthSqr();
 		double wing = 1;

@@ -13,12 +13,16 @@ import com.onewhohears.dscombat.util.math.UtilAngles;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
+import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -162,16 +166,35 @@ public final class ClientForgeEvents {
 		}
 	}
 	
-	/*@SubscribeEvent
+	@SubscribeEvent
 	public static void onClick(InputEvent.ClickInputEvent event) {
+		// TODO won't get kicked for hitting yourself but now you can't attack any entity
 		if (event.isAttack()) {
-			
+			//System.out.println("input attack event");
+			Minecraft m = Minecraft.getInstance();
+			if (m.hitResult.getType() == HitResult.Type.ENTITY) {
+				EntityHitResult hit = (EntityHitResult) m.hitResult;
+				if (hit.getEntity().equals(m.player)) {
+					event.setSwingHand(false);
+					event.setCanceled(true);
+					//System.out.println("canceled");
+				}
+			}
 		}
-	}*/
+	}
 	
 	/*@SubscribeEvent
 	public static void onPlayerAttack(AttackEntityEvent event) {
 		System.out.println("attacked entity "+event.getTarget());
+		if (event.getTarget().equals(event.getEntity())) {
+			System.out.println("canceled");
+			event.setCanceled(true);
+		}
+	}*/
+	
+	/*@SubscribeEvent
+	public static void onEntityInteract(PlayerInteractEvent.EntityInteract event) {
+		System.out.println(event.getEntity()+" interacted with "+event.getTarget());
 		if (event.getTarget().equals(event.getEntity())) {
 			System.out.println("canceled");
 			event.setCanceled(true);

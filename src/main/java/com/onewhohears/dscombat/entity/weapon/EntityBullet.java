@@ -46,7 +46,6 @@ public class EntityBullet extends EntityAbstractWeapon {
 	@Override
 	public void tick() {
 		super.tick();
-		// TODO bullets can sometimes randomly change direction or get pushed by exploding bullets
 		//System.out.println(this);
 		Vec3 vec3 = this.getDeltaMovement();
 		Vec3 vec32 = this.position();

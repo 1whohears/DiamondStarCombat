@@ -14,7 +14,7 @@ import net.minecraft.world.phys.Vec3;
 public class BulletData extends WeaponData {
 	
 	public static BulletData basic() {
-		return new BulletData("basic", Vec3.ZERO, 600, 10, 1, 1);
+		return new BulletData("basic", Vec3.ZERO, 600, 10, 1, 1, 1);
 	}
 	
 	private float damage;
@@ -25,16 +25,17 @@ public class BulletData extends WeaponData {
 	private double explosiveDamage; // TODO doesn't do anything
 	private float explosionRadius;
 	
-	public BulletData(String id, Vec3 launchPos, int maxAge, int maxAmmo, float damage, double speed) {
-		super(id, launchPos, maxAge, maxAmmo);
+	public BulletData(String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, 
+			float damage, double speed) {
+		super(id, launchPos, maxAge, maxAmmo, fireRate);
 		this.damage = damage;
 		this.speed = speed;
 	}
 	
-	public BulletData(String id, Vec3 launchPos, int maxAge, int maxAmmo, float damage, double speed,
-			boolean explosive, boolean destroyTerrain, boolean causesFire, 
-			double explosiveDamage, float explosionRadius) {
-		this(id, launchPos, maxAge, maxAmmo, damage, speed);
+	public BulletData(String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, 
+			float damage, double speed, boolean explosive, boolean destroyTerrain, 
+			boolean causesFire, double explosiveDamage, float explosionRadius) {
+		this(id, launchPos, maxAge, maxAmmo, fireRate, damage, speed);
 		this.explosive = explosive;
 		this.destroyTerrain = destroyTerrain;
 		this.causesFire = causesFire;
@@ -96,8 +97,8 @@ public class BulletData extends WeaponData {
 
 	@Override
 	public EntityAbstractWeapon shoot(Level level, Entity vehicle, Entity owner, Vec3 direction, Quaternion vehicleQ) {
-		System.out.println(this.getId()+" ammo pre shoot "+this.getCurrentAmmo());
-		if (!this.useAmmo(1)) return null;
+		if (!this.checkShoot(1)) return null;
+		System.out.println(this.getId()+" ammo "+this.getCurrentAmmo());
 		EntityBullet bullet = new EntityBullet(level, owner, this);
 		bullet.setPos(vehicle.position()
 				.add(UtilAngles.rotateVector(this.getLaunchPos(), vehicleQ)));

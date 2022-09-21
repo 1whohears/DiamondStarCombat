@@ -18,7 +18,8 @@ public abstract class WeaponData {
 	private int maxAge;
 	private int currentAmmo;
 	private int maxAmmo;
-	// TODO add fire rate
+	private int fireRate;
+	private int recoilTime;
 	
 	public static enum WeaponType {
 		BULLET,
@@ -26,11 +27,12 @@ public abstract class WeaponData {
 		BOMB
 	}
 	
-	protected WeaponData(String id, Vec3 pos, int maxAge, int maxAmmo) {
+	protected WeaponData(String id, Vec3 pos, int maxAge, int maxAmmo, int fireRate) {
 		this.id = id;
 		this.pos = pos;
 		this.maxAge = maxAge;
 		this.maxAmmo = maxAmmo;
+		this.fireRate = fireRate;
 	}
 	
 	public WeaponData(CompoundTag tag) {
@@ -43,6 +45,7 @@ public abstract class WeaponData {
 		maxAge = tag.getInt("maxAge");
 		currentAmmo = tag.getInt("currentAmmo");
 		maxAmmo = tag.getInt("maxAmmo");
+		fireRate = tag.getInt("fireRate");
 	}
 	
 	public CompoundTag write() {
@@ -55,6 +58,7 @@ public abstract class WeaponData {
 		tag.putInt("maxAge", maxAge);
 		tag.putInt("currentAmmo", currentAmmo);
 		tag.putInt("maxAmmo", maxAmmo);
+		tag.putInt("fireRate", fireRate);
 		return tag;
 	}
 	
@@ -70,6 +74,7 @@ public abstract class WeaponData {
 		maxAge = buffer.readInt();
 		currentAmmo = buffer.readInt();
 		maxAmmo = buffer.readInt();
+		fireRate = buffer.readInt();
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
@@ -82,11 +87,29 @@ public abstract class WeaponData {
 		buffer.writeInt(maxAge);
 		buffer.writeInt(currentAmmo);
 		buffer.writeInt(maxAmmo);
+		buffer.writeInt(fireRate);
 	}
 	
 	public abstract WeaponType getType();
 	
 	public abstract EntityAbstractWeapon shoot(Level level, Entity vehicle, Entity owner, Vec3 direction, Quaternion vehicleQ);
+	
+	protected void tick() {
+		if (recoilTime > 1) --recoilTime;
+	}
+	
+	/**
+	 * called inside the shoot function
+	 * @param ammoNum
+	 * @return if this weapon can shoot
+	 */
+	public boolean checkShoot(int ammoNum) {
+		if (currentAmmo < ammoNum) return false;
+		if (recoilTime > 1) return false;
+		recoilTime = this.getFireRate();
+		this.addAmmo(-ammoNum);
+		return true;
+	}
 	
 	public String getId() {
 		return id;
@@ -95,7 +118,11 @@ public abstract class WeaponData {
 	public Vec3 getLaunchPos() {
 		return pos;
 	}
-	
+
+	public void setLaunchPos(Vec3 pos) {
+		this.pos = pos;
+	}
+
 	public int getMaxAge() {
 		return maxAge;
 	}
@@ -110,10 +137,8 @@ public abstract class WeaponData {
 		this.currentAmmo = currentAmmo;
 	}
 	
-	public boolean useAmmo(int num) {
-		if (currentAmmo < num) return false;
-		currentAmmo -= num;
-		return true;
+	public void addAmmo(int num) {
+		this.setCurrentAmmo(currentAmmo+num);
 	}
 	
 	public int getMaxAmmo() {
@@ -122,6 +147,14 @@ public abstract class WeaponData {
 	
 	public void setMaxAmmo(int max) {
 		maxAmmo = max;
+	}
+
+	public int getFireRate() {
+		return fireRate;
+	}
+
+	public void setFireRate(int fireRate) {
+		this.fireRate = fireRate;
 	}
 	
 }

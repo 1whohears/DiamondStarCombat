@@ -43,12 +43,12 @@ public abstract class EntityAbstractWeapon extends Projectile {
 	
 	@Override
 	public void tick() {
+		super.tick();
 		if (!this.level.isClientSide && touchingUnloadedChunk()) {
 			System.out.println("bullet unloaded");
 			discard(); 
 			return; 
 		}
-		super.tick();
 		if (!this.level.isClientSide && this.tickCount > this.getWeaponData().getMaxAge()) { 
 			System.out.println("bullet to old");
 			discard(); 

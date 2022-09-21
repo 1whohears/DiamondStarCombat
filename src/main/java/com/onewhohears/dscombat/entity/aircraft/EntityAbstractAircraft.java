@@ -61,7 +61,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	protected void defineSynchedData() {
 		entityData.define(MAX_HEALTH, 10);
         entityData.define(HEALTH, 10);
-		entityData.define(MAX_SPEED, 2.0f);
+		entityData.define(MAX_SPEED, 1.0f);
 		entityData.define(THROTTLE, 0.0f);
 		entityData.define(Q, Quaternion.ONE);
 		entityData.define(FREE_LOOK, false);
@@ -80,6 +80,7 @@ public abstract class EntityAbstractAircraft extends Entity {
                 lerpStepsQ = 10;
             }
         }
+        // TODO check of update synch data to see how often it updates the part data
     }
 	
 	@Override
@@ -89,11 +90,13 @@ public abstract class EntityAbstractAircraft extends Entity {
 		setPrevQ(q);
 		//setClientQ(q);
 		this.setPartsManager(new PartsManager(compound));
+		// TODO read all the other synced data
 	}
 
 	@Override
 	protected void addAdditionalSaveData(CompoundTag compound) {
 		this.getPartsManager().write(compound);
+		// TODO add all the other synced data
 	}
 	
 	public void init() {
@@ -105,6 +108,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		//System.out.println("client side "+this.level.isClientSide);
 		if (this.firstTick) init();
 		super.tick();
+		if (!level.isClientSide) this.getPartsManager().getWeapons().tick();
 		if (Double.isNaN(getDeltaMovement().length())) {
             setDeltaMovement(Vec3.ZERO);
         }
@@ -252,11 +256,10 @@ public abstract class EntityAbstractAircraft extends Entity {
 		if (level.isClientSide) return;
 		Entity controller = this.getControllingPassenger();
 		if (controller == null) return;
-		WeaponSystem system = this.getPartsManager().getWeapons();
-		WeaponData data = system.getSelected();
-		if (data == null) return;
 		if (this.inputShoot) {
-			System.out.println("shooting client side "+level.isClientSide);
+			WeaponSystem system = this.getPartsManager().getWeapons();
+			WeaponData data = system.getSelected();
+			if (data == null) return;
 			data.shoot(level, this, controller, UtilAngles.getRollAxis(getQ()), this.getQ());
 		}
 	}

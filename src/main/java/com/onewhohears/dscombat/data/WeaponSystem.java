@@ -86,4 +86,11 @@ public class WeaponSystem {
 		if (weaponIndex >= weapons.size() || weaponIndex < 0) weaponIndex = 0;
 	}
 	
+	/**
+	 * called by this weapon system's entity tick function
+	 */
+	public void tick() {
+		for (WeaponData w : weapons) w.tick();
+	}
+	
 }

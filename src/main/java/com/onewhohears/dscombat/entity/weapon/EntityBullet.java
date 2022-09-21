@@ -138,5 +138,16 @@ public class EntityBullet extends EntityAbstractWeapon {
 			}
 		}
 	}
+	
+	/*@Override
+	public boolean canBeCollidedWith() {
+		return false;
+	}*/
+	
+	@Override 
+	public boolean canCollideWith(Entity entity) {
+		if (entity instanceof EntityBullet) return false;
+		return true;
+	}
 
 }

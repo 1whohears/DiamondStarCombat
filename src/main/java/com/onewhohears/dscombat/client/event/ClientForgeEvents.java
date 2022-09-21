@@ -15,10 +15,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
-import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -162,14 +162,20 @@ public final class ClientForgeEvents {
 		}
 	}
 	
-	@SubscribeEvent
+	/*@SubscribeEvent
 	public static void onClick(InputEvent.ClickInputEvent event) {
-		// TODO cancel attack actions/tool uses when not in free look
 		if (event.isAttack()) {
 			
 		}
-	}
+	}*/
 	
-	//TODO prevent player from attacking a camera entity
+	/*@SubscribeEvent
+	public static void onPlayerAttack(AttackEntityEvent event) {
+		System.out.println("attacked entity "+event.getTarget());
+		if (event.getTarget().equals(event.getEntity())) {
+			System.out.println("canceled");
+			event.setCanceled(true);
+		}
+	}*/
 	
 }

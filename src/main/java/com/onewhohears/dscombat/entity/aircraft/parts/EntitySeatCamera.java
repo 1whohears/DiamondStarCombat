@@ -50,6 +50,7 @@ public class EntitySeatCamera extends Entity {
 	
 	@Override
     public boolean hurt(DamageSource source, float amount) {
+		// TODO when camera gets hurt, hurt the player?
 		return false;
 	}
 	

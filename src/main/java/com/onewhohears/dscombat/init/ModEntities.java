@@ -27,8 +27,12 @@ public class ModEntities {
 	public static final RegistryObject<EntityType<EntitySeat>> SEAT = ENTITIES.register("seat", 
 			() -> createEntityType(EntitySeat::new, EntityDimensions.scalable(1.1F, 1.1F)));
 	
+	/*
+	 * this needs to be bigger that player model to stop invalid entity issue
+	 * TODO find right size	
+	 */
 	public static final RegistryObject<EntityType<EntitySeatCamera>> CAMERA = ENTITIES.register("seat_camera", 
-			() -> createEntityType(EntitySeatCamera::new, EntityDimensions.scalable(0f, 0f)));
+			() -> createEntityType(EntitySeatCamera::new, EntityDimensions.scalable(1f, 1f)));
 	
 	public static final RegistryObject<EntityType<EntityBullet>> BULLET = ENTITIES.register("bullet", 
 			() -> createEntityType(EntityBullet::new, EntityDimensions.scalable(0.15f, 0.15f)));

@@ -35,7 +35,7 @@ public class EntityRocket extends EntityBullet {
 			}
 			motionClamp();
 		} else {
-			level.addParticle(ParticleTypes.SMOKE, 
+			level.addParticle(ParticleTypes.FIREWORK, 
 					this.getX(), this.getY(), this.getZ(), 
 					0.0D, 0.0D, 0.0D);
 		}
@@ -45,7 +45,7 @@ public class EntityRocket extends EntityBullet {
 	public void motionClamp() {
 		Vec3 motion = getDeltaMovement();
 		double vel = motion.length();
-		double max = 4d;
+		double max = 1d;
 		if (vel > max) motion = motion.scale(max / vel);
 		setDeltaMovement(motion);
 	}

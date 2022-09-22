@@ -34,16 +34,17 @@ public abstract class EntityAbstractWeapon extends Projectile {
 		this.entityData.define(DATA, BulletData.basic());
 	}
 	
-	@Override
+	/*@Override
 	protected void readAdditionalSaveData(CompoundTag compound) {
 		//System.out.println("bullet reloaded");
 		this.discard();
-	}
-
-	/*@Override
-	protected void addAdditionalSaveData(CompoundTag compound) {
-		super.addAdditionalSaveData(compound);
 	}*/
+
+	@Override
+	protected void addAdditionalSaveData(CompoundTag compound) {
+		//super.addAdditionalSaveData(compound);
+		this.discard();
+	}
 	
 	@Override
 	public void tick() {
@@ -86,7 +87,6 @@ public abstract class EntityAbstractWeapon extends Projectile {
 	
 	@Override
 	public Packet<?> getAddEntityPacket() {
-		if (this.isRemoved()) return null;
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 

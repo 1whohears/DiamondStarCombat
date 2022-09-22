@@ -12,6 +12,7 @@ import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -19,7 +20,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
-import net.minecraftforge.event.TickEvent.ClientTickEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -31,7 +32,7 @@ public final class ClientForgeEvents {
 	private ClientForgeEvents() {}
 	
 	@SubscribeEvent
-	public static void clientTick(ClientTickEvent event) {
+	public static void clientTick(TickEvent.ClientTickEvent event) {
 		if (event.phase != Phase.START) return;
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
@@ -179,6 +180,19 @@ public final class ClientForgeEvents {
 				}
 			}
 		}
+	}
+	
+	@SubscribeEvent
+	public void playerTick(TickEvent.PlayerTickEvent event) {
+		// TODO change player bounding box so camera entity can't attack player
+		final var player = event.player;
+		System.out.println("client side player "+player);
+		if (player == null) return;
+		System.out.println("client side vehicle "+player.getVehicle());
+		if (!(player.getVehicle() instanceof EntitySeat seat)) return;
+		EntityDimensions dim = new EntityDimensions(player.getBbWidth(), 1f, false);
+		player.setBoundingBox(dim.makeBoundingBox(player.position()));
+		System.out.println("client side player hitbox");
 	}
 	
 	/*@SubscribeEvent

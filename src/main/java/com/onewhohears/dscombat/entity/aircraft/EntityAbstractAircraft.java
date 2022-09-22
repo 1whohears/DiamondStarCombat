@@ -225,10 +225,23 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public double getDrag(Quaternion q) {
 		// Drag = (drag coefficient) * (air pressure) * (speed)^2 * (wing surface area) / 2
 		double dc = 0.015;
-		double air = 1;
+		double air = getAirPressure();
 		double speedSqr = getDeltaMovement().lengthSqr();
-		double wing = 1;
+		double wing = getSurfaceArea();
 		return dc * air * speedSqr * wing / 2;
+	}
+	
+	public double getAirPressure() {
+		double space = 300;
+		double water = 64;
+		double scale = 1;
+		if (getY() > space) return 0;
+		if (getY() < water) return scale;
+		return -(scale/(space-water)) * (getY()-water) + scale;
+	}
+	
+	public double getSurfaceArea() {
+		return 1;
 	}
 	
 	public Vec3 getFrictionForce() {

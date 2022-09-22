@@ -101,10 +101,7 @@ public class RocketData extends BulletData {
 	 * @param missile
 	 */
 	public void guideToTarget(EntityAbstractWeapon missile, Entity target) {
-		if (target == null) {
-			missile.discard();
-			return;
-		}
+		if (target == null) return;
 		this.guideToTarget(missile, target.position());
 	}
 	

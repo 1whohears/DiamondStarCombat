@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.entity.weapon;
 
 import com.onewhohears.dscombat.data.RocketData;
 
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -32,8 +33,12 @@ public class EntityRocket extends EntityBullet {
 			} else {
 				data.guideToTarget(this, target);
 			}
+			motionClamp();
+		} else {
+			level.addParticle(ParticleTypes.SMOKE, 
+					this.getX(), this.getY(), this.getZ(), 
+					0.0D, 0.0D, 0.0D);
 		}
-		motionClamp();
 		super.tick();
 	}
 	

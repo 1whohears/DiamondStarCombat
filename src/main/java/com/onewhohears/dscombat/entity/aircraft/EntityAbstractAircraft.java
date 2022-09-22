@@ -11,7 +11,6 @@ import com.onewhohears.dscombat.data.WeaponData;
 import com.onewhohears.dscombat.data.WeaponSystem;
 import com.onewhohears.dscombat.entity.aircraft.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
-import com.onewhohears.dscombat.entity.weapon.EntityRocket;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
@@ -275,10 +274,11 @@ public abstract class EntityAbstractAircraft extends Entity {
 			WeaponSystem system = this.getPartsManager().getWeapons();
 			WeaponData data = system.getSelected();
 			if (data == null) return;
+			if (data.mustSelectTarget()) return;
 			EntityAbstractWeapon weapon = data.shoot(level, this, controller, UtilAngles.getRollAxis(getQ()), this.getQ());
-			if (weapon instanceof EntityRocket rocket) {
+			/*if (weapon instanceof EntityRocket rocket) {
 				rocket.targetPos = this.position().add(20, 20, 0);
-			}
+			}*/
 		}
 	}
 	

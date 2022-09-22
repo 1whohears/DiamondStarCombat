@@ -12,16 +12,17 @@ import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
+import net.minecraftforge.event.TickEvent.RenderTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -60,35 +61,28 @@ public final class ClientForgeEvents {
 		plane.updateControls(throttleUp, throttleDown, pitchUp, pitchDown, 
 				rollLeft, rollRight, yawLeft, yawRight, 
 				mouseMode, flare, shoot, select);
+		/**
+		 * check if the currently selected weapon needs a packet with the target to fire
+		 * TODO get radar data of plane from the server to the client
+		 * draw boxes around potential radar targets
+		 * client clicks on those boxes to choose a target
+		 * presses shoot button to launch
+		 */
 	}
 	
-	/*@SubscribeEvent
+	@SubscribeEvent
 	public static void renderClient(RenderTickEvent event) {
 		if (event.phase != Phase.START) return;
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
 		if (player == null) return;
-		if (player.getVehicle() instanceof EntitySeat seat 
-				&& seat.getVehicle() instanceof EntityAbstractAircraft plane) {
-			EntitySeatCamera camera = seat.getCamera();
-			float xo, xn, yo, yn;
-			if (plane.isFreeLook()) {
-				xo = player.xRotO;
-				xn = player.getXRot();
-				yo = player.yRotO;
-				yn = player.getYRot();
-			} else {
-				xo = plane.prevXRot;
-				xn = plane.getXRot();
-				yo = plane.prevYRot;
-				yn = plane.getYRot();
-			}
-			float xi = xo + (xn - xo) * event.renderTickTime;
-			float yi = yo + (yn - yo) * event.renderTickTime;
-			camera.setXRot(xi);
-			camera.setYRot(yi);
-		}
-	}*/
+		
+	}
+	
+	@SubscribeEvent
+	public static void renderOverlay(RenderGameOverlayEvent.Pre event) {
+		//Minecraft.getInstance().getOverlay().blit(null, 0, 0, 0, 0, 0, 0);
+	}
 	
 	@SubscribeEvent
 	public static void playerRender(RenderPlayerEvent.Pre event) {

@@ -186,5 +186,10 @@ public class RocketData extends BulletData {
 	public double getFuseDist() {
 		return fuseDist;
 	}
+	
+	@Override
+	public boolean mustSelectTarget() {
+		return true;
+	}
 
 }

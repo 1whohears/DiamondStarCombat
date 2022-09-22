@@ -157,4 +157,8 @@ public abstract class WeaponData {
 		this.fireRate = fireRate;
 	}
 	
+	public boolean mustSelectTarget() {
+		return false;
+	}
+	
 }

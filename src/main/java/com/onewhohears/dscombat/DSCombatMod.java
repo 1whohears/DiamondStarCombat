@@ -3,6 +3,7 @@ package com.onewhohears.dscombat;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
+import com.onewhohears.dscombat.common.event.CommonForgeEvents;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModEntities;
 
@@ -26,6 +27,7 @@ public class DSCombatMod
     	DataSerializers.init(eventBus);
     	ModEntities.register(eventBus);
     	eventBus.addListener(this::setup);
+    	MinecraftForge.EVENT_BUS.register(new CommonForgeEvents());
         
         MinecraftForge.EVENT_BUS.register(this);
     }
@@ -34,4 +36,5 @@ public class DSCombatMod
     {
         LOGGER.info("HELLO FROM PREINIT");
     }
+    
 }

@@ -182,19 +182,6 @@ public final class ClientForgeEvents {
 		}
 	}
 	
-	@SubscribeEvent
-	public void playerTick(TickEvent.PlayerTickEvent event) {
-		// TODO change player bounding box so camera entity can't attack player
-		final var player = event.player;
-		System.out.println("client side player "+player);
-		if (player == null) return;
-		System.out.println("client side vehicle "+player.getVehicle());
-		if (!(player.getVehicle() instanceof EntitySeat seat)) return;
-		EntityDimensions dim = new EntityDimensions(player.getBbWidth(), 1f, false);
-		player.setBoundingBox(dim.makeBoundingBox(player.position()));
-		System.out.println("client side player hitbox");
-	}
-	
 	/*@SubscribeEvent
 	public static void onPlayerAttack(AttackEntityEvent event) {
 		System.out.println("attacked entity "+event.getTarget());

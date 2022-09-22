@@ -4,18 +4,23 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.entity.aircraft.parts.EntitySeat;
 
 import net.minecraft.world.entity.EntityDimensions;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
-@Mod.EventBusSubscriber(modid = DSCombatMod.MODID, bus = Bus.FORGE, value = Dist.DEDICATED_SERVER)
-public class ForgeEvents {
+// TODO this annotation not needed?
+@Mod.EventBusSubscriber(modid = DSCombatMod.MODID, bus = Bus.FORGE/*, value = Dist.DEDICATED_SERVER*/)
+public class CommonForgeEvents {
+	
+	public CommonForgeEvents() {}
 	
 	@SubscribeEvent
-	public void playerTick(TickEvent.PlayerTickEvent event) {
+	public void playerTickEvent(TickEvent.PlayerTickEvent event) {
 		// TODO change player bounding box so camera entity can't attack player
+		// TODO this event doesn't fire
+		System.out.println("server side player tick event");
+		if(event.phase != TickEvent.Phase.END) return;
 		final var player = event.player;
 		System.out.println("server side player "+player);
 		if (player == null) return;

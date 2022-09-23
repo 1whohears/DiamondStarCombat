@@ -82,6 +82,8 @@ public final class ClientForgeEvents {
 	@SubscribeEvent
 	public static void renderOverlay(RenderGameOverlayEvent.Pre event) {
 		//Minecraft.getInstance().getOverlay().blit(null, 0, 0, 0, 0, 0, 0);
+		Minecraft m = Minecraft.getInstance();
+		m.setOverlay(null);
 	}
 	
 	@SubscribeEvent

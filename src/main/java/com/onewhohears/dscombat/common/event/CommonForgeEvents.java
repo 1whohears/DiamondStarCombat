@@ -26,7 +26,7 @@ public class CommonForgeEvents {
 		double y = player.getY();
 		double z = player.getZ();
 		double w = player.getBbWidth()/2;
-		player.setBoundingBox(new AABB(x+w, y, z+w, x-w, y+0.5, z-w));
+		player.setBoundingBox(new AABB(x+w, y+0.5, z+w, x-w, y, z-w));
 	}
 	
 }

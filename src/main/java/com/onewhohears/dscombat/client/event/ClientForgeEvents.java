@@ -13,6 +13,7 @@ import com.onewhohears.dscombat.util.math.UtilAngles;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
@@ -94,6 +95,7 @@ public final class ClientForgeEvents {
 		Player player = event.getPlayer();
 		if (player.getVehicle() instanceof EntitySeat seat 
 				&& seat.getVehicle() instanceof EntityAbstractAircraft plane) {
+			changePlayerHitbox(player);
 			if (player.equals(playerC) &&
 					m.options.getCameraType().isFirstPerson()) {
 				event.setCanceled(true);
@@ -103,6 +105,14 @@ public final class ClientForgeEvents {
 			event.getPoseStack().mulPose(q);
 		}
 		// TODO player inventory not rendering
+	}
+	
+	private static void changePlayerHitbox(Player player) {
+		double x = player.getX();
+		double y = player.getY();
+		double z = player.getZ();
+		double w = player.getBbWidth()/2;
+		player.setBoundingBox(new AABB(x+w, y+0.5d, z+w, x-w, y, z-w)); 
 	}
 	
 	@SubscribeEvent
@@ -163,7 +173,6 @@ public final class ClientForgeEvents {
 	
 	@SubscribeEvent
 	public static void onClick(InputEvent.ClickInputEvent event) {
-		// TODO won't get kicked for hitting yourself but now you can't attack any entity
 		if (event.isAttack()) {
 			//System.out.println("input attack event");
 			Minecraft m = Minecraft.getInstance();

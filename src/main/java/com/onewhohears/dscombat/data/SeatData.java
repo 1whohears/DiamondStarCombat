@@ -31,6 +31,7 @@ public class SeatData extends PartData {
 
 	@Override
 	public void setup(EntityAbstractAircraft craft) {
+		super.setup(craft);
 		List<Entity> passengers = craft.getPassengers();
 		for (Entity p : passengers) {
 			System.out.println("CHECK SEAT "+p);

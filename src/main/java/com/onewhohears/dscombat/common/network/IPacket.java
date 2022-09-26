@@ -5,11 +5,11 @@ import java.util.function.Supplier;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
-public abstract class IServerBoundPacket {
+public abstract class IPacket {
 	
-	public IServerBoundPacket() {}
+	public IPacket() {}
 	
-	public IServerBoundPacket(FriendlyByteBuf buffer) {}
+	public IPacket(FriendlyByteBuf buffer) {}
 	
 	public abstract void encode(FriendlyByteBuf buffer);
 	

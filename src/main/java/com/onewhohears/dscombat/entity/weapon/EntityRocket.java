@@ -10,6 +10,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class EntityRocket extends EntityBullet {
 	
+	public Entity parent;
 	public Entity target;
 	public Vec3 targetPos;
 	
@@ -25,14 +26,7 @@ public class EntityRocket extends EntityBullet {
 	public void tick() {
 		if (!this.level.isClientSide) {
 			RocketData data = (RocketData)this.getWeaponData();
-			if (data.getGuidanceType() == RocketData.GuidanceType.OWNER_RADAR
-					|| data.getTargetType() == RocketData.TargetType.POS) {
-				data.guideToTarget(this, targetPos);
-			} else if (data.getGuidanceType() == RocketData.GuidanceType.IR) {
-				data.irGuidance(this);
-			} else {
-				data.guideToTarget(this, target);
-			}
+			data.tickGuide(this);
 			motionClamp();
 		} else {
 			level.addParticle(ParticleTypes.FIREWORK, 

@@ -12,10 +12,12 @@ public abstract class PartData {
 	
 	private String id;
 	private Vec3 pos;
+	private EntityAbstractAircraft parent;
 	
 	public static enum PartType {
 		SEAT,
-		TURRENT
+		TURRENT,
+		RADAR
 	}
 	
 	protected PartData(String id, Vec3 pos) {
@@ -72,6 +74,12 @@ public abstract class PartData {
 		return pos;
 	}
 	
-	public abstract void setup(EntityAbstractAircraft craft);
+	public EntityAbstractAircraft getParent() {
+		return parent;
+	}
+	
+	public void setup(EntityAbstractAircraft craft) {
+		parent = craft;
+	}
 	
 }

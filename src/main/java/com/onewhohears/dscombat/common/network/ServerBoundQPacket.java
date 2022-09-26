@@ -13,7 +13,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
 
-public class ServerBoundQPacket extends IServerBoundPacket {
+public class ServerBoundQPacket extends IPacket {
 	
 	public final Quaternion Q;
 	

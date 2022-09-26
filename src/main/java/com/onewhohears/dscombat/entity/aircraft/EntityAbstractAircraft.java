@@ -6,11 +6,17 @@ import javax.annotation.Nullable;
 
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
+import com.onewhohears.dscombat.data.PartData;
 import com.onewhohears.dscombat.data.PartsManager;
+import com.onewhohears.dscombat.data.RadarData;
+import com.onewhohears.dscombat.data.RocketData;
+import com.onewhohears.dscombat.data.RocketData.GuidanceType;
 import com.onewhohears.dscombat.data.WeaponData;
+import com.onewhohears.dscombat.data.WeaponData.WeaponType;
 import com.onewhohears.dscombat.data.WeaponSystem;
 import com.onewhohears.dscombat.entity.aircraft.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
+import com.onewhohears.dscombat.entity.weapon.EntityRocket;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
@@ -270,16 +276,25 @@ public abstract class EntityAbstractAircraft extends Entity {
 		if (level.isClientSide) return;
 		Entity controller = this.getControllingPassenger();
 		if (controller == null) return;
+		RadarData radar = getRadar();
+		if (radar != null) radar.tickUpdateTargets();
 		if (this.inputShoot) {
 			WeaponSystem system = this.getPartsManager().getWeapons();
 			WeaponData data = system.getSelected();
 			if (data == null) return;
 			if (data.mustSelectTarget()) return;
 			EntityAbstractWeapon weapon = data.shoot(level, this, controller, UtilAngles.getRollAxis(getQ()), this.getQ());
-			/*if (weapon instanceof EntityRocket rocket) {
-				rocket.targetPos = this.position().add(20, 20, 0);
+			/*if (data.getType() == WeaponType.ROCKET 
+					&& ((RocketData)data).getGuidanceType() == GuidanceType.OWNER_RADAR) {
+				radar.addRocket((EntityRocket)weapon);
 			}*/
 		}
+	}
+	
+	public RadarData getRadar() {
+		PartData rPart = this.getPartsManager().get("main-radar");
+		if (rPart == null) return null;
+		return (RadarData) rPart;
 	}
 	
 	@Override
@@ -539,5 +554,13 @@ public abstract class EntityAbstractAircraft extends Entity {
     
     public void setPartsManager(PartsManager manager) {
     	entityData.set(PARTS_MANAGER, manager);
+    }
+    
+    /**
+     * smaller number is better
+     * @return value to be multiplied to the range of a radar
+     */
+    public double getStealth() {
+    	return 1;
     }
 }

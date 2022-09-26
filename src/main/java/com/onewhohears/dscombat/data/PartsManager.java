@@ -30,7 +30,10 @@ public class PartsManager {
 				parts.add(new SeatData(tag));
 				break;
 			case TURRENT:
-				break;				
+				break;	
+			case RADAR:
+				parts.add(new RadarData(tag));
+				break;
 			}
 		}
 	}

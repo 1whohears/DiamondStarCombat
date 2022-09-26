@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.data;
 
 import com.mojang.math.Quaternion;
+import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
 import com.onewhohears.dscombat.entity.weapon.EntityRocket;
 import com.onewhohears.dscombat.util.math.UtilAngles;
@@ -92,24 +93,46 @@ public class RocketData extends BulletData {
 		rocket.setPos(vehicle.position()
 				.add(UtilAngles.rotateVector(this.getLaunchPos(), vehicleQ)));
 		rocket.setDeltaMovement(direction.scale(this.getSpeed()).add(vehicle.getDeltaMovement()));
+		rocket.parent = vehicle;
+		if (vehicle instanceof EntityAbstractAircraft plane) {
+			RadarData radar = plane.getRadar();
+			if (radar != null) {
+				Entity target = radar.getSelectedTarget();
+				if (targetType == TargetType.POS) {
+					rocket.targetPos = Vec3.ZERO;
+				} else if (target != null) {
+					if (guidanceType == GuidanceType.OWNER_RADAR) {
+						rocket.targetPos = target.position();
+						rocket.target = target;
+						radar.addRocket(rocket);
+					} else if (guidanceType == GuidanceType.PITBULL) {
+						rocket.target = target;
+					}
+				} 
+			}
+		}
 		level.addFreshEntity(rocket);
 		return rocket;
 	}
 	
-	/**
-	 * called by a missile entity in server side
-	 * @param missile
-	 */
-	public void guideToTarget(EntityAbstractWeapon missile, Entity target) {
+	public void tickGuide(EntityRocket missile) {
+		if (getTargetType() == TargetType.POS) {
+			guideToTarget(missile, missile.targetPos);
+		} else if (getGuidanceType() == GuidanceType.OWNER_RADAR) {
+			guideToTarget(missile, missile.targetPos);
+		} else if (getGuidanceType() == GuidanceType.PITBULL) {
+			guideToTarget(missile, missile.target);
+		} else if (getGuidanceType() == GuidanceType.IR) {
+			irGuidance(missile);
+		}
+	}
+	
+	public void guideToTarget(EntityRocket missile, Entity target) {
 		if (target == null) return;
 		this.guideToTarget(missile, target.position());
 	}
 	
-	/**
-	 * called by a missile entity in server side
-	 * @param missile
-	 */
-	public void guideToTarget(EntityAbstractWeapon missile, Vec3 target) {
+	public void guideToTarget(EntityRocket missile, Vec3 target) {
 		if (target == null) {
 			missile.discard();
 			return;
@@ -154,11 +177,7 @@ public class RocketData extends BulletData {
 		missile.setYRot(nry);
 	}
 	
-	/**
-	 * called by a missile entity in server side
-	 * @param missile
-	 */
-	public void irGuidance(EntityAbstractWeapon missile) {
+	public void irGuidance(EntityRocket missile) {
 		
 	}
 	

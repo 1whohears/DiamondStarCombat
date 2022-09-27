@@ -159,8 +159,8 @@ public final class ClientForgeEvents {
 	}
 	
 	private static boolean isPlayerLookingAtPing(Player player, RadarPing ping) {
-		return UtilGeometry.isPointInsideCone(ping.pos, 
-				player.getEyePosition(), player.getLookAngle(), 10, 1000);
+		return UtilGeometry.isPointInsideCone(ping.pos.add(0, 0.5, 0), 
+				player.getEyePosition(), player.getLookAngle(), 5, 1000);
 	}
 	
 	@SubscribeEvent

@@ -29,9 +29,9 @@ public class RadarData extends PartData {
 	private boolean scanMobs;
 	
 	public List<RadarPing> targets = new ArrayList<RadarPing>();
-	public Entity selected;
 	private int scanTicks;
 	private boolean freshTargets;
+	private int selectedIndex = -1;
 	private List<EntityRocket> rockets = new ArrayList<EntityRocket>();
 	
 	public RadarData(String id, double range, double fov, int scanRate) {
@@ -91,6 +91,7 @@ public class RadarData extends PartData {
 		}
 		freshTargets = true;
 		targets.clear();
+		selectedIndex = -1;
 		Level level = radar.level;
 		List<Entity> list = level.getEntities(radar, getRadarBoundingBox(radar));
 		for (int i = 0; i < list.size(); ++i) {
@@ -132,13 +133,28 @@ public class RadarData extends PartData {
 		if (!rockets.contains(r)) rockets.add(r);
 	}
 	
+	public RadarPing getPingById(int id) {
+		for (int i = 0; i < targets.size(); ++i) if (targets.get(i).id == id) return targets.get(i);
+		return null;
+	}
+	
 	/**
 	 * USE ON CLIENT SIDE
 	 * @param target
 	 */
-	public void selectTarget(Entity target) {
-		selected = target;
+	public void selectTarget(RadarPing ping) {
+		int id = ping.id;
+		for (int i = 0; i < targets.size(); ++i) if (targets.get(i).id == id) selectedIndex = i;
+		selectedIndex = -1;
 		// TODO send packet to server of selected target
+	}
+	
+	public int getSelectedPingIndex() {
+		return selectedIndex;
+	}
+	
+	public Entity getSelectedTarget() {
+		return null;
 	}
 	
 	/**
@@ -154,7 +170,15 @@ public class RadarData extends PartData {
 	 * @param pings
 	 */
 	public void readPings(List<RadarPing> pings) {
+		RadarPing oldSelect = null; 
+		if (selectedIndex != -1) oldSelect = targets.get(selectedIndex);
 		targets = pings;
+		selectedIndex = -1;
+		if (oldSelect != null) {
+			int id = oldSelect.id;
+			for (int i = 0; i < targets.size(); ++i) 
+				if (targets.get(i).id == id) selectedIndex = i;
+		}
 	}
 	
 	private boolean checkTargetRange(Entity radar, Entity target, double rangeMod) {
@@ -238,10 +262,6 @@ public class RadarData extends PartData {
 
 	public void setScanMobs(boolean scanMobs) {
 		this.scanMobs = scanMobs;
-	}
-	
-	public Entity getSelectedTarget() {
-		return selected;
 	}
 	
 	public static class RadarPing {

@@ -21,6 +21,7 @@ import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.aircraft.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.aircraft.parts.EntitySeatCamera;
 import com.onewhohears.dscombat.util.math.UtilAngles;
+import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
@@ -82,6 +83,17 @@ public final class ClientForgeEvents {
 		 * client clicks on those boxes to choose a target
 		 * presses shoot button to launch
 		 */
+		RadarData radar = plane.getRadar();
+		if (radar == null) return;
+		List<RadarPing> pings = radar.getRadarPings();
+		int selected = radar.getSelectedPingIndex();
+		if (pings == null) return;
+		for (int i = 0; i < pings.size(); ++i) {
+			RadarPing p = pings.get(i);
+			if (isPlayerLookingAtPing(player, p)) {
+				
+			}
+		}
 	}
 	
 	@SubscribeEvent
@@ -109,6 +121,34 @@ public final class ClientForgeEvents {
 	}*/
 	
 	private static VertexBuffer pingBuffer;
+	private static int colorR, colorG, colorB, colorA;
+	private static int hoverIndex;
+	
+	private static void setDefaultColor() {
+		colorR = 0;
+		colorG = 255;
+		colorB = 0;
+		colorA = 255;
+	}
+	
+	private static void setHoverColor() {
+		colorR = 255;
+		colorG = 255;
+		colorB = 0;
+		colorA = 255;
+	}
+	
+	private static void setSelectedColor() {
+		colorR = 255;
+		colorG = 0;
+		colorB = 0;
+		colorA = 255;
+	}
+	
+	private static boolean isPlayerLookingAtPing(Player player, RadarPing ping) {
+		return UtilGeometry.isPointInsideCone(ping.pos, 
+				player.position().add(0, player.getEyeY(), 0), player.getLookAngle(), 5, 1000);
+	}
 	
 	@SubscribeEvent
 	public static void renderLevel(RenderLevelLastEvent event) {
@@ -119,10 +159,14 @@ public final class ClientForgeEvents {
 			RadarData radar = plane.getRadar();
 			if (radar == null) return;
 			List<RadarPing> pings = radar.getRadarPings();
+			int selected = radar.getSelectedPingIndex();
 			if (pings == null) return;
 			//System.out.println("RADAR PINGS");
 			for (int i = 0; i < pings.size(); ++i) {
 				RadarPing p = pings.get(i);
+				if (i == selected) setSelectedColor();
+				else if (i == hoverIndex) setHoverColor();
+				else setDefaultColor();
 				//System.out.println(p.pos);
 				Vec3 view = m.gameRenderer.getMainCamera().getPosition();
 				double x = p.pos.x, y = p.pos.y+0.02, z = p.pos.z, w2 = 1, w = w2/2;
@@ -132,42 +176,42 @@ public final class ClientForgeEvents {
 				if (pingBuffer != null) pingBuffer.close();
 				pingBuffer = new VertexBuffer();
 				buffer.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
-				// TODO change color if selected or hovering over
-				buffer.vertex(x-w, y, z-w).color(0, 255, 0, 255).endVertex();
-				buffer.vertex(x+w, y, z-w).color(0, 255, 0, 255).endVertex();
 				
-				buffer.vertex(x+w, y, z-w).color(0, 255, 0, 255).endVertex();
-				buffer.vertex(x+w, y, z+w).color(0, 255, 0, 255).endVertex();
+				buffer.vertex(x-w, y, z-w).color(colorR, colorG, colorB, colorA).endVertex();
+				buffer.vertex(x+w, y, z-w).color(colorR, colorG, colorB, colorA).endVertex();
 				
-				buffer.vertex(x+w, y, z+w).color(0, 255, 0, 255).endVertex();
-				buffer.vertex(x-w, y, z+w).color(0, 255, 0, 255).endVertex();
+				buffer.vertex(x+w, y, z-w).color(colorR, colorG, colorB, colorA).endVertex();
+				buffer.vertex(x+w, y, z+w).color(colorR, colorG, colorB, colorA).endVertex();
 				
-				buffer.vertex(x-w, y, z+w).color(0, 255, 0, 255).endVertex();
-				buffer.vertex(x-w, y, z-w).color(0, 255, 0, 255).endVertex();
+				buffer.vertex(x+w, y, z+w).color(colorR, colorG, colorB, colorA).endVertex();
+				buffer.vertex(x-w, y, z+w).color(colorR, colorG, colorB, colorA).endVertex();
 				
-				buffer.vertex(x-w, y, z-w).color(0, 255, 0, 255).endVertex();
-				buffer.vertex(x-w, y+w2, z-w).color(0, 255, 0, 255).endVertex();
+				buffer.vertex(x-w, y, z+w).color(colorR, colorG, colorB, colorA).endVertex();
+				buffer.vertex(x-w, y, z-w).color(colorR, colorG, colorB, colorA).endVertex();
 				
-				buffer.vertex(x+w, y, z-w).color(0, 255, 0, 255).endVertex();
-				buffer.vertex(x+w, y+w2, z-w).color(0, 255, 0, 255).endVertex();
+				buffer.vertex(x-w, y, z-w).color(colorR, colorG, colorB, colorA).endVertex();
+				buffer.vertex(x-w, y+w2, z-w).color(colorR, colorG, colorB, colorA).endVertex();
 				
-				buffer.vertex(x+w, y, z+w).color(0, 255, 0, 255).endVertex();
-				buffer.vertex(x+w, y+w2, z+w).color(0, 255, 0, 255).endVertex();
+				buffer.vertex(x+w, y, z-w).color(colorR, colorG, colorB, colorA).endVertex();
+				buffer.vertex(x+w, y+w2, z-w).color(colorR, colorG, colorB, colorA).endVertex();
 				
-				buffer.vertex(x-w, y, z+w).color(0, 255, 0, 255).endVertex();
-				buffer.vertex(x-w, y+w2, z+w).color(0, 255, 0, 255).endVertex();
+				buffer.vertex(x+w, y, z+w).color(colorR, colorG, colorB, colorA).endVertex();
+				buffer.vertex(x+w, y+w2, z+w).color(colorR, colorG, colorB, colorA).endVertex();
 				
-				buffer.vertex(x-w, y+w2, z-w).color(0, 255, 0, 255).endVertex();
-				buffer.vertex(x+w, y+w2, z-w).color(0, 255, 0, 255).endVertex();
+				buffer.vertex(x-w, y, z+w).color(colorR, colorG, colorB, colorA).endVertex();
+				buffer.vertex(x-w, y+w2, z+w).color(colorR, colorG, colorB, colorA).endVertex();
 				
-				buffer.vertex(x+w, y+w2, z-w).color(0, 255, 0, 255).endVertex();
-				buffer.vertex(x+w, y+w2, z+w).color(0, 255, 0, 255).endVertex();
+				buffer.vertex(x-w, y+w2, z-w).color(colorR, colorG, colorB, colorA).endVertex();
+				buffer.vertex(x+w, y+w2, z-w).color(colorR, colorG, colorB, colorA).endVertex();
 				
-				buffer.vertex(x+w, y+w2, z+w).color(0, 255, 0, 255).endVertex();
-				buffer.vertex(x-w, y+w2, z+w).color(0, 255, 0, 255).endVertex();
+				buffer.vertex(x+w, y+w2, z-w).color(colorR, colorG, colorB, colorA).endVertex();
+				buffer.vertex(x+w, y+w2, z+w).color(colorR, colorG, colorB, colorA).endVertex();
 				
-				buffer.vertex(x-w, y+w2, z+w).color(0, 255, 0, 255).endVertex();
-				buffer.vertex(x-w, y+w2, z-w).color(0, 255, 0, 255).endVertex();
+				buffer.vertex(x+w, y+w2, z+w).color(colorR, colorG, colorB, colorA).endVertex();
+				buffer.vertex(x-w, y+w2, z+w).color(colorR, colorG, colorB, colorA).endVertex();
+				
+				buffer.vertex(x-w, y+w2, z+w).color(colorR, colorG, colorB, colorA).endVertex();
+				buffer.vertex(x-w, y+w2, z-w).color(colorR, colorG, colorB, colorA).endVertex();
 				
 				buffer.end();
 				pingBuffer.upload(buffer);

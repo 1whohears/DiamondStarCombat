@@ -178,7 +178,7 @@ public final class ClientForgeEvents {
 			for (int i = 0; i < pings.size(); ++i) {
 				RadarPing p = pings.get(i);
 				if (i == selected) setSelectedColor();
-				else if (i == hoverIndex) setHoverColor();
+				else if (i == hoverIndex) setHoverColor(); // TODO display distance when hovering over it
 				else setDefaultColor();
 				//System.out.println(p.pos);
 				Vec3 view = m.gameRenderer.getMainCamera().getPosition();

@@ -21,7 +21,7 @@ public class UtilGeometry {
 	
 	public static boolean canEntitySeeEntity(Entity e1, Entity e2) {
 		// TODO is this math wrong? radar can't see players as far as it should
-		System.out.println("can "+e1+" see "+e2);
+		//System.out.println("can "+e1+" see "+e2);
 		Level level = e1.getLevel();
 		Vec3 diff = e2.position().subtract(e1.position());
 		Vec3 look = diff.normalize();
@@ -30,7 +30,7 @@ public class UtilGeometry {
 		int k = 0;
 		while (k++ < dist) {
 			BlockState block = level.getBlockState(new BlockPos(pos));
-			System.out.println(k+" blockstate "+block);
+			//System.out.println(k+" blockstate "+block);
 			if (block != null && !block.isAir()) return false;
 			pos = pos.add(look);
 		}

@@ -86,14 +86,27 @@ public final class ClientForgeEvents {
 		RadarData radar = plane.getRadar();
 		if (radar == null) return;
 		List<RadarPing> pings = radar.getRadarPings();
-		int selected = radar.getSelectedPingIndex();
-		if (pings == null) return;
-		for (int i = 0; i < pings.size(); ++i) {
-			RadarPing p = pings.get(i);
-			if (isPlayerLookingAtPing(player, p)) {
-				
+		//int selected = radar.getSelectedPingIndex();
+		boolean hovering = false;
+		if (pings != null) {
+			//System.out.println("ping size "+pings.size());
+			for (int i = 0; i < pings.size(); ++i) {
+				RadarPing p = pings.get(i);
+				if (isPlayerLookingAtPing(player, p)) {
+					hoverIndex = i;
+					hovering = true;
+					break;
+				}
 			}
 		}
+		if (!hovering) resetHoverIndex();
+		//System.out.println("selected = "+selected);
+		//System.out.println("hover index = "+hoverIndex);
+	}
+	
+	private static void resetHoverIndex() {
+		hoverIndex = -1;
+		//System.out.println("reset hover index");
 	}
 	
 	@SubscribeEvent
@@ -122,7 +135,7 @@ public final class ClientForgeEvents {
 	
 	private static VertexBuffer pingBuffer;
 	private static int colorR, colorG, colorB, colorA;
-	private static int hoverIndex;
+	private static int hoverIndex = -1;
 	
 	private static void setDefaultColor() {
 		colorR = 0;
@@ -147,7 +160,7 @@ public final class ClientForgeEvents {
 	
 	private static boolean isPlayerLookingAtPing(Player player, RadarPing ping) {
 		return UtilGeometry.isPointInsideCone(ping.pos, 
-				player.position().add(0, player.getEyeY(), 0), player.getLookAngle(), 5, 1000);
+				player.getEyePosition(), player.getLookAngle(), 10, 1000);
 	}
 	
 	@SubscribeEvent

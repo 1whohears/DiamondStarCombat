@@ -1,10 +1,22 @@
 package com.onewhohears.dscombat.client.event;
 
+import java.util.List;
+
+import org.lwjgl.opengl.GL11;
+
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexBuffer;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.KeyInit;
 import com.onewhohears.dscombat.common.PacketHandler;
 import com.onewhohears.dscombat.common.network.ServerBoundFlightControlPacket;
+import com.onewhohears.dscombat.data.RadarData;
+import com.onewhohears.dscombat.data.RadarData.RadarPing;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.aircraft.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.aircraft.parts.EntitySeatCamera;
@@ -12,18 +24,19 @@ import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderLevelLastEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.event.TickEvent.RenderTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -72,19 +85,114 @@ public final class ClientForgeEvents {
 	}
 	
 	@SubscribeEvent
+	public static void onClick(InputEvent.ClickInputEvent event) {
+		if (event.isAttack()) {
+			//System.out.println("input attack event");
+			Minecraft m = Minecraft.getInstance();
+			if (m.hitResult.getType() == HitResult.Type.ENTITY) {
+				EntityHitResult hit = (EntityHitResult) m.hitResult;
+				if (hit.getEntity().equals(m.player)) {
+					event.setSwingHand(false);
+					event.setCanceled(true);
+					//System.out.println("canceled");
+				}
+			}
+		}
+	}
+	
+	/*@SubscribeEvent
 	public static void renderClient(RenderTickEvent event) {
 		if (event.phase != Phase.START) return;
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
 		if (player == null) return;
-		
-	}
+	}*/
+	
+	private static VertexBuffer pingBuffer;
 	
 	@SubscribeEvent
-	public static void renderOverlay(RenderGameOverlayEvent.Pre event) {
-		//Minecraft.getInstance().getOverlay().blit(null, 0, 0, 0, 0, 0, 0);
-		//Minecraft m = Minecraft.getInstance();
-		//m.setOverlay(null);
+	public static void renderLevel(RenderLevelLastEvent event) {
+		Minecraft m = Minecraft.getInstance();
+		final var player = m.player;
+		if (player.getVehicle() instanceof EntitySeat seat 
+				&& seat.getVehicle() instanceof EntityAbstractAircraft plane) {
+			RadarData radar = plane.getRadar();
+			if (radar == null) return;
+			List<RadarPing> pings = radar.getRadarPings();
+			if (pings == null) return;
+			//System.out.println("RADAR PINGS");
+			for (int i = 0; i < pings.size(); ++i) {
+				RadarPing p = pings.get(i);
+				//System.out.println(p.pos);
+				Vec3 view = m.gameRenderer.getMainCamera().getPosition();
+				double x = p.pos.x, y = p.pos.y+0.02, z = p.pos.z, w2 = 1, w = w2/2;
+				
+				var tesselator = Tesselator.getInstance();
+				var buffer = tesselator.getBuilder();
+				if (pingBuffer != null) pingBuffer.close();
+				pingBuffer = new VertexBuffer();
+				buffer.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
+				// TODO change color if selected or hovering over
+				buffer.vertex(x-w, y, z-w).color(0, 255, 0, 255).endVertex();
+				buffer.vertex(x+w, y, z-w).color(0, 255, 0, 255).endVertex();
+				
+				buffer.vertex(x+w, y, z-w).color(0, 255, 0, 255).endVertex();
+				buffer.vertex(x+w, y, z+w).color(0, 255, 0, 255).endVertex();
+				
+				buffer.vertex(x+w, y, z+w).color(0, 255, 0, 255).endVertex();
+				buffer.vertex(x-w, y, z+w).color(0, 255, 0, 255).endVertex();
+				
+				buffer.vertex(x-w, y, z+w).color(0, 255, 0, 255).endVertex();
+				buffer.vertex(x-w, y, z-w).color(0, 255, 0, 255).endVertex();
+				
+				buffer.vertex(x-w, y, z-w).color(0, 255, 0, 255).endVertex();
+				buffer.vertex(x-w, y+w2, z-w).color(0, 255, 0, 255).endVertex();
+				
+				buffer.vertex(x+w, y, z-w).color(0, 255, 0, 255).endVertex();
+				buffer.vertex(x+w, y+w2, z-w).color(0, 255, 0, 255).endVertex();
+				
+				buffer.vertex(x+w, y, z+w).color(0, 255, 0, 255).endVertex();
+				buffer.vertex(x+w, y+w2, z+w).color(0, 255, 0, 255).endVertex();
+				
+				buffer.vertex(x-w, y, z+w).color(0, 255, 0, 255).endVertex();
+				buffer.vertex(x-w, y+w2, z+w).color(0, 255, 0, 255).endVertex();
+				
+				buffer.vertex(x-w, y+w2, z-w).color(0, 255, 0, 255).endVertex();
+				buffer.vertex(x+w, y+w2, z-w).color(0, 255, 0, 255).endVertex();
+				
+				buffer.vertex(x+w, y+w2, z-w).color(0, 255, 0, 255).endVertex();
+				buffer.vertex(x+w, y+w2, z+w).color(0, 255, 0, 255).endVertex();
+				
+				buffer.vertex(x+w, y+w2, z+w).color(0, 255, 0, 255).endVertex();
+				buffer.vertex(x-w, y+w2, z+w).color(0, 255, 0, 255).endVertex();
+				
+				buffer.vertex(x-w, y+w2, z+w).color(0, 255, 0, 255).endVertex();
+				buffer.vertex(x-w, y+w2, z-w).color(0, 255, 0, 255).endVertex();
+				
+				buffer.end();
+				pingBuffer.upload(buffer);
+
+				RenderSystem.depthMask(false);
+				RenderSystem.disableCull();
+				RenderSystem.enableBlend();
+				RenderSystem.defaultBlendFunc();
+				RenderSystem.disableTexture();
+				GL11.glEnable(GL11.GL_LINE_SMOOTH);
+				GL11.glEnable(GL11.GL_DEPTH_TEST);
+
+				PoseStack poseStack = event.getPoseStack();
+				poseStack.pushPose();
+				poseStack.translate(-view.x, -view.y, -view.z);
+				var shader = GameRenderer.getPositionColorShader();
+				pingBuffer.drawWithShader(poseStack.last().pose(), event.getProjectionMatrix().copy(), shader);
+				poseStack.popPose();
+
+				RenderSystem.depthMask(true);
+				RenderSystem.disableBlend();
+				RenderSystem.enableCull();
+				RenderSystem.enableTexture();
+			}
+		}
 	}
 	
 	@SubscribeEvent
@@ -168,22 +276,6 @@ public final class ClientForgeEvents {
 			if (playerCam) m.setCameraEntity(camera);
 		} else {
 			if (!playerCam) m.setCameraEntity(player);
-		}
-	}
-	
-	@SubscribeEvent
-	public static void onClick(InputEvent.ClickInputEvent event) {
-		if (event.isAttack()) {
-			//System.out.println("input attack event");
-			Minecraft m = Minecraft.getInstance();
-			if (m.hitResult.getType() == HitResult.Type.ENTITY) {
-				EntityHitResult hit = (EntityHitResult) m.hitResult;
-				if (hit.getEntity().equals(m.player)) {
-					event.setSwingHand(false);
-					event.setCanceled(true);
-					//System.out.println("canceled");
-				}
-			}
 		}
 	}
 	

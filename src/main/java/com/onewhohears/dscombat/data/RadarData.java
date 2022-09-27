@@ -3,6 +3,8 @@ package com.onewhohears.dscombat.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.onewhohears.dscombat.common.PacketHandler;
+import com.onewhohears.dscombat.common.network.ClientBoundPingsPacket;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityRocket;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
@@ -15,6 +17,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.network.PacketDistributor;
 
 public class RadarData extends PartData {
 	
@@ -25,7 +28,7 @@ public class RadarData extends PartData {
 	private boolean scanPlayers;
 	private boolean scanMobs;
 	
-	public List<Entity> targets = new ArrayList<Entity>();
+	public List<RadarPing> targets = new ArrayList<RadarPing>();
 	public Entity selected;
 	private int scanTicks;
 	private boolean freshTargets;
@@ -79,7 +82,7 @@ public class RadarData extends PartData {
 		buffer.writeBoolean(scanMobs);
 	}
 	
-	public List<Entity> tickUpdateTargets() {
+	public List<RadarPing> tickUpdateTargets(Entity radar) {
 		if (scanTicks > scanRate) scanTicks = 0;
 		else {
 			++scanTicks;
@@ -88,7 +91,6 @@ public class RadarData extends PartData {
 		}
 		freshTargets = true;
 		targets.clear();
-		Entity radar = this.getParent();
 		Level level = radar.level;
 		List<Entity> list = level.getEntities(radar, getRadarBoundingBox(radar));
 		for (int i = 0; i < list.size(); ++i) {
@@ -97,19 +99,21 @@ public class RadarData extends PartData {
 			if (this.scanAircraft && target instanceof EntityAbstractAircraft plane) {
 				if (!checkTargetRange(radar, target, plane.getStealth())) continue;
 				if (!checkCanSee(radar, target)) continue;
-				targets.add(target);
+				targets.add(new RadarPing(target));
 			} else if (this.scanPlayers && target instanceof Player player) {
 				if (!checkTargetRange(radar, target, 1)) continue;
 				if (!checkCanSee(radar, target)) continue;
-				targets.add(target);
+				targets.add(new RadarPing(target));
 			} else if (this.scanMobs && target instanceof Mob mob) {
 				if (!checkTargetRange(radar, target, 1)) continue;
 				if (!checkCanSee(radar, target)) continue;
-				targets.add(target);
+				targets.add(new RadarPing(target));
 			}
 		}
 		updateRockets();
-		// TODO send new targets to client
+		//System.out.println("chunk source "+radar.getCommandSenderWorld().getChunkSource().getClass().getName());
+		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> radar), 
+				new ClientBoundPingsPacket(radar.getId(), targets));
 		return targets;
 	}
 	
@@ -141,8 +145,16 @@ public class RadarData extends PartData {
 	 * USE ON CLIENT SIDE
 	 * @return
 	 */
-	public List<Entity> getRadarPings() {
+	public List<RadarPing> getRadarPings() {
 		return targets;
+	}
+	
+	/**
+	 * USE ON CLIENT SIDE
+	 * @param pings
+	 */
+	public void readPings(List<RadarPing> pings) {
+		targets = pings;
 	}
 	
 	private boolean checkTargetRange(Entity radar, Entity target, double rangeMod) {
@@ -230,6 +242,34 @@ public class RadarData extends PartData {
 	
 	public Entity getSelectedTarget() {
 		return selected;
+	}
+	
+	public static class RadarPing {
+		
+		public final int id;
+		public final Vec3 pos;
+		
+		public RadarPing(Entity ping) {
+			id = ping.getId();
+			pos = ping.position();
+		}
+		
+		public RadarPing(FriendlyByteBuf buffer) {
+			id = buffer.readInt();
+			double x, y, z;
+			x = buffer.readDouble();
+			y = buffer.readDouble();
+			z = buffer.readDouble();
+			pos = new Vec3(x, y, z);
+		}
+		
+		public void write(FriendlyByteBuf buffer) {
+			buffer.writeInt(id);
+			buffer.writeDouble(pos.x);
+			buffer.writeDouble(pos.y);
+			buffer.writeDouble(pos.z);
+		}
+		
 	}
 	
 }

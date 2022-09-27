@@ -277,7 +277,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		Entity controller = this.getControllingPassenger();
 		if (controller == null) return;
 		RadarData radar = getRadar();
-		if (radar != null) radar.tickUpdateTargets();
+		if (radar != null) radar.tickUpdateTargets(this);
 		if (this.inputShoot) {
 			WeaponSystem system = this.getPartsManager().getWeapons();
 			WeaponData data = system.getSelected();

@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.common;
 
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.common.network.ClientBoundPingsPacket;
 import com.onewhohears.dscombat.common.network.ServerBoundFlightControlPacket;
 import com.onewhohears.dscombat.common.network.ServerBoundQPacket;
 
@@ -29,6 +30,11 @@ public final class PacketHandler {
 			.encoder(ServerBoundQPacket::encode)
 			.decoder(ServerBoundQPacket::new)
 			.consumer(ServerBoundQPacket::handle)
+			.add();
+		INSTANCE.messageBuilder(ClientBoundPingsPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ClientBoundPingsPacket::encode)
+			.decoder(ClientBoundPingsPacket::new)
+			.consumer(ClientBoundPingsPacket::handle)
 			.add();
 	}
 	

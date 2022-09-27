@@ -40,7 +40,10 @@ public class EntityTestPlane extends EntityAbstractPlane {
 				0.1f, 0.2d, 1.0d);
 		test3.setCurrentAmmo(test3.getMaxAmmo());
 		pm.getWeapons().addWeapon(test3);
-		RadarData radar = new RadarData("main-radar", 500, 90, 20);
+		RadarData radar = new RadarData("main-radar", 1000, 90, 20);
+		radar.setScanAircraft(true);
+		radar.setScanPlayers(true);
+		radar.setScanMobs(true);
 		pm.addPart(radar);
 		super.setupAircraftParts();
 	}

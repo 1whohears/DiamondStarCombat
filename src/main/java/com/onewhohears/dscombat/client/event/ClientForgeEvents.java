@@ -76,16 +76,9 @@ public final class ClientForgeEvents {
 		plane.updateControls(throttleUp, throttleDown, pitchUp, pitchDown, 
 				rollLeft, rollRight, yawLeft, yawRight, 
 				mouseMode, flare, shoot, select);
-		/**
-		 * check if the currently selected weapon needs a packet with the target to fire
-		 * TODO get radar data of plane from the server to the client
-		 * draw boxes around potential radar targets
-		 * client clicks on those boxes to choose a target
-		 * presses shoot button to launch
-		 */
 		RadarData radar = plane.getRadar();
 		if (radar == null) return;
-		List<RadarPing> pings = radar.getRadarPings();
+		List<RadarPing> pings = radar.getClientRadarPings();
 		//int selected = radar.getSelectedPingIndex();
 		boolean hovering = false;
 		if (pings != null) {
@@ -95,9 +88,7 @@ public final class ClientForgeEvents {
 				if (isPlayerLookingAtPing(player, p)) {
 					hoverIndex = i;
 					hovering = true;
-					if (leftClick) {
-						radar.selectTarget(plane, p);
-					}
+					if (leftClick) radar.clientSelectTarget(plane, p);
 					break;
 				}
 			}
@@ -112,8 +103,8 @@ public final class ClientForgeEvents {
 		//System.out.println("reset hover index");
 	}
 	
-	private static boolean leftClick;
-	private static boolean rightClick;
+	private static boolean leftClick = false;;
+	private static boolean rightClick = false;
 	
 	@SubscribeEvent
 	public static void onClickInput(InputEvent.ClickInputEvent event) {
@@ -135,6 +126,7 @@ public final class ClientForgeEvents {
 	public static void onMouseInput(InputEvent.MouseInputEvent event) {
 		//System.out.println("mouse input button "+event.getButton());
 		//System.out.println("mouse input action "+event.getAction());
+		// TODO joins the level holding left click?
 		if (event.getButton() == 0) {
 			if (event.getAction() == 1) leftClick = true;
 			else leftClick = false;
@@ -189,8 +181,8 @@ public final class ClientForgeEvents {
 				&& seat.getVehicle() instanceof EntityAbstractAircraft plane) {
 			RadarData radar = plane.getRadar();
 			if (radar == null) return;
-			List<RadarPing> pings = radar.getRadarPings();
-			int selected = radar.getSelectedPingIndex();
+			List<RadarPing> pings = radar.getClientRadarPings();
+			int selected = radar.getClientSelectedPingIndex();
 			if (pings == null) return;
 			//System.out.println("RADAR PINGS");
 			for (int i = 0; i < pings.size(); ++i) {

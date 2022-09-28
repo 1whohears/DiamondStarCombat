@@ -49,7 +49,7 @@ public class ClientBoundPingsPacket extends IPacket {
 				Level world = m.level;
 				EntityAbstractAircraft plane = (EntityAbstractAircraft) world.getEntity(id);
 				RadarData radar = plane.getRadar();
-				radar.readPings(pings);
+				radar.readClientPingsFromServer(pings);
 				success.set(true);
 			});
 		});

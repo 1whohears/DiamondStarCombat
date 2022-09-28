@@ -28,11 +28,14 @@ public class RadarData extends PartData {
 	private boolean scanPlayers;
 	private boolean scanMobs;
 	
-	public List<RadarPing> targets = new ArrayList<RadarPing>();
-	private int scanTicks;
-	private boolean freshTargets;
+	private List<RadarPing> targets = new ArrayList<RadarPing>();
 	private int selectedIndex = -1;
+	private boolean freshTargets;
+	private int scanTicks;
 	private List<EntityRocket> rockets = new ArrayList<EntityRocket>();
+	
+	private List<RadarPing> clientTargets = new ArrayList<RadarPing>();
+	private int clientSelectedIndex = -1;
 	
 	public RadarData(String id, double range, double fov, int scanRate) {
 		super(id, Vec3.ZERO);
@@ -82,14 +85,16 @@ public class RadarData extends PartData {
 		buffer.writeBoolean(scanMobs);
 	}
 	
-	public List<RadarPing> tickUpdateTargets(Entity radar) {
+	public void tickUpdateTargets(Entity radar) {
 		if (scanTicks > scanRate) scanTicks = 0;
 		else {
 			++scanTicks;
 			freshTargets = false;
-			return targets;
+			return;
 		}
 		freshTargets = true;
+		RadarPing old = null; 
+		if (selectedIndex != -1) old = targets.get(selectedIndex);
 		targets.clear();
 		selectedIndex = -1;
 		Level level = radar.level;
@@ -111,11 +116,15 @@ public class RadarData extends PartData {
 				targets.add(new RadarPing(target));
 			}
 		}
+		if (old != null) for (int i = 0; i < targets.size(); ++i) 
+			if (targets.get(i).id == old.id) {
+				selectedIndex = i;
+				break;
+			}
 		updateRockets();
 		//System.out.println("chunk source "+radar.getCommandSenderWorld().getChunkSource().getClass().getName());
 		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> radar), 
 				new ClientBoundPingsPacket(radar.getId(), targets));
-		return targets;
 	}
 	
 	private void updateRockets() {
@@ -133,53 +142,45 @@ public class RadarData extends PartData {
 		if (!rockets.contains(r)) rockets.add(r);
 	}
 	
-	public RadarPing getPingById(int id) {
-		for (int i = 0; i < targets.size(); ++i) if (targets.get(i).id == id) return targets.get(i);
-		return null;
-	}
-	
-	/**
-	 * USE ON CLIENT SIDE
-	 * @param target
-	 */
-	public void selectTarget(Entity radar, RadarPing ping) {
+	public void selectTarget(RadarPing ping) {
 		int id = ping.id;
 		selectedIndex = -1;
 		for (int i = 0; i < targets.size(); ++i) if (targets.get(i).id == id) selectedIndex = i;
-		System.out.println("new selected index "+selectedIndex);
-		// TODO send packet to server of selected target
-	}
-	
-	public int getSelectedPingIndex() {
-		return selectedIndex;
 	}
 	
 	public Entity getSelectedTarget() {
 		return null;
 	}
 	
-	/**
-	 * USE ON CLIENT SIDE
-	 * @return
-	 */
-	public List<RadarPing> getRadarPings() {
-		return targets;
+	public void clientSelectTarget(Entity radar, RadarPing ping) {
+		int id = ping.id;
+		clientSelectedIndex = -1;
+		for (int i = 0; i < clientTargets.size(); ++i) if (clientTargets.get(i).id == id) clientSelectedIndex = i;
+		//System.out.println("new selected index "+clientSelectedIndex);
+		// TODO send packet to server of selected target
 	}
 	
-	/**
-	 * USE ON CLIENT SIDE
-	 * @param pings
-	 */
-	public void readPings(List<RadarPing> pings) {
+	public int getClientSelectedPingIndex() {
+		return clientSelectedIndex;
+	}
+	
+	public List<RadarPing> getClientRadarPings() {
+		return clientTargets;
+	}
+	
+	public void readClientPingsFromServer(List<RadarPing> pings) {
+		//System.out.println("pre selected index "+clientSelectedIndex);
 		RadarPing oldSelect = null; 
-		if (selectedIndex != -1) oldSelect = targets.get(selectedIndex);
-		targets = pings;
-		selectedIndex = -1;
+		if (clientSelectedIndex != -1) oldSelect = clientTargets.get(clientSelectedIndex);
+		clientTargets = pings;
+		clientSelectedIndex = -1;
 		if (oldSelect != null) {
 			int id = oldSelect.id;
-			for (int i = 0; i < targets.size(); ++i) 
-				if (targets.get(i).id == id) selectedIndex = i;
+			for (int i = 0; i < clientTargets.size(); ++i) 
+				if (clientTargets.get(i).id == id) clientSelectedIndex = i;
 		}
+		//System.out.println("old select "+oldSelect);
+		//System.out.println("refreshed selected index "+clientSelectedIndex);
 	}
 	
 	private boolean checkTargetRange(Entity radar, Entity target, double rangeMod) {

@@ -7,7 +7,7 @@ import com.onewhohears.dscombat.data.BulletData;
 import com.onewhohears.dscombat.data.PartData;
 import com.onewhohears.dscombat.data.PartsManager;
 import com.onewhohears.dscombat.data.RadarData;
-import com.onewhohears.dscombat.data.RocketData;
+import com.onewhohears.dscombat.data.MissileData;
 import com.onewhohears.dscombat.data.SeatData;
 import com.onewhohears.dscombat.data.WeaponData;
 
@@ -88,7 +88,7 @@ public class DataSerializers {
 			case BULLET:
 				return new BulletData(buffer);
 			case ROCKET:
-				return new RocketData(buffer);
+				return new MissileData(buffer);
 			}
 			return null;
 		}

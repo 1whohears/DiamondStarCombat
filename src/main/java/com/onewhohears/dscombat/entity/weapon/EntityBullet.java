@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.data.BulletData;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
+import com.onewhohears.dscombat.init.ModEntities;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.damagesource.DamageSource;
@@ -28,7 +29,9 @@ public class EntityBullet extends EntityAbstractWeapon {
 	}
 	
 	public EntityBullet(Level level, Entity owner, BulletData data) {
-		super(level, owner, data);
+		this(ModEntities.BULLET.get(), level);
+		this.setOwner(owner);
+		this.setWeaponData(data);
 	}
 	
 	/*@Override
@@ -45,6 +48,7 @@ public class EntityBullet extends EntityAbstractWeapon {
 	
 	@Override
 	public void tick() {
+		//System.out.println("bullet "+this.tickCount+" "+this.level);
 		super.tick();
 		//System.out.println(this);
 		Vec3 vec3 = this.getDeltaMovement();
@@ -89,6 +93,14 @@ public class EntityBullet extends EntityAbstractWeapon {
 		}
 		move(MoverType.SELF, getDeltaMovement());
 		setPacketCoordinates(this.getX(), this.getY(), this.getZ());
+		/*if (this.level.isClientSide) {
+			Vec3 move = this.getDeltaMovement();
+			level.addParticle(ParticleTypes.FIREWORK, 
+					this.getX(), this.getY(), this.getZ(), 
+					-move.x * 0.5D + random.nextGaussian() * 0.05D, 
+					-move.y * 0.5D + random.nextGaussian() * 0.05D, 
+					-move.y * 0.5D + random.nextGaussian() * 0.05D);
+		}*/
 	}
 	
 	@Override

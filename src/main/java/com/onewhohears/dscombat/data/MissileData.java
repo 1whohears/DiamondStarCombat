@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.data;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
-import com.onewhohears.dscombat.entity.weapon.EntityRocket;
+import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.nbt.CompoundTag;
@@ -12,7 +12,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class RocketData extends BulletData {
+public class MissileData extends BulletData {
 	
 	public static enum GuidanceType {
 		OWNER_RADAR,
@@ -32,7 +32,7 @@ public class RocketData extends BulletData {
 	private double acceleration;
 	private double fuseDist;
 	
-	public RocketData(String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, 
+	public MissileData(String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, 
 			float damage, double speed, boolean explosive, boolean destroyTerrain, 
 			boolean causesFire, double explosiveDamage, float explosionRadius,
 			TargetType tType, GuidanceType gType, float maxRot, 
@@ -46,7 +46,7 @@ public class RocketData extends BulletData {
 		this.fuseDist = fuseDist;
 	}
 	
-	public RocketData(CompoundTag tag) {
+	public MissileData(CompoundTag tag) {
 		super(tag);
 		targetType = TargetType.values()[tag.getInt("targetType")];
 		guidanceType = GuidanceType.values()[tag.getInt("guidanceType")];
@@ -66,7 +66,7 @@ public class RocketData extends BulletData {
 		return tag;
 	}
 	
-	public RocketData(FriendlyByteBuf buffer) {
+	public MissileData(FriendlyByteBuf buffer) {
 		super(buffer);
 		targetType = TargetType.values()[buffer.readInt()];
 		guidanceType = GuidanceType.values()[buffer.readInt()];
@@ -96,7 +96,7 @@ public class RocketData extends BulletData {
 			return null;
 		}
 		System.out.println(this.getId()+" ammo "+this.getCurrentAmmo());
-		EntityRocket rocket = new EntityRocket(level, owner, this);
+		EntityMissile rocket = new EntityMissile(level, owner, this);
 		rocket.setPos(vehicle.position()
 				.add(UtilAngles.rotateVector(this.getLaunchPos(), vehicleQ)));
 		rocket.setDeltaMovement(direction.scale(this.getSpeed()).add(vehicle.getDeltaMovement()));
@@ -138,7 +138,7 @@ public class RocketData extends BulletData {
 		return rocket;
 	}
 	
-	public void tickGuide(EntityRocket missile) {
+	public void tickGuide(EntityMissile missile) {
 		if (getTargetType() == TargetType.POS) {
 			guideToTarget(missile, missile.targetPos);
 		} else if (getGuidanceType() == GuidanceType.OWNER_RADAR) {
@@ -150,12 +150,12 @@ public class RocketData extends BulletData {
 		}
 	}
 	
-	public void guideToTarget(EntityRocket missile, Entity target) {
+	public void guideToTarget(EntityMissile missile, Entity target) {
 		if (target == null) return;
 		this.guideToTarget(missile, target.position());
 	}
 	
-	public void guideToTarget(EntityRocket missile, Vec3 target) {
+	public void guideToTarget(EntityMissile missile, Vec3 target) {
 		if (target == null) {
 			missile.discard();
 			return;
@@ -200,7 +200,7 @@ public class RocketData extends BulletData {
 		missile.setYRot(nry);
 	}
 	
-	public void irGuidance(EntityRocket missile) {
+	public void irGuidance(EntityMissile missile) {
 		
 	}
 	

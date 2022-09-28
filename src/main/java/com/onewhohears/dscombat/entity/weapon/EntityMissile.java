@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.entity.weapon;
 
-import com.onewhohears.dscombat.data.RocketData;
+import com.onewhohears.dscombat.data.MissileData;
+import com.onewhohears.dscombat.init.ModEntities;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.Entity;
@@ -8,37 +9,39 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class EntityRocket extends EntityBullet {
+public class EntityMissile extends EntityBullet {
 	
 	public Entity parent;
 	public Entity target;
 	public Vec3 targetPos;
 	
-	public EntityRocket(EntityType<? extends EntityBullet> type, Level level) {
+	public EntityMissile(EntityType<? extends EntityMissile> type, Level level) {
 		super(type, level);
 	}
 	
-	public EntityRocket(Level level, Entity owner, RocketData data) {
-		super(level, owner, data);
+	public EntityMissile(Level level, Entity owner, MissileData data) {
+		this(ModEntities.MISSILE.get(), level);
+		this.setOwner(owner);
+		this.setWeaponData(data);
 	}
 	
 	@Override
 	public void tick() {
+		//System.out.println("rocket "+this.tickCount+" "+this.level);
+		super.tick();
 		if (!this.level.isClientSide) {
-			RocketData data = (RocketData)this.getWeaponData();
+			MissileData data = (MissileData)this.getWeaponData();
 			data.tickGuide(this);
 			motionClamp();
 			// TODO explode if close enough to the target
 		}
-		super.tick();
-		if (this.level.isClientSide /*&& this.tickCount % 2 < 2*/) {
-			// TODO why are particles not showing / client side not firing?
-			System.out.println("making particle");
+		if (this.level.isClientSide && this.tickCount % 2 == 0) {
+			Vec3 move = this.getDeltaMovement();
 			level.addParticle(ParticleTypes.FIREWORK, 
 					this.getX(), this.getY(), this.getZ(), 
-					this.random.nextGaussian() * 0.05D, 
-					-this.getDeltaMovement().y * 0.5D, 
-					this.random.nextGaussian() * 0.05D);
+					-move.x * 0.5D + random.nextGaussian() * 0.05D, 
+					-move.y * 0.5D + random.nextGaussian() * 0.05D, 
+					-move.y * 0.5D + random.nextGaussian() * 0.05D);
 		}
 	}
 	

@@ -3,7 +3,6 @@ package com.onewhohears.dscombat.entity.weapon;
 import com.onewhohears.dscombat.data.BulletData;
 import com.onewhohears.dscombat.data.WeaponData;
 import com.onewhohears.dscombat.init.DataSerializers;
-import com.onewhohears.dscombat.init.ModEntities;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -21,12 +20,6 @@ public abstract class EntityAbstractWeapon extends Projectile {
 	
 	public EntityAbstractWeapon(EntityType<? extends EntityAbstractWeapon> type, Level level) {
 		super(type, level);
-	}
-	
-	public EntityAbstractWeapon(Level level, Entity pilot, WeaponData data) {
-		super(ModEntities.BULLET.get(), level);
-		this.setOwner(pilot);
-		this.setWeaponData(data);
 	}
 
 	@Override
@@ -48,16 +41,15 @@ public abstract class EntityAbstractWeapon extends Projectile {
 	
 	@Override
 	public void tick() {
+		//System.out.println("weapon "+this.tickCount+" "+this.level);
 		super.tick();
 		/*if (!this.level.isClientSide && touchingUnloadedChunk()) {
 			//System.out.println("bullet unloaded");
 			discard(); 
-			return; 
 		}*/
 		if (!this.level.isClientSide && this.tickCount > this.getWeaponData().getMaxAge()) { 
 			//System.out.println("bullet to old");
 			discard(); 
-			return; 
 		}
 	}
 	

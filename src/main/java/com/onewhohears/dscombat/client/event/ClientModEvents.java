@@ -38,6 +38,6 @@ public class ClientModEvents {
 		event.registerEntityRenderer(ModEntities.SEAT.get(), RendererEntitySeat::new);
 		event.registerEntityRenderer(ModEntities.CAMERA.get(), RendererEntitySeatCamera::new);
 		event.registerEntityRenderer(ModEntities.BULLET.get(), RendererEntityAbstractWeapon::new);
-		event.registerEntityRenderer(ModEntities.ROCKET.get(), RendererEntityAbstractWeapon::new);
+		event.registerEntityRenderer(ModEntities.MISSILE.get(), RendererEntityAbstractWeapon::new);
 	}
 }

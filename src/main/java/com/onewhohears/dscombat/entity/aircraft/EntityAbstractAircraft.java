@@ -109,7 +109,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	@Override
 	public void tick() {
-		//System.out.println("client side "+this.level.isClientSide);
+		//System.out.println(this.tickCount+" "+this.level);
 		if (this.firstTick) init();
 		super.tick();
 		if (!level.isClientSide) this.getPartsManager().getWeapons().tick();

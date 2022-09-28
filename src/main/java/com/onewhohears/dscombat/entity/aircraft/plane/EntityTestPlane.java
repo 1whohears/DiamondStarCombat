@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.entity.aircraft.plane;
 import com.onewhohears.dscombat.data.BulletData;
 import com.onewhohears.dscombat.data.PartsManager;
 import com.onewhohears.dscombat.data.RadarData;
-import com.onewhohears.dscombat.data.RocketData;
+import com.onewhohears.dscombat.data.MissileData;
 import com.onewhohears.dscombat.data.SeatData;
 
 import net.minecraft.nbt.CompoundTag;
@@ -34,9 +34,9 @@ public class EntityTestPlane extends EntityAbstractPlane {
 				600, 100000, 15, 100, 4, true, true, false, 100d, 4f);
 		test2.setCurrentAmmo(test2.getMaxAmmo());
 		pm.getWeapons().addWeapon(test2);
-		RocketData test3 = new RocketData("bullet3", new Vec3(0, 0.5, 1),
+		MissileData test3 = new MissileData("bullet3", new Vec3(0, 0.5, 1),
 				600, 100000, 15, 1000, 1d, true, true, false, 100d, 8f,
-				RocketData.TargetType.GROUND, RocketData.GuidanceType.PITBULL,
+				MissileData.TargetType.GROUND, MissileData.GuidanceType.PITBULL,
 				0.1f, 0.2d, 1.0d);
 		test3.setCurrentAmmo(test3.getMaxAmmo());
 		pm.getWeapons().addWeapon(test3);

@@ -7,7 +7,7 @@ import com.onewhohears.dscombat.common.PacketHandler;
 import com.onewhohears.dscombat.common.network.ClientBoundPingsPacket;
 import com.onewhohears.dscombat.common.network.ServerBoundPingSelectPacket;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
-import com.onewhohears.dscombat.entity.weapon.EntityRocket;
+import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.nbt.CompoundTag;
@@ -33,7 +33,7 @@ public class RadarData extends PartData {
 	private int selectedIndex = -1;
 	private boolean freshTargets;
 	private int scanTicks;
-	private List<EntityRocket> rockets = new ArrayList<EntityRocket>();
+	private List<EntityMissile> rockets = new ArrayList<EntityMissile>();
 	
 	private List<RadarPing> clientTargets = new ArrayList<RadarPing>();
 	private int clientSelectedIndex = -1;
@@ -130,7 +130,7 @@ public class RadarData extends PartData {
 	
 	private void updateRockets() {
 		for (int i = 0; i < rockets.size(); ++i) {
-			EntityRocket r = rockets.get(i);
+			EntityMissile r = rockets.get(i);
 			if (r.isRemoved()) {
 				rockets.remove(i--);
 				continue;
@@ -139,7 +139,7 @@ public class RadarData extends PartData {
 		}
 	}
 	
-	public void addRocket(EntityRocket r) {
+	public void addRocket(EntityMissile r) {
 		if (!rockets.contains(r)) rockets.add(r);
 	}
 	

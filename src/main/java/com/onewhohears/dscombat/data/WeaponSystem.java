@@ -34,7 +34,7 @@ public class WeaponSystem {
 				weapons.add(new BulletData(tag));
 				break;
 			case ROCKET:
-				weapons.add(new RocketData(tag));
+				weapons.add(new MissileData(tag));
 				break;
 			}
 		}

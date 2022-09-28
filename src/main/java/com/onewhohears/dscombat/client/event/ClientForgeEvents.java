@@ -95,6 +95,9 @@ public final class ClientForgeEvents {
 				if (isPlayerLookingAtPing(player, p)) {
 					hoverIndex = i;
 					hovering = true;
+					if (leftClick) {
+						radar.selectTarget(plane, p);
+					}
 					break;
 				}
 			}
@@ -109,8 +112,11 @@ public final class ClientForgeEvents {
 		//System.out.println("reset hover index");
 	}
 	
+	private static boolean leftClick;
+	private static boolean rightClick;
+	
 	@SubscribeEvent
-	public static void onClick(InputEvent.ClickInputEvent event) {
+	public static void onClickInput(InputEvent.ClickInputEvent event) {
 		if (event.isAttack()) {
 			//System.out.println("input attack event");
 			Minecraft m = Minecraft.getInstance();
@@ -125,13 +131,25 @@ public final class ClientForgeEvents {
 		}
 	}
 	
-	/*@SubscribeEvent
-	public static void renderClient(RenderTickEvent event) {
-		if (event.phase != Phase.START) return;
-		Minecraft m = Minecraft.getInstance();
-		final var player = m.player;
-		if (player == null) return;
-	}*/
+	@SubscribeEvent
+	public static void onMouseInput(InputEvent.MouseInputEvent event) {
+		//System.out.println("mouse input button "+event.getButton());
+		//System.out.println("mouse input action "+event.getAction());
+		if (event.getButton() == 0) {
+			if (event.getAction() == 1) leftClick = true;
+			else leftClick = false;
+		}
+		if (event.getButton() == 1) {
+			if (event.getAction() == 1) rightClick = true;
+			else rightClick = false;
+		} 
+	}
+	
+	@SubscribeEvent
+	public static void onScrollInput(InputEvent.MouseScrollEvent event) {
+		//System.out.println(event.getMouseX()+" "+event.getMouseY());
+		//System.out.println("mouse scroll "+event.getScrollDelta());
+	}
 	
 	private static VertexBuffer pingBuffer;
 	private static int colorR, colorG, colorB, colorA;

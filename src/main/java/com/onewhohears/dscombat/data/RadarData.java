@@ -142,10 +142,11 @@ public class RadarData extends PartData {
 	 * USE ON CLIENT SIDE
 	 * @param target
 	 */
-	public void selectTarget(RadarPing ping) {
+	public void selectTarget(Entity radar, RadarPing ping) {
 		int id = ping.id;
-		for (int i = 0; i < targets.size(); ++i) if (targets.get(i).id == id) selectedIndex = i;
 		selectedIndex = -1;
+		for (int i = 0; i < targets.size(); ++i) if (targets.get(i).id == id) selectedIndex = i;
+		System.out.println("new selected index "+selectedIndex);
 		// TODO send packet to server of selected target
 	}
 	

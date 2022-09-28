@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.common;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.network.ClientBoundPingsPacket;
 import com.onewhohears.dscombat.common.network.ServerBoundFlightControlPacket;
+import com.onewhohears.dscombat.common.network.ServerBoundPingSelectPacket;
 import com.onewhohears.dscombat.common.network.ServerBoundQPacket;
 
 import net.minecraft.resources.ResourceLocation;
@@ -35,6 +36,11 @@ public final class PacketHandler {
 			.encoder(ClientBoundPingsPacket::encode)
 			.decoder(ClientBoundPingsPacket::new)
 			.consumer(ClientBoundPingsPacket::handle)
+			.add();
+		INSTANCE.messageBuilder(ServerBoundPingSelectPacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
+			.encoder(ServerBoundPingSelectPacket::encode)
+			.decoder(ServerBoundPingSelectPacket::new)
+			.consumer(ServerBoundPingSelectPacket::handle)
 			.add();
 	}
 	

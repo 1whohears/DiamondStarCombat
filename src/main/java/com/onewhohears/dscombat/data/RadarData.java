@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.onewhohears.dscombat.common.PacketHandler;
 import com.onewhohears.dscombat.common.network.ClientBoundPingsPacket;
+import com.onewhohears.dscombat.common.network.ServerBoundPingSelectPacket;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityRocket;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
@@ -145,19 +146,29 @@ public class RadarData extends PartData {
 	public void selectTarget(RadarPing ping) {
 		int id = ping.id;
 		selectedIndex = -1;
-		for (int i = 0; i < targets.size(); ++i) if (targets.get(i).id == id) selectedIndex = i;
+		for (int i = 0; i < targets.size(); ++i) if (targets.get(i).id == id) {
+			selectedIndex = i;
+			break;
+		}
 	}
 	
-	public Entity getSelectedTarget() {
-		return null;
+	public Entity getSelectedTarget(Level level) {
+		if (selectedIndex == -1) return null;
+		int id = targets.get(selectedIndex).id;
+		return level.getEntity(id);
 	}
 	
 	public void clientSelectTarget(Entity radar, RadarPing ping) {
 		int id = ping.id;
 		clientSelectedIndex = -1;
-		for (int i = 0; i < clientTargets.size(); ++i) if (clientTargets.get(i).id == id) clientSelectedIndex = i;
+		for (int i = 0; i < clientTargets.size(); ++i) 
+			if (clientTargets.get(i).id == id) {
+				clientSelectedIndex = i;
+				PacketHandler.INSTANCE.sendToServer(new ServerBoundPingSelectPacket(
+						radar.getId(), ping));
+				break;
+			}
 		//System.out.println("new selected index "+clientSelectedIndex);
-		// TODO send packet to server of selected target
 	}
 	
 	public int getClientSelectedPingIndex() {
@@ -177,7 +188,10 @@ public class RadarData extends PartData {
 		if (oldSelect != null) {
 			int id = oldSelect.id;
 			for (int i = 0; i < clientTargets.size(); ++i) 
-				if (clientTargets.get(i).id == id) clientSelectedIndex = i;
+				if (clientTargets.get(i).id == id) {
+					clientSelectedIndex = i;
+					break;
+				}
 		}
 		//System.out.println("old select "+oldSelect);
 		//System.out.println("refreshed selected index "+clientSelectedIndex);

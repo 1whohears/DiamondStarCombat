@@ -97,13 +97,21 @@ public class BulletData extends WeaponData {
 
 	@Override
 	public EntityAbstractWeapon shoot(Level level, Entity vehicle, Entity owner, Vec3 direction, Quaternion vehicleQ) {
-		if (!this.checkShoot(1)) return null;
+		if (!this.checkRecoil()) {
+			this.setLaunchFail(null);
+			return null;
+		}
+		if (!this.checkShoot(1)) {
+			this.setLaunchFail("not enough ammo");
+			return null;
+		}
 		System.out.println(this.getId()+" ammo "+this.getCurrentAmmo());
 		EntityBullet bullet = new EntityBullet(level, owner, this);
 		bullet.setPos(vehicle.position()
 				.add(UtilAngles.rotateVector(this.getLaunchPos(), vehicleQ)));
 		bullet.setDeltaMovement(direction.scale(speed).add(vehicle.getDeltaMovement()));
 		level.addFreshEntity(bullet);
+		this.setLaunchSuccess(1);
 		return bullet;
 	}
 	

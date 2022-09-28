@@ -28,12 +28,18 @@ public class EntityRocket extends EntityBullet {
 			RocketData data = (RocketData)this.getWeaponData();
 			data.tickGuide(this);
 			motionClamp();
-		} else {
-			level.addParticle(ParticleTypes.FIREWORK, 
-					this.getX(), this.getY(), this.getZ(), 
-					0.0D, 0.0D, 0.0D);
+			// TODO explode if close enough to the target
 		}
 		super.tick();
+		if (this.level.isClientSide /*&& this.tickCount % 2 < 2*/) {
+			// TODO why are particles not showing / client side not firing?
+			System.out.println("making particle");
+			level.addParticle(ParticleTypes.FIREWORK, 
+					this.getX(), this.getY(), this.getZ(), 
+					this.random.nextGaussian() * 0.05D, 
+					-this.getDeltaMovement().y * 0.5D, 
+					this.random.nextGaussian() * 0.05D);
+		}
 	}
 	
 	public void motionClamp() {

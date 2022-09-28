@@ -26,7 +26,9 @@ import com.onewhohears.dscombat.util.math.UtilGeometry;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -38,6 +40,7 @@ import net.minecraftforge.client.event.RenderLevelLastEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -126,7 +129,6 @@ public final class ClientForgeEvents {
 	public static void onMouseInput(InputEvent.MouseInputEvent event) {
 		//System.out.println("mouse input button "+event.getButton());
 		//System.out.println("mouse input action "+event.getAction());
-		// TODO joins the level holding left click?
 		if (event.getButton() == 0) {
 			if (event.getAction() == 1) leftClick = true;
 			else leftClick = false;
@@ -363,5 +365,20 @@ public final class ClientForgeEvents {
 			event.setCanceled(true);
 		}
 	}*/
+	
+	@SubscribeEvent
+	public static void onEntityJoin(EntityJoinWorldEvent event) {
+		Level level = event.getWorld();
+		if (!level.isClientSide) return;
+		Minecraft m = Minecraft.getInstance();
+		Entity entity = event.getEntity();
+		//System.out.println("entity joined client "+entity);
+		if (entity instanceof Player player) {
+			if (m.player.equals(player)) {
+				leftClick = false;
+				rightClick = false;
+			}
+		}
+	}
 	
 }

@@ -46,6 +46,7 @@ public class BombData extends BulletData {
 	public EntityAbstractWeapon shoot(Level level, Entity vehicle, Entity owner, Vec3 direction, Quaternion vehicleQ) {
 		if (!this.checkShoot(1)) return null;
 		System.out.println(this.getId()+" ammo "+this.getCurrentAmmo());
+		this.setLaunchFail("bombs are not added yet");
 		return null;
 	}
 }

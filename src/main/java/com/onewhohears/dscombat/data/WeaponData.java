@@ -2,6 +2,8 @@ package com.onewhohears.dscombat.data;
 
 import java.nio.charset.Charset;
 
+import javax.annotation.Nullable;
+
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
 
@@ -20,6 +22,7 @@ public abstract class WeaponData {
 	private int maxAmmo;
 	private int fireRate;
 	private int recoilTime;
+	private String failedLaunchReason;
 	
 	public static enum WeaponType {
 		BULLET,
@@ -104,11 +107,11 @@ public abstract class WeaponData {
 	 * @return if this weapon can shoot
 	 */
 	public boolean checkShoot(int ammoNum) {
-		if (currentAmmo < ammoNum) return false;
-		if (recoilTime > 1) return false;
-		recoilTime = this.getFireRate();
-		this.addAmmo(-ammoNum);
-		return true;
+		return currentAmmo >= ammoNum;
+	}
+	
+	public boolean checkRecoil() {
+		return recoilTime <= 1;
 	}
 	
 	public String getId() {
@@ -157,8 +160,23 @@ public abstract class WeaponData {
 		this.fireRate = fireRate;
 	}
 	
-	public boolean mustSelectTarget() {
-		return false;
+	public boolean isFailedLaunch() {
+		return failedLaunchReason != null;
+	}
+	
+	@Nullable
+	public String getFailedLaunchReason() {
+		return failedLaunchReason;
+	}
+	
+	public void setLaunchSuccess(int ammoNum) {
+		failedLaunchReason = null;
+		this.addAmmo(-ammoNum);
+		recoilTime = this.getFireRate();
+	}
+	
+	public void setLaunchFail(String failedLaunchReason) {
+		this.failedLaunchReason = failedLaunchReason;
 	}
 	
 }

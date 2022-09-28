@@ -87,31 +87,54 @@ public class RocketData extends BulletData {
 	
 	@Override
 	public EntityAbstractWeapon shoot(Level level, Entity vehicle, Entity owner, Vec3 direction, Quaternion vehicleQ) {
-		if (!this.checkShoot(1)) return null;
+		if (!this.checkRecoil()) {
+			this.setLaunchFail(null);
+			return null;
+		}
+		if (!this.checkShoot(1)) {
+			this.setLaunchFail("not enough ammo");
+			return null;
+		}
 		System.out.println(this.getId()+" ammo "+this.getCurrentAmmo());
 		EntityRocket rocket = new EntityRocket(level, owner, this);
 		rocket.setPos(vehicle.position()
 				.add(UtilAngles.rotateVector(this.getLaunchPos(), vehicleQ)));
 		rocket.setDeltaMovement(direction.scale(this.getSpeed()).add(vehicle.getDeltaMovement()));
 		rocket.parent = vehicle;
-		if (vehicle instanceof EntityAbstractAircraft plane) {
+		if (targetType == TargetType.POS) {
+			rocket.targetPos = Vec3.ZERO;
+		} else if (guidanceType != GuidanceType.IR) {
+			if (!(vehicle instanceof EntityAbstractAircraft plane)) {
+				this.setLaunchFail("this rocket must be launched from an aircraft");
+				return null;
+			}
 			RadarData radar = plane.getRadar();
-			if (radar != null) {
-				Entity target = radar.getSelectedTarget();
-				if (targetType == TargetType.POS) {
-					rocket.targetPos = Vec3.ZERO;
-				} else if (target != null) {
-					if (guidanceType == GuidanceType.OWNER_RADAR) {
-						rocket.targetPos = target.position();
-						rocket.target = target;
-						radar.addRocket(rocket);
-					} else if (guidanceType == GuidanceType.PITBULL) {
-						rocket.target = target;
-					}
-				} 
+			if (radar == null) {
+				this.setLaunchFail("this rocket requires a radar on this aircraft");
+				return null;
+			}
+			Entity target = radar.getSelectedTarget(level);
+			if (target == null) {
+				this.setLaunchFail("you have not selected an enemy to shoot");
+				return null;
+			}
+			if (targetType == TargetType.AIR && target.isOnGround()) {
+				this.setLaunchFail("this missile can only shoot AIRBORN targets");
+				return null;
+			} else if (targetType == TargetType.GROUND && !target.isOnGround()) {
+				this.setLaunchFail("this missile can only shoot GROUNDED targets");
+				return null;
+			}
+			if (guidanceType == GuidanceType.OWNER_RADAR) {
+				rocket.targetPos = target.position();
+				rocket.target = target;
+				radar.addRocket(rocket);
+			} else if (guidanceType == GuidanceType.PITBULL) {
+				rocket.target = target;
 			}
 		}
 		level.addFreshEntity(rocket);
+		this.setLaunchSuccess(1);
 		return rocket;
 	}
 	
@@ -204,11 +227,6 @@ public class RocketData extends BulletData {
 
 	public double getFuseDist() {
 		return fuseDist;
-	}
-	
-	@Override
-	public boolean mustSelectTarget() {
-		return true;
 	}
 
 }

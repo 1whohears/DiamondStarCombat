@@ -36,6 +36,7 @@ public class EntityMissile extends EntityBullet {
 	@Override
 	public void tick() {
 		//System.out.println("rocket "+this.tickCount+" "+this.level);
+		// TODO have another player watch the missile because it doesn't visually look like it's hitting the target
 		super.tick();
 		if (!this.level.isClientSide) {
 			MissileData data = (MissileData)this.getWeaponData();
@@ -47,7 +48,7 @@ public class EntityMissile extends EntityBullet {
 				}
 			}
 		}
-		if (this.level.isClientSide && this.tickCount % 2 == 0) {
+		if (this.level.isClientSide /*&& this.tickCount % 2 == 0*/) {
 			Vec3 move = this.getDeltaMovement();
 			level.addParticle(ParticleTypes.FIREWORK, 
 					this.getX(), this.getY(), this.getZ(), 

@@ -15,8 +15,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class EntityMissile extends EntityBullet {
 	
-	private static final ResourceLocation TEXTURE = new ResourceLocation(DSCombatMod.MODID, "textures/entities/missile1.png");
-	public static EntityModel<EntityTestPlane> MODEL = null;
+	private static final ResourceLocation TEXTURE_MISSILE1 = new ResourceLocation(DSCombatMod.MODID, "textures/entities/missile1.png");
+	public static EntityModel<EntityTestPlane> MODEL_MISSILE1 = null;
 	
 	public Entity parent;
 	public Entity target;
@@ -62,12 +62,12 @@ public class EntityMissile extends EntityBullet {
 	
 	@Override
 	public ResourceLocation getTexture() {
-		return TEXTURE;
+		return TEXTURE_MISSILE1;
 	}
 	
 	@Override
 	public EntityModel<?> getModel() {
-		return MODEL;
+		return MODEL_MISSILE1;
 	}
 
 }

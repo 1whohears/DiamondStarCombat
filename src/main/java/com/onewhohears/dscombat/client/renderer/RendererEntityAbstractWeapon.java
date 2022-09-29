@@ -23,8 +23,8 @@ public class RendererEntityAbstractWeapon<T extends EntityAbstractWeapon> extend
 	public RendererEntityAbstractWeapon(Context ctx) {
 		super(ctx);
 		this.model = null;
-		EntityBullet.MODEL = new EntityModelBullet1<>(ctx.bakeLayer(EntityModelBullet1.LAYER_LOCATION));
-		EntityMissile.MODEL = new EntityModelMissile1<>(ctx.bakeLayer(EntityModelMissile1.LAYER_LOCATION));
+		EntityBullet.MODEL_BULLET1 = new EntityModelBullet1<>(ctx.bakeLayer(EntityModelBullet1.LAYER_LOCATION));
+		EntityMissile.MODEL_MISSILE1 = new EntityModelMissile1<>(ctx.bakeLayer(EntityModelMissile1.LAYER_LOCATION));
 	}
 
 	@Override
@@ -35,7 +35,7 @@ public class RendererEntityAbstractWeapon<T extends EntityAbstractWeapon> extend
 	@Override
 	public void render(T entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
 		model = entity.getModel();
-		// TODO not showing different x rot?
+		
 		poseStack.pushPose();
 		poseStack.mulPose(Vector3f.YP.rotationDegrees(entity.getYRot()));
 		poseStack.mulPose(Vector3f.XN.rotationDegrees(entity.getXRot()));

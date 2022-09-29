@@ -28,8 +28,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class EntityBullet extends EntityAbstractWeapon {
 	
-	private static final ResourceLocation TEXTURE = new ResourceLocation(DSCombatMod.MODID, "textures/entities/bullet1.png");
-	public static EntityModel<EntityTestPlane> MODEL = null;
+	private static final ResourceLocation TEXTURE_BULLET1 = new ResourceLocation(DSCombatMod.MODID, "textures/entities/bullet1.png");
+	public static EntityModel<EntityTestPlane> MODEL_BULLET1 = null;
 	
 	public EntityBullet(EntityType<? extends EntityBullet> type, Level level) {
 		super(type, level);
@@ -169,12 +169,12 @@ public class EntityBullet extends EntityAbstractWeapon {
 
 	@Override
 	public ResourceLocation getTexture() {
-		return TEXTURE;
+		return TEXTURE_BULLET1;
 	}
 	
 	@Override
 	public EntityModel<?> getModel() {
-		return MODEL;
+		return MODEL_BULLET1;
 	}
 
 }

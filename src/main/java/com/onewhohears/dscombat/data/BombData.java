@@ -12,9 +12,9 @@ import net.minecraft.world.phys.Vec3;
 public class BombData extends BulletData {
 	
 	public BombData(String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, 
-			float damage, double speed, boolean explosive, boolean destroyTerrain, 
+			float damage, double speed, float innacuracy, boolean explosive, boolean destroyTerrain, 
 			boolean causesFire, double explosiveDamage, float explosionRadius) {
-		super(id, launchPos, maxAge, maxAmmo, fireRate, damage, speed, 
+		super(id, launchPos, maxAge, maxAmmo, fireRate, damage, speed, innacuracy,
 				explosive, destroyTerrain, causesFire, explosiveDamage, explosionRadius);
 	}
 	

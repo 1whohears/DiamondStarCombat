@@ -1,10 +1,11 @@
 package com.onewhohears.dscombat.data;
 
+import java.util.Random;
+
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
 import com.onewhohears.dscombat.entity.weapon.EntityBullet;
 import com.onewhohears.dscombat.util.math.UtilAngles;
-import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -15,7 +16,7 @@ import net.minecraft.world.phys.Vec3;
 public class BulletData extends WeaponData {
 	
 	public static BulletData basic() {
-		return new BulletData("basic", Vec3.ZERO, 600, 10, 1, 1, 1);
+		return new BulletData("basic", Vec3.ZERO, 600, 10, 1, 1, 1, 0);
 	}
 	
 	private float damage;
@@ -25,18 +26,20 @@ public class BulletData extends WeaponData {
 	private boolean causesFire;
 	private double explosiveDamage; // TODO doesn't do anything
 	private float explosionRadius;
+	private float innacuracy;
 	
 	public BulletData(String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, 
-			float damage, double speed) {
+			float damage, double speed, float innacuracy) {
 		super(id, launchPos, maxAge, maxAmmo, fireRate);
 		this.damage = damage;
 		this.speed = speed;
+		this.innacuracy = innacuracy;
 	}
 	
 	public BulletData(String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, 
-			float damage, double speed, boolean explosive, boolean destroyTerrain, 
+			float damage, double speed, float innacuracy, boolean explosive, boolean destroyTerrain, 
 			boolean causesFire, double explosiveDamage, float explosionRadius) {
-		this(id, launchPos, maxAge, maxAmmo, fireRate, damage, speed);
+		this(id, launchPos, maxAge, maxAmmo, fireRate, damage, speed, innacuracy);
 		this.explosive = explosive;
 		this.destroyTerrain = destroyTerrain;
 		this.causesFire = causesFire;
@@ -53,6 +56,7 @@ public class BulletData extends WeaponData {
 		this.causesFire = tag.getBoolean("causesFire");
 		this.explosiveDamage = tag.getDouble("explosiveDamage");
 		this.explosionRadius = tag.getFloat("explosionRadius");
+		this.innacuracy = tag.getFloat("innacuracy");
 	}
 	
 	@Override
@@ -65,6 +69,7 @@ public class BulletData extends WeaponData {
 		tag.putBoolean("causesFire", causesFire);
 		tag.putDouble("explosiveDamage", explosiveDamage);
 		tag.putFloat("explosionRadius", explosionRadius);
+		tag.putFloat("innacuracy", innacuracy);
 		return tag;
 	}
 	
@@ -77,6 +82,7 @@ public class BulletData extends WeaponData {
 		this.causesFire = buffer.readBoolean();
 		this.explosiveDamage = buffer.readDouble();
 		this.explosionRadius = buffer.readFloat();
+		this.innacuracy = buffer.readFloat();
 	}
 	
 	@Override
@@ -89,6 +95,7 @@ public class BulletData extends WeaponData {
 		buffer.writeBoolean(causesFire);
 		buffer.writeDouble(explosiveDamage);
 		buffer.writeFloat(explosionRadius);
+		buffer.writeFloat(innacuracy);
 	}
 	
 	@Override
@@ -108,13 +115,17 @@ public class BulletData extends WeaponData {
 		}
 		System.out.println(this.getId()+" ammo "+this.getCurrentAmmo());
 		EntityBullet bullet = new EntityBullet(level, owner, this);
+		Random r = new Random();
+		float pitch = UtilAngles.getPitch(direction);
+		float yaw = UtilAngles.getYaw(direction);
+		pitch = pitch + (r.nextFloat()-0.5f) * 2f * innacuracy;
+		yaw = yaw + (r.nextFloat()-0.5f) * 2f * innacuracy;
+		bullet.setXRot(pitch);
+		bullet.setYRot(yaw);
+		direction = UtilAngles.rotationToVector(yaw, pitch);
 		bullet.setPos(vehicle.position()
 				.add(UtilAngles.rotateVector(this.getLaunchPos(), vehicleQ)));
 		bullet.setDeltaMovement(direction.scale(speed).add(vehicle.getDeltaMovement()));
-		// TODO add a bit of random variance to bullet launch angle
-		EulerAngles a = UtilAngles.vectorToRotation(bullet.getDeltaMovement());
-		bullet.setXRot((float)a.pitch);
-		bullet.setYRot((float)a.yaw);
 		level.addFreshEntity(bullet);
 		this.setLaunchSuccess(1);
 		return bullet;
@@ -146,6 +157,10 @@ public class BulletData extends WeaponData {
 
 	public boolean isCausesFire() {
 		return causesFire;
+	}
+
+	public float getInnacuracy() {
+		return innacuracy;
 	}
 
 }

@@ -16,7 +16,7 @@ public class UtilAngles {
     }
 
     public static float getPitch(Vec3 motion) {
-        double y = motion.y;
+        double y = -motion.y;
         return (float) Math.toDegrees(Math.atan2(y, Math.sqrt(motion.x * motion.x + motion.z * motion.z)));
     }
 
@@ -57,7 +57,7 @@ public class UtilAngles {
         pitch = Math.toRadians(pitch);
         double xzLen = Math.cos(pitch);
         double x = -xzLen * Math.sin(yaw);
-        double y = Math.sin(pitch);
+        double y = Math.sin(-pitch);
         double z = xzLen * Math.cos(-yaw);
         return new Vec3(x, y, z);
     }
@@ -65,14 +65,6 @@ public class UtilAngles {
     public static Vec3 rotationToVector(double yaw, double pitch, double size) {
         Vec3 vec = rotationToVector(yaw, pitch);
         return vec.scale(size / vec.length());
-    }
-    
-    public static EulerAngles vectorToRotation(Vec3 v) {
-    	EulerAngles a = new EulerAngles();
-    	double xz = Math.pow(v.x*v.x+v.z+v.z, 0.5);
-    	a.pitch = Math.toDegrees(Math.atan2(v.y, xz));
-    	a.yaw = Math.toDegrees(Math.atan2(v.x, v.z));
-    	return a;
     }
 
     public static EulerAngles toRadians(Quaternion q) {

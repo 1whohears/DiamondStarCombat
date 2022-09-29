@@ -5,7 +5,6 @@ import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.util.math.UtilAngles;
-import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -34,11 +33,11 @@ public class MissileData extends BulletData {
 	private double fuseDist;
 	
 	public MissileData(String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, 
-			float damage, double speed, boolean explosive, boolean destroyTerrain, 
+			float damage, double speed, float innacuracy, boolean explosive, boolean destroyTerrain, 
 			boolean causesFire, double explosiveDamage, float explosionRadius,
 			TargetType tType, GuidanceType gType, float maxRot, 
 			double acceleration, double fuseDist) {
-		super(id, launchPos, maxAge, maxAmmo, fireRate, damage, speed, 
+		super(id, launchPos, maxAge, maxAmmo, fireRate, damage, speed, innacuracy, 
 				explosive, destroyTerrain, causesFire, explosiveDamage, explosionRadius);
 		this.targetType = tType;
 		this.guidanceType = gType;
@@ -134,9 +133,8 @@ public class MissileData extends BulletData {
 				rocket.target = target;
 			}
 		}
-		EulerAngles a = UtilAngles.vectorToRotation(rocket.getDeltaMovement());
-		rocket.setXRot((float)a.pitch);
-		rocket.setYRot((float)a.yaw);
+		rocket.setXRot(UtilAngles.getPitch(rocket.getDeltaMovement()));
+		rocket.setYRot(UtilAngles.getYaw(rocket.getDeltaMovement()));
 		level.addFreshEntity(rocket);
 		this.setLaunchSuccess(1);
 		return rocket;

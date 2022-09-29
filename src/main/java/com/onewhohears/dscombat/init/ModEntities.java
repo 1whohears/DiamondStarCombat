@@ -34,7 +34,7 @@ public class ModEntities {
 			() -> createEntityType(EntityBullet::new, EntityDimensions.scalable(0.15f, 0.15f)));
 	
 	public static final RegistryObject<EntityType<EntityMissile>> MISSILE = ENTITIES.register("missile", 
-			() -> createEntityType(EntityMissile::new, EntityDimensions.scalable(0.25f, 0.25f), 10));
+			() -> createEntityType(EntityMissile::new, EntityDimensions.scalable(0.5f, 0.5f), 10));
 	
 	private static <T extends Entity> EntityType<T> createEntityType(EntityType.EntityFactory<T> factory, EntityDimensions size) {
         return new EntityType<>(factory, MobCategory.MISC, true, true, false, true, ImmutableSet.of(), size, 5, 3);

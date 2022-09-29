@@ -134,7 +134,7 @@ public class MissileData extends BulletData {
 				rocket.target = target;
 			}
 		}
-		EulerAngles a = UtilAngles.toDegrees(vehicleQ);
+		EulerAngles a = UtilAngles.vectorToRotation(rocket.getDeltaMovement());
 		rocket.setXRot((float)a.pitch);
 		rocket.setYRot((float)a.yaw);
 		level.addFreshEntity(rocket);

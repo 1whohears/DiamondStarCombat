@@ -135,7 +135,15 @@ public class RadarData extends PartData {
 				rockets.remove(i--);
 				continue;
 			}
-			// TODO check if this radar is still locked onto this rocket's target
+			boolean b = false;
+			for (int j = 0; j < targets.size(); ++j) if (targets.get(j).id == r.target.getId()) {
+				r.targetPos = targets.get(j).pos;
+				b = true;
+				break;
+			}
+			if (b) continue;
+			rockets.remove(i--);
+			r.kill();
 		}
 	}
 	

@@ -66,6 +66,14 @@ public class UtilAngles {
         Vec3 vec = rotationToVector(yaw, pitch);
         return vec.scale(size / vec.length());
     }
+    
+    public static EulerAngles vectorToRotation(Vec3 v) {
+    	EulerAngles a = new EulerAngles();
+    	double xz = Math.pow(v.x*v.x+v.z+v.z, 0.5);
+    	a.pitch = Math.toDegrees(Math.atan2(v.y, xz));
+    	a.yaw = Math.toDegrees(Math.atan2(v.x, v.z));
+    	return a;
+    }
 
     public static EulerAngles toRadians(Quaternion q) {
         EulerAngles angles = new EulerAngles();

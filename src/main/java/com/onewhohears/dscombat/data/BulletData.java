@@ -111,7 +111,8 @@ public class BulletData extends WeaponData {
 		bullet.setPos(vehicle.position()
 				.add(UtilAngles.rotateVector(this.getLaunchPos(), vehicleQ)));
 		bullet.setDeltaMovement(direction.scale(speed).add(vehicle.getDeltaMovement()));
-		EulerAngles a = UtilAngles.toDegrees(vehicleQ);
+		// TODO add a bit of random variance to bullet launch angle
+		EulerAngles a = UtilAngles.vectorToRotation(bullet.getDeltaMovement());
 		bullet.setXRot((float)a.pitch);
 		bullet.setYRot((float)a.yaw);
 		level.addFreshEntity(bullet);

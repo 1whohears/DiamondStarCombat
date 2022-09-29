@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.entity.weapon;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.MissileData;
+import com.onewhohears.dscombat.data.MissileData.TargetType;
 import com.onewhohears.dscombat.entity.aircraft.plane.EntityTestPlane;
 import com.onewhohears.dscombat.init.ModEntities;
 
@@ -40,7 +41,11 @@ public class EntityMissile extends EntityBullet {
 			MissileData data = (MissileData)this.getWeaponData();
 			data.tickGuide(this);
 			motionClamp();
-			// TODO explode if close enough to the target
+			if (data.getTargetType() != TargetType.POS) {
+				if (this.distanceTo(target) < data.getFuseDist()) {
+					this.setPos(target.position());
+				}
+			}
 		}
 		if (this.level.isClientSide && this.tickCount % 2 == 0) {
 			Vec3 move = this.getDeltaMovement();

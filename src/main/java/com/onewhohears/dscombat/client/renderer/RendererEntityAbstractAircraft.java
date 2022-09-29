@@ -4,9 +4,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
-import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.renderer.model.EntityModelTestPlane;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
+import com.onewhohears.dscombat.entity.aircraft.plane.EntityTestPlane;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.client.model.EntityModel;
@@ -18,18 +18,18 @@ import net.minecraft.resources.ResourceLocation;
 
 public class RendererEntityAbstractAircraft<T extends EntityAbstractAircraft> extends EntityRenderer<T> {
 	
-	private static final ResourceLocation TEXTURE = new ResourceLocation(DSCombatMod.MODID, "textures/entities/basic_plane.png");
-	
-	protected final EntityModel<T> model;
+	protected EntityModel<?> model;
 	
 	public RendererEntityAbstractAircraft(Context context) {
 		super(context);
 		this.shadowRadius = 0.8f;
-		model = new EntityModelTestPlane<>(context.bakeLayer(EntityModelTestPlane.LAYER_LOCATION));
+		this.model = null;
+		EntityTestPlane.MODEL = new EntityModelTestPlane<>(context.bakeLayer(EntityModelTestPlane.LAYER_LOCATION));
 	}
 	
 	@Override
 	public void render(T entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
+		this.model = entity.getModel();
 		//System.out.println("RENDER "+entity);
 		Quaternion q = UtilAngles.lerpQ(partialTicks, entity.getPrevQ(), entity.getQ()); // TODO shakes at start and end of movement
 		//Quaternion q = UtilAngles.lerpQ(partialTicks, entity.getPrevQ(), entity.getClientQ());
@@ -51,7 +51,7 @@ public class RendererEntityAbstractAircraft<T extends EntityAbstractAircraft> ex
 	
 	@Override
 	public ResourceLocation getTextureLocation(T entity) {
-		return TEXTURE;
+		return entity.getTexture();
 	}
 	
 }

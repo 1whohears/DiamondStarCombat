@@ -4,6 +4,7 @@ import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
 import com.onewhohears.dscombat.entity.weapon.EntityBullet;
 import com.onewhohears.dscombat.util.math.UtilAngles;
+import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -110,6 +111,9 @@ public class BulletData extends WeaponData {
 		bullet.setPos(vehicle.position()
 				.add(UtilAngles.rotateVector(this.getLaunchPos(), vehicleQ)));
 		bullet.setDeltaMovement(direction.scale(speed).add(vehicle.getDeltaMovement()));
+		EulerAngles a = UtilAngles.toDegrees(vehicleQ);
+		bullet.setXRot((float)a.pitch);
+		bullet.setYRot((float)a.yaw);
 		level.addFreshEntity(bullet);
 		this.setLaunchSuccess(1);
 		return bullet;

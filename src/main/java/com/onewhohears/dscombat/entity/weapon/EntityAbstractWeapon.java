@@ -4,10 +4,12 @@ import com.onewhohears.dscombat.data.BulletData;
 import com.onewhohears.dscombat.data.WeaponData;
 import com.onewhohears.dscombat.init.DataSerializers;
 
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -41,8 +43,11 @@ public abstract class EntityAbstractWeapon extends Projectile {
 	
 	@Override
 	public void tick() {
+		// TODO game crashes when summon random missile because default weapon data is null or class cast exception
 		//System.out.println("weapon "+this.tickCount+" "+this.level);
 		super.tick();
+		this.xRotO = this.getXRot();
+		this.yRotO = this.getYRot();
 		/*if (!this.level.isClientSide && touchingUnloadedChunk()) {
 			//System.out.println("bullet unloaded");
 			discard(); 
@@ -81,5 +86,9 @@ public abstract class EntityAbstractWeapon extends Projectile {
 	public Packet<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
+	
+	public abstract ResourceLocation getTexture();
+	
+	public abstract EntityModel<?> getModel();
 
 }

@@ -2,11 +2,15 @@ package com.onewhohears.dscombat.entity.weapon;
 
 import javax.annotation.Nullable;
 
+import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.BulletData;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
+import com.onewhohears.dscombat.entity.aircraft.plane.EntityTestPlane;
 import com.onewhohears.dscombat.init.ModEntities;
 
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -23,6 +27,9 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 public class EntityBullet extends EntityAbstractWeapon {
+	
+	private static final ResourceLocation TEXTURE = new ResourceLocation(DSCombatMod.MODID, "textures/entities/bullet1.png");
+	public static EntityModel<EntityTestPlane> MODEL = null;
 	
 	public EntityBullet(EntityType<? extends EntityBullet> type, Level level) {
 		super(type, level);
@@ -158,6 +165,16 @@ public class EntityBullet extends EntityAbstractWeapon {
 						0.0D, 0.0D, 0.0D);
 			}
 		}
+	}
+
+	@Override
+	public ResourceLocation getTexture() {
+		return TEXTURE;
+	}
+	
+	@Override
+	public EntityModel<?> getModel() {
+		return MODEL;
 	}
 
 }

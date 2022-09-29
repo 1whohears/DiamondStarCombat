@@ -1,15 +1,22 @@
 package com.onewhohears.dscombat.entity.weapon;
 
+import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.MissileData;
+import com.onewhohears.dscombat.entity.aircraft.plane.EntityTestPlane;
 import com.onewhohears.dscombat.init.ModEntities;
 
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class EntityMissile extends EntityBullet {
+	
+	private static final ResourceLocation TEXTURE = new ResourceLocation(DSCombatMod.MODID, "textures/entities/bullet1.png");
+	public static EntityModel<EntityTestPlane> MODEL = null;
 	
 	public Entity parent;
 	public Entity target;
@@ -51,6 +58,16 @@ public class EntityMissile extends EntityBullet {
 		double max = 1d;
 		if (vel > max) motion = motion.scale(max / vel);
 		setDeltaMovement(motion);
+	}
+	
+	@Override
+	public ResourceLocation getTexture() {
+		return TEXTURE;
+	}
+	
+	@Override
+	public EntityModel<?> getModel() {
+		return MODEL;
 	}
 
 }

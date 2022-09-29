@@ -5,6 +5,7 @@ import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.util.math.UtilAngles;
+import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -133,6 +134,9 @@ public class MissileData extends BulletData {
 				rocket.target = target;
 			}
 		}
+		EulerAngles a = UtilAngles.toDegrees(vehicleQ);
+		rocket.setXRot((float)a.pitch);
+		rocket.setYRot((float)a.yaw);
 		level.addFreshEntity(rocket);
 		this.setLaunchSuccess(1);
 		return rocket;

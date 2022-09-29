@@ -16,12 +16,14 @@ import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -562,4 +564,8 @@ public abstract class EntityAbstractAircraft extends Entity {
     public double getStealth() {
     	return 1;
     }
+    
+    public abstract ResourceLocation getTexture();
+    
+    public abstract EntityModel<?> getModel();
 }

@@ -99,6 +99,7 @@ public final class ClientForgeEvents {
 		if (!hovering) resetHoverIndex();
 		//System.out.println("selected = "+selected);
 		//System.out.println("hover index = "+hoverIndex);
+		// TODO middle click to mark a spot to target with a position guided missile
 	}
 	
 	private static void resetHoverIndex() {
@@ -143,6 +144,8 @@ public final class ClientForgeEvents {
 	public static void onScrollInput(InputEvent.MouseScrollEvent event) {
 		//System.out.println(event.getMouseX()+" "+event.getMouseY());
 		//System.out.println("mouse scroll "+event.getScrollDelta());
+		// TODO scroll to select weapon
+		// TODO use mouse position to control plane
 	}
 	
 	private static VertexBuffer pingBuffer;

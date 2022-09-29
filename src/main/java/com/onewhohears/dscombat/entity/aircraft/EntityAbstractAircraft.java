@@ -205,6 +205,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		motion = motion.add(getThrustForce(q));
 		motion = motion.add(getDragForce(q));
 		setDeltaMovement(motion);
+		this.resetFallDistance();
 	}
 	
 	public Vec3 getThrustForce(Quaternion q) {

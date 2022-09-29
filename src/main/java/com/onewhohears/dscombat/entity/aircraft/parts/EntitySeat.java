@@ -91,9 +91,6 @@ public class EntitySeat extends EntityAbstractPart {
 		//System.out.println("SEAT POSITION "+passenger);
 		if (passenger instanceof Player player) {
 			player.setPos(position());
-			//player.resetFallDistance();
-			//player.stopFallFlying();
-			// TODO stop fall damage
 		} else if (passenger instanceof EntitySeatCamera camera) {
 			//System.out.println("SEAT ROOT "+getVehicle());
 			if (!(this.getVehicle() instanceof EntityAbstractAircraft craft)) return;

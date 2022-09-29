@@ -12,5 +12,7 @@
 	"key.dscombat.yaw_left_key": "Yaw Left",
 	"key.dscombat.yaw_right_key": "Yaw Right",
 	"key.dscombat.flare_key": "Flare",
-	"key.dscombat.mouse_mode_key": "Mouse Mode"
+	"key.dscombat.mouse_mode_key": "Mouse Mode",
+	"key.dscombat.shoot_key": "Shoot Key",
+	"key.dscombat.weapon_select_key": "Weapon Cycle"
 }

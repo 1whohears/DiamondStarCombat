@@ -37,7 +37,7 @@ public final class KeyInit {
 		flareKey = registerKey("flare_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_V);
 		mouseModeKey = registerKey("mouse_mode_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_LCONTROL);
 		shootKey = registerKey("shoot_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.MOUSE_BUTTON_RIGHT);
-		weaponSelectKey = registerKey("weapon_select_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_X);
+		weaponSelectKey = registerKey("weapon_select_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_G);
 	}
 	
 	private static KeyMapping registerKey(String name, String category, int keycode) {

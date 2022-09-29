@@ -15,7 +15,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class EntityMissile extends EntityBullet {
 	
-	private static final ResourceLocation TEXTURE = new ResourceLocation(DSCombatMod.MODID, "textures/entities/bullet1.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation(DSCombatMod.MODID, "textures/entities/missile1.png");
 	public static EntityModel<EntityTestPlane> MODEL = null;
 	
 	public Entity parent;

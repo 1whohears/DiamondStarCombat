@@ -7,6 +7,7 @@ import com.onewhohears.dscombat.client.renderer.RendererEntityAbstractWeapon;
 import com.onewhohears.dscombat.client.renderer.RendererEntitySeat;
 import com.onewhohears.dscombat.client.renderer.RendererEntitySeatCamera;
 import com.onewhohears.dscombat.client.renderer.model.EntityModelBullet1;
+import com.onewhohears.dscombat.client.renderer.model.EntityModelMissile1;
 import com.onewhohears.dscombat.client.renderer.model.EntityModelTestPlane;
 import com.onewhohears.dscombat.init.ModEntities;
 
@@ -32,6 +33,7 @@ public class ClientModEvents {
 	public static void registerLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
 		event.registerLayerDefinition(EntityModelTestPlane.LAYER_LOCATION, EntityModelTestPlane::createBodyLayer);
 		event.registerLayerDefinition(EntityModelBullet1.LAYER_LOCATION, EntityModelBullet1::createBodyLayer);
+		event.registerLayerDefinition(EntityModelMissile1.LAYER_LOCATION, EntityModelMissile1::createBodyLayer);
 	}
 	
 	@SubscribeEvent

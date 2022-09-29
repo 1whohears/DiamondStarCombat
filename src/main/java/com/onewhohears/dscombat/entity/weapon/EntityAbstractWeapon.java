@@ -90,5 +90,10 @@ public abstract class EntityAbstractWeapon extends Projectile {
 	public abstract ResourceLocation getTexture();
 	
 	public abstract EntityModel<?> getModel();
+	
+	@Override
+	public boolean shouldRenderAtSqrDistance(double dist) {
+		return dist < 25000;
+	}
 
 }

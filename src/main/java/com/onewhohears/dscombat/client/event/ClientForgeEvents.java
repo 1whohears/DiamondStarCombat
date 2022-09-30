@@ -85,7 +85,8 @@ public final class ClientForgeEvents {
 			if (yawLeft) yaw -= 1;
 			if (yawRight) yaw += 1;
 		} else {
-			System.out.println("x = "+mouseX+" y = "+mouseY);
+			//System.out.println("x = "+mouseX+" y = "+mouseY);
+			// TODO mouse stick math that feels good
 			if (Math.abs(mouseY) > max) 
 				pitch = (float) -Math.signum(mouseY);
 			else if (Math.abs(mouseY) > deadZone) 

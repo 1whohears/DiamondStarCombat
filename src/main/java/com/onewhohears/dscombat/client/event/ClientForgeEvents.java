@@ -36,8 +36,10 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.InputEvent.MouseScrollEvent;
 import net.minecraftforge.client.event.RenderLevelLastEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -54,30 +56,51 @@ public final class ClientForgeEvents {
 	public static void clientTick(TickEvent.ClientTickEvent event) {
 		if (event.phase != Phase.START) return;
 		Minecraft m = Minecraft.getInstance();
+		mouseX = m.mouseHandler.xpos();
+		mouseY = m.mouseHandler.ypos();
 		final var player = m.player;
 		if (player == null) return;
 		//System.out.println("VEHICLE "+player.getVehicle());
 		//System.out.println("ROOT "+player.getRootVehicle());
 		if (!(player.getRootVehicle() instanceof EntityAbstractAircraft plane)) return;
 		if (plane.getControllingPassenger() != player) return;
+		float pitch = 0, roll = 0, yaw = 0;
 		boolean throttleUp = KeyInit.throttleUpKey.isDown();
 		boolean throttleDown = KeyInit.throttleDownKey.isDown();
-		boolean pitchUp = KeyInit.pitchUpKey.isDown();
-		boolean pitchDown = KeyInit.pitchDownKey.isDown();
 		boolean rollLeft = KeyInit.rollLeftKey.isDown();
 		boolean rollRight = KeyInit.rollRightKey.isDown();
-		boolean yawLeft = KeyInit.yawLeftKey.isDown();
-		boolean yawRight = KeyInit.yawRightKey.isDown();
 		boolean mouseMode = KeyInit.mouseModeKey.isDown();
 		boolean flare = KeyInit.flareKey.isDown();
 		boolean shoot = KeyInit.shootKey.isDown();
 		boolean select = KeyInit.weaponSelectKey.isDown();
+		if (rollLeft) roll -= 1;
+		if (rollRight) roll += 1;
+		if (plane.isFreeLook()) {
+			boolean pitchUp = KeyInit.pitchUpKey.isDown();
+			boolean pitchDown = KeyInit.pitchDownKey.isDown();
+			boolean yawLeft = KeyInit.yawLeftKey.isDown();
+			boolean yawRight = KeyInit.yawRightKey.isDown();
+			if (pitchUp) pitch += 1;
+			if (pitchDown) pitch -= 1;
+			if (yawLeft) yaw -= 1;
+			if (yawRight) yaw += 1;
+		} else {
+			System.out.println("x = "+mouseX+" y = "+mouseY);
+			if (Math.abs(mouseY) > max) 
+				pitch = (float) -Math.signum(mouseY);
+			else if (Math.abs(mouseY) > deadZone) 
+				pitch = (float) -(mouseY / max);
+			if (Math.abs(mouseX) > max) 
+				yaw = (float) Math.signum(mouseX);
+			else if (Math.abs(mouseX) > deadZone) 
+				yaw = (float) (mouseX / max);
+		}
 		PacketHandler.INSTANCE.sendToServer(new ServerBoundFlightControlPacket(
-				throttleUp, throttleDown, pitchUp, pitchDown, 
-				rollLeft, rollRight, yawLeft, yawRight,
+				throttleUp, throttleDown, 
+				pitch, roll, yaw,
 				mouseMode, flare, shoot, select));
-		plane.updateControls(throttleUp, throttleDown, pitchUp, pitchDown, 
-				rollLeft, rollRight, yawLeft, yawRight, 
+		plane.updateControls(throttleUp, throttleDown,
+				pitch, roll, yaw,
 				mouseMode, flare, shoot, select);
 		RadarData radar = plane.getRadar();
 		if (radar == null) return;
@@ -107,8 +130,13 @@ public final class ClientForgeEvents {
 		//System.out.println("reset hover index");
 	}
 	
-	private static boolean leftClick = false;;
+	private static boolean leftClick = false;
 	private static boolean rightClick = false;
+	private static double mouseX = 0;
+	private static double mouseY = 0;
+	
+	private static final double deadZone = 200;
+	private static final double max = 1000;
 	
 	@SubscribeEvent
 	public static void onClickInput(InputEvent.ClickInputEvent event) {
@@ -141,11 +169,10 @@ public final class ClientForgeEvents {
 	}
 	
 	@SubscribeEvent
-	public static void onScrollInput(InputEvent.MouseScrollEvent event) {
+	public static void onScrollInput(MouseScrollEvent event) {
 		//System.out.println(event.getMouseX()+" "+event.getMouseY());
 		//System.out.println("mouse scroll "+event.getScrollDelta());
 		// TODO scroll to select weapon
-		// TODO use mouse position to control plane
 	}
 	
 	private static VertexBuffer pingBuffer;

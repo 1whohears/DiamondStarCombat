@@ -49,9 +49,9 @@ public abstract class EntityAbstractAircraft extends Entity {
 	//public Quaternion clientQ = Quaternion.ONE.copy();
 	public Quaternion prevQ = Quaternion.ONE.copy();
 	
-	public boolean inputThrottleUp, inputThrottleDown, inputPitchUp, inputPitchDown;
-	public boolean inputRollLeft, inputRollRight, inputYawLeft, inputYawRight;
+	public boolean inputThrottleUp, inputThrottleDown;
 	public boolean inputMouseMode, inputFlare, inputShoot, inputSelect;
+	public float inputPitch, inputRoll, inputYaw;
 	public float prevXRot, prevYRot, zRot, prevZRot;
 	
 	private int lerpSteps, lerpStepsQ;
@@ -170,19 +170,10 @@ public abstract class EntityAbstractAircraft extends Entity {
 		if (this.getControllingPassenger() == null) this.resetControls();
 		if (inputThrottleUp) this.increaseThrottle();
 		if (inputThrottleDown) this.decreaseThrottle();
-		float pitchInput = 0;
-		if (inputPitchUp) pitchInput += 1;
-		if (inputPitchDown) pitchInput -= 1;
-		float rollInput = 0;
-		if (inputRollLeft) rollInput -= 1;
-		if (inputRollRight) rollInput += 1;
-		float yawInput = 0;
-		if (inputYawLeft) yawInput -= 1;
-		if (inputYawRight) yawInput += 1;
 		
-		q.mul(new Quaternion(Vector3f.ZP, rollInput*getMaxDeltaRoll(), true));
-		q.mul(new Quaternion(Vector3f.XN, pitchInput*getMaxDeltaPitch(), true));
-		q.mul(new Quaternion(Vector3f.YN, yawInput*getMaxDeltaYaw(), true));
+		q.mul(new Quaternion(Vector3f.ZP, inputRoll*getMaxDeltaRoll(), true));
+		q.mul(new Quaternion(Vector3f.XN, inputPitch*getMaxDeltaPitch(), true));
+		q.mul(new Quaternion(Vector3f.YN, inputYaw*getMaxDeltaYaw(), true));
 	}
 	
 	public void tickMovement(Quaternion q) {
@@ -335,17 +326,14 @@ public abstract class EntityAbstractAircraft extends Entity {
 		}*/
 	}
 	
-	public void updateControls(boolean throttleUp, boolean throttleDown, boolean pitchUp, boolean pitchDown,
-			boolean rollLeft, boolean rollRight, boolean yawLeft, boolean yawRight,
+	public void updateControls(boolean throttleUp, boolean throttleDown, 
+			float pitch, float roll, float yaw,
 			boolean mouseMode, boolean flare, boolean shoot, boolean select) {
 		this.inputThrottleUp = throttleUp;
 		this.inputThrottleDown = throttleDown;
-		this.inputPitchUp = pitchUp;
-		this.inputPitchDown = pitchDown;
-		this.inputRollLeft = rollLeft;
-		this.inputRollRight = rollRight;
-		this.inputYawLeft = yawLeft;
-		this.inputYawRight = yawRight;
+		this.inputPitch = pitch;
+		this.inputRoll = roll;
+		this.inputYaw = yaw;
 		this.inputFlare = flare;
 		this.inputMouseMode = mouseMode;
 		if (!prevInputMouseMode && inputMouseMode) 
@@ -361,12 +349,9 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public void resetControls() {
 		this.inputThrottleUp = false;
 		this.inputThrottleDown = false;
-		this.inputPitchUp = false;
-		this.inputPitchDown = false;
-		this.inputRollLeft = false;
-		this.inputRollRight = false;
-		this.inputYawLeft = false;
-		this.inputYawRight = false;
+		this.inputPitch = 0;
+		this.inputRoll = 0;
+		this.inputYaw = 0;
 		this.inputFlare = false;
 		this.inputMouseMode = false;
 		this.inputShoot = false;

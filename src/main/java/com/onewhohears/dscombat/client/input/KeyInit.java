@@ -30,10 +30,10 @@ public final class KeyInit {
 		throttleDownKey = registerKey("throttle_down_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_S);
 		pitchUpKey = registerKey("pitch_up_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_UP);
 		pitchDownKey = registerKey("pitch_down_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_DOWN);
-		rollLeftKey = registerKey("roll_left_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_LEFT);
-		rollRightKey = registerKey("roll_right_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_RIGHT);
-		yawLeftKey = registerKey("yaw_left_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_A);
-		yawRightKey = registerKey("yaw_right_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_D);
+		rollLeftKey = registerKey("roll_left_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_A);
+		rollRightKey = registerKey("roll_right_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_D);
+		yawLeftKey = registerKey("yaw_left_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_LEFT);
+		yawRightKey = registerKey("yaw_right_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_RIGHT);
 		flareKey = registerKey("flare_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_V);
 		mouseModeKey = registerKey("mouse_mode_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_LCONTROL);
 		shootKey = registerKey("shoot_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.MOUSE_BUTTON_RIGHT);

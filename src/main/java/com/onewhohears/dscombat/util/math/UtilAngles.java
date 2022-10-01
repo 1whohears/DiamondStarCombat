@@ -78,15 +78,15 @@ public class UtilAngles {
         // pitch (z-axis rotation)
         double sinp = 2 * (q.r() * q.i() - q.j() * q.k());
         if (Math.abs(sinp) >= 0.999) {
-            angles.pitch = -Math.signum(sinp) * Math.PI / 2; // use 90 degrees if out of range
+            angles.pitch = Math.signum(sinp) * Math.PI / 2; // use 90 degrees if out of range
         } else {
-            angles.pitch = -Math.asin(sinp);
+            angles.pitch = Math.asin(sinp);
         }
 
         // yaw (y-axis rotation)
         double siny_cosp = 2 * (q.r() * q.j() + q.k() * q.i());
         double cosy_cosp = 1 - 2 * (q.i() * q.i() + q.j() * q.j());
-        angles.yaw = Math.atan2(siny_cosp, cosy_cosp);
+        angles.yaw = -Math.atan2(siny_cosp, cosy_cosp);
 
         return angles;
     }
@@ -228,8 +228,8 @@ public class UtilAngles {
     }
     
     public static Vec3 getRollAxis(double pitchRad, double yawRad) {
-		return new Vec3(Math.sin(yawRad)*Math.cos(pitchRad), 
-							Math.sin(pitchRad), 
+		return new Vec3(-Math.sin(yawRad)*Math.cos(pitchRad), 
+							Math.sin(-pitchRad), 
 							Math.cos(yawRad)*Math.cos(pitchRad));
 	}
     
@@ -256,15 +256,15 @@ public class UtilAngles {
     }
     
     public static Vec3 getYawAxis(double pitchRad, double yawRad, double rollRad) {
-    	double CP = Math.cos(pitchRad);
-		double SP = Math.sin(pitchRad);
+    	double CP = Math.cos(-pitchRad);
+		double SP = Math.sin(-pitchRad);
 		double CY = Math.cos(yawRad);
 		double SY = Math.sin(yawRad);
 		double CR = Math.cos(rollRad);
 		double SR = Math.sin(rollRad);
-		return new Vec3(SY*SP*CR+CY*SR,
+		return new Vec3(SY*SP*CR-CY*SR,
 						CP*CR,
-						-CY*SP*CR+SY*SR);
+						-(CY*SP*CR+SY*SR));
 	}
     
     public static Vec3 rotateVector(Vec3 n, Quaternion q) {

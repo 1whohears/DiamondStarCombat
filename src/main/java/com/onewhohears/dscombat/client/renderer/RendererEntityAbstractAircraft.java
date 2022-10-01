@@ -3,7 +3,6 @@ package com.onewhohears.dscombat.client.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.renderer.model.EntityModelTestPlane;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.aircraft.plane.EntityTestPlane;
@@ -35,15 +34,13 @@ public class RendererEntityAbstractAircraft<T extends EntityAbstractAircraft> ex
 		//Quaternion q = UtilAngles.lerpQ(partialTicks, entity.getPrevQ(), entity.getClientQ());
 		poseStack.pushPose();
         poseStack.mulPose(q);
-        poseStack.translate(0, 1.55, 0);
-        poseStack.scale(1.0F, -1.0F, 1.0F);
-        poseStack.mulPose(Vector3f.YP.rotationDegrees(180));
+        //poseStack.translate(0, 1.55, 0);
+        //poseStack.scale(1.0F, -1.0F, 1.0F);
+        //poseStack.mulPose(Vector3f.YP.rotationDegrees(180));
 		
         VertexConsumer vertexconsumer = multiBufferSource.getBuffer(this.model.renderType(this.getTextureLocation(entity)));
 		model.renderToBuffer(poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 		
-		poseStack.pushPose();
-        poseStack.popPose();
         poseStack.popPose();
 		
         super.render(entity, entityYaw, partialTicks, poseStack, multiBufferSource, packedLight);

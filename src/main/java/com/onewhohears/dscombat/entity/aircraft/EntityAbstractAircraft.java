@@ -142,9 +142,14 @@ public abstract class EntityAbstractAircraft extends Entity {
 		move(MoverType.SELF, getDeltaMovement());
 		q = UtilAngles.normalizeQuaternion(q);
 		EulerAngles angles = UtilAngles.toDegrees(q);
-		setXRot(-(float)angles.pitch);
-		setYRot(-(float)angles.yaw);
+		setXRot((float)angles.pitch);
+		setYRot((float)angles.yaw);
 		zRot = (float)angles.roll;
+		/*if (!level.isClientSide) {
+			System.out.println("x = "+this.getXRot()+" y = "+this.getYRot());
+			System.out.println("roll axis "+UtilAngles.getRollAxis(q));
+			System.out.println("yaw  axis "+UtilAngles.getYawAxis(q));
+		}*/
 		//setPrevQ(getClientQ());
         setQ(q);
         /*if (level.isClientSide && isControlledByLocalInstance()) {

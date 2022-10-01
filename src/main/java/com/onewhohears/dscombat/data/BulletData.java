@@ -15,10 +15,6 @@ import net.minecraft.world.phys.Vec3;
 
 public class BulletData extends WeaponData {
 	
-	public static BulletData basic() {
-		return new BulletData("basic", Vec3.ZERO, 600, 10, 1, 1, 1, 0);
-	}
-	
 	private float damage;
 	private double speed;
 	private boolean explosive;

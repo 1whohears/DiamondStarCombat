@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.BulletData;
+import com.onewhohears.dscombat.data.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.aircraft.plane.EntityTestPlane;
 import com.onewhohears.dscombat.init.ModEntities;
@@ -175,6 +176,12 @@ public class EntityBullet extends EntityAbstractWeapon {
 	@Override
 	public EntityModel<?> getModel() {
 		return MODEL_BULLET1;
+	}
+
+	@Override
+	public WeaponData getDefaultData() {
+		return new BulletData("default_bullet", Vec3.ZERO, 
+				0, 0, 0, 0, 0, 0);
 	}
 
 }

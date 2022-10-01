@@ -39,7 +39,6 @@ import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.InputEvent.MouseScrollEvent;
 import net.minecraftforge.client.event.RenderLevelLastEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
-import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -57,7 +56,7 @@ public final class ClientForgeEvents {
 		if (event.phase != Phase.START) return;
 		Minecraft m = Minecraft.getInstance();
 		mouseX = m.mouseHandler.xpos();
-		mouseY = m.mouseHandler.ypos();
+		mouseY = -m.mouseHandler.ypos();
 		final var player = m.player;
 		if (player == null) return;
 		//System.out.println("VEHICLE "+player.getVehicle());
@@ -86,16 +85,21 @@ public final class ClientForgeEvents {
 			if (yawRight) yaw += 1;
 		} else {
 			//System.out.println("x = "+mouseX+" y = "+mouseY);
-			// TODO mouse stick math that feels good
-			if (Math.abs(mouseY) > max) 
-				pitch = (float) -Math.signum(mouseY);
-			else if (Math.abs(mouseY) > deadZone) 
-				pitch = (float) -(mouseY / max);
-			if (Math.abs(mouseX) > max) 
-				yaw = (float) Math.signum(mouseX);
-			else if (Math.abs(mouseX) > deadZone) 
-				yaw = (float) (mouseX / max);
+			double ya = Math.abs(mouseY);
+			double xa = Math.abs(mouseX);
+			float ys = (float) Math.signum(mouseY);
+			float xs = (float) Math.signum(mouseX);
+			double md = max-deadZone;
+			if (ya > max) 
+				pitch = ys;
+			else if (ya > deadZone) 
+				pitch = (float) ((ya-deadZone) / md) * ys;
+			if (xa > max) 
+				yaw = xs;
+			else if (xa > deadZone) 
+				yaw = (float) ((xa-deadZone) / md) * xs;
 		}
+		//System.out.println("pitch = "+pitch+" yaw = "+yaw);
 		PacketHandler.INSTANCE.sendToServer(new ServerBoundFlightControlPacket(
 				throttleUp, throttleDown, 
 				pitch, roll, yaw,
@@ -136,7 +140,7 @@ public final class ClientForgeEvents {
 	private static double mouseX = 0;
 	private static double mouseY = 0;
 	
-	private static final double deadZone = 200;
+	private static final double deadZone = 250;
 	private static final double max = 1000;
 	
 	@SubscribeEvent

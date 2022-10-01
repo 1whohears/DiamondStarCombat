@@ -31,17 +31,17 @@ public class EntityModelMissile1<T extends Entity> extends EntityModel<T> {
 
 		PartDefinition bone = partdefinition.addOrReplaceChild("bone", CubeListBuilder.create().texOffs(0, 33).addBox(1.0F, -1.0F, -7.0F, 1.0F, 2.0F, 14.0F, new CubeDeformation(0.0F))
 		.texOffs(20, 0).addBox(-2.0F, -1.0F, -7.0F, 1.0F, 2.0F, 14.0F, new CubeDeformation(0.0F))
-		.texOffs(18, 19).addBox(-1.0F, -2.0F, -7.0F, 2.0F, 1.0F, 14.0F, new CubeDeformation(0.0F))
-		.texOffs(0, 18).addBox(-1.0F, 1.0F, -7.0F, 2.0F, 1.0F, 14.0F, new CubeDeformation(0.0F))
-		.texOffs(0, 0).addBox(0.0F, -4.0F, -7.0F, 0.0F, 2.0F, 4.0F, new CubeDeformation(0.0F))
+		.texOffs(18, 19).addBox(-1.0F, 1.0F, -7.0F, 2.0F, 1.0F, 14.0F, new CubeDeformation(0.0F))
+		.texOffs(0, 18).addBox(-1.0F, -2.0F, -7.0F, 2.0F, 1.0F, 14.0F, new CubeDeformation(0.0F))
 		.texOffs(0, 0).addBox(0.0F, 2.0F, -7.0F, 0.0F, 2.0F, 4.0F, new CubeDeformation(0.0F))
+		.texOffs(0, 0).addBox(0.0F, -4.0F, -7.0F, 0.0F, 2.0F, 4.0F, new CubeDeformation(0.0F))
 		.texOffs(0, 0).addBox(-4.0F, 0.0F, -7.0F, 2.0F, 0.0F, 4.0F, new CubeDeformation(0.0F))
 		.texOffs(0, 0).addBox(2.0F, 0.0F, -7.0F, 2.0F, 0.0F, 4.0F, new CubeDeformation(0.0F))
 		.texOffs(0, 0).addBox(2.0F, 0.0F, 2.0F, 2.0F, 0.0F, 2.0F, new CubeDeformation(0.0F))
 		.texOffs(0, 0).addBox(-4.0F, 0.0F, 2.0F, 2.0F, 0.0F, 2.0F, new CubeDeformation(0.0F))
-		.texOffs(0, 0).addBox(0.0F, -4.0F, 2.0F, 0.0F, 2.0F, 2.0F, new CubeDeformation(0.0F))
 		.texOffs(0, 0).addBox(0.0F, 2.0F, 2.0F, 0.0F, 2.0F, 2.0F, new CubeDeformation(0.0F))
-		.texOffs(17, 38).addBox(-1.0F, -1.0F, -6.0F, 2.0F, 2.0F, 14.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 24.0F, 0.0F));
+		.texOffs(0, 0).addBox(0.0F, -4.0F, 2.0F, 0.0F, 2.0F, 2.0F, new CubeDeformation(0.0F))
+		.texOffs(17, 38).addBox(-1.0F, -1.0F, -6.0F, 2.0F, 2.0F, 14.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 
 		return LayerDefinition.create(meshdefinition, 64, 64);
 	}

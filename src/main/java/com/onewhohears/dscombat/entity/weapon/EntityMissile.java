@@ -2,7 +2,9 @@ package com.onewhohears.dscombat.entity.weapon;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.MissileData;
+import com.onewhohears.dscombat.data.MissileData.GuidanceType;
 import com.onewhohears.dscombat.data.MissileData.TargetType;
+import com.onewhohears.dscombat.data.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.plane.EntityTestPlane;
 import com.onewhohears.dscombat.init.ModEntities;
 
@@ -36,7 +38,7 @@ public class EntityMissile extends EntityBullet {
 	@Override
 	public void tick() {
 		//System.out.println("rocket "+this.tickCount+" "+this.level);
-		// TODO have another player watch the missile because it doesn't visually look like it's hitting the target
+		// TODO doesn't visually look like missile hitting the target
 		super.tick();
 		if (!this.level.isClientSide) {
 			MissileData data = (MissileData)this.getWeaponData();
@@ -74,6 +76,15 @@ public class EntityMissile extends EntityBullet {
 	@Override
 	public EntityModel<?> getModel() {
 		return MODEL_MISSILE1;
+	}
+	
+	@Override
+	public WeaponData getDefaultData() {
+		return new MissileData("default_missile", Vec3.ZERO,
+				0, 0, 0, 0, 0, 0, 
+				false, false, false, 0, 0,
+				TargetType.POS, GuidanceType.IR,
+				0, 0, 0);
 	}
 
 }

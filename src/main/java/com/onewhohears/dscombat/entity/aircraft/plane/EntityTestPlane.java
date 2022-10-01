@@ -3,6 +3,8 @@ package com.onewhohears.dscombat.entity.aircraft.plane;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.BulletData;
 import com.onewhohears.dscombat.data.MissileData;
+import com.onewhohears.dscombat.data.MissileData.GuidanceType;
+import com.onewhohears.dscombat.data.MissileData.TargetType;
 import com.onewhohears.dscombat.data.PartsManager;
 import com.onewhohears.dscombat.data.RadarData;
 import com.onewhohears.dscombat.data.SeatData;
@@ -31,21 +33,36 @@ public class EntityTestPlane extends EntityAbstractPlane {
 	@Override
 	protected void setupAircraftParts() {
 		PartsManager pm = this.getPartsManager();
+		// seat
 		pm.addPart(new SeatData("pilot_seat", Vec3.ZERO));
+		// bullet 1
 		BulletData test = new BulletData("bullet1", new Vec3(0, 0.5, 1), 
 				600, 100000, 1, 10, 4, 2);
 		pm.getWeapons().addWeapon(test);
 		test.setCurrentAmmo(test.getMaxAmmo());
+		// bullet 2
 		BulletData test2 = new BulletData("bullet2", new Vec3(0, 0.5, 1),
-				600, 100000, 15, 100, 4, 1, true, true, false, 100d, 4f);
+				600, 100000, 15, 100, 4, 1, 
+				true, true, false, 100d, 4f);
 		test2.setCurrentAmmo(test2.getMaxAmmo());
 		pm.getWeapons().addWeapon(test2);
-		MissileData test3 = new MissileData("bullet3", new Vec3(0, 0.5, 1),
-				600, 100000, 15, 1000, 1d, 0, true, true, false, 100d, 8f,
-				MissileData.TargetType.GROUND, MissileData.GuidanceType.PITBULL,
+		// missile 1
+		MissileData test3 = new MissileData("missile1", new Vec3(0, 0.5, 1),
+				600, 100000, 10, 1000, 1d, 0, 
+				true, true, false, 100d, 4f,
+				TargetType.GROUND, GuidanceType.PITBULL,
 				0.1f, 0.2d, 1.0d);
 		test3.setCurrentAmmo(test3.getMaxAmmo());
 		pm.getWeapons().addWeapon(test3);
+		// missile 2
+		MissileData test4 = new MissileData("missile2", new Vec3(0, 0.5, 1),
+				600, 100000, 20, 1000, 1.5d, 0, 
+				true, true, false, 100d, 8f,
+				TargetType.AIR, GuidanceType.PITBULL,
+				0.1f, 0.3d, 1.0d);
+		test4.setCurrentAmmo(test4.getMaxAmmo());
+		pm.getWeapons().addWeapon(test4);
+		// radar
 		RadarData radar = new RadarData("main-radar", 1000, 90, 20);
 		radar.setScanAircraft(true);
 		radar.setScanPlayers(true);

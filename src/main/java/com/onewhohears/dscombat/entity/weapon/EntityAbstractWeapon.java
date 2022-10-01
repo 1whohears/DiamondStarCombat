@@ -1,6 +1,5 @@
 package com.onewhohears.dscombat.entity.weapon;
 
-import com.onewhohears.dscombat.data.BulletData;
 import com.onewhohears.dscombat.data.WeaponData;
 import com.onewhohears.dscombat.init.DataSerializers;
 
@@ -26,7 +25,7 @@ public abstract class EntityAbstractWeapon extends Projectile {
 
 	@Override
 	protected void defineSynchedData() {
-		this.entityData.define(DATA, BulletData.basic());
+		this.entityData.define(DATA, getDefaultData());
 	}
 	
 	/*@Override
@@ -43,7 +42,6 @@ public abstract class EntityAbstractWeapon extends Projectile {
 	
 	@Override
 	public void tick() {
-		// TODO game crashes when summon random missile because default weapon data is null or class cast exception
 		//System.out.println("weapon "+this.tickCount+" "+this.level);
 		super.tick();
 		this.xRotO = this.getXRot();
@@ -90,6 +88,8 @@ public abstract class EntityAbstractWeapon extends Projectile {
 	public abstract ResourceLocation getTexture();
 	
 	public abstract EntityModel<?> getModel();
+	
+	public abstract WeaponData getDefaultData();
 	
 	@Override
 	public boolean shouldRenderAtSqrDistance(double dist) {

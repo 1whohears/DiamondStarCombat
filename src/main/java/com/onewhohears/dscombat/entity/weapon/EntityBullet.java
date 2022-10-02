@@ -112,6 +112,12 @@ public class EntityBullet extends EntityAbstractWeapon {
 	}
 	
 	@Override
+	public void onHit(HitResult result) {
+		if (this.isRemoved()) return;
+		super.onHit(result);
+	}
+	
+	@Override
 	public void onHitBlock(BlockHitResult result) {
 		super.onHitBlock(result);
 		//System.out.println("BULLET HIT "+result.getBlockPos());
@@ -151,6 +157,7 @@ public class EntityBullet extends EntityAbstractWeapon {
 	}
 	
 	protected void checkExplode(DamageSource source) {
+		//System.out.println("explode");
 		BulletData data = (BulletData) this.getWeaponData();
 		if (data.isExplosive()) {
 			if (!this.level.isClientSide) {

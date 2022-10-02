@@ -171,14 +171,14 @@ public class MissileData extends BulletData {
 		float orx = missile.getXRot();
 		float ory = missile.getYRot();
 		float nrx = orx, nry = ory;
-		if (Math.abs(nrx-orx) < this.getMaxRot()) {
+		if (Math.abs(grx-orx) < this.getMaxRot()) {
 			nrx = grx;
 		} else if (grx > orx) {
 			nrx += this.getMaxRot();
 		} else if (grx < orx) {
 			nrx -= this.getMaxRot();
 		}
-		if (Math.abs(nry-ory) < this.getMaxRot()) {
+		if (Math.abs(gry-ory) < this.getMaxRot()) {
 			nry = gry;
 		} else {
 			if (gry > 90 && ory < -90) {

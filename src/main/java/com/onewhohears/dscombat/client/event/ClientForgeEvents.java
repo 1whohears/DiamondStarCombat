@@ -37,6 +37,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.InputEvent.MouseScrollEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderLevelLastEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.TickEvent;
@@ -66,23 +68,23 @@ public final class ClientForgeEvents {
 		float pitch = 0, roll = 0, yaw = 0;
 		boolean throttleUp = KeyInit.throttleUpKey.isDown();
 		boolean throttleDown = KeyInit.throttleDownKey.isDown();
-		boolean rollLeft = KeyInit.rollLeftKey.isDown();
-		boolean rollRight = KeyInit.rollRightKey.isDown();
 		boolean mouseMode = KeyInit.mouseModeKey.isDown();
 		boolean flare = KeyInit.flareKey.isDown();
 		boolean shoot = KeyInit.shootKey.isDown();
 		boolean select = KeyInit.weaponSelectKey.isDown();
-		if (rollLeft) roll -= 1;
-		if (rollRight) roll += 1;
 		if (plane.isFreeLook()) {
 			boolean pitchUp = KeyInit.pitchUpKey.isDown();
 			boolean pitchDown = KeyInit.pitchDownKey.isDown();
-			boolean yawLeft = KeyInit.yawLeftKey.isDown();
-			boolean yawRight = KeyInit.yawRightKey.isDown();
+			boolean yawLeft = KeyInit.rollLeftKey.isDown();
+			boolean yawRight = KeyInit.rollRightKey.isDown();
+			boolean rollLeft = KeyInit.yawLeftKey.isDown();
+			boolean rollRight = KeyInit.yawRightKey.isDown();
 			if (pitchUp) pitch += 1;
 			if (pitchDown) pitch -= 1;
 			if (yawLeft) yaw -= 1;
 			if (yawRight) yaw += 1;
+			if (rollLeft) roll -= 1;
+			if (rollRight) roll += 1;
 		} else {
 			//System.out.println("x = "+mouseX+" y = "+mouseY);
 			double ya = Math.abs(mouseY);
@@ -98,6 +100,10 @@ public final class ClientForgeEvents {
 				yaw = xs;
 			else if (xa > deadZone) 
 				yaw = (float) ((xa-deadZone) / md) * xs;
+			boolean rollLeft = KeyInit.rollLeftKey.isDown();
+			boolean rollRight = KeyInit.rollRightKey.isDown();
+			if (rollLeft) roll -= 1;
+			if (rollRight) roll += 1;
 		}
 		//System.out.println("pitch = "+pitch+" yaw = "+yaw);
 		PacketHandler.INSTANCE.sendToServer(new ServerBoundFlightControlPacket(
@@ -286,6 +292,7 @@ public final class ClientForgeEvents {
 
 				PoseStack poseStack = event.getPoseStack();
 				poseStack.pushPose();
+				m.font.draw(poseStack, "TEST", 0, 0, 0xFFFFFF); // TODO how to draw text?
 				poseStack.translate(-view.x, -view.y, -view.z);
 				var shader = GameRenderer.getPositionColorShader();
 				pingBuffer.drawWithShader(poseStack.last().pose(), event.getProjectionMatrix().copy(), shader);
@@ -298,6 +305,17 @@ public final class ClientForgeEvents {
 			}
 		}
 	}
+	
+	/*@SubscribeEvent
+	public static void renderOverlay(RenderGameOverlayEvent.Pre event) {
+		if (event.getType() != ElementType.ALL) return;
+		PoseStack ps = event.getMatrixStack();
+	}*/
+	
+	/*@SubscribeEvent
+	public static void renderOverlay(RenderNameplateEvent event) {
+		
+	}*/
 	
 	@SubscribeEvent
 	public static void playerRender(RenderPlayerEvent.Pre event) {

@@ -48,8 +48,10 @@ public class ClientBoundPingsPacket extends IPacket {
 				Minecraft m = Minecraft.getInstance();
 				Level world = m.level;
 				EntityAbstractAircraft plane = (EntityAbstractAircraft) world.getEntity(id);
-				RadarData radar = plane.getRadar();
-				radar.readClientPingsFromServer(pings);
+				if (plane != null) {
+					RadarData radar = plane.getRadar();
+					radar.readClientPingsFromServer(pings);
+				}
 				success.set(true);
 			});
 		});

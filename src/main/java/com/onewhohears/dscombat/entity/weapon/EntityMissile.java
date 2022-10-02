@@ -1,6 +1,8 @@
 package com.onewhohears.dscombat.entity.weapon;
 
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.common.PacketHandler;
+import com.onewhohears.dscombat.common.network.ClientBoundMissileMovePacket;
 import com.onewhohears.dscombat.data.MissileData;
 import com.onewhohears.dscombat.data.MissileData.GuidanceType;
 import com.onewhohears.dscombat.data.MissileData.TargetType;
@@ -15,6 +17,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.network.PacketDistributor;
 
 public class EntityMissile extends EntityBullet {
 	
@@ -23,7 +26,7 @@ public class EntityMissile extends EntityBullet {
 	
 	public Entity parent;
 	public Entity target;
-	public Vec3 targetPos;
+	public Vec3 targetPos = Vec3.ZERO;
 	
 	public EntityMissile(EntityType<? extends EntityMissile> type, Level level) {
 		super(type, level);
@@ -37,27 +40,36 @@ public class EntityMissile extends EntityBullet {
 	
 	@Override
 	public void tick() {
-		//System.out.println("rocket "+this.tickCount+" "+this.level);
-		// TODO doesn't visually look like missile hitting the target
-		super.tick();
+		//System.out.println("ROCKET "+this.tickCount+" "+this.level);
+		//System.out.println("target = "+target); // target entity is not set on client side
 		if (!this.level.isClientSide) {
-			MissileData data = (MissileData)this.getWeaponData();
+			MissileData data = (MissileData)getWeaponData();
 			data.tickGuide(this);
 			motionClamp();
+			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), 
+					new ClientBoundMissileMovePacket(this.getId(), this.position(), 
+							this.getDeltaMovement(), this.getXRot(), this.getYRot()));
 			if (data.getTargetType() != TargetType.POS) {
 				if (this.distanceTo(target) < data.getFuseDist()) {
 					this.setPos(target.position());
+					this.checkExplode();
+					this.discard();
+					//System.out.println("close enough");
 				}
 			}
 		}
+		super.tick();
 		if (this.level.isClientSide /*&& this.tickCount % 2 == 0*/) {
-			Vec3 move = this.getDeltaMovement();
-			level.addParticle(ParticleTypes.FIREWORK, 
-					this.getX(), this.getY(), this.getZ(), 
+			Vec3 move = getDeltaMovement();
+			level.addParticle(ParticleTypes.SMOKE, 
+					getX(), getY(), getZ(), 
 					-move.x * 0.5D + random.nextGaussian() * 0.05D, 
 					-move.y * 0.5D + random.nextGaussian() * 0.05D, 
-					-move.y * 0.5D + random.nextGaussian() * 0.05D);
+					-move.z * 0.5D + random.nextGaussian() * 0.05D);
 		}
+		//System.out.println("pos = "+position());
+		//System.out.println("vel = "+getDeltaMovement());
+		//System.out.println("pit = "+getXRot()+" yaw = "+getYRot());
 	}
 	
 	public void motionClamp() {

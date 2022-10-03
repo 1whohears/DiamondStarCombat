@@ -133,11 +133,6 @@ public final class ClientForgeEvents {
 		// TODO middle click to mark a spot to target with a position guided missile
 	}
 	
-	private static void resetHoverIndex() {
-		hoverIndex = -1;
-		//System.out.println("reset hover index");
-	}
-	
 	private static boolean leftClick = false;
 	private static boolean rightClick = false;
 	private static double mouseX = 0;
@@ -145,6 +140,17 @@ public final class ClientForgeEvents {
 	
 	private static final double deadZone = 250;
 	private static final double max = 1000;
+	
+	private static int hoverIndex = -1;
+	
+	public static int getHoverIndex() {
+		return hoverIndex;
+	}
+	
+	private static void resetHoverIndex() {
+		hoverIndex = -1;
+		//System.out.println("reset hover index");
+	}
 	
 	@SubscribeEvent
 	public static void onAttackEntity(AttackEntityEvent event) {
@@ -185,7 +191,6 @@ public final class ClientForgeEvents {
 	
 	private static VertexBuffer pingBuffer;
 	private static int colorR, colorG, colorB, colorA;
-	private static int hoverIndex = -1;
 	
 	private static void setDefaultColor() {
 		colorR = 0;
@@ -213,9 +218,15 @@ public final class ClientForgeEvents {
 				player.getEyePosition(), player.getLookAngle(), 5, 1000);
 	}
 	
+	/*@SubscribeEvent
+	public static void renderClient(RenderTickEvent event) {
+		Minecraft m = Minecraft.getInstance();
+		final var player = m.player;
+		
+	}*/
+	
 	@SubscribeEvent
-	public static void renderLevel(RenderLevelStageEvent event) {
-		// TODO THIS CAUSES EVERYTHING TO BREAK FIX NOW
+	public static void renderLevelStage(RenderLevelStageEvent event) {
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
 		if (player.getVehicle() instanceof EntitySeat seat 
@@ -228,12 +239,13 @@ public final class ClientForgeEvents {
 			//System.out.println("RADAR PINGS");
 			for (int i = 0; i < pings.size(); ++i) {
 				RadarPing p = pings.get(i);
+				//System.out.println(i+" "+p);
 				if (i == selected) setSelectedColor();
-				else if (i == hoverIndex) setHoverColor(); // TODO display distance when hovering over it
+				else if (i == hoverIndex) setHoverColor();
 				else setDefaultColor();
-				//System.out.println(p.pos);
-				Vec3 view = m.gameRenderer.getMainCamera().getPosition();
+				
 				double x = p.pos.x, y = p.pos.y+0.02, z = p.pos.z, w2 = 1, w = w2/2;
+				Vec3 view = m.gameRenderer.getMainCamera().getPosition();
 				
 				RenderSystem.depthMask(false);
 				RenderSystem.disableCull();
@@ -285,8 +297,7 @@ public final class ClientForgeEvents {
 				buffer.vertex(x-w, y+w2, z+w).color(colorR, colorG, colorB, colorA).endVertex();
 				buffer.vertex(x-w, y+w2, z-w).color(colorR, colorG, colorB, colorA).endVertex();
 				
-				//buffer.end();
-				//buffer.bind();
+				pingBuffer.bind();
 				pingBuffer.upload(buffer.end());
 
 				PoseStack poseStack = event.getPoseStack();
@@ -296,7 +307,7 @@ public final class ClientForgeEvents {
 				pingBuffer.drawWithShader(poseStack.last().pose(), event.getProjectionMatrix().copy(), shader);
 				poseStack.popPose();
 				
-				VertexBuffer.unbind(); // TODO is this needed?
+				VertexBuffer.unbind();
 				
 				RenderSystem.depthMask(true);
 				RenderSystem.disableBlend();
@@ -308,11 +319,11 @@ public final class ClientForgeEvents {
 	
 	@SubscribeEvent
 	public static void renderOverlay(RenderGuiOverlayEvent.Pre event) {
-		
+		// TODO display pilot overlay
 	}
 	
 	/*@SubscribeEvent
-	public static void renderOverlay(RenderNameplateEvent event) {
+	public static void renderNameplate(RenderNameplateEvent event) {
 		
 	}*/
 	

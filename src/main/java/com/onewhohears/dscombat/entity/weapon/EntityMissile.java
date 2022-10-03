@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.entity.weapon;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.PacketHandler;
-import com.onewhohears.dscombat.common.network.ClientBoundMissileMovePacket;
+import com.onewhohears.dscombat.common.network.ClientBoundEntityMovePacket;
 import com.onewhohears.dscombat.data.MissileData;
 import com.onewhohears.dscombat.data.MissileData.GuidanceType;
 import com.onewhohears.dscombat.data.MissileData.TargetType;
@@ -46,9 +46,6 @@ public class EntityMissile extends EntityBullet {
 			MissileData data = (MissileData)getWeaponData();
 			data.tickGuide(this);
 			motionClamp();
-			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), 
-					new ClientBoundMissileMovePacket(this.getId(), this.position(), 
-							this.getDeltaMovement(), this.getXRot(), this.getYRot()));
 			if (data.getTargetType() != TargetType.POS) {
 				if (this.distanceTo(target) < data.getFuseDist()) {
 					this.setPos(target.position());
@@ -57,6 +54,9 @@ public class EntityMissile extends EntityBullet {
 					//System.out.println("close enough");
 				}
 			}
+			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), 
+					new ClientBoundEntityMovePacket(this.getId(), this.position(), 
+							this.getDeltaMovement(), this.getXRot(), this.getYRot()));
 		}
 		super.tick();
 		if (this.level.isClientSide /*&& this.tickCount % 2 == 0*/) {

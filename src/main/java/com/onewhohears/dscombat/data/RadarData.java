@@ -314,6 +314,11 @@ public class RadarData extends PartData {
 			buffer.writeDouble(pos.z);
 		}
 		
+		@Override
+		public String toString() {
+			return "PING["+(int)pos.x+","+(int)pos.y+","+(int)pos.z+"]";
+		}
+		
 	}
 	
 }

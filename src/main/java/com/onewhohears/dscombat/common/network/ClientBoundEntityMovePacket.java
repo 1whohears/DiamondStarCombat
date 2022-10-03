@@ -14,7 +14,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent.Context;
 
-public class ClientBoundMissileMovePacket extends IPacket {
+public class ClientBoundEntityMovePacket extends IPacket {
 	
 	public final int id;
 	public final Vec3 pos;
@@ -22,7 +22,7 @@ public class ClientBoundMissileMovePacket extends IPacket {
 	public final float pitch;
 	public final float yaw;
 	
-	public ClientBoundMissileMovePacket(int id, Vec3 pos, Vec3 move, float pitch, float yaw) {
+	public ClientBoundEntityMovePacket(int id, Vec3 pos, Vec3 move, float pitch, float yaw) {
 		this.id = id;
 		this.pos = pos;
 		this.move = move;
@@ -30,7 +30,7 @@ public class ClientBoundMissileMovePacket extends IPacket {
 		this.yaw = yaw;
 	}
 	
-	public ClientBoundMissileMovePacket(FriendlyByteBuf buffer) {
+	public ClientBoundEntityMovePacket(FriendlyByteBuf buffer) {
 		id = buffer.readInt();
 		pos = DataSerializers.VEC3.read(buffer);
 		move = DataSerializers.VEC3.read(buffer);

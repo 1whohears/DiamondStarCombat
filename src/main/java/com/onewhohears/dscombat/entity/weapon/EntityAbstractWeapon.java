@@ -11,6 +11,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkHooks;
@@ -46,14 +47,15 @@ public abstract class EntityAbstractWeapon extends Projectile {
 		super.tick();
 		this.xRotO = this.getXRot();
 		this.yRotO = this.getYRot();
-		/*if (!this.level.isClientSide && touchingUnloadedChunk()) {
+		if (!this.level.isClientSide && touchingUnloadedChunk()) {
 			//System.out.println("bullet unloaded");
 			discard(); 
-		}*/
+		}
 		if (!this.level.isClientSide && this.tickCount > this.getWeaponData().getMaxAge()) { 
 			//System.out.println("bullet to old");
-			discard(); 
+			discard();
 		}
+		move(MoverType.SELF, getDeltaMovement());
 	}
 	
 	public void setWeaponData(WeaponData data) {

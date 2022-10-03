@@ -16,7 +16,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.ClipContext;
@@ -57,7 +56,6 @@ public class EntityBullet extends EntityAbstractWeapon {
 	@Override
 	public void tick() {
 		//System.out.println("bullet "+this.tickCount+" "+this.level);
-		super.tick();
 		//System.out.println(this);
 		Vec3 vec3 = this.getDeltaMovement();
 		Vec3 vec32 = this.position();
@@ -99,8 +97,7 @@ public class EntityBullet extends EntityAbstractWeapon {
 			}
 			hitresult = null;
 		}
-		move(MoverType.SELF, getDeltaMovement());
-		//setPacketCoordinates(this.getX(), this.getY(), this.getZ()); // TODO position packet
+		super.tick();
 	}
 	
 	@Override

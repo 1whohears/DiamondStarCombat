@@ -153,7 +153,10 @@ public class MissileData extends BulletData {
 	}
 	
 	public void guideToTarget(EntityMissile missile, Entity target) {
-		if (target == null) return;
+		if (target == null || target.isRemoved()) {
+			missile.discard();
+			return;
+		}
 		this.guideToTarget(missile, target.position());
 	}
 	

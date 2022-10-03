@@ -101,14 +101,6 @@ public class EntityBullet extends EntityAbstractWeapon {
 		}
 		move(MoverType.SELF, getDeltaMovement());
 		setPacketCoordinates(this.getX(), this.getY(), this.getZ());
-		/*if (this.level.isClientSide) {
-			Vec3 move = this.getDeltaMovement();
-			level.addParticle(ParticleTypes.FIREWORK, 
-					this.getX(), this.getY(), this.getZ(), 
-					-move.x * 0.5D + random.nextGaussian() * 0.05D, 
-					-move.y * 0.5D + random.nextGaussian() * 0.05D, 
-					-move.y * 0.5D + random.nextGaussian() * 0.05D);
-		}*/
 	}
 	
 	@Override

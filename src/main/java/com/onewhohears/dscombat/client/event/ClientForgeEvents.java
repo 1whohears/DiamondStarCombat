@@ -292,7 +292,6 @@ public final class ClientForgeEvents {
 
 				PoseStack poseStack = event.getPoseStack();
 				poseStack.pushPose();
-				m.font.draw(poseStack, "TEST", 0, 0, 0xFFFFFF); // TODO how to draw text?
 				poseStack.translate(-view.x, -view.y, -view.z);
 				var shader = GameRenderer.getPositionColorShader();
 				pingBuffer.drawWithShader(poseStack.last().pose(), event.getProjectionMatrix().copy(), shader);
@@ -306,11 +305,12 @@ public final class ClientForgeEvents {
 		}
 	}
 	
-	/*@SubscribeEvent
+	@SubscribeEvent
 	public static void renderOverlay(RenderGameOverlayEvent.Pre event) {
 		if (event.getType() != ElementType.ALL) return;
-		PoseStack ps = event.getMatrixStack();
-	}*/
+		//PoseStack ps = event.getMatrixStack();
+		
+	}
 	
 	/*@SubscribeEvent
 	public static void renderOverlay(RenderNameplateEvent event) {

@@ -19,34 +19,36 @@ public final class PacketHandler {
 	private static final String PROTOCOL_VERSION = "1";
 	
 	public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(new ResourceLocation(DSCombatMod.MODID), 
-			() -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
+			() -> PROTOCOL_VERSION, 
+			PROTOCOL_VERSION::equals, 
+			PROTOCOL_VERSION::equals);
 	
 	public static void init() {
 		int index = 0;
 		INSTANCE.messageBuilder(ServerBoundFlightControlPacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
 			.encoder(ServerBoundFlightControlPacket::encode)
 			.decoder(ServerBoundFlightControlPacket::new)
-			.consumer(ServerBoundFlightControlPacket::handle)
+			.consumerMainThread(ServerBoundFlightControlPacket::handle)
 			.add();
 		INSTANCE.messageBuilder(ServerBoundQPacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
 			.encoder(ServerBoundQPacket::encode)
 			.decoder(ServerBoundQPacket::new)
-			.consumer(ServerBoundQPacket::handle)
+			.consumerMainThread(ServerBoundQPacket::handle)
 			.add();
 		INSTANCE.messageBuilder(ClientBoundPingsPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
 			.encoder(ClientBoundPingsPacket::encode)
 			.decoder(ClientBoundPingsPacket::new)
-			.consumer(ClientBoundPingsPacket::handle)
+			.consumerMainThread(ClientBoundPingsPacket::handle)
 			.add();
 		INSTANCE.messageBuilder(ServerBoundPingSelectPacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
 			.encoder(ServerBoundPingSelectPacket::encode)
 			.decoder(ServerBoundPingSelectPacket::new)
-			.consumer(ServerBoundPingSelectPacket::handle)
+			.consumerMainThread(ServerBoundPingSelectPacket::handle)
 			.add();
 		INSTANCE.messageBuilder(ClientBoundMissileMovePacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
 			.encoder(ClientBoundMissileMovePacket::encode)
 			.decoder(ClientBoundMissileMovePacket::new)
-			.consumer(ClientBoundMissileMovePacket::handle)
+			.consumerMainThread(ClientBoundMissileMovePacket::handle)
 			.add();
 	}
 	

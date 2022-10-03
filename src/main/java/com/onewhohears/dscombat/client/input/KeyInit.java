@@ -4,7 +4,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import com.onewhohears.dscombat.DSCombatMod;
 
 import net.minecraft.client.KeyMapping;
-import net.minecraftforge.client.ClientRegistry;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.settings.KeyConflictContext;
 
 public final class KeyInit {
@@ -25,7 +25,10 @@ public final class KeyInit {
 	public static KeyMapping shootKey;
 	public static KeyMapping weaponSelectKey;
 	
-	public static void init() {
+	private static RegisterKeyMappingsEvent event;
+	
+	public static void init(RegisterKeyMappingsEvent e) {
+		event = e;
 		throttleUpKey = registerKey("throttle_up_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_W);
 		throttleDownKey = registerKey("throttle_down_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_S);
 		pitchUpKey = registerKey("pitch_up_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_UP);
@@ -42,7 +45,7 @@ public final class KeyInit {
 	
 	private static KeyMapping registerKey(String name, String category, int keycode) {
 		final var key = new KeyMapping("key."+DSCombatMod.MODID+"."+name, KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, keycode, category);
-		ClientRegistry.registerKeyBinding(key);
+		event.register(key);
 		return key;
 	}
 	

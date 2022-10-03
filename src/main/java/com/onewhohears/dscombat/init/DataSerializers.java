@@ -4,10 +4,10 @@ import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.BombData;
 import com.onewhohears.dscombat.data.BulletData;
+import com.onewhohears.dscombat.data.MissileData;
 import com.onewhohears.dscombat.data.PartData;
 import com.onewhohears.dscombat.data.PartsManager;
 import com.onewhohears.dscombat.data.RadarData;
-import com.onewhohears.dscombat.data.MissileData;
 import com.onewhohears.dscombat.data.SeatData;
 import com.onewhohears.dscombat.data.WeaponData;
 
@@ -15,14 +15,13 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DataSerializerEntry;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class DataSerializers {
 	
-	public static final DeferredRegister<DataSerializerEntry> DATA_SERIALIZERS = DeferredRegister.create(ForgeRegistries.Keys.DATA_SERIALIZERS, DSCombatMod.MODID);
+	public static final DeferredRegister<EntityDataSerializer<?>> DATA_SERIALIZERS = DeferredRegister.create(ForgeRegistries.Keys.ENTITY_DATA_SERIALIZERS, DSCombatMod.MODID);
 
     public static void init(IEventBus eventBus) {
         DATA_SERIALIZERS.register(eventBus);
@@ -148,18 +147,18 @@ public class DataSerializers {
     	
     };
 
-    public static final RegistryObject<DataSerializerEntry> SERIALIZER_ENTRY_QUATERNION = DATA_SERIALIZERS
-    		.register("quaternion", () -> new DataSerializerEntry(QUATERNION));
+    public static final RegistryObject<EntityDataSerializer<?>> SERIALIZER_ENTRY_QUATERNION = DATA_SERIALIZERS
+    		.register("quaternion", () -> QUATERNION);
     
-    public static final RegistryObject<DataSerializerEntry> SERIALIZER_ENTRY_VEC3 = DATA_SERIALIZERS
-    		.register("vec3", () -> new DataSerializerEntry(VEC3));
+    public static final RegistryObject<EntityDataSerializer<?>> SERIALIZER_ENTRY_VEC3 = DATA_SERIALIZERS
+    		.register("vec3", () -> VEC3);
     
-    public static final RegistryObject<DataSerializerEntry> SERIALIZER_ENTRY_WEAPONDATA = DATA_SERIALIZERS
-    		.register("weapondata", () -> new DataSerializerEntry(WEAPON_DATA));
+    public static final RegistryObject<EntityDataSerializer<?>> SERIALIZER_ENTRY_WEAPONDATA = DATA_SERIALIZERS
+    		.register("weapondata", () -> WEAPON_DATA);
     
-    public static final RegistryObject<DataSerializerEntry> SERIALIZER_ENTRY_PARTSMANAGER = DATA_SERIALIZERS
-    		.register("weaponsystem", () -> new DataSerializerEntry(PARTS_MANAGER));
+    public static final RegistryObject<EntityDataSerializer<?>> SERIALIZER_ENTRY_PARTSMANAGER = DATA_SERIALIZERS
+    		.register("weaponsystem", () -> PARTS_MANAGER);
     
-    public static final RegistryObject<DataSerializerEntry> SERIALIZER_ENTRY_PARTDATA = DATA_SERIALIZERS
-    		.register("partdata", () -> new DataSerializerEntry(PART_DATA));
+    public static final RegistryObject<EntityDataSerializer<?>> SERIALIZER_ENTRY_PARTDATA = DATA_SERIALIZERS
+    		.register("partdata", () -> PART_DATA);
 }

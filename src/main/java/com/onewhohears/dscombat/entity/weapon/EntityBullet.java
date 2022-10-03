@@ -100,7 +100,7 @@ public class EntityBullet extends EntityAbstractWeapon {
 			hitresult = null;
 		}
 		move(MoverType.SELF, getDeltaMovement());
-		setPacketCoordinates(this.getX(), this.getY(), this.getZ());
+		//setPacketCoordinates(this.getX(), this.getY(), this.getZ()); // TODO position packet
 	}
 	
 	@Override

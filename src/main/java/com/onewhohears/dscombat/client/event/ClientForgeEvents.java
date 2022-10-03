@@ -30,20 +30,17 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.client.event.InputEvent.MouseScrollEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
-import net.minecraftforge.client.event.RenderLevelLastEvent;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -150,23 +147,23 @@ public final class ClientForgeEvents {
 	private static final double max = 1000;
 	
 	@SubscribeEvent
-	public static void onClickInput(InputEvent.ClickInputEvent event) {
-		if (event.isAttack()) {
-			//System.out.println("input attack event");
-			Minecraft m = Minecraft.getInstance();
-			if (m.hitResult.getType() == HitResult.Type.ENTITY) {
-				EntityHitResult hit = (EntityHitResult) m.hitResult;
-				if (hit.getEntity().equals(m.player)) {
-					event.setSwingHand(false);
-					event.setCanceled(true);
-					//System.out.println("canceled");
-				}
+	public static void onAttackEntity(AttackEntityEvent event) {
+		Minecraft m = Minecraft.getInstance();
+		/*if (m.hitResult.getType() == HitResult.Type.ENTITY) {
+			EntityHitResult hit = (EntityHitResult) m.hitResult;
+			if (hit.getEntity().equals(m.player)) {
+				event.setCanceled(true);
+				//System.out.println("canceled");
 			}
+		}*/
+		if (event.getTarget().equals(m.player)) {
+			event.setCanceled(true);
+			//System.out.println("canceled");
 		}
 	}
 	
 	@SubscribeEvent
-	public static void onMouseInput(InputEvent.MouseInputEvent event) {
+	public static void onMouseInput(InputEvent.MouseButton event) {
 		//System.out.println("mouse input button "+event.getButton());
 		//System.out.println("mouse input action "+event.getAction());
 		if (event.getButton() == 0) {
@@ -180,7 +177,7 @@ public final class ClientForgeEvents {
 	}
 	
 	@SubscribeEvent
-	public static void onScrollInput(MouseScrollEvent event) {
+	public static void onScrollInput(InputEvent.MouseScrollingEvent event) {
 		//System.out.println(event.getMouseX()+" "+event.getMouseY());
 		//System.out.println("mouse scroll "+event.getScrollDelta());
 		// TODO scroll to select weapon
@@ -217,7 +214,8 @@ public final class ClientForgeEvents {
 	}
 	
 	@SubscribeEvent
-	public static void renderLevel(RenderLevelLastEvent event) {
+	public static void renderLevel(RenderLevelStageEvent event) {
+		// TODO THIS CAUSES EVERYTHING TO BREAK FIX NOW
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
 		if (player.getVehicle() instanceof EntitySeat seat 
@@ -236,6 +234,14 @@ public final class ClientForgeEvents {
 				//System.out.println(p.pos);
 				Vec3 view = m.gameRenderer.getMainCamera().getPosition();
 				double x = p.pos.x, y = p.pos.y+0.02, z = p.pos.z, w2 = 1, w = w2/2;
+				
+				RenderSystem.depthMask(false);
+				RenderSystem.disableCull();
+				RenderSystem.enableBlend();
+				RenderSystem.defaultBlendFunc();
+				RenderSystem.disableTexture();
+				GL11.glEnable(GL11.GL_LINE_SMOOTH);
+				GL11.glEnable(GL11.GL_DEPTH_TEST);
 				
 				var tesselator = Tesselator.getInstance();
 				var buffer = tesselator.getBuilder();
@@ -279,16 +285,9 @@ public final class ClientForgeEvents {
 				buffer.vertex(x-w, y+w2, z+w).color(colorR, colorG, colorB, colorA).endVertex();
 				buffer.vertex(x-w, y+w2, z-w).color(colorR, colorG, colorB, colorA).endVertex();
 				
-				buffer.end();
-				pingBuffer.upload(buffer);
-
-				RenderSystem.depthMask(false);
-				RenderSystem.disableCull();
-				RenderSystem.enableBlend();
-				RenderSystem.defaultBlendFunc();
-				RenderSystem.disableTexture();
-				GL11.glEnable(GL11.GL_LINE_SMOOTH);
-				GL11.glEnable(GL11.GL_DEPTH_TEST);
+				//buffer.end();
+				//buffer.bind();
+				pingBuffer.upload(buffer.end());
 
 				PoseStack poseStack = event.getPoseStack();
 				poseStack.pushPose();
@@ -296,7 +295,9 @@ public final class ClientForgeEvents {
 				var shader = GameRenderer.getPositionColorShader();
 				pingBuffer.drawWithShader(poseStack.last().pose(), event.getProjectionMatrix().copy(), shader);
 				poseStack.popPose();
-
+				
+				VertexBuffer.unbind(); // TODO is this needed?
+				
 				RenderSystem.depthMask(true);
 				RenderSystem.disableBlend();
 				RenderSystem.enableCull();
@@ -306,9 +307,7 @@ public final class ClientForgeEvents {
 	}
 	
 	@SubscribeEvent
-	public static void renderOverlay(RenderGameOverlayEvent.Pre event) {
-		if (event.getType() != ElementType.ALL) return;
-		//PoseStack ps = event.getMatrixStack();
+	public static void renderOverlay(RenderGuiOverlayEvent.Pre event) {
 		
 	}
 	
@@ -322,7 +321,7 @@ public final class ClientForgeEvents {
 		//System.out.println("render player");
 		Minecraft m = Minecraft.getInstance();
 		final var playerC = m.player;
-		Player player = event.getPlayer();
+		Player player = event.getEntity();
 		if (player.getVehicle() instanceof EntitySeat seat 
 				&& seat.getVehicle() instanceof EntityAbstractAircraft plane) {
 			changePlayerHitbox(player);
@@ -346,7 +345,7 @@ public final class ClientForgeEvents {
 	}
 	
 	@SubscribeEvent
-	public static void cameraSetup(EntityViewRenderEvent.CameraSetup event) {
+	public static void cameraSetup(ViewportEvent.ComputeCameraAngles event) {
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
 		boolean playerCam = m.getCameraEntity().equals(player);
@@ -378,9 +377,9 @@ public final class ClientForgeEvents {
 				//zo = event.getRoll();
 				zn = plane.zRot;
 			}
-			float xi = xo + (xn - xo) * (float)event.getPartialTicks();
-			float yi = yo + (yn - yo) * (float)event.getPartialTicks();
-			float zi = zo + (zn - zo) * (float)event.getPartialTicks();
+			float xi = xo + (xn - xo) * (float)event.getPartialTick();
+			float yi = yo + (yn - yo) * (float)event.getPartialTick();
+			float zi = zo + (zn - zo) * (float)event.getPartialTick();
 			if (m.options.getCameraType() == CameraType.THIRD_PERSON_FRONT) {
 				event.setPitch(xi*-1f);
 				event.setYaw(yi+180f);
@@ -420,8 +419,8 @@ public final class ClientForgeEvents {
 	}*/
 	
 	@SubscribeEvent
-	public static void onEntityJoin(EntityJoinWorldEvent event) {
-		Level level = event.getWorld();
+	public static void onEntityJoin(EntityJoinLevelEvent event) {
+		Level level = event.getLevel();
 		if (!level.isClientSide) return;
 		Minecraft m = Minecraft.getInstance();
 		Entity entity = event.getEntity();

@@ -13,10 +13,10 @@ import com.onewhohears.dscombat.init.ModEntities;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 @Mod.EventBusSubscriber(modid = DSCombatMod.MODID, bus = Bus.MOD, value = Dist.CLIENT)
 public class ClientModEvents {
@@ -24,9 +24,14 @@ public class ClientModEvents {
 	private ClientModEvents() {
 	}
 	
-	@SubscribeEvent
+	/*@SubscribeEvent
 	public static void clientSetup(FMLClientSetupEvent event) {
-		KeyInit.init();
+		
+	}*/
+	
+	@SubscribeEvent
+	public static void clientSetup(RegisterKeyMappingsEvent event) {
+		KeyInit.init(event);
 	}
 	
 	@SubscribeEvent

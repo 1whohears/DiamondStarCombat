@@ -18,7 +18,8 @@ import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -35,6 +36,7 @@ import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.network.NetworkHooks;
 
 public abstract class EntityAbstractAircraft extends Entity {
@@ -282,8 +284,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 			if (data.isFailedLaunch() && data.getFailedLaunchReason() != null) {
 				System.out.println(data.getFailedLaunchReason());
 				if (controller instanceof ServerPlayer player) {
-					player.displayClientMessage(new TextComponent(
-							data.getFailedLaunchReason()), true);
+					player.displayClientMessage(MutableComponent.create(new TranslatableContents(data.getFailedLaunchReason())), true);
 				}
 			}
 		}
@@ -307,7 +308,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		if (this.isControlledByLocalInstance()) {
 			this.lerpSteps = 0;
 			this.lerpStepsQ = 0;
-	        this.setPacketCoordinates(this.getX(), this.getY(), this.getZ());
+	        //this.setPacketCoordinates(this.getX(), this.getY(), this.getZ()); // TODO packet coordinates
 		}
 		if (this.lerpSteps > 0) {
 			double d0 = this.getX() + (this.lerpX - this.getX()) / (double)this.lerpSteps;
@@ -437,8 +438,8 @@ public abstract class EntityAbstractAircraft extends Entity {
         return false;
     }
 
-    @Override
-    public boolean canBeRiddenInWater(Entity rider) {
+	@Override
+    public boolean canBeRiddenUnderFluidType(FluidType type, Entity rider) {
         return true;
     }
     

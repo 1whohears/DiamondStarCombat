@@ -19,7 +19,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class ModEntities {
 	
-	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, DSCombatMod.MODID);
+	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, DSCombatMod.MODID);
 	
 	public static final RegistryObject<EntityType<EntityTestPlane>> TEST_PLANE = ENTITIES.register("test_plane", 
 			() -> createEntityType(EntityTestPlane::new, EntityDimensions.scalable(1F, 1F), 10));

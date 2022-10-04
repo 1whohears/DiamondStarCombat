@@ -8,6 +8,7 @@ import com.onewhohears.dscombat.data.RadarData.RadarPing;
 import com.onewhohears.dscombat.data.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.aircraft.parts.EntitySeat;
+import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
@@ -18,12 +19,29 @@ public class PilotOverlay {
 	public static final IGuiOverlay HUD_Aircraft_Stats = ((gui, poseStack, partialTick, width, height) -> {
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
-		// TODO show plane's current speed
-		// TODO show plane's distance from ground
-		// TODO show plane's current xyz position
-		//GuiComponent.drawString(poseStack, m.font, "TEST", 0, 0, 0xffffff);
 		if (player.getVehicle() instanceof EntitySeat seat 
 				&& seat.getVehicle() instanceof EntityAbstractAircraft plane) {
+			// plane position
+			GuiComponent.drawString(poseStack, m.font, 
+					"["+plane.getBlockX()+","+plane.getBlockY()+","+plane.getBlockZ()+"]", 
+					width/2-60, height-60, 0x00ff00);
+			// plane speed
+			int s = (int)(plane.getDeltaMovement().length() * 20d);
+			GuiComponent.drawString(poseStack, m.font, 
+					"m/s: "+s, 
+					width/2-60, height-50, 0x00ff00);
+			// distance from ground
+			GuiComponent.drawString(poseStack, m.font, 
+					"H: "+UtilGeometry.getDistFromGround(plane), 
+					width/2-60, height-40, 0x00ff00);
+			// weapon data
+			WeaponData weapon = plane.getPartsManager().getWeapons().getSelected();
+			if (weapon != null) {
+				GuiComponent.drawString(poseStack, m.font, 
+						"Weapon: "+weapon.getId()+" "+weapon.getCurrentAmmo()+"/"+weapon.getMaxAmmo(), 
+						width/2-60, height-30, 0x0000ff);
+			}
+			// target distance
 			RadarData radar = plane.getRadar();
 			if (radar != null) {
 				List<RadarPing> pings = radar.getClientRadarPings();
@@ -38,15 +56,9 @@ public class PilotOverlay {
 					if (selected != -1 && selected < pings.size()) {
 						GuiComponent.drawString(poseStack, m.font, 
 								"Target Dist: "+(int)pings.get(selected).pos.distanceTo(plane.position()), 
-								width/2-40, height-40, 0xff0000);
+								width/2-60, height-20, 0xff0000);
 					}
 				}
-			}
-			WeaponData weapon = plane.getPartsManager().getWeapons().getSelected();
-			if (weapon != null) {
-				GuiComponent.drawString(poseStack, m.font, 
-						"Weapon: "+weapon.getId()+" "+weapon.getCurrentAmmo()+"/"+weapon.getMaxAmmo(), 
-						width/2-40, height-30, 0x0000ff);
 			}
 		}
 	});

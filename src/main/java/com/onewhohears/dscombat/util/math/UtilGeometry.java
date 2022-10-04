@@ -20,7 +20,7 @@ public class UtilGeometry {
 	}
 	
 	public static boolean canEntitySeeEntity(Entity e1, Entity e2) {
-		// TODO is this math wrong? radar can't see players as far as it should
+		// TODO radar can't see players as far as it should. there is some chunk distance barrier maybe?
 		//System.out.println("can "+e1+" see "+e2);
 		Level level = e1.getLevel();
 		Vec3 diff = e2.position().subtract(e1.position());
@@ -30,11 +30,24 @@ public class UtilGeometry {
 		int k = 0;
 		while (k++ < dist) {
 			BlockState block = level.getBlockState(new BlockPos(pos));
-			//System.out.println(k+" blockstate "+block);
+			//System.out.println(k+" block "+block);
 			if (block != null && !block.isAir()) return false;
 			pos = pos.add(look);
 		}
 		return true;
+	}
+	
+	public static int getDistFromGround(Entity e) {
+		Level l = e.getLevel();
+		int[] pos = {e.getBlockX(), e.getBlockY(), e.getBlockZ()};
+		int dist = 0;
+		while (pos[1] >= -64) {
+			BlockState block = l.getBlockState(new BlockPos(pos[0], pos[1], pos[2]));
+			if (block != null && !block.isAir()) break;
+			--pos[1];
+			++dist;
+		}
+		return dist;
 	}
 	
 }

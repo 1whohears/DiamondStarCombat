@@ -4,11 +4,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.init.DataSerializers;
+import com.onewhohears.dscombat.util.UtilPacket;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
@@ -52,15 +50,7 @@ public class ClientBoundEntityMovePacket extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				Minecraft m = Minecraft.getInstance();
-				Level world = m.level;
-				Entity e = world.getEntity(id);
-				if (e != null) {
-					e.setPos(pos);
-					e.setDeltaMovement(move);
-					e.setXRot(pitch);
-					e.setYRot(yaw);
-				}
+				UtilPacket.entityMovePacket(id, pos, move, pitch, yaw);	
 				success.set(true);
 			});
 		});

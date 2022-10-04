@@ -41,10 +41,12 @@ public class ServerBoundPingSelectPacket extends IPacket {
 			ServerPlayer player = ctx.get().getSender();
 			ServerLevel level = player.getLevel();
 			EntityAbstractAircraft plane = (EntityAbstractAircraft) level.getEntity(id);
-			if (plane == null) return;
-			RadarData radar = plane.getRadar();
-			if (radar == null) return;
-			radar.selectTarget(ping);
+			if (plane != null) {
+				RadarData radar = plane.getRadar();
+				if (radar != null) {
+					radar.selectTarget(ping);
+				}
+			}
 		});
 		ctx.get().setPacketHandled(true);
 		return success.get();

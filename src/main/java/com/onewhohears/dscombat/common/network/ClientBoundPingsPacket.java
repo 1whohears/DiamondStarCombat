@@ -5,13 +5,10 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
-import com.onewhohears.dscombat.data.RadarData;
 import com.onewhohears.dscombat.data.RadarData.RadarPing;
-import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
+import com.onewhohears.dscombat.util.UtilPacket;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent.Context;
@@ -45,13 +42,7 @@ public class ClientBoundPingsPacket extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				Minecraft m = Minecraft.getInstance();
-				Level world = m.level;
-				EntityAbstractAircraft plane = (EntityAbstractAircraft) world.getEntity(id);
-				if (plane != null) {
-					RadarData radar = plane.getRadar();
-					radar.readClientPingsFromServer(pings);
-				}
+				UtilPacket.pingsPacket(id, pings);
 				success.set(true);
 			});
 		});

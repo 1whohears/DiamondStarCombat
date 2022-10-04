@@ -3,6 +3,7 @@ package com.onewhohears.dscombat;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
+import com.onewhohears.dscombat.common.PacketHandler;
 import com.onewhohears.dscombat.common.event.CommonForgeEvents;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModEntities;
@@ -20,21 +21,20 @@ public class DSCombatMod
 	
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    public DSCombatMod()
-    {
+    public DSCombatMod() {
     	IEventBus eventBus =  FMLJavaModLoadingContext.get().getModEventBus();
         
     	DataSerializers.init(eventBus);
     	ModEntities.register(eventBus);
-    	eventBus.addListener(this::setup);
+    	eventBus.addListener(this::commonSetup);
+    	
     	MinecraftForge.EVENT_BUS.register(new CommonForgeEvents());
-        
         MinecraftForge.EVENT_BUS.register(this);
     }
-
-    private void setup(final FMLCommonSetupEvent event)
-    {
-        LOGGER.info("HELLO FROM PREINIT");
-    }
+    
+    private void commonSetup(final FMLCommonSetupEvent event) {
+    	LOGGER.info("HELLO FROM PREINIT");
+		PacketHandler.register();
+	}
     
 }

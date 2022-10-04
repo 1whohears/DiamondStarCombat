@@ -16,36 +16,40 @@ public final class PacketHandler {
 	
 	private PacketHandler() {}
 	
-	private static final String PROTOCOL_VERSION = "1";
+	private static final String PROTOCOL_VERSION = "1.0";
 	
-	public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(new ResourceLocation(DSCombatMod.MODID), 
-			() -> PROTOCOL_VERSION, 
-			PROTOCOL_VERSION::equals, 
-			PROTOCOL_VERSION::equals);
+	public static SimpleChannel INSTANCE;
 	
-	public static void init() {
+	public static void register() {
+		SimpleChannel net = NetworkRegistry.ChannelBuilder
+				.named(new ResourceLocation(DSCombatMod.MODID, "messages"))
+				.networkProtocolVersion(() -> PROTOCOL_VERSION)
+                .clientAcceptedVersions(s -> true)
+                .serverAcceptedVersions(s -> true)
+                .simpleChannel();
+		INSTANCE = net;
 		int index = 0;
-		INSTANCE.messageBuilder(ServerBoundFlightControlPacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
+		net.messageBuilder(ServerBoundFlightControlPacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
 			.encoder(ServerBoundFlightControlPacket::encode)
 			.decoder(ServerBoundFlightControlPacket::new)
 			.consumerMainThread(ServerBoundFlightControlPacket::handle)
 			.add();
-		INSTANCE.messageBuilder(ServerBoundQPacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
+		net.messageBuilder(ServerBoundQPacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
 			.encoder(ServerBoundQPacket::encode)
 			.decoder(ServerBoundQPacket::new)
 			.consumerMainThread(ServerBoundQPacket::handle)
 			.add();
-		INSTANCE.messageBuilder(ClientBoundPingsPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+		net.messageBuilder(ClientBoundPingsPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
 			.encoder(ClientBoundPingsPacket::encode)
 			.decoder(ClientBoundPingsPacket::new)
 			.consumerMainThread(ClientBoundPingsPacket::handle)
 			.add();
-		INSTANCE.messageBuilder(ServerBoundPingSelectPacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
+		net.messageBuilder(ServerBoundPingSelectPacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
 			.encoder(ServerBoundPingSelectPacket::encode)
 			.decoder(ServerBoundPingSelectPacket::new)
 			.consumerMainThread(ServerBoundPingSelectPacket::handle)
 			.add();
-		INSTANCE.messageBuilder(ClientBoundEntityMovePacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+		net.messageBuilder(ClientBoundEntityMovePacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
 			.encoder(ClientBoundEntityMovePacket::encode)
 			.decoder(ClientBoundEntityMovePacket::new)
 			.consumerMainThread(ClientBoundEntityMovePacket::handle)

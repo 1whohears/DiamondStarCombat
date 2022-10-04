@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.client.renderer.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.onewhohears.dscombat.DSCombatMod;
 
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -18,7 +19,7 @@ import net.minecraft.world.entity.schedule.Keyframe;
 
 public class EntityModelTestPlane<T extends Entity> extends EntityModel<T> {
 	
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("modid", "basic_plane"), "main");
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(DSCombatMod.MODID, "basic_plane"), "main");
 	private final ModelPart body;
 
 	public EntityModelTestPlane(ModelPart root) {

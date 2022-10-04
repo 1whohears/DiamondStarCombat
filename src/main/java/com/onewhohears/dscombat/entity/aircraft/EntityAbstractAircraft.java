@@ -17,6 +17,7 @@ import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 
 import net.minecraft.client.model.EntityModel;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.contents.TranslatableContents;
@@ -34,6 +35,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidType;
@@ -41,8 +43,8 @@ import net.minecraftforge.network.NetworkHooks;
 
 public abstract class EntityAbstractAircraft extends Entity {
 	
-	public static final EntityDataAccessor<Integer> MAX_HEALTH = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.INT);
-    public static final EntityDataAccessor<Integer> HEALTH = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Float> MAX_HEALTH = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
+    public static final EntityDataAccessor<Float> HEALTH = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> MAX_SPEED = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> THROTTLE = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Quaternion> Q = SynchedEntityData.defineId(EntityAbstractAircraft.class, DataSerializers.QUATERNION);
@@ -68,8 +70,8 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	@Override
 	protected void defineSynchedData() {
-		entityData.define(MAX_HEALTH, 10);
-        entityData.define(HEALTH, 10);
+		entityData.define(MAX_HEALTH, 10f);
+        entityData.define(HEALTH, 10f);
 		entityData.define(MAX_SPEED, 1.5f);
 		entityData.define(THROTTLE, 0.0f);
 		entityData.define(Q, Quaternion.ONE);
@@ -311,7 +313,6 @@ public abstract class EntityAbstractAircraft extends Entity {
 		if (this.isControlledByLocalInstance()) {
 			this.lerpSteps = 0;
 			this.lerpStepsQ = 0;
-	        //this.setPacketCoordinates(this.getX(), this.getY(), this.getZ()); // TODO packet coordinates
 		}
 		if (this.lerpSteps > 0) {
 			double d0 = this.getX() + (this.lerpX - this.getX()) / (double)this.lerpSteps;
@@ -458,7 +459,27 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	@Override
     public boolean hurt(DamageSource source, float amount) {
-		return false;
+		addHealth(amount);
+		float h = getHealth();
+		if (h <= 0) {
+			kill();
+			source.setExplosion();
+			explode(source);
+		}
+		return true;
+	}
+	
+	public void explode(DamageSource source) {
+		if (!this.level.isClientSide) {
+			level.explode(this, source,
+					null, getX(), getY(), getZ(), 
+					3, true, 
+					Explosion.BlockInteraction.BREAK);
+		} else {
+			level.addParticle(ParticleTypes.SMOKE, 
+					this.getX(), this.getY()+0.5D, this.getZ(), 
+					0.0D, 0.0D, 0.0D);
+		}
 	}
 
 	@Override
@@ -568,4 +589,27 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public boolean shouldRenderAtSqrDistance(double dist) {
 		return dist < 25000;
 	}
+    
+    public void setMaxHealth(float h) {
+    	entityData.set(MAX_HEALTH, h);
+    }
+    
+    public float getMaxHealth() {
+    	return entityData.get(MAX_HEALTH);
+    }
+    
+    public void addHealth(float h) {
+    	this.setHealth(getHealth()+h);
+    }
+    
+    public void setHealth(float h) {
+    	float max = getMaxHealth();
+    	if (h > max) h = max;
+    	else if (h < 0) h = 0;
+    	entityData.set(HEALTH, h);
+    }
+    
+    public float getHealth() {
+    	return entityData.get(HEALTH);
+    }
 }

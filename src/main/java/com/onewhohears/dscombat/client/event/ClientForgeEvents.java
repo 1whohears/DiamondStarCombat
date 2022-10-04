@@ -319,7 +319,7 @@ public final class ClientForgeEvents {
 	
 	@SubscribeEvent
 	public static void renderOverlay(RenderGuiOverlayEvent.Pre event) {
-		// TODO display pilot overlay
+		
 	}
 	
 	/*@SubscribeEvent

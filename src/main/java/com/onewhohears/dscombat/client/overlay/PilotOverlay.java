@@ -21,25 +21,27 @@ public class PilotOverlay {
 		final var player = m.player;
 		if (player.getVehicle() instanceof EntitySeat seat 
 				&& seat.getVehicle() instanceof EntityAbstractAircraft plane) {
+			// TODO plane health
+			
 			// plane position
 			GuiComponent.drawString(poseStack, m.font, 
 					"["+plane.getBlockX()+","+plane.getBlockY()+","+plane.getBlockZ()+"]", 
-					width/2-60, height-60, 0x00ff00);
+					width/2-100, height-60, 0x00ff00);
 			// plane speed
 			int s = (int)(plane.getDeltaMovement().length() * 20d);
 			GuiComponent.drawString(poseStack, m.font, 
 					"m/s: "+s, 
-					width/2-60, height-50, 0x00ff00);
+					width/2-100, height-50, 0x00ff00);
 			// distance from ground
 			GuiComponent.drawString(poseStack, m.font, 
 					"H: "+UtilGeometry.getDistFromGround(plane), 
-					width/2-60, height-40, 0x00ff00);
+					width/2-100, height-40, 0x00ff00);
 			// weapon data
 			WeaponData weapon = plane.getPartsManager().getWeapons().getSelected();
 			if (weapon != null) {
 				GuiComponent.drawString(poseStack, m.font, 
 						"Weapon: "+weapon.getId()+" "+weapon.getCurrentAmmo()+"/"+weapon.getMaxAmmo(), 
-						width/2-60, height-30, 0x0000ff);
+						width/2-100, height-30, 0x0000ff);
 			}
 			// target distance
 			RadarData radar = plane.getRadar();
@@ -56,7 +58,7 @@ public class PilotOverlay {
 					if (selected != -1 && selected < pings.size()) {
 						GuiComponent.drawString(poseStack, m.font, 
 								"Target Dist: "+(int)pings.get(selected).pos.distanceTo(plane.position()), 
-								width/2-60, height-20, 0xff0000);
+								width/2-100, height-20, 0xff0000);
 					}
 				}
 			}

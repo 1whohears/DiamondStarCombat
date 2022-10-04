@@ -21,7 +21,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
 
 public class RadarData extends PartData {
-	
+	// TODO if there is more than one radar on a plane they all send data to player
 	private double range;
 	private double fov;
 	private int scanRate;
@@ -39,7 +39,7 @@ public class RadarData extends PartData {
 	private int clientSelectedIndex = -1;
 	
 	public RadarData(String id, double range, double fov, int scanRate) {
-		super(id, Vec3.ZERO);
+		super(id, new Vec3(0, 0.5, 0));
 		this.range = range;
 		this.fov = fov;
 		this.scanRate = scanRate;

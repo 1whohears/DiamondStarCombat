@@ -157,7 +157,24 @@ public class MissileData extends BulletData {
 			missile.discard();
 			return;
 		}
-		this.guideToTarget(missile, target.position());
+		this.guideToTarget(missile, interceptPos(
+				missile.position(), missile.getDeltaMovement(), 
+				target.position(), target.getDeltaMovement()));
+	}
+	
+	public static Vec3 interceptPos(Vec3 mPos, Vec3 mVel, Vec3 tPos, Vec3 tVel) {
+		double x = 0, y = 0, z = 0;
+		Vec3 d = tPos.subtract(mPos);
+		double dvx = mVel.x - tVel.x;
+		double dvy = mVel.y - tVel.y;
+		double dvz = mVel.z - tVel.z;
+		if (dvx > 0) x = tVel.x * d.x / dvx;
+		else         x = tVel.x * d.x / mVel.x;
+		if (dvy > 0) y = tVel.y * d.y / dvy;
+		else         y = tVel.y * d.y / mVel.y;
+		if (dvz > 0) z = tVel.z * d.z / dvz;
+		else         z = tVel.z * d.z / mVel.z;
+		return tPos.add(x, y, z);
 	}
 	
 	public void guideToTarget(EntityMissile missile, Vec3 target) {

@@ -27,8 +27,6 @@ public class EntityMissile extends EntityBullet {
 	public Entity parent;
 	public Entity target;
 	public Vec3 targetPos = Vec3.ZERO;
-	public Vec3 targetPosPrev = Vec3.ZERO;
-	public Vec3 targetVel = Vec3.ZERO; // TODO target where the opponent is going to be
 	
 	public EntityMissile(EntityType<? extends EntityMissile> type, Level level) {
 		super(type, level);

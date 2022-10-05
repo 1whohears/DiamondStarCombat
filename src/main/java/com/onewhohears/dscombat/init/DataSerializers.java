@@ -157,7 +157,7 @@ public class DataSerializers {
     		.register("weapondata", () -> WEAPON_DATA);
     
     public static final RegistryObject<EntityDataSerializer<?>> SERIALIZER_ENTRY_PARTSMANAGER = DATA_SERIALIZERS
-    		.register("weaponsystem", () -> PARTS_MANAGER);
+    		.register("partsmanager", () -> PARTS_MANAGER);
     
     public static final RegistryObject<EntityDataSerializer<?>> SERIALIZER_ENTRY_PARTDATA = DATA_SERIALIZERS
     		.register("partdata", () -> PART_DATA);

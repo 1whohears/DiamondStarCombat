@@ -33,6 +33,11 @@ public class BombData extends BulletData {
 	}
 	
 	@Override
+	public void read(FriendlyByteBuf buffer) {
+		super.read(buffer);
+	}
+	
+	@Override
 	public void write(FriendlyByteBuf buffer) {
 		super.write(buffer);
 	}
@@ -47,6 +52,8 @@ public class BombData extends BulletData {
 		if (!this.checkShoot(1)) return null;
 		System.out.println(this.getId()+" ammo "+this.getCurrentAmmo());
 		this.setLaunchFail("bombs are not added yet");
+		
+		super.shoot(level, vehicle, owner, direction, vehicleQ);
 		return null;
 	}
 }

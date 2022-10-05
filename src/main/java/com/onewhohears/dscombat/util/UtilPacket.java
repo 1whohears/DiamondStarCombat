@@ -31,7 +31,7 @@ public class UtilPacket {
 		EntityAbstractAircraft plane = (EntityAbstractAircraft) world.getEntity(id);
 		if (plane != null) {
 			RadarData radar = plane.getRadar();
-			radar.readClientPingsFromServer(pings);
+			if (radar != null) radar.readClientPingsFromServer(pings);
 		}
 	}
 	

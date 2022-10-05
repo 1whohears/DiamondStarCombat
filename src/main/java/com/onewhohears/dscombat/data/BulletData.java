@@ -71,6 +71,11 @@ public class BulletData extends WeaponData {
 	
 	public BulletData(FriendlyByteBuf buffer) {
 		super(buffer);
+	}
+	
+	@Override
+	public void read(FriendlyByteBuf buffer) {
+		super.read(buffer);
 		this.damage = buffer.readFloat();
 		this.speed = buffer.readDouble();
 		this.explosive = buffer.readBoolean();
@@ -124,6 +129,7 @@ public class BulletData extends WeaponData {
 		bullet.setDeltaMovement(direction.scale(speed).add(vehicle.getDeltaMovement()));
 		level.addFreshEntity(bullet);
 		this.setLaunchSuccess(1);
+		super.shoot(level, vehicle, owner, direction, vehicleQ);
 		return bullet;
 	}
 	

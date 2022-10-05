@@ -39,7 +39,7 @@ public class RadarData extends PartData {
 	private int clientSelectedIndex = -1;
 	
 	public RadarData(String id, double range, double fov, int scanRate) {
-		super(id, new Vec3(0, 0.5, 0));
+		super(id, new Vec3(0, 0.5, 0.1));
 		this.range = range;
 		this.fov = fov;
 		this.scanRate = scanRate;

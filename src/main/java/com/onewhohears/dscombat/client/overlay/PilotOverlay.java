@@ -41,7 +41,7 @@ public class PilotOverlay {
 						"Health: "+(int)h+"/"+(int)max, 
 						width/2-100, height-40, getHealthColor(h, max));
 			// weapon data
-			WeaponData weapon = plane.getPartsManager().getWeapons().getSelected();
+			WeaponData weapon = plane.weaponSystem.getSelected();
 			if (weapon != null) {
 				GuiComponent.drawString(poseStack, m.font, 
 						"Weapon: "+weapon.getId()+" "+weapon.getCurrentAmmo()+"/"+weapon.getMaxAmmo(), 

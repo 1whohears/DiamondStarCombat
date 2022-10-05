@@ -66,6 +66,10 @@ public abstract class WeaponData {
 	}
 	
 	public WeaponData(FriendlyByteBuf buffer) {
+		read(buffer);
+	}
+	
+	public void read(FriendlyByteBuf buffer) {
 		// type int is read in DataSerializers
 		int idLength = buffer.readInt();
 		id = buffer.readCharSequence(idLength, Charset.defaultCharset()).toString();
@@ -95,7 +99,10 @@ public abstract class WeaponData {
 	
 	public abstract WeaponType getType();
 	
-	public abstract EntityAbstractWeapon shoot(Level level, Entity vehicle, Entity owner, Vec3 direction, Quaternion vehicleQ);
+	public EntityAbstractWeapon shoot(Level level, Entity vehicle, Entity owner, Vec3 direction, Quaternion vehicleQ) {
+		// TODO update ammo num packet to client
+		return null;
+	}
 	
 	protected void tick() {
 		if (recoilTime > 1) --recoilTime;

@@ -68,6 +68,11 @@ public class MissileData extends BulletData {
 	
 	public MissileData(FriendlyByteBuf buffer) {
 		super(buffer);
+	}
+	
+	@Override
+	public void read(FriendlyByteBuf buffer) {
+		super.read(buffer);
 		targetType = TargetType.values()[buffer.readInt()];
 		guidanceType = GuidanceType.values()[buffer.readInt()];
 		maxRot = buffer.readFloat();
@@ -137,6 +142,7 @@ public class MissileData extends BulletData {
 		rocket.setYRot(UtilAngles.getYaw(rocket.getDeltaMovement()));
 		level.addFreshEntity(rocket);
 		this.setLaunchSuccess(1);
+		super.shoot(level, vehicle, owner, direction, vehicleQ);
 		return rocket;
 	}
 	

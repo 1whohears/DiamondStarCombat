@@ -59,11 +59,13 @@ public class WeaponSystem {
 	public boolean addWeapon(WeaponData data) {
 		if (get(data.getId()) != null) return false;
 		weapons.add(data);
+		// TODO add weapon packet
 		return true;
 	}
 	
 	public void removeWeapon(String id) {
 		weapons.remove(get(id));
+		// TODO remove weapon packet
 	}
 	
 	@Nullable
@@ -89,7 +91,7 @@ public class WeaponSystem {
 	}
 	
 	/**
-	 * called by this weapon system's entity tick function
+	 * called by this weapon system's entity tick function server side
 	 */
 	public void tick() {
 		for (WeaponData w : weapons) w.tick();

@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
+import com.onewhohears.dscombat.data.AircraftPresets;
 import com.onewhohears.dscombat.data.PartData;
 import com.onewhohears.dscombat.data.PartsManager;
 import com.onewhohears.dscombat.data.RadarData;
@@ -49,20 +50,21 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public static final EntityDataAccessor<Float> THROTTLE = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Quaternion> Q = SynchedEntityData.defineId(EntityAbstractAircraft.class, DataSerializers.QUATERNION);
 	public static final EntityDataAccessor<Boolean> FREE_LOOK = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<PartsManager> PARTS_MANAGER = SynchedEntityData.defineId(EntityAbstractAircraft.class, DataSerializers.PARTS_MANAGER);
+	//public static final EntityDataAccessor<PartsManager> PARTS_MANAGER = SynchedEntityData.defineId(EntityAbstractAircraft.class, DataSerializers.PARTS_MANAGER);
 	// TODO this parts manager does not sync between client and server automatically needs a system here packets update individual parts
-	//public Quaternion clientQ = Quaternion.ONE.copy();
+	public PartsManager partsManager = new PartsManager();
+	public WeaponSystem weaponSystem = new WeaponSystem();
 	public Quaternion prevQ = Quaternion.ONE.copy();
+	//public Quaternion clientQ = Quaternion.ONE.copy();
 	
 	public boolean inputThrottleUp, inputThrottleDown;
 	public boolean inputMouseMode, inputFlare, inputShoot, inputSelect;
 	public float inputPitch, inputRoll, inputYaw;
 	public float prevXRot, prevYRot, zRot, prevZRot;
 	
-	private int lerpSteps, lerpStepsQ;
-	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot, lerpZRot;
+	private int lerpSteps/*, lerpStepsQ*/;
+	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot/*, lerpZRot*/;
 	private boolean prevInputMouseMode, prevInputSelect;
-	//private boolean notFirstEverTick;
 	
 	public EntityAbstractAircraft(EntityType<? extends EntityAbstractAircraft> entity, Level level) {
 		super(entity, level);
@@ -77,7 +79,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		entityData.define(THROTTLE, 0.0f);
 		entityData.define(Q, Quaternion.ONE);
 		entityData.define(FREE_LOOK, true);
-		entityData.define(PARTS_MANAGER, new PartsManager());
+		//entityData.define(PARTS_MANAGER, new PartsManager());
 	}
 	
 	@Override
@@ -85,11 +87,11 @@ public abstract class EntityAbstractAircraft extends Entity {
         super.onSyncedDataUpdated(key);
         if (Q.equals(key) && level.isClientSide() && !isControlledByLocalInstance()) {
             if (firstTick) {
-                lerpStepsQ = 0;
+                //lerpStepsQ = 0;
                 //setClientQ(getQ());
                 setPrevQ(getQ());
             } else {
-                lerpStepsQ = 10;
+                //lerpStepsQ = 10;
             }
         }
         // TODO check of update synch data to see how often it updates the part data
@@ -97,47 +99,44 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	@Override
 	protected void readAdditionalSaveData(CompoundTag compound) {
-		//notFirstEverTick = compound.getBoolean("not_first_ever_tick");
-		//System.out.println("read data not first tick = "+notFirstEverTick);
-		// TODO default health is zero. modify command to set default health
-		// /summon dscombat:test_plane ~ ~ ~ {health:100f,max_health:100f,max_speed:1.5f}
+		String initType = compound.getString("INIT_TYPE");
+		if (!initType.isEmpty()) {
+			AircraftPresets.setupAircraftByPreset(this, initType);
+			// TODO SEAT ISN'T SPAWNING IN PLANE!!!
+			return;
+		}
+		// /summon dscombat:test_plane ~ ~ ~ {INIT_TYPE:"test_plane"}
+		partsManager = new PartsManager(compound);
+		weaponSystem = new WeaponSystem(compound);
+		this.setMaxSpeed(compound.getFloat("max_speed"));
+		this.setMaxHealth(compound.getFloat("max_health"));
+		this.setHealth(compound.getFloat("health"));
 		Quaternion q = new Quaternion(getXRot(), getYRot(), 0, true);
 		setQ(q);
 		setPrevQ(q);
 		//setClientQ(q);
-		this.setPartsManager(new PartsManager(compound));
-		this.setMaxSpeed(compound.getFloat("max_speed"));
-		this.setMaxHealth(compound.getFloat("max_health"));
-		this.setHealth(compound.getFloat("health"));
 	}
 
 	@Override
 	protected void addAdditionalSaveData(CompoundTag compound) {
-		//compound.putBoolean("not_first_ever_tick", true);
-		this.getPartsManager().write(compound);
+		compound.putString("INIT_TYPE", "");
+		partsManager.write(compound);
+		weaponSystem.write(compound);
 		compound.putFloat("max_speed", this.getMaxSpeed());
 		compound.putFloat("max_health", this.getMaxHealth());
 		compound.putFloat("health", this.getHealth());
 	}
 	
 	public void init() {
-		//if (!notFirstEverTick && !level.isClientSide) firstEverTick();
 		setupAircraftParts();
-		// synch data with client
 	}
-	
-	/*public void firstEverTick() {
-		this.setMaxSpeed(1.5f);
-		this.setMaxHealth(100f);
-		this.setHealth(100f);
-	}*/
 	
 	@Override
 	public void tick() {
 		//System.out.println(this.tickCount+" "+this.level);
 		if (this.firstTick) init();
 		super.tick();
-		if (!level.isClientSide) this.getPartsManager().getWeapons().tick();
+		if (!level.isClientSide) weaponSystem.tick();
 		if (Double.isNaN(getDeltaMovement().length())) {
             setDeltaMovement(Vec3.ZERO);
         }
@@ -298,27 +297,28 @@ public abstract class EntityAbstractAircraft extends Entity {
 	}
 	
 	public void controlSystem() {
-		if (level.isClientSide) return;
 		Entity controller = this.getControllingPassenger();
 		if (controller == null) return;
-		RadarData radar = getRadar();
-		if (radar != null) radar.tickUpdateTargets(this);
-		if (this.inputShoot) {
-			WeaponSystem system = this.getPartsManager().getWeapons();
-			WeaponData data = system.getSelected();
-			if (data == null) return;
-			data.shoot(level, this, controller, UtilAngles.getRollAxis(getQ()), this.getQ());
-			if (data.isFailedLaunch() && data.getFailedLaunchReason() != null) {
-				System.out.println(data.getFailedLaunchReason());
-				if (controller instanceof ServerPlayer player) {
-					player.displayClientMessage(MutableComponent.create(new TranslatableContents(data.getFailedLaunchReason())), true);
+		if (!level.isClientSide) {
+			RadarData radar = getRadar();
+			if (radar != null) radar.tickUpdateTargets(this);
+			if (this.inputShoot) {
+				WeaponData data = weaponSystem.getSelected();
+				if (data == null) return;
+				data.shoot(level, this, controller, UtilAngles.getRollAxis(getQ()), this.getQ());
+				if (data.isFailedLaunch() && data.getFailedLaunchReason() != null) {
+					System.out.println(data.getFailedLaunchReason());
+					if (controller instanceof ServerPlayer player) {
+						player.displayClientMessage(MutableComponent.create(
+								new TranslatableContents(data.getFailedLaunchReason())), true);
+					}
 				}
 			}
 		}
 	}
 	
 	public RadarData getRadar() {
-		PartData rPart = this.getPartsManager().get("main-radar");
+		PartData rPart = partsManager.get("main-radar");
 		if (rPart == null) return null;
 		return (RadarData) rPart;
 	}
@@ -334,7 +334,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	private void tickLerp() {
 		if (this.isControlledByLocalInstance()) {
 			this.lerpSteps = 0;
-			this.lerpStepsQ = 0;
+			//this.lerpStepsQ = 0;
 		}
 		if (this.lerpSteps > 0) {
 			double d0 = this.getX() + (this.lerpX - this.getX()) / (double)this.lerpSteps;
@@ -374,7 +374,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		this.inputShoot = shoot;
 		this.inputSelect = select;
 		if (!this.prevInputSelect && this.inputSelect && !this.level.isClientSide) 
-			getPartsManager().getWeapons().selectNextWeapon();
+			weaponSystem.selectNextWeapon();
 		this.prevInputSelect = this.inputSelect;
 	}
 	
@@ -400,10 +400,10 @@ public abstract class EntityAbstractAircraft extends Entity {
     }
 	
     /**
-     * register parts before calling super
+     * register parts before calling super in server side
      */
 	protected void setupAircraftParts() {
-		this.getPartsManager().setupParts(this);
+		partsManager.setupParts(this);
 	}
 	
 	@Override
@@ -581,13 +581,13 @@ public abstract class EntityAbstractAircraft extends Entity {
         prevQ = q.copy();
     }
     
-    public PartsManager getPartsManager() {
+    /*public PartsManager getPartsManager() {
     	return entityData.get(PARTS_MANAGER);
     }
     
     public void setPartsManager(PartsManager manager) {
     	entityData.set(PARTS_MANAGER, manager);
-    }
+    }*/
     
     /**
      * smaller number is better

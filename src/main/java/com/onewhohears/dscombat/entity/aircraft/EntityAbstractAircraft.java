@@ -70,12 +70,12 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	@Override
 	protected void defineSynchedData() {
-		entityData.define(MAX_HEALTH, 10f);
-        entityData.define(HEALTH, 10f);
+		entityData.define(MAX_HEALTH, 100f);
+        entityData.define(HEALTH, 100f);
 		entityData.define(MAX_SPEED, 1.5f);
 		entityData.define(THROTTLE, 0.0f);
 		entityData.define(Q, Quaternion.ONE);
-		entityData.define(FREE_LOOK, false);
+		entityData.define(FREE_LOOK, true);
 		entityData.define(PARTS_MANAGER, new PartsManager());
 	}
 	
@@ -101,13 +101,17 @@ public abstract class EntityAbstractAircraft extends Entity {
 		setPrevQ(q);
 		//setClientQ(q);
 		this.setPartsManager(new PartsManager(compound));
-		// TODO read all the other synced data
+		this.setMaxSpeed(compound.getFloat("max_speed"));
+		this.setMaxHealth(compound.getFloat("max_health"));
+		this.setHealth(compound.getFloat("health"));
 	}
 
 	@Override
 	protected void addAdditionalSaveData(CompoundTag compound) {
 		this.getPartsManager().write(compound);
-		// TODO add all the other synced data
+		compound.putFloat("max_speed", this.getMaxSpeed());
+		compound.putFloat("max_health", this.getMaxHealth());
+		compound.putFloat("health", this.getHealth());
 	}
 	
 	public void init() {
@@ -168,6 +172,10 @@ public abstract class EntityAbstractAircraft extends Entity {
 		System.out.println("P "+this.getPrevQ());
 		System.out.println("C "+this.getClientQ());
 		System.out.println("Q "+this.getQ());*/
+		if (getHealth() <= 0) {
+			kill();
+			explode(null);
+		}
 	}
 	
 	public void motionClamp() {
@@ -459,13 +467,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	@Override
     public boolean hurt(DamageSource source, float amount) {
-		addHealth(amount);
-		float h = getHealth();
-		if (h <= 0) {
-			kill();
-			source.setExplosion();
-			explode(source);
-		}
+		addHealth(-amount);
 		return true;
 	}
 	

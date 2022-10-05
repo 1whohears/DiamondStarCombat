@@ -169,7 +169,10 @@ public class EntitySeat extends EntityAbstractPart {
 	
 	@Override
     public boolean hurt(DamageSource source, float amount) {
-		return false;
+		if (source.isExplosion() || source.isFire() || source.isMagic()) return false;
+		Entity v = this.getRootVehicle();
+		if (v != null) v.hurt(source, amount);
+		return true;
 	}
 	
 	@Override

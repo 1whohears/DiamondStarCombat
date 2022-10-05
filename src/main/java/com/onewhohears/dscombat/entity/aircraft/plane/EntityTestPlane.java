@@ -51,7 +51,7 @@ public class EntityTestPlane extends EntityAbstractPlane {
 				600, 100000, 10, 1000, 1d, 0, 
 				true, true, false, 100d, 4f,
 				TargetType.GROUND, GuidanceType.PITBULL,
-				1.2f, 0.2d, 1.0d);
+				2.5f, 0.2d, 1.0d);
 		test3.setCurrentAmmo(test3.getMaxAmmo());
 		pm.getWeapons().addWeapon(test3);
 		// missile 2
@@ -59,7 +59,7 @@ public class EntityTestPlane extends EntityAbstractPlane {
 				600, 100000, 20, 1000, 1.5d, 0, 
 				true, true, false, 100d, 8f,
 				TargetType.AIR, GuidanceType.PITBULL,
-				0.8f, 0.3d, 1.0d);
+				1.5f, 0.3d, 1.0d);
 		test4.setCurrentAmmo(test4.getMaxAmmo());
 		pm.getWeapons().addWeapon(test4);
 		// radar

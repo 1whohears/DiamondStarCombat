@@ -62,6 +62,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	private int lerpSteps, lerpStepsQ;
 	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot, lerpZRot;
 	private boolean prevInputMouseMode, prevInputSelect;
+	//private boolean notFirstEverTick;
 	
 	public EntityAbstractAircraft(EntityType<? extends EntityAbstractAircraft> entity, Level level) {
 		super(entity, level);
@@ -96,6 +97,9 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	@Override
 	protected void readAdditionalSaveData(CompoundTag compound) {
+		//notFirstEverTick = compound.getBoolean("not_first_ever_tick");
+		//System.out.println("read data not first tick = "+notFirstEverTick);
+		// TODO default health is zero. modify command to set default health
 		Quaternion q = new Quaternion(getXRot(), getYRot(), 0, true);
 		setQ(q);
 		setPrevQ(q);
@@ -108,6 +112,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 
 	@Override
 	protected void addAdditionalSaveData(CompoundTag compound) {
+		//compound.putBoolean("not_first_ever_tick", true);
 		this.getPartsManager().write(compound);
 		compound.putFloat("max_speed", this.getMaxSpeed());
 		compound.putFloat("max_health", this.getMaxHealth());
@@ -115,8 +120,16 @@ public abstract class EntityAbstractAircraft extends Entity {
 	}
 	
 	public void init() {
+		//if (!notFirstEverTick && !level.isClientSide) firstEverTick();
 		setupAircraftParts();
+		// synch data with client
 	}
+	
+	/*public void firstEverTick() {
+		this.setMaxSpeed(1.5f);
+		this.setMaxHealth(100f);
+		this.setHealth(100f);
+	}*/
 	
 	@Override
 	public void tick() {
@@ -593,6 +606,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	}
     
     public void setMaxHealth(float h) {
+    	if (h < 0) h = 0;
     	entityData.set(MAX_HEALTH, h);
     }
     

@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.client.overlay;
 
+import java.awt.Color;
 import java.util.List;
 
 import com.onewhohears.dscombat.client.event.ClientForgeEvents;
@@ -35,10 +36,10 @@ public class PilotOverlay {
 					"H: "+UtilGeometry.getDistFromGround(plane), 
 					width/2-100, height-50, 0x00ff00);
 			// plane health
-			// TODO change colour based on health
+			float h = plane.getHealth(), max = plane.getMaxHealth();
 			GuiComponent.drawString(poseStack, m.font, 
-						"Health: "+(int)plane.getHealth()+"/"+(int)plane.getMaxHealth(), 
-						width/2-100, height-40, 0x00ff00);
+						"Health: "+(int)h+"/"+(int)max, 
+						width/2-100, height-40, getHealthColor(h, max));
 			// weapon data
 			WeaponData weapon = plane.getPartsManager().getWeapons().getSelected();
 			if (weapon != null) {
@@ -67,5 +68,24 @@ public class PilotOverlay {
 			}
 		}
 	});
+	
+	private static final Color green = new Color(0, 255, 0);
+	private static final Color red = new Color(255, 0, 0);
+	private static final float start = 0.6f;
+	private static final float end = 0.1f;
+	private static final float changeG = (float)green.getGreen() / (start-end);
+	private static final float changeR = (float)red.getRed() / (start-end);
+	
+	private static int getHealthColor(float health, float max) {
+		float r = health / max;
+		if (r >= start) return green.getRGB();
+		if (r < start && r > end) {
+			return new Color(
+				(int)(changeR*(start-r)), 
+				(int)(changeG*(r-end)), 
+				0).getRGB();
+		}
+		return red.getRGB();
+	}
 	
 }

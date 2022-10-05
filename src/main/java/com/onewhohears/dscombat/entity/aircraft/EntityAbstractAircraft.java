@@ -267,7 +267,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		double scale = 1;
 		if (getY() > space) return 0;
 		if (getY() < water) return scale;
-		return -(scale/(space-water)) * (getY()-water) + scale;
+		return scale/(water-space) * (getY()-water) + scale;
 	}
 	
 	public double getSurfaceArea() {

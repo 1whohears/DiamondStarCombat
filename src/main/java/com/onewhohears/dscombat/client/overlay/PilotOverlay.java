@@ -35,6 +35,7 @@ public class PilotOverlay {
 					"H: "+UtilGeometry.getDistFromGround(plane), 
 					width/2-100, height-50, 0x00ff00);
 			// plane health
+			// TODO change colour based on health
 			GuiComponent.drawString(poseStack, m.font, 
 						"Health: "+(int)plane.getHealth()+"/"+(int)plane.getMaxHealth(), 
 						width/2-100, height-40, 0x00ff00);

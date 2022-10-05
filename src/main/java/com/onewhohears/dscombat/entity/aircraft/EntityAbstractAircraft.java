@@ -100,6 +100,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		//notFirstEverTick = compound.getBoolean("not_first_ever_tick");
 		//System.out.println("read data not first tick = "+notFirstEverTick);
 		// TODO default health is zero. modify command to set default health
+		// /summon dscombat:test_plane ~ ~ ~ {health:100f,max_health:100f,max_speed:1.5f}
 		Quaternion q = new Quaternion(getXRot(), getYRot(), 0, true);
 		setQ(q);
 		setPrevQ(q);

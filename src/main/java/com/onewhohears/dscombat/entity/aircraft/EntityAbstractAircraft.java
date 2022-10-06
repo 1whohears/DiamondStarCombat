@@ -192,6 +192,27 @@ public abstract class EntityAbstractAircraft extends Entity {
 			kill();
 			explode(null);
 		}
+		if (level.isClientSide) clientTick();
+	}
+	
+	public void clientTick() {
+		healthSmoke();
+	}
+	
+	private void healthSmoke() {
+		float r = getHealth() / getMaxHealth();
+		if (r < 0.5f) smoke();
+		if (r < 0.3f) for (int i = 0; i < 2; ++i) smoke();
+		if (r < 0.1f) for (int i = 0; i < 4; ++i) smoke();
+	}
+	
+	private void smoke() {
+		if (Math.random() > 0.4d) return;
+		level.addParticle(ParticleTypes.SMOKE, 
+				this.getX(), this.getY(), this.getZ(), 
+				random.nextGaussian() * 0.08D, 
+				0.1D, 
+				random.nextGaussian() * 0.08D);
 	}
 	
 	public void motionClamp() {
@@ -499,7 +520,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 					3, true, 
 					Explosion.BlockInteraction.BREAK);
 		} else {
-			level.addParticle(ParticleTypes.SMOKE, 
+			level.addParticle(ParticleTypes.LARGE_SMOKE, 
 					this.getX(), this.getY()+0.5D, this.getZ(), 
 					0.0D, 0.0D, 0.0D);
 		}

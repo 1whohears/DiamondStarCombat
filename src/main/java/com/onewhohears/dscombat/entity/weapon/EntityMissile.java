@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.entity.weapon;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.PacketHandler;
-import com.onewhohears.dscombat.common.network.ClientBoundEntityMovePacket;
+import com.onewhohears.dscombat.common.network.toclient.ClientBoundEntityMovePacket;
 import com.onewhohears.dscombat.data.MissileData;
 import com.onewhohears.dscombat.data.MissileData.GuidanceType;
 import com.onewhohears.dscombat.data.MissileData.TargetType;

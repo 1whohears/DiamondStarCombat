@@ -55,7 +55,11 @@ public class PartsManager {
 	public void setupParts(EntityAbstractAircraft craft) {
 		System.out.println("setupParts "+this);
 		for (PartData p : parts) p.setup(craft);
-		// TODO setup parts packet to client
+	}
+	
+	public void clientPartsSetup(EntityAbstractAircraft craft) {
+		System.out.println("clientPartsSetup "+this);
+		for (PartData p : parts) p.clientSetup(craft);
 	}
 	
 	public void addPart(PartData part) {

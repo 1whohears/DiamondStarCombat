@@ -84,6 +84,13 @@ public class WeaponSystem {
 		++weaponIndex;
 		checkIndex();
 		System.out.println("new weapon index "+weaponIndex);
+		// TODO weapon index update packet
+	}
+	
+	public void clientSetSelected(int index) {
+		weaponIndex = index;
+		checkIndex();
+		System.out.println("client new weapon index "+weaponIndex);
 	}
 	
 	private void checkIndex() {

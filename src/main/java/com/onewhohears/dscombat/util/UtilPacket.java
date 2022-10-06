@@ -28,7 +28,7 @@ public class UtilPacket {
 	}
 	
 	public static void pingsPacket(int id, List<RadarPing> pings) {
-		System.out.println("ping packet recieved");
+		//System.out.println("ping packet recieved");
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		EntityAbstractAircraft plane = (EntityAbstractAircraft) world.getEntity(id);
@@ -39,7 +39,6 @@ public class UtilPacket {
 	}
 	
 	public static void planeDataPacket(int id, PartsManager pm, WeaponSystem ws) {
-		// TODO player is not receiving this packet?
 		System.out.println("plane data packet recieved");
 		System.out.println(pm.toString());
 		Minecraft m = Minecraft.getInstance();
@@ -48,9 +47,17 @@ public class UtilPacket {
 		if (plane != null) {
 			plane.partsManager = pm;
 			plane.weaponSystem = ws;
-			plane.setupAircraftParts();
+			plane.partsManager.clientPartsSetup(plane);
 			System.out.println("plane data updated");
 		}
+	}
+	
+	public static void weaponAmmoPacket(int id, String weaponId, int ammo) {
+		// TODO
+	}
+	
+	public static void weaponSelectPacket(int id, int index) {
+		// TODO
 	}
 	
 }

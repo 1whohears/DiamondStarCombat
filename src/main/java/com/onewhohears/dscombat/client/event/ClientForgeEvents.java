@@ -14,7 +14,7 @@ import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.KeyInit;
 import com.onewhohears.dscombat.common.PacketHandler;
-import com.onewhohears.dscombat.common.network.ServerBoundFlightControlPacket;
+import com.onewhohears.dscombat.common.network.toserver.ServerBoundFlightControlPacket;
 import com.onewhohears.dscombat.data.RadarData;
 import com.onewhohears.dscombat.data.RadarData.RadarPing;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;

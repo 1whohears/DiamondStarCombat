@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.onewhohears.dscombat.common.PacketHandler;
-import com.onewhohears.dscombat.common.network.ClientBoundPingsPacket;
-import com.onewhohears.dscombat.common.network.ServerBoundPingSelectPacket;
+import com.onewhohears.dscombat.common.network.toclient.ClientBoundPingsPacket;
+import com.onewhohears.dscombat.common.network.toserver.ServerBoundPingSelectPacket;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.util.math.UtilGeometry;

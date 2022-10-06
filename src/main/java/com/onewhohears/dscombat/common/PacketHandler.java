@@ -1,12 +1,14 @@
 package com.onewhohears.dscombat.common;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.common.network.ClientBoundEntityMovePacket;
-import com.onewhohears.dscombat.common.network.ClientBoundPingsPacket;
-import com.onewhohears.dscombat.common.network.ClientBoundPlaneDataPacket;
-import com.onewhohears.dscombat.common.network.ServerBoundFlightControlPacket;
-import com.onewhohears.dscombat.common.network.ServerBoundPingSelectPacket;
-import com.onewhohears.dscombat.common.network.ServerBoundQPacket;
+import com.onewhohears.dscombat.common.network.toclient.ClientBoundEntityMovePacket;
+import com.onewhohears.dscombat.common.network.toclient.ClientBoundPingsPacket;
+import com.onewhohears.dscombat.common.network.toclient.ClientBoundPlaneDataPacket;
+import com.onewhohears.dscombat.common.network.toclient.ClientBoundWeaponAmmoPacket;
+import com.onewhohears.dscombat.common.network.toclient.ClientBoundWeaponIndexPacket;
+import com.onewhohears.dscombat.common.network.toserver.ServerBoundFlightControlPacket;
+import com.onewhohears.dscombat.common.network.toserver.ServerBoundPingSelectPacket;
+import com.onewhohears.dscombat.common.network.toserver.ServerBoundQPacket;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkDirection;
@@ -59,6 +61,16 @@ public final class PacketHandler {
 			.encoder(ClientBoundPlaneDataPacket::encode)
 			.decoder(ClientBoundPlaneDataPacket::new)
 			.consumerMainThread(ClientBoundPlaneDataPacket::handle)
+			.add();
+		net.messageBuilder(ClientBoundWeaponAmmoPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ClientBoundWeaponAmmoPacket::encode)
+			.decoder(ClientBoundWeaponAmmoPacket::new)
+			.consumerMainThread(ClientBoundWeaponAmmoPacket::handle)
+			.add();
+		net.messageBuilder(ClientBoundWeaponIndexPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ClientBoundWeaponIndexPacket::encode)
+			.decoder(ClientBoundWeaponIndexPacket::new)
+			.consumerMainThread(ClientBoundWeaponIndexPacket::handle)
 			.add();
 	}
 	

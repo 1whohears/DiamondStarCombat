@@ -1,11 +1,11 @@
-package com.onewhohears.dscombat.common.network;
+package com.onewhohears.dscombat.common.network.toclient;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
-import com.onewhohears.dscombat.data.RadarData.RadarPing;
+import com.onewhohears.dscombat.common.network.IPacket;
+import com.onewhohears.dscombat.data.PartsManager;
+import com.onewhohears.dscombat.data.WeaponSystem;
 import com.onewhohears.dscombat.util.UtilPacket;
 
 import net.minecraft.network.FriendlyByteBuf;
@@ -13,28 +13,32 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent.Context;
 
-public class ClientBoundPingsPacket extends IPacket {
+public class ClientBoundPlaneDataPacket extends IPacket {
 	
 	public final int id;
-	public final List<RadarPing> pings;
+	public final PartsManager pm;
+	public final WeaponSystem ws;
 	
-	public ClientBoundPingsPacket(int id, List<RadarPing> pings) {
+	public ClientBoundPlaneDataPacket(int id, PartsManager pm, WeaponSystem ws) {
 		this.id = id;
-		this.pings = pings;
+		this.pm = pm;
+		this.ws = ws;
+		System.out.println("packet constructor "+pm);
 	}
 	
-	public ClientBoundPingsPacket(FriendlyByteBuf buffer) {
+	public ClientBoundPlaneDataPacket(FriendlyByteBuf buffer) {
 		id = buffer.readInt();
-		pings = new ArrayList<RadarPing>();
-		int num = buffer.readInt();
-		for (int i = 0; i < num; ++i) pings.add(new RadarPing(buffer));
+		pm = new PartsManager(buffer);
+		ws = new WeaponSystem(buffer);
+		System.out.println("decoding "+pm);
 	}
 	
 	@Override
 	public void encode(FriendlyByteBuf buffer) {
 		buffer.writeInt(id);
-		buffer.writeInt(pings.size());
-		for (int i = 0; i < pings.size(); ++i) pings.get(i).write(buffer);
+		pm.write(buffer);
+		ws.write(buffer);
+		System.out.println("encoding "+pm);
 	}
 
 	@Override
@@ -42,7 +46,7 @@ public class ClientBoundPingsPacket extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilPacket.pingsPacket(id, pings);
+				UtilPacket.planeDataPacket(id, pm, ws);
 				success.set(true);
 			});
 		});

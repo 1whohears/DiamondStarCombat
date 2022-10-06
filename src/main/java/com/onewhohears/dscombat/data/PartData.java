@@ -83,6 +83,11 @@ public abstract class PartData {
 		parent = craft;
 	}
 	
+	public void clientSetup(EntityAbstractAircraft craft) {
+		System.out.println("setting up part "+getId()+" client side "+craft.level.isClientSide);
+		parent = craft;
+	}
+	
 	@Override
 	public String toString() {
 		return "["+getType().name()+"@"+getId()+"]";

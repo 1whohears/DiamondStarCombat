@@ -7,7 +7,7 @@ import javax.annotation.Nullable;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.common.PacketHandler;
-import com.onewhohears.dscombat.common.network.ClientBoundPlaneDataPacket;
+import com.onewhohears.dscombat.common.network.toclient.ClientBoundPlaneDataPacket;
 import com.onewhohears.dscombat.data.AircraftPresets;
 import com.onewhohears.dscombat.data.PartData;
 import com.onewhohears.dscombat.data.PartsManager;
@@ -106,9 +106,6 @@ public abstract class EntityAbstractAircraft extends Entity {
 		System.out.println("client side = "+level.isClientSide+" init type = "+initType);
 		if (!initType.isEmpty()) {
 			AircraftPresets.setupAircraftByPreset(this, initType);
-			if (!level.isClientSide) 
-				PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), 
-					new ClientBoundPlaneDataPacket(this.getId(), partsManager, weaponSystem));
 			return;
 		}
 		// /summon dscombat:test_plane ~ ~ ~ {INIT_TYPE:"test_plane"}
@@ -134,7 +131,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	}
 	
 	public void init() {
-		setupAircraftParts();
+		if (!level.isClientSide) setupAircraftParts();
 	}
 	
 	@Override
@@ -411,6 +408,8 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public void setupAircraftParts() {
 		System.out.println("setting up parts client side = "+level.isClientSide);
 		partsManager.setupParts(this);
+		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), 
+				new ClientBoundPlaneDataPacket(this.getId(), partsManager, weaponSystem));
 	}
 	
 	@Override

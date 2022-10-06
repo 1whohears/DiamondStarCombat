@@ -53,6 +53,7 @@ public class PartsManager {
 	}
 	
 	public void setupParts(EntityAbstractAircraft craft) {
+		System.out.println("parts size = "+parts.size());
 		for (PartData p : parts) p.setup(craft);
 		// TODO setup parts packet to client
 	}
@@ -74,6 +75,13 @@ public class PartsManager {
 	public PartData get(String id) {
 		for (PartData p : parts) if (p.getId().equals(id)) return p;
 		return null;
+	}
+	
+	@Override
+	public String toString() {
+		String s = "Parts:";
+		for (int i = 0; i < parts.size(); ++i) s += parts.get(i).toString();
+		return s;
 	}
 	
 }

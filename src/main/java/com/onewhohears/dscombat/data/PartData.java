@@ -82,4 +82,9 @@ public abstract class PartData {
 		parent = craft;
 	}
 	
+	@Override
+	public String toString() {
+		return "["+getType().name()+"@"+getId()+"]";
+	}
+	
 }

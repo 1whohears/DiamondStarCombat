@@ -6,6 +6,8 @@ import javax.annotation.Nullable;
 
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
+import com.onewhohears.dscombat.common.PacketHandler;
+import com.onewhohears.dscombat.common.network.ClientBoundPlaneDataPacket;
 import com.onewhohears.dscombat.data.AircraftPresets;
 import com.onewhohears.dscombat.data.PartData;
 import com.onewhohears.dscombat.data.PartsManager;
@@ -41,6 +43,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.network.PacketDistributor;
 
 public abstract class EntityAbstractAircraft extends Entity {
 	
@@ -100,9 +103,12 @@ public abstract class EntityAbstractAircraft extends Entity {
 	@Override
 	protected void readAdditionalSaveData(CompoundTag compound) {
 		String initType = compound.getString("INIT_TYPE");
+		System.out.println("client side = "+level.isClientSide+" init type = "+initType);
 		if (!initType.isEmpty()) {
 			AircraftPresets.setupAircraftByPreset(this, initType);
-			// TODO SEAT ISN'T SPAWNING IN PLANE!!!
+			if (!level.isClientSide) 
+				PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), 
+					new ClientBoundPlaneDataPacket(this.getId(), partsManager, weaponSystem));
 			return;
 		}
 		// /summon dscombat:test_plane ~ ~ ~ {INIT_TYPE:"test_plane"}
@@ -402,7 +408,8 @@ public abstract class EntityAbstractAircraft extends Entity {
     /**
      * register parts before calling super in server side
      */
-	protected void setupAircraftParts() {
+	public void setupAircraftParts() {
+		System.out.println("setting up parts client side = "+level.isClientSide);
 		partsManager.setupParts(this);
 	}
 	

@@ -2,8 +2,10 @@ package com.onewhohears.dscombat.util;
 
 import java.util.List;
 
+import com.onewhohears.dscombat.data.PartsManager;
 import com.onewhohears.dscombat.data.RadarData;
 import com.onewhohears.dscombat.data.RadarData.RadarPing;
+import com.onewhohears.dscombat.data.WeaponSystem;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 
 import net.minecraft.client.Minecraft;
@@ -32,6 +34,20 @@ public class UtilPacket {
 		if (plane != null) {
 			RadarData radar = plane.getRadar();
 			if (radar != null) radar.readClientPingsFromServer(pings);
+		}
+	}
+	
+	public static void planeDataPacket(int id, PartsManager pm, WeaponSystem ws) {
+		System.out.println("client packet recieved");
+		System.out.println(pm.toString());
+		Minecraft m = Minecraft.getInstance();
+		Level world = m.level;
+		EntityAbstractAircraft plane = (EntityAbstractAircraft) world.getEntity(id);
+		if (plane != null) {
+			plane.partsManager = pm;
+			plane.weaponSystem = ws;
+			plane.setupAircraftParts();
+			System.out.println("plane data updated");
 		}
 	}
 	

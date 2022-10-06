@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.common;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.network.ClientBoundEntityMovePacket;
 import com.onewhohears.dscombat.common.network.ClientBoundPingsPacket;
+import com.onewhohears.dscombat.common.network.ClientBoundPlaneDataPacket;
 import com.onewhohears.dscombat.common.network.ServerBoundFlightControlPacket;
 import com.onewhohears.dscombat.common.network.ServerBoundPingSelectPacket;
 import com.onewhohears.dscombat.common.network.ServerBoundQPacket;
@@ -53,6 +54,11 @@ public final class PacketHandler {
 			.encoder(ClientBoundEntityMovePacket::encode)
 			.decoder(ClientBoundEntityMovePacket::new)
 			.consumerMainThread(ClientBoundEntityMovePacket::handle)
+			.add();
+		net.messageBuilder(ClientBoundPlaneDataPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ClientBoundPlaneDataPacket::encode)
+			.decoder(ClientBoundPlaneDataPacket::new)
+			.consumerMainThread(ClientBoundPlaneDataPacket::handle)
 			.add();
 	}
 	

@@ -20,8 +20,10 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
 
-public class RadarData extends PartData {
-	// TODO if there is more than one radar on a plane they all send data to player
+public class RadarData {
+	
+	private String id;
+	private Vec3 pos;
 	private double range;
 	private double fov;
 	private int scanRate;
@@ -39,14 +41,16 @@ public class RadarData extends PartData {
 	private int clientSelectedIndex = -1;
 	
 	public RadarData(String id, double range, double fov, int scanRate) {
-		super(id, new Vec3(0, 0.5, 0.1));
+		this.id = id;
+		this.pos = new Vec3(0, 0, 0);
 		this.range = range;
 		this.fov = fov;
 		this.scanRate = scanRate;
 	}
 	
 	public RadarData(CompoundTag tag) {
-		super(tag);
+		id = tag.getString("id");
+		pos = new Vec3(0, 0, 0);
 		range = tag.getDouble("range");
 		fov = tag.getDouble("fov");
 		scanRate = tag.getInt("scanRate");
@@ -56,7 +60,9 @@ public class RadarData extends PartData {
 	}
 	
 	public CompoundTag write() {
-		CompoundTag tag = super.write();
+		CompoundTag tag = new CompoundTag();
+		tag.putString("id", id);
+		// pos
 		tag.putDouble("range", range);
 		tag.putDouble("fov", fov);
 		tag.putInt("scanRate", scanRate);
@@ -67,7 +73,8 @@ public class RadarData extends PartData {
 	}
 	
 	public RadarData(FriendlyByteBuf buffer) {
-		super(buffer);
+		id = buffer.readUtf();
+		pos = new Vec3(0, 0, 0);
 		range = buffer.readDouble();
 		fov = buffer.readDouble();
 		scanRate = buffer.readInt();
@@ -77,7 +84,8 @@ public class RadarData extends PartData {
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
-		super.write(buffer);
+		buffer.writeUtf(id);
+		// pos
 		buffer.writeDouble(range);
 		buffer.writeDouble(fov);
 		buffer.writeInt(scanRate);
@@ -209,7 +217,7 @@ public class RadarData extends PartData {
 		if (fov == -1) return true;
 		return UtilGeometry.isPointInsideCone(
 				target.position(), 
-				radar.position().add(getRelativePos()), 
+				radar.position(), // TODO change radar position based on pose 
 				radar.getLookAngle(), 
 				fov, range*rangeMod);
 	}
@@ -224,16 +232,6 @@ public class RadarData extends PartData {
 		double z = radar.getZ();
 		double w = range/2;
 		return new AABB(x+w, y+w, z+w, x-w, y-w, z-w);
-	}
-	
-	@Override
-	public PartType getType() {
-		return PartType.RADAR;
-	}
-
-	@Override
-	public void setup(EntityAbstractAircraft craft) {
-		super.setup(craft);
 	}
 	
 	public double getRange() {

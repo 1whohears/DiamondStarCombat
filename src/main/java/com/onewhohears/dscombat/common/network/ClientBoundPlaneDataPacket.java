@@ -22,6 +22,7 @@ public class ClientBoundPlaneDataPacket extends IPacket {
 		this.id = id;
 		this.pm = pm;
 		this.ws = ws;
+		System.out.println("packet constructor "+pm);
 	}
 	
 	public ClientBoundPlaneDataPacket(FriendlyByteBuf buffer) {

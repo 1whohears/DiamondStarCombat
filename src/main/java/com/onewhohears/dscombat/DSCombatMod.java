@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
 import com.onewhohears.dscombat.common.PacketHandler;
 import com.onewhohears.dscombat.common.event.CommonForgeEvents;
+import com.onewhohears.dscombat.data.AircraftPresets;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModEntities;
 
@@ -30,6 +31,8 @@ public class DSCombatMod
     	
     	MinecraftForge.EVENT_BUS.register(new CommonForgeEvents());
         MinecraftForge.EVENT_BUS.register(this);
+        
+        AircraftPresets.setupPresets();
     }
     
     private void commonSetup(final FMLCommonSetupEvent event) {

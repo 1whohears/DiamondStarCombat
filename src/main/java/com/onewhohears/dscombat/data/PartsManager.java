@@ -53,7 +53,7 @@ public class PartsManager {
 	}
 	
 	public void setupParts(EntityAbstractAircraft craft) {
-		System.out.println("parts size = "+parts.size());
+		System.out.println("setupParts "+this);
 		for (PartData p : parts) p.setup(craft);
 		// TODO setup parts packet to client
 	}

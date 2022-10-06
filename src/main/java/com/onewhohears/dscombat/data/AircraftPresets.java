@@ -32,6 +32,7 @@ public class AircraftPresets {
 			plane.setHealth(getHealth());
 			plane.setMaxHealth(getMaxHealth());
 			plane.setMaxSpeed(getMaxSpeed());
+			System.out.println("setting up aircraft preset client side "+plane.level.isClientSide+" parts "+plane.partsManager);
 		}
 		
 		public abstract String getPresetName();
@@ -61,6 +62,7 @@ public class AircraftPresets {
 			radar.setScanPlayers(true);
 			radar.setScanMobs(true);
 			pm.addPart(radar);
+			System.out.println("getting parts from test plane preset "+pm);
 			return pm;
 		}
 

@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.data;
 
 import com.mojang.math.Quaternion;
+import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
 
 import net.minecraft.nbt.CompoundTag;
@@ -48,7 +49,7 @@ public class BombData extends BulletData {
 	}
 	
 	@Override
-	public EntityAbstractWeapon shoot(Level level, Entity vehicle, Entity owner, Vec3 direction, Quaternion vehicleQ) {
+	public EntityAbstractWeapon shoot(Level level, EntityAbstractAircraft vehicle, Entity owner, Vec3 direction, Quaternion vehicleQ) {
 		if (!this.checkShoot(1)) return null;
 		System.out.println(this.getId()+" ammo "+this.getCurrentAmmo());
 		this.setLaunchFail("bombs are not added yet");

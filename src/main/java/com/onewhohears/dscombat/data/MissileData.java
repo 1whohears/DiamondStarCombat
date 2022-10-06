@@ -91,7 +91,7 @@ public class MissileData extends BulletData {
 	}
 	
 	@Override
-	public EntityAbstractWeapon shoot(Level level, Entity vehicle, Entity owner, Vec3 direction, Quaternion vehicleQ) {
+	public EntityAbstractWeapon shoot(Level level, EntityAbstractAircraft vehicle, Entity owner, Vec3 direction, Quaternion vehicleQ) {
 		if (!this.checkRecoil()) {
 			this.setLaunchFail(null);
 			return null;
@@ -109,11 +109,11 @@ public class MissileData extends BulletData {
 		if (targetType == TargetType.POS) {
 			rocket.targetPos = Vec3.ZERO;
 		} else if (guidanceType != GuidanceType.IR) {
-			if (!(vehicle instanceof EntityAbstractAircraft plane)) {
+			/*if (!(vehicle instanceof EntityAbstractAircraft plane)) {
 				this.setLaunchFail("this rocket must be launched from an aircraft");
 				return null;
-			}
-			RadarData radar = plane.getRadar();
+			}*/
+			RadarData radar = vehicle.getRadar();
 			if (radar == null) {
 				this.setLaunchFail("this rocket requires a radar on this aircraft");
 				return null;

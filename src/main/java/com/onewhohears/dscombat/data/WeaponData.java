@@ -5,6 +5,9 @@ import java.nio.charset.Charset;
 import javax.annotation.Nullable;
 
 import com.mojang.math.Quaternion;
+import com.onewhohears.dscombat.common.PacketHandler;
+import com.onewhohears.dscombat.common.network.toclient.ClientBoundWeaponAmmoPacket;
+import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
 
 import net.minecraft.nbt.CompoundTag;
@@ -12,6 +15,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.network.PacketDistributor;
 
 public abstract class WeaponData {
 	
@@ -99,8 +103,9 @@ public abstract class WeaponData {
 	
 	public abstract WeaponType getType();
 	
-	public EntityAbstractWeapon shoot(Level level, Entity vehicle, Entity owner, Vec3 direction, Quaternion vehicleQ) {
-		// TODO update ammo num packet to client
+	public EntityAbstractWeapon shoot(Level level, EntityAbstractAircraft vehicle, Entity owner, Vec3 direction, Quaternion vehicleQ) {
+		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> vehicle), 
+				new ClientBoundWeaponAmmoPacket(vehicle.getId(), this.getId(), this.getCurrentAmmo()));
 		return null;
 	}
 	

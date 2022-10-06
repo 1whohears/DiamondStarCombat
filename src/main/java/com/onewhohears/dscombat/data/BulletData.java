@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.data;
 import java.util.Random;
 
 import com.mojang.math.Quaternion;
+import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
 import com.onewhohears.dscombat.entity.weapon.EntityBullet;
 import com.onewhohears.dscombat.util.math.UtilAngles;
@@ -105,7 +106,7 @@ public class BulletData extends WeaponData {
 	}
 
 	@Override
-	public EntityAbstractWeapon shoot(Level level, Entity vehicle, Entity owner, Vec3 direction, Quaternion vehicleQ) {
+	public EntityAbstractWeapon shoot(Level level, EntityAbstractAircraft vehicle, Entity owner, Vec3 direction, Quaternion vehicleQ) {
 		if (!this.checkRecoil()) {
 			this.setLaunchFail(null);
 			return null;

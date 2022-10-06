@@ -5,17 +5,21 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.onewhohears.dscombat.common.PacketHandler;
+import com.onewhohears.dscombat.common.network.toclient.ClientBoundWeaponIndexPacket;
+import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.init.DataSerializers;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.network.PacketDistributor;
 
 public class WeaponSystem {
 	
 	private List<WeaponData> weapons = new ArrayList<WeaponData>();
-	
 	private int weaponIndex = 0;
+	private EntityAbstractAircraft parent;
 	
 	public WeaponSystem() {
 	}
@@ -84,7 +88,8 @@ public class WeaponSystem {
 		++weaponIndex;
 		checkIndex();
 		System.out.println("new weapon index "+weaponIndex);
-		// TODO weapon index update packet
+		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
+				new ClientBoundWeaponIndexPacket(parent.getId(), weaponIndex));
 	}
 	
 	public void clientSetSelected(int index) {
@@ -102,6 +107,14 @@ public class WeaponSystem {
 	 */
 	public void tick() {
 		for (WeaponData w : weapons) w.tick();
+	}
+	
+	public void setup(EntityAbstractAircraft parent) {
+		this.parent = parent;
+	}
+	
+	public void clientSetup(EntityAbstractAircraft parent) {
+		this.parent = parent;
 	}
 	
 }

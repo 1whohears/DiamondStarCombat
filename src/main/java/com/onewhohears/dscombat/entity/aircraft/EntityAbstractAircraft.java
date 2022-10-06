@@ -408,6 +408,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public void setupAircraftParts() {
 		System.out.println("setting up parts client side = "+level.isClientSide);
 		partsManager.setupParts(this);
+		weaponSystem.setup(this);
 		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), 
 				new ClientBoundPlaneDataPacket(this.getId(), partsManager, weaponSystem));
 	}

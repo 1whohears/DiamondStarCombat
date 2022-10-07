@@ -25,27 +25,27 @@ public class PilotOverlay {
 			// plane position
 			GuiComponent.drawString(poseStack, m.font, 
 					"["+plane.getBlockX()+","+plane.getBlockY()+","+plane.getBlockZ()+"]", 
-					width/2-100, height-70, 0x00ff00);
+					width/2-100, height-75, 0x00ff00);
 			// plane speed
 			int s = (int)(plane.getDeltaMovement().length() * 20d);
 			GuiComponent.drawString(poseStack, m.font, 
 					"m/s: "+s, 
-					width/2-100, height-60, 0x00ff00);
+					width/2-100, height-65, 0x00ff00);
 			// distance from ground
 			GuiComponent.drawString(poseStack, m.font, 
 					"H: "+UtilGeometry.getDistFromGround(plane), 
-					width/2-100, height-50, 0x00ff00);
+					width/2-100, height-55, 0x00ff00);
 			// plane health
 			float h = plane.getHealth(), max = plane.getMaxHealth();
 			GuiComponent.drawString(poseStack, m.font, 
 						"Health: "+(int)h+"/"+(int)max, 
-						width/2-100, height-40, getHealthColor(h, max));
+						width/2-100, height-45, getHealthColor(h, max));
 			// weapon data
 			WeaponData weapon = plane.weaponSystem.getSelected();
 			if (weapon != null) {
 				GuiComponent.drawString(poseStack, m.font, 
 						"Weapon: "+weapon.getId()+" "+weapon.getCurrentAmmo()+"/"+weapon.getMaxAmmo(), 
-						width/2-100, height-30, 0x0000ff);
+						width/2-100, height-35, 0x0000ff);
 			}
 			// target distance
 			RadarSystem radar = plane.radarSystem;
@@ -57,12 +57,12 @@ public class PilotOverlay {
 					if (hover != -1 && hover < pings.size()) {
 						GuiComponent.drawString(poseStack, m.font, 
 								"Dist: "+(int)pings.get(hover).pos.distanceTo(plane.position()), 
-								width/2-20, height/2+10, 0xffff00);
+								width/2-20, height/2-20, 0xffff00);
 					}
 					if (selected != -1 && selected < pings.size()) {
 						GuiComponent.drawString(poseStack, m.font, 
 								"Target Dist: "+(int)pings.get(selected).pos.distanceTo(plane.position()), 
-								width/2-100, height-20, 0xff0000);
+								width/2-100, 5, 0xff0000);
 					}
 				}
 			}

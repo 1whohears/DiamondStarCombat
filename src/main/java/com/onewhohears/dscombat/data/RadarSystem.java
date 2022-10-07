@@ -57,7 +57,8 @@ public class RadarSystem {
 	
 	public void tickUpdateTargets(Entity radar) {
 		RadarPing old = null; 
-		if (selectedIndex != -1) old = targets.get(selectedIndex);
+		if (selectedIndex != -1 && selectedIndex < targets.size()) old = targets.get(selectedIndex);
+		selectedIndex = -1;
 		for (RadarData r : radars) r.tickUpdateTargets(radar, targets);
 		if (old != null) for (int i = 0; i < targets.size(); ++i) 
 			if (targets.get(i).id == old.id) {

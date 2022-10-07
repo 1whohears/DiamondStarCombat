@@ -85,6 +85,7 @@ public class EntitySeat extends EntityAbstractPart {
 		} else {
 			return InteractionResult.SUCCESS;
 		}
+		// TODO make hitbox size of seat zero so you right click the plane and the plane puts you in a seat
 	}
 	
 	@Override

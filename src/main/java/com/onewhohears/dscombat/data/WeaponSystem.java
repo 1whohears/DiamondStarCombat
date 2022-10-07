@@ -60,14 +60,14 @@ public class WeaponSystem {
 		for (WeaponData w : weapons) w.write(buffer);
 	}
 	
-	public boolean addWeapon(WeaponData data) {
+	public boolean addWeapon(WeaponData data, boolean updateClient) {
 		if (get(data.getId()) != null) return false;
 		weapons.add(data);
 		// TODO add weapon packet
 		return true;
 	}
 	
-	public void removeWeapon(String id) {
+	public void removeWeapon(String id, boolean updateClient) {
 		weapons.remove(get(id));
 		// TODO remove weapon packet
 	}

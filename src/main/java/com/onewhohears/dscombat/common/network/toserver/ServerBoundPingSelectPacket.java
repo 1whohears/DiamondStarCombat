@@ -4,7 +4,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.common.network.IPacket;
-import com.onewhohears.dscombat.data.RadarData;
 import com.onewhohears.dscombat.data.RadarData.RadarPing;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 
@@ -43,10 +42,7 @@ public class ServerBoundPingSelectPacket extends IPacket {
 			ServerLevel level = player.getLevel();
 			EntityAbstractAircraft plane = (EntityAbstractAircraft) level.getEntity(id);
 			if (plane != null) {
-				RadarData radar = plane.getRadar();
-				if (radar != null) {
-					radar.selectTarget(ping);
-				}
+				plane.radarSystem.selectTarget(ping);
 			}
 		});
 		ctx.get().setPacketHandled(true);

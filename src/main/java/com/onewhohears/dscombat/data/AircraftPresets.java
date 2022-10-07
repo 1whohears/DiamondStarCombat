@@ -29,6 +29,7 @@ public class AircraftPresets {
 		public void setupAircraft(EntityAbstractAircraft plane) {
 			plane.partsManager = this.getParts();
 			plane.weaponSystem = this.getWeapons();
+			plane.radarSystem = this.getRadar();
 			plane.setHealth(getHealth());
 			plane.setMaxHealth(getMaxHealth());
 			plane.setMaxSpeed(getMaxSpeed());
@@ -38,6 +39,7 @@ public class AircraftPresets {
 		public abstract String getPresetName();
 		public abstract PartsManager getParts();
 		public abstract WeaponSystem getWeapons();
+		public abstract RadarSystem getRadar();
 		public abstract float getHealth();
 		public abstract float getMaxHealth();
 		public abstract float getMaxSpeed();
@@ -55,13 +57,7 @@ public class AircraftPresets {
 		public PartsManager getParts() {
 			PartsManager pm = new PartsManager();
 			// seat
-			pm.addPart(new SeatData("pilot_seat", new Vec3(0, -0.5, 0)));
-			// radar
-			RadarData radar = new RadarData("main-radar", 1000, 90, 20);
-			radar.setScanAircraft(true);
-			radar.setScanPlayers(true);
-			radar.setScanMobs(true);
-			pm.addPart(radar);
+			pm.addPart(new SeatData("pilot_seat", new Vec3(0, -0.5, 0)), false);
 			System.out.println("getting parts from test plane preset "+pm);
 			return pm;
 		}
@@ -72,31 +68,42 @@ public class AircraftPresets {
 			// bullet 1
 			BulletData test = new BulletData("bullet1", new Vec3(0, 0.5, 1), 
 					600, 100000, 1, 10, 4, 2);
-			ws.addWeapon(test);
+			ws.addWeapon(test, false);
 			test.setCurrentAmmo(test.getMaxAmmo());
 			// bullet 2
 			BulletData test2 = new BulletData("bullet2", new Vec3(0, 0.5, 1),
 					600, 100000, 15, 100, 4, 1, 
 					true, true, false, 100d, 4f);
 			test2.setCurrentAmmo(test2.getMaxAmmo());
-			ws.addWeapon(test2);
+			ws.addWeapon(test2, false);
 			// missile 1
 			MissileData test3 = new MissileData("missile1", new Vec3(0, 0.5, 1),
 					600, 100000, 10, 1000, 1d, 0, 
 					true, true, false, 100d, 4f,
 					TargetType.GROUND, GuidanceType.PITBULL,
-					2.5f, 0.2d, 1.0d);
+					3.0f, 0.2d, 2.0d);
 			test3.setCurrentAmmo(test3.getMaxAmmo());
-			ws.addWeapon(test3);
+			ws.addWeapon(test3, false);
 			// missile 2
 			MissileData test4 = new MissileData("missile2", new Vec3(0, 0.5, 1),
 					600, 100000, 20, 1000, 1.5d, 0, 
 					true, true, false, 100d, 8f,
 					TargetType.AIR, GuidanceType.PITBULL,
-					1.5f, 0.3d, 1.0d);
+					2.0f, 0.3d, 2.0d);
 			test4.setCurrentAmmo(test4.getMaxAmmo());
-			ws.addWeapon(test4);
+			ws.addWeapon(test4, false);
 			return ws;
+		}
+		
+		public RadarSystem getRadar() {
+			RadarSystem rs = new RadarSystem();
+			// radar air
+			RadarData radar = new RadarData("radar1", 1000, 90, 20);
+			radar.setScanAircraft(true);
+			radar.setScanPlayers(true);
+			radar.setScanMobs(true);
+			rs.addRadar(radar, false);
+			return rs;
 		}
 
 		@Override

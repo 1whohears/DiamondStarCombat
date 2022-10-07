@@ -426,7 +426,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		partsManager.setupParts(this);
 		weaponSystem.setup(this);
 		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), 
-				new ClientBoundPlaneDataPacket(this.getId(), partsManager, weaponSystem));
+				new ClientBoundPlaneDataPacket(this.getId(), partsManager, weaponSystem, radarSystem));
 	}
 	
 	@Override

@@ -4,8 +4,8 @@ import java.awt.Color;
 import java.util.List;
 
 import com.onewhohears.dscombat.client.event.ClientForgeEvents;
-import com.onewhohears.dscombat.data.RadarData;
 import com.onewhohears.dscombat.data.RadarData.RadarPing;
+import com.onewhohears.dscombat.data.RadarSystem;
 import com.onewhohears.dscombat.data.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.aircraft.parts.EntitySeat;
@@ -48,7 +48,7 @@ public class PilotOverlay {
 						width/2-100, height-30, 0x0000ff);
 			}
 			// target distance
-			RadarData radar = plane.getRadar();
+			RadarSystem radar = plane.radarSystem;
 			if (radar != null) {
 				List<RadarPing> pings = radar.getClientRadarPings();
 				if (pings != null && pings.size() != 0) {

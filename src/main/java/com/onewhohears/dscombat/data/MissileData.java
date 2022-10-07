@@ -114,7 +114,8 @@ public class MissileData extends BulletData {
 				return null;
 			}*/
 			RadarSystem radar = vehicle.radarSystem;
-			if (radar.hasRadar()) {
+			System.out.println(radar);
+			if (!radar.hasRadar()) {
 				this.setLaunchFail("this rocket requires a radar on this aircraft");
 				return null;
 			}
@@ -223,7 +224,7 @@ public class MissileData extends BulletData {
 		}
 		Vec3 motion = missile.getDeltaMovement();
 		Vec3 n = UtilAngles.rotationToVector(nry, nrx, this.getAcceleration());
-		missile.setDeltaMovement(motion.add(n));
+		missile.setDeltaMovement(motion.add(n)); // TODO misses a lot
 		missile.setXRot(nrx);
 		missile.setYRot(nry);
 	}

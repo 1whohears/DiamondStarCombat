@@ -3,8 +3,8 @@ package com.onewhohears.dscombat.util;
 import java.util.List;
 
 import com.onewhohears.dscombat.data.PartsManager;
-import com.onewhohears.dscombat.data.RadarData;
 import com.onewhohears.dscombat.data.RadarData.RadarPing;
+import com.onewhohears.dscombat.data.RadarSystem;
 import com.onewhohears.dscombat.data.WeaponData;
 import com.onewhohears.dscombat.data.WeaponSystem;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
@@ -29,17 +29,16 @@ public class UtilPacket {
 	}
 	
 	public static void pingsPacket(int id, List<RadarPing> pings) {
-		//System.out.println("ping packet recieved");
+		//System.out.println("ping packet received");
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		EntityAbstractAircraft plane = (EntityAbstractAircraft) world.getEntity(id);
 		if (plane != null) {
-			RadarData radar = plane.getRadar();
-			if (radar != null) radar.readClientPingsFromServer(pings);
+			plane.radarSystem.readClientPingsFromServer(pings);
 		}
 	}
 	
-	public static void planeDataPacket(int id, PartsManager pm, WeaponSystem ws) {
+	public static void planeDataPacket(int id, PartsManager pm, WeaponSystem ws, RadarSystem rs) {
 		System.out.println("plane data packet recieved");
 		System.out.println(pm.toString());
 		Minecraft m = Minecraft.getInstance();
@@ -48,6 +47,7 @@ public class UtilPacket {
 		if (plane != null) {
 			plane.partsManager = pm;
 			plane.weaponSystem = ws;
+			plane.radarSystem = rs;
 			plane.partsManager.clientPartsSetup(plane);
 			plane.weaponSystem.clientSetup(plane);
 			System.out.println("plane data updated");

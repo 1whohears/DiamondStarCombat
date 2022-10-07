@@ -15,8 +15,8 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.KeyInit;
 import com.onewhohears.dscombat.common.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ServerBoundFlightControlPacket;
-import com.onewhohears.dscombat.data.RadarData;
 import com.onewhohears.dscombat.data.RadarData.RadarPing;
+import com.onewhohears.dscombat.data.RadarSystem;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.aircraft.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.aircraft.parts.EntitySeatCamera;
@@ -110,7 +110,7 @@ public final class ClientForgeEvents {
 		plane.updateControls(throttleUp, throttleDown,
 				pitch, roll, yaw,
 				mouseMode, flare, shoot, select);
-		RadarData radar = plane.getRadar();
+		RadarSystem radar = plane.radarSystem;
 		if (radar == null) return;
 		List<RadarPing> pings = radar.getClientRadarPings();
 		//int selected = radar.getSelectedPingIndex();
@@ -231,7 +231,7 @@ public final class ClientForgeEvents {
 		final var player = m.player;
 		if (player.getVehicle() instanceof EntitySeat seat 
 				&& seat.getVehicle() instanceof EntityAbstractAircraft plane) {
-			RadarData radar = plane.getRadar();
+			RadarSystem radar = plane.radarSystem;
 			if (radar == null) return;
 			List<RadarPing> pings = radar.getClientRadarPings();
 			int selected = radar.getClientSelectedPingIndex();

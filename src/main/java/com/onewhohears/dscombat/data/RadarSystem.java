@@ -3,6 +3,8 @@ package com.onewhohears.dscombat.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.onewhohears.dscombat.common.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundPingsPacket;
 import com.onewhohears.dscombat.common.network.toserver.ServerBoundPingSelectPacket;
@@ -56,8 +58,6 @@ public class RadarSystem {
 	public void tickUpdateTargets(Entity radar) {
 		RadarPing old = null; 
 		if (selectedIndex != -1) old = targets.get(selectedIndex);
-		targets.clear();
-		selectedIndex = -1;
 		for (RadarData r : radars) r.tickUpdateTargets(radar, targets);
 		if (old != null) for (int i = 0; i < targets.size(); ++i) 
 			if (targets.get(i).id == old.id) {
@@ -149,6 +149,30 @@ public class RadarSystem {
 	
 	public boolean hasRadar() {
 		return radars.size() > 0;
+	}
+	
+	@Nullable
+	public RadarData get(String id) {
+		for (RadarData r : radars) if (r.getId().equals(id)) return r;
+		return null;
+	}
+	
+	public void addRadar(RadarData r, boolean updateClient) {
+		if (get(r.getId()) != null) return;
+		radars.add(r);
+		// TODO add radar packet
+	}
+	
+	public void removeRadar(RadarData r, boolean updateClient) {
+		radars.remove(r);
+		// TODO remove radar packet
+	}
+	
+	@Override
+	public String toString() {
+		String s = "Radars:";
+		for (int i = 0; i < radars.size(); ++i) s += radars.get(i).toString();
+		return s;
 	}
 	
 }

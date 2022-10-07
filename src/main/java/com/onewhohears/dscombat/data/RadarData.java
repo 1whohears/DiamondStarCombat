@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
@@ -27,6 +28,7 @@ public class RadarData {
 	
 	private boolean freshTargets;
 	private int scanTicks;
+	private List<RadarPing> pings = new ArrayList<RadarPing>();
 	
 	public RadarData(String id, double range, double fov, int scanRate) {
 		this.id = id;
@@ -89,25 +91,30 @@ public class RadarData {
 			freshTargets = false;
 			return;
 		}
+		for (int i = 0; i < pings.size(); ++i) targets.remove(pings.get(i));
+		pings.clear();
 		freshTargets = true;
 		Level level = radar.level;
 		List<Entity> list = level.getEntities(radar, getRadarBoundingBox(radar));
 		for (int i = 0; i < list.size(); ++i) {
 			Entity target = list.get(i);
+			if (target.equals(radar)) continue;
 			if (target.isInvisible()) continue;
+			// TODO if target is a rider of the plane
 			if (this.scanAircraft && target instanceof EntityAbstractAircraft plane) {
 				if (!checkTargetRange(radar, target, plane.getStealth())) continue;
 				if (!checkCanSee(radar, target)) continue;
-				targets.add(new RadarPing(target));
 			} else if (this.scanPlayers && target instanceof Player player) {
 				if (!checkTargetRange(radar, target, 1)) continue;
 				if (!checkCanSee(radar, target)) continue;
-				targets.add(new RadarPing(target));
 			} else if (this.scanMobs && target instanceof Mob mob) {
 				if (!checkTargetRange(radar, target, 1)) continue;
 				if (!checkCanSee(radar, target)) continue;
-				targets.add(new RadarPing(target));
-			}
+			} else continue;
+			RadarPing p = new RadarPing(target);
+			targets.add(p);
+			pings.add(p);
+			//System.out.println("new target = "+target);
 		}
 	}
 	
@@ -130,6 +137,10 @@ public class RadarData {
 		double z = radar.getZ();
 		double w = range/2;
 		return new AABB(x+w, y+w, z+w, x-w, y-w, z-w);
+	}
+	
+	public String getId() {
+		return id;
 	}
 	
 	public double getRange() {
@@ -215,6 +226,11 @@ public class RadarData {
 			return "PING["+(int)pos.x+","+(int)pos.y+","+(int)pos.z+"]";
 		}
 		
+	}
+	
+	@Override
+	public String toString() {
+		return "["+id+":"+fov+":"+range+"]";
 	}
 	
 }

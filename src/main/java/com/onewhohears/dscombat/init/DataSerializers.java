@@ -7,7 +7,6 @@ import com.onewhohears.dscombat.data.BulletData;
 import com.onewhohears.dscombat.data.MissileData;
 import com.onewhohears.dscombat.data.PartData;
 import com.onewhohears.dscombat.data.PartsManager;
-import com.onewhohears.dscombat.data.RadarData;
 import com.onewhohears.dscombat.data.SeatData;
 import com.onewhohears.dscombat.data.WeaponData;
 

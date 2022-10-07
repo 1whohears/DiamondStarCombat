@@ -59,13 +59,13 @@ public class PartsManager {
 		for (PartData p : parts) p.clientSetup(craft);
 	}
 	
-	public void addPart(PartData part) {
+	public void addPart(PartData part, boolean updateClient) {
 		for (PartData p : parts) if (p.getId().equals(part.getId())) return;
 		parts.add(part);
 		// TODO add part packet to client
 	}
 	
-	public void removePart(String id) {
+	public void removePart(String id, boolean updateClient) {
 		for (PartData p : parts) if (p.getId().equals(id)) {
 			parts.remove(p);
 			// TODO remove part packet to client

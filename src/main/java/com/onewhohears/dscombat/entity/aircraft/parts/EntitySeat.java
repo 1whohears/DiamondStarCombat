@@ -78,14 +78,7 @@ public class EntitySeat extends EntityAbstractPart {
 	
 	@Override
 	public InteractionResult interact(Player player, InteractionHand hand) {
-		if (player.isSecondaryUseActive()) {
-			return InteractionResult.PASS;
-		} else if (!this.level.isClientSide) {
-			return player.startRiding(this) ? InteractionResult.CONSUME : InteractionResult.PASS;
-		} else {
-			return InteractionResult.SUCCESS;
-		}
-		// TODO make hitbox size of seat zero so you right click the plane and the plane puts you in a seat
+		return InteractionResult.PASS;
 	}
 	
 	@Override
@@ -111,7 +104,7 @@ public class EntitySeat extends EntityAbstractPart {
 	}
 	
 	@Override
-    protected boolean canAddPassenger(Entity passenger) {
+    public boolean canAddPassenger(Entity passenger) {
 		System.out.println("CAN SEAT ADD "+passenger);
 		if (passenger instanceof Player) return getPlayer() == null;
 		if (passenger instanceof EntitySeatCamera) return getCamera() == null;
@@ -126,8 +119,9 @@ public class EntitySeat extends EntityAbstractPart {
 	
 	@Override
     public Vec3 getDismountLocationForPassenger(LivingEntity livingEntity) {
-		// TODO get dismount location for root plane
-		return super.getDismountLocationForPassenger(livingEntity);
+		Entity root = this.getRootVehicle();
+		if (root == null) return super.getDismountLocationForPassenger(livingEntity);
+		return root.getDismountLocationForPassenger(livingEntity);
 	}
 	
 	public Player getPlayer() {

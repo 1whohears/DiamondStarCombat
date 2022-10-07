@@ -360,6 +360,8 @@ public final class ClientForgeEvents {
 			}
 			Quaternion q = UtilAngles.lerpQ(event.getPartialTick(), plane.getPrevQ(), plane.getQ());
 			event.getPoseStack().mulPose(q);
+			//System.out.println("plane zRot = "+plane.zRot);
+			//event.getPoseStack().mulPose(Vector3f.ZN.rotation((float)Math.toRadians(plane.zRot)));
 		}
 	}
 	

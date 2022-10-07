@@ -22,10 +22,10 @@ public class ModEntities {
 	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, DSCombatMod.MODID);
 	
 	public static final RegistryObject<EntityType<EntityTestPlane>> TEST_PLANE = ENTITIES.register("test_plane", 
-			() -> createEntityType(EntityTestPlane::new, EntityDimensions.scalable(1F, 1F), 10));
+			() -> createEntityType(EntityTestPlane::new, EntityDimensions.scalable(1f, 1f), 10));
 	
 	public static final RegistryObject<EntityType<EntitySeat>> SEAT = ENTITIES.register("seat", 
-			() -> createEntityType(EntitySeat::new, EntityDimensions.scalable(1.1F, 1.1F)));
+			() -> createEntityType(EntitySeat::new, EntityDimensions.scalable(0f, 0f)));
 	
 	public static final RegistryObject<EntityType<EntitySeatCamera>> CAMERA = ENTITIES.register("seat_camera", 
 			() -> createEntityType(EntitySeatCamera::new, EntityDimensions.scalable(0f, 0f)));

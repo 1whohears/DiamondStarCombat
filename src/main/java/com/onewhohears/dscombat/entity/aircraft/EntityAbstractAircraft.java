@@ -434,10 +434,23 @@ public abstract class EntityAbstractAircraft extends Entity {
 		if (player.isSecondaryUseActive()) {
 			return InteractionResult.PASS;
 		} else if (!this.level.isClientSide) {
-			return InteractionResult.SUCCESS;
+			return rideSeat(player) ? InteractionResult.CONSUME : InteractionResult.PASS;
 		} else {
 			return InteractionResult.SUCCESS;
 		}
+	}
+	
+	public boolean rideSeat(Entity e) {
+		List<Entity> list = getPassengers();
+		for (int i = 0; i < list.size(); ++i) {
+			if (list.get(i) instanceof EntitySeat seat) {
+				if (seat.canAddPassenger(e)) {
+					e.startRiding(seat);
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 	
 	@Override

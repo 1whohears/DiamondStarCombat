@@ -9,9 +9,8 @@ import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.common.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundPlaneDataPacket;
 import com.onewhohears.dscombat.data.AircraftPresets;
-import com.onewhohears.dscombat.data.PartData;
 import com.onewhohears.dscombat.data.PartsManager;
-import com.onewhohears.dscombat.data.RadarData;
+import com.onewhohears.dscombat.data.RadarSystem;
 import com.onewhohears.dscombat.data.WeaponData;
 import com.onewhohears.dscombat.data.WeaponSystem;
 import com.onewhohears.dscombat.entity.aircraft.parts.EntitySeat;
@@ -57,6 +56,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	// TODO this parts manager does not sync between client and server automatically needs a system here packets update individual parts
 	public PartsManager partsManager = new PartsManager();
 	public WeaponSystem weaponSystem = new WeaponSystem();
+	public RadarSystem radarSystem = new RadarSystem();
 	public Quaternion prevQ = Quaternion.ONE.copy();
 	//public Quaternion clientQ = Quaternion.ONE.copy();
 	
@@ -111,6 +111,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		// /summon dscombat:test_plane ~ ~ ~ {INIT_TYPE:"test_plane"}
 		partsManager = new PartsManager(compound);
 		weaponSystem = new WeaponSystem(compound);
+		radarSystem = new RadarSystem(compound);
 		this.setMaxSpeed(compound.getFloat("max_speed"));
 		this.setMaxHealth(compound.getFloat("max_health"));
 		this.setHealth(compound.getFloat("health"));
@@ -125,6 +126,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		compound.putString("INIT_TYPE", "");
 		partsManager.write(compound);
 		weaponSystem.write(compound);
+		radarSystem.write(compound);
 		compound.putFloat("max_speed", this.getMaxSpeed());
 		compound.putFloat("max_health", this.getMaxHealth());
 		compound.putFloat("health", this.getHealth());
@@ -324,8 +326,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		Entity controller = this.getControllingPassenger();
 		if (controller == null) return;
 		if (!level.isClientSide) {
-			RadarData radar = getRadar();
-			if (radar != null) radar.tickUpdateTargets(this);
+			radarSystem.tickUpdateTargets(this);
 			if (this.inputShoot) {
 				WeaponData data = weaponSystem.getSelected();
 				if (data == null) return;
@@ -339,12 +340,6 @@ public abstract class EntityAbstractAircraft extends Entity {
 				}
 			}
 		}
-	}
-	
-	public RadarData getRadar() {
-		PartData rPart = partsManager.get("main-radar");
-		if (rPart == null) return null;
-		return (RadarData) rPart;
 	}
 	
 	@Override

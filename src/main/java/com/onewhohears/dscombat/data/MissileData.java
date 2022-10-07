@@ -113,8 +113,8 @@ public class MissileData extends BulletData {
 				this.setLaunchFail("this rocket must be launched from an aircraft");
 				return null;
 			}*/
-			RadarData radar = vehicle.getRadar();
-			if (radar == null) {
+			RadarSystem radar = vehicle.radarSystem;
+			if (radar.hasRadar()) {
 				this.setLaunchFail("this rocket requires a radar on this aircraft");
 				return null;
 			}

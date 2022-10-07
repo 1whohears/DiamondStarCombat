@@ -134,8 +134,6 @@ public class DataSerializers {
 				return new SeatData(buffer);
 			case TURRENT:
 				return null;
-			case RADAR:
-				return new RadarData(buffer);
 			}
 			return null;
 		}

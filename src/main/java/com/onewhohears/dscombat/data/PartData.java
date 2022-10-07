@@ -16,8 +16,7 @@ public abstract class PartData {
 	
 	public static enum PartType {
 		SEAT,
-		TURRENT,
-		RADAR
+		TURRENT
 	}
 	
 	protected PartData(String id, Vec3 pos) {

@@ -171,6 +171,7 @@ public class MissileData extends BulletData {
 			missile.discard();
 			return;
 		}
+		// TODO check if missile can see target
 		this.guideToTarget(missile, interceptPos(
 				missile.position(), missile.getDeltaMovement(), 
 				target.position(), target.getDeltaMovement()));
@@ -237,7 +238,8 @@ public class MissileData extends BulletData {
 	}
 	
 	public void irGuidance(EntityMissile missile) {
-		
+		if (missile.tickCount % 10 == 0) findIrTarget(missile);
+		if (missile.target != null) this.guideToTarget(missile, missile.target);
 	}
 	
 	public void findIrTarget(EntityMissile missile) {
@@ -266,7 +268,15 @@ public class MissileData extends BulletData {
 				targets.add(new IrTarget(target, 1f / distSqr));
 			} else continue;
 		}
-		// TODO set target entity
+		if (targets.size() == 0) {
+			missile.target = null;
+			return;
+		}
+		IrTarget max = targets.get(0);
+		for (int i = 1; i < targets.size(); ++i) {
+			if (targets.get(i).heat > max.heat) max = targets.get(i);
+		}
+		missile.target = max.entity;
 	}
 	
 	private static final double irRange = 300d;

@@ -46,7 +46,7 @@ public class EntityMissile extends EntityBullet {
 			MissileData data = (MissileData)getWeaponData();
 			data.tickGuide(this);
 			motionClamp();
-			if (data.getTargetType() != TargetType.POS) {
+			if (target != null && data.getTargetType() != TargetType.POS) {
 				if (this.distanceTo(target) < data.getFuseDist()) {
 					this.setPos(target.position());
 					this.checkExplode();

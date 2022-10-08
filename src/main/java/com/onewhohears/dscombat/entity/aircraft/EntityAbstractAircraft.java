@@ -499,6 +499,18 @@ public abstract class EntityAbstractAircraft extends Entity {
 		System.out.println("CAN RIDE "+entityIn);
         return false;
     }
+	
+	public boolean isRiding(Entity e) {
+		List<Entity> list = getPassengers();
+		if (list.contains(e)) return true;
+		for (Entity l : list) {
+			if (l instanceof EntitySeat seat) {
+				List<Entity> list2 = seat.getPassengers();
+				if (list2.contains(e)) return true;
+			}
+		}
+		return false;
+	}
 
 	@Override
     public boolean canBeRiddenUnderFluidType(FluidType type, Entity rider) {
@@ -664,5 +676,13 @@ public abstract class EntityAbstractAircraft extends Entity {
     
     public float getHealth() {
     	return entityData.get(HEALTH);
+    }
+    
+    /**
+     * divide this by distance squared
+     * @return heat value
+     */
+    public float getHeat() {
+    	return this.getCurrentThrottle() * 2;
     }
 }

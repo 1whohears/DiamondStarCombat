@@ -98,11 +98,21 @@ public class AircraftPresets {
 		public RadarSystem getRadar() {
 			RadarSystem rs = new RadarSystem();
 			// radar air
-			RadarData radar = new RadarData("radar1", 1000, 90, 20);
+			RadarData radar = new RadarData("radar1", 1000, 70, 20);
 			radar.setScanAircraft(true);
 			radar.setScanPlayers(true);
-			radar.setScanMobs(true);
+			radar.setScanMobs(false);
+			radar.setScanAir(true);
+			radar.setScanGround(false);
 			rs.addRadar(radar, false);
+			// radar air
+			RadarData radar2 = new RadarData("radar2", 300, -1, 15);
+			radar2.setScanAircraft(true);
+			radar2.setScanPlayers(true);
+			radar2.setScanMobs(true);
+			radar2.setScanAir(false);
+			radar2.setScanGround(true);
+			rs.addRadar(radar2, false);
 			return rs;
 		}
 

@@ -9,6 +9,7 @@ import com.onewhohears.dscombat.common.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundPingsPacket;
 import com.onewhohears.dscombat.common.network.toserver.ServerBoundPingSelectPacket;
 import com.onewhohears.dscombat.data.RadarData.RadarPing;
+import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 
 import net.minecraft.nbt.CompoundTag;
@@ -55,7 +56,7 @@ public class RadarSystem {
 		for (int i = 0; i < radars.size(); ++i) radars.get(i).write(buffer);
 	}
 	
-	public void tickUpdateTargets(Entity radar) {
+	public void tickUpdateTargets(EntityAbstractAircraft radar) {
 		RadarPing old = null; 
 		if (selectedIndex != -1 && selectedIndex < targets.size()) old = targets.get(selectedIndex);
 		selectedIndex = -1;

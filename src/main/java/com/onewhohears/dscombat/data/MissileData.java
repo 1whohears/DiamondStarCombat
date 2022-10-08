@@ -1,15 +1,22 @@
 package com.onewhohears.dscombat.data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.util.math.UtilAngles;
+import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 public class MissileData extends BulletData {
@@ -230,6 +237,70 @@ public class MissileData extends BulletData {
 	}
 	
 	public void irGuidance(EntityMissile missile) {
+		
+	}
+	
+	public void findIrTarget(EntityMissile missile) {
+		Level level = missile.level;
+		List<Entity> list = level.getEntities(missile, getIrBoundingBox(missile));
+		List<IrTarget> targets = new ArrayList<IrTarget>();
+		for (int i = 0; i < list.size(); ++i) {
+			Entity target = list.get(i);
+			if (target.isOnGround()) continue;
+			if (target.isInvisible()) continue;
+			if (target.equals(missile)) continue;
+			float distSqr = (float)missile.distanceToSqr(target);
+			if (target instanceof EntityAbstractAircraft plane) {
+				if (!checkTargetRange(missile, target, plane.getStealth())) continue;
+				if (!checkCanSee(missile, target)) continue;
+				targets.add(new IrTarget(target, plane.getHeat() / distSqr));
+			// TODO add flares
+			} else if (target instanceof Player player) {
+				if (!checkTargetRange(missile, target, 1)) continue;
+				if (!checkCanSee(missile, target)) continue;
+				targets.add(new IrTarget(target, 1f / distSqr));
+			} else if (target instanceof Mob mob) {
+				if (!checkTargetRange(missile, target, 1)) continue;
+				if (!checkCanSee(missile, target)) continue; 
+				// TODO check for hot mobs
+				targets.add(new IrTarget(target, 1f / distSqr));
+			} else continue;
+		}
+		// TODO set target entity
+	}
+	
+	private static final double irRange = 300d;
+	private static final float irFov = 70f;
+	
+	private boolean checkTargetRange(Entity missile, Entity target, double rangeMod) {
+		return UtilGeometry.isPointInsideCone(
+				target.position(), 
+				missile.position(), // TODO change radar position based on pose 
+				missile.getLookAngle(), 
+				irFov, irRange*rangeMod);
+	}
+	
+	private boolean checkCanSee(Entity radar, Entity target) {
+		return UtilGeometry.canEntitySeeEntity(radar, target);
+	}
+	
+	private AABB getIrBoundingBox(Entity missile) {
+		double x = missile.getX();
+		double y = missile.getY();
+		double z = missile.getZ();
+		double w = irRange/2;
+		return new AABB(x+w, y+w, z+w, x-w, y-w, z-w);
+	}
+	
+	public static class IrTarget {
+		
+		public final Entity entity;
+		public final float heat;
+		
+		public IrTarget(Entity entity, float heat) {
+			this.entity = entity;
+			this.heat = heat;
+		}
 		
 	}
 	

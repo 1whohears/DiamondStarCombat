@@ -25,6 +25,8 @@ public class RadarData {
 	private boolean scanAircraft;
 	private boolean scanPlayers;
 	private boolean scanMobs;
+	private boolean scanGround;
+	private boolean scanAir;
 	
 	private boolean freshTargets;
 	private int scanTicks;
@@ -47,6 +49,8 @@ public class RadarData {
 		scanAircraft = tag.getBoolean("scanAircraft");
 		scanPlayers = tag.getBoolean("scanPlayers");
 		scanMobs = tag.getBoolean("scanMobs");
+		scanGround = tag.getBoolean("scanGround");
+		scanAir = tag.getBoolean("scanAir");
 	}
 	
 	public CompoundTag write() {
@@ -59,6 +63,8 @@ public class RadarData {
 		tag.putBoolean("scanAircraft", scanAircraft);
 		tag.putBoolean("scanPlayers", scanPlayers);
 		tag.putBoolean("scanMobs", scanMobs);
+		tag.putBoolean("scanGround", scanGround);
+		tag.putBoolean("scanAir", scanAir);
 		return tag;
 	}
 	
@@ -71,6 +77,8 @@ public class RadarData {
 		scanAircraft = buffer.readBoolean();
 		scanPlayers = buffer.readBoolean();
 		scanMobs = buffer.readBoolean();
+		scanGround = buffer.readBoolean();
+		scanAir = buffer.readBoolean();
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
@@ -82,9 +90,11 @@ public class RadarData {
 		buffer.writeBoolean(scanAircraft);
 		buffer.writeBoolean(scanPlayers);
 		buffer.writeBoolean(scanMobs);
+		buffer.writeBoolean(scanGround);
+		buffer.writeBoolean(scanAir);
 	}
 	
-	public void tickUpdateTargets(Entity radar, List<RadarPing> targets) {
+	public void tickUpdateTargets(EntityAbstractAircraft radar, List<RadarPing> targets) {
 		if (scanTicks > scanRate) scanTicks = 0;
 		else {
 			++scanTicks;
@@ -98,9 +108,11 @@ public class RadarData {
 		List<Entity> list = level.getEntities(radar, getRadarBoundingBox(radar));
 		for (int i = 0; i < list.size(); ++i) {
 			Entity target = list.get(i);
+			if (target.isOnGround() && !scanGround) continue;
+			if (!target.isOnGround() && !scanAir) continue;
 			if (target.equals(radar)) continue;
 			if (target.isInvisible()) continue;
-			// TODO if target is a rider of the plane
+			if (radar.isRiding(target)) continue;
 			if (this.scanAircraft && target instanceof EntityAbstractAircraft plane) {
 				if (!checkTargetRange(radar, target, plane.getStealth())) continue;
 				if (!checkCanSee(radar, target)) continue;
@@ -119,7 +131,7 @@ public class RadarData {
 	}
 	
 	private boolean checkTargetRange(Entity radar, Entity target, double rangeMod) {
-		if (fov == -1) return true;
+		if (fov == -1) return radar.distanceTo(target) <= range;
 		return UtilGeometry.isPointInsideCone(
 				target.position(), 
 				radar.position(), // TODO change radar position based on pose 
@@ -195,6 +207,22 @@ public class RadarData {
 		this.scanMobs = scanMobs;
 	}
 	
+	public boolean isScanGround() {
+		return scanGround;
+	}
+
+	public void setScanGround(boolean scanGround) {
+		this.scanGround = scanGround;
+	}
+
+	public boolean isScanAir() {
+		return scanAir;
+	}
+
+	public void setScanAir(boolean scanAir) {
+		this.scanAir = scanAir;
+	}
+
 	public static class RadarPing {
 		
 		public final int id;

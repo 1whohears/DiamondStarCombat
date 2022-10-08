@@ -143,7 +143,7 @@ public class MissileData extends BulletData {
 		rocket.setYRot(UtilAngles.getYaw(rocket.getDeltaMovement()));
 		level.addFreshEntity(rocket);
 		this.setLaunchSuccess(1);
-		super.shoot(level, vehicle, owner, direction, vehicleQ);
+		updateClientAmmo(vehicle);
 		return rocket;
 	}
 	

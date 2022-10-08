@@ -130,7 +130,7 @@ public class BulletData extends WeaponData {
 		bullet.setDeltaMovement(direction.scale(speed).add(vehicle.getDeltaMovement()));
 		level.addFreshEntity(bullet);
 		this.setLaunchSuccess(1);
-		super.shoot(level, vehicle, owner, direction, vehicleQ);
+		updateClientAmmo(vehicle);
 		return bullet;
 	}
 	

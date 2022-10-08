@@ -54,7 +54,7 @@ public class BombData extends BulletData {
 		System.out.println(this.getId()+" ammo "+this.getCurrentAmmo());
 		this.setLaunchFail("bombs are not added yet");
 		
-		super.shoot(level, vehicle, owner, direction, vehicleQ);
+		updateClientAmmo(vehicle);
 		return null;
 	}
 }

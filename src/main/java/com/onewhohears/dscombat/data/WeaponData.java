@@ -103,10 +103,11 @@ public abstract class WeaponData {
 	
 	public abstract WeaponType getType();
 	
-	public EntityAbstractWeapon shoot(Level level, EntityAbstractAircraft vehicle, Entity owner, Vec3 direction, Quaternion vehicleQ) {
+	public abstract EntityAbstractWeapon shoot(Level level, EntityAbstractAircraft vehicle, Entity owner, Vec3 direction, Quaternion vehicleQ);
+	
+	public void updateClientAmmo(EntityAbstractAircraft vehicle) {
 		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> vehicle), 
 				new ClientBoundWeaponAmmoPacket(vehicle.getId(), this.getId(), this.getCurrentAmmo()));
-		return null;
 	}
 	
 	protected void tick() {

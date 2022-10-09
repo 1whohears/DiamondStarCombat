@@ -15,6 +15,7 @@ public class AircraftPresets {
 	
 	public static void setupPresets() {
 		presets.add(new TestPlanePreset());
+		presets.add(new JaviPreset());
 	}
 	
 	public static void setupAircraftByPreset(EntityAbstractAircraft plane, String preset) {
@@ -161,13 +162,13 @@ public class AircraftPresets {
 		public WeaponSystem getWeapons() {
 			WeaponSystem ws = new WeaponSystem();
 			// bullet 1
-			BulletData bullet = new BulletData("bullet1", new Vec3(0, 0.5, 1), 
+			BulletData bullet = new BulletData("bullet", new Vec3(0, 0.5, 1), 
 					200, 1000, 1, 10, 4, 1.5f);
 			ws.addWeapon(bullet, false);
 			bullet.setCurrentAmmo(bullet.getMaxAmmo());
 			// missile 1
 			MissileData gbu = new MissileData("GBU", new Vec3(0, 0.5, 1),
-					600, 8, 100, 100, 1d, 0, 
+					400, 8, 100, 100, 1d, 0, 
 					true, true, true, 100d, 4f,
 					TargetType.GROUND, GuidanceType.PITBULL,
 					4.0f, 0.2d, 2.0d);
@@ -183,7 +184,7 @@ public class AircraftPresets {
 			ws.addWeapon(fox3, false);
 			// missile 3
 			MissileData fox2 = new MissileData("fox2", new Vec3(0, 0.5, 1),
-					600, 10, 40, 1000, 1.0d, 0, 
+					200, 10, 40, 1000, 1.0d, 0, 
 					true, true, false, 100d, 4f,
 					TargetType.AIR, GuidanceType.IR,
 					5.0f, 0.3d, 3.0d);
@@ -203,7 +204,7 @@ public class AircraftPresets {
 			radar.setScanGround(false);
 			rs.addRadar(radar, false);
 			// radar ground
-			RadarData radar2 = new RadarData("radar_ground", 300, -1, 15);
+			RadarData radar2 = new RadarData("radar_ground", 200, -1, 15);
 			radar2.setScanAircraft(true);
 			radar2.setScanPlayers(true);
 			radar2.setScanMobs(true);

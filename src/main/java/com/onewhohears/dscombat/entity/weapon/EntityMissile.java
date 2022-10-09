@@ -54,6 +54,7 @@ public class EntityMissile extends EntityBullet {
 					//System.out.println("close enough");
 				}
 			}
+			// TODO missile doesn't synch with client or looks glitchy
 			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), 
 					new ClientBoundEntityMovePacket(this.getId(), this.position(), 
 							this.getDeltaMovement(), this.getXRot(), this.getYRot()));

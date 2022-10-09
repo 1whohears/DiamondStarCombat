@@ -578,7 +578,7 @@ public abstract class EntityAbstractAircraft extends Entity {
     }
     
     public float getMaxDeltaPitch() {
-    	return 5.0f;
+    	return 5.0f; // TODO too good
     }
     
     public float getMaxDeltaYaw() {

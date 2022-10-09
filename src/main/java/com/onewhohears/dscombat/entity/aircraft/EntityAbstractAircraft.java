@@ -287,7 +287,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	}
 	
 	public double getAirPressure() {
-		double space = 300;
+		double space = 400;
 		double water = 64;
 		double scale = 1;
 		if (getY() > space) return 0;

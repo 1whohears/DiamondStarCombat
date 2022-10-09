@@ -20,7 +20,6 @@ public class UtilGeometry {
 	}
 	
 	public static boolean canEntitySeeEntity(Entity e1, Entity e2) {
-		// TODO radar can't see players as far as it should. there is some chunk distance barrier maybe?
 		//System.out.println("can "+e1+" see "+e2);
 		Level level = e1.getLevel();
 		Vec3 diff = e2.position().subtract(e1.position());
@@ -31,7 +30,10 @@ public class UtilGeometry {
 		while (k++ < dist) {
 			BlockState block = level.getBlockState(new BlockPos(pos));
 			//System.out.println(k+" block "+block);
-			if (block != null && !block.isAir()) return false;
+			if (block != null && !block.isAir()) {
+				//System.out.println(e1+" can't see "+e2+" because "+block.toString());
+				return false;
+			}
 			pos = pos.add(look);
 		}
 		return true;

@@ -78,7 +78,7 @@ public class AircraftPresets {
 			ws.addWeapon(test2, false);
 			// missile 1
 			MissileData test3 = new MissileData("ground_fox3", new Vec3(0, 0.5, 1),
-					600, 100000, 10, 1000, 1d, 0, 
+					600, 100000, 20, 1000, 1d, 0, 
 					true, true, false, 100d, 4f,
 					TargetType.GROUND, GuidanceType.PITBULL,
 					3.0f, 0.2d, 2.0d);
@@ -86,7 +86,7 @@ public class AircraftPresets {
 			ws.addWeapon(test3, false);
 			// missile 2
 			MissileData test4 = new MissileData("air_fox3", new Vec3(0, 0.5, 1),
-					600, 100000, 20, 1000, 1.5d, 0, 
+					600, 100000, 80, 1000, 1.5d, 0, 
 					true, true, false, 100d, 5f,
 					TargetType.AIR, GuidanceType.PITBULL,
 					3.0f, 0.4d, 2.0d);
@@ -94,7 +94,7 @@ public class AircraftPresets {
 			ws.addWeapon(test4, false);
 			// missile 3
 			MissileData test5 = new MissileData("air_fox2", new Vec3(0, 0.5, 1),
-					600, 100000, 20, 1000, 1.0d, 0, 
+					600, 100000, 40, 1000, 1.0d, 0, 
 					true, true, false, 100d, 4f,
 					TargetType.AIR, GuidanceType.IR,
 					5.0f, 0.3d, 3.0d);
@@ -115,6 +115,95 @@ public class AircraftPresets {
 			rs.addRadar(radar, false);
 			// radar air
 			RadarData radar2 = new RadarData("radar2", 300, -1, 15);
+			radar2.setScanAircraft(true);
+			radar2.setScanPlayers(true);
+			radar2.setScanMobs(true);
+			radar2.setScanAir(false);
+			radar2.setScanGround(true);
+			rs.addRadar(radar2, false);
+			return rs;
+		}
+
+		@Override
+		public float getHealth() {
+			return 100f;
+		}
+
+		@Override
+		public float getMaxHealth() {
+			return 100f;
+		}
+
+		@Override
+		public float getMaxSpeed() {
+			return 1.5f;
+		}
+		
+	}
+	
+	public static class JaviPreset extends AircraftPreset {
+		
+		@Override
+		public String getPresetName() {
+			return "javi";
+		}
+
+		@Override
+		public PartsManager getParts() {
+			PartsManager pm = new PartsManager();
+			// seat
+			pm.addPart(new SeatData("pilot_seat", new Vec3(0, -0.5, 0)), false);
+			System.out.println("getting parts from test plane preset "+pm);
+			return pm;
+		}
+
+		@Override
+		public WeaponSystem getWeapons() {
+			WeaponSystem ws = new WeaponSystem();
+			// bullet 1
+			BulletData bullet = new BulletData("bullet1", new Vec3(0, 0.5, 1), 
+					200, 1000, 1, 10, 4, 1.5f);
+			ws.addWeapon(bullet, false);
+			bullet.setCurrentAmmo(bullet.getMaxAmmo());
+			// missile 1
+			MissileData gbu = new MissileData("GBU", new Vec3(0, 0.5, 1),
+					600, 8, 100, 100, 1d, 0, 
+					true, true, true, 100d, 4f,
+					TargetType.GROUND, GuidanceType.PITBULL,
+					4.0f, 0.2d, 2.0d);
+			gbu.setCurrentAmmo(gbu.getMaxAmmo());
+			ws.addWeapon(gbu, false);
+			// missile 2
+			MissileData fox3 = new MissileData("fox3", new Vec3(0, 0.5, 1),
+					600, 4, 80, 100, 1.5d, 0, 
+					true, true, false, 100d, 4f,
+					TargetType.AIR, GuidanceType.PITBULL,
+					3.0f, 0.5d, 2.0d);
+			fox3.setCurrentAmmo(fox3.getMaxAmmo());
+			ws.addWeapon(fox3, false);
+			// missile 3
+			MissileData fox2 = new MissileData("fox2", new Vec3(0, 0.5, 1),
+					600, 10, 40, 1000, 1.0d, 0, 
+					true, true, false, 100d, 4f,
+					TargetType.AIR, GuidanceType.IR,
+					5.0f, 0.3d, 3.0d);
+			fox2.setCurrentAmmo(fox2.getMaxAmmo());
+			ws.addWeapon(fox2, false);
+			return ws;
+		}
+		
+		public RadarSystem getRadar() {
+			RadarSystem rs = new RadarSystem();
+			// radar air
+			RadarData radar = new RadarData("radar_air", 1000, 70, 20);
+			radar.setScanAircraft(true);
+			radar.setScanPlayers(true);
+			radar.setScanMobs(false);
+			radar.setScanAir(true);
+			radar.setScanGround(false);
+			rs.addRadar(radar, false);
+			// radar ground
+			RadarData radar2 = new RadarData("radar_ground", 300, -1, 15);
 			radar2.setScanAircraft(true);
 			radar2.setScanPlayers(true);
 			radar2.setScanMobs(true);

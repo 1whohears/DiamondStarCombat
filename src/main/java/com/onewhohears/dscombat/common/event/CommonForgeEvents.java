@@ -27,4 +27,12 @@ public class CommonForgeEvents {
 		player.setBoundingBox(new AABB(x+w, y+0.5d, z+w, x-w, y, z-w)); 
 	}
 	
+	/*@SubscribeEvent
+	public void chunkUnload(ChunkEvent.Unload event) {
+		ChunkAccess chunk = event.getChunk();
+		LevelAccessor level = event.getLevel();
+		// TODO kill bullets in this unloading chunk
+		//level.getEntitiesOfClass(EntityAbstractWeapon.class, null);
+	}*/
+	
 }

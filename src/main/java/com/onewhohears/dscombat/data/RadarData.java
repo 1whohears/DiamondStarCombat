@@ -106,6 +106,7 @@ public class RadarData {
 		freshTargets = true;
 		Level level = radar.level;
 		List<Entity> list = level.getEntities(radar, getRadarBoundingBox(radar));
+		// TODO use level.getEntitiesOfClass(null, null)
 		for (int i = 0; i < list.size(); ++i) {
 			Entity target = list.get(i);
 			if (target.isOnGround() && !scanGround) continue;
@@ -117,9 +118,17 @@ public class RadarData {
 				if (!checkTargetRange(radar, target, plane.getStealth())) continue;
 				if (!checkCanSee(radar, target)) continue;
 			} else if (this.scanPlayers && target instanceof Player player) {
-				if (!checkTargetRange(radar, target, 1)) continue;
-				if (!checkCanSee(radar, target)) continue;
+				if (player.getRootVehicle() instanceof EntityAbstractAircraft) continue;
+				if (!checkTargetRange(radar, target, 1)) {
+					//System.out.println("can't see player because not in cone");
+					continue;
+				}
+				if (!checkCanSee(radar, target)) {
+					//System.out.println("can't see player because can't see");
+					continue;
+				}
 			} else if (this.scanMobs && target instanceof Mob mob) {
+				if (mob.getRootVehicle() instanceof EntityAbstractAircraft) continue;
 				if (!checkTargetRange(radar, target, 1)) continue;
 				if (!checkCanSee(radar, target)) continue;
 			} else continue;
@@ -147,7 +156,7 @@ public class RadarData {
 		double x = radar.getX();
 		double y = radar.getY();
 		double z = radar.getZ();
-		double w = range/2;
+		double w = range;
 		return new AABB(x+w, y+w, z+w, x-w, y-w, z-w);
 	}
 	

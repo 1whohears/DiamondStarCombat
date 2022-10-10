@@ -27,10 +27,11 @@ public class RadarSystem {
 	private int selectedIndex = -1;
 	private List<RadarPing> clientTargets = new ArrayList<RadarPing>();
 	private int clientSelectedIndex = -1;
-	
 	private List<EntityMissile> rockets = new ArrayList<EntityMissile>();
+	private boolean readData = true;
 	
 	public RadarSystem() {
+		readData = false;
 	}
 	
 	public RadarSystem(CompoundTag compound) {
@@ -175,6 +176,10 @@ public class RadarSystem {
 		String s = "Radars:";
 		for (int i = 0; i < radars.size(); ++i) s += radars.get(i).toString();
 		return s;
+	}
+	
+	public boolean isReadData() {
+		return readData;
 	}
 	
 }

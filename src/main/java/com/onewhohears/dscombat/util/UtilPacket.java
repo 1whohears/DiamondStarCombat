@@ -8,9 +8,9 @@ import com.onewhohears.dscombat.data.RadarSystem;
 import com.onewhohears.dscombat.data.WeaponData;
 import com.onewhohears.dscombat.data.WeaponSystem;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
+import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
@@ -19,12 +19,13 @@ public class UtilPacket {
 	public static void entityMissileMovePacket(int id, Vec3 pos, Vec3 move, float pitch, float yaw, Vec3 targetPos) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
-		Entity e = world.getEntity(id);
+		EntityMissile e = (EntityMissile) world.getEntity(id);
 		if (e != null) {
 			e.setPos(pos);
 			e.setDeltaMovement(move);
 			e.setXRot(pitch);
 			e.setYRot(yaw);
+			e.targetPos = targetPos;
 		}
 	}
 	

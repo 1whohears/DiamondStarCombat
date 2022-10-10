@@ -8,6 +8,7 @@ import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.common.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundPlaneDataPacket;
+import com.onewhohears.dscombat.common.network.toserver.ServerBoundRequestPlaneDataPacket;
 import com.onewhohears.dscombat.data.AircraftPresets;
 import com.onewhohears.dscombat.data.PartsManager;
 import com.onewhohears.dscombat.data.RadarSystem;
@@ -132,6 +133,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	public void init() {
 		if (!level.isClientSide) setupAircraftParts();
+		else clientSetup();
 	}
 	
 	@Override
@@ -427,6 +429,11 @@ public abstract class EntityAbstractAircraft extends Entity {
 				new ClientBoundPlaneDataPacket(this.getId(), partsManager, weaponSystem, radarSystem));
 	}
 	
+	public void clientSetup() {
+		if (!partsManager.isReadData() || !weaponSystem.isReadData() || !radarSystem.isReadData())
+			PacketHandler.INSTANCE.sendToServer(new ServerBoundRequestPlaneDataPacket(getId()));
+	}
+	
 	@Override
 	public InteractionResult interact(Player player, InteractionHand hand) {
 		if (player.isSecondaryUseActive()) {
@@ -576,15 +583,15 @@ public abstract class EntityAbstractAircraft extends Entity {
     }
     
     public float getMaxDeltaPitch() {
-    	return 5.0f; // TODO too good
-    }
-    
-    public float getMaxDeltaYaw() {
     	return 2.0f;
     }
     
+    public float getMaxDeltaYaw() {
+    	return 1.0f;
+    }
+    
     public float getMaxDeltaRoll() {
-    	return 10.0f;
+    	return 8.0f;
     }
     
     public void increaseThrottle() {

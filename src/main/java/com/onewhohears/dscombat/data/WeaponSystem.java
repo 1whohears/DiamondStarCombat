@@ -20,8 +20,10 @@ public class WeaponSystem {
 	private List<WeaponData> weapons = new ArrayList<WeaponData>();
 	private int weaponIndex = 0;
 	private EntityAbstractAircraft parent;
+	private boolean readData = true;
 	
 	public WeaponSystem() {
+		readData = false;
 	}
 	
 	public WeaponSystem(CompoundTag compound) {
@@ -115,6 +117,10 @@ public class WeaponSystem {
 	
 	public void clientSetup(EntityAbstractAircraft parent) {
 		this.parent = parent;
+	}
+	
+	public boolean isReadData() {
+		return readData;
 	}
 	
 }

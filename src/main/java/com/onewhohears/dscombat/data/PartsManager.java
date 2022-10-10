@@ -13,8 +13,10 @@ import net.minecraft.network.FriendlyByteBuf;
 public class PartsManager {
 	
 	private List<PartData> parts = new ArrayList<PartData>();
+	private boolean readData = true;
 	
 	public PartsManager() {
+		readData = false;
 	}
 	
 	public PartsManager(CompoundTag compound) {
@@ -83,6 +85,10 @@ public class PartsManager {
 		String s = "Parts:";
 		for (int i = 0; i < parts.size(); ++i) s += parts.get(i).toString();
 		return s;
+	}
+	
+	public boolean isReadData() {
+		return readData;
 	}
 	
 }

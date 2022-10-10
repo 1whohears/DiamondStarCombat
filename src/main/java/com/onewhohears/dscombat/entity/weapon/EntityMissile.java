@@ -42,8 +42,8 @@ public class EntityMissile extends EntityBullet {
 	public void tick() {
 		//System.out.println("ROCKET "+this.tickCount+" "+this.level);
 		//System.out.println("target = "+target); // target entity is not set on client side
+		MissileData data = (MissileData)getWeaponData();
 		if (!this.level.isClientSide) {
-			MissileData data = (MissileData)getWeaponData();
 			data.tickGuide(this);
 			motionClamp();
 			if (target != null && data.getTargetType() != TargetType.POS) {
@@ -67,7 +67,7 @@ public class EntityMissile extends EntityBullet {
 					-move.x * 0.5D + random.nextGaussian() * 0.05D, 
 					-move.y * 0.5D + random.nextGaussian() * 0.05D, 
 					-move.z * 0.5D + random.nextGaussian() * 0.05D);
-			// TODO client guidance
+			data.clientGuidance(this);
 		}
 		//System.out.println("pos = "+position());
 		//System.out.println("vel = "+getDeltaMovement());

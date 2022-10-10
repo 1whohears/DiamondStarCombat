@@ -212,7 +212,7 @@ public class MissileData extends BulletData {
 	
 	public void guideToTarget(EntityMissile missile, Vec3 target) {
 		if (target == null) {
-			missile.discard();
+			//missile.discard();
 			return;
 		}
 		double gx = target.x - missile.getX();
@@ -329,6 +329,10 @@ public class MissileData extends BulletData {
 		double z = missile.getZ();
 		double w = irRange;
 		return new AABB(x+w, y+w, z+w, x-w, y-w, z-w);
+	}
+	
+	public void clientGuidance(EntityMissile missile) {
+		guideToTarget(missile, missile.targetPos);
 	}
 	
 	public static class IrTarget {

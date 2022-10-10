@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.common.PacketHandler;
-import com.onewhohears.dscombat.common.network.toclient.ClientBoundPlaneDataPacket;
 import com.onewhohears.dscombat.common.network.toserver.ServerBoundRequestPlaneDataPacket;
 import com.onewhohears.dscombat.data.AircraftPresets;
 import com.onewhohears.dscombat.data.PartsManager;
@@ -43,7 +42,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.network.PacketDistributor;
 
 public abstract class EntityAbstractAircraft extends Entity {
 	
@@ -219,10 +217,14 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	public void motionClamp() {
 		Vec3 motion = getDeltaMovement();
-		double vel = motion.length();
 		double max = getMaxSpeed();
-		if (vel > max) motion = motion.scale(max / vel);
-		setDeltaMovement(motion);
+		Vec3 motionXY = new Vec3(motion.x, 0, motion.z);
+		double velXY = motionXY.length();
+		if (velXY > max) motionXY = motionXY.scale(max / velXY);
+		double maxY = 2d;
+		double my = motion.y;
+		if (Math.abs(my) > maxY) my = maxY * Math.signum(my);
+		setDeltaMovement(motionXY.x, my, motionXY.z);
 	}
 	
 	public void controlDirection(Quaternion q) {
@@ -425,13 +427,13 @@ public abstract class EntityAbstractAircraft extends Entity {
 		System.out.println("setting up parts client side = "+level.isClientSide);
 		partsManager.setupParts(this);
 		weaponSystem.setup(this);
-		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), 
-				new ClientBoundPlaneDataPacket(this.getId(), partsManager, weaponSystem, radarSystem));
+		/*PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), 
+				new ClientBoundPlaneDataPacket(this.getId(), partsManager, weaponSystem, radarSystem));*/
 	}
 	
 	public void clientSetup() {
-		if (!partsManager.isReadData() || !weaponSystem.isReadData() || !radarSystem.isReadData())
-			PacketHandler.INSTANCE.sendToServer(new ServerBoundRequestPlaneDataPacket(getId()));
+		//if (!partsManager.isReadData() || !weaponSystem.isReadData() || !radarSystem.isReadData())
+		PacketHandler.INSTANCE.sendToServer(new ServerBoundRequestPlaneDataPacket(getId()));
 	}
 	
 	@Override

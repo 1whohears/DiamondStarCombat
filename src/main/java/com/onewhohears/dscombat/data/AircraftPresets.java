@@ -101,6 +101,14 @@ public class AircraftPresets {
 					5.0f, 0.3d, 3.0d, 120);
 			test5.setCurrentAmmo(test5.getMaxAmmo());
 			ws.addWeapon(test5, false);
+			// missile 4
+			MissileData test6 = new MissileData("test_pos", new Vec3(0, 0.5, 1),
+					600, 100000, 40, 1000, 1.0d, 0, 
+					true, true, false, 100d, 4f,
+					TargetType.POS, GuidanceType.PITBULL,
+					5.0f, 0.3d, 3.0d, 120);
+			test6.setCurrentAmmo(test6.getMaxAmmo());
+			ws.addWeapon(test6, false);			
 			return ws;
 		}
 		

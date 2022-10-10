@@ -9,6 +9,7 @@ import com.onewhohears.dscombat.common.network.toclient.ClientBoundWeaponIndexPa
 import com.onewhohears.dscombat.common.network.toserver.ServerBoundFlightControlPacket;
 import com.onewhohears.dscombat.common.network.toserver.ServerBoundPingSelectPacket;
 import com.onewhohears.dscombat.common.network.toserver.ServerBoundQPacket;
+import com.onewhohears.dscombat.common.network.toserver.ServerBoundRequestPlaneDataPacket;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkDirection;
@@ -71,6 +72,11 @@ public final class PacketHandler {
 			.encoder(ClientBoundWeaponIndexPacket::encode)
 			.decoder(ClientBoundWeaponIndexPacket::new)
 			.consumerMainThread(ClientBoundWeaponIndexPacket::handle)
+			.add();
+		net.messageBuilder(ServerBoundRequestPlaneDataPacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
+			.encoder(ServerBoundRequestPlaneDataPacket::encode)
+			.decoder(ServerBoundRequestPlaneDataPacket::new)
+			.consumerMainThread(ServerBoundRequestPlaneDataPacket::handle)
 			.add();
 	}
 	

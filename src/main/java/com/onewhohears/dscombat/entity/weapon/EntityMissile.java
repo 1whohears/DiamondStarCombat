@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.entity.weapon;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundMissileMovePacket;
+import com.onewhohears.dscombat.data.ChunkManager;
 import com.onewhohears.dscombat.data.MissileData;
 import com.onewhohears.dscombat.data.MissileData.GuidanceType;
 import com.onewhohears.dscombat.data.MissileData.TargetType;
@@ -44,6 +45,7 @@ public class EntityMissile extends EntityBullet {
 		//System.out.println("target = "+target); // target entity is not set on client side
 		MissileData data = (MissileData)getWeaponData();
 		if (!this.level.isClientSide) {
+			loadChunks();
 			data.tickGuide(this);
 			motionClamp();
 			if (target != null && data.getTargetType() != TargetType.POS) {
@@ -72,6 +74,27 @@ public class EntityMissile extends EntityBullet {
 		//System.out.println("pos = "+position());
 		//System.out.println("vel = "+getDeltaMovement());
 		//System.out.println("pit = "+getXRot()+" yaw = "+getYRot());
+	}
+	
+	private void loadChunks() {
+		int cx = this.chunkPosition().x;
+		int cz = this.chunkPosition().z;
+		/*int r = 1;
+		for (int x = cx-r; x < cx+r+1; ++x) {
+			for (int z = cz-r; z < cz+r+1; ++z) {
+				ChunkManager.addChunk(this, x, z);
+			}
+		}*/
+		// TODO remove chunk loads that the missile isn't going towards
+		ChunkManager.addChunk(this, cx, cz);
+		Vec3 move = this.getDeltaMovement();
+		if (move.x > 0) ChunkManager.addChunk(this, cx+1, cz);
+		else if (move.x < 0) ChunkManager.addChunk(this, cx-1, cz);
+		if (move.z > 0) ChunkManager.addChunk(this, cx, cz+1);
+		else if (move.z < 0) ChunkManager.addChunk(this, cx, cz-1);
+		if (Math.abs(move.x) > 0 && Math.abs(move.z) > 0) {
+			ChunkManager.addChunk(this, cx+(int)Math.signum(move.x), cz+(int)Math.signum(move.z));
+		}
 	}
 	
 	public void motionClamp() {

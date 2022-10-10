@@ -116,7 +116,7 @@ public class MissileData extends BulletData {
 		rocket.setDeltaMovement(direction.scale(this.getSpeed()).add(vehicle.getDeltaMovement()));
 		rocket.parent = vehicle;
 		if (targetType == TargetType.POS) {
-			rocket.targetPos = Vec3.ZERO;
+			rocket.targetPos = Vec3.ZERO.add(0, -60,0);
 		} else if (guidanceType != GuidanceType.IR) {
 			/*if (!(vehicle instanceof EntityAbstractAircraft plane)) {
 				this.setLaunchFail("this rocket must be launched from an aircraft");
@@ -157,7 +157,7 @@ public class MissileData extends BulletData {
 	}
 	
 	public void tickGuide(EntityMissile missile) {
-		if (missile.tickCount < 20) return;
+		if (missile.tickCount < 10) return;
 		if (getTargetType() == TargetType.POS) {
 			guideToTarget(missile, missile.targetPos);
 		} else if (getGuidanceType() == GuidanceType.OWNER_RADAR) {

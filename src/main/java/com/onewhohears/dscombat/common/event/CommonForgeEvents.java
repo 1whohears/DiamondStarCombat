@@ -1,9 +1,17 @@
 package com.onewhohears.dscombat.common.event;
 
-import com.onewhohears.dscombat.entity.aircraft.parts.EntitySeat;
+import java.util.List;
 
+import com.onewhohears.dscombat.data.ChunkManager;
+import com.onewhohears.dscombat.entity.aircraft.parts.EntitySeat;
+import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
+
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.level.ChunkEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 
@@ -27,12 +35,24 @@ public class CommonForgeEvents {
 		player.setBoundingBox(new AABB(x+w, y+0.5d, z+w, x-w, y, z-w)); 
 	}
 	
-	/*@SubscribeEvent
+	@SubscribeEvent
 	public void chunkUnload(ChunkEvent.Unload event) {
 		ChunkAccess chunk = event.getChunk();
 		LevelAccessor level = event.getLevel();
 		// TODO kill bullets in this unloading chunk
-		//level.getEntitiesOfClass(EntityAbstractWeapon.class, null);
-	}*/
+		List<EntityAbstractWeapon> list = level.getEntitiesOfClass(
+				EntityAbstractWeapon.class, getChunkBox(chunk.getPos()));
+		for (int i = 0; i < list.size(); ++i) list.get(i).discard();
+	}
+	
+	private static AABB getChunkBox(ChunkPos chunk) {
+		return new AABB(chunk.getMaxBlockX(), -64, chunk.getMaxBlockZ(),
+				chunk.getMinBlockX(), 1000, chunk.getMaxBlockZ());
+	}
+	
+	@SubscribeEvent
+	public void serverTickEvent(TickEvent.ServerTickEvent event) {
+		ChunkManager.serverTick(event.getServer());
+	}
 	
 }

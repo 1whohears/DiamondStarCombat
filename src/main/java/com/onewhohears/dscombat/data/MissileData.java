@@ -38,12 +38,13 @@ public class MissileData extends BulletData {
 	private float maxRot;
 	private double acceleration;
 	private double fuseDist;
+	private float fov;
 	
 	public MissileData(String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, 
 			float damage, double speed, float innacuracy, boolean explosive, boolean destroyTerrain, 
 			boolean causesFire, double explosiveDamage, float explosionRadius,
 			TargetType tType, GuidanceType gType, float maxRot, 
-			double acceleration, double fuseDist) {
+			double acceleration, double fuseDist, float fov) {
 		super(id, launchPos, maxAge, maxAmmo, fireRate, damage, speed, innacuracy, 
 				explosive, destroyTerrain, causesFire, explosiveDamage, explosionRadius);
 		this.targetType = tType;
@@ -51,6 +52,7 @@ public class MissileData extends BulletData {
 		this.maxRot = maxRot;
 		this.acceleration = acceleration;
 		this.fuseDist = fuseDist;
+		this.fov = fov;
 	}
 	
 	public MissileData(CompoundTag tag) {
@@ -168,23 +170,29 @@ public class MissileData extends BulletData {
 	}
 	
 	public void guideToTarget(EntityMissile missile, Entity target) {
-		if (target == null || target.isRemoved()) {
-			missile.discard();
+		if (target == null) {
+			//missile.discard();
+			return;
+		}
+		if (target.isRemoved()) {
+			//missile.discard();
 			return;
 		}
 		if (missile.tickCount % 10 == 0) {
-			if (!checkTargetRange(missile, target, 10000, 70)) {
-				missile.discard();
+			if (!checkTargetRange(missile, target, 10000)) {
+				//missile.discard();
 				return;
 			}
 			if (!checkCanSee(missile, target)) {
-				missile.discard();
+				//missile.discard();
 				return;
 			}
 		}
-		this.guideToTarget(missile, interceptPos(
+		Vec3 pos = interceptPos(
 				missile.position(), missile.getDeltaMovement(), 
-				target.position(), target.getDeltaMovement()));
+				target.position(), target.getDeltaMovement());
+		missile.targetPos = pos;
+		this.guideToTarget(missile, pos);
 	}
 	
 	public static Vec3 interceptPos(Vec3 mPos, Vec3 mVel, Vec3 tPos, Vec3 tVel) {
@@ -254,32 +262,32 @@ public class MissileData extends BulletData {
 	
 	public void findIrTarget(EntityMissile missile) {
 		Level level = missile.level;
-		List<Entity> list = level.getEntities(missile, getIrBoundingBox(missile));
 		List<IrTarget> targets = new ArrayList<IrTarget>();
-		// TODO use level.getEntitiesOfClass(null, null)
-		for (int i = 0; i < list.size(); ++i) {
-			Entity target = list.get(i);
-			if (target.isOnGround()) continue;
-			if (target.isInvisible()) continue;
-			if (target.equals(missile)) continue;
-			float distSqr = (float)missile.distanceToSqr(target);
-			if (target instanceof EntityAbstractAircraft plane) {
-				if (!checkTargetRange(missile, target, irRange, irFov)) continue;
-				if (!checkCanSee(missile, target)) continue;
-				targets.add(new IrTarget(target, plane.getHeat() / distSqr));
-			// TODO add flares
-			} else if (target instanceof Player player) {
-				if (player.getRootVehicle() instanceof EntityAbstractAircraft) continue;
-				if (!checkTargetRange(missile, target, irRange, irFov)) continue;
-				if (!checkCanSee(missile, target)) continue;
-				targets.add(new IrTarget(target, 1f / distSqr));
-			} else if (target instanceof Mob mob) {
-				if (mob.getRootVehicle() instanceof EntityAbstractAircraft) continue;
-				if (!checkTargetRange(missile, target, irRange, irFov)) continue;
-				if (!checkCanSee(missile, target)) continue; 
-				// TODO check for hot mobs
-				targets.add(new IrTarget(target, 1f / distSqr));
-			} else continue;
+		// planes
+		List<EntityAbstractAircraft> planes = level.getEntitiesOfClass(
+				EntityAbstractAircraft.class, getIrBoundingBox(missile));
+		for (int i = 0; i < planes.size(); ++i) {
+			if (!basicCheck(missile, planes.get(i))) continue;
+			float distSqr = (float)missile.distanceToSqr(planes.get(i));
+			targets.add(new IrTarget(planes.get(i), planes.get(i).getHeat() / distSqr));
+		}
+		// players
+		List<Player> players = level.getEntitiesOfClass(
+				Player.class, getIrBoundingBox(missile));
+		for (int i = 0; i < players.size(); ++i) {
+			if (players.get(i).getRootVehicle() instanceof EntityAbstractAircraft) continue;
+			if (!basicCheck(missile, players.get(i))) continue;
+			float distSqr = (float)missile.distanceToSqr(players.get(i));
+			targets.add(new IrTarget(players.get(i), 1f / distSqr));
+		}
+		// mobs
+		List<Mob> mobs = level.getEntitiesOfClass(
+				Mob.class, getIrBoundingBox(missile));
+		for (int i = 0; i < mobs.size(); ++i) {
+			if (mobs.get(i).getRootVehicle() instanceof EntityAbstractAircraft) continue;
+			if (!basicCheck(missile, mobs.get(i))) continue;
+			float distSqr = (float)missile.distanceToSqr(mobs.get(i));
+			targets.add(new IrTarget(mobs.get(i), 1f / distSqr));
 		}
 		if (targets.size() == 0) {
 			missile.target = null;
@@ -292,10 +300,18 @@ public class MissileData extends BulletData {
 		missile.target = max.entity;
 	}
 	
-	private static final double irRange = 200d;
-	private static final float irFov = 70f;
+	private boolean basicCheck(Entity missile, Entity ping) {
+		if (missile.equals(ping)) return false;
+		if (ping.isOnGround()) return false;
+		if (!checkTargetRange(missile, ping, irRange)) return false;
+		if (!checkCanSee(missile, ping)) return false;
+		return true;
+	}
 	
-	private boolean checkTargetRange(Entity missile, Entity target, double range, float fov) {
+	private static final double irRange = 200d;
+	
+	private boolean checkTargetRange(Entity missile, Entity target, double range) {
+		if (fov == -1) return missile.distanceTo(target) <= range;
 		return UtilGeometry.isPointInsideCone(
 				target.position(), 
 				missile.position(), // TODO change radar position based on pose 

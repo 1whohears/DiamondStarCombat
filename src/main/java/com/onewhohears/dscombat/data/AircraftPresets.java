@@ -82,7 +82,7 @@ public class AircraftPresets {
 					600, 100000, 20, 1000, 1d, 0, 
 					true, true, false, 100d, 4f,
 					TargetType.GROUND, GuidanceType.PITBULL,
-					3.0f, 0.2d, 2.0d);
+					3.0f, 0.2d, 2.0d, -1);
 			test3.setCurrentAmmo(test3.getMaxAmmo());
 			ws.addWeapon(test3, false);
 			// missile 2
@@ -90,7 +90,7 @@ public class AircraftPresets {
 					600, 100000, 80, 1000, 1.5d, 0, 
 					true, true, false, 100d, 5f,
 					TargetType.AIR, GuidanceType.PITBULL,
-					3.0f, 0.4d, 2.0d);
+					3.0f, 0.4d, 2.0d, 90);
 			test4.setCurrentAmmo(test4.getMaxAmmo());
 			ws.addWeapon(test4, false);
 			// missile 3
@@ -98,7 +98,7 @@ public class AircraftPresets {
 					600, 100000, 40, 1000, 1.0d, 0, 
 					true, true, false, 100d, 4f,
 					TargetType.AIR, GuidanceType.IR,
-					5.0f, 0.3d, 3.0d);
+					5.0f, 0.3d, 3.0d, 120);
 			test5.setCurrentAmmo(test5.getMaxAmmo());
 			ws.addWeapon(test5, false);
 			return ws;
@@ -171,7 +171,7 @@ public class AircraftPresets {
 					400, 8, 100, 100, 1d, 0, 
 					true, true, true, 100d, 4f,
 					TargetType.GROUND, GuidanceType.PITBULL,
-					4.0f, 0.2d, 2.0d);
+					4.0f, 0.2d, 2.0d, -1);
 			gbu.setCurrentAmmo(gbu.getMaxAmmo());
 			ws.addWeapon(gbu, false);
 			// missile 2
@@ -179,7 +179,7 @@ public class AircraftPresets {
 					600, 4, 80, 100, 1.5d, 0, 
 					true, true, false, 100d, 4f,
 					TargetType.AIR, GuidanceType.PITBULL,
-					3.0f, 0.5d, 2.0d);
+					3.0f, 0.5d, 2.0d, 80);
 			fox3.setCurrentAmmo(fox3.getMaxAmmo());
 			ws.addWeapon(fox3, false);
 			// missile 3
@@ -187,7 +187,7 @@ public class AircraftPresets {
 					200, 10, 40, 1000, 1.0d, 0, 
 					true, true, false, 100d, 4f,
 					TargetType.AIR, GuidanceType.IR,
-					5.0f, 0.3d, 3.0d);
+					5.0f, 0.3d, 3.0d, 110);
 			fox2.setCurrentAmmo(fox2.getMaxAmmo());
 			ws.addWeapon(fox2, false);
 			return ws;

@@ -52,8 +52,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public static final EntityDataAccessor<Float> THROTTLE = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Quaternion> Q = SynchedEntityData.defineId(EntityAbstractAircraft.class, DataSerializers.QUATERNION);
 	public static final EntityDataAccessor<Boolean> FREE_LOOK = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.BOOLEAN);
-	//public static final EntityDataAccessor<PartsManager> PARTS_MANAGER = SynchedEntityData.defineId(EntityAbstractAircraft.class, DataSerializers.PARTS_MANAGER);
-	// TODO this parts manager does not sync between client and server automatically needs a system here packets update individual parts
+	
 	public PartsManager partsManager = new PartsManager();
 	public WeaponSystem weaponSystem = new WeaponSystem();
 	public RadarSystem radarSystem = new RadarSystem();
@@ -97,7 +96,6 @@ public abstract class EntityAbstractAircraft extends Entity {
                 //lerpStepsQ = 10;
             }
         }
-        // TODO check of update synch data to see how often it updates the part data
     }
 	
 	@Override
@@ -500,7 +498,7 @@ public abstract class EntityAbstractAircraft extends Entity {
         return false;
     }
 	
-	public boolean isRiding(Entity e) {
+	public boolean isVehicleOf(Entity e) {
 		List<Entity> list = getPassengers();
 		if (list.contains(e)) return true;
 		for (Entity l : list) {

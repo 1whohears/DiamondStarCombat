@@ -105,38 +105,48 @@ public class RadarData {
 		pings.clear();
 		freshTargets = true;
 		Level level = radar.level;
-		List<Entity> list = level.getEntities(radar, getRadarBoundingBox(radar));
-		// TODO use level.getEntitiesOfClass(null, null)
-		for (int i = 0; i < list.size(); ++i) {
-			Entity target = list.get(i);
-			if (target.isOnGround() && !scanGround) continue;
-			if (!target.isOnGround() && !scanAir) continue;
-			if (target.equals(radar)) continue;
-			if (target.isInvisible()) continue;
-			if (radar.isRiding(target)) continue;
-			if (this.scanAircraft && target instanceof EntityAbstractAircraft plane) {
-				if (!checkTargetRange(radar, target, plane.getStealth())) continue;
-				if (!checkCanSee(radar, target)) continue;
-			} else if (this.scanPlayers && target instanceof Player player) {
-				if (player.getRootVehicle() instanceof EntityAbstractAircraft) continue;
-				if (!checkTargetRange(radar, target, 1)) {
-					//System.out.println("can't see player because not in cone");
-					continue;
-				}
-				if (!checkCanSee(radar, target)) {
-					//System.out.println("can't see player because can't see");
-					continue;
-				}
-			} else if (this.scanMobs && target instanceof Mob mob) {
-				if (mob.getRootVehicle() instanceof EntityAbstractAircraft) continue;
-				if (!checkTargetRange(radar, target, 1)) continue;
-				if (!checkCanSee(radar, target)) continue;
-			} else continue;
-			RadarPing p = new RadarPing(target);
-			targets.add(p);
-			pings.add(p);
-			//System.out.println("new target = "+target);
+		if (scanAircraft) {
+			List<EntityAbstractAircraft> list = level.getEntitiesOfClass(
+					EntityAbstractAircraft.class, getRadarBoundingBox(radar));
+			for (int i = 0; i < list.size(); ++i) {
+				if (!basicCheck(radar, list.get(i), list.get(i).getStealth())) continue;
+				RadarPing p = new RadarPing(list.get(i));
+				targets.add(p);
+				pings.add(p);
+			}
 		}
+		if (scanPlayers) {
+			List<Player> list = level.getEntitiesOfClass(
+					Player.class, getRadarBoundingBox(radar));
+			for (int i = 0; i < list.size(); ++i) {
+				if (list.get(i).getRootVehicle() instanceof EntityAbstractAircraft) continue;
+				if (!basicCheck(radar, list.get(i), 1)) continue;
+				RadarPing p = new RadarPing(list.get(i));
+				targets.add(p);
+				pings.add(p);
+			}
+		}
+		if (scanMobs) {
+			List<Mob> list = level.getEntitiesOfClass(
+					Mob.class, getRadarBoundingBox(radar));
+			for (int i = 0; i < list.size(); ++i) {
+				if (list.get(i).getRootVehicle() instanceof EntityAbstractAircraft) continue;
+				if (!basicCheck(radar, list.get(i), 1)) continue;
+				RadarPing p = new RadarPing(list.get(i));
+				targets.add(p);
+				pings.add(p);
+			}
+		}
+	}
+	
+	private boolean basicCheck(EntityAbstractAircraft radar, Entity ping, double rangeMod) {
+		if (radar.equals(ping)) return false;
+		if (ping.isOnGround() && !scanGround) return false;
+		if (!ping.isOnGround() && !scanAir) return false;
+		if (radar.isVehicleOf(ping)) return false;
+		if (!checkTargetRange(radar, ping, rangeMod)) return false;
+		if (!checkCanSee(radar, ping)) return false;
+		return true;
 	}
 	
 	private boolean checkTargetRange(Entity radar, Entity target, double rangeMod) {

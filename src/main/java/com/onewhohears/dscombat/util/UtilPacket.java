@@ -16,7 +16,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class UtilPacket {
 	
-	public static void entityMovePacket(int id, Vec3 pos, Vec3 move, float pitch, float yaw) {
+	public static void entityMissileMovePacket(int id, Vec3 pos, Vec3 move, float pitch, float yaw, Vec3 targetPos) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		Entity e = world.getEntity(id);

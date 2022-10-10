@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.entity.weapon;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.PacketHandler;
-import com.onewhohears.dscombat.common.network.toclient.ClientBoundEntityMovePacket;
+import com.onewhohears.dscombat.common.network.toclient.ClientBoundMissileMovePacket;
 import com.onewhohears.dscombat.data.MissileData;
 import com.onewhohears.dscombat.data.MissileData.GuidanceType;
 import com.onewhohears.dscombat.data.MissileData.TargetType;
@@ -56,8 +56,8 @@ public class EntityMissile extends EntityBullet {
 			}
 			// TODO missile doesn't synch with client or looks glitchy
 			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), 
-					new ClientBoundEntityMovePacket(this.getId(), this.position(), 
-							this.getDeltaMovement(), this.getXRot(), this.getYRot()));
+					new ClientBoundMissileMovePacket(this.getId(), this.position(), 
+							this.getDeltaMovement(), this.getXRot(), this.getYRot(), this.targetPos));
 		}
 		super.tick();
 		if (this.level.isClientSide /*&& this.tickCount % 2 == 0*/) {
@@ -67,6 +67,7 @@ public class EntityMissile extends EntityBullet {
 					-move.x * 0.5D + random.nextGaussian() * 0.05D, 
 					-move.y * 0.5D + random.nextGaussian() * 0.05D, 
 					-move.z * 0.5D + random.nextGaussian() * 0.05D);
+			// TODO client guidance
 		}
 		//System.out.println("pos = "+position());
 		//System.out.println("vel = "+getDeltaMovement());
@@ -97,7 +98,7 @@ public class EntityMissile extends EntityBullet {
 				0, 0, 0, 0, 0, 0, 
 				false, false, false, 0, 0,
 				TargetType.POS, GuidanceType.IR,
-				0, 0, 0);
+				0, 0, 0, -1);
 	}
 
 }

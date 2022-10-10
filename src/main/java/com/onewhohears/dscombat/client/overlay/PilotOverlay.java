@@ -50,7 +50,7 @@ public class PilotOverlay {
 			GuiComponent.drawString(poseStack, m.font, 
 					"["+plane.getBlockX()+","+plane.getBlockY()+","+plane.getBlockZ()+"]", 
 					width/2+11, height-60, 0x00ff00);
-			// weapon data TODO not displaying on server sometimes
+			// weapon data TODO not displaying on client sometimes
 			WeaponData weapon = plane.weaponSystem.getSelected();
 			if (weapon != null) {
 				GuiComponent.drawString(poseStack, m.font, 

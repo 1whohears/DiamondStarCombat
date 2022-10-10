@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.common;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.common.network.toclient.ClientBoundEntityMovePacket;
+import com.onewhohears.dscombat.common.network.toclient.ClientBoundMissileMovePacket;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundPingsPacket;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundPlaneDataPacket;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundWeaponAmmoPacket;
@@ -52,10 +52,10 @@ public final class PacketHandler {
 			.decoder(ServerBoundPingSelectPacket::new)
 			.consumerMainThread(ServerBoundPingSelectPacket::handle)
 			.add();
-		net.messageBuilder(ClientBoundEntityMovePacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ClientBoundEntityMovePacket::encode)
-			.decoder(ClientBoundEntityMovePacket::new)
-			.consumerMainThread(ClientBoundEntityMovePacket::handle)
+		net.messageBuilder(ClientBoundMissileMovePacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ClientBoundMissileMovePacket::encode)
+			.decoder(ClientBoundMissileMovePacket::new)
+			.consumerMainThread(ClientBoundMissileMovePacket::handle)
 			.add();
 		net.messageBuilder(ClientBoundPlaneDataPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
 			.encoder(ClientBoundPlaneDataPacket::encode)

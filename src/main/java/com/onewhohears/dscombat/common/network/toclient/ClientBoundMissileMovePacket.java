@@ -13,28 +13,31 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent.Context;
 
-public class ClientBoundEntityMovePacket extends IPacket {
+public class ClientBoundMissileMovePacket extends IPacket {
 	
 	public final int id;
 	public final Vec3 pos;
 	public final Vec3 move;
 	public final float pitch;
 	public final float yaw;
+	public final Vec3 targetPos;
 	
-	public ClientBoundEntityMovePacket(int id, Vec3 pos, Vec3 move, float pitch, float yaw) {
+	public ClientBoundMissileMovePacket(int id, Vec3 pos, Vec3 move, float pitch, float yaw, Vec3 target) {
 		this.id = id;
 		this.pos = pos;
 		this.move = move;
 		this.pitch = pitch;
 		this.yaw = yaw;
+		this.targetPos = target;
 	}
 	
-	public ClientBoundEntityMovePacket(FriendlyByteBuf buffer) {
+	public ClientBoundMissileMovePacket(FriendlyByteBuf buffer) {
 		id = buffer.readInt();
 		pos = DataSerializers.VEC3.read(buffer);
 		move = DataSerializers.VEC3.read(buffer);
 		pitch = buffer.readFloat();
 		yaw = buffer.readFloat();
+		targetPos = DataSerializers.VEC3.read(buffer);
 	}
 	
 	@Override
@@ -44,6 +47,7 @@ public class ClientBoundEntityMovePacket extends IPacket {
 		DataSerializers.VEC3.write(buffer, move);
 		buffer.writeFloat(pitch);
 		buffer.writeFloat(yaw);
+		DataSerializers.VEC3.write(buffer, targetPos);
 	}
 
 	@Override
@@ -51,7 +55,7 @@ public class ClientBoundEntityMovePacket extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilPacket.entityMovePacket(id, pos, move, pitch, yaw);	
+				UtilPacket.entityMissileMovePacket(id, pos, move, pitch, yaw, targetPos);	
 				success.set(true);
 			});
 		});

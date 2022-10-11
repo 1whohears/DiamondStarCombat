@@ -33,8 +33,6 @@ public class DSCombatMod
         MinecraftForge.EVENT_BUS.register(this);
         
         AircraftPresets.setupPresets();
-        
-        // TODO unload chunks when unloading world
     }
     
     private void commonSetup(final FMLCommonSetupEvent event) {

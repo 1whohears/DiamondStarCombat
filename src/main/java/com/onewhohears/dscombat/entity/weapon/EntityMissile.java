@@ -46,8 +46,6 @@ public class EntityMissile extends EntityBullet {
 		MissileData data = (MissileData)getWeaponData();
 		if (!this.level.isClientSide) {
 			data.tickGuide(this);
-			motionClamp();
-			loadChunks();
 			if (target != null && data.getTargetType() != TargetType.POS) {
 				if (this.distanceTo(target) < data.getFuseDist()) {
 					this.setPos(target.position());
@@ -56,12 +54,12 @@ public class EntityMissile extends EntityBullet {
 					//System.out.println("close enough");
 				}
 			}
+			if (targetPos != null) loadChunks();
 			// TODO missile doesn't synch with client or looks glitchy
 			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), 
 					new ClientBoundMissileMovePacket(getId(), position(), 
 							getDeltaMovement(), getXRot(), getYRot(), targetPos));
 		}
-		super.tick();
 		if (this.level.isClientSide /*&& this.tickCount % 2 == 0*/) {
 			Vec3 move = getDeltaMovement();
 			level.addParticle(ParticleTypes.SMOKE, 
@@ -71,6 +69,8 @@ public class EntityMissile extends EntityBullet {
 					-move.z * 0.5D + random.nextGaussian() * 0.05D);
 			data.clientGuidance(this);
 		}
+		motion(data);
+		super.tick();
 		//System.out.println("pos = "+position());
 		//System.out.println("vel = "+getDeltaMovement());
 		//System.out.println("pit = "+getXRot()+" yaw = "+getYRot());
@@ -79,12 +79,6 @@ public class EntityMissile extends EntityBullet {
 	private void loadChunks() {
 		int cx = this.chunkPosition().x;
 		int cz = this.chunkPosition().z;
-		/*int r = 1;
-		for (int x = cx-r; x < cx+r+1; ++x) {
-			for (int z = cz-r; z < cz+r+1; ++z) {
-				ChunkManager.addChunk(this, x, z);
-			}
-		}*/
 		// TODO remove chunk loads that the missile isn't going towards
 		ChunkManager.addChunk(this, cx, cz);
 		Vec3 move = this.getDeltaMovement();
@@ -97,12 +91,16 @@ public class EntityMissile extends EntityBullet {
 		}
 	}
 	
-	public void motionClamp() {
-		Vec3 motion = getDeltaMovement();
-		double vel = motion.length();
+	public void motion(MissileData data) {
+		Vec3 cm = getDeltaMovement();
+		double B = 0.002d;
+		double bleed = B * (Math.abs(getXRot()-xRotO)+Math.abs(getYRot()-yRotO));
+		double vel = cm.length() + data.getAcceleration() - bleed;
 		double max = 3d;
-		if (vel > max) motion = motion.scale(max / vel);
-		setDeltaMovement(motion);
+		if (vel > max) vel = max;
+		else if (vel < 0) vel = 0;
+		Vec3 nm = getLookAngle().scale(vel);
+		setDeltaMovement(nm);
 	}
 	
 	@Override

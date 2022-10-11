@@ -197,6 +197,7 @@ public class MissileData extends BulletData {
 				target.position(), target.getDeltaMovement());
 		missile.targetPos = pos;
 		this.guideToTarget(missile, pos);
+		// TODO missile doesn't change y sometimes
 	}
 	
 	public static Vec3 interceptPos(Vec3 mPos, Vec3 mVel, Vec3 tPos, Vec3 tVel) {
@@ -205,12 +206,12 @@ public class MissileData extends BulletData {
 		double dvx = mVel.x - tVel.x;
 		double dvy = mVel.y - tVel.y;
 		double dvz = mVel.z - tVel.z;
-		if (dvx > 0) x = tVel.x * d.x / dvx;
-		else         x = tVel.x * d.x / mVel.x;
-		if (dvy > 0) y = tVel.y * d.y / dvy;
-		else         y = tVel.y * d.y / mVel.y;
-		if (dvz > 0) z = tVel.z * d.z / dvz;
-		else         z = tVel.z * d.z / mVel.z;
+		if (dvx > 0)          x = tVel.x * d.x / dvx;
+		else if (mVel.x != 0) x = tVel.x * d.x / mVel.x;
+		if (dvy > 0)          y = tVel.y * d.y / dvy;
+		else if (mVel.y != 0) y = tVel.y * d.y / mVel.y;
+		if (dvz > 0)          z = tVel.z * d.z / dvz;
+		else if (mVel.z != 0) z = tVel.z * d.z / mVel.z;
 		return tPos.add(x, y, z);
 	}
 	
@@ -219,10 +220,7 @@ public class MissileData extends BulletData {
 			//missile.discard();
 			return;
 		}
-		double gx = target.x - missile.getX();
-		double gy = target.y - missile.getY();
-		double gz = target.z - missile.getZ();
-		Vec3 gm = new Vec3(gx, gy, gz);
+		Vec3 gm = target.subtract(missile.position());
 		float grx = UtilAngles.getPitch(gm);
 		float gry = UtilAngles.getYaw(gm);
 		float orx = missile.getXRot();
@@ -252,9 +250,9 @@ public class MissileData extends BulletData {
 				}
 			}
 		}
-		Vec3 motion = missile.getDeltaMovement();
+		/*Vec3 motion = missile.getDeltaMovement();
 		Vec3 n = UtilAngles.rotationToVector(nry, nrx, this.getAcceleration());
-		missile.setDeltaMovement(motion.add(n)); // TODO misses a lot
+		missile.setDeltaMovement(motion.add(n));*/
 		missile.setXRot(nrx);
 		missile.setYRot(nry);
 	}
@@ -295,6 +293,7 @@ public class MissileData extends BulletData {
 		}
 		if (targets.size() == 0) {
 			missile.target = null;
+			missile.targetPos = null;
 			return;
 		}
 		IrTarget max = targets.get(0);
@@ -302,6 +301,7 @@ public class MissileData extends BulletData {
 			if (targets.get(i).heat > max.heat) max = targets.get(i);
 		}
 		missile.target = max.entity;
+		missile.targetPos = max.entity.position();
 	}
 	
 	private boolean basicCheck(Entity missile, Entity ping) {
@@ -318,7 +318,7 @@ public class MissileData extends BulletData {
 		if (fov == -1) return missile.distanceTo(target) <= range;
 		return UtilGeometry.isPointInsideCone(
 				target.position(), 
-				missile.position(), // TODO change radar position based on pose 
+				missile.position(), // TODO change radar position based on pos
 				missile.getLookAngle(), 
 				fov, range);
 	}

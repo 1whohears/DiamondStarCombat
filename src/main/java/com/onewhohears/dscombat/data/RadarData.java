@@ -153,7 +153,7 @@ public class RadarData {
 		if (fov == -1) return radar.distanceTo(target) <= range;
 		return UtilGeometry.isPointInsideCone(
 				target.position(), 
-				radar.position(), // TODO change radar position based on pose 
+				radar.position(), // TODO change radar position based on pos
 				radar.getLookAngle(), 
 				fov, range*rangeMod);
 	}

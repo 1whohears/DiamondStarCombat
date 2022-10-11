@@ -172,19 +172,23 @@ public class MissileData extends BulletData {
 	public void guideToTarget(EntityMissile missile, Entity target) {
 		if (target == null) {
 			//missile.discard();
+			missile.targetPos = null;
 			return;
 		}
 		if (target.isRemoved()) {
 			//missile.discard();
+			missile.targetPos = null;
 			return;
 		}
-		if (missile.tickCount % 10 == 0) {
+		if (missile.tickCount % 4 == 0) {
 			if (!checkTargetRange(missile, target, 10000)) {
 				//missile.discard();
+				missile.targetPos = null;
 				return;
 			}
 			if (!checkCanSee(missile, target)) {
 				//missile.discard();
+				missile.targetPos = null;
 				return;
 			}
 		}
@@ -256,7 +260,7 @@ public class MissileData extends BulletData {
 	}
 	
 	public void irGuidance(EntityMissile missile) {
-		if (missile.tickCount % 10 == 0) findIrTarget(missile);
+		if (missile.tickCount % 4 == 0) findIrTarget(missile);
 		if (missile.target != null) this.guideToTarget(missile, missile.target);
 	}
 	

@@ -99,7 +99,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	@Override
 	protected void readAdditionalSaveData(CompoundTag compound) {
-		String initType = compound.getString("INIT_TYPE");
+		String initType = compound.getString("preset");
 		System.out.println("client side = "+level.isClientSide+" init type = "+initType);
 		if (!initType.isEmpty()) {
 			AircraftPresets.setupAircraftByPreset(this, initType);
@@ -120,7 +120,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 
 	@Override
 	protected void addAdditionalSaveData(CompoundTag compound) {
-		compound.putString("INIT_TYPE", "");
+		compound.putString("preset", "");
 		partsManager.write(compound);
 		weaponSystem.write(compound);
 		radarSystem.write(compound);
@@ -281,7 +281,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	public double getDrag(Quaternion q) {
 		// Drag = (drag coefficient) * (air pressure) * (speed)^2 * (wing surface area) / 2
-		double dc = 0.015;
+		double dc = 0.025;
 		double air = getAirPressure();
 		double speedSqr = getDeltaMovement().lengthSqr();
 		double wing = getSurfaceArea();
@@ -289,7 +289,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	}
 	
 	public double getAirPressure() {
-		double space = 400;
+		double space = 500;
 		double water = 64;
 		double scale = 1;
 		if (getY() > space) return 0;

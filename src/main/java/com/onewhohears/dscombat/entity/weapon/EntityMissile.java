@@ -58,8 +58,8 @@ public class EntityMissile extends EntityBullet {
 			}
 			// TODO missile doesn't synch with client or looks glitchy
 			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), 
-					new ClientBoundMissileMovePacket(this.getId(), this.position(), 
-							this.getDeltaMovement(), this.getXRot(), this.getYRot(), this.targetPos));
+					new ClientBoundMissileMovePacket(getId(), position(), 
+							getDeltaMovement(), getXRot(), getYRot(), targetPos));
 		}
 		super.tick();
 		if (this.level.isClientSide /*&& this.tickCount % 2 == 0*/) {

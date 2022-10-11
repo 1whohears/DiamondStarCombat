@@ -13,12 +13,12 @@ import net.minecraftforge.common.world.ForgeChunkManager;
 
 public class ChunkManager {
 	
-	public static final int maxTicks = 200;
+	public static final int maxTicks = 20;
 	
 	public static List<LoadedChunk> chunks = new ArrayList<LoadedChunk>();
 	
 	public static void serverTick(MinecraftServer server) {
-		System.out.println(debug());
+		if (chunks.size() > 0) System.out.println(debug());
 		for (int i = 0; i < chunks.size(); ++i) {
 			chunks.get(i).tick();
 			if (chunks.get(i).isUnloaded()) chunks.remove(i--);
@@ -60,28 +60,22 @@ public class ChunkManager {
 			this.chunkX = chunkX;
 			this.chunkZ = chunkZ;
 			this.uuid = uuid;
-			ForgeChunkManager.forceChunk(level, DSCombatMod.MODID, 
+			boolean success = ForgeChunkManager.forceChunk(level, DSCombatMod.MODID, 
 					this.uuid, this.chunkX, this.chunkZ, true, true);
+			System.out.println("LOADED "+success+" "+this);
 		}
 		
 		public void tick() {
 			if (ticks > maxTicks) {
-				ForgeChunkManager.forceChunk(level, DSCombatMod.MODID, 
-						this.uuid, this.chunkX, this.chunkZ, false, false);
+				boolean success = ForgeChunkManager.forceChunk(level, DSCombatMod.MODID, 
+						this.uuid, this.chunkX, this.chunkZ, false, true);
 				unload = true;
-				System.out.println("UNLOADED "+this);
+				System.out.println("UNLOADED "+success+" "+this);
 			}
 			++ticks;
 		}
 		
 		public void update(UUID uuid) {
-			/*if (ticks > 1 && this.uuid != uuid) {
-				ForgeChunkManager.forceChunk(level, DSCombatMod.MODID, 
-						this.uuid, this.chunkX, this.chunkZ, false, false);
-				this.uuid = uuid;
-				ForgeChunkManager.forceChunk(level, DSCombatMod.MODID, 
-						this.uuid, this.chunkX, this.chunkZ, true, true);
-			}*/
 			ticks = 0;
 		}
 		

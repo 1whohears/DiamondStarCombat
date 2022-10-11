@@ -37,7 +37,9 @@ public class ClientBoundMissileMovePacket extends IPacket {
 		move = DataSerializers.VEC3.read(buffer);
 		pitch = buffer.readFloat();
 		yaw = buffer.readFloat();
-		targetPos = DataSerializers.VEC3.read(buffer);
+		boolean targetNull = buffer.readBoolean();
+		if (!targetNull) targetPos = DataSerializers.VEC3.read(buffer);
+		else targetPos = null;
 	}
 	
 	@Override
@@ -47,7 +49,8 @@ public class ClientBoundMissileMovePacket extends IPacket {
 		DataSerializers.VEC3.write(buffer, move);
 		buffer.writeFloat(pitch);
 		buffer.writeFloat(yaw);
-		DataSerializers.VEC3.write(buffer, targetPos);
+		buffer.writeBoolean(targetPos == null);
+		if (targetPos != null) DataSerializers.VEC3.write(buffer, targetPos);
 	}
 
 	@Override

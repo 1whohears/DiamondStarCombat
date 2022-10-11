@@ -216,8 +216,12 @@ public final class ClientForgeEvents {
 	}
 	
 	private static boolean isPlayerLookingAtPing(Player player, RadarPing ping) {
+		double d = ping.pos.distanceTo(player.position());
+		double y = tan1*d;
+		if (y < 1) y = 1;
 		return UtilGeometry.isPointInsideCone(ping.pos.add(0, 0.5, 0), 
-				player.getEyePosition(), player.getLookAngle(), 5, 1000);
+				player.getEyePosition(), player.getLookAngle(), 
+				Math.toDegrees(Math.atan2(y, d)), 10000);
 	}
 	
 	/*@SubscribeEvent
@@ -226,6 +230,8 @@ public final class ClientForgeEvents {
 		final var player = m.player;
 		
 	}*/
+	
+	private static double tan1 = Math.tan(Math.toRadians(1));
 	
 	@SubscribeEvent
 	public static void renderLevelStage(RenderLevelStageEvent event) {
@@ -246,8 +252,11 @@ public final class ClientForgeEvents {
 				else if (i == hoverIndex) setHoverColor();
 				else setDefaultColor();
 				
-				double x = p.pos.x, y = p.pos.y+0.02, z = p.pos.z, w2 = 1, w = w2/2;
-				Vec3 view = m.gameRenderer.getMainCamera().getPosition();
+				double x = p.pos.x, y = p.pos.y+0.02, z = p.pos.z;
+				double d = p.pos.distanceTo(plane.position());
+				double w2 = tan1*d;
+				if (w2 < 1) w2 = 1;
+				double w = w2/2;
 				
 				RenderSystem.depthMask(false);
 				RenderSystem.disableCull();
@@ -301,7 +310,8 @@ public final class ClientForgeEvents {
 				
 				pingBuffer.bind();
 				pingBuffer.upload(buffer.end());
-
+				
+				Vec3 view = m.gameRenderer.getMainCamera().getPosition();
 				PoseStack poseStack = event.getPoseStack();
 				poseStack.pushPose();
 				poseStack.translate(-view.x, -view.y, -view.z);

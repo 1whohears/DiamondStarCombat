@@ -45,9 +45,9 @@ public class EntityMissile extends EntityBullet {
 		//System.out.println("target = "+target); // target entity is not set on client side
 		MissileData data = (MissileData)getWeaponData();
 		if (!this.level.isClientSide) {
-			loadChunks();
 			data.tickGuide(this);
 			motionClamp();
+			loadChunks();
 			if (target != null && data.getTargetType() != TargetType.POS) {
 				if (this.distanceTo(target) < data.getFuseDist()) {
 					this.setPos(target.position());
@@ -100,7 +100,7 @@ public class EntityMissile extends EntityBullet {
 	public void motionClamp() {
 		Vec3 motion = getDeltaMovement();
 		double vel = motion.length();
-		double max = 2d;
+		double max = 3d;
 		if (vel > max) motion = motion.scale(max / vel);
 		setDeltaMovement(motion);
 	}

@@ -91,7 +91,7 @@ public class ChunkManager {
 		
 		@Override
 		public String toString() {
-			return "["+level+":"+chunkX+":"+chunkZ+":"+uuid+":"+ticks+"]";
+			return "["+level+":"+chunkX+":"+chunkZ/*+":"+uuid*/+":"+ticks+"]";
 		}
 		
 	}

@@ -39,7 +39,6 @@ public class CommonForgeEvents {
 	public void chunkUnload(ChunkEvent.Unload event) {
 		ChunkAccess chunk = event.getChunk();
 		LevelAccessor level = event.getLevel();
-		// TODO kill bullets in this unloading chunk
 		List<EntityAbstractWeapon> list = level.getEntitiesOfClass(
 				EntityAbstractWeapon.class, getChunkBox(chunk.getPos()));
 		for (int i = 0; i < list.size(); ++i) list.get(i).discard();

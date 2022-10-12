@@ -62,6 +62,9 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public static final EntityDataAccessor<Float> IDLEHEAT = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> ENGINEHEAT = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	
+	public static final double collideSpeedThreshHold = 1d;
+	public static final double collideDamageRate = 200d;
+	
 	public PartsManager partsManager = new PartsManager();
 	public WeaponSystem weaponSystem = new WeaponSystem();
 	public RadarSystem radarSystem = new RadarSystem();
@@ -72,6 +75,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public boolean inputMouseMode, inputFlare, inputShoot, inputSelect;
 	public float inputPitch, inputRoll, inputYaw;
 	public float prevXRot, prevYRot, zRot, prevZRot;
+	public Vec3 prevMotion = Vec3.ZERO;
 	
 	private int lerpSteps/*, lerpStepsQ*/;
 	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot/*, lerpZRot*/;
@@ -226,11 +230,21 @@ public abstract class EntityAbstractAircraft extends Entity {
 		System.out.println("P "+this.getPrevQ());
 		System.out.println("C "+this.getClientQ());
 		System.out.println("Q "+this.getQ());*/
+		if (!this.level.isClientSide) {
+			if (this.verticalCollisionBelow || this.verticalCollision) {
+				double my = Math.abs(prevMotion.y);
+				if (my > 0) System.out.println("COLLISION SPEED "+my);
+				if (my > collideSpeedThreshHold) {
+					this.addHealth((float)(-(my-collideSpeedThreshHold) * collideDamageRate));
+				}
+			} 
+		}
 		if (getHealth() <= 0) {
 			kill();
 			explode(null);
 		}
 		if (level.isClientSide) clientTick();
+		this.prevMotion = this.getDeltaMovement();
 	}
 	
 	public void clientTick() {

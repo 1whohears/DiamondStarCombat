@@ -6,13 +6,11 @@ import com.onewhohears.dscombat.client.overlay.PilotOverlay;
 import com.onewhohears.dscombat.client.renderer.RendererEntityAbstractAircraft;
 import com.onewhohears.dscombat.client.renderer.RendererEntityAbstractWeapon;
 import com.onewhohears.dscombat.client.renderer.RendererEntityInvisible;
-import com.onewhohears.dscombat.client.renderer.RendererEntityInvisible;
 import com.onewhohears.dscombat.client.renderer.model.EntityModelBullet1;
 import com.onewhohears.dscombat.client.renderer.model.EntityModelMissile1;
 import com.onewhohears.dscombat.client.renderer.model.EntityModelTestPlane;
 import com.onewhohears.dscombat.init.ModEntities;
 
-import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;

@@ -570,6 +570,7 @@ public abstract class EntityAbstractAircraft extends Entity {
     }
 	
 	public boolean isVehicleOf(Entity e) {
+		if (e == null) return false;
 		List<Entity> list = getPassengers();
 		if (list.contains(e)) return true;
 		for (Entity l : list) {
@@ -598,8 +599,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	@Override
     public boolean hurt(DamageSource source, float amount) {
-		if (source.getEntity() != null && source.getEntity().getRootVehicle() != null
-				&& source.getEntity().getRootVehicle().equals(this)) return false;
+		if (this.isVehicleOf(source.getEntity())) return false;
 		addHealth(-amount);
 		return true;
 	}

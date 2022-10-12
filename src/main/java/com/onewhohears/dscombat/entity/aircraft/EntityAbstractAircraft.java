@@ -598,7 +598,8 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	@Override
     public boolean hurt(DamageSource source, float amount) {
-		if (source.getEntity().getRootVehicle().equals(this)) return true;
+		if (source.getEntity() != null && source.getEntity().getRootVehicle() != null
+				&& source.getEntity().getRootVehicle().equals(this)) return false;
 		addHealth(-amount);
 		return true;
 	}

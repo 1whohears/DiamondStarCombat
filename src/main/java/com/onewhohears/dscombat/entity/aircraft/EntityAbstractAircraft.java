@@ -112,7 +112,8 @@ public abstract class EntityAbstractAircraft extends Entity {
 		this.setMaxSpeed(compound.getFloat("max_speed"));
 		this.setMaxHealth(compound.getFloat("max_health"));
 		this.setHealth(compound.getFloat("health"));
-		Quaternion q = new Quaternion(getXRot(), getYRot(), 0, true);
+		zRot = compound.getFloat("zRot");
+		Quaternion q = new Quaternion(getXRot(), getYRot(), zRot, true);
 		setQ(q);
 		setPrevQ(q);
 		//setClientQ(q);
@@ -127,6 +128,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		compound.putFloat("max_speed", this.getMaxSpeed());
 		compound.putFloat("max_health", this.getMaxHealth());
 		compound.putFloat("health", this.getHealth());
+		compound.putFloat("zRot", zRot);
 	}
 	
 	public void init() {

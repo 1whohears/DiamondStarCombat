@@ -123,4 +123,8 @@ public class WeaponSystem {
 		return readData;
 	}
 	
+	public List<WeaponData> getWeapons() {
+		return weapons;
+	}
+	
 }

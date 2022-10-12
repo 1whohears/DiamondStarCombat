@@ -56,6 +56,7 @@ public class ClientModEvents {
 	
 	@SubscribeEvent
     public static void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
-        event.registerAboveAll("aircraft_stats", PilotOverlay.HUD_Aircraft_Stats);
+        //event.registerAboveAll("aircraft_stats", PilotOverlay.HUD_Aircraft_Stats);
+        event.registerBelowAll("aircraft_stats", PilotOverlay.HUD_Aircraft_Stats);
     }
 }

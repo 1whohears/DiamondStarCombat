@@ -14,6 +14,7 @@ import com.onewhohears.dscombat.data.RadarSystem;
 import com.onewhohears.dscombat.data.WeaponData;
 import com.onewhohears.dscombat.data.WeaponSystem;
 import com.onewhohears.dscombat.entity.aircraft.parts.EntitySeat;
+import com.onewhohears.dscombat.entity.weapon.EntityFlare;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
@@ -49,8 +50,17 @@ public abstract class EntityAbstractAircraft extends Entity {
     public static final EntityDataAccessor<Float> HEALTH = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> MAX_SPEED = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> THROTTLE = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> THROTTLEUP = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> THROTTLEDOWN = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Quaternion> Q = SynchedEntityData.defineId(EntityAbstractAircraft.class, DataSerializers.QUATERNION);
 	public static final EntityDataAccessor<Boolean> FREE_LOOK = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Integer> FLARES = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Float> STEALTH = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> ROLL = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> PITCH = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> YAW = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> IDLEHEAT = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> ENGINEHEAT = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	
 	public PartsManager partsManager = new PartsManager();
 	public WeaponSystem weaponSystem = new WeaponSystem();
@@ -78,9 +88,17 @@ public abstract class EntityAbstractAircraft extends Entity {
         entityData.define(HEALTH, 100f);
 		entityData.define(MAX_SPEED, 1.5f);
 		entityData.define(THROTTLE, 0.0f);
+		entityData.define(THROTTLEUP, 0.05f);
+		entityData.define(THROTTLEDOWN, 0.05f);
 		entityData.define(Q, Quaternion.ONE);
 		entityData.define(FREE_LOOK, true);
-		//entityData.define(PARTS_MANAGER, new PartsManager());
+		entityData.define(FLARES, 0);
+		entityData.define(STEALTH, 1f);
+		entityData.define(ROLL, 1f);
+		entityData.define(PITCH, 1f);
+		entityData.define(YAW, 1f);
+		entityData.define(IDLEHEAT, 1f);
+		entityData.define(ENGINEHEAT, 1f);
 	}
 	
 	@Override
@@ -117,6 +135,15 @@ public abstract class EntityAbstractAircraft extends Entity {
 		setQ(q);
 		setPrevQ(q);
 		//setClientQ(q);
+		this.setFlares(compound.getInt("flares"));
+		this.setStealth(compound.getFloat("stealth"));
+		this.setMaxDeltaRoll(compound.getFloat("maxroll"));
+		this.setMaxDeltaPitch(compound.getFloat("maxpitch"));
+		this.setMaxDeltaYaw(compound.getFloat("maxyaw"));
+		this.setThrottleIncreaseRate(compound.getFloat("throttleup"));
+		this.setThrottleDecreaseRate(compound.getFloat("throttledown"));
+		this.setIdleHeat(compound.getFloat("idleheat"));
+		this.setEngineHeat(compound.getFloat("engineheat"));
 	}
 
 	@Override
@@ -129,6 +156,15 @@ public abstract class EntityAbstractAircraft extends Entity {
 		compound.putFloat("max_health", this.getMaxHealth());
 		compound.putFloat("health", this.getHealth());
 		compound.putFloat("zRot", zRot);
+		compound.putInt("flares", this.getFlares());
+		compound.putFloat("stealth", this.getStealth());
+		compound.putFloat("maxroll", this.getMaxDeltaRoll());
+		compound.putFloat("maxpitch", this.getMaxDeltaPitch());
+		compound.putFloat("maxyaw", this.getMaxDeltaYaw());
+		compound.putFloat("throttleup", this.getThrottleIncreaseRate());
+		compound.putFloat("throttledown", this.getThrottleDecreaseRate());
+		compound.putFloat("idleheat", this.getIdleHeat());
+		compound.putFloat("engineheat", this.getEngineHeat());
 	}
 	
 	public void init() {
@@ -329,24 +365,45 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public void controlSystem() {
 		Entity controller = this.getControllingPassenger();
 		if (controller == null) return;
+		boolean isPlayer = controller instanceof ServerPlayer;
 		if (!level.isClientSide) {
 			radarSystem.tickUpdateTargets(this);
 			if (this.inputShoot) {
-				WeaponData data = weaponSystem.getSelected();
-				if (data == null) return;
-				data.shoot(level, this, controller, UtilAngles.getRollAxis(getQ()), this.getQ());
-				if (data.isFailedLaunch() && data.getFailedLaunchReason() != null) {
-					System.out.println(data.getFailedLaunchReason());
-					if (controller instanceof ServerPlayer player) {
-						player.displayClientMessage(MutableComponent.create(
-								new TranslatableContents(data.getFailedLaunchReason())), true);
-					}
-				}
+				shoot(controller, isPlayer);
 			}
-			if (this.inputFlare) {
-				// TODO spawn flares
+			if (this.inputFlare && tickCount % 5 == 0) {
+				flare(controller, isPlayer);
 			}
 		}
+	}
+	
+	public void shoot(Entity controller, boolean isPlayer) {
+		WeaponData data = weaponSystem.getSelected();
+		if (data == null) return;
+		data.shoot(level, this, controller, UtilAngles.getRollAxis(getQ()), this.getQ());
+		if (data.isFailedLaunch() && data.getFailedLaunchReason() != null) {
+			System.out.println(data.getFailedLaunchReason());
+			if (isPlayer) {
+				((ServerPlayer)controller).displayClientMessage(MutableComponent.create(
+						new TranslatableContents(data.getFailedLaunchReason())), true);
+			}
+		}
+	}
+	
+	public void flare(Entity controller, boolean isPlayer) {
+		int flares = this.getFlares();
+		int used = 1;
+		if (isPlayer) {
+			ServerPlayer p = (ServerPlayer) controller;
+			if (p.isCreative()) {
+				used = 0;
+			}
+		} 
+		if (flares < used) return;
+		EntityFlare flare = new EntityFlare(level, 1.5f, 80, 3);
+		flare.setPos(this.position().add(0, -0.1, 0));
+		level.addFreshEntity(flare);
+		if (used > 0) this.setFlares(flares-used);
 	}
 	
 	@Override
@@ -583,23 +640,48 @@ public abstract class EntityAbstractAircraft extends Entity {
     }
     
     public float getThrottleIncreaseRate() {
-    	return 0.02f;
+    	return entityData.get(THROTTLEUP);
+    }
+    
+    public void setThrottleIncreaseRate(float value) {
+    	if (value < 0) value = 0;
+    	entityData.set(THROTTLEUP, value);
     }
     
     public float getThrottleDecreaseRate() {
-    	return 0.05f;
+    	return entityData.get(THROTTLEDOWN);
+    }
+    
+    public void setThrottleDecreaseRate(float value) {
+    	if (value < 0) value = 0;
+    	entityData.set(THROTTLEDOWN, value);
     }
     
     public float getMaxDeltaPitch() {
-    	return 2.0f;
+    	return entityData.get(PITCH);
+    }
+    
+    public void setMaxDeltaPitch(float degrees) {
+    	if (degrees < 0) degrees = 0;
+    	entityData.set(PITCH, degrees);
     }
     
     public float getMaxDeltaYaw() {
-    	return 1.0f;
+    	return entityData.get(YAW);
+    }
+    
+    public void setMaxDeltaYaw(float degrees) {
+    	if (degrees < 0) degrees = 0;
+    	entityData.set(YAW, degrees);
     }
     
     public float getMaxDeltaRoll() {
-    	return 8.0f;
+    	return entityData.get(ROLL);
+    }
+    
+    public void setMaxDeltaRoll(float degrees) {
+    	if (degrees < 0) degrees = 0;
+    	entityData.set(ROLL, degrees);
     }
     
     public void increaseThrottle() {
@@ -642,20 +724,17 @@ public abstract class EntityAbstractAircraft extends Entity {
         prevQ = q.copy();
     }
     
-    /*public PartsManager getPartsManager() {
-    	return entityData.get(PARTS_MANAGER);
-    }
-    
-    public void setPartsManager(PartsManager manager) {
-    	entityData.set(PARTS_MANAGER, manager);
-    }*/
-    
     /**
      * smaller number is better
      * @return value to be multiplied to the range of a radar
      */
-    public double getStealth() {
-    	return 1;
+    public float getStealth() {
+    	return entityData.get(STEALTH);
+    }
+    
+    public void setStealth(float stealth) {
+    	if (stealth < 0) stealth = 0;
+    	entityData.set(STEALTH, stealth);
     }
     
     public abstract ResourceLocation getTexture();
@@ -696,6 +775,31 @@ public abstract class EntityAbstractAircraft extends Entity {
      * @return heat value
      */
     public float getHeat() {
-    	return this.getCurrentThrottle() * 4f;
+    	return getIdleHeat() + this.getCurrentThrottle() * getEngineHeat();
+    }
+    
+    public int getFlares() {
+    	return entityData.get(FLARES);
+    }
+    
+    public void setFlares(int flares) {
+    	if (flares < 0) flares = 0;
+    	entityData.set(FLARES, flares);
+    }
+    
+    public float getIdleHeat() {
+    	return entityData.get(IDLEHEAT);
+    }
+    
+    public void setIdleHeat(float heat) {
+    	entityData.set(IDLEHEAT, heat);
+    }
+    
+    public float getEngineHeat() {
+    	return entityData.get(ENGINEHEAT);
+    }
+    
+    public void setEngineHeat(float heat) {
+    	entityData.set(ENGINEHEAT, heat);
     }
 }

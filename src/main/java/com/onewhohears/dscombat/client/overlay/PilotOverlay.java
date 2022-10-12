@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.event.ClientForgeEvents;
 import com.onewhohears.dscombat.data.RadarData.RadarPing;
 import com.onewhohears.dscombat.data.RadarSystem;
@@ -15,6 +16,8 @@ import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -24,6 +27,16 @@ import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import net.minecraftforge.common.ForgeMod;
 
 public class PilotOverlay {
+	
+	private static final int stickBaseSize = 60;
+	private static final int stickKnobSize = (int)(stickBaseSize/6);
+	private static final int stickOffset = 1;
+	private static final ResourceLocation STICK_BASE_CIRCLE = new ResourceLocation(DSCombatMod.MODID,
+            "textures/ui/stickcanvascircle.png");
+	private static final ResourceLocation STICK_BASE_SQUARE = new ResourceLocation(DSCombatMod.MODID,
+            "textures/ui/stickcanvassquare.png");
+	private static final ResourceLocation STICK_KNOB = new ResourceLocation(DSCombatMod.MODID,
+            "textures/ui/stickknob.png");
 	
 	public static final IGuiOverlay HUD_Aircraft_Stats = ((gui, poseStack, partialTick, width, height) -> {
 		Minecraft m = Minecraft.getInstance();
@@ -51,12 +64,22 @@ public class PilotOverlay {
 					"["+plane.getBlockX()+","+plane.getBlockY()+","+plane.getBlockZ()+"]", 
 					width/2+11, height-60, 0x00ff00);
 			// weapon data
-			WeaponData weapon = plane.weaponSystem.getSelected();
-			if (weapon != null) {
-				GuiComponent.drawString(poseStack, m.font, 
-						"Weapon: "+weapon.getId()+" "+weapon.getCurrentAmmo()+"/"+weapon.getMaxAmmo(), 
-						width/2-90, 5, 0x0000ff);
+			int hieght = 1;
+			List<WeaponData> weapons = plane.weaponSystem.getWeapons();
+			WeaponData sw = plane.weaponSystem.getSelected();
+			if (sw != null) for (int i = 0; i < weapons.size(); ++i) {
+				WeaponData data = weapons.get(i);
+				String info;
+				if (data.equals(sw)) info = "->";
+				else info = "   ";
+				info += data.getId()+" "+data.getCurrentAmmo()+"/"+data.getMaxAmmo();
+				GuiComponent.drawString(poseStack, m.font, info, 1, hieght, 0x0000ff);
+				hieght += 10;
 			}
+			// flares
+			GuiComponent.drawString(poseStack, m.font, 
+					"   Flares "+plane.getFlares(), 
+					1, hieght, 0xffff00);
 			// target distance
 			RadarSystem radar = plane.radarSystem;
 			if (radar != null) {
@@ -72,7 +95,7 @@ public class PilotOverlay {
 					if (selected != -1 && selected < pings.size()) {
 						GuiComponent.drawString(poseStack, m.font, 
 								"Target Dist: "+(int)pings.get(selected).pos.distanceTo(plane.position()), 
-								width/2-90, 15, 0xff0000);
+								width/2-90, 1, 0xff0000);
 					}
 				}
 			}
@@ -86,6 +109,42 @@ public class PilotOverlay {
 				renderAir(width, height, poseStack, m, gui);
 			}
 			m.setCameraEntity(camera);
+			// pitch yaw input
+			RenderSystem.setShader(GameRenderer::getPositionTexShader);
+	        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+	        RenderSystem.setShaderTexture(0, STICK_BASE_CIRCLE);
+	        GuiComponent.blit(poseStack, 
+	        		width-stickBaseSize-stickOffset, height-stickBaseSize-stickOffset, 
+	        		0, 0, stickBaseSize, stickBaseSize, stickBaseSize, stickBaseSize);
+	        int b = stickBaseSize/2;
+	        int n = stickKnobSize/2;
+	        RenderSystem.setShaderTexture(0, STICK_KNOB);
+	        GuiComponent.blit(poseStack, 
+	        		width-b-n-stickOffset+(int)(plane.inputYaw*b), 
+	        		height-b-n-stickOffset-(int)(plane.inputPitch*b), 
+	        		0, 0, stickKnobSize, stickKnobSize, stickKnobSize, stickKnobSize);
+			// roll input
+	        RenderSystem.setShaderTexture(0, STICK_BASE_SQUARE);
+	        GuiComponent.blit(poseStack, 
+	        		width-stickBaseSize-stickOffset, 
+	        		height-stickBaseSize-stickOffset-stickKnobSize-stickOffset, 
+	        		0, 0, stickBaseSize, stickKnobSize, stickBaseSize, stickBaseSize);
+	        RenderSystem.setShaderTexture(0, STICK_KNOB);
+	        GuiComponent.blit(poseStack, 
+	        		width-b-n-stickOffset+(int)(plane.inputRoll*b), 
+	        		height-stickKnobSize-stickOffset-stickOffset-stickBaseSize, 
+	        		0, 0, stickKnobSize, stickKnobSize, stickKnobSize, stickKnobSize);
+	        // throttle input
+	        RenderSystem.setShaderTexture(0, STICK_BASE_SQUARE);
+	        GuiComponent.blit(poseStack, 
+	        		stickOffset, 
+	        		height-stickBaseSize-stickOffset, 
+	        		0, 0, stickKnobSize, stickBaseSize, stickBaseSize, stickBaseSize);
+	        RenderSystem.setShaderTexture(0, STICK_KNOB);
+	        GuiComponent.blit(poseStack, 
+	        		stickOffset, 
+	        		height-n-stickOffset-(int)(plane.getCurrentThrottle()*stickBaseSize), 
+	        		0, 0, stickKnobSize, stickKnobSize, stickKnobSize, stickKnobSize);
 		}
 	});
 	

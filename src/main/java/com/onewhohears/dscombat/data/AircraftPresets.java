@@ -34,6 +34,15 @@ public class AircraftPresets {
 			plane.setHealth(getHealth());
 			plane.setMaxHealth(getMaxHealth());
 			plane.setMaxSpeed(getMaxSpeed());
+			plane.setFlares(getFlares());
+			plane.setStealth(getStealth());
+			plane.setMaxDeltaPitch(getMaxPitch());
+			plane.setMaxDeltaRoll(getMaxRoll());
+			plane.setMaxDeltaYaw(getMaxYaw());
+			plane.setThrottleIncreaseRate(getThrottleUp());
+			plane.setThrottleDecreaseRate(getThrottleDown());
+			plane.setIdleHeat(getIdleHeat());
+			plane.setEngineHeat(getEngineHeat());
 			System.out.println("setting up aircraft preset client side "+plane.level.isClientSide+" parts "+plane.partsManager);
 		}
 		
@@ -44,6 +53,15 @@ public class AircraftPresets {
 		public abstract float getHealth();
 		public abstract float getMaxHealth();
 		public abstract float getMaxSpeed();
+		public abstract int getFlares();
+		public abstract float getStealth();
+		public abstract float getMaxPitch();
+		public abstract float getMaxRoll();
+		public abstract float getMaxYaw();
+		public abstract float getThrottleUp();
+		public abstract float getThrottleDown();
+		public abstract float getIdleHeat();
+		public abstract float getEngineHeat();
 		
 	}
 	
@@ -147,6 +165,51 @@ public class AircraftPresets {
 		public float getMaxSpeed() {
 			return 1.5f;
 		}
+
+		@Override
+		public int getFlares() {
+			return 100;
+		}
+
+		@Override
+		public float getStealth() {
+			return 1;
+		}
+
+		@Override
+		public float getMaxPitch() {
+			return 2;
+		}
+
+		@Override
+		public float getMaxRoll() {
+			return 8;
+		}
+
+		@Override
+		public float getMaxYaw() {
+			return 1;
+		}
+
+		@Override
+		public float getThrottleUp() {
+			return 0.02f;
+		}
+
+		@Override
+		public float getThrottleDown() {
+			return 0.05f;
+		}
+
+		@Override
+		public float getIdleHeat() {
+			return 4f;
+		}
+
+		@Override
+		public float getEngineHeat() {
+			return 4f;
+		}
 		
 	}
 	
@@ -235,6 +298,51 @@ public class AircraftPresets {
 		@Override
 		public float getMaxSpeed() {
 			return 1.5f;
+		}
+		
+		@Override
+		public int getFlares() {
+			return 100;
+		}
+
+		@Override
+		public float getStealth() {
+			return 1;
+		}
+
+		@Override
+		public float getMaxPitch() {
+			return 2;
+		}
+
+		@Override
+		public float getMaxRoll() {
+			return 8;
+		}
+
+		@Override
+		public float getMaxYaw() {
+			return 1;
+		}
+
+		@Override
+		public float getThrottleUp() {
+			return 0.02f;
+		}
+
+		@Override
+		public float getThrottleDown() {
+			return 0.05f;
+		}
+
+		@Override
+		public float getIdleHeat() {
+			return 2f;
+		}
+
+		@Override
+		public float getEngineHeat() {
+			return 4f;
 		}
 		
 	}

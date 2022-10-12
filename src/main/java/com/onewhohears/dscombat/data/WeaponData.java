@@ -199,4 +199,10 @@ public abstract class WeaponData {
 		this.failedLaunchReason = failedLaunchReason;
 	}
 	
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof WeaponData w) return w.getId().equals(id);
+		return false;
+	}
+	
 }

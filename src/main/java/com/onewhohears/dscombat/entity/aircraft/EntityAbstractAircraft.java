@@ -341,6 +341,9 @@ public abstract class EntityAbstractAircraft extends Entity {
 					}
 				}
 			}
+			if (this.inputFlare) {
+				// TODO spawn flares
+			}
 		}
 	}
 	

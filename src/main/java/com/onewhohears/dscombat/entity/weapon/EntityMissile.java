@@ -19,7 +19,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
 
@@ -30,7 +29,7 @@ public class EntityMissile extends EntityBullet {
 	
 	public Entity parent;
 	public Entity target;
-	public Vec3 targetPos = Vec3.ZERO;
+	public Vec3 targetPos;
 	
 	public EntityMissile(EntityType<? extends EntityMissile> type, Level level) {
 		super(type, level);

@@ -1,14 +1,13 @@
 package com.onewhohears.dscombat.client.renderer;
 
-import com.onewhohears.dscombat.entity.aircraft.parts.EntitySeat;
-
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 
-public class RendererEntitySeat<T extends EntitySeat> extends EntityRenderer<T> {
+public class RendererEntityInvisible<T extends Entity> extends EntityRenderer<T> {
 
-	public RendererEntitySeat(Context ctx) {
+	public RendererEntityInvisible(Context ctx) {
 		super(ctx);
 	}
 

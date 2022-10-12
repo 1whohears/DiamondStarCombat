@@ -6,6 +6,7 @@ import java.util.List;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
+import com.onewhohears.dscombat.entity.weapon.EntityFlare;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
@@ -277,7 +278,7 @@ public class MissileData extends BulletData {
 				EntityAbstractAircraft.class, getIrBoundingBox(missile));
 		for (int i = 0; i < planes.size(); ++i) {
 			if (planes.get(i).isVehicleOf(missile.getOwner())) continue;
-			if (!basicCheck(missile, planes.get(i))) continue;
+			if (!basicCheck(missile, planes.get(i), false)) continue;
 			float distSqr = (float)missile.distanceToSqr(planes.get(i));
 			targets.add(new IrTarget(planes.get(i), planes.get(i).getHeat() / distSqr));
 		}
@@ -286,7 +287,7 @@ public class MissileData extends BulletData {
 				Player.class, getIrBoundingBox(missile));
 		for (int i = 0; i < players.size(); ++i) {
 			if (players.get(i).getRootVehicle() instanceof EntityAbstractAircraft) continue;
-			if (!basicCheck(missile, players.get(i))) continue;
+			if (!basicCheck(missile, players.get(i), true)) continue;
 			float distSqr = (float)missile.distanceToSqr(players.get(i));
 			targets.add(new IrTarget(players.get(i), 1f / distSqr));
 		}
@@ -295,7 +296,7 @@ public class MissileData extends BulletData {
 				Mob.class, getIrBoundingBox(missile));
 		for (int i = 0; i < mobs.size(); ++i) {
 			if (mobs.get(i).getRootVehicle() instanceof EntityAbstractAircraft) continue;
-			if (!basicCheck(missile, mobs.get(i))) continue;
+			if (!basicCheck(missile, mobs.get(i), true)) continue;
 			float distSqr = (float)missile.distanceToSqr(mobs.get(i));
 			targets.add(new IrTarget(mobs.get(i), 1f / distSqr));
 		}
@@ -304,11 +305,18 @@ public class MissileData extends BulletData {
 				EntityMissile.class, getIrBoundingBox(missile));
 		for (int i = 0; i < missiles.size(); ++i) {
 			if (missile.equals(missiles.get(i))) continue;
- 			if (!basicCheck(missile, missiles.get(i))) continue;
+ 			if (!basicCheck(missile, missiles.get(i), false)) continue;
 			float distSqr = (float)missile.distanceToSqr(missiles.get(i));
 			targets.add(new IrTarget(missiles.get(i), missiles.get(i).getHeat() / distSqr));
 		}	
-		// TODO flares
+		// flares
+		List<EntityFlare> flares = level.getEntitiesOfClass(
+				EntityFlare.class, getIrBoundingBox(missile));
+		for (int i = 0; i < flares.size(); ++i) {
+			if (!basicCheck(missile, flares.get(i), true)) continue;
+			float distSqr = (float)missile.distanceToSqr(flares.get(i));
+			targets.add(new IrTarget(flares.get(i), flares.get(i).getHeat() / distSqr));
+		}
 		if (targets.size() == 0) {
 			missile.target = null;
 			missile.targetPos = null;
@@ -324,9 +332,9 @@ public class MissileData extends BulletData {
 		//System.out.println("TARGET FOUND "+missile.targetPos);
 	}
 	
-	private boolean basicCheck(EntityMissile missile, Entity ping) {
+	private boolean basicCheck(EntityMissile missile, Entity ping, boolean checkGround) {
 		//System.out.println("target? "+ping);
-		if (ping.isOnGround()) {
+		if (checkGround && ping.isOnGround()) {
 			//System.out.println("on ground");
 			return false;
 		}

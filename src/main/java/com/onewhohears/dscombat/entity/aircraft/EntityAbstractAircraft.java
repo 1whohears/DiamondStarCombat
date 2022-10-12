@@ -536,6 +536,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	@Override
     public boolean hurt(DamageSource source, float amount) {
+		if (source.getEntity().getRootVehicle().equals(this)) return true;
 		addHealth(-amount);
 		return true;
 	}
@@ -690,6 +691,6 @@ public abstract class EntityAbstractAircraft extends Entity {
      * @return heat value
      */
     public float getHeat() {
-    	return this.getCurrentThrottle() * 2;
+    	return this.getCurrentThrottle() * 4f;
     }
 }

@@ -111,7 +111,7 @@ public class BulletData extends WeaponData {
 			this.setLaunchFail(null);
 			return null;
 		}
-		if (!this.checkShoot(1)) {
+		if (!this.checkAmmo(1, owner)) {
 			this.setLaunchFail("not enough ammo");
 			return null;
 		}
@@ -125,11 +125,12 @@ public class BulletData extends WeaponData {
 		bullet.setXRot(pitch);
 		bullet.setYRot(yaw);
 		direction = UtilAngles.rotationToVector(yaw, pitch);
-		bullet.setPos(vehicle.position()
-				.add(UtilAngles.rotateVector(this.getLaunchPos(), vehicleQ)));
 		bullet.setDeltaMovement(direction.scale(speed).add(vehicle.getDeltaMovement()));
+		bullet.setPos(vehicle.position()
+				.add(UtilAngles.rotateVector(this.getLaunchPos(), vehicleQ))
+				/*.add(bullet.getDeltaMovement())*/);
 		level.addFreshEntity(bullet);
-		this.setLaunchSuccess(1);
+		this.setLaunchSuccess(1, owner);
 		updateClientAmmo(vehicle);
 		return bullet;
 	}

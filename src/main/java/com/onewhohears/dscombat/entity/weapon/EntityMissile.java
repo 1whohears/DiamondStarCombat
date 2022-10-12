@@ -12,11 +12,14 @@ import com.onewhohears.dscombat.entity.aircraft.plane.EntityTestPlane;
 import com.onewhohears.dscombat.init.ModEntities;
 
 import net.minecraft.client.model.EntityModel;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
 
@@ -55,7 +58,6 @@ public class EntityMissile extends EntityBullet {
 				}
 			}
 			if (targetPos != null) loadChunks();
-			// TODO missile doesn't synch with client or looks glitchy
 			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), 
 					new ClientBoundMissileMovePacket(getId(), position(), 
 							getDeltaMovement(), getXRot(), getYRot(), targetPos));
@@ -77,26 +79,21 @@ public class EntityMissile extends EntityBullet {
 	}
 	
 	private void loadChunks() {
-		int cx = this.chunkPosition().x;
-		int cz = this.chunkPosition().z;
-		// TODO remove chunk loads that the missile isn't going towards
-		ChunkManager.addChunk(this, cx, cz);
+		ChunkPos cp = this.chunkPosition();
+		ChunkManager.addChunk(this, cp.x, cp.z);
 		Vec3 move = this.getDeltaMovement();
-		if (move.x > 0) ChunkManager.addChunk(this, cx+1, cz);
-		else if (move.x < 0) ChunkManager.addChunk(this, cx-1, cz);
-		if (move.z > 0) ChunkManager.addChunk(this, cx, cz+1);
-		else if (move.z < 0) ChunkManager.addChunk(this, cx, cz-1);
-		if (Math.abs(move.x) > 0 && Math.abs(move.z) > 0) {
-			ChunkManager.addChunk(this, cx+(int)Math.signum(move.x), cz+(int)Math.signum(move.z));
-		}
+		Vec3 next = position().add(move);
+		ChunkPos ncp = level.getChunk(new BlockPos(next)).getPos();
+		if (ncp.x != cp.x || ncp.z != cp.z)
+			ChunkManager.addChunk(this, ncp.x, ncp.z);
 	}
 	
 	public void motion(MissileData data) {
 		Vec3 cm = getDeltaMovement();
-		double B = 0.002d;
+		double B = 0.001d;
 		double bleed = B * (Math.abs(getXRot()-xRotO)+Math.abs(getYRot()-yRotO));
 		double vel = cm.length() + data.getAcceleration() - bleed;
-		double max = 3d;
+		double max = data.getSpeed();
 		if (vel > max) vel = max;
 		else if (vel < 0) vel = 0;
 		Vec3 nm = getLookAngle().scale(vel);
@@ -120,6 +117,10 @@ public class EntityMissile extends EntityBullet {
 				false, false, false, 0, 0,
 				TargetType.POS, GuidanceType.IR,
 				0, 0, 0, -1);
+	}
+	
+	public float getHeat() {
+		return 2f;
 	}
 
 }

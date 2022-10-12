@@ -11,12 +11,19 @@ public class UtilGeometry {
 	public static boolean isPointInsideCone(Vec3 point, Vec3 origin, Vec3 direction, double maxAngle, double maxDistance) {
 		Vec3 diff = point.subtract(origin);
 		double dist = diff.length();
-		if (dist > maxDistance) return false;
+		if (dist > maxDistance) {
+			//System.out.println(dist+" > max dist "+maxDistance);
+			return false;
+		}
 		double dot = diff.dot(direction);
 		double mag = dist * direction.length();
 		double angle = Math.acos(dot / mag);
 		angle = Math.toDegrees(angle);
-		return angle <= maxAngle;
+		if (angle > maxAngle) {
+			//System.out.println(angle+" > max angle "+maxAngle);
+			return false;
+		}
+		return true;
 	}
 	
 	public static boolean canEntitySeeEntity(Entity e1, Entity e2) {

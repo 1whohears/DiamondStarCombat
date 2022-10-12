@@ -62,6 +62,7 @@ public class MissileData extends BulletData {
 		maxRot = tag.getFloat("maxRot");
 		acceleration = tag.getDouble("acceleration");
 		fuseDist = tag.getDouble("fuseDist");
+		fov = tag.getFloat("fov");
 	}
 	
 	@Override
@@ -72,6 +73,7 @@ public class MissileData extends BulletData {
 		tag.putFloat("maxRot", maxRot);
 		tag.putDouble("acceleration", acceleration);
 		tag.putDouble("fuseDist", fuseDist);
+		tag.putFloat("fov", fov);
 		return tag;
 	}
 	
@@ -87,6 +89,7 @@ public class MissileData extends BulletData {
 		maxRot = buffer.readFloat();
 		acceleration = buffer.readDouble();
 		fuseDist = buffer.readDouble();
+		fov = buffer.readFloat();
 	}
 	
 	@Override
@@ -97,6 +100,7 @@ public class MissileData extends BulletData {
 		buffer.writeFloat(maxRot);
 		buffer.writeDouble(acceleration);
 		buffer.writeDouble(fuseDist);
+		buffer.writeFloat(fov);
 	}
 	
 	@Override
@@ -105,15 +109,16 @@ public class MissileData extends BulletData {
 			this.setLaunchFail(null);
 			return null;
 		}
-		if (!this.checkShoot(1)) {
+		if (!this.checkAmmo(1, owner)) {
 			this.setLaunchFail("not enough ammo");
 			return null;
 		}
 		System.out.println(this.getId()+" ammo "+this.getCurrentAmmo());
 		EntityMissile rocket = new EntityMissile(level, owner, this);
+		rocket.setDeltaMovement(vehicle.getDeltaMovement());
 		rocket.setPos(vehicle.position()
-				.add(UtilAngles.rotateVector(this.getLaunchPos(), vehicleQ)));
-		rocket.setDeltaMovement(direction.scale(this.getSpeed()).add(vehicle.getDeltaMovement()));
+				.add(UtilAngles.rotateVector(this.getLaunchPos(), vehicleQ))
+				.add(rocket.getDeltaMovement()));
 		rocket.parent = vehicle;
 		if (targetType == TargetType.POS) {
 			rocket.targetPos = Vec3.ZERO.add(0, -60,0);
@@ -148,10 +153,10 @@ public class MissileData extends BulletData {
 				rocket.target = target;
 			}
 		}
-		rocket.setXRot(UtilAngles.getPitch(rocket.getDeltaMovement()));
-		rocket.setYRot(UtilAngles.getYaw(rocket.getDeltaMovement()));
+		rocket.setXRot(UtilAngles.getPitch(direction));
+		rocket.setYRot(UtilAngles.getYaw(direction));
 		level.addFreshEntity(rocket);
-		this.setLaunchSuccess(1);
+		this.setLaunchSuccess(1, owner);
 		updateClientAmmo(vehicle);
 		return rocket;
 	}
@@ -258,17 +263,20 @@ public class MissileData extends BulletData {
 	}
 	
 	public void irGuidance(EntityMissile missile) {
-		if (missile.tickCount % 4 == 0) findIrTarget(missile);
+		if (missile.tickCount % 5 == 0) findIrTarget(missile);
 		if (missile.target != null) this.guideToTarget(missile, missile.target);
 	}
 	
+	private List<IrTarget> targets = new ArrayList<IrTarget>();
+	
 	public void findIrTarget(EntityMissile missile) {
 		Level level = missile.level;
-		List<IrTarget> targets = new ArrayList<IrTarget>();
+		targets.clear();
 		// planes
 		List<EntityAbstractAircraft> planes = level.getEntitiesOfClass(
 				EntityAbstractAircraft.class, getIrBoundingBox(missile));
 		for (int i = 0; i < planes.size(); ++i) {
+			if (planes.get(i).isVehicleOf(missile.getOwner())) continue;
 			if (!basicCheck(missile, planes.get(i))) continue;
 			float distSqr = (float)missile.distanceToSqr(planes.get(i));
 			targets.add(new IrTarget(planes.get(i), planes.get(i).getHeat() / distSqr));
@@ -291,9 +299,20 @@ public class MissileData extends BulletData {
 			float distSqr = (float)missile.distanceToSqr(mobs.get(i));
 			targets.add(new IrTarget(mobs.get(i), 1f / distSqr));
 		}
+		// missiles
+		List<EntityMissile> missiles = level.getEntitiesOfClass(
+				EntityMissile.class, getIrBoundingBox(missile));
+		for (int i = 0; i < missiles.size(); ++i) {
+			if (missile.equals(missiles.get(i))) continue;
+ 			if (!basicCheck(missile, missiles.get(i))) continue;
+			float distSqr = (float)missile.distanceToSqr(missiles.get(i));
+			targets.add(new IrTarget(missiles.get(i), missiles.get(i).getHeat() / distSqr));
+		}	
+		// TODO flares
 		if (targets.size() == 0) {
 			missile.target = null;
 			missile.targetPos = null;
+			//System.out.println("NO TARGET");
 			return;
 		}
 		IrTarget max = targets.get(0);
@@ -302,23 +321,38 @@ public class MissileData extends BulletData {
 		}
 		missile.target = max.entity;
 		missile.targetPos = max.entity.position();
+		//System.out.println("TARGET FOUND "+missile.targetPos);
 	}
 	
-	private boolean basicCheck(Entity missile, Entity ping) {
-		if (missile.equals(ping)) return false;
-		if (ping.isOnGround()) return false;
-		if (!checkTargetRange(missile, ping, irRange)) return false;
-		if (!checkCanSee(missile, ping)) return false;
+	private boolean basicCheck(EntityMissile missile, Entity ping) {
+		//System.out.println("target? "+ping);
+		if (ping.isOnGround()) {
+			//System.out.println("on ground");
+			return false;
+		}
+		if (missile.getOwner().equals(ping)) {
+			//System.out.println("is owner");
+			return false;
+		}
+		if (!checkTargetRange(missile, ping, irRange)) {
+			//System.out.println("not in cone");
+			return false;
+		}
+		if (!checkCanSee(missile, ping)) {
+			//System.out.println("can't see");
+			return false;
+		}
+		//System.out.println("POSSIBLE");
 		return true;
 	}
 	
-	private static final double irRange = 200d;
+	private static final double irRange = 300d;
 	
 	private boolean checkTargetRange(Entity missile, Entity target, double range) {
 		if (fov == -1) return missile.distanceTo(target) <= range;
 		return UtilGeometry.isPointInsideCone(
 				target.position(), 
-				missile.position(), // TODO change radar position based on pos
+				missile.position(),
 				missile.getLookAngle(), 
 				fov, range);
 	}

@@ -12,6 +12,7 @@ import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -119,7 +120,10 @@ public abstract class WeaponData {
 	 * @param ammoNum
 	 * @return if this weapon can shoot
 	 */
-	public boolean checkShoot(int ammoNum) {
+	public boolean checkAmmo(int ammoNum, Entity shooter) {
+		if (shooter instanceof ServerPlayer p) {
+			if (p.isCreative()) return true;
+		}
 		return currentAmmo >= ammoNum;
 	}
 	
@@ -182,8 +186,11 @@ public abstract class WeaponData {
 		return failedLaunchReason;
 	}
 	
-	public void setLaunchSuccess(int ammoNum) {
+	public void setLaunchSuccess(int ammoNum, Entity shooter) {
 		failedLaunchReason = null;
+		if (shooter instanceof ServerPlayer p) {
+			if (p.isCreative()) ammoNum = 0;
+		}
 		this.addAmmo(-ammoNum);
 		recoilTime = this.getFireRate();
 	}

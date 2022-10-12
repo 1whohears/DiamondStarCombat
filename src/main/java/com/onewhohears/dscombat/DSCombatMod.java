@@ -6,11 +6,15 @@ import com.mojang.logging.LogUtils;
 import com.onewhohears.dscombat.common.PacketHandler;
 import com.onewhohears.dscombat.common.event.CommonForgeEvents;
 import com.onewhohears.dscombat.data.AircraftPresets;
+import com.onewhohears.dscombat.data.ChunkManager;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModEntities;
 
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.level.LevelEvent;
+import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -38,6 +42,18 @@ public class DSCombatMod
     private void commonSetup(final FMLCommonSetupEvent event) {
     	LOGGER.info("HELLO FROM PREINIT");
 		PacketHandler.register();
+	}
+    
+    @SubscribeEvent
+	public static void serverStoping(ServerStoppingEvent event) {
+    	LOGGER.info("SERVER STOPPING "+event.getServer());
+		ChunkManager.unloadAll(event.getServer());
+	}
+	
+	@SubscribeEvent
+	public static void levelUnload(LevelEvent.Unload event) {
+		LOGGER.info("LEVEL UNLOADING "+event.getLevel());
+		ChunkManager.unloadAllInLevel(event.getLevel());
 	}
     
 }

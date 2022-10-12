@@ -50,7 +50,7 @@ public class BombData extends BulletData {
 	
 	@Override
 	public EntityAbstractWeapon shoot(Level level, EntityAbstractAircraft vehicle, Entity owner, Vec3 direction, Quaternion vehicleQ) {
-		if (!this.checkShoot(1)) return null;
+		if (!this.checkAmmo(1, owner)) return null;
 		System.out.println(this.getId()+" ammo "+this.getCurrentAmmo());
 		this.setLaunchFail("bombs are not added yet");
 		

@@ -12,7 +12,6 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.level.ChunkEvent;
-import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 
@@ -53,12 +52,6 @@ public class CommonForgeEvents {
 	@SubscribeEvent
 	public void serverTickEvent(TickEvent.ServerTickEvent event) {
 		ChunkManager.serverTick(event.getServer());
-	}
-	
-	@SubscribeEvent
-	public static void serverStoping(ServerStoppingEvent event) {
-		System.out.println("SERVER STOPPING "+event.getServer());
-		ChunkManager.unloadAll(event.getServer());
 	}
 	
 }

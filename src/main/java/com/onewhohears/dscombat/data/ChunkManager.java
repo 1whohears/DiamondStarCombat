@@ -9,6 +9,7 @@ import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.common.world.ForgeChunkManager;
 
 public class ChunkManager {
@@ -18,7 +19,7 @@ public class ChunkManager {
 	public static List<LoadedChunk> chunks = new ArrayList<LoadedChunk>();
 	
 	public static void serverTick(MinecraftServer server) {
-		if (chunks.size() > 0) System.out.println(debug());
+		//if (chunks.size() > 0) System.out.println(debug());
 		for (int i = 0; i < chunks.size(); ++i) {
 			chunks.get(i).tick();
 			if (chunks.get(i).isUnloaded()) chunks.remove(i--);
@@ -33,7 +34,7 @@ public class ChunkManager {
 			if (c.chunkX == chunkX && c.chunkZ == chunkZ 
 					&& c.level.dimensionType() == level.dimensionType()) {
 				c.update(uuid);
-				System.out.println("UPDATED LOADED CHUNK "+c);
+				//System.out.println("UPDATED LOADED CHUNK "+c);
 				return;
 			}
 		}
@@ -43,7 +44,7 @@ public class ChunkManager {
 			return;
 		}*/
 		chunks.add(new LoadedChunk(level, chunkX, chunkZ, uuid));
-		System.out.println("ADDED LOADED CHUNK "+chunks.get(chunks.size()-1));
+		//System.out.println("ADDED LOADED CHUNK "+chunks.get(chunks.size()-1));
 	}
 	
 	public static void unloadAll(MinecraftServer server) {
@@ -51,6 +52,15 @@ public class ChunkManager {
 			chunks.get(i).unload();
 		}
 		chunks.clear();
+	}
+	
+	public static void unloadAllInLevel(LevelAccessor level) {
+		for (int i = 0; i < chunks.size(); ++i) {
+			if (chunks.get(i).level.dimensionType() == level.dimensionType()) {
+				chunks.get(i).unload();
+				chunks.remove(i--);
+			}
+		}
 	}
 	
 	public static class LoadedChunk {

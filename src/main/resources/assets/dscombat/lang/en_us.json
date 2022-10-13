@@ -14,5 +14,6 @@
 	"key.dscombat.flare_key": "Flare",
 	"key.dscombat.mouse_mode_key": "Mouse Mode",
 	"key.dscombat.shoot_key": "Shoot Key",
-	"key.dscombat.weapon_select_key": "Weapon Cycle"
+	"key.dscombat.weapon_select_key": "Weapon Cycle",
+	"key.dscombat.reset_mouse_key": "Reset Mouse"
 }

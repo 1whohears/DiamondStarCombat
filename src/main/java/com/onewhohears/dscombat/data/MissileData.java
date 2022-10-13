@@ -14,6 +14,7 @@ import com.onewhohears.dscombat.util.math.UtilGeometry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -286,10 +287,9 @@ public class MissileData extends BulletData {
 				Mob.class, getIrBoundingBox(missile));
 		for (int i = 0; i < mobs.size(); ++i) {
 			if (mobs.get(i).getRootVehicle() instanceof EntityAbstractAircraft) continue;
-			// TODO check if blaze/magmacube/fireworks
 			if (!basicCheck(missile, mobs.get(i), true)) continue;
 			float distSqr = (float)missile.distanceToSqr(mobs.get(i));
-			targets.add(new IrTarget(mobs.get(i), 1f / distSqr));
+			targets.add(new IrTarget(mobs.get(i), getMobHeat(mobs.get(i)) / distSqr));
 		}
 		// missiles
 		List<EntityMissile> missiles = level.getEntitiesOfClass(
@@ -308,6 +308,7 @@ public class MissileData extends BulletData {
 			float distSqr = (float)missile.distanceToSqr(flares.get(i));
 			targets.add(new IrTarget(flares.get(i), flares.get(i).getHeat() / distSqr));
 		}
+		// TODO check for fire arrows, fire balls, and fireworks
 		if (targets.size() == 0) {
 			missile.target = null;
 			missile.targetPos = null;
@@ -343,6 +344,12 @@ public class MissileData extends BulletData {
 		}
 		//System.out.println("POSSIBLE");
 		return true;
+	}
+	
+	private static float getMobHeat(Mob mob) {
+		if (mob.getType().equals(EntityType.BLAZE)) return 10f;
+		if (mob.getType().equals(EntityType.MAGMA_CUBE)) return 8f;
+		return 1f;
 	}
 	
 	private static final double irRange = 300d;

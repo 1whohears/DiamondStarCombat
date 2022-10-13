@@ -27,6 +27,7 @@ public class WeaponSystem {
 	}
 	
 	public WeaponSystem(CompoundTag compound) {
+		this.weaponIndex = compound.getInt("index");
 		ListTag list = compound.getList("weapons", 10);
 		for (int i = 0; i < list.size(); ++i) {
 			CompoundTag tag = list.getCompound(i);
@@ -50,16 +51,19 @@ public class WeaponSystem {
 		ListTag list = new ListTag();
 		for (WeaponData w : weapons) list.add(w.write());
 		compound.put("weapons", list);
+		compound.putInt("index", weaponIndex);
 	}
 	
 	public WeaponSystem(FriendlyByteBuf buffer) {
 		int num = buffer.readInt();
 		for (int i = 0; i < num; ++i) weapons.add(DataSerializers.WEAPON_DATA.read(buffer));
+		this.weaponIndex = buffer.readInt();
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
 		buffer.writeInt(weapons.size());
 		for (WeaponData w : weapons) w.write(buffer);
+		buffer.writeInt(weaponIndex);
 	}
 	
 	public boolean addWeapon(WeaponData data, boolean updateClient) {

@@ -25,11 +25,13 @@ import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.ChatScreen;
+import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameType;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
@@ -41,7 +43,6 @@ import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -56,10 +57,19 @@ public final class ClientForgeEvents {
 	public static void clientTick(TickEvent.ClientTickEvent event) {
 		if (event.phase != Phase.START) return;
 		Minecraft m = Minecraft.getInstance();
-		mouseX = m.mouseHandler.xpos();
-		mouseY = -m.mouseHandler.ypos();
 		final var player = m.player;
 		if (player == null) return;
+		if (KeyInit.resetMouseKey.isDown()) centerMouse();
+		else if (m.screen != null) {
+			//System.out.println("screen = "+m.screen);
+			if (m.screen.isPauseScreen()) centerMouse();
+			else if (m.screen instanceof ChatScreen i) centerMouse();
+			else if (m.screen instanceof InventoryScreen i) centerMouse();
+			else if (m.screen instanceof CreativeModeInventoryScreen i) centerMouse();
+			//else if (m.screen instanceof BookViewScreen i) centerMouse(m);
+		} 
+		double mouseX = m.mouseHandler.xpos() - mouseCenterX;
+		double mouseY = -(m.mouseHandler.ypos() - mouseCenterY);
 		//System.out.println("VEHICLE "+player.getVehicle());
 		//System.out.println("ROOT "+player.getRootVehicle());
 		if (!(player.getRootVehicle() instanceof EntityAbstractAircraft plane)) return;
@@ -91,13 +101,15 @@ public final class ClientForgeEvents {
 			float ys = (float) Math.signum(mouseY);
 			float xs = (float) Math.signum(mouseX);
 			double md = max-deadZone;
-			if (ya > max) 
+			if (ya > max) {
 				pitch = ys;
-			else if (ya > deadZone) 
+				mouseCenterY -= (ya - max) * ys;
+			} else if (ya > deadZone) 
 				pitch = (float) ((ya-deadZone) / md) * ys;
-			if (xa > max) 
+			if (xa > max) {
 				yaw = xs;
-			else if (xa > deadZone) 
+				mouseCenterX += (xa - max) * xs;
+			} else if (xa > deadZone) 
 				yaw = (float) ((xa-deadZone) / md) * xs;
 			boolean rollLeft = KeyInit.rollLeftKey.isDown();
 			boolean rollRight = KeyInit.rollRightKey.isDown();
@@ -124,7 +136,7 @@ public final class ClientForgeEvents {
 				if (isPlayerLookingAtPing(player, p)) {
 					hoverIndex = i;
 					hovering = true;
-					if (leftClick) radar.clientSelectTarget(plane, p);
+					if (m.mouseHandler.isLeftPressed()) radar.clientSelectTarget(plane, p);
 					break;
 				}
 			}
@@ -135,10 +147,15 @@ public final class ClientForgeEvents {
 		// TODO middle click to mark a spot to target with a position guided missile
 	}
 	
-	private static boolean leftClick = false;
-	private static boolean rightClick = false;
-	private static double mouseX = 0;
-	private static double mouseY = 0;
+	public static void centerMouse() {
+		// TODO center mouse when getting in plane
+		Minecraft m = Minecraft.getInstance();
+		mouseCenterX = m.mouseHandler.xpos();
+		mouseCenterY = m.mouseHandler.ypos();
+	}
+	
+	private static double mouseCenterX = 0;
+	private static double mouseCenterY = 0;
 	
 	private static final double deadZone = 250;
 	private static final double max = 1000;
@@ -174,14 +191,14 @@ public final class ClientForgeEvents {
 	public static void onMouseInput(InputEvent.MouseButton event) {
 		//System.out.println("mouse input button "+event.getButton());
 		//System.out.println("mouse input action "+event.getAction());
-		if (event.getButton() == 0) {
+		/*if (event.getButton() == 0) {
 			if (event.getAction() == 1) leftClick = true;
 			else leftClick = false;
-		}
-		if (event.getButton() == 1) {
+		}*/
+		/*if (event.getButton() == 1) {
 			if (event.getAction() == 1) rightClick = true;
 			else rightClick = false;
-		} 
+		}*/ 
 	}
 	
 	@SubscribeEvent
@@ -368,8 +385,14 @@ public final class ClientForgeEvents {
 				event.setCanceled(true);
 				return;
 			}
+			//float x = player.getXRot(), y = player.getYRot();
+			/*if (!plane.isFreeLook()) {
+				player.setXRot(0);
+				player.setYRot(0);
+			}*/
 			Quaternion q = UtilAngles.lerpQ(event.getPartialTick(), plane.getPrevQ(), plane.getQ());
 			event.getPoseStack().mulPose(q);
+			// TODO player looks in wrong direction
 			//System.out.println("plane zRot = "+plane.zRot);
 			//event.getPoseStack().mulPose(Vector3f.ZN.rotation((float)Math.toRadians(plane.zRot)));
 		}
@@ -459,7 +482,7 @@ public final class ClientForgeEvents {
 		}
 	}*/
 	
-	@SubscribeEvent
+	/*@SubscribeEvent
 	public static void onEntityJoin(EntityJoinLevelEvent event) {
 		Level level = event.getLevel();
 		if (!level.isClientSide) return;
@@ -468,10 +491,10 @@ public final class ClientForgeEvents {
 		//System.out.println("entity joined client "+entity);
 		if (entity instanceof Player player) {
 			if (m.player.equals(player)) {
-				leftClick = false;
-				rightClick = false;
+				//leftClick = false;
+				//rightClick = false;
 			}
 		}
-	}
+	}*/
 	
 }

@@ -15,6 +15,7 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ChunkPos;
@@ -120,6 +121,12 @@ public class EntityMissile extends EntityBullet {
 	
 	public float getHeat() {
 		return 2f;
+	}
+	
+	@Override
+    public boolean hurt(DamageSource source, float amount) {
+		this.checkExplode();
+		return true;
 	}
 
 }

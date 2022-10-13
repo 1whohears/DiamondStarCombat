@@ -77,7 +77,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public float prevXRot, prevYRot, zRot, prevZRot;
 	public Vec3 prevMotion = Vec3.ZERO;
 	
-	private int lerpSteps/*, lerpStepsQ*/;
+	private int lerpSteps/*, lerpStepsQ*/, newRiderCooldown;
 	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot/*, lerpZRot*/;
 	private boolean prevInputMouseMode, prevInputSelect;
 	
@@ -382,6 +382,10 @@ public abstract class EntityAbstractAircraft extends Entity {
 		boolean isPlayer = controller instanceof ServerPlayer;
 		if (!level.isClientSide) {
 			radarSystem.tickUpdateTargets(this);
+			if (newRiderCooldown > 0) {
+				--newRiderCooldown;
+				return;
+			}
 			if (this.inputShoot) {
 				shoot(controller, isPlayer);
 			}
@@ -529,6 +533,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 			if (list.get(i) instanceof EntitySeat seat) {
 				if (seat.canAddPassenger(e)) {
 					e.startRiding(seat);
+					this.newRiderCooldown = 10;
 					return true;
 				}
 			}

@@ -63,6 +63,9 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public static final EntityDataAccessor<Float> YAW = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> IDLEHEAT = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> ENGINEHEAT = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> WEIGHT = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> MAX_THRUST = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> WING_AREA = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	
 	public static final double collideSpeedThreshHold = 1d;
 	public static final double collideDamageRate = 200d;
@@ -105,6 +108,9 @@ public abstract class EntityAbstractAircraft extends Entity {
 		entityData.define(YAW, 1f);
 		entityData.define(IDLEHEAT, 1f);
 		entityData.define(ENGINEHEAT, 1f);
+		entityData.define(WEIGHT, 0.05f);
+		entityData.define(MAX_THRUST, 0.1f);
+		entityData.define(WING_AREA, 1f);
 	}
 	
 	@Override
@@ -150,6 +156,9 @@ public abstract class EntityAbstractAircraft extends Entity {
 		this.setThrottleDecreaseRate(compound.getFloat("throttledown"));
 		this.setIdleHeat(compound.getFloat("idleheat"));
 		this.setEngineHeat(compound.getFloat("engineheat"));
+		this.setAircraftWeight(compound.getFloat("weight"));
+		this.setMaxThrust(compound.getFloat("maxthrust"));
+		this.setSurfaceArea(compound.getFloat("surfacearea"));
 	}
 
 	@Override
@@ -171,6 +180,9 @@ public abstract class EntityAbstractAircraft extends Entity {
 		compound.putFloat("throttledown", this.getThrottleDecreaseRate());
 		compound.putFloat("idleheat", this.getIdleHeat());
 		compound.putFloat("engineheat", this.getEngineHeat());
+		compound.putFloat("weight", this.getAircraftWeight());
+		compound.putFloat("maxthrust", this.getMaxThrust());
+		compound.putFloat("surfacearea", this.getSurfaceArea());
 	}
 	
 	public void init() {
@@ -322,9 +334,17 @@ public abstract class EntityAbstractAircraft extends Entity {
 	}
 	
 	public double getThrust() {
-		// TODO make thrust customizable
 		float throttle = getCurrentThrottle();
-		return throttle * 0.1;
+		return throttle * getMaxThrust();
+	}
+	
+	public float getMaxThrust() {
+		return entityData.get(MAX_THRUST);
+	}
+	
+	public void setMaxThrust(float thrust) {
+		if (thrust < 0) thrust = 0;
+		entityData.set(MAX_THRUST, thrust);
 	}
 	
 	public Vec3 getDragForce(Quaternion q) {
@@ -352,9 +372,13 @@ public abstract class EntityAbstractAircraft extends Entity {
 		return scale/(water-space) * (getY()-water) + scale;
 	}
 	
-	public double getSurfaceArea() {
-		// TODO make surface area customizable
-		return 1;
+	public float getSurfaceArea() {
+		return entityData.get(WING_AREA);
+	}
+	
+	public void setSurfaceArea(float area) {
+		if (area < 0) area = 0;
+		entityData.set(WING_AREA, area);
 	}
 	
 	public Vec3 getFrictionForce() {
@@ -373,12 +397,20 @@ public abstract class EntityAbstractAircraft extends Entity {
 	}
 	
 	public Vec3 getWeightForce() {
-		return new Vec3(0, -getWeight(), 0);
+		return new Vec3(0, -getTotalWeight(), 0);
 	}
 	
-	public double getWeight() {
-		// TODO make weight customizable
-		return 0.05;
+	public float getTotalWeight() {
+		return getAircraftWeight() /*+ partsManager // TODO get weight of parts*/;
+	}
+	
+	public float getAircraftWeight() {
+		return entityData.get(WEIGHT);
+	}
+	
+	public void setAircraftWeight(float weight) {
+		if (weight < 0) weight = 0;
+		entityData.set(WEIGHT, weight);
 	}
 	
 	public void controlSystem() {
@@ -831,5 +863,13 @@ public abstract class EntityAbstractAircraft extends Entity {
     
     public void setEngineHeat(float heat) {
     	entityData.set(ENGINEHEAT, heat);
+    }
+    
+    public void trackedByMissile() {
+    	// TODO play missile tracking sound on player clients
+    }
+    
+    public void lockedOnto() {
+    	// TODO play radar lock sound on player clients
     }
 }

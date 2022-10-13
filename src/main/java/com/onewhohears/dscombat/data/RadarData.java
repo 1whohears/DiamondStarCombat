@@ -113,6 +113,7 @@ public class RadarData {
 				RadarPing p = new RadarPing(list.get(i));
 				targets.add(p);
 				pings.add(p);
+				list.get(i).lockedOnto();
 			}
 		}
 		if (scanPlayers) {

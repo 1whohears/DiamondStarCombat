@@ -6,7 +6,9 @@ import java.util.List;
 import com.onewhohears.dscombat.data.MissileData.GuidanceType;
 import com.onewhohears.dscombat.data.MissileData.TargetType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
+import com.onewhohears.dscombat.util.UtilParse;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.phys.Vec3;
 
 public class AircraftPresets {
@@ -16,6 +18,7 @@ public class AircraftPresets {
 	public static void setupPresets() {
 		presets.add(new TestPlanePreset());
 		presets.add(new JaviPreset());
+		// TODO check for a text file with the names of all the presets to read
 	}
 	
 	public static void setupAircraftByPreset(EntityAbstractAircraft plane, String preset) {
@@ -62,6 +65,9 @@ public class AircraftPresets {
 		public abstract float getThrottleDown();
 		public abstract float getIdleHeat();
 		public abstract float getEngineHeat();
+		public abstract float getAircraftWeight();
+		public abstract float getMaxThrust();
+		public abstract float getSurfaceArea();
 		
 	}
 	
@@ -210,6 +216,21 @@ public class AircraftPresets {
 		public float getEngineHeat() {
 			return 4f;
 		}
+
+		@Override
+		public float getAircraftWeight() {
+			return 0.05f;
+		}
+
+		@Override
+		public float getMaxThrust() {
+			return 0.1f;
+		}
+
+		@Override
+		public float getSurfaceArea() {
+			return 1f;
+		}
 		
 	}
 	
@@ -343,6 +364,126 @@ public class AircraftPresets {
 		@Override
 		public float getEngineHeat() {
 			return 4f;
+		}
+
+		@Override
+		public float getAircraftWeight() {
+			return 0.05f;
+		}
+
+		@Override
+		public float getMaxThrust() {
+			return 0.1f;
+		}
+
+		@Override
+		public float getSurfaceArea() {
+			return 1f;
+		}
+		
+	}
+	
+	public static class JsonPreset extends AircraftPreset {
+		
+		private CompoundTag tag;
+		
+		public JsonPreset(String path) {
+			tag = UtilParse.getComoundFromResource(path);
+		}
+		
+		@Override
+		public String getPresetName() {
+			return tag.getString("name");
+		}
+
+		@Override
+		public PartsManager getParts() {
+			return new PartsManager(tag);
+		}
+
+		@Override
+		public WeaponSystem getWeapons() {
+			return new WeaponSystem(tag);
+		}
+
+		@Override
+		public RadarSystem getRadar() {
+			return new RadarSystem(tag);
+		}
+
+		@Override
+		public float getHealth() {
+			return tag.getFloat("health");
+		}
+
+		@Override
+		public float getMaxHealth() {
+			return tag.getFloat("max_health");
+		}
+
+		@Override
+		public float getMaxSpeed() {
+			return tag.getFloat("max_speed");
+		}
+
+		@Override
+		public int getFlares() {
+			return tag.getInt("flares");
+		}
+
+		@Override
+		public float getStealth() {
+			return tag.getFloat("stealth");
+		}
+
+		@Override
+		public float getMaxPitch() {
+			return tag.getFloat("maxpitch");
+		}
+
+		@Override
+		public float getMaxRoll() {
+			return tag.getFloat("maxroll");
+		}
+
+		@Override
+		public float getMaxYaw() {
+			return tag.getFloat("maxyaw");
+		}
+
+		@Override
+		public float getThrottleUp() {
+			return tag.getFloat("throttleup");
+		}
+
+		@Override
+		public float getThrottleDown() {
+			return tag.getFloat("throttledown");
+		}
+
+		@Override
+		public float getIdleHeat() {
+			return tag.getFloat("idleheat");
+		}
+
+		@Override
+		public float getEngineHeat() {
+			return tag.getFloat("engineheat");
+		}
+
+		@Override
+		public float getAircraftWeight() {
+			return tag.getFloat("weight");
+		}
+
+		@Override
+		public float getMaxThrust() {
+			return tag.getFloat("maxthrust");
+		}
+
+		@Override
+		public float getSurfaceArea() {
+			return tag.getFloat("surfacearea");
 		}
 		
 	}

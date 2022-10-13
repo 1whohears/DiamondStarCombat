@@ -40,13 +40,19 @@ public final class KeyInit {
 		yawRightKey = registerKey("yaw_right_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_RIGHT);
 		flareKey = registerKey("flare_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_V);
 		mouseModeKey = registerKey("mouse_mode_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_LCONTROL);
-		shootKey = registerKey("shoot_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.MOUSE_BUTTON_RIGHT);
+		shootKey = registerMouse("shoot_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.MOUSE_BUTTON_RIGHT);
 		weaponSelectKey = registerKey("weapon_select_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_G);
 		resetMouseKey = registerKey("reset_mouse_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_LALT);
 	}
 	
 	private static KeyMapping registerKey(String name, String category, int keycode) {
 		final var key = new KeyMapping("key."+DSCombatMod.MODID+"."+name, KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, keycode, category);
+		event.register(key);
+		return key;
+	}
+	
+	private static KeyMapping registerMouse(String name, String category, int keycode) {
+		final var key = new KeyMapping("key."+DSCombatMod.MODID+"."+name, KeyConflictContext.IN_GAME, InputConstants.Type.MOUSE, keycode, category);
 		event.register(key);
 		return key;
 	}

@@ -212,6 +212,7 @@ public class MissileData extends BulletData {
 		//System.out.println("INTER  POS = "+pos);
 		missile.targetPos = pos;
 		this.guideToTarget(missile, pos);
+		// TODO play sound if target is an aircraft
 	}
 	
 	public void guideToTarget(EntityMissile missile, Vec3 target) {

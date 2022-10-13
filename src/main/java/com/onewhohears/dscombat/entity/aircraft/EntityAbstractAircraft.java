@@ -322,6 +322,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	}
 	
 	public double getThrust() {
+		// TODO make thrust customizable
 		float throttle = getCurrentThrottle();
 		return throttle * 0.1;
 	}
@@ -352,6 +353,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	}
 	
 	public double getSurfaceArea() {
+		// TODO make surface area customizable
 		return 1;
 	}
 	
@@ -375,6 +377,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	}
 	
 	public double getWeight() {
+		// TODO make weight customizable
 		return 0.05;
 	}
 	

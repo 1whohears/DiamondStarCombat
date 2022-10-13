@@ -17,6 +17,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.FireworkRocketEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -308,7 +310,23 @@ public class MissileData extends BulletData {
 			float distSqr = (float)missile.distanceToSqr(flares.get(i));
 			targets.add(new IrTarget(flares.get(i), flares.get(i).getHeat() / distSqr));
 		}
-		// TODO check for fire arrows, fire balls, and fireworks
+		// fire arrows
+		List<AbstractArrow> arrows = level.getEntitiesOfClass(
+				AbstractArrow.class, getIrBoundingBox(missile));
+		for (int i = 0; i < arrows.size(); ++i) {
+			if (!arrows.get(i).isOnFire()) continue;
+			if (!basicCheck(missile, arrows.get(i), false)) continue;
+			float distSqr = (float)missile.distanceToSqr(arrows.get(i));
+			targets.add(new IrTarget(arrows.get(i), 2f / distSqr));
+		}
+		// fire arrows
+		List<FireworkRocketEntity> foreworks = level.getEntitiesOfClass(
+				FireworkRocketEntity.class, getIrBoundingBox(missile));
+		for (int i = 0; i < foreworks.size(); ++i) {
+			if (!basicCheck(missile, foreworks.get(i), false)) continue;
+			float distSqr = (float)missile.distanceToSqr(foreworks.get(i));
+			targets.add(new IrTarget(foreworks.get(i), 2f / distSqr));
+		}
 		if (targets.size() == 0) {
 			missile.target = null;
 			missile.targetPos = null;

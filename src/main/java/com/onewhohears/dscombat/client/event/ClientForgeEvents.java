@@ -124,6 +124,7 @@ public final class ClientForgeEvents {
 		plane.updateControls(throttleUp, throttleDown,
 				pitch, roll, yaw,
 				mouseMode, flare, shoot, select);
+		if (mouseMode && !plane.isFreeLook()) centerMouse();
 		RadarSystem radar = plane.radarSystem;
 		if (radar == null) return;
 		List<RadarPing> pings = radar.getClientRadarPings();
@@ -148,7 +149,6 @@ public final class ClientForgeEvents {
 	}
 	
 	public static void centerMouse() {
-		// TODO center mouse when getting in plane
 		Minecraft m = Minecraft.getInstance();
 		mouseCenterX = m.mouseHandler.xpos();
 		mouseCenterY = m.mouseHandler.ypos();

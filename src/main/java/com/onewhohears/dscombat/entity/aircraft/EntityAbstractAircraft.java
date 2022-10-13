@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
+import com.onewhohears.dscombat.client.event.ClientForgeEvents;
 import com.onewhohears.dscombat.common.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ServerBoundRequestPlaneDataPacket;
 import com.onewhohears.dscombat.data.AircraftPresets;
@@ -19,6 +20,7 @@ import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -520,11 +522,16 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public InteractionResult interact(Player player, InteractionHand hand) {
 		if (player.isSecondaryUseActive()) {
 			return InteractionResult.PASS;
+		} else if (player.getRootVehicle() != null && player.getRootVehicle().equals(this)) {
+			return InteractionResult.PASS;
 		} else if (!this.level.isClientSide) {
 			return rideSeat(player) ? InteractionResult.CONSUME : InteractionResult.PASS;
-		} else {
+		} else if (this.level.isClientSide) {	
+			Minecraft m = Minecraft.getInstance();
+			if (m.player.equals(player)) ClientForgeEvents.centerMouse();
 			return InteractionResult.SUCCESS;
-		}
+		} 
+		return InteractionResult.SUCCESS;
 	}
 	
 	public boolean rideSeat(Entity e) {

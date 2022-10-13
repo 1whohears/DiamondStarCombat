@@ -194,31 +194,21 @@ public class MissileData extends BulletData {
 			}
 			if (!checkCanSee(missile, target)) {
 				//missile.discard();
+				//System.out.println("can't see target");
 				missile.targetPos = null;
 				return;
 			}
 		}
-		Vec3 pos = interceptPos(
+		//System.out.println("==========");
+		Vec3 tVel = target.getDeltaMovement();
+		if (target.isOnGround()) tVel = tVel.add(0, -tVel.y, 0); // some entities have -0.07 y vel when on ground
+		Vec3 pos = UtilGeometry.interceptPos( 
 				missile.position(), missile.getDeltaMovement(), 
-				target.position(), target.getDeltaMovement());
+				target.position(), tVel);
+		//System.out.println("TARGET POS = "+target.position());
+		//System.out.println("INTER  POS = "+pos);
 		missile.targetPos = pos;
 		this.guideToTarget(missile, pos);
-		// TODO missile doesn't change y sometimes
-	}
-	
-	public static Vec3 interceptPos(Vec3 mPos, Vec3 mVel, Vec3 tPos, Vec3 tVel) {
-		double x = 0, y = 0, z = 0;
-		Vec3 d = tPos.subtract(mPos);
-		double dvx = mVel.x - tVel.x;
-		double dvy = mVel.y - tVel.y;
-		double dvz = mVel.z - tVel.z;
-		if (dvx > 0)          x = tVel.x * d.x / dvx;
-		else if (mVel.x != 0) x = tVel.x * d.x / mVel.x;
-		if (dvy > 0)          y = tVel.y * d.y / dvy;
-		else if (mVel.y != 0) y = tVel.y * d.y / mVel.y;
-		if (dvz > 0)          z = tVel.z * d.z / dvz;
-		else if (mVel.z != 0) z = tVel.z * d.z / mVel.z;
-		return tPos.add(x, y, z);
 	}
 	
 	public void guideToTarget(EntityMissile missile, Vec3 target) {
@@ -296,6 +286,7 @@ public class MissileData extends BulletData {
 				Mob.class, getIrBoundingBox(missile));
 		for (int i = 0; i < mobs.size(); ++i) {
 			if (mobs.get(i).getRootVehicle() instanceof EntityAbstractAircraft) continue;
+			// TODO check if blaze/magmacube/fireworks
 			if (!basicCheck(missile, mobs.get(i), true)) continue;
 			float distSqr = (float)missile.distanceToSqr(mobs.get(i));
 			targets.add(new IrTarget(mobs.get(i), 1f / distSqr));
@@ -338,7 +329,7 @@ public class MissileData extends BulletData {
 			//System.out.println("on ground");
 			return false;
 		}
-		if (missile.getOwner().equals(ping)) {
+		if (missile.getOwner() != null && ping.equals(missile.getOwner())) {
 			//System.out.println("is owner");
 			return false;
 		}

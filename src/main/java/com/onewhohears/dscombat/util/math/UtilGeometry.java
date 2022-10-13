@@ -59,4 +59,29 @@ public class UtilGeometry {
 		return dist;
 	}
 	
+	public static Vec3 interceptPos(Vec3 mPos, Vec3 mVel, Vec3 tPos, Vec3 tVel) {
+		Vec3 dp = tPos.subtract(mPos);
+		//System.out.println("D = "+dp);
+		//System.out.println("X");
+		double x = interceptComponent(dp.x, mVel.x, tVel.x);
+		//System.out.println("x = "+x);
+		//System.out.println("Y");
+		double y = interceptComponent(dp.y, mVel.y, tVel.y);
+		//System.out.println("y = "+y);
+		//System.out.println("Z");
+		double z = interceptComponent(dp.z, mVel.z, tVel.z);
+		//System.out.println("z = "+z);
+		return tPos.add(x, y, z);
+	}
+	
+	private static double interceptComponent(double dp, double mVel, double tVel) {
+		//System.out.println("mVel = "+mVel);
+		//System.out.println("tVel = "+tVel);
+		double dv = tVel - mVel;
+		//System.out.println("dv = "+dv);
+		if ((dp > 0 && dv < 0) || (dp < 0 && dv > 0))
+			return tVel * dp / -dv;
+		return 0;
+	}
+	
 }

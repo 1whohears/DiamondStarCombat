@@ -368,7 +368,7 @@ public class AircraftPresets {
 
 		@Override
 		public float getAircraftWeight() {
-			return 0.05f;
+			return 0.04f;
 		}
 
 		@Override

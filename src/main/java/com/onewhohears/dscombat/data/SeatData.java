@@ -49,4 +49,9 @@ public class SeatData extends PartData {
 		System.out.println("ADDED SEAT "+seat);
 	}
 
+	@Override
+	public float getWeight() {
+		return 0.01f;
+	}
+
 }

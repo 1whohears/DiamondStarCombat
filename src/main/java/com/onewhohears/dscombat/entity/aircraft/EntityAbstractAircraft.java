@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -8,6 +9,7 @@ import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.event.ClientForgeEvents;
 import com.onewhohears.dscombat.common.PacketHandler;
+import com.onewhohears.dscombat.common.network.toclient.ClientBoundPlaySoundPacket;
 import com.onewhohears.dscombat.common.network.toserver.ServerBoundRequestPlaneDataPacket;
 import com.onewhohears.dscombat.data.AircraftPresets;
 import com.onewhohears.dscombat.data.PartsManager;
@@ -45,6 +47,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.network.PacketDistributor;
 
 public abstract class EntityAbstractAircraft extends Entity {
 	
@@ -401,7 +404,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	}
 	
 	public float getTotalWeight() {
-		return getAircraftWeight() /*+ partsManager // TODO get weight of parts*/;
+		return getAircraftWeight() + partsManager.getPartsWeight();
 	}
 	
 	public float getAircraftWeight() {
@@ -865,11 +868,30 @@ public abstract class EntityAbstractAircraft extends Entity {
     	entityData.set(ENGINEHEAT, heat);
     }
     
+    public List<Player> getRidingPlayers() {
+    	List<Player> players = new ArrayList<Player>();
+    	for (Entity e : getPassengers()) {
+    		if (e instanceof EntitySeat seat) {
+    			Player p = seat.getPlayer();
+    			if (p != null) players.add(p); 
+    		}
+    	}
+    	return players;
+    }
+    
     public void trackedByMissile() {
-    	// TODO play missile tracking sound on player clients
+    	// TODO missile sound not working
+    	// TODO instead of a packet use a synched boolean to know when to play the sound for all the players
+    	if (this.level.isClientSide) return;
+    	/*for (Player p : getRidingPlayers()) {
+    		if (p instanceof ServerPlayer player)
+    			PacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), 
+        			new ClientBoundPlaySoundPacket(1));
+    	}*/
     }
     
     public void lockedOnto() {
+    	if (this.level.isClientSide) return;
     	// TODO play radar lock sound on player clients
     }
 }

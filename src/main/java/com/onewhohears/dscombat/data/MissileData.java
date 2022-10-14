@@ -212,7 +212,7 @@ public class MissileData extends BulletData {
 		//System.out.println("INTER  POS = "+pos);
 		missile.targetPos = pos;
 		this.guideToTarget(missile, pos);
-		if (target instanceof EntityAbstractAircraft plane) {
+		if (getGuidanceType() == GuidanceType.IR && target instanceof EntityAbstractAircraft plane) {
 			plane.trackedByMissile();
 		}
 	}

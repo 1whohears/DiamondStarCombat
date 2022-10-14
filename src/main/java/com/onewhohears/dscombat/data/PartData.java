@@ -92,4 +92,6 @@ public abstract class PartData {
 		return "["+getType().name()+"@"+getId()+"]";
 	}
 	
+	public abstract float getWeight();
+	
 }

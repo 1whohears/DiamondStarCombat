@@ -1,0 +1,8 @@
+{
+	"missile_warning": {
+		"subtitle": "sounds.dscombat.missile_warning",
+		"sounds": [
+			"dscombat:missile_warning"
+		]
+	}
+}

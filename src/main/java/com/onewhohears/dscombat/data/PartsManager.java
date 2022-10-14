@@ -91,4 +91,10 @@ public class PartsManager {
 		return readData;
 	}
 	
+	public float getPartsWeight() {
+		float total = 0;
+		for (PartData p : parts) total += p.getWeight();
+		return total;
+	}
+	
 }

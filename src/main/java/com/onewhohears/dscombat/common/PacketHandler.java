@@ -4,6 +4,7 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundMissileMovePacket;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundPingsPacket;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundPlaneDataPacket;
+import com.onewhohears.dscombat.common.network.toclient.ClientBoundPlaySoundPacket;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundWeaponAmmoPacket;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundWeaponIndexPacket;
 import com.onewhohears.dscombat.common.network.toserver.ServerBoundFlightControlPacket;
@@ -77,6 +78,11 @@ public final class PacketHandler {
 			.encoder(ServerBoundRequestPlaneDataPacket::encode)
 			.decoder(ServerBoundRequestPlaneDataPacket::new)
 			.consumerMainThread(ServerBoundRequestPlaneDataPacket::handle)
+			.add();
+		net.messageBuilder(ClientBoundPlaySoundPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ClientBoundPlaySoundPacket::encode)
+			.decoder(ClientBoundPlaySoundPacket::new)
+			.consumerMainThread(ClientBoundPlaySoundPacket::handle)
 			.add();
 	}
 	

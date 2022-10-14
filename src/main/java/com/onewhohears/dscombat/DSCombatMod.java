@@ -9,6 +9,7 @@ import com.onewhohears.dscombat.data.AircraftPresets;
 import com.onewhohears.dscombat.data.ChunkManager;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModEntities;
+import com.onewhohears.dscombat.init.ModSounds;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.level.LevelEvent;
@@ -31,6 +32,7 @@ public class DSCombatMod
         
     	DataSerializers.init(eventBus);
     	ModEntities.register(eventBus);
+    	ModSounds.register(eventBus);
     	eventBus.addListener(this::commonSetup);
     	
     	MinecraftForge.EVENT_BUS.register(new CommonForgeEvents());

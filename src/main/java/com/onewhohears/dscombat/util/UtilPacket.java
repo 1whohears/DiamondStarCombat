@@ -9,8 +9,12 @@ import com.onewhohears.dscombat.data.WeaponData;
 import com.onewhohears.dscombat.data.WeaponSystem;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
+import com.onewhohears.dscombat.init.ModSounds;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
@@ -73,6 +77,14 @@ public class UtilPacket {
 		EntityAbstractAircraft plane = (EntityAbstractAircraft) world.getEntity(id);
 		if (plane != null) {
 			plane.weaponSystem.clientSetSelected(index);
+		}
+	}
+	
+	public static void playSoundPacket(int sound) {
+		Minecraft m = Minecraft.getInstance();
+		if (sound == 1) {
+			m.level.playSound(m.player, new BlockPos(m.player.position()), 
+	    			ModSounds.MISSILE_WARNING.get(), SoundSource.PLAYERS, 1f, 1f);
 		}
 	}
 	

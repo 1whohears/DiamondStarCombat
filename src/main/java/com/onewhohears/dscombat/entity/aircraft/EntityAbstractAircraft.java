@@ -9,7 +9,6 @@ import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.event.ClientForgeEvents;
 import com.onewhohears.dscombat.common.PacketHandler;
-import com.onewhohears.dscombat.common.network.toclient.ClientBoundPlaySoundPacket;
 import com.onewhohears.dscombat.common.network.toserver.ServerBoundRequestPlaneDataPacket;
 import com.onewhohears.dscombat.data.AircraftPresets;
 import com.onewhohears.dscombat.data.PartsManager;
@@ -19,11 +18,13 @@ import com.onewhohears.dscombat.data.WeaponSystem;
 import com.onewhohears.dscombat.entity.aircraft.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.weapon.EntityFlare;
 import com.onewhohears.dscombat.init.DataSerializers;
+import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.MutableComponent;
@@ -34,6 +35,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -47,7 +49,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.network.PacketDistributor;
 
 public abstract class EntityAbstractAircraft extends Entity {
 	
@@ -69,6 +70,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public static final EntityDataAccessor<Float> WEIGHT = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> MAX_THRUST = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> WING_AREA = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Integer> MISSILE_TRACKED_TICKS = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.INT);
 	
 	public static final double collideSpeedThreshHold = 1d;
 	public static final double collideDamageRate = 200d;
@@ -114,6 +116,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		entityData.define(WEIGHT, 0.05f);
 		entityData.define(MAX_THRUST, 0.1f);
 		entityData.define(WING_AREA, 1f);
+		entityData.define(MISSILE_TRACKED_TICKS, 0);
 	}
 	
 	@Override
@@ -254,7 +257,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 				if (my > collideSpeedThreshHold) {
 					this.addHealth((float)(-(my-collideSpeedThreshHold) * collideDamageRate));
 				}
-			} 
+			}
 		}
 		if (getHealth() <= 0) {
 			kill();
@@ -262,6 +265,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		}
 		if (level.isClientSide) clientTick();
 		this.prevMotion = this.getDeltaMovement();
+		sounds();
 	}
 	
 	public void clientTick() {
@@ -879,19 +883,34 @@ public abstract class EntityAbstractAircraft extends Entity {
     	return players;
     }
     
+    public void sounds() {
+    	if (this.level.isClientSide) {
+    		if (this.getMissileTrackedTicks() > 0) this.addMissileTrackedTicks(-1);
+    	} else {
+    		if (this.tickCount % 4 == 0 && this.getMissileTrackedTicks() > 0) for (Player p : getRidingPlayers())
+    			level.playSound(p, new BlockPos(p.position()), 
+	    			ModSounds.MISSILE_WARNING.get(), SoundSource.PLAYERS, 1f, 1f);
+    	}
+    }
+    
     public void trackedByMissile() {
-    	// TODO missile sound not working
-    	// TODO instead of a packet use a synched boolean to know when to play the sound for all the players
-    	if (this.level.isClientSide) return;
-    	/*for (Player p : getRidingPlayers()) {
-    		if (p instanceof ServerPlayer player)
-    			PacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), 
-        			new ClientBoundPlaySoundPacket(1));
-    	}*/
+    	this.setMissileTrackedTicks(10);
     }
     
     public void lockedOnto() {
     	if (this.level.isClientSide) return;
     	// TODO play radar lock sound on player clients
+    }
+    
+    public int getMissileTrackedTicks() {
+    	return entityData.get(MISSILE_TRACKED_TICKS);
+    }
+    
+    public void setMissileTrackedTicks(int ticks) {
+    	entityData.set(MISSILE_TRACKED_TICKS, ticks);
+    }
+    
+    public void addMissileTrackedTicks(int ticks) {
+    	this.setMissileTrackedTicks(ticks+this.getMissileTrackedTicks());
     }
 }

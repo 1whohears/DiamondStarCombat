@@ -358,12 +358,12 @@ public class AircraftPresets {
 
 		@Override
 		public float getIdleHeat() {
-			return 2f;
+			return 4f;
 		}
 
 		@Override
 		public float getEngineHeat() {
-			return 4f;
+			return 8f;
 		}
 
 		@Override

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
+import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.nbt.CompoundTag;
@@ -160,7 +161,7 @@ public class RadarData {
 	}
 	
 	private boolean checkCanSee(Entity radar, Entity target) {
-		return UtilGeometry.canEntitySeeEntity(radar, target);
+		return UtilEntity.canEntitySeeEntity(radar, target);
 	}
 	
 	private AABB getRadarBoundingBox(Entity radar) {

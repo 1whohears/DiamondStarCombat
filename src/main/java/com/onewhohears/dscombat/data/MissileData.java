@@ -8,6 +8,7 @@ import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
 import com.onewhohears.dscombat.entity.weapon.EntityFlare;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
+import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
@@ -385,7 +386,7 @@ public class MissileData extends BulletData {
 	}
 	
 	private boolean checkCanSee(Entity radar, Entity target) {
-		return UtilGeometry.canEntitySeeEntity(radar, target);
+		return UtilEntity.canEntitySeeEntity(radar, target);
 	}
 	
 	private AABB getIrBoundingBox(Entity missile) {

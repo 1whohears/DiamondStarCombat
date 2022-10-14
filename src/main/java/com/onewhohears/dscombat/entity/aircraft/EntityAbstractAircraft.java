@@ -19,6 +19,7 @@ import com.onewhohears.dscombat.entity.aircraft.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.weapon.EntityFlare;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModSounds;
+import com.onewhohears.dscombat.util.UtilMCText;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 
@@ -27,8 +28,6 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -446,8 +445,8 @@ public abstract class EntityAbstractAircraft extends Entity {
 		if (data.isFailedLaunch() && data.getFailedLaunchReason() != null) {
 			System.out.println(data.getFailedLaunchReason());
 			if (isPlayer) {
-				((ServerPlayer)controller).displayClientMessage(MutableComponent.create(
-						new TranslatableContents(data.getFailedLaunchReason())), true);
+				((ServerPlayer)controller).displayClientMessage(
+						UtilMCText.simpleText(data.getFailedLaunchReason()), true);
 			}
 		}
 	}

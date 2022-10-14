@@ -12,7 +12,7 @@ import com.onewhohears.dscombat.data.RadarSystem;
 import com.onewhohears.dscombat.data.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.aircraft.parts.EntitySeat;
-import com.onewhohears.dscombat.util.math.UtilGeometry;
+import com.onewhohears.dscombat.util.UtilEntity;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
@@ -52,7 +52,7 @@ public class PilotOverlay {
 					width/2+11, height-50, 0x00ff00);
 			// distance from ground
 			GuiComponent.drawString(poseStack, m.font, 
-					"H: "+UtilGeometry.getDistFromGround(plane), 
+					"H: "+UtilEntity.getDistFromGround(plane), 
 					width/2+62, height-50, 0x00ff00);
 			// plane health
 			float h = plane.getHealth(), max = plane.getMaxHealth();

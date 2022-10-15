@@ -7,6 +7,8 @@ import com.onewhohears.dscombat.common.PacketHandler;
 import com.onewhohears.dscombat.common.event.CommonForgeEvents;
 import com.onewhohears.dscombat.data.AircraftPresets;
 import com.onewhohears.dscombat.data.ChunkManager;
+import com.onewhohears.dscombat.data.RadarPresets;
+import com.onewhohears.dscombat.data.WeaponPresets;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.init.ModSounds;
@@ -39,6 +41,8 @@ public class DSCombatMod
         MinecraftForge.EVENT_BUS.register(this);
         
         AircraftPresets.setupPresets();
+        WeaponPresets.setupPresets();
+        RadarPresets.setupPresets();
     }
     
     private void commonSetup(final FMLCommonSetupEvent event) {

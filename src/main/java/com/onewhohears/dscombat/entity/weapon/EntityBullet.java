@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.BulletData;
+import com.onewhohears.dscombat.data.WeaponDamageSource;
 import com.onewhohears.dscombat.data.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.aircraft.plane.EntityTestPlane;
@@ -118,10 +119,10 @@ public class EntityBullet extends EntityAbstractWeapon {
 	public void onHitEntity(EntityHitResult result) {
 		super.onHitEntity(result);
 		//System.out.println("BULLET HIT "+result.getEntity());
-		DamageSource source = this.getDamageSource();
+		DamageSource source = this.getDamageSource(false);
 		if (source != null) {
 			result.getEntity().hurt(source, ((BulletData)getWeaponData()).getDamage());
-			checkExplode(source);
+			checkExplode();
 		}
 		this.discard();
 	}
@@ -131,30 +132,33 @@ public class EntityBullet extends EntityAbstractWeapon {
 		return ProjectileUtil.getEntityHitResult(this.level, this, p_36758_, p_36759_, this.getBoundingBox().expandTowards(this.getDeltaMovement()).inflate(1.0D), this::canHitEntity);
 	}
 	
-	protected DamageSource getDamageSource() {
+	protected DamageSource getDamageSource(boolean explosion) {
 		DamageSource source = null;
-		if (getOwner() instanceof Player player) {
-			source = DamageSource.playerAttack(player);
-			source.setExplosion();
-		} else if (getOwner() instanceof LivingEntity living) {
-			source = DamageSource.mobAttack(living);
-			source.setExplosion();
+		/*if (explosion) {
+			if (getOwner() instanceof LivingEntity living) {
+				source = DamageSource.explosion(living);
+			}
+		} else {
+			if (getOwner() instanceof Player player) {
+				source = DamageSource.playerAttack(player);
+			} else if (getOwner() instanceof LivingEntity living) {
+				source = DamageSource.mobAttack(living);
+			}
+		}*/
+		if (getOwner() instanceof LivingEntity living) {
+			source = new WeaponDamageSource(living, this, explosion);
 		}
 		return source;
 	}
 	
 	protected void checkExplode() {
-		this.checkExplode(getDamageSource());
-	}
-	
-	protected void checkExplode(DamageSource source) {
 		//System.out.println("explode");
 		BulletData data = (BulletData) this.getWeaponData();
 		if (data.isExplosive()) {
 			if (!this.level.isClientSide) {
 				Explosion.BlockInteraction interact = Explosion.BlockInteraction.NONE;
 				if (data.isDestroyTerrain()) interact = Explosion.BlockInteraction.BREAK;
-				level.explode(this, source,
+				level.explode(this, getDamageSource(true),
 						null, getX(), getY(), getZ(), 
 						data.getExplosionRadius(), data.isCausesFire(), 
 						interact);
@@ -166,7 +170,7 @@ public class EntityBullet extends EntityAbstractWeapon {
 			}
 		}
 	}
-
+	
 	@Override
 	public ResourceLocation getTexture() {
 		return TEXTURE_BULLET1;

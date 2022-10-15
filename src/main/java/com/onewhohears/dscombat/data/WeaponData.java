@@ -44,6 +44,11 @@ public abstract class WeaponData {
 	}
 	
 	public WeaponData(CompoundTag tag) {
+		String preset = tag.getString("preset");
+		if (!preset.isEmpty()) {
+			WeaponData data = WeaponPresets.getById(preset);
+			if (data != null) tag.merge(data.write());
+		}
 		id = tag.getString("id");
 		double x, y, z;
 		x = tag.getDouble("posx");

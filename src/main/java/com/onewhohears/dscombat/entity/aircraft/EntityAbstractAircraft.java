@@ -896,8 +896,9 @@ public abstract class EntityAbstractAircraft extends Entity {
     }
     
     public void trackedByMissile() {
-    	System.out.println("AIRCRAFT BEING TRACKED");
+    	if (this.level.isClientSide) return;
     	this.setMissileTrackedTicks(10);
+    	//System.out.println("AIRCRAFT BEING TRACKED");
     }
     
     public void lockedOnto() {

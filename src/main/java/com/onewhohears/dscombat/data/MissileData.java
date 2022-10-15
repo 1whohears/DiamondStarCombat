@@ -343,7 +343,7 @@ public class MissileData extends BulletData {
 		}
 		missile.target = max.entity;
 		missile.targetPos = max.entity.position();
-		//System.out.println("TARGET FOUND "+missile.targetPos);
+		//System.out.println("TARGET FOUND "+missile.target);
 	}
 	
 	private boolean basicCheck(EntityMissile missile, Entity ping, boolean checkGround) {

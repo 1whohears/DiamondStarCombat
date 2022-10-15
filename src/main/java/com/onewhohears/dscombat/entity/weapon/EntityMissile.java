@@ -125,8 +125,18 @@ public class EntityMissile extends EntityBullet {
 	
 	@Override
     public boolean hurt(DamageSource source, float amount) {
+		/*System.out.println("MISSILE GOT HURT!");
+		System.out.println("ENTITY "+source.getEntity());
+		System.out.println("DIRECT ENTITY "+source.getDirectEntity());*/
+		if (this.isRemoved()) return false;
+		if (source.getDirectEntity().equals(this)) return false;
 		this.checkExplode();
 		return true;
+	}
+	
+	@Override
+	public boolean ignoreExplosion() {
+		return false;
 	}
 
 }

@@ -44,7 +44,7 @@ public class ChunkManager {
 			return;
 		}*/
 		chunks.add(new LoadedChunk(level, chunkX, chunkZ, uuid));
-		//System.out.println("ADDED LOADED CHUNK "+chunks.get(chunks.size()-1));
+		//System.out.println("ADDED LOADED CHUNK "+chunks.get(chunks.size()-1)+" UUID "+uuid);
 	}
 	
 	public static void unloadAll(MinecraftServer server) {
@@ -77,9 +77,10 @@ public class ChunkManager {
 			this.chunkX = chunkX;
 			this.chunkZ = chunkZ;
 			this.uuid = uuid;
-			boolean success = ForgeChunkManager.forceChunk(level, DSCombatMod.MODID, 
+			//boolean success = 
+			ForgeChunkManager.forceChunk(level, DSCombatMod.MODID, 
 					this.uuid, this.chunkX, this.chunkZ, true, true);
-			System.out.println("LOADED "+success+" "+this);
+			//System.out.println("LOADED "+success+" "+this);
 		}
 		
 		public void tick() {
@@ -92,7 +93,7 @@ public class ChunkManager {
 		public boolean unload() {
 			unload = ForgeChunkManager.forceChunk(level, DSCombatMod.MODID, 
 					this.uuid, this.chunkX, this.chunkZ, false, true);
-			System.out.println("UNLOADED "+unload+" "+this);
+			//System.out.println("UNLOADED "+unload+" "+this);
 			return unload;
 		}
 		

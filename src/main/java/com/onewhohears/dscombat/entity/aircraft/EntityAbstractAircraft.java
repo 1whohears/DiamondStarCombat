@@ -883,14 +883,14 @@ public abstract class EntityAbstractAircraft extends Entity {
     }
     
     public void sounds() {
-    	System.out.println("SOUNDS client side "+level.isClientSide+" tracked ticks "+getMissileTrackedTicks());
-    	if (this.level.isClientSide) {
+    	//System.out.println("SOUNDS client side "+level.isClientSide+" tracked ticks "+getMissileTrackedTicks());
+    	if (!this.level.isClientSide) {
     		if (this.getMissileTrackedTicks() > 0) this.addMissileTrackedTicks(-1);
     	} else {
     		if (this.tickCount % 4 == 0 && this.getMissileTrackedTicks() > 0) for (Player p : getRidingPlayers()) {
     			level.playSound(p, new BlockPos(p.position()), 
 	    			ModSounds.MISSILE_WARNING.get(), SoundSource.PLAYERS, 1f, 1f);
-    			System.out.println("PLAYING WARNING SOUND FOR "+p);
+    			//System.out.println("PLAYING WARNING SOUND FOR "+p);
     		}
     	}
     }

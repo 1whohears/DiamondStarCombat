@@ -2,7 +2,6 @@ package com.onewhohears.dscombat.common.event;
 
 import java.util.List;
 
-import com.onewhohears.dscombat.command.TestWeaponCommand;
 import com.onewhohears.dscombat.data.ChunkManager;
 import com.onewhohears.dscombat.entity.aircraft.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
@@ -12,22 +11,14 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.level.ChunkEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.server.command.ConfigCommand;
 
 public class CommonForgeEvents {
 	
 	public CommonForgeEvents() {}
-	
-	@SubscribeEvent
-	public static void registerCommands(RegisterCommandsEvent event) {
-		new TestWeaponCommand(event.getDispatcher());
-		ConfigCommand.register(event.getDispatcher());
-	}
 	
 	@SubscribeEvent
 	public void playerTickEvent(TickEvent.PlayerTickEvent event) {

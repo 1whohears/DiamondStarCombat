@@ -1,6 +1,5 @@
 package com.onewhohears.dscombat.command;
 
-import java.awt.TextComponent;
 import java.util.Collection;
 
 import com.mojang.brigadier.CommandDispatcher;
@@ -11,6 +10,7 @@ import com.onewhohears.dscombat.data.MissileData.GuidanceType;
 import com.onewhohears.dscombat.data.MissileData.TargetType;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.util.UtilMCText;
+import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -39,10 +39,13 @@ public class TestWeaponCommand {
 					100, 4, TargetType.AIR, GuidanceType.PITBULL, 
 					2, 0.04, 3, 70);
 			EntityMissile missile = new EntityMissile(p.level, p, data);
-			missile.setPos(p.position().add(100, 0, 0));
-			missile.setXRot(-90);
+			missile.setPos(p.position().add(300, 10, 0));
+			Vec3 dp = p.position().subtract(missile.position());
+			missile.setXRot(UtilAngles.getPitch(dp));
+			missile.setYRot(UtilAngles.getYaw(dp));
 			if (p.getRootVehicle() != null) missile.target = p.getRootVehicle();
 			else missile.target = p;
+			// TODO force load chunk for missile
 			p.level.addFreshEntity(missile);
 			++i;
 		}

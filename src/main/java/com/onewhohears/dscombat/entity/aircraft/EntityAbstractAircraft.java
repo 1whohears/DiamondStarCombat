@@ -922,4 +922,9 @@ public abstract class EntityAbstractAircraft extends Entity {
     public AABB getBoundingBox() {
     	// TODO check all other bounding box functions to change hit box
     }*/
+    
+    /*@Override
+    protected AABB makeBoundingBox() {
+    	
+    }*/
 }

@@ -917,4 +917,9 @@ public abstract class EntityAbstractAircraft extends Entity {
     public void addMissileTrackedTicks(int ticks) {
     	this.setMissileTrackedTicks(ticks+this.getMissileTrackedTicks());
     }
+    
+    /*@Override
+    public AABB getBoundingBox() {
+    	// TODO check all other bounding box functions to change hit box
+    }*/
 }

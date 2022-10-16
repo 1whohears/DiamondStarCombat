@@ -28,22 +28,27 @@ public class MissileCommand {
 			.then(Commands.argument("target", EntityArgument.entities())
 			.then(Commands.argument("pos", Vec3Argument.vec3()).executes((context) -> {
 					return testMissile(context, EntityArgument.getEntities(context, "target"), 
-							Vec3Argument.getVec3(context, "pos"), null);})
+							Vec3Argument.getVec3(context, "pos"), null, null);})
 			.then(Commands.argument("nbt", CompoundTagArgument.compoundTag()).executes((context) -> {
 				return testMissile(context, EntityArgument.getEntities(context, "target"), 
 						Vec3Argument.getVec3(context, "pos"), 
-						CompoundTagArgument.getCompoundTag(context, "nbt"));})
-		))));
+						CompoundTagArgument.getCompoundTag(context, "nbt"), null);})
+			.then(Commands.argument("owner", EntityArgument.entity()).executes((context) -> {
+				return testMissile(context, EntityArgument.getEntities(context, "target"), 
+						Vec3Argument.getVec3(context, "pos"), 
+						CompoundTagArgument.getCompoundTag(context, "nbt"), 
+						EntityArgument.getEntity(context, "owner"));})
+			)))));
 	}
 	
-	private int testMissile(CommandContext<CommandSourceStack> context, Collection<? extends Entity> targets, Vec3 pos, CompoundTag tag) throws CommandSyntaxException {
-		Entity source = context.getSource().getEntity();
+	private int testMissile(CommandContext<CommandSourceStack> context, Collection<? extends Entity> targets, Vec3 pos, CompoundTag tag, Entity owner) throws CommandSyntaxException {
+		if (owner == null) owner = context.getSource().getEntity();
 		MissileData data;
 		if (tag == null) data = WeaponPresets.getDefaultTestMissile();
 		else data = new MissileData(tag);
 		int i = 0;
 		for (Entity e : targets) {
-			EntityMissile missile = new EntityMissile(e.level, source, data);
+			EntityMissile missile = new EntityMissile(e.level, owner, data);
 			missile.setPos(pos);
 			Vec3 dp = e.position().subtract(missile.position()).normalize();
 			missile.setXRot(UtilAngles.getPitch(dp));

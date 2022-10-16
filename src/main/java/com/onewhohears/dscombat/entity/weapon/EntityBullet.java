@@ -134,17 +134,6 @@ public class EntityBullet extends EntityAbstractWeapon {
 	
 	protected DamageSource getDamageSource(boolean explosion) {
 		DamageSource source = null;
-		/*if (explosion) {
-			if (getOwner() instanceof LivingEntity living) {
-				source = DamageSource.explosion(living);
-			}
-		} else {
-			if (getOwner() instanceof Player player) {
-				source = DamageSource.playerAttack(player);
-			} else if (getOwner() instanceof LivingEntity living) {
-				source = DamageSource.mobAttack(living);
-			}
-		}*/
 		if (getOwner() instanceof LivingEntity living) {
 			source = new WeaponDamageSource(living, this, explosion);
 		}

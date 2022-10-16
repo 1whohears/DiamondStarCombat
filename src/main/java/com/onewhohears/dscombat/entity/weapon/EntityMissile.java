@@ -54,6 +54,9 @@ public class EntityMissile extends EntityBullet {
 					this.setPos(target.position());
 					this.checkExplode();
 					this.discard();
+					if (target.getType().equals(ModEntities.MISSILE.get())) {
+						target.kill();
+					}
 					//System.out.println("close enough");
 				}
 			}
@@ -131,12 +134,13 @@ public class EntityMissile extends EntityBullet {
 		if (this.isRemoved()) return false;
 		if (source.getDirectEntity().equals(this)) return false;
 		this.checkExplode();
+		this.discard();
 		return true;
 	}
 	
-	@Override
+	/*@Override
 	public boolean ignoreExplosion() {
 		return false;
-	}
+	}*/
 
 }

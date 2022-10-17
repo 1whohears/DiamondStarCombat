@@ -72,6 +72,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public static final EntityDataAccessor<Float> MAX_THRUST = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> WING_AREA = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Integer> MISSILE_TRACKED_TICKS = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> LOCKED_ONTO_TICKS = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.INT);
 	
 	public static final double collideSpeedThreshHold = 1d;
 	public static final double collideDamageRate = 200d;
@@ -118,6 +119,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		entityData.define(MAX_THRUST, 0.1f);
 		entityData.define(WING_AREA, 1f);
 		entityData.define(MISSILE_TRACKED_TICKS, 0);
+		entityData.define(LOCKED_ONTO_TICKS, 0);
 	}
 	
 	@Override
@@ -888,12 +890,15 @@ public abstract class EntityAbstractAircraft extends Entity {
     	//System.out.println("SOUNDS client side "+level.isClientSide+" tracked ticks "+getMissileTrackedTicks());
     	if (!this.level.isClientSide) {
     		if (this.getMissileTrackedTicks() > 0) this.addMissileTrackedTicks(-1);
+    		if (this.getLockedOntoTicks() > 0) this.addLockedOntoTicks(-1);
     	} else {
-    		if (this.tickCount % 4 == 0 && this.getMissileTrackedTicks() > 0) for (Player p : getRidingPlayers()) {
+    		if (this.getMissileTrackedTicks() > 0 && this.tickCount % 4 == 0) for (Player p : getRidingPlayers()) {
     			level.playSound(p, new BlockPos(p.position()), 
 	    			ModSounds.MISSILE_WARNING.get(), SoundSource.PLAYERS, 1f, 1f);
-    			//System.out.println("PLAYING WARNING SOUND FOR "+p);
-    		}
+    		} else if (this.getLockedOntoTicks() > 0 && this.tickCount % 4 == 0) for (Player p : getRidingPlayers()) {
+    			level.playSound(p, new BlockPos(p.position()), 
+    	    		ModSounds.MISSILE_WARNING.get(), SoundSource.PLAYERS, 1f, 1f);
+        	}
     	}
     }
     
@@ -918,6 +923,18 @@ public abstract class EntityAbstractAircraft extends Entity {
     
     public void addMissileTrackedTicks(int ticks) {
     	this.setMissileTrackedTicks(ticks+this.getMissileTrackedTicks());
+    }
+    
+    public int getLockedOntoTicks() {
+    	return entityData.get(LOCKED_ONTO_TICKS);
+    }
+    
+    public void setLockedOntoTicks(int ticks) {
+    	entityData.set(LOCKED_ONTO_TICKS, ticks);
+    }
+    
+    public void addLockedOntoTicks(int ticks) {
+    	this.setLockedOntoTicks(ticks+this.getLockedOntoTicks());
     }
     
     @Override

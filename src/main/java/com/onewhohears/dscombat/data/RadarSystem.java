@@ -65,6 +65,9 @@ public class RadarSystem {
 		if (old != null) for (int i = 0; i < targets.size(); ++i) 
 			if (targets.get(i).id == old.id) {
 				selectedIndex = i;
+				if (getSelectedTarget(radar.level) instanceof EntityAbstractAircraft plane) {
+					plane.lockedOnto();
+				}
 				break;
 			}
 		//System.out.println("chunk source "+radar.getCommandSenderWorld().getChunkSource().getClass().getName());
@@ -105,6 +108,7 @@ public class RadarSystem {
 		}
 	}
 	
+	@Nullable
 	public Entity getSelectedTarget(Level level) {
 		if (selectedIndex == -1) return null;
 		int id = targets.get(selectedIndex).id;

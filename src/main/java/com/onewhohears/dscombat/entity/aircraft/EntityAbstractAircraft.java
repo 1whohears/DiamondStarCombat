@@ -40,11 +40,13 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.network.NetworkHooks;
@@ -918,13 +920,12 @@ public abstract class EntityAbstractAircraft extends Entity {
     	this.setMissileTrackedTicks(ticks+this.getMissileTrackedTicks());
     }
     
-    /*@Override
-    public AABB getBoundingBox() {
-    	// TODO check all other bounding box functions to change hit box
-    }*/
-    
-    /*@Override
+    @Override
     protected AABB makeBoundingBox() {
-    	
-    }*/
+    	double pX = getX(), pY = getY(), pZ = getZ();
+    	EntityDimensions d = getDimensions(getPose());
+    	float f = d.width / 2.0F;
+        float f1 = d.height / 2.0F;
+        return new AABB(pX-(double)f, pY-(double)f1, pZ-(double)f, pX+(double)f, pY+(double)f1, pZ+(double)f);
+    }
 }

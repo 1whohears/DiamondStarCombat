@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.data;
+package com.onewhohears.dscombat.data.weapon;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,8 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.common.PacketHandler;
+import com.onewhohears.dscombat.common.network.toclient.ClientBoundAddWeaponPacket;
+import com.onewhohears.dscombat.common.network.toclient.ClientBoundRemoveWeaponPacket;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundWeaponIndexPacket;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.init.DataSerializers;
@@ -69,13 +71,19 @@ public class WeaponSystem {
 	public boolean addWeapon(WeaponData data, boolean updateClient) {
 		if (get(data.getId()) != null) return false;
 		weapons.add(data);
-		// TODO add weapon packet
+		if (updateClient) {
+			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
+					new ClientBoundAddWeaponPacket(parent.getId(), data));
+		}
 		return true;
 	}
 	
 	public void removeWeapon(String id, boolean updateClient) {
-		weapons.remove(get(id));
-		// TODO remove weapon packet
+		boolean r = weapons.remove(get(id));
+		if (r && updateClient) {
+			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
+					new ClientBoundRemoveWeaponPacket(parent.getId(), id));
+		}
 	}
 	
 	@Nullable
@@ -93,7 +101,7 @@ public class WeaponSystem {
 	public void selectNextWeapon() {
 		++weaponIndex;
 		checkIndex();
-		System.out.println("new weapon index "+weaponIndex);
+		//System.out.println("new weapon index "+weaponIndex);
 		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
 				new ClientBoundWeaponIndexPacket(parent.getId(), weaponIndex));
 	}
@@ -101,7 +109,7 @@ public class WeaponSystem {
 	public void clientSetSelected(int index) {
 		weaponIndex = index;
 		checkIndex();
-		System.out.println("client new weapon index "+weaponIndex);
+		//System.out.println("client new weapon index "+weaponIndex);
 	}
 	
 	private void checkIndex() {

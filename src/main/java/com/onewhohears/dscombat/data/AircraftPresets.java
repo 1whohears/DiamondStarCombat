@@ -3,8 +3,11 @@ package com.onewhohears.dscombat.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.onewhohears.dscombat.data.MissileData.GuidanceType;
-import com.onewhohears.dscombat.data.MissileData.TargetType;
+import com.onewhohears.dscombat.data.weapon.BulletData;
+import com.onewhohears.dscombat.data.weapon.MissileData;
+import com.onewhohears.dscombat.data.weapon.WeaponSystem;
+import com.onewhohears.dscombat.data.weapon.MissileData.GuidanceType;
+import com.onewhohears.dscombat.data.weapon.MissileData.TargetType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.util.UtilParse;
 

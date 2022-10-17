@@ -2,13 +2,12 @@ package com.onewhohears.dscombat.init;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.BombData;
-import com.onewhohears.dscombat.data.BulletData;
-import com.onewhohears.dscombat.data.MissileData;
 import com.onewhohears.dscombat.data.PartData;
-import com.onewhohears.dscombat.data.PartsManager;
 import com.onewhohears.dscombat.data.SeatData;
-import com.onewhohears.dscombat.data.WeaponData;
+import com.onewhohears.dscombat.data.weapon.BombData;
+import com.onewhohears.dscombat.data.weapon.BulletData;
+import com.onewhohears.dscombat.data.weapon.MissileData;
+import com.onewhohears.dscombat.data.weapon.WeaponData;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataSerializer;
@@ -22,7 +21,7 @@ public class DataSerializers {
 	
 	public static final DeferredRegister<EntityDataSerializer<?>> DATA_SERIALIZERS = DeferredRegister.create(ForgeRegistries.Keys.ENTITY_DATA_SERIALIZERS, DSCombatMod.MODID);
 
-    public static void init(IEventBus eventBus) {
+    public static void register(IEventBus eventBus) {
         DATA_SERIALIZERS.register(eventBus);
     }
 
@@ -98,25 +97,6 @@ public class DataSerializers {
     	
     };
     
-    public static final EntityDataSerializer<PartsManager> PARTS_MANAGER = new EntityDataSerializer<>() {
-
-		@Override
-		public void write(FriendlyByteBuf buffer, PartsManager w) {
-			w.write(buffer);
-		}
-
-		@Override
-		public PartsManager read(FriendlyByteBuf buffer) {
-			return new PartsManager(buffer);
-		}
-
-		@Override
-		public PartsManager copy(PartsManager w) {
-			return w;
-		}
-    	
-    };
-    
     public static final EntityDataSerializer<PartData> PART_DATA = new EntityDataSerializer<>() {
 
 		@Override
@@ -152,9 +132,6 @@ public class DataSerializers {
     
     public static final RegistryObject<EntityDataSerializer<?>> SERIALIZER_ENTRY_WEAPONDATA = DATA_SERIALIZERS
     		.register("weapondata", () -> WEAPON_DATA);
-    
-    public static final RegistryObject<EntityDataSerializer<?>> SERIALIZER_ENTRY_PARTSMANAGER = DATA_SERIALIZERS
-    		.register("partsmanager", () -> PARTS_MANAGER);
     
     public static final RegistryObject<EntityDataSerializer<?>> SERIALIZER_ENTRY_PARTDATA = DATA_SERIALIZERS
     		.register("partdata", () -> PART_DATA);

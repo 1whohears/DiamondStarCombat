@@ -4,9 +4,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.common.network.IPacket;
-import com.onewhohears.dscombat.data.PartsManager;
-import com.onewhohears.dscombat.data.RadarSystem;
-import com.onewhohears.dscombat.data.weapon.WeaponSystem;
+import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.UtilPacket;
 
 import net.minecraft.network.FriendlyByteBuf;
@@ -14,36 +13,25 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent.Context;
 
-public class ClientBoundPlaneDataPacket extends IPacket {
+public class ClientBoundAddWeaponPacket extends IPacket {
 	
 	public final int id;
-	public final PartsManager pm;
-	public final WeaponSystem ws;
-	public final RadarSystem rs;
+	public final WeaponData data;
 	
-	public ClientBoundPlaneDataPacket(int id, PartsManager pm, WeaponSystem ws, RadarSystem rs) {
+	public ClientBoundAddWeaponPacket(int id, WeaponData data) {
 		this.id = id;
-		this.pm = pm;
-		this.ws = ws;
-		this.rs = rs;
-		System.out.println("packet constructor "+pm);
+		this.data = data;
 	}
 	
-	public ClientBoundPlaneDataPacket(FriendlyByteBuf buffer) {
+	public ClientBoundAddWeaponPacket(FriendlyByteBuf buffer) {
 		id = buffer.readInt();
-		pm = new PartsManager(buffer);
-		ws = new WeaponSystem(buffer);
-		rs = new RadarSystem(buffer);
-		System.out.println("decoding "+pm);
+		data = DataSerializers.WEAPON_DATA.read(buffer);
 	}
 	
 	@Override
 	public void encode(FriendlyByteBuf buffer) {
 		buffer.writeInt(id);
-		pm.write(buffer);
-		ws.write(buffer);
-		rs.write(buffer);
-		System.out.println("encoding "+pm);
+		data.write(buffer);
 	}
 
 	@Override
@@ -51,7 +39,7 @@ public class ClientBoundPlaneDataPacket extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilPacket.planeDataPacket(id, pm, ws, rs);
+				UtilPacket.addWeaponPacket(id, data);
 				success.set(true);
 			});
 		});

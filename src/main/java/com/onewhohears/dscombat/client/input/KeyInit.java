@@ -25,6 +25,7 @@ public final class KeyInit {
 	public static KeyMapping shootKey;
 	public static KeyMapping weaponSelectKey;
 	public static KeyMapping resetMouseKey;
+	public static KeyMapping planeMenuKey;
 	
 	private static RegisterKeyMappingsEvent event;
 	
@@ -43,6 +44,7 @@ public final class KeyInit {
 		shootKey = registerMouse("shoot_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.MOUSE_BUTTON_RIGHT);
 		weaponSelectKey = registerKey("weapon_select_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_G);
 		resetMouseKey = registerKey("reset_mouse_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_LALT);
+		planeMenuKey = registerKey("plane_menu_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_U);
 	}
 	
 	private static KeyMapping registerKey(String name, String category, int keycode) {

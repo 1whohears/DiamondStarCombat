@@ -9,6 +9,8 @@ import com.onewhohears.dscombat.init.DataSerializers;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.SimpleContainerData;
 
 public class PartsManager {
 	
@@ -65,12 +67,18 @@ public class PartsManager {
 		for (PartData p : parts) if (p.getId().equals(part.getId())) return;
 		parts.add(part);
 		// TODO add part packet to client
+		if (updateClient) {
+			
+		}
 	}
 	
 	public void removePart(String id, boolean updateClient) {
 		for (PartData p : parts) if (p.getId().equals(id)) {
 			parts.remove(p);
 			// TODO remove part packet to client
+			if (updateClient) {
+				
+			}
 			return;
 		}
 	}
@@ -95,6 +103,10 @@ public class PartsManager {
 		float total = 0;
 		for (PartData p : parts) total += p.getWeight();
 		return total;
+	}
+	
+	public ContainerData getContainerData() {
+		return new SimpleContainerData(0);
 	}
 	
 }

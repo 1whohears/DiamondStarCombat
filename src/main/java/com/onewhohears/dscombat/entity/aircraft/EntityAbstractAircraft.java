@@ -13,8 +13,8 @@ import com.onewhohears.dscombat.common.network.toserver.ServerBoundRequestPlaneD
 import com.onewhohears.dscombat.data.AircraftPresets;
 import com.onewhohears.dscombat.data.PartsManager;
 import com.onewhohears.dscombat.data.RadarSystem;
-import com.onewhohears.dscombat.data.WeaponData;
-import com.onewhohears.dscombat.data.WeaponSystem;
+import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.data.weapon.WeaponSystem;
 import com.onewhohears.dscombat.entity.aircraft.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.weapon.EntityFlare;
 import com.onewhohears.dscombat.init.DataSerializers;
@@ -910,7 +910,7 @@ public abstract class EntityAbstractAircraft extends Entity {
     
     public void lockedOnto() {
     	if (this.level.isClientSide) return;
-    	// TODO play radar lock sound on player clients
+    	this.setLockedOntoTicks(10);
     }
     
     public int getMissileTrackedTicks() {

@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.entity.weapon;
 
-import com.onewhohears.dscombat.data.WeaponData;
+import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.init.DataSerializers;
 
 import net.minecraft.client.model.EntityModel;

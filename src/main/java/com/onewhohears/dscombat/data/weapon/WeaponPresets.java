@@ -1,12 +1,12 @@
-package com.onewhohears.dscombat.data;
+package com.onewhohears.dscombat.data.weapon;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.onewhohears.dscombat.data.MissileData.GuidanceType;
-import com.onewhohears.dscombat.data.MissileData.TargetType;
+import com.onewhohears.dscombat.data.weapon.MissileData.GuidanceType;
+import com.onewhohears.dscombat.data.weapon.MissileData.TargetType;
 
 import net.minecraft.world.phys.Vec3;
 

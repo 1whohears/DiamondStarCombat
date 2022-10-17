@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.data;
+package com.onewhohears.dscombat.data.weapon;
 
 import java.nio.charset.Charset;
 

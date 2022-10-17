@@ -4,9 +4,9 @@ import java.util.List;
 
 import com.onewhohears.dscombat.data.PartsManager;
 import com.onewhohears.dscombat.data.RadarData.RadarPing;
+import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.data.weapon.WeaponSystem;
 import com.onewhohears.dscombat.data.RadarSystem;
-import com.onewhohears.dscombat.data.WeaponData;
-import com.onewhohears.dscombat.data.WeaponSystem;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.init.ModSounds;
@@ -84,6 +84,24 @@ public class UtilPacket {
 		if (sound == 1) {
 			m.level.playSound(m.player, new BlockPos(m.player.position()), 
 	    			ModSounds.MISSILE_WARNING.get(), SoundSource.PLAYERS, 1f, 1f);
+		}
+	}
+	
+	public static void addWeaponPacket(int id, WeaponData data) {
+		Minecraft m = Minecraft.getInstance();
+		Level world = m.level;
+		EntityAbstractAircraft plane = (EntityAbstractAircraft) world.getEntity(id);
+		if (plane != null) {
+			plane.weaponSystem.addWeapon(data, false);
+		}
+	}
+	
+	public static void removeWeaponPacket(int id, String wid) {
+		Minecraft m = Minecraft.getInstance();
+		Level world = m.level;
+		EntityAbstractAircraft plane = (EntityAbstractAircraft) world.getEntity(id);
+		if (plane != null) {
+			plane.weaponSystem.removeWeapon(wid, false);
 		}
 	}
 	

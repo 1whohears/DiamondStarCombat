@@ -8,8 +8,9 @@ import com.onewhohears.dscombat.common.event.CommonForgeEvents;
 import com.onewhohears.dscombat.data.AircraftPresets;
 import com.onewhohears.dscombat.data.ChunkManager;
 import com.onewhohears.dscombat.data.RadarPresets;
-import com.onewhohears.dscombat.data.WeaponPresets;
+import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.init.DataSerializers;
+import com.onewhohears.dscombat.init.ModContainers;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.init.ModSounds;
 
@@ -32,9 +33,10 @@ public class DSCombatMod
     public DSCombatMod() {
     	IEventBus eventBus =  FMLJavaModLoadingContext.get().getModEventBus();
         
-    	DataSerializers.init(eventBus);
+    	DataSerializers.register(eventBus);
     	ModEntities.register(eventBus);
     	ModSounds.register(eventBus);
+    	ModContainers.register(eventBus);
     	eventBus.addListener(this::commonSetup);
     	
     	MinecraftForge.EVENT_BUS.register(new CommonForgeEvents());

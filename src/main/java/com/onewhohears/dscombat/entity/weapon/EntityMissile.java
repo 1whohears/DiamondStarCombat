@@ -4,10 +4,10 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundMissileMovePacket;
 import com.onewhohears.dscombat.data.ChunkManager;
-import com.onewhohears.dscombat.data.MissileData;
-import com.onewhohears.dscombat.data.MissileData.GuidanceType;
-import com.onewhohears.dscombat.data.MissileData.TargetType;
-import com.onewhohears.dscombat.data.WeaponData;
+import com.onewhohears.dscombat.data.weapon.MissileData;
+import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.data.weapon.MissileData.GuidanceType;
+import com.onewhohears.dscombat.data.weapon.MissileData.TargetType;
 import com.onewhohears.dscombat.entity.aircraft.plane.EntityTestPlane;
 import com.onewhohears.dscombat.init.ModEntities;
 

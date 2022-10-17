@@ -16,6 +16,7 @@
 	"key.dscombat.shoot_key": "Shoot Key",
 	"key.dscombat.weapon_select_key": "Weapon Cycle",
 	"key.dscombat.reset_mouse_key": "Reset Mouse",
+	"key.dscombat.plane_menu_key": "Plane Menu",
 	
 	"sounds.dscombat.missile_warning": "Missile Warning"
 }

@@ -168,11 +168,17 @@ public class RadarSystem {
 		if (get(r.getId()) != null) return;
 		radars.add(r);
 		// TODO add radar packet
+		if (updateClient) {
+			
+		}
 	}
 	
 	public void removeRadar(RadarData r, boolean updateClient) {
 		radars.remove(r);
 		// TODO remove radar packet
+		if (updateClient) {
+			
+		}
 	}
 	
 	@Override

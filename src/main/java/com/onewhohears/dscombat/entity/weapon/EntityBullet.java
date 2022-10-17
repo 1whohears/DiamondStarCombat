@@ -3,9 +3,9 @@ package com.onewhohears.dscombat.entity.weapon;
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.BulletData;
-import com.onewhohears.dscombat.data.WeaponDamageSource;
-import com.onewhohears.dscombat.data.WeaponData;
+import com.onewhohears.dscombat.data.weapon.BulletData;
+import com.onewhohears.dscombat.data.weapon.WeaponDamageSource;
+import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.aircraft.plane.EntityTestPlane;
 import com.onewhohears.dscombat.init.ModEntities;

@@ -155,7 +155,7 @@ public class RadarData {
 		if (fov == -1) return radar.distanceTo(target) <= range;
 		return UtilGeometry.isPointInsideCone(
 				target.position(), 
-				radar.position(), // TODO change radar position based on pos
+				radar.position().add(pos),
 				radar.getLookAngle(), 
 				fov, range*rangeMod);
 	}
@@ -165,9 +165,9 @@ public class RadarData {
 	}
 	
 	private AABB getRadarBoundingBox(Entity radar) {
-		double x = radar.getX();
-		double y = radar.getY();
-		double z = radar.getZ();
+		double x = radar.getX()+pos.x;
+		double y = radar.getY()+pos.y;
+		double z = radar.getZ()+pos.z;
 		double w = range;
 		return new AABB(x+w, y+w, z+w, x-w, y-w, z-w);
 	}

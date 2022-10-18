@@ -8,6 +8,7 @@ import com.onewhohears.dscombat.data.weapon.WeaponDamageSource;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.init.ModEntities;
+import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
@@ -165,7 +166,16 @@ public class EntityBullet extends EntityAbstractWeapon {
 	@Override
 	public WeaponData getDefaultData() {
 		return new BulletData("default_bullet", Vec3.ZERO, 
-				0, 0, 0, 0, 0, 0);
+				0, 0, 0, false, 0, 0, 0);
+	}
+	
+	@Override
+	protected void motion() {
+		BulletData data = (BulletData)this.getWeaponData();
+		if (data != null) {
+			Vec3 dir = UtilAngles.rotationToVector(this.getYRot(), this.getXRot());
+			this.setDeltaMovement(dir.scale(data.getSpeed()));
+		}
 	}
 
 }

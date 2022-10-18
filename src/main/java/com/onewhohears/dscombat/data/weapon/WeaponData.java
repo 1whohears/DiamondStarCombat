@@ -28,6 +28,7 @@ public abstract class WeaponData {
 	private int fireRate;
 	private int recoilTime;
 	private String failedLaunchReason;
+	private boolean canShootOnGround;
 	
 	public static enum WeaponType {
 		BULLET,
@@ -35,12 +36,13 @@ public abstract class WeaponData {
 		BOMB
 	}
 	
-	protected WeaponData(String id, Vec3 pos, int maxAge, int maxAmmo, int fireRate) {
+	protected WeaponData(String id, Vec3 pos, int maxAge, int maxAmmo, int fireRate, boolean canShootOnGround) {
 		this.id = id;
 		this.pos = pos;
 		this.maxAge = maxAge;
 		this.maxAmmo = maxAmmo;
 		this.fireRate = fireRate;
+		this.setCanShootOnGround(canShootOnGround);
 	}
 	
 	public WeaponData(CompoundTag tag) {
@@ -182,6 +184,14 @@ public abstract class WeaponData {
 		this.fireRate = fireRate;
 	}
 	
+	public boolean isCanShootOnGround() {
+		return canShootOnGround;
+	}
+
+	public void setCanShootOnGround(boolean canShootOnGround) {
+		this.canShootOnGround = canShootOnGround;
+	}
+
 	public boolean isFailedLaunch() {
 		return failedLaunchReason != null;
 	}

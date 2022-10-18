@@ -25,18 +25,18 @@ public class BulletData extends WeaponData {
 	private float explosionRadius;
 	private float innacuracy;
 	
-	public BulletData(String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, 
+	public BulletData(String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, boolean canShootOnGround,
 			float damage, double speed, float innacuracy) {
-		super(id, launchPos, maxAge, maxAmmo, fireRate);
+		super(id, launchPos, maxAge, maxAmmo, fireRate, canShootOnGround);
 		this.damage = damage;
 		this.speed = speed;
 		this.innacuracy = innacuracy;
 	}
 	
-	public BulletData(String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, 
+	public BulletData(String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, boolean canShootOnGround,
 			float damage, double speed, float innacuracy, boolean explosive, boolean destroyTerrain, 
 			boolean causesFire, double explosiveDamage, float explosionRadius) {
-		this(id, launchPos, maxAge, maxAmmo, fireRate, damage, speed, innacuracy);
+		this(id, launchPos, maxAge, maxAmmo, fireRate, canShootOnGround, damage, speed, innacuracy);
 		this.explosive = explosive;
 		this.destroyTerrain = destroyTerrain;
 		this.causesFire = causesFire;
@@ -111,11 +111,15 @@ public class BulletData extends WeaponData {
 			this.setLaunchFail(null);
 			return null;
 		}
+		if (!this.isCanShootOnGround() && vehicle.isOnGround()) {
+			this.setLaunchFail("can't shoot this while on ground");
+			return null;
+		}
 		if (!this.checkAmmo(1, owner)) {
 			this.setLaunchFail("not enough ammo");
 			return null;
 		}
-		System.out.println(this.getId()+" ammo "+this.getCurrentAmmo());
+		//System.out.println(this.getId()+" ammo "+this.getCurrentAmmo());
 		EntityBullet bullet = new EntityBullet(level, owner, this);
 		Random r = new Random();
 		float pitch = UtilAngles.getPitch(direction);
@@ -125,7 +129,7 @@ public class BulletData extends WeaponData {
 		bullet.setXRot(pitch);
 		bullet.setYRot(yaw);
 		direction = UtilAngles.rotationToVector(yaw, pitch);
-		bullet.setDeltaMovement(direction.scale(speed).add(vehicle.getDeltaMovement()));
+		bullet.setDeltaMovement(direction.scale(speed)/*.add(vehicle.getDeltaMovement())*/);
 		bullet.setPos(vehicle.position()
 				.add(UtilAngles.rotateVector(this.getLaunchPos(), vehicleQ))
 				/*.add(bullet.getDeltaMovement())*/);

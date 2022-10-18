@@ -449,7 +449,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		if (data == null) return;
 		data.shoot(level, this, controller, UtilAngles.getRollAxis(getQ()), this.getQ());
 		if (data.isFailedLaunch() && data.getFailedLaunchReason() != null) {
-			System.out.println(data.getFailedLaunchReason());
+			//System.out.println(data.getFailedLaunchReason());
 			if (isPlayer) {
 				((ServerPlayer)controller).displayClientMessage(
 						UtilMCText.simpleText(data.getFailedLaunchReason()), true);
@@ -467,7 +467,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 			}
 		} 
 		if (flares < used) return;
-		EntityFlare flare = new EntityFlare(level, 1.5f, 80, 3);
+		EntityFlare flare = new EntityFlare(level, 4.0f, 100, 3);
 		flare.setPos(this.position().add(0, -0.1, 0));
 		level.addFreshEntity(flare);
 		if (used > 0) this.setFlares(flares-used);

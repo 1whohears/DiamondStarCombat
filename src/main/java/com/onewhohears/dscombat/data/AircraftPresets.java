@@ -95,18 +95,18 @@ public class AircraftPresets {
 			WeaponSystem ws = new WeaponSystem();
 			// bullet 1
 			BulletData test = new BulletData("bullet1", new Vec3(0, 0, 1), 
-					600, 100000, 1, 10, 4, 2);
+					600, 100000, 1, true, 10, 4, 2);
 			ws.addWeapon(test, false);
 			test.setCurrentAmmo(test.getMaxAmmo());
 			// bullet 2
 			BulletData test2 = new BulletData("bullet2", new Vec3(0, 0, 1),
-					600, 100000, 15, 100, 4, 1, 
+					600, 100000, 15, true, 100, 4, 1, 
 					true, true, false, 100d, 4f);
 			test2.setCurrentAmmo(test2.getMaxAmmo());
 			ws.addWeapon(test2, false);
 			// missile 1
 			MissileData test3 = new MissileData("ground_fox3", new Vec3(0, 0, 1),
-					600, 100000, 20, 1000, 2d, 0, 
+					600, 100000, 20, true, 1000, 2d, 0, 
 					true, true, false, 100d, 4f,
 					TargetType.GROUND, GuidanceType.PITBULL,
 					3.0f, 0.02d, 2.0d, -1);
@@ -114,7 +114,7 @@ public class AircraftPresets {
 			ws.addWeapon(test3, false);
 			// missile 2
 			MissileData test4 = new MissileData("air_fox3", new Vec3(0, 0, 1),
-					600, 100000, 80, 1000, 2.0d, 0, 
+					600, 100000, 80, true, 1000, 2.0d, 0, 
 					true, true, false, 100d, 5f,
 					TargetType.AIR, GuidanceType.PITBULL,
 					2.0f, 0.04d, 2.0d, 90);
@@ -122,7 +122,7 @@ public class AircraftPresets {
 			ws.addWeapon(test4, false);
 			// missile 3
 			MissileData test5 = new MissileData("air_fox2", new Vec3(0, 0, 1),
-					600, 100000, 40, 1000, 2.0d, 0, 
+					600, 100000, 40, true, 1000, 2.0d, 0, 
 					true, true, false, 100d, 4f,
 					TargetType.AIR, GuidanceType.IR,
 					4.0f, 0.03d, 3.0d, 90);
@@ -130,7 +130,7 @@ public class AircraftPresets {
 			ws.addWeapon(test5, false);
 			// missile 4
 			MissileData test6 = new MissileData("test_pos", new Vec3(0, 0, 1),
-					600, 100000, 40, 1000, 2.0d, 0, 
+					600, 100000, 40, true, 1000, 2.0d, 0, 
 					true, true, false, 100d, 4f,
 					TargetType.POS, GuidanceType.PITBULL,
 					5.0f, 0.3d, 3.0d, 90);
@@ -258,12 +258,12 @@ public class AircraftPresets {
 			WeaponSystem ws = new WeaponSystem();
 			// bullet 1
 			BulletData bullet = new BulletData("bullet", new Vec3(0, 0, 1), 
-					200, 1000, 1, 10, 6, 0.5f);
+					200, 1000, 1, true, 10, 6, 0.5f);
 			ws.addWeapon(bullet, false);
 			bullet.setCurrentAmmo(bullet.getMaxAmmo());
 			// missile 1
 			MissileData gbu = new MissileData("GBU", new Vec3(0, 0, 1),
-					400, 8, 100, 100, 1.5d, 0, 
+					400, 8, 100, false, 100, 1.5d, 0, 
 					true, true, true, 100d, 4f,
 					TargetType.GROUND, GuidanceType.PITBULL,
 					4.0f, 0.02d, 2.5d, -1);
@@ -271,7 +271,7 @@ public class AircraftPresets {
 			ws.addWeapon(gbu, false);
 			// missile 2
 			MissileData fox3 = new MissileData("fox3", new Vec3(0, 0, 1),
-					600, 4, 80, 100, 4d, 0, 
+					600, 4, 80, false, 100, 4d, 0, 
 					true, true, false, 100d, 4f,
 					TargetType.AIR, GuidanceType.PITBULL,
 					2.0f, 0.05d, 4.0d, 90);
@@ -279,7 +279,7 @@ public class AircraftPresets {
 			ws.addWeapon(fox3, false);
 			// missile 3
 			MissileData fox2 = new MissileData("fox2", new Vec3(0, 0, 1),
-					200, 10, 40, 1000, 2.5d, 0, 
+					200, 10, 40, false,1000, 2.5d, 0, 
 					true, true, false, 100d, 4f,
 					TargetType.AIR, GuidanceType.IR,
 					4.0f, 0.03d, 3.0d, 80);

@@ -71,7 +71,6 @@ public class EntityMissile extends EntityBullet {
 					-move.z * 0.5D + random.nextGaussian() * 0.05D);
 			data.clientGuidance(this);
 		}
-		motion(data);
 		super.tick();
 		//System.out.println("pos = "+position());
 		//System.out.println("vel = "+getDeltaMovement());
@@ -88,7 +87,9 @@ public class EntityMissile extends EntityBullet {
 			ChunkManager.addChunk(this, ncp.x, ncp.z);
 	}
 	
-	public void motion(MissileData data) {
+	@Override
+	protected void motion() {
+		MissileData data = (MissileData)getWeaponData();
 		Vec3 cm = getDeltaMovement();
 		double B = 0.001d;
 		double bleed = B * (Math.abs(getXRot()-xRotO)+Math.abs(getYRot()-yRotO));
@@ -108,7 +109,7 @@ public class EntityMissile extends EntityBullet {
 	@Override
 	public WeaponData getDefaultData() {
 		return new MissileData("default_missile", Vec3.ZERO,
-				0, 0, 0, 0, 0, 0, 
+				0, 0, 0, false, 0, 0, 0, 
 				false, false, false, 0, 0,
 				TargetType.POS, GuidanceType.IR,
 				0, 0, 0, -1);

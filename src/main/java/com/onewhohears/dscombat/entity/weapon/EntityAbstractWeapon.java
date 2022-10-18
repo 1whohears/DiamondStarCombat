@@ -55,6 +55,7 @@ public abstract class EntityAbstractWeapon extends Projectile {
 			//System.out.println("bullet to old");
 			discard();
 		}
+		motion();
 		move(MoverType.SELF, getDeltaMovement());
 	}
 	
@@ -99,6 +100,10 @@ public abstract class EntityAbstractWeapon extends Projectile {
 	@Override
     public boolean hurt(DamageSource source, float amount) {
 		return false;
+	}
+	
+	protected void motion() {
+		
 	}
 
 }

@@ -46,12 +46,12 @@ public class MissileData extends BulletData {
 	private double fuseDist;
 	private float fov;
 	
-	public MissileData(String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, 
+	public MissileData(String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, boolean canShootOnGround,
 			float damage, double speed, float innacuracy, boolean explosive, boolean destroyTerrain, 
 			boolean causesFire, double explosiveDamage, float explosionRadius,
 			TargetType tType, GuidanceType gType, float maxRot, 
 			double acceleration, double fuseDist, float fov) {
-		super(id, launchPos, maxAge, maxAmmo, fireRate, damage, speed, innacuracy, 
+		super(id, launchPos, maxAge, maxAmmo, fireRate, canShootOnGround, damage, speed, innacuracy, 
 				explosive, destroyTerrain, causesFire, explosiveDamage, explosionRadius);
 		this.targetType = tType;
 		this.guidanceType = gType;
@@ -115,11 +115,15 @@ public class MissileData extends BulletData {
 			this.setLaunchFail(null);
 			return null;
 		}
+		if (!this.isCanShootOnGround() && vehicle.isOnGround()) {
+			this.setLaunchFail("can't shoot this while on ground");
+			return null;
+		}
 		if (!this.checkAmmo(1, owner)) {
 			this.setLaunchFail("not enough ammo");
 			return null;
 		}
-		System.out.println(this.getId()+" ammo "+this.getCurrentAmmo());
+		//System.out.println(this.getId()+" ammo "+this.getCurrentAmmo());
 		EntityMissile rocket = new EntityMissile(level, owner, this);
 		rocket.setDeltaMovement(vehicle.getDeltaMovement());
 		rocket.setPos(vehicle.position()
@@ -129,12 +133,8 @@ public class MissileData extends BulletData {
 		if (targetType == TargetType.POS) {
 			rocket.targetPos = Vec3.ZERO.add(0, -60,0);
 		} else if (guidanceType != GuidanceType.IR) {
-			/*if (!(vehicle instanceof EntityAbstractAircraft plane)) {
-				this.setLaunchFail("this rocket must be launched from an aircraft");
-				return null;
-			}*/
 			RadarSystem radar = vehicle.radarSystem;
-			System.out.println(radar);
+			//System.out.println(radar);
 			if (!radar.hasRadar()) {
 				this.setLaunchFail("this rocket requires a radar on this aircraft");
 				return null;
@@ -353,6 +353,7 @@ public class MissileData extends BulletData {
 			//System.out.println("on ground");
 			return false;
 		}
+		// TODO check if in water
 		if (missile.getOwner() != null && ping.equals(missile.getOwner())) {
 			//System.out.println("is owner");
 			return false;

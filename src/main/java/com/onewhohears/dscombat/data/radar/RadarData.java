@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.data;
+package com.onewhohears.dscombat.data.radar;
 
 import java.util.ArrayList;
 import java.util.List;

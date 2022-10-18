@@ -4,8 +4,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.common.network.IPacket;
-import com.onewhohears.dscombat.data.PartsManager;
-import com.onewhohears.dscombat.data.RadarSystem;
+import com.onewhohears.dscombat.data.parts.PartsManager;
+import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.weapon.WeaponSystem;
 import com.onewhohears.dscombat.util.UtilPacket;
 

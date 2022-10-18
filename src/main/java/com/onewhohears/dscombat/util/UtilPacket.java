@@ -2,11 +2,11 @@ package com.onewhohears.dscombat.util;
 
 import java.util.List;
 
-import com.onewhohears.dscombat.data.PartData;
-import com.onewhohears.dscombat.data.PartsManager;
-import com.onewhohears.dscombat.data.RadarData;
-import com.onewhohears.dscombat.data.RadarData.RadarPing;
-import com.onewhohears.dscombat.data.RadarSystem;
+import com.onewhohears.dscombat.data.parts.PartData;
+import com.onewhohears.dscombat.data.parts.PartsManager;
+import com.onewhohears.dscombat.data.radar.RadarData;
+import com.onewhohears.dscombat.data.radar.RadarSystem;
+import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponSystem;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;

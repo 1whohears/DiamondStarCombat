@@ -2,8 +2,8 @@ package com.onewhohears.dscombat.init;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.PartData;
-import com.onewhohears.dscombat.data.SeatData;
+import com.onewhohears.dscombat.data.parts.PartData;
+import com.onewhohears.dscombat.data.parts.SeatData;
 import com.onewhohears.dscombat.data.weapon.BombData;
 import com.onewhohears.dscombat.data.weapon.BulletData;
 import com.onewhohears.dscombat.data.weapon.MissileData;

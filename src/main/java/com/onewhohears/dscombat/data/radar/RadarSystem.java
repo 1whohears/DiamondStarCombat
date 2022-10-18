@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.data;
+package com.onewhohears.dscombat.data.radar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ import com.onewhohears.dscombat.common.network.toclient.ClientBoundAddRadarPacke
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundPingsPacket;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundRemoveRadarPacket;
 import com.onewhohears.dscombat.common.network.toserver.ServerBoundPingSelectPacket;
-import com.onewhohears.dscombat.data.RadarData.RadarPing;
+import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 

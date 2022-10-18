@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.data.RadarSystem;
+import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
 import com.onewhohears.dscombat.entity.weapon.EntityFlare;

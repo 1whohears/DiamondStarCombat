@@ -7,7 +7,7 @@ import com.onewhohears.dscombat.common.event.CommonForgeEvents;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.data.AircraftPresets;
 import com.onewhohears.dscombat.data.ChunkManager;
-import com.onewhohears.dscombat.data.RadarPresets;
+import com.onewhohears.dscombat.data.radar.RadarPresets;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModContainers;

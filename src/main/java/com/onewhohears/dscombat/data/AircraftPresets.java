@@ -3,6 +3,10 @@ package com.onewhohears.dscombat.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.onewhohears.dscombat.data.parts.PartsManager;
+import com.onewhohears.dscombat.data.parts.SeatData;
+import com.onewhohears.dscombat.data.radar.RadarData;
+import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.weapon.BulletData;
 import com.onewhohears.dscombat.data.weapon.MissileData;
 import com.onewhohears.dscombat.data.weapon.WeaponSystem;

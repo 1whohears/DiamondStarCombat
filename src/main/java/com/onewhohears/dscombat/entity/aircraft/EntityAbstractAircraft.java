@@ -910,9 +910,9 @@ public abstract class EntityAbstractAircraft extends Entity {
     		if (this.getMissileTrackedTicks() > 0 && this.tickCount % 4 == 0) for (Player p : getRidingPlayers()) {
     			level.playSound(p, new BlockPos(p.position()), 
 	    			ModSounds.MISSILE_WARNING.get(), SoundSource.PLAYERS, 1f, 1f);
-    		} else if (this.getLockedOntoTicks() > 0 && this.tickCount % 4 == 0) for (Player p : getRidingPlayers()) {
+    		} else if (this.getLockedOntoTicks() > 0 && this.tickCount % 8 == 0) for (Player p : getRidingPlayers()) {
     			level.playSound(p, new BlockPos(p.position()), 
-    	    		ModSounds.MISSILE_WARNING.get(), SoundSource.PLAYERS, 1f, 1f);
+    	    		ModSounds.GETTING_LOCKED.get(), SoundSource.PLAYERS, 1f, 1f);
         	}
     	}
     }

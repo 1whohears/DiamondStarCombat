@@ -14,6 +14,7 @@ public class ModSounds {
 	public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, DSCombatMod.MODID);
 	
 	public static final RegistryObject<SoundEvent> MISSILE_WARNING = registerSoundEvent("missile_warning");
+	public static final RegistryObject<SoundEvent> GETTING_LOCKED = registerSoundEvent("getting_locked");
 	
 	public static void register(IEventBus eventBus) {
 		SOUND_EVENTS.register(eventBus);

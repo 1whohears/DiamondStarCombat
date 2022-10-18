@@ -30,6 +30,7 @@ public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContaine
 		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
 		RenderSystem.setShaderTexture(0, TEXTURE);
 		blit(stack, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
+		// TODO create plane menu screen
 	}
 
 	@Override

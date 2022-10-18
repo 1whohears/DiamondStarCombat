@@ -22,7 +22,7 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
 	// client constructor
 	public AircraftMenuContainer(int id, Inventory playerInv) {
 		super(ModContainers.PLANE_MENU.get(), id);
-		
+		// TODO create plane menu container
 	}
 
 	@Override

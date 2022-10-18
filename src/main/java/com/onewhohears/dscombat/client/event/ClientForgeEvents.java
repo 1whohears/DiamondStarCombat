@@ -262,6 +262,14 @@ public final class ClientForgeEvents {
 			int selected = radar.getClientSelectedPingIndex();
 			if (pings == null) return;
 			//System.out.println("RADAR PINGS");
+			RenderSystem.depthMask(false);
+			RenderSystem.disableCull();
+			RenderSystem.enableBlend();
+			RenderSystem.defaultBlendFunc();
+			RenderSystem.disableTexture();
+			GL11.glEnable(GL11.GL_LINE_SMOOTH);
+			GL11.glEnable(GL11.GL_DEPTH_TEST);
+			// TODO lines are not visible beyond around 500 blocks
 			for (int i = 0; i < pings.size(); ++i) {
 				RadarPing p = pings.get(i);
 				//System.out.println(i+" "+p);
@@ -275,19 +283,11 @@ public final class ClientForgeEvents {
 				if (w2 < 1) w2 = 1;
 				double w = w2/2;
 				
-				RenderSystem.depthMask(false);
-				RenderSystem.disableCull();
-				RenderSystem.enableBlend();
-				RenderSystem.defaultBlendFunc();
-				RenderSystem.disableTexture();
-				GL11.glEnable(GL11.GL_LINE_SMOOTH);
-				GL11.glEnable(GL11.GL_DEPTH_TEST);
-				
 				var tesselator = Tesselator.getInstance();
 				var buffer = tesselator.getBuilder();
 				if (pingBuffer != null) pingBuffer.close();
 				pingBuffer = new VertexBuffer();
-				buffer.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
+				buffer.begin(VertexFormat.Mode.LINES, DefaultVertexFormat.POSITION_COLOR);
 				
 				buffer.vertex(x-w, y, z-w).color(colorR, colorG, colorB, colorA).endVertex();
 				buffer.vertex(x+w, y, z-w).color(colorR, colorG, colorB, colorA).endVertex();
@@ -337,12 +337,11 @@ public final class ClientForgeEvents {
 				poseStack.popPose();
 				
 				VertexBuffer.unbind();
-				
-				RenderSystem.depthMask(true);
-				RenderSystem.disableBlend();
-				RenderSystem.enableCull();
-				RenderSystem.enableTexture();
 			}
+			RenderSystem.depthMask(true);
+			RenderSystem.disableBlend();
+			RenderSystem.enableCull();
+			RenderSystem.enableTexture();
 		}
 	}
 	

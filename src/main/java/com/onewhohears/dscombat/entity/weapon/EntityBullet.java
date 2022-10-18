@@ -7,10 +7,8 @@ import com.onewhohears.dscombat.data.weapon.BulletData;
 import com.onewhohears.dscombat.data.weapon.WeaponDamageSource;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
-import com.onewhohears.dscombat.entity.aircraft.plane.EntityTestPlane;
 import com.onewhohears.dscombat.init.ModEntities;
 
-import net.minecraft.client.model.EntityModel;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
@@ -30,7 +28,6 @@ import net.minecraft.world.phys.Vec3;
 public class EntityBullet extends EntityAbstractWeapon {
 	
 	private static final ResourceLocation TEXTURE_BULLET1 = new ResourceLocation(DSCombatMod.MODID, "textures/entities/bullet1.png");
-	public static EntityModel<EntityTestPlane> MODEL_BULLET1 = null;
 	
 	public EntityBullet(EntityType<? extends EntityBullet> type, Level level) {
 		super(type, level);
@@ -163,11 +160,6 @@ public class EntityBullet extends EntityAbstractWeapon {
 	@Override
 	public ResourceLocation getTexture() {
 		return TEXTURE_BULLET1;
-	}
-	
-	@Override
-	public EntityModel<?> getModel() {
-		return MODEL_BULLET1;
 	}
 
 	@Override

@@ -18,5 +18,11 @@
 	"key.dscombat.reset_mouse_key": "Reset Mouse",
 	"key.dscombat.plane_menu_key": "Plane Menu",
 	
-	"sounds.dscombat.missile_warning": "Missile Warning"
+	"sounds.dscombat.missile_warning": "Missile Warning",
+	
+	"itemGroup.parts": "DSCombat Parts",
+	"itemGroup.aircraft": "DSCombat Aircraft",
+	
+	"item.dscombat.seat": "Seat",
+	"item.dscombat.test_plane": "Test Plane"
 }

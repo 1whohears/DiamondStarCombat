@@ -1,17 +1,17 @@
-package com.onewhohears.dscombat.entity.aircraft.plane;
+package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public abstract class EntityAbstractPlane extends EntityAbstractAircraft {
-
-	public EntityAbstractPlane(EntityType<? extends EntityAbstractAircraft> entity, Level level) {
-		super(entity, level);
+public class EntityPlane extends EntityAbstractAircraft {
+	
+	public EntityPlane(EntityType<? extends EntityPlane> entity, Level level, ResourceLocation texture) {
+		super(entity, level, texture);
 	}
 	
 	@Override

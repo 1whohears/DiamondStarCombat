@@ -1,17 +1,15 @@
 package com.onewhohears.dscombat.entity.weapon;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.common.PacketHandler;
+import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundMissileMovePacket;
 import com.onewhohears.dscombat.data.ChunkManager;
 import com.onewhohears.dscombat.data.weapon.MissileData;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.MissileData.GuidanceType;
 import com.onewhohears.dscombat.data.weapon.MissileData.TargetType;
-import com.onewhohears.dscombat.entity.aircraft.plane.EntityTestPlane;
+import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.init.ModEntities;
 
-import net.minecraft.client.model.EntityModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
@@ -26,7 +24,6 @@ import net.minecraftforge.network.PacketDistributor;
 public class EntityMissile extends EntityBullet {
 	
 	private static final ResourceLocation TEXTURE_MISSILE1 = new ResourceLocation(DSCombatMod.MODID, "textures/entities/missile1.png");
-	public static EntityModel<EntityTestPlane> MODEL_MISSILE1 = null;
 	
 	public Entity parent;
 	public Entity target;
@@ -106,11 +103,6 @@ public class EntityMissile extends EntityBullet {
 	@Override
 	public ResourceLocation getTexture() {
 		return TEXTURE_MISSILE1;
-	}
-	
-	@Override
-	public EntityModel<?> getModel() {
-		return MODEL_MISSILE1;
 	}
 	
 	@Override

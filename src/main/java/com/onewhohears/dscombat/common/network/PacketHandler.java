@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.common;
+package com.onewhohears.dscombat.common.network;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundMissileMovePacket;

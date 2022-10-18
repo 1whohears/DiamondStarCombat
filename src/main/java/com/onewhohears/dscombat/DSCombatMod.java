@@ -3,8 +3,8 @@ package com.onewhohears.dscombat;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
-import com.onewhohears.dscombat.common.PacketHandler;
 import com.onewhohears.dscombat.common.event.CommonForgeEvents;
+import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.data.AircraftPresets;
 import com.onewhohears.dscombat.data.ChunkManager;
 import com.onewhohears.dscombat.data.RadarPresets;
@@ -12,6 +12,7 @@ import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModContainers;
 import com.onewhohears.dscombat.init.ModEntities;
+import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModSounds;
 
 import net.minecraftforge.common.MinecraftForge;
@@ -37,6 +38,7 @@ public class DSCombatMod
     	ModEntities.register(eventBus);
     	ModSounds.register(eventBus);
     	ModContainers.register(eventBus);
+    	ModItems.register(eventBus);
     	eventBus.addListener(this::commonSetup);
     	
     	MinecraftForge.EVENT_BUS.register(new CommonForgeEvents());

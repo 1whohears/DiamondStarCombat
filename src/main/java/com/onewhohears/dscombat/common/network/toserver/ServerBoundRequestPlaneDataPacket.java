@@ -3,8 +3,8 @@ package com.onewhohears.dscombat.common.network.toserver;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
-import com.onewhohears.dscombat.common.PacketHandler;
 import com.onewhohears.dscombat.common.network.IPacket;
+import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundPlaneDataPacket;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 

@@ -5,7 +5,7 @@ import java.nio.charset.Charset;
 import javax.annotation.Nullable;
 
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.common.PacketHandler;
+import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundWeaponAmmoPacket;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;

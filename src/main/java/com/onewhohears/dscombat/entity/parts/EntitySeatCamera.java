@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.entity.aircraft.parts;
+package com.onewhohears.dscombat.entity.parts;
 
 import com.onewhohears.dscombat.init.ModEntities;
 

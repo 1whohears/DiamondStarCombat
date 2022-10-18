@@ -3,7 +3,6 @@ package com.onewhohears.dscombat.entity.weapon;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.init.DataSerializers;
 
-import net.minecraft.client.model.EntityModel;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -89,8 +88,6 @@ public abstract class EntityAbstractWeapon extends Projectile {
 	}
 	
 	public abstract ResourceLocation getTexture();
-	
-	public abstract EntityModel<?> getModel();
 	
 	public abstract WeaponData getDefaultData();
 	

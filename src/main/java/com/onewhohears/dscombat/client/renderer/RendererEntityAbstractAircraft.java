@@ -3,9 +3,7 @@ package com.onewhohears.dscombat.client.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.client.renderer.model.EntityModelTestPlane;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
-import com.onewhohears.dscombat.entity.aircraft.plane.EntityTestPlane;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.client.model.EntityModel;
@@ -17,18 +15,16 @@ import net.minecraft.resources.ResourceLocation;
 
 public class RendererEntityAbstractAircraft<T extends EntityAbstractAircraft> extends EntityRenderer<T> {
 	
-	protected EntityModel<?> model;
+	protected final EntityModel<?> model;
 	
-	public RendererEntityAbstractAircraft(Context context) {
+	public RendererEntityAbstractAircraft(Context context, EntityModel<T> model) {
 		super(context);
 		this.shadowRadius = 0.8f;
-		this.model = null;
-		EntityTestPlane.MODEL = new EntityModelTestPlane<>(context.bakeLayer(EntityModelTestPlane.LAYER_LOCATION));
+		this.model = model;
 	}
 	
 	@Override
 	public void render(T entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
-		this.model = entity.getModel();
 		//System.out.println("RENDER "+entity);
 		Quaternion q = UtilAngles.lerpQ(partialTicks, entity.getPrevQ(), entity.getQ()); // TODO shakes at start and end of movement
 		//Quaternion q = UtilAngles.lerpQ(partialTicks, entity.getPrevQ(), entity.getClientQ());

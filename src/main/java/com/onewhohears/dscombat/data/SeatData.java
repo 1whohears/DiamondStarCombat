@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.data;
 import java.util.List;
 
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
-import com.onewhohears.dscombat.entity.aircraft.parts.EntitySeat;
+import com.onewhohears.dscombat.entity.parts.EntitySeat;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;

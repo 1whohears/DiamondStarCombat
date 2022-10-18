@@ -11,7 +11,7 @@ import com.onewhohears.dscombat.data.RadarData.RadarPing;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.RadarSystem;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
-import com.onewhohears.dscombat.entity.aircraft.parts.EntitySeat;
+import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.util.UtilEntity;
 
 import net.minecraft.client.Minecraft;

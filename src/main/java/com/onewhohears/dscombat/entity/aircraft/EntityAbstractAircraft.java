@@ -8,14 +8,14 @@ import javax.annotation.Nullable;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.event.ClientForgeEvents;
-import com.onewhohears.dscombat.common.PacketHandler;
+import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ServerBoundRequestPlaneDataPacket;
 import com.onewhohears.dscombat.data.AircraftPresets;
 import com.onewhohears.dscombat.data.PartsManager;
 import com.onewhohears.dscombat.data.RadarSystem;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponSystem;
-import com.onewhohears.dscombat.entity.aircraft.parts.EntitySeat;
+import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.weapon.EntityFlare;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModSounds;
@@ -24,7 +24,6 @@ import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.EntityModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -89,12 +88,15 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public float prevXRot, prevYRot, zRot, prevZRot;
 	public Vec3 prevMotion = Vec3.ZERO;
 	
+	protected final ResourceLocation TEXTURE;
+	
 	private int lerpSteps/*, lerpStepsQ*/, newRiderCooldown;
 	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot/*, lerpZRot*/;
 	private boolean prevInputMouseMode, prevInputSelect;
 	
-	public EntityAbstractAircraft(EntityType<? extends EntityAbstractAircraft> entity, Level level) {
+	public EntityAbstractAircraft(EntityType<? extends EntityAbstractAircraft> entity, Level level, ResourceLocation texture) {
 		super(entity, level);
+		this.TEXTURE = texture;
 		this.blocksBuilding = true;
 	}
 	
@@ -137,7 +139,7 @@ public abstract class EntityAbstractAircraft extends Entity {
     }
 	
 	@Override
-	protected void readAdditionalSaveData(CompoundTag compound) {
+	public void readAdditionalSaveData(CompoundTag compound) {
 		String initType = compound.getString("preset");
 		System.out.println("client side = "+level.isClientSide+" init type = "+initType);
 		if (!initType.isEmpty()) {
@@ -565,30 +567,43 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	@Override
 	public InteractionResult interact(Player player, InteractionHand hand) {
+		System.out.println("interact with plane client side "+level.isClientSide);
 		if (player.isSecondaryUseActive()) {
+			System.out.println("secondary use");
 			return InteractionResult.PASS;
 		} else if (player.getRootVehicle() != null && player.getRootVehicle().equals(this)) {
+			System.out.println("root vehicle same");
 			return InteractionResult.PASS;
 		} else if (!this.level.isClientSide) {
-			return rideSeat(player) ? InteractionResult.CONSUME : InteractionResult.PASS;
+			System.out.println("server side");
+			boolean okay = rideSeat(player);
+			System.out.println("rideSeat = "+okay);
+			return okay ? InteractionResult.CONSUME : InteractionResult.PASS;
 		} else if (this.level.isClientSide) {	
+			System.out.println("client side");
 			Minecraft m = Minecraft.getInstance();
 			if (m.player.equals(player)) ClientForgeEvents.centerMouse();
 			return InteractionResult.SUCCESS;
 		} 
+		System.out.println("end");
 		return InteractionResult.SUCCESS;
 	}
 	
 	public boolean rideSeat(Entity e) {
 		List<Entity> list = getPassengers();
 		for (int i = 0; i < list.size(); ++i) {
+			System.out.println("can "+e+" ride "+list.get(i));
 			if (list.get(i) instanceof EntitySeat seat) {
 				if (seat.canAddPassenger(e)) {
-					e.startRiding(seat);
-					this.newRiderCooldown = 10;
-					return true;
+					if (e.startRiding(seat)) {
+						this.newRiderCooldown = 10;
+						return true;
+					}
+					System.out.println("can't start riding");
 				}
+				System.out.println("seat can't add passenger");
 			}
+			System.out.println("not seat");
 		}
 		return false;
 	}
@@ -809,9 +824,9 @@ public abstract class EntityAbstractAircraft extends Entity {
     	entityData.set(STEALTH, stealth);
     }
     
-    public abstract ResourceLocation getTexture();
-    
-    public abstract EntityModel<?> getModel();
+    public ResourceLocation getTexture() {
+    	return TEXTURE;
+    }
     
     @Override
 	public boolean shouldRenderAtSqrDistance(double dist) {

@@ -12,6 +12,8 @@ public final class KeyInit {
 	private KeyInit() {
 	}
 	
+	public static final String FLIGHT_CONTROL = "key.categories.flight_control"; 
+	
 	public static KeyMapping throttleUpKey;
 	public static KeyMapping throttleDownKey;
 	public static KeyMapping pitchUpKey;
@@ -31,20 +33,20 @@ public final class KeyInit {
 	
 	public static void init(RegisterKeyMappingsEvent e) {
 		event = e;
-		throttleUpKey = registerKey("throttle_up_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_W);
-		throttleDownKey = registerKey("throttle_down_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_S);
-		pitchUpKey = registerKey("pitch_up_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_UP);
-		pitchDownKey = registerKey("pitch_down_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_DOWN);
-		rollLeftKey = registerKey("roll_left_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_A);
-		rollRightKey = registerKey("roll_right_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_D);
-		yawLeftKey = registerKey("yaw_left_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_LEFT);
-		yawRightKey = registerKey("yaw_right_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_RIGHT);
-		flareKey = registerKey("flare_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_V);
-		mouseModeKey = registerKey("mouse_mode_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_LCONTROL);
-		shootKey = registerMouse("shoot_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.MOUSE_BUTTON_RIGHT);
-		weaponSelectKey = registerKey("weapon_select_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_G);
-		resetMouseKey = registerKey("reset_mouse_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_LALT);
-		planeMenuKey = registerKey("plane_menu_key", ModKeyCategories.FLIGHT_CONTROL, InputConstants.KEY_U);
+		throttleUpKey = registerKey("throttle_up_key", FLIGHT_CONTROL, InputConstants.KEY_W);
+		throttleDownKey = registerKey("throttle_down_key", FLIGHT_CONTROL, InputConstants.KEY_S);
+		pitchUpKey = registerKey("pitch_up_key", FLIGHT_CONTROL, InputConstants.KEY_UP);
+		pitchDownKey = registerKey("pitch_down_key", FLIGHT_CONTROL, InputConstants.KEY_DOWN);
+		rollLeftKey = registerKey("roll_left_key", FLIGHT_CONTROL, InputConstants.KEY_A);
+		rollRightKey = registerKey("roll_right_key", FLIGHT_CONTROL, InputConstants.KEY_D);
+		yawLeftKey = registerKey("yaw_left_key", FLIGHT_CONTROL, InputConstants.KEY_LEFT);
+		yawRightKey = registerKey("yaw_right_key", FLIGHT_CONTROL, InputConstants.KEY_RIGHT);
+		flareKey = registerKey("flare_key", FLIGHT_CONTROL, InputConstants.KEY_V);
+		mouseModeKey = registerKey("mouse_mode_key", FLIGHT_CONTROL, InputConstants.KEY_LCONTROL);
+		shootKey = registerMouse("shoot_key", FLIGHT_CONTROL, InputConstants.MOUSE_BUTTON_RIGHT);
+		weaponSelectKey = registerKey("weapon_select_key", FLIGHT_CONTROL, InputConstants.KEY_G);
+		resetMouseKey = registerKey("reset_mouse_key", FLIGHT_CONTROL, InputConstants.KEY_LALT);
+		planeMenuKey = registerKey("plane_menu_key", FLIGHT_CONTROL, InputConstants.KEY_U);
 	}
 	
 	private static KeyMapping registerKey(String name, String category, int keycode) {

@@ -232,6 +232,13 @@ public final class ClientForgeEvents {
 		colorA = 255;
 	}
 	
+	private static void setFriendlyColor() {
+		colorR = 0;
+		colorG = 0;
+		colorB = 255;
+		colorA = 255;
+	}
+	
 	private static boolean isPlayerLookingAtPing(Player player, RadarPing ping) {
 		double d = ping.pos.distanceTo(player.position());
 		double y = tan1*d;
@@ -275,6 +282,7 @@ public final class ClientForgeEvents {
 				//System.out.println(i+" "+p);
 				if (i == selected) setSelectedColor();
 				else if (i == hoverIndex) setHoverColor();
+				else if (p.isFriendly) setFriendlyColor();
 				else setDefaultColor();
 				
 				double x = p.pos.x, y = p.pos.y+0.02, z = p.pos.z;

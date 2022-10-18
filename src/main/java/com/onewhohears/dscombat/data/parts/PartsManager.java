@@ -18,7 +18,7 @@ import net.minecraftforge.network.PacketDistributor;
 
 public class PartsManager {
 	
-	private List<PartData> parts = new ArrayList<PartData>();
+	private List<PartData> parts = new ArrayList<PartData>(); // TODO make this PartSlot
 	private boolean readData = true;
 	private EntityAbstractAircraft parent;
 	

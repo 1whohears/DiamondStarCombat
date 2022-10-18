@@ -34,7 +34,7 @@ public class EntityAbstractPart extends Entity {
 		double y = compound.getDouble("relposy");
 		double z = compound.getDouble("relposz");
 		setRelativePos(new Vec3(x, y, z));
-		this.setPartId(compound.getString("seatid"));
+		this.setPartId(compound.getString("id"));
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public class EntityAbstractPart extends Entity {
 		compound.putDouble("relposx", pos.x);
 		compound.putDouble("relposy", pos.y);
 		compound.putDouble("relposz", pos.z);
-		compound.putString("seatid", this.getPartId());
+		compound.putString("id", this.getPartId());
 	}
 
 	@Override

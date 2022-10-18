@@ -29,7 +29,7 @@ public class EntitySeat extends EntityAbstractPart {
 	}
 	
 	public EntitySeat(Level level, String seatId, Vec3 pos) {
-		super(ModEntities.SEAT.get(), level);
+		this(ModEntities.SEAT.get(), level);
 		this.setRelativePos(pos);
 		this.setPartId(seatId);
 	}

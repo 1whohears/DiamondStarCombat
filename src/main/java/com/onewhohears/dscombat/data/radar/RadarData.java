@@ -111,7 +111,8 @@ public class RadarData {
 					EntityAbstractAircraft.class, getRadarBoundingBox(radar));
 			for (int i = 0; i < list.size(); ++i) {
 				if (!basicCheck(radar, list.get(i), list.get(i).getStealth())) continue;
-				RadarPing p = new RadarPing(list.get(i));
+				// TODO check if friendly
+				RadarPing p = new RadarPing(list.get(i), false);
 				targets.add(p);
 				pings.add(p);
 				list.get(i).lockedOnto();
@@ -123,7 +124,8 @@ public class RadarData {
 			for (int i = 0; i < list.size(); ++i) {
 				if (list.get(i).getRootVehicle() instanceof EntityAbstractAircraft) continue;
 				if (!basicCheck(radar, list.get(i), 1)) continue;
-				RadarPing p = new RadarPing(list.get(i));
+				// TODO check if friendly
+				RadarPing p = new RadarPing(list.get(i), false);
 				targets.add(p);
 				pings.add(p);
 			}
@@ -134,7 +136,8 @@ public class RadarData {
 			for (int i = 0; i < list.size(); ++i) {
 				if (list.get(i).getRootVehicle() instanceof EntityAbstractAircraft) continue;
 				if (!basicCheck(radar, list.get(i), 1)) continue;
-				RadarPing p = new RadarPing(list.get(i));
+				// TODO check if friendly
+				RadarPing p = new RadarPing(list.get(i), false);
 				targets.add(p);
 				pings.add(p);
 			}
@@ -248,10 +251,12 @@ public class RadarData {
 		
 		public final int id;
 		public final Vec3 pos;
+		public final boolean isFriendly;
 		
-		public RadarPing(Entity ping) {
+		public RadarPing(Entity ping, boolean isFriendly) {
 			id = ping.getId();
 			pos = ping.position();
+			this.isFriendly = isFriendly;
 		}
 		
 		public RadarPing(FriendlyByteBuf buffer) {
@@ -261,6 +266,7 @@ public class RadarData {
 			y = buffer.readDouble();
 			z = buffer.readDouble();
 			pos = new Vec3(x, y, z);
+			isFriendly = buffer.readBoolean();
 		}
 		
 		public void write(FriendlyByteBuf buffer) {
@@ -268,6 +274,7 @@ public class RadarData {
 			buffer.writeDouble(pos.x);
 			buffer.writeDouble(pos.y);
 			buffer.writeDouble(pos.z);
+			buffer.writeBoolean(isFriendly);
 		}
 		
 		@Override

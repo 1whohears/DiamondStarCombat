@@ -1,17 +1,17 @@
 package com.onewhohears.dscombat.data.parts;
 
-import java.nio.charset.Charset;
-
+import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 
 public abstract class PartData {
 	
-	private String id;
-	private Vec3 pos;
+	private final String id;
+	private final String itemId;
 	private EntityAbstractAircraft parent;
 	
 	public static enum PartType {
@@ -19,48 +19,44 @@ public abstract class PartData {
 		TURRENT
 	}
 	
-	protected PartData(String id, Vec3 pos) {
+	protected PartData(String id, String itemId) {
 		this.id = id;
-		this.pos = pos;
+		this.itemId = itemId;
 	}
 	
 	public PartData(CompoundTag tag) {
 		id = tag.getString("id");
-		double x, y, z;
+		itemId = tag.getString("itemId");
+		/*double x, y, z;
 		x = tag.getDouble("posx");
 		y = tag.getDouble("posy");
 		z = tag.getDouble("posz");
-		pos = new Vec3(x, y, z);
+		pos = new Vec3(x, y, z);*/
 	}
 	
 	public CompoundTag write() {
 		CompoundTag tag = new CompoundTag();
 		tag.putInt("type", this.getType().ordinal());
 		tag.putString("id", getId());
-		tag.putDouble("posx", getRelativePos().x);
+		tag.putString("itemId", itemId);
+		/*tag.putDouble("posx", getRelativePos().x);
 		tag.putDouble("posy", getRelativePos().y);
-		tag.putDouble("posz", getRelativePos().z);
+		tag.putDouble("posz", getRelativePos().z);*/
 		return tag;
 	}
 	
 	public PartData(FriendlyByteBuf buffer) {
 		// type int is read in DataSerializers
-		int idLength = buffer.readInt();
-		id = buffer.readCharSequence(idLength, Charset.defaultCharset()).toString();
-		double x, y, z;
-		x = buffer.readDouble();
-		y = buffer.readDouble();
-		z = buffer.readDouble();
-		pos = new Vec3(x, y, z);
+		id = buffer.readUtf();
+		itemId = buffer.readUtf();
+		//pos = DataSerializers.VEC3.read(buffer);
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
 		buffer.writeInt(this.getType().ordinal());
-		buffer.writeInt(getId().length());
-		buffer.writeCharSequence(getId(), Charset.defaultCharset());
-		buffer.writeDouble(getRelativePos().x);
-		buffer.writeDouble(getRelativePos().y);
-		buffer.writeDouble(getRelativePos().z);
+		buffer.writeUtf(id);
+		buffer.writeUtf(itemId);
+		//DataSerializers.VEC3.write(buffer, pos);
 	}
 	
 	public abstract PartType getType();
@@ -69,20 +65,20 @@ public abstract class PartData {
 		return id;
 	}
 	
-	public Vec3 getRelativePos() {
-		return pos;
+	public String getItemId() {
+		return itemId;
 	}
 	
 	public EntityAbstractAircraft getParent() {
 		return parent;
 	}
 	
-	public void setup(EntityAbstractAircraft craft) {
+	public void setup(EntityAbstractAircraft craft, Vec3 pos) {
 		System.out.println("setting up part "+getId()+" client side "+craft.level.isClientSide);
 		parent = craft;
 	}
 	
-	public void clientSetup(EntityAbstractAircraft craft) {
+	public void clientSetup(EntityAbstractAircraft craft, Vec3 pos) {
 		System.out.println("setting up part "+getId()+" client side "+craft.level.isClientSide);
 		parent = craft;
 	}
@@ -93,5 +89,9 @@ public abstract class PartData {
 	}
 	
 	public abstract float getWeight();
+	
+	public abstract SlotType[] getCompatibleSlots();
+	
+	public abstract ItemStack getItemStack();
 	
 }

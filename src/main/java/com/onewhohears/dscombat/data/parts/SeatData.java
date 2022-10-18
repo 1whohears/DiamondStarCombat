@@ -2,18 +2,20 @@ package com.onewhohears.dscombat.data.parts;
 
 import java.util.List;
 
+import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 
 public class SeatData extends PartData {
 
-	public SeatData(String id, Vec3 pos) {
-		super(id, pos);
+	public SeatData(String id) {
+		super(id, "dscombat:seat");
 	}
 
 	public SeatData(CompoundTag tag) {
@@ -30,8 +32,8 @@ public class SeatData extends PartData {
 	}
 
 	@Override
-	public void setup(EntityAbstractAircraft craft) {
-		super.setup(craft);
+	public void setup(EntityAbstractAircraft craft, Vec3 pos) {
+		super.setup(craft, pos);
 		List<Entity> passengers = craft.getPassengers();
 		for (Entity p : passengers) {
 			System.out.println("CHECK SEAT "+p);
@@ -41,9 +43,8 @@ public class SeatData extends PartData {
 				return;
 			} }
 		}
-		EntitySeat seat = new EntitySeat(craft.level, this.getId(), this.getRelativePos());
+		EntitySeat seat = new EntitySeat(craft.level, this.getId(), pos);
 		seat.setPos(craft.position());
-		seat.setRelativePos(this.getRelativePos());
 		seat.startRiding(craft);
 		craft.level.addFreshEntity(seat);
 		System.out.println("ADDED SEAT "+seat);
@@ -52,6 +53,17 @@ public class SeatData extends PartData {
 	@Override
 	public float getWeight() {
 		return 0.01f;
+	}
+
+	@Override
+	public SlotType[] getCompatibleSlots() {
+		return new SlotType[]{SlotType.SEAT};
+	}
+
+	@Override
+	public ItemStack getItemStack() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

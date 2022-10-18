@@ -353,7 +353,9 @@ public class MissileData extends BulletData {
 			//System.out.println("on ground");
 			return false;
 		}
-		// TODO check if in water
+		if (ping.isInWater()) {
+			return false;
+		}
 		if (missile.getOwner() != null && ping.equals(missile.getOwner())) {
 			//System.out.println("is owner");
 			return false;

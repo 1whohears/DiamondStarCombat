@@ -6,7 +6,9 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.common.network.PacketHandler;
+import com.onewhohears.dscombat.common.network.toclient.ClientBoundAddRadarPacket;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundPingsPacket;
+import com.onewhohears.dscombat.common.network.toclient.ClientBoundRemoveRadarPacket;
 import com.onewhohears.dscombat.common.network.toserver.ServerBoundPingSelectPacket;
 import com.onewhohears.dscombat.data.RadarData.RadarPing;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
@@ -21,7 +23,8 @@ import net.minecraftforge.network.PacketDistributor;
 
 public class RadarSystem {
 	
-	List<RadarData> radars = new ArrayList<RadarData>();
+	private List<RadarData> radars = new ArrayList<RadarData>();
+	private EntityAbstractAircraft parent;
 	
 	private List<RadarPing> targets = new ArrayList<RadarPing>();
 	private int selectedIndex = -1;
@@ -57,22 +60,22 @@ public class RadarSystem {
 		for (int i = 0; i < radars.size(); ++i) radars.get(i).write(buffer);
 	}
 	
-	public void tickUpdateTargets(EntityAbstractAircraft radar) {
+	public void tickUpdateTargets() {
 		RadarPing old = null; 
 		if (selectedIndex != -1 && selectedIndex < targets.size()) old = targets.get(selectedIndex);
 		selectedIndex = -1;
-		for (RadarData r : radars) r.tickUpdateTargets(radar, targets);
+		for (RadarData r : radars) r.tickUpdateTargets(parent, targets);
 		if (old != null) for (int i = 0; i < targets.size(); ++i) 
 			if (targets.get(i).id == old.id) {
 				selectedIndex = i;
-				if (getSelectedTarget(radar.level) instanceof EntityAbstractAircraft plane) {
+				if (getSelectedTarget(parent.level) instanceof EntityAbstractAircraft plane) {
 					plane.lockedOnto();
 				}
 				break;
 			}
 		//System.out.println("chunk source "+radar.getCommandSenderWorld().getChunkSource().getClass().getName());
-		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> radar), 
-				new ClientBoundPingsPacket(radar.getId(), targets));
+		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
+				new ClientBoundPingsPacket(parent.getId(), targets));
 		updateRockets();
 	}
 	
@@ -115,14 +118,14 @@ public class RadarSystem {
 		return level.getEntity(id);
 	}
 	
-	public void clientSelectTarget(Entity radar, RadarPing ping) {
+	public void clientSelectTarget(RadarPing ping) {
 		int id = ping.id;
 		clientSelectedIndex = -1;
 		for (int i = 0; i < clientTargets.size(); ++i) 
 			if (clientTargets.get(i).id == id) {
 				clientSelectedIndex = i;
 				PacketHandler.INSTANCE.sendToServer(new ServerBoundPingSelectPacket(
-						radar.getId(), ping));
+						parent.getId(), ping));
 				break;
 			}
 		//System.out.println("new selected index "+clientSelectedIndex);
@@ -167,17 +170,20 @@ public class RadarSystem {
 	public void addRadar(RadarData r, boolean updateClient) {
 		if (get(r.getId()) != null) return;
 		radars.add(r);
-		// TODO add radar packet
 		if (updateClient) {
-			
+			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
+					new ClientBoundAddRadarPacket(parent.getId(), r));
 		}
 	}
 	
-	public void removeRadar(RadarData r, boolean updateClient) {
-		radars.remove(r);
-		// TODO remove radar packet
-		if (updateClient) {
-			
+	public void removeRadar(String id, boolean updateClient) {
+		for (RadarData r : radars) if (r.getId().equals(id)) {
+			radars.remove(r);
+			if (updateClient) {
+				PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
+						new ClientBoundRemoveRadarPacket(parent.getId(), id));
+			}
+			return;
 		}
 	}
 	
@@ -190,6 +196,14 @@ public class RadarSystem {
 	
 	public boolean isReadData() {
 		return readData;
+	}
+	
+	public void setup(EntityAbstractAircraft e) {
+		parent = e;
+	}
+	
+	public void clientSetup(EntityAbstractAircraft e) {
+		parent = e;
 	}
 	
 }

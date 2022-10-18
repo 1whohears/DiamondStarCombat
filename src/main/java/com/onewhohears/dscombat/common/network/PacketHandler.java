@@ -1,10 +1,16 @@
 package com.onewhohears.dscombat.common.network;
 
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.common.network.toclient.ClientBoundAddPartPacket;
+import com.onewhohears.dscombat.common.network.toclient.ClientBoundAddRadarPacket;
+import com.onewhohears.dscombat.common.network.toclient.ClientBoundAddWeaponPacket;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundMissileMovePacket;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundPingsPacket;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundPlaneDataPacket;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundPlaySoundPacket;
+import com.onewhohears.dscombat.common.network.toclient.ClientBoundRemovePartPacket;
+import com.onewhohears.dscombat.common.network.toclient.ClientBoundRemoveRadarPacket;
+import com.onewhohears.dscombat.common.network.toclient.ClientBoundRemoveWeaponPacket;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundWeaponAmmoPacket;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundWeaponIndexPacket;
 import com.onewhohears.dscombat.common.network.toserver.ServerBoundFlightControlPacket;
@@ -83,6 +89,36 @@ public final class PacketHandler {
 			.encoder(ClientBoundPlaySoundPacket::encode)
 			.decoder(ClientBoundPlaySoundPacket::new)
 			.consumerMainThread(ClientBoundPlaySoundPacket::handle)
+			.add();
+		net.messageBuilder(ClientBoundAddWeaponPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ClientBoundAddWeaponPacket::encode)
+			.decoder(ClientBoundAddWeaponPacket::new)
+			.consumerMainThread(ClientBoundAddWeaponPacket::handle)
+			.add();
+		net.messageBuilder(ClientBoundRemoveWeaponPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ClientBoundRemoveWeaponPacket::encode)
+			.decoder(ClientBoundRemoveWeaponPacket::new)
+			.consumerMainThread(ClientBoundRemoveWeaponPacket::handle)
+			.add();
+		net.messageBuilder(ClientBoundAddPartPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ClientBoundAddPartPacket::encode)
+			.decoder(ClientBoundAddPartPacket::new)
+			.consumerMainThread(ClientBoundAddPartPacket::handle)
+			.add();
+		net.messageBuilder(ClientBoundRemovePartPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ClientBoundRemovePartPacket::encode)
+			.decoder(ClientBoundRemovePartPacket::new)
+			.consumerMainThread(ClientBoundRemovePartPacket::handle)
+			.add();		
+		net.messageBuilder(ClientBoundAddRadarPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ClientBoundAddRadarPacket::encode)
+			.decoder(ClientBoundAddRadarPacket::new)
+			.consumerMainThread(ClientBoundAddRadarPacket::handle)
+			.add();
+		net.messageBuilder(ClientBoundRemoveRadarPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ClientBoundRemoveRadarPacket::encode)
+			.decoder(ClientBoundRemoveRadarPacket::new)
+			.consumerMainThread(ClientBoundRemoveRadarPacket::handle)
 			.add();
 	}
 	

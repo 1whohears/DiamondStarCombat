@@ -3,6 +3,9 @@ package com.onewhohears.dscombat.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.onewhohears.dscombat.common.network.PacketHandler;
+import com.onewhohears.dscombat.common.network.toclient.ClientBoundAddPartPacket;
+import com.onewhohears.dscombat.common.network.toclient.ClientBoundRemovePartPacket;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.init.DataSerializers;
 
@@ -11,11 +14,13 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
+import net.minecraftforge.network.PacketDistributor;
 
 public class PartsManager {
 	
 	private List<PartData> parts = new ArrayList<PartData>();
 	private boolean readData = true;
+	private EntityAbstractAircraft parent;
 	
 	public PartsManager() {
 		readData = false;
@@ -54,11 +59,13 @@ public class PartsManager {
 	}
 	
 	public void setupParts(EntityAbstractAircraft craft) {
+		this.parent = craft;
 		System.out.println("setupParts "+this);
 		for (PartData p : parts) p.setup(craft);
 	}
 	
 	public void clientPartsSetup(EntityAbstractAircraft craft) {
+		this.parent = craft;
 		System.out.println("clientPartsSetup "+this);
 		for (PartData p : parts) p.clientSetup(craft);
 	}
@@ -66,18 +73,18 @@ public class PartsManager {
 	public void addPart(PartData part, boolean updateClient) {
 		for (PartData p : parts) if (p.getId().equals(part.getId())) return;
 		parts.add(part);
-		// TODO add part packet to client
 		if (updateClient) {
-			
+			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
+					new ClientBoundAddPartPacket(parent.getId(), part));
 		}
 	}
 	
 	public void removePart(String id, boolean updateClient) {
 		for (PartData p : parts) if (p.getId().equals(id)) {
 			parts.remove(p);
-			// TODO remove part packet to client
 			if (updateClient) {
-				
+				PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
+						new ClientBoundRemovePartPacket(parent.getId(), id));
 			}
 			return;
 		}

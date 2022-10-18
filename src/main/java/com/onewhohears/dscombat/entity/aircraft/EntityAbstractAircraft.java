@@ -430,7 +430,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		if (controller == null) return;
 		boolean isPlayer = controller instanceof ServerPlayer;
 		if (!level.isClientSide) {
-			radarSystem.tickUpdateTargets(this);
+			radarSystem.tickUpdateTargets();
 			if (newRiderCooldown > 0) {
 				--newRiderCooldown;
 				return;
@@ -556,6 +556,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		System.out.println("setting up parts client side = "+level.isClientSide);
 		partsManager.setupParts(this);
 		weaponSystem.setup(this);
+		radarSystem.setup(this);
 		/*PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), 
 				new ClientBoundPlaneDataPacket(this.getId(), partsManager, weaponSystem, radarSystem));*/
 	}

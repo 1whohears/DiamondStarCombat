@@ -4,5 +4,11 @@
 		"sounds": [
 			"dscombat:missile_warning"
 		]
+	},
+	"getting_locked": {
+		"subtitle": "sounds.dscombat.getting_locked",
+		"sounds": [
+			"dscombat:getting_locked"
+		]
 	}
 }

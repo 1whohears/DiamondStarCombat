@@ -137,7 +137,7 @@ public final class ClientForgeEvents {
 				if (isPlayerLookingAtPing(player, p)) {
 					hoverIndex = i;
 					hovering = true;
-					if (m.mouseHandler.isLeftPressed()) radar.clientSelectTarget(plane, p);
+					if (m.mouseHandler.isLeftPressed()) radar.clientSelectTarget(p);
 					break;
 				}
 			}

@@ -2,6 +2,12 @@ package com.onewhohears.dscombat.data.parts;
 
 import javax.annotation.Nullable;
 
+import com.onewhohears.dscombat.data.parts.PartData.PartType;
+import com.onewhohears.dscombat.init.DataSerializers;
+
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+
 public class PartSlot {
 	
 	private final String name;
@@ -11,6 +17,37 @@ public class PartSlot {
 	protected PartSlot(String name, SlotType type) {
 		this.name = name;
 		this.type = type;
+	}
+	
+	public PartSlot(CompoundTag tag) {
+		name = tag.getString("name");
+		type = SlotType.values()[tag.getInt("type")];
+		PartType type = PartType.values()[tag.getInt("type")];
+		switch (type) {
+		case SEAT:
+			data = new SeatData(tag);
+			break;
+		case TURRENT:
+			break;
+		}
+		
+	}
+	
+	public CompoundTag write() {
+		CompoundTag tag = new CompoundTag();
+		
+		return tag;
+	}
+	
+	public PartSlot(FriendlyByteBuf buffer) {
+		name = buffer.readUtf();
+		type = SlotType.values()[buffer.readInt()];
+		boolean notNull = buffer.readBoolean();
+		if (notNull) data = DataSerializers.PART_DATA.read(buffer);
+	}
+	
+	public void write(FriendlyByteBuf buffer) {
+		
 	}
 	
 	public boolean isEmpty() {

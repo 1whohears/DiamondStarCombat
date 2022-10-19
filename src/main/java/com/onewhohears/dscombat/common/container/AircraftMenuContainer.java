@@ -1,9 +1,6 @@
 package com.onewhohears.dscombat.common.container;
 
-import java.util.List;
-
 import com.onewhohears.dscombat.common.container.slot.PartItemSlot;
-import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartsManager;
 import com.onewhohears.dscombat.init.ModContainers;
 
@@ -18,23 +15,20 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
 	
 	private Container playerInv;
 	private Container partsInv;
-	private PartsManager pm;
 	
-	// server constructor
-	public AircraftMenuContainer(int id, Inventory playerInv, PartsManager pm) {
-		this(id, playerInv);
-		this.pm = pm;
+	public AircraftMenuContainer(int id, Inventory playerInv) {
+		this(id, playerInv, new PartsManager());
+		System.out.println("AircraftMenuContainer CLIENT");
 	}
 	
-	// client constructor
-	public AircraftMenuContainer(int id, Inventory playerInv) {
+	public AircraftMenuContainer(int id, Inventory playerInv, PartsManager pm) {
 		super(ModContainers.PLANE_MENU.get(), id);
+		System.out.println("AircraftMenuContainer SERVER");
 		this.playerInv = playerInv;
-		this.partsInv = pm.getContainer();
-		List<PartSlot> slots = pm.getSlots();
+		partsInv = pm.getContainer();
 		// create plane menu container
 		for (int i = 0; i < partsInv.getContainerSize(); ++i) {
-			this.addSlot(new PartItemSlot(partsInv, i, slots.get(i).getUIX(), slots.get(i).getUIY()));
+			this.addSlot(new PartItemSlot(partsInv, i, i*9, 0));
 		}
 		// display player inventory
 		for(int i = 0; i < 3; i++) {

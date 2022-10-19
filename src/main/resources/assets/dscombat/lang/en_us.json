@@ -30,5 +30,7 @@
 	
 	"item.dscombat.seat": "Seat",
 	"item.dscombat.test_plane": "Test Plane",
-	"item.dscombat.javi_plane": "Javi Plane"
+	"item.dscombat.javi_plane": "Javi Plane",
+	
+	"container.dscombat.plane_menu": "Aircraft Menu"
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
+import com.onewhohears.dscombat.init.ModItems;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -67,8 +68,7 @@ public class SeatData extends PartData {
 
 	@Override
 	public ItemStack getItemStack() {
-		// TODO Auto-generated method stub
-		return null;
+		return new ItemStack(ModItems.SEAT.get(), 1, this.write());
 	}
 
 }

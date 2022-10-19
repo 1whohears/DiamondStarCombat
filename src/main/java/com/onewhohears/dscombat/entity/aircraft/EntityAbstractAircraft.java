@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.event.ClientForgeEvents;
+import com.onewhohears.dscombat.common.container.AircraftMenuContainer;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ServerBoundRequestPlaneDataPacket;
 import com.onewhohears.dscombat.data.AircraftPresets;
@@ -27,6 +28,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -37,6 +39,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
@@ -84,6 +87,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	public boolean inputThrottleUp, inputThrottleDown;
 	public boolean inputMouseMode, inputFlare, inputShoot, inputSelect;
+	public boolean inputOpenMenu;
 	public float inputPitch, inputRoll, inputYaw;
 	public float prevXRot, prevYRot, zRot, prevZRot;
 	public Vec3 prevMotion = Vec3.ZERO;
@@ -92,7 +96,6 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	private int lerpSteps/*, lerpStepsQ*/, newRiderCooldown;
 	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot/*, lerpZRot*/;
-	private boolean prevInputMouseMode, prevInputSelect;
 	
 	public EntityAbstractAircraft(EntityType<? extends EntityAbstractAircraft> entity, Level level, ResourceLocation texture) {
 		super(entity, level);
@@ -431,15 +434,17 @@ public abstract class EntityAbstractAircraft extends Entity {
 		boolean isPlayer = controller instanceof ServerPlayer;
 		if (!level.isClientSide) {
 			radarSystem.tickUpdateTargets();
-			if (newRiderCooldown > 0) {
-				--newRiderCooldown;
-				return;
+			if (newRiderCooldown > 0) --newRiderCooldown;
+			else {
+				if (this.inputShoot) shoot(controller, isPlayer);
+				if (this.inputFlare && tickCount % 5 == 0) flare(controller, isPlayer);
 			}
-			if (this.inputShoot) {
-				shoot(controller, isPlayer);
-			}
-			if (this.inputFlare && tickCount % 5 == 0) {
-				flare(controller, isPlayer);
+			if (this.inputOpenMenu && isPlayer) {
+				System.out.println("OPENING MENU "+partsManager);
+				NetworkHooks.openScreen((ServerPlayer) controller, 
+						new SimpleMenuProvider((windowId, playerInv, player) -> 
+								new AircraftMenuContainer(windowId, playerInv, partsManager), 
+						Component.translatable("container.dscombat.plane_menu")));
 			}
 		}
 	}
@@ -510,7 +515,8 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	public void updateControls(boolean throttleUp, boolean throttleDown, 
 			float pitch, float roll, float yaw,
-			boolean mouseMode, boolean flare, boolean shoot, boolean select) {
+			boolean mouseMode, boolean flare, boolean shoot, boolean select,
+			boolean openMenu) {
 		this.inputThrottleUp = throttleUp;
 		this.inputThrottleDown = throttleDown;
 		this.inputPitch = pitch;
@@ -518,14 +524,11 @@ public abstract class EntityAbstractAircraft extends Entity {
 		this.inputYaw = yaw;
 		this.inputFlare = flare;
 		this.inputMouseMode = mouseMode;
-		if (!prevInputMouseMode && inputMouseMode) 
-			setFreeLook(!isFreeLook());
-		prevInputMouseMode = inputMouseMode;
+		if (inputMouseMode) setFreeLook(!isFreeLook());
 		this.inputShoot = shoot;
 		this.inputSelect = select;
-		if (!this.prevInputSelect && this.inputSelect && !this.level.isClientSide) 
-			weaponSystem.selectNextWeapon();
-		this.prevInputSelect = this.inputSelect;
+		if (this.inputSelect && !this.level.isClientSide) weaponSystem.selectNextWeapon();
+		this.inputOpenMenu = openMenu;
 	}
 	
 	public void resetControls() {
@@ -538,6 +541,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		this.inputMouseMode = false;
 		this.inputShoot = false;
 		this.inputSelect = false;
+		this.inputOpenMenu = false;
 		this.setCurrentThrottle(0);
 	}
 	

@@ -77,10 +77,11 @@ public final class ClientForgeEvents {
 		float pitch = 0, roll = 0, yaw = 0;
 		boolean throttleUp = KeyInit.throttleUpKey.isDown();
 		boolean throttleDown = KeyInit.throttleDownKey.isDown();
-		boolean mouseMode = KeyInit.mouseModeKey.isDown();
+		boolean mouseMode = KeyInit.mouseModeKey.consumeClick();
 		boolean flare = KeyInit.flareKey.isDown();
 		boolean shoot = KeyInit.shootKey.isDown();
-		boolean select = KeyInit.weaponSelectKey.isDown();
+		boolean select = KeyInit.weaponSelectKey.consumeClick();
+		boolean openMenu = KeyInit.planeMenuKey.consumeClick();
 		if (plane.isFreeLook()) {
 			boolean pitchUp = KeyInit.pitchUpKey.isDown();
 			boolean pitchDown = KeyInit.pitchDownKey.isDown();
@@ -120,10 +121,10 @@ public final class ClientForgeEvents {
 		PacketHandler.INSTANCE.sendToServer(new ServerBoundFlightControlPacket(
 				throttleUp, throttleDown, 
 				pitch, roll, yaw,
-				mouseMode, flare, shoot, select));
+				mouseMode, flare, shoot, select, openMenu));
 		plane.updateControls(throttleUp, throttleDown,
 				pitch, roll, yaw,
-				mouseMode, flare, shoot, select);
+				mouseMode, flare, shoot, select, openMenu);
 		if (mouseMode && !plane.isFreeLook()) centerMouse();
 		RadarSystem radar = plane.radarSystem;
 		if (radar == null) return;

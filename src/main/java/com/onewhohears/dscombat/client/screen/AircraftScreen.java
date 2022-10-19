@@ -23,7 +23,12 @@ public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContaine
 		this.imageWidth = 64;
 		this.imageHeight = 64;
 	}
-
+	
+	@Override
+	public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+		super.render(poseStack, mouseX, mouseY, partialTicks);
+	}
+	
 	@Override
 	protected void renderBg(PoseStack stack, float pTicks, int mouseX, int mouseY) {
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
@@ -43,6 +48,26 @@ public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContaine
 	protected void init() {
 		super.init();
 		// use to add widgets like buttons and sliders
+	}
+	
+	@Override
+	public void containerTick() {
+		super.containerTick();
+	}
+	
+	@Override
+	public boolean mouseScrolled(double mouseX, double mouseY, double scroll) {
+		return false;
+	}
+	
+	@Override
+	public boolean mouseClicked(double mouseX, double mouseY, int button) {
+		return false;
+	}
+	
+	@Override
+	public boolean mouseReleased(double mouseX, double mouseY, int button) {
+		return false;
 	}
 
 }

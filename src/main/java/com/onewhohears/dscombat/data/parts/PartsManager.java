@@ -14,8 +14,8 @@ import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.inventory.SimpleContainerData;
+import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
 
@@ -65,9 +65,9 @@ public class PartsManager {
 		for (PartSlot p : slots) p.clientSetup(craft);
 	}
 	
-	public boolean addSlot(String slotName, SlotType slotType, Vec3 slotPos) {
-		if (get(slotName) != null) return false;
-		slots.add(new PartSlot(slotName, slotType, slotPos));
+	public boolean addSlot(String slotName, SlotType slotType, Vec3 slotPos, int uix, int uiy) {
+		if (getSlot(slotName) != null) return false;
+		slots.add(new PartSlot(slotName, slotType, slotPos, uix, uiy));
 		return true;
 	}
 	
@@ -95,7 +95,7 @@ public class PartsManager {
 	}
 	
 	@Nullable
-	public PartSlot get(String slotName) {
+	public PartSlot getSlot(String slotName) {
 		for (PartSlot p : slots) if (p.getName().equals(slotName)) return p;
 		return null;
 	}
@@ -117,8 +117,16 @@ public class PartsManager {
 		return total;
 	}
 	
-	public ContainerData getContainerData() {
-		return new SimpleContainerData(0);
+	public Container getContainer() {
+		Container c = new SimpleContainer(slots.size());
+		for (int i = 0; i < slots.size(); ++i) if (slots.get(i).filled()) {
+			c.setItem(i, slots.get(i).getPartData().getItemStack());
+		}
+		return c;
+	}
+	
+	public List<PartSlot> getSlots() {
+		return slots;
 	}
 	
 }

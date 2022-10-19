@@ -29,5 +29,6 @@
 	"itemGroup.aircraft": "DSCombat Aircraft",
 	
 	"item.dscombat.seat": "Seat",
-	"item.dscombat.test_plane": "Test Plane"
+	"item.dscombat.test_plane": "Test Plane",
+	"item.dscombat.javi_plane": "Javi Plane"
 }

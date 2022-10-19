@@ -16,18 +16,23 @@ public class PartSlot {
 	private final String name;
 	private final SlotType type;
 	private final Vec3 pos;
+	private final int uix, uiy;
 	private PartData data;
 	
-	protected PartSlot(String name, SlotType type, Vec3 pos) {
+	protected PartSlot(String name, SlotType type, Vec3 pos, int uix, int uiy) {
 		this.name = name;
 		this.type = type;
 		this.pos = pos;
+		this.uix = uix;
+		this.uiy = uiy;
 	}
 	
 	public PartSlot(CompoundTag tag) {
 		name = tag.getString("name");
 		type = SlotType.values()[tag.getInt("slot_type")];
 		pos = UtilParse.readVec3(tag, "slot_pos");
+		uix = tag.getInt("uix");
+		uiy = tag.getInt("uiy");
 		boolean filled = tag.getBoolean("filled");
 		if (filled) {
 			CompoundTag t = tag.getCompound("data");
@@ -47,6 +52,8 @@ public class PartSlot {
 		tag.putString("name", name);
 		tag.putInt("slot_type",type.ordinal());
 		UtilParse.writeVec3(tag, pos, "slot_pos");
+		tag.putInt("uix", uix);
+		tag.putInt("uiy", uiy);
 		tag.putBoolean("filled", filled());
 		if (filled()) tag.put("data", data.write());
 		return tag;
@@ -56,6 +63,8 @@ public class PartSlot {
 		name = buffer.readUtf();
 		type = SlotType.values()[buffer.readInt()];
 		pos = DataSerializers.VEC3.read(buffer);
+		uix = buffer.readInt();
+		uiy = buffer.readInt();
 		boolean notNull = buffer.readBoolean();
 		if (notNull) data = DataSerializers.PART_DATA.read(buffer);
 	}
@@ -64,6 +73,8 @@ public class PartSlot {
 		buffer.writeUtf(name);
 		buffer.writeInt(type.ordinal());
 		DataSerializers.VEC3.write(buffer, pos);
+		buffer.writeInt(uix);
+		buffer.writeInt(uiy);
 		buffer.writeBoolean(filled());
 		if (filled()) data.write(buffer);
 	}
@@ -119,6 +130,14 @@ public class PartSlot {
 		return type;
 	}
 	
+	public int getUIX() {
+		return uix;
+	}
+	
+	public int getUIY() {
+		return uiy;
+	}
+
 	public static enum SlotType {
 		SEAT,
 		WING,

@@ -61,6 +61,7 @@ public class ChunkManager {
 				chunks.remove(i--);
 			}
 		}
+		// TODO check if any chunks are still loaded and unload them
 	}
 	
 	public static class LoadedChunk {

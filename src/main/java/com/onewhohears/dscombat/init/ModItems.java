@@ -35,6 +35,8 @@ public class ModItems {
 	
 	public static final RegistryObject<Item> SEAT = ITEMS.register("seat", () -> new Item(new Item.Properties().tab(PARTS)));
 	public static final RegistryObject<Item> TEST_PLANE = ITEMS.register("test_plane", 
+			() -> new ItemAircraft(ModEntities.TEST_PLANE.get(), "test_plane"));
+	public static final RegistryObject<Item> JAVI_PLANE = ITEMS.register("javi_plane", 
 			() -> new ItemAircraft(ModEntities.TEST_PLANE.get(), "javi"));
 	
 }

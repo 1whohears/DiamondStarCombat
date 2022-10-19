@@ -295,7 +295,7 @@ public final class ClientForgeEvents {
 				var buffer = tesselator.getBuilder();
 				if (pingBuffer != null) pingBuffer.close();
 				pingBuffer = new VertexBuffer();
-				buffer.begin(VertexFormat.Mode.LINES, DefaultVertexFormat.POSITION_COLOR);
+				buffer.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
 				
 				buffer.vertex(x-w, y, z-w).color(colorR, colorG, colorB, colorA).endVertex();
 				buffer.vertex(x+w, y, z-w).color(colorR, colorG, colorB, colorA).endVertex();

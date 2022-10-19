@@ -30,8 +30,8 @@ public class AircraftPresets {
 	}
 	
 	@Nullable
-	public static CompoundTag getPreset(String id) {
-		for (CompoundTag tag : presets) if (tag.getString("preset").equals(id)) return tag;
+	public static CompoundTag getPreset(String preset) {
+		for (CompoundTag tag : presets) if (tag.getString("preset").equals(preset)) return tag;
 		return null;
 	}
 	
@@ -39,6 +39,15 @@ public class AircraftPresets {
 		System.out.println("CREATING TEST PRESET");
 		CompoundTag tag = JaviPreset();
 		tag.putString("preset", "test_plane");
+		RadarSystem rs = new RadarSystem();
+		RadarData radar2 = new RadarData("radar_all", 1000, -1, 20);
+		radar2.setScanAircraft(true);
+		radar2.setScanPlayers(true);
+		radar2.setScanMobs(true);
+		radar2.setScanAir(true);
+		radar2.setScanGround(true);
+		rs.addRadar(radar2, false);
+		rs.write(tag);
 		return tag;
 	}
 	
@@ -47,9 +56,9 @@ public class AircraftPresets {
 		CompoundTag tag = new CompoundTag();
 		// parts
 		PartsManager pm = new PartsManager();
-		pm.addSlot("pilot_seat", SlotType.SEAT, new Vec3(0, -0.5, 0));
-		pm.addSlot("left_wing_1", SlotType.WING, new Vec3(-1, 0, 0));
-		pm.addSlot("right_wing_1", SlotType.WING, new Vec3(1, 0, 0));
+		pm.addSlot("pilot_seat", SlotType.SEAT, new Vec3(0, -0.5, 0), 0, 0);
+		pm.addSlot("left_wing_1", SlotType.WING, new Vec3(-1, 0, 0), 9, 0);
+		pm.addSlot("right_wing_1", SlotType.WING, new Vec3(1, 0, 0), 18, 0);
 		pm.addPart(new SeatData("pilot_seat"), "pilot_seat", false);
 		pm.write(tag);
 		System.out.println(pm);

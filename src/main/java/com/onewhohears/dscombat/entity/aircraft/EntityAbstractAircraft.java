@@ -141,13 +141,13 @@ public abstract class EntityAbstractAircraft extends Entity {
 	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
 		String initType = compound.getString("preset");
-		System.out.println("client side = "+level.isClientSide+" init type = "+initType);
+		System.out.println("aircraft read data client side = "+level.isClientSide+" init type = "+initType);
 		if (!initType.isEmpty()) {
-			AircraftPresets.setupAircraftByPreset(this, initType);
-			return;
+			CompoundTag tag = AircraftPresets.getPreset(initType);
+			if (tag != null) compound.merge(tag);
 		}
-		// /summon dscombat:test_plane ~ ~ ~ {INIT_TYPE:"test_plane"}
 		partsManager = new PartsManager(compound);
+		System.out.println(partsManager);
 		weaponSystem = new WeaponSystem(compound);
 		radarSystem = new RadarSystem(compound);
 		this.setMaxSpeed(compound.getFloat("max_speed"));
@@ -568,25 +568,25 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	@Override
 	public InteractionResult interact(Player player, InteractionHand hand) {
-		System.out.println("interact with plane client side "+level.isClientSide);
+		//System.out.println("interact with plane client side "+level.isClientSide);
 		if (player.isSecondaryUseActive()) {
-			System.out.println("secondary use");
+			//System.out.println("secondary use");
 			return InteractionResult.PASS;
 		} else if (player.getRootVehicle() != null && player.getRootVehicle().equals(this)) {
-			System.out.println("root vehicle same");
+			//System.out.println("root vehicle same");
 			return InteractionResult.PASS;
 		} else if (!this.level.isClientSide) {
-			System.out.println("server side");
+			//System.out.println("server side");
 			boolean okay = rideSeat(player);
-			System.out.println("rideSeat = "+okay);
+			//System.out.println("rideSeat = "+okay);
 			return okay ? InteractionResult.CONSUME : InteractionResult.PASS;
 		} else if (this.level.isClientSide) {	
-			System.out.println("client side");
+			//System.out.println("client side");
 			Minecraft m = Minecraft.getInstance();
 			if (m.player.equals(player)) ClientForgeEvents.centerMouse();
 			return InteractionResult.SUCCESS;
 		} 
-		System.out.println("end");
+		//System.out.println("end");
 		return InteractionResult.SUCCESS;
 	}
 	

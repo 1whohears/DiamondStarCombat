@@ -9,6 +9,7 @@ import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundWeaponAmmoPacket;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
+import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -42,38 +43,34 @@ public abstract class WeaponData {
 		this.maxAge = maxAge;
 		this.maxAmmo = maxAmmo;
 		this.fireRate = fireRate;
-		this.setCanShootOnGround(canShootOnGround);
+		this.canShootOnGround = canShootOnGround;
 	}
 	
 	public WeaponData(CompoundTag tag) {
 		String preset = tag.getString("preset");
 		if (!preset.isEmpty()) {
-			WeaponData data = WeaponPresets.getById(preset);
-			if (data != null) tag.merge(data.write());
+			CompoundTag data = WeaponPresets.getById(preset);
+			if (data != null) tag.merge(data);
 		}
 		id = tag.getString("id");
-		double x, y, z;
-		x = tag.getDouble("posx");
-		y = tag.getDouble("posy");
-		z = tag.getDouble("posz");
-		pos = new Vec3(x, y, z);
+		pos = UtilParse.readVec3(tag, "pos");
 		maxAge = tag.getInt("maxAge");
 		currentAmmo = tag.getInt("currentAmmo");
 		maxAmmo = tag.getInt("maxAmmo");
 		fireRate = tag.getInt("fireRate");
+		canShootOnGround = tag.getBoolean("canShootOnGround");
 	}
 	
 	public CompoundTag write() {
 		CompoundTag tag = new CompoundTag();
 		tag.putInt("type", this.getType().ordinal());
 		tag.putString("id", getId());
-		tag.putDouble("posx", getLaunchPos().x);
-		tag.putDouble("posy", getLaunchPos().y);
-		tag.putDouble("posz", getLaunchPos().z);
+		UtilParse.writeVec3(tag, pos, "pos");
 		tag.putInt("maxAge", maxAge);
 		tag.putInt("currentAmmo", currentAmmo);
 		tag.putInt("maxAmmo", maxAmmo);
 		tag.putInt("fireRate", fireRate);
+		tag.putBoolean("canShootOnGround", canShootOnGround);
 		return tag;
 	}
 	
@@ -94,6 +91,7 @@ public abstract class WeaponData {
 		currentAmmo = buffer.readInt();
 		maxAmmo = buffer.readInt();
 		fireRate = buffer.readInt();
+		canShootOnGround = buffer.readBoolean();
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
@@ -107,6 +105,7 @@ public abstract class WeaponData {
 		buffer.writeInt(currentAmmo);
 		buffer.writeInt(maxAmmo);
 		buffer.writeInt(fireRate);
+		buffer.writeBoolean(canShootOnGround);
 	}
 	
 	public abstract WeaponType getType();
@@ -184,7 +183,7 @@ public abstract class WeaponData {
 		this.fireRate = fireRate;
 	}
 	
-	public boolean isCanShootOnGround() {
+	public boolean canShootOnGround() {
 		return canShootOnGround;
 	}
 
@@ -218,6 +217,13 @@ public abstract class WeaponData {
 	public boolean equals(Object o) {
 		if (o instanceof WeaponData w) return w.getId().equals(id);
 		return false;
+	}
+	
+	public abstract WeaponData copy();
+	
+	@Override
+	public String toString() {
+		return "["+id+":"+this.getType().toString()+"]";
 	}
 	
 }

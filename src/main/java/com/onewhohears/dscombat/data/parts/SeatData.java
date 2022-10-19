@@ -49,6 +49,11 @@ public class SeatData extends PartData {
 		craft.level.addFreshEntity(seat);
 		System.out.println("ADDED SEAT "+seat);
 	}
+	
+	@Override
+	public void remove(EntityAbstractAircraft craft) {
+		// TODO remove seat
+	}
 
 	@Override
 	public float getWeight() {

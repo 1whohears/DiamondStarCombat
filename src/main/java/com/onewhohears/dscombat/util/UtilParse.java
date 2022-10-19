@@ -5,6 +5,7 @@ import java.util.zip.GZIPInputStream;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtIo;
+import net.minecraft.world.phys.Vec3;
 
 public class UtilParse {
 	
@@ -22,6 +23,20 @@ public class UtilParse {
         	return new CompoundTag();
         }
         return compound;
+	}
+	
+	public static void writeVec3(CompoundTag tag, Vec3 v, String name) {
+		tag.putDouble(name+"x", v.x);
+		tag.putDouble(name+"y", v.y);
+		tag.putDouble(name+"z", v.z);
+	}
+	
+	public static Vec3 readVec3(CompoundTag tag, String name) {
+		double x, y, z;
+		x = tag.getDouble(name+"x");
+		y = tag.getDouble(name+"y");
+		z = tag.getDouble(name+"z");
+		return new Vec3(x, y, z);
 	}
 	
 }

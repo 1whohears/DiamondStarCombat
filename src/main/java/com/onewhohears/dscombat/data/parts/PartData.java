@@ -27,21 +27,13 @@ public abstract class PartData {
 	public PartData(CompoundTag tag) {
 		id = tag.getString("id");
 		itemId = tag.getString("itemId");
-		/*double x, y, z;
-		x = tag.getDouble("posx");
-		y = tag.getDouble("posy");
-		z = tag.getDouble("posz");
-		pos = new Vec3(x, y, z);*/
 	}
 	
 	public CompoundTag write() {
 		CompoundTag tag = new CompoundTag();
 		tag.putInt("type", this.getType().ordinal());
-		tag.putString("id", getId());
+		tag.putString("id", id);
 		tag.putString("itemId", itemId);
-		/*tag.putDouble("posx", getRelativePos().x);
-		tag.putDouble("posy", getRelativePos().y);
-		tag.putDouble("posz", getRelativePos().z);*/
 		return tag;
 	}
 	
@@ -83,9 +75,17 @@ public abstract class PartData {
 		parent = craft;
 	}
 	
+	public void remove(EntityAbstractAircraft craft) {
+		
+	}
+	
+	public void clientRemove(EntityAbstractAircraft craft) {
+		
+	}
+	
 	@Override
 	public String toString() {
-		return "["+getType().name()+"@"+getId()+"]";
+		return "("+getType().name()+"@"+getId()+")";
 	}
 	
 	public abstract float getWeight();

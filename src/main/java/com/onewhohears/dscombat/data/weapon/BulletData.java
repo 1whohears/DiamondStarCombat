@@ -111,7 +111,7 @@ public class BulletData extends WeaponData {
 			this.setLaunchFail(null);
 			return null;
 		}
-		if (!this.isCanShootOnGround() && vehicle.isOnGround()) {
+		if (!this.canShootOnGround() && vehicle.isOnGround()) {
 			this.setLaunchFail("can't shoot this while on ground");
 			return null;
 		}
@@ -169,6 +169,14 @@ public class BulletData extends WeaponData {
 
 	public float getInnacuracy() {
 		return innacuracy;
+	}
+
+	@Override
+	public WeaponData copy() {
+		return new BulletData(getId(), this.getLaunchPos(), this.getMaxAge(), this.getMaxAmmo(), 
+				this.getFireRate(), this.canShootOnGround(), this.getDamage(), this.getSpeed(), 
+				this.getInnacuracy(), this.isExplosive(), this.isDestroyTerrain(), this.isCausesFire(), 
+				this.getExplosiveDamage(), this.getExplosionRadius());
 	}
 
 }

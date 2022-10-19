@@ -3,55 +3,73 @@ package com.onewhohears.dscombat.data.parts;
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
+import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.init.DataSerializers;
+import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.phys.Vec3;
 
 public class PartSlot {
 	
 	private final String name;
 	private final SlotType type;
+	private final Vec3 pos;
 	private PartData data;
 	
-	protected PartSlot(String name, SlotType type) {
+	protected PartSlot(String name, SlotType type, Vec3 pos) {
 		this.name = name;
 		this.type = type;
+		this.pos = pos;
 	}
 	
 	public PartSlot(CompoundTag tag) {
 		name = tag.getString("name");
-		type = SlotType.values()[tag.getInt("type")];
-		PartType type = PartType.values()[tag.getInt("type")];
-		switch (type) {
-		case SEAT:
-			data = new SeatData(tag);
-			break;
-		case TURRENT:
-			break;
+		type = SlotType.values()[tag.getInt("slot_type")];
+		pos = UtilParse.readVec3(tag, "slot_pos");
+		boolean filled = tag.getBoolean("filled");
+		if (filled) {
+			CompoundTag t = tag.getCompound("data");
+			PartType type = PartType.values()[tag.getInt("type")];
+			switch (type) {
+			case SEAT:
+				data = new SeatData(t);
+				break;
+			case TURRENT:
+				break;
+			}
 		}
-		
 	}
 	
 	public CompoundTag write() {
 		CompoundTag tag = new CompoundTag();
-		
+		tag.putString("name", name);
+		tag.putInt("slot_type",type.ordinal());
+		UtilParse.writeVec3(tag, pos, "slot_pos");
+		tag.putBoolean("filled", filled());
+		if (filled()) tag.put("data", data.write());
 		return tag;
 	}
 	
 	public PartSlot(FriendlyByteBuf buffer) {
 		name = buffer.readUtf();
 		type = SlotType.values()[buffer.readInt()];
+		pos = DataSerializers.VEC3.read(buffer);
 		boolean notNull = buffer.readBoolean();
 		if (notNull) data = DataSerializers.PART_DATA.read(buffer);
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
-		
+		buffer.writeUtf(name);
+		buffer.writeInt(type.ordinal());
+		DataSerializers.VEC3.write(buffer, pos);
+		buffer.writeBoolean(filled());
+		if (filled()) data.write(buffer);
 	}
 	
-	public boolean isEmpty() {
-		return data == null;
+	public boolean filled() {
+		return data != null;
 	}
 	
 	@Nullable
@@ -59,10 +77,32 @@ public class PartSlot {
 		return data;
 	}
 	
-	protected boolean setPartData(PartData data) {
+	public void setup(EntityAbstractAircraft plane) {
+		if (filled()) data.setup(plane, pos);
+	}
+	
+	public void clientSetup(EntityAbstractAircraft plane) {
+		if (filled()) data.clientSetup(plane, pos);
+	}
+	
+	public boolean addPartData(PartData data, EntityAbstractAircraft plane) {
+		if (filled()) return false;
 		if (!isCompatible(data)) return false;
 		this.data = data;
+		if (plane == null) return true;
+		if (plane.level.isClientSide) data.clientSetup(plane, pos);
+		else data.setup(plane, pos);
 		return true;
+	}
+	
+	public boolean removePartData(EntityAbstractAircraft plane) {
+		if (plane.level.isClientSide) data.clientRemove(plane);
+		else data.remove(plane);
+		if (filled()) {
+			data = null;
+			return true;
+		}
+		return false;
 	}
 	
 	public boolean isCompatible(PartData data) {
@@ -71,7 +111,7 @@ public class PartSlot {
 		return false;
 	}
 	
-	public String getString() {
+	public String getName() {
 		return name;
 	}
 	
@@ -84,6 +124,11 @@ public class PartSlot {
 		WING,
 		FRAME,
 		INTERNAL
+	}
+	
+	@Override
+	public String toString() {
+		return "["+name+":"+getSlotType().toString()+":"+data+"]";
 	}
 	
 }

@@ -14,22 +14,22 @@ import net.minecraftforge.network.NetworkEvent.Context;
 public class ClientBoundRemovePartPacket extends IPacket {
 	
 	public final int id;
-	public final String pid;
+	public final String slotName;
 	
-	public ClientBoundRemovePartPacket(int id, String pid) {
+	public ClientBoundRemovePartPacket(int id, String slotName) {
 		this.id = id;
-		this.pid = pid;
+		this.slotName = slotName;
 	}
 	
 	public ClientBoundRemovePartPacket(FriendlyByteBuf buffer) {
 		id = buffer.readInt();
-		pid = buffer.readUtf();
+		slotName = buffer.readUtf();
 	}
 	
 	@Override
 	public void encode(FriendlyByteBuf buffer) {
 		buffer.writeInt(id);
-		buffer.writeUtf(pid);
+		buffer.writeUtf(slotName);
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class ClientBoundRemovePartPacket extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilPacket.removePartPacket(id, pid);
+				UtilPacket.removePartPacket(id, slotName);
 				success.set(true);
 			});
 		});

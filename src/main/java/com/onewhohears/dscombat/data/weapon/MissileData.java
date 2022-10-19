@@ -115,7 +115,7 @@ public class MissileData extends BulletData {
 			this.setLaunchFail(null);
 			return null;
 		}
-		if (!this.isCanShootOnGround() && vehicle.isOnGround()) {
+		if (!this.canShootOnGround() && vehicle.isOnGround()) {
 			this.setLaunchFail("can't shoot this while on ground");
 			return null;
 		}
@@ -440,6 +440,20 @@ public class MissileData extends BulletData {
 
 	public double getFuseDist() {
 		return fuseDist;
+	}
+	
+	public float getFov() {
+		return fov;
+	}
+	
+	@Override
+	public WeaponData copy() {
+		return new MissileData(getId(), this.getLaunchPos(), this.getMaxAge(), this.getMaxAmmo(), 
+				this.getFireRate(), this.canShootOnGround(), this.getDamage(), this.getSpeed(), 
+				this.getInnacuracy(), this.isExplosive(), this.isDestroyTerrain(), this.isCausesFire(), 
+				this.getExplosiveDamage(), this.getExplosionRadius(), this.getTargetType(), 
+				this.getGuidanceType(), this.getMaxRot(), this.getAcceleration(), this.getFuseDist(), 
+				this.getFov());
 	}
 
 }

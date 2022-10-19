@@ -44,9 +44,9 @@ public class DSCombatMod
     	MinecraftForge.EVENT_BUS.register(new CommonForgeEvents());
         MinecraftForge.EVENT_BUS.register(this);
         
-        AircraftPresets.setupPresets();
-        WeaponPresets.setupPresets();
         RadarPresets.setupPresets();
+        WeaponPresets.setupPresets();
+        AircraftPresets.setupPresets();
     }
     
     private void commonSetup(final FMLCommonSetupEvent event) {

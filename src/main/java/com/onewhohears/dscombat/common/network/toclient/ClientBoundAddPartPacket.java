@@ -16,21 +16,25 @@ import net.minecraftforge.network.NetworkEvent.Context;
 public class ClientBoundAddPartPacket extends IPacket {
 	
 	public final int id;
+	public final String slotName;
 	public final PartData data;
 	
-	public ClientBoundAddPartPacket(int id, PartData data) {
+	public ClientBoundAddPartPacket(int id, String slotName, PartData data) {
 		this.id = id;
+		this.slotName = slotName;
 		this.data = data;
 	}
 	
 	public ClientBoundAddPartPacket(FriendlyByteBuf buffer) {
 		id = buffer.readInt();
+		slotName = buffer.readUtf();
 		data = DataSerializers.PART_DATA.read(buffer);
 	}
 	
 	@Override
 	public void encode(FriendlyByteBuf buffer) {
 		buffer.writeInt(id);
+		buffer.writeUtf(slotName);
 		data.write(buffer);
 	}
 
@@ -39,7 +43,7 @@ public class ClientBoundAddPartPacket extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilPacket.addPartPacket(id, data);
+				UtilPacket.addPartPacket(id, slotName, data);
 				success.set(true);
 			});
 		});

@@ -101,19 +101,19 @@ public class UtilPacket {
 		}
 	}
 	
-	public static void addPartPacket(int id, PartData data) {
+	public static void addPartPacket(int id, String slotName, PartData data) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityAbstractAircraft plane) {
-			plane.partsManager.addPart(data, false);
+			plane.partsManager.addPart(data, slotName, false);
 		}
 	}
 	
-	public static void removePartPacket(int id, String pid) {
+	public static void removePartPacket(int id, String slotName) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityAbstractAircraft plane) {
-			plane.partsManager.removePart(pid, false);
+			plane.partsManager.removePart(slotName, false);
 		}
 	}
 	

@@ -145,6 +145,8 @@ public final class ClientForgeEvents {
 		//System.out.println("selected = "+selected);
 		//System.out.println("hover index = "+hoverIndex);
 		// TODO middle click to mark a spot to target with a position guided missile
+		// TODO share selected target with team members button
+		// TODO swap throttle/roll with pitch/yaw keys button
 	}
 	
 	public static void centerMouse() {
@@ -276,6 +278,7 @@ public final class ClientForgeEvents {
 			GL11.glEnable(GL11.GL_LINE_SMOOTH);
 			GL11.glEnable(GL11.GL_DEPTH_TEST);
 			// TODO lines are not visible beyond around 500 blocks
+			// try a different shape like the QUADS
 			for (int i = 0; i < pings.size(); ++i) {
 				RadarPing p = pings.get(i);
 				//System.out.println(i+" "+p);

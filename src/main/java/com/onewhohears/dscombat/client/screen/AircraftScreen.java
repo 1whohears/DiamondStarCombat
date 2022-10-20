@@ -14,10 +14,10 @@ import net.minecraft.world.entity.player.Inventory;
 public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContainer> {
 	
 	private static final ResourceLocation TEXTURE = new ResourceLocation(DSCombatMod.MODID,
-			"textures/gui/aircraft_screen.png");
+			"textures/ui/aircraft_screen.png");
 	
-	public AircraftScreen(AircraftMenuContainer pMenu, Inventory pPlayerInventory) {
-		super(pMenu, pPlayerInventory, Component.empty());
+	public AircraftScreen(AircraftMenuContainer pMenu, Inventory pPlayerInventory, Component title) {
+		super(pMenu, pPlayerInventory, title);
 		this.leftPos = 0;
 		this.topPos = 0;
 		this.imageWidth = 64;

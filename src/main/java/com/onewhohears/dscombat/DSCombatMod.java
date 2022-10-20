@@ -3,6 +3,7 @@ package com.onewhohears.dscombat;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
+import com.onewhohears.dscombat.client.screen.AircraftScreen;
 import com.onewhohears.dscombat.common.event.CommonForgeEvents;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.data.AircraftPresets;
@@ -15,12 +16,14 @@ import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModSounds;
 
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -40,6 +43,7 @@ public class DSCombatMod
     	ModContainers.register(eventBus);
     	ModItems.register(eventBus);
     	eventBus.addListener(this::commonSetup);
+    	eventBus.addListener(this::clientSetup);
     	
     	MinecraftForge.EVENT_BUS.register(new CommonForgeEvents());
         MinecraftForge.EVENT_BUS.register(this);
@@ -49,10 +53,14 @@ public class DSCombatMod
         AircraftPresets.setupPresets();
     }
     
-    private void commonSetup(final FMLCommonSetupEvent event) {
+    private void commonSetup(FMLCommonSetupEvent event) {
     	LOGGER.info("HELLO FROM PREINIT");
 		PacketHandler.register();
 	}
+    
+    private void clientSetup(FMLClientSetupEvent event) {
+    	MenuScreens.register(ModContainers.PLANE_MENU.get(), AircraftScreen::new);
+    }
     
     @SubscribeEvent
 	public static void serverStoping(ServerStoppingEvent event) {

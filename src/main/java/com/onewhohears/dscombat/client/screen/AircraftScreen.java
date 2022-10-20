@@ -20,8 +20,8 @@ public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContaine
 		super(pMenu, pPlayerInventory, title);
 		this.leftPos = 0;
 		this.topPos = 0;
-		this.imageWidth = 64;
-		this.imageHeight = 64;
+		this.imageWidth = 256;
+		this.imageHeight = 256;
 	}
 	
 	@Override

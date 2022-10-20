@@ -443,7 +443,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 				System.out.println("OPENING MENU "+partsManager);
 				NetworkHooks.openScreen((ServerPlayer) controller, 
 						new SimpleMenuProvider((windowId, playerInv, player) -> 
-								new AircraftMenuContainer(windowId, playerInv, partsManager), 
+								new AircraftMenuContainer(windowId, playerInv), 
 						Component.translatable("container.dscombat.plane_menu")));
 			}
 		}

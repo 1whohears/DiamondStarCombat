@@ -118,6 +118,7 @@ public class PartsManager {
 	}
 	
 	public Container getContainer() {
+		System.out.println("GETTING CONTAINER client side = "+parent.level.isClientSide+" for slots "+this);
 		Container c = new SimpleContainer(slots.size());
 		for (int i = 0; i < slots.size(); ++i) if (slots.get(i).filled()) {
 			c.setItem(i, slots.get(i).getPartData().getItemStack());

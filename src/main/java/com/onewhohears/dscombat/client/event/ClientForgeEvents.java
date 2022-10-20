@@ -15,8 +15,8 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.KeyInit;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ServerBoundFlightControlPacket;
-import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
+import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.parts.EntitySeatCamera;
@@ -25,9 +25,6 @@ import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.ChatScreen;
-import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
-import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -62,10 +59,11 @@ public final class ClientForgeEvents {
 		if (KeyInit.resetMouseKey.isDown()) centerMouse();
 		else if (m.screen != null) {
 			//System.out.println("screen = "+m.screen);
-			if (m.screen.isPauseScreen()) centerMouse();
+			centerMouse();
+			/*if (m.screen.isPauseScreen()) centerMouse();
 			else if (m.screen instanceof ChatScreen i) centerMouse();
 			else if (m.screen instanceof InventoryScreen i) centerMouse();
-			else if (m.screen instanceof CreativeModeInventoryScreen i) centerMouse();
+			else if (m.screen instanceof CreativeModeInventoryScreen i) centerMouse();*/
 			//else if (m.screen instanceof BookViewScreen i) centerMouse(m);
 		} 
 		double mouseX = m.mouseHandler.xpos() - mouseCenterX;

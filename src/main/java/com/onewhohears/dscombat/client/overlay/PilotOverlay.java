@@ -7,8 +7,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.event.ClientForgeEvents;
-import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
+import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
@@ -103,6 +103,7 @@ public class PilotOverlay {
 			m.setCameraEntity(player);
 			if (gui.shouldDrawSurvivalElements()) {
 				gui.setupOverlayRenderState(true, false);
+				gui.renderHotbar(partialTick, poseStack);
 				gui.renderHealth(width, height, poseStack);
 				gui.renderFood(width, height, poseStack);
 				renderArmor(width, height, poseStack, m, gui);

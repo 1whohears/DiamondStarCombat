@@ -41,6 +41,7 @@ import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -240,6 +241,8 @@ public final class ClientForgeEvents {
 		colorA = 255;
 	}
 	
+	private static double tan1 = Math.tan(Math.toRadians(1));
+	
 	private static boolean isPlayerLookingAtPing(Player player, RadarPing ping) {
 		double d = ping.pos.distanceTo(player.position());
 		double y = tan1*d;
@@ -250,15 +253,6 @@ public final class ClientForgeEvents {
 	}
 	
 	/*@SubscribeEvent
-	public static void renderClient(RenderTickEvent event) {
-		Minecraft m = Minecraft.getInstance();
-		final var player = m.player;
-		
-	}*/
-	
-	private static double tan1 = Math.tan(Math.toRadians(1));
-	
-	@SubscribeEvent
 	public static void renderLevelStage(RenderLevelStageEvent event) {
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
@@ -353,26 +347,30 @@ public final class ClientForgeEvents {
 			RenderSystem.enableCull();
 			RenderSystem.enableTexture();
 		}
-	}
+	}*/
 	
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void renderOverlay(RenderGuiOverlayEvent.Pre event) {
 		Minecraft m = Minecraft.getInstance();
 		if (m.options.hideGui) return;
 		if (m.gameMode.getPlayerMode() == GameType.SPECTATOR) return;
-		Entity camera = m.getCameraEntity();
-		if (!(camera instanceof EntitySeatCamera)) return;
-		//System.out.println(m.gui);
-		if (!(m.gui instanceof ForgeGui gui)) return;
 		final var player = m.player;
-		String path = event.getOverlay().id().getPath();
-		m.setCameraEntity(player);
-		if (path == "hotbar") {
-			//System.out.println("rendering hot bar");
-			gui.setupOverlayRenderState(true, false);
-			gui.renderHotbar(event.getPartialTick(), event.getPoseStack());
+		if (!(player.getRootVehicle() instanceof EntityAbstractAircraft plane)) return;
+		RadarSystem radar = plane.radarSystem;
+		List<RadarPing> pings = radar.getClientRadarPings();
+		if (pings.size() == 0) return;
+		int selected = radar.getClientSelectedPingIndex();
+		int w = event.getWindow().getScreenWidth();
+		int h = event.getWindow().getScreenHeight();
+		System.out.println("w = "+w+" h = "+h);
+		for (int i = 0; i < pings.size(); ++i) {
+			RadarPing p = pings.get(i);
+			if (i == selected) setSelectedColor();
+			else if (i == hoverIndex) setHoverColor();
+			else if (p.isFriendly) setFriendlyColor();
+			else setDefaultColor();
+			
 		}
-		m.setCameraEntity(camera);
 	}
 	
 	/*@SubscribeEvent

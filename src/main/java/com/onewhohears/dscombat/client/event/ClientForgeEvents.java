@@ -5,6 +5,7 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
@@ -26,22 +27,17 @@ import com.onewhohears.dscombat.util.math.UtilGeometry;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.GameType;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.ViewportEvent;
-import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -235,7 +231,9 @@ public final class ClientForgeEvents {
 		colorA = 255;
 	}
 	
-	private static double tan1 = Math.tan(Math.toRadians(1));
+	private static final double tan1 = Math.tan(Math.toRadians(1));
+	private static final double farDist = 300;
+	private static final double farXtan1 = farDist*tan1;
 	
 	private static boolean isPlayerLookingAtPing(Player player, RadarPing ping) {
 		double d = ping.pos.distanceTo(player.position());
@@ -246,7 +244,7 @@ public final class ClientForgeEvents {
 				Math.toDegrees(Math.atan2(y, d)), 10000);
 	}
 	
-	/*@SubscribeEvent
+	@SubscribeEvent
 	public static void renderLevelStage(RenderLevelStageEvent event) {
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
@@ -277,9 +275,6 @@ public final class ClientForgeEvents {
 				
 				double x = p.pos.x, y = p.pos.y+0.02, z = p.pos.z;
 				double d = p.pos.distanceTo(plane.position());
-				double w2 = tan1*d;
-				if (w2 < 1) w2 = 1;
-				double w = w2/2;
 				
 				var tesselator = Tesselator.getInstance();
 				var buffer = tesselator.getBuilder();
@@ -287,41 +282,8 @@ public final class ClientForgeEvents {
 				pingBuffer = new VertexBuffer();
 				buffer.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
 				
-				buffer.vertex(x-w, y, z-w).color(colorR, colorG, colorB, colorA).endVertex();
-				buffer.vertex(x+w, y, z-w).color(colorR, colorG, colorB, colorA).endVertex();
-				
-				buffer.vertex(x+w, y, z-w).color(colorR, colorG, colorB, colorA).endVertex();
-				buffer.vertex(x+w, y, z+w).color(colorR, colorG, colorB, colorA).endVertex();
-				
-				buffer.vertex(x+w, y, z+w).color(colorR, colorG, colorB, colorA).endVertex();
-				buffer.vertex(x-w, y, z+w).color(colorR, colorG, colorB, colorA).endVertex();
-				
-				buffer.vertex(x-w, y, z+w).color(colorR, colorG, colorB, colorA).endVertex();
-				buffer.vertex(x-w, y, z-w).color(colorR, colorG, colorB, colorA).endVertex();
-				
-				buffer.vertex(x-w, y, z-w).color(colorR, colorG, colorB, colorA).endVertex();
-				buffer.vertex(x-w, y+w2, z-w).color(colorR, colorG, colorB, colorA).endVertex();
-				
-				buffer.vertex(x+w, y, z-w).color(colorR, colorG, colorB, colorA).endVertex();
-				buffer.vertex(x+w, y+w2, z-w).color(colorR, colorG, colorB, colorA).endVertex();
-				
-				buffer.vertex(x+w, y, z+w).color(colorR, colorG, colorB, colorA).endVertex();
-				buffer.vertex(x+w, y+w2, z+w).color(colorR, colorG, colorB, colorA).endVertex();
-				
-				buffer.vertex(x-w, y, z+w).color(colorR, colorG, colorB, colorA).endVertex();
-				buffer.vertex(x-w, y+w2, z+w).color(colorR, colorG, colorB, colorA).endVertex();
-				
-				buffer.vertex(x-w, y+w2, z-w).color(colorR, colorG, colorB, colorA).endVertex();
-				buffer.vertex(x+w, y+w2, z-w).color(colorR, colorG, colorB, colorA).endVertex();
-				
-				buffer.vertex(x+w, y+w2, z-w).color(colorR, colorG, colorB, colorA).endVertex();
-				buffer.vertex(x+w, y+w2, z+w).color(colorR, colorG, colorB, colorA).endVertex();
-				
-				buffer.vertex(x+w, y+w2, z+w).color(colorR, colorG, colorB, colorA).endVertex();
-				buffer.vertex(x-w, y+w2, z+w).color(colorR, colorG, colorB, colorA).endVertex();
-				
-				buffer.vertex(x-w, y+w2, z+w).color(colorR, colorG, colorB, colorA).endVertex();
-				buffer.vertex(x-w, y+w2, z-w).color(colorR, colorG, colorB, colorA).endVertex();
+				if (d < farDist) closeBox(buffer, x, y, z, d);
+				else farSquare(buffer, x, y, z, player);
 				
 				pingBuffer.bind();
 				pingBuffer.upload(buffer.end());
@@ -341,10 +303,65 @@ public final class ClientForgeEvents {
 			RenderSystem.enableCull();
 			RenderSystem.enableTexture();
 		}
-	}*/
+	}
 	
-	@SubscribeEvent(priority = EventPriority.NORMAL)
-	public static void renderOverlay(RenderGuiOverlayEvent.Pre event) {
+	private static void farSquare(BufferBuilder buffer, double x, double y, double z, Player player) {
+		double w2 = farXtan1;
+		double w = w2/2;
+		Vec3 pp = player.position();
+		Vec3 tp = new Vec3(x, y, z);
+		Vec3 np = tp.subtract(pp).normalize().scale(farDist).add(pp);
+		float rotX = (float)Math.toRadians(player.getXRot());
+		float rotY = (float)Math.toRadians(player.getYRot());
+		
+		buffer.vertex(np.x-w*Math.sin(rotY), np.y, np.z-w*Math.cos(rotY)).color(colorR, colorG, colorB, colorA).endVertex();
+		buffer.vertex(np.x+w*Math.sin(rotY), np.y, np.z+w*Math.cos(rotY)).color(colorR, colorG, colorB, colorA).endVertex();
+	}
+	
+	private static void closeBox(BufferBuilder buffer, double x, double y, double z, double d) {
+		double w2 = tan1*d;
+		if (w2 < 1) w2 = 1;
+		double w = w2/2;
+		
+		buffer.vertex(x-w, y, z-w).color(colorR, colorG, colorB, colorA).endVertex();
+		buffer.vertex(x+w, y, z-w).color(colorR, colorG, colorB, colorA).endVertex();
+		
+		buffer.vertex(x+w, y, z-w).color(colorR, colorG, colorB, colorA).endVertex();
+		buffer.vertex(x+w, y, z+w).color(colorR, colorG, colorB, colorA).endVertex();
+		
+		buffer.vertex(x+w, y, z+w).color(colorR, colorG, colorB, colorA).endVertex();
+		buffer.vertex(x-w, y, z+w).color(colorR, colorG, colorB, colorA).endVertex();
+		
+		buffer.vertex(x-w, y, z+w).color(colorR, colorG, colorB, colorA).endVertex();
+		buffer.vertex(x-w, y, z-w).color(colorR, colorG, colorB, colorA).endVertex();
+		
+		buffer.vertex(x-w, y, z-w).color(colorR, colorG, colorB, colorA).endVertex();
+		buffer.vertex(x-w, y+w2, z-w).color(colorR, colorG, colorB, colorA).endVertex();
+		
+		buffer.vertex(x+w, y, z-w).color(colorR, colorG, colorB, colorA).endVertex();
+		buffer.vertex(x+w, y+w2, z-w).color(colorR, colorG, colorB, colorA).endVertex();
+		
+		buffer.vertex(x+w, y, z+w).color(colorR, colorG, colorB, colorA).endVertex();
+		buffer.vertex(x+w, y+w2, z+w).color(colorR, colorG, colorB, colorA).endVertex();
+		
+		buffer.vertex(x-w, y, z+w).color(colorR, colorG, colorB, colorA).endVertex();
+		buffer.vertex(x-w, y+w2, z+w).color(colorR, colorG, colorB, colorA).endVertex();
+		
+		buffer.vertex(x-w, y+w2, z-w).color(colorR, colorG, colorB, colorA).endVertex();
+		buffer.vertex(x+w, y+w2, z-w).color(colorR, colorG, colorB, colorA).endVertex();
+		
+		buffer.vertex(x+w, y+w2, z-w).color(colorR, colorG, colorB, colorA).endVertex();
+		buffer.vertex(x+w, y+w2, z+w).color(colorR, colorG, colorB, colorA).endVertex();
+		
+		buffer.vertex(x+w, y+w2, z+w).color(colorR, colorG, colorB, colorA).endVertex();
+		buffer.vertex(x-w, y+w2, z+w).color(colorR, colorG, colorB, colorA).endVertex();
+		
+		buffer.vertex(x-w, y+w2, z+w).color(colorR, colorG, colorB, colorA).endVertex();
+		buffer.vertex(x-w, y+w2, z-w).color(colorR, colorG, colorB, colorA).endVertex();
+	}
+	
+	/*@SubscribeEvent(priority = EventPriority.NORMAL)
+	public static void renderOverlay(RenderGuiOverlayEvent.Post event) {
 		Minecraft m = Minecraft.getInstance();
 		if (m.options.hideGui) return;
 		if (m.gameMode.getPlayerMode() == GameType.SPECTATOR) return;
@@ -356,7 +373,22 @@ public final class ClientForgeEvents {
 		int selected = radar.getClientSelectedPingIndex();
 		int w = event.getWindow().getScreenWidth();
 		int h = event.getWindow().getScreenHeight();
+		int r = 200;
 		System.out.println("w = "+w+" h = "+h);
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glPushMatrix();
+		GL11.glColor4f(0.6F, 0.6F, 0.6F, 0.3F);
+		GL11.glBegin(GL11.GL_TRIANGLE_FAN);
+		GL11.glVertex2f(w/2, h/2);
+		for( int n = 0; n <= 18; n++ )
+        {
+            float t = 2 * 3.14152f * (float)n / (float)18;
+            GL11.glVertex2d(w + Math.sin(t) * r, h + Math.cos(t) * r);
+        }
+        GL11.glRectd(w, h, w+100, h+200);
+        GL11.glEnd();
+        GL11.glPopMatrix();
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
 		for (int i = 0; i < pings.size(); ++i) {
 			RadarPing p = pings.get(i);
 			if (i == selected) setSelectedColor();
@@ -365,7 +397,7 @@ public final class ClientForgeEvents {
 			else setDefaultColor();
 			
 		}
-	}
+	}*/
 	
 	@SubscribeEvent
 	public static void playerRender(RenderPlayerEvent.Pre event) {

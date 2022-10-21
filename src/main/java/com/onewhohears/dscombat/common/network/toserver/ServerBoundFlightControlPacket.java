@@ -12,8 +12,7 @@ import net.minecraftforge.network.NetworkEvent;
 
 public class ServerBoundFlightControlPacket extends IPacket {
 	
-	public final boolean throttleUp;
-	public final boolean throttleDown;
+	public final float throttle;
 	public final float pitch;
 	public final float roll;
 	public final float yaw;
@@ -23,12 +22,10 @@ public class ServerBoundFlightControlPacket extends IPacket {
 	public final boolean select;
 	public final boolean openMenu;
 	
-	public ServerBoundFlightControlPacket(boolean throttleUp, boolean throttleDown,
-			float pitch, float roll, float yaw,
+	public ServerBoundFlightControlPacket(float throttle, float pitch, float roll, float yaw,
 			boolean mouseMode, boolean flare, boolean shoot, boolean select,
 			boolean openMenu) {
-		this.throttleUp = throttleUp;
-		this.throttleDown = throttleDown;
+		this.throttle = throttle;
 		this.pitch = pitch;
 		this.roll = roll;
 		this.yaw = yaw;
@@ -40,8 +37,7 @@ public class ServerBoundFlightControlPacket extends IPacket {
 	}
 	
 	public ServerBoundFlightControlPacket(FriendlyByteBuf buffer) {
-		throttleUp = buffer.readBoolean();
-		throttleDown = buffer.readBoolean();
+		throttle = buffer.readFloat();
 		pitch = buffer.readFloat();
 		roll = buffer.readFloat();
 		yaw = buffer.readFloat();
@@ -53,8 +49,7 @@ public class ServerBoundFlightControlPacket extends IPacket {
 	}
 	
 	public void encode(FriendlyByteBuf buffer) {
-		buffer.writeBoolean(throttleUp);
-		buffer.writeBoolean(throttleDown);
+		buffer.writeFloat(throttle);
 		buffer.writeFloat(pitch);
 		buffer.writeFloat(roll);
 		buffer.writeFloat(yaw);
@@ -71,8 +66,7 @@ public class ServerBoundFlightControlPacket extends IPacket {
 			ServerPlayer player = ctx.get().getSender();
 			if (player.getRootVehicle() instanceof EntityAbstractAircraft plane) {
 				if (plane.getControllingPassenger() == player) {
-					plane.updateControls(throttleUp, throttleDown,
-							pitch, roll, yaw,
+					plane.updateControls(throttle, pitch, roll, yaw,
 							mouseMode, flare, shoot, select, openMenu);
 				}
 			}

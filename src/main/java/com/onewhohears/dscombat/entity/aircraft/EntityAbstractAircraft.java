@@ -85,10 +85,8 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public Quaternion prevQ = Quaternion.ONE.copy();
 	//public Quaternion clientQ = Quaternion.ONE.copy();
 	
-	public boolean inputThrottleUp, inputThrottleDown;
-	public boolean inputMouseMode, inputFlare, inputShoot, inputSelect;
-	public boolean inputOpenMenu;
-	public float inputPitch, inputRoll, inputYaw;
+	public boolean inputMouseMode, inputFlare, inputShoot, inputSelect, inputOpenMenu;
+	public float inputThrottle, inputPitch, inputRoll, inputYaw;
 	public float prevXRot, prevYRot, zRot, prevZRot;
 	public Vec3 prevMotion = Vec3.ZERO;
 	
@@ -310,8 +308,8 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	public void controlDirection(Quaternion q) {
 		if (this.getControllingPassenger() == null) this.resetControls();
-		if (inputThrottleUp) this.increaseThrottle();
-		if (inputThrottleDown) this.decreaseThrottle();
+		if (inputThrottle > 0) this.increaseThrottle();
+		else if (inputThrottle < 0) this.decreaseThrottle();
 		
 		q.mul(new Quaternion(Vector3f.ZP, inputRoll*getMaxDeltaRoll(), true));
 		q.mul(new Quaternion(Vector3f.XN, inputPitch*getMaxDeltaPitch(), true));
@@ -513,12 +511,10 @@ public abstract class EntityAbstractAircraft extends Entity {
 		}*/
 	}
 	
-	public void updateControls(boolean throttleUp, boolean throttleDown, 
-			float pitch, float roll, float yaw,
+	public void updateControls(float throttle, float pitch, float roll, float yaw,
 			boolean mouseMode, boolean flare, boolean shoot, boolean select,
 			boolean openMenu) {
-		this.inputThrottleUp = throttleUp;
-		this.inputThrottleDown = throttleDown;
+		this.inputThrottle = throttle;
 		this.inputPitch = pitch;
 		this.inputRoll = roll;
 		this.inputYaw = yaw;
@@ -532,8 +528,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	}
 	
 	public void resetControls() {
-		this.inputThrottleUp = false;
-		this.inputThrottleDown = false;
+		this.inputThrottle = 0;
 		this.inputPitch = 0;
 		this.inputRoll = 0;
 		this.inputYaw = 0;

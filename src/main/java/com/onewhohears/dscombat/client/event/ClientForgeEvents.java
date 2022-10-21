@@ -73,28 +73,36 @@ public final class ClientForgeEvents {
 		//System.out.println("ROOT "+player.getRootVehicle());
 		if (!(player.getRootVehicle() instanceof EntityAbstractAircraft plane)) return;
 		if (plane.getControllingPassenger() != player) return;
-		float pitch = 0, roll = 0, yaw = 0;
-		boolean throttleUp = KeyInit.throttleUpKey.isDown();
-		boolean throttleDown = KeyInit.throttleDownKey.isDown();
 		boolean mouseMode = KeyInit.mouseModeKey.consumeClick();
 		boolean flare = KeyInit.flareKey.isDown();
 		boolean shoot = KeyInit.shootKey.isDown();
 		boolean select = KeyInit.weaponSelectKey.consumeClick();
 		boolean openMenu = KeyInit.planeMenuKey.consumeClick();
-		if (plane.isFreeLook()) {
-			boolean pitchUp = KeyInit.pitchUpKey.isDown();
-			boolean pitchDown = KeyInit.pitchDownKey.isDown();
-			boolean yawLeft = KeyInit.rollLeftKey.isDown();
-			boolean yawRight = KeyInit.rollRightKey.isDown();
-			boolean rollLeft = KeyInit.yawLeftKey.isDown();
-			boolean rollRight = KeyInit.yawRightKey.isDown();
-			if (pitchUp) pitch += 1;
-			if (pitchDown) pitch -= 1;
-			if (yawLeft) yaw -= 1;
-			if (yawRight) yaw += 1;
-			if (rollLeft) roll -= 1;
-			if (rollRight) roll += 1;
+		boolean flip = KeyInit.flipControls.isDown();
+		float pitch = 0, roll = 0, yaw = 0, throttle = 0;
+		boolean pitchUp, pitchDown, yawLeft, yawRight;
+		boolean rollLeft, rollRight, throttleUp, throttleDown;
+		if (plane.isFreeLook()) flip = !flip;
+		if (flip) {
+			pitchUp = KeyInit.throttleUpKey.isDown();
+			pitchDown = KeyInit.throttleDownKey.isDown();
+			yawLeft = KeyInit.rollLeftKey.isDown();
+			yawRight = KeyInit.rollRightKey.isDown();
+			rollLeft = KeyInit.yawLeftKey.isDown();
+			rollRight = KeyInit.yawRightKey.isDown();
+			throttleUp = KeyInit.pitchUpKey.isDown();
+			throttleDown = KeyInit.pitchDownKey.isDown();
 		} else {
+			yawLeft = KeyInit.yawLeftKey.isDown();
+			yawRight = KeyInit.yawRightKey.isDown();
+			pitchUp = KeyInit.pitchUpKey.isDown();
+			pitchDown = KeyInit.pitchDownKey.isDown();
+			rollLeft = KeyInit.rollLeftKey.isDown();
+			rollRight = KeyInit.rollRightKey.isDown();
+			throttleUp = KeyInit.throttleUpKey.isDown();
+			throttleDown = KeyInit.throttleDownKey.isDown();
+		}
+		if (!plane.isFreeLook()) {
 			//System.out.println("x = "+mouseX+" y = "+mouseY);
 			double ya = Math.abs(mouseY);
 			double xa = Math.abs(mouseX);
@@ -111,22 +119,23 @@ public final class ClientForgeEvents {
 				mouseCenterX += (xa - max) * xs;
 			} else if (xa > deadZone) 
 				yaw = (float) ((xa-deadZone) / md) * xs;
-			boolean rollLeft = KeyInit.rollLeftKey.isDown();
-			boolean rollRight = KeyInit.rollRightKey.isDown();
-			if (rollLeft) roll -= 1;
-			if (rollRight) roll += 1;
 		}
+		if (pitchUp && !pitchDown) pitch = 1;
+		if (pitchDown && !pitchUp) pitch = -1;
+		if (yawLeft && !yawRight) yaw = -1;
+		if (yawRight && !yawLeft) yaw = 1;
+		if (rollLeft) roll -= 1;
+		if (rollRight) roll += 1;
+		if (throttleUp) throttle += 1;
+		if (throttleDown) throttle -= 1;
 		//System.out.println("pitch = "+pitch+" yaw = "+yaw);
 		PacketHandler.INSTANCE.sendToServer(new ServerBoundFlightControlPacket(
-				throttleUp, throttleDown, 
-				pitch, roll, yaw,
+				throttle, pitch, roll, yaw,
 				mouseMode, flare, shoot, select, openMenu));
-		plane.updateControls(throttleUp, throttleDown,
-				pitch, roll, yaw,
+		plane.updateControls(throttle, pitch, roll, yaw,
 				mouseMode, flare, shoot, select, openMenu);
 		if (mouseMode && !plane.isFreeLook()) centerMouse();
 		RadarSystem radar = plane.radarSystem;
-		if (radar == null) return;
 		List<RadarPing> pings = radar.getClientRadarPings();
 		//int selected = radar.getSelectedPingIndex();
 		boolean hovering = false;
@@ -147,7 +156,6 @@ public final class ClientForgeEvents {
 		//System.out.println("hover index = "+hoverIndex);
 		// TODO middle click to mark a spot to target with a position guided missile
 		// TODO share selected target with team members button
-		// TODO swap throttle/roll with pitch/yaw keys button
 	}
 	
 	public static void centerMouse() {
@@ -187,20 +195,6 @@ public final class ClientForgeEvents {
 			event.setCanceled(true);
 			//System.out.println("canceled");
 		}
-	}
-	
-	@SubscribeEvent
-	public static void onMouseInput(InputEvent.MouseButton event) {
-		//System.out.println("mouse input button "+event.getButton());
-		//System.out.println("mouse input action "+event.getAction());
-		/*if (event.getButton() == 0) {
-			if (event.getAction() == 1) leftClick = true;
-			else leftClick = false;
-		}*/
-		/*if (event.getButton() == 1) {
-			if (event.getAction() == 1) rightClick = true;
-			else rightClick = false;
-		}*/ 
 	}
 	
 	@SubscribeEvent
@@ -373,11 +367,6 @@ public final class ClientForgeEvents {
 		}
 	}
 	
-	/*@SubscribeEvent
-	public static void renderNameplate(RenderNameplateEvent event) {
-		
-	}*/
-	
 	@SubscribeEvent
 	public static void playerRender(RenderPlayerEvent.Pre event) {
 		//System.out.println("render player");
@@ -470,38 +459,5 @@ public final class ClientForgeEvents {
 			if (!playerCam) m.setCameraEntity(player);
 		}
 	}
-	
-	/*@SubscribeEvent
-	public static void onPlayerAttack(AttackEntityEvent event) {
-		System.out.println("attacked entity "+event.getTarget());
-		if (event.getTarget().equals(event.getEntity())) {
-			System.out.println("canceled");
-			event.setCanceled(true);
-		}
-	}*/
-	
-	/*@SubscribeEvent
-	public static void onEntityInteract(PlayerInteractEvent.EntityInteract event) {
-		System.out.println(event.getEntity()+" interacted with "+event.getTarget());
-		if (event.getTarget().equals(event.getEntity())) {
-			System.out.println("canceled");
-			event.setCanceled(true);
-		}
-	}*/
-	
-	/*@SubscribeEvent
-	public static void onEntityJoin(EntityJoinLevelEvent event) {
-		Level level = event.getLevel();
-		if (!level.isClientSide) return;
-		Minecraft m = Minecraft.getInstance();
-		Entity entity = event.getEntity();
-		//System.out.println("entity joined client "+entity);
-		if (entity instanceof Player player) {
-			if (m.player.equals(player)) {
-				//leftClick = false;
-				//rightClick = false;
-			}
-		}
-	}*/
 	
 }

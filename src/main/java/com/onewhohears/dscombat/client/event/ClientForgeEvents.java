@@ -233,7 +233,6 @@ public final class ClientForgeEvents {
 	
 	private static final double tan1 = Math.tan(Math.toRadians(1));
 	private static final double farDist = 300;
-	private static final double farXtan1 = farDist*tan1;
 	
 	private static boolean isPlayerLookingAtPing(Player player, RadarPing ping) {
 		double d = ping.pos.distanceTo(player.position());
@@ -263,8 +262,6 @@ public final class ClientForgeEvents {
 			RenderSystem.disableTexture();
 			GL11.glEnable(GL11.GL_LINE_SMOOTH);
 			GL11.glEnable(GL11.GL_DEPTH_TEST);
-			// TODO lines are not visible beyond around 500 blocks
-			// try a different shape like the QUADS
 			for (int i = 0; i < pings.size(); ++i) {
 				RadarPing p = pings.get(i);
 				//System.out.println(i+" "+p);
@@ -306,16 +303,11 @@ public final class ClientForgeEvents {
 	}
 	
 	private static void farSquare(BufferBuilder buffer, double x, double y, double z, Player player) {
-		double w2 = farXtan1;
-		double w = w2/2;
 		Vec3 pp = player.position();
 		Vec3 tp = new Vec3(x, y, z);
-		Vec3 np = tp.subtract(pp).normalize().scale(farDist).add(pp);
-		float rotX = (float)Math.toRadians(player.getXRot());
-		float rotY = (float)Math.toRadians(player.getYRot());
-		
-		buffer.vertex(np.x-w*Math.sin(rotY), np.y, np.z-w*Math.cos(rotY)).color(colorR, colorG, colorB, colorA).endVertex();
-		buffer.vertex(np.x+w*Math.sin(rotY), np.y, np.z+w*Math.cos(rotY)).color(colorR, colorG, colorB, colorA).endVertex();
+		Vec3 nn = tp.subtract(pp).normalize();
+		Vec3 np = nn.scale(farDist).add(pp);
+		closeBox(buffer, np.x, np.y, np.z, farDist);
 	}
 	
 	private static void closeBox(BufferBuilder buffer, double x, double y, double z, double d) {

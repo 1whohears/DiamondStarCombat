@@ -141,6 +141,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
+		// TODO couldn't re-attach entity to player
 		String initType = compound.getString("preset");
 		System.out.println("aircraft read data client side = "+level.isClientSide+" init type = "+initType);
 		if (!initType.isEmpty()) {

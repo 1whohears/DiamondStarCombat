@@ -13,7 +13,7 @@ import net.minecraft.world.entity.player.Inventory;
 
 public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContainer> {
 	
-	private static final ResourceLocation TEXTURE = new ResourceLocation(DSCombatMod.MODID,
+	private static final ResourceLocation BG_TEXTURE = new ResourceLocation(DSCombatMod.MODID,
 			"textures/ui/aircraft_screen.png");
 	
 	public AircraftScreen(AircraftMenuContainer pMenu, Inventory pPlayerInventory, Component title) {
@@ -33,15 +33,15 @@ public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContaine
 	protected void renderBg(PoseStack stack, float pTicks, int mouseX, int mouseY) {
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-		RenderSystem.setShaderTexture(0, TEXTURE);
+		RenderSystem.setShaderTexture(0, BG_TEXTURE);
 		blit(stack, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
 		// TODO create plane menu screen
 	}
 
 	@Override
 	protected void renderLabels(PoseStack stack, int mouseX, int mouseY) {
-		drawString(stack, font, title, this.leftPos+8, this.topPos+3, 0x404040);
-		drawString(stack, font, playerInventoryTitle, this.leftPos+8, this.topPos+80, 0x404040);
+		drawString(stack, font, title, this.leftPos, this.topPos+3, 0x404040);
+		drawString(stack, font, playerInventoryTitle, this.leftPos, this.topPos+80, 0x404040);
 	}
 	
 	@Override
@@ -57,17 +57,17 @@ public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContaine
 	
 	@Override
 	public boolean mouseScrolled(double mouseX, double mouseY, double scroll) {
-		return false;
+		return super.mouseScrolled(mouseX, mouseY, scroll);
 	}
 	
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
-		return false;
+		return super.mouseClicked(mouseX, mouseY, button);
 	}
 	
 	@Override
 	public boolean mouseReleased(double mouseX, double mouseY, int button) {
-		return false;
+		return super.mouseReleased(mouseX, mouseY, button);
 	}
 
 }

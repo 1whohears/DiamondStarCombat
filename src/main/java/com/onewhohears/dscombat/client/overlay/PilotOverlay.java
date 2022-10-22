@@ -101,9 +101,9 @@ public class PilotOverlay {
 			}
 			Entity camera = m.getCameraEntity();
 			m.setCameraEntity(player);
+			gui.setupOverlayRenderState(true, false);
+			gui.renderHotbar(partialTick, poseStack);
 			if (gui.shouldDrawSurvivalElements()) {
-				gui.setupOverlayRenderState(true, false);
-				gui.renderHotbar(partialTick, poseStack);
 				gui.renderHealth(width, height, poseStack);
 				gui.renderFood(width, height, poseStack);
 				renderArmor(width, height, poseStack, m, gui);

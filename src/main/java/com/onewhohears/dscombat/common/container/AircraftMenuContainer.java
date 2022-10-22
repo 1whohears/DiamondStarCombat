@@ -1,6 +1,9 @@
 package com.onewhohears.dscombat.common.container;
 
+import java.util.List;
+
 import com.onewhohears.dscombat.common.container.slot.PartItemSlot;
+import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.init.ModContainers;
 
@@ -28,33 +31,48 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
 		this.playerInv = playerInv;
 		if (playerInv.player.getRootVehicle() instanceof EntityAbstractAircraft plane) {
 			this.partsInv = plane.partsManager.getContainer();
-		}
-		// create plane menu container
-		for (int i = 0; i < partsInv.getContainerSize(); ++i) {
-			//System.out.println("partsInv i = "+i);
-			this.addSlot(new PartItemSlot(partsInv, i, 8 + i * 9, 50));
+			List<PartSlot> slots = plane.partsManager.getSlots();
+			// create plane menu container
+			for (int i = 0; i < partsInv.getContainerSize(); ++i) {
+				//System.out.println("partsInv i = "+i);
+				this.addSlot(new PartItemSlot(partsInv, i, slots.get(i)));
+			}
 		}
 		// display player inventory
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
 				//System.out.println("playerInv i = "+i+" j = "+j);
-				this.addSlot(new Slot(playerInv, j + i * 9 + 9, 8 + j * 18, 102 + i * 18));
+				this.addSlot(new Slot(playerInv, j + i * 9 + 9, 48 + j * 18, 138 + i * 18));
 			}
 		}
 		for(int i = 0; i < 9; i++) {
 			//System.out.println("playerInv i = "+i);
-			this.addSlot(new Slot(playerInv, i, 8 + i * 18, 160));
+			this.addSlot(new Slot(playerInv, i, 48 + i * 18, 196));
 		}
-	}
-
-	@Override
-	public ItemStack quickMoveStack(Player player, int index) {
-		return null;
 	}
 
 	@Override
 	public boolean stillValid(Player player) {
 		return true;
 	}
+	
+	@Override
+	public void slotsChanged(Container inventory) {
+		
+		super.broadcastChanges();
+	}
+	
+	@Override
+	public ItemStack quickMoveStack(Player player, int index) {
+		return null;
+	}
+	
+	public Container getPlayerInventory() {
+        return this.playerInv;
+    }
+
+    public Container getPartsInventory() {
+        return this.partsInv;
+    }
 
 }

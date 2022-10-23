@@ -4,11 +4,11 @@ import java.util.List;
 
 import com.onewhohears.dscombat.common.container.slot.PartItemSlot;
 import com.onewhohears.dscombat.data.parts.PartSlot;
+import com.onewhohears.dscombat.data.parts.PartsManager;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.init.ModContainers;
 
 import net.minecraft.world.Container;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -18,7 +18,7 @@ import net.minecraft.world.item.ItemStack;
 public class AircraftMenuContainer extends AbstractContainerMenu {
 	
 	private Container playerInv;
-	private Container partsInv = new SimpleContainer(0);;
+	private PartsManager pm;
 	
 	/*public AircraftMenuContainer(int id, Inventory playerInv) {
 		this(id, playerInv, new PartsManager());
@@ -30,7 +30,8 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
 		System.out.println("AircraftMenuContainer client side "+playerInv.player.level.isClientSide);
 		this.playerInv = playerInv;
 		if (playerInv.player.getRootVehicle() instanceof EntityAbstractAircraft plane) {
-			this.partsInv = plane.partsManager.getContainer();
+			this.pm = plane.partsManager;
+			Container partsInv = pm.getContainer();
 			List<PartSlot> slots = plane.partsManager.getSlots();
 			// create plane menu container
 			for (int i = 0; i < partsInv.getContainerSize(); ++i) {
@@ -71,8 +72,8 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
         return this.playerInv;
     }
 
-    public Container getPartsInventory() {
-        return this.partsInv;
+    public PartsManager getPartsInventory() {
+        return pm;
     }
 
 }

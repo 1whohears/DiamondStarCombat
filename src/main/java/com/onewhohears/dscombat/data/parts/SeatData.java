@@ -16,7 +16,7 @@ import net.minecraft.world.phys.Vec3;
 public class SeatData extends PartData {
 
 	public SeatData(String id) {
-		super(id, "dscombat:seat");
+		super(id);
 	}
 
 	public SeatData(CompoundTag tag) {
@@ -68,6 +68,7 @@ public class SeatData extends PartData {
 
 	@Override
 	public ItemStack getItemStack() {
+		// TODO item doesn't have nbt?
 		return new ItemStack(ModItems.SEAT.get(), 1, this.write());
 	}
 

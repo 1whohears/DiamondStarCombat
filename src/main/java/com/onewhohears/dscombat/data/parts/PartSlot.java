@@ -2,7 +2,6 @@ package com.onewhohears.dscombat.data.parts;
 
 import javax.annotation.Nullable;
 
-import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.UtilParse;
@@ -34,17 +33,7 @@ public class PartSlot {
 		uix = tag.getInt("uix");
 		uiy = tag.getInt("uiy");
 		boolean filled = tag.getBoolean("filled");
-		if (filled) {
-			CompoundTag t = tag.getCompound("data");
-			PartType type = PartType.values()[tag.getInt("type")];
-			switch (type) {
-			case SEAT:
-				data = new SeatData(t);
-				break;
-			case TURRENT:
-				break;
-			}
-		}
+		if (filled) data = UtilParse.parsePartFromCompound(tag.getCompound("data"));
 	}
 	
 	public CompoundTag write() {
@@ -117,6 +106,7 @@ public class PartSlot {
 	}
 	
 	public boolean isCompatible(PartData data) {
+		if (data == null) return false;
 		SlotType[] types = data.getCompatibleSlots();
 		for (int i = 0; i < types.length; ++i) if (types[i] == getSlotType()) return true;
 		return false;

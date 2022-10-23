@@ -3,6 +3,10 @@ package com.onewhohears.dscombat.util;
 import java.io.DataInputStream;
 import java.util.zip.GZIPInputStream;
 
+import com.onewhohears.dscombat.data.parts.PartData;
+import com.onewhohears.dscombat.data.parts.SeatData;
+import com.onewhohears.dscombat.data.parts.PartData.PartType;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.world.phys.Vec3;
@@ -37,6 +41,17 @@ public class UtilParse {
 		y = tag.getDouble(name+"y");
 		z = tag.getDouble(name+"z");
 		return new Vec3(x, y, z);
+	}
+	
+	public static PartData parsePartFromCompound(CompoundTag tag) {
+		PartType type = PartType.values()[tag.getInt("type")];
+		switch (type) {
+		case SEAT:
+			return new SeatData(tag);
+		case TURRENT:
+			return null;
+		}
+		return null;
 	}
 	
 }

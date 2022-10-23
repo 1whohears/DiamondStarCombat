@@ -1,8 +1,11 @@
 package com.onewhohears.dscombat.common.container.slot;
 
+import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.item.ItemPart;
+import com.onewhohears.dscombat.util.UtilParse;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
@@ -24,7 +27,11 @@ public class PartItemSlot extends Slot {
 	
 	@Override
 	public boolean mayPlace(ItemStack stack) {
-		return stack.getItem() instanceof ItemPart;
+		if (!(stack.getItem() instanceof ItemPart)) return false;
+		CompoundTag tag = stack.getOrCreateTag();
+		PartData part = UtilParse.parsePartFromCompound(tag);
+		if (data.isCompatible(part)) return true;
+		return false;
 	}
 	
 	@Override

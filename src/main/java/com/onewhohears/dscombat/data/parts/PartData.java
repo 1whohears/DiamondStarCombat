@@ -11,7 +11,6 @@ import net.minecraft.world.phys.Vec3;
 public abstract class PartData {
 	
 	private final String id;
-	private final String itemId;
 	private EntityAbstractAircraft parent;
 	
 	public static enum PartType {
@@ -19,46 +18,35 @@ public abstract class PartData {
 		TURRENT
 	}
 	
-	protected PartData(String id, String itemId) {
+	protected PartData(String id) {
 		this.id = id;
-		this.itemId = itemId;
 	}
 	
 	public PartData(CompoundTag tag) {
 		id = tag.getString("id");
-		itemId = tag.getString("itemId");
 	}
 	
 	public CompoundTag write() {
 		CompoundTag tag = new CompoundTag();
 		tag.putInt("type", this.getType().ordinal());
 		tag.putString("id", id);
-		tag.putString("itemId", itemId);
 		return tag;
 	}
 	
 	public PartData(FriendlyByteBuf buffer) {
 		// type int is read in DataSerializers
 		id = buffer.readUtf();
-		itemId = buffer.readUtf();
-		//pos = DataSerializers.VEC3.read(buffer);
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
 		buffer.writeInt(this.getType().ordinal());
 		buffer.writeUtf(id);
-		buffer.writeUtf(itemId);
-		//DataSerializers.VEC3.write(buffer, pos);
 	}
 	
 	public abstract PartType getType();
 	
 	public String getId() {
 		return id;
-	}
-	
-	public String getItemId() {
-		return itemId;
 	}
 	
 	public EntityAbstractAircraft getParent() {

@@ -10,7 +10,7 @@ import net.minecraft.world.phys.Vec3;
 
 public abstract class PartData {
 	
-	private final String id;
+	private final String id; // TODO find a way to not need this id
 	private EntityAbstractAircraft parent;
 	
 	public static enum PartType {

@@ -69,7 +69,9 @@ public class SeatData extends PartData {
 	@Override
 	public ItemStack getItemStack() {
 		// TODO item doesn't have nbt?
-		return new ItemStack(ModItems.SEAT.get(), 1, this.write());
+		CompoundTag tag = this.write();
+		System.out.println("getting item data "+this+" compound "+tag);
+		return new ItemStack(ModItems.SEAT.get(), 1, tag);
 	}
 
 }

@@ -59,7 +59,7 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
 	
 	@Override
 	public void slotsChanged(Container inventory) {
-		
+		System.out.println("slots changed "+inventory);
 		super.broadcastChanges();
 	}
 	

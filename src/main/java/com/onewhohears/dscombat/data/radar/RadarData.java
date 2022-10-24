@@ -106,13 +106,13 @@ public class RadarData {
 		pings.clear();
 		freshTargets = true;
 		Level level = radar.level;
+		Entity controller = radar.getControllingPassenger();
 		if (scanAircraft) {
 			List<EntityAbstractAircraft> list = level.getEntitiesOfClass(
 					EntityAbstractAircraft.class, getRadarBoundingBox(radar));
 			for (int i = 0; i < list.size(); ++i) {
 				if (!basicCheck(radar, list.get(i), list.get(i).getStealth())) continue;
-				// TODO check if friendly
-				RadarPing p = new RadarPing(list.get(i), false);
+				RadarPing p = new RadarPing(list.get(i), checkFriendly(controller, list.get(i).getControllingPassenger()));
 				targets.add(p);
 				pings.add(p);
 				list.get(i).lockedOnto();
@@ -124,8 +124,7 @@ public class RadarData {
 			for (int i = 0; i < list.size(); ++i) {
 				if (list.get(i).getRootVehicle() instanceof EntityAbstractAircraft) continue;
 				if (!basicCheck(radar, list.get(i), 1)) continue;
-				// TODO check if friendly
-				RadarPing p = new RadarPing(list.get(i), false);
+				RadarPing p = new RadarPing(list.get(i), checkFriendly(controller, list.get(i)));
 				targets.add(p);
 				pings.add(p);
 			}
@@ -136,12 +135,19 @@ public class RadarData {
 			for (int i = 0; i < list.size(); ++i) {
 				if (list.get(i).getRootVehicle() instanceof EntityAbstractAircraft) continue;
 				if (!basicCheck(radar, list.get(i), 1)) continue;
-				// TODO check if friendly
-				RadarPing p = new RadarPing(list.get(i), false);
+				RadarPing p = new RadarPing(list.get(i), checkFriendly(controller, list.get(i)));
 				targets.add(p);
 				pings.add(p);
 			}
 		}
+	}
+	
+	private boolean checkFriendly(Entity controller, Entity target) {
+		if (controller == null) return false;
+		if (target == null) return false;
+		if (controller.getTeam() == null) return false;
+		if (target.getTeam() == null) return false;
+		return target.getTeam().getName().equals(controller.getTeam().getName());
 	}
 	
 	private boolean basicCheck(EntityAbstractAircraft radar, Entity ping, double rangeMod) {

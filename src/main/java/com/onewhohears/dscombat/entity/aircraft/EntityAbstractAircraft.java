@@ -579,7 +579,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 			return InteractionResult.PASS;
 		} else if (!this.level.isClientSide) {
 			//System.out.println("server side");
-			boolean okay = rideSeat(player);
+			boolean okay = rideAvailableSeat(player);
 			//System.out.println("rideSeat = "+okay);
 			return okay ? InteractionResult.CONSUME : InteractionResult.PASS;
 		} else if (this.level.isClientSide) {	
@@ -592,23 +592,19 @@ public abstract class EntityAbstractAircraft extends Entity {
 		return InteractionResult.SUCCESS;
 	}
 	
-	public boolean rideSeat(Entity e) {
-		List<Entity> list = getPassengers();
-		for (int i = 0; i < list.size(); ++i) {
-			System.out.println("can "+e+" ride "+list.get(i));
-			if (list.get(i) instanceof EntitySeat seat) {
-				if (seat.canAddPassenger(e)) {
-					if (e.startRiding(seat)) {
-						this.newRiderCooldown = 10;
-						return true;
-					}
-					System.out.println("can't start riding");
-				}
-				System.out.println("seat can't add passenger");
+	public boolean rideAvailableSeat(Entity e) {
+		for (EntitySeat seat : getSeats()) 
+			if (e.startRiding(seat)) {
+				this.newRiderCooldown = 10;
+				return true;
 			}
-			System.out.println("not seat");
-		}
 		return false;
+	}
+	
+	public boolean switchSeat(Entity e) {
+		// TODO switch seat
+		if (!isVehicleOf(e)) return false;
+		return true;
 	}
 	
 	@Override

@@ -54,15 +54,7 @@ public final class ClientForgeEvents {
 		final var player = m.player;
 		if (player == null) return;
 		if (KeyInit.resetMouseKey.isDown()) centerMouse();
-		else if (m.screen != null) {
-			//System.out.println("screen = "+m.screen);
-			centerMouse();
-			/*if (m.screen.isPauseScreen()) centerMouse();
-			else if (m.screen instanceof ChatScreen i) centerMouse();
-			else if (m.screen instanceof InventoryScreen i) centerMouse();
-			else if (m.screen instanceof CreativeModeInventoryScreen i) centerMouse();*/
-			//else if (m.screen instanceof BookViewScreen i) centerMouse(m);
-		} 
+		else if (m.screen != null) centerMouse();
 		double mouseX = m.mouseHandler.xpos() - mouseCenterX;
 		double mouseY = -(m.mouseHandler.ypos() - mouseCenterY);
 		//System.out.println("VEHICLE "+player.getVehicle());

@@ -906,6 +906,14 @@ public abstract class EntityAbstractAircraft extends Entity {
     	return seats;
     }
     
+    public List<EntityAbstractPart> getPartEntities() {
+    	List<EntityAbstractPart> parts = new ArrayList<EntityAbstractPart>();
+    	for (Entity e : getPassengers())
+    		if (e instanceof EntityAbstractPart part)
+    			parts.add(part);
+    	return parts;
+    }
+    
     public void sounds() {
     	//System.out.println("SOUNDS client side "+level.isClientSide+" tracked ticks "+getMissileTrackedTicks());
     	if (!this.level.isClientSide) {

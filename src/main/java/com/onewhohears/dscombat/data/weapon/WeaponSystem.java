@@ -11,6 +11,7 @@ import com.onewhohears.dscombat.common.network.toclient.ClientBoundRemoveWeaponP
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundWeaponIndexPacket;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.init.DataSerializers;
+import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -32,20 +33,7 @@ public class WeaponSystem {
 		this.weaponIndex = compound.getInt("index");
 		ListTag list = compound.getList("weapons", 10);
 		for (int i = 0; i < list.size(); ++i) {
-			CompoundTag tag = list.getCompound(i);
-			int index = tag.getInt("type");
-			WeaponData.WeaponType type = WeaponData.WeaponType.values()[index];
-			switch (type) {
-			case BOMB:
-				weapons.add(new BombData(tag));
-				break;
-			case BULLET:
-				weapons.add(new BulletData(tag));
-				break;
-			case ROCKET:
-				weapons.add(new MissileData(tag));
-				break;
-			}
+			weapons.add(UtilParse.parseWeaponFromCompound(list.getCompound(i)));
 		}
 	}
 	

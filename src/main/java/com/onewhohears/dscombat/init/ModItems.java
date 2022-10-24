@@ -2,6 +2,8 @@ package com.onewhohears.dscombat.init;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.item.ItemAircraft;
+import com.onewhohears.dscombat.item.ItemSeat;
+import com.onewhohears.dscombat.item.ItemWeaponRack;
 
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -33,7 +35,10 @@ public class ModItems {
 		}
 	};
 	
-	public static final RegistryObject<Item> SEAT = ITEMS.register("seat", () -> new Item(new Item.Properties().tab(PARTS)));
+	public static final RegistryObject<Item> SEAT = ITEMS.register("seat", 
+			() -> new ItemSeat());
+	public static final RegistryObject<Item> WEAPON_RACK = ITEMS.register("weapon_rack", 
+			() -> new ItemWeaponRack());
 	public static final RegistryObject<Item> TEST_PLANE = ITEMS.register("test_plane", 
 			() -> new ItemAircraft(ModEntities.TEST_PLANE.get(), "test_plane"));
 	public static final RegistryObject<Item> JAVI_PLANE = ITEMS.register("javi_plane", 

@@ -8,6 +8,11 @@ import javax.annotation.Nullable;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.data.parts.SeatData;
+import com.onewhohears.dscombat.data.parts.WeaponRackData;
+import com.onewhohears.dscombat.data.weapon.BombData;
+import com.onewhohears.dscombat.data.weapon.BulletData;
+import com.onewhohears.dscombat.data.weapon.MissileData;
+import com.onewhohears.dscombat.data.weapon.WeaponData;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtIo;
@@ -56,6 +61,26 @@ public class UtilParse {
 			return new SeatData(tag);
 		case TURRENT:
 			return null;
+		case WEAPON_RACK:
+			return new WeaponRackData(tag);
+		}
+		return null;
+	}
+	
+	@Nullable
+	public static WeaponData parseWeaponFromCompound(CompoundTag tag) {
+		if (tag == null) return null;
+		if (tag.isEmpty()) return null;
+		if (!tag.contains("type")) return null;
+		int index = tag.getInt("type");
+		WeaponData.WeaponType type = WeaponData.WeaponType.values()[index];
+		switch (type) {
+		case BOMB:
+			return new BombData(tag);
+		case BULLET:
+			return new BulletData(tag);
+		case ROCKET:
+			return new MissileData(tag);
 		}
 		return null;
 	}

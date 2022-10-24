@@ -6,7 +6,7 @@ import net.minecraft.world.item.Item;
 
 public abstract class ItemPart extends Item {
 	
-	public ItemPart(int stackSize) {
+	protected ItemPart(int stackSize) {
 		super(getDefaultProperties(stackSize));
 	}
 	

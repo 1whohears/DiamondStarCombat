@@ -62,9 +62,9 @@ public class AircraftPresets {
 		pm.addSlot("seat3", SlotType.SEAT, new Vec3(0, -0.5, -2), 80, 60);
 		pm.addSlot("left_wing_1", SlotType.WING, new Vec3(-1, 0, 0), 100, 60);
 		pm.addSlot("right_wing_1", SlotType.WING, new Vec3(1, 0, 0), 120, 60);
-		pm.addPart(new SeatData(), "pilot_seat", false);
-		pm.addPart(new SeatData(), "seat2", false);
-		pm.addPart(new SeatData(), "seat3", false);
+		pm.addPart(new SeatData(0.01f), PartSlot.PILOT_SLOT_NAME, false);
+		pm.addPart(new SeatData(0.01f), "seat2", false);
+		pm.addPart(new SeatData(0.01f), "seat3", false);
 		pm.write(tag);
 		System.out.println(pm);
 		// weapons

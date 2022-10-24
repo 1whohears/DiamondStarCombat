@@ -10,38 +10,41 @@ import net.minecraft.world.phys.Vec3;
 
 public abstract class PartData {
 	
+	private final float weight;
 	private EntityAbstractAircraft parent;
 	
 	public static enum PartType {
 		SEAT,
-		TURRENT
+		TURRENT,
+		WEAPON_RACK
 	}
 	
-	protected PartData() {
+	protected PartData(float weight) {
+		this.weight = weight;
 	}
 	
 	public PartData(CompoundTag tag) {
+		weight = tag.getFloat("weight");
 	}
 	
 	public CompoundTag write() {
 		CompoundTag tag = new CompoundTag();
 		tag.putInt("type", this.getType().ordinal());
+		tag.putFloat("weight", weight);
 		return tag;
 	}
 	
 	public PartData(FriendlyByteBuf buffer) {
 		// type int is read in DataSerializers
+		weight = buffer.readFloat();
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
 		buffer.writeInt(this.getType().ordinal());
+		buffer.writeFloat(weight);
 	}
 	
 	public abstract PartType getType();
-	
-	/*public String getId() {
-		return id;
-	}*/
 	
 	public EntityAbstractAircraft getParent() {
 		return parent;
@@ -72,7 +75,9 @@ public abstract class PartData {
 		return "("+getType().name()+")";
 	}
 	
-	public abstract float getWeight();
+	public float getWeight() {
+		return weight;
+	}
 	
 	public abstract SlotType[] getCompatibleSlots();
 	

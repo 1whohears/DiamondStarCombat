@@ -5,6 +5,7 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.parts.EntitySeatCamera;
+import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
 import com.onewhohears.dscombat.entity.weapon.EntityBullet;
 import com.onewhohears.dscombat.entity.weapon.EntityFlare;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
@@ -37,6 +38,9 @@ public class ModEntities {
 	
 	public static final RegistryObject<EntityType<EntitySeatCamera>> CAMERA = ENTITIES.register("seat_camera", 
 			() -> createEntityType(EntitySeatCamera::new, EntityDimensions.scalable(0f, 0f)));
+	
+	public static final RegistryObject<EntityType<EntityWeaponRack>> WEAPON_RACK = ENTITIES.register("weapon_rack", 
+			() -> createEntityType(EntityWeaponRack::new, EntityDimensions.scalable(0f, 0f)));
 	
 	public static final RegistryObject<EntityType<EntityBullet>> BULLET = ENTITIES.register("bullet", 
 			() -> createEntityType(EntityBullet::new, EntityDimensions.scalable(0.15f, 0.15f)));

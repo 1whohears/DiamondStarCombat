@@ -106,6 +106,7 @@ public class PartSlot {
 	}
 	
 	public boolean isCompatible(PartData data) {
+		System.out.println("is "+data+" compatible with "+this);
 		if (data == null) return false;
 		SlotType[] types = data.getCompatibleSlots();
 		for (int i = 0; i < types.length; ++i) if (types[i] == getSlotType()) return true;

@@ -44,6 +44,9 @@ public class UtilParse {
 	}
 	
 	public static PartData parsePartFromCompound(CompoundTag tag) {
+		if (tag == null) return null;
+		if (tag.isEmpty()) return null;
+		if (!tag.contains("type")) return null;
 		PartType type = PartType.values()[tag.getInt("type")];
 		switch (type) {
 		case SEAT:

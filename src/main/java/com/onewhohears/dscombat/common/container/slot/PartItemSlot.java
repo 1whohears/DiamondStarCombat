@@ -2,7 +2,6 @@ package com.onewhohears.dscombat.common.container.slot;
 
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot;
-import com.onewhohears.dscombat.item.ItemPart;
 import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
@@ -27,8 +26,9 @@ public class PartItemSlot extends Slot {
 	
 	@Override
 	public boolean mayPlace(ItemStack stack) {
-		if (!(stack.getItem() instanceof ItemPart)) return false;
+		System.out.println("is "+stack+" compatible with tag "+stack.getOrCreateTag());
 		CompoundTag tag = stack.getOrCreateTag();
+		if (tag.isEmpty()) return false;
 		PartData part = UtilParse.parsePartFromCompound(tag);
 		if (data.isCompatible(part)) return true;
 		return false;

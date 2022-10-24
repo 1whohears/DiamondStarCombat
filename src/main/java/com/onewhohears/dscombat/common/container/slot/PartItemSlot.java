@@ -26,7 +26,7 @@ public class PartItemSlot extends Slot {
 	
 	@Override
 	public boolean mayPlace(ItemStack stack) {
-		System.out.println("is "+stack+" compatible with tag "+stack.getOrCreateTag());
+		//System.out.println("is "+stack+" compatible with tag "+stack.getOrCreateTag());
 		CompoundTag tag = stack.getOrCreateTag();
 		if (tag.isEmpty()) return false;
 		PartData part = UtilParse.parsePartFromCompound(tag);
@@ -36,7 +36,8 @@ public class PartItemSlot extends Slot {
 	
 	@Override
 	public void setChanged() {
-		super.setChanged();
+		//System.out.println("THIS CHANGED "+this);
+		//super.setChanged();
 	}
 	
 	@Override
@@ -46,6 +47,7 @@ public class PartItemSlot extends Slot {
 	
 	@Override
 	public boolean mayPickup(Player player) {
+		if (data.getName().equals(PartSlot.PILOT_SLOT_NAME)) return false;
 		return true;
 	}
 

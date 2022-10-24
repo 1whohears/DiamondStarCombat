@@ -10,7 +10,6 @@ import net.minecraft.world.phys.Vec3;
 
 public abstract class PartData {
 	
-	private final String id; // TODO find a way to not need this id
 	private EntityAbstractAircraft parent;
 	
 	public static enum PartType {
@@ -18,62 +17,59 @@ public abstract class PartData {
 		TURRENT
 	}
 	
-	protected PartData(String id) {
-		this.id = id;
+	protected PartData() {
 	}
 	
 	public PartData(CompoundTag tag) {
-		id = tag.getString("id");
 	}
 	
 	public CompoundTag write() {
 		CompoundTag tag = new CompoundTag();
 		tag.putInt("type", this.getType().ordinal());
-		tag.putString("id", id);
 		return tag;
 	}
 	
 	public PartData(FriendlyByteBuf buffer) {
 		// type int is read in DataSerializers
-		id = buffer.readUtf();
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
 		buffer.writeInt(this.getType().ordinal());
-		buffer.writeUtf(id);
 	}
 	
 	public abstract PartType getType();
 	
-	public String getId() {
+	/*public String getId() {
 		return id;
-	}
+	}*/
 	
 	public EntityAbstractAircraft getParent() {
 		return parent;
 	}
 	
-	public void setup(EntityAbstractAircraft craft, Vec3 pos) {
-		System.out.println("setting up part "+getId()+" client side "+craft.level.isClientSide);
+	public void setup(EntityAbstractAircraft craft, String slotId, Vec3 pos) {
+		System.out.println("setting up part "+this+" client side "+craft.level.isClientSide);
 		parent = craft;
 	}
 	
-	public void clientSetup(EntityAbstractAircraft craft, Vec3 pos) {
-		System.out.println("setting up part "+getId()+" client side "+craft.level.isClientSide);
+	public void clientSetup(EntityAbstractAircraft craft, String slotId, Vec3 pos) {
+		System.out.println("setting up part "+this+" client side "+craft.level.isClientSide);
 		parent = craft;
 	}
 	
-	public void remove(EntityAbstractAircraft craft) {
+	public abstract boolean isSetup(String slotId);
+	
+	public void remove(String slotId) {
 		
 	}
 	
-	public void clientRemove(EntityAbstractAircraft craft) {
+	public void clientRemove(String slotId) {
 		
 	}
 	
 	@Override
 	public String toString() {
-		return "("+getType().name()+"@"+getId()+")";
+		return "("+getType().name()+")";
 	}
 	
 	public abstract float getWeight();

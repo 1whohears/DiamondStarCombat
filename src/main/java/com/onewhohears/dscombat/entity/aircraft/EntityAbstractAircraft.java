@@ -12,10 +12,12 @@ import com.onewhohears.dscombat.common.container.AircraftMenuContainer;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ServerBoundRequestPlaneDataPacket;
 import com.onewhohears.dscombat.data.AircraftPresets;
+import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartsManager;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponSystem;
+import com.onewhohears.dscombat.entity.parts.EntityAbstractPart;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.weapon.EntityFlare;
 import com.onewhohears.dscombat.init.DataSerializers;
@@ -141,7 +143,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
-		// TODO couldn't re-attach entity to player
+		// TODO couldn't re-attach entity to player error killing this entity on world load
 		String initType = compound.getString("preset");
 		System.out.println("aircraft read data client side = "+level.isClientSide+" init type = "+initType);
 		if (!initType.isEmpty()) {
@@ -613,10 +615,10 @@ public abstract class EntityAbstractAircraft extends Entity {
     public void positionRider(Entity passenger) {
 		//if (!this.hasPassenger(passenger)) return;
 		//System.out.println("POSITION RIDER "+passenger);
-		if (!(passenger instanceof EntitySeat seat)) return;
- 		Vec3 pos = position();
-		Vec3 seatPos = UtilAngles.rotateVector(seat.getRelativePos(), getQ());
-		passenger.setPos(pos.add(seatPos));
+		if (passenger instanceof EntityAbstractPart seat) {
+ 			Vec3 seatPos = UtilAngles.rotateVector(seat.getRelativePos(), getQ());
+			passenger.setPos(position().add(seatPos));
+		}
 	}
 	
 	/*@Override
@@ -627,10 +629,10 @@ public abstract class EntityAbstractAircraft extends Entity {
 	@Nullable
 	@Override
     public Entity getControllingPassenger() {
-        List<Entity> list = getPassengers();
-        if (list.isEmpty()) return null;
-        if (!(list.get(0) instanceof EntitySeat seat)) return null;
-        return seat.getPlayer();
+        for (EntitySeat seat : getSeats()) 
+        	if (seat.getSlotId().equals(PartSlot.PILOT_SLOT_NAME)) 
+        		return seat.getPlayer();
+        return null;
     }
 	
 	@Override
@@ -893,13 +895,19 @@ public abstract class EntityAbstractAircraft extends Entity {
     
     public List<Player> getRidingPlayers() {
     	List<Player> players = new ArrayList<Player>();
-    	for (Entity e : getPassengers()) {
-    		if (e instanceof EntitySeat seat) {
-    			Player p = seat.getPlayer();
-    			if (p != null) players.add(p); 
-    		}
+    	for (EntitySeat seat : getSeats()) {
+    		Player p = seat.getPlayer();
+			if (p != null) players.add(p); 
     	}
     	return players;
+    }
+    
+    public List<EntitySeat> getSeats() {
+    	List<EntitySeat> seats = new ArrayList<EntitySeat>();
+    	for (Entity e : getPassengers())
+    		if (e instanceof EntitySeat seat) 
+    			seats.add(seat);
+    	return seats;
     }
     
     public void sounds() {

@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.data.parts.PartsManager;
 import com.onewhohears.dscombat.data.parts.SeatData;
@@ -56,10 +57,14 @@ public class AircraftPresets {
 		CompoundTag tag = new CompoundTag();
 		// parts
 		PartsManager pm = new PartsManager();
-		pm.addSlot("pilot_seat", SlotType.SEAT, new Vec3(0, -0.5, 0), 40, 60);
-		pm.addSlot("left_wing_1", SlotType.WING, new Vec3(-1, 0, 0), 60, 60);
-		pm.addSlot("right_wing_1", SlotType.WING, new Vec3(1, 0, 0), 80, 60);
-		pm.addPart(new SeatData("pilot_seat"), "pilot_seat", false);
+		pm.addSlot(PartSlot.PILOT_SLOT_NAME, SlotType.SEAT, new Vec3(0, -0.5, 0), 40, 60);
+		pm.addSlot("seat2", SlotType.SEAT, new Vec3(0, -0.5, -1), 60, 60);
+		pm.addSlot("seat3", SlotType.SEAT, new Vec3(0, -0.5, -2), 80, 60);
+		pm.addSlot("left_wing_1", SlotType.WING, new Vec3(-1, 0, 0), 100, 60);
+		pm.addSlot("right_wing_1", SlotType.WING, new Vec3(1, 0, 0), 120, 60);
+		pm.addPart(new SeatData(), "pilot_seat", false);
+		pm.addPart(new SeatData(), "seat2", false);
+		pm.addPart(new SeatData(), "seat3", false);
 		pm.write(tag);
 		System.out.println(pm);
 		// weapons

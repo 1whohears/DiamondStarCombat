@@ -5,17 +5,20 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.onewhohears.dscombat.common.container.AircraftMenuContainer;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundAddPartPacket;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundRemovePartPacket;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
+import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
 
@@ -117,14 +120,45 @@ public class PartsManager {
 		return total;
 	}
 	
-	public Container getContainer() {
+	public Container getContainer(AircraftMenuContainer menu) {
 		System.out.println("GETTING CONTAINER client side = "+parent.level.isClientSide+" for slots "+this);
-		Container c = new SimpleContainer(slots.size());
+		Container c = new SimpleContainer(slots.size()){
+			@Override
+			public void setChanged() {
+				super.setChanged();
+				menu.slotsChanged(this);
+			}
+		};
 		for (int i = 0; i < slots.size(); ++i) if (slots.get(i).filled()) {
 			c.setItem(i, slots.get(i).getPartData().getItemStack());
-			System.out.println("putting item in slot "+i+" "+c.getItem(i).getOrCreateTag()); // TODO the item nbt is empty here
+			System.out.println("putting item in slot "+i+" "+c.getItem(i)+" "+c.getItem(i).getTag());
 		}
 		return c;
+	}
+	
+	public void readContainer(Container c) {
+		System.out.println("READING CHANGED CONTAINER client side "+parent.level.isClientSide+" items "+c);
+		if (c.getContainerSize() != slots.size()) {
+			System.out.println("ERROR! THIS CONTAINER HAS THE WRONG NUMBER OF SLOTS!");
+			// TODO kick client with better error message
+			return;
+		}
+		for (int i = 0; i < c.getContainerSize(); ++i) {
+			ItemStack stack = c.getItem(i);
+			PartSlot slot = slots.get(i);
+			if (stack.isEmpty()) {
+				if (slot.filled()) removePart(slot.getName(), false);
+				continue;
+			}
+			PartData data = UtilParse.parsePartFromCompound(stack.getTag());
+			if (data == null) {
+				System.out.println("ERROR! COULD NOT GET PART DATA FROM "+stack+" "+stack.getTag());
+				continue;
+			}
+			if (data.isSetup(slot.getName())) continue;
+			if (slot.filled()) removePart(slot.getName(), false);
+			addPart(data, slot.getName(), false);
+		}
 	}
 	
 	public List<PartSlot> getSlots() {

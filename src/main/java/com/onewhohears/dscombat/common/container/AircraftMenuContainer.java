@@ -19,11 +19,7 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
 	
 	private Container playerInv;
 	private PartsManager pm;
-	
-	/*public AircraftMenuContainer(int id, Inventory playerInv) {
-		this(id, playerInv, new PartsManager());
-		System.out.println("AircraftMenuContainer CLIENT");
-	}*/
+	private boolean loaded = false;
 	
 	public AircraftMenuContainer(int id, Inventory playerInv) {
 		super(ModContainers.PLANE_MENU.get(), id);
@@ -31,7 +27,7 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
 		this.playerInv = playerInv;
 		if (playerInv.player.getRootVehicle() instanceof EntityAbstractAircraft plane) {
 			this.pm = plane.partsManager;
-			Container partsInv = pm.getContainer();
+			Container partsInv = pm.getContainer(this);
 			List<PartSlot> slots = plane.partsManager.getSlots();
 			// create plane menu container
 			for (int i = 0; i < partsInv.getContainerSize(); ++i) {
@@ -50,6 +46,7 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
 			//System.out.println("playerInv i = "+i);
 			this.addSlot(new Slot(playerInv, i, 48 + i * 18, 196));
 		}
+		this.loaded = true;
 	}
 
 	@Override
@@ -59,8 +56,9 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
 	
 	@Override
 	public void slotsChanged(Container inventory) {
-		System.out.println("slots changed "+inventory);
-		super.broadcastChanges();
+		//System.out.println("SLOTS CHANGED "+inventory);
+		if (this.loaded) pm.readContainer(inventory);
+		super.slotsChanged(inventory);
 	}
 	
 	@Override
@@ -73,7 +71,11 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
     }
 
     public PartsManager getPartsInventory() {
-        return pm;
+        return this.pm;
+    }
+    
+    public boolean isLoaded() {
+    	return this.loaded;
     }
 
 }

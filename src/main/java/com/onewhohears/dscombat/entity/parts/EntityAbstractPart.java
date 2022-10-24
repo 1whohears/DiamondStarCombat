@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.entity.parts;
 
 import com.onewhohears.dscombat.init.DataSerializers;
+import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -21,6 +22,12 @@ public class EntityAbstractPart extends Entity {
 	public EntityAbstractPart(EntityType<?> pEntityType, Level pLevel) {
 		super(pEntityType, pLevel);
 	}
+	
+	public EntityAbstractPart(EntityType<?> pEntityType, Level level, String slotId, Vec3 pos) {
+		this(pEntityType, level);
+		this.setRelativePos(pos);
+		this.setSlotId(slotId);
+	}
 
 	@Override
 	protected void defineSynchedData() {
@@ -30,20 +37,14 @@ public class EntityAbstractPart extends Entity {
 
 	@Override
 	protected void readAdditionalSaveData(CompoundTag compound) {
-		double x = compound.getDouble("relposx");
-		double y = compound.getDouble("relposy");
-		double z = compound.getDouble("relposz");
-		setRelativePos(new Vec3(x, y, z));
-		this.setPartId(compound.getString("id"));
+		setRelativePos(UtilParse.readVec3(compound, "relpos"));
+		this.setSlotId(compound.getString("id"));
 	}
 
 	@Override
 	protected void addAdditionalSaveData(CompoundTag compound) {
-		Vec3 pos = getRelativePos();
-		compound.putDouble("relposx", pos.x);
-		compound.putDouble("relposy", pos.y);
-		compound.putDouble("relposz", pos.z);
-		compound.putString("id", this.getPartId());
+		UtilParse.writeVec3(compound, getRelativePos(), "relpos");
+		compound.putString("id", this.getSlotId());
 	}
 
 	@Override
@@ -70,11 +71,11 @@ public class EntityAbstractPart extends Entity {
 		entityData.set(POS, pos);
 	}
 	
-	public String getPartId() {
+	public String getSlotId() {
 		return entityData.get(ID);
 	}
 	
-	public void setPartId(String id) {
+	public void setSlotId(String id) {
 		entityData.set(ID, id);
 	}
 

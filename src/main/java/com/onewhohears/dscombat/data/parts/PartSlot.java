@@ -12,6 +12,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class PartSlot {
 	
+	public static final String PILOT_SLOT_NAME = "pilot_seat";
+	
 	private final String name;
 	private final SlotType type;
 	private final Vec3 pos;
@@ -78,11 +80,11 @@ public class PartSlot {
 	}
 	
 	public void setup(EntityAbstractAircraft plane) {
-		if (filled()) data.setup(plane, pos);
+		if (filled()) data.setup(plane, name, pos);
 	}
 	
 	public void clientSetup(EntityAbstractAircraft plane) {
-		if (filled()) data.clientSetup(plane, pos);
+		if (filled()) data.clientSetup(plane, name, pos);
 	}
 	
 	public boolean addPartData(PartData data, EntityAbstractAircraft plane) {
@@ -90,14 +92,14 @@ public class PartSlot {
 		if (!isCompatible(data)) return false;
 		this.data = data;
 		if (plane == null) return true;
-		if (plane.level.isClientSide) data.clientSetup(plane, pos);
-		else data.setup(plane, pos);
+		if (plane.level.isClientSide) data.clientSetup(plane, name, pos);
+		else data.setup(plane, name, pos);
 		return true;
 	}
 	
 	public boolean removePartData(EntityAbstractAircraft plane) {
-		if (plane.level.isClientSide) data.clientRemove(plane);
-		else data.remove(plane);
+		if (plane.level.isClientSide) data.clientRemove(name);
+		else data.remove(name);
 		if (filled()) {
 			data = null;
 			return true;

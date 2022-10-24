@@ -28,10 +28,8 @@ public class EntitySeat extends EntityAbstractPart {
 		super(type, level);
 	}
 	
-	public EntitySeat(Level level, String seatId, Vec3 pos) {
-		this(ModEntities.SEAT.get(), level);
-		this.setRelativePos(pos);
-		this.setPartId(seatId);
+	public EntitySeat(Level level, String slotId, Vec3 pos) {
+		super(ModEntities.SEAT.get(), level, slotId, pos);
 	}
 
 	@Override

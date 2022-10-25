@@ -8,6 +8,7 @@ import com.onewhohears.dscombat.client.renderer.RendererEntityAbstractWeapon;
 import com.onewhohears.dscombat.client.renderer.RendererEntityInvisible;
 import com.onewhohears.dscombat.client.renderer.RendererEntityWeaponRack;
 import com.onewhohears.dscombat.client.renderer.model.EntityModelBullet1;
+import com.onewhohears.dscombat.client.renderer.model.EntityModelF16;
 import com.onewhohears.dscombat.client.renderer.model.EntityModelMissile1;
 import com.onewhohears.dscombat.client.renderer.model.EntityModelTestPlane;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
@@ -47,6 +48,7 @@ public class ClientModEvents {
 		event.registerLayerDefinition(EntityModelTestPlane.LAYER_LOCATION, EntityModelTestPlane::createBodyLayer);
 		event.registerLayerDefinition(EntityModelBullet1.LAYER_LOCATION, EntityModelBullet1::createBodyLayer);
 		event.registerLayerDefinition(EntityModelMissile1.LAYER_LOCATION, EntityModelMissile1::createBodyLayer);
+		event.registerLayerDefinition(EntityModelF16.LAYER_LOCATION, EntityModelF16::createBodyLayer);
 	}
 	
 	@SubscribeEvent
@@ -55,6 +57,9 @@ public class ClientModEvents {
 		event.registerEntityRenderer(ModEntities.TEST_PLANE.get(), 
 				(context) -> new RendererEntityAbstractAircraft<EntityPlane>(context, 
 						new EntityModelTestPlane<EntityPlane>(models.bakeLayer(EntityModelTestPlane.LAYER_LOCATION))));
+		event.registerEntityRenderer(ModEntities.F16.get(), 
+				(context) -> new RendererEntityAbstractAircraft<EntityPlane>(context, 
+						new EntityModelTestPlane<EntityPlane>(models.bakeLayer(EntityModelF16.LAYER_LOCATION))));
 		event.registerEntityRenderer(ModEntities.BULLET.get(), 
 				(context) -> new RendererEntityAbstractWeapon<EntityBullet>(context, 
 						new EntityModelBullet1<EntityBullet>(models.bakeLayer(EntityModelBullet1.LAYER_LOCATION))));

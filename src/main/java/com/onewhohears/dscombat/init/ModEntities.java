@@ -33,6 +33,11 @@ public class ModEntities {
 					new ResourceLocation(DSCombatMod.MODID, "textures/entities/basic_plane.png")), 
 					EntityDimensions.scalable(1f, 1f)));
 	
+	public static final RegistryObject<EntityType<EntityPlane>> F16 = ENTITIES.register("f16", 
+			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
+					new ResourceLocation(DSCombatMod.MODID, "textures/entities/f16.png")), 
+					EntityDimensions.scalable(1f, 1f)));
+	
 	public static final RegistryObject<EntityType<EntitySeat>> SEAT = ENTITIES.register("seat", 
 			() -> createEntityType(EntitySeat::new, EntityDimensions.scalable(0f, 0f)));
 	

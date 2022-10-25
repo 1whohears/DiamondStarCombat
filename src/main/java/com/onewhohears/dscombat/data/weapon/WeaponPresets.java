@@ -13,7 +13,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class WeaponPresets {
 	
-	public static List<CompoundTag> weapons = new ArrayList<CompoundTag>();
+	public static List<WeaponData> weapons = new ArrayList<WeaponData>();
+	public static List<CompoundTag> weaponNbt = new ArrayList<CompoundTag>();
 	
 	public static void setupPresets() {
 		MissileData m1 = new MissileData("fox3_1", Vec3.ZERO, 
@@ -33,20 +34,30 @@ public class WeaponPresets {
 				true, true, true, 100d, 4f,
 				TargetType.GROUND, GuidanceType.PITBULL,
 				4.0f, 0.02d, 2.5d, -1);
-		weapons.add(m1.write());
-		weapons.add(m2.write());
-		weapons.add(b1.write());
-		weapons.add(m3.write());
+		weapons.add(m1);
+		weapons.add(m2);
+		weapons.add(b1);
+		weapons.add(m3);
+		weaponNbt.add(m1.write());
+		weaponNbt.add(m2.write());
+		weaponNbt.add(b1.write());
+		weaponNbt.add(m3.write());
 	}
 	
 	@Nullable
-	public static CompoundTag getById(String id) {
-		for (CompoundTag w : weapons) if (w.getString("id").equals(id)) return w.copy();
+	public static CompoundTag getNbtById(String id) {
+		for (CompoundTag w : weaponNbt) if (w.getString("id").equals(id)) return w.copy();
+		return null;
+	}
+	
+	@Nullable
+	public static WeaponData getById(String id) {
+		for (WeaponData w : weapons) if (w.getId().equals(id)) return w.copy();
 		return null;
 	}
 	
 	public static MissileData getDefaultTestMissile() {
-		return new MissileData(weapons.get(0));
+		return new MissileData(weaponNbt.get(0));
 	}
 	
 }

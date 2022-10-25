@@ -144,10 +144,14 @@ public class PartsManager {
 			return;
 		}
 		for (int i = 0; i < c.getContainerSize(); ++i) {
+			System.out.println("### CHECKING CONTAINER "+i);
 			ItemStack stack = c.getItem(i);
 			PartSlot slot = slots.get(i);
+			System.out.println("stack = "+stack+" "+stack.getTag());
+			System.out.println("slot = "+slot);
 			if (stack.isEmpty()) {
-				if (slot.filled()) removePart(slot.getName(), false);
+				removePart(slot.getName(), false);
+				System.out.println("REMOVING CAUSE EMPTY");
 				continue;
 			}
 			PartData data = UtilParse.parsePartFromCompound(stack.getTag());
@@ -155,8 +159,13 @@ public class PartsManager {
 				System.out.println("ERROR! COULD NOT GET PART DATA FROM "+stack+" "+stack.getTag());
 				continue;
 			}
-			if (data.isSetup(slot.getName())) continue;
-			if (slot.filled()) removePart(slot.getName(), false);
+			if (data.isSetup(slot.getName(), parent)) {
+				System.out.println("ALREADY SETUP");
+				continue;
+			}
+			System.out.println("REMOVING");
+			removePart(slot.getName(), false);
+			System.out.println("ADDING");
 			addPart(data, slot.getName(), false);
 		}
 	}

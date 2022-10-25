@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.data.parts;
 
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.parts.EntityAbstractPart;
 import com.onewhohears.dscombat.init.ModItems;
@@ -15,9 +16,9 @@ public class WeaponRackData extends PartData {
 	
 	public final String weaponId;
 	
-	public WeaponRackData(float weight, WeaponData weapon) {
+	public WeaponRackData(float weight, String preset) {
 		super(weight);
-		this.weaponId = weapon.getId();
+		this.weaponId = preset;
 	}
 	
 	public WeaponRackData(CompoundTag tag) {
@@ -49,12 +50,20 @@ public class WeaponRackData extends PartData {
 	@Override
 	public void setup(EntityAbstractAircraft craft, String slotId, Vec3 pos) {
 		super.setup(craft, slotId, pos);
-		if (isSetup(slotId)) return;
+		if (!isSetup(slotId, craft)) {
+			
+		}
 		// TODO setup weapon rack
+		WeaponData data = craft.weaponSystem.get(weaponId, slotId);
+		if (data == null) {
+			data = WeaponPresets.getById(weaponId);
+			data.setSlot(slotId);
+			craft.weaponSystem.addWeapon(data, true);
+		}
 	}
 	
 	@Override
-	public boolean isSetup(String slotId) {
+	public boolean isSetup(String slotId, EntityAbstractAircraft craft) {
 		EntityAbstractAircraft p = getParent();
 		if (p == null) return false;
 		for (EntityAbstractPart part : p.getPartEntities()) 
@@ -66,6 +75,7 @@ public class WeaponRackData extends PartData {
 	@Override
 	public void remove(String slotId) {
 		// TODO remove weapon rack
+		this.getParent().weaponSystem.removeWeapon(weaponId, slotId, true);
 	}
 
 	@Override

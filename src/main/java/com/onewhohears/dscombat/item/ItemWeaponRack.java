@@ -15,8 +15,8 @@ public class ItemWeaponRack extends ItemPart {
 	
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-		ItemStack seat1 = new ItemStack(ModItems.SEAT.get());
-		seat1.setTag(new WeaponRackData(0.01f).write());
+		ItemStack seat1 = new ItemStack(ModItems.WEAPON_RACK.get());
+		seat1.setTag(new WeaponRackData(0.01f, "fox3_1").write());
 		items.add(seat1);
 	}
 

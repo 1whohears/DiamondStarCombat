@@ -58,12 +58,12 @@ public class UtilPacket {
 		}
 	}
 	
-	public static void weaponAmmoPacket(int id, String weaponId, int ammo) {
+	public static void weaponAmmoPacket(int id, String weaponId, String slotId, int ammo) {
 		System.out.println("ammo packet recieved");
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityAbstractAircraft plane) {
-			WeaponData w = plane.weaponSystem.get(weaponId);
+			WeaponData w = plane.weaponSystem.get(weaponId, slotId);
 			if (w != null) w.setCurrentAmmo(ammo);
 		}
 	}
@@ -93,11 +93,11 @@ public class UtilPacket {
 		}
 	}
 	
-	public static void removeWeaponPacket(int id, String wid) {
+	public static void removeWeaponPacket(int id, String wid, String slotId) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityAbstractAircraft plane) {
-			plane.weaponSystem.removeWeapon(wid, false);
+			plane.weaponSystem.removeWeapon(wid, slotId, false);
 		}
 	}
 	

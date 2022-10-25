@@ -592,12 +592,22 @@ public abstract class EntityAbstractAircraft extends Entity {
 		return InteractionResult.SUCCESS;
 	}
 	
-	public boolean rideAvailableSeat(Entity e) {
-		for (EntitySeat seat : getSeats()) 
-			if (e.startRiding(seat)) {
-				this.newRiderCooldown = 10;
-				return true;
+	private boolean ridePilotSeat(Entity e, List<EntitySeat> seats) {
+		for (EntitySeat seat : seats) 
+			if (seat.getSlotId().equals(PartSlot.PILOT_SLOT_NAME)) {
+				if (e.startRiding(seat)) {
+					this.newRiderCooldown = 10;
+					return true;
+				} else return false;
 			}
+		return false;
+	}
+	
+	public boolean rideAvailableSeat(Entity e) {
+		List<EntitySeat> seats = getSeats();
+		if (ridePilotSeat(e, seats)) return true;
+		for (EntitySeat seat : seats) 
+			if (e.startRiding(seat)) return true;
 		return false;
 	}
 	

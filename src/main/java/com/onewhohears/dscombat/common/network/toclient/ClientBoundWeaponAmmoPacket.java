@@ -15,17 +15,20 @@ public class ClientBoundWeaponAmmoPacket extends IPacket {
 	
 	public final int id;
 	public final String weaponId;
+	public final String slotId;
 	public final int ammo;
 	
-	public ClientBoundWeaponAmmoPacket(int id, String weaponId, int ammo) {
+	public ClientBoundWeaponAmmoPacket(int id, String weaponId, String slotId, int ammo) {
 		this.id = id;
 		this.weaponId = weaponId;
+		this.slotId = slotId;
 		this.ammo = ammo;
 	}
 	
 	public ClientBoundWeaponAmmoPacket(FriendlyByteBuf buffer) {
 		id = buffer.readInt();
 		weaponId = buffer.readUtf();
+		slotId = buffer.readUtf();
 		ammo = buffer.readInt();
 	}
 	
@@ -33,6 +36,7 @@ public class ClientBoundWeaponAmmoPacket extends IPacket {
 	public void encode(FriendlyByteBuf buffer) {
 		buffer.writeInt(id);
 		buffer.writeUtf(weaponId);
+		buffer.writeUtf(slotId);
 		buffer.writeInt(ammo);
 	}
 
@@ -41,7 +45,7 @@ public class ClientBoundWeaponAmmoPacket extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilPacket.weaponAmmoPacket(id, weaponId, ammo);
+				UtilPacket.weaponAmmoPacket(id, weaponId, slotId, ammo);
 				success.set(true);
 			});
 		});

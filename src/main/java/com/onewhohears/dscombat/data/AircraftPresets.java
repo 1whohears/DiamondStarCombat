@@ -69,10 +69,10 @@ public class AircraftPresets {
 		System.out.println(pm);
 		// weapons
 		WeaponSystem ws = new WeaponSystem();
-		WeaponData b1 = new BulletData(WeaponPresets.getById("bullet_1"));
-		WeaponData gbu = new MissileData(WeaponPresets.getById("gbu"));
-		WeaponData f31 = new MissileData(WeaponPresets.getById("fox3_1"));
-		WeaponData f21 = new MissileData(WeaponPresets.getById("fox2_1"));
+		WeaponData b1 = new BulletData(WeaponPresets.getNbtById("bullet_1"));
+		WeaponData gbu = new MissileData(WeaponPresets.getNbtById("gbu"));
+		WeaponData f31 = new MissileData(WeaponPresets.getNbtById("fox3_1"));
+		WeaponData f21 = new MissileData(WeaponPresets.getNbtById("fox2_1"));
 		b1.setCurrentAmmo(b1.getMaxAmmo());
 		gbu.setCurrentAmmo(gbu.getMaxAmmo());
 		f31.setCurrentAmmo(f31.getMaxAmmo());

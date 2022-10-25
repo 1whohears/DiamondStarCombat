@@ -1,7 +1,5 @@
 package com.onewhohears.dscombat.data.weapon;
 
-import java.nio.charset.Charset;
-
 import javax.annotation.Nullable;
 
 import com.mojang.math.Quaternion;
@@ -9,6 +7,7 @@ import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundWeaponAmmoPacket;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
+import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
@@ -30,6 +29,7 @@ public abstract class WeaponData {
 	private int recoilTime;
 	private String failedLaunchReason;
 	private boolean canShootOnGround;
+	private String slotId = "";
 	
 	public static enum WeaponType {
 		BULLET,
@@ -49,7 +49,7 @@ public abstract class WeaponData {
 	public WeaponData(CompoundTag tag) {
 		String preset = tag.getString("preset");
 		if (!preset.isEmpty()) {
-			CompoundTag data = WeaponPresets.getById(preset);
+			CompoundTag data = WeaponPresets.getNbtById(preset);
 			if (data != null) tag.merge(data);
 		}
 		id = tag.getString("id");
@@ -59,6 +59,7 @@ public abstract class WeaponData {
 		maxAmmo = tag.getInt("maxAmmo");
 		fireRate = tag.getInt("fireRate");
 		canShootOnGround = tag.getBoolean("canShootOnGround");
+		slotId = tag.getString("slotId");
 	}
 	
 	public CompoundTag write() {
@@ -71,6 +72,7 @@ public abstract class WeaponData {
 		tag.putInt("maxAmmo", maxAmmo);
 		tag.putInt("fireRate", fireRate);
 		tag.putBoolean("canShootOnGround", canShootOnGround);
+		tag.putString("slotId", slotId);
 		return tag;
 	}
 	
@@ -80,32 +82,26 @@ public abstract class WeaponData {
 	
 	public void read(FriendlyByteBuf buffer) {
 		// type int is read in DataSerializers
-		int idLength = buffer.readInt();
-		id = buffer.readCharSequence(idLength, Charset.defaultCharset()).toString();
-		double x, y, z;
-		x = buffer.readDouble();
-		y = buffer.readDouble();
-		z = buffer.readDouble();
-		pos = new Vec3(x, y, z);
+		id = buffer.readUtf();
+		pos = DataSerializers.VEC3.read(buffer);
 		maxAge = buffer.readInt();
 		currentAmmo = buffer.readInt();
 		maxAmmo = buffer.readInt();
 		fireRate = buffer.readInt();
 		canShootOnGround = buffer.readBoolean();
+		slotId = buffer.readUtf();
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
 		buffer.writeInt(this.getType().ordinal());
-		buffer.writeInt(getId().length());
-		buffer.writeCharSequence(getId(), Charset.defaultCharset());
-		buffer.writeDouble(getLaunchPos().x);
-		buffer.writeDouble(getLaunchPos().y);
-		buffer.writeDouble(getLaunchPos().z);
+		buffer.writeUtf(id);
+		DataSerializers.VEC3.write(buffer, pos);
 		buffer.writeInt(maxAge);
 		buffer.writeInt(currentAmmo);
 		buffer.writeInt(maxAmmo);
 		buffer.writeInt(fireRate);
 		buffer.writeBoolean(canShootOnGround);
+		buffer.writeUtf(slotId);
 	}
 	
 	public abstract WeaponType getType();
@@ -114,7 +110,7 @@ public abstract class WeaponData {
 	
 	public void updateClientAmmo(EntityAbstractAircraft vehicle) {
 		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> vehicle), 
-				new ClientBoundWeaponAmmoPacket(vehicle.getId(), this.getId(), this.getCurrentAmmo()));
+				new ClientBoundWeaponAmmoPacket(vehicle.getId(), this.getId(), this.slotId, this.getCurrentAmmo()));
 	}
 	
 	protected void tick() {
@@ -215,7 +211,7 @@ public abstract class WeaponData {
 	
 	@Override
 	public boolean equals(Object o) {
-		if (o instanceof WeaponData w) return w.getId().equals(id);
+		if (o instanceof WeaponData w) return w.getId().equals(id) && w.getSlotId().equals(slotId);
 		return false;
 	}
 	
@@ -224,6 +220,28 @@ public abstract class WeaponData {
 	@Override
 	public String toString() {
 		return "["+id+":"+this.getType().toString()+"]";
+	}
+	
+	public String getSlotId() {
+		return slotId;
+	}
+	
+	public boolean isInternal() {
+		return slotId == "";
+	}
+	
+	public void setSlot(String slotId) {
+		this.slotId = slotId;
+	}
+	
+	public void setInternal() {
+		this.slotId = "";
+	}
+	
+	public boolean idMatch(String id, String slotId) {
+		if (slotId == null) return false;
+		if (id == null) return false;
+		return this.id.equals(id) && this.slotId.equals(slotId);
 	}
 	
 }

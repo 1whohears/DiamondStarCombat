@@ -6,10 +6,12 @@ import com.onewhohears.dscombat.client.overlay.PilotOverlay;
 import com.onewhohears.dscombat.client.renderer.RendererEntityAbstractAircraft;
 import com.onewhohears.dscombat.client.renderer.RendererEntityAbstractWeapon;
 import com.onewhohears.dscombat.client.renderer.RendererEntityInvisible;
+import com.onewhohears.dscombat.client.renderer.RendererEntityWeaponRack;
 import com.onewhohears.dscombat.client.renderer.model.EntityModelBullet1;
 import com.onewhohears.dscombat.client.renderer.model.EntityModelMissile1;
 import com.onewhohears.dscombat.client.renderer.model.EntityModelTestPlane;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
+import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
 import com.onewhohears.dscombat.entity.weapon.EntityBullet;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.init.ModEntities;
@@ -59,6 +61,8 @@ public class ClientModEvents {
 		event.registerEntityRenderer(ModEntities.MISSILE.get(), 
 				(context) -> new RendererEntityAbstractWeapon<EntityMissile>(context, 
 						new EntityModelMissile1<EntityMissile>(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION))));
+		event.registerEntityRenderer(ModEntities.WEAPON_RACK.get(), 
+				(context) -> new RendererEntityWeaponRack<EntityWeaponRack>(context));
 		event.registerEntityRenderer(ModEntities.SEAT.get(), RendererEntityInvisible::new);
 		event.registerEntityRenderer(ModEntities.CAMERA.get(), RendererEntityInvisible::new);
 		event.registerEntityRenderer(ModEntities.FLARE.get(), RendererEntityInvisible::new);

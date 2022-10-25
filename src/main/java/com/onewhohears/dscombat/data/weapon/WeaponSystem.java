@@ -58,7 +58,7 @@ public class WeaponSystem {
 	}
 	
 	public boolean addWeapon(WeaponData data, boolean updateClient) {
-		if (get(data.getId()) != null) return false;
+		if (get(data.getId(), data.getSlotId()) != null) return false;
 		weapons.add(data);
 		if (updateClient) {
 			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
@@ -67,17 +67,17 @@ public class WeaponSystem {
 		return true;
 	}
 	
-	public void removeWeapon(String id, boolean updateClient) {
-		boolean r = weapons.remove(get(id));
+	public void removeWeapon(String id, String slotId, boolean updateClient) {
+		boolean r = weapons.remove(get(id, slotId));
 		if (r && updateClient) {
 			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
-					new ClientBoundRemoveWeaponPacket(parent.getId(), id));
+					new ClientBoundRemoveWeaponPacket(parent.getId(), id, slotId));
 		}
 	}
 	
 	@Nullable
-	public WeaponData get(String id) {
-		for (WeaponData w : weapons) if (w.getId().equals(id)) return w;
+	public WeaponData get(String id, String slotId) {
+		for (WeaponData w : weapons) if (w.idMatch(id, slotId)) return w;
 		return null;
 	}
 	

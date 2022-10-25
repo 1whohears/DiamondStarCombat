@@ -15,21 +15,25 @@ public class ClientBoundRemoveWeaponPacket extends IPacket {
 	
 	public final int id;
 	public final String wid;
+	public final String slotId;
 	
-	public ClientBoundRemoveWeaponPacket(int id, String wid) {
+	public ClientBoundRemoveWeaponPacket(int id, String wid, String slotId) {
 		this.id = id;
 		this.wid = wid;
+		this.slotId = slotId;
 	}
 	
 	public ClientBoundRemoveWeaponPacket(FriendlyByteBuf buffer) {
 		id = buffer.readInt();
 		wid = buffer.readUtf();
+		slotId = buffer.readUtf();
 	}
 	
 	@Override
 	public void encode(FriendlyByteBuf buffer) {
 		buffer.writeInt(id);
 		buffer.writeUtf(wid);
+		buffer.writeUtf(slotId);
 	}
 
 	@Override
@@ -37,7 +41,7 @@ public class ClientBoundRemoveWeaponPacket extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilPacket.removeWeaponPacket(id, wid);
+				UtilPacket.removeWeaponPacket(id, wid, slotId);
 				success.set(true);
 			});
 		});

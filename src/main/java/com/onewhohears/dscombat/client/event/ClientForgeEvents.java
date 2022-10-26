@@ -172,13 +172,6 @@ public final class ClientForgeEvents {
 	@SubscribeEvent
 	public static void onAttackEntity(AttackEntityEvent event) {
 		Minecraft m = Minecraft.getInstance();
-		/*if (m.hitResult.getType() == HitResult.Type.ENTITY) {
-			EntityHitResult hit = (EntityHitResult) m.hitResult;
-			if (hit.getEntity().equals(m.player)) {
-				event.setCanceled(true);
-				//System.out.println("canceled");
-			}
-		}*/
 		if (event.getTarget().equals(m.player)) {
 			event.setCanceled(true);
 			//System.out.println("canceled");
@@ -189,38 +182,25 @@ public final class ClientForgeEvents {
 	public static void onScrollInput(InputEvent.MouseScrollingEvent event) {
 		//System.out.println(event.getMouseX()+" "+event.getMouseY());
 		//System.out.println("mouse scroll "+event.getScrollDelta());
-		// TODO scroll to select weapon
 	}
 	
 	private static VertexBuffer pingBuffer;
 	private static int colorR, colorG, colorB, colorA;
 	
 	private static void setDefaultColor() {
-		colorR = 0;
-		colorG = 255;
-		colorB = 0;
-		colorA = 255;
+		colorR = 0; colorG = 255; colorB = 0; colorA = 255;
 	}
 	
 	private static void setHoverColor() {
-		colorR = 255;
-		colorG = 255;
-		colorB = 0;
-		colorA = 255;
+		colorR = 255; colorG = 255; colorB = 0; colorA = 255;
 	}
 	
 	private static void setSelectedColor() {
-		colorR = 255;
-		colorG = 0;
-		colorB = 0;
-		colorA = 255;
+		colorR = 255; colorG = 0; colorB = 0; colorA = 255;
 	}
 	
 	private static void setFriendlyColor() {
-		colorR = 0;
-		colorG = 0;
-		colorB = 255;
-		colorA = 255;
+		colorR = 0; colorG = 0; colorB = 255; colorA = 255;
 	}
 	
 	private static final double tan1 = Math.tan(Math.toRadians(1));
@@ -239,59 +219,56 @@ public final class ClientForgeEvents {
 	public static void renderLevelStage(RenderLevelStageEvent event) {
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
-		if (player.getVehicle() instanceof EntitySeat seat 
-				&& seat.getVehicle() instanceof EntityAbstractAircraft plane) {
-			RadarSystem radar = plane.radarSystem;
-			if (radar == null) return;
-			List<RadarPing> pings = radar.getClientRadarPings();
-			int selected = radar.getClientSelectedPingIndex();
-			if (pings == null) return;
-			//System.out.println("RADAR PINGS");
-			RenderSystem.depthMask(false);
-			RenderSystem.disableCull();
-			RenderSystem.enableBlend();
-			RenderSystem.defaultBlendFunc();
-			RenderSystem.disableTexture();
-			GL11.glEnable(GL11.GL_LINE_SMOOTH);
-			GL11.glEnable(GL11.GL_DEPTH_TEST);
-			for (int i = 0; i < pings.size(); ++i) {
-				RadarPing p = pings.get(i);
-				//System.out.println(i+" "+p);
-				if (i == selected) setSelectedColor();
-				else if (i == hoverIndex) setHoverColor();
-				else if (p.isFriendly) setFriendlyColor();
-				else setDefaultColor();
-				
-				double x = p.pos.x, y = p.pos.y+0.02, z = p.pos.z;
-				double d = p.pos.distanceTo(plane.position());
-				
-				var tesselator = Tesselator.getInstance();
-				var buffer = tesselator.getBuilder();
-				if (pingBuffer != null) pingBuffer.close();
-				pingBuffer = new VertexBuffer();
-				buffer.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
-				
-				if (d < farDist) closeBox(buffer, x, y, z, d);
-				else farSquare(buffer, x, y, z, player);
-				
-				pingBuffer.bind();
-				pingBuffer.upload(buffer.end());
-				
-				Vec3 view = m.gameRenderer.getMainCamera().getPosition();
-				PoseStack poseStack = event.getPoseStack();
-				poseStack.pushPose();
-				poseStack.translate(-view.x, -view.y, -view.z);
-				var shader = GameRenderer.getPositionColorShader();
-				pingBuffer.drawWithShader(poseStack.last().pose(), event.getProjectionMatrix().copy(), shader);
-				poseStack.popPose();
-				
-				VertexBuffer.unbind();
-			}
-			RenderSystem.depthMask(true);
-			RenderSystem.disableBlend();
-			RenderSystem.enableCull();
-			RenderSystem.enableTexture();
+		if (!(player.getRootVehicle() instanceof EntityAbstractAircraft plane)) return;
+		RadarSystem radar = plane.radarSystem;
+		if (radar == null) return;
+		List<RadarPing> pings = radar.getClientRadarPings();
+		int selected = radar.getClientSelectedPingIndex();
+		if (pings == null) return;
+		//System.out.println("RADAR PINGS");
+		RenderSystem.depthMask(false);
+		RenderSystem.disableCull();
+		RenderSystem.enableBlend();
+		RenderSystem.defaultBlendFunc();
+		RenderSystem.disableTexture();
+		GL11.glEnable(GL11.GL_LINE_SMOOTH);
+		GL11.glEnable(GL11.GL_DEPTH_TEST);
+		for (int i = 0; i < pings.size(); ++i) {
+			RadarPing p = pings.get(i);
+			//System.out.println(i+" "+p);
+			if (i == selected) setSelectedColor();
+			else if (i == hoverIndex) setHoverColor();
+			else if (p.isFriendly) setFriendlyColor();
+			else setDefaultColor();
+			
+			var tesselator = Tesselator.getInstance();
+			var buffer = tesselator.getBuilder();
+			if (pingBuffer != null) pingBuffer.close();
+			pingBuffer = new VertexBuffer();
+			buffer.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
+			
+			double x = p.pos.x, y = p.pos.y+0.02, z = p.pos.z;
+			double d = p.pos.distanceTo(plane.position());
+			if (d < farDist) closeBox(buffer, x, y, z, d);
+			else farSquare(buffer, x, y, z, player);
+			
+			pingBuffer.bind();
+			pingBuffer.upload(buffer.end());
+			
+			Vec3 view = m.gameRenderer.getMainCamera().getPosition();
+			PoseStack poseStack = event.getPoseStack();
+			poseStack.pushPose();
+			poseStack.translate(-view.x, -view.y, -view.z);
+			var shader = GameRenderer.getPositionColorShader();
+			pingBuffer.drawWithShader(poseStack.last().pose(), event.getProjectionMatrix().copy(), shader);
+			poseStack.popPose();
+			
+			VertexBuffer.unbind();
 		}
+		RenderSystem.depthMask(true);
+		RenderSystem.disableBlend();
+		RenderSystem.enableCull();
+		RenderSystem.enableTexture();
 	}
 	
 	private static void farSquare(BufferBuilder buffer, double x, double y, double z, Player player) {
@@ -344,45 +321,6 @@ public final class ClientForgeEvents {
 		buffer.vertex(x-w, y+w2, z-w).color(colorR, colorG, colorB, colorA).endVertex();
 	}
 	
-	/*@SubscribeEvent(priority = EventPriority.NORMAL)
-	public static void renderOverlay(RenderGuiOverlayEvent.Post event) {
-		Minecraft m = Minecraft.getInstance();
-		if (m.options.hideGui) return;
-		if (m.gameMode.getPlayerMode() == GameType.SPECTATOR) return;
-		final var player = m.player;
-		if (!(player.getRootVehicle() instanceof EntityAbstractAircraft plane)) return;
-		RadarSystem radar = plane.radarSystem;
-		List<RadarPing> pings = radar.getClientRadarPings();
-		if (pings.size() == 0) return;
-		int selected = radar.getClientSelectedPingIndex();
-		int w = event.getWindow().getScreenWidth();
-		int h = event.getWindow().getScreenHeight();
-		int r = 200;
-		System.out.println("w = "+w+" h = "+h);
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		GL11.glPushMatrix();
-		GL11.glColor4f(0.6F, 0.6F, 0.6F, 0.3F);
-		GL11.glBegin(GL11.GL_TRIANGLE_FAN);
-		GL11.glVertex2f(w/2, h/2);
-		for( int n = 0; n <= 18; n++ )
-        {
-            float t = 2 * 3.14152f * (float)n / (float)18;
-            GL11.glVertex2d(w + Math.sin(t) * r, h + Math.cos(t) * r);
-        }
-        GL11.glRectd(w, h, w+100, h+200);
-        GL11.glEnd();
-        GL11.glPopMatrix();
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-		for (int i = 0; i < pings.size(); ++i) {
-			RadarPing p = pings.get(i);
-			if (i == selected) setSelectedColor();
-			else if (i == hoverIndex) setHoverColor();
-			else if (p.isFriendly) setFriendlyColor();
-			else setDefaultColor();
-			
-		}
-	}*/
-	
 	@SubscribeEvent
 	public static void playerRender(RenderPlayerEvent.Pre event) {
 		//System.out.println("render player");
@@ -430,25 +368,17 @@ public final class ClientForgeEvents {
 			float xo, xn, yo, yn, zo, zn;
 			if (plane.isFreeLook()) {
 				xo = player.xRotO;
-				//xo = player.getXRot();
-				//xo = event.getPitch();
 				xn = player.getXRot();
 				yo = player.yRotO;
-				//yo = player.getYRot();
-				//yo = event.getYaw();
 				yn = player.getYRot();
 				zo = plane.prevZRot;
-				//zo = event.getRoll();
 				zn = plane.zRot;
 			} else {
 				xo = plane.prevXRot;
-				//xo = event.getPitch();
 				xn = plane.getXRot();
 				yo = plane.prevYRot;
-				//yo = event.getYaw();
 				yn = plane.getYRot();
 				zo = plane.prevZRot;
-				//zo = event.getRoll();
 				zn = plane.zRot;
 			}
 			float xi = xo + (xn - xo) * (float)event.getPartialTick();

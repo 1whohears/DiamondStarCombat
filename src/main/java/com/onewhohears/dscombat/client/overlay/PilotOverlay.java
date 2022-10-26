@@ -168,7 +168,7 @@ public class PilotOverlay {
 		return red.getRGB();
 	}
 	
-	// TODO ForgeGui.renderArmor is protected for some reason
+	// ForgeGui.renderArmor is protected for some reason
 	private static void renderArmor(int width, int height, PoseStack poseStack, Minecraft minecraft, ForgeGui gui) {
         minecraft.getProfiler().push("armor");
 
@@ -199,7 +199,7 @@ public class PilotOverlay {
         minecraft.getProfiler().pop();
     }
 	
-	// TODO ForgeGui.renderAir is protected for some reason
+	// ForgeGui.renderAir is protected for some reason
 	private static void renderAir(int width, int height, PoseStack poseStack, Minecraft minecraft, ForgeGui gui) {
         minecraft.getProfiler().push("air");
         Player player = (Player) minecraft.getCameraEntity();

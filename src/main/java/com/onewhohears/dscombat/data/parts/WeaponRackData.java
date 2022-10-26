@@ -15,6 +15,7 @@ import net.minecraft.world.phys.Vec3;
 public class WeaponRackData extends PartData {
 	
 	public final String weaponId;
+	private int ammo;
 	
 	public WeaponRackData(float weight, String preset) {
 		super(weight);
@@ -24,22 +25,26 @@ public class WeaponRackData extends PartData {
 	public WeaponRackData(CompoundTag tag) {
 		super(tag);
 		weaponId = tag.getString("weaponId");
+		ammo = tag.getInt("ammo");
 	}
 	
 	public CompoundTag write() {
 		CompoundTag tag = super.write();
 		tag.putString("weaponId", weaponId);
+		tag.putInt("ammo", ammo);
 		return tag;
 	}
 
 	public WeaponRackData(FriendlyByteBuf buffer) {
 		super(buffer);
 		weaponId = buffer.readUtf();
+		ammo = buffer.readInt();
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
 		super.write(buffer);
 		buffer.writeUtf(weaponId);
+		buffer.writeInt(ammo);
 	}
 
 	@Override
@@ -60,6 +65,7 @@ public class WeaponRackData extends PartData {
 			data.setSlot(slotId);
 			craft.weaponSystem.addWeapon(data, true);
 		}
+		data.setCurrentAmmo(ammo);
 	}
 	
 	@Override

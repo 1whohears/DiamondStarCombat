@@ -1,15 +1,24 @@
 package com.onewhohears.dscombat.client.screen;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.container.AircraftMenuContainer;
+import com.onewhohears.dscombat.common.container.slot.PartItemSlot;
+import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 
 public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContainer> {
 	
@@ -27,6 +36,38 @@ public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContaine
 	@Override
 	public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
 		super.render(poseStack, mouseX, mouseY, partialTicks);
+        this.renderTooltip(poseStack, mouseX, mouseY);
+	}
+	
+	@Override
+	protected void renderTooltip(PoseStack poseStack, int mouseX, int mouseY) {
+		if (!menu.getCarried().isEmpty() || hoveredSlot == null) return;
+		if (hoveredSlot.hasItem()) {
+			ItemStack stack = hoveredSlot.getItem();
+			renderTooltip(poseStack, getTooltipFromItem(stack), stack.getTooltipImage(), mouseX, mouseY);
+		} else {
+			renderTooltip(poseStack, getSlotTooltip(), Optional.empty(), mouseX, mouseY);
+		}
+	}
+	
+	@Override
+	public List<Component> getTooltipFromItem(ItemStack itemStack) {
+		List<Component> c = itemStack.getTooltipLines(this.minecraft.player, 
+				minecraft.options.advancedItemTooltips ? TooltipFlag.Default.ADVANCED : TooltipFlag.Default.NORMAL);
+		List<Component> slots = getSlotTooltip();
+		for (int i = 0; i < slots.size(); ++i) c.add(i, slots.get(i));
+		return c;
+	}
+	
+	public List<Component> getSlotTooltip() {
+		List<Component> c = new ArrayList<Component>();
+		if (this.hoveredSlot instanceof PartItemSlot slot) {
+			MutableComponent type = UtilMCText.simpleText(slot.data.getTypeName());
+			MutableComponent name = UtilMCText.simpleText(slot.data.getName());
+			c.add(type);
+			c.add(name);
+		}
+		return c;
 	}
 	
 	@Override
@@ -34,14 +75,18 @@ public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContaine
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
 		RenderSystem.setShaderTexture(0, BG_TEXTURE);
-		blit(stack, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
-		// TODO create plane menu screen
+		blit(stack, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		for (int i = 0; i < menu.slots.size(); ++i) {
+			if (!(menu.slots.get(i) instanceof PartItemSlot slot)) continue;
+			RenderSystem.setShaderTexture(0, slot.data.getSlotIcon());
+			blit(stack, leftPos+slot.x, topPos+slot.y, 0, 0, 16, 16);
+		}
 	}
 
 	@Override
 	protected void renderLabels(PoseStack stack, int mouseX, int mouseY) {
-		drawString(stack, font, title, this.leftPos, this.topPos+3, 0x404040);
-		drawString(stack, font, playerInventoryTitle, this.leftPos, this.topPos+80, 0x404040);
+		drawString(stack, font, title, titleLabelX+35, titleLabelY, 0x404040);
+		drawString(stack, font, playerInventoryTitle, titleLabelX+35, titleLabelY+40, 0x404040);
 	}
 	
 	@Override

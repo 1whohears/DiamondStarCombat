@@ -2,17 +2,19 @@ package com.onewhohears.dscombat.data.parts;
 
 import javax.annotation.Nullable;
 
+import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 
 public class PartSlot {
 	
-	public static final String PILOT_SLOT_NAME = "pilot_seat";
+	public static final String PILOT_SLOT_NAME = "dscombat.pilot_seat";
 	
 	private final String name;
 	private final SlotType type;
@@ -119,6 +121,20 @@ public class PartSlot {
 		return name;
 	}
 	
+	public String getTypeName() {
+		switch (type) {
+		case FRAME:
+			return "dscombat.slotname_frame";
+		case INTERNAL:
+			return "dscombat.slotname_internal";
+		case SEAT:
+			return "dscombat.slotname_seat";
+		case WING:
+			return "dscombat.slotname_wing";
+		}
+		return "";
+	}
+	
 	public SlotType getSlotType() {
 		return type;
 	}
@@ -136,6 +152,30 @@ public class PartSlot {
 		WING,
 		FRAME,
 		INTERNAL
+	}
+	
+	public ResourceLocation getSlotIcon() {
+		return getSlotIcon(getSlotType());
+	}
+	// TODO make these slot images
+	public static final ResourceLocation SEAT_ICON = new ResourceLocation(DSCombatMod.MODID, "textures/ui/seat_icon.png");
+	public static final ResourceLocation WING_ICON = new ResourceLocation(DSCombatMod.MODID, "textures/ui/wing_icon.png");
+	public static final ResourceLocation FRAME_ICON = new ResourceLocation(DSCombatMod.MODID, "textures/ui/frame_icon.png");
+	public static final ResourceLocation INTERNAL_ICON = new ResourceLocation(DSCombatMod.MODID, "textures/ui/internal_icon.png");
+	
+	@Nullable
+	public static ResourceLocation getSlotIcon(SlotType type) {
+		switch (type) {
+		case FRAME:
+			return FRAME_ICON;
+		case INTERNAL:
+			return INTERNAL_ICON;
+		case SEAT:
+			return SEAT_ICON;
+		case WING:
+			return WING_ICON;
+		}
+		return null;
 	}
 	
 	@Override

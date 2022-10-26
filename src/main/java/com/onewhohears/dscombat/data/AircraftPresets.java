@@ -57,14 +57,14 @@ public class AircraftPresets {
 		CompoundTag tag = new CompoundTag();
 		// parts
 		PartsManager pm = new PartsManager();
-		pm.addSlot(PartSlot.PILOT_SLOT_NAME, SlotType.SEAT, new Vec3(0, -0.5, 0), 40, 60);
-		pm.addSlot("seat2", SlotType.SEAT, new Vec3(0, -0.5, -1), 60, 60);
-		pm.addSlot("seat3", SlotType.SEAT, new Vec3(0, -0.5, -2), 80, 60);
-		pm.addSlot("left_wing_1", SlotType.WING, new Vec3(-1, 0, 0), 100, 60);
-		pm.addSlot("right_wing_1", SlotType.WING, new Vec3(1, 0, 0), 120, 60);
+		pm.addSlot(PartSlot.PILOT_SLOT_NAME, SlotType.SEAT, new Vec3(0, -0.5, 0), 48, 60);
+		pm.addSlot("dscombat.seat2", SlotType.SEAT, new Vec3(0, -0.5, -1), 68, 60);
+		pm.addSlot("dscombat.seat3", SlotType.SEAT, new Vec3(0, -0.5, -2), 88, 60);
+		pm.addSlot("dscombat.left_wing_1", SlotType.WING, new Vec3(-1, 0, 0), 108, 60);
+		pm.addSlot("dscombat.right_wing_1", SlotType.WING, new Vec3(1, 0, 0), 128, 60);
 		pm.addPart(new SeatData(0.01f), PartSlot.PILOT_SLOT_NAME, false);
-		pm.addPart(new SeatData(0.01f), "seat2", false);
-		pm.addPart(new SeatData(0.01f), "seat3", false);
+		pm.addPart(new SeatData(0.01f), "dscombat.seat2", false);
+		pm.addPart(new SeatData(0.01f), "dscombat.seat3", false);
 		pm.write(tag);
 		System.out.println(pm);
 		// weapons

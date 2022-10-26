@@ -59,7 +59,7 @@ public class ClientModEvents {
 						new EntityModelTestPlane<EntityPlane>(models.bakeLayer(EntityModelTestPlane.LAYER_LOCATION))));
 		event.registerEntityRenderer(ModEntities.F16.get(), 
 				(context) -> new RendererEntityAbstractAircraft<EntityPlane>(context, 
-						new EntityModelTestPlane<EntityPlane>(models.bakeLayer(EntityModelF16.LAYER_LOCATION))));
+						new EntityModelF16<EntityPlane>(models.bakeLayer(EntityModelF16.LAYER_LOCATION))));
 		event.registerEntityRenderer(ModEntities.BULLET.get(), 
 				(context) -> new RendererEntityAbstractWeapon<EntityBullet>(context, 
 						new EntityModelBullet1<EntityBullet>(models.bakeLayer(EntityModelBullet1.LAYER_LOCATION))));

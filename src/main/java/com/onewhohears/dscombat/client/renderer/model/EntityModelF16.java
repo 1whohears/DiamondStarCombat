@@ -1359,6 +1359,8 @@ public class EntityModelF16<T extends EntityAbstractAircraft> extends EntityMode
 
 	@Override
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+		poseStack.translate(0, 1.5, 0);
+		poseStack.scale(1.0F, -1.0F, 1.0F);
 		body.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 }

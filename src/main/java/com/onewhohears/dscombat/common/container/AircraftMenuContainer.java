@@ -36,8 +36,6 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
 				this.addSlot(new PartItemSlot(partsInv, i, slots.get(i)));
 			}
 		}
-		// TODO display plane ammo
-		
 		// display player inventory
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {

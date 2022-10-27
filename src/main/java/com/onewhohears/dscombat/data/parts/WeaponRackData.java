@@ -17,23 +17,27 @@ public class WeaponRackData extends PartData {
 	
 	public final String weaponId;
 	private int ammo;
+	private int max;
 	
-	public WeaponRackData(float weight, String preset, int ammo) {
+	public WeaponRackData(float weight, String preset, int ammo, int max) {
 		super(weight);
 		this.weaponId = preset;
 		this.ammo = ammo;
+		this.max = max;
 	}
 	
 	public WeaponRackData(CompoundTag tag) {
 		super(tag);
 		weaponId = tag.getString("weaponId");
 		ammo = tag.getInt("ammo");
+		max = tag.getInt("max");
 	}
 	
 	public CompoundTag write() {
 		CompoundTag tag = super.write();
 		tag.putString("weaponId", weaponId);
 		tag.putInt("ammo", ammo);
+		tag.putInt("max", max);
 		return tag;
 	}
 
@@ -41,12 +45,14 @@ public class WeaponRackData extends PartData {
 		super(buffer);
 		weaponId = buffer.readUtf();
 		ammo = buffer.readInt();
+		max = buffer.readInt();
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
 		super.write(buffer);
 		buffer.writeUtf(weaponId);
 		buffer.writeInt(ammo);
+		buffer.writeInt(max);
 	}
 
 	@Override
@@ -70,6 +76,7 @@ public class WeaponRackData extends PartData {
 			craft.weaponSystem.addWeapon(data, true);
 		}
 		data.setCurrentAmmo(ammo);
+		data.setMaxAmmo(max);
 		data.updateClientAmmo(craft);
 	}
 	
@@ -93,7 +100,10 @@ public class WeaponRackData extends PartData {
 	public void tick(String slotId) {
 		super.tick(slotId);
 		WeaponData data = this.getParent().weaponSystem.get(weaponId, slotId);
-		if (data != null) ammo = data.getCurrentAmmo();
+		if (data != null) {
+			ammo = data.getCurrentAmmo();
+			max = data.getMaxAmmo();
+		}
 	}
 	
 	@Override

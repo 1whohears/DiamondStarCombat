@@ -442,11 +442,16 @@ public abstract class EntityAbstractAircraft extends Entity {
 				if (this.inputFlare && tickCount % 5 == 0) flare(controller, isPlayer);
 			}
 			if (this.inputOpenMenu && isPlayer) {
-				System.out.println("OPENING MENU "+partsManager);
-				NetworkHooks.openScreen((ServerPlayer) controller, 
+				if (this.isOnGround()) {
+					System.out.println("OPENING MENU "+partsManager);
+					NetworkHooks.openScreen((ServerPlayer) controller, 
 						new SimpleMenuProvider((windowId, playerInv, player) -> 
 								new AircraftMenuContainer(windowId, playerInv), 
 						Component.translatable("container.dscombat.plane_menu")));
+				} else {
+					((ServerPlayer)controller).displayClientMessage(
+							UtilMCText.simpleText("Can't open plane menu while flying!"), true);
+				}
 			}
 		}
 	}

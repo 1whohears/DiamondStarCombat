@@ -89,6 +89,14 @@ public class PartSlot {
 		if (filled()) data.clientSetup(plane, name, pos);
 	}
 	
+	protected void tick() {
+		if (filled()) data.tick(name);
+	}
+	
+	protected void clientTick() {
+		if (filled()) data.clientTick(name);
+	}
+	
 	public boolean addPartData(PartData data, EntityAbstractAircraft plane) {
 		if (filled()) return false;
 		if (!isCompatible(data)) return false;

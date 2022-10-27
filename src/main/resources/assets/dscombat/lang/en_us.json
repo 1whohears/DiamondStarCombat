@@ -3,11 +3,16 @@
 	"dscombat.slotname_internal": "INTERNAL",
 	"dscombat.slotname_seat": "SEAT",
 	"dscombat.slotname_wing": "WING",
+	
 	"dscombat.pilot_seat": "Pilot Seat",
 	"dscombat.seat2": "Seat 2",
 	"dscombat.seat3": "Seat 3",
 	"dscombat.left_wing_1": "Left Wing 1",
 	"dscombat.right_wing_1": "Right Wing 1",
+	
+	"dscombat.gbu": "GBU",
+	"dscombat.fox3_1": "Fox3-1",
+	"dscombat.fox2_1": "Fox2-1",
 	
 	"entity.dscombat.basic_plane": "Test Plane",
 	"entity.dscombat.f16": "F16",

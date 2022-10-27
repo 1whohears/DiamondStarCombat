@@ -46,11 +46,6 @@ public class SeatData extends PartData {
 	@Override
 	public boolean isSetup(String slotId, EntityAbstractAircraft craft) {
 		System.out.println("is this seat setup "+slotId);
-		/*EntityAbstractAircraft p = getParent();
-		if (p == null) {
-			System.out.println("no because parent is null");
-			return false;
-		}*/
 		for (EntitySeat seat : craft.getSeats()) {
 			System.out.println("check seat slot "+seat.getSlotId());
 			if (seat.getSlotId().equals(slotId)) 

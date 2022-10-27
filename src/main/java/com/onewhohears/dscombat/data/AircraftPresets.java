@@ -58,21 +58,21 @@ public class AircraftPresets {
 		// parts
 		PartsManager pm = new PartsManager();
 		pm.addSlot(PartSlot.PILOT_SLOT_NAME, SlotType.SEAT, new Vec3(0, -0.5, 0), 48, 60);
-		pm.addSlot("dscombat.seat2", SlotType.SEAT, new Vec3(0, -0.5, -1), 68, 60);
-		pm.addSlot("dscombat.seat3", SlotType.SEAT, new Vec3(0, -0.5, -2), 88, 60);
+		pm.addSlot("dscombat.seat2", SlotType.SEAT, new Vec3(1, -0.5, 1), 68, 60);
+		pm.addSlot("dscombat.seat3", SlotType.SEAT, new Vec3(-1, -0.5, 1), 88, 60);
 		pm.addSlot("dscombat.left_wing_1", SlotType.WING, new Vec3(-1, 0, 0), 108, 60);
 		pm.addSlot("dscombat.right_wing_1", SlotType.WING, new Vec3(1, 0, 0), 128, 60);
-		pm.addPart(new SeatData(0.01f), PartSlot.PILOT_SLOT_NAME, false);
-		pm.addPart(new SeatData(0.01f), "dscombat.seat2", false);
-		pm.addPart(new SeatData(0.01f), "dscombat.seat3", false);
+		pm.addPart(new SeatData(0.003f), PartSlot.PILOT_SLOT_NAME, false);
+		pm.addPart(new SeatData(0.003f), "dscombat.seat2", false);
+		pm.addPart(new SeatData(0.003f), "dscombat.seat3", false);
 		pm.write(tag);
 		System.out.println(pm);
 		// weapons
 		WeaponSystem ws = new WeaponSystem();
-		WeaponData b1 = new BulletData(WeaponPresets.getNbtById("bullet_1"));
-		WeaponData gbu = new MissileData(WeaponPresets.getNbtById("gbu"));
-		WeaponData f31 = new MissileData(WeaponPresets.getNbtById("fox3_1"));
-		WeaponData f21 = new MissileData(WeaponPresets.getNbtById("fox2_1"));
+		WeaponData b1 = WeaponPresets.getById("bullet_1");
+		WeaponData gbu = WeaponPresets.getById("gbu");
+		WeaponData f31 = WeaponPresets.getById("fox3_1");
+		WeaponData f21 = WeaponPresets.getById("fox2_1");
 		b1.setCurrentAmmo(b1.getMaxAmmo());
 		gbu.setCurrentAmmo(gbu.getMaxAmmo());
 		f31.setCurrentAmmo(f31.getMaxAmmo());

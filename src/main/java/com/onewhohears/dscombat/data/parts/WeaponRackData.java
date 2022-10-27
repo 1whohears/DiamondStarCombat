@@ -5,6 +5,7 @@ import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.parts.EntityAbstractPart;
+import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
 import com.onewhohears.dscombat.init.ModItems;
 
 import net.minecraft.nbt.CompoundTag;
@@ -17,9 +18,10 @@ public class WeaponRackData extends PartData {
 	public final String weaponId;
 	private int ammo;
 	
-	public WeaponRackData(float weight, String preset) {
+	public WeaponRackData(float weight, String preset, int ammo) {
 		super(weight);
 		this.weaponId = preset;
+		this.ammo = ammo;
 	}
 	
 	public WeaponRackData(CompoundTag tag) {
@@ -56,9 +58,11 @@ public class WeaponRackData extends PartData {
 	public void setup(EntityAbstractAircraft craft, String slotId, Vec3 pos) {
 		super.setup(craft, slotId, pos);
 		if (!isSetup(slotId, craft)) {
-			
+			EntityWeaponRack rack = new EntityWeaponRack(craft.level, slotId, pos);
+			rack.setPos(craft.position());
+			rack.startRiding(craft);
+			craft.level.addFreshEntity(rack);
 		}
-		// TODO setup weapon rack
 		WeaponData data = craft.weaponSystem.get(weaponId, slotId);
 		if (data == null) {
 			data = WeaponPresets.getById(weaponId);
@@ -66,13 +70,12 @@ public class WeaponRackData extends PartData {
 			craft.weaponSystem.addWeapon(data, true);
 		}
 		data.setCurrentAmmo(ammo);
+		data.updateClientAmmo(craft);
 	}
 	
 	@Override
 	public boolean isSetup(String slotId, EntityAbstractAircraft craft) {
-		EntityAbstractAircraft p = getParent();
-		if (p == null) return false;
-		for (EntityAbstractPart part : p.getPartEntities()) 
+		for (EntityAbstractPart part : craft.getPartEntities()) 
 			if (part.getSlotId().equals(slotId)) 
 				return true;
 		return false;
@@ -80,8 +83,23 @@ public class WeaponRackData extends PartData {
 	
 	@Override
 	public void remove(String slotId) {
-		// TODO remove weapon rack
+		for (EntityAbstractPart part : getParent().getPartEntities()) 
+			if (part.getSlotId().equals(slotId)) 
+				part.discard();
 		this.getParent().weaponSystem.removeWeapon(weaponId, slotId, true);
+	}
+	
+	@Override
+	public void tick(String slotId) {
+		super.tick(slotId);
+		WeaponData data = this.getParent().weaponSystem.get(weaponId, slotId);
+		if (data != null) ammo = data.getCurrentAmmo();
+	}
+	
+	@Override
+	public void clientTick(String slotId) {
+		super.clientTick(slotId);
+		this.tick(slotId);
 	}
 
 	@Override

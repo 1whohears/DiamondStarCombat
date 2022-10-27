@@ -124,8 +124,7 @@ public class RadarSystem {
 		for (int i = 0; i < clientTargets.size(); ++i) 
 			if (clientTargets.get(i).id == id) {
 				clientSelectedIndex = i;
-				PacketHandler.INSTANCE.sendToServer(new ServerBoundPingSelectPacket(
-						parent.getId(), ping));
+				PacketHandler.INSTANCE.sendToServer(new ServerBoundPingSelectPacket(parent.getId(), ping));
 				break;
 			}
 		//System.out.println("new selected index "+clientSelectedIndex);

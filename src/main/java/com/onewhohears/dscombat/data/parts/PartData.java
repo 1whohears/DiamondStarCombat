@@ -70,6 +70,14 @@ public abstract class PartData {
 		
 	}
 	
+	protected void tick(String slotId) {
+		
+	}
+	
+	protected void clientTick(String slotId) {
+		
+	}
+	
 	@Override
 	public String toString() {
 		return "("+getType().name()+")";

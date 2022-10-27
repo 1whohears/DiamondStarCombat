@@ -68,6 +68,14 @@ public class PartsManager {
 		for (PartSlot p : slots) p.clientSetup(craft);
 	}
 	
+	public void tickParts() {
+		for (PartSlot p : slots) p.tick();
+	}
+	
+	public void clientTickParts() {
+		for (PartSlot p : slots) p.clientTick();
+	}
+	
 	public boolean addSlot(String slotName, SlotType slotType, Vec3 slotPos, int uix, int uiy) {
 		if (getSlot(slotName) != null) return false;
 		slots.add(new PartSlot(slotName, slotType, slotPos, uix, uiy));

@@ -254,6 +254,7 @@ public abstract class EntityAbstractAircraft extends Entity {
             setClientQ(q);
         }*/
         controlSystem();
+        tickParts();
 		tickLerp();
 		/*System.out.println("######### client "+this.level.isClientSide);
 		System.out.println("P "+this.getPrevQ());
@@ -479,6 +480,11 @@ public abstract class EntityAbstractAircraft extends Entity {
 		if (used > 0) this.setFlares(flares-used);
 	}
 	
+	public void tickParts() {
+		if (level.isClientSide) partsManager.clientTickParts();
+		else partsManager.tickParts();
+	}
+	
 	@Override
 	public void lerpTo(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
         if (x == getX() && y == getY() && z == getZ()) return;
@@ -612,17 +618,44 @@ public abstract class EntityAbstractAircraft extends Entity {
 	}
 	
 	public boolean switchSeat(Entity e) {
-		// TODO switch seat
-		if (!isVehicleOf(e)) return false;
-		return true;
+		//System.out.println(e+" switching seats on "+this);
+		List<EntitySeat> seats = this.getSeats();
+		//System.out.println("GOT SEATS "+seats);
+		int seatIndex = -1;
+		for (int i = 0; i < seats.size(); ++i) {
+			Player p = seats.get(i).getPlayer();
+			if (p == null) continue;
+			if (p.equals(e)) {
+				seatIndex = i;
+				break;
+			}
+		}
+		if (seatIndex == -1) {
+			//System.out.println("not riding any of the seats");
+			return false;
+		}
+		System.out.println("riding seat "+seatIndex);
+		int i = 0, j = seatIndex+1;
+		while (i < seats.size()-1) {
+			if (j >= seats.size()) j = 0;
+			//System.out.println("i = "+i+" j = "+j);
+			//System.out.println("checking to ride "+seats.get(j));
+			if (e.startRiding(seats.get(j))) {
+				//System.out.println("riding");
+				return true;
+			}
+			++i; ++j;
+		}
+		//System.out.println("could not ride any of them");
+		return false;
 	}
 	
 	@Override
     public void positionRider(Entity passenger) {
 		//if (!this.hasPassenger(passenger)) return;
 		//System.out.println("POSITION RIDER "+passenger);
-		if (passenger instanceof EntityAbstractPart seat) {
- 			Vec3 seatPos = UtilAngles.rotateVector(seat.getRelativePos(), getQ());
+		if (passenger instanceof EntityAbstractPart part) {
+ 			Vec3 seatPos = UtilAngles.rotateVector(part.getRelativePos(), getQ());
 			passenger.setPos(position().add(seatPos));
 		}
 	}

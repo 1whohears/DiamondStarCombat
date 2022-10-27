@@ -18,12 +18,12 @@ public class WeaponPresets {
 	
 	public static void setupPresets() {
 		MissileData m1 = new MissileData("fox3_1", Vec3.ZERO, 
-				300, 10, 10, false, 100, 4, 0, 
+				300, 4, 10, false, 100, 4, 0, 
 				true, true, false, 
 				100, 4, TargetType.AIR, GuidanceType.PITBULL, 
 				2, 0.04, 3, 70);
 		MissileData m2 = new MissileData("fox2_1", Vec3.ZERO, 
-				200, 10, 10, false, 100, 2, 0, 
+				200, 12, 10, false, 100, 2, 0, 
 				true, true, false, 
 				100, 4, TargetType.AIR, GuidanceType.IR, 
 				4, 0.03, 3, 80);

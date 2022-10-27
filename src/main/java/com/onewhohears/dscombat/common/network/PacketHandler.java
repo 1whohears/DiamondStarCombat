@@ -17,6 +17,7 @@ import com.onewhohears.dscombat.common.network.toserver.ServerBoundFlightControl
 import com.onewhohears.dscombat.common.network.toserver.ServerBoundPingSelectPacket;
 import com.onewhohears.dscombat.common.network.toserver.ServerBoundQPacket;
 import com.onewhohears.dscombat.common.network.toserver.ServerBoundRequestPlaneDataPacket;
+import com.onewhohears.dscombat.common.network.toserver.ServerBoundSwitchSeatPacket;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkDirection;
@@ -119,6 +120,11 @@ public final class PacketHandler {
 			.encoder(ClientBoundRemoveRadarPacket::encode)
 			.decoder(ClientBoundRemoveRadarPacket::new)
 			.consumerMainThread(ClientBoundRemoveRadarPacket::handle)
+			.add();
+		net.messageBuilder(ServerBoundSwitchSeatPacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
+			.encoder(ServerBoundSwitchSeatPacket::encode)
+			.decoder(ServerBoundSwitchSeatPacket::new)
+			.consumerMainThread(ServerBoundSwitchSeatPacket::handle)
 			.add();
 	}
 	

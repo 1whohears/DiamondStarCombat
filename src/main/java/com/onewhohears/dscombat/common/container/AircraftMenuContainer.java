@@ -25,6 +25,7 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
 		super(ModContainers.PLANE_MENU.get(), id);
 		System.out.println("AircraftMenuContainer client side "+playerInv.player.level.isClientSide);
 		this.playerInv = playerInv;
+		// display plane parts
 		if (playerInv.player.getRootVehicle() instanceof EntityAbstractAircraft plane) {
 			this.pm = plane.partsManager;
 			Container partsInv = pm.getContainer(this);
@@ -35,6 +36,8 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
 				this.addSlot(new PartItemSlot(partsInv, i, slots.get(i)));
 			}
 		}
+		// TODO display plane ammo
+		
 		// display player inventory
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
@@ -63,7 +66,8 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
 	
 	@Override
 	public ItemStack quickMoveStack(Player player, int index) {
-		return null;
+		ItemStack stack = ItemStack.EMPTY;
+		return stack;
 	}
 	
 	public Container getPlayerInventory() {

@@ -16,6 +16,7 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.KeyInit;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ServerBoundFlightControlPacket;
+import com.onewhohears.dscombat.common.network.toserver.ServerBoundSwitchSeatPacket;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
@@ -27,17 +28,20 @@ import com.onewhohears.dscombat.util.math.UtilGeometry;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
+import net.minecraftforge.client.event.RenderLevelStageEvent.Stage;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -48,24 +52,26 @@ public final class ClientForgeEvents {
 	private ClientForgeEvents() {}
 	
 	@SubscribeEvent
-	public static void clientTick(TickEvent.ClientTickEvent event) {
+	public static void clientTickPilotControl(TickEvent.ClientTickEvent event) {
 		if (event.phase != Phase.START) return;
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
 		if (player == null) return;
+		boolean select = KeyInit.weaponSelectKey.consumeClick();
+		boolean openMenu = KeyInit.planeMenuKey.consumeClick();
+		boolean mouseMode = KeyInit.mouseModeKey.consumeClick();
+		if (!(player.getRootVehicle() instanceof EntityAbstractAircraft plane)) return;
+		//System.out.println("controller passenger "+plane.getControllingPassenger());
+		if (plane.getControllingPassenger() == null 
+				|| !plane.getControllingPassenger().equals(player)) return;
 		if (KeyInit.resetMouseKey.isDown()) centerMouse();
 		else if (m.screen != null) centerMouse();
 		double mouseX = m.mouseHandler.xpos() - mouseCenterX;
 		double mouseY = -(m.mouseHandler.ypos() - mouseCenterY);
 		//System.out.println("VEHICLE "+player.getVehicle());
 		//System.out.println("ROOT "+player.getRootVehicle());
-		if (!(player.getRootVehicle() instanceof EntityAbstractAircraft plane)) return;
-		if (plane.getControllingPassenger() != player) return;
-		boolean mouseMode = KeyInit.mouseModeKey.consumeClick();
 		boolean flare = KeyInit.flareKey.isDown();
 		boolean shoot = KeyInit.shootKey.isDown();
-		boolean select = KeyInit.weaponSelectKey.consumeClick();
-		boolean openMenu = KeyInit.planeMenuKey.consumeClick();
 		boolean flip = KeyInit.flipControls.isDown();
 		float pitch = 0, roll = 0, yaw = 0, throttle = 0;
 		boolean pitchUp, pitchDown, yawLeft, yawRight;
@@ -123,9 +129,23 @@ public final class ClientForgeEvents {
 		plane.updateControls(throttle, pitch, roll, yaw,
 				mouseMode, flare, shoot, select, openMenu);
 		if (mouseMode && !plane.isFreeLook()) centerMouse();
+	}
+	
+	@SubscribeEvent
+	public static void clientTickPassengerControl(TickEvent.ClientTickEvent event) {
+		if (event.phase != Phase.START) return;
+		Minecraft m = Minecraft.getInstance();
+		final var player = m.player;
+		if (player == null) return;
+		boolean seat = KeyInit.changeSeat.consumeClick();
+		if (!(player.getRootVehicle() instanceof EntityAbstractAircraft plane)) return;
+		//boolean shoot = KeyInit.shootKey.isDown();
+		if (seat) {
+			//System.out.println("CHANGE SEAT BUTTON PRESSED");
+			PacketHandler.INSTANCE.sendToServer(new ServerBoundSwitchSeatPacket(plane.getId()));
+		}
 		RadarSystem radar = plane.radarSystem;
 		List<RadarPing> pings = radar.getClientRadarPings();
-		//int selected = radar.getSelectedPingIndex();
 		boolean hovering = false;
 		if (pings != null) {
 			//System.out.println("ping size "+pings.size());
@@ -140,7 +160,6 @@ public final class ClientForgeEvents {
 			}
 		}
 		if (!hovering) resetHoverIndex();
-		//System.out.println("selected = "+selected);
 		//System.out.println("hover index = "+hoverIndex);
 		// TODO middle click to mark a spot to target with a position guided missile
 		// TODO share selected target with team members button
@@ -171,6 +190,7 @@ public final class ClientForgeEvents {
 	
 	@SubscribeEvent
 	public static void onAttackEntity(AttackEntityEvent event) {
+		if (event.getPhase() != EventPriority.NORMAL) return;
 		Minecraft m = Minecraft.getInstance();
 		if (event.getTarget().equals(m.player)) {
 			event.setCanceled(true);
@@ -217,6 +237,8 @@ public final class ClientForgeEvents {
 	
 	@SubscribeEvent
 	public static void renderLevelStage(RenderLevelStageEvent event) {
+		if (event.getPhase() != EventPriority.NORMAL) return;
+		if (event.getStage() != Stage.AFTER_PARTICLES) return;
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
 		if (!(player.getRootVehicle() instanceof EntityAbstractAircraft plane)) return;
@@ -323,6 +345,7 @@ public final class ClientForgeEvents {
 	
 	@SubscribeEvent
 	public static void playerRender(RenderPlayerEvent.Pre event) {
+		if (event.getPhase() != EventPriority.NORMAL) return;
 		//System.out.println("render player");
 		Minecraft m = Minecraft.getInstance();
 		final var playerC = m.player;
@@ -330,8 +353,7 @@ public final class ClientForgeEvents {
 		if (player.getVehicle() instanceof EntitySeat seat 
 				&& seat.getVehicle() instanceof EntityAbstractAircraft plane) {
 			changePlayerHitbox(player);
-			if (player.equals(playerC) &&
-					m.options.getCameraType().isFirstPerson()) {
+			if (player.equals(playerC) && m.options.getCameraType().isFirstPerson()) {
 				event.setCanceled(true);
 				return;
 			}
@@ -356,28 +378,32 @@ public final class ClientForgeEvents {
 		player.setBoundingBox(new AABB(x+w, y+0.5d, z+w, x-w, y, z-w)); 
 	}
 	
+	private static Entity prevCamera;
+	
 	@SubscribeEvent
 	public static void cameraSetup(ViewportEvent.ComputeCameraAngles event) {
+		if (event.getPhase() != EventPriority.NORMAL) return;
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
-		boolean playerCam = m.getCameraEntity().equals(player);
 		if (player == null) return;
+		prevCamera = m.getCameraEntity();
 		if (player.getVehicle() instanceof EntitySeat seat 
 				&& seat.getVehicle() instanceof EntityAbstractAircraft plane) {
 			EntitySeatCamera camera = seat.getCamera();
 			float xo, xn, yo, yn, zo, zn;
-			if (plane.isFreeLook()) {
-				xo = player.xRotO;
-				xn = player.getXRot();
-				yo = player.yRotO;
-				yn = player.getYRot();
-				zo = plane.prevZRot;
-				zn = plane.zRot;
-			} else {
+			if (!plane.isFreeLook() && plane.getControllingPassenger() != null 
+					&& plane.getControllingPassenger().equals(player)) {
 				xo = plane.prevXRot;
 				xn = plane.getXRot();
 				yo = plane.prevYRot;
 				yn = plane.getYRot();
+				zo = plane.prevZRot;
+				zn = plane.zRot;
+			} else {
+				xo = player.xRotO;
+				xn = player.getXRot();
+				yo = player.yRotO;
+				yn = player.getYRot();
 				zo = plane.prevZRot;
 				zn = plane.zRot;
 			}
@@ -397,12 +423,12 @@ public final class ClientForgeEvents {
 			if (camera != null) {
 				camera.setXRot(xi);
 				camera.setYRot(yi);
-				if (playerCam) m.setCameraEntity(camera);
+				if (!prevCamera.equals(camera)) m.setCameraEntity(camera);
 			}
 			player.setXRot(xi);
 			player.setYRot(yi);
 		} else {
-			if (!playerCam) m.setCameraEntity(player);
+			if (!prevCamera.equals(player)) m.setCameraEntity(player);
 		}
 	}
 	

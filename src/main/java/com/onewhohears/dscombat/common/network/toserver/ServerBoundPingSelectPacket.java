@@ -40,8 +40,7 @@ public class ServerBoundPingSelectPacket extends IPacket {
 			success.set(true);
 			ServerPlayer player = ctx.get().getSender();
 			ServerLevel level = player.getLevel();
-			EntityAbstractAircraft plane = (EntityAbstractAircraft) level.getEntity(id);
-			if (plane != null) {
+			if (level.getEntity(id) instanceof EntityAbstractAircraft plane) {
 				plane.radarSystem.selectTarget(ping);
 			}
 		});

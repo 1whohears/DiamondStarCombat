@@ -13,6 +13,7 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.level.ChunkEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 
@@ -22,6 +23,7 @@ public class CommonForgeEvents {
 	
 	@SubscribeEvent
 	public void playerTickEvent(TickEvent.PlayerTickEvent event) {
+		if (event.getPhase() != EventPriority.NORMAL) return;
 		if (event.side != LogicalSide.SERVER) return;
 		final var player = event.player;
 		//System.out.println("server side player "+player);
@@ -38,6 +40,7 @@ public class CommonForgeEvents {
 	
 	@SubscribeEvent
 	public void chunkUnload(ChunkEvent.Unload event) {
+		if (event.getPhase() != EventPriority.NORMAL) return;
 		ChunkAccess chunk = event.getChunk();
 		LevelAccessor level = event.getLevel();
 		AABB chunkArea = getChunkBox(chunk.getPos());
@@ -56,6 +59,7 @@ public class CommonForgeEvents {
 	
 	@SubscribeEvent
 	public void serverTickEvent(TickEvent.ServerTickEvent event) {
+		if (event.getPhase() != EventPriority.NORMAL) return;
 		ChunkManager.serverTick(event.getServer());
 	}
 	

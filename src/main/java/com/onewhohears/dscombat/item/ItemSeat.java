@@ -15,9 +15,11 @@ public class ItemSeat extends ItemPart {
 	
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-		ItemStack seat1 = new ItemStack(ModItems.SEAT.get());
-		seat1.setTag(new SeatData(0.01f).write());
-		items.add(seat1);
+		if (group.getId() == ModItems.PARTS.getId()) {
+			ItemStack seat1 = new ItemStack(ModItems.SEAT.get());
+			seat1.setTag(new SeatData(0.01f).write());
+			items.add(seat1);
+		}
 	}
 
 }

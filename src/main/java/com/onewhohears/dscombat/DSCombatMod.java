@@ -14,6 +14,7 @@ import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModContainers;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.init.ModItems;
+import com.onewhohears.dscombat.init.ModRecipeSerializers;
 import com.onewhohears.dscombat.init.ModSounds;
 
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -35,6 +36,10 @@ public class DSCombatMod
     private static final Logger LOGGER = LogUtils.getLogger();
 
     public DSCombatMod() {
+    	RadarPresets.setupPresets();
+        WeaponPresets.setupPresets();
+        AircraftPresets.setupPresets();
+    	
     	IEventBus eventBus =  FMLJavaModLoadingContext.get().getModEventBus();
         
     	DataSerializers.register(eventBus);
@@ -42,15 +47,12 @@ public class DSCombatMod
     	ModSounds.register(eventBus);
     	ModContainers.register(eventBus);
     	ModItems.register(eventBus);
+    	ModRecipeSerializers.register(eventBus);
     	eventBus.addListener(this::commonSetup);
     	eventBus.addListener(this::clientSetup);
     	
     	MinecraftForge.EVENT_BUS.register(new CommonForgeEvents());
         MinecraftForge.EVENT_BUS.register(this);
-        
-        RadarPresets.setupPresets();
-        WeaponPresets.setupPresets();
-        AircraftPresets.setupPresets();
     }
     
     private void commonSetup(FMLCommonSetupEvent event) {

@@ -1,7 +1,10 @@
 package com.onewhohears.dscombat.init;
 
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.item.ItemAircraft;
+import com.onewhohears.dscombat.item.ItemAmmo;
 import com.onewhohears.dscombat.item.ItemSeat;
 import com.onewhohears.dscombat.item.ItemWeaponRack;
 
@@ -18,7 +21,16 @@ public class ModItems {
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, DSCombatMod.MODID);
 	
 	public static void register(IEventBus eventBus) {
+		registerWeaponPresets();
 		ITEMS.register(eventBus);
+	}
+	
+	public static void registerWeaponPresets() {
+		for (int i = 0; i < WeaponPresets.weapons.size(); ++i) {
+			final WeaponData data = WeaponPresets.weapons.get(i);
+			ITEMS.register(data.getId(), 
+					() -> new ItemAmmo(data.getMaxAmmo()));
+		}
 	}
 	
 	public static final CreativeModeTab PARTS = new CreativeModeTab("parts") {
@@ -38,7 +50,7 @@ public class ModItems {
 	public static final RegistryObject<Item> SEAT = ITEMS.register("seat", 
 			() -> new ItemSeat());
 	public static final RegistryObject<Item> WEAPON_RACK = ITEMS.register("weapon_rack", 
-			() -> new ItemWeaponRack());
+			() -> new ItemWeaponRack()); // TODO rename to weapon part and make all weapons in a plane a part (some are internal)
 	public static final RegistryObject<Item> TEST_PLANE = ITEMS.register("test_plane", 
 			() -> new ItemAircraft(ModEntities.TEST_PLANE.get(), "test_plane"));
 	public static final RegistryObject<Item> JAVI_PLANE = ITEMS.register("javi_plane", 

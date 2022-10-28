@@ -15,12 +15,10 @@ public class ItemWeaponRack extends ItemPart {
 	
 	public ItemWeaponRack() {
 		super(1);
-		// TODO use crafting to put ammo in this rack
 	}
 	
 	@Override
 	public Component getName(ItemStack stack) {
-		super.getName(stack);
 		CompoundTag tag = stack.getOrCreateTag();
 		return UtilMCText.simpleText(DSCombatMod.MODID+"."+tag.getString("weaponId"))
 				.append(" "+tag.getInt("ammo")+"/"+tag.getInt("max"));

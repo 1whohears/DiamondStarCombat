@@ -357,13 +357,13 @@ public final class ClientForgeEvents {
 				event.setCanceled(true);
 				return;
 			}
-			//float x = player.getXRot(), y = player.getYRot();
-			/*if (!plane.isFreeLook()) {
-				player.setXRot(0);
-				player.setYRot(0);
-			}*/
 			Quaternion q = UtilAngles.lerpQ(event.getPartialTick(), plane.getPrevQ(), plane.getQ());
+			/*EulerAngles a = UtilAngles.toDegrees(q);
+			a.pitch = player.getXRot()-a.pitch; 
+			a.yaw = player.getYRot()-a.yaw;
+			Quaternion q2 = UtilAngles.toQuaternion(player.getYRot(), player.getXRot(), a.roll);*/
 			event.getPoseStack().mulPose(q);
+			//event.getPoseStack().mulPose(q2);
 			// TODO player looks in wrong direction
 			//System.out.println("plane zRot = "+plane.zRot);
 			//event.getPoseStack().mulPose(Vector3f.ZN.rotation((float)Math.toRadians(plane.zRot)));

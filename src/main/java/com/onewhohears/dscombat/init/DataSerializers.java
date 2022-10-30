@@ -4,7 +4,7 @@ import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.SeatData;
-import com.onewhohears.dscombat.data.parts.WeaponRackData;
+import com.onewhohears.dscombat.data.parts.WeaponPartData;
 import com.onewhohears.dscombat.data.weapon.BombData;
 import com.onewhohears.dscombat.data.weapon.BulletData;
 import com.onewhohears.dscombat.data.weapon.MissileData;
@@ -115,7 +115,7 @@ public class DataSerializers {
 			case TURRENT:
 				return null;
 			case WEAPON_RACK:
-				return new WeaponRackData(buffer);
+				return new WeaponPartData(buffer);
 			}
 			return null;
 		}

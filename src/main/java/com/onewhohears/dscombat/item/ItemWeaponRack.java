@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.item;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.parts.WeaponRackData;
+import com.onewhohears.dscombat.data.parts.WeaponPartData;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.util.UtilMCText;
 
@@ -28,15 +28,15 @@ public class ItemWeaponRack extends ItemPart {
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
 		if (group.getId() == ModItems.PARTS.getId()) {
 			ItemStack rack1 = new ItemStack(ModItems.WEAPON_RACK.get());
-			rack1.setTag(new WeaponRackData(0.005f, "fox3_1", 4, 4).write());
+			rack1.setTag(new WeaponPartData(0.005f, "fox3_1", 4, 4).write());
 			items.add(rack1);
 			
 			ItemStack rack2 = new ItemStack(ModItems.WEAPON_RACK.get());
-			rack2.setTag(new WeaponRackData(0.005f, "fox2_1", 12, 12).write());
+			rack2.setTag(new WeaponPartData(0.005f, "fox2_1", 12, 12).write());
 			items.add(rack2);
 			
 			ItemStack rack3 = new ItemStack(ModItems.WEAPON_RACK.get());
-			rack3.setTag(new WeaponRackData(0.005f, "gbu", 8, 8).write());
+			rack3.setTag(new WeaponPartData(0.005f, "gbu", 8, 8).write());
 			items.add(rack3);
 		}
 	}

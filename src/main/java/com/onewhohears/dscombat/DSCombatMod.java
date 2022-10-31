@@ -36,6 +36,7 @@ public class DSCombatMod
     private static final Logger LOGGER = LogUtils.getLogger();
 
     public DSCombatMod() {
+    	// ORDER MATTERS
     	RadarPresets.setupPresets();
         WeaponPresets.setupPresets();
         AircraftPresets.setupPresets();

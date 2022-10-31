@@ -16,6 +16,7 @@ public abstract class PartData {
 	public static enum PartType {
 		SEAT,
 		TURRENT,
+		INTERNAL_WEAPON,
 		WEAPON_RACK
 	}
 	

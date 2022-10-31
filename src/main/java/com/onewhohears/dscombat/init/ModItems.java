@@ -6,7 +6,7 @@ import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.item.ItemAircraft;
 import com.onewhohears.dscombat.item.ItemAmmo;
 import com.onewhohears.dscombat.item.ItemSeat;
-import com.onewhohears.dscombat.item.ItemWeaponRack;
+import com.onewhohears.dscombat.item.ItemWeaponPart;
 
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -49,8 +49,8 @@ public class ModItems {
 	
 	public static final RegistryObject<Item> SEAT = ITEMS.register("seat", 
 			() -> new ItemSeat());
-	public static final RegistryObject<Item> WEAPON_RACK = ITEMS.register("weapon_rack", 
-			() -> new ItemWeaponRack()); // TODO rename to weapon part and make all weapons in a plane a part (some are internal)
+	public static final RegistryObject<Item> WEAPON_PART = ITEMS.register("weapon_part", 
+			() -> new ItemWeaponPart());
 	public static final RegistryObject<Item> TEST_PLANE = ITEMS.register("test_plane", 
 			() -> new ItemAircraft(ModEntities.TEST_PLANE.get(), "test_plane"));
 	public static final RegistryObject<Item> JAVI_PLANE = ITEMS.register("javi_plane", 

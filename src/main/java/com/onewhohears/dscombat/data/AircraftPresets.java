@@ -35,8 +35,34 @@ public class AircraftPresets {
 	
 	public static CompoundTag TestPreset() {
 		System.out.println("CREATING TEST PRESET");
-		CompoundTag tag = JaviPreset();
-		tag.putString("preset", "test_plane");
+		CompoundTag tag = new CompoundTag();
+		// parts
+		PartsManager pm = new PartsManager();
+		pm.addSlot(PartSlot.PILOT_SLOT_NAME, SlotType.SEAT, new Vec3(0, -0.5, 0), 48, 20);
+		pm.addSlot("dscombat.seat2", SlotType.SEAT, new Vec3(1, -0.5, 1), 68, 20);
+		pm.addSlot("dscombat.seat3", SlotType.SEAT, new Vec3(-1, -0.5, 1), 88, 20);
+		pm.addSlot("dscombat.left_wing_1", SlotType.WING, new Vec3(-0.8, 0, 1), 48, 40);
+		pm.addSlot("dscombat.left_wing_2", SlotType.WING, new Vec3(-1.2, 0, 1), 68, 40);
+		pm.addSlot("dscombat.left_wing_3", SlotType.WING, new Vec3(-1.6, 0, 1), 88, 40);
+		pm.addSlot("dscombat.left_wing_4", SlotType.WING, new Vec3(-2.0, 0, 1), 108, 40);
+		pm.addSlot("dscombat.right_wing_1", SlotType.WING, new Vec3(0.8, 0, 1), 48, 60);
+		pm.addSlot("dscombat.right_wing_2", SlotType.WING, new Vec3(1.2, 0, 1), 68, 60);
+		pm.addSlot("dscombat.right_wing_3", SlotType.WING, new Vec3(1.6, 0, 1), 88, 60);
+		pm.addSlot("dscombat.right_wing_4", SlotType.WING, new Vec3(2.0, 0, 1), 108, 60);
+		pm.addSlot("dscombat.internal_1", SlotType.INTERNAL, new Vec3(0, 0, 1), 48, 80);
+		pm.addSlot("dscombat.internal_2", SlotType.INTERNAL, new Vec3(0, 0, 1), 68, 80);
+		pm.addSlot("dscombat.internal_3", SlotType.INTERNAL, new Vec3(0, 0, 1), 88, 80);
+		pm.addSlot("dscombat.internal_4", SlotType.INTERNAL, new Vec3(0, 0, 1), 108, 80);
+		pm.addPart(new SeatData(0.003f), PartSlot.PILOT_SLOT_NAME, false);
+		pm.addPart(new SeatData(0.003f), "dscombat.seat2", false);
+		pm.addPart(new SeatData(0.003f), "dscombat.seat3", false);
+		pm.addPart(new WeaponRackData(0.005f, "gbu", 8, 8), "dscombat.left_wing_1", false);
+		pm.addPart(new WeaponRackData(0.005f, "fox3_1", 4, 4), "dscombat.right_wing_1", false);
+		pm.addPart(new WeaponRackData(0.005f, "fox2_1", 12, 12), "dscombat.left_wing_2", false);
+		pm.addPart(new WeaponRackData(0.005f, "fox2_1", 12, 12), "dscombat.right_wing_2", false);
+		pm.addPart(new WeaponPartData(0.002f, "bullet_1", 1000, 1000), "dscombat.internal_1", false);
+		pm.write(tag);
+		// radar
 		RadarSystem rs = new RadarSystem();
 		RadarData radar2 = new RadarData("radar_all", 1000, -1, 20);
 		radar2.setScanAircraft(true);
@@ -46,6 +72,23 @@ public class AircraftPresets {
 		radar2.setScanGround(true);
 		rs.addRadar(radar2, false);
 		rs.write(tag);
+		// other
+		tag.putString("preset", "test_plane");
+		tag.putFloat("max_speed", 1.5f);
+		tag.putFloat("max_health", 200);
+		tag.putFloat("health", 200);
+		tag.putInt("flares", 1000);
+		tag.putFloat("stealth", 1);
+		tag.putFloat("maxroll", 8);
+		tag.putFloat("maxpitch", 4);
+		tag.putFloat("maxyaw", 4);
+		tag.putFloat("throttleup", 0.04f);
+		tag.putFloat("throttledown", 0.04f);
+		tag.putFloat("idleheat", 8f);
+		tag.putFloat("engineheat", 8f);
+		tag.putFloat("weight", 0.04f);
+		tag.putFloat("maxthrust", 0.1f);
+		tag.putFloat("surfacearea", 1f);
 		return tag;
 	}
 	
@@ -54,14 +97,14 @@ public class AircraftPresets {
 		CompoundTag tag = new CompoundTag();
 		// parts
 		PartsManager pm = new PartsManager();
-		pm.addSlot(PartSlot.PILOT_SLOT_NAME, SlotType.SEAT, new Vec3(0, -0.5, 0), 48, 60);
-		pm.addSlot("dscombat.seat2", SlotType.SEAT, new Vec3(1, -0.5, 1), 68, 60);
-		pm.addSlot("dscombat.seat3", SlotType.SEAT, new Vec3(-1, -0.5, 1), 88, 60);
-		pm.addSlot("dscombat.left_wing_1", SlotType.WING, new Vec3(-0.9, -0.5, 1), 48, 80);
-		pm.addSlot("dscombat.left_wing_2", SlotType.WING, new Vec3(-1.8, -0.5, 1), 68, 80);
-		pm.addSlot("dscombat.right_wing_1", SlotType.WING, new Vec3(0.9, -0.5, 1), 88, 80);
-		pm.addSlot("dscombat.right_wing_2", SlotType.WING, new Vec3(1.8, -0.5, 1), 108, 80);
-		pm.addSlot("dscombat.internal_1", SlotType.INTERNAL, new Vec3(0, 0, 1), 48, 100);
+		pm.addSlot(PartSlot.PILOT_SLOT_NAME, SlotType.SEAT, new Vec3(0, -0.5, 0), 48, 20);
+		pm.addSlot("dscombat.seat2", SlotType.SEAT, new Vec3(1, -0.5, 1), 68, 20);
+		pm.addSlot("dscombat.seat3", SlotType.SEAT, new Vec3(-1, -0.5, 1), 88, 20);
+		pm.addSlot("dscombat.left_wing_1", SlotType.WING, new Vec3(-0.9, 0, 1), 48, 40);
+		pm.addSlot("dscombat.left_wing_2", SlotType.WING, new Vec3(-1.8, 0, 1), 68, 40);
+		pm.addSlot("dscombat.right_wing_1", SlotType.WING, new Vec3(0.9, 0, 1), 88, 40);
+		pm.addSlot("dscombat.right_wing_2", SlotType.WING, new Vec3(1.8, 0, 1), 108, 40);
+		pm.addSlot("dscombat.internal_1", SlotType.INTERNAL, new Vec3(0, 0, 1), 48, 60);
 		pm.addPart(new SeatData(0.003f), PartSlot.PILOT_SLOT_NAME, false);
 		pm.addPart(new SeatData(0.003f), "dscombat.seat2", false);
 		pm.addPart(new SeatData(0.003f), "dscombat.seat3", false);
@@ -70,26 +113,6 @@ public class AircraftPresets {
 		pm.addPart(new WeaponRackData(0.005f, "fox2_1", 12, 12), "dscombat.left_wing_2", false);
 		pm.addPart(new WeaponPartData(0.002f, "bullet_1", 1000, 1000), "dscombat.internal_1", false);
 		pm.write(tag);
-		System.out.println(pm);
-		// weapons
-		/*WeaponSystem ws = new WeaponSystem();
-		WeaponData b1 = WeaponPresets.getById("bullet_1");
-		WeaponData gbu = WeaponPresets.getById("gbu");
-		WeaponData f31 = WeaponPresets.getById("fox3_1");
-		WeaponData f21 = WeaponPresets.getById("fox2_1");
-		b1.setCurrentAmmo(b1.getMaxAmmo());
-		gbu.setCurrentAmmo(gbu.getMaxAmmo());
-		f31.setCurrentAmmo(f31.getMaxAmmo());
-		f21.setCurrentAmmo(f21.getMaxAmmo());
-		b1.setLaunchPos(new Vec3(0, 0, 1));
-		gbu.setLaunchPos(new Vec3(0, 0, 1));
-		f31.setLaunchPos(new Vec3(0, 0, 1));
-		f21.setLaunchPos(new Vec3(0, 0, 1));
-		ws.addWeapon(b1, false);
-		ws.addWeapon(gbu, false);
-		ws.addWeapon(f31, false);
-		ws.addWeapon(f21, false);
-		ws.write(tag);*/
 		// radar
 		RadarSystem rs = new RadarSystem();
 		RadarData radar = new RadarData("radar_air", 1000, 70, 20);

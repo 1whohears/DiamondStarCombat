@@ -165,7 +165,7 @@ public class PartSlot {
 	public ResourceLocation getSlotIcon() {
 		return getSlotIcon(getSlotType());
 	}
-	// TODO make these slot images
+	
 	public static final ResourceLocation SEAT_ICON = new ResourceLocation(DSCombatMod.MODID, "textures/ui/seat_icon.png");
 	public static final ResourceLocation WING_ICON = new ResourceLocation(DSCombatMod.MODID, "textures/ui/wing_icon.png");
 	public static final ResourceLocation FRAME_ICON = new ResourceLocation(DSCombatMod.MODID, "textures/ui/frame_icon.png");

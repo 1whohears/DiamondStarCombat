@@ -76,6 +76,7 @@ public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContaine
 		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
 		RenderSystem.setShaderTexture(0, BG_TEXTURE);
 		blit(stack, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		// TODO slot icons not rendering
 		for (int i = 0; i < menu.slots.size(); ++i) {
 			if (!(menu.slots.get(i) instanceof PartItemSlot slot)) continue;
 			RenderSystem.setShaderTexture(0, slot.data.getSlotIcon());

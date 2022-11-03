@@ -28,8 +28,7 @@ public class ModItems {
 	public static void registerWeaponPresets() {
 		for (int i = 0; i < WeaponPresets.weapons.size(); ++i) {
 			final WeaponData data = WeaponPresets.weapons.get(i);
-			ITEMS.register(data.getId(), 
-					() -> new ItemAmmo(data.getMaxAmmo()));
+			ITEMS.register(data.getId(), () -> new ItemAmmo(data.getMaxAmmo()));
 		}
 	}
 	

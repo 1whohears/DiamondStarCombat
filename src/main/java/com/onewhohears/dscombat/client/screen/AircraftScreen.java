@@ -12,7 +12,6 @@ import com.onewhohears.dscombat.common.container.slot.PartItemSlot;
 import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -24,6 +23,8 @@ public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContaine
 	
 	private static final ResourceLocation BG_TEXTURE = new ResourceLocation(DSCombatMod.MODID,
 			"textures/ui/aircraft_screen.png");
+	private static final ResourceLocation SLOTS_TEXTURE = new ResourceLocation(DSCombatMod.MODID,
+			"textures/ui/slots.png");
 	
 	public AircraftScreen(AircraftMenuContainer pMenu, Inventory pPlayerInventory, Component title) {
 		super(pMenu, pPlayerInventory, title);
@@ -35,6 +36,7 @@ public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContaine
 	
 	@Override
 	public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+		this.renderBackground(poseStack);
 		super.render(poseStack, mouseX, mouseY, partialTicks);
         this.renderTooltip(poseStack, mouseX, mouseY);
 	}
@@ -72,15 +74,13 @@ public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContaine
 	
 	@Override
 	protected void renderBg(PoseStack stack, float pTicks, int mouseX, int mouseY) {
-		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
 		RenderSystem.setShaderTexture(0, BG_TEXTURE);
 		blit(stack, leftPos, topPos, 0, 0, imageWidth, imageHeight);
-		// TODO slot icons not rendering
+		RenderSystem.setShaderTexture(0, SLOTS_TEXTURE);
 		for (int i = 0; i < menu.slots.size(); ++i) {
 			if (!(menu.slots.get(i) instanceof PartItemSlot slot)) continue;
-			RenderSystem.setShaderTexture(0, slot.data.getSlotIcon());
-			blit(stack, leftPos+slot.x, topPos+slot.y, 0, 0, 16, 16);
+			blit(stack, leftPos+slot.x, topPos+slot.y, slot.data.getIconOffsetX(), 0, 16, 16, 128, 16);
 		}
 	}
 

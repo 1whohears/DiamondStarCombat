@@ -2,24 +2,22 @@ package com.onewhohears.dscombat.data.parts;
 
 import javax.annotation.Nullable;
 
-import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 
 public class PartSlot {
 	
 	public static final String PILOT_SLOT_NAME = "dscombat.pilot_seat";
 	
-	private final String name;
+	private final String name, typeName;
 	private final SlotType type;
 	private final Vec3 pos;
-	private final int uix, uiy;
+	private final int uix, uiy, offsetX;
 	private PartData data;
 	
 	protected PartSlot(String name, SlotType type, Vec3 pos, int uix, int uiy) {
@@ -28,6 +26,8 @@ public class PartSlot {
 		this.pos = pos;
 		this.uix = uix;
 		this.uiy = uiy;
+		this.offsetX = getIconOffsetX(this.type);
+		this.typeName = getTypeName(this.type);
 	}
 	
 	public PartSlot(CompoundTag tag) {
@@ -38,6 +38,8 @@ public class PartSlot {
 		uiy = tag.getInt("uiy");
 		boolean filled = tag.getBoolean("filled");
 		if (filled) data = UtilParse.parsePartFromCompound(tag.getCompound("data"));
+		this.offsetX = getIconOffsetX(this.type);
+		this.typeName = getTypeName(this.type);
 	}
 	
 	public CompoundTag write() {
@@ -60,6 +62,8 @@ public class PartSlot {
 		uiy = buffer.readInt();
 		boolean notNull = buffer.readBoolean();
 		if (notNull) data = DataSerializers.PART_DATA.read(buffer);
+		this.offsetX = getIconOffsetX(this.type);
+		this.typeName = getTypeName(this.type);
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
@@ -130,6 +134,10 @@ public class PartSlot {
 	}
 	
 	public String getTypeName() {
+		return typeName;
+	}
+	
+	public static String getTypeName(SlotType type) {
 		switch (type) {
 		case FRAME:
 			return "dscombat.slotname_frame";
@@ -162,28 +170,12 @@ public class PartSlot {
 		INTERNAL
 	}
 	
-	public ResourceLocation getSlotIcon() {
-		return getSlotIcon(getSlotType());
+	public static int getIconOffsetX(SlotType type) {
+		return type.ordinal() * 16;
 	}
 	
-	public static final ResourceLocation SEAT_ICON = new ResourceLocation(DSCombatMod.MODID, "textures/ui/seat_icon.png");
-	public static final ResourceLocation WING_ICON = new ResourceLocation(DSCombatMod.MODID, "textures/ui/wing_icon.png");
-	public static final ResourceLocation FRAME_ICON = new ResourceLocation(DSCombatMod.MODID, "textures/ui/frame_icon.png");
-	public static final ResourceLocation INTERNAL_ICON = new ResourceLocation(DSCombatMod.MODID, "textures/ui/internal_icon.png");
-	
-	@Nullable
-	public static ResourceLocation getSlotIcon(SlotType type) {
-		switch (type) {
-		case FRAME:
-			return FRAME_ICON;
-		case INTERNAL:
-			return INTERNAL_ICON;
-		case SEAT:
-			return SEAT_ICON;
-		case WING:
-			return WING_ICON;
-		}
-		return null;
+	public int getIconOffsetX() {
+		return offsetX;
 	}
 	
 	@Override

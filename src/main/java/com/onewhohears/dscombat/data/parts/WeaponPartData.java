@@ -75,6 +75,7 @@ public class WeaponPartData extends PartData {
 	
 	@Override
 	public boolean isSetup(String slotId, EntityAbstractAircraft craft) {
+		// TODO if you replace a lot with the same weapon it takes the ammo of the previous weapon part
 		return craft.weaponSystem.get(weaponId, slotId) != null;
 	}
 	

@@ -124,7 +124,7 @@ public class MissileData extends BulletData {
 			return null;
 		}
 		//System.out.println(this.getId()+" ammo "+this.getCurrentAmmo());
-		EntityMissile rocket = new EntityMissile(level, owner, this);
+		EntityMissile rocket = EntityMissile.missile(level, owner, this);
 		rocket.setDeltaMovement(vehicle.getDeltaMovement());
 		rocket.setPos(vehicle.position()
 				.add(UtilAngles.rotateVector(this.getLaunchPos(), vehicleQ))

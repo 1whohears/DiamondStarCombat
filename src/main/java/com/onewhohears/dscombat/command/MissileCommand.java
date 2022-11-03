@@ -48,7 +48,7 @@ public class MissileCommand {
 		else data = new MissileData(tag);
 		int i = 0;
 		for (Entity e : targets) {
-			EntityMissile missile = new EntityMissile(e.level, owner, data);
+			EntityMissile missile = EntityMissile.missile(e.level, owner, data);
 			missile.setPos(pos);
 			Vec3 dp = e.position().subtract(missile.position()).normalize();
 			missile.setXRot(UtilAngles.getPitch(dp));

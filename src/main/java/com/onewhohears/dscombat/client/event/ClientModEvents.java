@@ -60,14 +60,24 @@ public class ClientModEvents {
 		event.registerEntityRenderer(ModEntities.F16.get(), 
 				(context) -> new RendererEntityAbstractAircraft<EntityPlane>(context, 
 						new EntityModelF16<EntityPlane>(models.bakeLayer(EntityModelF16.LAYER_LOCATION))));
+		
 		event.registerEntityRenderer(ModEntities.BULLET.get(), 
 				(context) -> new RendererEntityAbstractWeapon<EntityBullet>(context, 
 						new EntityModelBullet1<EntityBullet>(models.bakeLayer(EntityModelBullet1.LAYER_LOCATION))));
-		event.registerEntityRenderer(ModEntities.MISSILE.get(), 
+		
+		event.registerEntityRenderer(ModEntities.MISSILE1.get(), 
 				(context) -> new RendererEntityAbstractWeapon<EntityMissile>(context, 
 						new EntityModelMissile1<EntityMissile>(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION))));
+		event.registerEntityRenderer(ModEntities.MISSILE2.get(), 
+				(context) -> new RendererEntityAbstractWeapon<EntityMissile>(context, 
+						new EntityModelMissile1<EntityMissile>(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION))));
+		event.registerEntityRenderer(ModEntities.MISSILE3.get(), 
+				(context) -> new RendererEntityAbstractWeapon<EntityMissile>(context, 
+						new EntityModelMissile1<EntityMissile>(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION))));
+		
 		event.registerEntityRenderer(ModEntities.WEAPON_RACK.get(), 
 				(context) -> new RendererEntityWeaponRack<EntityWeaponRack>(context));
+		
 		event.registerEntityRenderer(ModEntities.SEAT.get(), RendererEntityInvisible::new);
 		event.registerEntityRenderer(ModEntities.CAMERA.get(), RendererEntityInvisible::new);
 		event.registerEntityRenderer(ModEntities.FLARE.get(), RendererEntityInvisible::new);

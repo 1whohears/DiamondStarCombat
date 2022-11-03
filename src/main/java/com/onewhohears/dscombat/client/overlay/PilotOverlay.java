@@ -13,10 +13,12 @@ import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.util.UtilEntity;
+import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -69,11 +71,12 @@ public class PilotOverlay {
 			WeaponData sw = plane.weaponSystem.getSelected();
 			if (sw != null) for (int i = 0; i < weapons.size(); ++i) {
 				WeaponData data = weapons.get(i);
-				String info;
-				if (data.equals(sw)) info = "->";
-				else info = "   ";
-				info += data.getId()+" "+data.getCurrentAmmo()+"/"+data.getMaxAmmo();
-				GuiComponent.drawString(poseStack, m.font, info, 1, hieght, 0x0000ff);
+				MutableComponent c = UtilMCText.simpleText("");
+				if (data.equals(sw)) c.append("->");
+				else c.append("   ");
+				c.append(UtilMCText.simpleText("item."+DSCombatMod.MODID+"."+data.getId()));
+				c.append(" "+data.getCurrentAmmo()+"/"+data.getMaxAmmo());
+				GuiComponent.drawString(poseStack, m.font, c, 1, hieght, 0x0000ff);
 				hieght += 10;
 			}
 			// flares

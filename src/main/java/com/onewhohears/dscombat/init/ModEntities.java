@@ -50,8 +50,17 @@ public class ModEntities {
 	public static final RegistryObject<EntityType<EntityBullet>> BULLET = ENTITIES.register("bullet", 
 			() -> createEntityType(EntityBullet::new, EntityDimensions.scalable(0.15f, 0.15f)));
 	
-	public static final RegistryObject<EntityType<EntityMissile>> MISSILE = ENTITIES.register("missile", 
-			() -> createEntityTypeFar(EntityMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
+	public static final RegistryObject<EntityType<EntityMissile>> MISSILE1 = ENTITIES.register("missile1", 
+			() -> createEntityTypeFar((type, level) -> new EntityMissile(type, level, EntityMissile.TEXTURE_MISSILE1), 
+					EntityDimensions.scalable(0.5f, 0.5f)));
+	
+	public static final RegistryObject<EntityType<EntityMissile>> MISSILE2 = ENTITIES.register("missile2", 
+			() -> createEntityTypeFar((type, level) -> new EntityMissile(type, level, EntityMissile.TEXTURE_MISSILE2), 
+					EntityDimensions.scalable(0.5f, 0.5f)));
+	
+	public static final RegistryObject<EntityType<EntityMissile>> MISSILE3 = ENTITIES.register("missile3", 
+			() -> createEntityTypeFar((type, level) -> new EntityMissile(type, level, EntityMissile.TEXTURE_MISSILE3), 
+					EntityDimensions.scalable(0.5f, 0.5f)));
 	
 	public static final RegistryObject<EntityType<EntityFlare>> FLARE = ENTITIES.register("flare", 
 			() -> createEntityType(EntityFlare::new, EntityDimensions.scalable(0f, 0f)));

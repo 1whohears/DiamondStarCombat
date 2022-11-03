@@ -23,18 +23,33 @@ import net.minecraftforge.network.PacketDistributor;
 
 public class EntityMissile extends EntityBullet {
 	
-	private static final ResourceLocation TEXTURE_MISSILE1 = new ResourceLocation(DSCombatMod.MODID, "textures/entities/missile1.png");
+	public static final ResourceLocation TEXTURE_MISSILE1 = new ResourceLocation(DSCombatMod.MODID, "textures/entities/missile1.png");
+	public static final ResourceLocation TEXTURE_MISSILE2 = new ResourceLocation(DSCombatMod.MODID, "textures/entities/missile2.png");
+	public static final ResourceLocation TEXTURE_MISSILE3 = new ResourceLocation(DSCombatMod.MODID, "textures/entities/missile3.png");
+	
+	public static EntityMissile missile(Level level, Entity owner, MissileData data) {
+		switch (data.getId()) {
+		case "gbu": return new EntityMissile(ModEntities.MISSILE1.get(), level, owner, data, TEXTURE_MISSILE1);
+		case "fox3_1": return new EntityMissile(ModEntities.MISSILE2.get(), level, owner, data, TEXTURE_MISSILE2);
+		case "fox2_1": return new EntityMissile(ModEntities.MISSILE3.get(), level, owner, data, TEXTURE_MISSILE3);
+		}
+		return new EntityMissile(ModEntities.MISSILE1.get(), level, owner, data, TEXTURE_MISSILE1);
+	}
+	
+	private final ResourceLocation TEXTURE;
 	
 	public Entity parent;
 	public Entity target;
 	public Vec3 targetPos;
 	
-	public EntityMissile(EntityType<? extends EntityMissile> type, Level level) {
+	public EntityMissile(EntityType<? extends EntityMissile> type, Level level, ResourceLocation texture) {
 		super(type, level);
+		TEXTURE = texture;
+		//System.out.println("NEW MISSILE "+level+" "+texture);
 	}
 	
-	public EntityMissile(Level level, Entity owner, MissileData data) {
-		this(ModEntities.MISSILE.get(), level);
+	private EntityMissile(EntityType<? extends EntityMissile> type, Level level, Entity owner, MissileData data, ResourceLocation texture) {
+		this(type, level, texture);
 		this.setOwner(owner);
 		this.setWeaponData(data);
 	}
@@ -51,7 +66,7 @@ public class EntityMissile extends EntityBullet {
 					this.setPos(target.position());
 					this.checkExplode();
 					this.discard();
-					if (target.getType().equals(ModEntities.MISSILE.get())) {
+					if (target.getType().equals(ModEntities.MISSILE1.get())) {
 						target.kill();
 					}
 					//System.out.println("close enough");
@@ -103,7 +118,7 @@ public class EntityMissile extends EntityBullet {
 	
 	@Override
 	public ResourceLocation getTexture() {
-		return TEXTURE_MISSILE1;
+		return TEXTURE;
 	}
 	
 	@Override

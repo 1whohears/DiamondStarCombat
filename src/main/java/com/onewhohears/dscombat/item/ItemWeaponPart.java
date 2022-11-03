@@ -20,7 +20,9 @@ public class ItemWeaponPart extends ItemPart {
 	@Override
 	public Component getName(ItemStack stack) {
 		CompoundTag tag = stack.getOrCreateTag();
-		return UtilMCText.simpleText(DSCombatMod.MODID+"."+tag.getString("weaponId"))
+		return UtilMCText.simpleText(getDescriptionId())
+				.append(" ")
+				.append(UtilMCText.simpleText("item."+DSCombatMod.MODID+"."+tag.getString("weaponId")))
 				.append(" "+tag.getInt("ammo")+"/"+tag.getInt("max"));
 	}
 	

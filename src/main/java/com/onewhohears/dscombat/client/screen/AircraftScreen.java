@@ -85,8 +85,8 @@ public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContaine
 
 	@Override
 	protected void renderLabels(PoseStack stack, int mouseX, int mouseY) {
-		drawString(stack, font, title, titleLabelX+35, titleLabelY, 0x404040);
-		drawString(stack, font, playerInventoryTitle, titleLabelX+35, titleLabelY+40, 0x404040);
+		drawString(stack, font, title, titleLabelX+38, titleLabelY, 0x404040);
+		drawString(stack, font, playerInventoryTitle, titleLabelX+38, titleLabelY+120, 0x404040);
 	}
 	
 	@Override

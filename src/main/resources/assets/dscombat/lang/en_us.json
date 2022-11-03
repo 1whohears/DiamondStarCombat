@@ -4,15 +4,15 @@
 	"dscombat.slotname_seat": "SEAT",
 	"dscombat.slotname_wing": "WING",
 	
+	"dscombat.ammo": "Ammo",
 	"dscombat.pilot_seat": "Pilot Seat",
 	"dscombat.seat2": "Seat 2",
 	"dscombat.seat3": "Seat 3",
 	"dscombat.left_wing_1": "Left Wing 1",
+	"dscombat.left_wing_2": "Left Wing 2",
 	"dscombat.right_wing_1": "Right Wing 1",
-	
-	"dscombat.gbu": "GBU",
-	"dscombat.fox3_1": "Fox3-1",
-	"dscombat.fox2_1": "Fox2-1",
+	"dscombat.right_wing_2": "Right Wing 2",
+	"dscombat.internal_1": "Internal 1",
 	
 	"entity.dscombat.basic_plane": "Test Plane",
 	"entity.dscombat.f16": "F16",
@@ -50,6 +50,11 @@
 	"item.dscombat.weapon_rack": "Weapon Rack",
 	"item.dscombat.test_plane": "Test Plane",
 	"item.dscombat.javi_plane": "Javi Plane",
+	"item.dscombat.weapon_part": "Weapon Part",
+	"item.dscombat.bullet_1": "Bullet-1",
+	"item.dscombat.gbu": "GBU",
+	"item.dscombat.fox3_1": "Fox3-1",
+	"item.dscombat.fox2_1": "Fox2-1",
 	
 	"container.dscombat.plane_menu": "Aircraft Menu"
 }

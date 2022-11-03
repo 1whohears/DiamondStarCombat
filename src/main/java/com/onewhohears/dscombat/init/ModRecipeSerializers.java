@@ -1,7 +1,8 @@
 package com.onewhohears.dscombat.init;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.crafting.WeaponPartAmmoRecipe;
+import com.onewhohears.dscombat.crafting.WeaponPartLoadRecipe;
+import com.onewhohears.dscombat.crafting.WeaponPartUnloadRecipe;
 
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SimpleRecipeSerializer;
@@ -18,6 +19,7 @@ public class ModRecipeSerializers {
 		RECIPES.register(eventBus);
 	}
 	
-	public static final RegistryObject<SimpleRecipeSerializer<WeaponPartAmmoRecipe>> WEAPON_PART = RECIPES.register("weapon_part_ammo_recipe", () -> new SimpleRecipeSerializer<>(WeaponPartAmmoRecipe::new));
+	public static final RegistryObject<SimpleRecipeSerializer<WeaponPartLoadRecipe>> WEAPON_PART_LOAD = RECIPES.register("weapon_part_load_recipe", () -> new SimpleRecipeSerializer<>(WeaponPartLoadRecipe::new));
+	public static final RegistryObject<SimpleRecipeSerializer<WeaponPartUnloadRecipe>> WEAPON_PART_UNLOAD = RECIPES.register("weapon_part_unload_recipe", () -> new SimpleRecipeSerializer<>(WeaponPartUnloadRecipe::new));
 	
 }

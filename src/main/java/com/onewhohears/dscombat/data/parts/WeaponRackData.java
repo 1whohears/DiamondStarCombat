@@ -26,7 +26,7 @@ public class WeaponRackData extends WeaponPartData {
 	@Override
 	public void setup(EntityAbstractAircraft craft, String slotId, Vec3 pos) {
 		super.setup(craft, slotId, pos);
-		if (!isSetup(slotId, craft)) {
+		if (!isEntitySetup(slotId, craft)) {
 			EntityWeaponRack rack = new EntityWeaponRack(craft.level, slotId, pos);
 			rack.setPos(craft.position());
 			rack.startRiding(craft);
@@ -36,6 +36,10 @@ public class WeaponRackData extends WeaponPartData {
 	
 	@Override
 	public boolean isSetup(String slotId, EntityAbstractAircraft craft) {
+		return super.isSetup(slotId, craft);
+	}
+	
+	public boolean isEntitySetup(String slotId, EntityAbstractAircraft craft) {
 		for (EntityAbstractPart part : craft.getPartEntities()) 
 			if (part.getSlotId().equals(slotId)) 
 				return true;

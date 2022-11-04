@@ -109,8 +109,14 @@ public class WeaponPartLoadRecipe extends CustomRecipe {
 		//debugContainer(container, "REMAINING ITEMS");
 		ItemStack part = getPart(container);
 		List<ItemStack> ammo = getAmmo(container);
-		int ca = part.getOrCreateTag().getInt("ammo");
-		int ma = part.getOrCreateTag().getInt("max");
+		int ca = 0, ma;
+		if (part.getOrCreateTag().getString("weaponId").isEmpty()) {
+			String weaponId = ammo.get(0).getItem().getDescriptionId().split("\\.")[2];
+			ma = WeaponPresets.getById(weaponId).getMaxAmmo();
+		} else {
+			ca = part.getOrCreateTag().getInt("ammo");
+			ma = part.getOrCreateTag().getInt("max");
+		}
 		//System.out.println("ammo item = "+ammo.getCount());
 		//System.out.println("ca = "+ca+" ma = "+ma+" na = "+na);
 		//System.out.println("diff = "+diff);

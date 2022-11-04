@@ -3,11 +3,13 @@ package com.onewhohears.dscombat.crafting;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.init.ModRecipeSerializers;
 import com.onewhohears.dscombat.item.ItemAmmo;
 import com.onewhohears.dscombat.item.ItemWeaponPart;
 
 import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.Item;
@@ -45,7 +47,7 @@ public class WeaponPartLoadRecipe extends CustomRecipe {
 		String partId = part.getOrCreateTag().getString("weaponId");
 		String ammoId = ammo.get(0).getItem().getDescriptionId().split("\\.")[2];
 		//System.out.println("partId = "+partId+" ammoId = "+ammoId);
-		return partId.equals(ammoId);
+		return partId.equals(ammoId) || partId.isEmpty();
 	}
 	
 	private ItemStack getPart(CraftingContainer container) {
@@ -82,14 +84,23 @@ public class WeaponPartLoadRecipe extends CustomRecipe {
 	public ItemStack assemble(CraftingContainer container) {
 		ItemStack part = getPart(container);
 		List<ItemStack> ammo = getAmmo(container);
-		ItemStack r = part.copy();
 		if (!isIdSame(part, ammo)) return ItemStack.EMPTY;
-		int ca = part.getOrCreateTag().getInt("ammo");
-		int ma = part.getOrCreateTag().getInt("max");
+		int ca = 0, ma;
+		String weaponId = ammo.get(0).getItem().getDescriptionId().split("\\.")[2];
+		if (part.getOrCreateTag().getString("weaponId").isEmpty()) {
+			ma = WeaponPresets.getById(weaponId).getMaxAmmo();
+		} else {
+			ca = part.getOrCreateTag().getInt("ammo");
+			ma = part.getOrCreateTag().getInt("max");
+		}
 		int na = ca;
 		for (int i = 0; i < ammo.size(); ++i) na += ammo.get(i).getCount();
 		if (na > ma) na = ma;
-		r.getOrCreateTag().putInt("ammo", na);
+		ItemStack r = part.copy();
+		CompoundTag tag = r.getOrCreateTag();
+		tag.putString("weaponId", weaponId);
+		tag.putInt("ammo", na);
+		tag.putInt("max", ma);
 		return r;
 	}
 	

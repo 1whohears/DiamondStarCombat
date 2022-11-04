@@ -8,6 +8,7 @@ import com.onewhohears.dscombat.util.UtilMCText;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 
@@ -20,10 +21,16 @@ public class ItemWeaponPart extends ItemPart {
 	@Override
 	public Component getName(ItemStack stack) {
 		CompoundTag tag = stack.getOrCreateTag();
-		return UtilMCText.simpleText(getDescriptionId())
-				.append(" ")
-				.append(UtilMCText.simpleText("item."+DSCombatMod.MODID+"."+tag.getString("weaponId")))
+		String weapon = tag.getString("weaponId");
+		MutableComponent name = UtilMCText.simpleText(getDescriptionId()).append(" ");
+		if (weapon.isEmpty()) {
+			name.append("EMPTY");
+		} else {
+			name.append(UtilMCText.simpleText("item."+DSCombatMod.MODID+"."+weapon))
 				.append(" "+tag.getInt("ammo")+"/"+tag.getInt("max"));
+		}
+		return name;
+				
 	}
 	
 	@Override

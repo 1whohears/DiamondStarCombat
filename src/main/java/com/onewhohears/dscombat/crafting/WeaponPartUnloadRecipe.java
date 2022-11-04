@@ -5,6 +5,7 @@ import com.onewhohears.dscombat.init.ModRecipeSerializers;
 import com.onewhohears.dscombat.item.ItemWeaponPart;
 
 import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.Item;
@@ -68,7 +69,10 @@ public class WeaponPartUnloadRecipe extends CustomRecipe {
 			}
 		}
 		if (part != null) {
-			part.getOrCreateTag().putInt("ammo", 0);
+			CompoundTag tag = part.getOrCreateTag();
+			tag.putString("weaponId", "");
+			tag.putInt("ammo", 0);
+			tag.putInt("max", 0);
 			part.setCount(2);
 		}
 		NonNullList<ItemStack> list = NonNullList.withSize(container.getContainerSize(), ItemStack.EMPTY);

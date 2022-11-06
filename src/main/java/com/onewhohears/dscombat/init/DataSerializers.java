@@ -2,6 +2,8 @@ package com.onewhohears.dscombat.init;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.data.parts.EngineData;
+import com.onewhohears.dscombat.data.parts.FuelTankData;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.SeatData;
 import com.onewhohears.dscombat.data.parts.WeaponPartData;
@@ -119,6 +121,10 @@ public class DataSerializers {
 				return new WeaponRackData(buffer);
 			case INTERNAL_WEAPON:
 				return new WeaponPartData(buffer);
+			case ENGINE:
+				return new EngineData(buffer);
+			case FUEL_TANK:
+				return new FuelTankData(buffer);
 			}
 			return null;
 		}

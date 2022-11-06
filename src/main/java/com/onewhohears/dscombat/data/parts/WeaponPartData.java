@@ -102,9 +102,6 @@ public class WeaponPartData extends PartData {
 		this.tick(slotId);
 	}
 	
-	public static final SlotType[] INTERNAL = new SlotType[] {SlotType.INTERNAL};
-	public static final SlotType[] EXTERNAL = new SlotType[] {SlotType.WING, SlotType.FRAME};
-	
 	@Override
 	public SlotType[] getCompatibleSlots() {
 		return INTERNAL;

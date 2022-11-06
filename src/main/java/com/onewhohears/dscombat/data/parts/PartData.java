@@ -10,6 +10,9 @@ import net.minecraft.world.phys.Vec3;
 
 public abstract class PartData {
 	
+	public static final SlotType[] INTERNAL = new SlotType[] {SlotType.INTERNAL};
+	public static final SlotType[] EXTERNAL = new SlotType[] {SlotType.WING, SlotType.FRAME};
+	
 	private final float weight;
 	private EntityAbstractAircraft parent;
 	
@@ -17,7 +20,9 @@ public abstract class PartData {
 		SEAT,
 		TURRENT,
 		INTERNAL_WEAPON,
-		WEAPON_RACK
+		WEAPON_RACK,
+		ENGINE,
+		FUEL_TANK
 	}
 	
 	protected PartData(float weight) {

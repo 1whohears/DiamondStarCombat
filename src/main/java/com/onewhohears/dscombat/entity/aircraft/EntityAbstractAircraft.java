@@ -71,12 +71,16 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public static final EntityDataAccessor<Float> PITCH = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> YAW = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> IDLEHEAT = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> ENGINEHEAT = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
+	//public static final EntityDataAccessor<Float> ENGINEHEAT = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> WEIGHT = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> MAX_THRUST = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
+	//public static final EntityDataAccessor<Float> MAX_THRUST = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> WING_AREA = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Integer> MISSILE_TRACKED_TICKS = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> LOCKED_ONTO_TICKS = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.INT);
+	//public static final EntityDataAccessor<Float> FUEL = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
+	//public static final EntityDataAccessor<Float> MAX_FUEL = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
+	//public static final EntityDataAccessor<Float> FUEL_RATE = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Boolean> LANDING_GEAR = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.BOOLEAN);
 	
 	public static final double collideSpeedThreshHold = 1d;
 	public static final double collideDamageRate = 200d;
@@ -119,12 +123,16 @@ public abstract class EntityAbstractAircraft extends Entity {
 		entityData.define(PITCH, 1f);
 		entityData.define(YAW, 1f);
 		entityData.define(IDLEHEAT, 1f);
-		entityData.define(ENGINEHEAT, 1f);
+		//entityData.define(ENGINEHEAT, 1f);
 		entityData.define(WEIGHT, 0.05f);
-		entityData.define(MAX_THRUST, 0.1f);
+		//entityData.define(MAX_THRUST, 0.1f);
 		entityData.define(WING_AREA, 1f);
 		entityData.define(MISSILE_TRACKED_TICKS, 0);
 		entityData.define(LOCKED_ONTO_TICKS, 0);
+		//entityData.define(FUEL, 0f);
+		//entityData.define(MAX_FUEL, 0f);
+		//entityData.define(FUEL_RATE, 0f);
+		entityData.define(LANDING_GEAR, false);
 	}
 	
 	@Override
@@ -170,10 +178,9 @@ public abstract class EntityAbstractAircraft extends Entity {
 		this.setThrottleIncreaseRate(compound.getFloat("throttleup"));
 		this.setThrottleDecreaseRate(compound.getFloat("throttledown"));
 		this.setIdleHeat(compound.getFloat("idleheat"));
-		this.setEngineHeat(compound.getFloat("engineheat"));
 		this.setAircraftWeight(compound.getFloat("weight"));
-		this.setMaxThrust(compound.getFloat("maxthrust"));
 		this.setSurfaceArea(compound.getFloat("surfacearea"));
+		this.setLandingGear(compound.getBoolean("landing_gear"));
 	}
 
 	@Override
@@ -194,10 +201,9 @@ public abstract class EntityAbstractAircraft extends Entity {
 		compound.putFloat("throttleup", this.getThrottleIncreaseRate());
 		compound.putFloat("throttledown", this.getThrottleDecreaseRate());
 		compound.putFloat("idleheat", this.getIdleHeat());
-		compound.putFloat("engineheat", this.getEngineHeat());
 		compound.putFloat("weight", this.getAircraftWeight());
-		compound.putFloat("maxthrust", this.getMaxThrust());
 		compound.putFloat("surfacearea", this.getSurfaceArea());
+		compound.putBoolean("landing_gear", this.isLandingGear());
 	}
 	
 	public void init() {
@@ -351,17 +357,13 @@ public abstract class EntityAbstractAircraft extends Entity {
 	}
 	
 	public double getThrust() {
+		if (this.getFuel() <= 0) return 0;
 		float throttle = getCurrentThrottle();
 		return throttle * getMaxThrust();
 	}
 	
 	public float getMaxThrust() {
-		return entityData.get(MAX_THRUST);
-	}
-	
-	public void setMaxThrust(float thrust) {
-		if (thrust < 0) thrust = 0;
-		entityData.set(MAX_THRUST, thrust);
+		return partsManager.getTotalEngineThrust();
 	}
 	
 	public Vec3 getDragForce(Quaternion q) {
@@ -452,6 +454,11 @@ public abstract class EntityAbstractAircraft extends Entity {
 					((ServerPlayer)controller).displayClientMessage(
 							UtilMCText.simpleText("Can't open plane menu while flying!"), true);
 				}
+			}
+			if (isPlayer && ((ServerPlayer)controller).isCreative()) {
+				
+			} else {
+				this.tickFuel();
 			}
 		}
 	}
@@ -929,11 +936,7 @@ public abstract class EntityAbstractAircraft extends Entity {
     }
     
     public float getEngineHeat() {
-    	return entityData.get(ENGINEHEAT);
-    }
-    
-    public void setEngineHeat(float heat) {
-    	entityData.set(ENGINEHEAT, heat);
+    	return partsManager.getTotalEngineHeat();
     }
     
     public List<Player> getRidingPlayers() {
@@ -1014,10 +1017,39 @@ public abstract class EntityAbstractAircraft extends Entity {
     
     @Override
     protected AABB makeBoundingBox() {
+    	// TODO change if landing gear is out 
     	double pX = getX(), pY = getY(), pZ = getZ();
     	EntityDimensions d = getDimensions(getPose());
     	float f = d.width / 2.0F;
         float f1 = d.height / 2.0F;
         return new AABB(pX-(double)f, pY-(double)f1, pZ-(double)f, pX+(double)f, pY+(double)f1, pZ+(double)f);
     }
+    
+    public float getMaxFuel() {
+    	return partsManager.getMaxFuel();
+    }
+    
+    public void tickFuel() {
+    	if (!level.isClientSide) {
+    		float f = getFuel();
+    		setFuel(f - getFuelRate());
+    	}
+    }
+    
+    public float getFuel() {
+    	return partsManager.getCurrentFuel();
+    }
+    
+    public void addFuel(float fuel) {
+    	// TODO add fuel
+    }
+    
+    public boolean isLandingGear() {
+    	return entityData.get(LANDING_GEAR);
+    }
+    
+    public void setLandingGear(boolean gear) {
+    	entityData.set(LANDING_GEAR, gear);
+    }
+    
 }

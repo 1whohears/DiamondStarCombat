@@ -9,6 +9,7 @@ import com.onewhohears.dscombat.common.container.AircraftMenuContainer;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundAddPartPacket;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundRemovePartPacket;
+import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.util.UtilParse;
@@ -70,6 +71,7 @@ public class PartsManager {
 	
 	public void tickParts() {
 		for (PartSlot p : slots) p.tick();
+		// TODO tick fuel usage
 	}
 	
 	public void clientTickParts() {
@@ -125,6 +127,34 @@ public class PartsManager {
 	public float getPartsWeight() {
 		float total = 0;
 		for (PartSlot p : slots) if (p.filled()) total += p.getPartData().getWeight();
+		return total;
+	}
+	
+	public float getTotalEngineThrust() {
+		float total = 0;
+		for (PartSlot p : slots) if (p.filled() && p.getPartData().getType() == PartType.ENGINE) 
+			total += ((EngineData)p.getPartData()).getThrust();
+		return total;
+	}
+	
+	public float getTotalEngineHeat() {
+		float total = 0;
+		for (PartSlot p : slots) if (p.filled() && p.getPartData().getType() == PartType.ENGINE) 
+			total += ((EngineData)p.getPartData()).getHeat();
+		return total;
+	}
+	
+	public float getCurrentFuel() {
+		float total = 0;
+		for (PartSlot p : slots) if (p.filled() && p.getPartData().getType() == PartType.FUEL_TANK) 
+			total += ((FuelTankData)p.getPartData()).getFuel();
+		return total;
+	}
+	
+	public float getMaxFuel() {
+		float total = 0;
+		for (PartSlot p : slots) if (p.filled() && p.getPartData().getType() == PartType.FUEL_TANK) 
+			total += ((FuelTankData)p.getPartData()).getMaxFuel();
 		return total;
 	}
 	

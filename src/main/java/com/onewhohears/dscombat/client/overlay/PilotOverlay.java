@@ -65,6 +65,8 @@ public class PilotOverlay {
 			GuiComponent.drawString(poseStack, m.font, 
 					"["+plane.getBlockX()+","+plane.getBlockY()+","+plane.getBlockZ()+"]", 
 					width/2+11, height-60, 0x00ff00);
+			// TODO plane fuel
+			
 			// weapon data
 			int hieght = 1;
 			List<WeaponData> weapons = plane.weaponSystem.getWeapons();

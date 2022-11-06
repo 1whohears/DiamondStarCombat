@@ -89,6 +89,10 @@ public class AircraftPresets {
 		tag.putFloat("weight", 0.04f);
 		tag.putFloat("maxthrust", 0.1f);
 		tag.putFloat("surfacearea", 1f);
+		tag.putFloat("fuel", 100f);
+		tag.putFloat("max_fuel", 100f);
+		tag.putFloat("fuel_rate", 0.0083f);
+		tag.putBoolean("landing_gear", true);
 		return tag;
 	}
 	
@@ -145,8 +149,12 @@ public class AircraftPresets {
 		tag.putFloat("idleheat", 4f);
 		tag.putFloat("engineheat", 4f);
 		tag.putFloat("weight", 0.04f);
-		tag.putFloat("maxthrust", 0.1f);
+		tag.putFloat("maxthrust", 0.04f);
 		tag.putFloat("surfacearea", 1f);
+		tag.putFloat("fuel", 100f);
+		tag.putFloat("max_fuel", 100f);
+		tag.putFloat("fuel_rate", 0.0083f);
+		tag.putBoolean("landing_gear", true);
 		return tag;
 	}
 	

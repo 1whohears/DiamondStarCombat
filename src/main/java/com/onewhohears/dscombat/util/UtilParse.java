@@ -5,6 +5,8 @@ import java.util.zip.GZIPInputStream;
 
 import javax.annotation.Nullable;
 
+import com.onewhohears.dscombat.data.parts.EngineData;
+import com.onewhohears.dscombat.data.parts.FuelTankData;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.data.parts.SeatData;
@@ -66,6 +68,10 @@ public class UtilParse {
 			return new WeaponRackData(tag);
 		case INTERNAL_WEAPON:
 			return new WeaponPartData(tag);
+		case ENGINE:
+			return new EngineData(tag);
+		case FUEL_TANK:
+			return new FuelTankData(tag);
 		}
 		return null;
 	}

@@ -64,10 +64,23 @@ public class FuelTankData extends PartData {
 		return null;
 	}
 	
-	public void addFuel(float fuel) {
+	/**
+	 * @param fuel
+	 * @return remainder
+	 */
+	public float addFuel(float fuel) {
 		this.fuel += fuel;
-		if (this.fuel < 0) this.fuel = 0;
-		else if (this.fuel > max) this.fuel = max;
+		if (this.fuel < 0) {
+			float r = this.fuel;
+			this.fuel = 0;
+			return r;
+		}
+		else if (this.fuel > max) {
+			float r = this.fuel - this.max;
+			this.fuel = max;
+			return r;
+		}
+		return 0;
 	}
 	
 	public float getFuel() {

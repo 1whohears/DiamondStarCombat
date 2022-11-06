@@ -1031,8 +1031,7 @@ public abstract class EntityAbstractAircraft extends Entity {
     
     public void tickFuel() {
     	if (!level.isClientSide) {
-    		float f = getFuel();
-    		setFuel(f - getFuelRate());
+    		this.partsManager.tickFuel(true);
     	}
     }
     
@@ -1040,8 +1039,8 @@ public abstract class EntityAbstractAircraft extends Entity {
     	return partsManager.getCurrentFuel();
     }
     
-    public void addFuel(float fuel) {
-    	// TODO add fuel
+    public void addFuel(float fuel, boolean updateClient) {
+    	this.partsManager.addFuel(fuel, updateClient);
     }
     
     public boolean isLandingGear() {

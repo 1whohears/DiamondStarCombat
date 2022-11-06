@@ -71,7 +71,6 @@ public class PartsManager {
 	
 	public void tickParts() {
 		for (PartSlot p : slots) p.tick();
-		// TODO tick fuel usage
 	}
 	
 	public void clientTickParts() {
@@ -144,6 +143,13 @@ public class PartsManager {
 		return total;
 	}
 	
+	public float getTotalEngineFuelConsume() {
+		float total = 0;
+		for (PartSlot p : slots) if (p.filled() && p.getPartData().getType() == PartType.ENGINE) 
+			total += ((EngineData)p.getPartData()).getFuelPerTick();
+		return total;
+	}
+	
 	public float getCurrentFuel() {
 		float total = 0;
 		for (PartSlot p : slots) if (p.filled() && p.getPartData().getType() == PartType.FUEL_TANK) 
@@ -156,6 +162,19 @@ public class PartsManager {
 		for (PartSlot p : slots) if (p.filled() && p.getPartData().getType() == PartType.FUEL_TANK) 
 			total += ((FuelTankData)p.getPartData()).getMaxFuel();
 		return total;
+	}
+	
+	public void addFuel(float fuel, boolean updateClient) {
+		// TODO add fuel
+	}
+	
+	public void tickFuel(boolean updateClient) {
+		float consume = getTotalEngineFuelConsume();
+		for (PartSlot p : slots) if (p.filled() && p.getPartData().getType() == PartType.FUEL_TANK) {
+			FuelTankData data = (FuelTankData) p.getPartData();
+			consume = -data.addFuel(-consume);
+			if (consume <= 0) break;
+		}
 	}
 	
 	public Container getContainer(AircraftMenuContainer menu) {

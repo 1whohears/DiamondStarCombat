@@ -133,4 +133,12 @@ public class UtilPacket {
 		}
 	}
 	
+	public static void setAircraftFuel(int id, float[] fuels) {
+		Minecraft m = Minecraft.getInstance();
+		Level world = m.level;
+		if (world.getEntity(id) instanceof EntityAbstractAircraft plane) {
+			
+		}
+	}
+	
 }

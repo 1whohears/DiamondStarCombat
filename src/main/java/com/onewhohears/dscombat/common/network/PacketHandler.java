@@ -4,6 +4,7 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundAddPartPacket;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundAddRadarPacket;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundAddWeaponPacket;
+import com.onewhohears.dscombat.common.network.toclient.ClientBoundFuelPacket;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundMissileMovePacket;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundPingsPacket;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundPlaneDataPacket;
@@ -125,6 +126,11 @@ public final class PacketHandler {
 			.encoder(ServerBoundSwitchSeatPacket::encode)
 			.decoder(ServerBoundSwitchSeatPacket::new)
 			.consumerMainThread(ServerBoundSwitchSeatPacket::handle)
+			.add();
+		net.messageBuilder(ClientBoundFuelPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ClientBoundFuelPacket::encode)
+			.decoder(ClientBoundFuelPacket::new)
+			.consumerMainThread(ClientBoundFuelPacket::handle)
 			.add();
 	}
 	

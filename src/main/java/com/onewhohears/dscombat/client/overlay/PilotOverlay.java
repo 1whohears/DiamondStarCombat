@@ -39,6 +39,8 @@ public class PilotOverlay {
             "textures/ui/stickcanvassquare.png");
 	private static final ResourceLocation STICK_KNOB = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/stickknob.png");
+	private static final ResourceLocation FUEL = new ResourceLocation(DSCombatMod.MODID,
+            "textures/ui/fuel.png");
 	
 	public static final IGuiOverlay HUD_Aircraft_Stats = ((gui, poseStack, partialTick, width, height) -> {
 		Minecraft m = Minecraft.getInstance();
@@ -65,8 +67,6 @@ public class PilotOverlay {
 			GuiComponent.drawString(poseStack, m.font, 
 					"["+plane.getBlockX()+","+plane.getBlockY()+","+plane.getBlockZ()+"]", 
 					width/2+11, height-60, 0x00ff00);
-			// TODO plane fuel
-			
 			// weapon data
 			int hieght = 1;
 			List<WeaponData> weapons = plane.weaponSystem.getWeapons();
@@ -115,42 +115,55 @@ public class PilotOverlay {
 				renderAir(width, height, poseStack, m, gui);
 			}
 			m.setCameraEntity(camera);
-			// pitch yaw input
+			// textures
 			RenderSystem.setShader(GameRenderer::getPositionTexShader);
 	        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+	        // pitch yaw input
 	        RenderSystem.setShaderTexture(0, STICK_BASE_CIRCLE);
 	        GuiComponent.blit(poseStack, 
 	        		width-stickBaseSize-stickOffset, height-stickBaseSize-stickOffset, 
-	        		0, 0, stickBaseSize, stickBaseSize, stickBaseSize, stickBaseSize);
+	        		0, 0, stickBaseSize, stickBaseSize, 
+	        		stickBaseSize, stickBaseSize);
 	        int b = stickBaseSize/2;
 	        int n = stickKnobSize/2;
 	        RenderSystem.setShaderTexture(0, STICK_KNOB);
 	        GuiComponent.blit(poseStack, 
 	        		width-b-n-stickOffset+(int)(plane.inputYaw*b), 
 	        		height-b-n-stickOffset-(int)(plane.inputPitch*b), 
-	        		0, 0, stickKnobSize, stickKnobSize, stickKnobSize, stickKnobSize);
+	        		0, 0, stickKnobSize, stickKnobSize, 
+	        		stickKnobSize, stickKnobSize);
 			// roll input
 	        RenderSystem.setShaderTexture(0, STICK_BASE_SQUARE);
 	        GuiComponent.blit(poseStack, 
 	        		width-stickBaseSize-stickOffset, 
 	        		height-stickBaseSize-stickOffset-stickKnobSize-stickOffset, 
-	        		0, 0, stickBaseSize, stickKnobSize, stickBaseSize, stickBaseSize);
+	        		0, 0, stickBaseSize, stickKnobSize, 
+	        		stickBaseSize, stickBaseSize);
 	        RenderSystem.setShaderTexture(0, STICK_KNOB);
 	        GuiComponent.blit(poseStack, 
 	        		width-b-n-stickOffset+(int)(plane.inputRoll*b), 
 	        		height-stickKnobSize-stickOffset-stickOffset-stickBaseSize, 
-	        		0, 0, stickKnobSize, stickKnobSize, stickKnobSize, stickKnobSize);
+	        		0, 0, stickKnobSize, stickKnobSize, 
+	        		stickKnobSize, stickKnobSize);
 	        // throttle input
 	        RenderSystem.setShaderTexture(0, STICK_BASE_SQUARE);
 	        GuiComponent.blit(poseStack, 
 	        		stickOffset, 
 	        		height-stickBaseSize-stickOffset, 
-	        		0, 0, stickKnobSize, stickBaseSize, stickBaseSize, stickBaseSize);
+	        		0, 0, stickKnobSize, stickBaseSize, 
+	        		stickBaseSize, stickBaseSize);
 	        RenderSystem.setShaderTexture(0, STICK_KNOB);
 	        GuiComponent.blit(poseStack, 
 	        		stickOffset, 
 	        		height-n-stickOffset-(int)(plane.getCurrentThrottle()*stickBaseSize), 
-	        		0, 0, stickKnobSize, stickKnobSize, stickKnobSize, stickKnobSize);
+	        		0, 0, stickKnobSize, stickKnobSize, 
+	        		stickKnobSize, stickKnobSize);
+	        // fuel
+	        RenderSystem.setShaderTexture(0, FUEL);
+	        GuiComponent.blit(poseStack, 0, 0, 
+	        		0, 0, 0, 
+	        		0, 0, 
+	        		128, 16);
 		}
 	});
 	

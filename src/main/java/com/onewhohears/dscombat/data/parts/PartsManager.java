@@ -166,6 +166,9 @@ public class PartsManager {
 	
 	public void addFuel(float fuel, boolean updateClient) {
 		// TODO add fuel
+		if (updateClient) {
+			
+		}
 	}
 	
 	public void tickFuel(boolean updateClient) {
@@ -174,6 +177,9 @@ public class PartsManager {
 			FuelTankData data = (FuelTankData) p.getPartData();
 			consume = -data.addFuel(-consume);
 			if (consume <= 0) break;
+		}
+		if (updateClient) {
+			
 		}
 	}
 	

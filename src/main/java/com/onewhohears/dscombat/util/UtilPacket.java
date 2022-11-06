@@ -137,7 +137,7 @@ public class UtilPacket {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityAbstractAircraft plane) {
-			
+			plane.partsManager.readFuelsForClient(fuels);
 		}
 	}
 	

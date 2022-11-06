@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 import com.onewhohears.dscombat.common.container.AircraftMenuContainer;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundAddPartPacket;
+import com.onewhohears.dscombat.common.network.toclient.ClientBoundFuelPacket;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundRemovePartPacket;
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
@@ -165,22 +166,38 @@ public class PartsManager {
 	}
 	
 	public void addFuel(float fuel, boolean updateClient) {
-		// TODO add fuel
+		for (PartSlot p : slots) if (p.filled() && p.getPartData().getType() == PartType.FUEL_TANK) {
+			FuelTankData data = (FuelTankData) p.getPartData();
+			fuel = data.addFuel(fuel);
+			if (fuel == 0) break;
+		}
 		if (updateClient) {
-			
+			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
+					new ClientBoundFuelPacket(parent));
 		}
 	}
 	
 	public void tickFuel(boolean updateClient) {
-		float consume = getTotalEngineFuelConsume();
-		for (PartSlot p : slots) if (p.filled() && p.getPartData().getType() == PartType.FUEL_TANK) {
-			FuelTankData data = (FuelTankData) p.getPartData();
-			consume = -data.addFuel(-consume);
-			if (consume <= 0) break;
-		}
-		if (updateClient) {
-			
-		}
+		addFuel(-getTotalEngineFuelConsume(), updateClient);
+	}
+	
+	public List<PartSlot> getFuelTanks() {
+		List<PartSlot> tanks = new ArrayList<PartSlot>();
+		for (PartSlot p : slots) if (p.filled() && p.getPartData().getType() == PartType.FUEL_TANK) tanks.add(p);
+		return tanks;
+	}
+	
+	public float[] getFuelsForClient() {
+		List<PartSlot> tanks = getFuelTanks();
+		float[] fuels = new float[tanks.size()];
+		for (int i = 0; i < tanks.size(); ++i) fuels[i] = ((FuelTankData)tanks.get(i).getPartData()).getFuel();
+		return fuels;
+	}
+	
+	public void readFuelsForClient(float[] fuels) {
+		List<PartSlot> tanks = getFuelTanks();
+		if (fuels.length != tanks.size()) return;
+		for (int i = 0; i < tanks.size(); ++i) ((FuelTankData)tanks.get(i).getPartData()).setFuel(fuels[i]);
 	}
 	
 	public Container getContainer(AircraftMenuContainer menu) {

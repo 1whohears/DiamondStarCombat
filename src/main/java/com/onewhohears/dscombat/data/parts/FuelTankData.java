@@ -12,7 +12,7 @@ public class FuelTankData extends PartData {
 	private final float max;
 	private float fuel;
 	
-	protected FuelTankData(float weight, float fuel, float max) {
+	public FuelTankData(float weight, float fuel, float max) {
 		super(weight);
 		this.fuel = fuel;
 		this.max = max;
@@ -83,12 +83,24 @@ public class FuelTankData extends PartData {
 		return 0;
 	}
 	
+	public void setFuel(float fuel) {
+		if (fuel > max) fuel = max;
+		else if (fuel < 0) fuel = 0;
+		this.fuel = fuel;
+	}
+	
 	public float getFuel() {
 		return fuel;
 	}
 	
 	public float getMaxFuel() {
 		return max;
+	}
+	
+	@Override
+	public float getWeight() {
+		float w = super.getWeight();
+		return w * fuel / max;
 	}
 
 }

@@ -5,6 +5,7 @@ import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.item.ItemAircraft;
 import com.onewhohears.dscombat.item.ItemAmmo;
+import com.onewhohears.dscombat.item.ItemFuelTank;
 import com.onewhohears.dscombat.item.ItemSeat;
 import com.onewhohears.dscombat.item.ItemWeaponPart;
 
@@ -48,8 +49,14 @@ public class ModItems {
 	
 	public static final RegistryObject<Item> SEAT = ITEMS.register("seat", 
 			() -> new ItemSeat());
+	
 	public static final RegistryObject<Item> WEAPON_PART = ITEMS.register("weapon_part", 
-			() -> new ItemWeaponPart());
+			() -> new ItemWeaponPart()); // TODO allow these racks to be compatible with certain weapons/bullets
+	
+	public static final RegistryObject<Item> TEST_TANK = ITEMS.register("test_fuel_tank", 
+			() -> new ItemFuelTank());
+	public static final RegistryObject<Item> TEST_TANK_2 = ITEMS.register("test_fuel_tank_2", 
+			() -> new ItemFuelTank());
 	
 	public static final RegistryObject<Item> TEST_PLANE = ITEMS.register("test_plane", 
 			() -> new ItemAircraft(ModEntities.TEST_PLANE.get(), "test_plane"));

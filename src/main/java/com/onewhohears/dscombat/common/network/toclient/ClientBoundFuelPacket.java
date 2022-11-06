@@ -19,6 +19,7 @@ public class ClientBoundFuelPacket extends IPacket {
 	
 	public ClientBoundFuelPacket(EntityAbstractAircraft plane) {
 		this.id = plane.getId();
+		this.fuels = plane.partsManager.getFuelsForClient();
 	}
 	
 	public ClientBoundFuelPacket(FriendlyByteBuf buffer) {

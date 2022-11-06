@@ -160,9 +160,11 @@ public class PilotOverlay {
 	        		stickKnobSize, stickKnobSize);
 	        // fuel
 	        RenderSystem.setShaderTexture(0, FUEL);
+	        float r = plane.getFuel() / plane.getMaxFuel();
+	        int fh = (int)(r * 128f);
 	        GuiComponent.blit(poseStack, 0, 0, 
 	        		0, 0, 0, 
-	        		0, 0, 
+	        		16, fh, 
 	        		128, 16);
 		}
 	});

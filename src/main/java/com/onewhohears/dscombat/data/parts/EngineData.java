@@ -13,7 +13,7 @@ public class EngineData extends PartData {
 	private final float heat;
 	private final float fuelRate;
 	
-	protected EngineData(float weight, float thrust, float heat, float fuelRate) {
+	public EngineData(float weight, float thrust, float heat, float fuelRate) {
 		super(weight);
 		this.thrust = thrust;
 		this.heat = heat;

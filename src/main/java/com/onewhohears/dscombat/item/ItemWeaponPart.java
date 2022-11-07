@@ -1,7 +1,5 @@
 package com.onewhohears.dscombat.item;
 
-import java.util.function.Consumer;
-
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.WeaponPartData;
 import com.onewhohears.dscombat.data.parts.WeaponRackData;
@@ -9,14 +7,12 @@ import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.util.UtilMCText;
 
-import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 public class ItemWeaponPart extends ItemPart {
 	
@@ -25,16 +21,6 @@ public class ItemWeaponPart extends ItemPart {
 	public ItemWeaponPart(int num) {
 		super(1);
 		this.num = num;
-	}
-	
-	@Override
-    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-		consumer.accept(new IClientItemExtensions() {
-			@Override
-			public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-				return this.getCustomRenderer();
-			}
-		});
 	}
 	
 	@Override

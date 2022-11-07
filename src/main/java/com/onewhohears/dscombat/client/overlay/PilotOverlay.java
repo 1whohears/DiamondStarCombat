@@ -162,10 +162,11 @@ public class PilotOverlay {
 	        RenderSystem.setShaderTexture(0, FUEL);
 	        float r = plane.getFuel() / plane.getMaxFuel();
 	        int fh = (int)(r * 128f);
-	        GuiComponent.blit(poseStack, 0, 0, 
-	        		0, 0, 0, 
+	        int fh2 = 128-fh;
+	        GuiComponent.blit(poseStack, width-16, fh2, 
+	        		0, fh2, 
 	        		16, fh, 
-	        		128, 16);
+	        		16, 128);
 		}
 	});
 	

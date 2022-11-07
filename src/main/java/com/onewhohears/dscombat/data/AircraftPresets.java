@@ -83,8 +83,9 @@ public class AircraftPresets {
 				"dscombat.internal_2", false);
 		pm.addPart(new EngineData(0.01f, 0.04f, 4f, 0.001f, 
 						ModItems.TEST_ENGINE.getId()), 
-				"dscombat.internal_3", false);
+				"dscombat.left_wing_4", false);
 		pm.write(tag);
+		//System.out.println(pm);
 		// radar
 		RadarSystem rs = new RadarSystem();
 		RadarData radar2 = new RadarData("radar_all", 1000, -1, 20);
@@ -127,7 +128,9 @@ public class AircraftPresets {
 		pm.addSlot("dscombat.left_wing_2", SlotType.WING, new Vec3(-1.8, 0, 1), 68, 40);
 		pm.addSlot("dscombat.right_wing_1", SlotType.WING, new Vec3(0.9, 0, 1), 88, 40);
 		pm.addSlot("dscombat.right_wing_2", SlotType.WING, new Vec3(1.8, 0, 1), 108, 40);
-		pm.addSlot("dscombat.internal_1", SlotType.INTERNAL, new Vec3(0, 0, 1), 48, 60);
+		pm.addSlot("dscombat.frame_rear", SlotType.FRAME, new Vec3(0, 0, -1), 48, 60);
+		pm.addSlot("dscombat.internal_1", SlotType.INTERNAL, new Vec3(0, 0, 1), 68, 60);
+		pm.addSlot("dscombat.internal_2", SlotType.INTERNAL, new Vec3(0, 0, 1), 88, 60);
 		pm.addPart(new SeatData(0.003f, ModItems.SEAT.getId()), 
 				PartSlot.PILOT_SLOT_NAME, false);
 		pm.addPart(new SeatData(0.003f, ModItems.SEAT.getId()), 
@@ -146,6 +149,12 @@ public class AircraftPresets {
 		pm.addPart(new WeaponPartData(0.002f, 1000, 1000, "bullet_1", 
 				WeaponPresets.TEST_BIG_GUN, ModItems.TEST_BIG_GUN.getId()), 
 				"dscombat.internal_1", false);
+		pm.addPart(new FuelTankData(0.001f, 100f, 100f,
+				ModItems.TEST_TANK.getId()), 
+				"dscombat.internal_2", false);
+		pm.addPart(new EngineData(0.01f, 0.04f, 4f, 0.001f, 
+						ModItems.TEST_ENGINE.getId()), 
+				"dscombat.frame_rear", false);
 		pm.write(tag);
 		// radar
 		RadarSystem rs = new RadarSystem();

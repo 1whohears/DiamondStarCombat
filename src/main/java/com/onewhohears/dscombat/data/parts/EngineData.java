@@ -56,7 +56,7 @@ public class EngineData extends PartData {
 
 	@Override
 	public boolean isSetup(String slotId, EntityAbstractAircraft craft) {
-		return true;
+		return false;
 	}
 
 	@Override

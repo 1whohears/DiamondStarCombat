@@ -80,7 +80,9 @@ public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContaine
 		RenderSystem.setShaderTexture(0, SLOTS_TEXTURE);
 		for (int i = 0; i < menu.slots.size(); ++i) {
 			if (!(menu.slots.get(i) instanceof PartItemSlot slot)) continue;
-			blit(stack, leftPos+slot.x, topPos+slot.y, slot.data.getIconOffsetX(), 0, 16, 16, 128, 16);
+			blit(stack, leftPos+slot.x, topPos+slot.y, 
+					slot.data.getIconOffsetX(), 0, 16, 16, 
+					128, 16);
 		}
 	}
 

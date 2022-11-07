@@ -127,7 +127,7 @@ public class EntityMissile extends EntityBullet {
 				0, 0, 0, false, 0, 0, 0, 
 				false, false, false, 0, 0,
 				TargetType.POS, GuidanceType.IR,
-				0, 0, 0, -1);
+				0, 0, 0, -1, 1);
 	}
 	
 	public float getHeat() {

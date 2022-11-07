@@ -85,6 +85,7 @@ public class PartsManager {
 	}
 	
 	public boolean addPart(PartData part, String slotName, boolean updateClient) {
+		//System.out.println("ADDING PART "+part+" IN SLOT "+slotName);
 		for (PartSlot p : slots) if (p.getName().equals(slotName) && !p.filled()) {
 			boolean ok = p.addPartData(part, parent);
 			if (updateClient && ok) {
@@ -178,7 +179,7 @@ public class PartsManager {
 	}
 	
 	public void tickFuel(boolean updateClient) {
-		addFuel(-getTotalEngineFuelConsume(), updateClient);
+		addFuel(-getTotalEngineFuelConsume() * parent.getCurrentThrottle(), updateClient);
 	}
 	
 	public List<PartSlot> getFuelTanks() {
@@ -239,7 +240,6 @@ public class PartsManager {
 				System.out.println("ERROR! COULD NOT GET PART DATA FROM "+stack+" "+stack.getTag());
 				continue;
 			}
-			// TODO engine and tank get removed when container is changed
 			if (data.isSetup(slot.getName(), parent)) {
 				System.out.println("ALREADY SETUP");
 				continue;

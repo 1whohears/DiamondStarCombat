@@ -24,19 +24,19 @@ public class WeaponPresets {
 				300, 4, 10, false, 100, 4, 0, 
 				true, true, false, 
 				100, 4, TargetType.AIR, GuidanceType.PITBULL, 
-				2, 0.04, 3, 70);
+				2, 0.04, 3, 70, 0);
 		MissileData m2 = new MissileData("fox2_1", Vec3.ZERO, 
 				200, 12, 10, false, 100, 2, 0, 
 				true, true, false, 
 				100, 4, TargetType.AIR, GuidanceType.IR, 
-				4, 0.03, 3, 80);
+				4, 0.03, 3, 80, 1);
 		BulletData b1 = new BulletData("bullet_1", Vec3.ZERO, 
 				200, 1000, 1, true, 10, 6, 0.5f);
 		MissileData m3 = new MissileData("gbu", Vec3.ZERO,
 				400, 8, 100, false, 100, 1.5d, 0, 
 				true, true, true, 100d, 4f,
 				TargetType.GROUND, GuidanceType.PITBULL,
-				4.0f, 0.02d, 2.5d, -1);
+				4.0f, 0.02d, 2.5d, -1, 0);
 		weapons.add(m1);
 		weapons.add(m2);
 		weapons.add(b1);

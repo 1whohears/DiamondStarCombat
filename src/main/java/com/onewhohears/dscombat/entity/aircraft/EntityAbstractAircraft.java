@@ -411,8 +411,8 @@ public abstract class EntityAbstractAircraft extends Entity {
 		double x = getDeltaMovement().x;
 		double z = getDeltaMovement().z;
 		double speed = Math.sqrt(x*x + z*z);
-		if (speed < 0.05) return speed;
-		return 0.05;
+		if (speed < 0.01) return speed;
+		return 0.01;
 	}
 	
 	public Vec3 getWeightForce() {
@@ -420,7 +420,9 @@ public abstract class EntityAbstractAircraft extends Entity {
 	}
 	
 	public float getTotalWeight() {
-		return getAircraftWeight() + partsManager.getPartsWeight();
+		float w = getAircraftWeight() + partsManager.getPartsWeight();
+		//System.out.println("WEIGHT = "+w);
+		return w;
 	}
 	
 	public float getAircraftWeight() {

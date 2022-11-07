@@ -45,12 +45,13 @@ public class MissileData extends BulletData {
 	private double acceleration;
 	private double fuseDist;
 	private float fov;
+	private float flareResistance;
 	
 	public MissileData(String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, boolean canShootOnGround,
 			float damage, double speed, float innacuracy, boolean explosive, boolean destroyTerrain, 
 			boolean causesFire, double explosiveDamage, float explosionRadius,
 			TargetType tType, GuidanceType gType, float maxRot, 
-			double acceleration, double fuseDist, float fov) {
+			double acceleration, double fuseDist, float fov, float flareResistance) {
 		super(id, launchPos, maxAge, maxAmmo, fireRate, canShootOnGround, damage, speed, innacuracy, 
 				explosive, destroyTerrain, causesFire, explosiveDamage, explosionRadius);
 		this.targetType = tType;
@@ -59,6 +60,7 @@ public class MissileData extends BulletData {
 		this.acceleration = acceleration;
 		this.fuseDist = fuseDist;
 		this.fov = fov;
+		this.flareResistance = flareResistance;
 	}
 	
 	public MissileData(CompoundTag tag) {
@@ -69,6 +71,7 @@ public class MissileData extends BulletData {
 		acceleration = tag.getDouble("acceleration");
 		fuseDist = tag.getDouble("fuseDist");
 		fov = tag.getFloat("fov");
+		flareResistance = tag.getFloat("flareResistance");
 	}
 	
 	@Override
@@ -80,6 +83,7 @@ public class MissileData extends BulletData {
 		tag.putDouble("acceleration", acceleration);
 		tag.putDouble("fuseDist", fuseDist);
 		tag.putFloat("fov", fov);
+		tag.putFloat("flareResistance", flareResistance);
 		return tag;
 	}
 	
@@ -96,6 +100,7 @@ public class MissileData extends BulletData {
 		acceleration = buffer.readDouble();
 		fuseDist = buffer.readDouble();
 		fov = buffer.readFloat();
+		flareResistance = buffer.readFloat();
 	}
 	
 	@Override
@@ -107,6 +112,7 @@ public class MissileData extends BulletData {
 		buffer.writeDouble(acceleration);
 		buffer.writeDouble(fuseDist);
 		buffer.writeFloat(fov);
+		buffer.writeFloat(flareResistance);
 	}
 	
 	@Override
@@ -313,7 +319,8 @@ public class MissileData extends BulletData {
 		for (int i = 0; i < flares.size(); ++i) {
 			if (!basicCheck(missile, flares.get(i), true)) continue;
 			float distSqr = (float)missile.distanceToSqr(flares.get(i));
-			targets.add(new IrTarget(flares.get(i), flares.get(i).getHeat() / distSqr));
+			targets.add(new IrTarget(flares.get(i), 
+					flares.get(i).getHeat() / distSqr * flareResistance));
 		}
 		// fire arrows
 		List<AbstractArrow> arrows = level.getEntitiesOfClass(
@@ -322,7 +329,8 @@ public class MissileData extends BulletData {
 			if (!arrows.get(i).isOnFire()) continue;
 			if (!basicCheck(missile, arrows.get(i), false)) continue;
 			float distSqr = (float)missile.distanceToSqr(arrows.get(i));
-			targets.add(new IrTarget(arrows.get(i), 2f / distSqr));
+			targets.add(new IrTarget(arrows.get(i), 
+					2f / distSqr * flareResistance));
 		}
 		// fire arrows
 		List<FireworkRocketEntity> foreworks = level.getEntitiesOfClass(
@@ -330,8 +338,10 @@ public class MissileData extends BulletData {
 		for (int i = 0; i < foreworks.size(); ++i) {
 			if (!basicCheck(missile, foreworks.get(i), false)) continue;
 			float distSqr = (float)missile.distanceToSqr(foreworks.get(i));
-			targets.add(new IrTarget(foreworks.get(i), 2f / distSqr));
+			targets.add(new IrTarget(foreworks.get(i), 
+					2f / distSqr * flareResistance));
 		}
+		// pick target
 		if (targets.size() == 0) {
 			missile.target = null;
 			missile.targetPos = null;
@@ -446,6 +456,16 @@ public class MissileData extends BulletData {
 		return fov;
 	}
 	
+	/**
+	 * only matters if this is an IR missile
+	 * 0 means immune to flares
+	 * 1 means flares effect tracking normally
+	 * @return missiles flare resistance
+	 */
+	public float getFlareResistance() {
+		return flareResistance;
+	}
+	
 	@Override
 	public WeaponData copy() {
 		return new MissileData(getId(), this.getLaunchPos(), this.getMaxAge(), this.getMaxAmmo(), 
@@ -453,7 +473,7 @@ public class MissileData extends BulletData {
 				this.getInnacuracy(), this.isExplosive(), this.isDestroyTerrain(), this.isCausesFire(), 
 				this.getExplosiveDamage(), this.getExplosionRadius(), this.getTargetType(), 
 				this.getGuidanceType(), this.getMaxRot(), this.getAcceleration(), this.getFuseDist(), 
-				this.getFov());
+				this.getFov(), this.getFlareResistance());
 	}
 
 }

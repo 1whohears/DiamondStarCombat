@@ -7,12 +7,13 @@ import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 
 public class WeaponRackData extends WeaponPartData {
 
-	public WeaponRackData(float weight, String preset, int ammo, int max) {
-		super(weight, preset, ammo, max);
+	public WeaponRackData(float weight, int ammo, int max, String preset, String[] compatible, ResourceLocation itemid) {
+		super(weight, ammo, max, preset, compatible, itemid);
 	}
 	
 	public WeaponRackData(CompoundTag tag) {

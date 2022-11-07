@@ -239,6 +239,7 @@ public class PartsManager {
 				System.out.println("ERROR! COULD NOT GET PART DATA FROM "+stack+" "+stack.getTag());
 				continue;
 			}
+			// TODO engine and tank get removed when container is changed
 			if (data.isSetup(slot.getName(), parent)) {
 				System.out.println("ALREADY SETUP");
 				continue;

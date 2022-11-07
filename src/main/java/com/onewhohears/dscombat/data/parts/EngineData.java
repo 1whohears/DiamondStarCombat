@@ -5,7 +5,7 @@ import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
 
 public class EngineData extends PartData {
 	
@@ -13,8 +13,8 @@ public class EngineData extends PartData {
 	private final float heat;
 	private final float fuelRate;
 	
-	public EngineData(float weight, float thrust, float heat, float fuelRate) {
-		super(weight);
+	public EngineData(float weight, float thrust, float heat, float fuelRate, ResourceLocation itemid) {
+		super(weight, itemid);
 		this.thrust = thrust;
 		this.heat = heat;
 		this.fuelRate = fuelRate;
@@ -64,11 +64,10 @@ public class EngineData extends PartData {
 		return EXTERNAL;
 	}
 
-	@Override
+	/*@Override
 	public ItemStack getItemStack() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		
+	}*/
 	
 	public float getThrust() {
 		return thrust;

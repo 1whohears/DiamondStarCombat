@@ -5,6 +5,7 @@ import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.item.ItemAircraft;
 import com.onewhohears.dscombat.item.ItemAmmo;
+import com.onewhohears.dscombat.item.ItemEngine;
 import com.onewhohears.dscombat.item.ItemFuelTank;
 import com.onewhohears.dscombat.item.ItemSeat;
 import com.onewhohears.dscombat.item.ItemWeaponPart;
@@ -50,13 +51,18 @@ public class ModItems {
 	public static final RegistryObject<Item> SEAT = ITEMS.register("seat", 
 			() -> new ItemSeat());
 	
-	public static final RegistryObject<Item> WEAPON_PART = ITEMS.register("weapon_part", 
-			() -> new ItemWeaponPart()); // TODO allow these racks to be compatible with certain weapons/bullets
+	public static final RegistryObject<Item> TEST_MISSILE_RACK = ITEMS.register("test_missile_rack", 
+			() -> new ItemWeaponPart(0)); 
+	public static final RegistryObject<Item> TEST_BIG_GUN = ITEMS.register("test_big_gun", 
+			() -> new ItemWeaponPart(1)); 
 	
 	public static final RegistryObject<Item> TEST_TANK = ITEMS.register("test_fuel_tank", 
-			() -> new ItemFuelTank());
+			() -> new ItemFuelTank(0));
 	public static final RegistryObject<Item> TEST_TANK_2 = ITEMS.register("test_fuel_tank_2", 
-			() -> new ItemFuelTank());
+			() -> new ItemFuelTank(1));
+	
+	public static final RegistryObject<Item> TEST_ENGINE = ITEMS.register("test_engine", 
+			() -> new ItemEngine(0));
 	
 	public static final RegistryObject<Item> TEST_PLANE = ITEMS.register("test_plane", 
 			() -> new ItemAircraft(ModEntities.TEST_PLANE.get(), "test_plane"));

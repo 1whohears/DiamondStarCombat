@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.onewhohears.dscombat.data.parts.EngineData;
+import com.onewhohears.dscombat.data.parts.FuelTankData;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.data.parts.PartsManager;
@@ -13,6 +15,8 @@ import com.onewhohears.dscombat.data.parts.WeaponPartData;
 import com.onewhohears.dscombat.data.parts.WeaponRackData;
 import com.onewhohears.dscombat.data.radar.RadarData;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
+import com.onewhohears.dscombat.data.weapon.WeaponPresets;
+import com.onewhohears.dscombat.init.ModItems;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.phys.Vec3;
@@ -53,14 +57,33 @@ public class AircraftPresets {
 		pm.addSlot("dscombat.internal_2", SlotType.INTERNAL, new Vec3(0, 0, 1), 68, 80);
 		pm.addSlot("dscombat.internal_3", SlotType.INTERNAL, new Vec3(0, 0, 1), 88, 80);
 		pm.addSlot("dscombat.internal_4", SlotType.INTERNAL, new Vec3(0, 0, 1), 108, 80);
-		pm.addPart(new SeatData(0.003f), PartSlot.PILOT_SLOT_NAME, false);
-		pm.addPart(new SeatData(0.003f), "dscombat.seat2", false);
-		pm.addPart(new SeatData(0.003f), "dscombat.seat3", false);
-		pm.addPart(new WeaponRackData(0.005f, "gbu", 8, 8), "dscombat.left_wing_1", false);
-		pm.addPart(new WeaponRackData(0.005f, "fox3_1", 4, 4), "dscombat.right_wing_1", false);
-		pm.addPart(new WeaponRackData(0.005f, "fox2_1", 12, 12), "dscombat.left_wing_2", false);
-		pm.addPart(new WeaponRackData(0.005f, "fox2_1", 12, 12), "dscombat.right_wing_2", false);
-		pm.addPart(new WeaponPartData(0.002f, "bullet_1", 1000, 1000), "dscombat.internal_1", false);
+		pm.addPart(new SeatData(0.003f, ModItems.SEAT.getId()), 
+				PartSlot.PILOT_SLOT_NAME, false);
+		pm.addPart(new SeatData(0.003f, ModItems.SEAT.getId()), 
+				"dscombat.seat2", false);
+		pm.addPart(new SeatData(0.003f, ModItems.SEAT.getId()), 
+				"dscombat.seat3", false);
+		pm.addPart(new WeaponRackData(0.005f,  8, 8, "gbu", 
+				WeaponPresets.TEST_MISSILE_RACK, ModItems.TEST_MISSILE_RACK.getId()), 
+				"dscombat.left_wing_1", false);
+		pm.addPart(new WeaponRackData(0.005f, 4, 4, "fox3_1", 
+				WeaponPresets.TEST_MISSILE_RACK, ModItems.TEST_MISSILE_RACK.getId()), 
+				"dscombat.right_wing_1", false);
+		pm.addPart(new WeaponRackData(0.005f, 12, 12, "fox2_1", 
+				WeaponPresets.TEST_MISSILE_RACK, ModItems.TEST_MISSILE_RACK.getId()), 
+				"dscombat.left_wing_2", false);
+		pm.addPart(new WeaponRackData(0.005f, 12, 12, "fox2_1", 
+				WeaponPresets.TEST_MISSILE_RACK, ModItems.TEST_MISSILE_RACK.getId()), 
+				"dscombat.right_wing_2", false);
+		pm.addPart(new WeaponPartData(0.002f, 1000, 1000, "bullet_1", 
+				WeaponPresets.TEST_BIG_GUN, ModItems.TEST_BIG_GUN.getId()), 
+				"dscombat.internal_1", false);
+		pm.addPart(new FuelTankData(0.001f, 100f, 100f,
+				ModItems.TEST_TANK.getId()), 
+				"dscombat.internal_2", false);
+		pm.addPart(new EngineData(0.01f, 0.04f, 4f, 0.001f, 
+						ModItems.TEST_ENGINE.getId()), 
+				"dscombat.internal_3", false);
 		pm.write(tag);
 		// radar
 		RadarSystem rs = new RadarSystem();
@@ -85,13 +108,9 @@ public class AircraftPresets {
 		tag.putFloat("throttleup", 0.04f);
 		tag.putFloat("throttledown", 0.04f);
 		tag.putFloat("idleheat", 8f);
-		tag.putFloat("engineheat", 8f);
 		tag.putFloat("weight", 0.04f);
 		tag.putFloat("maxthrust", 0.1f);
 		tag.putFloat("surfacearea", 1f);
-		tag.putFloat("fuel", 100f);
-		tag.putFloat("max_fuel", 100f);
-		tag.putFloat("fuel_rate", 0.0083f);
 		tag.putBoolean("landing_gear", true);
 		return tag;
 	}
@@ -109,13 +128,24 @@ public class AircraftPresets {
 		pm.addSlot("dscombat.right_wing_1", SlotType.WING, new Vec3(0.9, 0, 1), 88, 40);
 		pm.addSlot("dscombat.right_wing_2", SlotType.WING, new Vec3(1.8, 0, 1), 108, 40);
 		pm.addSlot("dscombat.internal_1", SlotType.INTERNAL, new Vec3(0, 0, 1), 48, 60);
-		pm.addPart(new SeatData(0.003f), PartSlot.PILOT_SLOT_NAME, false);
-		pm.addPart(new SeatData(0.003f), "dscombat.seat2", false);
-		pm.addPart(new SeatData(0.003f), "dscombat.seat3", false);
-		pm.addPart(new WeaponRackData(0.005f, "gbu", 8, 8), "dscombat.left_wing_1", false);
-		pm.addPart(new WeaponRackData(0.005f, "fox3_1", 4, 4), "dscombat.right_wing_1", false);
-		pm.addPart(new WeaponRackData(0.005f, "fox2_1", 12, 12), "dscombat.left_wing_2", false);
-		pm.addPart(new WeaponPartData(0.002f, "bullet_1", 1000, 1000), "dscombat.internal_1", false);
+		pm.addPart(new SeatData(0.003f, ModItems.SEAT.getId()), 
+				PartSlot.PILOT_SLOT_NAME, false);
+		pm.addPart(new SeatData(0.003f, ModItems.SEAT.getId()), 
+				"dscombat.seat2", false);
+		pm.addPart(new SeatData(0.003f, ModItems.SEAT.getId()), 
+				"dscombat.seat3", false);
+		pm.addPart(new WeaponRackData(0.005f, 8, 8, "gbu", 
+				WeaponPresets.TEST_MISSILE_RACK, ModItems.TEST_MISSILE_RACK.getId()), 
+				"dscombat.left_wing_1", false);
+		pm.addPart(new WeaponRackData(0.005f, 4, 4, "fox3_1", 
+				WeaponPresets.TEST_MISSILE_RACK, ModItems.TEST_MISSILE_RACK.getId()), 
+				"dscombat.right_wing_1", false);
+		pm.addPart(new WeaponRackData(0.005f, 12, 12, "fox2_1", 
+				WeaponPresets.TEST_MISSILE_RACK, ModItems.TEST_MISSILE_RACK.getId()), 
+				"dscombat.left_wing_2", false);
+		pm.addPart(new WeaponPartData(0.002f, 1000, 1000, "bullet_1", 
+				WeaponPresets.TEST_BIG_GUN, ModItems.TEST_BIG_GUN.getId()), 
+				"dscombat.internal_1", false);
 		pm.write(tag);
 		// radar
 		RadarSystem rs = new RadarSystem();
@@ -147,13 +177,9 @@ public class AircraftPresets {
 		tag.putFloat("throttleup", 0.04f);
 		tag.putFloat("throttledown", 0.04f);
 		tag.putFloat("idleheat", 4f);
-		tag.putFloat("engineheat", 4f);
 		tag.putFloat("weight", 0.04f);
 		tag.putFloat("maxthrust", 0.04f);
 		tag.putFloat("surfacearea", 1f);
-		tag.putFloat("fuel", 100f);
-		tag.putFloat("max_fuel", 100f);
-		tag.putFloat("fuel_rate", 0.0083f);
 		tag.putBoolean("landing_gear", true);
 		return tag;
 	}

@@ -10,6 +10,7 @@ import com.onewhohears.dscombat.item.ItemWeaponPart;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.Item;
@@ -44,10 +45,16 @@ public class WeaponPartLoadRecipe extends CustomRecipe {
 	private boolean isIdSame(ItemStack part, List<ItemStack> ammo) {
 		if (part == null || ammo == null) return false;
 		if (ammo.size() < 1) return false;
-		String partId = part.getOrCreateTag().getString("weaponId");
+		CompoundTag pTag = part.getOrCreateTag();
+		String partId = pTag.getString("weaponId");
 		String ammoId = ammo.get(0).getItem().getDescriptionId().split("\\.")[2];
+		if (partId.isEmpty()) {
+			ListTag list = pTag.getList("compatible", 8);
+			for (int i = 0; i < list.size(); ++i) if (list.getString(i).equals(ammoId)) return true;
+			return false;
+		}
 		//System.out.println("partId = "+partId+" ammoId = "+ammoId);
-		return partId.equals(ammoId) || partId.isEmpty();
+		return partId.equals(ammoId);
 	}
 	
 	private ItemStack getPart(CraftingContainer container) {

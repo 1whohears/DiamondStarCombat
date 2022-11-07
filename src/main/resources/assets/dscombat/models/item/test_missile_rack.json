@@ -1,6 +1,6 @@
 {
 	"parent": "item/generated",
 	"textures": {
-		"layer0": "dscombat:item/weapon_part"
+		"layer0": "dscombat:item/test_missile_rack"
 	}
 }

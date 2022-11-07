@@ -3,7 +3,9 @@ package com.onewhohears.dscombat.item;
 import java.util.function.Consumer;
 
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.data.parts.WeaponPartData;
 import com.onewhohears.dscombat.data.parts.WeaponRackData;
+import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.util.UtilMCText;
 
@@ -18,8 +20,11 @@ import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 public class ItemWeaponPart extends ItemPart {
 	
-	public ItemWeaponPart() {
+	private final int num;
+	
+	public ItemWeaponPart(int num) {
 		super(1);
+		this.num = num;
 	}
 	
 	@Override
@@ -49,17 +54,31 @@ public class ItemWeaponPart extends ItemPart {
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
 		if (group.getId() == ModItems.PARTS.getId()) {
-			ItemStack rack1 = new ItemStack(ModItems.WEAPON_PART.get());
-			rack1.setTag(new WeaponRackData(0.005f, "fox3_1", 4, 4).write());
-			items.add(rack1);
-			
-			ItemStack rack2 = new ItemStack(ModItems.WEAPON_PART.get());
-			rack2.setTag(new WeaponRackData(0.005f, "fox2_1", 12, 12).write());
-			items.add(rack2);
-			
-			ItemStack rack3 = new ItemStack(ModItems.WEAPON_PART.get());
-			rack3.setTag(new WeaponRackData(0.005f, "gbu", 8, 8).write());
-			items.add(rack3);
+			if (num == 0) {
+				ItemStack rack1 = new ItemStack(ModItems.TEST_MISSILE_RACK.get());
+				rack1.setTag(new WeaponRackData(0.005f, 4, 4, "fox3_1", 
+						WeaponPresets.TEST_MISSILE_RACK, ModItems.TEST_MISSILE_RACK.getId())
+						.write());
+				items.add(rack1);
+				
+				ItemStack rack2 = new ItemStack(ModItems.TEST_MISSILE_RACK.get());
+				rack2.setTag(new WeaponRackData(0.005f, 12, 12, "fox2_1", 
+						WeaponPresets.TEST_MISSILE_RACK, ModItems.TEST_MISSILE_RACK.getId())
+						.write());
+				items.add(rack2);
+				
+				ItemStack rack3 = new ItemStack(ModItems.TEST_MISSILE_RACK.get());
+				rack3.setTag(new WeaponRackData(0.005f, 8, 8, "gbu", 
+						WeaponPresets.TEST_MISSILE_RACK, ModItems.TEST_MISSILE_RACK.getId())
+						.write());
+				items.add(rack3);
+			} else if (num == 1) {
+				ItemStack part = new ItemStack(ModItems.TEST_BIG_GUN.get());
+				part.setTag(new WeaponPartData(0.005f, 1000, 1000, "bullet_1", 
+						WeaponPresets.TEST_BIG_GUN, ModItems.TEST_BIG_GUN.getId())
+						.write());
+				items.add(part);
+			}
 		}
 	}
 

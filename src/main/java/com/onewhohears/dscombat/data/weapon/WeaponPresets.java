@@ -13,6 +13,9 @@ import net.minecraft.world.phys.Vec3;
 
 public class WeaponPresets {
 	
+	public static final String[] TEST_MISSILE_RACK = new String[] {"fox3_1", "fox2_1", "gbu"};
+	public static final String[] TEST_BIG_GUN = new String[] {"bullet_1"};
+	
 	public static List<WeaponData> weapons = new ArrayList<WeaponData>();
 	public static List<CompoundTag> weaponNbt = new ArrayList<CompoundTag>();
 	

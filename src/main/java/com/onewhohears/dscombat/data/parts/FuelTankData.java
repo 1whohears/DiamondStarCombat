@@ -5,15 +5,15 @@ import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
 
 public class FuelTankData extends PartData {
 	
 	private final float max;
 	private float fuel;
 	
-	public FuelTankData(float weight, float fuel, float max) {
-		super(weight);
+	public FuelTankData(float weight, float fuel, float max, ResourceLocation itemid) {
+		super(weight, itemid);
 		this.fuel = fuel;
 		this.max = max;
 	}
@@ -58,11 +58,10 @@ public class FuelTankData extends PartData {
 		return INTERNAL;
 	}
 
-	@Override
+	/*@Override
 	public ItemStack getItemStack() {
-		// TODO Auto-generated method stub
 		return null;
-	}
+	}*/
 	
 	/**
 	 * @param fuel

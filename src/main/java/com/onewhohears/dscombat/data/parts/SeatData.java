@@ -3,17 +3,16 @@ package com.onewhohears.dscombat.data.parts;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
-import com.onewhohears.dscombat.init.ModItems;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 
 public class SeatData extends PartData {
 	
-	public SeatData(float weight) {
-		super(weight);
+	public SeatData(float weight, ResourceLocation itemid) {
+		super(weight, itemid);
 	}
 
 	public SeatData(CompoundTag tag) {
@@ -69,13 +68,13 @@ public class SeatData extends PartData {
 		return new SlotType[]{SlotType.SEAT};
 	}
 
-	@Override
+	/*@Override
 	public ItemStack getItemStack() {
 		//System.out.println("getting item data "+this+" compound "+tag);
 		ItemStack stack = new ItemStack(ModItems.SEAT.get(), 1);
 		stack.setTag(write());
 		System.out.println("created stack "+stack.toString()+" "+stack.getTag());
 		return stack;
-	}
+	}*/
 
 }

@@ -41,31 +41,38 @@ public class ItemWeaponPart extends ItemPart {
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
 		if (group.getId() == ModItems.PARTS.getId()) {
 			if (num == 0) {
-				ItemStack rack1 = new ItemStack(ModItems.TEST_MISSILE_RACK.get());
-				rack1.setTag(new WeaponRackData(0.005f, 4, 4, "fox3_1", 
-						WeaponPresets.TEST_MISSILE_RACK, ModItems.TEST_MISSILE_RACK.getId())
-						.write());
-				items.add(rack1);
-				
-				ItemStack rack2 = new ItemStack(ModItems.TEST_MISSILE_RACK.get());
-				rack2.setTag(new WeaponRackData(0.005f, 12, 12, "fox2_1", 
-						WeaponPresets.TEST_MISSILE_RACK, ModItems.TEST_MISSILE_RACK.getId())
-						.write());
-				items.add(rack2);
-				
-				ItemStack rack3 = new ItemStack(ModItems.TEST_MISSILE_RACK.get());
-				rack3.setTag(new WeaponRackData(0.005f, 8, 8, "gbu", 
-						WeaponPresets.TEST_MISSILE_RACK, ModItems.TEST_MISSILE_RACK.getId())
-						.write());
-				items.add(rack3);
+				addTestMissileRack(0.005f, "fox3_1", items);
+				addTestMissileRack(0.005f, "fox2_1", items);
+				addTestMissileRack(0.005f, "gbu", items);
+				addTestMissileRack(0.005f, "aim7e", items);
+				addTestMissileRack(0.005f, "aim7mh", items);
+				addTestMissileRack(0.005f, "aim9x", items);
+				addTestMissileRack(0.010f, "aim120b", items);
+				addTestMissileRack(0.010f, "aim120c", items);
+				addTestMissileRack(0.008f, "agm65e", items);
+				addTestMissileRack(0.008f, "agm84e", items);
 			} else if (num == 1) {
 				ItemStack part = new ItemStack(ModItems.TEST_BIG_GUN.get());
-				part.setTag(new WeaponPartData(0.005f, 1000, 1000, "bullet_1", 
+				part.setTag(new WeaponPartData(0.005f, "bullet_1", 
 						WeaponPresets.TEST_BIG_GUN, ModItems.TEST_BIG_GUN.getId())
 						.write());
 				items.add(part);
 			}
 		}
 	}
+	
+	private void addTestMissileRack(float weight, String preset, NonNullList<ItemStack> items) {
+		ItemStack rack = new ItemStack(ModItems.TEST_MISSILE_RACK.get());
+		rack.setTag(new WeaponRackData(weight, preset, 
+				WeaponPresets.TEST_MISSILE_RACK, 
+				ModItems.TEST_MISSILE_RACK.getId())
+				.write());
+		items.add(rack);
+	}
+	
+	/*@Override
+	public ItemStack getCraftingRemainingItem(ItemStack stack) {	
+		return stack;
+	}*/
 
 }

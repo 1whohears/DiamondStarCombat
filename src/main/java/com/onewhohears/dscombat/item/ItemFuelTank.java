@@ -23,7 +23,7 @@ public class ItemFuelTank extends ItemPart {
 	@Override
 	public Component getName(ItemStack stack) {
 		CompoundTag tag = stack.getOrCreateTag();
-		MutableComponent name = UtilMCText.simpleText(getDescriptionId()).append(" ")
+		MutableComponent name = UtilMCText.simpleText(getDescriptionId())
 			.append(" "+tag.getInt("fuel")+"/"+tag.getInt("max"));
 		return name;	
 	}

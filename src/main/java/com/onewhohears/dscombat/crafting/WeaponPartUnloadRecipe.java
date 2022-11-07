@@ -33,6 +33,7 @@ public class WeaponPartUnloadRecipe extends CustomRecipe {
 			if (s != null) return false;
 			s = stack;
 		}
+		// TODO unload recipe not working
 		return s != null;
 	}
 

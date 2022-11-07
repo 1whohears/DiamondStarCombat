@@ -27,6 +27,15 @@ public class WeaponPartData extends PartData {
 		this.max = max;
 	}
 	
+	public WeaponPartData(float weight, String preset, String[] compatible, ResourceLocation itemid) {
+		this(weight, 0, 0, preset, compatible, itemid);
+		WeaponData data = WeaponPresets.getById(preset);
+		if (data != null) {
+			this.ammo = data.getMaxAmmo();
+			this.max = data.getMaxAmmo();
+		}
+	}
+	
 	public WeaponPartData(CompoundTag tag) {
 		super(tag);
 		ListTag list = tag.getList("compatible", 8);

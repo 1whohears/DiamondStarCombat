@@ -25,9 +25,9 @@ public class ItemAmmo extends Item {
 				.append(UtilMCText.simpleText(DSCombatMod.MODID+".ammo"));
 	}
 	
-	@Override
+	/*@Override
 	public ItemStack getCraftingRemainingItem(ItemStack stack) {	
-		return ItemStack.EMPTY;
-	}
+		return stack;
+	}*/
 
 }

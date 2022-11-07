@@ -13,38 +13,94 @@ import net.minecraft.world.phys.Vec3;
 
 public class WeaponPresets {
 	
-	public static final String[] TEST_MISSILE_RACK = new String[] {"fox3_1", "fox2_1", "gbu"};
-	public static final String[] TEST_BIG_GUN = new String[] {"bullet_1"};
+	public static final String[] TEST_MISSILE_RACK = new String[] 
+			{"fox3_1","fox2_1","gbu",
+			 "aim7e","aim7mh","aim9x","aim120b","aim120c","agm65e","agm84e"};
+	public static final String[] TEST_BIG_GUN = new String[] 
+			{"bullet_1"};
 	
 	public static List<WeaponData> weapons = new ArrayList<WeaponData>();
 	public static List<CompoundTag> weaponNbt = new ArrayList<CompoundTag>();
 	
 	public static void setupPresets() {
-		MissileData m1 = new MissileData("fox3_1", Vec3.ZERO, 
-				300, 4, 10, false, 100, 4, 0, 
+		add(new MissileData("fox3_1", Vec3.ZERO, 300, 4, 
+				10, false, 100, 4, 0, 
 				true, true, false, 
-				100, 4, TargetType.AIR, GuidanceType.PITBULL, 
-				2, 0.04, 3, 70, 0);
-		MissileData m2 = new MissileData("fox2_1", Vec3.ZERO, 
-				200, 12, 10, false, 100, 2, 0, 
+				100, 4, 
+				TargetType.AIR, GuidanceType.PITBULL, 
+				2, 0.04, 3, 70, 0));
+		
+		add(new MissileData("fox2_1", Vec3.ZERO, 200, 12, 
+				10, false, 100, 2, 0, 
 				true, true, false, 
-				100, 4, TargetType.AIR, GuidanceType.IR, 
-				4, 0.03, 3, 80, 1);
-		BulletData b1 = new BulletData("bullet_1", Vec3.ZERO, 
-				200, 1000, 1, true, 10, 6, 0.5f);
-		MissileData m3 = new MissileData("gbu", Vec3.ZERO,
-				400, 8, 100, false, 100, 1.5d, 0, 
-				true, true, true, 100d, 4f,
+				100, 4, 
+				TargetType.AIR, GuidanceType.IR, 
+				4, 0.03, 3, 80, 1));
+		
+		add(new BulletData("bullet_1", Vec3.ZERO, 
+				200, 1000, 1, true, 
+				10, 6, 0.5f));
+		
+		add(new MissileData("gbu", Vec3.ZERO, 400, 8, 
+				100, false, 100, 1.5d, 0, 
+				true, true, true, 
+				100d, 4f, 
 				TargetType.GROUND, GuidanceType.PITBULL,
-				4.0f, 0.02d, 2.5d, -1, 0);
-		weapons.add(m1);
-		weapons.add(m2);
-		weapons.add(b1);
-		weapons.add(m3);
-		weaponNbt.add(m1.write());
-		weaponNbt.add(m2.write());
-		weaponNbt.add(b1.write());
-		weaponNbt.add(m3.write());
+				4.0f, 0.02d, 2.5d, -1, 0));
+		
+		add(new MissileData("aim7e", Vec3.ZERO, 200, 4, 
+				20, false, 100, 2, 0, 
+				true, true, true, 
+				100, 3, 
+				TargetType.AIR, GuidanceType.IR, 
+				2, 0.02, 3, 60, 1.3f));
+		
+		add(new MissileData("aim7mh", Vec3.ZERO, 200, 4, 
+				20, false, 100, 2, 0, 
+				true, true, true, 
+				100, 3, 
+				TargetType.AIR, GuidanceType.IR, 
+				2.5f, 0.02, 3, 70, 1.0f));
+		
+		add(new MissileData("aim9x", Vec3.ZERO, 100, 4, 
+				20, false, 100, 2.2, 0, 
+				true, true, true, 
+				100, 3, 
+				TargetType.AIR, GuidanceType.IR, 
+				3.5f, 0.04, 3, 80, 0.7f));
+		
+		add(new MissileData("aim120b", Vec3.ZERO, 300, 2, 
+				80, false, 100, 4.0, 0, 
+				true, true, true, 
+				100, 4, 
+				TargetType.AIR, GuidanceType.PITBULL, 
+				2.0f, 0.05, 3, 70, 0));
+		
+		add(new MissileData("aim120c", Vec3.ZERO, 400, 2, 
+				80, false, 100, 4.5, 0, 
+				true, true, true, 
+				100, 4, 
+				TargetType.AIR, GuidanceType.PITBULL, 
+				1.5f, 0.05, 3, 70, 0));
+		
+		add(new MissileData("agm65e", Vec3.ZERO, 100, 3, 
+				80, false, 100, 1.5d, 0, 
+				true, true, true, 
+				100d, 5f, 
+				TargetType.GROUND, GuidanceType.PITBULL,
+				1.0f, 0.02d, 1.5d, -1, 0));
+		
+		add(new MissileData("agm84e", Vec3.ZERO, 200, 3, 
+				80, false, 100, 2.0d, 0, 
+				true, true, true, 
+				100d, 5f, 
+				TargetType.GROUND, GuidanceType.PITBULL,
+				2.0f, 0.03d, 2.0d, -1, 0));
+	}
+	
+	public static void add(WeaponData data) {
+		weapons.add(data);
+		weaponNbt.add(data.write());
 	}
 	
 	@Nullable

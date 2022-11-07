@@ -68,6 +68,13 @@
 	"item.dscombat.gbu": "GBU",
 	"item.dscombat.fox3_1": "Fox3-1",
 	"item.dscombat.fox2_1": "Fox2-1",
+	"item.dscombat.aim7e": "AIM-7E",
+	"item.dscombat.aim7mh": "AIM-7MH",
+	"item.dscombat.aim9x": "AIM-9X",
+	"item.dscombat.aim120b": "AIM-120B",
+	"item.dscombat.aim120c": "AIM-120C",
+	"item.dscombat.agm65e": "AGM-65E",
+	"item.dscombat.agm84e": "AGM-84E",
 	
 	"container.dscombat.plane_menu": "Aircraft Menu"
 }

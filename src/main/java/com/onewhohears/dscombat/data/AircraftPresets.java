@@ -63,19 +63,19 @@ public class AircraftPresets {
 				"dscombat.seat2", false);
 		pm.addPart(new SeatData(0.003f, ModItems.SEAT.getId()), 
 				"dscombat.seat3", false);
-		pm.addPart(new WeaponRackData(0.005f,  8, 8, "gbu", 
+		pm.addPart(new WeaponRackData(0.005f,  "gbu", 
 				WeaponPresets.TEST_MISSILE_RACK, ModItems.TEST_MISSILE_RACK.getId()), 
 				"dscombat.left_wing_1", false);
-		pm.addPart(new WeaponRackData(0.005f, 4, 4, "fox3_1", 
+		pm.addPart(new WeaponRackData(0.005f, "fox3_1", 
 				WeaponPresets.TEST_MISSILE_RACK, ModItems.TEST_MISSILE_RACK.getId()), 
 				"dscombat.right_wing_1", false);
-		pm.addPart(new WeaponRackData(0.005f, 12, 12, "fox2_1", 
+		pm.addPart(new WeaponRackData(0.005f, "fox2_1", 
 				WeaponPresets.TEST_MISSILE_RACK, ModItems.TEST_MISSILE_RACK.getId()), 
 				"dscombat.left_wing_2", false);
-		pm.addPart(new WeaponRackData(0.005f, 12, 12, "fox2_1", 
+		pm.addPart(new WeaponRackData(0.005f, "fox2_1", 
 				WeaponPresets.TEST_MISSILE_RACK, ModItems.TEST_MISSILE_RACK.getId()), 
 				"dscombat.right_wing_2", false);
-		pm.addPart(new WeaponPartData(0.002f, 1000, 1000, "bullet_1", 
+		pm.addPart(new WeaponPartData(0.002f, "bullet_1", 
 				WeaponPresets.TEST_BIG_GUN, ModItems.TEST_BIG_GUN.getId()), 
 				"dscombat.internal_1", false);
 		pm.addPart(new FuelTankData(0.001f, 100f, 100f,
@@ -110,7 +110,6 @@ public class AircraftPresets {
 		tag.putFloat("throttledown", 0.04f);
 		tag.putFloat("idleheat", 8f);
 		tag.putFloat("weight", 0.04f);
-		tag.putFloat("maxthrust", 0.1f);
 		tag.putFloat("surfacearea", 1f);
 		tag.putBoolean("landing_gear", true);
 		return tag;
@@ -131,28 +130,31 @@ public class AircraftPresets {
 		pm.addSlot("dscombat.frame_rear", SlotType.FRAME, new Vec3(0, 0, -1), 48, 60);
 		pm.addSlot("dscombat.internal_1", SlotType.INTERNAL, new Vec3(0, 0, 1), 68, 60);
 		pm.addSlot("dscombat.internal_2", SlotType.INTERNAL, new Vec3(0, 0, 1), 88, 60);
-		pm.addPart(new SeatData(0.003f, ModItems.SEAT.getId()), 
+		pm.addPart(new SeatData(0.001f, ModItems.SEAT.getId()), 
 				PartSlot.PILOT_SLOT_NAME, false);
-		pm.addPart(new SeatData(0.003f, ModItems.SEAT.getId()), 
+		pm.addPart(new SeatData(0.001f, ModItems.SEAT.getId()), 
 				"dscombat.seat2", false);
-		pm.addPart(new SeatData(0.003f, ModItems.SEAT.getId()), 
+		pm.addPart(new SeatData(0.001f, ModItems.SEAT.getId()), 
 				"dscombat.seat3", false);
-		pm.addPart(new WeaponRackData(0.005f, 8, 8, "gbu", 
+		pm.addPart(new WeaponRackData(0.004f, "agm65e", 
 				WeaponPresets.TEST_MISSILE_RACK, ModItems.TEST_MISSILE_RACK.getId()), 
 				"dscombat.left_wing_1", false);
-		pm.addPart(new WeaponRackData(0.005f, 4, 4, "fox3_1", 
+		pm.addPart(new WeaponRackData(0.004f, "aim120b", 
 				WeaponPresets.TEST_MISSILE_RACK, ModItems.TEST_MISSILE_RACK.getId()), 
 				"dscombat.right_wing_1", false);
-		pm.addPart(new WeaponRackData(0.005f, 12, 12, "fox2_1", 
+		pm.addPart(new WeaponRackData(0.004f, "aim9x", 
 				WeaponPresets.TEST_MISSILE_RACK, ModItems.TEST_MISSILE_RACK.getId()), 
 				"dscombat.left_wing_2", false);
-		pm.addPart(new WeaponPartData(0.002f, 1000, 1000, "bullet_1", 
+		pm.addPart(new WeaponRackData(0.004f, "aim7e", 
+				WeaponPresets.TEST_MISSILE_RACK, ModItems.TEST_MISSILE_RACK.getId()), 
+				"dscombat.right_wing_2", false);
+		pm.addPart(new WeaponPartData(0.002f, "bullet_1", 
 				WeaponPresets.TEST_BIG_GUN, ModItems.TEST_BIG_GUN.getId()), 
 				"dscombat.internal_1", false);
-		pm.addPart(new FuelTankData(0.001f, 100f, 100f,
+		pm.addPart(new FuelTankData(0.008f, 100f, 100f,
 				ModItems.TEST_TANK.getId()), 
 				"dscombat.internal_2", false);
-		pm.addPart(new EngineData(0.01f, 0.04f, 4f, 0.001f, 
+		pm.addPart(new EngineData(0.008f, 0.04f, 4f, 0.001f, 
 						ModItems.TEST_ENGINE.getId()), 
 				"dscombat.frame_rear", false);
 		pm.write(tag);
@@ -187,7 +189,6 @@ public class AircraftPresets {
 		tag.putFloat("throttledown", 0.04f);
 		tag.putFloat("idleheat", 4f);
 		tag.putFloat("weight", 0.04f);
-		tag.putFloat("maxthrust", 0.04f);
 		tag.putFloat("surfacearea", 1f);
 		tag.putBoolean("landing_gear", true);
 		return tag;

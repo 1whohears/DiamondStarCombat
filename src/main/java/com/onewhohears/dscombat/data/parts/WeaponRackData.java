@@ -16,6 +16,10 @@ public class WeaponRackData extends WeaponPartData {
 		super(weight, ammo, max, preset, compatible, itemid);
 	}
 	
+	public WeaponRackData(float weight, String preset, String[] compatible, ResourceLocation itemid) {
+		super(weight, preset, compatible, itemid);
+	}
+	
 	public WeaponRackData(CompoundTag tag) {
 		super(tag);
 	}

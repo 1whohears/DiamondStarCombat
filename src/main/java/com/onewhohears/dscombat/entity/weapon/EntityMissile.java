@@ -37,8 +37,10 @@ public class EntityMissile extends EntityBullet {
 		case "aim9x": return new EntityMissile(ModEntities.MISSILE3.get(), level, owner, data, TEXTURE_MISSILE3);
 		case "aim120b": return new EntityMissile(ModEntities.MISSILE2.get(), level, owner, data, TEXTURE_MISSILE2);
 		case "aim120c": return new EntityMissile(ModEntities.MISSILE2.get(), level, owner, data, TEXTURE_MISSILE2);
-		case "agm65e": return new EntityMissile(ModEntities.MISSILE1.get(), level, owner, data, TEXTURE_MISSILE1);
+		case "agm65g": return new EntityMissile(ModEntities.MISSILE1.get(), level, owner, data, TEXTURE_MISSILE1);
+		case "agm65l": return new EntityMissile(ModEntities.MISSILE1.get(), level, owner, data, TEXTURE_MISSILE1);
 		case "agm84e": return new EntityMissile(ModEntities.MISSILE1.get(), level, owner, data, TEXTURE_MISSILE1);
+		case "agm114k": return new EntityMissile(ModEntities.MISSILE1.get(), level, owner, data, TEXTURE_MISSILE1);
 		}
 		return new EntityMissile(ModEntities.MISSILE1.get(), level, owner, data, TEXTURE_MISSILE1);
 	}

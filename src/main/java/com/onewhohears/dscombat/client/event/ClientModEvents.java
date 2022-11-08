@@ -57,6 +57,15 @@ public class ClientModEvents {
 		event.registerEntityRenderer(ModEntities.TEST_PLANE.get(), 
 				(context) -> new RendererEntityAbstractAircraft<EntityPlane>(context, 
 						new EntityModelTestPlane<EntityPlane>(models.bakeLayer(EntityModelTestPlane.LAYER_LOCATION))));
+		
+		event.registerEntityRenderer(ModEntities.JAVI_PLANE.get(), 
+				(context) -> new RendererEntityAbstractAircraft<EntityPlane>(context, 
+						new EntityModelTestPlane<EntityPlane>(models.bakeLayer(EntityModelTestPlane.LAYER_LOCATION))));
+		
+		event.registerEntityRenderer(ModEntities.ALEXIS_PLANE.get(), 
+				(context) -> new RendererEntityAbstractAircraft<EntityPlane>(context, 
+						new EntityModelTestPlane<EntityPlane>(models.bakeLayer(EntityModelTestPlane.LAYER_LOCATION))));
+		
 		event.registerEntityRenderer(ModEntities.F16.get(), 
 				(context) -> new RendererEntityAbstractAircraft<EntityPlane>(context, 
 						new EntityModelF16<EntityPlane>(models.bakeLayer(EntityModelF16.LAYER_LOCATION))));

@@ -23,6 +23,7 @@ import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.parts.EntitySeatCamera;
 import com.onewhohears.dscombat.util.math.UtilAngles;
+import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.client.CameraType;
@@ -345,7 +346,6 @@ public final class ClientForgeEvents {
 	@SubscribeEvent
 	public static void playerRender(RenderPlayerEvent.Pre event) {
 		if (event.getPhase() != EventPriority.NORMAL) return;
-		//System.out.println("render player");
 		Minecraft m = Minecraft.getInstance();
 		final var playerC = m.player;
 		Player player = event.getEntity();
@@ -356,17 +356,24 @@ public final class ClientForgeEvents {
 				event.setCanceled(true);
 				return;
 			}
+			//System.out.println("RENDER_PLAYER");
 			Quaternion q = UtilAngles.lerpQ(event.getPartialTick(), plane.getPrevQ(), plane.getQ());
-			/*EulerAngles a = UtilAngles.toDegrees(q);
-			a.pitch = player.getXRot()-a.pitch; 
-			a.yaw = player.getYRot()-a.yaw;
-			Quaternion q2 = UtilAngles.toQuaternion(player.getYRot(), player.getXRot(), a.roll);*/
 			event.getPoseStack().mulPose(q);
-			//event.getPoseStack().mulPose(q2);
+			//player.setYBodyRot(0); // THIS WORKS
 			// TODO player looks in wrong direction
-			//System.out.println("plane zRot = "+plane.zRot);
-			//event.getPoseStack().mulPose(Vector3f.ZN.rotation((float)Math.toRadians(plane.zRot)));
-			//event.getRenderer().getModel().getHead().setRotation(player.getXRot(), player.getYRot(), plane.zRot);
+			EulerAngles a = UtilAngles.toDegrees(q);
+			player.setYBodyRot(player.getYRot()-(float)a.yaw);
+			player.setYHeadRot(player.getYRot()-(float)a.yaw);
+			//System.out.println("prx = "+player.getXRot()+" pry = "+player.getYRot());
+			//System.out.println("plane rot = "+a);
+			/*PlayerRenderer pr = event.getRenderer();
+			PlayerModel<AbstractClientPlayer> model = pr.getModel();
+			System.out.println("hrx1 = "+Math.toDegrees(model.getHead().xRot)+" hry1 = "+Math.toDegrees(model.getHead().yRot));
+			float x = (float)Math.toRadians(player.getXRot()-(float)a.pitch);
+			float y = (float)Math.toRadians(player.getYRot()-(float)a.yaw);
+			//float z = (float)Math.toRadians(plane.zRot);
+			model.getHead().setRotation(x, y, 0);
+			System.out.println("hrx2 = "+Math.toDegrees(model.getHead().xRot)+" hry2 = "+Math.toDegrees(model.getHead().yRot));*/
 		}
 	}
 	

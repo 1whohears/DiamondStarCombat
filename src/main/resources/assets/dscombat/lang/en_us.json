@@ -23,6 +23,8 @@
 	"dscombat.internal_4": "Internal 4",
 	
 	"entity.dscombat.basic_plane": "Test Plane",
+	"entity.dscombat.javi_plane": "Javi Plane",
+	"entity.dscombat.alexis_plane": "Alexis Plane",
 	"entity.dscombat.f16": "F16",
 	"entity.dscombat.bullet": "Bullet",
 	"entity.dscombat.missile": "Missile",
@@ -58,6 +60,7 @@
 	"item.dscombat.weapon_rack": "Weapon Rack",
 	"item.dscombat.test_plane": "Test Plane",
 	"item.dscombat.javi_plane": "Javi Plane",
+	"item.dscombat.alexis_plane": "Alexis Plane",
 	"item.dscombat.f16": "F16",
 	"item.dscombat.test_missile_rack": "Test Missile Rack",
 	"item.dscombat.test_big_gun": "Test Big Gun",
@@ -65,6 +68,7 @@
 	"item.dscombat.test_fuel_tank_2": "Test Fuel 2",
 	"item.dscombat.test_engine": "Test Engine",
 	"item.dscombat.bullet_1": "Bullet-1",
+	"item.dscombat.bullet_2": "Bullet-2",
 	"item.dscombat.gbu": "GBU",
 	"item.dscombat.fox3_1": "Fox3-1",
 	"item.dscombat.fox2_1": "Fox2-1",
@@ -76,6 +80,7 @@
 	"item.dscombat.agm65g": "AGM-65G",
 	"item.dscombat.agm65l": "AGM-65L",
 	"item.dscombat.agm84e": "AGM-84E",
+	"item.dscombat.agm114k": "AGM-114K",
 	
 	"container.dscombat.plane_menu": "Aircraft Menu"
 }

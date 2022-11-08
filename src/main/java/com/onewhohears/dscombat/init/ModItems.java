@@ -67,7 +67,9 @@ public class ModItems {
 	public static final RegistryObject<Item> TEST_PLANE = ITEMS.register("test_plane", 
 			() -> new ItemAircraft(ModEntities.TEST_PLANE.get(), "test_plane"));
 	public static final RegistryObject<Item> JAVI_PLANE = ITEMS.register("javi_plane", 
-			() -> new ItemAircraft(ModEntities.TEST_PLANE.get(), "javi"));
+			() -> new ItemAircraft(ModEntities.JAVI_PLANE.get(), "javi"));
+	public static final RegistryObject<Item> ALEXIS_PLANE = ITEMS.register("alexis_plane", 
+			() -> new ItemAircraft(ModEntities.ALEXIS_PLANE.get(), "alexis"));
 	public static final RegistryObject<Item> F16 = ITEMS.register("f16", 
 			() -> new ItemAircraft(ModEntities.F16.get(), "javi"));
 	

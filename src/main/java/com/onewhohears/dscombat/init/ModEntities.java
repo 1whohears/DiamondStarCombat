@@ -33,6 +33,16 @@ public class ModEntities {
 					new ResourceLocation(DSCombatMod.MODID, "textures/entities/basic_plane.png")), 
 					EntityDimensions.scalable(1f, 1f)));
 	
+	public static final RegistryObject<EntityType<EntityPlane>> JAVI_PLANE = ENTITIES.register("javi_plane", 
+			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
+					new ResourceLocation(DSCombatMod.MODID, "textures/entities/javi_plane.png")), 
+					EntityDimensions.scalable(1f, 1f)));
+	
+	public static final RegistryObject<EntityType<EntityPlane>> ALEXIS_PLANE = ENTITIES.register("alexis_plane", 
+			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
+					new ResourceLocation(DSCombatMod.MODID, "textures/entities/alexis_plane.png")), 
+					EntityDimensions.scalable(1f, 1f)));
+	
 	public static final RegistryObject<EntityType<EntityPlane>> F16 = ENTITIES.register("f16", 
 			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
 					new ResourceLocation(DSCombatMod.MODID, "textures/entities/f16.png")), 

@@ -17,7 +17,7 @@ public class ItemSeat extends ItemPart {
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
 		if (group.getId() == ModItems.PARTS.getId()) {
 			ItemStack seat1 = new ItemStack(ModItems.SEAT.get());
-			seat1.setTag(new SeatData(0.01f, ModItems.SEAT.getId()).write());
+			seat1.setTag(new SeatData(0.001f, ModItems.SEAT.getId()).write());
 			items.add(seat1);
 		}
 	}

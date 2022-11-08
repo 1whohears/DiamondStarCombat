@@ -45,7 +45,7 @@ public class EntityPlane extends EntityAbstractAircraft {
 	public double getLift(double zSpeedSqr) {
 		// Lift = (angle of attack coefficient) * (air density) * (speed)^2 * (wing surface area) / 2
 		//double ac = 0.06;
-		double ac = 0.10;
+		double ac = 0.120;
 		double air = getAirPressure();
 		//double speedSqr = zSpeedSqr;
 		double wing = getSurfaceArea();

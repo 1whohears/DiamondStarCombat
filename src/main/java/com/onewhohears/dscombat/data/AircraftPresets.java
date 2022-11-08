@@ -128,8 +128,11 @@ public class AircraftPresets {
 		pm.addSlot("dscombat.right_wing_1", SlotType.WING, new Vec3(0.9, 0, 1), 88, 40);
 		pm.addSlot("dscombat.right_wing_2", SlotType.WING, new Vec3(1.8, 0, 1), 108, 40);
 		pm.addSlot("dscombat.frame_rear", SlotType.FRAME, new Vec3(0, 0, -1), 48, 60);
-		pm.addSlot("dscombat.internal_1", SlotType.INTERNAL, new Vec3(0, 0, 1), 68, 60);
-		pm.addSlot("dscombat.internal_2", SlotType.INTERNAL, new Vec3(0, 0, 1), 88, 60);
+		pm.addSlot("dscombat.frame_belly", SlotType.FRAME, new Vec3(0, -0.5, 0), 68, 60);
+		pm.addSlot("dscombat.internal_1", SlotType.INTERNAL, new Vec3(0, 0, 1), 48, 80);
+		pm.addSlot("dscombat.internal_2", SlotType.INTERNAL, new Vec3(0, 0, 1), 68, 80);
+		pm.addSlot("dscombat.internal_3", SlotType.INTERNAL, new Vec3(0, 0, 1), 88, 80);
+		pm.addSlot("dscombat.internal_4", SlotType.INTERNAL, new Vec3(0, 0, 1), 108, 80);
 		pm.addPart(new SeatData(0.001f, ModItems.SEAT.getId()), 
 				PartSlot.PILOT_SLOT_NAME, false);
 		pm.addPart(new SeatData(0.001f, ModItems.SEAT.getId()), 

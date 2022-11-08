@@ -39,13 +39,13 @@ public class WeaponPresets {
 		
 		add(new BulletData("bullet_1", Vec3.ZERO, 
 				200, 1000, 1, true, 
-				15, 6, 0.5f));
+				15, 10, 0.5f));
 		
 		add(new BulletData("bullet_2", Vec3.ZERO, 
 				200, 400, 4, true, 
-				10, 6, 0.2f,
-				true, true, true,
-				10, 2f));
+				10, 10, 0.2f,
+				true, true, false,
+				10, 2.5f));
 		
 		add(new MissileData("gbu", Vec3.ZERO, 400, 8, 
 				100, false, 100, 1.5d, 0, 

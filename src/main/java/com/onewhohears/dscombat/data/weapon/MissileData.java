@@ -310,6 +310,7 @@ public class MissileData extends BulletData {
 		for (int i = 0; i < missiles.size(); ++i) {
 			if (missile.equals(missiles.get(i))) continue;
  			if (!basicCheck(missile, missiles.get(i), false)) continue;
+ 			if (missile.getOwner() != null && missile.getOwner().equals(missiles.get(i).getOwner())) continue;
 			float distSqr = (float)missile.distanceToSqr(missiles.get(i));
 			targets.add(new IrTarget(missiles.get(i), missiles.get(i).getHeat() / distSqr));
 		}	
@@ -317,7 +318,7 @@ public class MissileData extends BulletData {
 		List<EntityFlare> flares = level.getEntitiesOfClass(
 				EntityFlare.class, getIrBoundingBox(missile));
 		for (int i = 0; i < flares.size(); ++i) {
-			if (!basicCheck(missile, flares.get(i), true)) continue;
+			if (!basicCheck(missile, flares.get(i), false)) continue;
 			float distSqr = (float)missile.distanceToSqr(flares.get(i));
 			targets.add(new IrTarget(flares.get(i), 
 					flares.get(i).getHeat() / distSqr * flareResistance));
@@ -332,7 +333,7 @@ public class MissileData extends BulletData {
 			targets.add(new IrTarget(arrows.get(i), 
 					2f / distSqr * flareResistance));
 		}
-		// fire arrows
+		// fire works
 		List<FireworkRocketEntity> foreworks = level.getEntitiesOfClass(
 				FireworkRocketEntity.class, getIrBoundingBox(missile));
 		for (int i = 0; i < foreworks.size(); ++i) {
@@ -366,7 +367,7 @@ public class MissileData extends BulletData {
 		if (ping.isInWater()) {
 			return false;
 		}
-		if (missile.getOwner() != null && ping.equals(missile.getOwner())) {
+		if (ping.equals(missile.getOwner())) {
 			//System.out.println("is owner");
 			return false;
 		}
@@ -385,6 +386,8 @@ public class MissileData extends BulletData {
 	private static float getMobHeat(Mob mob) {
 		if (mob.getType().equals(EntityType.BLAZE)) return 10f;
 		if (mob.getType().equals(EntityType.MAGMA_CUBE)) return 8f;
+		if (mob.getType().equals(EntityType.WITHER)) return 200f;
+		if (mob.getType().equals(EntityType.ENDER_DRAGON)) return 100f;
 		return 1f;
 	}
 	

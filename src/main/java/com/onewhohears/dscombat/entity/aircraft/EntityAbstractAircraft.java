@@ -22,6 +22,7 @@ import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.weapon.EntityFlare;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModSounds;
+import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.UtilMCText;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
@@ -376,19 +377,10 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public double getDrag(Quaternion q) {
 		// Drag = (drag coefficient) * (air pressure) * (speed)^2 * (wing surface area) / 2
 		double dc = 0.030;
-		double air = getAirPressure();
+		double air = UtilEntity.getAirPressure(getY());
 		double speedSqr = getDeltaMovement().lengthSqr();
 		double wing = getSurfaceArea();
 		return dc * air * speedSqr * wing / 2;
-	}
-	
-	public double getAirPressure() {
-		double space = 1000;
-		double water = 64;
-		double scale = 1;
-		if (getY() > space) return 0;
-		if (getY() < water) return scale;
-		return scale/(water-space) * (getY()-water) + scale;
 	}
 	
 	public float getSurfaceArea() {

@@ -52,4 +52,18 @@ public class UtilEntity {
 		}
 		return pos.add(look);
 	}
+	
+	/**
+	 * @param posY
+	 * @return between 0 (no air pressure) and 1
+	 */
+	public static double getAirPressure(double posY) {
+		double space = 1000;
+		double water = 64;
+		double scale = 1;
+		if (posY > space) return 0;
+		if (posY < water) return scale;
+		return scale/(water-space) * (posY-water) + scale;
+	}
+	
 }

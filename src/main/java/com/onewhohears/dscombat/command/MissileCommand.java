@@ -42,7 +42,6 @@ public class MissileCommand {
 	}
 	
 	private int testMissile(CommandContext<CommandSourceStack> context, Collection<? extends Entity> targets, Vec3 pos, CompoundTag tag, Entity owner) throws CommandSyntaxException {
-		if (owner == null) owner = context.getSource().getEntity();
 		MissileData data;
 		if (tag == null) data = WeaponPresets.getDefaultTestMissile();
 		else data = new MissileData(tag);

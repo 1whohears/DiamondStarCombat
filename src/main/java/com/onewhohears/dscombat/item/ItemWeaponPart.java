@@ -44,21 +44,18 @@ public class ItemWeaponPart extends ItemPart {
 				addTestMissileRack(0.005f, "fox3_1", items);
 				addTestMissileRack(0.005f, "fox2_1", items);
 				addTestMissileRack(0.005f, "gbu", items);
-				addTestMissileRack(0.005f, "aim7e", items);
-				addTestMissileRack(0.005f, "aim7mh", items);
-				addTestMissileRack(0.005f, "aim9x", items);
-				addTestMissileRack(0.010f, "aim120b", items);
-				addTestMissileRack(0.010f, "aim120c", items);
-				addTestMissileRack(0.008f, "agm65g", items);
-				addTestMissileRack(0.008f, "agm65l", items);
-				addTestMissileRack(0.008f, "agm84e", items);
-				addTestMissileRack(0.008f, "agm114k", items);
+				addTestMissileRack(0.003f, "aim7e", items);
+				addTestMissileRack(0.003f, "aim7mh", items);
+				addTestMissileRack(0.002f, "aim9x", items);
+				addTestMissileRack(0.005f, "aim120b", items);
+				addTestMissileRack(0.005f, "aim120c", items);
+				addTestMissileRack(0.004f, "agm65g", items);
+				addTestMissileRack(0.004f, "agm65l", items);
+				addTestMissileRack(0.004f, "agm84e", items);
+				addTestMissileRack(0.004f, "agm114k", items);
 			} else if (num == 1) {
-				ItemStack part = new ItemStack(ModItems.TEST_BIG_GUN.get());
-				part.setTag(new WeaponPartData(0.005f, "bullet_1", 
-						WeaponPresets.TEST_BIG_GUN, ModItems.TEST_BIG_GUN.getId())
-						.write());
-				items.add(part);
+				addTestBigGun(0.002f, "bullet_1", items);
+				addTestBigGun(0.002f, "bullet_2", items);
 			}
 		}
 	}
@@ -68,6 +65,15 @@ public class ItemWeaponPart extends ItemPart {
 		rack.setTag(new WeaponRackData(weight, preset, 
 				WeaponPresets.TEST_MISSILE_RACK, 
 				ModItems.TEST_MISSILE_RACK.getId())
+				.write());
+		items.add(rack);
+	}
+	
+	private void addTestBigGun(float weight, String preset, NonNullList<ItemStack> items) {
+		ItemStack rack = new ItemStack(ModItems.TEST_BIG_GUN.get());
+		rack.setTag(new WeaponPartData(weight, preset, 
+				WeaponPresets.TEST_BIG_GUN, 
+				ModItems.TEST_BIG_GUN.getId())
 				.write());
 		items.add(rack);
 	}

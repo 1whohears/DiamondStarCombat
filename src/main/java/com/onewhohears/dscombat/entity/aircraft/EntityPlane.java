@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
+import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.resources.ResourceLocation;
@@ -46,7 +47,7 @@ public class EntityPlane extends EntityAbstractAircraft {
 		// Lift = (angle of attack coefficient) * (air density) * (speed)^2 * (wing surface area) / 2
 		//double ac = 0.06;
 		double ac = 0.120;
-		double air = getAirPressure();
+		double air = UtilEntity.getAirPressure(getY());
 		//double speedSqr = zSpeedSqr;
 		double wing = getSurfaceArea();
 		double lift = ac * air * zSpeedSqr * wing / 2d;

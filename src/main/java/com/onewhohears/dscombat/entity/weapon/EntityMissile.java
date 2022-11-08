@@ -9,6 +9,7 @@ import com.onewhohears.dscombat.data.weapon.MissileData.GuidanceType;
 import com.onewhohears.dscombat.data.weapon.MissileData.TargetType;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.init.ModEntities;
+import com.onewhohears.dscombat.util.UtilEntity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -75,7 +76,7 @@ public class EntityMissile extends EntityBullet {
 					this.setPos(target.position());
 					this.checkExplode();
 					this.discard();
-					if (target.getType().equals(ModEntities.MISSILE1.get())) {
+					if (target instanceof EntityMissile) {
 						target.kill();
 					}
 					//System.out.println("close enough");
@@ -115,7 +116,7 @@ public class EntityMissile extends EntityBullet {
 	protected void motion() {
 		MissileData data = (MissileData)getWeaponData();
 		Vec3 cm = getDeltaMovement();
-		double B = 0.001d;
+		double B = 0.004d * UtilEntity.getAirPressure(getY());
 		double bleed = B * (Math.abs(getXRot()-xRotO)+Math.abs(getYRot()-yRotO));
 		double vel = cm.length() + data.getAcceleration() - bleed;
 		double max = data.getSpeed();
@@ -149,7 +150,7 @@ public class EntityMissile extends EntityBullet {
 		System.out.println("ENTITY "+source.getEntity());
 		System.out.println("DIRECT ENTITY "+source.getDirectEntity());*/
 		if (this.isRemoved()) return false;
-		if (source.getDirectEntity().equals(this)) return false;
+		if (this.equals(source.getDirectEntity())) return false;
 		this.checkExplode();
 		this.discard();
 		return true;

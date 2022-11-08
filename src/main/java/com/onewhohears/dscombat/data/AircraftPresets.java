@@ -139,7 +139,7 @@ public class AircraftPresets {
 				"dscombat.seat2", false);
 		pm.addPart(new SeatData(0.001f, ModItems.SEAT.getId()), 
 				"dscombat.seat3", false);
-		pm.addPart(new WeaponRackData(0.004f, "agm65e", 
+		pm.addPart(new WeaponRackData(0.004f, "agm65g", 
 				WeaponPresets.TEST_MISSILE_RACK, ModItems.TEST_MISSILE_RACK.getId()), 
 				"dscombat.left_wing_1", false);
 		pm.addPart(new WeaponRackData(0.004f, "aim120b", 

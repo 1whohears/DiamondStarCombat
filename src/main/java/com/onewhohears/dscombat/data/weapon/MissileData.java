@@ -137,7 +137,7 @@ public class MissileData extends BulletData {
 				.add(rocket.getDeltaMovement()));
 		rocket.parent = vehicle;
 		if (targetType == TargetType.POS) {
-			rocket.targetPos = Vec3.ZERO.add(0, -60,0);
+			rocket.targetPos = UtilEntity.getLookingAtBlockPos(owner, 1000);
 		} else if (guidanceType != GuidanceType.IR) {
 			RadarSystem radar = vehicle.radarSystem;
 			//System.out.println(radar);

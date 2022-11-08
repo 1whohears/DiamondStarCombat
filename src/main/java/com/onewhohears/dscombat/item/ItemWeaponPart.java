@@ -49,7 +49,8 @@ public class ItemWeaponPart extends ItemPart {
 				addTestMissileRack(0.005f, "aim9x", items);
 				addTestMissileRack(0.010f, "aim120b", items);
 				addTestMissileRack(0.010f, "aim120c", items);
-				addTestMissileRack(0.008f, "agm65e", items);
+				addTestMissileRack(0.008f, "agm65g", items);
+				addTestMissileRack(0.008f, "agm65l", items);
 				addTestMissileRack(0.008f, "agm84e", items);
 			} else if (num == 1) {
 				ItemStack part = new ItemStack(ModItems.TEST_BIG_GUN.get());

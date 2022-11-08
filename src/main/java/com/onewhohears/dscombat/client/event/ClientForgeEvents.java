@@ -161,7 +161,6 @@ public final class ClientForgeEvents {
 		}
 		if (!hovering) resetHoverIndex();
 		//System.out.println("hover index = "+hoverIndex);
-		// TODO middle click to mark a spot to target with a position guided missile
 		// TODO share selected target with team members button
 	}
 	
@@ -367,6 +366,7 @@ public final class ClientForgeEvents {
 			// TODO player looks in wrong direction
 			//System.out.println("plane zRot = "+plane.zRot);
 			//event.getPoseStack().mulPose(Vector3f.ZN.rotation((float)Math.toRadians(plane.zRot)));
+			//event.getRenderer().getModel().getHead().setRotation(player.getXRot(), player.getYRot(), plane.zRot);
 		}
 	}
 	

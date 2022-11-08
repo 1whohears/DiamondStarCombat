@@ -34,6 +34,7 @@ public class ItemAircraft extends Item {
 			return InteractionResult.SUCCESS;
 		} else {
 			//ItemStack stack = context.getItemInHand(); // TODO get nbt from this item check SpawnEggItem to see how
+			// TODO plane spawns under the ground
 			EntityAbstractAircraft plane = type.spawn((ServerLevel)level, null, null, context.getPlayer(), 
 					context.getClickedPos(), MobSpawnType.SPAWN_EGG, true, true);
 			if (plane != null) {

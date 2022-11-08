@@ -40,4 +40,16 @@ public class UtilEntity {
 		}
 		return dist;
 	}
+	
+	public static Vec3 getLookingAtBlockPos(Entity e, int max) {
+		Level level = e.level;
+		Vec3 look = e.getLookAngle();
+		Vec3 pos = e.position();
+		for (int i = 0; i < max; ++i) {
+			BlockState block = level.getBlockState(new BlockPos(pos));
+			if (block != null && !block.isAir()) return pos;
+			pos = pos.add(look);
+		}
+		return pos.add(look);
+	}
 }

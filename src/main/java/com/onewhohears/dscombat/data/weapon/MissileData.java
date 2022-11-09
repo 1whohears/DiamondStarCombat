@@ -153,7 +153,8 @@ public class MissileData extends BulletData {
 			if (targetType == TargetType.AIR && target.isOnGround()) {
 				this.setLaunchFail("this missile can only shoot AIRBORN targets");
 				return null;
-			} else if (targetType == TargetType.GROUND && !target.isOnGround()) {
+			} else if (targetType == TargetType.GROUND && (!target.isOnGround() || !target.isInWater())) {
+				// TODO make sure these missiles can hit people in boats and people in water
 				this.setLaunchFail("this missile can only shoot GROUNDED targets");
 				return null;
 			}

@@ -32,6 +32,7 @@ public class PartsManager {
 	
 	public PartsManager() {
 		readData = false;
+		// TODO add radar parts
 	}
 	
 	public PartsManager(CompoundTag compound) {

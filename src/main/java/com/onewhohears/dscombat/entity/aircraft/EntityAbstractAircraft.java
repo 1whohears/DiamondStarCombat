@@ -66,21 +66,16 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public static final EntityDataAccessor<Float> THROTTLEDOWN = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Quaternion> Q = SynchedEntityData.defineId(EntityAbstractAircraft.class, DataSerializers.QUATERNION);
 	public static final EntityDataAccessor<Boolean> FREE_LOOK = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<Integer> FLARES = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> FLARES = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.INT); // TODO allow player to add flares
 	public static final EntityDataAccessor<Float> STEALTH = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> ROLL = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> PITCH = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> YAW = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> IDLEHEAT = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
-	//public static final EntityDataAccessor<Float> ENGINEHEAT = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> WEIGHT = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
-	//public static final EntityDataAccessor<Float> MAX_THRUST = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> WING_AREA = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Integer> MISSILE_TRACKED_TICKS = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> LOCKED_ONTO_TICKS = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.INT);
-	//public static final EntityDataAccessor<Float> FUEL = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
-	//public static final EntityDataAccessor<Float> MAX_FUEL = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
-	//public static final EntityDataAccessor<Float> FUEL_RATE = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Boolean> LANDING_GEAR = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.BOOLEAN);
 	
 	public static final double collideSpeedThreshHold = 1d;

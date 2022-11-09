@@ -177,12 +177,22 @@ public class RadarData {
 	
 	private boolean basicCheck(EntityAbstractAircraft radar, Entity ping, double rangeMod) {
 		if (radar.equals(ping)) return false;
-		if ((ping.isOnGround() || ping.isInWater()) && !scanGround) return false;
-		if (!ping.isOnGround() && !ping.isInWater() && !scanAir) return false;
+		if (!groundCheck(ping)) return false;
 		if (radar.isVehicleOf(ping)) return false;
 		if (!checkTargetRange(radar, ping, rangeMod)) return false;
 		if (!checkCanSee(radar, ping)) return false;
 		return true;
+	}
+	
+	private boolean groundCheck(Entity ping) {
+		if (ping.getRootVehicle() != null) ping = ping.getRootVehicle();
+		if (scanGround) {
+			if (ping.isOnGround() || ping.isInWater() || ping.fallDistance < 4f) return true;
+		} 
+		if (scanAir) {
+			if (!ping.isOnGround() && !ping.isInWater()) return true;
+		}
+		return false;
 	}
 	
 	private boolean checkTargetRange(Entity radar, Entity target, double rangeMod) {

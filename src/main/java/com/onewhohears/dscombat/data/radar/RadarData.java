@@ -18,6 +18,26 @@ import net.minecraft.world.phys.Vec3;
 
 public class RadarData {
 	
+	public static RadarData TrackFlyingAircraft(String id, double range, double fov, int scanRate) {
+		RadarData data = new RadarData(id, range, fov, scanRate);
+		data.setScanAir(true);
+		data.setScanGround(false);
+		data.setScanPlayers(true);
+		data.setScanAircraft(true);
+		data.setScanMobs(false);
+		return data;
+	}
+	
+	public static RadarData TrackGround(String id, double range, double fov, int scanRate) {
+		RadarData data = new RadarData(id, range, fov, scanRate);
+		data.setScanAir(false);
+		data.setScanGround(true);
+		data.setScanPlayers(true);
+		data.setScanAircraft(true);
+		data.setScanMobs(true);
+		return data;
+	}
+	
 	private String id;
 	private Vec3 pos;
 	private double range;
@@ -28,6 +48,7 @@ public class RadarData {
 	private boolean scanMobs;
 	private boolean scanGround;
 	private boolean scanAir;
+	private String slotId = "";
 	
 	private boolean freshTargets;
 	private int scanTicks;
@@ -35,7 +56,7 @@ public class RadarData {
 	
 	public RadarData(String id, double range, double fov, int scanRate) {
 		this.id = id;
-		this.pos = new Vec3(0, 0, 0);
+		this.pos = Vec3.ZERO;
 		this.range = range;
 		this.fov = fov;
 		this.scanRate = scanRate;
@@ -52,6 +73,7 @@ public class RadarData {
 		scanMobs = tag.getBoolean("scanMobs");
 		scanGround = tag.getBoolean("scanGround");
 		scanAir = tag.getBoolean("scanAir");
+		slotId = tag.getString("slotId");
 	}
 	
 	public CompoundTag write() {
@@ -66,6 +88,7 @@ public class RadarData {
 		tag.putBoolean("scanMobs", scanMobs);
 		tag.putBoolean("scanGround", scanGround);
 		tag.putBoolean("scanAir", scanAir);
+		tag.putString("slotId", slotId);
 		return tag;
 	}
 	
@@ -80,6 +103,7 @@ public class RadarData {
 		scanMobs = buffer.readBoolean();
 		scanGround = buffer.readBoolean();
 		scanAir = buffer.readBoolean();
+		slotId = buffer.readUtf();
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
@@ -93,6 +117,7 @@ public class RadarData {
 		buffer.writeBoolean(scanMobs);
 		buffer.writeBoolean(scanGround);
 		buffer.writeBoolean(scanAir);
+		buffer.writeUtf(slotId);
 	}
 	
 	public void tickUpdateTargets(EntityAbstractAircraft radar, List<RadarPing> targets) {
@@ -152,8 +177,8 @@ public class RadarData {
 	
 	private boolean basicCheck(EntityAbstractAircraft radar, Entity ping, double rangeMod) {
 		if (radar.equals(ping)) return false;
-		if (ping.isOnGround() && !scanGround) return false;
-		if (!ping.isOnGround() && !scanAir) return false;
+		if ((ping.isOnGround() || ping.isInWater()) && !scanGround) return false;
+		if (!ping.isOnGround() && !ping.isInWater() && !scanAir) return false;
 		if (radar.isVehicleOf(ping)) return false;
 		if (!checkTargetRange(radar, ping, rangeMod)) return false;
 		if (!checkCanSee(radar, ping)) return false;
@@ -293,6 +318,38 @@ public class RadarData {
 	@Override
 	public String toString() {
 		return "["+id+":"+fov+":"+range+"]";
+	}
+	
+	public RadarData copy() {
+		RadarData data = new RadarData(id, range, fov, scanRate);
+		data.setScanAir(scanAir);
+		data.setScanAircraft(scanAircraft);
+		data.setScanGround(scanGround);
+		data.setScanMobs(scanMobs);
+		data.setScanPlayers(scanPlayers);
+		return data;
+	}
+	
+	public String getSlotId() {
+		return slotId;
+	}
+	
+	public boolean isInternal() {
+		return slotId == "";
+	}
+	
+	public void setSlot(String slotId) {
+		this.slotId = slotId;
+	}
+	
+	public void setInternal() {
+		this.slotId = "";
+	}
+	
+	public boolean idMatch(String id, String slotId) {
+		if (slotId == null) return false;
+		if (id == null) return false;
+		return this.id.equals(id) && this.slotId.equals(slotId);
 	}
 	
 }

@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
+import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
@@ -13,6 +14,14 @@ public class EntityPlane extends EntityAbstractAircraft {
 	
 	public EntityPlane(EntityType<? extends EntityPlane> entity, Level level, ResourceLocation texture) {
 		super(entity, level, texture);
+	}
+	
+	@Override
+	public void controlDirection(Quaternion q) {
+		super.controlDirection(q);
+		q.mul(new Quaternion(Vector3f.ZP, inputRoll*getMaxDeltaRoll(), true));
+		q.mul(new Quaternion(Vector3f.XN, inputPitch*getMaxDeltaPitch(), true));
+		q.mul(new Quaternion(Vector3f.YN, inputYaw*getMaxDeltaYaw(), true));
 	}
 	
 	@Override
@@ -53,6 +62,14 @@ public class EntityPlane extends EntityAbstractAircraft {
 		double lift = ac * air * zSpeedSqr * wing / 2d;
 		//System.out.println("LIFT = "+lift);
 		return lift;
+	}
+	
+	@Override
+	public Vec3 getThrustForce(Quaternion q) {
+		Vec3 direction = UtilAngles.getRollAxis(q);
+		Vec3 thrustForce = direction.scale(getThrust());
+		//System.out.println("thrust force = "+thrustForce);
+		return thrustForce;
 	}
 
 }

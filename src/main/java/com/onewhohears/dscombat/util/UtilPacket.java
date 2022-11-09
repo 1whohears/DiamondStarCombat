@@ -125,11 +125,11 @@ public class UtilPacket {
 		}
 	}
 	
-	public static void removeRadarPacket(int id, String rid) {
+	public static void removeRadarPacket(int id, String rid, String slotId) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityAbstractAircraft plane) {
-			plane.radarSystem.removeRadar(rid, false);
+			plane.radarSystem.removeRadar(rid, slotId, false);
 		}
 	}
 	

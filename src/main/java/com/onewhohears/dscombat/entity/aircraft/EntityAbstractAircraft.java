@@ -6,7 +6,6 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.event.ClientForgeEvents;
 import com.onewhohears.dscombat.common.container.AircraftMenuContainer;
 import com.onewhohears.dscombat.common.network.PacketHandler;
@@ -155,17 +154,11 @@ public abstract class EntityAbstractAircraft extends Entity {
 			if (tag != null) compound.merge(tag);
 		}
 		partsManager = new PartsManager(compound);
-		System.out.println(partsManager);
 		weaponSystem = new WeaponSystem(compound);
 		radarSystem = new RadarSystem(compound);
 		this.setMaxSpeed(compound.getFloat("max_speed"));
 		this.setMaxHealth(compound.getFloat("max_health"));
 		this.setHealth(compound.getFloat("health"));
-		zRot = compound.getFloat("zRot");
-		Quaternion q = new Quaternion(getXRot(), getYRot(), zRot, true);
-		setQ(q);
-		setPrevQ(q);
-		//setClientQ(q);
 		this.setFlares(compound.getInt("flares"));
 		this.setStealth(compound.getFloat("stealth"));
 		this.setMaxDeltaRoll(compound.getFloat("maxroll"));
@@ -177,6 +170,13 @@ public abstract class EntityAbstractAircraft extends Entity {
 		this.setAircraftWeight(compound.getFloat("weight"));
 		this.setSurfaceArea(compound.getFloat("surfacearea"));
 		this.setLandingGear(compound.getBoolean("landing_gear"));
+		setXRot(compound.getFloat("xRot"));
+		if (compound.contains("yRot")) setYRot(compound.getFloat("yRot"));
+		zRot = compound.getFloat("zRot");
+		Quaternion q = new Quaternion(getXRot(), getYRot(), zRot, true);
+		setQ(q);
+		setPrevQ(q);
+		//setClientQ(q);
 	}
 
 	@Override
@@ -188,7 +188,6 @@ public abstract class EntityAbstractAircraft extends Entity {
 		compound.putFloat("max_speed", this.getMaxSpeed());
 		compound.putFloat("max_health", this.getMaxHealth());
 		compound.putFloat("health", this.getHealth());
-		compound.putFloat("zRot", zRot);
 		compound.putInt("flares", this.getFlares());
 		compound.putFloat("stealth", this.getStealth());
 		compound.putFloat("maxroll", this.getMaxDeltaRoll());
@@ -200,6 +199,9 @@ public abstract class EntityAbstractAircraft extends Entity {
 		compound.putFloat("weight", this.getAircraftWeight());
 		compound.putFloat("surfacearea", this.getSurfaceArea());
 		compound.putBoolean("landing_gear", this.isLandingGear());
+		compound.putFloat("xRot", this.getXRot());
+		compound.putFloat("yRot", this.getYRot());
+		compound.putFloat("zRot", zRot);
 	}
 	
 	public void init() {
@@ -316,10 +318,6 @@ public abstract class EntityAbstractAircraft extends Entity {
 		if (this.getControllingPassenger() == null) this.resetControls();
 		if (inputThrottle > 0) this.increaseThrottle();
 		else if (inputThrottle < 0) this.decreaseThrottle();
-		
-		q.mul(new Quaternion(Vector3f.ZP, inputRoll*getMaxDeltaRoll(), true));
-		q.mul(new Quaternion(Vector3f.XN, inputPitch*getMaxDeltaPitch(), true));
-		q.mul(new Quaternion(Vector3f.YN, inputYaw*getMaxDeltaYaw(), true));
 	}
 	
 	public void tickMovement(Quaternion q) {
@@ -345,12 +343,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		this.resetFallDistance();
 	}
 	
-	public Vec3 getThrustForce(Quaternion q) {
-		Vec3 direction = UtilAngles.getRollAxis(q);
-		Vec3 thrustForce = direction.scale(getThrust());
-		//System.out.println("thrust force = "+thrustForce);
-		return thrustForce;
-	}
+	public abstract Vec3 getThrustForce(Quaternion q);
 	
 	public double getThrust() {
 		if (this.getFuel() <= 0) return 0;

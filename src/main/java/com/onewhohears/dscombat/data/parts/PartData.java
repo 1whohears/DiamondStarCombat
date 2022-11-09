@@ -25,7 +25,8 @@ public abstract class PartData {
 		INTERNAL_WEAPON,
 		WEAPON_RACK,
 		ENGINE,
-		FUEL_TANK
+		FUEL_TANK,
+		INTERNAL_RADAR
 	}
 	
 	protected PartData(float weight, ResourceLocation itemid) {

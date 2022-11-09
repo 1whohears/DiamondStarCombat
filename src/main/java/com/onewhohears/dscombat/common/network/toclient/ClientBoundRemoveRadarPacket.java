@@ -15,21 +15,25 @@ public class ClientBoundRemoveRadarPacket extends IPacket {
 	
 	public final int id;
 	public final String rid;
+	public final String slotId;
 	
-	public ClientBoundRemoveRadarPacket(int id, String rid) {
+	public ClientBoundRemoveRadarPacket(int id, String rid, String slotId) {
 		this.id = id;
 		this.rid = rid;
+		this.slotId = slotId;
 	}
 	
 	public ClientBoundRemoveRadarPacket(FriendlyByteBuf buffer) {
 		id = buffer.readInt();
 		rid = buffer.readUtf();
+		slotId = buffer.readUtf();
 	}
 	
 	@Override
 	public void encode(FriendlyByteBuf buffer) {
 		buffer.writeInt(id);
 		buffer.writeUtf(rid);
+		buffer.writeUtf(slotId);
 	}
 
 	@Override
@@ -37,7 +41,7 @@ public class ClientBoundRemoveRadarPacket extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilPacket.removeRadarPacket(id, rid);
+				UtilPacket.removeRadarPacket(id, rid, slotId);
 				success.set(true);
 			});
 		});

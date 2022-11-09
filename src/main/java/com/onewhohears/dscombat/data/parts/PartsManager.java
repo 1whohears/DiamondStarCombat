@@ -221,8 +221,7 @@ public class PartsManager {
 	public void readContainer(Container c) {
 		System.out.println("READING CHANGED CONTAINER client side "+parent.level.isClientSide+" items "+c);
 		if (c.getContainerSize() != slots.size()) {
-			System.out.println("ERROR! THIS CONTAINER HAS THE WRONG NUMBER OF SLOTS!");
-			// TODO kick client with better error message
+			System.out.println("WARNING! THIS CONTAINER HAS THE WRONG NUMBER OF SLOTS!");
 			return;
 		}
 		for (int i = 0; i < c.getContainerSize(); ++i) {

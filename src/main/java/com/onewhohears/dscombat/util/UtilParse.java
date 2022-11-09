@@ -9,6 +9,7 @@ import com.onewhohears.dscombat.data.parts.EngineData;
 import com.onewhohears.dscombat.data.parts.FuelTankData;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
+import com.onewhohears.dscombat.data.parts.RadarPartData;
 import com.onewhohears.dscombat.data.parts.SeatData;
 import com.onewhohears.dscombat.data.parts.WeaponPartData;
 import com.onewhohears.dscombat.data.parts.WeaponRackData;
@@ -72,6 +73,8 @@ public class UtilParse {
 			return new EngineData(tag);
 		case FUEL_TANK:
 			return new FuelTankData(tag);
+		case INTERNAL_RADAR:
+			return new RadarPartData(tag);
 		}
 		return null;
 	}

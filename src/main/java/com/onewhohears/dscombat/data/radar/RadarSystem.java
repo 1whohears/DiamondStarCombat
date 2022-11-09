@@ -161,29 +161,28 @@ public class RadarSystem {
 	}
 	
 	@Nullable
-	public RadarData get(String id) {
-		for (RadarData r : radars) if (r.getId().equals(id)) return r;
+	public RadarData get(String id, String slotId) {
+		for (RadarData r : radars) if (r.idMatch(id, slotId)) return r;
 		return null;
 	}
 	
-	public void addRadar(RadarData r, boolean updateClient) {
-		if (get(r.getId()) != null) return;
+	public boolean addRadar(RadarData r, boolean updateClient) {
+		if (get(r.getId(), r.getSlotId()) != null) return false;
 		radars.add(r);
 		if (updateClient) {
 			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
 					new ClientBoundAddRadarPacket(parent.getId(), r));
 		}
+		return true;
 	}
 	
-	public void removeRadar(String id, boolean updateClient) {
-		for (RadarData r : radars) if (r.getId().equals(id)) {
-			radars.remove(r);
-			if (updateClient) {
-				PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
-						new ClientBoundRemoveRadarPacket(parent.getId(), id));
-			}
-			return;
+	public void removeRadar(String id, String slotId, boolean updateClient) {
+		boolean ok = radars.remove(get(id, slotId));
+		if (ok && updateClient) {
+			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
+					new ClientBoundRemoveRadarPacket(parent.getId(), id, slotId));
 		}
+		return;
 	}
 	
 	@Override

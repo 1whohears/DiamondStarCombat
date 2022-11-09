@@ -7,6 +7,7 @@ import com.onewhohears.dscombat.item.ItemAircraft;
 import com.onewhohears.dscombat.item.ItemAmmo;
 import com.onewhohears.dscombat.item.ItemEngine;
 import com.onewhohears.dscombat.item.ItemFuelTank;
+import com.onewhohears.dscombat.item.ItemGasCan;
 import com.onewhohears.dscombat.item.ItemSeat;
 import com.onewhohears.dscombat.item.ItemWeaponPart;
 
@@ -47,6 +48,11 @@ public class ModItems {
 			return new ItemStack(ModItems.TEST_PLANE.get());
 		}
 	};
+	
+	public static final RegistryObject<Item> GAS_CAN = ITEMS.register("gas_can", 
+			() -> new ItemGasCan(25));
+	public static final RegistryObject<Item> BIG_GAS_CAN = ITEMS.register("big_gas_can", 
+			() -> new ItemGasCan(50));
 	
 	public static final RegistryObject<Item> SEAT = ITEMS.register("seat", 
 			() -> new ItemSeat());

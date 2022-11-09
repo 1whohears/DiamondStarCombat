@@ -56,6 +56,8 @@
 	"itemGroup.parts": "DSCombat Parts",
 	"itemGroup.aircraft": "DSCombat Aircraft",
 	
+	"item.dscombat.gas_can": "Gas Can",
+	"item.dscombat.big_gas_can": "Big Gas Can",
 	"item.dscombat.seat": "Seat",
 	"item.dscombat.weapon_rack": "Weapon Rack",
 	"item.dscombat.test_plane": "Test Plane",

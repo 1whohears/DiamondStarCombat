@@ -52,7 +52,7 @@ public class ModItems {
 	public static final RegistryObject<Item> GAS_CAN = ITEMS.register("gas_can", 
 			() -> new ItemGasCan(25));
 	public static final RegistryObject<Item> BIG_GAS_CAN = ITEMS.register("big_gas_can", 
-			() -> new ItemGasCan(50));
+			() -> new ItemGasCan(75));
 	
 	public static final RegistryObject<Item> SEAT = ITEMS.register("seat", 
 			() -> new ItemSeat());

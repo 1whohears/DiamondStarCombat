@@ -403,8 +403,11 @@ public abstract class EntityAbstractAircraft extends Entity {
 		double x = getDeltaMovement().x;
 		double z = getDeltaMovement().z;
 		double speed = Math.sqrt(x*x + z*z);
-		if (speed < 0.01) return speed;
-		return 0.01;
+		double f;
+		if (getCurrentThrottle() <= 0) f = 0.05;
+		else f = 0.01;
+		if (speed < f) return speed;
+		return f;
 	}
 	
 	public Vec3 getWeightForce() {

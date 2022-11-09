@@ -53,6 +53,8 @@ public class ModItems {
 			() -> new ItemGasCan(25));
 	public static final RegistryObject<Item> BIG_GAS_CAN = ITEMS.register("big_gas_can", 
 			() -> new ItemGasCan(75));
+	public static final RegistryObject<Item> BIG_ASS_CAN = ITEMS.register("big_ass_can", 
+			() -> new ItemGasCan(300));
 	
 	public static final RegistryObject<Item> SEAT = ITEMS.register("seat", 
 			() -> new ItemSeat());

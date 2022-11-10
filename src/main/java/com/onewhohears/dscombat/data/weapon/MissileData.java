@@ -175,7 +175,7 @@ public class MissileData extends BulletData {
 	
 	private boolean isOnGroundOrWater(Entity ping) {
 		if (ping.getRootVehicle() != null) ping = ping.getRootVehicle();
-		if (ping.isOnGround() || ping.isInWater() || ping.fallDistance < 4f) return true;
+		if (ping.isOnGround() || ping.isInWater() || (ping.fallDistance < 4f && !ping.isNoGravity())) return true;
 		return false;
 	}
 	

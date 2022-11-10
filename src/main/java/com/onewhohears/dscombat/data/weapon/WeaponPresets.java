@@ -37,22 +37,22 @@ public class WeaponPresets {
 				TargetType.AIR, GuidanceType.IR, 
 				4, 0.03, 3, 80, 1));
 		
-		add(new BulletData("bullet_1", Vec3.ZERO, 
-				200, 1000, 1, true, 
-				15, 10, 0.5f));
-		
-		add(new BulletData("bullet_2", Vec3.ZERO, 
-				200, 400, 4, true, 
-				10, 10, 0.2f,
-				true, true, false,
-				10, 2.5f));
-		
 		add(new MissileData("gbu", Vec3.ZERO, 400, 8, 
 				100, false, 100, 1.5d, 0, 
 				true, true, true, 
 				100d, 4f, 
 				TargetType.GROUND, GuidanceType.PITBULL,
 				4.0f, 0.02d, 2.5d, -1, 0));
+		
+		add(new BulletData("bullet_1", Vec3.ZERO, 
+				200, 1000, 1, true, 
+				15, 10, 0.5f));
+		
+		add(new BulletData("bullet_2", Vec3.ZERO, 
+				200, 400, 4, true, 
+				30, 10, 0.2f,
+				true, true, false,
+				30, 3.0f));
 		
 		add(new MissileData("aim7e", Vec3.ZERO, 300, 4, 
 				20, false, 100, 2, 0, 

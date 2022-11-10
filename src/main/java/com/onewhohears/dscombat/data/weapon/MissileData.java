@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.data.weapon;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.base.Supplier;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
@@ -15,6 +16,9 @@ import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -47,12 +51,14 @@ public class MissileData extends BulletData {
 	private float fov;
 	private float flareResistance;
 	
-	public MissileData(String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, boolean canShootOnGround,
+	public MissileData(Supplier<EntityType<?>> entityType, ResourceLocation texture, Supplier<SoundEvent> shootSound,
+			String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, boolean canShootOnGround,
 			float damage, double speed, float innacuracy, boolean explosive, boolean destroyTerrain, 
 			boolean causesFire, double explosiveDamage, float explosionRadius,
 			TargetType tType, GuidanceType gType, float maxRot, 
 			double acceleration, double fuseDist, float fov, float flareResistance) {
-		super(id, launchPos, maxAge, maxAmmo, fireRate, canShootOnGround, damage, speed, innacuracy, 
+		super(entityType, texture, shootSound, 
+				id, launchPos, maxAge, maxAmmo, fireRate, canShootOnGround, damage, speed, innacuracy, 
 				explosive, destroyTerrain, causesFire, explosiveDamage, explosionRadius);
 		this.targetType = tType;
 		this.guidanceType = gType;
@@ -130,7 +136,7 @@ public class MissileData extends BulletData {
 			return null;
 		}
 		//System.out.println(this.getId()+" ammo "+this.getCurrentAmmo());
-		EntityMissile rocket = EntityMissile.missile(level, owner, this);
+		EntityMissile rocket = new EntityMissile(level, owner, this);
 		rocket.setDeltaMovement(vehicle.getDeltaMovement());
 		rocket.setPos(vehicle.position()
 				.add(UtilAngles.rotateVector(this.getLaunchPos(), vehicleQ))
@@ -170,6 +176,9 @@ public class MissileData extends BulletData {
 		level.addFreshEntity(rocket);
 		this.setLaunchSuccess(1, owner);
 		updateClientAmmo(vehicle);
+		level.playSound(null, rocket.blockPosition(), 
+				this.getShootSound(), SoundSource.PLAYERS, 
+				1f, 1f);
 		return rocket;
 	}
 	
@@ -477,7 +486,8 @@ public class MissileData extends BulletData {
 	
 	@Override
 	public WeaponData copy() {
-		return new MissileData(getId(), this.getLaunchPos(), this.getMaxAge(), this.getMaxAmmo(), 
+		return new MissileData(() -> getEntityType(), getTexture(), () -> getShootSound(),
+				this.getId(), this.getLaunchPos(), this.getMaxAge(), this.getMaxAmmo(), 
 				this.getFireRate(), this.canShootOnGround(), this.getDamage(), this.getSpeed(), 
 				this.getInnacuracy(), this.isExplosive(), this.isDestroyTerrain(), this.isCausesFire(), 
 				this.getExplosiveDamage(), this.getExplosionRadius(), this.getTargetType(), 

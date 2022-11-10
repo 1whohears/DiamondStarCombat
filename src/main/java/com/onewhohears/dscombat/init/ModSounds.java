@@ -15,6 +15,9 @@ public class ModSounds {
 	
 	public static final RegistryObject<SoundEvent> MISSILE_WARNING = registerSoundEvent("missile_warning");
 	public static final RegistryObject<SoundEvent> GETTING_LOCKED = registerSoundEvent("getting_locked");
+	public static final RegistryObject<SoundEvent> MISSILE_LAUNCH_1 = registerSoundEvent("rocket_launch_1");
+	public static final RegistryObject<SoundEvent> MISSILE_ENGINE_1 = registerSoundEvent("rocket_engine_1");
+	public static final RegistryObject<SoundEvent> BULLET_SHOOT_1 = registerSoundEvent("bullet_shoot_1");
 	
 	public static void register(IEventBus eventBus) {
 		SOUND_EVENTS.register(eventBus);

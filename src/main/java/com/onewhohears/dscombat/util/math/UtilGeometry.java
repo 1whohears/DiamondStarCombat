@@ -37,4 +37,9 @@ public class UtilGeometry {
 		return tPos;
 	}
 	
+	public static Vec3 componentOfVecByAxis(Vec3 u, Vec3 v) {
+		double vl2 = v.lengthSqr();
+		return v.scale(u.dot(v) / vl2);
+	}
+	
 }

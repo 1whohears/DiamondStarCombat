@@ -4,6 +4,7 @@ import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.math.UtilAngles;
+import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -45,8 +46,7 @@ public class EntityPlane extends EntityAbstractAircraft {
 		//System.out.println("lift direction = "+direction);
 		Vec3 u = getDeltaMovement();
 		Vec3 v = UtilAngles.getRollAxis(q);
-		double vl2 = v.lengthSqr();
-		double zSpeedSqr = v.scale(u.dot(v) / vl2).lengthSqr();
+		double zSpeedSqr = UtilGeometry.componentOfVecByAxis(u, v).lengthSqr();
 		Vec3 liftForce = direction.scale(getLift(zSpeedSqr));
 		//System.out.println("lift force = "+liftForce);
 		return liftForce;

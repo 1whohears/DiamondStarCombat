@@ -36,16 +36,16 @@ public class DSCombatMod
     private static final Logger LOGGER = LogUtils.getLogger();
 
     public DSCombatMod() {
-    	// ORDER MATTERS
-    	RadarPresets.setupPresets();
-        WeaponPresets.setupPresets();
-        AircraftPresets.setupPresets();
-    	
     	IEventBus eventBus =  FMLJavaModLoadingContext.get().getModEventBus();
-        
-    	DataSerializers.register(eventBus);
+    	// ORDER MATTERS
     	ModEntities.register(eventBus);
     	ModSounds.register(eventBus);
+    	
+    	WeaponPresets.setupPresets();
+    	RadarPresets.setupPresets();
+        AircraftPresets.setupPresets();
+        
+    	DataSerializers.register(eventBus);
     	ModContainers.register(eventBus);
     	ModItems.register(eventBus);
     	ModRecipeSerializers.register(eventBus);

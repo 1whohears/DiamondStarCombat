@@ -1,21 +1,27 @@
 package com.onewhohears.dscombat.data.weapon;
 
+import com.google.common.base.Supplier;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class BombData extends BulletData {
 	
-	public BombData(String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, boolean canShootOnGround,
+	public BombData(Supplier<EntityType<?>> entityType, ResourceLocation texture, Supplier<SoundEvent> shootSound,
+			String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, boolean canShootOnGround,
 			float damage, double speed, float innacuracy, boolean explosive, boolean destroyTerrain, 
 			boolean causesFire, double explosiveDamage, float explosionRadius) {
-		super(id, launchPos, maxAge, maxAmmo, fireRate, canShootOnGround, damage, speed, innacuracy,
+		super(entityType, texture, shootSound, 
+				id, launchPos, maxAge, maxAmmo, fireRate, canShootOnGround, damage, speed, innacuracy,
 				explosive, destroyTerrain, causesFire, explosiveDamage, explosionRadius);
 	}
 	

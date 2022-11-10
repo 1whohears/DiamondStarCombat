@@ -52,6 +52,8 @@
 	
 	"sounds.dscombat.missile_warning": "Missile Warning",
 	"sounds.dscombat.getting_locked": "Getting Locked",
+	"sounds.dscombat.rocket_launch_1": "Missile Launch",
+	"sounds.dscombat.rocket_engine_1": "Missile Engine",
 	
 	"itemGroup.parts": "DSCombat Parts",
 	"itemGroup.aircraft": "DSCombat Aircraft",

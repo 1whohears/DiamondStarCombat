@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.data.weapon;
 
 import java.util.Random;
 
+import com.google.common.base.Supplier;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
@@ -10,7 +11,11 @@ import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
@@ -25,18 +30,21 @@ public class BulletData extends WeaponData {
 	private float explosionRadius;
 	private float innacuracy;
 	
-	public BulletData(String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, boolean canShootOnGround,
+	public BulletData(Supplier<EntityType<?>> entityType, ResourceLocation texture, Supplier<SoundEvent> shootSound, 
+			String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, boolean canShootOnGround,
 			float damage, double speed, float innacuracy) {
-		super(id, launchPos, maxAge, maxAmmo, fireRate, canShootOnGround);
+		super(entityType, texture, shootSound, id, launchPos, maxAge, maxAmmo, fireRate, canShootOnGround);
 		this.damage = damage;
 		this.speed = speed;
 		this.innacuracy = innacuracy;
 	}
 	
-	public BulletData(String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, boolean canShootOnGround,
+	public BulletData(Supplier<EntityType<?>> entityType, ResourceLocation texture, Supplier<SoundEvent> shootSound, 
+			String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, boolean canShootOnGround,
 			float damage, double speed, float innacuracy, boolean explosive, boolean destroyTerrain, 
 			boolean causesFire, double explosiveDamage, float explosionRadius) {
-		this(id, launchPos, maxAge, maxAmmo, fireRate, canShootOnGround, damage, speed, innacuracy);
+		this(entityType, texture, shootSound, 
+				id, launchPos, maxAge, maxAmmo, fireRate, canShootOnGround, damage, speed, innacuracy);
 		this.explosive = explosive;
 		this.destroyTerrain = destroyTerrain;
 		this.causesFire = causesFire;
@@ -136,6 +144,9 @@ public class BulletData extends WeaponData {
 		level.addFreshEntity(bullet);
 		this.setLaunchSuccess(1, owner);
 		updateClientAmmo(vehicle);
+		level.playSound(null, bullet.blockPosition(), 
+				this.getShootSound(), SoundSource.PLAYERS, 
+				1f, 1f);
 		return bullet;
 	}
 	
@@ -173,7 +184,8 @@ public class BulletData extends WeaponData {
 
 	@Override
 	public WeaponData copy() {
-		return new BulletData(getId(), this.getLaunchPos(), this.getMaxAge(), this.getMaxAmmo(), 
+		return new BulletData(() -> getEntityType(), getTexture(), () -> getShootSound(), 
+				this.getId(), this.getLaunchPos(), this.getMaxAge(), this.getMaxAmmo(), 
 				this.getFireRate(), this.canShootOnGround(), this.getDamage(), this.getSpeed(), 
 				this.getInnacuracy(), this.isExplosive(), this.isDestroyTerrain(), this.isCausesFire(), 
 				this.getExplosiveDamage(), this.getExplosionRadius());

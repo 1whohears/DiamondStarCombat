@@ -2,16 +2,12 @@ package com.onewhohears.dscombat.entity.weapon;
 
 import javax.annotation.Nullable;
 
-import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.weapon.BulletData;
 import com.onewhohears.dscombat.data.weapon.WeaponDamageSource;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
-import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -28,16 +24,12 @@ import net.minecraft.world.phys.Vec3;
 
 public class EntityBullet extends EntityAbstractWeapon {
 	
-	private static final ResourceLocation TEXTURE_BULLET1 = new ResourceLocation(DSCombatMod.MODID, "textures/entities/bullet1.png");
-	
 	public EntityBullet(EntityType<? extends EntityBullet> type, Level level) {
 		super(type, level);
 	}
 	
 	public EntityBullet(Level level, Entity owner, BulletData data) {
-		this(ModEntities.BULLET.get(), level);
-		this.setOwner(owner);
-		this.setWeaponData(data);
+		super(level, owner, data);
 	}
 	
 	/*@Override
@@ -157,17 +149,12 @@ public class EntityBullet extends EntityAbstractWeapon {
 			}
 		}
 	}
-	
-	@Override
-	public ResourceLocation getTexture() {
-		return TEXTURE_BULLET1;
-	}
 
-	@Override
+	/*@Override
 	public WeaponData getDefaultData() {
 		return new BulletData("default_bullet", Vec3.ZERO, 
 				0, 0, 0, false, 0, 0, 0);
-	}
+	}*/
 	
 	@Override
 	protected void motion() {

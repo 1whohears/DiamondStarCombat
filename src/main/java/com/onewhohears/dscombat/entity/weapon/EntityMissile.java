@@ -1,19 +1,18 @@
 package com.onewhohears.dscombat.entity.weapon;
 
-import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.client.sounds.DopplerOnPlayerSoundInstance;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundMissileMovePacket;
 import com.onewhohears.dscombat.data.ChunkManager;
 import com.onewhohears.dscombat.data.weapon.MissileData;
-import com.onewhohears.dscombat.data.weapon.MissileData.GuidanceType;
 import com.onewhohears.dscombat.data.weapon.MissileData.TargetType;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
-import com.onewhohears.dscombat.init.ModEntities;
+import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.util.UtilEntity;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -24,45 +23,23 @@ import net.minecraftforge.network.PacketDistributor;
 
 public class EntityMissile extends EntityBullet {
 	
-	public static final ResourceLocation TEXTURE_MISSILE1 = new ResourceLocation(DSCombatMod.MODID, "textures/entities/missile1.png");
-	public static final ResourceLocation TEXTURE_MISSILE2 = new ResourceLocation(DSCombatMod.MODID, "textures/entities/missile2.png");
-	public static final ResourceLocation TEXTURE_MISSILE3 = new ResourceLocation(DSCombatMod.MODID, "textures/entities/missile3.png");
-	
-	public static EntityMissile missile(Level level, Entity owner, MissileData data) {
-		switch (data.getId()) {
-		case "gbu": return new EntityMissile(ModEntities.MISSILE1.get(), level, owner, data, TEXTURE_MISSILE1);
-		case "fox3_1": return new EntityMissile(ModEntities.MISSILE2.get(), level, owner, data, TEXTURE_MISSILE2);
-		case "fox2_1": return new EntityMissile(ModEntities.MISSILE3.get(), level, owner, data, TEXTURE_MISSILE3);
-		case "aim7e": return new EntityMissile(ModEntities.MISSILE3.get(), level, owner, data, TEXTURE_MISSILE3);
-		case "aim7mh": return new EntityMissile(ModEntities.MISSILE3.get(), level, owner, data, TEXTURE_MISSILE3);
-		case "aim9x": return new EntityMissile(ModEntities.MISSILE3.get(), level, owner, data, TEXTURE_MISSILE3);
-		case "aim120b": return new EntityMissile(ModEntities.MISSILE2.get(), level, owner, data, TEXTURE_MISSILE2);
-		case "aim120c": return new EntityMissile(ModEntities.MISSILE2.get(), level, owner, data, TEXTURE_MISSILE2);
-		case "agm65g": return new EntityMissile(ModEntities.MISSILE1.get(), level, owner, data, TEXTURE_MISSILE1);
-		case "agm65l": return new EntityMissile(ModEntities.MISSILE1.get(), level, owner, data, TEXTURE_MISSILE1);
-		case "agm84e": return new EntityMissile(ModEntities.MISSILE1.get(), level, owner, data, TEXTURE_MISSILE1);
-		case "agm114k": return new EntityMissile(ModEntities.MISSILE1.get(), level, owner, data, TEXTURE_MISSILE1);
-		}
-		return new EntityMissile(ModEntities.MISSILE1.get(), level, owner, data, TEXTURE_MISSILE1);
-	}
-	
-	private final ResourceLocation TEXTURE;
-	
 	public Entity parent;
 	public Entity target;
 	public Vec3 targetPos;
 	
-	public EntityMissile(EntityType<? extends EntityMissile> type, Level level, ResourceLocation texture) {
+	public EntityMissile(EntityType<? extends EntityMissile> type, Level level) {
 		super(type, level);
-		TEXTURE = texture;
-		//System.out.println("NEW MISSILE "+level+" "+texture);
 	}
 	
-	private EntityMissile(EntityType<? extends EntityMissile> type, Level level, Entity owner, MissileData data, ResourceLocation texture) {
+	public EntityMissile(Level level, Entity owner, MissileData data) {
+		super(level, owner, data);
+	}
+	
+	/*private EntityMissile(EntityType<? extends EntityMissile> type, Level level, Entity owner, MissileData data, ResourceLocation texture) {
 		this(type, level, texture);
 		this.setOwner(owner);
 		this.setWeaponData(data);
-	}
+	}*/
 	
 	@Override
 	public void tick() {
@@ -96,10 +73,22 @@ public class EntityMissile extends EntityBullet {
 					-move.z * 0.5D + random.nextGaussian() * 0.05D);
 			data.clientGuidance(this);
 		}
+		engineSound();
 		super.tick();
 		//System.out.println("pos = "+position());
 		//System.out.println("vel = "+getDeltaMovement());
 		//System.out.println("pit = "+getXRot()+" yaw = "+getYRot());
+	}
+	
+	private void engineSound() {
+		if (!this.level.isClientSide) return;
+		if (this.tickCount == 8) {
+			Minecraft m = Minecraft.getInstance();
+			LocalPlayer p = m.player;
+			m.getSoundManager().play(new DopplerOnPlayerSoundInstance(ModSounds.MISSILE_ENGINE_1.get(), 
+					p, this, 0.8F, 1.0F, 10F));
+			//System.out.println("STARTING ENGINE SOUND");
+		}
 	}
 	
 	private void loadChunks() {
@@ -126,19 +115,14 @@ public class EntityMissile extends EntityBullet {
 		setDeltaMovement(nm);
 	}
 	
-	@Override
-	public ResourceLocation getTexture() {
-		return TEXTURE;
-	}
-	
-	@Override
+	/*@Override
 	public WeaponData getDefaultData() {
 		return new MissileData("default_missile", Vec3.ZERO,
 				0, 0, 0, false, 0, 0, 0, 
 				false, false, false, 0, 0,
 				TargetType.POS, GuidanceType.IR,
 				0, 0, 0, -1, 1);
-	}
+	}*/
 	
 	public float getHeat() {
 		return 2f;

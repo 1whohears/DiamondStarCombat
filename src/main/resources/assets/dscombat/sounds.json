@@ -10,5 +10,17 @@
 		"sounds": [
 			"dscombat:getting_locked"
 		]
+	},
+	"rocket_launch_1": {
+		"subtitle": "sounds.dscombat.rocket_launch_1",
+		"sounds": [
+			"dscombat:rocket_launch_1"
+		]
+	},
+	"rocket_engine_1": {
+		"subtitle": "sounds.dscombat.rocket_engine_1",
+		"sounds": [
+			"dscombat:rocket_engine_1"
+		]
 	}
 }

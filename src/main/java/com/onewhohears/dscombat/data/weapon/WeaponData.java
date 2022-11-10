@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.data.weapon;
 
 import javax.annotation.Nullable;
 
+import com.google.common.base.Supplier;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundWeaponAmmoPacket;
@@ -12,13 +13,21 @@ import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public abstract class WeaponData {
+	
+	private final EntityType<?> entityType; // TODO make entity type and shoot sound registry objects to not crash on startup
+	private final SoundEvent shootSound;
+	private final ResourceLocation texture;
 	
 	private String id;
 	private Vec3 pos;
@@ -37,13 +46,17 @@ public abstract class WeaponData {
 		BOMB
 	}
 	
-	protected WeaponData(String id, Vec3 pos, int maxAge, int maxAmmo, int fireRate, boolean canShootOnGround) {
+	protected WeaponData(Supplier<EntityType<?>> entityType, ResourceLocation texture, Supplier<SoundEvent> shootSound,
+			String id, Vec3 pos, int maxAge, int maxAmmo, int fireRate, boolean canShootOnGround) {
 		this.id = id;
 		this.pos = pos;
 		this.maxAge = maxAge;
 		this.maxAmmo = maxAmmo;
 		this.fireRate = fireRate;
 		this.canShootOnGround = canShootOnGround;
+		this.entityType = entityType.get();
+		this.shootSound = shootSound.get();
+		this.texture = texture;
 	}
 	
 	public WeaponData(CompoundTag tag) {
@@ -60,6 +73,9 @@ public abstract class WeaponData {
 		fireRate = tag.getInt("fireRate");
 		canShootOnGround = tag.getBoolean("canShootOnGround");
 		slotId = tag.getString("slotId");
+		entityType = ForgeRegistries.ENTITY_TYPES.getValue(new ResourceLocation(tag.getString("entityType")));
+		shootSound = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(tag.getString("shootSound")));
+		texture = new ResourceLocation(tag.getString("texture"));
 	}
 	
 	public CompoundTag write() {
@@ -73,10 +89,16 @@ public abstract class WeaponData {
 		tag.putInt("fireRate", fireRate);
 		tag.putBoolean("canShootOnGround", canShootOnGround);
 		tag.putString("slotId", slotId);
+		tag.putString("entityType", entityType.toString());
+		tag.putString("shootSound", shootSound.getLocation().toString());
+		tag.putString("texture", texture.toString());
 		return tag;
 	}
 	
 	public WeaponData(FriendlyByteBuf buffer) {
+		entityType = ForgeRegistries.ENTITY_TYPES.getValue(new ResourceLocation(buffer.readUtf()));
+		shootSound = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(buffer.readUtf()));
+		texture = new ResourceLocation(buffer.readUtf());
 		read(buffer);
 	}
 	
@@ -93,6 +115,9 @@ public abstract class WeaponData {
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
+		buffer.writeUtf(entityType.toString());
+		buffer.writeUtf(shootSound.getLocation().toString());
+		buffer.writeUtf(texture.toString());
 		buffer.writeInt(this.getType().ordinal());
 		buffer.writeUtf(id);
 		DataSerializers.VEC3.write(buffer, pos);
@@ -242,6 +267,18 @@ public abstract class WeaponData {
 		if (slotId == null) return false;
 		if (id == null) return false;
 		return this.id.equals(id) && this.slotId.equals(slotId);
+	}
+	
+	public EntityType<?> getEntityType() {
+		return entityType;
+	}
+	
+	public ResourceLocation getTexture() {
+		return texture;
+	}
+	
+	public SoundEvent getShootSound() {
+		return shootSound;
 	}
 	
 }

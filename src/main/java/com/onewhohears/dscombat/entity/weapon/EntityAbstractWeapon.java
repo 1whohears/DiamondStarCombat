@@ -1,14 +1,12 @@
 package com.onewhohears.dscombat.entity.weapon;
 
 import com.onewhohears.dscombat.data.weapon.WeaponData;
-import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.init.DataSerializers;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -21,8 +19,6 @@ public abstract class EntityAbstractWeapon extends Projectile {
 	
 	public static final EntityDataAccessor<WeaponData> DATA = SynchedEntityData.defineId(EntityAbstractWeapon.class, DataSerializers.WEAPON_DATA);
 	
-	private ResourceLocation TEXTURE = WeaponPresets.BULLET1;
-	
 	@SuppressWarnings("unchecked")
 	public EntityAbstractWeapon(EntityType<?> type, Level level) {
 		super((EntityType<? extends Projectile>) type, level);
@@ -33,23 +29,22 @@ public abstract class EntityAbstractWeapon extends Projectile {
 		super((EntityType<? extends Projectile>) data.getEntityType(), level);
 		this.setOwner(owner);
 		this.setWeaponData(data);
-		TEXTURE = data.getTexture();
 	}
 
 	@Override
 	protected void defineSynchedData() {
 		//this.entityData.define(DATA, getDefaultData());
-		this.entityData.define(DATA, WeaponPresets.getDefaultBullet());
+		this.entityData.define(DATA, getDefaultData());
 	}
 	
-	@Override
+	/*@Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
 		if (level.isClientSide) {
 			if (key.equals(DATA)) {
 				TEXTURE = this.getWeaponData().getTexture();
 			}
 		}
-	}
+	}*/
 	
 	/*@Override
 	protected void readAdditionalSaveData(CompoundTag compound) {
@@ -89,6 +84,8 @@ public abstract class EntityAbstractWeapon extends Projectile {
 		return entityData.get(DATA);
 	}
 	
+	public abstract WeaponData getDefaultData();
+	
 	@Override
 	public boolean ignoreExplosion() {
 		return true;
@@ -108,10 +105,6 @@ public abstract class EntityAbstractWeapon extends Projectile {
 	@Override
 	public Packet<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
-	}
-	
-	public ResourceLocation getTexture() {
-		return TEXTURE;
 	}
 	
 	@Override

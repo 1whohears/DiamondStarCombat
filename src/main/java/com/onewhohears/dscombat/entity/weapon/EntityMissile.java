@@ -5,6 +5,8 @@ import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundMissileMovePacket;
 import com.onewhohears.dscombat.data.ChunkManager;
 import com.onewhohears.dscombat.data.weapon.MissileData;
+import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.data.weapon.MissileData.TargetType;
 import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.util.UtilEntity;
@@ -115,14 +117,10 @@ public class EntityMissile extends EntityBullet {
 		setDeltaMovement(nm);
 	}
 	
-	/*@Override
+	@Override
 	public WeaponData getDefaultData() {
-		return new MissileData("default_missile", Vec3.ZERO,
-				0, 0, 0, false, 0, 0, 0, 
-				false, false, false, 0, 0,
-				TargetType.POS, GuidanceType.IR,
-				0, 0, 0, -1, 1);
-	}*/
+		return WeaponPresets.getDefaultMissile();
+	}
 	
 	public float getHeat() {
 		return 2f;

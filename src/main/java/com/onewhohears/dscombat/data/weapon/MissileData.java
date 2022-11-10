@@ -15,7 +15,6 @@ import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
@@ -51,13 +50,13 @@ public class MissileData extends BulletData {
 	private float fov;
 	private float flareResistance;
 	
-	public MissileData(RegistryObject<EntityType<?>> entityType, ResourceLocation texture, RegistryObject<SoundEvent> shootSound,
+	public MissileData(RegistryObject<EntityType<?>> entityType, RegistryObject<SoundEvent> shootSound,
 			String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, boolean canShootOnGround,
 			float damage, double speed, float innacuracy, boolean explosive, boolean destroyTerrain, 
 			boolean causesFire, double explosiveDamage, float explosionRadius,
 			TargetType tType, GuidanceType gType, float maxRot, 
 			double acceleration, double fuseDist, float fov, float flareResistance) {
-		super(entityType, texture, shootSound, 
+		super(entityType, shootSound, 
 				id, launchPos, maxAge, maxAmmo, fireRate, canShootOnGround, damage, speed, innacuracy, 
 				explosive, destroyTerrain, causesFire, explosiveDamage, explosionRadius);
 		this.targetType = tType;
@@ -481,7 +480,7 @@ public class MissileData extends BulletData {
 	
 	@Override
 	public WeaponData copy() {
-		return new MissileData(entityType, getTexture(), shootSound,
+		return new MissileData(entityType, shootSound,
 				this.getId(), this.getLaunchPos(), this.getMaxAge(), this.getMaxAmmo(), 
 				this.getFireRate(), this.canShootOnGround(), this.getDamage(), this.getSpeed(), 
 				this.getInnacuracy(), this.isExplosive(), this.isDestroyTerrain(), this.isCausesFire(), 

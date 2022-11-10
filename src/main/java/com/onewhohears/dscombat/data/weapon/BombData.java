@@ -20,7 +20,7 @@ public class BombData extends BulletData {
 			String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, boolean canShootOnGround,
 			float damage, double speed, float innacuracy, boolean explosive, boolean destroyTerrain, 
 			boolean causesFire, double explosiveDamage, float explosionRadius) {
-		super(entityType, texture, shootSound, 
+		super(entityType, shootSound, 
 				id, launchPos, maxAge, maxAmmo, fireRate, canShootOnGround, damage, speed, innacuracy,
 				explosive, destroyTerrain, causesFire, explosiveDamage, explosionRadius);
 	}

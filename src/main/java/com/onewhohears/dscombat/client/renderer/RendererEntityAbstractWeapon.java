@@ -15,15 +15,17 @@ import net.minecraft.resources.ResourceLocation;
 public class RendererEntityAbstractWeapon<T extends EntityAbstractWeapon> extends EntityRenderer<T> {
 	
 	protected final EntityModel<?> model;
+	protected final ResourceLocation texture;
 	
-	public RendererEntityAbstractWeapon(Context ctx, EntityModel<T> model) {
+	public RendererEntityAbstractWeapon(Context ctx, EntityModel<T> model, ResourceLocation texture) {
 		super(ctx);
 		this.model = model;
+		this.texture = texture;
 	}
 
 	@Override
 	public ResourceLocation getTextureLocation(T entity) {
-		return entity.getTexture();
+		return texture;
 	}
 	
 	@Override

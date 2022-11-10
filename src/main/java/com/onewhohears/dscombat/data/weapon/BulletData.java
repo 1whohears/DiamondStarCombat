@@ -10,7 +10,6 @@ import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
@@ -30,20 +29,20 @@ public class BulletData extends WeaponData {
 	private float explosionRadius;
 	private float innacuracy;
 	
-	public BulletData(RegistryObject<EntityType<?>> entityType, ResourceLocation texture, RegistryObject<SoundEvent> shootSound, 
+	public BulletData(RegistryObject<EntityType<?>> entityType, RegistryObject<SoundEvent> shootSound, 
 			String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, boolean canShootOnGround,
 			float damage, double speed, float innacuracy) {
-		super(entityType, texture, shootSound, id, launchPos, maxAge, maxAmmo, fireRate, canShootOnGround);
+		super(entityType, shootSound, id, launchPos, maxAge, maxAmmo, fireRate, canShootOnGround);
 		this.damage = damage;
 		this.speed = speed;
 		this.innacuracy = innacuracy;
 	}
 	
-	public BulletData(RegistryObject<EntityType<?>> entityType, ResourceLocation texture, RegistryObject<SoundEvent> shootSound, 
+	public BulletData(RegistryObject<EntityType<?>> entityType, RegistryObject<SoundEvent> shootSound, 
 			String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, boolean canShootOnGround,
 			float damage, double speed, float innacuracy, boolean explosive, boolean destroyTerrain, 
 			boolean causesFire, double explosiveDamage, float explosionRadius) {
-		this(entityType, texture, shootSound, 
+		this(entityType, shootSound, 
 				id, launchPos, maxAge, maxAmmo, fireRate, canShootOnGround, damage, speed, innacuracy);
 		this.explosive = explosive;
 		this.destroyTerrain = destroyTerrain;
@@ -179,7 +178,7 @@ public class BulletData extends WeaponData {
 
 	@Override
 	public WeaponData copy() {
-		return new BulletData(entityType, getTexture(), shootSound, 
+		return new BulletData(entityType, shootSound, 
 				this.getId(), this.getLaunchPos(), this.getMaxAge(), this.getMaxAmmo(), 
 				this.getFireRate(), this.canShootOnGround(), this.getDamage(), this.getSpeed(), 
 				this.getInnacuracy(), this.isExplosive(), this.isDestroyTerrain(), this.isCausesFire(), 

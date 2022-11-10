@@ -19,6 +19,7 @@ import com.onewhohears.dscombat.init.ModEntities;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -30,6 +31,11 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 @Mod.EventBusSubscriber(modid = DSCombatMod.MODID, bus = Bus.MOD, value = Dist.CLIENT)
 public class ClientModEvents {
+	
+	public static final ResourceLocation BULLET1 = new ResourceLocation(DSCombatMod.MODID, "textures/entities/bullet1.png");
+	public static final ResourceLocation MISSILE1 = new ResourceLocation(DSCombatMod.MODID, "textures/entities/missile1.png");
+	public static final ResourceLocation MISSILE2 = new ResourceLocation(DSCombatMod.MODID, "textures/entities/missile2.png");
+	public static final ResourceLocation MISSILE3 = new ResourceLocation(DSCombatMod.MODID, "textures/entities/missile3.png");
 	
 	private ClientModEvents() {
 	}
@@ -74,17 +80,21 @@ public class ClientModEvents {
 		
 		event.registerEntityRenderer((EntityType<EntityBullet>)ModEntities.BULLET.get(), 
 				(context) -> new RendererEntityAbstractWeapon<EntityBullet>(context, 
-						new EntityModelBullet1<EntityBullet>(models.bakeLayer(EntityModelBullet1.LAYER_LOCATION))));
+						new EntityModelBullet1<EntityBullet>(models.bakeLayer(EntityModelBullet1.LAYER_LOCATION)),
+						BULLET1));
 		
 		event.registerEntityRenderer((EntityType<EntityMissile>)ModEntities.MISSILE1.get(), 
 				(context) -> new RendererEntityAbstractWeapon<EntityMissile>(context, 
-						new EntityModelMissile1<EntityMissile>(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION))));
+						new EntityModelMissile1<EntityMissile>(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)), 
+						MISSILE1));
 		event.registerEntityRenderer((EntityType<EntityMissile>)ModEntities.MISSILE2.get(), 
 				(context) -> new RendererEntityAbstractWeapon<EntityMissile>(context, 
-						new EntityModelMissile1<EntityMissile>(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION))));
+						new EntityModelMissile1<EntityMissile>(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)),
+						MISSILE2));
 		event.registerEntityRenderer((EntityType<EntityMissile>)ModEntities.MISSILE3.get(), 
 				(context) -> new RendererEntityAbstractWeapon<EntityMissile>(context, 
-						new EntityModelMissile1<EntityMissile>(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION))));
+						new EntityModelMissile1<EntityMissile>(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)),
+						MISSILE3));
 		
 		event.registerEntityRenderer(ModEntities.WEAPON_RACK.get(), 
 				(context) -> new RendererEntityWeaponRack<EntityWeaponRack>(context));

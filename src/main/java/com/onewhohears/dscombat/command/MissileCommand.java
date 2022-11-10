@@ -43,7 +43,7 @@ public class MissileCommand {
 	
 	private int testMissile(CommandContext<CommandSourceStack> context, Collection<? extends Entity> targets, Vec3 pos, CompoundTag tag, Entity owner) throws CommandSyntaxException {
 		MissileData data;
-		if (tag == null) data = WeaponPresets.getDefaultTestMissile();
+		if (tag == null) data = WeaponPresets.getDefaultMissile();
 		else data = new MissileData(tag);
 		int i = 0;
 		for (Entity e : targets) {

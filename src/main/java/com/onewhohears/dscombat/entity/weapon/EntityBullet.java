@@ -4,6 +4,8 @@ import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.data.weapon.BulletData;
 import com.onewhohears.dscombat.data.weapon.WeaponDamageSource;
+import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
@@ -163,6 +165,11 @@ public class EntityBullet extends EntityAbstractWeapon {
 			Vec3 dir = UtilAngles.rotationToVector(this.getYRot(), this.getXRot());
 			this.setDeltaMovement(dir.scale(data.getSpeed()));
 		}
+	}
+
+	@Override
+	public WeaponData getDefaultData() {
+		return WeaponPresets.getDefaultBullet();
 	}
 
 }

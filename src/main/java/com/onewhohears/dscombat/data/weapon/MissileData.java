@@ -3,7 +3,6 @@ package com.onewhohears.dscombat.data.weapon;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.common.base.Supplier;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
@@ -28,6 +27,7 @@ import net.minecraft.world.entity.projectile.FireworkRocketEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.registries.RegistryObject;
 
 public class MissileData extends BulletData {
 	
@@ -51,7 +51,7 @@ public class MissileData extends BulletData {
 	private float fov;
 	private float flareResistance;
 	
-	public MissileData(Supplier<EntityType<?>> entityType, ResourceLocation texture, Supplier<SoundEvent> shootSound,
+	public MissileData(RegistryObject<EntityType<?>> entityType, ResourceLocation texture, RegistryObject<SoundEvent> shootSound,
 			String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, boolean canShootOnGround,
 			float damage, double speed, float innacuracy, boolean explosive, boolean destroyTerrain, 
 			boolean causesFire, double explosiveDamage, float explosionRadius,
@@ -95,11 +95,6 @@ public class MissileData extends BulletData {
 	
 	public MissileData(FriendlyByteBuf buffer) {
 		super(buffer);
-	}
-	
-	@Override
-	public void read(FriendlyByteBuf buffer) {
-		super.read(buffer);
 		targetType = TargetType.values()[buffer.readInt()];
 		guidanceType = GuidanceType.values()[buffer.readInt()];
 		maxRot = buffer.readFloat();
@@ -486,7 +481,7 @@ public class MissileData extends BulletData {
 	
 	@Override
 	public WeaponData copy() {
-		return new MissileData(() -> getEntityType(), getTexture(), () -> getShootSound(),
+		return new MissileData(entityType, getTexture(), shootSound,
 				this.getId(), this.getLaunchPos(), this.getMaxAge(), this.getMaxAmmo(), 
 				this.getFireRate(), this.canShootOnGround(), this.getDamage(), this.getSpeed(), 
 				this.getInnacuracy(), this.isExplosive(), this.isDestroyTerrain(), this.isCausesFire(), 

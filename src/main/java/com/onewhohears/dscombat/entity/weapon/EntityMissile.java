@@ -27,7 +27,7 @@ public class EntityMissile extends EntityBullet {
 	public Entity target;
 	public Vec3 targetPos;
 	
-	public EntityMissile(EntityType<? extends EntityMissile> type, Level level) {
+	public EntityMissile(EntityType<?> type, Level level) {
 		super(type, level);
 	}
 	

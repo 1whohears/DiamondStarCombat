@@ -2,7 +2,6 @@ package com.onewhohears.dscombat.data.weapon;
 
 import java.util.Random;
 
-import com.google.common.base.Supplier;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
@@ -18,6 +17,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.registries.RegistryObject;
 
 public class BulletData extends WeaponData {
 	
@@ -30,7 +30,7 @@ public class BulletData extends WeaponData {
 	private float explosionRadius;
 	private float innacuracy;
 	
-	public BulletData(Supplier<EntityType<?>> entityType, ResourceLocation texture, Supplier<SoundEvent> shootSound, 
+	public BulletData(RegistryObject<EntityType<?>> entityType, ResourceLocation texture, RegistryObject<SoundEvent> shootSound, 
 			String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, boolean canShootOnGround,
 			float damage, double speed, float innacuracy) {
 		super(entityType, texture, shootSound, id, launchPos, maxAge, maxAmmo, fireRate, canShootOnGround);
@@ -39,7 +39,7 @@ public class BulletData extends WeaponData {
 		this.innacuracy = innacuracy;
 	}
 	
-	public BulletData(Supplier<EntityType<?>> entityType, ResourceLocation texture, Supplier<SoundEvent> shootSound, 
+	public BulletData(RegistryObject<EntityType<?>> entityType, ResourceLocation texture, RegistryObject<SoundEvent> shootSound, 
 			String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, boolean canShootOnGround,
 			float damage, double speed, float innacuracy, boolean explosive, boolean destroyTerrain, 
 			boolean causesFire, double explosiveDamage, float explosionRadius) {
@@ -80,11 +80,6 @@ public class BulletData extends WeaponData {
 	
 	public BulletData(FriendlyByteBuf buffer) {
 		super(buffer);
-	}
-	
-	@Override
-	public void read(FriendlyByteBuf buffer) {
-		super.read(buffer);
 		this.damage = buffer.readFloat();
 		this.speed = buffer.readDouble();
 		this.explosive = buffer.readBoolean();
@@ -184,7 +179,7 @@ public class BulletData extends WeaponData {
 
 	@Override
 	public WeaponData copy() {
-		return new BulletData(() -> getEntityType(), getTexture(), () -> getShootSound(), 
+		return new BulletData(entityType, getTexture(), shootSound, 
 				this.getId(), this.getLaunchPos(), this.getMaxAge(), this.getMaxAmmo(), 
 				this.getFireRate(), this.canShootOnGround(), this.getDamage(), this.getSpeed(), 
 				this.getInnacuracy(), this.isExplosive(), this.isDestroyTerrain(), this.isCausesFire(), 

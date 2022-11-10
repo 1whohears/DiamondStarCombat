@@ -2,13 +2,14 @@ package com.onewhohears.dscombat.data.weapon;
 
 import javax.annotation.Nullable;
 
-import com.google.common.base.Supplier;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundWeaponAmmoPacket;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
 import com.onewhohears.dscombat.init.DataSerializers;
+import com.onewhohears.dscombat.init.ModEntities;
+import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
@@ -21,12 +22,12 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 public abstract class WeaponData {
 	
-	private final EntityType<?> entityType; // TODO make entity type and shoot sound registry objects to not crash on startup
-	private final SoundEvent shootSound;
+	protected final RegistryObject<EntityType<?>> entityType; // TODO make entity type and shoot sound registry objects to not crash on startup
+	protected final RegistryObject<SoundEvent> shootSound;
 	private final ResourceLocation texture;
 	
 	private String id;
@@ -46,7 +47,7 @@ public abstract class WeaponData {
 		BOMB
 	}
 	
-	protected WeaponData(Supplier<EntityType<?>> entityType, ResourceLocation texture, Supplier<SoundEvent> shootSound,
+	protected WeaponData(RegistryObject<EntityType<?>> entityType, ResourceLocation texture, RegistryObject<SoundEvent> shootSound,
 			String id, Vec3 pos, int maxAge, int maxAmmo, int fireRate, boolean canShootOnGround) {
 		this.id = id;
 		this.pos = pos;
@@ -54,8 +55,8 @@ public abstract class WeaponData {
 		this.maxAmmo = maxAmmo;
 		this.fireRate = fireRate;
 		this.canShootOnGround = canShootOnGround;
-		this.entityType = entityType.get();
-		this.shootSound = shootSound.get();
+		this.entityType = entityType;
+		this.shootSound = shootSound;
 		this.texture = texture;
 	}
 	
@@ -73,8 +74,13 @@ public abstract class WeaponData {
 		fireRate = tag.getInt("fireRate");
 		canShootOnGround = tag.getBoolean("canShootOnGround");
 		slotId = tag.getString("slotId");
-		entityType = ForgeRegistries.ENTITY_TYPES.getValue(new ResourceLocation(tag.getString("entityType")));
-		shootSound = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(tag.getString("shootSound")));
+		
+		RegistryObject<EntityType<?>> type = ModEntities.getObjectByKey(tag.getString("entityType"));
+		if (type == null) type = getDefaultEntityType();
+		entityType = type;
+		RegistryObject<SoundEvent> sound = ModSounds.getObjectByKey(tag.getString("shootSound"));
+		if (sound == null) sound = getDefaultShootSound();
+		shootSound = sound;
 		texture = new ResourceLocation(tag.getString("texture"));
 	}
 	
@@ -89,21 +95,17 @@ public abstract class WeaponData {
 		tag.putInt("fireRate", fireRate);
 		tag.putBoolean("canShootOnGround", canShootOnGround);
 		tag.putString("slotId", slotId);
-		tag.putString("entityType", entityType.toString());
-		tag.putString("shootSound", shootSound.getLocation().toString());
+		tag.putString("entityType", entityType.getId().toString());
+		tag.putString("shootSound", shootSound.getId().toString());
 		tag.putString("texture", texture.toString());
 		return tag;
 	}
 	
 	public WeaponData(FriendlyByteBuf buffer) {
-		entityType = ForgeRegistries.ENTITY_TYPES.getValue(new ResourceLocation(buffer.readUtf()));
-		shootSound = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(buffer.readUtf()));
-		texture = new ResourceLocation(buffer.readUtf());
-		read(buffer);
-	}
-	
-	public void read(FriendlyByteBuf buffer) {
 		// type int is read in DataSerializers
+		entityType = ModEntities.getObjectByKey(buffer.readUtf());
+		shootSound = ModSounds.getObjectByKey(buffer.readUtf());
+		texture = new ResourceLocation(buffer.readUtf());
 		id = buffer.readUtf();
 		pos = DataSerializers.VEC3.read(buffer);
 		maxAge = buffer.readInt();
@@ -115,10 +117,10 @@ public abstract class WeaponData {
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
-		buffer.writeUtf(entityType.toString());
-		buffer.writeUtf(shootSound.getLocation().toString());
-		buffer.writeUtf(texture.toString());
 		buffer.writeInt(this.getType().ordinal());
+		buffer.writeUtf(entityType.getId().toString());
+		buffer.writeUtf(shootSound.getId().toString());
+		buffer.writeUtf(texture.toString());
 		buffer.writeUtf(id);
 		DataSerializers.VEC3.write(buffer, pos);
 		buffer.writeInt(maxAge);
@@ -270,7 +272,7 @@ public abstract class WeaponData {
 	}
 	
 	public EntityType<?> getEntityType() {
-		return entityType;
+		return entityType.get();
 	}
 	
 	public ResourceLocation getTexture() {
@@ -278,7 +280,15 @@ public abstract class WeaponData {
 	}
 	
 	public SoundEvent getShootSound() {
-		return shootSound;
+		return shootSound.get();
+	}
+	
+	public RegistryObject<EntityType<?>> getDefaultEntityType() {
+		return ModEntities.MISSILE1;
+	}
+	
+	public RegistryObject<SoundEvent> getDefaultShootSound() {
+		return ModSounds.MISSILE_LAUNCH_1;
 	}
 	
 }

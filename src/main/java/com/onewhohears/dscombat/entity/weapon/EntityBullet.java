@@ -24,7 +24,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class EntityBullet extends EntityAbstractWeapon {
 	
-	public EntityBullet(EntityType<? extends EntityBullet> type, Level level) {
+	public EntityBullet(EntityType<?> type, Level level) {
 		super(type, level);
 	}
 	

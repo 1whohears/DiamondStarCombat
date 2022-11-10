@@ -38,9 +38,6 @@ public class DSCombatMod
     public DSCombatMod() {
     	IEventBus eventBus =  FMLJavaModLoadingContext.get().getModEventBus();
     	// ORDER MATTERS
-    	ModEntities.register(eventBus);
-    	ModSounds.register(eventBus);
-    	
     	WeaponPresets.setupPresets();
     	RadarPresets.setupPresets();
         AircraftPresets.setupPresets();
@@ -48,6 +45,8 @@ public class DSCombatMod
     	DataSerializers.register(eventBus);
     	ModContainers.register(eventBus);
     	ModItems.register(eventBus);
+    	ModEntities.register(eventBus);
+    	ModSounds.register(eventBus);
     	ModRecipeSerializers.register(eventBus);
     	eventBus.addListener(this::commonSetup);
     	eventBus.addListener(this::clientSetup);
@@ -58,6 +57,7 @@ public class DSCombatMod
     
     private void commonSetup(FMLCommonSetupEvent event) {
     	LOGGER.info("HELLO FROM PREINIT");
+    	WeaponPresets.setupPresetNbt();
 		PacketHandler.register();
 	}
     

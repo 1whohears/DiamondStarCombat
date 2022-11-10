@@ -1,5 +1,7 @@
 package com.onewhohears.dscombat.init;
 
+import javax.annotation.Nullable;
+
 import com.google.common.collect.ImmutableSet;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
@@ -26,6 +28,13 @@ public class ModEntities {
 	
 	public static void register(IEventBus eventBus) {
 		ENTITIES.register(eventBus);
+	}
+	
+	@Nullable
+	public static RegistryObject<EntityType<?>> getObjectByKey(String key) {
+		for (RegistryObject<EntityType<?>> type : ENTITIES.getEntries()) 
+			if(type.getId().toString().equals(key)) return type;
+		return null;
 	}
 	
 	public static final RegistryObject<EntityType<EntityPlane>> TEST_PLANE = ENTITIES.register("test_plane", 
@@ -57,16 +66,16 @@ public class ModEntities {
 	public static final RegistryObject<EntityType<EntityWeaponRack>> WEAPON_RACK = ENTITIES.register("weapon_rack", 
 			() -> createEntityType(EntityWeaponRack::new, EntityDimensions.scalable(0f, 0f)));
 	
-	public static final RegistryObject<EntityType<EntityBullet>> BULLET = ENTITIES.register("bullet", 
+	public static final RegistryObject<EntityType<?>> BULLET = ENTITIES.register("bullet", 
 			() -> createEntityType(EntityBullet::new, EntityDimensions.scalable(0.15f, 0.15f)));
 	
-	public static final RegistryObject<EntityType<EntityMissile>> MISSILE1 = ENTITIES.register("missile1", 
+	public static final RegistryObject<EntityType<?>> MISSILE1 = ENTITIES.register("missile1", 
 			() -> createEntityTypeFar(EntityMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
 	
-	public static final RegistryObject<EntityType<EntityMissile>> MISSILE2 = ENTITIES.register("missile2", 
+	public static final RegistryObject<EntityType<?>> MISSILE2 = ENTITIES.register("missile2", 
 			() -> createEntityTypeFar(EntityMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
 	
-	public static final RegistryObject<EntityType<EntityMissile>> MISSILE3 = ENTITIES.register("missile3", 
+	public static final RegistryObject<EntityType<?>> MISSILE3 = ENTITIES.register("missile3", 
 			() -> createEntityTypeFar(EntityMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
 	
 	public static final RegistryObject<EntityType<EntityFlare>> FLARE = ENTITIES.register("flare", 

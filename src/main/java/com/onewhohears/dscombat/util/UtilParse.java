@@ -1,10 +1,13 @@
 package com.onewhohears.dscombat.util;
 
 import java.io.DataInputStream;
+import java.io.InputStreamReader;
 import java.util.zip.GZIPInputStream;
 
 import javax.annotation.Nullable;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.data.parts.EngineData;
 import com.onewhohears.dscombat.data.parts.FuelTankData;
 import com.onewhohears.dscombat.data.parts.PartData;
@@ -24,6 +27,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class UtilParse {
 	
+	public static final Gson gson = new Gson();
+	
 	public static CompoundTag getComoundFromResource(String path) {
 		CompoundTag compound;
         DataInputStream dis;
@@ -38,6 +43,34 @@ public class UtilParse {
         	return new CompoundTag();
         }
         return compound;
+	}
+	
+	public static CompoundTag getCompoundFromJson(JsonObject json) {
+		return JsonToNBTUtil.getTagFromJson(json);
+	}
+	
+	public static CompoundTag getCompoundFromJsonResource(String path) {
+		return getCompoundFromJson(getJsonFromResource(path));
+	}
+	
+	public static JsonObject getJsonFromResource(String path) {
+		JsonObject json;
+        //DataInputStream dis;
+        InputStreamReader isr;
+        try {
+            //dis = new DataInputStream(new GZIPInputStream(UtilParse.class.getResourceAsStream(path)));
+        	//isr = new InputStreamReader(dis, "UTF-8");
+        	isr = new InputStreamReader(UtilParse.class.getResourceAsStream(path));
+            json = gson.fromJson(isr, JsonObject.class);
+            //dis.close();
+            isr.close();
+        }
+        catch (Exception e) {
+        	System.out.println("ERROR: COULD NOT PARSE JSON "+path);
+            e.printStackTrace();
+        	return new JsonObject();
+        }
+        return json;
 	}
 	
 	public static void writeVec3(CompoundTag tag, Vec3 v, String name) {

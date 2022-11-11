@@ -9,6 +9,7 @@ import com.onewhohears.dscombat.data.weapon.MissileData.GuidanceType;
 import com.onewhohears.dscombat.data.weapon.MissileData.TargetType;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.init.ModSounds;
+import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.phys.Vec3;
@@ -50,11 +51,6 @@ public class WeaponPresets {
 				4.0f, 0.02d, 2.5d, -1, 0));
 		
 		add(new BulletData(ModEntities.BULLET, ModSounds.BULLET_SHOOT_1,
-				"bullet_1", Vec3.ZERO, 
-				200, 1000, 1, true, 
-				15, 10, 0.5f));
-		
-		add(new BulletData(ModEntities.BULLET, ModSounds.BULLET_SHOOT_1,
 				"bullet_2", Vec3.ZERO, 
 				200, 400, 4, true, 
 				30, 10, 0.2f,
@@ -84,14 +80,6 @@ public class WeaponPresets {
 				100, 3f, 
 				TargetType.AIR, GuidanceType.IR, 
 				3.5f, 0.04, 3, 80, 0.6f));
-		
-		add(new MissileData(ModEntities.MISSILE2, ModSounds.MISSILE_LAUNCH_1,
-				"aim120b", Vec3.ZERO, 400, 2, 
-				60, false, 100, 4.0, 0, 
-				true, true, true, 
-				100, 4, 
-				TargetType.AIR, GuidanceType.PITBULL, 
-				2.0f, 0.05, 3, 70, 0));
 		
 		add(new MissileData(ModEntities.MISSILE2, ModSounds.MISSILE_LAUNCH_1,
 				"aim120c", Vec3.ZERO, 400, 2, 
@@ -132,14 +120,27 @@ public class WeaponPresets {
 				100d, 3f, 
 				TargetType.POS, GuidanceType.PITBULL,
 				3.0f, 0.05d, 2.0d, -1, 0));
+		
+		add(UtilParse.getCompoundFromJsonResource("/data/dscombat/weapons/aim120b.json"));
+		add(UtilParse.getCompoundFromJsonResource("/data/dscombat/weapons/bullet_1.json"));
 	}
 	
-	public static void setupPresetNbt() {
+	/*public static void setupPresetNbt() {
 		for (WeaponData w : weapons) weaponNbt.add(w.write());
-	}
+	}*/
 	
 	public static void add(WeaponData data) {
+		System.out.println("WEAPON PRESET JAVA "+data);
 		weapons.add(data);
+		weaponNbt.add(data.write());
+	}
+	
+	public static void add(CompoundTag data) {
+		WeaponData wd = UtilParse.parseWeaponFromCompound(data);
+		System.out.println("WEAPON PRESET JSON "+wd);
+		if (wd == null) return;
+		weapons.add(wd);
+		weaponNbt.add(data);
 	}
 	
 	@Nullable

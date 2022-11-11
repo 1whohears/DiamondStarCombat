@@ -41,7 +41,7 @@ public class DSCombatMod
     	WeaponPresets.setupPresets();
     	RadarPresets.setupPresets();
         AircraftPresets.setupPresets();
-        
+    	
     	DataSerializers.register(eventBus);
     	ModContainers.register(eventBus);
     	ModItems.register(eventBus);
@@ -57,7 +57,6 @@ public class DSCombatMod
     
     private void commonSetup(FMLCommonSetupEvent event) {
     	LOGGER.info("HELLO FROM PREINIT");
-    	WeaponPresets.setupPresetNbt();
 		PacketHandler.register();
 	}
     

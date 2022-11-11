@@ -22,5 +22,11 @@
 		"sounds": [
 			"dscombat:rocket_engine_1"
 		]
+	},
+	"bullet_shoot_1": {
+		"subtitle": "sounds.dscombat.bullet_shoot_1",
+		"sounds": [
+			"dscombat:bullet_shoot_1"
+		]
 	}
 }

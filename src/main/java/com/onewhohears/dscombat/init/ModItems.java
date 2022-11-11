@@ -56,6 +56,10 @@ public class ModItems {
 	public static final RegistryObject<Item> BIG_ASS_CAN = ITEMS.register("big_ass_can", 
 			() -> new ItemGasCan(300));
 	
+	// TODO repair plane wrench
+	// TODO radar part item
+	// TODO data link module item
+	
 	public static final RegistryObject<Item> SEAT = ITEMS.register("seat", 
 			() -> new ItemSeat());
 	

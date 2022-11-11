@@ -140,7 +140,6 @@ public class WeaponPresets {
 	
 	public static void add(WeaponData data) {
 		weapons.add(data);
-		//weaponNbt.add(data.write());
 	}
 	
 	@Nullable

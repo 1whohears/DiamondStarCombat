@@ -1,0 +1,33 @@
+{
+	"type":1,
+	"id":"aim120b",
+	
+	"entityType":"dscombat:missile2",
+	"shootSound":"dscombat:rocket_launch_1",
+	
+	"fireRate":60,
+	"innacuracy":0.0,
+	"canShootOnGround":false,
+	
+	"damage":100.0,
+	"speed":4.0,
+	"explosionRadius":0.0,
+	"explosiveDamage":0.0,
+	
+	"explosive":true,
+	"destroyTerrain":true,
+	"causesFire":true,
+	
+	"maxAge":400,
+	"maxAmmo":2,
+	
+	"guidanceType": 2,
+	"targetType": 1,
+	"maxRot": 2.0,
+	"acceleration": 0.05,
+	"fuseDist": 3,
+	"fov": 70,
+	"flareResistance": 0
+	
+	
+}

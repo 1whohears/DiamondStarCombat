@@ -1,0 +1,24 @@
+{
+	"type":0,
+	"id":"bullet_1",
+	
+	"entityType":"dscombat:bullet",
+	"shootSound":"dscombat:bullet_shoot_1",
+	
+	"fireRate":1,
+	"innacuracy":0.5,
+	"canShootOnGround":true,
+	
+	"damage":15.0,
+	"speed":10.0,
+	"explosionRadius":0.0,
+	"explosiveDamage":0.0,
+	
+	"explosive":false,
+	"destroyTerrain":false,
+	"causesFire":false,
+	
+	"maxAge":200,
+	"maxAmmo":1000
+	
+}

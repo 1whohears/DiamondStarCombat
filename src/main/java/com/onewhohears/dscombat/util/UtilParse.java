@@ -1,12 +1,8 @@
 package com.onewhohears.dscombat.util;
 
-import java.io.BufferedReader;
 import java.io.DataInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.zip.GZIPInputStream;
 
 import javax.annotation.Nullable;
@@ -38,7 +34,7 @@ public class UtilParse {
 		CompoundTag compound;
         DataInputStream dis;
         try {
-            dis = new DataInputStream(new GZIPInputStream(UtilParse.class.getResourceAsStream(path)));
+            dis = new DataInputStream(new GZIPInputStream(getResourceAsStream(path)));
             compound = NbtIo.read(dis);
             dis.close();
         }
@@ -65,7 +61,7 @@ public class UtilParse {
         try {
             //dis = new DataInputStream(new GZIPInputStream(UtilParse.class.getResourceAsStream(path)));
         	//isr = new InputStreamReader(dis, "UTF-8");
-        	isr = new InputStreamReader(UtilParse.class.getResourceAsStream(path));
+        	isr = new InputStreamReader(getResourceAsStream(path));
             json = gson.fromJson(isr, JsonObject.class);
             //dis.close();
             isr.close();
@@ -78,63 +74,52 @@ public class UtilParse {
         return json;
 	}
 	
-	public static List<JsonObject> getJsonsFromDirectory(String path) {
+	/*public static List<JsonObject> getJsonsFromDirectory(String path) {
 		List<JsonObject> jsons = new ArrayList<JsonObject>();
-		//InputStreamReader isr = new InputStreamReader(UtilParse.class.getResourceAsStream(path));
-		//System.out.println(isr);
-		/*Path dir;
 		try {
-			dir = Path.of(UtilParse.class.getResource(path).toURI());
-		} catch (URISyntaxException e1) {
-			System.out.println("ERROR: COULD NOT PARSE JSONS "+path);
-			e1.printStackTrace();
-			return jsons;
-		}
-		try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir, "*.json")) {
-			for (Path p : stream) {
-				BufferedReader buffReader = Files.newBufferedReader(p);
-				jsons.add(gson.fromJson(buffReader, JsonObject.class));
+			List<String> files = getResourceNames(path);
+			for (String name : files) {
+				JsonObject json = getJsonFromResource(path+"/"+name);
+				jsons.add(json);
 			}
-			stream.close();
 		} catch (IOException e) {
 			System.out.println("ERROR: COULD NOT PARSE JSONS "+path);
 			e.printStackTrace();
-		}*/
+		}
 		return jsons;
-	}
+	}*/
 	
-	/**
-	 * https://stackoverflow.com/questions/3923129/get-a-list-of-resources-from-classpath-directory
-	 */
-	public List<String> getResourceFiles(String path) throws IOException {
-	    List<String> filenames = new ArrayList<>();
-	    try (InputStream in = getResourceAsStream(path);
-	            BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
-	        String resource;
-	        while ((resource = br.readLine()) != null) {
-	            filenames.add(resource);
-	        }
-	    }
+	/*public static List<String> getResourceNames(String path) throws IOException {
+	    List<String> filenames = new ArrayList<String>();
+		try {
+			InputStream is = UtilParse.class.getClassLoader().getResourceAsStream(path);
+			if (is == null) {
+				System.out.println("ERROR: NOT A DIRECTORY "+path);
+				return filenames;
+			}
+			filenames = IOUtils.readLines(is, Charsets.UTF_8);
+			is.close();
+		} catch (Exception e) {
+	    	System.out.println("ERROR: COULD NOT PARSE JSON "+path);
+            e.printStackTrace();
+		}
 	    return filenames;
+	}*/
+
+	private static InputStream getResourceAsStream(String resource) {
+	    return UtilParse.class.getResourceAsStream(resource);
 	}
 
-	private InputStream getResourceAsStream(String resource) {
-	    final InputStream in
-	            = getContextClassLoader().getResourceAsStream(resource);
-
-	    return in == null ? getClass().getResourceAsStream(resource) : in;
-	}
-
-	private ClassLoader getContextClassLoader() {
+	/*private static ClassLoader getContextClassLoader() {
 	    return Thread.currentThread().getContextClassLoader();
-	}
+	}*/
 	
-	public static List<CompoundTag> getCompoundsFromJsonDirectory(String path) {
+	/*public static List<CompoundTag> getCompoundsFromJsonDirectory(String path) {
 		List<JsonObject> jsons = getJsonsFromDirectory(path);
 		List<CompoundTag> compounds = new ArrayList<CompoundTag>();
 		for (JsonObject j : jsons) compounds.add(getCompoundFromJson(j));
 		return compounds;
-	}
+	}*/
 	
 	public static void writeVec3(CompoundTag tag, Vec3 v, String name) {
 		tag.putDouble(name+"x", v.x);

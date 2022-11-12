@@ -64,16 +64,16 @@ public class AircraftPresets {
 				"dscombat.seat2", false);
 		pm.addPart(new SeatData(0.003f, ModItems.SEAT.getId()), 
 				"dscombat.seat3", false);
-		pm.addPart(new WeaponRackData(0.005f,  "gbu", 
+		pm.addPart(new WeaponRackData(0.005f,  "agm84e", 
 				WeaponPresets.TEST_MISSILE_RACK, ModItems.TEST_MISSILE_RACK.getId()), 
 				"dscombat.left_wing_1", false);
-		pm.addPart(new WeaponRackData(0.005f, "fox3_1", 
+		pm.addPart(new WeaponRackData(0.005f, "aim120c", 
 				WeaponPresets.TEST_MISSILE_RACK, ModItems.TEST_MISSILE_RACK.getId()), 
 				"dscombat.right_wing_1", false);
-		pm.addPart(new WeaponRackData(0.005f, "fox2_1", 
+		pm.addPart(new WeaponRackData(0.005f, "aim9x", 
 				WeaponPresets.TEST_MISSILE_RACK, ModItems.TEST_MISSILE_RACK.getId()), 
 				"dscombat.left_wing_2", false);
-		pm.addPart(new WeaponRackData(0.005f, "fox2_1", 
+		pm.addPart(new WeaponRackData(0.005f, "agm114k", 
 				WeaponPresets.TEST_MISSILE_RACK, ModItems.TEST_MISSILE_RACK.getId()), 
 				"dscombat.right_wing_2", false);
 		pm.addPart(new WeaponPartData(0.002f, "bullet_1", 

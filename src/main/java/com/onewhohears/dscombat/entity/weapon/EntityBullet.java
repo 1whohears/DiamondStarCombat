@@ -11,6 +11,7 @@ import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -112,10 +113,9 @@ public class EntityBullet extends EntityAbstractWeapon {
 		super.onHitEntity(result);
 		//System.out.println("BULLET HIT "+result.getEntity());
 		DamageSource source = this.getDamageSource(false);
-		if (source != null) {
-			result.getEntity().hurt(source, ((BulletData)getWeaponData()).getDamage());
-			checkExplode();
-		}
+		result.getEntity().hurt(source, ((BulletData)getWeaponData()).getDamage());
+		this.setPos(result.getEntity().position());
+		checkExplode();
 		this.discard();
 	}
 	
@@ -125,11 +125,12 @@ public class EntityBullet extends EntityAbstractWeapon {
 	}
 	
 	protected DamageSource getDamageSource(boolean explosion) {
-		DamageSource source = null;
-		if (getOwner() instanceof LivingEntity living) {
-			source = new WeaponDamageSource(living, this, explosion);
+		Entity owner = getOwner();
+		if (owner instanceof LivingEntity living) {
+			return new WeaponDamageSource(living, this, explosion);
 		}
-		return source;
+		if (explosion) return DamageSource.explosion((Explosion)null);
+		return new EntityDamageSource("dscombat.bullet", this);
 	}
 	
 	protected void checkExplode() {

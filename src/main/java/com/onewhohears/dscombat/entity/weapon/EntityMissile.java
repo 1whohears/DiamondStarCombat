@@ -51,7 +51,9 @@ public class EntityMissile extends EntityBullet {
 		if (!this.level.isClientSide) {
 			data.tickGuide(this);
 			if (target != null && data.getTargetType() != TargetType.POS) {
-				if (this.distanceTo(target) < data.getFuseDist()) {
+				if (this.distanceTo(target) <= data.getFuseDist()) {
+					//System.out.println("WITHIN FUSE DISTANCE");
+					//System.out.println("IS REMOVED "+this.isRemoved());
 					this.setPos(target.position());
 					this.checkExplode();
 					this.discard();

@@ -1,6 +1,6 @@
 {
 	"type":1,
-	"id":"aim120b",
+	"id":"aim120c",
 	
 	"entityType":"dscombat:missile2",
 	"shootSound":"dscombat:rocket_launch_1",
@@ -10,7 +10,7 @@
 	"canShootOnGround":false,
 	
 	"damage":100.0,
-	"speed":4.0,
+	"speed":5.0,
 	"explosionRadius":4.0,
 	"explosiveDamage":100.0,
 	
@@ -24,7 +24,7 @@
 	"guidanceType": 2,
 	"targetType": 1,
 	
-	"maxRot": 2.0,
+	"maxRot": 1.5,
 	"acceleration": 0.05,
 	"fuseDist": 3,
 	"fov": 70,

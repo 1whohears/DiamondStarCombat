@@ -5,127 +5,28 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.onewhohears.dscombat.data.weapon.MissileData.GuidanceType;
-import com.onewhohears.dscombat.data.weapon.MissileData.TargetType;
-import com.onewhohears.dscombat.init.ModEntities;
-import com.onewhohears.dscombat.init.ModSounds;
+import com.google.gson.JsonArray;
 import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.phys.Vec3;
 
 public class WeaponPresets {
 	
 	public static final String[] TEST_MISSILE_RACK = new String[] 
-			{"fox3_1","fox2_1","gbu",
-			 "aim7e","aim7mh","aim9x","aim120b","aim120c","agm65g","agm65l","agm84e","agm114k"};
+			{"aim7e","aim7mh","aim9x","aim120b","aim120c","agm65g","agm65l","agm84e","agm114k"};
 	public static final String[] TEST_BIG_GUN = new String[] 
 			{"bullet_1","bullet_2"};
 	
 	public static List<WeaponData> weapons = new ArrayList<WeaponData>();
 	public static List<CompoundTag> weaponNbt = new ArrayList<CompoundTag>();
 	
-	public static void setupPresets() {
-		add(new MissileData(ModEntities.MISSILE2, ModSounds.MISSILE_LAUNCH_1,
-				"fox3_1", Vec3.ZERO, 300, 4, 
-				10, false, 100, 4, 0, 
-				true, true, false, 
-				100, 4, 
-				TargetType.AIR, GuidanceType.PITBULL, 
-				2, 0.04, 3, 70, 0));
+	public static void setupPresets() {						
+		String dir = "/data/dscombat/weapons/";
+		JsonArray ja = UtilParse.getJsonFromResource(dir+"weapons.json").get("weapons").getAsJsonArray();
+		for (int i = 0; i < ja.size(); ++i) add(UtilParse.getCompoundFromJsonResource(dir+ja.get(i).getAsString()));
 		
-		add(new MissileData(ModEntities.MISSILE3, ModSounds.MISSILE_LAUNCH_1,
-				"fox2_1", Vec3.ZERO, 200, 12, 
-				10, false, 100, 2, 0, 
-				true, true, false, 
-				100, 4, 
-				TargetType.AIR, GuidanceType.IR, 
-				4, 0.03, 3, 80, 1));
-		
-		add(new MissileData(ModEntities.MISSILE1, ModSounds.MISSILE_LAUNCH_1,
-				"gbu", Vec3.ZERO, 400, 8, 
-				100, false, 100, 1.5d, 0, 
-				true, true, true, 
-				100d, 4f, 
-				TargetType.GROUND, GuidanceType.PITBULL,
-				4.0f, 0.02d, 2.5d, -1, 0));
-		
-		add(new BulletData(ModEntities.BULLET, ModSounds.BULLET_SHOOT_1,
-				"bullet_2", Vec3.ZERO, 
-				200, 400, 4, true, 
-				30, 10, 0.2f,
-				true, true, false,
-				30, 3.0f));
-		
-		add(new MissileData(ModEntities.MISSILE3, ModSounds.MISSILE_LAUNCH_1,
-				"aim7e", Vec3.ZERO, 300, 4, 
-				20, false, 100, 2, 0, 
-				true, true, true, 
-				100, 3f, 
-				TargetType.AIR, GuidanceType.IR, 
-				2, 0.02, 3, 60, 1.5f));
-		
-		add(new MissileData(ModEntities.MISSILE3, ModSounds.MISSILE_LAUNCH_1,
-				"aim7mh", Vec3.ZERO, 300, 4, 
-				20, false, 100, 2.5, 0, 
-				true, true, true, 
-				100, 3.5f, 
-				TargetType.AIR, GuidanceType.IR, 
-				2.5f, 0.03, 3, 70, 1.0f));
-		
-		add(new MissileData(ModEntities.MISSILE3, ModSounds.MISSILE_LAUNCH_1,
-				"aim9x", Vec3.ZERO, 400, 4, 
-				20, false, 100, 2.5, 0, 
-				true, true, true, 
-				100, 3f, 
-				TargetType.AIR, GuidanceType.IR, 
-				3.5f, 0.04, 3, 80, 0.6f));
-		
-		add(new MissileData(ModEntities.MISSILE2, ModSounds.MISSILE_LAUNCH_1,
-				"aim120c", Vec3.ZERO, 400, 2, 
-				60, false, 100, 5.0, 0, 
-				true, true, true, 
-				100, 4, 
-				TargetType.AIR, GuidanceType.PITBULL, 
-				1.5f, 0.05, 3, 70, 0));
-		
-		add(new MissileData(ModEntities.MISSILE1, ModSounds.MISSILE_LAUNCH_1,
-				"agm65g", Vec3.ZERO, 300, 4, 
-				40, false, 100, 2.0d, 0, 
-				true, true, true, 
-				100d, 4f, 
-				TargetType.GROUND, GuidanceType.PITBULL,
-				1.0f, 0.02d, 1.5d, -1, 0));
-		
-		add(new MissileData(ModEntities.MISSILE1, ModSounds.MISSILE_LAUNCH_1,
-				"agm65l", Vec3.ZERO, 300, 4, 
-				40, false, 100, 2.0d, 0, 
-				true, true, true, 
-				100d, 4f, 
-				TargetType.POS, GuidanceType.OWNER_RADAR,
-				1.0f, 0.02d, 1.5d, -1, 0));
-		
-		add(new MissileData(ModEntities.MISSILE1, ModSounds.MISSILE_LAUNCH_1,
-				"agm84e", Vec3.ZERO, 300, 3, 
-				60, false, 100, 2.5d, 0, 
-				true, true, true, 
-				100d, 5f, 
-				TargetType.GROUND, GuidanceType.PITBULL,
-				2.0f, 0.03d, 2.0d, -1, 0));
-		
-		add(new MissileData(ModEntities.MISSILE1, ModSounds.MISSILE_LAUNCH_1,
-				"agm114k", Vec3.ZERO, 300, 6, 
-				20, false, 100, 3.0d, 0, 
-				true, true, true, 
-				100d, 3f, 
-				TargetType.POS, GuidanceType.PITBULL,
-				3.0f, 0.05d, 2.0d, -1, 0));
-		
-		//add(UtilParse.getCompoundFromJsonResource("/data/dscombat/weapons/aim120b.json"));
-		//add(UtilParse.getCompoundFromJsonResource("/data/dscombat/weapons/bullet_1.json"));
-		
-		List<CompoundTag> tags = UtilParse.getCompoundsFromJsonDirectory("/data/dscombat/weapons");
-		for (CompoundTag t : tags) add(t);
+		defaultBullet = (BulletData) getById("bullet_1");
+		defaultMissile = (MissileData) getById("aim120b");
 	}
 	
 	/*public static void setupPresetNbt() {
@@ -158,12 +59,15 @@ public class WeaponPresets {
 		return null;
 	}
 	
-	public static MissileData getDefaultMissile() {
-		return (MissileData) weapons.get(0).copy();
-	}
+	private static BulletData defaultBullet;
+	private static MissileData defaultMissile;
 	
 	public static BulletData getDefaultBullet() {
-		return (BulletData) weapons.get(3).copy();
+		return defaultBullet;
+	}
+	
+	public static MissileData getDefaultMissile() {
+		return defaultMissile;
 	}
 	
 }

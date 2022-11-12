@@ -7,14 +7,27 @@ import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class EntityPlane extends EntityAbstractAircraft {
 	
+	private final float propellerRate = 3.141f;
+	private float propellerRot, propellerRotOld;
+	
 	public EntityPlane(EntityType<? extends EntityPlane> entity, Level level, ResourceLocation texture) {
 		super(entity, level, texture);
+	}
+	
+	@Override
+	public void clientTick() {
+		super.clientTick();
+		float th = this.getCurrentThrottle();
+		propellerRotOld = propellerRot;
+		propellerRot += th * propellerRate;
+		//System.out.println("plane client tick rot "+propellerRot);
 	}
 	
 	@Override
@@ -70,6 +83,10 @@ public class EntityPlane extends EntityAbstractAircraft {
 		Vec3 thrustForce = direction.scale(getThrust());
 		//System.out.println("thrust force = "+thrustForce);
 		return thrustForce;
+	}
+	
+	public float getPropellerRotation(float partialTicks) {
+		return Mth.lerp(partialTicks, propellerRotOld, propellerRot);
 	}
 
 }

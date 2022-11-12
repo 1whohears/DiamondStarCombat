@@ -1,7 +1,12 @@
 package com.onewhohears.dscombat.util;
 
+import java.io.BufferedReader;
 import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.zip.GZIPInputStream;
 
 import javax.annotation.Nullable;
@@ -71,6 +76,64 @@ public class UtilParse {
         	return new JsonObject();
         }
         return json;
+	}
+	
+	public static List<JsonObject> getJsonsFromDirectory(String path) {
+		List<JsonObject> jsons = new ArrayList<JsonObject>();
+		//InputStreamReader isr = new InputStreamReader(UtilParse.class.getResourceAsStream(path));
+		//System.out.println(isr);
+		/*Path dir;
+		try {
+			dir = Path.of(UtilParse.class.getResource(path).toURI());
+		} catch (URISyntaxException e1) {
+			System.out.println("ERROR: COULD NOT PARSE JSONS "+path);
+			e1.printStackTrace();
+			return jsons;
+		}
+		try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir, "*.json")) {
+			for (Path p : stream) {
+				BufferedReader buffReader = Files.newBufferedReader(p);
+				jsons.add(gson.fromJson(buffReader, JsonObject.class));
+			}
+			stream.close();
+		} catch (IOException e) {
+			System.out.println("ERROR: COULD NOT PARSE JSONS "+path);
+			e.printStackTrace();
+		}*/
+		return jsons;
+	}
+	
+	/**
+	 * https://stackoverflow.com/questions/3923129/get-a-list-of-resources-from-classpath-directory
+	 */
+	public List<String> getResourceFiles(String path) throws IOException {
+	    List<String> filenames = new ArrayList<>();
+	    try (InputStream in = getResourceAsStream(path);
+	            BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
+	        String resource;
+	        while ((resource = br.readLine()) != null) {
+	            filenames.add(resource);
+	        }
+	    }
+	    return filenames;
+	}
+
+	private InputStream getResourceAsStream(String resource) {
+	    final InputStream in
+	            = getContextClassLoader().getResourceAsStream(resource);
+
+	    return in == null ? getClass().getResourceAsStream(resource) : in;
+	}
+
+	private ClassLoader getContextClassLoader() {
+	    return Thread.currentThread().getContextClassLoader();
+	}
+	
+	public static List<CompoundTag> getCompoundsFromJsonDirectory(String path) {
+		List<JsonObject> jsons = getJsonsFromDirectory(path);
+		List<CompoundTag> compounds = new ArrayList<CompoundTag>();
+		for (JsonObject j : jsons) compounds.add(getCompoundFromJson(j));
+		return compounds;
 	}
 	
 	public static void writeVec3(CompoundTag tag, Vec3 v, String name) {

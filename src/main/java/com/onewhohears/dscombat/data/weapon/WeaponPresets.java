@@ -121,8 +121,11 @@ public class WeaponPresets {
 				TargetType.POS, GuidanceType.PITBULL,
 				3.0f, 0.05d, 2.0d, -1, 0));
 		
-		add(UtilParse.getCompoundFromJsonResource("/data/dscombat/weapons/aim120b.json"));
-		add(UtilParse.getCompoundFromJsonResource("/data/dscombat/weapons/bullet_1.json"));
+		//add(UtilParse.getCompoundFromJsonResource("/data/dscombat/weapons/aim120b.json"));
+		//add(UtilParse.getCompoundFromJsonResource("/data/dscombat/weapons/bullet_1.json"));
+		
+		List<CompoundTag> tags = UtilParse.getCompoundsFromJsonDirectory("/data/dscombat/weapons");
+		for (CompoundTag t : tags) add(t);
 	}
 	
 	/*public static void setupPresetNbt() {

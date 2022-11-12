@@ -25,7 +25,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public abstract class WeaponData {
 	
-	protected final RegistryObject<EntityType<?>> entityType; // TODO make entity type and shoot sound registry objects to not crash on startup
+	protected final RegistryObject<EntityType<?>> entityType;
 	protected final RegistryObject<SoundEvent> shootSound;
 	
 	private String id;

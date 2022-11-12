@@ -21,6 +21,7 @@ import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.weapon.EntityFlare;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModSounds;
+import com.onewhohears.dscombat.item.ItemGasCan;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.UtilMCText;
 import com.onewhohears.dscombat.util.math.UtilAngles;
@@ -48,6 +49,7 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
@@ -581,6 +583,14 @@ public abstract class EntityAbstractAircraft extends Entity {
 			return InteractionResult.PASS;
 		} else if (!this.level.isClientSide) {
 			//System.out.println("server side");
+			if (player.getInventory().getSelected().getItem() instanceof ItemGasCan) {
+				ItemStack can = player.getInventory().getSelected();
+				int md = can.getMaxDamage();
+				int d = can.getDamageValue();
+				float r = this.addFuel(md-d, true);
+				can.setDamageValue(md-(int)r);
+				return InteractionResult.SUCCESS;
+			}
 			boolean okay = rideAvailableSeat(player);
 			//System.out.println("rideSeat = "+okay);
 			return okay ? InteractionResult.CONSUME : InteractionResult.PASS;
@@ -1024,8 +1034,8 @@ public abstract class EntityAbstractAircraft extends Entity {
     	return partsManager.getCurrentFuel();
     }
     
-    public void addFuel(float fuel, boolean updateClient) {
-    	this.partsManager.addFuel(fuel, updateClient);
+    public float addFuel(float fuel, boolean updateClient) {
+    	return this.partsManager.addFuel(fuel, updateClient);
     }
     
     public boolean isLandingGear() {

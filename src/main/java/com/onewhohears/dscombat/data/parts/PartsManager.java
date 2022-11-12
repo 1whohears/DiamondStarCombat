@@ -167,7 +167,7 @@ public class PartsManager {
 		return total;
 	}
 	
-	public void addFuel(float fuel, boolean updateClient) {
+	public float addFuel(float fuel, boolean updateClient) {
 		for (PartSlot p : slots) if (p.filled() && p.getPartData().getType() == PartType.FUEL_TANK) {
 			FuelTankData data = (FuelTankData) p.getPartData();
 			fuel = data.addFuel(fuel);
@@ -177,6 +177,7 @@ public class PartsManager {
 			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
 					new ClientBoundFuelPacket(parent));
 		}
+		return fuel;
 	}
 	
 	public void tickFuel(boolean updateClient) {

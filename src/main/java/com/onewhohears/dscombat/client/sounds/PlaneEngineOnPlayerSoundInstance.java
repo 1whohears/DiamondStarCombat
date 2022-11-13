@@ -16,7 +16,7 @@ public class PlaneEngineOnPlayerSoundInstance extends DopplerOnPlayerSoundInstan
 		EntityAbstractAircraft craft = (EntityAbstractAircraft)this.entity;
 		float th = craft.getCurrentThrottle();
 		if (th == 0) this.initVolume = th;
-		else this.initVolume = 0.5f + 0.5f*th;;
+		else this.initVolume = 0.4f + 0.6f*th;;
 		this.initPitch = 0.5f + 0.5f*th;
 		if (craft.isVehicleOf(player)) {
 			this.volume = initVolume;

@@ -37,6 +37,7 @@ public class ItemAircraft extends Item {
 	
 	@Override
 	public InteractionResult useOn(UseOnContext context) {
+		// TODO when you right click the side of a block it gets but inside the block below
 		Level level = context.getLevel();
 		if (!(level instanceof ServerLevel)) {
 			return InteractionResult.SUCCESS;

@@ -116,9 +116,10 @@ public class EntitySeat extends EntityAbstractPart {
 	
 	@Override
     public Vec3 getDismountLocationForPassenger(LivingEntity livingEntity) {
-		Entity root = this.getRootVehicle();
+		/*Entity root = this.getRootVehicle(); // TODO this can cause a stack overflow
 		if (root == null) return super.getDismountLocationForPassenger(livingEntity);
-		return root.getDismountLocationForPassenger(livingEntity);
+		return root.getDismountLocationForPassenger(livingEntity);*/
+		return super.getDismountLocationForPassenger(livingEntity);
 	}
 	
 	public Player getPlayer() {

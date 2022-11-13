@@ -740,7 +740,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	@Override
     public boolean hurt(DamageSource source, float amount) {
-		//if (level.isClientSide) return true; // TODO should be a temporary fix
+		if (level.isClientSide) return true; // TODO should be a temporary fix
 		if (this.isVehicleOf(source.getEntity())) return false;
 		addHealth(-amount);
 		return true;

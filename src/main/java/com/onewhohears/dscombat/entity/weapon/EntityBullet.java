@@ -69,8 +69,8 @@ public class EntityBullet extends EntityAbstractWeapon {
 				System.out.println("BULLET "+this);
 				System.out.println("HIT "+hit);
 				System.out.println("OWNER "+owner);
+				// TODO on the client side the owner is null
 				if (owner instanceof Player) {
-					// TODO you can shoot yourself with certain missiles sometimes?
 					if (hit instanceof Player && !((Player)owner).canHarmPlayer((Player)hit)) {
 						hitresult = null;
 						entityhitresult = null;

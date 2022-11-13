@@ -144,7 +144,7 @@ public class EntityBullet extends EntityAbstractWeapon {
 						null, getX(), getY(), getZ(), 
 						data.getExplosionRadius(), data.isCausesFire(), 
 						interact);
-				System.out.println("EXPLODE "+this);
+				//System.out.println("EXPLODE "+this);
 			} else {
 				level.addParticle(ParticleTypes.SMOKE, 
 						this.getX(), this.getY()+0.5D, this.getZ(), 

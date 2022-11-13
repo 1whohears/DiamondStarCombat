@@ -32,10 +32,10 @@ public class EntitySeat extends EntityAbstractPart {
 		super(ModEntities.SEAT.get(), level, slotId, pos);
 	}
 
-	@Override
+	/*@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-	}
+	}*/
 
 	@Override
 	protected void readAdditionalSaveData(CompoundTag compound) {
@@ -51,9 +51,9 @@ public class EntitySeat extends EntityAbstractPart {
 		super.init();
 		List<Entity> passengers = getPassengers();
 		for (Entity p : passengers) {
-			System.out.println("CHECK CAMERA "+p);
+			//System.out.println("CHECK CAMERA "+p);
 			if (p instanceof EntitySeatCamera camera) {
-				System.out.println("ALREADY CAMERA");
+				//System.out.println("ALREADY CAMERA");
 				return;
 			}
 		}
@@ -61,7 +61,7 @@ public class EntitySeat extends EntityAbstractPart {
 		cam.setPos(position());
 		cam.startRiding(this);
 		level.addFreshEntity(cam);
-		System.out.println("ADDED CAMERA "+cam);
+		//System.out.println("ADDED CAMERA "+cam);
 	}
 	
 	@Override
@@ -98,12 +98,12 @@ public class EntitySeat extends EntityAbstractPart {
 	@Override
     protected void addPassenger(Entity passenger) {
         super.addPassenger(passenger);
-        System.out.println("SEAT ADDED PASSENGER "+passenger);
+        //System.out.println("SEAT ADDED PASSENGER "+passenger);
 	}
 	
 	@Override
     public boolean canAddPassenger(Entity passenger) {
-		System.out.println("CAN SEAT ADD "+passenger);
+		//System.out.println("CAN SEAT ADD "+passenger);
 		if (passenger instanceof Player) return getPlayer() == null;
 		if (passenger instanceof EntitySeatCamera) return getCamera() == null;
 		return false;
@@ -111,7 +111,7 @@ public class EntitySeat extends EntityAbstractPart {
 	
 	@Override
     protected boolean canRide(Entity entityIn) {
-		System.out.println("CAN RIDE SEAT "+entityIn);
+		//System.out.println("CAN RIDE SEAT "+entityIn);
 		return entityIn instanceof EntityAbstractAircraft;
     }
 	

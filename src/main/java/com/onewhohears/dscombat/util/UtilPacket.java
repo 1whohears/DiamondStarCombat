@@ -43,8 +43,8 @@ public class UtilPacket {
 	}
 	
 	public static void planeDataPacket(int id, PartsManager pm, WeaponSystem ws, RadarSystem rs) {
-		System.out.println("plane data packet recieved");
-		System.out.println(pm.toString());
+		//System.out.println("plane data packet recieved");
+		//System.out.println(pm.toString());
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityAbstractAircraft plane) {
@@ -54,12 +54,12 @@ public class UtilPacket {
 			plane.partsManager.clientPartsSetup(plane);
 			plane.weaponSystem.clientSetup(plane);
 			plane.radarSystem.clientSetup(plane);
-			System.out.println("plane data updated");
+			//System.out.println("plane data updated");
 		}
 	}
 	
 	public static void weaponAmmoPacket(int id, String weaponId, String slotId, int ammo) {
-		System.out.println("ammo packet recieved");
+		//System.out.println("ammo packet recieved");
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityAbstractAircraft plane) {

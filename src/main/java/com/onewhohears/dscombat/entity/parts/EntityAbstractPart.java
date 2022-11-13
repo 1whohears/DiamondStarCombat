@@ -60,7 +60,8 @@ public class EntityAbstractPart extends Entity {
 	public void tick() {
 		if (this.firstTick) init();
 		super.tick();
-		if (!this.level.isClientSide && this.getVehicle() == null) this.kill();
+		if (!this.level.isClientSide && this.tickCount > 10 && this.getVehicle() == null) this.kill(); 
+		// TODO does the seat immediately die when loaded cause of this?
 	}
 	
 	public Vec3 getRelativePos() {

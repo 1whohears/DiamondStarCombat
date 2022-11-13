@@ -26,7 +26,7 @@ public class ClientBoundPlaneDataPacket extends IPacket {
 		this.pm = pm;
 		this.ws = ws;
 		this.rs = rs;
-		System.out.println("packet constructor "+pm);
+		//System.out.println("packet constructor "+pm);
 	}
 	
 	public ClientBoundPlaneDataPacket(FriendlyByteBuf buffer) {
@@ -34,7 +34,7 @@ public class ClientBoundPlaneDataPacket extends IPacket {
 		pm = new PartsManager(buffer);
 		ws = new WeaponSystem(buffer);
 		rs = new RadarSystem(buffer);
-		System.out.println("decoding "+pm);
+		//System.out.println("decoding "+pm);
 	}
 	
 	@Override
@@ -43,7 +43,7 @@ public class ClientBoundPlaneDataPacket extends IPacket {
 		pm.write(buffer);
 		ws.write(buffer);
 		rs.write(buffer);
-		System.out.println("encoding "+pm);
+		//System.out.println("encoding "+pm);
 	}
 
 	@Override

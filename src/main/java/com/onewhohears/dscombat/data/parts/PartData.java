@@ -66,12 +66,12 @@ public abstract class PartData {
 	}
 	
 	public void setup(EntityAbstractAircraft craft, String slotId, Vec3 pos) {
-		System.out.println("setting up part "+this+" client side "+craft.level.isClientSide+" slot "+slotId);
+		//System.out.println("setting up part "+this+" client side "+craft.level.isClientSide+" slot "+slotId);
 		parent = craft;
 	}
 	
 	public void clientSetup(EntityAbstractAircraft craft, String slotId, Vec3 pos) {
-		System.out.println("setting up part "+this+" client side "+craft.level.isClientSide+" slot "+slotId);
+		//System.out.println("setting up part "+this+" client side "+craft.level.isClientSide+" slot "+slotId);
 		parent = craft;
 	}
 	

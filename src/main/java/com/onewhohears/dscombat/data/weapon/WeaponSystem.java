@@ -42,7 +42,7 @@ public class WeaponSystem {
 		for (WeaponData w : weapons) list.add(w.write());
 		compound.put("weapons", list);
 		compound.putInt("index", weaponIndex);
-		System.out.println(this);
+		//System.out.println(this);
 	}
 	
 	public WeaponSystem(FriendlyByteBuf buffer) {

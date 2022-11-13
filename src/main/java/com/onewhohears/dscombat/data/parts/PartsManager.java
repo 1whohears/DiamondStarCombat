@@ -61,13 +61,13 @@ public class PartsManager {
 	
 	public void setupParts(EntityAbstractAircraft craft) {
 		this.parent = craft;
-		System.out.println("setupParts "+this);
+		//System.out.println("setupParts "+this);
 		for (PartSlot p : slots) p.setup(craft);
 	}
 	
 	public void clientPartsSetup(EntityAbstractAircraft craft) {
 		this.parent = craft;
-		System.out.println("clientPartsSetup "+this);
+		//System.out.println("clientPartsSetup "+this);
 		for (PartSlot p : slots) p.clientSetup(craft);
 	}
 	
@@ -204,7 +204,7 @@ public class PartsManager {
 	}
 	
 	public Container getContainer(AircraftMenuContainer menu) {
-		System.out.println("GETTING CONTAINER client side = "+parent.level.isClientSide+" for slots "+this);
+		//System.out.println("GETTING CONTAINER client side = "+parent.level.isClientSide+" for slots "+this);
 		Container c = new SimpleContainer(slots.size()){
 			@Override
 			public void setChanged() {
@@ -214,40 +214,40 @@ public class PartsManager {
 		};
 		for (int i = 0; i < slots.size(); ++i) if (slots.get(i).filled()) {
 			c.setItem(i, slots.get(i).getPartData().getItemStack());
-			System.out.println("putting item in slot "+i+" "+c.getItem(i)+" "+c.getItem(i).getTag());
+			//System.out.println("putting item in slot "+i+" "+c.getItem(i)+" "+c.getItem(i).getTag());
 		}
 		return c;
 	}
 	
 	public void readContainer(Container c) {
-		System.out.println("READING CHANGED CONTAINER client side "+parent.level.isClientSide+" items "+c);
+		//System.out.println("READING CHANGED CONTAINER client side "+parent.level.isClientSide+" items "+c);
 		if (c.getContainerSize() != slots.size()) {
-			System.out.println("WARNING! THIS CONTAINER HAS THE WRONG NUMBER OF SLOTS!");
+			//System.out.println("WARNING! THIS CONTAINER HAS THE WRONG NUMBER OF SLOTS!");
 			return;
 		}
 		for (int i = 0; i < c.getContainerSize(); ++i) {
-			System.out.println("### CHECKING CONTAINER "+i);
+			//System.out.println("### CHECKING CONTAINER "+i);
 			ItemStack stack = c.getItem(i);
 			PartSlot slot = slots.get(i);
-			System.out.println("stack = "+stack+" "+stack.getTag());
-			System.out.println("slot = "+slot);
+			//System.out.println("stack = "+stack+" "+stack.getTag());
+			//System.out.println("slot = "+slot);
 			if (stack.isEmpty()) {
 				removePart(slot.getName(), false);
-				System.out.println("REMOVING CAUSE EMPTY");
+				//System.out.println("REMOVING CAUSE EMPTY");
 				continue;
 			}
 			PartData data = UtilParse.parsePartFromCompound(stack.getTag());
 			if (data == null) {
-				System.out.println("ERROR! COULD NOT GET PART DATA FROM "+stack+" "+stack.getTag());
+				//System.out.println("ERROR! COULD NOT GET PART DATA FROM "+stack+" "+stack.getTag());
 				continue;
 			}
 			if (data.isSetup(slot.getName(), parent)) {
 				System.out.println("ALREADY SETUP");
 				continue;
 			}
-			System.out.println("REMOVING");
+			//System.out.println("REMOVING");
 			removePart(slot.getName(), false);
-			System.out.println("ADDING");
+			//System.out.println("ADDING");
 			addPart(data, slot.getName(), false);
 		}
 	}

@@ -32,21 +32,21 @@ public class SeatData extends PartData {
 	public void setup(EntityAbstractAircraft craft, String slotId, Vec3 pos) {
 		super.setup(craft, slotId, pos);
 		if (isSetup(slotId, craft)) {
-			System.out.println("ALREADY SEAT "+slotId);
+			//System.out.println("ALREADY SEAT "+slotId);
 			return;
 		}
 		EntitySeat seat = new EntitySeat(craft.level, slotId, pos);
 		seat.setPos(craft.position());
 		seat.startRiding(craft);
 		craft.level.addFreshEntity(seat);
-		System.out.println("ADDED SEAT "+seat);
+		//System.out.println("ADDED SEAT "+seat);
 	}
 	
 	@Override
 	public boolean isSetup(String slotId, EntityAbstractAircraft craft) {
-		System.out.println("is this seat setup "+slotId);
+		//System.out.println("is this seat setup "+slotId);
 		for (EntitySeat seat : craft.getSeats()) {
-			System.out.println("check seat slot "+seat.getSlotId());
+			//System.out.println("check seat slot "+seat.getSlotId());
 			if (seat.getSlotId().equals(slotId)) 
 				return true;
 		}
@@ -55,9 +55,9 @@ public class SeatData extends PartData {
 	
 	@Override
 	public void remove(String slotId) {
-		System.out.println("removing seat of slot "+slotId);
+		//System.out.println("removing seat of slot "+slotId);
 		for (EntitySeat seat : this.getParent().getSeats()) {
-			System.out.println("checking seat "+seat.getSlotId());
+			//System.out.println("checking seat "+seat.getSlotId());
 			if (seat.getSlotId().equals(slotId))
 					seat.discard();
 		}

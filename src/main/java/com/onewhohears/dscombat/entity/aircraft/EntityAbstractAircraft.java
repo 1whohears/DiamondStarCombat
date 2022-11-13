@@ -107,6 +107,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		this.TEXTURE = texture;
 		this.engineSound = engineSound;
 		this.blocksBuilding = true;
+		// TODO plane not affected by honey
 	}
 	
 	@Override
@@ -279,10 +280,9 @@ public abstract class EntityAbstractAircraft extends Entity {
 					this.addHealth((float)(-(my-collideSpeedThreshHold) * collideDamageRate));
 				}
 			}
-		}
-		if (getHealth() <= 0) {
-			kill();
-			explode(null);
+			if (getHealth() <= 0) {
+				kill();
+			}
 		}
 		if (level.isClientSide) clientTick();
 		this.prevMotion = this.getDeltaMovement();
@@ -470,6 +470,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 						UtilMCText.simpleText(data.getFailedLaunchReason()), true);
 			}
 		}
+		// TODO if you hold right click while shooting missiles on a server you can get stuck in the air while riding a seat for some reason
 	}
 	
 	public void flare(Entity controller, boolean isPlayer) {
@@ -569,7 +570,7 @@ public abstract class EntityAbstractAircraft extends Entity {
      * register parts before calling super in server side
      */
 	public void setupAircraftParts() {
-		System.out.println("setting up parts client side = "+level.isClientSide);
+		//System.out.println("setting up parts client side = "+level.isClientSide);
 		// ORDER MATTERS
 		weaponSystem.setup(this);
 		partsManager.setupParts(this);
@@ -697,18 +698,18 @@ public abstract class EntityAbstractAircraft extends Entity {
 	@Override
     protected void addPassenger(Entity passenger) {
         super.addPassenger(passenger);
-        System.out.println("AIRCRAFT ADDED PASSENGER "+passenger);
+        //System.out.println("AIRCRAFT ADDED PASSENGER "+passenger);
 	}
 	
 	@Override
     protected boolean canAddPassenger(Entity passenger) {
-		System.out.println("CAN ADD PASSENGER "+passenger);
+		//System.out.println("CAN ADD PASSENGER "+passenger);
 		return passenger instanceof EntitySeat;
 	}
 	
 	@Override
     protected boolean canRide(Entity entityIn) {
-		System.out.println("CAN RIDE "+entityIn);
+		//System.out.println("CAN RIDE "+entityIn);
         return false;
     }
 	
@@ -1057,6 +1058,12 @@ public abstract class EntityAbstractAircraft extends Entity {
     
     public void setLandingGear(boolean gear) {
     	entityData.set(LANDING_GEAR, gear);
+    }
+    
+    @Override
+    public void kill() {
+    	explode(null);
+    	super.kill();
     }
     
 }

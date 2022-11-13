@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.client.event.ClientForgeEvents;
-import com.onewhohears.dscombat.client.sounds.PlaneEngineOnPlayerSoundInstance;
 import com.onewhohears.dscombat.common.container.AircraftMenuContainer;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ServerBoundRequestPlaneDataPacket;
@@ -23,13 +22,13 @@ import com.onewhohears.dscombat.entity.weapon.EntityFlare;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.item.ItemGasCan;
+import com.onewhohears.dscombat.util.UtilClientSafeSoundInstance;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.UtilMCText;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -59,6 +58,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.registries.RegistryObject;
 
 public abstract class EntityAbstractAircraft extends Entity {
 	
@@ -97,12 +97,12 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public Vec3 prevMotion = Vec3.ZERO;
 	
 	protected final ResourceLocation TEXTURE;
-	protected final SoundEvent engineSound;
+	protected final RegistryObject<SoundEvent> engineSound;
 	
 	private int lerpSteps/*, lerpStepsQ*/, newRiderCooldown;
 	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot/*, lerpZRot*/;
 	
-	public EntityAbstractAircraft(EntityType<? extends EntityAbstractAircraft> entity, Level level, ResourceLocation texture, SoundEvent engineSound) {
+	public EntityAbstractAircraft(EntityType<? extends EntityAbstractAircraft> entity, Level level, ResourceLocation texture, RegistryObject<SoundEvent> engineSound) {
 		super(entity, level);
 		this.TEXTURE = texture;
 		this.engineSound = engineSound;
@@ -292,10 +292,8 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public void clientTick() {
 		healthSmoke();
 		if (this.tickCount == 1) {
-			Minecraft m = Minecraft.getInstance();
-			LocalPlayer p = m.player;
-			m.getSoundManager().play(new PlaneEngineOnPlayerSoundInstance(this.engineSound, 
-					p, this, 10F));
+			UtilClientSafeSoundInstance.aircraftEngineSound(
+					Minecraft.getInstance(), this, getEngineSound());
 		}
 	}
 	
@@ -885,6 +883,10 @@ public abstract class EntityAbstractAircraft extends Entity {
     
     public ResourceLocation getTexture() {
     	return TEXTURE;
+    }
+    
+    public SoundEvent getEngineSound() {
+    	return engineSound.get();
     }
     
     @Override

@@ -40,25 +40,25 @@ public class ModEntities {
 	public static final RegistryObject<EntityType<EntityPlane>> TEST_PLANE = ENTITIES.register("test_plane", 
 			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
 					new ResourceLocation(DSCombatMod.MODID, "textures/entities/basic_plane.png"),
-					ModSounds.BIPLANE_1.get()), 
+					ModSounds.BIPLANE_1), 
 					EntityDimensions.scalable(1f, 1f)));
 	
 	public static final RegistryObject<EntityType<EntityPlane>> JAVI_PLANE = ENTITIES.register("javi_plane", 
 			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
 					new ResourceLocation(DSCombatMod.MODID, "textures/entities/javi_plane.png"),
-					ModSounds.BIPLANE_1.get()), 
+					ModSounds.BIPLANE_1), 
 					EntityDimensions.scalable(1f, 1f)));
 	
 	public static final RegistryObject<EntityType<EntityPlane>> ALEXIS_PLANE = ENTITIES.register("alexis_plane", 
 			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
 					new ResourceLocation(DSCombatMod.MODID, "textures/entities/alexis_plane.png"),
-					ModSounds.BIPLANE_1.get()), 
+					ModSounds.BIPLANE_1), 
 					EntityDimensions.scalable(1f, 1f)));
 	
 	public static final RegistryObject<EntityType<EntityPlane>> F16 = ENTITIES.register("f16", 
 			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
 					new ResourceLocation(DSCombatMod.MODID, "textures/entities/f16.png"),
-					ModSounds.BIPLANE_1.get()), 
+					ModSounds.BIPLANE_1), 
 					EntityDimensions.scalable(1f, 1f)));
 	
 	public static final RegistryObject<EntityType<EntitySeat>> SEAT = ENTITIES.register("seat", 

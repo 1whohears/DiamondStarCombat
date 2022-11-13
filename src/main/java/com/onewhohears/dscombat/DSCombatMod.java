@@ -45,8 +45,8 @@ public class DSCombatMod
     	DataSerializers.register(eventBus);
     	ModContainers.register(eventBus);
     	ModItems.register(eventBus);
-    	ModEntities.register(eventBus);
     	ModSounds.register(eventBus);
+    	ModEntities.register(eventBus);
     	ModRecipeSerializers.register(eventBus);
     	eventBus.addListener(this::commonSetup);
     	eventBus.addListener(this::clientSetup);

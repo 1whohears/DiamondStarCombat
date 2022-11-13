@@ -12,13 +12,14 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.registries.RegistryObject;
 
 public class EntityPlane extends EntityAbstractAircraft {
 	
 	private final float propellerRate = 3.141f;
 	private float propellerRot, propellerRotOld;
 	
-	public EntityPlane(EntityType<? extends EntityPlane> entity, Level level, ResourceLocation texture, SoundEvent engineSound) {
+	public EntityPlane(EntityType<? extends EntityPlane> entity, Level level, ResourceLocation texture, RegistryObject<SoundEvent> engineSound) {
 		super(entity, level, texture, engineSound);
 	}
 	

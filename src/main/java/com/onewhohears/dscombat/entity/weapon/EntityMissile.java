@@ -1,18 +1,17 @@
 package com.onewhohears.dscombat.entity.weapon;
 
-import com.onewhohears.dscombat.client.sounds.DopplerOnPlayerSoundInstance;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundMissileMovePacket;
 import com.onewhohears.dscombat.data.ChunkManager;
 import com.onewhohears.dscombat.data.weapon.MissileData;
+import com.onewhohears.dscombat.data.weapon.MissileData.TargetType;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
-import com.onewhohears.dscombat.data.weapon.MissileData.TargetType;
 import com.onewhohears.dscombat.init.ModSounds;
+import com.onewhohears.dscombat.util.UtilClientSafeSoundInstance;
 import com.onewhohears.dscombat.util.UtilEntity;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.damagesource.DamageSource;
@@ -87,11 +86,8 @@ public class EntityMissile extends EntityBullet {
 	private void engineSound() {
 		if (!this.level.isClientSide) return;
 		if (this.tickCount == 8) {
-			Minecraft m = Minecraft.getInstance();
-			LocalPlayer p = m.player;
-			m.getSoundManager().play(new DopplerOnPlayerSoundInstance(ModSounds.MISSILE_ENGINE_1.get(), 
-					p, this, 0.8F, 1.0F, 10F));
-			//System.out.println("STARTING ENGINE SOUND");
+			UtilClientSafeSoundInstance.dopplerSound(Minecraft.getInstance(), this, ModSounds.MISSILE_ENGINE_1.get(), 
+					0.8F, 1.0F, 10F);
 		}
 	}
 	

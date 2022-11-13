@@ -125,15 +125,10 @@ public abstract class EntityAbstractAircraft extends Entity {
 		entityData.define(PITCH, 1f);
 		entityData.define(YAW, 1f);
 		entityData.define(IDLEHEAT, 1f);
-		//entityData.define(ENGINEHEAT, 1f);
 		entityData.define(WEIGHT, 0.05f);
-		//entityData.define(MAX_THRUST, 0.1f);
 		entityData.define(WING_AREA, 1f);
 		entityData.define(MISSILE_TRACKED_TICKS, 0);
 		entityData.define(LOCKED_ONTO_TICKS, 0);
-		//entityData.define(FUEL, 0f);
-		//entityData.define(MAX_FUEL, 0f);
-		//entityData.define(FUEL_RATE, 0f);
 		entityData.define(LANDING_GEAR, false);
 	}
 	
@@ -154,7 +149,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
 		String initType = compound.getString("preset");
-		System.out.println("aircraft read data client side = "+level.isClientSide+" init type = "+initType);
+		//System.out.println("aircraft read data client side = "+level.isClientSide+" init type = "+initType);
 		if (!initType.isEmpty()) {
 			CompoundTag tag = AircraftPresets.getPreset(initType);
 			if (tag != null) compound.merge(tag);
@@ -220,13 +215,9 @@ public abstract class EntityAbstractAircraft extends Entity {
 		//System.out.println(this.tickCount+" "+this.level);
 		if (this.firstTick) init();
 		super.tick();
-		if (!level.isClientSide) weaponSystem.tick();
 		if (Double.isNaN(getDeltaMovement().length())) {
             setDeltaMovement(Vec3.ZERO);
         }
-		if (this.getPassengers().size() == 0) {
-			this.setCurrentThrottle(0);
-		}
 		prevXRot = getXRot();
 		prevYRot = getYRot();
 		prevZRot = zRot;
@@ -431,6 +422,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		if (controller == null) return;
 		boolean isPlayer = controller instanceof ServerPlayer;
 		if (!level.isClientSide) {
+			weaponSystem.tick();
 			radarSystem.tickUpdateTargets();
 			if (newRiderCooldown > 0) --newRiderCooldown;
 			else {

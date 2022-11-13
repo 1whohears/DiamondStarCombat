@@ -65,13 +65,15 @@ public class ItemAircraft extends Item {
 			} else {
 				blockpos1 = blockpos.relative(direction);
 			}
+			//blockpos1.offset(0, 10, 0); // doesn't work
 			CompoundTag tag = itemstack.getOrCreateTag();
 			EntityType<?> entitytype = this.getType(tag);
 			Player player = context.getPlayer();
 			if (player != null) {
 				tag.getCompound("EntityTag").putFloat("yRot", -player.getYRot());
 			}
-			if (entitytype.spawn((ServerLevel)level, itemstack, player, blockpos1, MobSpawnType.SPAWN_EGG, true, !Objects.equals(blockpos, blockpos1) && direction == Direction.UP) != null) {
+			if (entitytype.spawn((ServerLevel)level, itemstack, player, blockpos1, MobSpawnType.SPAWN_EGG, 
+					true, !Objects.equals(blockpos, blockpos1) && direction == Direction.UP) != null) {
 				itemstack.shrink(1);
 				level.gameEvent(player, GameEvent.ENTITY_PLACE, blockpos);
 			}

@@ -17,7 +17,7 @@ import net.minecraftforge.network.NetworkHooks;
 public class EntityAbstractPart extends Entity {
 	
 	public static final EntityDataAccessor<Vec3> POS = SynchedEntityData.defineId(EntitySeat.class, DataSerializers.VEC3);
-	public static final EntityDataAccessor<String> ID = SynchedEntityData.defineId(EntitySeat.class, EntityDataSerializers.STRING);
+	public static final EntityDataAccessor<String> SLOT_ID = SynchedEntityData.defineId(EntitySeat.class, EntityDataSerializers.STRING);
 	
 	public EntityAbstractPart(EntityType<?> pEntityType, Level pLevel) {
 		super(pEntityType, pLevel);
@@ -32,19 +32,19 @@ public class EntityAbstractPart extends Entity {
 	@Override
 	protected void defineSynchedData() {
 		entityData.define(POS, Vec3.ZERO);
-		entityData.define(ID, "");
+		entityData.define(SLOT_ID, "");
 	}
 
 	@Override
 	protected void readAdditionalSaveData(CompoundTag compound) {
 		setRelativePos(UtilParse.readVec3(compound, "relpos"));
-		this.setSlotId(compound.getString("id"));
+		this.setSlotId(compound.getString("slotid"));
 	}
 
 	@Override
 	protected void addAdditionalSaveData(CompoundTag compound) {
 		UtilParse.writeVec3(compound, getRelativePos(), "relpos");
-		compound.putString("id", this.getSlotId());
+		compound.putString("slotid", this.getSlotId());
 	}
 
 	@Override
@@ -61,7 +61,6 @@ public class EntityAbstractPart extends Entity {
 		if (this.firstTick) init();
 		super.tick();
 		if (!this.level.isClientSide && this.tickCount > 10 && this.getVehicle() == null) this.kill(); 
-		// TODO does the seat immediately die when loaded cause of this?
 	}
 	
 	public Vec3 getRelativePos() {
@@ -73,11 +72,11 @@ public class EntityAbstractPart extends Entity {
 	}
 	
 	public String getSlotId() {
-		return entityData.get(ID);
+		return entityData.get(SLOT_ID);
 	}
 	
 	public void setSlotId(String id) {
-		entityData.set(ID, id);
+		entityData.set(SLOT_ID, id);
 	}
 
 }

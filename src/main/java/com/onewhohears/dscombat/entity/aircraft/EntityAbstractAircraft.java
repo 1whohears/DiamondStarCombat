@@ -107,7 +107,6 @@ public abstract class EntityAbstractAircraft extends Entity {
 		this.TEXTURE = texture;
 		this.engineSound = engineSound;
 		this.blocksBuilding = true;
-		// TODO plane not affected by honey
 	}
 	
 	@Override
@@ -154,7 +153,6 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
-		// TODO couldn't re-attach entity to player error killing this entity on world load
 		String initType = compound.getString("preset");
 		System.out.println("aircraft read data client side = "+level.isClientSide+" init type = "+initType);
 		if (!initType.isEmpty()) {
@@ -743,6 +741,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	@Override
     public boolean hurt(DamageSource source, float amount) {
+		if (level.isClientSide) return true;
 		if (this.isVehicleOf(source.getEntity())) return false;
 		addHealth(-amount);
 		return true;

@@ -12,11 +12,11 @@ import net.minecraft.world.phys.Vec3;
 
 public class DopplerOnPlayerSoundInstance extends AbstractTickableSoundInstance {
 	
-	private final LocalPlayer player;
-	private final Entity entity;
-	private final float initVolume;
-	private final float initPitch;
-	private final float velocitySound;
+	protected final LocalPlayer player;
+	protected final Entity entity;
+	protected final float velocitySound;
+	protected float initVolume;
+	protected float initPitch;
 	
 	public DopplerOnPlayerSoundInstance(SoundEvent sound, LocalPlayer player, Entity entity, float initVolume, float initPitch, float velSound) {
 		super(sound, SoundSource.PLAYERS, SoundInstance.createUnseededRandom());

@@ -7,6 +7,7 @@ import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -17,8 +18,8 @@ public class EntityPlane extends EntityAbstractAircraft {
 	private final float propellerRate = 3.141f;
 	private float propellerRot, propellerRotOld;
 	
-	public EntityPlane(EntityType<? extends EntityPlane> entity, Level level, ResourceLocation texture) {
-		super(entity, level, texture);
+	public EntityPlane(EntityType<? extends EntityPlane> entity, Level level, ResourceLocation texture, SoundEvent engineSound) {
+		super(entity, level, texture, engineSound);
 	}
 	
 	@Override

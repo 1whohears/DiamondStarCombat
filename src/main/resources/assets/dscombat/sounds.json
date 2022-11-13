@@ -28,5 +28,11 @@
 		"sounds": [
 			"dscombat:bullet_shoot_1"
 		]
+	},
+	"biplane_1": {
+		"subtitle": "sounds.dscombat.biplane_1",
+		"sounds": [
+			"dscombat:biplane_1"
+		]
 	}
 }

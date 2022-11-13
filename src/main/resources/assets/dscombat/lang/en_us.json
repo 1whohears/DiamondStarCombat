@@ -55,6 +55,7 @@
 	"sounds.dscombat.rocket_launch_1": "Missile Launch",
 	"sounds.dscombat.rocket_engine_1": "Missile Engine",
 	"sounds.dscombat.bullet_shoot_1": "Bullet Shoot",
+	"sounds.dscombat.biplane_1": "Biplane Engine",
 	
 	"itemGroup.parts": "DSCombat Parts",
 	"itemGroup.aircraft": "DSCombat Aircraft",

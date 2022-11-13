@@ -44,7 +44,7 @@ public class DopplerOnPlayerSoundInstance extends AbstractTickableSoundInstance 
 		this.z = entity.getZ();
 		// volume
 		float d2 = (float)player.distanceToSqr(entity);
-		volume = initVolume - d2 * 0.00005f;
+		volume = initVolume - d2 * 0.000025f;
 		// pitch
 		Vec3 v = entity.position().subtract(player.position());
 		Vec3 v3p = UtilGeometry.componentOfVecByAxis(player.getDeltaMovement(), v);

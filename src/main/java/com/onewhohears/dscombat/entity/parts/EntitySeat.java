@@ -12,7 +12,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -139,11 +138,6 @@ public class EntitySeat extends EntityAbstractPart {
     public Entity getControllingPassenger() {
 		return getPlayer();
     }
-	
-	@Override
-	public boolean isPickable() {
-		return !this.isRemoved();
-	}
 
     @Override
     public boolean canBeRiddenUnderFluidType(FluidType type, Entity rider) {
@@ -154,19 +148,6 @@ public class EntitySeat extends EntityAbstractPart {
     public double getPassengersRidingOffset() {
         return 0;
     }
-
-    @Override
-    public boolean canBeCollidedWith() {
-        return true;
-    }
-	
-	@Override
-    public boolean hurt(DamageSource source, float amount) {
-		if (source.isExplosion() || source.isFire() || source.isMagic()) return false;
-		Entity v = this.getRootVehicle();
-		if (v != null) v.hurt(source, amount);
-		return true;
-	}
 	
 	@Override
 	public String toString() {

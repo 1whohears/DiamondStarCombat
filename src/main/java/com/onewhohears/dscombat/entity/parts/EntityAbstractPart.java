@@ -8,6 +8,7 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -77,6 +78,16 @@ public class EntityAbstractPart extends Entity {
 	
 	public void setSlotId(String id) {
 		entityData.set(SLOT_ID, id);
+	}
+	
+	@Override
+    public boolean hurt(DamageSource source, float amount) {
+		/* THIS IS NO
+		if (source.isExplosion() || source.isFire() || source.isMagic()) return false;
+		Entity v = this.getRootVehicle();
+		if (v != null) v.hurt(source, amount);
+		return true;*/
+		return false;
 	}
 
 }

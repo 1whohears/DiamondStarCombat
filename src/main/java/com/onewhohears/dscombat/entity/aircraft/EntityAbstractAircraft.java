@@ -468,7 +468,6 @@ public abstract class EntityAbstractAircraft extends Entity {
 						UtilMCText.simpleText(data.getFailedLaunchReason()), true);
 			}
 		}
-		// TODO if you hold right click while shooting missiles on a server you can get stuck in the air while riding a seat for some reason
 	}
 	
 	public void flare(Entity controller, boolean isPlayer) {
@@ -741,7 +740,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	@Override
     public boolean hurt(DamageSource source, float amount) {
-		if (level.isClientSide) return true;
+		//if (level.isClientSide) return true; // TODO should be a temporary fix
 		if (this.isVehicleOf(source.getEntity())) return false;
 		addHealth(-amount);
 		return true;

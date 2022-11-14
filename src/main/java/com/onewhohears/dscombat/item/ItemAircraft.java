@@ -10,6 +10,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
@@ -37,7 +38,6 @@ public class ItemAircraft extends Item {
 	
 	@Override
 	public InteractionResult useOn(UseOnContext context) {
-		// TODO when you right click the side of a block it gets but inside the block below
 		Level level = context.getLevel();
 		if (!(level instanceof ServerLevel)) {
 			return InteractionResult.SUCCESS;
@@ -65,15 +65,17 @@ public class ItemAircraft extends Item {
 			} else {
 				blockpos1 = blockpos.relative(direction);
 			}
-			//blockpos1.offset(0, 10, 0); // doesn't work
 			CompoundTag tag = itemstack.getOrCreateTag();
 			EntityType<?> entitytype = this.getType(tag);
 			Player player = context.getPlayer();
 			if (player != null) {
 				tag.getCompound("EntityTag").putFloat("yRot", -player.getYRot());
 			}
-			if (entitytype.spawn((ServerLevel)level, itemstack, player, blockpos1, MobSpawnType.SPAWN_EGG, 
-					true, !Objects.equals(blockpos, blockpos1) && direction == Direction.UP) != null) {
+			Entity spawn = entitytype.spawn((ServerLevel)level, itemstack, player, blockpos1, 
+					MobSpawnType.SPAWN_EGG, true, 
+					!Objects.equals(blockpos, blockpos1) && direction == Direction.UP);
+			if (spawn != null) {
+				spawn.setPos(spawn.position().add(0, 2, 0));
 				itemstack.shrink(1);
 				level.gameEvent(player, GameEvent.ENTITY_PLACE, blockpos);
 			}

@@ -3,9 +3,11 @@ package com.onewhohears.dscombat.entity.weapon;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.init.DataSerializers;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -18,6 +20,7 @@ import net.minecraftforge.network.NetworkHooks;
 public abstract class EntityAbstractWeapon extends Projectile {
 	
 	public static final EntityDataAccessor<WeaponData> DATA = SynchedEntityData.defineId(EntityAbstractWeapon.class, DataSerializers.WEAPON_DATA);
+	public static final EntityDataAccessor<Integer> OWNER_ID = SynchedEntityData.defineId(EntityAbstractWeapon.class, EntityDataSerializers.INT);
 	
 	@SuppressWarnings("unchecked")
 	public EntityAbstractWeapon(EntityType<?> type, Level level) {
@@ -33,8 +36,8 @@ public abstract class EntityAbstractWeapon extends Projectile {
 
 	@Override
 	protected void defineSynchedData() {
-		//this.entityData.define(DATA, getDefaultData());
-		this.entityData.define(DATA, getDefaultData());
+		entityData.define(DATA, getDefaultData());
+		entityData.define(OWNER_ID, -1);
 	}
 	
 	/*@Override
@@ -86,6 +89,14 @@ public abstract class EntityAbstractWeapon extends Projectile {
 	
 	public abstract WeaponData getDefaultData();
 	
+	protected int getOwnerId() {
+		return entityData.get(OWNER_ID);
+	}
+	
+	protected void setOwnerId(int id) {
+		entityData.set(OWNER_ID, id);
+	}
+	
 	@Override
 	public boolean ignoreExplosion() {
 		return true;
@@ -119,6 +130,23 @@ public abstract class EntityAbstractWeapon extends Projectile {
 	
 	protected void motion() {
 		
+	}
+	
+	@Override
+	public Entity getOwner() {
+		Entity o = super.getOwner();
+		if (o == null && level.isClientSide) {
+			Minecraft m = Minecraft.getInstance();
+			o = m.level.getEntity(getOwnerId());
+		}
+		return o;
+	}
+	
+	@Override
+	public void setOwner(Entity owner) {
+		super.setOwner(owner);
+		if (owner != null) this.setOwnerId(owner.getId());
+		else this.setOwnerId(-1);
 	}
 
 }

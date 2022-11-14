@@ -83,6 +83,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public static final EntityDataAccessor<Boolean> LANDING_GEAR = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.BOOLEAN);
 	
 	public static final double collideSpeedThreshHold = 1d;
+	public static final double collideSpeedWithGearThreshHold = 2d;
 	public static final double collideDamageRate = 200d;
 	
 	public PartsManager partsManager = new PartsManager();
@@ -101,6 +102,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	private int lerpSteps/*, lerpStepsQ*/, newRiderCooldown;
 	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot/*, lerpZRot*/;
+	private float landingGearPos, landingGearPosOld;
 	
 	public EntityAbstractAircraft(EntityType<? extends EntityAbstractAircraft> entity, Level level, ResourceLocation texture, RegistryObject<SoundEvent> engineSound) {
 		super(entity, level);
@@ -212,7 +214,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	@Override
 	public void tick() {
-		//System.out.println(this.tickCount+" "+this.level);
+		System.out.println(this.tickCount+" "+this.level);
 		if (this.firstTick) init();
 		super.tick();
 		if (Double.isNaN(getDeltaMovement().length())) {
@@ -225,15 +227,17 @@ public abstract class EntityAbstractAircraft extends Entity {
 			tickLerp();
 		}
 		Quaternion q = getQ();
+		setPrevQ(q);
 		/*Quaternion q;
         if (level.isClientSide) {
             q = getClientQ();
         } else {
             q = getQ();
         }*/
-		setPrevQ(q);
+		System.out.println("BEFORE "+q);
 		controlDirection(q);
-    	tickMovement(q);
+		System.out.println("AFTER "+q);
+		tickMovement(q);
     	motionClamp();
     	//System.out.println("MOTION "+getDeltaMovement());
 		move(MoverType.SELF, getDeltaMovement());
@@ -262,13 +266,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		System.out.println("C "+this.getClientQ());
 		System.out.println("Q "+this.getQ());*/
 		if (!this.level.isClientSide) {
-			if (this.verticalCollisionBelow || this.verticalCollision) {
-				double my = Math.abs(prevMotion.y);
-				if (my > 0) System.out.println("COLLISION SPEED "+my);
-				if (my > collideSpeedThreshHold) {
-					this.addHealth((float)(-(my-collideSpeedThreshHold) * collideDamageRate));
-				}
-			}
+			tickCollisions();
 			if (getHealth() <= 0) {
 				kill();
 			}
@@ -278,15 +276,35 @@ public abstract class EntityAbstractAircraft extends Entity {
 		sounds();
 	}
 	
+	public void tickCollisions() {
+		if (this.verticalCollisionBelow || this.verticalCollision) {
+			double my = Math.abs(prevMotion.y);
+			if (my > 0) System.out.println("COLLISION SPEED "+my);
+			double th = collideSpeedThreshHold;
+			if (isLandingGear() 
+					&& (this.getXRot() < 15f && this.getXRot() > -15f)
+					&& (this.zRot < 15f && this.zRot > -15f)) 
+				th = collideSpeedWithGearThreshHold;
+			if (my > th) {
+				this.addHealth((float)(-(my-th) * collideDamageRate));
+			}
+		}
+	}
+	
 	public void clientTick() {
-		healthSmoke();
+		tickHealthSmoke();
+		tickClientSound();
+		tickClientLandingGear();
+	}
+	
+	public void tickClientSound() {
 		if (this.tickCount == 1) {
 			UtilClientSafeSoundInstance.aircraftEngineSound(
 					Minecraft.getInstance(), this, getEngineSound());
 		}
 	}
 	
-	private void healthSmoke() {
+	private void tickHealthSmoke() {
 		float r = getHealth() / getMaxHealth();
 		if (r < 0.5f) smoke();
 		if (r < 0.3f) for (int i = 0; i < 2; ++i) smoke();
@@ -732,7 +750,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	@Override
     public boolean hurt(DamageSource source, float amount) {
-		if (level.isClientSide) return true; // TODO should be a temporary fix
+		//if (level.isClientSide) return true; // TODO should be a temporary fix
 		if (this.isVehicleOf(source.getEntity())) return false;
 		addHealth(-amount);
 		return true;
@@ -1016,8 +1034,7 @@ public abstract class EntityAbstractAircraft extends Entity {
     
     @Override
     protected AABB makeBoundingBox() {
-    	// TODO change if landing gear is out 
-    	double pX = getX(), pY = getY(), pZ = getZ();
+     	double pX = getX(), pY = getY(), pZ = getZ();
     	EntityDimensions d = getDimensions(getPose());
     	float f = d.width / 2.0F;
         float f1 = d.height / 2.0F;
@@ -1049,6 +1066,31 @@ public abstract class EntityAbstractAircraft extends Entity {
     public void setLandingGear(boolean gear) {
     	entityData.set(LANDING_GEAR, gear);
     }
+    
+    public void switchLandingGear() {
+    	//System.out.println("SWITCH LANDING GEAR");
+    	this.setLandingGear(!isLandingGear());
+    }
+    
+    public void tickClientLandingGear() {
+    	landingGearPosOld = landingGearPos;
+    	if (isLandingGear()) {
+    		if (landingGearPos > 0f) landingGearPos -= 0.02f;
+    		else if (landingGearPos < 0f) landingGearPos = 0f;
+    	} else {
+    		if (landingGearPos < 1f) landingGearPos += 0.02f;
+    		else if (landingGearPos > 1f) landingGearPos = 1f;
+    	}
+    	//System.out.println("landingGearPos = "+landingGearPos);
+    }
+    
+    /**
+     * @param partialTicks
+     * @return 0 (landing gear out) 1 (landing gear folded)
+     */
+    public float getLandingGearPos(float partialTicks) {
+		return Mth.lerp(partialTicks, landingGearPosOld, landingGearPos);
+	}
     
     @Override
     public void kill() {

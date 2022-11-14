@@ -17,8 +17,8 @@ import net.minecraftforge.network.NetworkHooks;
 
 public class EntityAbstractPart extends Entity {
 	
-	public static final EntityDataAccessor<Vec3> POS = SynchedEntityData.defineId(EntitySeat.class, DataSerializers.VEC3);
-	public static final EntityDataAccessor<String> SLOT_ID = SynchedEntityData.defineId(EntitySeat.class, EntityDataSerializers.STRING);
+	public static final EntityDataAccessor<Vec3> POS = SynchedEntityData.defineId(EntityAbstractPart.class, DataSerializers.VEC3);
+	public static final EntityDataAccessor<String> SLOT_ID = SynchedEntityData.defineId(EntityAbstractPart.class, EntityDataSerializers.STRING);
 	
 	public EntityAbstractPart(EntityType<?> pEntityType, Level pLevel) {
 		super(pEntityType, pLevel);

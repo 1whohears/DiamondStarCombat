@@ -27,7 +27,9 @@
 	"entity.dscombat.alexis_plane": "Alexis Plane",
 	"entity.dscombat.f16": "F16",
 	"entity.dscombat.bullet": "Bullet",
-	"entity.dscombat.missile": "Missile",
+	"entity.dscombat.missile1": "Missile 1",
+	"entity.dscombat.missile2": "Missile 2",
+	"entity.dscombat.missile3": "Missile 3",
 	"entity.dscombat.flare": "Flare",
 	"entity.dscombat.seat": "Seat",
 	
@@ -49,6 +51,8 @@
 	"key.dscombat.plane_menu_key": "Plane Menu",
 	"key.dscombat.flip_controls_key": "Flip Plane Controls",
 	"key.dscombat.change_seat_key": "Change Seat",
+	"key.dscombat.landing_gear_key": "Landing Gear",
+	"key.dscombat.share_pos_key": "Share Pos",
 	
 	"sounds.dscombat.missile_warning": "Missile Warning",
 	"sounds.dscombat.getting_locked": "Getting Locked",

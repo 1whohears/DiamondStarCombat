@@ -61,6 +61,7 @@ public final class ClientForgeEvents {
 		boolean select = KeyInit.weaponSelectKey.consumeClick();
 		boolean openMenu = KeyInit.planeMenuKey.consumeClick();
 		boolean mouseMode = KeyInit.mouseModeKey.consumeClick();
+		boolean gear = KeyInit.landingGear.consumeClick();
 		if (!(player.getRootVehicle() instanceof EntityAbstractAircraft plane)) return;
 		//System.out.println("controller passenger "+plane.getControllingPassenger());
 		if (plane.getControllingPassenger() == null 
@@ -123,6 +124,7 @@ public final class ClientForgeEvents {
 		if (rollRight) roll += 1;
 		if (throttleUp) throttle += 1;
 		if (throttleDown) throttle -= 1;
+		if (gear) plane.switchLandingGear();
 		//System.out.println("pitch = "+pitch+" yaw = "+yaw);
 		PacketHandler.INSTANCE.sendToServer(new ServerBoundFlightControlPacket(
 				throttle, pitch, roll, yaw,

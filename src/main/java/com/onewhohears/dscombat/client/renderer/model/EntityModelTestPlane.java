@@ -18,12 +18,19 @@ import net.minecraft.resources.ResourceLocation;
 public class EntityModelTestPlane<T extends EntityPlane> extends EntityAircraftModel<T> {
 	
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(DSCombatMod.MODID, "basic_plane"), "main");
+	
 	private final ModelPart body;
 	private final ModelPart propeller;
+	private final ModelPart gearback;
+	private final ModelPart gearleft;
+	private final ModelPart gearright;
 
 	public EntityModelTestPlane(ModelPart root) {
 		this.body = root.getChild("body");
 		this.propeller = body.getChild("propeller");
+		this.gearback = body.getChild("gearback");
+		this.gearleft = body.getChild("gearleft");
+		this.gearright = body.getChild("gearright");
 	}
 
 	public static LayerDefinition createBodyLayer() {
@@ -49,8 +56,17 @@ public class EntityModelTestPlane<T extends EntityPlane> extends EntityAircraftM
 
 		PartDefinition right = tail.addOrReplaceChild("right", CubeListBuilder.create().texOffs(60, 0).addBox(4.0F, 0.0F, 14.0F, 12.0F, 1.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-		PartDefinition propeller = body.addOrReplaceChild("propeller", CubeListBuilder.create().texOffs(0, 0).addBox(-1.0F, -1.0F, -24.0F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F))
+		PartDefinition propeller = body.addOrReplaceChild("propeller", CubeListBuilder.create().texOffs(0, 26).addBox(-1.0F, -1.0F, -24.0F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F))
 		.texOffs(42, 27).addBox(-12.0F, -1.0F, -25.0F, 24.0F, 2.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+
+		PartDefinition gearback = body.addOrReplaceChild("gearback", CubeListBuilder.create().texOffs(8, 0).addBox(-0.5F, 0.0F, -0.5F, 1.0F, 5.0F, 1.0F, new CubeDeformation(0.0F))
+		.texOffs(0, 21).addBox(-1.0F, 5.0F, -1.0F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 4.0F, 17.0F));
+
+		PartDefinition gearleft = body.addOrReplaceChild("gearleft", CubeListBuilder.create().texOffs(4, 0).addBox(-0.5F, 0.0F, -0.5F, 1.0F, 9.0F, 1.0F, new CubeDeformation(0.0F))
+		.texOffs(0, 17).addBox(-1.0F, 9.0F, -1.0F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(25.0F, 0.0F, -16.0F));
+
+		PartDefinition gearright = body.addOrReplaceChild("gearright", CubeListBuilder.create().texOffs(0, 0).addBox(-0.5F, 0.0F, -0.5F, 1.0F, 9.0F, 1.0F, new CubeDeformation(0.0F))
+		.texOffs(0, 13).addBox(-1.0F, 9.0F, -1.0F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(-25.0F, 0.0F, -16.0F));
 
 		return LayerDefinition.create(meshdefinition, 128, 128);
 	}
@@ -60,6 +76,11 @@ public class EntityModelTestPlane<T extends EntityPlane> extends EntityAircraftM
 		poseStack.translate(0, 1.5, 0);
 		poseStack.scale(1.0F, -1.0F, 1.0F);
 		propeller.zRot = entity.getPropellerRotation(partialTicks);
+		float gear = entity.getLandingGearPos(partialTicks);
+		float hpi = (float)Math.PI/2;
+		gearback.xRot = gear * -hpi;
+		gearleft.zRot = gear * (hpi-0.01f);
+		gearright.zRot = gear * -(hpi-0.01f);
 		body.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 	

@@ -30,6 +30,8 @@ public final class KeyInit {
 	public static KeyMapping planeMenuKey;
 	public static KeyMapping flipControls;
 	public static KeyMapping changeSeat;
+	public static KeyMapping landingGear;
+	public static KeyMapping sharePos;
 	
 	private static RegisterKeyMappingsEvent event;
 	
@@ -51,6 +53,8 @@ public final class KeyInit {
 		planeMenuKey = registerKey("plane_menu_key", FLIGHT_CONTROL, InputConstants.KEY_U);
 		flipControls = registerKey("flip_controls_key", FLIGHT_CONTROL, InputConstants.KEY_LALT);
 		changeSeat = registerKey("change_seat_key", FLIGHT_CONTROL, InputConstants.KEY_SEMICOLON);
+		landingGear = registerKey("landing_gear_key", FLIGHT_CONTROL, InputConstants.KEY_L);
+		sharePos = registerMouse("share_pos_key", FLIGHT_CONTROL, InputConstants.MOUSE_BUTTON_MIDDLE);
 	}
 	
 	private static KeyMapping registerKey(String name, String category, int keycode) {

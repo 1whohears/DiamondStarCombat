@@ -4,6 +4,7 @@ import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.math.UtilAngles;
+import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.resources.ResourceLocation;
@@ -36,21 +37,10 @@ public class EntityPlane extends EntityAbstractAircraft {
 	public void controlDirection(Quaternion q) {
 		super.controlDirection(q);
 		if (isOnGround()) {
-			//Quaternion q2 = new Quaternion(q.i(), q.j(), q.k(), q.r());
-			//q.mul(new Quaternion(Vector3f.YN, this.getYRot(), true));
-			//q.mul(new Quaternion(Vector3f.YN, inputYaw*getMaxDeltaYaw(), true));
-			//Quaternion q2 = Quaternion.fromXYZDegrees(new Vector3f(0, this.getYRot() + inputYaw*getMaxDeltaYaw(), 0));
-			//q.set(q2.i(), q2.j(), q2.k(), q2.r());
-			/*degrees.set(0, degrees.y(), 0);
-			Quaternion q2 = Quaternion.fromXYZDegrees(degrees);
-			q.set(q2.i(), q2.j(), q2.k(), q2.r());*/
-			/*EulerAngles angles = UtilAngles.toDegrees(q);
-			Quaternion q2 = UtilAngles.toQuaternion(angles.yaw, 0, 0);
-			q.set(q2.i(), q2.j(), q2.k(), q2.r());*/
-			//Vector3f degrees = q.toXYZDegrees();
-			//q.mul(new Quaternion(Vector3f.ZP, -degrees.z(), true));
-			//q.mul(new Quaternion(Vector3f.XN, degrees.x(), true));
-			// TODO make pitch and roll zero here somehow
+			EulerAngles angles = UtilAngles.toDegrees(q);
+			//System.out.println("degrees "+angles);
+			q.mul(new Quaternion(Vector3f.ZP, (float)-angles.roll, true));
+			q.mul(new Quaternion(Vector3f.XP, (float)-angles.pitch, true));
 			q.mul(new Quaternion(Vector3f.YN, inputYaw*getMaxDeltaYaw(), true));
 		} else {
 			q.mul(new Quaternion(Vector3f.ZP, inputRoll*getMaxDeltaRoll(), true));

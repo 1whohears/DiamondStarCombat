@@ -226,38 +226,25 @@ public abstract class EntityAbstractAircraft extends Entity {
 		if (level.isClientSide && !isControlledByLocalInstance()) {
 			tickLerp();
 		}
+		// set direction
 		Quaternion q = getQ();
 		setPrevQ(q);
-		/*Quaternion q;
-        if (level.isClientSide) {
-            q = getClientQ();
-        } else {
-            q = getQ();
-        }*/
-		System.out.println("BEFORE "+q);
+		//System.out.println("BEFORE "+q);
 		controlDirection(q);
-		System.out.println("AFTER "+q);
+		q.normalize();
+		setQ(q);
+		EulerAngles angles = UtilAngles.toDegrees(q);
+		setXRot((float)angles.pitch);
+		setYRot((float)angles.yaw);
+		zRot = (float)angles.roll;
+		//System.out.println("AFTER "+q);
+		// movement
 		tickMovement(q);
     	motionClamp();
     	//System.out.println("MOTION "+getDeltaMovement());
 		move(MoverType.SELF, getDeltaMovement());
 		if (this.isControlledByLocalInstance()) 
 			this.syncPacketPositionCodec(getX(), getY(), getZ());
-		q = UtilAngles.normalizeQuaternion(q);
-		EulerAngles angles = UtilAngles.toDegrees(q);
-		setXRot((float)angles.pitch);
-		setYRot((float)angles.yaw);
-		zRot = (float)angles.roll;
-		/*if (!level.isClientSide) {
-			System.out.println("x = "+this.getXRot()+" y = "+this.getYRot());
-			System.out.println("roll axis "+UtilAngles.getRollAxis(q));
-			System.out.println("yaw  axis "+UtilAngles.getYawAxis(q));
-		}*/
-		//setPrevQ(getClientQ());
-        setQ(q);
-        /*if (level.isClientSide && isControlledByLocalInstance()) {
-            setClientQ(q);
-        }*/
         controlSystem();
         tickParts();
 		tickLerp();
@@ -386,6 +373,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		double air = UtilEntity.getAirPressure(getY());
 		double speedSqr = getDeltaMovement().lengthSqr();
 		double wing = getSurfaceArea();
+		if (this.isLandingGear()) wing += 1.0;
 		return dc * air * speedSqr * wing / 2;
 	}
 	
@@ -750,7 +738,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	@Override
     public boolean hurt(DamageSource source, float amount) {
-		//if (level.isClientSide) return true; // TODO should be a temporary fix
+		//if (level.isClientSide) return true; // should be a temporary fix
 		if (this.isVehicleOf(source.getEntity())) return false;
 		addHealth(-amount);
 		return true;

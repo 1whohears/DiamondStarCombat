@@ -124,11 +124,10 @@ public final class ClientForgeEvents {
 		if (rollRight) roll += 1;
 		if (throttleUp) throttle += 1;
 		if (throttleDown) throttle -= 1;
-		if (gear) plane.switchLandingGear();
 		//System.out.println("pitch = "+pitch+" yaw = "+yaw);
 		PacketHandler.INSTANCE.sendToServer(new ServerBoundFlightControlPacket(
 				throttle, pitch, roll, yaw,
-				mouseMode, flare, shoot, select, openMenu));
+				mouseMode, flare, shoot, select, openMenu, gear));
 		plane.updateControls(throttle, pitch, roll, yaw,
 				mouseMode, flare, shoot, select, openMenu);
 		if (mouseMode && !plane.isFreeLook()) centerMouse();

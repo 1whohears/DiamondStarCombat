@@ -214,7 +214,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	@Override
 	public void tick() {
-		System.out.println(this.tickCount+" "+this.level);
+		//System.out.println(this.tickCount+" "+this.level);
 		if (this.firstTick) init();
 		super.tick();
 		if (Double.isNaN(getDeltaMovement().length())) {
@@ -266,12 +266,16 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public void tickCollisions() {
 		if (this.verticalCollisionBelow || this.verticalCollision) {
 			double my = Math.abs(prevMotion.y);
-			if (my > 0) System.out.println("COLLISION SPEED "+my);
 			double th = collideSpeedThreshHold;
 			if (isLandingGear() 
 					&& (this.getXRot() < 15f && this.getXRot() > -15f)
-					&& (this.zRot < 15f && this.zRot > -15f)) 
+					&& (this.zRot < 15f && this.zRot > -15f)) {
 				th = collideSpeedWithGearThreshHold;
+			}
+			if (my > 0) {
+				System.out.println("COLLISION SPEED "+my);
+				System.out.println("THRESHHOLD = "+th);
+			}
 			if (my > th) {
 				this.addHealth((float)(-(my-th) * collideDamageRate));
 			}
@@ -568,8 +572,8 @@ public abstract class EntityAbstractAircraft extends Entity {
 		//System.out.println("setting up parts client side = "+level.isClientSide);
 		// ORDER MATTERS
 		weaponSystem.setup(this);
-		partsManager.setupParts(this);
 		radarSystem.setup(this);
+		partsManager.setupParts(this);
 	}
 	
 	public void clientSetup() {

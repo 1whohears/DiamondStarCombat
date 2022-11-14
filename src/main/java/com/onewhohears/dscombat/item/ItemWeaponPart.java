@@ -16,11 +16,8 @@ import net.minecraft.world.item.ItemStack;
 
 public class ItemWeaponPart extends ItemPart {
 	
-	private final int num;
-	
 	public ItemWeaponPart(int num) {
-		super(1);
-		this.num = num;
+		super(1, num);
 	}
 	
 	@Override

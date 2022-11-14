@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 public class ItemSeat extends ItemPart {
 
 	public ItemSeat() {
-		super(1);
+		super(1, 0);
 	}
 	
 	@Override

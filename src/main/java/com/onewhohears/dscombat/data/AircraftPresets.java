@@ -10,11 +10,10 @@ import com.onewhohears.dscombat.data.parts.FuelTankData;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.data.parts.PartsManager;
+import com.onewhohears.dscombat.data.parts.RadarPartData;
 import com.onewhohears.dscombat.data.parts.SeatData;
 import com.onewhohears.dscombat.data.parts.WeaponPartData;
 import com.onewhohears.dscombat.data.parts.WeaponRackData;
-import com.onewhohears.dscombat.data.radar.RadarData;
-import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.init.ModItems;
 
@@ -85,18 +84,12 @@ public class AircraftPresets {
 		pm.addPart(new EngineData(0.01f, 0.04f, 4f, 0.001f, 
 						ModItems.TEST_ENGINE.getId()), 
 				"dscombat.left_wing_4", false);
+		pm.addPart(new RadarPartData(0.001f, "test_air", ModItems.TEST_AIR_RADAR.getId()), 
+				"dscombat.internal_3", false);
+		pm.addPart(new RadarPartData(0.001f, "test_ground", ModItems.TEST_GROUND_RADAR.getId()), 
+				"dscombat.internal_4", false);
 		pm.write(tag);
 		//System.out.println(pm);
-		// radar
-		RadarSystem rs = new RadarSystem();
-		RadarData radar2 = new RadarData("radar_all", 1000, -1, 20);
-		radar2.setScanAircraft(true);
-		radar2.setScanPlayers(true);
-		radar2.setScanMobs(true);
-		radar2.setScanAir(true);
-		radar2.setScanGround(true);
-		rs.addRadar(radar2, false);
-		rs.write(tag);
 		// other
 		tag.putString("preset", "test_plane");
 		tag.putFloat("max_speed", 1.5f);
@@ -161,24 +154,11 @@ public class AircraftPresets {
 		pm.addPart(new EngineData(0.008f, 0.06f, 4f, 0.002f, 
 						ModItems.TEST_ENGINE.getId()), 
 				"dscombat.frame_rear", false);
+		pm.addPart(new RadarPartData(0.001f, "test_air", ModItems.TEST_AIR_RADAR.getId()), 
+				"dscombat.internal_3", false);
+		pm.addPart(new RadarPartData(0.001f, "test_ground", ModItems.TEST_GROUND_RADAR.getId()), 
+				"dscombat.internal_4", false);
 		pm.write(tag);
-		// radar
-		RadarSystem rs = new RadarSystem();
-		RadarData radar = new RadarData("radar_air", 1000, 70, 20);
-		radar.setScanAircraft(true);
-		radar.setScanPlayers(true);
-		radar.setScanMobs(false);
-		radar.setScanAir(true);
-		radar.setScanGround(false);
-		rs.addRadar(radar, false);
-		RadarData radar2 = new RadarData("radar_ground", 300, -1, 20);
-		radar2.setScanAircraft(true);
-		radar2.setScanPlayers(true);
-		radar2.setScanMobs(true);
-		radar2.setScanAir(false);
-		radar2.setScanGround(true);
-		rs.addRadar(radar2, false);
-		rs.write(tag);
 		// other
 		tag.putString("preset", "javi");
 		tag.putFloat("max_speed", 1.2f);
@@ -243,24 +223,11 @@ public class AircraftPresets {
 		pm.addPart(new EngineData(0.008f, 0.04f, 4f, 0.001f, 
 						ModItems.TEST_ENGINE.getId()), 
 				"dscombat.frame_rear", false);
+		pm.addPart(new RadarPartData(0.001f, "test_air", ModItems.TEST_AIR_RADAR.getId()), 
+				"dscombat.internal_3", false);
+		pm.addPart(new RadarPartData(0.001f, "test_ground", ModItems.TEST_GROUND_RADAR.getId()), 
+				"dscombat.internal_4", false);
 		pm.write(tag);
-		// radar
-		RadarSystem rs = new RadarSystem();
-		RadarData radar = new RadarData("radar_air", 1500, 70, 20);
-		radar.setScanAircraft(true);
-		radar.setScanPlayers(true);
-		radar.setScanMobs(false);
-		radar.setScanAir(true);
-		radar.setScanGround(false);
-		rs.addRadar(radar, false);
-		RadarData radar2 = new RadarData("radar_ground", 200, -1, 20);
-		radar2.setScanAircraft(true);
-		radar2.setScanPlayers(true);
-		radar2.setScanMobs(true);
-		radar2.setScanAir(false);
-		radar2.setScanGround(true);
-		rs.addRadar(radar2, false);
-		rs.write(tag);
 		// other
 		tag.putString("preset", "alexis");
 		tag.putFloat("max_speed", 1.4f);

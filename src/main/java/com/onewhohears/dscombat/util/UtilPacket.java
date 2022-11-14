@@ -51,9 +51,10 @@ public class UtilPacket {
 			plane.partsManager = pm;
 			plane.weaponSystem = ws;
 			plane.radarSystem = rs;
-			plane.partsManager.clientPartsSetup(plane);
+			// ORDER MATTERS
 			plane.weaponSystem.clientSetup(plane);
 			plane.radarSystem.clientSetup(plane);
+			plane.partsManager.clientPartsSetup(plane);
 			//System.out.println("plane data updated");
 		}
 	}

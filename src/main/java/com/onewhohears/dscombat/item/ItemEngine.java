@@ -9,11 +9,8 @@ import net.minecraft.world.item.ItemStack;
 
 public class ItemEngine extends ItemPart {
 	
-	public final int num;
-	
 	public ItemEngine(int num) {
-		super(1);
-		this.num = num;
+		super(1, num);
 	}
 	
 	@Override

@@ -6,8 +6,11 @@ import net.minecraft.world.item.Item;
 
 public abstract class ItemPart extends Item {
 	
-	protected ItemPart(int stackSize) {
+	protected final int num;
+	
+	protected ItemPart(int stackSize, int num) {
 		super(getDefaultProperties(stackSize));
+		this.num = num;
 	}
 	
 	public static Properties getDefaultProperties(int stackSize) {

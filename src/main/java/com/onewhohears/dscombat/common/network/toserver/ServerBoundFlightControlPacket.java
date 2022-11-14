@@ -21,10 +21,11 @@ public class ServerBoundFlightControlPacket extends IPacket {
 	public final boolean shoot;
 	public final boolean select;
 	public final boolean openMenu;
+	public final boolean gear;
 	
 	public ServerBoundFlightControlPacket(float throttle, float pitch, float roll, float yaw,
 			boolean mouseMode, boolean flare, boolean shoot, boolean select,
-			boolean openMenu) {
+			boolean openMenu, boolean gear) {
 		this.throttle = throttle;
 		this.pitch = pitch;
 		this.roll = roll;
@@ -34,6 +35,7 @@ public class ServerBoundFlightControlPacket extends IPacket {
 		this.shoot = shoot;
 		this.select = select;
 		this.openMenu = openMenu;
+		this.gear = gear;
 	}
 	
 	public ServerBoundFlightControlPacket(FriendlyByteBuf buffer) {
@@ -46,6 +48,7 @@ public class ServerBoundFlightControlPacket extends IPacket {
 		shoot = buffer.readBoolean();
 		select = buffer.readBoolean();
 		openMenu = buffer.readBoolean();
+		gear = buffer.readBoolean();
 	}
 	
 	public void encode(FriendlyByteBuf buffer) {
@@ -58,6 +61,7 @@ public class ServerBoundFlightControlPacket extends IPacket {
 		buffer.writeBoolean(shoot);
 		buffer.writeBoolean(select);
 		buffer.writeBoolean(openMenu);
+		buffer.writeBoolean(gear);
 	}
 	
 	public boolean handle(Supplier<NetworkEvent.Context> ctx) {
@@ -68,6 +72,7 @@ public class ServerBoundFlightControlPacket extends IPacket {
 				if (plane.getControllingPassenger() == player) {
 					plane.updateControls(throttle, pitch, roll, yaw,
 							mouseMode, flare, shoot, select, openMenu);
+					if (gear) plane.switchLandingGear();
 				}
 			}
 			success.set(true);

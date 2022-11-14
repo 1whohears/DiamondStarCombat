@@ -401,9 +401,10 @@ public abstract class EntityAbstractAircraft extends Entity {
 		double x = getDeltaMovement().x;
 		double z = getDeltaMovement().z;
 		double speed = Math.sqrt(x*x + z*z);
-		double f;
-		if (getCurrentThrottle() <= 0) f = 0.05;
-		else f = 0.01;
+		double f = getTotalWeight();
+		if (!isLandingGear()) f *= 2.0;
+		else if (getCurrentThrottle() <= 0) f *= 0.2;
+		else f *= 0.1;
 		if (speed < f) return speed;
 		return f;
 	}

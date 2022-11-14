@@ -9,6 +9,7 @@ import com.onewhohears.dscombat.item.ItemEngine;
 import com.onewhohears.dscombat.item.ItemFuelTank;
 import com.onewhohears.dscombat.item.ItemGasCan;
 import com.onewhohears.dscombat.item.ItemRadarPart;
+import com.onewhohears.dscombat.item.ItemRepairTool;
 import com.onewhohears.dscombat.item.ItemSeat;
 import com.onewhohears.dscombat.item.ItemWeaponPart;
 
@@ -51,8 +52,15 @@ public class ModItems {
 		}
 	};
 	
-	// TODO repair plane wrench
+	// BUFFS
+	public static final RegistryObject<Item> DATA_LINK = ITEMS.register("data_link", 
+			() -> new Item(new Item.Properties().tab(ModItems.PARTS).stacksTo(1)));
 	
+	// TOOLS
+	public static final RegistryObject<Item> WRENCH = ITEMS.register("wrench", 
+			() -> new ItemRepairTool(20, 5));
+	
+	// GAS CANS
 	public static final RegistryObject<Item> GAS_CAN = ITEMS.register("gas_can", 
 			() -> new ItemGasCan(25));
 	public static final RegistryObject<Item> BIG_GAS_CAN = ITEMS.register("big_gas_can", 
@@ -60,29 +68,33 @@ public class ModItems {
 	public static final RegistryObject<Item> BIG_ASS_CAN = ITEMS.register("big_ass_can", 
 			() -> new ItemGasCan(300));
 	
+	// FUEL TANKS
 	public static final RegistryObject<Item> TEST_TANK = ITEMS.register("test_fuel_tank", 
 			() -> new ItemFuelTank(0));
 	public static final RegistryObject<Item> TEST_TANK_2 = ITEMS.register("test_fuel_tank_2", 
 			() -> new ItemFuelTank(1));
 	
+	// ENGINES
 	public static final RegistryObject<Item> TEST_ENGINE = ITEMS.register("test_engine", 
 			() -> new ItemEngine(0));
 	
+	// RADARS
 	public static final RegistryObject<Item> TEST_AIR_RADAR = ITEMS.register("test_radar_air", 
 			() -> new ItemRadarPart(0));
 	public static final RegistryObject<Item> TEST_GROUND_RADAR = ITEMS.register("test_radar_ground", 
 			() -> new ItemRadarPart(0));
-	public static final RegistryObject<Item> DATA_LINK = ITEMS.register("data_link", 
-			() -> new Item(new Item.Properties().tab(ModItems.PARTS).stacksTo(1)));
 	
+	// SEATS
 	public static final RegistryObject<Item> SEAT = ITEMS.register("seat", 
 			() -> new ItemSeat());
 	
+	// WEAPON PARTS
 	public static final RegistryObject<Item> TEST_MISSILE_RACK = ITEMS.register("test_missile_rack", 
 			() -> new ItemWeaponPart(0)); 
 	public static final RegistryObject<Item> TEST_BIG_GUN = ITEMS.register("test_big_gun", 
 			() -> new ItemWeaponPart(1)); 
 	
+	// PLANES
 	public static final RegistryObject<Item> TEST_PLANE = ITEMS.register("test_plane", 
 			() -> new ItemAircraft(ModEntities.TEST_PLANE.get(), "test_plane"));
 	public static final RegistryObject<Item> JAVI_PLANE = ITEMS.register("javi_plane", 

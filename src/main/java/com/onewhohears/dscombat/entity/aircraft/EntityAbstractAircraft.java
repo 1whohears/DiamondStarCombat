@@ -22,6 +22,7 @@ import com.onewhohears.dscombat.entity.weapon.EntityFlare;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.item.ItemGasCan;
+import com.onewhohears.dscombat.item.ItemRepairTool;
 import com.onewhohears.dscombat.util.UtilClientSafeSoundInstance;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.UtilMCText;
@@ -593,13 +594,21 @@ public abstract class EntityAbstractAircraft extends Entity {
 			return InteractionResult.PASS;
 		} else if (!this.level.isClientSide) {
 			//System.out.println("server side");
-			if (player.getInventory().getSelected().getItem() instanceof ItemGasCan) {
-				ItemStack can = player.getInventory().getSelected();
-				int md = can.getMaxDamage();
-				int d = can.getDamageValue();
-				float r = this.addFuel(md-d, true);
-				can.setDamageValue(md-(int)r);
-				return InteractionResult.SUCCESS;
+			ItemStack stack = player.getInventory().getSelected();
+			if (!stack.isEmpty()) {
+				if (stack.getItem() instanceof ItemGasCan) {
+					int md = stack.getMaxDamage();
+					int d = stack.getDamageValue();
+					int r = (int)this.addFuel(md-d, true);
+					stack.setDamageValue(md-r);
+					return InteractionResult.SUCCESS;
+				} else if (stack.getItem() instanceof ItemRepairTool tool) {
+					if (this.isMaxHealth()) return InteractionResult.PASS;
+					this.addHealth(tool.repair);
+					stack.hurtAndBreak(1, player, 
+						(p) -> { p.broadcastBreakEvent(hand); });
+					return InteractionResult.SUCCESS;
+				}
 			}
 			boolean okay = rideAvailableSeat(player);
 			//System.out.println("rideSeat = "+okay);
@@ -918,6 +927,10 @@ public abstract class EntityAbstractAircraft extends Entity {
     
     public float getHealth() {
     	return entityData.get(HEALTH);
+    }
+    
+    public boolean isMaxHealth() {
+    	return getHealth() >= getMaxHealth();
     }
     
     /**

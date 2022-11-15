@@ -241,7 +241,7 @@ public class PartsManager {
 				continue;
 			}
 			if (data.isSetup(slot.getName(), parent)) {
-				System.out.println("ALREADY SETUP");
+				//System.out.println("ALREADY SETUP");
 				continue;
 			}
 			//System.out.println("REMOVING");

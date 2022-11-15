@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableSet;
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.entity.aircraft.EntityHelicopter;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.parts.EntitySeatCamera;
@@ -60,6 +61,12 @@ public class ModEntities {
 					new ResourceLocation(DSCombatMod.MODID, "textures/entities/f16.png"),
 					ModSounds.BIPLANE_1, ModItems.F16), 
 					EntityDimensions.scalable(1.5f, 1.5f)));
+	
+	public static final RegistryObject<EntityType<EntityHelicopter>> NOAH_CHOPPER = ENTITIES.register("noah_chopper", 
+			() -> createEntityTypeFar((type, level) -> new EntityHelicopter(type, level, 
+					new ResourceLocation(DSCombatMod.MODID, "textures/entities/noah_chopper.png"),
+					ModSounds.BIPLANE_1, ModItems.NOAH_CHOPPER, true), 
+					EntityDimensions.scalable(2.8f, 2.8f)));
 	
 	public static final RegistryObject<EntityType<EntitySeat>> SEAT = ENTITIES.register("seat", 
 			() -> createEntityType(EntitySeat::new, EntityDimensions.scalable(0f, 0f)));

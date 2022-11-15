@@ -10,7 +10,9 @@ import com.onewhohears.dscombat.client.renderer.RendererEntityWeaponRack;
 import com.onewhohears.dscombat.client.renderer.model.EntityModelBullet1;
 import com.onewhohears.dscombat.client.renderer.model.EntityModelF16;
 import com.onewhohears.dscombat.client.renderer.model.EntityModelMissile1;
+import com.onewhohears.dscombat.client.renderer.model.EntityModelNoahChopper;
 import com.onewhohears.dscombat.client.renderer.model.EntityModelTestPlane;
+import com.onewhohears.dscombat.entity.aircraft.EntityHelicopter;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
 import com.onewhohears.dscombat.entity.weapon.EntityBullet;
@@ -56,6 +58,7 @@ public class ClientModEvents {
 		event.registerLayerDefinition(EntityModelBullet1.LAYER_LOCATION, EntityModelBullet1::createBodyLayer);
 		event.registerLayerDefinition(EntityModelMissile1.LAYER_LOCATION, EntityModelMissile1::createBodyLayer);
 		event.registerLayerDefinition(EntityModelF16.LAYER_LOCATION, EntityModelF16::createBodyLayer);
+		event.registerLayerDefinition(EntityModelNoahChopper.LAYER_LOCATION, EntityModelNoahChopper::createBodyLayer);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -77,6 +80,10 @@ public class ClientModEvents {
 		event.registerEntityRenderer(ModEntities.F16.get(), 
 				(context) -> new RendererEntityAbstractAircraft<EntityPlane>(context, 
 						new EntityModelF16<EntityPlane>(models.bakeLayer(EntityModelF16.LAYER_LOCATION))));
+		
+		event.registerEntityRenderer(ModEntities.NOAH_CHOPPER.get(), 
+				(context) -> new RendererEntityAbstractAircraft<EntityHelicopter>(context, 
+						new EntityModelNoahChopper<EntityHelicopter>(models.bakeLayer(EntityModelNoahChopper.LAYER_LOCATION))));
 		
 		event.registerEntityRenderer((EntityType<EntityBullet>)ModEntities.BULLET.get(), 
 				(context) -> new RendererEntityAbstractWeapon<EntityBullet>(context, 

@@ -41,8 +41,15 @@ public class EntityPlane extends EntityAbstractAircraft {
 		if (isOnGround()) {
 			EulerAngles angles = UtilAngles.toDegrees(q);
 			//System.out.println("degrees "+angles);
-			q.mul(new Quaternion(Vector3f.ZP, (float)-angles.roll, true));
-			q.mul(new Quaternion(Vector3f.XP, (float)-angles.pitch, true));
+			float dRoll = 5f;
+			float dPitch = 5f;
+			float roll, pitch;
+			if (Math.abs(angles.roll) < dRoll) roll = (float) -angles.roll;
+			else roll = -(float)Math.signum(angles.roll) * dRoll;
+			if (Math.abs(angles.pitch) < dPitch) pitch = (float) -angles.pitch;
+			else pitch = -(float)Math.signum(angles.pitch) * dPitch;
+			q.mul(new Quaternion(Vector3f.ZP, roll, true));
+			q.mul(new Quaternion(Vector3f.XP, pitch, true));
 			q.mul(new Quaternion(Vector3f.YN, inputYaw*getMaxDeltaYaw(), true));
 		} else {
 			q.mul(new Quaternion(Vector3f.ZP, inputRoll*getMaxDeltaRoll(), true));

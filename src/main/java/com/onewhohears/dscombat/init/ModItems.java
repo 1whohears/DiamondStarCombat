@@ -103,5 +103,7 @@ public class ModItems {
 			() -> new ItemAircraft(ModEntities.ALEXIS_PLANE.get(), "alexis"));
 	public static final RegistryObject<Item> F16 = ITEMS.register("f16", 
 			() -> new ItemAircraft(ModEntities.F16.get(), "alexis"));
+	public static final RegistryObject<Item> NOAH_CHOPPER = ITEMS.register("noah_chopper", 
+			() -> new ItemAircraft(ModEntities.NOAH_CHOPPER.get(), "noah"));
 	
 }

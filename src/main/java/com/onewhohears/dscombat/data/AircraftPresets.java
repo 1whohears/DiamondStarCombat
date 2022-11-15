@@ -28,6 +28,7 @@ public class AircraftPresets {
 		presets.add(TestPreset());
 		presets.add(JaviPreset());
 		presets.add(AlexisPreset());
+		presets.add(NoahPreset());
 		// TODO check for a text file with the names of all the presets to read
 	}
 	
@@ -244,6 +245,80 @@ public class AircraftPresets {
 		tag.putFloat("weight", 0.04f);
 		tag.putFloat("surfacearea", 1.2f);
 		tag.putBoolean("landing_gear", true);
+		return tag;
+	}
+	
+	public static CompoundTag NoahPreset() {
+		System.out.println("CREATING NOAH PRESET");
+		CompoundTag tag = new CompoundTag();
+		// parts
+		PartsManager pm = new PartsManager();
+		pm.addSlot(PartSlot.PILOT_SLOT_NAME, SlotType.SEAT, new Vec3(-0.4, -1.0, 1.5), 48, 20);
+		pm.addSlot("dscombat.seat2", SlotType.SEAT, new Vec3(0.4, -1.0, 1.5), 68, 20);
+		pm.addSlot("dscombat.seat3", SlotType.SEAT, new Vec3(-0.4, -1.0, 0.4), 88, 20);
+		pm.addSlot("dscombat.seat4", SlotType.SEAT, new Vec3(0.4, -1.0, 0.4), 108, 20);
+		pm.addSlot("dscombat.left_wing_1", SlotType.WING, new Vec3(-0.9, 0, 1), 48, 40);
+		pm.addSlot("dscombat.left_wing_2", SlotType.WING, new Vec3(-1.8, 0, 1), 68, 40);
+		pm.addSlot("dscombat.right_wing_1", SlotType.WING, new Vec3(0.9, 0, 1), 88, 40);
+		pm.addSlot("dscombat.right_wing_2", SlotType.WING, new Vec3(1.8, 0, 1), 108, 40);
+		pm.addSlot("dscombat.frame_rear", SlotType.FRAME, new Vec3(0, 0, -1), 48, 60);
+		pm.addSlot("dscombat.frame_belly", SlotType.FRAME, new Vec3(0, -0.5, 0), 68, 60);
+		pm.addSlot("dscombat.internal_1", SlotType.INTERNAL, new Vec3(0, 0, 1), 48, 80);
+		pm.addSlot("dscombat.internal_2", SlotType.INTERNAL, new Vec3(0, 0, 1), 68, 80);
+		pm.addSlot("dscombat.internal_3", SlotType.INTERNAL, new Vec3(0, 0, 1), 88, 80);
+		pm.addSlot("dscombat.internal_4", SlotType.INTERNAL, new Vec3(0, 0, 1), 108, 80);
+		pm.addPart(new SeatData(0.001f, ModItems.SEAT.getId()), 
+				PartSlot.PILOT_SLOT_NAME, false);
+		pm.addPart(new SeatData(0.001f, ModItems.SEAT.getId()), 
+				"dscombat.seat2", false);
+		pm.addPart(new SeatData(0.001f, ModItems.SEAT.getId()), 
+				"dscombat.seat3", false);
+		pm.addPart(new SeatData(0.001f, ModItems.SEAT.getId()), 
+				"dscombat.seat4", false);
+		pm.addPart(new WeaponPartData(0.002f, "bullet_2", 
+				WeaponPresets.TEST_BIG_GUN, ModItems.TEST_BIG_GUN.getId()), 
+				"dscombat.internal_1", false);
+		pm.addPart(new WeaponRackData(0.004f, "aim120b", 
+				WeaponPresets.TEST_MISSILE_RACK, ModItems.TEST_MISSILE_RACK.getId()), 
+				"dscombat.right_wing_1", false);
+		pm.addPart(new WeaponRackData(0.004f, "aim7e", 
+				WeaponPresets.TEST_MISSILE_RACK, ModItems.TEST_MISSILE_RACK.getId()), 
+				"dscombat.right_wing_2", false);
+		pm.addPart(new WeaponRackData(0.004f, "agm84e", 
+				WeaponPresets.TEST_MISSILE_RACK, ModItems.TEST_MISSILE_RACK.getId()), 
+				"dscombat.left_wing_2", false);
+		pm.addPart(new WeaponRackData(0.004f, "agm114k", 
+				WeaponPresets.TEST_MISSILE_RACK, ModItems.TEST_MISSILE_RACK.getId()), 
+				"dscombat.left_wing_1", false);
+		pm.addPart(new FuelTankData(0.008f, 100f, 100f, 
+				ModItems.TEST_TANK.getId()), 
+				"dscombat.internal_2", false);
+		pm.addPart(new EngineData(0.008f, 0.06f, 4f, 0.002f, 
+				ModItems.TEST_ENGINE.getId()), 
+				"dscombat.frame_rear", false);
+		pm.addPart(new RadarPartData(0.001f, "test_air", ModItems.TEST_AIR_RADAR.getId()), 
+				"dscombat.internal_3", false);
+		pm.addPart(new RadarPartData(0.001f, "test_ground", ModItems.TEST_GROUND_RADAR.getId()), 
+				"dscombat.internal_4", false);
+		pm.write(tag);
+		// other
+		tag.putString("preset", "noah");
+		tag.putFloat("max_speed", 1.0f);
+		tag.putFloat("max_health", 100);
+		tag.putFloat("health", 100);
+		tag.putInt("flares", 100);
+		tag.putFloat("stealth", 1);
+		tag.putFloat("maxroll", 4.0f);
+		tag.putFloat("maxpitch", 2.0f);
+		tag.putFloat("maxyaw", 4.0f);
+		tag.putFloat("throttleup", 0.02f);
+		tag.putFloat("throttledown", 0.02f);
+		tag.putFloat("idleheat", 8f);
+		tag.putFloat("weight", 0.03f);
+		tag.putFloat("surfacearea", 1.0f);
+		tag.putBoolean("landing_gear", true);
+		tag.putFloat("accForward", 0.05f);
+		tag.putFloat("accSide", 0.02f);
 		return tag;
 	}
 	

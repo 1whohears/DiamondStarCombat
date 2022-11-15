@@ -233,11 +233,17 @@ public class UtilAngles {
 							Math.cos(yawRad)*Math.cos(pitchRad));
 	}
     
+    /**
+     * TODO doesn't work
+     */
     public static Vec3 getPitchAxis(Quaternion q) {
     	EulerAngles a = toRadians(q);
     	return getPitchAxis(a.pitch, a.yaw, a.roll);
     }
     
+    /**
+     * TODO doesn't work
+     */
     public static Vec3 getPitchAxis(double pitchRad, double yawRad, double rollRad) {
 		double CP = Math.cos(pitchRad);
 		double SP = Math.sin(pitchRad);

@@ -76,7 +76,7 @@ public class ItemAircraft extends Item {
 					MobSpawnType.SPAWN_EGG, true, 
 					!Objects.equals(blockpos, blockpos1) && direction == Direction.UP);
 			if (spawn != null) {
-				spawn.setPos(spawn.position().add(0, 2, 0));
+				spawn.setPos(spawn.position().add(0, 4, 0));
 				itemstack.shrink(1);
 				level.gameEvent(player, GameEvent.ENTITY_PLACE, blockpos);
 			}

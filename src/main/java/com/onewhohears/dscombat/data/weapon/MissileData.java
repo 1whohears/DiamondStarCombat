@@ -150,10 +150,11 @@ public class MissileData extends BulletData {
 				this.setLaunchFail("you have not selected an enemy to shoot");
 				return null;
 			}
-			if (targetType == TargetType.AIR && target.isOnGround()) {
+			boolean groundWater = UtilEntity.isOnGroundOrWater(target);
+			if (targetType == TargetType.AIR && groundWater) {
 				this.setLaunchFail("this missile can only shoot AIRBORN targets");
 				return null;
-			} else if (targetType == TargetType.GROUND && !isOnGroundOrWater(target)) {
+			} else if (targetType == TargetType.GROUND && !groundWater) {
 				this.setLaunchFail("this missile can only shoot GROUNDED targets");
 				return null;
 			}
@@ -174,12 +175,6 @@ public class MissileData extends BulletData {
 				this.getShootSound(), SoundSource.PLAYERS, 
 				1f, 1f);
 		return rocket;
-	}
-	
-	private boolean isOnGroundOrWater(Entity ping) {
-		if (ping.getRootVehicle() != null) ping = ping.getRootVehicle();
-		if (ping.isOnGround() || ping.isInWater() || (ping.fallDistance < 4f && !ping.isNoGravity())) return true;
-		return false;
 	}
 	
 	public void tickGuide(EntityMissile missile) {

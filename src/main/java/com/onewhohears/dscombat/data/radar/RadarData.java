@@ -185,13 +185,9 @@ public class RadarData {
 	}
 	
 	private boolean groundCheck(Entity ping) {
-		if (ping.getRootVehicle() != null) ping = ping.getRootVehicle();
-		if (scanGround) {
-			if (ping.isOnGround() || ping.isInWater() || (ping.fallDistance < 4f && !ping.isNoGravity())) return true;
-		} 
-		if (scanAir) {
-			if (!ping.isOnGround() && !ping.isInWater()) return true;
-		}
+		boolean groundWater = UtilEntity.isOnGroundOrWater(ping);
+		if (scanGround) if (groundWater) return true;
+		if (scanAir) if (!groundWater) return true;
 		return false;
 	}
 	

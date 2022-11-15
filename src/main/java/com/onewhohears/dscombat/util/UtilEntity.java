@@ -2,6 +2,9 @@ package com.onewhohears.dscombat.util;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.Boat;
+import net.minecraft.world.entity.vehicle.Minecart;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -64,6 +67,21 @@ public class UtilEntity {
 		if (posY > space) return 0;
 		if (posY < water) return scale;
 		return scale/(water-space) * (posY-water) + scale;
+	}
+	
+	public static boolean isOnGroundOrWater(Entity entity) {
+		Entity rv = entity.getRootVehicle();
+		if (rv != null) {
+			if (rv instanceof Boat) return true;
+			if (rv instanceof Minecart) return true;
+			if (rv.isOnGround() || rv.isInWater()) return true;
+		}
+		if (entity instanceof Player p) {
+			if (p.isFallFlying()) return false;
+			if (p.isSprinting()) return true;
+		}
+		if (entity.isOnGround() || entity.isInWater()) return true;
+		return false;
 	}
 	
 }

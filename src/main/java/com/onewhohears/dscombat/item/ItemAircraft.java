@@ -71,6 +71,7 @@ public class ItemAircraft extends Item {
 			if (player != null) {
 				tag.getCompound("EntityTag").putFloat("yRot", -player.getYRot());
 			}
+			//System.out.println("MAKING ENTITY FROM = "+tag);
 			Entity spawn = entitytype.spawn((ServerLevel)level, itemstack, player, blockpos1, 
 					MobSpawnType.SPAWN_EGG, true, 
 					!Objects.equals(blockpos, blockpos1) && direction == Direction.UP);
@@ -84,12 +85,12 @@ public class ItemAircraft extends Item {
 	}
 	
 	private EntityType<?> getType(CompoundTag nbt) {
+		//System.out.println("GETTING TYPE FROM = "+nbt);
 		if (nbt.contains("EntityTag", 10)) {
-			CompoundTag compoundtag = nbt.getCompound("EntityTag");
-			if (compoundtag.contains("id", 8)) {
-				return EntityType.byString(compoundtag.getString("id")).orElse(this.defaultType);
-			}
-		} 
+			//System.out.println("HAS EntityTag");
+			return this.defaultType;
+		}
+		//System.out.println("BAD");
 		CompoundTag etag = new CompoundTag();
 		etag.putString("preset", defultPreset);
 		nbt.put("EntityTag", etag);

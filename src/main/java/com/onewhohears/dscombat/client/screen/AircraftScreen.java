@@ -9,12 +9,18 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.container.AircraftMenuContainer;
 import com.onewhohears.dscombat.common.container.slot.PartItemSlot;
+import com.onewhohears.dscombat.common.network.PacketHandler;
+import com.onewhohears.dscombat.common.network.toserver.ServerBoundAircraftToItemPacket;
+import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.util.UtilMCText;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -46,9 +52,11 @@ public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContaine
 		if (!menu.getCarried().isEmpty() || hoveredSlot == null) return;
 		if (hoveredSlot.hasItem()) {
 			ItemStack stack = hoveredSlot.getItem();
-			renderTooltip(poseStack, getTooltipFromItem(stack), stack.getTooltipImage(), mouseX, mouseY);
+			renderTooltip(poseStack, getTooltipFromItem(stack), 
+					stack.getTooltipImage(), mouseX, mouseY);
 		} else {
-			renderTooltip(poseStack, getSlotTooltip(), Optional.empty(), mouseX, mouseY);
+			renderTooltip(poseStack, getSlotTooltip(), 
+					Optional.empty(), mouseX, mouseY);
 		}
 	}
 	
@@ -95,12 +103,32 @@ public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContaine
 	@Override
 	protected void init() {
 		super.init();
-		// use to add widgets like buttons and sliders
+		Button getItemButton = new Button(0, 0, 80, 20, 
+				Component.translatable("dscombat.shrink_plane_button"), 
+				onPress -> { onPlaneItemButton(); });
+		getItemButton.x = this.getGuiLeft() + titleLabelX+122;
+		getItemButton.y = this.getGuiTop() + titleLabelY+110;
+		this.addRenderableWidget(getItemButton);
 	}
 	
 	@Override
 	public void containerTick() {
 		super.containerTick();
+		Minecraft m = Minecraft.getInstance();
+		if (m.player == null) {
+			m.setScreen(null);
+			return;
+		}
+		Entity rv = m.player.getRootVehicle();
+		if (!(rv instanceof EntityAbstractAircraft plane)) {
+			m.setScreen(null);
+			return;
+		}
+		Entity c = plane.getControllingPassenger();
+		if (c == null || !c.equals(m.player)) {
+			m.setScreen(null);
+			return;
+		}
 	}
 	
 	@Override
@@ -116,6 +144,12 @@ public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContaine
 	@Override
 	public boolean mouseReleased(double mouseX, double mouseY, int button) {
 		return super.mouseReleased(mouseX, mouseY, button);
+	}
+	
+	private void onPlaneItemButton() {
+		Minecraft m = Minecraft.getInstance();
+		Entity rv = m.player.getRootVehicle();
+		PacketHandler.INSTANCE.sendToServer(new ServerBoundAircraftToItemPacket(rv.getId()));
 	}
 
 }

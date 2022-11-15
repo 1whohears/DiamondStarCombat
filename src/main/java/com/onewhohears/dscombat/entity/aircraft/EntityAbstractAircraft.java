@@ -52,6 +52,7 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
@@ -100,16 +101,19 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	protected final ResourceLocation TEXTURE;
 	protected final RegistryObject<SoundEvent> engineSound;
+	protected final RegistryObject<Item> item;
 	
 	private int lerpSteps/*, lerpStepsQ*/, newRiderCooldown;
 	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot/*, lerpZRot*/;
 	private float landingGearPos, landingGearPosOld;
 	
-	public EntityAbstractAircraft(EntityType<? extends EntityAbstractAircraft> entity, Level level, ResourceLocation texture, RegistryObject<SoundEvent> engineSound) {
+	public EntityAbstractAircraft(EntityType<? extends EntityAbstractAircraft> entity, Level level, 
+			ResourceLocation texture, RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item) {
 		super(entity, level);
 		this.TEXTURE = texture;
 		this.engineSound = engineSound;
 		this.blocksBuilding = true;
+		this.item = item;
 	}
 	
 	@Override
@@ -900,6 +904,16 @@ public abstract class EntityAbstractAircraft extends Entity {
     	return engineSound.get();
     }
     
+    public ItemStack getItem() {
+    	ItemStack stack = new ItemStack(item.get());
+    	CompoundTag tag = new CompoundTag();
+    	addAdditionalSaveData(tag);
+    	CompoundTag eTag = new CompoundTag();
+    	eTag.put("EntityTag", tag);
+    	stack.setTag(eTag);
+    	return stack;
+    }
+    
     @Override
 	public boolean shouldRenderAtSqrDistance(double dist) {
 		return dist < 25000;
@@ -1044,7 +1058,8 @@ public abstract class EntityAbstractAircraft extends Entity {
     	EntityDimensions d = getDimensions(getPose());
     	float f = d.width / 2.0F;
         float f1 = d.height / 2.0F;
-        return new AABB(pX-(double)f, pY-(double)f1, pZ-(double)f, pX+(double)f, pY+(double)f1, pZ+(double)f);
+        return new AABB(pX-(double)f, pY-(double)f1, pZ-(double)f, 
+        		pX+(double)f, pY+(double)f1, pZ+(double)f);
     }
     
     public float getMaxFuel() {

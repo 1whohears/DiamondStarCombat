@@ -25,7 +25,7 @@
 	"targetType": 1,
 	
 	"maxRot": 2.5,
-	"acceleration": 0.03,
+	"acceleration": 0.04,
 	"fuseDist": 3,
 	"fov": 70,
 	"flareResistance": 1.0

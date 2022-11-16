@@ -281,7 +281,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 				System.out.println("COLLISION SPEED "+my);
 				System.out.println("THRESHHOLD = "+th);
 			}
-			if (my > th) {
+			if (my > th && this.tickCount > 300) {
 				this.addHealth((float)(-(my-th) * collideDamageRate));
 			}
 		}

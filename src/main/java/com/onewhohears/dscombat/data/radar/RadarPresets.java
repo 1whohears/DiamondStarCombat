@@ -13,6 +13,8 @@ public class RadarPresets {
 	public static List<CompoundTag> radarNbt = new ArrayList<CompoundTag>();
 	
 	public static void setupPresets() {
+		// TODO make radar presets json file
+		
 		RadarData test_air = new RadarData("test_air", 1500, 70, 20);
 		test_air.setScanAircraft(true);
 		test_air.setScanPlayers(true);

@@ -77,6 +77,7 @@ public class RadarSystem {
 		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
 				new ClientBoundPingsPacket(parent.getId(), targets));
 		updateRockets();
+		// TODO make data link module do something
 	}
 	
 	private void updateRockets() {

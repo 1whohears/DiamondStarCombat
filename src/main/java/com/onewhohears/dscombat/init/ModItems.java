@@ -59,6 +59,8 @@ public class ModItems {
 	// TOOLS
 	public static final RegistryObject<Item> WRENCH = ITEMS.register("wrench", 
 			() -> new ItemRepairTool(20, 5));
+	public static final RegistryObject<Item> THICK_WRENCH = ITEMS.register("thick_wrench", 
+			() -> new ItemRepairTool(200, 5));
 	
 	// GAS CANS
 	public static final RegistryObject<Item> GAS_CAN = ITEMS.register("gas_can", 
@@ -70,29 +72,31 @@ public class ModItems {
 	
 	// FUEL TANKS
 	public static final RegistryObject<Item> TEST_TANK = ITEMS.register("test_fuel_tank", 
-			() -> new ItemFuelTank(0));
+			() -> new ItemFuelTank(0.005f, 100f, 100f));
 	public static final RegistryObject<Item> TEST_TANK_2 = ITEMS.register("test_fuel_tank_2", 
-			() -> new ItemFuelTank(1));
+			() -> new ItemFuelTank(0.010f, 200f, 200f));
 	
 	// ENGINES
 	public static final RegistryObject<Item> TEST_ENGINE = ITEMS.register("test_engine", 
-			() -> new ItemEngine(0));
+			() -> new ItemEngine(0.010f, 0.040f, 4.0f, 0.005f));
 	
 	// RADARS
 	public static final RegistryObject<Item> TEST_AIR_RADAR = ITEMS.register("test_radar_air", 
-			() -> new ItemRadarPart(0));
+			() -> new ItemRadarPart(0.002f, "test_air"));
 	public static final RegistryObject<Item> TEST_GROUND_RADAR = ITEMS.register("test_radar_ground", 
-			() -> new ItemRadarPart(0));
+			() -> new ItemRadarPart(0.002f, "test_ground"));
 	
 	// SEATS
 	public static final RegistryObject<Item> SEAT = ITEMS.register("seat", 
-			() -> new ItemSeat());
+			() -> new ItemSeat(0.001f));
 	
 	// WEAPON PARTS
-	public static final RegistryObject<Item> TEST_MISSILE_RACK = ITEMS.register("test_missile_rack", 
-			() -> new ItemWeaponPart(0)); 
-	public static final RegistryObject<Item> TEST_BIG_GUN = ITEMS.register("test_big_gun", 
-			() -> new ItemWeaponPart(1)); 
+	public static final RegistryObject<Item> XM12 = ITEMS.register("xm12", 
+			() -> new ItemWeaponPart(0.003f, "xm12")); 
+	public static final RegistryObject<Item> LIGHT_MISSILE_RACK = ITEMS.register("light_missile_rack", 
+			() -> new ItemWeaponPart(0.004f, "light_missile_rack")); 
+	public static final RegistryObject<Item> HEAVY_MISSILE_RACK = ITEMS.register("heavy_missile_rack", 
+			() -> new ItemWeaponPart(0.008f, "heavy_missile_rack")); 
 	
 	// PLANES
 	public static final RegistryObject<Item> TEST_PLANE = ITEMS.register("test_plane", 

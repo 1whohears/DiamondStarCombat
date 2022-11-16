@@ -13,8 +13,12 @@ import net.minecraft.world.item.ItemStack;
 
 public class ItemFuelTank extends ItemPart {
 	
-	public ItemFuelTank(int num) {
-		super(1, num);
+	public final float fuel, max;
+	
+	public ItemFuelTank(float weight, float fuel, float max) {
+		super(1, weight);
+		this.fuel = fuel;
+		this.max = max;
 	}
 	
 	@Override
@@ -28,15 +32,9 @@ public class ItemFuelTank extends ItemPart {
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
 		if (group.getId() == ModItems.PARTS.getId()) {
-			if (num == 0) {
-				ItemStack test = new ItemStack(ModItems.TEST_TANK.get());
-				test.setTag(new FuelTankData(0.01f, 100f, 100f, ModItems.TEST_TANK.getId()).write());
-				items.add(test);
-			} else if (num == 1) {
-				ItemStack test2 = new ItemStack(ModItems.TEST_TANK_2.get());
-				test2.setTag(new FuelTankData(0.02f, 200f, 200f, ModItems.TEST_TANK_2.getId()).write());
-				items.add(test2);
-			}
+			ItemStack test = new ItemStack(this);
+			test.setTag(new FuelTankData(weight, fuel, max, getIdPart()).write());
+			items.add(test);
 		}
 	}
 

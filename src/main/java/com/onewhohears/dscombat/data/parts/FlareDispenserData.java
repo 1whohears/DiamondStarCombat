@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.data.parts;
 
+import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityFlare;
@@ -22,6 +23,10 @@ public class FlareDispenserData extends PartData {
 		this.heat = heat;
 		this.age = age;
 		this.max = max;
+	}
+	
+	public FlareDispenserData(float weight, int flares, int max, float heat, int age, String itemid) {
+		this(weight, flares, max, heat, age, new ResourceLocation(DSCombatMod.MODID, itemid));
 	}
 	
 	public FlareDispenserData(CompoundTag tag) {

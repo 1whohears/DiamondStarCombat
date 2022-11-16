@@ -9,19 +9,21 @@ import net.minecraft.world.item.ItemStack;
 
 public class ItemEngine extends ItemPart {
 	
-	public ItemEngine(int num) {
-		super(1, num);
+	public final float thrust, heat, fuelRate;
+	
+	public ItemEngine(float weight, float thrust, float heat, float fuelRate) {
+		super(1, weight);
+		this.thrust = thrust;
+		this.heat = heat;
+		this.fuelRate = fuelRate;
 	}
 	
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
 		if (group.getId() == ModItems.PARTS.getId()) {
-			if (num == 0) {
-				ItemStack test = new ItemStack(ModItems.TEST_ENGINE.get());
-				test.setTag(new EngineData(0.01f, 0.04f, 4f, 0.005f, 
-						ModItems.TEST_ENGINE.getId()).write());
-				items.add(test);
-			}
+			ItemStack test = new ItemStack(this);
+			test.setTag(new EngineData(weight, thrust, heat, fuelRate, getIdPart()).write());
+			items.add(test);
 		}
 	}
 

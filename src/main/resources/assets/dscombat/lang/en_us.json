@@ -69,6 +69,7 @@
 	"itemGroup.aircraft": "DSCombat Aircraft",
 	
 	"item.dscombat.wrench": "Wrench",
+	"item.dscombat.thick_wrench": "Thiccc Wrench",
 	"item.dscombat.gas_can": "Gas Can",
 	"item.dscombat.big_gas_can": "Big Gas Can",
 	"item.dscombat.big_ass_can": "Big Ass Can",
@@ -86,15 +87,12 @@
 	"item.dscombat.f16": "F16",
 	"item.dscombat.noah_chopper": "Noah Chopper",
 	
-	"item.dscombat.weapon_rack": "Weapon Rack",
-	"item.dscombat.test_missile_rack": "Test Missile Rack",
-	"item.dscombat.test_big_gun": "Test Big Gun",
+	"item.dscombat.xm12": "XM12",
+	"item.dscombat.light_missile_rack": "Light Missile Rack",
+	"item.dscombat.heavy_missile_rack": "Heavy Big Gun",
 	
-	"item.dscombat.bullet_1": "Bullet-1",
-	"item.dscombat.bullet_2": "Bullet-2",
-	"item.dscombat.gbu": "GBU",
-	"item.dscombat.fox3_1": "Fox3-1",
-	"item.dscombat.fox2_1": "Fox2-1",
+	"item.dscombat.20mm": "20mm",
+	"item.dscombat.50mmhe": "50mm HE",
 	"item.dscombat.aim7e": "AIM-7E",
 	"item.dscombat.aim7mh": "AIM-7MH",
 	"item.dscombat.aim9x": "AIM-9X",

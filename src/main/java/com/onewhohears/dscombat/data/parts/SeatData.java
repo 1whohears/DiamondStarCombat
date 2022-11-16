@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.data.parts;
 
+import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
@@ -13,6 +14,10 @@ public class SeatData extends PartData {
 	
 	public SeatData(float weight, ResourceLocation itemid) {
 		super(weight, itemid);
+	}
+	
+	public SeatData(float weight, String itemid) {
+		this(weight, new ResourceLocation(DSCombatMod.MODID, itemid));
 	}
 
 	public SeatData(CompoundTag tag) {

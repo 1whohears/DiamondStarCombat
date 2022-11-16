@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.data.parts;
 
+import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 
@@ -35,6 +36,10 @@ public abstract class PartData {
 	protected PartData(float weight, ResourceLocation itemid) {
 		this.weight = weight;
 		this.itemid = itemid;
+	}
+	
+	protected PartData(float weight, String itemid) {
+		this(weight, new ResourceLocation(DSCombatMod.MODID, itemid));
 	}
 	
 	public PartData(CompoundTag tag) {

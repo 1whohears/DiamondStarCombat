@@ -10,8 +10,11 @@ import net.minecraft.world.item.ItemStack;
 
 public class ItemRadarPart extends ItemPart {
 	
-	public ItemRadarPart(int num) {
-		super(1, num);
+	public final String preset;
+	
+	public ItemRadarPart(float weight, String preset) {
+		super(1, weight);
+		this.preset = preset;
 	}
 	
 	@Override
@@ -26,15 +29,9 @@ public class ItemRadarPart extends ItemPart {
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
 		if (group.getId() == ModItems.PARTS.getId()) {
-			if (num == 0) {
-				ItemStack test = new ItemStack(ModItems.TEST_AIR_RADAR.get());
-				test.setTag(new RadarPartData(0.001f, "test_air", ModItems.TEST_AIR_RADAR.getId()).write());
-				items.add(test);
-			} else if (num == 1) {
-				ItemStack test = new ItemStack(ModItems.TEST_GROUND_RADAR.get());
-				test.setTag(new RadarPartData(0.001f, "test_ground", ModItems.TEST_GROUND_RADAR.getId()).write());
-				items.add(test);
-			}
+			ItemStack test = new ItemStack(this);
+			test.setTag(new RadarPartData(weight, preset, getIdPart()).write());
+			items.add(test);
 		}
 	}
 

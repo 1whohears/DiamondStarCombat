@@ -6,15 +6,19 @@ import net.minecraft.world.item.Item;
 
 public abstract class ItemPart extends Item {
 	
-	protected final int num;
+	public final float weight;
 	
-	protected ItemPart(int stackSize, int num) {
+	protected ItemPart(int stackSize, float weight) {
 		super(getDefaultProperties(stackSize));
-		this.num = num;
+		this.weight = weight;
 	}
 	
 	public static Properties getDefaultProperties(int stackSize) {
 		return new Item.Properties().tab(ModItems.PARTS).stacksTo(stackSize);
+	}
+	
+	public String getIdPart() {
+		return getDescriptionId().split("\\.")[2];
 	}
 
 }

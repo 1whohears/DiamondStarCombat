@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.data.parts;
 
+import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 
@@ -16,6 +17,10 @@ public class FuelTankData extends PartData {
 		super(weight, itemid);
 		this.fuel = fuel;
 		this.max = max;
+	}
+	
+	public FuelTankData(float weight, float fuel, float max, String itemid) {
+		this(weight, fuel, max, new ResourceLocation(DSCombatMod.MODID, itemid));
 	}
 	
 	public FuelTankData(CompoundTag tag) {

@@ -1,7 +1,7 @@
 {
 	"weapons": [
-		"bullet_1.json",
-		"bullet_2.json",
+		"20mm.json",
+		"50mmhe.json",
 		"aim7e.json",
 		"aim7mh.json",
 		"aim9x.json",
@@ -11,5 +11,19 @@
 		"agm65l.json",
 		"agm84e.json",
 		"agm114k.json"
+	],
+	"compatibility": [
+		{
+			"type": "xm12",
+			"weapons": ["20mm","50mmhe"]
+		},
+		{
+			"type": "light_missile_rack",
+			"weapons": ["aim7e","aim7mh","aim9x","agm114k"]
+		},
+		{
+			"type": "heavy_missile_rack",
+			"weapons": ["aim120b","aim120c","agm65g","agm65l","agm84e"]
+		}
 	]
 }

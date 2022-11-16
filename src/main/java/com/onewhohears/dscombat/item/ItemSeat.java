@@ -9,15 +9,15 @@ import net.minecraft.world.item.ItemStack;
 
 public class ItemSeat extends ItemPart {
 
-	public ItemSeat() {
-		super(1, 0);
+	public ItemSeat(float weight) {
+		super(1, weight);
 	}
 	
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
 		if (group.getId() == ModItems.PARTS.getId()) {
-			ItemStack seat1 = new ItemStack(ModItems.SEAT.get());
-			seat1.setTag(new SeatData(0.001f, ModItems.SEAT.getId()).write());
+			ItemStack seat1 = new ItemStack(this);
+			seat1.setTag(new SeatData(weight, getIdPart()).write());
 			items.add(seat1);
 		}
 	}

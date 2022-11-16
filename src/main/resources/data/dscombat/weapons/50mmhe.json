@@ -1,12 +1,12 @@
 {
 	"type":0,
-	"id":"bullet_2",
+	"id":"50mmhe",
 	
 	"entityType":"dscombat:bullet",
 	"shootSound":"dscombat:bullet_shoot_1",
 	
 	"fireRate":4,
-	"innacuracy":0.2,
+	"innacuracy":0.1,
 	"canShootOnGround":true,
 	
 	"damage":30.0,

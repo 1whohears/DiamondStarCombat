@@ -1,6 +1,6 @@
 {
 	"parent": "item/generated",
 	"textures": {
-		"layer0": "dscombat:item/bullet_1"
+		"layer0": "dscombat:item/20mm"
 	}
 }

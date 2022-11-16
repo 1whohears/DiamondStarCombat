@@ -1,12 +1,12 @@
 {
 	"type":0,
-	"id":"bullet_1",
+	"id":"20mm",
 	
 	"entityType":"dscombat:bullet",
 	"shootSound":"dscombat:bullet_shoot_1",
 	
 	"fireRate":1,
-	"innacuracy":0.5,
+	"innacuracy":0.3,
 	"canShootOnGround":true,
 	
 	"damage":15.0,

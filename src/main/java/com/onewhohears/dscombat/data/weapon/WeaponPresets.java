@@ -1,32 +1,42 @@
 package com.onewhohears.dscombat.data.weapon;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
 
 public class WeaponPresets {
 	
-	public static final String[] TEST_MISSILE_RACK = new String[] 
-			{"aim7e","aim7mh","aim9x","aim120b","aim120c","agm65g","agm65l","agm84e","agm114k"};
-	public static final String[] TEST_BIG_GUN = new String[] 
-			{"bullet_1","bullet_2"};
+	public static final HashMap<String, String[]> compatibility = new HashMap<String, String[]>();
 	
 	public static List<WeaponData> weapons = new ArrayList<WeaponData>();
 	public static List<CompoundTag> weaponNbt = new ArrayList<CompoundTag>();
 	
 	public static void setupPresets() {						
 		String dir = "/data/dscombat/weapons/";
-		JsonArray ja = UtilParse.getJsonFromResource(dir+"weapons.json").get("weapons").getAsJsonArray();
-		for (int i = 0; i < ja.size(); ++i) add(UtilParse.getCompoundFromJsonResource(dir+ja.get(i).getAsString()));
+		JsonObject jo = UtilParse.getJsonFromResource(dir+"weapons.json");
 		
+		JsonArray jaw = jo.get("weapons").getAsJsonArray();
+		for (int i = 0; i < jaw.size(); ++i) add(UtilParse.getCompoundFromJsonResource(dir+jaw.get(i).getAsString()));
 		defaultBullet = (BulletData) getById("bullet_1");
 		defaultMissile = (MissileData) getById("aim120b");
+		
+		JsonArray jac = jo.get("compatibility").getAsJsonArray();
+		for (int i = 0; i < jac.size(); ++i) {
+			JsonObject joi = jac.get(i).getAsJsonObject();
+			String type = joi.get("type").getAsString();
+			JsonArray jai = joi.get("weapons").getAsJsonArray();
+			String[] weapons = new String[jai.size()];
+			for (int j = 0; j < weapons.length; ++j) weapons[j] = jai.get(j).getAsString();
+			compatibility.put(type, weapons);
+ 		}
 	}
 	
 	/*public static void setupPresetNbt() {
@@ -68,6 +78,11 @@ public class WeaponPresets {
 	
 	public static MissileData getDefaultMissile() {
 		return defaultMissile;
+	}
+	
+	@Nullable
+	public static String[] getCompatibility(String type) {
+		return compatibility.get(type);
 	}
 	
 }

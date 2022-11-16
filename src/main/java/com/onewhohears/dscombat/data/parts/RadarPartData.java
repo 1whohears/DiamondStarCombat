@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.data.parts;
 
+import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.data.radar.RadarData;
 import com.onewhohears.dscombat.data.radar.RadarPresets;
@@ -17,6 +18,10 @@ public class RadarPartData extends PartData {
 	public RadarPartData(float weight, String preset, ResourceLocation itemid) {
 		super(weight, itemid);
 		this.radarId = preset;
+	}
+	
+	public RadarPartData(float weight, String preset, String itemid) {
+		this(weight, preset, new ResourceLocation(DSCombatMod.MODID, itemid));
 	}
 	
 	public RadarPartData(CompoundTag tag) {

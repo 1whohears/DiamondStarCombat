@@ -1,6 +1,6 @@
 {
 	"parent": "item/generated",
 	"textures": {
-		"layer0": "dscombat:item/bullet_2"
+		"layer0": "dscombat:item/heavy_missile_rack"
 	}
 }

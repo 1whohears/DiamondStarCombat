@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.data.parts;
 
+import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.parts.EntityAbstractPart;
@@ -18,6 +19,10 @@ public class WeaponRackData extends WeaponPartData {
 	
 	public WeaponRackData(float weight, String preset, String[] compatible, ResourceLocation itemid) {
 		super(weight, preset, compatible, itemid);
+	}
+	
+	public WeaponRackData(float weight, String preset, String[] compatible, String itemid) {
+		this(weight, preset, compatible, new ResourceLocation(DSCombatMod.MODID, itemid));
 	}
 	
 	public WeaponRackData(CompoundTag tag) {

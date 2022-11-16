@@ -66,7 +66,7 @@ public class EngineData extends PartData {
 
 	@Override
 	public SlotType[] getCompatibleSlots() {
-		return EXTERNAL;
+		return INTERNAL;
 	}
 
 	/*@Override

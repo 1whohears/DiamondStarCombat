@@ -70,14 +70,14 @@ public class ModItems {
 	public static final RegistryObject<Item> BIG_ASS_CAN = ITEMS.register("big_ass_can", 
 			() -> new ItemGasCan(300));
 	
-	// FUEL TANKS // TODO give tanks actual names
-	public static final RegistryObject<Item> TEST_TANK = ITEMS.register("test_fuel_tank", 
-			() -> new ItemFuelTank(0.005f, 100f, 100f));
-	public static final RegistryObject<Item> TEST_TANK_2 = ITEMS.register("test_fuel_tank_2", 
-			() -> new ItemFuelTank(0.010f, 200f, 200f));
+	// FUEL TANKS
+	public static final RegistryObject<Item> LIGHT_FUEL_TANK = ITEMS.register("light_fuel_tank", 
+			() -> new ItemFuelTank(0.003f, 0f, 50f));
+	public static final RegistryObject<Item> HEAVY_FUEL_TANK = ITEMS.register("heavy_fuel_tank", 
+			() -> new ItemFuelTank(0.010f, 0f, 150f));
 	
-	// ENGINES // TODO give engines actual names
-	public static final RegistryObject<Item> TEST_ENGINE = ITEMS.register("test_engine", 
+	// ENGINES
+	public static final RegistryObject<Item> C6_ENGINE = ITEMS.register("c6_engine", 
 			() -> new ItemEngine(0.010f, 0.040f, 4.0f, 0.005f));
 	
 	// RADARS // TODO give radars actual names

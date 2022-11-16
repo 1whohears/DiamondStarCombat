@@ -1,16 +1,19 @@
 {
 	"weapons": [
-		"20mm.json",
-		"50mmhe.json",
-		"aim7e.json",
-		"aim7mh.json",
-		"aim9x.json",
-		"aim120b.json",
-		"aim120c.json",
-		"agm65g.json",
-		"agm65l.json",
-		"agm84e.json",
-		"agm114k.json"
+		"bullets/20mm.json",
+		"bullets/50mmhe.json",
+		
+		"missiles/aim7e.json",
+		"missiles/aim7mh.json",
+		"missiles/aim9x.json",
+		
+		"missiles/aim120b.json",
+		"missiles/aim120c.json",
+		
+		"missiles/agm65g.json",
+		"missiles/agm65l.json",
+		"missiles/agm84e.json",
+		"missiles/agm114k.json"
 	],
 	"compatibility": [
 		{

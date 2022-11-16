@@ -98,12 +98,12 @@ public class ModItems {
 	public static final RegistryObject<Item> TEST_PLANE = ITEMS.register("test_plane", 
 			() -> new ItemAircraft(ModEntities.TEST_PLANE.get(), "test_plane"));
 	public static final RegistryObject<Item> JAVI_PLANE = ITEMS.register("javi_plane", 
-			() -> new ItemAircraft(ModEntities.JAVI_PLANE.get(), "javi"));
+			() -> new ItemAircraft(ModEntities.JAVI_PLANE.get(), "javi_plane"));
 	public static final RegistryObject<Item> ALEXIS_PLANE = ITEMS.register("alexis_plane", 
-			() -> new ItemAircraft(ModEntities.ALEXIS_PLANE.get(), "alexis"));
+			() -> new ItemAircraft(ModEntities.ALEXIS_PLANE.get(), "alexis_plane"));
 	public static final RegistryObject<Item> F16 = ITEMS.register("f16", 
-			() -> new ItemAircraft(ModEntities.F16.get(), "alexis"));
+			() -> new ItemAircraft(ModEntities.F16.get(), "alexis_plane"));
 	public static final RegistryObject<Item> NOAH_CHOPPER = ITEMS.register("noah_chopper", 
-			() -> new ItemAircraft(ModEntities.NOAH_CHOPPER.get(), "noah"));
+			() -> new ItemAircraft(ModEntities.NOAH_CHOPPER.get(), "noah_chopper"));
 	
 }

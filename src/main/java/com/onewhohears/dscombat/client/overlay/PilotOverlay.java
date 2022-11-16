@@ -82,9 +82,9 @@ public class PilotOverlay {
 				hieght += 10;
 			}
 			// flares
-			GuiComponent.drawString(poseStack, m.font, 
+			/*GuiComponent.drawString(poseStack, m.font, 
 					"   Flares "+plane.getFlares(), 
-					1, hieght, 0xffff00);
+					1, hieght, 0xffff00);*/
 			// target distance
 			RadarSystem radar = plane.radarSystem;
 			if (radar != null) {

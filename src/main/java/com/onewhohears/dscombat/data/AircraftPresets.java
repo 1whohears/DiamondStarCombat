@@ -6,16 +6,6 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonArray;
-import com.onewhohears.dscombat.data.parts.EngineData;
-import com.onewhohears.dscombat.data.parts.FuelTankData;
-import com.onewhohears.dscombat.data.parts.PartSlot;
-import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.data.parts.PartsManager;
-import com.onewhohears.dscombat.data.parts.RadarPartData;
-import com.onewhohears.dscombat.data.parts.SeatData;
-import com.onewhohears.dscombat.data.parts.WeaponRackData;
-import com.onewhohears.dscombat.data.weapon.WeaponPresets;
-import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;

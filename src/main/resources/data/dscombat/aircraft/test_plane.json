@@ -136,7 +136,7 @@
 		},
 		{
 			"name": "dscombat.frame_1",
-			"slot_type": 3,
+			"slot_type": 2,
 			"slot_posx": 0,
 			"slot_posy": -0.5,
 			"slot_posz": 1,
@@ -146,7 +146,7 @@
 		},
 		{
 			"name": "dscombat.frame_2",
-			"slot_type": 3,
+			"slot_type": 2,
 			"slot_posx": 0,
 			"slot_posy": -0.5,
 			"slot_posz": 0.3,
@@ -156,7 +156,7 @@
 		},
 		{
 			"name": "dscombat.frame_3",
-			"slot_type": 3,
+			"slot_type": 2,
 			"slot_posx": 0,
 			"slot_posy": -0.5,
 			"slot_posz": -0.3,
@@ -166,7 +166,7 @@
 		},
 		{
 			"name": "dscombat.frame_4",
-			"slot_type": 3,
+			"slot_type": 2,
 			"slot_posx": 0,
 			"slot_posy": -0.5,
 			"slot_posz": -1,

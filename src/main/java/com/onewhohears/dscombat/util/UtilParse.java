@@ -10,6 +10,7 @@ import javax.annotation.Nullable;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.data.parts.EngineData;
+import com.onewhohears.dscombat.data.parts.FlareDispenserData;
 import com.onewhohears.dscombat.data.parts.FuelTankData;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
@@ -156,6 +157,8 @@ public class UtilParse {
 			return new FuelTankData(tag);
 		case INTERNAL_RADAR:
 			return new RadarPartData(tag);
+		case FLARE_DISPENSER:
+			return new FlareDispenserData(tag);
 		}
 		return null;
 	}

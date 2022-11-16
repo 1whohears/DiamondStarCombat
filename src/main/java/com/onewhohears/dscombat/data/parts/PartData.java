@@ -15,6 +15,8 @@ public abstract class PartData {
 	public static final SlotType[] INTERNAL = new SlotType[] {SlotType.INTERNAL};
 	public static final SlotType[] EXTERNAL = new SlotType[] {SlotType.WING, SlotType.FRAME};
 	
+	public Vec3 relPos = Vec3.ZERO;
+	
 	private final ResourceLocation itemid;
 	private final float weight;
 	private EntityAbstractAircraft parent;
@@ -26,7 +28,8 @@ public abstract class PartData {
 		WEAPON_RACK,
 		ENGINE,
 		FUEL_TANK,
-		INTERNAL_RADAR
+		INTERNAL_RADAR,
+		FLARE_DISPENSER
 	}
 	
 	protected PartData(float weight, ResourceLocation itemid) {
@@ -68,11 +71,13 @@ public abstract class PartData {
 	public void setup(EntityAbstractAircraft craft, String slotId, Vec3 pos) {
 		//System.out.println("setting up part "+this+" client side "+craft.level.isClientSide+" slot "+slotId);
 		parent = craft;
+		relPos = pos;
 	}
 	
 	public void clientSetup(EntityAbstractAircraft craft, String slotId, Vec3 pos) {
 		//System.out.println("setting up part "+this+" client side "+craft.level.isClientSide+" slot "+slotId);
 		parent = craft;
+		relPos = pos;
 	}
 	
 	public abstract boolean isSetup(String slotId, EntityAbstractAircraft craft);

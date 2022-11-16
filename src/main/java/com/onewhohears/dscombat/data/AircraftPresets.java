@@ -18,7 +18,6 @@ import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.init.ModItems;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.phys.Vec3;
 
 public class AircraftPresets {
 	
@@ -43,21 +42,21 @@ public class AircraftPresets {
 		CompoundTag tag = new CompoundTag();
 		// parts
 		PartsManager pm = new PartsManager();
-		pm.addSlot(PartSlot.PILOT_SLOT_NAME, SlotType.SEAT, new Vec3(0, -0.8, 0), 48, 20);
-		pm.addSlot("dscombat.seat2", SlotType.SEAT, new Vec3(1, -0.5, 1), 68, 20);
-		pm.addSlot("dscombat.seat3", SlotType.SEAT, new Vec3(-1, -0.5, 1), 88, 20);
-		pm.addSlot("dscombat.left_wing_1", SlotType.WING, new Vec3(-0.8, 0, 1), 48, 40);
-		pm.addSlot("dscombat.left_wing_2", SlotType.WING, new Vec3(-1.2, 0, 1), 68, 40);
-		pm.addSlot("dscombat.left_wing_3", SlotType.WING, new Vec3(-1.6, 0, 1), 88, 40);
-		pm.addSlot("dscombat.left_wing_4", SlotType.WING, new Vec3(-2.0, 0, 1), 108, 40);
-		pm.addSlot("dscombat.right_wing_1", SlotType.WING, new Vec3(0.8, 0, 1), 48, 60);
-		pm.addSlot("dscombat.right_wing_2", SlotType.WING, new Vec3(1.2, 0, 1), 68, 60);
-		pm.addSlot("dscombat.right_wing_3", SlotType.WING, new Vec3(1.6, 0, 1), 88, 60);
-		pm.addSlot("dscombat.right_wing_4", SlotType.WING, new Vec3(2.0, 0, 1), 108, 60);
-		pm.addSlot("dscombat.internal_1", SlotType.INTERNAL, new Vec3(0, 0, 1), 48, 80);
-		pm.addSlot("dscombat.internal_2", SlotType.INTERNAL, new Vec3(0, 0, 1), 68, 80);
-		pm.addSlot("dscombat.internal_3", SlotType.INTERNAL, new Vec3(0, 0, 1), 88, 80);
-		pm.addSlot("dscombat.internal_4", SlotType.INTERNAL, new Vec3(0, 0, 1), 108, 80);
+		pm.addSlot(PartSlot.PILOT_SLOT_NAME, SlotType.SEAT, 0, -0.8, 0, 48, 20);
+		pm.addSlot("dscombat.seat2", SlotType.SEAT, 1, -0.5, 1, 68, 20);
+		pm.addSlot("dscombat.seat3", SlotType.SEAT, -1, -0.5, 1, 88, 20);
+		pm.addSlot("dscombat.left_wing_1", SlotType.WING, -0.8, 0, 1, 48, 40);
+		pm.addSlot("dscombat.left_wing_2", SlotType.WING, -1.2, 0, 1, 68, 40);
+		pm.addSlot("dscombat.left_wing_3", SlotType.WING, -1.6, 0, 1, 88, 40);
+		pm.addSlot("dscombat.left_wing_4", SlotType.WING, -2.0, 0, 1, 108, 40);
+		pm.addSlot("dscombat.right_wing_1", SlotType.WING, 0.8, 0, 1, 48, 60);
+		pm.addSlot("dscombat.right_wing_2", SlotType.WING, 1.2, 0, 1, 68, 60);
+		pm.addSlot("dscombat.right_wing_3", SlotType.WING, 1.6, 0, 1, 88, 60);
+		pm.addSlot("dscombat.right_wing_4", SlotType.WING, 2.0, 0, 1, 108, 60);
+		pm.addSlot("dscombat.internal_1", SlotType.INTERNAL, 0, 0, 1, 48, 80);
+		pm.addSlot("dscombat.internal_2", SlotType.INTERNAL, 0, 0, 1, 68, 80);
+		pm.addSlot("dscombat.internal_3", SlotType.INTERNAL, 0, 0, 1, 88, 80);
+		pm.addSlot("dscombat.internal_4", SlotType.INTERNAL, 0, 0, 1, 108, 80);
 		pm.addPart(new SeatData(0.003f, ModItems.SEAT.getId()), 
 				PartSlot.PILOT_SLOT_NAME, false);
 		pm.addPart(new SeatData(0.003f, ModItems.SEAT.getId()), 
@@ -115,19 +114,19 @@ public class AircraftPresets {
 		CompoundTag tag = new CompoundTag();
 		// parts
 		PartsManager pm = new PartsManager();
-		pm.addSlot(PartSlot.PILOT_SLOT_NAME, SlotType.SEAT, new Vec3(0, -0.8, 0), 48, 20);
-		pm.addSlot("dscombat.seat2", SlotType.SEAT, new Vec3(1, -0.5, 1), 68, 20);
-		pm.addSlot("dscombat.seat3", SlotType.SEAT, new Vec3(-1, -0.5, 1), 88, 20);
-		pm.addSlot("dscombat.left_wing_1", SlotType.WING, new Vec3(-0.9, 0, 1), 48, 40);
-		pm.addSlot("dscombat.left_wing_2", SlotType.WING, new Vec3(-1.8, 0, 1), 68, 40);
-		pm.addSlot("dscombat.right_wing_1", SlotType.WING, new Vec3(0.9, 0, 1), 88, 40);
-		pm.addSlot("dscombat.right_wing_2", SlotType.WING, new Vec3(1.8, 0, 1), 108, 40);
-		pm.addSlot("dscombat.frame_rear", SlotType.FRAME, new Vec3(0, 0, -1), 48, 60);
-		pm.addSlot("dscombat.frame_belly", SlotType.FRAME, new Vec3(0, -0.5, 0), 68, 60);
-		pm.addSlot("dscombat.internal_1", SlotType.INTERNAL, new Vec3(0, 0, 1), 48, 80);
-		pm.addSlot("dscombat.internal_2", SlotType.INTERNAL, new Vec3(0, 0, 1), 68, 80);
-		pm.addSlot("dscombat.internal_3", SlotType.INTERNAL, new Vec3(0, 0, 1), 88, 80);
-		pm.addSlot("dscombat.internal_4", SlotType.INTERNAL, new Vec3(0, 0, 1), 108, 80);
+		pm.addSlot(PartSlot.PILOT_SLOT_NAME, SlotType.SEAT, 0, -0.8, 0, 48, 20);
+		pm.addSlot("dscombat.seat2", SlotType.SEAT, 1, -0.5, 1, 68, 20);
+		pm.addSlot("dscombat.seat3", SlotType.SEAT, -1, -0.5, 1, 88, 20);
+		pm.addSlot("dscombat.left_wing_1", SlotType.WING, -0.9, 0, 1, 48, 40);
+		pm.addSlot("dscombat.left_wing_2", SlotType.WING, -1.8, 0, 1, 68, 40);
+		pm.addSlot("dscombat.right_wing_1", SlotType.WING, 0.9, 0, 1, 88, 40);
+		pm.addSlot("dscombat.right_wing_2", SlotType.WING, 1.8, 0, 1, 108, 40);
+		pm.addSlot("dscombat.frame_rear", SlotType.FRAME, 0, 0, -1, 48, 60);
+		pm.addSlot("dscombat.frame_belly", SlotType.FRAME, 0, -0.5, 0, 68, 60);
+		pm.addSlot("dscombat.internal_1", SlotType.INTERNAL, 0, 0, 1, 48, 80);
+		pm.addSlot("dscombat.internal_2", SlotType.INTERNAL, 0, 0, 1, 68, 80);
+		pm.addSlot("dscombat.internal_3", SlotType.INTERNAL, 0, 0, 1, 88, 80);
+		pm.addSlot("dscombat.internal_4", SlotType.INTERNAL, 0, 0, 1, 108, 80);
 		pm.addPart(new SeatData(0.001f, ModItems.SEAT.getId()), 
 				PartSlot.PILOT_SLOT_NAME, false);
 		pm.addPart(new SeatData(0.001f, ModItems.SEAT.getId()), 
@@ -165,7 +164,7 @@ public class AircraftPresets {
 		tag.putFloat("max_speed", 1.2f);
 		tag.putFloat("max_health", 100);
 		tag.putFloat("health", 100);
-		tag.putInt("flares", 100);
+		//tag.putInt("flares", 100);
 		tag.putFloat("stealth", 1);
 		tag.putFloat("maxroll", 6.0f);
 		tag.putFloat("maxpitch", 2.5f);
@@ -184,19 +183,19 @@ public class AircraftPresets {
 		CompoundTag tag = new CompoundTag();
 		// parts
 		PartsManager pm = new PartsManager();
-		pm.addSlot(PartSlot.PILOT_SLOT_NAME, SlotType.SEAT, new Vec3(0, -0.8, 0), 48, 20);
-		pm.addSlot("dscombat.seat2", SlotType.SEAT, new Vec3(1, -0.5, 1), 68, 20);
-		pm.addSlot("dscombat.seat3", SlotType.SEAT, new Vec3(-1, -0.5, 1), 88, 20);
-		pm.addSlot("dscombat.left_wing_1", SlotType.WING, new Vec3(-0.9, 0, 1), 48, 40);
-		pm.addSlot("dscombat.left_wing_2", SlotType.WING, new Vec3(-1.8, 0, 1), 68, 40);
-		pm.addSlot("dscombat.right_wing_1", SlotType.WING, new Vec3(0.9, 0, 1), 88, 40);
-		pm.addSlot("dscombat.right_wing_2", SlotType.WING, new Vec3(1.8, 0, 1), 108, 40);
-		pm.addSlot("dscombat.frame_rear", SlotType.FRAME, new Vec3(0, 0, -1), 48, 60);
-		pm.addSlot("dscombat.frame_belly", SlotType.FRAME, new Vec3(0, -0.5, 0), 68, 60);
-		pm.addSlot("dscombat.internal_1", SlotType.INTERNAL, new Vec3(0, 0, 1), 48, 80);
-		pm.addSlot("dscombat.internal_2", SlotType.INTERNAL, new Vec3(0, 0, 1), 68, 80);
-		pm.addSlot("dscombat.internal_3", SlotType.INTERNAL, new Vec3(0, 0, 1), 88, 80);
-		pm.addSlot("dscombat.internal_4", SlotType.INTERNAL, new Vec3(0, 0, 1), 108, 80);
+		pm.addSlot(PartSlot.PILOT_SLOT_NAME, SlotType.SEAT, 0, -0.8, 0, 48, 20);
+		pm.addSlot("dscombat.seat2", SlotType.SEAT, 1, -0.5, 1, 68, 20);
+		pm.addSlot("dscombat.seat3", SlotType.SEAT, -1, -0.5, 1, 88, 20);
+		pm.addSlot("dscombat.left_wing_1", SlotType.WING, -0.9, 0, 1, 48, 40);
+		pm.addSlot("dscombat.left_wing_2", SlotType.WING, -1.8, 0, 1, 68, 40);
+		pm.addSlot("dscombat.right_wing_1", SlotType.WING, 0.9, 0, 1, 88, 40);
+		pm.addSlot("dscombat.right_wing_2", SlotType.WING, 1.8, 0, 1, 108, 40);
+		pm.addSlot("dscombat.frame_rear", SlotType.FRAME, 0, 0, -1, 48, 60);
+		pm.addSlot("dscombat.frame_belly", SlotType.FRAME, 0, -0.5, 0, 68, 60);
+		pm.addSlot("dscombat.internal_1", SlotType.INTERNAL, 0, 0, 1, 48, 80);
+		pm.addSlot("dscombat.internal_2", SlotType.INTERNAL, 0, 0, 1, 68, 80);
+		pm.addSlot("dscombat.internal_3", SlotType.INTERNAL, 0, 0, 1, 88, 80);
+		pm.addSlot("dscombat.internal_4", SlotType.INTERNAL, 0, 0, 1, 108, 80);
 		pm.addPart(new SeatData(0.001f, ModItems.SEAT.getId()), 
 				PartSlot.PILOT_SLOT_NAME, false);
 		pm.addPart(new SeatData(0.001f, ModItems.SEAT.getId()), 
@@ -234,7 +233,7 @@ public class AircraftPresets {
 		tag.putFloat("max_speed", 1.4f);
 		tag.putFloat("max_health", 100);
 		tag.putFloat("health", 100);
-		tag.putInt("flares", 100);
+		//tag.putInt("flares", 100);
 		tag.putFloat("stealth", 1);
 		tag.putFloat("maxroll", 8);
 		tag.putFloat("maxpitch", 2);
@@ -253,20 +252,20 @@ public class AircraftPresets {
 		CompoundTag tag = new CompoundTag();
 		// parts
 		PartsManager pm = new PartsManager();
-		pm.addSlot(PartSlot.PILOT_SLOT_NAME, SlotType.SEAT, new Vec3(-0.4, -1.0, 1.5), 48, 20);
-		pm.addSlot("dscombat.seat2", SlotType.SEAT, new Vec3(0.4, -1.0, 1.5), 68, 20);
-		pm.addSlot("dscombat.seat3", SlotType.SEAT, new Vec3(-0.4, -1.0, 0.4), 88, 20);
-		pm.addSlot("dscombat.seat4", SlotType.SEAT, new Vec3(0.4, -1.0, 0.4), 108, 20);
-		pm.addSlot("dscombat.left_wing_1", SlotType.WING, new Vec3(-1.5, -0.5, 0), 48, 40);
-		pm.addSlot("dscombat.left_wing_2", SlotType.WING, new Vec3(-1.5, 0.5, 0), 68, 40);
-		pm.addSlot("dscombat.right_wing_1", SlotType.WING, new Vec3(1.5, -0.5, 0), 88, 40);
-		pm.addSlot("dscombat.right_wing_2", SlotType.WING, new Vec3(1.5, 0.5, 0), 108, 40);
-		pm.addSlot("dscombat.frame_rear", SlotType.FRAME, new Vec3(0, 0, -1), 48, 60);
-		pm.addSlot("dscombat.frame_belly", SlotType.FRAME, new Vec3(0, -1.0, 0), 68, 60);
-		pm.addSlot("dscombat.internal_1", SlotType.INTERNAL, new Vec3(0, 0, 1), 48, 80);
-		pm.addSlot("dscombat.internal_2", SlotType.INTERNAL, new Vec3(0, 0, 1), 68, 80);
-		pm.addSlot("dscombat.internal_3", SlotType.INTERNAL, new Vec3(0, 0, 1), 88, 80);
-		pm.addSlot("dscombat.internal_4", SlotType.INTERNAL, new Vec3(0, 0, 1), 108, 80);
+		pm.addSlot(PartSlot.PILOT_SLOT_NAME, SlotType.SEAT, -0.4, -1.0, 1.5, 48, 20);
+		pm.addSlot("dscombat.seat2", SlotType.SEAT, 0.4, -1.0, 1.5, 68, 20);
+		pm.addSlot("dscombat.seat3", SlotType.SEAT, -0.4, -1.0, 0.4, 88, 20);
+		pm.addSlot("dscombat.seat4", SlotType.SEAT, 0.4, -1.0, 0.4, 108, 20);
+		pm.addSlot("dscombat.left_wing_1", SlotType.WING, -1.5, -0.5, 0, 48, 40);
+		pm.addSlot("dscombat.left_wing_2", SlotType.WING, -1.5, 0.5, 0, 68, 40);
+		pm.addSlot("dscombat.right_wing_1", SlotType.WING, 1.5, -0.5, 0, 88, 40);
+		pm.addSlot("dscombat.right_wing_2", SlotType.WING, 1.5, 0.5, 0, 108, 40);
+		pm.addSlot("dscombat.frame_rear", SlotType.FRAME, 0, 0, -1, 48, 60);
+		pm.addSlot("dscombat.frame_belly", SlotType.FRAME, 0, -1.0, 0, 68, 60);
+		pm.addSlot("dscombat.internal_1", SlotType.INTERNAL, 0, 0, 1, 48, 80);
+		pm.addSlot("dscombat.internal_2", SlotType.INTERNAL, 0, 0, 1, 68, 80);
+		pm.addSlot("dscombat.internal_3", SlotType.INTERNAL, 0, 0, 1, 88, 80);
+		pm.addSlot("dscombat.internal_4", SlotType.INTERNAL, 0, 0, 1, 108, 80);
 		pm.addPart(new SeatData(0.001f, ModItems.SEAT.getId()), 
 				PartSlot.PILOT_SLOT_NAME, false);
 		pm.addPart(new SeatData(0.001f, ModItems.SEAT.getId()), 
@@ -301,7 +300,7 @@ public class AircraftPresets {
 		tag.putFloat("max_speed", 0.8f);
 		tag.putFloat("max_health", 200);
 		tag.putFloat("health", 200);
-		tag.putInt("flares", 100);
+		//tag.putInt("flares", 100);
 		tag.putFloat("stealth", 1);
 		tag.putFloat("maxroll", 4.0f);
 		tag.putFloat("maxpitch", 2.0f);

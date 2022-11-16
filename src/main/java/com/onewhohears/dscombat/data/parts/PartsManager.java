@@ -84,6 +84,12 @@ public class PartsManager {
 		return true;
 	}
 	
+	public boolean addSlot(String slotName, SlotType slotType, double x, double y, double z, int uix, int uiy) {
+		if (getSlot(slotName) != null) return false;
+		slots.add(new PartSlot(slotName, slotType, new Vec3(x, y, z), uix, uiy));
+		return true;
+	}
+	
 	public boolean addPart(PartData part, String slotName, boolean updateClient) {
 		//System.out.println("ADDING PART "+part+" IN SLOT "+slotName);
 		for (PartSlot p : slots) if (p.getName().equals(slotName) && !p.filled()) {
@@ -253,6 +259,21 @@ public class PartsManager {
 	
 	public List<PartSlot> getSlots() {
 		return slots;
+	}
+	
+	public List<PartSlot> getFlares() {
+		List<PartSlot> flares = new ArrayList<PartSlot>();
+		for (PartSlot p : slots) if (p.filled() && p.getPartData().getType() == PartType.FLARE_DISPENSER) flares.add(p);
+		return flares;
+	}
+	
+	public boolean useFlares(boolean isCreative) {
+		List<PartSlot> flares = getFlares();
+		boolean r = false;
+		for (PartSlot p : flares)
+			if (((FlareDispenserData)p.getPartData()).flare(isCreative))
+				r = true;
+		return r;
 	}
 	
 }

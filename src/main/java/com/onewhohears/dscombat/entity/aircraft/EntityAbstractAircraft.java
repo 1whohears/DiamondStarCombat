@@ -18,7 +18,6 @@ import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponSystem;
 import com.onewhohears.dscombat.entity.parts.EntityAbstractPart;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
-import com.onewhohears.dscombat.entity.weapon.EntityFlare;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.item.ItemGasCan;
@@ -72,7 +71,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public static final EntityDataAccessor<Float> THROTTLEDOWN = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Quaternion> Q = SynchedEntityData.defineId(EntityAbstractAircraft.class, DataSerializers.QUATERNION);
 	public static final EntityDataAccessor<Boolean> FREE_LOOK = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<Integer> FLARES = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.INT); // TODO allow player to add flares
+	//public static final EntityDataAccessor<Integer> FLARES = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.INT); // TODO allow player to add flares
 	public static final EntityDataAccessor<Float> STEALTH = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> ROLL = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> PITCH = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
@@ -126,7 +125,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		entityData.define(THROTTLEDOWN, 0.05f);
 		entityData.define(Q, Quaternion.ONE);
 		entityData.define(FREE_LOOK, true);
-		entityData.define(FLARES, 0);
+		//entityData.define(FLARES, 0);
 		entityData.define(STEALTH, 1f);
 		entityData.define(ROLL, 1f);
 		entityData.define(PITCH, 1f);
@@ -167,7 +166,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		this.setMaxSpeed(compound.getFloat("max_speed"));
 		this.setMaxHealth(compound.getFloat("max_health"));
 		this.setHealth(compound.getFloat("health"));
-		this.setFlares(compound.getInt("flares"));
+		//this.setFlares(compound.getInt("flares"));
 		this.setStealth(compound.getFloat("stealth"));
 		this.setMaxDeltaRoll(compound.getFloat("maxroll"));
 		this.setMaxDeltaPitch(compound.getFloat("maxpitch"));
@@ -196,7 +195,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		compound.putFloat("max_speed", this.getMaxSpeed());
 		compound.putFloat("max_health", this.getMaxHealth());
 		compound.putFloat("health", this.getHealth());
-		compound.putInt("flares", this.getFlares());
+		//compound.putInt("flares", this.getFlares());
 		compound.putFloat("stealth", this.getStealth());
 		compound.putFloat("maxroll", this.getMaxDeltaRoll());
 		compound.putFloat("maxpitch", this.getMaxDeltaPitch());
@@ -479,7 +478,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	}
 	
 	public void flare(Entity controller, boolean isPlayer) {
-		int flares = this.getFlares();
+		/*int flares = this.getFlares();
 		int used = 1;
 		if (isPlayer) {
 			ServerPlayer p = (ServerPlayer) controller;
@@ -491,7 +490,8 @@ public abstract class EntityAbstractAircraft extends Entity {
 		EntityFlare flare = new EntityFlare(level, 6.0f, 100, 3);
 		flare.setPos(this.position().add(0, -0.1, 0));
 		level.addFreshEntity(flare);
-		if (used > 0) this.setFlares(flares-used);
+		if (used > 0) this.setFlares(flares-used);*/
+		partsManager.useFlares(isPlayer && ((ServerPlayer)controller).isCreative());
 	}
 	
 	public void tickParts() {
@@ -955,14 +955,14 @@ public abstract class EntityAbstractAircraft extends Entity {
     	return getIdleHeat() + this.getCurrentThrottle() * getEngineHeat();
     }
     
-    public int getFlares() {
+   /* public int getFlares() {
     	return entityData.get(FLARES);
     }
     
     public void setFlares(int flares) {
     	if (flares < 0) flares = 0;
     	entityData.set(FLARES, flares);
-    }
+    }*/
     
     public float getIdleHeat() {
     	return entityData.get(IDLEHEAT);

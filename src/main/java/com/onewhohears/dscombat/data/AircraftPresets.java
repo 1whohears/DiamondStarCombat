@@ -82,7 +82,7 @@ public class AircraftPresets {
 		pm.addPart(new FuelTankData(0.001f, 100f, 100f,
 				ModItems.TEST_TANK.getId()), 
 				"dscombat.internal_2", false);
-		pm.addPart(new EngineData(0.01f, 0.04f, 4f, 0.001f, 
+		pm.addPart(new EngineData(0.01f, 0.04f, 4f, 0.005f, 
 						ModItems.TEST_ENGINE.getId()), 
 				"dscombat.left_wing_4", false);
 		pm.addPart(new RadarPartData(0.001f, "test_air", ModItems.TEST_AIR_RADAR.getId()), 
@@ -152,7 +152,7 @@ public class AircraftPresets {
 		pm.addPart(new FuelTankData(0.008f, 100f, 100f,
 				ModItems.TEST_TANK.getId()), 
 				"dscombat.internal_2", false);
-		pm.addPart(new EngineData(0.008f, 0.06f, 4f, 0.002f, 
+		pm.addPart(new EngineData(0.008f, 0.06f, 4f, 0.005f, 
 						ModItems.TEST_ENGINE.getId()), 
 				"dscombat.frame_rear", false);
 		pm.addPart(new RadarPartData(0.001f, "test_air", ModItems.TEST_AIR_RADAR.getId()), 
@@ -221,7 +221,7 @@ public class AircraftPresets {
 		pm.addPart(new FuelTankData(0.008f, 100f, 100f,
 				ModItems.TEST_TANK.getId()), 
 				"dscombat.internal_2", false);
-		pm.addPart(new EngineData(0.008f, 0.04f, 4f, 0.001f, 
+		pm.addPart(new EngineData(0.008f, 0.04f, 4f, 0.005f, 
 						ModItems.TEST_ENGINE.getId()), 
 				"dscombat.frame_rear", false);
 		pm.addPart(new RadarPartData(0.001f, "test_air", ModItems.TEST_AIR_RADAR.getId()), 
@@ -257,12 +257,12 @@ public class AircraftPresets {
 		pm.addSlot("dscombat.seat2", SlotType.SEAT, new Vec3(0.4, -1.0, 1.5), 68, 20);
 		pm.addSlot("dscombat.seat3", SlotType.SEAT, new Vec3(-0.4, -1.0, 0.4), 88, 20);
 		pm.addSlot("dscombat.seat4", SlotType.SEAT, new Vec3(0.4, -1.0, 0.4), 108, 20);
-		pm.addSlot("dscombat.left_wing_1", SlotType.WING, new Vec3(-0.9, 0, 1), 48, 40);
-		pm.addSlot("dscombat.left_wing_2", SlotType.WING, new Vec3(-1.8, 0, 1), 68, 40);
-		pm.addSlot("dscombat.right_wing_1", SlotType.WING, new Vec3(0.9, 0, 1), 88, 40);
-		pm.addSlot("dscombat.right_wing_2", SlotType.WING, new Vec3(1.8, 0, 1), 108, 40);
+		pm.addSlot("dscombat.left_wing_1", SlotType.WING, new Vec3(-1.5, -0.5, 0), 48, 40);
+		pm.addSlot("dscombat.left_wing_2", SlotType.WING, new Vec3(-1.5, 0.5, 0), 68, 40);
+		pm.addSlot("dscombat.right_wing_1", SlotType.WING, new Vec3(1.5, -0.5, 0), 88, 40);
+		pm.addSlot("dscombat.right_wing_2", SlotType.WING, new Vec3(1.5, 0.5, 0), 108, 40);
 		pm.addSlot("dscombat.frame_rear", SlotType.FRAME, new Vec3(0, 0, -1), 48, 60);
-		pm.addSlot("dscombat.frame_belly", SlotType.FRAME, new Vec3(0, -0.5, 0), 68, 60);
+		pm.addSlot("dscombat.frame_belly", SlotType.FRAME, new Vec3(0, -1.0, 0), 68, 60);
 		pm.addSlot("dscombat.internal_1", SlotType.INTERNAL, new Vec3(0, 0, 1), 48, 80);
 		pm.addSlot("dscombat.internal_2", SlotType.INTERNAL, new Vec3(0, 0, 1), 68, 80);
 		pm.addSlot("dscombat.internal_3", SlotType.INTERNAL, new Vec3(0, 0, 1), 88, 80);
@@ -275,13 +275,10 @@ public class AircraftPresets {
 				"dscombat.seat3", false);
 		pm.addPart(new SeatData(0.001f, ModItems.SEAT.getId()), 
 				"dscombat.seat4", false);
-		pm.addPart(new WeaponPartData(0.002f, "bullet_2", 
-				WeaponPresets.TEST_BIG_GUN, ModItems.TEST_BIG_GUN.getId()), 
-				"dscombat.internal_1", false);
-		pm.addPart(new WeaponRackData(0.004f, "aim120b", 
+		pm.addPart(new WeaponRackData(0.004f, "agm84e", 
 				WeaponPresets.TEST_MISSILE_RACK, ModItems.TEST_MISSILE_RACK.getId()), 
 				"dscombat.right_wing_1", false);
-		pm.addPart(new WeaponRackData(0.004f, "aim7e", 
+		pm.addPart(new WeaponRackData(0.004f, "aim9x", 
 				WeaponPresets.TEST_MISSILE_RACK, ModItems.TEST_MISSILE_RACK.getId()), 
 				"dscombat.right_wing_2", false);
 		pm.addPart(new WeaponRackData(0.004f, "agm84e", 
@@ -293,19 +290,17 @@ public class AircraftPresets {
 		pm.addPart(new FuelTankData(0.008f, 100f, 100f, 
 				ModItems.TEST_TANK.getId()), 
 				"dscombat.internal_2", false);
-		pm.addPart(new EngineData(0.008f, 0.06f, 4f, 0.002f, 
+		pm.addPart(new EngineData(0.008f, 0.06f, 4f, 0.005f, 
 				ModItems.TEST_ENGINE.getId()), 
 				"dscombat.frame_rear", false);
-		pm.addPart(new RadarPartData(0.001f, "test_air", ModItems.TEST_AIR_RADAR.getId()), 
-				"dscombat.internal_3", false);
 		pm.addPart(new RadarPartData(0.001f, "test_ground", ModItems.TEST_GROUND_RADAR.getId()), 
 				"dscombat.internal_4", false);
 		pm.write(tag);
 		// other
 		tag.putString("preset", "noah");
-		tag.putFloat("max_speed", 1.0f);
-		tag.putFloat("max_health", 100);
-		tag.putFloat("health", 100);
+		tag.putFloat("max_speed", 0.8f);
+		tag.putFloat("max_health", 200);
+		tag.putFloat("health", 200);
 		tag.putInt("flares", 100);
 		tag.putFloat("stealth", 1);
 		tag.putFloat("maxroll", 4.0f);
@@ -318,7 +313,7 @@ public class AircraftPresets {
 		tag.putFloat("surfacearea", 1.0f);
 		tag.putBoolean("landing_gear", true);
 		tag.putFloat("accForward", 0.05f);
-		tag.putFloat("accSide", 0.02f);
+		tag.putFloat("accSide", 0.01f);
 		return tag;
 	}
 	

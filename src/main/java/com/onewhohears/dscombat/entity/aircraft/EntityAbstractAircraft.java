@@ -488,7 +488,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 			}
 		} 
 		if (flares < used) return;
-		EntityFlare flare = new EntityFlare(level, 4.0f, 100, 3);
+		EntityFlare flare = new EntityFlare(level, 6.0f, 100, 3);
 		flare.setPos(this.position().add(0, -0.1, 0));
 		level.addFreshEntity(flare);
 		if (used > 0) this.setFlares(flares-used);

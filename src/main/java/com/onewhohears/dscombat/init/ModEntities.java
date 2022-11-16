@@ -65,7 +65,7 @@ public class ModEntities {
 	public static final RegistryObject<EntityType<EntityHelicopter>> NOAH_CHOPPER = ENTITIES.register("noah_chopper", 
 			() -> createEntityTypeFar((type, level) -> new EntityHelicopter(type, level, 
 					new ResourceLocation(DSCombatMod.MODID, "textures/entities/noah_chopper.png"),
-					ModSounds.BIPLANE_1, ModItems.NOAH_CHOPPER, true), 
+					ModSounds.HELI_1, ModItems.NOAH_CHOPPER, true), 
 					EntityDimensions.scalable(2.8f, 2.8f)));
 	
 	public static final RegistryObject<EntityType<EntitySeat>> SEAT = ENTITIES.register("seat", 

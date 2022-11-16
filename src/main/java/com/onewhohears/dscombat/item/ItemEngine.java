@@ -18,7 +18,7 @@ public class ItemEngine extends ItemPart {
 		if (group.getId() == ModItems.PARTS.getId()) {
 			if (num == 0) {
 				ItemStack test = new ItemStack(ModItems.TEST_ENGINE.get());
-				test.setTag(new EngineData(0.01f, 0.04f, 4f, 0.001f, 
+				test.setTag(new EngineData(0.01f, 0.04f, 4f, 0.005f, 
 						ModItems.TEST_ENGINE.getId()).write());
 				items.add(test);
 			}

@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
+import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 
@@ -119,7 +120,7 @@ public class EntityHelicopter extends EntityAbstractAircraft {
 	
 	@Override
 	public double getThrust() {
-		return super.getThrust() * 2.0;
+		return super.getThrust() * 2.0 * UtilEntity.getAirPressure(getY());
 	}
 	
 	@Override

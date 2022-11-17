@@ -62,6 +62,21 @@ public class RadarData {
 		this.scanRate = scanRate;
 	}
 	
+	public RadarData(String id, double range, double fov, int scanRate,
+			boolean scanAircraft, boolean scanPlayers, boolean scanMobs,
+			boolean scanGround, boolean scanAir) {
+		this.id = id;
+		this.pos = Vec3.ZERO;
+		this.range = range;
+		this.fov = fov;
+		this.scanRate = scanRate;
+		this.scanAircraft = scanAircraft;
+		this.scanPlayers = scanPlayers;
+		this.scanMobs = scanMobs;
+		this.scanGround = scanGround;
+		this.scanAir = scanAir;
+	}
+	
 	public RadarData(CompoundTag tag) {
 		id = tag.getString("id");
 		pos = new Vec3(0, 0, 0);

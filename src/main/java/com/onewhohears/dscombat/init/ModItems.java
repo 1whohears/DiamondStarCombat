@@ -78,13 +78,19 @@ public class ModItems {
 	
 	// ENGINES
 	public static final RegistryObject<Item> C6_ENGINE = ITEMS.register("c6_engine", 
-			() -> new ItemEngine(0.010f, 0.040f, 4.0f, 0.005f));
+			() -> new ItemEngine(0.010f, 0.040f, 4.0f, 0.005f, false));
 	
-	// RADARS // TODO give radars actual names
-	public static final RegistryObject<Item> TEST_AIR_RADAR = ITEMS.register("test_radar_air", 
-			() -> new ItemRadarPart(0.002f, "test_air"));
-	public static final RegistryObject<Item> TEST_GROUND_RADAR = ITEMS.register("test_radar_ground", 
-			() -> new ItemRadarPart(0.002f, "test_ground"));
+	// RADARS
+	public static final RegistryObject<Item> AR500 = ITEMS.register("ar500", 
+			() -> new ItemRadarPart(0.002f, "ar500"));
+	public static final RegistryObject<Item> AR1K = ITEMS.register("ar1k", 
+			() -> new ItemRadarPart(0.005f, "ar1k"));
+	public static final RegistryObject<Item> AR2K = ITEMS.register("ar2k", 
+			() -> new ItemRadarPart(0.010f, "ar2k"));
+	public static final RegistryObject<Item> GR200 = ITEMS.register("gr200", 
+			() -> new ItemRadarPart(0.004f, "gr200"));
+	public static final RegistryObject<Item> GR400 = ITEMS.register("gr400", 
+			() -> new ItemRadarPart(0.008f, "gr400"));
 	
 	// SEATS
 	public static final RegistryObject<Item> SEAT = ITEMS.register("seat", 

@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.init;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.EngineData;
+import com.onewhohears.dscombat.data.parts.ExternalEngineData;
 import com.onewhohears.dscombat.data.parts.FlareDispenserData;
 import com.onewhohears.dscombat.data.parts.FuelTankData;
 import com.onewhohears.dscombat.data.parts.PartData;
@@ -131,6 +132,8 @@ public class DataSerializers {
 				return new RadarPartData(buffer);
 			case FLARE_DISPENSER:
 				return new FlareDispenserData(buffer);
+			case EXTERNAL_ENGINE:
+				return new ExternalEngineData(buffer);
 			}
 			return null;
 		}

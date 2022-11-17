@@ -5,6 +5,10 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.onewhohears.dscombat.util.UtilParse;
+
 import net.minecraft.nbt.CompoundTag;
 
 public class RadarPresets {
@@ -13,6 +17,11 @@ public class RadarPresets {
 	public static List<CompoundTag> radarNbt = new ArrayList<CompoundTag>();
 	
 	public static void setupPresets() {
+		String dir = "/data/dscombat/radars/";
+		JsonObject jo = UtilParse.getJsonFromResource(dir+"radars.json");
+		
+		JsonArray jar = jo.get("radars").getAsJsonArray();
+		for (int i = 0; i < jar.size(); ++i) add(UtilParse.getCompoundFromJsonResource(dir+jar.get(i).getAsString()));
 		// TODO make radar presets json file
 		
 		RadarData test_air = new RadarData("test_air", 1500, 70, 20);
@@ -35,6 +44,12 @@ public class RadarPresets {
 	public static void add(RadarData data) {
 		radars.add(data);
 		radarNbt.add(data.write());
+	}
+	
+	public static void add(CompoundTag tag) {
+		RadarData data = new RadarData(tag);
+		radars.add(data);
+		radarNbt.add(tag);
 	}
 	
 	@Nullable

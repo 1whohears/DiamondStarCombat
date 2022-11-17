@@ -1,6 +1,6 @@
 {
 	"parent": "item/generated",
 	"textures": {
-		"layer0": "dscombat:item/fox3_1"
+		"layer0": "dscombat:item/ar2k"
 	}
 }

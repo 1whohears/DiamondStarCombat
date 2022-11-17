@@ -6,6 +6,7 @@ import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.item.ItemAircraft;
 import com.onewhohears.dscombat.item.ItemAmmo;
 import com.onewhohears.dscombat.item.ItemEngine;
+import com.onewhohears.dscombat.item.ItemFlareDispenser;
 import com.onewhohears.dscombat.item.ItemFuelTank;
 import com.onewhohears.dscombat.item.ItemGasCan;
 import com.onewhohears.dscombat.item.ItemRadarPart;
@@ -97,6 +98,10 @@ public class ModItems {
 	// SEATS
 	public static final RegistryObject<Item> SEAT = ITEMS.register("seat", 
 			() -> new ItemSeat(0.001f));
+	
+	// FLARE DISPENSERS
+	public static final RegistryObject<Item> BASIC_FLARE_DISPENSER = ITEMS.register("basic_flare_dispenser", 
+			() -> new ItemFlareDispenser(0.010f, 0, 20, 5.0f, 100));
 	
 	// WEAPON PARTS
 	public static final RegistryObject<Item> XM12 = ITEMS.register("xm12", 

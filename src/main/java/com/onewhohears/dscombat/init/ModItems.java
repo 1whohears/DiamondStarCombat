@@ -53,7 +53,7 @@ public class ModItems {
 		}
 	};
 	
-	// BUFFS
+	// BUFFS TODO crafting recipes maybe make and ItemBuffPart class
 	public static final RegistryObject<Item> DATA_LINK = ITEMS.register("data_link", 
 			() -> new Item(new Item.Properties().tab(ModItems.PARTS).stacksTo(1)));
 	
@@ -71,19 +71,19 @@ public class ModItems {
 	public static final RegistryObject<Item> BIG_ASS_CAN = ITEMS.register("big_ass_can", 
 			() -> new ItemGasCan(300));
 	
-	// FUEL TANKS
+	// FUEL TANKS TODO crafting recipes
 	public static final RegistryObject<Item> LIGHT_FUEL_TANK = ITEMS.register("light_fuel_tank", 
 			() -> new ItemFuelTank(0.003f, 0f, 50f));
 	public static final RegistryObject<Item> HEAVY_FUEL_TANK = ITEMS.register("heavy_fuel_tank", 
 			() -> new ItemFuelTank(0.010f, 0f, 150f));
 	
-	// ENGINES
+	// ENGINES TODO crafting recipes
 	public static final RegistryObject<Item> C6_ENGINE = ITEMS.register("c6_engine", 
 			() -> new ItemEngine(0.010f, 0.040f, 4.0f, 0.005f, false));
 	public static final RegistryObject<Item> C12_ENGINE = ITEMS.register("c12_engine", 
 			() -> new ItemEngine(0.018f, 0.080f, 8.0f, 0.015f, false));
 	
-	// RADARS
+	// RADARS TODO crafting recipes
 	public static final RegistryObject<Item> AR500 = ITEMS.register("ar500", 
 			() -> new ItemRadarPart(0.002f, "ar500"));
 	public static final RegistryObject<Item> AR1K = ITEMS.register("ar1k", 
@@ -95,15 +95,15 @@ public class ModItems {
 	public static final RegistryObject<Item> GR400 = ITEMS.register("gr400", 
 			() -> new ItemRadarPart(0.008f, "gr400"));
 	
-	// SEATS
+	// SEATS TODO crafting recipes
 	public static final RegistryObject<Item> SEAT = ITEMS.register("seat", 
 			() -> new ItemSeat(0.001f));
 	
-	// FLARE DISPENSERS
+	// FLARE DISPENSERS TODO crafting recipes
 	public static final RegistryObject<Item> BASIC_FLARE_DISPENSER = ITEMS.register("basic_flare_dispenser", 
 			() -> new ItemFlareDispenser(0.010f, 0, 20, 5.0f, 100));
 	
-	// WEAPON PARTS
+	// WEAPON PARTS TODO crafting recipes
 	public static final RegistryObject<Item> XM12 = ITEMS.register("xm12", 
 			() -> new ItemWeaponPart(0.003f, "xm12")); 
 	public static final RegistryObject<Item> LIGHT_MISSILE_RACK = ITEMS.register("light_missile_rack", 
@@ -111,7 +111,7 @@ public class ModItems {
 	public static final RegistryObject<Item> HEAVY_MISSILE_RACK = ITEMS.register("heavy_missile_rack", 
 			() -> new ItemWeaponPart(0.008f, "heavy_missile_rack")); 
 	
-	// PLANES
+	// PLANES TODO crafting recipes
 	public static final RegistryObject<Item> TEST_PLANE = ITEMS.register("test_plane", 
 			() -> new ItemAircraft(ModEntities.TEST_PLANE.get(), "test_plane"));
 	public static final RegistryObject<Item> JAVI_PLANE = ITEMS.register("javi_plane", 

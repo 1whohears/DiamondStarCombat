@@ -1,14 +1,14 @@
 {
 	"preset": "javi_plane",
-	"max_speed": 1.2,
+	"max_speed": 1.15,
 	
 	"max_health": 150,
 	"health": 150,
 	
 	"weight": 0.04,
-	"surfacearea": 1.5,
+	"surfacearea": 1.6,
 	
-	"stealth": 1.0,
+	"stealth": 1.1,
 	"idleheat": 5.0,
 	
 	"maxroll": 4.0,
@@ -155,26 +155,6 @@
 			"filled": false
 		},
 		{
-			"name": "dscombat.frame_3",
-			"slot_type": 2,
-			"slot_posx": 0,
-			"slot_posy": -0.5,
-			"slot_posz": -0.3,
-			"uix": 88,
-			"uiy": 80,
-			"filled": false
-		},
-		{
-			"name": "dscombat.frame_4",
-			"slot_type": 2,
-			"slot_posx": 0,
-			"slot_posy": -0.5,
-			"slot_posz": -1,
-			"uix": 108,
-			"uiy": 80,
-			"filled": false
-		},
-		{
 			"name": "dscombat.internal_1",
 			"slot_type": 3,
 			"slot_posx": 0,
@@ -211,6 +191,26 @@
 			"slot_posy": 0,
 			"slot_posz": 0,
 			"uix": 108,
+			"uiy": 100,
+			"filled": false
+		},
+		{
+			"name": "dscombat.internal_5",
+			"slot_type": 3,
+			"slot_posx": 0,
+			"slot_posy": 0,
+			"slot_posz": 0,
+			"uix": 128,
+			"uiy": 100,
+			"filled": false
+		},
+		{
+			"name": "dscombat.internal_6",
+			"slot_type": 3,
+			"slot_posx": 0,
+			"slot_posy": 0,
+			"slot_posz": 0,
+			"uix": 148,
 			"uiy": 100,
 			"filled": false
 		}

@@ -213,6 +213,46 @@
 			"uix": 108,
 			"uiy": 100,
 			"filled": false
+		},
+		{
+			"name": "dscombat.internal_5",
+			"slot_type": 3,
+			"slot_posx": 0,
+			"slot_posy": 0,
+			"slot_posz": 0,
+			"uix": 128,
+			"uiy": 100,
+			"filled": false
+		},
+		{
+			"name": "dscombat.internal_6",
+			"slot_type": 3,
+			"slot_posx": 0,
+			"slot_posy": 0,
+			"slot_posz": 0,
+			"uix": 148,
+			"uiy": 100,
+			"filled": false
+		},
+		{
+			"name": "dscombat.internal_7",
+			"slot_type": 3,
+			"slot_posx": 0,
+			"slot_posy": 0,
+			"slot_posz": 0,
+			"uix": 168,
+			"uiy": 100,
+			"filled": false
+		},
+		{
+			"name": "dscombat.internal_8",
+			"slot_type": 3,
+			"slot_posx": 0,
+			"slot_posy": 0,
+			"slot_posz": 0,
+			"uix": 188,
+			"uiy": 100,
+			"filled": false
 		}
 	]
 }

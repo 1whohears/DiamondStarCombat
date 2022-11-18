@@ -41,7 +41,6 @@ public class FlareDispenserLoadRecipe extends CustomRecipe {
 			int c = flares.get(i).getCount();
 			cf += c;
 		}
-		// TODO make based on item count and not damage idiot
 		if (cf > mf) cf = mf;
 		ItemStack r = flareDis.copy();
 		r.getOrCreateTag().putFloat("flares", cf);

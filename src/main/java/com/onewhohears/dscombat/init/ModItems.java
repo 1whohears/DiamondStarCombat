@@ -63,6 +63,8 @@ public class ModItems {
 			() -> new Item(ItemPart.basicProps(64)));
 	public static final RegistryObject<Item> INTEL_CORE_I9X = ITEMS.register("intel_core_i9x", 
 			() -> new Item(ItemPart.basicProps(64)));
+	public static final RegistryObject<Item> NVIDIA_3090 = ITEMS.register("nvidia_3090", 
+			() -> new Item(ItemPart.basicProps(16)));
 	public static final RegistryObject<Item> FUSELAGE = ITEMS.register("fuselage", 
 			() -> new Item(ItemPart.basicProps(32)));
 	public static final RegistryObject<Item> LARGE_FUSELAGE = ITEMS.register("large_fuselage", 

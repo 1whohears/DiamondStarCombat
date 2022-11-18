@@ -18,10 +18,14 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.PacketDistributor;
 
 public class RadarSystem {
+	
+	public boolean dataLink = false;
+	private List<RadarPing> dataLinkTargets = new ArrayList<RadarPing>();
 	
 	private List<RadarData> radars = new ArrayList<RadarData>();
 	private EntityAbstractAircraft parent;
@@ -64,7 +68,28 @@ public class RadarSystem {
 		RadarPing old = null; 
 		if (selectedIndex != -1 && selectedIndex < targets.size()) old = targets.get(selectedIndex);
 		selectedIndex = -1;
+		// PLANE RADARS
 		for (RadarData r : radars) r.tickUpdateTargets(parent, targets);
+		// DATA LINK
+		if (dataLink && parent.level.getGameTime() % 20 == 0) {
+			for (int i = 0; i < dataLinkTargets.size(); ++i) targets.remove(dataLinkTargets.get(i));
+			dataLinkTargets.clear();
+			Entity controller = parent.getControllingPassenger();
+			if (!(controller instanceof Player player)) return;
+			List<? extends Player> players = parent.level.players();
+			for (Player p : players) {
+				if (player.equals(p)) continue;
+				if (player.getTeam() != null && p.getTeam() != null
+						&& player.getTeam().getName().equals(p.getTeam().getName())) {
+					if (p.getRootVehicle() instanceof EntityAbstractAircraft plane) {
+						for (RadarPing rp : targets) {
+							plane.radarSystem.dataLinkTargets.add(rp);
+							plane.radarSystem.targets.add(rp);
+						}
+					}
+				}
+			}
+		}
 		if (old != null) for (int i = 0; i < targets.size(); ++i) 
 			if (targets.get(i).id == old.id) {
 				selectedIndex = i;
@@ -73,11 +98,9 @@ public class RadarSystem {
 				}
 				break;
 			}
-		//System.out.println("chunk source "+radar.getCommandSenderWorld().getChunkSource().getClass().getName());
 		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
 				new ClientBoundPingsPacket(parent.getId(), targets));
 		updateRockets();
-		// TODO make data link module do something
 	}
 	
 	private void updateRockets() {

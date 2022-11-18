@@ -227,7 +227,7 @@ public class PartsManager {
 	public void readContainer(Container c) {
 		//System.out.println("READING CHANGED CONTAINER client side "+parent.level.isClientSide+" items "+c);
 		if (c.getContainerSize() != slots.size()) {
-			//System.out.println("WARNING! THIS CONTAINER HAS THE WRONG NUMBER OF SLOTS!");
+			System.out.println("WARNING! THIS CONTAINER HAS THE WRONG NUMBER OF SLOTS!");
 			return;
 		}
 		for (int i = 0; i < c.getContainerSize(); ++i) {
@@ -241,9 +241,16 @@ public class PartsManager {
 				//System.out.println("REMOVING CAUSE EMPTY");
 				continue;
 			}
+		}
+		for (int i = 0; i < c.getContainerSize(); ++i) {
+			//System.out.println("### CHECKING CONTAINER "+i);
+			ItemStack stack = c.getItem(i);
+			PartSlot slot = slots.get(i);
+			//System.out.println("stack = "+stack+" "+stack.getTag());
+			//System.out.println("slot = "+slot);
 			PartData data = UtilParse.parsePartFromCompound(stack.getTag());
 			if (data == null) {
-				//System.out.println("ERROR! COULD NOT GET PART DATA FROM "+stack+" "+stack.getTag());
+				System.out.println("ERROR! COULD NOT GET PART DATA FROM "+stack+" "+stack.getTag());
 				continue;
 			}
 			if (data.isSetup(slot.getName(), parent)) {

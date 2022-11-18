@@ -1,14 +1,17 @@
 package com.onewhohears.dscombat.init;
 
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.data.parts.BuffData.BuffType;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.item.ItemAircraft;
 import com.onewhohears.dscombat.item.ItemAmmo;
+import com.onewhohears.dscombat.item.ItemBuffPart;
 import com.onewhohears.dscombat.item.ItemEngine;
 import com.onewhohears.dscombat.item.ItemFlareDispenser;
 import com.onewhohears.dscombat.item.ItemFuelTank;
 import com.onewhohears.dscombat.item.ItemGasCan;
+import com.onewhohears.dscombat.item.ItemPart;
 import com.onewhohears.dscombat.item.ItemRadarPart;
 import com.onewhohears.dscombat.item.ItemRepairTool;
 import com.onewhohears.dscombat.item.ItemSeat;
@@ -53,9 +56,33 @@ public class ModItems {
 		}
 	};
 	
-	// BUFFS TODO crafting recipes maybe make and ItemBuffPart class
+	// PARTS TODO crafting recipes
+	public static final RegistryObject<Item> TI83 = ITEMS.register("ti83", 
+			() -> new Item(ItemPart.basicProps(64)));
+	public static final RegistryObject<Item> INTEL_PENTIUM = ITEMS.register("intel_pentium", 
+			() -> new Item(ItemPart.basicProps(64)));
+	public static final RegistryObject<Item> INTEL_CORE_I9X = ITEMS.register("intel_core_i9x", 
+			() -> new Item(ItemPart.basicProps(64)));
+	public static final RegistryObject<Item> FUSELAGE = ITEMS.register("fuselage", 
+			() -> new Item(ItemPart.basicProps(32)));
+	public static final RegistryObject<Item> LARGE_FUSELAGE = ITEMS.register("large_fuselage", 
+			() -> new Item(ItemPart.basicProps(16)));
+	public static final RegistryObject<Item> WING = ITEMS.register("wing", 
+			() -> new Item(ItemPart.basicProps(32)));
+	public static final RegistryObject<Item> LARGE_WING = ITEMS.register("large_wing", 
+			() -> new Item(ItemPart.basicProps(16)));
+	public static final RegistryObject<Item> PROPELLER = ITEMS.register("propeller", 
+			() -> new Item(ItemPart.basicProps(32)));
+	public static final RegistryObject<Item> LARGE_PROPELLER = ITEMS.register("large_propeller", 
+			() -> new Item(ItemPart.basicProps(16)));
+	public static final RegistryObject<Item> COCKPIT = ITEMS.register("cockpit", 
+			() -> new Item(ItemPart.basicProps(4)));
+	public static final RegistryObject<Item> ADVANCED_COCKPIT = ITEMS.register("advanced_cockpit", 
+			() -> new Item(ItemPart.basicProps(1)));
+	
+	// BUFFS TODO crafting recipes
 	public static final RegistryObject<Item> DATA_LINK = ITEMS.register("data_link", 
-			() -> new Item(new Item.Properties().tab(ModItems.PARTS).stacksTo(1)));
+			() -> new ItemBuffPart(BuffType.DATA_LINK));
 	
 	// TOOLS
 	public static final RegistryObject<Item> WRENCH = ITEMS.register("wrench", 

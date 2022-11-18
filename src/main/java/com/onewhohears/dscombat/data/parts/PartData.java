@@ -31,7 +31,8 @@ public abstract class PartData {
 		FUEL_TANK,
 		INTERNAL_RADAR,
 		FLARE_DISPENSER,
-		EXTERNAL_ENGINE
+		EXTERNAL_ENGINE,
+		BUFF_DATA
 	}
 	
 	protected PartData(float weight, ResourceLocation itemid) {

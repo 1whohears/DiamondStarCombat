@@ -9,6 +9,7 @@ import javax.annotation.Nullable;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.onewhohears.dscombat.data.parts.BuffData;
 import com.onewhohears.dscombat.data.parts.EngineData;
 import com.onewhohears.dscombat.data.parts.ExternalEngineData;
 import com.onewhohears.dscombat.data.parts.FlareDispenserData;
@@ -162,6 +163,8 @@ public class UtilParse {
 			return new FlareDispenserData(tag);
 		case EXTERNAL_ENGINE:
 			return new ExternalEngineData(tag);
+		case BUFF_DATA:
+			return new BuffData(tag);
 		}
 		return null;
 	}

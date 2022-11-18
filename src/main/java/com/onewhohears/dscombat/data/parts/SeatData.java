@@ -60,6 +60,7 @@ public class SeatData extends PartData {
 	
 	@Override
 	public void remove(String slotId) {
+		super.remove(slotId);
 		//System.out.println("removing seat of slot "+slotId);
 		for (EntitySeat seat : this.getParent().getSeats()) {
 			//System.out.println("checking seat "+seat.getSlotId());

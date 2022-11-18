@@ -231,20 +231,16 @@ public class PartsManager {
 			return;
 		}
 		for (int i = 0; i < c.getContainerSize(); ++i) {
-			//System.out.println("### CHECKING CONTAINER "+i);
 			ItemStack stack = c.getItem(i);
-			PartSlot slot = slots.get(i);
-			//System.out.println("stack = "+stack+" "+stack.getTag());
-			//System.out.println("slot = "+slot);
 			if (stack.isEmpty()) {
-				removePart(slot.getName(), false);
-				//System.out.println("REMOVING CAUSE EMPTY");
+				removePart(slots.get(i).getName(), false);
 				continue;
 			}
 		}
 		for (int i = 0; i < c.getContainerSize(); ++i) {
 			//System.out.println("### CHECKING CONTAINER "+i);
 			ItemStack stack = c.getItem(i);
+			if (stack.isEmpty()) continue;
 			PartSlot slot = slots.get(i);
 			//System.out.println("stack = "+stack+" "+stack.getTag());
 			//System.out.println("slot = "+slot);

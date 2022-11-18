@@ -78,6 +78,7 @@
 	"sounds.dscombat.heli_1": "Helicopter",
 	
 	"itemGroup.parts": "DSCombat Parts",
+	"itemGroup.weapons": "DSCombat Weapons",
 	"itemGroup.aircraft": "DSCombat Aircraft",
 	
 	"item.dscombat.data_link": "Data Link Module",

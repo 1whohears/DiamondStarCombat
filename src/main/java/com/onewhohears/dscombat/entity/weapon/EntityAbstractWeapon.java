@@ -71,6 +71,10 @@ public abstract class EntityAbstractWeapon extends Projectile {
 			//System.out.println("bullet unloaded");
 			discard(); 
 		}
+		if (!this.level.isClientSide && this.getWeaponData() == null) {
+			discard();
+			return;
+		}
 		if (!this.level.isClientSide && this.tickCount > this.getWeaponData().getMaxAge()) { 
 			//System.out.println("bullet to old");
 			discard();

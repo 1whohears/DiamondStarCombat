@@ -18,7 +18,7 @@ public class ItemWeaponPart extends ItemPart {
 	public final String[] compatible;
 	
 	public ItemWeaponPart(float weight, String compatibilityType) {
-		super(1, weight);
+		super(ItemAmmo.weaponProps(1), weight);
 		this.compatible = WeaponPresets.getCompatibility(compatibilityType);
 	}
 	
@@ -38,7 +38,7 @@ public class ItemWeaponPart extends ItemPart {
 	
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-		if (group.getId() == ModItems.PARTS.getId()) {
+		if (group.getId() == ModItems.WEAPONS.getId()) {
 			for (int i = 0; i < compatible.length; ++i) addWeaponRack(compatible[i], items);
 		}
 	}

@@ -11,11 +11,11 @@ import net.minecraft.world.item.ItemStack;
 public class ItemAmmo extends Item {
 
 	public ItemAmmo(int size) {
-		super(getDefaultProperties(size));
+		super(weaponProps(size));
 	}
 	
-	public static Properties getDefaultProperties(int stackSize) {
-		return new Item.Properties().tab(ModItems.PARTS).stacksTo(stackSize);
+	public static Properties weaponProps(int stackSize) {
+		return new Item.Properties().tab(ModItems.WEAPONS).stacksTo(stackSize);
 	}
 	
 	@Override

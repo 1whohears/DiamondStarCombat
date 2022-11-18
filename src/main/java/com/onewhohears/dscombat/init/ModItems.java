@@ -49,6 +49,13 @@ public class ModItems {
 		}
 	};
 	
+	public static final CreativeModeTab WEAPONS = new CreativeModeTab("weapons") {
+		@Override
+		public ItemStack makeIcon() {
+			return new ItemStack(ModItems.XM12.get());
+		}
+	};
+	
 	public static final CreativeModeTab AIRCRAFT = new CreativeModeTab("aircraft") {
 		@Override
 		public ItemStack makeIcon() {
@@ -58,29 +65,29 @@ public class ModItems {
 	
 	// PARTS TODO crafting recipes
 	public static final RegistryObject<Item> TI83 = ITEMS.register("ti83", 
-			() -> new Item(ItemPart.basicProps(64)));
+			() -> new Item(ItemPart.partProps(64)));
 	public static final RegistryObject<Item> INTEL_PENTIUM = ITEMS.register("intel_pentium", 
-			() -> new Item(ItemPart.basicProps(64)));
+			() -> new Item(ItemPart.partProps(64)));
 	public static final RegistryObject<Item> INTEL_CORE_I9X = ITEMS.register("intel_core_i9x", 
-			() -> new Item(ItemPart.basicProps(64)));
+			() -> new Item(ItemPart.partProps(64)));
 	public static final RegistryObject<Item> NVIDIA_3090 = ITEMS.register("nvidia_3090", 
-			() -> new Item(ItemPart.basicProps(16)));
+			() -> new Item(ItemPart.partProps(16)));
 	public static final RegistryObject<Item> FUSELAGE = ITEMS.register("fuselage", 
-			() -> new Item(ItemPart.basicProps(32)));
+			() -> new Item(ItemPart.partProps(32)));
 	public static final RegistryObject<Item> LARGE_FUSELAGE = ITEMS.register("large_fuselage", 
-			() -> new Item(ItemPart.basicProps(16)));
+			() -> new Item(ItemPart.partProps(16)));
 	public static final RegistryObject<Item> WING = ITEMS.register("wing", 
-			() -> new Item(ItemPart.basicProps(32)));
+			() -> new Item(ItemPart.partProps(32)));
 	public static final RegistryObject<Item> LARGE_WING = ITEMS.register("large_wing", 
-			() -> new Item(ItemPart.basicProps(16)));
+			() -> new Item(ItemPart.partProps(16)));
 	public static final RegistryObject<Item> PROPELLER = ITEMS.register("propeller", 
-			() -> new Item(ItemPart.basicProps(32)));
+			() -> new Item(ItemPart.partProps(32)));
 	public static final RegistryObject<Item> LARGE_PROPELLER = ITEMS.register("large_propeller", 
-			() -> new Item(ItemPart.basicProps(16)));
+			() -> new Item(ItemPart.partProps(16)));
 	public static final RegistryObject<Item> COCKPIT = ITEMS.register("cockpit", 
-			() -> new Item(ItemPart.basicProps(4)));
+			() -> new Item(ItemPart.partProps(4)));
 	public static final RegistryObject<Item> ADVANCED_COCKPIT = ITEMS.register("advanced_cockpit", 
-			() -> new Item(ItemPart.basicProps(1)));
+			() -> new Item(ItemPart.partProps(1)));
 	
 	// BUFFS TODO crafting recipes
 	public static final RegistryObject<Item> DATA_LINK = ITEMS.register("data_link", 

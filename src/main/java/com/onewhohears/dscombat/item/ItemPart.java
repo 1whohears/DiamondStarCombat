@@ -9,11 +9,15 @@ public abstract class ItemPart extends Item {
 	public final float weight;
 	
 	protected ItemPart(int stackSize, float weight) {
-		super(basicProps(stackSize));
+		this(partProps(stackSize), weight);
+	}
+	
+	protected ItemPart(Properties props, float weight) {
+		super(props);
 		this.weight = weight;
 	}
 	
-	public static Properties basicProps(int stackSize) {
+	public static Properties partProps(int stackSize) {
 		return new Item.Properties().tab(ModItems.PARTS).stacksTo(stackSize);
 	}
 	

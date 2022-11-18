@@ -56,21 +56,15 @@ public class FlareDispenserLoadRecipe extends CustomRecipe {
 		int mf = flareDis.getOrCreateTag().getInt("max");
 		for (int i = 0; i < flares.size(); ++i) {
 			ItemStack stack = flares.get(i);
-			int d = stack.getDamageValue();
-			int m = stack.getMaxDamage();
-			int f = m-d;
-			float t = f + cf;
+			int c = flares.get(i).getCount();
+			int t = cf+c;
 			if (t <= mf) {
-				stack.setDamageValue(m);
-				stack.setCount(2);
-				cf += f;
+				stack.setCount(0);
+				cf += c;
 			} else if (t > mf && cf != mf) {
-				stack.setDamageValue(m-(int)(t-mf));
-				stack.setCount(2);
+				stack.setCount(t-mf+1);
 				cf = mf;
-			} else {
-				stack.setCount(2);
-			}
+			} else stack.setCount(c+1);
 		}
 		NonNullList<ItemStack> list = NonNullList.withSize(container.getContainerSize(), ItemStack.EMPTY);
 		for(int i = 0; i < list.size(); ++i) {

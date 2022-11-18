@@ -38,10 +38,8 @@ public class FlareDispenserLoadRecipe extends CustomRecipe {
 		int cf = flareDis.getOrCreateTag().getInt("flares");
 		int mf = flareDis.getOrCreateTag().getInt("max");
 		for (int i = 0; i < flares.size(); ++i) {
-			int d = flares.get(i).getDamageValue();
-			int m = flares.get(i).getMaxDamage();
-			int f = m-d;
-			cf += f;
+			int c = flares.get(i).getCount();
+			cf += c;
 		}
 		// TODO make based on item count and not damage idiot
 		if (cf > mf) cf = mf;

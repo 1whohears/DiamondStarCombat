@@ -63,15 +63,13 @@ public class ModItems {
 		}
 	};
 	
-	// PARTS TODO crafting recipes
+	// PARTS
 	public static final RegistryObject<Item> TI83 = ITEMS.register("ti83", 
 			() -> new Item(ItemPart.partProps(64)));
 	public static final RegistryObject<Item> INTEL_PENTIUM = ITEMS.register("intel_pentium", 
 			() -> new Item(ItemPart.partProps(64)));
 	public static final RegistryObject<Item> INTEL_CORE_I9X = ITEMS.register("intel_core_i9x", 
 			() -> new Item(ItemPart.partProps(64)));
-	public static final RegistryObject<Item> NVIDIA_3090 = ITEMS.register("nvidia_3090", 
-			() -> new Item(ItemPart.partProps(16)));
 	public static final RegistryObject<Item> FUSELAGE = ITEMS.register("fuselage", 
 			() -> new Item(ItemPart.partProps(32)));
 	public static final RegistryObject<Item> LARGE_FUSELAGE = ITEMS.register("large_fuselage", 
@@ -89,7 +87,7 @@ public class ModItems {
 	public static final RegistryObject<Item> ADVANCED_COCKPIT = ITEMS.register("advanced_cockpit", 
 			() -> new Item(ItemPart.partProps(1)));
 	
-	// BUFFS TODO crafting recipes
+	// BUFFS
 	public static final RegistryObject<Item> DATA_LINK = ITEMS.register("data_link", 
 			() -> new ItemBuffPart(BuffType.DATA_LINK));
 	
@@ -107,13 +105,13 @@ public class ModItems {
 	public static final RegistryObject<Item> BIG_ASS_CAN = ITEMS.register("big_ass_can", 
 			() -> new ItemGasCan(300));
 	
-	// FUEL TANKS TODO crafting recipes
+	// FUEL TANKS
 	public static final RegistryObject<Item> LIGHT_FUEL_TANK = ITEMS.register("light_fuel_tank", 
 			() -> new ItemFuelTank(0.003f, 0f, 50f));
 	public static final RegistryObject<Item> HEAVY_FUEL_TANK = ITEMS.register("heavy_fuel_tank", 
 			() -> new ItemFuelTank(0.010f, 0f, 150f));
 	
-	// ENGINES TODO crafting recipes
+	// ENGINES
 	public static final RegistryObject<Item> C6_ENGINE = ITEMS.register("c6_engine", 
 			() -> new ItemEngine(0.010f, 0.040f, 4.0f, 0.005f, false));
 	public static final RegistryObject<Item> C12_ENGINE = ITEMS.register("c12_engine", 

@@ -81,33 +81,52 @@
 	"itemGroup.weapons": "DSCombat Weapons",
 	"itemGroup.aircraft": "DSCombat Aircraft",
 	
+	"item.dscombat.ti83": "TI83",
+	"item.dscombat.intel_pentium": "Intel Pentium",
+	"item.dscombat.intel_core_i9x": "Intel Core 9X",
+	"item.dscombat.fuselage": "Fuselage",
+	"item.dscombat.large_fuselage": "Large Fuselage",
+	"item.dscombat.wing": "Wing",
+	"item.dscombat.large_wing": "Large Wing",
+	"item.dscombat.propeller": "Propeller",
+	"item.dscombat.large_propeller": "Large Propeller",
+	"item.dscombat.cockpit": "Cockpit",
+	"item.dscombat.advanced_cockpit": "Advanced Cockpit",
+	
 	"item.dscombat.data_link": "Data Link Module",
+	
 	"item.dscombat.wrench": "Wrench",
 	"item.dscombat.thick_wrench": "Thiccc Wrench",
+	
 	"item.dscombat.gas_can": "Gas Can",
 	"item.dscombat.big_gas_can": "Big Gas Can",
 	"item.dscombat.big_ass_can": "Big Ass Can",
-	"item.dscombat.seat": "Seat",
+	
 	"item.dscombat.light_fuel_tank": "Light Fuel Tank",
 	"item.dscombat.heavy_fuel_tank": "Heavy Fuel Tank",
+	
 	"item.dscombat.c6_engine": "6 Cylinder Engine",
 	"item.dscombat.c12_engine": "12 Cylinder Engine",
+	
 	"item.dscombat.ar500": "AR-500",
 	"item.dscombat.ar1k": "AR-1k",
 	"item.dscombat.ar2k": "AR-2k",
 	"item.dscombat.gr200": "GR-200",
 	"item.dscombat.gr400": "GR-400",
+	
+	"item.dscombat.seat": "Seat",
+	
 	"item.dscombat.basic_flare_dispenser": "Basic Flare Dispenser",
+	
+	"item.dscombat.xm12": "XM12",
+	"item.dscombat.light_missile_rack": "Light Missile Rack",
+	"item.dscombat.heavy_missile_rack": "Heavy Missile Rack",
 	
 	"item.dscombat.test_plane": "Test Plane",
 	"item.dscombat.javi_plane": "Javi Plane",
 	"item.dscombat.alexis_plane": "Alexis Plane",
 	"item.dscombat.f16": "F16",
 	"item.dscombat.noah_chopper": "Noah Chopper",
-	
-	"item.dscombat.xm12": "XM12",
-	"item.dscombat.light_missile_rack": "Light Missile Rack",
-	"item.dscombat.heavy_missile_rack": "Heavy Missile Rack",
 	
 	"item.dscombat.20mm": "20mm",
 	"item.dscombat.50mmhe": "50mm HE",

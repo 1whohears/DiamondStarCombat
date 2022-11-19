@@ -1,0 +1,19 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"P": {
+			"item": "dscombat:intel_pentium"
+		},
+		"L": {
+			"item": "minecraft:lightning_rod"
+		}
+	},
+	"pattern": [
+		"L",
+		"P"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:data_link"
+	}
+}

@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.item;
 
 import com.onewhohears.dscombat.data.parts.FlareDispenserData;
+import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.util.UtilMCText;
 
@@ -16,8 +17,8 @@ public class ItemFlareDispenser extends ItemPart {
 	public final int flares, max, age;
 	public final float heat;
 	
-	public ItemFlareDispenser(float weight, int flares, int max, float heat, int age) {
-		super(1, weight);
+	public ItemFlareDispenser(float weight, int flares, int max, float heat, int age, SlotType[] compatibleSlots) {
+		super(1, weight, compatibleSlots);
 		this.flares = flares;
 		this.max = max;
 		this.heat = heat;
@@ -36,7 +37,7 @@ public class ItemFlareDispenser extends ItemPart {
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
 		if (group.getId() == ModItems.PARTS.getId()) {
 			ItemStack test = new ItemStack(this);
-			test.setTag(new FlareDispenserData(weight, flares, max, heat, age, getIdPart()).write());
+			test.setTag(new FlareDispenserData(weight, flares, max, heat, age, getIdPart(), compatibleSlots).write());
 			items.add(test);
 		}
 	}

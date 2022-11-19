@@ -12,12 +12,12 @@ import net.minecraft.world.phys.Vec3;
 
 public class SeatData extends PartData {
 	
-	public SeatData(float weight, ResourceLocation itemid) {
-		super(weight, itemid);
+	public SeatData(float weight, ResourceLocation itemid, SlotType[] compatibleSlots) {
+		super(weight, itemid, compatibleSlots);
 	}
 	
-	public SeatData(float weight, String itemid) {
-		this(weight, new ResourceLocation(DSCombatMod.MODID, itemid));
+	public SeatData(float weight, String itemid, SlotType[] compatibleSlots) {
+		this(weight, new ResourceLocation(DSCombatMod.MODID, itemid), compatibleSlots);
 	}
 
 	public SeatData(CompoundTag tag) {
@@ -67,11 +67,6 @@ public class SeatData extends PartData {
 			if (seat.getSlotId().equals(slotId))
 					seat.discard();
 		}
-	}
-
-	@Override
-	public SlotType[] getCompatibleSlots() {
-		return new SlotType[]{SlotType.SEAT};
 	}
 
 	/*@Override

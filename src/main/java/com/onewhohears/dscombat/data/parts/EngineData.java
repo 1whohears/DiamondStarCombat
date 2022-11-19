@@ -14,15 +14,15 @@ public class EngineData extends PartData {
 	private final float heat;
 	private final float fuelRate;
 	
-	public EngineData(float weight, float thrust, float heat, float fuelRate, ResourceLocation itemid) {
-		super(weight, itemid);
+	public EngineData(float weight, float thrust, float heat, float fuelRate, ResourceLocation itemid, SlotType[] compatibleSlots) {
+		super(weight, itemid, compatibleSlots);
 		this.thrust = thrust;
 		this.heat = heat;
 		this.fuelRate = fuelRate;
 	}
 	
-	public EngineData(float weight, float thrust, float heat, float fuelRate, String itemid) {
-		this(weight, thrust, heat, fuelRate, new ResourceLocation(DSCombatMod.MODID, itemid));
+	public EngineData(float weight, float thrust, float heat, float fuelRate, String itemid, SlotType[] compatibleSlots) {
+		this(weight, thrust, heat, fuelRate, new ResourceLocation(DSCombatMod.MODID, itemid), compatibleSlots);
 	}
 	
 	public EngineData(CompoundTag tag) {
@@ -62,11 +62,6 @@ public class EngineData extends PartData {
 	@Override
 	public boolean isSetup(String slotId, EntityAbstractAircraft craft) {
 		return false;
-	}
-
-	@Override
-	public SlotType[] getCompatibleSlots() {
-		return INTERNAL;
 	}
 
 	/*@Override

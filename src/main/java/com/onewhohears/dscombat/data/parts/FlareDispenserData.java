@@ -17,16 +17,16 @@ public class FlareDispenserData extends PartData {
 	private final int age;
 	private int flares;
 	
-	public FlareDispenserData(float weight, int flares, int max, float heat, int age, ResourceLocation itemid) {
-		super(weight, itemid);
+	public FlareDispenserData(float weight, int flares, int max, float heat, int age, ResourceLocation itemid, SlotType[] compatibleSlots) {
+		super(weight, itemid, compatibleSlots);
 		this.flares = flares;
 		this.heat = heat;
 		this.age = age;
 		this.max = max;
 	}
 	
-	public FlareDispenserData(float weight, int flares, int max, float heat, int age, String itemid) {
-		this(weight, flares, max, heat, age, new ResourceLocation(DSCombatMod.MODID, itemid));
+	public FlareDispenserData(float weight, int flares, int max, float heat, int age, String itemid, SlotType[] compatibleSlots) {
+		this(weight, flares, max, heat, age, new ResourceLocation(DSCombatMod.MODID, itemid), compatibleSlots);
 	}
 	
 	public FlareDispenserData(CompoundTag tag) {
@@ -70,11 +70,6 @@ public class FlareDispenserData extends PartData {
 	@Override
 	public boolean isSetup(String slotId, EntityAbstractAircraft craft) {
 		return false;
-	}
-
-	@Override
-	public SlotType[] getCompatibleSlots() {
-		return INTERNAL;
 	}
 	
 	/**

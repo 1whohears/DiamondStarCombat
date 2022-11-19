@@ -17,13 +17,13 @@ public class BuffData extends PartData {
 	
 	private final BuffType type;
 	
-	public BuffData(BuffType type, ResourceLocation itemid) {
-		super(0, itemid);
+	public BuffData(BuffType type, ResourceLocation itemid, SlotType[] compatibleSlots) {
+		super(0, itemid, compatibleSlots);
 		this.type = type;
 	}
 	
-	public BuffData(BuffType type, String itemid) {
-		this(type, new ResourceLocation(DSCombatMod.MODID, itemid));
+	public BuffData(BuffType type, String itemid, SlotType[] compatibleSlots) {
+		this(type, new ResourceLocation(DSCombatMod.MODID, itemid), compatibleSlots);
 	}
 	
 	public BuffData(CompoundTag tag) {
@@ -77,11 +77,6 @@ public class BuffData extends PartData {
 			this.getParent().radarSystem.dataLink = false;
 			break;
 		}
-	}
-
-	@Override
-	public SlotType[] getCompatibleSlots() {
-		return INTERNAL;
 	}
 
 }

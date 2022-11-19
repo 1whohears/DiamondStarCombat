@@ -13,14 +13,14 @@ public class FuelTankData extends PartData {
 	private final float max;
 	private float fuel;
 	
-	public FuelTankData(float weight, float fuel, float max, ResourceLocation itemid) {
-		super(weight, itemid);
+	public FuelTankData(float weight, float fuel, float max, ResourceLocation itemid, SlotType[] compatibleSlots) {
+		super(weight, itemid, compatibleSlots);
 		this.fuel = fuel;
 		this.max = max;
 	}
 	
-	public FuelTankData(float weight, float fuel, float max, String itemid) {
-		this(weight, fuel, max, new ResourceLocation(DSCombatMod.MODID, itemid));
+	public FuelTankData(float weight, float fuel, float max, String itemid, SlotType[] compatibleSlots) {
+		this(weight, fuel, max, new ResourceLocation(DSCombatMod.MODID, itemid), compatibleSlots);
 	}
 	
 	public FuelTankData(CompoundTag tag) {
@@ -56,11 +56,6 @@ public class FuelTankData extends PartData {
 	@Override
 	public boolean isSetup(String slotId, EntityAbstractAircraft craft) {
 		return false;
-	}
-
-	@Override
-	public SlotType[] getCompatibleSlots() {
-		return INTERNAL;
 	}
 
 	/*@Override

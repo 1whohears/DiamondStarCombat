@@ -170,6 +170,10 @@ public class PartSlot {
 		INTERNAL
 	}
 	
+	public static final SlotType[] SEAT = new SlotType[] {SlotType.SEAT};
+	public static final SlotType[] INTERNAL = new SlotType[] {SlotType.INTERNAL};
+	public static final SlotType[] EXTERNAL = new SlotType[] {SlotType.WING, SlotType.FRAME};
+	
 	public static int getIconOffsetX(SlotType type) {
 		return type.ordinal() * 16;
 	}

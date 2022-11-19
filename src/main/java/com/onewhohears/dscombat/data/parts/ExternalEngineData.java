@@ -9,12 +9,12 @@ import net.minecraft.resources.ResourceLocation;
 
 public class ExternalEngineData extends EngineData {
 
-	public ExternalEngineData(float weight, float thrust, float heat, float fuelRate, ResourceLocation itemid) {
-		super(weight, thrust, heat, fuelRate, itemid);
+	public ExternalEngineData(float weight, float thrust, float heat, float fuelRate, ResourceLocation itemid, SlotType[] compatibleSlots) {
+		super(weight, thrust, heat, fuelRate, itemid, compatibleSlots);
 	}
 	
-	public ExternalEngineData(float weight, float thrust, float heat, float fuelRate, String itemid) {
-		this(weight, thrust, heat, fuelRate, new ResourceLocation(DSCombatMod.MODID, itemid));
+	public ExternalEngineData(float weight, float thrust, float heat, float fuelRate, String itemid, SlotType[] compatibleSlots) {
+		this(weight, thrust, heat, fuelRate, new ResourceLocation(DSCombatMod.MODID, itemid), compatibleSlots);
 	}
 	
 	public ExternalEngineData(CompoundTag tag) {
@@ -28,11 +28,6 @@ public class ExternalEngineData extends EngineData {
 	@Override
 	public PartType getType() {
 		return PartType.EXTERNAL_ENGINE;
-	}
-	
-	@Override
-	public SlotType[] getCompatibleSlots() {
-		return INTERNAL;
 	}
 
 }

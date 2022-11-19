@@ -13,11 +13,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public abstract class PartData {
 	
-	public static final SlotType[] INTERNAL = new SlotType[] {SlotType.INTERNAL};
-	public static final SlotType[] EXTERNAL = new SlotType[] {SlotType.WING, SlotType.FRAME};
-	
 	public Vec3 relPos = Vec3.ZERO;
 	
+	private final SlotType[] compatibleSlots;
 	private final ResourceLocation itemid;
 	private final float weight;
 	private EntityAbstractAircraft parent;
@@ -35,18 +33,22 @@ public abstract class PartData {
 		BUFF_DATA
 	}
 	
-	protected PartData(float weight, ResourceLocation itemid) {
+	protected PartData(float weight, ResourceLocation itemid, SlotType[] compatibleSlots) {
 		this.weight = weight;
 		this.itemid = itemid;
+		this.compatibleSlots = compatibleSlots;
 	}
 	
-	protected PartData(float weight, String itemid) {
-		this(weight, new ResourceLocation(DSCombatMod.MODID, itemid));
+	protected PartData(float weight, String itemid, SlotType[] compatibleSlots) {
+		this(weight, new ResourceLocation(DSCombatMod.MODID, itemid), compatibleSlots);
 	}
 	
 	public PartData(CompoundTag tag) {
 		weight = tag.getFloat("weight");
 		itemid = new ResourceLocation(tag.getString("itemid"));
+		int[] cs = tag.getIntArray("compatibleSlots");
+		compatibleSlots = new SlotType[cs.length];
+		for (int i = 0; i < cs.length; ++i) compatibleSlots[i] = SlotType.values()[cs[i]];
 	}
 	
 	public CompoundTag write() {
@@ -54,6 +56,9 @@ public abstract class PartData {
 		tag.putInt("type", this.getType().ordinal());
 		tag.putFloat("weight", weight);
 		tag.putString("itemid", itemid.toString());
+		int[] cs = new int[compatibleSlots.length];
+		for (int i = 0; i < compatibleSlots.length; ++i) cs[i] = compatibleSlots[i].ordinal();
+		tag.putIntArray("compatibleSlots", cs);
 		return tag;
 	}
 	
@@ -61,12 +66,18 @@ public abstract class PartData {
 		// type int is read in DataSerializers
 		weight = buffer.readFloat();
 		itemid = new ResourceLocation(buffer.readUtf());
+		int[] cs = buffer.readVarIntArray();
+		compatibleSlots = new SlotType[cs.length];
+		for (int i = 0; i < cs.length; ++i) compatibleSlots[i] = SlotType.values()[cs[i]];
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
 		buffer.writeInt(this.getType().ordinal());
 		buffer.writeFloat(weight);
 		buffer.writeUtf(itemid.toString());
+		int[] cs = new int[compatibleSlots.length];
+		for (int i = 0; i < compatibleSlots.length; ++i) cs[i] = compatibleSlots[i].ordinal();
+		buffer.writeVarIntArray(cs);
 	}
 	
 	public abstract PartType getType();
@@ -114,7 +125,9 @@ public abstract class PartData {
 		return weight;
 	}
 	
-	public abstract SlotType[] getCompatibleSlots();
+	public SlotType[] getCompatibleSlots() {
+		return compatibleSlots;
+	}
 	
 	public ItemStack getItemStack() {
 		System.out.println("GETTING ITEM STACK "+itemid);

@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.item;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.WeaponRackData;
+import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.util.UtilMCText;
@@ -17,8 +18,8 @@ public class ItemWeaponPart extends ItemPart {
 	
 	public final String[] compatible;
 	
-	public ItemWeaponPart(float weight, String compatibilityType) {
-		super(ItemAmmo.weaponProps(1), weight);
+	public ItemWeaponPart(float weight, String compatibilityType, SlotType[] compatibleSlots) {
+		super(ItemAmmo.weaponProps(1), weight, compatibleSlots);
 		this.compatible = WeaponPresets.getCompatibility(compatibilityType);
 	}
 	
@@ -45,7 +46,7 @@ public class ItemWeaponPart extends ItemPart {
 	
 	private void addWeaponRack(String preset, NonNullList<ItemStack> items) {
 		ItemStack rack = new ItemStack(this);
-		rack.setTag(new WeaponRackData(weight, preset, compatible, getIdPart()).write());
+		rack.setTag(new WeaponRackData(weight, preset, compatible, getIdPart(), compatibleSlots).write());
 		items.add(rack);
 	}
 	

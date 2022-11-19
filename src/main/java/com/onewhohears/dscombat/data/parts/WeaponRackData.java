@@ -13,16 +13,16 @@ import net.minecraft.world.phys.Vec3;
 
 public class WeaponRackData extends WeaponPartData {
 
-	public WeaponRackData(float weight, int ammo, int max, String preset, String[] compatible, ResourceLocation itemid) {
-		super(weight, ammo, max, preset, compatible, itemid);
+	public WeaponRackData(float weight, int ammo, int max, String preset, String[] compatible, ResourceLocation itemid, SlotType[] compatibleSlots) {
+		super(weight, ammo, max, preset, compatible, itemid, compatibleSlots);
 	}
 	
-	public WeaponRackData(float weight, String preset, String[] compatible, ResourceLocation itemid) {
-		super(weight, preset, compatible, itemid);
+	public WeaponRackData(float weight, String preset, String[] compatible, ResourceLocation itemid, SlotType[] compatibleSlots) {
+		super(weight, preset, compatible, itemid, compatibleSlots);
 	}
 	
-	public WeaponRackData(float weight, String preset, String[] compatible, String itemid) {
-		this(weight, preset, compatible, new ResourceLocation(DSCombatMod.MODID, itemid));
+	public WeaponRackData(float weight, String preset, String[] compatible, String itemid, SlotType[] compatibleSlots) {
+		this(weight, preset, compatible, new ResourceLocation(DSCombatMod.MODID, itemid), compatibleSlots);
 	}
 	
 	public WeaponRackData(CompoundTag tag) {
@@ -62,11 +62,6 @@ public class WeaponRackData extends WeaponPartData {
 		for (EntityAbstractPart part : getParent().getPartEntities()) 
 			if (part.getSlotId().equals(slotId)) 
 				part.discard();
-	}
-	
-	@Override
-	public SlotType[] getCompatibleSlots() {
-		return EXTERNAL;
 	}
 	
 	@Override

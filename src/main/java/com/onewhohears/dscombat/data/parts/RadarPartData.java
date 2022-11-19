@@ -15,13 +15,13 @@ public class RadarPartData extends PartData {
 	
 	private String radarId;
 	
-	public RadarPartData(float weight, String preset, ResourceLocation itemid) {
-		super(weight, itemid);
+	public RadarPartData(float weight, String preset, ResourceLocation itemid, SlotType[] compatibleSlots) {
+		super(weight, itemid, compatibleSlots);
 		this.radarId = preset;
 	}
 	
-	public RadarPartData(float weight, String preset, String itemid) {
-		this(weight, preset, new ResourceLocation(DSCombatMod.MODID, itemid));
+	public RadarPartData(float weight, String preset, String itemid, SlotType[] compatibleSlots) {
+		this(weight, preset, new ResourceLocation(DSCombatMod.MODID, itemid), compatibleSlots);
 	}
 	
 	public RadarPartData(CompoundTag tag) {
@@ -88,11 +88,6 @@ public class RadarPartData extends PartData {
 	public void clientTick(String slotId) {
 		super.clientTick(slotId);
 		//this.tick(slotId);
-	}
-	
-	@Override
-	public SlotType[] getCompatibleSlots() {
-		return INTERNAL;
 	}
 
 }

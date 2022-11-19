@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.init;
 
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.BuffData.BuffType;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
@@ -89,7 +90,7 @@ public class ModItems {
 	
 	// BUFFS
 	public static final RegistryObject<Item> DATA_LINK = ITEMS.register("data_link", 
-			() -> new ItemBuffPart(BuffType.DATA_LINK));
+			() -> new ItemBuffPart(BuffType.DATA_LINK, PartSlot.INTERNAL));
 	
 	// TOOLS
 	public static final RegistryObject<Item> WRENCH = ITEMS.register("wrench", 
@@ -107,43 +108,43 @@ public class ModItems {
 	
 	// FUEL TANKS
 	public static final RegistryObject<Item> LIGHT_FUEL_TANK = ITEMS.register("light_fuel_tank", 
-			() -> new ItemFuelTank(0.003f, 0f, 50f));
+			() -> new ItemFuelTank(0.003f, 0f, 50f, PartSlot.INTERNAL));
 	public static final RegistryObject<Item> HEAVY_FUEL_TANK = ITEMS.register("heavy_fuel_tank", 
-			() -> new ItemFuelTank(0.010f, 0f, 150f));
+			() -> new ItemFuelTank(0.010f, 0f, 150f, PartSlot.INTERNAL));
 	
 	// ENGINES
 	public static final RegistryObject<Item> C6_ENGINE = ITEMS.register("c6_engine", 
-			() -> new ItemEngine(0.010f, 0.040f, 4.0f, 0.005f, false));
+			() -> new ItemEngine(0.010f, 0.040f, 4.0f, 0.005f, false, PartSlot.INTERNAL));
 	public static final RegistryObject<Item> C12_ENGINE = ITEMS.register("c12_engine", 
-			() -> new ItemEngine(0.018f, 0.080f, 8.0f, 0.015f, false));
+			() -> new ItemEngine(0.018f, 0.080f, 8.0f, 0.015f, false, PartSlot.INTERNAL));
 	
 	// RADARS TODO crafting recipes
 	public static final RegistryObject<Item> AR500 = ITEMS.register("ar500", 
-			() -> new ItemRadarPart(0.002f, "ar500"));
+			() -> new ItemRadarPart(0.002f, "ar500", PartSlot.INTERNAL));
 	public static final RegistryObject<Item> AR1K = ITEMS.register("ar1k", 
-			() -> new ItemRadarPart(0.005f, "ar1k"));
+			() -> new ItemRadarPart(0.005f, "ar1k", PartSlot.INTERNAL));
 	public static final RegistryObject<Item> AR2K = ITEMS.register("ar2k", 
-			() -> new ItemRadarPart(0.010f, "ar2k"));
+			() -> new ItemRadarPart(0.010f, "ar2k", PartSlot.INTERNAL));
 	public static final RegistryObject<Item> GR200 = ITEMS.register("gr200", 
-			() -> new ItemRadarPart(0.004f, "gr200"));
+			() -> new ItemRadarPart(0.004f, "gr200", PartSlot.INTERNAL));
 	public static final RegistryObject<Item> GR400 = ITEMS.register("gr400", 
-			() -> new ItemRadarPart(0.008f, "gr400"));
+			() -> new ItemRadarPart(0.008f, "gr400", PartSlot.INTERNAL));
 	
 	// SEATS TODO crafting recipes
 	public static final RegistryObject<Item> SEAT = ITEMS.register("seat", 
-			() -> new ItemSeat(0.001f));
+			() -> new ItemSeat(0.001f, PartSlot.SEAT));
 	
 	// FLARE DISPENSERS TODO crafting recipes
 	public static final RegistryObject<Item> BASIC_FLARE_DISPENSER = ITEMS.register("basic_flare_dispenser", 
-			() -> new ItemFlareDispenser(0.010f, 0, 20, 5.0f, 100));
+			() -> new ItemFlareDispenser(0.010f, 0, 20, 5.0f, 100, PartSlot.INTERNAL));
 	
 	// WEAPON PARTS TODO crafting recipes
 	public static final RegistryObject<Item> XM12 = ITEMS.register("xm12", 
-			() -> new ItemWeaponPart(0.003f, "xm12")); 
+			() -> new ItemWeaponPart(0.003f, "xm12", PartSlot.EXTERNAL)); 
 	public static final RegistryObject<Item> LIGHT_MISSILE_RACK = ITEMS.register("light_missile_rack", 
-			() -> new ItemWeaponPart(0.004f, "light_missile_rack")); 
+			() -> new ItemWeaponPart(0.004f, "light_missile_rack", PartSlot.EXTERNAL)); 
 	public static final RegistryObject<Item> HEAVY_MISSILE_RACK = ITEMS.register("heavy_missile_rack", 
-			() -> new ItemWeaponPart(0.008f, "heavy_missile_rack")); 
+			() -> new ItemWeaponPart(0.008f, "heavy_missile_rack", PartSlot.EXTERNAL)); 
 	
 	// PLANES TODO crafting recipes
 	public static final RegistryObject<Item> TEST_PLANE = ITEMS.register("test_plane", 

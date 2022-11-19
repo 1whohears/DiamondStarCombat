@@ -19,16 +19,16 @@ public class WeaponPartData extends PartData {
 	private int ammo;
 	private int max;
 	
-	public WeaponPartData(float weight, int ammo, int max, String preset, String[] compatible, ResourceLocation itemid) {
-		super(weight, itemid);
+	public WeaponPartData(float weight, int ammo, int max, String preset, String[] compatible, ResourceLocation itemid, SlotType[] compatibleSlots) {
+		super(weight, itemid, compatibleSlots);
 		this.compatible = compatible;
 		this.weaponId = preset;
 		this.ammo = ammo;
 		this.max = max;
 	}
 	
-	public WeaponPartData(float weight, String preset, String[] compatible, ResourceLocation itemid) {
-		this(weight, 0, 0, preset, compatible, itemid);
+	public WeaponPartData(float weight, String preset, String[] compatible, ResourceLocation itemid, SlotType[] compatibleSlots) {
+		this(weight, 0, 0, preset, compatible, itemid, compatibleSlots);
 		WeaponData data = WeaponPresets.getById(preset);
 		if (data != null) {
 			this.ammo = data.getMaxAmmo();
@@ -124,11 +124,6 @@ public class WeaponPartData extends PartData {
 	public void clientTick(String slotId) {
 		super.clientTick(slotId);
 		this.tick(slotId);
-	}
-	
-	@Override
-	public SlotType[] getCompatibleSlots() {
-		return INTERNAL;
 	}
 
 	/*@Override

@@ -147,6 +147,10 @@ public class PartSlot {
 			return "dscombat.slotname_seat";
 		case WING:
 			return "dscombat.slotname_wing";
+		case ADVANCED_INTERNAL:
+			return "dscombat.slotname_advanced_internal";
+		case TURRENT:
+			return "dscombat.slotname_turrent";
 		}
 		return "";
 	}
@@ -167,11 +171,15 @@ public class PartSlot {
 		SEAT,
 		WING,
 		FRAME,
-		INTERNAL
+		INTERNAL,
+		ADVANCED_INTERNAL,
+		TURRENT
 	}
 	
-	public static final SlotType[] SEAT = new SlotType[] {SlotType.SEAT};
-	public static final SlotType[] INTERNAL = new SlotType[] {SlotType.INTERNAL};
+	public static final SlotType[] SEAT = new SlotType[] {SlotType.SEAT, SlotType.TURRENT};
+	public static final SlotType[] TURRENT = new SlotType[] {SlotType.TURRENT};
+	public static final SlotType[] INTERNAL = new SlotType[] {SlotType.INTERNAL, SlotType.ADVANCED_INTERNAL};
+	public static final SlotType[] ADVANCED_INTERNAL = new SlotType[] {SlotType.ADVANCED_INTERNAL};
 	public static final SlotType[] EXTERNAL = new SlotType[] {SlotType.WING, SlotType.FRAME};
 	
 	public static int getIconOffsetX(SlotType type) {

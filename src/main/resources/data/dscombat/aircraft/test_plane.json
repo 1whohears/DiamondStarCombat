@@ -216,7 +216,7 @@
 		},
 		{
 			"name": "dscombat.internal_5",
-			"slot_type": 3,
+			"slot_type": 4,
 			"slot_posx": 0,
 			"slot_posy": 0,
 			"slot_posz": 0,
@@ -226,7 +226,7 @@
 		},
 		{
 			"name": "dscombat.internal_6",
-			"slot_type": 3,
+			"slot_type": 4,
 			"slot_posx": 0,
 			"slot_posy": 0,
 			"slot_posz": 0,
@@ -236,7 +236,7 @@
 		},
 		{
 			"name": "dscombat.internal_7",
-			"slot_type": 3,
+			"slot_type": 4,
 			"slot_posx": 0,
 			"slot_posy": 0,
 			"slot_posz": 0,
@@ -246,7 +246,7 @@
 		},
 		{
 			"name": "dscombat.internal_8",
-			"slot_type": 3,
+			"slot_type": 4,
 			"slot_posx": 0,
 			"slot_posy": 0,
 			"slot_posz": 0,

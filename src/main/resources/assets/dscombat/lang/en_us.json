@@ -5,6 +5,8 @@
 	"dscombat.slotname_internal": "INTERNAL",
 	"dscombat.slotname_seat": "SEAT",
 	"dscombat.slotname_wing": "WING",
+	"dscombat.slotname_advanced_internal": "ADVANCED INTERNAL",
+	"dscombat.slotname_turrent": "TURRENT",
 	
 	"dscombat.ammo": "Ammo",
 	"dscombat.pilot_seat": "Pilot Seat",

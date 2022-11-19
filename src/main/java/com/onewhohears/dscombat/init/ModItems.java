@@ -90,7 +90,7 @@ public class ModItems {
 	
 	// BUFFS
 	public static final RegistryObject<Item> DATA_LINK = ITEMS.register("data_link", 
-			() -> new ItemBuffPart(BuffType.DATA_LINK, PartSlot.INTERNAL));
+			() -> new ItemBuffPart(BuffType.DATA_LINK, PartSlot.ADVANCED_INTERNAL));
 	
 	// TOOLS
 	public static final RegistryObject<Item> WRENCH = ITEMS.register("wrench", 
@@ -120,15 +120,15 @@ public class ModItems {
 	
 	// RADARS TODO crafting recipes
 	public static final RegistryObject<Item> AR500 = ITEMS.register("ar500", 
-			() -> new ItemRadarPart(0.002f, "ar500", PartSlot.INTERNAL));
+			() -> new ItemRadarPart(0.002f, "ar500", PartSlot.ADVANCED_INTERNAL));
 	public static final RegistryObject<Item> AR1K = ITEMS.register("ar1k", 
-			() -> new ItemRadarPart(0.005f, "ar1k", PartSlot.INTERNAL));
+			() -> new ItemRadarPart(0.005f, "ar1k", PartSlot.ADVANCED_INTERNAL));
 	public static final RegistryObject<Item> AR2K = ITEMS.register("ar2k", 
-			() -> new ItemRadarPart(0.010f, "ar2k", PartSlot.INTERNAL));
+			() -> new ItemRadarPart(0.010f, "ar2k", PartSlot.ADVANCED_INTERNAL));
 	public static final RegistryObject<Item> GR200 = ITEMS.register("gr200", 
-			() -> new ItemRadarPart(0.004f, "gr200", PartSlot.INTERNAL));
+			() -> new ItemRadarPart(0.004f, "gr200", PartSlot.ADVANCED_INTERNAL));
 	public static final RegistryObject<Item> GR400 = ITEMS.register("gr400", 
-			() -> new ItemRadarPart(0.008f, "gr400", PartSlot.INTERNAL));
+			() -> new ItemRadarPart(0.008f, "gr400", PartSlot.ADVANCED_INTERNAL));
 	
 	// SEATS TODO crafting recipes
 	public static final RegistryObject<Item> SEAT = ITEMS.register("seat", 

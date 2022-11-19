@@ -163,7 +163,6 @@ public final class ClientForgeEvents {
 		}
 		if (!hovering) resetHoverIndex();
 		//System.out.println("hover index = "+hoverIndex);
-		// TODO share selected target with team members button
 	}
 	
 	public static void centerMouse() {

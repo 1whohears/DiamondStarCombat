@@ -118,7 +118,7 @@ public class ModItems {
 	public static final RegistryObject<Item> C12_ENGINE = ITEMS.register("c12_engine", 
 			() -> new ItemEngine(0.018f, 0.080f, 8.0f, 0.015f, false, PartSlot.INTERNAL));
 	
-	// RADARS TODO crafting recipes
+	// RADARS
 	public static final RegistryObject<Item> AR500 = ITEMS.register("ar500", 
 			() -> new ItemRadarPart(0.002f, "ar500", PartSlot.ADVANCED_INTERNAL));
 	public static final RegistryObject<Item> AR1K = ITEMS.register("ar1k", 
@@ -130,15 +130,15 @@ public class ModItems {
 	public static final RegistryObject<Item> GR400 = ITEMS.register("gr400", 
 			() -> new ItemRadarPart(0.008f, "gr400", PartSlot.ADVANCED_INTERNAL));
 	
-	// SEATS TODO crafting recipes
+	// SEATS
 	public static final RegistryObject<Item> SEAT = ITEMS.register("seat", 
 			() -> new ItemSeat(0.001f, PartSlot.SEAT));
 	
-	// FLARE DISPENSERS TODO crafting recipes
+	// FLARE DISPENSERS
 	public static final RegistryObject<Item> BASIC_FLARE_DISPENSER = ITEMS.register("basic_flare_dispenser", 
 			() -> new ItemFlareDispenser(0.010f, 0, 20, 5.0f, 100, PartSlot.INTERNAL));
 	
-	// WEAPON PARTS TODO crafting recipes
+	// WEAPON PARTS
 	public static final RegistryObject<Item> XM12 = ITEMS.register("xm12", 
 			() -> new ItemWeaponPart(0.003f, "xm12", PartSlot.EXTERNAL)); 
 	public static final RegistryObject<Item> LIGHT_MISSILE_RACK = ITEMS.register("light_missile_rack", 
@@ -146,16 +146,17 @@ public class ModItems {
 	public static final RegistryObject<Item> HEAVY_MISSILE_RACK = ITEMS.register("heavy_missile_rack", 
 			() -> new ItemWeaponPart(0.008f, "heavy_missile_rack", PartSlot.EXTERNAL)); 
 	
-	// PLANES TODO crafting recipes
+	// PLANES
 	public static final RegistryObject<Item> TEST_PLANE = ITEMS.register("test_plane", 
 			() -> new ItemAircraft(ModEntities.TEST_PLANE.get(), "test_plane"));
 	public static final RegistryObject<Item> JAVI_PLANE = ITEMS.register("javi_plane", 
 			() -> new ItemAircraft(ModEntities.JAVI_PLANE.get(), "javi_plane"));
 	public static final RegistryObject<Item> ALEXIS_PLANE = ITEMS.register("alexis_plane", 
 			() -> new ItemAircraft(ModEntities.ALEXIS_PLANE.get(), "alexis_plane"));
-	public static final RegistryObject<Item> F16 = ITEMS.register("f16", 
-			() -> new ItemAircraft(ModEntities.F16.get(), "alexis_plane"));
 	public static final RegistryObject<Item> NOAH_CHOPPER = ITEMS.register("noah_chopper", 
 			() -> new ItemAircraft(ModEntities.NOAH_CHOPPER.get(), "noah_chopper"));
+	public static final RegistryObject<Item> F16 = ITEMS.register("f16", 
+			() -> new ItemAircraft(ModEntities.F16.get(), "alexis_plane"));
+	
 	
 }

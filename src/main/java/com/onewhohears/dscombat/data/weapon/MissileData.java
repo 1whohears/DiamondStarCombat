@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mojang.math.Quaternion;
+import com.onewhohears.dscombat.data.Ingredient;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
@@ -50,13 +51,13 @@ public class MissileData extends BulletData {
 	private float fov;
 	private float flareResistance;
 	
-	public MissileData(RegistryObject<EntityType<?>> entityType, RegistryObject<SoundEvent> shootSound,
+	public MissileData(RegistryObject<EntityType<?>> entityType, RegistryObject<SoundEvent> shootSound, List<Ingredient> ingredients,
 			String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, boolean canShootOnGround,
 			float damage, double speed, float innacuracy, boolean explosive, boolean destroyTerrain, 
 			boolean causesFire, double explosiveDamage, float explosionRadius,
 			TargetType tType, GuidanceType gType, float maxRot, 
 			double acceleration, double fuseDist, float fov, float flareResistance) {
-		super(entityType, shootSound, 
+		super(entityType, shootSound, ingredients,
 				id, launchPos, maxAge, maxAmmo, fireRate, canShootOnGround, damage, speed, innacuracy, 
 				explosive, destroyTerrain, causesFire, explosiveDamage, explosionRadius);
 		this.targetType = tType;
@@ -475,7 +476,7 @@ public class MissileData extends BulletData {
 	
 	@Override
 	public WeaponData copy() {
-		return new MissileData(entityType, shootSound,
+		return new MissileData(entityType, shootSound, ingredients,
 				this.getId(), this.getLaunchPos(), this.getMaxAge(), this.getMaxAmmo(), 
 				this.getFireRate(), this.canShootOnGround(), this.getDamage(), this.getSpeed(), 
 				this.getInnacuracy(), this.isExplosive(), this.isDestroyTerrain(), this.isCausesFire(), 

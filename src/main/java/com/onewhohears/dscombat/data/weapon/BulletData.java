@@ -1,8 +1,10 @@
 package com.onewhohears.dscombat.data.weapon;
 
+import java.util.List;
 import java.util.Random;
 
 import com.mojang.math.Quaternion;
+import com.onewhohears.dscombat.data.Ingredient;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
 import com.onewhohears.dscombat.entity.weapon.EntityBullet;
@@ -29,20 +31,20 @@ public class BulletData extends WeaponData {
 	private float explosionRadius;
 	private float innacuracy;
 	
-	public BulletData(RegistryObject<EntityType<?>> entityType, RegistryObject<SoundEvent> shootSound, 
+	public BulletData(RegistryObject<EntityType<?>> entityType, RegistryObject<SoundEvent> shootSound, List<Ingredient> ingredients,
 			String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, boolean canShootOnGround,
 			float damage, double speed, float innacuracy) {
-		super(entityType, shootSound, id, launchPos, maxAge, maxAmmo, fireRate, canShootOnGround);
+		super(entityType, shootSound, ingredients, id, launchPos, maxAge, maxAmmo, fireRate, canShootOnGround);
 		this.damage = damage;
 		this.speed = speed;
 		this.innacuracy = innacuracy;
 	}
 	
-	public BulletData(RegistryObject<EntityType<?>> entityType, RegistryObject<SoundEvent> shootSound, 
+	public BulletData(RegistryObject<EntityType<?>> entityType, RegistryObject<SoundEvent> shootSound, List<Ingredient> ingredients,
 			String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, boolean canShootOnGround,
 			float damage, double speed, float innacuracy, boolean explosive, boolean destroyTerrain, 
 			boolean causesFire, double explosiveDamage, float explosionRadius) {
-		this(entityType, shootSound, 
+		this(entityType, shootSound, ingredients,
 				id, launchPos, maxAge, maxAmmo, fireRate, canShootOnGround, damage, speed, innacuracy);
 		this.explosive = explosive;
 		this.destroyTerrain = destroyTerrain;
@@ -178,7 +180,7 @@ public class BulletData extends WeaponData {
 
 	@Override
 	public WeaponData copy() {
-		return new BulletData(entityType, shootSound, 
+		return new BulletData(entityType, shootSound, ingredients,
 				this.getId(), this.getLaunchPos(), this.getMaxAge(), this.getMaxAmmo(), 
 				this.getFireRate(), this.canShootOnGround(), this.getDamage(), this.getSpeed(), 
 				this.getInnacuracy(), this.isExplosive(), this.isDestroyTerrain(), this.isCausesFire(), 

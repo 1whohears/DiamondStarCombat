@@ -5,6 +5,13 @@
 	"entityType":"dscombat:bullet",
 	"shootSound":"dscombat:bullet_shoot_1",
 	
+	"ingredients": [
+		{
+			"item": "",
+			"num": 0
+		}
+	],
+	
 	"fireRate":1,
 	"innacuracy":0.3,
 	"canShootOnGround":true,

@@ -21,6 +21,12 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockMenu
 		this.topPos = 0;
 		this.imageWidth = 256;
 		this.imageHeight = 256;
+		/*
+		 * TODO make image buttons on the top with the weapon icon
+		 * when you click on these buttons the weapon info is displayed underneath 
+		 * with the materials needed and craft button at the bottom
+ 		 * also have arrows on the sides to cycle through the weapons
+		 */
 	}
 	
 	@Override

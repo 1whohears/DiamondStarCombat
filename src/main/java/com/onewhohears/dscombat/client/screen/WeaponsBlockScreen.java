@@ -45,8 +45,8 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockMenu
 	
 	@Override
 	protected void renderLabels(PoseStack stack, int mouseX, int mouseY) {
-		drawString(stack, font, title, titleLabelX+38, titleLabelY, 0x404040);
-		drawString(stack, font, playerInventoryTitle, titleLabelX+38, titleLabelY+120, 0x404040);
+		font.draw(stack, title, titleLabelX+38, titleLabelY, 0x404040);
+		font.draw(stack, playerInventoryTitle, inventoryLabelX+38, inventoryLabelY+56, 0x404040);
 	}
 	
 	@Override

@@ -25,6 +25,4 @@ public class ModRecipeSerializers {
 	public static final RegistryObject<SimpleRecipeSerializer<WeaponPartUnloadRecipe>> WEAPON_PART_UNLOAD = RECIPES.register("weapon_part_unload_recipe", () -> new SimpleRecipeSerializer<>(WeaponPartUnloadRecipe::new));
 	public static final RegistryObject<SimpleRecipeSerializer<FuelTankLoadRecipe>> FUEL_TANK_LOAD = RECIPES.register("fuel_tank_load_recipe", () -> new SimpleRecipeSerializer<>(FuelTankLoadRecipe::new));
 	public static final RegistryObject<SimpleRecipeSerializer<FlareDispenserLoadRecipe>> FLARE_LOAD = RECIPES.register("flare_load_recipe", () -> new SimpleRecipeSerializer<>(FlareDispenserLoadRecipe::new));
-	// TODO make a bullet box to make bullets and missiles
-	// TODO make an aircraft box to make aircraft
 }

@@ -227,9 +227,9 @@ public abstract class EntityAbstractAircraft extends Entity {
 		prevXRot = getXRot();
 		prevYRot = getYRot();
 		prevZRot = zRot;
-		if (level.isClientSide && !isControlledByLocalInstance()) {
+		/*if (level.isClientSide && !isControlledByLocalInstance()) {
 			tickLerp();
-		}
+		}*/
 		// set direction
 		Quaternion q = getQ();
 		setPrevQ(q);
@@ -251,7 +251,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 			this.syncPacketPositionCodec(getX(), getY(), getZ());
         controlSystem();
         tickParts();
-		tickLerp();
+		tickLerp(); // TODO something is wrong with rotation lerp shakes at start and end of rotation
 		/*System.out.println("######### client "+this.level.isClientSide);
 		System.out.println("P "+this.getPrevQ());
 		System.out.println("C "+this.getClientQ());

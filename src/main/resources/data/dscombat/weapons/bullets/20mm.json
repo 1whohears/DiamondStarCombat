@@ -1,31 +1,35 @@
 {
-	"type":0,
-	"id":"20mm",
+	"type": 0,
+	"id": "20mm",
 	
-	"entityType":"dscombat:bullet",
-	"shootSound":"dscombat:bullet_shoot_1",
+	"entityType": "dscombat:bullet",
+	"shootSound": "dscombat:bullet_shoot_1",
 	
+	"craftNum": 64,
 	"ingredients": [
 		{
-			"item": "",
-			"num": 0
+			"item": "minecraft:copper_ingot",
+			"num": 8
+		},
+		{
+			"item": "minecraft:gunpowder",
+			"num": 2
 		}
 	],
 	
-	"fireRate":1,
-	"innacuracy":0.3,
-	"canShootOnGround":true,
+	"fireRate": 1,
+	"innacuracy": 0.3,
+	"canShootOnGround": true,
 	
-	"damage":15.0,
-	"speed":10.0,
-	"explosionRadius":0.0,
-	"explosiveDamage":0.0,
+	"damage": 15.0,
+	"speed": 10.0,
 	
-	"explosive":false,
-	"destroyTerrain":false,
-	"causesFire":false,
+	"explosionRadius": 0.0,
+	"explosiveDamage": 0.0,
+	"explosive": false,
+	"destroyTerrain": false,
+	"causesFire": false,
 	
-	"maxAge":200,
-	"maxAmmo":1000
-	
+	"maxAge": 200,
+	"maxAmmo": 1000
 }

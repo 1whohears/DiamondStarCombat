@@ -29,6 +29,7 @@ import net.minecraftforge.registries.RegistryObject;
 public abstract class WeaponData {
 	
 	public final List<DSCIngredient> ingredients;
+	public final int craftNum;
 	protected final RegistryObject<EntityType<?>> entityType;
 	protected final RegistryObject<SoundEvent> shootSound;
 	
@@ -84,6 +85,7 @@ public abstract class WeaponData {
 		if (sound == null) sound = ModSounds.BULLET_SHOOT_1;
 		shootSound = sound;
 		ingredients = DSCIngredient.getIngredients(tag);
+		craftNum = tag.getInt("craftNum");
 	}
 	
 	public CompoundTag write() {
@@ -100,6 +102,7 @@ public abstract class WeaponData {
 		tag.putString("entityType", entityType.getId().toString());
 		tag.putString("shootSound", shootSound.getId().toString());
 		DSCIngredient.writeIngredients(ingredients, tag);
+		tag.putInt("craftNum", craftNum);
 		return tag;
 	}
 	
@@ -108,6 +111,7 @@ public abstract class WeaponData {
 		entityType = ModEntities.getObjectByKey(buffer.readUtf());
 		shootSound = ModSounds.getObjectByKey(buffer.readUtf());
 		ingredients = DSCIngredient.getIngredients(buffer);
+		craftNum = buffer.readInt();
 		id = buffer.readUtf();
 		pos = DataSerializers.VEC3.read(buffer);
 		maxAge = buffer.readInt();
@@ -119,9 +123,10 @@ public abstract class WeaponData {
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
-		buffer.writeInt(this.getType().ordinal());
+		buffer.writeInt(getType().ordinal());
 		buffer.writeUtf(entityType.getId().toString());
 		buffer.writeUtf(shootSound.getId().toString());
+		buffer.writeInt(craftNum);
 		DSCIngredient.writeIngredients(ingredients, buffer);
 		buffer.writeUtf(id);
 		DataSerializers.VEC3.write(buffer, pos);

@@ -86,7 +86,7 @@ public class WeaponPartData extends PartData {
 		super.setup(craft, slotId, pos);
 		WeaponData data = craft.weaponSystem.get(weaponId, slotId);
 		if (data == null) {
-			data = WeaponPresets.getById(weaponId);
+			data = WeaponPresets.getByNewId(weaponId);
 			if (data == null) return;
 			data.setSlot(slotId);
 			craft.weaponSystem.addWeapon(data, true);

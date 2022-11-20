@@ -1,10 +1,8 @@
 package com.onewhohears.dscombat.data.weapon;
 
-import java.util.List;
 import java.util.Random;
 
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.data.Ingredient;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
 import com.onewhohears.dscombat.entity.weapon.EntityBullet;
@@ -12,13 +10,10 @@ import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.RegistryObject;
 
 public class BulletData extends WeaponData {
 	
@@ -31,7 +26,7 @@ public class BulletData extends WeaponData {
 	private float explosionRadius;
 	private float innacuracy;
 	
-	public BulletData(RegistryObject<EntityType<?>> entityType, RegistryObject<SoundEvent> shootSound, List<Ingredient> ingredients,
+	/*public BulletData(RegistryObject<EntityType<?>> entityType, RegistryObject<SoundEvent> shootSound, List<Ingredient> ingredients,
 			String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, boolean canShootOnGround,
 			float damage, double speed, float innacuracy) {
 		super(entityType, shootSound, ingredients, id, launchPos, maxAge, maxAmmo, fireRate, canShootOnGround);
@@ -51,7 +46,7 @@ public class BulletData extends WeaponData {
 		this.causesFire = causesFire;
 		this.explosiveDamage = explosiveDamage;
 		this.explosionRadius = explosionRadius;
-	}
+	}*/
 	
 	public BulletData(CompoundTag tag) {
 		super(tag);
@@ -180,11 +175,7 @@ public class BulletData extends WeaponData {
 
 	@Override
 	public WeaponData copy() {
-		return new BulletData(entityType, shootSound, ingredients,
-				this.getId(), this.getLaunchPos(), this.getMaxAge(), this.getMaxAmmo(), 
-				this.getFireRate(), this.canShootOnGround(), this.getDamage(), this.getSpeed(), 
-				this.getInnacuracy(), this.isExplosive(), this.isDestroyTerrain(), this.isCausesFire(), 
-				this.getExplosiveDamage(), this.getExplosionRadius());
+		return new BulletData(this.write());
 	}
 
 }

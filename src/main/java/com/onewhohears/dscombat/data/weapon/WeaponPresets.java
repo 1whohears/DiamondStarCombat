@@ -59,13 +59,19 @@ public class WeaponPresets {
 	
 	@Nullable
 	public static CompoundTag getNbtById(String id) {
-		for (CompoundTag w : weaponNbt) if (w.getString("id").equals(id)) return w.copy();
+		for (CompoundTag w : weaponNbt) if (w.getString("id").equals(id)) return w;
+		return null;
+	}
+	
+	@Nullable
+	public static WeaponData getByNewId(String id) {
+		for (WeaponData w : weapons) if (w.getId().equals(id)) return w.copy();
 		return null;
 	}
 	
 	@Nullable
 	public static WeaponData getById(String id) {
-		for (WeaponData w : weapons) if (w.getId().equals(id)) return w.copy();
+		for (WeaponData w : weapons) if (w.getId().equals(id)) return w;
 		return null;
 	}
 	

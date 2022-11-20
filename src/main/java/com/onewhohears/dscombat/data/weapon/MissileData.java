@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.data.Ingredient;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
@@ -16,7 +15,6 @@ import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -27,7 +25,6 @@ import net.minecraft.world.entity.projectile.FireworkRocketEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.RegistryObject;
 
 public class MissileData extends BulletData {
 	
@@ -51,7 +48,7 @@ public class MissileData extends BulletData {
 	private float fov;
 	private float flareResistance;
 	
-	public MissileData(RegistryObject<EntityType<?>> entityType, RegistryObject<SoundEvent> shootSound, List<Ingredient> ingredients,
+	/*public MissileData(RegistryObject<EntityType<?>> entityType, RegistryObject<SoundEvent> shootSound, List<Ingredient> ingredients,
 			String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, boolean canShootOnGround,
 			float damage, double speed, float innacuracy, boolean explosive, boolean destroyTerrain, 
 			boolean causesFire, double explosiveDamage, float explosionRadius,
@@ -67,7 +64,7 @@ public class MissileData extends BulletData {
 		this.fuseDist = fuseDist;
 		this.fov = fov;
 		this.flareResistance = flareResistance;
-	}
+	}*/
 	
 	public MissileData(CompoundTag tag) {
 		super(tag);
@@ -476,13 +473,7 @@ public class MissileData extends BulletData {
 	
 	@Override
 	public WeaponData copy() {
-		return new MissileData(entityType, shootSound, ingredients,
-				this.getId(), this.getLaunchPos(), this.getMaxAge(), this.getMaxAmmo(), 
-				this.getFireRate(), this.canShootOnGround(), this.getDamage(), this.getSpeed(), 
-				this.getInnacuracy(), this.isExplosive(), this.isDestroyTerrain(), this.isCausesFire(), 
-				this.getExplosiveDamage(), this.getExplosionRadius(), this.getTargetType(), 
-				this.getGuidanceType(), this.getMaxRot(), this.getAcceleration(), this.getFuseDist(), 
-				this.getFov(), this.getFlareResistance());
+		return new MissileData(this.write());
 	}
 
 }

@@ -7,7 +7,7 @@ import javax.annotation.Nullable;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundWeaponAmmoPacket;
-import com.onewhohears.dscombat.data.Ingredient;
+import com.onewhohears.dscombat.data.DSCIngredient;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
 import com.onewhohears.dscombat.init.DataSerializers;
@@ -28,7 +28,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public abstract class WeaponData {
 	
-	public final List<Ingredient> ingredients;
+	public final List<DSCIngredient> ingredients;
 	protected final RegistryObject<EntityType<?>> entityType;
 	protected final RegistryObject<SoundEvent> shootSound;
 	
@@ -49,7 +49,7 @@ public abstract class WeaponData {
 		BOMB
 	}
 	
-	protected WeaponData(RegistryObject<EntityType<?>> entityType, RegistryObject<SoundEvent> shootSound, List<Ingredient> ingredients,
+	/*protected WeaponData(RegistryObject<EntityType<?>> entityType, RegistryObject<SoundEvent> shootSound, List<Ingredient> ingredients,
 			String id, Vec3 pos, int maxAge, int maxAmmo, int fireRate, boolean canShootOnGround) {
 		this.id = id;
 		this.pos = pos;
@@ -60,7 +60,7 @@ public abstract class WeaponData {
 		this.entityType = entityType;
 		this.shootSound = shootSound;
 		this.ingredients = ingredients;
-	}
+	}*/
 	
 	public WeaponData(CompoundTag tag) {
 		String preset = tag.getString("preset");
@@ -78,12 +78,12 @@ public abstract class WeaponData {
 		slotId = tag.getString("slotId");
 		
 		RegistryObject<EntityType<?>> type = ModEntities.getObjectByKey(tag.getString("entityType"));
-		if (type == null) type = getDefaultEntityType();
+		if (type == null) type = ModEntities.BULLET;
 		entityType = type;
 		RegistryObject<SoundEvent> sound = ModSounds.getObjectByKey(tag.getString("shootSound"));
-		if (sound == null) sound = getDefaultShootSound();
+		if (sound == null) sound = ModSounds.BULLET_SHOOT_1;
 		shootSound = sound;
-		ingredients = Ingredient.getIngredients(tag);
+		ingredients = DSCIngredient.getIngredients(tag);
 	}
 	
 	public CompoundTag write() {
@@ -99,7 +99,7 @@ public abstract class WeaponData {
 		tag.putString("slotId", slotId);
 		tag.putString("entityType", entityType.getId().toString());
 		tag.putString("shootSound", shootSound.getId().toString());
-		Ingredient.writeIngredients(ingredients, tag);
+		DSCIngredient.writeIngredients(ingredients, tag);
 		return tag;
 	}
 	
@@ -107,7 +107,7 @@ public abstract class WeaponData {
 		// type int is read in DataSerializers
 		entityType = ModEntities.getObjectByKey(buffer.readUtf());
 		shootSound = ModSounds.getObjectByKey(buffer.readUtf());
-		ingredients = Ingredient.getIngredients(buffer);
+		ingredients = DSCIngredient.getIngredients(buffer);
 		id = buffer.readUtf();
 		pos = DataSerializers.VEC3.read(buffer);
 		maxAge = buffer.readInt();
@@ -122,7 +122,7 @@ public abstract class WeaponData {
 		buffer.writeInt(this.getType().ordinal());
 		buffer.writeUtf(entityType.getId().toString());
 		buffer.writeUtf(shootSound.getId().toString());
-		Ingredient.writeIngredients(ingredients, buffer);
+		DSCIngredient.writeIngredients(ingredients, buffer);
 		buffer.writeUtf(id);
 		DataSerializers.VEC3.write(buffer, pos);
 		buffer.writeInt(maxAge);
@@ -279,14 +279,6 @@ public abstract class WeaponData {
 	
 	public SoundEvent getShootSound() {
 		return shootSound.get();
-	}
-	
-	public RegistryObject<EntityType<?>> getDefaultEntityType() {
-		return ModEntities.MISSILE1;
-	}
-	
-	public RegistryObject<SoundEvent> getDefaultShootSound() {
-		return ModSounds.MISSILE_LAUNCH_1;
 	}
 	
 }

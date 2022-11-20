@@ -4,15 +4,12 @@
 		"E": {
 			"item": "dscombat:c6_engine"
 		},
-		"P": {
-			"item": "minecraft:piston"
-		},
 		"I": {
 			"item": "minecraft:iron_ingot"
 		}
 	},
 	"pattern": [
-		"EE"
+		"EIE"
 	],
 	"result": {
 		"count": 1,

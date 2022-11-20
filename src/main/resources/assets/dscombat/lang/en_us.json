@@ -79,6 +79,9 @@
 	"sounds.dscombat.biplane_1": "Biplane Engine",
 	"sounds.dscombat.heli_1": "Helicopter",
 	
+	"block.dscombat.weapons_block": "Weapons Workbench",
+	"block.dscombat.aircraft_block": "Aircraft Workbench",
+	
 	"itemGroup.parts": "DSCombat Parts",
 	"itemGroup.weapons": "DSCombat Weapons",
 	"itemGroup.aircraft": "DSCombat Aircraft",
@@ -142,5 +145,7 @@
 	"item.dscombat.agm84e": "AGM-84E",
 	"item.dscombat.agm114k": "AGM-114K",
 	
-	"container.dscombat.plane_menu": "Aircraft Menu"
+	"container.dscombat.plane_menu": "Aircraft Menu",
+	"container.dscombat.weapons_block_menu": "Weapons Workbench",
+	"container.dscombat.aircraft_block_menu": "Aircraft Workbench"
 }

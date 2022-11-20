@@ -81,6 +81,7 @@ public class WeaponSystem {
 		return null;
 	}
 	
+	@Nullable
 	public WeaponData getSelected() {
 		if (weapons.size() == 0) return null;
 		checkIndex();

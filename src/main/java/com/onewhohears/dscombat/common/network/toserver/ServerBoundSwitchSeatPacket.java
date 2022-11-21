@@ -5,9 +5,9 @@ import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
-import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent.Context;
@@ -42,7 +42,7 @@ public class ServerBoundSwitchSeatPacket extends IPacket {
 			ServerLevel level = player.getLevel();
 			if (level.getEntity(id) instanceof EntityAbstractAircraft plane) {
 				if (!plane.switchSeat(player)) {
-					player.displayClientMessage(UtilMCText.simpleText("No Open Seats"), true);
+					player.displayClientMessage(Component.translatable("dscombat.no_open_seats"), true);
 				}
 			}
 		});

@@ -1,11 +1,10 @@
 package com.onewhohears.dscombat.item;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.parts.WeaponRackData;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
+import com.onewhohears.dscombat.data.parts.WeaponRackData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.init.ModItems;
-import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -27,11 +26,11 @@ public class ItemWeaponPart extends ItemPart {
 	public Component getName(ItemStack stack) {
 		CompoundTag tag = stack.getOrCreateTag();
 		String weapon = tag.getString("weaponId");
-		MutableComponent name = UtilMCText.simpleText(getDescriptionId()).append(" ");
+		MutableComponent name = Component.translatable(getDescriptionId()).append(" ");
 		if (weapon.isEmpty()) {
 			name.append("EMPTY");
 		} else {
-			name.append(UtilMCText.simpleText("item."+DSCombatMod.MODID+"."+weapon))
+			name.append(Component.translatable("item."+DSCombatMod.MODID+"."+weapon))
 				.append(" "+tag.getInt("ammo")+"/"+tag.getInt("max"));
 		}
 		return name;	

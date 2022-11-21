@@ -1,5 +1,9 @@
 {
 	"dscombat.shrink_plane_button": "Get Plane Item",
+	"dscombat.craft_button": "Assemble",
+	"dscombat.ingredients": "Materials",
+	"dscombat.no_menu_in_air": "Can't open plane menu while flying!",
+	"dscombat.no_open_seats": "No Open Seats",
 	
 	"dscombat.slotname_frame": "FRAME",
 	"dscombat.slotname_internal": "INTERNAL",

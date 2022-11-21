@@ -2,7 +2,6 @@ package com.onewhohears.dscombat.item;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.init.ModItems;
-import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
@@ -20,9 +19,9 @@ public class ItemAmmo extends Item {
 	
 	@Override
 	public Component getName(ItemStack stack) {
-		return UtilMCText.simpleText(getDescriptionId())
+		return Component.translatable(getDescriptionId())
 				.append(" ")
-				.append(UtilMCText.simpleText(DSCombatMod.MODID+".ammo"));
+				.append(Component.translatable(DSCombatMod.MODID+".ammo"));
 	}
 	
 	/*@Override

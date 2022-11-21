@@ -3,7 +3,6 @@ package com.onewhohears.dscombat.item;
 import com.onewhohears.dscombat.data.parts.FuelTankData;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.init.ModItems;
-import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -25,7 +24,7 @@ public class ItemFuelTank extends ItemPart {
 	@Override
 	public Component getName(ItemStack stack) {
 		CompoundTag tag = stack.getOrCreateTag();
-		MutableComponent name = UtilMCText.simpleText(getDescriptionId())
+		MutableComponent name = Component.translatable(getDescriptionId())
 			.append(" "+tag.getInt("fuel")+"/"+tag.getInt("max"));
 		return name;	
 	}

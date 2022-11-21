@@ -24,7 +24,6 @@ import com.onewhohears.dscombat.item.ItemGasCan;
 import com.onewhohears.dscombat.item.ItemRepairTool;
 import com.onewhohears.dscombat.util.UtilClientSafeSoundInstance;
 import com.onewhohears.dscombat.util.UtilEntity;
-import com.onewhohears.dscombat.util.UtilMCText;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 
@@ -453,7 +452,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 						Component.translatable("container.dscombat.plane_menu")));
 				} else {
 					((ServerPlayer)controller).displayClientMessage(
-							UtilMCText.simpleText("Can't open plane menu while flying!"), true);
+							Component.translatable("dscombat.no_menu_in_air"), true);
 				}
 			}
 			if (isPlayer && ((ServerPlayer)controller).isCreative()) {
@@ -472,7 +471,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 			//System.out.println(data.getFailedLaunchReason());
 			if (isPlayer) {
 				((ServerPlayer)controller).displayClientMessage(
-						UtilMCText.simpleText(data.getFailedLaunchReason()), true);
+						Component.translatable(data.getFailedLaunchReason()), true);
 			}
 		}
 	}

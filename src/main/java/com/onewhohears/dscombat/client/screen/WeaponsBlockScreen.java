@@ -4,18 +4,39 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.container.WeaponsBlockMenuContainer;
+import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
 
 public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockMenuContainer> {
 	
+	/*private static final HashMap<String, ResourceLocation> ITEM_TEXTURES = new HashMap<String, ResourceLocation>();
+	private static ResourceLocation getItemTexture(String id) {
+		ResourceLocation rl = ITEM_TEXTURES.get(id);
+		if (rl == null) {
+			rl = new ResourceLocation(DSCombatMod.MODID, "textures/item/"+id+".png");
+			ITEM_TEXTURES.put(id, rl);
+		}
+		return rl;
+	}*/
+	
 	private static final ResourceLocation BG_TEXTURE = new ResourceLocation(DSCombatMod.MODID,
 			"textures/ui/aircraft_screen.png");
+	/*private static final ResourceLocation WIDGETS = new ResourceLocation("minecraft",
+			"textures/gui/widgets.png");*/
+	
+	private static final int buttonNum = 7;
+	
+	private final int maxTab;
+	private int tabIndex = 0;
+	private int weaponIndex = 0;
 	
 	public WeaponsBlockScreen(WeaponsBlockMenuContainer menu, Inventory playerInv, Component title) {
 		super(menu, playerInv, title);
@@ -29,6 +50,8 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockMenu
 		 * with the materials needed and craft button at the bottom
  		 * also have arrows on the sides to cycle through the weapons
 		 */
+		maxTab = (int)((float)WeaponPresets.weapons.size() / (float)buttonNum);
+		//System.out.println("size = "+WeaponPresets.weapons.size()+" max tab = "+maxTab);
 	}
 	
 	@Override
@@ -36,6 +59,38 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockMenu
 		this.renderBackground(poseStack);
 		super.render(poseStack, mouseX, mouseY, partialTicks);
         this.renderTooltip(poseStack, mouseX, mouseY);
+        Minecraft m = Minecraft.getInstance();
+        RenderSystem.enableBlend();
+        // render weapon item options
+        int startX = getGuiLeft() + titleLabelX;
+		int startY = getGuiTop() + titleLabelY;
+		int wx = startX + 51;
+		int wy = startY + 12;
+		for (int i = 0; i < buttonNum; ++i) {
+			int index = tabIndex * buttonNum + i;
+			if (index >= WeaponPresets.weapons.size()) break;
+			ItemStack stack = WeaponPresets.weapons.get(index).getDisplayStack();
+			m.getItemRenderer().renderAndDecorateItem(
+					stack, wx, wy);
+			m.getItemRenderer().renderGuiItemDecorations(font,
+					stack, wx, wy);
+			wx += 20;
+		}
+		// render ingredients
+		if (WeaponPresets.weapons.size() == 0) return;
+		WeaponData data = WeaponPresets.weapons.get(weaponIndex);
+		int iix = startX + 122;
+		int ix = iix;
+		int iy = startY + 44;
+		for (int i = 0; i < data.ingredients.size(); ++i) {
+			if (i != 0 && i % 4 == 0) iy += 18;
+			ItemStack stack = data.ingredients.get(i).getItem();
+			m.getItemRenderer().renderAndDecorateItem(
+					stack, ix, iy);
+			m.getItemRenderer().renderGuiItemDecorations(font, 
+					stack, ix, iy);
+			ix += 18;
+		}
 	}
 
 	@Override
@@ -49,34 +104,61 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockMenu
 	protected void renderLabels(PoseStack stack, int mouseX, int mouseY) {
 		font.draw(stack, title, titleLabelX+38, titleLabelY, 0x404040);
 		font.draw(stack, playerInventoryTitle, inventoryLabelX+38, inventoryLabelY+56, 0x404040);
+		font.draw(stack, Component.translatable("dscombat.ingredients"), titleLabelX+122, titleLabelY+34, 0x00aa00);
+		// weapon stats
+		if (WeaponPresets.weapons.size() == 0) return;
+		WeaponData data = WeaponPresets.weapons.get(weaponIndex);
+		int startX = titleLabelX+38;
+		int startY = titleLabelY+34;
+		// name
+		font.draw(stack, Component.translatable("item.dscombat."+data.getId()), 
+				startX, startY, 0x040404);
+		// type
+		font.draw(stack, Component.literal(data.getType().toString()), 
+				startX, startY+10, 0x0000aa);
+		// TODO display more weapon stats
 	}
 	
 	@Override
 	protected void init() {
 		super.init();
-		Button acb1 = new ImageButton(0, 0, 20, 20, 0, 0, 
-				null, 
-				onPress -> { aircraftButton(1); });
-		acb1.x = getGuiLeft() + titleLabelX+48;
-		acb1.y = getGuiTop() + titleLabelY+10;
-		addRenderableWidget(acb1);
+		int startX = getGuiLeft() + titleLabelX;
+		int startY = getGuiTop() + titleLabelY;
+		// weapons buttons
+		int wx = startX + 39;
+		int wy = startY + 10;
+		// prev
 		Button prevButton = new Button(0, 0, 10, 20, 
 				Component.literal("<"), 
 				onPress -> { prevButton(); });
-		prevButton.x = getGuiLeft() + titleLabelX+38;
-		prevButton.y = getGuiTop() + titleLabelY+10;
+		prevButton.x = wx;
+		prevButton.y = wy;
 		addRenderableWidget(prevButton);
+		// buttons
+		wx += 10;
+		for (int b = 0; b < buttonNum; ++b) {
+			final int c = b;
+			Button acb = new Button(0, 0, 20, 20,
+					Component.empty(),
+					onPress -> { weaponButton(c); });
+			acb.x = wx;
+			acb.y = wy;
+			addRenderableWidget(acb);
+			wx += 20;
+		}
+		// next
 		Button nextButton = new Button(0, 0, 10, 20, 
 				Component.literal(">"), 
 				onPress -> { nextButton(); });
-		nextButton.x = getGuiLeft() + titleLabelX+192;
-		nextButton.y = getGuiTop() + titleLabelY+10;
+		nextButton.x = wx;
+		nextButton.y = wy;
 		addRenderableWidget(nextButton);
+		// craft
 		Button craftButton = new Button(0, 0, 80, 20, 
 				Component.translatable("dscombat.craft_button"), 
 				onPress -> { craftButton(); });
-		craftButton.x = getGuiLeft() + titleLabelX+122;
-		craftButton.y = getGuiTop() + titleLabelY+110;
+		craftButton.x = startX+122;
+		craftButton.y = startY+110;
 		addRenderableWidget(craftButton);
 	}
 	
@@ -101,19 +183,29 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockMenu
 	}
 	
 	private void prevButton() {
-		
+		tabIndex -= 1;
+		if (tabIndex < 0) tabIndex = maxTab;
+		System.out.println("tabIndex = "+tabIndex);
 	}
 	
 	private void nextButton() {
-		
+		tabIndex += 1;
+		if (tabIndex > maxTab) tabIndex = 0;
+		System.out.println("tabIndex = "+tabIndex);
 	}
 	
-	private void aircraftButton(int num) {
-		
+	private void weaponButton(int num) {
+		int max = WeaponPresets.weapons.size();
+		int a = tabIndex * buttonNum + num;
+		if (a >= max) weaponIndex = max-1;
+		else weaponIndex = a;
+		System.out.println("buttonIndex = "+weaponIndex);
 	}
 	
 	private void craftButton() {
-		
+		System.out.println("CRAFT BUTTON");
+		System.out.println("tabIndex = "+tabIndex);
+		System.out.println("weaponIndex = "+weaponIndex);
 	}
 
 }

@@ -12,7 +12,6 @@ import com.onewhohears.dscombat.common.container.slot.PartItemSlot;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ServerBoundAircraftToItemPacket;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
-import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
@@ -72,8 +71,8 @@ public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContaine
 	public List<Component> getSlotTooltip() {
 		List<Component> c = new ArrayList<Component>();
 		if (this.hoveredSlot instanceof PartItemSlot slot) {
-			MutableComponent type = UtilMCText.simpleText(slot.data.getTypeName());
-			MutableComponent name = UtilMCText.simpleText(slot.data.getName());
+			MutableComponent type = Component.literal(slot.data.getTypeName());
+			MutableComponent name = Component.literal(slot.data.getName());
 			c.add(type);
 			c.add(name);
 		}

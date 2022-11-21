@@ -1,8 +1,8 @@
 package com.onewhohears.dscombat.init;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.BuffData.BuffType;
+import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.item.ItemAircraft;

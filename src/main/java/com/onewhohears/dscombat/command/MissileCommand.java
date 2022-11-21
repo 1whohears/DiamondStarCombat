@@ -9,7 +9,6 @@ import com.onewhohears.dscombat.data.ChunkManager;
 import com.onewhohears.dscombat.data.weapon.MissileData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
-import com.onewhohears.dscombat.util.UtilMCText;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.commands.CommandSourceStack;
@@ -18,6 +17,7 @@ import net.minecraft.commands.arguments.CompoundTagArgument;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.commands.arguments.coordinates.Vec3Argument;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 
@@ -61,8 +61,8 @@ public class MissileCommand {
 			ChunkManager.addChunk(missile, cx, cz);
 			if (e.level.addFreshEntity(missile)) ++i;
 		}
-		if (i == 0) context.getSource().sendFailure(UtilMCText.simpleText("No targets found!"));
-		else if (i > 0) context.getSource().sendSuccess(UtilMCText.simpleText("Launched "+i+" missiles!"), true);
+		if (i == 0) context.getSource().sendFailure(Component.literal("No targets found!"));
+		else if (i > 0) context.getSource().sendSuccess(Component.literal("Launched "+i+" missiles!"), true);
 		return i;
 	}
 	

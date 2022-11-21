@@ -5,9 +5,10 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.mojang.math.Quaternion;
+import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundWeaponAmmoPacket;
-import com.onewhohears.dscombat.data.DSCIngredient;
+import com.onewhohears.dscombat.crafting.DSCIngredient;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
 import com.onewhohears.dscombat.init.DataSerializers;
@@ -17,13 +18,17 @@ import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public abstract class WeaponData {
@@ -227,6 +232,7 @@ public abstract class WeaponData {
 	
 	@Nullable
 	public String getFailedLaunchReason() {
+		// TODO make this translatable
 		return failedLaunchReason;
 	}
 	
@@ -284,6 +290,26 @@ public abstract class WeaponData {
 	
 	public SoundEvent getShootSound() {
 		return shootSound.get();
+	}
+	
+	private Item item;
+	private ItemStack stack;
+	
+	public Item getItem() {
+		if (item == null) {
+			item = ForgeRegistries.ITEMS.getDelegate(
+					new ResourceLocation(DSCombatMod.MODID, id))
+						.get().get();
+		}
+		return item;
+	}
+	
+	public ItemStack getDisplayStack() {
+		if (stack == null) {
+			stack = new ItemStack(getItem());
+			stack.setCount(craftNum);
+		}
+		return stack;
 	}
 	
 }

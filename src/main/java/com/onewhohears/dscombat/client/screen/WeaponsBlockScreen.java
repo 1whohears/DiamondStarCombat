@@ -5,6 +5,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.container.WeaponsBlockMenuContainer;
 
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -52,6 +54,30 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockMenu
 	@Override
 	protected void init() {
 		super.init();
+		Button acb1 = new ImageButton(0, 0, 20, 20, 0, 0, 
+				null, 
+				onPress -> { aircraftButton(1); });
+		acb1.x = getGuiLeft() + titleLabelX+48;
+		acb1.y = getGuiTop() + titleLabelY+10;
+		addRenderableWidget(acb1);
+		Button prevButton = new Button(0, 0, 10, 20, 
+				Component.literal("<"), 
+				onPress -> { prevButton(); });
+		prevButton.x = getGuiLeft() + titleLabelX+38;
+		prevButton.y = getGuiTop() + titleLabelY+10;
+		addRenderableWidget(prevButton);
+		Button nextButton = new Button(0, 0, 10, 20, 
+				Component.literal(">"), 
+				onPress -> { nextButton(); });
+		nextButton.x = getGuiLeft() + titleLabelX+192;
+		nextButton.y = getGuiTop() + titleLabelY+10;
+		addRenderableWidget(nextButton);
+		Button craftButton = new Button(0, 0, 80, 20, 
+				Component.translatable("dscombat.craft_button"), 
+				onPress -> { craftButton(); });
+		craftButton.x = getGuiLeft() + titleLabelX+122;
+		craftButton.y = getGuiTop() + titleLabelY+110;
+		addRenderableWidget(craftButton);
 	}
 	
 	@Override
@@ -72,6 +98,22 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockMenu
 	@Override
 	public boolean mouseReleased(double mouseX, double mouseY, int button) {
 		return super.mouseReleased(mouseX, mouseY, button);
+	}
+	
+	private void prevButton() {
+		
+	}
+	
+	private void nextButton() {
+		
+	}
+	
+	private void aircraftButton(int num) {
+		
+	}
+	
+	private void craftButton() {
+		
 	}
 
 }

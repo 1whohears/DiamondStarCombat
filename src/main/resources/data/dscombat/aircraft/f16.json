@@ -1,19 +1,19 @@
 {
-	"preset": "alexis_plane",
-	"max_speed": 1.40,
+	"preset": "f16",
+	"max_speed": 1.5,
 	
-	"max_health": 100,
-	"health": 100,
+	"max_health": 200,
+	"health": 200,
 	
-	"weight": 0.03,
-	"surfacearea": 1.1,
+	"weight": 0.04,
+	"surfacearea": 1.0,
 	
-	"stealth": 0.8,
-	"idleheat": 4.0,
+	"stealth": 1.0,
+	"idleheat": 8.0,
 	
-	"maxroll": 6.0,
-	"maxpitch": 3.0,
-	"maxyaw": 2.0,
+	"maxroll": 8.0,
+	"maxpitch": 4.0,
+	"maxyaw": 4.0,
 	"throttleup": 0.04,
 	"throttledown": 0.04,
 	"landing_gear": true,
@@ -75,6 +75,26 @@
 			"filled": false
 		},
 		{
+			"name": "dscombat.left_wing_3",
+			"slot_type": 1,
+			"slot_posx": 1.6,
+			"slot_posy": 0,
+			"slot_posz": 1,
+			"uix": 88,
+			"uiy": 40,
+			"filled": false
+		},
+		{
+			"name": "dscombat.left_wing_4",
+			"slot_type": 1,
+			"slot_posx": 2.0,
+			"slot_posy": 0,
+			"slot_posz": 1,
+			"uix": 108,
+			"uiy": 40,
+			"filled": false
+		},
+		{
 			"name": "dscombat.right_wing_1",
 			"slot_type": 1,
 			"slot_posx": -0.8,
@@ -95,6 +115,26 @@
 			"filled": false
 		},
 		{
+			"name": "dscombat.right_wing_3",
+			"slot_type": 1,
+			"slot_posx": -1.6,
+			"slot_posy": 0,
+			"slot_posz": 1,
+			"uix": 88,
+			"uiy": 60,
+			"filled": false
+		},
+		{
+			"name": "dscombat.right_wing_4",
+			"slot_type": 1,
+			"slot_posx": -2.0,
+			"slot_posy": 0,
+			"slot_posz": 1,
+			"uix": 108,
+			"uiy": 60,
+			"filled": false
+		},
+		{
 			"name": "dscombat.frame_1",
 			"slot_type": 2,
 			"slot_posx": 0,
@@ -111,6 +151,26 @@
 			"slot_posy": -0.5,
 			"slot_posz": 0.3,
 			"uix": 68,
+			"uiy": 80,
+			"filled": false
+		},
+		{
+			"name": "dscombat.frame_3",
+			"slot_type": 2,
+			"slot_posx": 0,
+			"slot_posy": -0.5,
+			"slot_posz": -0.3,
+			"uix": 88,
+			"uiy": 80,
+			"filled": false
+		},
+		{
+			"name": "dscombat.frame_4",
+			"slot_type": 2,
+			"slot_posx": 0,
+			"slot_posy": -0.5,
+			"slot_posz": -1,
+			"uix": 108,
 			"uiy": 80,
 			"filled": false
 		},
@@ -146,7 +206,7 @@
 		},
 		{
 			"name": "dscombat.internal_4",
-			"slot_type": 4,
+			"slot_type": 3,
 			"slot_posx": 0,
 			"slot_posy": 0,
 			"slot_posz": 0,
@@ -171,6 +231,26 @@
 			"slot_posy": 0,
 			"slot_posz": 0,
 			"uix": 148,
+			"uiy": 100,
+			"filled": false
+		},
+		{
+			"name": "dscombat.internal_7",
+			"slot_type": 4,
+			"slot_posx": 0,
+			"slot_posy": 0,
+			"slot_posz": 0,
+			"uix": 168,
+			"uiy": 100,
+			"filled": false
+		},
+		{
+			"name": "dscombat.internal_8",
+			"slot_type": 4,
+			"slot_posx": 0,
+			"slot_posy": 0,
+			"slot_posz": 0,
+			"uix": 188,
 			"uiy": 100,
 			"filled": false
 		}

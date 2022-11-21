@@ -26,20 +26,8 @@ import net.minecraft.world.item.ItemStack;
 
 public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockMenuContainer> {
 	
-	/*private static final HashMap<String, ResourceLocation> ITEM_TEXTURES = new HashMap<String, ResourceLocation>();
-	private static ResourceLocation getItemTexture(String id) {
-		ResourceLocation rl = ITEM_TEXTURES.get(id);
-		if (rl == null) {
-			rl = new ResourceLocation(DSCombatMod.MODID, "textures/item/"+id+".png");
-			ITEM_TEXTURES.put(id, rl);
-		}
-		return rl;
-	}*/
-	
 	private static final ResourceLocation BG_TEXTURE = new ResourceLocation(DSCombatMod.MODID,
 			"textures/ui/aircraft_screen.png");
-	/*private static final ResourceLocation WIDGETS = new ResourceLocation("minecraft",
-			"textures/gui/widgets.png");*/
 	
 	private static final int buttonNum = 7;
 	
@@ -53,14 +41,7 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockMenu
 		this.topPos = 0;
 		this.imageWidth = 256;
 		this.imageHeight = 256;
-		/*
-		 * TODO make image buttons on the top with the weapon icon
-		 * when you click on these buttons the weapon info is displayed underneath 
-		 * with the materials needed and craft button at the bottom
- 		 * also have arrows on the sides to cycle through the weapons
-		 */
 		maxTab = (int)((float)WeaponPresets.weapons.size() / (float)buttonNum);
-		//System.out.println("size = "+WeaponPresets.weapons.size()+" max tab = "+maxTab);
 	}
 	
 	@Override
@@ -70,6 +51,7 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockMenu
         this.renderTooltip(poseStack, mouseX, mouseY);
         Minecraft m = Minecraft.getInstance();
         RenderSystem.enableBlend();
+        if (WeaponPresets.weapons.size() == 0) return;
         // render weapon item options
         int startX = getGuiLeft() + titleLabelX;
 		int startY = getGuiTop() + titleLabelY;
@@ -86,7 +68,6 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockMenu
 			wx += 20;
 		}
 		// render ingredients
-		if (WeaponPresets.weapons.size() == 0) return;
 		WeaponData data = WeaponPresets.weapons.get(weaponIndex);
 		int iix = startX + 122;
 		int ix = iix;

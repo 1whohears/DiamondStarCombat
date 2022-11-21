@@ -214,5 +214,16 @@
 			"uiy": 100,
 			"filled": false
 		}
+	],
+	
+	"ingredients": [
+		{
+			"item": "minecraft:copper_ingot",
+			"num": 8
+		},
+		{
+			"item": "minecraft:gunpowder",
+			"num": 2
+		}
 	]
 }

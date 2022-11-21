@@ -15,6 +15,7 @@ import com.onewhohears.dscombat.common.network.toclient.ClientBoundRemoveWeaponP
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundWeaponAmmoPacket;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundWeaponIndexPacket;
 import com.onewhohears.dscombat.common.network.toserver.ServerBoundAircraftToItemPacket;
+import com.onewhohears.dscombat.common.network.toserver.ServerBoundCraftPlanePacket;
 import com.onewhohears.dscombat.common.network.toserver.ServerBoundCraftWeaponPacket;
 import com.onewhohears.dscombat.common.network.toserver.ServerBoundFlightControlPacket;
 import com.onewhohears.dscombat.common.network.toserver.ServerBoundPingSelectPacket;
@@ -143,6 +144,11 @@ public final class PacketHandler {
 			.encoder(ServerBoundCraftWeaponPacket::encode)
 			.decoder(ServerBoundCraftWeaponPacket::new)
 			.consumerMainThread(ServerBoundCraftWeaponPacket::handle)
+			.add();
+		net.messageBuilder(ServerBoundCraftPlanePacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
+			.encoder(ServerBoundCraftPlanePacket::encode)
+			.decoder(ServerBoundCraftPlanePacket::new)
+			.consumerMainThread(ServerBoundCraftPlanePacket::handle)
 			.add();
 	}
 	

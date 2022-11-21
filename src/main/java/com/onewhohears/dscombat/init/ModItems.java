@@ -159,7 +159,7 @@ public class ModItems {
 	public static final RegistryObject<Item> NOAH_CHOPPER = ITEMS.register("noah_chopper", 
 			() -> new ItemAircraft(ModEntities.NOAH_CHOPPER.get(), "noah_chopper"));
 	public static final RegistryObject<Item> F16 = ITEMS.register("f16", 
-			() -> new ItemAircraft(ModEntities.F16.get(), "alexis_plane"));
+			() -> new ItemAircraft(ModEntities.F16.get(), "f16"));
 	
 	
 }

@@ -15,9 +15,8 @@ import net.minecraft.nbt.CompoundTag;
 public class WeaponPresets {
 	
 	public static final HashMap<String, String[]> compatibility = new HashMap<String, String[]>();
-	
-	public static List<WeaponData> weapons = new ArrayList<WeaponData>();
-	public static List<CompoundTag> weaponNbt = new ArrayList<CompoundTag>();
+	public static final List<WeaponData> weapons = new ArrayList<WeaponData>();
+	public static final List<CompoundTag> weaponNbt = new ArrayList<CompoundTag>();
 	
 	public static void setupPresets() {						
 		String dir = "/data/dscombat/weapons/";

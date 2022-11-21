@@ -8,15 +8,23 @@
 	"craftNum": 1,
 	"ingredients": [
 		{
-			"item": "minecraft:copper_ingot",
-			"num": 8
+			"item": "minecraft:iron_ingot",
+			"num": 20
 		},
 		{
-			"item": "minecraft:gunpowder",
-			"num": 8
+			"item": "minecraft:tnt",
+			"num": 3
 		},
 		{
-			"item": "dscombat:ti83",
+			"item": "minecraft:coal_block",
+			"num": 5
+		},
+		{
+			"item": "minecraft:amethyst_shard",
+			"num": 1
+		},
+		{
+			"item": "dscombat:intel_pentium",
 			"num": 1
 		}
 	],
@@ -25,9 +33,9 @@
 	"innacuracy":0.0,
 	"canShootOnGround":false,
 	
-	"damage":100.0,
+	"damage":80.0,
 	"speed":5.0,
-	"explosionRadius":4.0,
+	"explosionRadius":5.0,
 	"explosiveDamage":100.0,
 	
 	"explosive":true,

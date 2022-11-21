@@ -8,12 +8,20 @@
 	"craftNum": 1,
 	"ingredients": [
 		{
-			"item": "minecraft:copper_ingot",
-			"num": 8
+			"item": "minecraft:iron_ingot",
+			"num": 16
 		},
 		{
-			"item": "minecraft:gunpowder",
-			"num": 8
+			"item": "minecraft:tnt",
+			"num": 1
+		},
+		{
+			"item": "minecraft:coal_block",
+			"num": 3
+		},
+		{
+			"item": "minecraft:spider_eye",
+			"num": 2
 		},
 		{
 			"item": "dscombat:ti83",
@@ -25,7 +33,7 @@
 	"innacuracy":0.0,
 	"canShootOnGround":false,
 	
-	"damage":100.0,
+	"damage":40.0,
 	"speed":2.5,
 	"explosionRadius":3.0,
 	"explosiveDamage":100.0,

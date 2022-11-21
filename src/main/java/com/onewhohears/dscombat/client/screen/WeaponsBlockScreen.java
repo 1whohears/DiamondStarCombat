@@ -6,6 +6,9 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.container.WeaponsBlockMenuContainer;
+import com.onewhohears.dscombat.common.network.PacketHandler;
+import com.onewhohears.dscombat.common.network.toserver.ServerBoundCraftWeaponPacket;
+import com.onewhohears.dscombat.crafting.DSCIngredient;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponData.ComponentColor;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
@@ -13,9 +16,12 @@ import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockMenuContainer> {
@@ -197,13 +203,11 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockMenu
 	private void prevButton() {
 		tabIndex -= 1;
 		if (tabIndex < 0) tabIndex = maxTab;
-		System.out.println("tabIndex = "+tabIndex);
 	}
 	
 	private void nextButton() {
 		tabIndex += 1;
 		if (tabIndex > maxTab) tabIndex = 0;
-		System.out.println("tabIndex = "+tabIndex);
 	}
 	
 	private void weaponButton(int num) {
@@ -211,13 +215,19 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockMenu
 		int a = tabIndex * buttonNum + num;
 		if (a >= max) weaponIndex = max-1;
 		else weaponIndex = a;
-		System.out.println("buttonIndex = "+weaponIndex);
 	}
 	
 	private void craftButton() {
-		System.out.println("CRAFT BUTTON");
-		System.out.println("tabIndex = "+tabIndex);
-		System.out.println("weaponIndex = "+weaponIndex);
+		Minecraft m = Minecraft.getInstance();
+		Player player = m.player;
+		if (player == null) return;
+		WeaponData data = WeaponPresets.weapons.get(weaponIndex);
+		if (DSCIngredient.hasIngredients(data.ingredients, player.getInventory())) {
+			PacketHandler.INSTANCE.sendToServer(new ServerBoundCraftWeaponPacket(data.getId(), menu.getPos()));
+		} else {
+			player.displayClientMessage(Component.translatable("dscombat.cant_craft"), true);
+			minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.GHAST_DEATH, 1.0F));
+		}
 	}
 
 }

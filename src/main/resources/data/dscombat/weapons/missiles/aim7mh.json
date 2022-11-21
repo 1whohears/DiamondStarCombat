@@ -5,6 +5,22 @@
 	"entityType":"dscombat:missile3",
 	"shootSound":"dscombat:rocket_launch_1",
 	
+	"craftNum": 1,
+	"ingredients": [
+		{
+			"item": "minecraft:copper_ingot",
+			"num": 8
+		},
+		{
+			"item": "minecraft:gunpowder",
+			"num": 8
+		},
+		{
+			"item": "dscombat:ti83",
+			"num": 1
+		}
+	],
+	
 	"fireRate":20,
 	"innacuracy":0.0,
 	"canShootOnGround":false,

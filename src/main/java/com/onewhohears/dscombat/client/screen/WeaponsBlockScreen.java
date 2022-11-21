@@ -1,10 +1,13 @@
 package com.onewhohears.dscombat.client.screen;
 
+import java.util.List;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.container.WeaponsBlockMenuContainer;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.data.weapon.WeaponData.ComponentColor;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 
 import net.minecraft.client.Minecraft;
@@ -83,13 +86,16 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockMenu
 		int ix = iix;
 		int iy = startY + 44;
 		for (int i = 0; i < data.ingredients.size(); ++i) {
-			if (i != 0 && i % 4 == 0) iy += 18;
+			if (i != 0 && i % 4 == 0) {
+				ix = iix;
+				iy += 20;
+			}
 			ItemStack stack = data.ingredients.get(i).getItem();
 			m.getItemRenderer().renderAndDecorateItem(
 					stack, ix, iy);
 			m.getItemRenderer().renderGuiItemDecorations(font, 
 					stack, ix, iy);
-			ix += 18;
+			ix += 20;
 		}
 	}
 
@@ -110,13 +116,12 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockMenu
 		WeaponData data = WeaponPresets.weapons.get(weaponIndex);
 		int startX = titleLabelX+38;
 		int startY = titleLabelY+34;
-		// name
-		font.draw(stack, Component.translatable("item.dscombat."+data.getId()), 
-				startX, startY, 0x040404);
-		// type
-		font.draw(stack, Component.literal(data.getType().toString()), 
-				startX, startY+10, 0x0000aa);
-		// TODO display more weapon stats
+		List<ComponentColor> list = data.getInfoComponents();
+		for (int i = 0; i < list.size(); ++i) {
+			font.draw(stack, list.get(i).component, 
+					startX, startY, list.get(i).color);
+			startY += 10;
+		}
 	}
 	
 	@Override

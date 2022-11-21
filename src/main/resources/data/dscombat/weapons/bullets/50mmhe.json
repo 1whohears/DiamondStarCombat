@@ -5,6 +5,18 @@
 	"entityType":"dscombat:bullet",
 	"shootSound":"dscombat:bullet_shoot_1",
 	
+	"craftNum": 16,
+	"ingredients": [
+		{
+			"item": "minecraft:copper_ingot",
+			"num": 8
+		},
+		{
+			"item": "minecraft:gunpowder",
+			"num": 4
+		}
+	],
+	
 	"fireRate":4,
 	"innacuracy":0.1,
 	"canShootOnGround":true,

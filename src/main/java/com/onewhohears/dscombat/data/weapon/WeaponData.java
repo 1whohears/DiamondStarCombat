@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.data.weapon;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -18,6 +19,7 @@ import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -310,6 +312,22 @@ public abstract class WeaponData {
 			stack.setCount(craftNum);
 		}
 		return stack;
+	}
+	
+	public List<ComponentColor> getInfoComponents() {
+		List<ComponentColor> list = new ArrayList<>();
+		list.add(new ComponentColor(Component.translatable("item.dscombat."+getId()), 0x040404));
+		list.add(new ComponentColor(Component.literal(getType().toString()), 0x0000aa));
+		return list;
+	}
+	
+	public static class ComponentColor {
+		public final Component component;
+		public final int color;
+		public ComponentColor(Component component, int color) {
+			this.component = component;
+			this.color = color;
+		}
 	}
 	
 }

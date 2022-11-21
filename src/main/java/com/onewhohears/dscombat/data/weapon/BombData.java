@@ -1,5 +1,7 @@
 package com.onewhohears.dscombat.data.weapon;
 
+import java.util.List;
+
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
@@ -53,5 +55,12 @@ public class BombData extends BulletData {
 		
 		updateClientAmmo(vehicle);
 		return null;
+	}
+	
+	@Override
+	public List<ComponentColor> getInfoComponents() {
+		List<ComponentColor> list = super.getInfoComponents();
+		
+		return list;
 	}
 }

@@ -114,13 +114,20 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockMenu
 		// weapon stats
 		if (WeaponPresets.weapons.size() == 0) return;
 		WeaponData data = WeaponPresets.weapons.get(weaponIndex);
-		int startX = titleLabelX+38;
-		int startY = titleLabelY+34;
 		List<ComponentColor> list = data.getInfoComponents();
-		for (int i = 0; i < list.size(); ++i) {
+		font.draw(stack, list.get(0).component, 
+				titleLabelX+38, titleLabelY+34, list.get(0).color);
+		float scale = 0.5f;
+		stack.scale(scale, scale, scale);
+		float invScale = 1f / scale;
+		int startX = (int)((float)(titleLabelX+38) * invScale);
+		int startY = (int)((float)(titleLabelY+43) * invScale);
+		//int inc = (int)((float)font.lineHeight * scale);
+		for (int i = 1; i < list.size(); ++i) {
 			font.draw(stack, list.get(i).component, 
 					startX, startY, list.get(i).color);
-			startY += 10;
+			//startY += inc;
+			startY += font.lineHeight;
 		}
 	}
 	

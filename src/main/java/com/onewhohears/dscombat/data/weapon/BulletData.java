@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.data.weapon;
 
+import java.util.List;
 import java.util.Random;
 
 import com.mojang.math.Quaternion;
@@ -10,6 +11,7 @@ import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
@@ -176,6 +178,20 @@ public class BulletData extends WeaponData {
 	@Override
 	public WeaponData copy() {
 		return new BulletData(this.write());
+	}
+	
+	@Override
+	public List<ComponentColor> getInfoComponents() {
+		List<ComponentColor> list = super.getInfoComponents();
+		list.add(new ComponentColor(Component.literal("Damage: ").append(getDamage()+""), 0x040404));
+		list.add(new ComponentColor(Component.literal("Max Speed: ").append(getSpeed()+""), 0x040404));
+		list.add(new ComponentColor(Component.literal("Innacuracy: ").append(getInnacuracy()+""), 0x040404));
+		if (isExplosive()) {
+			list.add(new ComponentColor(Component.literal("EXPLOSIVE"), 0xaa0000));
+			list.add(new ComponentColor(Component.literal("Radius: ").append(getExplosionRadius()+""), 0x040404));
+		}
+		if (isCausesFire()) list.add(new ComponentColor(Component.literal("INCENDIARY"), 0xaa0000));
+		return list;
 	}
 
 }

@@ -181,7 +181,7 @@ public class UtilParse {
 			return new BombData(tag);
 		case BULLET:
 			return new BulletData(tag);
-		case ROCKET:
+		case MISSILE:
 			return new MissileData(tag);
 		}
 		return null;

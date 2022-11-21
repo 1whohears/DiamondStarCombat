@@ -92,7 +92,7 @@ public class DataSerializers {
 				return new BombData(buffer);
 			case BULLET:
 				return new BulletData(buffer);
-			case ROCKET:
+			case MISSILE:
 				return new MissileData(buffer);
 			}
 			return null;

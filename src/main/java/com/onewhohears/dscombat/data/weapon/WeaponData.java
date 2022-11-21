@@ -53,7 +53,7 @@ public abstract class WeaponData {
 	
 	public static enum WeaponType {
 		BULLET,
-		ROCKET,
+		MISSILE,
 		BOMB
 	}
 	
@@ -316,8 +316,10 @@ public abstract class WeaponData {
 	
 	public List<ComponentColor> getInfoComponents() {
 		List<ComponentColor> list = new ArrayList<>();
-		list.add(new ComponentColor(Component.translatable("item.dscombat."+getId()), 0x040404));
+		list.add(new ComponentColor(Component.translatable("item.dscombat."+getId()), 0x000000));
 		list.add(new ComponentColor(Component.literal(getType().toString()), 0x0000aa));
+		list.add(new ComponentColor(Component.literal("Max Ammo: ").append(getMaxAmmo()+""), 0x040404));
+		list.add(new ComponentColor(Component.literal("Fire Rate: ").append(getFireRate()+""), 0x040404));
 		return list;
 	}
 	

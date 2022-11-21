@@ -15,6 +15,7 @@ import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -434,7 +435,7 @@ public class MissileData extends BulletData {
 	
 	@Override
 	public WeaponType getType() {
-		return WeaponType.ROCKET;
+		return WeaponType.MISSILE;
 	}
 	
 	public TargetType getTargetType() {
@@ -474,6 +475,31 @@ public class MissileData extends BulletData {
 	@Override
 	public WeaponData copy() {
 		return new MissileData(this.write());
+	}
+	
+	@Override
+	public List<ComponentColor> getInfoComponents() {
+		List<ComponentColor> list = super.getInfoComponents();
+		if (getTargetType() == TargetType.POS) {
+			list.add(2, new ComponentColor(Component.literal("TARGETS POSITION"), 0xaaaa00));
+		} else if (getTargetType() == TargetType.AIR) {
+			list.add(2, new ComponentColor(Component.literal("TARGETS FLYING"), 0xaaaa00));
+			if (getGuidanceType() == GuidanceType.OWNER_RADAR) {
+				list.add(3, new ComponentColor(Component.literal("VEHICLE GUIDED"), 0xaaaa00));
+			} else if (getGuidanceType() == GuidanceType.PITBULL) {
+				list.add(3, new ComponentColor(Component.literal("SELF GUIDED"), 0xaaaa00));
+			} else if (getGuidanceType() == GuidanceType.IR) {
+				list.add(3, new ComponentColor(Component.literal("IR GUIDED"), 0xaaaa00));
+			}
+		} else if (getTargetType() == TargetType.GROUND) {
+			list.add(2, new ComponentColor(Component.literal("TARGETS GROUNDED"), 0xaaaa00));
+			list.add(3, new ComponentColor(Component.literal("SELF GUIDED"), 0xaaaa00));
+		} 
+		if (getFov() != -1) list.add(new ComponentColor(Component.literal("FOV: ").append(getFov()+""), 0x040404));
+		if (getFlareResistance() != 0) if (getFov() != -1) list.add(new ComponentColor(Component.literal("Flare Resistance: ").append(getFlareResistance()+""), 0x040404));
+		list.add(new ComponentColor(Component.literal("Turn Rate: ").append(getMaxRot()+""), 0x040404));
+		list.add(new ComponentColor(Component.literal("Acceleration: ").append(getAcceleration()+""), 0x040404));
+		return list;
 	}
 
 }

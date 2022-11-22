@@ -15,6 +15,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
@@ -100,6 +101,16 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 		font.draw(stack, Component.translatable("dscombat.ingredients"), titleLabelX+122, titleLabelY+34, 0x00aa00);
 		// plane stats
 		if (AircraftPresets.presets.size() == 0) return;
+		int startX = titleLabelX+38;
+		int startY = titleLabelY+34;
+		CompoundTag data = AircraftPresets.presets.get(planeIndex);
+		font.draw(stack, Component.translatable("entity.dscombat."+data.getString("preset")), startX, startY, 0x000000);
+		font.draw(stack, Component.literal("Health: "+data.getDouble("max_health")), startX, startY+9, 0x404040);
+		font.draw(stack, Component.literal("Speed: "+data.getDouble("max_speed")), startX, startY+9*2, 0x404040);
+		font.draw(stack, Component.literal("Weight: "+data.getDouble("weight")), startX, startY+9*3, 0x404040);
+		font.draw(stack, Component.literal("Wing Area: "+data.getDouble("surfacearea")), startX, startY+9*4, 0x404040);
+		font.draw(stack, Component.literal("Stealth: "+data.getDouble("stealth")), startX, startY+9*5, 0x404040);
+		font.draw(stack, Component.literal("Heat: "+data.getDouble("idleheat")), startX, startY+9*6, 0x404040);
 		// TODO display plane stats
 		// TODO display plane model
 	}

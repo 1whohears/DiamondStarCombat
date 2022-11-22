@@ -43,7 +43,7 @@
 	"dscombat.internal_7": "Internal 7",
 	"dscombat.internal_8": "Internal 8",
 	
-	"entity.dscombat.basic_plane": "Test Plane",
+	"entity.dscombat.test_plane": "Test Plane",
 	"entity.dscombat.javi_plane": "Javi Plane",
 	"entity.dscombat.alexis_plane": "Alexis Plane",
 	"entity.dscombat.f16": "F16",

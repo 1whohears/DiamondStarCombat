@@ -38,11 +38,11 @@ public class ModEntities {
 		return null;
 	}
 	
-	public static final RegistryObject<EntityType<EntityPlane>> TEST_PLANE = ENTITIES.register("test_plane", 
+	/*public static final RegistryObject<EntityType<EntityPlane>> TEST_PLANE = ENTITIES.register("test_plane", 
 			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
 					new ResourceLocation(DSCombatMod.MODID, "textures/entities/basic_plane.png"),
 					ModSounds.BIPLANE_1, ModItems.TEST_PLANE), 
-					EntityDimensions.scalable(1.5f, 1.5f)));
+					EntityDimensions.scalable(1.5f, 1.5f)));*/
 	
 	public static final RegistryObject<EntityType<EntityPlane>> JAVI_PLANE = ENTITIES.register("javi_plane", 
 			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 

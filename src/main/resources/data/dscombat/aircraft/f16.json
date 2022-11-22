@@ -258,12 +258,8 @@
 	
 	"ingredients": [
 		{
-			"item": "minecraft:copper_ingot",
-			"num": 8
-		},
-		{
-			"item": "minecraft:gunpowder",
-			"num": 2
+			"item": "minecraft:diamond_block",
+			"num": 64
 		}
 	]
 }

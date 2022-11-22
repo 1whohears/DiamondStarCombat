@@ -178,12 +178,24 @@
 	
 	"ingredients": [
 		{
-			"item": "minecraft:copper_ingot",
-			"num": 8
+			"item": "dscombat:fuselage",
+			"num": 2
 		},
 		{
-			"item": "minecraft:gunpowder",
+			"item": "dscombat:wing",
 			"num": 2
+		},
+		{
+			"item": "dscombat:propeller",
+			"num": 1
+		},
+		{
+			"item": "dscombat:cockpit",
+			"num": 1
+		},
+		{
+			"item": "minecraft:gold_ingot",
+			"num": 4
 		}
 	]
 }

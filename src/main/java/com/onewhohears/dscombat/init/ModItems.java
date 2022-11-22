@@ -63,7 +63,7 @@ public class ModItems {
 	public static final CreativeModeTab AIRCRAFT = new CreativeModeTab("aircraft") {
 		@Override
 		public ItemStack makeIcon() {
-			return new ItemStack(ModItems.TEST_PLANE.get());
+			return new ItemStack(ModItems.NOAH_CHOPPER.get());
 		}
 	};
 	
@@ -150,8 +150,8 @@ public class ModItems {
 			() -> new ItemWeaponPart(0.008f, "heavy_missile_rack", PartSlot.EXTERNAL)); 
 	
 	// PLANES
-	public static final RegistryObject<Item> TEST_PLANE = ITEMS.register("test_plane", 
-			() -> new ItemAircraft(ModEntities.TEST_PLANE.get(), "test_plane"));
+	/*public static final RegistryObject<Item> TEST_PLANE = ITEMS.register("test_plane", 
+			() -> new ItemAircraft(ModEntities.TEST_PLANE.get(), "test_plane"));*/
 	public static final RegistryObject<Item> JAVI_PLANE = ITEMS.register("javi_plane", 
 			() -> new ItemAircraft(ModEntities.JAVI_PLANE.get(), "javi_plane"));
 	public static final RegistryObject<Item> ALEXIS_PLANE = ITEMS.register("alexis_plane", 

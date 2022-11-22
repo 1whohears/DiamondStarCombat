@@ -65,9 +65,9 @@ public class ClientModEvents {
 	@SubscribeEvent
 	public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
 		EntityModelSet models = Minecraft.getInstance().getEntityModels();
-		event.registerEntityRenderer(ModEntities.TEST_PLANE.get(), 
+		/*event.registerEntityRenderer(ModEntities.TEST_PLANE.get(), 
 				(context) -> new RendererEntityAbstractAircraft<EntityPlane>(context, 
-						new EntityModelTestPlane<EntityPlane>(models.bakeLayer(EntityModelTestPlane.LAYER_LOCATION))));
+						new EntityModelTestPlane<EntityPlane>(models.bakeLayer(EntityModelTestPlane.LAYER_LOCATION))));*/
 		
 		event.registerEntityRenderer(ModEntities.JAVI_PLANE.get(), 
 				(context) -> new RendererEntityAbstractAircraft<EntityPlane>(context, 

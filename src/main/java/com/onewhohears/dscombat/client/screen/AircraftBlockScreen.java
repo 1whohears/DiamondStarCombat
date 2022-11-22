@@ -101,17 +101,32 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 		font.draw(stack, Component.translatable("dscombat.ingredients"), titleLabelX+122, titleLabelY+34, 0x00aa00);
 		// plane stats
 		if (AircraftPresets.presets.size() == 0) return;
-		int startX = titleLabelX+38;
-		int startY = titleLabelY+34;
 		CompoundTag data = AircraftPresets.presets.get(planeIndex);
-		font.draw(stack, Component.translatable("entity.dscombat."+data.getString("preset")), startX, startY, 0x000000);
-		font.draw(stack, Component.literal("Health: "+data.getDouble("max_health")), startX, startY+9, 0x404040);
-		font.draw(stack, Component.literal("Speed: "+data.getDouble("max_speed")), startX, startY+9*2, 0x404040);
-		font.draw(stack, Component.literal("Weight: "+data.getDouble("weight")), startX, startY+9*3, 0x404040);
-		font.draw(stack, Component.literal("Wing Area: "+data.getDouble("surfacearea")), startX, startY+9*4, 0x404040);
-		font.draw(stack, Component.literal("Stealth: "+data.getDouble("stealth")), startX, startY+9*5, 0x404040);
-		font.draw(stack, Component.literal("Heat: "+data.getDouble("idleheat")), startX, startY+9*6, 0x404040);
-		// TODO display plane stats
+		font.draw(stack, Component.translatable("entity.dscombat."+data.getString("preset")), titleLabelX+38, titleLabelY+34, 0x000000);
+		float scale = 0.5f;
+		stack.scale(scale, scale, scale);
+		float invScale = 1f / scale;
+		int startX = (int)((float)(titleLabelX+38) * invScale);
+		int startY = (int)((float)(titleLabelY+43) * invScale);
+		int initY = startY;
+		font.draw(stack, Component.literal("Health: "+data.getDouble("max_health")), startX, startY, 0x404040);
+		startY += font.lineHeight;
+		font.draw(stack, Component.literal("Speed: "+data.getDouble("max_speed")), startX, startY, 0x404040);
+		startY += font.lineHeight;
+		font.draw(stack, Component.literal("Weight: "+data.getDouble("weight")), startX, startY, 0x404040);
+		startY += font.lineHeight;
+		font.draw(stack, Component.literal("Wing Area: "+data.getDouble("surfacearea")), startX, startY, 0x404040);
+		startY = initY;
+		startX += 80;
+		font.draw(stack, Component.literal("Stealth: "+data.getDouble("stealth")), startX, startY, 0x404040);
+		startY += font.lineHeight;
+		font.draw(stack, Component.literal("Heat: "+data.getDouble("idleheat")), startX, startY, 0x404040);
+		startY += font.lineHeight;
+		font.draw(stack, Component.literal("Yaw Rate: "+data.getDouble("maxyaw")), startX, startY, 0x404040);
+		startY += font.lineHeight;
+		font.draw(stack, Component.literal("Pitch Rate: "+data.getDouble("maxpitch")), startX, startY, 0x404040);
+		startY += font.lineHeight;
+		font.draw(stack, Component.literal("Roll Rate: "+data.getDouble("maxroll")), startX, startY, 0x404040);
 		// TODO display plane model
 	}
 	

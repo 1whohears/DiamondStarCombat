@@ -207,7 +207,7 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockMenu
 			PacketHandler.INSTANCE.sendToServer(new ServerBoundCraftWeaponPacket(data.getId(), menu.getPos()));
 		} else {
 			player.displayClientMessage(Component.translatable("dscombat.cant_craft"), true);
-			minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.GHAST_DEATH, 1.0F));
+			minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.VILLAGER_NO, 1.0F));
 		}
 	}
 

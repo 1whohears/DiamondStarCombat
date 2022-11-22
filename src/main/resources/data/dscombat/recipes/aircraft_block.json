@@ -1,0 +1,21 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"W": {
+			"item": "dscombat:thick_wrench"
+		},
+		"S": {
+			"item": "minecraft:smithing_table"
+		},
+		"C": {
+			"item": "minecraft:stonecutter"
+		}
+	},
+	"pattern": [
+		"SWC"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:aircraft_block"
+	}
+}

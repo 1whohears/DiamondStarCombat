@@ -220,7 +220,7 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 			PacketHandler.INSTANCE.sendToServer(new ServerBoundCraftPlanePacket(preset, menu.getPos()));
 		} else {
 			player.displayClientMessage(Component.translatable("dscombat.cant_craft"), true);
-			minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.GHAST_DEATH, 1.0F));
+			minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.VILLAGER_NO, 1.0F));
 		}
 	}
 

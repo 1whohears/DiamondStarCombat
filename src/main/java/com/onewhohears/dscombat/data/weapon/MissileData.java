@@ -121,11 +121,11 @@ public class MissileData extends BulletData {
 			return null;
 		}
 		if (!this.canShootOnGround() && vehicle.isOnGround()) {
-			this.setLaunchFail("can't shoot this while on ground");
+			this.setLaunchFail("dscombat.cant_shoot_on_ground");
 			return null;
 		}
 		if (!this.checkAmmo(1, owner)) {
-			this.setLaunchFail("not enough ammo");
+			this.setLaunchFail("dscombat.no_ammo");
 			return null;
 		}
 		//System.out.println(this.getId()+" ammo "+this.getCurrentAmmo());
@@ -141,20 +141,20 @@ public class MissileData extends BulletData {
 			RadarSystem radar = vehicle.radarSystem;
 			//System.out.println(radar);
 			if (!radar.hasRadar()) {
-				this.setLaunchFail("this rocket requires a radar on this aircraft");
+				this.setLaunchFail("dscombat.no_radar");
 				return null;
 			}
 			Entity target = radar.getSelectedTarget(level);
 			if (target == null) {
-				this.setLaunchFail("you have not selected an enemy to shoot");
+				this.setLaunchFail("dscombat.no_target_selectedt");
 				return null;
 			}
 			boolean groundWater = UtilEntity.isOnGroundOrWater(target);
 			if (targetType == TargetType.AIR && groundWater) {
-				this.setLaunchFail("this missile can only shoot AIRBORN targets");
+				this.setLaunchFail("dscombat.air_target_only");
 				return null;
 			} else if (targetType == TargetType.GROUND && !groundWater) {
-				this.setLaunchFail("this missile can only shoot GROUNDED targets");
+				this.setLaunchFail("dscombat.ground_target_only");
 				return null;
 			}
 			if (guidanceType == GuidanceType.OWNER_RADAR) {

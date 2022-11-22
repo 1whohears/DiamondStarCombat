@@ -5,6 +5,12 @@
 	"dscombat.no_menu_in_air": "Can't open plane menu while flying!",
 	"dscombat.no_open_seats": "No Open Seats",
 	"dscombat.cant_craft": "Not Enough Materials",
+	"dscombat.cant_shoot_on_ground": "Can't Shoot This On Ground",
+	"dscombat.no_ammo": "Out of Ammo",
+	"dscombat.no_radar": "This Weapon Requires a Radar to Select a Target",
+	"dscombat.no_target_selected": "You have not Selected a Target",
+	"dscombat.air_target_only": "This Weapon only tracks Airial Targets",
+	"dscombat.ground_target_only": "This Weapon only tracks Grounded Targets",
 	
 	"dscombat.slotname_frame": "FRAME",
 	"dscombat.slotname_internal": "INTERNAL",

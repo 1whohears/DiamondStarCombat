@@ -113,11 +113,11 @@ public class BulletData extends WeaponData {
 			return null;
 		}
 		if (!this.canShootOnGround() && vehicle.isOnGround()) {
-			this.setLaunchFail("can't shoot this while on ground");
+			this.setLaunchFail("dscombat.cant_shoot_on_ground");
 			return null;
 		}
 		if (!this.checkAmmo(1, owner)) {
-			this.setLaunchFail("not enough ammo");
+			this.setLaunchFail("dscombat.no_ammo");
 			return null;
 		}
 		//System.out.println(this.getId()+" ammo "+this.getCurrentAmmo());

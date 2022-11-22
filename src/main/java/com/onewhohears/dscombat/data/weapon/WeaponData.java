@@ -234,7 +234,6 @@ public abstract class WeaponData {
 	
 	@Nullable
 	public String getFailedLaunchReason() {
-		// TODO make this translatable
 		return failedLaunchReason;
 	}
 	

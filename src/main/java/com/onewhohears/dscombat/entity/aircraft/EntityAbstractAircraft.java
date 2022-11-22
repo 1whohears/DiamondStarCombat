@@ -70,7 +70,6 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public static final EntityDataAccessor<Float> THROTTLEDOWN = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Quaternion> Q = SynchedEntityData.defineId(EntityAbstractAircraft.class, DataSerializers.QUATERNION);
 	public static final EntityDataAccessor<Boolean> FREE_LOOK = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.BOOLEAN);
-	//public static final EntityDataAccessor<Integer> FLARES = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Float> STEALTH = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> ROLL = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> PITCH = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
@@ -90,7 +89,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public WeaponSystem weaponSystem = new WeaponSystem();
 	public RadarSystem radarSystem = new RadarSystem();
 	public Quaternion prevQ = Quaternion.ONE.copy();
-	//public Quaternion clientQ = Quaternion.ONE.copy();
+	public Quaternion clientQ = Quaternion.ONE.copy();
 	
 	public boolean inputMouseMode, inputFlare, inputShoot, inputSelect, inputOpenMenu;
 	public float inputThrottle, inputPitch, inputRoll, inputYaw;
@@ -101,7 +100,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	protected final RegistryObject<SoundEvent> engineSound;
 	protected final RegistryObject<Item> item;
 	
-	private int lerpSteps/*, lerpStepsQ*/, newRiderCooldown;
+	private int lerpSteps, lerpStepsQ, newRiderCooldown;
 	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot/*, lerpZRot*/;
 	private float landingGearPos, landingGearPosOld;
 	
@@ -124,7 +123,6 @@ public abstract class EntityAbstractAircraft extends Entity {
 		entityData.define(THROTTLEDOWN, 0.05f);
 		entityData.define(Q, Quaternion.ONE);
 		entityData.define(FREE_LOOK, true);
-		//entityData.define(FLARES, 0);
 		entityData.define(STEALTH, 1f);
 		entityData.define(ROLL, 1f);
 		entityData.define(PITCH, 1f);
@@ -142,11 +140,11 @@ public abstract class EntityAbstractAircraft extends Entity {
         super.onSyncedDataUpdated(key);
         if (Q.equals(key) && level.isClientSide() && !isControlledByLocalInstance()) {
             if (firstTick) {
-                //lerpStepsQ = 0;
-                //setClientQ(getQ());
+                lerpStepsQ = 0;
+                setClientQ(getQ());
                 setPrevQ(getQ());
             } else {
-                //lerpStepsQ = 10;
+                lerpStepsQ = 10;
             }
         }
     }
@@ -165,7 +163,6 @@ public abstract class EntityAbstractAircraft extends Entity {
 		this.setMaxSpeed(compound.getFloat("max_speed"));
 		this.setMaxHealth(compound.getFloat("max_health"));
 		this.setHealth(compound.getFloat("health"));
-		//this.setFlares(compound.getInt("flares"));
 		this.setStealth(compound.getFloat("stealth"));
 		this.setMaxDeltaRoll(compound.getFloat("maxroll"));
 		this.setMaxDeltaPitch(compound.getFloat("maxpitch"));
@@ -182,7 +179,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		Quaternion q = new Quaternion(getXRot(), getYRot(), zRot, true);
 		setQ(q);
 		setPrevQ(q);
-		//setClientQ(q);
+		setClientQ(q);
 	}
 
 	@Override
@@ -194,7 +191,6 @@ public abstract class EntityAbstractAircraft extends Entity {
 		compound.putFloat("max_speed", this.getMaxSpeed());
 		compound.putFloat("max_health", this.getMaxHealth());
 		compound.putFloat("health", this.getHealth());
-		//compound.putInt("flares", this.getFlares());
 		compound.putFloat("stealth", this.getStealth());
 		compound.putFloat("maxroll", this.getMaxDeltaRoll());
 		compound.putFloat("maxpitch", this.getMaxDeltaPitch());
@@ -226,16 +222,16 @@ public abstract class EntityAbstractAircraft extends Entity {
 		prevXRot = getXRot();
 		prevYRot = getYRot();
 		prevZRot = zRot;
-		/*if (level.isClientSide && !isControlledByLocalInstance()) {
-			tickLerp();
-		}*/
 		// set direction
-		Quaternion q = getQ();
+		Quaternion q;
+		if (level.isClientSide) q = getClientQ();
+		else q = getQ();
 		setPrevQ(q);
 		//System.out.println("BEFORE "+q);
 		controlDirection(q);
 		q.normalize();
-		setQ(q);
+		if (level.isClientSide) setClientQ(q);
+		else setQ(q);
 		EulerAngles angles = UtilAngles.toDegrees(q);
 		setXRot((float)angles.pitch);
 		setYRot((float)angles.yaw);
@@ -250,7 +246,8 @@ public abstract class EntityAbstractAircraft extends Entity {
 			this.syncPacketPositionCodec(getX(), getY(), getZ());
         controlSystem();
         tickParts();
-		tickLerp(); // TODO something is wrong with rotation lerp shakes at start and end of rotation
+        // TODO something is wrong with rotation lerp shakes at start and end of rotation
+        tickLerp(); 
 		/*System.out.println("######### client "+this.level.isClientSide);
 		System.out.println("P "+this.getPrevQ());
 		System.out.println("C "+this.getClientQ());
@@ -509,7 +506,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	private void tickLerp() {
 		if (this.isControlledByLocalInstance()) {
 			this.lerpSteps = 0;
-			//this.lerpStepsQ = 0;
+			this.lerpStepsQ = 0;
 		}
 		if (this.lerpSteps > 0) {
 			double d0 = this.getX() + (this.lerpX - this.getX()) / (double)this.lerpSteps;
@@ -522,15 +519,15 @@ public abstract class EntityAbstractAircraft extends Entity {
 	        this.setPos(d0, d1, d2);
 	        this.setRot(this.getYRot(), this.getXRot());
 		}
-		/*if (lerpStepsQ > 0) {
-			this.setPrevQ(this.getClientQ());
-			this.setClientQ(UtilAngles.lerpQ(1f / lerpSteps, this.getClientQ(), this.getQ()));
+		if (lerpStepsQ > 0) {
+			setPrevQ(getClientQ());
+			setClientQ(UtilAngles.lerpQ(1f / lerpSteps, getClientQ(), getQ()));
 			--lerpStepsQ;
 		} else if (lerpStepsQ == 0) {
-			this.setPrevQ(this.getClientQ());
-			this.setClientQ(this.getQ());
+			setPrevQ(getClientQ());
+			setClientQ(getQ());
 			--lerpStepsQ;
-		}*/
+		}
 	}
 	
 	public void updateControls(float throttle, float pitch, float roll, float yaw,
@@ -866,13 +863,13 @@ public abstract class EntityAbstractAircraft extends Entity {
         entityData.set(Q, q.copy());
     }
 
-    /*public Quaternion getClientQ() {
+    public Quaternion getClientQ() {
         return clientQ.copy();
     }
 
     public void setClientQ(Quaternion q) {
         clientQ = q.copy();
-    }*/
+    }
 
     public Quaternion getPrevQ() {
         return prevQ.copy();
@@ -953,15 +950,6 @@ public abstract class EntityAbstractAircraft extends Entity {
     public float getHeat() {
     	return getIdleHeat() + this.getCurrentThrottle() * getEngineHeat();
     }
-    
-   /* public int getFlares() {
-    	return entityData.get(FLARES);
-    }
-    
-    public void setFlares(int flares) {
-    	if (flares < 0) flares = 0;
-    	entityData.set(FLARES, flares);
-    }*/
     
     public float getIdleHeat() {
     	return entityData.get(IDLEHEAT);

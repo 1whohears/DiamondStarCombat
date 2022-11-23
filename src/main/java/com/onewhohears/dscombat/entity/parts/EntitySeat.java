@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.util.math.UtilAngles;
@@ -87,7 +88,10 @@ public class EntitySeat extends EntityAbstractPart {
 			//System.out.println("SEAT ROOT "+getVehicle());
 			if (!(this.getVehicle() instanceof EntityAbstractAircraft craft)) return;
 			Vec3 pos = position();
-			Vec3 seatPos = UtilAngles.rotateVector(new Vec3(0, 1.62, 0), craft.getQ());
+			Quaternion q;
+			if (level.isClientSide) q = craft.getClientQ();
+			else q = craft.getQ();
+			Vec3 seatPos = UtilAngles.rotateVector(new Vec3(0, 1.62, 0), q);
 			camera.setPos(pos.add(seatPos));
 		} else {
 			super.positionRider(passenger);

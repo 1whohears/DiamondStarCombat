@@ -357,10 +357,9 @@ public final class ClientForgeEvents {
 				return;
 			}
 			//System.out.println("RENDER_PLAYER");
-			Quaternion q = UtilAngles.lerpQ(event.getPartialTick(), plane.getPrevQ(), plane.getQ());
+			Quaternion q = UtilAngles.lerpQ(event.getPartialTick(), plane.getPrevQ(), plane.getClientQ());
 			event.getPoseStack().mulPose(q);
-			//player.setYBodyRot(0); // THIS WORKS
-			// TODO player looks in wrong direction
+			// TODO player looks in wrong direction sometimes
 			EulerAngles a = UtilAngles.toDegrees(q);
 			player.setYBodyRot(player.getYRot()-(float)a.yaw);
 			player.setYHeadRot(player.getYRot()-(float)a.yaw);
@@ -393,6 +392,7 @@ public final class ClientForgeEvents {
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
 		if (player == null) return;
+		// TODO third person looks feels janky
 		prevCamera = m.getCameraEntity();
 		if (player.getVehicle() instanceof EntitySeat seat 
 				&& seat.getVehicle() instanceof EntityAbstractAircraft plane) {

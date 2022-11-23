@@ -100,7 +100,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	protected final RegistryObject<SoundEvent> engineSound;
 	protected final RegistryObject<Item> item;
 	
-	private int lerpSteps, lerpStepsQ, newRiderCooldown;
+	private int lerpSteps, /*lerpStepsQ,*/ newRiderCooldown;
 	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot/*, lerpZRot*/;
 	private float landingGearPos, landingGearPosOld;
 	
@@ -140,11 +140,11 @@ public abstract class EntityAbstractAircraft extends Entity {
         super.onSyncedDataUpdated(key);
         if (Q.equals(key) && level.isClientSide() && !isControlledByLocalInstance()) {
             if (firstTick) {
-                lerpStepsQ = 0;
+                //lerpStepsQ = 0;
                 setClientQ(getQ());
                 setPrevQ(getQ());
             } else {
-                lerpStepsQ = 10;
+                //lerpStepsQ = 10;
             }
         }
     }
@@ -246,7 +246,6 @@ public abstract class EntityAbstractAircraft extends Entity {
 			this.syncPacketPositionCodec(getX(), getY(), getZ());
         controlSystem();
         tickParts();
-        // TODO something is wrong with rotation lerp shakes at start and end of rotation
         tickLerp(); 
 		/*System.out.println("######### client "+this.level.isClientSide);
 		System.out.println("P "+this.getPrevQ());
@@ -506,7 +505,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	private void tickLerp() {
 		if (this.isControlledByLocalInstance()) {
 			this.lerpSteps = 0;
-			this.lerpStepsQ = 0;
+			//this.lerpStepsQ = 0;
 		}
 		if (this.lerpSteps > 0) {
 			double d0 = this.getX() + (this.lerpX - this.getX()) / (double)this.lerpSteps;
@@ -519,7 +518,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	        this.setPos(d0, d1, d2);
 	        this.setRot(this.getYRot(), this.getXRot());
 		}
-		if (lerpStepsQ > 0) {
+		/*if (lerpStepsQ > 0) {
 			setPrevQ(getClientQ());
 			setClientQ(UtilAngles.lerpQ(1f / lerpSteps, getClientQ(), getQ()));
 			--lerpStepsQ;
@@ -527,7 +526,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 			setPrevQ(getClientQ());
 			setClientQ(getQ());
 			--lerpStepsQ;
-		}
+		}*/
 	}
 	
 	public void updateControls(float throttle, float pitch, float roll, float yaw,
@@ -679,8 +678,11 @@ public abstract class EntityAbstractAircraft extends Entity {
     public void positionRider(Entity passenger) {
 		//if (!this.hasPassenger(passenger)) return;
 		//System.out.println("POSITION RIDER "+passenger);
+		Quaternion q;
+		if (level.isClientSide) q = getClientQ();
+		else q = getQ();
 		if (passenger instanceof EntityAbstractPart part) {
- 			Vec3 seatPos = UtilAngles.rotateVector(part.getRelativePos(), getQ());
+ 			Vec3 seatPos = UtilAngles.rotateVector(part.getRelativePos(), q);
 			passenger.setPos(position().add(seatPos));
 		}
 	}

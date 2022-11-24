@@ -32,6 +32,7 @@ public class ClientBoundMissileMovePacket extends IPacket {
 	}
 	
 	public ClientBoundMissileMovePacket(FriendlyByteBuf buffer) {
+		super(buffer);
 		id = buffer.readInt();
 		pos = DataSerializers.VEC3.read(buffer);
 		move = DataSerializers.VEC3.read(buffer);

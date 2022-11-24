@@ -427,8 +427,8 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public void controlSystem() {
 		Entity controller = this.getControllingPassenger();
 		if (controller == null) return;
-		boolean isPlayer = controller instanceof ServerPlayer;
 		if (!level.isClientSide) {
+			boolean isPlayer = controller instanceof ServerPlayer;
 			weaponSystem.tick();
 			radarSystem.tickUpdateTargets();
 			if (newRiderCooldown > 0) --newRiderCooldown;
@@ -583,7 +583,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 				if (stack.getItem() instanceof ItemGasCan) {
 					int md = stack.getMaxDamage();
 					int d = stack.getDamageValue();
-					int r = (int)this.addFuel(md-d, true);
+					int r = (int)this.addFuel(md-d);
 					stack.setDamageValue(md-r);
 					return InteractionResult.SUCCESS;
 				} else if (stack.getItem() instanceof ItemRepairTool tool) {
@@ -1050,8 +1050,8 @@ public abstract class EntityAbstractAircraft extends Entity {
     	return partsManager.getCurrentFuel();
     }
     
-    public float addFuel(float fuel, boolean updateClient) {
-    	return this.partsManager.addFuel(fuel, updateClient);
+    public float addFuel(float fuel) {
+    	return this.partsManager.addFuel(fuel);
     }
     
     public boolean isLandingGear() {

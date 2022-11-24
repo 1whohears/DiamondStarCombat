@@ -173,21 +173,21 @@ public class PartsManager {
 		return total;
 	}
 	
-	public float addFuel(float fuel, boolean updateClient) {
+	public float addFuel(float fuel) {
 		for (PartSlot p : slots) if (p.filled() && p.getPartData().getType() == PartType.FUEL_TANK) {
 			FuelTankData data = (FuelTankData) p.getPartData();
 			fuel = data.addFuel(fuel);
 			if (fuel == 0) break;
 		}
-		if (updateClient) {
-			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
-					new ClientBoundFuelPacket(parent));
-		}
 		return fuel;
 	}
 	
 	public void tickFuel(boolean updateClient) {
-		addFuel(-getTotalEngineFuelConsume() * parent.getCurrentThrottle(), updateClient);
+		addFuel(-getTotalEngineFuelConsume() * parent.getCurrentThrottle());
+		if (updateClient && parent.tickCount % 10 == 0) {
+			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
+					new ClientBoundFuelPacket(parent));
+		}
 	}
 	
 	public List<PartSlot> getFuelTanks() {

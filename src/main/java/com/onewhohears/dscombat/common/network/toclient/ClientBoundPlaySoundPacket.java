@@ -20,6 +20,7 @@ public class ClientBoundPlaySoundPacket extends IPacket {
 	}
 	
 	public ClientBoundPlaySoundPacket(FriendlyByteBuf buffer) {
+		super(buffer);
 		sound = buffer.readInt();
 	}
 	

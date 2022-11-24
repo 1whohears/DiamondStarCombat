@@ -63,7 +63,8 @@ public class EntityMissile extends EntityBullet {
 				}
 			}
 			if (targetPos != null) loadChunks();
-			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), 
+			if (tickCount % 10 == 0) PacketHandler.INSTANCE.send(
+					PacketDistributor.TRACKING_ENTITY.with(() -> this), 
 					new ClientBoundMissileMovePacket(getId(), position(), 
 							getDeltaMovement(), getXRot(), getYRot(), targetPos));
 		}

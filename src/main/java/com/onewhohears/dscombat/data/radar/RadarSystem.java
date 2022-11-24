@@ -90,7 +90,7 @@ public class RadarSystem {
 				}
 			}
 		}
-		// selected target
+		// PICK PREVIOUS TARGET
 		if (old != null) for (int i = 0; i < targets.size(); ++i) 
 			if (targets.get(i).id == old.id) {
 				selectedIndex = i;
@@ -99,9 +99,12 @@ public class RadarSystem {
 				}
 				break;
 			}
-		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
-				new ClientBoundPingsPacket(parent.getId(), targets));
+		// ROCKETS
 		updateRockets();
+		// PACKET
+		if (parent.tickCount % 10 == 0) PacketHandler.INSTANCE.send(
+				PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
+				new ClientBoundPingsPacket(parent.getId(), targets));
 	}
 	
 	private void updateRockets() {

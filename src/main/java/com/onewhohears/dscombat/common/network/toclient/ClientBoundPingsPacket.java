@@ -25,6 +25,7 @@ public class ClientBoundPingsPacket extends IPacket {
 	}
 	
 	public ClientBoundPingsPacket(FriendlyByteBuf buffer) {
+		super(buffer);
 		id = buffer.readInt();
 		pings = new ArrayList<RadarPing>();
 		int num = buffer.readInt();

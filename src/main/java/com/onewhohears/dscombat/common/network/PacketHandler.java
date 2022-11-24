@@ -19,7 +19,6 @@ import com.onewhohears.dscombat.common.network.toserver.ServerBoundCraftPlanePac
 import com.onewhohears.dscombat.common.network.toserver.ServerBoundCraftWeaponPacket;
 import com.onewhohears.dscombat.common.network.toserver.ServerBoundFlightControlPacket;
 import com.onewhohears.dscombat.common.network.toserver.ServerBoundPingSelectPacket;
-import com.onewhohears.dscombat.common.network.toserver.ServerBoundQPacket;
 import com.onewhohears.dscombat.common.network.toserver.ServerBoundRequestPlaneDataPacket;
 import com.onewhohears.dscombat.common.network.toserver.ServerBoundSwitchSeatPacket;
 
@@ -49,11 +48,6 @@ public final class PacketHandler {
 			.encoder(ServerBoundFlightControlPacket::encode)
 			.decoder(ServerBoundFlightControlPacket::new)
 			.consumerMainThread(ServerBoundFlightControlPacket::handle)
-			.add();
-		net.messageBuilder(ServerBoundQPacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ServerBoundQPacket::encode)
-			.decoder(ServerBoundQPacket::new)
-			.consumerMainThread(ServerBoundQPacket::handle)
 			.add();
 		net.messageBuilder(ClientBoundPingsPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
 			.encoder(ClientBoundPingsPacket::encode)

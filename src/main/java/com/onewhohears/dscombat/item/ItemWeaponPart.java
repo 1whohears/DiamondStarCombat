@@ -50,8 +50,13 @@ public class ItemWeaponPart extends ItemPart {
 	}
 	
 	/*@Override
-	public ItemStack getCraftingRemainingItem(ItemStack stack) {	
-		return stack;
+	public void onCraftedBy(ItemStack stack, Level level, Player player) {
+		stack.setTag(getNbt());
 	}*/
+
+	@Override
+	public CompoundTag getNbt() {
+		return new WeaponRackData(weight, "", compatible, getIdPart(), compatibleSlots).write();
+	}
 
 }

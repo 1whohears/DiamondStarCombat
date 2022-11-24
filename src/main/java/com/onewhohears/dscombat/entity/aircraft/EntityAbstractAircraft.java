@@ -139,13 +139,15 @@ public abstract class EntityAbstractAircraft extends Entity {
     public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
         super.onSyncedDataUpdated(key);
         if (Q.equals(key) && level.isClientSide() && !isControlledByLocalInstance()) {
-            if (firstTick) {
+            /*if (firstTick) {
                 //lerpStepsQ = 0;
                 setClientQ(getQ());
                 setPrevQ(getQ());
             } else {
                 //lerpStepsQ = 10;
-            }
+            }*/
+        	setClientQ(getQ());
+            setPrevQ(getQ());
         }
     }
 	

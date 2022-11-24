@@ -1,12 +1,10 @@
 package com.onewhohears.dscombat.item;
 
-import com.onewhohears.dscombat.data.parts.RadarPartData;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.init.ModItems;
+import com.onewhohears.dscombat.data.parts.RadarPartData;
 
-import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 
 public class ItemRadarPart extends ItemPart {
@@ -26,14 +24,10 @@ public class ItemRadarPart extends ItemPart {
 		return name;*/
 		return super.getName(stack);
 	}
-	
+
 	@Override
-	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-		if (group.getId() == ModItems.PARTS.getId()) {
-			ItemStack test = new ItemStack(this);
-			test.setTag(new RadarPartData(weight, preset, getIdPart(), compatibleSlots).write());
-			items.add(test);
-		}
+	public CompoundTag getNbt() {
+		return new RadarPartData(weight, preset, getIdPart(), compatibleSlots).write();
 	}
 
 }

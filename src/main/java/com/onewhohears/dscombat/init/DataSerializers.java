@@ -85,8 +85,10 @@ public class DataSerializers {
 
 		@Override
 		public WeaponData read(FriendlyByteBuf buffer) {
+			//System.out.println("WEAPON DATA DESERIALIZE");
 			int index = buffer.readInt();
 			WeaponData.WeaponType type = WeaponData.WeaponType.values()[index];
+			//System.out.println("type = "+type.name());
 			switch (type) {
 			case BOMB:
 				return new BombData(buffer);
@@ -114,8 +116,10 @@ public class DataSerializers {
 
 		@Override
 		public PartData read(FriendlyByteBuf buffer) {
+			//System.out.println("PART DATA BUFFER");
 			int index = buffer.readInt();
 			PartData.PartType type = PartData.PartType.values()[index];
+			//System.out.println("PART TYPE = "+type.name());
 			switch (type) {
 			case SEAT:
 				return new SeatData(buffer);

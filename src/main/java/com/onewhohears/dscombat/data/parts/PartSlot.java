@@ -26,8 +26,8 @@ public class PartSlot {
 		this.pos = pos;
 		this.uix = uix;
 		this.uiy = uiy;
-		this.offsetX = getIconOffsetX(this.type);
-		this.typeName = getTypeName(this.type);
+		this.offsetX = getIconOffsetX(type);
+		this.typeName = getTypeName(type);
 	}
 	
 	public PartSlot(CompoundTag tag) {
@@ -38,8 +38,9 @@ public class PartSlot {
 		uiy = tag.getInt("uiy");
 		boolean filled = tag.getBoolean("filled");
 		if (filled) data = UtilParse.parsePartFromCompound(tag.getCompound("data"));
-		this.offsetX = getIconOffsetX(this.type);
-		this.typeName = getTypeName(this.type);
+		// not saved
+		offsetX = getIconOffsetX(type);
+		typeName = getTypeName(type);
 	}
 	
 	public CompoundTag write() {
@@ -55,15 +56,23 @@ public class PartSlot {
 	}
 	
 	public PartSlot(FriendlyByteBuf buffer) {
+		//System.out.println("PART SLOT BUFFER");
 		name = buffer.readUtf();
+		//System.out.println("name = "+name);
 		type = SlotType.values()[buffer.readInt()];
+		//System.out.println("type = "+type.name());
 		pos = DataSerializers.VEC3.read(buffer);
+		//System.out.println("pos = "+pos);
 		uix = buffer.readInt();
+		//System.out.println("uix = "+uix);
 		uiy = buffer.readInt();
+		//System.out.println("uiy = "+uiy);
 		boolean notNull = buffer.readBoolean();
+		//System.out.println("notNull = "+notNull);
 		if (notNull) data = DataSerializers.PART_DATA.read(buffer);
-		this.offsetX = getIconOffsetX(this.type);
-		this.typeName = getTypeName(this.type);
+		// not in packet
+		offsetX = getIconOffsetX(type);
+		typeName = getTypeName(type);
 	}
 	
 	public void write(FriendlyByteBuf buffer) {

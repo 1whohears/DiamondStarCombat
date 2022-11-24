@@ -115,18 +115,31 @@ public abstract class WeaponData {
 	
 	public WeaponData(FriendlyByteBuf buffer) {
 		// type int is read in DataSerializers
+		//System.out.println("WEAPON DATA BUFFER");
 		entityType = ModEntities.getObjectByKey(buffer.readUtf());
+		//System.out.println("entityType = "+entityType.getId().toString());
 		shootSound = ModSounds.getObjectByKey(buffer.readUtf());
-		ingredients = DSCIngredient.getIngredients(buffer);
+		//System.out.println("shootSound = "+shootSound.getId().toString());
 		craftNum = buffer.readInt();
+		//System.out.println("craftNum = "+craftNum);
+		ingredients = DSCIngredient.getIngredients(buffer);
+		//System.out.println("ingredients = "+ingredients);
 		id = buffer.readUtf();
+		//System.out.println("id = "+id);
 		pos = DataSerializers.VEC3.read(buffer);
+		//System.out.println("pos = "+pos);
 		maxAge = buffer.readInt();
+		//System.out.println("maxAge = "+maxAge);
 		currentAmmo = buffer.readInt();
+		//System.out.println("currentAmmo = "+currentAmmo);
 		maxAmmo = buffer.readInt();
+		//System.out.println("maxAmmo = "+maxAmmo);
 		fireRate = buffer.readInt();
+		//System.out.println("fireRate = "+fireRate);
 		canShootOnGround = buffer.readBoolean();
+		//System.out.println("canShootOnGround = "+canShootOnGround);
 		slotId = buffer.readUtf();
+		//System.out.println("slotId = "+slotId);
 	}
 	
 	public void write(FriendlyByteBuf buffer) {

@@ -24,6 +24,7 @@ public class ClientBoundAddWeaponPacket extends IPacket {
 	}
 	
 	public ClientBoundAddWeaponPacket(FriendlyByteBuf buffer) {
+		super(buffer);
 		id = buffer.readInt();
 		data = DataSerializers.WEAPON_DATA.read(buffer);
 	}

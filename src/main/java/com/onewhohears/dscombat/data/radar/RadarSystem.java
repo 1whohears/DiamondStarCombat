@@ -54,7 +54,7 @@ public class RadarSystem {
 	}
 	
 	public RadarSystem(FriendlyByteBuf buffer) {
-		radars.clear();
+		//System.out.println("RADAR SYSTEM BUFFER");
 		int num = buffer.readInt();
 		for (int i = 0; i < num; ++i) radars.add(new RadarData(buffer));
 	}
@@ -90,6 +90,7 @@ public class RadarSystem {
 				}
 			}
 		}
+		// selected target
 		if (old != null) for (int i = 0; i < targets.size(); ++i) 
 			if (targets.get(i).id == old.id) {
 				selectedIndex = i;

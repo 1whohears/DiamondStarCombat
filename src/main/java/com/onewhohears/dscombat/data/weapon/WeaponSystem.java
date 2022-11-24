@@ -46,9 +46,12 @@ public class WeaponSystem {
 	}
 	
 	public WeaponSystem(FriendlyByteBuf buffer) {
+		//System.out.println("WEAPON SYSTEM BUFFER");
 		int num = buffer.readInt();
+		//System.out.println("num = "+num);
 		for (int i = 0; i < num; ++i) weapons.add(DataSerializers.WEAPON_DATA.read(buffer));
-		this.weaponIndex = buffer.readInt();
+		weaponIndex = buffer.readInt();
+		//System.out.println("weaponIndex = "+weaponIndex);
 	}
 	
 	public void write(FriendlyByteBuf buffer) {

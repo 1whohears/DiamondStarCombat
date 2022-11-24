@@ -22,6 +22,7 @@ public class ClientBoundRemovePartPacket extends IPacket {
 	}
 	
 	public ClientBoundRemovePartPacket(FriendlyByteBuf buffer) {
+		super(buffer);
 		id = buffer.readInt();
 		slotName = buffer.readUtf();
 	}

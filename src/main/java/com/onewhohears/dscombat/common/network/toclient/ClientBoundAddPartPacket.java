@@ -26,6 +26,7 @@ public class ClientBoundAddPartPacket extends IPacket {
 	}
 	
 	public ClientBoundAddPartPacket(FriendlyByteBuf buffer) {
+		super(buffer);
 		id = buffer.readInt();
 		slotName = buffer.readUtf();
 		data = DataSerializers.PART_DATA.read(buffer);

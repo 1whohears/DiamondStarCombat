@@ -24,6 +24,7 @@ public class ClientBoundRemoveWeaponPacket extends IPacket {
 	}
 	
 	public ClientBoundRemoveWeaponPacket(FriendlyByteBuf buffer) {
+		super(buffer);
 		id = buffer.readInt();
 		wid = buffer.readUtf();
 		slotId = buffer.readUtf();

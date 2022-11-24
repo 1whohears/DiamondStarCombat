@@ -26,6 +26,7 @@ public class ClientBoundWeaponAmmoPacket extends IPacket {
 	}
 	
 	public ClientBoundWeaponAmmoPacket(FriendlyByteBuf buffer) {
+		super(buffer);
 		id = buffer.readInt();
 		weaponId = buffer.readUtf();
 		slotId = buffer.readUtf();

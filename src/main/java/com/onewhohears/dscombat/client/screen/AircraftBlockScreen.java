@@ -102,7 +102,8 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 		// plane stats
 		if (AircraftPresets.presets.size() == 0) return;
 		CompoundTag data = AircraftPresets.presets.get(planeIndex);
-		font.draw(stack, Component.translatable("entity.dscombat."+data.getString("preset")), titleLabelX+38, titleLabelY+34, 0x000000);
+		String preset = data.getString("preset");
+		font.draw(stack, Component.translatable("entity.dscombat."+preset), titleLabelX+38, titleLabelY+34, 0x000000);
 		float scale = 0.5f;
 		stack.scale(scale, scale, scale);
 		float invScale = 1f / scale;
@@ -128,6 +129,7 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 		startY += font.lineHeight;
 		font.draw(stack, Component.literal("Roll Rate: "+data.getDouble("maxroll")), startX, startY, 0x404040);
 		// TODO display plane model
+		//Minecraft m = Minecraft.getInstance();
 	}
 	
 	@Override

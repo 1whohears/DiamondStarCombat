@@ -9,7 +9,9 @@ public abstract class IPacket {
 	
 	public IPacket() {}
 	
-	public IPacket(FriendlyByteBuf buffer) {}
+	public IPacket(FriendlyByteBuf buffer) {
+		System.out.println("DECODING PACKET "+getClass().getName());
+	}
 	
 	public abstract void encode(FriendlyByteBuf buffer);
 	

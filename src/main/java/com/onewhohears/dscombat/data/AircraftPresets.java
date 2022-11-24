@@ -18,7 +18,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class AircraftPresets {
 	
-	public static final List<CompoundTag> presets = new ArrayList<CompoundTag>();
+	public static final List<CompoundTag> presets = new ArrayList<>();
 	public static final HashMap<String, List<DSCIngredient>> ingredients = new HashMap<>();
 	public static final HashMap<String, ItemStack> items = new HashMap<>();
 	

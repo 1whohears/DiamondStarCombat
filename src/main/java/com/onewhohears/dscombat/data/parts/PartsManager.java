@@ -49,6 +49,7 @@ public class PartsManager {
 	}
 	
 	public PartsManager(FriendlyByteBuf buffer) {
+		//System.out.println("PARTS MANAGER BUFFER");
 		int num = buffer.readInt();
 		for (int i = 0; i < num; ++i) slots.add(new PartSlot(buffer));
 	}

@@ -30,6 +30,7 @@ public class ClientBoundPlaneDataPacket extends IPacket {
 	}
 	
 	public ClientBoundPlaneDataPacket(FriendlyByteBuf buffer) {
+		super(buffer);
 		id = buffer.readInt();
 		pm = new PartsManager(buffer);
 		ws = new WeaponSystem(buffer);

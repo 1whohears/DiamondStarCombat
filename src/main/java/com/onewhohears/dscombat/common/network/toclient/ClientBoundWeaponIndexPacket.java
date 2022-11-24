@@ -22,6 +22,7 @@ public class ClientBoundWeaponIndexPacket extends IPacket {
 	}
 	
 	public ClientBoundWeaponIndexPacket(FriendlyByteBuf buffer) {
+		super(buffer);
 		id = buffer.readInt();
 		index = buffer.readInt();
 	}

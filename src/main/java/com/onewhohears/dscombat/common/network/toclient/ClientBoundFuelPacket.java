@@ -23,6 +23,7 @@ public class ClientBoundFuelPacket extends IPacket {
 	}
 	
 	public ClientBoundFuelPacket(FriendlyByteBuf buffer) {
+		super(buffer);
 		this.id = buffer.readInt();
 		int num = buffer.readInt();
 		fuels = new float[num];

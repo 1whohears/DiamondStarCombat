@@ -24,6 +24,7 @@ public class ClientBoundRemoveRadarPacket extends IPacket {
 	}
 	
 	public ClientBoundRemoveRadarPacket(FriendlyByteBuf buffer) {
+		super(buffer);
 		id = buffer.readInt();
 		rid = buffer.readUtf();
 		slotId = buffer.readUtf();

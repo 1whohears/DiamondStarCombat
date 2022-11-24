@@ -397,7 +397,7 @@ public final class ClientForgeEvents {
 		if (player.getVehicle() instanceof EntitySeat seat 
 				&& seat.getVehicle() instanceof EntityAbstractAircraft plane) {
 			EntitySeatCamera camera = seat.getCamera();
-			float xo, xn, yo, yn, zo, zn;
+			float xo, xn, xi, yo, yn, yi, zo, zn, zi;
 			if (!plane.isFreeLook() && plane.getControllingPassenger() != null 
 					&& plane.getControllingPassenger().equals(player)) {
 				xo = plane.prevXRot;
@@ -406,6 +406,11 @@ public final class ClientForgeEvents {
 				yn = plane.getYRot();
 				zo = plane.prevZRot;
 				zn = plane.zRot;
+				xi = xo + (xn - xo) * (float)event.getPartialTick();
+				yi = yo + (yn - yo) * (float)event.getPartialTick();
+				zi = zo + (zn - zo) * (float)event.getPartialTick();
+				player.setXRot(xi);
+				player.setYRot(yi);
 			} else {
 				xo = player.xRotO;
 				xn = player.getXRot();
@@ -413,10 +418,10 @@ public final class ClientForgeEvents {
 				yn = player.getYRot();
 				zo = plane.prevZRot;
 				zn = plane.zRot;
+				xi = xo + (xn - xo) * (float)event.getPartialTick();
+				yi = yo + (yn - yo) * (float)event.getPartialTick();
+				zi = zo + (zn - zo) * (float)event.getPartialTick();
 			}
-			float xi = xo + (xn - xo) * (float)event.getPartialTick();
-			float yi = yo + (yn - yo) * (float)event.getPartialTick();
-			float zi = zo + (zn - zo) * (float)event.getPartialTick();
 			if (m.options.getCameraType() == CameraType.THIRD_PERSON_FRONT) {
 				event.setPitch(xi*-1f);
 				event.setYaw(yi+180f);
@@ -431,8 +436,6 @@ public final class ClientForgeEvents {
 				camera.setYRot(yi);
 				if (!prevCamera.equals(camera)) m.setCameraEntity(camera);
 			}
-			player.setXRot(xi);
-			player.setYRot(yi);
 		} else {
 			if (!prevCamera.equals(player)) m.setCameraEntity(player);
 		}

@@ -23,6 +23,7 @@ public class ClientBoundAddRadarPacket extends IPacket {
 	}
 	
 	public ClientBoundAddRadarPacket(FriendlyByteBuf buffer) {
+		super(buffer);
 		id = buffer.readInt();
 		data = new RadarData(buffer);
 	}

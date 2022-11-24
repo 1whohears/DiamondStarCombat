@@ -78,6 +78,7 @@ public class BulletData extends WeaponData {
 	
 	public BulletData(FriendlyByteBuf buffer) {
 		super(buffer);
+		//System.out.println("BULLET BUFFER");
 		this.damage = buffer.readFloat();
 		this.speed = buffer.readDouble();
 		this.explosive = buffer.readBoolean();

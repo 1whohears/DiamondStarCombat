@@ -42,11 +42,6 @@ public class ClientModEvents {
 	private ClientModEvents() {
 	}
 	
-	/*@SubscribeEvent
-	public static void clientSetup(FMLClientSetupEvent event) {
-		
-	}*/
-	
 	@SubscribeEvent
 	public static void clientSetup(RegisterKeyMappingsEvent event) {
 		KeyInit.init(event);

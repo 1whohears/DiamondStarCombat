@@ -216,6 +216,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		if (Double.isNaN(getDeltaMovement().length())) {
             setDeltaMovement(Vec3.ZERO);
         }
+		prevMotion = getDeltaMovement();
 		prevXRot = getXRot();
 		prevYRot = getYRot();
 		prevZRot = zRot;
@@ -224,7 +225,6 @@ public abstract class EntityAbstractAircraft extends Entity {
 		if (level.isClientSide) q = getClientQ();
 		else q = getQ();
 		setPrevQ(q);
-		//System.out.println("BEFORE "+q);
 		controlDirection(q);
 		q.normalize();
 		if (level.isClientSide) setClientQ(q);
@@ -233,7 +233,6 @@ public abstract class EntityAbstractAircraft extends Entity {
 		setXRot((float)angles.pitch);
 		setYRot((float)angles.yaw);
 		zRot = (float)angles.roll;
-		//System.out.println("AFTER "+q);
 		// movement
 		tickMovement(q);
     	motionClamp();
@@ -247,15 +246,16 @@ public abstract class EntityAbstractAircraft extends Entity {
 		System.out.println("P "+this.getPrevQ());
 		System.out.println("C "+this.getClientQ());
 		System.out.println("Q "+this.getQ());*/
-		if (!this.level.isClientSide) {
-			tickCollisions();
-			if (getHealth() <= 0) {
-				kill();
-			}
-		}
 		if (level.isClientSide) clientTick();
-		this.prevMotion = this.getDeltaMovement();
+		else serverTick();
 		sounds();
+	}
+	
+	public void serverTick() {
+		tickCollisions();
+		if (getHealth() <= 0) {
+			kill();
+		}
 	}
 	
 	public void tickCollisions() {

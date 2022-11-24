@@ -139,13 +139,8 @@ public abstract class EntityAbstractAircraft extends Entity {
     public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
         super.onSyncedDataUpdated(key);
         if (Q.equals(key) && level.isClientSide() && !isControlledByLocalInstance()) {
-            /*if (firstTick) {
-                //lerpStepsQ = 0;
-                setClientQ(getQ());
-                setPrevQ(getQ());
-            } else {
-                //lerpStepsQ = 10;
-            }*/
+            //if (firstTick) lerpStepsQ = 0;
+            //else lerpStepsQ = 10;
         	setClientQ(getQ());
             setPrevQ(getQ());
         }
@@ -248,7 +243,6 @@ public abstract class EntityAbstractAircraft extends Entity {
 			this.syncPacketPositionCodec(getX(), getY(), getZ());
         controlSystem();
         tickParts();
-        tickLerp(); 
 		/*System.out.println("######### client "+this.level.isClientSide);
 		System.out.println("P "+this.getPrevQ());
 		System.out.println("C "+this.getClientQ());
@@ -284,6 +278,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	}
 	
 	public void clientTick() {
+		tickLerp(); 
 		tickHealthSmoke();
 		tickClientSound();
 		tickClientLandingGear();
@@ -475,19 +470,6 @@ public abstract class EntityAbstractAircraft extends Entity {
 	}
 	
 	public void flare(Entity controller, boolean isPlayer) {
-		/*int flares = this.getFlares();
-		int used = 1;
-		if (isPlayer) {
-			ServerPlayer p = (ServerPlayer) controller;
-			if (p.isCreative()) {
-				used = 0;
-			}
-		} 
-		if (flares < used) return;
-		EntityFlare flare = new EntityFlare(level, 6.0f, 100, 3);
-		flare.setPos(this.position().add(0, -0.1, 0));
-		level.addFreshEntity(flare);
-		if (used > 0) this.setFlares(flares-used);*/
 		partsManager.useFlares(isPlayer && ((ServerPlayer)controller).isCreative());
 	}
 	
@@ -508,6 +490,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		if (this.isControlledByLocalInstance()) {
 			this.lerpSteps = 0;
 			//this.lerpStepsQ = 0;
+			return;
 		}
 		if (this.lerpSteps > 0) {
 			double d0 = this.getX() + (this.lerpX - this.getX()) / (double)this.lerpSteps;

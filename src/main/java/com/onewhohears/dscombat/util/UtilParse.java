@@ -22,7 +22,9 @@ import com.onewhohears.dscombat.data.parts.WeaponPartData;
 import com.onewhohears.dscombat.data.parts.WeaponRackData;
 import com.onewhohears.dscombat.data.weapon.BombData;
 import com.onewhohears.dscombat.data.weapon.BulletData;
-import com.onewhohears.dscombat.data.weapon.MissileData;
+import com.onewhohears.dscombat.data.weapon.IRMissileData;
+import com.onewhohears.dscombat.data.weapon.PosMissileData;
+import com.onewhohears.dscombat.data.weapon.TrackMissileData;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 
 import net.minecraft.nbt.CompoundTag;
@@ -181,8 +183,12 @@ public class UtilParse {
 			return new BombData(tag);
 		case BULLET:
 			return new BulletData(tag);
-		case MISSILE:
-			return new MissileData(tag);
+		case IR_MISSILE:
+			return new IRMissileData(tag);
+		case POS_MISSILE:
+			return new PosMissileData(tag);
+		case TRACK_MISSILE:
+			return new TrackMissileData(tag);
 		}
 		return null;
 	}

@@ -3,8 +3,6 @@ package com.onewhohears.dscombat.data.weapon;
 import java.util.List;
 import java.util.Random;
 
-import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
 import com.onewhohears.dscombat.entity.weapon.EntityBullet;
 import com.onewhohears.dscombat.util.math.UtilAngles;
@@ -12,7 +10,6 @@ import com.onewhohears.dscombat.util.math.UtilAngles;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -106,42 +103,29 @@ public class BulletData extends WeaponData {
 	public WeaponType getType() {
 		return WeaponType.BULLET;
 	}
-
+	
+	public EntityAbstractWeapon getEntity(Level level, Entity owner) {
+		return new EntityBullet(level, owner, this);
+	}
+	
 	@Override
-	public EntityAbstractWeapon shoot(Level level, EntityAbstractAircraft vehicle, Entity owner, Vec3 direction, Quaternion vehicleQ) {
-		if (!this.checkRecoil()) {
-			this.setLaunchFail(null);
-			return null;
-		}
-		if (!this.canShootOnGround() && vehicle.isOnGround()) {
-			this.setLaunchFail("dscombat.cant_shoot_on_ground");
-			return null;
-		}
-		if (!this.checkAmmo(1, owner)) {
-			this.setLaunchFail("dscombat.no_ammo");
-			return null;
-		}
-		//System.out.println(this.getId()+" ammo "+this.getCurrentAmmo());
-		EntityBullet bullet = new EntityBullet(level, owner, this);
-		Random r = new Random();
+	public EntityAbstractWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction) {
+		EntityBullet bullet = (EntityBullet) super.getShootEntity(level, owner, pos, direction);
+		if (bullet == null) return null;
+		bullet.setDeltaMovement(direction.scale(speed));
+		return bullet;
+	}
+	
+	@Override
+	public void setDirection(EntityAbstractWeapon weapon, Vec3 direction) {
 		float pitch = UtilAngles.getPitch(direction);
 		float yaw = UtilAngles.getYaw(direction);
+		Random r = new Random();
 		pitch = pitch + (r.nextFloat()-0.5f) * 2f * innacuracy;
 		yaw = yaw + (r.nextFloat()-0.5f) * 2f * innacuracy;
-		bullet.setXRot(pitch);
-		bullet.setYRot(yaw);
-		direction = UtilAngles.rotationToVector(yaw, pitch);
-		bullet.setDeltaMovement(direction.scale(speed)/*.add(vehicle.getDeltaMovement())*/);
-		bullet.setPos(vehicle.position()
-				.add(UtilAngles.rotateVector(this.getLaunchPos(), vehicleQ))
-				/*.add(bullet.getDeltaMovement())*/);
-		level.addFreshEntity(bullet);
-		this.setLaunchSuccess(1, owner);
-		updateClientAmmo(vehicle);
-		level.playSound(null, bullet.blockPosition(), 
-				this.getShootSound(), SoundSource.PLAYERS, 
-				1f, 1f);
-		return bullet;
+		weapon.setXRot(pitch);
+		weapon.setYRot(yaw);
+		direction.subtract(direction).add(UtilAngles.rotationToVector(yaw, pitch));
 	}
 	
 	public float getDamage() {

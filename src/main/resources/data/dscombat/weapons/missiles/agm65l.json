@@ -1,8 +1,8 @@
 {
-	"type":1,
+	"type":2,
 	"id":"agm65l",
 	
-	"entityType":"dscombat:missile1",
+	"entityType":"dscombat:pos_missile_1",
 	"shootSound":"dscombat:rocket_launch_1",
 	
 	"craftNum": 1,
@@ -41,14 +41,9 @@
 	"maxAge":300,
 	"maxAmmo":4,
 	
-	"guidanceType": 0,
-	"targetType": 2,
-	
 	"maxRot": 1.0,
 	"acceleration": 0.02,
 	"fuseDist": 1.5,
-	"fov": -1,
-	"flareResistance": 0
-	
+	"fov": -1
 	
 }

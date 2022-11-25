@@ -11,7 +11,9 @@ import com.onewhohears.dscombat.entity.parts.EntitySeatCamera;
 import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
 import com.onewhohears.dscombat.entity.weapon.EntityBullet;
 import com.onewhohears.dscombat.entity.weapon.EntityFlare;
-import com.onewhohears.dscombat.entity.weapon.EntityMissile;
+import com.onewhohears.dscombat.entity.weapon.IRMissile;
+import com.onewhohears.dscombat.entity.weapon.PositionMissile;
+import com.onewhohears.dscombat.entity.weapon.TrackEntityMissile;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -80,14 +82,14 @@ public class ModEntities {
 	public static final RegistryObject<EntityType<?>> BULLET = ENTITIES.register("bullet", 
 			() -> createEntityType(EntityBullet::new, EntityDimensions.scalable(0.15f, 0.15f)));
 	
-	public static final RegistryObject<EntityType<?>> MISSILE1 = ENTITIES.register("missile1", 
-			() -> createEntityTypeFar(EntityMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
+	public static final RegistryObject<EntityType<?>> POS_MISSILE_1 = ENTITIES.register("pos_missile_1", 
+			() -> createEntityTypeFar(PositionMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
 	
-	public static final RegistryObject<EntityType<?>> MISSILE2 = ENTITIES.register("missile2", 
-			() -> createEntityTypeFar(EntityMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
+	public static final RegistryObject<EntityType<?>> IR_MISSILE_1 = ENTITIES.register("ir_missile_1", 
+			() -> createEntityTypeFar(IRMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
 	
-	public static final RegistryObject<EntityType<?>> MISSILE3 = ENTITIES.register("missile3", 
-			() -> createEntityTypeFar(EntityMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
+	public static final RegistryObject<EntityType<?>> TRACK_MISSILE_1 = ENTITIES.register("track_missile_1", 
+			() -> createEntityTypeFar(TrackEntityMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
 	
 	public static final RegistryObject<EntityType<EntityFlare>> FLARE = ENTITIES.register("flare", 
 			() -> createEntityType(EntityFlare::new, EntityDimensions.scalable(0f, 0f)));

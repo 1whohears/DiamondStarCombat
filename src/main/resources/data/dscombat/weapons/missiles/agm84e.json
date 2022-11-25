@@ -1,8 +1,8 @@
 {
-	"type":1,
+	"type":3,
 	"id":"agm84e",
 	
-	"entityType":"dscombat:missile1",
+	"entityType":"dscombat:track_missile_1",
 	"shootSound":"dscombat:rocket_launch_1",
 	
 	"craftNum": 1,
@@ -41,14 +41,11 @@
 	"maxAge":400,
 	"maxAmmo":3,
 	
-	"guidanceType": 2,
-	"targetType": 0,
+	"targetType": 1,
 	
 	"maxRot": 2.0,
 	"acceleration": 0.03,
 	"fuseDist": 2.0,
-	"fov": -1,
-	"flareResistance": 0
-	
+	"fov": -1
 	
 }

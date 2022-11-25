@@ -4,16 +4,18 @@ import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundMissileMovePacket;
 import com.onewhohears.dscombat.data.ChunkManager;
 import com.onewhohears.dscombat.data.weapon.MissileData;
-import com.onewhohears.dscombat.data.weapon.MissileData.TargetType;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
-import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.util.UtilClientSafeSoundInstance;
 import com.onewhohears.dscombat.util.UtilEntity;
+import com.onewhohears.dscombat.util.math.UtilAngles;
+import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -22,7 +24,19 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
 
-public class EntityMissile extends EntityBullet {
+public abstract class EntityMissile extends EntityBullet {
+	
+	public static final EntityDataAccessor<Float> ACCELERATION = SynchedEntityData.defineId(EntityMissile.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> MAX_ROT = SynchedEntityData.defineId(EntityMissile.class, EntityDataSerializers.FLOAT);
+	
+	/**
+	 * only set on server side
+	 */
+	protected final double fuseDist;
+	/**
+	 * only set on server side
+	 */
+	protected final float fov;
 	
 	public Entity parent;
 	public Entity target;
@@ -30,10 +44,23 @@ public class EntityMissile extends EntityBullet {
 	
 	public EntityMissile(EntityType<?> type, Level level) {
 		super(type, level);
+		fuseDist = 0;
+		fov = 0;
 	}
 	
 	public EntityMissile(Level level, Entity owner, MissileData data) {
 		super(level, owner, data);
+		this.setAcceleration((float)data.getAcceleration());
+		this.setMaxRot(data.getMaxRot());
+		fuseDist = data.getFuseDist();
+		fov = data.getFov();
+	}
+	
+	@Override
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		entityData.define(ACCELERATION, 0f);
+		entityData.define(MAX_ROT, 0f);
 	}
 	
 	/*private EntityMissile(EntityType<? extends EntityMissile> type, Level level, Entity owner, MissileData data, ResourceLocation texture) {
@@ -46,11 +73,11 @@ public class EntityMissile extends EntityBullet {
 	public void tick() {
 		//System.out.println("ROCKET "+this.tickCount+" "+this.level);
 		//System.out.println("target = "+target); // target entity is not set on client side
-		MissileData data = (MissileData)getWeaponData();
+		//MissileData data = (MissileData)getWeaponData();
 		if (!this.level.isClientSide) {
-			data.tickGuide(this);
-			if (target != null && data.getTargetType() != TargetType.POS) {
-				if (this.distanceTo(target) <= data.getFuseDist()) {
+			tickGuide();
+			if (target != null) {
+				if (this.distanceTo(target) <= fuseDist) {
 					//System.out.println("WITHIN FUSE DISTANCE");
 					//System.out.println("IS REMOVED "+this.isRemoved());
 					this.setPos(target.position());
@@ -75,13 +102,108 @@ public class EntityMissile extends EntityBullet {
 					-move.x * 0.5D + random.nextGaussian() * 0.05D, 
 					-move.y * 0.5D + random.nextGaussian() * 0.05D, 
 					-move.z * 0.5D + random.nextGaussian() * 0.05D);
-			data.clientGuidance(this);
+			tickClientGuide();
 		}
 		engineSound();
 		super.tick();
 		//System.out.println("pos = "+position());
 		//System.out.println("vel = "+getDeltaMovement());
 		//System.out.println("pit = "+getXRot()+" yaw = "+getYRot());
+	}
+	
+	public abstract void tickGuide();
+	
+	public void tickClientGuide() {
+		this.guideToPosition();
+	}
+	
+	public void guideToPosition() {
+		if (targetPos == null) {
+			//missile.discard();
+			return;
+		}
+		Vec3 gm = targetPos.subtract(this.position());
+		float grx = UtilAngles.getPitch(gm);
+		float gry = UtilAngles.getYaw(gm);
+		float orx = this.getXRot();
+		float ory = this.getYRot();
+		float nrx = orx, nry = ory;
+		if (Math.abs(grx-orx) < this.getMaxRot()) {
+			nrx = grx;
+		} else if (grx > orx) {
+			nrx += this.getMaxRot();
+		} else if (grx < orx) {
+			nrx -= this.getMaxRot();
+		}
+		if (Math.abs(gry-ory) < this.getMaxRot()) {
+			nry = gry;
+		} else {
+			if (gry > 90 && ory < -90) {
+				nry -= this.getMaxRot();
+				if (nry < -180) nry += 360;
+			} else if (ory > 90 && gry < -90) {
+				nry += this.getMaxRot();
+				if (nry > 180) nry -= 360;
+			} else {
+				if (gry > ory) {
+					nry += this.getMaxRot();
+				} else if (gry < ory) {
+					nry -= this.getMaxRot();
+				}
+			}
+		}
+		this.setXRot(nrx);
+		this.setYRot(nry);
+	}
+	
+	public void guideToTarget() {
+		if (target == null) {
+			//missile.discard();
+			this.targetPos = null;
+			return;
+		}
+		if (target.isRemoved()) {
+			//missile.discard();
+			this.target = null;
+			this.targetPos = null;
+			return;
+		}
+		if (this.tickCount % 4 == 0) {
+			if (!checkTargetRange(target, 10000)) {
+				//missile.discard();
+				this.targetPos = null;
+				return;
+			}
+			if (!checkCanSee(target)) {
+				//missile.discard();
+				//System.out.println("can't see target");
+				this.targetPos = null;
+				return;
+			}
+		}
+		//System.out.println("==========");
+		Vec3 tVel = target.getDeltaMovement();
+		if (target.isOnGround()) tVel = tVel.add(0, -tVel.y, 0); // some entities have -0.07 y vel when on ground
+		Vec3 pos = UtilGeometry.interceptPos( 
+				this.position(), this.getDeltaMovement(), 
+				target.position(), tVel);
+		//System.out.println("TARGET POS = "+target.position());
+		//System.out.println("INTER  POS = "+pos);
+		this.targetPos = pos;
+		this.guideToPosition();
+	}
+	
+	protected boolean checkTargetRange(Entity target, double range) {
+		if (fov == -1) return this.distanceTo(target) <= range;
+		return UtilGeometry.isPointInsideCone(
+				target.position(), 
+				this.position(),
+				this.getLookAngle(), 
+				fov, range);
+	}
+	
+	protected boolean checkCanSee(Entity target) {
+		return UtilEntity.canEntitySeeEntity(this, target);
 	}
 	
 	private void engineSound() {
@@ -104,21 +226,16 @@ public class EntityMissile extends EntityBullet {
 	
 	@Override
 	protected void motion() {
-		MissileData data = (MissileData)getWeaponData();
+		//MissileData data = (MissileData)getWeaponData();
 		Vec3 cm = getDeltaMovement();
 		double B = 0.004d * UtilEntity.getAirPressure(getY());
 		double bleed = B * (Math.abs(getXRot()-xRotO)+Math.abs(getYRot()-yRotO));
-		double vel = cm.length() + data.getAcceleration() - bleed;
-		double max = data.getSpeed();
+		double vel = cm.length() + this.getAcceleration() - bleed;
+		double max = this.getSpeed();
 		if (vel > max) vel = max;
 		else if (vel < 0) vel = 0;
 		Vec3 nm = getLookAngle().scale(vel);
 		setDeltaMovement(nm);
-	}
-	
-	@Override
-	public WeaponData getDefaultData() {
-		return WeaponPresets.getDefaultMissile();
 	}
 	
 	public float getHeat() {
@@ -141,5 +258,21 @@ public class EntityMissile extends EntityBullet {
 	public boolean ignoreExplosion() {
 		return false;
 	}*/
+	
+	public float getAcceleration() {
+		return entityData.get(ACCELERATION);
+	}
+	
+	public void setAcceleration(float acceleration) {
+		entityData.set(ACCELERATION, acceleration);
+	}
+	
+	public float getMaxRot() {
+		return entityData.get(MAX_ROT);
+	}
+	
+	public void setMaxRot(float max_rot) {
+		entityData.set(MAX_ROT, max_rot);
+	}
 
 }

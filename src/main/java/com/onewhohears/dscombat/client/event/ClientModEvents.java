@@ -35,9 +35,9 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 public class ClientModEvents {
 	
 	public static final ResourceLocation BULLET1 = new ResourceLocation(DSCombatMod.MODID, "textures/entities/bullet1.png");
-	public static final ResourceLocation MISSILE1 = new ResourceLocation(DSCombatMod.MODID, "textures/entities/missile1.png");
-	public static final ResourceLocation MISSILE2 = new ResourceLocation(DSCombatMod.MODID, "textures/entities/missile2.png");
-	public static final ResourceLocation MISSILE3 = new ResourceLocation(DSCombatMod.MODID, "textures/entities/missile3.png");
+	public static final ResourceLocation POS_MISSILE_1 = new ResourceLocation(DSCombatMod.MODID, "textures/entities/missile1.png");
+	public static final ResourceLocation IR_MISSILE_1 = new ResourceLocation(DSCombatMod.MODID, "textures/entities/missile3.png");
+	public static final ResourceLocation TRACK_MISSILE_1 = new ResourceLocation(DSCombatMod.MODID, "textures/entities/missile2.png");
 	
 	private ClientModEvents() {
 	}
@@ -85,18 +85,18 @@ public class ClientModEvents {
 						new EntityModelBullet1<EntityBullet>(models.bakeLayer(EntityModelBullet1.LAYER_LOCATION)),
 						BULLET1));
 		
-		event.registerEntityRenderer((EntityType<EntityMissile>)ModEntities.MISSILE1.get(), 
+		event.registerEntityRenderer((EntityType<EntityMissile>)ModEntities.POS_MISSILE_1.get(), 
 				(context) -> new RendererEntityAbstractWeapon<EntityMissile>(context, 
 						new EntityModelMissile1<EntityMissile>(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)), 
-						MISSILE1));
-		event.registerEntityRenderer((EntityType<EntityMissile>)ModEntities.MISSILE2.get(), 
+						POS_MISSILE_1));
+		event.registerEntityRenderer((EntityType<EntityMissile>)ModEntities.IR_MISSILE_1.get(), 
 				(context) -> new RendererEntityAbstractWeapon<EntityMissile>(context, 
 						new EntityModelMissile1<EntityMissile>(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)),
-						MISSILE2));
-		event.registerEntityRenderer((EntityType<EntityMissile>)ModEntities.MISSILE3.get(), 
+						IR_MISSILE_1));
+		event.registerEntityRenderer((EntityType<EntityMissile>)ModEntities.TRACK_MISSILE_1.get(), 
 				(context) -> new RendererEntityAbstractWeapon<EntityMissile>(context, 
 						new EntityModelMissile1<EntityMissile>(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)),
-						MISSILE3));
+						TRACK_MISSILE_1));
 		
 		event.registerEntityRenderer(ModEntities.WEAPON_RACK.get(), 
 				(context) -> new RendererEntityWeaponRack<EntityWeaponRack>(context));

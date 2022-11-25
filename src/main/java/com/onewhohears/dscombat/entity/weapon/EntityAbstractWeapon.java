@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.entity.weapon;
 
 import com.onewhohears.dscombat.data.weapon.WeaponData;
-import com.onewhohears.dscombat.init.DataSerializers;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
@@ -19,24 +18,28 @@ import net.minecraftforge.network.NetworkHooks;
 
 public abstract class EntityAbstractWeapon extends Projectile {
 	
-	public static final EntityDataAccessor<WeaponData> DATA = SynchedEntityData.defineId(EntityAbstractWeapon.class, DataSerializers.WEAPON_DATA);
 	public static final EntityDataAccessor<Integer> OWNER_ID = SynchedEntityData.defineId(EntityAbstractWeapon.class, EntityDataSerializers.INT);
+	
+	/**
+	 * only set on server side
+	 */
+	protected final int maxAge;
 	
 	@SuppressWarnings("unchecked")
 	public EntityAbstractWeapon(EntityType<?> type, Level level) {
 		super((EntityType<? extends Projectile>) type, level);
+		maxAge = 0;
 	}
 	
 	@SuppressWarnings("unchecked")
 	public EntityAbstractWeapon(Level level, Entity owner, WeaponData data) {
 		super((EntityType<? extends Projectile>) data.getEntityType(), level);
 		this.setOwner(owner);
-		this.setWeaponData(data);
+		maxAge = data.getMaxAge();
 	}
 
 	@Override
 	protected void defineSynchedData() {
-		entityData.define(DATA, getDefaultData());
 		entityData.define(OWNER_ID, -1);
 	}
 	
@@ -71,27 +74,13 @@ public abstract class EntityAbstractWeapon extends Projectile {
 			//System.out.println("bullet unloaded");
 			discard(); 
 		}
-		if (!this.level.isClientSide && this.getWeaponData() == null) {
-			discard();
-			return;
-		}
-		if (!this.level.isClientSide && this.tickCount > this.getWeaponData().getMaxAge()) { 
+		if (!level.isClientSide && tickCount > maxAge) { 
 			//System.out.println("bullet to old");
 			discard();
 		}
 		motion();
 		move(MoverType.SELF, getDeltaMovement());
 	}
-	
-	public void setWeaponData(WeaponData data) {
-		entityData.set(DATA, data);
-	}
-	
-	public WeaponData getWeaponData() {
-		return entityData.get(DATA);
-	}
-	
-	public abstract WeaponData getDefaultData();
 	
 	protected int getOwnerId() {
 		return entityData.get(OWNER_ID);

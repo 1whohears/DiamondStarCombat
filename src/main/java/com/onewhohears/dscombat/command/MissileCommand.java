@@ -5,11 +5,9 @@ import java.util.Collection;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.onewhohears.dscombat.data.ChunkManager;
-import com.onewhohears.dscombat.data.weapon.MissileData;
+import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
-import com.onewhohears.dscombat.entity.weapon.EntityMissile;
-import com.onewhohears.dscombat.util.math.UtilAngles;
+import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -42,24 +40,16 @@ public class MissileCommand {
 	}
 	
 	private int testMissile(CommandContext<CommandSourceStack> context, Collection<? extends Entity> targets, Vec3 pos, CompoundTag tag, Entity owner) throws CommandSyntaxException {
-		MissileData data;
+		WeaponData data;
 		if (tag == null) data = WeaponPresets.getDefaultMissile();
-		else data = new MissileData(tag);
+		else data = UtilParse.parseWeaponFromCompound(tag);
 		int i = 0;
 		for (Entity e : targets) {
-			EntityMissile missile = new EntityMissile(e.level, owner, data);
-			missile.setPos(pos);
-			Vec3 dp = e.position().subtract(missile.position()).normalize();
-			missile.setXRot(UtilAngles.getPitch(dp));
-			missile.setYRot(UtilAngles.getYaw(dp));
-			missile.setDeltaMovement(dp.scale(1d));
-			if (e.getRootVehicle() != null) missile.target = e.getRootVehicle();
-			else missile.target = e;
-			missile.targetPos = missile.target.position();
-			int cx = missile.chunkPosition().x;
-			int cz = missile.chunkPosition().z;
-			ChunkManager.addChunk(missile, cx, cz);
-			if (e.level.addFreshEntity(missile)) ++i;
+			Vec3 dp = e.position().subtract(e.position()).normalize();
+			if (data.shoot(e.level, owner, dp, pos, null)) {
+				++i;
+				//ChunkManager.addChunk(missile, cx, cz);
+			}
 		}
 		if (i == 0) context.getSource().sendFailure(Component.literal("No targets found!"));
 		else if (i > 0) context.getSource().sendSuccess(Component.literal("Launched "+i+" missiles!"), true);

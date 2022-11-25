@@ -459,7 +459,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public void shoot(Entity controller, boolean isPlayer) {
 		WeaponData data = weaponSystem.getSelected();
 		if (data == null) return;
-		data.shoot(level, this, controller, UtilAngles.getRollAxis(getQ()), this.getQ());
+		data.shoot(level, controller, UtilAngles.getRollAxis(getQ()), null, this);
 		if (data.isFailedLaunch() && data.getFailedLaunchReason() != null) {
 			//System.out.println(data.getFailedLaunchReason());
 			if (isPlayer) {

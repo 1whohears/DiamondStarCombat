@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundWeaponAmmoPacket;
@@ -16,6 +15,7 @@ import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.util.UtilParse;
+import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -23,6 +23,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
@@ -41,7 +42,7 @@ public abstract class WeaponData {
 	protected final RegistryObject<SoundEvent> shootSound;
 	
 	private String id;
-	private Vec3 pos;
+	private Vec3 pos = Vec3.ZERO;
 	private int maxAge;
 	private int currentAmmo;
 	private int maxAmmo;
@@ -53,8 +54,10 @@ public abstract class WeaponData {
 	
 	public static enum WeaponType {
 		BULLET,
-		MISSILE,
-		BOMB
+		BOMB,
+		POS_MISSILE,
+		TRACK_MISSILE,
+		IR_MISSILE
 	}
 	
 	/*protected WeaponData(RegistryObject<EntityType<?>> entityType, RegistryObject<SoundEvent> shootSound, List<Ingredient> ingredients,
@@ -159,8 +162,55 @@ public abstract class WeaponData {
 	}
 	
 	public abstract WeaponType getType();
+	public abstract EntityAbstractWeapon getEntity(Level level, Entity owner);
 	
-	public abstract EntityAbstractWeapon shoot(Level level, EntityAbstractAircraft vehicle, Entity owner, Vec3 direction, Quaternion vehicleQ);
+	public EntityAbstractWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction) {
+		if (!this.checkRecoil()) {
+			this.setLaunchFail(null);
+			return null;
+		}
+		if (!this.checkAmmo(1, owner)) {
+			this.setLaunchFail("dscombat.no_ammo");
+			return null;
+		}
+		EntityAbstractWeapon w = getEntity(level, owner);
+		w.setPos(pos);
+		this.setDirection(w, direction);
+		return w;
+	}
+	
+	public EntityAbstractWeapon getShootEntity(Level level, Entity owner, Vec3 direction, EntityAbstractAircraft vehicle) {
+		EntityAbstractWeapon w = this.getShootEntity(level, owner, vehicle.position(), direction);
+		if (w == null) return null;
+		if (!this.canShootOnGround() && vehicle.isOnGround()) {
+			this.setLaunchFail("dscombat.cant_shoot_on_ground");
+			return null;
+		}
+		w.setPos(vehicle.position().add(UtilAngles.rotateVector(this.getLaunchPos(), vehicle.getQ())));
+		return w;
+	}
+	
+	public void setDirection(EntityAbstractWeapon weapon, Vec3 direction) {
+		float pitch = UtilAngles.getPitch(direction);
+		float yaw = UtilAngles.getYaw(direction);
+		weapon.setXRot(pitch);
+		weapon.setYRot(yaw);
+	}
+	
+	public boolean shoot(Level level, Entity owner, Vec3 direction, @Nullable Vec3 pos, @Nullable EntityAbstractAircraft vehicle) {
+		EntityAbstractWeapon w;
+		if (vehicle == null && pos != null) w = this.getShootEntity(level, owner, pos, direction);
+		else if (vehicle != null && pos == null) w = this.getShootEntity(level, owner, direction, vehicle);
+		else return false;
+		if (w == null) return false;
+		level.addFreshEntity(w);
+		level.playSound(null, w.blockPosition(), 
+				getShootSound(), SoundSource.PLAYERS, 
+				1f, 1f);
+		setLaunchSuccess(1, owner);
+		updateClientAmmo(vehicle);
+		return true;
+	}
 	
 	public void updateClientAmmo(EntityAbstractAircraft vehicle) {
 		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> vehicle), 

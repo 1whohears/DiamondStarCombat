@@ -4,12 +4,13 @@ import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.data.weapon.BulletData;
 import com.onewhohears.dscombat.data.weapon.WeaponDamageSource;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
-import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.Entity;
@@ -27,12 +28,36 @@ import net.minecraft.world.phys.Vec3;
 
 public class EntityBullet extends EntityAbstractWeapon {
 	
+	public static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(EntityBullet.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Boolean> EXPLOSIVE = SynchedEntityData.defineId(EntityBullet.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Boolean> TERRAIN = SynchedEntityData.defineId(EntityBullet.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Boolean> FIRE = SynchedEntityData.defineId(EntityBullet.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Float> RADIUS = SynchedEntityData.defineId(EntityBullet.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> SPEED = SynchedEntityData.defineId(EntityBullet.class, EntityDataSerializers.FLOAT);
+	
 	public EntityBullet(EntityType<?> type, Level level) {
 		super(type, level);
 	}
 	
 	public EntityBullet(Level level, Entity owner, BulletData data) {
 		super(level, owner, data);
+		this.setDamage(data.getDamage());
+		this.setExplosive(data.isExplosive());
+		this.setTerrain(data.isDestroyTerrain());
+		this.setFire(data.isCausesFire());
+		this.setRadius(data.getExplosionRadius());
+		this.setSpeed((float)data.getSpeed());
+	}
+	
+	@Override
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		entityData.define(DAMAGE, 0f);
+		entityData.define(EXPLOSIVE, false);
+		entityData.define(TERRAIN, false);
+		entityData.define(FIRE, false);
+		entityData.define(RADIUS, 0f);
+		entityData.define(SPEED, 0f);
 	}
 	
 	/*@Override
@@ -100,6 +125,7 @@ public class EntityBullet extends EntityAbstractWeapon {
 	@Override
 	public void onHit(HitResult result) {
 		if (this.isRemoved()) return;
+		this.setPos(result.getLocation());
 		super.onHit(result);
 	}
 	
@@ -116,8 +142,7 @@ public class EntityBullet extends EntityAbstractWeapon {
 		super.onHitEntity(result);
 		//System.out.println("BULLET HIT "+result.getEntity());
 		DamageSource source = this.getDamageSource(false);
-		result.getEntity().hurt(source, ((BulletData)getWeaponData()).getDamage());
-		this.setPos(result.getEntity().position());
+		result.getEntity().hurt(source, getDamage());
 		checkExplode();
 		this.discard();
 	}
@@ -138,14 +163,14 @@ public class EntityBullet extends EntityAbstractWeapon {
 	
 	protected void checkExplode() {
 		//System.out.println("explode");
-		BulletData data = (BulletData) this.getWeaponData();
-		if (data.isExplosive()) {
+		//BulletData data = (BulletData) this.getWeaponData();
+		if (this.getExplosive()) {
 			if (!this.level.isClientSide) {
 				Explosion.BlockInteraction interact = Explosion.BlockInteraction.NONE;
-				if (data.isDestroyTerrain()) interact = Explosion.BlockInteraction.BREAK;
+				if (this.getTerrain()) interact = Explosion.BlockInteraction.BREAK;
 				level.explode(this, getDamageSource(true),
 						null, getX(), getY(), getZ(), 
-						data.getExplosionRadius(), data.isCausesFire(), 
+						this.getRadius(), this.getFire(), 
 						interact);
 				//System.out.println("EXPLODE "+this);
 			} else {
@@ -155,25 +180,59 @@ public class EntityBullet extends EntityAbstractWeapon {
 			}
 		}
 	}
-
-	/*@Override
-	public WeaponData getDefaultData() {
-		return new BulletData("default_bullet", Vec3.ZERO, 
-				0, 0, 0, false, 0, 0, 0);
-	}*/
 	
 	@Override
 	protected void motion() {
-		BulletData data = (BulletData)this.getWeaponData();
-		if (data != null) {
-			Vec3 dir = UtilAngles.rotationToVector(this.getYRot(), this.getXRot());
-			this.setDeltaMovement(dir.scale(data.getSpeed()));
-		}
+		Vec3 dir = UtilAngles.rotationToVector(this.getYRot(), this.getXRot());
+		this.setDeltaMovement(dir.scale(this.getSpeed()));
 	}
-
-	@Override
-	public WeaponData getDefaultData() {
-		return WeaponPresets.getDefaultBullet();
+	
+	public float getDamage() {
+		return entityData.get(DAMAGE);
+	}
+	
+	public void setDamage(float damage) {
+		entityData.set(DAMAGE, damage);
+	}
+	
+	public boolean getExplosive() {
+		return entityData.get(EXPLOSIVE);
+	}
+	
+	public void setExplosive(boolean explosive) {
+		entityData.set(EXPLOSIVE, explosive);
+	}
+	
+	public boolean getTerrain() {
+		return entityData.get(TERRAIN);
+	}
+	
+	public void setTerrain(boolean terrain) {
+		entityData.set(TERRAIN, terrain);
+	}
+	
+	public boolean getFire() {
+		return entityData.get(FIRE);
+	}
+	
+	public void setFire(boolean fire) {
+		entityData.set(FIRE, fire);
+	}
+	
+	public float getRadius() {
+		return entityData.get(RADIUS);
+	}
+	
+	public void setRadius(float radius) {
+		entityData.set(RADIUS, radius);
+	}
+	
+	public float getSpeed() {
+		return entityData.get(SPEED);
+	}
+	
+	public void setSpeed(float speed) {
+		entityData.set(SPEED, speed);
 	}
 
 }

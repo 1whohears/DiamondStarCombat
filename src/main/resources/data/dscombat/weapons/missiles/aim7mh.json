@@ -1,8 +1,8 @@
 {
-	"type":1,
+	"type":4,
 	"id":"aim7mh",
 	
-	"entityType":"dscombat:missile3",
+	"entityType":"dscombat:ir_missile_1",
 	"shootSound":"dscombat:rocket_launch_1",
 	
 	"craftNum": 1,
@@ -45,14 +45,10 @@
 	"maxAge":300,
 	"maxAmmo":4,
 	
-	"guidanceType": 1,
-	"targetType": 1,
-	
 	"maxRot": 2.5,
 	"acceleration": 0.04,
 	"fuseDist": 3,
 	"fov": 70,
 	"flareResistance": 1.0
-	
 	
 }

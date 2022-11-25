@@ -14,7 +14,9 @@ import com.onewhohears.dscombat.data.parts.WeaponPartData;
 import com.onewhohears.dscombat.data.parts.WeaponRackData;
 import com.onewhohears.dscombat.data.weapon.BombData;
 import com.onewhohears.dscombat.data.weapon.BulletData;
-import com.onewhohears.dscombat.data.weapon.MissileData;
+import com.onewhohears.dscombat.data.weapon.IRMissileData;
+import com.onewhohears.dscombat.data.weapon.PosMissileData;
+import com.onewhohears.dscombat.data.weapon.TrackMissileData;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 
 import net.minecraft.network.FriendlyByteBuf;
@@ -94,8 +96,12 @@ public class DataSerializers {
 				return new BombData(buffer);
 			case BULLET:
 				return new BulletData(buffer);
-			case MISSILE:
-				return new MissileData(buffer);
+			case IR_MISSILE:
+				return new IRMissileData(buffer);
+			case POS_MISSILE:
+				return new PosMissileData(buffer);
+			case TRACK_MISSILE:
+				return new TrackMissileData(buffer);
 			}
 			return null;
 		}

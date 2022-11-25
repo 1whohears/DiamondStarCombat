@@ -24,7 +24,6 @@ public class WeaponPresets {
 		
 		JsonArray jaw = jo.get("weapons").getAsJsonArray();
 		for (int i = 0; i < jaw.size(); ++i) add(UtilParse.getCompoundFromJsonResource(dir+jaw.get(i).getAsString()));
-		defaultBullet = (BulletData) getById("bullet_1");
 		defaultMissile = (TrackMissileData) getById("aim120b");
 		
 		JsonArray jac = jo.get("compatibility").getAsJsonArray();
@@ -74,15 +73,10 @@ public class WeaponPresets {
 		return null;
 	}
 	
-	private static BulletData defaultBullet;
 	private static TrackMissileData defaultMissile;
 	
-	public static BulletData getDefaultBullet() {
-		return defaultBullet;
-	}
-	
 	public static TrackMissileData getDefaultMissile() {
-		return defaultMissile;
+		return (TrackMissileData) defaultMissile.copy();
 	}
 	
 	@Nullable

@@ -43,6 +43,7 @@ public class MissileCommand {
 		WeaponData data;
 		if (tag == null) data = WeaponPresets.getDefaultMissile();
 		else data = UtilParse.parseWeaponFromCompound(tag);
+		// TODO command doesn't work
 		int i = 0;
 		for (Entity e : targets) {
 			Vec3 dp = e.position().subtract(e.position()).normalize();

@@ -7,6 +7,8 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
+import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
+import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.commands.CommandSourceStack;
@@ -25,8 +27,8 @@ public class MissileCommand {
 		d.register(Commands.literal("missile").requires(null).requires((stack) -> { return stack.hasPermission(2);})
 			.then(Commands.argument("target", EntityArgument.entities())
 			.then(Commands.argument("pos", Vec3Argument.vec3()).executes((context) -> {
-					return testMissile(context, EntityArgument.getEntities(context, "target"), 
-							Vec3Argument.getVec3(context, "pos"), null, null);})
+				return testMissile(context, EntityArgument.getEntities(context, "target"), 
+						Vec3Argument.getVec3(context, "pos"), null, null);})
 			.then(Commands.argument("nbt", CompoundTagArgument.compoundTag()).executes((context) -> {
 				return testMissile(context, EntityArgument.getEntities(context, "target"), 
 						Vec3Argument.getVec3(context, "pos"), 
@@ -43,18 +45,22 @@ public class MissileCommand {
 		WeaponData data;
 		if (tag == null) data = WeaponPresets.getDefaultMissile();
 		else data = UtilParse.parseWeaponFromCompound(tag);
-		// TODO command doesn't work
 		int i = 0;
 		for (Entity e : targets) {
-			Vec3 dp = e.position().subtract(e.position()).normalize();
-			if (data.shoot(e.level, owner, dp, pos, null)) {
-				++i;
-				//ChunkManager.addChunk(missile, cx, cz);
+			Vec3 dp = e.position().subtract(pos).normalize();
+			EntityAbstractWeapon ew = data.getEntity(e.level, owner);
+			ew.setPos(pos);
+			data.setDirection(ew, dp);
+			if (ew instanceof EntityMissile missile) {
+				missile.target = e;
+				missile.targetPos = e.position();
 			}
+			e.level.addFreshEntity(ew);
+			++i;
 		}
 		if (i == 0) context.getSource().sendFailure(Component.literal("No targets found!"));
 		else if (i > 0) context.getSource().sendSuccess(Component.literal("Launched "+i+" missiles!"), true);
-		return i;
+		return 1;
 	}
 	
 }

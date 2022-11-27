@@ -7,6 +7,7 @@ import com.onewhohears.dscombat.client.renderer.RendererEntityAbstractAircraft;
 import com.onewhohears.dscombat.client.renderer.RendererEntityAbstractWeapon;
 import com.onewhohears.dscombat.client.renderer.RendererEntityInvisible;
 import com.onewhohears.dscombat.client.renderer.RendererEntityWeaponRack;
+import com.onewhohears.dscombat.client.renderer.model.EntityModelAlexisPlane;
 import com.onewhohears.dscombat.client.renderer.model.EntityModelBullet1;
 import com.onewhohears.dscombat.client.renderer.model.EntityModelF16;
 import com.onewhohears.dscombat.client.renderer.model.EntityModelMissile1;
@@ -54,6 +55,7 @@ public class ClientModEvents {
 		event.registerLayerDefinition(EntityModelMissile1.LAYER_LOCATION, EntityModelMissile1::createBodyLayer);
 		event.registerLayerDefinition(EntityModelF16.LAYER_LOCATION, EntityModelF16::createBodyLayer);
 		event.registerLayerDefinition(EntityModelNoahChopper.LAYER_LOCATION, EntityModelNoahChopper::createBodyLayer);
+		event.registerLayerDefinition(EntityModelAlexisPlane.LAYER_LOCATION, EntityModelAlexisPlane::createBodyLayer);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -70,7 +72,7 @@ public class ClientModEvents {
 		
 		event.registerEntityRenderer(ModEntities.ALEXIS_PLANE.get(), 
 				(context) -> new RendererEntityAbstractAircraft<EntityPlane>(context, 
-						new EntityModelTestPlane<EntityPlane>(models.bakeLayer(EntityModelTestPlane.LAYER_LOCATION))));
+						new EntityModelAlexisPlane<EntityPlane>(models.bakeLayer(EntityModelAlexisPlane.LAYER_LOCATION))));
 		
 		event.registerEntityRenderer(ModEntities.F16.get(), 
 				(context) -> new RendererEntityAbstractAircraft<EntityPlane>(context, 

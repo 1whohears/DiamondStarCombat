@@ -155,9 +155,9 @@ public class EntityModelAlexisPlane<T extends EntityPlane> extends EntityAircraf
 
 		PartDefinition gear = body.addOrReplaceChild("gear", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-		PartDefinition gfront = gear.addOrReplaceChild("gfront", CubeListBuilder.create().texOffs(0, 300).addBox(-0.5F, 0.0F, -0.5F, 1.0F, 8.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(5, 300).addBox(-1.5F, 6.0F, -1.5F, 1.0F, 3.0F, 3.0F, new CubeDeformation(0.0F))
-		.texOffs(14, 300).addBox(0.5F, 6.0F, -1.5F, 1.0F, 3.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 2.0F, 42.5F));
+		PartDefinition gfront = gear.addOrReplaceChild("gfront", CubeListBuilder.create().texOffs(0, 334).addBox(-0.5F, 0.0F, -0.5F, 1.0F, 8.0F, 1.0F, new CubeDeformation(0.0F))
+		.texOffs(5, 334).addBox(-1.5F, 6.0F, -1.5F, 1.0F, 3.0F, 3.0F, new CubeDeformation(0.0F))
+		.texOffs(14, 334).addBox(0.5F, 6.0F, -1.5F, 1.0F, 3.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 2.0F, 42.5F));
 
 		PartDefinition gleft = gear.addOrReplaceChild("gleft", CubeListBuilder.create().texOffs(0, 311).addBox(-0.5F, 0.0F, -0.5F, 1.0F, 9.0F, 1.0F, new CubeDeformation(0.0F))
 		.texOffs(5, 311).addBox(-1.5F, 7.0F, -1.5F, 1.0F, 3.0F, 3.0F, new CubeDeformation(0.0F))
@@ -173,7 +173,7 @@ public class EntityModelAlexisPlane<T extends EntityPlane> extends EntityAircraf
 	@Override
 	public void renderToBuffer(T entity, float partialTicks, PoseStack poseStack, VertexConsumer vertexConsumer,
 			int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		poseStack.translate(0, 2, 0);
+		poseStack.translate(0, 1.20, 0);
 		poseStack.scale(1.0F, -1.0F, 1.0F);
 		body.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}

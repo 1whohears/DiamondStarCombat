@@ -12,8 +12,8 @@
 	"idleheat": 4.0,
 	
 	"maxroll": 6.0,
-	"maxpitch": 3.0,
-	"maxyaw": 2.0,
+	"maxpitch": 2.5,
+	"maxyaw": 1.5,
 	"throttleup": 0.04,
 	"throttledown": 0.04,
 	"landing_gear": true,
@@ -24,7 +24,7 @@
 			"slot_type": 0,
 			"slot_posx": 0,
 			"slot_posy": -0.8,
-			"slot_posz": 0,
+			"slot_posz": 2.0,
 			"uix": 48,
 			"uiy": 20,
 			"filled": true,
@@ -33,26 +33,6 @@
 				"weight": 0.001,
 				"itemid": "dscombat:seat"
 			}
-		},
-		{
-			"name": "dscombat.seat2",
-			"slot_type": 0,
-			"slot_posx": 1.0,
-			"slot_posy": -0.5,
-			"slot_posz": 1,
-			"uix": 68,
-			"uiy": 20,
-			"filled": false
-		},
-		{
-			"name": "dscombat.seat3",
-			"slot_type": 0,
-			"slot_posx": -1.0,
-			"slot_posy": -0.5,
-			"slot_posz": 1,
-			"uix": 88,
-			"uiy": 20,
-			"filled": false
 		},
 		{
 			"name": "dscombat.left_wing_1",

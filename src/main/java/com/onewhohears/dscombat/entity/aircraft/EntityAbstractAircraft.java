@@ -141,8 +141,8 @@ public abstract class EntityAbstractAircraft extends Entity {
         if (Q.equals(key) && level.isClientSide() && !isControlledByLocalInstance()) {
             //if (firstTick) lerpStepsQ = 0;
             //else lerpStepsQ = 10;
+        	setPrevQ(getClientQ());
         	setClientQ(getQ());
-            setPrevQ(getQ());
         }
     }
 	

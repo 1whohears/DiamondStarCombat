@@ -20,9 +20,15 @@ public class EntityModelAlexisPlane<T extends EntityPlane> extends EntityAircraf
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(DSCombatMod.MODID, "alexis_plane"), "main");
 	
 	private final ModelPart body;
+	private final ModelPart gfront, gleft, gright;
+	private final ModelPart stick;
 
 	public EntityModelAlexisPlane(ModelPart root) {
 		this.body = root.getChild("body");
+		this.gfront = body.getChild("gear").getChild("gfront");
+		this.gleft = body.getChild("gear").getChild("gleft");
+		this.gright = body.getChild("gear").getChild("gright");
+		this.stick = body.getChild("seat").getChild("stick");
 	}
 	
 	public static LayerDefinition createBodyLayer() {
@@ -140,8 +146,8 @@ public class EntityModelAlexisPlane<T extends EntityPlane> extends EntityAircraf
 		PartDefinition seat = body.addOrReplaceChild("seat", CubeListBuilder.create().texOffs(24, 283).addBox(-6.0F, 0.0F, 25.0F, 12.0F, 1.0F, 12.0F, new CubeDeformation(0.0F))
 		.texOffs(120, 112).addBox(-6.0F, -15.0F, 25.0F, 12.0F, 15.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-		PartDefinition stick = seat.addOrReplaceChild("stick", CubeListBuilder.create().texOffs(0, 17).addBox(-0.5F, -8.0F, 38.0F, 1.0F, 8.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(8, 0).addBox(-1.0F, -10.0F, 37.5F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+		PartDefinition stick = seat.addOrReplaceChild("stick", CubeListBuilder.create().texOffs(0, 17).addBox(-0.5F, -8.0F, -0.5F, 1.0F, 8.0F, 1.0F, new CubeDeformation(0.0F))
+		.texOffs(8, 0).addBox(-1.0F, -10.0F, -1.0F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 1.0F, 38.5F));
 
 		PartDefinition window = seat.addOrReplaceChild("window", CubeListBuilder.create().texOffs(77, 62).addBox(-8.0F, -9.0F, 15.0F, 16.0F, 8.0F, 1.0F, new CubeDeformation(0.0F))
 		.texOffs(0, 62).addBox(-8.0F, -9.0F, 0.0F, 16.0F, 8.0F, 1.0F, new CubeDeformation(0.0F))
@@ -175,6 +181,24 @@ public class EntityModelAlexisPlane<T extends EntityPlane> extends EntityAircraf
 			int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		poseStack.translate(0, 1.20, 0);
 		poseStack.scale(1.0F, -1.0F, 1.0F);
+		float gear = entity.getLandingGearPos(partialTicks);
+		if (gear < 1) {
+			float hpi = (float)Math.PI/2;
+			this.gfront.xRot = gear * -hpi;
+			this.gleft.xRot = gear * hpi;
+			this.gright.xRot = gear * hpi;
+			this.gfront.visible = true;
+			this.gleft.visible = true;
+			this.gright.visible = true;
+		} else {
+			this.gfront.visible = false;
+			this.gleft.visible = false;
+			this.gright.visible = false;
+		}
+		float ypi = (float)Math.PI/8;
+		float ppi = (float)Math.PI/12;
+		this.stick.zRot = entity.inputYaw * -ypi;
+		this.stick.xRot = entity.inputPitch * ppi;
 		body.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 

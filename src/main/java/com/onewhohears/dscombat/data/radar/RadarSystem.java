@@ -102,7 +102,7 @@ public class RadarSystem {
 		// ROCKETS
 		updateRockets();
 		// PACKET
-		if (parent.tickCount % 10 == 0) PacketHandler.INSTANCE.send(
+		if (parent.tickCount % 20 == 0) PacketHandler.INSTANCE.send(
 				PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
 				new ClientBoundPingsPacket(parent.getId(), targets));
 	}

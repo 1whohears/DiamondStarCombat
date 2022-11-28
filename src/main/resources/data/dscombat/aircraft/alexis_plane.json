@@ -166,11 +166,7 @@
 			"num": 2
 		},
 		{
-			"item": "dscombat:propeller",
-			"num": 1
-		},
-		{
-			"item": "dscombat:cockpit",
+			"item": "dscombat:advanced_cockpit",
 			"num": 1
 		},
 		{

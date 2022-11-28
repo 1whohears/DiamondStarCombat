@@ -46,6 +46,7 @@ public class ModEntities {
 					ModSounds.BIPLANE_1, ModItems.TEST_PLANE), 
 					EntityDimensions.scalable(1.5f, 1.5f)));*/
 	
+	// TODO use a10 for inspiration for the javi plane
 	public static final RegistryObject<EntityType<EntityPlane>> JAVI_PLANE = ENTITIES.register("javi_plane", 
 			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
 					new ResourceLocation(DSCombatMod.MODID, "textures/entities/javi_plane.png"),
@@ -58,6 +59,7 @@ public class ModEntities {
 					ModSounds.BIPLANE_1, ModItems.ALEXIS_PLANE), 
 					EntityDimensions.scalable(2.0f, 2.0f)));
 	
+	// TODO use black hawk as inspiration for noah chopper
 	public static final RegistryObject<EntityType<EntityHelicopter>> NOAH_CHOPPER = ENTITIES.register("noah_chopper", 
 			() -> createEntityTypeFar((type, level) -> new EntityHelicopter(type, level, 
 					new ResourceLocation(DSCombatMod.MODID, "textures/entities/noah_chopper.png"),
@@ -69,6 +71,14 @@ public class ModEntities {
 					new ResourceLocation(DSCombatMod.MODID, "textures/entities/f16.png"),
 					ModSounds.BIPLANE_1, ModItems.F16), 
 					EntityDimensions.scalable(1.5f, 1.5f)));*/
+	
+	// TODO wooden plane
+	// TODO large wooden plane
+	// TODO something like a spitfire
+	// TODO something like a p51 mustang 
+	// TODO private jet
+	// TODO large passenger jat
+	// TODO large cargo plane like a galaxy
 	
 	public static final RegistryObject<EntityType<EntitySeat>> SEAT = ENTITIES.register("seat", 
 			() -> createEntityType(EntitySeat::new, EntityDimensions.scalable(0f, 0f)));

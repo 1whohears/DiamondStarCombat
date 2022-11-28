@@ -64,11 +64,11 @@ public class ModEntities {
 					ModSounds.HELI_1, ModItems.NOAH_CHOPPER, true), 
 					EntityDimensions.scalable(2.8f, 2.8f)));
 	
-	public static final RegistryObject<EntityType<EntityPlane>> F16 = ENTITIES.register("f16", 
+	/*public static final RegistryObject<EntityType<EntityPlane>> F16 = ENTITIES.register("f16", 
 			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
 					new ResourceLocation(DSCombatMod.MODID, "textures/entities/f16.png"),
 					ModSounds.BIPLANE_1, ModItems.F16), 
-					EntityDimensions.scalable(1.5f, 1.5f)));
+					EntityDimensions.scalable(1.5f, 1.5f)));*/
 	
 	public static final RegistryObject<EntityType<EntitySeat>> SEAT = ENTITIES.register("seat", 
 			() -> createEntityType(EntitySeat::new, EntityDimensions.scalable(0f, 0f)));

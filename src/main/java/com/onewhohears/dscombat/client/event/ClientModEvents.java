@@ -74,9 +74,9 @@ public class ClientModEvents {
 				(context) -> new RendererEntityAbstractAircraft<EntityPlane>(context, 
 						new EntityModelAlexisPlane<EntityPlane>(models.bakeLayer(EntityModelAlexisPlane.LAYER_LOCATION))));
 		
-		event.registerEntityRenderer(ModEntities.F16.get(), 
+		/*event.registerEntityRenderer(ModEntities.F16.get(), 
 				(context) -> new RendererEntityAbstractAircraft<EntityPlane>(context, 
-						new EntityModelF16<EntityPlane>(models.bakeLayer(EntityModelF16.LAYER_LOCATION))));
+						new EntityModelF16<EntityPlane>(models.bakeLayer(EntityModelF16.LAYER_LOCATION))));*/
 		
 		event.registerEntityRenderer(ModEntities.NOAH_CHOPPER.get(), 
 				(context) -> new RendererEntityAbstractAircraft<EntityHelicopter>(context, 

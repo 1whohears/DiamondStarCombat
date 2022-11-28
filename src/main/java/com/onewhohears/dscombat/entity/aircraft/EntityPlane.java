@@ -76,31 +76,63 @@ public class EntityPlane extends EntityAbstractAircraft {
 	
 	public Vec3 getLiftForce(Quaternion q) {
 		Vec3 direction = UtilAngles.getYawAxis(q);
-		//System.out.println("lift direction = "+direction);
+		System.out.println("lift direction = "+direction);
 		Vec3 u = getDeltaMovement();
 		Vec3 v = UtilAngles.getRollAxis(q);
 		double zSpeedSqr = UtilGeometry.componentOfVecByAxis(u, v).lengthSqr();
-		Vec3 liftForce = direction.scale(getLift(zSpeedSqr));
-		//System.out.println("lift force = "+liftForce);
+		double aoa = UtilGeometry.angleBetweenDegrees(v, u);
+		double uy = UtilGeometry.componentOfVecByAxis(u.normalize(), direction).lengthSqr();
+		double vy = UtilGeometry.componentOfVecByAxis(v, direction).lengthSqr();
+		if (vy < uy) aoa *= -1;
+		// TODO fix this madness
+		//if (v.y < u.normalize().y) aoa *= -1;
+ 		System.out.println("zSpeedSqr = "+zSpeedSqr);
+		System.out.println("aoa = "+aoa);
+		Vec3 liftForce = direction.scale(getLiftMag(zSpeedSqr, aoa));
+		System.out.println("lift force = "+liftForce);
 		return liftForce;
 	}
 	
-	public double getLift(double zSpeedSqr) {
+	public double getLiftMag(double zSpeedSqr, double aoa) {
 		// Lift = (angle of attack coefficient) * (air density) * (speed)^2 * (wing surface area) / 2
 		//double ac = 0.06;
-		double ac = 0.120;
+		double ac = getLiftK(aoa);
+		System.out.println("liftK = "+ac);
 		double air = UtilEntity.getAirPressure(getY());
-		//double speedSqr = zSpeedSqr;
 		double wing = getSurfaceArea();
-		double lift = ac * air * zSpeedSqr * wing / 2d;
+		double lift = ac * air * zSpeedSqr * wing / 2.0;
 		//System.out.println("LIFT = "+lift);
 		return lift;
+	}
+	
+	public double getLiftK(double aoa) {
+		double minAngle = -10.0;
+		double maxAngle = 30.0;
+		if (aoa < minAngle) return 0;
+		if (aoa > maxAngle) return 0;
+		double zeroK = 0.120;
+		if (aoa >= minAngle && aoa <= 0) 
+			return zeroK / -minAngle * aoa + zeroK;
+		double stallAngle = 20.0;
+		double stallK = 0.150;
+		if (aoa > 0 && aoa <= stallAngle) {
+			double a = -(stallK - zeroK) / (stallAngle*stallAngle);
+			double b = -2 * stallAngle * a;
+			return a*aoa*aoa + b*aoa + zeroK;
+		}
+		if (aoa > stallAngle && aoa <= maxAngle) {
+			double a = -stallK / (maxAngle*maxAngle + stallAngle*stallAngle - 2*maxAngle*stallAngle);
+			double b = -2*stallAngle*a;
+			double c = stallK + a*stallAngle*stallAngle;
+			return a*aoa*aoa + b*aoa + c;
+		}
+		return 0;
 	}
 	
 	@Override
 	public Vec3 getThrustForce(Quaternion q) {
 		Vec3 direction = UtilAngles.getRollAxis(q);
-		Vec3 thrustForce = direction.scale(getThrust());
+		Vec3 thrustForce = direction.scale(getThrustMag());
 		//System.out.println("thrust force = "+thrustForce);
 		return thrustForce;
 	}

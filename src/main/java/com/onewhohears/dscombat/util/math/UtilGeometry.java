@@ -22,6 +22,16 @@ public class UtilGeometry {
 		return true;
 	}
 	
+	public static double angleBetween(Vec3 dir, Vec3 base) {
+		double dot = dir.dot(base);
+		double mag = dir.length() * base.length();
+		return Math.acos(dot / mag);
+	}
+	
+	public static double angleBetweenDegrees(Vec3 dir, Vec3 base) {
+		return Math.toDegrees(angleBetween(dir, base));
+	}
+	
 	public static Vec3 interceptPos(Vec3 mPos, Vec3 mVel, Vec3 tPos, Vec3 tVel) {
 		double x = interceptComponent(mPos.x, tPos.x, mVel.x, tVel.x);
 		double y = interceptComponent(mPos.y, tPos.y, mVel.y, tVel.y);

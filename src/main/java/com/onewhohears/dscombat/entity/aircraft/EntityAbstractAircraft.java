@@ -313,7 +313,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		Vec3 motionXY = new Vec3(motion.x, 0, motion.z);
 		double velXY = motionXY.length();
 		if (velXY > max) motionXY = motionXY.scale(max / velXY);
-		double maxY = 2d;
+		double maxY = 2.0;
 		double my = motion.y;
 		if (Math.abs(my) > maxY) my = maxY * Math.signum(my);
 		setDeltaMovement(motionXY.x, my, motionXY.z);
@@ -326,6 +326,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	}
 	
 	public void tickMovement(Quaternion q) {
+		// TODO change plane physics
 		if (onGround) tickGround(q);
 		else tickAir(q);
 	}
@@ -345,12 +346,12 @@ public abstract class EntityAbstractAircraft extends Entity {
 		motion = motion.add(getThrustForce(q));
 		motion = motion.add(getDragForce(q));
 		setDeltaMovement(motion);
-		this.resetFallDistance();
+		resetFallDistance();
 	}
 	
 	public abstract Vec3 getThrustForce(Quaternion q);
 	
-	public double getThrust() {
+	public double getThrustMag() {
 		if (this.getFuel() <= 0) return 0;
 		float throttle = getCurrentThrottle();
 		return throttle * getMaxThrust();
@@ -362,18 +363,18 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	public Vec3 getDragForce(Quaternion q) {
 		Vec3 direction = getDeltaMovement().normalize();
-		Vec3 dragForce = direction.scale(-getDrag(q));
+		Vec3 dragForce = direction.scale(-getDragMag(q));
 		//System.out.println("drag force = "+dragForce);
 		return dragForce;
 	}
 	
-	public double getDrag(Quaternion q) {
+	public double getDragMag(Quaternion q) {
 		// Drag = (drag coefficient) * (air pressure) * (speed)^2 * (wing surface area) / 2
 		double dc = 0.030;
 		double air = UtilEntity.getAirPressure(getY());
 		double speedSqr = getDeltaMovement().lengthSqr();
 		double wing = getSurfaceArea();
-		if (this.isLandingGear()) wing += 1.0;
+		if (isLandingGear()) wing += 1.0;
 		return dc * air * speedSqr * wing / 2;
 	}
 	
@@ -390,10 +391,10 @@ public abstract class EntityAbstractAircraft extends Entity {
 		double x = getDeltaMovement().x;
 		double z = getDeltaMovement().z;
 		Vec3 direction = new Vec3(-x, 0, -z).normalize();
-		return direction.scale(getFriction());
+		return direction.scale(getFrictionMag());
 	}
 	
-	public double getFriction() {
+	public double getFrictionMag() {
 		double x = getDeltaMovement().x;
 		double z = getDeltaMovement().z;
 		double speed = Math.sqrt(x*x + z*z);

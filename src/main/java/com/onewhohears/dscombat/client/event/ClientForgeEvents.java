@@ -356,23 +356,12 @@ public final class ClientForgeEvents {
 				event.setCanceled(true);
 				return;
 			}
-			//System.out.println("RENDER_PLAYER");
 			Quaternion q = UtilAngles.lerpQ(event.getPartialTick(), plane.getPrevQ(), plane.getClientQ());
 			event.getPoseStack().mulPose(q);
 			// TODO player looks in wrong direction sometimes
 			EulerAngles a = UtilAngles.toDegrees(q);
 			player.setYBodyRot(player.getYRot()-(float)a.yaw);
 			player.setYHeadRot(player.getYRot()-(float)a.yaw);
-			//System.out.println("prx = "+player.getXRot()+" pry = "+player.getYRot());
-			//System.out.println("plane rot = "+a);
-			/*PlayerRenderer pr = event.getRenderer();
-			PlayerModel<AbstractClientPlayer> model = pr.getModel();
-			System.out.println("hrx1 = "+Math.toDegrees(model.getHead().xRot)+" hry1 = "+Math.toDegrees(model.getHead().yRot));
-			float x = (float)Math.toRadians(player.getXRot()-(float)a.pitch);
-			float y = (float)Math.toRadians(player.getYRot()-(float)a.yaw);
-			//float z = (float)Math.toRadians(plane.zRot);
-			model.getHead().setRotation(x, y, 0);
-			System.out.println("hrx2 = "+Math.toDegrees(model.getHead().xRot)+" hry2 = "+Math.toDegrees(model.getHead().yRot));*/
 		}
 	}
 	

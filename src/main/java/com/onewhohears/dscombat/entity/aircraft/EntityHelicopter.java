@@ -113,18 +113,18 @@ public class EntityHelicopter extends EntityAbstractAircraft {
 	@Override
 	public Vec3 getThrustForce(Quaternion q) {
 		Vec3 direction = UtilAngles.getYawAxis(q);
-		Vec3 thrustForce = direction.scale(getThrust());
+		Vec3 thrustForce = direction.scale(getThrustMag());
 		//System.out.println("thrust force = "+thrustForce);
 		return thrustForce;
 	}
 	
 	@Override
-	public double getThrust() {
-		return super.getThrust() * 2.0 * UtilEntity.getAirPressure(getY());
+	public double getThrustMag() {
+		return super.getThrustMag() * 2.0 * UtilEntity.getAirPressure(getY());
 	}
 	
 	@Override
-	public double getFriction() {
+	public double getFrictionMag() {
 		double x = getDeltaMovement().x;
 		double z = getDeltaMovement().z;
 		double speed = Math.sqrt(x*x + z*z);

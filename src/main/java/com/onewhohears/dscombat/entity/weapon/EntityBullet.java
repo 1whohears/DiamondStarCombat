@@ -167,10 +167,10 @@ public class EntityBullet extends EntityAbstractWeapon {
 		if (this.getExplosive()) {
 			if (!this.level.isClientSide) {
 				Explosion.BlockInteraction interact = Explosion.BlockInteraction.NONE;
-				if (this.getTerrain()) interact = Explosion.BlockInteraction.BREAK;
+				if (getTerrain()) interact = Explosion.BlockInteraction.BREAK;
 				level.explode(this, getDamageSource(true),
 						null, getX(), getY(), getZ(), 
-						this.getRadius(), this.getFire(), 
+						getRadius(), getFire(), 
 						interact);
 				//System.out.println("EXPLODE "+this);
 			} else {

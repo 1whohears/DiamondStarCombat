@@ -21,7 +21,6 @@ public class BulletData extends WeaponData {
 	private boolean explosive;
 	private boolean destroyTerrain;
 	private boolean causesFire;
-	private double explosiveDamage; // TODO doesn't do anything
 	private float explosionRadius;
 	private float innacuracy;
 	
@@ -54,7 +53,6 @@ public class BulletData extends WeaponData {
 		this.explosive = tag.getBoolean("explosive");
 		this.destroyTerrain = tag.getBoolean("destroyTerrain");
 		this.causesFire = tag.getBoolean("causesFire");
-		this.explosiveDamage = tag.getDouble("explosiveDamage");
 		this.explosionRadius = tag.getFloat("explosionRadius");
 		this.innacuracy = tag.getFloat("innacuracy");
 	}
@@ -67,7 +65,6 @@ public class BulletData extends WeaponData {
 		tag.putBoolean("explosive", explosive);
 		tag.putBoolean("destroyTerrain", destroyTerrain);
 		tag.putBoolean("causesFire", causesFire);
-		tag.putDouble("explosiveDamage", explosiveDamage);
 		tag.putFloat("explosionRadius", explosionRadius);
 		tag.putFloat("innacuracy", innacuracy);
 		return tag;
@@ -81,7 +78,6 @@ public class BulletData extends WeaponData {
 		this.explosive = buffer.readBoolean();
 		this.destroyTerrain = buffer.readBoolean();
 		this.causesFire = buffer.readBoolean();
-		this.explosiveDamage = buffer.readDouble();
 		this.explosionRadius = buffer.readFloat();
 		this.innacuracy = buffer.readFloat();
 	}
@@ -94,7 +90,6 @@ public class BulletData extends WeaponData {
 		buffer.writeBoolean(explosive);
 		buffer.writeBoolean(destroyTerrain);
 		buffer.writeBoolean(causesFire);
-		buffer.writeDouble(explosiveDamage);
 		buffer.writeFloat(explosionRadius);
 		buffer.writeFloat(innacuracy);
 	}
@@ -142,10 +137,6 @@ public class BulletData extends WeaponData {
 
 	public boolean isDestroyTerrain() {
 		return destroyTerrain;
-	}
-
-	public double getExplosiveDamage() {
-		return explosiveDamage;
 	}
 
 	public float getExplosionRadius() {

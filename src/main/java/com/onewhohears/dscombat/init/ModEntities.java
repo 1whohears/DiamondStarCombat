@@ -71,14 +71,19 @@ public class ModEntities {
 					new ResourceLocation(DSCombatMod.MODID, "textures/entities/f16.png"),
 					ModSounds.BIPLANE_1, ModItems.F16), 
 					EntityDimensions.scalable(1.5f, 1.5f)));*/
-	
-	// TODO wooden plane
-	// TODO large wooden plane
-	// TODO something like a spitfire
-	// TODO something like a p51 mustang 
-	// TODO private jet
-	// TODO large passenger jat
-	// TODO large cargo plane like a galaxy
+	/*
+	 * TODO more planes
+	 * wooden plane, large wooden plane, something like a spitfire, something like a p51 mustang 
+	 * private jet, large passenger jat, large cargo plane like a galaxy, large radar plane
+	 * 
+	 * TODO more helicopters
+	 * small unarmed heli, large cargo heli, 2 seated heli with gunner on front bottom
+	 * 
+	 * TODO more cars/tanks
+	 * Honda Ferrari, heavy tank, light tank
+	 * 
+	 * TODO more boats
+	 */
 	
 	public static final RegistryObject<EntityType<EntitySeat>> SEAT = ENTITIES.register("seat", 
 			() -> createEntityType(EntitySeat::new, EntityDimensions.scalable(0f, 0f)));

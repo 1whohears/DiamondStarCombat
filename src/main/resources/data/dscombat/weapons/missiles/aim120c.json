@@ -36,7 +36,6 @@
 	"damage":80.0,
 	"speed":5.0,
 	"explosionRadius":5.0,
-	"explosiveDamage":100.0,
 	
 	"explosive":true,
 	"destroyTerrain":true,

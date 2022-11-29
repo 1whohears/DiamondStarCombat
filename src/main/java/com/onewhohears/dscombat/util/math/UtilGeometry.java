@@ -52,4 +52,17 @@ public class UtilGeometry {
 		return v.scale(u.dot(v) / vl2);
 	}
 	
+	public static double componentMagSqrDirByAxis(Vec3 u, Vec3 v) {
+		Vec3 vec = componentOfVecByAxis(u, v);
+		double sqr = vec.lengthSqr();
+		if (!isSameDirection(vec, v)) sqr *= -1;
+		return sqr;
+	}
+	
+	public static boolean isSameDirection(Vec3 u, Vec3 v) {
+		return 	Math.signum(u.x) == Math.signum(v.x) && 
+				Math.signum(u.y) == Math.signum(v.y) && 
+				Math.signum(u.z) == Math.signum(v.z);
+	}
+	
 }

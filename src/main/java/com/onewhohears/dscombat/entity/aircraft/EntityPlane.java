@@ -76,13 +76,14 @@ public class EntityPlane extends EntityAbstractAircraft {
 	
 	public Vec3 getLiftForce(Quaternion q) {
 		Vec3 direction = UtilAngles.getYawAxis(q);
-		System.out.println("lift direction = "+direction);
+		System.out.println("LIFT DIRECTION = "+direction);
 		Vec3 u = getDeltaMovement();
 		Vec3 v = UtilAngles.getRollAxis(q);
 		double zSpeedSqr = UtilGeometry.componentOfVecByAxis(u, v).lengthSqr();
 		double aoa = UtilGeometry.angleBetweenDegrees(v, u);
-		double uy = UtilGeometry.componentOfVecByAxis(u.normalize(), direction).lengthSqr();
-		double vy = UtilGeometry.componentOfVecByAxis(v, direction).lengthSqr();
+		double uy = UtilGeometry.componentMagSqrDirByAxis(u.normalize(), direction);
+		double vy = UtilGeometry.componentMagSqrDirByAxis(v, direction);
+		System.out.println("move y = "+uy+" plane y = "+vy);
 		if (vy < uy) aoa *= -1;
 		// TODO fix this madness
 		//if (v.y < u.normalize().y) aoa *= -1;
@@ -106,19 +107,24 @@ public class EntityPlane extends EntityAbstractAircraft {
 	}
 	
 	public double getLiftK(double aoa) {
-		double minAngle = -10.0;
+		double minAngle = -15.0;
 		double maxAngle = 30.0;
 		if (aoa < minAngle) return 0;
 		if (aoa > maxAngle) return 0;
-		double zeroK = 0.120;
-		if (aoa >= minAngle && aoa <= 0) 
-			return zeroK / -minAngle * aoa + zeroK;
+		double zeroK = 0.150;
 		double stallAngle = 20.0;
-		double stallK = 0.150;
+		double stallK = 0.210;
+		if (aoa >= minAngle && aoa <= 0) {
+			double c = zeroK;
+			double b = 2*(stallK-zeroK)/stallAngle;
+			double a = (-zeroK - b*minAngle - c) / (minAngle*minAngle);
+			return a*aoa*aoa + b*aoa + c;
+		}
 		if (aoa > 0 && aoa <= stallAngle) {
 			double a = -(stallK - zeroK) / (stallAngle*stallAngle);
-			double b = -2 * stallAngle * a;
-			return a*aoa*aoa + b*aoa + zeroK;
+			double b = -2*stallAngle*a;
+			double c = zeroK;
+			return a*aoa*aoa + b*aoa + c;
 		}
 		if (aoa > stallAngle && aoa <= maxAngle) {
 			double a = -stallK / (maxAngle*maxAngle + stallAngle*stallAngle - 2*maxAngle*stallAngle);

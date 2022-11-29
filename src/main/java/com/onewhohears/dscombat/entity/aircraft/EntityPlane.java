@@ -107,7 +107,7 @@ public class EntityPlane extends EntityAbstractAircraft {
 	}
 	
 	public double getLiftK(double aoa) {
-		double minAngle = -15.0;
+		double minAngle = -10.0;
 		double maxAngle = 30.0;
 		if (aoa < minAngle) return 0;
 		if (aoa > maxAngle) return 0;
@@ -117,7 +117,7 @@ public class EntityPlane extends EntityAbstractAircraft {
 		if (aoa >= minAngle && aoa <= 0) {
 			double c = zeroK;
 			double b = 2*(stallK-zeroK)/stallAngle;
-			double a = (-zeroK - b*minAngle - c) / (minAngle*minAngle);
+			double a = (-c - b*minAngle) / (minAngle*minAngle);
 			return a*aoa*aoa + b*aoa + c;
 		}
 		if (aoa > 0 && aoa <= stallAngle) {

@@ -18,8 +18,9 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class EntityPlane extends EntityAbstractAircraft {
 	
-	private final float propellerRate = 3.141f;
-	private float propellerRot, propellerRotOld;
+	private final float propellerRate = 3.141f, gearAOABias = 10f;
+	private float propellerRot = 0, propellerRotOld = 0, aoa = 0, liftK = 0, airFoilSpeedSqr = 0;
+	private Vec3 liftDir = Vec3.ZERO, airFoilAxes = Vec3.ZERO;
 	
 	public EntityPlane(EntityType<? extends EntityPlane> entity, Level level, 
 			ResourceLocation texture, RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item) {
@@ -59,8 +60,14 @@ public class EntityPlane extends EntityAbstractAircraft {
 	}
 	
 	@Override
+	public void tickMovement(Quaternion q) {
+		super.tickMovement(q);
+	}
+	
+	@Override
 	public void tickGround(Quaternion q) {
 		super.tickGround(q);
+		calculateAOA(q);
 		Vec3 motion = getDeltaMovement();
 		motion = motion.add(getLiftForce(q));
 		setDeltaMovement(motion);
@@ -69,45 +76,67 @@ public class EntityPlane extends EntityAbstractAircraft {
 	@Override
 	public void tickAir(Quaternion q) {
 		super.tickAir(q);
+		calculateAOA(q);
 		Vec3 motion = getDeltaMovement();
 		motion = motion.add(getLiftForce(q));
 		setDeltaMovement(motion);
 	}
 	
-	public Vec3 getLiftForce(Quaternion q) {
-		Vec3 direction = UtilAngles.getYawAxis(q);
-		System.out.println("LIFT DIRECTION = "+direction);
+	public void calculateAOA(Quaternion q) {
 		Vec3 u = getDeltaMovement();
-		Vec3 v = UtilAngles.getRollAxis(q);
-		double zSpeedSqr = UtilGeometry.componentOfVecByAxis(u, v).lengthSqr();
-		double aoa = UtilGeometry.angleBetweenDegrees(v, u);
-		double uy = UtilGeometry.componentMagSqrDirByAxis(u.normalize(), direction);
-		double vy = UtilGeometry.componentMagSqrDirByAxis(v, direction);
-		System.out.println("move y = "+uy+" plane y = "+vy);
-		if (vy < uy) aoa *= -1;
-		// TODO fix this madness
-		//if (v.y < u.normalize().y) aoa *= -1;
- 		System.out.println("zSpeedSqr = "+zSpeedSqr);
+		liftDir = UtilAngles.getYawAxis(q);
+		airFoilAxes = UtilAngles.getRollAxis(q);
+		airFoilSpeedSqr = (float) UtilGeometry.componentOfVecByAxis(u, airFoilAxes).lengthSqr();
+		if (this.isOnGround()) {
+			aoa = 0;
+			if (isLandingGear()) aoa += gearAOABias;
+		} else {
+			aoa = (float) UtilGeometry.angleBetweenDegrees(airFoilAxes, u);
+			double uy = UtilGeometry.componentMagSqrDirByAxis(u.normalize(), liftDir);
+			double vy = UtilGeometry.componentMagSqrDirByAxis(airFoilAxes, liftDir);
+			if (vy < uy) aoa *= -1;
+			//System.out.println("plane y = "+vy+" move y = "+uy);
+		}
+		if (isLandingGear()) aoa += gearAOABias;
+		liftK = (float) getLiftK();
+	}
+	
+	public Vec3 getLiftForce(Quaternion q) {
+		System.out.println("LIFT DIRECTION = "+liftDir);
 		System.out.println("aoa = "+aoa);
-		Vec3 liftForce = direction.scale(getLiftMag(zSpeedSqr, aoa));
+		System.out.println("liftK = "+liftK);
+		System.out.println("airFoilSpeedSqr = "+airFoilSpeedSqr);
+		Vec3 liftForce = liftDir.scale(getLiftMag());
 		System.out.println("lift force = "+liftForce);
 		return liftForce;
 	}
 	
-	public double getLiftMag(double zSpeedSqr, double aoa) {
+	public double getLiftMag() {
 		// Lift = (angle of attack coefficient) * (air density) * (speed)^2 * (wing surface area) / 2
-		//double ac = 0.06;
-		double ac = getLiftK(aoa);
-		System.out.println("liftK = "+ac);
 		double air = UtilEntity.getAirPressure(getY());
 		double wing = getSurfaceArea();
-		double lift = ac * air * zSpeedSqr * wing / 2.0;
-		//System.out.println("LIFT = "+lift);
+		double lift = liftK * air * airFoilSpeedSqr * wing / 2.0;
 		return lift;
 	}
 	
-	public double getLiftK(double aoa) {
-		double minAngle = -10.0;
+	public double getLiftK() {
+		if (aoa > 90 || aoa < -90) return 0;
+		float maxAngle = 30.0f;
+		float stallAngle = 20.0f;
+		double stallK = 0.200;
+		float aoaAbs = Math.abs(aoa);
+		double r = 0;
+		if (aoaAbs <= stallAngle) {
+			double a = -stallK / (stallAngle*stallAngle);
+			double b = -2*stallAngle*a;
+			r =  a*aoaAbs*aoaAbs + b*aoaAbs;
+		} else if (aoaAbs > stallAngle) {
+			double a = -stallK / (maxAngle*maxAngle + stallAngle*stallAngle - 2*maxAngle*stallAngle);
+			double b = -2*stallAngle*a;
+			double c = stallK + a*stallAngle*stallAngle;
+			r = a*aoaAbs*aoaAbs + b*aoaAbs + c;
+		}
+		/*double minAngle = -10.0;
 		double maxAngle = 30.0;
 		if (aoa < minAngle) return 0;
 		if (aoa > maxAngle) return 0;
@@ -131,8 +160,8 @@ public class EntityPlane extends EntityAbstractAircraft {
 			double b = -2*stallAngle*a;
 			double c = stallK + a*stallAngle*stallAngle;
 			return a*aoa*aoa + b*aoa + c;
-		}
-		return 0;
+		}*/
+		return Math.signum(aoa) * r;
 	}
 	
 	@Override

@@ -90,6 +90,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public RadarSystem radarSystem = new RadarSystem();
 	public Quaternion prevQ = Quaternion.ONE.copy();
 	public Quaternion clientQ = Quaternion.ONE.copy();
+	public Quaternion change = Quaternion.ONE.copy();
 	
 	public boolean inputMouseMode, inputFlare, inputShoot, inputSelect, inputOpenMenu;
 	public float inputThrottle, inputPitch, inputRoll, inputYaw;
@@ -177,6 +178,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		setQ(q);
 		setPrevQ(q);
 		setClientQ(q);
+		this.setCurrentThrottle(compound.getFloat("current_throttle"));
 	}
 
 	@Override
@@ -201,6 +203,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		compound.putFloat("xRot", this.getXRot());
 		compound.putFloat("yRot", this.getYRot());
 		compound.putFloat("zRot", zRot);
+		compound.putFloat("current_throttle", this.getCurrentThrottle());
 	}
 	
 	public void init() {
@@ -213,6 +216,9 @@ public abstract class EntityAbstractAircraft extends Entity {
 		//System.out.println(this.tickCount+" "+this.level);
 		if (this.firstTick) init();
 		super.tick();
+		if (Double.isNaN(getDeltaMovement().length())) {
+            setDeltaMovement(Vec3.ZERO);
+        }
 		prevMotion = getDeltaMovement();
 		zRotO = zRot;
 		// SET DIRECTION
@@ -229,7 +235,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		setYRot((float)angles.yaw);
 		zRot = (float)angles.roll;
 		// CHANGE VELOCITY DIRECTION (not realistic but feels better)
-		
+		tickVelDir(q);
 		// MOVEMENT
 		tickMovement(q);
     	motionClamp();
@@ -242,6 +248,12 @@ public abstract class EntityAbstractAircraft extends Entity {
 		sounds();
 		if (level.isClientSide) clientTick();
 		else serverTick();
+	}
+	
+	public void tickVelDir(Quaternion q) {
+		Quaternion in = getPrevQ(); in.conj();
+		change = q.copy(); change.mul(in);
+		setDeltaMovement(UtilAngles.rotateVector(getDeltaMovement(), change));
 	}
 	
 	public void serverTick() {
@@ -355,13 +367,17 @@ public abstract class EntityAbstractAircraft extends Entity {
 	}
 	
 	public Vec3 getDragForce(Quaternion q) {
-		Vec3 direction = getDeltaMovement().normalize();
-		Vec3 dragForce = direction.scale(-getDragMag(q));
+		Vec3 direction = getDeltaMovement().normalize().scale(-1);
+		Vec3 dragForce = direction.scale(getDragMag());
 		//System.out.println("drag force = "+dragForce);
 		return dragForce;
 	}
 	
-	public double getDragMag(Quaternion q) {
+	public double getDragMag() {
+		return surfaceAreaDrag() + rotationDrag();
+	}
+	
+	public double surfaceAreaDrag() {
 		// Drag = (drag coefficient) * (air pressure) * (speed)^2 * (wing surface area) / 2
 		double dc = 0.030;
 		double air = UtilEntity.getAirPressure(getY());
@@ -369,6 +385,11 @@ public abstract class EntityAbstractAircraft extends Entity {
 		double wing = getSurfaceArea();
 		if (isLandingGear()) wing += 1.0;
 		return dc * air * speedSqr * wing / 2;
+	}
+	
+	public double rotationDrag() {
+		// TODO make rotation drag based on torque
+		return 0;
 	}
 	
 	public float getSurfaceArea() {

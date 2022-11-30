@@ -44,8 +44,7 @@
 			"slot_posy": -1.0,
 			"slot_posz": 1.5,
 			"uix": 68,
-			"uiy": 20,
-			"filled": false
+			"uiy": 20
 		},
 		{
 			"name": "dscombat.seat3",
@@ -54,8 +53,7 @@
 			"slot_posy": -1.0,
 			"slot_posz": 1.5,
 			"uix": 88,
-			"uiy": 20,
-			"filled": false
+			"uiy": 20
 		},
 		{
 			"name": "dscombat.seat4",
@@ -64,8 +62,7 @@
 			"slot_posy": -1.0,
 			"slot_posz": 1.5,
 			"uix": 108,
-			"uiy": 20,
-			"filled": false
+			"uiy": 20
 		},
 		{
 			"name": "dscombat.left_wing_1",
@@ -74,8 +71,7 @@
 			"slot_posy": 0,
 			"slot_posz": 0,
 			"uix": 48,
-			"uiy": 40,
-			"filled": false
+			"uiy": 40
 		},
 		{
 			"name": "dscombat.left_wing_2",
@@ -84,8 +80,7 @@
 			"slot_posy": 0,
 			"slot_posz": 1,
 			"uix": 68,
-			"uiy": 40,
-			"filled": false
+			"uiy": 40
 		},
 		{
 			"name": "dscombat.left_wing_3",
@@ -94,8 +89,7 @@
 			"slot_posy": 0,
 			"slot_posz": 0,
 			"uix": 88,
-			"uiy": 40,
-			"filled": false
+			"uiy": 40
 		},
 		{
 			"name": "dscombat.left_wing_4",
@@ -104,8 +98,7 @@
 			"slot_posy": 0,
 			"slot_posz": 0,
 			"uix": 108,
-			"uiy": 40,
-			"filled": false
+			"uiy": 40
 		},
 		{
 			"name": "dscombat.right_wing_1",
@@ -114,8 +107,7 @@
 			"slot_posy": 0,
 			"slot_posz": 0,
 			"uix": 48,
-			"uiy": 60,
-			"filled": false
+			"uiy": 60
 		},
 		{
 			"name": "dscombat.right_wing_2",
@@ -124,8 +116,7 @@
 			"slot_posy": 0,
 			"slot_posz": 0,
 			"uix": 68,
-			"uiy": 60,
-			"filled": false
+			"uiy": 60
 		},
 		{
 			"name": "dscombat.right_wing_3",
@@ -134,8 +125,7 @@
 			"slot_posy": 0,
 			"slot_posz": 0,
 			"uix": 88,
-			"uiy": 60,
-			"filled": false
+			"uiy": 60
 		},
 		{
 			"name": "dscombat.right_wing_4",
@@ -144,8 +134,7 @@
 			"slot_posy": 0,
 			"slot_posz": 0,
 			"uix": 108,
-			"uiy": 60,
-			"filled": false
+			"uiy": 60
 		},
 		{
 			"name": "dscombat.frame_1",
@@ -154,8 +143,7 @@
 			"slot_posy": -0.5,
 			"slot_posz": 1,
 			"uix": 48,
-			"uiy": 80,
-			"filled": false
+			"uiy": 80
 		},
 		{
 			"name": "dscombat.frame_2",
@@ -164,8 +152,7 @@
 			"slot_posy": -0.5,
 			"slot_posz": 0.3,
 			"uix": 68,
-			"uiy": 80,
-			"filled": false
+			"uiy": 80
 		},
 		{
 			"name": "dscombat.frame_3",
@@ -174,8 +161,7 @@
 			"slot_posy": -0.5,
 			"slot_posz": -0.3,
 			"uix": 88,
-			"uiy": 80,
-			"filled": false
+			"uiy": 80
 		},
 		{
 			"name": "dscombat.frame_4",
@@ -184,8 +170,7 @@
 			"slot_posy": -0.5,
 			"slot_posz": -1,
 			"uix": 108,
-			"uiy": 80,
-			"filled": false
+			"uiy": 80
 		},
 		{
 			"name": "dscombat.internal_1",
@@ -194,8 +179,7 @@
 			"slot_posy": 0,
 			"slot_posz": 0,
 			"uix": 48,
-			"uiy": 100,
-			"filled": false
+			"uiy": 100
 		},
 		{
 			"name": "dscombat.internal_2",
@@ -204,8 +188,7 @@
 			"slot_posy": 0,
 			"slot_posz": 0,
 			"uix": 68,
-			"uiy": 100,
-			"filled": false
+			"uiy": 100
 		},
 		{
 			"name": "dscombat.internal_3",
@@ -214,8 +197,7 @@
 			"slot_posy": 0,
 			"slot_posz": 0,
 			"uix": 88,
-			"uiy": 100,
-			"filled": false
+			"uiy": 100
 		},
 		{
 			"name": "dscombat.internal_4",
@@ -224,8 +206,7 @@
 			"slot_posy": 0,
 			"slot_posz": 0,
 			"uix": 108,
-			"uiy": 100,
-			"filled": false
+			"uiy": 100
 		},
 		{
 			"name": "dscombat.internal_5",
@@ -234,8 +215,7 @@
 			"slot_posy": 0,
 			"slot_posz": 0,
 			"uix": 128,
-			"uiy": 100,
-			"filled": false
+			"uiy": 100
 		},
 		{
 			"name": "dscombat.internal_6",
@@ -244,8 +224,7 @@
 			"slot_posy": 0,
 			"slot_posz": 0,
 			"uix": 148,
-			"uiy": 100,
-			"filled": false
+			"uiy": 100
 		},
 		{
 			"name": "dscombat.internal_7",
@@ -254,8 +233,7 @@
 			"slot_posy": 0,
 			"slot_posz": 0,
 			"uix": 168,
-			"uiy": 100,
-			"filled": false
+			"uiy": 100
 		},
 		{
 			"name": "dscombat.internal_8",
@@ -264,8 +242,7 @@
 			"slot_posy": 0,
 			"slot_posz": 0,
 			"uix": 188,
-			"uiy": 100,
-			"filled": false
+			"uiy": 100
 		}
 	],
 	

@@ -389,11 +389,11 @@ public final class ClientForgeEvents {
 			float xo, xn, xi, yo, yn, yi, zo, zn, zi;
 			if (!plane.isFreeLook() && plane.getControllingPassenger() != null 
 					&& plane.getControllingPassenger().equals(player)) {
-				xo = plane.prevXRot;
+				xo = plane.xRotO;
 				xn = plane.getXRot();
-				yo = plane.prevYRot;
+				yo = plane.yRotO;
 				yn = plane.getYRot();
-				zo = plane.prevZRot;
+				zo = plane.zRotO;
 				zn = plane.zRot;
 				xi = xo + (xn - xo) * (float)event.getPartialTick();
 				yi = yo + (yn - yo) * (float)event.getPartialTick();
@@ -405,7 +405,7 @@ public final class ClientForgeEvents {
 				xn = player.getXRot();
 				yo = player.yRotO;
 				yn = player.getYRot();
-				zo = plane.prevZRot;
+				zo = plane.zRotO;
 				zn = plane.zRot;
 				xi = xo + (xn - xo) * (float)event.getPartialTick();
 				yi = yo + (yn - yo) * (float)event.getPartialTick();

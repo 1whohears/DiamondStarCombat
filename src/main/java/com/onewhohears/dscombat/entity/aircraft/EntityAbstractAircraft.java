@@ -93,7 +93,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	public boolean inputMouseMode, inputFlare, inputShoot, inputSelect, inputOpenMenu;
 	public float inputThrottle, inputPitch, inputRoll, inputYaw;
-	public float prevXRot, prevYRot, zRot, prevZRot;
+	public float zRot, zRotO;
 	public Vec3 prevMotion = Vec3.ZERO;
 	
 	protected final ResourceLocation TEXTURE;
@@ -213,14 +213,9 @@ public abstract class EntityAbstractAircraft extends Entity {
 		//System.out.println(this.tickCount+" "+this.level);
 		if (this.firstTick) init();
 		super.tick();
-		if (Double.isNaN(getDeltaMovement().length())) {
-            setDeltaMovement(Vec3.ZERO);
-        }
 		prevMotion = getDeltaMovement();
-		prevXRot = getXRot();
-		prevYRot = getYRot();
-		prevZRot = zRot;
-		// set direction
+		zRotO = zRot;
+		// SET DIRECTION
 		Quaternion q;
 		if (level.isClientSide) q = getClientQ();
 		else q = getQ();
@@ -233,22 +228,20 @@ public abstract class EntityAbstractAircraft extends Entity {
 		setXRot((float)angles.pitch);
 		setYRot((float)angles.yaw);
 		zRot = (float)angles.roll;
-		// movement
+		// CHANGE VELOCITY DIRECTION (not realistic but feels better)
+		
+		// MOVEMENT
 		tickMovement(q);
     	motionClamp();
-    	//System.out.println("MOTION "+getDeltaMovement());
 		move(MoverType.SELF, getDeltaMovement());
 		if (this.isControlledByLocalInstance()) 
 			this.syncPacketPositionCodec(getX(), getY(), getZ());
-        controlSystem();
+        // OTHER
+		controlSystem();
         tickParts();
-		/*System.out.println("######### client "+this.level.isClientSide);
-		System.out.println("P "+this.getPrevQ());
-		System.out.println("C "+this.getClientQ());
-		System.out.println("Q "+this.getQ());*/
+		sounds();
 		if (level.isClientSide) clientTick();
 		else serverTick();
-		sounds();
 	}
 	
 	public void serverTick() {

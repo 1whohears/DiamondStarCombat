@@ -102,12 +102,12 @@ public class EntityPlane extends EntityAbstractAircraft {
 	}
 	
 	public Vec3 getLiftForce(Quaternion q) {
-		System.out.println("LIFT DIRECTION = "+liftDir);
-		System.out.println("aoa = "+aoa);
-		System.out.println("liftK = "+liftK);
-		System.out.println("airFoilSpeedSqr = "+airFoilSpeedSqr);
+		//System.out.println("LIFT DIRECTION = "+liftDir);
+		//System.out.println("aoa = "+aoa);
+		//System.out.println("liftK = "+liftK);
+		//System.out.println("airFoilSpeedSqr = "+airFoilSpeedSqr);
 		Vec3 liftForce = liftDir.scale(getLiftMag());
-		System.out.println("lift force = "+liftForce);
+		//System.out.println("lift force = "+liftForce);
 		return liftForce;
 	}
 	

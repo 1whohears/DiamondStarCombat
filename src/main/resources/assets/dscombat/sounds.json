@@ -40,5 +40,11 @@
 		"sounds": [
 			"dscombat:heli_1"
 		]
+	},
+	"jet_1": {
+		"subtitle": "sounds.dscombat.jet_1",
+		"sounds": [
+			"dscombat:jet_1"
+		]
 	}
 }

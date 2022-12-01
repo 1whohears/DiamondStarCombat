@@ -89,8 +89,8 @@ public class EntityHelicopter extends EntityAbstractAircraft {
 	
 	@Override
 	public void controlDirection(Quaternion q) {
-		super.controlDirection(q);
 		if (isOnGround() || isFreeLook()) {
+			torqueX = torqueY = torqueZ = 0;
 			EulerAngles angles = UtilAngles.toDegrees(q);
 			//System.out.println("degrees "+angles);
 			float dRoll = getMaxDeltaRoll();
@@ -100,14 +100,15 @@ public class EntityHelicopter extends EntityAbstractAircraft {
 			else roll = -(float)Math.signum(angles.roll) * dRoll;
 			if (Math.abs(angles.pitch) < dPitch) pitch = (float) -angles.pitch;
 			else pitch = -(float)Math.signum(angles.pitch) * dPitch;
-			q.mul(new Quaternion(Vector3f.ZP, roll, true));
 			q.mul(new Quaternion(Vector3f.XP, pitch, true));
-			if (!isOnGround()) q.mul(new Quaternion(Vector3f.YN, inputYaw*getMaxDeltaYaw(), true));
+			q.mul(new Quaternion(Vector3f.ZP, roll, true));
+			if (!isOnGround()) torqueY += inputYaw * 0.5f;
 		} else if (!isOnGround()) {
-			q.mul(new Quaternion(Vector3f.ZP, inputRoll*getMaxDeltaRoll(), true));
-			q.mul(new Quaternion(Vector3f.XN, inputPitch*getMaxDeltaPitch(), true));
-			q.mul(new Quaternion(Vector3f.YN, inputYaw*getMaxDeltaYaw(), true));
+			torqueX += inputPitch * 0.5f;
+			torqueY += inputYaw * 0.5f;
+			torqueZ += inputRoll * 0.5f;
 		}
+		super.controlDirection(q);
 	}
 
 	@Override

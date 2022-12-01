@@ -38,8 +38,8 @@ public class EntityPlane extends EntityAbstractAircraft {
 	
 	@Override
 	public void controlDirection(Quaternion q) {
-		super.controlDirection(q);
 		if (isOnGround()) {
+			torqueX = torqueY = torqueZ = 0;
 			EulerAngles angles = UtilAngles.toDegrees(q);
 			//System.out.println("degrees "+angles);
 			float dRoll = 5f;
@@ -49,14 +49,15 @@ public class EntityPlane extends EntityAbstractAircraft {
 			else roll = -(float)Math.signum(angles.roll) * dRoll;
 			if (Math.abs(angles.pitch) < dPitch) pitch = (float) -angles.pitch;
 			else pitch = -(float)Math.signum(angles.pitch) * dPitch;
-			q.mul(new Quaternion(Vector3f.ZP, roll, true));
 			q.mul(new Quaternion(Vector3f.XP, pitch, true));
 			q.mul(new Quaternion(Vector3f.YN, inputYaw*getMaxDeltaYaw(), true));
+			q.mul(new Quaternion(Vector3f.ZP, roll, true));
 		} else {
-			q.mul(new Quaternion(Vector3f.ZP, inputRoll*getMaxDeltaRoll(), true));
-			q.mul(new Quaternion(Vector3f.XN, inputPitch*getMaxDeltaPitch(), true));
-			q.mul(new Quaternion(Vector3f.YN, inputYaw*getMaxDeltaYaw(), true));
+			torqueX += inputPitch * 0.5f;
+			torqueY += inputYaw * 0.5f;
+			torqueZ += inputRoll * 0.5f;
 		}
+		super.controlDirection(q);
 	}
 	
 	@Override
@@ -89,7 +90,6 @@ public class EntityPlane extends EntityAbstractAircraft {
 		airFoilSpeedSqr = (float) UtilGeometry.componentOfVecByAxis(u, airFoilAxes).lengthSqr();
 		if (this.isOnGround()) {
 			aoa = 0;
-			if (isLandingGear()) aoa += gearAOABias;
 		} else {
 			aoa = (float) UtilGeometry.angleBetweenDegrees(airFoilAxes, u);
 			double uy = UtilGeometry.componentMagSqrDirByAxis(u.normalize(), liftDir);
@@ -120,10 +120,10 @@ public class EntityPlane extends EntityAbstractAircraft {
 	}
 	
 	public double getLiftK() {
-		if (aoa > 90 || aoa < -90) return 0;
 		float maxAngle = 30.0f;
+		if (aoa > maxAngle || aoa < -maxAngle) return 0;
 		float stallAngle = 20.0f;
-		double stallK = 0.200;
+		double stallK = 0.210;
 		float aoaAbs = Math.abs(aoa);
 		double r = 0;
 		if (aoaAbs <= stallAngle) {
@@ -174,6 +174,10 @@ public class EntityPlane extends EntityAbstractAircraft {
 	
 	public float getPropellerRotation(float partialTicks) {
 		return Mth.lerp(partialTicks, propellerRotOld, propellerRot);
+	}
+
+	public float getAOA() {
+		return aoa;
 	}
 
 }

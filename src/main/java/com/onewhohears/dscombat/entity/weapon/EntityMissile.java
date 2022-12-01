@@ -114,6 +114,7 @@ public abstract class EntityMissile extends EntityBullet {
 	public abstract void tickGuide();
 	
 	public void tickClientGuide() {
+		if (tickCount < 20) return;
 		this.guideToPosition();
 	}
 	

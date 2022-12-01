@@ -56,7 +56,7 @@ public class ModEntities {
 	public static final RegistryObject<EntityType<EntityPlane>> ALEXIS_PLANE = ENTITIES.register("alexis_plane", 
 			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
 					new ResourceLocation(DSCombatMod.MODID, "textures/entities/alexis_plane.png"),
-					ModSounds.BIPLANE_1, ModItems.ALEXIS_PLANE), 
+					ModSounds.JET_1, ModItems.ALEXIS_PLANE), 
 					EntityDimensions.scalable(2.0f, 2.0f)));
 	
 	// TODO use black hawk as inspiration for noah chopper

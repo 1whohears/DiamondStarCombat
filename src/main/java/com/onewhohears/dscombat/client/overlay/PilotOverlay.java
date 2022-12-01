@@ -11,6 +11,7 @@ import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.util.UtilEntity;
 
@@ -67,6 +68,12 @@ public class PilotOverlay {
 			GuiComponent.drawString(poseStack, m.font, 
 					"["+plane.getBlockX()+","+plane.getBlockY()+","+plane.getBlockZ()+"]", 
 					width/2+11, height-60, 0x00ff00);
+			// aoa
+			if (plane instanceof EntityPlane p) {
+				GuiComponent.drawString(poseStack, m.font, 
+					String.format("AOA: %3.3f", p.getAOA()), 
+					width/2+11, height-70, 0x00ff00);
+			}
 			// weapon data
 			int hieght = 1;
 			List<WeaponData> weapons = plane.weaponSystem.getWeapons();

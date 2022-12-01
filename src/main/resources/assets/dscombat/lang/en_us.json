@@ -89,6 +89,7 @@
 	"sounds.dscombat.bullet_shoot_1": "Bullet Shoot",
 	"sounds.dscombat.biplane_1": "Biplane Engine",
 	"sounds.dscombat.heli_1": "Helicopter",
+	"sounds.dscombat.jet_1": "Jet Engine",
 	
 	"block.dscombat.weapons_block": "Weapons Workbench",
 	"block.dscombat.aircraft_block": "Aircraft Workbench",

@@ -22,6 +22,7 @@ public class ModSounds {
 	public static final RegistryObject<SoundEvent> BULLET_SHOOT_1 = registerSoundEvent("bullet_shoot_1");
 	public static final RegistryObject<SoundEvent> BIPLANE_1 = registerSoundEvent("biplane_1");
 	public static final RegistryObject<SoundEvent> HELI_1 = registerSoundEvent("heli_1");
+	public static final RegistryObject<SoundEvent> JET_1 = registerSoundEvent("jet_1");
 	
 	public static void register(IEventBus eventBus) {
 		SOUND_EVENTS.register(eventBus);

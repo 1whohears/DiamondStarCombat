@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.mojang.math.Quaternion;
+import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.event.ClientForgeEvents;
 import com.onewhohears.dscombat.common.container.AircraftMenuContainer;
 import com.onewhohears.dscombat.common.network.PacketHandler;
@@ -71,9 +72,9 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public static final EntityDataAccessor<Quaternion> Q = SynchedEntityData.defineId(EntityAbstractAircraft.class, DataSerializers.QUATERNION);
 	public static final EntityDataAccessor<Boolean> FREE_LOOK = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Float> STEALTH = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> ROLL = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> PITCH = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> YAW = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> MAX_ROLL = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> MAX_PITCH = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> MAX_YAW = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> IDLEHEAT = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> WEIGHT = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> WING_AREA = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
@@ -90,11 +91,12 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public RadarSystem radarSystem = new RadarSystem();
 	public Quaternion prevQ = Quaternion.ONE.copy();
 	public Quaternion clientQ = Quaternion.ONE.copy();
-	public Quaternion change = Quaternion.ONE.copy();
+	//public Quaternion change = Quaternion.ONE.copy();
 	
 	public boolean inputMouseMode, inputFlare, inputShoot, inputSelect, inputOpenMenu;
 	public float inputThrottle, inputPitch, inputRoll, inputYaw;
-	public float zRot, zRotO;
+	public float zRot, zRotO; 
+	public float torqueX, torqueY, torqueZ, torqueXO, torqueYO, torqueZO;
 	public Vec3 prevMotion = Vec3.ZERO;
 	
 	protected final ResourceLocation TEXTURE;
@@ -125,9 +127,9 @@ public abstract class EntityAbstractAircraft extends Entity {
 		entityData.define(Q, Quaternion.ONE);
 		entityData.define(FREE_LOOK, true);
 		entityData.define(STEALTH, 1f);
-		entityData.define(ROLL, 1f);
-		entityData.define(PITCH, 1f);
-		entityData.define(YAW, 1f);
+		entityData.define(MAX_ROLL, 1f);
+		entityData.define(MAX_PITCH, 1f);
+		entityData.define(MAX_YAW, 1f);
 		entityData.define(IDLEHEAT, 1f);
 		entityData.define(WEIGHT, 0.05f);
 		entityData.define(WING_AREA, 1f);
@@ -221,6 +223,9 @@ public abstract class EntityAbstractAircraft extends Entity {
         }
 		prevMotion = getDeltaMovement();
 		zRotO = zRot;
+		torqueXO = torqueX;
+		torqueYO = torqueY;
+		torqueZO = torqueZ;
 		// SET DIRECTION
 		Quaternion q;
 		if (level.isClientSide) q = getClientQ();
@@ -234,8 +239,6 @@ public abstract class EntityAbstractAircraft extends Entity {
 		setXRot((float)angles.pitch);
 		setYRot((float)angles.yaw);
 		zRot = (float)angles.roll;
-		// CHANGE VELOCITY DIRECTION (not realistic but feels better)
-		tickVelDir(q);
 		// MOVEMENT
 		tickMovement(q);
     	motionClamp();
@@ -250,11 +253,11 @@ public abstract class EntityAbstractAircraft extends Entity {
 		else serverTick();
 	}
 	
-	public void tickVelDir(Quaternion q) {
+	/*public void tickVelDir(Quaternion q) {
 		Quaternion in = getPrevQ(); in.conj();
 		change = q.copy(); change.mul(in);
 		setDeltaMovement(UtilAngles.rotateVector(getDeltaMovement(), change));
-	}
+	}*/
 	
 	public void serverTick() {
 		tickCollisions();
@@ -328,6 +331,22 @@ public abstract class EntityAbstractAircraft extends Entity {
 		if (this.getControllingPassenger() == null) this.resetControls();
 		if (inputThrottle > 0) this.increaseThrottle();
 		else if (inputThrottle < 0) this.decreaseThrottle();
+		if (Math.abs(torqueX) > getMaxDeltaPitch()) torqueX = getMaxDeltaPitch() * Math.signum(torqueX);
+		if (Math.abs(torqueY) > getMaxDeltaYaw()) torqueY = getMaxDeltaYaw() * Math.signum(torqueY);
+		if (Math.abs(torqueZ) > getMaxDeltaRoll()) torqueZ = getMaxDeltaRoll() * Math.signum(torqueZ);
+		q.mul(new Quaternion(Vector3f.XN, torqueX, true));
+		q.mul(new Quaternion(Vector3f.YN, torqueY, true));
+		q.mul(new Quaternion(Vector3f.ZP, torqueZ, true));
+		torqueX = torqueDrag(torqueX);
+		torqueY = torqueDrag(torqueY);
+		torqueZ = torqueDrag(torqueZ);
+	}
+	
+	protected float torqueDrag(float torque) {
+		float td = 0.25f;
+		float abs = Math.abs(torque);
+		if (abs < td) return 0;
+		return (abs - td) * Math.signum(torque);
 	}
 	
 	public void tickMovement(Quaternion q) {
@@ -815,30 +834,30 @@ public abstract class EntityAbstractAircraft extends Entity {
     }
     
     public float getMaxDeltaPitch() {
-    	return entityData.get(PITCH);
+    	return entityData.get(MAX_PITCH);
     }
     
     public void setMaxDeltaPitch(float degrees) {
     	if (degrees < 0) degrees = 0;
-    	entityData.set(PITCH, degrees);
+    	entityData.set(MAX_PITCH, degrees);
     }
     
     public float getMaxDeltaYaw() {
-    	return entityData.get(YAW);
+    	return entityData.get(MAX_YAW);
     }
     
     public void setMaxDeltaYaw(float degrees) {
     	if (degrees < 0) degrees = 0;
-    	entityData.set(YAW, degrees);
+    	entityData.set(MAX_YAW, degrees);
     }
     
     public float getMaxDeltaRoll() {
-    	return entityData.get(ROLL);
+    	return entityData.get(MAX_ROLL);
     }
     
     public void setMaxDeltaRoll(float degrees) {
     	if (degrees < 0) degrees = 0;
-    	entityData.set(ROLL, degrees);
+    	entityData.set(MAX_ROLL, degrees);
     }
     
     public void increaseThrottle() {

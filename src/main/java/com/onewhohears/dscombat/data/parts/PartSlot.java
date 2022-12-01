@@ -36,8 +36,7 @@ public class PartSlot {
 		pos = UtilParse.readVec3(tag, "slot_pos");
 		uix = tag.getInt("uix");
 		uiy = tag.getInt("uiy");
-		boolean filled = tag.getBoolean("filled");
-		if (filled) data = UtilParse.parsePartFromCompound(tag.getCompound("data"));
+		if (tag.contains("data")) data = UtilParse.parsePartFromCompound(tag.getCompound("data"));
 		// not saved
 		offsetX = getIconOffsetX(type);
 		typeName = getTypeName(type);
@@ -50,7 +49,6 @@ public class PartSlot {
 		UtilParse.writeVec3(tag, pos, "slot_pos");
 		tag.putInt("uix", uix);
 		tag.putInt("uiy", uiy);
-		tag.putBoolean("filled", filled());
 		if (filled()) tag.put("data", data.write());
 		return tag;
 	}

@@ -90,7 +90,7 @@ public class EntityHelicopter extends EntityAbstractAircraft {
 	@Override
 	public void controlDirection(Quaternion q) {
 		if (isOnGround() || isFreeLook()) {
-			torqueX = torqueY = torqueZ = 0;
+			torqueX = torqueZ = 0;
 			EulerAngles angles = UtilAngles.toDegrees(q);
 			//System.out.println("degrees "+angles);
 			float dRoll = getMaxDeltaRoll();

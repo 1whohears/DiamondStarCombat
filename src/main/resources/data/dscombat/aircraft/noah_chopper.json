@@ -30,7 +30,6 @@
 			"slot_posz": 1.5,
 			"uix": 48,
 			"uiy": 20,
-			"filled": true,
 			"data": {
 				"type": 0,
 				"weight": 0.001,
@@ -44,25 +43,40 @@
 			"slot_posy": -1.0,
 			"slot_posz": 1.5,
 			"uix": 68,
-			"uiy": 20
+			"uiy": 20,
+			"data": {
+				"type": 0,
+				"weight": 0.001,
+				"itemid": "dscombat:seat"
+			}
 		},
 		{
 			"name": "dscombat.seat3",
 			"slot_type": 0,
 			"slot_posx": 0.4,
 			"slot_posy": -1.0,
-			"slot_posz": 1.5,
+			"slot_posz": 0.3,
 			"uix": 88,
-			"uiy": 20
+			"uiy": 20,
+			"data": {
+				"type": 0,
+				"weight": 0.001,
+				"itemid": "dscombat:seat"
+			}
 		},
 		{
 			"name": "dscombat.seat4",
 			"slot_type": 0,
 			"slot_posx": -0.4,
 			"slot_posy": -1.0,
-			"slot_posz": 1.5,
+			"slot_posz": 0.3,
 			"uix": 108,
-			"uiy": 20
+			"uiy": 20,
+			"data": {
+				"type": 0,
+				"weight": 0.001,
+				"itemid": "dscombat:seat"
+			}
 		},
 		{
 			"name": "dscombat.left_wing_1",

@@ -6,7 +6,7 @@
 	"health": 150,
 	
 	"weight": 0.04,
-	"surfacearea": 1.8,
+	"surfacearea": 2.1,
 	
 	"stealth": 1.1,
 	"idleheat": 5.0,
@@ -27,7 +27,6 @@
 			"slot_posz": 0,
 			"uix": 48,
 			"uiy": 20,
-			"filled": true,
 			"data": {
 				"type": 0,
 				"weight": 0.001,

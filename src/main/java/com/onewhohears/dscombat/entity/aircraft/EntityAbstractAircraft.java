@@ -491,6 +491,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	}
 	
 	public void shoot(Entity controller, boolean isPlayer) {
+		// TODO make a shoot function in the weapon system and shoot all bullets with the same name
 		WeaponData data = weaponSystem.getSelected();
 		if (data == null) return;
 		data.shoot(level, controller, UtilAngles.getRollAxis(getQ()), null, this);

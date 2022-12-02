@@ -78,7 +78,7 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 				ix = iix;
 				iy += 20;
 			}
-			ItemStack stack = ingredients.get(i).getItem();
+			ItemStack stack = ingredients.get(i).getDisplayItem();
 			m.getItemRenderer().renderAndDecorateItem(
 					stack, ix, iy);
 			m.getItemRenderer().renderGuiItemDecorations(font, 

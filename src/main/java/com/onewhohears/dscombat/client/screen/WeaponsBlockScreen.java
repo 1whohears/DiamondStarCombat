@@ -77,7 +77,7 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockMenu
 				ix = iix;
 				iy += 20;
 			}
-			ItemStack stack = data.ingredients.get(i).getItem();
+			ItemStack stack = data.ingredients.get(i).getDisplayItem();
 			m.getItemRenderer().renderAndDecorateItem(
 					stack, ix, iy);
 			m.getItemRenderer().renderGuiItemDecorations(font, 

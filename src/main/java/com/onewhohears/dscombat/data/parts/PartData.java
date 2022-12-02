@@ -1,5 +1,7 @@
 package com.onewhohears.dscombat.data.parts;
 
+import java.util.NoSuchElementException;
+
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
@@ -7,6 +9,7 @@ import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -129,14 +132,21 @@ public abstract class PartData {
 		return compatibleSlots;
 	}
 	
-	public ItemStack getItemStack() {
+	private ItemStack stack;
+	
+	public ItemStack getNewItemStack() {
 		System.out.println("GETTING ITEM STACK "+itemid);
-		ItemStack stack = new ItemStack(
-				ForgeRegistries.ITEMS.getDelegate(itemid)
-					.get()
-						.get());
-		stack.setTag(this.write());
-		return stack;
+		if (stack == null) {
+			try {
+				Item i = ForgeRegistries.ITEMS.getDelegate(itemid).get().get();
+				stack = new ItemStack(i);
+			} catch(NoSuchElementException e) {
+				stack = ItemStack.EMPTY;
+			}
+		}
+		ItemStack s = stack.copy();
+		s.setTag(write());
+		return s;
 	}
 	
 }

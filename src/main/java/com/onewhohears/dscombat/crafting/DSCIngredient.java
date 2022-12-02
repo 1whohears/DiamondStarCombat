@@ -2,54 +2,57 @@ package com.onewhohears.dscombat.crafting;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class DSCIngredient {
 	
-	public final String item;
-	public final int num;
+	public final int cost;
+	private final String displayItemId;
 	private ItemStack stack;
 	
-	public DSCIngredient(String item, int num) {
-		this.item = item;
-		this.num = num;
+	public DSCIngredient(String displayItemId, int cost) {
+		this.displayItemId = displayItemId;
+		this.cost = cost;
 	}
 	
 	public DSCIngredient(CompoundTag tag) {
-		item = tag.getString("item");
-		num = tag.getInt("num");
+		displayItemId = tag.getString("displayItemId");
+		cost = tag.getInt("cost");
 	}
 	
 	public CompoundTag write() {
 		CompoundTag tag = new CompoundTag();
-		tag.putString("item", item);
-		tag.putInt("num", num);
+		tag.putString("displayItemId", displayItemId);
+		tag.putInt("cost", cost);
 		return tag;
 	}
 	
 	public DSCIngredient(FriendlyByteBuf buffer) {
-		item = buffer.readUtf();
-		num = buffer.readInt();
+		displayItemId = buffer.readUtf();
+		cost = buffer.readInt();
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
-		buffer.writeUtf(item);
-		buffer.writeInt(num);
+		buffer.writeUtf(displayItemId);
+		buffer.writeInt(cost);
 	}
 	
-	public ItemStack getItem() {
+	public ItemStack getDisplayItem() {
 		if (stack == null) {
-			Item i = ForgeRegistries.ITEMS.getDelegate(new ResourceLocation(item)).get().get();
-			stack = new ItemStack(i);
-			stack.setCount(num);
+			try {
+				stack = new ItemStack(ForgeRegistries.ITEMS.getDelegate(
+						new ResourceLocation(displayItemId)).get().get());
+			} catch(NoSuchElementException e) {
+				stack = ItemStack.EMPTY;
+			}
 		}
 		return stack;
 	}
@@ -59,18 +62,18 @@ public class DSCIngredient {
 		for (int i = 0; i < playerInv.getContainerSize(); ++i) {
 			ItemStack stack = playerInv.getItem(i);
 			if (stack.isEmpty()) continue;
-			if (stack.sameItem(getItem())) count += stack.getCount();
+			if (isSameItem(stack)) count += stack.getCount();
 		}
-		return num <= count;
+		return cost <= count;
 	}
 	
 	public void consumeIngredient(Container playerInv) {
-		int amount = num;
+		int amount = cost;
 		for (int i = 0; i < playerInv.getContainerSize(); ++i) {
 			if (amount <= 0) return;
 			ItemStack stack = playerInv.getItem(i);
 			if (stack.isEmpty()) continue;
-			if (stack.sameItem(getItem())) {
+			if (isSameItem(stack)) {
 				if (stack.getCount() < amount) {
 					amount -= stack.getCount();
 					playerInv.setItem(i, ItemStack.EMPTY);
@@ -80,6 +83,10 @@ public class DSCIngredient {
 				}
 			}
 		}
+	}
+	
+	public boolean isSameItem(ItemStack item) {
+		return stack.sameItem(getDisplayItem());
 	}
 	
 	public static List<DSCIngredient> getIngredients(CompoundTag tag) {

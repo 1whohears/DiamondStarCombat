@@ -50,8 +50,8 @@ public class ServerBoundCraftPlanePacket extends IPacket {
 			if (DSCIngredient.hasIngredients(ingredients, player.getInventory())) {
 				DSCIngredient.consumeIngredients(ingredients, player.getInventory());
 				ItemStack stack = AircraftPresets.getPlaneDisplayItem(preset).copy();
-				Containers.dropItemStack(player.level, 
-						pos.getX()+0.5, pos.getY()+1.125, pos.getZ()+0.5, stack);
+				Containers.dropItemStack(player.level, pos.getX()+0.5, 
+						pos.getY()+1.125, pos.getZ()+0.5, stack);
 			}
 			success.set(true);
 		});

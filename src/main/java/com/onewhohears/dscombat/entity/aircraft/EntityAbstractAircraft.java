@@ -275,10 +275,10 @@ public abstract class EntityAbstractAircraft extends Entity {
 					&& (this.zRot < 15f && this.zRot > -15f)) {
 				th = collideSpeedWithGearThreshHold;
 			}
-			if (my > 0) {
+			/*if (my > 0) {
 				System.out.println("COLLISION SPEED "+my);
 				System.out.println("THRESHHOLD = "+th);
-			}
+			}*/
 			if (my > th && this.tickCount > 300) {
 				this.addHealth((float)(-(my-th) * collideDamageRate));
 			}

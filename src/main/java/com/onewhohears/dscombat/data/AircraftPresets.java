@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.data;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import javax.annotation.Nullable;
 
@@ -27,6 +28,7 @@ public class AircraftPresets {
 		JsonArray ja = UtilParse.getJsonFromResource(dir+"aircraft.json").get("aircraft").getAsJsonArray();
 		for (int i = 0; i < ja.size(); ++i) 
 			presets.add(UtilParse.getCompoundFromJsonResource(dir+ja.get(i).getAsString()));
+		// TODO presets should have an engine, fuel, and weapons for presets 
 	}
 	
 	@Nullable
@@ -47,9 +49,13 @@ public class AircraftPresets {
 	public static ItemStack getPlaneDisplayItem(String preset) {
 		ItemStack stack = items.get(preset);
 		if (stack == null) {
-			stack = new ItemStack(ForgeRegistries.ITEMS.getDelegate(
+			try {
+				stack = new ItemStack(ForgeRegistries.ITEMS.getDelegate(
 						new ResourceLocation(DSCombatMod.MODID, preset))
 							.get().get());
+			} catch(NoSuchElementException e) {
+				stack = ItemStack.EMPTY;
+			}
 			items.put(preset, stack);
 		}
 		return stack;

@@ -219,7 +219,7 @@ public class PartsManager {
 			}
 		};
 		for (int i = 0; i < slots.size(); ++i) if (slots.get(i).filled()) {
-			c.setItem(i, slots.get(i).getPartData().getItemStack());
+			c.setItem(i, slots.get(i).getPartData().getNewItemStack());
 			//System.out.println("putting item in slot "+i+" "+c.getItem(i)+" "+c.getItem(i).getTag());
 		}
 		return c;

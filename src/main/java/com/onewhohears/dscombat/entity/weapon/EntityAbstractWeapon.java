@@ -68,8 +68,6 @@ public abstract class EntityAbstractWeapon extends Projectile {
 	public void tick() {
 		//System.out.println("weapon "+this.tickCount+" "+this.level);
 		super.tick();
-		this.xRotO = this.getXRot();
-		this.yRotO = this.getYRot();
 		if (!this.level.isClientSide && touchingUnloadedChunk()) {
 			//System.out.println("bullet unloaded");
 			discard(); 

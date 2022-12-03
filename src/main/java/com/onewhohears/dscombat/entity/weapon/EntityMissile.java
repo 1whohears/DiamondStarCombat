@@ -228,6 +228,7 @@ public abstract class EntityMissile extends EntityBullet {
 	@Override
 	protected void motion() {
 		Vec3 cm = getDeltaMovement();
+		// TODO make bleed coefficient part of weapon data
 		double B = 0.004d * UtilEntity.getAirPressure(getY());
 		double bleed = B * (Math.abs(getXRot()-xRotO)+Math.abs(getYRot()-yRotO));
 		double vel = cm.length() + this.getAcceleration() - bleed;

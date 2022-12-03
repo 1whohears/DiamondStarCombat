@@ -2,8 +2,8 @@
 	"preset": "alexis_plane",
 	"max_speed": 1.40,
 	
-	"max_health": 100,
-	"health": 100,
+	"max_health": 150,
+	"health": 150,
 	
 	"weight": 0.03,
 	"surfacearea": 1.2,
@@ -103,7 +103,15 @@
 			"slot_posy": 0,
 			"slot_posz": 0,
 			"uix": 48,
-			"uiy": 100
+			"uiy": 100,
+			"data": {
+				"type": 4,
+				"weight": 0.016,
+				"itemid": "dscombat:c12_engine",
+				"thrust": 0.080,
+				"heat": 8.0,
+				"fuelRate": 0.015
+			}
 		},
 		{
 			"name": "dscombat.internal_2",
@@ -112,7 +120,14 @@
 			"slot_posy": 0,
 			"slot_posz": 0,
 			"uix": 68,
-			"uiy": 100
+			"uiy": 100,
+			"data": {
+				"type": 5,
+				"weight": 0.003,
+				"itemid": "dscombat:light_fuel_tank",
+				"fuel": 50.0,
+				"max": 50.0
+			}
 		},
 		{
 			"name": "dscombat.internal_3",
@@ -168,6 +183,14 @@
 		{
 			"item": "minecraft:gold_ingot",
 			"num": 4
+		},
+		{
+			"item": "dscombat:c12_engine",
+			"num": 1
+		},
+		{
+			"item": "dscombat:light_fuel_tank",
+			"num": 1
 		}
 	]
 }

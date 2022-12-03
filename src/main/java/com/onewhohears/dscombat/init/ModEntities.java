@@ -50,8 +50,8 @@ public class ModEntities {
 	public static final RegistryObject<EntityType<EntityPlane>> JAVI_PLANE = ENTITIES.register("javi_plane", 
 			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
 					new ResourceLocation(DSCombatMod.MODID, "textures/entities/javi_plane.png"),
-					ModSounds.BIPLANE_1, ModItems.JAVI_PLANE), 
-					EntityDimensions.scalable(1.5f, 1.5f)));
+					ModSounds.JET_1, ModItems.JAVI_PLANE), 
+					EntityDimensions.scalable(2.45f, 2.45f)));
 	
 	public static final RegistryObject<EntityType<EntityPlane>> ALEXIS_PLANE = ENTITIES.register("alexis_plane", 
 			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 

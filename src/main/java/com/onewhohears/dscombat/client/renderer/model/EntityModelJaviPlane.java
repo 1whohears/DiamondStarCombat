@@ -1,21 +1,36 @@
-// Made with Blockbench 4.5.2
-// Exported for Minecraft version 1.17 - 1.18 with Mojang mappings
-// Paste this class into your mod and generate all required imports
+package com.onewhohears.dscombat.client.renderer.model;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 
-public class javi_plane<T extends Entity> extends EntityModel<T> {
-	// This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("modid", "javi_plane"), "main");
-	private final ModelPart fuselage;
-	private final ModelPart seat;
-	private final ModelPart gear;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.resources.ResourceLocation;
 
-	public javi_plane(ModelPart root) {
-		this.fuselage = root.getChild("fuselage");
-		this.seat = root.getChild("seat");
-		this.gear = root.getChild("gear");
+public class EntityModelJaviPlane<T extends EntityPlane> extends EntityAircraftModel<T> {
+	
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(DSCombatMod.MODID, "javi_plane"), "main");
+	
+	private final ModelPart root;
+	private final ModelPart gfront, gleft, gright;
+	private final ModelPart stick;
+
+	public EntityModelJaviPlane(ModelPart root) {
+		this.root = root;
+		this.gfront = root.getChild("gear").getChild("gfront");
+		this.gleft = root.getChild("gear").getChild("gleft");
+		this.gright = root.getChild("gear").getChild("gright");
+		this.stick = root.getChild("seat").getChild("stick");
 	}
-
+	
 	public static LayerDefinition createBodyLayer() {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
@@ -131,16 +146,31 @@ public class javi_plane<T extends Entity> extends EntityModel<T> {
 
 		return LayerDefinition.create(meshdefinition, 512, 512);
 	}
-
+	
 	@Override
-	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-
+	public void renderToBuffer(T entity, float partialTicks, PoseStack poseStack, VertexConsumer vertexConsumer,
+			int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+		poseStack.translate(0, 1.20, 0);
+		poseStack.scale(1.0F, -1.0F, 1.0F);
+		float gear = entity.getLandingGearPos(partialTicks);
+		if (gear < 1) {
+			float hpi = (float)Math.PI/2;
+			this.gfront.xRot = gear * -hpi;
+			this.gleft.xRot = gear * hpi;
+			this.gright.xRot = gear * hpi;
+			this.gfront.visible = true;
+			this.gleft.visible = true;
+			this.gright.visible = true;
+		} else {
+			this.gfront.visible = false;
+			this.gleft.visible = false;
+			this.gright.visible = false;
+		}
+		float ypi = (float)Math.PI/8;
+		float ppi = (float)Math.PI/12;
+		this.stick.zRot = entity.inputYaw * -ypi;
+		this.stick.xRot = entity.inputPitch * ppi;
+		root.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 
-	@Override
-	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		fuselage.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-		seat.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-		gear.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-	}
 }

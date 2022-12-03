@@ -119,7 +119,7 @@ public class ModItems {
 	public static final RegistryObject<Item> C6_ENGINE = ITEMS.register("c6_engine", 
 			() -> new ItemEngine(0.010f, 0.040f, 4.0f, 0.005f, false, PartSlot.INTERNAL));
 	public static final RegistryObject<Item> C12_ENGINE = ITEMS.register("c12_engine", 
-			() -> new ItemEngine(0.018f, 0.080f, 8.0f, 0.015f, false, PartSlot.INTERNAL));
+			() -> new ItemEngine(0.016f, 0.080f, 8.0f, 0.015f, false, PartSlot.INTERNAL));
 	
 	// RADARS
 	public static final RegistryObject<Item> AR500 = ITEMS.register("ar500", 

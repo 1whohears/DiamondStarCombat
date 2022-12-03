@@ -227,7 +227,6 @@ public abstract class EntityMissile extends EntityBullet {
 	
 	@Override
 	protected void motion() {
-		//MissileData data = (MissileData)getWeaponData();
 		Vec3 cm = getDeltaMovement();
 		double B = 0.004d * UtilEntity.getAirPressure(getY());
 		double bleed = B * (Math.abs(getXRot()-xRotO)+Math.abs(getYRot()-yRotO));
@@ -269,6 +268,9 @@ public abstract class EntityMissile extends EntityBullet {
 	}
 	
 	public float getMaxRot() {
+		// TODO the bleed causes missile to loose all velocity but it can still turn
+		// it then functionally picks a new direction while not moving making it impossible to go "under" the missile
+		// limit rotation if the missile is too slow
 		return entityData.get(MAX_ROT);
 	}
 	

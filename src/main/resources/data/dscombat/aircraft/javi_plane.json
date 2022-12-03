@@ -30,7 +30,8 @@
 			"data": {
 				"type": 0,
 				"weight": 0.001,
-				"itemid": "dscombat:seat"
+				"itemid": "dscombat:seat",
+				"compatibleSlots": ["I",0]
 			}
 		},
 		{
@@ -44,7 +45,8 @@
 			"data": {
 				"type": 0,
 				"weight": 0.001,
-				"itemid": "dscombat:seat"
+				"itemid": "dscombat:seat",
+				"compatibleSlots": ["I",0]
 			}
 		},
 		{
@@ -149,6 +151,7 @@
 				"type": 4,
 				"weight": 0.010,
 				"itemid": "dscombat:c6_engine",
+				"compatibleSlots": ["I",3,4],
 				"thrust": 0.040,
 				"heat": 4.0,
 				"fuelRate": 0.005
@@ -166,6 +169,7 @@
 				"type": 4,
 				"weight": 0.010,
 				"itemid": "dscombat:c6_engine",
+				"compatibleSlots": ["I",3,4],
 				"thrust": 0.040,
 				"heat": 4.0,
 				"fuelRate": 0.005
@@ -183,6 +187,7 @@
 				"type": 5,
 				"weight": 0.010,
 				"itemid": "dscombat:heavy_fuel_tank",
+				"compatibleSlots": ["I",3,4],
 				"fuel": 150.0,
 				"max": 150.0
 			}
@@ -194,7 +199,17 @@
 			"slot_posy": 0,
 			"slot_posz": 0,
 			"uix": 108,
-			"uiy": 100
+			"uiy": 100,
+			"data": {
+				"type": 7,
+				"weight": 0.010,
+				"itemid": "dscombat:basic_flare_dispenser",
+				"compatibleSlots": ["I",3,4],
+				"flares": 20,
+				"heat": 5.0,
+				"age": 100,
+				"max": 20
+			}
 		},
 		{
 			"name": "dscombat.internal_5",
@@ -243,6 +258,10 @@
 		},
 		{
 			"item": "dscombat:heavy_fuel_tank",
+			"num": 1
+		},
+		{
+			"item": "dscombat:basic_flare_dispenser",
 			"num": 1
 		}
 	]

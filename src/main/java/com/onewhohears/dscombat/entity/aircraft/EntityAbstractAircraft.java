@@ -349,7 +349,6 @@ public abstract class EntityAbstractAircraft extends Entity {
 	}
 	
 	public void tickMovement(Quaternion q) {
-		// TODO change plane physics
 		if (onGround) tickGround(q);
 		else tickAir(q);
 	}

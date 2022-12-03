@@ -46,7 +46,6 @@ public class ModEntities {
 					ModSounds.BIPLANE_1, ModItems.TEST_PLANE), 
 					EntityDimensions.scalable(1.5f, 1.5f)));*/
 	
-	// TODO use a10 for inspiration for the javi plane
 	public static final RegistryObject<EntityType<EntityPlane>> JAVI_PLANE = ENTITIES.register("javi_plane", 
 			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
 					new ResourceLocation(DSCombatMod.MODID, "textures/entities/javi_plane.png"),

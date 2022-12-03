@@ -30,7 +30,8 @@
 			"data": {
 				"type": 0,
 				"weight": 0.001,
-				"itemid": "dscombat:seat"
+				"itemid": "dscombat:seat",
+				"compatibleSlots": ["I",0]
 			}
 		},
 		{
@@ -108,6 +109,7 @@
 				"type": 4,
 				"weight": 0.016,
 				"itemid": "dscombat:c12_engine",
+				"compatibleSlots": ["I",3,4],
 				"thrust": 0.080,
 				"heat": 8.0,
 				"fuelRate": 0.015
@@ -125,6 +127,7 @@
 				"type": 5,
 				"weight": 0.003,
 				"itemid": "dscombat:light_fuel_tank",
+				"compatibleSlots": ["I",3,4],
 				"fuel": 50.0,
 				"max": 50.0
 			}
@@ -136,7 +139,17 @@
 			"slot_posy": 0,
 			"slot_posz": 0,
 			"uix": 88,
-			"uiy": 100
+			"uiy": 100,
+			"data": {
+				"type": 7,
+				"weight": 0.010,
+				"itemid": "dscombat:basic_flare_dispenser",
+				"compatibleSlots": ["I",3,4],
+				"flares": 20,
+				"heat": 5.0,
+				"age": 100,
+				"max": 20
+			}
 		},
 		{
 			"name": "dscombat.internal_4",
@@ -190,6 +203,10 @@
 		},
 		{
 			"item": "dscombat:light_fuel_tank",
+			"num": 1
+		},
+		{
+			"item": "dscombat:basic_flare_dispenser",
 			"num": 1
 		}
 	]

@@ -15,7 +15,6 @@ import com.onewhohears.dscombat.data.AircraftPresets;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartsManager;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponSystem;
 import com.onewhohears.dscombat.entity.parts.EntityAbstractPart;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
@@ -467,7 +466,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 			radarSystem.tickUpdateTargets();
 			if (newRiderCooldown > 0) --newRiderCooldown;
 			else {
-				if (this.inputShoot) shoot(controller, isPlayer);
+				if (this.inputShoot) weaponSystem.shootSelected(controller);
 				if (this.inputFlare && tickCount % 5 == 0) flare(controller, isPlayer);
 			}
 			if (this.inputOpenMenu && isPlayer) {
@@ -486,20 +485,6 @@ public abstract class EntityAbstractAircraft extends Entity {
 				
 			} else {
 				this.tickFuel();
-			}
-		}
-	}
-	
-	public void shoot(Entity controller, boolean isPlayer) {
-		// TODO make a shoot function in the weapon system and shoot all bullets with the same name
-		WeaponData data = weaponSystem.getSelected();
-		if (data == null) return;
-		data.shoot(level, controller, UtilAngles.getRollAxis(getQ()), null, this);
-		if (data.isFailedLaunch() && data.getFailedLaunchReason() != null) {
-			//System.out.println(data.getFailedLaunchReason());
-			if (isPlayer) {
-				((ServerPlayer)controller).displayClientMessage(
-						Component.translatable(data.getFailedLaunchReason()), true);
 			}
 		}
 	}

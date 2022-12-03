@@ -9,13 +9,18 @@ import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundAddWeaponPacket;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundRemoveWeaponPacket;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundWeaponIndexPacket;
+import com.onewhohears.dscombat.data.weapon.WeaponData.WeaponType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.UtilParse;
+import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraftforge.network.PacketDistributor;
 
 public class WeaponSystem {
@@ -89,6 +94,26 @@ public class WeaponSystem {
 		if (weapons.size() == 0) return null;
 		checkIndex();
 		return weapons.get(weaponIndex);
+	}
+	
+	public boolean shootSelected(Entity controller) {
+		WeaponData data = getSelected();
+		if (data == null) {
+			return false;
+		}
+		String name = data.getId();
+		String reason = null;
+		data.shoot(parent.level, controller, UtilAngles.getRollAxis(parent.getQ()), null, parent);
+		if (data.isFailedLaunch()) reason = data.getFailedLaunchReason();
+		for (WeaponData wd : weapons) if (wd.getType() == WeaponType.BULLET && wd.getId().equals(name) && !wd.getSlotId().equals(data.getSlotId())) {
+			wd.shoot(parent.level, controller, UtilAngles.getRollAxis(parent.getQ()), null, parent);
+			if (reason == null && wd.isFailedLaunch()) reason = wd.getFailedLaunchReason();
+		}
+		if (reason != null && controller instanceof ServerPlayer player) {
+			player.displayClientMessage(
+				Component.translatable(reason), true);
+		}
+		return true;
 	}
 	
 	public void selectNextWeapon() {

@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.entity.weapon;
 
 import com.onewhohears.dscombat.data.weapon.TrackMissileData;
+import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -20,6 +21,9 @@ public class TrackEntityMissile extends EntityMissile {
 	public void tickGuide() {
 		if (tickCount < 20) return;
 		this.guideToTarget();
+		if (this.target instanceof EntityAbstractAircraft plane) {
+			plane.trackedByMissile();
+		}
 	}
 
 }

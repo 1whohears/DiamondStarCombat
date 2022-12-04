@@ -102,7 +102,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	protected final RegistryObject<SoundEvent> engineSound;
 	protected final RegistryObject<Item> item;
 	
-	private int lerpSteps, /*lerpStepsQ,*/ newRiderCooldown;
+	private int lerpSteps, /*lerpStepsQ,*/ newRiderCooldown, synchQ;
 	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot/*, lerpZRot*/;
 	private float landingGearPos, landingGearPosOld;
 	
@@ -140,11 +140,14 @@ public abstract class EntityAbstractAircraft extends Entity {
 	@Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
         super.onSyncedDataUpdated(key);
-        if (Q.equals(key) && level.isClientSide() && !isControlledByLocalInstance()) {
+        if (Q.equals(key) && level.isClientSide()) {
             //if (firstTick) lerpStepsQ = 0;
             //else lerpStepsQ = 10;
-        	setPrevQ(getClientQ());
-        	setClientQ(getQ());
+        	if (!isControlledByLocalInstance() || synchQ <= 0) {
+        		setPrevQ(getClientQ());
+            	setClientQ(getQ());
+            	synchQ = 200;
+        	}
         }
     }
 	
@@ -173,9 +176,10 @@ public abstract class EntityAbstractAircraft extends Entity {
 		this.setSurfaceArea(compound.getFloat("surfacearea"));
 		this.setLandingGear(compound.getBoolean("landing_gear"));
 		setXRot(compound.getFloat("xRot"));
-		if (compound.contains("yRot")) setYRot(compound.getFloat("yRot"));
+		setYRot(compound.getFloat("yRot"));
 		zRot = compound.getFloat("zRot");
-		Quaternion q = new Quaternion(getXRot(), getYRot(), zRot, true);
+		//Quaternion q = new Quaternion(getXRot(), getYRot(), zRot, true);
+		Quaternion q = UtilAngles.toQuaternion(getYRot(), getXRot(), zRot);
 		setQ(q);
 		setPrevQ(q);
 		setClientQ(q);
@@ -289,6 +293,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		tickHealthSmoke();
 		tickClientSound();
 		tickClientLandingGear();
+		--synchQ;
 	}
 	
 	public void tickClientSound() {
@@ -1013,7 +1018,6 @@ public abstract class EntityAbstractAircraft extends Entity {
     public void trackedByMissile() {
     	if (this.level.isClientSide) return;
     	this.setMissileTrackedTicks(10);
-    	//System.out.println("AIRCRAFT BEING TRACKED");
     }
     
     public void lockedOnto() {

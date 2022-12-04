@@ -2,9 +2,8 @@ package com.onewhohears.dscombat.item;
 
 import com.onewhohears.dscombat.data.parts.EngineData;
 import com.onewhohears.dscombat.data.parts.ExternalEngineData;
+import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-
-import net.minecraft.nbt.CompoundTag;
 
 public class ItemEngine extends ItemPart {
 	
@@ -20,9 +19,9 @@ public class ItemEngine extends ItemPart {
 	}
 
 	@Override
-	public CompoundTag getNbt() {
-		if (external) return new ExternalEngineData(weight, thrust, heat, fuelRate, getIdPart(), compatibleSlots).write();
-		return new EngineData(weight, thrust, heat, fuelRate, getIdPart(), compatibleSlots).write();
+	public PartData getPartData() {
+		if (external) return new ExternalEngineData(weight, thrust, heat, fuelRate, getIdPart(), compatibleSlots);
+		return new EngineData(weight, thrust, heat, fuelRate, getIdPart(), compatibleSlots);
 	}
 
 }

@@ -24,14 +24,14 @@ public class DSCIngredient {
 	}
 	
 	public DSCIngredient(CompoundTag tag) {
-		displayItemId = tag.getString("displayItemId");
-		cost = tag.getInt("cost");
+		displayItemId = tag.getString("item");
+		cost = tag.getInt("num");
 	}
 	
 	public CompoundTag write() {
 		CompoundTag tag = new CompoundTag();
-		tag.putString("displayItemId", displayItemId);
-		tag.putInt("cost", cost);
+		tag.putString("item", displayItemId);
+		tag.putInt("num", cost);
 		return tag;
 	}
 	
@@ -50,6 +50,7 @@ public class DSCIngredient {
 			try {
 				stack = new ItemStack(ForgeRegistries.ITEMS.getDelegate(
 						new ResourceLocation(displayItemId)).get().get());
+				stack.setCount(cost);
 			} catch(NoSuchElementException e) {
 				stack = ItemStack.EMPTY;
 			}

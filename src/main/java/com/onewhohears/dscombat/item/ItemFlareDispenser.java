@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.item;
 
 import com.onewhohears.dscombat.data.parts.FlareDispenserData;
+import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 
 import net.minecraft.nbt.CompoundTag;
@@ -30,8 +31,13 @@ public class ItemFlareDispenser extends ItemPart {
 	}
 
 	@Override
-	public CompoundTag getNbt() {
-		return new FlareDispenserData(weight, flares, max, heat, age, getIdPart(), compatibleSlots).write();
+	public PartData getPartData() {
+		return new FlareDispenserData(weight, flares, max, heat, age, getIdPart(), compatibleSlots);
+	}
+	
+	@Override
+	public PartData getFilledPartData(String param) {
+		return new FlareDispenserData(weight, max, max, heat, age, getIdPart(), compatibleSlots);
 	}
 
 }

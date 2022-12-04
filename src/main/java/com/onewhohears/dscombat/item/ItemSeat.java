@@ -1,9 +1,8 @@
 package com.onewhohears.dscombat.item;
 
+import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.data.parts.SeatData;
-
-import net.minecraft.nbt.CompoundTag;
 
 public class ItemSeat extends ItemPart {
 
@@ -12,8 +11,8 @@ public class ItemSeat extends ItemPart {
 	}
 
 	@Override
-	public CompoundTag getNbt() {
-		return new SeatData(weight, getIdPart(), compatibleSlots).write();
+	public PartData getPartData() {
+		return new SeatData(weight, getIdPart(), compatibleSlots);
 	}
 
 }

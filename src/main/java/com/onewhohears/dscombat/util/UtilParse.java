@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.util;
 import java.io.DataInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.NoSuchElementException;
 import java.util.zip.GZIPInputStream;
 
 import javax.annotation.Nullable;
@@ -26,10 +27,14 @@ import com.onewhohears.dscombat.data.weapon.IRMissileData;
 import com.onewhohears.dscombat.data.weapon.PosMissileData;
 import com.onewhohears.dscombat.data.weapon.TrackMissileData;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.item.ItemPart;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtIo;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class UtilParse {
 	
@@ -144,7 +149,20 @@ public class UtilParse {
 	public static PartData parsePartFromCompound(CompoundTag tag) {
 		if (tag == null) return null;
 		if (tag.isEmpty()) return null;
-		if (!tag.contains("type")) return null;
+		if (!tag.contains("type")) {
+			if (!tag.contains("itemid")) return null;
+			String itemId = tag.getString("itemid");
+			Item item;
+			try {
+				item = ForgeRegistries.ITEMS.getDelegate(
+					new ResourceLocation(itemId)).get().get();
+			} catch(NoSuchElementException e) {
+				return null;
+			}
+			if (!(item instanceof ItemPart part)) return null;
+			if (tag.getBoolean("filled")) return part.getFilledPartData(tag.getString("param"));
+			return part.getPartData();
+		}
 		PartType type = PartType.values()[tag.getInt("type")];
 		switch (type) {
 		case SEAT:

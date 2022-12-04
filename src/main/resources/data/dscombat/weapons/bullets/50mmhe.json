@@ -30,6 +30,6 @@
 	"causesFire":false,
 	
 	"maxAge":200,
-	"maxAmmo":400
+	"maxAmmo":250
 	
 }

@@ -269,10 +269,10 @@ public abstract class EntityMissile extends EntityBullet {
 	}
 	
 	public float getMaxRot() {
-		// TODO the bleed causes missile to loose all velocity but it can still turn
-		// it then functionally picks a new direction while not moving making it impossible to go "under" the missile
-		// limit rotation if the missile is too slow
-		return entityData.get(MAX_ROT);
+		float velSqr = (float) getDeltaMovement().lengthSqr();
+		float K = 1;
+		if (velSqr < 1) K = velSqr;
+		return entityData.get(MAX_ROT) * K;
 	}
 	
 	public void setMaxRot(float max_rot) {

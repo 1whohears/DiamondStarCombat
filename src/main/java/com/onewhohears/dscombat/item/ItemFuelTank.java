@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.item;
 
 import com.onewhohears.dscombat.data.parts.FuelTankData;
+import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 
 import net.minecraft.nbt.CompoundTag;
@@ -27,8 +28,13 @@ public class ItemFuelTank extends ItemPart {
 	}
 
 	@Override
-	public CompoundTag getNbt() {
-		return new FuelTankData(weight, fuel, max, getIdPart(), compatibleSlots).write();
+	public PartData getPartData() {
+		return new FuelTankData(weight, fuel, max, getIdPart(), compatibleSlots);
+	}
+	
+	@Override
+	public PartData getFilledPartData(String param) {
+		return new FuelTankData(weight, max, max, getIdPart(), compatibleSlots);
 	}
 
 }

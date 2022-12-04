@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.item;
 
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.data.parts.WeaponRackData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
@@ -45,7 +46,7 @@ public class ItemWeaponPart extends ItemPart {
 	
 	private void addWeaponRack(String preset, NonNullList<ItemStack> items) {
 		ItemStack rack = new ItemStack(this);
-		rack.setTag(new WeaponRackData(weight, preset, compatible, getIdPart(), compatibleSlots).write());
+		rack.setTag(getFilledPartData(preset).write());
 		items.add(rack);
 	}
 	
@@ -55,8 +56,13 @@ public class ItemWeaponPart extends ItemPart {
 	}*/
 
 	@Override
-	public CompoundTag getNbt() {
-		return new WeaponRackData(weight, "", compatible, getIdPart(), compatibleSlots).write();
+	public PartData getPartData() {
+		return getFilledPartData("");
+	}
+	
+	@Override
+	public PartData getFilledPartData(String param) {
+		return new WeaponRackData(weight, param, compatible, getIdPart(), compatibleSlots);
 	}
 
 }

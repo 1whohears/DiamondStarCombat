@@ -71,8 +71,8 @@ public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContaine
 	public List<Component> getSlotTooltip() {
 		List<Component> c = new ArrayList<Component>();
 		if (this.hoveredSlot instanceof PartItemSlot slot) {
-			MutableComponent type = Component.literal(slot.data.getTypeName());
-			MutableComponent name = Component.literal(slot.data.getName());
+			MutableComponent type = Component.translatable(slot.data.getTypeName());
+			MutableComponent name = Component.translatable(slot.data.getName());
 			c.add(type);
 			c.add(name);
 		}

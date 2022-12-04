@@ -141,7 +141,7 @@
 			"uiy": 100,
 			"data": {
 				"filled": true,
-				"itemid": "dscombat:light_fuel_tank"
+				"itemid": "dscombat:heavy_fuel_tank"
 			}
 		},
 		{
@@ -211,7 +211,7 @@
 			"num": 1
 		},
 		{
-			"item": "dscombat:light_fuel_tank",
+			"item": "dscombat:heavy_fuel_tank",
 			"num": 1
 		},
 		{

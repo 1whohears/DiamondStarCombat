@@ -20,21 +20,21 @@ public class NonTickingMissileManager {
 	}
 	
 	private static boolean tickMissile(EntityMissile missile) {
-		System.out.println("SERVER TICK MISSILE "+missile+" "+missile.tickCount);
+		//System.out.println("SERVER TICK MISSILE "+missile+" "+missile.tickCount);
 		if (isKilled(missile)) {
-			System.out.println("REMOVING MISSILE FROM MANAGER");
+			//System.out.println("REMOVING MISSILE FROM MANAGER");
 			return false;
 		}
 		if (missile.inEntityTickingRange()) {
-			System.out.println("MISSILE IN TICK RANGE");
+			//System.out.println("MISSILE IN TICK RANGE");
 			if (isUnloaded(missile)) {
-				System.out.println("MISSILE UNLOADED");
+				//System.out.println("MISSILE UNLOADED");
 				missile.revive();
 				missile.setUUID(UUID.randomUUID());
 				missile.level.addFreshEntity(missile);
 			}
 		} else {
-			System.out.println("MISSILE OUT OF TICK RANGE");
+			//System.out.println("MISSILE OUT OF TICK RANGE");
 			if (!missile.isRemoved()) missile.discardButTick();
 			missile.tickOutRange();
 			++missile.tickCount;
@@ -46,8 +46,7 @@ public class NonTickingMissileManager {
 		if (missile.isDiscardedButTicking()) return false;
 		RemovalReason rr = missile.getRemovalReason();
 		if (rr == null) return false;
-		if (rr == RemovalReason.KILLED
-				|| rr == RemovalReason.DISCARDED) {
+		if (rr == RemovalReason.KILLED || rr == RemovalReason.DISCARDED) {
 			return true;
 		}
 		return false;

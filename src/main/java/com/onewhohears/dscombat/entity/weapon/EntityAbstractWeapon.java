@@ -79,7 +79,7 @@ public abstract class EntityAbstractWeapon extends Projectile {
 		motion();
 		super.tick();
 		if (!level.isClientSide && tickCount > maxAge) { 
-			System.out.println("WEAPON OLD");
+			//System.out.println("WEAPON OLD");
 			kill();
 		}
 		move(MoverType.SELF, getDeltaMovement());
@@ -148,7 +148,7 @@ public abstract class EntityAbstractWeapon extends Projectile {
 	@Override
 	public void remove(Entity.RemovalReason reason) {
 		super.remove(reason);
-		System.out.println("REMOVED "+reason.toString()+" "+this);
+		//System.out.println("REMOVED "+reason.toString()+" "+this);
 	}
 	
 	/*@Override
@@ -162,7 +162,7 @@ public abstract class EntityAbstractWeapon extends Projectile {
 		//System.out.println("CHECK DESPAWN");
 		if (!level.isClientSide) {
 			if (!inEntityTickingRange()) {
-				System.out.println("REMOVED OUT OF TICK RANGE");
+				//System.out.println("REMOVED OUT OF TICK RANGE");
 				discard();
 				return;
 			}

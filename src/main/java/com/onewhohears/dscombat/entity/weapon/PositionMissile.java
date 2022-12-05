@@ -8,7 +8,7 @@ import net.minecraft.world.level.Level;
 
 public class PositionMissile extends EntityMissile {
 	
-	public PositionMissile(EntityType<?> type, Level level) {
+	public PositionMissile(EntityType<? extends PositionMissile> type, Level level) {
 		super(type, level);
 	}
 	

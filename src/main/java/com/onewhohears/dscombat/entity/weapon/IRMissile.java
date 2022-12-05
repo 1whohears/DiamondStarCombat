@@ -22,7 +22,7 @@ public class IRMissile extends EntityMissile {
 	 */
 	protected final float flareResistance;
 	
-	public IRMissile(EntityType<?> type, Level level) {
+	public IRMissile(EntityType<? extends IRMissile> type, Level level) {
 		super(type, level);
 		flareResistance = 0;
 	}

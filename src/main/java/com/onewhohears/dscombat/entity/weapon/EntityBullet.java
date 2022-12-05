@@ -8,6 +8,7 @@ import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -35,7 +36,7 @@ public class EntityBullet extends EntityAbstractWeapon {
 	public static final EntityDataAccessor<Float> RADIUS = SynchedEntityData.defineId(EntityBullet.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> SPEED = SynchedEntityData.defineId(EntityBullet.class, EntityDataSerializers.FLOAT);
 	
-	public EntityBullet(EntityType<?> type, Level level) {
+	public EntityBullet(EntityType<? extends EntityBullet> type, Level level) {
 		super(type, level);
 	}
 	
@@ -60,20 +61,31 @@ public class EntityBullet extends EntityAbstractWeapon {
 		entityData.define(SPEED, 0f);
 	}
 	
-	/*@Override
+	@Override
 	protected void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
-		this.setWeaponData(new BulletData(compound.getCompound("weapondata")));
+		this.setDamage(compound.getFloat("damage"));
+		this.setExplosive(compound.getBoolean("explosive"));
+		this.setTerrain(compound.getBoolean("terrain"));
+		this.setFire(compound.getBoolean("fire"));
+		this.setRadius(compound.getFloat("radius"));
+		this.setSpeed(compound.getFloat("speed"));
 	}
 
 	@Override
 	protected void addAdditionalSaveData(CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
-		compound.put("weapondata", this.getWeaponData().write());
-	}*/
+		compound.putFloat("damage", this.getDamage());
+		compound.putBoolean("explosive", this.getExplosive());
+		compound.putBoolean("terrain", this.getTerrain());
+		compound.putBoolean("fire", this.getFire());
+		compound.putFloat("radius", this.getRadius());
+		compound.putFloat("speed", this.getSpeed());
+	}
 	
 	@Override
 	public void tick() {
+		super.tick();
 		//System.out.println("bullet "+this.tickCount+" "+this.level);
 		//System.out.println(this);
 		Vec3 vec3 = this.getDeltaMovement();
@@ -119,7 +131,6 @@ public class EntityBullet extends EntityAbstractWeapon {
 			}
 			hitresult = null;
 		}
-		super.tick();
 	}
 	
 	@Override
@@ -162,8 +173,6 @@ public class EntityBullet extends EntityAbstractWeapon {
 	}
 	
 	protected void checkExplode() {
-		//System.out.println("explode");
-		//BulletData data = (BulletData) this.getWeaponData();
 		if (this.getExplosive()) {
 			if (!this.level.isClientSide) {
 				Explosion.BlockInteraction interact = Explosion.BlockInteraction.NONE;
@@ -172,7 +181,7 @@ public class EntityBullet extends EntityAbstractWeapon {
 						null, getX(), getY(), getZ(), 
 						getRadius(), getFire(), 
 						interact);
-				//System.out.println("EXPLODE "+this);
+				System.out.println("EXPLODE "+this);
 			} else {
 				level.addParticle(ParticleTypes.SMOKE, 
 						this.getX(), this.getY()+0.5D, this.getZ(), 

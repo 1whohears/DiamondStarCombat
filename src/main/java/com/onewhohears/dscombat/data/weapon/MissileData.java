@@ -98,7 +98,6 @@ public abstract class MissileData extends BulletData {
 	public EntityAbstractWeapon getShootEntity(Level level, Entity owner, Vec3 direction, EntityAbstractAircraft vehicle) {
 		EntityMissile missile = (EntityMissile) super.getShootEntity(level, owner, direction, vehicle);
 		if (missile == null) return null;
-		missile.parent = vehicle;
 		missile.setPos(missile.position().add(vehicle.getDeltaMovement()));
 		missile.setDeltaMovement(vehicle.getDeltaMovement());
 		return missile;

@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.common.event;
 import java.util.List;
 
 import com.onewhohears.dscombat.data.ChunkManager;
+import com.onewhohears.dscombat.data.weapon.NonTickingMissileManager;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
 import com.onewhohears.dscombat.entity.weapon.EntityFlare;
@@ -61,6 +62,7 @@ public class CommonForgeEvents {
 	public void serverTickEvent(TickEvent.ServerTickEvent event) {
 		if (event.getPhase() != EventPriority.NORMAL) return;
 		ChunkManager.serverTick(event.getServer());
+		NonTickingMissileManager.serverTick(event.getServer());
 	}
 	
 }

@@ -60,7 +60,6 @@ public class ClientModEvents {
 		event.registerLayerDefinition(EntityModelJaviPlane.LAYER_LOCATION, EntityModelJaviPlane::createBodyLayer);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@SubscribeEvent
 	public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
 		EntityModelSet models = Minecraft.getInstance().getEntityModels();
@@ -89,15 +88,15 @@ public class ClientModEvents {
 						new EntityModelBullet1<EntityBullet>(models.bakeLayer(EntityModelBullet1.LAYER_LOCATION)),
 						BULLET1));
 		
-		event.registerEntityRenderer((EntityType<EntityMissile>)ModEntities.POS_MISSILE_1.get(), 
+		event.registerEntityRenderer(ModEntities.POS_MISSILE_1.get(), 
 				(context) -> new RendererEntityAbstractWeapon<EntityMissile>(context, 
 						new EntityModelMissile1<EntityMissile>(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)), 
 						POS_MISSILE_1));
-		event.registerEntityRenderer((EntityType<EntityMissile>)ModEntities.IR_MISSILE_1.get(), 
+		event.registerEntityRenderer(ModEntities.IR_MISSILE_1.get(), 
 				(context) -> new RendererEntityAbstractWeapon<EntityMissile>(context, 
 						new EntityModelMissile1<EntityMissile>(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)),
 						IR_MISSILE_1));
-		event.registerEntityRenderer((EntityType<EntityMissile>)ModEntities.TRACK_MISSILE_1.get(), 
+		event.registerEntityRenderer(ModEntities.TRACK_MISSILE_1.get(), 
 				(context) -> new RendererEntityAbstractWeapon<EntityMissile>(context, 
 						new EntityModelMissile1<EntityMissile>(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)),
 						TRACK_MISSILE_1));

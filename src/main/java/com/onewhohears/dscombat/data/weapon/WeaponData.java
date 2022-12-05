@@ -76,11 +76,6 @@ public abstract class WeaponData {
 	}*/
 	
 	public WeaponData(CompoundTag tag) {
-		String preset = tag.getString("preset");
-		if (!preset.isEmpty()) {
-			CompoundTag data = WeaponPresets.getNbtById(preset);
-			if (data != null) tag.merge(data);
-		}
 		id = tag.getString("id");
 		pos = UtilParse.readVec3(tag, "pos");
 		maxAge = tag.getInt("maxAge");
@@ -90,12 +85,8 @@ public abstract class WeaponData {
 		canShootOnGround = tag.getBoolean("canShootOnGround");
 		slotId = tag.getString("slotId");
 		
-		RegistryObject<EntityType<?>> type = ModEntities.getObjectByKey(tag.getString("entityType"));
-		if (type == null) type = ModEntities.BULLET;
-		entityType = type;
-		RegistryObject<SoundEvent> sound = ModSounds.getObjectByKey(tag.getString("shootSound"));
-		if (sound == null) sound = ModSounds.BULLET_SHOOT_1;
-		shootSound = sound;
+		entityType = ModEntities.getObjectByKey(tag.getString("entityType"));
+		shootSound = ModSounds.getObjectByKey(tag.getString("shootSound"));
 		ingredients = DSCIngredient.getIngredients(tag);
 		craftNum = tag.getInt("craftNum");
 	}
@@ -351,10 +342,12 @@ public abstract class WeaponData {
 	}
 	
 	public EntityType<?> getEntityType() {
+		if (entityType == null) return null;
 		return entityType.get();
 	}
 	
 	public SoundEvent getShootSound() {
+		if (shootSound == null) return ModSounds.BULLET_SHOOT_1.get();
 		return shootSound.get();
 	}
 	

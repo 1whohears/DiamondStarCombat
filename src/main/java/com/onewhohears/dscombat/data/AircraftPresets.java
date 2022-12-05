@@ -28,7 +28,6 @@ public class AircraftPresets {
 		JsonArray ja = UtilParse.getJsonFromResource(dir+"aircraft.json").get("aircraft").getAsJsonArray();
 		for (int i = 0; i < ja.size(); ++i) 
 			presets.add(UtilParse.getCompoundFromJsonResource(dir+ja.get(i).getAsString()));
-		// TODO presets should have an engine, fuel, and weapons for presets 
 	}
 	
 	@Nullable

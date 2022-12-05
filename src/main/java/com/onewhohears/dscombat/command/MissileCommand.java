@@ -45,6 +45,10 @@ public class MissileCommand {
 		WeaponData data;
 		if (tag == null) data = WeaponPresets.getDefaultMissile();
 		else data = UtilParse.parseWeaponFromCompound(tag);
+		if (data == null) {
+			context.getSource().sendFailure(Component.literal("Failed to make missile from nbt "+tag.toString()));
+			return 1;
+		}
 		int i = 0;
 		for (Entity e : targets) {
 			Vec3 dp = e.position().subtract(pos).normalize();
@@ -58,6 +62,7 @@ public class MissileCommand {
 				missile.targetPos = e.position();
 			}
 			e.level.addFreshEntity(ew);
+			//ew.tick();
 			++i;
 		}
 		if (i == 0) context.getSource().sendFailure(Component.literal("No targets found!"));

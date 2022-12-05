@@ -29,7 +29,7 @@
 	"destroyTerrain":true,
 	"causesFire":false,
 	
-	"maxAge":200,
+	"maxAge":40,
 	"maxAmmo":250
 	
 }

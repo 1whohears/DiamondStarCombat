@@ -9,7 +9,7 @@ import net.minecraft.world.level.Level;
 
 public class TrackEntityMissile extends EntityMissile {
 
-	public TrackEntityMissile(EntityType<?> type, Level level) {
+	public TrackEntityMissile(EntityType<? extends TrackEntityMissile> type, Level level) {
 		super(type, level);
 	}
 	

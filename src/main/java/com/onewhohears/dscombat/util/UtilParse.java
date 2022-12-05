@@ -27,6 +27,7 @@ import com.onewhohears.dscombat.data.weapon.IRMissileData;
 import com.onewhohears.dscombat.data.weapon.PosMissileData;
 import com.onewhohears.dscombat.data.weapon.TrackMissileData;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.item.ItemPart;
 
 import net.minecraft.nbt.CompoundTag;
@@ -193,7 +194,13 @@ public class UtilParse {
 	public static WeaponData parseWeaponFromCompound(CompoundTag tag) {
 		if (tag == null) return null;
 		if (tag.isEmpty()) return null;
-		if (!tag.contains("type")) return null;
+		if (!tag.contains("type")) {
+			String preset = tag.getString("preset");
+			if (preset.isEmpty()) return null;
+			CompoundTag data = WeaponPresets.getNbtById(preset);
+			if (data == null) return null;
+			tag.merge(data);
+		}
 		int index = tag.getInt("type");
 		WeaponData.WeaponType type = WeaponData.WeaponType.values()[index];
 		switch (type) {

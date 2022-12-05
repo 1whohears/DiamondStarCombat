@@ -8,6 +8,8 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerChunkCache;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -23,17 +25,15 @@ public abstract class EntityAbstractWeapon extends Projectile {
 	/**
 	 * only set on server side
 	 */
-	protected final int maxAge;
+	protected int maxAge;
 	
-	@SuppressWarnings("unchecked")
-	public EntityAbstractWeapon(EntityType<?> type, Level level) {
-		super((EntityType<? extends Projectile>) type, level);
-		maxAge = 0;
+	public EntityAbstractWeapon(EntityType<? extends EntityAbstractWeapon> type, Level level) {
+		super(type, level);
 	}
 	
 	@SuppressWarnings("unchecked")
 	public EntityAbstractWeapon(Level level, Entity owner, WeaponData data) {
-		super((EntityType<? extends Projectile>) data.getEntityType(), level);
+		this((EntityType<? extends EntityAbstractWeapon>) data.getEntityType(), level);
 		this.setOwner(owner);
 		maxAge = data.getMaxAge();
 	}
@@ -52,31 +52,36 @@ public abstract class EntityAbstractWeapon extends Projectile {
 		}
 	}*/
 	
-	/*@Override
+	@Override
 	protected void readAdditionalSaveData(CompoundTag compound) {
 		//System.out.println("bullet reloaded");
-		this.discard();
-	}*/
+		//this.discard();
+		super.readAdditionalSaveData(compound);
+		tickCount = compound.getInt("tickCount");
+		maxAge = compound.getInt("maxAge");
+		if (getOwner() != null) setOwnerId(getOwner().getId());
+		else setOwnerId(-1);
+	}
 
 	@Override
 	protected void addAdditionalSaveData(CompoundTag compound) {
 		//super.addAdditionalSaveData(compound);
-		this.discard();
+		//System.out.println("weapon got additional save data");
+		//this.discard();
+		super.addAdditionalSaveData(compound);
+		compound.putInt("tickCount", tickCount);
+		compound.putInt("maxAge", maxAge);
 	}
 	
 	@Override
 	public void tick() {
-		//System.out.println("weapon "+this.tickCount+" "+this.level);
+		System.out.println(this+" "+tickCount);
+		motion();
 		super.tick();
-		if (!this.level.isClientSide && touchingUnloadedChunk()) {
-			//System.out.println("bullet unloaded");
-			discard(); 
-		}
 		if (!level.isClientSide && tickCount > maxAge) { 
-			//System.out.println("bullet to old");
+			System.out.println("WEAPON OLD");
 			discard();
 		}
-		motion();
 		move(MoverType.SELF, getDeltaMovement());
 	}
 	
@@ -138,6 +143,37 @@ public abstract class EntityAbstractWeapon extends Projectile {
 		super.setOwner(owner);
 		if (owner != null) this.setOwnerId(owner.getId());
 		else this.setOwnerId(-1);
+	}
+	
+	@Override
+	public void remove(Entity.RemovalReason reason) {
+		super.remove(reason);
+		System.out.println("REMOVED "+reason.toString()+" "+this);
+	}
+	
+	/*@Override
+	public void onRemovedFromWorld() {
+		super.onRemovedFromWorld();
+		System.out.println("REMOVED FROM WORLD "+this);
+	}*/
+	
+	@Override
+	public void checkDespawn() {
+		//System.out.println("CHECK DESPAWN");
+		if (!level.isClientSide) {
+			if (!inEntityTickingRange()) {
+				System.out.println("REMOVED OUT OF TICK RANGE");
+				discard();
+				return;
+			}
+		}
+	}
+	
+	public boolean inEntityTickingRange() {
+		if (level.isClientSide) return true;
+		ServerLevel sl = (ServerLevel) level;
+		ServerChunkCache scc = sl.getChunkSource();
+		return scc.chunkMap.getDistanceManager().inEntityTickingRange(chunkPosition().toLong());
 	}
 
 }

@@ -93,16 +93,16 @@ public class ModEntities {
 	public static final RegistryObject<EntityType<EntityWeaponRack>> WEAPON_RACK = ENTITIES.register("weapon_rack", 
 			() -> createEntityType(EntityWeaponRack::new, EntityDimensions.scalable(0f, 0f)));
 	
-	public static final RegistryObject<EntityType<?>> BULLET = ENTITIES.register("bullet", 
+	public static final RegistryObject<EntityType<EntityBullet>> BULLET = ENTITIES.register("bullet", 
 			() -> createEntityType(EntityBullet::new, EntityDimensions.scalable(0.15f, 0.15f)));
 	
-	public static final RegistryObject<EntityType<?>> POS_MISSILE_1 = ENTITIES.register("pos_missile_1", 
+	public static final RegistryObject<EntityType<PositionMissile>> POS_MISSILE_1 = ENTITIES.register("pos_missile_1", 
 			() -> createEntityTypeFar(PositionMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
 	
-	public static final RegistryObject<EntityType<?>> IR_MISSILE_1 = ENTITIES.register("ir_missile_1", 
+	public static final RegistryObject<EntityType<IRMissile>> IR_MISSILE_1 = ENTITIES.register("ir_missile_1", 
 			() -> createEntityTypeFar(IRMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
 	
-	public static final RegistryObject<EntityType<?>> TRACK_MISSILE_1 = ENTITIES.register("track_missile_1", 
+	public static final RegistryObject<EntityType<TrackEntityMissile>> TRACK_MISSILE_1 = ENTITIES.register("track_missile_1", 
 			() -> createEntityTypeFar(TrackEntityMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
 	
 	public static final RegistryObject<EntityType<EntityFlare>> FLARE = ENTITIES.register("flare", 

@@ -80,7 +80,7 @@ public abstract class EntityAbstractWeapon extends Projectile {
 		super.tick();
 		if (!level.isClientSide && tickCount > maxAge) { 
 			System.out.println("WEAPON OLD");
-			discard();
+			kill();
 		}
 		move(MoverType.SELF, getDeltaMovement());
 	}
@@ -174,6 +174,10 @@ public abstract class EntityAbstractWeapon extends Projectile {
 		ServerLevel sl = (ServerLevel) level;
 		ServerChunkCache scc = sl.getChunkSource();
 		return scc.chunkMap.getDistanceManager().inEntityTickingRange(chunkPosition().toLong());
+	}
+	
+	public int getMaxAge() {
+		return maxAge;
 	}
 
 }

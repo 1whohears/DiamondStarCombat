@@ -144,8 +144,7 @@ public class EntityBullet extends EntityAbstractWeapon {
 	public void onHitBlock(BlockHitResult result) {
 		super.onHitBlock(result);
 		//System.out.println("BULLET HIT "+result.getBlockPos());
-		this.checkExplode();
-		this.discard();
+		this.kill();
 	}
 	
 	@Override
@@ -154,8 +153,7 @@ public class EntityBullet extends EntityAbstractWeapon {
 		//System.out.println("BULLET HIT "+result.getEntity());
 		DamageSource source = this.getDamageSource(false);
 		result.getEntity().hurt(source, getDamage());
-		checkExplode();
-		this.discard();
+		this.kill();
 	}
 	
 	@Nullable
@@ -242,6 +240,12 @@ public class EntityBullet extends EntityAbstractWeapon {
 	
 	public void setSpeed(float speed) {
 		entityData.set(SPEED, speed);
+	}
+	
+	@Override
+	public void kill() {
+		checkExplode();
+		super.kill();
 	}
 
 }

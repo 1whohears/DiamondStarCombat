@@ -2,7 +2,6 @@ package com.onewhohears.dscombat.entity.weapon;
 
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundMissileMovePacket;
-import com.onewhohears.dscombat.data.ChunkManager;
 import com.onewhohears.dscombat.data.weapon.MissileData;
 import com.onewhohears.dscombat.data.weapon.NonTickingMissileManager;
 import com.onewhohears.dscombat.init.ModSounds;
@@ -12,7 +11,6 @@ import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -21,7 +19,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
@@ -39,7 +36,7 @@ public abstract class EntityMissile extends EntityBullet {
 	public Entity target;
 	public Vec3 targetPos;
 	
-	private int tickCountRepeat, tickCountO;
+	private boolean discardedButTicking;
 	
 	public EntityMissile(EntityType<? extends EntityMissile> type, Level level) {
 		super(type, level);
@@ -90,8 +87,7 @@ public abstract class EntityMissile extends EntityBullet {
 					//System.out.println("WITHIN FUSE DISTANCE");
 					//System.out.println("IS REMOVED "+this.isRemoved());
 					this.setPos(target.position());
-					this.checkExplode();
-					this.discard();
+					this.kill();
 					if (target instanceof EntityMissile) {
 						target.kill();
 					}
@@ -116,13 +112,6 @@ public abstract class EntityMissile extends EntityBullet {
 		engineSound();
 		//System.out.println("pos = "+position());
 		//System.out.println("vel = "+getDeltaMovement());
-	}
-	
-	public int getTickCountRepeat() {
-		if (tickCount == tickCountO) ++tickCountRepeat;
-		else tickCountRepeat = 0;
-		tickCountO = tickCount;
-		return tickCountRepeat;
 	}
 	
 	public abstract void tickGuide();
@@ -233,7 +222,7 @@ public abstract class EntityMissile extends EntityBullet {
 		}
 	}
 	
-	private void loadChunks() {
+	/*private void loadChunks() {
 		ChunkPos cp = this.chunkPosition();
 		ChunkManager.addChunk(this, cp.x, cp.z);
 		Vec3 move = this.getDeltaMovement();
@@ -241,28 +230,28 @@ public abstract class EntityMissile extends EntityBullet {
 		ChunkPos ncp = level.getChunk(new BlockPos(next)).getPos();
 		if (ncp.x != cp.x || ncp.z != cp.z)
 			ChunkManager.addChunk(this, ncp.x, ncp.z);
-	}
+	}*/
 	
 	@Override
 	public void checkDespawn() {
-		if (!level.isClientSide) {
+		/*if (!level.isClientSide) {
 			System.out.println("CHECK DESPAWN "+this);
-			/*if (!inEntityTickingRange()) {
+			if (!inEntityTickingRange()) {
 				//tickOutRange();
 				System.out.println("OUT OF TICK RANGE");
-			}*/
-		}
+			}
+		}*/
 	}
 	
 	public void tickOutRange() {
 		if (tickCount > maxAge) { 
 			System.out.println("REMOVED OLD");
-			discard();
+			kill();
 			return;
 		}
 		if (targetPos == null) {
 			System.out.println("REMOVED NO TARGET POS");
-			discard();
+			kill();
 			return;
 		}
 		tickGuide();
@@ -298,8 +287,7 @@ public abstract class EntityMissile extends EntityBullet {
 		System.out.println("DIRECT ENTITY "+source.getDirectEntity());*/
 		if (this.isRemoved()) return false;
 		if (this.equals(source.getDirectEntity())) return false;
-		this.checkExplode();
-		this.discard();
+		this.kill();
 		return true;
 	}
 	
@@ -325,6 +313,27 @@ public abstract class EntityMissile extends EntityBullet {
 	
 	public void setMaxRot(float max_rot) {
 		entityData.set(MAX_ROT, max_rot);
+	}
+	
+	public void discardButTick() {
+		discard();
+		discardedButTicking = true;
+	}
+	
+	@Override
+	public void kill() {
+		super.kill();
+		discardedButTicking = false;
+	}
+	
+	@Override
+	public void revive() {
+		super.revive();
+		discardedButTicking = false;
+	}
+	
+	public boolean isDiscardedButTicking() {
+		return discardedButTicking;
 	}
 
 }

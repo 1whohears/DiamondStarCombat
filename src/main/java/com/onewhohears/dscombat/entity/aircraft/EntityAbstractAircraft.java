@@ -178,8 +178,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		setXRot(compound.getFloat("xRot"));
 		setYRot(compound.getFloat("yRot"));
 		zRot = compound.getFloat("zRot");
-		//Quaternion q = new Quaternion(getXRot(), getYRot(), zRot, true);
-		Quaternion q = UtilAngles.toQuaternion(getYRot(), getXRot(), zRot);
+		Quaternion q = UtilAngles.toQuaternion(-getYRot(), getXRot(), zRot);
 		setQ(q);
 		setPrevQ(q);
 		setClientQ(q);

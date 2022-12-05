@@ -39,6 +39,8 @@ public abstract class EntityMissile extends EntityBullet {
 	public Entity target;
 	public Vec3 targetPos;
 	
+	private int tickCountRepeat, tickCountO;
+	
 	public EntityMissile(EntityType<? extends EntityMissile> type, Level level) {
 		super(type, level);
 		if (!level.isClientSide) NonTickingMissileManager.addMissile(this);
@@ -114,6 +116,13 @@ public abstract class EntityMissile extends EntityBullet {
 		engineSound();
 		//System.out.println("pos = "+position());
 		//System.out.println("vel = "+getDeltaMovement());
+	}
+	
+	public int getTickCountRepeat() {
+		if (tickCount == tickCountO) ++tickCountRepeat;
+		else tickCountRepeat = 0;
+		tickCountO = tickCount;
+		return tickCountRepeat;
 	}
 	
 	public abstract void tickGuide();
@@ -236,17 +245,16 @@ public abstract class EntityMissile extends EntityBullet {
 	
 	@Override
 	public void checkDespawn() {
-		/*if (!level.isClientSide) {
-			System.out.println("CHECK DESPAWN");
-			if (!inEntityTickingRange()) {
+		if (!level.isClientSide) {
+			System.out.println("CHECK DESPAWN "+this);
+			/*if (!inEntityTickingRange()) {
 				//tickOutRange();
 				System.out.println("OUT OF TICK RANGE");
-			}
-		}*/
+			}*/
+		}
 	}
 	
 	public void tickOutRange() {
-		++tickCount;
 		if (tickCount > maxAge) { 
 			System.out.println("REMOVED OLD");
 			discard();
@@ -257,7 +265,6 @@ public abstract class EntityMissile extends EntityBullet {
 			discard();
 			return;
 		}
-		System.out.println("MISSILE OUT OF TICK RANGE "+this+" "+tickCount);
 		tickGuide();
 		motion();
 		setPos(position().add(getDeltaMovement()));

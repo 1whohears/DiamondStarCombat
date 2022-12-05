@@ -27,6 +27,7 @@ public abstract class EntityMissile extends EntityBullet {
 	
 	public static final EntityDataAccessor<Float> ACCELERATION = SynchedEntityData.defineId(EntityMissile.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> MAX_ROT = SynchedEntityData.defineId(EntityMissile.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> BLEED = SynchedEntityData.defineId(EntityMissile.class, EntityDataSerializers.FLOAT);
 	
 	/**
 	 * only set on server side
@@ -48,6 +49,7 @@ public abstract class EntityMissile extends EntityBullet {
 		if (!level.isClientSide) NonTickingMissileManager.addMissile(this);
 		this.setAcceleration((float)data.getAcceleration());
 		this.setMaxRot(data.getMaxRot());
+		this.setBleed((float)data.getBleed());
 		fuseDist = (float) data.getFuseDist();
 		fov = data.getFov();
 	}
@@ -57,6 +59,7 @@ public abstract class EntityMissile extends EntityBullet {
 		super.defineSynchedData();
 		entityData.define(ACCELERATION, 0f);
 		entityData.define(MAX_ROT, 0f);
+		entityData.define(BLEED, 0f);
 	}
 	
 	@Override
@@ -64,6 +67,7 @@ public abstract class EntityMissile extends EntityBullet {
 		super.readAdditionalSaveData(compound);
 		this.setAcceleration(compound.getFloat("acc"));
 		this.setMaxRot(compound.getFloat("max_rot"));
+		this.setBleed(compound.getFloat("bleed"));
 		fuseDist = compound.getFloat("fuseDist");
 		fov = compound.getFloat("fov");
 	}
@@ -73,6 +77,7 @@ public abstract class EntityMissile extends EntityBullet {
 		super.addAdditionalSaveData(compound);
 		compound.putFloat("acc", this.getAcceleration());
 		compound.putFloat("max_rot", this.getMaxRot());
+		compound.putFloat("bleed", this.getBleed());
 		compound.putFloat("fuseDist", fuseDist);
 		compound.putFloat("fov", fov);
 	}
@@ -84,17 +89,13 @@ public abstract class EntityMissile extends EntityBullet {
 			tickGuide();
 			if (target != null) {
 				if (this.distanceTo(target) <= fuseDist) {
-					//System.out.println("WITHIN FUSE DISTANCE");
-					//System.out.println("IS REMOVED "+this.isRemoved());
 					this.setPos(target.position());
 					this.kill();
 					if (target instanceof EntityMissile) {
 						target.kill();
 					}
-					//System.out.println("close enough");
 				}
 			}
-			//if (targetPos != null) loadChunks(); // TODO don't load chunks
 			if (tickCount % 10 == 0) PacketHandler.INSTANCE.send(
 					PacketDistributor.TRACKING_ENTITY.with(() -> this), 
 					new ClientBoundMissileMovePacket(getId(), position(), 
@@ -222,25 +223,9 @@ public abstract class EntityMissile extends EntityBullet {
 		}
 	}
 	
-	/*private void loadChunks() {
-		ChunkPos cp = this.chunkPosition();
-		ChunkManager.addChunk(this, cp.x, cp.z);
-		Vec3 move = this.getDeltaMovement();
-		Vec3 next = position().add(move);
-		ChunkPos ncp = level.getChunk(new BlockPos(next)).getPos();
-		if (ncp.x != cp.x || ncp.z != cp.z)
-			ChunkManager.addChunk(this, ncp.x, ncp.z);
-	}*/
-	
 	@Override
 	public void checkDespawn() {
-		/*if (!level.isClientSide) {
-			System.out.println("CHECK DESPAWN "+this);
-			if (!inEntityTickingRange()) {
-				//tickOutRange();
-				System.out.println("OUT OF TICK RANGE");
-			}
-		}*/
+		
 	}
 	
 	public void tickOutRange() {
@@ -262,8 +247,7 @@ public abstract class EntityMissile extends EntityBullet {
 	@Override
 	protected void motion() {
 		Vec3 cm = getDeltaMovement();
-		// TODO make bleed coefficient part of weapon data
-		double B = 0.004d * UtilEntity.getAirPressure(getY());
+		double B = getBleed() * UtilEntity.getAirPressure(getY());
 		double bleed = B * (Math.abs(getXRot()-xRotO)+Math.abs(getYRot()-yRotO));
 		double vel = cm.length() + getAcceleration() - bleed;
 		double max = getSpeed();
@@ -302,6 +286,14 @@ public abstract class EntityMissile extends EntityBullet {
 	
 	public void setAcceleration(float acceleration) {
 		entityData.set(ACCELERATION, acceleration);
+	}
+	
+	public float getBleed() {
+		return entityData.get(BLEED);
+	}
+	
+	public void setBleed(float bleed) {
+		entityData.set(BLEED, bleed);
 	}
 	
 	public float getMaxRot() {

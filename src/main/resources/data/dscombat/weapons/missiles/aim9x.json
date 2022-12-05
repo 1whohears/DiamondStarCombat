@@ -46,6 +46,7 @@
 	
 	"maxRot": 3.5,
 	"acceleration": 0.05,
+	"bleed": 0.004,
 	"fuseDist": 3,
 	"fov": 80,
 	"flareResistance": 0.6

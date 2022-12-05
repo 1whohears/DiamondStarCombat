@@ -16,6 +16,7 @@ public abstract class MissileData extends BulletData {
 	private double acceleration;
 	private double fuseDist;
 	private float fov;
+	private double bleed;
 	
 	/*public MissileData(RegistryObject<EntityType<?>> entityType, RegistryObject<SoundEvent> shootSound, List<Ingredient> ingredients,
 			String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, boolean canShootOnGround,
@@ -41,6 +42,7 @@ public abstract class MissileData extends BulletData {
 		acceleration = tag.getDouble("acceleration");
 		fuseDist = tag.getDouble("fuseDist");
 		fov = tag.getFloat("fov");
+		bleed = tag.getDouble("bleed");
 	}
 	
 	@Override
@@ -50,6 +52,7 @@ public abstract class MissileData extends BulletData {
 		tag.putDouble("acceleration", acceleration);
 		tag.putDouble("fuseDist", fuseDist);
 		tag.putFloat("fov", fov);
+		tag.putDouble("bleed", bleed);
 		return tag;
 	}
 	
@@ -59,6 +62,7 @@ public abstract class MissileData extends BulletData {
 		acceleration = buffer.readDouble();
 		fuseDist = buffer.readDouble();
 		fov = buffer.readFloat();
+		bleed = buffer.readDouble();
 	}
 	
 	@Override
@@ -68,6 +72,7 @@ public abstract class MissileData extends BulletData {
 		buffer.writeDouble(acceleration);
 		buffer.writeDouble(fuseDist);
 		buffer.writeFloat(fov);
+		buffer.writeDouble(bleed);
 	}
 
 	public float getMaxRot() {
@@ -84,6 +89,10 @@ public abstract class MissileData extends BulletData {
 	
 	public float getFov() {
 		return fov;
+	}
+	
+	public double getBleed() {
+		return bleed;
 	}
 	
 	@Override

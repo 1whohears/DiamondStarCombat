@@ -42,6 +42,7 @@
 	
 	"maxRot": 1.0,
 	"acceleration": 0.02,
+	"bleed": 0.004,
 	"fuseDist": 1.5,
 	"fov": -1
 	

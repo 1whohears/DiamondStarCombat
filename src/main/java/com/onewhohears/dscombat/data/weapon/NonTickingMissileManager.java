@@ -25,6 +25,7 @@ public class NonTickingMissileManager {
 			//System.out.println("REMOVING MISSILE FROM MANAGER");
 			return false;
 		}
+		// TODO missile gets stuck when chunks aren't loading in front
 		if (missile.inEntityTickingRange() && !missile.touchingUnloadedChunk()) {
 			//System.out.println("MISSILE IN TICK RANGE");
 			if (isUnloaded(missile)) {

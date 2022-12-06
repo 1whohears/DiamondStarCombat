@@ -171,6 +171,7 @@ public class EntityBullet extends EntityAbstractWeapon {
 	}
 	
 	protected void checkExplode() {
+		if (this.isRemoved()) return;
 		if (this.getExplosive()) {
 			if (!this.level.isClientSide) {
 				Explosion.BlockInteraction interact = Explosion.BlockInteraction.NONE;
@@ -244,7 +245,9 @@ public class EntityBullet extends EntityAbstractWeapon {
 	
 	@Override
 	public void kill() {
+		//System.out.println("check explode");
 		checkExplode();
+		//System.out.println("super.kill");
 		super.kill();
 	}
 

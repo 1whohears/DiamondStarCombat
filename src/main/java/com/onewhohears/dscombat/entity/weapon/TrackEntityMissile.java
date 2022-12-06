@@ -20,7 +20,9 @@ public class TrackEntityMissile extends EntityMissile {
 	@Override
 	public void tickGuide() {
 		if (tickCount < 20) return;
+		//System.out.println("starting guide to target");
 		this.guideToTarget();
+		//System.out.println("starting cast");
 		if (this.target instanceof EntityAbstractAircraft plane) {
 			plane.trackedByMissile();
 		}

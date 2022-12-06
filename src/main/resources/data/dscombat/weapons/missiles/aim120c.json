@@ -29,12 +29,12 @@
 		}
 	],
 	
-	"fireRate":60,
+	"fireRate":50,
 	"innacuracy":0.0,
 	"canShootOnGround":false,
 	
-	"damage":80.0,
-	"speed":5.0,
+	"damage":50.0,
+	"speed":4.5,
 	"explosionRadius":5.0,
 	
 	"explosive":true,
@@ -42,7 +42,7 @@
 	"causesFire":true,
 	
 	"maxAge":400,
-	"maxAmmo":2,
+	"maxAmmo":3,
 	
 	"targetType": 0,
 	

@@ -1,6 +1,6 @@
 {
 	"type":3,
-	"id":"aim7f",
+	"id":"aim120b",
 	
 	"entityType":"dscombat:track_missile_1",
 	"shootSound":"dscombat:rocket_launch_1",
@@ -29,11 +29,11 @@
 		}
 	],
 	
-	"fireRate":60,
+	"fireRate":50,
 	"innacuracy":0.0,
 	"canShootOnGround":false,
 	
-	"damage":80.0,
+	"damage":50.0,
 	"speed":4.0,
 	"explosionRadius":5.0,
 	
@@ -42,7 +42,7 @@
 	"causesFire":true,
 	
 	"maxAge":400,
-	"maxAmmo":2,
+	"maxAmmo":3,
 	
 	"targetType": 0,
 	

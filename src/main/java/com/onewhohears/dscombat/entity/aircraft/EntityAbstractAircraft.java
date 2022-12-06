@@ -255,12 +255,6 @@ public abstract class EntityAbstractAircraft extends Entity {
 		else serverTick();
 	}
 	
-	/*public void tickVelDir(Quaternion q) {
-		Quaternion in = getPrevQ(); in.conj();
-		change = q.copy(); change.mul(in);
-		setDeltaMovement(UtilAngles.rotateVector(getDeltaMovement(), change));
-	}*/
-	
 	public void serverTick() {
 		tickCollisions();
 		if (getHealth() <= 0) {
@@ -395,7 +389,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	}
 	
 	public double getDragMag() {
-		return surfaceAreaDrag() + rotationDrag();
+		return surfaceAreaDrag();
 	}
 	
 	public double surfaceAreaDrag() {
@@ -406,11 +400,6 @@ public abstract class EntityAbstractAircraft extends Entity {
 		double wing = getSurfaceArea();
 		if (isLandingGear()) wing += 1.0;
 		return dc * air * speedSqr * wing / 2;
-	}
-	
-	public double rotationDrag() {
-		// TODO make rotation drag based on torque
-		return 0;
 	}
 	
 	public float getSurfaceArea() {

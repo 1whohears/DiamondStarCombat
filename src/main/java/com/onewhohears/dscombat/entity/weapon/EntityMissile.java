@@ -164,41 +164,40 @@ public abstract class EntityMissile extends EntityBullet {
 	}
 	
 	public void guideToTarget() {
+		//System.out.println("target null check");
 		if (target == null) {
-			//missile.discard();
 			this.targetPos = null;
 			return;
 		}
+		//System.out.println("target removed check");
 		if (target.isRemoved()) {
-			//missile.discard();
 			this.target = null;
 			this.targetPos = null;
 			return;
 		}
-		if (this.tickCount % 5 == 0) {
+		if (this.tickCount % 10 == 0) {
+			//System.out.println("check target range");
 			if (!checkTargetRange(target, 10000)) {
-				//missile.discard();
 				this.target = null;
 				this.targetPos = null;
 				return;
 			}
+			//System.out.println("check can see");
 			if (!checkCanSee(target)) {
-				//missile.discard();
 				//System.out.println("can't see target");
 				this.target = null;
 				this.targetPos = null;
 				return;
 			}
 		}
-		//System.out.println("==========");
+		//System.out.println("intercept math");
 		Vec3 tVel = target.getDeltaMovement();
 		if (target.isOnGround()) tVel = tVel.add(0, -tVel.y, 0); // some entities have -0.07 y vel when on ground
 		Vec3 pos = UtilGeometry.interceptPos( 
 				this.position(), this.getDeltaMovement(), 
 				target.position(), tVel);
-		//System.out.println("TARGET POS = "+target.position());
-		//System.out.println("INTER  POS = "+pos);
 		this.targetPos = pos;
+		//System.out.println("guide to position");
 		this.guideToPosition();
 	}
 	
@@ -230,17 +229,20 @@ public abstract class EntityMissile extends EntityBullet {
 	
 	public void tickOutRange() {
 		if (tickCount > maxAge) { 
-			System.out.println("REMOVED OLD");
+			//System.out.println("REMOVED OLD");
 			kill();
 			return;
 		}
 		if (targetPos == null) {
-			System.out.println("REMOVED NO TARGET POS");
+			//System.out.println("REMOVED NO TARGET POS");
 			kill();
 			return;
 		}
+		//System.out.println("starting tick guide");
 		tickGuide();
+		//System.out.println("starting motion");
 		motion();
+		//System.out.println("starting set pos");
 		setPos(position().add(getDeltaMovement()));
 	}
 	
@@ -308,6 +310,7 @@ public abstract class EntityMissile extends EntityBullet {
 	}
 	
 	public void discardButTick() {
+		//System.out.println("discard but tick");
 		discard();
 		discardedButTicking = true;
 	}

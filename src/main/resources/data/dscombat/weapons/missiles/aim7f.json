@@ -1,6 +1,6 @@
 {
 	"type":3,
-	"id":"aim120b",
+	"id":"aim7f",
 	
 	"entityType":"dscombat:track_missile_1",
 	"shootSound":"dscombat:rocket_launch_1",
@@ -29,27 +29,27 @@
 		}
 	],
 	
-	"fireRate":60,
+	"fireRate":80,
 	"innacuracy":0.0,
 	"canShootOnGround":false,
 	
 	"damage":80.0,
-	"speed":4.0,
-	"explosionRadius":5.0,
+	"speed":3.5,
+	"explosionRadius":7.0,
 	
 	"explosive":true,
 	"destroyTerrain":true,
 	"causesFire":true,
 	
-	"maxAge":400,
+	"maxAge":600,
 	"maxAmmo":2,
 	
 	"targetType": 0,
 	
-	"maxRot": 2.0,
-	"acceleration": 0.05,
-	"bleed": 0.004,
-	"fuseDist": 3,
-	"fov": 70
+	"maxRot": 1.0,
+	"acceleration": 0.06,
+	"bleed": 0.006,
+	"fuseDist": 5,
+	"fov": 30
 	
 }

@@ -75,7 +75,7 @@ public abstract class EntityAbstractWeapon extends Projectile {
 	
 	@Override
 	public void tick() {
-		System.out.println(this+" "+tickCount);
+		//System.out.println(this+" "+tickCount);
 		motion();
 		super.tick();
 		if (!level.isClientSide && tickCount > maxAge) { 

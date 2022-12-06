@@ -7,6 +7,8 @@
 		"missiles/aim9p5.json",
 		"missiles/aim9x.json",
 		
+		"missiles/aim7f.json",
+		"missiles/aim7mh.json",
 		"missiles/aim120b.json",
 		"missiles/aim120c.json",
 		
@@ -22,11 +24,11 @@
 		},
 		{
 			"type": "light_missile_rack",
-			"weapons": ["aim7e","aim7mh","aim9x","agm114k"]
+			"weapons": ["aim9l","aim9p5","aim9x","agm114k"]
 		},
 		{
 			"type": "heavy_missile_rack",
-			"weapons": ["aim120b","aim120c","agm65g","agm65l","agm84e"]
+			"weapons": ["aim120b","aim120c","agm65g","agm65l","agm84e","aim7f","aim7mh"]
 		}
 	]
 }

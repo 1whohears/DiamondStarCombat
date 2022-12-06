@@ -66,10 +66,10 @@ public class NonTickingMissileManager {
 	
 	public static void addMissile(EntityMissile missile) {
 		if (!missiles.contains(missile)) {
-			System.out.println("ADDING MISSILE TO MANAGER "+missile);
+			//System.out.println("ADDING MISSILE TO MANAGER "+missile);
 			missiles.add(missile);
 		} else {
-			System.out.println("MISSILE ALREADY ADDED");
+			//System.out.println("MISSILE ALREADY ADDED");
 		}
 	}
 	

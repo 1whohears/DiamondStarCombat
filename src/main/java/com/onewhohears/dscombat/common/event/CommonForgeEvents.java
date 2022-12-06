@@ -61,7 +61,7 @@ public class CommonForgeEvents {
 	@SubscribeEvent
 	public void serverTickEvent(TickEvent.ServerTickEvent event) {
 		if (event.getPhase() != EventPriority.NORMAL) return;
-		ChunkManager.serverTick(event.getServer());
+		//ChunkManager.serverTick(event.getServer());
 		NonTickingMissileManager.serverTick(event.getServer());
 	}
 	

@@ -16,8 +16,16 @@ public class UtilEntity {
 		Level level = e1.getLevel();
 		Vec3 diff = e2.position().subtract(e1.position());
 		Vec3 look = diff.normalize();
-		int dist = (int)diff.length();
-		Vec3 pos = e1.position();
+		double distance = diff.length();
+		int maxDistance = 225;
+		Vec3 pos; int dist;
+		if (distance <= maxDistance) {
+			dist = (int)distance;
+			pos = e1.position();
+		} else {
+			dist = maxDistance;
+			pos = e1.position().add(look.scale(distance-maxDistance));
+		}
 		int k = 0;
 		while (k++ < dist) {
 			BlockState block = level.getBlockState(new BlockPos(pos));

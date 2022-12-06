@@ -25,7 +25,7 @@ public class NonTickingMissileManager {
 			//System.out.println("REMOVING MISSILE FROM MANAGER");
 			return false;
 		}
-		if (missile.inEntityTickingRange()) {
+		if (missile.inEntityTickingRange() && !missile.touchingUnloadedChunk()) {
 			//System.out.println("MISSILE IN TICK RANGE");
 			if (isUnloaded(missile)) {
 				//System.out.println("MISSILE UNLOADED");

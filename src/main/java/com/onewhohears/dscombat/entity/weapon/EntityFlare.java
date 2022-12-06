@@ -69,10 +69,6 @@ public class EntityFlare extends Entity {
 	public void tick() {
 		super.tick();
 		this.setDeltaMovement(motion);
-		if (!this.level.isClientSide && touchingUnloadedChunk()) {
-			//System.out.println("bullet unloaded");
-			discard(); 
-		}
 		if (!this.level.isClientSide && tickCount > age) {
 			discard();
 		}

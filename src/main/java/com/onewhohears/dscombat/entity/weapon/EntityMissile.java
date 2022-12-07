@@ -37,6 +37,7 @@ public abstract class EntityMissile extends EntityBullet {
 	public Entity target;
 	public Vec3 targetPos;
 	
+	private int prevTickCount, tickCountRepeats, repeatCoolDown;
 	private boolean discardedButTicking;
 	
 	public EntityMissile(EntityType<? extends EntityMissile> type, Level level) {
@@ -313,6 +314,7 @@ public abstract class EntityMissile extends EntityBullet {
 		//System.out.println("discard but tick");
 		discard();
 		discardedButTicking = true;
+		repeatCoolDown = 5;
 	}
 	
 	@Override
@@ -329,6 +331,17 @@ public abstract class EntityMissile extends EntityBullet {
 	
 	public boolean isDiscardedButTicking() {
 		return discardedButTicking;
+	}
+	
+	public int getTickCountRepeats() {
+		if (tickCount == prevTickCount) ++tickCountRepeats;
+		else if (tickCountRepeats > 0) tickCountRepeats = 0;
+		prevTickCount = tickCount;
+		if (repeatCoolDown > 0) {
+			--repeatCoolDown;
+			return 10;
+		}
+		return tickCountRepeats;
 	}
 
 }

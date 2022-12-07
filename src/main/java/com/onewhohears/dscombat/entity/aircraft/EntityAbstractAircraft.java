@@ -147,6 +147,7 @@ public abstract class EntityAbstractAircraft extends Entity {
         		setPrevQ(getClientQ());
             	setClientQ(getQ());
             	synchQ = 200;
+            	// TODO synch the pilots clientQ with the server don't force server Q onto pilot client
         	}
         }
     }

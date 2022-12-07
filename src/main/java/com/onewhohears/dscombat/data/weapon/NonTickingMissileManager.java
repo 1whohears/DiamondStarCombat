@@ -8,6 +8,7 @@ import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.Entity.RemovalReason;
+import net.minecraft.world.level.ChunkPos;
 
 public class NonTickingMissileManager {
 	
@@ -20,26 +21,31 @@ public class NonTickingMissileManager {
 	}
 	
 	private static boolean tickMissile(EntityMissile missile) {
-		//System.out.println("SERVER TICK MISSILE "+missile+" "+missile.tickCount);
+		System.out.println("SERVER TICK MISSILE "+missile+" "+missile.tickCount);
 		if (isKilled(missile)) {
-			//System.out.println("REMOVING MISSILE FROM MANAGER");
+			System.out.println("REMOVING MISSILE FROM MANAGER");
 			return false;
 		}
-		// TODO missile gets stuck when chunks aren't loading in front
-		if (missile.inEntityTickingRange() && !missile.touchingUnloadedChunk()) {
-			//System.out.println("MISSILE IN TICK RANGE");
+		ChunkPos cp = missile.chunkPosition();
+		boolean hasChunk = missile.level.hasChunk(cp.x, cp.z);
+		boolean inTickRange = missile.inEntityTickingRange();
+		int repeats = missile.getTickCountRepeats();
+		System.out.println(hasChunk+" "+inTickRange+" "+repeats);
+		if (hasChunk && inTickRange && repeats < 5) {
+			System.out.println("MISSILE IN TICK RANGE");
 			if (isUnloaded(missile)) {
-				//System.out.println("MISSILE UNLOADED");
+				System.out.println("MISSILE UNLOADED");
 				missile.revive();
 				missile.setUUID(UUID.randomUUID());
 				missile.level.addFreshEntity(missile);
 			}
 		} else {
-			//System.out.println("MISSILE OUT OF TICK RANGE");
+			System.out.println("MISSILE OUT OF TICK RANGE");
 			if (!missile.isRemoved()) missile.discardButTick();
 			missile.tickOutRange();
 			++missile.tickCount;
 		}
+		System.out.println("FINISHED TICK MISSILE\n");
 		return true;
 	}
 	
@@ -66,12 +72,8 @@ public class NonTickingMissileManager {
 	}
 	
 	public static void addMissile(EntityMissile missile) {
-		if (!missiles.contains(missile)) {
-			//System.out.println("ADDING MISSILE TO MANAGER "+missile);
-			missiles.add(missile);
-		} else {
-			//System.out.println("MISSILE ALREADY ADDED");
-		}
+		System.out.println("ADDING MISSILE TO MANAGER "+missile);
+		missiles.add(missile);
 	}
 	
 }

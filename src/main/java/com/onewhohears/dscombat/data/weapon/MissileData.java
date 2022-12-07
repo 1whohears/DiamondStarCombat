@@ -17,6 +17,7 @@ public abstract class MissileData extends BulletData {
 	private double fuseDist;
 	private float fov;
 	private double bleed;
+	// TODO missiles have limited fuel and they bleed energy when they turn so with no fuel they die if they get to slow
 	
 	/*public MissileData(RegistryObject<EntityType<?>> entityType, RegistryObject<SoundEvent> shootSound, List<Ingredient> ingredients,
 			String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, boolean canShootOnGround,

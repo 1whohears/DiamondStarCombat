@@ -42,6 +42,7 @@
 	"causesFire":true,
 	
 	"maxAge":400,
+	"fuelTicks":250,
 	"maxAmmo":3,
 	
 	"targetType": 0,

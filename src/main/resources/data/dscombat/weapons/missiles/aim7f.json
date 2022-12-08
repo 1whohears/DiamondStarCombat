@@ -42,13 +42,14 @@
 	"causesFire":true,
 	
 	"maxAge":600,
+	"fuelTicks":450,
 	"maxAmmo":2,
 	
 	"targetType": 0,
 	
 	"maxRot": 1.0,
 	"acceleration": 0.06,
-	"bleed": 0.006,
+	"bleed": 0.008,
 	"fuseDist": 5,
 	"fov": 30
 	

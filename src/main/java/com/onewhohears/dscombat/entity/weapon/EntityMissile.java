@@ -28,6 +28,7 @@ public abstract class EntityMissile extends EntityBullet {
 	public static final EntityDataAccessor<Float> ACCELERATION = SynchedEntityData.defineId(EntityMissile.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> MAX_ROT = SynchedEntityData.defineId(EntityMissile.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> BLEED = SynchedEntityData.defineId(EntityMissile.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Integer> FUEL_TICKS = SynchedEntityData.defineId(EntityMissile.class, EntityDataSerializers.INT);
 	
 	/**
 	 * only set on server side
@@ -43,6 +44,7 @@ public abstract class EntityMissile extends EntityBullet {
 	public EntityMissile(EntityType<? extends EntityMissile> type, Level level) {
 		super(type, level);
 		if (!level.isClientSide) NonTickingMissileManager.addMissile(this);
+		else engineSound();
 	}
 	
 	public EntityMissile(Level level, Entity owner, MissileData data) {
@@ -53,6 +55,7 @@ public abstract class EntityMissile extends EntityBullet {
 		this.setBleed((float)data.getBleed());
 		fuseDist = (float) data.getFuseDist();
 		fov = data.getFov();
+		this.setFuelTicks(data.getFuelTicks());
 	}
 	
 	@Override
@@ -61,6 +64,7 @@ public abstract class EntityMissile extends EntityBullet {
 		entityData.define(ACCELERATION, 0f);
 		entityData.define(MAX_ROT, 0f);
 		entityData.define(BLEED, 0f);
+		entityData.define(FUEL_TICKS, 0);
 	}
 	
 	@Override
@@ -71,6 +75,7 @@ public abstract class EntityMissile extends EntityBullet {
 		this.setBleed(compound.getFloat("bleed"));
 		fuseDist = compound.getFloat("fuseDist");
 		fov = compound.getFloat("fov");
+		this.setFuelTicks(compound.getInt("fuelTicks"));
 	}
 
 	@Override
@@ -81,11 +86,13 @@ public abstract class EntityMissile extends EntityBullet {
 		compound.putFloat("bleed", this.getBleed());
 		compound.putFloat("fuseDist", fuseDist);
 		compound.putFloat("fov", fov);
+		compound.putInt("fuelTicks", this.getFuelTicks());
 	}
 	
 	@Override
 	public void tick() {
-		super.tick();
+		xRotO = getXRot(); 
+		yRotO = getYRot();
 		if (!level.isClientSide && !isRemoved()) {
 			tickGuide();
 			if (target != null) {
@@ -111,7 +118,7 @@ public abstract class EntityMissile extends EntityBullet {
 					-move.y * 0.5D + random.nextGaussian() * 0.05D, 
 					-move.z * 0.5D + random.nextGaussian() * 0.05D);
 		}
-		engineSound();
+		super.tick();
 		//System.out.println("pos = "+position());
 		//System.out.println("vel = "+getDeltaMovement());
 	}
@@ -158,8 +165,6 @@ public abstract class EntityMissile extends EntityBullet {
 				}
 			}
 		}
-		xRotO = getXRot(); 
-		yRotO = getYRot();
 		setXRot(nrx);
 		setYRot(nry);
 	}
@@ -216,11 +221,8 @@ public abstract class EntityMissile extends EntityBullet {
 	}
 	
 	private void engineSound() {
-		if (!this.level.isClientSide) return;
-		if (this.tickCount == 8) {
-			UtilClientSafeSoundInstance.dopplerSound(Minecraft.getInstance(), this, ModSounds.MISSILE_ENGINE_1.get(), 
-					0.8F, 1.0F, 10F);
-		}
+		UtilClientSafeSoundInstance.dopplerSound(Minecraft.getInstance(), this, ModSounds.MISSILE_ENGINE_1.get(), 
+				0.8F, 1.0F, 10F);
 	}
 	
 	@Override
@@ -229,13 +231,15 @@ public abstract class EntityMissile extends EntityBullet {
 	}
 	
 	public void tickOutRange() {
+		xRotO = getXRot(); 
+		yRotO = getYRot();
 		if (tickCount > maxAge) { 
-			//System.out.println("REMOVED OLD");
+			System.out.println("old");
 			kill();
 			return;
 		}
 		if (targetPos == null) {
-			//System.out.println("REMOVED NO TARGET POS");
+			System.out.println("no target pos");
 			kill();
 			return;
 		}
@@ -252,15 +256,20 @@ public abstract class EntityMissile extends EntityBullet {
 		Vec3 cm = getDeltaMovement();
 		double B = getBleed() * UtilEntity.getAirPressure(getY());
 		double bleed = B * (Math.abs(getXRot()-xRotO)+Math.abs(getYRot()-yRotO));
-		double vel = cm.length() + getAcceleration() - bleed;
+		double vel = cm.length() - bleed;
+		if (tickCount <= getFuelTicks()) vel += getAcceleration();
 		double max = getSpeed();
 		if (vel > max) vel = max;
-		else if (vel < 0) vel = 0;
+		else if (vel <= 0) vel = 0;
 		Vec3 nm = getLookAngle().scale(vel);
 		setDeltaMovement(nm);
-		/*System.out.println("x  = "+getXRot()+" y  = "+getYRot());
-		System.out.println("xO = "+xRotO    +" yO = "+yRotO);
-		System.out.println("vel = "+vel+" acc = "+getAcceleration()+" bleed = "+bleed);*/
+		/*if (!level.isClientSide) {
+			System.out.println("speed = "+vel);
+			System.out.println("bleed = "+bleed);
+			System.out.println("fuelAge = "+getFuelTicks());
+			System.out.println("x  = "+getXRot()+" y  = "+getYRot());
+			System.out.println("xO = "+xRotO    +" yO = "+yRotO);
+		}*/
 	}
 	
 	public float getHeat() {
@@ -297,6 +306,14 @@ public abstract class EntityMissile extends EntityBullet {
 	
 	public void setBleed(float bleed) {
 		entityData.set(BLEED, bleed);
+	}
+	
+	public int getFuelTicks() {
+		return entityData.get(FUEL_TICKS);
+	}
+	
+	public void setFuelTicks(int fuelTicks) {
+		entityData.set(FUEL_TICKS, fuelTicks);
 	}
 	
 	public float getMaxRot() {

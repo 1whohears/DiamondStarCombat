@@ -21,6 +21,7 @@ import net.minecraftforge.network.NetworkHooks;
 public abstract class EntityAbstractWeapon extends Projectile {
 	
 	public static final EntityDataAccessor<Integer> OWNER_ID = SynchedEntityData.defineId(EntityAbstractWeapon.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> AGE = SynchedEntityData.defineId(EntityAbstractWeapon.class, EntityDataSerializers.INT);
 	
 	/**
 	 * only set on server side
@@ -41,16 +42,17 @@ public abstract class EntityAbstractWeapon extends Projectile {
 	@Override
 	protected void defineSynchedData() {
 		entityData.define(OWNER_ID, -1);
+		entityData.define(AGE, 0);
 	}
 	
-	/*@Override
+	@Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
 		if (level.isClientSide) {
-			if (key.equals(DATA)) {
-				TEXTURE = this.getWeaponData().getTexture();
+			if (key.equals(AGE)) {
+				tickCount = entityData.get(AGE);
 			}
 		}
-	}*/
+	}
 	
 	@Override
 	protected void readAdditionalSaveData(CompoundTag compound) {
@@ -78,6 +80,7 @@ public abstract class EntityAbstractWeapon extends Projectile {
 		//System.out.println(this+" "+tickCount);
 		motion();
 		super.tick();
+		if (!level.isClientSide) setAge(tickCount);
 		if (!level.isClientSide && tickCount > maxAge) { 
 			//System.out.println("WEAPON OLD");
 			kill();
@@ -91,6 +94,14 @@ public abstract class EntityAbstractWeapon extends Projectile {
 	
 	protected void setOwnerId(int id) {
 		entityData.set(OWNER_ID, id);
+	}
+	
+	/*public int getAge() {
+		return entityData.get(AGE);
+	}*/
+	
+	protected void setAge(int age) {
+		entityData.set(AGE, age);
 	}
 	
 	@Override

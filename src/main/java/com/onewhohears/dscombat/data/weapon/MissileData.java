@@ -17,7 +17,7 @@ public abstract class MissileData extends BulletData {
 	private double fuseDist;
 	private float fov;
 	private double bleed;
-	// TODO missiles have limited fuel and they bleed energy when they turn so with no fuel they die if they get to slow
+	private int fuelTicks;
 	
 	/*public MissileData(RegistryObject<EntityType<?>> entityType, RegistryObject<SoundEvent> shootSound, List<Ingredient> ingredients,
 			String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, boolean canShootOnGround,
@@ -44,6 +44,7 @@ public abstract class MissileData extends BulletData {
 		fuseDist = tag.getDouble("fuseDist");
 		fov = tag.getFloat("fov");
 		bleed = tag.getDouble("bleed");
+		fuelTicks = tag.getInt("fuelTicks");
 	}
 	
 	@Override
@@ -54,6 +55,7 @@ public abstract class MissileData extends BulletData {
 		tag.putDouble("fuseDist", fuseDist);
 		tag.putFloat("fov", fov);
 		tag.putDouble("bleed", bleed);
+		tag.putInt("fuelTicks", fuelTicks);
 		return tag;
 	}
 	
@@ -64,6 +66,7 @@ public abstract class MissileData extends BulletData {
 		fuseDist = buffer.readDouble();
 		fov = buffer.readFloat();
 		bleed = buffer.readDouble();
+		fuelTicks = buffer.readInt();
 	}
 	
 	@Override
@@ -74,6 +77,7 @@ public abstract class MissileData extends BulletData {
 		buffer.writeDouble(fuseDist);
 		buffer.writeFloat(fov);
 		buffer.writeDouble(bleed);
+		buffer.writeInt(fuelTicks);
 	}
 
 	public float getMaxRot() {
@@ -94,6 +98,10 @@ public abstract class MissileData extends BulletData {
 	
 	public double getBleed() {
 		return bleed;
+	}
+	
+	public int getFuelTicks() {
+		return fuelTicks;
 	}
 	
 	@Override

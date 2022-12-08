@@ -24,7 +24,7 @@ public class DopplerOnPlayerSoundInstance extends AbstractTickableSoundInstance 
 		this.entity = entity;
 		this.looping = true;
 		this.delay = 0;
-		this.volume = initVolume;
+		this.volume = 0.001f;
 		this.initVolume = initVolume;
 		this.pitch = initPitch;
 		this.initPitch = initPitch;
@@ -37,7 +37,6 @@ public class DopplerOnPlayerSoundInstance extends AbstractTickableSoundInstance 
 			this.stop();
 			return;
 		}
-		//System.out.println("TICK MISSILE SOUND");
 		// position
 		this.x = entity.getX();
 		this.y = entity.getY();
@@ -54,9 +53,6 @@ public class DopplerOnPlayerSoundInstance extends AbstractTickableSoundInstance 
 		if (!sameDirection(v, v3p)) vp *= -1f;
 		if (!sameDirection(v, v3m)) vm *= -1f;
 		pitch = initPitch * ((velocitySound + vp)/(velocitySound + vm));
-		/*System.out.println("vp = "+vp);
-		System.out.println("vm = "+vm);
-		System.out.println("new pitch = "+pitch);*/
 	}
 	
 	private boolean sameDirection(Vec3 a, Vec3 b) {

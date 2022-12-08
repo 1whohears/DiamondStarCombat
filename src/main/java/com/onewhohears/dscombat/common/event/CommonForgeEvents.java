@@ -12,6 +12,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.level.ChunkEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -23,6 +24,7 @@ public class CommonForgeEvents {
 	
 	@SubscribeEvent
 	public void playerTickEvent(TickEvent.PlayerTickEvent event) {
+		if (event.phase != Phase.START) return;
 		if (event.getPhase() != EventPriority.NORMAL) return;
 		if (event.side != LogicalSide.SERVER) return;
 		final var player = event.player;
@@ -59,6 +61,7 @@ public class CommonForgeEvents {
 	
 	@SubscribeEvent
 	public void serverTickEvent(TickEvent.ServerTickEvent event) {
+		if (event.phase != Phase.END) return;
 		if (event.getPhase() != EventPriority.NORMAL) return;
 		//ChunkManager.serverTick(event.getServer());
 		NonTickingMissileManager.serverTick(event.getServer());

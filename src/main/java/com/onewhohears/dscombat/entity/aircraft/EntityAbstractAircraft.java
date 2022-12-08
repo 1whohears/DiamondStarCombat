@@ -10,6 +10,7 @@ import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.event.ClientForgeEvents;
 import com.onewhohears.dscombat.common.container.AircraftMenuContainer;
 import com.onewhohears.dscombat.common.network.PacketHandler;
+import com.onewhohears.dscombat.common.network.toserver.ServerBoundQPacket;
 import com.onewhohears.dscombat.common.network.toserver.ServerBoundRequestPlaneDataPacket;
 import com.onewhohears.dscombat.data.AircraftPresets;
 import com.onewhohears.dscombat.data.parts.PartSlot;
@@ -102,7 +103,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	protected final RegistryObject<SoundEvent> engineSound;
 	protected final RegistryObject<Item> item;
 	
-	private int lerpSteps, /*lerpStepsQ,*/ newRiderCooldown, synchQ;
+	private int lerpSteps, /*lerpStepsQ,*/ newRiderCooldown;
 	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot/*, lerpZRot*/;
 	private float landingGearPos, landingGearPosOld;
 	
@@ -143,11 +144,11 @@ public abstract class EntityAbstractAircraft extends Entity {
         if (Q.equals(key) && level.isClientSide()) {
             //if (firstTick) lerpStepsQ = 0;
             //else lerpStepsQ = 10;
-        	if (!isControlledByLocalInstance() || synchQ <= 0) {
+        	if (isControlledByLocalInstance()) {
+        		PacketHandler.INSTANCE.sendToServer(new ServerBoundQPacket(getId(), getClientQ()));
+        	} else {
         		setPrevQ(getClientQ());
             	setClientQ(getQ());
-            	synchQ = 200;
-            	// TODO synch the pilots clientQ with the server don't force server Q onto pilot client
         	}
         }
     }
@@ -287,7 +288,6 @@ public abstract class EntityAbstractAircraft extends Entity {
 		tickHealthSmoke();
 		tickClientSound();
 		tickClientLandingGear();
-		--synchQ;
 	}
 	
 	public void tickClientSound() {

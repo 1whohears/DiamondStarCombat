@@ -66,10 +66,12 @@ public class ItemAircraft extends Item {
 				blockpos1 = blockpos.relative(direction);
 			}
 			CompoundTag tag = itemstack.getOrCreateTag();
-			EntityType<?> entitytype = this.getType(tag);
+			EntityType<?> entitytype = getType(tag);
 			Player player = context.getPlayer();
 			if (player != null) {
-				tag.getCompound("EntityTag").putFloat("yRot", player.getYRot());
+				CompoundTag et = tag.getCompound("EntityTag");
+				et.putFloat("yRot", player.getYRot());
+				et.putFloat("current_throttle", 0);
 			}
 			//System.out.println("MAKING ENTITY FROM = "+tag);
 			Entity spawn = entitytype.spawn((ServerLevel)level, itemstack, player, blockpos1, 

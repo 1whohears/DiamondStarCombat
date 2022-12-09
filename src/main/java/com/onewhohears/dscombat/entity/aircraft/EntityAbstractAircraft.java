@@ -353,7 +353,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		torqueZ = torqueDrag(torqueZ);
 	}
 	
-	protected float torqueDrag(float torque) {
+	private float torqueDrag(float torque) {
 		float td = 0.25f;
 		float abs = Math.abs(torque);
 		if (abs < td) return 0;

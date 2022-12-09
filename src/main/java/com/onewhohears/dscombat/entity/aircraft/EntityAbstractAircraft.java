@@ -61,6 +61,10 @@ import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.registries.RegistryObject;
 
+/**
+ * the parent class for planes, helicopters, boats, and ground vehicles
+ * @author 1whohears
+ */
 public abstract class EntityAbstractAircraft extends Entity {
 	
 	public static final EntityDataAccessor<Float> MAX_HEALTH = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.FLOAT);
@@ -91,7 +95,6 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public RadarSystem radarSystem = new RadarSystem();
 	public Quaternion prevQ = Quaternion.ONE.copy();
 	public Quaternion clientQ = Quaternion.ONE.copy();
-	//public Quaternion change = Quaternion.ONE.copy();
 	
 	public boolean inputMouseMode, inputFlare, inputShoot, inputSelect, inputOpenMenu;
 	public float inputThrottle, inputPitch, inputRoll, inputYaw;
@@ -103,8 +106,8 @@ public abstract class EntityAbstractAircraft extends Entity {
 	protected final RegistryObject<SoundEvent> engineSound;
 	protected final RegistryObject<Item> item;
 	
-	private int lerpSteps, /*lerpStepsQ,*/ newRiderCooldown;
-	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot/*, lerpZRot*/;
+	private int lerpSteps, newRiderCooldown;
+	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot;
 	private float landingGearPos, landingGearPosOld;
 	
 	public EntityAbstractAircraft(EntityType<? extends EntityAbstractAircraft> entity, Level level, 
@@ -141,12 +144,13 @@ public abstract class EntityAbstractAircraft extends Entity {
 	@Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
         super.onSyncedDataUpdated(key);
-        if (Q.equals(key) && level.isClientSide()) {
-            //if (firstTick) lerpStepsQ = 0;
-            //else lerpStepsQ = 10;
+        // if this entity is on the client side and receiving the quaternion of the plane from the server 
+        if (level.isClientSide() && Q.equals(key)) {
         	if (isControlledByLocalInstance()) {
+        		// if this entity is piloted by the client's player send the client quaternion to the server
         		PacketHandler.INSTANCE.sendToServer(new ServerBoundQPacket(getId(), getClientQ()));
         	} else {
+        		// if the client player is not controlling this plane then client quaternion = server quaternion
         		setPrevQ(getClientQ());
             	setClientQ(getQ());
         	}
@@ -155,8 +159,8 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
+		// this function is called on the server side only
 		String initType = compound.getString("preset");
-		//System.out.println("aircraft read data client side = "+level.isClientSide+" init type = "+initType);
 		if (!initType.isEmpty()) {
 			CompoundTag tag = AircraftPresets.getPreset(initType);
 			if (tag != null) compound.merge(tag);
@@ -177,14 +181,14 @@ public abstract class EntityAbstractAircraft extends Entity {
 		this.setAircraftWeight(compound.getFloat("weight"));
 		this.setSurfaceArea(compound.getFloat("surfacearea"));
 		this.setLandingGear(compound.getBoolean("landing_gear"));
+		this.setCurrentThrottle(compound.getFloat("current_throttle"));
 		setXRot(compound.getFloat("xRot"));
 		setYRot(compound.getFloat("yRot"));
 		zRot = compound.getFloat("zRot");
 		Quaternion q = UtilAngles.toQuaternion(-getYRot(), getXRot(), zRot);
 		setQ(q);
 		setPrevQ(q);
-		setClientQ(q);
-		this.setCurrentThrottle(compound.getFloat("current_throttle"));
+		setClientQ(q);	
 	}
 
 	@Override
@@ -206,25 +210,30 @@ public abstract class EntityAbstractAircraft extends Entity {
 		compound.putFloat("weight", this.getAircraftWeight());
 		compound.putFloat("surfacearea", this.getSurfaceArea());
 		compound.putBoolean("landing_gear", this.isLandingGear());
+		compound.putFloat("current_throttle", this.getCurrentThrottle());
 		compound.putFloat("xRot", this.getXRot());
 		compound.putFloat("yRot", this.getYRot());
 		compound.putFloat("zRot", zRot);
-		compound.putFloat("current_throttle", this.getCurrentThrottle());
 	}
 	
+	/**
+	 * called on this entities first tick on client and server side
+	 * this function fires clientSetup() and serverSetup()
+	 */
 	public void init() {
-		if (!level.isClientSide) setupAircraftParts();
+		if (!level.isClientSide) serverSetup();
 		else clientSetup();
 	}
 	
+	/**
+	 * fires every tick server and client side
+	 */
 	@Override
 	public void tick() {
-		//System.out.println(this.tickCount+" "+this.level);
-		if (this.firstTick) init();
+		if (Double.isNaN(getDeltaMovement().length())) setDeltaMovement(Vec3.ZERO);
 		super.tick();
-		if (Double.isNaN(getDeltaMovement().length())) {
-            setDeltaMovement(Vec3.ZERO);
-        }
+		if (firstTick) init();
+		// SET PREV/OLD
 		prevMotion = getDeltaMovement();
 		zRotO = zRot;
 		torqueXO = torqueX;
@@ -325,6 +334,10 @@ public abstract class EntityAbstractAircraft extends Entity {
 		setDeltaMovement(motionXY.x, my, motionXY.z);
 	}
 	
+	/**
+	 * reads player input to change the direction of the craft
+	 * @param q the current direction of the craft
+	 */
 	public void controlDirection(Quaternion q) {
 		if (this.getControllingPassenger() == null) this.resetControls();
 		if (inputThrottle > 0) this.increaseThrottle();
@@ -567,8 +580,7 @@ public abstract class EntityAbstractAircraft extends Entity {
     /**
      * register parts before calling super in server side
      */
-	public void setupAircraftParts() {
-		//System.out.println("setting up parts client side = "+level.isClientSide);
+	public void serverSetup() {
 		// ORDER MATTERS
 		weaponSystem.setup(this);
 		radarSystem.setup(this);
@@ -576,7 +588,6 @@ public abstract class EntityAbstractAircraft extends Entity {
 	}
 	
 	public void clientSetup() {
-		//if (!partsManager.isReadData() || !weaponSystem.isReadData() || !radarSystem.isReadData())
 		PacketHandler.INSTANCE.sendToServer(new ServerBoundRequestPlaneDataPacket(getId()));
 	}
 	
@@ -855,38 +866,64 @@ public abstract class EntityAbstractAircraft extends Entity {
     	}
     }
     
+    /**
+     * @return server side quaternion
+     */
     public Quaternion getQ() {
         return entityData.get(Q).copy();
     }
-
+    
+    /**
+     * @param q set server side quaternion
+     */
     public void setQ(Quaternion q) {
         entityData.set(Q, q.copy());
     }
-
+    
+    /**
+     * @return the client side rotation
+     */
     public Quaternion getClientQ() {
         return clientQ.copy();
     }
-
+    
+    /**
+     * @param q set client side rotation
+     */
     public void setClientQ(Quaternion q) {
         clientQ = q.copy();
     }
-
+    
+    /**
+     * @return the rotation on the previous tick for both client and server side
+     */
     public Quaternion getPrevQ() {
         return prevQ.copy();
     }
-
+    
+    /**
+     * @param q the rotation for both client and server side
+     */
     public void setPrevQ(Quaternion q) {
         prevQ = q.copy();
     }
     
     /**
-     * smaller number is better
+     * 1 is no stealth
+     * 0 is invisible
+     * 0.5 is a radar with a range of 1000 can only see this craft within 500
      * @return value to be multiplied to the range of a radar
      */
     public float getStealth() {
     	return entityData.get(STEALTH);
     }
     
+    /**
+     * 1 is no stealth
+     * 0 is invisible
+     * 0.5 is a radar with a range of 1000 can only see this craft within 500
+     * @param stealth value to be multiplied to the range of a radar
+     */
     public void setStealth(float stealth) {
     	if (stealth < 0) stealth = 0;
     	entityData.set(STEALTH, stealth);
@@ -900,6 +937,9 @@ public abstract class EntityAbstractAircraft extends Entity {
     	return engineSound.get();
     }
     
+    /**
+     * @return the item stack with all of this plane's data 
+     */
     public ItemStack getItem() {
     	ItemStack stack = new ItemStack(item.get());
     	CompoundTag tag = new CompoundTag();
@@ -944,21 +984,30 @@ public abstract class EntityAbstractAircraft extends Entity {
     }
     
     /**
-     * divide this by distance squared
-     * @return heat value
+     * divide this by distance squared when ir missile compares this heat value with others
+     * @return the total heat value
      */
     public float getHeat() {
     	return getIdleHeat() + this.getCurrentThrottle() * getEngineHeat();
     }
     
+    /**
+     * @return the heat value this aircraft always emits 
+     */
     public float getIdleHeat() {
     	return entityData.get(IDLEHEAT);
     }
     
+    /**
+     * @param heat the heat value this aircraft always emits 
+     */
     public void setIdleHeat(float heat) {
     	entityData.set(IDLEHEAT, heat);
     }
     
+    /**
+     * @return the heat this plane's engines emit at max throttle 
+     */
     public float getEngineHeat() {
     	return partsManager.getTotalEngineHeat();
     }
@@ -988,8 +1037,10 @@ public abstract class EntityAbstractAircraft extends Entity {
     	return parts;
     }
     
+    /**
+     * plays all the sounds for the players in the plane
+     */
     public void sounds() {
-    	//System.out.println("SOUNDS client side "+level.isClientSide+" tracked ticks "+getMissileTrackedTicks());
     	if (!this.level.isClientSide) {
     		if (this.getMissileTrackedTicks() > 0) this.addMissileTrackedTicks(-1);
     		if (this.getLockedOntoTicks() > 0) this.addLockedOntoTicks(-1);
@@ -1004,36 +1055,42 @@ public abstract class EntityAbstractAircraft extends Entity {
     	}
     }
     
+    /**
+     * entity tracking missile calls this when tracking this plane
+     */
     public void trackedByMissile() {
     	if (this.level.isClientSide) return;
     	this.setMissileTrackedTicks(10);
     }
     
+    /**
+     * another radar system calls this when tracking this craft
+     */
     public void lockedOnto() {
     	if (this.level.isClientSide) return;
     	this.setLockedOntoTicks(10);
     }
     
+    /*
+     * the following group of functions is used to tell the plane from the server side that they are being
+     * tracked from another radar while also only letting certain players hear the sound on the client side
+     * probably not the best way to do it but it works 
+     */
     public int getMissileTrackedTicks() {
     	return entityData.get(MISSILE_TRACKED_TICKS);
     }
-    
     public void setMissileTrackedTicks(int ticks) {
     	entityData.set(MISSILE_TRACKED_TICKS, ticks);
     }
-    
     public void addMissileTrackedTicks(int ticks) {
     	this.setMissileTrackedTicks(ticks+this.getMissileTrackedTicks());
     }
-    
     public int getLockedOntoTicks() {
     	return entityData.get(LOCKED_ONTO_TICKS);
     }
-    
     public void setLockedOntoTicks(int ticks) {
     	entityData.set(LOCKED_ONTO_TICKS, ticks);
     }
-    
     public void addLockedOntoTicks(int ticks) {
     	this.setLockedOntoTicks(ticks+this.getLockedOntoTicks());
     }
@@ -1048,37 +1105,58 @@ public abstract class EntityAbstractAircraft extends Entity {
         		pX+(double)f, pY+(double)f1, pZ+(double)f);
     }
     
+    /**
+     * @return the total fuel this aircraft can hold
+     */
     public float getMaxFuel() {
     	return partsManager.getMaxFuel();
     }
     
+    /**
+     * consume fuel every server tick
+     */
     public void tickFuel() {
     	if (!level.isClientSide) {
-    		this.partsManager.tickFuel(true);
+    		partsManager.tickFuel(true);
     	}
     }
     
+    /**
+     * @return the current amount of fuel left
+     */
     public float getFuel() {
     	return partsManager.getCurrentFuel();
     }
     
+    /**
+     * @param fuel
+     * @return the left over fuel
+     */
     public float addFuel(float fuel) {
-    	return this.partsManager.addFuel(fuel);
+    	return partsManager.addFuel(fuel);
     }
     
+    /**
+     * @return true if landing gear is out false if folded
+     */
     public boolean isLandingGear() {
     	return entityData.get(LANDING_GEAR);
     }
     
+    /**
+     * @param gear true if landing gear is out false if folded
+     */
     public void setLandingGear(boolean gear) {
     	entityData.set(LANDING_GEAR, gear);
     }
     
-    public void switchLandingGear() {
-    	//System.out.println("SWITCH LANDING GEAR");
+    public void toggleLandingGear() {
     	this.setLandingGear(!isLandingGear());
     }
     
+    /**
+     * update landingGearPos between 0 and 1 so the model knows where in the animation the landing gear is
+     */
     public void tickClientLandingGear() {
     	landingGearPosOld = landingGearPos;
     	if (isLandingGear()) {
@@ -1088,7 +1166,6 @@ public abstract class EntityAbstractAircraft extends Entity {
     		if (landingGearPos < 1f) landingGearPos += 0.02f;
     		else if (landingGearPos > 1f) landingGearPos = 1f;
     	}
-    	//System.out.println("landingGearPos = "+landingGearPos);
     }
     
     /**

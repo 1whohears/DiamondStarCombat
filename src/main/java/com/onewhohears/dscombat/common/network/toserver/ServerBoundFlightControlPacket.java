@@ -72,7 +72,7 @@ public class ServerBoundFlightControlPacket extends IPacket {
 				if (plane.getControllingPassenger() == player) {
 					plane.updateControls(throttle, pitch, roll, yaw,
 							mouseMode, flare, shoot, select, openMenu);
-					if (gear) plane.switchLandingGear();
+					if (gear) plane.toggleLandingGear();
 				}
 			}
 			success.set(true);

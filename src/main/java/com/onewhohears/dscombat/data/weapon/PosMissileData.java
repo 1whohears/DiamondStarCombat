@@ -62,9 +62,6 @@ public class PosMissileData extends MissileData {
 	public List<ComponentColor> getInfoComponents() {
 		List<ComponentColor> list = super.getInfoComponents();
 		list.add(2, new ComponentColor(Component.literal("TARGETS POSITION"), 0xaaaa00));
-		if (getFov() != -1) list.add(new ComponentColor(Component.literal("FOV: ").append(getFov()+""), 0x040404));
-		list.add(new ComponentColor(Component.literal("Turn Rate: ").append(getMaxRot()+""), 0x040404));
-		list.add(new ComponentColor(Component.literal("Acceleration: ").append(getAcceleration()+""), 0x040404));
 		return list;
 	}
 

@@ -381,6 +381,7 @@ public abstract class WeaponData {
 		list.add(new ComponentColor(Component.literal(getType().toString()), 0x0000aa));
 		list.add(new ComponentColor(Component.literal("Max Ammo: ").append(getMaxAmmo()+""), 0x040404));
 		list.add(new ComponentColor(Component.literal("Fire Rate: ").append(getFireRate()+""), 0x040404));
+		list.add(new ComponentColor(Component.literal("Max Age: ").append(getMaxAge()+""), 0x040404));
 		return list;
 	}
 	

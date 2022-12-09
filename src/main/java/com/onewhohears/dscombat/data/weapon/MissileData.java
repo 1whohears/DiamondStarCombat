@@ -1,11 +1,14 @@
 package com.onewhohears.dscombat.data.weapon;
 
+import java.util.List;
+
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -119,6 +122,15 @@ public abstract class MissileData extends BulletData {
 		missile.setPos(missile.position().add(vehicle.getDeltaMovement()));
 		missile.setDeltaMovement(vehicle.getDeltaMovement());
 		return missile;
+	}
+	
+	@Override
+	public List<ComponentColor> getInfoComponents() {
+		List<ComponentColor> list = super.getInfoComponents();
+		if (getFov() != -1) list.add(new ComponentColor(Component.literal("FOV: ").append(getFov()+""), 0x040404));
+		list.add(new ComponentColor(Component.literal("Turn Rate: ").append(getMaxRot()+""), 0x040404));
+		list.add(new ComponentColor(Component.literal("Acceleration: ").append(getAcceleration()+""), 0x040404));
+		return list;
 	}
 
 }

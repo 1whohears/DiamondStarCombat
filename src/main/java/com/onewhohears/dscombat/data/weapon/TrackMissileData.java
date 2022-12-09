@@ -108,9 +108,6 @@ public class TrackMissileData extends MissileData {
 			break;
 		}
 		list.add(3, new ComponentColor(Component.literal("SELF GUIDED"), 0xaaaa00));
-		if (getFov() != -1) list.add(new ComponentColor(Component.literal("FOV: ").append(getFov()+""), 0x040404));
-		list.add(new ComponentColor(Component.literal("Turn Rate: ").append(getMaxRot()+""), 0x040404));
-		list.add(new ComponentColor(Component.literal("Acceleration: ").append(getAcceleration()+""), 0x040404));
 		return list;
 	}
 

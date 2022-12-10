@@ -358,7 +358,7 @@ public final class ClientForgeEvents {
 			}
 			Quaternion q = UtilAngles.lerpQ(event.getPartialTick(), plane.getPrevQ(), plane.getClientQ());
 			event.getPoseStack().mulPose(q);
-			// TODO player looks in wrong direction sometimes
+			// TODO player doesn't look in the right direction in certain cases
 			EulerAngles a = UtilAngles.toDegrees(q);
 			player.setYBodyRot(player.getYRot()-(float)a.yaw);
 			player.setYHeadRot(player.getYRot()-(float)a.yaw);

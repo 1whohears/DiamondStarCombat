@@ -51,17 +51,16 @@ public class EntityHelicopter extends EntityAbstractAircraft {
 	@Override
 	protected void addAdditionalSaveData(CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
-		compound.putFloat("accForward", this.getAccForward());
-		compound.putFloat("accSide", this.getAccSide());
+		compound.putFloat("accForward", getAccForward());
+		compound.putFloat("accSide", getAccSide());
 	}
 	
 	@Override
 	public void clientTick() {
 		super.clientTick();
-		float th = this.getCurrentThrottle();
+		float th = getCurrentThrottle();
 		propellerRotOld = propellerRot;
 		propellerRot += th * propellerRate;
-		//System.out.println("plane client tick rot "+propellerRot);
 	}
 	
 	@Override
@@ -92,7 +91,6 @@ public class EntityHelicopter extends EntityAbstractAircraft {
 		if (isOnGround() || isFreeLook()) {
 			torqueX = torqueZ = 0;
 			EulerAngles angles = UtilAngles.toDegrees(q);
-			//System.out.println("degrees "+angles);
 			float dRoll = getMaxDeltaRoll();
 			float dPitch = getMaxDeltaPitch();
 			float roll, pitch;
@@ -115,7 +113,6 @@ public class EntityHelicopter extends EntityAbstractAircraft {
 	public Vec3 getThrustForce(Quaternion q) {
 		Vec3 direction = UtilAngles.getYawAxis(q);
 		Vec3 thrustForce = direction.scale(getThrustMag());
-		//System.out.println("thrust force = "+thrustForce);
 		return thrustForce;
 	}
 	

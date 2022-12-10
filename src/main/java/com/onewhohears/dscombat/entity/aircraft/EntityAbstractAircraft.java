@@ -266,6 +266,9 @@ public abstract class EntityAbstractAircraft extends Entity {
 		else serverTick();
 	}
 	
+	/**
+	 * called on server side
+	 */
 	public void serverTick() {
 		tickCollisions();
 		if (getHealth() <= 0) {
@@ -273,6 +276,10 @@ public abstract class EntityAbstractAircraft extends Entity {
 		}
 	}
 	
+	/**
+	 * called on server tick 
+	 * damages plane if it falls 
+	 */
 	public void tickCollisions() {
 		if (this.verticalCollisionBelow || this.verticalCollision) {
 			double my = Math.abs(prevMotion.y);
@@ -282,16 +289,15 @@ public abstract class EntityAbstractAircraft extends Entity {
 					&& (this.zRot < 15f && this.zRot > -15f)) {
 				th = collideSpeedWithGearThreshHold;
 			}
-			/*if (my > 0) {
-				System.out.println("COLLISION SPEED "+my);
-				System.out.println("THRESHHOLD = "+th);
-			}*/
 			if (my > th && this.tickCount > 300) {
 				this.addHealth((float)(-(my-th) * collideDamageRate));
 			}
 		}
 	}
 	
+	/**
+	 * called on client side
+	 */
 	public void clientTick() {
 		tickLerp(); 
 		tickHealthSmoke();
@@ -299,8 +305,11 @@ public abstract class EntityAbstractAircraft extends Entity {
 		tickClientLandingGear();
 	}
 	
+	/**
+	 * plays the plane's engine sound
+	 */
 	public void tickClientSound() {
-		if (this.tickCount == 1) {
+		if (firstTick) {
 			UtilClientSafeSoundInstance.aircraftEngineSound(
 					Minecraft.getInstance(), this, getEngineSound());
 		}
@@ -322,6 +331,9 @@ public abstract class EntityAbstractAircraft extends Entity {
 				random.nextGaussian() * 0.08D);
 	}
 	
+	/**
+	 * restricts the motion of the craft based on max speed
+	 */
 	public void motionClamp() {
 		Vec3 motion = getDeltaMovement();
 		double max = getMaxSpeed();
@@ -360,11 +372,21 @@ public abstract class EntityAbstractAircraft extends Entity {
 		return (abs - td) * Math.signum(torque);
 	}
 	
+	/**
+	 * called on both client and server side every tick to change the craft's movement 
+	 * a force is a Vec3 to be added to this entities motion or getDeltaMovement()
+	 * in minecraft an entitie's motion is the blocks an entity will move per tick
+	 * @param q the plane's current rotation
+	 */
 	public void tickMovement(Quaternion q) {
 		if (onGround) tickGround(q);
 		else tickAir(q);
 	}
 	
+	/**
+	 * called on both client and server side every tick when the craft is on the ground
+	 * @param q the plane's current rotation
+	 */
 	public void tickGround(Quaternion q) {
 		Vec3 motion = getDeltaMovement();
 		if (motion.y < 0) motion = new Vec3(motion.x, 0, motion.z);
@@ -374,6 +396,10 @@ public abstract class EntityAbstractAircraft extends Entity {
 		setDeltaMovement(motion);
 	}
 	
+	/**
+	 * called on both client and server side every tick when the craft is in the air
+	 * @param q the plane's current rotation
+	 */
 	public void tickAir(Quaternion q) {
 		Vec3 motion = getDeltaMovement();
 		motion = motion.add(getWeightForce());
@@ -383,22 +409,36 @@ public abstract class EntityAbstractAircraft extends Entity {
 		resetFallDistance();
 	}
 	
+	/**
+	 * @param q the plane's current rotation
+	 * @return a force vector as the plane's thrust force this tick
+	 */
 	public abstract Vec3 getThrustForce(Quaternion q);
 	
+	/**
+	 * @return the magnitude of the thrust force based on the engines, throttle, and 0 if no fuel
+	 */
 	public double getThrustMag() {
 		if (this.getFuel() <= 0) return 0;
 		float throttle = getCurrentThrottle();
 		return throttle * getMaxThrust();
 	}
 	
+	/**
+	 * @return the total thrust from the engines in the parts manager
+	 */
 	public float getMaxThrust() {
 		return partsManager.getTotalEngineThrust();
 	}
 	
+	/**
+	 * will be the inverse of some proportion of the plane's current movement
+	 * @param q the plane's current rotation
+	 * @return a force vector as the plane's drag this tick
+	 */
 	public Vec3 getDragForce(Quaternion q) {
 		Vec3 direction = getDeltaMovement().normalize().scale(-1);
 		Vec3 dragForce = direction.scale(getDragMag());
-		//System.out.println("drag force = "+dragForce);
 		return dragForce;
 	}
 	
@@ -408,7 +448,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	public double surfaceAreaDrag() {
 		// Drag = (drag coefficient) * (air pressure) * (speed)^2 * (wing surface area) / 2
-		double dc = 0.030;
+		double dc = 0.025;
 		double air = UtilEntity.getAirPressure(getY());
 		double speedSqr = getDeltaMovement().lengthSqr();
 		double wing = getSurfaceArea();
@@ -416,6 +456,12 @@ public abstract class EntityAbstractAircraft extends Entity {
 		return dc * air * speedSqr * wing / 2;
 	}
 	
+	/**
+	 * this is a super simplified aircraft parameter
+	 * probably should be called the wing surface area as it's used in the lift force equation
+	 * but it is also used to calculate drag so maybe I should make separate variables
+	 * @return the surface area of the plane
+	 */
 	public float getSurfaceArea() {
 		return entityData.get(WING_AREA);
 	}
@@ -425,6 +471,9 @@ public abstract class EntityAbstractAircraft extends Entity {
 		entityData.set(WING_AREA, area);
 	}
 	
+	/**
+	 * @return friction force restricting movement of the craft while on the ground
+	 */
 	public Vec3 getFrictionForce() {
 		double x = getDeltaMovement().x;
 		double z = getDeltaMovement().z;
@@ -448,12 +497,18 @@ public abstract class EntityAbstractAircraft extends Entity {
 		return new Vec3(0, -getTotalWeight(), 0);
 	}
 	
+	/**
+	 * @return this weight of the aircraft plus the weight of the parts
+	 */
 	public float getTotalWeight() {
 		float w = getAircraftWeight() + partsManager.getPartsWeight();
-		//System.out.println("WEIGHT = "+w);
 		return w;
 	}
 	
+	/**
+	 * this is NOT the total weight
+	 * @return the weight of the fuselage 
+	 */
 	public float getAircraftWeight() {
 		return entityData.get(WEIGHT);
 	}
@@ -463,6 +518,9 @@ public abstract class EntityAbstractAircraft extends Entity {
 		entityData.set(WEIGHT, weight);
 	}
 	
+	/**
+	 * fired on both client and server side to control the plane's weapons, flares, open menu
+	 */
 	public void controlSystem() {
 		Entity controller = this.getControllingPassenger();
 		if (controller == null) return;
@@ -499,6 +557,9 @@ public abstract class EntityAbstractAircraft extends Entity {
 		partsManager.useFlares(isPlayer && ((ServerPlayer)controller).isCreative());
 	}
 	
+	/**
+	 * ticks the parts manager
+	 */
 	public void tickParts() {
 		if (level.isClientSide) partsManager.clientTickParts();
 		else partsManager.tickParts();
@@ -512,32 +573,25 @@ public abstract class EntityAbstractAircraft extends Entity {
         lerpSteps = 10;
     }
 	
+	/**
+	 * this is used on the client side and fills in the positions and rotations of the entity between ticks
+	 */
 	private void tickLerp() {
-		if (this.isControlledByLocalInstance()) {
-			this.lerpSteps = 0;
-			//this.lerpStepsQ = 0;
+		if (isControlledByLocalInstance()) {
+			lerpSteps = 0;
 			return;
 		}
-		if (this.lerpSteps > 0) {
-			double d0 = this.getX() + (this.lerpX - this.getX()) / (double)this.lerpSteps;
-	        double d1 = this.getY() + (this.lerpY - this.getY()) / (double)this.lerpSteps;
-	        double d2 = this.getZ() + (this.lerpZ - this.getZ()) / (double)this.lerpSteps;
-	        double d3 = Mth.wrapDegrees(this.lerpYRot - (double)this.getYRot());
-	        this.setYRot(this.getYRot() + (float)d3 / (float)this.lerpSteps);
-	        this.setXRot(this.getXRot() + (float)(this.lerpXRot - (double)this.getXRot()) / (float)this.lerpSteps);
-	        --this.lerpSteps;
-	        this.setPos(d0, d1, d2);
-	        this.setRot(this.getYRot(), this.getXRot());
+		if (lerpSteps > 0) {
+			double d0 = getX() + (lerpX - getX()) / (double)lerpSteps;
+	        double d1 = getY() + (lerpY - getY()) / (double)lerpSteps;
+	        double d2 = getZ() + (lerpZ - getZ()) / (double)lerpSteps;
+	        double d3 = Mth.wrapDegrees(lerpYRot - (double)getYRot());
+	        setYRot(getYRot() + (float)d3 / (float)lerpSteps);
+	        setXRot(getXRot() + (float)(lerpXRot - (double)getXRot()) / (float)lerpSteps);
+	        --lerpSteps;
+	        setPos(d0, d1, d2);
+	        setRot(getYRot(), getXRot());
 		}
-		/*if (lerpStepsQ > 0) {
-			setPrevQ(getClientQ());
-			setClientQ(UtilAngles.lerpQ(1f / lerpSteps, getClientQ(), getQ()));
-			--lerpStepsQ;
-		} else if (lerpStepsQ == 0) {
-			setPrevQ(getClientQ());
-			setClientQ(getQ());
-			--lerpStepsQ;
-		}*/
 	}
 	
 	public void updateControls(float throttle, float pitch, float roll, float yaw,
@@ -587,21 +641,20 @@ public abstract class EntityAbstractAircraft extends Entity {
 		partsManager.setupParts(this);
 	}
 	
+	/**
+	 * gets the part manager, weapon system, and radar system data from the server
+	 */
 	public void clientSetup() {
 		PacketHandler.INSTANCE.sendToServer(new ServerBoundRequestPlaneDataPacket(getId()));
 	}
 	
 	@Override
 	public InteractionResult interact(Player player, InteractionHand hand) {
-		//System.out.println("interact with plane client side "+level.isClientSide);
 		if (player.isSecondaryUseActive()) {
-			//System.out.println("secondary use");
 			return InteractionResult.PASS;
 		} else if (player.getRootVehicle() != null && player.getRootVehicle().equals(this)) {
-			//System.out.println("root vehicle same");
 			return InteractionResult.PASS;
 		} else if (!this.level.isClientSide) {
-			//System.out.println("server side");
 			ItemStack stack = player.getInventory().getSelected();
 			if (!stack.isEmpty()) {
 				if (stack.getItem() instanceof ItemGasCan) {
@@ -619,15 +672,12 @@ public abstract class EntityAbstractAircraft extends Entity {
 				}
 			}
 			boolean okay = rideAvailableSeat(player);
-			//System.out.println("rideSeat = "+okay);
 			return okay ? InteractionResult.CONSUME : InteractionResult.PASS;
 		} else if (this.level.isClientSide) {	
-			//System.out.println("client side");
 			Minecraft m = Minecraft.getInstance();
 			if (m.player.equals(player)) ClientForgeEvents.centerMouse();
 			return InteractionResult.SUCCESS;
-		} 
-		//System.out.println("end");
+		}
 		return InteractionResult.SUCCESS;
 	}
 	
@@ -635,7 +685,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		for (EntitySeat seat : seats) 
 			if (seat.getSlotId().equals(PartSlot.PILOT_SLOT_NAME)) {
 				if (e.startRiding(seat)) {
-					this.newRiderCooldown = 10;
+					newRiderCooldown = 10;
 					return true;
 				} else return false;
 			}
@@ -651,9 +701,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	}
 	
 	public boolean switchSeat(Entity e) {
-		//System.out.println(e+" switching seats on "+this);
-		List<EntitySeat> seats = this.getSeats();
-		//System.out.println("GOT SEATS "+seats);
+		List<EntitySeat> seats = getSeats();
 		int seatIndex = -1;
 		for (int i = 0; i < seats.size(); ++i) {
 			Player p = seats.get(i).getPlayer();
@@ -664,29 +712,22 @@ public abstract class EntityAbstractAircraft extends Entity {
 			}
 		}
 		if (seatIndex == -1) {
-			//System.out.println("not riding any of the seats");
 			return false;
 		}
 		System.out.println("riding seat "+seatIndex);
 		int i = 0, j = seatIndex+1;
 		while (i < seats.size()-1) {
 			if (j >= seats.size()) j = 0;
-			//System.out.println("i = "+i+" j = "+j);
-			//System.out.println("checking to ride "+seats.get(j));
 			if (e.startRiding(seats.get(j))) {
-				//System.out.println("riding");
 				return true;
 			}
 			++i; ++j;
 		}
-		//System.out.println("could not ride any of them");
 		return false;
 	}
 	
 	@Override
     public void positionRider(Entity passenger) {
-		//if (!this.hasPassenger(passenger)) return;
-		//System.out.println("POSITION RIDER "+passenger);
 		Quaternion q;
 		if (level.isClientSide) q = getClientQ();
 		else q = getQ();
@@ -695,11 +736,6 @@ public abstract class EntityAbstractAircraft extends Entity {
 			passenger.setPos(position().add(seatPos));
 		}
 	}
-	
-	/*@Override
-    public Vec3 getDismountLocationForPassenger(LivingEntity livingEntity) {
-		return super.getDismountLocationForPassenger(livingEntity);
-	}*/
 	
 	@Nullable
 	@Override
@@ -718,18 +754,15 @@ public abstract class EntityAbstractAircraft extends Entity {
 	@Override
     protected void addPassenger(Entity passenger) {
         super.addPassenger(passenger);
-        //System.out.println("AIRCRAFT ADDED PASSENGER "+passenger);
 	}
 	
 	@Override
     protected boolean canAddPassenger(Entity passenger) {
-		//System.out.println("CAN ADD PASSENGER "+passenger);
-		return passenger instanceof EntitySeat;
+		return passenger instanceof EntityAbstractPart;
 	}
 	
 	@Override
     protected boolean canRide(Entity entityIn) {
-		//System.out.println("CAN RIDE "+entityIn);
         return false;
     }
 	
@@ -763,8 +796,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	@Override
     public boolean hurt(DamageSource source, float amount) {
-		//if (level.isClientSide) return true; // should be a temporary fix
-		if (this.isVehicleOf(source.getEntity())) return false;
+		if (isVehicleOf(source.getEntity())) return false;
 		addHealth(-amount);
 		return true;
 	}
@@ -787,6 +819,9 @@ public abstract class EntityAbstractAircraft extends Entity {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 	
+	/**
+	 * @return the max speed of the craft along the x and z axis
+	 */
     public float getMaxSpeed() {
     	return entityData.get(MAX_SPEED);
     }
@@ -795,6 +830,9 @@ public abstract class EntityAbstractAircraft extends Entity {
     	entityData.set(MAX_SPEED, maxSpeed);
     }
     
+    /**
+     * @return between 0 and 1
+     */
     public float getCurrentThrottle() {
     	return entityData.get(THROTTLE);
     }

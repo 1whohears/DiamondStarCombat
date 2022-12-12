@@ -44,7 +44,7 @@ public abstract class EntityMissile extends EntityBullet {
 	public EntityMissile(EntityType<? extends EntityMissile> type, Level level) {
 		super(type, level);
 		if (!level.isClientSide) NonTickingMissileManager.addMissile(this);
-		else engineSound();
+		if (level.isClientSide) engineSound();
 	}
 	
 	public EntityMissile(Level level, Entity owner, MissileData data) {

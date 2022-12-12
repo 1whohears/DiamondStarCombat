@@ -113,7 +113,7 @@ public class WeaponPartData extends PartData {
 	@Override
 	public void tick(String slotId) {
 		super.tick(slotId);
-		WeaponData data = this.getParent().weaponSystem.get(weaponId, slotId);
+		WeaponData data = getParent().weaponSystem.get(weaponId, slotId);
 		if (data != null) {
 			ammo = data.getCurrentAmmo();
 			max = data.getMaxAmmo();

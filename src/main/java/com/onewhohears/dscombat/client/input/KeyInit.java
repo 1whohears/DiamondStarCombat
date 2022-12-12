@@ -54,7 +54,7 @@ public final class KeyInit {
 		flipControls = registerKey("flip_controls_key", FLIGHT_CONTROL, InputConstants.KEY_LALT);
 		changeSeat = registerKey("change_seat_key", FLIGHT_CONTROL, InputConstants.KEY_SEMICOLON);
 		landingGear = registerKey("landing_gear_key", FLIGHT_CONTROL, InputConstants.KEY_L);
-		sharePos = registerMouse("share_pos_key", FLIGHT_CONTROL, InputConstants.MOUSE_BUTTON_MIDDLE);
+		sharePos = registerKey("share_pos_key", FLIGHT_CONTROL, InputConstants.KEY_O);
 	}
 	
 	private static KeyMapping registerKey(String name, String category, int keycode) {

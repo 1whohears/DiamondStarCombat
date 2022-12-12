@@ -231,8 +231,8 @@ public abstract class EntityAbstractAircraft extends Entity {
 	@Override
 	public void tick() {
 		if (Double.isNaN(getDeltaMovement().length())) setDeltaMovement(Vec3.ZERO);
+		if (firstTick) init(); // MUST BE CALLED BEFORE SUPER
 		super.tick();
-		if (firstTick) init();
 		// SET PREV/OLD
 		prevMotion = getDeltaMovement();
 		zRotO = zRot;

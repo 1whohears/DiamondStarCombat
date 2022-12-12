@@ -106,6 +106,7 @@ public class EntityBullet extends EntityAbstractWeapon {
 				System.out.println("BULLET "+this);
 				System.out.println("HIT "+hit);
 				System.out.println("OWNER "+owner);
+				// TODO player can shoot them self with their own missile if it lags and the missile is behind the plane
 				if (owner instanceof Player) {
 					if (hit instanceof Player && !((Player)owner).canHarmPlayer((Player)hit)) {
 						hitresult = null;

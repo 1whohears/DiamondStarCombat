@@ -102,7 +102,7 @@ public abstract class WeaponData {
 		tag.putInt("fireRate", fireRate);
 		tag.putBoolean("canShootOnGround", canShootOnGround);
 		tag.putString("slotId", slotId);
-		tag.putString("entityType", entityType.getId().toString());
+		tag.putString("entityType", entityType.getId().toString()); // TODO entityType is null sometimes use getEntityType()
 		tag.putString("shootSound", shootSound.getId().toString());
 		DSCIngredient.writeIngredients(ingredients, tag);
 		tag.putInt("craftNum", craftNum);

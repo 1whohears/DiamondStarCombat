@@ -63,15 +63,12 @@ public final class ClientForgeEvents {
 		boolean mouseMode = KeyInit.mouseModeKey.consumeClick();
 		boolean gear = KeyInit.landingGear.consumeClick();
 		if (!(player.getRootVehicle() instanceof EntityAbstractAircraft plane)) return;
-		//System.out.println("controller passenger "+plane.getControllingPassenger());
 		if (plane.getControllingPassenger() == null 
 				|| !plane.getControllingPassenger().equals(player)) return;
 		if (KeyInit.resetMouseKey.isDown()) centerMouse();
 		else if (m.screen != null) centerMouse();
 		double mouseX = m.mouseHandler.xpos() - mouseCenterX;
 		double mouseY = -(m.mouseHandler.ypos() - mouseCenterY);
-		//System.out.println("VEHICLE "+player.getVehicle());
-		//System.out.println("ROOT "+player.getRootVehicle());
 		boolean flare = KeyInit.flareKey.isDown();
 		boolean shoot = KeyInit.shootKey.isDown();
 		boolean flip = KeyInit.flipControls.isDown();
@@ -99,7 +96,6 @@ public final class ClientForgeEvents {
 			throttleDown = KeyInit.throttleDownKey.isDown();
 		}
 		if (!plane.isFreeLook()) {
-			//System.out.println("x = "+mouseX+" y = "+mouseY);
 			double ya = Math.abs(mouseY);
 			double xa = Math.abs(mouseX);
 			float ys = (float) Math.signum(mouseY);
@@ -124,7 +120,6 @@ public final class ClientForgeEvents {
 		if (rollRight) roll += 1;
 		if (throttleUp) throttle += 1;
 		if (throttleDown) throttle -= 1;
-		//System.out.println("pitch = "+pitch+" yaw = "+yaw);
 		PacketHandler.INSTANCE.sendToServer(new ServerBoundFlightControlPacket(
 				throttle, pitch, roll, yaw,
 				mouseMode, flare, shoot, select, openMenu, gear));
@@ -141,16 +136,13 @@ public final class ClientForgeEvents {
 		if (player == null) return;
 		boolean seat = KeyInit.changeSeat.consumeClick();
 		if (!(player.getRootVehicle() instanceof EntityAbstractAircraft plane)) return;
-		//boolean shoot = KeyInit.shootKey.isDown();
 		if (seat) {
-			//System.out.println("CHANGE SEAT BUTTON PRESSED");
 			PacketHandler.INSTANCE.sendToServer(new ServerBoundSwitchSeatPacket(plane.getId()));
 		}
 		RadarSystem radar = plane.radarSystem;
 		List<RadarPing> pings = radar.getClientRadarPings();
 		boolean hovering = false;
 		if (pings != null) {
-			//System.out.println("ping size "+pings.size());
 			for (int i = 0; i < pings.size(); ++i) {
 				RadarPing p = pings.get(i);
 				if (isPlayerLookingAtPing(player, p)) {
@@ -162,7 +154,6 @@ public final class ClientForgeEvents {
 			}
 		}
 		if (!hovering) resetHoverIndex();
-		//System.out.println("hover index = "+hoverIndex);
 	}
 	
 	public static void centerMouse() {
@@ -194,7 +185,6 @@ public final class ClientForgeEvents {
 		Minecraft m = Minecraft.getInstance();
 		if (event.getTarget().equals(m.player)) {
 			event.setCanceled(true);
-			//System.out.println("canceled");
 		}
 	}
 	
@@ -247,7 +237,6 @@ public final class ClientForgeEvents {
 		List<RadarPing> pings = radar.getClientRadarPings();
 		int selected = radar.getClientSelectedPingIndex();
 		if (pings == null) return;
-		//System.out.println("RADAR PINGS");
 		RenderSystem.depthMask(false);
 		RenderSystem.disableCull();
 		RenderSystem.enableBlend();
@@ -257,7 +246,7 @@ public final class ClientForgeEvents {
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		for (int i = 0; i < pings.size(); ++i) {
 			RadarPing p = pings.get(i);
-			//System.out.println(i+" "+p);
+			
 			if (i == selected) setSelectedColor();
 			else if (i == hoverIndex) setHoverColor();
 			else if (p.isFriendly) setFriendlyColor();

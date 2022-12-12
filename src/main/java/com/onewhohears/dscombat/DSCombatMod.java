@@ -9,7 +9,6 @@ import com.onewhohears.dscombat.client.screen.WeaponsBlockScreen;
 import com.onewhohears.dscombat.common.event.CommonForgeEvents;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.data.AircraftPresets;
-import com.onewhohears.dscombat.data.ChunkManager;
 import com.onewhohears.dscombat.data.radar.RadarPresets;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.init.DataSerializers;
@@ -75,14 +74,14 @@ public class DSCombatMod
     
     @SubscribeEvent
 	public static void serverStoping(ServerStoppingEvent event) {
-    	LOGGER.info("SERVER STOPPING "+event.getServer());
-		ChunkManager.unloadAll(event.getServer());
+    	//LOGGER.info("SERVER STOPPING "+event.getServer());
+		//ChunkManager.unloadAll(event.getServer());
 	}
 	
 	@SubscribeEvent
 	public static void levelUnload(LevelEvent.Unload event) {
-		LOGGER.info("LEVEL UNLOADING "+event.getLevel());
-		ChunkManager.unloadAllInLevel(event.getLevel());
+		//LOGGER.info("LEVEL UNLOADING "+event.getLevel());
+		//ChunkManager.unloadAllInLevel(event.getLevel());
 	}
     
 }

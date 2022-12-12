@@ -37,14 +37,14 @@ public final class KeyInit {
 	
 	public static void init(RegisterKeyMappingsEvent e) {
 		event = e;
-		throttleUpKey = registerKey("throttle_up_key", FLIGHT_CONTROL, InputConstants.KEY_W);
-		throttleDownKey = registerKey("throttle_down_key", FLIGHT_CONTROL, InputConstants.KEY_S);
-		pitchUpKey = registerKey("pitch_up_key", FLIGHT_CONTROL, InputConstants.KEY_UP);
-		pitchDownKey = registerKey("pitch_down_key", FLIGHT_CONTROL, InputConstants.KEY_DOWN);
-		rollLeftKey = registerKey("roll_left_key", FLIGHT_CONTROL, InputConstants.KEY_A);
-		rollRightKey = registerKey("roll_right_key", FLIGHT_CONTROL, InputConstants.KEY_D);
-		yawLeftKey = registerKey("yaw_left_key", FLIGHT_CONTROL, InputConstants.KEY_LEFT);
-		yawRightKey = registerKey("yaw_right_key", FLIGHT_CONTROL, InputConstants.KEY_RIGHT);
+		throttleUpKey = registerKey("throttle_up_key", FLIGHT_CONTROL, InputConstants.KEY_UP);
+		throttleDownKey = registerKey("throttle_down_key", FLIGHT_CONTROL, InputConstants.KEY_DOWN);
+		pitchUpKey = registerKey("pitch_up_key", FLIGHT_CONTROL, InputConstants.KEY_W);
+		pitchDownKey = registerKey("pitch_down_key", FLIGHT_CONTROL, InputConstants.KEY_S);
+		rollLeftKey = registerKey("roll_left_key", FLIGHT_CONTROL, InputConstants.KEY_LEFT);
+		rollRightKey = registerKey("roll_right_key", FLIGHT_CONTROL, InputConstants.KEY_RIGHT);
+		yawLeftKey = registerKey("yaw_left_key", FLIGHT_CONTROL, InputConstants.KEY_A);
+		yawRightKey = registerKey("yaw_right_key", FLIGHT_CONTROL, InputConstants.KEY_D);
 		flareKey = registerKey("flare_key", FLIGHT_CONTROL, InputConstants.KEY_V);
 		mouseModeKey = registerKey("mouse_mode_key", FLIGHT_CONTROL, InputConstants.KEY_LCONTROL);
 		shootKey = registerMouse("shoot_key", FLIGHT_CONTROL, InputConstants.MOUSE_BUTTON_RIGHT);

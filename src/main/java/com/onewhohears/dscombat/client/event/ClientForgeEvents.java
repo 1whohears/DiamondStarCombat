@@ -78,7 +78,7 @@ public final class ClientForgeEvents {
 		float pitch = 0, roll = 0, yaw = 0, throttle = 0;
 		boolean pitchUp, pitchDown, yawLeft, yawRight;
 		boolean rollLeft, rollRight, throttleUp, throttleDown;
-		if (plane.isFreeLook()) flip = !flip;
+		if (!plane.isFreeLook()) flip = !flip;
 		if (flip) {
 			pitchUp = KeyInit.throttleUpKey.isDown();
 			pitchDown = KeyInit.throttleDownKey.isDown();

@@ -234,12 +234,12 @@ public abstract class EntityMissile extends EntityBullet {
 		xRotO = getXRot(); 
 		yRotO = getYRot();
 		if (tickCount > maxAge) { 
-			System.out.println("old");
+			//System.out.println("old");
 			kill();
 			return;
 		}
 		if (targetPos == null) {
-			System.out.println("no target pos");
+			//System.out.println("no target pos");
 			kill();
 			return;
 		}

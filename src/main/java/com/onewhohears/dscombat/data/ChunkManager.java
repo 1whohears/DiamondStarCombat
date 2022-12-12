@@ -12,6 +12,11 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.common.world.ForgeChunkManager;
 
+/**
+ * Missiles used to load their own chunks but I opted to "simulate" the missile entities movements when they aren't in loaded chunks with {@link NonTickingMissileManager}
+ * @author 1whohears
+ */
+@Deprecated
 public class ChunkManager {
 	
 	public static final int maxTicks = 20;

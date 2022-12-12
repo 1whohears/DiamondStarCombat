@@ -301,18 +301,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public void clientTick() {
 		tickLerp(); 
 		tickHealthSmoke();
-		tickClientSound();
 		tickClientLandingGear();
-	}
-	
-	/**
-	 * plays the plane's engine sound
-	 */
-	public void tickClientSound() {
-		if (firstTick) {
-			UtilClientSafeSoundInstance.aircraftEngineSound(
-					Minecraft.getInstance(), this, getEngineSound());
-		}
 	}
 	
 	private void tickHealthSmoke() {
@@ -645,6 +634,8 @@ public abstract class EntityAbstractAircraft extends Entity {
 	 * gets the part manager, weapon system, and radar system data from the server
 	 */
 	public void clientSetup() {
+		UtilClientSafeSoundInstance.aircraftEngineSound(
+				Minecraft.getInstance(), this, getEngineSound());
 		PacketHandler.INSTANCE.sendToServer(new ServerBoundRequestPlaneDataPacket(getId()));
 	}
 	

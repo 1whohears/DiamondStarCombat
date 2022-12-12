@@ -24,7 +24,7 @@ public class DopplerOnPlayerSoundInstance extends AbstractTickableSoundInstance 
 		this.entity = entity;
 		this.looping = true;
 		this.delay = 0;
-		this.volume = 0.001f;
+		this.volume = 0.001f; // when missile enters client world from far a way the sound is loud at first without this
 		this.initVolume = initVolume;
 		this.pitch = initPitch;
 		this.initPitch = initPitch;

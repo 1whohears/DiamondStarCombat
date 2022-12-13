@@ -1,7 +1,5 @@
 package com.onewhohears.dscombat.init;
 
-import javax.annotation.Nullable;
-
 import com.google.common.collect.ImmutableSet;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.entity.aircraft.EntityHelicopter;
@@ -31,13 +29,6 @@ public class ModEntities {
 	
 	public static void register(IEventBus eventBus) {
 		ENTITIES.register(eventBus);
-	}
-	
-	@Nullable
-	public static RegistryObject<EntityType<?>> getObjectByKey(String key) {
-		for (RegistryObject<EntityType<?>> type : ENTITIES.getEntries()) 
-			if(type.getId().toString().equals(key)) return type;
-		return null;
 	}
 	
 	/*public static final RegistryObject<EntityType<EntityPlane>> TEST_PLANE = ENTITIES.register("test_plane", 

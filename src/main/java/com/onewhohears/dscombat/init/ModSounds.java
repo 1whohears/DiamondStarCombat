@@ -1,7 +1,5 @@
 package com.onewhohears.dscombat.init;
 
-import javax.annotation.Nullable;
-
 import com.onewhohears.dscombat.DSCombatMod;
 
 import net.minecraft.resources.ResourceLocation;
@@ -26,13 +24,6 @@ public class ModSounds {
 	
 	public static void register(IEventBus eventBus) {
 		SOUND_EVENTS.register(eventBus);
-	}
-	
-	@Nullable
-	public static RegistryObject<SoundEvent> getObjectByKey(String key) {
-		for (RegistryObject<SoundEvent> sound : SOUND_EVENTS.getEntries()) 
-			if(sound.getId().toString().equals(key)) return sound;
-		return null;
 	}
 	
 	private static RegistryObject<SoundEvent> registerSoundEvent(String name) {

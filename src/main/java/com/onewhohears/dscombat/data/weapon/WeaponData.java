@@ -34,15 +34,17 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 
 public abstract class WeaponData {
 	
 	public final List<DSCIngredient> ingredients;
 	public final int craftNum;
-	protected final RegistryObject<EntityType<?>> entityType;
-	protected final RegistryObject<SoundEvent> shootSound;
 	
+	private final String entityTypeKey;
+	private final String shootSoundKey;
+	
+	private EntityType<?> entityType;
+	private SoundEvent shootSound;
 	private String id;
 	private Vec3 pos = Vec3.ZERO;
 	private int maxAge;
@@ -84,9 +86,8 @@ public abstract class WeaponData {
 		fireRate = tag.getInt("fireRate");
 		canShootOnGround = tag.getBoolean("canShootOnGround");
 		slotId = tag.getString("slotId");
-		
-		entityType = ModEntities.getObjectByKey(tag.getString("entityType"));
-		shootSound = ModSounds.getObjectByKey(tag.getString("shootSound"));
+		entityTypeKey = tag.getString("entityType");
+		shootSoundKey = tag.getString("shootSound");
 		ingredients = DSCIngredient.getIngredients(tag);
 		craftNum = tag.getInt("craftNum");
 	}
@@ -102,8 +103,8 @@ public abstract class WeaponData {
 		tag.putInt("fireRate", fireRate);
 		tag.putBoolean("canShootOnGround", canShootOnGround);
 		tag.putString("slotId", slotId);
-		tag.putString("entityType", entityType.getId().toString()); // TODO entityType is null sometimes use getEntityType()
-		tag.putString("shootSound", shootSound.getId().toString());
+		tag.putString("entityType", entityTypeKey);
+		tag.putString("shootSound", shootSoundKey);
 		DSCIngredient.writeIngredients(ingredients, tag);
 		tag.putInt("craftNum", craftNum);
 		return tag;
@@ -112,10 +113,10 @@ public abstract class WeaponData {
 	public WeaponData(FriendlyByteBuf buffer) {
 		// type int is read in DataSerializers
 		//System.out.println("WEAPON DATA BUFFER");
-		entityType = ModEntities.getObjectByKey(buffer.readUtf());
-		//System.out.println("entityType = "+entityType.getId().toString());
-		shootSound = ModSounds.getObjectByKey(buffer.readUtf());
-		//System.out.println("shootSound = "+shootSound.getId().toString());
+		entityTypeKey = buffer.readUtf();
+		//System.out.println("entityTypeKey = "+entityTypeKey);
+		shootSoundKey = buffer.readUtf();
+		//System.out.println("shootSoundKey = "+shootSoundKey);
 		craftNum = buffer.readInt();
 		//System.out.println("craftNum = "+craftNum);
 		ingredients = DSCIngredient.getIngredients(buffer);
@@ -140,8 +141,8 @@ public abstract class WeaponData {
 	
 	public void write(FriendlyByteBuf buffer) {
 		buffer.writeInt(getType().ordinal());
-		buffer.writeUtf(entityType.getId().toString());
-		buffer.writeUtf(shootSound.getId().toString());
+		buffer.writeUtf(entityTypeKey);
+		buffer.writeUtf(shootSoundKey);
 		buffer.writeInt(craftNum);
 		DSCIngredient.writeIngredients(ingredients, buffer);
 		buffer.writeUtf(id);
@@ -342,13 +343,21 @@ public abstract class WeaponData {
 	}
 	
 	public EntityType<?> getEntityType() {
-		if (entityType == null) return null;
-		return entityType.get();
+		if (entityType == null) {
+			try { entityType = ForgeRegistries.ENTITY_TYPES
+					.getDelegate(new ResourceLocation(entityTypeKey)).get().get(); }
+			catch(NoSuchElementException e) { entityType = ModEntities.BULLET.get(); }
+		}
+		return entityType;
 	}
 	
 	public SoundEvent getShootSound() {
-		if (shootSound == null) return ModSounds.BULLET_SHOOT_1.get();
-		return shootSound.get();
+		if (shootSound == null) {
+			try { shootSound = ForgeRegistries.SOUND_EVENTS
+					.getDelegate(new ResourceLocation(shootSoundKey)).get().get(); }
+			catch(NoSuchElementException e) { shootSound = ModSounds.BULLET_SHOOT_1.get(); }
+		}
+		return shootSound;
 	}
 	
 	private Item item;

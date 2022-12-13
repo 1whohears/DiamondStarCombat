@@ -95,18 +95,18 @@ public class EntityBullet extends EntityAbstractWeapon {
 		if (hitresult.getType() != HitResult.Type.MISS) {
 			vec33 = hitresult.getLocation();
 		}
+		Entity owner = getOwner();
 		while(!this.isRemoved()) {
 			EntityHitResult entityhitresult = this.findHitEntity(vec32, vec33);
 			if (entityhitresult != null) {
 				hitresult = entityhitresult;
 			}
-			if (hitresult != null && hitresult.getType() == HitResult.Type.ENTITY) {
+			if (owner != null && hitresult != null && hitresult.getType() == HitResult.Type.ENTITY) {
 				Entity hit = ((EntityHitResult)hitresult).getEntity();
-				Entity owner = getOwner();
 				System.out.println("BULLET "+this);
 				System.out.println("HIT "+hit);
 				System.out.println("OWNER "+owner);
-				if (owner != null && owner.equals(hit)) {
+				if (owner.equals(hit)) {
 					hitresult = null;
 					entityhitresult = null;
 				} else if (owner instanceof Player player) {
@@ -120,7 +120,7 @@ public class EntityBullet extends EntityAbstractWeapon {
 							entityhitresult = null;
 						}
 					}
-				}
+				} 
 			}
 			if (hitresult != null && hitresult.getType() != HitResult.Type.MISS && !noPhysics 
 					&& !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, hitresult)) {

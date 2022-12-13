@@ -102,19 +102,17 @@ public class EntityBullet extends EntityAbstractWeapon {
 			}
 			if (hitresult != null && hitresult.getType() == HitResult.Type.ENTITY) {
 				Entity hit = ((EntityHitResult)hitresult).getEntity();
-				Entity owner = this.getOwner();
+				Entity owner = getOwner();
 				System.out.println("BULLET "+this);
 				System.out.println("HIT "+hit);
 				System.out.println("OWNER "+owner);
-				// TODO player can shoot them self with their own missile if it lags and the missile is behind the plane
-				if (owner instanceof Player) {
-					if (hit instanceof Player && !((Player)owner).canHarmPlayer((Player)hit)) {
+				if (owner instanceof Player player) {
+					if (player.equals(hit) || (hit instanceof Player p && !player.canHarmPlayer(p))) {
 						hitresult = null;
 						entityhitresult = null;
 					} else if (hit instanceof EntityAbstractAircraft plane) {
 						Entity c = plane.getControllingPassenger();
-						if (c != null && c instanceof Player 
-								&& !((Player)owner).canHarmPlayer((Player)c)) {
+						if (player.equals(c) || (c instanceof Player p && !player.canHarmPlayer(p))) {
 							hitresult = null;
 							entityhitresult = null;
 						}

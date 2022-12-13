@@ -106,8 +106,11 @@ public class EntityBullet extends EntityAbstractWeapon {
 				System.out.println("BULLET "+this);
 				System.out.println("HIT "+hit);
 				System.out.println("OWNER "+owner);
-				if (owner instanceof Player player) {
-					if (player.equals(hit) || (hit instanceof Player p && !player.canHarmPlayer(p))) {
+				if (owner != null && owner.equals(hit)) {
+					hitresult = null;
+					entityhitresult = null;
+				} else if (owner instanceof Player player) {
+					if (hit instanceof Player p && !player.canHarmPlayer(p)) {
 						hitresult = null;
 						entityhitresult = null;
 					} else if (hit instanceof EntityAbstractAircraft plane) {

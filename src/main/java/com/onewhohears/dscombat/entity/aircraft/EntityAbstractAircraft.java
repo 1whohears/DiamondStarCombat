@@ -85,6 +85,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	public static final EntityDataAccessor<Integer> MISSILE_TRACKED_TICKS = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> LOCKED_ONTO_TICKS = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Boolean> LANDING_GEAR = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Boolean> TEST_MODE = SynchedEntityData.defineId(EntityAbstractAircraft.class, EntityDataSerializers.BOOLEAN);
 	
 	public static final double collideSpeedThreshHold = 1d;
 	public static final double collideSpeedWithGearThreshHold = 2d;
@@ -139,6 +140,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 		entityData.define(MISSILE_TRACKED_TICKS, 0);
 		entityData.define(LOCKED_ONTO_TICKS, 0);
 		entityData.define(LANDING_GEAR, false);
+		entityData.define(TEST_MODE, false);
 	}
 	
 	@Override
@@ -160,6 +162,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
 		// this function is called on the server side only
+		this.setTestMode(compound.getBoolean("test_mode"));
 		String initType = compound.getString("preset");
 		if (!initType.isEmpty()) {
 			CompoundTag tag = AircraftPresets.getPreset(initType);
@@ -193,6 +196,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 
 	@Override
 	protected void addAdditionalSaveData(CompoundTag compound) {
+		compound.putBoolean("test_mode", this.isTestMode());
 		compound.putString("preset", "");
 		partsManager.write(compound);
 		weaponSystem.write(compound);
@@ -253,9 +257,11 @@ public abstract class EntityAbstractAircraft extends Entity {
 		setYRot((float)angles.yaw);
 		zRot = (float)angles.roll;
 		// MOVEMENT
-		tickMovement(q);
-    	motionClamp();
-		move(MoverType.SELF, getDeltaMovement());
+		if (!isTestMode()) {
+			tickMovement(q);
+			motionClamp();
+			move(MoverType.SELF, getDeltaMovement());
+		}
 		if (this.isControlledByLocalInstance()) 
 			this.syncPacketPositionCodec(getX(), getY(), getZ());
         // OTHER
@@ -271,9 +277,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	 */
 	public void serverTick() {
 		tickCollisions();
-		if (getHealth() <= 0) {
-			kill();
-		}
+		if (!isTestMode() && getHealth() <= 0) kill();
 	}
 	
 	/**
@@ -285,8 +289,8 @@ public abstract class EntityAbstractAircraft extends Entity {
 			double my = Math.abs(prevMotion.y);
 			double th = collideSpeedThreshHold;
 			if (isLandingGear() 
-					&& (this.getXRot() < 15f && this.getXRot() > -15f)
-					&& (this.zRot < 15f && this.zRot > -15f)) {
+					&& (getXRot() < 15f && getXRot() > -15f)
+					&& (zRot < 15f && zRot > -15f)) {
 				th = collideSpeedWithGearThreshHold;
 			}
 			if (my > th && this.tickCount > 300) {
@@ -787,6 +791,7 @@ public abstract class EntityAbstractAircraft extends Entity {
 	
 	@Override
     public boolean hurt(DamageSource source, float amount) {
+		if (this.isTestMode()) return false;
 		if (isVehicleOf(source.getEntity())) return false;
 		addHealth(-amount);
 		return true;
@@ -1177,6 +1182,14 @@ public abstract class EntityAbstractAircraft extends Entity {
      */
     public void setLandingGear(boolean gear) {
     	entityData.set(LANDING_GEAR, gear);
+    }
+    
+    public boolean isTestMode() {
+    	return entityData.get(TEST_MODE);
+    }
+    
+    public void setTestMode(boolean testMode) {
+    	entityData.set(TEST_MODE, testMode);
     }
     
     public void toggleLandingGear() {

@@ -22,6 +22,7 @@ public abstract class EntityAbstractWeapon extends Projectile {
 	
 	public static final EntityDataAccessor<Integer> OWNER_ID = SynchedEntityData.defineId(EntityAbstractWeapon.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> AGE = SynchedEntityData.defineId(EntityAbstractWeapon.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Boolean> TEST_MODE = SynchedEntityData.defineId(EntityAbstractWeapon.class, EntityDataSerializers.BOOLEAN);
 	
 	/**
 	 * only set on server side
@@ -43,6 +44,7 @@ public abstract class EntityAbstractWeapon extends Projectile {
 	protected void defineSynchedData() {
 		entityData.define(OWNER_ID, -1);
 		entityData.define(AGE, 0);
+		entityData.define(TEST_MODE, false);
 	}
 	
 	@Override
@@ -63,6 +65,7 @@ public abstract class EntityAbstractWeapon extends Projectile {
 		maxAge = compound.getInt("maxAge");
 		if (getOwner() != null) setOwnerId(getOwner().getId());
 		else setOwnerId(-1);
+		this.setTestMode(compound.getBoolean("test_mode"));
 	}
 
 	@Override
@@ -73,17 +76,18 @@ public abstract class EntityAbstractWeapon extends Projectile {
 		super.addAdditionalSaveData(compound);
 		compound.putInt("tickCount", tickCount);
 		compound.putInt("maxAge", maxAge);
+		compound.putBoolean("test_mode", this.isTestMode());
 	}
 	
 	@Override
 	public void tick() {
 		//System.out.println(this+" "+tickCount);
-		motion();
+		if (isTestMode()) return;
+ 		motion();
 		super.tick();
-		if (!level.isClientSide) setAge(tickCount);
-		if (!level.isClientSide && tickCount > maxAge) { 
-			//System.out.println("WEAPON OLD");
-			kill();
+		if (!level.isClientSide) {
+			setAge(tickCount);
+			if (tickCount > maxAge) kill();
 		}
 		move(MoverType.SELF, getDeltaMovement());
 	}
@@ -162,14 +166,9 @@ public abstract class EntityAbstractWeapon extends Projectile {
 		//System.out.println("REMOVED "+reason.toString()+" "+this);
 	}
 	
-	/*@Override
-	public void onRemovedFromWorld() {
-		super.onRemovedFromWorld();
-		System.out.println("REMOVED FROM WORLD "+this);
-	}*/
-	
 	@Override
 	public void checkDespawn() {
+		if (this.isTestMode()) return;
 		//System.out.println("CHECK DESPAWN");
 		if (!level.isClientSide) {
 			if (!inEntityTickingRange()) {
@@ -190,5 +189,13 @@ public abstract class EntityAbstractWeapon extends Projectile {
 	public int getMaxAge() {
 		return maxAge;
 	}
+	
+	public boolean isTestMode() {
+    	return entityData.get(TEST_MODE);
+    }
+    
+    public void setTestMode(boolean testMode) {
+    	entityData.set(TEST_MODE, testMode);
+    }
 
 }

@@ -85,6 +85,7 @@ public class EntityBullet extends EntityAbstractWeapon {
 	
 	@Override
 	public void tick() {
+		if (isTestMode()) return;
 		super.tick();
 		//System.out.println("bullet "+this.tickCount+" "+this.level);
 		//System.out.println(this);

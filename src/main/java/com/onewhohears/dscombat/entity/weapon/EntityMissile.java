@@ -91,6 +91,17 @@ public abstract class EntityMissile extends EntityBullet {
 	
 	@Override
 	public void tick() {
+		if (isTestMode()) {
+			if (level.isClientSide) {
+				Vec3 look = getLookAngle();
+				level.addParticle(ParticleTypes.SMOKE, 
+					getX(), getY(), getZ(), 
+					-look.x * 0.5D + random.nextGaussian() * 0.05D, 
+					-look.y * 0.5D + random.nextGaussian() * 0.05D, 
+					-look.z * 0.5D + random.nextGaussian() * 0.05D);
+			}
+			return;
+		}
 		xRotO = getXRot(); 
 		yRotO = getYRot();
 		if (!level.isClientSide && !isRemoved()) {

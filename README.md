@@ -6,6 +6,8 @@ Join the discord for development updates and let me know if you want to contibut
 
 https://discord.gg/dWgQTRxCJm
 
+![2022-12-17_02 14 55](https://user-images.githubusercontent.com/79810154/208233270-e5a64a83-4427-475c-98bf-ee6c61a3649d.png)
+
 ## Controls
 
 Here are the flight control keys by default.

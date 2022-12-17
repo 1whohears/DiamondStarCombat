@@ -6,6 +6,10 @@ Join the discord for development updates and let me know if you want to contibut
 
 https://discord.gg/dWgQTRxCJm
 
+Check out my channel where I'll post guides and other videos showing of the mod! 
+
+https://youtu.be/P4Flz0XOtTk
+
 ![2022-12-17_02 14 55](https://user-images.githubusercontent.com/79810154/208233270-e5a64a83-4427-475c-98bf-ee6c61a3649d.png)
 
 ## Controls

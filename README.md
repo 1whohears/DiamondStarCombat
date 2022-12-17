@@ -2,7 +2,7 @@
  
 A Minecraft Aircraft Combat mod inspired by Mcheli. Planes, Radars, Missiles, Explosions! Customize your vehicle's weapon loadout. You can use a radar to shoot a missile at a target beyond your render distance. Shoot heat seeking missiles at nearby planes and use flares to defend yourself in dynamic dog fights. Use uhh...real life inspired flight physics to pull of baller maneuvers. Or shoot laser guided bombs at enemies on the ground. 
 
-Join the discord for development updates and let me know if you want to contibute to the project. Scroll down for a few words I have on contributing.
+Join the discord for development updates and let me know if you want to contribute to the project. Scroll down for a few words I have on contributing.
 
 https://discord.gg/dWgQTRxCJm
 
@@ -48,5 +48,5 @@ This mod is far from finished. Most of the core for the mod is complete. However
 - I want to add turret seats so passengers can shoot. 
 - The plane physics are definitely not final. Open to feedback.
 - Open to feedback on anything actually. Did you find a bug. Could certain functions be more efficient? Is my code bad?
-- Pvp ballance is something I really want to get right. Let me know if something should be nerfed or buffed. 
+- Pvp balance is something I really want to get right. Let me know if something should be nerfed or buffed. 
 - If you don't want to add your content to the base mod I want it to be easy for developers to make addons for this mod. But I haven't put much thought into it yet because I'm trying to build up the base content for this mod. Let me know if something is making addon development difficult. 

@@ -18,6 +18,7 @@ public class SeatData extends PartData {
 	
 	public SeatData(float weight, String itemid, SlotType[] compatibleSlots) {
 		this(weight, new ResourceLocation(DSCombatMod.MODID, itemid), compatibleSlots);
+		// TODO this shouldn't require using the DSC mod id
 	}
 
 	public SeatData(CompoundTag tag) {
@@ -68,14 +69,5 @@ public class SeatData extends PartData {
 					seat.discard();
 		}
 	}
-
-	/*@Override
-	public ItemStack getItemStack() {
-		//System.out.println("getting item data "+this+" compound "+tag);
-		ItemStack stack = new ItemStack(ModItems.SEAT.get(), 1);
-		stack.setTag(write());
-		System.out.println("created stack "+stack.toString()+" "+stack.getTag());
-		return stack;
-	}*/
 
 }

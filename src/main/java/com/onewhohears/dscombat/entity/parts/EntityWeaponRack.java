@@ -15,5 +15,7 @@ public class EntityWeaponRack extends EntityAbstractPart {
 	public EntityWeaponRack(Level level, String slotId, Vec3 pos) {
 		super(ModEntities.WEAPON_RACK.get(), level, slotId, pos);
 	}
+	
+	// TODO display weapon models under aircraft wings
 
 }

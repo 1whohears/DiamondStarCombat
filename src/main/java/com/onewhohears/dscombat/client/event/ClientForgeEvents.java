@@ -370,7 +370,7 @@ public final class ClientForgeEvents {
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
 		if (player == null) return;
-		// TODO third person looks feels janky
+		// TODO third person camera looks feels janky
 		prevCamera = m.getCameraEntity();
 		if (player.getVehicle() instanceof EntitySeat seat 
 				&& seat.getVehicle() instanceof EntityAbstractAircraft plane) {

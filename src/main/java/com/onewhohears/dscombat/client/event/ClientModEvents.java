@@ -101,7 +101,9 @@ public class ClientModEvents {
 						new EntityModelMissile1<EntityMissile>(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)),
 						TRACK_MISSILE_1));
 		
-		event.registerEntityRenderer(ModEntities.WEAPON_RACK.get(), 
+		event.registerEntityRenderer(ModEntities.LIGHT_WEAPON_RACK.get(), 
+				(context) -> new RendererEntityWeaponRack<EntityWeaponRack>(context));
+		event.registerEntityRenderer(ModEntities.HEAVY_WEAPON_RACK.get(), 
 				(context) -> new RendererEntityWeaponRack<EntityWeaponRack>(context));
 		
 		event.registerEntityRenderer(ModEntities.SEAT.get(), RendererEntityInvisible::new);

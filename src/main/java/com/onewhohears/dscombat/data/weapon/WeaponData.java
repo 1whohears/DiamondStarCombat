@@ -42,9 +42,11 @@ public abstract class WeaponData {
 	
 	private final String entityTypeKey;
 	private final String shootSoundKey;
+	private final String rackTypeKey;
 	
 	private EntityType<?> entityType;
 	private SoundEvent shootSound;
+	private EntityType<?> rackType;
 	private String id;
 	private Vec3 pos = Vec3.ZERO;
 	private int maxAge;
@@ -88,6 +90,7 @@ public abstract class WeaponData {
 		slotId = tag.getString("slotId");
 		entityTypeKey = tag.getString("entityType");
 		shootSoundKey = tag.getString("shootSound");
+		rackTypeKey = tag.getString("rackTypeKey");
 		ingredients = DSCIngredient.getIngredients(tag);
 		craftNum = tag.getInt("craftNum");
 	}
@@ -105,6 +108,7 @@ public abstract class WeaponData {
 		tag.putString("slotId", slotId);
 		tag.putString("entityType", entityTypeKey);
 		tag.putString("shootSound", shootSoundKey);
+		tag.putString("rackTypeKey", rackTypeKey);
 		DSCIngredient.writeIngredients(ingredients, tag);
 		tag.putInt("craftNum", craftNum);
 		return tag;
@@ -117,6 +121,8 @@ public abstract class WeaponData {
 		//System.out.println("entityTypeKey = "+entityTypeKey);
 		shootSoundKey = buffer.readUtf();
 		//System.out.println("shootSoundKey = "+shootSoundKey);
+		rackTypeKey = buffer.readUtf();
+		//
 		craftNum = buffer.readInt();
 		//System.out.println("craftNum = "+craftNum);
 		ingredients = DSCIngredient.getIngredients(buffer);
@@ -143,6 +149,7 @@ public abstract class WeaponData {
 		buffer.writeInt(getType().ordinal());
 		buffer.writeUtf(entityTypeKey);
 		buffer.writeUtf(shootSoundKey);
+		buffer.writeUtf(rackTypeKey);
 		buffer.writeInt(craftNum);
 		DSCIngredient.writeIngredients(ingredients, buffer);
 		buffer.writeUtf(id);
@@ -358,6 +365,15 @@ public abstract class WeaponData {
 			catch(NoSuchElementException e) { shootSound = ModSounds.BULLET_SHOOT_1.get(); }
 		}
 		return shootSound;
+	}
+	
+	public EntityType<?> getRackEntityType() {
+		if (rackType == null) {
+			try { rackType = ForgeRegistries.ENTITY_TYPES
+					.getDelegate(new ResourceLocation(rackTypeKey)).get().get(); }
+			catch(NoSuchElementException e) { rackType = ModEntities.LIGHT_WEAPON_RACK.get(); }
+		}
+		return rackType;
 	}
 	
 	private Item item;

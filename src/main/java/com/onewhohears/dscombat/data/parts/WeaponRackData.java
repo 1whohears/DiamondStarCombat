@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.data.parts;
 
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
+import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.entity.parts.EntityAbstractPart;
 import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
@@ -32,7 +33,9 @@ public class WeaponRackData extends WeaponPartData {
 	public void setup(EntityAbstractAircraft craft, String slotId, Vec3 pos) {
 		super.setup(craft, slotId, pos);
 		if (!isEntitySetup(slotId, craft)) {
-			EntityWeaponRack rack = new EntityWeaponRack(craft.level, slotId, pos);
+			WeaponData data = craft.weaponSystem.get(weaponId, slotId);
+			if (data == null) return;
+			EntityWeaponRack rack = new EntityWeaponRack(data.getRackEntityType(), craft.level, slotId, pos);
 			rack.setPos(craft.position());
 			rack.startRiding(craft);
 			craft.level.addFreshEntity(rack);

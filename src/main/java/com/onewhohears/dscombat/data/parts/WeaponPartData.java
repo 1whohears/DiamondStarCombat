@@ -14,8 +14,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class WeaponPartData extends PartData {
 	
+	protected String weaponId;
 	private final String[] compatible;
-	private String weaponId;
 	private int ammo;
 	private int max;
 	
@@ -86,7 +86,7 @@ public class WeaponPartData extends PartData {
 		super.setup(craft, slotId, pos);
 		WeaponData data = craft.weaponSystem.get(weaponId, slotId);
 		if (data == null) {
-			data = WeaponPresets.getByNewId(weaponId);
+			data = WeaponPresets.getNewById(weaponId);
 			if (data == null) return;
 			data.setSlot(slotId);
 			craft.weaponSystem.addWeapon(data, true);
@@ -125,14 +125,6 @@ public class WeaponPartData extends PartData {
 		super.clientTick(slotId);
 		this.tick(slotId);
 	}
-
-	/*@Override
-	public ItemStack getItemStack() {
-		ItemStack stack = new ItemStack(ModItems.WEAPON_PART.get(), 1);
-		stack.setTag(write());
-		System.out.println("created stack "+stack.toString()+" "+stack.getTag());
-		return stack;
-	}*/
 	
 	@Override
 	public float getWeight() {

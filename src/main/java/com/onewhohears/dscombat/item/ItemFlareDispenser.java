@@ -8,6 +8,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class ItemFlareDispenser extends ItemPart {
 	
@@ -32,12 +33,12 @@ public class ItemFlareDispenser extends ItemPart {
 
 	@Override
 	public PartData getPartData() {
-		return new FlareDispenserData(weight, flares, max, heat, age, getIdPart(), compatibleSlots);
+		return new FlareDispenserData(weight, flares, max, heat, age, ForgeRegistries.ITEMS.getKey(this), compatibleSlots);
 	}
 	
 	@Override
 	public PartData getFilledPartData(String param) {
-		return new FlareDispenserData(weight, max, max, heat, age, getIdPart(), compatibleSlots);
+		return new FlareDispenserData(weight, max, max, heat, age, ForgeRegistries.ITEMS.getKey(this), compatibleSlots);
 	}
 
 }

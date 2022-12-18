@@ -13,6 +13,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class ItemWeaponPart extends ItemPart {
 	
@@ -62,7 +63,7 @@ public class ItemWeaponPart extends ItemPart {
 	
 	@Override
 	public PartData getFilledPartData(String param) {
-		return new WeaponRackData(weight, param, compatible, getIdPart(), compatibleSlots);
+		return new WeaponRackData(weight, param, compatible, ForgeRegistries.ITEMS.getKey(this), compatibleSlots);
 	}
 
 }

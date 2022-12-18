@@ -1,6 +1,5 @@
 package com.onewhohears.dscombat.data.parts;
 
-import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 
@@ -20,10 +19,6 @@ public class BuffData extends PartData {
 	public BuffData(BuffType type, ResourceLocation itemid, SlotType[] compatibleSlots) {
 		super(0, itemid, compatibleSlots);
 		this.type = type;
-	}
-	
-	public BuffData(BuffType type, String itemid, SlotType[] compatibleSlots) {
-		this(type, new ResourceLocation(DSCombatMod.MODID, itemid), compatibleSlots);
 	}
 	
 	public BuffData(CompoundTag tag) {

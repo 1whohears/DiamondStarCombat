@@ -2,7 +2,6 @@ package com.onewhohears.dscombat.data.parts;
 
 import java.util.NoSuchElementException;
 
-import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 
@@ -40,10 +39,6 @@ public abstract class PartData {
 		this.weight = weight;
 		this.itemid = itemid;
 		this.compatibleSlots = compatibleSlots;
-	}
-	
-	protected PartData(float weight, String itemid, SlotType[] compatibleSlots) {
-		this(weight, new ResourceLocation(DSCombatMod.MODID, itemid), compatibleSlots);
 	}
 	
 	public PartData(CompoundTag tag) {

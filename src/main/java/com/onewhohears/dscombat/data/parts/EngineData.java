@@ -1,6 +1,5 @@
 package com.onewhohears.dscombat.data.parts;
 
-import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 
@@ -19,10 +18,6 @@ public class EngineData extends PartData {
 		this.thrust = thrust;
 		this.heat = heat;
 		this.fuelRate = fuelRate;
-	}
-	
-	public EngineData(float weight, float thrust, float heat, float fuelRate, String itemid, SlotType[] compatibleSlots) {
-		this(weight, thrust, heat, fuelRate, new ResourceLocation(DSCombatMod.MODID, itemid), compatibleSlots);
 	}
 	
 	public EngineData(CompoundTag tag) {

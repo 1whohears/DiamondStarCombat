@@ -5,6 +5,8 @@ import com.onewhohears.dscombat.data.parts.ExternalEngineData;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 
+import net.minecraftforge.registries.ForgeRegistries;
+
 public class ItemEngine extends ItemPart {
 	
 	public final float thrust, heat, fuelRate;
@@ -20,8 +22,8 @@ public class ItemEngine extends ItemPart {
 
 	@Override
 	public PartData getPartData() {
-		if (external) return new ExternalEngineData(weight, thrust, heat, fuelRate, getIdPart(), compatibleSlots);
-		return new EngineData(weight, thrust, heat, fuelRate, getIdPart(), compatibleSlots);
+		if (external) return new ExternalEngineData(weight, thrust, heat, fuelRate, ForgeRegistries.ITEMS.getKey(this), compatibleSlots);
+		return new EngineData(weight, thrust, heat, fuelRate, ForgeRegistries.ITEMS.getKey(this), compatibleSlots);
 	}
 
 }

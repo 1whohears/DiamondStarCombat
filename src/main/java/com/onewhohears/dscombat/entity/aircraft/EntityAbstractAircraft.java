@@ -964,6 +964,7 @@ public abstract class EntityAbstractAircraft extends Entity {
     }
     
     public ResourceLocation getTexture() {
+    	// TODO right clicking plane with paint job item changes texture
     	return TEXTURE;
     }
     

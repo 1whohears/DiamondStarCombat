@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.client.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.client.renderer.model.EntityAircraftModel;
+import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityAircraftModel;
 import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 

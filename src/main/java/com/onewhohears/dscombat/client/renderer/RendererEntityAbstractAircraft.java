@@ -3,8 +3,8 @@ package com.onewhohears.dscombat.client.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityAircraftModel;
-import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
+import com.onewhohears.dscombat.client.renderer.model.EntityControllableModel;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -13,11 +13,11 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
-public class RendererEntityAbstractAircraft<T extends EntityAbstractAircraft> extends EntityRenderer<T> {
+public class RendererEntityAbstractAircraft<T extends EntityAircraft> extends EntityRenderer<T> {
 	
-	protected final EntityAircraftModel<T> model;
+	protected final EntityControllableModel<T> model;
 	
-	public RendererEntityAbstractAircraft(Context context, EntityAircraftModel<T> model) {
+	public RendererEntityAbstractAircraft(Context context, EntityControllableModel<T> model) {
 		super(context);
 		this.shadowRadius = 0.8f;
 		this.model = model;

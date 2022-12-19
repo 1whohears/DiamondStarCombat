@@ -6,7 +6,7 @@ import java.util.function.Supplier;
 import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundPlaneDataPacket;
-import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.Level;
@@ -35,7 +35,7 @@ public class ServerBoundRequestPlaneDataPacket extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			Level level = ctx.get().getSender().level;
-			if (level.getEntity(id) instanceof EntityAbstractAircraft plane) {
+			if (level.getEntity(id) instanceof EntityAircraft plane) {
 				PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> plane), 
 						new ClientBoundPlaneDataPacket(plane.getId(), 
 							plane.partsManager, plane.weaponSystem, plane.radarSystem));

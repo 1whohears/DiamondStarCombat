@@ -10,7 +10,7 @@ import com.onewhohears.dscombat.common.network.toclient.ClientBoundAddWeaponPack
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundRemoveWeaponPacket;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundWeaponIndexPacket;
 import com.onewhohears.dscombat.data.weapon.WeaponData.WeaponType;
-import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.math.UtilAngles;
@@ -27,7 +27,7 @@ public class WeaponSystem {
 	
 	private List<WeaponData> weapons = new ArrayList<WeaponData>();
 	private int weaponIndex = 0;
-	private EntityAbstractAircraft parent;
+	private EntityAircraft parent;
 	private boolean readData = true;
 	
 	public WeaponSystem() {
@@ -90,6 +90,12 @@ public class WeaponSystem {
 	}
 	
 	@Nullable
+	public WeaponData get(String slotId) {
+		for (WeaponData w : weapons) if (w.getSlotId().equals(slotId)) return w;
+		return null;
+	}
+	
+	@Nullable
 	public WeaponData getSelected() {
 		if (weapons.size() == 0) return null;
 		checkIndex();
@@ -141,11 +147,11 @@ public class WeaponSystem {
 		for (WeaponData w : weapons) w.tick();
 	}
 	
-	public void setup(EntityAbstractAircraft parent) {
+	public void setup(EntityAircraft parent) {
 		this.parent = parent;
 	}
 	
-	public void clientSetup(EntityAbstractAircraft parent) {
+	public void clientSetup(EntityAircraft parent) {
 		this.parent = parent;
 	}
 	

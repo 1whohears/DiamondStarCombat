@@ -11,7 +11,7 @@ import com.onewhohears.dscombat.common.network.toclient.ClientBoundPingsPacket;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundRemoveRadarPacket;
 import com.onewhohears.dscombat.common.network.toserver.ServerBoundPingSelectPacket;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
-import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 
 import net.minecraft.nbt.CompoundTag;
@@ -28,7 +28,7 @@ public class RadarSystem {
 	private List<RadarPing> dataLinkTargets = new ArrayList<RadarPing>();
 	
 	private List<RadarData> radars = new ArrayList<RadarData>();
-	private EntityAbstractAircraft parent;
+	private EntityAircraft parent;
 	
 	private List<RadarPing> targets = new ArrayList<RadarPing>();
 	private int selectedIndex = -1;
@@ -81,7 +81,7 @@ public class RadarSystem {
 				if (player.equals(p)) continue;
 				if (player.getTeam() != null && p.getTeam() != null
 						&& player.getTeam().getName().equals(p.getTeam().getName())) {
-					if (p.getRootVehicle() instanceof EntityAbstractAircraft plane) {
+					if (p.getRootVehicle() instanceof EntityAircraft plane) {
 						for (RadarPing rp : targets) {
 							plane.radarSystem.dataLinkTargets.add(rp);
 							plane.radarSystem.targets.add(rp);
@@ -94,7 +94,7 @@ public class RadarSystem {
 		if (old != null) for (int i = 0; i < targets.size(); ++i) 
 			if (targets.get(i).id == old.id) {
 				selectedIndex = i;
-				if (getSelectedTarget(parent.level) instanceof EntityAbstractAircraft plane) {
+				if (getSelectedTarget(parent.level) instanceof EntityAircraft plane) {
 					plane.lockedOnto();
 				}
 				break;
@@ -224,11 +224,11 @@ public class RadarSystem {
 		return readData;
 	}
 	
-	public void setup(EntityAbstractAircraft e) {
+	public void setup(EntityAircraft e) {
 		parent = e;
 	}
 	
-	public void clientSetup(EntityAbstractAircraft e) {
+	public void clientSetup(EntityAircraft e) {
 		parent = e;
 	}
 	

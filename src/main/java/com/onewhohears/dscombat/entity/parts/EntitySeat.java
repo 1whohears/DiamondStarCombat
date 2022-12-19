@@ -5,7 +5,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
@@ -22,7 +22,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.network.NetworkHooks;
 
-public class EntitySeat extends EntityAbstractPart {
+public class EntitySeat extends EntityPart {
 	
 	public EntitySeat(EntityType<?> type, Level level) {
 		super(type, level);
@@ -86,7 +86,7 @@ public class EntitySeat extends EntityAbstractPart {
 			player.setPos(position());
 		} else if (passenger instanceof EntitySeatCamera camera) {
 			//System.out.println("SEAT ROOT "+getVehicle());
-			if (!(this.getVehicle() instanceof EntityAbstractAircraft craft)) return;
+			if (!(this.getVehicle() instanceof EntityAircraft craft)) return;
 			Vec3 pos = position();
 			Quaternion q;
 			if (level.isClientSide) q = craft.getClientQ();
@@ -115,7 +115,7 @@ public class EntitySeat extends EntityAbstractPart {
 	@Override
     protected boolean canRide(Entity entityIn) {
 		//System.out.println("CAN RIDE SEAT "+entityIn);
-		return entityIn instanceof EntityAbstractAircraft;
+		return entityIn instanceof EntityAircraft;
     }
 	
 	@Override
@@ -157,6 +157,11 @@ public class EntitySeat extends EntityAbstractPart {
 	@Override
 	public String toString() {
 		return "seat "+this.getRelativePos();
+	}
+
+	@Override
+	public boolean shouldRender() {
+		return false;
 	}
 
 }

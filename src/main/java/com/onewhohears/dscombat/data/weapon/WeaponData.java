@@ -10,8 +10,8 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundWeaponAmmoPacket;
 import com.onewhohears.dscombat.crafting.DSCIngredient;
-import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
-import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.init.ModSounds;
@@ -163,9 +163,9 @@ public abstract class WeaponData {
 	}
 	
 	public abstract WeaponType getType();
-	public abstract EntityAbstractWeapon getEntity(Level level, Entity owner);
+	public abstract EntityWeapon getEntity(Level level, Entity owner);
 	
-	public EntityAbstractWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction) {
+	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction) {
 		if (!this.checkRecoil()) {
 			this.setLaunchFail(null);
 			return null;
@@ -174,14 +174,14 @@ public abstract class WeaponData {
 			this.setLaunchFail("dscombat.no_ammo");
 			return null;
 		}
-		EntityAbstractWeapon w = getEntity(level, owner);
+		EntityWeapon w = getEntity(level, owner);
 		w.setPos(pos);
 		this.setDirection(w, direction);
 		return w;
 	}
 	
-	public EntityAbstractWeapon getShootEntity(Level level, Entity owner, Vec3 direction, EntityAbstractAircraft vehicle) {
-		EntityAbstractWeapon w = this.getShootEntity(level, owner, vehicle.position(), direction);
+	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 direction, EntityAircraft vehicle) {
+		EntityWeapon w = this.getShootEntity(level, owner, vehicle.position(), direction);
 		if (w == null) return null;
 		if (!this.canShootOnGround() && vehicle.isOnGround()) {
 			this.setLaunchFail("dscombat.cant_shoot_on_ground");
@@ -191,15 +191,15 @@ public abstract class WeaponData {
 		return w;
 	}
 	
-	public void setDirection(EntityAbstractWeapon weapon, Vec3 direction) {
+	public void setDirection(EntityWeapon weapon, Vec3 direction) {
 		float pitch = UtilAngles.getPitch(direction);
 		float yaw = UtilAngles.getYaw(direction);
 		weapon.setXRot(pitch);
 		weapon.setYRot(yaw);
 	}
 	
-	public boolean shoot(Level level, Entity owner, Vec3 direction, @Nullable Vec3 pos, @Nullable EntityAbstractAircraft vehicle) {
-		EntityAbstractWeapon w;
+	public boolean shoot(Level level, Entity owner, Vec3 direction, @Nullable Vec3 pos, @Nullable EntityAircraft vehicle) {
+		EntityWeapon w;
 		if (vehicle == null && pos != null) w = this.getShootEntity(level, owner, pos, direction);
 		else if (vehicle != null && pos == null) w = this.getShootEntity(level, owner, direction, vehicle);
 		else return false;
@@ -213,7 +213,7 @@ public abstract class WeaponData {
 		return true;
 	}
 	
-	public void updateClientAmmo(EntityAbstractAircraft vehicle) {
+	public void updateClientAmmo(EntityAircraft vehicle) {
 		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> vehicle), 
 				new ClientBoundWeaponAmmoPacket(vehicle.getId(), this.getId(), this.slotId, this.getCurrentAmmo()));
 	}
@@ -371,7 +371,7 @@ public abstract class WeaponData {
 		if (rackType == null) {
 			try { rackType = ForgeRegistries.ENTITY_TYPES
 					.getDelegate(new ResourceLocation(rackTypeKey)).get().get(); }
-			catch(NoSuchElementException e) { rackType = ModEntities.LIGHT_WEAPON_RACK.get(); }
+			catch(NoSuchElementException e) { rackType = ModEntities.LIGHT_MISSILE_RACK.get(); }
 		}
 		return rackType;
 	}

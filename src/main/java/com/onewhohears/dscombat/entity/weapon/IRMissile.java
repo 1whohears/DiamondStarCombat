@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.onewhohears.dscombat.data.weapon.IRMissileData;
-import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -45,8 +45,8 @@ public class IRMissile extends EntityMissile {
 		Level level = this.level;
 		targets.clear();
 		// planes
-		List<EntityAbstractAircraft> planes = level.getEntitiesOfClass(
-				EntityAbstractAircraft.class, getIrBoundingBox());
+		List<EntityAircraft> planes = level.getEntitiesOfClass(
+				EntityAircraft.class, getIrBoundingBox());
 		for (int i = 0; i < planes.size(); ++i) {
 			if (planes.get(i).isVehicleOf(this.getOwner())) continue;
 			if (!basicCheck(planes.get(i), false)) continue;
@@ -57,7 +57,7 @@ public class IRMissile extends EntityMissile {
 		List<Player> players = level.getEntitiesOfClass(
 				Player.class, getIrBoundingBox());
 		for (int i = 0; i < players.size(); ++i) {
-			if (players.get(i).getRootVehicle() instanceof EntityAbstractAircraft) continue;
+			if (players.get(i).getRootVehicle() instanceof EntityAircraft) continue;
 			if (!basicCheck(players.get(i), true)) continue;
 			float distSqr = (float)this.distanceToSqr(players.get(i));
 			targets.add(new IrTarget(players.get(i), 1f / distSqr));
@@ -66,7 +66,7 @@ public class IRMissile extends EntityMissile {
 		List<Mob> mobs = level.getEntitiesOfClass(
 				Mob.class, getIrBoundingBox());
 		for (int i = 0; i < mobs.size(); ++i) {
-			if (mobs.get(i).getRootVehicle() instanceof EntityAbstractAircraft) continue;
+			if (mobs.get(i).getRootVehicle() instanceof EntityAircraft) continue;
 			if (!basicCheck(mobs.get(i), true)) continue;
 			float distSqr = (float)this.distanceToSqr(mobs.get(i));
 			targets.add(new IrTarget(mobs.get(i), getMobHeat(mobs.get(i)) / distSqr));

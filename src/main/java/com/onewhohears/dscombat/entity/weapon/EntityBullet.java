@@ -4,7 +4,7 @@ import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.data.weapon.BulletData;
 import com.onewhohears.dscombat.data.weapon.WeaponDamageSource;
-import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.core.particles.ParticleTypes;
@@ -27,7 +27,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
-public class EntityBullet extends EntityAbstractWeapon {
+public class EntityBullet extends EntityWeapon {
 	
 	public static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(EntityBullet.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Boolean> EXPLOSIVE = SynchedEntityData.defineId(EntityBullet.class, EntityDataSerializers.BOOLEAN);
@@ -114,7 +114,7 @@ public class EntityBullet extends EntityAbstractWeapon {
 					if (hit instanceof Player p && !player.canHarmPlayer(p)) {
 						hitresult = null;
 						entityhitresult = null;
-					} else if (hit instanceof EntityAbstractAircraft plane) {
+					} else if (hit instanceof EntityAircraft plane) {
 						Entity c = plane.getControllingPassenger();
 						if (player.equals(c) || (c instanceof Player p && !player.canHarmPlayer(p))) {
 							hitresult = null;

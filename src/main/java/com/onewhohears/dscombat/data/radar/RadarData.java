@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.data.radar;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
@@ -135,7 +135,7 @@ public class RadarData {
 		buffer.writeUtf(slotId);
 	}
 	
-	public void tickUpdateTargets(EntityAbstractAircraft radar, List<RadarPing> targets) {
+	public void tickUpdateTargets(EntityAircraft radar, List<RadarPing> targets) {
 		if (scanTicks > scanRate) scanTicks = 0;
 		else {
 			++scanTicks;
@@ -148,8 +148,8 @@ public class RadarData {
 		Level level = radar.level;
 		Entity controller = radar.getControllingPassenger();
 		if (scanAircraft) {
-			List<EntityAbstractAircraft> list = level.getEntitiesOfClass(
-					EntityAbstractAircraft.class, getRadarBoundingBox(radar));
+			List<EntityAircraft> list = level.getEntitiesOfClass(
+					EntityAircraft.class, getRadarBoundingBox(radar));
 			for (int i = 0; i < list.size(); ++i) {
 				if (!basicCheck(radar, list.get(i), list.get(i).getStealth())) continue;
 				RadarPing p = new RadarPing(list.get(i), checkFriendly(controller, list.get(i).getControllingPassenger()));
@@ -162,7 +162,7 @@ public class RadarData {
 			List<Player> list = level.getEntitiesOfClass(
 					Player.class, getRadarBoundingBox(radar));
 			for (int i = 0; i < list.size(); ++i) {
-				if (list.get(i).getRootVehicle() instanceof EntityAbstractAircraft) continue;
+				if (list.get(i).getRootVehicle() instanceof EntityAircraft) continue;
 				if (!basicCheck(radar, list.get(i), 1)) continue;
 				RadarPing p = new RadarPing(list.get(i), checkFriendly(controller, list.get(i)));
 				targets.add(p);
@@ -173,7 +173,7 @@ public class RadarData {
 			List<Mob> list = level.getEntitiesOfClass(
 					Mob.class, getRadarBoundingBox(radar));
 			for (int i = 0; i < list.size(); ++i) {
-				if (list.get(i).getRootVehicle() instanceof EntityAbstractAircraft) continue;
+				if (list.get(i).getRootVehicle() instanceof EntityAircraft) continue;
 				if (!basicCheck(radar, list.get(i), 1)) continue;
 				RadarPing p = new RadarPing(list.get(i), checkFriendly(controller, list.get(i)));
 				targets.add(p);
@@ -190,7 +190,7 @@ public class RadarData {
 		return target.getTeam().getName().equals(controller.getTeam().getName());
 	}
 	
-	private boolean basicCheck(EntityAbstractAircraft radar, Entity ping, double rangeMod) {
+	private boolean basicCheck(EntityAircraft radar, Entity ping, double rangeMod) {
 		if (radar.equals(ping)) return false;
 		if (!groundCheck(ping)) return false;
 		if (radar.isVehicleOf(ping)) return false;

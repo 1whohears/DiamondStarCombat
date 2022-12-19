@@ -12,7 +12,7 @@ import com.onewhohears.dscombat.common.network.toclient.ClientBoundFuelPacket;
 import com.onewhohears.dscombat.common.network.toclient.ClientBoundRemovePartPacket;
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
@@ -28,7 +28,7 @@ public class PartsManager {
 	
 	private List<PartSlot> slots = new ArrayList<PartSlot>();
 	private boolean readData = true;
-	private EntityAbstractAircraft parent;
+	private EntityAircraft parent;
 	
 	public PartsManager() {
 		readData = false;
@@ -59,13 +59,13 @@ public class PartsManager {
 		for (PartSlot p : slots) p.write(buffer);
 	}
 	
-	public void setupParts(EntityAbstractAircraft craft) {
+	public void setupParts(EntityAircraft craft) {
 		this.parent = craft;
 		//System.out.println("setupParts "+this);
 		for (PartSlot p : slots) p.setup(craft);
 	}
 	
-	public void clientPartsSetup(EntityAbstractAircraft craft) {
+	public void clientPartsSetup(EntityAircraft craft) {
 		this.parent = craft;
 		//System.out.println("clientPartsSetup "+this);
 		for (PartSlot p : slots) p.clientSetup(craft);

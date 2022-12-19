@@ -1,19 +1,19 @@
 package com.onewhohears.dscombat.client.sounds;
 
-import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.sounds.SoundEvent;
 
 public class PlaneEngineOnPlayerSoundInstance extends DopplerOnPlayerSoundInstance {
 
-	public PlaneEngineOnPlayerSoundInstance(SoundEvent sound, LocalPlayer player, EntityAbstractAircraft entity, float velSound) {
+	public PlaneEngineOnPlayerSoundInstance(SoundEvent sound, LocalPlayer player, EntityAircraft entity, float velSound) {
 		super(sound, player, entity, 1.0f, 1.0f, velSound);
 	}
 	
 	@Override
 	public void tick() {
-		EntityAbstractAircraft craft = (EntityAbstractAircraft)this.entity;
+		EntityAircraft craft = (EntityAircraft)this.entity;
 		float th = craft.getCurrentThrottle();
 		if (th == 0) this.initVolume = th;
 		else this.initVolume = 0.4f + 0.6f*th;;

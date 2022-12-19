@@ -1,12 +1,13 @@
 package com.onewhohears.dscombat.entity.parts;
 
-import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
+import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class EntityWeaponRack extends EntityAbstractPart {
+public class EntityWeaponRack extends EntityPart {
 	
 	public EntityWeaponRack(EntityType<?> type, Level level) {
 		super(type, level);
@@ -16,13 +17,16 @@ public class EntityWeaponRack extends EntityAbstractPart {
 		super(type, level, slotId, pos);
 	}
 	
-	// TODO display weapon models under aircraft wings
-	
-	public int getMissileNum() {
-		if (this.getVehicle() instanceof EntityAbstractAircraft plane) {
-			
-		}
-		return 0;
+	public int getAmmoNum() {
+		if (!(getVehicle() instanceof EntityAircraft plane)) return 0;
+		WeaponData wd = plane.weaponSystem.get(getSlotId());
+		if (wd == null) return 0;
+		return wd.getCurrentAmmo();
+	}
+
+	@Override
+	public boolean shouldRender() {
+		return true;
 	}
 
 }

@@ -4,7 +4,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.common.network.IPacket;
-import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -34,7 +34,7 @@ public class ServerBoundAircraftToItemPacket extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			Level level = ctx.get().getSender().level;
-			if (level.getEntity(id) instanceof EntityAbstractAircraft plane) {
+			if (level.getEntity(id) instanceof EntityAircraft plane) {
 				ItemStack stack = plane.getItem();
 				ItemEntity e = new ItemEntity(level, plane.getX(), plane.getY(), plane.getZ(), stack);
 				level.addFreshEntity(e);

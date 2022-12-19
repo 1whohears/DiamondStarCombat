@@ -19,7 +19,7 @@ import com.onewhohears.dscombat.common.network.toserver.ServerBoundFlightControl
 import com.onewhohears.dscombat.common.network.toserver.ServerBoundSwitchSeatPacket;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
-import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.parts.EntitySeatCamera;
 import com.onewhohears.dscombat.util.math.UtilAngles;
@@ -62,7 +62,7 @@ public final class ClientForgeEvents {
 		boolean openMenu = KeyInit.planeMenuKey.consumeClick();
 		boolean mouseMode = KeyInit.mouseModeKey.consumeClick();
 		boolean gear = KeyInit.landingGear.consumeClick();
-		if (!(player.getRootVehicle() instanceof EntityAbstractAircraft plane)) return;
+		if (!(player.getRootVehicle() instanceof EntityAircraft plane)) return;
 		if (plane.getControllingPassenger() == null 
 				|| !plane.getControllingPassenger().equals(player)) return;
 		if (KeyInit.resetMouseKey.isDown()) centerMouse();
@@ -135,7 +135,7 @@ public final class ClientForgeEvents {
 		final var player = m.player;
 		if (player == null) return;
 		boolean seat = KeyInit.changeSeat.consumeClick();
-		if (!(player.getRootVehicle() instanceof EntityAbstractAircraft plane)) return;
+		if (!(player.getRootVehicle() instanceof EntityAircraft plane)) return;
 		if (seat) {
 			PacketHandler.INSTANCE.sendToServer(new ServerBoundSwitchSeatPacket(plane.getId()));
 		}
@@ -231,7 +231,7 @@ public final class ClientForgeEvents {
 		if (event.getStage() != Stage.AFTER_PARTICLES) return;
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
-		if (!(player.getRootVehicle() instanceof EntityAbstractAircraft plane)) return;
+		if (!(player.getRootVehicle() instanceof EntityAircraft plane)) return;
 		RadarSystem radar = plane.radarSystem;
 		if (radar == null) return;
 		List<RadarPing> pings = radar.getClientRadarPings();
@@ -339,7 +339,7 @@ public final class ClientForgeEvents {
 		final var playerC = m.player;
 		Player player = event.getEntity();
 		if (player.getVehicle() instanceof EntitySeat seat 
-				&& seat.getVehicle() instanceof EntityAbstractAircraft plane) {
+				&& seat.getVehicle() instanceof EntityAircraft plane) {
 			changePlayerHitbox(player);
 			if (player.equals(playerC) && m.options.getCameraType().isFirstPerson()) {
 				event.setCanceled(true);
@@ -373,7 +373,7 @@ public final class ClientForgeEvents {
 		// TODO third person camera looks feels janky
 		prevCamera = m.getCameraEntity();
 		if (player.getVehicle() instanceof EntitySeat seat 
-				&& seat.getVehicle() instanceof EntityAbstractAircraft plane) {
+				&& seat.getVehicle() instanceof EntityAircraft plane) {
 			EntitySeatCamera camera = seat.getCamera();
 			float xo, xn, xi, yo, yn, yi, zo, zn, zi;
 			if (!plane.isFreeLook() && plane.getControllingPassenger() != null 

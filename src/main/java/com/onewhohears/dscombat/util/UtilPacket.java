@@ -9,7 +9,7 @@ import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponSystem;
-import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.init.ModSounds;
 
@@ -37,7 +37,7 @@ public class UtilPacket {
 		//System.out.println("ping packet received");
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
-		if (world.getEntity(id) instanceof EntityAbstractAircraft plane) {
+		if (world.getEntity(id) instanceof EntityAircraft plane) {
 			plane.radarSystem.readClientPingsFromServer(pings);
 		}
 	}
@@ -47,7 +47,7 @@ public class UtilPacket {
 		//System.out.println(pm.toString());
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
-		if (world.getEntity(id) instanceof EntityAbstractAircraft plane) {
+		if (world.getEntity(id) instanceof EntityAircraft plane) {
 			plane.partsManager = pm;
 			plane.weaponSystem = ws;
 			plane.radarSystem = rs;
@@ -63,7 +63,7 @@ public class UtilPacket {
 		//System.out.println("ammo packet recieved");
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
-		if (world.getEntity(id) instanceof EntityAbstractAircraft plane) {
+		if (world.getEntity(id) instanceof EntityAircraft plane) {
 			WeaponData w = plane.weaponSystem.get(weaponId, slotId);
 			if (w != null) w.setCurrentAmmo(ammo);
 		}
@@ -73,7 +73,7 @@ public class UtilPacket {
 		//System.out.println("ammo select packet recieved");
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
-		if (world.getEntity(id) instanceof EntityAbstractAircraft plane) {
+		if (world.getEntity(id) instanceof EntityAircraft plane) {
 			plane.weaponSystem.clientSetSelected(index);
 		}
 	}
@@ -89,7 +89,7 @@ public class UtilPacket {
 	public static void addWeaponPacket(int id, WeaponData data) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
-		if (world.getEntity(id) instanceof EntityAbstractAircraft plane) {
+		if (world.getEntity(id) instanceof EntityAircraft plane) {
 			plane.weaponSystem.addWeapon(data, false);
 		}
 	}
@@ -97,7 +97,7 @@ public class UtilPacket {
 	public static void removeWeaponPacket(int id, String wid, String slotId) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
-		if (world.getEntity(id) instanceof EntityAbstractAircraft plane) {
+		if (world.getEntity(id) instanceof EntityAircraft plane) {
 			plane.weaponSystem.removeWeapon(wid, slotId, false);
 		}
 	}
@@ -105,7 +105,7 @@ public class UtilPacket {
 	public static void addPartPacket(int id, String slotName, PartData data) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
-		if (world.getEntity(id) instanceof EntityAbstractAircraft plane) {
+		if (world.getEntity(id) instanceof EntityAircraft plane) {
 			plane.partsManager.addPart(data, slotName, false);
 		}
 	}
@@ -113,7 +113,7 @@ public class UtilPacket {
 	public static void removePartPacket(int id, String slotName) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
-		if (world.getEntity(id) instanceof EntityAbstractAircraft plane) {
+		if (world.getEntity(id) instanceof EntityAircraft plane) {
 			plane.partsManager.removePart(slotName, false);
 		}
 	}
@@ -121,7 +121,7 @@ public class UtilPacket {
 	public static void addRadarPacket(int id, RadarData data) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
-		if (world.getEntity(id) instanceof EntityAbstractAircraft plane) {
+		if (world.getEntity(id) instanceof EntityAircraft plane) {
 			plane.radarSystem.addRadar(data, false);
 		}
 	}
@@ -129,7 +129,7 @@ public class UtilPacket {
 	public static void removeRadarPacket(int id, String rid, String slotId) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
-		if (world.getEntity(id) instanceof EntityAbstractAircraft plane) {
+		if (world.getEntity(id) instanceof EntityAircraft plane) {
 			plane.radarSystem.removeRadar(rid, slotId, false);
 		}
 	}
@@ -137,7 +137,7 @@ public class UtilPacket {
 	public static void setAircraftFuel(int id, float[] fuels) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
-		if (world.getEntity(id) instanceof EntityAbstractAircraft plane) {
+		if (world.getEntity(id) instanceof EntityAircraft plane) {
 			plane.partsManager.readFuelsForClient(fuels);
 		}
 	}

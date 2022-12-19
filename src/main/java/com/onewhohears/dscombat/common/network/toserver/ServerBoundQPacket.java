@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.common.network.IPacket;
-import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.init.DataSerializers;
 
 import net.minecraft.network.FriendlyByteBuf;
@@ -41,7 +41,7 @@ public class ServerBoundQPacket extends IPacket {
 			success.set(true);
 			ServerPlayer player = ctx.get().getSender();
 			ServerLevel level = player.getLevel();
-			if (level.getEntity(id) instanceof EntityAbstractAircraft plane) {
+			if (level.getEntity(id) instanceof EntityAircraft plane) {
 				plane.setPrevQ(plane.getQ());
 				plane.setQ(q);
 			}

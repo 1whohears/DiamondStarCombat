@@ -10,7 +10,7 @@ import com.onewhohears.dscombat.client.event.ClientForgeEvents;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
-import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.util.UtilEntity;
@@ -49,7 +49,7 @@ public class PilotOverlay {
 		if (m.gameMode.getPlayerMode() == GameType.SPECTATOR) return;
 		final var player = m.player;
 		if (player.getVehicle() instanceof EntitySeat seat 
-				&& seat.getVehicle() instanceof EntityAbstractAircraft plane) {
+				&& seat.getVehicle() instanceof EntityAircraft plane) {
 			// plane speed
 			int s = (int)(plane.getDeltaMovement().length() * 20d);
 			GuiComponent.drawString(poseStack, m.font, 

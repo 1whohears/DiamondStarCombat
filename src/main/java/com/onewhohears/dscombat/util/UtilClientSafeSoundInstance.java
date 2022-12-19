@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.util;
 
 import com.onewhohears.dscombat.client.sounds.DopplerOnPlayerSoundInstance;
 import com.onewhohears.dscombat.client.sounds.PlaneEngineOnPlayerSoundInstance;
-import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -18,7 +18,7 @@ public class UtilClientSafeSoundInstance {
 				p, entity, initVolume, initPitch, velSound));
 	}
 	
-	public static void aircraftEngineSound(Minecraft m, EntityAbstractAircraft plane, SoundEvent sound) {
+	public static void aircraftEngineSound(Minecraft m, EntityAircraft plane, SoundEvent sound) {
 		LocalPlayer p = m.player;
 		if (p == null) return;
 		m.getSoundManager().play(new PlaneEngineOnPlayerSoundInstance(sound, 

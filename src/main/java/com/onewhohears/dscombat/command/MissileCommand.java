@@ -7,7 +7,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
-import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
+import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.util.UtilParse;
 
@@ -52,7 +52,7 @@ public class MissileCommand {
 		int i = 0;
 		for (Entity e : targets) {
 			Vec3 dp = e.position().subtract(pos).normalize();
-			EntityAbstractWeapon ew = data.getEntity(e.level, owner);
+			EntityWeapon ew = data.getEntity(e.level, owner);
 			ew.setPos(pos);
 			data.setDirection(ew, dp);
 			if (ew instanceof EntityMissile missile) {

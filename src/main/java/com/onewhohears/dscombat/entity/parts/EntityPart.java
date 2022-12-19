@@ -15,16 +15,16 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 
-public class EntityAbstractPart extends Entity {
+public abstract class EntityPart extends Entity {
 	
-	public static final EntityDataAccessor<Vec3> POS = SynchedEntityData.defineId(EntityAbstractPart.class, DataSerializers.VEC3);
-	public static final EntityDataAccessor<String> SLOT_ID = SynchedEntityData.defineId(EntityAbstractPart.class, EntityDataSerializers.STRING);
+	public static final EntityDataAccessor<Vec3> POS = SynchedEntityData.defineId(EntityPart.class, DataSerializers.VEC3);
+	public static final EntityDataAccessor<String> SLOT_ID = SynchedEntityData.defineId(EntityPart.class, EntityDataSerializers.STRING);
 	
-	public EntityAbstractPart(EntityType<?> pEntityType, Level pLevel) {
+	public EntityPart(EntityType<?> pEntityType, Level pLevel) {
 		super(pEntityType, pLevel);
 	}
 	
-	public EntityAbstractPart(EntityType<?> pEntityType, Level level, String slotId, Vec3 pos) {
+	public EntityPart(EntityType<?> pEntityType, Level level, String slotId, Vec3 pos) {
 		this(pEntityType, level);
 		this.setRelativePos(pos);
 		this.setSlotId(slotId);
@@ -89,5 +89,7 @@ public class EntityAbstractPart extends Entity {
 		return true;*/
 		return false;
 	}
+	
+	public abstract boolean shouldRender();
 
 }

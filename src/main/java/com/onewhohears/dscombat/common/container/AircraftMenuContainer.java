@@ -5,7 +5,7 @@ import java.util.List;
 import com.onewhohears.dscombat.common.container.slot.PartItemSlot;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartsManager;
-import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.init.ModContainers;
 
 import net.minecraft.world.Container;
@@ -26,7 +26,7 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
 		System.out.println("AircraftMenuContainer client side "+playerInv.player.level.isClientSide);
 		this.playerInv = playerInv;
 		// display plane parts
-		if (playerInv.player.getRootVehicle() instanceof EntityAbstractAircraft plane) {
+		if (playerInv.player.getRootVehicle() instanceof EntityAircraft plane) {
 			this.pm = plane.partsManager;
 			Container partsInv = pm.getContainer(this);
 			List<PartSlot> slots = plane.partsManager.getSlots();

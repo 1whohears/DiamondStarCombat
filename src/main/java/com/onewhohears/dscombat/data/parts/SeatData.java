@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.data.parts;
 
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 
 import net.minecraft.nbt.CompoundTag;
@@ -29,7 +29,7 @@ public class SeatData extends PartData {
 	}
 
 	@Override
-	public void setup(EntityAbstractAircraft craft, String slotId, Vec3 pos) {
+	public void setup(EntityAircraft craft, String slotId, Vec3 pos) {
 		super.setup(craft, slotId, pos);
 		if (isSetup(slotId, craft)) {
 			//System.out.println("ALREADY SEAT "+slotId);
@@ -43,7 +43,7 @@ public class SeatData extends PartData {
 	}
 	
 	@Override
-	public boolean isSetup(String slotId, EntityAbstractAircraft craft) {
+	public boolean isSetup(String slotId, EntityAircraft craft) {
 		//System.out.println("is this seat setup "+slotId);
 		for (EntitySeat seat : craft.getSeats()) {
 			//System.out.println("check seat slot "+seat.getSlotId());

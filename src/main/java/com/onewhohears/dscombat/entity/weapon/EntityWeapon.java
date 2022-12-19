@@ -18,24 +18,24 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkHooks;
 
-public abstract class EntityAbstractWeapon extends Projectile {
+public abstract class EntityWeapon extends Projectile {
 	
-	public static final EntityDataAccessor<Integer> OWNER_ID = SynchedEntityData.defineId(EntityAbstractWeapon.class, EntityDataSerializers.INT);
-	public static final EntityDataAccessor<Integer> AGE = SynchedEntityData.defineId(EntityAbstractWeapon.class, EntityDataSerializers.INT);
-	public static final EntityDataAccessor<Boolean> TEST_MODE = SynchedEntityData.defineId(EntityAbstractWeapon.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Integer> OWNER_ID = SynchedEntityData.defineId(EntityWeapon.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> AGE = SynchedEntityData.defineId(EntityWeapon.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Boolean> TEST_MODE = SynchedEntityData.defineId(EntityWeapon.class, EntityDataSerializers.BOOLEAN);
 	
 	/**
 	 * only set on server side
 	 */
 	protected int maxAge;
 	
-	public EntityAbstractWeapon(EntityType<? extends EntityAbstractWeapon> type, Level level) {
+	public EntityWeapon(EntityType<? extends EntityWeapon> type, Level level) {
 		super(type, level);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public EntityAbstractWeapon(Level level, Entity owner, WeaponData data) {
-		this((EntityType<? extends EntityAbstractWeapon>) data.getEntityType(), level);
+	public EntityWeapon(Level level, Entity owner, WeaponData data) {
+		this((EntityType<? extends EntityWeapon>) data.getEntityType(), level);
 		this.setOwner(owner);
 		maxAge = data.getMaxAge();
 	}
@@ -120,7 +120,7 @@ public abstract class EntityAbstractWeapon extends Projectile {
 	
 	@Override 
 	public boolean canCollideWith(Entity entity) {
-		if (entity instanceof EntityAbstractWeapon) return false;
+		if (entity instanceof EntityWeapon) return false;
 		return true;
 	}
 	

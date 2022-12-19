@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.data.weapon;
 import java.util.List;
 import java.util.Random;
 
-import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
+import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.entity.weapon.EntityBullet;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
@@ -99,12 +99,12 @@ public class BulletData extends WeaponData {
 		return WeaponType.BULLET;
 	}
 	
-	public EntityAbstractWeapon getEntity(Level level, Entity owner) {
+	public EntityWeapon getEntity(Level level, Entity owner) {
 		return new EntityBullet(level, owner, this);
 	}
 	
 	@Override
-	public EntityAbstractWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction) {
+	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction) {
 		EntityBullet bullet = (EntityBullet) super.getShootEntity(level, owner, pos, direction);
 		if (bullet == null) return null;
 		bullet.setDeltaMovement(direction.scale(speed));
@@ -112,7 +112,7 @@ public class BulletData extends WeaponData {
 	}
 	
 	@Override
-	public void setDirection(EntityAbstractWeapon weapon, Vec3 direction) {
+	public void setDirection(EntityWeapon weapon, Vec3 direction) {
 		float pitch = UtilAngles.getPitch(direction);
 		float yaw = UtilAngles.getYaw(direction);
 		Random r = new Random();

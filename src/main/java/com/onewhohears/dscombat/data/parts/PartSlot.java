@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.data.parts;
 
 import javax.annotation.Nullable;
 
-import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.UtilParse;
 
@@ -18,6 +18,7 @@ public class PartSlot {
 	private final SlotType type;
 	private final Vec3 pos;
 	private final int uix, uiy, offsetX;
+	// TODO the side the part is connected to
 	private PartData data;
 	
 	protected PartSlot(String name, SlotType type, Vec3 pos, int uix, int uiy) {
@@ -92,11 +93,11 @@ public class PartSlot {
 		return data;
 	}
 	
-	public void setup(EntityAbstractAircraft plane) {
+	public void setup(EntityAircraft plane) {
 		if (filled()) data.setup(plane, name, pos);
 	}
 	
-	public void clientSetup(EntityAbstractAircraft plane) {
+	public void clientSetup(EntityAircraft plane) {
 		if (filled()) data.clientSetup(plane, name, pos);
 	}
 	
@@ -108,7 +109,7 @@ public class PartSlot {
 		if (filled()) data.clientTick(name);
 	}
 	
-	public boolean addPartData(PartData data, EntityAbstractAircraft plane) {
+	public boolean addPartData(PartData data, EntityAircraft plane) {
 		if (filled()) return false;
 		if (!isCompatible(data)) return false;
 		this.data = data;
@@ -118,7 +119,7 @@ public class PartSlot {
 		return true;
 	}
 	
-	public boolean removePartData(EntityAbstractAircraft plane) {
+	public boolean removePartData(EntityAircraft plane) {
 		if (filled()) {
 			if (plane.level.isClientSide) data.clientRemove(name);
 			else data.remove(name);

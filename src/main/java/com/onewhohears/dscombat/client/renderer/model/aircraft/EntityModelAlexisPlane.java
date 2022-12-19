@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.client.renderer.model.aircraft;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.client.renderer.model.EntityControllableModel;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -15,7 +16,7 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
 
-public class EntityModelAlexisPlane<T extends EntityPlane> extends EntityAircraftModel<T> {
+public class EntityModelAlexisPlane<T extends EntityPlane> extends EntityControllableModel<T> {
 	
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(DSCombatMod.MODID, "alexis_plane"), "main");
 	
@@ -29,6 +30,32 @@ public class EntityModelAlexisPlane<T extends EntityPlane> extends EntityAircraf
 		this.gleft = body.getChild("gear").getChild("gleft");
 		this.gright = body.getChild("gear").getChild("gright");
 		this.stick = body.getChild("seat").getChild("stick");
+	}
+	
+	@Override
+	public void renderToBuffer(T entity, float partialTicks, PoseStack poseStack, VertexConsumer vertexConsumer,
+			int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+		poseStack.translate(0, 1.20, 0);
+		poseStack.scale(1.0F, -1.0F, 1.0F);
+		float gear = entity.getLandingGearPos(partialTicks);
+		if (gear < 1) {
+			float hpi = (float)Math.PI/2;
+			this.gfront.xRot = gear * -hpi;
+			this.gleft.xRot = gear * hpi;
+			this.gright.xRot = gear * hpi;
+			this.gfront.visible = true;
+			this.gleft.visible = true;
+			this.gright.visible = true;
+		} else {
+			this.gfront.visible = false;
+			this.gleft.visible = false;
+			this.gright.visible = false;
+		}
+		float ypi = (float)Math.PI/8;
+		float ppi = (float)Math.PI/12;
+		this.stick.zRot = entity.inputYaw * -ypi;
+		this.stick.xRot = entity.inputPitch * ppi;
+		body.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 	
 	public static LayerDefinition createBodyLayer() {
@@ -174,32 +201,6 @@ public class EntityModelAlexisPlane<T extends EntityPlane> extends EntityAircraf
 		.texOffs(14, 323).addBox(0.5F, 7.0F, -1.5F, 1.0F, 3.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offset(10.5F, 1.0F, 1.5F));
 
 		return LayerDefinition.create(meshdefinition, 512, 512);
-	}
-	
-	@Override
-	public void renderToBuffer(T entity, float partialTicks, PoseStack poseStack, VertexConsumer vertexConsumer,
-			int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		poseStack.translate(0, 1.20, 0);
-		poseStack.scale(1.0F, -1.0F, 1.0F);
-		float gear = entity.getLandingGearPos(partialTicks);
-		if (gear < 1) {
-			float hpi = (float)Math.PI/2;
-			this.gfront.xRot = gear * -hpi;
-			this.gleft.xRot = gear * hpi;
-			this.gright.xRot = gear * hpi;
-			this.gfront.visible = true;
-			this.gleft.visible = true;
-			this.gright.visible = true;
-		} else {
-			this.gfront.visible = false;
-			this.gleft.visible = false;
-			this.gright.visible = false;
-		}
-		float ypi = (float)Math.PI/8;
-		float ppi = (float)Math.PI/12;
-		this.stick.zRot = entity.inputYaw * -ypi;
-		this.stick.xRot = entity.inputPitch * ppi;
-		body.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 
 }

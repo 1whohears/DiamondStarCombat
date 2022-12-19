@@ -81,10 +81,10 @@ public class ModEntities {
 	public static final RegistryObject<EntityType<EntitySeatCamera>> CAMERA = ENTITIES.register("seat_camera", 
 			() -> createEntityType(EntitySeatCamera::new, EntityDimensions.scalable(0f, 0f)));
 	
-	public static final RegistryObject<EntityType<EntityWeaponRack>> LIGHT_WEAPON_RACK = ENTITIES.register("light_weapon_rack", 
-			() -> createEntityType(EntityWeaponRack::new, EntityDimensions.scalable(0f, 0f)));
+	public static final RegistryObject<EntityType<EntityWeaponRack>> LIGHT_MISSILE_RACK = ENTITIES.register("light_missile_rack", 
+			() -> createEntityType(EntityWeaponRack::new, EntityDimensions.scalable(0.1f, 0.1f)));
 	
-	public static final RegistryObject<EntityType<EntityWeaponRack>> HEAVY_WEAPON_RACK = ENTITIES.register("heavy_weapon_rack", 
+	public static final RegistryObject<EntityType<EntityWeaponRack>> HEAVY_MISSILE_RACK = ENTITIES.register("heavy_missile_rack", 
 			() -> createEntityType(EntityWeaponRack::new, EntityDimensions.scalable(0f, 0f)));
 	
 	public static final RegistryObject<EntityType<EntityBullet>> BULLET = ENTITIES.register("bullet", 

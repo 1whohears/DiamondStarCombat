@@ -3,10 +3,10 @@ package com.onewhohears.dscombat.client.event;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.KeyInit;
 import com.onewhohears.dscombat.client.overlay.PilotOverlay;
-import com.onewhohears.dscombat.client.renderer.RendererEntityAbstractAircraft;
-import com.onewhohears.dscombat.client.renderer.RendererEntityAbstractWeapon;
+import com.onewhohears.dscombat.client.renderer.RendererEntityAircraft;
+import com.onewhohears.dscombat.client.renderer.RendererEntityWeapon;
 import com.onewhohears.dscombat.client.renderer.RendererEntityInvisible;
-import com.onewhohears.dscombat.client.renderer.RendererEntityWeaponRack;
+import com.onewhohears.dscombat.client.renderer.RendererEntityPart;
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelAlexisPlane;
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelF16;
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelJaviPlane;
@@ -65,11 +65,11 @@ public class ClientModEvents {
 						new EntityModelTestPlane<EntityPlane>(models.bakeLayer(EntityModelTestPlane.LAYER_LOCATION))));*/
 		
 		event.registerEntityRenderer(ModEntities.JAVI_PLANE.get(), 
-				(context) -> new RendererEntityAbstractAircraft<EntityPlane>(context, 
+				(context) -> new RendererEntityAircraft<EntityPlane>(context, 
 						new EntityModelJaviPlane<EntityPlane>(models.bakeLayer(EntityModelJaviPlane.LAYER_LOCATION))));
 		
 		event.registerEntityRenderer(ModEntities.ALEXIS_PLANE.get(), 
-				(context) -> new RendererEntityAbstractAircraft<EntityPlane>(context, 
+				(context) -> new RendererEntityAircraft<EntityPlane>(context, 
 						new EntityModelAlexisPlane<EntityPlane>(models.bakeLayer(EntityModelAlexisPlane.LAYER_LOCATION))));
 		
 		/*event.registerEntityRenderer(ModEntities.F16.get(), 
@@ -77,33 +77,33 @@ public class ClientModEvents {
 						new EntityModelF16<EntityPlane>(models.bakeLayer(EntityModelF16.LAYER_LOCATION))));*/
 		
 		event.registerEntityRenderer(ModEntities.NOAH_CHOPPER.get(), 
-				(context) -> new RendererEntityAbstractAircraft<EntityHelicopter>(context, 
+				(context) -> new RendererEntityAircraft<EntityHelicopter>(context, 
 						new EntityModelNoahChopper<EntityHelicopter>(models.bakeLayer(EntityModelNoahChopper.LAYER_LOCATION))));
 		
 		event.registerEntityRenderer((EntityType<EntityBullet>)ModEntities.BULLET.get(), 
-				(context) -> new RendererEntityAbstractWeapon<EntityBullet>(context, 
+				(context) -> new RendererEntityWeapon<EntityBullet>(context, 
 						new EntityModelBullet1<EntityBullet>(models.bakeLayer(EntityModelBullet1.LAYER_LOCATION)),
 						new ResourceLocation(DSCombatMod.MODID, "textures/entities/bullet1.png")));
 		
 		event.registerEntityRenderer(ModEntities.POS_MISSILE_1.get(), 
-				(context) -> new RendererEntityAbstractWeapon<EntityMissile>(context, 
+				(context) -> new RendererEntityWeapon<EntityMissile>(context, 
 						new EntityModelMissile1<EntityMissile>(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)), 
 						new ResourceLocation(DSCombatMod.MODID, "textures/entities/missile1.png")));
 		event.registerEntityRenderer(ModEntities.IR_MISSILE_1.get(), 
-				(context) -> new RendererEntityAbstractWeapon<EntityMissile>(context, 
+				(context) -> new RendererEntityWeapon<EntityMissile>(context, 
 						new EntityModelMissile1<EntityMissile>(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)),
 						new ResourceLocation(DSCombatMod.MODID, "textures/entities/missile3.png")));
 		event.registerEntityRenderer(ModEntities.TRACK_MISSILE_1.get(), 
-				(context) -> new RendererEntityAbstractWeapon<EntityMissile>(context, 
+				(context) -> new RendererEntityWeapon<EntityMissile>(context, 
 						new EntityModelMissile1<EntityMissile>(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)),
 						new ResourceLocation(DSCombatMod.MODID, "textures/entities/missile2.png")));
 		
 		event.registerEntityRenderer(ModEntities.LIGHT_MISSILE_RACK.get(), 
-				(context) -> new RendererEntityWeaponRack<EntityWeaponRack>(context,
+				(context) -> new RendererEntityPart<EntityWeaponRack>(context,
 						new EntityModelLightMissileRack<EntityWeaponRack>(models.bakeLayer(EntityModelLightMissileRack.LAYER_LOCATION)),
 						new ResourceLocation(DSCombatMod.MODID, "textures/entities/light_missile_rack.png")));
 		event.registerEntityRenderer(ModEntities.HEAVY_MISSILE_RACK.get(), 
-				(context) -> new RendererEntityWeaponRack<EntityWeaponRack>(context,
+				(context) -> new RendererEntityPart<EntityWeaponRack>(context,
 						new EntityModelLightMissileRack<EntityWeaponRack>(models.bakeLayer(EntityModelLightMissileRack.LAYER_LOCATION)),
 						new ResourceLocation(DSCombatMod.MODID, "textures/entities/light_missile_rack.png")));
 		

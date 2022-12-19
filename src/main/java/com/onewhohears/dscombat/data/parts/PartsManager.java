@@ -79,15 +79,15 @@ public class PartsManager {
 		for (PartSlot p : slots) p.clientTick();
 	}
 	
-	public boolean addSlot(String slotName, SlotType slotType, Vec3 slotPos, int uix, int uiy) {
+	public boolean addSlot(String slotName, SlotType slotType, Vec3 slotPos, int uix, int uiy, float zRot) {
 		if (getSlot(slotName) != null) return false;
-		slots.add(new PartSlot(slotName, slotType, slotPos, uix, uiy));
+		slots.add(new PartSlot(slotName, slotType, slotPos, uix, uiy, zRot));
 		return true;
 	}
 	
-	public boolean addSlot(String slotName, SlotType slotType, double x, double y, double z, int uix, int uiy) {
+	public boolean addSlot(String slotName, SlotType slotType, double x, double y, double z, int uix, int uiy, float zRot) {
 		if (getSlot(slotName) != null) return false;
-		slots.add(new PartSlot(slotName, slotType, new Vec3(x, y, z), uix, uiy));
+		slots.add(new PartSlot(slotName, slotType, new Vec3(x, y, z), uix, uiy, zRot));
 		return true;
 	}
 	

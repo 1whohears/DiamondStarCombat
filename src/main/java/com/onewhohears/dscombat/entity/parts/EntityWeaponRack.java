@@ -28,5 +28,10 @@ public class EntityWeaponRack extends EntityPart {
 	public boolean shouldRender() {
 		return true;
 	}
+	
+	@Override
+	public boolean shouldRenderAtSqrDistance(double dist) {
+		return dist < 25600;
+	}
 
 }

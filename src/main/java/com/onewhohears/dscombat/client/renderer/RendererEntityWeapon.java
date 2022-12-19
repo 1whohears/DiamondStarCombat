@@ -12,12 +12,12 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
-public class RendererEntityAbstractWeapon<T extends EntityWeapon> extends EntityRenderer<T> {
+public class RendererEntityWeapon<T extends EntityWeapon> extends EntityRenderer<T> {
 	
 	protected final EntityModel<?> model;
 	protected final ResourceLocation texture;
 	
-	public RendererEntityAbstractWeapon(Context ctx, EntityModel<T> model, ResourceLocation texture) {
+	public RendererEntityWeapon(Context ctx, EntityModel<T> model, ResourceLocation texture) {
 		super(ctx);
 		this.model = model;
 		this.texture = texture;

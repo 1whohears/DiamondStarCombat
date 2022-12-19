@@ -3,8 +3,10 @@ package com.onewhohears.dscombat.client.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Quaternion;
+import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.renderer.model.EntityControllableModel;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.parts.EntityPart;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -13,34 +15,35 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
-public class RendererEntityAbstractAircraft<T extends EntityAircraft> extends EntityRenderer<T> {
+public class RendererEntityPart<T extends EntityPart> extends EntityRenderer<T> {
 	
 	protected final EntityControllableModel<T> model;
+	protected final ResourceLocation texture;
 	
-	public RendererEntityAbstractAircraft(Context context, EntityControllableModel<T> model) {
+	public RendererEntityPart(Context context, EntityControllableModel<T> model, ResourceLocation texture) {
 		super(context);
-		this.shadowRadius = 0.8f;
 		this.model = model;
+		this.texture = texture;
+	}
+
+	@Override
+	public ResourceLocation getTextureLocation(T entity) {
+		return texture;
 	}
 	
 	@Override
 	public void render(T entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
-		//System.out.println("RENDER "+entity);
-		Quaternion q = UtilAngles.lerpQ(partialTicks, entity.getPrevQ(), entity.getClientQ());
+		if (!entity.shouldRender()) return;
 		poseStack.pushPose();
-        poseStack.mulPose(q);
-		
-        VertexConsumer vertexconsumer = multiBufferSource.getBuffer(this.model.renderType(this.getTextureLocation(entity)));
+		if (entity.getVehicle() instanceof EntityAircraft plane) {
+			Quaternion q = UtilAngles.lerpQ(partialTicks, plane.getPrevQ(), plane.getClientQ());
+			poseStack.mulPose(q);
+		}
+		poseStack.mulPose(Vector3f.ZP.rotationDegrees(entity.getZRot()));
+		VertexConsumer vertexconsumer = multiBufferSource.getBuffer(model.renderType(getTextureLocation(entity)));
 		model.renderToBuffer(entity, partialTicks, poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-		
-        poseStack.popPose();
-		
-        super.render(entity, entityYaw, partialTicks, poseStack, multiBufferSource, packedLight);
+		poseStack.popPose();
+		super.render(entity, entityYaw, partialTicks, poseStack, multiBufferSource, packedLight);
 	}
-	
-	@Override
-	public ResourceLocation getTextureLocation(T entity) {
-		return entity.getTexture();
-	}
-	
+
 }

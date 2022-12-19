@@ -1,5 +1,7 @@
 package com.onewhohears.dscombat.entity.parts;
 
+import com.onewhohears.dscombat.data.parts.PartSlot;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.UtilParse;
 
@@ -59,9 +61,9 @@ public abstract class EntityPart extends Entity {
 	
 	@Override
 	public void tick() {
-		if (this.firstTick) init();
+		if (firstTick) init();
 		super.tick();
-		if (!this.level.isClientSide && this.tickCount > 10 && this.getVehicle() == null) this.kill(); 
+		if (!level.isClientSide && tickCount > 10 && getVehicle() == null) kill(); 
 	}
 	
 	public Vec3 getRelativePos() {
@@ -91,5 +93,12 @@ public abstract class EntityPart extends Entity {
 	}
 	
 	public abstract boolean shouldRender();
+	
+	public float getZRot() {
+		if (!(getVehicle() instanceof EntityAircraft plane)) return 0;
+		PartSlot ps = plane.partsManager.getSlot(getSlotId());
+		if (ps == null) return 0;
+		return ps.getZRot();
+	}
 
 }

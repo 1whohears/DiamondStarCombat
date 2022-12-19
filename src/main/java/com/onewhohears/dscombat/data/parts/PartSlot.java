@@ -18,15 +18,16 @@ public class PartSlot {
 	private final SlotType type;
 	private final Vec3 pos;
 	private final int uix, uiy, offsetX;
-	// TODO the side the part is connected to
+	private final float zRot;
 	private PartData data;
 	
-	protected PartSlot(String name, SlotType type, Vec3 pos, int uix, int uiy) {
+	protected PartSlot(String name, SlotType type, Vec3 pos, int uix, int uiy, float zRot) {
 		this.name = name;
 		this.type = type;
 		this.pos = pos;
 		this.uix = uix;
 		this.uiy = uiy;
+		this.zRot = zRot;
 		this.offsetX = getIconOffsetX(type);
 		this.typeName = getTypeName(type);
 	}
@@ -37,6 +38,7 @@ public class PartSlot {
 		pos = UtilParse.readVec3(tag, "slot_pos");
 		uix = tag.getInt("uix");
 		uiy = tag.getInt("uiy");
+		zRot = tag.getFloat("zRot");
 		if (tag.contains("data")) data = UtilParse.parsePartFromCompound(tag.getCompound("data"));
 		// not saved
 		offsetX = getIconOffsetX(type);
@@ -50,6 +52,7 @@ public class PartSlot {
 		UtilParse.writeVec3(tag, pos, "slot_pos");
 		tag.putInt("uix", uix);
 		tag.putInt("uiy", uiy);
+		tag.putFloat("zRot", zRot);
 		if (filled()) tag.put("data", data.write());
 		return tag;
 	}
@@ -66,6 +69,7 @@ public class PartSlot {
 		//System.out.println("uix = "+uix);
 		uiy = buffer.readInt();
 		//System.out.println("uiy = "+uiy);
+		zRot = buffer.readFloat();
 		boolean notNull = buffer.readBoolean();
 		//System.out.println("notNull = "+notNull);
 		if (notNull) data = DataSerializers.PART_DATA.read(buffer);
@@ -80,6 +84,7 @@ public class PartSlot {
 		DataSerializers.VEC3.write(buffer, pos);
 		buffer.writeInt(uix);
 		buffer.writeInt(uiy);
+		buffer.writeFloat(zRot);
 		buffer.writeBoolean(filled());
 		if (filled()) data.write(buffer);
 	}
@@ -201,6 +206,10 @@ public class PartSlot {
 	@Override
 	public String toString() {
 		return "["+name+":"+getSlotType().toString()+":"+data+"]";
+	}
+	
+	public float getZRot() {
+		return zRot;
 	}
 	
 }

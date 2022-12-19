@@ -113,15 +113,11 @@ public abstract class EntityWeapon extends Projectile {
 		return true;
 	}
 	
-	/*@Override
-	public boolean canBeCollidedWith() {
-		return false;
-	}*/
-	
 	@Override 
 	public boolean canCollideWith(Entity entity) {
-		if (entity instanceof EntityWeapon) return false;
-		return true;
+		/*if (entity instanceof EntityWeapon) return false;
+		return true;*/
+		return false;
 	}
 	
 	@Override

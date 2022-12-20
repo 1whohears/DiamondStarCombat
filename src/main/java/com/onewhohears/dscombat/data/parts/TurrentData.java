@@ -1,5 +1,7 @@
 package com.onewhohears.dscombat.data.parts;
 
+import java.util.NoSuchElementException;
+
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.parts.EntityPart;
@@ -9,20 +11,46 @@ import com.onewhohears.dscombat.init.ModEntities;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class TurrentData extends SeatData {
 	
-	public TurrentData(float weight, ResourceLocation itemid, SlotType[] compatibleSlots) {
+	private final String turrentEntityKey;
+	private EntityType<? extends EntityTurrent> turrentType;
+	private int ammo; 
+	// TODO need to come up with a better way to save ammo and weapon data
+	// maybe save weaponId and WeaponData in here and give it to the entity on setup instead of the entity making it
+	
+	public TurrentData(float weight, ResourceLocation itemid, SlotType[] compatibleSlots, String turrentEntityKey) {
 		super(weight, itemid, compatibleSlots);
+		this.turrentEntityKey = turrentEntityKey;
 	}
 
 	public TurrentData(CompoundTag tag) {
 		super(tag);
+		turrentEntityKey = tag.getString("turrentEntity");
+		ammo = tag.getInt("ammo");
+	}
+	
+	public CompoundTag write() {
+		CompoundTag tag = super.write();
+		tag.putString("turrentEntity", turrentEntityKey);
+		tag.putInt("ammo", ammo);
+		return tag;
 	}
 
 	public TurrentData(FriendlyByteBuf buffer) {
 		super(buffer);
+		turrentEntityKey = buffer.readUtf();
+		ammo = buffer.readInt();
+	}
+	
+	public void write(FriendlyByteBuf buffer) {
+		super.write(buffer);
+		buffer.writeUtf(turrentEntityKey);
+		buffer.writeInt(ammo);
 	}
 	
 	@Override
@@ -33,15 +61,21 @@ public class TurrentData extends SeatData {
 	@Override
 	public void setup(EntityAircraft craft, String slotId, Vec3 pos) {
 		super.setup(craft, slotId, pos);
-		if (isSetup(slotId, craft)) {
-			return;
-		}
-		EntityTurrent t = ModEntities.MINIGUN_TURRENT.get().create(craft.level);
+		EntityTurrent t = getTurrent(slotId, craft, pos);
+		t.setAmmo(ammo);
+	}
+	
+	public EntityTurrent getTurrent(String slotId, EntityAircraft craft, Vec3 pos) {
+		for (EntityPart part : craft.getPartEntities()) 
+			if (part.getSlotId().equals(slotId)) 
+				return (EntityTurrent) part;
+		EntityTurrent t = getTurrentType().create(craft.level);
 		t.setSlotId(slotId);
 		t.setRelativePos(pos);
 		t.setPos(craft.position());
 		t.startRiding(craft);
 		craft.level.addFreshEntity(t);
+		return t;
 	}
 	
 	@Override
@@ -57,6 +91,17 @@ public class TurrentData extends SeatData {
 		for (EntityPart part : getParent().getPartEntities()) 
 			if (part.getSlotId().equals(slotId)) 
 				part.discard();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public EntityType<? extends EntityTurrent> getTurrentType() {
+		if (turrentType == null) {
+			try { turrentType = (EntityType<? extends EntityTurrent>) ForgeRegistries.ENTITY_TYPES
+					.getDelegate(new ResourceLocation(turrentEntityKey)).get().get(); }
+			catch(NoSuchElementException e) { turrentType = ModEntities.MINIGUN_TURRENT.get(); }
+			catch(ClassCastException e) { turrentType = ModEntities.MINIGUN_TURRENT.get(); }
+		}
+		return turrentType;
 	}
 	
 }

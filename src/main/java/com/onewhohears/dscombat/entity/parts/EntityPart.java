@@ -100,5 +100,10 @@ public abstract class EntityPart extends Entity {
 		if (ps == null) return 0;
 		return ps.getZRot();
 	}
+	
+	@Override 
+	public boolean canCollideWith(Entity entity) {
+		return false;
+	}
 
 }

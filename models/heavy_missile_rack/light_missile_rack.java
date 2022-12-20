@@ -3,12 +3,12 @@
 // Paste this class into your mod and generate all required imports
 
 
-public class light_missile_rack<T extends Entity> extends EntityModel<T> {
+public class heavy_missile_rack<T extends Entity> extends EntityModel<T> {
 	// This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("modid", "light_missile_rack"), "main");
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("modid", "heavy_missile_rack"), "main");
 	private final ModelPart main;
 
-	public light_missile_rack(ModelPart root) {
+	public heavy_missile_rack(ModelPart root) {
 		this.main = root.getChild("main");
 	}
 

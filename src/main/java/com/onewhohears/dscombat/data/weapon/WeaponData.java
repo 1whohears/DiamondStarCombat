@@ -90,7 +90,7 @@ public abstract class WeaponData {
 		slotId = tag.getString("slotId");
 		entityTypeKey = tag.getString("entityType");
 		shootSoundKey = tag.getString("shootSound");
-		rackTypeKey = tag.getString("rackTypeKey");
+		rackTypeKey = tag.getString("rackType");
 		ingredients = DSCIngredient.getIngredients(tag);
 		craftNum = tag.getInt("craftNum");
 	}
@@ -108,7 +108,7 @@ public abstract class WeaponData {
 		tag.putString("slotId", slotId);
 		tag.putString("entityType", entityTypeKey);
 		tag.putString("shootSound", shootSoundKey);
-		tag.putString("rackTypeKey", rackTypeKey);
+		tag.putString("rackType", rackTypeKey);
 		DSCIngredient.writeIngredients(ingredients, tag);
 		tag.putInt("craftNum", craftNum);
 		return tag;
@@ -371,7 +371,7 @@ public abstract class WeaponData {
 		if (rackType == null) {
 			try { rackType = ForgeRegistries.ENTITY_TYPES
 					.getDelegate(new ResourceLocation(rackTypeKey)).get().get(); }
-			catch(NoSuchElementException e) { rackType = ModEntities.LIGHT_MISSILE_RACK.get(); }
+			catch(NoSuchElementException e) { rackType = ModEntities.XM12.get(); }
 		}
 		return rackType;
 	}

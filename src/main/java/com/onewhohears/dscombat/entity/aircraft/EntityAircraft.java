@@ -91,9 +91,14 @@ public abstract class EntityAircraft extends Entity {
 	public static final double collideSpeedWithGearThreshHold = 2d;
 	public static final double collideDamageRate = 200d;
 	
-	public PartsManager partsManager = new PartsManager();
-	public WeaponSystem weaponSystem = new WeaponSystem();
-	public RadarSystem radarSystem = new RadarSystem();
+	public final PartsManager partsManager = new PartsManager();
+	public final WeaponSystem weaponSystem = new WeaponSystem();
+	public final RadarSystem radarSystem = new RadarSystem();
+	
+	protected final ResourceLocation TEXTURE;
+	protected final RegistryObject<SoundEvent> engineSound;
+	protected final RegistryObject<Item> item;
+	
 	public Quaternion prevQ = Quaternion.ONE.copy();
 	public Quaternion clientQ = Quaternion.ONE.copy();
 	
@@ -102,10 +107,6 @@ public abstract class EntityAircraft extends Entity {
 	public float zRot, zRotO; 
 	public float torqueX, torqueY, torqueZ, torqueXO, torqueYO, torqueZO;
 	public Vec3 prevMotion = Vec3.ZERO;
-	
-	protected final ResourceLocation TEXTURE;
-	protected final RegistryObject<SoundEvent> engineSound;
-	protected final RegistryObject<Item> item;
 	
 	private int lerpSteps, newRiderCooldown;
 	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot;
@@ -168,9 +169,9 @@ public abstract class EntityAircraft extends Entity {
 			CompoundTag tag = AircraftPresets.getPreset(initType);
 			if (tag != null) compound.merge(tag);
 		}
-		partsManager = new PartsManager(compound);
-		weaponSystem = new WeaponSystem(compound);
-		radarSystem = new RadarSystem(compound);
+		partsManager.read(compound);
+		weaponSystem.read(compound);
+		radarSystem.read(compound);
 		this.setMaxSpeed(compound.getFloat("max_speed"));
 		this.setMaxHealth(compound.getFloat("max_health"));
 		this.setHealth(compound.getFloat("health"));

@@ -22,12 +22,12 @@ public abstract class EntityPart extends Entity {
 	public static final EntityDataAccessor<Vec3> POS = SynchedEntityData.defineId(EntityPart.class, DataSerializers.VEC3);
 	public static final EntityDataAccessor<String> SLOT_ID = SynchedEntityData.defineId(EntityPart.class, EntityDataSerializers.STRING);
 	
-	public EntityPart(EntityType<?> pEntityType, Level pLevel) {
+	protected EntityPart(EntityType<?> pEntityType, Level pLevel) {
 		super(pEntityType, pLevel);
 	}
 	
-	public EntityPart(EntityType<?> pEntityType, Level level, String slotId, Vec3 pos) {
-		this(pEntityType, level);
+	protected EntityPart(EntityType<?> entityType, Level level, String slotId, Vec3 pos) {
+		this(entityType, level);
 		this.setRelativePos(pos);
 		this.setSlotId(slotId);
 	}

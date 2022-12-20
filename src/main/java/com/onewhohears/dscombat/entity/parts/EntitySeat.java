@@ -10,7 +10,6 @@ import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -20,7 +19,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidType;
-import net.minecraftforge.network.NetworkHooks;
 
 public class EntitySeat extends EntityPart {
 	
@@ -32,10 +30,10 @@ public class EntitySeat extends EntityPart {
 		super(ModEntities.SEAT.get(), level, slotId, pos);
 	}
 
-	/*@Override
+	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-	}*/
+	}
 
 	@Override
 	protected void readAdditionalSaveData(CompoundTag compound) {
@@ -67,11 +65,6 @@ public class EntitySeat extends EntityPart {
 	@Override
 	public void tick() {
 		super.tick();
-	}
-
-	@Override
-	public Packet<?> getAddEntityPacket() {
-		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 	
 	@Override
@@ -120,9 +113,6 @@ public class EntitySeat extends EntityPart {
 	
 	@Override
     public Vec3 getDismountLocationForPassenger(LivingEntity livingEntity) {
-		/*Entity root = this.getRootVehicle(); // this can cause a stack overflow
-		if (root == null) return super.getDismountLocationForPassenger(livingEntity);
-		return root.getDismountLocationForPassenger(livingEntity);*/
 		return super.getDismountLocationForPassenger(livingEntity).add(0, 1, 0);
 	}
 	
@@ -153,11 +143,6 @@ public class EntitySeat extends EntityPart {
     public double getPassengersRidingOffset() {
         return 0;
     }
-	
-	@Override
-	public String toString() {
-		return "seat "+this.getRelativePos();
-	}
 
 	@Override
 	public boolean shouldRender() {

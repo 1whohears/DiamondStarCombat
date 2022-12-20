@@ -27,19 +27,25 @@ import net.minecraftforge.network.PacketDistributor;
 public class PartsManager {
 	
 	private List<PartSlot> slots = new ArrayList<PartSlot>();
-	private boolean readData = true;
+	private boolean readData = false;
 	private EntityAircraft parent;
 	
 	public PartsManager() {
-		readData = false;
+		
 	}
 	
-	public PartsManager(CompoundTag compound) {
+	/**
+	 * deletes all slot data currently in the list and reads from this compound
+	 * @param compound
+	 */
+	public void read(CompoundTag compound) {
+		slots.clear();
 		ListTag list = compound.getList("slots", 10);
 		for (int i = 0; i < list.size(); ++i) {
 			CompoundTag tag = list.getCompound(i);
 			slots.add(new PartSlot(tag));
 		}
+		readData = true;
 	}
 	
 	public void write(CompoundTag compound) {
@@ -49,14 +55,22 @@ public class PartsManager {
 	}
 	
 	public PartsManager(FriendlyByteBuf buffer) {
-		//System.out.println("PARTS MANAGER BUFFER");
 		int num = buffer.readInt();
 		for (int i = 0; i < num; ++i) slots.add(new PartSlot(buffer));
+		readData = true;
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
 		buffer.writeInt(slots.size());
 		for (PartSlot p : slots) p.write(buffer);
+	}
+	
+	/**
+	 * @param copy copies this part manager's slot data
+	 */
+	public void copy(PartsManager copy) {
+		this.slots = copy.slots;
+		readData = true;
 	}
 	
 	public void setupParts(EntityAircraft craft) {

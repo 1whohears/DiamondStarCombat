@@ -35,16 +35,17 @@ public class RadarSystem {
 	private List<RadarPing> clientTargets = new ArrayList<RadarPing>();
 	private int clientSelectedIndex = -1;
 	private List<EntityMissile> rockets = new ArrayList<EntityMissile>();
-	private boolean readData = true;
+	private boolean readData = false;
 	
 	public RadarSystem() {
-		readData = false;
+		
 	}
 	
-	public RadarSystem(CompoundTag compound) {
+	public void read(CompoundTag compound) {
 		radars.clear();
 		ListTag list = compound.getList("radars", 10);
 		for (int i = 0; i < list.size(); ++i) radars.add(new RadarData(list.getCompound(i)));
+		readData = true;
 	}
 	
 	public void write(CompoundTag compound) {
@@ -57,11 +58,20 @@ public class RadarSystem {
 		//System.out.println("RADAR SYSTEM BUFFER");
 		int num = buffer.readInt();
 		for (int i = 0; i < num; ++i) radars.add(new RadarData(buffer));
+		readData = true;
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
 		buffer.writeInt(radars.size());
 		for (int i = 0; i < radars.size(); ++i) radars.get(i).write(buffer);
+	}
+	
+	/**
+	 * @param rs copies this radar system's radar list
+	 */
+	public void copy(RadarSystem rs) {
+		this.radars = rs.radars;
+		this.readData = true;
 	}
 	
 	public void tickUpdateTargets() {

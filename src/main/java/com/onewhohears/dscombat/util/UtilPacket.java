@@ -43,14 +43,14 @@ public class UtilPacket {
 	}
 	
 	public static void planeDataPacket(int id, PartsManager pm, WeaponSystem ws, RadarSystem rs) {
-		//System.out.println("plane data packet recieved");
+		//System.out.println("plane data packet received");
 		//System.out.println(pm.toString());
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityAircraft plane) {
-			plane.partsManager = pm;
-			plane.weaponSystem = ws;
-			plane.radarSystem = rs;
+			plane.partsManager.copy(pm);
+			plane.weaponSystem.copy(ws);
+			plane.radarSystem.copy(rs);
 			// ORDER MATTERS
 			plane.weaponSystem.clientSetup(plane);
 			plane.radarSystem.clientSetup(plane);
@@ -60,7 +60,7 @@ public class UtilPacket {
 	}
 	
 	public static void weaponAmmoPacket(int id, String weaponId, String slotId, int ammo) {
-		//System.out.println("ammo packet recieved");
+		//System.out.println("ammo packet received");
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityAircraft plane) {
@@ -70,7 +70,7 @@ public class UtilPacket {
 	}
 	
 	public static void weaponSelectPacket(int id, int index) {
-		//System.out.println("ammo select packet recieved");
+		//System.out.println("ammo select packet received");
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityAircraft plane) {

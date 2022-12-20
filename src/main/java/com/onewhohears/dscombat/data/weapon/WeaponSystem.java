@@ -28,18 +28,20 @@ public class WeaponSystem {
 	private List<WeaponData> weapons = new ArrayList<WeaponData>();
 	private int weaponIndex = 0;
 	private EntityAircraft parent;
-	private boolean readData = true;
+	private boolean readData = false;
 	
 	public WeaponSystem() {
-		readData = false;
+		
 	}
 	
-	public WeaponSystem(CompoundTag compound) {
+	public void read(CompoundTag compound) {
+		weapons.clear();
 		this.weaponIndex = compound.getInt("index");
 		ListTag list = compound.getList("weapons", 10);
 		for (int i = 0; i < list.size(); ++i) {
 			weapons.add(UtilParse.parseWeaponFromCompound(list.getCompound(i)));
 		}
+		readData = true;
 	}
 	
 	public void write(CompoundTag compound) {
@@ -57,12 +59,22 @@ public class WeaponSystem {
 		for (int i = 0; i < num; ++i) weapons.add(DataSerializers.WEAPON_DATA.read(buffer));
 		weaponIndex = buffer.readInt();
 		//System.out.println("weaponIndex = "+weaponIndex);
+		readData = true;
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
 		buffer.writeInt(weapons.size());
 		for (WeaponData w : weapons) w.write(buffer);
 		buffer.writeInt(weaponIndex);
+	}
+	
+	/**
+	 * @param ws copies this weapon system's weapons list and selected weapon index
+	 */
+	public void copy(WeaponSystem ws) {
+		this.weapons = ws.weapons;
+		this.weaponIndex = ws.weaponIndex;
+		this.readData = true;
 	}
 	
 	public boolean addWeapon(WeaponData data, boolean updateClient) {

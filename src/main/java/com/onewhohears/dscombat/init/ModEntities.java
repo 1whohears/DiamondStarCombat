@@ -6,6 +6,7 @@ import com.onewhohears.dscombat.entity.aircraft.EntityHelicopter;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.parts.EntitySeatCamera;
+import com.onewhohears.dscombat.entity.parts.EntityTurrent;
 import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
 import com.onewhohears.dscombat.entity.weapon.EntityBullet;
 import com.onewhohears.dscombat.entity.weapon.EntityFlare;
@@ -77,28 +78,26 @@ public class ModEntities {
 	
 	public static final RegistryObject<EntityType<EntitySeat>> SEAT = ENTITIES.register("seat", 
 			() -> createEntityType(EntitySeat::new, EntityDimensions.scalable(0f, 0f)));
-	
 	public static final RegistryObject<EntityType<EntitySeatCamera>> CAMERA = ENTITIES.register("seat_camera", 
 			() -> createEntityType(EntitySeatCamera::new, EntityDimensions.scalable(0f, 0f)));
 	
+	public static final RegistryObject<EntityType<EntityTurrent>> MINIGUN_TURRENT = ENTITIES.register("minigun_turrent", 
+			() -> createEntityType((type, level) -> new EntityTurrent(type, level, "20mm"), 
+					EntityDimensions.scalable(0.1f, 0.1f)));
+	
 	public static final RegistryObject<EntityType<EntityWeaponRack>> LIGHT_MISSILE_RACK = ENTITIES.register("light_missile_rack", 
 			() -> createEntityType(EntityWeaponRack::new, EntityDimensions.scalable(0.1f, 0.1f)));
-	
 	public static final RegistryObject<EntityType<EntityWeaponRack>> HEAVY_MISSILE_RACK = ENTITIES.register("heavy_missile_rack", 
 			() -> createEntityType(EntityWeaponRack::new, EntityDimensions.scalable(0.1f, 0.1f)));
-	
 	public static final RegistryObject<EntityType<EntityWeaponRack>> XM12 = ENTITIES.register("xm12", 
 			() -> createEntityType(EntityWeaponRack::new, EntityDimensions.scalable(0.1f, 0.1f)));
 	
 	public static final RegistryObject<EntityType<EntityBullet>> BULLET = ENTITIES.register("bullet", 
 			() -> createEntityType(EntityBullet::new, EntityDimensions.scalable(0.15f, 0.15f)));
-	
 	public static final RegistryObject<EntityType<PositionMissile>> POS_MISSILE_1 = ENTITIES.register("pos_missile_1", 
 			() -> createEntityTypeFar(PositionMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
-	
 	public static final RegistryObject<EntityType<IRMissile>> IR_MISSILE_1 = ENTITIES.register("ir_missile_1", 
 			() -> createEntityTypeFar(IRMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
-	
 	public static final RegistryObject<EntityType<TrackEntityMissile>> TRACK_MISSILE_1 = ENTITIES.register("track_missile_1", 
 			() -> createEntityTypeFar(TrackEntityMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
 	

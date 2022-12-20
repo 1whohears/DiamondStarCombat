@@ -5,17 +5,14 @@ import java.util.List;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartsManager;
 import com.onewhohears.dscombat.data.radar.RadarData;
-import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
+import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponSystem;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
-import com.onewhohears.dscombat.init.ModSounds;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.BlockPos;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
@@ -75,14 +72,6 @@ public class UtilPacket {
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityAircraft plane) {
 			plane.weaponSystem.clientSetSelected(index);
-		}
-	}
-	
-	public static void playSoundPacket(int sound) {
-		Minecraft m = Minecraft.getInstance();
-		if (sound == 1) {
-			m.level.playSound(m.player, new BlockPos(m.player.position()), 
-	    			ModSounds.MISSILE_WARNING.get(), SoundSource.PLAYERS, 1f, 1f);
 		}
 	}
 	

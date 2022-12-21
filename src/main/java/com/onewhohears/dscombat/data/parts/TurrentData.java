@@ -61,8 +61,9 @@ public class TurrentData extends SeatData {
 	@Override
 	public void setup(EntityAircraft craft, String slotId, Vec3 pos) {
 		super.setup(craft, slotId, pos);
-		EntityTurrent t = getTurrent(slotId, craft, pos);
-		t.setAmmo(ammo);
+		//EntityTurrent t = 
+				getTurrent(slotId, craft, pos);
+		//t.setAmmo(ammo);
 	}
 	
 	public EntityTurrent getTurrent(String slotId, EntityAircraft craft, Vec3 pos) {

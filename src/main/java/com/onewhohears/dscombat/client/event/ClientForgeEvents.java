@@ -134,8 +134,9 @@ public final class ClientForgeEvents {
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
 		if (player == null) return;
-		boolean seat = KeyInit.changeSeat.consumeClick();
 		if (!(player.getRootVehicle() instanceof EntityAircraft plane)) return;
+		boolean seat = KeyInit.changeSeat.consumeClick();
+		boolean shoot = KeyInit.shootKey.isDown();
 		if (seat) {
 			PacketHandler.INSTANCE.sendToServer(new ServerBoundSwitchSeatPacket(plane.getId()));
 		}
@@ -154,6 +155,9 @@ public final class ClientForgeEvents {
 			}
 		}
 		if (!hovering) resetHoverIndex();
+		if (shoot && !plane.getControllingPassenger().equals(player)) {
+			
+		}
 	}
 	
 	public static void centerMouse() {

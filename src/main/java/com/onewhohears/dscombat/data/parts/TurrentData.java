@@ -2,6 +2,8 @@ package com.onewhohears.dscombat.data.parts;
 
 import java.util.NoSuchElementException;
 
+import javax.annotation.Nullable;
+
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.parts.EntityPart;
@@ -20,8 +22,6 @@ public class TurrentData extends SeatData {
 	private final String turrentEntityKey;
 	private EntityType<? extends EntityTurrent> turrentType;
 	private int ammo; 
-	// TODO need to come up with a better way to save ammo and weapon data
-	// maybe save weaponId and WeaponData in here and give it to the entity on setup instead of the entity making it
 	
 	public TurrentData(float weight, ResourceLocation itemid, SlotType[] compatibleSlots, String turrentEntityKey) {
 		super(weight, itemid, compatibleSlots);
@@ -61,18 +61,20 @@ public class TurrentData extends SeatData {
 	@Override
 	public void setup(EntityAircraft craft, String slotId, Vec3 pos) {
 		super.setup(craft, slotId, pos);
-		//EntityTurrent t = 
-				getTurrent(slotId, craft, pos);
-		//t.setAmmo(ammo);
+		EntityTurrent t = getTurrent(slotId);
+		t.setAmmo(ammo);
 	}
 	
-	public EntityTurrent getTurrent(String slotId, EntityAircraft craft, Vec3 pos) {
+	@Nullable
+	public EntityTurrent getTurrent(String slotId) {
+		EntityAircraft craft = getParent();
+		if (craft == null) return null;
 		for (EntityPart part : craft.getPartEntities()) 
 			if (part.getSlotId().equals(slotId)) 
 				return (EntityTurrent) part;
 		EntityTurrent t = getTurrentType().create(craft.level);
 		t.setSlotId(slotId);
-		t.setRelativePos(pos);
+		t.setRelativePos(getRelPos());
 		t.setPos(craft.position());
 		t.startRiding(craft);
 		craft.level.addFreshEntity(t);
@@ -103,6 +105,10 @@ public class TurrentData extends SeatData {
 			catch(ClassCastException e) { turrentType = ModEntities.MINIGUN_TURRENT.get(); }
 		}
 		return turrentType;
+	}
+	
+	public void setAmmo(int ammo) {
+		this.ammo = ammo;
 	}
 	
 }

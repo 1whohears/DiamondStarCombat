@@ -1,5 +1,8 @@
 package com.onewhohears.dscombat.entity.parts;
 
+import com.onewhohears.dscombat.data.parts.PartData.PartType;
+import com.onewhohears.dscombat.data.parts.PartSlot;
+import com.onewhohears.dscombat.data.parts.TurrentData;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
@@ -47,10 +50,12 @@ public class EntityTurrent extends EntitySeat {
 	@Override
 	public void tick() {
 		super.tick();
-		/*if (!level.isClientSide) {
-			if (data != null) setAmmo(data.getCurrentAmmo());
-			else setAmmo(0);
-		}*/
+		if (tickCount % 10 == 0 && getRootVehicle() instanceof EntityAircraft plane) {
+			PartSlot slot = plane.partsManager.getSlot(getSlotId());
+			if (slot != null && slot.filled() && slot.getPartData().getType() == PartType.TURRENT) { 
+				((TurrentData)slot.getPartData()).setAmmo(getAmmo());
+			}
+		}
 	}
 	
 	@Override

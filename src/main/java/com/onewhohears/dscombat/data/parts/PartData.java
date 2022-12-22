@@ -84,6 +84,10 @@ public abstract class PartData {
 		return parent;
 	}
 	
+	public Vec3 getRelPos() {
+		return relPos;
+	}
+	
 	public void setup(EntityAircraft craft, String slotId, Vec3 pos) {
 		//System.out.println("setting up part "+this+" client side "+craft.level.isClientSide+" slot "+slotId);
 		parent = craft;

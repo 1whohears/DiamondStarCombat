@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.common.network;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddPart;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddRadar;
+import com.onewhohears.dscombat.common.network.toclient.ToClientAddTurret;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddWeapon;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAircraftFuel;
 import com.onewhohears.dscombat.common.network.toclient.ToClientMissileMove;
@@ -10,6 +11,7 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientRadarPings;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRecievePlaneData;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRemovePart;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRemoveRadar;
+import com.onewhohears.dscombat.common.network.toclient.ToClientRemoveTurret;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRemoveWeapon;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponAmmo;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponIndex;
@@ -20,6 +22,7 @@ import com.onewhohears.dscombat.common.network.toserver.ToServerFlightControl;
 import com.onewhohears.dscombat.common.network.toserver.ToServerPingSelect;
 import com.onewhohears.dscombat.common.network.toserver.ToServerQ;
 import com.onewhohears.dscombat.common.network.toserver.ToServerRequestPlaneData;
+import com.onewhohears.dscombat.common.network.toserver.ToServerShootTurret;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSwitchSeat;
 
 import net.minecraft.resources.ResourceLocation;
@@ -143,6 +146,21 @@ public final class PacketHandler {
 			.encoder(ToServerQ::encode)
 			.decoder(ToServerQ::new)
 			.consumerMainThread(ToServerQ::handle)
+			.add();
+		net.messageBuilder(ToClientAddTurret.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ToClientAddTurret::encode)
+			.decoder(ToClientAddTurret::new)
+			.consumerMainThread(ToClientAddTurret::handle)
+			.add();
+		net.messageBuilder(ToClientRemoveTurret.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ToClientRemoveTurret::encode)
+			.decoder(ToClientRemoveTurret::new)
+			.consumerMainThread(ToClientRemoveTurret::handle)
+			.add();
+		net.messageBuilder(ToServerShootTurret.class, index++, NetworkDirection.PLAY_TO_SERVER)
+			.encoder(ToServerShootTurret::encode)
+			.decoder(ToServerShootTurret::new)
+			.consumerMainThread(ToServerShootTurret::handle)
 			.add();
 	}
 	

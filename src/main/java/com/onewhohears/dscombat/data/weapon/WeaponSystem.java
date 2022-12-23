@@ -7,11 +7,14 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.common.network.PacketHandler;
+import com.onewhohears.dscombat.common.network.toclient.ToClientAddTurret;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddWeapon;
+import com.onewhohears.dscombat.common.network.toclient.ToClientRemoveTurret;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRemoveWeapon;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponIndex;
 import com.onewhohears.dscombat.data.weapon.WeaponData.WeaponType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.math.UtilAngles;
@@ -83,14 +86,16 @@ public class WeaponSystem {
 		if (turrets.get(slotName) != null) return false;
 		turrets.put(slotName, data);
 		if (updateClient) {
-			// TODO add turret
+			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
+					new ToClientAddTurret(parent.getId(), slotName, data));
 		}
 		return true;
 	}
 	
-	public void removeTurret(String slotId, boolean updateClient) {
-		if (turrets.remove(slotId) != null && updateClient) {
-			// TODO remove turret
+	public void removeTurret(String slotName, boolean updateClient) {
+		if (turrets.remove(slotName) != null && updateClient) {
+			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
+					new ToClientRemoveTurret(parent.getId(), slotName));
 		}
 	}
 	
@@ -150,8 +155,21 @@ public class WeaponSystem {
 			if (reason == null && wd.isFailedLaunch()) reason = wd.getFailedLaunchReason();
 		}
 		if (reason != null && controller instanceof ServerPlayer player) {
-			player.displayClientMessage(
-				Component.translatable(reason), true);
+			player.displayClientMessage(Component.translatable(reason), true);
+		}
+		return true;
+	}
+	
+	public boolean shootTurret(Entity shooter, EntityTurret turret) {
+		WeaponData data = turrets.get(turret.getSlotId());
+		if (data == null) {
+			return false;
+		}
+		String reason = null;
+		data.shoot(parent.level, shooter, shooter.getLookAngle(), turret.position(), null);
+		if (data.isFailedLaunch()) reason = data.getFailedLaunchReason();
+		if (reason != null && shooter instanceof ServerPlayer player) {
+			player.displayClientMessage(Component.translatable(reason), true);
 		}
 		return true;
 	}

@@ -8,6 +8,7 @@ import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 
@@ -96,9 +97,16 @@ public class EntityTurret extends EntitySeat {
 		super.remove(reason);
 	}
 	
-	public void shoot() {
-		if (level.isClientSide) return;
-		// TODO shoot the turret
+	public void shoot(Entity shooter) {
+		if (level.isClientSide || !(getRootVehicle() instanceof EntityAircraft plane)) return;
+		if (plane.weaponSystem.shootTurret(shooter, this)) {
+			PartSlot slot = plane.partsManager.getSlot(getSlotId());
+			if (slot != null && slot.filled() && slot.getPartData().getType() == PartType.TURRENT) { 
+				TurretData td = (TurretData) slot.getPartData();
+				td.setAmmo(getAmmo());
+				td.setMax(getMax());
+			}
+		}
 	}
 
 }

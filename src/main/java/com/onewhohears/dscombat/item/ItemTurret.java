@@ -28,7 +28,7 @@ public class ItemTurret extends ItemPart {
 			name.append("EMPTY");
 		} else {
 			name.append(Component.translatable(turret))
-				.append(" "+tag.getInt("ammo"));
+				.append(" "+tag.getInt("ammo")+"/"+tag.getInt("max"));
 		}
 		return name;	
 	}

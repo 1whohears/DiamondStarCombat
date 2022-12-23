@@ -4,45 +4,43 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.common.network.IPacket;
-import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
+import com.onewhohears.dscombat.common.network.PacketHandler;
+import com.onewhohears.dscombat.common.network.toclient.ToClientRecievePlaneData;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkEvent.Context;
+import net.minecraftforge.network.PacketDistributor;
 
-public class ServerBoundPingSelectPacket extends IPacket {
+public class ToServerRequestPlaneData extends IPacket {
 	
 	public final int id;
-	public final RadarPing ping;
 	
-	public ServerBoundPingSelectPacket(int planeId, RadarPing ping) {
-		this.id = planeId;
-		this.ping = ping;
+	public ToServerRequestPlaneData(int id) {
+		this.id = id;
 	}
 	
-	public ServerBoundPingSelectPacket(FriendlyByteBuf buffer) {
+	public ToServerRequestPlaneData(FriendlyByteBuf buffer) {
 		id = buffer.readInt();
-		ping = new RadarPing(buffer);
 	}
 	
 	@Override
 	public void encode(FriendlyByteBuf buffer) {
 		buffer.writeInt(id);
-		ping.write(buffer);
 	}
 
 	@Override
 	public boolean handle(Supplier<Context> ctx) {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
-			success.set(true);
-			ServerPlayer player = ctx.get().getSender();
-			ServerLevel level = player.getLevel();
+			Level level = ctx.get().getSender().level;
 			if (level.getEntity(id) instanceof EntityAircraft plane) {
-				plane.radarSystem.selectTarget(ping);
+				PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> plane), 
+						new ToClientRecievePlaneData(plane.getId(), 
+							plane.partsManager, plane.weaponSystem, plane.radarSystem));
 			}
+			success.set(true);
 		});
 		ctx.get().setPacketHandled(true);
 		return success.get();

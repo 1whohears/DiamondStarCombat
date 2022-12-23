@@ -8,7 +8,7 @@ import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.common.network.toclient.ClientBoundWeaponAmmoPacket;
+import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponAmmo;
 import com.onewhohears.dscombat.crafting.DSCIngredient;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
@@ -215,7 +215,7 @@ public abstract class WeaponData {
 	
 	public void updateClientAmmo(EntityAircraft vehicle) {
 		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> vehicle), 
-				new ClientBoundWeaponAmmoPacket(vehicle.getId(), this.getId(), this.slotId, this.getCurrentAmmo()));
+				new ToClientWeaponAmmo(vehicle.getId(), this.getId(), this.slotId, this.getCurrentAmmo()));
 	}
 	
 	protected void tick() {

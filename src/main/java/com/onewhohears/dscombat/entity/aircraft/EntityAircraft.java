@@ -10,8 +10,8 @@ import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.event.ClientForgeEvents;
 import com.onewhohears.dscombat.common.container.AircraftMenuContainer;
 import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.common.network.toserver.ServerBoundQPacket;
-import com.onewhohears.dscombat.common.network.toserver.ServerBoundRequestPlaneDataPacket;
+import com.onewhohears.dscombat.common.network.toserver.ToServerQ;
+import com.onewhohears.dscombat.common.network.toserver.ToServerRequestPlaneData;
 import com.onewhohears.dscombat.data.AircraftPresets;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartsManager;
@@ -151,7 +151,7 @@ public abstract class EntityAircraft extends Entity {
         if (level.isClientSide() && Q.equals(key)) {
         	if (isControlledByLocalInstance()) {
         		// if this entity is piloted by the client's player send the client quaternion to the server
-        		PacketHandler.INSTANCE.sendToServer(new ServerBoundQPacket(getId(), getClientQ()));
+        		PacketHandler.INSTANCE.sendToServer(new ToServerQ(getId(), getClientQ()));
         	} else {
         		// if the client player is not controlling this plane then client quaternion = server quaternion
         		setPrevQ(getClientQ());
@@ -641,7 +641,7 @@ public abstract class EntityAircraft extends Entity {
 	public void clientSetup() {
 		UtilClientSafeSoundInstance.aircraftEngineSound(
 				Minecraft.getInstance(), this, getEngineSound());
-		PacketHandler.INSTANCE.sendToServer(new ServerBoundRequestPlaneDataPacket(getId()));
+		PacketHandler.INSTANCE.sendToServer(new ToServerRequestPlaneData(getId()));
 	}
 	
 	@Override

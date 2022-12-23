@@ -11,26 +11,26 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent.Context;
 
-public class ClientBoundWeaponIndexPacket extends IPacket {
+public class ToClientRemoveTurret extends IPacket {
 	
 	public final int id;
-	public final int index;
+	public final String slotName;
 	
-	public ClientBoundWeaponIndexPacket(int id, int index) {
+	public ToClientRemoveTurret(int id, String slotName) {
 		this.id = id;
-		this.index = index;
+		this.slotName = slotName;
 	}
 	
-	public ClientBoundWeaponIndexPacket(FriendlyByteBuf buffer) {
+	public ToClientRemoveTurret(FriendlyByteBuf buffer) {
 		super(buffer);
 		id = buffer.readInt();
-		index = buffer.readInt();
+		slotName = buffer.readUtf();
 	}
 	
 	@Override
 	public void encode(FriendlyByteBuf buffer) {
 		buffer.writeInt(id);
-		buffer.writeInt(index);
+		buffer.writeUtf(slotName);
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class ClientBoundWeaponIndexPacket extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilPacket.weaponSelectPacket(id, index);
+				UtilPacket.removeTurretPacket(id, slotName);
 				success.set(true);
 			});
 		});

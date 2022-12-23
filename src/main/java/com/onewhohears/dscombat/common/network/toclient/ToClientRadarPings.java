@@ -1,10 +1,12 @@
 package com.onewhohears.dscombat.common.network.toclient;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.common.network.IPacket;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
 import com.onewhohears.dscombat.util.UtilPacket;
 
 import net.minecraft.network.FriendlyByteBuf;
@@ -12,29 +14,29 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent.Context;
 
-public class ClientBoundFuelPacket extends IPacket {
+public class ToClientRadarPings extends IPacket {
 	
 	public final int id;
-	public final float[] fuels;
+	public final List<RadarPing> pings;
 	
-	public ClientBoundFuelPacket(EntityAircraft plane) {
-		this.id = plane.getId();
-		this.fuels = plane.partsManager.getFuelsForClient();
+	public ToClientRadarPings(int id, List<RadarPing> pings) {
+		this.id = id;
+		this.pings = pings;
 	}
 	
-	public ClientBoundFuelPacket(FriendlyByteBuf buffer) {
+	public ToClientRadarPings(FriendlyByteBuf buffer) {
 		super(buffer);
-		this.id = buffer.readInt();
+		id = buffer.readInt();
+		pings = new ArrayList<RadarPing>();
 		int num = buffer.readInt();
-		fuels = new float[num];
-		for (int i = 0 ; i < num; ++i) fuels[i] = buffer.readFloat();
+		for (int i = 0; i < num; ++i) pings.add(new RadarPing(buffer));
 	}
 	
 	@Override
 	public void encode(FriendlyByteBuf buffer) {
 		buffer.writeInt(id);
-		buffer.writeInt(fuels.length);
-		for (int i = 0; i < fuels.length; ++i) buffer.writeFloat(fuels[i]);
+		buffer.writeInt(pings.size());
+		for (int i = 0; i < pings.size(); ++i) pings.get(i).write(buffer);
 	}
 
 	@Override
@@ -42,7 +44,7 @@ public class ClientBoundFuelPacket extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilPacket.setAircraftFuel(id, fuels);
+				UtilPacket.pingsPacket(id, pings);
 				success.set(true);
 			});
 		});

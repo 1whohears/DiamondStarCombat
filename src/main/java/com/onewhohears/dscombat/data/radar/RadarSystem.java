@@ -6,10 +6,10 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.common.network.toclient.ClientBoundAddRadarPacket;
-import com.onewhohears.dscombat.common.network.toclient.ClientBoundPingsPacket;
-import com.onewhohears.dscombat.common.network.toclient.ClientBoundRemoveRadarPacket;
-import com.onewhohears.dscombat.common.network.toserver.ServerBoundPingSelectPacket;
+import com.onewhohears.dscombat.common.network.toclient.ToClientAddRadar;
+import com.onewhohears.dscombat.common.network.toclient.ToClientRadarPings;
+import com.onewhohears.dscombat.common.network.toclient.ToClientRemoveRadar;
+import com.onewhohears.dscombat.common.network.toserver.ToServerPingSelect;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
@@ -114,7 +114,7 @@ public class RadarSystem {
 		// PACKET
 		if (parent.tickCount % 20 == 0) PacketHandler.INSTANCE.send(
 				PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
-				new ClientBoundPingsPacket(parent.getId(), targets));
+				new ToClientRadarPings(parent.getId(), targets));
 	}
 	
 	private void updateRockets() {
@@ -162,7 +162,7 @@ public class RadarSystem {
 		for (int i = 0; i < clientTargets.size(); ++i) 
 			if (clientTargets.get(i).id == id) {
 				clientSelectedIndex = i;
-				PacketHandler.INSTANCE.sendToServer(new ServerBoundPingSelectPacket(parent.getId(), ping));
+				PacketHandler.INSTANCE.sendToServer(new ToServerPingSelect(parent.getId(), ping));
 				break;
 			}
 		//System.out.println("new selected index "+clientSelectedIndex);
@@ -209,7 +209,7 @@ public class RadarSystem {
 		radars.add(r);
 		if (updateClient) {
 			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
-					new ClientBoundAddRadarPacket(parent.getId(), r));
+					new ToClientAddRadar(parent.getId(), r));
 		}
 		return true;
 	}
@@ -218,7 +218,7 @@ public class RadarSystem {
 		boolean ok = radars.remove(get(id, slotId));
 		if (ok && updateClient) {
 			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
-					new ClientBoundRemoveRadarPacket(parent.getId(), id, slotId));
+					new ToClientRemoveRadar(parent.getId(), id, slotId));
 		}
 		return;
 	}

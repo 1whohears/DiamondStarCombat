@@ -4,6 +4,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.common.network.IPacket;
+import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.UtilPacket;
 
 import net.minecraft.network.FriendlyByteBuf;
@@ -11,30 +13,26 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent.Context;
 
-public class ClientBoundRemoveRadarPacket extends IPacket {
+public class ToClientAddWeapon extends IPacket {
 	
 	public final int id;
-	public final String rid;
-	public final String slotId;
+	public final WeaponData data;
 	
-	public ClientBoundRemoveRadarPacket(int id, String rid, String slotId) {
+	public ToClientAddWeapon(int id, WeaponData data) {
 		this.id = id;
-		this.rid = rid;
-		this.slotId = slotId;
+		this.data = data;
 	}
 	
-	public ClientBoundRemoveRadarPacket(FriendlyByteBuf buffer) {
+	public ToClientAddWeapon(FriendlyByteBuf buffer) {
 		super(buffer);
 		id = buffer.readInt();
-		rid = buffer.readUtf();
-		slotId = buffer.readUtf();
+		data = DataSerializers.WEAPON_DATA.read(buffer);
 	}
 	
 	@Override
 	public void encode(FriendlyByteBuf buffer) {
 		buffer.writeInt(id);
-		buffer.writeUtf(rid);
-		buffer.writeUtf(slotId);
+		data.write(buffer);
 	}
 
 	@Override
@@ -42,7 +40,7 @@ public class ClientBoundRemoveRadarPacket extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilPacket.removeRadarPacket(id, rid, slotId);
+				UtilPacket.addWeaponPacket(id, data);
 				success.set(true);
 			});
 		});

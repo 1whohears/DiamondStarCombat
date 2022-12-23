@@ -3,48 +3,44 @@ package com.onewhohears.dscombat.common.network.toserver;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
-import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
-import com.onewhohears.dscombat.init.DataSerializers;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkEvent.Context;
 
-public class ServerBoundQPacket extends IPacket {
+public class ToServerAircraftToItem extends IPacket {
 	
 	public final int id;
-	public final Quaternion q;
 	
-	public ServerBoundQPacket(int id, Quaternion q) {
+	public ToServerAircraftToItem(int id) {
 		this.id = id;
-		this.q = q;
 	}
 	
-	public ServerBoundQPacket(FriendlyByteBuf buffer) {
+	public ToServerAircraftToItem(FriendlyByteBuf buffer) {
 		id = buffer.readInt();
-		q = DataSerializers.QUATERNION.read(buffer);
 	}
 	
 	@Override
 	public void encode(FriendlyByteBuf buffer) {
 		buffer.writeInt(id);
-		DataSerializers.QUATERNION.write(buffer, q);
 	}
 
 	@Override
 	public boolean handle(Supplier<Context> ctx) {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
-			success.set(true);
-			ServerPlayer player = ctx.get().getSender();
-			ServerLevel level = player.getLevel();
+			Level level = ctx.get().getSender().level;
 			if (level.getEntity(id) instanceof EntityAircraft plane) {
-				plane.setPrevQ(plane.getQ());
-				plane.setQ(q);
+				ItemStack stack = plane.getItem();
+				ItemEntity e = new ItemEntity(level, plane.getX(), plane.getY(), plane.getZ(), stack);
+				level.addFreshEntity(e);
+				plane.discard();
 			}
+			success.set(true);
 		});
 		ctx.get().setPacketHandled(true);
 		return success.get();

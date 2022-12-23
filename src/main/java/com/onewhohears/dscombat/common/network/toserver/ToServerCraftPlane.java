@@ -1,12 +1,12 @@
 package com.onewhohears.dscombat.common.network.toserver;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.crafting.DSCIngredient;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
-import com.onewhohears.dscombat.data.weapon.WeaponPresets;
+import com.onewhohears.dscombat.data.AircraftPresets;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -15,18 +15,18 @@ import net.minecraft.world.Containers;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent.Context;
 
-public class ServerBoundCraftWeaponPacket extends IPacket {
+public class ToServerCraftPlane extends IPacket {
 	
-	public final String weaponId;
+	public final String preset;
 	public final BlockPos pos;
 	
-	public ServerBoundCraftWeaponPacket(String weaponId, BlockPos pos) {
-		this.weaponId = weaponId;
+	public ToServerCraftPlane(String preset, BlockPos pos) {
+		this.preset = preset;
 		this.pos = pos;
 	}
 	
-	public ServerBoundCraftWeaponPacket(FriendlyByteBuf buffer) {
-		weaponId = buffer.readUtf();
+	public ToServerCraftPlane(FriendlyByteBuf buffer) {
+		preset = buffer.readUtf();
 		double x = buffer.readDouble();
 		double y = buffer.readDouble();
 		double z = buffer.readDouble();
@@ -35,7 +35,7 @@ public class ServerBoundCraftWeaponPacket extends IPacket {
 	
 	@Override
 	public void encode(FriendlyByteBuf buffer) {
-		buffer.writeUtf(weaponId);
+		buffer.writeUtf(preset);
 		buffer.writeDouble(pos.getX());
 		buffer.writeDouble(pos.getY());
 		buffer.writeDouble(pos.getZ());
@@ -46,13 +46,12 @@ public class ServerBoundCraftWeaponPacket extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			ServerPlayer player = ctx.get().getSender();
-			WeaponData data = WeaponPresets.getById(weaponId);
-			if (DSCIngredient.hasIngredients(data.ingredients, player.getInventory())) {
-				DSCIngredient.consumeIngredients(data.ingredients, player.getInventory());
-				ItemStack stack = new ItemStack(data.getItem());
-				stack.setCount(data.craftNum);
-				Containers.dropItemStack(player.level, 
-						pos.getX()+0.5, pos.getY()+1.125, pos.getZ()+0.5, stack);
+			List<DSCIngredient> ingredients = AircraftPresets.getPlaneIngredients(preset);
+			if (DSCIngredient.hasIngredients(ingredients, player.getInventory())) {
+				DSCIngredient.consumeIngredients(ingredients, player.getInventory());
+				ItemStack stack = AircraftPresets.getPlaneDisplayItem(preset).copy();
+				Containers.dropItemStack(player.level, pos.getX()+0.5, 
+						pos.getY()+1.125, pos.getZ()+0.5, stack);
 			}
 			success.set(true);
 		});

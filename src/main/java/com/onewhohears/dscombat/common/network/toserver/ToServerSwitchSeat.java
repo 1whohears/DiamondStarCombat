@@ -7,40 +7,44 @@ import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent.Context;
 
-public class ServerBoundAircraftToItemPacket extends IPacket {
+public class ToServerSwitchSeat extends IPacket {
 	
 	public final int id;
 	
-	public ServerBoundAircraftToItemPacket(int id) {
+	public ToServerSwitchSeat(int id) {
 		this.id = id;
+		//System.out.println("CREATED PACKET");
 	}
 	
-	public ServerBoundAircraftToItemPacket(FriendlyByteBuf buffer) {
+	public ToServerSwitchSeat(FriendlyByteBuf buffer) {
 		id = buffer.readInt();
+		//System.out.println("DECODING PACKET");
 	}
 	
 	@Override
 	public void encode(FriendlyByteBuf buffer) {
 		buffer.writeInt(id);
+		//System.out.println("ENCODING PACKET");
 	}
 
 	@Override
 	public boolean handle(Supplier<Context> ctx) {
+		//System.out.println("HANDELING PACKET");
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
-			Level level = ctx.get().getSender().level;
-			if (level.getEntity(id) instanceof EntityAircraft plane) {
-				ItemStack stack = plane.getItem();
-				ItemEntity e = new ItemEntity(level, plane.getX(), plane.getY(), plane.getZ(), stack);
-				level.addFreshEntity(e);
-				plane.discard();
-			}
 			success.set(true);
+			ServerPlayer player = ctx.get().getSender();
+			ServerLevel level = player.getLevel();
+			if (level.getEntity(id) instanceof EntityAircraft plane) {
+				if (!plane.switchSeat(player)) {
+					player.displayClientMessage(Component.translatable("dscombat.no_open_seats"), true);
+				}
+			}
 		});
 		ctx.get().setPacketHandled(true);
 		return success.get();

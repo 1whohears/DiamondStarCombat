@@ -4,7 +4,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.common.network.IPacket;
-import com.onewhohears.dscombat.data.parts.PartData;
+import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.UtilPacket;
 
@@ -13,23 +13,23 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent.Context;
 
-public class ClientBoundAddPartPacket extends IPacket {
+public class ToClientAddTurret extends IPacket {
 	
 	public final int id;
 	public final String slotName;
-	public final PartData data;
+	public final WeaponData data;
 	
-	public ClientBoundAddPartPacket(int id, String slotName, PartData data) {
+	public ToClientAddTurret(int id, String slotName, WeaponData data) {
 		this.id = id;
 		this.slotName = slotName;
 		this.data = data;
 	}
 	
-	public ClientBoundAddPartPacket(FriendlyByteBuf buffer) {
+	public ToClientAddTurret(FriendlyByteBuf buffer) {
 		super(buffer);
 		id = buffer.readInt();
 		slotName = buffer.readUtf();
-		data = DataSerializers.PART_DATA.read(buffer);
+		data = DataSerializers.WEAPON_DATA.read(buffer);
 	}
 	
 	@Override
@@ -44,7 +44,7 @@ public class ClientBoundAddPartPacket extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilPacket.addPartPacket(id, slotName, data);
+				UtilPacket.addTurretPacket(id, slotName, data);
 				success.set(true);
 			});
 		});

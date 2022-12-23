@@ -4,6 +4,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.common.network.IPacket;
+import com.onewhohears.dscombat.data.parts.PartsManager;
+import com.onewhohears.dscombat.data.radar.RadarSystem;
+import com.onewhohears.dscombat.data.weapon.WeaponSystem;
 import com.onewhohears.dscombat.util.UtilPacket;
 
 import net.minecraft.network.FriendlyByteBuf;
@@ -11,30 +14,37 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent.Context;
 
-public class ClientBoundRemoveWeaponPacket extends IPacket {
+public class ToClientRecievePlaneData extends IPacket {
 	
 	public final int id;
-	public final String wid;
-	public final String slotId;
+	public final PartsManager pm;
+	public final WeaponSystem ws;
+	public final RadarSystem rs;
 	
-	public ClientBoundRemoveWeaponPacket(int id, String wid, String slotId) {
+	public ToClientRecievePlaneData(int id, PartsManager pm, WeaponSystem ws, RadarSystem rs) {
 		this.id = id;
-		this.wid = wid;
-		this.slotId = slotId;
+		this.pm = pm;
+		this.ws = ws;
+		this.rs = rs;
+		//System.out.println("packet constructor "+pm);
 	}
 	
-	public ClientBoundRemoveWeaponPacket(FriendlyByteBuf buffer) {
+	public ToClientRecievePlaneData(FriendlyByteBuf buffer) {
 		super(buffer);
 		id = buffer.readInt();
-		wid = buffer.readUtf();
-		slotId = buffer.readUtf();
+		pm = new PartsManager(buffer);
+		ws = new WeaponSystem(buffer);
+		rs = new RadarSystem(buffer);
+		//System.out.println("decoding "+pm);
 	}
 	
 	@Override
 	public void encode(FriendlyByteBuf buffer) {
 		buffer.writeInt(id);
-		buffer.writeUtf(wid);
-		buffer.writeUtf(slotId);
+		pm.write(buffer);
+		ws.write(buffer);
+		rs.write(buffer);
+		//System.out.println("encoding "+pm);
 	}
 
 	@Override
@@ -42,7 +52,7 @@ public class ClientBoundRemoveWeaponPacket extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilPacket.removeWeaponPacket(id, wid, slotId);
+				UtilPacket.planeDataPacket(id, pm, ws, rs);
 				success.set(true);
 			});
 		});

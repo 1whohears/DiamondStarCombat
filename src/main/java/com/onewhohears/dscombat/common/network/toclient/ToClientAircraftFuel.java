@@ -4,6 +4,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.common.network.IPacket;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.util.UtilPacket;
 
 import net.minecraft.network.FriendlyByteBuf;
@@ -11,34 +12,29 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent.Context;
 
-public class ClientBoundWeaponAmmoPacket extends IPacket {
+public class ToClientAircraftFuel extends IPacket {
 	
 	public final int id;
-	public final String weaponId;
-	public final String slotId;
-	public final int ammo;
+	public final float[] fuels;
 	
-	public ClientBoundWeaponAmmoPacket(int id, String weaponId, String slotId, int ammo) {
-		this.id = id;
-		this.weaponId = weaponId;
-		this.slotId = slotId;
-		this.ammo = ammo;
+	public ToClientAircraftFuel(EntityAircraft plane) {
+		this.id = plane.getId();
+		this.fuels = plane.partsManager.getFuelsForClient();
 	}
 	
-	public ClientBoundWeaponAmmoPacket(FriendlyByteBuf buffer) {
+	public ToClientAircraftFuel(FriendlyByteBuf buffer) {
 		super(buffer);
-		id = buffer.readInt();
-		weaponId = buffer.readUtf();
-		slotId = buffer.readUtf();
-		ammo = buffer.readInt();
+		this.id = buffer.readInt();
+		int num = buffer.readInt();
+		fuels = new float[num];
+		for (int i = 0 ; i < num; ++i) fuels[i] = buffer.readFloat();
 	}
 	
 	@Override
 	public void encode(FriendlyByteBuf buffer) {
 		buffer.writeInt(id);
-		buffer.writeUtf(weaponId);
-		buffer.writeUtf(slotId);
-		buffer.writeInt(ammo);
+		buffer.writeInt(fuels.length);
+		for (int i = 0; i < fuels.length; ++i) buffer.writeFloat(fuels[i]);
 	}
 
 	@Override
@@ -46,7 +42,7 @@ public class ClientBoundWeaponAmmoPacket extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilPacket.weaponAmmoPacket(id, weaponId, slotId, ammo);
+				UtilPacket.setAircraftFuel(id, fuels);
 				success.set(true);
 			});
 		});

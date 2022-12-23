@@ -91,6 +91,22 @@ public class UtilPacket {
 		}
 	}
 	
+	public static void addTurretPacket(int id, String slotName, WeaponData data) {
+		Minecraft m = Minecraft.getInstance();
+		Level world = m.level;
+		if (world.getEntity(id) instanceof EntityAircraft plane) {
+			plane.weaponSystem.addTurret(slotName, data, false);
+		}
+	}
+	
+	public static void removeTurretPacket(int id, String slotName) {
+		Minecraft m = Minecraft.getInstance();
+		Level world = m.level;
+		if (world.getEntity(id) instanceof EntityAircraft plane) {
+			plane.weaponSystem.removeTurret(slotName, false);
+		}
+	}
+	
 	public static void addPartPacket(int id, String slotName, PartData data) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;

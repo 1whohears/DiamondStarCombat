@@ -56,7 +56,9 @@ public class EntityTurret extends EntitySeat {
 		if (!level.isClientSide && tickCount % 10 == 0 && getRootVehicle() instanceof EntityAircraft plane) {
 			PartSlot slot = plane.partsManager.getSlot(getSlotId());
 			if (slot != null && slot.filled() && slot.getPartData().getType() == PartType.TURRENT) { 
-				((TurretData)slot.getPartData()).setAmmo(getAmmo());
+				TurretData td = (TurretData) slot.getPartData();
+				td.setAmmo(getAmmo());
+				td.setMax(getMax());
 			}
 		}
 	}
@@ -79,6 +81,11 @@ public class EntityTurret extends EntitySeat {
 	public int getAmmo() {
 		if (data == null) return 0;
 		return data.getCurrentAmmo();
+	}
+	
+	public int getMax() {
+		if (data == null) return 0;
+		return data.getMaxAmmo();
 	}
 
 	@Override

@@ -15,8 +15,8 @@ import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.KeyInit;
 import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.common.network.toserver.ServerBoundFlightControlPacket;
-import com.onewhohears.dscombat.common.network.toserver.ServerBoundSwitchSeatPacket;
+import com.onewhohears.dscombat.common.network.toserver.ToServerFlightControl;
+import com.onewhohears.dscombat.common.network.toserver.ToServerSwitchSeat;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
@@ -121,7 +121,7 @@ public final class ClientForgeEvents {
 		if (rollRight) roll += 1;
 		if (throttleUp) throttle += 1;
 		if (throttleDown) throttle -= 1;
-		PacketHandler.INSTANCE.sendToServer(new ServerBoundFlightControlPacket(
+		PacketHandler.INSTANCE.sendToServer(new ToServerFlightControl(
 				throttle, pitch, roll, yaw,
 				mouseMode, flare, shoot, select, openMenu, gear));
 		plane.updateControls(throttle, pitch, roll, yaw,
@@ -139,7 +139,7 @@ public final class ClientForgeEvents {
 		boolean seat = KeyInit.changeSeat.consumeClick();
 		boolean shoot = KeyInit.shootKey.isDown();
 		if (seat) {
-			PacketHandler.INSTANCE.sendToServer(new ServerBoundSwitchSeatPacket(plane.getId()));
+			PacketHandler.INSTANCE.sendToServer(new ToServerSwitchSeat(plane.getId()));
 		}
 		RadarSystem radar = plane.radarSystem;
 		List<RadarPing> pings = radar.getClientRadarPings();

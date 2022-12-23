@@ -10,7 +10,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
 
-public class ServerBoundFlightControlPacket extends IPacket {
+public class ToServerFlightControl extends IPacket {
 	
 	public final float throttle;
 	public final float pitch;
@@ -23,7 +23,7 @@ public class ServerBoundFlightControlPacket extends IPacket {
 	public final boolean openMenu;
 	public final boolean gear;
 	
-	public ServerBoundFlightControlPacket(float throttle, float pitch, float roll, float yaw,
+	public ToServerFlightControl(float throttle, float pitch, float roll, float yaw,
 			boolean mouseMode, boolean flare, boolean shoot, boolean select,
 			boolean openMenu, boolean gear) {
 		this.throttle = throttle;
@@ -38,7 +38,7 @@ public class ServerBoundFlightControlPacket extends IPacket {
 		this.gear = gear;
 	}
 	
-	public ServerBoundFlightControlPacket(FriendlyByteBuf buffer) {
+	public ToServerFlightControl(FriendlyByteBuf buffer) {
 		throttle = buffer.readFloat();
 		pitch = buffer.readFloat();
 		roll = buffer.readFloat();

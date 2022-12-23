@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.entity.weapon;
 
 import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.common.network.toclient.ClientBoundMissileMovePacket;
+import com.onewhohears.dscombat.common.network.toclient.ToClientMissileMove;
 import com.onewhohears.dscombat.data.weapon.MissileData;
 import com.onewhohears.dscombat.data.weapon.NonTickingMissileManager;
 import com.onewhohears.dscombat.init.ModSounds;
@@ -117,7 +117,7 @@ public abstract class EntityMissile extends EntityBullet {
 			}
 			if (tickCount % 10 == 0) PacketHandler.INSTANCE.send(
 					PacketDistributor.TRACKING_ENTITY.with(() -> this), 
-					new ClientBoundMissileMovePacket(getId(), position(), 
+					new ToClientMissileMove(getId(), position(), 
 							getDeltaMovement(), getXRot(), getYRot(), targetPos));
 		}
 		if (level.isClientSide && !isRemoved()) {

@@ -4,7 +4,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.common.network.IPacket;
-import com.onewhohears.dscombat.data.radar.RadarData;
 import com.onewhohears.dscombat.util.UtilPacket;
 
 import net.minecraft.network.FriendlyByteBuf;
@@ -12,26 +11,26 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent.Context;
 
-public class ClientBoundAddRadarPacket extends IPacket {
+public class ToClientRemovePart extends IPacket {
 	
 	public final int id;
-	public final RadarData data;
+	public final String slotName;
 	
-	public ClientBoundAddRadarPacket(int id, RadarData data) {
+	public ToClientRemovePart(int id, String slotName) {
 		this.id = id;
-		this.data = data;
+		this.slotName = slotName;
 	}
 	
-	public ClientBoundAddRadarPacket(FriendlyByteBuf buffer) {
+	public ToClientRemovePart(FriendlyByteBuf buffer) {
 		super(buffer);
 		id = buffer.readInt();
-		data = new RadarData(buffer);
+		slotName = buffer.readUtf();
 	}
 	
 	@Override
 	public void encode(FriendlyByteBuf buffer) {
 		buffer.writeInt(id);
-		data.write(buffer);
+		buffer.writeUtf(slotName);
 	}
 
 	@Override
@@ -39,7 +38,7 @@ public class ClientBoundAddRadarPacket extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilPacket.addRadarPacket(id, data);
+				UtilPacket.removePartPacket(id, slotName);
 				success.set(true);
 			});
 		});

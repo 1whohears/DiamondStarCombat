@@ -7,9 +7,9 @@ import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.common.container.AircraftMenuContainer;
 import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.common.network.toclient.ClientBoundAddPartPacket;
-import com.onewhohears.dscombat.common.network.toclient.ClientBoundFuelPacket;
-import com.onewhohears.dscombat.common.network.toclient.ClientBoundRemovePartPacket;
+import com.onewhohears.dscombat.common.network.toclient.ToClientAddPart;
+import com.onewhohears.dscombat.common.network.toclient.ToClientAircraftFuel;
+import com.onewhohears.dscombat.common.network.toclient.ToClientRemovePart;
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
@@ -111,7 +111,7 @@ public class PartsManager {
 			boolean ok = p.addPartData(part, parent);
 			if (updateClient && ok) {
 				PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
-						new ClientBoundAddPartPacket(parent.getId(), slotName, part));
+						new ToClientAddPart(parent.getId(), slotName, part));
 			}
 			return true;
 		}
@@ -123,7 +123,7 @@ public class PartsManager {
 			boolean ok = p.removePartData(parent);
 			if (updateClient && ok) {
 				PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
-						new ClientBoundRemovePartPacket(parent.getId(), slotName));
+						new ToClientRemovePart(parent.getId(), slotName));
 			}
 			return;
 		}
@@ -200,7 +200,7 @@ public class PartsManager {
 		addFuel(-getTotalEngineFuelConsume() * parent.getCurrentThrottle());
 		if (updateClient && parent.tickCount % 100 == 0) {
 			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
-					new ClientBoundFuelPacket(parent));
+					new ToClientAircraftFuel(parent));
 		}
 	}
 	

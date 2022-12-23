@@ -1,12 +1,9 @@
 package com.onewhohears.dscombat.common.network.toclient;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.common.network.IPacket;
-import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
 import com.onewhohears.dscombat.util.UtilPacket;
 
 import net.minecraft.network.FriendlyByteBuf;
@@ -14,29 +11,26 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent.Context;
 
-public class ClientBoundPingsPacket extends IPacket {
+public class ToClientWeaponIndex extends IPacket {
 	
 	public final int id;
-	public final List<RadarPing> pings;
+	public final int index;
 	
-	public ClientBoundPingsPacket(int id, List<RadarPing> pings) {
+	public ToClientWeaponIndex(int id, int index) {
 		this.id = id;
-		this.pings = pings;
+		this.index = index;
 	}
 	
-	public ClientBoundPingsPacket(FriendlyByteBuf buffer) {
+	public ToClientWeaponIndex(FriendlyByteBuf buffer) {
 		super(buffer);
 		id = buffer.readInt();
-		pings = new ArrayList<RadarPing>();
-		int num = buffer.readInt();
-		for (int i = 0; i < num; ++i) pings.add(new RadarPing(buffer));
+		index = buffer.readInt();
 	}
 	
 	@Override
 	public void encode(FriendlyByteBuf buffer) {
 		buffer.writeInt(id);
-		buffer.writeInt(pings.size());
-		for (int i = 0; i < pings.size(); ++i) pings.get(i).write(buffer);
+		buffer.writeInt(index);
 	}
 
 	@Override
@@ -44,7 +38,7 @@ public class ClientBoundPingsPacket extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilPacket.pingsPacket(id, pings);
+				UtilPacket.weaponSelectPacket(id, index);
 				success.set(true);
 			});
 		});

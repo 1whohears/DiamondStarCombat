@@ -7,9 +7,9 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.common.network.toclient.ClientBoundAddWeaponPacket;
-import com.onewhohears.dscombat.common.network.toclient.ClientBoundRemoveWeaponPacket;
-import com.onewhohears.dscombat.common.network.toclient.ClientBoundWeaponIndexPacket;
+import com.onewhohears.dscombat.common.network.toclient.ToClientAddWeapon;
+import com.onewhohears.dscombat.common.network.toclient.ToClientRemoveWeapon;
+import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponIndex;
 import com.onewhohears.dscombat.data.weapon.WeaponData.WeaponType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.init.DataSerializers;
@@ -99,7 +99,7 @@ public class WeaponSystem {
 		weapons.add(data);
 		if (updateClient) {
 			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
-					new ClientBoundAddWeaponPacket(parent.getId(), data));
+					new ToClientAddWeapon(parent.getId(), data));
 		}
 		return true;
 	}
@@ -108,7 +108,7 @@ public class WeaponSystem {
 		boolean r = weapons.remove(get(id, slotId));
 		if (r && updateClient) {
 			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
-					new ClientBoundRemoveWeaponPacket(parent.getId(), id, slotId));
+					new ToClientRemoveWeapon(parent.getId(), id, slotId));
 		}
 	}
 	
@@ -161,7 +161,7 @@ public class WeaponSystem {
 		checkIndex();
 		//System.out.println("new weapon index "+weaponIndex);
 		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
-				new ClientBoundWeaponIndexPacket(parent.getId(), weaponIndex));
+				new ToClientWeaponIndex(parent.getId(), weaponIndex));
 	}
 	
 	public void clientSetSelected(int index) {

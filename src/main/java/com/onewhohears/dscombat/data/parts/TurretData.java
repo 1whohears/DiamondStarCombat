@@ -21,7 +21,8 @@ public class TurretData extends SeatData {
 	
 	private final String turretEntityKey;
 	private EntityType<? extends EntityTurret> turretType;
-	private int ammo; 
+	private int ammo;
+	private int max;
 	
 	public TurretData(float weight, ResourceLocation itemid, SlotType[] compatibleSlots, String turrentEntityKey) {
 		super(weight, itemid, compatibleSlots);
@@ -32,12 +33,14 @@ public class TurretData extends SeatData {
 		super(tag);
 		turretEntityKey = tag.getString("turretEntity");
 		ammo = tag.getInt("ammo");
+		max = tag.getInt("max");
 	}
 	
 	public CompoundTag write() {
 		CompoundTag tag = super.write();
 		tag.putString("turretEntity", turretEntityKey);
 		tag.putInt("ammo", ammo);
+		tag.putInt("max", max);
 		return tag;
 	}
 
@@ -45,12 +48,14 @@ public class TurretData extends SeatData {
 		super(buffer);
 		turretEntityKey = buffer.readUtf();
 		ammo = buffer.readInt();
+		max = buffer.readInt();
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
 		super.write(buffer);
 		buffer.writeUtf(turretEntityKey);
 		buffer.writeInt(ammo);
+		buffer.writeInt(max);
 	}
 	
 	@Override
@@ -110,6 +115,10 @@ public class TurretData extends SeatData {
 	
 	public void setAmmo(int ammo) {
 		this.ammo = ammo;
+	}
+	
+	public void setMax(int max) {
+		this.max = max;
 	}
 	
 }

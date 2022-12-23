@@ -6,6 +6,7 @@ import com.onewhohears.dscombat.client.overlay.PilotOverlay;
 import com.onewhohears.dscombat.client.renderer.RendererEntityAircraft;
 import com.onewhohears.dscombat.client.renderer.RendererEntityInvisible;
 import com.onewhohears.dscombat.client.renderer.RendererEntityPart;
+import com.onewhohears.dscombat.client.renderer.RendererEntityTurret;
 import com.onewhohears.dscombat.client.renderer.RendererEntityWeapon;
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelAlexisPlane;
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelF16;
@@ -15,10 +16,12 @@ import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelTestPl
 import com.onewhohears.dscombat.client.renderer.model.weapon.EntityModelBullet1;
 import com.onewhohears.dscombat.client.renderer.model.weapon.EntityModelHeavyMissileRack;
 import com.onewhohears.dscombat.client.renderer.model.weapon.EntityModelLightMissileRack;
+import com.onewhohears.dscombat.client.renderer.model.weapon.EntityModelMiniGunTurret;
 import com.onewhohears.dscombat.client.renderer.model.weapon.EntityModelMissile1;
 import com.onewhohears.dscombat.client.renderer.model.weapon.EntityModelXM12;
 import com.onewhohears.dscombat.entity.aircraft.EntityHelicopter;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
+import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
 import com.onewhohears.dscombat.entity.weapon.EntityBullet;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
@@ -59,6 +62,7 @@ public class ClientModEvents {
 		event.registerLayerDefinition(EntityModelLightMissileRack.LAYER_LOCATION, EntityModelLightMissileRack::createBodyLayer);
 		event.registerLayerDefinition(EntityModelHeavyMissileRack.LAYER_LOCATION, EntityModelHeavyMissileRack::createBodyLayer);
 		event.registerLayerDefinition(EntityModelXM12.LAYER_LOCATION, EntityModelXM12::createBodyLayer);
+		event.registerLayerDefinition(EntityModelMiniGunTurret.LAYER_LOCATION, EntityModelMiniGunTurret::createBodyLayer);
 	}
 	
 	@SubscribeEvent
@@ -101,6 +105,11 @@ public class ClientModEvents {
 				(context) -> new RendererEntityWeapon<EntityMissile>(context, 
 						new EntityModelMissile1<EntityMissile>(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)),
 						new ResourceLocation(DSCombatMod.MODID, "textures/entities/missile2.png")));
+		
+		event.registerEntityRenderer(ModEntities.MINIGUN_TURRET.get(), 
+				(context) -> new RendererEntityTurret<EntityTurret>(context, 
+						new EntityModelMiniGunTurret<EntityTurret>(models.bakeLayer(EntityModelMiniGunTurret.LAYER_LOCATION)),
+						new ResourceLocation(DSCombatMod.MODID, "textures/entities/minigun_turrent.png")));
 		
 		event.registerEntityRenderer(ModEntities.LIGHT_MISSILE_RACK.get(), 
 				(context) -> new RendererEntityPart<EntityWeaponRack>(context,

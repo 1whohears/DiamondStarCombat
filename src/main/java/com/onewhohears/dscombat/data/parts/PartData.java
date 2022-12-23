@@ -88,10 +88,18 @@ public abstract class PartData {
 		return relPos;
 	}
 	
+	protected void setParent(EntityAircraft parent) {
+		this.parent = parent;
+	}
+	
+	protected void setRelPos(Vec3 pos) {
+		this.relPos = pos;
+	}
+	
 	public void setup(EntityAircraft craft, String slotId, Vec3 pos) {
 		//System.out.println("setting up part "+this+" client side "+craft.level.isClientSide+" slot "+slotId);
-		parent = craft;
-		relPos = pos;
+		setParent(craft);
+		setRelPos(pos);
 	}
 	
 	public void clientSetup(EntityAircraft craft, String slotId, Vec3 pos) {

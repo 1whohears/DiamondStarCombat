@@ -22,6 +22,7 @@ import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.parts.EntitySeatCamera;
+import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
@@ -155,8 +156,8 @@ public final class ClientForgeEvents {
 			}
 		}
 		if (!hovering) resetHoverIndex();
-		if (shoot && !plane.getControllingPassenger().equals(player)) {
-			
+		if (shoot && player.getVehicle() instanceof EntityTurret turret) {
+			// TODO shoot turret packet
 		}
 	}
 	

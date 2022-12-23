@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.data.weapon;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -29,6 +30,7 @@ public class WeaponSystem {
 	private int weaponIndex = 0;
 	private EntityAircraft parent;
 	private boolean readData = false;
+	private HashMap<String, WeaponData> turrets = new HashMap<>();
 	
 	public WeaponSystem() {
 		
@@ -77,6 +79,21 @@ public class WeaponSystem {
 		this.readData = true;
 	}
 	
+	public boolean addTurret(String slotName, WeaponData data, boolean updateClient) {
+		if (turrets.get(slotName) != null) return false;
+		turrets.put(slotName, data);
+		if (updateClient) {
+			// TODO add turret
+		}
+		return true;
+	}
+	
+	public void removeTurret(String slotId, boolean updateClient) {
+		if (turrets.remove(slotId) != null && updateClient) {
+			// TODO remove turret
+		}
+	}
+	
 	public boolean addWeapon(WeaponData data, boolean updateClient) {
 		if (get(data.getId(), data.getSlotId()) != null) return false;
 		weapons.add(data);
@@ -93,6 +110,11 @@ public class WeaponSystem {
 			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
 					new ClientBoundRemoveWeaponPacket(parent.getId(), id, slotId));
 		}
+	}
+	
+	@Nullable
+	public WeaponData getTurret(String slotId) {
+		return turrets.get(slotId);
 	}
 	
 	@Nullable

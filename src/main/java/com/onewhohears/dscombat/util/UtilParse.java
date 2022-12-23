@@ -19,7 +19,7 @@ import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.data.parts.RadarPartData;
 import com.onewhohears.dscombat.data.parts.SeatData;
-import com.onewhohears.dscombat.data.parts.TurrentData;
+import com.onewhohears.dscombat.data.parts.TurretData;
 import com.onewhohears.dscombat.data.parts.WeaponPartData;
 import com.onewhohears.dscombat.data.parts.WeaponRackData;
 import com.onewhohears.dscombat.data.weapon.BombData;
@@ -170,7 +170,7 @@ public class UtilParse {
 		case SEAT:
 			return new SeatData(tag);
 		case TURRENT:
-			return new TurrentData(tag);
+			return new TurretData(tag);
 		case WEAPON_RACK:
 			return new WeaponRackData(tag);
 		case INTERNAL_WEAPON:

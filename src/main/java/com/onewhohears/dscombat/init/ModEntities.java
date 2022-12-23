@@ -6,7 +6,7 @@ import com.onewhohears.dscombat.entity.aircraft.EntityHelicopter;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.parts.EntitySeatCamera;
-import com.onewhohears.dscombat.entity.parts.EntityTurrent;
+import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
 import com.onewhohears.dscombat.entity.weapon.EntityBullet;
 import com.onewhohears.dscombat.entity.weapon.EntityFlare;
@@ -81,8 +81,8 @@ public class ModEntities {
 	public static final RegistryObject<EntityType<EntitySeatCamera>> CAMERA = ENTITIES.register("seat_camera", 
 			() -> createEntityType(EntitySeatCamera::new, EntityDimensions.scalable(0f, 0f)));
 	
-	public static final RegistryObject<EntityType<EntityTurrent>> MINIGUN_TURRENT = ENTITIES.register("minigun_turrent", 
-			() -> createEntityType((type, level) -> new EntityTurrent(type, level, "20mm"), 
+	public static final RegistryObject<EntityType<EntityTurret>> MINIGUN_TURRET = ENTITIES.register("minigun_turret", 
+			() -> createEntityType((type, level) -> new EntityTurret(type, level, "20mm"), 
 					EntityDimensions.scalable(0.1f, 0.1f)));
 	
 	public static final RegistryObject<EntityType<EntityWeaponRack>> LIGHT_MISSILE_RACK = ENTITIES.register("light_missile_rack", 

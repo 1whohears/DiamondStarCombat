@@ -10,7 +10,7 @@ import com.onewhohears.dscombat.data.parts.FuelTankData;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.RadarPartData;
 import com.onewhohears.dscombat.data.parts.SeatData;
-import com.onewhohears.dscombat.data.parts.TurrentData;
+import com.onewhohears.dscombat.data.parts.TurretData;
 import com.onewhohears.dscombat.data.parts.WeaponPartData;
 import com.onewhohears.dscombat.data.parts.WeaponRackData;
 import com.onewhohears.dscombat.data.weapon.BombData;
@@ -131,7 +131,7 @@ public class DataSerializers {
 			case SEAT:
 				return new SeatData(buffer);
 			case TURRENT:
-				return new TurrentData(buffer);
+				return new TurretData(buffer);
 			case WEAPON_RACK:
 				return new WeaponRackData(buffer);
 			case INTERNAL_WEAPON:

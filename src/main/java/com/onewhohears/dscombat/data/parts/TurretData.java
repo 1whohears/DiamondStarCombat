@@ -7,7 +7,7 @@ import javax.annotation.Nullable;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.parts.EntityPart;
-import com.onewhohears.dscombat.entity.parts.EntityTurrent;
+import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.init.ModEntities;
 
 import net.minecraft.nbt.CompoundTag;
@@ -17,39 +17,39 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class TurrentData extends SeatData {
+public class TurretData extends SeatData {
 	
-	private final String turrentEntityKey;
-	private EntityType<? extends EntityTurrent> turrentType;
+	private final String turretEntityKey;
+	private EntityType<? extends EntityTurret> turretType;
 	private int ammo; 
 	
-	public TurrentData(float weight, ResourceLocation itemid, SlotType[] compatibleSlots, String turrentEntityKey) {
+	public TurretData(float weight, ResourceLocation itemid, SlotType[] compatibleSlots, String turrentEntityKey) {
 		super(weight, itemid, compatibleSlots);
-		this.turrentEntityKey = turrentEntityKey;
+		this.turretEntityKey = turrentEntityKey;
 	}
 
-	public TurrentData(CompoundTag tag) {
+	public TurretData(CompoundTag tag) {
 		super(tag);
-		turrentEntityKey = tag.getString("turrentEntity");
+		turretEntityKey = tag.getString("turretEntity");
 		ammo = tag.getInt("ammo");
 	}
 	
 	public CompoundTag write() {
 		CompoundTag tag = super.write();
-		tag.putString("turrentEntity", turrentEntityKey);
+		tag.putString("turretEntity", turretEntityKey);
 		tag.putInt("ammo", ammo);
 		return tag;
 	}
 
-	public TurrentData(FriendlyByteBuf buffer) {
+	public TurretData(FriendlyByteBuf buffer) {
 		super(buffer);
-		turrentEntityKey = buffer.readUtf();
+		turretEntityKey = buffer.readUtf();
 		ammo = buffer.readInt();
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
 		super.write(buffer);
-		buffer.writeUtf(turrentEntityKey);
+		buffer.writeUtf(turretEntityKey);
 		buffer.writeInt(ammo);
 	}
 	
@@ -60,19 +60,20 @@ public class TurrentData extends SeatData {
 	
 	@Override
 	public void setup(EntityAircraft craft, String slotId, Vec3 pos) {
-		super.setup(craft, slotId, pos);
-		EntityTurrent t = getTurrent(slotId);
+		setParent(craft);
+		setRelPos(pos);
+		EntityTurret t = getTurret(slotId);
 		t.setAmmo(ammo);
 	}
 	
 	@Nullable
-	public EntityTurrent getTurrent(String slotId) {
+	public EntityTurret getTurret(String slotId) {
 		EntityAircraft craft = getParent();
 		if (craft == null) return null;
 		for (EntityPart part : craft.getPartEntities()) 
 			if (part.getSlotId().equals(slotId)) 
-				return (EntityTurrent) part;
-		EntityTurrent t = getTurrentType().create(craft.level);
+				return (EntityTurret) part;
+		EntityTurret t = getTurretType().create(craft.level);
 		t.setSlotId(slotId);
 		t.setRelativePos(getRelPos());
 		t.setPos(craft.position());
@@ -97,14 +98,14 @@ public class TurrentData extends SeatData {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public EntityType<? extends EntityTurrent> getTurrentType() {
-		if (turrentType == null) {
-			try { turrentType = (EntityType<? extends EntityTurrent>) ForgeRegistries.ENTITY_TYPES
-					.getDelegate(new ResourceLocation(turrentEntityKey)).get().get(); }
-			catch(NoSuchElementException e) { turrentType = ModEntities.MINIGUN_TURRENT.get(); }
-			catch(ClassCastException e) { turrentType = ModEntities.MINIGUN_TURRENT.get(); }
+	public EntityType<? extends EntityTurret> getTurretType() {
+		if (turretType == null) {
+			try { turretType = (EntityType<? extends EntityTurret>) ForgeRegistries.ENTITY_TYPES
+					.getDelegate(new ResourceLocation(turretEntityKey)).get().get(); }
+			catch(NoSuchElementException e) { turretType = ModEntities.MINIGUN_TURRET.get(); }
+			catch(ClassCastException e) { turretType = ModEntities.MINIGUN_TURRET.get(); }
 		}
-		return turrentType;
+		return turretType;
 	}
 	
 	public void setAmmo(int ammo) {

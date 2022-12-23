@@ -50,11 +50,6 @@ public class ItemWeaponPart extends ItemPart {
 		rack.setTag(getFilledPartData(preset).write());
 		items.add(rack);
 	}
-	
-	/*@Override
-	public void onCraftedBy(ItemStack stack, Level level, Player player) {
-		stack.setTag(getNbt());
-	}*/
 
 	@Override
 	public PartData getPartData() {

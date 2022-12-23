@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.entity.parts;
 
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.data.parts.PartSlot;
-import com.onewhohears.dscombat.data.parts.TurrentData;
+import com.onewhohears.dscombat.data.parts.TurretData;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
@@ -11,12 +11,15 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 
-public class EntityTurrent extends EntitySeat {
+public class EntityTurret extends EntitySeat {
 	
 	public final String weaponId;
+	/**
+	 * only used on server side
+	 */
 	private WeaponData data;
 	
-	public EntityTurrent(EntityType<?> type, Level level, String weaponId) {
+	public EntityTurret(EntityType<?> type, Level level, String weaponId) {
 		super(type, level);
 		this.weaponId = weaponId;
 	}
@@ -39,10 +42,10 @@ public class EntityTurrent extends EntitySeat {
 	public void init() {
 		super.init();
 		if (!level.isClientSide && getRootVehicle() instanceof EntityAircraft plane) {
-			data = plane.weaponSystem.get(weaponId, getSlotId());
+			data = plane.weaponSystem.getTurret(getSlotId());
 			if (data == null) {
 				data = WeaponPresets.getNewById(weaponId);
-				if (data != null) plane.weaponSystem.addWeapon(data, true);
+				if (data != null) plane.weaponSystem.addTurret(getSlotId(), data, true);
 			}
 		}
 	}
@@ -50,10 +53,10 @@ public class EntityTurrent extends EntitySeat {
 	@Override
 	public void tick() {
 		super.tick();
-		if (tickCount % 10 == 0 && getRootVehicle() instanceof EntityAircraft plane) {
+		if (!level.isClientSide && tickCount % 10 == 0 && getRootVehicle() instanceof EntityAircraft plane) {
 			PartSlot slot = plane.partsManager.getSlot(getSlotId());
 			if (slot != null && slot.filled() && slot.getPartData().getType() == PartType.TURRENT) { 
-				((TurrentData)slot.getPartData()).setAmmo(getAmmo());
+				((TurretData)slot.getPartData()).setAmmo(getAmmo());
 			}
 		}
 	}
@@ -81,9 +84,14 @@ public class EntityTurrent extends EntitySeat {
 	@Override
 	public void remove(RemovalReason reason) {
 		if (!level.isClientSide && getRootVehicle() instanceof EntityAircraft plane) {
-			plane.weaponSystem.removeWeapon(weaponId, getSlotId(), true);
+			plane.weaponSystem.removeTurret(getSlotId(), true);
 		}
 		super.remove(reason);
+	}
+	
+	public void shoot() {
+		if (level.isClientSide) return;
+		// TODO shoot the turret
 	}
 
 }

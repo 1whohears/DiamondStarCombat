@@ -200,8 +200,8 @@ public abstract class WeaponData {
 	
 	public boolean shoot(Level level, Entity owner, Vec3 direction, @Nullable Vec3 pos, @Nullable EntityAircraft vehicle) {
 		EntityWeapon w;
-		if (vehicle == null && pos != null) w = this.getShootEntity(level, owner, pos, direction);
-		else if (vehicle != null && pos == null) w = this.getShootEntity(level, owner, direction, vehicle);
+		if (vehicle == null && pos != null) w = getShootEntity(level, owner, pos, direction);
+		else if (vehicle != null && pos == null) w = getShootEntity(level, owner, direction, vehicle);
 		else return false;
 		if (w == null) return false;
 		level.addFreshEntity(w);
@@ -214,8 +214,9 @@ public abstract class WeaponData {
 	}
 	
 	public void updateClientAmmo(EntityAircraft vehicle) {
+		if (vehicle == null) return;
 		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> vehicle), 
-				new ToClientWeaponAmmo(vehicle.getId(), this.getId(), this.slotId, this.getCurrentAmmo()));
+				new ToClientWeaponAmmo(vehicle.getId(), getId(), slotId, getCurrentAmmo()));
 	}
 	
 	protected void tick() {

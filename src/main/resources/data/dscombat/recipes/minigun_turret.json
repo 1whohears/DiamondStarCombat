@@ -1,0 +1,26 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"S": {
+			"item": "dscombat:seat"
+		},
+		"I": {
+			"item": "minecraft:iron_block"
+		},
+		"C": {
+			"item": "minecraft:copper_block"
+		},
+		"G": {
+			"item": "minecraft:gunpowder"
+		}
+	},
+	"pattern": [
+		"GGG",
+		"IIS",
+		"CCC"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:minigun_turret"
+	}
+}

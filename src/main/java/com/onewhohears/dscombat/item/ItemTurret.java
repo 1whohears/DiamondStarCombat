@@ -25,10 +25,11 @@ public class ItemTurret extends ItemPart {
 	@Override
 	public Component getName(ItemStack stack) {
 		CompoundTag tag = stack.getOrCreateTag();
-		String weapon = tag.getString("weaponId");
 		MutableComponent name = Component.translatable(getDescriptionId()).append(" ")
-				.append(Component.translatable("item."+DSCombatMod.MODID+"."+weapon))
-				.append(" "+tag.getInt("ammo")+"/"+tag.getInt("max"));
+				.append(Component.translatable("item."+DSCombatMod.MODID+"."+weaponId));
+		int ammo = tag.getInt("ammo");
+		int max = tag.getInt("max");
+		if (max != 0) name.append(" "+ammo+"/"+max);
 		return name;	
 	}
 

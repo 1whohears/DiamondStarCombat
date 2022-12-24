@@ -78,23 +78,6 @@ public class WeaponSystem {
 		this.readData = true;
 	}
 	
-	/*public boolean addTurret(String slotName, WeaponData data, boolean updateClient) {
-		if (turrets.get(slotName) != null) return false;
-		turrets.put(slotName, data);
-		if (updateClient) {
-			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
-					new ToClientAddTurret(parent.getId(), slotName, data));
-		}
-		return true;
-	}*/
-	
-	/*public void removeTurret(String slotName, boolean updateClient) {
-		if (turrets.remove(slotName) != null && updateClient) {
-			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
-					new ToClientRemoveTurret(parent.getId(), slotName));
-		}
-	}*/
-	
 	public boolean addWeapon(WeaponData data, boolean updateClient) {
 		if (get(data.getId(), data.getSlotId()) != null) return false;
 		weapons.add(data);
@@ -112,11 +95,6 @@ public class WeaponSystem {
 					new ToClientRemoveWeapon(parent.getId(), id, slotId));
 		}
 	}
-	
-	/*@Nullable
-	public WeaponData getTurret(String slotId) {
-		return turrets.get(slotId);
-	}*/
 	
 	@Nullable
 	public WeaponData get(String id, String slotId) {
@@ -139,9 +117,7 @@ public class WeaponSystem {
 	
 	public boolean shootSelected(Entity controller) {
 		WeaponData data = getSelected();
-		if (data == null) {
-			return false;
-		}
+		if (data == null) return false;
 		String name = data.getId();
 		String reason = null;
 		data.shoot(parent.level, controller, UtilAngles.getRollAxis(parent.getQ()), null, parent);
@@ -155,20 +131,6 @@ public class WeaponSystem {
 		}
 		return true;
 	}
-	
-	/*public boolean shootTurret(Entity shooter, EntityTurret turret) {
-		WeaponData data = turrets.get(turret.getSlotId());
-		if (data == null) {
-			return false;
-		}
-		String reason = null;
-		data.shoot(parent.level, shooter, shooter.getLookAngle(), turret.position(), null);
-		if (data.isFailedLaunch()) reason = data.getFailedLaunchReason();
-		if (reason != null && shooter instanceof ServerPlayer player) {
-			player.displayClientMessage(Component.translatable(reason), true);
-		}
-		return true;
-	}*/
 	
 	public void selectNextWeapon() {
 		++weaponIndex;

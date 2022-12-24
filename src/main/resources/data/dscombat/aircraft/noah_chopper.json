@@ -43,7 +43,7 @@
 			"uix": 68,
 			"uiy": 20,
 			"data": {
-				"itemid": "dscombat:seat"
+				"itemid": "dscombat:minigun_turret"
 			}
 		},
 		{
@@ -359,6 +359,9 @@
 		},
 		{
 			"item": "dscombat:gr400",
+			"num": 1
+		},{
+			"item": "dscombat:minigun_turret",
 			"num": 1
 		}
 	]

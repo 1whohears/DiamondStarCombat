@@ -48,7 +48,7 @@ public class PilotOverlay {
 		if (m.options.hideGui) return;
 		if (m.gameMode.getPlayerMode() == GameType.SPECTATOR) return;
 		final var player = m.player;
-		if (player.getRootVehicle() instanceof EntityAircraft plane && player.equals(plane.getControllingPassenger())) {
+		if (player.getRootVehicle() instanceof EntityAircraft plane) {
 			// plane speed
 			int s = (int)(plane.getDeltaMovement().length() * 20d);
 			GuiComponent.drawString(poseStack, m.font, 

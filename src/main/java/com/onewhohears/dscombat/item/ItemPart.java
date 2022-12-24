@@ -46,8 +46,6 @@ public abstract class ItemPart extends Item {
 	
 	@Override
 	public void onCraftedBy(ItemStack stack, Level level, Player player) {
-		//System.out.println("ON CRAFTED");
-		//System.out.println("nbt = "+stack.getOrCreateTag());
 		if (stack.getOrCreateTag().contains("type")) return;
 		stack.setTag(getNbt());
 	}

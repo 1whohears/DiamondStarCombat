@@ -49,7 +49,7 @@ public class WeaponRackData extends WeaponPartData {
 	
 	public boolean isEntitySetup(String slotId, EntityAircraft craft) {
 		for (EntityPart part : craft.getPartEntities()) 
-			if (part.getSlotId().equals(slotId)) 
+			if (part.getPartType() == getType() && part.getSlotId().equals(slotId)) 
 				return true;
 		return false;
 	}

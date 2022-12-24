@@ -47,7 +47,7 @@ public class SeatData extends PartData {
 		//System.out.println("is this seat setup "+slotId);
 		for (EntitySeat seat : craft.getSeats()) {
 			//System.out.println("check seat slot "+seat.getSlotId());
-			if (seat.getSlotId().equals(slotId)) 
+			if (seat.getPartType() == getType() && seat.getSlotId().equals(slotId)) 
 				return true;
 		}
 		return false;

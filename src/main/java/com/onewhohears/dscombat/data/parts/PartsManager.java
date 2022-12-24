@@ -228,8 +228,18 @@ public class PartsManager {
 		Container c = new SimpleContainer(slots.size()){
 			@Override
 			public void setChanged() {
+				//menu.slotsChanged(this);
 				super.setChanged();
-				menu.slotsChanged(this);
+			}
+			@Override
+			public void setItem(int i, ItemStack stack) {
+				menu.setItem(i, stack);
+				super.setItem(i, stack);
+			}
+			@Override
+			public ItemStack removeItem(int i, int count) {
+				menu.removeItem(i, count);
+				return super.removeItem(i, count);
 			}
 		};
 		for (int i = 0; i < slots.size(); ++i) if (slots.get(i).filled()) {
@@ -239,9 +249,35 @@ public class PartsManager {
 		return c;
 	}
 	
-	public void readContainer(Container c) {
+	public void setItem(int i, ItemStack stack) {
+		if (i < 0 || i >= slots.size()) {
+			System.out.println("WARNING! INDEX "+i+" IS OUT OF BOUNDS IN PARTS MANAGER "+this);
+			return;
+		}
+		PartSlot slot = slots.get(i);
+		if (stack.isEmpty()) {
+			removePart(slot.getName(), false);
+			return;
+		}
+		if (slot.filled()) removePart(slot.getName(), false);
+		PartData data = UtilParse.parsePartFromCompound(stack.getTag());
+		if (data == null) {
+			System.out.println("ERROR! COULD NOT GET PART DATA FROM "+stack+" "+stack.getTag());
+			return;
+		}
+		addPart(data, slot.getName(), false);
+	}
+	
+	public void removeItem(int i, int count) {
+		if (i < 0 || i >= slots.size()) {
+			System.out.println("WARNING! INDEX "+i+" IS OUT OF BOUNDS IN PARTS MANAGER "+this);
+			return;
+		}
+		removePart(slots.get(i).getName(), false);
+	}
+	
+	/*public void readContainer(Container c) {
 		//System.out.println("READING CHANGED CONTAINER client side "+parent.level.isClientSide+" items "+c);
-		// TODO if you replace a seat with a turret without taking the seat out first the seat doesn't get removed and the turret data doesn't get read
 		if (c.getContainerSize() != slots.size()) {
 			System.out.println("WARNING! THIS CONTAINER HAS THE WRONG NUMBER OF SLOTS!");
 			return;
@@ -274,7 +310,7 @@ public class PartsManager {
 			//System.out.println("ADDING");
 			addPart(data, slot.getName(), false);
 		}
-	}
+	}*/
 	
 	public List<PartSlot> getSlots() {
 		return slots;

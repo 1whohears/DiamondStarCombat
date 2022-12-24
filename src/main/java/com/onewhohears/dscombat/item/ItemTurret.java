@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.item;
 
+import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.data.parts.TurretData;
@@ -24,14 +25,10 @@ public class ItemTurret extends ItemPart {
 	@Override
 	public Component getName(ItemStack stack) {
 		CompoundTag tag = stack.getOrCreateTag();
-		String turret = tag.getString("turretEntity");
-		MutableComponent name = Component.translatable(getDescriptionId()).append(" ");
-		if (turret.isEmpty()) {
-			name.append("EMPTY");
-		} else {
-			name.append(Component.translatable(turret))
+		String weapon = tag.getString("weaponId");
+		MutableComponent name = Component.translatable(getDescriptionId()).append(" ")
+				.append(Component.translatable("item."+DSCombatMod.MODID+"."+weapon))
 				.append(" "+tag.getInt("ammo")+"/"+tag.getInt("max"));
-		}
 		return name;	
 	}
 

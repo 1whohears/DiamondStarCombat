@@ -81,7 +81,6 @@ public class TurretData extends SeatData {
 		setParent(craft);
 		setRelPos(pos);
 		EntityTurret t = getTurret(slotId);
-		t.setWeaponId(weaponId);
 		t.setAmmo(ammo);
 	}
 	
@@ -90,13 +89,14 @@ public class TurretData extends SeatData {
 		EntityAircraft craft = getParent();
 		if (craft == null) return null;
 		for (EntityPart part : craft.getPartEntities()) 
-			if (part.getSlotId().equals(slotId)) 
+			if (part.getSlotId().equals(slotId) && part.getType().equals(getTurretType())) 
 				return (EntityTurret) part;
 		EntityTurret t = getTurretType().create(craft.level);
 		t.setSlotId(slotId);
 		t.setRelativePos(getRelPos());
 		t.setPos(craft.position());
 		t.startRiding(craft);
+		t.setWeaponId(weaponId);
 		craft.level.addFreshEntity(t);
 		return t;
 	}
@@ -104,7 +104,7 @@ public class TurretData extends SeatData {
 	@Override
 	public boolean isSetup(String slotId, EntityAircraft craft) {
 		for (EntityPart part : craft.getPartEntities()) 
-			if (part.getSlotId().equals(slotId)) 
+			if (part.getPartType() == getType() && part.getSlotId().equals(slotId)) 
 				return true;
 		return false;
 	}

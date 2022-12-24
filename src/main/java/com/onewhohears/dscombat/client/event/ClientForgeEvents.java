@@ -12,6 +12,7 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexBuffer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Quaternion;
+import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.KeyInit;
 import com.onewhohears.dscombat.common.network.PacketHandler;
@@ -158,7 +159,6 @@ public final class ClientForgeEvents {
 		}
 		if (!hovering) resetHoverIndex();
 		if (shoot && player.getVehicle() instanceof EntityTurret turret) {
-			System.out.println(player+" shooting "+turret);
 			PacketHandler.INSTANCE.sendToServer(new ToServerShootTurret(turret));
 		}
 	}
@@ -345,8 +345,7 @@ public final class ClientForgeEvents {
 		Minecraft m = Minecraft.getInstance();
 		final var playerC = m.player;
 		Player player = event.getEntity();
-		if (player.getVehicle() instanceof EntitySeat seat 
-				&& seat.getVehicle() instanceof EntityAircraft plane) {
+		if (player.getRootVehicle() instanceof EntityAircraft plane) {
 			changePlayerHitbox(player);
 			if (player.equals(playerC) && m.options.getCameraType().isFirstPerson()) {
 				event.setCanceled(true);
@@ -355,9 +354,16 @@ public final class ClientForgeEvents {
 			Quaternion q = UtilAngles.lerpQ(event.getPartialTick(), plane.getPrevQ(), plane.getClientQ());
 			event.getPoseStack().mulPose(q);
 			// TODO player doesn't look in the right direction in certain cases
-			EulerAngles a = UtilAngles.toDegrees(q);
-			player.setYBodyRot(player.getYRot()-(float)a.yaw);
-			player.setYHeadRot(player.getYRot()-(float)a.yaw);
+			if (player.getVehicle() instanceof EntityTurret turret) {
+				player.setYBodyRot(0);
+				player.setYHeadRot(0);
+				event.getPoseStack().mulPose(Vector3f.YP.rotationDegrees(turret.getYRot()));
+				event.getPoseStack().mulPose(Vector3f.XP.rotationDegrees(turret.getXRot()));
+			} else {
+				EulerAngles a = UtilAngles.toDegrees(q);
+				player.setYBodyRot(player.getYRot()-(float)a.yaw);
+				player.setYHeadRot(player.getYRot()-(float)a.yaw);
+			}
 		}
 	}
 	

@@ -57,9 +57,15 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
 	
 	@Override
 	public void slotsChanged(Container inventory) {
-		//System.out.println("SLOTS CHANGED "+inventory);
-		if (this.loaded) pm.readContainer(inventory);
 		super.slotsChanged(inventory);
+	}
+	
+	public void setItem(int i, ItemStack stack) {
+		if (loaded) pm.setItem(i, stack);
+	}
+	
+	public void removeItem(int i, int count) {
+		if (loaded) pm.removeItem(i, count);
 	}
 	
 	@Override

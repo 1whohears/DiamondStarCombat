@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.mojang.math.Quaternion;
+import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.util.math.UtilAngles;
@@ -147,6 +148,11 @@ public class EntitySeat extends EntityPart {
 	@Override
 	public boolean shouldRender() {
 		return false;
+	}
+
+	@Override
+	public PartType getPartType() {
+		return PartType.SEAT;
 	}
 
 }

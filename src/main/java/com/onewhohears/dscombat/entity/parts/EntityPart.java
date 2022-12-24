@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.entity.parts;
 
+import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.init.DataSerializers;
@@ -105,5 +106,7 @@ public abstract class EntityPart extends Entity {
 	public boolean canCollideWith(Entity entity) {
 		return false;
 	}
+	
+	public abstract PartType getPartType();
 
 }

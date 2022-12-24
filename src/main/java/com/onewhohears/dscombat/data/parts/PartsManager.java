@@ -241,6 +241,7 @@ public class PartsManager {
 	
 	public void readContainer(Container c) {
 		//System.out.println("READING CHANGED CONTAINER client side "+parent.level.isClientSide+" items "+c);
+		// TODO if you replace a seat with a turret without taking the seat out first the seat doesn't get removed and the turret data doesn't get read
 		if (c.getContainerSize() != slots.size()) {
 			System.out.println("WARNING! THIS CONTAINER HAS THE WRONG NUMBER OF SLOTS!");
 			return;

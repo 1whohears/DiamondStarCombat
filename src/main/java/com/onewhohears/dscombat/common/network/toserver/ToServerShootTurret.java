@@ -4,7 +4,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.common.network.IPacket;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.parts.EntityTurret;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
@@ -15,8 +15,8 @@ public class ToServerShootTurret extends IPacket {
 	
 	public final int id;
 	
-	public ToServerShootTurret(int id) {
-		this.id = id;
+	public ToServerShootTurret(EntityTurret t) {
+		id = t.getId();
 	}
 	
 	public ToServerShootTurret(FriendlyByteBuf buffer) {
@@ -35,8 +35,8 @@ public class ToServerShootTurret extends IPacket {
 			success.set(true);
 			ServerPlayer player = ctx.get().getSender();
 			ServerLevel level = player.getLevel();
-			if (level.getEntity(id) instanceof EntityAircraft plane) {
-				
+			if (level.getEntity(id) instanceof EntityTurret turret) {
+				turret.shoot(player);
 			}
 		});
 		ctx.get().setPacketHandled(true);

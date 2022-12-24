@@ -11,11 +11,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class ItemTurret extends ItemPart {
-
+	
+	public final String weaponId;
 	public final String turrentEntityKey;
 	
-	public ItemTurret(float weight, SlotType[] compatibleSlots, String turrentEntityKey) {
+	public ItemTurret(float weight, SlotType[] compatibleSlots, String turrentEntityKey, String weaponId) {
 		super(1, weight, compatibleSlots);
+		this.weaponId = weaponId;
 		this.turrentEntityKey = turrentEntityKey;
 	}
 	
@@ -35,7 +37,7 @@ public class ItemTurret extends ItemPart {
 
 	@Override
 	public PartData getPartData() {
-		return new TurretData(weight, ForgeRegistries.ITEMS.getKey(this), compatibleSlots, turrentEntityKey);
+		return new TurretData(weight, ForgeRegistries.ITEMS.getKey(this), compatibleSlots, turrentEntityKey, weaponId);
 	}
 
 }

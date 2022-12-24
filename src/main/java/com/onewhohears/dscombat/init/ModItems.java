@@ -140,7 +140,8 @@ public class ModItems {
 	
 	// TURRENTS
 	public static final RegistryObject<Item> MINIGUN_TURRENT = ITEMS.register("minigun_turret", 
-			() -> new ItemTurret(0.005f, PartSlot.SEAT, ModEntities.MINIGUN_TURRET.getId().toString()));
+			() -> new ItemTurret(0.005f, PartSlot.SEAT, 
+					ModEntities.MINIGUN_TURRET.getId().toString(), "20mm"));
 	
 	// FLARE DISPENSERS
 	public static final RegistryObject<Item> BASIC_FLARE_DISPENSER = ITEMS.register("basic_flare_dispenser", 

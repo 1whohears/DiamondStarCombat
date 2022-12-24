@@ -1,20 +1,16 @@
 package com.onewhohears.dscombat.data.weapon;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.common.network.toclient.ToClientAddTurret;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddWeapon;
-import com.onewhohears.dscombat.common.network.toclient.ToClientRemoveTurret;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRemoveWeapon;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponIndex;
 import com.onewhohears.dscombat.data.weapon.WeaponData.WeaponType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
-import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.math.UtilAngles;
@@ -33,7 +29,7 @@ public class WeaponSystem {
 	private int weaponIndex = 0;
 	private EntityAircraft parent;
 	private boolean readData = false;
-	private HashMap<String, WeaponData> turrets = new HashMap<>();
+	//private HashMap<String, WeaponData> turrets = new HashMap<>();
 	
 	public WeaponSystem() {
 		
@@ -82,7 +78,7 @@ public class WeaponSystem {
 		this.readData = true;
 	}
 	
-	public boolean addTurret(String slotName, WeaponData data, boolean updateClient) {
+	/*public boolean addTurret(String slotName, WeaponData data, boolean updateClient) {
 		if (turrets.get(slotName) != null) return false;
 		turrets.put(slotName, data);
 		if (updateClient) {
@@ -90,14 +86,14 @@ public class WeaponSystem {
 					new ToClientAddTurret(parent.getId(), slotName, data));
 		}
 		return true;
-	}
+	}*/
 	
-	public void removeTurret(String slotName, boolean updateClient) {
+	/*public void removeTurret(String slotName, boolean updateClient) {
 		if (turrets.remove(slotName) != null && updateClient) {
 			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
 					new ToClientRemoveTurret(parent.getId(), slotName));
 		}
-	}
+	}*/
 	
 	public boolean addWeapon(WeaponData data, boolean updateClient) {
 		if (get(data.getId(), data.getSlotId()) != null) return false;
@@ -117,10 +113,10 @@ public class WeaponSystem {
 		}
 	}
 	
-	@Nullable
+	/*@Nullable
 	public WeaponData getTurret(String slotId) {
 		return turrets.get(slotId);
-	}
+	}*/
 	
 	@Nullable
 	public WeaponData get(String id, String slotId) {
@@ -160,7 +156,7 @@ public class WeaponSystem {
 		return true;
 	}
 	
-	public boolean shootTurret(Entity shooter, EntityTurret turret) {
+	/*public boolean shootTurret(Entity shooter, EntityTurret turret) {
 		WeaponData data = turrets.get(turret.getSlotId());
 		if (data == null) {
 			return false;
@@ -172,7 +168,7 @@ public class WeaponSystem {
 			player.displayClientMessage(Component.translatable(reason), true);
 		}
 		return true;
-	}
+	}*/
 	
 	public void selectNextWeapon() {
 		++weaponIndex;

@@ -6,62 +6,77 @@ import com.onewhohears.dscombat.data.parts.TurretData;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 
 public class EntityTurret extends EntitySeat {
 	
-	public final String weaponId;
+	public static final EntityDataAccessor<Integer> AMMO = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.INT);
+	
+	/**
+	 * only used on server side
+	 */
+	private String weaponId;
 	/**
 	 * only used on server side
 	 */
 	private WeaponData data;
 	
-	public EntityTurret(EntityType<?> type, Level level, String weaponId) {
+	public EntityTurret(EntityType<?> type, Level level) {
 		super(type, level);
-		this.weaponId = weaponId;
 	}
 
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
+		entityData.define(AMMO, 0);
 	}
 	
 	@Override
 	protected void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
+		data = UtilParse.parseWeaponFromCompound(tag.getCompound("weapondata"));
+		if (data == null) data = WeaponPresets.getNewById(weaponId);
 	}
 
 	@Override
 	protected void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
+		if (data != null) tag.put("weapondata", data.write());
 	}
 	
 	public void init() {
 		super.init();
-		if (!level.isClientSide && getRootVehicle() instanceof EntityAircraft plane) {
+		/*if (!level.isClientSide && getRootVehicle() instanceof EntityAircraft plane) {
 			data = plane.weaponSystem.getTurret(getSlotId());
 			if (data == null) {
 				data = WeaponPresets.getNewById(weaponId);
 				if (data != null) plane.weaponSystem.addTurret(getSlotId(), data, true);
 			}
-		}
+		}*/
+		if (data != null) data.setCurrentAmmo(getAmmo());
 	}
 	
 	@Override
 	public void tick() {
 		super.tick();
-		if (!level.isClientSide && tickCount % 10 == 0 && getRootVehicle() instanceof EntityAircraft plane) {
+		/*if (!level.isClientSide && tickCount % 10 == 0 && getRootVehicle() instanceof EntityAircraft plane) {
 			PartSlot slot = plane.partsManager.getSlot(getSlotId());
 			if (slot != null && slot.filled() && slot.getPartData().getType() == PartType.TURRENT) { 
 				TurretData td = (TurretData) slot.getPartData();
 				td.setAmmo(getAmmo());
 				td.setMax(getMax());
 			}
-		}
+		}*/
 	}
 	
 	@Override
@@ -75,36 +90,34 @@ public class EntityTurret extends EntitySeat {
 	}
 	
 	public void setAmmo(int ammo) {
-		if (data == null) return;
-		data.setCurrentAmmo(ammo);
+		entityData.set(AMMO, ammo);
 	}
 	
 	public int getAmmo() {
-		if (data == null) return 0;
-		return data.getCurrentAmmo();
+		return entityData.get(AMMO);
 	}
 	
-	public int getMax() {
-		if (data == null) return 0;
-		return data.getMaxAmmo();
-	}
-
-	@Override
-	public void remove(RemovalReason reason) {
-		if (!level.isClientSide && getRootVehicle() instanceof EntityAircraft plane) {
-			plane.weaponSystem.removeTurret(getSlotId(), true);
-		}
-		super.remove(reason);
+	public void setWeaponId(String wid) {
+		weaponId = wid;
 	}
 	
 	public void shoot(Entity shooter) {
-		if (level.isClientSide || !(getRootVehicle() instanceof EntityAircraft plane)) return;
-		if (plane.weaponSystem.shootTurret(shooter, this)) {
-			PartSlot slot = plane.partsManager.getSlot(getSlotId());
-			if (slot != null && slot.filled() && slot.getPartData().getType() == PartType.TURRENT) { 
-				TurretData td = (TurretData) slot.getPartData();
-				td.setAmmo(getAmmo());
-				td.setMax(getMax());
+		// TODO data is null when shooting
+		System.out.println(shooter+" shooting "+this+" with "+data);
+		if (level.isClientSide || data == null) return;
+		data.shoot(level, shooter, shooter.getLookAngle(), position(), null);
+		if (data.isFailedLaunch()) {
+			if (shooter instanceof ServerPlayer player) {
+				player.displayClientMessage(Component.translatable(data.getFailedLaunchReason()), true);
+			}
+		} else {
+			setAmmo(data.getCurrentAmmo());
+			if (getRootVehicle() instanceof EntityAircraft plane) {
+				PartSlot slot = plane.partsManager.getSlot(getSlotId());
+				if (slot != null && slot.filled() && slot.getPartData().getType() == PartType.TURRENT) { 
+					TurretData td = (TurretData) slot.getPartData();
+					td.setAmmo(data.getCurrentAmmo());
+				}
 			}
 		}
 	}

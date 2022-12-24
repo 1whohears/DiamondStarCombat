@@ -16,6 +16,7 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.KeyInit;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerFlightControl;
+import com.onewhohears.dscombat.common.network.toserver.ToServerShootTurret;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSwitchSeat;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
@@ -157,7 +158,8 @@ public final class ClientForgeEvents {
 		}
 		if (!hovering) resetHoverIndex();
 		if (shoot && player.getVehicle() instanceof EntityTurret turret) {
-			// TODO shoot turret packet
+			System.out.println(player+" shooting "+turret);
+			PacketHandler.INSTANCE.sendToServer(new ToServerShootTurret(turret));
 		}
 	}
 	

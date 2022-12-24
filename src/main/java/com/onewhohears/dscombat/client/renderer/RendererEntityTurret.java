@@ -42,6 +42,7 @@ public class RendererEntityTurret<T extends EntityTurret> extends EntityRenderer
 			poseStack.mulPose(q);
 			Player player = entity.getPlayer();
 			if (player != null) {
+				// TODO add a limit to the turret's rotation
 				EulerAngles a = UtilAngles.toDegrees(q);
 				float y = (float)a.yaw-player.getYRot();
 				float x = player.getXRot()-(float)a.pitch;

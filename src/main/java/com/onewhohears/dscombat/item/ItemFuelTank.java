@@ -8,6 +8,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class ItemFuelTank extends ItemPart {
 	
@@ -29,12 +30,12 @@ public class ItemFuelTank extends ItemPart {
 
 	@Override
 	public PartData getPartData() {
-		return new FuelTankData(weight, fuel, max, getIdPart(), compatibleSlots);
+		return new FuelTankData(weight, fuel, max, ForgeRegistries.ITEMS.getKey(this), compatibleSlots);
 	}
 	
 	@Override
 	public PartData getFilledPartData(String param) {
-		return new FuelTankData(weight, max, max, getIdPart(), compatibleSlots);
+		return new FuelTankData(weight, max, max, ForgeRegistries.ITEMS.getKey(this), compatibleSlots);
 	}
 
 }

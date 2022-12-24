@@ -62,7 +62,7 @@ public class WeaponPresets {
 	}
 	
 	@Nullable
-	public static WeaponData getByNewId(String id) {
+	public static WeaponData getNewById(String id) {
 		for (WeaponData w : weapons) if (w.getId().equals(id)) return w.copy();
 		return null;
 	}

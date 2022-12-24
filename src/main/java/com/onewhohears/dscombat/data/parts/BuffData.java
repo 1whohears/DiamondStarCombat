@@ -1,8 +1,7 @@
 package com.onewhohears.dscombat.data.parts;
 
-import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -20,10 +19,6 @@ public class BuffData extends PartData {
 	public BuffData(BuffType type, ResourceLocation itemid, SlotType[] compatibleSlots) {
 		super(0, itemid, compatibleSlots);
 		this.type = type;
-	}
-	
-	public BuffData(BuffType type, String itemid, SlotType[] compatibleSlots) {
-		this(type, new ResourceLocation(DSCombatMod.MODID, itemid), compatibleSlots);
 	}
 	
 	public BuffData(CompoundTag tag) {
@@ -55,12 +50,12 @@ public class BuffData extends PartData {
 	}
 
 	@Override
-	public boolean isSetup(String slotId, EntityAbstractAircraft craft) {
+	public boolean isSetup(String slotId, EntityAircraft craft) {
 		return false;
 	}
 	
 	@Override
-	public void setup(EntityAbstractAircraft craft, String slotId, Vec3 pos) {
+	public void setup(EntityAircraft craft, String slotId, Vec3 pos) {
 		super.setup(craft, slotId, pos);
 		switch (type) {
 		case DATA_LINK:

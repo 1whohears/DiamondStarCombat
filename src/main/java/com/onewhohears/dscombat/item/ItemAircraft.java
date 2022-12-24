@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.item;
 
 import java.util.Objects;
 
-import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.init.ModItems;
 
 import net.minecraft.core.BlockPos;
@@ -27,10 +27,10 @@ import net.minecraft.world.level.gameevent.GameEvent;
 
 public class ItemAircraft extends Item {
 	
-	private final EntityType<? extends EntityAbstractAircraft> defaultType;
+	private final EntityType<? extends EntityAircraft> defaultType;
 	private final String defultPreset;
 	
-	public ItemAircraft(EntityType<? extends EntityAbstractAircraft> defaultType, String defaultPreset) {
+	public ItemAircraft(EntityType<? extends EntityAircraft> defaultType, String defaultPreset) {
 		super(new Item.Properties().tab(ModItems.AIRCRAFT).stacksTo(1));
 		this.defaultType = defaultType;
 		this.defultPreset = defaultPreset;

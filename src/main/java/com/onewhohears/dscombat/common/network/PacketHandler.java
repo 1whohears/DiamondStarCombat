@@ -1,27 +1,27 @@
 package com.onewhohears.dscombat.common.network;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.common.network.toclient.ClientBoundAddPartPacket;
-import com.onewhohears.dscombat.common.network.toclient.ClientBoundAddRadarPacket;
-import com.onewhohears.dscombat.common.network.toclient.ClientBoundAddWeaponPacket;
-import com.onewhohears.dscombat.common.network.toclient.ClientBoundFuelPacket;
-import com.onewhohears.dscombat.common.network.toclient.ClientBoundMissileMovePacket;
-import com.onewhohears.dscombat.common.network.toclient.ClientBoundPingsPacket;
-import com.onewhohears.dscombat.common.network.toclient.ClientBoundPlaneDataPacket;
-import com.onewhohears.dscombat.common.network.toclient.ClientBoundPlaySoundPacket;
-import com.onewhohears.dscombat.common.network.toclient.ClientBoundRemovePartPacket;
-import com.onewhohears.dscombat.common.network.toclient.ClientBoundRemoveRadarPacket;
-import com.onewhohears.dscombat.common.network.toclient.ClientBoundRemoveWeaponPacket;
-import com.onewhohears.dscombat.common.network.toclient.ClientBoundWeaponAmmoPacket;
-import com.onewhohears.dscombat.common.network.toclient.ClientBoundWeaponIndexPacket;
-import com.onewhohears.dscombat.common.network.toserver.ServerBoundAircraftToItemPacket;
-import com.onewhohears.dscombat.common.network.toserver.ServerBoundCraftPlanePacket;
-import com.onewhohears.dscombat.common.network.toserver.ServerBoundCraftWeaponPacket;
-import com.onewhohears.dscombat.common.network.toserver.ServerBoundFlightControlPacket;
-import com.onewhohears.dscombat.common.network.toserver.ServerBoundPingSelectPacket;
-import com.onewhohears.dscombat.common.network.toserver.ServerBoundQPacket;
-import com.onewhohears.dscombat.common.network.toserver.ServerBoundRequestPlaneDataPacket;
-import com.onewhohears.dscombat.common.network.toserver.ServerBoundSwitchSeatPacket;
+import com.onewhohears.dscombat.common.network.toclient.ToClientAddPart;
+import com.onewhohears.dscombat.common.network.toclient.ToClientAddRadar;
+import com.onewhohears.dscombat.common.network.toclient.ToClientAddWeapon;
+import com.onewhohears.dscombat.common.network.toclient.ToClientAircraftFuel;
+import com.onewhohears.dscombat.common.network.toclient.ToClientMissileMove;
+import com.onewhohears.dscombat.common.network.toclient.ToClientRadarPings;
+import com.onewhohears.dscombat.common.network.toclient.ToClientRecievePlaneData;
+import com.onewhohears.dscombat.common.network.toclient.ToClientRemovePart;
+import com.onewhohears.dscombat.common.network.toclient.ToClientRemoveRadar;
+import com.onewhohears.dscombat.common.network.toclient.ToClientRemoveWeapon;
+import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponAmmo;
+import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponIndex;
+import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftToItem;
+import com.onewhohears.dscombat.common.network.toserver.ToServerCraftPlane;
+import com.onewhohears.dscombat.common.network.toserver.ToServerCraftWeapon;
+import com.onewhohears.dscombat.common.network.toserver.ToServerFlightControl;
+import com.onewhohears.dscombat.common.network.toserver.ToServerPingSelect;
+import com.onewhohears.dscombat.common.network.toserver.ToServerQ;
+import com.onewhohears.dscombat.common.network.toserver.ToServerRequestPlaneData;
+import com.onewhohears.dscombat.common.network.toserver.ToServerShootTurret;
+import com.onewhohears.dscombat.common.network.toserver.ToServerSwitchSeat;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkDirection;
@@ -45,110 +45,110 @@ public final class PacketHandler {
                 .simpleChannel();
 		INSTANCE = net;
 		int index = 0;
-		net.messageBuilder(ServerBoundFlightControlPacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ServerBoundFlightControlPacket::encode)
-			.decoder(ServerBoundFlightControlPacket::new)
-			.consumerMainThread(ServerBoundFlightControlPacket::handle)
+		net.messageBuilder(ToServerFlightControl.class, index++, NetworkDirection.PLAY_TO_SERVER)
+			.encoder(ToServerFlightControl::encode)
+			.decoder(ToServerFlightControl::new)
+			.consumerMainThread(ToServerFlightControl::handle)
 			.add();
-		net.messageBuilder(ClientBoundPingsPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ClientBoundPingsPacket::encode)
-			.decoder(ClientBoundPingsPacket::new)
-			.consumerMainThread(ClientBoundPingsPacket::handle)
+		net.messageBuilder(ToClientRadarPings.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ToClientRadarPings::encode)
+			.decoder(ToClientRadarPings::new)
+			.consumerMainThread(ToClientRadarPings::handle)
 			.add();
-		net.messageBuilder(ServerBoundPingSelectPacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ServerBoundPingSelectPacket::encode)
-			.decoder(ServerBoundPingSelectPacket::new)
-			.consumerMainThread(ServerBoundPingSelectPacket::handle)
+		net.messageBuilder(ToServerPingSelect.class, index++, NetworkDirection.PLAY_TO_SERVER)
+			.encoder(ToServerPingSelect::encode)
+			.decoder(ToServerPingSelect::new)
+			.consumerMainThread(ToServerPingSelect::handle)
 			.add();
-		net.messageBuilder(ClientBoundMissileMovePacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ClientBoundMissileMovePacket::encode)
-			.decoder(ClientBoundMissileMovePacket::new)
-			.consumerMainThread(ClientBoundMissileMovePacket::handle)
+		net.messageBuilder(ToClientMissileMove.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ToClientMissileMove::encode)
+			.decoder(ToClientMissileMove::new)
+			.consumerMainThread(ToClientMissileMove::handle)
 			.add();
-		net.messageBuilder(ClientBoundPlaneDataPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ClientBoundPlaneDataPacket::encode)
-			.decoder(ClientBoundPlaneDataPacket::new)
-			.consumerMainThread(ClientBoundPlaneDataPacket::handle)
+		net.messageBuilder(ToClientRecievePlaneData.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ToClientRecievePlaneData::encode)
+			.decoder(ToClientRecievePlaneData::new)
+			.consumerMainThread(ToClientRecievePlaneData::handle)
 			.add();
-		net.messageBuilder(ClientBoundWeaponAmmoPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ClientBoundWeaponAmmoPacket::encode)
-			.decoder(ClientBoundWeaponAmmoPacket::new)
-			.consumerMainThread(ClientBoundWeaponAmmoPacket::handle)
+		net.messageBuilder(ToClientWeaponAmmo.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ToClientWeaponAmmo::encode)
+			.decoder(ToClientWeaponAmmo::new)
+			.consumerMainThread(ToClientWeaponAmmo::handle)
 			.add();
-		net.messageBuilder(ClientBoundWeaponIndexPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ClientBoundWeaponIndexPacket::encode)
-			.decoder(ClientBoundWeaponIndexPacket::new)
-			.consumerMainThread(ClientBoundWeaponIndexPacket::handle)
+		net.messageBuilder(ToClientWeaponIndex.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ToClientWeaponIndex::encode)
+			.decoder(ToClientWeaponIndex::new)
+			.consumerMainThread(ToClientWeaponIndex::handle)
 			.add();
-		net.messageBuilder(ServerBoundRequestPlaneDataPacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ServerBoundRequestPlaneDataPacket::encode)
-			.decoder(ServerBoundRequestPlaneDataPacket::new)
-			.consumerMainThread(ServerBoundRequestPlaneDataPacket::handle)
+		net.messageBuilder(ToServerRequestPlaneData.class, index++, NetworkDirection.PLAY_TO_SERVER)
+			.encoder(ToServerRequestPlaneData::encode)
+			.decoder(ToServerRequestPlaneData::new)
+			.consumerMainThread(ToServerRequestPlaneData::handle)
+			.add(); 
+		net.messageBuilder(ToClientAddWeapon.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ToClientAddWeapon::encode)
+			.decoder(ToClientAddWeapon::new)
+			.consumerMainThread(ToClientAddWeapon::handle)
 			.add();
-		net.messageBuilder(ClientBoundPlaySoundPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ClientBoundPlaySoundPacket::encode)
-			.decoder(ClientBoundPlaySoundPacket::new)
-			.consumerMainThread(ClientBoundPlaySoundPacket::handle)
+		net.messageBuilder(ToClientRemoveWeapon.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ToClientRemoveWeapon::encode)
+			.decoder(ToClientRemoveWeapon::new)
+			.consumerMainThread(ToClientRemoveWeapon::handle)
 			.add();
-		net.messageBuilder(ClientBoundAddWeaponPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ClientBoundAddWeaponPacket::encode)
-			.decoder(ClientBoundAddWeaponPacket::new)
-			.consumerMainThread(ClientBoundAddWeaponPacket::handle)
+		net.messageBuilder(ToClientAddPart.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ToClientAddPart::encode)
+			.decoder(ToClientAddPart::new)
+			.consumerMainThread(ToClientAddPart::handle)
 			.add();
-		net.messageBuilder(ClientBoundRemoveWeaponPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ClientBoundRemoveWeaponPacket::encode)
-			.decoder(ClientBoundRemoveWeaponPacket::new)
-			.consumerMainThread(ClientBoundRemoveWeaponPacket::handle)
-			.add();
-		net.messageBuilder(ClientBoundAddPartPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ClientBoundAddPartPacket::encode)
-			.decoder(ClientBoundAddPartPacket::new)
-			.consumerMainThread(ClientBoundAddPartPacket::handle)
-			.add();
-		net.messageBuilder(ClientBoundRemovePartPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ClientBoundRemovePartPacket::encode)
-			.decoder(ClientBoundRemovePartPacket::new)
-			.consumerMainThread(ClientBoundRemovePartPacket::handle)
+		net.messageBuilder(ToClientRemovePart.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ToClientRemovePart::encode)
+			.decoder(ToClientRemovePart::new)
+			.consumerMainThread(ToClientRemovePart::handle)
 			.add();		
-		net.messageBuilder(ClientBoundAddRadarPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ClientBoundAddRadarPacket::encode)
-			.decoder(ClientBoundAddRadarPacket::new)
-			.consumerMainThread(ClientBoundAddRadarPacket::handle)
+		net.messageBuilder(ToClientAddRadar.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ToClientAddRadar::encode)
+			.decoder(ToClientAddRadar::new)
+			.consumerMainThread(ToClientAddRadar::handle)
 			.add();
-		net.messageBuilder(ClientBoundRemoveRadarPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ClientBoundRemoveRadarPacket::encode)
-			.decoder(ClientBoundRemoveRadarPacket::new)
-			.consumerMainThread(ClientBoundRemoveRadarPacket::handle)
+		net.messageBuilder(ToClientRemoveRadar.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ToClientRemoveRadar::encode)
+			.decoder(ToClientRemoveRadar::new)
+			.consumerMainThread(ToClientRemoveRadar::handle)
 			.add();
-		net.messageBuilder(ServerBoundSwitchSeatPacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ServerBoundSwitchSeatPacket::encode)
-			.decoder(ServerBoundSwitchSeatPacket::new)
-			.consumerMainThread(ServerBoundSwitchSeatPacket::handle)
+		net.messageBuilder(ToServerSwitchSeat.class, index++, NetworkDirection.PLAY_TO_SERVER)
+			.encoder(ToServerSwitchSeat::encode)
+			.decoder(ToServerSwitchSeat::new)
+			.consumerMainThread(ToServerSwitchSeat::handle)
 			.add();
-		net.messageBuilder(ClientBoundFuelPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ClientBoundFuelPacket::encode)
-			.decoder(ClientBoundFuelPacket::new)
-			.consumerMainThread(ClientBoundFuelPacket::handle)
+		net.messageBuilder(ToClientAircraftFuel.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ToClientAircraftFuel::encode)
+			.decoder(ToClientAircraftFuel::new)
+			.consumerMainThread(ToClientAircraftFuel::handle)
 			.add();
-		net.messageBuilder(ServerBoundAircraftToItemPacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ServerBoundAircraftToItemPacket::encode)
-			.decoder(ServerBoundAircraftToItemPacket::new)
-			.consumerMainThread(ServerBoundAircraftToItemPacket::handle)
+		net.messageBuilder(ToServerAircraftToItem.class, index++, NetworkDirection.PLAY_TO_SERVER)
+			.encoder(ToServerAircraftToItem::encode)
+			.decoder(ToServerAircraftToItem::new)
+			.consumerMainThread(ToServerAircraftToItem::handle)
 			.add();	
-		net.messageBuilder(ServerBoundCraftWeaponPacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ServerBoundCraftWeaponPacket::encode)
-			.decoder(ServerBoundCraftWeaponPacket::new)
-			.consumerMainThread(ServerBoundCraftWeaponPacket::handle)
+		net.messageBuilder(ToServerCraftWeapon.class, index++, NetworkDirection.PLAY_TO_SERVER)
+			.encoder(ToServerCraftWeapon::encode)
+			.decoder(ToServerCraftWeapon::new)
+			.consumerMainThread(ToServerCraftWeapon::handle)
 			.add();
-		net.messageBuilder(ServerBoundCraftPlanePacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ServerBoundCraftPlanePacket::encode)
-			.decoder(ServerBoundCraftPlanePacket::new)
-			.consumerMainThread(ServerBoundCraftPlanePacket::handle)
+		net.messageBuilder(ToServerCraftPlane.class, index++, NetworkDirection.PLAY_TO_SERVER)
+			.encoder(ToServerCraftPlane::encode)
+			.decoder(ToServerCraftPlane::new)
+			.consumerMainThread(ToServerCraftPlane::handle)
 			.add();
-		net.messageBuilder(ServerBoundQPacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ServerBoundQPacket::encode)
-			.decoder(ServerBoundQPacket::new)
-			.consumerMainThread(ServerBoundQPacket::handle)
+		net.messageBuilder(ToServerQ.class, index++, NetworkDirection.PLAY_TO_SERVER)
+			.encoder(ToServerQ::encode)
+			.decoder(ToServerQ::new)
+			.consumerMainThread(ToServerQ::handle)
+			.add();
+		net.messageBuilder(ToServerShootTurret.class, index++, NetworkDirection.PLAY_TO_SERVER)
+			.encoder(ToServerShootTurret::encode)
+			.decoder(ToServerShootTurret::new)
+			.consumerMainThread(ToServerShootTurret::handle)
 			.add();
 	}
 	

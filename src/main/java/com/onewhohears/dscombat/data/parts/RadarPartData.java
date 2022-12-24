@@ -4,7 +4,7 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.data.radar.RadarData;
 import com.onewhohears.dscombat.data.radar.RadarPresets;
-import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -51,7 +51,7 @@ public class RadarPartData extends PartData {
 	}
 	
 	@Override
-	public void setup(EntityAbstractAircraft craft, String slotId, Vec3 pos) {
+	public void setup(EntityAircraft craft, String slotId, Vec3 pos) {
 		super.setup(craft, slotId, pos);
 		RadarData data = craft.radarSystem.get(radarId, slotId);
 		if (data == null) {
@@ -63,7 +63,7 @@ public class RadarPartData extends PartData {
 	}
 	
 	@Override
-	public boolean isSetup(String slotId, EntityAbstractAircraft craft) {
+	public boolean isSetup(String slotId, EntityAircraft craft) {
 		RadarData data = craft.radarSystem.get(radarId, slotId);
 		if (data == null) return false;
 		return true;

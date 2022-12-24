@@ -2,8 +2,8 @@ package com.onewhohears.dscombat.data.weapon;
 
 import java.util.List;
 
-import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
-import com.onewhohears.dscombat.entity.weapon.EntityAbstractWeapon;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.entity.weapon.IRMissile;
 
 import net.minecraft.nbt.CompoundTag;
@@ -61,12 +61,12 @@ public class IRMissileData extends MissileData {
 	}
 	
 	@Override
-	public EntityAbstractWeapon getEntity(Level level, Entity owner) {
+	public EntityWeapon getEntity(Level level, Entity owner) {
 		return new IRMissile(level, owner, this);
 	}
 	
 	@Override
-	public EntityAbstractWeapon getShootEntity(Level level, Entity owner, Vec3 direction, EntityAbstractAircraft vehicle) {
+	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 direction, EntityAircraft vehicle) {
 		IRMissile missile = (IRMissile) super.getShootEntity(level, owner, direction, vehicle);
 		if (missile == null) return null;
 		return missile;

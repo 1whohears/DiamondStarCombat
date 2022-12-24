@@ -60,6 +60,7 @@
 	"entity.dscombat.missile3": "Missile 3",
 	"entity.dscombat.flare": "Flare",
 	"entity.dscombat.seat": "Seat",
+	"entity.dscombat.minigun_turret": "Minigun Turret",
 	
 	"key.categories.flight_control": "Diamond Star Combat Flight Control",
 	
@@ -132,6 +133,8 @@
 	"item.dscombat.gr400": "GR-400",
 	
 	"item.dscombat.seat": "Seat",
+	
+	"item.dscombat.minigun_turret": "Minigun Turret",
 	
 	"item.dscombat.basic_flare_dispenser": "Basic Flare Dispenser",
 	

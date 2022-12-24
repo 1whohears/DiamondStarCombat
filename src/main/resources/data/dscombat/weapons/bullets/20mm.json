@@ -4,6 +4,7 @@
 	
 	"entityType": "dscombat:bullet",
 	"shootSound": "dscombat:bullet_shoot_1",
+	"rackType": "dscombat:xm12",
 	
 	"craftNum": 64,
 	"ingredients": [

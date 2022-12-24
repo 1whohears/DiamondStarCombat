@@ -16,7 +16,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.RegistryObject;
 
-public class EntityPlane extends EntityAbstractAircraft {
+public class EntityPlane extends EntityAircraft {
 	
 	private final float propellerRate = 3.141f, gearAOABias = 10f;
 	private float propellerRot = 0, propellerRotOld = 0, aoa = 0, liftK = 0, airFoilSpeedSqr = 0;

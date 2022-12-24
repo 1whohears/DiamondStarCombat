@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.data.parts;
 
 import javax.annotation.Nullable;
 
-import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.UtilParse;
 
@@ -18,14 +18,16 @@ public class PartSlot {
 	private final SlotType type;
 	private final Vec3 pos;
 	private final int uix, uiy, offsetX;
+	private final float zRot;
 	private PartData data;
 	
-	protected PartSlot(String name, SlotType type, Vec3 pos, int uix, int uiy) {
+	protected PartSlot(String name, SlotType type, Vec3 pos, int uix, int uiy, float zRot) {
 		this.name = name;
 		this.type = type;
 		this.pos = pos;
 		this.uix = uix;
 		this.uiy = uiy;
+		this.zRot = zRot;
 		this.offsetX = getIconOffsetX(type);
 		this.typeName = getTypeName(type);
 	}
@@ -36,6 +38,7 @@ public class PartSlot {
 		pos = UtilParse.readVec3(tag, "slot_pos");
 		uix = tag.getInt("uix");
 		uiy = tag.getInt("uiy");
+		zRot = tag.getFloat("zRot");
 		if (tag.contains("data")) data = UtilParse.parsePartFromCompound(tag.getCompound("data"));
 		// not saved
 		offsetX = getIconOffsetX(type);
@@ -49,6 +52,7 @@ public class PartSlot {
 		UtilParse.writeVec3(tag, pos, "slot_pos");
 		tag.putInt("uix", uix);
 		tag.putInt("uiy", uiy);
+		tag.putFloat("zRot", zRot);
 		if (filled()) tag.put("data", data.write());
 		return tag;
 	}
@@ -65,6 +69,7 @@ public class PartSlot {
 		//System.out.println("uix = "+uix);
 		uiy = buffer.readInt();
 		//System.out.println("uiy = "+uiy);
+		zRot = buffer.readFloat();
 		boolean notNull = buffer.readBoolean();
 		//System.out.println("notNull = "+notNull);
 		if (notNull) data = DataSerializers.PART_DATA.read(buffer);
@@ -79,6 +84,7 @@ public class PartSlot {
 		DataSerializers.VEC3.write(buffer, pos);
 		buffer.writeInt(uix);
 		buffer.writeInt(uiy);
+		buffer.writeFloat(zRot);
 		buffer.writeBoolean(filled());
 		if (filled()) data.write(buffer);
 	}
@@ -92,11 +98,11 @@ public class PartSlot {
 		return data;
 	}
 	
-	public void setup(EntityAbstractAircraft plane) {
+	public void setup(EntityAircraft plane) {
 		if (filled()) data.setup(plane, name, pos);
 	}
 	
-	public void clientSetup(EntityAbstractAircraft plane) {
+	public void clientSetup(EntityAircraft plane) {
 		if (filled()) data.clientSetup(plane, name, pos);
 	}
 	
@@ -108,7 +114,7 @@ public class PartSlot {
 		if (filled()) data.clientTick(name);
 	}
 	
-	public boolean addPartData(PartData data, EntityAbstractAircraft plane) {
+	public boolean addPartData(PartData data, EntityAircraft plane) {
 		if (filled()) return false;
 		if (!isCompatible(data)) return false;
 		this.data = data;
@@ -118,7 +124,7 @@ public class PartSlot {
 		return true;
 	}
 	
-	public boolean removePartData(EntityAbstractAircraft plane) {
+	public boolean removePartData(EntityAircraft plane) {
 		if (filled()) {
 			if (plane.level.isClientSide) data.clientRemove(name);
 			else data.remove(name);
@@ -200,6 +206,10 @@ public class PartSlot {
 	@Override
 	public String toString() {
 		return "["+name+":"+getSlotType().toString()+":"+data+"]";
+	}
+	
+	public float getZRot() {
+		return zRot;
 	}
 	
 }

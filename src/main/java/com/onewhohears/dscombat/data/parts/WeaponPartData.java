@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.data.parts;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
-import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -14,8 +14,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class WeaponPartData extends PartData {
 	
+	protected String weaponId;
 	private final String[] compatible;
-	private String weaponId;
 	private int ammo;
 	private int max;
 	
@@ -82,11 +82,11 @@ public class WeaponPartData extends PartData {
 	}
 	
 	@Override
-	public void setup(EntityAbstractAircraft craft, String slotId, Vec3 pos) {
+	public void setup(EntityAircraft craft, String slotId, Vec3 pos) {
 		super.setup(craft, slotId, pos);
 		WeaponData data = craft.weaponSystem.get(weaponId, slotId);
 		if (data == null) {
-			data = WeaponPresets.getByNewId(weaponId);
+			data = WeaponPresets.getNewById(weaponId);
 			if (data == null) return;
 			data.setSlot(slotId);
 			craft.weaponSystem.addWeapon(data, true);
@@ -98,7 +98,7 @@ public class WeaponPartData extends PartData {
 	}
 	
 	@Override
-	public boolean isSetup(String slotId, EntityAbstractAircraft craft) {
+	public boolean isSetup(String slotId, EntityAircraft craft) {
 		WeaponData data = craft.weaponSystem.get(weaponId, slotId);
 		if (data == null) return false;
 		return data.getCurrentAmmo() == ammo && data.getMaxAmmo() == max;
@@ -125,14 +125,6 @@ public class WeaponPartData extends PartData {
 		super.clientTick(slotId);
 		this.tick(slotId);
 	}
-
-	/*@Override
-	public ItemStack getItemStack() {
-		ItemStack stack = new ItemStack(ModItems.WEAPON_PART.get(), 1);
-		stack.setTag(write());
-		System.out.println("created stack "+stack.toString()+" "+stack.getTag());
-		return stack;
-	}*/
 	
 	@Override
 	public float getWeight() {

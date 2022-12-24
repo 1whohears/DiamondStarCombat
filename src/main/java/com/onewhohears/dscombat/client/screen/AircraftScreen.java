@@ -10,8 +10,8 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.container.AircraftMenuContainer;
 import com.onewhohears.dscombat.common.container.slot.PartItemSlot;
 import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.common.network.toserver.ServerBoundAircraftToItemPacket;
-import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
+import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftToItem;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
@@ -119,7 +119,7 @@ public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContaine
 			return;
 		}
 		Entity rv = m.player.getRootVehicle();
-		if (!(rv instanceof EntityAbstractAircraft plane)) {
+		if (!(rv instanceof EntityAircraft plane)) {
 			m.setScreen(null);
 			return;
 		}
@@ -148,7 +148,7 @@ public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContaine
 	private void onPlaneItemButton() {
 		Minecraft m = Minecraft.getInstance();
 		Entity rv = m.player.getRootVehicle();
-		PacketHandler.INSTANCE.sendToServer(new ServerBoundAircraftToItemPacket(rv.getId()));
+		PacketHandler.INSTANCE.sendToServer(new ToServerAircraftToItem(rv.getId()));
 	}
 
 }

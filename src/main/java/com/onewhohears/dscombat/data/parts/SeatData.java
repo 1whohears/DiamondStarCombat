@@ -1,8 +1,7 @@
 package com.onewhohears.dscombat.data.parts;
 
-import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 
 import net.minecraft.nbt.CompoundTag;
@@ -14,10 +13,6 @@ public class SeatData extends PartData {
 	
 	public SeatData(float weight, ResourceLocation itemid, SlotType[] compatibleSlots) {
 		super(weight, itemid, compatibleSlots);
-	}
-	
-	public SeatData(float weight, String itemid, SlotType[] compatibleSlots) {
-		this(weight, new ResourceLocation(DSCombatMod.MODID, itemid), compatibleSlots);
 	}
 
 	public SeatData(CompoundTag tag) {
@@ -34,7 +29,7 @@ public class SeatData extends PartData {
 	}
 
 	@Override
-	public void setup(EntityAbstractAircraft craft, String slotId, Vec3 pos) {
+	public void setup(EntityAircraft craft, String slotId, Vec3 pos) {
 		super.setup(craft, slotId, pos);
 		if (isSetup(slotId, craft)) {
 			//System.out.println("ALREADY SEAT "+slotId);
@@ -48,11 +43,11 @@ public class SeatData extends PartData {
 	}
 	
 	@Override
-	public boolean isSetup(String slotId, EntityAbstractAircraft craft) {
+	public boolean isSetup(String slotId, EntityAircraft craft) {
 		//System.out.println("is this seat setup "+slotId);
 		for (EntitySeat seat : craft.getSeats()) {
 			//System.out.println("check seat slot "+seat.getSlotId());
-			if (seat.getSlotId().equals(slotId)) 
+			if (seat.getPartType() == getType() && seat.getSlotId().equals(slotId)) 
 				return true;
 		}
 		return false;
@@ -68,14 +63,5 @@ public class SeatData extends PartData {
 					seat.discard();
 		}
 	}
-
-	/*@Override
-	public ItemStack getItemStack() {
-		//System.out.println("getting item data "+this+" compound "+tag);
-		ItemStack stack = new ItemStack(ModItems.SEAT.get(), 1);
-		stack.setTag(write());
-		System.out.println("created stack "+stack.toString()+" "+stack.getTag());
-		return stack;
-	}*/
 
 }

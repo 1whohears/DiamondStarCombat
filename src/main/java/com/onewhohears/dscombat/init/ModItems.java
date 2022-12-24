@@ -16,6 +16,7 @@ import com.onewhohears.dscombat.item.ItemPart;
 import com.onewhohears.dscombat.item.ItemRadarPart;
 import com.onewhohears.dscombat.item.ItemRepairTool;
 import com.onewhohears.dscombat.item.ItemSeat;
+import com.onewhohears.dscombat.item.ItemTurret;
 import com.onewhohears.dscombat.item.ItemWeaponPart;
 
 import net.minecraft.world.item.CreativeModeTab;
@@ -136,6 +137,11 @@ public class ModItems {
 	// SEATS
 	public static final RegistryObject<Item> SEAT = ITEMS.register("seat", 
 			() -> new ItemSeat(0.001f, PartSlot.SEAT));
+	
+	// TURRENTS
+	public static final RegistryObject<Item> MINIGUN_TURRENT = ITEMS.register("minigun_turret", 
+			() -> new ItemTurret(0.019f, PartSlot.SEAT, 
+					ModEntities.MINIGUN_TURRET.getId().toString(), "20mm"));
 	
 	// FLARE DISPENSERS
 	public static final RegistryObject<Item> BASIC_FLARE_DISPENSER = ITEMS.register("basic_flare_dispenser", 

@@ -4,6 +4,7 @@
 	
 	"entityType":"dscombat:ir_missile_1",
 	"shootSound":"dscombat:rocket_launch_1",
+	"rackType": "dscombat:light_missile_rack",
 	
 	"craftNum": 1,
 	"ingredients": [

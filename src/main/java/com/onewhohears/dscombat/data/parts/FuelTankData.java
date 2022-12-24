@@ -1,8 +1,7 @@
 package com.onewhohears.dscombat.data.parts;
 
-import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -17,10 +16,6 @@ public class FuelTankData extends PartData {
 		super(weight, itemid, compatibleSlots);
 		this.fuel = fuel;
 		this.max = max;
-	}
-	
-	public FuelTankData(float weight, float fuel, float max, String itemid, SlotType[] compatibleSlots) {
-		this(weight, fuel, max, new ResourceLocation(DSCombatMod.MODID, itemid), compatibleSlots);
 	}
 	
 	public FuelTankData(CompoundTag tag) {
@@ -54,7 +49,7 @@ public class FuelTankData extends PartData {
 	}
 
 	@Override
-	public boolean isSetup(String slotId, EntityAbstractAircraft craft) {
+	public boolean isSetup(String slotId, EntityAircraft craft) {
 		return false;
 	}
 

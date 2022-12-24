@@ -2,9 +2,8 @@ package com.onewhohears.dscombat.data.parts;
 
 import java.util.NoSuchElementException;
 
-import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -21,7 +20,7 @@ public abstract class PartData {
 	private final SlotType[] compatibleSlots;
 	private final ResourceLocation itemid;
 	private final float weight;
-	private EntityAbstractAircraft parent;
+	private EntityAircraft parent;
 	
 	public static enum PartType {
 		SEAT,
@@ -40,10 +39,6 @@ public abstract class PartData {
 		this.weight = weight;
 		this.itemid = itemid;
 		this.compatibleSlots = compatibleSlots;
-	}
-	
-	protected PartData(float weight, String itemid, SlotType[] compatibleSlots) {
-		this(weight, new ResourceLocation(DSCombatMod.MODID, itemid), compatibleSlots);
 	}
 	
 	public PartData(CompoundTag tag) {
@@ -85,23 +80,35 @@ public abstract class PartData {
 	
 	public abstract PartType getType();
 	
-	public EntityAbstractAircraft getParent() {
+	public EntityAircraft getParent() {
 		return parent;
 	}
 	
-	public void setup(EntityAbstractAircraft craft, String slotId, Vec3 pos) {
+	public Vec3 getRelPos() {
+		return relPos;
+	}
+	
+	protected void setParent(EntityAircraft parent) {
+		this.parent = parent;
+	}
+	
+	protected void setRelPos(Vec3 pos) {
+		this.relPos = pos;
+	}
+	
+	public void setup(EntityAircraft craft, String slotId, Vec3 pos) {
+		//System.out.println("setting up part "+this+" client side "+craft.level.isClientSide+" slot "+slotId);
+		setParent(craft);
+		setRelPos(pos);
+	}
+	
+	public void clientSetup(EntityAircraft craft, String slotId, Vec3 pos) {
 		//System.out.println("setting up part "+this+" client side "+craft.level.isClientSide+" slot "+slotId);
 		parent = craft;
 		relPos = pos;
 	}
 	
-	public void clientSetup(EntityAbstractAircraft craft, String slotId, Vec3 pos) {
-		//System.out.println("setting up part "+this+" client side "+craft.level.isClientSide+" slot "+slotId);
-		parent = craft;
-		relPos = pos;
-	}
-	
-	public abstract boolean isSetup(String slotId, EntityAbstractAircraft craft);
+	public abstract boolean isSetup(String slotId, EntityAircraft craft);
 	
 	public void remove(String slotId) {
 		

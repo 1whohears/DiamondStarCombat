@@ -1,9 +1,9 @@
 package com.onewhohears.dscombat.data.parts;
 
-import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
-import com.onewhohears.dscombat.entity.parts.EntityAbstractPart;
+import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.parts.EntityPart;
 import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
 
 import net.minecraft.nbt.CompoundTag;
@@ -21,10 +21,6 @@ public class WeaponRackData extends WeaponPartData {
 		super(weight, preset, compatible, itemid, compatibleSlots);
 	}
 	
-	public WeaponRackData(float weight, String preset, String[] compatible, String itemid, SlotType[] compatibleSlots) {
-		this(weight, preset, compatible, new ResourceLocation(DSCombatMod.MODID, itemid), compatibleSlots);
-	}
-	
 	public WeaponRackData(CompoundTag tag) {
 		super(tag);
 	}
@@ -34,10 +30,12 @@ public class WeaponRackData extends WeaponPartData {
 	}
 
 	@Override
-	public void setup(EntityAbstractAircraft craft, String slotId, Vec3 pos) {
+	public void setup(EntityAircraft craft, String slotId, Vec3 pos) {
 		super.setup(craft, slotId, pos);
 		if (!isEntitySetup(slotId, craft)) {
-			EntityWeaponRack rack = new EntityWeaponRack(craft.level, slotId, pos);
+			WeaponData data = craft.weaponSystem.get(weaponId, slotId);
+			if (data == null) return;
+			EntityWeaponRack rack = new EntityWeaponRack(data.getRackEntityType(), craft.level, slotId, pos);
 			rack.setPos(craft.position());
 			rack.startRiding(craft);
 			craft.level.addFreshEntity(rack);
@@ -45,13 +43,13 @@ public class WeaponRackData extends WeaponPartData {
 	}
 	
 	@Override
-	public boolean isSetup(String slotId, EntityAbstractAircraft craft) {
+	public boolean isSetup(String slotId, EntityAircraft craft) {
 		return super.isSetup(slotId, craft);
 	}
 	
-	public boolean isEntitySetup(String slotId, EntityAbstractAircraft craft) {
-		for (EntityAbstractPart part : craft.getPartEntities()) 
-			if (part.getSlotId().equals(slotId)) 
+	public boolean isEntitySetup(String slotId, EntityAircraft craft) {
+		for (EntityPart part : craft.getPartEntities()) 
+			if (part.getPartType() == getType() && part.getSlotId().equals(slotId)) 
 				return true;
 		return false;
 	}
@@ -59,7 +57,7 @@ public class WeaponRackData extends WeaponPartData {
 	@Override
 	public void remove(String slotId) {
 		super.remove(slotId);
-		for (EntityAbstractPart part : getParent().getPartEntities()) 
+		for (EntityPart part : getParent().getPartEntities()) 
 			if (part.getSlotId().equals(slotId)) 
 				part.discard();
 	}

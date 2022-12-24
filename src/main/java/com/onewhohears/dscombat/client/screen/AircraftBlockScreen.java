@@ -7,7 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.container.AircraftBlockMenuContainer;
 import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.common.network.toserver.ServerBoundCraftPlanePacket;
+import com.onewhohears.dscombat.common.network.toserver.ToServerCraftPlane;
 import com.onewhohears.dscombat.crafting.DSCIngredient;
 import com.onewhohears.dscombat.data.AircraftPresets;
 
@@ -219,7 +219,7 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 		String preset = AircraftPresets.presets.get(planeIndex).getString("preset");
 		List<DSCIngredient> ingredients = AircraftPresets.getPlaneIngredients(preset);
 		if (DSCIngredient.hasIngredients(ingredients, player.getInventory())) {
-			PacketHandler.INSTANCE.sendToServer(new ServerBoundCraftPlanePacket(preset, menu.getPos()));
+			PacketHandler.INSTANCE.sendToServer(new ToServerCraftPlane(preset, menu.getPos()));
 		} else {
 			player.displayClientMessage(Component.translatable("dscombat.cant_craft"), true);
 			minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.VILLAGER_NO, 1.0F));

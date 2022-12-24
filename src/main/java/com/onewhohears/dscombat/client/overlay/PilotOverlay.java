@@ -10,9 +10,9 @@ import com.onewhohears.dscombat.client.event.ClientForgeEvents;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
-import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
-import com.onewhohears.dscombat.entity.parts.EntitySeat;
+import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.util.UtilEntity;
 
 import net.minecraft.client.Minecraft;
@@ -48,8 +48,7 @@ public class PilotOverlay {
 		if (m.options.hideGui) return;
 		if (m.gameMode.getPlayerMode() == GameType.SPECTATOR) return;
 		final var player = m.player;
-		if (player.getVehicle() instanceof EntitySeat seat 
-				&& seat.getVehicle() instanceof EntityAbstractAircraft plane) {
+		if (player.getRootVehicle() instanceof EntityAircraft plane) {
 			// plane speed
 			int s = (int)(plane.getDeltaMovement().length() * 20d);
 			GuiComponent.drawString(poseStack, m.font, 
@@ -111,6 +110,7 @@ public class PilotOverlay {
 					}
 				}
 			}
+			// vanilla overlays
 			Entity camera = m.getCameraEntity();
 			m.setCameraEntity(player);
 			gui.setupOverlayRenderState(true, false);
@@ -174,6 +174,12 @@ public class PilotOverlay {
 	        		0, fh2, 
 	        		16, fh, 
 	        		16, 128);
+	        // turret
+	        if (player.getVehicle() instanceof EntityTurret turret) {
+				GuiComponent.drawString(poseStack, m.font, 
+						"Ammo: "+turret.getAmmo(), 
+						width/2-90, 11, 0xffff00);
+			}
 		}
 	});
 	

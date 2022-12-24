@@ -1,6 +1,5 @@
 package com.onewhohears.dscombat.data.parts;
 
-import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 
 import net.minecraft.nbt.CompoundTag;
@@ -11,10 +10,6 @@ public class ExternalEngineData extends EngineData {
 
 	public ExternalEngineData(float weight, float thrust, float heat, float fuelRate, ResourceLocation itemid, SlotType[] compatibleSlots) {
 		super(weight, thrust, heat, fuelRate, itemid, compatibleSlots);
-	}
-	
-	public ExternalEngineData(float weight, float thrust, float heat, float fuelRate, String itemid, SlotType[] compatibleSlots) {
-		this(weight, thrust, heat, fuelRate, new ResourceLocation(DSCombatMod.MODID, itemid), compatibleSlots);
 	}
 	
 	public ExternalEngineData(CompoundTag tag) {

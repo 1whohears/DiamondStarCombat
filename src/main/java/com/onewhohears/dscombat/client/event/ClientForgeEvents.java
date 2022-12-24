@@ -12,16 +12,19 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexBuffer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Quaternion;
+import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.KeyInit;
 import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.common.network.toserver.ServerBoundFlightControlPacket;
-import com.onewhohears.dscombat.common.network.toserver.ServerBoundSwitchSeatPacket;
+import com.onewhohears.dscombat.common.network.toserver.ToServerFlightControl;
+import com.onewhohears.dscombat.common.network.toserver.ToServerShootTurret;
+import com.onewhohears.dscombat.common.network.toserver.ToServerSwitchSeat;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
-import com.onewhohears.dscombat.entity.aircraft.EntityAbstractAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.parts.EntitySeatCamera;
+import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
@@ -62,7 +65,7 @@ public final class ClientForgeEvents {
 		boolean openMenu = KeyInit.planeMenuKey.consumeClick();
 		boolean mouseMode = KeyInit.mouseModeKey.consumeClick();
 		boolean gear = KeyInit.landingGear.consumeClick();
-		if (!(player.getRootVehicle() instanceof EntityAbstractAircraft plane)) return;
+		if (!(player.getRootVehicle() instanceof EntityAircraft plane)) return;
 		if (plane.getControllingPassenger() == null 
 				|| !plane.getControllingPassenger().equals(player)) return;
 		if (KeyInit.resetMouseKey.isDown()) centerMouse();
@@ -120,7 +123,7 @@ public final class ClientForgeEvents {
 		if (rollRight) roll += 1;
 		if (throttleUp) throttle += 1;
 		if (throttleDown) throttle -= 1;
-		PacketHandler.INSTANCE.sendToServer(new ServerBoundFlightControlPacket(
+		PacketHandler.INSTANCE.sendToServer(new ToServerFlightControl(
 				throttle, pitch, roll, yaw,
 				mouseMode, flare, shoot, select, openMenu, gear));
 		plane.updateControls(throttle, pitch, roll, yaw,
@@ -134,10 +137,11 @@ public final class ClientForgeEvents {
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
 		if (player == null) return;
+		if (!(player.getRootVehicle() instanceof EntityAircraft plane)) return;
 		boolean seat = KeyInit.changeSeat.consumeClick();
-		if (!(player.getRootVehicle() instanceof EntityAbstractAircraft plane)) return;
+		boolean shoot = KeyInit.shootKey.isDown();
 		if (seat) {
-			PacketHandler.INSTANCE.sendToServer(new ServerBoundSwitchSeatPacket(plane.getId()));
+			PacketHandler.INSTANCE.sendToServer(new ToServerSwitchSeat(plane.getId()));
 		}
 		RadarSystem radar = plane.radarSystem;
 		List<RadarPing> pings = radar.getClientRadarPings();
@@ -154,6 +158,9 @@ public final class ClientForgeEvents {
 			}
 		}
 		if (!hovering) resetHoverIndex();
+		if (shoot && player.getVehicle() instanceof EntityTurret turret) {
+			PacketHandler.INSTANCE.sendToServer(new ToServerShootTurret(turret));
+		}
 	}
 	
 	public static void centerMouse() {
@@ -231,7 +238,7 @@ public final class ClientForgeEvents {
 		if (event.getStage() != Stage.AFTER_PARTICLES) return;
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
-		if (!(player.getRootVehicle() instanceof EntityAbstractAircraft plane)) return;
+		if (!(player.getRootVehicle() instanceof EntityAircraft plane)) return;
 		RadarSystem radar = plane.radarSystem;
 		if (radar == null) return;
 		List<RadarPing> pings = radar.getClientRadarPings();
@@ -338,8 +345,7 @@ public final class ClientForgeEvents {
 		Minecraft m = Minecraft.getInstance();
 		final var playerC = m.player;
 		Player player = event.getEntity();
-		if (player.getVehicle() instanceof EntitySeat seat 
-				&& seat.getVehicle() instanceof EntityAbstractAircraft plane) {
+		if (player.getRootVehicle() instanceof EntityAircraft plane) {
 			changePlayerHitbox(player);
 			if (player.equals(playerC) && m.options.getCameraType().isFirstPerson()) {
 				event.setCanceled(true);
@@ -348,9 +354,16 @@ public final class ClientForgeEvents {
 			Quaternion q = UtilAngles.lerpQ(event.getPartialTick(), plane.getPrevQ(), plane.getClientQ());
 			event.getPoseStack().mulPose(q);
 			// TODO player doesn't look in the right direction in certain cases
-			EulerAngles a = UtilAngles.toDegrees(q);
-			player.setYBodyRot(player.getYRot()-(float)a.yaw);
-			player.setYHeadRot(player.getYRot()-(float)a.yaw);
+			if (player.getVehicle() instanceof EntityTurret turret) {
+				player.setYBodyRot(0);
+				player.setYHeadRot(0);
+				event.getPoseStack().mulPose(Vector3f.YP.rotationDegrees(turret.getYRot()));
+				event.getPoseStack().mulPose(Vector3f.XP.rotationDegrees(turret.getXRot()));
+			} else {
+				EulerAngles a = UtilAngles.toDegrees(q);
+				player.setYBodyRot(player.getYRot()-(float)a.yaw);
+				player.setYHeadRot(player.getYRot()-(float)a.yaw);
+			}
 		}
 	}
 	
@@ -370,10 +383,10 @@ public final class ClientForgeEvents {
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
 		if (player == null) return;
-		// TODO third person looks feels janky
+		// TODO third person camera looks feels janky
 		prevCamera = m.getCameraEntity();
 		if (player.getVehicle() instanceof EntitySeat seat 
-				&& seat.getVehicle() instanceof EntityAbstractAircraft plane) {
+				&& seat.getVehicle() instanceof EntityAircraft plane) {
 			EntitySeatCamera camera = seat.getCamera();
 			float xo, xn, xi, yo, yn, yi, zo, zn, zi;
 			if (!plane.isFreeLook() && plane.getControllingPassenger() != null 

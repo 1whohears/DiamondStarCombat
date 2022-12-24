@@ -2,6 +2,9 @@ package com.onewhohears.dscombat.item;
 
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
+
+import net.minecraftforge.registries.ForgeRegistries;
+
 import com.onewhohears.dscombat.data.parts.SeatData;
 
 public class ItemSeat extends ItemPart {
@@ -12,7 +15,7 @@ public class ItemSeat extends ItemPart {
 
 	@Override
 	public PartData getPartData() {
-		return new SeatData(weight, getIdPart(), compatibleSlots);
+		return new SeatData(weight, ForgeRegistries.ITEMS.getKey(this), compatibleSlots);
 	}
 
 }

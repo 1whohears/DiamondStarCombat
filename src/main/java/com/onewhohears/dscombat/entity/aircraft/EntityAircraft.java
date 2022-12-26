@@ -21,6 +21,7 @@ import com.onewhohears.dscombat.entity.parts.EntityPart;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModSounds;
+import com.onewhohears.dscombat.item.ItemAmmo;
 import com.onewhohears.dscombat.item.ItemGasCan;
 import com.onewhohears.dscombat.item.ItemRepairTool;
 import com.onewhohears.dscombat.util.UtilClientSafeSoundInstance;
@@ -714,18 +715,24 @@ public abstract class EntityAircraft extends Entity {
 		} else if (!this.level.isClientSide) {
 			ItemStack stack = player.getInventory().getSelected();
 			if (!stack.isEmpty()) {
-				if (stack.getItem() instanceof ItemGasCan) {
+				Item item = stack.getItem();
+				if (item instanceof ItemGasCan) {
 					int md = stack.getMaxDamage();
 					int d = stack.getDamageValue();
-					int r = (int)this.addFuel(md-d);
+					int r = (int)addFuel(md-d);
 					stack.setDamageValue(md-r);
 					return InteractionResult.SUCCESS;
-				} else if (stack.getItem() instanceof ItemRepairTool tool) {
-					if (this.isMaxHealth()) return InteractionResult.PASS;
-					this.addHealth(tool.repair);
+				} else if (item instanceof ItemRepairTool tool) {
+					if (isMaxHealth()) {
+						// TODO some kind of visual/audio plane fixed cue
+						return InteractionResult.PASS;
+					}
+					addHealth(tool.repair);
 					stack.hurtAndBreak(1, player, 
 						(p) -> { p.broadcastBreakEvent(hand); });
 					return InteractionResult.SUCCESS;
+				} else if (item instanceof ItemAmmo ammo) {
+					// TODO right click aircraft with ammo to reload turrets/weapon racks
 				}
 			}
 			boolean okay = rideAvailableSeat(player);

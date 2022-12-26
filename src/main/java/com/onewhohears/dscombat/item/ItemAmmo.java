@@ -23,10 +23,5 @@ public class ItemAmmo extends Item {
 				.append(" ")
 				.append(Component.translatable(DSCombatMod.MODID+".ammo"));
 	}
-	
-	/*@Override
-	public ItemStack getCraftingRemainingItem(ItemStack stack) {	
-		return stack;
-	}*/
 
 }

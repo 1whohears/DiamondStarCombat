@@ -79,6 +79,9 @@ public abstract class EntityAircraft extends Entity {
 	public static final EntityDataAccessor<Float> MAX_ROLL = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> MAX_PITCH = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> MAX_YAW = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> ACC_ROLL = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> ACC_PITCH = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> ACC_YAW = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> IDLEHEAT = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> WEIGHT = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> WING_AREA = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
@@ -108,6 +111,8 @@ public abstract class EntityAircraft extends Entity {
 	public float torqueX, torqueY, torqueZ, torqueXO, torqueYO, torqueZO;
 	public Vec3 prevMotion = Vec3.ZERO;
 	
+	protected float xzSpeed;
+	
 	private int lerpSteps, newRiderCooldown;
 	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot;
 	private float landingGearPos, landingGearPosOld;
@@ -135,6 +140,9 @@ public abstract class EntityAircraft extends Entity {
 		entityData.define(MAX_ROLL, 1f);
 		entityData.define(MAX_PITCH, 1f);
 		entityData.define(MAX_YAW, 1f);
+		entityData.define(ACC_ROLL, 0.5f);
+		entityData.define(ACC_PITCH, 0.5f);
+		entityData.define(ACC_YAW, 0.5f);
 		entityData.define(IDLEHEAT, 1f);
 		entityData.define(WEIGHT, 0.05f);
 		entityData.define(WING_AREA, 1f);
@@ -179,6 +187,9 @@ public abstract class EntityAircraft extends Entity {
 		this.setMaxDeltaRoll(compound.getFloat("maxroll"));
 		this.setMaxDeltaPitch(compound.getFloat("maxpitch"));
 		this.setMaxDeltaYaw(compound.getFloat("maxyaw"));
+		this.setAccelerationRoll(compound.getFloat("accroll"));
+		this.setAccelerationPitch(compound.getFloat("accpitch"));
+		this.setAccelerationYaw(compound.getFloat("accyaw"));
 		this.setThrottleIncreaseRate(compound.getFloat("throttleup"));
 		this.setThrottleDecreaseRate(compound.getFloat("throttledown"));
 		this.setIdleHeat(compound.getFloat("idleheat"));
@@ -209,6 +220,9 @@ public abstract class EntityAircraft extends Entity {
 		compound.putFloat("maxroll", this.getMaxDeltaRoll());
 		compound.putFloat("maxpitch", this.getMaxDeltaPitch());
 		compound.putFloat("maxyaw", this.getMaxDeltaYaw());
+		compound.putFloat("accroll", this.getAccelerationRoll());
+		compound.putFloat("accpitch", this.getAccelerationPitch());
+		compound.putFloat("accyaw", this.getAccelerationYaw());
 		compound.putFloat("throttleup", this.getThrottleIncreaseRate());
 		compound.putFloat("throttledown", this.getThrottleDecreaseRate());
 		compound.putFloat("idleheat", this.getIdleHeat());
@@ -235,7 +249,6 @@ public abstract class EntityAircraft extends Entity {
 	 */
 	@Override
 	public void tick() {
-		if (Double.isNaN(getDeltaMovement().length())) setDeltaMovement(Vec3.ZERO);
 		if (firstTick) init(); // MUST BE CALLED BEFORE SUPER
 		super.tick();
 		// SET PREV/OLD
@@ -258,7 +271,9 @@ public abstract class EntityAircraft extends Entity {
 		setYRot((float)angles.yaw);
 		zRot = (float)angles.roll;
 		// MOVEMENT
+		tickThrottle();
 		if (!isTestMode()) {
+			calcXZSpeed();
 			tickMovement(q);
 			motionClamp();
 			move(MoverType.SELF, getDeltaMovement());
@@ -341,29 +356,71 @@ public abstract class EntityAircraft extends Entity {
 	}
 	
 	/**
+	 * changes this craft's throttle every tick based on inputThrottle 
+	 * also resets the controls if there isn't a controlling passenger
+	 */
+	public void tickThrottle() {
+		if (getControllingPassenger() == null) resetControls();
+		if (inputThrottle > 0) increaseThrottle();
+		else if (inputThrottle < 0) decreaseThrottle();
+	}
+	
+	/**
 	 * reads player input to change the direction of the craft
 	 * @param q the current direction of the craft
 	 */
 	public void controlDirection(Quaternion q) {
-		if (this.getControllingPassenger() == null) this.resetControls();
-		if (inputThrottle > 0) this.increaseThrottle();
-		else if (inputThrottle < 0) this.decreaseThrottle();
-		if (Math.abs(torqueX) > getMaxDeltaPitch()) torqueX = getMaxDeltaPitch() * Math.signum(torqueX);
-		if (Math.abs(torqueY) > getMaxDeltaYaw()) torqueY = getMaxDeltaYaw() * Math.signum(torqueY);
-		if (Math.abs(torqueZ) > getMaxDeltaRoll()) torqueZ = getMaxDeltaRoll() * Math.signum(torqueZ);
+		/*if (!level.isClientSide && getControllingPassenger() != null) {
+			System.out.println("torqueX = "+torqueX);
+			System.out.println("torqueY = "+torqueY);
+			System.out.println("torqueZ = "+torqueZ);
+		}*/
 		q.mul(new Quaternion(Vector3f.XN, torqueX, true));
 		q.mul(new Quaternion(Vector3f.YN, torqueY, true));
 		q.mul(new Quaternion(Vector3f.ZP, torqueZ, true));
-		torqueX = torqueDrag(torqueX);
-		torqueY = torqueDrag(torqueY);
-		torqueZ = torqueDrag(torqueZ);
+		if (torqueX > getMaxDeltaPitch() || inputPitch == 0) torqueX = torqueDrag(torqueX);
+		if (torqueY > getMaxDeltaYaw() || inputYaw == 0) torqueY = torqueDrag(torqueY);
+		if (torqueZ > getMaxDeltaRoll() || inputRoll == 0) torqueZ = torqueDrag(torqueZ);
 	}
 	
 	private float torqueDrag(float torque) {
-		float td = 0.25f;
+		float td = getTorqueDragMag();
 		float abs = Math.abs(torque);
 		if (abs < td) return 0;
 		return (abs - td) * Math.signum(torque);
+	}
+	
+	protected abstract float getTorqueDragMag();
+	
+	public void resetTorque() {
+		torqueX = torqueY = torqueZ = 0;
+	}
+	
+	public void addTorqueX(float torque, boolean control) {
+		if (control) {
+			float tabs = Math.abs(torqueX);
+			if (tabs > getMaxDeltaPitch()) torque = 0;
+			else if (Math.abs(torqueX+torque) > getMaxDeltaPitch()) torque = (getMaxDeltaPitch() - tabs) * Math.signum(torqueX);
+		}
+		torqueX += torque;
+	}
+	
+	public void addTorqueY(float torque, boolean control) {
+		if (control) {
+			float tabs = Math.abs(torqueY);
+			if (tabs > getMaxDeltaYaw()) torque = 0;
+			else if (Math.abs(torqueY+torque) > getMaxDeltaYaw()) torque = (getMaxDeltaYaw() - tabs) * Math.signum(torqueY);
+		}
+		torqueY += torque;
+	}
+	
+	public void addTorqueZ(float torque, boolean control) {
+		if (control) {
+			float tabs = Math.abs(torqueZ);
+			if (tabs > getMaxDeltaRoll()) torque = 0;
+			else if (Math.abs(torqueZ+torque) > getMaxDeltaRoll()) torque = (getMaxDeltaRoll() - tabs) * Math.signum(torqueZ);
+		}
+		torqueZ += torque;
 	}
 	
 	/**
@@ -476,15 +533,19 @@ public abstract class EntityAircraft extends Entity {
 	}
 	
 	public double getFrictionMag() {
-		double x = getDeltaMovement().x;
-		double z = getDeltaMovement().z;
-		double speed = Math.sqrt(x*x + z*z);
+		double speed = xzSpeed;
 		double f = getTotalWeight();
 		if (!isLandingGear()) f *= 2.0;
 		else if (getCurrentThrottle() <= 0) f *= 0.2;
 		else f *= 0.1;
 		if (speed < f) return speed;
 		return f;
+	}
+	
+	protected void calcXZSpeed() {
+		double x = getDeltaMovement().x;
+		double z = getDeltaMovement().z;
+		xzSpeed = (float) Math.sqrt(x*x + z*z);
 	}
 	
 	public Vec3 getWeightForce() {
@@ -792,21 +853,21 @@ public abstract class EntityAircraft extends Entity {
 	
 	@Override
     public boolean hurt(DamageSource source, float amount) {
-		if (this.isTestMode()) return false;
+		if (isTestMode()) return false;
 		if (isVehicleOf(source.getEntity())) return false;
 		addHealth(-amount);
 		return true;
 	}
 	
 	public void explode(DamageSource source) {
-		if (!this.level.isClientSide) {
+		if (!level.isClientSide) {
 			level.explode(this, source,
 					null, getX(), getY(), getZ(), 
 					3, true, 
 					Explosion.BlockInteraction.BREAK);
 		} else {
 			level.addParticle(ParticleTypes.LARGE_SMOKE, 
-					this.getX(), this.getY()+0.5D, this.getZ(), 
+					getX(), getY()+0.5D, getZ(), 
 					0.0D, 0.0D, 0.0D);
 		}
 	}
@@ -885,19 +946,46 @@ public abstract class EntityAircraft extends Entity {
     	entityData.set(MAX_ROLL, degrees);
     }
     
+    public float getAccelerationPitch() {
+    	return entityData.get(ACC_PITCH);
+    }
+    
+    public void setAccelerationPitch(float degrees) {
+    	if (degrees < 0) degrees = 0;
+    	entityData.set(ACC_PITCH, degrees);
+    }
+    
+    public float getAccelerationYaw() {
+    	return entityData.get(ACC_YAW);
+    }
+    
+    public void setAccelerationYaw(float degrees) {
+    	if (degrees < 0) degrees = 0;
+    	entityData.set(ACC_YAW, degrees);
+    }
+    
+    public float getAccelerationRoll() {
+    	return entityData.get(ACC_ROLL);
+    }
+    
+    public void setAccelerationRoll(float degrees) {
+    	if (degrees < 0) degrees = 0;
+    	entityData.set(ACC_ROLL, degrees);
+    }
+    
     public void increaseThrottle() {
-    	float current = this.getCurrentThrottle();
+    	float current = getCurrentThrottle();
     	if (current < 1f) {
-    		current += this.getThrottleIncreaseRate();
-    		this.setCurrentThrottle(current);
+    		current += getThrottleIncreaseRate();
+    		setCurrentThrottle(current);
     	}
     }
     
     public void decreaseThrottle() {
-    	float current = this.getCurrentThrottle();
+    	float current = getCurrentThrottle();
     	if (current > 0) {
-    		current -= this.getThrottleDecreaseRate();
-    		this.setCurrentThrottle(current);
+    		current -= getThrottleDecreaseRate();
+    		setCurrentThrottle(current);
     	}
     }
     

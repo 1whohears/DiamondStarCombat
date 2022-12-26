@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.init;
 
 import com.google.common.collect.ImmutableSet;
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.entity.aircraft.EntityGroundVehicle;
 import com.onewhohears.dscombat.entity.aircraft.EntityHelicopter;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
@@ -32,12 +33,6 @@ public class ModEntities {
 		ENTITIES.register(eventBus);
 	}
 	
-	/*public static final RegistryObject<EntityType<EntityPlane>> TEST_PLANE = ENTITIES.register("test_plane", 
-			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
-					new ResourceLocation(DSCombatMod.MODID, "textures/entities/basic_plane.png"),
-					ModSounds.BIPLANE_1, ModItems.TEST_PLANE), 
-					EntityDimensions.scalable(1.5f, 1.5f)));*/
-	
 	public static final RegistryObject<EntityType<EntityPlane>> JAVI_PLANE = ENTITIES.register("javi_plane", 
 			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
 					new ResourceLocation(DSCombatMod.MODID, "textures/entities/javi_plane.png"),
@@ -57,11 +52,12 @@ public class ModEntities {
 					ModSounds.HELI_1, ModItems.NOAH_CHOPPER, true), 
 					EntityDimensions.scalable(2.8f, 2.8f)));
 	
-	/*public static final RegistryObject<EntityType<EntityPlane>> F16 = ENTITIES.register("f16", 
-			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
-					new ResourceLocation(DSCombatMod.MODID, "textures/entities/f16.png"),
-					ModSounds.BIPLANE_1, ModItems.F16), 
-					EntityDimensions.scalable(1.5f, 1.5f)));*/
+	public static final RegistryObject<EntityType<EntityGroundVehicle>> MRBUDGER_TANK = ENTITIES.register("mrbudger_tank", 
+			() -> createEntityTypeFar((type, level) -> new EntityGroundVehicle(type, level, 
+					new ResourceLocation(DSCombatMod.MODID, "textures/entities/mrbudger_tank.png"),
+					ModSounds.JET_1, ModItems.MRBUDGER_TANK), 
+					EntityDimensions.scalable(3.0f, 2.5f)));
+	
 	/*
 	 * TODO more planes
 	 * wooden plane, large wooden plane, something like a spitfire, something like a p51 mustang 

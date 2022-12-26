@@ -54,6 +54,7 @@
 	"entity.dscombat.alexis_plane": "Alexis Plane",
 	"entity.dscombat.f16": "F16",
 	"entity.dscombat.noah_chopper": "Noah Chopper",
+	"entity.dscombat.mrbudger_tank": "Mr Budger Tank",
 	"entity.dscombat.bullet": "Bullet",
 	"entity.dscombat.missile1": "Missile 1",
 	"entity.dscombat.missile2": "Missile 2",
@@ -147,6 +148,7 @@
 	"item.dscombat.alexis_plane": "Alexis Plane",
 	"item.dscombat.f16": "F16",
 	"item.dscombat.noah_chopper": "Noah Chopper",
+	"item.dscombat.mrbudger_tank": "Mr Budger Tank",
 	
 	"item.dscombat.20mm": "20mm",
 	"item.dscombat.50mmhe": "50mm HE",

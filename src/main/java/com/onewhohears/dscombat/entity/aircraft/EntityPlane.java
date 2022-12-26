@@ -38,7 +38,7 @@ public class EntityPlane extends EntityAircraft {
 	@Override
 	public void controlDirection(Quaternion q) {
 		if (isOnGround()) {
-			torqueX = torqueY = torqueZ = 0;
+			resetTorque();
 			EulerAngles angles = UtilAngles.toDegrees(q);
 			float dRoll = 5f;
 			float dPitch = 5f;
@@ -51,9 +51,9 @@ public class EntityPlane extends EntityAircraft {
 			q.mul(new Quaternion(Vector3f.YN, inputYaw*getMaxDeltaYaw(), true));
 			q.mul(new Quaternion(Vector3f.ZP, roll, true));
 		} else {
-			torqueX += inputPitch * 0.5f;
-			torqueY += inputYaw * 0.5f;
-			torqueZ += inputRoll * 0.5f;
+			addTorqueX(inputPitch * getAccelerationPitch(), true);
+			addTorqueY(inputYaw * getAccelerationYaw(), true);
+			addTorqueZ(inputRoll * getAccelerationRoll(), true);
 		}
 		super.controlDirection(q);
 	}
@@ -144,6 +144,11 @@ public class EntityPlane extends EntityAircraft {
 
 	public float getAOA() {
 		return aoa;
+	}
+	
+	@Override
+	protected float getTorqueDragMag() {
+		return 0.15f;
 	}
 
 }

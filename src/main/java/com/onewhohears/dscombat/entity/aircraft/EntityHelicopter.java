@@ -100,11 +100,11 @@ public class EntityHelicopter extends EntityAircraft {
 			else pitch = -(float)Math.signum(angles.pitch) * dPitch;
 			q.mul(new Quaternion(Vector3f.XP, pitch, true));
 			q.mul(new Quaternion(Vector3f.ZP, roll, true));
-			if (!isOnGround()) torqueY += inputYaw * 0.5f;
+			if (!isOnGround()) addTorqueY(inputYaw * getAccelerationYaw(), true);
 		} else if (!isOnGround()) {
-			torqueX += inputPitch * 0.5f;
-			torqueY += inputYaw * 0.5f;
-			torqueZ += inputRoll * 0.5f;
+			addTorqueX(inputPitch * getAccelerationPitch(), true);
+			addTorqueY(inputYaw * getAccelerationYaw(), true);
+			addTorqueZ(inputRoll * getAccelerationRoll(), true);
 		}
 		super.controlDirection(q);
 	}
@@ -155,6 +155,11 @@ public class EntityHelicopter extends EntityAircraft {
 	
 	public void setAccSide(float acc) {
 		entityData.set(ACC_SIDE, acc);
+	}
+	
+	@Override
+	protected float getTorqueDragMag() {
+		return 0.25f;
 	}
 
 }

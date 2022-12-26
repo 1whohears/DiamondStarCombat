@@ -26,6 +26,8 @@ public class TurretData extends SeatData {
 	private EntityType<? extends EntityTurret> turretType;
 	private int ammo;
 	private int max;
+	// TODO rotation bounds
+	// TODO max rotation speed
 	
 	public TurretData(float weight, ResourceLocation itemid, SlotType[] compatibleSlots, String turrentEntityKey, String weaponId) {
 		super(weight, itemid, compatibleSlots);

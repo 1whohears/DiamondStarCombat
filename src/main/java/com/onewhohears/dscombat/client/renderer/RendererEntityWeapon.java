@@ -34,7 +34,7 @@ public class RendererEntityWeapon<T extends EntityWeapon> extends EntityRenderer
 		poseStack.mulPose(Vector3f.YN.rotationDegrees(entity.getYRot()));
 		poseStack.mulPose(Vector3f.XP.rotationDegrees(entity.getXRot()));
 		
-		VertexConsumer vertexconsumer = multiBufferSource.getBuffer(this.model.renderType(this.getTextureLocation(entity)));
+		VertexConsumer vertexconsumer = multiBufferSource.getBuffer(model.renderType(getTextureLocation(entity)));
 		model.renderToBuffer(poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 		
 		poseStack.popPose();

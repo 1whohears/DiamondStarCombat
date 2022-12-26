@@ -14,11 +14,15 @@
 	"maxroll": 4.0,
 	"maxpitch": 2.0,
 	"maxyaw": 4.0,
-	"throttleup": 0.02,
-	"throttledown": 0.02,
+	"accroll": 0.35,
+	"accpitch": 0.3,
+	"accyaw": 0.6,
+	
+	"throttleup": 0.01,
+	"throttledown": 0.01,
 	"landing_gear": true,
 	
-	"accForward": 0.05,
+	"accForward": 0.04,
 	"accSide": 0.02,
 	
 	"slots": [

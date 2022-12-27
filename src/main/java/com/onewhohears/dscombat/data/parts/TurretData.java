@@ -23,16 +23,16 @@ public class TurretData extends SeatData {
 	
 	private final String weaponId;
 	private final String turretEntityKey;
+	private final RotBounds rotBounds;
 	private EntityType<? extends EntityTurret> turretType;
 	private int ammo;
 	private int max;
-	// TODO rotation bounds
-	// TODO max rotation speed
 	
-	public TurretData(float weight, ResourceLocation itemid, SlotType[] compatibleSlots, String turrentEntityKey, String weaponId) {
+	public TurretData(float weight, ResourceLocation itemid, SlotType[] compatibleSlots, String turrentEntityKey, String weaponId, RotBounds rotBounds) {
 		super(weight, itemid, compatibleSlots);
 		this.weaponId = weaponId;
 		this.turretEntityKey = turrentEntityKey;
+		this.rotBounds = rotBounds;
 		WeaponData data = WeaponPresets.getById(weaponId);
 		if (data != null) {
 			this.ammo = data.getMaxAmmo();
@@ -44,6 +44,7 @@ public class TurretData extends SeatData {
 		super(tag);
 		weaponId = tag.getString("weaponId");
 		turretEntityKey = tag.getString("turretEntity");
+		rotBounds = new RotBounds(tag);
 		ammo = tag.getInt("ammo");
 		max = tag.getInt("max");
 	}
@@ -52,6 +53,7 @@ public class TurretData extends SeatData {
 		CompoundTag tag = super.write();
 		tag.putString("weaponId", weaponId);
 		tag.putString("turretEntity", turretEntityKey);
+		rotBounds.write(tag);
 		tag.putInt("ammo", ammo);
 		tag.putInt("max", max);
 		return tag;
@@ -61,6 +63,7 @@ public class TurretData extends SeatData {
 		super(buffer);
 		weaponId = buffer.readUtf();
 		turretEntityKey = buffer.readUtf();
+		rotBounds = new RotBounds(buffer);
 		ammo = buffer.readInt();
 		max = buffer.readInt();
 	}
@@ -69,6 +72,7 @@ public class TurretData extends SeatData {
 		super.write(buffer);
 		buffer.writeUtf(weaponId);
 		buffer.writeUtf(turretEntityKey);
+		rotBounds.write(buffer);
 		buffer.writeInt(ammo);
 		buffer.writeInt(max);
 	}
@@ -99,6 +103,7 @@ public class TurretData extends SeatData {
 		t.setPos(craft.position());
 		t.startRiding(craft);
 		t.setWeaponId(weaponId);
+		t.setRotBounds(rotBounds);
 		craft.level.addFreshEntity(t);
 		return t;
 	}
@@ -131,6 +136,51 @@ public class TurretData extends SeatData {
 	
 	public void setAmmo(int ammo) {
 		this.ammo = ammo;
+	}
+	
+	public RotBounds getRotBounds() {
+		return rotBounds;
+	}
+	
+	public static class RotBounds {
+		public final float minRotX, maxRotX;
+		//public final float minRotY, maxRotY;
+		public final float rotRate;
+		public RotBounds(float rotRate, /*float minRotY,*/ float minRotX, /*float maxRotY,*/ float maxRotX) {
+			this.minRotX = minRotX;
+			this.maxRotX = maxRotX;
+			//this.minRotY = minRotY;
+			//this.maxRotY = maxRotY;
+			this.rotRate = rotRate;
+		}
+		public RotBounds(CompoundTag tag) {
+			this.minRotX = tag.getFloat("minRotX");
+			this.maxRotX = tag.getFloat("maxRotX");
+			//this.minRotY = tag.getFloat("minRotY");
+			//this.maxRotY = tag.getFloat("maxRotY");
+			this.rotRate = tag.getFloat("rotRate");
+		}
+		public void write(CompoundTag tag) {
+			tag.putFloat("minRotX", minRotX);
+			tag.putFloat("maxRotX", maxRotX);
+			//tag.putFloat("minRotY", minRotY);
+			//tag.putFloat("maxRotY", maxRotY);
+			tag.putFloat("rotRate", rotRate);
+		}
+		public RotBounds(FriendlyByteBuf buffer) {
+			this.minRotX = buffer.readFloat();
+			this.maxRotX = buffer.readFloat();
+			//this.minRotY = buffer.readFloat();
+			//this.maxRotY = buffer.readFloat();
+			this.rotRate = buffer.readFloat();
+		}
+		public void write(FriendlyByteBuf buffer) {
+			buffer.writeFloat(minRotX);
+			buffer.writeFloat(maxRotX);
+			//buffer.writeFloat(minRotY);
+			//buffer.writeFloat(maxRotY);
+			buffer.writeFloat(rotRate);
+		}
 	}
 	
 }

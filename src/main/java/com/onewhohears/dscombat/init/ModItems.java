@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.init;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.BuffData.BuffType;
 import com.onewhohears.dscombat.data.parts.PartSlot;
+import com.onewhohears.dscombat.data.parts.TurretData.RotBounds;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.item.ItemAircraft;
@@ -141,7 +142,8 @@ public class ModItems {
 	// TURRENTS
 	public static final RegistryObject<Item> MINIGUN_TURRENT = ITEMS.register("minigun_turret", 
 			() -> new ItemTurret(0.019f, PartSlot.SEAT, 
-					ModEntities.MINIGUN_TURRET.getId().toString(), "20mm"));
+					ModEntities.MINIGUN_TURRET.getId().toString(), "20mm",
+					new RotBounds(1f, -30f, 30f)));
 	
 	// FLARE DISPENSERS
 	public static final RegistryObject<Item> BASIC_FLARE_DISPENSER = ITEMS.register("basic_flare_dispenser", 

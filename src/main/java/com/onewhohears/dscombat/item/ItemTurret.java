@@ -4,6 +4,7 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.data.parts.TurretData;
+import com.onewhohears.dscombat.data.parts.TurretData.RotBounds;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -15,11 +16,13 @@ public class ItemTurret extends ItemPart {
 	
 	public final String weaponId;
 	public final String turrentEntityKey;
+	public final RotBounds rotBounds;
 	
-	public ItemTurret(float weight, SlotType[] compatibleSlots, String turrentEntityKey, String weaponId) {
+	public ItemTurret(float weight, SlotType[] compatibleSlots, String turrentEntityKey, String weaponId, RotBounds rotBounds) {
 		super(1, weight, compatibleSlots);
 		this.weaponId = weaponId;
 		this.turrentEntityKey = turrentEntityKey;
+		this.rotBounds = rotBounds;
 	}
 	
 	@Override
@@ -35,7 +38,7 @@ public class ItemTurret extends ItemPart {
 
 	@Override
 	public PartData getPartData() {
-		return new TurretData(weight, ForgeRegistries.ITEMS.getKey(this), compatibleSlots, turrentEntityKey, weaponId);
+		return new TurretData(weight, ForgeRegistries.ITEMS.getKey(this), compatibleSlots, turrentEntityKey, weaponId, rotBounds);
 	}
 
 }

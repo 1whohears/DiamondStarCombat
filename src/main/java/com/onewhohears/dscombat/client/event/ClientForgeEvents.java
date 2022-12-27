@@ -379,11 +379,11 @@ public final class ClientForgeEvents {
 	
 	@SubscribeEvent
 	public static void cameraSetup(ViewportEvent.ComputeCameraAngles event) {
+		// TODO camera move doesn't work well when plane zRot is not zero
 		if (event.getPhase() != EventPriority.NORMAL) return;
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
 		if (player == null) return;
-		// TODO third person camera looks feels janky
 		prevCamera = m.getCameraEntity();
 		if (player.getVehicle() instanceof EntitySeat seat 
 				&& seat.getVehicle() instanceof EntityAircraft plane) {
@@ -403,15 +403,12 @@ public final class ClientForgeEvents {
 				player.setXRot(xi);
 				player.setYRot(yi);
 			} else {
-				xo = player.xRotO;
-				xn = player.getXRot();
-				yo = player.yRotO;
-				yn = player.getYRot();
+				xo = xn = yo = yn = 0;
 				zo = plane.zRotO;
 				zn = plane.zRot;
-				xi = xo + (xn - xo) * (float)event.getPartialTick();
-				yi = yo + (yn - yo) * (float)event.getPartialTick();
 				zi = zo + (zn - zo) * (float)event.getPartialTick();
+				xi = player.getXRot();
+				yi = player.getYRot();
 			}
 			if (m.options.getCameraType() == CameraType.THIRD_PERSON_FRONT) {
 				event.setPitch(xi*-1f);

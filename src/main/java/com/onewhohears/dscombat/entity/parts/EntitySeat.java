@@ -117,12 +117,14 @@ public class EntitySeat extends EntityPart {
 		return super.getDismountLocationForPassenger(livingEntity).add(0, 1, 0);
 	}
 	
+	@Nullable
 	public Player getPlayer() {
 		List<Entity> list = getPassengers();
 		for (Entity e : list) if (e instanceof Player p) return p;
 		return null;
 	}
 	
+	@Nullable
 	public EntitySeatCamera getCamera() {
 		List<Entity> list = getPassengers();
 		for (Entity e : list) if (e instanceof EntitySeatCamera c) return c;

@@ -32,6 +32,15 @@ public class UtilGeometry {
 		return Math.toDegrees(angleBetween(dir, base));
 	}
 	
+	public static double angleBetweenVecPlane(Vec3 dir, Vec3 planeNormal) {
+		double a = angleBetween(dir, planeNormal);
+		return Math.PI/2 - a;
+	}
+	
+	public static double angleBetweenVecPlaneDegrees(Vec3 dir, Vec3 planeNormal) {
+		return Math.toDegrees(angleBetweenVecPlane(dir, planeNormal));
+	}
+	
 	public static Vec3 interceptPos(Vec3 mPos, Vec3 mVel, Vec3 tPos, Vec3 tVel) {
 		double x = interceptComponent(mPos.x, tPos.x, mVel.x, tVel.x);
 		double y = interceptComponent(mPos.y, tPos.y, mVel.y, tVel.y);

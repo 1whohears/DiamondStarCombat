@@ -8,14 +8,13 @@ import com.onewhohears.dscombat.client.renderer.model.EntityControllableModel;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.util.math.UtilAngles;
-import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.util.Mth;
 
 public class RendererEntityTurret<T extends EntityTurret> extends EntityRenderer<T> {
 	
@@ -36,8 +35,10 @@ public class RendererEntityTurret<T extends EntityTurret> extends EntityRenderer
 	@Override
 	public void render(T entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
 		if (!entity.shouldRender()) return;
+		//Quaternion q = UtilAngles.lerpQ(partialTicks, entity.getPrevQ(), entity.getClientQ());
 		poseStack.pushPose();
-		if (entity.getVehicle() instanceof EntityAircraft plane) {
+		//poseStack.mulPose(q);
+		/*if (entity.getVehicle() instanceof EntityAircraft plane) {
 			Quaternion q = UtilAngles.lerpQ(partialTicks, plane.getPrevQ(), plane.getClientQ());
 			poseStack.mulPose(q);
 			Player player = entity.getPlayer();
@@ -50,8 +51,16 @@ public class RendererEntityTurret<T extends EntityTurret> extends EntityRenderer
 				poseStack.mulPose(Vector3f.YP.rotationDegrees(y));
 				poseStack.mulPose(Vector3f.XP.rotationDegrees(x));
 			}
+			poseStack.mulPose(Vector3f.YN.rotationDegrees(entity.getYRot()-plane.getYRot()));
+			poseStack.mulPose(Vector3f.XP.rotationDegrees(entity.getXRot()-plane.getXRot()));
+		}*/
+		//poseStack.mulPose(Vector3f.ZP.rotationDegrees(entity.getZRot()));
+		if (entity.getVehicle() instanceof EntityAircraft plane) {
+			Quaternion q = UtilAngles.lerpQ(partialTicks, plane.getPrevQ(), plane.getClientQ());
+			poseStack.mulPose(q);
 		}
-		poseStack.mulPose(Vector3f.ZP.rotationDegrees(entity.getZRot()));
+		//poseStack.mulPose(Vector3f.XP.rotationDegrees(entity.getRelRotX())); // x rot done in model
+		poseStack.mulPose(Vector3f.YN.rotationDegrees(Mth.rotLerp(partialTicks, entity.yRotRelO, entity.getRelRotY())));
 		VertexConsumer vertexconsumer = multiBufferSource.getBuffer(model.renderType(getTextureLocation(entity)));
 		model.renderToBuffer(entity, partialTicks, poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 		poseStack.popPose();

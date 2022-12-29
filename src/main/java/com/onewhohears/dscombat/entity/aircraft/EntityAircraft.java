@@ -279,8 +279,8 @@ public abstract class EntityAircraft extends Entity {
 			motionClamp();
 			move(MoverType.SELF, getDeltaMovement());
 		}
-		if (this.isControlledByLocalInstance()) 
-			this.syncPacketPositionCodec(getX(), getY(), getZ());
+		if (isControlledByLocalInstance()) 
+			syncPacketPositionCodec(getX(), getY(), getZ());
         // OTHER
 		controlSystem();
         tickParts();
@@ -662,7 +662,7 @@ public abstract class EntityAircraft extends Entity {
 		if (inputMouseMode) setFreeLook(!isFreeLook());
 		this.inputShoot = shoot;
 		this.inputSelect = select;
-		if (this.inputSelect && !this.level.isClientSide) weaponSystem.selectNextWeapon();
+		if (inputSelect && !level.isClientSide) weaponSystem.selectNextWeapon();
 		this.inputOpenMenu = openMenu;
 	}
 	
@@ -812,7 +812,7 @@ public abstract class EntityAircraft extends Entity {
 	
 	@Override
 	public boolean isPickable() {
-		return !this.isRemoved();
+		return !isRemoved();
 	}
 	
 	@Override

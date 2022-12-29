@@ -391,6 +391,7 @@ public final class ClientForgeEvents {
 			float xo, xn, xi, yo, yn, yi, zo, zn, zi;
 			if (!plane.isFreeLook() && plane.getControllingPassenger() != null 
 					&& plane.getControllingPassenger().equals(player)) {
+				// TODO use Math.rotLerp
 				xo = plane.xRotO;
 				xn = plane.getXRot();
 				yo = plane.yRotO;
@@ -428,5 +429,4 @@ public final class ClientForgeEvents {
 			if (!prevCamera.equals(player)) m.setCameraEntity(player);
 		}
 	}
-	
 }

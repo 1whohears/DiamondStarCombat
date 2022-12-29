@@ -8,6 +8,8 @@ import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.util.UtilParse;
+import com.onewhohears.dscombat.util.math.UtilAngles;
+import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -26,6 +28,14 @@ public class EntityTurret extends EntitySeat {
 	public static final EntityDataAccessor<Float> MINROTX = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> MAXROTX = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> ROTRATE = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.FLOAT);
+	//public static final EntityDataAccessor<Quaternion> Q = SynchedEntityData.defineId(EntityAircraft.class, DataSerializers.QUATERNION);
+	public static final EntityDataAccessor<Float> RELROTX = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> RELROTY = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.FLOAT);
+	
+	//public Quaternion clientQ = Quaternion.ONE.copy();
+	//public Quaternion prevQ = Quaternion.ONE.copy();
+	public float zRot, zRotO; 
+	public float xRotRelO, yRotRelO;
 	
 	/**
 	 * only used on server side
@@ -47,25 +57,47 @@ public class EntityTurret extends EntitySeat {
 		entityData.define(MINROTX, 0f);
 		entityData.define(MAXROTX, 0f);
 		entityData.define(ROTRATE, 0f);
+		//entityData.define(Q, Quaternion.ONE);
+		entityData.define(RELROTX, 0f);
+		entityData.define(RELROTY, 0f);
 	}
+	
+	@Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
+        super.onSyncedDataUpdated(key);
+        /*if (level.isClientSide() && Q.equals(key)) {
+        	setPrevQ(getClientQ());
+        	setClientQ(getQ());
+        }*/
+    }
 	
 	@Override
 	protected void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
 		data = UtilParse.parseWeaponFromCompound(tag.getCompound("weapondata"));
 		if (data == null) data = WeaponPresets.getNewById(weaponId);
+		setRotBounds(new RotBounds(tag));
 		setXRot(tag.getFloat("xRot"));
 		setYRot(tag.getFloat("yRot"));
-		setRotBounds(new RotBounds(tag));
+		zRot = tag.getFloat("zRot");
+		/*Quaternion q = UtilAngles.toQuaternion(-getYRot(), getXRot(), zRot);
+		setQ(q);
+		setPrevQ(q);*/
+		setRelRotX(tag.getFloat("relrotx"));
+		setRelRotX(tag.getFloat("relroty"));
+		
 	}
 
 	@Override
 	protected void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
 		if (data != null) tag.put("weapondata", data.write());
+		getRotBounds().write(tag);
 		tag.putFloat("xRot", getXRot());
 		tag.putFloat("yRot", getYRot());
-		getRotBounds().write(tag);
+		tag.putFloat("zRot", zRot);
+		tag.putFloat("relrotx", getRelRotX());
+		tag.putFloat("relroty", getRelRotY());
 	}
 	
 	public void init() {
@@ -76,9 +108,54 @@ public class EntityTurret extends EntitySeat {
 	@Override
 	public void tick() {
 		super.tick();
+		xRotRelO = getRelRotX();
+		yRotRelO = getRelRotY();
 		Player player = getPlayer();
 		if (player == null) return;
-		
+		// TODO change based on where player looks
+		// TODO this is not working lmao
+		/*float angle = 0; // whatever the new x rot is
+		if (getVehicle() instanceof EntityAircraft plane) {
+			Quaternion pq;
+			if (level.isClientSide) pq = plane.getClientQ();
+			else pq = plane.getQ();
+			Quaternion pqpc = plane.getPrevQ(); pqpc.conj();
+			Quaternion diff = pq.copy();
+			diff.mul(pqpc);
+			q.mul(diff);
+			Vec3 dir = UtilAngles.getRollAxis(q);
+			Vec3 planeNormal = UtilAngles.getYawAxis(pq);
+			angle = (float) UtilGeometry.angleBetweenVecPlaneDegrees(dir, planeNormal);
+		}
+		EulerAngles angles = UtilAngles.toDegrees(q);
+		setXRot((float)angles.pitch);
+		setYRot((float)angles.yaw);
+		zRot = (float)angles.roll;*/
+		EulerAngles ra;
+		if (getVehicle() instanceof EntityAircraft plane) ra = UtilAngles.toDegrees(plane.getQ());
+		else ra = new EulerAngles();
+		if (!level.isClientSide) {
+			float gx = player.getXRot(), gy = player.getYRot();
+			float[] relgoal = UtilAngles.globalToRelativeDegrees(gx, gy, 0f, ra);
+			
+			float relx = xRotRelO, rely = yRotRelO;
+			float rotrate = getRotRate(), minrotx = getMinRotX(), maxrotx = getMaxRotX();
+			
+			if (relgoal[0] > maxrotx) relgoal[0] = maxrotx;
+			else if (relgoal[0] < minrotx) relgoal[0] = minrotx;
+			
+			float rotdiffx = relgoal[0]-relx, rotdiffy = relgoal[1]-rely;
+			
+			if (Math.abs(rotdiffx) < rotrate) setRelRotX(relgoal[0]);
+			else setRelRotX(relx + rotrate*Math.signum(rotdiffx));
+			
+			if (Math.abs(rotdiffy) < rotrate) setRelRotY(relgoal[1]);
+			else setRelRotY(rely + rotrate*Math.signum(rotdiffy));
+		}
+		float[] global = UtilAngles.relativeToGlobalDegrees(getRelRotX(), getRelRotY(), 0f, ra);
+		setXRot(global[0]);
+		setYRot(global[1]);
+		zRot = global[2];
 	}
 	
 	@Override
@@ -185,6 +262,46 @@ public class EntityTurret extends EntitySeat {
 	
 	public float getRotRate() {
 		return entityData.get(ROTRATE);
+	}
+	
+	/*public Quaternion getQ() {
+        return entityData.get(Q).copy();
+    }
+    
+    public void setQ(Quaternion q) {
+        entityData.set(Q, q.copy());
+    }
+    
+    public Quaternion getPrevQ() {
+        return prevQ.copy();
+    }
+    
+    public void setPrevQ(Quaternion q) {
+        prevQ = q.copy();
+    }
+    
+    public Quaternion getClientQ() {
+        return clientQ.copy();
+    }
+    
+    public void setClientQ(Quaternion q) {
+        clientQ = q.copy();
+    }*/
+	
+	public float getRelRotX() {
+		return entityData.get(RELROTX);
+	}
+	
+	public float getRelRotY() {
+		return entityData.get(RELROTY);
+	}
+	
+	public void setRelRotX(float degrees) {
+		entityData.set(RELROTX, degrees);
+	}
+	
+	public void setRelRotY(float degrees) {
+		entityData.set(RELROTY, degrees);
 	}
 
 }

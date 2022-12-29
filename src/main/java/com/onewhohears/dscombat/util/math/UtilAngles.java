@@ -202,7 +202,7 @@ public class UtilAngles {
 
         public EulerAngles() {}
 
-        public EulerAngles(EulerAngles a) {
+        private EulerAngles(EulerAngles a) {
             this.pitch = a.pitch;
             this.yaw = a.yaw;
             this.roll = a.roll;
@@ -286,4 +286,51 @@ public class UtilAngles {
     	//System.out.println(a);
     	return a;
     }
+    
+    /**
+     * @param gx global x rotation in degrees
+     * @param gy global y rotation in degrees
+     * @param gz global z rotation in degrees
+     * @param r this quaternion plus quaternio.ONE makes relative rotation axis
+     * @return float array size 3 index 0 = relative x, index 1 = relative y, index 2 = relative z
+     */
+    public static float[] globalToRelativeDegrees(float gx, float gy, float gz, Quaternion r) {
+    	EulerAngles ra = UtilAngles.toDegrees(r);
+    	return globalToRelativeDegrees(gx, gy, gz, ra);
+    }
+    
+    /**
+     * @param gx global x rotation in degrees
+     * @param gy global y rotation in degrees
+     * @param gz global z rotation in degrees
+     * @param ra these angles in degrees make relative rotation axis
+     * @return float array size 3 index 0 = relative x, index 1 = relative y, index 2 = relative z
+     */
+    public static float[] globalToRelativeDegrees(float gx, float gy, float gz, EulerAngles ra) {
+    	return new float[] {gx - (float)ra.pitch, gy - (float)ra.yaw, gz - (float)ra.roll};
+    }
+    
+    /**
+     * @param rx relative x rotation in degrees
+     * @param ry relative y rotation in degrees
+     * @param rz relative z rotation in degrees
+     * @param r this quaternion plus quaternio.ONE makes relative rotation axis
+     * @return float array size 3 index 0 = global x, index 1 = global y, index 2 = global z
+     */
+    public static float[] relativeToGlobalDegrees(float rx, float ry, float rz, Quaternion r) {
+    	EulerAngles ra = UtilAngles.toDegrees(r);
+    	return relativeToGlobalDegrees(rx, ry, rz, ra);
+    }
+    
+    /**
+     * @param rx relative x rotation in degrees
+     * @param ry relative y rotation in degrees
+     * @param rz relative z rotation in degrees
+     * @param ra these angles in degrees make relative rotation axis
+     * @return float array size 3 index 0 = global x, index 1 = global y, index 2 = global z
+     */
+    public static float[] relativeToGlobalDegrees(float rx, float ry, float rz, EulerAngles ra) {
+    	return new float[] {rx + (float)ra.pitch, ry + (float)ra.yaw, rz + (float)ra.roll};
+    }
+    
 }

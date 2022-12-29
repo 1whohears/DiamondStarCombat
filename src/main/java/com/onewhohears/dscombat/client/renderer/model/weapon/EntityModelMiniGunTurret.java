@@ -15,14 +15,17 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
 public class EntityModelMiniGunTurret<T extends EntityTurret> extends EntityControllableModel<T>{
 	
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(DSCombatMod.MODID, "minigun_turrent"), "main");
 	private final ModelPart main;
+	private final ModelPart gun;
 	
 	public EntityModelMiniGunTurret(ModelPart root) {
 		this.main = root.getChild("main");
+		this.gun = main.getChild("gun");
 	}
 	
 	@Override
@@ -30,6 +33,7 @@ public class EntityModelMiniGunTurret<T extends EntityTurret> extends EntityCont
 			int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		poseStack.translate(0, 2.7, 0);
 		poseStack.scale(1.0F, -1.0F, 1.0F);
+		gun.xRot = -(float)Math.toRadians(Mth.rotLerp(partialTicks, entity.xRotRelO, entity.getRelRotX()));
 		main.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 	

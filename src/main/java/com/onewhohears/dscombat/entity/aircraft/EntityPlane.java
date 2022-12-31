@@ -47,9 +47,9 @@ public class EntityPlane extends EntityAircraft {
 			else roll = -(float)Math.signum(angles.roll) * dRoll;
 			if (Math.abs(angles.pitch) < dPitch) pitch = (float) -angles.pitch;
 			else pitch = -(float)Math.signum(angles.pitch) * dPitch;
-			q.mul(new Quaternion(Vector3f.XP, pitch, true));
-			q.mul(new Quaternion(Vector3f.YN, inputYaw*getMaxDeltaYaw(), true));
-			q.mul(new Quaternion(Vector3f.ZP, roll, true));
+			q.mul(Vector3f.XP.rotationDegrees(pitch));
+			q.mul(Vector3f.ZP.rotationDegrees(roll));
+			q.mul(Vector3f.YN.rotationDegrees(inputYaw*getMaxDeltaYaw()));
 		} else {
 			addTorqueX(inputPitch * getAccelerationPitch(), true);
 			addTorqueY(inputYaw * getAccelerationYaw(), true);

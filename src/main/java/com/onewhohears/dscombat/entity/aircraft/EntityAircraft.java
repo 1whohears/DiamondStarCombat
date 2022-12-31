@@ -201,7 +201,7 @@ public abstract class EntityAircraft extends Entity {
 		setXRot(compound.getFloat("xRot"));
 		setYRot(compound.getFloat("yRot"));
 		zRot = compound.getFloat("zRot");
-		Quaternion q = UtilAngles.toQuaternion(-getYRot(), getXRot(), zRot);
+		Quaternion q = UtilAngles.toQuaternion(getYRot(), getXRot(), zRot);
 		setQ(q);
 		setPrevQ(q);
 		setClientQ(q);	
@@ -266,7 +266,10 @@ public abstract class EntityAircraft extends Entity {
 		controlDirection(q);
 		q.normalize();
 		if (level.isClientSide) setClientQ(q);
-		else setQ(q);
+		else {
+			setQ(q);
+			//if (getControllingPassenger() != null) System.out.println("xaxis = "+UtilAngles.getPitchAxis(q));
+		}
 		EulerAngles angles = UtilAngles.toDegrees(q);
 		setXRot((float)angles.pitch);
 		setYRot((float)angles.yaw);
@@ -376,9 +379,9 @@ public abstract class EntityAircraft extends Entity {
 			System.out.println("torqueY = "+torqueY);
 			System.out.println("torqueZ = "+torqueZ);
 		}*/
-		q.mul(new Quaternion(Vector3f.XN, torqueX, true));
-		q.mul(new Quaternion(Vector3f.YN, torqueY, true));
-		q.mul(new Quaternion(Vector3f.ZP, torqueZ, true));
+		q.mul(Vector3f.XN.rotationDegrees(torqueX));
+		q.mul(Vector3f.YN.rotationDegrees(torqueY));
+		q.mul(Vector3f.ZP.rotationDegrees(torqueZ));
 		if (torqueX > getMaxDeltaPitch() || inputPitch == 0) torqueX = torqueDrag(torqueX);
 		if (torqueY > getMaxDeltaYaw() || inputYaw == 0) torqueY = torqueDrag(torqueY);
 		if (torqueZ > getMaxDeltaRoll() || inputRoll == 0) torqueZ = torqueDrag(torqueZ);
@@ -578,7 +581,7 @@ public abstract class EntityAircraft extends Entity {
 	 * fired on both client and server side to control the plane's weapons, flares, open menu
 	 */
 	public void controlSystem() {
-		Entity controller = this.getControllingPassenger();
+		Entity controller = getControllingPassenger();
 		if (controller == null) return;
 		if (!level.isClientSide) {
 			boolean isPlayer = controller instanceof ServerPlayer;
@@ -589,8 +592,8 @@ public abstract class EntityAircraft extends Entity {
 				if (this.inputShoot) weaponSystem.shootSelected(controller);
 				if (this.inputFlare && tickCount % 5 == 0) flare(controller, isPlayer);
 			}
-			if (this.inputOpenMenu && isPlayer) {
-				if (this.isOnGround()) {
+			if (inputOpenMenu && isPlayer) {
+				if (isOnGround() || isTestMode()) {
 					System.out.println("OPENING MENU "+partsManager);
 					NetworkHooks.openScreen((ServerPlayer) controller, 
 						new SimpleMenuProvider((windowId, playerInv, player) -> 
@@ -604,7 +607,7 @@ public abstract class EntityAircraft extends Entity {
 			if (isPlayer && ((ServerPlayer)controller).isCreative()) {
 				
 			} else {
-				this.tickFuel();
+				tickFuel();
 			}
 		}
 	}

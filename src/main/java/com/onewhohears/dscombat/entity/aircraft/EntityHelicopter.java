@@ -98,8 +98,8 @@ public class EntityHelicopter extends EntityAircraft {
 			else roll = -(float)Math.signum(angles.roll) * dRoll;
 			if (Math.abs(angles.pitch) < dPitch) pitch = (float) -angles.pitch;
 			else pitch = -(float)Math.signum(angles.pitch) * dPitch;
-			q.mul(new Quaternion(Vector3f.XP, pitch, true));
-			q.mul(new Quaternion(Vector3f.ZP, roll, true));
+			q.mul(Vector3f.XP.rotationDegrees(pitch));
+			q.mul(Vector3f.ZP.rotationDegrees(roll));
 			if (!isOnGround()) addTorqueY(inputYaw * getAccelerationYaw(), true);
 		} else if (!isOnGround()) {
 			addTorqueX(inputPitch * getAccelerationPitch(), true);

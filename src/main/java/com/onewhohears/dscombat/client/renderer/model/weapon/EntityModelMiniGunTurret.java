@@ -33,7 +33,7 @@ public class EntityModelMiniGunTurret<T extends EntityTurret> extends EntityCont
 			int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		poseStack.translate(0, 2.7, 0);
 		poseStack.scale(1.0F, -1.0F, 1.0F);
-		gun.xRot = -(float)Math.toRadians(Mth.rotLerp(partialTicks, entity.xRotRelO, entity.getRelRotX()));
+		gun.xRot = -(float)Math.toRadians(Mth.lerp(partialTicks, entity.xRotRelO, entity.getRelRotX()));
 		main.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 	

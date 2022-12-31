@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.entity.parts;
 
+import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.TurretData;
@@ -9,7 +10,6 @@ import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.math.UtilAngles;
-import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -28,13 +28,13 @@ public class EntityTurret extends EntitySeat {
 	public static final EntityDataAccessor<Float> MINROTX = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> MAXROTX = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> ROTRATE = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.FLOAT);
-	//public static final EntityDataAccessor<Quaternion> Q = SynchedEntityData.defineId(EntityAircraft.class, DataSerializers.QUATERNION);
+	//public static final EntityDataAccessor<Quaternion> RQ = SynchedEntityData.defineId(EntityAircraft.class, DataSerializers.QUATERNION);
 	public static final EntityDataAccessor<Float> RELROTX = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> RELROTY = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.FLOAT);
 	
 	//public Quaternion clientQ = Quaternion.ONE.copy();
-	//public Quaternion prevQ = Quaternion.ONE.copy();
-	public float zRot, zRotO; 
+	//public Quaternion prevRQ = Quaternion.ONE.copy();
+	//public float zRot, zRotO; 
 	public float xRotRelO, yRotRelO;
 	
 	/**
@@ -57,7 +57,7 @@ public class EntityTurret extends EntitySeat {
 		entityData.define(MINROTX, 0f);
 		entityData.define(MAXROTX, 0f);
 		entityData.define(ROTRATE, 0f);
-		//entityData.define(Q, Quaternion.ONE);
+		//entityData.define(RQ, Quaternion.ONE);
 		entityData.define(RELROTX, 0f);
 		entityData.define(RELROTY, 0f);
 	}
@@ -79,12 +79,12 @@ public class EntityTurret extends EntitySeat {
 		setRotBounds(new RotBounds(tag));
 		setXRot(tag.getFloat("xRot"));
 		setYRot(tag.getFloat("yRot"));
-		zRot = tag.getFloat("zRot");
-		/*Quaternion q = UtilAngles.toQuaternion(-getYRot(), getXRot(), zRot);
-		setQ(q);
-		setPrevQ(q);*/
+		//zRot = tag.getFloat("zRot");
 		setRelRotX(tag.getFloat("relrotx"));
 		setRelRotX(tag.getFloat("relroty"));
+		/*Quaternion q = UtilAngles.toQuaternion(getRelRotY(), getRelRotX(), zRot);
+		setRelQ(q);
+		setPrevRelQ(q);*/
 		
 	}
 
@@ -95,7 +95,7 @@ public class EntityTurret extends EntitySeat {
 		getRotBounds().write(tag);
 		tag.putFloat("xRot", getXRot());
 		tag.putFloat("yRot", getYRot());
-		tag.putFloat("zRot", zRot);
+		//tag.putFloat("zRot", zRot);
 		tag.putFloat("relrotx", getRelRotX());
 		tag.putFloat("relroty", getRelRotY());
 	}
@@ -110,52 +110,75 @@ public class EntityTurret extends EntitySeat {
 		super.tick();
 		xRotRelO = getRelRotX();
 		yRotRelO = getRelRotY();
+		//setPrevRelQ(getRelQ());
 		Player player = getPlayer();
 		if (player == null) return;
-		// TODO change based on where player looks
-		// TODO this is not working lmao
-		/*float angle = 0; // whatever the new x rot is
-		if (getVehicle() instanceof EntityAircraft plane) {
-			Quaternion pq;
-			if (level.isClientSide) pq = plane.getClientQ();
-			else pq = plane.getQ();
-			Quaternion pqpc = plane.getPrevQ(); pqpc.conj();
-			Quaternion diff = pq.copy();
-			diff.mul(pqpc);
-			q.mul(diff);
-			Vec3 dir = UtilAngles.getRollAxis(q);
-			Vec3 planeNormal = UtilAngles.getYawAxis(pq);
-			angle = (float) UtilGeometry.angleBetweenVecPlaneDegrees(dir, planeNormal);
-		}
-		EulerAngles angles = UtilAngles.toDegrees(q);
-		setXRot((float)angles.pitch);
-		setYRot((float)angles.yaw);
-		zRot = (float)angles.roll;*/
-		EulerAngles ra;
-		if (getVehicle() instanceof EntityAircraft plane) ra = UtilAngles.toDegrees(plane.getQ());
-		else ra = new EulerAngles();
+		Quaternion ra = Quaternion.ONE;
 		if (!level.isClientSide) {
-			float gx = player.getXRot(), gy = player.getYRot();
-			float[] relgoal = UtilAngles.globalToRelativeDegrees(gx, gy, 0f, ra);
-			
-			float relx = xRotRelO, rely = yRotRelO;
+			//Quaternion rq = getRelQ();
+			//EulerAngles rr = UtilAngles.toDegrees(rq);
+			//float rely = (float)rr.yaw, relx = (float)rr.pitch;
+			float rely = yRotRelO, relx = xRotRelO;
 			float rotrate = getRotRate(), minrotx = getMinRotX(), maxrotx = getMaxRotX();
+			//float zgoal = 0;
+			if (getVehicle() instanceof EntityAircraft plane) {
+				ra = plane.getQ();
+				//zgoal = plane.zRot;
+			}
+			//Quaternion rrg = UtilAngles.globalDegreesToRelativeRotation(player.getXRot(), player.getYRot(), zgoal, ra);
+			//EulerAngles rrga = UtilAngles.toDegrees(rrg);
+			float[] relangles = UtilAngles.globalToRelativeDegrees(player.getXRot(), player.getYRot(), ra);
 			
-			if (relgoal[0] > maxrotx) relgoal[0] = maxrotx;
-			else if (relgoal[0] < minrotx) relgoal[0] = minrotx;
+			float rg1 = relangles[1] + 360, rg2 = relangles[1] - 360;
+			float d1 = Math.abs(rg1-rely), d2 = Math.abs(rg2-rely), d3 =  Math.abs(relangles[1]-rely);
+			if (d1 < d2 && d1 < d3) relangles[1] += 360;
+			else if (d2 < d1 && d2 < d3) relangles[1] -= 360;
 			
-			float rotdiffx = relgoal[0]-relx, rotdiffy = relgoal[1]-rely;
+			if (relangles[0] > maxrotx) relangles[0] = maxrotx;
+			else if (relangles[0] < minrotx) relangles[0] = minrotx;
 			
-			if (Math.abs(rotdiffx) < rotrate) setRelRotX(relgoal[0]);
-			else setRelRotX(relx + rotrate*Math.signum(rotdiffx));
+			float rotdiffx = relangles[0]-relx, rotdiffy = relangles[1]-rely;
 			
-			if (Math.abs(rotdiffy) < rotrate) setRelRotY(relgoal[1]);
-			else setRelRotY(rely + rotrate*Math.signum(rotdiffy));
+			float dx, dy;
+			
+			if (Math.abs(rotdiffx) < rotrate) dx = rotdiffx;
+			else dx = rotrate*Math.signum(rotdiffx);
+			
+			if (Math.abs(rotdiffy) < rotrate) dy = rotdiffy;
+			else dy = rotrate*Math.signum(rotdiffy);
+			
+			/*rq.mul(Vector3f.XP.rotationDegrees(dx));
+			rq.mul(Vector3f.YN.rotationDegrees(dy));
+			rq.normalize();
+			setRelQ(rq);
+			
+			EulerAngles nrr = UtilAngles.toDegrees(rq);
+			setRelRotX((float)nrr.pitch);
+			setRelRotY((float)nrr.yaw);*/
+			
+			setRelRotX(relx+dx);
+			setRelRotY(rely+dy);
+			
+			System.out.println("TURRET SERVER TICK "+tickCount);
+			System.out.println("rely     = "+rely);
+			System.out.println("relgoaly = "+relangles[1]);
+			System.out.println("rotdiffy = "+rotdiffy);
+			System.out.println("relyn    = "+getRelRotY());
+			/*System.out.println("relx     = "+relx);
+			System.out.println("relgoalx = "+(float)rrga.pitch);
+			System.out.println("rotdiffx = "+rotdiffx);
+			System.out.println("relxn    = "+getRelRotX());*/
 		}
-		float[] global = UtilAngles.relativeToGlobalDegrees(getRelRotX(), getRelRotY(), 0f, ra);
+		float[] global = UtilAngles.relativeToGlobalDegrees(getRelRotX(), getRelRotY(), ra);
 		setXRot(global[0]);
 		setYRot(global[1]);
-		zRot = global[2];
+		//zRot = (float)global.roll;
+		if (!level.isClientSide) {
+			System.out.println("playery  = "+player.getYRot());
+			System.out.println("globaly  = "+global[1]);
+			//System.out.println("playerx  = "+player.getXRot());
+			//System.out.println("globalx  = "+global.pitch);
+		}
 	}
 	
 	@Override
@@ -205,27 +228,6 @@ public class EntityTurret extends EntitySeat {
 	}
 	
 	@Override
-    public void positionRider(Entity passenger) {
-		/*if (passenger instanceof Player player) {
-			player.setPos(position());
-		} else if (passenger instanceof EntitySeatCamera camera) {
-			if (!(getVehicle() instanceof EntityAircraft craft)) return;
-			Vec3 pos = position();
-			Quaternion q;
-			if (level.isClientSide) {
-				q = craft.getClientQ();
-				q.mul(Vector3f.YP.rotationDegrees(getYRot()));
-				q.mul(Vector3f.XP.rotationDegrees(getXRot()));
-			} else q = craft.getQ();
-			Vec3 seatPos = UtilAngles.rotateVector(new Vec3(0, 1.62, 0), q);
-			camera.setPos(pos.add(seatPos));
-		} else {
-			super.positionRider(passenger);
-		}*/
-		super.positionRider(passenger);
-	}
-	
-	@Override
 	public PartType getPartType() {
 		return PartType.TURRENT;
 	}
@@ -264,23 +266,23 @@ public class EntityTurret extends EntitySeat {
 		return entityData.get(ROTRATE);
 	}
 	
-	/*public Quaternion getQ() {
-        return entityData.get(Q).copy();
+	/*public Quaternion getRelQ() {
+        return entityData.get(RQ).copy();
     }
     
-    public void setQ(Quaternion q) {
-        entityData.set(Q, q.copy());
+    public void setRelQ(Quaternion q) {
+        entityData.set(RQ, q.copy());
     }
     
-    public Quaternion getPrevQ() {
-        return prevQ.copy();
+    public Quaternion getPrevRelQ() {
+        return prevRQ.copy();
     }
     
-    public void setPrevQ(Quaternion q) {
-        prevQ = q.copy();
-    }
+    public void setPrevRelQ(Quaternion q) {
+        prevRQ = q.copy();
+    }*/
     
-    public Quaternion getClientQ() {
+    /*public Quaternion getClientQ() {
         return clientQ.copy();
     }
     

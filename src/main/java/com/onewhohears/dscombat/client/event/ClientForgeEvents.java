@@ -12,7 +12,6 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexBuffer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.KeyInit;
 import com.onewhohears.dscombat.common.network.PacketHandler;
@@ -357,12 +356,10 @@ public final class ClientForgeEvents {
 			if (player.getVehicle() instanceof EntityTurret turret) {
 				player.setYBodyRot(0);
 				player.setYHeadRot(0);
-				event.getPoseStack().mulPose(Vector3f.YP.rotationDegrees(turret.getYRot()));
-				event.getPoseStack().mulPose(Vector3f.XP.rotationDegrees(turret.getXRot()));
 			} else {
 				EulerAngles a = UtilAngles.toDegrees(q);
-				player.setYBodyRot(player.getYRot()-(float)a.yaw);
-				player.setYHeadRot(player.getYRot()-(float)a.yaw);
+				player.setYBodyRot((float)a.yaw-player.getYRot());
+				player.setYHeadRot((float)a.yaw-player.getYRot());
 			}
 		}
 	}
@@ -391,7 +388,7 @@ public final class ClientForgeEvents {
 			float xo, xn, xi, yo, yn, yi, zo, zn, zi;
 			if (!plane.isFreeLook() && plane.getControllingPassenger() != null 
 					&& plane.getControllingPassenger().equals(player)) {
-				// TODO use Math.rotLerp
+				// TODO use Mth.rotLerp
 				xo = plane.xRotO;
 				xn = plane.getXRot();
 				yo = plane.yRotO;

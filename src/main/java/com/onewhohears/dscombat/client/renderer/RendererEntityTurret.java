@@ -35,32 +35,12 @@ public class RendererEntityTurret<T extends EntityTurret> extends EntityRenderer
 	@Override
 	public void render(T entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
 		if (!entity.shouldRender()) return;
-		//Quaternion q = UtilAngles.lerpQ(partialTicks, entity.getPrevQ(), entity.getClientQ());
 		poseStack.pushPose();
-		//poseStack.mulPose(q);
-		/*if (entity.getVehicle() instanceof EntityAircraft plane) {
-			Quaternion q = UtilAngles.lerpQ(partialTicks, plane.getPrevQ(), plane.getClientQ());
-			poseStack.mulPose(q);
-			Player player = entity.getPlayer();
-			if (player != null) {
-				EulerAngles a = UtilAngles.toDegrees(q);
-				float y = (float)a.yaw-player.getYRot();
-				float x = player.getXRot()-(float)a.pitch;
-				entity.setYRot(y); // TODO the angle should be calculated in the entity?
-				entity.setXRot(x);
-				poseStack.mulPose(Vector3f.YP.rotationDegrees(y));
-				poseStack.mulPose(Vector3f.XP.rotationDegrees(x));
-			}
-			poseStack.mulPose(Vector3f.YN.rotationDegrees(entity.getYRot()-plane.getYRot()));
-			poseStack.mulPose(Vector3f.XP.rotationDegrees(entity.getXRot()-plane.getXRot()));
-		}*/
-		//poseStack.mulPose(Vector3f.ZP.rotationDegrees(entity.getZRot()));
 		if (entity.getVehicle() instanceof EntityAircraft plane) {
-			Quaternion q = UtilAngles.lerpQ(partialTicks, plane.getPrevQ(), plane.getClientQ());
-			poseStack.mulPose(q);
+			Quaternion qp = UtilAngles.lerpQ(partialTicks, plane.getPrevQ(), plane.getClientQ());
+			poseStack.mulPose(qp);
 		}
-		//poseStack.mulPose(Vector3f.XP.rotationDegrees(entity.getRelRotX())); // x rot done in model
-		poseStack.mulPose(Vector3f.YN.rotationDegrees(Mth.rotLerp(partialTicks, entity.yRotRelO, entity.getRelRotY())));
+		poseStack.mulPose(Vector3f.YN.rotationDegrees(Mth.lerp(partialTicks, entity.yRotRelO, entity.getRelRotY())));
 		VertexConsumer vertexconsumer = multiBufferSource.getBuffer(model.renderType(getTextureLocation(entity)));
 		model.renderToBuffer(entity, partialTicks, poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 		poseStack.popPose();

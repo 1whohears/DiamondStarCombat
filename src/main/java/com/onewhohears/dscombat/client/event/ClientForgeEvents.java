@@ -355,6 +355,10 @@ public final class ClientForgeEvents {
 			player.setYBodyRot(relangles[1]);
 			player.setYHeadRot(relangles[1]);
 			// TODO set player head model part x rot to relangles[0]
+			//event.getRenderer().getModel().head.xRot = (float) Math.toRadians(relangles[0]);
+			//event.getRenderer().getModel().head.xRot = 0;
+			/*event.getRenderer().getModel().setupAnim((LocalPlayer)player, 0f, 
+					0f, 0f, 0f, (float) Math.toRadians(relangles[0]));*/
 		}
 	}
 	
@@ -367,10 +371,10 @@ public final class ClientForgeEvents {
 	}
 	
 	private static Entity prevCamera;
+	//private static float prevPlayerX, prevPlayerY;
 	
 	@SubscribeEvent
 	public static void cameraSetup(ViewportEvent.ComputeCameraAngles event) {
-		// TODO camera move doesn't work well when plane zRot is not zero
 		if (event.getPhase() != EventPriority.NORMAL) return;
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
@@ -379,28 +383,31 @@ public final class ClientForgeEvents {
 		if (player.getVehicle() instanceof EntitySeat seat 
 				&& seat.getVehicle() instanceof EntityAircraft plane) {
 			EntitySeatCamera camera = seat.getCamera();
-			float xo, xn, xi, yo, yn, yi, zo, zn, zi;
+			float xi, yi, zi;
+			float pt = (float)event.getPartialTick();
 			if (!plane.isFreeLook() && plane.getControllingPassenger() != null 
 					&& plane.getControllingPassenger().equals(player)) {
-				// TODO use Mth.rotLerp
-				xo = plane.xRotO;
-				xn = plane.getXRot();
-				yo = plane.yRotO;
-				yn = plane.getYRot();
-				zo = plane.zRotO;
-				zn = plane.zRot;
-				xi = xo + (xn - xo) * (float)event.getPartialTick();
-				yi = yo + (yn - yo) * (float)event.getPartialTick();
-				zi = zo + (zn - zo) * (float)event.getPartialTick();
+				xi = UtilAngles.lerpAngle(pt, plane.xRotO, plane.getXRot());
+				yi = UtilAngles.lerpAngle180(pt, plane.yRotO, plane.getYRot());
+				zi = UtilAngles.lerpAngle(pt, plane.zRotO, plane.zRot);
 				player.setXRot(xi);
 				player.setYRot(yi);
 			} else {
-				xo = xn = yo = yn = 0;
-				zo = plane.zRotO;
-				zn = plane.zRot;
-				zi = zo + (zn - zo) * (float)event.getPartialTick();
+				zi = UtilAngles.lerpAngle(pt, plane.zRotO, plane.zRot);
 				xi = player.getXRot();
 				yi = player.getYRot();
+				// TODO make the mouse moves change the camera angles relative to the plane axis
+				// player.getXRot() = player.xRotO on the client's player
+				// mouseHandler.getXVelocity() is always 0
+				/*float diffx = 0; // how to get mouse movements?
+				float diffy = 0; // how to get mouse movements?
+				float[] rel = UtilAngles.globalToRelativeDegrees(prevPlayerX, prevPlayerY, plane.getClientQ());
+				rel[0] += diffx; rel[1] += diffy;
+				float[] global = UtilAngles.relativeToGlobalDegrees(rel[0], rel[1], plane.getClientQ());
+				xi = global[0];
+				yi = global[1];
+				player.setXRot(xi);
+				player.setYRot(yi);*/
 			}
 			if (m.options.getCameraType() == CameraType.THIRD_PERSON_FRONT) {
 				event.setPitch(xi*-1f);
@@ -414,10 +421,14 @@ public final class ClientForgeEvents {
 			if (camera != null) {
 				camera.setXRot(xi);
 				camera.setYRot(yi);
+				camera.xRotO = xi;
+				camera.yRotO = yi;
 				if (!prevCamera.equals(camera)) m.setCameraEntity(camera);
 			}
 		} else {
 			if (!prevCamera.equals(player)) m.setCameraEntity(player);
 		}
+		//prevPlayerX = player.getXRot();
+		//prevPlayerY = player.getYRot();
 	}
 }

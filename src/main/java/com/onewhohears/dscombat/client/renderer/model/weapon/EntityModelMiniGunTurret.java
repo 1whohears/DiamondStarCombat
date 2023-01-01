@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.renderer.model.EntityControllableModel;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
+import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -33,7 +34,7 @@ public class EntityModelMiniGunTurret<T extends EntityTurret> extends EntityCont
 			int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		poseStack.translate(0, 2.7, 0);
 		poseStack.scale(1.0F, -1.0F, 1.0F);
-		gun.xRot = -(float)Math.toRadians(Mth.lerp(partialTicks, entity.xRotRelO, entity.getRelRotX()));
+		gun.xRot = -(float)Math.toRadians(UtilAngles.lerpAngle(partialTicks, entity.xRotRelO, entity.getRelRotX()));
 		main.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 	

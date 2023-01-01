@@ -300,8 +300,6 @@ public class UtilAngles {
     	float ry = (float) Math.toDegrees(Math.atan2(
     			Math.sqrt(Math.abs(xc))*Math.signum(xc), 
     			Math.sqrt(Math.abs(zc))*Math.signum(zc)));
-    	//System.out.println("rx = "+rx);
-    	//System.out.println("ry = "+ry);
     	return new float[] {rx, ry};
     }
     
@@ -311,12 +309,6 @@ public class UtilAngles {
     	r.mul(Vector3f.XP.rotationDegrees(rx));
     	EulerAngles ea = toDegrees(r);
     	return new float[] {(float)ea.pitch, (float)ea.yaw};
-    }
-    
-    public static float degreeClamp(float d) {
-    	while (d > 180) d -= 360f;
-    	while (d < -180) d += 360f;
-    	return d;
     }
     
 }

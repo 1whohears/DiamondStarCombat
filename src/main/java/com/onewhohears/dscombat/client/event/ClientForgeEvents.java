@@ -25,7 +25,6 @@ import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.parts.EntitySeatCamera;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.util.math.UtilAngles;
-import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.client.CameraType;
@@ -352,15 +351,10 @@ public final class ClientForgeEvents {
 			}
 			Quaternion q = UtilAngles.lerpQ(event.getPartialTick(), plane.getPrevQ(), plane.getClientQ());
 			event.getPoseStack().mulPose(q);
-			// TODO player doesn't look in the right direction in certain cases
-			if (player.getVehicle() instanceof EntityTurret turret) {
-				player.setYBodyRot(0);
-				player.setYHeadRot(0);
-			} else {
-				EulerAngles a = UtilAngles.toDegrees(q);
-				player.setYBodyRot((float)a.yaw-player.getYRot());
-				player.setYHeadRot((float)a.yaw-player.getYRot());
-			}
+			float[] relangles = UtilAngles.globalToRelativeDegrees(player.getXRot(), player.getYRot(), q);
+			player.setYBodyRot(relangles[1]);
+			player.setYHeadRot(relangles[1]);
+			// TODO set player head model part x rot to relangles[0]
 		}
 	}
 	

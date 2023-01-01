@@ -288,98 +288,27 @@ public class UtilAngles {
     	return a;
     }
     
-    /**
-     * @param gx global x rotation in degrees
-     * @param gy global y rotation in degrees
-     * @param gz global z rotation in degrees
-     * @param r this quaternion plus quaternio.ONE makes relative rotation axis
-     * @return float array size 3 index 0 = relative x, index 1 = relative y, index 2 = relative z
-     */
-    /*public static float[] globalToRelativeDegrees(float gx, float gy, float gz, Quaternion r) {
-    	EulerAngles ra = UtilAngles.toDegrees(r);
-    	return globalToRelativeDegrees(gx, gy, gz, (float)ra.pitch, (float)ra.yaw, (float)ra.roll);
-    }*/
-    
-    /**
-     * @param gx global x rotation in degrees
-     * @param gy global y rotation in degrees
-     * @param gz global z rotation in degrees
-     * @param rax relative axis x rotation in degrees
-     * @param ray relative axis y rotation in degrees
-     * @param raz relative axis z rotation in degrees
-     * @return float array size 3 index 0 = relative x, index 1 = relative y, index 2 = relative z
-     */
-    /*public static float[] globalToRelativeDegrees(float gx, float gy, float gz, float rax, float ray, float raz) {
-    	return new float[] {degreeClamp(gx - rax), degreeClamp(gy - ray), degreeClamp(gz - raz)};
-    }*/
-    
-    /**
-     * @param rx relative x rotation in degrees
-     * @param ry relative y rotation in degrees
-     * @param rz relative z rotation in degrees
-     * @param r this quaternion plus quaternio.ONE makes relative rotation axis
-     * @return float array size 3 index 0 = global x, index 1 = global y, index 2 = global z
-     */
-    /*public static float[] relativeToGlobalDegrees(float rx, float ry, float rz, Quaternion r) {
-    	EulerAngles ra = UtilAngles.toDegrees(r);
-    	return relativeToGlobalDegrees(rx, ry, rz, (float)ra.pitch, (float)ra.yaw, (float)ra.roll);
-    }*/
-    
-    /**
-     * @param rx relative x rotation in degrees
-     * @param ry relative y rotation in degrees
-     * @param rz relative z rotation in degrees
-     * @param rax relative axis x rotation in degrees
-     * @param ray relative axis y rotation in degrees
-     * @param raz relative axis z rotation in degrees
-     * @return float array size 3 index 0 = global x, index 1 = global y, index 2 = global z
-     */
-    /*public static float[] relativeToGlobalDegrees(float rx, float ry, float rz, float rax, float ray, float raz) {
-    	return new float[] {degreeClamp(rx + rax), degreeClamp(ry + ray), degreeClamp(rz + raz)};
-    }*/
-    
-    /*public static Quaternion globalDegreesToRelativeRotation(float gx, float gy, float gz, Quaternion ra) {
-    	Quaternion gq = toQuaternion(gy, gx, gz);
-    	//gq.conj();
-    	//EulerAngles ea = toDegrees(gq);
-    	//System.out.println("gx = "+gx+" gy = "+gy+" gz = "+gz);
-    	//System.out.println("ea = "+ea);
-    	Quaternion rc = ra.copy();
-    	rc.conj();
-    	//rc.mul(gq);
-    	//return rc;
-    	gq.mul(rc);
-    	return gq;
-    }*/
-    
-    /*public static EulerAngles relativeRotationToGlobalDegrees(Quaternion rr, Quaternion ra) {
-    	Quaternion ra2 = ra.copy();
-    	ra2.mul(rr);
-    	return toDegrees(ra2);
-    }
-    
-    public static EulerAngles relativeRotationToGlobalDegrees(float rx, float ry, float rz, Quaternion ra) {
-    	return relativeRotationToGlobalDegrees(toQuaternion(ry, rx, rz), ra);
-    }*/
-    
+    // TODO there has to be a faster way to do this...math majors help please!
     public static float[] globalToRelativeDegrees(float gx, float gy, Quaternion ra) {
     	Vec3 dir = rotationToVector(gy, gx);
     	Vec3 yaxis = getYawAxis(ra).scale(-1);
+    	Vec3 zaxis = getRollAxis(ra);
     	Vec3 xaxis = getPitchAxis(ra).scale(-1);
-    	Vec3 zaxis = getRollAxis(ra).scale(-1);
     	float rx = (float) UtilGeometry.angleBetweenVecPlaneDegrees(dir, yaxis);
-    	float ry = (float) UtilGeometry.angleBetweenVecPlaneDegrees(dir, xaxis); // TODO doesn't work when dir is in negative z axis
-    	float rz = (float) UtilGeometry.angleBetweenVecPlaneDegrees(dir, zaxis);
-    	System.out.println("rx = "+rx);
-    	System.out.println("ry = "+ry);
-    	System.out.println("rz = "+rz);
-    	return new float[] {degreeClamp(rx), degreeClamp(ry)};
+    	double xc = UtilGeometry.componentMagSqrDirByAxis(dir, xaxis);
+    	double zc = UtilGeometry.componentMagSqrDirByAxis(dir, zaxis);
+    	float ry = (float) Math.toDegrees(Math.atan2(
+    			Math.sqrt(Math.abs(xc))*Math.signum(xc), 
+    			Math.sqrt(Math.abs(zc))*Math.signum(zc)));
+    	//System.out.println("rx = "+rx);
+    	//System.out.println("ry = "+ry);
+    	return new float[] {rx, ry};
     }
     
     public static float[] relativeToGlobalDegrees(float rx, float ry, Quaternion ra) {
     	Quaternion r = ra.copy();
-    	r.mul(Vector3f.XN.rotationDegrees(rx));
     	r.mul(Vector3f.YN.rotationDegrees(ry));
+    	r.mul(Vector3f.XP.rotationDegrees(rx));
     	EulerAngles ea = toDegrees(r);
     	return new float[] {(float)ea.pitch, (float)ea.yaw};
     }

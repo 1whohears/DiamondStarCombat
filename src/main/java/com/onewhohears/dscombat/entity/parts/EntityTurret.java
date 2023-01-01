@@ -28,13 +28,9 @@ public class EntityTurret extends EntitySeat {
 	public static final EntityDataAccessor<Float> MINROTX = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> MAXROTX = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> ROTRATE = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.FLOAT);
-	//public static final EntityDataAccessor<Quaternion> RQ = SynchedEntityData.defineId(EntityAircraft.class, DataSerializers.QUATERNION);
 	public static final EntityDataAccessor<Float> RELROTX = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> RELROTY = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.FLOAT);
 	
-	//public Quaternion clientQ = Quaternion.ONE.copy();
-	//public Quaternion prevRQ = Quaternion.ONE.copy();
-	//public float zRot, zRotO; 
 	public float xRotRelO, yRotRelO;
 	
 	/**
@@ -57,7 +53,6 @@ public class EntityTurret extends EntitySeat {
 		entityData.define(MINROTX, 0f);
 		entityData.define(MAXROTX, 0f);
 		entityData.define(ROTRATE, 0f);
-		//entityData.define(RQ, Quaternion.ONE);
 		entityData.define(RELROTX, 0f);
 		entityData.define(RELROTY, 0f);
 	}
@@ -65,10 +60,6 @@ public class EntityTurret extends EntitySeat {
 	@Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
         super.onSyncedDataUpdated(key);
-        /*if (level.isClientSide() && Q.equals(key)) {
-        	setPrevQ(getClientQ());
-        	setClientQ(getQ());
-        }*/
     }
 	
 	@Override
@@ -79,12 +70,8 @@ public class EntityTurret extends EntitySeat {
 		setRotBounds(new RotBounds(tag));
 		setXRot(tag.getFloat("xRot"));
 		setYRot(tag.getFloat("yRot"));
-		//zRot = tag.getFloat("zRot");
 		setRelRotX(tag.getFloat("relrotx"));
 		setRelRotX(tag.getFloat("relroty"));
-		/*Quaternion q = UtilAngles.toQuaternion(getRelRotY(), getRelRotX(), zRot);
-		setRelQ(q);
-		setPrevRelQ(q);*/
 		
 	}
 
@@ -95,7 +82,6 @@ public class EntityTurret extends EntitySeat {
 		getRotBounds().write(tag);
 		tag.putFloat("xRot", getXRot());
 		tag.putFloat("yRot", getYRot());
-		//tag.putFloat("zRot", zRot);
 		tag.putFloat("relrotx", getRelRotX());
 		tag.putFloat("relroty", getRelRotY());
 	}
@@ -110,23 +96,15 @@ public class EntityTurret extends EntitySeat {
 		super.tick();
 		xRotRelO = getRelRotX();
 		yRotRelO = getRelRotY();
-		//setPrevRelQ(getRelQ());
 		Player player = getPlayer();
 		if (player == null) return;
 		Quaternion ra = Quaternion.ONE;
 		if (!level.isClientSide) {
-			//Quaternion rq = getRelQ();
-			//EulerAngles rr = UtilAngles.toDegrees(rq);
-			//float rely = (float)rr.yaw, relx = (float)rr.pitch;
 			float rely = yRotRelO, relx = xRotRelO;
 			float rotrate = getRotRate(), minrotx = getMinRotX(), maxrotx = getMaxRotX();
-			//float zgoal = 0;
 			if (getVehicle() instanceof EntityAircraft plane) {
 				ra = plane.getQ();
-				//zgoal = plane.zRot;
 			}
-			//Quaternion rrg = UtilAngles.globalDegreesToRelativeRotation(player.getXRot(), player.getYRot(), zgoal, ra);
-			//EulerAngles rrga = UtilAngles.toDegrees(rrg);
 			float[] relangles = UtilAngles.globalToRelativeDegrees(player.getXRot(), player.getYRot(), ra);
 			
 			float rg1 = relangles[1] + 360, rg2 = relangles[1] - 360;
@@ -147,38 +125,22 @@ public class EntityTurret extends EntitySeat {
 			if (Math.abs(rotdiffy) < rotrate) dy = rotdiffy;
 			else dy = rotrate*Math.signum(rotdiffy);
 			
-			/*rq.mul(Vector3f.XP.rotationDegrees(dx));
-			rq.mul(Vector3f.YN.rotationDegrees(dy));
-			rq.normalize();
-			setRelQ(rq);
+			setRelRotX(UtilAngles.degreeClamp(relx+dx));
+			setRelRotY(UtilAngles.degreeClamp(rely+dy));
 			
-			EulerAngles nrr = UtilAngles.toDegrees(rq);
-			setRelRotX((float)nrr.pitch);
-			setRelRotY((float)nrr.yaw);*/
-			
-			setRelRotX(relx+dx);
-			setRelRotY(rely+dy);
-			
-			System.out.println("TURRET SERVER TICK "+tickCount);
-			System.out.println("rely     = "+rely);
+			/*System.out.println("TURRET SERVER TICK "+tickCount);
 			System.out.println("relgoaly = "+relangles[1]);
-			System.out.println("rotdiffy = "+rotdiffy);
 			System.out.println("relyn    = "+getRelRotY());
-			/*System.out.println("relx     = "+relx);
-			System.out.println("relgoalx = "+(float)rrga.pitch);
-			System.out.println("rotdiffx = "+rotdiffx);
+			System.out.println("relgoalx = "+relangles[0]);
 			System.out.println("relxn    = "+getRelRotX());*/
 		}
 		float[] global = UtilAngles.relativeToGlobalDegrees(getRelRotX(), getRelRotY(), ra);
 		setXRot(global[0]);
 		setYRot(global[1]);
-		//zRot = (float)global.roll;
-		if (!level.isClientSide) {
-			System.out.println("playery  = "+player.getYRot());
-			System.out.println("globaly  = "+global[1]);
-			//System.out.println("playerx  = "+player.getXRot());
-			//System.out.println("globalx  = "+global.pitch);
-		}
+		/*if (!level.isClientSide) {
+			System.out.println("playerx = "+player.getXRot()+" playery = "+player.getYRot());
+			System.out.println("globalx = "+global[0]       +" globaly = "+global[1]);
+		}*/
 	}
 	
 	@Override
@@ -265,30 +227,6 @@ public class EntityTurret extends EntitySeat {
 	public float getRotRate() {
 		return entityData.get(ROTRATE);
 	}
-	
-	/*public Quaternion getRelQ() {
-        return entityData.get(RQ).copy();
-    }
-    
-    public void setRelQ(Quaternion q) {
-        entityData.set(RQ, q.copy());
-    }
-    
-    public Quaternion getPrevRelQ() {
-        return prevRQ.copy();
-    }
-    
-    public void setPrevRelQ(Quaternion q) {
-        prevRQ = q.copy();
-    }*/
-    
-    /*public Quaternion getClientQ() {
-        return clientQ.copy();
-    }
-    
-    public void setClientQ(Quaternion q) {
-        clientQ = q.copy();
-    }*/
 	
 	public float getRelRotX() {
 		return entityData.get(RELROTX);

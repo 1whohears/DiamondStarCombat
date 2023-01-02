@@ -275,16 +275,12 @@ public class UtilAngles {
 	}
     
     public static Vec3 rotateVector(Vec3 n, Quaternion q) {
-    	//System.out.println("ROTATE VECTOR");
-    	//System.out.println(v);
-    	//System.out.println(q);
     	Quaternion nq = new Quaternion((float)n.x, (float)n.y, (float)n.z, 0);
     	Quaternion cq = q.copy(); cq.conj();
     	Quaternion q1 = q.copy();
     	q1.mul(nq);
     	q1.mul(cq);
     	Vec3 a = new Vec3(q1.i(), q1.j(), q1.k());
-    	//System.out.println(a);
     	return a;
     }
     

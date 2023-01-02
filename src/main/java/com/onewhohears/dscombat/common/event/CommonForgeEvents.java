@@ -13,11 +13,11 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 @Mod.EventBusSubscriber(modid = DSCombatMod.MODID, bus = Bus.FORGE)
 public final class CommonForgeEvents {
 	
-	/*@SubscribeEvent
+	// TODO how to make player bounding box smaller when in plane
+	/*@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void playerTickEvent(TickEvent.PlayerTickEvent event) {
 		//if (event.side != LogicalSide.SERVER) return;
-		if (event.getPhase() != EventPriority.NORMAL) return;
-		if (event.phase != Phase.END) return;
+		//if (event.phase != Phase.END) return;
 		final var player = event.player;
 		if (player == null) return;
 		if (!(player.getVehicle() instanceof EntitySeat seat)) return;
@@ -29,10 +29,9 @@ public final class CommonForgeEvents {
 		player.setBoundingBox(new AABB(x+w, y+0.5d, z+w, x-w, y, z-w)); 
 	}*/
 	
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void serverTickEvent(TickEvent.ServerTickEvent event) {
 		if (event.phase != Phase.END) return;
-		if (event.getPhase() != EventPriority.NORMAL) return;
 		NonTickingMissileManager.serverTick(event.getServer());
 	}
 	

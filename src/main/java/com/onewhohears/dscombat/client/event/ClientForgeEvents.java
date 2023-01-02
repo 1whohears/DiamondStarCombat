@@ -32,6 +32,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult.Type;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
@@ -41,7 +43,6 @@ import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -178,22 +179,15 @@ public final class ClientForgeEvents {
 	
 	private static void resetHoverIndex() {
 		hoverIndex = -1;
-		//System.out.println("reset hover index");
 	}
 	
-	@SubscribeEvent
-	public static void onAttackEntity(AttackEntityEvent event) {
-		if (event.getPhase() != EventPriority.NORMAL) return;
+	@SubscribeEvent(priority = EventPriority.NORMAL)
+	public static void onInteractKey(InputEvent.InteractionKeyMappingTriggered event) {
+		if (!event.isAttack()) return;
 		Minecraft m = Minecraft.getInstance();
-		if (event.getTarget().equals(m.player)) {
-			event.setCanceled(true);
-		}
-	}
-	
-	@SubscribeEvent
-	public static void onScrollInput(InputEvent.MouseScrollingEvent event) {
-		//System.out.println(event.getMouseX()+" "+event.getMouseY());
-		//System.out.println("mouse scroll "+event.getScrollDelta());
+		if (m.hitResult.getType() != Type.ENTITY) return;
+		EntityHitResult hit = (EntityHitResult) m.hitResult;
+		if (hit.getEntity().equals(m.player)) event.setCanceled(true);
 	}
 	
 	private static VertexBuffer pingBuffer;
@@ -227,9 +221,8 @@ public final class ClientForgeEvents {
 				Math.toDegrees(Math.atan2(y, d)), 10000);
 	}
 	
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void renderLevelStage(RenderLevelStageEvent event) {
-		if (event.getPhase() != EventPriority.NORMAL) return;
 		if (event.getStage() != Stage.AFTER_PARTICLES) return;
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
@@ -334,9 +327,8 @@ public final class ClientForgeEvents {
 		buffer.vertex(x-w, y+w2, z-w).color(colorR, colorG, colorB, colorA).endVertex();
 	}
 	
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void playerRender(RenderPlayerEvent.Pre event) {
-		if (event.getPhase() != EventPriority.NORMAL) return;
 		Minecraft m = Minecraft.getInstance();
 		final var playerC = m.player;
 		Player player = event.getEntity();
@@ -359,7 +351,6 @@ public final class ClientForgeEvents {
 		}
 	}
 	
-	// TODO attempting to attack invalid entity bug still there
 	/*private static void changePlayerHitbox(Player player) {
 		double x = player.getX();
 		double y = player.getY();
@@ -371,9 +362,8 @@ public final class ClientForgeEvents {
 	private static Entity prevCamera;
 	//private static float prevPlayerX, prevPlayerY;
 	
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void cameraSetup(ViewportEvent.ComputeCameraAngles event) {
-		if (event.getPhase() != EventPriority.NORMAL) return;
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
 		if (player == null) return;

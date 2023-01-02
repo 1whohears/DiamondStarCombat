@@ -37,19 +37,15 @@ public class WeaponPresets {
  		}
 	}
 	
-	/*public static void setupPresetNbt() {
-		for (WeaponData w : weapons) weaponNbt.add(w.write());
-	}*/
-	
 	public static void add(WeaponData data) {
-		System.out.println("WEAPON PRESET JAVA "+data);
+		//System.out.println("WEAPON PRESET JAVA "+data);
 		weapons.add(data);
 		weaponNbt.add(data.write());
 	}
 	
 	public static void add(CompoundTag data) {
 		WeaponData wd = UtilParse.parseWeaponFromCompound(data);
-		System.out.println("WEAPON PRESET JSON "+wd);
+		//System.out.println("WEAPON PRESET JSON "+wd);
 		if (wd == null) return;
 		weapons.add(wd);
 		weaponNbt.add(data);

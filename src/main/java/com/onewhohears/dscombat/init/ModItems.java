@@ -40,7 +40,7 @@ public class ModItems {
 	public static void registerWeaponPresets() {
 		for (int i = 0; i < WeaponPresets.weapons.size(); ++i) {
 			WeaponData data = WeaponPresets.weapons.get(i);
-			System.out.println("registering item weapon "+data);
+			//System.out.println("registering item weapon "+data);
 			final int size;
 			if (data.getMaxAmmo() < 64) size = data.getMaxAmmo();
 			else size = 64;

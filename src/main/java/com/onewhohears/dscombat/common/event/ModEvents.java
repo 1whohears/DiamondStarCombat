@@ -9,13 +9,12 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.server.command.ConfigCommand;
 
 @Mod.EventBusSubscriber(modid = DSCombatMod.MODID)
-public class ModEvents {
+public final class ModEvents {
 	
 	@SubscribeEvent
 	public static void registerCommands(RegisterCommandsEvent event) {
 		new MissileCommand(event.getDispatcher());
 		ConfigCommand.register(event.getDispatcher());
-		System.out.println("REGISTERING COMMANDS");
 	}
 	
 }

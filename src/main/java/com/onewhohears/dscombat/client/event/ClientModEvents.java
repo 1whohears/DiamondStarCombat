@@ -42,10 +42,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 @Mod.EventBusSubscriber(modid = DSCombatMod.MODID, bus = Bus.MOD, value = Dist.CLIENT)
-public class ClientModEvents {
-	
-	private ClientModEvents() {
-	}
+public final class ClientModEvents {
 	
 	@SubscribeEvent
 	public static void clientSetup(RegisterKeyMappingsEvent event) {
@@ -130,7 +127,6 @@ public class ClientModEvents {
 	
 	@SubscribeEvent
     public static void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
-        //event.registerAboveAll("aircraft_stats", PilotOverlay.HUD_Aircraft_Stats);
         event.registerBelowAll("aircraft_stats", PilotOverlay.HUD_Aircraft_Stats);
     }
 }

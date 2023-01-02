@@ -14,6 +14,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 public final class CommonForgeEvents {
 	
 	// TODO how to make player bounding box smaller when in plane
+	// probably only needs to be set on the client side
 	/*@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void playerTickEvent(TickEvent.PlayerTickEvent event) {
 		//if (event.side != LogicalSide.SERVER) return;

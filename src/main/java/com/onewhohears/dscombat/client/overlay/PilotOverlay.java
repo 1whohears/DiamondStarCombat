@@ -67,14 +67,8 @@ public class PilotOverlay {
 			GuiComponent.drawString(poseStack, m.font, 
 					"["+plane.getBlockX()+","+plane.getBlockY()+","+plane.getBlockZ()+"]", 
 					width/2+11, height-60, 0x00ff00);
-			// aoa
-			if (plane instanceof EntityPlane p) {
-				GuiComponent.drawString(poseStack, m.font, 
-					String.format("AOA: %3.3f", p.getAOA()), 
-					width/2+11, height-70, 0x00ff00);
-			}
 			// weapon data
-			int hieght = 1;
+			int wh = 1;
 			List<WeaponData> weapons = plane.weaponSystem.getWeapons();
 			WeaponData sw = plane.weaponSystem.getSelected();
 			if (sw != null) for (int i = 0; i < weapons.size(); ++i) {
@@ -84,8 +78,9 @@ public class PilotOverlay {
 				else c.append("   ");
 				c.append(Component.translatable("item."+DSCombatMod.MODID+"."+data.getId()));
 				c.append(" "+data.getCurrentAmmo()+"/"+data.getMaxAmmo());
-				GuiComponent.drawString(poseStack, m.font, c, 1, hieght, 0x0000ff);
-				hieght += 10;
+				GuiComponent.drawString(poseStack, m.font, c, 
+						1, wh, 0x0000ff);
+				wh += 10;
 			}
 			// flares
 			/*GuiComponent.drawString(poseStack, m.font, 
@@ -152,16 +147,24 @@ public class PilotOverlay {
 	        		height-stickKnobSize-stickOffset-stickOffset-stickBaseSize, 
 	        		0, 0, stickKnobSize, stickKnobSize, 
 	        		stickKnobSize, stickKnobSize);
+	        // aoa
+	     	if (plane instanceof EntityPlane p) {
+	     		GuiComponent.drawString(poseStack, m.font, 
+	     			String.format("AOA: %3.3f", p.getAOA()), 
+	     			width-stickBaseSize-stickOffset, 
+	     			height-stickBaseSize-stickOffset-stickKnobSize-stickOffset-10, 
+	     			0x00ff00);
+	     	}
 	        // throttle input
 	        RenderSystem.setShaderTexture(0, STICK_BASE_SQUARE);
 	        GuiComponent.blit(poseStack, 
-	        		stickOffset, 
+	        		width-stickBaseSize-stickOffset-stickKnobSize-stickOffset, 
 	        		height-stickBaseSize-stickOffset, 
 	        		0, 0, stickKnobSize, stickBaseSize, 
 	        		stickBaseSize, stickBaseSize);
 	        RenderSystem.setShaderTexture(0, STICK_KNOB);
 	        GuiComponent.blit(poseStack, 
-	        		stickOffset, 
+	        		width-stickBaseSize-stickOffset-stickKnobSize-stickOffset, 
 	        		height-n-stickOffset-(int)(plane.getCurrentThrottle()*stickBaseSize), 
 	        		0, 0, stickKnobSize, stickKnobSize, 
 	        		stickKnobSize, stickKnobSize);
@@ -180,6 +183,16 @@ public class PilotOverlay {
 						"Ammo: "+turret.getAmmo(), 
 						width/2-90, 11, 0xffff00);
 			}
+	        // missile warning
+	        if (plane.getMissileTrackedTicks() > 0) {
+	        	GuiComponent.drawString(poseStack, m.font, 
+						"MISSILE TRACKING YOU", 
+						1, height-10, 0xff0000);
+	        } else if (plane.getLockedOntoTicks() > 0) {
+	        	GuiComponent.drawString(poseStack, m.font, 
+						"RADAR TRACKING YOU", 
+						1, height-10, 0xffff00);
+	        }
 		}
 	});
 	

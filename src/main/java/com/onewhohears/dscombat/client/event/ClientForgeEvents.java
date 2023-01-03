@@ -32,6 +32,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult.Type;
 import net.minecraft.world.phys.Vec3;
@@ -333,7 +334,7 @@ public final class ClientForgeEvents {
 		final var playerC = m.player;
 		Player player = event.getEntity();
 		if (player.getRootVehicle() instanceof EntityAircraft plane) {
-			//changePlayerHitbox(player);
+			changePlayerHitbox(player);
 			if (player.equals(playerC) && m.options.getCameraType().isFirstPerson()) {
 				event.setCanceled(true);
 				return;
@@ -351,13 +352,13 @@ public final class ClientForgeEvents {
 		}
 	}
 	
-	/*private static void changePlayerHitbox(Player player) {
+	private static void changePlayerHitbox(Player player) {
 		double x = player.getX();
 		double y = player.getY();
 		double z = player.getZ();
 		double w = player.getBbWidth()/2;
-		player.setBoundingBox(new AABB(x+w, y+0.5d, z+w, x-w, y, z-w)); 
-	}*/
+		player.setBoundingBox(new AABB(x+w, y+w, z+w, x-w, y-w, z-w));
+	}
 	
 	private static Entity prevCamera;
 	//private static float prevPlayerX, prevPlayerY;

@@ -41,6 +41,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -181,23 +182,23 @@ public abstract class EntityAircraft extends Entity {
 		partsManager.read(compound);
 		weaponSystem.read(compound);
 		radarSystem.read(compound);
-		this.setMaxSpeed(compound.getFloat("max_speed"));
-		this.setMaxHealth(compound.getFloat("max_health"));
-		this.setHealth(compound.getFloat("health"));
-		this.setStealth(compound.getFloat("stealth"));
-		this.setMaxDeltaRoll(compound.getFloat("maxroll"));
-		this.setMaxDeltaPitch(compound.getFloat("maxpitch"));
-		this.setMaxDeltaYaw(compound.getFloat("maxyaw"));
-		this.setAccelerationRoll(compound.getFloat("accroll"));
-		this.setAccelerationPitch(compound.getFloat("accpitch"));
-		this.setAccelerationYaw(compound.getFloat("accyaw"));
-		this.setThrottleIncreaseRate(compound.getFloat("throttleup"));
-		this.setThrottleDecreaseRate(compound.getFloat("throttledown"));
-		this.setIdleHeat(compound.getFloat("idleheat"));
-		this.setAircraftWeight(compound.getFloat("weight"));
-		this.setSurfaceArea(compound.getFloat("surfacearea"));
-		this.setLandingGear(compound.getBoolean("landing_gear"));
-		this.setCurrentThrottle(compound.getFloat("current_throttle"));
+		setMaxSpeed(compound.getFloat("max_speed"));
+		setMaxHealth(compound.getFloat("max_health"));
+		setHealth(compound.getFloat("health"));
+		setStealth(compound.getFloat("stealth"));
+		setMaxDeltaRoll(compound.getFloat("maxroll"));
+		setMaxDeltaPitch(compound.getFloat("maxpitch"));
+		setMaxDeltaYaw(compound.getFloat("maxyaw"));
+		setAccelerationRoll(compound.getFloat("accroll"));
+		setAccelerationPitch(compound.getFloat("accpitch"));
+		setAccelerationYaw(compound.getFloat("accyaw"));
+		setThrottleIncreaseRate(compound.getFloat("throttleup"));
+		setThrottleDecreaseRate(compound.getFloat("throttledown"));
+		setIdleHeat(compound.getFloat("idleheat"));
+		setAircraftWeight(compound.getFloat("weight"));
+		setSurfaceArea(compound.getFloat("surfacearea"));
+		setLandingGear(compound.getBoolean("landing_gear"));
+		setCurrentThrottle(compound.getFloat("current_throttle"));
 		setXRot(compound.getFloat("xRot"));
 		setYRot(compound.getFloat("yRot"));
 		zRot = compound.getFloat("zRot");
@@ -214,25 +215,25 @@ public abstract class EntityAircraft extends Entity {
 		partsManager.write(compound);
 		weaponSystem.write(compound);
 		radarSystem.write(compound);
-		compound.putFloat("max_speed", this.getMaxSpeed());
-		compound.putFloat("max_health", this.getMaxHealth());
-		compound.putFloat("health", this.getHealth());
-		compound.putFloat("stealth", this.getStealth());
-		compound.putFloat("maxroll", this.getMaxDeltaRoll());
-		compound.putFloat("maxpitch", this.getMaxDeltaPitch());
-		compound.putFloat("maxyaw", this.getMaxDeltaYaw());
-		compound.putFloat("accroll", this.getAccelerationRoll());
-		compound.putFloat("accpitch", this.getAccelerationPitch());
-		compound.putFloat("accyaw", this.getAccelerationYaw());
-		compound.putFloat("throttleup", this.getThrottleIncreaseRate());
-		compound.putFloat("throttledown", this.getThrottleDecreaseRate());
-		compound.putFloat("idleheat", this.getIdleHeat());
-		compound.putFloat("weight", this.getAircraftWeight());
-		compound.putFloat("surfacearea", this.getSurfaceArea());
-		compound.putBoolean("landing_gear", this.isLandingGear());
-		compound.putFloat("current_throttle", this.getCurrentThrottle());
-		compound.putFloat("xRot", this.getXRot());
-		compound.putFloat("yRot", this.getYRot());
+		compound.putFloat("max_speed", getMaxSpeed());
+		compound.putFloat("max_health", getMaxHealth());
+		compound.putFloat("health", getHealth());
+		compound.putFloat("stealth", getStealth());
+		compound.putFloat("maxroll", getMaxDeltaRoll());
+		compound.putFloat("maxpitch", getMaxDeltaPitch());
+		compound.putFloat("maxyaw", getMaxDeltaYaw());
+		compound.putFloat("accroll", getAccelerationRoll());
+		compound.putFloat("accpitch", getAccelerationPitch());
+		compound.putFloat("accyaw", getAccelerationYaw());
+		compound.putFloat("throttleup", getThrottleIncreaseRate());
+		compound.putFloat("throttledown", getThrottleDecreaseRate());
+		compound.putFloat("idleheat", getIdleHeat());
+		compound.putFloat("weight", getAircraftWeight());
+		compound.putFloat("surfacearea", getSurfaceArea());
+		compound.putBoolean("landing_gear", isLandingGear());
+		compound.putFloat("current_throttle", getCurrentThrottle());
+		compound.putFloat("xRot", getXRot());
+		compound.putFloat("yRot", getYRot());
 		compound.putFloat("zRot", zRot);
 	}
 	
@@ -314,7 +315,7 @@ public abstract class EntityAircraft extends Entity {
 				th = collideSpeedWithGearThreshHold;
 			}
 			if (my > th && this.tickCount > 300) {
-				this.addHealth((float)(-(my-th) * collideDamageRate));
+				addHealth((float)(-(my-th) * collideDamageRate));
 			}
 		}
 	}
@@ -338,7 +339,7 @@ public abstract class EntityAircraft extends Entity {
 	private void smoke() {
 		if (Math.random() > 0.4d) return;
 		level.addParticle(ParticleTypes.SMOKE, 
-				this.getX(), this.getY(), this.getZ(), 
+				getX(), getY(), getZ(), 
 				random.nextGaussian() * 0.08D, 
 				0.1D, 
 				random.nextGaussian() * 0.08D);
@@ -589,8 +590,8 @@ public abstract class EntityAircraft extends Entity {
 			radarSystem.tickUpdateTargets();
 			if (newRiderCooldown > 0) --newRiderCooldown;
 			else {
-				if (this.inputShoot) weaponSystem.shootSelected(controller);
-				if (this.inputFlare && tickCount % 5 == 0) flare(controller, isPlayer);
+				if (inputShoot) weaponSystem.shootSelected(controller);
+				if (inputFlare && tickCount % 5 == 0) flare(controller, isPlayer);
 			}
 			if (inputOpenMenu && isPlayer) {
 				if (isOnGround() || isTestMode()) {
@@ -715,7 +716,7 @@ public abstract class EntityAircraft extends Entity {
 			return InteractionResult.PASS;
 		} else if (player.getRootVehicle() != null && player.getRootVehicle().equals(this)) {
 			return InteractionResult.PASS;
-		} else if (!this.level.isClientSide) {
+		} else if (!level.isClientSide) {
 			ItemStack stack = player.getInventory().getSelected();
 			if (!stack.isEmpty()) {
 				Item item = stack.getItem();
@@ -727,7 +728,9 @@ public abstract class EntityAircraft extends Entity {
 					return InteractionResult.SUCCESS;
 				} else if (item instanceof ItemRepairTool tool) {
 					if (isMaxHealth()) {
-						// TODO some kind of visual/audio plane fixed cue
+						level.playSound(null, this, 
+								SoundEvents.ANVIL_USE, 
+								getSoundSource(), 0.5f, 0.9f);
 						return InteractionResult.PASS;
 					}
 					addHealth(tool.repair);
@@ -740,7 +743,7 @@ public abstract class EntityAircraft extends Entity {
 			}
 			boolean okay = rideAvailableSeat(player);
 			return okay ? InteractionResult.CONSUME : InteractionResult.PASS;
-		} else if (this.level.isClientSide) {	
+		} else if (level.isClientSide) {	
 			Minecraft m = Minecraft.getInstance();
 			if (m.player.equals(player)) ClientForgeEvents.centerMouse();
 			return InteractionResult.SUCCESS;
@@ -1099,7 +1102,7 @@ public abstract class EntityAircraft extends Entity {
     }
     
     public void addHealth(float h) {
-    	this.setHealth(getHealth()+h);
+    	setHealth(getHealth()+h);
     }
     
     public void setHealth(float h) {
@@ -1122,7 +1125,7 @@ public abstract class EntityAircraft extends Entity {
      * @return the total heat value
      */
     public float getHeat() {
-    	return getIdleHeat() + this.getCurrentThrottle() * getEngineHeat();
+    	return getIdleHeat() + getCurrentThrottle() * getEngineHeat();
     }
     
     /**
@@ -1175,14 +1178,14 @@ public abstract class EntityAircraft extends Entity {
      * plays all the sounds for the players in the plane
      */
     public void sounds() {
-    	if (!this.level.isClientSide) {
-    		if (this.getMissileTrackedTicks() > 0) this.addMissileTrackedTicks(-1);
-    		if (this.getLockedOntoTicks() > 0) this.addLockedOntoTicks(-1);
+    	if (!level.isClientSide) {
+    		if (getMissileTrackedTicks() > 0) addMissileTrackedTicks(-1);
+    		if (getLockedOntoTicks() > 0) addLockedOntoTicks(-1);
     	} else {
-    		if (this.getMissileTrackedTicks() > 0 && this.tickCount % 4 == 0) for (Player p : getRidingPlayers()) {
+    		if (getMissileTrackedTicks() > 0 && tickCount % 4 == 0) for (Player p : getRidingPlayers()) {
     			level.playSound(p, new BlockPos(p.position()), 
 	    			ModSounds.MISSILE_WARNING.get(), SoundSource.PLAYERS, 1f, 1f);
-    		} else if (this.getLockedOntoTicks() > 0 && this.tickCount % 8 == 0) for (Player p : getRidingPlayers()) {
+    		} else if (getLockedOntoTicks() > 0 && tickCount % 8 == 0) for (Player p : getRidingPlayers()) {
     			level.playSound(p, new BlockPos(p.position()), 
     	    		ModSounds.GETTING_LOCKED.get(), SoundSource.PLAYERS, 1f, 1f);
         	}
@@ -1193,16 +1196,16 @@ public abstract class EntityAircraft extends Entity {
      * entity tracking missile calls this when tracking this plane
      */
     public void trackedByMissile() {
-    	if (this.level.isClientSide) return;
-    	this.setMissileTrackedTicks(10);
+    	if (level.isClientSide) return;
+    	setMissileTrackedTicks(10);
     }
     
     /**
      * another radar system calls this when tracking this craft
      */
     public void lockedOnto() {
-    	if (this.level.isClientSide) return;
-    	this.setLockedOntoTicks(10);
+    	if (level.isClientSide) return;
+    	setLockedOntoTicks(10);
     }
     
     /*
@@ -1217,7 +1220,7 @@ public abstract class EntityAircraft extends Entity {
     	entityData.set(MISSILE_TRACKED_TICKS, ticks);
     }
     public void addMissileTrackedTicks(int ticks) {
-    	this.setMissileTrackedTicks(ticks+this.getMissileTrackedTicks());
+    	setMissileTrackedTicks(ticks+getMissileTrackedTicks());
     }
     public int getLockedOntoTicks() {
     	return entityData.get(LOCKED_ONTO_TICKS);
@@ -1226,7 +1229,7 @@ public abstract class EntityAircraft extends Entity {
     	entityData.set(LOCKED_ONTO_TICKS, ticks);
     }
     public void addLockedOntoTicks(int ticks) {
-    	this.setLockedOntoTicks(ticks+this.getLockedOntoTicks());
+    	setLockedOntoTicks(ticks+getLockedOntoTicks());
     }
     
     @Override
@@ -1293,7 +1296,7 @@ public abstract class EntityAircraft extends Entity {
     }
     
     public void toggleLandingGear() {
-    	this.setLandingGear(!isLandingGear());
+    	setLandingGear(!isLandingGear());
     }
     
     /**

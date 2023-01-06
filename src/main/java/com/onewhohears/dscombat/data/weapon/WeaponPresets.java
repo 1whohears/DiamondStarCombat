@@ -49,6 +49,8 @@ public class WeaponPresets {
 		if (wd == null) return;
 		weapons.add(wd);
 		weaponNbt.add(data);
+		//System.out.println("ADDED "+wd.getId());
+		//System.out.println("max = "+wd.getMaxAmmo());
 	}
 	
 	@Nullable

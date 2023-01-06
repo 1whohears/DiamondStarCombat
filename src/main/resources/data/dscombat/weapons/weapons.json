@@ -2,6 +2,7 @@
 	"weapons": [
 		"bullets/20mm.json",
 		"bullets/50mmhe.json",
+		"bullets/120mmhe.json",
 		
 		"missiles/aim9l.json",
 		"missiles/aim9p5.json",

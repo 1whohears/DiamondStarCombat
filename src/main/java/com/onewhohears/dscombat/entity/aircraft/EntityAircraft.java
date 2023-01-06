@@ -53,6 +53,7 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Explosion;
@@ -119,6 +120,7 @@ public abstract class EntityAircraft extends Entity {
 	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot;
 	private float landingGearPos, landingGearPosOld;
 	
+	// TODO the current texture should be a synched string defined in readAdditionalSaveData
 	public EntityAircraft(EntityType<? extends EntityAircraft> entity, Level level, 
 			ResourceLocation texture, RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item) {
 		super(entity, level);
@@ -739,6 +741,9 @@ public abstract class EntityAircraft extends Entity {
 					return InteractionResult.SUCCESS;
 				} else if (item instanceof ItemAmmo ammo) {
 					// TODO right click aircraft with ammo to reload turrets/weapon racks
+				} else if (item instanceof DyeItem dye) {
+					// TODO right clicking plane with dye item changes texture
+					// if (this craft has a texture that matches that color) consume dye and change texture packet
 				}
 			}
 			boolean okay = rideAvailableSeat(player);
@@ -1066,7 +1071,6 @@ public abstract class EntityAircraft extends Entity {
     }
     
     public ResourceLocation getTexture() {
-    	// TODO right clicking plane with paint job item changes texture
     	return TEXTURE;
     }
     

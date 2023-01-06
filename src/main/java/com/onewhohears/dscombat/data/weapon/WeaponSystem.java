@@ -123,7 +123,7 @@ public class WeaponSystem {
 		data.shoot(parent.level, controller, UtilAngles.getRollAxis(parent.getQ()), null, parent);
 		if (data.isFailedLaunch()) reason = data.getFailedLaunchReason();
 		for (WeaponData wd : weapons) if (wd.getType() == WeaponType.BULLET && wd.getId().equals(name) && !wd.getSlotId().equals(data.getSlotId())) {
-			wd.shoot(parent.level, controller, UtilAngles.getRollAxis(parent.getQ()), null, parent);
+			wd.shoot(parent.level, controller, parent.getLookAngle(), null, parent);
 			if (reason == null && wd.isFailedLaunch()) reason = wd.getFailedLaunchReason();
 		}
 		if (reason != null && controller instanceof ServerPlayer player) {

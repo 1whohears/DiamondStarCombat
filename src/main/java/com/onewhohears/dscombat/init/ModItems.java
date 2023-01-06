@@ -140,10 +140,15 @@ public class ModItems {
 			() -> new ItemSeat(0.001f, PartSlot.SEAT));
 	
 	// TURRENTS
-	public static final RegistryObject<Item> MINIGUN_TURRENT = ITEMS.register("minigun_turret", 
+	public static final RegistryObject<Item> MINIGUN_TURRET = ITEMS.register("minigun_turret", 
 			() -> new ItemTurret(0.019f, PartSlot.SEAT, 
 					ModEntities.MINIGUN_TURRET.getId().toString(), "20mm",
-					new RotBounds(1f, -30f, 30f)));
+					new RotBounds(2f, -30f, 30f)));
+	// TODO heavy_tank_turret item texture/model/recipe
+	public static final RegistryObject<Item> HEAVY_TANK_TURRET = ITEMS.register("heavy_tank_turret", 
+			() -> new ItemTurret(0.027f, PartSlot.SEAT, 
+					ModEntities.HEAVY_TANK_TURRET.getId().toString(), "120mmhe",
+					new RotBounds(1f, -15f, 15f)));
 	
 	// FLARE DISPENSERS
 	public static final RegistryObject<Item> BASIC_FLARE_DISPENSER = ITEMS.register("basic_flare_dispenser", 

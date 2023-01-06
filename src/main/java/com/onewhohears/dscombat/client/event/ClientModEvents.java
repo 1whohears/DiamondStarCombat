@@ -16,6 +16,7 @@ import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelNoahCh
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelTestPlane;
 import com.onewhohears.dscombat.client.renderer.model.weapon.EntityModelBullet1;
 import com.onewhohears.dscombat.client.renderer.model.weapon.EntityModelHeavyMissileRack;
+import com.onewhohears.dscombat.client.renderer.model.weapon.EntityModelHeavyTankTurret;
 import com.onewhohears.dscombat.client.renderer.model.weapon.EntityModelLightMissileRack;
 import com.onewhohears.dscombat.client.renderer.model.weapon.EntityModelMiniGunTurret;
 import com.onewhohears.dscombat.client.renderer.model.weapon.EntityModelMissile1;
@@ -63,6 +64,7 @@ public final class ClientModEvents {
 		event.registerLayerDefinition(EntityModelXM12.LAYER_LOCATION, EntityModelXM12::createBodyLayer);
 		event.registerLayerDefinition(EntityModelMiniGunTurret.LAYER_LOCATION, EntityModelMiniGunTurret::createBodyLayer);
 		event.registerLayerDefinition(EntityModelMrBudgerTank.LAYER_LOCATION, EntityModelMrBudgerTank::createBodyLayer);
+		event.registerLayerDefinition(EntityModelHeavyTankTurret.LAYER_LOCATION, EntityModelHeavyTankTurret::createBodyLayer);
 	}
 	
 	@SubscribeEvent
@@ -105,7 +107,11 @@ public final class ClientModEvents {
 		event.registerEntityRenderer(ModEntities.MINIGUN_TURRET.get(), 
 				(context) -> new RendererEntityTurret<EntityTurret>(context, 
 						new EntityModelMiniGunTurret<EntityTurret>(models.bakeLayer(EntityModelMiniGunTurret.LAYER_LOCATION)),
-						new ResourceLocation(DSCombatMod.MODID, "textures/entities/minigun_turrent.png")));
+						new ResourceLocation(DSCombatMod.MODID, "textures/entities/minigun_turret.png")));
+		event.registerEntityRenderer(ModEntities.HEAVY_TANK_TURRET.get(), 
+				(context) -> new RendererEntityTurret<EntityTurret>(context, 
+						new EntityModelHeavyTankTurret<EntityTurret>(models.bakeLayer(EntityModelHeavyTankTurret.LAYER_LOCATION)),
+						new ResourceLocation(DSCombatMod.MODID, "textures/entities/heavy_tank_turret.png")));
 		
 		event.registerEntityRenderer(ModEntities.LIGHT_MISSILE_RACK.get(), 
 				(context) -> new RendererEntityPart<EntityWeaponRack>(context,

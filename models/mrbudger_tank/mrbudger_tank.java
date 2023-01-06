@@ -20,14 +20,6 @@ public class mrbudger_tank<T extends Entity> extends EntityModel<T> {
 
 		PartDefinition frame = main.addOrReplaceChild("frame", CubeListBuilder.create().texOffs(0, 0).addBox(-24.0F, -22.0F, -40.0F, 48.0F, 14.0F, 80.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-		PartDefinition head = main.addOrReplaceChild("head", CubeListBuilder.create().texOffs(308, 0).addBox(-16.0F, -16.0F, -16.0F, 32.0F, 16.0F, 6.0F, new CubeDeformation(0.0F))
-		.texOffs(308, 22).addBox(-16.0F, -16.0F, 10.0F, 32.0F, 16.0F, 6.0F, new CubeDeformation(0.0F))
-		.texOffs(308, 44).addBox(10.0F, -16.0F, -10.0F, 6.0F, 16.0F, 20.0F, new CubeDeformation(0.0F))
-		.texOffs(308, 80).addBox(-16.0F, -16.0F, -10.0F, 6.0F, 16.0F, 20.0F, new CubeDeformation(0.0F))
-		.texOffs(0, 248).addBox(-10.0F, -2.0F, -10.0F, 20.0F, 2.0F, 20.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -22.0F, 0.0F));
-
-		PartDefinition barrel = head.addOrReplaceChild("barrel", CubeListBuilder.create().texOffs(176, 0).addBox(-2.0F, -2.0F, 0.0F, 4.0F, 4.0F, 56.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -8.0F, 16.0F));
-
 		PartDefinition trackL = main.addOrReplaceChild("trackL", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
 
 		PartDefinition wheelsL = trackL.addOrReplaceChild("wheelsL", CubeListBuilder.create(), PartPose.offset(-24.0F, -8.0F, 0.0F));

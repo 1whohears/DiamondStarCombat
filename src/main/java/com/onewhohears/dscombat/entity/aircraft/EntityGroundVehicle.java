@@ -22,7 +22,6 @@ public class EntityGroundVehicle extends EntityAircraft {
 			RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item) {
 		super(entity, level, texture, engineSound, item);
 		// TODO make a functional car/tank/air defense
-		// TODO the tops of tanks are specialized turrets? but then how to reload a pilot seat turret?
 	}
 	
 	@Override

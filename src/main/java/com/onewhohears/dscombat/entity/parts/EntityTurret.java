@@ -42,6 +42,10 @@ public class EntityTurret extends EntitySeat {
 	 * only used on server side
 	 */
 	private WeaponData data;
+	/**
+	 * only used on server side
+	 */
+	private int newRiderCoolDown;
 	
 	public EntityTurret(EntityType<?> type, Level level) {
 		super(type, level);
@@ -72,8 +76,7 @@ public class EntityTurret extends EntitySeat {
 		setXRot(tag.getFloat("xRot"));
 		setYRot(tag.getFloat("yRot"));
 		setRelRotX(tag.getFloat("relrotx"));
-		setRelRotX(tag.getFloat("relroty"));
-		
+		setRelRotY(tag.getFloat("relroty"));
 	}
 
 	@Override
@@ -101,6 +104,9 @@ public class EntityTurret extends EntitySeat {
 		if (player == null) return;
 		Quaternion ra = Quaternion.ONE;
 		if (!level.isClientSide) {
+			if (data != null) data.tick();
+			if (newRiderCoolDown > 0) --newRiderCoolDown;
+			
 			float rely = yRotRelO, relx = xRotRelO;
 			float rotrate = getRotRate(), minrotx = getMinRotX(), maxrotx = getMaxRotX();
 			if (getVehicle() instanceof EntityAircraft plane) {
@@ -172,7 +178,7 @@ public class EntityTurret extends EntitySeat {
 	}
 	
 	public void shoot(Entity shooter) {
-		if (level.isClientSide || data == null) return;
+		if (level.isClientSide || data == null || newRiderCoolDown > 0) return;
 		data.shoot(level, shooter, getLookAngle(), position(), null);
 		if (data.isFailedLaunch()) {
 			if (shooter instanceof ServerPlayer player) {
@@ -243,6 +249,12 @@ public class EntityTurret extends EntitySeat {
 	
 	public void setRelRotY(float degrees) {
 		entityData.set(RELROTY, degrees);
+	}
+	
+	@Override
+    protected void addPassenger(Entity passenger) {
+        super.addPassenger(passenger);
+        newRiderCoolDown = 10;
 	}
 
 }

@@ -62,6 +62,7 @@
 	"entity.dscombat.flare": "Flare",
 	"entity.dscombat.seat": "Seat",
 	"entity.dscombat.minigun_turret": "Minigun Turret",
+	"entity.dscombat.heavy_tank_turret": "Heavy Tank Turret",
 	
 	"key.categories.flight_control": "Diamond Star Combat Flight Control",
 	
@@ -136,6 +137,7 @@
 	"item.dscombat.seat": "Seat",
 	
 	"item.dscombat.minigun_turret": "Minigun Turret",
+	"item.dscombat.heavy_tank_turret": "Heavy Tank Turret",
 	
 	"item.dscombat.basic_flare_dispenser": "Basic Flare Dispenser",
 	
@@ -152,6 +154,7 @@
 	
 	"item.dscombat.20mm": "20mm",
 	"item.dscombat.50mmhe": "50mm HE",
+	"item.dscombat.120mmhe": "120mm HE",
 	"item.dscombat.aim9l": "AIM-9L",
 	"item.dscombat.aim9p5": "AIM-9P5",
 	"item.dscombat.aim9x": "AIM-9X",

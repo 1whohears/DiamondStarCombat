@@ -219,7 +219,7 @@ public abstract class WeaponData {
 				new ToClientWeaponAmmo(vehicle.getId(), getId(), slotId, getCurrentAmmo()));
 	}
 	
-	protected void tick() {
+	public void tick() {
 		if (recoilTime > 1) --recoilTime;
 	}
 	
@@ -266,7 +266,7 @@ public abstract class WeaponData {
 	}
 	
 	public void addAmmo(int num) {
-		this.setCurrentAmmo(currentAmmo+num);
+		setCurrentAmmo(currentAmmo+num);
 	}
 	
 	public int getMaxAmmo() {

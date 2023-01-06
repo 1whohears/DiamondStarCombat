@@ -135,9 +135,7 @@ public final class ClientForgeEvents {
 		final var player = m.player;
 		if (player == null) return;
 		if (!(player.getRootVehicle() instanceof EntityAircraft plane)) return;
-		boolean seat = KeyInit.changeSeat.consumeClick();
-		boolean shoot = KeyInit.shootKey.isDown();
-		if (seat) {
+		if (KeyInit.changeSeat.consumeClick()) {
 			PacketHandler.INSTANCE.sendToServer(new ToServerSwitchSeat(plane.getId()));
 		}
 		RadarSystem radar = plane.radarSystem;
@@ -155,6 +153,7 @@ public final class ClientForgeEvents {
 			}
 		}
 		if (!hovering) resetHoverIndex();
+		boolean shoot = KeyInit.shootKey.isDown();
 		if (shoot && player.getVehicle() instanceof EntityTurret turret) {
 			PacketHandler.INSTANCE.sendToServer(new ToServerShootTurret(turret));
 		}

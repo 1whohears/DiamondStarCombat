@@ -20,13 +20,11 @@ public class EntityModelMrBudgerTank<T extends EntityGroundVehicle> extends Enti
 	
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(DSCombatMod.MODID, "mrbudger_tank"), "main");
 	private final ModelPart main;
-	private final ModelPart head;
 	private final ModelPart[] wheelsL = new ModelPart[5];
 	private final ModelPart[] wheelsR = new ModelPart[5];
 
 	public EntityModelMrBudgerTank(ModelPart root) {
 		this.main = root.getChild("main");
-		this.head = main.getChild("head");
 		ModelPart wL = main.getChild("trackL").getChild("wheelsL");
 		wheelsL[0] = wL.getChild("w1");
 		wheelsL[1] = wL.getChild("w2");
@@ -58,14 +56,6 @@ public class EntityModelMrBudgerTank<T extends EntityGroundVehicle> extends Enti
 		PartDefinition main = partdefinition.addOrReplaceChild("main", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
 
 		PartDefinition frame = main.addOrReplaceChild("frame", CubeListBuilder.create().texOffs(0, 0).addBox(-24.0F, -22.0F, -40.0F, 48.0F, 14.0F, 80.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
-
-		PartDefinition head = main.addOrReplaceChild("head", CubeListBuilder.create().texOffs(308, 0).addBox(-16.0F, -16.0F, -16.0F, 32.0F, 16.0F, 6.0F, new CubeDeformation(0.0F))
-		.texOffs(308, 22).addBox(-16.0F, -16.0F, 10.0F, 32.0F, 16.0F, 6.0F, new CubeDeformation(0.0F))
-		.texOffs(308, 44).addBox(10.0F, -16.0F, -10.0F, 6.0F, 16.0F, 20.0F, new CubeDeformation(0.0F))
-		.texOffs(308, 80).addBox(-16.0F, -16.0F, -10.0F, 6.0F, 16.0F, 20.0F, new CubeDeformation(0.0F))
-		.texOffs(0, 248).addBox(-10.0F, -2.0F, -10.0F, 20.0F, 2.0F, 20.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -22.0F, 0.0F));
-
-		PartDefinition barrel = head.addOrReplaceChild("barrel", CubeListBuilder.create().texOffs(176, 0).addBox(-2.0F, -2.0F, 0.0F, 4.0F, 4.0F, 56.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -8.0F, 16.0F));
 
 		PartDefinition trackL = main.addOrReplaceChild("trackL", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
 

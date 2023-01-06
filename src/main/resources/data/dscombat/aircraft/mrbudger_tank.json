@@ -82,6 +82,10 @@
 		{
 			"item": "dscombat:heavy_fuel_tank",
 			"num": 1
+		},
+		{
+			"item": "dscombat:heavy_tank_turret",
+			"num": 1
 		}
 	]
 }

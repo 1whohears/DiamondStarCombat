@@ -144,7 +144,6 @@ public class ModItems {
 			() -> new ItemTurret(0.019f, PartSlot.SEAT, 
 					ModEntities.MINIGUN_TURRET.getId().toString(), "20mm",
 					new RotBounds(2f, -30f, 30f)));
-	// TODO heavy_tank_turret item texture/model/recipe
 	public static final RegistryObject<Item> HEAVY_TANK_TURRET = ITEMS.register("heavy_tank_turret", 
 			() -> new ItemTurret(0.027f, PartSlot.SEAT, 
 					ModEntities.HEAVY_TANK_TURRET.getId().toString(), "120mmhe",

@@ -23,5 +23,9 @@ public class ItemAmmo extends Item {
 				.append(" ")
 				.append(Component.translatable(DSCombatMod.MODID+".ammo"));
 	}
+	
+	public String getAmmoId() {
+		return getDescriptionId().split("\\.")[2];
+	}
 
 }

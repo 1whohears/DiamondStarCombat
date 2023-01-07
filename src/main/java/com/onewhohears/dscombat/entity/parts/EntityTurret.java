@@ -1,5 +1,7 @@
 package com.onewhohears.dscombat.entity.parts;
 
+import javax.annotation.Nullable;
+
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.data.parts.PartSlot;
@@ -175,6 +177,11 @@ public class EntityTurret extends EntitySeat {
 	
 	public String getWeaponId() {
 		return weaponId;
+	}
+	
+	@Nullable
+	public WeaponData getWeaponData() {
+		return data;
 	}
 	
 	public void shoot(Entity shooter) {

@@ -265,8 +265,22 @@ public abstract class WeaponData {
 		this.currentAmmo = currentAmmo;
 	}
 	
-	public void addAmmo(int num) {
-		setCurrentAmmo(currentAmmo+num);
+	/**
+	 * @param num
+	 * @return overflow
+	 */
+	public int addAmmo(int num) {
+		int total = currentAmmo+num;
+		int r = 0;
+		if (total > maxAmmo) {
+			r = total - maxAmmo;
+			total = maxAmmo;
+		} else if (total < 0) {
+			r = total;
+			total = 0;
+		}
+		setCurrentAmmo(total);
+		return r;
 	}
 	
 	public int getMaxAmmo() {

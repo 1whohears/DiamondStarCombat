@@ -17,9 +17,11 @@ import com.onewhohears.dscombat.data.AircraftTextures;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartsManager;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
+import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponSystem;
 import com.onewhohears.dscombat.entity.parts.EntityPart;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
+import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.item.ItemAmmo;
@@ -177,12 +179,7 @@ public abstract class EntityAircraft extends Entity {
         			setClientQ(getQ());
         		}
         	} else if (CURRRENT_DYE_ID.equals(key)) {
-        		/*String newTexture = null; // get texture by color
-        		try {
-            		currentTexture = new ResourceLocation(newTexture);
-            	} catch(ResourceLocationException e) {
-            		
-            	}*/
+        		currentTexture = textures.getTexture(getCurrentColorId());
         	}
         }
     }
@@ -756,6 +753,13 @@ public abstract class EntityAircraft extends Entity {
 					return InteractionResult.SUCCESS;
 				} else if (item instanceof ItemAmmo ammo) {
 					// TODO right click aircraft with ammo to reload turrets/weapon racks
+					for (EntityTurret t : getTurrets()) {
+						WeaponData wd = t.getWeaponData();
+						if (wd == null) continue;
+						if (!wd.getId().equals(ammo.getAmmoId())) continue;
+						int o = wd.addAmmo(stack.getCount());
+						stack.setCount(o);
+					}
 				} else if (item instanceof DyeItem dye) {
 					// TODO right clicking plane with dye item changes texture
 					// if (this craft has a texture that matches that color) consume dye and change texture packet
@@ -1169,7 +1173,7 @@ public abstract class EntityAircraft extends Entity {
     }
     
     public List<Player> getRidingPlayers() {
-    	List<Player> players = new ArrayList<Player>();
+    	List<Player> players = new ArrayList<>();
     	for (EntitySeat seat : getSeats()) {
     		Player p = seat.getPlayer();
 			if (p != null) players.add(p); 
@@ -1178,15 +1182,23 @@ public abstract class EntityAircraft extends Entity {
     }
     
     public List<EntitySeat> getSeats() {
-    	List<EntitySeat> seats = new ArrayList<EntitySeat>();
+    	List<EntitySeat> seats = new ArrayList<>();
     	for (Entity e : getPassengers())
     		if (e instanceof EntitySeat seat) 
     			seats.add(seat);
     	return seats;
     }
     
+    public List<EntityTurret> getTurrets() {
+    	List<EntityTurret> turrets = new ArrayList<>();
+    	for (Entity e : getPassengers())
+    		if (e instanceof EntityTurret turret)
+    			turrets.add(turret);
+    	return turrets;
+    }
+    
     public List<EntityPart> getPartEntities() {
-    	List<EntityPart> parts = new ArrayList<EntityPart>();
+    	List<EntityPart> parts = new ArrayList<>();
     	for (Entity e : getPassengers())
     		if (e instanceof EntityPart part)
     			parts.add(part);

@@ -13,6 +13,7 @@ import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerQ;
 import com.onewhohears.dscombat.common.network.toserver.ToServerRequestPlaneData;
 import com.onewhohears.dscombat.data.AircraftPresets;
+import com.onewhohears.dscombat.data.AircraftTextures;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartsManager;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
@@ -53,6 +54,7 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -92,6 +94,7 @@ public abstract class EntityAircraft extends Entity {
 	public static final EntityDataAccessor<Integer> LOCKED_ONTO_TICKS = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Boolean> LANDING_GEAR = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> TEST_MODE = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Integer> CURRRENT_DYE_ID = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.INT);
 	
 	public static final double collideSpeedThreshHold = 1d;
 	public static final double collideSpeedWithGearThreshHold = 2d;
@@ -101,7 +104,7 @@ public abstract class EntityAircraft extends Entity {
 	public final WeaponSystem weaponSystem = new WeaponSystem();
 	public final RadarSystem radarSystem = new RadarSystem();
 	
-	protected final ResourceLocation TEXTURE;
+	protected final AircraftTextures textures;
 	protected final RegistryObject<SoundEvent> engineSound;
 	protected final RegistryObject<Item> item;
 	
@@ -116,15 +119,17 @@ public abstract class EntityAircraft extends Entity {
 	
 	protected float xzSpeed;
 	
+	private ResourceLocation currentTexture;
 	private int lerpSteps, newRiderCooldown;
 	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot;
 	private float landingGearPos, landingGearPosOld;
 	
 	// TODO the current texture should be a synched string defined in readAdditionalSaveData
 	public EntityAircraft(EntityType<? extends EntityAircraft> entity, Level level, 
-			ResourceLocation texture, RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item) {
+			AircraftTextures textures, RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item) {
 		super(entity, level);
-		this.TEXTURE = texture;
+		this.textures = textures;
+		this.currentTexture = textures.getDefaultTexture();
 		this.engineSound = engineSound;
 		this.blocksBuilding = true;
 		this.item = item;
@@ -154,20 +159,30 @@ public abstract class EntityAircraft extends Entity {
 		entityData.define(LOCKED_ONTO_TICKS, 0);
 		entityData.define(LANDING_GEAR, false);
 		entityData.define(TEST_MODE, false);
+		entityData.define(CURRRENT_DYE_ID, 0);
 	}
 	
 	@Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
         super.onSyncedDataUpdated(key);
         // if this entity is on the client side and receiving the quaternion of the plane from the server 
-        if (level.isClientSide() && Q.equals(key)) {
-        	if (isControlledByLocalInstance()) {
-        		// if this entity is piloted by the client's player send the client quaternion to the server
-        		PacketHandler.INSTANCE.sendToServer(new ToServerQ(getId(), getClientQ()));
-        	} else {
-        		// if the client player is not controlling this plane then client quaternion = server quaternion
-        		setPrevQ(getClientQ());
-            	setClientQ(getQ());
+        if (level.isClientSide()) {
+        	if (Q.equals(key)) {
+        		if (isControlledByLocalInstance()) {
+        			// if this entity is piloted by the client's player send the client quaternion to the server
+        			PacketHandler.INSTANCE.sendToServer(new ToServerQ(getId(), getClientQ()));
+        		} else {
+        			// if the client player is not controlling this plane then client quaternion = server quaternion
+        			setPrevQ(getClientQ());
+        			setClientQ(getQ());
+        		}
+        	} else if (CURRRENT_DYE_ID.equals(key)) {
+        		/*String newTexture = null; // get texture by color
+        		try {
+            		currentTexture = new ResourceLocation(newTexture);
+            	} catch(ResourceLocationException e) {
+            		
+            	}*/
         	}
         }
     }
@@ -1071,7 +1086,7 @@ public abstract class EntityAircraft extends Entity {
     }
     
     public ResourceLocation getTexture() {
-    	return TEXTURE;
+    	return currentTexture;
     }
     
     public SoundEvent getEngineSound() {
@@ -1329,6 +1344,15 @@ public abstract class EntityAircraft extends Entity {
     public void kill() {
     	explode(null);
     	super.kill();
+    }
+    
+    public int getCurrentColorId() {
+    	return entityData.get(CURRRENT_DYE_ID);
+    }
+    
+    public boolean setCurrrentColor(DyeColor color) {
+    	entityData.set(CURRRENT_DYE_ID, color.getId());
+    	return true;
     }
     
 }

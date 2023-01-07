@@ -22,6 +22,7 @@ public class AircraftPresets {
 	public static final List<CompoundTag> presets = new ArrayList<>();
 	public static final HashMap<String, List<DSCIngredient>> ingredients = new HashMap<>();
 	public static final HashMap<String, ItemStack> items = new HashMap<>();
+	public static final HashMap<String, AircraftTextures> textures = new HashMap<>();
 	
 	public static void setupPresets() {
 		String dir = "/data/dscombat/aircraft/";
@@ -34,6 +35,19 @@ public class AircraftPresets {
 	public static CompoundTag getPreset(String preset) {
 		for (CompoundTag tag : presets) if (tag.getString("preset").equals(preset)) return tag;
 		return null;
+	}
+	
+	public static AircraftTextures getAircraftTextures(String preset) {
+		//System.out.println("requesting aircraft textures for aircraft "+preset);
+		AircraftTextures at = textures.get(preset);
+		if (at == null) {
+			System.out.println("initially null");
+			at = new AircraftTextures(getPreset(preset));
+			textures.put(preset, at);
+		}
+		//System.out.println("default id      = "+at.getDefaultId());
+		//System.out.println("default texture = "+at.getDefaultTexture());
+		return at;
 	}
 	
 	public static List<DSCIngredient> getPlaneIngredients(String preset) {

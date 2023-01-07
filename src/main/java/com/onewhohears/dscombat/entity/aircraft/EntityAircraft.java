@@ -106,9 +106,9 @@ public abstract class EntityAircraft extends Entity {
 	public final WeaponSystem weaponSystem = new WeaponSystem();
 	public final RadarSystem radarSystem = new RadarSystem();
 	
-	protected final AircraftTextures textures;
 	protected final RegistryObject<SoundEvent> engineSound;
 	protected final RegistryObject<Item> item;
+	protected final AircraftTextures textures;
 	
 	public Quaternion prevQ = Quaternion.ONE.copy();
 	public Quaternion clientQ = Quaternion.ONE.copy();
@@ -126,7 +126,6 @@ public abstract class EntityAircraft extends Entity {
 	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot;
 	private float landingGearPos, landingGearPosOld;
 	
-	// TODO the current texture should be a synched string defined in readAdditionalSaveData
 	public EntityAircraft(EntityType<? extends EntityAircraft> entity, Level level, 
 			AircraftTextures textures, RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item) {
 		super(entity, level);
@@ -187,7 +186,7 @@ public abstract class EntityAircraft extends Entity {
 	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
 		// this function is called on the server side only
-		this.setTestMode(compound.getBoolean("test_mode"));
+		setTestMode(compound.getBoolean("test_mode"));
 		String initType = compound.getString("preset");
 		if (!initType.isEmpty()) {
 			CompoundTag tag = AircraftPresets.getPreset(initType);
@@ -219,12 +218,13 @@ public abstract class EntityAircraft extends Entity {
 		Quaternion q = UtilAngles.toQuaternion(getYRot(), getXRot(), zRot);
 		setQ(q);
 		setPrevQ(q);
-		setClientQ(q);	
+		setClientQ(q);
+		setCurrentColor(DyeColor.byId(compound.getInt("dyecolor")));
 	}
 
 	@Override
 	protected void addAdditionalSaveData(CompoundTag compound) {
-		compound.putBoolean("test_mode", this.isTestMode());
+		compound.putBoolean("test_mode", isTestMode());
 		compound.putString("preset", "");
 		partsManager.write(compound);
 		weaponSystem.write(compound);
@@ -249,6 +249,7 @@ public abstract class EntityAircraft extends Entity {
 		compound.putFloat("xRot", getXRot());
 		compound.putFloat("yRot", getYRot());
 		compound.putFloat("zRot", zRot);
+		compound.putInt("dyecolor", getCurrentColorId());
 	}
 	
 	/**
@@ -752,17 +753,25 @@ public abstract class EntityAircraft extends Entity {
 						(p) -> { p.broadcastBreakEvent(hand); });
 					return InteractionResult.SUCCESS;
 				} else if (item instanceof ItemAmmo ammo) {
-					// TODO right click aircraft with ammo to reload turrets/weapon racks
+					String ammoId = ammo.getAmmoId();
 					for (EntityTurret t : getTurrets()) {
 						WeaponData wd = t.getWeaponData();
 						if (wd == null) continue;
-						if (!wd.getId().equals(ammo.getAmmoId())) continue;
+						if (!wd.getId().equals(ammoId)) continue;
 						int o = wd.addAmmo(stack.getCount());
+						t.setAmmo(wd.getCurrentAmmo());
 						stack.setCount(o);
+						if (stack.getCount() == 0) return InteractionResult.SUCCESS;
 					}
+					int o = weaponSystem.addAmmo(ammoId, stack.getCount(), true);
+					stack.setCount(o);
+					return InteractionResult.SUCCESS;
 				} else if (item instanceof DyeItem dye) {
-					// TODO right clicking plane with dye item changes texture
-					// if (this craft has a texture that matches that color) consume dye and change texture packet
+					if (setCurrentColor(dye.getDyeColor())) {
+						stack.shrink(1);
+						return InteractionResult.CONSUME;
+					}
+					return InteractionResult.PASS;
 				}
 			}
 			boolean okay = rideAvailableSeat(player);
@@ -1362,8 +1371,11 @@ public abstract class EntityAircraft extends Entity {
     	return entityData.get(CURRRENT_DYE_ID);
     }
     
-    public boolean setCurrrentColor(DyeColor color) {
-    	entityData.set(CURRRENT_DYE_ID, color.getId());
+    public boolean setCurrentColor(DyeColor color) {
+    	int id = color.getId();
+    	if (id == getCurrentColorId()) return false;
+    	if (!textures.hasTexture(id)) return false;
+    	entityData.set(CURRRENT_DYE_ID, id);
     	return true;
     }
     

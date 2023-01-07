@@ -324,6 +324,11 @@
 		}
 	],
 	
+	"dyecolor": 12,
+	"textures": {
+		"12": "dscombat:textures/entities/noah_chopper.png"
+	},
+	
 	"ingredients": [
 		{
 			"item": "dscombat:fuselage",

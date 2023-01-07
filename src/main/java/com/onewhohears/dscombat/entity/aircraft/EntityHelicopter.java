@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
+import com.onewhohears.dscombat.data.AircraftTextures;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
@@ -10,7 +11,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
@@ -28,9 +28,9 @@ public class EntityHelicopter extends EntityAircraft {
 	private float propellerRot, propellerRotOld;
 	private final boolean alwaysLandingGear;
 	
-	public EntityHelicopter(EntityType<? extends EntityHelicopter> entity, Level level, ResourceLocation texture,
+	public EntityHelicopter(EntityType<? extends EntityHelicopter> entity, Level level, AircraftTextures textures,
 			RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item, boolean alwaysLandingGear) {
-		super(entity, level, texture, engineSound, item);
+		super(entity, level, textures, engineSound, item);
 		this.alwaysLandingGear = alwaysLandingGear;
 	}
 	

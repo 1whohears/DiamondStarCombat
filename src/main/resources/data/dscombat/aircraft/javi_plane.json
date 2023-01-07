@@ -243,6 +243,11 @@
 		}
 	],
 	
+	"dyecolor": 13,
+	"textures": {
+		"13": "dscombat:textures/entities/javi_plane.png"
+	},
+	
 	"ingredients": [
 		{
 			"item": "dscombat:fuselage",

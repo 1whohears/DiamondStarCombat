@@ -180,4 +180,13 @@ public class WeaponSystem {
 		return s;
 	}
 	
+	public int addAmmo(String id, int ammo, boolean updateClient) {
+		for (WeaponData w : weapons) if (w.getId().equals(id)) {
+			ammo = w.addAmmo(ammo);
+			if (updateClient) w.updateClientAmmo(parent);
+			if (ammo == 0) return 0;
+		}
+		return ammo;
+	}
+	
 }

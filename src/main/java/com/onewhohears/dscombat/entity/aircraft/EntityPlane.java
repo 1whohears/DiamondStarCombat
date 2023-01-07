@@ -2,12 +2,12 @@ package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
+import com.onewhohears.dscombat.data.AircraftTextures;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
@@ -23,8 +23,8 @@ public class EntityPlane extends EntityAircraft {
 	private Vec3 liftDir = Vec3.ZERO, airFoilAxes = Vec3.ZERO;
 	
 	public EntityPlane(EntityType<? extends EntityPlane> entity, Level level, 
-			ResourceLocation texture, RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item) {
-		super(entity, level, texture, engineSound, item);
+			AircraftTextures textures, RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item) {
+		super(entity, level, textures, engineSound, item);
 	}
 	
 	@Override

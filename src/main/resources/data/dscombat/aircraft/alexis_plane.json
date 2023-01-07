@@ -193,6 +193,12 @@
 		}
 	],
 	
+	"dyecolor": 0,
+	"textures": {
+		"0": "dscombat:textures/entities/alexis_plane.png",
+		"14": "dscombat:textures/entities/red_alexis_plane.png"
+	},
+	
 	"ingredients": [
 		{
 			"item": "dscombat:fuselage",

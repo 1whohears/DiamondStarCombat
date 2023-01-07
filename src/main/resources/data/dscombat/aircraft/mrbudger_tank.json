@@ -62,6 +62,11 @@
 		}
 	],
 	
+	"dyecolor": 0,
+	"textures": {
+		"0": "dscombat:textures/entities/mrbudger_tank.png"
+	},
+	
 	"ingredients": [
 		{
 			"item": "dscombat:fuselage",

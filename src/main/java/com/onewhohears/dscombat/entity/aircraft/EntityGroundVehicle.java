@@ -1,9 +1,9 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
+import com.onewhohears.dscombat.data.AircraftTextures;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
@@ -18,9 +18,9 @@ public class EntityGroundVehicle extends EntityAircraft {
 	protected final float wheelRate = 1.5f;
 	private float wheelLRot, wheelLRotOld, wheelRRot, wheelRRotOld;
 	
-	public EntityGroundVehicle(EntityType<? extends EntityGroundVehicle> entity, Level level, ResourceLocation texture,
+	public EntityGroundVehicle(EntityType<? extends EntityGroundVehicle> entity, Level level, AircraftTextures textures,
 			RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item) {
-		super(entity, level, texture, engineSound, item);
+		super(entity, level, textures, engineSound, item);
 		// TODO make a functional car/tank/air defense
 	}
 	

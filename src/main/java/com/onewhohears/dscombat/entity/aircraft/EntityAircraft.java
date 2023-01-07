@@ -113,7 +113,7 @@ public abstract class EntityAircraft extends Entity {
 	public Quaternion prevQ = Quaternion.ONE.copy();
 	public Quaternion clientQ = Quaternion.ONE.copy();
 	
-	public boolean inputMouseMode, inputFlare, inputShoot, inputSelect, inputOpenMenu;
+	public boolean inputMouseMode, inputFlare, inputShoot, inputSelect, inputOpenMenu, inputSpecial;
 	public float inputThrottle, inputPitch, inputRoll, inputYaw;
 	public float zRot, zRotO; 
 	public float torqueX, torqueY, torqueZ, torqueXO, torqueYO, torqueZO;
@@ -490,7 +490,7 @@ public abstract class EntityAircraft extends Entity {
 	 * @return the magnitude of the thrust force based on the engines, throttle, and 0 if no fuel
 	 */
 	public double getThrustMag() {
-		if (this.getFuel() <= 0) return 0;
+		if (getFuel() <= 0) return 0;
 		float throttle = getCurrentThrottle();
 		return throttle * getMaxThrust();
 	}
@@ -671,7 +671,7 @@ public abstract class EntityAircraft extends Entity {
 	
 	public void updateControls(float throttle, float pitch, float roll, float yaw,
 			boolean mouseMode, boolean flare, boolean shoot, boolean select,
-			boolean openMenu) {
+			boolean openMenu, boolean special) {
 		this.inputThrottle = throttle;
 		this.inputPitch = pitch;
 		this.inputRoll = roll;
@@ -683,6 +683,7 @@ public abstract class EntityAircraft extends Entity {
 		this.inputSelect = select;
 		if (inputSelect && !level.isClientSide) weaponSystem.selectNextWeapon();
 		this.inputOpenMenu = openMenu;
+		this.inputSpecial = special;
 	}
 	
 	public void resetControls() {

@@ -18,8 +18,8 @@
 	"accpitch": 0.0,
 	"accyaw": 0.2,
 	
-	"throttleup": 0.01,
-	"throttledown": 0.01,
+	"throttleup": 0.04,
+	"throttledown": 0.04,
 	"landing_gear": true,
 	
 	"slots": [

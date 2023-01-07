@@ -82,6 +82,7 @@ public class EntityHelicopter extends EntityAircraft {
 			// roll left right
 			Vec3 sDir = UtilAngles.rotationToVector(a.yaw+90, 0);
 			motion = motion.add(sDir.scale(inputRoll).scale(getAccSide()));
+			// TODO special key causes heli to hover
 		}
 		setDeltaMovement(motion);
 	}

@@ -55,7 +55,7 @@ public class ModEntities {
 	public static final RegistryObject<EntityType<EntityGroundVehicle>> MRBUDGER_TANK = ENTITIES.register("mrbudger_tank", 
 			() -> createEntityTypeFar((type, level) -> new EntityGroundVehicle(type, level, 
 					AircraftPresets.getAircraftTextures("mrbudger_tank"),
-					ModSounds.JET_1, ModItems.MRBUDGER_TANK), 
+					ModSounds.JET_1, ModItems.MRBUDGER_TANK, true), 
 					EntityDimensions.scalable(3.0f, 2.5f)));
 	
 	/*

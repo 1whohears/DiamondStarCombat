@@ -28,10 +28,11 @@ public final class KeyInit {
 	public static KeyMapping weaponSelectKey;
 	public static KeyMapping resetMouseKey;
 	public static KeyMapping planeMenuKey;
-	public static KeyMapping flipControls;
+	public static KeyMapping flipControlsKey;
 	public static KeyMapping changeSeat;
 	public static KeyMapping landingGear;
 	public static KeyMapping sharePos;
+	public static KeyMapping specialKey;
 	
 	private static RegisterKeyMappingsEvent event;
 	
@@ -51,10 +52,11 @@ public final class KeyInit {
 		weaponSelectKey = registerKey("weapon_select_key", FLIGHT_CONTROL, InputConstants.KEY_G);
 		resetMouseKey = registerKey("reset_mouse_key", FLIGHT_CONTROL, InputConstants.KEY_RALT);
 		planeMenuKey = registerKey("plane_menu_key", FLIGHT_CONTROL, InputConstants.KEY_U);
-		flipControls = registerKey("flip_controls_key", FLIGHT_CONTROL, InputConstants.KEY_LALT);
+		flipControlsKey = registerKey("flip_controls_key", FLIGHT_CONTROL, InputConstants.KEY_LALT);
 		changeSeat = registerKey("change_seat_key", FLIGHT_CONTROL, InputConstants.KEY_SEMICOLON);
 		landingGear = registerKey("landing_gear_key", FLIGHT_CONTROL, InputConstants.KEY_L);
 		sharePos = registerKey("share_pos_key", FLIGHT_CONTROL, InputConstants.KEY_O);
+		specialKey = registerKey("special_key", FLIGHT_CONTROL, InputConstants.KEY_SPACE);
 	}
 	
 	private static KeyMapping registerKey(String name, String category, int keycode) {

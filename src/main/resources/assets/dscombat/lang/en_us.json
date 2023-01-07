@@ -84,6 +84,7 @@
 	"key.dscombat.change_seat_key": "Change Seat",
 	"key.dscombat.landing_gear_key": "Landing Gear",
 	"key.dscombat.share_pos_key": "Share Pos",
+	"key.dscombat.special_key": "Special Key",
 	
 	"sounds.dscombat.missile_warning": "Missile Warning",
 	"sounds.dscombat.getting_locked": "Getting Locked",

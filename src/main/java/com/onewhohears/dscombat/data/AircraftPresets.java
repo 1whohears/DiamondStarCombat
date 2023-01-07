@@ -38,15 +38,11 @@ public class AircraftPresets {
 	}
 	
 	public static AircraftTextures getAircraftTextures(String preset) {
-		//System.out.println("requesting aircraft textures for aircraft "+preset);
 		AircraftTextures at = textures.get(preset);
 		if (at == null) {
-			System.out.println("initially null");
 			at = new AircraftTextures(getPreset(preset));
 			textures.put(preset, at);
 		}
-		//System.out.println("default id      = "+at.getDefaultId());
-		//System.out.println("default texture = "+at.getDefaultTexture());
 		return at;
 	}
 	

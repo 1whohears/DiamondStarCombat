@@ -71,7 +71,8 @@ public final class ClientForgeEvents {
 		double mouseY = -(m.mouseHandler.ypos() - mouseCenterY);
 		boolean flare = KeyInit.flareKey.isDown();
 		boolean shoot = KeyInit.shootKey.isDown();
-		boolean flip = KeyInit.flipControls.isDown();
+		boolean flip = KeyInit.flipControlsKey.isDown();
+		boolean special = KeyInit.specialKey.isDown();
 		float pitch = 0, roll = 0, yaw = 0, throttle = 0;
 		boolean pitchUp, pitchDown, yawLeft, yawRight;
 		boolean rollLeft, rollRight, throttleUp, throttleDown;
@@ -122,9 +123,9 @@ public final class ClientForgeEvents {
 		if (throttleDown) throttle -= 1;
 		PacketHandler.INSTANCE.sendToServer(new ToServerFlightControl(
 				throttle, pitch, roll, yaw,
-				mouseMode, flare, shoot, select, openMenu, gear));
+				mouseMode, flare, shoot, select, openMenu, gear, special));
 		plane.updateControls(throttle, pitch, roll, yaw,
-				mouseMode, flare, shoot, select, openMenu);
+				mouseMode, flare, shoot, select, openMenu, special);
 		if (mouseMode && !plane.isFreeLook()) centerMouse();
 	}
 	

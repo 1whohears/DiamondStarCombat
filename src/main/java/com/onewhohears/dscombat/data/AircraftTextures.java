@@ -13,14 +13,9 @@ public class AircraftTextures {
 	private int defaultId = 0;
 	
 	public AircraftTextures(CompoundTag tag) {
-		//System.out.println("making textures with "+tag.toString());
 		defaultId = tag.getInt("dyecolor");
-		if (!tag.contains("textures", 10)) {
-			//System.out.println("no textures object");
-			return;
-		}
+		if (!tag.contains("textures", 10)) return;
 		CompoundTag t = tag.getCompound("textures");
-		//System.out.println("textures = "+t.toString());
 		for (int i = 0; i < DyeColor.values().length; ++i) {
 			if (t.contains(""+i, 8)) {
 				String tex = t.getString(""+i);

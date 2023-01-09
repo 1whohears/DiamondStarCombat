@@ -61,13 +61,13 @@ public class ModEntities {
 	/*
 	 * TODO more planes
 	 * wooden plane, large wooden plane, something like a spitfire, something like a p51 mustang 
-	 * private jet, large passenger jat, large cargo plane like a galaxy, large radar plane
+	 * private jet, large passenger jet, large cargo plane like a galaxy, large radar plane
 	 * 
 	 * TODO more helicopters
 	 * small unarmed heli, large cargo heli, 2 seated heli with gunner on front bottom
 	 * 
 	 * TODO more cars/tanks
-	 * Honda Ferrari, heavy tank, light tank
+	 * Honda Ferrari, steve's up smash (mobile SAM) 
 	 * 
 	 * TODO more boats
 	 */
@@ -78,10 +78,10 @@ public class ModEntities {
 			() -> createEntityType(EntitySeatCamera::new, EntityDimensions.scalable(0f, 0f)));
 	
 	public static final RegistryObject<EntityType<EntityTurret>> MINIGUN_TURRET = ENTITIES.register("minigun_turret", 
-			() -> createEntityType((type, level) -> new EntityTurret(type, level), 
+			() -> createEntityType((type, level) -> new EntityTurret(type, level, 0.0, 0.8), 
 					EntityDimensions.scalable(0.5f, 0.5f)));
 	public static final RegistryObject<EntityType<EntityTurret>> HEAVY_TANK_TURRET = ENTITIES.register("heavy_tank_turret", 
-			() -> createEntityType((type, level) -> new EntityTurret(type, level), 
+			() -> createEntityType((type, level) -> new EntityTurret(type, level, 0.0, 0.5), 
 					EntityDimensions.scalable(0.5f, 0.5f)));
 	
 	public static final RegistryObject<EntityType<EntityWeaponRack>> LIGHT_MISSILE_RACK = ENTITIES.register("light_missile_rack", 

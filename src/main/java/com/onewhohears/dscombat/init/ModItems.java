@@ -46,6 +46,7 @@ public class ModItems {
 			else size = 64;
 			ITEMS.register(data.getId(), () -> new ItemAmmo(size));
 		}
+		// TODO 120mmhe item texture/model
 	}
 	
 	public static final CreativeModeTab PARTS = new CreativeModeTab("parts") {

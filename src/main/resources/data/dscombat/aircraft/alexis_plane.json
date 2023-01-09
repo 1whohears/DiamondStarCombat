@@ -28,7 +28,7 @@
 			"name": "dscombat.pilot_seat",
 			"slot_type": 0,
 			"slot_posx": 0,
-			"slot_posy": -0.8,
+			"slot_posy": -0.3,
 			"slot_posz": 2.0,
 			"uix": 48,
 			"uiy": 20,

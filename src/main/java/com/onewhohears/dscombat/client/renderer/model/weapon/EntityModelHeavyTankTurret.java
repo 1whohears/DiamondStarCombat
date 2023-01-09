@@ -31,7 +31,7 @@ public class EntityModelHeavyTankTurret<T extends EntityTurret> extends EntityCo
 	@Override
 	public void renderToBuffer(T entity, float partialTicks, PoseStack poseStack, VertexConsumer vertexConsumer,
 			int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		poseStack.translate(0, 2.0, 0);
+		poseStack.translate(0, 1.5, 0);
 		poseStack.scale(1.0F, -1.0F, 1.0F);
 		gun.xRot = -(float)Math.toRadians(UtilAngles.lerpAngle(partialTicks, entity.xRotRelO, entity.getRelRotX()));
 		main.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);

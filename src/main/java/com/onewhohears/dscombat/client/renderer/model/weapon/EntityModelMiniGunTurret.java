@@ -16,7 +16,6 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 
 public class EntityModelMiniGunTurret<T extends EntityTurret> extends EntityControllableModel<T>{
 	
@@ -32,7 +31,7 @@ public class EntityModelMiniGunTurret<T extends EntityTurret> extends EntityCont
 	@Override
 	public void renderToBuffer(T entity, float partialTicks, PoseStack poseStack, VertexConsumer vertexConsumer,
 			int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		poseStack.translate(0, 2.7, 0);
+		poseStack.translate(0, 1.5, 0);
 		poseStack.scale(1.0F, -1.0F, 1.0F);
 		gun.xRot = -(float)Math.toRadians(UtilAngles.lerpAngle(partialTicks, entity.xRotRelO, entity.getRelRotX()));
 		main.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
@@ -42,7 +41,7 @@ public class EntityModelMiniGunTurret<T extends EntityTurret> extends EntityCont
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		PartDefinition main = partdefinition.addOrReplaceChild("main", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
+		PartDefinition main = partdefinition.addOrReplaceChild("main", CubeListBuilder.create(), PartPose.offset(0.0F, 10.0F, 0.0F));
 
 		PartDefinition frame = main.addOrReplaceChild("frame", CubeListBuilder.create().texOffs(0, 0).addBox(-6.0F, 12.0F, -8.0F, 12.0F, 2.0F, 14.0F, new CubeDeformation(0.0F))
 		.texOffs(0, 16).addBox(-6.0F, -12.0F, -8.0F, 12.0F, 24.0F, 2.0F, new CubeDeformation(0.0F))

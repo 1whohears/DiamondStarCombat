@@ -28,7 +28,7 @@
 			"name": "dscombat.pilot_seat",
 			"slot_type": 0,
 			"slot_posx": 0.0,
-			"slot_posy": 1.0,
+			"slot_posy": 1.4,
 			"slot_posz": 0.0,
 			"uix": 48,
 			"uiy": 20,
@@ -95,7 +95,7 @@
 		},
 		{
 			"item": "dscombat:c12_engine",
-			"num": 1
+			"num": 2
 		},
 		{
 			"item": "dscombat:heavy_fuel_tank",

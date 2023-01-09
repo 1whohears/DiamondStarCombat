@@ -24,8 +24,6 @@ public class EntityGroundVehicle extends EntityAircraft {
 			RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item, boolean isTank) {
 		super(entity, level, textures, engineSound, item);
 		this.isTank = isTank;
-		//this.maxUpStep = 1.0f;
-		// TODO make a functional car/tank/air defense
 	}
 	
 	@Override

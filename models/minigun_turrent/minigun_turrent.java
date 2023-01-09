@@ -16,7 +16,7 @@ public class minigun_turrent<T extends Entity> extends EntityModel<T> {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		PartDefinition main = partdefinition.addOrReplaceChild("main", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
+		PartDefinition main = partdefinition.addOrReplaceChild("main", CubeListBuilder.create(), PartPose.offset(0.0F, 10.0F, 0.0F));
 
 		PartDefinition frame = main.addOrReplaceChild("frame", CubeListBuilder.create().texOffs(0, 0).addBox(-6.0F, 12.0F, -8.0F, 12.0F, 2.0F, 14.0F, new CubeDeformation(0.0F))
 		.texOffs(0, 16).addBox(-6.0F, -12.0F, -8.0F, 12.0F, 24.0F, 2.0F, new CubeDeformation(0.0F))

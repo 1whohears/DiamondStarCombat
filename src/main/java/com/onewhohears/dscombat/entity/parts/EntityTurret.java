@@ -24,6 +24,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 public class EntityTurret extends EntitySeat {
 	
@@ -33,6 +34,8 @@ public class EntityTurret extends EntitySeat {
 	public static final EntityDataAccessor<Float> ROTRATE = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> RELROTX = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> RELROTY = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.FLOAT);
+	
+	public final double passengerOffset, weaponOffset;
 	
 	public float xRotRelO, yRotRelO;
 	
@@ -49,8 +52,10 @@ public class EntityTurret extends EntitySeat {
 	 */
 	private int newRiderCoolDown;
 	
-	public EntityTurret(EntityType<?> type, Level level) {
+	public EntityTurret(EntityType<?> type, Level level, double passengerOffset, double weaponOffset) {
 		super(type, level);
+		this.passengerOffset = passengerOffset;
+		this.weaponOffset = weaponOffset;
 	}
 
 	@Override
@@ -186,7 +191,11 @@ public class EntityTurret extends EntitySeat {
 	
 	public void shoot(Entity shooter) {
 		if (level.isClientSide || data == null || newRiderCoolDown > 0) return;
-		data.shoot(level, shooter, getLookAngle(), position(), null);
+		Vec3 pos = position();
+		if (getVehicle() instanceof EntityAircraft craft) {
+			pos = pos.add(UtilAngles.rotateVector(new Vec3(0, weaponOffset, 0), craft.getQ()));
+		}
+		data.shoot(level, shooter, getLookAngle(), pos, null);
 		if (data.isFailedLaunch()) {
 			if (shooter instanceof ServerPlayer player) {
 				player.displayClientMessage(Component.translatable(data.getFailedLaunchReason()), true);
@@ -202,6 +211,11 @@ public class EntityTurret extends EntitySeat {
 			}
 		}
 	}
+	
+	@Override
+    public double getPassengersRidingOffset() {
+        return passengerOffset;
+    }
 	
 	@Override
 	public PartType getPartType() {

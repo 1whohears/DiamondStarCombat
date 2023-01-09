@@ -57,5 +57,10 @@ public class EntitySeatCamera extends Entity {
 	public boolean isAttackable() {
 		return false;
 	}
+	
+	@Override
+	public double getMyRidingOffset() {
+		return 1.62 - 0.35;
+	}
 
 }

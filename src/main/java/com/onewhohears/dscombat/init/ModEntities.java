@@ -45,7 +45,7 @@ public class ModEntities {
 					ModSounds.JET_1, ModItems.ALEXIS_PLANE), 
 					EntityDimensions.scalable(2.0f, 2.0f)));
 	
-	// TODO use black hawk as inspiration for noah chopper
+	// IDEA use black hawk as inspiration for noah chopper
 	public static final RegistryObject<EntityType<EntityHelicopter>> NOAH_CHOPPER = ENTITIES.register("noah_chopper", 
 			() -> createEntityTypeFar((type, level) -> new EntityHelicopter(type, level, 
 					AircraftPresets.getAircraftTextures("noah_chopper"),
@@ -59,17 +59,17 @@ public class ModEntities {
 					EntityDimensions.scalable(3.0f, 2.5f)));
 	
 	/*
-	 * TODO more planes
+	 * IDEA more planes
 	 * wooden plane, large wooden plane, something like a spitfire, something like a p51 mustang 
 	 * private jet, large passenger jet, large cargo plane like a galaxy, large radar plane
 	 * 
-	 * TODO more helicopters
+	 * IDEA more helicopters
 	 * small unarmed heli, large cargo heli, 2 seated heli with gunner on front bottom
 	 * 
-	 * TODO more cars/tanks
+	 * IDEA more cars/tanks
 	 * Honda Ferrari, steve's up smash (mobile SAM) 
 	 * 
-	 * TODO more boats
+	 * IDEA more boats
 	 */
 	
 	public static final RegistryObject<EntityType<EntitySeat>> SEAT = ENTITIES.register("seat", 

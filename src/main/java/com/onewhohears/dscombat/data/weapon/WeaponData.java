@@ -198,7 +198,7 @@ public abstract class WeaponData {
 		weapon.setYRot(yaw);
 	}
 	
-	public boolean shoot(Level level, Entity owner, Vec3 direction, @Nullable Vec3 pos, @Nullable EntityAircraft vehicle) {
+	public boolean shoot(Level level, Entity owner, Vec3 direction, @Nullable Vec3 pos, @Nullable EntityAircraft vehicle, boolean consume) {
 		EntityWeapon w;
 		if (vehicle == null && pos != null) w = getShootEntity(level, owner, pos, direction);
 		else if (vehicle != null && pos == null) w = getShootEntity(level, owner, direction, vehicle);
@@ -208,7 +208,7 @@ public abstract class WeaponData {
 		level.playSound(null, w.blockPosition(), 
 				getShootSound(), SoundSource.PLAYERS, 
 				1f, 1f);
-		setLaunchSuccess(1, owner);
+		setLaunchSuccess(1, owner, consume);
 		updateClientAmmo(vehicle);
 		return true;
 	}
@@ -316,13 +316,10 @@ public abstract class WeaponData {
 		return failedLaunchReason;
 	}
 	
-	public void setLaunchSuccess(int ammoNum, Entity shooter) {
+	public void setLaunchSuccess(int ammoNum, Entity shooter, boolean consume) {
 		failedLaunchReason = null;
-		if (shooter instanceof ServerPlayer p) {
-			if (p.isCreative()) ammoNum = 0;
-		}
-		this.addAmmo(-ammoNum);
-		recoilTime = this.getFireRate();
+		if (consume) addAmmo(-ammoNum);
+		recoilTime = getFireRate();
 	}
 	
 	public void setLaunchFail(String failedLaunchReason) {

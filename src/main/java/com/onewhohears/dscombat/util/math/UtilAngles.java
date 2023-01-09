@@ -284,7 +284,7 @@ public class UtilAngles {
     	return a;
     }
     
-    // TODO there has to be a faster way to do this...math majors help please!
+    // HOW there has to be a faster way to do this...math majors help please!
     public static float[] globalToRelativeDegrees(float gx, float gy, Quaternion ra) {
     	Vec3 dir = rotationToVector(gy, gx);
     	Vec3 yaxis = getYawAxis(ra).scale(-1);

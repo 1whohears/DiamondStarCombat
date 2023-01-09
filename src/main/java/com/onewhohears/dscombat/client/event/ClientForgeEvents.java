@@ -344,7 +344,7 @@ public final class ClientForgeEvents {
 			float[] relangles = UtilAngles.globalToRelativeDegrees(player.getXRot(), player.getYRot(), q);
 			player.setYBodyRot(relangles[1]);
 			player.setYHeadRot(relangles[1]);
-			// TODO set player head model part x rot to relangles[0]
+			// HOW set player head model part x rot to relangles[0]
 			//event.getRenderer().getModel().head.xRot = (float) Math.toRadians(relangles[0]);
 			//event.getRenderer().getModel().head.xRot = 0;
 			/*event.getRenderer().getModel().setupAnim((LocalPlayer)player, 0f, 
@@ -385,7 +385,7 @@ public final class ClientForgeEvents {
 				zi = UtilAngles.lerpAngle(pt, plane.zRotO, plane.zRot);
 				xi = player.getXRot();
 				yi = player.getYRot();
-				// TODO make the mouse moves change the camera angles relative to the plane axis
+				// HOW make the mouse moves change the camera angles relative to the plane axis
 				// player.getXRot() = player.xRotO on the client's player
 				// mouseHandler.getXVelocity() is always 0
 				/*float diffx = 0; // how to get mouse movements?

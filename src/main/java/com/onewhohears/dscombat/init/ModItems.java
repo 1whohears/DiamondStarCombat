@@ -6,9 +6,11 @@ import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.TurretData.RotBounds;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.item.ItemAircraft;
 import com.onewhohears.dscombat.item.ItemAmmo;
 import com.onewhohears.dscombat.item.ItemBuffPart;
+import com.onewhohears.dscombat.item.ItemCreativeWand;
 import com.onewhohears.dscombat.item.ItemEngine;
 import com.onewhohears.dscombat.item.ItemFlareDispenser;
 import com.onewhohears.dscombat.item.ItemFuelTank;
@@ -101,6 +103,16 @@ public class ModItems {
 			() -> new ItemRepairTool(20, 5));
 	public static final RegistryObject<Item> THICK_WRENCH = ITEMS.register("thick_wrench", 
 			() -> new ItemRepairTool(200, 5));
+	
+	// CREATIVE WANDS
+	public static final RegistryObject<Item> NO_CONSUME_WAND = ITEMS.register("no_consume_wand", 
+			() -> new ItemCreativeWand(new String[] {"dscombat.no_consume_wand_1"}) {
+				@Override
+				public boolean modifyAircraft(EntityAircraft plane) {
+					plane.setNoConsume(true);
+					return true;
+				}
+			});
 	
 	// GAS CANS
 	public static final RegistryObject<Item> GAS_CAN = ITEMS.register("gas_can", 

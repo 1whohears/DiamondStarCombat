@@ -322,11 +322,11 @@ public class PartsManager {
 		return flares;
 	}
 	
-	public boolean useFlares(boolean isCreative) {
+	public boolean useFlares(boolean consume) {
 		List<PartSlot> flares = getFlares();
 		boolean r = false;
 		for (PartSlot p : flares)
-			if (((FlareDispenserData)p.getPartData()).flare(isCreative))
+			if (((FlareDispenserData)p.getPartData()).flare(consume))
 				r = true;
 		return r;
 	}

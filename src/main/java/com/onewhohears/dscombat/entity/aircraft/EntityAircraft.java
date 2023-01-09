@@ -25,6 +25,7 @@ import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.item.ItemAmmo;
+import com.onewhohears.dscombat.item.ItemCreativeWand;
 import com.onewhohears.dscombat.item.ItemGasCan;
 import com.onewhohears.dscombat.item.ItemRepairTool;
 import com.onewhohears.dscombat.util.UtilClientSafeSoundInstance;
@@ -98,6 +99,7 @@ public abstract class EntityAircraft extends Entity {
 	public static final EntityDataAccessor<Boolean> LANDING_GEAR = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> TEST_MODE = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Integer> CURRRENT_DYE_ID = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Boolean> NO_CONSUME = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.BOOLEAN);
 	
 	public static final double collideSpeedThreshHold = 1d;
 	public static final double collideSpeedWithGearThreshHold = 2d;
@@ -163,6 +165,7 @@ public abstract class EntityAircraft extends Entity {
 		entityData.define(TEST_MODE, false);
 		entityData.define(CURRRENT_DYE_ID, 0);
 		entityData.define(TURN_RADIUS, 0f);
+		entityData.define(NO_CONSUME, false);
 	}
 	
 	@Override
@@ -189,6 +192,7 @@ public abstract class EntityAircraft extends Entity {
 	public void readAdditionalSaveData(CompoundTag compound) {
 		// this function is called on the server side only
 		setTestMode(compound.getBoolean("test_mode"));
+		setNoConsume(compound.getBoolean("no_consume"));
 		String initType = compound.getString("preset");
 		if (!initType.isEmpty()) {
 			CompoundTag tag = AircraftPresets.getPreset(initType);
@@ -228,6 +232,7 @@ public abstract class EntityAircraft extends Entity {
 	@Override
 	protected void addAdditionalSaveData(CompoundTag compound) {
 		compound.putBoolean("test_mode", isTestMode());
+		compound.putBoolean("no_consume", isNoConsume());
 		compound.putString("preset", "");
 		partsManager.write(compound);
 		weaponSystem.write(compound);
@@ -483,11 +488,6 @@ public abstract class EntityAircraft extends Entity {
 	 * @param q the plane's current rotation
 	 */
 	public void tickGround(Quaternion q) {
-		/*Vec3 motion = getDeltaMovement();
-		if (motion.y < 0) motion = new Vec3(motion.x, 0, motion.z);
-		motion = motion.add(getWeightForce());*/
-		//motion = motion.add(getThrustForce(q));
-		//motion = motion.add(getFrictionForce());
 		float speed = xzSpeed;
 		float th = getCurrentThrottle();
 		float max = getMaxSpeed() * th;
@@ -623,36 +623,31 @@ public abstract class EntityAircraft extends Entity {
 		Entity controller = getControllingPassenger();
 		if (controller == null) return;
 		if (!level.isClientSide) {
-			boolean isPlayer = controller instanceof ServerPlayer;
 			weaponSystem.tick();
 			radarSystem.tickUpdateTargets();
-			if (newRiderCooldown > 0) --newRiderCooldown;
-			else {
-				if (inputShoot) weaponSystem.shootSelected(controller);
-				if (inputFlare && tickCount % 5 == 0) flare(controller, isPlayer);
-			}
-			if (inputOpenMenu && isPlayer) {
-				if (isOnGround() || isTestMode()) {
-					System.out.println("OPENING MENU "+partsManager);
-					NetworkHooks.openScreen((ServerPlayer) controller, 
-						new SimpleMenuProvider((windowId, playerInv, player) -> 
-								new AircraftMenuContainer(windowId, playerInv), 
-						Component.translatable("container.dscombat.plane_menu")));
-				} else {
-					((ServerPlayer)controller).displayClientMessage(
-							Component.translatable("dscombat.no_menu_in_air"), true);
+			boolean consume = !isNoConsume();
+			if (controller instanceof ServerPlayer player) {
+				if (inputOpenMenu) {
+					if (isOnGround() || isTestMode()) {
+						NetworkHooks.openScreen(player, 
+								new SimpleMenuProvider((windowId, playerInv, p) -> 
+										new AircraftMenuContainer(windowId, playerInv), 
+								Component.translatable("container.dscombat.plane_menu")));
+					} else player.displayClientMessage(
+							Component.translatable("dscombat.no_menu_in_air"), 
+							true);
 				}
+				if (player.isCreative()) consume = false;
 			}
-			if (isPlayer && ((ServerPlayer)controller).isCreative()) {
-				
-			} else {
-				tickFuel();
-			}
+			if (consume) tickFuel();
+			if (newRiderCooldown > 0) --newRiderCooldown;
+			else if (inputShoot) weaponSystem.shootSelected(controller, consume);
+			if (inputFlare && tickCount % 5 == 0) flare(controller, consume);
 		}
 	}
 	
-	public void flare(Entity controller, boolean isPlayer) {
-		partsManager.useFlares(isPlayer && ((ServerPlayer)controller).isCreative());
+	public void flare(Entity controller, boolean consume) {
+		partsManager.useFlares(consume);
 	}
 	
 	/**
@@ -796,8 +791,10 @@ public abstract class EntityAircraft extends Entity {
 						return InteractionResult.CONSUME;
 					}
 					return InteractionResult.PASS;
+				} else if (item instanceof ItemCreativeWand wand) {
+					if (wand.modifyAircraft(this)) return InteractionResult.SUCCESS;
+					return InteractionResult.PASS;
 				}
-				// TODO infinite ammo/infinite fuel item
 			}
 			boolean okay = rideAvailableSeat(player);
 			return okay ? InteractionResult.CONSUME : InteractionResult.PASS;
@@ -1416,5 +1413,13 @@ public abstract class EntityAircraft extends Entity {
 	public float getStepHeight() {
 		return 0.6f;
 	}
+    
+    public boolean isNoConsume() {
+    	return entityData.get(NO_CONSUME);
+    }
+    
+    public void setNoConsume(boolean noConsume) {
+    	entityData.set(NO_CONSUME, noConsume);
+    }
     
 }

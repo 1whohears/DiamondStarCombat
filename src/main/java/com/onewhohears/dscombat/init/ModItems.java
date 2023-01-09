@@ -40,13 +40,11 @@ public class ModItems {
 	public static void registerWeaponPresets() {
 		for (int i = 0; i < WeaponPresets.weapons.size(); ++i) {
 			WeaponData data = WeaponPresets.weapons.get(i);
-			//System.out.println("registering item weapon "+data);
 			final int size;
 			if (data.getMaxAmmo() < 64) size = data.getMaxAmmo();
 			else size = 64;
 			ITEMS.register(data.getId(), () -> new ItemAmmo(size));
 		}
-		// TODO 120mmhe item texture/model
 	}
 	
 	public static final CreativeModeTab PARTS = new CreativeModeTab("parts") {

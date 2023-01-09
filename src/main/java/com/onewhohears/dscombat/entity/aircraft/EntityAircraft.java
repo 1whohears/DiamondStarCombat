@@ -390,17 +390,36 @@ public abstract class EntityAircraft extends Entity {
 	 * @param q the current direction of the craft
 	 */
 	public void controlDirection(Quaternion q) {
-		/*if (!level.isClientSide && getControllingPassenger() != null) {
-			System.out.println("torqueX = "+torqueX);
-			System.out.println("torqueY = "+torqueY);
-			System.out.println("torqueZ = "+torqueZ);
-		}*/
+		if (onGround) directionGround(q);
+		else directionAir(q);
 		q.mul(Vector3f.XN.rotationDegrees(torqueX));
 		q.mul(Vector3f.YN.rotationDegrees(torqueY));
 		q.mul(Vector3f.ZP.rotationDegrees(torqueZ));
 		if (torqueX > getMaxDeltaPitch() || inputPitch == 0) torqueX = torqueDrag(torqueX);
 		if (torqueY > getMaxDeltaYaw() || inputYaw == 0) torqueY = torqueDrag(torqueY);
 		if (torqueZ > getMaxDeltaRoll() || inputRoll == 0) torqueZ = torqueDrag(torqueZ);
+	}
+	
+	public void directionGround(Quaternion q) {
+		flatten(q, 5f, 5f);
+		// TODO how does turn rate change based on speed for a car?
+		q.mul(Vector3f.YN.rotationDegrees(inputYaw*getMaxDeltaYaw())); // not this
+	}
+	
+	public void directionAir(Quaternion q) {
+		
+	}
+	
+	public void flatten(Quaternion q, float dPitch, float dRoll) {
+		torqueX = torqueZ = 0;
+		EulerAngles angles = UtilAngles.toDegrees(q);
+		float roll, pitch;
+		if (Math.abs(angles.roll) < dRoll) roll = (float) -angles.roll;
+		else roll = -(float)Math.signum(angles.roll) * dRoll;
+		if (Math.abs(angles.pitch) < dPitch) pitch = (float) -angles.pitch;
+		else pitch = -(float)Math.signum(angles.pitch) * dPitch;
+		q.mul(Vector3f.XP.rotationDegrees(pitch));
+		q.mul(Vector3f.ZP.rotationDegrees(roll));
 	}
 	
 	private float torqueDrag(float torque) {
@@ -459,11 +478,31 @@ public abstract class EntityAircraft extends Entity {
 	 * @param q the plane's current rotation
 	 */
 	public void tickGround(Quaternion q) {
-		Vec3 motion = getDeltaMovement();
+		/*Vec3 motion = getDeltaMovement();
 		if (motion.y < 0) motion = new Vec3(motion.x, 0, motion.z);
-		motion = motion.add(getWeightForce());
-		motion = motion.add(getThrustForce(q));
-		motion = motion.add(getFrictionForce());
+		motion = motion.add(getWeightForce());*/
+		//motion = motion.add(getThrustForce(q));
+		//motion = motion.add(getFrictionForce());
+		float speed = xzSpeed;
+		float th = getCurrentThrottle();
+		float max = getMaxSpeed() * th;
+		float w = getTotalWeight();
+		if (!isLandingGear()) {
+			speed -= 0.05;
+			if (speed < 0) speed = 0;
+		} else if (th > 0 && speed < max) {
+			double sd = getThrustMag() - w*0.3;
+			if (sd < 0) sd = 0;
+			speed += sd;
+			if (speed > max) speed = max;
+		} else {
+			speed -= 0.01;
+			if (speed < 0) speed = 0;
+		}
+		Vec3 dir = UtilAngles.rotationToVector(getYRot(), 0);
+		Vec3 motion = dir.scale(speed);
+		if (motion.y < 0) motion = new Vec3(motion.x, 0, motion.z);
+		motion = motion.add(0, -w, 0);
 		setDeltaMovement(motion);
 	}
 	
@@ -545,7 +584,7 @@ public abstract class EntityAircraft extends Entity {
 	/**
 	 * @return friction force restricting movement of the craft while on the ground
 	 */
-	public Vec3 getFrictionForce() {
+	/*public Vec3 getFrictionForce() {
 		double x = getDeltaMovement().x;
 		double z = getDeltaMovement().z;
 		Vec3 direction = new Vec3(-x, 0, -z).normalize();
@@ -560,7 +599,7 @@ public abstract class EntityAircraft extends Entity {
 		else f *= 0.1;
 		if (speed < f) return speed;
 		return f;
-	}
+	}*/
 	
 	protected void calcXZSpeed() {
 		double x = getDeltaMovement().x;
@@ -774,6 +813,7 @@ public abstract class EntityAircraft extends Entity {
 					}
 					return InteractionResult.PASS;
 				}
+				// TODO infinite ammo/infinite fuel item
 			}
 			boolean okay = rideAvailableSeat(player);
 			return okay ? InteractionResult.CONSUME : InteractionResult.PASS;

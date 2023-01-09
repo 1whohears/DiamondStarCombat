@@ -56,6 +56,18 @@
 			"uix": 68,
 			"uiy": 100,
 			"data": {
+				"itemid": "dscombat:c12_engine"
+			}
+		},
+		{
+			"name": "dscombat.internal_3",
+			"slot_type": 3,
+			"slot_posx": 0,
+			"slot_posy": 0,
+			"slot_posz": 0,
+			"uix": 88,
+			"uiy": 100,
+			"data": {
 				"filled": true,
 				"itemid": "dscombat:heavy_fuel_tank"
 			}

@@ -245,6 +245,7 @@
 	
 	"dyecolor": 13,
 	"textures": {
+		"11": "dscombat:textures/entities/blue_javi_plane.png",
 		"13": "dscombat:textures/entities/javi_plane.png"
 	},
 	

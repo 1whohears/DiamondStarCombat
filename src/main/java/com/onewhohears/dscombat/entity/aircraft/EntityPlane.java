@@ -1,11 +1,9 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.data.AircraftTextures;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.math.UtilAngles;
-import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.sounds.SoundEvent;
@@ -37,25 +35,20 @@ public class EntityPlane extends EntityAircraft {
 	
 	@Override
 	public void controlDirection(Quaternion q) {
-		if (isOnGround()) {
-			resetTorque();
-			EulerAngles angles = UtilAngles.toDegrees(q);
-			float dRoll = 5f;
-			float dPitch = 5f;
-			float roll, pitch;
-			if (Math.abs(angles.roll) < dRoll) roll = (float) -angles.roll;
-			else roll = -(float)Math.signum(angles.roll) * dRoll;
-			if (Math.abs(angles.pitch) < dPitch) pitch = (float) -angles.pitch;
-			else pitch = -(float)Math.signum(angles.pitch) * dPitch;
-			q.mul(Vector3f.XP.rotationDegrees(pitch));
-			q.mul(Vector3f.ZP.rotationDegrees(roll));
-			q.mul(Vector3f.YN.rotationDegrees(inputYaw*getMaxDeltaYaw()));
-		} else {
-			addTorqueX(inputPitch * getAccelerationPitch(), true);
-			addTorqueY(inputYaw * getAccelerationYaw(), true);
-			addTorqueZ(inputRoll * getAccelerationRoll(), true);
-		}
 		super.controlDirection(q);
+	}
+	
+	@Override
+	public void directionGround(Quaternion q) {
+		super.directionGround(q);
+	}
+	
+	@Override
+	public void directionAir(Quaternion q) {
+		super.directionAir(q);
+		addTorqueX(inputPitch * getAccelerationPitch(), true);
+		addTorqueY(inputYaw * getAccelerationYaw(), true);
+		addTorqueZ(inputRoll * getAccelerationRoll(), true);
 	}
 	
 	@Override
@@ -149,6 +142,11 @@ public class EntityPlane extends EntityAircraft {
 	@Override
 	protected float getTorqueDragMag() {
 		return 0.15f;
+	}
+	
+	@Override
+	public float getStepHeight() {
+		return 0.6f;
 	}
 
 }

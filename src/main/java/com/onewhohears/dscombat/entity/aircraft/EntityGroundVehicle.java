@@ -2,7 +2,6 @@ package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.data.AircraftTextures;
-import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
@@ -25,6 +24,7 @@ public class EntityGroundVehicle extends EntityAircraft {
 			RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item, boolean isTank) {
 		super(entity, level, textures, engineSound, item);
 		this.isTank = isTank;
+		//this.maxUpStep = 1.0f;
 		// TODO make a functional car/tank/air defense
 	}
 	
@@ -48,12 +48,20 @@ public class EntityGroundVehicle extends EntityAircraft {
 	
 	@Override
 	public void controlDirection(Quaternion q) {
-		float torque = inputYaw * getAccelerationYaw();
-		if (isTank) addTorqueY(torque, true);
-		else {
-			// TODO how does turn rate change based on speed for a car?
-		}
 		super.controlDirection(q);
+	}
+	
+	@Override
+	public void directionGround(Quaternion q) {
+		if (isTank) {
+			flatten(q, 5f, 5f);
+			addTorqueY(inputYaw * getAccelerationYaw(), true);
+		} else super.directionGround(q);
+	}
+	
+	@Override
+	public void directionAir(Quaternion q) {
+		super.directionAir(q);
 	}
 	
 	@Override
@@ -64,23 +72,27 @@ public class EntityGroundVehicle extends EntityAircraft {
 	@Override
 	public void tickGround(Quaternion q) {
 		super.tickGround(q);
-		double speed = xzSpeed;
+		/*float speed = xzSpeed;
 		float th = getCurrentThrottle();
 		float max = getMaxSpeed() * th;
+		float w = getTotalWeight();
 		if (inputSpecial) {
-			speed -= 0.03;
+			speed -= 0.05;
 			if (speed < 0) speed = 0;
 		} else if (th > 0 && speed < max) {
-			speed += getThrustMag();
+			double sd = getThrustMag() - w*0.3;
+			if (sd < 0) sd = 0;
+			speed += sd;
 			if (speed > max) speed = max;
 		} else {
-			speed -= 0.01;
+			speed -= 0.02;
 			if (speed < 0) speed = 0;
 		}
 		Vec3 dir = UtilAngles.rotationToVector(getYRot(), 0);
 		Vec3 motion = dir.scale(speed);
-		setDeltaMovement(motion);
-		// TODO ground vehicle gets over one block or less walls
+		if (motion.y < 0) motion = new Vec3(motion.x, 0, motion.z);
+		motion = motion.add(0, -w, 0);
+		setDeltaMovement(motion);*/
 	}
 	
 	@Override
@@ -93,7 +105,7 @@ public class EntityGroundVehicle extends EntityAircraft {
 		return Vec3.ZERO;
 	}
 	
-	@Override
+	/*@Override
 	public Vec3 getFrictionForce() {
 		return Vec3.ZERO;
 	}
@@ -101,7 +113,7 @@ public class EntityGroundVehicle extends EntityAircraft {
 	@Override
 	public double getFrictionMag() {
 		return 0;
-	}
+	}*/
 	
 	@Override
 	public void clientTick() {
@@ -122,7 +134,7 @@ public class EntityGroundVehicle extends EntityAircraft {
 	
 	@Override
 	public boolean isLandingGear() {
-		return true;
+		return !inputSpecial;
     }
 	
 	@Override
@@ -148,6 +160,11 @@ public class EntityGroundVehicle extends EntityAircraft {
 				select, openMenu, special);
 		this.inputThrottle = pitch;
 		this.inputPitch = throttle;
+	}
+	
+	@Override
+	public float getStepHeight() {
+		return 1.0f;
 	}
 
 }

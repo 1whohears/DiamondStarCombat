@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.data.AircraftTextures;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.math.UtilAngles;
@@ -65,8 +64,11 @@ public class EntityHelicopter extends EntityAircraft {
 	
 	@Override
 	public void tickGround(Quaternion q) {
-		super.tickGround(q);
 		Vec3 motion = getDeltaMovement();
+		if (motion.y < 0) motion = new Vec3(motion.x, 0, motion.z);
+		motion = motion.multiply(0.8, 1, 0.8);
+		motion = motion.add(getWeightForce());
+		motion = motion.add(getThrustForce(q));
 		setDeltaMovement(motion);
 	}
 	
@@ -89,25 +91,22 @@ public class EntityHelicopter extends EntityAircraft {
 	
 	@Override
 	public void controlDirection(Quaternion q) {
-		if (isOnGround() || isFreeLook()) {
-			torqueX = torqueZ = 0;
-			EulerAngles angles = UtilAngles.toDegrees(q);
-			float dRoll = getMaxDeltaRoll();
-			float dPitch = getMaxDeltaPitch();
-			float roll, pitch;
-			if (Math.abs(angles.roll) < dRoll) roll = (float) -angles.roll;
-			else roll = -(float)Math.signum(angles.roll) * dRoll;
-			if (Math.abs(angles.pitch) < dPitch) pitch = (float) -angles.pitch;
-			else pitch = -(float)Math.signum(angles.pitch) * dPitch;
-			q.mul(Vector3f.XP.rotationDegrees(pitch));
-			q.mul(Vector3f.ZP.rotationDegrees(roll));
-			if (!isOnGround()) addTorqueY(inputYaw * getAccelerationYaw(), true);
-		} else if (!isOnGround()) {
-			addTorqueX(inputPitch * getAccelerationPitch(), true);
-			addTorqueY(inputYaw * getAccelerationYaw(), true);
-			addTorqueZ(inputRoll * getAccelerationRoll(), true);
-		}
 		super.controlDirection(q);
+	}
+	
+	@Override
+	public void directionGround(Quaternion q) {
+		super.directionGround(q);
+	}
+	
+	@Override
+	public void directionAir(Quaternion q) {
+		super.directionAir(q);
+		addTorqueY(inputYaw * getAccelerationYaw(), true);
+		if (!isFreeLook()) {
+			addTorqueX(inputPitch * getAccelerationPitch(), true);
+			addTorqueZ(inputRoll * getAccelerationRoll(), true);
+		} else flatten(q, getMaxDeltaPitch(), getMaxDeltaRoll());
 	}
 
 	@Override
@@ -122,7 +121,7 @@ public class EntityHelicopter extends EntityAircraft {
 		return super.getThrustMag() * 2.0 * UtilEntity.getAirPressure(getY());
 	}
 	
-	@Override
+	/*@Override
 	public double getFrictionMag() {
 		double x = getDeltaMovement().x;
 		double z = getDeltaMovement().z;
@@ -130,7 +129,7 @@ public class EntityHelicopter extends EntityAircraft {
 		double f = getTotalWeight() * 0.2;
 		if (speed < f) return speed;
 		return f;
-	}
+	}*/
 	
 	public float getPropellerRotation(float partialTicks) {
 		return Mth.lerp(partialTicks, propellerRotOld, propellerRot);

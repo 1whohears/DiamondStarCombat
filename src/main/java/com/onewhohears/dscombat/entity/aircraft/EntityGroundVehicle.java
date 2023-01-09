@@ -72,27 +72,6 @@ public class EntityGroundVehicle extends EntityAircraft {
 	@Override
 	public void tickGround(Quaternion q) {
 		super.tickGround(q);
-		/*float speed = xzSpeed;
-		float th = getCurrentThrottle();
-		float max = getMaxSpeed() * th;
-		float w = getTotalWeight();
-		if (inputSpecial) {
-			speed -= 0.05;
-			if (speed < 0) speed = 0;
-		} else if (th > 0 && speed < max) {
-			double sd = getThrustMag() - w*0.3;
-			if (sd < 0) sd = 0;
-			speed += sd;
-			if (speed > max) speed = max;
-		} else {
-			speed -= 0.02;
-			if (speed < 0) speed = 0;
-		}
-		Vec3 dir = UtilAngles.rotationToVector(getYRot(), 0);
-		Vec3 motion = dir.scale(speed);
-		if (motion.y < 0) motion = new Vec3(motion.x, 0, motion.z);
-		motion = motion.add(0, -w, 0);
-		setDeltaMovement(motion);*/
 	}
 	
 	@Override
@@ -104,16 +83,6 @@ public class EntityGroundVehicle extends EntityAircraft {
 	public Vec3 getThrustForce(Quaternion q) {
 		return Vec3.ZERO;
 	}
-	
-	/*@Override
-	public Vec3 getFrictionForce() {
-		return Vec3.ZERO;
-	}
-	
-	@Override
-	public double getFrictionMag() {
-		return 0;
-	}*/
 	
 	@Override
 	public void clientTick() {

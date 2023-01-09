@@ -404,9 +404,10 @@ public abstract class EntityAircraft extends Entity {
 	public void directionGround(Quaternion q) {
 		flatten(q, 5f, 5f);
 		torqueY = 0;
-		if (inputYaw != 0) {
-			float turnRadius = 1 / inputYaw * getTurnRadius();
-			q.mul(Vector3f.YN.rotation(xzSpeed / turnRadius));
+		float tr = getTurnRadius();
+		if (inputYaw != 0 && tr != 0) {
+			float turn = 1 / inputYaw * tr;
+			q.mul(Vector3f.YN.rotation(xzSpeed / turn));
 		}
 	}
 	
@@ -534,8 +535,7 @@ public abstract class EntityAircraft extends Entity {
 	 */
 	public double getThrustMag() {
 		if (getFuel() <= 0) return 0;
-		float throttle = getCurrentThrottle();
-		return throttle * getMaxThrust();
+		return getCurrentThrottle() * getMaxThrust();
 	}
 	
 	/**
@@ -584,26 +584,6 @@ public abstract class EntityAircraft extends Entity {
 		if (area < 0) area = 0;
 		entityData.set(WING_AREA, area);
 	}
-	
-	/**
-	 * @return friction force restricting movement of the craft while on the ground
-	 */
-	/*public Vec3 getFrictionForce() {
-		double x = getDeltaMovement().x;
-		double z = getDeltaMovement().z;
-		Vec3 direction = new Vec3(-x, 0, -z).normalize();
-		return direction.scale(getFrictionMag());
-	}
-	
-	public double getFrictionMag() {
-		double speed = xzSpeed;
-		double f = getTotalWeight();
-		if (!isLandingGear()) f *= 2.0;
-		else if (getCurrentThrottle() <= 0) f *= 0.2;
-		else f *= 0.1;
-		if (speed < f) return speed;
-		return f;
-	}*/
 	
 	protected void calcXZSpeed() {
 		double x = getDeltaMovement().x;

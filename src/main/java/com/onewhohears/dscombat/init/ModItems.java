@@ -147,7 +147,7 @@ public class ModItems {
 	public static final RegistryObject<Item> HEAVY_TANK_TURRET = ITEMS.register("heavy_tank_turret", 
 			() -> new ItemTurret(0.027f, PartSlot.SEAT, 
 					ModEntities.HEAVY_TANK_TURRET.getId().toString(), "120mmhe",
-					new RotBounds(1f, -15f, 15f)));
+					new RotBounds(1f, -20f, 20f)));
 	
 	// FLARE DISPENSERS
 	public static final RegistryObject<Item> BASIC_FLARE_DISPENSER = ITEMS.register("basic_flare_dispenser", 

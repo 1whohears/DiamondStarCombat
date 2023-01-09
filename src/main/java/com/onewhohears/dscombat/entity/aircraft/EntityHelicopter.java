@@ -74,6 +74,10 @@ public class EntityHelicopter extends EntityAircraft {
 	
 	@Override
 	public void tickAir(Quaternion q) {
+		if (!level.isClientSide && inputSpecial) {
+			float th = getTotalWeight() / getMaxThrust();
+			setCurrentThrottle(th);
+		}
 		super.tickAir(q);
 		Vec3 motion = getDeltaMovement();
 		if (isFreeLook()) {
@@ -84,7 +88,6 @@ public class EntityHelicopter extends EntityAircraft {
 			// roll left right
 			Vec3 sDir = UtilAngles.rotationToVector(a.yaw+90, 0);
 			motion = motion.add(sDir.scale(inputRoll).scale(getAccSide()));
-			// TODO special key causes heli to hover
 		}
 		setDeltaMovement(motion);
 	}
@@ -96,7 +99,8 @@ public class EntityHelicopter extends EntityAircraft {
 	
 	@Override
 	public void directionGround(Quaternion q) {
-		super.directionGround(q);
+		flatten(q, 5f, 5f);
+		torqueY = 0;
 	}
 	
 	@Override
@@ -118,18 +122,13 @@ public class EntityHelicopter extends EntityAircraft {
 	
 	@Override
 	public double getThrustMag() {
-		return super.getThrustMag() * 2.0 * UtilEntity.getAirPressure(getY());
+		return super.getThrustMag();
 	}
 	
-	/*@Override
-	public double getFrictionMag() {
-		double x = getDeltaMovement().x;
-		double z = getDeltaMovement().z;
-		double speed = Math.sqrt(x*x + z*z);
-		double f = getTotalWeight() * 0.2;
-		if (speed < f) return speed;
-		return f;
-	}*/
+	@Override
+	public float getMaxThrust() {
+		return super.getMaxThrust() * 2.0f * (float)UtilEntity.getAirPressure(getY());
+	}
 	
 	public float getPropellerRotation(float partialTicks) {
 		return Mth.lerp(partialTicks, propellerRotOld, propellerRot);

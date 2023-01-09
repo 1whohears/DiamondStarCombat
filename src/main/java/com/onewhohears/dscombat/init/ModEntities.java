@@ -67,7 +67,8 @@ public class ModEntities {
 	 * small unarmed heli, large cargo heli, 2 seated heli with gunner on front bottom
 	 * 
 	 * IDEA more cars/tanks
-	 * Honda Ferrari, steve's up smash (mobile SAM) 
+	 * TODO Honda Ferrari
+	 * TODO steve's up smash (mobile SAM) 
 	 * 
 	 * IDEA more boats
 	 */

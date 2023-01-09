@@ -37,6 +37,54 @@
 			}
 		},
 		{
+			"name": "dscombat.seat1",
+			"slot_type": 0,
+			"slot_posx": 1.0,
+			"slot_posy": 1.4,
+			"slot_posz": 2.0,
+			"uix": 68,
+			"uiy": 20,
+			"data": {
+				"itemid": "dscombat:seat"
+			}
+		},
+		{
+			"name": "dscombat.seat2",
+			"slot_type": 0,
+			"slot_posx": -1.0,
+			"slot_posy": 1.4,
+			"slot_posz": 2.0,
+			"uix": 88,
+			"uiy": 20,
+			"data": {
+				"itemid": "dscombat:seat"
+			}
+		},
+		{
+			"name": "dscombat.seat3",
+			"slot_type": 0,
+			"slot_posx": 1.0,
+			"slot_posy": 1.4,
+			"slot_posz": -2.0,
+			"uix": 108,
+			"uiy": 20,
+			"data": {
+				"itemid": "dscombat:seat"
+			}
+		},
+		{
+			"name": "dscombat.seat4",
+			"slot_type": 0,
+			"slot_posx": -1.0,
+			"slot_posy": 1.4,
+			"slot_posz": -2.0,
+			"uix": 128,
+			"uiy": 20,
+			"data": {
+				"itemid": "dscombat:seat"
+			}
+		},
+		{
 			"name": "dscombat.internal_1",
 			"slot_type": 3,
 			"slot_posx": 0,
@@ -82,12 +130,16 @@
 	
 	"ingredients": [
 		{
+			"item": "minecraft:minecart",
+			"num": 4
+		},
+		{
 			"item": "dscombat:fuselage",
 			"num": 1
 		},
 		{
 			"item": "dscombat:seat",
-			"num": 1
+			"num": 4
 		},
 		{
 			"item": "minecraft:gold_ingot",

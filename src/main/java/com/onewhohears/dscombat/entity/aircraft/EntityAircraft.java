@@ -86,6 +86,7 @@ public abstract class EntityAircraft extends Entity {
 	public static final EntityDataAccessor<Float> MAX_ROLL = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> MAX_PITCH = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> MAX_YAW = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> TURN_RADIUS = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> ACC_ROLL = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> ACC_PITCH = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> ACC_YAW = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
@@ -161,6 +162,7 @@ public abstract class EntityAircraft extends Entity {
 		entityData.define(LANDING_GEAR, false);
 		entityData.define(TEST_MODE, false);
 		entityData.define(CURRRENT_DYE_ID, 0);
+		entityData.define(TURN_RADIUS, 0f);
 	}
 	
 	@Override
@@ -199,6 +201,7 @@ public abstract class EntityAircraft extends Entity {
 		setMaxHealth(compound.getFloat("max_health"));
 		setHealth(compound.getFloat("health"));
 		setStealth(compound.getFloat("stealth"));
+		setTurnRadius(compound.getFloat("turn_radius"));
 		setMaxDeltaRoll(compound.getFloat("maxroll"));
 		setMaxDeltaPitch(compound.getFloat("maxpitch"));
 		setMaxDeltaYaw(compound.getFloat("maxyaw"));
@@ -233,6 +236,7 @@ public abstract class EntityAircraft extends Entity {
 		compound.putFloat("max_health", getMaxHealth());
 		compound.putFloat("health", getHealth());
 		compound.putFloat("stealth", getStealth());
+		compound.putFloat("turn_radius", getTurnRadius());
 		compound.putFloat("maxroll", getMaxDeltaRoll());
 		compound.putFloat("maxpitch", getMaxDeltaPitch());
 		compound.putFloat("maxyaw", getMaxDeltaYaw());
@@ -282,10 +286,7 @@ public abstract class EntityAircraft extends Entity {
 		controlDirection(q);
 		q.normalize();
 		if (level.isClientSide) setClientQ(q);
-		else {
-			setQ(q);
-			//if (getControllingPassenger() != null) System.out.println("xaxis = "+UtilAngles.getPitchAxis(q));
-		}
+		else setQ(q);
 		EulerAngles angles = UtilAngles.toDegrees(q);
 		setXRot((float)angles.pitch);
 		setYRot((float)angles.yaw);
@@ -402,8 +403,11 @@ public abstract class EntityAircraft extends Entity {
 	
 	public void directionGround(Quaternion q) {
 		flatten(q, 5f, 5f);
-		// TODO how does turn rate change based on speed for a car?
-		q.mul(Vector3f.YN.rotationDegrees(inputYaw*getMaxDeltaYaw())); // not this
+		torqueY = 0;
+		if (inputYaw != 0) {
+			float turnRadius = 1 / inputYaw * getTurnRadius();
+			q.mul(Vector3f.YN.rotation(xzSpeed / turnRadius));
+		}
 	}
 	
 	public void directionAir(Quaternion q) {
@@ -1419,5 +1423,18 @@ public abstract class EntityAircraft extends Entity {
     	entityData.set(CURRRENT_DYE_ID, id);
     	return true;
     }
+    
+    public float getTurnRadius() {
+    	return entityData.get(TURN_RADIUS);
+    }
+    
+    public void setTurnRadius(float turn) {
+    	entityData.set(TURN_RADIUS, turn);
+    }
+    
+    @Override
+	public float getStepHeight() {
+		return 0.6f;
+	}
     
 }

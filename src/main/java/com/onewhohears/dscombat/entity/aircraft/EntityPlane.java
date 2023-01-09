@@ -143,10 +143,5 @@ public class EntityPlane extends EntityAircraft {
 	protected float getTorqueDragMag() {
 		return 0.15f;
 	}
-	
-	@Override
-	public float getStepHeight() {
-		return 0.6f;
-	}
 
 }

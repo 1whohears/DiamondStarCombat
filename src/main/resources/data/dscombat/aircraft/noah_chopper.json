@@ -11,6 +11,7 @@
 	"stealth": 1.0,
 	"idleheat": 8.0,
 	
+	"turn_radius": 0,
 	"maxroll": 4.0,
 	"maxpitch": 2.0,
 	"maxyaw": 4.0,

@@ -68,6 +68,7 @@ public class ModEntities {
 	 * 
 	 * IDEA more cars/tanks
 	 * TODO Honda Ferrari
+	 * TODO Orange Tesla
 	 * TODO steve's up smash (mobile SAM) 
 	 * 
 	 * IDEA more boats

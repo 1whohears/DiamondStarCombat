@@ -71,6 +71,7 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
 	@Override
 	public ItemStack quickMoveStack(Player player, int index) {
 		ItemStack stack = ItemStack.EMPTY;
+		// TODO quick move stack aircraft menu
 		return stack;
 	}
 	

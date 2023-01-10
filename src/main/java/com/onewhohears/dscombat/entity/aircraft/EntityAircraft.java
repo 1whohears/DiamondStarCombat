@@ -1150,7 +1150,7 @@ public abstract class EntityAircraft extends Entity {
     
     @Override
 	public boolean shouldRenderAtSqrDistance(double dist) {
-		return dist < 25600;
+		return dist < 65536;
 	}
     
     public void setMaxHealth(float h) {

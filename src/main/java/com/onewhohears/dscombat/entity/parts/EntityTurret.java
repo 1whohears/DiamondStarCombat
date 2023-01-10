@@ -164,7 +164,7 @@ public class EntityTurret extends EntitySeat {
 	
 	@Override
 	public boolean shouldRenderAtSqrDistance(double dist) {
-		return dist < 25600;
+		return dist < 65536;
 	}
 	
 	public void setAmmo(int ammo) {

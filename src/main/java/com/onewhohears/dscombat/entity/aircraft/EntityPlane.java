@@ -22,7 +22,7 @@ public class EntityPlane extends EntityAircraft {
 	
 	public EntityPlane(EntityType<? extends EntityPlane> entity, Level level, 
 			AircraftTextures textures, RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item) {
-		super(entity, level, textures, engineSound, item);
+		super(entity, level, textures, engineSound, item, false);
 	}
 	
 	@Override

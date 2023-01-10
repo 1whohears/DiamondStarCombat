@@ -163,9 +163,13 @@ public class PilotOverlay {
 	        		0, 0, stickKnobSize, stickBaseSize, 
 	        		stickBaseSize, stickBaseSize);
 	        RenderSystem.setShaderTexture(0, STICK_KNOB);
+	        int sy;
+	        int sb2 = stickBaseSize/2;
+	        if (plane.negativeThrottle) sy = height-n-stickOffset-sb2-(int)(plane.getCurrentThrottle()*sb2);
+	        else sy = height-n-stickOffset-(int)(plane.getCurrentThrottle()*stickBaseSize);
 	        GuiComponent.blit(poseStack, 
 	        		width-stickBaseSize-stickOffset-stickKnobSize-stickOffset, 
-	        		height-n-stickOffset-(int)(plane.getCurrentThrottle()*stickBaseSize), 
+	        		sy, 
 	        		0, 0, stickKnobSize, stickKnobSize, 
 	        		stickKnobSize, stickKnobSize);
 	        // fuel

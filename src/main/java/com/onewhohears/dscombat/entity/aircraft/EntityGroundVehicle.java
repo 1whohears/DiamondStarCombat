@@ -22,9 +22,8 @@ public class EntityGroundVehicle extends EntityAircraft {
 	
 	public EntityGroundVehicle(EntityType<? extends EntityGroundVehicle> entity, Level level, AircraftTextures textures,
 			RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item, boolean isTank) {
-		super(entity, level, textures, engineSound, item);
+		super(entity, level, textures, engineSound, item, true);
 		this.isTank = isTank;
-		// TODO go backwards
 	}
 	
 	@Override
@@ -71,6 +70,7 @@ public class EntityGroundVehicle extends EntityAircraft {
 	@Override
 	public void tickGround(Quaternion q) {
 		super.tickGround(q);
+		if (inputSpecial) setCurrentThrottle(0);
 	}
 	
 	@Override
@@ -88,8 +88,9 @@ public class EntityGroundVehicle extends EntityAircraft {
 		super.clientTick();
 		wheelLRotOld = wheelLRot;
 		wheelRRotOld = wheelRRot;
-		wheelLRot += xzSpeed * wheelRate;
-		wheelRRot += xzSpeed * wheelRate;
+		int dir = getXZSpeedDir();
+		wheelLRot += xzSpeed * wheelRate * dir;
+		wheelRRot += xzSpeed * wheelRate * dir;
 	}
 	
 	public float getWheelLeftRotation(float partialTicks) {

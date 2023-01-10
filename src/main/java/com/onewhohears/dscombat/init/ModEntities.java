@@ -86,13 +86,13 @@ public class ModEntities {
 	
 	public static final RegistryObject<EntityType<EntityTurret>> MINIGUN_TURRET = ENTITIES.register("minigun_turret", 
 			() -> createEntityType((type, level) -> new EntityTurret(type, level, 0.0, 0.8), 
-					EntityDimensions.scalable(1.0f, 1.5f)));
+					EntityDimensions.scalable(0.1f, 0.1f)));
 	public static final RegistryObject<EntityType<EntityTurret>> HEAVY_TANK_TURRET = ENTITIES.register("heavy_tank_turret", 
 			() -> createEntityType((type, level) -> new EntityTurret(type, level, 0.0, 0.5), 
-					EntityDimensions.scalable(2.0f, 1.0f)));
+					EntityDimensions.scalable(0.1f, 0.1f)));
 	public static final RegistryObject<EntityType<EntityTurret>> STEVE_UP_SMASH = ENTITIES.register("steve_up_smash", 
 			() -> createEntityType((type, level) -> new EntityTurret(type, level, 0.0, 3.2), 
-					EntityDimensions.scalable(1.0f, 3.5f)));
+					EntityDimensions.scalable(0.1f, 0.1f)));
 	
 	public static final RegistryObject<EntityType<EntityWeaponRack>> LIGHT_MISSILE_RACK = ENTITIES.register("light_missile_rack", 
 			() -> createEntityType(EntityWeaponRack::new, EntityDimensions.scalable(0.1f, 0.1f)));

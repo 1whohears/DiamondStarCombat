@@ -109,6 +109,8 @@ public abstract class EntityAircraft extends Entity {
 	public final WeaponSystem weaponSystem = new WeaponSystem();
 	public final RadarSystem radarSystem = new RadarSystem();
 	
+	public final boolean negativeThrottle;
+	
 	protected final RegistryObject<SoundEvent> engineSound;
 	protected final RegistryObject<Item> item;
 	protected final AircraftTextures textures;
@@ -130,13 +132,15 @@ public abstract class EntityAircraft extends Entity {
 	private float landingGearPos, landingGearPosOld;
 	
 	public EntityAircraft(EntityType<? extends EntityAircraft> entity, Level level, 
-			AircraftTextures textures, RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item) {
+			AircraftTextures textures, RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item,
+			boolean negativeThrottle) {
 		super(entity, level);
 		this.textures = textures;
 		this.currentTexture = textures.getDefaultTexture();
 		this.engineSound = engineSound;
 		this.blocksBuilding = true;
 		this.item = item;
+		this.negativeThrottle = negativeThrottle;
 	}
 	
 	@Override
@@ -488,27 +492,35 @@ public abstract class EntityAircraft extends Entity {
 	 * @param q the plane's current rotation
 	 */
 	public void tickGround(Quaternion q) {
-		float speed = xzSpeed;
+		int xzsdir = getXZSpeedDir();
+		float speed = xzSpeed * xzsdir;
 		float th = getCurrentThrottle();
-		float max = getMaxSpeed() * th;
+		float max = getMaxSpeed();
 		float w = getTotalWeight();
-		if (!isLandingGear()) {
-			speed -= 0.05;
-			if (speed < 0) speed = 0;
-		} else if (th > 0 && speed < max) {
-			double sd = getThrustMag() - w*0.3;
-			if (sd < 0) sd = 0;
-			speed += sd;
-			if (speed > max) speed = max;
-		} else {
-			speed -= 0.01;
-			if (speed < 0) speed = 0;
+		if (!isLandingGear() && speed != 0) {
+			speed -= 0.05 * xzsdir;
+			if (Math.abs(speed) < 0.05) speed = 0;
+		} else if (th != 0 && xzSpeed < max) {
+			double mag = getThrustMag();
+			double f = w*0.3*Math.signum(mag);
+			if (Math.abs(mag) > Math.abs(f)) speed += mag - f;
+			if (Math.abs(speed) > max) speed = max * Math.signum(speed);
+		} else if (speed != 0) {
+			speed -= 0.01 * xzsdir;
+			if (Math.abs(speed) < 0.01) speed = 0;
 		}
 		Vec3 dir = UtilAngles.rotationToVector(getYRot(), 0);
 		Vec3 motion = dir.scale(speed);
 		if (motion.y < 0) motion = new Vec3(motion.x, 0, motion.z);
 		motion = motion.add(0, -w, 0);
 		setDeltaMovement(motion);
+	}
+	
+	protected int getXZSpeedDir() {
+		float my = UtilAngles.getYaw(getDeltaMovement());
+		double diff = UtilAngles.degreesDifferenceAbs(my, yRotO);
+		if (diff > 90) return -1;
+		return 1;
 	}
 	
 	/**
@@ -589,6 +601,7 @@ public abstract class EntityAircraft extends Entity {
 		double x = getDeltaMovement().x;
 		double z = getDeltaMovement().z;
 		xzSpeed = (float) Math.sqrt(x*x + z*z);
+		
 	}
 	
 	public Vec3 getWeightForce() {
@@ -714,7 +727,8 @@ public abstract class EntityAircraft extends Entity {
 		this.inputShoot = false;
 		this.inputSelect = false;
 		this.inputOpenMenu = false;
-		this.decreaseThrottle();
+		this.inputSpecial = false;
+		this.setCurrentThrottle(0);
 	}
 	
 	public boolean isFreeLook() {
@@ -957,15 +971,16 @@ public abstract class EntityAircraft extends Entity {
     }
     
     /**
-     * @return between 0 and 1
+     * @return between 1 and 0 or 1 and -1 if negativeThrottle
      */
     public float getCurrentThrottle() {
     	return entityData.get(THROTTLE);
     }
     
     public void setCurrentThrottle(float throttle) {
-    	if (throttle > 1f) throttle = 1f;
-    	if (throttle < 0) throttle = 0;
+    	if (throttle > 1) throttle = 1;
+    	else if (negativeThrottle && throttle < -1) throttle = -1;
+    	else if (!negativeThrottle && throttle < 0) throttle = 0;
     	entityData.set(THROTTLE, throttle);
     }
     
@@ -1042,19 +1057,11 @@ public abstract class EntityAircraft extends Entity {
     }
     
     public void increaseThrottle() {
-    	float current = getCurrentThrottle();
-    	if (current < 1f) {
-    		current += getThrottleIncreaseRate();
-    		setCurrentThrottle(current);
-    	}
+    	setCurrentThrottle(getCurrentThrottle() + getThrottleIncreaseRate());
     }
     
     public void decreaseThrottle() {
-    	float current = getCurrentThrottle();
-    	if (current > 0) {
-    		current -= getThrottleDecreaseRate();
-    		setCurrentThrottle(current);
-    	}
+    	setCurrentThrottle(getCurrentThrottle() - getThrottleDecreaseRate());
     }
     
     /**
@@ -1179,7 +1186,7 @@ public abstract class EntityAircraft extends Entity {
      * @return the total heat value
      */
     public float getHeat() {
-    	return getIdleHeat() + getCurrentThrottle() * getEngineHeat();
+    	return getIdleHeat() + Math.abs(getCurrentThrottle()) * getEngineHeat();
     }
     
     /**

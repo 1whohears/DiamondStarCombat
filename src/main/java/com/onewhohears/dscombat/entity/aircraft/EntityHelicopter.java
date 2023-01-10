@@ -29,7 +29,7 @@ public class EntityHelicopter extends EntityAircraft {
 	
 	public EntityHelicopter(EntityType<? extends EntityHelicopter> entity, Level level, AircraftTextures textures,
 			RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item, boolean alwaysLandingGear) {
-		super(entity, level, textures, engineSound, item);
+		super(entity, level, textures, engineSound, item, false);
 		this.alwaysLandingGear = alwaysLandingGear;
 	}
 	

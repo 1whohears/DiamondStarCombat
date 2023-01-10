@@ -48,6 +48,7 @@ public class PartItemSlot extends Slot {
 	@Override
 	public boolean mayPickup(Player player) {
 		if (data.getName().equals(PartSlot.PILOT_SLOT_NAME)) return false;
+		// TODO find way to replace pilot turrets
 		return true;
 	}
 

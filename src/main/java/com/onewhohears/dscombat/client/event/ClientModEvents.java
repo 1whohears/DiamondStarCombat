@@ -13,6 +13,7 @@ import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelF16;
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelJaviPlane;
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelMrBudgerTank;
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelNoahChopper;
+import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelSmallRoller;
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelTestPlane;
 import com.onewhohears.dscombat.client.renderer.model.weapon.EntityModelBullet1;
 import com.onewhohears.dscombat.client.renderer.model.weapon.EntityModelHeavyMissileRack;
@@ -20,6 +21,7 @@ import com.onewhohears.dscombat.client.renderer.model.weapon.EntityModelHeavyTan
 import com.onewhohears.dscombat.client.renderer.model.weapon.EntityModelLightMissileRack;
 import com.onewhohears.dscombat.client.renderer.model.weapon.EntityModelMiniGunTurret;
 import com.onewhohears.dscombat.client.renderer.model.weapon.EntityModelMissile1;
+import com.onewhohears.dscombat.client.renderer.model.weapon.EntityModelSteveUpSmash;
 import com.onewhohears.dscombat.client.renderer.model.weapon.EntityModelXM12;
 import com.onewhohears.dscombat.entity.aircraft.EntityGroundVehicle;
 import com.onewhohears.dscombat.entity.aircraft.EntityHelicopter;
@@ -65,6 +67,8 @@ public final class ClientModEvents {
 		event.registerLayerDefinition(EntityModelMiniGunTurret.LAYER_LOCATION, EntityModelMiniGunTurret::createBodyLayer);
 		event.registerLayerDefinition(EntityModelMrBudgerTank.LAYER_LOCATION, EntityModelMrBudgerTank::createBodyLayer);
 		event.registerLayerDefinition(EntityModelHeavyTankTurret.LAYER_LOCATION, EntityModelHeavyTankTurret::createBodyLayer);
+		event.registerLayerDefinition(EntityModelSmallRoller.LAYER_LOCATION, EntityModelSmallRoller::createBodyLayer);
+		event.registerLayerDefinition(EntityModelSteveUpSmash.LAYER_LOCATION, EntityModelSteveUpSmash::createBodyLayer);
 	}
 	
 	@SubscribeEvent
@@ -86,11 +90,14 @@ public final class ClientModEvents {
 				(context) -> new RendererEntityAircraft<EntityGroundVehicle>(context, 
 						new EntityModelMrBudgerTank<EntityGroundVehicle>(models.bakeLayer(EntityModelMrBudgerTank.LAYER_LOCATION))));
 		
+		event.registerEntityRenderer(ModEntities.SMALL_ROLLER.get(), 
+				(context) -> new RendererEntityAircraft<EntityGroundVehicle>(context, 
+						new EntityModelSmallRoller<EntityGroundVehicle>(models.bakeLayer(EntityModelSmallRoller.LAYER_LOCATION))));
+		
 		event.registerEntityRenderer((EntityType<EntityBullet>)ModEntities.BULLET.get(), 
 				(context) -> new RendererEntityWeapon<EntityBullet>(context, 
 						new EntityModelBullet1<EntityBullet>(models.bakeLayer(EntityModelBullet1.LAYER_LOCATION)),
 						new ResourceLocation(DSCombatMod.MODID, "textures/entities/bullet1.png")));
-		
 		event.registerEntityRenderer(ModEntities.POS_MISSILE_1.get(), 
 				(context) -> new RendererEntityWeapon<EntityMissile>(context, 
 						new EntityModelMissile1<EntityMissile>(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)), 
@@ -112,6 +119,10 @@ public final class ClientModEvents {
 				(context) -> new RendererEntityTurret<EntityTurret>(context, 
 						new EntityModelHeavyTankTurret<EntityTurret>(models.bakeLayer(EntityModelHeavyTankTurret.LAYER_LOCATION)),
 						new ResourceLocation(DSCombatMod.MODID, "textures/entities/heavy_tank_turret.png")));
+		event.registerEntityRenderer(ModEntities.STEVE_UP_SMASH.get(), 
+				(context) -> new RendererEntityTurret<EntityTurret>(context, 
+						new EntityModelSteveUpSmash<EntityTurret>(models.bakeLayer(EntityModelSteveUpSmash.LAYER_LOCATION)),
+						new ResourceLocation(DSCombatMod.MODID, "textures/entities/steve_up_smash.png")));
 		
 		event.registerEntityRenderer(ModEntities.LIGHT_MISSILE_RACK.get(), 
 				(context) -> new RendererEntityPart<EntityWeaponRack>(context,

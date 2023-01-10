@@ -1,0 +1,101 @@
+{
+	"preset": "small_roller",
+	"max_speed": 0.2,
+	
+	"max_health": 30,
+	"health": 30,
+	
+	"weight": 0.01,
+	"surfacearea": 1.0,
+	
+	"stealth": 1.0,
+	"idleheat": 4.0,
+	
+	"turn_radius": 0,
+	"maxroll": 0.0,
+	"maxpitch": 0.0,
+	"maxyaw": 2.0,
+	"accroll": 0.0,
+	"accpitch": 0.0,
+	"accyaw": 0.3,
+	
+	"throttleup": 0.08,
+	"throttledown": 0.08,
+	"landing_gear": true,
+	
+	"slots": [
+		{
+			"name": "dscombat.pilot_seat",
+			"slot_type": 0,
+			"slot_posx": 0.0,
+			"slot_posy": 0.6,
+			"slot_posz": 0.0,
+			"uix": 48,
+			"uiy": 20,
+			"data": {
+				"itemid": "dscombat:steve_up_smash"
+			}
+		},
+		{
+			"name": "dscombat.internal_1",
+			"slot_type": 3,
+			"slot_posx": 0,
+			"slot_posy": 0,
+			"slot_posz": 0,
+			"uix": 48,
+			"uiy": 100,
+			"data": {
+				"itemid": "dscombat:c6_engine"
+			}
+		},
+		{
+			"name": "dscombat.internal_2",
+			"slot_type": 3,
+			"slot_posx": 0,
+			"slot_posy": 0,
+			"slot_posz": 0,
+			"uix": 68,
+			"uiy": 100,
+			"data": {
+				"filled": true,
+				"itemid": "dscombat:light_fuel_tank"
+			}
+		}
+	],
+	
+	"dyecolor": 0,
+	"textures": {
+		"0": "dscombat:textures/entities/small_roller.png"
+	},
+	
+	"ingredients": [
+		{
+			"item": "minecraft:minecart",
+			"num": 2
+		},
+		{
+			"item": "dscombat:fuselage",
+			"num": 1
+		},
+		{
+			"item": "dscombat:seat",
+			"num": 1
+		},
+		{
+			"item": "minecraft:gold_ingot",
+			"num": 4
+		},
+		{
+			"item": "dscombat:c6_engine",
+			"num": 1
+		},
+		{
+			"item": "dscombat:light_fuel_tank",
+			"num": 1
+		},
+		{
+			"item": "dscombat:steve_up_smash",
+			"num": 1
+		}
+	]
+}

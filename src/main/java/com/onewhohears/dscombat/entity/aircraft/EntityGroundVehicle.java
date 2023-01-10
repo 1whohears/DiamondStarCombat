@@ -24,6 +24,7 @@ public class EntityGroundVehicle extends EntityAircraft {
 			RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item, boolean isTank) {
 		super(entity, level, textures, engineSound, item);
 		this.isTank = isTank;
+		// TODO go backwards
 	}
 	
 	@Override

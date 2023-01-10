@@ -158,7 +158,12 @@ public class ModItems {
 	public static final RegistryObject<Item> HEAVY_TANK_TURRET = ITEMS.register("heavy_tank_turret", 
 			() -> new ItemTurret(0.027f, PartSlot.SEAT, 
 					ModEntities.HEAVY_TANK_TURRET.getId().toString(), "120mmhe",
-					new RotBounds(1f, -20f, 20f)));
+					new RotBounds(1.5f, -20f, 20f)));
+	// TODO texture/model/recipe
+	public static final RegistryObject<Item> STEVE_UP_SMASH = ITEMS.register("steve_up_smash", 
+			() -> new ItemTurret(0.035f, PartSlot.SEAT, 
+					ModEntities.STEVE_UP_SMASH.getId().toString(), "aim9p5",
+					new RotBounds(1f, -30f, 30f)));
 	
 	// FLARE DISPENSERS
 	public static final RegistryObject<Item> BASIC_FLARE_DISPENSER = ITEMS.register("basic_flare_dispenser", 
@@ -181,5 +186,8 @@ public class ModItems {
 			() -> new ItemAircraft(ModEntities.NOAH_CHOPPER.get(), "noah_chopper"));
 	public static final RegistryObject<Item> MRBUDGER_TANK = ITEMS.register("mrbudger_tank", 
 			() -> new ItemAircraft(ModEntities.MRBUDGER_TANK.get(), "mrbudger_tank"));
+	// TODO texture/model
+	public static final RegistryObject<Item> SMALL_ROLLER = ITEMS.register("small_roller", 
+			() -> new ItemAircraft(ModEntities.SMALL_ROLLER.get(), "small_roller"));
 	
 }

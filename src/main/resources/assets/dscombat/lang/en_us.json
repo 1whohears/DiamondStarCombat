@@ -58,6 +58,7 @@
 	"entity.dscombat.f16": "F16",
 	"entity.dscombat.noah_chopper": "Noah Chopper",
 	"entity.dscombat.mrbudger_tank": "Mr Budger Tank",
+	"entity.dscombat.small_roller": "Small Roller",
 	"entity.dscombat.bullet": "Bullet",
 	"entity.dscombat.missile1": "Missile 1",
 	"entity.dscombat.missile2": "Missile 2",
@@ -66,6 +67,7 @@
 	"entity.dscombat.seat": "Seat",
 	"entity.dscombat.minigun_turret": "Minigun Turret",
 	"entity.dscombat.heavy_tank_turret": "Heavy Tank Turret",
+	"entity.dscombat.steve_up_smash": "Steve Up Smash",
 	
 	"key.categories.flight_control": "Diamond Star Combat Flight Control",
 	
@@ -144,6 +146,7 @@
 	
 	"item.dscombat.minigun_turret": "Minigun Turret",
 	"item.dscombat.heavy_tank_turret": "Heavy Tank Turret",
+	"item.dscombat.steve_up_smash": "Steve Up Smash",
 	
 	"item.dscombat.basic_flare_dispenser": "Basic Flare Dispenser",
 	
@@ -157,6 +160,7 @@
 	"item.dscombat.f16": "F16",
 	"item.dscombat.noah_chopper": "Noah Chopper",
 	"item.dscombat.mrbudger_tank": "Mr Budger Tank",
+	"item.dscombat.small_roller": "Small Roller",
 	
 	"item.dscombat.20mm": "20mm",
 	"item.dscombat.50mmhe": "50mm HE",

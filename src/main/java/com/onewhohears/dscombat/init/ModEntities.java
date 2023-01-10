@@ -58,6 +58,12 @@ public class ModEntities {
 					ModSounds.JET_1, ModItems.MRBUDGER_TANK, true), 
 					EntityDimensions.scalable(3.0f, 2.5f)));
 	
+	public static final RegistryObject<EntityType<EntityGroundVehicle>> SMALL_ROLLER = ENTITIES.register("small_roller", 
+			() -> createEntityTypeFar((type, level) -> new EntityGroundVehicle(type, level, 
+					AircraftPresets.getAircraftTextures("small_roller"),
+					ModSounds.JET_1, ModItems.SMALL_ROLLER, true), 
+					EntityDimensions.scalable(1.5f, 0.8f)));
+	
 	/*
 	 * IDEA more planes
 	 * wooden plane, large wooden plane, something like a spitfire, something like a p51 mustang 
@@ -69,7 +75,6 @@ public class ModEntities {
 	 * IDEA more cars/tanks
 	 * TODO Honda Ferrari
 	 * TODO Orange Tesla
-	 * TODO steve's up smash (mobile SAM) 
 	 * 
 	 * IDEA more boats
 	 */
@@ -81,10 +86,13 @@ public class ModEntities {
 	
 	public static final RegistryObject<EntityType<EntityTurret>> MINIGUN_TURRET = ENTITIES.register("minigun_turret", 
 			() -> createEntityType((type, level) -> new EntityTurret(type, level, 0.0, 0.8), 
-					EntityDimensions.scalable(0.5f, 0.5f)));
+					EntityDimensions.scalable(1.0f, 1.5f)));
 	public static final RegistryObject<EntityType<EntityTurret>> HEAVY_TANK_TURRET = ENTITIES.register("heavy_tank_turret", 
 			() -> createEntityType((type, level) -> new EntityTurret(type, level, 0.0, 0.5), 
-					EntityDimensions.scalable(0.5f, 0.5f)));
+					EntityDimensions.scalable(2.0f, 1.0f)));
+	public static final RegistryObject<EntityType<EntityTurret>> STEVE_UP_SMASH = ENTITIES.register("steve_up_smash", 
+			() -> createEntityType((type, level) -> new EntityTurret(type, level, 0.0, 3.2), 
+					EntityDimensions.scalable(1.0f, 3.5f)));
 	
 	public static final RegistryObject<EntityType<EntityWeaponRack>> LIGHT_MISSILE_RACK = ENTITIES.register("light_missile_rack", 
 			() -> createEntityType(EntityWeaponRack::new, EntityDimensions.scalable(0.1f, 0.1f)));

@@ -33,6 +33,15 @@ There is one more condition where controls gets swapped and that is switching to
 
 Now the movements of your mouse are mapped to Pitch and Yaw and WASD control Throttle and Roll. 
 
+Other Controls
+
+- Switch Seat = ;
+- Switch Weapon = G
+- Flare = V
+- Landing Gear = L
+- Open Plane Inventory = U
+- Center Mouse = Right Alt
+
 ## Parts System
 
 If the aircraft is on the ground you can press the Plane Menu Button which is U by default. This allows you to add/remove/customize the plane's internal parts. You theoretically give any aircraft any weapon load out. You can also customize the radars, fuel tanks, and engines. However every part has weight and if you make your aircraft too heavy it may not get of the ground or be prone to drop out of the sky during turns. 

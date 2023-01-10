@@ -64,7 +64,7 @@ public class ModEntities {
 					ModSounds.JET_1, ModItems.SMALL_ROLLER, true), 
 					EntityDimensions.scalable(1.5f, 0.8f)));
 	
-	/*
+	/*  
 	 * IDEA more planes
 	 * wooden plane, large wooden plane, something like a spitfire, something like a p51 mustang 
 	 * private jet, large passenger jet, large cargo plane like a galaxy, large radar plane
@@ -73,10 +73,14 @@ public class ModEntities {
 	 * small unarmed heli, large cargo heli, 2 seated heli with gunner on front bottom
 	 * 
 	 * IDEA more cars/tanks
-	 * TODO Honda Ferrari
-	 * TODO Orange Tesla
+	 * TODO Honda Ferrari/Orange Tesla
 	 * 
-	 * IDEA more boats
+	 * TODO boats/submarines 
+	 * 
+	 * TODO torpedoes
+	 * TODO radar "attracted" missile
+	 * 
+	 * IDEA AI for planes and turrets
 	 */
 	
 	public static final RegistryObject<EntityType<EntitySeat>> SEAT = ENTITIES.register("seat", 

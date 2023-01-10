@@ -2,6 +2,8 @@ package com.onewhohears.dscombat.init;
 
 import com.google.common.collect.ImmutableSet;
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.data.AircraftPresets;
+import com.onewhohears.dscombat.entity.aircraft.EntityGroundVehicle;
 import com.onewhohears.dscombat.entity.aircraft.EntityHelicopter;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
@@ -14,7 +16,6 @@ import com.onewhohears.dscombat.entity.weapon.IRMissile;
 import com.onewhohears.dscombat.entity.weapon.PositionMissile;
 import com.onewhohears.dscombat.entity.weapon.TrackEntityMissile;
 
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
@@ -32,48 +33,50 @@ public class ModEntities {
 		ENTITIES.register(eventBus);
 	}
 	
-	/*public static final RegistryObject<EntityType<EntityPlane>> TEST_PLANE = ENTITIES.register("test_plane", 
-			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
-					new ResourceLocation(DSCombatMod.MODID, "textures/entities/basic_plane.png"),
-					ModSounds.BIPLANE_1, ModItems.TEST_PLANE), 
-					EntityDimensions.scalable(1.5f, 1.5f)));*/
-	
 	public static final RegistryObject<EntityType<EntityPlane>> JAVI_PLANE = ENTITIES.register("javi_plane", 
 			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
-					new ResourceLocation(DSCombatMod.MODID, "textures/entities/javi_plane.png"),
+					AircraftPresets.getAircraftTextures("javi_plane"),
 					ModSounds.JET_1, ModItems.JAVI_PLANE), 
 					EntityDimensions.scalable(2.45f, 2.45f)));
 	
 	public static final RegistryObject<EntityType<EntityPlane>> ALEXIS_PLANE = ENTITIES.register("alexis_plane", 
 			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
-					new ResourceLocation(DSCombatMod.MODID, "textures/entities/alexis_plane.png"),
+					AircraftPresets.getAircraftTextures("alexis_plane"),
 					ModSounds.JET_1, ModItems.ALEXIS_PLANE), 
 					EntityDimensions.scalable(2.0f, 2.0f)));
 	
-	// TODO use black hawk as inspiration for noah chopper
+	// IDEA use black hawk as inspiration for noah chopper
 	public static final RegistryObject<EntityType<EntityHelicopter>> NOAH_CHOPPER = ENTITIES.register("noah_chopper", 
 			() -> createEntityTypeFar((type, level) -> new EntityHelicopter(type, level, 
-					new ResourceLocation(DSCombatMod.MODID, "textures/entities/noah_chopper.png"),
+					AircraftPresets.getAircraftTextures("noah_chopper"),
 					ModSounds.HELI_1, ModItems.NOAH_CHOPPER, true), 
 					EntityDimensions.scalable(2.8f, 2.8f)));
 	
-	/*public static final RegistryObject<EntityType<EntityPlane>> F16 = ENTITIES.register("f16", 
-			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
-					new ResourceLocation(DSCombatMod.MODID, "textures/entities/f16.png"),
-					ModSounds.BIPLANE_1, ModItems.F16), 
-					EntityDimensions.scalable(1.5f, 1.5f)));*/
+	public static final RegistryObject<EntityType<EntityGroundVehicle>> MRBUDGER_TANK = ENTITIES.register("mrbudger_tank", 
+			() -> createEntityTypeFar((type, level) -> new EntityGroundVehicle(type, level, 
+					AircraftPresets.getAircraftTextures("mrbudger_tank"),
+					ModSounds.JET_1, ModItems.MRBUDGER_TANK, true), 
+					EntityDimensions.scalable(3.0f, 2.5f)));
+	
+	public static final RegistryObject<EntityType<EntityGroundVehicle>> SMALL_ROLLER = ENTITIES.register("small_roller", 
+			() -> createEntityTypeFar((type, level) -> new EntityGroundVehicle(type, level, 
+					AircraftPresets.getAircraftTextures("small_roller"),
+					ModSounds.JET_1, ModItems.SMALL_ROLLER, true), 
+					EntityDimensions.scalable(1.5f, 0.8f)));
+	
 	/*
-	 * TODO more planes
+	 * IDEA more planes
 	 * wooden plane, large wooden plane, something like a spitfire, something like a p51 mustang 
-	 * private jet, large passenger jat, large cargo plane like a galaxy, large radar plane
+	 * private jet, large passenger jet, large cargo plane like a galaxy, large radar plane
 	 * 
-	 * TODO more helicopters
+	 * IDEA more helicopters
 	 * small unarmed heli, large cargo heli, 2 seated heli with gunner on front bottom
 	 * 
-	 * TODO more cars/tanks
-	 * Honda Ferrari, heavy tank, light tank
+	 * IDEA more cars/tanks
+	 * TODO Honda Ferrari
+	 * TODO Orange Tesla
 	 * 
-	 * TODO more boats
+	 * IDEA more boats
 	 */
 	
 	public static final RegistryObject<EntityType<EntitySeat>> SEAT = ENTITIES.register("seat", 
@@ -82,7 +85,13 @@ public class ModEntities {
 			() -> createEntityType(EntitySeatCamera::new, EntityDimensions.scalable(0f, 0f)));
 	
 	public static final RegistryObject<EntityType<EntityTurret>> MINIGUN_TURRET = ENTITIES.register("minigun_turret", 
-			() -> createEntityType((type, level) -> new EntityTurret(type, level), 
+			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 0.0, 0.8), 
+					EntityDimensions.scalable(0.1f, 0.1f)));
+	public static final RegistryObject<EntityType<EntityTurret>> HEAVY_TANK_TURRET = ENTITIES.register("heavy_tank_turret", 
+			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 0.0, 0.5), 
+					EntityDimensions.scalable(0.1f, 0.1f)));
+	public static final RegistryObject<EntityType<EntityTurret>> STEVE_UP_SMASH = ENTITIES.register("steve_up_smash", 
+			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 0.0, 3.2), 
 					EntityDimensions.scalable(0.1f, 0.1f)));
 	
 	public static final RegistryObject<EntityType<EntityWeaponRack>> LIGHT_MISSILE_RACK = ENTITIES.register("light_missile_rack", 
@@ -105,11 +114,13 @@ public class ModEntities {
 			() -> createEntityType(EntityFlare::new, EntityDimensions.scalable(0f, 0f)));
 	
 	private static <T extends Entity> EntityType<T> createEntityType(EntityType.EntityFactory<T> factory, EntityDimensions size) {
-        return new EntityType<>(factory, MobCategory.MISC, true, true, false, true, ImmutableSet.of(), size, 5, 3);
+        return new EntityType<>(factory, MobCategory.MISC, true, true, false, 
+        		true, ImmutableSet.of(), size, 5, 3);
     }
 	
 	private static <T extends Entity> EntityType<T> createEntityTypeFar(EntityType.EntityFactory<T> factory, EntityDimensions size) {
-        return new EntityType<>(factory, MobCategory.MISC, true, true, false, true, ImmutableSet.of(), size, 10, 3);
+        return new EntityType<>(factory, MobCategory.MISC, true, true, false, 
+        		true, ImmutableSet.of(), size, 15, 3);
     }
 	
 }

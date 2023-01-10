@@ -68,14 +68,10 @@ public class UtilParse {
 	
 	public static JsonObject getJsonFromResource(String path) {
 		JsonObject json;
-        //DataInputStream dis;
         InputStreamReader isr;
         try {
-            //dis = new DataInputStream(new GZIPInputStream(UtilParse.class.getResourceAsStream(path)));
-        	//isr = new InputStreamReader(dis, "UTF-8");
         	isr = new InputStreamReader(getResourceAsStream(path));
             json = gson.fromJson(isr, JsonObject.class);
-            //dis.close();
             isr.close();
         }
         catch (Exception e) {
@@ -85,53 +81,10 @@ public class UtilParse {
         }
         return json;
 	}
-	
-	/*public static List<JsonObject> getJsonsFromDirectory(String path) {
-		List<JsonObject> jsons = new ArrayList<JsonObject>();
-		try {
-			List<String> files = getResourceNames(path);
-			for (String name : files) {
-				JsonObject json = getJsonFromResource(path+"/"+name);
-				jsons.add(json);
-			}
-		} catch (IOException e) {
-			System.out.println("ERROR: COULD NOT PARSE JSONS "+path);
-			e.printStackTrace();
-		}
-		return jsons;
-	}*/
-	
-	/*public static List<String> getResourceNames(String path) throws IOException {
-	    List<String> filenames = new ArrayList<String>();
-		try {
-			InputStream is = UtilParse.class.getClassLoader().getResourceAsStream(path);
-			if (is == null) {
-				System.out.println("ERROR: NOT A DIRECTORY "+path);
-				return filenames;
-			}
-			filenames = IOUtils.readLines(is, Charsets.UTF_8);
-			is.close();
-		} catch (Exception e) {
-	    	System.out.println("ERROR: COULD NOT PARSE JSON "+path);
-            e.printStackTrace();
-		}
-	    return filenames;
-	}*/
 
 	private static InputStream getResourceAsStream(String resource) {
 	    return UtilParse.class.getResourceAsStream(resource);
 	}
-
-	/*private static ClassLoader getContextClassLoader() {
-	    return Thread.currentThread().getContextClassLoader();
-	}*/
-	
-	/*public static List<CompoundTag> getCompoundsFromJsonDirectory(String path) {
-		List<JsonObject> jsons = getJsonsFromDirectory(path);
-		List<CompoundTag> compounds = new ArrayList<CompoundTag>();
-		for (JsonObject j : jsons) compounds.add(getCompoundFromJson(j));
-		return compounds;
-	}*/
 	
 	public static void writeVec3(CompoundTag tag, Vec3 v, String name) {
 		tag.putDouble(name+"x", v.x);
@@ -156,8 +109,7 @@ public class UtilParse {
 			String itemId = tag.getString("itemid");
 			Item item;
 			try {
-				item = ForgeRegistries.ITEMS.getDelegate(
-					new ResourceLocation(itemId)).get().get();
+				item = ForgeRegistries.ITEMS.getDelegate(new ResourceLocation(itemId)).get().get();
 			} catch(NoSuchElementException e) {
 				return null;
 			}

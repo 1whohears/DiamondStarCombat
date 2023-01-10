@@ -35,22 +35,21 @@ public class IRMissile extends EntityMissile {
 	@Override
 	public void tickGuide() {
 		if (tickCount < 20) return;
-		if (this.tickCount % 10 == 0) findIrTarget();
-		if (this.target != null) guideToTarget();
+		if (tickCount % 10 == 0) findIrTarget();
+		if (target != null) guideToTarget();
 	}
 	
 	protected List<IrTarget> targets = new ArrayList<IrTarget>();
 	
 	protected void findIrTarget() {
-		Level level = this.level;
 		targets.clear();
 		// planes
 		List<EntityAircraft> planes = level.getEntitiesOfClass(
 				EntityAircraft.class, getIrBoundingBox());
 		for (int i = 0; i < planes.size(); ++i) {
-			if (planes.get(i).isVehicleOf(this.getOwner())) continue;
-			if (!basicCheck(planes.get(i), false)) continue;
-			float distSqr = (float)this.distanceToSqr(planes.get(i));
+			if (planes.get(i).isVehicleOf(getOwner())) continue;
+			if (!basicCheck(planes.get(i), true)) continue;
+			float distSqr = (float)distanceToSqr(planes.get(i));
 			targets.add(new IrTarget(planes.get(i), planes.get(i).getHeat() / distSqr));
 		}
 		// players
@@ -59,7 +58,7 @@ public class IRMissile extends EntityMissile {
 		for (int i = 0; i < players.size(); ++i) {
 			if (players.get(i).getRootVehicle() instanceof EntityAircraft) continue;
 			if (!basicCheck(players.get(i), true)) continue;
-			float distSqr = (float)this.distanceToSqr(players.get(i));
+			float distSqr = (float)distanceToSqr(players.get(i));
 			targets.add(new IrTarget(players.get(i), 1f / distSqr));
 		}
 		// mobs
@@ -68,7 +67,7 @@ public class IRMissile extends EntityMissile {
 		for (int i = 0; i < mobs.size(); ++i) {
 			if (mobs.get(i).getRootVehicle() instanceof EntityAircraft) continue;
 			if (!basicCheck(mobs.get(i), true)) continue;
-			float distSqr = (float)this.distanceToSqr(mobs.get(i));
+			float distSqr = (float)distanceToSqr(mobs.get(i));
 			targets.add(new IrTarget(mobs.get(i), getMobHeat(mobs.get(i)) / distSqr));
 		}
 		// missiles
@@ -77,8 +76,8 @@ public class IRMissile extends EntityMissile {
 		for (int i = 0; i < missiles.size(); ++i) {
 			if (this.equals(missiles.get(i))) continue;
  			if (!basicCheck(missiles.get(i), false)) continue;
- 			if (this.getOwner() != null && this.getOwner().equals(missiles.get(i).getOwner())) continue;
-			float distSqr = (float)this.distanceToSqr(missiles.get(i));
+ 			if (this.getOwner() != null && getOwner().equals(missiles.get(i).getOwner())) continue;
+			float distSqr = (float)distanceToSqr(missiles.get(i));
 			targets.add(new IrTarget(missiles.get(i), missiles.get(i).getHeat() / distSqr));
 		}	
 		// flares
@@ -86,7 +85,7 @@ public class IRMissile extends EntityMissile {
 				EntityFlare.class, getIrBoundingBox());
 		for (int i = 0; i < flares.size(); ++i) {
 			if (!basicCheck(flares.get(i), false)) continue;
-			float distSqr = (float)this.distanceToSqr(flares.get(i));
+			float distSqr = (float)distanceToSqr(flares.get(i));
 			targets.add(new IrTarget(flares.get(i), 
 					flares.get(i).getHeat() / distSqr * flareResistance));
 		}
@@ -96,7 +95,7 @@ public class IRMissile extends EntityMissile {
 		for (int i = 0; i < arrows.size(); ++i) {
 			if (!arrows.get(i).isOnFire()) continue;
 			if (!basicCheck(arrows.get(i), false)) continue;
-			float distSqr = (float)this.distanceToSqr(arrows.get(i));
+			float distSqr = (float)distanceToSqr(arrows.get(i));
 			targets.add(new IrTarget(arrows.get(i), 
 					2f / distSqr * flareResistance));
 		}
@@ -105,7 +104,7 @@ public class IRMissile extends EntityMissile {
 				FireworkRocketEntity.class, getIrBoundingBox());
 		for (int i = 0; i < foreworks.size(); ++i) {
 			if (!basicCheck(foreworks.get(i), false)) continue;
-			float distSqr = (float)this.distanceToSqr(foreworks.get(i));
+			float distSqr = (float)distanceToSqr(foreworks.get(i));
 			targets.add(new IrTarget(foreworks.get(i), 
 					2f / distSqr * flareResistance));
 		}

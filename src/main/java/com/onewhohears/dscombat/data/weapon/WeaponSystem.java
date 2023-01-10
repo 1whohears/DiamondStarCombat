@@ -115,15 +115,15 @@ public class WeaponSystem {
 		return weapons.get(weaponIndex);
 	}
 	
-	public boolean shootSelected(Entity controller) {
+	public boolean shootSelected(Entity controller, boolean consume) {
 		WeaponData data = getSelected();
 		if (data == null) return false;
 		String name = data.getId();
 		String reason = null;
-		data.shoot(parent.level, controller, UtilAngles.getRollAxis(parent.getQ()), null, parent);
+		data.shoot(parent.level, controller, UtilAngles.getRollAxis(parent.getQ()), null, parent, consume);
 		if (data.isFailedLaunch()) reason = data.getFailedLaunchReason();
 		for (WeaponData wd : weapons) if (wd.getType() == WeaponType.BULLET && wd.getId().equals(name) && !wd.getSlotId().equals(data.getSlotId())) {
-			wd.shoot(parent.level, controller, UtilAngles.getRollAxis(parent.getQ()), null, parent);
+			wd.shoot(parent.level, controller, parent.getLookAngle(), null, parent, consume);
 			if (reason == null && wd.isFailedLaunch()) reason = wd.getFailedLaunchReason();
 		}
 		if (reason != null && controller instanceof ServerPlayer player) {
@@ -178,6 +178,15 @@ public class WeaponSystem {
 		String s = "Weapons:";
 		for (WeaponData w : weapons) s += w;
 		return s;
+	}
+	
+	public int addAmmo(String id, int ammo, boolean updateClient) {
+		for (WeaponData w : weapons) if (w.getId().equals(id)) {
+			ammo = w.addAmmo(ammo);
+			if (updateClient) w.updateClientAmmo(parent);
+			if (ammo == 0) return 0;
+		}
+		return ammo;
 	}
 	
 }

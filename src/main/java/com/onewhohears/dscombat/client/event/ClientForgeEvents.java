@@ -12,7 +12,6 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexBuffer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.KeyInit;
 import com.onewhohears.dscombat.common.network.PacketHandler;
@@ -26,7 +25,6 @@ import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.parts.EntitySeatCamera;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.util.math.UtilAngles;
-import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.client.CameraType;
@@ -35,6 +33,8 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult.Type;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
@@ -44,7 +44,6 @@ import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -52,8 +51,6 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 @Mod.EventBusSubscriber(modid = DSCombatMod.MODID, bus = Bus.FORGE, value = Dist.CLIENT)
 public final class ClientForgeEvents {
-	
-	private ClientForgeEvents() {}
 	
 	@SubscribeEvent
 	public static void clientTickPilotControl(TickEvent.ClientTickEvent event) {
@@ -74,7 +71,8 @@ public final class ClientForgeEvents {
 		double mouseY = -(m.mouseHandler.ypos() - mouseCenterY);
 		boolean flare = KeyInit.flareKey.isDown();
 		boolean shoot = KeyInit.shootKey.isDown();
-		boolean flip = KeyInit.flipControls.isDown();
+		boolean flip = KeyInit.flipControlsKey.isDown();
+		boolean special = KeyInit.specialKey.isDown();
 		float pitch = 0, roll = 0, yaw = 0, throttle = 0;
 		boolean pitchUp, pitchDown, yawLeft, yawRight;
 		boolean rollLeft, rollRight, throttleUp, throttleDown;
@@ -125,9 +123,9 @@ public final class ClientForgeEvents {
 		if (throttleDown) throttle -= 1;
 		PacketHandler.INSTANCE.sendToServer(new ToServerFlightControl(
 				throttle, pitch, roll, yaw,
-				mouseMode, flare, shoot, select, openMenu, gear));
+				mouseMode, flare, shoot, select, openMenu, gear, special));
 		plane.updateControls(throttle, pitch, roll, yaw,
-				mouseMode, flare, shoot, select, openMenu);
+				mouseMode, flare, shoot, select, openMenu, special);
 		if (mouseMode && !plane.isFreeLook()) centerMouse();
 	}
 	
@@ -138,9 +136,7 @@ public final class ClientForgeEvents {
 		final var player = m.player;
 		if (player == null) return;
 		if (!(player.getRootVehicle() instanceof EntityAircraft plane)) return;
-		boolean seat = KeyInit.changeSeat.consumeClick();
-		boolean shoot = KeyInit.shootKey.isDown();
-		if (seat) {
+		if (KeyInit.changeSeat.consumeClick()) {
 			PacketHandler.INSTANCE.sendToServer(new ToServerSwitchSeat(plane.getId()));
 		}
 		RadarSystem radar = plane.radarSystem;
@@ -158,6 +154,7 @@ public final class ClientForgeEvents {
 			}
 		}
 		if (!hovering) resetHoverIndex();
+		boolean shoot = KeyInit.shootKey.isDown();
 		if (shoot && player.getVehicle() instanceof EntityTurret turret) {
 			PacketHandler.INSTANCE.sendToServer(new ToServerShootTurret(turret));
 		}
@@ -183,22 +180,15 @@ public final class ClientForgeEvents {
 	
 	private static void resetHoverIndex() {
 		hoverIndex = -1;
-		//System.out.println("reset hover index");
 	}
 	
-	@SubscribeEvent
-	public static void onAttackEntity(AttackEntityEvent event) {
-		if (event.getPhase() != EventPriority.NORMAL) return;
+	@SubscribeEvent(priority = EventPriority.NORMAL)
+	public static void onInteractKey(InputEvent.InteractionKeyMappingTriggered event) {
+		if (!event.isAttack()) return;
 		Minecraft m = Minecraft.getInstance();
-		if (event.getTarget().equals(m.player)) {
-			event.setCanceled(true);
-		}
-	}
-	
-	@SubscribeEvent
-	public static void onScrollInput(InputEvent.MouseScrollingEvent event) {
-		//System.out.println(event.getMouseX()+" "+event.getMouseY());
-		//System.out.println("mouse scroll "+event.getScrollDelta());
+		if (m.hitResult.getType() != Type.ENTITY) return;
+		EntityHitResult hit = (EntityHitResult) m.hitResult;
+		if (hit.getEntity().equals(m.player)) event.setCanceled(true);
 	}
 	
 	private static VertexBuffer pingBuffer;
@@ -232,9 +222,8 @@ public final class ClientForgeEvents {
 				Math.toDegrees(Math.atan2(y, d)), 10000);
 	}
 	
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void renderLevelStage(RenderLevelStageEvent event) {
-		if (event.getPhase() != EventPriority.NORMAL) return;
 		if (event.getStage() != Stage.AFTER_PARTICLES) return;
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
@@ -339,9 +328,8 @@ public final class ClientForgeEvents {
 		buffer.vertex(x-w, y+w2, z-w).color(colorR, colorG, colorB, colorA).endVertex();
 	}
 	
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void playerRender(RenderPlayerEvent.Pre event) {
-		if (event.getPhase() != EventPriority.NORMAL) return;
 		Minecraft m = Minecraft.getInstance();
 		final var playerC = m.player;
 		Player player = event.getEntity();
@@ -353,17 +341,14 @@ public final class ClientForgeEvents {
 			}
 			Quaternion q = UtilAngles.lerpQ(event.getPartialTick(), plane.getPrevQ(), plane.getClientQ());
 			event.getPoseStack().mulPose(q);
-			// TODO player doesn't look in the right direction in certain cases
-			if (player.getVehicle() instanceof EntityTurret turret) {
-				player.setYBodyRot(0);
-				player.setYHeadRot(0);
-				event.getPoseStack().mulPose(Vector3f.YP.rotationDegrees(turret.getYRot()));
-				event.getPoseStack().mulPose(Vector3f.XP.rotationDegrees(turret.getXRot()));
-			} else {
-				EulerAngles a = UtilAngles.toDegrees(q);
-				player.setYBodyRot(player.getYRot()-(float)a.yaw);
-				player.setYHeadRot(player.getYRot()-(float)a.yaw);
-			}
+			float[] relangles = UtilAngles.globalToRelativeDegrees(player.getXRot(), player.getYRot(), q);
+			player.setYBodyRot(relangles[1]);
+			player.setYHeadRot(relangles[1]);
+			// HOW set player head model part x rot to relangles[0]
+			//event.getRenderer().getModel().head.xRot = (float) Math.toRadians(relangles[0]);
+			//event.getRenderer().getModel().head.xRot = 0;
+			/*event.getRenderer().getModel().setupAnim((LocalPlayer)player, 0f, 
+					0f, 0f, 0f, (float) Math.toRadians(relangles[0]));*/
 		}
 	}
 	
@@ -372,46 +357,46 @@ public final class ClientForgeEvents {
 		double y = player.getY();
 		double z = player.getZ();
 		double w = player.getBbWidth()/2;
-		player.setBoundingBox(new AABB(x+w, y+0.5d, z+w, x-w, y, z-w)); 
+		player.setBoundingBox(new AABB(x+w, y+w, z+w, x-w, y-w, z-w));
 	}
 	
 	private static Entity prevCamera;
+	//private static float prevPlayerX, prevPlayerY;
 	
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void cameraSetup(ViewportEvent.ComputeCameraAngles event) {
-		if (event.getPhase() != EventPriority.NORMAL) return;
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
 		if (player == null) return;
-		// TODO third person camera looks feels janky
 		prevCamera = m.getCameraEntity();
 		if (player.getVehicle() instanceof EntitySeat seat 
 				&& seat.getVehicle() instanceof EntityAircraft plane) {
 			EntitySeatCamera camera = seat.getCamera();
-			float xo, xn, xi, yo, yn, yi, zo, zn, zi;
+			float xi, yi, zi;
+			float pt = (float)event.getPartialTick();
 			if (!plane.isFreeLook() && plane.getControllingPassenger() != null 
 					&& plane.getControllingPassenger().equals(player)) {
-				xo = plane.xRotO;
-				xn = plane.getXRot();
-				yo = plane.yRotO;
-				yn = plane.getYRot();
-				zo = plane.zRotO;
-				zn = plane.zRot;
-				xi = xo + (xn - xo) * (float)event.getPartialTick();
-				yi = yo + (yn - yo) * (float)event.getPartialTick();
-				zi = zo + (zn - zo) * (float)event.getPartialTick();
+				xi = UtilAngles.lerpAngle(pt, plane.xRotO, plane.getXRot());
+				yi = UtilAngles.lerpAngle180(pt, plane.yRotO, plane.getYRot());
+				zi = UtilAngles.lerpAngle(pt, plane.zRotO, plane.zRot);
 				player.setXRot(xi);
 				player.setYRot(yi);
 			} else {
-				xo = player.xRotO;
-				xn = player.getXRot();
-				yo = player.yRotO;
-				yn = player.getYRot();
-				zo = plane.zRotO;
-				zn = plane.zRot;
-				xi = xo + (xn - xo) * (float)event.getPartialTick();
-				yi = yo + (yn - yo) * (float)event.getPartialTick();
-				zi = zo + (zn - zo) * (float)event.getPartialTick();
+				zi = UtilAngles.lerpAngle(pt, plane.zRotO, plane.zRot);
+				xi = player.getXRot();
+				yi = player.getYRot();
+				// HOW make the mouse moves change the camera angles relative to the plane axis
+				// player.getXRot() = player.xRotO on the client's player
+				// mouseHandler.getXVelocity() is always 0
+				/*float diffx = 0; // how to get mouse movements?
+				float diffy = 0; // how to get mouse movements?
+				float[] rel = UtilAngles.globalToRelativeDegrees(prevPlayerX, prevPlayerY, plane.getClientQ());
+				rel[0] += diffx; rel[1] += diffy;
+				float[] global = UtilAngles.relativeToGlobalDegrees(rel[0], rel[1], plane.getClientQ());
+				xi = global[0];
+				yi = global[1];
+				player.setXRot(xi);
+				player.setYRot(yi);*/
 			}
 			if (m.options.getCameraType() == CameraType.THIRD_PERSON_FRONT) {
 				event.setPitch(xi*-1f);
@@ -425,11 +410,14 @@ public final class ClientForgeEvents {
 			if (camera != null) {
 				camera.setXRot(xi);
 				camera.setYRot(yi);
+				camera.xRotO = xi;
+				camera.yRotO = yi;
 				if (!prevCamera.equals(camera)) m.setCameraEntity(camera);
 			}
 		} else {
 			if (!prevCamera.equals(player)) m.setCameraEntity(player);
 		}
+		//prevPlayerX = player.getXRot();
+		//prevPlayerY = player.getYRot();
 	}
-	
 }

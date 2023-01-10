@@ -58,11 +58,6 @@ public class EngineData extends PartData {
 	public boolean isSetup(String slotId, EntityAircraft craft) {
 		return false;
 	}
-
-	/*@Override
-	public ItemStack getItemStack() {
-		
-	}*/
 	
 	public float getThrust() {
 		return thrust;

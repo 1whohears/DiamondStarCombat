@@ -1,12 +1,8 @@
 package com.onewhohears.dscombat;
 
-import org.slf4j.Logger;
-
-import com.mojang.logging.LogUtils;
 import com.onewhohears.dscombat.client.screen.AircraftBlockScreen;
 import com.onewhohears.dscombat.client.screen.AircraftScreen;
 import com.onewhohears.dscombat.client.screen.WeaponsBlockScreen;
-import com.onewhohears.dscombat.common.event.CommonForgeEvents;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.data.AircraftPresets;
 import com.onewhohears.dscombat.data.radar.RadarPresets;
@@ -21,11 +17,7 @@ import com.onewhohears.dscombat.init.ModRecipeSerializers;
 import com.onewhohears.dscombat.init.ModSounds;
 
 import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.level.LevelEvent;
-import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -36,7 +28,7 @@ public class DSCombatMod
 {
 	public static final String MODID = "dscombat";
 	
-    private static final Logger LOGGER = LogUtils.getLogger();
+    //private static final Logger LOGGER = LogUtils.getLogger();
 
     public DSCombatMod() {
     	IEventBus eventBus =  FMLJavaModLoadingContext.get().getModEventBus();
@@ -56,13 +48,9 @@ public class DSCombatMod
     	
     	eventBus.addListener(this::commonSetup);
     	eventBus.addListener(this::clientSetup);
-    	
-    	MinecraftForge.EVENT_BUS.register(new CommonForgeEvents());
-        MinecraftForge.EVENT_BUS.register(this);
     }
     
     private void commonSetup(FMLCommonSetupEvent event) {
-    	LOGGER.info("HELLO FROM PREINIT");
 		PacketHandler.register();
 	}
     
@@ -71,17 +59,5 @@ public class DSCombatMod
     	MenuScreens.register(ModContainers.WEAPONS_BLOCK_MENU.get(), WeaponsBlockScreen::new);
     	MenuScreens.register(ModContainers.AIRCRAFT_BLOCK_MENU.get(), AircraftBlockScreen::new);
     }
-    
-    @SubscribeEvent
-	public static void serverStoping(ServerStoppingEvent event) {
-    	//LOGGER.info("SERVER STOPPING "+event.getServer());
-		//ChunkManager.unloadAll(event.getServer());
-	}
-	
-	@SubscribeEvent
-	public static void levelUnload(LevelEvent.Unload event) {
-		//LOGGER.info("LEVEL UNLOADING "+event.getLevel());
-		//ChunkManager.unloadAllInLevel(event.getLevel());
-	}
     
 }

@@ -75,32 +75,26 @@ public class EntitySeat extends EntityPart {
 	
 	@Override
     public void positionRider(Entity passenger) {
-		//System.out.println("SEAT POSITION "+passenger);
-		if (passenger instanceof Player player) {
-			player.setPos(position());
-		} else if (passenger instanceof EntitySeatCamera camera) {
-			//System.out.println("SEAT ROOT "+getVehicle());
-			if (!(this.getVehicle() instanceof EntityAircraft craft)) return;
-			Vec3 pos = position();
-			Quaternion q;
-			if (level.isClientSide) q = craft.getClientQ();
-			else q = craft.getQ();
-			Vec3 seatPos = UtilAngles.rotateVector(new Vec3(0, 1.62, 0), q);
-			camera.setPos(pos.add(seatPos));
-		} else {
+		if (!(getVehicle() instanceof EntityAircraft craft)) {
 			super.positionRider(passenger);
+			return;
 		}
+		Vec3 pos = position();
+		Quaternion q;
+		if (level.isClientSide) q = craft.getClientQ();
+		else q = craft.getQ();
+		double offset = getPassengersRidingOffset() + passenger.getMyRidingOffset();
+		Vec3 passPos = UtilAngles.rotateVector(new Vec3(0, offset, 0), q);
+		passenger.setPos(pos.add(passPos));
 	}
 	
 	@Override
     protected void addPassenger(Entity passenger) {
         super.addPassenger(passenger);
-        //System.out.println("SEAT ADDED PASSENGER "+passenger);
 	}
 	
 	@Override
     public boolean canAddPassenger(Entity passenger) {
-		//System.out.println("CAN SEAT ADD "+passenger);
 		if (passenger instanceof Player) return getPlayer() == null;
 		if (passenger instanceof EntitySeatCamera) return getCamera() == null;
 		return false;
@@ -108,7 +102,6 @@ public class EntitySeat extends EntityPart {
 	
 	@Override
     protected boolean canRide(Entity entityIn) {
-		//System.out.println("CAN RIDE SEAT "+entityIn);
 		return entityIn instanceof EntityAircraft;
     }
 	
@@ -117,12 +110,14 @@ public class EntitySeat extends EntityPart {
 		return super.getDismountLocationForPassenger(livingEntity).add(0, 1, 0);
 	}
 	
+	@Nullable
 	public Player getPlayer() {
 		List<Entity> list = getPassengers();
 		for (Entity e : list) if (e instanceof Player p) return p;
 		return null;
 	}
 	
+	@Nullable
 	public EntitySeatCamera getCamera() {
 		List<Entity> list = getPassengers();
 		for (Entity e : list) if (e instanceof EntitySeatCamera c) return c;
@@ -142,7 +137,7 @@ public class EntitySeat extends EntityPart {
     
     @Override
     public double getPassengersRidingOffset() {
-        return 0;
+        return 0.0;
     }
 
 	@Override

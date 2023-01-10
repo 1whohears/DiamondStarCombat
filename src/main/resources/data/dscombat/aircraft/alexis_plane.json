@@ -11,9 +11,14 @@
 	"stealth": 0.8,
 	"idleheat": 4.0,
 	
+	"turn_radius": 24,
 	"maxroll": 6.0,
 	"maxpitch": 2.5,
 	"maxyaw": 1.5,
+	"accroll": 0.6,
+	"accpitch": 0.3,
+	"accyaw": 0.5,
+	
 	"throttleup": 0.04,
 	"throttledown": 0.04,
 	"landing_gear": true,
@@ -23,7 +28,7 @@
 			"name": "dscombat.pilot_seat",
 			"slot_type": 0,
 			"slot_posx": 0,
-			"slot_posy": -0.8,
+			"slot_posy": -0.3,
 			"slot_posz": 2.0,
 			"uix": 48,
 			"uiy": 20,
@@ -188,6 +193,12 @@
 			"uiy": 100
 		}
 	],
+	
+	"dyecolor": 0,
+	"textures": {
+		"0": "dscombat:textures/entities/alexis_plane.png",
+		"14": "dscombat:textures/entities/red_alexis_plane.png"
+	},
 	
 	"ingredients": [
 		{

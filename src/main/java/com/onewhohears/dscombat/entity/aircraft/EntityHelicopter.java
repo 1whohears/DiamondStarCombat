@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.onewhohears.dscombat.data.AircraftTextures;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
@@ -10,7 +10,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
@@ -28,9 +27,9 @@ public class EntityHelicopter extends EntityAircraft {
 	private float propellerRot, propellerRotOld;
 	private final boolean alwaysLandingGear;
 	
-	public EntityHelicopter(EntityType<? extends EntityHelicopter> entity, Level level, ResourceLocation texture,
+	public EntityHelicopter(EntityType<? extends EntityHelicopter> entity, Level level, AircraftTextures textures,
 			RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item, boolean alwaysLandingGear) {
-		super(entity, level, texture, engineSound, item);
+		super(entity, level, textures, engineSound, item, false);
 		this.alwaysLandingGear = alwaysLandingGear;
 	}
 	
@@ -65,13 +64,20 @@ public class EntityHelicopter extends EntityAircraft {
 	
 	@Override
 	public void tickGround(Quaternion q) {
-		super.tickGround(q);
 		Vec3 motion = getDeltaMovement();
+		if (motion.y < 0) motion = new Vec3(motion.x, 0, motion.z);
+		motion = motion.multiply(0.8, 1, 0.8);
+		motion = motion.add(getWeightForce());
+		motion = motion.add(getThrustForce(q));
 		setDeltaMovement(motion);
 	}
 	
 	@Override
 	public void tickAir(Quaternion q) {
+		if (!level.isClientSide && inputSpecial) {
+			float th = getTotalWeight() / getMaxThrust();
+			setCurrentThrottle(th);
+		}
 		super.tickAir(q);
 		Vec3 motion = getDeltaMovement();
 		if (isFreeLook()) {
@@ -88,25 +94,23 @@ public class EntityHelicopter extends EntityAircraft {
 	
 	@Override
 	public void controlDirection(Quaternion q) {
-		if (isOnGround() || isFreeLook()) {
-			torqueX = torqueZ = 0;
-			EulerAngles angles = UtilAngles.toDegrees(q);
-			float dRoll = getMaxDeltaRoll();
-			float dPitch = getMaxDeltaPitch();
-			float roll, pitch;
-			if (Math.abs(angles.roll) < dRoll) roll = (float) -angles.roll;
-			else roll = -(float)Math.signum(angles.roll) * dRoll;
-			if (Math.abs(angles.pitch) < dPitch) pitch = (float) -angles.pitch;
-			else pitch = -(float)Math.signum(angles.pitch) * dPitch;
-			q.mul(new Quaternion(Vector3f.XP, pitch, true));
-			q.mul(new Quaternion(Vector3f.ZP, roll, true));
-			if (!isOnGround()) torqueY += inputYaw * 0.5f;
-		} else if (!isOnGround()) {
-			torqueX += inputPitch * 0.5f;
-			torqueY += inputYaw * 0.5f;
-			torqueZ += inputRoll * 0.5f;
-		}
 		super.controlDirection(q);
+	}
+	
+	@Override
+	public void directionGround(Quaternion q) {
+		flatten(q, 5f, 5f);
+		torqueY = 0;
+	}
+	
+	@Override
+	public void directionAir(Quaternion q) {
+		super.directionAir(q);
+		addTorqueY(inputYaw * getAccelerationYaw(), true);
+		if (!isFreeLook()) {
+			addTorqueX(inputPitch * getAccelerationPitch(), true);
+			addTorqueZ(inputRoll * getAccelerationRoll(), true);
+		} else flatten(q, getMaxDeltaPitch(), getMaxDeltaRoll());
 	}
 
 	@Override
@@ -118,17 +122,12 @@ public class EntityHelicopter extends EntityAircraft {
 	
 	@Override
 	public double getThrustMag() {
-		return super.getThrustMag() * 2.0 * UtilEntity.getAirPressure(getY());
+		return super.getThrustMag();
 	}
 	
 	@Override
-	public double getFrictionMag() {
-		double x = getDeltaMovement().x;
-		double z = getDeltaMovement().z;
-		double speed = Math.sqrt(x*x + z*z);
-		double f = getTotalWeight() * 0.2;
-		if (speed < f) return speed;
-		return f;
+	public float getMaxThrust() {
+		return super.getMaxThrust() * 2.0f * (float)UtilEntity.getAirPressure(getY());
 	}
 	
 	public float getPropellerRotation(float partialTicks) {
@@ -155,6 +154,11 @@ public class EntityHelicopter extends EntityAircraft {
 	
 	public void setAccSide(float acc) {
 		entityData.set(ACC_SIDE, acc);
+	}
+	
+	@Override
+	protected float getTorqueDragMag() {
+		return 0.25f;
 	}
 
 }

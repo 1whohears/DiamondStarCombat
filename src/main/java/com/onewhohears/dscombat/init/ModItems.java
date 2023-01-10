@@ -3,11 +3,14 @@ package com.onewhohears.dscombat.init;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.BuffData.BuffType;
 import com.onewhohears.dscombat.data.parts.PartSlot;
+import com.onewhohears.dscombat.data.parts.TurretData.RotBounds;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.item.ItemAircraft;
 import com.onewhohears.dscombat.item.ItemAmmo;
 import com.onewhohears.dscombat.item.ItemBuffPart;
+import com.onewhohears.dscombat.item.ItemCreativeWand;
 import com.onewhohears.dscombat.item.ItemEngine;
 import com.onewhohears.dscombat.item.ItemFlareDispenser;
 import com.onewhohears.dscombat.item.ItemFuelTank;
@@ -39,7 +42,6 @@ public class ModItems {
 	public static void registerWeaponPresets() {
 		for (int i = 0; i < WeaponPresets.weapons.size(); ++i) {
 			WeaponData data = WeaponPresets.weapons.get(i);
-			System.out.println("registering item weapon "+data);
 			final int size;
 			if (data.getMaxAmmo() < 64) size = data.getMaxAmmo();
 			else size = 64;
@@ -102,6 +104,16 @@ public class ModItems {
 	public static final RegistryObject<Item> THICK_WRENCH = ITEMS.register("thick_wrench", 
 			() -> new ItemRepairTool(200, 5));
 	
+	// CREATIVE WANDS
+	public static final RegistryObject<Item> NO_CONSUME_WAND = ITEMS.register("no_consume_wand", 
+			() -> new ItemCreativeWand(new String[] {"dscombat.no_consume_wand_1"}) {
+				@Override
+				public boolean modifyAircraft(EntityAircraft plane) {
+					plane.setNoConsume(true);
+					return true;
+				}
+			});
+	
 	// GAS CANS
 	public static final RegistryObject<Item> GAS_CAN = ITEMS.register("gas_can", 
 			() -> new ItemGasCan(25));
@@ -139,9 +151,18 @@ public class ModItems {
 			() -> new ItemSeat(0.001f, PartSlot.SEAT));
 	
 	// TURRENTS
-	public static final RegistryObject<Item> MINIGUN_TURRENT = ITEMS.register("minigun_turret", 
+	public static final RegistryObject<Item> MINIGUN_TURRET = ITEMS.register("minigun_turret", 
 			() -> new ItemTurret(0.019f, PartSlot.SEAT, 
-					ModEntities.MINIGUN_TURRET.getId().toString(), "20mm"));
+					ModEntities.MINIGUN_TURRET.getId().toString(), "20mm",
+					new RotBounds(2f, -30f, 30f)));
+	public static final RegistryObject<Item> HEAVY_TANK_TURRET = ITEMS.register("heavy_tank_turret", 
+			() -> new ItemTurret(0.027f, PartSlot.SEAT, 
+					ModEntities.HEAVY_TANK_TURRET.getId().toString(), "120mmhe",
+					new RotBounds(1.5f, -20f, 20f)));
+	public static final RegistryObject<Item> STEVE_UP_SMASH = ITEMS.register("steve_up_smash", 
+			() -> new ItemTurret(0.035f, PartSlot.SEAT, 
+					ModEntities.STEVE_UP_SMASH.getId().toString(), "aim9p5",
+					new RotBounds(1f, -30f, 30f)));
 	
 	// FLARE DISPENSERS
 	public static final RegistryObject<Item> BASIC_FLARE_DISPENSER = ITEMS.register("basic_flare_dispenser", 
@@ -156,15 +177,15 @@ public class ModItems {
 			() -> new ItemWeaponPart(0.008f, "heavy_missile_rack", PartSlot.EXTERNAL)); 
 	
 	// PLANES
-	/*public static final RegistryObject<Item> TEST_PLANE = ITEMS.register("test_plane", 
-			() -> new ItemAircraft(ModEntities.TEST_PLANE.get(), "test_plane"));*/
 	public static final RegistryObject<Item> JAVI_PLANE = ITEMS.register("javi_plane", 
 			() -> new ItemAircraft(ModEntities.JAVI_PLANE.get(), "javi_plane"));
 	public static final RegistryObject<Item> ALEXIS_PLANE = ITEMS.register("alexis_plane", 
 			() -> new ItemAircraft(ModEntities.ALEXIS_PLANE.get(), "alexis_plane"));
 	public static final RegistryObject<Item> NOAH_CHOPPER = ITEMS.register("noah_chopper", 
 			() -> new ItemAircraft(ModEntities.NOAH_CHOPPER.get(), "noah_chopper"));
-	/*public static final RegistryObject<Item> F16 = ITEMS.register("f16", 
-			() -> new ItemAircraft(ModEntities.F16.get(), "f16"));*/
+	public static final RegistryObject<Item> MRBUDGER_TANK = ITEMS.register("mrbudger_tank", 
+			() -> new ItemAircraft(ModEntities.MRBUDGER_TANK.get(), "mrbudger_tank"));
+	public static final RegistryObject<Item> SMALL_ROLLER = ITEMS.register("small_roller", 
+			() -> new ItemAircraft(ModEntities.SMALL_ROLLER.get(), "small_roller"));
 	
 }

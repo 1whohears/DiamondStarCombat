@@ -102,19 +102,17 @@ public class FlareDispenserData extends PartData {
 	
 	@Override
 	public float getWeight() {
-		//float w = super.getWeight();
-		//return w * (float)flares / (float)max;
 		return super.getWeight();
 	}
 	
-	public boolean flare(boolean isCreative) {
-		if (this.getParent() == null) return false;
-		if (this.getFlares() <= 0) return false;
+	public boolean flare(boolean consume) {
+		if (getParent() == null) return false;
+		if (getFlares() <= 0) return false;
 		Level level = getParent().level;
 		EntityFlare flare = new EntityFlare(level, heat, age, 3);
 		flare.setPos(getParent().position().add(relPos));
 		level.addFreshEntity(flare);
-		if (!isCreative) this.addFlares(-1);
+		if (consume) addFlares(-1);
 		return true;
 	}
 

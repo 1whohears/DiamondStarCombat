@@ -1,0 +1,29 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"S": {
+			"item": "dscombat:seat"
+		},
+		"R": {
+			"item": "dscombat:light_missile_rack"
+		},
+		"M": {
+			"item": "minecraft:magma_block"
+		},
+		"C": {
+			"item": "minecraft:minecart"
+		},
+		"P": {
+			"item": "dscombat:aim9p5"
+		}
+	},
+	"pattern": [
+		"PMP",
+		"PRP",
+		"CSC"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:steve_up_smash"
+	}
+}

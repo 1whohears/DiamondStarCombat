@@ -11,14 +11,19 @@
 	"stealth": 1.0,
 	"idleheat": 8.0,
 	
+	"turn_radius": 0,
 	"maxroll": 4.0,
 	"maxpitch": 2.0,
 	"maxyaw": 4.0,
-	"throttleup": 0.02,
-	"throttledown": 0.02,
+	"accroll": 0.35,
+	"accpitch": 0.3,
+	"accyaw": 0.6,
+	
+	"throttleup": 0.01,
+	"throttledown": 0.01,
 	"landing_gear": true,
 	
-	"accForward": 0.05,
+	"accForward": 0.04,
 	"accSide": 0.02,
 	
 	"slots": [
@@ -26,7 +31,7 @@
 			"name": "dscombat.pilot_seat",
 			"slot_type": 0,
 			"slot_posx": 0.4,
-			"slot_posy": -1.0,
+			"slot_posy": -0.65,
 			"slot_posz": 1.5,
 			"uix": 48,
 			"uiy": 20,
@@ -38,7 +43,7 @@
 			"name": "dscombat.seat2",
 			"slot_type": 0,
 			"slot_posx": -0.4,
-			"slot_posy": -1.0,
+			"slot_posy": -0.65,
 			"slot_posz": 1.5,
 			"uix": 68,
 			"uiy": 20,
@@ -50,7 +55,7 @@
 			"name": "dscombat.seat3",
 			"slot_type": 0,
 			"slot_posx": 0.4,
-			"slot_posy": -1.0,
+			"slot_posy": -0.65,
 			"slot_posz": 0.3,
 			"uix": 88,
 			"uiy": 20,
@@ -62,7 +67,7 @@
 			"name": "dscombat.seat4",
 			"slot_type": 0,
 			"slot_posx": -0.4,
-			"slot_posy": -1.0,
+			"slot_posy": -0.65,
 			"slot_posz": 0.3,
 			"uix": 108,
 			"uiy": 20,
@@ -319,6 +324,11 @@
 			"uiy": 100
 		}
 	],
+	
+	"dyecolor": 12,
+	"textures": {
+		"12": "dscombat:textures/entities/noah_chopper.png"
+	},
 	
 	"ingredients": [
 		{

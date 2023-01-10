@@ -1,13 +1,11 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.onewhohears.dscombat.data.AircraftTextures;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.math.UtilAngles;
-import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
@@ -23,8 +21,8 @@ public class EntityPlane extends EntityAircraft {
 	private Vec3 liftDir = Vec3.ZERO, airFoilAxes = Vec3.ZERO;
 	
 	public EntityPlane(EntityType<? extends EntityPlane> entity, Level level, 
-			ResourceLocation texture, RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item) {
-		super(entity, level, texture, engineSound, item);
+			AircraftTextures textures, RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item) {
+		super(entity, level, textures, engineSound, item, false);
 	}
 	
 	@Override
@@ -37,25 +35,20 @@ public class EntityPlane extends EntityAircraft {
 	
 	@Override
 	public void controlDirection(Quaternion q) {
-		if (isOnGround()) {
-			torqueX = torqueY = torqueZ = 0;
-			EulerAngles angles = UtilAngles.toDegrees(q);
-			float dRoll = 5f;
-			float dPitch = 5f;
-			float roll, pitch;
-			if (Math.abs(angles.roll) < dRoll) roll = (float) -angles.roll;
-			else roll = -(float)Math.signum(angles.roll) * dRoll;
-			if (Math.abs(angles.pitch) < dPitch) pitch = (float) -angles.pitch;
-			else pitch = -(float)Math.signum(angles.pitch) * dPitch;
-			q.mul(new Quaternion(Vector3f.XP, pitch, true));
-			q.mul(new Quaternion(Vector3f.YN, inputYaw*getMaxDeltaYaw(), true));
-			q.mul(new Quaternion(Vector3f.ZP, roll, true));
-		} else {
-			torqueX += inputPitch * 0.5f;
-			torqueY += inputYaw * 0.5f;
-			torqueZ += inputRoll * 0.5f;
-		}
 		super.controlDirection(q);
+	}
+	
+	@Override
+	public void directionGround(Quaternion q) {
+		super.directionGround(q);
+	}
+	
+	@Override
+	public void directionAir(Quaternion q) {
+		super.directionAir(q);
+		addTorqueX(inputPitch * getAccelerationPitch(), true);
+		addTorqueY(inputYaw * getAccelerationYaw(), true);
+		addTorqueZ(inputRoll * getAccelerationRoll(), true);
 	}
 	
 	@Override
@@ -144,6 +137,11 @@ public class EntityPlane extends EntityAircraft {
 
 	public float getAOA() {
 		return aoa;
+	}
+	
+	@Override
+	protected float getTorqueDragMag() {
+		return 0.15f;
 	}
 
 }

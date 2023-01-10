@@ -11,9 +11,14 @@
 	"stealth": 1.1,
 	"idleheat": 5.0,
 	
+	"turn_radius": 30,
 	"maxroll": 4.0,
 	"maxpitch": 2.0,
 	"maxyaw": 1.0,
+	"accroll": 0.4,
+	"accpitch": 0.2,
+	"accyaw": 0.3,
+	
 	"throttleup": 0.04,
 	"throttledown": 0.04,
 	"landing_gear": true,
@@ -23,7 +28,7 @@
 			"name": "dscombat.pilot_seat",
 			"slot_type": 0,
 			"slot_posx": 0,
-			"slot_posy": -0.9,
+			"slot_posy": -0.4,
 			"slot_posz": 3,
 			"uix": 48,
 			"uiy": 20,
@@ -35,7 +40,7 @@
 			"name": "dscombat.seat2",
 			"slot_type": 0,
 			"slot_posx": 0,
-			"slot_posy": -0.9,
+			"slot_posy": -0.4,
 			"slot_posz": 2,
 			"uix": 68,
 			"uiy": 20,
@@ -238,6 +243,12 @@
 			}
 		}
 	],
+	
+	"dyecolor": 13,
+	"textures": {
+		"11": "dscombat:textures/entities/blue_javi_plane.png",
+		"13": "dscombat:textures/entities/javi_plane.png"
+	},
 	
 	"ingredients": [
 		{

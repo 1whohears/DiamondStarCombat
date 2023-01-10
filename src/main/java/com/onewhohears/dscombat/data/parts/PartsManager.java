@@ -197,7 +197,7 @@ public class PartsManager {
 	}
 	
 	public void tickFuel(boolean updateClient) {
-		addFuel(-getTotalEngineFuelConsume() * parent.getCurrentThrottle());
+		addFuel(-getTotalEngineFuelConsume() * Math.abs(parent.getCurrentThrottle()));
 		if (updateClient && parent.tickCount % 100 == 0) {
 			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
 					new ToClientAircraftFuel(parent));
@@ -322,11 +322,11 @@ public class PartsManager {
 		return flares;
 	}
 	
-	public boolean useFlares(boolean isCreative) {
+	public boolean useFlares(boolean consume) {
 		List<PartSlot> flares = getFlares();
 		boolean r = false;
 		for (PartSlot p : flares)
-			if (((FlareDispenserData)p.getPartData()).flare(isCreative))
+			if (((FlareDispenserData)p.getPartData()).flare(consume))
 				r = true;
 		return r;
 	}

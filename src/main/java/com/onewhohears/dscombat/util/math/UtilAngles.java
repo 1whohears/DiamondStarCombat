@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.util.math;
 
 import com.mojang.math.Quaternion;
+import com.mojang.math.Vector3f;
 
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
@@ -125,11 +126,17 @@ public class UtilAngles {
         }
 
     }
-
+    
+    /**
+     * @param yaw degrees
+     * @param pitch degrees
+     * @param roll degrees
+     * @return
+     */
     public static Quaternion toQuaternion(double yaw, double pitch, double roll) { // yaw (Z), pitch (Y), roll (X)
         // Abbreviations for the various angular functions
-        yaw = Math.toRadians(yaw);
-        pitch = -Math.toRadians(pitch);
+        yaw = -Math.toRadians(yaw);
+        pitch = Math.toRadians(pitch);
         roll = Math.toRadians(roll);
 
         double cy = Math.cos(yaw * 0.5);
@@ -202,7 +209,7 @@ public class UtilAngles {
 
         public EulerAngles() {}
 
-        public EulerAngles(EulerAngles a) {
+        private EulerAngles(EulerAngles a) {
             this.pitch = a.pitch;
             this.yaw = a.yaw;
             this.roll = a.roll;
@@ -233,27 +240,21 @@ public class UtilAngles {
 							Math.cos(yawRad)*Math.cos(pitchRad));
 	}
     
-    /**
-     * TODO doesn't work
-     */
     public static Vec3 getPitchAxis(Quaternion q) {
     	EulerAngles a = toRadians(q);
     	return getPitchAxis(a.pitch, a.yaw, a.roll);
     }
     
-    /**
-     * TODO doesn't work
-     */
     public static Vec3 getPitchAxis(double pitchRad, double yawRad, double rollRad) {
-		double CP = Math.cos(pitchRad);
-		double SP = Math.sin(pitchRad);
+		double CP = Math.cos(-pitchRad);
+		double SP = Math.sin(-pitchRad);
 		double CY = Math.cos(yawRad);
 		double SY = Math.sin(yawRad);
 		double CR = Math.cos(rollRad);
 		double SR = Math.sin(rollRad);
-		return new Vec3(-SY*SP*SR+CY*CR,
-						-CP*SR,
-						-CY*SP*SR-SY*CR);
+		return new Vec3(CY*CR+SY*SP*SR,
+						CP*SR,
+						-(CY*SP*SR-CR*SY));
 	}
     
     public static Vec3 getYawAxis(Quaternion q) {
@@ -268,22 +269,42 @@ public class UtilAngles {
 		double SY = Math.sin(yawRad);
 		double CR = Math.cos(rollRad);
 		double SR = Math.sin(rollRad);
-		return new Vec3(SY*SP*CR-CY*SR,
+		return new Vec3(CR*SY*SP-CY*SR,
 						CP*CR,
-						-(CY*SP*CR+SY*SR));
+						-(SY*SR+CY*SP*CR));
 	}
     
     public static Vec3 rotateVector(Vec3 n, Quaternion q) {
-    	//System.out.println("ROTATE VECTOR");
-    	//System.out.println(v);
-    	//System.out.println(q);
     	Quaternion nq = new Quaternion((float)n.x, (float)n.y, (float)n.z, 0);
     	Quaternion cq = q.copy(); cq.conj();
     	Quaternion q1 = q.copy();
     	q1.mul(nq);
     	q1.mul(cq);
     	Vec3 a = new Vec3(q1.i(), q1.j(), q1.k());
-    	//System.out.println(a);
     	return a;
     }
+    
+    // HOW there has to be a faster way to do this...math majors help please!
+    public static float[] globalToRelativeDegrees(float gx, float gy, Quaternion ra) {
+    	Vec3 dir = rotationToVector(gy, gx);
+    	Vec3 yaxis = getYawAxis(ra).scale(-1);
+    	Vec3 zaxis = getRollAxis(ra);
+    	Vec3 xaxis = getPitchAxis(ra).scale(-1);
+    	float rx = (float) UtilGeometry.angleBetweenVecPlaneDegrees(dir, yaxis);
+    	double xc = UtilGeometry.componentMagSqrDirByAxis(dir, xaxis);
+    	double zc = UtilGeometry.componentMagSqrDirByAxis(dir, zaxis);
+    	float ry = (float) Math.toDegrees(Math.atan2(
+    			Math.sqrt(Math.abs(xc))*Math.signum(xc), 
+    			Math.sqrt(Math.abs(zc))*Math.signum(zc)));
+    	return new float[] {rx, ry};
+    }
+    
+    public static float[] relativeToGlobalDegrees(float rx, float ry, Quaternion ra) {
+    	Quaternion r = ra.copy();
+    	r.mul(Vector3f.YN.rotationDegrees(ry));
+    	r.mul(Vector3f.XP.rotationDegrees(rx));
+    	EulerAngles ea = toDegrees(r);
+    	return new float[] {(float)ea.pitch, (float)ea.yaw};
+    }
+    
 }

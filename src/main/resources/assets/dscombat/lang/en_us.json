@@ -12,6 +12,8 @@
 	"dscombat.air_target_only": "This Weapon only tracks Airial Targets",
 	"dscombat.ground_target_only": "This Weapon only tracks Grounded Targets",
 	
+	"dscombat.no_consume_wand_1": "This Aircraft Won't Consume Fuel/Ammo/Flares",
+	
 	"dscombat.slotname_frame": "FRAME",
 	"dscombat.slotname_internal": "INTERNAL",
 	"dscombat.slotname_seat": "SEAT",
@@ -21,6 +23,7 @@
 	
 	"dscombat.ammo": "Ammo",
 	"dscombat.pilot_seat": "Pilot Seat",
+	"dscombat.seat1": "Seat 1",
 	"dscombat.seat2": "Seat 2",
 	"dscombat.seat3": "Seat 3",
 	"dscombat.seat4": "Seat 4",
@@ -54,6 +57,8 @@
 	"entity.dscombat.alexis_plane": "Alexis Plane",
 	"entity.dscombat.f16": "F16",
 	"entity.dscombat.noah_chopper": "Noah Chopper",
+	"entity.dscombat.mrbudger_tank": "Mr Budger Tank",
+	"entity.dscombat.small_roller": "Small Roller",
 	"entity.dscombat.bullet": "Bullet",
 	"entity.dscombat.missile1": "Missile 1",
 	"entity.dscombat.missile2": "Missile 2",
@@ -61,6 +66,8 @@
 	"entity.dscombat.flare": "Flare",
 	"entity.dscombat.seat": "Seat",
 	"entity.dscombat.minigun_turret": "Minigun Turret",
+	"entity.dscombat.heavy_tank_turret": "Heavy Tank Turret",
+	"entity.dscombat.steve_up_smash": "Steve Up Smash",
 	
 	"key.categories.flight_control": "Diamond Star Combat Flight Control",
 	
@@ -82,6 +89,7 @@
 	"key.dscombat.change_seat_key": "Change Seat",
 	"key.dscombat.landing_gear_key": "Landing Gear",
 	"key.dscombat.share_pos_key": "Share Pos",
+	"key.dscombat.special_key": "Special Key",
 	
 	"sounds.dscombat.missile_warning": "Missile Warning",
 	"sounds.dscombat.getting_locked": "Getting Locked",
@@ -116,6 +124,8 @@
 	"item.dscombat.wrench": "Wrench",
 	"item.dscombat.thick_wrench": "Thiccc Wrench",
 	
+	"item.dscombat.no_consume_wand": "No Consume Wand",
+	
 	"item.dscombat.gas_can": "Gas Can",
 	"item.dscombat.big_gas_can": "Big Gas Can",
 	"item.dscombat.big_ass_can": "Big Ass Can",
@@ -135,6 +145,8 @@
 	"item.dscombat.seat": "Seat",
 	
 	"item.dscombat.minigun_turret": "Minigun Turret",
+	"item.dscombat.heavy_tank_turret": "Heavy Tank Turret",
+	"item.dscombat.steve_up_smash": "Steve Up Smash",
 	
 	"item.dscombat.basic_flare_dispenser": "Basic Flare Dispenser",
 	
@@ -147,9 +159,12 @@
 	"item.dscombat.alexis_plane": "Alexis Plane",
 	"item.dscombat.f16": "F16",
 	"item.dscombat.noah_chopper": "Noah Chopper",
+	"item.dscombat.mrbudger_tank": "Mr Budger Tank",
+	"item.dscombat.small_roller": "Small Roller",
 	
 	"item.dscombat.20mm": "20mm",
 	"item.dscombat.50mmhe": "50mm HE",
+	"item.dscombat.120mmhe": "120mm HE",
 	"item.dscombat.aim9l": "AIM-9L",
 	"item.dscombat.aim9p5": "AIM-9P5",
 	"item.dscombat.aim9x": "AIM-9X",

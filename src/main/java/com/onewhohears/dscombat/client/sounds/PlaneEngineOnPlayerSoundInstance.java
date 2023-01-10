@@ -14,10 +14,10 @@ public class PlaneEngineOnPlayerSoundInstance extends DopplerOnPlayerSoundInstan
 	@Override
 	public void tick() {
 		EntityAircraft craft = (EntityAircraft)this.entity;
-		float th = craft.getCurrentThrottle();
-		if (th == 0) this.initVolume = th;
-		else this.initVolume = 0.4f + 0.6f*th;;
-		this.initPitch = 0.5f + 0.5f*th;
+		float th = Math.abs(craft.getCurrentThrottle());
+		if (th == 0) initVolume = th;
+		else initVolume = 0.4f + 0.6f*th;;
+		initPitch = 0.5f + 0.5f*th;
 		if (craft.isVehicleOf(player)) {
 			this.volume = initVolume;
 			this.pitch = initPitch;

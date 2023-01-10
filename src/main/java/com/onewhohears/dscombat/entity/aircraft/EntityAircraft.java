@@ -492,6 +492,7 @@ public abstract class EntityAircraft extends Entity {
 	 * @param q the plane's current rotation
 	 */
 	public void tickGround(Quaternion q) {
+		// TODO drifting
 		int xzsdir = getXZSpeedDir();
 		float speed = xzSpeed * xzsdir;
 		float th = getCurrentThrottle();

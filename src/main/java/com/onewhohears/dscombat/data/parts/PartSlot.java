@@ -179,7 +179,9 @@ public class PartSlot {
 	public int getUIY() {
 		return uiy;
 	}
-
+	
+	// TODO heavy seat slot type for turrets
+	
 	public static enum SlotType {
 		SEAT,
 		WING,

@@ -41,6 +41,7 @@ Other Controls
 - Landing Gear = L
 - Open Plane Inventory = U
 - Center Mouse = Right Alt
+- Special (Breaks/Hover) = Space
 
 ## Parts System
 

@@ -24,14 +24,12 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(DSCombatMod.MODID)
-public class DSCombatMod
-{
-	public static final String MODID = "dscombat";
+public class DSCombatMod {
 	
-    //private static final Logger LOGGER = LogUtils.getLogger();
+	public static final String MODID = "dscombat";
 
     public DSCombatMod() {
-    	IEventBus eventBus =  FMLJavaModLoadingContext.get().getModEventBus();
+    	IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
     	// ORDER MATTERS
     	WeaponPresets.setupPresets();
     	RadarPresets.setupPresets();

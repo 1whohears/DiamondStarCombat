@@ -141,6 +141,7 @@ public abstract class EntityAircraft extends Entity {
 		this.blocksBuilding = true;
 		this.item = item;
 		this.negativeThrottle = negativeThrottle;
+		// FIXME player can punch and push aircraft
 	}
 	
 	@Override
@@ -1428,6 +1429,11 @@ public abstract class EntityAircraft extends Entity {
     
     public void setNoConsume(boolean noConsume) {
     	entityData.set(NO_CONSUME, noConsume);
+    }
+    
+    @Override
+    public boolean isPushable() {
+    	return false;
     }
     
 }

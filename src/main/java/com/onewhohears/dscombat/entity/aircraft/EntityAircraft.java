@@ -730,7 +730,7 @@ public abstract class EntityAircraft extends Entity {
 		this.inputSelect = false;
 		this.inputOpenMenu = false;
 		this.inputSpecial = false;
-		this.setCurrentThrottle(0);
+		this.setCurrentThrottle(0); // TODO throttle towards zero
 	}
 	
 	public boolean isFreeLook() {

@@ -59,5 +59,12 @@ public abstract class ItemPart extends Item {
 	public PartData getFilledPartData(String param) {
 		return getPartData();
 	}
+	
+	@Override
+	public ItemStack getDefaultInstance() {
+		ItemStack stack = new ItemStack(this);
+		stack.setTag(getNbt());
+		return stack;
+	}
 
 }

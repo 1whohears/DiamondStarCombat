@@ -19,7 +19,6 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
 	
 	private Container playerInv;
 	private PartsManager pm;
-	private boolean loaded = false;
 	
 	public AircraftMenuContainer(int id, Inventory playerInv) {
 		super(ModContainers.PLANE_MENU.get(), id);
@@ -47,7 +46,6 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
 			//System.out.println("playerInv i = "+i);
 			this.addSlot(new Slot(playerInv, i, 48 + i * 18, 196));
 		}
-		this.loaded = true;
 	}
 
 	@Override
@@ -61,11 +59,15 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
 	}
 	
 	public void setItem(int i, ItemStack stack) {
-		if (loaded) pm.setItem(i, stack);
+		System.out.println("set index "+i+" stack "+stack);
+		System.out.println("carried "+getCarried());
+		pm.setItem(i, stack);
 	}
 	
 	public void removeItem(int i, int count) {
-		if (loaded) pm.removeItem(i, count);
+		System.out.println("remove index "+i);
+		System.out.println("carried "+getCarried());
+		pm.removeItem(i, count);
 	}
 	
 	@Override
@@ -81,10 +83,6 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
 
     public PartsManager getPartsInventory() {
         return this.pm;
-    }
-    
-    public boolean isLoaded() {
-    	return this.loaded;
     }
 
 }

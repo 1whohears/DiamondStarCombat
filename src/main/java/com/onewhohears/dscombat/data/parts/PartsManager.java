@@ -256,7 +256,7 @@ public class PartsManager {
 		}
 		PartSlot slot = slots.get(i);
 		if (stack.isEmpty()) {
-			removePart(slot.getName(), false);
+			if (!slot.isPilotSlot()) removePart(slot.getName(), false);
 			return;
 		}
 		if (slot.filled()) removePart(slot.getName(), false);

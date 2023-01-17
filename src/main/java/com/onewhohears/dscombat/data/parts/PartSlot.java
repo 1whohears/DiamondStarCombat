@@ -214,4 +214,8 @@ public class PartSlot {
 		return zRot;
 	}
 	
+	public boolean isPilotSlot() {
+		return getName().equals(PILOT_SLOT_NAME);
+	}
+	
 }

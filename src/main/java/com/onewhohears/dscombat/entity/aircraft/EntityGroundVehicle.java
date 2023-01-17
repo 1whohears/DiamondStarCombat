@@ -70,7 +70,7 @@ public class EntityGroundVehicle extends EntityAircraft {
 	@Override
 	public void tickGround(Quaternion q) {
 		super.tickGround(q);
-		if (inputSpecial) setCurrentThrottle(0);
+		if (inputSpecial) throttleToZero();
 	}
 	
 	@Override

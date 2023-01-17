@@ -6,7 +6,7 @@ import java.util.List;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.client.event.ClientForgeEvents;
+import com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
@@ -92,7 +92,7 @@ public class PilotOverlay {
 				List<RadarPing> pings = radar.getClientRadarPings();
 				if (pings != null && pings.size() != 0) {
 					int selected = radar.getClientSelectedPingIndex();
-					int hover = ClientForgeEvents.getHoverIndex();
+					int hover = ClientInputEvents.getHoverIndex();
 					if (hover != -1 && hover < pings.size()) {
 						GuiComponent.drawString(poseStack, m.font, 
 								"Dist: "+(int)pings.get(hover).pos.distanceTo(plane.position()), 

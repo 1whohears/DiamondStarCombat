@@ -7,7 +7,7 @@ import javax.annotation.Nullable;
 
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
-import com.onewhohears.dscombat.client.event.ClientForgeEvents;
+import com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents;
 import com.onewhohears.dscombat.common.container.AircraftMenuContainer;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerQ;
@@ -141,7 +141,8 @@ public abstract class EntityAircraft extends Entity {
 		this.blocksBuilding = true;
 		this.item = item;
 		this.negativeThrottle = negativeThrottle;
-		// FIXME player can punch and push aircraft
+		// FIXME player can punch and push aircraft\
+		// FIXME aircraft don't push entities
 	}
 	
 	@Override
@@ -730,7 +731,7 @@ public abstract class EntityAircraft extends Entity {
 		this.inputSelect = false;
 		this.inputOpenMenu = false;
 		this.inputSpecial = false;
-		this.setCurrentThrottle(0); // TODO throttle towards zero
+		this.throttleToZero();
 	}
 	
 	public boolean isFreeLook() {
@@ -816,7 +817,7 @@ public abstract class EntityAircraft extends Entity {
 			return okay ? InteractionResult.CONSUME : InteractionResult.PASS;
 		} else if (level.isClientSide) {	
 			Minecraft m = Minecraft.getInstance();
-			if (m.player.equals(player)) ClientForgeEvents.centerMouse();
+			if (m.player.equals(player)) ClientInputEvents.centerMouse();
 			return InteractionResult.SUCCESS;
 		}
 		return InteractionResult.SUCCESS;
@@ -984,6 +985,15 @@ public abstract class EntityAircraft extends Entity {
     	else if (negativeThrottle && throttle < -1) throttle = -1;
     	else if (!negativeThrottle && throttle < 0) throttle = 0;
     	entityData.set(THROTTLE, throttle);
+    }
+    
+    public void throttleToZero() {
+    	float th = getCurrentThrottle();
+    	if (th == 0) return;
+    	float r = getThrottleDecreaseRate();
+    	th -= r * Math.signum(th);
+    	if (Math.abs(th) < r) th = 0;
+    	setCurrentThrottle(th);
     }
     
     public float getThrottleIncreaseRate() {

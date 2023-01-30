@@ -36,10 +36,6 @@ public class AircraftBlockMenuContainer extends AbstractContainerMenu {
 	
 	@Override
 	public void slotsChanged(Container inventory) {
-		//System.out.println("SLOTS CHANGED "+inventory);
-		if (this.loaded) {
-			
-		}
 		super.slotsChanged(inventory);
 	}
 

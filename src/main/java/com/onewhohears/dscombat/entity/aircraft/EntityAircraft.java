@@ -141,7 +141,7 @@ public abstract class EntityAircraft extends Entity {
 		this.blocksBuilding = true;
 		this.item = item;
 		this.negativeThrottle = negativeThrottle;
-		// FIXME player can punch and push aircraft\
+		// FIXME player can punch and push aircraft
 		// FIXME aircraft don't push entities
 	}
 	

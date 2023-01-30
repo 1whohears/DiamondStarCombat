@@ -62,8 +62,7 @@ public class DSCIngredient {
 		int count = 0;
 		for (int i = 0; i < playerInv.getContainerSize(); ++i) {
 			ItemStack stack = playerInv.getItem(i);
-			if (stack.isEmpty()) continue;
-			if (isSameItem(stack)) count += stack.getCount();
+			if (this.stack.sameItem(stack)) count += stack.getCount();
 		}
 		return cost <= count;
 	}
@@ -73,8 +72,7 @@ public class DSCIngredient {
 		for (int i = 0; i < playerInv.getContainerSize(); ++i) {
 			if (amount <= 0) return;
 			ItemStack stack = playerInv.getItem(i);
-			if (stack.isEmpty()) continue;
-			if (isSameItem(stack)) {
+			if (this.stack.sameItem(stack)) {
 				if (stack.getCount() < amount) {
 					amount -= stack.getCount();
 					playerInv.setItem(i, ItemStack.EMPTY);
@@ -84,10 +82,6 @@ public class DSCIngredient {
 				}
 			}
 		}
-	}
-	
-	public boolean isSameItem(ItemStack item) {
-		return stack.sameItem(getDisplayItem());
 	}
 	
 	public static List<DSCIngredient> getIngredients(CompoundTag tag) {

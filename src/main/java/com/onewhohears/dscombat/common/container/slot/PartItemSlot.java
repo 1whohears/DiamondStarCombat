@@ -43,7 +43,7 @@ public class PartItemSlot extends Slot {
 		if (tag.isEmpty()) return false;
 		PartData part = UtilParse.parsePartFromCompound(tag);
 		if (part == null) return false;
-		if (data.getName().equals(PartSlot.PILOT_SLOT_NAME) && data.filled()) {
+		if (data.getName().equals(PartSlot.PILOT_SLOT_NAME)) {
 			if (part.getType() == PartType.SEAT) return false;
 		}
 		if (data.isCompatible(part)) return true;

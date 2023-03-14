@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.onewhohears.dscombat.common.container.AircraftMenuContainer;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddPart;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAircraftFuel;
@@ -223,7 +222,7 @@ public class PartsManager {
 		for (int i = 0; i < tanks.size(); ++i) ((FuelTankData)tanks.get(i).getPartData()).setFuel(fuels[i]);
 	}
 	
-	public Container getContainer(AircraftMenuContainer menu) {
+	public Container getContainer(/*AircraftMenuContainer menu*/) {
 		//System.out.println("GETTING CONTAINER client side = "+parent.level.isClientSide+" for slots "+this);
 		Container c = new SimpleContainer(slots.size()){
 			@Override
@@ -233,12 +232,16 @@ public class PartsManager {
 			}
 			@Override
 			public void setItem(int i, ItemStack stack) {
-				menu.setItem(i, stack);
+				//menu.setItem(i, stack);
+				System.out.println("SET ITEM "+i+" "+stack);
+				this.setItem(i, stack);
 				super.setItem(i, stack);
 			}
 			@Override
 			public ItemStack removeItem(int i, int count) {
-				menu.removeItem(i, count);
+				//menu.removeItem(i, count);
+				System.out.println("REMOVE ITEM "+i);
+				this.removeItem(i, count);
 				return super.removeItem(i, count);
 			}
 		};

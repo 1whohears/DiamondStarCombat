@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.onewhohears.dscombat.common.container.slot.PartItemSlot;
 import com.onewhohears.dscombat.data.parts.PartSlot;
-import com.onewhohears.dscombat.data.parts.PartsManager;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.init.ModContainers;
 
@@ -18,7 +17,7 @@ import net.minecraft.world.item.ItemStack;
 public class AircraftMenuContainer extends AbstractContainerMenu {
 	
 	private Container playerInv;
-	private PartsManager pm;
+	//private PartsManager pm;
 	
 	public AircraftMenuContainer(int id, Inventory playerInv) {
 		super(ModContainers.PLANE_MENU.get(), id);
@@ -26,8 +25,8 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
 		this.playerInv = playerInv;
 		// display plane parts
 		if (playerInv.player.getRootVehicle() instanceof EntityAircraft plane) {
-			this.pm = plane.partsManager;
-			Container partsInv = pm.getContainer(this);
+			//this.pm = plane.partsManager;
+			Container partsInv = plane.partsManager.getContainer(/*this*/);
 			List<PartSlot> slots = plane.partsManager.getSlots();
 			// create plane menu container
 			for (int i = 0; i < partsInv.getContainerSize(); ++i) {
@@ -58,7 +57,7 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
 		super.slotsChanged(inventory);
 	}
 	
-	public void setItem(int i, ItemStack stack) {
+	/*public void setItem(int i, ItemStack stack) {
 		System.out.println("set index "+i+" stack "+stack);
 		System.out.println("carried "+getCarried());
 		pm.setItem(i, stack);
@@ -68,7 +67,7 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
 		System.out.println("remove index "+i);
 		System.out.println("carried "+getCarried());
 		pm.removeItem(i, count);
-	}
+	}*/
 	
 	@Override
 	public ItemStack quickMoveStack(Player player, int index) {
@@ -81,8 +80,8 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
         return this.playerInv;
     }
 
-    public PartsManager getPartsInventory() {
+    /*public PartsManager getPartsInventory() {
         return this.pm;
-    }
+    }*/
 
 }

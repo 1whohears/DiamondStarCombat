@@ -26,7 +26,7 @@
 	"slots": [
 		{
 			"name": "dscombat.pilot_seat",
-			"slot_type": 0,
+			"slot_type": 6,
 			"slot_posx": 0.0,
 			"slot_posy": 1.4,
 			"slot_posz": 0.0,
@@ -38,7 +38,7 @@
 		},
 		{
 			"name": "dscombat.seat1",
-			"slot_type": 0,
+			"slot_type": 6,
 			"slot_posx": 1.0,
 			"slot_posy": 1.4,
 			"slot_posz": 2.0,
@@ -50,7 +50,7 @@
 		},
 		{
 			"name": "dscombat.seat2",
-			"slot_type": 0,
+			"slot_type": 6,
 			"slot_posx": -1.0,
 			"slot_posy": 1.4,
 			"slot_posz": 2.0,
@@ -62,7 +62,7 @@
 		},
 		{
 			"name": "dscombat.seat3",
-			"slot_type": 0,
+			"slot_type": 6,
 			"slot_posx": 1.0,
 			"slot_posy": 1.4,
 			"slot_posz": -2.0,
@@ -74,7 +74,7 @@
 		},
 		{
 			"name": "dscombat.seat4",
-			"slot_type": 0,
+			"slot_type": 6,
 			"slot_posx": -1.0,
 			"slot_posy": 1.4,
 			"slot_posz": -2.0,

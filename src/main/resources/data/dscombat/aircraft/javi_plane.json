@@ -38,7 +38,7 @@
 		},
 		{
 			"name": "dscombat.seat2",
-			"slot_type": 0,
+			"slot_type": 5,
 			"slot_posx": 0,
 			"slot_posy": -0.4,
 			"slot_posz": 2,

@@ -89,6 +89,7 @@ public class TrackMissileData extends MissileData {
 			this.setLaunchFail("dscombat.ground_target_only");
 			return null;
 		}
+		// TODO check if target is in water
 		missile.target = target;
 		return missile;
 	}

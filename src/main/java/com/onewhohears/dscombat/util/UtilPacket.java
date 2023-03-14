@@ -107,6 +107,7 @@ public class UtilPacket {
 		}
 	}*/
 	
+	@Deprecated
 	public static void addPartPacket(int id, String slotName, PartData data) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
@@ -115,6 +116,7 @@ public class UtilPacket {
 		}
 	}
 	
+	@Deprecated
 	public static void removePartPacket(int id, String slotName) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;

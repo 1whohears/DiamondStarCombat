@@ -39,7 +39,6 @@ public class PartsManager {
 	 * @param compound
 	 */
 	public void read(CompoundTag compound) {
-		
 		slots.clear();
 		ListTag list = compound.getList("slots", 10);
 		for (int i = 0; i < list.size(); ++i) {
@@ -51,7 +50,7 @@ public class PartsManager {
 	}
 	
 	private void createNewInventory() {
-		System.out.println("CREATING NEW INVENTORY client side = "+parent.level.isClientSide+" for slots "+this);
+		System.out.println("CREATING NEW INVENTORY for slots "+this);
 		inventory = new SimpleContainer(slots.size()) {
 			@Override
 			public void setChanged() {
@@ -60,13 +59,13 @@ public class PartsManager {
 			@Override
 			public void setItem(int i, ItemStack stack) {
 				System.out.println("SET ITEM "+i+" "+stack);
-				if (readData) this.setItem(i, stack);
+				if (readData) inventorySetItem(i, stack);
 				super.setItem(i, stack);
 			}
 			@Override
 			public ItemStack removeItem(int i, int count) {
 				System.out.println("REMOVE ITEM "+i);
-				if (readData) this.removeItem(i, count);
+				if (readData) inventoryRemoveItem(i, count);
 				return super.removeItem(i, count);
 			}			
 		};
@@ -76,7 +75,7 @@ public class PartsManager {
 		}
 	}
 	
-	public void setItem(int i, ItemStack stack) {
+	public void inventorySetItem(int i, ItemStack stack) {
 		if (i < 0 || i >= slots.size()) {
 			System.out.println("WARNING! INDEX "+i+" IS OUT OF BOUNDS IN PARTS MANAGER "+this);
 			return;
@@ -85,16 +84,11 @@ public class PartsManager {
 		Entity pilot = null;
 		if (slot.isPilotSlot()) pilot = parent.getControllingPassenger();
 		if (stack.isEmpty()) {
-			//removePart(slot.getName(), false);
 			slot.removePartData(parent);
 			if (pilot != null && pilot.getVehicle() == null) {
 				SeatData seatdata = ItemSeat.getDefaultSeat();
-				//addPart(seatdata, slot.getName(), false);
 				slot.addPartData(seatdata, parent);
 				parent.rideAvailableSeat(pilot);
-				readData = false;
-				inventory.setItem(i, seatdata.getNewItemStack());
-				readData = true;
 			}
 		} else {
 			PartData data = UtilParse.parsePartFromCompound(stack.getTag());
@@ -102,9 +96,7 @@ public class PartsManager {
 				System.out.println("ERROR! COULD NOT GET PART DATA FROM "+stack+" "+stack.getTag());
 				return;
 			}
-			//if (slot.filled()) removePart(slot.getName(), false);
 			if (slot.filled()) slot.removePartData(parent);
-			//addPart(data, slot.getName(), false);
 			slot.addPartData(data, parent);
 			if (pilot != null && pilot.getVehicle() == null) {
 				parent.rideAvailableSeat(pilot);
@@ -112,23 +104,18 @@ public class PartsManager {
 		}	
 	}
 	
-	public void removeItem(int i, int count) {
+	public void inventoryRemoveItem(int i, int count) {
 		if (i < 0 || i >= slots.size()) {
 			System.out.println("WARNING! INDEX "+i+" IS OUT OF BOUNDS IN PARTS MANAGER "+this);
 			return;
 		}
 		Entity pilot = null;
 		if (slots.get(i).isPilotSlot()) pilot = parent.getControllingPassenger();
-		//removePart(slots.get(i).getName(), false);
 		slots.get(i).removePartData(parent);
 		if (pilot != null && pilot.getVehicle() == null) {
 			SeatData seatdata = ItemSeat.getDefaultSeat();
-			//addPart(seatdata, slot.getName(), false);
 			slots.get(i).addPartData(seatdata, parent);
 			parent.rideAvailableSeat(pilot);
-			readData = false;
-			inventory.setItem(i, seatdata.getNewItemStack());
-			readData = true;
 		}
 	}
 	
@@ -179,7 +166,7 @@ public class PartsManager {
 		for (PartSlot p : slots) p.clientTick();
 	}
 	
-	// TODO these shouldn't need to send packets and shouldn't be public
+	@Deprecated
 	public boolean addPart(PartData part, String slotName, boolean updateClient) {
 		System.out.println("ADDING PART "+part+" IN SLOT "+slotName+" client side "+parent.level.isClientSide);
 		for (PartSlot p : slots) if (p.getName().equals(slotName) && !p.filled()) {
@@ -193,6 +180,7 @@ public class PartsManager {
 		return false;
 	}
 	
+	@Deprecated
 	public void removePart(String slotName, boolean updateClient) {
 		System.out.println("ADDING PART IN SLOT "+slotName+" client side "+parent.level.isClientSide);
 		for (PartSlot p : slots) if (p.getName().equals(slotName)) {

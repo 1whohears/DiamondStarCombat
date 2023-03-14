@@ -124,15 +124,15 @@ public class ModItems {
 	
 	// FUEL TANKS
 	public static final RegistryObject<Item> LIGHT_FUEL_TANK = ITEMS.register("light_fuel_tank", 
-			() -> new ItemFuelTank(0.003f, 0f, 50f, PartSlot.INTERNAL));
+			() -> new ItemFuelTank(0.003f, 0f, 50f, PartSlot.INTERNAL_ALL));
 	public static final RegistryObject<Item> HEAVY_FUEL_TANK = ITEMS.register("heavy_fuel_tank", 
-			() -> new ItemFuelTank(0.010f, 0f, 150f, PartSlot.INTERNAL));
+			() -> new ItemFuelTank(0.010f, 0f, 150f, PartSlot.INTERNAL_ALL));
 	
 	// ENGINES
 	public static final RegistryObject<Item> C6_ENGINE = ITEMS.register("c6_engine", 
-			() -> new ItemEngine(0.010f, 0.040f, 4.0f, 0.005f, false, PartSlot.INTERNAL));
+			() -> new ItemEngine(0.010f, 0.040f, 4.0f, 0.005f, false, PartSlot.INTERNAL_ALL));
 	public static final RegistryObject<Item> C12_ENGINE = ITEMS.register("c12_engine", 
-			() -> new ItemEngine(0.016f, 0.080f, 8.0f, 0.015f, false, PartSlot.INTERNAL));
+			() -> new ItemEngine(0.016f, 0.080f, 8.0f, 0.015f, false, PartSlot.INTERNAL_ALL));
 	
 	// RADARS
 	public static final RegistryObject<Item> AR500 = ITEMS.register("ar500", 
@@ -148,33 +148,33 @@ public class ModItems {
 	
 	// SEATS
 	public static final RegistryObject<Item> SEAT = ITEMS.register("seat", 
-			() -> new ItemSeat(0.001f, PartSlot.SEAT));
+			() -> new ItemSeat(0.001f, PartSlot.SEAT_ALL));
 	
 	// TURRENTS
 	public static final RegistryObject<Item> MINIGUN_TURRET = ITEMS.register("minigun_turret", 
-			() -> new ItemTurret(0.019f, PartSlot.SEAT, 
+			() -> new ItemTurret(0.019f, PartSlot.TURRET_ALL, 
 					ModEntities.MINIGUN_TURRET.getId().toString(), "20mm",
 					new RotBounds(2f, -30f, 30f)));
 	public static final RegistryObject<Item> HEAVY_TANK_TURRET = ITEMS.register("heavy_tank_turret", 
-			() -> new ItemTurret(0.027f, PartSlot.SEAT, 
+			() -> new ItemTurret(0.027f, PartSlot.TURRET_HEAVY, 
 					ModEntities.HEAVY_TANK_TURRET.getId().toString(), "120mmhe",
 					new RotBounds(1.5f, -20f, 20f)));
 	public static final RegistryObject<Item> STEVE_UP_SMASH = ITEMS.register("steve_up_smash", 
-			() -> new ItemTurret(0.035f, PartSlot.SEAT, 
+			() -> new ItemTurret(0.035f, PartSlot.TURRET_HEAVY, 
 					ModEntities.STEVE_UP_SMASH.getId().toString(), "aim9p5",
 					new RotBounds(1f, -30f, 30f)));
 	
 	// FLARE DISPENSERS
 	public static final RegistryObject<Item> BASIC_FLARE_DISPENSER = ITEMS.register("basic_flare_dispenser", 
-			() -> new ItemFlareDispenser(0.010f, 0, 20, 5.0f, 100, PartSlot.INTERNAL));
+			() -> new ItemFlareDispenser(0.010f, 0, 20, 5.0f, 100, PartSlot.INTERNAL_ALL));
 	
 	// WEAPON PARTS
 	public static final RegistryObject<Item> XM12 = ITEMS.register("xm12", 
-			() -> new ItemWeaponPart(0.003f, "xm12", PartSlot.EXTERNAL)); 
+			() -> new ItemWeaponPart(0.003f, "xm12", PartSlot.EXTERNAL_ALL)); 
 	public static final RegistryObject<Item> LIGHT_MISSILE_RACK = ITEMS.register("light_missile_rack", 
-			() -> new ItemWeaponPart(0.004f, "light_missile_rack", PartSlot.EXTERNAL)); 
+			() -> new ItemWeaponPart(0.004f, "light_missile_rack", PartSlot.EXTERNAL_ALL)); 
 	public static final RegistryObject<Item> HEAVY_MISSILE_RACK = ITEMS.register("heavy_missile_rack", 
-			() -> new ItemWeaponPart(0.008f, "heavy_missile_rack", PartSlot.EXTERNAL)); 
+			() -> new ItemWeaponPart(0.008f, "heavy_missile_rack", PartSlot.EXTERNAL_ALL)); 
 	
 	// PLANES
 	public static final RegistryObject<Item> JAVI_PLANE = ITEMS.register("javi_plane", 

@@ -63,7 +63,9 @@ public abstract class WeaponData {
 		BOMB,
 		POS_MISSILE,
 		TRACK_MISSILE,
-		IR_MISSILE
+		IR_MISSILE,
+		ANTIRADAR_MISSILE,
+		TORPEDO
 	}
 	
 	/*protected WeaponData(RegistryObject<EntityType<?>> entityType, RegistryObject<SoundEvent> shootSound, List<Ingredient> ingredients,

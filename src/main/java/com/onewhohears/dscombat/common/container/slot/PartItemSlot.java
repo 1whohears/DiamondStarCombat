@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.common.container.slot;
 
 import com.onewhohears.dscombat.data.parts.PartData;
-import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.util.UtilParse;
 
@@ -43,9 +42,6 @@ public class PartItemSlot extends Slot {
 		if (tag.isEmpty()) return false;
 		PartData part = UtilParse.parsePartFromCompound(tag);
 		if (part == null) return false;
-		if (data.getName().equals(PartSlot.PILOT_SLOT_NAME)) {
-			if (part.getType() == PartType.SEAT) return false;
-		}
 		if (data.isCompatible(part)) return true;
 		return false;
 	}
@@ -59,7 +55,6 @@ public class PartItemSlot extends Slot {
 				this.getItem().setCount(0);
 			}
 		}*/
-		// TODO find way to replace pilot turrets
 		return true;
 	}
 	

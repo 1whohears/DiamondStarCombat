@@ -17,7 +17,7 @@ import net.minecraft.world.item.ItemStack;
 public class AircraftMenuContainer extends AbstractContainerMenu {
 	
 	private Container playerInv;
-	//private PartsManager pm;
+	private Container planeInv;
 	
 	public AircraftMenuContainer(int id, Inventory playerInv) {
 		super(ModContainers.PLANE_MENU.get(), id);
@@ -25,13 +25,12 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
 		this.playerInv = playerInv;
 		// display plane parts
 		if (playerInv.player.getRootVehicle() instanceof EntityAircraft plane) {
-			//this.pm = plane.partsManager;
-			Container partsInv = plane.partsManager.getContainer(/*this*/);
+			this.planeInv = plane.partsManager.getInventory();
 			List<PartSlot> slots = plane.partsManager.getSlots();
 			// create plane menu container
-			for (int i = 0; i < partsInv.getContainerSize(); ++i) {
+			for (int i = 0; i < planeInv.getContainerSize(); ++i) {
 				//System.out.println("partsInv i = "+i);
-				this.addSlot(new PartItemSlot(partsInv, i, slots.get(i)));
+				this.addSlot(new PartItemSlot(planeInv, i, slots.get(i)));
 			}
 		}
 		// display player inventory
@@ -57,18 +56,6 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
 		super.slotsChanged(inventory);
 	}
 	
-	/*public void setItem(int i, ItemStack stack) {
-		System.out.println("set index "+i+" stack "+stack);
-		System.out.println("carried "+getCarried());
-		pm.setItem(i, stack);
-	}
-	
-	public void removeItem(int i, int count) {
-		System.out.println("remove index "+i);
-		System.out.println("carried "+getCarried());
-		pm.removeItem(i, count);
-	}*/
-	
 	@Override
 	public ItemStack quickMoveStack(Player player, int index) {
 		ItemStack stack = ItemStack.EMPTY;
@@ -79,9 +66,9 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
 	public Container getPlayerInventory() {
         return this.playerInv;
     }
-
-    /*public PartsManager getPartsInventory() {
-        return this.pm;
-    }*/
+	
+	public Container getPlaneInventory() {
+		return this.planeInv;
+	}
 
 }

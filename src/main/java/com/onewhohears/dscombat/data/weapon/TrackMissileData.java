@@ -88,8 +88,10 @@ public class TrackMissileData extends MissileData {
 		} else if (targetType == TargetType.GROUND && !groundWater) {
 			this.setLaunchFail("dscombat.ground_target_only");
 			return null;
+		} else if (targetType == TargetType.WATER && !target.isInWater()) {
+			this.setLaunchFail("dscombat.water_target_only");
+			return null;
 		}
-		// TODO check if target is in water
 		missile.target = target;
 		return missile;
 	}

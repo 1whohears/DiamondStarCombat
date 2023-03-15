@@ -223,6 +223,14 @@ public class RadarSystem {
 		return;
 	}
 	
+	public double getMaxAirRange() {
+		double max = 0;
+		for (RadarData r : radars) 
+			if (r.isScanAir() && r.getRange() > max) 
+				max = r.getRange();
+		return max;
+	}
+	
 	@Override
 	public String toString() {
 		String s = "Radars:";

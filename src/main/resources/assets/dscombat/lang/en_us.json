@@ -11,6 +11,7 @@
 	"dscombat.no_target_selected": "You have not Selected a Target",
 	"dscombat.air_target_only": "This Weapon only tracks Airial Targets",
 	"dscombat.ground_target_only": "This Weapon only tracks Grounded Targets",
+	"dscombat.water_target_only": "This Weapon only tracks Targets in Water",
 	
 	"dscombat.no_consume_wand_1": "This Aircraft Won't Consume Fuel/Ammo/Flares",
 	
@@ -177,6 +178,8 @@
 	"item.dscombat.agm65l": "AGM-65L",
 	"item.dscombat.agm84e": "AGM-84E",
 	"item.dscombat.agm114k": "AGM-114K",
+	"item.dscombat.rifel1": "RIFEL-1",
+	"item.dscombat.torpedo1": "TORPEDO-1",
 	
 	"container.dscombat.plane_menu": "Aircraft Menu",
 	"container.dscombat.weapons_block_menu": "Weapons Workbench",

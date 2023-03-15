@@ -1,0 +1,51 @@
+{
+	"type":5,
+	"id":"torpedo1",
+	
+	"entityType":"dscombat:torpedo_missile_1",
+	"shootSound":"dscombat:rocket_launch_1",
+	"rackType": "dscombat:heavy_missile_rack",
+	
+	"craftNum": 1,
+	"ingredients": [
+		{
+			"item": "minecraft:iron_ingot",
+			"num": 8
+		},
+		{
+			"item": "minecraft:tnt",
+			"num": 1
+		},
+		{
+			"item": "minecraft:coal_block",
+			"num": 2
+		},
+		{
+			"item": "dscombat:ti83",
+			"num": 1
+		}
+	],
+	
+	"fireRate":20,
+	"innacuracy":0.0,
+	"canShootOnGround":false,
+	
+	"damage":50.0,
+	"speed":3.0,
+	"explosionRadius":4.0,
+	
+	"explosive":true,
+	"destroyTerrain":true,
+	"causesFire":true,
+	
+	"maxAge":600,
+	"fuelTicks":400,
+	"maxAmmo":3,
+	
+	"maxRot": 1.5,
+	"acceleration": 0.04,
+	"bleed": 0.005,
+	"fuseDist": 2.0,
+	"fov": 40
+	
+}

@@ -19,7 +19,8 @@
 	"dscombat.slotname_seat": "SEAT",
 	"dscombat.slotname_wing": "WING",
 	"dscombat.slotname_advanced_internal": "ADVANCED INTERNAL",
-	"dscombat.slotname_turrent": "TURRENT",
+	"dscombat.slotname_turret": "TURRET",
+	"dscombat.slotname_turret_heavy": "HEAVY_TURRET",
 	
 	"dscombat.ammo": "Ammo",
 	"dscombat.pilot_seat": "Pilot Seat",

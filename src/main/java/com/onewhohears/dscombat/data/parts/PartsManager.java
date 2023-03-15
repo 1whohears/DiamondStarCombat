@@ -6,9 +6,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.common.network.toclient.ToClientAddPart;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAircraftFuel;
-import com.onewhohears.dscombat.common.network.toclient.ToClientRemovePart;
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.item.ItemSeat;
@@ -164,33 +162,6 @@ public class PartsManager {
 	
 	public void clientTickParts() {
 		for (PartSlot p : slots) p.clientTick();
-	}
-	
-	@Deprecated
-	public boolean addPart(PartData part, String slotName, boolean updateClient) {
-		System.out.println("ADDING PART "+part+" IN SLOT "+slotName+" client side "+parent.level.isClientSide);
-		for (PartSlot p : slots) if (p.getName().equals(slotName) && !p.filled()) {
-			boolean ok = p.addPartData(part, parent);
-			if (updateClient && ok) {
-				PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
-						new ToClientAddPart(parent.getId(), slotName, part));
-			}
-			return true;
-		}
-		return false;
-	}
-	
-	@Deprecated
-	public void removePart(String slotName, boolean updateClient) {
-		System.out.println("ADDING PART IN SLOT "+slotName+" client side "+parent.level.isClientSide);
-		for (PartSlot p : slots) if (p.getName().equals(slotName)) {
-			boolean ok = p.removePartData(parent);
-			if (updateClient && ok) {
-				PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
-						new ToClientRemovePart(parent.getId(), slotName));
-			}
-			return;
-		}
 	}
 	
 	@Nullable

@@ -2,7 +2,6 @@ package com.onewhohears.dscombat.util;
 
 import java.util.List;
 
-import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartsManager;
 import com.onewhohears.dscombat.data.radar.RadarData;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
@@ -88,40 +87,6 @@ public class UtilPacket {
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityAircraft plane) {
 			plane.weaponSystem.removeWeapon(wid, slotId, false);
-		}
-	}
-	
-	/*public static void addTurretPacket(int id, String slotName, WeaponData data) {
-		Minecraft m = Minecraft.getInstance();
-		Level world = m.level;
-		if (world.getEntity(id) instanceof EntityAircraft plane) {
-			plane.weaponSystem.addTurret(slotName, data, false);
-		}
-	}*/
-	
-	/*public static void removeTurretPacket(int id, String slotName) {
-		Minecraft m = Minecraft.getInstance();
-		Level world = m.level;
-		if (world.getEntity(id) instanceof EntityAircraft plane) {
-			plane.weaponSystem.removeTurret(slotName, false);
-		}
-	}*/
-	
-	@Deprecated
-	public static void addPartPacket(int id, String slotName, PartData data) {
-		Minecraft m = Minecraft.getInstance();
-		Level world = m.level;
-		if (world.getEntity(id) instanceof EntityAircraft plane) {
-			plane.partsManager.addPart(data, slotName, false);
-		}
-	}
-	
-	@Deprecated
-	public static void removePartPacket(int id, String slotName) {
-		Minecraft m = Minecraft.getInstance();
-		Level world = m.level;
-		if (world.getEntity(id) instanceof EntityAircraft plane) {
-			plane.partsManager.removePart(slotName, false);
 		}
 	}
 	

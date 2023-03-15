@@ -486,6 +486,7 @@ public abstract class EntityAircraft extends Entity {
 	 */
 	public void tickMovement(Quaternion q) {
 		if (onGround) tickGround(q);
+		else if (isInWater()) tickWater(q);
 		else tickAir(q);
 	}
 	
@@ -537,6 +538,11 @@ public abstract class EntityAircraft extends Entity {
 		motion = motion.add(getDragForce(q));
 		setDeltaMovement(motion);
 		resetFallDistance();
+	}
+	
+	public void tickWater(Quaternion q) {
+		// TODO sink
+		tickAir(q);
 	}
 	
 	/**

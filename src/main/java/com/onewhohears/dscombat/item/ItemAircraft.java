@@ -1,7 +1,5 @@
 package com.onewhohears.dscombat.item;
 
-import java.util.Objects;
-
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.init.ModItems;
 
@@ -74,11 +72,10 @@ public class ItemAircraft extends Item {
 				et.putFloat("current_throttle", 0);
 			}
 			//System.out.println("MAKING ENTITY FROM = "+tag);
-			Entity spawn = entitytype.spawn((ServerLevel)level, itemstack, player, blockpos1, 
-					MobSpawnType.SPAWN_EGG, true, 
-					!Objects.equals(blockpos, blockpos1) && direction == Direction.UP);
+			Entity spawn = entitytype.spawn((ServerLevel)level, itemstack, 
+					player, blockpos1.above(2), MobSpawnType.SPAWN_EGG, 
+					true, true);
 			if (spawn != null) {
-				spawn.setPos(spawn.position().add(0, 4, 0));
 				itemstack.shrink(1);
 				level.gameEvent(player, GameEvent.ENTITY_PLACE, blockpos);
 			}

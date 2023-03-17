@@ -187,5 +187,7 @@ public class ModItems {
 			() -> new ItemAircraft(ModEntities.MRBUDGER_TANK.get(), "mrbudger_tank"));
 	public static final RegistryObject<Item> SMALL_ROLLER = ITEMS.register("small_roller", 
 			() -> new ItemAircraft(ModEntities.SMALL_ROLLER.get(), "small_roller"));
+	public static final RegistryObject<Item> NATHAN_BOAT = ITEMS.register("nathan_boat", 
+			() -> new ItemAircraft(ModEntities.NATHAN_BOAT.get(), "nathan_boat"));
 	
 }

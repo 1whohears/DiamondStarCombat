@@ -3,20 +3,30 @@ package com.onewhohears.dscombat.entity.aircraft;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.data.AircraftTextures;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.RegistryObject;
 
 public class EntityBoat extends EntityAircraft {
-
+	
+	public final float MIN_SPEED;
+	
+	private double waterLevel;
+	
 	public EntityBoat(EntityType<? extends EntityBoat> entity, Level level, AircraftTextures textures,
-			RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item, boolean negativeThrottle) {
+			RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item, 
+			boolean negativeThrottle, float minSpeed) {
 		super(entity, level, textures, engineSound, item, negativeThrottle);
+		MIN_SPEED = minSpeed;
 	}
 	
 	@Override
@@ -36,6 +46,8 @@ public class EntityBoat extends EntityAircraft {
 	
 	@Override
 	public void controlDirection(Quaternion q) {
+		flatten(q, 5f, 5f);
+		addTorqueY(inputYaw * getAccelerationYaw(), true);
 		super.controlDirection(q);
 	}
 	
@@ -55,21 +67,70 @@ public class EntityBoat extends EntityAircraft {
 	@Override
 	public void tickMovement(Quaternion q) {
 		super.tickMovement(q);
+		//System.out.println("vy = "+getDeltaMovement().y);
 	}
 	
 	@Override
 	public void tickGround(Quaternion q) {
-		
+		Vec3 motion = getDeltaMovement();
+		if (motion.y < 0) motion = motion.multiply(0.7, 0, 0.7);
+		setDeltaMovement(motion);
 	}
 	
 	@Override
 	public void tickAir(Quaternion q) {
-		
+		super.tickAir(q);
 	}
 	
 	@Override
 	public void tickWater(Quaternion q) {
-		// TODO boat float
+		if (inputSpecial) throttleToZero();
+		Vec3 motion = getDeltaMovement();
+		motion = motion.multiply(0.990, 0.900, 0.990);
+		if (checkInWater()) {
+			double wdiff = waterLevel - getY();
+			double f = wdiff * getBbWidth() * 0.20;
+			motion = motion.add(0, f-getTotalWeight(), 0);
+			//System.out.println("f  = "+f);
+			//System.out.println("my = "+motion.y);
+		}
+		float f = (float)getThrustMag();
+		motion = motion.add(
+				(double)(Mth.sin(-getYRot()*Mth.DEG_TO_RAD)*f), 
+				0.0D, 
+				(double)(Mth.cos(getYRot()*Mth.DEG_TO_RAD)*f));
+		setDeltaMovement(motion);
+	}
+	
+	@Override
+	public void tickGroundWater(Quaternion q) {
+		tickWater(q);
+		Vec3 motion = getDeltaMovement();
+		if (motion.y < 0) motion = motion.multiply(1, 0, 1);
+		setDeltaMovement(motion);
+	}
+	
+	private boolean checkInWater() {
+		AABB aabb = this.getBoundingBox();
+		int i = Mth.floor(aabb.minX);
+		int j = Mth.ceil(aabb.maxX);
+		int k = Mth.floor(aabb.minY);
+		int l = Mth.ceil(aabb.maxY);
+		int i1 = Mth.floor(aabb.minZ);
+		int j1 = Mth.ceil(aabb.maxZ);
+		boolean flag = false;
+		this.waterLevel = -Double.MAX_VALUE;
+		BlockPos.MutableBlockPos mbp = new BlockPos.MutableBlockPos();
+		for(int k1=i;k1<j;++k1){for(int l1=k;l1<l;++l1){for(int i2=i1;i2<j1;++i2){
+			mbp.set(k1, l1, i2);
+			FluidState fluidstate = level.getFluidState(mbp);
+			if (fluidstate.is(FluidTags.WATER)) {
+				float f = (float)l1 + fluidstate.getHeight(level, mbp);
+				waterLevel = Math.max((double)f, waterLevel);
+				flag = aabb.minY < (double)f;
+			}
+		}}}
+		return flag;
 	}
 	
 	@Override
@@ -98,8 +159,9 @@ public class EntityBoat extends EntityAircraft {
     }
 	
 	@Override
-	public float getMaxDeltaYaw() {
-    	return entityData.get(MAX_YAW);
+	public float getMaxSpeed() {
+		if (getCurrentThrottle() < 0) return super.getMaxSpeed() * 0.05f;
+    	return entityData.get(MAX_SPEED);
     }
 	
 	@Override

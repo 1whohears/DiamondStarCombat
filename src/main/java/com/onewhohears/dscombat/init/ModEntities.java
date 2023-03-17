@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.init;
 import com.google.common.collect.ImmutableSet;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.AircraftPresets;
+import com.onewhohears.dscombat.entity.aircraft.EntityBoat;
 import com.onewhohears.dscombat.entity.aircraft.EntityGroundVehicle;
 import com.onewhohears.dscombat.entity.aircraft.EntityHelicopter;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
@@ -66,20 +67,30 @@ public class ModEntities {
 					ModSounds.JET_1, ModItems.SMALL_ROLLER, true), 
 					EntityDimensions.scalable(1.5f, 0.8f)));
 	
-	/*  
-	 * IDEA more planes
+	public static final RegistryObject<EntityType<EntityBoat>> NATHAN_BOAT = ENTITIES.register("nathan_boat", 
+			() -> createEntityTypeFar((type, level) -> new EntityBoat(type, level, 
+					AircraftPresets.getAircraftTextures("nathan_boat"),
+					ModSounds.JET_1, ModItems.NATHAN_BOAT, 
+					true, 0.025f), 
+					EntityDimensions.scalable(2.5f,1.5f)));
+	
+	/* 
+	 * IDEA more vehicles
+	 * 
+	 * PLANES
 	 * wooden plane, large wooden plane, something like a spitfire, something like a p51 mustang 
 	 * private jet, large passenger jet, large cargo plane like a galaxy, large radar plane
 	 * 
-	 * IDEA more helicopters
+	 * HELICOPTORS
 	 * small unarmed heli, large cargo heli, 2 seated heli with gunner on front bottom
 	 * 
-	 * IDEA more cars/tanks
+	 * CARS/TANKS
 	 * TODO Honda Ferrari/Orange Tesla
 	 * 
-	 * TODO boats/submarines 
+	 * BOATS/SUBMARINES
+	 * TODO submarine entity 
 	 * 
-	 * IDEA torpedoes, anti radar missiles
+	 * IDEA more weapons
 	 * 
 	 * IDEA AI for planes and turrets
 	 */

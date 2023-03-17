@@ -60,6 +60,8 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
 	public ItemStack quickMoveStack(Player player, int index) {
 		ItemStack stack = ItemStack.EMPTY;
 		// TODO quick move stack aircraft menu
+		Slot slot = getSlot(index);
+		
 		return stack;
 	}
 	

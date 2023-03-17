@@ -384,6 +384,7 @@ public abstract class EntityAircraft extends Entity {
 		double maxY = 2.0;
 		double my = motion.y;
 		if (Math.abs(my) > maxY) my = maxY * Math.signum(my);
+		else if (Math.abs(my) < 0.001d) my = 0;
 		setDeltaMovement(motionXY.x, my, motionXY.z);
 	}
 	
@@ -485,7 +486,8 @@ public abstract class EntityAircraft extends Entity {
 	 * @param q the plane's current rotation
 	 */
 	public void tickMovement(Quaternion q) {
-		if (onGround) tickGround(q);
+		if (onGround && isInWater()) tickGroundWater(q);
+		else if (onGround) tickGround(q);
 		else if (isInWater()) tickWater(q);
 		else tickAir(q);
 	}
@@ -543,6 +545,10 @@ public abstract class EntityAircraft extends Entity {
 	public void tickWater(Quaternion q) {
 		// TODO sink
 		tickAir(q);
+	}
+	
+	public void tickGroundWater(Quaternion q) {
+		tickGround(q);
 	}
 	
 	/**

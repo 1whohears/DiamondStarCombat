@@ -62,6 +62,7 @@ public class EntityBoat extends EntityAircraft {
 	
 	@Override
 	public void tickMovement(Quaternion q) {
+		if (inputSpecial) throttleToZero();
 		super.tickMovement(q);
 		//System.out.println("vy = "+getDeltaMovement().y);
 	}
@@ -81,7 +82,6 @@ public class EntityBoat extends EntityAircraft {
 	
 	@Override
 	public void tickWater(Quaternion q) {
-		if (inputSpecial) throttleToZero();
 		Vec3 motion = getDeltaMovement();
 		motion = motion.multiply(0.990, 0.900, 0.990);
 		if (checkInWater()) {

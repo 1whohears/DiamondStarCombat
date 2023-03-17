@@ -72,12 +72,11 @@ public class EntitySubmarine extends EntityBoat {
 	
 	@Override
 	public void tickWater(Quaternion q) {
-		if (inputSpecial) throttleToZero();
 		Vec3 move = getDeltaMovement();
 		move = move.multiply(0.990, 0.900, 0.990);
 		float f = (float)getThrustMag();
-		move = move.add(0, f * inputPitch * 0.1, 0);
-		double max = 0.5;
+		move = move.add(0, inputPitch * 0.04, 0);
+		double max = 0.2;
 		if (Math.abs(move.y) > 0.5) move.multiply(1, max/move.y, 1);
 		move = move.add(
 				(double)(Mth.sin(-getYRot()*Mth.DEG_TO_RAD)*f), 

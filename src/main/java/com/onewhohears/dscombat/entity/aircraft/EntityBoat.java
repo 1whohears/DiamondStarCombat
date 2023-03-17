@@ -170,6 +170,8 @@ public class EntityBoat extends EntityAircraft {
 			boolean openMenu, boolean special) {
 		super.updateControls(throttle, pitch, roll, yaw, mouseMode, flare, shoot, 
 				select, openMenu, special);
+		this.inputThrottle = pitch;
+		this.inputPitch = throttle;
 	}
 	
 	@Override

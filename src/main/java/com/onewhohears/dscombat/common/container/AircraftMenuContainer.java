@@ -64,24 +64,15 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
 		ItemStack stack1 = slot.getItem();
 		ItemStack stack = stack1.copy();
 		int planeSize = planeInv.getContainerSize();
-		//System.out.println("quick move stack index "+index);
-		//System.out.println("plane size "+planeSize);
 		if (index < planeSize) { if (!moveItemStackTo(stack1, 
 				planeSize, slots.size(), true)) {
 			return ItemStack.EMPTY;
 		} } else if (index >= planeSize) { if (!moveItemStackTo(stack1, 
 				0, planeSize, false)) {
-			//System.out.println("failed custom quick move stack");
 			return ItemStack.EMPTY;
 		} }
-		if (stack1.isEmpty()) {
-			slot.set(ItemStack.EMPTY);
-			//System.out.println("stack1 is empty");
-		} else {
-			slot.setChanged();
-			//System.out.println("slot changed");
-		}
-		//System.out.println("finished quick move stack");
+		if (stack1.isEmpty()) slot.set(ItemStack.EMPTY);
+		else slot.setChanged();
 		return stack;
 	}
 	

@@ -325,6 +325,7 @@ public abstract class EntityAircraft extends Entity {
 	 */
 	public void serverTick() {
 		tickCollisions();
+		waterDamage();
 		if (!isTestMode() && getHealth() <= 0) kill();
 	}
 	
@@ -344,6 +345,13 @@ public abstract class EntityAircraft extends Entity {
 			if (my > th && this.tickCount > 300) {
 				addHealth((float)(-(my-th) * collideDamageRate));
 			}
+		}
+	}
+	
+	public void waterDamage() {
+		if (tickCount % 20 == 0 && isInWater()) {
+			addHealth(-5);
+			// TODO water damage sound
 		}
 	}
 	

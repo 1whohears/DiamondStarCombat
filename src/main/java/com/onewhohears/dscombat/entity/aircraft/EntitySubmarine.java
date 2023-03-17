@@ -6,7 +6,11 @@ import com.onewhohears.dscombat.data.AircraftTextures;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
@@ -132,6 +136,21 @@ public class EntitySubmarine extends EntityBoat {
 	@Override
 	public float getStepHeight() {
 		return 0.2f;
+	}
+	
+	@Override
+    public void positionRider(Entity passenger) {
+		if (tickCount % 20 != 0) return;
+		if (passenger instanceof Player p) {
+			p.addEffect(new MobEffectInstance(MobEffects.WATER_BREATHING, 
+					40, 0, true, false));
+			p.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 
+					40, 0, true, false));
+		}
+	}
+	
+	@Override
+	public void waterDamage() {
 	}
 
 }

@@ -109,7 +109,7 @@ public class EntityBoat extends EntityAircraft {
 	}
 	
 	protected boolean checkInWater() {
-		AABB aabb = this.getBoundingBox();
+		AABB aabb = getBoundingBox();
 		int i = Mth.floor(aabb.minX);
 		int j = Mth.ceil(aabb.maxX);
 		int k = Mth.floor(aabb.minY);
@@ -175,6 +175,11 @@ public class EntityBoat extends EntityAircraft {
 	@Override
 	public float getStepHeight() {
 		return 0.2f;
+	}
+	
+	@Override
+	public void waterDamage() {
+		if (waterLevel > getBoundingBox().maxY) super.waterDamage();
 	}
 
 }

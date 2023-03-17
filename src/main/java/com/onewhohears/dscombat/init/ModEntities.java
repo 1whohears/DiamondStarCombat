@@ -7,6 +7,7 @@ import com.onewhohears.dscombat.entity.aircraft.EntityBoat;
 import com.onewhohears.dscombat.entity.aircraft.EntityGroundVehicle;
 import com.onewhohears.dscombat.entity.aircraft.EntityHelicopter;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
+import com.onewhohears.dscombat.entity.aircraft.EntitySubmarine;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.parts.EntitySeatCamera;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
@@ -36,6 +37,8 @@ public class ModEntities {
 		ENTITIES.register(eventBus);
 	}
 	
+	// PLANES
+	
 	public static final RegistryObject<EntityType<EntityPlane>> JAVI_PLANE = ENTITIES.register("javi_plane", 
 			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
 					AircraftPresets.getAircraftTextures("javi_plane"),
@@ -48,12 +51,15 @@ public class ModEntities {
 					ModSounds.JET_1, ModItems.ALEXIS_PLANE), 
 					EntityDimensions.scalable(2.0f, 2.0f)));
 	
-	// IDEA use black hawk as inspiration for noah chopper
+	// HELICOPTORS
+	
 	public static final RegistryObject<EntityType<EntityHelicopter>> NOAH_CHOPPER = ENTITIES.register("noah_chopper", 
 			() -> createEntityTypeFar((type, level) -> new EntityHelicopter(type, level, 
 					AircraftPresets.getAircraftTextures("noah_chopper"),
 					ModSounds.HELI_1, ModItems.NOAH_CHOPPER, true), 
 					EntityDimensions.scalable(2.8f, 2.8f)));
+	
+	// TANKS
 	
 	public static final RegistryObject<EntityType<EntityGroundVehicle>> MRBUDGER_TANK = ENTITIES.register("mrbudger_tank", 
 			() -> createEntityTypeFar((type, level) -> new EntityGroundVehicle(type, level, 
@@ -67,12 +73,23 @@ public class ModEntities {
 					ModSounds.JET_1, ModItems.SMALL_ROLLER, true), 
 					EntityDimensions.scalable(1.5f, 0.8f)));
 	
+	// CARS
+	
+	// BOATS
+	
 	public static final RegistryObject<EntityType<EntityBoat>> NATHAN_BOAT = ENTITIES.register("nathan_boat", 
 			() -> createEntityTypeFar((type, level) -> new EntityBoat(type, level, 
 					AircraftPresets.getAircraftTextures("nathan_boat"),
-					ModSounds.JET_1, ModItems.NATHAN_BOAT, 
-					true, 0.025f), 
+					ModSounds.JET_1, ModItems.NATHAN_BOAT), 
 					EntityDimensions.scalable(2.5f,1.5f)));
+	
+	// SUBMARINES
+	
+	public static final RegistryObject<EntityType<EntitySubmarine>> ANDOLF_SUB = ENTITIES.register("andolf_sub", 
+			() -> createEntityTypeFar((type, level) -> new EntitySubmarine(type, level, 
+					AircraftPresets.getAircraftTextures("andolf_sub"),
+					ModSounds.JET_1, ModItems.ANDOLF_SUB), 
+					EntityDimensions.scalable(3.5f,3.5f)));
 	
 	/* 
 	 * IDEA more vehicles
@@ -80,15 +97,16 @@ public class ModEntities {
 	 * PLANES
 	 * wooden plane, large wooden plane, something like a spitfire, something like a p51 mustang 
 	 * private jet, large passenger jet, large cargo plane like a galaxy, large radar plane
+	 * Tariku plane will be VTOL
 	 * 
 	 * HELICOPTORS
 	 * small unarmed heli, large cargo heli, 2 seated heli with gunner on front bottom
+	 * noah chopper should resemble black hawk
 	 * 
 	 * CARS/TANKS
 	 * TODO Honda Ferrari/Orange Tesla
 	 * 
 	 * BOATS/SUBMARINES
-	 * TODO submarine entity 
 	 * 
 	 * IDEA more weapons
 	 * 

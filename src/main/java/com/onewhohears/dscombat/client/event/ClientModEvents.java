@@ -9,6 +9,7 @@ import com.onewhohears.dscombat.client.renderer.RendererEntityPart;
 import com.onewhohears.dscombat.client.renderer.RendererEntityTurret;
 import com.onewhohears.dscombat.client.renderer.RendererEntityWeapon;
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelAlexisPlane;
+import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelAndolfSub;
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelF16;
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelJaviPlane;
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelMrBudgerTank;
@@ -28,6 +29,7 @@ import com.onewhohears.dscombat.entity.aircraft.EntityBoat;
 import com.onewhohears.dscombat.entity.aircraft.EntityGroundVehicle;
 import com.onewhohears.dscombat.entity.aircraft.EntityHelicopter;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
+import com.onewhohears.dscombat.entity.aircraft.EntitySubmarine;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
 import com.onewhohears.dscombat.entity.weapon.EntityBullet;
@@ -72,6 +74,7 @@ public final class ClientModEvents {
 		event.registerLayerDefinition(EntityModelSmallRoller.LAYER_LOCATION, EntityModelSmallRoller::createBodyLayer);
 		event.registerLayerDefinition(EntityModelSteveUpSmash.LAYER_LOCATION, EntityModelSteveUpSmash::createBodyLayer);
 		event.registerLayerDefinition(EntityModelNathanBoat.LAYER_LOCATION, EntityModelNathanBoat::createBodyLayer);
+		event.registerLayerDefinition(EntityModelAndolfSub.LAYER_LOCATION, EntityModelNathanBoat::createBodyLayer);
 	}
 	
 	@SubscribeEvent
@@ -99,6 +102,10 @@ public final class ClientModEvents {
 		event.registerEntityRenderer(ModEntities.NATHAN_BOAT.get(), 
 				(context) -> new RendererEntityAircraft<EntityBoat>(context, 
 						new EntityModelNathanBoat<EntityBoat>(models.bakeLayer(EntityModelNathanBoat.LAYER_LOCATION))));
+		// SUBMARINES
+		event.registerEntityRenderer(ModEntities.ANDOLF_SUB.get(), 
+				(context) -> new RendererEntityAircraft<EntitySubmarine>(context, 
+						new EntityModelAndolfSub<EntitySubmarine>(models.bakeLayer(EntityModelAndolfSub.LAYER_LOCATION))));
 		// BULLETS
 		event.registerEntityRenderer((EntityType<EntityBullet>)ModEntities.BULLET.get(), 
 				(context) -> new RendererEntityWeapon<EntityBullet>(context, 

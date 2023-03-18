@@ -73,7 +73,7 @@ public class ItemAircraft extends Item {
 			}
 			//System.out.println("MAKING ENTITY FROM = "+tag);
 			Entity spawn = entitytype.spawn((ServerLevel)level, itemstack, 
-					player, blockpos1.above(2), MobSpawnType.SPAWN_EGG, 
+					player, blockpos1.above(4), MobSpawnType.SPAWN_EGG, 
 					true, true);
 			if (spawn != null) {
 				itemstack.shrink(1);

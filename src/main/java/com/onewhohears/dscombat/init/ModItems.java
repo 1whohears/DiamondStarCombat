@@ -97,7 +97,7 @@ public class ModItems {
 	// BUFFS
 	public static final RegistryObject<Item> DATA_LINK = ITEMS.register("data_link", 
 			() -> new ItemBuffPart(BuffType.DATA_LINK, PartSlot.ADVANCED_INTERNAL));
-	// TODO night vision helmet item buff
+	// IDEA night vision helmet item buff
 	
 	// TOOLS
 	public static final RegistryObject<Item> WRENCH = ITEMS.register("wrench", 
@@ -146,8 +146,9 @@ public class ModItems {
 			() -> new ItemRadarPart(0.004f, "gr200", PartSlot.ADVANCED_INTERNAL));
 	public static final RegistryObject<Item> GR400 = ITEMS.register("gr400", 
 			() -> new ItemRadarPart(0.008f, "gr400", PartSlot.ADVANCED_INTERNAL));
-	// TODO water penetrating radar
-	// TODO ground penetrating radar
+	// IDEA water penetrating radar
+	// IDEA ground penetrating radar
+	// IDEA giant radar
 	
 	// SEATS
 	public static final RegistryObject<Item> SEAT = ITEMS.register("seat", 

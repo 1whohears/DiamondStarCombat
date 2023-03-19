@@ -355,16 +355,15 @@ public abstract class EntityAircraft extends Entity {
 				th = collideSpeedWithGearThreshHold;
 			}
 			if (my > th && this.tickCount > 300) {
-				addHealth((float)(-(my-th) * collideDamageRate));
+				hurt(DamageSource.FLY_INTO_WALL, 
+						(float)((my-th)*collideDamageRate));
 			}
 		}
 	}
 	
 	public void waterDamage() {
-		if (tickCount % 20 == 0 && isInWater()) {
-			addHealth(-5);
-			// TODO water damage sound
-		}
+		if (tickCount % 20 == 0 && isInWater()) 
+			hurt(DamageSource.DROWN, 5);
 	}
 	
 	/**
@@ -967,11 +966,19 @@ public abstract class EntityAircraft extends Entity {
         return true;
     }
 	
+    @Override
+    public boolean isInvulnerableTo(DamageSource source) {
+    	if (isTestMode()) return true;
+    	if (super.isInvulnerableTo(source)) return true;
+    	if (isVehicleOf(source.getEntity())) return true;
+    	return false;
+    }
+    
 	@Override
     public boolean hurt(DamageSource source, float amount) {
-		if (isTestMode()) return false;
-		if (isVehicleOf(source.getEntity())) return false;
+		if (isInvulnerableTo(source)) return false;
 		addHealth(-amount);
+		// TODO hurt sound
 		return true;
 	}
 	

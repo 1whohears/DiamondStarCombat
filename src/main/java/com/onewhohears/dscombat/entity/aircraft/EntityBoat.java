@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.data.AircraftTextures;
+import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -87,21 +88,16 @@ public class EntityBoat extends EntityAircraft {
 	
 	@Override
 	public void tickWater(Quaternion q) {
-		Vec3 motion = getDeltaMovement();
-		motion = motion.multiply(0.990, 0.900, 0.990);
+		Vec3 move = getDeltaMovement();
+		move = move.multiply(0.900, 0.900, 0.900);
 		if (checkInWater()) {
 			double wdiff = waterLevel - getY();
 			double f = wdiff * getBbWidth() * 0.20;
-			motion = motion.add(0, f-getTotalWeight(), 0);
-			//System.out.println("f  = "+f);
-			//System.out.println("my = "+motion.y);
+			move = move.add(0, f-getTotalWeight(), 0);
 		}
-		float f = (float)getThrustMag();
-		motion = motion.add(
-				(double)(Mth.sin(-getYRot()*Mth.DEG_TO_RAD)*f), 
-				0.0D, 
-				(double)(Mth.cos(getYRot()*Mth.DEG_TO_RAD)*f));
-		setDeltaMovement(motion);
+		float th = (float)getThrustMag();
+		move = move.add(UtilAngles.rotationToVector(getYRot(), 0, th));
+		setDeltaMovement(move);
 	}
 	
 	@Override
@@ -163,7 +159,7 @@ public class EntityBoat extends EntityAircraft {
 	
 	@Override
 	public float getMaxSpeed() {
-		if (getCurrentThrottle() < 0) return super.getMaxSpeed() * 0.05f;
+		if (getCurrentThrottle() < 0) return super.getMaxSpeed() * 0.2f;
     	return entityData.get(MAX_SPEED);
     }
 	

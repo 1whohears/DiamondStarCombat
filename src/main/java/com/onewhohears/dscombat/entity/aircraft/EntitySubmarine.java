@@ -2,10 +2,10 @@ package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.data.AircraftTextures;
+import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
@@ -78,15 +78,12 @@ public class EntitySubmarine extends EntityBoat {
 	@Override
 	public void tickWater(Quaternion q) {
 		Vec3 move = getDeltaMovement();
-		move = move.multiply(0.990, 0.900, 0.990);
-		float f = (float)getThrustMag();
+		move = move.multiply(0.900, 0.900, 0.900);
 		move = move.add(0, inputPitch * 0.04, 0);
 		double max = 0.2;
 		if (Math.abs(move.y) > 0.5) move.multiply(1, max/move.y, 1);
-		move = move.add(
-				(double)(Mth.sin(-getYRot()*Mth.DEG_TO_RAD)*f), 
-				0.0D, 
-				(double)(Mth.cos(getYRot()*Mth.DEG_TO_RAD)*f));
+		float th = (float)getThrustMag();
+		move = move.add(UtilAngles.rotationToVector(getYRot(), 0, th));
 		setDeltaMovement(move);
 	}
 	
@@ -122,8 +119,7 @@ public class EntitySubmarine extends EntityBoat {
 	
 	@Override
 	public float getMaxSpeed() {
-		if (getCurrentThrottle() < 0) return super.getMaxSpeed() * 0.10f;
-    	return entityData.get(MAX_SPEED);
+		return super.getMaxSpeed();
     }
 	
 	@Override

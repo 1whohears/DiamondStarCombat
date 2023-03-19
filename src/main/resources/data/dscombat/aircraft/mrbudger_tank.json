@@ -125,7 +125,10 @@
 	
 	"dyecolor": 0,
 	"textures": {
-		"0": "dscombat:textures/entities/mrbudger_tank.png"
+		"0": "dscombat:textures/entities/mrbudger_tank/yellow.png",
+		"14": "dscombat:textures/entities/mrbudger_tank/red.png",
+		"15": "dscombat:textures/entities/mrbudger_tank/black.png",
+		"11": "dscombat:textures/entities/mrbudger_tank/blue.png"
 	},
 	
 	"ingredients": [

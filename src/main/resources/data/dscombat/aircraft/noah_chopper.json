@@ -327,7 +327,10 @@
 	
 	"dyecolor": 12,
 	"textures": {
-		"12": "dscombat:textures/entities/noah_chopper.png"
+		"12": "dscombat:textures/entities/noah_chopper/brown.png",
+		"14": "dscombat:textures/entities/noah_chopper/red.png",
+		"15": "dscombat:textures/entities/noah_chopper/black.png",
+		"11": "dscombat:textures/entities/noah_chopper/blue.png"
 	},
 	
 	"ingredients": [

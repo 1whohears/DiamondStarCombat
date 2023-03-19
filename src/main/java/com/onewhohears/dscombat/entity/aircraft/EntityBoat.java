@@ -26,6 +26,11 @@ public class EntityBoat extends EntityAircraft {
 	}
 	
 	@Override
+	public AircraftType getAircraftType() {
+		return AircraftType.BOAT;
+	}
+	
+	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
 	}

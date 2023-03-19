@@ -97,7 +97,8 @@ public class ModItems {
 	// BUFFS
 	public static final RegistryObject<Item> DATA_LINK = ITEMS.register("data_link", 
 			() -> new ItemBuffPart(BuffType.DATA_LINK, PartSlot.ADVANCED_INTERNAL));
-	// IDEA night vision helmet item buff
+	public static final RegistryObject<Item> NIGHT_VISION_HUD = ITEMS.register("night_vision_hud", 
+			() -> new ItemBuffPart(BuffType.NIGHT_VISION_HUD, PartSlot.ADVANCED_INTERNAL));
 	
 	// TOOLS
 	public static final RegistryObject<Item> WRENCH = ITEMS.register("wrench", 
@@ -146,9 +147,12 @@ public class ModItems {
 			() -> new ItemRadarPart(0.004f, "gr200", PartSlot.ADVANCED_INTERNAL));
 	public static final RegistryObject<Item> GR400 = ITEMS.register("gr400", 
 			() -> new ItemRadarPart(0.008f, "gr400", PartSlot.ADVANCED_INTERNAL));
-	// IDEA water penetrating radar
-	// IDEA ground penetrating radar
-	// IDEA giant radar
+	public static final RegistryObject<Item> WR1K = ITEMS.register("wr1k", 
+			() -> new ItemRadarPart(0.012f, "wr1k", PartSlot.ADVANCED_INTERNAL));
+	public static final RegistryObject<Item> GPR20 = ITEMS.register("gpr20", 
+			() -> new ItemRadarPart(0.016f, "gpr20", PartSlot.ADVANCED_INTERNAL));
+	public static final RegistryObject<Item> AR10K = ITEMS.register("ar20k", 
+			() -> new ItemRadarPart(0.040f, "ar20k", PartSlot.ADVANCED_INTERNAL));
 	
 	// SEATS
 	public static final RegistryObject<Item> SEAT = ITEMS.register("seat", 

@@ -34,6 +34,11 @@ public class EntityHelicopter extends EntityAircraft {
 	}
 	
 	@Override
+	public AircraftType getAircraftType() {
+		return AircraftType.HELICOPTER;
+	}
+	
+	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
 		entityData.define(ACC_FORWARD, 0f);

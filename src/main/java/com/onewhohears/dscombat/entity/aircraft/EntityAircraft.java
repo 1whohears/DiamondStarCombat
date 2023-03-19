@@ -124,6 +124,8 @@ public abstract class EntityAircraft extends Entity {
 	public float torqueX, torqueY, torqueZ, torqueXO, torqueYO, torqueZO;
 	public Vec3 prevMotion = Vec3.ZERO;
 	
+	public boolean nightVisionHud = false;
+	
 	protected float xzSpeed;
 	
 	private ResourceLocation currentTexture;
@@ -266,6 +268,16 @@ public abstract class EntityAircraft extends Entity {
 		compound.putFloat("zRot", zRot);
 		compound.putInt("dyecolor", getCurrentColorId());
 	}
+	
+	public static enum AircraftType {
+		PLANE,
+		HELICOPTER,
+		CAR,
+		BOAT,
+		SUBMARINE
+	}
+	
+	public abstract AircraftType getAircraftType();
 	
 	/**
 	 * called on this entities first tick on client and server side
@@ -551,7 +563,6 @@ public abstract class EntityAircraft extends Entity {
 	}
 	
 	public void tickWater(Quaternion q) {
-		// TODO sink
 		tickAir(q);
 	}
 	
@@ -890,10 +901,10 @@ public abstract class EntityAircraft extends Entity {
 	
 	@Override
     public void positionRider(Entity passenger) {
-		Quaternion q;
-		if (level.isClientSide) q = getClientQ();
-		else q = getQ();
 		if (passenger instanceof EntityPart part) {
+			Quaternion q;
+			if (level.isClientSide) q = getClientQ();
+			else q = getQ();
  			Vec3 seatPos = UtilAngles.rotateVector(part.getRelativePos(), q);
 			passenger.setPos(position().add(seatPos));
 		}

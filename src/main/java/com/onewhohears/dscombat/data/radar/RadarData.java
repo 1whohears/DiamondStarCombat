@@ -119,7 +119,8 @@ public class RadarData {
 					EntityAircraft.class, getRadarBoundingBox(radar));
 			for (int i = 0; i < list.size(); ++i) {
 				if (!basicCheck(radar, list.get(i), list.get(i).getStealth())) continue;
-				RadarPing p = new RadarPing(list.get(i), checkFriendly(controller, list.get(i).getControllingPassenger()));
+				RadarPing p = new RadarPing(list.get(i), 
+					checkFriendly(controller, list.get(i).getControllingPassenger()));
 				targets.add(p);
 				pings.add(p);
 				list.get(i).lockedOnto();
@@ -131,7 +132,8 @@ public class RadarData {
 			for (int i = 0; i < list.size(); ++i) {
 				if (list.get(i).getRootVehicle() instanceof EntityAircraft) continue;
 				if (!basicCheck(radar, list.get(i), 1)) continue;
-				RadarPing p = new RadarPing(list.get(i), checkFriendly(controller, list.get(i)));
+				RadarPing p = new RadarPing(list.get(i), 
+						checkFriendly(controller, list.get(i)));
 				targets.add(p);
 				pings.add(p);
 			}
@@ -142,7 +144,8 @@ public class RadarData {
 			for (int i = 0; i < list.size(); ++i) {
 				if (list.get(i).getRootVehicle() instanceof EntityAircraft) continue;
 				if (!basicCheck(radar, list.get(i), 1)) continue;
-				RadarPing p = new RadarPing(list.get(i), checkFriendly(controller, list.get(i)));
+				RadarPing p = new RadarPing(list.get(i), 
+						checkFriendly(controller, list.get(i)));
 				targets.add(p);
 				pings.add(p);
 			}
@@ -167,6 +170,7 @@ public class RadarData {
 	}
 	
 	private boolean groundCheck(Entity ping) {
+		if (throWaterRange > 0 && ping.isInWater()) return true;
 		boolean groundWater = UtilEntity.isOnGroundOrWater(ping);
 		if (scanGround) if (groundWater) return true;
 		if (scanAir) if (!groundWater) return true;
@@ -183,8 +187,8 @@ public class RadarData {
 	}
 	
 	private boolean checkCanSee(Entity radar, Entity target) {
-		// TODO check for water and or blocks
-		return UtilEntity.canEntitySeeEntity(radar, target);
+		return UtilEntity.canEntitySeeEntity(radar, target, 200, 
+				throWaterRange, throGroundRange);
 	}
 	
 	private AABB getRadarBoundingBox(Entity radar) {

@@ -26,6 +26,11 @@ public class EntityPlane extends EntityAircraft {
 	}
 	
 	@Override
+	public AircraftType getAircraftType() {
+		return AircraftType.PLANE;
+	}
+	
+	@Override
 	public void clientTick() {
 		super.clientTick();
 		float th = getCurrentThrottle();

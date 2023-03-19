@@ -27,6 +27,11 @@ public class EntityGroundVehicle extends EntityAircraft {
 	}
 	
 	@Override
+	public AircraftType getAircraftType() {
+		return AircraftType.CAR;
+	}
+	
+	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
 		

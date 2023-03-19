@@ -8,24 +8,28 @@ import net.minecraft.world.entity.vehicle.Minecart;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 
 public class UtilEntity {
 	
-	public static boolean canEntitySeeEntity(Entity e1, Entity e2) {
-		//System.out.println("can "+e1+" see "+e2);
+	public static boolean canEntitySeeEntity(Entity e1, Entity e2, int maxCheckDist) {
+		return canEntitySeeEntity(e1, e2, maxCheckDist, 0, 0);
+	}
+	
+	public static boolean canEntitySeeEntity(Entity e1, Entity e2, int maxCheckDist, 
+			double throWater, double throBlock) {
 		Level level = e1.getLevel();
 		Vec3 diff = e2.position().subtract(e1.position());
 		Vec3 look = diff.normalize();
 		double distance = diff.length();
-		int maxDistance = 200;
 		Vec3 pos; int dist;
-		if (distance <= maxDistance) {
+		if (distance <= maxCheckDist) {
 			dist = (int)distance;
 			pos = e1.position();
 		} else {
-			dist = maxDistance;
-			pos = e1.position().add(look.scale(distance-maxDistance));
+			dist = maxCheckDist;
+			pos = e1.position().add(look.scale(distance-maxCheckDist));
 		}
 		int k = 0;
 		while (k++ < dist) {
@@ -33,10 +37,18 @@ public class UtilEntity {
 			ChunkPos cp = new ChunkPos(bp);
 			if (!level.hasChunk(cp.x, cp.z)) continue;
 			BlockState block = level.getBlockState(bp);
-			//System.out.println(k+" block "+block);
 			if (block != null && !block.isAir()) {
-				//System.out.println(e1+" can't see "+e2+" because "+block.toString());
-				return false;
+				if (throWater <= 0 && throBlock <= 0) return false;
+				if (block.getFluidState().getType().isSame(Fluids.WATER)) {
+					if (throWater > 0) {
+						--throWater;
+						continue;
+					} else return false;
+				}
+				if (throBlock > 0) {
+					--throBlock;
+					continue;
+				} else return false;
 			}
 			pos = pos.add(look);
 		}

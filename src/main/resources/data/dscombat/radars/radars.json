@@ -54,6 +54,45 @@
 			"scanMobs": true,
 			"scanGround": true,
 			"scanAir": false
+		},
+		{
+			"id": "wr1k",
+			"range": 1000,
+			"fov": -1,
+			"scanRate": 30,
+			"scanAircraft": true,
+			"scanPlayers": true,
+			"scanMobs": false,
+			"scanGround": false,
+			"scanAir": false,
+			"throWaterRange": 1000,
+			"throGroundRange": 0
+		},
+		{
+			"id": "gpr20",
+			"range": 500,
+			"fov": -1,
+			"scanRate": 50,
+			"scanAircraft": true,
+			"scanPlayers": true,
+			"scanMobs": false,
+			"scanGround": true,
+			"scanAir": false,
+			"throWaterRange": 0,
+			"throGroundRange": 20
+		},
+		{
+			"id": "ar20k",
+			"range": 20000,
+			"fov": -1,
+			"scanRate": 80,
+			"scanAircraft": true,
+			"scanPlayers": true,
+			"scanMobs": false,
+			"scanGround": false,
+			"scanAir": true,
+			"throWaterRange": 0,
+			"throGroundRange": 0
 		}
 	]
 }

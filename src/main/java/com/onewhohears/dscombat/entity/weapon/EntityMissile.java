@@ -228,11 +228,12 @@ public abstract class EntityMissile extends EntityBullet {
 	}
 	
 	protected boolean checkCanSee(Entity target) {
-		return UtilEntity.canEntitySeeEntity(this, target);
+		return UtilEntity.canEntitySeeEntity(this, target, 200);
 	}
 	
 	private void engineSound() {
-		UtilClientSafeSoundInstance.dopplerSound(Minecraft.getInstance(), this, ModSounds.MISSILE_ENGINE_1.get(), 
+		UtilClientSafeSoundInstance.dopplerSound(Minecraft.getInstance(), this, 
+				ModSounds.MISSILE_ENGINE_1.get(), 
 				0.8F, 1.0F, 10F);
 	}
 	

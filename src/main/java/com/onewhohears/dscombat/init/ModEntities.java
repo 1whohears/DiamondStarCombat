@@ -108,8 +108,6 @@ public class ModEntities {
 	 * 
 	 * BOATS/SUBMARINES
 	 * 
-	 * IDEA more weapons
-	 * 
 	 * IDEA AI for planes and turrets
 	 */
 	

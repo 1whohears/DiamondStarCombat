@@ -246,8 +246,11 @@
 	
 	"dyecolor": 13,
 	"textures": {
-		"11": "dscombat:textures/entities/blue_javi_plane.png",
-		"13": "dscombat:textures/entities/javi_plane.png"
+		"11": "dscombat:textures/entities/javi_plane/blue.png",
+		"13": "dscombat:textures/entities/javi_plane/green.png",
+		"10": "dscombat:textures/entities/javi_plane/purple.png",
+		"14": "dscombat:textures/entities/javi_plane/red.png",
+		"15": "dscombat:textures/entities/javi_plane/black.png"
 	},
 	
 	"ingredients": [

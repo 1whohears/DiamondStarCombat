@@ -201,6 +201,8 @@ public abstract class EntityAircraft extends Entity {
 		// this function is called on the server side only
 		setTestMode(compound.getBoolean("test_mode"));
 		setNoConsume(compound.getBoolean("no_consume"));
+		int color = -1;
+		if (compound.contains("dyecolor")) color = compound.getInt("dyecolor");
 		String initType = compound.getString("preset");
 		if (!initType.isEmpty()) {
 			CompoundTag tag = AircraftPresets.getPreset(initType);
@@ -234,7 +236,8 @@ public abstract class EntityAircraft extends Entity {
 		setQ(q);
 		setPrevQ(q);
 		setClientQ(q);
-		setCurrentColor(DyeColor.byId(compound.getInt("dyecolor")));
+		if (color == -1) color = compound.getInt("dyecolor");
+		setCurrentColor(DyeColor.byId(color));
 	}
 
 	@Override

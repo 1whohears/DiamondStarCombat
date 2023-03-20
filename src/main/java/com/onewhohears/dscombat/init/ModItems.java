@@ -151,7 +151,7 @@ public class ModItems {
 			() -> new ItemRadarPart(0.012f, "wr1k", PartSlot.ADVANCED_INTERNAL));
 	public static final RegistryObject<Item> GPR20 = ITEMS.register("gpr20", 
 			() -> new ItemRadarPart(0.016f, "gpr20", PartSlot.ADVANCED_INTERNAL));
-	public static final RegistryObject<Item> AR10K = ITEMS.register("ar20k", 
+	public static final RegistryObject<Item> AR20K = ITEMS.register("ar20k", 
 			() -> new ItemRadarPart(0.040f, "ar20k", PartSlot.ADVANCED_INTERNAL));
 	
 	// SEATS

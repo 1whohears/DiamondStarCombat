@@ -122,6 +122,7 @@
 	"item.dscombat.advanced_cockpit": "Advanced Cockpit",
 	
 	"item.dscombat.data_link": "Data Link Module",
+	"item.dscombat.night_vision_hud": "Night Vision HUD Module",
 	
 	"item.dscombat.wrench": "Wrench",
 	"item.dscombat.thick_wrench": "Thiccc Wrench",
@@ -141,8 +142,11 @@
 	"item.dscombat.ar500": "AR-500",
 	"item.dscombat.ar1k": "AR-1k",
 	"item.dscombat.ar2k": "AR-2k",
+	"item.dscombat.ar20k": "AR-20k",
 	"item.dscombat.gr200": "GR-200",
 	"item.dscombat.gr400": "GR-400",
+	"item.dscombat.gpr20": "GPR-20",
+	"item.dscombat.wr1k": "WR-1k",
 	
 	"item.dscombat.seat": "Seat",
 	
@@ -163,6 +167,8 @@
 	"item.dscombat.noah_chopper": "Noah Chopper",
 	"item.dscombat.mrbudger_tank": "Mr Budger Tank",
 	"item.dscombat.small_roller": "Small Roller",
+	"item.dscombat.nathan_boat": "Nathan Boat",
+	"item.dscombat.andolf_sub": "Andolf Submarine",
 	
 	"item.dscombat.20mm": "20mm",
 	"item.dscombat.50mmhe": "50mm HE",

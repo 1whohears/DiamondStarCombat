@@ -72,10 +72,12 @@ public class ItemAircraft extends Item {
 					et.putFloat("current_throttle", 0);
 				}
 				Entity e = entitytype.create(level);
+				Vec3 pos = hitresult.getLocation();
+				if (addHalfHeight) e.setPos(pos.add(0, e.getBbHeight()/2d, 0));
 				if (!level.noCollision(e, e.getBoundingBox())) 
 					return InteractionResultHolder.fail(itemstack);
 				if (!level.isClientSide) {
-					Vec3 pos = hitresult.getLocation();
+					
 					int above = 0;
 					if (addHalfHeight) above = (int)(e.getBbHeight()/2d)+1;
 					Entity entity = entitytype.spawn((ServerLevel)level, 

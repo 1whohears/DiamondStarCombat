@@ -258,42 +258,6 @@ public class PartsManager {
 		for (int i = 0; i < tanks.size(); ++i) ((FuelTankData)tanks.get(i).getPartData()).setFuel(fuels[i]);
 	}
 	
-	/*public void readContainer(Container c) {
-		//System.out.println("READING CHANGED CONTAINER client side "+parent.level.isClientSide+" items "+c);
-		if (c.getContainerSize() != slots.size()) {
-			System.out.println("WARNING! THIS CONTAINER HAS THE WRONG NUMBER OF SLOTS!");
-			return;
-		}
-		for (int i = 0; i < c.getContainerSize(); ++i) {
-			ItemStack stack = c.getItem(i);
-			if (stack.isEmpty()) {
-				removePart(slots.get(i).getName(), false);
-				continue;
-			}
-		}
-		for (int i = 0; i < c.getContainerSize(); ++i) {
-			//System.out.println("### CHECKING CONTAINER "+i);
-			ItemStack stack = c.getItem(i);
-			if (stack.isEmpty()) continue;
-			PartSlot slot = slots.get(i);
-			//System.out.println("stack = "+stack+" "+stack.getTag());
-			//System.out.println("slot = "+slot);
-			PartData data = UtilParse.parsePartFromCompound(stack.getTag());
-			if (data == null) {
-				System.out.println("ERROR! COULD NOT GET PART DATA FROM "+stack+" "+stack.getTag());
-				continue;
-			}
-			if (data.isSetup(slot.getName(), parent)) {
-				//System.out.println("ALREADY SETUP");
-				continue;
-			}
-			//System.out.println("REMOVING");
-			removePart(slot.getName(), false);
-			//System.out.println("ADDING");
-			addPart(data, slot.getName(), false);
-		}
-	}*/
-	
 	public List<PartSlot> getSlots() {
 		return slots;
 	}

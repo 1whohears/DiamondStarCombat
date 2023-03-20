@@ -10,18 +10,18 @@
 	"ingredients": [
 		{
 			"item": "minecraft:iron_ingot",
-			"num": 8
+			"num": 16
 		},
 		{
 			"item": "minecraft:tnt",
-			"num": 1
+			"num": 4
 		},
 		{
 			"item": "minecraft:coal_block",
-			"num": 2
+			"num": 3
 		},
 		{
-			"item": "dscombat:ti83",
+			"item": "dscombat:intel_pentium",
 			"num": 1
 		}
 	],

@@ -10,19 +10,19 @@
 	"ingredients": [
 		{
 			"item": "minecraft:iron_ingot",
-			"num": 8
+			"num": 12
 		},
 		{
 			"item": "minecraft:tnt",
-			"num": 1
+			"num": 3
 		},
 		{
 			"item": "minecraft:coal_block",
-			"num": 2
+			"num": 4
 		},
 		{
 			"item": "dscombat:ti83",
-			"num": 1
+			"num": 2
 		}
 	],
 	
@@ -42,7 +42,7 @@
 	"fuelTicks":400,
 	"maxAmmo":3,
 	
-	"maxRot": 1.5,
+	"maxRot": 3.0,
 	"acceleration": 0.04,
 	"bleed": 0.005,
 	"fuseDist": 2.0,

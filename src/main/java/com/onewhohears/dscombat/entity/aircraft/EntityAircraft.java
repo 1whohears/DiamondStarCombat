@@ -128,6 +128,7 @@ public abstract class EntityAircraft extends Entity {
 	public boolean nightVisionHud = false;
 	
 	protected float xzSpeed;
+	protected int xzSpeedDir;
 	
 	private ResourceLocation currentTexture;
 	private int lerpSteps, newRiderCooldown;
@@ -443,7 +444,7 @@ public abstract class EntityAircraft extends Entity {
 		float tr = getTurnRadius();
 		if (inputYaw != 0 && tr != 0) {
 			float turn = 1 / inputYaw * tr;
-			q.mul(Vector3f.YN.rotation(xzSpeed / turn));
+			q.mul(Vector3f.YN.rotation(xzSpeed / turn * xzSpeedDir));
 		}
 	}
 	
@@ -526,13 +527,12 @@ public abstract class EntityAircraft extends Entity {
 	 */
 	public void tickGround(Quaternion q) {
 		// TODO drifting
-		int xzsdir = getXZSpeedDir();
-		float speed = xzSpeed * xzsdir;
+		float speed = xzSpeed * xzSpeedDir;
 		float th = getCurrentThrottle();
 		float max = getMaxSpeed();
 		float w = getTotalWeight();
 		if (!isLandingGear() && speed != 0) {
-			speed -= 0.05 * xzsdir;
+			speed -= 0.05 * xzSpeedDir;
 			if (Math.abs(speed) < 0.05) speed = 0;
 		} else if (th != 0 && xzSpeed < max) {
 			double mag = getThrustMag();
@@ -540,7 +540,7 @@ public abstract class EntityAircraft extends Entity {
 			if (Math.abs(mag) > Math.abs(f)) speed += mag - f;
 			if (Math.abs(speed) > max) speed = max * Math.signum(speed);
 		} else if (speed != 0) {
-			speed -= 0.01 * xzsdir;
+			speed -= 0.01 * xzSpeedDir;
 			if (Math.abs(speed) < 0.01) speed = 0;
 		}
 		Vec3 dir = UtilAngles.rotationToVector(getYRot(), 0);
@@ -550,7 +550,7 @@ public abstract class EntityAircraft extends Entity {
 		setDeltaMovement(motion);
 	}
 	
-	protected int getXZSpeedDir() {
+	private int getXZSpeedDir() {
 		float my = UtilAngles.getYaw(getDeltaMovement());
 		double diff = UtilAngles.degreesDifferenceAbs(my, yRotO);
 		if (diff > 90) return -1;
@@ -643,7 +643,7 @@ public abstract class EntityAircraft extends Entity {
 		double x = getDeltaMovement().x;
 		double z = getDeltaMovement().z;
 		xzSpeed = (float) Math.sqrt(x*x + z*z);
-		
+		xzSpeedDir = getXZSpeedDir();
 	}
 	
 	public Vec3 getWeightForce() {

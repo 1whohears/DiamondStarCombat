@@ -92,9 +92,8 @@ public class EntityGroundVehicle extends EntityAircraft {
 		super.clientTick();
 		wheelLRotOld = wheelLRot;
 		wheelRRotOld = wheelRRot;
-		int dir = getXZSpeedDir();
-		wheelLRot += xzSpeed * wheelRate * dir;
-		wheelRRot += xzSpeed * wheelRate * dir;
+		wheelLRot += xzSpeed * wheelRate * xzSpeedDir;
+		wheelRRot += xzSpeed * wheelRate * xzSpeedDir;
 	}
 	
 	public float getWheelLeftRotation(float partialTicks) {

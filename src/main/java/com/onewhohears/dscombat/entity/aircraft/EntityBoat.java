@@ -51,17 +51,24 @@ public class EntityBoat extends EntityAircraft {
 	
 	@Override
 	public void controlDirection(Quaternion q) {
-		flatten(q, 5f, 5f);
-		addTorqueY(inputYaw * getAccelerationYaw(), true);
 		super.controlDirection(q);
 	}
 	
 	@Override
 	public void directionGround(Quaternion q) {
+		flatten(q, 5f, 5f);
+		addTorqueY(inputYaw * getAccelerationYaw() * 0.1f, true);
 	}
 	
 	@Override
 	public void directionAir(Quaternion q) {
+		super.directionAir(q);
+	}
+	
+	@Override
+	public void directionWater(Quaternion q) {
+		flatten(q, 5f, 5f);
+		addTorqueY(inputYaw * getAccelerationYaw(), true);
 	}
 	
 	@Override
@@ -156,8 +163,9 @@ public class EntityBoat extends EntityAircraft {
 	
 	@Override
 	public float getMaxSpeed() {
-		if (getCurrentThrottle() < 0) return super.getMaxSpeed() * 0.2f;
-    	return entityData.get(MAX_SPEED);
+		float max = super.getMaxSpeed() * Mth.abs(getCurrentThrottle());
+		if (getCurrentThrottle() < 0) return max * 0.2f;
+    	return max;
     }
 	
 	@Override

@@ -41,18 +41,27 @@ public class EntitySubmarine extends EntityBoat {
 	
 	@Override
 	public void controlDirection(Quaternion q) {
-		flatten(q, 5f, 5f);
-		addTorqueY(inputYaw * getAccelerationYaw(), true);
-		// TODO add gamer mode like the heli
 		super.controlDirection(q);
 	}
 	
 	@Override
 	public void directionGround(Quaternion q) {
+		super.directionGround(q);
 	}
 	
 	@Override
 	public void directionAir(Quaternion q) {
+		super.directionAir(q);
+	}
+	
+	@Override
+	public void directionWater(Quaternion q) {
+		if (isFreeLook()) flatten(q, 5f, 5f);
+		else {
+			addTorqueX(inputPitch * getAccelerationPitch(), true);
+			addTorqueZ(inputRoll * getAccelerationRoll(), true);
+		}
+		addTorqueY(inputYaw * getAccelerationYaw(), true);
 	}
 	
 	@Override
@@ -78,13 +87,14 @@ public class EntitySubmarine extends EntityBoat {
 	@Override
 	public void tickWater(Quaternion q) {
 		Vec3 move = getDeltaMovement();
-		if (inputSpecial) move = move.scale(0.6);
+		if (inputSpecial) move = move.scale(0.75);
 		else move = move.scale(0.925);
-		move = move.add(0, inputPitch * 0.04, 0);
-		double max = 0.2;
-		if (Math.abs(move.y) > 0.5) move.multiply(1, max/move.y, 1);
-		float th = (float)getThrustMag();
-		move = move.add(UtilAngles.rotationToVector(getYRot(), 0, th));
+		if (isFreeLook()) {
+			move = move.add(0, inputPitch * 0.04, 0);
+			double max = 0.2;
+			if (Math.abs(move.y) > 0.5) move.multiply(1, max/move.y, 1);
+		}
+		move = move.add(UtilAngles.getRollAxis(q).scale(getThrustMag()));
 		setDeltaMovement(move);
 	}
 	
@@ -127,8 +137,12 @@ public class EntitySubmarine extends EntityBoat {
 	public void updateControls(float throttle, float pitch, float roll, float yaw,
 			boolean mouseMode, boolean flare, boolean shoot, boolean select,
 			boolean openMenu, boolean special) {
-		super.updateControls(throttle, pitch, roll, yaw, mouseMode, flare, shoot, 
-				select, openMenu, special);
+		super.updateControls(throttle, pitch, roll, yaw, 
+				mouseMode, flare, shoot, select, openMenu, special);
+		if (!isFreeLook()) {
+			this.inputThrottle = throttle;
+			this.inputPitch = pitch;
+		}
 	}
 	
 	@Override

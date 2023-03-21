@@ -427,6 +427,7 @@ public abstract class EntityAircraft extends Entity {
 	 */
 	public void controlDirection(Quaternion q) {
 		if (onGround) directionGround(q);
+		else if (isInWater()) directionWater(q);
 		else directionAir(q);
 		q.mul(Vector3f.XN.rotationDegrees(torqueX));
 		q.mul(Vector3f.YN.rotationDegrees(torqueY));
@@ -447,6 +448,10 @@ public abstract class EntityAircraft extends Entity {
 	}
 	
 	public void directionAir(Quaternion q) {
+		
+	}
+	
+	public void directionWater(Quaternion q) {
 		
 	}
 	

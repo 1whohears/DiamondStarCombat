@@ -54,8 +54,6 @@ This mod is far from finished. Most of the core for the mod is complete. However
 - I will be adding comments around the mod in an attempt to explain how it works. 
 - I want to add more planes, helicopters, cars, tanks, boats, anti air defenses and any other vehicle type you think would be cool. Someone better at modeling than me could make an f22, mig 29, the Ornithopter from Dune, or an X-Wing from Star Wars for example. Make what you think would be cool!
 - My item textures sorta suck. So similar to the previous point, if someone better than me at making textures wants to redo some of them please.
-- I want to add models for weapons that hang on aircraft wings, so there is another visual component for weapons. 
-- I want to add turret seats so passengers can shoot. 
 - The plane physics are definitely not final. Open to feedback.
 - Open to feedback on anything actually. Did you find a bug. Could certain functions be more efficient? Is my code bad?
 - Pvp balance is something I really want to get right. Let me know if something should be nerfed or buffed. 

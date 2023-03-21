@@ -22,24 +22,6 @@ public abstract class MissileData extends BulletData {
 	private double bleed;
 	private int fuelTicks;
 	
-	/*public MissileData(RegistryObject<EntityType<?>> entityType, RegistryObject<SoundEvent> shootSound, List<Ingredient> ingredients,
-			String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, boolean canShootOnGround,
-			float damage, double speed, float innacuracy, boolean explosive, boolean destroyTerrain, 
-			boolean causesFire, double explosiveDamage, float explosionRadius,
-			TargetType tType, GuidanceType gType, float maxRot, 
-			double acceleration, double fuseDist, float fov, float flareResistance) {
-		super(entityType, shootSound, ingredients,
-				id, launchPos, maxAge, maxAmmo, fireRate, canShootOnGround, damage, speed, innacuracy, 
-				explosive, destroyTerrain, causesFire, explosiveDamage, explosionRadius);
-		this.targetType = tType;
-		this.guidanceType = gType;
-		this.maxRot = maxRot;
-		this.acceleration = acceleration;
-		this.fuseDist = fuseDist;
-		this.fov = fov;
-		this.flareResistance = flareResistance;
-	}*/
-	
 	public MissileData(CompoundTag tag) {
 		super(tag);
 		maxRot = tag.getFloat("maxRot");

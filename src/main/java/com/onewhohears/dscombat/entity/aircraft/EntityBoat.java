@@ -19,6 +19,9 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class EntityBoat extends EntityAircraft {
 	
+	private final float propellerRate = 3.141f;
+	private float propellerRot = 0, propellerRotOld = 0;
+	
 	protected double waterLevel;
 	
 	public EntityBoat(EntityType<? extends EntityBoat> entity, Level level, 
@@ -70,7 +73,6 @@ public class EntityBoat extends EntityAircraft {
 	public void tickMovement(Quaternion q) {
 		if (inputSpecial) throttleToZero();
 		super.tickMovement(q);
-		//System.out.println("vy = "+getDeltaMovement().y);
 	}
 	
 	@Override
@@ -89,7 +91,7 @@ public class EntityBoat extends EntityAircraft {
 	@Override
 	public void tickWater(Quaternion q) {
 		Vec3 move = getDeltaMovement();
-		move = move.multiply(0.900, 0.900, 0.900);
+		move = move.multiply(0.950, 0.900, 0.950);
 		if (checkInWater()) {
 			double wdiff = waterLevel - getY();
 			double f = wdiff * getBbWidth() * 0.20;
@@ -181,6 +183,28 @@ public class EntityBoat extends EntityAircraft {
 	@Override
 	public void waterDamage() {
 		if (waterLevel > getBoundingBox().maxY) super.waterDamage();
+	}
+	
+	@Override
+	public void clientTick() {
+		super.clientTick();
+		float th = getCurrentThrottle();
+		propellerRotOld = propellerRot;
+		propellerRot += th * propellerRate;
+	}
+	
+	public float getPropellerRotation(float partialTicks) {
+		return Mth.lerp(partialTicks, propellerRotOld, propellerRot);
+	}
+	
+	@Override
+	public boolean canOpenMenu() {
+		return xzSpeed < 0.1;
+	}
+	
+	@Override
+	public String getOpenMenuError() {
+		return "dscombat.no_menu_moving";
 	}
 
 }

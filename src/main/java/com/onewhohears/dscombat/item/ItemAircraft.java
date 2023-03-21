@@ -74,10 +74,10 @@ public class ItemAircraft extends Item {
 				Entity e = entitytype.create(level);
 				Vec3 pos = hitresult.getLocation();
 				if (addHalfHeight) e.setPos(pos.add(0, e.getBbHeight()/2d, 0));
+				else e.setPos(pos);
 				if (!level.noCollision(e, e.getBoundingBox())) 
 					return InteractionResultHolder.fail(itemstack);
 				if (!level.isClientSide) {
-					
 					int above = 0;
 					if (addHalfHeight) above = (int)(e.getBbHeight()/2d)+1;
 					Entity entity = entitytype.spawn((ServerLevel)level, 

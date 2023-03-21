@@ -81,7 +81,7 @@ public class ModEntities {
 			() -> createEntityTypeFar((type, level) -> new EntityBoat(type, level, 
 					AircraftPresets.getAircraftTextures("nathan_boat"),
 					ModSounds.JET_1, ModItems.NATHAN_BOAT), 
-					EntityDimensions.scalable(2.5f,1.5f)));
+					EntityDimensions.scalable(3.0f,1.5f)));
 	
 	// SUBMARINES
 	

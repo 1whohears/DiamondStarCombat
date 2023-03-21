@@ -55,6 +55,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
@@ -676,16 +677,7 @@ public abstract class EntityAircraft extends Entity {
 			radarSystem.tickUpdateTargets();
 			boolean consume = !isNoConsume();
 			if (controller instanceof ServerPlayer player) {
-				if (inputOpenMenu) {
-					if (isOnGround() || isTestMode()) {
-						NetworkHooks.openScreen(player, 
-								new SimpleMenuProvider((windowId, playerInv, p) -> 
-										new AircraftMenuContainer(windowId, playerInv), 
-								Component.translatable("container.dscombat.plane_menu")));
-					} else player.displayClientMessage(
-							Component.translatable("dscombat.no_menu_in_air"), 
-							true);
-				}
+				if (inputOpenMenu) openMenu(player);
 				if (player.isCreative()) consume = false;
 			}
 			if (consume) tickFuel();
@@ -693,6 +685,25 @@ public abstract class EntityAircraft extends Entity {
 			else if (inputShoot) weaponSystem.shootSelected(controller, consume);
 			if (inputFlare && tickCount % 5 == 0) flare(controller, consume);
 		}
+	}
+	
+	public void openMenu(ServerPlayer player) {
+		if (canOpenMenu()) {
+			NetworkHooks.openScreen(player, 
+				new SimpleMenuProvider((windowId, playerInv, p) -> 
+						new AircraftMenuContainer(windowId, playerInv), 
+				Component.translatable("container.dscombat.plane_menu")));
+		} else player.displayClientMessage(
+				Component.translatable(getOpenMenuError()), 
+				true);
+	}
+	
+	public boolean canOpenMenu() {
+		return isOnGround() || isTestMode();
+	}
+	
+	public String getOpenMenuError() {
+		return "dscombat.no_menu_in_air";
 	}
 	
 	public void flare(Entity controller, boolean consume) {
@@ -1486,5 +1497,10 @@ public abstract class EntityAircraft extends Entity {
     public boolean isPushable() {
     	return false;
     }
+    
+    @Override
+    public Vec3 getDismountLocationForPassenger(LivingEntity livingEntity) {
+		return super.getDismountLocationForPassenger(livingEntity);
+	}
     
 }

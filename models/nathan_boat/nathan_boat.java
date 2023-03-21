@@ -1,45 +1,17 @@
-package com.onewhohears.dscombat.client.renderer.model.aircraft;
+// Made with Blockbench 4.5.2
+// Exported for Minecraft version 1.17 - 1.18 with Mojang mappings
+// Paste this class into your mod and generate all required imports
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.client.renderer.model.EntityControllableModel;
-import com.onewhohears.dscombat.entity.aircraft.EntityBoat;
 
-import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeDeformation;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.resources.ResourceLocation;
-
-public class EntityModelNathanBoat<T extends EntityBoat> extends EntityControllableModel<T> {
-	
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(DSCombatMod.MODID, "nathan_boat"), "main");
+public class nathan_boat<T extends Entity> extends EntityModel<T> {
+	// This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("modid", "nathan_boat"), "main");
 	private final ModelPart main;
-	private final ModelPart engine;
-	private final ModelPart propellor;
-	
-	public EntityModelNathanBoat(ModelPart root) {
+
+	public nathan_boat(ModelPart root) {
 		this.main = root.getChild("main");
-		this.engine = main.getChild("engine");
-		this.propellor = engine.getChild("propellor");
 	}
-	
-	@Override
-	public void renderToBuffer(T entity, float partialTicks, PoseStack poseStack, VertexConsumer vertexConsumer,
-			int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		poseStack.translate(0, 1.55, 0);
-		poseStack.scale(-1.0F, -1.0F, 1.0F);
-		float ypi = (float)Math.PI/8;
-		this.engine.yRot = -entity.inputYaw * ypi;
-		this.propellor.zRot = entity.getPropellerRotation(partialTicks);
-		main.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-	}
-	
+
 	public static LayerDefinition createBodyLayer() {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
@@ -90,4 +62,13 @@ public class EntityModelNathanBoat<T extends EntityBoat> extends EntityControlla
 		return LayerDefinition.create(meshdefinition, 512, 512);
 	}
 
+	@Override
+	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+
+	}
+
+	@Override
+	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+		main.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+	}
 }

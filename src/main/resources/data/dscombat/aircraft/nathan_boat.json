@@ -1,9 +1,9 @@
 {
 	"preset": "nathan_boat",
-	"max_speed": 1.0,
+	"max_speed": 1.2,
 	
-	"max_health": 500,
-	"health": 500,
+	"max_health": 300,
+	"health": 300,
 	
 	"weight": 0.25,
 	"surfacearea": 1.0,
@@ -14,46 +14,46 @@
 	"turn_radius": 0,
 	"maxroll": 0.0,
 	"maxpitch": 0.0,
-	"maxyaw": 1.0,
+	"maxyaw": 3.0,
 	"accroll": 0.0,
 	"accpitch": 0.0,
-	"accyaw": 0.2,
+	"accyaw": 0.4,
 	
-	"throttleup": 0.04,
-	"throttledown": 0.04,
+	"throttleup": 0.05,
+	"throttledown": 0.10,
 	"landing_gear": true,
 	
 	"slots": [
 		{
 			"name": "dscombat.pilot_seat",
-			"slot_type": 6,
-			"slot_posx": 0.0,
-			"slot_posy": 1.4,
-			"slot_posz": 0.0,
+			"slot_type": 0,
+			"slot_posx": 0.80,
+			"slot_posy": 1.2,
+			"slot_posz": -1.13,
 			"uix": 48,
-			"uiy": 20,
-			"data": {
-				"itemid": "dscombat:heavy_tank_turret"
-			}
-		},
-		{
-			"name": "dscombat.seat1",
-			"slot_type": 6,
-			"slot_posx": 1.0,
-			"slot_posy": 1.4,
-			"slot_posz": 2.0,
-			"uix": 68,
 			"uiy": 20,
 			"data": {
 				"itemid": "dscombat:seat"
 			}
 		},
 		{
+			"name": "dscombat.seat1",
+			"slot_type": 5,
+			"slot_posx": 0.65,
+			"slot_posy": 1.2,
+			"slot_posz": 2.44,
+			"uix": 68,
+			"uiy": 20,
+			"data": {
+				"itemid": "dscombat:minigun_turret"
+			}
+		},
+		{
 			"name": "dscombat.seat2",
-			"slot_type": 6,
-			"slot_posx": -1.0,
-			"slot_posy": 1.4,
-			"slot_posz": 2.0,
+			"slot_type": 5,
+			"slot_posx": -0.65,
+			"slot_posy": 1.2,
+			"slot_posz": 2.44,
 			"uix": 88,
 			"uiy": 20,
 			"data": {
@@ -62,10 +62,10 @@
 		},
 		{
 			"name": "dscombat.seat3",
-			"slot_type": 6,
-			"slot_posx": 1.0,
-			"slot_posy": 1.4,
-			"slot_posz": -2.0,
+			"slot_type": 5,
+			"slot_posx": 0.65,
+			"slot_posy": 1.2,
+			"slot_posz": 1.25,
 			"uix": 108,
 			"uiy": 20,
 			"data": {
@@ -74,14 +74,68 @@
 		},
 		{
 			"name": "dscombat.seat4",
-			"slot_type": 6,
-			"slot_posx": -1.0,
-			"slot_posy": 1.4,
-			"slot_posz": -2.0,
+			"slot_type": 5,
+			"slot_posx": -0.65,
+			"slot_posy": 1.2,
+			"slot_posz": 1.25,
 			"uix": 128,
 			"uiy": 20,
 			"data": {
 				"itemid": "dscombat:seat"
+			}
+		},
+		{
+			"name": "dscombat.seat5",
+			"slot_type": 5,
+			"slot_posx": 0.65,
+			"slot_posy": 1.2,
+			"slot_posz": -0.06,
+			"uix": 148,
+			"uiy": 20,
+			"data": {
+				"itemid": "dscombat:seat"
+			}
+		},
+		{
+			"name": "dscombat.seat6",
+			"slot_type": 5,
+			"slot_posx": -0.65,
+			"slot_posy": 1.2,
+			"slot_posz": -0.06,
+			"uix": 168,
+			"uiy": 20,
+			"data": {
+				"itemid": "dscombat:seat"
+			}
+		},
+		{
+			"name": "dscombat.frame_1",
+			"slot_type": 1,
+			"slot_posx": 1.5,
+			"slot_posy": 1,
+			"slot_posz": 0,
+			"uix": 48,
+			"uiy": 60,
+			"zRot": 90,
+			"data": {
+				"filled": true,
+				"param": "torpedo1",
+				"itemid": "dscombat:heavy_missile_rack"
+			}
+		},
+		{
+			"name": "dscombat.frame_2",
+			"slot_type": 1,
+			"slot_posx": -1.5,
+			"slot_posy": 1,
+			"slot_posz": 0,
+			"uix": 68,
+			"uiy": 60,
+			"zRot": -90,
+			"data": {
+				"filled": true,
+				"param": "torpedo1",
+				"itemid": "dscombat:heavy_missile_rack"
 			}
 		},
 		{
@@ -125,12 +179,12 @@
 	
 	"dyecolor": 0,
 	"textures": {
-		"0": "dscombat:textures/entities/mrbudger_tank.png"
+		"0": "dscombat:textures/entities/nathan_boat/white.png"
 	},
 	
 	"ingredients": [
 		{
-			"item": "minecraft:minecart",
+			"item": "minecraft:boat",
 			"num": 4
 		},
 		{
@@ -142,10 +196,6 @@
 			"num": 4
 		},
 		{
-			"item": "minecraft:gold_ingot",
-			"num": 4
-		},
-		{
 			"item": "dscombat:c12_engine",
 			"num": 2
 		},
@@ -154,7 +204,7 @@
 			"num": 1
 		},
 		{
-			"item": "dscombat:heavy_tank_turret",
+			"item": "dscombat:minigun_turret",
 			"num": 1
 		}
 	]

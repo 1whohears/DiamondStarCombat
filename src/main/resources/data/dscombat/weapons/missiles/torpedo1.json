@@ -1,5 +1,5 @@
 {
-	"type":5,
+	"type":6,
 	"id":"torpedo1",
 	
 	"entityType":"dscombat:torpedo_missile_1",
@@ -42,10 +42,12 @@
 	"fuelTicks":400,
 	"maxAmmo":3,
 	
+	"targetType": 2,
+	
 	"maxRot": 3.0,
 	"acceleration": 0.04,
 	"bleed": 0.005,
 	"fuseDist": 2.0,
-	"fov": 40
+	"fov": 60
 	
 }

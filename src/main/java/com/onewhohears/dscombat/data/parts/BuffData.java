@@ -11,7 +11,8 @@ import net.minecraft.world.phys.Vec3;
 public class BuffData extends PartData {
 	
 	public static enum BuffType {
-		DATA_LINK
+		DATA_LINK,
+		NIGHT_VISION_HUD
 	}
 	
 	private final BuffType type;
@@ -59,7 +60,9 @@ public class BuffData extends PartData {
 		super.setup(craft, slotId, pos);
 		switch (type) {
 		case DATA_LINK:
-			this.getParent().radarSystem.dataLink = true;
+			getParent().radarSystem.dataLink = true;
+			break;
+		case NIGHT_VISION_HUD:
 			break;
 		}
 	}
@@ -69,7 +72,9 @@ public class BuffData extends PartData {
 		super.remove(slotId);
 		switch (type) {
 		case DATA_LINK:
-			this.getParent().radarSystem.dataLink = false;
+			getParent().radarSystem.dataLink = false;
+			break;
+		case NIGHT_VISION_HUD:
 			break;
 		}
 	}

@@ -22,10 +22,12 @@ import com.onewhohears.dscombat.data.parts.SeatData;
 import com.onewhohears.dscombat.data.parts.TurretData;
 import com.onewhohears.dscombat.data.parts.WeaponPartData;
 import com.onewhohears.dscombat.data.parts.WeaponRackData;
+import com.onewhohears.dscombat.data.weapon.AntiRadarMissileData;
 import com.onewhohears.dscombat.data.weapon.BombData;
 import com.onewhohears.dscombat.data.weapon.BulletData;
 import com.onewhohears.dscombat.data.weapon.IRMissileData;
 import com.onewhohears.dscombat.data.weapon.PosMissileData;
+import com.onewhohears.dscombat.data.weapon.TorpedoData;
 import com.onewhohears.dscombat.data.weapon.TrackMissileData;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
@@ -167,6 +169,10 @@ public class UtilParse {
 			return new PosMissileData(tag);
 		case TRACK_MISSILE:
 			return new TrackMissileData(tag);
+		case ANTIRADAR_MISSILE:
+			return new AntiRadarMissileData(tag);
+		case TORPEDO:
+			return new TorpedoData(tag);
 		}
 		return null;
 	}

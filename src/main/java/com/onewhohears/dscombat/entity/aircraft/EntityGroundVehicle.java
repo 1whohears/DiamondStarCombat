@@ -9,7 +9,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -24,6 +23,11 @@ public class EntityGroundVehicle extends EntityAircraft {
 			RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item, boolean isTank) {
 		super(entity, level, textures, engineSound, item, true);
 		this.isTank = isTank;
+	}
+	
+	@Override
+	public AircraftType getAircraftType() {
+		return AircraftType.CAR;
 	}
 	
 	@Override
@@ -70,7 +74,7 @@ public class EntityGroundVehicle extends EntityAircraft {
 	@Override
 	public void tickGround(Quaternion q) {
 		super.tickGround(q);
-		if (inputSpecial) setCurrentThrottle(0);
+		if (inputSpecial) throttleToZero();
 	}
 	
 	@Override
@@ -88,9 +92,8 @@ public class EntityGroundVehicle extends EntityAircraft {
 		super.clientTick();
 		wheelLRotOld = wheelLRot;
 		wheelRRotOld = wheelRRot;
-		int dir = getXZSpeedDir();
-		wheelLRot += xzSpeed * wheelRate * dir;
-		wheelRRot += xzSpeed * wheelRate * dir;
+		wheelLRot += xzSpeed * wheelRate * xzSpeedDir;
+		wheelRRot += xzSpeed * wheelRate * xzSpeedDir;
 	}
 	
 	public float getWheelLeftRotation(float partialTicks) {
@@ -104,11 +107,6 @@ public class EntityGroundVehicle extends EntityAircraft {
 	@Override
 	public boolean isLandingGear() {
 		return !inputSpecial;
-    }
-	
-	@Override
-    protected AABB makeBoundingBox() {
-		return getDimensions(getPose()).makeBoundingBox(position());
     }
 
 	@Override
@@ -134,6 +132,16 @@ public class EntityGroundVehicle extends EntityAircraft {
 	@Override
 	public float getStepHeight() {
 		return 1.0f;
+	}
+	
+	@Override
+	public boolean canOpenMenu() {
+		return xzSpeed < 0.1;
+	}
+	
+	@Override
+	public String getOpenMenuError() {
+		return "dscombat.no_menu_moving";
 	}
 
 }

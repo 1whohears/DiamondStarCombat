@@ -1,0 +1,19 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"A": {
+			"item": "dscombat:ar500"
+		},
+		"D": {
+			"item": "minecraft:pufferfish"
+		}
+	},
+	"pattern": [
+		"A",
+		"D"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:wr400"
+	}
+}

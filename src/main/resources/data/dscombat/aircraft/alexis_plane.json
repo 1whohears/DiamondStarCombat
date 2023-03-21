@@ -196,8 +196,13 @@
 	
 	"dyecolor": 0,
 	"textures": {
-		"0": "dscombat:textures/entities/alexis_plane.png",
-		"14": "dscombat:textures/entities/red_alexis_plane.png"
+		"0": "dscombat:textures/entities/alexis_plane/white.png",
+		"14": "dscombat:textures/entities/alexis_plane/red.png",
+		"9": "dscombat:textures/entities/alexis_plane/cyan.png",
+		"15": "dscombat:textures/entities/alexis_plane/black.png",
+		"1": "dscombat:textures/entities/alexis_plane/orange.png",
+		"11": "dscombat:textures/entities/alexis_plane/blue.png",
+		"10": "dscombat:textures/entities/alexis_plane/purple.png"
 	},
 	
 	"ingredients": [

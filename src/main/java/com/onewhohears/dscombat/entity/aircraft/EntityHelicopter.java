@@ -34,6 +34,11 @@ public class EntityHelicopter extends EntityAircraft {
 	}
 	
 	@Override
+	public AircraftType getAircraftType() {
+		return AircraftType.HELICOPTER;
+	}
+	
+	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
 		entityData.define(ACC_FORWARD, 0f);
@@ -160,5 +165,10 @@ public class EntityHelicopter extends EntityAircraft {
 	protected float getTorqueDragMag() {
 		return 0.25f;
 	}
+	
+	@Override
+	public boolean isCustomBoundingBox() {
+    	return true;
+    }
 
 }

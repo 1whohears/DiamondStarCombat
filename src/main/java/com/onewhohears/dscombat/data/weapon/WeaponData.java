@@ -63,21 +63,10 @@ public abstract class WeaponData {
 		BOMB,
 		POS_MISSILE,
 		TRACK_MISSILE,
-		IR_MISSILE
+		IR_MISSILE,
+		ANTIRADAR_MISSILE,
+		TORPEDO
 	}
-	
-	/*protected WeaponData(RegistryObject<EntityType<?>> entityType, RegistryObject<SoundEvent> shootSound, List<Ingredient> ingredients,
-			String id, Vec3 pos, int maxAge, int maxAmmo, int fireRate, boolean canShootOnGround) {
-		this.id = id;
-		this.pos = pos;
-		this.maxAge = maxAge;
-		this.maxAmmo = maxAmmo;
-		this.fireRate = fireRate;
-		this.canShootOnGround = canShootOnGround;
-		this.entityType = entityType;
-		this.shootSound = shootSound;
-		this.ingredients = ingredients;
-	}*/
 	
 	public WeaponData(CompoundTag tag) {
 		id = tag.getString("id");

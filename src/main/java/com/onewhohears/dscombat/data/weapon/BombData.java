@@ -7,15 +7,6 @@ import net.minecraft.network.FriendlyByteBuf;
 
 public class BombData extends BulletData {
 	
-	/*public BombData(RegistryObject<EntityType<?>> entityType, ResourceLocation texture, RegistryObject<SoundEvent> shootSound, List<Ingredient> ingredients,
-			String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, boolean canShootOnGround,
-			float damage, double speed, float innacuracy, boolean explosive, boolean destroyTerrain, 
-			boolean causesFire, double explosiveDamage, float explosionRadius) {
-		super(entityType, shootSound, ingredients,
-				id, launchPos, maxAge, maxAmmo, fireRate, canShootOnGround, damage, speed, innacuracy,
-				explosive, destroyTerrain, causesFire, explosiveDamage, explosionRadius);
-	}*/
-	
 	public BombData(CompoundTag tag) {
 		super(tag);
 	}
@@ -38,6 +29,11 @@ public class BombData extends BulletData {
 	@Override
 	public WeaponType getType() {
 		return WeaponType.BOMB;
+	}
+	
+	@Override
+	public WeaponData copy() {
+		return new BombData(this.write());
 	}
 	
 	@Override

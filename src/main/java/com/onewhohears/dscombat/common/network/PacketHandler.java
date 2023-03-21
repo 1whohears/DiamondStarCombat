@@ -1,14 +1,12 @@
 package com.onewhohears.dscombat.common.network;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.common.network.toclient.ToClientAddPart;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddRadar;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddWeapon;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAircraftFuel;
 import com.onewhohears.dscombat.common.network.toclient.ToClientMissileMove;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRadarPings;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRecievePlaneData;
-import com.onewhohears.dscombat.common.network.toclient.ToClientRemovePart;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRemoveRadar;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRemoveWeapon;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponAmmo;
@@ -94,16 +92,6 @@ public final class PacketHandler {
 			.encoder(ToClientRemoveWeapon::encode)
 			.decoder(ToClientRemoveWeapon::new)
 			.consumerMainThread(ToClientRemoveWeapon::handle)
-			.add();
-		net.messageBuilder(ToClientAddPart.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ToClientAddPart::encode)
-			.decoder(ToClientAddPart::new)
-			.consumerMainThread(ToClientAddPart::handle)
-			.add();
-		net.messageBuilder(ToClientRemovePart.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ToClientRemovePart::encode)
-			.decoder(ToClientRemovePart::new)
-			.consumerMainThread(ToClientRemovePart::handle)
 			.add();		
 		net.messageBuilder(ToClientAddRadar.class, index++, NetworkDirection.PLAY_TO_CLIENT)
 			.encoder(ToClientAddRadar::encode)

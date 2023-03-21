@@ -1,0 +1,23 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"P": {
+			"item": "dscombat:intel_pentium"
+		},
+		"S": {
+			"item": "minecraft:spyglass"
+		},
+		"C": {
+			"item": "minecraft:golden_carrot"
+		}
+	},
+	"pattern": [
+		"C C",
+		"SPS",
+		"C C"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:data_link"
+	}
+}

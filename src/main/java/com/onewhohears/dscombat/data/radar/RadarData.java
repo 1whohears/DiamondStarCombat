@@ -18,26 +18,6 @@ import net.minecraft.world.phys.Vec3;
 
 public class RadarData {
 	
-	public static RadarData TrackFlyingAircraft(String id, double range, double fov, int scanRate) {
-		RadarData data = new RadarData(id, range, fov, scanRate);
-		data.setScanAir(true);
-		data.setScanGround(false);
-		data.setScanPlayers(true);
-		data.setScanAircraft(true);
-		data.setScanMobs(false);
-		return data;
-	}
-	
-	public static RadarData TrackGround(String id, double range, double fov, int scanRate) {
-		RadarData data = new RadarData(id, range, fov, scanRate);
-		data.setScanAir(false);
-		data.setScanGround(true);
-		data.setScanPlayers(true);
-		data.setScanAircraft(true);
-		data.setScanMobs(true);
-		return data;
-	}
-	
 	private String id;
 	private Vec3 pos;
 	private double range;
@@ -48,34 +28,13 @@ public class RadarData {
 	private boolean scanMobs;
 	private boolean scanGround;
 	private boolean scanAir;
+	private double throWaterRange;
+	private double throGroundRange;
 	private String slotId = "";
 	
 	private boolean freshTargets;
 	private int scanTicks;
 	private List<RadarPing> pings = new ArrayList<RadarPing>();
-	
-	public RadarData(String id, double range, double fov, int scanRate) {
-		this.id = id;
-		this.pos = Vec3.ZERO;
-		this.range = range;
-		this.fov = fov;
-		this.scanRate = scanRate;
-	}
-	
-	public RadarData(String id, double range, double fov, int scanRate,
-			boolean scanAircraft, boolean scanPlayers, boolean scanMobs,
-			boolean scanGround, boolean scanAir) {
-		this.id = id;
-		this.pos = Vec3.ZERO;
-		this.range = range;
-		this.fov = fov;
-		this.scanRate = scanRate;
-		this.scanAircraft = scanAircraft;
-		this.scanPlayers = scanPlayers;
-		this.scanMobs = scanMobs;
-		this.scanGround = scanGround;
-		this.scanAir = scanAir;
-	}
 	
 	public RadarData(CompoundTag tag) {
 		id = tag.getString("id");
@@ -88,6 +47,8 @@ public class RadarData {
 		scanMobs = tag.getBoolean("scanMobs");
 		scanGround = tag.getBoolean("scanGround");
 		scanAir = tag.getBoolean("scanAir");
+		throWaterRange = tag.getDouble("throWaterRange");
+		throGroundRange = tag.getDouble("throGroundRange");
 		slotId = tag.getString("slotId");
 	}
 	
@@ -103,6 +64,8 @@ public class RadarData {
 		tag.putBoolean("scanMobs", scanMobs);
 		tag.putBoolean("scanGround", scanGround);
 		tag.putBoolean("scanAir", scanAir);
+		tag.putDouble("throWaterRange", throWaterRange);
+		tag.putDouble("throGroundRange", throGroundRange);
 		tag.putString("slotId", slotId);
 		return tag;
 	}
@@ -118,6 +81,8 @@ public class RadarData {
 		scanMobs = buffer.readBoolean();
 		scanGround = buffer.readBoolean();
 		scanAir = buffer.readBoolean();
+		throWaterRange = buffer.readDouble();
+		throGroundRange = buffer.readDouble();
 		slotId = buffer.readUtf();
 	}
 	
@@ -132,6 +97,8 @@ public class RadarData {
 		buffer.writeBoolean(scanMobs);
 		buffer.writeBoolean(scanGround);
 		buffer.writeBoolean(scanAir);
+		buffer.writeDouble(throWaterRange);
+		buffer.writeDouble(throGroundRange);
 		buffer.writeUtf(slotId);
 	}
 	
@@ -152,7 +119,8 @@ public class RadarData {
 					EntityAircraft.class, getRadarBoundingBox(radar));
 			for (int i = 0; i < list.size(); ++i) {
 				if (!basicCheck(radar, list.get(i), list.get(i).getStealth())) continue;
-				RadarPing p = new RadarPing(list.get(i), checkFriendly(controller, list.get(i).getControllingPassenger()));
+				RadarPing p = new RadarPing(list.get(i), 
+					checkFriendly(controller, list.get(i).getControllingPassenger()));
 				targets.add(p);
 				pings.add(p);
 				list.get(i).lockedOnto();
@@ -164,7 +132,8 @@ public class RadarData {
 			for (int i = 0; i < list.size(); ++i) {
 				if (list.get(i).getRootVehicle() instanceof EntityAircraft) continue;
 				if (!basicCheck(radar, list.get(i), 1)) continue;
-				RadarPing p = new RadarPing(list.get(i), checkFriendly(controller, list.get(i)));
+				RadarPing p = new RadarPing(list.get(i), 
+						checkFriendly(controller, list.get(i)));
 				targets.add(p);
 				pings.add(p);
 			}
@@ -175,7 +144,8 @@ public class RadarData {
 			for (int i = 0; i < list.size(); ++i) {
 				if (list.get(i).getRootVehicle() instanceof EntityAircraft) continue;
 				if (!basicCheck(radar, list.get(i), 1)) continue;
-				RadarPing p = new RadarPing(list.get(i), checkFriendly(controller, list.get(i)));
+				RadarPing p = new RadarPing(list.get(i), 
+						checkFriendly(controller, list.get(i)));
 				targets.add(p);
 				pings.add(p);
 			}
@@ -200,6 +170,7 @@ public class RadarData {
 	}
 	
 	private boolean groundCheck(Entity ping) {
+		if (throWaterRange > 0 && ping.isInWater()) return true;
 		boolean groundWater = UtilEntity.isOnGroundOrWater(ping);
 		if (scanGround) if (groundWater) return true;
 		if (scanAir) if (!groundWater) return true;
@@ -216,7 +187,8 @@ public class RadarData {
 	}
 	
 	private boolean checkCanSee(Entity radar, Entity target) {
-		return UtilEntity.canEntitySeeEntity(radar, target);
+		return UtilEntity.canEntitySeeEntity(radar, target, 200, 
+				throWaterRange, throGroundRange);
 	}
 	
 	private AABB getRadarBoundingBox(Entity radar) {
@@ -342,13 +314,7 @@ public class RadarData {
 	}
 	
 	public RadarData copy() {
-		RadarData data = new RadarData(id, range, fov, scanRate);
-		data.setScanAir(scanAir);
-		data.setScanAircraft(scanAircraft);
-		data.setScanGround(scanGround);
-		data.setScanMobs(scanMobs);
-		data.setScanPlayers(scanPlayers);
-		return data;
+		return new RadarData(write());
 	}
 	
 	public String getSlotId() {

@@ -23,7 +23,6 @@ public class AircraftTextures {
 				catch(ResourceLocationException e) {  }
 			}
 		}
-		// IDEA more custom colors
 	}
 	
 	public ResourceLocation getTexture(int colorId) {

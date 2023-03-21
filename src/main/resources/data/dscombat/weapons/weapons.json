@@ -16,7 +16,10 @@
 		"missiles/agm65g.json",
 		"missiles/agm65l.json",
 		"missiles/agm84e.json",
-		"missiles/agm114k.json"
+		"missiles/agm114k.json",
+		
+		"missiles/rifel1.json",
+		"missiles/torpedo1.json"
 	],
 	"compatibility": [
 		{
@@ -29,7 +32,7 @@
 		},
 		{
 			"type": "heavy_missile_rack",
-			"weapons": ["aim120b","aim120c","agm65g","agm65l","agm84e","aim7f","aim7mh"]
+			"weapons": ["aim120b","aim120c","agm65g","agm65l","agm84e","aim7f","aim7mh","rifel1","torpedo1"]
 		}
 	]
 }

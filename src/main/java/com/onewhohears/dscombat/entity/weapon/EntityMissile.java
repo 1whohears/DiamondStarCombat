@@ -119,6 +119,7 @@ public abstract class EntityMissile extends EntityBullet {
 					PacketDistributor.TRACKING_ENTITY.with(() -> this), 
 					new ToClientMissileMove(getId(), position(), 
 							getDeltaMovement(), getXRot(), getYRot(), targetPos));
+			if (isInWater()) tickInWater();
 		}
 		if (level.isClientSide && !isRemoved()) {
 			tickClientGuide();
@@ -228,11 +229,12 @@ public abstract class EntityMissile extends EntityBullet {
 	}
 	
 	protected boolean checkCanSee(Entity target) {
-		return UtilEntity.canEntitySeeEntity(this, target);
+		return UtilEntity.canEntitySeeEntity(this, target, 200);
 	}
 	
 	private void engineSound() {
-		UtilClientSafeSoundInstance.dopplerSound(Minecraft.getInstance(), this, ModSounds.MISSILE_ENGINE_1.get(), 
+		UtilClientSafeSoundInstance.dopplerSound(Minecraft.getInstance(), this, 
+				ModSounds.MISSILE_ENGINE_1.get(), 
 				0.8F, 1.0F, 10F);
 	}
 	
@@ -370,6 +372,10 @@ public abstract class EntityMissile extends EntityBullet {
 			return 10;
 		}
 		return tickCountRepeats;
+	}
+	
+	public void tickInWater() {
+		this.kill();
 	}
 
 }

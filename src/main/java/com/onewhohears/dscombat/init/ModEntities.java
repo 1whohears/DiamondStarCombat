@@ -3,17 +3,21 @@ package com.onewhohears.dscombat.init;
 import com.google.common.collect.ImmutableSet;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.AircraftPresets;
+import com.onewhohears.dscombat.entity.aircraft.EntityBoat;
 import com.onewhohears.dscombat.entity.aircraft.EntityGroundVehicle;
 import com.onewhohears.dscombat.entity.aircraft.EntityHelicopter;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
+import com.onewhohears.dscombat.entity.aircraft.EntitySubmarine;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.parts.EntitySeatCamera;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
+import com.onewhohears.dscombat.entity.weapon.AntiRadarMissile;
 import com.onewhohears.dscombat.entity.weapon.EntityBullet;
 import com.onewhohears.dscombat.entity.weapon.EntityFlare;
 import com.onewhohears.dscombat.entity.weapon.IRMissile;
 import com.onewhohears.dscombat.entity.weapon.PositionMissile;
+import com.onewhohears.dscombat.entity.weapon.TorpedoMissile;
 import com.onewhohears.dscombat.entity.weapon.TrackEntityMissile;
 
 import net.minecraft.world.entity.Entity;
@@ -33,6 +37,8 @@ public class ModEntities {
 		ENTITIES.register(eventBus);
 	}
 	
+	// PLANES
+	
 	public static final RegistryObject<EntityType<EntityPlane>> JAVI_PLANE = ENTITIES.register("javi_plane", 
 			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
 					AircraftPresets.getAircraftTextures("javi_plane"),
@@ -45,40 +51,68 @@ public class ModEntities {
 					ModSounds.JET_1, ModItems.ALEXIS_PLANE), 
 					EntityDimensions.scalable(2.0f, 2.0f)));
 	
-	// IDEA use black hawk as inspiration for noah chopper
+	// HELICOPTORS
+	
 	public static final RegistryObject<EntityType<EntityHelicopter>> NOAH_CHOPPER = ENTITIES.register("noah_chopper", 
 			() -> createEntityTypeFar((type, level) -> new EntityHelicopter(type, level, 
 					AircraftPresets.getAircraftTextures("noah_chopper"),
 					ModSounds.HELI_1, ModItems.NOAH_CHOPPER, true), 
 					EntityDimensions.scalable(2.8f, 2.8f)));
 	
+	// TANKS
+	
 	public static final RegistryObject<EntityType<EntityGroundVehicle>> MRBUDGER_TANK = ENTITIES.register("mrbudger_tank", 
 			() -> createEntityTypeFar((type, level) -> new EntityGroundVehicle(type, level, 
 					AircraftPresets.getAircraftTextures("mrbudger_tank"),
-					ModSounds.JET_1, ModItems.MRBUDGER_TANK, true), 
+					ModSounds.TANK_1, ModItems.MRBUDGER_TANK, true), 
 					EntityDimensions.scalable(3.0f, 2.5f)));
 	
 	public static final RegistryObject<EntityType<EntityGroundVehicle>> SMALL_ROLLER = ENTITIES.register("small_roller", 
 			() -> createEntityTypeFar((type, level) -> new EntityGroundVehicle(type, level, 
 					AircraftPresets.getAircraftTextures("small_roller"),
-					ModSounds.JET_1, ModItems.SMALL_ROLLER, true), 
+					ModSounds.TANK_1, ModItems.SMALL_ROLLER, true), 
 					EntityDimensions.scalable(1.5f, 0.8f)));
 	
-	/*  
-	 * IDEA more planes
+	// CARS
+	
+	public static final RegistryObject<EntityType<EntityGroundVehicle>> ORANGE_TESLA = ENTITIES.register("orange_tesla", 
+			() -> createEntityTypeFar((type, level) -> new EntityGroundVehicle(type, level, 
+					AircraftPresets.getAircraftTextures("orange_tesla"),
+					ModSounds.ORANGE_TESLA, ModItems.ORANGE_TESLA, false), 
+					EntityDimensions.scalable(2.5f, 2.15f)));
+	
+	// BOATS
+	
+	public static final RegistryObject<EntityType<EntityBoat>> NATHAN_BOAT = ENTITIES.register("nathan_boat", 
+			() -> createEntityTypeFar((type, level) -> new EntityBoat(type, level, 
+					AircraftPresets.getAircraftTextures("nathan_boat"),
+					ModSounds.BOAT_1, ModItems.NATHAN_BOAT), 
+					EntityDimensions.scalable(3.0f,1.5f)));
+	
+	// SUBMARINES
+	
+	public static final RegistryObject<EntityType<EntitySubmarine>> ANDOLF_SUB = ENTITIES.register("andolf_sub", 
+			() -> createEntityTypeFar((type, level) -> new EntitySubmarine(type, level, 
+					AircraftPresets.getAircraftTextures("andolf_sub"),
+					ModSounds.SUB_1, ModItems.ANDOLF_SUB), 
+					EntityDimensions.scalable(4.5f,4.0f)));
+	
+	/* 
+	 * IDEA more vehicles
+	 * 
+	 * PLANES
 	 * wooden plane, large wooden plane, something like a spitfire, something like a p51 mustang 
 	 * private jet, large passenger jet, large cargo plane like a galaxy, large radar plane
+	 * Tariku plane will be VTOL
 	 * 
-	 * IDEA more helicopters
+	 * HELICOPTORS
 	 * small unarmed heli, large cargo heli, 2 seated heli with gunner on front bottom
+	 * noah chopper should resemble black hawk
 	 * 
-	 * IDEA more cars/tanks
-	 * TODO Honda Ferrari/Orange Tesla
+	 * CARS/TANKS
+	 * Honda Ferrari, Joanna Bike
 	 * 
-	 * TODO boats/submarines 
-	 * 
-	 * TODO torpedoes
-	 * TODO radar "attracted" missile
+	 * BOATS/SUBMARINES
 	 * 
 	 * IDEA AI for planes and turrets
 	 */
@@ -113,6 +147,10 @@ public class ModEntities {
 			() -> createEntityTypeFar(IRMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
 	public static final RegistryObject<EntityType<TrackEntityMissile>> TRACK_MISSILE_1 = ENTITIES.register("track_missile_1", 
 			() -> createEntityTypeFar(TrackEntityMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
+	public static final RegistryObject<EntityType<AntiRadarMissile>> ANTI_RADAR_MISSILE_1 = ENTITIES.register("anti_radar_missile_1", 
+			() -> createEntityTypeFar(AntiRadarMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
+	public static final RegistryObject<EntityType<TorpedoMissile>> TORPEDO_MISSILE_1 = ENTITIES.register("torpedo_missile_1", 
+			() -> createEntityTypeFar(TorpedoMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
 	
 	public static final RegistryObject<EntityType<EntityFlare>> FLARE = ENTITIES.register("flare", 
 			() -> createEntityType(EntityFlare::new, EntityDimensions.scalable(0f, 0f)));

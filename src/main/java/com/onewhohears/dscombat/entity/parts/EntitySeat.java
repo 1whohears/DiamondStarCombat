@@ -114,8 +114,9 @@ public class EntitySeat extends EntityPart {
 	
 	@Override
     public Vec3 getDismountLocationForPassenger(LivingEntity livingEntity) {
-		// FIXME player should dismount on top of the aircraft
-		return super.getDismountLocationForPassenger(livingEntity).add(0, 1, 0);
+		Entity rv = getRootVehicle();
+		if (rv != null) return rv.getDismountLocationForPassenger(livingEntity);
+		return super.getDismountLocationForPassenger(livingEntity);
 	}
 	
 	@Nullable

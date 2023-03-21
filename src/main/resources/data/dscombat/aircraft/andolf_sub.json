@@ -1,6 +1,6 @@
 {
 	"preset": "andolf_sub",
-	"max_speed": 0.7,
+	"max_speed": 0.6,
 	
 	"max_health": 800,
 	"health": 800,

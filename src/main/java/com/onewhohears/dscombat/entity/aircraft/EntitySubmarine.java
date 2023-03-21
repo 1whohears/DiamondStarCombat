@@ -9,7 +9,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -114,8 +113,8 @@ public class EntitySubmarine extends EntityBoat {
     }
 	
 	@Override
-    protected AABB makeBoundingBox() {
-		return getDimensions(getPose()).makeBoundingBox(position());
+	public boolean isCustomBoundingBox() {
+    	return true;
     }
 	
 	@Override

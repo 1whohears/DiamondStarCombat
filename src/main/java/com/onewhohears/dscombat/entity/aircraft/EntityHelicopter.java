@@ -165,5 +165,10 @@ public class EntityHelicopter extends EntityAircraft {
 	protected float getTorqueDragMag() {
 		return 0.25f;
 	}
+	
+	@Override
+	public boolean isCustomBoundingBox() {
+    	return true;
+    }
 
 }

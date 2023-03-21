@@ -9,7 +9,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -109,11 +108,6 @@ public class EntityGroundVehicle extends EntityAircraft {
 	@Override
 	public boolean isLandingGear() {
 		return !inputSpecial;
-    }
-	
-	@Override
-    protected AABB makeBoundingBox() {
-		return getDimensions(getPose()).makeBoundingBox(position());
     }
 
 	@Override

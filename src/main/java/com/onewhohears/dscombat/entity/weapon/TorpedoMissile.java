@@ -32,4 +32,8 @@ public class TorpedoMissile extends TrackEntityMissile {
 				10000, 0);
 	}
 	
+	@Override
+	public void tickInWater() {
+	}
+	
 }

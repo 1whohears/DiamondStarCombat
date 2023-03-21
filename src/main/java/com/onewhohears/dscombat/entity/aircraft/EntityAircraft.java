@@ -1367,12 +1367,21 @@ public abstract class EntityAircraft extends Entity {
     
     @Override
     protected AABB makeBoundingBox() {
-     	double pX = getX(), pY = getY(), pZ = getZ();
+    	if (isCustomBoundingBox()) return makeCustomBoundingBox();
+     	return super.makeBoundingBox();
+    }
+    
+    protected AABB makeCustomBoundingBox() {
+    	double pX = getX(), pY = getY(), pZ = getZ();
     	EntityDimensions d = getDimensions(getPose());
     	float f = d.width / 2.0F;
         float f1 = d.height / 2.0F;
         return new AABB(pX-(double)f, pY-(double)f1, pZ-(double)f, 
         		pX+(double)f, pY+(double)f1, pZ+(double)f);
+    }
+    
+    public boolean isCustomBoundingBox() {
+    	return false;
     }
     
     /**

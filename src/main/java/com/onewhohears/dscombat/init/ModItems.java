@@ -200,6 +200,6 @@ public class ModItems {
 	public static final RegistryObject<Item> NATHAN_BOAT = ITEMS.register("nathan_boat", 
 			() -> new ItemAircraft(ModEntities.NATHAN_BOAT.get(), "nathan_boat", false));
 	public static final RegistryObject<Item> ANDOLF_SUB = ITEMS.register("andolf_sub", 
-			() -> new ItemAircraft(ModEntities.ANDOLF_SUB.get(), "andolf_sub", false));
+			() -> new ItemAircraft(ModEntities.ANDOLF_SUB.get(), "andolf_sub", true));
 	
 }

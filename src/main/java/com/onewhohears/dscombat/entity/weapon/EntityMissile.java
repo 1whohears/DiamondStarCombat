@@ -119,6 +119,7 @@ public abstract class EntityMissile extends EntityBullet {
 					PacketDistributor.TRACKING_ENTITY.with(() -> this), 
 					new ToClientMissileMove(getId(), position(), 
 							getDeltaMovement(), getXRot(), getYRot(), targetPos));
+			if (isInWater()) tickInWater();
 		}
 		if (level.isClientSide && !isRemoved()) {
 			tickClientGuide();
@@ -371,6 +372,10 @@ public abstract class EntityMissile extends EntityBullet {
 			return 10;
 		}
 		return tickCountRepeats;
+	}
+	
+	public void tickInWater() {
+		this.kill();
 	}
 
 }

@@ -373,7 +373,8 @@
 		{
 			"item": "dscombat:gr400",
 			"num": 1
-		},{
+		},
+		{
 			"item": "dscombat:minigun_turret",
 			"num": 1
 		}

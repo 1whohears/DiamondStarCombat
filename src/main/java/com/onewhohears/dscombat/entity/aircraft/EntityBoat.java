@@ -155,11 +155,6 @@ public class EntityBoat extends EntityAircraft {
     }
 	
 	@Override
-    protected AABB makeBoundingBox() {
-		return getDimensions(getPose()).makeBoundingBox(position());
-    }
-	
-	@Override
 	public float getMaxSpeed() {
 		if (getCurrentThrottle() < 0) return super.getMaxSpeed() * 0.2f;
     	return entityData.get(MAX_SPEED);

@@ -184,7 +184,7 @@
 			"uix": 108,
 			"uiy": 100,
 			"data": {
-				"itemid": "dscombat:wr1k"
+				"itemid": "dscombat:wr400"
 			}
 		}
 	],
@@ -220,7 +220,7 @@
 			"num": 1
 		},
 		{
-			"item": "dscombat:wr1k",
+			"item": "dscombat:wr400",
 			"num": 1
 		}
 	]

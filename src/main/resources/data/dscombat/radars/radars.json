@@ -56,6 +56,19 @@
 			"scanAir": false
 		},
 		{
+			"id": "wr400",
+			"range": 400,
+			"fov": -1,
+			"scanRate": 30,
+			"scanAircraft": true,
+			"scanPlayers": true,
+			"scanMobs": false,
+			"scanGround": false,
+			"scanAir": false,
+			"throWaterRange": 400,
+			"throGroundRange": 0
+		},
+		{
 			"id": "wr1k",
 			"range": 1000,
 			"fov": -1,

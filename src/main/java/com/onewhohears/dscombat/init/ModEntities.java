@@ -75,6 +75,12 @@ public class ModEntities {
 	
 	// CARS
 	
+	public static final RegistryObject<EntityType<EntityGroundVehicle>> ORANGE_TESLA = ENTITIES.register("orange_tesla", 
+			() -> createEntityTypeFar((type, level) -> new EntityGroundVehicle(type, level, 
+					AircraftPresets.getAircraftTextures("orange_tesla"),
+					ModSounds.JET_1, ModItems.ORANGE_TESLA, false), 
+					EntityDimensions.scalable(2.5f, 2.15f)));
+	
 	// BOATS
 	
 	public static final RegistryObject<EntityType<EntityBoat>> NATHAN_BOAT = ENTITIES.register("nathan_boat", 
@@ -104,7 +110,7 @@ public class ModEntities {
 	 * noah chopper should resemble black hawk
 	 * 
 	 * CARS/TANKS
-	 * TODO Honda Ferrari/Orange Tesla
+	 * Honda Ferrari, Orange Tesla
 	 * 
 	 * BOATS/SUBMARINES
 	 * 

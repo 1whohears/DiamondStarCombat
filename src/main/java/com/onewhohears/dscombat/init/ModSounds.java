@@ -21,6 +21,7 @@ public class ModSounds {
 	public static final RegistryObject<SoundEvent> BIPLANE_1 = registerSoundEvent("biplane_1");
 	public static final RegistryObject<SoundEvent> HELI_1 = registerSoundEvent("heli_1");
 	public static final RegistryObject<SoundEvent> JET_1 = registerSoundEvent("jet_1");
+	// TODO SOUNDS: tank, car, boat, submarine
 	
 	public static void register(IEventBus eventBus) {
 		SOUND_EVENTS.register(eventBus);

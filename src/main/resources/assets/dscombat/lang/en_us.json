@@ -66,6 +66,7 @@
 	"entity.dscombat.small_roller": "Small Roller",
 	"entity.dscombat.nathan_boat": "Nathan Boat",
 	"entity.dscombat.andolf_sub": "Andolf Submarine",
+	"entity.dscombat.orange_tesla": "Orange Tesla",
 	"entity.dscombat.bullet": "Bullet",
 	"entity.dscombat.missile1": "Missile 1",
 	"entity.dscombat.missile2": "Missile 2",
@@ -177,6 +178,7 @@
 	"item.dscombat.small_roller": "Small Roller",
 	"item.dscombat.nathan_boat": "Nathan Boat",
 	"item.dscombat.andolf_sub": "Andolf Submarine",
+	"item.dscombat.orange_tesla": "Orange Tesla",
 	
 	"item.dscombat.20mm": "20mm",
 	"item.dscombat.50mmhe": "50mm HE",

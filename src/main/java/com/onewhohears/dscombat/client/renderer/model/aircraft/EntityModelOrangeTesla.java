@@ -1,17 +1,53 @@
-// Made with Blockbench 4.5.2
-// Exported for Minecraft version 1.17 - 1.18 with Mojang mappings
-// Paste this class into your mod and generate all required imports
+package com.onewhohears.dscombat.client.renderer.model.aircraft;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.client.renderer.model.EntityControllableModel;
+import com.onewhohears.dscombat.entity.aircraft.EntityGroundVehicle;
 
-public class orange_tesla<T extends Entity> extends EntityModel<T> {
-	// This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("modid", "orange_tesla"), "main");
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+
+public class EntityModelOrangeTesla<T extends EntityGroundVehicle> extends EntityControllableModel<T> {
+	
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(DSCombatMod.MODID, "orange_tesla"), "main");
 	private final ModelPart main;
+	private final ModelPart stearing;
+	private final ModelPart[] wheels = new ModelPart[4];
 
-	public orange_tesla(ModelPart root) {
+	public EntityModelOrangeTesla(ModelPart root) {
 		this.main = root.getChild("main");
+		this.stearing = main.getChild("stearing");
+		ModelPart w = main.getChild("wheels");
+		wheels[0] = w.getChild("fl");
+		wheels[1] = w.getChild("bl");
+		wheels[2] = w.getChild("fr");
+		wheels[3] = w.getChild("br");
 	}
-
+	
+	@Override
+	public void renderToBuffer(T entity, float partialTicks, PoseStack poseStack, VertexConsumer vertexConsumer,
+			int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+		poseStack.translate(0, 1.55, 0);
+		poseStack.scale(-1.0F, -1.0F, 1.0F);
+		float yf = Mth.PI/4;
+		stearing.zRot = entity.inputYaw * yf;
+		wheels[0].yRot = entity.inputYaw * yf;
+		wheels[2].yRot = entity.inputYaw * yf;
+		for (int i = 0; i < 2; ++i) wheels[i].xRot = -entity.getWheelLeftRotation(partialTicks);
+		for (int i = 2; i < 4; ++i) wheels[i].xRot = -entity.getWheelRightRotation(partialTicks);
+		main.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+	}
+	
 	public static LayerDefinition createBodyLayer() {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
@@ -69,14 +105,5 @@ public class orange_tesla<T extends Entity> extends EntityModel<T> {
 
 		return LayerDefinition.create(meshdefinition, 256, 256);
 	}
-
-	@Override
-	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-
-	}
-
-	@Override
-	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		main.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-	}
+	
 }

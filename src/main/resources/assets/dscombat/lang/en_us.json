@@ -110,6 +110,10 @@
 	"sounds.dscombat.heli_1": "Helicopter",
 	"sounds.dscombat.jet_1": "Jet Engine",
 	"sounds.dscombat.orange_tesla": "Orange Tesla - Kanye West",
+	"sounds.dscombat.vehicle_hit": "Hit",
+	"sounds.dscombat.tank_1": "Tank Engine",
+	"sounds.dscombat.boat_1": "Boat Engine",
+	"sounds.dscombat.sub_1": "Submarine Engine",
 	
 	"block.dscombat.weapons_block": "Weapons Workbench",
 	"block.dscombat.aircraft_block": "Aircraft Workbench",

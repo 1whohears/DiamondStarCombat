@@ -64,13 +64,13 @@ public class ModEntities {
 	public static final RegistryObject<EntityType<EntityGroundVehicle>> MRBUDGER_TANK = ENTITIES.register("mrbudger_tank", 
 			() -> createEntityTypeFar((type, level) -> new EntityGroundVehicle(type, level, 
 					AircraftPresets.getAircraftTextures("mrbudger_tank"),
-					ModSounds.JET_1, ModItems.MRBUDGER_TANK, true), 
+					ModSounds.TANK_1, ModItems.MRBUDGER_TANK, true), 
 					EntityDimensions.scalable(3.0f, 2.5f)));
 	
 	public static final RegistryObject<EntityType<EntityGroundVehicle>> SMALL_ROLLER = ENTITIES.register("small_roller", 
 			() -> createEntityTypeFar((type, level) -> new EntityGroundVehicle(type, level, 
 					AircraftPresets.getAircraftTextures("small_roller"),
-					ModSounds.JET_1, ModItems.SMALL_ROLLER, true), 
+					ModSounds.TANK_1, ModItems.SMALL_ROLLER, true), 
 					EntityDimensions.scalable(1.5f, 0.8f)));
 	
 	// CARS
@@ -86,7 +86,7 @@ public class ModEntities {
 	public static final RegistryObject<EntityType<EntityBoat>> NATHAN_BOAT = ENTITIES.register("nathan_boat", 
 			() -> createEntityTypeFar((type, level) -> new EntityBoat(type, level, 
 					AircraftPresets.getAircraftTextures("nathan_boat"),
-					ModSounds.JET_1, ModItems.NATHAN_BOAT), 
+					ModSounds.BOAT_1, ModItems.NATHAN_BOAT), 
 					EntityDimensions.scalable(3.0f,1.5f)));
 	
 	// SUBMARINES
@@ -94,7 +94,7 @@ public class ModEntities {
 	public static final RegistryObject<EntityType<EntitySubmarine>> ANDOLF_SUB = ENTITIES.register("andolf_sub", 
 			() -> createEntityTypeFar((type, level) -> new EntitySubmarine(type, level, 
 					AircraftPresets.getAircraftTextures("andolf_sub"),
-					ModSounds.JET_1, ModItems.ANDOLF_SUB), 
+					ModSounds.SUB_1, ModItems.ANDOLF_SUB), 
 					EntityDimensions.scalable(4.5f,4.0f)));
 	
 	/* 
@@ -110,7 +110,7 @@ public class ModEntities {
 	 * noah chopper should resemble black hawk
 	 * 
 	 * CARS/TANKS
-	 * Honda Ferrari, Orange Tesla
+	 * Honda Ferrari, Joanna Bike
 	 * 
 	 * BOATS/SUBMARINES
 	 * 

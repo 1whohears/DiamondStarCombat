@@ -453,7 +453,7 @@ public abstract class EntityAircraft extends Entity {
 	}
 	
 	public void directionWater(Quaternion q) {
-		
+		directionAir(q);
 	}
 	
 	public void flatten(Quaternion q, float dPitch, float dRoll) {
@@ -997,7 +997,9 @@ public abstract class EntityAircraft extends Entity {
     public boolean hurt(DamageSource source, float amount) {
 		if (isInvulnerableTo(source)) return false;
 		addHealth(-amount);
-		// TODO hurt sound
+		if (!level.isClientSide) level.playSound(null, blockPosition(), 
+				ModSounds.VEHICLE_HIT_1.get(), 
+				SoundSource.PLAYERS, 0.5f, 1.0f);
 		return true;
 	}
 	

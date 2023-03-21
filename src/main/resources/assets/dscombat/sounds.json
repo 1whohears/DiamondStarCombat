@@ -52,5 +52,29 @@
 		"sounds": [
 			"dscombat:orange_tesla"
 		]
+	},
+	"vehicle_hit": {
+		"subtitle": "sounds.dscombat.vehicle_hit",
+		"sounds": [
+			"dscombat:vehicle_hit"
+		]
+	},
+	"tank_1": {
+		"subtitle": "sounds.dscombat.tank_1",
+		"sounds": [
+			"dscombat:tank_1"
+		]
+	},
+	"boat_1": {
+		"subtitle": "sounds.dscombat.boat_1",
+		"sounds": [
+			"dscombat:boat_1"
+		]
+	},
+	"sub_1": {
+		"subtitle": "sounds.dscombat.sub_1",
+		"sounds": [
+			"dscombat:sub_1"
+		]
 	}
 }

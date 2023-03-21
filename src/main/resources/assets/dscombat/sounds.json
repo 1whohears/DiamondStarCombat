@@ -46,5 +46,11 @@
 		"sounds": [
 			"dscombat:jet_1"
 		]
+	},
+	"orange_tesla": {
+		"subtitle": "sounds.dscombat.orange_tesla",
+		"sounds": [
+			"dscombat:orange_tesla"
+		]
 	}
 }

@@ -78,7 +78,7 @@ public class ModEntities {
 	public static final RegistryObject<EntityType<EntityGroundVehicle>> ORANGE_TESLA = ENTITIES.register("orange_tesla", 
 			() -> createEntityTypeFar((type, level) -> new EntityGroundVehicle(type, level, 
 					AircraftPresets.getAircraftTextures("orange_tesla"),
-					ModSounds.JET_1, ModItems.ORANGE_TESLA, false), 
+					ModSounds.ORANGE_TESLA, ModItems.ORANGE_TESLA, false), 
 					EntityDimensions.scalable(2.5f, 2.15f)));
 	
 	// BOATS

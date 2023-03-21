@@ -89,7 +89,7 @@ public class ModEntities {
 			() -> createEntityTypeFar((type, level) -> new EntitySubmarine(type, level, 
 					AircraftPresets.getAircraftTextures("andolf_sub"),
 					ModSounds.JET_1, ModItems.ANDOLF_SUB), 
-					EntityDimensions.scalable(3.5f,3.5f)));
+					EntityDimensions.scalable(4.5f,4.0f)));
 	
 	/* 
 	 * IDEA more vehicles

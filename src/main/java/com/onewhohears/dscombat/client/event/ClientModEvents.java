@@ -74,7 +74,7 @@ public final class ClientModEvents {
 		event.registerLayerDefinition(EntityModelSmallRoller.LAYER_LOCATION, EntityModelSmallRoller::createBodyLayer);
 		event.registerLayerDefinition(EntityModelSteveUpSmash.LAYER_LOCATION, EntityModelSteveUpSmash::createBodyLayer);
 		event.registerLayerDefinition(EntityModelNathanBoat.LAYER_LOCATION, EntityModelNathanBoat::createBodyLayer);
-		event.registerLayerDefinition(EntityModelAndolfSub.LAYER_LOCATION, EntityModelNathanBoat::createBodyLayer);
+		event.registerLayerDefinition(EntityModelAndolfSub.LAYER_LOCATION, EntityModelAndolfSub::createBodyLayer);
 	}
 	
 	@SubscribeEvent

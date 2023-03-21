@@ -43,6 +43,7 @@ public class EntitySubmarine extends EntityBoat {
 	public void controlDirection(Quaternion q) {
 		flatten(q, 5f, 5f);
 		addTorqueY(inputYaw * getAccelerationYaw(), true);
+		// TODO add gamer mode like the heli
 		super.controlDirection(q);
 	}
 	
@@ -77,8 +78,8 @@ public class EntitySubmarine extends EntityBoat {
 	@Override
 	public void tickWater(Quaternion q) {
 		Vec3 move = getDeltaMovement();
-		if (inputSpecial) move = move.multiply(0.400, 0.900, 0.400);
-		else move = move.multiply(0.900, 0.900, 0.900);
+		if (inputSpecial) move = move.scale(0.6);
+		else move = move.scale(0.925);
 		move = move.add(0, inputPitch * 0.04, 0);
 		double max = 0.2;
 		if (Math.abs(move.y) > 0.5) move.multiply(1, max/move.y, 1);

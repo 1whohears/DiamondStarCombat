@@ -97,6 +97,8 @@ public class EntityBoat extends EntityAircraft {
 	
 	@Override
 	public void tickWater(Quaternion q) {
+		// FIXME sub and boat will stop moving forward if they've been turned into item then placed down again
+		// FIXME boats bounce uncontrollably in lag
 		Vec3 move = getDeltaMovement();
 		move = move.multiply(0.950, 0.900, 0.950);
 		if (checkInWater()) {
@@ -104,8 +106,7 @@ public class EntityBoat extends EntityAircraft {
 			double f = wdiff * getBbWidth() * 0.20;
 			move = move.add(0, f-getTotalWeight(), 0);
 		}
-		float th = (float)getThrustMag();
-		move = move.add(UtilAngles.rotationToVector(getYRot(), 0, th));
+		move = move.add(UtilAngles.rotationToVector(getYRot(), 0, getThrustMag()));
 		setDeltaMovement(move);
 	}
 	

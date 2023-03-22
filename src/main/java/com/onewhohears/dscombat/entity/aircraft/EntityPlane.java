@@ -72,6 +72,7 @@ public class EntityPlane extends EntityAircraft {
 	
 	@Override
 	public void tickAir(Quaternion q) {
+		// TODO flight physics overhaul is needed
 		super.tickAir(q);
 		calculateAOA(q);
 		Vec3 motion = getDeltaMovement();

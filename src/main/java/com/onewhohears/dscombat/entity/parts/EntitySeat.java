@@ -114,6 +114,7 @@ public class EntitySeat extends EntityPart {
 	
 	@Override
     public Vec3 getDismountLocationForPassenger(LivingEntity livingEntity) {
+		// FIXME this can cause a stack overflow
 		Entity rv = getRootVehicle();
 		if (rv != null) return rv.getDismountLocationForPassenger(livingEntity);
 		return super.getDismountLocationForPassenger(livingEntity);

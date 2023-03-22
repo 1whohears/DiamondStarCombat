@@ -412,7 +412,7 @@ public abstract class EntityAircraft extends Entity {
 		double maxY = 2.0;
 		double my = move.y;
 		if (Math.abs(my) > maxY) my = maxY * Math.signum(my);
-		else if (Math.abs(my) < 0.001d) my = 0;
+		else if (Math.abs(my) < 0.001) my = 0;
 		
 		setDeltaMovement(motionXZ.x, my, motionXZ.z);
 	}
@@ -1045,7 +1045,6 @@ public abstract class EntityAircraft extends Entity {
 	 * @return the max speed of the craft along the x and z axis
 	 */
     public final float getMaxSpeed() {
-    	// FIXME this returns 0 after it gets placed by an item but only for the boat and submarine
     	return entityData.get(MAX_SPEED);
     }
     

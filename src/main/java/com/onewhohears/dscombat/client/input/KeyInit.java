@@ -31,7 +31,7 @@ public final class KeyInit {
 	public static KeyMapping flipControlsKey;
 	public static KeyMapping changeSeat;
 	public static KeyMapping landingGear;
-	public static KeyMapping sharePos;
+	public static KeyMapping radarModeKey;
 	public static KeyMapping specialKey;
 	
 	private static RegisterKeyMappingsEvent event;
@@ -55,7 +55,7 @@ public final class KeyInit {
 		flipControlsKey = registerKey("flip_controls_key", FLIGHT_CONTROL, InputConstants.KEY_LALT);
 		changeSeat = registerKey("change_seat_key", FLIGHT_CONTROL, InputConstants.KEY_SEMICOLON);
 		landingGear = registerKey("landing_gear_key", FLIGHT_CONTROL, InputConstants.KEY_L);
-		sharePos = registerKey("share_pos_key", FLIGHT_CONTROL, InputConstants.KEY_O);
+		radarModeKey = registerKey("radar_mode_key", FLIGHT_CONTROL, InputConstants.KEY_O);
 		specialKey = registerKey("special_key", FLIGHT_CONTROL, InputConstants.KEY_SPACE);
 	}
 	

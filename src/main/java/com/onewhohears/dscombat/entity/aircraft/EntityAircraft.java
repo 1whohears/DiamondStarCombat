@@ -101,6 +101,7 @@ public abstract class EntityAircraft extends Entity {
 	public static final EntityDataAccessor<Boolean> TEST_MODE = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Integer> CURRRENT_DYE_ID = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Boolean> NO_CONSUME = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Boolean> PLAYERS_ONLY_RADAR = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.BOOLEAN);
 	
 	public static final double collideSpeedThreshHold = 1d;
 	public static final double collideSpeedWithGearThreshHold = 2d;
@@ -119,7 +120,7 @@ public abstract class EntityAircraft extends Entity {
 	public Quaternion prevQ = Quaternion.ONE.copy();
 	public Quaternion clientQ = Quaternion.ONE.copy();
 	
-	public boolean inputMouseMode, inputFlare, inputShoot, inputSelect, inputOpenMenu, inputSpecial;
+	public boolean inputMouseMode, inputFlare, inputShoot, inputSelect, inputOpenMenu, inputSpecial, inputRadarMode;
 	public float inputThrottle, inputPitch, inputRoll, inputYaw;
 	public float zRot, zRotO; 
 	public float torqueX, torqueY, torqueZ, torqueXO, torqueYO, torqueZO;
@@ -176,6 +177,7 @@ public abstract class EntityAircraft extends Entity {
 		entityData.define(CURRRENT_DYE_ID, 0);
 		entityData.define(TURN_RADIUS, 0f);
 		entityData.define(NO_CONSUME, false);
+		entityData.define(PLAYERS_ONLY_RADAR, false);
 	}
 	
 	@Override
@@ -754,7 +756,7 @@ public abstract class EntityAircraft extends Entity {
 	
 	public void updateControls(float throttle, float pitch, float roll, float yaw,
 			boolean mouseMode, boolean flare, boolean shoot, boolean select,
-			boolean openMenu, boolean special) {
+			boolean openMenu, boolean special, boolean radarMode) {
 		this.inputThrottle = throttle;
 		this.inputPitch = pitch;
 		this.inputRoll = roll;
@@ -767,6 +769,8 @@ public abstract class EntityAircraft extends Entity {
 		if (inputSelect && !level.isClientSide) weaponSystem.selectNextWeapon();
 		this.inputOpenMenu = openMenu;
 		this.inputSpecial = special;
+		this.inputRadarMode = radarMode;
+		if (inputRadarMode) setRadarPlayersOnly(!isRadarPlayersOnly());
 	}
 	
 	public void resetControls() {
@@ -780,6 +784,7 @@ public abstract class EntityAircraft extends Entity {
 		this.inputSelect = false;
 		this.inputOpenMenu = false;
 		this.inputSpecial = false;
+		this.inputRadarMode = false;
 		this.throttleToZero();
 	}
 	
@@ -789,6 +794,14 @@ public abstract class EntityAircraft extends Entity {
     
     public void setFreeLook(boolean freeLook) {
     	entityData.set(FREE_LOOK, freeLook);
+    }
+    
+    public boolean isRadarPlayersOnly() {
+    	return entityData.get(PLAYERS_ONLY_RADAR);
+    }
+    
+    public void setRadarPlayersOnly(boolean playersOnly) {
+    	entityData.set(PLAYERS_ONLY_RADAR, playersOnly);
     }
 	
     /**

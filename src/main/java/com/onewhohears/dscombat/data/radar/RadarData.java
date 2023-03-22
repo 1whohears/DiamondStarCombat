@@ -118,9 +118,11 @@ public class RadarData {
 			List<EntityAircraft> list = level.getEntitiesOfClass(
 					EntityAircraft.class, getRadarBoundingBox(radar));
 			for (int i = 0; i < list.size(); ++i) {
+				Entity pilot = list.get(i).getControllingPassenger();
+				if (radar.isRadarPlayersOnly() && pilot == null) continue;
 				if (!basicCheck(radar, list.get(i), list.get(i).getStealth())) continue;
 				RadarPing p = new RadarPing(list.get(i), 
-					checkFriendly(controller, list.get(i).getControllingPassenger()));
+					checkFriendly(controller, pilot));
 				targets.add(p);
 				pings.add(p);
 				list.get(i).lockedOnto();
@@ -133,12 +135,12 @@ public class RadarData {
 				if (list.get(i).getRootVehicle() instanceof EntityAircraft) continue;
 				if (!basicCheck(radar, list.get(i), 1)) continue;
 				RadarPing p = new RadarPing(list.get(i), 
-						checkFriendly(controller, list.get(i)));
+					checkFriendly(controller, list.get(i)));
 				targets.add(p);
 				pings.add(p);
 			}
 		}
-		if (scanMobs) {
+		if (scanMobs && !radar.isRadarPlayersOnly()) {
 			List<Mob> list = level.getEntitiesOfClass(
 					Mob.class, getRadarBoundingBox(radar));
 			for (int i = 0; i < list.size(); ++i) {

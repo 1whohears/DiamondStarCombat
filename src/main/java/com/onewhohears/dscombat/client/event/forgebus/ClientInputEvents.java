@@ -50,6 +50,7 @@ public final class ClientInputEvents {
 		boolean openMenu = KeyInit.planeMenuKey.consumeClick();
 		boolean mouseMode = KeyInit.mouseModeKey.consumeClick();
 		boolean gear = KeyInit.landingGear.consumeClick();
+		boolean radarMode = KeyInit.radarModeKey.consumeClick();
 		if (!(player.getRootVehicle() instanceof EntityAircraft plane)) return;
 		if (plane.getControllingPassenger() == null 
 				|| !plane.getControllingPassenger().equals(player)) return;
@@ -111,9 +112,11 @@ public final class ClientInputEvents {
 		if (throttleDown) throttle -= 1;
 		PacketHandler.INSTANCE.sendToServer(new ToServerFlightControl(
 				throttle, pitch, roll, yaw,
-				mouseMode, flare, shoot, select, openMenu, gear, special));
+				mouseMode, flare, shoot, select, openMenu, gear, 
+				special, radarMode));
 		plane.updateControls(throttle, pitch, roll, yaw,
-				mouseMode, flare, shoot, select, openMenu, special);
+				mouseMode, flare, shoot, select, openMenu, 
+				special, radarMode);
 		if (mouseMode && !plane.isFreeLook()) centerMouse();
 	}
 	

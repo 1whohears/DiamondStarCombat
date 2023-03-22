@@ -21,7 +21,7 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
 	
 	public AircraftMenuContainer(int id, Inventory playerInv) {
 		super(ModContainers.PLANE_MENU.get(), id);
-		System.out.println("AircraftMenuContainer client side "+playerInv.player.level.isClientSide);
+		//System.out.println("AircraftMenuContainer client side "+playerInv.player.level.isClientSide);
 		this.playerInv = playerInv;
 		// display plane parts
 		if (playerInv.player.getRootVehicle() instanceof EntityAircraft plane) {

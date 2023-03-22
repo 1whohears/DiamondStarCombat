@@ -154,7 +154,7 @@ public abstract class EntityAircraft extends Entity {
 	protected void defineSynchedData() {
 		entityData.define(MAX_HEALTH, 100f);
         entityData.define(HEALTH, 100f);
-		entityData.define(MAX_SPEED, 1.5f);
+		entityData.define(MAX_SPEED, 1.0f);
 		entityData.define(THROTTLE, 0.0f);
 		entityData.define(THROTTLEUP, 0.05f);
 		entityData.define(THROTTLEDOWN, 0.05f);
@@ -402,16 +402,23 @@ public abstract class EntityAircraft extends Entity {
 	 * restricts the motion of the craft based on max speed
 	 */
 	public void motionClamp() {
-		Vec3 motion = getDeltaMovement();
-		double max = getMaxSpeed();
-		Vec3 motionXY = new Vec3(motion.x, 0, motion.z);
-		double velXY = motionXY.length();
-		if (velXY > max) motionXY = motionXY.scale(max / velXY);
+		Vec3 move = getDeltaMovement();
+		double maxXZ = getMaxSpeedForMotion();
+		
+		Vec3 motionXZ = new Vec3(move.x, 0, move.z);
+		double velXZ = motionXZ.length();
+		if (velXZ > maxXZ) motionXZ = motionXZ.scale(maxXZ / velXZ);
+		
 		double maxY = 2.0;
-		double my = motion.y;
+		double my = move.y;
 		if (Math.abs(my) > maxY) my = maxY * Math.signum(my);
 		else if (Math.abs(my) < 0.001d) my = 0;
-		setDeltaMovement(motionXY.x, my, motionXY.z);
+		
+		setDeltaMovement(motionXZ.x, my, motionXZ.z);
+	}
+	
+	public double getMaxSpeedForMotion() {
+		return getMaxSpeed();
 	}
 	
 	/**
@@ -529,9 +536,9 @@ public abstract class EntityAircraft extends Entity {
 	 */
 	public void tickGround(Quaternion q) {
 		// TODO drifting
-		float speed = xzSpeed * xzSpeedDir;
+		double speed = xzSpeed * xzSpeedDir;
 		float th = getCurrentThrottle();
-		float max = getMaxSpeed();
+		double max = getMaxSpeedForMotion();
 		float w = getTotalWeight();
 		if (!isLandingGear() && speed != 0) {
 			speed -= 0.05 * xzSpeedDir;
@@ -632,11 +639,11 @@ public abstract class EntityAircraft extends Entity {
 	 * but it is also used to calculate drag so maybe I should make separate variables
 	 * @return the surface area of the plane
 	 */
-	public float getSurfaceArea() {
+	public final float getSurfaceArea() {
 		return entityData.get(WING_AREA);
 	}
 	
-	public void setSurfaceArea(float area) {
+	public final void setSurfaceArea(float area) {
 		if (area < 0) area = 0;
 		entityData.set(WING_AREA, area);
 	}
@@ -664,11 +671,11 @@ public abstract class EntityAircraft extends Entity {
 	 * this is NOT the total weight
 	 * @return the weight of the fuselage 
 	 */
-	public float getAircraftWeight() {
+	public final float getAircraftWeight() {
 		return entityData.get(WEIGHT);
 	}
 	
-	public void setAircraftWeight(float weight) {
+	public final void setAircraftWeight(float weight) {
 		if (weight < 0) weight = 0;
 		entityData.set(WEIGHT, weight);
 	}
@@ -788,19 +795,19 @@ public abstract class EntityAircraft extends Entity {
 		this.throttleToZero();
 	}
 	
-	public boolean isFreeLook() {
+	public final boolean isFreeLook() {
     	return entityData.get(FREE_LOOK);
     }
     
-    public void setFreeLook(boolean freeLook) {
+    public final void setFreeLook(boolean freeLook) {
     	entityData.set(FREE_LOOK, freeLook);
     }
     
-    public boolean isRadarPlayersOnly() {
+    public final boolean isRadarPlayersOnly() {
     	return entityData.get(PLAYERS_ONLY_RADAR);
     }
     
-    public void setRadarPlayersOnly(boolean playersOnly) {
+    public final void setRadarPlayersOnly(boolean playersOnly) {
     	entityData.set(PLAYERS_ONLY_RADAR, playersOnly);
     }
 	
@@ -1037,22 +1044,24 @@ public abstract class EntityAircraft extends Entity {
 	/**
 	 * @return the max speed of the craft along the x and z axis
 	 */
-    public float getMaxSpeed() {
+    public final float getMaxSpeed() {
+    	// FIXME this returns 0 after it gets placed by an item but only for the boat and submarine
     	return entityData.get(MAX_SPEED);
     }
     
-    public void setMaxSpeed(float maxSpeed) {
+    public final void setMaxSpeed(float maxSpeed) {
+    	System.out.println("setting max speed "+maxSpeed);
     	entityData.set(MAX_SPEED, maxSpeed);
     }
     
     /**
      * @return between 1 and 0 or 1 and -1 if negativeThrottle
      */
-    public float getCurrentThrottle() {
+    public final float getCurrentThrottle() {
     	return entityData.get(THROTTLE);
     }
     
-    public void setCurrentThrottle(float throttle) {
+    public final void setCurrentThrottle(float throttle) {
     	if (throttle > 1) throttle = 1;
     	else if (negativeThrottle && throttle < -1) throttle = -1;
     	else if (!negativeThrottle && throttle < 0) throttle = 0;
@@ -1068,74 +1077,74 @@ public abstract class EntityAircraft extends Entity {
     	setCurrentThrottle(th);
     }
     
-    public float getThrottleIncreaseRate() {
+    public final float getThrottleIncreaseRate() {
     	return entityData.get(THROTTLEUP);
     }
     
-    public void setThrottleIncreaseRate(float value) {
+    public final void setThrottleIncreaseRate(float value) {
     	if (value < 0) value = 0;
     	entityData.set(THROTTLEUP, value);
     }
     
-    public float getThrottleDecreaseRate() {
+    public final float getThrottleDecreaseRate() {
     	return entityData.get(THROTTLEDOWN);
     }
     
-    public void setThrottleDecreaseRate(float value) {
+    public final void setThrottleDecreaseRate(float value) {
     	if (value < 0) value = 0;
     	entityData.set(THROTTLEDOWN, value);
     }
     
-    public float getMaxDeltaPitch() {
+    public final float getMaxDeltaPitch() {
     	return entityData.get(MAX_PITCH);
     }
     
-    public void setMaxDeltaPitch(float degrees) {
+    public final void setMaxDeltaPitch(float degrees) {
     	if (degrees < 0) degrees = 0;
     	entityData.set(MAX_PITCH, degrees);
     }
     
-    public float getMaxDeltaYaw() {
+    public final float getMaxDeltaYaw() {
     	return entityData.get(MAX_YAW);
     }
     
-    public void setMaxDeltaYaw(float degrees) {
+    public final void setMaxDeltaYaw(float degrees) {
     	if (degrees < 0) degrees = 0;
     	entityData.set(MAX_YAW, degrees);
     }
     
-    public float getMaxDeltaRoll() {
+    public final float getMaxDeltaRoll() {
     	return entityData.get(MAX_ROLL);
     }
     
-    public void setMaxDeltaRoll(float degrees) {
+    public final void setMaxDeltaRoll(float degrees) {
     	if (degrees < 0) degrees = 0;
     	entityData.set(MAX_ROLL, degrees);
     }
     
-    public float getAccelerationPitch() {
+    public final float getAccelerationPitch() {
     	return entityData.get(ACC_PITCH);
     }
     
-    public void setAccelerationPitch(float degrees) {
+    public final void setAccelerationPitch(float degrees) {
     	if (degrees < 0) degrees = 0;
     	entityData.set(ACC_PITCH, degrees);
     }
     
-    public float getAccelerationYaw() {
+    public final float getAccelerationYaw() {
     	return entityData.get(ACC_YAW);
     }
     
-    public void setAccelerationYaw(float degrees) {
+    public final void setAccelerationYaw(float degrees) {
     	if (degrees < 0) degrees = 0;
     	entityData.set(ACC_YAW, degrees);
     }
     
-    public float getAccelerationRoll() {
+    public final float getAccelerationRoll() {
     	return entityData.get(ACC_ROLL);
     }
     
-    public void setAccelerationRoll(float degrees) {
+    public final void setAccelerationRoll(float degrees) {
     	if (degrees < 0) degrees = 0;
     	entityData.set(ACC_ROLL, degrees);
     }
@@ -1151,42 +1160,42 @@ public abstract class EntityAircraft extends Entity {
     /**
      * @return server side quaternion
      */
-    public Quaternion getQ() {
+    public final Quaternion getQ() {
         return entityData.get(Q).copy();
     }
     
     /**
      * @param q set server side quaternion
      */
-    public void setQ(Quaternion q) {
+    public final void setQ(Quaternion q) {
         entityData.set(Q, q.copy());
     }
     
     /**
      * @return the client side rotation
      */
-    public Quaternion getClientQ() {
+    public final Quaternion getClientQ() {
         return clientQ.copy();
     }
     
     /**
      * @param q set client side rotation
      */
-    public void setClientQ(Quaternion q) {
+    public final void setClientQ(Quaternion q) {
         clientQ = q.copy();
     }
     
     /**
      * @return the rotation on the previous tick for both client and server side
      */
-    public Quaternion getPrevQ() {
+    public final Quaternion getPrevQ() {
         return prevQ.copy();
     }
     
     /**
      * @param q the rotation for both client and server side
      */
-    public void setPrevQ(Quaternion q) {
+    public final void setPrevQ(Quaternion q) {
         prevQ = q.copy();
     }
     
@@ -1196,7 +1205,7 @@ public abstract class EntityAircraft extends Entity {
      * 0.5 is a radar with a range of 1000 can only see this craft within 500
      * @return value to be multiplied to the range of a radar
      */
-    public float getStealth() {
+    public final float getStealth() {
     	return entityData.get(STEALTH);
     }
     
@@ -1206,7 +1215,7 @@ public abstract class EntityAircraft extends Entity {
      * 0.5 is a radar with a range of 1000 can only see this craft within 500
      * @param stealth value to be multiplied to the range of a radar
      */
-    public void setStealth(float stealth) {
+    public final void setStealth(float stealth) {
     	if (stealth < 0) stealth = 0;
     	entityData.set(STEALTH, stealth);
     }
@@ -1237,27 +1246,27 @@ public abstract class EntityAircraft extends Entity {
 		return dist < 65536;
 	}
     
-    public void setMaxHealth(float h) {
+    public final void setMaxHealth(float h) {
     	if (h < 0) h = 0;
     	entityData.set(MAX_HEALTH, h);
     }
     
-    public float getMaxHealth() {
+    public final float getMaxHealth() {
     	return entityData.get(MAX_HEALTH);
     }
     
-    public void addHealth(float h) {
+    public final void addHealth(float h) {
     	setHealth(getHealth()+h);
     }
     
-    public void setHealth(float h) {
+    public final void setHealth(float h) {
     	float max = getMaxHealth();
     	if (h > max) h = max;
     	else if (h < 0) h = 0;
     	entityData.set(HEALTH, h);
     }
     
-    public float getHealth() {
+    public final float getHealth() {
     	return entityData.get(HEALTH);
     }
     
@@ -1276,14 +1285,14 @@ public abstract class EntityAircraft extends Entity {
     /**
      * @return the heat value this aircraft always emits 
      */
-    public float getIdleHeat() {
+    public final float getIdleHeat() {
     	return entityData.get(IDLEHEAT);
     }
     
     /**
      * @param heat the heat value this aircraft always emits 
      */
-    public void setIdleHeat(float heat) {
+    public final void setIdleHeat(float heat) {
     	entityData.set(IDLEHEAT, heat);
     }
     
@@ -1366,22 +1375,22 @@ public abstract class EntityAircraft extends Entity {
      * tracked from another radar while also only letting certain players hear the sound on the client side
      * probably not the best way to do it but it works 
      */
-    public int getMissileTrackedTicks() {
+    public final int getMissileTrackedTicks() {
     	return entityData.get(MISSILE_TRACKED_TICKS);
     }
-    public void setMissileTrackedTicks(int ticks) {
+    public final void setMissileTrackedTicks(int ticks) {
     	entityData.set(MISSILE_TRACKED_TICKS, ticks);
     }
-    public void addMissileTrackedTicks(int ticks) {
+    public final void addMissileTrackedTicks(int ticks) {
     	setMissileTrackedTicks(ticks+getMissileTrackedTicks());
     }
-    public int getLockedOntoTicks() {
+    public final int getLockedOntoTicks() {
     	return entityData.get(LOCKED_ONTO_TICKS);
     }
-    public void setLockedOntoTicks(int ticks) {
+    public final void setLockedOntoTicks(int ticks) {
     	entityData.set(LOCKED_ONTO_TICKS, ticks);
     }
-    public void addLockedOntoTicks(int ticks) {
+    public final void addLockedOntoTicks(int ticks) {
     	setLockedOntoTicks(ticks+getLockedOntoTicks());
     }
     
@@ -1501,11 +1510,11 @@ public abstract class EntityAircraft extends Entity {
     	return true;
     }
     
-    public float getTurnRadius() {
+    public final float getTurnRadius() {
     	return entityData.get(TURN_RADIUS);
     }
     
-    public void setTurnRadius(float turn) {
+    public final void setTurnRadius(float turn) {
     	entityData.set(TURN_RADIUS, turn);
     }
     

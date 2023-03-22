@@ -143,6 +143,13 @@ public class EntityBoat extends EntityAircraft {
 	}
 	
 	@Override
+	public double getMaxSpeedForMotion() {
+		double max = getMaxSpeed();
+		if (getCurrentThrottle() < 0) return max * 0.2;
+    	return max;
+    }
+	
+	@Override
 	public double getThrustMag() {
 		return super.getThrustMag();
 	}
@@ -160,13 +167,6 @@ public class EntityBoat extends EntityAircraft {
 	@Override
 	public boolean isLandingGear() {
 		return false;
-    }
-	
-	@Override
-	public float getMaxSpeed() {
-		float max = super.getMaxSpeed() * Mth.abs(getCurrentThrottle());
-		if (getCurrentThrottle() < 0) return max * 0.2f;
-    	return max;
     }
 	
 	@Override

@@ -16,7 +16,7 @@ import com.onewhohears.dscombat.common.network.toserver.ToServerCraftPlane;
 import com.onewhohears.dscombat.common.network.toserver.ToServerCraftWeapon;
 import com.onewhohears.dscombat.common.network.toserver.ToServerFlightControl;
 import com.onewhohears.dscombat.common.network.toserver.ToServerPingSelect;
-import com.onewhohears.dscombat.common.network.toserver.ToServerQ;
+import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftData;
 import com.onewhohears.dscombat.common.network.toserver.ToServerRequestPlaneData;
 import com.onewhohears.dscombat.common.network.toserver.ToServerShootTurret;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSwitchSeat;
@@ -128,10 +128,10 @@ public final class PacketHandler {
 			.decoder(ToServerCraftPlane::new)
 			.consumerMainThread(ToServerCraftPlane::handle)
 			.add();
-		net.messageBuilder(ToServerQ.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ToServerQ::encode)
-			.decoder(ToServerQ::new)
-			.consumerMainThread(ToServerQ::handle)
+		net.messageBuilder(ToServerAircraftData.class, index++, NetworkDirection.PLAY_TO_SERVER)
+			.encoder(ToServerAircraftData::encode)
+			.decoder(ToServerAircraftData::new)
+			.consumerMainThread(ToServerAircraftData::handle)
 			.add();
 		net.messageBuilder(ToServerShootTurret.class, index++, NetworkDirection.PLAY_TO_SERVER)
 			.encoder(ToServerShootTurret::encode)

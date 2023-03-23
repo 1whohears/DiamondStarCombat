@@ -10,7 +10,7 @@ import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents;
 import com.onewhohears.dscombat.common.container.AircraftMenuContainer;
 import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.common.network.toserver.ToServerQ;
+import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftData;
 import com.onewhohears.dscombat.common.network.toserver.ToServerRequestPlaneData;
 import com.onewhohears.dscombat.data.AircraftPresets;
 import com.onewhohears.dscombat.data.AircraftTextures;
@@ -103,6 +103,7 @@ public abstract class EntityAircraft extends Entity {
 	public static final EntityDataAccessor<Boolean> NO_CONSUME = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> PLAYERS_ONLY_RADAR = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.BOOLEAN);
 	
+	public static final double ACC_GRAVITY = 0.025;
 	public static final double collideSpeedThreshHold = 1d;
 	public static final double collideSpeedWithGearThreshHold = 2d;
 	public static final double collideDamageRate = 200d;
@@ -120,15 +121,16 @@ public abstract class EntityAircraft extends Entity {
 	public Quaternion prevQ = Quaternion.ONE.copy();
 	public Quaternion clientQ = Quaternion.ONE.copy();
 	
-	public boolean inputMouseMode, inputFlare, inputShoot, inputSelect, inputOpenMenu, inputSpecial, inputRadarMode;
+	public boolean inputMouseMode, inputFlare, inputShoot, inputSelect, inputOpenMenu, inputSpecial, inputRadarMode, inputBothRoll;
 	public float inputThrottle, inputPitch, inputRoll, inputYaw;
 	public float zRot, zRotO; 
 	public float torqueX, torqueY, torqueZ, torqueXO, torqueYO, torqueZO;
 	public Vec3 prevMotion = Vec3.ZERO;
+	public Vec3 forces = Vec3.ZERO;
 	
 	public boolean nightVisionHud = false;
 	
-	protected float xzSpeed;
+	protected float xzSpeed, totalWeight;
 	protected int xzSpeedDir;
 	
 	private ResourceLocation currentTexture;
@@ -188,7 +190,7 @@ public abstract class EntityAircraft extends Entity {
         	if (Q.equals(key)) {
         		if (isControlledByLocalInstance()) {
         			// if this entity is piloted by the client's player send the client quaternion to the server
-        			PacketHandler.INSTANCE.sendToServer(new ToServerQ(getId(), getClientQ()));
+        			PacketHandler.INSTANCE.sendToServer(new ToServerAircraftData(this));
         		} else {
         			// if the client player is not controlling this plane then client quaternion = server quaternion
         			setPrevQ(getClientQ());
@@ -302,6 +304,8 @@ public abstract class EntityAircraft extends Entity {
 	public void tick() {
 		if (firstTick) init(); // MUST BE CALLED BEFORE SUPER
 		super.tick();
+		if (Double.isNaN(getDeltaMovement().length())) 
+            setDeltaMovement(Vec3.ZERO);
 		// SET PREV/OLD
 		prevMotion = getDeltaMovement();
 		zRotO = zRot;
@@ -322,15 +326,17 @@ public abstract class EntityAircraft extends Entity {
 		setYRot((float)angles.yaw);
 		zRot = (float)angles.roll;
 		// MOVEMENT
+		forces = Vec3.ZERO;
 		tickThrottle();
 		if (!isTestMode()) {
-			calcXZSpeed();
+			calcFields(q);
 			tickMovement(q);
+			calcForces(q);
+			calcAcc();
 			motionClamp();
 			move(MoverType.SELF, getDeltaMovement());
 		}
-		if (isControlledByLocalInstance()) 
-			syncPacketPositionCodec(getX(), getY(), getZ());
+		if (isControlledByLocalInstance()) syncPacketPositionCodec(getX(), getY(), getZ());
         // OTHER
 		controlSystem();
         tickParts();
@@ -469,12 +475,16 @@ public abstract class EntityAircraft extends Entity {
 		torqueX = torqueZ = 0;
 		EulerAngles angles = UtilAngles.toDegrees(q);
 		float roll, pitch;
-		if (Math.abs(angles.roll) < dRoll) roll = (float) -angles.roll;
-		else roll = -(float)Math.signum(angles.roll) * dRoll;
-		if (Math.abs(angles.pitch) < dPitch) pitch = (float) -angles.pitch;
-		else pitch = -(float)Math.signum(angles.pitch) * dPitch;
-		q.mul(Vector3f.XP.rotationDegrees(pitch));
-		q.mul(Vector3f.ZP.rotationDegrees(roll));
+		if (dRoll != 0) {
+			if (Math.abs(angles.roll) < dRoll) roll = (float) -angles.roll;
+			else roll = -(float)Math.signum(angles.roll) * dRoll;
+			q.mul(Vector3f.ZP.rotationDegrees(roll));
+		}
+		if (dPitch != 0) {
+			if (Math.abs(angles.pitch) < dPitch) pitch = (float) -angles.pitch;
+			else pitch = -(float)Math.signum(angles.pitch) * dPitch;
+			q.mul(Vector3f.XP.rotationDegrees(pitch));
+		}
 	}
 	
 	private float torqueDrag(float torque) {
@@ -517,6 +527,16 @@ public abstract class EntityAircraft extends Entity {
 		torqueZ += torque;
 	}
 	
+	public void calcForces(Quaternion q) {
+		forces = forces.add(getWeightForce());
+		forces = forces.add(getThrustForce(q));
+		//forces = forces.add(getDragForce(q));
+	}
+	
+	public void calcAcc() {
+		setDeltaMovement(getDeltaMovement().add(forces.scale(1/totalWeight)));
+	}
+	
 	/**
 	 * called on both client and server side every tick to change the craft's movement 
 	 * a force is a Vec3 to be added to this entities motion or getDeltaMovement()
@@ -555,7 +575,6 @@ public abstract class EntityAircraft extends Entity {
 		Vec3 dir = UtilAngles.rotationToVector(getYRot(), 0);
 		Vec3 motion = dir.scale(speed);
 		if (motion.y < 0) motion = new Vec3(motion.x, 0, motion.z);
-		motion = motion.add(0, -w, 0);
 		setDeltaMovement(motion);
 	}
 	
@@ -571,11 +590,6 @@ public abstract class EntityAircraft extends Entity {
 	 * @param q the plane's current rotation
 	 */
 	public void tickAir(Quaternion q) {
-		Vec3 motion = getDeltaMovement();
-		motion = motion.add(getWeightForce());
-		motion = motion.add(getThrustForce(q));
-		motion = motion.add(getDragForce(q));
-		setDeltaMovement(motion);
 		resetFallDistance();
 	}
 	
@@ -624,6 +638,7 @@ public abstract class EntityAircraft extends Entity {
 	}
 	
 	public double surfaceAreaDrag() {
+		// TODO redo drag equations
 		// Drag = (drag coefficient) * (air pressure) * (speed)^2 * (wing surface area) / 2
 		double dc = 0.025;
 		double air = UtilEntity.getAirPressure(getY());
@@ -648,23 +663,24 @@ public abstract class EntityAircraft extends Entity {
 		entityData.set(WING_AREA, area);
 	}
 	
-	protected void calcXZSpeed() {
+	protected void calcFields(Quaternion q) {
+		// IDEA !calculate everything here once per tick!
 		double x = getDeltaMovement().x;
 		double z = getDeltaMovement().z;
 		xzSpeed = (float) Math.sqrt(x*x + z*z);
 		xzSpeedDir = getXZSpeedDir();
+		totalWeight = getAircraftWeight() + partsManager.getPartsWeight();
 	}
 	
 	public Vec3 getWeightForce() {
-		return new Vec3(0, -getTotalWeight(), 0);
+		return new Vec3(0, -getTotalWeight() * ACC_GRAVITY, 0);
 	}
 	
 	/**
 	 * @return this weight of the aircraft plus the weight of the parts
 	 */
 	public float getTotalWeight() {
-		float w = getAircraftWeight() + partsManager.getPartsWeight();
-		return w;
+		return totalWeight;
 	}
 	
 	/**
@@ -763,7 +779,7 @@ public abstract class EntityAircraft extends Entity {
 	
 	public void updateControls(float throttle, float pitch, float roll, float yaw,
 			boolean mouseMode, boolean flare, boolean shoot, boolean select,
-			boolean openMenu, boolean special, boolean radarMode) {
+			boolean openMenu, boolean special, boolean radarMode, boolean bothRoll) {
 		this.inputThrottle = throttle;
 		this.inputPitch = pitch;
 		this.inputRoll = roll;
@@ -778,6 +794,7 @@ public abstract class EntityAircraft extends Entity {
 		this.inputSpecial = special;
 		this.inputRadarMode = radarMode;
 		if (inputRadarMode) setRadarPlayersOnly(!isRadarPlayersOnly());
+		this.inputBothRoll = bothRoll;
 	}
 	
 	public void resetControls() {
@@ -792,6 +809,7 @@ public abstract class EntityAircraft extends Entity {
 		this.inputOpenMenu = false;
 		this.inputSpecial = false;
 		this.inputRadarMode = false;
+		this.inputBothRoll = false;
 		this.throttleToZero();
 	}
 	
@@ -1049,7 +1067,6 @@ public abstract class EntityAircraft extends Entity {
     }
     
     public final void setMaxSpeed(float maxSpeed) {
-    	System.out.println("setting max speed "+maxSpeed);
     	entityData.set(MAX_SPEED, maxSpeed);
     }
     

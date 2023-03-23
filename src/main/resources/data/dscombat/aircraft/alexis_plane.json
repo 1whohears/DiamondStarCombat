@@ -5,8 +5,8 @@
 	"max_health": 150,
 	"health": 150,
 	
-	"weight": 0.03,
-	"surfacearea": 1.2,
+	"weight": 20.0,
+	"surfacearea": 12.0,
 	
 	"stealth": 0.8,
 	"idleheat": 4.0,

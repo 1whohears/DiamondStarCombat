@@ -74,4 +74,8 @@ public class UtilGeometry {
 				Math.signum(u.z) == Math.signum(v.z);
 	}
 	
+	public static boolean isZero(Vec3 v) {
+		return v.x == 0 && v.y == 0 && v.z == 0;
+	}
+	
 }

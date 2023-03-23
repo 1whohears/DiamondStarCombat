@@ -113,10 +113,10 @@ public final class ClientInputEvents {
 		PacketHandler.INSTANCE.sendToServer(new ToServerFlightControl(
 				throttle, pitch, roll, yaw,
 				mouseMode, flare, shoot, select, openMenu, gear, 
-				special, radarMode));
+				special, radarMode, rollLeft && rollRight));
 		plane.updateControls(throttle, pitch, roll, yaw,
 				mouseMode, flare, shoot, select, openMenu, 
-				special, radarMode);
+				special, radarMode, rollLeft && rollRight);
 		if (mouseMode && !plane.isFreeLook()) centerMouse();
 	}
 	

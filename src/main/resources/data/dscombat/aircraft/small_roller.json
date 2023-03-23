@@ -5,7 +5,7 @@
 	"max_health": 30,
 	"health": 30,
 	
-	"weight": 0.01,
+	"weight": 5,
 	"surfacearea": 1.0,
 	
 	"stealth": 1.0,

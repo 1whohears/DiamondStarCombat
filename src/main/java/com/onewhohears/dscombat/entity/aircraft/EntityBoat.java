@@ -100,13 +100,23 @@ public class EntityBoat extends EntityAircraft {
 		Vec3 move = getDeltaMovement();
 		move = move.multiply(0.950, 0.900, 0.950);
 		if (checkInWater()) {
-			double wdiff = waterLevel - getY();
-			double f = wdiff * getBbWidth() * 0.20;
-			move = move.add(0, f-getTotalWeight(), 0);
+			if (willFloat()) {
+				double bbh = getBbHeight();
+				double goalY = waterLevel - bbh/2.5;
+				double dy = goalY - getY();
+				if (Math.abs(move.y) < 0.01 && Math.abs(dy) < 0.01) move = move.multiply(1, 0, 1);
+				else move = move.add(0, 0.01 * Math.signum(dy), 0);
+			} 
+			else move = move.add(0, -0.01, 0);
 		}
-		float th = (float)getThrustMag();
-		move = move.add(UtilAngles.rotationToVector(getYRot(), 0, th));
+		move = move.add(UtilAngles.rotationToVector(getYRot(), 0, getThrustMag()));
 		setDeltaMovement(move);
+	}
+	
+	public boolean willFloat() {
+		float w = getTotalWeight();
+		float fc = getBbWidth() * getBbWidth() * 0.05f;
+		return fc > w;
 	}
 	
 	@Override
@@ -142,6 +152,13 @@ public class EntityBoat extends EntityAircraft {
 	}
 	
 	@Override
+	public double getMaxSpeedForMotion() {
+		double max = getMaxSpeed();
+		if (getCurrentThrottle() < 0) return max * 0.2;
+    	return max;
+    }
+	
+	@Override
 	public double getThrustMag() {
 		return super.getThrustMag();
 	}
@@ -162,18 +179,11 @@ public class EntityBoat extends EntityAircraft {
     }
 	
 	@Override
-	public float getMaxSpeed() {
-		float max = super.getMaxSpeed() * Mth.abs(getCurrentThrottle());
-		if (getCurrentThrottle() < 0) return max * 0.2f;
-    	return max;
-    }
-	
-	@Override
 	public void updateControls(float throttle, float pitch, float roll, float yaw,
 			boolean mouseMode, boolean flare, boolean shoot, boolean select,
-			boolean openMenu, boolean special) {
+			boolean openMenu, boolean special, boolean radarMode) {
 		super.updateControls(throttle, pitch, roll, yaw, mouseMode, flare, shoot, 
-				select, openMenu, special);
+				select, openMenu, special, radarMode);
 		this.inputThrottle = pitch;
 		this.inputPitch = throttle;
 	}

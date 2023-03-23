@@ -70,6 +70,7 @@ public class ItemAircraft extends Item {
 					CompoundTag et = tag.getCompound("EntityTag");
 					et.putFloat("yRot", player.getYRot());
 					et.putFloat("current_throttle", 0);
+					et.putBoolean("landing_gear", true);
 				}
 				Entity e = entitytype.create(level);
 				Vec3 pos = hitresult.getLocation();
@@ -96,55 +97,6 @@ public class ItemAircraft extends Item {
 			} else return InteractionResultHolder.pass(itemstack);
 		}
 	}
-	
-	/*@Override
-	public InteractionResult useOn(UseOnContext context) {
-		Level level = context.getLevel();
-		if (!(level instanceof ServerLevel)) {
-			return InteractionResult.SUCCESS;
-		} else {
-			ItemStack itemstack = context.getItemInHand();
-			BlockPos blockpos = context.getClickedPos();
-			Direction direction = context.getClickedFace();
-			BlockState blockstate = level.getBlockState(blockpos);
-			if (blockstate.is(Blocks.SPAWNER)) {
-				BlockEntity blockentity = level.getBlockEntity(blockpos);
-				if (blockentity instanceof SpawnerBlockEntity) {
-					BaseSpawner basespawner = ((SpawnerBlockEntity)blockentity).getSpawner();
-					EntityType<?> entitytype1 = this.getType(itemstack.getOrCreateTag());
-					basespawner.setEntityId(entitytype1);
-					blockentity.setChanged();
-					level.sendBlockUpdated(blockpos, blockstate, blockstate, 3);
-					level.gameEvent(context.getPlayer(), GameEvent.BLOCK_CHANGE, blockpos);
-					itemstack.shrink(1);
-					return InteractionResult.CONSUME;
-				}
-			}
-			BlockPos blockpos1;
-			if (blockstate.getCollisionShape(level, blockpos).isEmpty()) {
-				blockpos1 = blockpos;
-			} else {
-				blockpos1 = blockpos.relative(direction);
-			}
-			CompoundTag tag = itemstack.getOrCreateTag();
-			EntityType<?> entitytype = getType(tag);
-			Player player = context.getPlayer();
-			if (player != null) {
-				CompoundTag et = tag.getCompound("EntityTag");
-				et.putFloat("yRot", player.getYRot());
-				et.putFloat("current_throttle", 0);
-			}
-			//System.out.println("MAKING ENTITY FROM = "+tag);
-			Entity spawn = entitytype.spawn((ServerLevel)level, itemstack, 
-					player, blockpos1.above(4), MobSpawnType.SPAWN_EGG, 
-					true, true);
-			if (spawn != null) {
-				itemstack.shrink(1);
-				level.gameEvent(player, GameEvent.ENTITY_PLACE, blockpos);
-			}
-			return InteractionResult.CONSUME;
-		}
-	}*/
 	
 	private EntityType<?> getType(CompoundTag nbt) {
 		//System.out.println("GETTING TYPE FROM = "+nbt);

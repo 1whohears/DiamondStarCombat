@@ -114,8 +114,8 @@ public class EntitySeat extends EntityPart {
 	
 	@Override
     public Vec3 getDismountLocationForPassenger(LivingEntity livingEntity) {
-		Entity rv = getRootVehicle();
-		if (rv != null) return rv.getDismountLocationForPassenger(livingEntity);
+		Entity v = getVehicle();
+		if (v != null) return v.getDismountLocationForPassenger(livingEntity);
 		return super.getDismountLocationForPassenger(livingEntity);
 	}
 	

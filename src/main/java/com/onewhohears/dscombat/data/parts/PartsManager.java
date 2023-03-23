@@ -48,7 +48,7 @@ public class PartsManager {
 	}
 	
 	private void createNewInventory() {
-		System.out.println("CREATING NEW INVENTORY for slots "+this);
+		//System.out.println("CREATING NEW INVENTORY for slots "+this);
 		inventory = new SimpleContainer(slots.size()) {
 			@Override
 			public void setChanged() {
@@ -56,20 +56,20 @@ public class PartsManager {
 			}
 			@Override
 			public void setItem(int i, ItemStack stack) {
-				System.out.println("SET ITEM "+i+" "+stack);
+				//System.out.println("SET ITEM "+i+" "+stack);
 				if (readData) inventorySetItem(i, stack);
 				super.setItem(i, stack);
 			}
 			@Override
 			public ItemStack removeItem(int i, int count) {
-				System.out.println("REMOVE ITEM "+i);
+				//System.out.println("REMOVE ITEM "+i);
 				if (readData) inventoryRemoveItem(i, count);
 				return super.removeItem(i, count);
 			}			
 		};
 		for (int i = 0; i < slots.size(); ++i) if (slots.get(i).filled()) {
 			inventory.setItem(i, slots.get(i).getPartData().getNewItemStack());
-			System.out.println("new item in slot "+i+" "+inventory.getItem(i)+" "+inventory.getItem(i).getTag());
+			//System.out.println("new item in slot "+i+" "+inventory.getItem(i)+" "+inventory.getItem(i).getTag());
 		}
 	}
 	

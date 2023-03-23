@@ -115,16 +115,11 @@ public class EntityGroundVehicle extends EntityAircraft {
 	}
 	
 	@Override
-	public float getMaxDeltaYaw() {
-    	return entityData.get(MAX_YAW);
-    }
-	
-	@Override
 	public void updateControls(float throttle, float pitch, float roll, float yaw,
 			boolean mouseMode, boolean flare, boolean shoot, boolean select,
-			boolean openMenu, boolean special) {
+			boolean openMenu, boolean special, boolean radarMode) {
 		super.updateControls(throttle, pitch, roll, yaw, mouseMode, flare, shoot, 
-				select, openMenu, special);
+				select, openMenu, special, radarMode);
 		this.inputThrottle = pitch;
 		this.inputPitch = throttle;
 	}

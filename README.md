@@ -42,6 +42,7 @@ Other Controls
 - Open Plane Inventory = U
 - Center Mouse = Right Alt
 - Special (Breaks/Hover) = Space
+- Toggle Radar Players Only Mode = O
 
 ## Parts System
 

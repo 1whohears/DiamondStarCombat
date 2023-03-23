@@ -29,28 +29,28 @@ public class UtilEntity {
 			pos = e1.position();
 		} else {
 			dist = maxCheckDist;
-			pos = e1.position().add(look.scale(distance-maxCheckDist));
+			pos = e1.position().add(look.scale(distance-maxCheckDist).subtract(look));
 		}
 		int k = 0;
 		while (k++ < dist) {
+			pos = pos.add(look);
 			BlockPos bp = new BlockPos(pos);
 			ChunkPos cp = new ChunkPos(bp);
 			if (!level.hasChunk(cp.x, cp.z)) continue;
 			BlockState block = level.getBlockState(bp);
-			if (block != null && !block.isAir()) {
-				if (throWater <= 0 && throBlock <= 0) return false;
-				if (block.getFluidState().getType().isSame(Fluids.WATER)) {
-					if (throWater > 0) {
-						--throWater;
-						continue;
-					} else return false;
-				}
-				if (throBlock > 0) {
-					--throBlock;
+			if (block == null || block.isAir()) continue;
+			if (!block.getMaterial().blocksMotion() && !block.getMaterial().isLiquid()) continue;
+			if (throWater <= 0 && throBlock <= 0) return false;
+			if (block.getFluidState().getType().isSame(Fluids.WATER)) {
+				if (throWater > 0) {
+					--throWater;
 					continue;
 				} else return false;
 			}
-			pos = pos.add(look);
+			if (throBlock > 0) {
+				--throBlock;
+				continue;
+			} else return false;
 		}
 		return true;
 	}

@@ -63,6 +63,7 @@ public class BuffData extends PartData {
 			getParent().radarSystem.dataLink = true;
 			break;
 		case NIGHT_VISION_HUD:
+			getParent().nightVisionHud = true;
 			break;
 		}
 	}
@@ -75,6 +76,7 @@ public class BuffData extends PartData {
 			getParent().radarSystem.dataLink = false;
 			break;
 		case NIGHT_VISION_HUD:
+			getParent().nightVisionHud = false;
 			break;
 		}
 	}

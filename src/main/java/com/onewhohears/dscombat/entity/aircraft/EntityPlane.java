@@ -16,7 +16,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class EntityPlane extends EntityAircraft {
 	
-	public static final double LIFT_COEFFICIENT = 0.400;
+	public static final double LIFT_COEFFICIENT = 0.500;
 	
 	private final float propellerRate = 3.141f, flapsAOABias = 10f;
 	private float propellerRot = 0, propellerRotOld = 0, aoa = 0, liftK = 0, airFoilSpeedSqr = 0;
@@ -74,7 +74,7 @@ public class EntityPlane extends EntityAircraft {
 	public void calcForces(Quaternion q) {
 		super.calcForces(q);
 		forces = forces.add(getLiftForce(q));
-		if (getControllingPassenger() != null) System.out.println("fy = "+forces.y);
+		if (getControllingPassenger() != null) System.out.println("forces = "+forces);
 	}
 	
 	@Override
@@ -121,7 +121,7 @@ public class EntityPlane extends EntityAircraft {
 	public double getLiftMag() {
 		// Lift = (angle of attack coefficient) * (air density) * (speed)^2 * (wing surface area) / 2
 		double air = UtilEntity.getAirPressure(getY());
-		double wing = getSurfaceArea();
+		double wing = getWingSurfaceArea();
 		double lift = liftK * air * airFoilSpeedSqr * wing * LIFT_COEFFICIENT;
 		return lift;
 	}
@@ -151,6 +151,15 @@ public class EntityPlane extends EntityAircraft {
 		Vec3 direction = UtilAngles.getRollAxis(q);
 		Vec3 thrustForce = direction.scale(getThrustMag());
 		return thrustForce;
+	}
+	
+	@Override
+	public double getSurfaceArea() {
+		double a = super.getSurfaceArea();
+		a += getWingSurfaceArea() * Math.sin(Math.toRadians(aoa));
+		if  (isLandingGear()) a += 2.0 * Math.cos(Math.toRadians(aoa));
+		if  (inputSpecial) a += 2.0 * Math.cos(Math.toRadians(aoa));
+		return a;
 	}
 	
 	public float getPropellerRotation(float partialTicks) {

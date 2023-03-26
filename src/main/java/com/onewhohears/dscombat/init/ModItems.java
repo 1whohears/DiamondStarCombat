@@ -128,13 +128,15 @@ public class ModItems {
 	public static final RegistryObject<Item> LIGHT_FUEL_TANK = ITEMS.register("light_fuel_tank", 
 			() -> new ItemFuelTank(1f, 0f, 50f, PartSlot.INTERNAL_ALL));
 	public static final RegistryObject<Item> HEAVY_FUEL_TANK = ITEMS.register("heavy_fuel_tank", 
-			() -> new ItemFuelTank(4f, 0f, 150f, PartSlot.INTERNAL_ALL));
+			() -> new ItemFuelTank(3f, 0f, 150f, PartSlot.INTERNAL_ALL));
 	
 	// ENGINES
 	public static final RegistryObject<Item> C6_ENGINE = ITEMS.register("c6_engine", 
-			() -> new ItemEngine(1f, 0.11f, 4.0f, 0.005f, false, PartSlot.INTERNAL_ALL));
+			() -> new ItemEngine(1.2f, 8f*(float)EntityAircraft.ACC_GRAVITY, 4.0f, 
+					0.005f, false, PartSlot.INTERNAL_ALL));
 	public static final RegistryObject<Item> C12_ENGINE = ITEMS.register("c12_engine", 
-			() -> new ItemEngine(2.5f, 0.25f, 8.0f, 0.011f, false, PartSlot.INTERNAL_ALL));
+			() -> new ItemEngine(2.5f, 17f*(float)EntityAircraft.ACC_GRAVITY, 8.0f, 
+					0.011f, false, PartSlot.INTERNAL_ALL));
 	
 	// RADARS
 	public static final RegistryObject<Item> AR500 = ITEMS.register("ar500", 

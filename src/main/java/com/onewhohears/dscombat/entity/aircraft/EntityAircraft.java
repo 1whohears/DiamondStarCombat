@@ -104,6 +104,7 @@ public abstract class EntityAircraft extends Entity {
 	public static final EntityDataAccessor<Boolean> PLAYERS_ONLY_RADAR = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.BOOLEAN);
 	
 	public static final double ACC_GRAVITY = 0.025;
+	public static final double DRAG_COEFFICIENT = 0.015;
 	public static final double collideSpeedThreshHold = 1d;
 	public static final double collideSpeedWithGearThreshHold = 2d;
 	public static final double collideDamageRate = 200d;
@@ -232,7 +233,7 @@ public abstract class EntityAircraft extends Entity {
 		setThrottleDecreaseRate(compound.getFloat("throttledown"));
 		setIdleHeat(compound.getFloat("idleheat"));
 		setAircraftWeight(compound.getFloat("weight"));
-		setSurfaceArea(compound.getFloat("surfacearea"));
+		setWingSurfaceArea(compound.getFloat("surfacearea"));
 		setLandingGear(compound.getBoolean("landing_gear"));
 		setCurrentThrottle(compound.getFloat("current_throttle"));
 		setXRot(compound.getFloat("xRot"));
@@ -269,7 +270,7 @@ public abstract class EntityAircraft extends Entity {
 		compound.putFloat("throttledown", getThrottleDecreaseRate());
 		compound.putFloat("idleheat", getIdleHeat());
 		compound.putFloat("weight", getAircraftWeight());
-		compound.putFloat("surfacearea", getSurfaceArea());
+		compound.putFloat("surfacearea", getWingSurfaceArea());
 		compound.putBoolean("landing_gear", isLandingGear());
 		compound.putFloat("current_throttle", getCurrentThrottle());
 		compound.putFloat("xRot", getXRot());
@@ -530,7 +531,7 @@ public abstract class EntityAircraft extends Entity {
 	public void calcForces(Quaternion q) {
 		forces = forces.add(getWeightForce());
 		forces = forces.add(getThrustForce(q));
-		//forces = forces.add(getDragForce(q));
+		forces = forces.add(getDragForce(q));
 	}
 	
 	public void calcAcc() {
@@ -634,18 +635,14 @@ public abstract class EntityAircraft extends Entity {
 	}
 	
 	public double getDragMag() {
-		return surfaceAreaDrag();
-	}
-	
-	public double surfaceAreaDrag() {
-		// TODO redo drag equations
 		// Drag = (drag coefficient) * (air pressure) * (speed)^2 * (wing surface area) / 2
-		double dc = 0.025;
 		double air = UtilEntity.getAirPressure(getY());
 		double speedSqr = getDeltaMovement().lengthSqr();
-		double wing = getSurfaceArea();
-		if (isLandingGear()) wing += 1.0;
-		return dc * air * speedSqr * wing / 2;
+		return air * speedSqr * getSurfaceArea() * DRAG_COEFFICIENT;
+	}
+	
+	public double getSurfaceArea() {
+		return getBbHeight() * getBbWidth();
 	}
 	
 	/**
@@ -654,11 +651,11 @@ public abstract class EntityAircraft extends Entity {
 	 * but it is also used to calculate drag so maybe I should make separate variables
 	 * @return the surface area of the plane
 	 */
-	public final float getSurfaceArea() {
+	public final float getWingSurfaceArea() {
 		return entityData.get(WING_AREA);
 	}
 	
-	public final void setSurfaceArea(float area) {
+	public final void setWingSurfaceArea(float area) {
 		if (area < 0) area = 0;
 		entityData.set(WING_AREA, area);
 	}

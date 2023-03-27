@@ -16,7 +16,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class EntityPlane extends EntityAircraft {
 	
-	public static final double LIFT_COEFFICIENT = 0.500;
+	public static final double CO_LIFT = 0.500;
 	
 	private final float propellerRate = 3.141f, flapsAOABias = 10f;
 	private float propellerRot = 0, propellerRotOld = 0, aoa = 0, liftK = 0, airFoilSpeedSqr = 0;
@@ -60,8 +60,9 @@ public class EntityPlane extends EntityAircraft {
 	}
 	
 	@Override
-	public void tickMovement(Quaternion q) {
-		super.tickMovement(q);
+	public void tickAll(Quaternion q) {
+		super.tickAll(q);
+		forces = forces.add(getLiftForce(q));
 	}
 	
 	@Override
@@ -71,20 +72,13 @@ public class EntityPlane extends EntityAircraft {
 	}
 	
 	@Override
-	public void calcForces(Quaternion q) {
-		super.calcForces(q);
-		forces = forces.add(getLiftForce(q));
-		if (getControllingPassenger() != null) System.out.println("forces = "+forces);
-	}
-	
-	@Override
 	public void tickGround(Quaternion q) {
 		super.tickGround(q);	
 	}
 	
 	@Override
 	public void tickAir(Quaternion q) {
-		// TODO flight physics overhaul is needed
+		// TODO turn assist button
 		super.tickAir(q);
 	}
 	
@@ -122,7 +116,7 @@ public class EntityPlane extends EntityAircraft {
 		// Lift = (angle of attack coefficient) * (air density) * (speed)^2 * (wing surface area) / 2
 		double air = UtilEntity.getAirPressure(getY());
 		double wing = getWingSurfaceArea();
-		double lift = liftK * air * airFoilSpeedSqr * wing * LIFT_COEFFICIENT;
+		double lift = liftK * air * airFoilSpeedSqr * wing * CO_LIFT;
 		return lift;
 	}
 	

@@ -104,7 +104,9 @@ public abstract class EntityAircraft extends Entity {
 	public static final EntityDataAccessor<Boolean> PLAYERS_ONLY_RADAR = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.BOOLEAN);
 	
 	public static final double ACC_GRAVITY = 0.025;
-	public static final double DRAG_COEFFICIENT = 0.015;
+	public static final double CO_DRAG = 0.015;
+	public static final double CO_STATIC_FRICTION = 0.420;
+	public static final double CO_KINETIC_FRICTION = 0.200;
 	public static final double collideSpeedThreshHold = 1d;
 	public static final double collideSpeedWithGearThreshHold = 2d;
 	public static final double collideDamageRate = 200d;
@@ -131,8 +133,9 @@ public abstract class EntityAircraft extends Entity {
 	
 	public boolean nightVisionHud = false;
 	
-	protected float xzSpeed, totalWeight;
 	protected int xzSpeedDir;
+	protected float xzSpeed, totalWeight, xzYaw, xzDirYawDiff;
+	protected double staticFric, kineticFric;
 	
 	private ResourceLocation currentTexture;
 	private int lerpSteps, newRiderCooldown;
@@ -332,7 +335,6 @@ public abstract class EntityAircraft extends Entity {
 		if (!isTestMode()) {
 			calcFields(q);
 			tickMovement(q);
-			calcForces(q);
 			calcAcc();
 			motionClamp();
 			move(MoverType.SELF, getDeltaMovement());
@@ -528,10 +530,17 @@ public abstract class EntityAircraft extends Entity {
 		torqueZ += torque;
 	}
 	
-	public void calcForces(Quaternion q) {
-		forces = forces.add(getWeightForce());
-		forces = forces.add(getThrustForce(q));
-		forces = forces.add(getDragForce(q));
+	protected void calcFields(Quaternion q) {
+		// IDEA !calculate everything here once per tick!
+		Vec3 m = getDeltaMovement();
+		xzSpeed = (float) Math.sqrt(m.x*m.x + m.z*m.z);
+		xzYaw = UtilAngles.getYaw(m);
+		xzDirYawDiff = xzYaw - getYRot();
+		xzSpeedDir = 1;
+		if (Math.abs(xzDirYawDiff) > 90) xzSpeedDir = -1;
+		totalWeight = getAircraftWeight() + partsManager.getPartsWeight();
+		staticFric = totalWeight * ACC_GRAVITY * CO_STATIC_FRICTION;
+		kineticFric = totalWeight * ACC_GRAVITY * CO_KINETIC_FRICTION;
 	}
 	
 	public void calcAcc() {
@@ -545,10 +554,16 @@ public abstract class EntityAircraft extends Entity {
 	 * @param q the plane's current rotation
 	 */
 	public void tickMovement(Quaternion q) {
+		tickAll(q);
 		if (onGround && isInWater()) tickGroundWater(q);
 		else if (onGround) tickGround(q);
 		else if (isInWater()) tickWater(q);
 		else tickAir(q);
+	}
+	
+	public void tickAll(Quaternion q) {
+		forces = forces.add(getWeightForce());
+		forces = forces.add(getThrustForce(q));
 	}
 	
 	/**
@@ -556,34 +571,39 @@ public abstract class EntityAircraft extends Entity {
 	 * @param q the plane's current rotation
 	 */
 	public void tickGround(Quaternion q) {
-		// TODO drifting
-		double speed = xzSpeed * xzSpeedDir;
-		float th = getCurrentThrottle();
-		double max = getMaxSpeedForMotion();
-		float w = getTotalWeight();
-		if (!isLandingGear() && speed != 0) {
-			speed -= 0.05 * xzSpeedDir;
-			if (Math.abs(speed) < 0.05) speed = 0;
-		} else if (th != 0 && xzSpeed < max) {
-			double mag = getThrustMag();
-			double f = w*0.3*Math.signum(mag);
-			if (Math.abs(mag) > Math.abs(f)) speed += mag - f;
-			if (Math.abs(speed) > max) speed = max * Math.signum(speed);
-		} else if (speed != 0) {
-			speed -= 0.01 * xzSpeedDir;
-			if (Math.abs(speed) < 0.01) speed = 0;
-		}
-		Vec3 dir = UtilAngles.rotationToVector(getYRot(), 0);
-		Vec3 motion = dir.scale(speed);
-		if (motion.y < 0) motion = new Vec3(motion.x, 0, motion.z);
-		setDeltaMovement(motion);
+		forces = forces.add(getDriveForce());
+		forces = forces.add(getFrictionForce());
 	}
 	
-	private int getXZSpeedDir() {
-		float my = UtilAngles.getYaw(getDeltaMovement());
-		double diff = UtilAngles.degreesDifferenceAbs(my, yRotO);
-		if (diff > 90) return -1;
-		return 1;
+	public Vec3 getDriveForce() {
+		// TODO drifting
+		//float th = getCurrentThrottle();
+		//double speed = getMaxSpeedForMotion() * th;
+		double f = getThrustMag();
+		if (inputSpecial) f = -0.1;
+		if (Math.abs(xzDirYawDiff) < 0.01) {
+			return UtilAngles.rotationToVector(getYRot(), 0, f);
+		} 
+		return Vec3.ZERO;
+	}
+	
+	public Vec3 getFrictionForce() {
+		double max_tr = getTurnRadius();
+		if (Math.abs(xzDirYawDiff) < 0.01) {
+			if (inputYaw != 0 && max_tr != 0) {
+				double tr = max_tr * 1 / inputYaw;
+				double cen_acc = xzSpeed * xzSpeed / tr;
+				double cen_force = cen_acc * totalWeight; 
+				if (cen_force >= staticFric) return getKineticFrictionForce();
+				float cen_acc_dir = getYRot() - Math.abs(inputYaw)*90;
+				return UtilAngles.rotationToVector(cen_acc_dir, 0, -cen_force);
+			}
+		} 
+		return getKineticFrictionForce();
+	}
+	
+	private Vec3 getKineticFrictionForce() {
+		return UtilAngles.rotationToVector(xzYaw, 0, -kineticFric);
 	}
 	
 	/**
@@ -591,6 +611,7 @@ public abstract class EntityAircraft extends Entity {
 	 * @param q the plane's current rotation
 	 */
 	public void tickAir(Quaternion q) {
+		forces = forces.add(getDragForce(q));
 		resetFallDistance();
 	}
 	
@@ -638,7 +659,7 @@ public abstract class EntityAircraft extends Entity {
 		// Drag = (drag coefficient) * (air pressure) * (speed)^2 * (wing surface area) / 2
 		double air = UtilEntity.getAirPressure(getY());
 		double speedSqr = getDeltaMovement().lengthSqr();
-		return air * speedSqr * getSurfaceArea() * DRAG_COEFFICIENT;
+		return air * speedSqr * getSurfaceArea() * CO_DRAG;
 	}
 	
 	public double getSurfaceArea() {
@@ -658,15 +679,6 @@ public abstract class EntityAircraft extends Entity {
 	public final void setWingSurfaceArea(float area) {
 		if (area < 0) area = 0;
 		entityData.set(WING_AREA, area);
-	}
-	
-	protected void calcFields(Quaternion q) {
-		// IDEA !calculate everything here once per tick!
-		double x = getDeltaMovement().x;
-		double z = getDeltaMovement().z;
-		xzSpeed = (float) Math.sqrt(x*x + z*z);
-		xzSpeedDir = getXZSpeedDir();
-		totalWeight = getAircraftWeight() + partsManager.getPartsWeight();
 	}
 	
 	public Vec3 getWeightForce() {

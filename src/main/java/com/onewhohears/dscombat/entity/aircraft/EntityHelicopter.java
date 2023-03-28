@@ -69,12 +69,12 @@ public class EntityHelicopter extends EntityAircraft {
 	
 	@Override
 	public void tickGround(Quaternion q) {
-		Vec3 motion = getDeltaMovement();
-		if (motion.y < 0) motion = new Vec3(motion.x, 0, motion.z);
-		motion = motion.multiply(0.8, 1, 0.8);
-		motion = motion.add(getWeightForce());
-		motion = motion.add(getThrustForce(q));
-		setDeltaMovement(motion);
+		addFrictionForce(kineticFric);
+	}
+	
+	@Override
+	public double getDriveAcc() {
+		return 0;
 	}
 	
 	@Override

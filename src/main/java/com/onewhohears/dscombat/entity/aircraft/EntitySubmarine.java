@@ -80,6 +80,11 @@ public class EntitySubmarine extends EntityBoat {
 	}
 	
 	@Override
+	public double getDriveAcc() {
+		return 0;
+	}
+	
+	@Override
 	public void tickAir(Quaternion q) {
 		super.tickAir(q);
 	}

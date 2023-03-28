@@ -84,10 +84,12 @@ public class EntityBoat extends EntityAircraft {
 	
 	@Override
 	public void tickGround(Quaternion q) {
-		Vec3 motion = getDeltaMovement();
-		if (motion.y < 0) motion = motion.multiply(1, 0, 1);
-		motion = motion.multiply(0.5, 1, 0.5);
-		setDeltaMovement(motion);
+		addFrictionForce(kineticFric);
+	}
+	
+	@Override
+	public double getDriveAcc() {
+		return 0;
 	}
 	
 	@Override

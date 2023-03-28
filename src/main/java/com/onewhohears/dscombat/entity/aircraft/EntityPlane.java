@@ -60,8 +60,8 @@ public class EntityPlane extends EntityAircraft {
 	}
 	
 	@Override
-	public void tickAll(Quaternion q) {
-		super.tickAll(q);
+	public void tickAlways(Quaternion q) {
+		super.tickAlways(q);
 		forces = forces.add(getLiftForce(q));
 	}
 	
@@ -73,7 +73,12 @@ public class EntityPlane extends EntityAircraft {
 	
 	@Override
 	public void tickGround(Quaternion q) {
-		super.tickGround(q);	
+		super.tickGround(q);
+	}
+	
+	@Override
+	public double getDriveAcc() {
+		return 0;
 	}
 	
 	@Override

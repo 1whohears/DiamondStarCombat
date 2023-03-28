@@ -107,6 +107,7 @@ public abstract class EntityAircraft extends Entity {
 	public static final double CO_DRAG = 0.015;
 	public static final double CO_STATIC_FRICTION = 8.00;
 	public static final double CO_KINETIC_FRICTION = 2.00;
+	public static final float CO_SLIDE_TORQUE = 0.800f;
 	public static final double collideSpeedThreshHold = 1d;
 	public static final double collideSpeedWithGearThreshHold = 2d;
 	public static final double collideDamageRate = 200d;
@@ -126,15 +127,16 @@ public abstract class EntityAircraft extends Entity {
 	
 	public boolean inputMouseMode, inputFlare, inputShoot, inputSelect, inputOpenMenu, inputSpecial, inputRadarMode, inputBothRoll;
 	public float inputThrottle, inputPitch, inputRoll, inputYaw;
-	public float zRot, zRotO, yRotO2; 
+	public float zRot, zRotO; 
 	public float torqueX, torqueY, torqueZ, torqueXO, torqueYO, torqueZO;
 	public Vec3 prevMotion = Vec3.ZERO;
 	public Vec3 forces = Vec3.ZERO;
 	
 	public boolean nightVisionHud = false;
 	
+	protected boolean isSliding;
 	protected int xzSpeedDir;
-	protected float xzSpeed, totalWeight, xzYaw, xzDirYawDiff;
+	protected float xzSpeed, totalWeight, xzYaw, slideAngle, slideAngleCos;
 	protected double staticFric, kineticFric;
 	
 	private ResourceLocation currentTexture;
@@ -312,11 +314,13 @@ public abstract class EntityAircraft extends Entity {
             setDeltaMovement(Vec3.ZERO);
 		// SET PREV/OLD
 		prevMotion = getDeltaMovement();
-		zRotO = zRot;
 		torqueXO = torqueX;
 		torqueYO = torqueY;
 		torqueZO = torqueZ;
 		// SET DIRECTION
+		xRotO = getXRot();
+		yRotO = getYRot();
+		zRotO = zRot;
 		Quaternion q;
 		if (level.isClientSide) q = getClientQ();
 		else q = getQ();
@@ -333,11 +337,11 @@ public abstract class EntityAircraft extends Entity {
 		forces = Vec3.ZERO;
 		tickThrottle();
 		if (!isTestMode()) {
-			calcFields(q);
 			tickMovement(q);
 			calcAcc();
 			motionClamp();
 			move(MoverType.SELF, getDeltaMovement());
+			calcFields(q); // MUST BE LAST
 		}
 		if (isControlledByLocalInstance()) syncPacketPositionCodec(getX(), getY(), getZ());
         // OTHER
@@ -346,7 +350,6 @@ public abstract class EntityAircraft extends Entity {
 		sounds();
 		if (level.isClientSide) clientTick();
 		else serverTick();
-		yRotO2 = yRotO;
 	}
 	
 	/**
@@ -424,6 +427,7 @@ public abstract class EntityAircraft extends Entity {
 		if (Math.abs(my) > maxY) my = maxY * Math.signum(my);
 		else if (Math.abs(my) < 0.001) my = 0;
 		
+		if (onGround && my < 0) my = 0; 
 		setDeltaMovement(motionXZ.x, my, motionXZ.z);
 	}
 	
@@ -459,11 +463,16 @@ public abstract class EntityAircraft extends Entity {
 	
 	public void directionGround(Quaternion q) {
 		flatten(q, 5f, 5f);
-		torqueY = 0;
-		float tr = getTurnRadius();
-		if (inputYaw != 0 && tr != 0) {
-			float turn = 1 / inputYaw * tr;
-			q.mul(Vector3f.YN.rotation(xzSpeed / turn * xzSpeedDir));
+		float max_tr = getTurnRadius();
+		if (inputYaw == 0 || max_tr == 0) return;
+		float tr = 1 / inputYaw * max_tr;
+		float turn = xzSpeed / tr * xzSpeedDir;
+		if (isSliding) {
+			// TODO find better sliding torque equation
+			addTorqueY(turn*slideAngleCos*CO_SLIDE_TORQUE, false);
+		} else {
+			torqueY = 0;
+			q.mul(Vector3f.YN.rotation(turn));
 		}
 	}
 	
@@ -534,17 +543,18 @@ public abstract class EntityAircraft extends Entity {
 	protected void calcFields(Quaternion q) {
 		// IDEA !calculate everything here once per tick!
 		Vec3 m = getDeltaMovement();
-		float y = yRotO2;
+		float y = getYRot();
 		xzSpeed = (float) Math.sqrt(m.x*m.x + m.z*m.z);
 		if (xzSpeed == 0) {
 			xzYaw = y;
-			xzDirYawDiff = 0;
+			slideAngle = 0;
 		} else {
 			xzYaw = UtilAngles.getYaw(m);
-			xzDirYawDiff = Mth.degreesDifference(xzYaw, y);
+			slideAngle = Mth.degreesDifference(xzYaw, y);
+			slideAngleCos = (float) Math.abs(Math.cos(Math.toRadians(slideAngle)));
 		}
 		xzSpeedDir = 1;
-		if (Math.abs(xzDirYawDiff) > 90) xzSpeedDir = -1;
+		if (Math.abs(slideAngle) > 90) xzSpeedDir = -1;
 		totalWeight = getAircraftWeight() + partsManager.getPartsWeight();
 		staticFric = totalWeight * ACC_GRAVITY * CO_STATIC_FRICTION;
 		kineticFric = totalWeight * ACC_GRAVITY * CO_KINETIC_FRICTION;
@@ -557,16 +567,16 @@ public abstract class EntityAircraft extends Entity {
 	/**
 	 * called on both client and server side every tick to change the craft's movement 
 	 * a force is a Vec3 to be added to this entities motion or getDeltaMovement()
-	 * in minecraft an entitie's motion is the blocks an entity will move per tick
+	 * in Minecraft an entitie's motion is the blocks an entity will move per tick
 	 * @param q the plane's current rotation
 	 */
 	public void tickMovement(Quaternion q) {
 		//System.out.println("===MOVEMENT===");
 		//System.out.println("xzSpeed = "+xzSpeed*xzSpeedDir);
-		System.out.println(level.isClientSide);
-		System.out.println("xzYaw = "+xzYaw+" yRot = "+getYRot()+" yRotO = "+yRotO+" yRotO2 = "+yRotO2);
-		System.out.println("ANGLE DIFF = "+xzDirYawDiff);
-		tickAll(q);
+		//System.out.println(level.isClientSide);
+		//System.out.println("xzYaw = "+xzYaw+" yRot = "+getYRot()+" yRotO = "+yRotO);
+		//System.out.println("ANGLE DIFF = "+xzDirYawDiff);
+		tickAlways(q);
 		if (onGround && isInWater()) tickGroundWater(q);
 		else if (onGround) tickGround(q);
 		else if (isInWater()) tickWater(q);
@@ -575,7 +585,7 @@ public abstract class EntityAircraft extends Entity {
 		//System.out.println("move = "+getDeltaMovement());
 	}
 	
-	public void tickAll(Quaternion q) {
+	public void tickAlways(Quaternion q) {
 		forces = forces.add(getWeightForce());
 		forces = forces.add(getThrustForce(q));
 	}
@@ -585,25 +595,30 @@ public abstract class EntityAircraft extends Entity {
 	 * @param q the plane's current rotation
 	 */
 	public void tickGround(Quaternion q) {
-		if (isXZDirYawDiffNearZero()) {
-			double max_tr = getTurnRadius();
-			if (inputYaw != 0 && max_tr != 0) {
-				double tr = max_tr * 1 / Math.abs(inputYaw);
-				double cen_acc = xzSpeed * xzSpeed / tr;
-				double cen_force = cen_acc * totalWeight; 
-				System.out.println("cen_force = "+cen_force);
-				System.out.println("staticFric = "+staticFric);
-				if (cen_force >= staticFric) {
-					addFrictionForce(kineticFric);
-					return;
-				}
-				//Math.abs(Math.cos(Math.toRadians(xzDirYawDiff)))
-			}
-			Vec3 n = UtilAngles.rotationToVector(getYRot(), 0);
-			setDeltaMovement(n.scale(xzSpeed*xzSpeedDir + getThrustMag()/totalWeight));
-			return;
+		if (!isSlideAngleNearZero()) { // CHECK IF SLIDING
+			addFrictionForce(kineticFric);
+		} else {
+			isSliding = false;
+			checkSlideFromTurn();
 		}
-		addFrictionForce(kineticFric);
+		setDriveMovement();
+	}
+	
+	protected void setDriveMovement() {
+		Vec3 n = UtilAngles.rotationToVector(getYRot(), 0);
+		if (isSliding) {
+			setDeltaMovement(getDeltaMovement().add(n.scale(
+				getDriveAcc() * slideAngleCos
+			)));
+			System.out.println("SLIDING");
+		} else {
+			setDeltaMovement(n.scale(xzSpeed*xzSpeedDir + getDriveAcc()));
+			if (getCurrentThrottle() == 0) addFrictionForce(1);
+		}
+	}
+	
+	public double getDriveAcc() {
+		return getThrustMag()/totalWeight;
 	}
 	
 	protected void addFrictionForce(double f) {
@@ -614,18 +629,33 @@ public abstract class EntityAircraft extends Entity {
 		Vec3 acc = force.scale(1/totalWeight);
 		if (m.x != 0 && Math.signum(m.x+acc.x) != Math.signum(m.x)) {
 			force = force.multiply(0, 1, 1);
-			setDeltaMovement(m.multiply(0, 1, 1));
+			m = m.multiply(0, 1, 1);
 		}
 		if (m.z != 0 && Math.signum(m.z+acc.z) != Math.signum(m.z)) {
 			force = force.multiply(1, 1, 0);
-			setDeltaMovement(m.multiply(1, 1, 0));
+			m = m.multiply(1, 1, 0);
 		}
+		setDeltaMovement(m);
 		forces = forces.add(force);
+		isSliding = true;
 	}
 	
-	public boolean isXZDirYawDiffNearZero() {
-		if (xzSpeedDir == -1) return Mth.abs(Mth.abs(xzDirYawDiff)-180) < 0.1;
-		return Mth.abs(xzDirYawDiff) < 0.1;
+	protected void checkSlideFromTurn() {
+		double max_tr = getTurnRadius();
+		if (inputYaw != 0 && max_tr != 0) { // IF TURNING
+			double tr = max_tr * 1 / Math.abs(inputYaw); // inputed turn radius
+			double cen_acc = xzSpeed * xzSpeed / tr; // cen_acc needed to complete turn
+			double cen_force = cen_acc * totalWeight; // friction force needed to not slide
+			if (cen_force >= staticFric) { // if cen_force > static-friction-threshold slide
+				addFrictionForce(kineticFric);
+				System.out.println(cen_force+" >= "+staticFric);
+			}
+		}
+	}
+	
+	public boolean isSlideAngleNearZero() {
+		if (xzSpeedDir == -1) return Mth.abs(Mth.abs(slideAngle)-180) < 0.1;
+		return Mth.abs(slideAngle) < 0.1;
 	}
 	
 	/**

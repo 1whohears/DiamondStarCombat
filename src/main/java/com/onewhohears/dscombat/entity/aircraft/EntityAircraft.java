@@ -107,7 +107,7 @@ public abstract class EntityAircraft extends Entity {
 	public static final double CO_DRAG = 0.015;
 	public static final double CO_STATIC_FRICTION = 8.00;
 	public static final double CO_KINETIC_FRICTION = 2.00;
-	public static final float CO_SLIDE_TORQUE = 0.800f;
+	public static final float CO_SLIDE_TORQUE = 0.100f;
 	public static final double collideSpeedThreshHold = 1d;
 	public static final double collideSpeedWithGearThreshHold = 2d;
 	public static final double collideDamageRate = 200d;
@@ -467,13 +467,18 @@ public abstract class EntityAircraft extends Entity {
 		if (inputYaw == 0 || max_tr == 0) return;
 		float tr = 1 / inputYaw * max_tr;
 		float turn = xzSpeed / tr * xzSpeedDir;
-		if (isSliding) {
+		float turnDeg = turn * Mth.RAD_TO_DEG;
+		//float yi = Math.signum(inputYaw);
+		//float ay = getAccelerationYaw();
+		//if (isSliding) {
 			// TODO find better sliding torque equation
-			addTorqueY(turn*slideAngleCos*CO_SLIDE_TORQUE, false);
-		} else {
+			//addTorqueY(turnDeg*slideAngleCos*CO_SLIDE_TORQUE, false);
+			//addTorqueY(ay*yi*slideAngleCos*CO_SLIDE_TORQUE, turnDeg);
+		//} else {
 			torqueY = 0;
 			q.mul(Vector3f.YN.rotation(turn));
-		}
+			//addTorqueY(ay*yi, turnDeg);
+		//}
 	}
 	
 	public void directionAir(Quaternion q) {
@@ -523,11 +528,15 @@ public abstract class EntityAircraft extends Entity {
 	}
 	
 	public void addTorqueY(float torque, boolean control) {
-		if (control) {
-			float tabs = Math.abs(torqueY);
-			if (tabs > getMaxDeltaYaw()) torque = 0;
-			else if (Math.abs(torqueY+torque) > getMaxDeltaYaw()) torque = (getMaxDeltaYaw() - tabs) * Math.signum(torqueY);
-		}
+		if (control) addTorqueY(torque, getMaxDeltaYaw());
+		else torqueY += torque;
+	}
+	
+	public void addTorqueY(float torque, float maxDeltaYaw) {
+		maxDeltaYaw = Mth.abs(maxDeltaYaw);
+		float tabs = Math.abs(torqueY);
+		if (tabs > maxDeltaYaw) torque = 0;
+		else if (Math.abs(torqueY+torque) > maxDeltaYaw) torque = (maxDeltaYaw-tabs)*Math.signum(torqueY);
 		torqueY += torque;
 	}
 	
@@ -596,10 +605,15 @@ public abstract class EntityAircraft extends Entity {
 	 */
 	public void tickGround(Quaternion q) {
 		if (!isSlideAngleNearZero()) { // CHECK IF SLIDING
+			debug("slide angle = "+slideAngle);
 			addFrictionForce(kineticFric);
+			isSliding = true;
 		} else {
-			isSliding = false;
-			checkSlideFromTurn();
+			if (willSlideFromTurn()) {
+				addFrictionForce(kineticFric);
+				isSliding = true;
+			} 
+			else isSliding = false;
 		}
 		setDriveMovement();
 	}
@@ -610,10 +624,10 @@ public abstract class EntityAircraft extends Entity {
 			setDeltaMovement(getDeltaMovement().add(n.scale(
 				getDriveAcc() * slideAngleCos
 			)));
-			System.out.println("SLIDING");
+			debug("SLIDING");
 		} else {
 			setDeltaMovement(n.scale(xzSpeed*xzSpeedDir + getDriveAcc()));
-			if (getCurrentThrottle() == 0) addFrictionForce(1);
+			if (getCurrentThrottle() == 0 && xzSpeed != 0) addFrictionForce(1);
 		}
 	}
 	
@@ -637,25 +651,25 @@ public abstract class EntityAircraft extends Entity {
 		}
 		setDeltaMovement(m);
 		forces = forces.add(force);
-		isSliding = true;
 	}
 	
-	protected void checkSlideFromTurn() {
+	protected boolean willSlideFromTurn() {
 		double max_tr = getTurnRadius();
 		if (inputYaw != 0 && max_tr != 0) { // IF TURNING
 			double tr = max_tr * 1 / Math.abs(inputYaw); // inputed turn radius
 			double cen_acc = xzSpeed * xzSpeed / tr; // cen_acc needed to complete turn
 			double cen_force = cen_acc * totalWeight; // friction force needed to not slide
 			if (cen_force >= staticFric) { // if cen_force > static-friction-threshold slide
-				addFrictionForce(kineticFric);
-				System.out.println(cen_force+" >= "+staticFric);
+				debug(cen_force+" >= "+staticFric);
+				return true;
 			}
 		}
+		return false;
 	}
 	
 	public boolean isSlideAngleNearZero() {
-		if (xzSpeedDir == -1) return Mth.abs(Mth.abs(slideAngle)-180) < 0.1;
-		return Mth.abs(slideAngle) < 0.1;
+		if (xzSpeedDir == -1) return Mth.abs(Mth.abs(slideAngle)-180) < 1;
+		return Mth.abs(slideAngle) < 1;
 	}
 	
 	/**
@@ -1617,5 +1631,9 @@ public abstract class EntityAircraft extends Entity {
     public Vec3 getDismountLocationForPassenger(LivingEntity livingEntity) {
 		return super.getDismountLocationForPassenger(livingEntity);
 	}
+    
+    protected void debug(String debug) {
+    	if (hasControllingPassenger()) System.out.println(debug);
+    }
     
 }

@@ -151,8 +151,8 @@ public class EntityPlane extends EntityAircraft {
 	public double getSurfaceArea() {
 		double a = super.getSurfaceArea();
 		a += getWingSurfaceArea() * Math.sin(Math.toRadians(aoa));
-		if  (isLandingGear()) a += 2.0 * Math.cos(Math.toRadians(aoa));
-		if  (inputSpecial) a += 2.0 * Math.cos(Math.toRadians(aoa));
+		if (isLandingGear()) a += 2.0 * Math.cos(Math.toRadians(aoa));
+		if (inputSpecial) a += getWingSurfaceArea() / 8 * Math.cos(Math.toRadians(aoa));
 		return a;
 	}
 	

@@ -186,7 +186,7 @@ public class EntityBullet extends EntityWeapon {
 				System.out.println("EXPLODE "+this);
 			} else {
 				level.addParticle(ParticleTypes.SMOKE, 
-						this.getX(), this.getY()+0.5D, this.getZ(), 
+						getX(), getY()+0.5D, getZ(), 
 						0.0D, 0.0D, 0.0D);
 			}
 		}
@@ -194,8 +194,8 @@ public class EntityBullet extends EntityWeapon {
 	
 	@Override
 	protected void motion() {
-		Vec3 dir = UtilAngles.rotationToVector(this.getYRot(), this.getXRot());
-		this.setDeltaMovement(dir.scale(this.getSpeed()));
+		Vec3 dir = UtilAngles.rotationToVector(getYRot(), getXRot());
+		this.setDeltaMovement(dir.scale(getSpeed()));
 	}
 	
 	public float getDamage() {

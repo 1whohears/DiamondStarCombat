@@ -79,6 +79,7 @@ public class EntityHelicopter extends EntityAircraft {
 	
 	@Override
 	public void tickAir(Quaternion q) {
+		// TODO fix helicopter physics
 		if (!level.isClientSide && inputSpecial) {
 			float th = getTotalWeight() / getMaxThrust();
 			setCurrentThrottle(th);

@@ -76,7 +76,7 @@ public class EntityGroundVehicle extends EntityAircraft {
 		super.tickGround(q);
 		if (inputSpecial) {
 			throttleToZero();
-			addFrictionForce(kineticFric*2);
+			addFrictionForce(kineticFric);
 		}
 	}
 	
@@ -109,13 +109,8 @@ public class EntityGroundVehicle extends EntityAircraft {
 	
 	@Override
 	public boolean isLandingGear() {
-		return !inputSpecial;
+		return true;
     }
-
-	@Override
-	protected float getTorqueDragMag() {
-		return 0.35f;
-	}
 	
 	@Override
 	public void updateControls(float throttle, float pitch, float roll, float yaw,

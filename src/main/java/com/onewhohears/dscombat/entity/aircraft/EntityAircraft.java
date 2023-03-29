@@ -10,7 +10,7 @@ import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents;
 import com.onewhohears.dscombat.common.container.AircraftMenuContainer;
 import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftData;
+import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftQ;
 import com.onewhohears.dscombat.common.network.toserver.ToServerRequestPlaneData;
 import com.onewhohears.dscombat.data.AircraftPresets;
 import com.onewhohears.dscombat.data.AircraftTextures;
@@ -105,9 +105,9 @@ public abstract class EntityAircraft extends Entity {
 	
 	public static final double ACC_GRAVITY = 0.025;
 	public static final double CO_DRAG = 0.015;
-	public static final double CO_STATIC_FRICTION = 8.00;
-	public static final double CO_KINETIC_FRICTION = 2.00;
-	public static final float CO_SLIDE_TORQUE = 0.100f;
+	public static final double CO_STATIC_FRICTION = 4.50;
+	public static final double CO_KINETIC_FRICTION = 1.50;
+	public static final float CO_SLIDE_TORQUE = 1.00f;
 	public static final double collideSpeedThreshHold = 1d;
 	public static final double collideSpeedWithGearThreshHold = 2d;
 	public static final double collideDamageRate = 200d;
@@ -134,7 +134,6 @@ public abstract class EntityAircraft extends Entity {
 	
 	public boolean nightVisionHud = false;
 	
-	protected boolean isSliding;
 	protected int xzSpeedDir;
 	protected float xzSpeed, totalWeight, xzYaw, slideAngle, slideAngleCos;
 	protected double staticFric, kineticFric;
@@ -196,7 +195,7 @@ public abstract class EntityAircraft extends Entity {
         	if (Q.equals(key)) {
         		if (isControlledByLocalInstance()) {
         			// if this entity is piloted by the client's player send the client quaternion to the server
-        			PacketHandler.INSTANCE.sendToServer(new ToServerAircraftData(this));
+        			PacketHandler.INSTANCE.sendToServer(new ToServerAircraftQ(this));
         		} else {
         			// if the client player is not controlling this plane then client quaternion = server quaternion
         			setPrevQ(getClientQ());
@@ -318,8 +317,6 @@ public abstract class EntityAircraft extends Entity {
 		torqueYO = torqueY;
 		torqueZO = torqueZ;
 		// SET DIRECTION
-		xRotO = getXRot();
-		yRotO = getYRot();
 		zRotO = zRot;
 		Quaternion q;
 		if (level.isClientSide) q = getClientQ();
@@ -337,11 +334,12 @@ public abstract class EntityAircraft extends Entity {
 		forces = Vec3.ZERO;
 		tickThrottle();
 		if (!isTestMode()) {
+			calcMoveStatsPre(q);
 			tickMovement(q);
 			calcAcc();
 			motionClamp();
 			move(MoverType.SELF, getDeltaMovement());
-			calcFields(q); // MUST BE LAST
+			calcMoveStatsPost(q);
 		}
 		if (isControlledByLocalInstance()) syncPacketPositionCodec(getX(), getY(), getZ());
         // OTHER
@@ -427,7 +425,7 @@ public abstract class EntityAircraft extends Entity {
 		if (Math.abs(my) > maxY) my = maxY * Math.signum(my);
 		else if (Math.abs(my) < 0.001) my = 0;
 		
-		if (onGround && my < 0) my = 0; 
+		if (onGround && my < 0) my = -0.01; // THIS MUST BE BELOW ZERO
 		setDeltaMovement(motionXZ.x, my, motionXZ.z);
 	}
 	
@@ -468,17 +466,12 @@ public abstract class EntityAircraft extends Entity {
 		float tr = 1 / inputYaw * max_tr;
 		float turn = xzSpeed / tr * xzSpeedDir;
 		float turnDeg = turn * Mth.RAD_TO_DEG;
-		//float yi = Math.signum(inputYaw);
-		//float ay = getAccelerationYaw();
-		//if (isSliding) {
-			// TODO find better sliding torque equation
+		if (isSliding()) {
 			//addTorqueY(turnDeg*slideAngleCos*CO_SLIDE_TORQUE, false);
-			//addTorqueY(ay*yi*slideAngleCos*CO_SLIDE_TORQUE, turnDeg);
-		//} else {
-			torqueY = 0;
-			q.mul(Vector3f.YN.rotation(turn));
-			//addTorqueY(ay*yi, turnDeg);
-		//}
+			torqueY = turnDeg*slideAngleCos*CO_SLIDE_TORQUE;
+		} else {
+			torqueY = turnDeg;
+		}
 	}
 	
 	public void directionAir(Quaternion q) {
@@ -512,7 +505,11 @@ public abstract class EntityAircraft extends Entity {
 		return (abs - td) * Math.signum(torque);
 	}
 	
-	protected abstract float getTorqueDragMag();
+	protected float getTorqueDragMag() {
+		if (onGround) return 1.0f;
+		else if (isInWater()) return 0.3f;
+		else return 0.2f;
+ 	}
 	
 	public void resetTorque() {
 		torqueX = torqueY = torqueZ = 0;
@@ -549,8 +546,11 @@ public abstract class EntityAircraft extends Entity {
 		torqueZ += torque;
 	}
 	
-	protected void calcFields(Quaternion q) {
-		// IDEA !calculate everything here once per tick!
+	protected void calcMoveStatsPre(Quaternion q) {
+		
+	}
+	
+	protected void calcMoveStatsPost(Quaternion q) {
 		Vec3 m = getDeltaMovement();
 		float y = getYRot();
 		xzSpeed = (float) Math.sqrt(m.x*m.x + m.z*m.z);
@@ -580,18 +580,11 @@ public abstract class EntityAircraft extends Entity {
 	 * @param q the plane's current rotation
 	 */
 	public void tickMovement(Quaternion q) {
-		//System.out.println("===MOVEMENT===");
-		//System.out.println("xzSpeed = "+xzSpeed*xzSpeedDir);
-		//System.out.println(level.isClientSide);
-		//System.out.println("xzYaw = "+xzYaw+" yRot = "+getYRot()+" yRotO = "+yRotO);
-		//System.out.println("ANGLE DIFF = "+xzDirYawDiff);
 		tickAlways(q);
 		if (onGround && isInWater()) tickGroundWater(q);
 		else if (onGround) tickGround(q);
 		else if (isInWater()) tickWater(q);
 		else tickAir(q);
-		//System.out.println("forces = "+forces);
-		//System.out.println("move = "+getDeltaMovement());
 	}
 	
 	public void tickAlways(Quaternion q) {
@@ -604,30 +597,16 @@ public abstract class EntityAircraft extends Entity {
 	 * @param q the plane's current rotation
 	 */
 	public void tickGround(Quaternion q) {
-		if (!isSlideAngleNearZero()) { // CHECK IF SLIDING
-			debug("slide angle = "+slideAngle);
-			addFrictionForce(kineticFric);
-			isSliding = true;
-		} else {
-			if (willSlideFromTurn()) {
-				addFrictionForce(kineticFric);
-				isSliding = true;
-			} 
-			else isSliding = false;
-		}
-		setDriveMovement();
-	}
-	
-	protected void setDriveMovement() {
 		Vec3 n = UtilAngles.rotationToVector(getYRot(), 0);
-		if (isSliding) {
+		if (isSliding() || willSlideFromTurn()) {
 			setDeltaMovement(getDeltaMovement().add(n.scale(
 				getDriveAcc() * slideAngleCos
 			)));
-			debug("SLIDING");
+			addFrictionForce(kineticFric);
+			//debug("SLIDING");
 		} else {
 			setDeltaMovement(n.scale(xzSpeed*xzSpeedDir + getDriveAcc()));
-			if (getCurrentThrottle() == 0 && xzSpeed != 0) addFrictionForce(1);
+			if (getCurrentThrottle() == 0 && xzSpeed != 0) addFrictionForce(0.1);
 		}
 	}
 	
@@ -659,17 +638,19 @@ public abstract class EntityAircraft extends Entity {
 			double tr = max_tr * 1 / Math.abs(inputYaw); // inputed turn radius
 			double cen_acc = xzSpeed * xzSpeed / tr; // cen_acc needed to complete turn
 			double cen_force = cen_acc * totalWeight; // friction force needed to not slide
-			if (cen_force >= staticFric) { // if cen_force > static-friction-threshold slide
-				debug(cen_force+" >= "+staticFric);
-				return true;
-			}
+			//debug(cen_force+" >? "+staticFric);
+			if (cen_force >= staticFric) return true; // if cen_force >= static-friction-threshold slide
 		}
 		return false;
 	}
 	
 	public boolean isSlideAngleNearZero() {
-		if (xzSpeedDir == -1) return Mth.abs(Mth.abs(slideAngle)-180) < 1;
-		return Mth.abs(slideAngle) < 1;
+		if (xzSpeedDir == -1) return Mth.abs(Mth.abs(slideAngle)-180) < 2;
+		return Mth.abs(slideAngle) < 2;
+	}
+	
+	public boolean isSliding() {
+		return !isLandingGear() || !isSlideAngleNearZero();
 	}
 	
 	/**

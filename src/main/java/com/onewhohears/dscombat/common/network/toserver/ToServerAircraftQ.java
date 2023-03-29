@@ -13,34 +13,25 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent.Context;
 
-public class ToServerAircraftData extends IPacket {
+public class ToServerAircraftQ extends IPacket {
 	
 	public final int id;
 	public final Quaternion q;
-	//public final Vec3 pos;
-	//public final Vec3 move;
 	
-	public ToServerAircraftData(EntityAircraft e) {
-		// TODO should only Q be synched or should Q position and move all be synched like this?
+	public ToServerAircraftQ(EntityAircraft e) {
 		this.id = e.getId();
 		this.q = e.getClientQ();
-		//this.pos = e.position();
-		//this.move = e.getDeltaMovement();
 	}
 	
-	public ToServerAircraftData(FriendlyByteBuf buffer) {
+	public ToServerAircraftQ(FriendlyByteBuf buffer) {
 		id = buffer.readInt();
 		q = DataSerializers.QUATERNION.read(buffer);
-		//pos = DataSerializers.VEC3.read(buffer);
-		//move = DataSerializers.VEC3.read(buffer);
 	}
 	
 	@Override
 	public void encode(FriendlyByteBuf buffer) {
 		buffer.writeInt(id);
 		DataSerializers.QUATERNION.write(buffer, q);
-		//DataSerializers.VEC3.write(buffer, pos);
-		//DataSerializers.VEC3.write(buffer, move);
 	}
 
 	@Override
@@ -53,9 +44,6 @@ public class ToServerAircraftData extends IPacket {
 			if (level.getEntity(id) instanceof EntityAircraft plane) {
 				plane.setPrevQ(plane.getQ());
 				plane.setQ(q);
-				//plane.setPos(pos);
-				//plane.prevMotion = plane.getDeltaMovement();
-				//plane.setDeltaMovement(move);
 			}
 		});
 		ctx.get().setPacketHandled(true);

@@ -166,11 +166,6 @@ public class EntityBoat extends EntityAircraft {
 	}
 
 	@Override
-	protected float getTorqueDragMag() {
-		return 0.35f;
-	}
-
-	@Override
 	public Vec3 getThrustForce(Quaternion q) {
 		return Vec3.ZERO;
 	}

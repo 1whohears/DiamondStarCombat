@@ -66,8 +66,8 @@ public class EntityPlane extends EntityAircraft {
 	}
 	
 	@Override
-	protected void calcFields(Quaternion q) {
-		super.calcFields(q);
+	protected void calcMoveStatsPre(Quaternion q) {
+		super.calcMoveStatsPre(q);
 		calculateAOA(q);
 	}
 	
@@ -167,11 +167,6 @@ public class EntityPlane extends EntityAircraft {
 
 	public float getAOA() {
 		return aoa;
-	}
-	
-	@Override
-	protected float getTorqueDragMag() {
-		return 0.15f;
 	}
 	
 	@Override

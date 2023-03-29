@@ -142,7 +142,7 @@ public class EntityHelicopter extends EntityAircraft {
 	@Override
 	public boolean isLandingGear() {
 		if (alwaysLandingGear) return true;
-    	return entityData.get(LANDING_GEAR);
+    	return super.isLandingGear();
     }
 	
 	public float getAccForward() {
@@ -159,11 +159,6 @@ public class EntityHelicopter extends EntityAircraft {
 	
 	public void setAccSide(float acc) {
 		entityData.set(ACC_SIDE, acc);
-	}
-	
-	@Override
-	protected float getTorqueDragMag() {
-		return 0.25f;
 	}
 	
 	@Override

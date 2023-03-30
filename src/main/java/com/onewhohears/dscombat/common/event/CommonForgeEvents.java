@@ -7,6 +7,7 @@ import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
+import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -27,6 +28,12 @@ public final class CommonForgeEvents {
 	public static void serverTickEvent(TickEvent.ServerTickEvent event) {
 		if (event.phase != Phase.END) return;
 		NonTickingMissileManager.serverTick(event.getServer());
+	}
+	
+	@SubscribeEvent(priority = EventPriority.HIGH)
+	public static void entityDismountEvent(EntityMountEvent event) {
+		if (!event.isDismounting()) return;
+		// TODO prevent player from dismounting aircraft with shift to free that key
 	}
 	
 }

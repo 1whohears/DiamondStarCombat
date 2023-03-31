@@ -7,6 +7,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents;
+import com.onewhohears.dscombat.client.input.KeyInit;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
@@ -106,9 +107,9 @@ public class PilotOverlay {
 	
 	private static final MutableComponent weaponSelect = Component.empty().append("->");
 	private static void drawAircraftWeapons(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
+		int wh = 1, x = 1, weaponSelectWidth = m.font.width(weaponSelect)+1, maxNameWidth = 46;
 		WeaponData sw = plane.weaponSystem.getSelected();
-		if (sw == null) return;
-		int weaponSelectWidth = m.font.width(weaponSelect)+1, wh = 1, maxNameWidth = 0;
+		if (sw != null) {
 		List<WeaponData> weapons = plane.weaponSystem.getWeapons();
 		MutableComponent[] names = new MutableComponent[weapons.size()];
 		for (int i = 0; i < weapons.size(); ++i) {
@@ -118,7 +119,7 @@ public class PilotOverlay {
 		}
 		maxNameWidth += 4;
 		for (int i = 0; i < weapons.size(); ++i) {
-			int x = 1;
+			x = 1;
 			WeaponData data = weapons.get(i);
 			if (data.equals(sw)) GuiComponent.drawString(poseStack, m.font, 
 					weaponSelect, x, wh, 0x0000ff);
@@ -130,8 +131,18 @@ public class PilotOverlay {
 					data.getCurrentAmmo()+"/"+data.getMaxAmmo(), 
 					x, wh, 0x0000ff);
 			wh += 10;
-		}
-		// TODO display flares
+		} }
+		// flares
+		if (maxNameWidth < 50) maxNameWidth = 50;
+		x = 1+weaponSelectWidth;
+		GuiComponent.drawString(poseStack, m.font, 
+				"Flares("+KeyInit.flareKey.getKey().getDisplayName().getString()+")", 
+				x, wh, 0x0000ff);
+		x += maxNameWidth;
+		GuiComponent.drawString(poseStack, m.font, 
+				plane.getFlareNum()+"", 
+				x, wh, 0x0000ff);
+		wh += 10;
 	}
 	
 	private static void drawAircraftRadarData(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
@@ -142,15 +153,16 @@ public class PilotOverlay {
 				int selected = radar.getClientSelectedPingIndex();
 				int hover = ClientInputEvents.getHoverIndex();
 				if (hover != -1 && hover < pings.size()) {
+					String text = "("+(int)pings.get(hover).pos.distanceTo(plane.position())
+							+" | "+(int)pings.get(hover).pos.y+")";
 					GuiComponent.drawString(poseStack, m.font, 
-							"Dist: "+(int)pings.get(hover).pos.distanceTo(plane.position()), 
-							width/2-20, height/2-20, 0xffff00);
-					// TODO show target height
+						text, width/2-20, height/2-20, 0xffff00);
 				}
 				if (selected != -1 && selected < pings.size()) {
+					String text = "Target ("+(int)pings.get(hover).pos.distanceTo(plane.position())
+							+" | "+(int)pings.get(hover).pos.y+")";
 					GuiComponent.drawString(poseStack, m.font, 
-							"Target Dist: "+(int)pings.get(selected).pos.distanceTo(plane.position()), 
-							width/2-90, 1, 0xff0000);
+						text, width/2-90, 1, 0xff0000);
 				}
 			}
 		}

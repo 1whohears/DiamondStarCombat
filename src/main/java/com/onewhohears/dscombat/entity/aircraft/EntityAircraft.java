@@ -134,7 +134,7 @@ public abstract class EntityAircraft extends Entity {
 	
 	public boolean nightVisionHud = false;
 	
-	protected int xzSpeedDir;
+	protected int xzSpeedDir, flareNum;
 	protected float xzSpeed, totalMass, xzYaw, slideAngle, slideAngleCos, maxThrust;
 	protected double staticFric, kineticFric;
 	
@@ -551,6 +551,7 @@ public abstract class EntityAircraft extends Entity {
 		staticFric = totalMass * ACC_GRAVITY * CO_STATIC_FRICTION;
 		kineticFric = totalMass * ACC_GRAVITY * CO_KINETIC_FRICTION;
 		maxThrust = partsManager.getTotalEngineThrust();
+		flareNum = partsManager.getNumFlares();
 	}
 	
 	protected void calcMoveStatsPost(Quaternion q) {
@@ -1612,6 +1613,10 @@ public abstract class EntityAircraft extends Entity {
     public Vec3 getDismountLocationForPassenger(LivingEntity livingEntity) {
 		return super.getDismountLocationForPassenger(livingEntity);
 	}
+    
+    public int getFlareNum() {
+    	return flareNum;
+    }
     
     protected void debug(String debug) {
     	if (hasControllingPassenger()) System.out.println(debug);

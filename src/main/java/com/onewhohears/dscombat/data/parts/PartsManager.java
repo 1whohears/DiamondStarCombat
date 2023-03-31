@@ -268,17 +268,26 @@ public class PartsManager {
 	
 	public List<PartSlot> getFlares() {
 		List<PartSlot> flares = new ArrayList<PartSlot>();
-		for (PartSlot p : slots) if (p.filled() && p.getPartData().getType() == PartType.FLARE_DISPENSER) flares.add(p);
+		for (PartSlot p : slots) 
+			if (p.filled() && p.getPartData().getType() == PartType.FLARE_DISPENSER) 
+				flares.add(p);
 		return flares;
 	}
 	
 	public boolean useFlares(boolean consume) {
-		List<PartSlot> flares = getFlares();
+		if (parent.getFlareNum() < 1) return false;
 		boolean r = false;
-		for (PartSlot p : flares)
+		for (PartSlot p : getFlares())
 			if (((FlareDispenserData)p.getPartData()).flare(consume))
 				r = true;
 		return r;
+	}
+	
+	public int getNumFlares() {
+		int num = 0;
+		for (PartSlot p : getFlares()) 
+			num += ((FlareDispenserData)p.getPartData()).getFlares();
+		return num;
 	}
 	
 }

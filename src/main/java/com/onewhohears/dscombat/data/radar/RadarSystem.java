@@ -105,7 +105,7 @@ public class RadarSystem {
 			if (targets.get(i).id == old.id) {
 				selectedIndex = i;
 				if (getSelectedTarget(parent.level) instanceof EntityAircraft plane) {
-					plane.lockedOnto();
+					plane.lockedOnto(parent.position());
 				}
 				break;
 			}

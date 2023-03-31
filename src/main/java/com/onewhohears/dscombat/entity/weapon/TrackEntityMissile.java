@@ -21,10 +21,10 @@ public class TrackEntityMissile extends EntityMissile {
 	public void tickGuide() {
 		if (tickCount < 20) return;
 		//System.out.println("starting guide to target");
-		this.guideToTarget();
+		guideToTarget();
 		//System.out.println("starting cast");
-		if (this.target instanceof EntityAircraft plane) {
-			plane.trackedByMissile();
+		if (target instanceof EntityAircraft plane) {
+			plane.trackedByMissile(position());
 		}
 	}
 

@@ -1428,17 +1428,20 @@ public abstract class EntityAircraft extends Entity {
     }
     
     /**
-     * entity tracking missile calls this when tracking this plane
+     * entity tracking missile calls this server side when tracking this plane
+     * @param pos the position of the missile
      */
-    public void trackedByMissile() {
+    public void trackedByMissile(Vec3 pos) {
     	if (level.isClientSide) return;
     	setMissileTrackedTicks(10);
+    	// TODO tell radar system to send new RWR warning to client
     }
     
     /**
-     * another radar system calls this when tracking this craft
+     * another radar system calls this server side when tracking this craft
+     * @param pos the position of the radar
      */
-    public void lockedOnto() {
+    public void lockedOnto(Vec3 pos) {
     	if (level.isClientSide) return;
     	setLockedOntoTicks(10);
     }

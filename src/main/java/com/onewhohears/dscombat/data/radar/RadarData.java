@@ -125,7 +125,7 @@ public class RadarData {
 					checkFriendly(controller, pilot));
 				targets.add(p);
 				pings.add(p);
-				list.get(i).lockedOnto();
+				list.get(i).lockedOnto(radar.position());
 			}
 		}
 		if (scanPlayers) {

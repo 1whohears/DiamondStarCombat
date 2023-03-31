@@ -136,7 +136,7 @@ public class ModItems {
 					0.005f, false, PartSlot.INTERNAL_ALL));
 	public static final RegistryObject<Item> C12_ENGINE = ITEMS.register("c12_engine", 
 			() -> new ItemEngine(2.5f, 17f*(float)EntityAircraft.ACC_GRAVITY, 8.0f, 
-					0.011f, false, PartSlot.INTERNAL_ALL));
+					0.012f, false, PartSlot.INTERNAL_ALL));
 	
 	// RADARS
 	public static final RegistryObject<Item> AR500 = ITEMS.register("ar500", 

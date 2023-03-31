@@ -48,40 +48,12 @@ public class PilotOverlay {
 		if (m.options.hideGui) return;
 		if (m.gameMode.getPlayerMode() == GameType.SPECTATOR) return;
 		final var player = m.player;
-		if (player.getRootVehicle() instanceof EntityAircraft plane) {
-			// plane speed
-			int s = (int)(plane.getDeltaMovement().length() * 20d);
-			GuiComponent.drawString(poseStack, m.font, 
-					"m/s: "+s, 
-					width/2+11, height-50, 0x00ff00);
-			// distance from ground
-			GuiComponent.drawString(poseStack, m.font, 
-					"H: "+UtilEntity.getDistFromGround(plane), 
-					width/2+62, height-50, 0x00ff00);
-			// plane health
-			float h = plane.getHealth(), max = plane.getMaxHealth();
-			GuiComponent.drawString(poseStack, m.font, 
-						"Health: "+(int)h+"/"+(int)max, 
-						width/2-90, height-60, getHealthColor(h, max));
-			// plane position
-			GuiComponent.drawString(poseStack, m.font, 
-					"["+plane.getBlockX()+","+plane.getBlockY()+","+plane.getBlockZ()+"]", 
-					width/2+11, height-60, 0x00ff00);
-			// weapon data
-			int wh = 1;
-			List<WeaponData> weapons = plane.weaponSystem.getWeapons();
-			WeaponData sw = plane.weaponSystem.getSelected();
-			if (sw != null) for (int i = 0; i < weapons.size(); ++i) {
-				WeaponData data = weapons.get(i);
-				MutableComponent c = Component.empty();
-				if (data.equals(sw)) c.append("->");
-				else c.append("   ");
-				c.append(Component.translatable("item."+DSCombatMod.MODID+"."+data.getId()));
-				c.append(" "+data.getCurrentAmmo()+"/"+data.getMaxAmmo());
-				GuiComponent.drawString(poseStack, m.font, c, 
-						1, wh, 0x0000ff);
-				wh += 10;
-			}
+		
+		if (!(player.getRootVehicle() instanceof EntityAircraft plane)) return;
+		drawAircraftStats(m, player, plane, gui, poseStack, partialTick, width, height);
+		drawAircraftWeapons(m, player, plane, gui, poseStack, partialTick, width, height);
+		// TODO display heading, pitch, and roll
+		// TODO display direction missile is coming from
 			// flares
 			/*GuiComponent.drawString(poseStack, m.font, 
 					"   Flares "+plane.getFlares(), 
@@ -197,8 +169,45 @@ public class PilotOverlay {
 						"RADAR TRACKING YOU", 
 						1, height-10, 0xffff00);
 	        }
-		}
 	});
+	
+	private static void drawAircraftStats(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
+		// plane speed
+		int s = (int)(plane.getDeltaMovement().length() * 20d);
+		GuiComponent.drawString(poseStack, m.font, 
+				"m/s: "+s, 
+				width/2+11, height-50, 0x00ff00);
+		// distance from ground
+		GuiComponent.drawString(poseStack, m.font, 
+				"H: "+UtilEntity.getDistFromGround(plane), 
+				width/2+62, height-50, 0x00ff00);
+		// plane health
+		float h = plane.getHealth(), max = plane.getMaxHealth();
+		GuiComponent.drawString(poseStack, m.font, 
+					"Health: "+(int)h+"/"+(int)max, 
+					width/2-90, height-60, getHealthColor(h, max));
+		// plane position
+		GuiComponent.drawString(poseStack, m.font, 
+				"["+plane.getBlockX()+","+plane.getBlockY()+","+plane.getBlockZ()+"]", 
+				width/2+11, height-60, 0x00ff00);
+	}
+	
+	private static void drawAircraftWeapons(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
+		int wh = 1;
+		List<WeaponData> weapons = plane.weaponSystem.getWeapons();
+		WeaponData sw = plane.weaponSystem.getSelected();
+		if (sw != null) for (int i = 0; i < weapons.size(); ++i) {
+			WeaponData data = weapons.get(i);
+			MutableComponent c = Component.empty();
+			if (data.equals(sw)) c.append("->");
+			else c.append("   ");
+			c.append(Component.translatable("item."+DSCombatMod.MODID+"."+data.getId()));
+			c.append(" "+data.getCurrentAmmo()+"/"+data.getMaxAmmo());
+			GuiComponent.drawString(poseStack, m.font, c, 
+					1, wh, 0x0000ff);
+			wh += 10;
+		}
+	}
 	
 	private static final Color green = new Color(0, 255, 0);
 	private static final Color red = new Color(255, 0, 0);

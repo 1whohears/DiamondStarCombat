@@ -135,7 +135,7 @@ public abstract class EntityAircraft extends Entity {
 	public boolean nightVisionHud = false;
 	
 	protected int xzSpeedDir;
-	protected float xzSpeed, totalWeight, xzYaw, slideAngle, slideAngleCos;
+	protected float xzSpeed, totalMass, xzYaw, slideAngle, slideAngleCos, maxThrust;
 	protected double staticFric, kineticFric;
 	
 	private ResourceLocation currentTexture;
@@ -547,7 +547,10 @@ public abstract class EntityAircraft extends Entity {
 	}
 	
 	protected void calcMoveStatsPre(Quaternion q) {
-		
+		totalMass = getAircraftWeight() + partsManager.getPartsWeight();
+		staticFric = totalMass * ACC_GRAVITY * CO_STATIC_FRICTION;
+		kineticFric = totalMass * ACC_GRAVITY * CO_KINETIC_FRICTION;
+		maxThrust = partsManager.getTotalEngineThrust();
 	}
 	
 	protected void calcMoveStatsPost(Quaternion q) {
@@ -564,13 +567,10 @@ public abstract class EntityAircraft extends Entity {
 		}
 		xzSpeedDir = 1;
 		if (Math.abs(slideAngle) > 90) xzSpeedDir = -1;
-		totalWeight = getAircraftWeight() + partsManager.getPartsWeight();
-		staticFric = totalWeight * ACC_GRAVITY * CO_STATIC_FRICTION;
-		kineticFric = totalWeight * ACC_GRAVITY * CO_KINETIC_FRICTION;
 	}
 	
 	public void calcAcc() {
-		setDeltaMovement(getDeltaMovement().add(forces.scale(1/totalWeight)));
+		setDeltaMovement(getDeltaMovement().add(forces.scale(1/totalMass)));
 	}
 	
 	/**
@@ -611,7 +611,7 @@ public abstract class EntityAircraft extends Entity {
 	}
 	
 	public double getDriveAcc() {
-		return getThrustMag()/totalWeight;
+		return getThrustMag()/totalMass;
 	}
 	
 	protected void addFrictionForce(double f) {
@@ -619,7 +619,7 @@ public abstract class EntityAircraft extends Entity {
 		if (m.x == 0 && m.z == 0) return;
 		Vec3 mn = m.normalize();
  		Vec3 force = mn.scale(-f);
-		Vec3 acc = force.scale(1/totalWeight);
+		Vec3 acc = force.scale(1/totalMass);
 		if (m.x != 0 && Math.signum(m.x+acc.x) != Math.signum(m.x)) {
 			force = force.multiply(0, 1, 1);
 			m = m.multiply(0, 1, 1);
@@ -637,7 +637,7 @@ public abstract class EntityAircraft extends Entity {
 		if (inputYaw != 0 && max_tr != 0) { // IF TURNING
 			double tr = max_tr * 1 / Math.abs(inputYaw); // inputed turn radius
 			double cen_acc = xzSpeed * xzSpeed / tr; // cen_acc needed to complete turn
-			double cen_force = cen_acc * totalWeight; // friction force needed to not slide
+			double cen_force = cen_acc * totalMass; // friction force needed to not slide
 			//debug(cen_force+" >? "+staticFric);
 			if (cen_force >= staticFric) return true; // if cen_force >= static-friction-threshold slide
 		}
@@ -688,7 +688,7 @@ public abstract class EntityAircraft extends Entity {
 	 * @return the total thrust from the engines in the parts manager
 	 */
 	public float getMaxThrust() {
-		return partsManager.getTotalEngineThrust();
+		return maxThrust;
 	}
 	
 	/**
@@ -729,14 +729,14 @@ public abstract class EntityAircraft extends Entity {
 	}
 	
 	public Vec3 getWeightForce() {
-		return new Vec3(0, -getTotalWeight() * ACC_GRAVITY, 0);
+		return new Vec3(0, -getTotalMass() * ACC_GRAVITY, 0);
 	}
 	
 	/**
-	 * @return this weight of the aircraft plus the weight of the parts
+	 * @return this mass of the aircraft plus the mass of the parts
 	 */
-	public float getTotalWeight() {
-		return totalWeight;
+	public float getTotalMass() {
+		return totalMass;
 	}
 	
 	/**

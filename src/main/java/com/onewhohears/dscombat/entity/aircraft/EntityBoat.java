@@ -116,7 +116,7 @@ public class EntityBoat extends EntityAircraft {
 	}
 	
 	public boolean willFloat() {
-		float w = getTotalWeight();
+		float w = getTotalMass();
 		float fc = getBbWidth() * getBbWidth() * 0.05f;
 		return fc > w;
 	}

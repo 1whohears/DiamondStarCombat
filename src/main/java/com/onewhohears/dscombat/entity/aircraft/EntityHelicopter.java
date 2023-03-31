@@ -20,6 +20,8 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class EntityHelicopter extends EntityAircraft {
 	
+	public static final float CO_LIFT = 2.75f;
+	
 	public static final EntityDataAccessor<Float> ACC_FORWARD = SynchedEntityData.defineId(EntityHelicopter.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> ACC_SIDE = SynchedEntityData.defineId(EntityHelicopter.class, EntityDataSerializers.FLOAT);
 	
@@ -79,10 +81,10 @@ public class EntityHelicopter extends EntityAircraft {
 	
 	@Override
 	public void tickAir(Quaternion q) {
-		// FIXME fix helicopter physics
 		if (!level.isClientSide && inputSpecial) {
-			float th = getTotalWeight() / getMaxThrust();
-			setCurrentThrottle(th);
+			float max_th = getMaxThrust();
+			if (max_th != 0) setCurrentThrottle((float)-getWeightForce().y / max_th);
+			setDeltaMovement(getDeltaMovement().multiply(1, 0.95, 1));
 		}
 		super.tickAir(q);
 		Vec3 motion = getDeltaMovement();
@@ -133,7 +135,7 @@ public class EntityHelicopter extends EntityAircraft {
 	
 	@Override
 	public float getMaxThrust() {
-		return super.getMaxThrust() * 2.0f * (float)UtilEntity.getAirPressure(getY());
+		return super.getMaxThrust() * (float)UtilEntity.getAirPressure(getY()) * CO_LIFT;
 	}
 	
 	public float getPropellerRotation(float partialTicks) {

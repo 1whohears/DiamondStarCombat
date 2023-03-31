@@ -89,6 +89,7 @@ public class EntityHelicopter extends EntityAircraft {
 		super.tickAir(q);
 		Vec3 motion = getDeltaMovement();
 		if (isFreeLook()) {
+			motion = motion.multiply(0.95, 1, 0.95);
 			EulerAngles a = UtilAngles.toDegrees(q);
 			// pitch forward backward
 			Vec3 fDir = UtilAngles.rotationToVector(a.yaw, 0);

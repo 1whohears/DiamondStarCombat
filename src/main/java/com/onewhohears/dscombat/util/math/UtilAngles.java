@@ -52,16 +52,6 @@ public class UtilAngles {
     public static double wrapSubtractDegrees(double p_203302_0_, double p_203302_1_) {
         return Mth.wrapDegrees(p_203302_1_ - p_203302_0_);
     }
-    
-    /*public static float degreesDiff180(float start, float end) {
-    	start = Mth.wrapDegrees(start);
-    	end = Mth.wrapDegrees(end);
-    	if (start > 90f && end < -90f) end += 360f;
-    	else if (start < -90f && end > 90f) start += 360f;
-    	else if (start > 0 && end < -90f) end += 360f;
-    	else if (start < 0 && end > 90f) start += 360f;
-    	return end - start;
-    }*/
 
     public static Vec3 rotationToVector(double yaw, double pitch) {
         yaw = Math.toRadians(yaw);

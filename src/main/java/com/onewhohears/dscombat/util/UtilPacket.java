@@ -5,6 +5,7 @@ import java.util.List;
 import com.onewhohears.dscombat.data.parts.PartsManager;
 import com.onewhohears.dscombat.data.radar.RadarData;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
+import com.onewhohears.dscombat.data.radar.RadarSystem.RWRWarning;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponSystem;
@@ -111,6 +112,14 @@ public class UtilPacket {
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityAircraft plane) {
 			plane.partsManager.readFuelsForClient(fuels);
+		}
+	}
+	
+	public static void rwrPacket(int id, RWRWarning warning) {
+		Minecraft m = Minecraft.getInstance();
+		Level world = m.level;
+		if (world.getEntity(id) instanceof EntityAircraft plane) {
+			plane.radarSystem.getClientRWRWarnings().add(warning);
 		}
 	}
 	

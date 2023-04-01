@@ -95,8 +95,6 @@ public abstract class EntityAircraft extends Entity {
 	public static final EntityDataAccessor<Float> IDLEHEAT = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> WEIGHT = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> WING_AREA = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Integer> MISSILE_TRACKED_TICKS = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.INT);
-	public static final EntityDataAccessor<Integer> LOCKED_ONTO_TICKS = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Boolean> LANDING_GEAR = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> TEST_MODE = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Integer> CURRRENT_DYE_ID = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.INT);
@@ -177,8 +175,6 @@ public abstract class EntityAircraft extends Entity {
 		entityData.define(IDLEHEAT, 1f);
 		entityData.define(WEIGHT, 0.05f);
 		entityData.define(WING_AREA, 1f);
-		entityData.define(MISSILE_TRACKED_TICKS, 0);
-		entityData.define(LOCKED_ONTO_TICKS, 0);
 		entityData.define(LANDING_GEAR, false);
 		entityData.define(TEST_MODE, false);
 		entityData.define(CURRRENT_DYE_ID, 0);
@@ -771,6 +767,8 @@ public abstract class EntityAircraft extends Entity {
 			if (newRiderCooldown > 0) --newRiderCooldown;
 			else if (inputShoot) weaponSystem.shootSelected(controller, consume);
 			if (inputFlare && tickCount % 5 == 0) flare(controller, consume);
+		} else {
+			radarSystem.clientTick();
 		}
 	}
 	
@@ -1413,28 +1411,23 @@ public abstract class EntityAircraft extends Entity {
      * plays all the sounds for the players in the plane
      */
     public void sounds() {
-    	if (!level.isClientSide) {
-    		if (getMissileTrackedTicks() > 0) addMissileTrackedTicks(-1);
-    		if (getLockedOntoTicks() > 0) addLockedOntoTicks(-1);
-    	} else {
-    		if (getMissileTrackedTicks() > 0 && tickCount % 4 == 0) for (Player p : getRidingPlayers()) {
+    	if (level.isClientSide) {
+    		if (tickCount % 4 == 0 && radarSystem.isTrackedByMissile()) for (Player p : getRidingPlayers()) {
     			level.playSound(p, new BlockPos(p.position()), 
 	    			ModSounds.MISSILE_WARNING.get(), SoundSource.PLAYERS, 1f, 1f);
-    		} else if (getLockedOntoTicks() > 0 && tickCount % 8 == 0) for (Player p : getRidingPlayers()) {
+    		} else if (tickCount % 8 == 0 && radarSystem.isTrackedByRadar()) for (Player p : getRidingPlayers()) {
     			level.playSound(p, new BlockPos(p.position()), 
     	    		ModSounds.GETTING_LOCKED.get(), SoundSource.PLAYERS, 1f, 1f);
         	}
     	}
-    }
+    } 
     
     /**
      * entity tracking missile calls this server side when tracking this plane
      * @param pos the position of the missile
      */
     public void trackedByMissile(Vec3 pos) {
-    	if (level.isClientSide) return;
-    	setMissileTrackedTicks(10);
-    	// TODO tell radar system to send new RWR warning to client
+    	radarSystem.addRWRWarning(pos, true, level.isClientSide);
     }
     
     /**
@@ -1442,32 +1435,7 @@ public abstract class EntityAircraft extends Entity {
      * @param pos the position of the radar
      */
     public void lockedOnto(Vec3 pos) {
-    	if (level.isClientSide) return;
-    	setLockedOntoTicks(10);
-    }
-    
-    /*
-     * the following group of functions is used to tell the plane from the server side that they are being
-     * tracked from another radar while also only letting certain players hear the sound on the client side
-     * probably not the best way to do it but it works 
-     */
-    public final int getMissileTrackedTicks() {
-    	return entityData.get(MISSILE_TRACKED_TICKS);
-    }
-    public final void setMissileTrackedTicks(int ticks) {
-    	entityData.set(MISSILE_TRACKED_TICKS, ticks);
-    }
-    public final void addMissileTrackedTicks(int ticks) {
-    	setMissileTrackedTicks(ticks+getMissileTrackedTicks());
-    }
-    public final int getLockedOntoTicks() {
-    	return entityData.get(LOCKED_ONTO_TICKS);
-    }
-    public final void setLockedOntoTicks(int ticks) {
-    	entityData.set(LOCKED_ONTO_TICKS, ticks);
-    }
-    public final void addLockedOntoTicks(int ticks) {
-    	setLockedOntoTicks(ticks+getLockedOntoTicks());
+    	radarSystem.addRWRWarning(pos, false, level.isClientSide);
     }
     
     @Override

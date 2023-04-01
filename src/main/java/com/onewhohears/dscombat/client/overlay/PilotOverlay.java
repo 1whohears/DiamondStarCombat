@@ -10,12 +10,14 @@ import com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents;
 import com.onewhohears.dscombat.client.input.KeyInit;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
+import com.onewhohears.dscombat.data.radar.RadarSystem.RWRWarning;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft.AircraftType;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.util.UtilEntity;
+import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
@@ -27,6 +29,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameType;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import net.minecraftforge.common.ForgeMod;
@@ -36,6 +39,8 @@ public class PilotOverlay {
 	private static final int stickBaseSize = 60;
 	private static final int stickKnobSize = (int)(stickBaseSize/6);
 	private static final int stickOffset = 1;
+	private static final int radarSize = 120;
+	private static final int radarOffset = 8;
 	private static final ResourceLocation STICK_BASE_CIRCLE = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/stickcanvascircle.png");
 	private static final ResourceLocation STICK_BASE_SQUARE = new ResourceLocation(DSCombatMod.MODID,
@@ -44,6 +49,8 @@ public class PilotOverlay {
             "textures/ui/stickknob.png");
 	private static final ResourceLocation FUEL = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/fuel.png");
+	private static final ResourceLocation RADAR = new ResourceLocation(DSCombatMod.MODID,
+            "textures/ui/radar.png");
 	
 	public static final IGuiOverlay HUD_Aircraft_Stats = ((gui, poseStack, partialTick, width, height) -> {
 		Minecraft m = Minecraft.getInstance();
@@ -51,6 +58,8 @@ public class PilotOverlay {
 		if (m.gameMode.getPlayerMode() == GameType.SPECTATOR) return;
 		final var player = m.player;
 		if (!(player.getRootVehicle() instanceof EntityAircraft plane)) return;
+		RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		drawMissingVanillaOverlays(m, player, plane, gui, poseStack, partialTick, width, height);
 		drawAircraftStats(m, player, plane, gui, poseStack, partialTick, width, height);
 		drawAircraftAngles(m, player, plane, gui, poseStack, partialTick, width, height);
@@ -59,7 +68,6 @@ public class PilotOverlay {
 		drawAircraftControls(m, player, plane, gui, poseStack, partialTick, width, height);
 		drawAircraftThrottle(m, player, plane, gui, poseStack, partialTick, width, height);
 		drawAircraftFuel(m, player, plane, gui, poseStack, partialTick, width, height);
-		drawAircraftMissileWarning(m, player, plane, gui, poseStack, partialTick, width, height);
 		if (plane.getAircraftType() == AircraftType.PLANE) 
 			drawPlaneData(m, player, (EntityPlane)plane, gui, poseStack, partialTick, width, height);
 		if (player.getVehicle() instanceof EntityTurret turret)
@@ -146,32 +154,70 @@ public class PilotOverlay {
 	}
 	
 	private static void drawAircraftRadarData(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
-		RadarSystem radar = plane.radarSystem;
-		if (radar != null) {
-			List<RadarPing> pings = radar.getClientRadarPings();
-			if (pings != null && pings.size() != 0) {
-				int selected = radar.getClientSelectedPingIndex();
-				int hover = ClientInputEvents.getHoverIndex();
-				if (hover != -1 && hover < pings.size()) {
-					String text = "("+(int)pings.get(hover).pos.distanceTo(plane.position())
-							+" | "+(int)pings.get(hover).pos.y+")";
-					GuiComponent.drawString(poseStack, m.font, 
-						text, width/2-20, height/2-20, 0xffff00);
-				}
-				if (selected != -1 && selected < pings.size()) {
-					String text = "Target ("+(int)pings.get(hover).pos.distanceTo(plane.position())
-							+" | "+(int)pings.get(hover).pos.y+")";
-					GuiComponent.drawString(poseStack, m.font, 
-						text, width/2-90, 1, 0xff0000);
-				}
-			}
+        RenderSystem.setShaderTexture(0, RADAR);
+        GuiComponent.blit(poseStack, 
+        		radarOffset, height-radarOffset-radarSize, 
+        		0, 0, radarSize, radarSize, 
+        		radarSize, radarSize);
+        int radius = radarSize/2;
+        int cx = radarOffset + radius;
+        int cy = height-radarOffset-radius-5;
+        double displayRange = 1000;
+        // RWR
+        RadarSystem radar = plane.radarSystem;
+        for (RWRWarning warn : radar.getClientRWRWarnings()) {
+        	Vec3 dp = warn.pos.subtract(plane.position());
+        	float yaw = (UtilAngles.getYaw(dp)-plane.getYRot())*Mth.DEG_TO_RAD;
+        	int x = cx + (int)(Mth.sin(yaw)*radius);
+        	int y = cy + (int)(-Mth.cos(yaw)*radius);
+        	int color = 0xffff00;
+        	String symbol = "W";
+        	if (warn.isMissile) {
+        		color = 0xff0000;
+        		symbol = "M";
+        	}
+        	GuiComponent.drawCenteredString(poseStack, m.font, 
+        			symbol, x, y, color);
+        }
+		// PINGS
+		List<RadarPing> pings = radar.getClientRadarPings();
+		if (pings == null || pings.size() == 0) return;
+		int selected = radar.getClientSelectedPingIndex();
+		int hover = ClientInputEvents.getHoverIndex();
+		if (hover != -1 && hover < pings.size()) {
+			String text = "("+(int)pings.get(hover).pos.distanceTo(plane.position())
+					+" | "+(int)pings.get(hover).pos.y+")";
+			GuiComponent.drawString(poseStack, m.font, 
+				text, width/2-20, height/2-20, 0xffff00);
+		}
+		if (selected != -1 && selected < pings.size()) {
+			String text = "Target ("+(int)pings.get(selected).pos.distanceTo(plane.position())
+					+" | "+(int)pings.get(selected).pos.y+")";
+			GuiComponent.drawString(poseStack, m.font, 
+				text, width/2-90, 1, 0xff0000);
+		}
+		for (int i = 0; i < pings.size(); ++i) {
+			RadarPing ping = pings.get(i);
+			Vec3 dp = ping.pos.subtract(plane.position());
+			double dist = dp.multiply(1, 0, 1).length()/displayRange;
+			if (dist > 1) dist = 1;
+        	float yaw = (UtilAngles.getYaw(dp)-plane.getYRot())*Mth.DEG_TO_RAD;
+        	int x = cx + (int)(Mth.sin(yaw)*radius*dist);
+        	int y = cy + (int)(-Mth.cos(yaw)*radius*dist);
+        	int color = 0x00ff00;
+        	String symbol = "o";
+        	if (i == selected) color = 0xff0000;
+        	else if (i == hover) color = 0xffff00;
+        	else if (ping.isFriendly) {
+        		color = 0x0000ff;
+        		symbol = "F";
+        	}
+        	GuiComponent.drawCenteredString(poseStack, m.font, 
+        			symbol, x, y, color);
 		}
 	}
 	
 	private static void drawAircraftControls(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
-		// textures
-		RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         // pitch yaw input
         RenderSystem.setShaderTexture(0, STICK_BASE_CIRCLE);
         GuiComponent.blit(poseStack, 
@@ -201,7 +247,7 @@ public class PilotOverlay {
 	}
 	
 	private static void drawAircraftThrottle(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
-        RenderSystem.setShaderTexture(0, STICK_BASE_SQUARE);
+		RenderSystem.setShaderTexture(0, STICK_BASE_SQUARE);
         GuiComponent.blit(poseStack, 
         		width-stickBaseSize-stickOffset-stickKnobSize-stickOffset, 
         		height-stickBaseSize-stickOffset, 
@@ -219,7 +265,7 @@ public class PilotOverlay {
 	}
 	
 	private static void drawAircraftFuel(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
-        RenderSystem.setShaderTexture(0, FUEL);
+		RenderSystem.setShaderTexture(0, FUEL);
         float r = plane.getFuel() / plane.getMaxFuel();
         int fh = (int)(r * 128f);
         int fh2 = 128-fh;
@@ -233,19 +279,6 @@ public class PilotOverlay {
 		GuiComponent.drawString(poseStack, m.font, 
 				"Ammo: "+turret.getAmmo(), 
 				width/2-90, 11, 0xffff00);
-	}
-	
-	private static void drawAircraftMissileWarning(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
-        if (plane.getMissileTrackedTicks() > 0) {
-        	GuiComponent.drawString(poseStack, m.font, 
-					"MISSILE TRACKING YOU", 
-					1, height-10, 0xff0000);
-        } else if (plane.getLockedOntoTicks() > 0) {
-        	GuiComponent.drawString(poseStack, m.font, 
-					"RADAR TRACKING YOU", 
-					1, height-10, 0xffff00);
-        }
-        // TODO display direction missile is coming from
 	}
 	
 	private static void drawPlaneData(Minecraft m, Player player, EntityPlane plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {

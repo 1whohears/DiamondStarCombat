@@ -5,18 +5,19 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientAddRadar;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddWeapon;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAircraftFuel;
 import com.onewhohears.dscombat.common.network.toclient.ToClientMissileMove;
+import com.onewhohears.dscombat.common.network.toclient.ToClientRWRWarning;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRadarPings;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRecievePlaneData;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRemoveRadar;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRemoveWeapon;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponAmmo;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponIndex;
+import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftQ;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftToItem;
 import com.onewhohears.dscombat.common.network.toserver.ToServerCraftPlane;
 import com.onewhohears.dscombat.common.network.toserver.ToServerCraftWeapon;
 import com.onewhohears.dscombat.common.network.toserver.ToServerFlightControl;
 import com.onewhohears.dscombat.common.network.toserver.ToServerPingSelect;
-import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftQ;
 import com.onewhohears.dscombat.common.network.toserver.ToServerRequestPlaneData;
 import com.onewhohears.dscombat.common.network.toserver.ToServerShootTurret;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSwitchSeat;
@@ -137,6 +138,11 @@ public final class PacketHandler {
 			.encoder(ToServerShootTurret::encode)
 			.decoder(ToServerShootTurret::new)
 			.consumerMainThread(ToServerShootTurret::handle)
+			.add();
+		net.messageBuilder(ToClientRWRWarning.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ToClientRWRWarning::encode)
+			.decoder(ToClientRWRWarning::new)
+			.consumerMainThread(ToClientRWRWarning::handle)
 			.add();
 	}
 	

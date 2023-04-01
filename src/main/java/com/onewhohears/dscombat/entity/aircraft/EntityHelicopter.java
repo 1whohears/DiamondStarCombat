@@ -84,7 +84,7 @@ public class EntityHelicopter extends EntityAircraft {
 		if (!level.isClientSide && inputSpecial) {
 			float max_th = getMaxThrust();
 			if (max_th != 0) setCurrentThrottle((float)-getWeightForce().y / max_th);
-			setDeltaMovement(getDeltaMovement().multiply(1, 0.95, 1));
+			setDeltaMovement(getDeltaMovement().multiply(1, 0.90, 1));
 		}
 		super.tickAir(q);
 		Vec3 motion = getDeltaMovement();

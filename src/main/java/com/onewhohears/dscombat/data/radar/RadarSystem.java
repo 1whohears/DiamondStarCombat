@@ -1,18 +1,21 @@
 package com.onewhohears.dscombat.data.radar;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddRadar;
+import com.onewhohears.dscombat.common.network.toclient.ToClientRWRWarning;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRadarPings;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRemoveRadar;
 import com.onewhohears.dscombat.common.network.toserver.ToServerPingSelect;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
+import com.onewhohears.dscombat.init.DataSerializers;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -20,22 +23,27 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
 
 public class RadarSystem {
 	
 	public boolean dataLink = false;
-	private List<RadarPing> dataLinkTargets = new ArrayList<RadarPing>();
+	
+	private boolean readData = false;
+	private EntityAircraft parent;
 	
 	private List<RadarData> radars = new ArrayList<RadarData>();
-	private EntityAircraft parent;
+	private List<EntityMissile> rockets = new ArrayList<EntityMissile>();
 	
 	private List<RadarPing> targets = new ArrayList<RadarPing>();
 	private int selectedIndex = -1;
 	private List<RadarPing> clientTargets = new ArrayList<RadarPing>();
 	private int clientSelectedIndex = -1;
-	private List<EntityMissile> rockets = new ArrayList<EntityMissile>();
-	private boolean readData = false;
+	private List<RadarPing> dataLinkTargets = new ArrayList<RadarPing>();
+	
+	private List<RWRWarning> rwrWarnings = new ArrayList<RWRWarning>();
+	private boolean rwrMissile, rwrRadar;
 	
 	public RadarSystem() {
 		
@@ -165,7 +173,6 @@ public class RadarSystem {
 				PacketHandler.INSTANCE.sendToServer(new ToServerPingSelect(parent.getId(), ping));
 				break;
 			}
-		//System.out.println("new selected index "+clientSelectedIndex);
 	}
 	
 	public int getClientSelectedPingIndex() {
@@ -177,7 +184,6 @@ public class RadarSystem {
 	}
 	
 	public void readClientPingsFromServer(List<RadarPing> pings) {
-		//System.out.println("pre selected index "+clientSelectedIndex);
 		RadarPing oldSelect = null; 
 		if (clientSelectedIndex != -1) oldSelect = clientTargets.get(clientSelectedIndex);
 		clientTargets = pings;
@@ -190,8 +196,6 @@ public class RadarSystem {
 					break;
 				}
 		}
-		//System.out.println("old select "+oldSelect);
-		//System.out.println("refreshed selected index "+clientSelectedIndex);
 	}
 	
 	public boolean hasRadar() {
@@ -248,6 +252,68 @@ public class RadarSystem {
 	
 	public void clientSetup(EntityAircraft e) {
 		parent = e;
+	}
+	
+	public void addRWRWarning(Vec3 pos, boolean isMissile, boolean clientSide) {
+		if (parent == null) return;
+		RWRWarning warning = new RWRWarning(pos, isMissile);
+		if (clientSide) rwrWarnings.add(warning);
+		else PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
+				new ToClientRWRWarning(parent.getId(), warning));
+	}
+	
+	public boolean isTrackedByMissile() {
+		return rwrMissile;
+	}
+	
+	public boolean isTrackedByRadar() {
+		return rwrRadar;
+	}
+	
+	public void clientTick() {
+		rwrMissile = false;
+		rwrRadar = false;
+		if (rwrWarnings.size() > 0) {
+			Iterator<RWRWarning> it = rwrWarnings.iterator();
+			while (it.hasNext()) {
+				RWRWarning n = it.next();
+				if (n.isMissile) rwrMissile = true;
+				else rwrRadar = true;
+				if (++n.age > 10) it.remove();
+			}
+		}
+	}
+	
+	public List<RWRWarning> getClientRWRWarnings() {
+		return rwrWarnings;
+	}
+	
+	public static class RWRWarning {
+		
+		public final Vec3 pos;
+		public final boolean isMissile;
+		public int age = 0;
+		
+		public RWRWarning(Vec3 pos, boolean isMissile) {
+			this.pos = pos;
+			this.isMissile = isMissile;
+		}
+		
+		public RWRWarning(FriendlyByteBuf buffer) {
+			pos = DataSerializers.VEC3.read(buffer);
+			isMissile = buffer.readBoolean();
+		}
+		
+		public void write(FriendlyByteBuf buffer) {
+			DataSerializers.VEC3.write(buffer, pos);
+			buffer.writeBoolean(isMissile);
+		}
+		
+		@Override
+		public String toString() {
+			return "RWR["+(int)pos.x+","+(int)pos.y+","+(int)pos.z+"]";
+		}
+		
 	}
 	
 }

@@ -111,6 +111,16 @@ public class PilotOverlay {
 	
 	private static void drawAircraftAngles(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
 		// TODO display heading, pitch, and roll
+		// HEADING
+        float heading = plane.getYRot();
+        if (heading < 0) heading += 360;
+        
+        // PITCH
+        float pitch = plane.getXRot();
+        
+        // ROLL
+        float roll = plane.zRot;
+        
 	}
 	
 	private static final MutableComponent weaponSelect = Component.empty().append("->");

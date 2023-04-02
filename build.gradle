@@ -173,12 +173,12 @@ dependencies {
 jar {
     manifest {
         attributes([
-                "Specification-Title"     : "dscombat",
-                "Specification-Vendor"    : "dscombatsareus",
-                "Specification-Version"   : "1", // We are version 1 of ourselves
-                "Implementation-Title"    : project.name,
-                "Implementation-Version"  : project.jar.archiveVersion,
-                "Implementation-Vendor"   : "dscombatsareus",
+                "Specification-Title"     : "Diamond Star Combat",
+                "Specification-Vendor"    : "1whohears",
+                "Specification-Version"   : "1", 
+                "Implementation-Title"    : "Diamond Star Combat",
+                "Implementation-Version"  : project.version,
+                "Implementation-Vendor"   : "1whohears",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }

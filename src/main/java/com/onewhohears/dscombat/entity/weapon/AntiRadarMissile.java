@@ -41,7 +41,7 @@ public class AntiRadarMissile extends EntityMissile {
 			if (!basicCheck(planes.get(i))) continue;
 			float distSqr = (float)distanceToSqr(planes.get(i));
 			targets.add(new ARTarget(planes.get(i), 
-					(float)planes.get(i).radarSystem.getMaxAirRange() / distSqr));
+				(float)planes.get(i).radarSystem.getMaxAirRange() / distSqr));
 		}
 		// pick target
 		if (targets.size() == 0) {

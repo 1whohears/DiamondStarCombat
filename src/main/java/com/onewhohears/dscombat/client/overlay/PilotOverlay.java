@@ -163,6 +163,11 @@ public class PilotOverlay {
         int cx = radarOffset + radius;
         int cy = height-radarOffset-radius-5;
         double displayRange = 1000;
+        // HEADING
+        int heading = (int)plane.getYRot();
+        if (heading < 0) heading += 360;
+        GuiComponent.drawCenteredString(poseStack, m.font, 
+    			heading+"", cx, height-radarOffset-radarSize-10, 0x8888ff);
         // RWR
         RadarSystem radar = plane.radarSystem;
         for (RWRWarning warn : radar.getClientRWRWarnings()) {
@@ -191,10 +196,10 @@ public class PilotOverlay {
 				text, width/2-20, height/2-20, 0xffff00);
 		}
 		if (selected != -1 && selected < pings.size()) {
-			String text = "Target ("+(int)pings.get(selected).pos.distanceTo(plane.position())
+			String text = "("+(int)pings.get(selected).pos.distanceTo(plane.position())
 					+" | "+(int)pings.get(selected).pos.y+")";
-			GuiComponent.drawString(poseStack, m.font, 
-				text, width/2-90, 1, 0xff0000);
+			GuiComponent.drawCenteredString(poseStack, m.font, 
+				text, cx, height-radarOffset-radarSize-20, 0xff0000);
 		}
 		for (int i = 0; i < pings.size(); ++i) {
 			RadarPing ping = pings.get(i);

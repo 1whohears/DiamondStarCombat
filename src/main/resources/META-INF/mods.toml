@@ -1,26 +1,28 @@
-modLoader="javafml" #mandatory
-loaderVersion="[43,)" #mandatory
+modLoader="javafml"
+loaderVersion="[43,)"
 license="MIT License"
+issueTrackerURL="https://github.com/1whohears/DiamondStarCombat/issues"
+showAsResourcePack=false
 
-[[mods]] #mandatory
+[[mods]]
+	modId="dscombat"
+	version="${file.jarVersion}"
+	displayName="Diamond Star Combat"
+	logoFile="dscombat.png"
+	displayURL="https://www.curseforge.com/minecraft/mc-mods/diamond-star-combat"
+	#updateJSONURL="https://www.curseforge.com/minecraft/mc-mods/diamond-star-combat/files"
+	displayTest = "MATCH_VERSION"
+	authors="1whohears"
+	credits="a duck"
+	description="A vehicle combat mod that adds Planes, Helicoptors, Tanks, Radars, Missiles and more!"
 
-modId="dscombat" #mandatory
-version=${file.jarVersion} #mandatory
-displayName="Diamond Star Combat" #mandatory
-#logoFile="dscombat.png" #optional
-displayURL="https://www.curseforge.com/minecraft/mc-mods/diamond-star-combat" #optional
-updateJSONURL="https://www.curseforge.com/minecraft/mc-mods/diamond-star-combat/files" #optional
-issueTrackerURL="https://github.com/1whohears/DiamondStarCombat/issues" #optional
-authors="1whohears" #optional
-credits="" #optional
-description="A vehicle combat mod that adds Planes, Helicoptors, Tanks, Radars, Missiles and more!"
-
-[[dependencies.dscombat]] #optional
-    modId="forge" #mandatory
-    mandatory=true #mandatory
-    versionRange="[43,)" #mandatory
+[[dependencies.dscombat]]
+    modId="forge"
+    mandatory=true
+    versionRange="[43,)"
     ordering="NONE"
     side="BOTH"
+
 [[dependencies.dscombat]]
     modId="minecraft"
     mandatory=true

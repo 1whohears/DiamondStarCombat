@@ -112,11 +112,24 @@ public class PilotOverlay {
 	private static void drawAircraftAngles(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
 		// TODO display heading, pitch, and roll
 		// HEADING
-        float heading = plane.getYRot();
-        if (heading < 0) heading += 360;
-        
+		int y = 10;
+        int heading = (int)Mth.wrapDegrees(player.getYRot());
+        if (heading < 0) heading += 360f;
+        GuiComponent.drawCenteredString(poseStack, m.font, 
+        		(int)heading+"", width/2, y+20, 0x00ff00);
+        int num = 10, space = 15;
+        for (int i = -num; i < num; ++i) {
+        	int x = width/2+i*space;
+        	GuiComponent.drawCenteredString(poseStack, m.font, 
+            		"|", x, y+10, 0x00ff00);
+        	int h = heading+i;
+        	if (h < 0) h += 360;
+        	if (h % 3 != 0) continue;
+        	GuiComponent.drawCenteredString(poseStack, m.font, 
+            		h+"", x, y, 0x00ff00);
+        }
         // PITCH
-        float pitch = plane.getXRot();
+        float pitch = Mth.wrapDegrees(player.getXRot());
         
         // ROLL
         float roll = plane.zRot;
@@ -202,8 +215,8 @@ public class PilotOverlay {
 		if (hover != -1 && hover < pings.size()) {
 			String text = "("+(int)pings.get(hover).pos.distanceTo(plane.position())
 					+" | "+(int)pings.get(hover).pos.y+")";
-			GuiComponent.drawString(poseStack, m.font, 
-				text, width/2-20, height/2-20, 0xffff00);
+			GuiComponent.drawCenteredString(poseStack, m.font, 
+				text, width/2, height/2-20, 0xffff00);
 		}
 		if (selected != -1 && selected < pings.size()) {
 			String text = "("+(int)pings.get(selected).pos.distanceTo(plane.position())

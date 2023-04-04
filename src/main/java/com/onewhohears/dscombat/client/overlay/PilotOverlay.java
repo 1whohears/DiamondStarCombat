@@ -110,29 +110,32 @@ public class PilotOverlay {
 	}
 	
 	private static void drawAircraftAngles(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
-		// TODO display heading, pitch, and roll
+		// TODO display pitch and roll
 		// HEADING
 		int y = 10;
         int heading = (int)Mth.wrapDegrees(player.getYRot());
         if (heading < 0) heading += 360f;
         GuiComponent.drawCenteredString(poseStack, m.font, 
-        		(int)heading+"", width/2, y+20, 0x00ff00);
-        int num = 10, space = 15;
+        	heading+"", width/2, y+20, 0x00ff00);
+        int num = 15, degSpace = 3, degPerLine = 3, steps = 3;
         for (int i = -num; i < num; ++i) {
-        	int x = width/2+i*space;
+        	int j = i*degPerLine;
+        	int x = width/2+j*degSpace-heading%degPerLine*degSpace;
         	GuiComponent.drawCenteredString(poseStack, m.font, 
-            		"|", x, y+10, 0x00ff00);
-        	int h = heading+i;
+            	"|", x, y+10, 0x00ff00);
+        	int hl = heading / degPerLine;
+        	if ((hl+i) % steps != 0) continue;
+        	int h = hl*degPerLine+j;
         	if (h < 0) h += 360;
-        	if (h % 3 != 0) continue;
+        	else if (h >= 360) h-= 360;
         	GuiComponent.drawCenteredString(poseStack, m.font, 
-            		h+"", x, y, 0x00ff00);
+            	h+"", x, y, 0x00ff00);
         }
         // PITCH
-        float pitch = Mth.wrapDegrees(player.getXRot());
+        int pitch = (int)Mth.wrapDegrees(player.getXRot());
         
         // ROLL
-        float roll = plane.zRot;
+        int roll = (int)plane.zRot;
         
 	}
 	

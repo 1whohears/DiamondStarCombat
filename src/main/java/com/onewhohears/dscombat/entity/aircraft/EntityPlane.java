@@ -100,12 +100,7 @@ public class EntityPlane extends EntityAircraft {
 			aoa = 0;
 		} else {
 			aoa = (float) UtilGeometry.angleBetweenDegrees(airFoilAxes, u);
-			//System.out.println("aoa = "+aoa);
-			double uy = UtilGeometry.componentMagSqrDirByAxis(u.normalize(), liftDir);
-			//System.out.println("uy = "+uy);
-			double vy = UtilGeometry.componentMagSqrDirByAxis(airFoilAxes, liftDir);
-			//System.out.println("vy = "+vy);
-			if (vy < uy) aoa *= -1;
+			if (liftDir.dot(u) > 0) aoa *= -1;
 		}
 		if (inputSpecial) aoa += flapsAOABias;
 		liftK = (float) getLiftK();

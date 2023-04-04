@@ -297,7 +297,7 @@ public class PilotOverlay {
 	
 	private static void drawAircraftFuel(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
 		RenderSystem.setShaderTexture(0, FUEL);
-        float r = plane.getFuel() / plane.getMaxFuel();
+        float r = plane.getCurrentFuel() / plane.getMaxFuel();
         int fh = (int)(r * 128f);
         int fh2 = 128-fh;
         GuiComponent.blit(poseStack, width-16, fh2, 

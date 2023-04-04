@@ -94,18 +94,20 @@ public class UtilEntity {
 	}
 	
 	public static boolean isOnGroundOrWater(Entity entity) {
-		Entity rv = entity.getRootVehicle();
-		if (rv != null) {
+		if (entity.isPassenger()) {
+			Entity rv = entity.getRootVehicle();
 			if (rv instanceof Boat) return true;
 			if (rv instanceof Minecart) return true;
-			if (rv.isOnGround() || rv.isInWater()) return true;
+			if (rv.isOnGround() || isHeadAboveWater(rv)) return true;
 		}
-		if (entity instanceof Player p) {
-			if (p.isFallFlying()) return false;
-			if (p.isSprinting()) return true;
-		}
-		if (entity.isOnGround() || entity.isInWater()) return true;
+		if (entity instanceof Player p) if (p.isFallFlying()) return false;		
+		if (!entity.isInWater() && entity.isSprinting() && entity.fallDistance < 1.15) return true;
+		if (entity.isOnGround() || isHeadAboveWater(entity)) return true;
 		return false;
+	}
+	
+	public static boolean isHeadAboveWater(Entity entity) {
+		return entity.isInWater() && !entity.isUnderWater();
 	}
 	
 }

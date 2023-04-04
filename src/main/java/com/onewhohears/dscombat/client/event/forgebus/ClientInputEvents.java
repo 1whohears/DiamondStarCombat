@@ -8,13 +8,14 @@ import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerFlightControl;
 import com.onewhohears.dscombat.common.network.toserver.ToServerShootTurret;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSwitchSeat;
-import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
+import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult.Type;
@@ -52,8 +53,8 @@ public final class ClientInputEvents {
 		boolean gear = KeyInit.landingGear.consumeClick();
 		boolean radarMode = KeyInit.radarModeKey.consumeClick();
 		if (!(player.getRootVehicle() instanceof EntityAircraft plane)) return;
-		if (plane.getControllingPassenger() == null 
-				|| !plane.getControllingPassenger().equals(player)) return;
+		Entity controller = plane.getControllingPassenger();
+		if (controller == null || !controller.equals(player)) return;
 		if (KeyInit.resetMouseKey.isDown()) centerMouse();
 		else if (m.screen != null) centerMouse();
 		double mouseX = m.mouseHandler.xpos() - mouseCenterX;

@@ -9,6 +9,7 @@ import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents;
 import com.onewhohears.dscombat.common.container.AircraftMenuContainer;
+import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftQ;
 import com.onewhohears.dscombat.common.network.toserver.ToServerRequestPlaneData;
@@ -68,6 +69,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.RegistryObject;
 
 /**
@@ -133,7 +135,7 @@ public abstract class EntityAircraft extends Entity {
 	public boolean nightVisionHud = false;
 	
 	protected int xzSpeedDir, flareNum;
-	protected float xzSpeed, totalMass, xzYaw, slideAngle, slideAngleCos, maxThrust;
+	protected float xzSpeed, totalMass, xzYaw, slideAngle, slideAngleCos, maxThrust, currentFuel, maxFuel;
 	protected double staticFric, kineticFric;
 	
 	private ResourceLocation currentTexture;
@@ -152,7 +154,7 @@ public abstract class EntityAircraft extends Entity {
 		this.item = item;
 		this.negativeThrottle = negativeThrottle;
 		// FIXME player can punch and push aircraft
-		// FIXME aircraft don't push entities
+		// FIXME aircraft don't push entities (add collisions)
 	}
 	
 	@Override
@@ -677,7 +679,7 @@ public abstract class EntityAircraft extends Entity {
 	 * @return the magnitude of the thrust force based on the engines, throttle, and 0 if no fuel
 	 */
 	public double getThrustMag() {
-		if (getFuel() <= 0) return 0;
+		if (getCurrentFuel() <= 0) return 0;
 		return getCurrentThrottle() * getMaxThrust();
 	}
 	
@@ -995,9 +997,7 @@ public abstract class EntityAircraft extends Entity {
 				break;
 			}
 		}
-		if (seatIndex == -1) {
-			return false;
-		}
+		if (seatIndex == -1) return false; // player not riding seat
 		System.out.println("riding seat "+seatIndex);
 		int i = 0, j = seatIndex+1;
 		while (i < seats.size()-1) {
@@ -1461,7 +1461,7 @@ public abstract class EntityAircraft extends Entity {
      * @return the total fuel this aircraft can hold
      */
     public float getMaxFuel() {
-    	return partsManager.getMaxFuel();
+    	return maxFuel;
     }
     
     /**
@@ -1471,13 +1471,15 @@ public abstract class EntityAircraft extends Entity {
     	if (!level.isClientSide) {
     		partsManager.tickFuel(true);
     	}
+    	currentFuel = partsManager.getCurrentFuel();
+    	maxFuel = partsManager.getMaxFuel();
     }
     
     /**
      * @return the current amount of fuel left
      */
-    public float getFuel() {
-    	return partsManager.getCurrentFuel();
+    public float getCurrentFuel() {
+    	return currentFuel;
     }
     
     /**
@@ -1591,6 +1593,15 @@ public abstract class EntityAircraft extends Entity {
     
     protected void debug(String debug) {
     	if (hasControllingPassenger()) System.out.println(debug);
+    }
+    
+    public void toClientPassengers(IPacket packet) {
+    	if (level.isClientSide) return;
+    	for (Player p : getRidingPlayers()) {
+    		PacketHandler.INSTANCE.send(
+    			PacketDistributor.PLAYER.with(() -> (ServerPlayer)p),
+    			packet);
+    	}
     }
     
 }

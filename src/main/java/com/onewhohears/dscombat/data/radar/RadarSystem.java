@@ -120,8 +120,7 @@ public class RadarSystem {
 		// ROCKETS
 		updateRockets();
 		// PACKET
-		if (parent.tickCount % 20 == 0) PacketHandler.INSTANCE.send(
-				PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
+		if (parent.tickCount % 20 == 0) parent.toClientPassengers(
 				new ToClientRadarPings(parent.getId(), targets));
 	}
 	
@@ -170,7 +169,8 @@ public class RadarSystem {
 		for (int i = 0; i < clientTargets.size(); ++i) 
 			if (clientTargets.get(i).id == id) {
 				clientSelectedIndex = i;
-				PacketHandler.INSTANCE.sendToServer(new ToServerPingSelect(parent.getId(), ping));
+				PacketHandler.INSTANCE.sendToServer(
+					new ToServerPingSelect(parent.getId(), ping));
 				break;
 			}
 	}

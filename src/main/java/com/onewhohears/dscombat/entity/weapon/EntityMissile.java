@@ -210,9 +210,10 @@ public abstract class EntityMissile extends EntityBullet {
 		}
 		//System.out.println("intercept math");
 		Vec3 tVel = target.getDeltaMovement();
-		if (target.isOnGround()) tVel = tVel.add(0, -tVel.y, 0); // some entities have -0.07 y vel when on ground
+		if (UtilEntity.isOnGroundOrWater(target)) 
+			tVel = tVel.multiply(1, 0, 1);
 		Vec3 pos = UtilGeometry.interceptPos( 
-				this.position(), this.getDeltaMovement(), 
+				position(), getDeltaMovement(), 
 				target.position(), tVel);
 		this.targetPos = pos;
 		//System.out.println("guide to position");

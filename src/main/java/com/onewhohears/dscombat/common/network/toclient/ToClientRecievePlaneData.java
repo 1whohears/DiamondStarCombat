@@ -14,6 +14,13 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent.Context;
 
+/*
+ * TODO ToClientRecievePlaneData shouldn't be needed!
+ * same with the add/remove radars and weapons
+ * these should get updated when item changes in plane menu get sent to client
+ * it's unnecessary extra data send from server to client
+ */
+
 public class ToClientRecievePlaneData extends IPacket {
 	
 	public final int id;

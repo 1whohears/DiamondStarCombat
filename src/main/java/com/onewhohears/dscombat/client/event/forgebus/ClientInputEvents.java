@@ -43,7 +43,7 @@ public final class ClientInputEvents {
 	
 	@SubscribeEvent
 	public static void clientTickPilotControl(TickEvent.ClientTickEvent event) {
-		if (event.phase != Phase.START) return;
+		if (event.phase != Phase.END) return;
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
 		if (player == null) return;
@@ -52,6 +52,7 @@ public final class ClientInputEvents {
 		boolean mouseMode = KeyInit.mouseModeKey.consumeClick();
 		boolean gear = KeyInit.landingGear.consumeClick();
 		boolean radarMode = KeyInit.radarModeKey.consumeClick();
+		if (!player.isPassenger()) return;
 		if (!(player.getRootVehicle() instanceof EntityAircraft plane)) return;
 		Entity controller = plane.getControllingPassenger();
 		if (controller == null || !controller.equals(player)) return;
@@ -123,29 +124,32 @@ public final class ClientInputEvents {
 	
 	@SubscribeEvent
 	public static void clientTickPassengerControl(TickEvent.ClientTickEvent event) {
-		if (event.phase != Phase.START) return;
+		if (event.phase != Phase.END) return;
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
-		if (player == null) return;
+		if (player == null || !player.isPassenger()) return;
 		if (!(player.getRootVehicle() instanceof EntityAircraft plane)) return;
+		// DISMOUNT
+		
+		// SWITCH SEAT
 		if (KeyInit.changeSeat.consumeClick()) {
 			PacketHandler.INSTANCE.sendToServer(new ToServerSwitchSeat(plane.getId()));
 		}
+		// SELECT RADAR PING
 		RadarSystem radar = plane.radarSystem;
 		List<RadarPing> pings = radar.getClientRadarPings();
 		boolean hovering = false;
-		if (pings != null) {
-			for (int i = 0; i < pings.size(); ++i) {
-				RadarPing p = pings.get(i);
-				if (isPlayerLookingAtPing(player, p)) {
-					hoverIndex = i;
-					hovering = true;
-					if (m.mouseHandler.isLeftPressed()) radar.clientSelectTarget(p);
-					break;
-				}
+		for (int i = 0; i < pings.size(); ++i) {
+			RadarPing p = pings.get(i);
+			if (isPlayerLookingAtPing(player, p)) {
+				hoverIndex = i;
+				hovering = true;
+				if (m.mouseHandler.isLeftPressed()) radar.clientSelectTarget(p);
+				break;
 			}
 		}
 		if (!hovering) resetHoverIndex();
+		// TURRET SHOOT
 		boolean shoot = KeyInit.shootKey.isDown();
 		if (shoot && player.getVehicle() instanceof EntityTurret turret) {
 			PacketHandler.INSTANCE.sendToServer(new ToServerShootTurret(turret));

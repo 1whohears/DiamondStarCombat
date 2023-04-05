@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.common.network.PacketHandler;
@@ -179,6 +180,7 @@ public class RadarSystem {
 		return clientSelectedIndex;
 	}
 	
+	@Nonnull
 	public List<RadarPing> getClientRadarPings() {
 		return clientTargets;
 	}

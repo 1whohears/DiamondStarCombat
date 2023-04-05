@@ -22,6 +22,8 @@ public class ClientRenderEvents {
 		Minecraft m = Minecraft.getInstance();
 		final var playerC = m.player;
 		Player player = event.getEntity();
+		if (!player.isPassenger()) return;
+		// FIXME the player's hand is doing a funny
 		if (player.getRootVehicle() instanceof EntityAircraft plane) {
 			if (player.equals(playerC) && m.options.getCameraType().isFirstPerson()) {
 				event.setCanceled(true);

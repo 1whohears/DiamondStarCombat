@@ -28,6 +28,7 @@ public class ClientCameraEvents {
 		final var player = m.player;
 		if (player == null) return;
 		prevCamera = m.getCameraEntity();
+		if (!player.isPassenger()) return;
 		if (player.getVehicle() instanceof EntitySeat seat 
 				&& seat.getVehicle() instanceof EntityAircraft plane) {
 			EntitySeatCamera camera = seat.getCamera();

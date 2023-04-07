@@ -23,13 +23,13 @@ import net.minecraftforge.network.PacketDistributor;
 
 public class PartsManager {
 	
+	private final EntityAircraft parent;
 	private List<PartSlot> slots = new ArrayList<PartSlot>();
 	private Container inventory = new SimpleContainer(0);
 	private boolean readData = false;
-	private EntityAircraft parent;
 	
-	public PartsManager() {
-		
+	public PartsManager(EntityAircraft parent) {
+		this.parent = parent;
 	}
 	
 	/**
@@ -123,7 +123,14 @@ public class PartsManager {
 		compound.put("slots", list);
 	}
 	
-	public PartsManager(FriendlyByteBuf buffer) {
+	/*public PartsManager(FriendlyByteBuf buffer) {
+		int num = buffer.readInt();
+		for (int i = 0; i < num; ++i) slots.add(new PartSlot(buffer));
+		createNewInventory();
+		readData = true;
+	}*/
+	
+	public void read(FriendlyByteBuf buffer) {
 		int num = buffer.readInt();
 		for (int i = 0; i < num; ++i) slots.add(new PartSlot(buffer));
 		createNewInventory();
@@ -144,16 +151,16 @@ public class PartsManager {
 		readData = true;
 	}
 	
-	public void setupParts(EntityAircraft craft) {
-		this.parent = craft;
+	public void setupParts(/*EntityAircraft craft*/) {
+		//this.parent = craft;
 		//System.out.println("setupParts "+this);
-		for (PartSlot p : slots) p.setup(craft);
+		for (PartSlot p : slots) p.setup(parent);
 	}
 	
-	public void clientPartsSetup(EntityAircraft craft) {
-		this.parent = craft;
+	public void clientPartsSetup(/*EntityAircraft craft*/) {
+		//this.parent = craft;
 		//System.out.println("clientPartsSetup "+this);
-		for (PartSlot p : slots) p.clientSetup(craft);
+		for (PartSlot p : slots) p.clientSetup(parent);
 	}
 	
 	public void tickParts() {

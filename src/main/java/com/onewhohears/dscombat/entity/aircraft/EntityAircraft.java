@@ -112,7 +112,7 @@ public abstract class EntityAircraft extends Entity {
 	public static final double collideSpeedWithGearThreshHold = 2d;
 	public static final double collideDamageRate = 200d;
 	
-	public final PartsManager partsManager = new PartsManager();
+	public final PartsManager partsManager = new PartsManager(this);
 	public final WeaponSystem weaponSystem = new WeaponSystem();
 	public final RadarSystem radarSystem = new RadarSystem();
 	
@@ -895,7 +895,7 @@ public abstract class EntityAircraft extends Entity {
 		// ORDER MATTERS
 		weaponSystem.setup(this);
 		radarSystem.setup(this);
-		partsManager.setupParts(this);
+		partsManager.setupParts();
 	}
 	
 	/**
@@ -905,6 +905,11 @@ public abstract class EntityAircraft extends Entity {
 		UtilClientSafeSoundInstance.aircraftEngineSound(
 				Minecraft.getInstance(), this, getEngineSound());
 		PacketHandler.INSTANCE.sendToServer(new ToServerRequestPlaneData(getId()));
+	}
+	
+	@Override
+	public Packet<?> getAddEntityPacket() {
+		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 	
 	@Override
@@ -1109,11 +1114,6 @@ public abstract class EntityAircraft extends Entity {
 					getX(), getY()+0.5D, getZ(), 
 					0.0D, 0.0D, 0.0D);
 		}
-	}
-
-	@Override
-	public Packet<?> getAddEntityPacket() {
-		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 	
 	/**

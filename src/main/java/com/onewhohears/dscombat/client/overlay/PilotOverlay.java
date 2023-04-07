@@ -180,7 +180,9 @@ public class PilotOverlay {
 	}
 	
 	private static void drawAircraftRadarData(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
-        RenderSystem.setShaderTexture(0, RADAR);
+		RadarSystem radar = plane.radarSystem;
+		if (!radar.hasRadar()) return;
+		RenderSystem.setShaderTexture(0, RADAR);
         GuiComponent.blit(poseStack, 
         		radarOffset, height-radarOffset-radarSize, 
         		0, 0, radarSize, radarSize, 
@@ -195,7 +197,6 @@ public class PilotOverlay {
         GuiComponent.drawCenteredString(poseStack, m.font, 
     			heading+"", cx, height-radarOffset-radarSize-10, 0x8888ff);
         // RWR
-        RadarSystem radar = plane.radarSystem;
         for (RWRWarning warn : radar.getClientRWRWarnings()) {
         	Vec3 dp = warn.pos.subtract(plane.position());
         	float yaw = (UtilAngles.getYaw(dp)-plane.getYRot())*Mth.DEG_TO_RAD;

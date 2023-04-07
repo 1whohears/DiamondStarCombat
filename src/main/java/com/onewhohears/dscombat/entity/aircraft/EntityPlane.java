@@ -94,7 +94,7 @@ public class EntityPlane extends EntityAircraft {
 		//System.out.println("liftDir = "+liftDir);
 		airFoilAxes = UtilAngles.getRollAxis(q);
 		//System.out.println("airFoilAxes = "+airFoilAxes);
-		airFoilSpeedSqr = (float) UtilGeometry.componentOfVecByAxis(u, airFoilAxes).lengthSqr();
+		airFoilSpeedSqr = (float)UtilGeometry.vecCompByNormAxis(u, airFoilAxes).lengthSqr();
 		//System.out.println("airFoilSpeedSqr = "+airFoilSpeedSqr);
 		if (isOnGround() || UtilGeometry.isZero(u)) {
 			aoa = 0;

@@ -550,6 +550,8 @@ public abstract class EntityAircraft extends Entity {
 		kineticFric = totalMass * ACC_GRAVITY * CO_KINETIC_FRICTION;
 		maxThrust = partsManager.getTotalEngineThrust();
 		flareNum = partsManager.getNumFlares();
+		currentFuel = partsManager.getCurrentFuel();
+		maxFuel = partsManager.getMaxFuel();
 	}
 	
 	protected void calcMoveStatsPost(Quaternion q) {
@@ -1468,11 +1470,7 @@ public abstract class EntityAircraft extends Entity {
      * consume fuel every server tick
      */
     public void tickFuel() {
-    	if (!level.isClientSide) {
-    		partsManager.tickFuel(true);
-    	}
-    	currentFuel = partsManager.getCurrentFuel();
-    	maxFuel = partsManager.getMaxFuel();
+    	partsManager.tickFuel(!level.isClientSide);
     }
     
     /**

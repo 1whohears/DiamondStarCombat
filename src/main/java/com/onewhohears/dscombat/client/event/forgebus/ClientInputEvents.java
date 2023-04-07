@@ -188,4 +188,10 @@ public final class ClientInputEvents {
 		if (hit.getEntity().equals(m.player)) event.setCanceled(true);
 	}
 	
+	// TODO make the mouse moves change the camera angles relative to the plane axis
+	// use access transformer to make MouseHandler.onMove method public
+	// have GLFW switch between vanilla and custom one
+	// for performance reasons this should probably be done in client tick
+	// GLFW.glfwSetCursorPosCallback(m.getWindow().getWindow(), null);
+	
 }

@@ -10,6 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ViewportEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -56,6 +57,15 @@ public class ClientCameraEvents {
 		} else {
 			if (!prevCamera.equals(player)) m.setCameraEntity(player);
 		}
+	}
+	
+	@SubscribeEvent
+	public static void clientTickSetMouseCallback(TickEvent.ClientTickEvent event) {
+		// TODO make the mouse moves change the camera angles relative to the plane axis
+		// use access transformer to make MouseHandler.onMove method public
+		// have GLFW switch between vanilla and custom one
+		// for performance reasons this should probably be done in client tick
+		// GLFW.glfwSetCursorPosCallback(m.getWindow().getWindow(), null);
 	}
 	
 }

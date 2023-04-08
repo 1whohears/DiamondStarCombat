@@ -27,7 +27,7 @@ public class WeaponSystem {
 	
 	private List<WeaponData> weapons = new ArrayList<WeaponData>();
 	private int weaponIndex = 0;
-	private EntityAircraft parent;
+	private EntityAircraft parent; // TODO make final
 	private boolean readData = false;
 	//private HashMap<String, WeaponData> turrets = new HashMap<>();
 	

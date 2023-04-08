@@ -1,9 +1,11 @@
 package com.onewhohears.dscombat.common.network.toclient;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.common.network.IPacket;
+import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartsManager;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.weapon.WeaponSystem;
@@ -24,13 +26,13 @@ import net.minecraftforge.network.NetworkEvent.Context;
 public class ToClientRecievePlaneData extends IPacket {
 	
 	public final int id;
-	public final PartsManager pm;
+	public final List<PartSlot> slots;
 	public final WeaponSystem ws;
 	public final RadarSystem rs;
 	
-	public ToClientRecievePlaneData(int id, PartsManager pm, WeaponSystem ws, RadarSystem rs) {
+	public ToClientRecievePlaneData(int id, List<PartSlot> slots, WeaponSystem ws, RadarSystem rs) {
 		this.id = id;
-		this.pm = pm;
+		this.slots = slots;
 		this.ws = ws;
 		this.rs = rs;
 		//System.out.println("packet constructor "+pm);
@@ -39,7 +41,7 @@ public class ToClientRecievePlaneData extends IPacket {
 	public ToClientRecievePlaneData(FriendlyByteBuf buffer) {
 		super(buffer);
 		id = buffer.readInt();
-		pm = new PartsManager(buffer);
+		slots = PartsManager.readSlotsFromBuffer(buffer);
 		ws = new WeaponSystem(buffer);
 		rs = new RadarSystem(buffer);
 		//System.out.println("decoding "+pm);
@@ -48,7 +50,7 @@ public class ToClientRecievePlaneData extends IPacket {
 	@Override
 	public void encode(FriendlyByteBuf buffer) {
 		buffer.writeInt(id);
-		pm.write(buffer);
+		PartsManager.writeSlotsToBuffer(buffer, slots);
 		ws.write(buffer);
 		rs.write(buffer);
 		//System.out.println("encoding "+pm);
@@ -59,7 +61,7 @@ public class ToClientRecievePlaneData extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilPacket.planeDataPacket(id, pm, ws, rs);
+				UtilPacket.planeDataPacket(id, slots, ws, rs);
 				success.set(true);
 			});
 		});

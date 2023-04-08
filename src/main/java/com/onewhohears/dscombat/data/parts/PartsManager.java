@@ -130,25 +130,34 @@ public class PartsManager {
 		readData = true;
 	}*/
 	
-	public void read(FriendlyByteBuf buffer) {
+	/*public void read(FriendlyByteBuf buffer) {
 		int num = buffer.readInt();
 		for (int i = 0; i < num; ++i) slots.add(new PartSlot(buffer));
 		createNewInventory();
 		readData = true;
+	}*/
+	
+	public static List<PartSlot> readSlotsFromBuffer(FriendlyByteBuf buffer) {
+		List<PartSlot> ps = new ArrayList<PartSlot>();
+		int num = buffer.readInt();
+		for (int i = 0; i < num; ++i) ps.add(new PartSlot(buffer));
+		return ps;
+	}
+	
+	public static void writeSlotsToBuffer(FriendlyByteBuf buffer, List<PartSlot> slots) {
+		buffer.writeInt(slots.size());
+		for (PartSlot p : slots) p.write(buffer);
+	}
+	
+	public void setPartSlots(List<PartSlot> slots) {
+		this.slots = slots;
+		createNewInventory();
+		this.readData = true;
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
 		buffer.writeInt(slots.size());
 		for (PartSlot p : slots) p.write(buffer);
-	}
-	
-	/**
-	 * @param copy copies this part manager's slot data
-	 */
-	public void copy(PartsManager copy) {
-		this.slots = copy.slots;
-		createNewInventory();
-		readData = true;
 	}
 	
 	public void setupParts(/*EntityAircraft craft*/) {

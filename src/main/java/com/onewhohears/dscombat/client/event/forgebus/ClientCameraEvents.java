@@ -1,5 +1,11 @@
 package com.onewhohears.dscombat.client.event.forgebus;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWCursorPosCallbackI;
+
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
@@ -7,6 +13,7 @@ import com.onewhohears.dscombat.entity.parts.EntitySeatCamera;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.MouseHandler;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ViewportEvent;
@@ -61,11 +68,44 @@ public class ClientCameraEvents {
 	
 	@SubscribeEvent
 	public static void clientTickSetMouseCallback(TickEvent.ClientTickEvent event) {
-		// TODO make the mouse moves change the camera angles relative to the plane axis
-		// use access transformer to make MouseHandler.onMove method public
-		// have GLFW switch between vanilla and custom one
-		// for performance reasons this should probably be done in client tick
-		// GLFW.glfwSetCursorPosCallback(m.getWindow().getWindow(), null);
+		Minecraft m = Minecraft.getInstance();
+		if (m.player == null || m.player.tickCount != 1) return;
+		GLFW.glfwSetCursorPosCallback(m.getWindow().getWindow(), ClientCameraEvents.customMouseCallback);
 	}
+	
+	public static Method vanillaOnMove;
+	
+	public static Method getVanillaOnMove() {
+		if (vanillaOnMove != null) return vanillaOnMove; 
+		try {
+			vanillaOnMove = MouseHandler.class.getDeclaredMethod(
+					"onMove", long.class, double.class, double.class);
+			vanillaOnMove.setAccessible(true);
+		} catch (NoSuchMethodException | SecurityException e) {
+			e.printStackTrace();
+		}
+		return vanillaOnMove;
+	}
+	
+	public static final GLFWCursorPosCallbackI customMouseCallback = (window, x, y) -> {
+		Minecraft m = Minecraft.getInstance();
+		m.execute(() -> {
+			double xn = x, yn = y;
+			if (window != m.getWindow().getWindow()) return;
+			if (m.player != null && m.screen == null && m.player.getRootVehicle() instanceof EntityAircraft craft) {
+				double r = Math.toRadians(craft.zRot);
+				double dx = x - m.mouseHandler.xpos();
+				double dy = y - m.mouseHandler.ypos();
+				xn = dx*Math.cos(r) + dy*Math.sin(r) + m.mouseHandler.xpos();
+				yn = dy*Math.cos(r) + dx*Math.sin(r) + m.mouseHandler.ypos();
+				// FIXME CAN CRASH
+			}
+			try { getVanillaOnMove().invoke(m.mouseHandler, window, xn, yn); } 
+			catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				e.printStackTrace();
+			}
+			return;
+		});
+	};
 	
 }

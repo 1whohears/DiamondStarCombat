@@ -37,8 +37,8 @@ public class ToServerRequestPlaneData extends IPacket {
 			Level level = ctx.get().getSender().level;
 			if (level.getEntity(id) instanceof EntityAircraft plane) {
 				PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> plane), 
-						new ToClientRecievePlaneData(plane.getId(), 
-							plane.partsManager, plane.weaponSystem, plane.radarSystem));
+					new ToClientRecievePlaneData(plane.getId(), 
+						plane.partsManager.getSlots(), plane.weaponSystem, plane.radarSystem));
 			}
 			success.set(true);
 		});

@@ -32,7 +32,7 @@ public class RadarSystem {
 	public boolean dataLink = false;
 	
 	private boolean readData = false;
-	private EntityAircraft parent;
+	private EntityAircraft parent; // TODO make final
 	
 	private List<RadarData> radars = new ArrayList<RadarData>();
 	private List<EntityMissile> rockets = new ArrayList<EntityMissile>();

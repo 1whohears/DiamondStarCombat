@@ -2,11 +2,11 @@ package com.onewhohears.dscombat.util;
 
 import java.util.List;
 
-import com.onewhohears.dscombat.data.parts.PartsManager;
+import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.radar.RadarData;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
-import com.onewhohears.dscombat.data.radar.RadarSystem.RWRWarning;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
+import com.onewhohears.dscombat.data.radar.RadarSystem.RWRWarning;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponSystem;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
@@ -39,13 +39,13 @@ public class UtilPacket {
 		}
 	}
 	
-	public static void planeDataPacket(int id, PartsManager pm, WeaponSystem ws, RadarSystem rs) {
+	public static void planeDataPacket(int id, List<PartSlot> slots, WeaponSystem ws, RadarSystem rs) {
 		//System.out.println("plane data packet received");
 		//System.out.println(pm.toString());
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityAircraft plane) {
-			plane.partsManager.copy(pm);
+			plane.partsManager.setPartSlots(slots);
 			plane.weaponSystem.copy(ws);
 			plane.radarSystem.copy(rs);
 			// ORDER MATTERS

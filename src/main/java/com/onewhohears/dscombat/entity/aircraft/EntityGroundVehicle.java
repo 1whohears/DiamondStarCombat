@@ -55,7 +55,7 @@ public class EntityGroundVehicle extends EntityAircraft {
 	
 	@Override
 	public void directionGround(Quaternion q) {
-		if (isTank) {
+		if (isTank && isOperational()) {
 			flatten(q, 5f, 5f);
 			addTorqueY(inputYaw * getAccelerationYaw(), true);
 		} else super.directionGround(q);
@@ -74,7 +74,7 @@ public class EntityGroundVehicle extends EntityAircraft {
 	@Override
 	public void tickGround(Quaternion q) {
 		super.tickGround(q);
-		if (inputSpecial) {
+		if (inputSpecial && isOperational()) {
 			throttleToZero();
 			addFrictionForce(kineticFric);
 		}

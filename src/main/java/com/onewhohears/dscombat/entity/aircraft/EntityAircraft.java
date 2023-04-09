@@ -108,8 +108,8 @@ public abstract class EntityAircraft extends Entity {
 	public static final double CO_STATIC_FRICTION = 4.50;
 	public static final double CO_KINETIC_FRICTION = 1.50;
 	public static final float CO_SLIDE_TORQUE = 1.00f;
-	public static final double collideSpeedThreshHold = 1d;
-	public static final double collideSpeedWithGearThreshHold = 2d;
+	public static final double collideSpeedThreshHold = 0.8d;
+	public static final double collideSpeedWithGearThreshHold = 1.8d;
 	public static final double collideDamageRate = 200d;
 	
 	public final PartsManager partsManager = new PartsManager(this);
@@ -139,7 +139,7 @@ public abstract class EntityAircraft extends Entity {
 	protected double staticFric, kineticFric;
 	
 	private ResourceLocation currentTexture;
-	private int lerpSteps, newRiderCooldown;
+	private int lerpSteps, newRiderCooldown, deadTicks;
 	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot;
 	private float landingGearPos, landingGearPosOld;
 	
@@ -354,7 +354,7 @@ public abstract class EntityAircraft extends Entity {
 	public void serverTick() {
 		tickCollisions();
 		waterDamage();
-		if (!isTestMode() && getHealth() <= 0) tickNoHealth();
+		if (!isTestMode() && !isOperational()) tickNoHealth();
 	}
 	
 	/**
@@ -362,17 +362,18 @@ public abstract class EntityAircraft extends Entity {
 	 * damages plane if it falls 
 	 */
 	public void tickCollisions() {
-		if (this.verticalCollisionBelow || this.verticalCollision) {
+		if (verticalCollisionBelow || verticalCollision) {
 			double my = Math.abs(prevMotion.y);
 			double th = collideSpeedThreshHold;
-			if (isLandingGear() 
+			if (isOperational() && isLandingGear() 
 					&& (getXRot() < 15f && getXRot() > -15f)
 					&& (zRot < 15f && zRot > -15f)) {
 				th = collideSpeedWithGearThreshHold;
 			}
-			if (my > th && this.tickCount > 300) {
+			if (my > th && tickCount > 300) {
 				hurt(DamageSource.FLY_INTO_WALL, 
-						(float)((my-th)*collideDamageRate));
+					(float)((my-th)*collideDamageRate));
+				if (!isOperational()) explode(null);
 			}
 		}
 	}
@@ -383,7 +384,18 @@ public abstract class EntityAircraft extends Entity {
 	}
 	
 	public void tickNoHealth() {
-		// TODO vehicle dead state
+		if (deadTicks++ > 400) {
+			kill();
+			return;
+		}
+	}
+	
+	public boolean isOperational() {
+		return getHealth() > 0;
+	}
+	
+	public int getDeadTicks() {
+		return deadTicks;
 	}
 	
 	/**
@@ -422,7 +434,7 @@ public abstract class EntityAircraft extends Entity {
 		double velXZ = motionXZ.length();
 		if (velXZ > maxXZ) motionXZ = motionXZ.scale(maxXZ / velXZ);
 		
-		double maxY = 2.0;
+		double maxY = 2.5;
 		double my = move.y;
 		if (Math.abs(my) > maxY) my = maxY * Math.signum(my);
 		else if (Math.abs(my) < 0.001) my = 0;
@@ -440,7 +452,7 @@ public abstract class EntityAircraft extends Entity {
 	 * also resets the controls if there isn't a controlling passenger
 	 */
 	public void tickThrottle() {
-		if (getControllingPassenger() == null) resetControls();
+		if (getControllingPassenger() == null || !isOperational()) resetControls();
 		if (inputThrottle > 0) increaseThrottle();
 		else if (inputThrottle < 0) decreaseThrottle();
 	}
@@ -462,6 +474,7 @@ public abstract class EntityAircraft extends Entity {
 	}
 	
 	public void directionGround(Quaternion q) {
+		if (!isOperational()) return;
 		flatten(q, 5f, 5f);
 		float max_tr = getTurnRadius();
 		if (inputYaw == 0 || max_tr == 0) return;
@@ -469,7 +482,6 @@ public abstract class EntityAircraft extends Entity {
 		float turn = xzSpeed / tr * xzSpeedDir;
 		float turnDeg = turn * Mth.RAD_TO_DEG;
 		if (isSliding()) {
-			//addTorqueY(turnDeg*slideAngleCos*CO_SLIDE_TORQUE, false);
 			torqueY = turnDeg*slideAngleCos*CO_SLIDE_TORQUE;
 		} else {
 			torqueY = turnDeg;
@@ -685,7 +697,7 @@ public abstract class EntityAircraft extends Entity {
 	 * @return the magnitude of the thrust force based on the engines, throttle, and 0 if no fuel
 	 */
 	public double getThrustMag() {
-		if (getCurrentFuel() <= 0) return 0;
+		if (getCurrentFuel() <= 0 || !isOperational()) return 0;
 		return getCurrentThrottle() * getMaxThrust();
 	}
 	
@@ -764,6 +776,7 @@ public abstract class EntityAircraft extends Entity {
 		Entity controller = getControllingPassenger();
 		if (controller == null) return;
 		if (!level.isClientSide) {
+			if (!isOperational()) return;
 			weaponSystem.tick();
 			radarSystem.tickUpdateTargets();
 			boolean consume = !isNoConsume();
@@ -923,15 +936,18 @@ public abstract class EntityAircraft extends Entity {
 		} else if (player.getRootVehicle() != null && player.getRootVehicle().equals(this)) {
 			return InteractionResult.PASS;
 		} else if (!level.isClientSide) {
+			if (!isOperational()) return InteractionResult.PASS;
 			ItemStack stack = player.getInventory().getSelected();
 			if (!stack.isEmpty()) {
 				Item item = stack.getItem();
+				// REFUEL
 				if (item instanceof ItemGasCan) {
 					int md = stack.getMaxDamage();
 					int d = stack.getDamageValue();
 					int r = (int)addFuel(md-d);
 					stack.setDamageValue(md-r);
 					return InteractionResult.SUCCESS;
+				// REPAIR
 				} else if (item instanceof ItemRepairTool tool) {
 					if (isMaxHealth()) {
 						level.playSound(null, this, 
@@ -943,6 +959,7 @@ public abstract class EntityAircraft extends Entity {
 					stack.hurtAndBreak(1, player, 
 						(p) -> { p.broadcastBreakEvent(hand); });
 					return InteractionResult.SUCCESS;
+				// RELOAD
 				} else if (item instanceof ItemAmmo ammo) {
 					String ammoId = ammo.getAmmoId();
 					for (EntityTurret t : getTurrets()) {
@@ -957,12 +974,14 @@ public abstract class EntityAircraft extends Entity {
 					int o = weaponSystem.addAmmo(ammoId, stack.getCount(), true);
 					stack.setCount(o);
 					return InteractionResult.SUCCESS;
+				// CHANGE COLOR
 				} else if (item instanceof DyeItem dye) {
 					if (setCurrentColor(dye.getDyeColor())) {
 						stack.shrink(1);
 						return InteractionResult.CONSUME;
 					}
 					return InteractionResult.PASS;
+				// CREATIVE WAND
 				} else if (item instanceof ItemCreativeWand wand) {
 					if (wand.modifyAircraft(this)) return InteractionResult.SUCCESS;
 					return InteractionResult.PASS;
@@ -1102,6 +1121,10 @@ public abstract class EntityAircraft extends Entity {
 		if (isInvulnerableTo(source)) return false;
 		addHealth(-amount);
 		// TODO if damage is explosion, add torque to craft causing it to spin out of control
+		if (source.isExplosion() && !isOnGround()) {
+			Vec3 delta = source.getSourcePosition().subtract(position());
+			
+		}
 		if (!level.isClientSide) level.playSound(null, blockPosition(), 
 				ModSounds.VEHICLE_HIT_1.get(), 
 				SoundSource.PLAYERS, 0.5f, 1.0f);

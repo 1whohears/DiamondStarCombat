@@ -81,14 +81,14 @@ public class EntityHelicopter extends EntityAircraft {
 	
 	@Override
 	public void tickAir(Quaternion q) {
-		if (!level.isClientSide && inputSpecial) {
+		if (!level.isClientSide && inputSpecial && isOperational()) {
 			float max_th = getMaxThrust();
 			if (max_th != 0) setCurrentThrottle((float)-getWeightForce().y / max_th);
 			setDeltaMovement(getDeltaMovement().multiply(1, 0.90, 1));
 		}
 		super.tickAir(q);
 		Vec3 motion = getDeltaMovement();
-		if (isFreeLook()) {
+		if (isFreeLook() && isOperational()) {
 			motion = motion.multiply(0.95, 1, 0.95);
 			EulerAngles a = UtilAngles.toDegrees(q);
 			// pitch forward backward
@@ -115,6 +115,7 @@ public class EntityHelicopter extends EntityAircraft {
 	@Override
 	public void directionAir(Quaternion q) {
 		super.directionAir(q);
+		if (!isOperational()) return;
 		addTorqueY(inputYaw * getAccelerationYaw(), true);
 		if (!isFreeLook()) {
 			addTorqueX(inputPitch * getAccelerationPitch(), true);

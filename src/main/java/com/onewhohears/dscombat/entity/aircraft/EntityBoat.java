@@ -57,6 +57,7 @@ public class EntityBoat extends EntityAircraft {
 	@Override
 	public void directionGround(Quaternion q) {
 		flatten(q, 5f, 5f);
+		if (!isOperational()) return;
 		addTorqueY(inputYaw * getAccelerationYaw() * 0.1f, true);
 	}
 	
@@ -68,6 +69,7 @@ public class EntityBoat extends EntityAircraft {
 	@Override
 	public void directionWater(Quaternion q) {
 		flatten(q, 5f, 5f);
+		if (!isOperational()) return;
 		addTorqueY(inputYaw * getAccelerationYaw(), true);
 	}
 	
@@ -116,6 +118,7 @@ public class EntityBoat extends EntityAircraft {
 	}
 	
 	public boolean willFloat() {
+		if (!isOperational()) return false;
 		float w = getTotalMass();
 		float fc = getBbWidth() * getBbWidth() * 0.05f;
 		return fc > w;

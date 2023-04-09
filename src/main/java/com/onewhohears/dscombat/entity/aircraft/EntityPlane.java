@@ -53,6 +53,7 @@ public class EntityPlane extends EntityAircraft {
 	@Override
 	public void directionAir(Quaternion q) {
 		super.directionAir(q);
+		if (!isOperational()) return;
 		addTorqueX(inputPitch * getAccelerationPitch(), true);
 		addTorqueY(inputYaw * getAccelerationYaw(), true);
 		if (inputBothRoll) flatten(q, 0, getAccelerationRoll());

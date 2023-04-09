@@ -56,6 +56,7 @@ public class EntitySubmarine extends EntityBoat {
 	
 	@Override
 	public void directionWater(Quaternion q) {
+		if (!isOperational()) return;
 		if (isFreeLook()) flatten(q, 5f, 5f);
 		else {
 			addTorqueX(inputPitch * getAccelerationPitch(), true);
@@ -94,7 +95,7 @@ public class EntitySubmarine extends EntityBoat {
 		Vec3 move = getDeltaMovement();
 		if (inputSpecial) move = move.scale(0.75);
 		else move = move.scale(0.925);
-		if (isFreeLook()) {
+		if (isFreeLook() && isOperational()) {
 			move = move.add(0, inputPitch * 0.04, 0);
 			double max = 0.2;
 			if (Math.abs(move.y) > 0.5) move.multiply(1, max/move.y, 1);

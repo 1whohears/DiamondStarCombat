@@ -18,13 +18,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent.Context;
 
-/*
- * TODO ToClientRecievePlaneData shouldn't be needed!
- * same with the add/remove radars and weapons
- * these should get updated when item changes in plane menu get sent to client
- * it's unnecessary extra data send from server to client
- */
-
 public class ToClientRecievePlaneData extends IPacket {
 	
 	public final int id;
@@ -39,7 +32,6 @@ public class ToClientRecievePlaneData extends IPacket {
 		this.weapons = weapons;
 		this.slots = slots;
 		this.radars = radars;
-		//System.out.println("packet constructor "+pm);
 	}
 	
 	public ToClientRecievePlaneData(FriendlyByteBuf buffer) {
@@ -49,7 +41,6 @@ public class ToClientRecievePlaneData extends IPacket {
 		weapons = WeaponSystem.readWeaponsFromBuffer(buffer);
 		slots = PartsManager.readSlotsFromBuffer(buffer);
 		radars = RadarSystem.readRadarsFromBuffer(buffer);
-		//System.out.println("decoding "+pm);
 	}
 	
 	@Override
@@ -59,7 +50,6 @@ public class ToClientRecievePlaneData extends IPacket {
 		WeaponSystem.writeWeaponsToBuffer(buffer, weapons);
 		PartsManager.writeSlotsToBuffer(buffer, slots);
 		RadarSystem.writeRadarsToBuffer(buffer, radars);
-		//System.out.println("encoding "+pm);
 	}
 
 	@Override

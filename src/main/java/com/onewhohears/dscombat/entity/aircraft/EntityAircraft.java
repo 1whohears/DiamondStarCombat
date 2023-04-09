@@ -354,7 +354,7 @@ public abstract class EntityAircraft extends Entity {
 	public void serverTick() {
 		tickCollisions();
 		waterDamage();
-		if (!isTestMode() && getHealth() <= 0) kill();
+		if (!isTestMode() && getHealth() <= 0) tickNoHealth();
 	}
 	
 	/**
@@ -380,6 +380,10 @@ public abstract class EntityAircraft extends Entity {
 	public void waterDamage() {
 		if (tickCount % 20 == 0 && isInWater()) 
 			hurt(DamageSource.DROWN, 5);
+	}
+	
+	public void tickNoHealth() {
+		// TODO vehicle dead state
 	}
 	
 	/**
@@ -1097,6 +1101,7 @@ public abstract class EntityAircraft extends Entity {
     public boolean hurt(DamageSource source, float amount) {
 		if (isInvulnerableTo(source)) return false;
 		addHealth(-amount);
+		// TODO if damage is explosion, add torque to craft causing it to spin out of control
 		if (!level.isClientSide) level.playSound(null, blockPosition(), 
 				ModSounds.VEHICLE_HIT_1.get(), 
 				SoundSource.PLAYERS, 0.5f, 1.0f);
@@ -1538,7 +1543,6 @@ public abstract class EntityAircraft extends Entity {
     
     @Override
     public void kill() {
-    	explode(null);
     	super.kill();
     }
     

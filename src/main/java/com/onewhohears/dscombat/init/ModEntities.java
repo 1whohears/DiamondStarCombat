@@ -114,6 +114,8 @@ public class ModEntities {
 	 * 
 	 * BOATS/SUBMARINES
 	 * 
+	 * weather balloon
+	 * 
 	 * IDEA AI for planes and turrets
 	 */
 	

@@ -379,7 +379,7 @@ public abstract class EntityAircraft extends Entity {
 	}
 	
 	public void waterDamage() {
-		if (tickCount % 20 == 0 && isInWater()) 
+		if (tickCount % 20 == 0 && isInWater() && isOperational()) 
 			hurt(DamageSource.DROWN, 5);
 	}
 	
@@ -1125,8 +1125,8 @@ public abstract class EntityAircraft extends Entity {
 			Vec3 delta = source.getSourcePosition().subtract(position());
 			
 		}
-		if (!level.isClientSide) level.playSound(null, blockPosition(), 
-				ModSounds.VEHICLE_HIT_1.get(), 
+		if (!level.isClientSide && isOperational()) level.playSound(null, 
+				blockPosition(), ModSounds.VEHICLE_HIT_1.get(), 
 				SoundSource.PLAYERS, 0.5f, 1.0f);
 		return true;
 	}

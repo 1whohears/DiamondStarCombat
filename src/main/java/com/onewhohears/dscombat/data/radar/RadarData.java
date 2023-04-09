@@ -119,6 +119,7 @@ public class RadarData {
 			List<EntityAircraft> list = level.getEntitiesOfClass(
 					EntityAircraft.class, getRadarBoundingBox(radar));
 			for (int i = 0; i < list.size(); ++i) {
+				if (!list.get(i).isOperational()) continue;
 				Entity pilot = list.get(i).getControllingPassenger();
 				if (radar.isRadarPlayersOnly() && pilot == null) continue;
 				if (!basicCheck(radar, list.get(i), list.get(i).getStealth())) continue;

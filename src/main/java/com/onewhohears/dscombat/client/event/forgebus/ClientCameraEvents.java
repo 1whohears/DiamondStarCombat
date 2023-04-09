@@ -53,6 +53,8 @@ public class ClientCameraEvents {
 			}
 			camera.setXRot(xi);
 			camera.setYRot(yi);
+			camera.xRotO = xi;
+			camera.yRotO = yi;
 			if (!prevCamera.equals(camera)) m.setCameraEntity(camera);
 			boolean detached = !m.options.getCameraType().isFirstPerson();
 			boolean mirrored = m.options.getCameraType().isMirrored();
@@ -96,9 +98,9 @@ public class ClientCameraEvents {
 				double r = Math.toRadians(craft.zRot);
 				double dx = x - m.mouseHandler.xpos();
 				double dy = y - m.mouseHandler.ypos();
-				xn = dx*Math.cos(r) + dy*Math.sin(r) + m.mouseHandler.xpos();
+				xn = dx*Math.cos(r) - dy*Math.sin(r) + m.mouseHandler.xpos();
 				yn = dy*Math.cos(r) + dx*Math.sin(r) + m.mouseHandler.ypos();
-				// FIXME CAN CRASH
+				GLFW.glfwSetCursorPos(window, xn, yn);
 			}
 			try { getVanillaOnMove().invoke(m.mouseHandler, window, xn, yn); } 
 			catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {

@@ -44,7 +44,6 @@ public class EntitySeatCamera extends Entity {
 	
 	@Override
 	public void tick() {
-		super.tick();
 		if (!level.isClientSide && getVehicle() == null) discard();
 	}
 	

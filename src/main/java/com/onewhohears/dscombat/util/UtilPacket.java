@@ -5,10 +5,8 @@ import java.util.List;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.radar.RadarData;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
-import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.radar.RadarSystem.RWRWarning;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
-import com.onewhohears.dscombat.data.weapon.WeaponSystem;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 
@@ -39,18 +37,19 @@ public class UtilPacket {
 		}
 	}
 	
-	public static void planeDataPacket(int id, List<PartSlot> slots, WeaponSystem ws, RadarSystem rs) {
+	public static void planeDataPacket(int id, List<PartSlot> slots, List<WeaponData> weapons, int weaponIndex, List<RadarData> radars) {
 		//System.out.println("plane data packet received");
 		//System.out.println(pm.toString());
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityAircraft plane) {
+			plane.weaponSystem.clientSetSelected(weaponIndex);
+			plane.weaponSystem.setWeapons(weapons);
+			plane.radarSystem.setRadars(radars);
 			plane.partsManager.setPartSlots(slots);
-			plane.weaponSystem.copy(ws);
-			plane.radarSystem.copy(rs);
 			// ORDER MATTERS
-			plane.weaponSystem.clientSetup(plane);
-			plane.radarSystem.clientSetup(plane);
+			plane.weaponSystem.clientSetup();
+			plane.radarSystem.clientSetup();
 			plane.partsManager.clientPartsSetup();
 			//System.out.println("plane data updated");
 		}

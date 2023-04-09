@@ -25,14 +25,13 @@ import net.minecraftforge.network.PacketDistributor;
 
 public class WeaponSystem {
 	
+	private final EntityAircraft parent;
+	private boolean readData = false;
 	private List<WeaponData> weapons = new ArrayList<WeaponData>();
 	private int weaponIndex = 0;
-	private EntityAircraft parent; // TODO make final
-	private boolean readData = false;
-	//private HashMap<String, WeaponData> turrets = new HashMap<>();
 	
-	public WeaponSystem() {
-		
+	public WeaponSystem(EntityAircraft parent) {
+		this.parent = parent;
 	}
 	
 	public void read(CompoundTag compound) {
@@ -53,29 +52,21 @@ public class WeaponSystem {
 		//System.out.println(this);
 	}
 	
-	public WeaponSystem(FriendlyByteBuf buffer) {
-		//System.out.println("WEAPON SYSTEM BUFFER");
+	public static List<WeaponData> readWeaponsFromBuffer(FriendlyByteBuf buffer) {
+		List<WeaponData> weapons = new ArrayList<WeaponData>();
 		int num = buffer.readInt();
-		//System.out.println("num = "+num);
 		for (int i = 0; i < num; ++i) weapons.add(DataSerializers.WEAPON_DATA.read(buffer));
-		weaponIndex = buffer.readInt();
-		//System.out.println("weaponIndex = "+weaponIndex);
-		readData = true;
+		return weapons;
 	}
 	
-	public void write(FriendlyByteBuf buffer) {
+	public static void writeWeaponsToBuffer(FriendlyByteBuf buffer, List<WeaponData> weapons) {
 		buffer.writeInt(weapons.size());
 		for (WeaponData w : weapons) w.write(buffer);
-		buffer.writeInt(weaponIndex);
 	}
 	
-	/**
-	 * @param ws copies this weapon system's weapons list and selected weapon index
-	 */
-	public void copy(WeaponSystem ws) {
-		this.weapons = ws.weapons;
-		this.weaponIndex = ws.weaponIndex;
-		this.readData = true;
+	public void setWeapons(List<WeaponData> weapons) {
+		this.weapons = weapons;
+		readData = true;
 	}
 	
 	public boolean addWeapon(WeaponData data, boolean updateClient) {
@@ -113,6 +104,10 @@ public class WeaponSystem {
 		if (weapons.size() == 0) return null;
 		checkIndex();
 		return weapons.get(weaponIndex);
+	}
+	
+	public int getSelectedIndex() {
+		return weaponIndex;
 	}
 	
 	public boolean shootSelected(Entity controller, boolean consume) {
@@ -157,12 +152,12 @@ public class WeaponSystem {
 		for (WeaponData w : weapons) w.tick();
 	}
 	
-	public void setup(EntityAircraft parent) {
-		this.parent = parent;
+	public void setup(/*EntityAircraft parent*/) {
+		//this.parent = parent;
 	}
 	
-	public void clientSetup(EntityAircraft parent) {
-		this.parent = parent;
+	public void clientSetup(/*EntityAircraft parent*/) {
+		//this.parent = parent;
 	}
 	
 	public boolean isReadData() {

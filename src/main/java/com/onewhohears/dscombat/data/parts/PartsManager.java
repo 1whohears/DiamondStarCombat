@@ -155,11 +155,6 @@ public class PartsManager {
 		this.readData = true;
 	}
 	
-	public void write(FriendlyByteBuf buffer) {
-		buffer.writeInt(slots.size());
-		for (PartSlot p : slots) p.write(buffer);
-	}
-	
 	public void setupParts(/*EntityAircraft craft*/) {
 		//this.parent = craft;
 		//System.out.println("setupParts "+this);

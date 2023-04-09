@@ -29,10 +29,8 @@ import net.minecraftforge.network.PacketDistributor;
 
 public class RadarSystem {
 	
-	public boolean dataLink = false;
-	
+	private final EntityAircraft parent;
 	private boolean readData = false;
-	private EntityAircraft parent; // TODO make final
 	
 	private List<RadarData> radars = new ArrayList<RadarData>();
 	private List<EntityMissile> rockets = new ArrayList<EntityMissile>();
@@ -46,8 +44,10 @@ public class RadarSystem {
 	private List<RWRWarning> rwrWarnings = new ArrayList<RWRWarning>();
 	private boolean rwrMissile, rwrRadar;
 	
-	public RadarSystem() {
-		
+	public boolean dataLink = false;
+	
+	public RadarSystem(EntityAircraft parent) {
+		this.parent = parent;
 	}
 	
 	public void read(CompoundTag compound) {
@@ -63,24 +63,25 @@ public class RadarSystem {
 		compound.put("radars", list);
 	}
 	
-	public RadarSystem(FriendlyByteBuf buffer) {
-		//System.out.println("RADAR SYSTEM BUFFER");
+	public static List<RadarData> readRadarsFromBuffer(FriendlyByteBuf buffer) {
+		List<RadarData> radars = new ArrayList<RadarData>();
 		int num = buffer.readInt();
 		for (int i = 0; i < num; ++i) radars.add(new RadarData(buffer));
-		readData = true;
+		return radars;
 	}
 	
-	public void write(FriendlyByteBuf buffer) {
+	public static void writeRadarsToBuffer(FriendlyByteBuf buffer, List<RadarData> radars) {
 		buffer.writeInt(radars.size());
 		for (int i = 0; i < radars.size(); ++i) radars.get(i).write(buffer);
 	}
 	
-	/**
-	 * @param rs copies this radar system's radar list
-	 */
-	public void copy(RadarSystem rs) {
-		this.radars = rs.radars;
-		this.readData = true;
+	public void setRadars(List<RadarData> radars) {
+		this.radars = radars;
+		readData = true;
+	}
+	
+	public List<RadarData> getRadars() {
+		return radars;
 	}
 	
 	public void tickUpdateTargets() {
@@ -248,12 +249,12 @@ public class RadarSystem {
 		return readData;
 	}
 	
-	public void setup(EntityAircraft e) {
-		parent = e;
+	public void setup(/*EntityAircraft e*/) {
+		//parent = e;
 	}
 	
-	public void clientSetup(EntityAircraft e) {
-		parent = e;
+	public void clientSetup(/*EntityAircraft e*/) {
+		//parent = e;
 	}
 	
 	public void addRWRWarning(Vec3 pos, boolean isMissile, boolean clientSide) {

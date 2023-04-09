@@ -113,8 +113,8 @@ public abstract class EntityAircraft extends Entity {
 	public static final double collideDamageRate = 200d;
 	
 	public final PartsManager partsManager = new PartsManager(this);
-	public final WeaponSystem weaponSystem = new WeaponSystem();
-	public final RadarSystem radarSystem = new RadarSystem();
+	public final WeaponSystem weaponSystem = new WeaponSystem(this);
+	public final RadarSystem radarSystem = new RadarSystem(this);
 	
 	public final boolean negativeThrottle;
 	
@@ -893,8 +893,8 @@ public abstract class EntityAircraft extends Entity {
      */
 	public void serverSetup() {
 		// ORDER MATTERS
-		weaponSystem.setup(this);
-		radarSystem.setup(this);
+		weaponSystem.setup();
+		radarSystem.setup();
 		partsManager.setupParts();
 	}
 	

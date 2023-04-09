@@ -7,7 +7,9 @@ import java.util.function.Supplier;
 import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartsManager;
+import com.onewhohears.dscombat.data.radar.RadarData;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
+import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponSystem;
 import com.onewhohears.dscombat.util.UtilPacket;
 
@@ -26,33 +28,37 @@ import net.minecraftforge.network.NetworkEvent.Context;
 public class ToClientRecievePlaneData extends IPacket {
 	
 	public final int id;
+	public final int weaponIndex;
+	public final List<WeaponData> weapons;
 	public final List<PartSlot> slots;
-	public final WeaponSystem ws;
-	public final RadarSystem rs;
+	public final List<RadarData> radars;
 	
-	public ToClientRecievePlaneData(int id, List<PartSlot> slots, WeaponSystem ws, RadarSystem rs) {
+	public ToClientRecievePlaneData(int id, int weaponIndex, List<WeaponData> weapons, List<PartSlot> slots, List<RadarData> radars) {
 		this.id = id;
+		this.weaponIndex = weaponIndex;
+		this.weapons = weapons;
 		this.slots = slots;
-		this.ws = ws;
-		this.rs = rs;
+		this.radars = radars;
 		//System.out.println("packet constructor "+pm);
 	}
 	
 	public ToClientRecievePlaneData(FriendlyByteBuf buffer) {
 		super(buffer);
 		id = buffer.readInt();
+		weaponIndex = buffer.readInt();
+		weapons = WeaponSystem.readWeaponsFromBuffer(buffer);
 		slots = PartsManager.readSlotsFromBuffer(buffer);
-		ws = new WeaponSystem(buffer);
-		rs = new RadarSystem(buffer);
+		radars = RadarSystem.readRadarsFromBuffer(buffer);
 		//System.out.println("decoding "+pm);
 	}
 	
 	@Override
 	public void encode(FriendlyByteBuf buffer) {
 		buffer.writeInt(id);
+		buffer.writeInt(weaponIndex);
+		WeaponSystem.writeWeaponsToBuffer(buffer, weapons);
 		PartsManager.writeSlotsToBuffer(buffer, slots);
-		ws.write(buffer);
-		rs.write(buffer);
+		RadarSystem.writeRadarsToBuffer(buffer, radars);
 		//System.out.println("encoding "+pm);
 	}
 
@@ -61,7 +67,7 @@ public class ToClientRecievePlaneData extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilPacket.planeDataPacket(id, slots, ws, rs);
+				UtilPacket.planeDataPacket(id, slots, weapons, weaponIndex, radars);
 				success.set(true);
 			});
 		});

@@ -54,6 +54,7 @@ public class EntityPlane extends EntityAircraft {
 	public void directionAir(Quaternion q) {
 		super.directionAir(q);
 		if (!isOperational()) return;
+		// TODO turn assist button
 		addTorqueX(inputPitch * getAccelerationPitch(), true);
 		addTorqueY(inputYaw * getAccelerationYaw(), true);
 		if (inputBothRoll) flatten(q, 0, getAccelerationRoll(), false);
@@ -84,7 +85,6 @@ public class EntityPlane extends EntityAircraft {
 	
 	@Override
 	public void tickAir(Quaternion q) {
-		// TODO turn assist button
 		super.tickAir(q);
 	}
 	

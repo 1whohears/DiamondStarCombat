@@ -40,6 +40,14 @@ public class WeaponDamageSource extends EntityDamageSource {
 		return new WeaponDamageSource("dscombat.missile", shooter, weapon, true, 0.50f);
 	}
 	
+	public static WeaponDamageSource torpedo(Entity shooter, EntityWeapon weapon) {
+		return new WeaponDamageSource("dscombat.torpedo", shooter, weapon, true, 0.40f);
+	}
+	
+	public static WeaponDamageSource ir_missile(Entity shooter, EntityWeapon weapon) {
+		return new WeaponDamageSource("dscombat.ir_missile", shooter, weapon, true, 0.50f);
+	}
+	
 	@Nonnull
 	@Override
 	public Entity getDirectEntity() {

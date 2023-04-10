@@ -87,6 +87,10 @@
 	"death.attack.dscombat.bomb.player": "%1$s was bombed by %2$s (%3$sm)",
 	"death.attack.dscombat.missile": "%1$s couldn't dodge a missile",
 	"death.attack.dscombat.missile.player": "%1$s was splashed by %2$s (%3$sm)",
+	"death.attack.dscombat.torpedo": "%1$s didn't drown because they were in a million pieces",
+	"death.attack.dscombat.torpedo.player": "%1$s was sunk by %2$s (%3$sm)",
+	"death.attack.dscombat.ir_missile": "%1$s didn't jam the WEZ",
+	"death.attack.dscombat.ir_missile.player": "%1$s was too hot for %2$s (%3$sm)",
 	
 	"key.categories.flight_control": "Diamond Star Combat Flight Control",
 	

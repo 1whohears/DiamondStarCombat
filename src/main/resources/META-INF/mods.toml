@@ -13,7 +13,7 @@ showAsResourcePack=false
 	updateJSONURL="https://raw.githubusercontent.com/1whohears/DiamondStarCombat/1.19.2/update.json"
 	displayTest = "MATCH_VERSION"
 	authors="1whohears"
-	credits="a duck"
+	credits="My Lizard"
 	description="A vehicle combat mod that adds Planes, Helicoptors, Tanks, Radars, Missiles and more!"
 
 [[dependencies.dscombat]]

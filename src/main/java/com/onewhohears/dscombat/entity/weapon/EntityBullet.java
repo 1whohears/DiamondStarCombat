@@ -13,10 +13,8 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.ClipContext;
@@ -154,7 +152,7 @@ public class EntityBullet extends EntityWeapon {
 	public void onHitEntity(EntityHitResult result) {
 		super.onHitEntity(result);
 		//System.out.println("BULLET HIT "+result.getEntity());
-		DamageSource source = this.getDamageSource(false);
+		DamageSource source = getImpactDamageSource();
 		result.getEntity().hurt(source, getDamage());
 		this.kill();
 	}
@@ -164,23 +162,13 @@ public class EntityBullet extends EntityWeapon {
 		return ProjectileUtil.getEntityHitResult(this.level, this, p_36758_, p_36759_, this.getBoundingBox().expandTowards(this.getDeltaMovement()).inflate(1.0D), this::canHitEntity);
 	}
 	
-	protected DamageSource getDamageSource(boolean explosion) {
-		Entity owner = getOwner();
-		if (owner instanceof LivingEntity living) {
-			return new WeaponDamageSource(living, this, explosion);
-		}
-		DamageSource source = new EntityDamageSource("dscombat.bullet", this);
-		if (explosion) source.setExplosion();
-		return source;
-	}
-	
 	protected void checkExplode() {
 		if (isRemoved()) return;
 		if (getExplosive()) {
 			if (!level.isClientSide) {
 				Explosion.BlockInteraction interact = Explosion.BlockInteraction.NONE;
 				if (getTerrain()) interact = Explosion.BlockInteraction.BREAK;
-				level.explode(this, getDamageSource(true),
+				level.explode(this, getExplosionDamageSource(),
 					null, getX(), getY(), getZ(), 
 					getRadius(), getFire(), 
 					interact);
@@ -253,6 +241,16 @@ public class EntityBullet extends EntityWeapon {
 		checkExplode();
 		//System.out.println("super.kill");
 		super.kill();
+	}
+
+	@Override
+	protected WeaponDamageSource getImpactDamageSource() {
+		return WeaponDamageSource.bullet(getOwner(), this);
+	}
+
+	@Override
+	protected WeaponDamageSource getExplosionDamageSource() {
+		return WeaponDamageSource.bullet_explode(getOwner(), this);
 	}
 
 }

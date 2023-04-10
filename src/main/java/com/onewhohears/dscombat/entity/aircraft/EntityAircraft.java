@@ -18,6 +18,7 @@ import com.onewhohears.dscombat.data.AircraftTextures;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartsManager;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
+import com.onewhohears.dscombat.data.weapon.WeaponDamageSource;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponSystem;
 import com.onewhohears.dscombat.entity.parts.EntityPart;
@@ -1128,15 +1129,14 @@ public abstract class EntityAircraft extends Entity {
 		// TODO if damage is explosion, add torque to craft causing it to spin out of control
 		// damage source isn't explosive on client
 		debug(source.toString()+" "+source.isExplosion());
-		if (source.isExplosion() && !isOnGround() && source.getDirectEntity() != null) {
+		if (source instanceof WeaponDamageSource ws && ws.getTorqueK() != 0) {
 			Vec3 dir = source.getDirectEntity().getLookAngle();
 			Quaternion q;
 			if (level.isClientSide) q = getClientQ();
 			else q = getQ();
 			Vec3 dir2 = UtilAngles.rotateVector(dir, q);
-			float K = 1f;
-			float rx = (float)(dir2.z*dir2.y)*amount*K;
-			float rz = (float)(dir2.x*dir2.y)*amount*K;
+			float rx = (float)(dir2.z*dir2.y)*amount*ws.getTorqueK();
+			float rz = (float)(dir2.x*dir2.y)*amount*ws.getTorqueK();
 			System.out.println("rx = "+rx+" rz = "+rz);
 			addTorqueX(rx, false);
 			addTorqueZ(rz, false);

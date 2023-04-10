@@ -4,6 +4,7 @@ import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientMissileMove;
 import com.onewhohears.dscombat.data.weapon.MissileData;
 import com.onewhohears.dscombat.data.weapon.NonTickingMissileManager;
+import com.onewhohears.dscombat.data.weapon.WeaponDamageSource;
 import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.util.UtilClientSafeSoundInstance;
 import com.onewhohears.dscombat.util.UtilEntity;
@@ -377,6 +378,16 @@ public abstract class EntityMissile extends EntityBullet {
 	
 	public void tickInWater() {
 		this.kill();
+	}
+	
+	@Override
+	protected WeaponDamageSource getImpactDamageSource() {
+		return WeaponDamageSource.missile(getOwner(), this);
+	}
+
+	@Override
+	protected WeaponDamageSource getExplosionDamageSource() {
+		return WeaponDamageSource.missile(getOwner(), this);
 	}
 
 }

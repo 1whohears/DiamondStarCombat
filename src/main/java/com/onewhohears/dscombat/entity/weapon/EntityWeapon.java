@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.entity.weapon;
 
+import com.onewhohears.dscombat.data.weapon.WeaponDamageSource;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 
 import net.minecraft.client.Minecraft;
@@ -191,5 +192,9 @@ public abstract class EntityWeapon extends Projectile {
     public void setTestMode(boolean testMode) {
     	entityData.set(TEST_MODE, testMode);
     }
+    
+    protected abstract WeaponDamageSource getImpactDamageSource();
+    
+    protected abstract WeaponDamageSource getExplosionDamageSource();
 
 }

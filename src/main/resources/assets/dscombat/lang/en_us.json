@@ -79,6 +79,15 @@
 	"entity.dscombat.heavy_tank_turret": "Heavy Tank Turret",
 	"entity.dscombat.steve_up_smash": "Steve Up Smash",
 	
+	"death.attack.dscombat.bullet": "%1$s was too easy",
+	"death.attack.dscombat.bullet.player": "%1$s was gunned down by %2$s (%3$sm)",
+	"death.attack.dscombat.bullet_explode": "%1$s was atomized",
+	"death.attack.dscombat.bullet_explode.player": "%1$s was shelled by %2$s (%3$sm)",
+	"death.attack.dscombat.bomb": "%1$s was vaporized",
+	"death.attack.dscombat.bomb.player": "%1$s was bombed by %2$s (%3$sm)",
+	"death.attack.dscombat.missile": "%1$s couldn't dodge a missile",
+	"death.attack.dscombat.missile.player": "%1$s was splashed by %2$s (%3$sm)",
+	
 	"key.categories.flight_control": "Diamond Star Combat Flight Control",
 	
 	"key.dscombat.throttle_up_key": "Throttle Up",

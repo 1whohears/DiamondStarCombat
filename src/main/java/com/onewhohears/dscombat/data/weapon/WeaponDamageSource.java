@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.data.weapon;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
@@ -15,7 +16,7 @@ public class WeaponDamageSource extends EntityDamageSource {
 	protected final EntityWeapon weapon;
 	protected final float torqueK;
 	
-	public WeaponDamageSource(String damageTypeId, Entity shooter, EntityWeapon weapon, boolean explosion, float torque) {
+	public WeaponDamageSource(@Nonnull String damageTypeId, @Nullable Entity shooter, @Nonnull EntityWeapon weapon, boolean explosion, float torque) {
 		super(damageTypeId, shooter);
 		this.weapon = weapon;
 		this.torqueK = torque;
@@ -28,18 +29,18 @@ public class WeaponDamageSource extends EntityDamageSource {
 	}
 	
 	public static WeaponDamageSource bullet_explode(Entity shooter, EntityWeapon weapon) {
-		return new WeaponDamageSource("dscombat.bullet_explode", shooter, weapon, true, 0.1f);
+		return new WeaponDamageSource("dscombat.bullet_explode", shooter, weapon, true, 0.05f);
 	}
 	
 	public static WeaponDamageSource bomb(Entity shooter, EntityWeapon weapon) {
-		return new WeaponDamageSource("dscombat.bomb", shooter, weapon, true, 0.5f);
+		return new WeaponDamageSource("dscombat.bomb", shooter, weapon, true, 0.10f);
 	}
 	
 	public static WeaponDamageSource missile(Entity shooter, EntityWeapon weapon) {
-		return new WeaponDamageSource("dscombat.missile", shooter, weapon, true, 1.5f);
+		return new WeaponDamageSource("dscombat.missile", shooter, weapon, true, 0.50f);
 	}
 	
-	@Nullable
+	@Nonnull
 	@Override
 	public Entity getDirectEntity() {
 		return weapon;
@@ -67,7 +68,7 @@ public class WeaponDamageSource extends EntityDamageSource {
 	
 	@Override
 	public String toString() {
-		return "WeaponDamageSource("+weapon+" / "+entity+")";
+		return "WDS: "+msgId+" / "+weapon+" / "+entity;
 	}
 	
 	@Override
@@ -75,8 +76,7 @@ public class WeaponDamageSource extends EntityDamageSource {
 		LivingEntity killer = livingEntity.getKillCredit();
 		String s = "death.attack." + msgId;
 		if (killer == null) return Component.translatable(s, livingEntity.getDisplayName());
-		// TODO get distance from weapon launch position
-		int dist = (int)livingEntity.distanceTo(killer);
+		int dist = (int)livingEntity.position().distanceTo(weapon.getShootPos());
 		s += ".player";
 		return Component.translatable(s, livingEntity.getDisplayName(), killer.getDisplayName(), dist+"");
 	}

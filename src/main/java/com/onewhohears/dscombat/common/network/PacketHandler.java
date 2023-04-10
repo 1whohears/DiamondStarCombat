@@ -10,6 +10,7 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientRadarPings;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRecievePlaneData;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRemoveRadar;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRemoveWeapon;
+import com.onewhohears.dscombat.common.network.toclient.ToClientSynchTorque;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponAmmo;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponIndex;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftQ;
@@ -143,6 +144,11 @@ public final class PacketHandler {
 			.encoder(ToClientRWRWarning::encode)
 			.decoder(ToClientRWRWarning::new)
 			.consumerMainThread(ToClientRWRWarning::handle)
+			.add();
+		net.messageBuilder(ToClientSynchTorque.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ToClientSynchTorque::encode)
+			.decoder(ToClientSynchTorque::new)
+			.consumerMainThread(ToClientSynchTorque::handle)
 			.add();
 	}
 	

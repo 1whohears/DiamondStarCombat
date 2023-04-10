@@ -11,6 +11,7 @@ import com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents;
 import com.onewhohears.dscombat.common.container.AircraftMenuContainer;
 import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.common.network.PacketHandler;
+import com.onewhohears.dscombat.common.network.toclient.ToClientSynchTorque;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftQ;
 import com.onewhohears.dscombat.common.network.toserver.ToServerRequestPlaneData;
 import com.onewhohears.dscombat.data.AircraftPresets;
@@ -385,7 +386,7 @@ public abstract class EntityAircraft extends Entity {
 	}
 	
 	public void tickNoHealth() {
-		if (deadTicks++ > 400) {
+		if (deadTicks++ > 500) {
 			kill();
 			return;
 		}
@@ -1126,25 +1127,25 @@ public abstract class EntityAircraft extends Entity {
     public boolean hurt(DamageSource source, float amount) {
 		if (isInvulnerableTo(source)) return false;
 		addHealth(-amount);
-		// TODO if damage is explosion, add torque to craft causing it to spin out of control
-		// damage source isn't explosive on client
-		debug(source.toString()+" "+source.isExplosion());
-		if (source instanceof WeaponDamageSource ws && ws.getTorqueK() != 0) {
+		if (!level.isClientSide && source instanceof WeaponDamageSource ws && ws.getTorqueK() != 0) {
 			Vec3 dir = source.getDirectEntity().getLookAngle();
-			Quaternion q;
-			if (level.isClientSide) q = getClientQ();
-			else q = getQ();
-			Vec3 dir2 = UtilAngles.rotateVector(dir, q);
+			Vec3 dir2 = UtilAngles.rotateVector(dir, getQ());
 			float rx = (float)(dir2.z*dir2.y)*amount*ws.getTorqueK();
 			float rz = (float)(dir2.x*dir2.y)*amount*ws.getTorqueK();
-			System.out.println("rx = "+rx+" rz = "+rz);
 			addTorqueX(rx, false);
 			addTorqueZ(rz, false);
+			synchTorqueToClient();
 		}
 		if (!level.isClientSide && isOperational()) level.playSound(null, 
 			blockPosition(), ModSounds.VEHICLE_HIT_1.get(), 
 			SoundSource.PLAYERS, 0.5f, 1.0f);
 		return true;
+	}
+	
+	public void synchTorqueToClient() {
+		if (level.isClientSide) return;
+		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), 
+				new ToClientSynchTorque(this));
 	}
 	
 	public void explode(DamageSource source) {
@@ -1633,7 +1634,12 @@ public abstract class EntityAircraft extends Entity {
     }
     
     protected void debug(String debug) {
-    	if (hasControllingPassenger()) System.out.println(debug);
+    	debug(debug, true);
+    }
+    
+    protected void debug(String debug, boolean passengerCheck) {
+    	if (!passengerCheck || (passengerCheck && hasControllingPassenger())) 
+    		System.out.println(debug);
     }
     
     public void toClientPassengers(IPacket packet) {

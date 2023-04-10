@@ -194,6 +194,7 @@ public class EntityTurret extends EntitySeat {
 		boolean consume = true;
 		Vec3 pos = position();
 		if (getVehicle() instanceof EntityAircraft craft) {
+			if (!craft.isOperational()) return;
 			pos = pos.add(UtilAngles.rotateVector(new Vec3(0, weaponOffset, 0), craft.getQ()));
 			if (craft.isNoConsume()) consume = false;
 		}

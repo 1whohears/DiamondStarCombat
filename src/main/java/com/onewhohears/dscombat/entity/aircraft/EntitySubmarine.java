@@ -57,7 +57,7 @@ public class EntitySubmarine extends EntityBoat {
 	@Override
 	public void directionWater(Quaternion q) {
 		if (!isOperational()) return;
-		if (isFreeLook()) flatten(q, 5f, 5f);
+		if (isFreeLook()) flatten(q, getMaxDeltaPitch(), getMaxDeltaRoll(), false);
 		else {
 			addTorqueX(inputPitch * getAccelerationPitch(), true);
 			addTorqueZ(inputRoll * getAccelerationRoll(), true);

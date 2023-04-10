@@ -107,18 +107,18 @@ public abstract class EntityMissile extends EntityBullet {
 		if (!level.isClientSide && !isRemoved()) {
 			tickGuide();
 			if (target != null) {
-				if (this.distanceTo(target) <= fuseDist) {
-					this.setPos(target.position());
-					this.kill();
+				if (distanceTo(target) <= fuseDist) {
+					setPos(target.position());
+					kill();
 					if (target instanceof EntityMissile) {
 						target.kill();
 					}
 				}
 			}
 			if (tickCount % 10 == 0) PacketHandler.INSTANCE.send(
-					PacketDistributor.TRACKING_ENTITY.with(() -> this), 
-					new ToClientMissileMove(getId(), position(), 
-							getDeltaMovement(), getXRot(), getYRot(), targetPos));
+				PacketDistributor.TRACKING_ENTITY.with(() -> this), 
+				new ToClientMissileMove(getId(), position(), 
+					getDeltaMovement(), getXRot(), getYRot(), targetPos));
 			if (isInWater()) tickInWater();
 		}
 		if (level.isClientSide && !isRemoved()) {

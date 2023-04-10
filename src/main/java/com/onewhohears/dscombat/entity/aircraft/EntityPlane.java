@@ -56,7 +56,7 @@ public class EntityPlane extends EntityAircraft {
 		if (!isOperational()) return;
 		addTorqueX(inputPitch * getAccelerationPitch(), true);
 		addTorqueY(inputYaw * getAccelerationYaw(), true);
-		if (inputBothRoll) flatten(q, 0, getAccelerationRoll());
+		if (inputBothRoll) flatten(q, 0, getAccelerationRoll(), false);
 		else addTorqueZ(inputRoll * getAccelerationRoll(), true);
 	}
 	

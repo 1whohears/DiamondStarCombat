@@ -108,7 +108,8 @@ public class EntityHelicopter extends EntityAircraft {
 	
 	@Override
 	public void directionGround(Quaternion q) {
-		flatten(q, 5f, 5f);
+		if (!isOperational()) return;
+		flatten(q, 4f, 4f, true);
 		torqueY = 0;
 	}
 	
@@ -120,7 +121,7 @@ public class EntityHelicopter extends EntityAircraft {
 		if (!isFreeLook()) {
 			addTorqueX(inputPitch * getAccelerationPitch(), true);
 			addTorqueZ(inputRoll * getAccelerationRoll(), true);
-		} else flatten(q, getMaxDeltaPitch(), getMaxDeltaRoll());
+		} else flatten(q, getMaxDeltaPitch(), getMaxDeltaRoll(), false);
 	}
 
 	@Override

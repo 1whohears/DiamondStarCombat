@@ -169,20 +169,21 @@ public class EntityBullet extends EntityWeapon {
 		if (owner instanceof LivingEntity living) {
 			return new WeaponDamageSource(living, this, explosion);
 		}
-		if (explosion) return DamageSource.explosion((Explosion)null);
-		return new EntityDamageSource("dscombat.bullet", this);
+		DamageSource source = new EntityDamageSource("dscombat.bullet", this);
+		if (explosion) source.setExplosion();
+		return source;
 	}
 	
 	protected void checkExplode() {
-		if (this.isRemoved()) return;
-		if (this.getExplosive()) {
-			if (!this.level.isClientSide) {
+		if (isRemoved()) return;
+		if (getExplosive()) {
+			if (!level.isClientSide) {
 				Explosion.BlockInteraction interact = Explosion.BlockInteraction.NONE;
 				if (getTerrain()) interact = Explosion.BlockInteraction.BREAK;
 				level.explode(this, getDamageSource(true),
-						null, getX(), getY(), getZ(), 
-						getRadius(), getFire(), 
-						interact);
+					null, getX(), getY(), getZ(), 
+					getRadius(), getFire(), 
+					interact);
 				System.out.println("EXPLODE "+this);
 			} else {
 				level.addParticle(ParticleTypes.SMOKE, 

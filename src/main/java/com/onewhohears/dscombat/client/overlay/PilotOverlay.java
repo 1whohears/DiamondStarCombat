@@ -309,8 +309,8 @@ public class PilotOverlay {
 	
 	private static void drawAircraftTurretData(Minecraft m, Player player, EntityTurret turret, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
 		GuiComponent.drawString(poseStack, m.font, 
-				"Ammo: "+turret.getAmmo(), 
-				width/2-90, 11, 0xffff00);
+				"Turret: "+turret.getAmmo(), 
+				width/2-90, 1, 0xffff00);
 	}
 	
 	private static void drawPlaneData(Minecraft m, Player player, EntityPlane plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {

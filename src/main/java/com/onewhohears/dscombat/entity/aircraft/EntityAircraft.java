@@ -475,7 +475,7 @@ public abstract class EntityAircraft extends Entity {
 	
 	public void directionGround(Quaternion q) {
 		if (!isOperational()) return;
-		flatten(q, 5f, 5f);
+		flatten(q, 4f, 4f, true);
 		float max_tr = getTurnRadius();
 		if (inputYaw == 0 || max_tr == 0) return;
 		float tr = 1 / inputYaw * max_tr;
@@ -496,19 +496,24 @@ public abstract class EntityAircraft extends Entity {
 		directionAir(q);
 	}
 	
-	public void flatten(Quaternion q, float dPitch, float dRoll) {
-		torqueX = torqueZ = 0;
+	public void flatten(Quaternion q, float dPitch, float dRoll, boolean forced) {
+		if (!forced) {
+			if (Mth.abs(torqueX) <= dPitch) torqueX = 0;
+			if (Mth.abs(torqueZ) <= dRoll) torqueZ = 0;
+		} else torqueX = torqueZ = 0;
 		EulerAngles angles = UtilAngles.toDegrees(q);
 		float roll, pitch;
 		if (dRoll != 0) {
 			if (Math.abs(angles.roll) < dRoll) roll = (float) -angles.roll;
 			else roll = -(float)Math.signum(angles.roll) * dRoll;
-			q.mul(Vector3f.ZP.rotationDegrees(roll));
+			//q.mul(Vector3f.ZP.rotationDegrees(roll));
+			torqueZ += roll;
 		}
 		if (dPitch != 0) {
-			if (Math.abs(angles.pitch) < dPitch) pitch = (float) -angles.pitch;
-			else pitch = -(float)Math.signum(angles.pitch) * dPitch;
-			q.mul(Vector3f.XP.rotationDegrees(pitch));
+			if (Math.abs(angles.pitch) < dPitch) pitch = (float) angles.pitch;
+			else pitch = (float)Math.signum(angles.pitch) * dPitch;
+			//q.mul(Vector3f.XN.rotationDegrees(pitch));
+			torqueX += pitch;
 		}
 	}
 	
@@ -1121,26 +1126,37 @@ public abstract class EntityAircraft extends Entity {
 		if (isInvulnerableTo(source)) return false;
 		addHealth(-amount);
 		// TODO if damage is explosion, add torque to craft causing it to spin out of control
-		if (source.isExplosion() && !isOnGround()) {
-			Vec3 delta = source.getSourcePosition().subtract(position());
-			
+		// damage source isn't explosive on client
+		debug(source.toString()+" "+source.isExplosion());
+		if (source.isExplosion() && !isOnGround() && source.getDirectEntity() != null) {
+			Vec3 dir = source.getDirectEntity().getLookAngle();
+			Quaternion q;
+			if (level.isClientSide) q = getClientQ();
+			else q = getQ();
+			Vec3 dir2 = UtilAngles.rotateVector(dir, q);
+			float K = 1f;
+			float rx = (float)(dir2.z*dir2.y)*amount*K;
+			float rz = (float)(dir2.x*dir2.y)*amount*K;
+			System.out.println("rx = "+rx+" rz = "+rz);
+			addTorqueX(rx, false);
+			addTorqueZ(rz, false);
 		}
 		if (!level.isClientSide && isOperational()) level.playSound(null, 
-				blockPosition(), ModSounds.VEHICLE_HIT_1.get(), 
-				SoundSource.PLAYERS, 0.5f, 1.0f);
+			blockPosition(), ModSounds.VEHICLE_HIT_1.get(), 
+			SoundSource.PLAYERS, 0.5f, 1.0f);
 		return true;
 	}
 	
 	public void explode(DamageSource source) {
 		if (!level.isClientSide) {
 			level.explode(this, source,
-					null, getX(), getY(), getZ(), 
-					3, true, 
-					Explosion.BlockInteraction.BREAK);
+				null, getX(), getY(), getZ(), 
+				3, true, 
+				Explosion.BlockInteraction.BREAK);
 		} else {
 			level.addParticle(ParticleTypes.LARGE_SMOKE, 
-					getX(), getY()+0.5D, getZ(), 
-					0.0D, 0.0D, 0.0D);
+				getX(), getY()+0.5D, getZ(), 
+				0.0D, 0.0D, 0.0D);
 		}
 	}
 	

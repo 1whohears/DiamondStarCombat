@@ -621,6 +621,7 @@ public abstract class EntityAircraft extends Entity {
 	 * @param q the plane's current rotation
 	 */
 	public void tickGround(Quaternion q) {
+		// TODO step down
 		Vec3 n = UtilAngles.rotationToVector(getYRot(), 0);
 		if (isSliding() || willSlideFromTurn()) {
 			setDeltaMovement(getDeltaMovement().add(n.scale(

@@ -34,7 +34,8 @@ public final class ClientInputEvents {
 	private static double mouseCenterX = 0;
 	private static double mouseCenterY = 0;
 	
-	private static final double deadZone = 250;
+	// TODO make client config for deadZone and max
+	private static final double deadZone = 150;
 	private static final double max = 1000;
 	
 	private static final double tan1 = Math.tan(Math.toRadians(1));

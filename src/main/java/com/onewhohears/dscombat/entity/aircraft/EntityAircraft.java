@@ -735,7 +735,9 @@ public abstract class EntityAircraft extends Entity {
 	}
 	
 	public double getSurfaceArea() {
-		return getBbHeight() * getBbWidth();
+		double a = getBbHeight() * getBbWidth();
+		if (!isOperational()) a += 4;
+		return a;
 	}
 	
 	/**

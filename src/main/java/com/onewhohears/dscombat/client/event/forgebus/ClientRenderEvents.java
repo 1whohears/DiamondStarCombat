@@ -46,6 +46,7 @@ public class ClientRenderEvents {
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
 		if (!(player.getVehicle() instanceof EntitySeat seat)) return;
+		// HOW revive vanilla hand swing effect
 		event.getPoseStack().setIdentity();
 	}
 	

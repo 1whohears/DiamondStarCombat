@@ -23,6 +23,8 @@ import net.minecraftforge.network.PacketDistributor;
 
 public class PartsManager {
 	
+	// TODO make sure unnecessary add part/radar/weapon packets aren't being sent to client
+	
 	private final EntityAircraft parent;
 	private List<PartSlot> slots = new ArrayList<PartSlot>();
 	private Container inventory = new SimpleContainer(0);

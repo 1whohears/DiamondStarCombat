@@ -72,6 +72,7 @@ public class ClientCameraEvents {
 	public static void clientTickSetMouseCallback(TickEvent.ClientTickEvent event) {
 		Minecraft m = Minecraft.getInstance();
 		if (m.player == null || m.player.tickCount != 1) return;
+		// TODO make client config for custom mouse callback
 		GLFW.glfwSetCursorPosCallback(m.getWindow().getWindow(), ClientCameraEvents.customMouseCallback);
 	}
 	

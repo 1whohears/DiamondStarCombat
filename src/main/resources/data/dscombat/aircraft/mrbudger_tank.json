@@ -1,6 +1,6 @@
 {
 	"preset": "mrbudger_tank",
-	"max_speed": 0.5,
+	"max_speed": 0.3,
 	
 	"max_health": 500,
 	"health": 500,

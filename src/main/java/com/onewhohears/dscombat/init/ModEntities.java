@@ -116,7 +116,7 @@ public class ModEntities {
 	 * 
 	 * weather balloon
 	 * 
-	 * IDEA AI for planes and turrets
+	 * IDEA AI for planes/turrets or an auto pilot module
 	 */
 	
 	public static final RegistryObject<EntityType<EntitySeat>> SEAT = ENTITIES.register("seat", 

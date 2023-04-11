@@ -94,7 +94,9 @@ public class ClientCameraEvents {
 		m.execute(() -> {
 			double xn = x, yn = y;
 			if (window != m.getWindow().getWindow()) return;
-			if (m.player != null && m.screen == null && m.player.getRootVehicle() instanceof EntityAircraft craft) {
+			if (m.player != null && m.screen == null 
+					&& m.player.getRootVehicle() instanceof EntityAircraft craft
+					&& craft.isFreeLook()) {
 				double r = Math.toRadians(craft.zRot);
 				double dx = x - m.mouseHandler.xpos();
 				double dy = y - m.mouseHandler.ypos();
@@ -106,7 +108,6 @@ public class ClientCameraEvents {
 			catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 				e.printStackTrace();
 			}
-			return;
 		});
 	};
 	

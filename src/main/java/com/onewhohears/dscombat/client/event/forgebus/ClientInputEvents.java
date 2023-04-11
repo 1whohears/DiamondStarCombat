@@ -8,13 +8,14 @@ import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerFlightControl;
 import com.onewhohears.dscombat.common.network.toserver.ToServerShootTurret;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSwitchSeat;
-import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
+import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult.Type;
@@ -33,7 +34,8 @@ public final class ClientInputEvents {
 	private static double mouseCenterX = 0;
 	private static double mouseCenterY = 0;
 	
-	private static final double deadZone = 250;
+	// TODO make client config for deadZone and max
+	private static final double deadZone = 150;
 	private static final double max = 1000;
 	
 	private static final double tan1 = Math.tan(Math.toRadians(1));
@@ -42,7 +44,7 @@ public final class ClientInputEvents {
 	
 	@SubscribeEvent
 	public static void clientTickPilotControl(TickEvent.ClientTickEvent event) {
-		if (event.phase != Phase.START) return;
+		if (event.phase != Phase.END) return;
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
 		if (player == null) return;
@@ -51,9 +53,10 @@ public final class ClientInputEvents {
 		boolean mouseMode = KeyInit.mouseModeKey.consumeClick();
 		boolean gear = KeyInit.landingGear.consumeClick();
 		boolean radarMode = KeyInit.radarModeKey.consumeClick();
+		if (!player.isPassenger()) return;
 		if (!(player.getRootVehicle() instanceof EntityAircraft plane)) return;
-		if (plane.getControllingPassenger() == null 
-				|| !plane.getControllingPassenger().equals(player)) return;
+		Entity controller = plane.getControllingPassenger();
+		if (controller == null || !controller.equals(player)) return;
 		if (KeyInit.resetMouseKey.isDown()) centerMouse();
 		else if (m.screen != null) centerMouse();
 		double mouseX = m.mouseHandler.xpos() - mouseCenterX;
@@ -113,38 +116,41 @@ public final class ClientInputEvents {
 		PacketHandler.INSTANCE.sendToServer(new ToServerFlightControl(
 				throttle, pitch, roll, yaw,
 				mouseMode, flare, shoot, select, openMenu, gear, 
-				special, radarMode));
+				special, radarMode, rollLeft && rollRight));
 		plane.updateControls(throttle, pitch, roll, yaw,
 				mouseMode, flare, shoot, select, openMenu, 
-				special, radarMode);
+				special, radarMode, rollLeft && rollRight);
 		if (mouseMode && !plane.isFreeLook()) centerMouse();
 	}
 	
 	@SubscribeEvent
 	public static void clientTickPassengerControl(TickEvent.ClientTickEvent event) {
-		if (event.phase != Phase.START) return;
+		if (event.phase != Phase.END) return;
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
-		if (player == null) return;
+		if (player == null || !player.isPassenger()) return;
 		if (!(player.getRootVehicle() instanceof EntityAircraft plane)) return;
+		// DISMOUNT
+		
+		// SWITCH SEAT
 		if (KeyInit.changeSeat.consumeClick()) {
 			PacketHandler.INSTANCE.sendToServer(new ToServerSwitchSeat(plane.getId()));
 		}
+		// SELECT RADAR PING
 		RadarSystem radar = plane.radarSystem;
 		List<RadarPing> pings = radar.getClientRadarPings();
 		boolean hovering = false;
-		if (pings != null) {
-			for (int i = 0; i < pings.size(); ++i) {
-				RadarPing p = pings.get(i);
-				if (isPlayerLookingAtPing(player, p)) {
-					hoverIndex = i;
-					hovering = true;
-					if (m.mouseHandler.isLeftPressed()) radar.clientSelectTarget(p);
-					break;
-				}
+		for (int i = 0; i < pings.size(); ++i) {
+			RadarPing p = pings.get(i);
+			if (isPlayerLookingAtPing(player, p)) {
+				hoverIndex = i;
+				hovering = true;
+				if (m.mouseHandler.isLeftPressed()) radar.clientSelectTarget(p);
+				break;
 			}
 		}
 		if (!hovering) resetHoverIndex();
+		// TURRET SHOOT
 		boolean shoot = KeyInit.shootKey.isDown();
 		if (shoot && player.getVehicle() instanceof EntityTurret turret) {
 			PacketHandler.INSTANCE.sendToServer(new ToServerShootTurret(turret));
@@ -171,7 +177,7 @@ public final class ClientInputEvents {
 		if (y < 1) y = 1;
 		return UtilGeometry.isPointInsideCone(ping.pos.add(0, 0.5, 0), 
 				player.getEyePosition(), player.getLookAngle(), 
-				Math.toDegrees(Math.atan2(y, d)), 10000);
+				Math.toDegrees(Math.atan2(y, d)), 100000);
 	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)

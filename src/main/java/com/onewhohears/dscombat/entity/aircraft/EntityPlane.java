@@ -16,7 +16,9 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class EntityPlane extends EntityAircraft {
 	
-	private final float propellerRate = 3.141f, gearAOABias = 10f;
+	public static final double CO_LIFT = 0.500;
+	
+	private final float propellerRate = 3.141f, flapsAOABias = 10f;
 	private float propellerRot = 0, propellerRotOld = 0, aoa = 0, liftK = 0, airFoilSpeedSqr = 0;
 	private Vec3 liftDir = Vec3.ZERO, airFoilAxes = Vec3.ZERO;
 	
@@ -51,50 +53,59 @@ public class EntityPlane extends EntityAircraft {
 	@Override
 	public void directionAir(Quaternion q) {
 		super.directionAir(q);
+		if (!isOperational()) return;
+		// TODO turn assist button
 		addTorqueX(inputPitch * getAccelerationPitch(), true);
 		addTorqueY(inputYaw * getAccelerationYaw(), true);
-		addTorqueZ(inputRoll * getAccelerationRoll(), true);
+		if (inputBothRoll) flatten(q, 0, getAccelerationRoll(), false);
+		else addTorqueZ(inputRoll * getAccelerationRoll(), true);
 	}
 	
 	@Override
-	public void tickMovement(Quaternion q) {
-		super.tickMovement(q);
+	public void tickAlways(Quaternion q) {
+		super.tickAlways(q);
+		forces = forces.add(getLiftForce(q));
+	}
+	
+	@Override
+	protected void calcMoveStatsPre(Quaternion q) {
+		super.calcMoveStatsPre(q);
+		calculateAOA(q);
 	}
 	
 	@Override
 	public void tickGround(Quaternion q) {
 		super.tickGround(q);
-		calculateAOA(q);
-		Vec3 motion = getDeltaMovement();
-		motion = motion.add(getLiftForce(q));
-		setDeltaMovement(motion);
+	}
+	
+	@Override
+	public double getDriveAcc() {
+		return 0;
 	}
 	
 	@Override
 	public void tickAir(Quaternion q) {
-		// TODO flight physics overhaul is needed
 		super.tickAir(q);
-		calculateAOA(q);
-		Vec3 motion = getDeltaMovement();
-		motion = motion.add(getLiftForce(q));
-		setDeltaMovement(motion);
 	}
 	
-	public void calculateAOA(Quaternion q) {
+	protected void calculateAOA(Quaternion q) {
 		Vec3 u = getDeltaMovement();
+		//System.out.println("u = "+u);
 		liftDir = UtilAngles.getYawAxis(q);
+		//System.out.println("liftDir = "+liftDir);
 		airFoilAxes = UtilAngles.getRollAxis(q);
-		airFoilSpeedSqr = (float) UtilGeometry.componentOfVecByAxis(u, airFoilAxes).lengthSqr();
-		if (isOnGround()) {
+		//System.out.println("airFoilAxes = "+airFoilAxes);
+		airFoilSpeedSqr = (float)UtilGeometry.vecCompByNormAxis(u, airFoilAxes).lengthSqr();
+		//System.out.println("airFoilSpeedSqr = "+airFoilSpeedSqr);
+		if (isOnGround() || UtilGeometry.isZero(u)) {
 			aoa = 0;
 		} else {
 			aoa = (float) UtilGeometry.angleBetweenDegrees(airFoilAxes, u);
-			double uy = UtilGeometry.componentMagSqrDirByAxis(u.normalize(), liftDir);
-			double vy = UtilGeometry.componentMagSqrDirByAxis(airFoilAxes, liftDir);
-			if (vy < uy) aoa *= -1;
+			if (liftDir.dot(u) > 0) aoa *= -1;
 		}
-		if (isLandingGear()) aoa += gearAOABias;
+		if (inputSpecial) aoa += flapsAOABias;
 		liftK = (float) getLiftK();
+		//System.out.println("liftK = "+liftK);
 	}
 	
 	public Vec3 getLiftForce(Quaternion q) {
@@ -105,8 +116,8 @@ public class EntityPlane extends EntityAircraft {
 	public double getLiftMag() {
 		// Lift = (angle of attack coefficient) * (air density) * (speed)^2 * (wing surface area) / 2
 		double air = UtilEntity.getAirPressure(getY());
-		double wing = getSurfaceArea();
-		double lift = liftK * air * airFoilSpeedSqr * wing / 2.0;
+		double wing = getWingSurfaceArea();
+		double lift = liftK * air * airFoilSpeedSqr * wing * CO_LIFT;
 		return lift;
 	}
 	
@@ -137,17 +148,21 @@ public class EntityPlane extends EntityAircraft {
 		return thrustForce;
 	}
 	
+	@Override
+	public double getSurfaceArea() {
+		double a = super.getSurfaceArea();
+		a += getWingSurfaceArea() * Math.sin(Math.toRadians(aoa));
+		if (isLandingGear()) a += 2.0 * Math.cos(Math.toRadians(aoa));
+		if (inputSpecial) a += getWingSurfaceArea() / 8 * Math.cos(Math.toRadians(aoa));
+		return a;
+	}
+	
 	public float getPropellerRotation(float partialTicks) {
 		return Mth.lerp(partialTicks, propellerRotOld, propellerRot);
 	}
 
 	public float getAOA() {
 		return aoa;
-	}
-	
-	@Override
-	protected float getTorqueDragMag() {
-		return 0.15f;
 	}
 	
 	@Override

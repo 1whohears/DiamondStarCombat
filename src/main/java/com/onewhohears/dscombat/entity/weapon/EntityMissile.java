@@ -4,6 +4,7 @@ import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientMissileMove;
 import com.onewhohears.dscombat.data.weapon.MissileData;
 import com.onewhohears.dscombat.data.weapon.NonTickingMissileManager;
+import com.onewhohears.dscombat.data.weapon.WeaponDamageSource;
 import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.util.UtilClientSafeSoundInstance;
 import com.onewhohears.dscombat.util.UtilEntity;
@@ -107,18 +108,18 @@ public abstract class EntityMissile extends EntityBullet {
 		if (!level.isClientSide && !isRemoved()) {
 			tickGuide();
 			if (target != null) {
-				if (this.distanceTo(target) <= fuseDist) {
-					this.setPos(target.position());
-					this.kill();
+				if (distanceTo(target) <= fuseDist) {
+					setPos(target.position());
+					kill();
 					if (target instanceof EntityMissile) {
 						target.kill();
 					}
 				}
 			}
 			if (tickCount % 10 == 0) PacketHandler.INSTANCE.send(
-					PacketDistributor.TRACKING_ENTITY.with(() -> this), 
-					new ToClientMissileMove(getId(), position(), 
-							getDeltaMovement(), getXRot(), getYRot(), targetPos));
+				PacketDistributor.TRACKING_ENTITY.with(() -> this), 
+				new ToClientMissileMove(getId(), position(), 
+					getDeltaMovement(), getXRot(), getYRot(), targetPos));
 			if (isInWater()) tickInWater();
 		}
 		if (level.isClientSide && !isRemoved()) {
@@ -210,9 +211,10 @@ public abstract class EntityMissile extends EntityBullet {
 		}
 		//System.out.println("intercept math");
 		Vec3 tVel = target.getDeltaMovement();
-		if (target.isOnGround()) tVel = tVel.add(0, -tVel.y, 0); // some entities have -0.07 y vel when on ground
+		if (UtilEntity.isOnGroundOrWater(target)) 
+			tVel = tVel.multiply(1, 0, 1);
 		Vec3 pos = UtilGeometry.interceptPos( 
-				this.position(), this.getDeltaMovement(), 
+				position(), getDeltaMovement(), 
 				target.position(), tVel);
 		this.targetPos = pos;
 		//System.out.println("guide to position");
@@ -376,6 +378,16 @@ public abstract class EntityMissile extends EntityBullet {
 	
 	public void tickInWater() {
 		this.kill();
+	}
+	
+	@Override
+	protected WeaponDamageSource getImpactDamageSource() {
+		return WeaponDamageSource.missile(getOwner(), this);
+	}
+
+	@Override
+	protected WeaponDamageSource getExplosionDamageSource() {
+		return WeaponDamageSource.missile(getOwner(), this);
 	}
 
 }

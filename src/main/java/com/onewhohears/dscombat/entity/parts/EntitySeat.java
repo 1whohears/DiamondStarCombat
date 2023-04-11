@@ -77,13 +77,13 @@ public class EntitySeat extends EntityPart {
 		if (tickCount % 20 != 0 && passenger instanceof Player player) {
 			if (craft.nightVisionHud) {
 				player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 
-						30, 0, false, false));
+						80, 0, false, false));
 			}	
 			if (craft.getAircraftType() == AircraftType.SUBMARINE) {
 				player.addEffect(new MobEffectInstance(MobEffects.WATER_BREATHING, 
-						30, 0, false, false));
+						80, 0, false, false));
 				player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 
-						30, 0, false, false));
+						80, 0, false, false));
 			}
 		}
 		Vec3 pos = position();

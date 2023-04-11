@@ -24,10 +24,11 @@ public class ToServerFlightControl extends IPacket {
 	public final boolean gear;
 	public final boolean special;
 	public final boolean radarMode;
+	public final boolean bothRoll;
 	
 	public ToServerFlightControl(float throttle, float pitch, float roll, float yaw,
 			boolean mouseMode, boolean flare, boolean shoot, boolean select,
-			boolean openMenu, boolean gear, boolean special, boolean radarMode) {
+			boolean openMenu, boolean gear, boolean special, boolean radarMode, boolean bothRoll) {
 		this.throttle = throttle;
 		this.pitch = pitch;
 		this.roll = roll;
@@ -40,6 +41,7 @@ public class ToServerFlightControl extends IPacket {
 		this.gear = gear;
 		this.special = special;
 		this.radarMode = radarMode;
+		this.bothRoll = bothRoll;
 	}
 	
 	public ToServerFlightControl(FriendlyByteBuf buffer) {
@@ -55,6 +57,7 @@ public class ToServerFlightControl extends IPacket {
 		gear = buffer.readBoolean();
 		special = buffer.readBoolean();
 		radarMode = buffer.readBoolean();
+		bothRoll = buffer.readBoolean();
 	}
 	
 	public void encode(FriendlyByteBuf buffer) {
@@ -70,6 +73,7 @@ public class ToServerFlightControl extends IPacket {
 		buffer.writeBoolean(gear);
 		buffer.writeBoolean(special);
 		buffer.writeBoolean(radarMode);
+		buffer.writeBoolean(bothRoll);
 	}
 	
 	public boolean handle(Supplier<NetworkEvent.Context> ctx) {
@@ -80,7 +84,7 @@ public class ToServerFlightControl extends IPacket {
 				if (plane.getControllingPassenger() == player) {
 					plane.updateControls(throttle, pitch, roll, yaw,
 							mouseMode, flare, shoot, select, openMenu, 
-							special, radarMode);
+							special, radarMode, bothRoll);
 					if (gear) plane.toggleLandingGear();
 				}
 			}

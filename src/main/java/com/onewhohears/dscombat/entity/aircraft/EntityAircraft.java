@@ -9,14 +9,17 @@ import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents;
 import com.onewhohears.dscombat.common.container.AircraftMenuContainer;
+import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.common.network.toserver.ToServerQ;
+import com.onewhohears.dscombat.common.network.toclient.ToClientSynchTorque;
+import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftQ;
 import com.onewhohears.dscombat.common.network.toserver.ToServerRequestPlaneData;
 import com.onewhohears.dscombat.data.AircraftPresets;
 import com.onewhohears.dscombat.data.AircraftTextures;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartsManager;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
+import com.onewhohears.dscombat.data.weapon.WeaponDamageSource;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponSystem;
 import com.onewhohears.dscombat.entity.parts.EntityPart;
@@ -68,6 +71,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.RegistryObject;
 
 /**
@@ -95,21 +99,24 @@ public abstract class EntityAircraft extends Entity {
 	public static final EntityDataAccessor<Float> IDLEHEAT = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> WEIGHT = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> WING_AREA = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Integer> MISSILE_TRACKED_TICKS = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.INT);
-	public static final EntityDataAccessor<Integer> LOCKED_ONTO_TICKS = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Boolean> LANDING_GEAR = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> TEST_MODE = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Integer> CURRRENT_DYE_ID = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Boolean> NO_CONSUME = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> PLAYERS_ONLY_RADAR = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.BOOLEAN);
 	
-	public static final double collideSpeedThreshHold = 1d;
-	public static final double collideSpeedWithGearThreshHold = 2d;
+	public static final double ACC_GRAVITY = 0.025;
+	public static final double CO_DRAG = 0.015;
+	public static final double CO_STATIC_FRICTION = 4.50;
+	public static final double CO_KINETIC_FRICTION = 1.50;
+	public static final float CO_SLIDE_TORQUE = 1.00f;
+	public static final double collideSpeedThreshHold = 0.8d;
+	public static final double collideSpeedWithGearThreshHold = 1.8d;
 	public static final double collideDamageRate = 200d;
 	
-	public final PartsManager partsManager = new PartsManager();
-	public final WeaponSystem weaponSystem = new WeaponSystem();
-	public final RadarSystem radarSystem = new RadarSystem();
+	public final PartsManager partsManager = new PartsManager(this);
+	public final WeaponSystem weaponSystem = new WeaponSystem(this);
+	public final RadarSystem radarSystem = new RadarSystem(this);
 	
 	public final boolean negativeThrottle;
 	
@@ -120,19 +127,21 @@ public abstract class EntityAircraft extends Entity {
 	public Quaternion prevQ = Quaternion.ONE.copy();
 	public Quaternion clientQ = Quaternion.ONE.copy();
 	
-	public boolean inputMouseMode, inputFlare, inputShoot, inputSelect, inputOpenMenu, inputSpecial, inputRadarMode;
+	public boolean inputMouseMode, inputFlare, inputShoot, inputSelect, inputOpenMenu, inputSpecial, inputRadarMode, inputBothRoll;
 	public float inputThrottle, inputPitch, inputRoll, inputYaw;
 	public float zRot, zRotO; 
 	public float torqueX, torqueY, torqueZ, torqueXO, torqueYO, torqueZO;
 	public Vec3 prevMotion = Vec3.ZERO;
+	public Vec3 forces = Vec3.ZERO;
 	
 	public boolean nightVisionHud = false;
 	
-	protected float xzSpeed;
-	protected int xzSpeedDir;
+	protected int xzSpeedDir, flareNum;
+	protected float xzSpeed, totalMass, xzYaw, slideAngle, slideAngleCos, maxThrust, currentFuel, maxFuel;
+	protected double staticFric, kineticFric;
 	
 	private ResourceLocation currentTexture;
-	private int lerpSteps, newRiderCooldown;
+	private int lerpSteps, newRiderCooldown, deadTicks;
 	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot;
 	private float landingGearPos, landingGearPosOld;
 	
@@ -147,7 +156,7 @@ public abstract class EntityAircraft extends Entity {
 		this.item = item;
 		this.negativeThrottle = negativeThrottle;
 		// FIXME player can punch and push aircraft
-		// FIXME aircraft don't push entities
+		// FIXME aircraft don't push entities (add collisions)
 	}
 	
 	@Override
@@ -170,8 +179,6 @@ public abstract class EntityAircraft extends Entity {
 		entityData.define(IDLEHEAT, 1f);
 		entityData.define(WEIGHT, 0.05f);
 		entityData.define(WING_AREA, 1f);
-		entityData.define(MISSILE_TRACKED_TICKS, 0);
-		entityData.define(LOCKED_ONTO_TICKS, 0);
 		entityData.define(LANDING_GEAR, false);
 		entityData.define(TEST_MODE, false);
 		entityData.define(CURRRENT_DYE_ID, 0);
@@ -188,7 +195,7 @@ public abstract class EntityAircraft extends Entity {
         	if (Q.equals(key)) {
         		if (isControlledByLocalInstance()) {
         			// if this entity is piloted by the client's player send the client quaternion to the server
-        			PacketHandler.INSTANCE.sendToServer(new ToServerQ(getId(), getClientQ()));
+        			PacketHandler.INSTANCE.sendToServer(new ToServerAircraftQ(this));
         		} else {
         			// if the client player is not controlling this plane then client quaternion = server quaternion
         			setPrevQ(getClientQ());
@@ -230,7 +237,7 @@ public abstract class EntityAircraft extends Entity {
 		setThrottleDecreaseRate(compound.getFloat("throttledown"));
 		setIdleHeat(compound.getFloat("idleheat"));
 		setAircraftWeight(compound.getFloat("weight"));
-		setSurfaceArea(compound.getFloat("surfacearea"));
+		setWingSurfaceArea(compound.getFloat("surfacearea"));
 		setLandingGear(compound.getBoolean("landing_gear"));
 		setCurrentThrottle(compound.getFloat("current_throttle"));
 		setXRot(compound.getFloat("xRot"));
@@ -267,7 +274,7 @@ public abstract class EntityAircraft extends Entity {
 		compound.putFloat("throttledown", getThrottleDecreaseRate());
 		compound.putFloat("idleheat", getIdleHeat());
 		compound.putFloat("weight", getAircraftWeight());
-		compound.putFloat("surfacearea", getSurfaceArea());
+		compound.putFloat("surfacearea", getWingSurfaceArea());
 		compound.putBoolean("landing_gear", isLandingGear());
 		compound.putFloat("current_throttle", getCurrentThrottle());
 		compound.putFloat("xRot", getXRot());
@@ -302,13 +309,15 @@ public abstract class EntityAircraft extends Entity {
 	public void tick() {
 		if (firstTick) init(); // MUST BE CALLED BEFORE SUPER
 		super.tick();
+		if (Double.isNaN(getDeltaMovement().length())) 
+            setDeltaMovement(Vec3.ZERO);
 		// SET PREV/OLD
 		prevMotion = getDeltaMovement();
-		zRotO = zRot;
 		torqueXO = torqueX;
 		torqueYO = torqueY;
 		torqueZO = torqueZ;
 		// SET DIRECTION
+		zRotO = zRot;
 		Quaternion q;
 		if (level.isClientSide) q = getClientQ();
 		else q = getQ();
@@ -322,15 +331,17 @@ public abstract class EntityAircraft extends Entity {
 		setYRot((float)angles.yaw);
 		zRot = (float)angles.roll;
 		// MOVEMENT
+		forces = Vec3.ZERO;
 		tickThrottle();
 		if (!isTestMode()) {
-			calcXZSpeed();
+			calcMoveStatsPre(q);
 			tickMovement(q);
+			calcAcc();
 			motionClamp();
 			move(MoverType.SELF, getDeltaMovement());
+			calcMoveStatsPost(q);
 		}
-		if (isControlledByLocalInstance()) 
-			syncPacketPositionCodec(getX(), getY(), getZ());
+		if (isControlledByLocalInstance()) syncPacketPositionCodec(getX(), getY(), getZ());
         // OTHER
 		controlSystem();
         tickParts();
@@ -345,7 +356,7 @@ public abstract class EntityAircraft extends Entity {
 	public void serverTick() {
 		tickCollisions();
 		waterDamage();
-		if (!isTestMode() && getHealth() <= 0) kill();
+		if (!isTestMode() && !isOperational()) tickNoHealth();
 	}
 	
 	/**
@@ -353,24 +364,40 @@ public abstract class EntityAircraft extends Entity {
 	 * damages plane if it falls 
 	 */
 	public void tickCollisions() {
-		if (this.verticalCollisionBelow || this.verticalCollision) {
+		if (verticalCollisionBelow || verticalCollision) {
 			double my = Math.abs(prevMotion.y);
 			double th = collideSpeedThreshHold;
-			if (isLandingGear() 
+			if (isOperational() && isLandingGear() 
 					&& (getXRot() < 15f && getXRot() > -15f)
 					&& (zRot < 15f && zRot > -15f)) {
 				th = collideSpeedWithGearThreshHold;
 			}
-			if (my > th && this.tickCount > 300) {
+			if (my > th && tickCount > 300) {
 				hurt(DamageSource.FLY_INTO_WALL, 
-						(float)((my-th)*collideDamageRate));
+					(float)((my-th)*collideDamageRate));
+				if (!isOperational()) explode(null);
 			}
 		}
 	}
 	
 	public void waterDamage() {
-		if (tickCount % 20 == 0 && isInWater()) 
+		if (tickCount % 20 == 0 && isInWater() && isOperational()) 
 			hurt(DamageSource.DROWN, 5);
+	}
+	
+	public void tickNoHealth() {
+		if (deadTicks++ > 500) {
+			kill();
+			return;
+		}
+	}
+	
+	public boolean isOperational() {
+		return getHealth() > 0;
+	}
+	
+	public int getDeadTicks() {
+		return deadTicks;
 	}
 	
 	/**
@@ -409,11 +436,12 @@ public abstract class EntityAircraft extends Entity {
 		double velXZ = motionXZ.length();
 		if (velXZ > maxXZ) motionXZ = motionXZ.scale(maxXZ / velXZ);
 		
-		double maxY = 2.0;
+		double maxY = 2.5;
 		double my = move.y;
 		if (Math.abs(my) > maxY) my = maxY * Math.signum(my);
 		else if (Math.abs(my) < 0.001) my = 0;
 		
+		if (onGround && my < 0) my = -0.01; // THIS MUST BE BELOW ZERO
 		setDeltaMovement(motionXZ.x, my, motionXZ.z);
 	}
 	
@@ -426,7 +454,7 @@ public abstract class EntityAircraft extends Entity {
 	 * also resets the controls if there isn't a controlling passenger
 	 */
 	public void tickThrottle() {
-		if (getControllingPassenger() == null) resetControls();
+		if (getControllingPassenger() == null || !isOperational()) resetControls();
 		if (inputThrottle > 0) increaseThrottle();
 		else if (inputThrottle < 0) decreaseThrottle();
 	}
@@ -448,12 +476,17 @@ public abstract class EntityAircraft extends Entity {
 	}
 	
 	public void directionGround(Quaternion q) {
-		flatten(q, 5f, 5f);
-		torqueY = 0;
-		float tr = getTurnRadius();
-		if (inputYaw != 0 && tr != 0) {
-			float turn = 1 / inputYaw * tr;
-			q.mul(Vector3f.YN.rotation(xzSpeed / turn * xzSpeedDir));
+		if (!isOperational()) return;
+		flatten(q, 4f, 4f, true);
+		float max_tr = getTurnRadius();
+		if (inputYaw == 0 || max_tr == 0) return;
+		float tr = 1 / inputYaw * max_tr;
+		float turn = xzSpeed / tr * xzSpeedDir;
+		float turnDeg = turn * Mth.RAD_TO_DEG;
+		if (isSliding()) {
+			torqueY = turnDeg*slideAngleCos*CO_SLIDE_TORQUE;
+		} else {
+			torqueY = turnDeg;
 		}
 	}
 	
@@ -465,16 +498,25 @@ public abstract class EntityAircraft extends Entity {
 		directionAir(q);
 	}
 	
-	public void flatten(Quaternion q, float dPitch, float dRoll) {
-		torqueX = torqueZ = 0;
+	public void flatten(Quaternion q, float dPitch, float dRoll, boolean forced) {
+		if (!forced) {
+			if (Mth.abs(torqueX) <= dPitch) torqueX = 0;
+			if (Mth.abs(torqueZ) <= dRoll) torqueZ = 0;
+		} else torqueX = torqueZ = 0;
 		EulerAngles angles = UtilAngles.toDegrees(q);
 		float roll, pitch;
-		if (Math.abs(angles.roll) < dRoll) roll = (float) -angles.roll;
-		else roll = -(float)Math.signum(angles.roll) * dRoll;
-		if (Math.abs(angles.pitch) < dPitch) pitch = (float) -angles.pitch;
-		else pitch = -(float)Math.signum(angles.pitch) * dPitch;
-		q.mul(Vector3f.XP.rotationDegrees(pitch));
-		q.mul(Vector3f.ZP.rotationDegrees(roll));
+		if (dRoll != 0) {
+			if (Math.abs(angles.roll) < dRoll) roll = (float) -angles.roll;
+			else roll = -(float)Math.signum(angles.roll) * dRoll;
+			//q.mul(Vector3f.ZP.rotationDegrees(roll));
+			torqueZ += roll;
+		}
+		if (dPitch != 0) {
+			if (Math.abs(angles.pitch) < dPitch) pitch = (float) angles.pitch;
+			else pitch = (float)Math.signum(angles.pitch) * dPitch;
+			//q.mul(Vector3f.XN.rotationDegrees(pitch));
+			torqueX += pitch;
+		}
 	}
 	
 	private float torqueDrag(float torque) {
@@ -484,7 +526,11 @@ public abstract class EntityAircraft extends Entity {
 		return (abs - td) * Math.signum(torque);
 	}
 	
-	protected abstract float getTorqueDragMag();
+	protected float getTorqueDragMag() {
+		if (onGround) return 1.0f;
+		else if (isInWater()) return 0.3f;
+		else return 0.2f;
+ 	}
 	
 	public void resetTorque() {
 		torqueX = torqueY = torqueZ = 0;
@@ -500,11 +546,15 @@ public abstract class EntityAircraft extends Entity {
 	}
 	
 	public void addTorqueY(float torque, boolean control) {
-		if (control) {
-			float tabs = Math.abs(torqueY);
-			if (tabs > getMaxDeltaYaw()) torque = 0;
-			else if (Math.abs(torqueY+torque) > getMaxDeltaYaw()) torque = (getMaxDeltaYaw() - tabs) * Math.signum(torqueY);
-		}
+		if (control) addTorqueY(torque, getMaxDeltaYaw());
+		else torqueY += torque;
+	}
+	
+	public void addTorqueY(float torque, float maxDeltaYaw) {
+		maxDeltaYaw = Mth.abs(maxDeltaYaw);
+		float tabs = Math.abs(torqueY);
+		if (tabs > maxDeltaYaw) torque = 0;
+		else if (Math.abs(torqueY+torque) > maxDeltaYaw) torque = (maxDeltaYaw-tabs)*Math.signum(torqueY);
 		torqueY += torque;
 	}
 	
@@ -517,17 +567,53 @@ public abstract class EntityAircraft extends Entity {
 		torqueZ += torque;
 	}
 	
+	protected void calcMoveStatsPre(Quaternion q) {
+		totalMass = getAircraftWeight() + partsManager.getPartsWeight();
+		staticFric = totalMass * ACC_GRAVITY * CO_STATIC_FRICTION;
+		kineticFric = totalMass * ACC_GRAVITY * CO_KINETIC_FRICTION;
+		maxThrust = partsManager.getTotalEngineThrust();
+		flareNum = partsManager.getNumFlares();
+		currentFuel = partsManager.getCurrentFuel();
+		maxFuel = partsManager.getMaxFuel();
+	}
+	
+	protected void calcMoveStatsPost(Quaternion q) {
+		Vec3 m = getDeltaMovement();
+		float y = getYRot();
+		xzSpeed = (float) Math.sqrt(m.x*m.x + m.z*m.z);
+		if (xzSpeed == 0) {
+			xzYaw = y;
+			slideAngle = 0;
+		} else {
+			xzYaw = UtilAngles.getYaw(m);
+			slideAngle = Mth.degreesDifference(xzYaw, y);
+			slideAngleCos = (float) Math.abs(Math.cos(Math.toRadians(slideAngle)));
+		}
+		xzSpeedDir = 1;
+		if (Math.abs(slideAngle) > 90) xzSpeedDir = -1;
+	}
+	
+	public void calcAcc() {
+		setDeltaMovement(getDeltaMovement().add(forces.scale(1/totalMass)));
+	}
+	
 	/**
 	 * called on both client and server side every tick to change the craft's movement 
 	 * a force is a Vec3 to be added to this entities motion or getDeltaMovement()
-	 * in minecraft an entitie's motion is the blocks an entity will move per tick
+	 * in Minecraft an entitie's motion is the blocks an entity will move per tick
 	 * @param q the plane's current rotation
 	 */
 	public void tickMovement(Quaternion q) {
+		tickAlways(q);
 		if (onGround && isInWater()) tickGroundWater(q);
 		else if (onGround) tickGround(q);
 		else if (isInWater()) tickWater(q);
 		else tickAir(q);
+	}
+	
+	public void tickAlways(Quaternion q) {
+		forces = forces.add(getWeightForce());
+		forces = forces.add(getThrustForce(q));
 	}
 	
 	/**
@@ -535,35 +621,61 @@ public abstract class EntityAircraft extends Entity {
 	 * @param q the plane's current rotation
 	 */
 	public void tickGround(Quaternion q) {
-		// TODO drifting
-		double speed = xzSpeed * xzSpeedDir;
-		float th = getCurrentThrottle();
-		double max = getMaxSpeedForMotion();
-		float w = getTotalWeight();
-		if (!isLandingGear() && speed != 0) {
-			speed -= 0.05 * xzSpeedDir;
-			if (Math.abs(speed) < 0.05) speed = 0;
-		} else if (th != 0 && xzSpeed < max) {
-			double mag = getThrustMag();
-			double f = w*0.3*Math.signum(mag);
-			if (Math.abs(mag) > Math.abs(f)) speed += mag - f;
-			if (Math.abs(speed) > max) speed = max * Math.signum(speed);
-		} else if (speed != 0) {
-			speed -= 0.01 * xzSpeedDir;
-			if (Math.abs(speed) < 0.01) speed = 0;
+		// TODO step down
+		Vec3 n = UtilAngles.rotationToVector(getYRot(), 0);
+		if (isSliding() || willSlideFromTurn()) {
+			setDeltaMovement(getDeltaMovement().add(n.scale(
+				getDriveAcc() * slideAngleCos
+			)));
+			addFrictionForce(kineticFric);
+			//debug("SLIDING");
+		} else {
+			setDeltaMovement(n.scale(xzSpeed*xzSpeedDir + getDriveAcc()));
+			if (getCurrentThrottle() == 0 && xzSpeed != 0) addFrictionForce(0.1);
 		}
-		Vec3 dir = UtilAngles.rotationToVector(getYRot(), 0);
-		Vec3 motion = dir.scale(speed);
-		if (motion.y < 0) motion = new Vec3(motion.x, 0, motion.z);
-		motion = motion.add(0, -w, 0);
-		setDeltaMovement(motion);
 	}
 	
-	private int getXZSpeedDir() {
-		float my = UtilAngles.getYaw(getDeltaMovement());
-		double diff = UtilAngles.degreesDifferenceAbs(my, yRotO);
-		if (diff > 90) return -1;
-		return 1;
+	public double getDriveAcc() {
+		return getThrustMag()/totalMass;
+	}
+	
+	protected void addFrictionForce(double f) {
+		Vec3 m = getDeltaMovement();
+		if (m.x == 0 && m.z == 0) return;
+		Vec3 mn = m.normalize();
+ 		Vec3 force = mn.scale(-f);
+		Vec3 acc = force.scale(1/totalMass);
+		if (m.x != 0 && Math.signum(m.x+acc.x) != Math.signum(m.x)) {
+			force = force.multiply(0, 1, 1);
+			m = m.multiply(0, 1, 1);
+		}
+		if (m.z != 0 && Math.signum(m.z+acc.z) != Math.signum(m.z)) {
+			force = force.multiply(1, 1, 0);
+			m = m.multiply(1, 1, 0);
+		}
+		setDeltaMovement(m);
+		forces = forces.add(force);
+	}
+	
+	protected boolean willSlideFromTurn() {
+		double max_tr = getTurnRadius();
+		if (inputYaw != 0 && max_tr != 0) { // IF TURNING
+			double tr = max_tr * 1 / Math.abs(inputYaw); // inputed turn radius
+			double cen_acc = xzSpeed * xzSpeed / tr; // cen_acc needed to complete turn
+			double cen_force = cen_acc * totalMass; // friction force needed to not slide
+			//debug(cen_force+" >? "+staticFric);
+			if (cen_force >= staticFric) return true; // if cen_force >= static-friction-threshold slide
+		}
+		return false;
+	}
+	
+	public boolean isSlideAngleNearZero() {
+		if (xzSpeedDir == -1) return Mth.abs(Mth.abs(slideAngle)-180) < 2;
+		return Mth.abs(slideAngle) < 2;
+	}
+	
+	public boolean isSliding() {
+		return !isLandingGear() || !isSlideAngleNearZero();
 	}
 	
 	/**
@@ -571,11 +683,7 @@ public abstract class EntityAircraft extends Entity {
 	 * @param q the plane's current rotation
 	 */
 	public void tickAir(Quaternion q) {
-		Vec3 motion = getDeltaMovement();
-		motion = motion.add(getWeightForce());
-		motion = motion.add(getThrustForce(q));
-		motion = motion.add(getDragForce(q));
-		setDeltaMovement(motion);
+		forces = forces.add(getDragForce(q));
 		resetFallDistance();
 	}
 	
@@ -597,7 +705,7 @@ public abstract class EntityAircraft extends Entity {
 	 * @return the magnitude of the thrust force based on the engines, throttle, and 0 if no fuel
 	 */
 	public double getThrustMag() {
-		if (getFuel() <= 0) return 0;
+		if (getCurrentFuel() <= 0 || !isOperational()) return 0;
 		return getCurrentThrottle() * getMaxThrust();
 	}
 	
@@ -605,7 +713,7 @@ public abstract class EntityAircraft extends Entity {
 	 * @return the total thrust from the engines in the parts manager
 	 */
 	public float getMaxThrust() {
-		return partsManager.getTotalEngineThrust();
+		return maxThrust;
 	}
 	
 	/**
@@ -620,17 +728,16 @@ public abstract class EntityAircraft extends Entity {
 	}
 	
 	public double getDragMag() {
-		return surfaceAreaDrag();
-	}
-	
-	public double surfaceAreaDrag() {
 		// Drag = (drag coefficient) * (air pressure) * (speed)^2 * (wing surface area) / 2
-		double dc = 0.025;
 		double air = UtilEntity.getAirPressure(getY());
 		double speedSqr = getDeltaMovement().lengthSqr();
-		double wing = getSurfaceArea();
-		if (isLandingGear()) wing += 1.0;
-		return dc * air * speedSqr * wing / 2;
+		return air * speedSqr * getSurfaceArea() * CO_DRAG;
+	}
+	
+	public double getSurfaceArea() {
+		double a = getBbHeight() * getBbWidth();
+		if (!isOperational()) a += 4;
+		return a;
 	}
 	
 	/**
@@ -639,32 +746,24 @@ public abstract class EntityAircraft extends Entity {
 	 * but it is also used to calculate drag so maybe I should make separate variables
 	 * @return the surface area of the plane
 	 */
-	public final float getSurfaceArea() {
+	public final float getWingSurfaceArea() {
 		return entityData.get(WING_AREA);
 	}
 	
-	public final void setSurfaceArea(float area) {
+	public final void setWingSurfaceArea(float area) {
 		if (area < 0) area = 0;
 		entityData.set(WING_AREA, area);
 	}
 	
-	protected void calcXZSpeed() {
-		double x = getDeltaMovement().x;
-		double z = getDeltaMovement().z;
-		xzSpeed = (float) Math.sqrt(x*x + z*z);
-		xzSpeedDir = getXZSpeedDir();
-	}
-	
 	public Vec3 getWeightForce() {
-		return new Vec3(0, -getTotalWeight(), 0);
+		return new Vec3(0, -getTotalMass() * ACC_GRAVITY, 0);
 	}
 	
 	/**
-	 * @return this weight of the aircraft plus the weight of the parts
+	 * @return this mass of the aircraft plus the mass of the parts
 	 */
-	public float getTotalWeight() {
-		float w = getAircraftWeight() + partsManager.getPartsWeight();
-		return w;
+	public float getTotalMass() {
+		return totalMass;
 	}
 	
 	/**
@@ -687,6 +786,7 @@ public abstract class EntityAircraft extends Entity {
 		Entity controller = getControllingPassenger();
 		if (controller == null) return;
 		if (!level.isClientSide) {
+			if (!isOperational()) return;
 			weaponSystem.tick();
 			radarSystem.tickUpdateTargets();
 			boolean consume = !isNoConsume();
@@ -698,6 +798,8 @@ public abstract class EntityAircraft extends Entity {
 			if (newRiderCooldown > 0) --newRiderCooldown;
 			else if (inputShoot) weaponSystem.shootSelected(controller, consume);
 			if (inputFlare && tickCount % 5 == 0) flare(controller, consume);
+		} else {
+			radarSystem.clientTick();
 		}
 	}
 	
@@ -763,7 +865,7 @@ public abstract class EntityAircraft extends Entity {
 	
 	public void updateControls(float throttle, float pitch, float roll, float yaw,
 			boolean mouseMode, boolean flare, boolean shoot, boolean select,
-			boolean openMenu, boolean special, boolean radarMode) {
+			boolean openMenu, boolean special, boolean radarMode, boolean bothRoll) {
 		this.inputThrottle = throttle;
 		this.inputPitch = pitch;
 		this.inputRoll = roll;
@@ -778,6 +880,7 @@ public abstract class EntityAircraft extends Entity {
 		this.inputSpecial = special;
 		this.inputRadarMode = radarMode;
 		if (inputRadarMode) setRadarPlayersOnly(!isRadarPlayersOnly());
+		this.inputBothRoll = bothRoll;
 	}
 	
 	public void resetControls() {
@@ -792,6 +895,7 @@ public abstract class EntityAircraft extends Entity {
 		this.inputOpenMenu = false;
 		this.inputSpecial = false;
 		this.inputRadarMode = false;
+		this.inputBothRoll = false;
 		this.throttleToZero();
 	}
 	
@@ -816,9 +920,9 @@ public abstract class EntityAircraft extends Entity {
      */
 	public void serverSetup() {
 		// ORDER MATTERS
-		weaponSystem.setup(this);
-		radarSystem.setup(this);
-		partsManager.setupParts(this);
+		weaponSystem.setup();
+		radarSystem.setup();
+		partsManager.setupParts();
 	}
 	
 	/**
@@ -831,21 +935,29 @@ public abstract class EntityAircraft extends Entity {
 	}
 	
 	@Override
+	public Packet<?> getAddEntityPacket() {
+		return NetworkHooks.getEntitySpawningPacket(this);
+	}
+	
+	@Override
 	public InteractionResult interact(Player player, InteractionHand hand) {
 		if (player.isSecondaryUseActive()) {
 			return InteractionResult.PASS;
 		} else if (player.getRootVehicle() != null && player.getRootVehicle().equals(this)) {
 			return InteractionResult.PASS;
 		} else if (!level.isClientSide) {
+			if (!isOperational()) return InteractionResult.PASS;
 			ItemStack stack = player.getInventory().getSelected();
 			if (!stack.isEmpty()) {
 				Item item = stack.getItem();
+				// REFUEL
 				if (item instanceof ItemGasCan) {
 					int md = stack.getMaxDamage();
 					int d = stack.getDamageValue();
 					int r = (int)addFuel(md-d);
 					stack.setDamageValue(md-r);
 					return InteractionResult.SUCCESS;
+				// REPAIR
 				} else if (item instanceof ItemRepairTool tool) {
 					if (isMaxHealth()) {
 						level.playSound(null, this, 
@@ -857,6 +969,7 @@ public abstract class EntityAircraft extends Entity {
 					stack.hurtAndBreak(1, player, 
 						(p) -> { p.broadcastBreakEvent(hand); });
 					return InteractionResult.SUCCESS;
+				// RELOAD
 				} else if (item instanceof ItemAmmo ammo) {
 					String ammoId = ammo.getAmmoId();
 					for (EntityTurret t : getTurrets()) {
@@ -871,12 +984,14 @@ public abstract class EntityAircraft extends Entity {
 					int o = weaponSystem.addAmmo(ammoId, stack.getCount(), true);
 					stack.setCount(o);
 					return InteractionResult.SUCCESS;
+				// CHANGE COLOR
 				} else if (item instanceof DyeItem dye) {
 					if (setCurrentColor(dye.getDyeColor())) {
 						stack.shrink(1);
 						return InteractionResult.CONSUME;
 					}
 					return InteractionResult.PASS;
+				// CREATIVE WAND
 				} else if (item instanceof ItemCreativeWand wand) {
 					if (wand.modifyAircraft(this)) return InteractionResult.SUCCESS;
 					return InteractionResult.PASS;
@@ -922,9 +1037,7 @@ public abstract class EntityAircraft extends Entity {
 				break;
 			}
 		}
-		if (seatIndex == -1) {
-			return false;
-		}
+		if (seatIndex == -1) return false; // player not riding seat
 		System.out.println("riding seat "+seatIndex);
 		int i = 0, j = seatIndex+1;
 		while (i < seats.size()-1) {
@@ -1017,28 +1130,38 @@ public abstract class EntityAircraft extends Entity {
     public boolean hurt(DamageSource source, float amount) {
 		if (isInvulnerableTo(source)) return false;
 		addHealth(-amount);
-		if (!level.isClientSide) level.playSound(null, blockPosition(), 
-				ModSounds.VEHICLE_HIT_1.get(), 
-				SoundSource.PLAYERS, 0.5f, 1.0f);
+		if (!level.isClientSide && source instanceof WeaponDamageSource ws && ws.getTorqueK() != 0) {
+			Vec3 dir = source.getDirectEntity().getLookAngle();
+			Vec3 dir2 = UtilAngles.rotateVector(dir, getQ());
+			float rx = (float)(dir2.z*dir2.y)*amount*ws.getTorqueK();
+			float rz = (float)(dir2.x*dir2.y)*amount*ws.getTorqueK();
+			addTorqueX(rx, false);
+			addTorqueZ(rz, false);
+			synchTorqueToClient();
+		}
+		if (!level.isClientSide && isOperational()) level.playSound(null, 
+			blockPosition(), ModSounds.VEHICLE_HIT_1.get(), 
+			SoundSource.PLAYERS, 0.5f, 1.0f);
 		return true;
+	}
+	
+	public void synchTorqueToClient() {
+		if (level.isClientSide) return;
+		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), 
+				new ToClientSynchTorque(this));
 	}
 	
 	public void explode(DamageSource source) {
 		if (!level.isClientSide) {
 			level.explode(this, source,
-					null, getX(), getY(), getZ(), 
-					3, true, 
-					Explosion.BlockInteraction.BREAK);
+				null, getX(), getY(), getZ(), 
+				3, true, 
+				Explosion.BlockInteraction.BREAK);
 		} else {
 			level.addParticle(ParticleTypes.LARGE_SMOKE, 
-					getX(), getY()+0.5D, getZ(), 
-					0.0D, 0.0D, 0.0D);
+				getX(), getY()+0.5D, getZ(), 
+				0.0D, 0.0D, 0.0D);
 		}
-	}
-
-	@Override
-	public Packet<?> getAddEntityPacket() {
-		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 	
 	/**
@@ -1049,7 +1172,6 @@ public abstract class EntityAircraft extends Entity {
     }
     
     public final void setMaxSpeed(float maxSpeed) {
-    	System.out.println("setting max speed "+maxSpeed);
     	entityData.set(MAX_SPEED, maxSpeed);
     }
     
@@ -1339,58 +1461,31 @@ public abstract class EntityAircraft extends Entity {
      * plays all the sounds for the players in the plane
      */
     public void sounds() {
-    	if (!level.isClientSide) {
-    		if (getMissileTrackedTicks() > 0) addMissileTrackedTicks(-1);
-    		if (getLockedOntoTicks() > 0) addLockedOntoTicks(-1);
-    	} else {
-    		if (getMissileTrackedTicks() > 0 && tickCount % 4 == 0) for (Player p : getRidingPlayers()) {
+    	if (level.isClientSide) {
+    		if (tickCount % 4 == 0 && radarSystem.isTrackedByMissile()) for (Player p : getRidingPlayers()) {
     			level.playSound(p, new BlockPos(p.position()), 
 	    			ModSounds.MISSILE_WARNING.get(), SoundSource.PLAYERS, 1f, 1f);
-    		} else if (getLockedOntoTicks() > 0 && tickCount % 8 == 0) for (Player p : getRidingPlayers()) {
+    		} else if (tickCount % 8 == 0 && radarSystem.isTrackedByRadar()) for (Player p : getRidingPlayers()) {
     			level.playSound(p, new BlockPos(p.position()), 
     	    		ModSounds.GETTING_LOCKED.get(), SoundSource.PLAYERS, 1f, 1f);
         	}
     	}
+    } 
+    
+    /**
+     * entity tracking missile calls this server side when tracking this plane
+     * @param pos the position of the missile
+     */
+    public void trackedByMissile(Vec3 pos) {
+    	radarSystem.addRWRWarning(pos, true, level.isClientSide);
     }
     
     /**
-     * entity tracking missile calls this when tracking this plane
+     * another radar system calls this server side when tracking this craft
+     * @param pos the position of the radar
      */
-    public void trackedByMissile() {
-    	if (level.isClientSide) return;
-    	setMissileTrackedTicks(10);
-    }
-    
-    /**
-     * another radar system calls this when tracking this craft
-     */
-    public void lockedOnto() {
-    	if (level.isClientSide) return;
-    	setLockedOntoTicks(10);
-    }
-    
-    /*
-     * the following group of functions is used to tell the plane from the server side that they are being
-     * tracked from another radar while also only letting certain players hear the sound on the client side
-     * probably not the best way to do it but it works 
-     */
-    public final int getMissileTrackedTicks() {
-    	return entityData.get(MISSILE_TRACKED_TICKS);
-    }
-    public final void setMissileTrackedTicks(int ticks) {
-    	entityData.set(MISSILE_TRACKED_TICKS, ticks);
-    }
-    public final void addMissileTrackedTicks(int ticks) {
-    	setMissileTrackedTicks(ticks+getMissileTrackedTicks());
-    }
-    public final int getLockedOntoTicks() {
-    	return entityData.get(LOCKED_ONTO_TICKS);
-    }
-    public final void setLockedOntoTicks(int ticks) {
-    	entityData.set(LOCKED_ONTO_TICKS, ticks);
-    }
-    public final void addLockedOntoTicks(int ticks) {
-    	setLockedOntoTicks(ticks+getLockedOntoTicks());
+    public void lockedOnto(Vec3 pos) {
+    	radarSystem.addRWRWarning(pos, false, level.isClientSide);
     }
     
     @Override
@@ -1416,23 +1511,21 @@ public abstract class EntityAircraft extends Entity {
      * @return the total fuel this aircraft can hold
      */
     public float getMaxFuel() {
-    	return partsManager.getMaxFuel();
+    	return maxFuel;
     }
     
     /**
      * consume fuel every server tick
      */
     public void tickFuel() {
-    	if (!level.isClientSide) {
-    		partsManager.tickFuel(true);
-    	}
+    	partsManager.tickFuel(!level.isClientSide);
     }
     
     /**
      * @return the current amount of fuel left
      */
-    public float getFuel() {
-    	return partsManager.getCurrentFuel();
+    public float getCurrentFuel() {
+    	return currentFuel;
     }
     
     /**
@@ -1493,7 +1586,6 @@ public abstract class EntityAircraft extends Entity {
     
     @Override
     public void kill() {
-    	explode(null);
     	super.kill();
     }
     
@@ -1539,5 +1631,27 @@ public abstract class EntityAircraft extends Entity {
     public Vec3 getDismountLocationForPassenger(LivingEntity livingEntity) {
 		return super.getDismountLocationForPassenger(livingEntity);
 	}
+    
+    public int getFlareNum() {
+    	return flareNum;
+    }
+    
+    protected void debug(String debug) {
+    	debug(debug, true);
+    }
+    
+    protected void debug(String debug, boolean passengerCheck) {
+    	if (!passengerCheck || (passengerCheck && hasControllingPassenger())) 
+    		System.out.println(debug);
+    }
+    
+    public void toClientPassengers(IPacket packet) {
+    	if (level.isClientSide) return;
+    	for (Player p : getRidingPlayers()) {
+    		PacketHandler.INSTANCE.send(
+    			PacketDistributor.PLAYER.with(() -> (ServerPlayer)p),
+    			packet);
+    	}
+    }
     
 }

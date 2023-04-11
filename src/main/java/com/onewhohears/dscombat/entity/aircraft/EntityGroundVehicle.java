@@ -55,8 +55,8 @@ public class EntityGroundVehicle extends EntityAircraft {
 	
 	@Override
 	public void directionGround(Quaternion q) {
-		if (isTank) {
-			flatten(q, 5f, 5f);
+		if (isTank && isOperational()) {
+			flatten(q, 4f, 4f, true);
 			addTorqueY(inputYaw * getAccelerationYaw(), true);
 		} else super.directionGround(q);
 	}
@@ -74,7 +74,10 @@ public class EntityGroundVehicle extends EntityAircraft {
 	@Override
 	public void tickGround(Quaternion q) {
 		super.tickGround(q);
-		if (inputSpecial) throttleToZero();
+		if (inputSpecial && isOperational()) {
+			throttleToZero();
+			addFrictionForce(kineticFric);
+		}
 	}
 	
 	@Override
@@ -106,20 +109,15 @@ public class EntityGroundVehicle extends EntityAircraft {
 	
 	@Override
 	public boolean isLandingGear() {
-		return !inputSpecial;
+		return true;
     }
-
-	@Override
-	protected float getTorqueDragMag() {
-		return 0.35f;
-	}
 	
 	@Override
 	public void updateControls(float throttle, float pitch, float roll, float yaw,
 			boolean mouseMode, boolean flare, boolean shoot, boolean select,
-			boolean openMenu, boolean special, boolean radarMode) {
+			boolean openMenu, boolean special, boolean radarMode, boolean bothRoll) {
 		super.updateControls(throttle, pitch, roll, yaw, mouseMode, flare, shoot, 
-				select, openMenu, special, radarMode);
+				select, openMenu, special, radarMode, bothRoll);
 		this.inputThrottle = pitch;
 		this.inputPitch = throttle;
 	}

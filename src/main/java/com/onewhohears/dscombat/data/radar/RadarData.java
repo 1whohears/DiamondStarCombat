@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
@@ -118,6 +119,7 @@ public class RadarData {
 			List<EntityAircraft> list = level.getEntitiesOfClass(
 					EntityAircraft.class, getRadarBoundingBox(radar));
 			for (int i = 0; i < list.size(); ++i) {
+				if (!list.get(i).isOperational()) continue;
 				Entity pilot = list.get(i).getControllingPassenger();
 				if (radar.isRadarPlayersOnly() && pilot == null) continue;
 				if (!basicCheck(radar, list.get(i), list.get(i).getStealth())) continue;
@@ -125,7 +127,7 @@ public class RadarData {
 					checkFriendly(controller, pilot));
 				targets.add(p);
 				pings.add(p);
-				list.get(i).lockedOnto();
+				list.get(i).lockedOnto(radar.position());
 			}
 		}
 		if (scanPlayers) {
@@ -287,19 +289,13 @@ public class RadarData {
 		
 		public RadarPing(FriendlyByteBuf buffer) {
 			id = buffer.readInt();
-			double x, y, z;
-			x = buffer.readDouble();
-			y = buffer.readDouble();
-			z = buffer.readDouble();
-			pos = new Vec3(x, y, z);
+			pos = DataSerializers.VEC3.read(buffer);
 			isFriendly = buffer.readBoolean();
 		}
 		
 		public void write(FriendlyByteBuf buffer) {
 			buffer.writeInt(id);
-			buffer.writeDouble(pos.x);
-			buffer.writeDouble(pos.y);
-			buffer.writeDouble(pos.z);
+			DataSerializers.VEC3.write(buffer, pos);
 			buffer.writeBoolean(isFriendly);
 		}
 		

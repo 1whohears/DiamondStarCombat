@@ -29,28 +29,28 @@ public class UtilEntity {
 			pos = e1.position();
 		} else {
 			dist = maxCheckDist;
-			pos = e1.position().add(look.scale(distance-maxCheckDist));
+			pos = e1.position().add(look.scale(distance-maxCheckDist).subtract(look));
 		}
 		int k = 0;
 		while (k++ < dist) {
+			pos = pos.add(look);
 			BlockPos bp = new BlockPos(pos);
 			ChunkPos cp = new ChunkPos(bp);
 			if (!level.hasChunk(cp.x, cp.z)) continue;
 			BlockState block = level.getBlockState(bp);
-			if (block != null && !block.isAir()) {
-				if (throWater <= 0 && throBlock <= 0) return false;
-				if (block.getFluidState().getType().isSame(Fluids.WATER)) {
-					if (throWater > 0) {
-						--throWater;
-						continue;
-					} else return false;
-				}
-				if (throBlock > 0) {
-					--throBlock;
+			if (block == null || block.isAir()) continue;
+			if (!block.getMaterial().blocksMotion() && !block.getMaterial().isLiquid()) continue;
+			if (throWater <= 0 && throBlock <= 0) return false;
+			if (block.getFluidState().getType().isSame(Fluids.WATER)) {
+				if (throWater > 0) {
+					--throWater;
 					continue;
 				} else return false;
 			}
-			pos = pos.add(look);
+			if (throBlock > 0) {
+				--throBlock;
+				continue;
+			} else return false;
 		}
 		return true;
 	}
@@ -94,18 +94,20 @@ public class UtilEntity {
 	}
 	
 	public static boolean isOnGroundOrWater(Entity entity) {
-		Entity rv = entity.getRootVehicle();
-		if (rv != null) {
+		if (entity.isPassenger()) {
+			Entity rv = entity.getRootVehicle();
 			if (rv instanceof Boat) return true;
 			if (rv instanceof Minecart) return true;
-			if (rv.isOnGround() || rv.isInWater()) return true;
+			if (rv.isOnGround() || isHeadAboveWater(rv)) return true;
 		}
-		if (entity instanceof Player p) {
-			if (p.isFallFlying()) return false;
-			if (p.isSprinting()) return true;
-		}
-		if (entity.isOnGround() || entity.isInWater()) return true;
+		if (entity instanceof Player p) if (p.isFallFlying()) return false;		
+		if (!entity.isInWater() && entity.isSprinting() && entity.fallDistance < 1.15) return true;
+		if (entity.isOnGround() || isHeadAboveWater(entity)) return true;
 		return false;
+	}
+	
+	public static boolean isHeadAboveWater(Entity entity) {
+		return entity.isInWater() && !entity.isUnderWater();
 	}
 	
 }

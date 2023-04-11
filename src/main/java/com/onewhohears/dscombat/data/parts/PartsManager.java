@@ -23,13 +23,15 @@ import net.minecraftforge.network.PacketDistributor;
 
 public class PartsManager {
 	
+	// TODO make sure unnecessary add part/radar/weapon packets aren't being sent to client
+	
+	private final EntityAircraft parent;
 	private List<PartSlot> slots = new ArrayList<PartSlot>();
 	private Container inventory = new SimpleContainer(0);
 	private boolean readData = false;
-	private EntityAircraft parent;
 	
-	public PartsManager() {
-		
+	public PartsManager(EntityAircraft parent) {
+		this.parent = parent;
 	}
 	
 	/**
@@ -123,37 +125,48 @@ public class PartsManager {
 		compound.put("slots", list);
 	}
 	
-	public PartsManager(FriendlyByteBuf buffer) {
+	/*public PartsManager(FriendlyByteBuf buffer) {
 		int num = buffer.readInt();
 		for (int i = 0; i < num; ++i) slots.add(new PartSlot(buffer));
 		createNewInventory();
 		readData = true;
+	}*/
+	
+	/*public void read(FriendlyByteBuf buffer) {
+		int num = buffer.readInt();
+		for (int i = 0; i < num; ++i) slots.add(new PartSlot(buffer));
+		createNewInventory();
+		readData = true;
+	}*/
+	
+	public static List<PartSlot> readSlotsFromBuffer(FriendlyByteBuf buffer) {
+		List<PartSlot> ps = new ArrayList<PartSlot>();
+		int num = buffer.readInt();
+		for (int i = 0; i < num; ++i) ps.add(new PartSlot(buffer));
+		return ps;
 	}
 	
-	public void write(FriendlyByteBuf buffer) {
+	public static void writeSlotsToBuffer(FriendlyByteBuf buffer, List<PartSlot> slots) {
 		buffer.writeInt(slots.size());
 		for (PartSlot p : slots) p.write(buffer);
 	}
 	
-	/**
-	 * @param copy copies this part manager's slot data
-	 */
-	public void copy(PartsManager copy) {
-		this.slots = copy.slots;
+	public void setPartSlots(List<PartSlot> slots) {
+		this.slots = slots;
 		createNewInventory();
-		readData = true;
+		this.readData = true;
 	}
 	
-	public void setupParts(EntityAircraft craft) {
-		this.parent = craft;
+	public void setupParts(/*EntityAircraft craft*/) {
+		//this.parent = craft;
 		//System.out.println("setupParts "+this);
-		for (PartSlot p : slots) p.setup(craft);
+		for (PartSlot p : slots) p.setup(parent);
 	}
 	
-	public void clientPartsSetup(EntityAircraft craft) {
-		this.parent = craft;
+	public void clientPartsSetup(/*EntityAircraft craft*/) {
+		//this.parent = craft;
 		//System.out.println("clientPartsSetup "+this);
-		for (PartSlot p : slots) p.clientSetup(craft);
+		for (PartSlot p : slots) p.clientSetup(parent);
 	}
 	
 	public void tickParts() {
@@ -268,17 +281,26 @@ public class PartsManager {
 	
 	public List<PartSlot> getFlares() {
 		List<PartSlot> flares = new ArrayList<PartSlot>();
-		for (PartSlot p : slots) if (p.filled() && p.getPartData().getType() == PartType.FLARE_DISPENSER) flares.add(p);
+		for (PartSlot p : slots) 
+			if (p.filled() && p.getPartData().getType() == PartType.FLARE_DISPENSER) 
+				flares.add(p);
 		return flares;
 	}
 	
 	public boolean useFlares(boolean consume) {
-		List<PartSlot> flares = getFlares();
+		if (parent.getFlareNum() < 1) return false;
 		boolean r = false;
-		for (PartSlot p : flares)
+		for (PartSlot p : getFlares())
 			if (((FlareDispenserData)p.getPartData()).flare(consume))
 				r = true;
 		return r;
+	}
+	
+	public int getNumFlares() {
+		int num = 0;
+		for (PartSlot p : getFlares()) 
+			num += ((FlareDispenserData)p.getPartData()).getFlares();
+		return num;
 	}
 	
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.onewhohears.dscombat.data.weapon.IRMissileData;
+import com.onewhohears.dscombat.data.weapon.WeaponDamageSource;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 
 import net.minecraft.world.entity.Entity;
@@ -177,6 +178,16 @@ public class IRMissile extends EntityMissile {
 			this.heat = heat;
 		}
 		
+	}
+	
+	@Override
+	protected WeaponDamageSource getImpactDamageSource() {
+		return WeaponDamageSource.ir_missile(getOwner(), this);
+	}
+
+	@Override
+	protected WeaponDamageSource getExplosionDamageSource() {
+		return WeaponDamageSource.ir_missile(getOwner(), this);
 	}
 
 }

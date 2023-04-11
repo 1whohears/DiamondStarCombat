@@ -5,7 +5,7 @@
 	"max_health": 30,
 	"health": 30,
 	
-	"weight": 0.01,
+	"weight": 5,
 	"surfacearea": 1.0,
 	
 	"stealth": 1.0,
@@ -14,10 +14,10 @@
 	"turn_radius": 0,
 	"maxroll": 0.0,
 	"maxpitch": 0.0,
-	"maxyaw": 2.0,
+	"maxyaw": 3.0,
 	"accroll": 0.0,
 	"accpitch": 0.0,
-	"accyaw": 0.3,
+	"accyaw": 0.4,
 	
 	"throttleup": 0.08,
 	"throttledown": 0.08,

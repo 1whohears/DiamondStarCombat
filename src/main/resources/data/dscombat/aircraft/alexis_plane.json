@@ -5,13 +5,13 @@
 	"max_health": 150,
 	"health": 150,
 	
-	"weight": 0.03,
-	"surfacearea": 1.2,
+	"weight": 20.0,
+	"surfacearea": 12.0,
 	
 	"stealth": 0.8,
 	"idleheat": 4.0,
 	
-	"turn_radius": 24,
+	"turn_radius": 10,
 	"maxroll": 6.0,
 	"maxpitch": 2.5,
 	"maxyaw": 1.5,

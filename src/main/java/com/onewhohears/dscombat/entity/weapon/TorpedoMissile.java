@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.entity.weapon;
 
 import com.onewhohears.dscombat.data.weapon.TorpedoData;
+import com.onewhohears.dscombat.data.weapon.WeaponDamageSource;
 import com.onewhohears.dscombat.util.UtilEntity;
 
 import net.minecraft.world.entity.Entity;
@@ -34,6 +35,16 @@ public class TorpedoMissile extends TrackEntityMissile {
 	
 	@Override
 	public void tickInWater() {
+	}
+	
+	@Override
+	protected WeaponDamageSource getImpactDamageSource() {
+		return WeaponDamageSource.torpedo(getOwner(), this);
+	}
+
+	@Override
+	protected WeaponDamageSource getExplosionDamageSource() {
+		return WeaponDamageSource.torpedo(getOwner(), this);
 	}
 	
 }

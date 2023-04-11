@@ -25,13 +25,19 @@ public class RendererEntityAircraft<T extends EntityAircraft> extends EntityRend
 	
 	@Override
 	public void render(T entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
+		float red = 1f, green = 1f, blue = 1f;
+		if (!entity.isOperational()) {
+			float grey = 0.4f;
+			red = green = blue = grey;
+		}
+		
 		Quaternion q = UtilAngles.lerpQ(partialTicks, entity.getPrevQ(), entity.getClientQ());
 		poseStack.pushPose();
         poseStack.mulPose(q);
-		
+        
         VertexConsumer vertexconsumer = multiBufferSource.getBuffer(model.renderType(getTextureLocation(entity)));
-		model.renderToBuffer(entity, partialTicks, poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, 
-				1.0F, 1.0F, 1.0F, 1.0F);
+		model.renderToBuffer(entity, partialTicks, poseStack, vertexconsumer, packedLight, 
+				OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
 		
         poseStack.popPose();
 		

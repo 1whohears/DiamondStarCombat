@@ -41,6 +41,7 @@ public final class ClientRenderRadarEvents {
 		if (event.getStage() != Stage.AFTER_PARTICLES) return;
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
+		if (!player.isPassenger()) return;
 		if (!(player.getRootVehicle() instanceof EntityAircraft plane)) return;
 		RadarSystem radar = plane.radarSystem;
 		if (radar == null) return;

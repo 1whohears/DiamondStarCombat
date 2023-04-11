@@ -56,7 +56,8 @@ public class EntityBoat extends EntityAircraft {
 	
 	@Override
 	public void directionGround(Quaternion q) {
-		flatten(q, 5f, 5f);
+		flatten(q, 4f, 4f, true);
+		if (!isOperational()) return;
 		addTorqueY(inputYaw * getAccelerationYaw() * 0.1f, true);
 	}
 	
@@ -67,7 +68,8 @@ public class EntityBoat extends EntityAircraft {
 	
 	@Override
 	public void directionWater(Quaternion q) {
-		flatten(q, 5f, 5f);
+		if (!isOperational()) return;
+		flatten(q, 2f, 2f, true);
 		addTorqueY(inputYaw * getAccelerationYaw(), true);
 	}
 	
@@ -84,10 +86,12 @@ public class EntityBoat extends EntityAircraft {
 	
 	@Override
 	public void tickGround(Quaternion q) {
-		Vec3 motion = getDeltaMovement();
-		if (motion.y < 0) motion = motion.multiply(1, 0, 1);
-		motion = motion.multiply(0.5, 1, 0.5);
-		setDeltaMovement(motion);
+		addFrictionForce(kineticFric);
+	}
+	
+	@Override
+	public double getDriveAcc() {
+		return 0;
 	}
 	
 	@Override
@@ -114,7 +118,8 @@ public class EntityBoat extends EntityAircraft {
 	}
 	
 	public boolean willFloat() {
-		float w = getTotalWeight();
+		if (!isOperational()) return false;
+		float w = getTotalMass();
 		float fc = getBbWidth() * getBbWidth() * 0.05f;
 		return fc > w;
 	}
@@ -164,11 +169,6 @@ public class EntityBoat extends EntityAircraft {
 	}
 
 	@Override
-	protected float getTorqueDragMag() {
-		return 0.35f;
-	}
-
-	@Override
 	public Vec3 getThrustForce(Quaternion q) {
 		return Vec3.ZERO;
 	}
@@ -181,9 +181,9 @@ public class EntityBoat extends EntityAircraft {
 	@Override
 	public void updateControls(float throttle, float pitch, float roll, float yaw,
 			boolean mouseMode, boolean flare, boolean shoot, boolean select,
-			boolean openMenu, boolean special, boolean radarMode) {
+			boolean openMenu, boolean special, boolean radarMode, boolean bothRoll) {
 		super.updateControls(throttle, pitch, roll, yaw, mouseMode, flare, shoot, 
-				select, openMenu, special, radarMode);
+				select, openMenu, special, radarMode, bothRoll);
 		this.inputThrottle = pitch;
 		this.inputPitch = throttle;
 	}

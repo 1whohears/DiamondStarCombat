@@ -1,11 +1,11 @@
 {
 	"preset": "mrbudger_tank",
-	"max_speed": 0.5,
+	"max_speed": 0.3,
 	
 	"max_health": 500,
 	"health": 500,
 	
-	"weight": 0.25,
+	"weight": 100,
 	"surfacearea": 1.0,
 	
 	"stealth": 1.0,
@@ -14,7 +14,7 @@
 	"turn_radius": 0,
 	"maxroll": 0.0,
 	"maxpitch": 0.0,
-	"maxyaw": 1.0,
+	"maxyaw": 2.0,
 	"accroll": 0.0,
 	"accpitch": 0.0,
 	"accyaw": 0.2,

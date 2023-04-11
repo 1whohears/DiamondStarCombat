@@ -13,17 +13,17 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent.Context;
 
-public class ToServerQ extends IPacket {
+public class ToServerAircraftQ extends IPacket {
 	
 	public final int id;
 	public final Quaternion q;
 	
-	public ToServerQ(int id, Quaternion q) {
-		this.id = id;
-		this.q = q;
+	public ToServerAircraftQ(EntityAircraft e) {
+		this.id = e.getId();
+		this.q = e.getClientQ();
 	}
 	
-	public ToServerQ(FriendlyByteBuf buffer) {
+	public ToServerAircraftQ(FriendlyByteBuf buffer) {
 		id = buffer.readInt();
 		q = DataSerializers.QUATERNION.read(buffer);
 	}

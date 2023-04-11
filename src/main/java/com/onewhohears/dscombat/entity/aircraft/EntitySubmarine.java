@@ -56,7 +56,8 @@ public class EntitySubmarine extends EntityBoat {
 	
 	@Override
 	public void directionWater(Quaternion q) {
-		if (isFreeLook()) flatten(q, 5f, 5f);
+		if (!isOperational()) return;
+		if (isFreeLook()) flatten(q, getMaxDeltaPitch(), getMaxDeltaRoll(), false);
 		else {
 			addTorqueX(inputPitch * getAccelerationPitch(), true);
 			addTorqueZ(inputRoll * getAccelerationRoll(), true);
@@ -80,6 +81,11 @@ public class EntitySubmarine extends EntityBoat {
 	}
 	
 	@Override
+	public double getDriveAcc() {
+		return 0;
+	}
+	
+	@Override
 	public void tickAir(Quaternion q) {
 		super.tickAir(q);
 	}
@@ -89,7 +95,7 @@ public class EntitySubmarine extends EntityBoat {
 		Vec3 move = getDeltaMovement();
 		if (inputSpecial) move = move.scale(0.75);
 		else move = move.scale(0.925);
-		if (isFreeLook()) {
+		if (isFreeLook() && isOperational()) {
 			move = move.add(0, inputPitch * 0.04, 0);
 			double max = 0.2;
 			if (Math.abs(move.y) > 0.5) move.multiply(1, max/move.y, 1);
@@ -106,11 +112,6 @@ public class EntitySubmarine extends EntityBoat {
 	@Override
 	public double getThrustMag() {
 		return super.getThrustMag();
-	}
-
-	@Override
-	protected float getTorqueDragMag() {
-		return 0.35f;
 	}
 
 	@Override
@@ -131,9 +132,9 @@ public class EntitySubmarine extends EntityBoat {
 	@Override
 	public void updateControls(float throttle, float pitch, float roll, float yaw,
 			boolean mouseMode, boolean flare, boolean shoot, boolean select,
-			boolean openMenu, boolean special, boolean radarMode) {
-		super.updateControls(throttle, pitch, roll, yaw, 
-				mouseMode, flare, shoot, select, openMenu, special, radarMode);
+			boolean openMenu, boolean special, boolean radarMode, boolean bothRoll) {
+		super.updateControls(throttle, pitch, roll, yaw, mouseMode, flare, shoot, 
+				select, openMenu, special, radarMode, bothRoll);
 		if (!isFreeLook()) {
 			this.inputThrottle = throttle;
 			this.inputPitch = pitch;

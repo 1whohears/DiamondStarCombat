@@ -24,7 +24,7 @@ public class UtilGeometry {
 	
 	public static double angleBetween(Vec3 dir, Vec3 base) {
 		double dot = dir.dot(base);
-		double mag = dir.length() * base.length();
+		double mag = Math.sqrt(dir.lengthSqr() * base.lengthSqr());
 		return Math.acos(dot / mag);
 	}
 	
@@ -56,22 +56,45 @@ public class UtilGeometry {
 		return tPos;
 	}
 	
-	public static Vec3 componentOfVecByAxis(Vec3 u, Vec3 v) {
+	public static Vec3 vecCompByAxis(Vec3 u, Vec3 v) {
+		if (isZero(v)) return Vec3.ZERO;
+		return v.scale(u.dot(v) / v.lengthSqr());
+	}
+	
+	public static Vec3 vecCompByNormAxis(Vec3 u, Vec3 n) {
+		return n.scale(u.dot(n));
+	}
+	
+	public static double vecCompMagSqrDirByAxis(Vec3 u, Vec3 v) {
+		if (isZero(v)) return 0;
+		double dot = u.dot(v);
 		double vl2 = v.lengthSqr();
-		return v.scale(u.dot(v) / vl2);
+		Vec3 vec = v.scale(dot / vl2);
+		return vec.lengthSqr() * Math.signum(dot);
 	}
 	
-	public static double componentMagSqrDirByAxis(Vec3 u, Vec3 v) {
-		Vec3 vec = componentOfVecByAxis(u, v);
-		double sqr = vec.lengthSqr();
-		if (!isSameDirection(vec, v)) sqr *= -1;
-		return sqr;
+	public static double vecCompMagSqrDirByNormAxis(Vec3 u, Vec3 n) {
+		double dot = u.dot(n);
+		Vec3 vec = n.scale(dot);
+		return vec.lengthSqr() * Math.signum(dot);
 	}
 	
-	public static boolean isSameDirection(Vec3 u, Vec3 v) {
-		return 	Math.signum(u.x) == Math.signum(v.x) && 
-				Math.signum(u.y) == Math.signum(v.y) && 
-				Math.signum(u.z) == Math.signum(v.z);
+	public static double vecCompMagDirByAxis(Vec3 u, Vec3 v) {
+		if (isZero(v)) return 0;
+		double dot = u.dot(v);
+		double vl2 = v.lengthSqr();
+		Vec3 vec = v.scale(dot / vl2);
+		return vec.length() * Math.signum(dot);
+	}
+	
+	public static double vecCompMagDirByNormAxis(Vec3 u, Vec3 n) {
+		double dot = u.dot(n);
+		Vec3 vec = n.scale(dot);
+		return vec.length() * Math.signum(dot);
+	}
+	
+	public static boolean isZero(Vec3 v) {
+		return v.x == 0 && v.y == 0 && v.z == 0;
 	}
 	
 }

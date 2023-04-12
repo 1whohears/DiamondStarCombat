@@ -71,23 +71,35 @@ public class ClientCameraEvents {
 	@SubscribeEvent
 	public static void clientTickSetMouseCallback(TickEvent.ClientTickEvent event) {
 		Minecraft m = Minecraft.getInstance();
-		if (m.player == null || m.player.tickCount != 1) return;
+		if (m.player == null || m.player.tickCount != 1 || getVanillaOnMove() == null) return;
 		// TODO make client config for custom mouse callback
 		GLFW.glfwSetCursorPosCallback(m.getWindow().getWindow(), ClientCameraEvents.customMouseCallback);
 	}
 	
 	public static Method vanillaOnMove;
+	public static boolean tried = false;
 	
 	public static Method getVanillaOnMove() {
 		if (vanillaOnMove != null) return vanillaOnMove; 
+		if (tried) return null;
+		tried = true;
 		try {
 			vanillaOnMove = MouseHandler.class.getDeclaredMethod(
-					"onMove", long.class, double.class, double.class);
+				"m_91561_", long.class, double.class, double.class);
 			vanillaOnMove.setAccessible(true);
+			return vanillaOnMove;
 		} catch (NoSuchMethodException | SecurityException e) {
-			e.printStackTrace();
+			System.out.println("WARNING: VANILLA MOUSE POS CALLBACK IS NOT m_91561_");
 		}
-		return vanillaOnMove;
+		try {
+			vanillaOnMove = MouseHandler.class.getDeclaredMethod(
+				"onMove", long.class, double.class, double.class);
+			vanillaOnMove.setAccessible(true);
+			return vanillaOnMove;
+		} catch (NoSuchMethodException | SecurityException e) {
+			System.out.println("WARNING: VANILLA MOUSE POS CALLBACK IS NOT onMove");
+		}
+		return null;
 	}
 	
 	public static final GLFWCursorPosCallbackI customMouseCallback = (window, x, y) -> {

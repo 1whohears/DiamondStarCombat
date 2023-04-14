@@ -18,7 +18,9 @@ import com.onewhohears.dscombat.init.ModSounds;
 
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -29,6 +31,8 @@ public class DSCombatMod {
 	public static final String MODID = "dscombat";
 
     public DSCombatMod() {
+    	ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.clientSpec);
+    	ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.serverSpec);
     	IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
     	// ORDER MATTERS
     	WeaponPresets.setupPresets();

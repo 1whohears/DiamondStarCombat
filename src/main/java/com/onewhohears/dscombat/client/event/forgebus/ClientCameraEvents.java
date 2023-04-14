@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCursorPosCallbackI;
 
+import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
@@ -71,8 +72,9 @@ public class ClientCameraEvents {
 	@SubscribeEvent
 	public static void clientTickSetMouseCallback(TickEvent.ClientTickEvent event) {
 		Minecraft m = Minecraft.getInstance();
-		if (m.player == null || m.player.tickCount != 1 || getVanillaOnMove() == null) return;
-		// TODO make client config for custom mouse callback
+		if (m.player == null || m.player.tickCount != 1) return;
+		if (!Config.CLIENT.cameraTurnRelativeToVehicle.get()) return;
+		if (getVanillaOnMove() == null) return;
 		GLFW.glfwSetCursorPosCallback(m.getWindow().getWindow(), ClientCameraEvents.customMouseCallback);
 	}
 	

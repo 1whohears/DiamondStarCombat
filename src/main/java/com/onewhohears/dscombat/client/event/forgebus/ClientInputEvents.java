@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.client.event.forgebus;
 
 import java.util.List;
 
+import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.KeyInit;
 import com.onewhohears.dscombat.common.network.PacketHandler;
@@ -33,10 +34,6 @@ public final class ClientInputEvents {
 	
 	private static double mouseCenterX = 0;
 	private static double mouseCenterY = 0;
-	
-	// TODO make client config for deadZone and max
-	private static final double deadZone = 150;
-	private static final double max = 1000;
 	
 	private static final double tan1 = Math.tan(Math.toRadians(1));
 	
@@ -93,6 +90,8 @@ public final class ClientInputEvents {
 			double xa = Math.abs(mouseX);
 			float ys = (float) Math.signum(mouseY);
 			float xs = (float) Math.signum(mouseX);
+			double deadZone = Config.CLIENT.mouseStickDeadzoneRadius.get();
+			double max = Config.CLIENT.mouseModeMaxRadius.get();
 			double md = max-deadZone;
 			if (ya > max) {
 				pitch = ys;

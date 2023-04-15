@@ -74,10 +74,6 @@ public class EntityGroundVehicle extends EntityAircraft {
 	@Override
 	public void tickGround(Quaternion q) {
 		super.tickGround(q);
-		if (inputSpecial && isOperational()) {
-			throttleToZero();
-			addFrictionForce(kineticFric);
-		}
 	}
 	
 	@Override

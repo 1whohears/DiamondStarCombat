@@ -61,8 +61,4 @@ public class Config {
         SERVER = serverSpecPair.getLeft();
 	}
 	
-	// TODO what does this do?
-	public static void saveClientConfig() {
-		clientSpec.save();
-	}
 }

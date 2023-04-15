@@ -1,6 +1,6 @@
 {
 	"preset": "alexis_plane",
-	"max_speed": 1.40,
+	"max_speed": 1.45,
 	
 	"max_health": 150,
 	"health": 150,

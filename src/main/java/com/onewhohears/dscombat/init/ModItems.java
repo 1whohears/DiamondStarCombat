@@ -132,10 +132,10 @@ public class ModItems {
 	
 	// ENGINES
 	public static final RegistryObject<Item> C6_ENGINE = ITEMS.register("c6_engine", 
-			() -> new ItemEngine(1.2f, 8f*(float)EntityAircraft.ACC_GRAVITY, 4.0f, 
+			() -> new ItemEngine(1.2f, 9f*(float)EntityAircraft.ACC_GRAVITY, 4.0f, 
 					0.005f, false, PartSlot.INTERNAL_ALL));
 	public static final RegistryObject<Item> C12_ENGINE = ITEMS.register("c12_engine", 
-			() -> new ItemEngine(2.5f, 17f*(float)EntityAircraft.ACC_GRAVITY, 8.0f, 
+			() -> new ItemEngine(2.5f, 18f*(float)EntityAircraft.ACC_GRAVITY, 8.0f, 
 					0.012f, false, PartSlot.INTERNAL_ALL));
 	
 	// RADARS

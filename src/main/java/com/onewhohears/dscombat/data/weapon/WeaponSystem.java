@@ -74,7 +74,7 @@ public class WeaponSystem {
 		weapons.add(data);
 		if (updateClient) {
 			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
-					new ToClientAddWeapon(parent.getId(), data));
+				new ToClientAddWeapon(parent.getId(), data));
 		}
 		return true;
 	}
@@ -83,7 +83,7 @@ public class WeaponSystem {
 		boolean r = weapons.remove(get(id, slotId));
 		if (r && updateClient) {
 			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
-					new ToClientRemoveWeapon(parent.getId(), id, slotId));
+				new ToClientRemoveWeapon(parent.getId(), id, slotId));
 		}
 	}
 	

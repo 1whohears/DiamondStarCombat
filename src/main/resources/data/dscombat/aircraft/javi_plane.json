@@ -1,12 +1,12 @@
 {
 	"preset": "javi_plane",
-	"max_speed": 1.15,
+	"max_speed": 1.20,
 	
 	"max_health": 200,
 	"health": 200,
 	
-	"weight": 25,
-	"surfacearea": 16.0,
+	"weight": 25.0,
+	"surfacearea": 20.0,
 	
 	"stealth": 1.1,
 	"idleheat": 5.0,

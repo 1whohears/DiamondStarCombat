@@ -107,7 +107,7 @@ public abstract class EntityAircraft extends Entity {
 	
 	public static final double ACC_GRAVITY = 0.025;
 	public static final double CO_DRAG = 0.015;
-	public static final double CO_STATIC_FRICTION = 4.50;
+	public static final double CO_STATIC_FRICTION = 4.10;
 	public static final double CO_KINETIC_FRICTION = 1.50;
 	public static final float CO_SLIDE_TORQUE = 1.00f;
 	public static final double collideSpeedThreshHold = 0.8d;
@@ -455,7 +455,14 @@ public abstract class EntityAircraft extends Entity {
 	 * also resets the controls if there isn't a controlling passenger
 	 */
 	public void tickThrottle() {
-		if (getControllingPassenger() == null || !isOperational()) resetControls();
+		if (currentFuel <= 0) {
+			throttleToZero();
+			return;
+		}
+		if (getControllingPassenger() == null || !isOperational()) {
+			resetControls();
+			return;
+		}
 		if (inputThrottle > 0) increaseThrottle();
 		else if (inputThrottle < 0) decreaseThrottle();
 	}

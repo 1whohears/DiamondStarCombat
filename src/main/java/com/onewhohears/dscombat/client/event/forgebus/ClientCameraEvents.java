@@ -69,7 +69,7 @@ public class ClientCameraEvents {
 		}
 	}
 	
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void clientTickSetMouseCallback(TickEvent.ClientTickEvent event) {
 		Minecraft m = Minecraft.getInstance();
 		if (m.player == null || m.player.tickCount != 1) return;

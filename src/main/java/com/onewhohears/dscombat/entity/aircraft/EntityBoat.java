@@ -181,9 +181,10 @@ public class EntityBoat extends EntityAircraft {
 	@Override
 	public void updateControls(float throttle, float pitch, float roll, float yaw,
 			boolean mouseMode, boolean flare, boolean shoot, boolean select,
-			boolean openMenu, boolean special, boolean radarMode, boolean bothRoll) {
+			boolean openMenu, boolean special, boolean special2, boolean radarMode, 
+			boolean bothRoll) {
 		super.updateControls(throttle, pitch, roll, yaw, mouseMode, flare, shoot, 
-				select, openMenu, special, radarMode, bothRoll);
+				select, openMenu, special, special2, radarMode, bothRoll);
 		this.inputThrottle = pitch;
 		this.inputPitch = throttle;
 	}

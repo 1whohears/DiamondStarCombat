@@ -127,7 +127,8 @@ public abstract class EntityAircraft extends Entity {
 	public Quaternion prevQ = Quaternion.ONE.copy();
 	public Quaternion clientQ = Quaternion.ONE.copy();
 	
-	public boolean inputMouseMode, inputFlare, inputShoot, inputSelect, inputOpenMenu, inputSpecial, inputRadarMode, inputBothRoll;
+	public boolean inputMouseMode, inputFlare, inputShoot, inputSelect, inputOpenMenu;
+	public boolean inputSpecial, inputSpecial2, inputRadarMode, inputBothRoll;
 	public float inputThrottle, inputPitch, inputRoll, inputYaw;
 	public float zRot, zRotO; 
 	public float torqueX, torqueY, torqueZ, torqueXO, torqueYO, torqueZO;
@@ -633,10 +634,19 @@ public abstract class EntityAircraft extends Entity {
 			setDeltaMovement(n.scale(xzSpeed*xzSpeedDir + getDriveAcc()));
 			if (getCurrentThrottle() == 0 && xzSpeed != 0) addFrictionForce(0.1);
 		}
+		if (isBreaking() && isOperational()) applyBreaks();
 	}
 	
 	public double getDriveAcc() {
 		return getThrustMag()/totalMass;
+	}
+	
+	public boolean isBreaking() {
+		return false;
+	}
+	
+	public void applyBreaks() {
+		addFrictionForce(kineticFric);
 	}
 	
 	protected void addFrictionForce(double f) {
@@ -865,7 +875,8 @@ public abstract class EntityAircraft extends Entity {
 	
 	public void updateControls(float throttle, float pitch, float roll, float yaw,
 			boolean mouseMode, boolean flare, boolean shoot, boolean select,
-			boolean openMenu, boolean special, boolean radarMode, boolean bothRoll) {
+			boolean openMenu, boolean special, boolean special2, boolean radarMode, 
+			boolean bothRoll) {
 		this.inputThrottle = throttle;
 		this.inputPitch = pitch;
 		this.inputRoll = roll;
@@ -878,6 +889,7 @@ public abstract class EntityAircraft extends Entity {
 		if (inputSelect && !level.isClientSide) weaponSystem.selectNextWeapon();
 		this.inputOpenMenu = openMenu;
 		this.inputSpecial = special;
+		this.inputSpecial2 = special2;
 		this.inputRadarMode = radarMode;
 		if (inputRadarMode) setRadarPlayersOnly(!isRadarPlayersOnly());
 		this.inputBothRoll = bothRoll;
@@ -894,6 +906,7 @@ public abstract class EntityAircraft extends Entity {
 		this.inputSelect = false;
 		this.inputOpenMenu = false;
 		this.inputSpecial = false;
+		this.inputSpecial2 = false;
 		this.inputRadarMode = false;
 		this.inputBothRoll = false;
 		this.throttleToZero();

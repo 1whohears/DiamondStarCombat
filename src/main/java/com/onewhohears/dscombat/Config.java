@@ -11,20 +11,26 @@ public class Config {
 		public final ForgeConfigSpec.DoubleValue mouseModeMaxRadius;
 		public final ForgeConfigSpec.DoubleValue mouseStickDeadzoneRadius;
 		public final ForgeConfigSpec.BooleanValue cameraTurnRelativeToVehicle;
+		public final ForgeConfigSpec.BooleanValue customDismount;
+		public final ForgeConfigSpec.BooleanValue debugMode;
 		
 		public Client(ForgeConfigSpec.Builder builder) {
 			mouseModeMaxRadius = builder
-					.comment("Only for vehicles in Mouse Mode. How far your mouse must move from rest "
-							+ "to get a maximum angle.")
+					.comment("Only for vehicles in Mouse Mode. How far your mouse must move from rest to get a maximum angle.")
 					.defineInRange("mouseModeMaxRadius", 1000d, 0, 10000d);
 			mouseStickDeadzoneRadius = builder
-					.comment("Only for vehicles in Mouse Mode. How far your mouse must move from rest "
-							+ "to register an input.")
+					.comment("Only for vehicles in Mouse Mode. How far your mouse must move from rest to register an input.")
 					.defineInRange("mouseStickDeadzoneRadius", 100d, 0, 1000d);
 			cameraTurnRelativeToVehicle = builder
 					.comment("If enabled, turning your player head may feel more natural.")
 					.worldRestart()
 					.define("cameraTurnRelativeToVehicle", true);
+			customDismount = builder
+					.comment("If enabled, your sneak key binding becomes Special2, and Special2 binding becomes dismount.")
+					.define("customDismount", true);
+			debugMode = builder
+					.comment("Stats for nerds.")
+					.define("debugMode", false);
 		}
 		
 	}

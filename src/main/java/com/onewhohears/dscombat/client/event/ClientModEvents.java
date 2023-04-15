@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.client.event;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.client.input.KeyInit;
+import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.client.overlay.PilotOverlay;
 import com.onewhohears.dscombat.client.renderer.RendererEntityAircraft;
 import com.onewhohears.dscombat.client.renderer.RendererEntityInvisible;
@@ -54,7 +54,7 @@ public final class ClientModEvents {
 	
 	@SubscribeEvent
 	public static void clientSetup(RegisterKeyMappingsEvent event) {
-		KeyInit.init(event);
+		DSCKeys.init(event);
 	}
 	
 	@SubscribeEvent

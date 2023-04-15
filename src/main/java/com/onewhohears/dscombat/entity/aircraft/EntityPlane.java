@@ -84,6 +84,11 @@ public class EntityPlane extends EntityAircraft {
 	}
 	
 	@Override
+	public boolean isBreaking() {
+		return inputSpecial2 && isOnGround();
+	}
+	
+	@Override
 	public void tickAir(Quaternion q) {
 		super.tickAir(q);
 	}

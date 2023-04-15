@@ -5,9 +5,10 @@ import java.util.List;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents;
-import com.onewhohears.dscombat.client.input.KeyInit;
+import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.radar.RadarSystem.RWRWarning;
@@ -72,7 +73,13 @@ public class PilotOverlay {
 			drawPlaneData(m, player, (EntityPlane)plane, gui, poseStack, partialTick, width, height);
 		if (player.getVehicle() instanceof EntityTurret turret)
 			drawAircraftTurretData(m, player, turret, gui, poseStack, partialTick, width, height);
+		if (Config.CLIENT.debugMode.get()) drawDebug(m, player, plane, gui, poseStack, partialTick, width, height);
 	});
+	
+	private static void drawDebug(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
+		if (plane.inputSpecial) GuiComponent.drawString(poseStack, m.font, "Special 1", width/2-50, 40, 0x00ffff);
+		if (plane.inputSpecial2) GuiComponent.drawString(poseStack, m.font, "Special 2", width/2-20, 40, 0x00ffff);
+	}
 	
 	private static void drawMissingVanillaOverlays(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
 		Entity camera = m.getCameraEntity();
@@ -170,7 +177,7 @@ public class PilotOverlay {
 		if (maxNameWidth < 50) maxNameWidth = 50;
 		x = 1+weaponSelectWidth;
 		GuiComponent.drawString(poseStack, m.font, 
-				"Flares("+KeyInit.flareKey.getKey().getDisplayName().getString()+")", 
+				"Flares("+DSCKeys.flareKey.getKey().getDisplayName().getString()+")", 
 				x, wh, 0x0000ff);
 		x += maxNameWidth;
 		GuiComponent.drawString(poseStack, m.font, 

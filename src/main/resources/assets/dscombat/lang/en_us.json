@@ -112,7 +112,9 @@
 	"key.dscombat.change_seat_key": "Change Seat",
 	"key.dscombat.landing_gear_key": "Landing Gear",
 	"key.dscombat.radar_mode_key": "Radar Mode Toggle",
-	"key.dscombat.special_key": "Special Key",
+	"key.dscombat.special_key": "Special",
+	"key.dscombat.special_2_key": "Special 2",
+	"key.dscombat.dismount_key": "Dismount",
 	
 	"sounds.dscombat.missile_warning": "Missile Warning",
 	"sounds.dscombat.getting_locked": "Getting Locked",

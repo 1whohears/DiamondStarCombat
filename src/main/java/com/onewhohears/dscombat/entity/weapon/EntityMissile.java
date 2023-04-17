@@ -109,7 +109,7 @@ public abstract class EntityMissile extends EntityBullet {
 			tickGuide();
 			if (target != null) {
 				if (distanceTo(target) <= fuseDist) {
-					setPos(target.position());
+					//setPos(target.position());
 					kill();
 					if (target instanceof EntityMissile) {
 						target.kill();
@@ -123,6 +123,7 @@ public abstract class EntityMissile extends EntityBullet {
 			if (isInWater()) tickInWater();
 		}
 		if (level.isClientSide && !isRemoved()) {
+			// IDEA 4 client side interpolation to better synch missile movement and not look as janky on client?
 			tickClientGuide();
 			Vec3 move = getDeltaMovement();
 			level.addParticle(ParticleTypes.SMOKE, 
@@ -148,6 +149,7 @@ public abstract class EntityMissile extends EntityBullet {
 			//missile.discard();
 			return;
 		}
+		// TODO 3 missile turns should be based on turn radius
 		Vec3 gm = targetPos.subtract(this.position());
 		float grx = UtilAngles.getPitch(gm);
 		float gry = UtilAngles.getYaw(gm);

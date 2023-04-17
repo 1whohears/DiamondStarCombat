@@ -98,7 +98,7 @@ public class ModEntities {
 					EntityDimensions.scalable(4.5f,4.0f)));
 	
 	/* 
-	 * IDEA more vehicles
+	 * IDEA 5 more vehicles
 	 * 
 	 * PLANES
 	 * wooden plane, large wooden plane, something like a spitfire, something like a p51 mustang 
@@ -116,7 +116,7 @@ public class ModEntities {
 	 * 
 	 * weather balloon
 	 * 
-	 * IDEA AI for planes/turrets or an auto pilot module
+	 * IDEA 9 AI for planes/turrets or an auto pilot module
 	 */
 	
 	public static final RegistryObject<EntityType<EntitySeat>> SEAT = ENTITIES.register("seat", 

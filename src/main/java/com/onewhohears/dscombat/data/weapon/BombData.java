@@ -14,7 +14,7 @@ public class BombData extends BulletData {
 	@Override
 	public CompoundTag write() {
 		CompoundTag tag = super.write();
-		// TODO make a bomb
+		// TODO 8 make a bomb
 		return tag;
 	}
 	

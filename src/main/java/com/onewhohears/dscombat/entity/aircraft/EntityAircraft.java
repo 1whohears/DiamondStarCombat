@@ -133,7 +133,7 @@ public abstract class EntityAircraft extends Entity {
 	public float zRot, zRotO; 
 	public float torqueX, torqueY, torqueZ, torqueXO, torqueYO, torqueZO;
 	public Vec3 prevMotion = Vec3.ZERO;
-	public Vec3 forces = Vec3.ZERO;
+	public Vec3 forces = Vec3.ZERO; // TODO 1 synch forces and moment like Quaternion so local instance controls all physics
 	
 	public boolean nightVisionHud = false;
 	
@@ -156,8 +156,8 @@ public abstract class EntityAircraft extends Entity {
 		this.blocksBuilding = true;
 		this.item = item;
 		this.negativeThrottle = negativeThrottle;
-		// FIXME player can punch and push aircraft
-		// FIXME aircraft don't push entities (add collisions)
+		// FIXME 4 players can punch and push aircraft
+		// IDEA 8 add collision physics with other entities
 	}
 	
 	@Override
@@ -379,6 +379,7 @@ public abstract class EntityAircraft extends Entity {
 				if (!isOperational()) explode(null);
 			}
 		}
+		// TODO 4 horizontal collisions with walls
 	}
 	
 	public void waterDamage() {
@@ -472,6 +473,7 @@ public abstract class EntityAircraft extends Entity {
 	 * @param q the current direction of the craft
 	 */
 	public void controlDirection(Quaternion q) {
+		// TODO 1 rotations based on moment = I * angular_acc
 		if (onGround) directionGround(q);
 		else if (isInWater()) directionWater(q);
 		else directionAir(q);
@@ -629,7 +631,7 @@ public abstract class EntityAircraft extends Entity {
 	 * @param q the plane's current rotation
 	 */
 	public void tickGround(Quaternion q) {
-		// TODO step down
+		// FIXME 3 add "stepDown" movement code so vehicles don't slowly fall while driving down blocks
 		Vec3 n = UtilAngles.rotationToVector(getYRot(), 0);
 		if (isSliding() || willSlideFromTurn()) {
 			setDeltaMovement(getDeltaMovement().add(n.scale(
@@ -1150,6 +1152,7 @@ public abstract class EntityAircraft extends Entity {
     public boolean hurt(DamageSource source, float amount) {
 		if (isInvulnerableTo(source)) return false;
 		addHealth(-amount);
+		// TODO 2 should only check if explosive and use cross product to get moment based on position
 		if (!level.isClientSide && source instanceof WeaponDamageSource ws && ws.getTorqueK() != 0) {
 			Vec3 dir = source.getDirectEntity().getLookAngle();
 			Vec3 dir2 = UtilAngles.rotateVector(dir, getQ());
@@ -1347,6 +1350,11 @@ public abstract class EntityAircraft extends Entity {
      * @return value to be multiplied to the range of a radar
      */
     public final float getStealth() {
+    	/**
+    	* TODO 5 stealth should become cross sectional area
+    	* smaller the area the harder for a radar to see
+    	* external parts increase this area
+    	* */
     	return entityData.get(STEALTH);
     }
     

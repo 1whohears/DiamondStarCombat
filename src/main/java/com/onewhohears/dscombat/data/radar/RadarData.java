@@ -19,6 +19,10 @@ import net.minecraft.world.phys.Vec3;
 
 public class RadarData {
 	
+	/**
+	 * TODO 5 radars should have a max range and a strength
+	 * radar can see object if cross_sec_area >= some function of strength with respect to distance
+	 */
 	private String id;
 	private Vec3 pos;
 	private double range;

@@ -87,6 +87,7 @@ public class EntityBullet extends EntityWeapon {
 		super.tick();
 		//System.out.println("bullet "+this.tickCount+" "+this.level);
 		//System.out.println(this);
+		// FIXME 2 bullets will bounce of walls and sometimes not collide?
 		Vec3 vec3 = this.getDeltaMovement();
 		Vec3 vec32 = this.position();
 		Vec3 vec33 = vec32.add(vec3);

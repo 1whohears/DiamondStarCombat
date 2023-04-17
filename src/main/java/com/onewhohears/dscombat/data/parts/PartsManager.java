@@ -23,7 +23,7 @@ import net.minecraftforge.network.PacketDistributor;
 
 public class PartsManager {
 	
-	// TODO make sure unnecessary add part/radar/weapon packets aren't being sent to client
+	// FIXME 5 make sure unnecessary add part/radar/weapon packets aren't being sent to client
 	
 	private final EntityAircraft parent;
 	private List<PartSlot> slots = new ArrayList<PartSlot>();
@@ -284,6 +284,7 @@ public class PartsManager {
 	}
 	
 	public int getNumFlares() {
+		// FIXME 1 not updating
 		int num = 0;
 		for (PartSlot p : getFlares()) 
 			num += ((FlareDispenserData)p.getPartData()).getFlares();

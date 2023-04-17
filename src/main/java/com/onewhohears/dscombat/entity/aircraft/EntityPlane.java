@@ -54,7 +54,7 @@ public class EntityPlane extends EntityAircraft {
 	public void directionAir(Quaternion q) {
 		super.directionAir(q);
 		if (!isOperational()) return;
-		// TODO turn assist button
+		// IDEA 3 turn assist button
 		addTorqueX(inputPitch * getAccelerationPitch(), true);
 		addTorqueY(inputYaw * getAccelerationYaw(), true);
 		if (inputBothRoll) flatten(q, 0, getAccelerationRoll(), false);
@@ -65,6 +65,7 @@ public class EntityPlane extends EntityAircraft {
 	public void tickAlways(Quaternion q) {
 		super.tickAlways(q);
 		forces = forces.add(getLiftForce(q));
+		// TODO 6 inputSpecial2 can lower front weapon angle on some planes
 	}
 	
 	@Override
@@ -127,6 +128,7 @@ public class EntityPlane extends EntityAircraft {
 	}
 	
 	public double getLiftK() {
+		// TODO 7 use a LiftK vs AOA graph
 		float maxAngle = 30.0f;
 		if (aoa > maxAngle || aoa < -maxAngle) return 0;
 		float stallAngle = 20.0f;

@@ -178,7 +178,7 @@ public class ModItems {
 	
 	// FLARE DISPENSERS
 	public static final RegistryObject<Item> BASIC_FLARE_DISPENSER = ITEMS.register("basic_flare_dispenser", 
-			() -> new ItemFlareDispenser(0.5f, 0, 20, 5.0f, 100, PartSlot.INTERNAL_ALL));
+			() -> new ItemFlareDispenser(0.5f, 0, 20, 8.0f, 100, PartSlot.INTERNAL_ALL));
 	
 	// WEAPON PARTS
 	public static final RegistryObject<Item> XM12 = ITEMS.register("xm12", 
@@ -187,6 +187,11 @@ public class ModItems {
 			() -> new ItemWeaponPart(2f, "light_missile_rack", PartSlot.EXTERNAL_ALL)); 
 	public static final RegistryObject<Item> HEAVY_MISSILE_RACK = ITEMS.register("heavy_missile_rack", 
 			() -> new ItemWeaponPart(4f, "heavy_missile_rack", PartSlot.EXTERNAL_ALL)); 
+	/**
+	 * IDEA 2 radar jamming pod
+	 * causes victims radar to display random noise
+	 * if your radar is strong enough and you get close enough, you stop getting jammed
+	 */
 	
 	// PLANES
 	public static final RegistryObject<Item> JAVI_PLANE = ITEMS.register("javi_plane", 

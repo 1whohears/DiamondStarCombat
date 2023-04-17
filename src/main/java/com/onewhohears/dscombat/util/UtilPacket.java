@@ -123,6 +123,7 @@ public class UtilPacket {
 	}
 	
 	public static void synchTorquePacket(int id, float tx, float ty, float tz) {
+		// TODO 2 only add torque to aircraft controlled by local instance
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityAircraft plane) {

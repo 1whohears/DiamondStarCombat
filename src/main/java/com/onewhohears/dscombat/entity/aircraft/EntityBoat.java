@@ -58,7 +58,7 @@ public class EntityBoat extends EntityAircraft {
 	public void directionGround(Quaternion q) {
 		flatten(q, 4f, 4f, true);
 		if (!isOperational()) return;
-		addTorqueY(inputYaw * getAccelerationYaw() * 0.1f, true);
+		addMomentY(inputYaw * getControlMomentY() * 0.1f, true);
 	}
 	
 	@Override
@@ -70,7 +70,7 @@ public class EntityBoat extends EntityAircraft {
 	public void directionWater(Quaternion q) {
 		if (!isOperational()) return;
 		flatten(q, 2f, 2f, true);
-		addTorqueY(inputYaw * getAccelerationYaw(), true);
+		addMomentY(inputYaw * getControlMomentY(), true);
 	}
 	
 	@Override

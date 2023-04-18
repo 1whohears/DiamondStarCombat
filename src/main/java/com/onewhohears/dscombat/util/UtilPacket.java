@@ -126,11 +126,11 @@ public class UtilPacket {
 		// TODO 2 only add torque to aircraft controlled by local instance
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
-		if (world.getEntity(id) instanceof EntityAircraft plane) {
+		/*if (world.getEntity(id) instanceof EntityAircraft plane) {
 			plane.torqueX = tx;
 			plane.torqueY = ty;
 			plane.torqueZ = tz;
-		}
+		}*/
 	}
 	
 }

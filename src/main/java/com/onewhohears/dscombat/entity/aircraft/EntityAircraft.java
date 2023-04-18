@@ -11,7 +11,6 @@ import com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents;
 import com.onewhohears.dscombat.common.container.AircraftMenuContainer;
 import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.common.network.toclient.ToClientSynchTorque;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftQ;
 import com.onewhohears.dscombat.common.network.toserver.ToServerRequestPlaneData;
 import com.onewhohears.dscombat.data.AircraftPresets;
@@ -19,7 +18,6 @@ import com.onewhohears.dscombat.data.AircraftTextures;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartsManager;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
-import com.onewhohears.dscombat.data.weapon.WeaponDamageSource;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponSystem;
 import com.onewhohears.dscombat.entity.parts.EntityPart;
@@ -35,6 +33,7 @@ import com.onewhohears.dscombat.util.UtilClientSafeSoundInstance;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
+import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -87,6 +86,9 @@ public abstract class EntityAircraft extends Entity {
 	public static final EntityDataAccessor<Float> THROTTLEUP = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> THROTTLEDOWN = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Quaternion> Q = SynchedEntityData.defineId(EntityAircraft.class, DataSerializers.QUATERNION);
+	public static final EntityDataAccessor<Vec3> AV = SynchedEntityData.defineId(EntityAircraft.class, DataSerializers.VEC3);
+	public static final EntityDataAccessor<Vec3> M = SynchedEntityData.defineId(EntityAircraft.class, DataSerializers.VEC3);
+	public static final EntityDataAccessor<Vec3> F = SynchedEntityData.defineId(EntityAircraft.class, DataSerializers.VEC3);
 	public static final EntityDataAccessor<Boolean> FREE_LOOK = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Float> STEALTH = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> MAX_ROLL = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
@@ -132,9 +134,7 @@ public abstract class EntityAircraft extends Entity {
 	public boolean inputSpecial, inputSpecial2, inputRadarMode, inputBothRoll;
 	public float inputThrottle, inputPitch, inputRoll, inputYaw;
 	public float zRot, zRotO; 
-	public float torqueX, torqueY, torqueZ, torqueXO, torqueYO, torqueZO;
 	public Vec3 prevMotion = Vec3.ZERO;
-	public Vec3 forces = Vec3.ZERO; // TODO 1 synch forces and moment like Quaternion so local instance controls all physics
 	
 	public boolean nightVisionHud = false;
 	
@@ -170,6 +170,9 @@ public abstract class EntityAircraft extends Entity {
 		entityData.define(THROTTLEUP, 0.05f);
 		entityData.define(THROTTLEDOWN, 0.05f);
 		entityData.define(Q, Quaternion.ONE);
+		entityData.define(AV, Vec3.ZERO);
+		entityData.define(M, Vec3.ZERO);
+		entityData.define(F, Vec3.ZERO);
 		entityData.define(FREE_LOOK, true);
 		entityData.define(STEALTH, 1f);
 		entityData.define(MAX_ROLL, 1f);
@@ -197,13 +200,20 @@ public abstract class EntityAircraft extends Entity {
         if (level.isClientSide()) {
         	if (Q.equals(key)) {
         		if (isControlledByLocalInstance()) {
-        			// if this entity is piloted by the client's player send the client quaternion to the server
         			PacketHandler.INSTANCE.sendToServer(new ToServerAircraftQ(this));
         		} else {
-        			// if the client player is not controlling this plane then client quaternion = server quaternion
         			setPrevQ(getClientQ());
         			setClientQ(getQ());
         		}
+        	// TODO 3 should angular velocity, moment, and forces be controlled by local client?
+        	/*} else if (F.equals(key)) {
+        		if (isControlledByLocalInstance()) {
+        			// to server pilot forces
+        		}
+        	} else if (M.equals(key)) {
+        		if (isControlledByLocalInstance()) {
+        			// to server pilot moments
+        		}*/
         	} else if (CURRRENT_DYE_ID.equals(key)) {
         		currentTexture = textures.getTexture(getCurrentColorId());
         	}
@@ -270,9 +280,9 @@ public abstract class EntityAircraft extends Entity {
 		compound.putFloat("maxroll", getMaxDeltaRoll());
 		compound.putFloat("maxpitch", getMaxDeltaPitch());
 		compound.putFloat("maxyaw", getMaxDeltaYaw());
-		compound.putFloat("accroll", getAccelerationRoll());
-		compound.putFloat("accpitch", getAccelerationPitch());
-		compound.putFloat("accyaw", getAccelerationYaw());
+		compound.putFloat("accroll", getControlMomentZ());
+		compound.putFloat("accpitch", getControlMomentX());
+		compound.putFloat("accyaw", getControlMomentY());
 		compound.putFloat("throttleup", getThrottleIncreaseRate());
 		compound.putFloat("throttledown", getThrottleDecreaseRate());
 		compound.putFloat("idleheat", getIdleHeat());
@@ -316,9 +326,6 @@ public abstract class EntityAircraft extends Entity {
             setDeltaMovement(Vec3.ZERO);
 		// SET PREV/OLD
 		prevMotion = getDeltaMovement();
-		torqueXO = torqueX;
-		torqueYO = torqueY;
-		torqueZO = torqueZ;
 		// SET DIRECTION
 		zRotO = zRot;
 		Quaternion q;
@@ -334,7 +341,8 @@ public abstract class EntityAircraft extends Entity {
 		setYRot((float)angles.yaw);
 		zRot = (float)angles.roll;
 		// MOVEMENT
-		forces = Vec3.ZERO;
+		setForces(Vec3.ZERO);
+		setMoment(Vec3.ZERO);
 		tickThrottle();
 		if (!isTestMode()) {
 			calcMoveStatsPre(q);
@@ -470,6 +478,8 @@ public abstract class EntityAircraft extends Entity {
 		else if (inputThrottle < 0) decreaseThrottle();
 	}
 	
+	public final float Ix = 6, Iy = 10, Iz = 2;
+	
 	/**
 	 * reads player input to change the direction of the craft
 	 * @param q the current direction of the craft
@@ -479,12 +489,35 @@ public abstract class EntityAircraft extends Entity {
 		if (onGround) directionGround(q);
 		else if (isInWater()) directionWater(q);
 		else directionAir(q);
-		q.mul(Vector3f.XN.rotationDegrees(torqueX));
+		Vec3 m = getMoment(), av = getAngularVel();
+		if (!UtilGeometry.isZero(m)) {
+			av = av.add(m.x/Ix, m.y/Iy, m.z/Iz);
+			setAngularVel(av);
+		}
+		q.mul(Vector3f.XN.rotationDegrees((float)av.x));
+		q.mul(Vector3f.YN.rotationDegrees((float)av.y));
+		q.mul(Vector3f.ZP.rotationDegrees((float)av.z));
+		applyAngularDrag(getAngularDrag());
+		/*q.mul(Vector3f.XN.rotationDegrees(torqueX));
 		q.mul(Vector3f.YN.rotationDegrees(torqueY));
 		q.mul(Vector3f.ZP.rotationDegrees(torqueZ));
 		if (torqueX > getMaxDeltaPitch() || inputPitch == 0) torqueX = torqueDrag(torqueX);
 		if (torqueY > getMaxDeltaYaw() || inputYaw == 0) torqueY = torqueDrag(torqueY);
-		if (torqueZ > getMaxDeltaRoll() || inputRoll == 0) torqueZ = torqueDrag(torqueZ);
+		if (torqueZ > getMaxDeltaRoll() || inputRoll == 0) torqueZ = torqueDrag(torqueZ);*/
+	}
+	
+	public void applyAngularDrag(float d) {
+		Vec3 av = getAngularVel();
+		setAngularVel(new Vec3(
+				getADComponent(av.x, d, Ix),
+				getADComponent(av.y, d, Iy),
+				getADComponent(av.z, d, Iz)));
+	}
+	
+	private double getADComponent(double v, float d, float I) {
+		double a = Math.abs(v) - d/Ix;
+		if (a < 0) return 0;
+		return a * Math.signum(v);
 	}
 	
 	public void directionGround(Quaternion q) {
@@ -495,11 +528,15 @@ public abstract class EntityAircraft extends Entity {
 		float tr = 1 / inputYaw * max_tr;
 		float turn = xzSpeed / tr * xzSpeedDir;
 		float turnDeg = turn * Mth.RAD_TO_DEG;
+		Vec3 av = getAngularVel().multiply(1, 0, 1);
+		av = av.add(0, turnDeg, 0);
 		if (isSliding()) {
-			torqueY = turnDeg*slideAngleCos*CO_SLIDE_TORQUE;
-		} else {
-			torqueY = turnDeg;
-		}
+			av = av.multiply(0, slideAngleCos*CO_SLIDE_TORQUE, 0);
+			//torqueY = turnDeg*slideAngleCos*CO_SLIDE_TORQUE;
+		} /*else {
+			//torqueY = turnDeg;
+		}*/
+		setAngularVel(av);
 	}
 	
 	public void directionAir(Quaternion q) {
@@ -511,72 +548,102 @@ public abstract class EntityAircraft extends Entity {
 	}
 	
 	public void flatten(Quaternion q, float dPitch, float dRoll, boolean forced) {
+		Vec3 av = getAngularVel();
+		float x = (float)av.x, z = (float)av.z;
 		if (!forced) {
-			if (Mth.abs(torqueX) <= dPitch) torqueX = 0;
-			if (Mth.abs(torqueZ) <= dRoll) torqueZ = 0;
-		} else torqueX = torqueZ = 0;
+			if (Math.abs(av.x) <= dPitch) x = 0;
+			if (Math.abs(av.z) <= dRoll) z = 0;
+		} else x = z = 0;
 		EulerAngles angles = UtilAngles.toDegrees(q);
 		float roll, pitch;
 		if (dRoll != 0) {
 			if (Math.abs(angles.roll) < dRoll) roll = (float) -angles.roll;
 			else roll = -(float)Math.signum(angles.roll) * dRoll;
 			//q.mul(Vector3f.ZP.rotationDegrees(roll));
-			torqueZ += roll;
+			//torqueZ += roll;
+			z += roll;
 		}
 		if (dPitch != 0) {
 			if (Math.abs(angles.pitch) < dPitch) pitch = (float) angles.pitch;
 			else pitch = (float)Math.signum(angles.pitch) * dPitch;
 			//q.mul(Vector3f.XN.rotationDegrees(pitch));
-			torqueX += pitch;
+			//torqueX += pitch;
+			x += pitch;
 		}
+		setAngularVel(new Vec3(x, av.y, z));
 	}
 	
-	private float torqueDrag(float torque) {
+	/*private float torqueDrag(float torque) {
 		float td = getTorqueDragMag();
 		float abs = Math.abs(torque);
 		if (abs < td) return 0;
 		return (abs - td) * Math.signum(torque);
-	}
+	}*/
 	
-	protected float getTorqueDragMag() {
+	protected float getAngularDrag() {
 		if (onGround) return 1.0f;
 		else if (isInWater()) return 0.3f;
 		else return 0.2f;
  	}
 	
-	public void resetTorque() {
-		torqueX = torqueY = torqueZ = 0;
-	}
-	
-	public void addTorqueX(float torque, boolean control) {
+	public void addMoment(Vec3 moment, boolean control) {
+		Vec3 m = getMoment();
+		double x = moment.x, y = moment.y, z = moment.z;
 		if (control) {
-			float tabs = Math.abs(torqueX);
-			if (tabs > getMaxDeltaPitch()) torque = 0;
-			else if (Math.abs(torqueX+torque) > getMaxDeltaPitch()) torque = (getMaxDeltaPitch() - tabs) * Math.signum(torqueX);
+			Vec3 av = getAngularVel();
+			x = getControlMomentComponent(m.x, moment.x, av.x, getMaxDeltaPitch(), Ix);
+			y = getControlMomentComponent(m.y, moment.y, av.y, getMaxDeltaYaw(), Iy);
+			z = getControlMomentComponent(m.z, moment.z, av.z, getMaxDeltaRoll(), Iz);
 		}
-		torqueX += torque;
+		setMoment(m.add(x, y, z));
 	}
 	
-	public void addTorqueY(float torque, boolean control) {
-		if (control) addTorqueY(torque, getMaxDeltaYaw());
-		else torqueY += torque;
+	private double getControlMomentComponent(double cm, double m, double v, float max, float I) {
+		if (Math.abs(v) > max && Math.signum(v) == Math.signum(m)) return 0;
+		double m2 = cm + m;
+		double a2 = m2 / I;
+		double v2 = v + a2;
+		double vd = Math.abs(v2) - max;
+		if (vd > 0) {
+			// max - abs(v) = abs((cm + m)/I)
+			// I*(max - abs(v)) = abs(cm + m)
+			m = (max*Math.signum(v) - v)*I - cm;
+		}
+		return m;
 	}
 	
-	public void addTorqueY(float torque, float maxDeltaYaw) {
+	public void addMomentX(float moment, boolean control) {
+		/*if (control) {
+			float tabs = Math.abs(torqueX);
+			if (tabs > getMaxDeltaPitch()) moment = 0;
+			else if (Math.abs(torqueX+moment) > getMaxDeltaPitch()) moment = (getMaxDeltaPitch() - tabs) * Math.signum(torqueX);
+		}
+		torqueX += moment;*/
+		addMoment(Vec3.ZERO.add(moment, 0, 0), control);
+	}
+	
+	public void addMomentY(float moment, boolean control) {
+		/*if (control) addTorqueY(torque, getMaxDeltaYaw());
+		else torqueY += torque;*/
+		addMoment(Vec3.ZERO.add(0, moment, 0), control);
+	}
+	
+	/*public void addTorqueY(float torque, float maxDeltaYaw) {
 		maxDeltaYaw = Mth.abs(maxDeltaYaw);
 		float tabs = Math.abs(torqueY);
 		if (tabs > maxDeltaYaw) torque = 0;
 		else if (Math.abs(torqueY+torque) > maxDeltaYaw) torque = (maxDeltaYaw-tabs)*Math.signum(torqueY);
 		torqueY += torque;
-	}
+	}*/
 	
-	public void addTorqueZ(float torque, boolean control) {
-		if (control) {
+	public void addMomentZ(float moment, boolean control) {
+		/*if (control) {
 			float tabs = Math.abs(torqueZ);
 			if (tabs > getMaxDeltaRoll()) torque = 0;
 			else if (Math.abs(torqueZ+torque) > getMaxDeltaRoll()) torque = (getMaxDeltaRoll() - tabs) * Math.signum(torqueZ);
 		}
-		torqueZ += torque;
+		torqueZ += torque;*/
+		addMoment(Vec3.ZERO.add(0, 0, moment), control);
 	}
 	
 	protected void calcMoveStatsPre(Quaternion q) {
@@ -605,7 +672,7 @@ public abstract class EntityAircraft extends Entity {
 	}
 	
 	public void calcAcc() {
-		setDeltaMovement(getDeltaMovement().add(forces.scale(1/totalMass)));
+		setDeltaMovement(getDeltaMovement().add(getForces().scale(1/totalMass)));
 	}
 	
 	/**
@@ -623,8 +690,10 @@ public abstract class EntityAircraft extends Entity {
 	}
 	
 	public void tickAlways(Quaternion q) {
-		forces = forces.add(getWeightForce());
-		forces = forces.add(getThrustForce(q));
+		Vec3 f = getForces();
+		f = f.add(getWeightForce());
+		f = f.add(getThrustForce(q));
+		setForces(f);
 	}
 	
 	/**
@@ -674,7 +743,7 @@ public abstract class EntityAircraft extends Entity {
 			m = m.multiply(1, 1, 0);
 		}
 		setDeltaMovement(m);
-		forces = forces.add(force);
+		setForces(getForces().add(force));
 	}
 	
 	protected boolean willSlideFromTurn() {
@@ -703,7 +772,7 @@ public abstract class EntityAircraft extends Entity {
 	 * @param q the plane's current rotation
 	 */
 	public void tickAir(Quaternion q) {
-		forces = forces.add(getDragForce(q));
+		setForces(getForces().add(getDragForce(q)));
 		resetFallDistance();
 	}
 	
@@ -1155,14 +1224,11 @@ public abstract class EntityAircraft extends Entity {
 		if (isInvulnerableTo(source)) return false;
 		addHealth(-amount);
 		// TODO 2 should only check if explosive and use cross product to get moment based on position
-		if (!level.isClientSide && source instanceof WeaponDamageSource ws && ws.getTorqueK() != 0) {
-			Vec3 dir = source.getDirectEntity().getLookAngle();
-			Vec3 dir2 = UtilAngles.rotateVector(dir, getQ());
-			float rx = (float)(dir2.z*dir2.y)*amount*ws.getTorqueK();
-			float rz = (float)(dir2.x*dir2.y)*amount*ws.getTorqueK();
-			addTorqueX(rx, false);
-			addTorqueZ(rz, false);
-			synchTorqueToClient();
+		if (!level.isClientSide && source.isExplosion()) {
+			//Vec3 dir = position().subtract(source.getSourcePosition()).normalize();
+			
+			addMoment(Vec3.ZERO, false);
+			//addMomentToPilotClient();
 		}
 		if (!level.isClientSide && isOperational()) level.playSound(null, 
 			blockPosition(), ModSounds.VEHICLE_HIT_1.get(), 
@@ -1170,11 +1236,11 @@ public abstract class EntityAircraft extends Entity {
 		return true;
 	}
 	
-	public void synchTorqueToClient() {
+	/*public void addMomentToPilotClient() {
 		if (level.isClientSide) return;
 		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), 
 				new ToClientSynchTorque(this));
-	}
+	}*/
 	
 	public void explode(DamageSource source) {
 		if (!level.isClientSide) {
@@ -1268,7 +1334,7 @@ public abstract class EntityAircraft extends Entity {
     	entityData.set(MAX_ROLL, degrees);
     }
     
-    public final float getAccelerationPitch() {
+    public final float getControlMomentX() {
     	return entityData.get(ACC_PITCH);
     }
     
@@ -1277,7 +1343,7 @@ public abstract class EntityAircraft extends Entity {
     	entityData.set(ACC_PITCH, degrees);
     }
     
-    public final float getAccelerationYaw() {
+    public final float getControlMomentY() {
     	return entityData.get(ACC_YAW);
     }
     
@@ -1286,7 +1352,7 @@ public abstract class EntityAircraft extends Entity {
     	entityData.set(ACC_YAW, degrees);
     }
     
-    public final float getAccelerationRoll() {
+    public final float getControlMomentZ() {
     	return entityData.get(ACC_ROLL);
     }
     
@@ -1343,6 +1409,30 @@ public abstract class EntityAircraft extends Entity {
      */
     public final void setPrevQ(Quaternion q) {
         prevQ = q.copy();
+    }
+    
+    public final Vec3 getMoment() {
+    	return entityData.get(M);
+    }
+    
+    public final Vec3 getForces() {
+    	return entityData.get(F);
+    }
+    
+    public final Vec3 getAngularVel() {
+    	return entityData.get(AV);
+    }
+    
+    public final void setMoment(Vec3 m) {
+    	entityData.set(M, m);
+    }
+    
+    public final void setForces(Vec3 f) {
+    	entityData.set(F, f);
+    }
+    
+    public final void setAngularVel(Vec3 av) {
+    	entityData.set(AV, av);
     }
     
     /**

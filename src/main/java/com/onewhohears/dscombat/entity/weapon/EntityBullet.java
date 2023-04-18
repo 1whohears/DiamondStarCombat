@@ -178,10 +178,9 @@ public class EntityBullet extends EntityWeapon {
 	
 	@Override
 	public void kill() {
-		//System.out.println("check explode");
-		//System.out.println("super.kill");
+		// ORDER MATTERS
 		super.kill();
-		checkExplode(); // TODO does this order fix the stack overflow?
+		checkExplode();
 	}
 
 	@Override

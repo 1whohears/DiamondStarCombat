@@ -110,17 +110,16 @@ public class EntityHelicopter extends EntityAircraft {
 	public void directionGround(Quaternion q) {
 		if (!isOperational()) return;
 		flatten(q, 4f, 4f, true);
-		torqueY = 0;
 	}
 	
 	@Override
 	public void directionAir(Quaternion q) {
 		super.directionAir(q);
 		if (!isOperational()) return;
-		addTorqueY(inputYaw * getAccelerationYaw(), true);
+		addMomentY(inputYaw * getControlMomentY(), true);
 		if (!isFreeLook()) {
-			addTorqueX(inputPitch * getAccelerationPitch(), true);
-			addTorqueZ(inputRoll * getAccelerationRoll(), true);
+			addMomentX(inputPitch * getControlMomentX(), true);
+			addMomentZ(inputRoll * getControlMomentZ(), true);
 		} else flatten(q, getMaxDeltaPitch(), getMaxDeltaRoll(), false);
 	}
 

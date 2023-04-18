@@ -19,9 +19,9 @@ public class ToClientSynchTorque extends IPacket {
 	
 	public ToClientSynchTorque(EntityAircraft craft) {
 		this.id = craft.getId();
-		this.tx = craft.torqueX;
-		this.ty = craft.torqueY;
-		this.tz = craft.torqueZ;
+		this.tx = 0;
+		this.ty = 0;
+		this.tz = 0;
 	}
 	
 	public ToClientSynchTorque(FriendlyByteBuf buffer) {

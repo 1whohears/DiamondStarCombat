@@ -55,16 +55,16 @@ public class EntityPlane extends EntityAircraft {
 		super.directionAir(q);
 		if (!isOperational()) return;
 		// IDEA 3 turn assist button
-		addTorqueX(inputPitch * getAccelerationPitch(), true);
-		addTorqueY(inputYaw * getAccelerationYaw(), true);
-		if (inputBothRoll) flatten(q, 0, getAccelerationRoll(), false);
-		else addTorqueZ(inputRoll * getAccelerationRoll(), true);
+		addMomentX(inputPitch * getControlMomentX(), true);
+		addMomentY(inputYaw * getControlMomentY(), true);
+		if (inputBothRoll) flatten(q, 0, getControlMomentZ(), false);
+		else addMomentZ(inputRoll * getControlMomentZ(), true);
 	}
 	
 	@Override
 	public void tickAlways(Quaternion q) {
 		super.tickAlways(q);
-		forces = forces.add(getLiftForce(q));
+		setForces(getForces().add(getLiftForce(q)));
 		// TODO 6 inputSpecial2 can lower front weapon angle on some planes
 	}
 	

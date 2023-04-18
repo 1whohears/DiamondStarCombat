@@ -57,7 +57,7 @@ public class EntityGroundVehicle extends EntityAircraft {
 	public void directionGround(Quaternion q) {
 		if (isTank && isOperational()) {
 			flatten(q, 4f, 4f, true);
-			addTorqueY(inputYaw * getAccelerationYaw(), true);
+			addMomentY(inputYaw * getControlMomentY(), true);
 		} else super.directionGround(q);
 	}
 	

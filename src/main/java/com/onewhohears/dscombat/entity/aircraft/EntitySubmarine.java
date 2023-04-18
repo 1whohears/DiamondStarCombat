@@ -59,10 +59,10 @@ public class EntitySubmarine extends EntityBoat {
 		if (!isOperational()) return;
 		if (isFreeLook()) flatten(q, getMaxDeltaPitch(), getMaxDeltaRoll(), false);
 		else {
-			addTorqueX(inputPitch * getAccelerationPitch(), true);
-			addTorqueZ(inputRoll * getAccelerationRoll(), true);
+			addMomentX(inputPitch * getControlMomentX(), true);
+			addMomentZ(inputRoll * getControlMomentZ(), true);
 		}
-		addTorqueY(inputYaw * getAccelerationYaw(), true);
+		addMomentY(inputYaw * getControlMomentY(), true);
 	}
 	
 	@Override

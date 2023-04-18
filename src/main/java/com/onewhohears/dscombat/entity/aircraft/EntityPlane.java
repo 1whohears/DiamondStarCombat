@@ -18,6 +18,7 @@ public class EntityPlane extends EntityAircraft {
 	
 	public static final double CO_LIFT = 0.500;
 	
+	// TODO 9.1 animate flaps down
 	private final float propellerRate = 3.141f, flapsAOABias = 10f;
 	private float propellerRot = 0, propellerRotOld = 0, aoa = 0, liftK = 0, airFoilSpeedSqr = 0;
 	private Vec3 liftDir = Vec3.ZERO, airFoilAxes = Vec3.ZERO;
@@ -89,6 +90,10 @@ public class EntityPlane extends EntityAircraft {
 		return inputSpecial2 && isOnGround();
 	}
 	
+	public boolean isFlapsDown() {
+		return inputSpecial;
+	}
+	
 	@Override
 	public void tickAir(Quaternion q) {
 		super.tickAir(q);
@@ -109,7 +114,7 @@ public class EntityPlane extends EntityAircraft {
 			aoa = (float) UtilGeometry.angleBetweenDegrees(airFoilAxes, u);
 			if (liftDir.dot(u) > 0) aoa *= -1;
 		}
-		if (inputSpecial) aoa += flapsAOABias;
+		if (isFlapsDown()) aoa += flapsAOABias;
 		liftK = (float) getLiftK();
 		//System.out.println("liftK = "+liftK);
 	}
@@ -159,8 +164,8 @@ public class EntityPlane extends EntityAircraft {
 	public double getSurfaceArea() {
 		double a = super.getSurfaceArea();
 		a += getWingSurfaceArea() * Math.sin(Math.toRadians(aoa));
-		if (isLandingGear()) a += 2.0 * Math.cos(Math.toRadians(aoa));
-		if (inputSpecial) a += getWingSurfaceArea() / 8 * Math.cos(Math.toRadians(aoa));
+		if (isLandingGear()) a += 4.0 * Math.cos(Math.toRadians(aoa));
+		if (isFlapsDown()) a += getWingSurfaceArea() / 4 * Math.cos(Math.toRadians(aoa));
 		return a;
 	}
 	

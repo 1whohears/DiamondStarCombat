@@ -142,7 +142,7 @@ public abstract class EntityMissile extends EntityBullet {
 			//missile.discard();
 			return;
 		}
-		// TODO 3 missile turns should be based on turn radius
+		// TODO 3.1 missile turns should be based on turn radius
 		Vec3 gm = targetPos.subtract(position());
 		float grx = UtilAngles.getPitch(gm);
 		float gry = UtilAngles.getYaw(gm);
@@ -264,6 +264,7 @@ public abstract class EntityMissile extends EntityBullet {
 	
 	@Override
 	protected void tickSetMove() {
+		// TODO 3.2 re-balance missile values
 		Vec3 cm = getDeltaMovement();
 		double B = getBleed() * UtilEntity.getAirPressure(getY());
 		double bleed = B * (Math.abs(getXRot()-xRotO)+Math.abs(getYRot()-yRotO));

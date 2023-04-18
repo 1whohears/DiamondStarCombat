@@ -99,6 +99,7 @@ public class ModItems {
 			() -> new ItemBuffPart(BuffType.DATA_LINK, PartSlot.ADVANCED_INTERNAL));
 	public static final RegistryObject<Item> NIGHT_VISION_HUD = ITEMS.register("night_vision_hud", 
 			() -> new ItemBuffPart(BuffType.NIGHT_VISION_HUD, PartSlot.ADVANCED_INTERNAL));
+	// IDEA 6 radio part buff. can play music disks.
 	
 	// TOOLS
 	public static final RegistryObject<Item> WRENCH = ITEMS.register("wrench", 

@@ -205,10 +205,14 @@ public abstract class EntityAircraft extends Entity {
         			setPrevQ(getClientQ());
         			setClientQ(getQ());
         		}
-        	// TODO 3 should angular velocity, moment, and forces be controlled by local client?
+        	// TODO 1.3 should angular velocity, moment, and forces be controlled by local client?
         	/*} else if (F.equals(key)) {
         		if (isControlledByLocalInstance()) {
         			// to server pilot forces
+        		}
+        	} else if (AV.equals(key)) {
+        		if (isControlledByLocalInstance()) {
+        			// to server pilot angular velocity
         		}
         	} else if (M.equals(key)) {
         		if (isControlledByLocalInstance()) {
@@ -222,7 +226,7 @@ public abstract class EntityAircraft extends Entity {
 	
 	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
-		// this function is called on the server side only
+		// FIXME 2 fix aircraft with old weights and missing physics values
 		setTestMode(compound.getBoolean("test_mode"));
 		setNoConsume(compound.getBoolean("no_consume"));
 		int color = -1;
@@ -485,7 +489,7 @@ public abstract class EntityAircraft extends Entity {
 	 * @param q the current direction of the craft
 	 */
 	public void controlDirection(Quaternion q) {
-		// TODO 1 rotations based on moment = I * angular_acc
+		// TODO 1.1 give aircraft Moments caused by inputs and Inertias in each turn axis
 		if (onGround) directionGround(q);
 		else if (isInWater()) directionWater(q);
 		else directionAir(q);
@@ -1223,12 +1227,13 @@ public abstract class EntityAircraft extends Entity {
     public boolean hurt(DamageSource source, float amount) {
 		if (isInvulnerableTo(source)) return false;
 		addHealth(-amount);
-		// TODO 2 should only check if explosive and use cross product to get moment based on position
 		if (!level.isClientSide && source.isExplosion()) {
-			//Vec3 dir = position().subtract(source.getSourcePosition()).normalize();
-			
-			addMoment(Vec3.ZERO, false);
-			//addMomentToPilotClient();
+			Vec3 p = UtilGeometry.getClosestPointOnAABB(source.getSourcePosition(), getBoundingBox());
+			Vec3 r = p.subtract(position());
+			Vec3 f = source.getSourcePosition().subtract(p).normalize().scale(amount);
+			Vec3 moment = r.cross(f);
+			addMoment(moment, false);
+			//addMomentToPilotClient(); // TODO 1.4 only add torque to aircraft controlled by local instance?
 		}
 		if (!level.isClientSide && isOperational()) level.playSound(null, 
 			blockPosition(), ModSounds.VEHICLE_HIT_1.get(), 

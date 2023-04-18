@@ -117,7 +117,7 @@ public class PilotOverlay {
 	}
 	
 	private static void drawAircraftAngles(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
-		// TODO 9 display pitch and roll
+		// TODO 9.2 display pitch and roll
 		// HEADING
 		int y = 10;
         int heading = (int)Mth.wrapDegrees(player.getYRot());

@@ -284,7 +284,6 @@ public class PartsManager {
 	}
 	
 	public int getNumFlares() {
-		// FIXME 1 not updating
 		int num = 0;
 		for (PartSlot p : getFlares()) 
 			num += ((FlareDispenserData)p.getPartData()).getFlares();

@@ -104,6 +104,7 @@ public abstract class EntityAircraft extends Entity {
 	public static final EntityDataAccessor<Integer> CURRRENT_DYE_ID = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Boolean> NO_CONSUME = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> PLAYERS_ONLY_RADAR = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Integer> FLARE_NUM = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.INT);
 	
 	public static final double ACC_GRAVITY = 0.025;
 	public static final double CO_DRAG = 0.015;
@@ -137,7 +138,7 @@ public abstract class EntityAircraft extends Entity {
 	
 	public boolean nightVisionHud = false;
 	
-	protected int xzSpeedDir, flareNum;
+	protected int xzSpeedDir;
 	protected float xzSpeed, totalMass, xzYaw, slideAngle, slideAngleCos, maxThrust, currentFuel, maxFuel;
 	protected double staticFric, kineticFric;
 	
@@ -186,6 +187,7 @@ public abstract class EntityAircraft extends Entity {
 		entityData.define(TURN_RADIUS, 0f);
 		entityData.define(NO_CONSUME, false);
 		entityData.define(PLAYERS_ONLY_RADAR, false);
+		entityData.define(FLARE_NUM, 0);
 	}
 	
 	@Override
@@ -582,7 +584,6 @@ public abstract class EntityAircraft extends Entity {
 		staticFric = totalMass * ACC_GRAVITY * CO_STATIC_FRICTION;
 		kineticFric = totalMass * ACC_GRAVITY * CO_KINETIC_FRICTION;
 		maxThrust = partsManager.getTotalEngineThrust();
-		flareNum = partsManager.getNumFlares();
 		currentFuel = partsManager.getCurrentFuel();
 		maxFuel = partsManager.getMaxFuel();
 	}
@@ -816,6 +817,7 @@ public abstract class EntityAircraft extends Entity {
 			if (consume) tickFuel();
 			if (newRiderCooldown > 0) --newRiderCooldown;
 			else if (inputShoot) weaponSystem.shootSelected(controller, consume);
+			setFlareNum(partsManager.getNumFlares());
 			if (inputFlare && tickCount % 5 == 0) flare(controller, consume);
 		} else {
 			radarSystem.clientTick();
@@ -1661,7 +1663,11 @@ public abstract class EntityAircraft extends Entity {
 	}
     
     public int getFlareNum() {
-    	return flareNum;
+    	return entityData.get(FLARE_NUM);
+    }
+    
+    public void setFlareNum(int flares) {
+    	entityData.set(FLARE_NUM, flares);
     }
     
     protected void debug(String debug) {

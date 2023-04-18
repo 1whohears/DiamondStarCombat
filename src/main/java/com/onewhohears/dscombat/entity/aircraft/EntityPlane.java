@@ -44,7 +44,7 @@ public class EntityPlane extends EntityAircraft {
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
 		super.readAdditionalSaveData(nbt);
-		CompoundTag presetNbt = AircraftPresets.getPreset(preset);
+		CompoundTag presetNbt = AircraftPresets.getPreset(defaultPreset);
 		setWingSurfaceArea(UtilEntity.fixFloatNbt(nbt, "wing_area", presetNbt, 1));
 	}
 

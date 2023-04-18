@@ -120,12 +120,12 @@ public abstract class EntityAircraft extends Entity {
 	public final WeaponSystem weaponSystem = new WeaponSystem(this);
 	public final RadarSystem radarSystem = new RadarSystem(this);
 	
-	public final String preset;
+	public final String defaultPreset;
 	public final boolean negativeThrottle;
 	public final float Ix, Iy, Iz;
 	
 	protected final RegistryObject<SoundEvent> engineSound;
-	protected final RegistryObject<Item> item;
+	protected final RegistryObject<Item> defaultItem;
 	protected final AircraftTextures textures;
 	
 	public Quaternion prevQ = Quaternion.ONE.copy();
@@ -149,14 +149,12 @@ public abstract class EntityAircraft extends Entity {
 	private float landingGearPos, landingGearPosOld;
 	
 	public EntityAircraft(EntityType<? extends EntityAircraft> entityType, Level level, 
-			RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item,
+			RegistryObject<SoundEvent> engineSound, RegistryObject<Item> defaultItem,
 			boolean negativeThrottle, float Ix, float Iy, float Iz) {
 		super(entityType, level);
-		this.item = item;
-		String pre = item.getId().getPath();
-		if (AircraftPresets.getPreset(pre) == null) pre = EntityType.getKey(entityType).getPath();
-		this.preset = pre;
-		this.textures = AircraftPresets.getAircraftTextures(preset);
+		this.defaultItem = defaultItem;
+		this.defaultPreset = defaultItem.getId().getPath();
+		this.textures = AircraftPresets.getAircraftTextures(defaultPreset);
 		this.currentTexture = textures.getDefaultTexture();
 		this.engineSound = engineSound;
 		this.negativeThrottle = negativeThrottle;
@@ -239,6 +237,8 @@ public abstract class EntityAircraft extends Entity {
 		setNoConsume(nbt.getBoolean("no_consume"));
 		int color = -1;
 		if (nbt.contains("dyecolor")) color = nbt.getInt("dyecolor");
+		String preset = nbt.getString("preset");
+		if (preset.isEmpty()) preset = defaultPreset;
 		CompoundTag presetNbt = AircraftPresets.getPreset(preset);
 		if (!nbt.getBoolean("merged_preset")) nbt.merge(presetNbt);
 		partsManager.read(nbt);
@@ -1421,7 +1421,7 @@ public abstract class EntityAircraft extends Entity {
      * @return the item stack with all of this plane's data 
      */
     public ItemStack getItem() {
-    	ItemStack stack = new ItemStack(item.get());
+    	ItemStack stack = new ItemStack(defaultItem.get());
     	CompoundTag tag = new CompoundTag();
     	addAdditionalSaveData(tag);
     	CompoundTag eTag = new CompoundTag();

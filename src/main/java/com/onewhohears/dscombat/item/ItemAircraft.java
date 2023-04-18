@@ -33,12 +33,12 @@ public class ItemAircraft extends Item {
 			.and(Entity::isPickable);
 	
 	private final EntityType<? extends EntityAircraft> defaultType;
-	private final String defultPreset;
+	private final String preset;
 	
 	public ItemAircraft(EntityType<? extends EntityAircraft> defaultType) {
 		super(new Item.Properties().tab(ModItems.AIRCRAFT).stacksTo(1));
 		this.defaultType = defaultType;
-		this.defultPreset = ForgeRegistries.ITEMS.getKey(this).getPath();
+		this.preset = ForgeRegistries.ITEMS.getKey(this).getPath();
 	}
 	
 	@Override
@@ -92,9 +92,9 @@ public class ItemAircraft extends Item {
 	}
 	
 	private EntityType<? extends EntityAircraft> getType(CompoundTag nbt) {
-		if (nbt.contains("EntityTag", 10)) return this.defaultType;
+		if (nbt.contains("EntityTag", 10)) return defaultType;
 		CompoundTag etag = new CompoundTag();
-		etag.putString("preset", defultPreset);
+		etag.putString("preset", preset);
 		nbt.put("EntityTag", etag);
 		return defaultType;
 	}

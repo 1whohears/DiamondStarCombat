@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.data.AircraftTextures;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
@@ -29,9 +28,10 @@ public class EntityHelicopter extends EntityAircraft {
 	private float propellerRot, propellerRotOld;
 	private final boolean alwaysLandingGear;
 	
-	public EntityHelicopter(EntityType<? extends EntityHelicopter> entity, Level level, AircraftTextures textures,
-			RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item, boolean alwaysLandingGear) {
-		super(entity, level, textures, engineSound, item, false);
+	public EntityHelicopter(EntityType<? extends EntityHelicopter> entity, Level level,
+			RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item, boolean alwaysLandingGear, 
+			float Ix, float Iy, float Iz) {
+		super(entity, level, engineSound, item, false, Ix, Iy, Iz);
 		this.alwaysLandingGear = alwaysLandingGear;
 	}
 	
@@ -116,10 +116,10 @@ public class EntityHelicopter extends EntityAircraft {
 	public void directionAir(Quaternion q) {
 		super.directionAir(q);
 		if (!isOperational()) return;
-		addMomentY(inputYaw * getControlMomentY(), true);
+		addMomentY(inputYaw * getYawTorque(), true);
 		if (!isFreeLook()) {
-			addMomentX(inputPitch * getControlMomentX(), true);
-			addMomentZ(inputRoll * getControlMomentZ(), true);
+			addMomentX(inputPitch * getPitchTorque(), true);
+			addMomentZ(inputRoll * getRollTorque(), true);
 		} else flatten(q, getMaxDeltaPitch(), getMaxDeltaRoll(), false);
 	}
 

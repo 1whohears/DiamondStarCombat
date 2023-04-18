@@ -25,6 +25,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class ItemAircraft extends Item {
 	
@@ -33,14 +34,11 @@ public class ItemAircraft extends Item {
 	
 	private final EntityType<? extends EntityAircraft> defaultType;
 	private final String defultPreset;
-	private final boolean addHalfHeight;
 	
-	public ItemAircraft(EntityType<? extends EntityAircraft> defaultType, String defaultPreset,
-			boolean addHalfHeight) {
+	public ItemAircraft(EntityType<? extends EntityAircraft> defaultType) {
 		super(new Item.Properties().tab(ModItems.AIRCRAFT).stacksTo(1));
 		this.defaultType = defaultType;
-		this.defultPreset = defaultPreset;
-		this.addHalfHeight = addHalfHeight;
+		this.defultPreset = ForgeRegistries.ITEMS.getKey(this).getPath();
 	}
 	
 	@Override
@@ -65,22 +63,17 @@ public class ItemAircraft extends Item {
 			}
 			if (hitresult.getType() == HitResult.Type.BLOCK) {
 				CompoundTag tag = itemstack.getOrCreateTag();
-				EntityType<?> entitytype = getType(tag);
-				if (player != null) {
-					CompoundTag et = tag.getCompound("EntityTag");
-					et.putFloat("yRot", player.getYRot());
-					et.putFloat("current_throttle", 0);
-					et.putBoolean("landing_gear", true);
-				}
-				Entity e = entitytype.create(level);
+				EntityType<? extends EntityAircraft> entitytype = getType(tag);
+				spawnData(tag, player);
+				EntityAircraft e = entitytype.create(level);
 				Vec3 pos = hitresult.getLocation();
-				if (addHalfHeight) e.setPos(pos.add(0, e.getBbHeight()/2d, 0));
+				if (e.isCustomBoundingBox()) e.setPos(pos.add(0, e.getBbHeight()/2d, 0));
 				else e.setPos(pos);
 				if (!level.noCollision(e, e.getBoundingBox())) 
 					return InteractionResultHolder.fail(itemstack);
 				if (!level.isClientSide) {
 					int above = 0;
-					if (addHalfHeight) above = (int)(e.getBbHeight()/2d)+1;
+					if (e.isCustomBoundingBox()) above = (int)(e.getBbHeight()/2d)+1;
 					Entity entity = entitytype.spawn((ServerLevel)level, 
 							itemstack, player, 
 							new BlockPos(pos).above(above), 
@@ -98,17 +91,19 @@ public class ItemAircraft extends Item {
 		}
 	}
 	
-	private EntityType<?> getType(CompoundTag nbt) {
-		//System.out.println("GETTING TYPE FROM = "+nbt);
-		if (nbt.contains("EntityTag", 10)) {
-			//System.out.println("HAS EntityTag");
-			return this.defaultType;
-		}
-		//System.out.println("BAD");
+	private EntityType<? extends EntityAircraft> getType(CompoundTag nbt) {
+		if (nbt.contains("EntityTag", 10)) return this.defaultType;
 		CompoundTag etag = new CompoundTag();
 		etag.putString("preset", defultPreset);
 		nbt.put("EntityTag", etag);
-		return this.defaultType;
+		return defaultType;
+	}
+	
+	private void spawnData(CompoundTag tag, Player player) {
+		CompoundTag et = tag.getCompound("EntityTag");
+		et.putFloat("yRot", player.getYRot());
+		et.putFloat("current_throttle", 0);
+		et.putBoolean("landing_gear", true);
 	}
 
 }

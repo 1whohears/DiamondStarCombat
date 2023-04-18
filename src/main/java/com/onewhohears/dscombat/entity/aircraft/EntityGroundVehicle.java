@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.data.AircraftTextures;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
@@ -19,9 +18,9 @@ public class EntityGroundVehicle extends EntityAircraft {
 	protected final float wheelRate = 1.5f;
 	private float wheelLRot, wheelLRotOld, wheelRRot, wheelRRotOld;
 	
-	public EntityGroundVehicle(EntityType<? extends EntityGroundVehicle> entity, Level level, AircraftTextures textures,
+	public EntityGroundVehicle(EntityType<? extends EntityGroundVehicle> entity, Level level,
 			RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item, boolean isTank) {
-		super(entity, level, textures, engineSound, item, true);
+		super(entity, level, engineSound, item, true, 8, 12, 8);
 		this.isTank = isTank;
 	}
 	
@@ -57,7 +56,7 @@ public class EntityGroundVehicle extends EntityAircraft {
 	public void directionGround(Quaternion q) {
 		if (isTank && isOperational()) {
 			flatten(q, 4f, 4f, true);
-			addMomentY(inputYaw * getControlMomentY(), true);
+			addMomentY(inputYaw * getYawTorque(), true);
 		} else super.directionGround(q);
 	}
 	

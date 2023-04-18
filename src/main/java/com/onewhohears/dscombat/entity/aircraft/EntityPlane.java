@@ -1,11 +1,15 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.data.AircraftTextures;
+import com.onewhohears.dscombat.data.AircraftPresets;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
@@ -16,6 +20,8 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class EntityPlane extends EntityAircraft {
 	
+	public static final EntityDataAccessor<Float> WING_AREA = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
+	
 	public static final double CO_LIFT = 0.500;
 	
 	// TODO 9.1 animate flaps down
@@ -24,8 +30,28 @@ public class EntityPlane extends EntityAircraft {
 	private Vec3 liftDir = Vec3.ZERO, airFoilAxes = Vec3.ZERO;
 	
 	public EntityPlane(EntityType<? extends EntityPlane> entity, Level level, 
-			AircraftTextures textures, RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item) {
-		super(entity, level, textures, engineSound, item, false);
+			RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item,
+			float Ix, float Iy, float Iz) {
+		super(entity, level, engineSound, item, false, Ix, Iy, Iz);
+	}
+	
+	@Override
+	public void defineSynchedData() {
+		super.defineSynchedData();
+		entityData.define(WING_AREA, 10f);
+	}
+	
+	@Override
+	public void readAdditionalSaveData(CompoundTag nbt) {
+		super.readAdditionalSaveData(nbt);
+		CompoundTag presetNbt = AircraftPresets.getPreset(preset);
+		setWingSurfaceArea(UtilEntity.fixFloatNbt(nbt, "wing_area", presetNbt, 1));
+	}
+
+	@Override
+	protected void addAdditionalSaveData(CompoundTag compound) {
+		super.addAdditionalSaveData(compound);
+		compound.putFloat("wing_area", getWingSurfaceArea());
 	}
 	
 	@Override
@@ -56,10 +82,10 @@ public class EntityPlane extends EntityAircraft {
 		super.directionAir(q);
 		if (!isOperational()) return;
 		// IDEA 3 turn assist button
-		addMomentX(inputPitch * getControlMomentX(), true);
-		addMomentY(inputYaw * getControlMomentY(), true);
-		if (inputBothRoll) flatten(q, 0, getControlMomentZ(), false);
-		else addMomentZ(inputRoll * getControlMomentZ(), true);
+		addMomentX(inputPitch * getPitchTorque(), true);
+		addMomentY(inputYaw * getYawTorque(), true);
+		if (inputBothRoll) flatten(q, 0, getRollTorque(), false);
+		else addMomentZ(inputRoll * getRollTorque(), true);
 	}
 	
 	@Override
@@ -161,8 +187,8 @@ public class EntityPlane extends EntityAircraft {
 	}
 	
 	@Override
-	public double getSurfaceArea() {
-		double a = super.getSurfaceArea();
+	public double getCrossSectionArea() {
+		double a = super.getCrossSectionArea();
 		a += getWingSurfaceArea() * Math.sin(Math.toRadians(aoa));
 		if (isLandingGear()) a += 4.0 * Math.cos(Math.toRadians(aoa));
 		if (isFlapsDown()) a += getWingSurfaceArea() / 4 * Math.cos(Math.toRadians(aoa));
@@ -181,5 +207,17 @@ public class EntityPlane extends EntityAircraft {
 	public boolean isCustomBoundingBox() {
     	return true;
     }
+	
+	/**
+	 * @return the surface area of the plane wings
+	 */
+	public final float getWingSurfaceArea() {
+		return entityData.get(WING_AREA);
+	}
+	
+	public final void setWingSurfaceArea(float area) {
+		if (area < 0) area = 0;
+		entityData.set(WING_AREA, area);
+	}
 
 }

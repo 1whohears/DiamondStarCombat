@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.data.AircraftTextures;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.core.BlockPos;
@@ -25,8 +24,8 @@ public class EntityBoat extends EntityAircraft {
 	protected double waterLevel;
 	
 	public EntityBoat(EntityType<? extends EntityBoat> entity, Level level, 
-			AircraftTextures textures, RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item) {
-		super(entity, level, textures, engineSound, item, true);
+			RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item) {
+		super(entity, level, engineSound, item, true, 6, 10, 4);
 	}
 	
 	@Override
@@ -58,7 +57,7 @@ public class EntityBoat extends EntityAircraft {
 	public void directionGround(Quaternion q) {
 		flatten(q, 4f, 4f, true);
 		if (!isOperational()) return;
-		addMomentY(inputYaw * getControlMomentY() * 0.1f, true);
+		addMomentY(inputYaw * getYawTorque() * 0.1f, true);
 	}
 	
 	@Override
@@ -70,7 +69,7 @@ public class EntityBoat extends EntityAircraft {
 	public void directionWater(Quaternion q) {
 		if (!isOperational()) return;
 		flatten(q, 2f, 2f, true);
-		addMomentY(inputYaw * getControlMomentY(), true);
+		addMomentY(inputYaw * getYawTorque(), true);
 	}
 	
 	@Override

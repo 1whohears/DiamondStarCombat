@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.util;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.Boat;
@@ -108,6 +109,14 @@ public class UtilEntity {
 	
 	public static boolean isHeadAboveWater(Entity entity) {
 		return entity.isInWater() && !entity.isUnderWater();
+	}
+	
+	public static float fixFloatNbt(CompoundTag nbt, String tag, CompoundTag presetNbt, float min) {
+		float f = nbt.getFloat(tag);
+		if (f > min) return f;
+		f = presetNbt.getFloat(tag);
+		nbt.putFloat(tag, f);
+		return f;
 	}
 	
 }

@@ -99,8 +99,14 @@ public class UtilGeometry {
 	}
 	
 	public static Vec3 getClosestPointOnAABB(Vec3 pos, AABB aabb) {
-		// TODO 1.2 getClosestPointOnAABB
-		return aabb.getCenter();
+		double rx = pos.x, ry = pos.y, rz = pos.z;
+		if (rx >= aabb.maxX) rx = aabb.maxX;
+		else if (rx <= aabb.minX) rx = aabb.minX;
+		if (ry >= aabb.maxY) ry = aabb.maxY;
+		else if (ry <= aabb.minY) ry = aabb.minY;
+		if (rz >= aabb.maxZ) rz = aabb.maxZ;
+		else if (rz <= aabb.minZ) rz = aabb.minZ;
+		return new Vec3(rx, ry, rz);
 	}
 	
 }

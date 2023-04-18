@@ -182,7 +182,7 @@ public class IRMissile extends EntityMissile {
 	
 	@Override
 	protected WeaponDamageSource getImpactDamageSource() {
-		return WeaponDamageSource.ir_missile(getOwner(), this);
+		return WeaponDamageSource.missile_contact(getOwner(), this);
 	}
 
 	@Override

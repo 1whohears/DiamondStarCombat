@@ -2,11 +2,14 @@ package com.onewhohears.dscombat.entity.weapon;
 
 import com.onewhohears.dscombat.data.weapon.TorpedoData;
 import com.onewhohears.dscombat.data.weapon.WeaponDamageSource;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.util.UtilEntity;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ClipContext.Fluid;
 import net.minecraft.world.phys.Vec3;
 
 public class TorpedoMissile extends TrackEntityMissile {
@@ -20,11 +23,13 @@ public class TorpedoMissile extends TrackEntityMissile {
 	}
 	
 	@Override
-	protected void motion() {
-		if (isInWater()) super.motion();
-		Vec3 cm = getDeltaMovement();
-		cm = cm.add(0, -0.02, 0);
-		setDeltaMovement(cm);
+	protected void tickSetMove() {
+		if (isInWater()) super.tickSetMove();
+		else {
+			Vec3 cm = getDeltaMovement();
+			cm = cm.add(0, -EntityAircraft.ACC_GRAVITY, 0);
+			setDeltaMovement(cm);
+		}
 	}
 	
 	@Override
@@ -33,13 +38,13 @@ public class TorpedoMissile extends TrackEntityMissile {
 				10000, 0);
 	}
 	
-	@Override
-	public void tickInWater() {
+	public Fluid getFluidClipContext() {
+		return ClipContext.Fluid.NONE;
 	}
 	
 	@Override
 	protected WeaponDamageSource getImpactDamageSource() {
-		return WeaponDamageSource.torpedo(getOwner(), this);
+		return WeaponDamageSource.missile_contact(getOwner(), this);
 	}
 
 	@Override

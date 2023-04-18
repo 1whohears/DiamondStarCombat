@@ -20,7 +20,9 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ClipContext.Fluid;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
 
@@ -107,20 +109,11 @@ public abstract class EntityMissile extends EntityBullet {
 		yRotO = getYRot();
 		if (!level.isClientSide && !isRemoved()) {
 			tickGuide();
-			if (target != null) {
-				if (distanceTo(target) <= fuseDist) {
-					//setPos(target.position());
-					kill();
-					if (target instanceof EntityMissile) {
-						target.kill();
-					}
-				}
-			}
+			if (target != null && distanceTo(target) <= fuseDist) kill();
 			if (tickCount % 10 == 0) PacketHandler.INSTANCE.send(
 				PacketDistributor.TRACKING_ENTITY.with(() -> this), 
 				new ToClientMissileMove(getId(), position(), 
 					getDeltaMovement(), getXRot(), getYRot(), targetPos));
-			if (isInWater()) tickInWater();
 		}
 		if (level.isClientSide && !isRemoved()) {
 			// IDEA 4 client side interpolation to better synch missile movement and not look as janky on client?
@@ -141,7 +134,7 @@ public abstract class EntityMissile extends EntityBullet {
 	
 	public void tickClientGuide() {
 		if (tickCount < 20) return;
-		this.guideToPosition();
+		guideToPosition();
 	}
 	
 	public void guideToPosition() {
@@ -150,33 +143,33 @@ public abstract class EntityMissile extends EntityBullet {
 			return;
 		}
 		// TODO 3 missile turns should be based on turn radius
-		Vec3 gm = targetPos.subtract(this.position());
+		Vec3 gm = targetPos.subtract(position());
 		float grx = UtilAngles.getPitch(gm);
 		float gry = UtilAngles.getYaw(gm);
-		float orx = this.getXRot();
-		float ory = this.getYRot();
+		float orx = getXRot();
+		float ory = getYRot();
 		float nrx = orx, nry = ory;
-		if (Math.abs(grx-orx) < this.getMaxRot()) {
+		if (Math.abs(grx-orx) < getMaxRot()) {
 			nrx = grx;
 		} else if (grx > orx) {
-			nrx += this.getMaxRot();
+			nrx += getMaxRot();
 		} else if (grx < orx) {
-			nrx -= this.getMaxRot();
+			nrx -= getMaxRot();
 		}
-		if (Math.abs(gry-ory) < this.getMaxRot()) {
+		if (Math.abs(gry-ory) < getMaxRot()) {
 			nry = gry;
 		} else {
 			if (gry > 90 && ory < -90) {
-				nry -= this.getMaxRot();
+				nry -= getMaxRot();
 				if (nry < -180) nry += 360;
 			} else if (ory > 90 && gry < -90) {
-				nry += this.getMaxRot();
+				nry += getMaxRot();
 				if (nry > 180) nry -= 360;
 			} else {
 				if (gry > ory) {
-					nry += this.getMaxRot();
+					nry += getMaxRot();
 				} else if (gry < ory) {
-					nry -= this.getMaxRot();
+					nry -= getMaxRot();
 				}
 			}
 		}
@@ -250,6 +243,7 @@ public abstract class EntityMissile extends EntityBullet {
 	public void tickOutRange() {
 		xRotO = getXRot(); 
 		yRotO = getYRot();
+		// uses special kill override function. don't change to discard.
 		if (tickCount > maxAge) { 
 			//System.out.println("old");
 			kill();
@@ -263,13 +257,13 @@ public abstract class EntityMissile extends EntityBullet {
 		//System.out.println("starting tick guide");
 		tickGuide();
 		//System.out.println("starting motion");
-		motion();
+		tickSetMove();
 		//System.out.println("starting set pos");
 		setPos(position().add(getDeltaMovement()));
 	}
 	
 	@Override
-	protected void motion() {
+	protected void tickSetMove() {
 		Vec3 cm = getDeltaMovement();
 		double B = getBleed() * UtilEntity.getAirPressure(getY());
 		double bleed = B * (Math.abs(getXRot()-xRotO)+Math.abs(getYRot()-yRotO));
@@ -290,7 +284,7 @@ public abstract class EntityMissile extends EntityBullet {
 	}
 	
 	public float getHeat() {
-		return 2f;
+		return 4f;
 	}
 	
 	@Override
@@ -298,16 +292,16 @@ public abstract class EntityMissile extends EntityBullet {
 		/*System.out.println("MISSILE GOT HURT!");
 		System.out.println("ENTITY "+source.getEntity());
 		System.out.println("DIRECT ENTITY "+source.getDirectEntity());*/
-		if (this.isRemoved()) return false;
-		if (this.equals(source.getDirectEntity())) return false;
-		this.kill();
+		if (isRemoved()) return false;
+		if (equals(source.getDirectEntity())) return false;
+		kill();
 		return true;
 	}
 	
-	/*@Override
+	@Override
 	public boolean ignoreExplosion() {
 		return false;
-	}*/
+	}
 	
 	public float getAcceleration() {
 		return entityData.get(ACCELERATION);
@@ -378,13 +372,13 @@ public abstract class EntityMissile extends EntityBullet {
 		return tickCountRepeats;
 	}
 	
-	public void tickInWater() {
-		this.kill();
+	public Fluid getFluidClipContext() {
+		return ClipContext.Fluid.SOURCE_ONLY;
 	}
 	
 	@Override
 	protected WeaponDamageSource getImpactDamageSource() {
-		return WeaponDamageSource.missile(getOwner(), this);
+		return WeaponDamageSource.missile_contact(getOwner(), this);
 	}
 
 	@Override

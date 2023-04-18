@@ -20,8 +20,9 @@ public class WeaponDamageSource extends EntityDamageSource {
 		super(damageTypeId, shooter);
 		this.weapon = weapon;
 		this.torqueK = torque;
-		this.setProjectile();
-		if (explosion) this.setExplosion();
+		setProjectile();
+		if (explosion) setExplosion();
+		// IDEA 7 random custom kill messages
 	}
 	
 	public static WeaponDamageSource bullet(Entity shooter, EntityWeapon weapon) {
@@ -34,6 +35,10 @@ public class WeaponDamageSource extends EntityDamageSource {
 	
 	public static WeaponDamageSource bomb(Entity shooter, EntityWeapon weapon) {
 		return new WeaponDamageSource("dscombat.bomb", shooter, weapon, true, 0.10f);
+	}
+	
+	public static WeaponDamageSource missile_contact(Entity shooter, EntityWeapon weapon) {
+		return new WeaponDamageSource("dscombat.missile_contact", shooter, weapon, true, 0.50f);
 	}
 	
 	public static WeaponDamageSource missile(Entity shooter, EntityWeapon weapon) {

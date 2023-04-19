@@ -142,6 +142,7 @@ public abstract class EntityAircraft extends Entity {
 	protected int xzSpeedDir;
 	protected float xzSpeed, totalMass, xzYaw, slideAngle, slideAngleCos, maxThrust, currentFuel, maxFuel;
 	protected double staticFric, kineticFric;
+	protected String preset;
 	
 	private ResourceLocation currentTexture;
 	private int lerpSteps, newRiderCooldown, deadTicks;
@@ -187,7 +188,7 @@ public abstract class EntityAircraft extends Entity {
 		entityData.define(PITCH_TORQUE, 1f);
 		entityData.define(YAW_TORQUE, 1f);
 		entityData.define(IDLEHEAT, 1f);
-		entityData.define(MASS, 0.05f);
+		entityData.define(MASS, 1f);
 		entityData.define(LANDING_GEAR, false);
 		entityData.define(TEST_MODE, false);
 		entityData.define(CURRRENT_DYE_ID, 0);
@@ -230,16 +231,14 @@ public abstract class EntityAircraft extends Entity {
 	
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
-		// FIXME 1 presets aren't working at all anymore?
 		// ORDER MATTERS
 		// UtilEntity.fixFloatNbt(nbt, "", presetNbt, 1)
 		setTestMode(nbt.getBoolean("test_mode"));
 		setNoConsume(nbt.getBoolean("no_consume"));
 		int color = -1;
 		if (nbt.contains("dyecolor")) color = nbt.getInt("dyecolor");
-		String preset = nbt.getString("preset");
+		preset = nbt.getString("preset");
 		if (preset.isEmpty()) preset = defaultPreset;
-		System.out.println(preset+" "+this);
 		CompoundTag presetNbt = AircraftPresets.getPreset(preset);
 		if (!nbt.getBoolean("merged_preset")) nbt.merge(presetNbt);
 		partsManager.read(nbt);

@@ -32,13 +32,11 @@ public class ItemAircraft extends Item {
 	private static final Predicate<Entity> ENTITY_PREDICATE = EntitySelector.NO_SPECTATORS
 			.and(Entity::isPickable);
 	
-	private final EntityType<? extends EntityAircraft> defaultType;
-	private final String preset;
+	private final EntityType<? extends EntityAircraft> entityType;
 	
-	public ItemAircraft(EntityType<? extends EntityAircraft> defaultType) {
+	public ItemAircraft(EntityType<? extends EntityAircraft> entityType) {
 		super(new Item.Properties().tab(ModItems.AIRCRAFT).stacksTo(1));
-		this.defaultType = defaultType;
-		this.preset = ForgeRegistries.ITEMS.getKey(this).getPath();
+		this.entityType = entityType;
 	}
 	
 	@Override
@@ -63,9 +61,9 @@ public class ItemAircraft extends Item {
 			}
 			if (hitresult.getType() == HitResult.Type.BLOCK) {
 				CompoundTag tag = itemstack.getOrCreateTag();
-				EntityType<? extends EntityAircraft> entitytype = getType(tag);
+				//EntityType<? extends EntityAircraft> entitytype = getType(tag);
 				spawnData(tag, player);
-				EntityAircraft e = entitytype.create(level);
+				EntityAircraft e = entityType.create(level);
 				Vec3 pos = hitresult.getLocation();
 				if (e.isCustomBoundingBox()) e.setPos(pos.add(0, e.getBbHeight()/2d, 0));
 				else e.setPos(pos);
@@ -74,7 +72,7 @@ public class ItemAircraft extends Item {
 				if (!level.isClientSide) {
 					int above = 0;
 					if (e.isCustomBoundingBox()) above = (int)(e.getBbHeight()/2d)+1;
-					Entity entity = entitytype.spawn((ServerLevel)level, 
+					Entity entity = entityType.spawn((ServerLevel)level, 
 							itemstack, player, 
 							new BlockPos(pos).above(above), 
 							MobSpawnType.SPAWN_EGG, 
@@ -91,19 +89,29 @@ public class ItemAircraft extends Item {
 		}
 	}
 	
-	private EntityType<? extends EntityAircraft> getType(CompoundTag nbt) {
-		if (nbt.contains("EntityTag", 10)) return defaultType;
+	/*private EntityType<? extends EntityAircraft> getType(CompoundTag nbt) {
+		if (nbt.contains("EntityTag", 10)) return entityType;
 		CompoundTag etag = new CompoundTag();
-		etag.putString("preset", preset);
+		etag.putString("preset", getPresetName());
 		nbt.put("EntityTag", etag);
-		return defaultType;
-	}
+		return entityType;
+	}*/
 	
 	private void spawnData(CompoundTag tag, Player player) {
+		if (!tag.contains("EntityTag", 10)) {
+			CompoundTag et = new CompoundTag();
+			et.putString("preset", getPresetName());
+			et.putBoolean("merged_preset", false);
+			tag.put("EntityTag", et);
+		}
 		CompoundTag et = tag.getCompound("EntityTag");
 		et.putFloat("yRot", player.getYRot());
 		et.putFloat("current_throttle", 0);
 		et.putBoolean("landing_gear", true);
+	}
+	
+	public String getPresetName() {
+		return ForgeRegistries.ITEMS.getKey(this).getPath();
 	}
 
 }

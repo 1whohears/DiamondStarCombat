@@ -11,7 +11,8 @@ import net.minecraft.world.entity.Entity;
 
 public class UtilClientSafeSoundInstance {
 	
-	public static void dopplerSound(Minecraft m, Entity entity, SoundEvent sound, float initVolume, float initPitch, float velSound) {
+	public static void dopplerSound(Minecraft m, Entity entity, SoundEvent sound, 
+			float initVolume, float initPitch, float velSound) {
 		LocalPlayer p = m.player;
 		if (p == null) return;
 		m.getSoundManager().play(new DopplerOnPlayerSoundInstance(sound, 

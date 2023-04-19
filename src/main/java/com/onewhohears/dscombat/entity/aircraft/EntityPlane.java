@@ -20,7 +20,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class EntityPlane extends EntityAircraft {
 	
-	public static final EntityDataAccessor<Float> WING_AREA = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> WING_AREA = SynchedEntityData.defineId(EntityPlane.class, EntityDataSerializers.FLOAT);
 	
 	public static final double CO_LIFT = 0.500;
 	

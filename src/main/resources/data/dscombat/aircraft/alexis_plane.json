@@ -15,9 +15,9 @@
 	"maxroll": 6.0,
 	"maxpitch": 2.5,
 	"maxyaw": 1.5,
-	"rolltorque": 1,
-	"pitchtorque": 1,
-	"yawtorque": 1,
+	"rolltorque": 1.0,
+	"pitchtorque": 2.0,
+	"yawtorque": 4.0,
 	
 	"throttleup": 0.04,
 	"throttledown": 0.04,

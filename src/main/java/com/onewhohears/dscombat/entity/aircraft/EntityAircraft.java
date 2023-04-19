@@ -163,7 +163,6 @@ public abstract class EntityAircraft extends Entity {
 		this.Iy = Iy;
 		this.Iz = Iz;
 		this.blocksBuilding = true;
-		// FIXME 4 players can punch and push aircraft
 		// IDEA 8 add collision physics with other entities
 	}
 	
@@ -501,15 +500,22 @@ public abstract class EntityAircraft extends Entity {
 		q.mul(Vector3f.XN.rotationDegrees((float)av.x));
 		q.mul(Vector3f.YN.rotationDegrees((float)av.y));
 		q.mul(Vector3f.ZP.rotationDegrees((float)av.z));
-		applyAngularDrag(getAngularDrag());
+		applyAngularDrag();
 	}
 	
-	public void applyAngularDrag(float d) {
+	public void applyAngularDrag() {
 		Vec3 av = getAngularVel();
+		float d = getAngularDrag();
+		float dx = d, dy = d, dz = d;
+		if (!onGround) {
+			if (inputPitch != 0) dx = 0;
+			if (inputYaw != 0) dy = 0;
+			if (inputRoll != 0) dz = 0;
+		}
 		setAngularVel(new Vec3(
-				getADComponent(av.x, d, Ix),
-				getADComponent(av.y, d, Iy),
-				getADComponent(av.z, d, Iz)));
+				getADComponent(av.x, dx, Ix),
+				getADComponent(av.y, dy, Iy),
+				getADComponent(av.z, dz, Iz)));
 	}
 	
 	private double getADComponent(double v, float d, float I) {
@@ -518,22 +524,28 @@ public abstract class EntityAircraft extends Entity {
 		return a * Math.signum(v);
 	}
 	
+	protected float getAngularDrag() {
+		if (onGround) return 2.5f;
+		else if (isInWater()) return 1.5f;
+		else return 1.0f;
+ 	}
+	
 	public void directionGround(Quaternion q) {
 		if (!isOperational()) return;
 		flatten(q, 4f, 4f, true);
 		float max_tr = getTurnRadius();
-		if (inputYaw == 0 || max_tr == 0) return;
+		Vec3 av = getAngularVel();
+		if (inputYaw == 0 || max_tr == 0) {
+			if (!isSliding()) setAngularVel(av.multiply(1, 0, 1));
+			return;
+		}
 		float tr = 1 / inputYaw * max_tr;
 		float turn = xzSpeed / tr * xzSpeedDir;
 		float turnDeg = turn * Mth.RAD_TO_DEG;
-		Vec3 av = getAngularVel().multiply(1, 0, 1);
-		av = av.add(0, turnDeg, 0);
-		if (isSliding()) {
-			av = av.multiply(0, slideAngleCos*CO_SLIDE_TORQUE, 0);
-			//torqueY = turnDeg*slideAngleCos*CO_SLIDE_TORQUE;
-		} /*else {
-			//torqueY = turnDeg;
-		}*/
+		if (!isSliding()) av = av
+				.multiply(1, 0, 1)
+				.add(0, turnDeg, 0);
+		else addMomentY(turnDeg*slideAngleCos*CO_SLIDE_TORQUE, false);
 		setAngularVel(av);
 	}
 	
@@ -566,12 +578,6 @@ public abstract class EntityAircraft extends Entity {
 		}
 		setAngularVel(new Vec3(x, av.y, z));
 	}
-	
-	protected float getAngularDrag() {
-		if (onGround) return 1.0f;
-		else if (isInWater()) return 0.3f;
-		else return 0.2f;
- 	}
 	
 	public void addMoment(Vec3 moment, boolean control) {
 		Vec3 m = getMoment();

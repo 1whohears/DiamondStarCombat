@@ -230,7 +230,7 @@ public abstract class EntityAircraft extends Entity {
 	
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
-		// FIXME 2 fix aircraft with old weights and missing physics values
+		// FIXME 1 presets aren't working at all anymore?
 		// ORDER MATTERS
 		// UtilEntity.fixFloatNbt(nbt, "", presetNbt, 1)
 		setTestMode(nbt.getBoolean("test_mode"));
@@ -239,6 +239,7 @@ public abstract class EntityAircraft extends Entity {
 		if (nbt.contains("dyecolor")) color = nbt.getInt("dyecolor");
 		String preset = nbt.getString("preset");
 		if (preset.isEmpty()) preset = defaultPreset;
+		System.out.println(preset+" "+this);
 		CompoundTag presetNbt = AircraftPresets.getPreset(preset);
 		if (!nbt.getBoolean("merged_preset")) nbt.merge(presetNbt);
 		partsManager.read(nbt);

@@ -149,28 +149,26 @@ public abstract class EntityMissile extends EntityBullet {
 		float orx = getXRot();
 		float ory = getYRot();
 		float nrx = orx, nry = ory;
-		if (Math.abs(grx-orx) < getMaxRot()) {
+		float rot = getMaxRot();
+		if (Math.abs(grx-orx) < rot) {
 			nrx = grx;
 		} else if (grx > orx) {
-			nrx += getMaxRot();
+			nrx += rot;
 		} else if (grx < orx) {
-			nrx -= getMaxRot();
+			nrx -= rot;
 		}
-		if (Math.abs(gry-ory) < getMaxRot()) {
+		if (Math.abs(gry-ory) < rot) {
 			nry = gry;
 		} else {
 			if (gry > 90 && ory < -90) {
-				nry -= getMaxRot();
+				nry -= rot;
 				if (nry < -180) nry += 360;
 			} else if (ory > 90 && gry < -90) {
-				nry += getMaxRot();
+				nry += rot;
 				if (nry > 180) nry -= 360;
 			} else {
-				if (gry > ory) {
-					nry += getMaxRot();
-				} else if (gry < ory) {
-					nry -= getMaxRot();
-				}
+				if (gry > ory) nry += rot;
+				else if (gry < ory) nry -= rot;
 			}
 		}
 		setXRot(nrx);
@@ -329,10 +327,7 @@ public abstract class EntityMissile extends EntityBullet {
 	}
 	
 	public float getMaxRot() {
-		float velSqr = (float) getDeltaMovement().lengthSqr();
-		float K = 1;
-		if (velSqr < 1) K = velSqr;
-		return entityData.get(MAX_ROT) * K;
+		return entityData.get(MAX_ROT);
 	}
 	
 	public void setMaxRot(float max_rot) {

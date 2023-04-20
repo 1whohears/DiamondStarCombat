@@ -44,7 +44,7 @@
 	
 	"targetType": 2,
 	
-	"maxRot": 3.0,
+	"maxRot": 80,
 	"acceleration": 0.04,
 	"bleed": 0.005,
 	"fuseDist": 2.0,

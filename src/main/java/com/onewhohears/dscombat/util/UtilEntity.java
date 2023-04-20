@@ -119,4 +119,12 @@ public class UtilEntity {
 		return f;
 	}
 	
+	public static float fixFloatNbt(CompoundTag nbt, String tag, float alt) {
+		if (!nbt.contains(tag)) {
+			nbt.putFloat(tag, alt);
+			return alt;
+		}
+		return nbt.getFloat(tag);
+	}
+	
 }

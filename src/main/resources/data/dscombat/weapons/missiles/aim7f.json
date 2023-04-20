@@ -44,7 +44,7 @@
 	
 	"targetType": 0,
 	
-	"maxRot": 1.0,
+	"turnRadius": 160,
 	"acceleration": 0.06,
 	"bleed": 0.008,
 	"fuseDist": 5,

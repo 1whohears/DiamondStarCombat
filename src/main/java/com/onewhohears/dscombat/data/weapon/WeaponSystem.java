@@ -115,6 +115,7 @@ public class WeaponSystem {
 		if (data == null) return false;
 		String name = data.getId();
 		String reason = null;
+		// FIXME 1 the missile still spawns and explodes?
 		data.shoot(parent.level, controller, UtilAngles.getRollAxis(parent.getQ()), null, parent, consume);
 		if (data.isFailedLaunch()) reason = data.getFailedLaunchReason();
 		for (WeaponData wd : weapons) if (wd.getType() == WeaponType.BULLET && wd.getId().equals(name) && !wd.getSlotId().equals(data.getSlotId())) {

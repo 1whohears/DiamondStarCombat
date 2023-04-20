@@ -17,6 +17,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -29,7 +30,7 @@ import net.minecraftforge.network.PacketDistributor;
 public abstract class EntityMissile extends EntityBullet {
 	
 	public static final EntityDataAccessor<Float> ACCELERATION = SynchedEntityData.defineId(EntityMissile.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> MAX_ROT = SynchedEntityData.defineId(EntityMissile.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> TURN_RADIUS = SynchedEntityData.defineId(EntityMissile.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> BLEED = SynchedEntityData.defineId(EntityMissile.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Integer> FUEL_TICKS = SynchedEntityData.defineId(EntityMissile.class, EntityDataSerializers.INT);
 	
@@ -53,19 +54,19 @@ public abstract class EntityMissile extends EntityBullet {
 	public EntityMissile(Level level, Entity owner, MissileData data) {
 		super(level, owner, data);
 		if (!level.isClientSide) NonTickingMissileManager.addMissile(this);
-		this.setAcceleration((float)data.getAcceleration());
-		this.setMaxRot(data.getMaxRot());
-		this.setBleed((float)data.getBleed());
+		setAcceleration((float)data.getAcceleration());
+		setTurnRadius(data.getTurnRadius());
+		setBleed((float)data.getBleed());
 		fuseDist = (float) data.getFuseDist();
 		fov = data.getFov();
-		this.setFuelTicks(data.getFuelTicks());
+		setFuelTicks(data.getFuelTicks());
 	}
 	
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
 		entityData.define(ACCELERATION, 0f);
-		entityData.define(MAX_ROT, 0f);
+		entityData.define(TURN_RADIUS, 0f);
 		entityData.define(BLEED, 0f);
 		entityData.define(FUEL_TICKS, 0);
 	}
@@ -73,23 +74,23 @@ public abstract class EntityMissile extends EntityBullet {
 	@Override
 	protected void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
-		this.setAcceleration(compound.getFloat("acc"));
-		this.setMaxRot(compound.getFloat("max_rot"));
-		this.setBleed(compound.getFloat("bleed"));
+		setAcceleration(compound.getFloat("acc"));
+		setTurnRadius(compound.getFloat("turnRadius"));
+		setBleed(compound.getFloat("bleed"));
 		fuseDist = compound.getFloat("fuseDist");
 		fov = compound.getFloat("fov");
-		this.setFuelTicks(compound.getInt("fuelTicks"));
+		setFuelTicks(compound.getInt("fuelTicks"));
 	}
 
 	@Override
 	protected void addAdditionalSaveData(CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
-		compound.putFloat("acc", this.getAcceleration());
-		compound.putFloat("max_rot", this.getMaxRot());
-		compound.putFloat("bleed", this.getBleed());
+		compound.putFloat("acc", getAcceleration());
+		compound.putFloat("turnRadius", getTurnRadius());
+		compound.putFloat("bleed", getBleed());
 		compound.putFloat("fuseDist", fuseDist);
 		compound.putFloat("fov", fov);
-		compound.putInt("fuelTicks", this.getFuelTicks());
+		compound.putInt("fuelTicks", getFuelTicks());
 	}
 	
 	@Override
@@ -143,23 +144,17 @@ public abstract class EntityMissile extends EntityBullet {
 			return;
 		}
 		// TODO 3.1 missile turns should be based on turn radius
+		System.out.println(getTurnRadius());
 		Vec3 gm = targetPos.subtract(position());
-		float grx = UtilAngles.getPitch(gm);
-		float gry = UtilAngles.getYaw(gm);
-		float orx = getXRot();
-		float ory = getYRot();
+		float grx = UtilAngles.getPitch(gm), gry = UtilAngles.getYaw(gm);
+		float orx = getXRot(), ory = getYRot();
 		float nrx = orx, nry = ory;
-		float rot = getMaxRot();
-		if (Math.abs(grx-orx) < rot) {
-			nrx = grx;
-		} else if (grx > orx) {
-			nrx += rot;
-		} else if (grx < orx) {
-			nrx -= rot;
-		}
-		if (Math.abs(gry-ory) < rot) {
-			nry = gry;
-		} else {
+		float rot = getTurnDegrees();
+		if (Math.abs(grx-orx) < rot) nrx = grx;
+		else if (grx > orx) nrx += rot;
+		else if (grx < orx) nrx -= rot;
+		if (Math.abs(gry-ory) < rot) nry = gry;
+		else {
 			if (gry > 90 && ory < -90) {
 				nry -= rot;
 				if (nry < -180) nry += 360;
@@ -175,30 +170,34 @@ public abstract class EntityMissile extends EntityBullet {
 		setYRot(nry);
 	}
 	
+	public float getTurnDegrees() {
+		return (float)getDeltaMovement().length() / getTurnRadius() * Mth.RAD_TO_DEG;
+	}
+	
 	public void guideToTarget() {
 		//System.out.println("target null check");
 		if (target == null) {
-			this.targetPos = null;
+			targetPos = null;
 			return;
 		}
 		//System.out.println("target removed check");
 		if (target.isRemoved()) {
-			this.target = null;
-			this.targetPos = null;
+			target = null;
+			targetPos = null;
 			return;
 		}
-		if (this.tickCount % 10 == 0) {
+		if (tickCount % 10 == 0) {
 			//System.out.println("check target range");
 			if (!checkTargetRange(target, 10000)) {
-				this.target = null;
-				this.targetPos = null;
+				target = null;
+				targetPos = null;
 				return;
 			}
 			//System.out.println("check can see");
 			if (!checkCanSee(target)) {
 				//System.out.println("can't see target");
-				this.target = null;
-				this.targetPos = null;
+				target = null;
+				targetPos = null;
 				return;
 			}
 		}
@@ -209,17 +208,17 @@ public abstract class EntityMissile extends EntityBullet {
 		Vec3 pos = UtilGeometry.interceptPos( 
 				position(), getDeltaMovement(), 
 				target.position(), tVel);
-		this.targetPos = pos;
+		targetPos = pos;
 		//System.out.println("guide to position");
-		this.guideToPosition();
+		guideToPosition();
 	}
 	
 	protected boolean checkTargetRange(Entity target, double range) {
-		if (fov == -1) return this.distanceTo(target) <= range;
+		if (fov == -1) return distanceTo(target) <= range;
 		return UtilGeometry.isPointInsideCone(
 				target.position(), 
-				this.position(),
-				this.getLookAngle(), 
+				position(),
+				getLookAngle(), 
 				fov, range);
 	}
 	
@@ -288,9 +287,6 @@ public abstract class EntityMissile extends EntityBullet {
 	
 	@Override
     public boolean hurt(DamageSource source, float amount) {
-		/*System.out.println("MISSILE GOT HURT!");
-		System.out.println("ENTITY "+source.getEntity());
-		System.out.println("DIRECT ENTITY "+source.getDirectEntity());*/
 		if (isRemoved()) return false;
 		if (equals(source.getDirectEntity())) return false;
 		kill();
@@ -326,12 +322,12 @@ public abstract class EntityMissile extends EntityBullet {
 		entityData.set(FUEL_TICKS, fuelTicks);
 	}
 	
-	public float getMaxRot() {
-		return entityData.get(MAX_ROT);
+	public float getTurnRadius() {
+		return entityData.get(TURN_RADIUS);
 	}
 	
-	public void setMaxRot(float max_rot) {
-		entityData.set(MAX_ROT, max_rot);
+	public void setTurnRadius(float max_rot) {
+		entityData.set(TURN_RADIUS, max_rot);
 	}
 	
 	public void discardButTick() {

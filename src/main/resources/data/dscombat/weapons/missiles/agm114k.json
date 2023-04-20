@@ -44,7 +44,7 @@
 	
 	"turnRadius": 50,
 	"acceleration": 0.05,
-	"bleed": 0.005,
+	"bleed": 0.02,
 	"fuseDist": 2.0,
 	"fov": -1
 	

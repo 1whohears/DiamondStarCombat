@@ -31,8 +31,9 @@ public class EntityPlane extends EntityAircraft {
 	
 	public EntityPlane(EntityType<? extends EntityPlane> entity, Level level, 
 			RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item,
-			float Ix, float Iy, float Iz) {
-		super(entity, level, engineSound, item, false, Ix, Iy, Iz);
+			float Ix, float Iy, float Iz, float explodeSize) {
+		super(entity, level, engineSound, item, 
+				false, Ix, Iy, Iz, explodeSize);
 	}
 	
 	@Override

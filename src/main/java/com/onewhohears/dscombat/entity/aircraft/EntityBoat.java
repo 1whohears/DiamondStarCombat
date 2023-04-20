@@ -24,8 +24,10 @@ public class EntityBoat extends EntityAircraft {
 	protected double waterLevel;
 	
 	public EntityBoat(EntityType<? extends EntityBoat> entity, Level level, 
-			RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item) {
-		super(entity, level, engineSound, item, true, 6, 10, 4);
+			RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item,
+			float explodeSize) {
+		super(entity, level, engineSound, item, 
+				true, 6, 10, 4, explodeSize);
 	}
 	
 	@Override

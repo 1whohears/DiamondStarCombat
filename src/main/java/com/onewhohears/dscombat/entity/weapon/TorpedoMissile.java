@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.entity.weapon;
 
+import com.onewhohears.dscombat.data.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.data.weapon.TorpedoData;
-import com.onewhohears.dscombat.data.weapon.WeaponDamageSource;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.util.UtilEntity;
 

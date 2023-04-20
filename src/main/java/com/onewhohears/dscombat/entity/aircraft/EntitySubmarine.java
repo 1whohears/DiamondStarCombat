@@ -14,8 +14,8 @@ import net.minecraftforge.registries.RegistryObject;
 public class EntitySubmarine extends EntityBoat {
 	
 	public EntitySubmarine(EntityType<? extends EntitySubmarine> entity, Level level, 
-			RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item) {
-		super(entity, level, engineSound, item);
+			RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item, float explodeSize) {
+		super(entity, level, engineSound, item, explodeSize);
 	}
 	
 	@Override

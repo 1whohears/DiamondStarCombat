@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.entity.weapon;
 
+import com.onewhohears.dscombat.data.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.data.weapon.BulletData;
-import com.onewhohears.dscombat.data.weapon.WeaponDamageSource;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.core.particles.ParticleTypes;

@@ -15,6 +15,7 @@ import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftQ;
 import com.onewhohears.dscombat.common.network.toserver.ToServerRequestPlaneData;
 import com.onewhohears.dscombat.data.AircraftPresets;
 import com.onewhohears.dscombat.data.AircraftTextures;
+import com.onewhohears.dscombat.data.damagesource.AircraftExplodeDamageSource;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartsManager;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
@@ -112,9 +113,9 @@ public abstract class EntityAircraft extends Entity {
 	public static final double CO_STATIC_FRICTION = 4.10;
 	public static final double CO_KINETIC_FRICTION = 1.50;
 	public static final float CO_SLIDE_TORQUE = 1.00f;
-	public static final double collideSpeedThreshHold = 0.8d;
-	public static final double collideSpeedWithGearThreshHold = 1.8d;
-	public static final double collideDamageRate = 200d;
+	public static final double collideSpeedThreshHold = 0.5d;
+	public static final double collideSpeedWithGearThreshHold = 1.5d;
+	public static final double collideDamageRate = 300d;
 	
 	public final PartsManager partsManager = new PartsManager(this);
 	public final WeaponSystem weaponSystem = new WeaponSystem(this);
@@ -122,7 +123,7 @@ public abstract class EntityAircraft extends Entity {
 	
 	public final String defaultPreset;
 	public final boolean negativeThrottle;
-	public final float Ix, Iy, Iz;
+	public final float Ix, Iy, Iz, explodeSize;
 	
 	protected final RegistryObject<SoundEvent> engineSound;
 	protected final RegistryObject<Item> defaultItem;
@@ -151,7 +152,7 @@ public abstract class EntityAircraft extends Entity {
 	
 	public EntityAircraft(EntityType<? extends EntityAircraft> entityType, Level level, 
 			RegistryObject<SoundEvent> engineSound, RegistryObject<Item> defaultItem,
-			boolean negativeThrottle, float Ix, float Iy, float Iz) {
+			boolean negativeThrottle, float Ix, float Iy, float Iz, float explodeSize) {
 		super(entityType, level);
 		this.defaultItem = defaultItem;
 		this.defaultPreset = defaultItem.getId().getPath();
@@ -162,6 +163,7 @@ public abstract class EntityAircraft extends Entity {
 		this.Ix = Ix;
 		this.Iy = Iy;
 		this.Iz = Iz;
+		this.explodeSize = explodeSize;
 		this.blocksBuilding = true;
 		// IDEA 8 add collision physics with other entities
 	}
@@ -381,6 +383,7 @@ public abstract class EntityAircraft extends Entity {
 	 * damages plane if it falls 
 	 */
 	public void tickCollisions() {
+		if (tickCount < 300) return;
 		if (verticalCollisionBelow || verticalCollision) {
 			double my = Math.abs(prevMotion.y);
 			double th = collideSpeedThreshHold;
@@ -389,13 +392,20 @@ public abstract class EntityAircraft extends Entity {
 					&& (zRot < 15f && zRot > -15f)) {
 				th = collideSpeedWithGearThreshHold;
 			}
-			if (my > th && tickCount > 300) {
-				hurt(DamageSource.FLY_INTO_WALL, 
-					(float)((my-th)*collideDamageRate));
-				if (!isOperational()) explode(null);
+			if (my > th) {
+				float amount = (float)((my-th)*collideDamageRate);
+				hurt(DamageSource.FALL, amount);
+				if (!isOperational()) explode(AircraftExplodeDamageSource.fall(this));
 			}
 		}
-		// TODO 4 horizontal collisions with walls
+		if (horizontalCollision) {
+			double speed = prevMotion.horizontalDistance();
+			if (speed > collideSpeedThreshHold) {
+				float amount = (float)((speed-collideSpeedThreshHold)*collideDamageRate);
+				hurt(DamageSource.FLY_INTO_WALL, amount);
+				if (!isOperational()) explode(AircraftExplodeDamageSource.collide(this));
+			}
+		}
 	}
 	
 	public void waterDamage() {
@@ -1199,7 +1209,7 @@ public abstract class EntityAircraft extends Entity {
 		if (!level.isClientSide) {
 			level.explode(this, source,
 				null, getX(), getY(), getZ(), 
-				3, true, 
+				explodeSize, true, 
 				Explosion.BlockInteraction.BREAK);
 		} else {
 			level.addParticle(ParticleTypes.LARGE_SMOKE, 

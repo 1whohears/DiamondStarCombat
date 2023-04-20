@@ -104,6 +104,7 @@ public class EntityBullet extends EntityWeapon {
 	}
 	
 	protected void checkExplode() {
+		if (tickCount == 0) return;
 		if (!level.hasChunk(chunkPosition().x, chunkPosition().z)) return;
 		if (getExplosive()) {
 			if (!level.isClientSide) {
@@ -113,7 +114,7 @@ public class EntityBullet extends EntityWeapon {
 					null, getX(), getY(), getZ(), 
 					getRadius(), getFire(), 
 					interact);
-				System.out.println("EXPLODE "+this);
+				System.out.println("EXPLODE "+this+" "+tickCount);
 			} else {
 				level.addParticle(ParticleTypes.SMOKE, 
 						getX(), getY()+0.5D, getZ(), 

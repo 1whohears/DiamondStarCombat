@@ -3,8 +3,8 @@ package com.onewhohears.dscombat.data.weapon;
 import java.util.List;
 import java.util.Random;
 
-import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.entity.weapon.EntityBullet;
+import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.nbt.CompoundTag;

@@ -9,7 +9,7 @@ import com.onewhohears.dscombat.common.container.AircraftBlockMenuContainer;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerCraftPlane;
 import com.onewhohears.dscombat.crafting.DSCIngredient;
-import com.onewhohears.dscombat.data.AircraftPresets;
+import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;

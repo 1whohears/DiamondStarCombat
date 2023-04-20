@@ -1,8 +1,10 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.data.AircraftPresets;
+import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
+import com.onewhohears.dscombat.data.aircraft.LiftKGraph;
 import com.onewhohears.dscombat.util.UtilEntity;
+import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
@@ -22,18 +24,23 @@ public class EntityPlane extends EntityAircraft {
 	
 	public static final EntityDataAccessor<Float> WING_AREA = SynchedEntityData.defineId(EntityPlane.class, EntityDataSerializers.FLOAT);
 	
-	public static final double CO_LIFT = 0.500;
+	public static final double CO_LIFT = 0.110;
 	
-	// TODO 9.1 animate flaps down
-	private final float propellerRate = 3.141f, flapsAOABias = 10f;
+	public final LiftKGraph liftKGraph;
+	public final float flapsAOABias; // TODO 9.1 animate flaps down
+	
+	private final float propellerRate = 3.141f;
 	private float propellerRot = 0, propellerRotOld = 0, aoa = 0, liftK = 0, airFoilSpeedSqr = 0;
 	private Vec3 liftDir = Vec3.ZERO, airFoilAxes = Vec3.ZERO;
 	
 	public EntityPlane(EntityType<? extends EntityPlane> entity, Level level, 
 			RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item,
-			float Ix, float Iy, float Iz, float explodeSize) {
+			float Ix, float Iy, float Iz, float explodeSize,
+			LiftKGraph liftKGraph, float flapsAOABias) {
 		super(entity, level, engineSound, item, 
 				false, Ix, Iy, Iz, explodeSize);
+		this.liftKGraph = liftKGraph;
+		this.flapsAOABias = flapsAOABias;
 	}
 	
 	@Override
@@ -46,7 +53,7 @@ public class EntityPlane extends EntityAircraft {
 	public void readAdditionalSaveData(CompoundTag nbt) {
 		super.readAdditionalSaveData(nbt);
 		CompoundTag presetNbt = AircraftPresets.getPreset(defaultPreset);
-		setWingSurfaceArea(UtilEntity.fixFloatNbt(nbt, "wing_area", presetNbt, 1));
+		setWingSurfaceArea(UtilParse.fixFloatNbt(nbt, "wing_area", presetNbt, 1));
 	}
 
 	@Override
@@ -156,28 +163,16 @@ public class EntityPlane extends EntityAircraft {
 		double air = UtilEntity.getAirPressure(getY());
 		double wing = getWingSurfaceArea();
 		double lift = liftK * air * airFoilSpeedSqr * wing * CO_LIFT;
+		debug("air        = "+air);
+		debug("wing speed = "+airFoilSpeedSqr);
+		debug("aoa        = "+aoa);
+		debug("liftK      = "+liftK);
+		debug("lift mag   = "+lift);
 		return lift;
 	}
 	
 	public double getLiftK() {
-		// TODO 7 use a LiftK vs AOA graph
-		float maxAngle = 30.0f;
-		if (aoa > maxAngle || aoa < -maxAngle) return 0;
-		float stallAngle = 20.0f;
-		double stallK = 0.210;
-		float aoaAbs = Math.abs(aoa);
-		double r = 0;
-		if (aoaAbs <= stallAngle) {
-			double a = -stallK / (stallAngle*stallAngle);
-			double b = -2*stallAngle*a;
-			r =  a*aoaAbs*aoaAbs + b*aoaAbs;
-		} else if (aoaAbs > stallAngle) {
-			double a = -stallK / (maxAngle*maxAngle + stallAngle*stallAngle - 2*maxAngle*stallAngle);
-			double b = -2*stallAngle*a;
-			double c = stallK + a*stallAngle*stallAngle;
-			r = a*aoaAbs*aoaAbs + b*aoaAbs + c;
-		}
-		return Math.signum(aoa) * r;
+		return liftKGraph.getLift(aoa);
 	}
 	
 	@Override

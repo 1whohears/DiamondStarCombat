@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.util;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.Boat;
@@ -86,12 +85,12 @@ public class UtilEntity {
 	 * @return between 0 (no air pressure) and 1
 	 */
 	public static double getAirPressure(double posY) {
-		double space = 1000;
-		double water = 64;
-		double scale = 1;
+		double space = 10000, water = 64;
+		double scale = 1, exp = 2;
+		if (posY <= water) return scale;
 		if (posY > space) return 0;
-		if (posY < water) return scale;
-		return scale/(water-space) * (posY-water) + scale;
+		posY -= water;
+		return Math.pow(Math.abs(posY-space), exp) * Math.pow(space, -exp);
 	}
 	
 	public static boolean isOnGroundOrWater(Entity entity) {
@@ -109,22 +108,6 @@ public class UtilEntity {
 	
 	public static boolean isHeadAboveWater(Entity entity) {
 		return entity.isInWater() && !entity.isUnderWater();
-	}
-	
-	public static float fixFloatNbt(CompoundTag nbt, String tag, CompoundTag presetNbt, float min) {
-		float f = nbt.getFloat(tag);
-		if (f > min) return f;
-		f = presetNbt.getFloat(tag);
-		nbt.putFloat(tag, f);
-		return f;
-	}
-	
-	public static float fixFloatNbt(CompoundTag nbt, String tag, float alt) {
-		if (!nbt.contains(tag)) {
-			nbt.putFloat(tag, alt);
-			return alt;
-		}
-		return nbt.getFloat(tag);
 	}
 	
 }

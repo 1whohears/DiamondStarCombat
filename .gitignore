@@ -25,3 +25,4 @@ build
 *.bak
 *.launch
 **/run/
+aoa_graphs/~$aoa_graphs.xlsx

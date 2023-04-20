@@ -13,8 +13,8 @@ import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftQ;
 import com.onewhohears.dscombat.common.network.toserver.ToServerRequestPlaneData;
-import com.onewhohears.dscombat.data.AircraftPresets;
-import com.onewhohears.dscombat.data.AircraftTextures;
+import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
+import com.onewhohears.dscombat.data.aircraft.AircraftTextures;
 import com.onewhohears.dscombat.data.damagesource.AircraftExplodeDamageSource;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartsManager;
@@ -32,6 +32,7 @@ import com.onewhohears.dscombat.item.ItemGasCan;
 import com.onewhohears.dscombat.item.ItemRepairTool;
 import com.onewhohears.dscombat.util.UtilClientSafeSoundInstance;
 import com.onewhohears.dscombat.util.UtilEntity;
+import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
@@ -131,6 +132,9 @@ public abstract class EntityAircraft extends Entity {
 	
 	public Quaternion prevQ = Quaternion.ONE.copy();
 	public Quaternion clientQ = Quaternion.ONE.copy();
+	public Vec3 clientAV = Vec3.ZERO;
+	public Vec3 clientM = Vec3.ZERO;
+	public Vec3 clientF = Vec3.ZERO;
 	
 	public boolean inputMouseMode, inputFlare, inputShoot, inputSelect, inputOpenMenu;
 	public boolean inputSpecial, inputSpecial2, inputRadarMode, inputBothRoll;
@@ -205,25 +209,25 @@ public abstract class EntityAircraft extends Entity {
         // if this entity is on the client side and receiving the quaternion of the plane from the server 
         if (level.isClientSide()) {
         	if (Q.equals(key)) {
-        		if (isControlledByLocalInstance()) {
-        			PacketHandler.INSTANCE.sendToServer(new ToServerAircraftQ(this));
-        		} else {
+        		if (isControlledByLocalInstance()) PacketHandler.INSTANCE.sendToServer(
+        				new ToServerAircraftQ(this));
+        		else {
         			setPrevQ(getClientQ());
         			setClientQ(getQ());
         		}
         	// TODO 1.3 should angular velocity, moment, and forces be controlled by local client?
-        	/*} else if (F.equals(key)) {
-        		if (isControlledByLocalInstance()) {
-        			// to server pilot forces
-        		}
+        	} else if (F.equals(key)) {
+        		if (isControlledByLocalInstance()) PacketHandler.INSTANCE.sendToServer(
+        				null); // to server pilot forces
+        		else clientF = entityData.get(F);
         	} else if (AV.equals(key)) {
-        		if (isControlledByLocalInstance()) {
-        			// to server pilot angular velocity
-        		}
+        		if (isControlledByLocalInstance()) PacketHandler.INSTANCE.sendToServer(
+        				null); // to server pilot angular velocity
+        		else clientAV = entityData.get(AV);
         	} else if (M.equals(key)) {
-        		if (isControlledByLocalInstance()) {
-        			// to server pilot moments
-        		}*/
+        		if (isControlledByLocalInstance()) PacketHandler.INSTANCE.sendToServer(
+        				null); // to server pilot moments
+        		else clientM = entityData.get(M);
         	} else if (CURRRENT_DYE_ID.equals(key)) {
         		currentTexture = textures.getTexture(getCurrentColorId());
         	}
@@ -253,13 +257,13 @@ public abstract class EntityAircraft extends Entity {
 		setMaxDeltaRoll(nbt.getFloat("maxroll"));
 		setMaxDeltaPitch(nbt.getFloat("maxpitch"));
 		setMaxDeltaYaw(nbt.getFloat("maxyaw"));
-		setRollTorque(UtilEntity.fixFloatNbt(nbt, "rolltorque", presetNbt, 1));
-		setPitchTorque(UtilEntity.fixFloatNbt(nbt, "pitchtorque", presetNbt, 1));
-		setYawTorque(UtilEntity.fixFloatNbt(nbt, "yawtorque", presetNbt, 1));
+		setRollTorque(UtilParse.fixFloatNbt(nbt, "rolltorque", presetNbt, 1));
+		setPitchTorque(UtilParse.fixFloatNbt(nbt, "pitchtorque", presetNbt, 1));
+		setYawTorque(UtilParse.fixFloatNbt(nbt, "yawtorque", presetNbt, 1));
 		setThrottleIncreaseRate(nbt.getFloat("throttleup"));
 		setThrottleDecreaseRate(nbt.getFloat("throttledown"));
 		setIdleHeat(nbt.getFloat("idleheat"));
-		setAircraftMass(UtilEntity.fixFloatNbt(nbt, "mass", presetNbt, 1));
+		setAircraftMass(UtilParse.fixFloatNbt(nbt, "mass", presetNbt, 1));
 		setLandingGear(nbt.getBoolean("landing_gear"));
 		setCurrentThrottle(nbt.getFloat("current_throttle"));
 		setXRot(nbt.getFloat("xRot"));
@@ -1375,27 +1379,33 @@ public abstract class EntityAircraft extends Entity {
     }
     
     public final Vec3 getMoment() {
+    	if (level.isClientSide) return clientM;
     	return entityData.get(M);
     }
     
     public final Vec3 getForces() {
+    	if (level.isClientSide) return clientF;
     	return entityData.get(F);
     }
     
     public final Vec3 getAngularVel() {
+    	if (level.isClientSide) return clientAV;
     	return entityData.get(AV);
     }
     
     public final void setMoment(Vec3 m) {
-    	entityData.set(M, m);
+    	if (level.isClientSide) clientM = m;
+    	else entityData.set(M, m);
     }
     
     public final void setForces(Vec3 f) {
-    	entityData.set(F, f);
+    	if (level.isClientSide) clientF = f;
+    	else entityData.set(F, f);
     }
     
     public final void setAngularVel(Vec3 av) {
-    	entityData.set(AV, av);
+    	if (level.isClientSide) clientAV = av;
+    	else entityData.set(AV, av);
     }
     
     /**

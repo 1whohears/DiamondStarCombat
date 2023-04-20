@@ -6,7 +6,7 @@ import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.crafting.DSCIngredient;
-import com.onewhohears.dscombat.data.AircraftPresets;
+import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;

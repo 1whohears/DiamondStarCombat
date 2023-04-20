@@ -3,9 +3,9 @@ package com.onewhohears.dscombat.data.weapon;
 import java.util.List;
 
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
-import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
-import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
+import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
+import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -25,7 +25,7 @@ public abstract class MissileData extends BulletData {
 	
 	public MissileData(CompoundTag tag) {
 		super(tag);
-		turnRadius = UtilEntity.fixFloatNbt(tag, "turnRadius", 32);
+		turnRadius = UtilParse.fixFloatNbt(tag, "turnRadius", 100);
 		acceleration = tag.getDouble("acceleration");
 		fuseDist = tag.getDouble("fuseDist");
 		fov = tag.getFloat("fov");

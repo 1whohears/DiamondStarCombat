@@ -10,9 +10,10 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientRadarPings;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRecievePlaneData;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRemoveRadar;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRemoveWeapon;
-import com.onewhohears.dscombat.common.network.toclient.ToClientSynchTorque;
+import com.onewhohears.dscombat.common.network.toclient.ToClientAddMoment;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponAmmo;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponIndex;
+import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftAV;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftQ;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftToItem;
 import com.onewhohears.dscombat.common.network.toserver.ToServerCraftPlane;
@@ -145,10 +146,15 @@ public final class PacketHandler {
 			.decoder(ToClientRWRWarning::new)
 			.consumerMainThread(ToClientRWRWarning::handle)
 			.add();
-		net.messageBuilder(ToClientSynchTorque.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ToClientSynchTorque::encode)
-			.decoder(ToClientSynchTorque::new)
-			.consumerMainThread(ToClientSynchTorque::handle)
+		net.messageBuilder(ToClientAddMoment.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ToClientAddMoment::encode)
+			.decoder(ToClientAddMoment::new)
+			.consumerMainThread(ToClientAddMoment::handle)
+			.add();
+		net.messageBuilder(ToServerAircraftAV.class, index++, NetworkDirection.PLAY_TO_SERVER)
+			.encoder(ToServerAircraftAV::encode)
+			.decoder(ToServerAircraftAV::new)
+			.consumerMainThread(ToServerAircraftAV::handle)
 			.add();
 	}
 	

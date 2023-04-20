@@ -5,38 +5,34 @@ import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.UtilPacket;
 
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent.Context;
 
-public class ToClientSynchTorque extends IPacket {
+public class ToClientAddMoment extends IPacket {
 	
 	public final int id;
-	public final float tx, ty, tz;
+	public final Vec3 moment;
 	
-	public ToClientSynchTorque(EntityAircraft craft) {
+	public ToClientAddMoment(EntityAircraft craft, Vec3 moment) {
 		this.id = craft.getId();
-		this.tx = 0;
-		this.ty = 0;
-		this.tz = 0;
+		this.moment = moment;
 	}
 	
-	public ToClientSynchTorque(FriendlyByteBuf buffer) {
+	public ToClientAddMoment(FriendlyByteBuf buffer) {
 		id = buffer.readInt();
-		tx = buffer.readFloat();
-		ty = buffer.readFloat();
-		tz = buffer.readFloat();
+		moment = DataSerializers.VEC3.read(buffer);
 	}
 	
 	@Override
 	public void encode(FriendlyByteBuf buffer) {
 		buffer.writeInt(id);
-		buffer.writeFloat(tx);
-		buffer.writeFloat(ty);
-		buffer.writeFloat(tz);
+		DataSerializers.VEC3.write(buffer, moment);
 	}
 
 	@Override
@@ -44,7 +40,7 @@ public class ToClientSynchTorque extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilPacket.synchTorquePacket(id, tx, ty, tz);
+				UtilPacket.addMomentPacket(id, moment);
 				success.set(true);
 			});
 		});

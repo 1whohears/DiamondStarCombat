@@ -122,14 +122,12 @@ public class UtilPacket {
 		}
 	}
 	
-	public static void synchTorquePacket(int id, float tx, float ty, float tz) {
-		/*Minecraft m = Minecraft.getInstance();
+	public static void addMomentPacket(int id, Vec3 moment) {
+		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityAircraft plane) {
-			plane.torqueX = tx;
-			plane.torqueY = ty;
-			plane.torqueZ = tz;
-		}*/
+			plane.addMoment(moment, false);
+		}
 	}
 	
 }

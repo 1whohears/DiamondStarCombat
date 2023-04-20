@@ -11,6 +11,8 @@ import com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents;
 import com.onewhohears.dscombat.common.container.AircraftMenuContainer;
 import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.common.network.PacketHandler;
+import com.onewhohears.dscombat.common.network.toclient.ToClientAddMoment;
+import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftAV;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftQ;
 import com.onewhohears.dscombat.common.network.toserver.ToServerRequestPlaneData;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
@@ -89,8 +91,6 @@ public abstract class EntityAircraft extends Entity {
 	public static final EntityDataAccessor<Float> THROTTLEDOWN = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Quaternion> Q = SynchedEntityData.defineId(EntityAircraft.class, DataSerializers.QUATERNION);
 	public static final EntityDataAccessor<Vec3> AV = SynchedEntityData.defineId(EntityAircraft.class, DataSerializers.VEC3);
-	public static final EntityDataAccessor<Vec3> M = SynchedEntityData.defineId(EntityAircraft.class, DataSerializers.VEC3);
-	public static final EntityDataAccessor<Vec3> F = SynchedEntityData.defineId(EntityAircraft.class, DataSerializers.VEC3);
 	public static final EntityDataAccessor<Boolean> FREE_LOOK = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Float> STEALTH = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> MAX_ROLL = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
@@ -133,14 +133,14 @@ public abstract class EntityAircraft extends Entity {
 	public Quaternion prevQ = Quaternion.ONE.copy();
 	public Quaternion clientQ = Quaternion.ONE.copy();
 	public Vec3 clientAV = Vec3.ZERO;
-	public Vec3 clientM = Vec3.ZERO;
-	public Vec3 clientF = Vec3.ZERO;
 	
 	public boolean inputMouseMode, inputFlare, inputShoot, inputSelect, inputOpenMenu;
 	public boolean inputSpecial, inputSpecial2, inputRadarMode, inputBothRoll;
 	public float inputThrottle, inputPitch, inputRoll, inputYaw;
 	public float zRot, zRotO; 
 	public Vec3 prevMotion = Vec3.ZERO;
+	public Vec3 forces = Vec3.ZERO, forcesO = Vec3.ZERO;
+	public Vec3 moment = Vec3.ZERO, momentO = Vec3.ZERO;
 	
 	public boolean nightVisionHud = false;
 	
@@ -182,8 +182,6 @@ public abstract class EntityAircraft extends Entity {
 		entityData.define(THROTTLEDOWN, 0.05f);
 		entityData.define(Q, Quaternion.ONE);
 		entityData.define(AV, Vec3.ZERO);
-		entityData.define(M, Vec3.ZERO);
-		entityData.define(F, Vec3.ZERO);
 		entityData.define(FREE_LOOK, true);
 		entityData.define(STEALTH, 1f);
 		entityData.define(MAX_ROLL, 1f);
@@ -215,19 +213,10 @@ public abstract class EntityAircraft extends Entity {
         			setPrevQ(getClientQ());
         			setClientQ(getQ());
         		}
-        	// TODO 1.3 should angular velocity, moment, and forces be controlled by local client?
-        	} else if (F.equals(key)) {
-        		if (isControlledByLocalInstance()) PacketHandler.INSTANCE.sendToServer(
-        				null); // to server pilot forces
-        		else clientF = entityData.get(F);
         	} else if (AV.equals(key)) {
         		if (isControlledByLocalInstance()) PacketHandler.INSTANCE.sendToServer(
-        				null); // to server pilot angular velocity
+        				new ToServerAircraftAV(this));
         		else clientAV = entityData.get(AV);
-        	} else if (M.equals(key)) {
-        		if (isControlledByLocalInstance()) PacketHandler.INSTANCE.sendToServer(
-        				null); // to server pilot moments
-        		else clientM = entityData.get(M);
         	} else if (CURRRENT_DYE_ID.equals(key)) {
         		currentTexture = textures.getTexture(getCurrentColorId());
         	}
@@ -353,8 +342,6 @@ public abstract class EntityAircraft extends Entity {
 		setYRot((float)angles.yaw);
 		zRot = (float)angles.roll;
 		// MOVEMENT
-		setForces(Vec3.ZERO);
-		setMoment(Vec3.ZERO);
 		tickThrottle();
 		if (!isTestMode()) {
 			calcMoveStatsPre(q);
@@ -364,13 +351,18 @@ public abstract class EntityAircraft extends Entity {
 			move(MoverType.SELF, getDeltaMovement());
 			calcMoveStatsPost(q);
 		}
-		if (isControlledByLocalInstance()) syncPacketPositionCodec(getX(), getY(), getZ());
+		tickLerp();
         // OTHER
 		controlSystem();
         tickParts();
 		sounds();
 		if (level.isClientSide) clientTick();
 		else serverTick();
+		// RESET FORCES AND MOMENT
+		forcesO = getForces();
+		momentO = getMoment();
+		setForces(Vec3.ZERO);
+		setMoment(Vec3.ZERO);
 	}
 	
 	/**
@@ -436,7 +428,6 @@ public abstract class EntityAircraft extends Entity {
 	 * called on client side
 	 */
 	public void clientTick() {
-		tickLerp(); 
 		tickHealthSmoke();
 		tickClientLandingGear();
 	}
@@ -898,11 +889,9 @@ public abstract class EntityAircraft extends Entity {
         lerpSteps = 10;
     }
 	
-	/**
-	 * this is used on the client side and fills in the positions and rotations of the entity between ticks
-	 */
 	private void tickLerp() {
 		if (isControlledByLocalInstance()) {
+			syncPacketPositionCodec(getX(), getY(), getZ());
 			lerpSteps = 0;
 			return;
 		}
@@ -1195,7 +1184,7 @@ public abstract class EntityAircraft extends Entity {
 			Vec3 f = source.getSourcePosition().subtract(p).normalize().scale(amount);
 			Vec3 moment = r.cross(f);
 			addMoment(moment, false);
-			//addMomentToPilotClient(); // TODO 1.4 only add torque to aircraft controlled by local instance?
+			addMomentToClient(moment);
 		}
 		if (!level.isClientSide && isOperational()) level.playSound(null, 
 			blockPosition(), ModSounds.VEHICLE_HIT_1.get(), 
@@ -1203,11 +1192,11 @@ public abstract class EntityAircraft extends Entity {
 		return true;
 	}
 	
-	/*public void addMomentToPilotClient() {
+	public void addMomentToClient(Vec3 moment) {
 		if (level.isClientSide) return;
 		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), 
-				new ToClientSynchTorque(this));
-	}*/
+				new ToClientAddMoment(this, moment));
+	}
 	
 	public void explode(DamageSource source) {
 		if (!level.isClientSide) {
@@ -1379,13 +1368,11 @@ public abstract class EntityAircraft extends Entity {
     }
     
     public final Vec3 getMoment() {
-    	if (level.isClientSide) return clientM;
-    	return entityData.get(M);
+    	return moment;
     }
     
     public final Vec3 getForces() {
-    	if (level.isClientSide) return clientF;
-    	return entityData.get(F);
+    	return forces;
     }
     
     public final Vec3 getAngularVel() {
@@ -1394,13 +1381,11 @@ public abstract class EntityAircraft extends Entity {
     }
     
     public final void setMoment(Vec3 m) {
-    	if (level.isClientSide) clientM = m;
-    	else entityData.set(M, m);
+    	moment = m;
     }
     
     public final void setForces(Vec3 f) {
-    	if (level.isClientSide) clientF = f;
-    	else entityData.set(F, f);
+    	forces = f;
     }
     
     public final void setAngularVel(Vec3 av) {

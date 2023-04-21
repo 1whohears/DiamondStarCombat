@@ -136,7 +136,7 @@ public class PilotOverlay {
         	if (h < 0) h += 360;
         	else if (h >= 360) h-= 360;
         	GuiComponent.drawCenteredString(poseStack, m.font, 
-            	h+"", x, y, 0x00ff00);
+        			textByHeading(h), x, y, 0x00ff00);
         }
         // PITCH
         int pitch = (int)Mth.wrapDegrees(player.getXRot());
@@ -144,6 +144,18 @@ public class PilotOverlay {
         // ROLL
         int roll = (int)plane.zRot;
         
+	}
+	
+	private static String textByHeading(int h) {
+    	if (h == 0) return "S";
+    	else if (h == 180) return "N";
+    	else if (h == 90) return "W";
+    	else if (h == 270) return "E";
+    	else if (h == 45) return "SW";
+    	else if (h == 135) return "NW";
+    	else if (h == 225) return "NE";
+    	else if (h == 315) return "SE";
+    	return h+"";
 	}
 	
 	private static final MutableComponent weaponSelect = Component.empty().append("->");
@@ -208,12 +220,34 @@ public class PilotOverlay {
         if (heading < 0) heading += 360;
         GuiComponent.drawCenteredString(poseStack, m.font, 
     			heading+"", cx, height-radarOffset-radarSize-10, 0x8888ff);
+        // CARDINAL
+        int card_color = 0x0000ff, radius2 = radius+4;
+        float card_yaw = -plane.getYRot()*Mth.DEG_TO_RAD;
+        GuiComponent.drawCenteredString(poseStack, m.font, "S", 
+    			cx+(int)(Mth.sin(card_yaw)*radius2), 
+    			cy-(int)(Mth.cos(card_yaw)*radius2), 
+    			card_color);
+        card_yaw = (180-plane.getYRot())*Mth.DEG_TO_RAD;
+        GuiComponent.drawCenteredString(poseStack, m.font, "N", 
+    			cx+(int)(Mth.sin(card_yaw)*radius2), 
+    			cy-(int)(Mth.cos(card_yaw)*radius2), 
+    			card_color);
+        card_yaw = (270-plane.getYRot())*Mth.DEG_TO_RAD;
+        GuiComponent.drawCenteredString(poseStack, m.font, "E", 
+    			cx+(int)(Mth.sin(card_yaw)*radius2), 
+    			cy-(int)(Mth.cos(card_yaw)*radius2), 
+    			card_color);
+        card_yaw = (90-plane.getYRot())*Mth.DEG_TO_RAD;
+        GuiComponent.drawCenteredString(poseStack, m.font, "W", 
+    			cx+(int)(Mth.sin(card_yaw)*radius2), 
+    			cy-(int)(Mth.cos(card_yaw)*radius2), 
+    			card_color);
         // RWR
         for (RWRWarning warn : radar.getClientRWRWarnings()) {
         	Vec3 dp = warn.pos.subtract(plane.position());
         	float yaw = (UtilAngles.getYaw(dp)-plane.getYRot())*Mth.DEG_TO_RAD;
         	int x = cx + (int)(Mth.sin(yaw)*radius);
-        	int y = cy + (int)(-Mth.cos(yaw)*radius);
+        	int y = cy - (int)(Mth.cos(yaw)*radius);
         	int color = 0xffff00;
         	String symbol = "W";
         	if (warn.isMissile) {

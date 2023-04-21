@@ -221,10 +221,25 @@ public class EntityPlane extends EntityAircraft {
 	public boolean isWeaponAngledDown() {
 		return canAimDown && !onGround && inputSpecial2;
 	}
+	
+	@Override
+	public boolean canAngleWeaponDown() {
+    	return canAimDown;
+    }
 
 	@Override
 	public boolean canBreak() {
 		return onGround;
 	}
+
+	@Override
+	public boolean canToggleLandingGear() {
+		return true;
+	}
+	
+	@Override
+	public boolean canFlapsDown() {
+    	return true;
+    }
 
 }

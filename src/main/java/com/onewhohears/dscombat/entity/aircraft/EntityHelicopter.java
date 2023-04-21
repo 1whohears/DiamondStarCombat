@@ -177,4 +177,14 @@ public class EntityHelicopter extends EntityAircraft {
 		return false;
 	}
 
+	@Override
+	public boolean canToggleLandingGear() {
+		return !alwaysLandingGear;
+	}
+	
+	@Override
+	public boolean canHover() {
+    	return true;
+    }
+
 }

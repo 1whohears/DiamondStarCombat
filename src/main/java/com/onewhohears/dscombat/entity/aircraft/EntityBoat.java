@@ -227,4 +227,9 @@ public class EntityBoat extends EntityAircraft {
 		return false;
 	}
 
+	@Override
+	public boolean canToggleLandingGear() {
+		return false;
+	}
+
 }

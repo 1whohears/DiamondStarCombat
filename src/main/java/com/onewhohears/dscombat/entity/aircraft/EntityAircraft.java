@@ -144,6 +144,7 @@ public abstract class EntityAircraft extends Entity {
 	
 	public boolean nightVisionHud = false;
 	
+	protected boolean hasFlares;
 	protected int xzSpeedDir;
 	protected float xzSpeed, totalMass, xzYaw, slideAngle, slideAngleCos, maxThrust, currentFuel, maxFuel;
 	protected double staticFric, kineticFric;
@@ -625,6 +626,7 @@ public abstract class EntityAircraft extends Entity {
 		maxThrust = partsManager.getTotalEngineThrust();
 		currentFuel = partsManager.getCurrentFuel();
 		maxFuel = partsManager.getMaxFuel();
+		hasFlares = partsManager.getFlares().size() > 0;
 	}
 	
 	protected void calcMoveStatsPost(Quaternion q) {
@@ -1615,6 +1617,8 @@ public abstract class EntityAircraft extends Entity {
     	return partsManager.addFuel(fuel);
     }
     
+    public abstract boolean canToggleLandingGear();
+    
     /**
      * @return true if landing gear is out false if folded
      */
@@ -1638,6 +1642,7 @@ public abstract class EntityAircraft extends Entity {
     }
     
     public void toggleLandingGear() {
+    	if (!canToggleLandingGear()) return;
     	setLandingGear(!isLandingGear());
     }
     
@@ -1719,6 +1724,10 @@ public abstract class EntityAircraft extends Entity {
     	entityData.set(FLARE_NUM, flares);
     }
     
+    public boolean hasFlares() {
+    	return hasFlares;
+    }
+    
     protected void debug(String debug) {
     	debug(debug, true);
     }
@@ -1738,6 +1747,18 @@ public abstract class EntityAircraft extends Entity {
     }
     
     public boolean isWeaponAngledDown() {
+    	return false;
+    }
+    
+    public boolean canAngleWeaponDown() {
+    	return false;
+    }
+    
+    public boolean canFlapsDown() {
+    	return false;
+    }
+    
+    public boolean canHover() {
     	return false;
     }
     

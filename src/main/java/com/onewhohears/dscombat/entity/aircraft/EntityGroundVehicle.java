@@ -150,4 +150,9 @@ public class EntityGroundVehicle extends EntityAircraft {
 		return true;
 	}
 
+	@Override
+	public boolean canToggleLandingGear() {
+		return false;
+	}
+
 }

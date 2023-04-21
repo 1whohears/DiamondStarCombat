@@ -64,7 +64,7 @@ public class PilotOverlay {
 		drawMissingVanillaOverlays(m, player, plane, gui, poseStack, partialTick, width, height);
 		drawAircraftStats(m, player, plane, gui, poseStack, partialTick, width, height);
 		drawAircraftAngles(m, player, plane, gui, poseStack, partialTick, width, height);
-		drawAircraftWeapons(m, player, plane, gui, poseStack, partialTick, width, height);
+		drawAircraftWeaponsAndKeys(m, player, plane, gui, poseStack, partialTick, width, height);
 		drawAircraftRadarData(m, player, plane, gui, poseStack, partialTick, width, height);
 		drawAircraftControls(m, player, plane, gui, poseStack, partialTick, width, height);
 		drawAircraftThrottle(m, player, plane, gui, poseStack, partialTick, width, height);
@@ -158,8 +158,9 @@ public class PilotOverlay {
 	}
 	
 	private static final MutableComponent weaponSelect = Component.empty().append("->");
-	private static void drawAircraftWeapons(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
-		int wh=1,x=1,weaponSelectWidth=m.font.width(weaponSelect)+1,maxNameWidth=46,color=0x7340bf;
+	private static void drawAircraftWeaponsAndKeys(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
+		int wh=1,x=1,weaponSelectWidth=m.font.width(weaponSelect)+1,maxNameWidth=46,color1=0x7340bf,color2=0x00ff00,color=color1;
+		// WEAPONS
 		WeaponData sw = plane.weaponSystem.getSelected();
 		if (sw != null) {
 		List<WeaponData> weapons = plane.weaponSystem.getWeapons();
@@ -171,10 +172,13 @@ public class PilotOverlay {
 		}
 		maxNameWidth += 4;
 		for (int i = 0; i < weapons.size(); ++i) {
-			x = 1;
+			x = 1; color = color1;
 			WeaponData data = weapons.get(i);
-			if (data.equals(sw)) GuiComponent.drawString(poseStack, m.font, 
+			if (data.equals(sw)) {
+				color = color2;
+				GuiComponent.drawString(poseStack, m.font, 
 					weaponSelect, x, wh, color);
+			}
 			x += weaponSelectWidth;
 			GuiComponent.drawString(poseStack, m.font, 
 					names[i], x, wh, color);
@@ -184,57 +188,105 @@ public class PilotOverlay {
 					x, wh, color);
 			wh += 10;
 		} }
-		// flares
+		// CONTROLS
+		String text = "";
 		if (maxNameWidth < 50) maxNameWidth = 50;
+		// FLARES
+		if (plane.hasFlares()) {
+			x = 1+weaponSelectWidth;
+			if (plane.inputFlare) color = color2;
+			else color = color1;
+			GuiComponent.drawString(poseStack, m.font, 
+				"Flares("+DSCKeys.flareKey.getKey().getDisplayName().getString()+")", 
+				x, wh, color);
+			x += maxNameWidth;
+			GuiComponent.drawString(poseStack, m.font, 
+				plane.getFlareNum()+"", 
+				x, wh, color);
+			wh += 10;
+		}
+		// FREE LOOK
 		x = 1+weaponSelectWidth;
+		String key = DSCKeys.mouseModeKey.getKey().getDisplayName().getString();
+		if (plane.isFreeLook()) {
+			text = "MouseMode("+key+")";
+			color = color1;
+		} else {
+			text = "FreeLook("+key+")";
+			color = color2;
+		}
 		GuiComponent.drawString(poseStack, m.font, 
-			"Flares("+DSCKeys.flareKey.getKey().getDisplayName().getString()+")", 
-			x, wh, color);
-		x += maxNameWidth;
-		GuiComponent.drawString(poseStack, m.font, 
-			plane.getFlareNum()+"", 
-			x, wh, color);
+			text, x, wh, color);
 		wh += 10;
 		// LANDING GEAR
-		x = 1+weaponSelectWidth;
-    	GuiComponent.drawString(poseStack, m.font, 
-    		"Gear("+DSCKeys.landingGear.getKey().getDisplayName().getString()+")", 
-    		x, wh, color);
-    	x += maxNameWidth;
-    	String text = "IN";
-    	if (plane.isLandingGear()) text = "OUT";
-    	GuiComponent.drawString(poseStack, m.font, 
-    		text, x, wh, color);
-    	wh += 10;
+		if (plane.canToggleLandingGear()) {
+			x = 1+weaponSelectWidth;
+			if (plane.isLandingGear()) {
+    			text = "OUT";
+    			color = color2;
+    		} else {
+    			text = "IN";
+    			color = color1;
+    		}
+    		GuiComponent.drawString(poseStack, m.font, 
+    			"Gear("+DSCKeys.landingGear.getKey().getDisplayName().getString()+")", 
+    			x, wh, color);
+    		x += maxNameWidth;
+    		GuiComponent.drawString(poseStack, m.font, 
+    			text, x, wh, color);
+    		wh += 10;
+		}
 		// BREAKS
     	if (plane.canBreak()) {
     		x = 1+weaponSelectWidth;
     		if (plane.getAircraftType() == AircraftType.PLANE) 
     			text = DSCKeys.special2Key.getKey().getDisplayName().getString();
     		else text = DSCKeys.specialKey.getKey().getDisplayName().getString();
-    		if (text.equals("Left Alt")) text = "LAlt";
+    		if (plane.isBreaking()) color = color2;
+    		else color = color1;
     		GuiComponent.drawString(poseStack, m.font, 
     			"Break("+text+")", 
     			x, wh, color);
-    		x += maxNameWidth;
-    		if (plane.isBreaking()) text = "ON";
-    		else text = "OFF";
-    		GuiComponent.drawString(poseStack, m.font, 
-    			text, x, wh, color);
     		wh += 10;
     	}
-    	// TODO 1 display controls
-		// FREE LOOK
-		
 		// FLAPS DOWN
-    	
+    	if (plane.canFlapsDown()) {
+    		x = 1+weaponSelectWidth;
+    		text = DSCKeys.specialKey.getKey().getDisplayName().getString();
+    		if (plane.inputSpecial) color = color2;
+    		else color = color1;
+    		GuiComponent.drawString(poseStack, m.font, 
+    			"FlapsDown("+text+")", 
+    			x, wh, color);
+    		wh += 10;
+    	}
     	// WEAPON ANGLED DOWN
-		
+		if (plane.canAngleWeaponDown()) {
+    		x = 1+weaponSelectWidth;
+    		text = DSCKeys.special2Key.getKey().getDisplayName().getString();
+    		if (plane.inputSpecial2) color = color2;
+    		else color = color1;
+    		GuiComponent.drawString(poseStack, m.font, 
+    			"AimDown("+text+")", 
+    			x, wh, color);
+    		wh += 10;
+		}
 		// HOVER
-		
+		if (plane.canHover()) {
+			x = 1+weaponSelectWidth;
+    		text = DSCKeys.special2Key.getKey().getDisplayName().getString();
+    		if (plane.inputSpecial) color = color2;
+    		else color = color1;
+    		GuiComponent.drawString(poseStack, m.font, 
+    			"Hover("+text+")", 
+    			x, wh, color);
+    		wh += 10;
+		}
 		// PLAYERS ONLY
         if (plane.radarSystem.hasRadar()) {
         	x = 1+weaponSelectWidth;
+        	if (plane.inputRadarMode) color = color2;
+        	else color = color1;
         	GuiComponent.drawString(poseStack, m.font, 
         		"RMode("+DSCKeys.radarModeKey.getKey().getDisplayName().getString()+")", 
         		x, wh, color);

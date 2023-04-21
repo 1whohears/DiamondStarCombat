@@ -222,4 +222,9 @@ public class EntityBoat extends EntityAircraft {
 		return "dscombat.no_menu_moving";
 	}
 
+	@Override
+	public boolean canBreak() {
+		return false;
+	}
+
 }

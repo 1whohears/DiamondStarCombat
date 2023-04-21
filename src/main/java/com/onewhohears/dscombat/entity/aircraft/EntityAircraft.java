@@ -140,7 +140,7 @@ public abstract class EntityAircraft extends Entity {
 	public float zRot, zRotO; 
 	public Vec3 prevMotion = Vec3.ZERO;
 	public Vec3 forces = Vec3.ZERO, forcesO = Vec3.ZERO;
-	public Vec3 moment = Vec3.ZERO, momentO = Vec3.ZERO;
+	public Vec3 moment = Vec3.ZERO, momentO = Vec3.ZERO, addMomentFromServer = Vec3.ZERO;
 	
 	public boolean nightVisionHud = false;
 	
@@ -327,6 +327,10 @@ public abstract class EntityAircraft extends Entity {
             setDeltaMovement(Vec3.ZERO);
 		// SET PREV/OLD
 		prevMotion = getDeltaMovement();
+		forcesO = getForces();
+		momentO = getMoment();
+		setForces(Vec3.ZERO);
+		setMoment(Vec3.ZERO);
 		// SET DIRECTION
 		zRotO = zRot;
 		Quaternion q;
@@ -358,11 +362,6 @@ public abstract class EntityAircraft extends Entity {
 		sounds();
 		if (level.isClientSide) clientTick();
 		else serverTick();
-		// RESET FORCES AND MOMENT
-		forcesO = getForces();
-		momentO = getMoment();
-		setForces(Vec3.ZERO);
-		setMoment(Vec3.ZERO);
 	}
 	
 	/**
@@ -497,7 +496,8 @@ public abstract class EntityAircraft extends Entity {
 		if (onGround) directionGround(q);
 		else if (isInWater()) directionWater(q);
 		else directionAir(q);
-		Vec3 m = getMoment(), av = getAngularVel();
+		Vec3 m = getMoment().add(addMomentFromServer), av = getAngularVel();
+		addMomentFromServer = Vec3.ZERO;
 		if (!UtilGeometry.isZero(m)) {
 			av = av.add(m.x/Ix, m.y/Iy, m.z/Iz);
 			setAngularVel(av);
@@ -701,6 +701,8 @@ public abstract class EntityAircraft extends Entity {
 	public boolean isBreaking() {
 		return false;
 	}
+	
+	public abstract boolean canBreak();
 	
 	public void applyBreaks() {
 		addFrictionForce(kineticFric);

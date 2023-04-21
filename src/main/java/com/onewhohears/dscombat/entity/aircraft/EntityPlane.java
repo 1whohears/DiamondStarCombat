@@ -164,11 +164,11 @@ public class EntityPlane extends EntityAircraft {
 		double air = UtilEntity.getAirPressure(getY());
 		double wing = getWingSurfaceArea();
 		double lift = liftK * air * airFoilSpeedSqr * wing * CO_LIFT;
-		debug("air        = "+air);
-		debug("wing speed = "+airFoilSpeedSqr);
-		debug("aoa        = "+aoa);
-		debug("liftK      = "+liftK);
-		debug("lift mag   = "+lift);
+		//debug("air        = "+air);
+		//debug("wing speed = "+airFoilSpeedSqr);
+		//debug("aoa        = "+aoa);
+		//debug("liftK      = "+liftK);
+		//debug("lift mag   = "+lift);
 		return lift;
 	}
 	
@@ -220,6 +220,11 @@ public class EntityPlane extends EntityAircraft {
 	@Override
 	public boolean isWeaponAngledDown() {
 		return canAimDown && !onGround && inputSpecial2;
+	}
+
+	@Override
+	public boolean canBreak() {
+		return onGround;
 	}
 
 }

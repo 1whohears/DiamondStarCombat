@@ -172,4 +172,9 @@ public class EntityHelicopter extends EntityAircraft {
     	return true;
     }
 
+	@Override
+	public boolean canBreak() {
+		return false;
+	}
+
 }

@@ -126,7 +126,7 @@ public class UtilPacket {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityAircraft plane) {
-			plane.addMoment(moment, false);
+			plane.addMomentFromServer = plane.addMomentFromServer.add(moment);
 		}
 	}
 	

@@ -145,4 +145,9 @@ public class EntityGroundVehicle extends EntityAircraft {
 		return "dscombat.no_menu_moving";
 	}
 
+	@Override
+	public boolean canBreak() {
+		return true;
+	}
+
 }

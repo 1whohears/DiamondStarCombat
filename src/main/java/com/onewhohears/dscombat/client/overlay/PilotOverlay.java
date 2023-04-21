@@ -198,6 +198,8 @@ public class PilotOverlay {
         int cx = radarOffset + radius;
         int cy = height-radarOffset-radius-5;
         double displayRange = 1000;
+        // PLAYERS ONLY
+        
         // HEADING
         int heading = (int)plane.getYRot();
         if (heading < 0) heading += 360;

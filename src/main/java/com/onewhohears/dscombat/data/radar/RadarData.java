@@ -6,6 +6,7 @@ import java.util.List;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.UtilEntity;
+import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.nbt.CompoundTag;
@@ -19,13 +20,10 @@ import net.minecraft.world.phys.Vec3;
 
 public class RadarData {
 	
-	/**
-	 * TODO 5 radars should have a max range and a strength
-	 * radar can see object if cross_sec_area >= some function of strength with respect to distance
-	 */
 	private String id;
 	private Vec3 pos;
 	private double range;
+	private double sensitivity;
 	private double fov;
 	private int scanRate;
 	private boolean scanAircraft;
@@ -45,6 +43,7 @@ public class RadarData {
 		id = tag.getString("id");
 		pos = new Vec3(0, 0, 0);
 		range = tag.getDouble("range");
+		sensitivity = UtilParse.fixFloatNbt(tag, "sensitivity", 1);
 		fov = tag.getDouble("fov");
 		scanRate = tag.getInt("scanRate");
 		scanAircraft = tag.getBoolean("scanAircraft");
@@ -62,6 +61,7 @@ public class RadarData {
 		tag.putString("id", id);
 		// pos
 		tag.putDouble("range", range);
+		tag.putDouble("sensitivity", sensitivity);
 		tag.putDouble("fov", fov);
 		tag.putInt("scanRate", scanRate);
 		tag.putBoolean("scanAircraft", scanAircraft);
@@ -79,6 +79,7 @@ public class RadarData {
 		id = buffer.readUtf();
 		pos = new Vec3(0, 0, 0);
 		range = buffer.readDouble();
+		sensitivity = buffer.readDouble();
 		fov = buffer.readDouble();
 		scanRate = buffer.readInt();
 		scanAircraft = buffer.readBoolean();
@@ -95,6 +96,7 @@ public class RadarData {
 		buffer.writeUtf(id);
 		// pos
 		buffer.writeDouble(range);
+		buffer.writeDouble(sensitivity);
 		buffer.writeDouble(fov);
 		buffer.writeInt(scanRate);
 		buffer.writeBoolean(scanAircraft);
@@ -168,12 +170,18 @@ public class RadarData {
 		return target.getTeam().getName().equals(controller.getTeam().getName());
 	}
 	
-	private boolean basicCheck(EntityAircraft radar, Entity ping, double rangeMod) {
+	private boolean basicCheck(EntityAircraft radar, Entity ping, double stealth) {
+		//System.out.println("RADAR CHECK "+ping);
 		if (radar.equals(ping)) return false;
+		//System.out.println("not equal");
 		if (!groundCheck(ping)) return false;
+		//System.out.println("passed ground check");
 		if (radar.isVehicleOf(ping)) return false;
-		if (!checkTargetRange(radar, ping, rangeMod)) return false;
+		//System.out.println("not a vehicle of ping");
+		if (!checkTargetRange(radar, ping, stealth)) return false;
+		//System.out.println("passed target range check");
 		if (!checkCanSee(radar, ping)) return false;
+		//System.out.println("passed can see check");
 		return true;
 	}
 	
@@ -185,13 +193,28 @@ public class RadarData {
 		return false;
 	}
 	
-	private boolean checkTargetRange(Entity radar, Entity target, double rangeMod) {
-		if (fov == -1) return radar.distanceTo(target) <= range;
-		return UtilGeometry.isPointInsideCone(
+	private boolean checkTargetRange(Entity radar, Entity target, double stealth) {
+		float dist = radar.distanceTo(target);
+		//System.out.println("dist = "+dist+" range = "+range);
+		if (fov == -1) {
+			if (dist > range) {
+				//System.out.println("out of range");
+				return false;
+			} 
+		} else if (!UtilGeometry.isPointInsideCone(
 				target.position(), 
 				radar.position().add(pos),
 				radar.getLookAngle(), 
-				fov, range*rangeMod);
+				fov, range)) {
+			//System.out.println("not in cone");
+			return false;
+		}
+		double area = stealth;
+		if (target instanceof EntityAircraft plane) area *= plane.getCrossSectionArea();
+		else area *= target.getBbHeight() * target.getBbWidth();
+		double areaMin = (1-Math.pow(range,-2)*Math.pow(dist-range,2))*sensitivity;
+		//System.out.println("area = "+area+" min = "+areaMin);
+		return area >= areaMin;
 	}
 	
 	private boolean checkCanSee(Entity radar, Entity target) {

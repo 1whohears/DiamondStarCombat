@@ -102,7 +102,6 @@ public class EntityPlane extends EntityAircraft {
 	public void tickAlways(Quaternion q) {
 		super.tickAlways(q);
 		setForces(getForces().add(getLiftForce(q)));
-		// TODO 6 inputSpecial2 can lower front weapon angle on some planes
 	}
 	
 	@Override

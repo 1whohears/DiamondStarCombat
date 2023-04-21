@@ -1402,24 +1402,16 @@ public abstract class EntityAircraft extends Entity {
     /**
      * 1 is no stealth
      * 0 is invisible
-     * 0.5 is a radar with a range of 1000 can only see this craft within 500
-     * @return value to be multiplied to the range of a radar
+     * @return value to be multiplied to the cross sectional area
      */
     public final float getStealth() {
-    	/**
-    	* TODO 5 stealth should become based on cross sectional area
-    	* smaller the area the harder for a radar to see
-    	* external parts increase this area
-    	* multiply this stealth value by the cross-sec area for radars
-    	* */
     	return entityData.get(STEALTH);
     }
     
     /**
      * 1 is no stealth
      * 0 is invisible
-     * 0.5 is a radar with a range of 1000 can only see this craft within 500
-     * @param stealth value to be multiplied to the range of a radar
+     * @param stealth value to be multiplied to the cross sectional area
      */
     public final void setStealth(float stealth) {
     	if (stealth < 0) stealth = 0;

@@ -140,7 +140,6 @@ public abstract class EntityMissile extends EntityBullet {
 	
 	public void guideToPosition() {
 		if (targetPos == null) return;
-		System.out.println(getTurnRadius());
 		Vec3 gm = targetPos.subtract(position());
 		float grx = UtilAngles.getPitch(gm), gry = UtilAngles.getYaw(gm);
 		float orx = getXRot(), ory = getYRot();

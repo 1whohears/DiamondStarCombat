@@ -361,7 +361,7 @@ public class PilotOverlay {
 	
 	private static void drawPlaneData(Minecraft m, Player player, EntityPlane plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
 		GuiComponent.drawString(poseStack, m.font, 
-     		String.format("AOA: %3.3f", plane.getAOA()), 
+     		String.format("AOA: %3.1f", plane.getAOA()), 
      		width-stickBaseSize-stickOffset, 
      		height-stickBaseSize-stickOffset-stickKnobSize-stickOffset-10, 
      		0x00ff00);

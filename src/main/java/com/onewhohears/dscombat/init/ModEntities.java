@@ -43,14 +43,14 @@ public class ModEntities {
 			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
 					ModSounds.JET_1, ModItems.JAVI_PLANE, 
 					6, 10, 4, 4, 
-					LiftKGraph.JAVI_PLANE_GRAPH, 8f), 
+					LiftKGraph.JAVI_PLANE_GRAPH, 8f, true), 
 					EntityDimensions.scalable(2.45f, 2.45f)));
 	
 	public static final RegistryObject<EntityType<EntityPlane>> ALEXIS_PLANE = ENTITIES.register("alexis_plane", 
 			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
 					ModSounds.JET_1, ModItems.ALEXIS_PLANE, 
 					4, 8, 2, 3, 
-					LiftKGraph.ALEXIS_PLANE_GRAPH, 8f), 
+					LiftKGraph.ALEXIS_PLANE_GRAPH, 8f, false), 
 					EntityDimensions.scalable(2.0f, 2.0f)));
 	
 	// HELICOPTORS

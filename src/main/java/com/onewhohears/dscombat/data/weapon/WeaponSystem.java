@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.mojang.math.Quaternion;
+import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddWeapon;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRemoveWeapon;
@@ -21,6 +23,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
 
 public class WeaponSystem {
@@ -115,10 +118,10 @@ public class WeaponSystem {
 		if (data == null) return false;
 		String name = data.getId();
 		String reason = null;
-		data.shoot(parent.level, controller, UtilAngles.getRollAxis(parent.getQ()), null, parent, consume);
+		data.shoot(parent.level, controller, getShootDirection(data), null, parent, consume);
 		if (data.isFailedLaunch()) reason = data.getFailedLaunchReason();
 		for (WeaponData wd : weapons) if (wd.getType() == WeaponType.BULLET && wd.getId().equals(name) && !wd.getSlotId().equals(data.getSlotId())) {
-			wd.shoot(parent.level, controller, parent.getLookAngle(), null, parent, consume);
+			wd.shoot(parent.level, controller, getShootDirection(wd), null, parent, consume);
 			if (reason == null && wd.isFailedLaunch()) reason = wd.getFailedLaunchReason();
 		}
 		if (reason != null && controller instanceof ServerPlayer player) {
@@ -126,6 +129,14 @@ public class WeaponSystem {
 		}
 		return true;
 	}
+	
+	public Vec3 getShootDirection(WeaponData data) {
+		Quaternion q = parent.getQ();
+		if (parent.isWeaponAngledDown() && data.getSlotId().equals("dscombat.frame_1")) {
+			q.mul(Vector3f.XP.rotationDegrees(25f));
+		}
+    	return UtilAngles.getRollAxis(q);
+    }
 	
 	public void selectNextWeapon() {
 		++weaponIndex;

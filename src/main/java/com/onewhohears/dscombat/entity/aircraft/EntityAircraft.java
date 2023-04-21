@@ -647,6 +647,13 @@ public abstract class EntityAircraft extends Entity {
 		setDeltaMovement(getDeltaMovement().add(getForces().scale(1/totalMass)));
 	}
 	
+	@Override
+	public void move(MoverType type, Vec3 move) {
+		super.move(type, move);
+		if (noPhysics) return;
+		// FIXME 3 add "stepDown" movement code so vehicles don't slowly fall while driving down blocks
+	}
+	
 	/**
 	 * called on both client and server side every tick to change the craft's movement 
 	 * a force is a Vec3 to be added to this entities motion or getDeltaMovement()
@@ -673,7 +680,6 @@ public abstract class EntityAircraft extends Entity {
 	 * @param q the plane's current rotation
 	 */
 	public void tickGround(Quaternion q) {
-		// FIXME 3 add "stepDown" movement code so vehicles don't slowly fall while driving down blocks
 		Vec3 n = UtilAngles.rotationToVector(getYRot(), 0);
 		if (isSliding() || willSlideFromTurn()) {
 			setDeltaMovement(getDeltaMovement().add(n.scale(
@@ -1735,6 +1741,10 @@ public abstract class EntityAircraft extends Entity {
     			PacketDistributor.PLAYER.with(() -> (ServerPlayer)p),
     			packet);
     	}
+    }
+    
+    public boolean isWeaponAngledDown() {
+    	return false;
     }
     
 }

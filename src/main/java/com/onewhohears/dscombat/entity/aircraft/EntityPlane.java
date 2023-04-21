@@ -28,6 +28,7 @@ public class EntityPlane extends EntityAircraft {
 	
 	public final LiftKGraph liftKGraph;
 	public final float flapsAOABias; // TODO 9.1 animate flaps down
+	public final boolean canAimDown;
 	
 	private final float propellerRate = 3.141f;
 	private float propellerRot = 0, propellerRotOld = 0, aoa = 0, liftK = 0, airFoilSpeedSqr = 0;
@@ -36,11 +37,12 @@ public class EntityPlane extends EntityAircraft {
 	public EntityPlane(EntityType<? extends EntityPlane> entity, Level level, 
 			RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item,
 			float Ix, float Iy, float Iz, float explodeSize,
-			LiftKGraph liftKGraph, float flapsAOABias) {
+			LiftKGraph liftKGraph, float flapsAOABias, boolean canAimDown) {
 		super(entity, level, engineSound, item, 
 				false, Ix, Iy, Iz, explodeSize);
 		this.liftKGraph = liftKGraph;
 		this.flapsAOABias = flapsAOABias;
+		this.canAimDown = canAimDown;
 	}
 	
 	@Override
@@ -214,6 +216,11 @@ public class EntityPlane extends EntityAircraft {
 	public final void setWingSurfaceArea(float area) {
 		if (area < 0) area = 0;
 		entityData.set(WING_AREA, area);
+	}
+	
+	@Override
+	public boolean isWeaponAngledDown() {
+		return canAimDown && !onGround && inputSpecial2;
 	}
 
 }

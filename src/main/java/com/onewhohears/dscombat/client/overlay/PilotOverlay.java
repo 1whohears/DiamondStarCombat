@@ -199,7 +199,10 @@ public class PilotOverlay {
         int cy = height-radarOffset-radius-5;
         double displayRange = 1000;
         // PLAYERS ONLY
-        
+        if (plane.isRadarPlayersOnly()) {
+        	GuiComponent.drawCenteredString(poseStack, m.font, 
+        		"PLAYERS ONLY", cx, height-radarOffset-radarSize-20, 0x0066ff);
+        }
         // HEADING
         int heading = (int)plane.getYRot();
         if (heading < 0) heading += 360;

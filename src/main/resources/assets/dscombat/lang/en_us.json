@@ -93,6 +93,12 @@
 	"death.attack.dscombat.torpedo.player": "%1$s was sunk by %2$s (%3$sm)",
 	"death.attack.dscombat.ir_missile": "%1$s didn't jam the WEZ",
 	"death.attack.dscombat.ir_missile.player": "%1$s was too hot for %2$s (%3$sm)",
+	"death.attack.dscombat.plane_crash_fall": "%1$s didn't look up",
+	"death.attack.dscombat.plane_crash_fall.self": "%1$s sucks at landing",
+	"death.attack.dscombat.plane_crash_fall.player": "%1$s was kamikaze'd by %2$s",
+	"death.attack.dscombat.plane_crash_collide": "%1$s didn't look both ways before crossing",
+	"death.attack.dscombat.plane_crash_collide.self": "%1$s missed",
+	"death.attack.dscombat.plane_crash_collide.player": "%1$s was intentional game designed by %2$s",
 	
 	"key.categories.flight_control": "Diamond Star Combat Flight Control",
 	

@@ -318,9 +318,10 @@ public class PilotOverlay {
         // HEADING
         int heading = (int)plane.getYRot();
         if (heading < 0) heading += 360;
+        int pitch = (int)plane.getXRot();
+        int roll = (int)plane.zRot;
         GuiComponent.drawCenteredString(poseStack, m.font, 
-    			heading+"", cx, height-radarOffset-radarSize-10, 0x8888ff);
-        // TODO 1 display pitch and roll
+    		"P: "+pitch+" Y: "+heading+" R: "+roll, cx, height-radarOffset-radarSize-10, 0x8888ff);
         // CARDINAL
         int card_color = 0x0000ff, radius2 = radius+4;
         float card_yaw = -plane.getYRot()*Mth.DEG_TO_RAD;

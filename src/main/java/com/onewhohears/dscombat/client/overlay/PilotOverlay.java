@@ -19,6 +19,7 @@ import com.onewhohears.dscombat.entity.aircraft.EntityAircraft.AircraftType;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.util.UtilEntity;
+import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.client.Minecraft;
@@ -81,8 +82,15 @@ public class PilotOverlay {
 	});
 	
 	private static void drawDebug(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
-		// TODO 3 display in top right, velocity, forces, angular velocity, moment
-		
+		int color = 0x00ff00;
+		GuiComponent.drawString(poseStack, m.font, 
+			"V"+UtilParse.prettyVec3(plane.getDeltaMovement()), width-100, 0, color);
+		GuiComponent.drawString(poseStack, m.font, 
+			"F"+UtilParse.prettyVec3(plane.forces), width-100, 10, color);
+		GuiComponent.drawString(poseStack, m.font, 
+			"A"+UtilParse.prettyVec3(plane.getAngularVel()), width-100, 20, color);
+		GuiComponent.drawString(poseStack, m.font, 
+			"M"+UtilParse.prettyVec3(plane.moment), width-100, 30, color);
 	}
 	
 	private static void drawMissingVanillaOverlays(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
@@ -469,7 +477,7 @@ public class PilotOverlay {
 	private static void drawAircraftTurretData(Minecraft m, Player player, EntityTurret turret, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
 		GuiComponent.drawString(poseStack, m.font, 
 				"Turret: "+turret.getAmmo(), 
-				width/2-90, 1, 0xffff00);
+				width/2-100, 1, 0xffff00);
 	}
 	
 	private static void drawPlaneData(Minecraft m, Player player, EntityPlane plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {

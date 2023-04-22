@@ -193,4 +193,13 @@ public class UtilParse {
 		return nbt.getFloat(tag);
 	}
 	
+	public static String prettyVec3(Vec3 v) {
+		return String.format("[%3.1f,%3.1f,%3.1f]", v.x, v.y, v.z);
+	}
+	
+	public static String prettyVec3(Vec3 v, int decimals) {
+		String f = "%3."+decimals+"f";
+		return String.format("["+f+","+f+","+f+"]", v.x, v.y, v.z);
+	}
+	
 }

@@ -9,14 +9,10 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 public class EntityBullet extends EntityWeapon {
@@ -80,29 +76,6 @@ public class EntityBullet extends EntityWeapon {
 		super.tick();
 	}
 	
-	@Override
-	public void onHit(HitResult result) {
-		if (isRemoved()) return;
-		setPos(result.getLocation());
-		super.onHit(result);
-	}
-	
-	@Override
-	public void onHitBlock(BlockHitResult result) {
-		super.onHitBlock(result);
-		//System.out.println("BULLET HIT "+result.getBlockPos());
-		kill();
-	}
-	
-	@Override
-	public void onHitEntity(EntityHitResult result) {
-		super.onHitEntity(result);
-		//System.out.println("BULLET HIT "+result.getEntity());
-		DamageSource source = getImpactDamageSource();
-		result.getEntity().hurt(source, getDamage());
-		kill();
-	}
-	
 	protected void checkExplode() {
 		if (tickCount == 0) return;
 		if (!level.hasChunk(chunkPosition().x, chunkPosition().z)) return;
@@ -129,6 +102,7 @@ public class EntityBullet extends EntityWeapon {
 		setDeltaMovement(dir.scale(getSpeed()));
 	}
 	
+	@Override
 	public float getDamage() {
 		return entityData.get(DAMAGE);
 	}

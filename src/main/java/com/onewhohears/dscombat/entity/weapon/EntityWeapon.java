@@ -25,6 +25,7 @@ import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.ClipContext.Fluid;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -168,6 +169,34 @@ public abstract class EntityWeapon extends Projectile {
 				start, end, 
 				getBoundingBox().expandTowards(getDeltaMovement()).inflate(1.0D), 
 				this::canHitEntity);
+	}
+	
+	@Override
+	public void onHit(HitResult result) {
+		if (isRemoved()) return;
+		setPos(result.getLocation());
+		super.onHit(result);
+	}
+	
+	@Override
+	public void onHitBlock(BlockHitResult result) {
+		super.onHitBlock(result);
+		//System.out.println("BULLET HIT "+result.getBlockPos());
+		
+		kill();
+	}
+	
+	@Override
+	public void onHitEntity(EntityHitResult result) {
+		super.onHitEntity(result);
+		//System.out.println("BULLET HIT "+result.getEntity());
+		DamageSource source = getImpactDamageSource();
+		result.getEntity().hurt(source, getDamage());
+		kill();
+	}
+	
+	public float getDamage() {
+		return 0;
 	}
 	
 	protected int getOwnerId() {

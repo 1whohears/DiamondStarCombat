@@ -498,7 +498,6 @@ public abstract class EntityAircraft extends Entity {
 		else if (isInWater()) directionWater(q);
 		else directionAir(q);
 		Vec3 m = getMoment().add(addMomentFromServer), av = getAngularVel();
-		addMomentFromServer = Vec3.ZERO;
 		if (!UtilGeometry.isZero(m)) {
 			av = av.add(m.x/Ix, m.y/Iy, m.z/Iz);
 			setAngularVel(av);
@@ -507,6 +506,7 @@ public abstract class EntityAircraft extends Entity {
 		q.mul(Vector3f.YN.rotationDegrees((float)av.y));
 		q.mul(Vector3f.ZP.rotationDegrees((float)av.z));
 		applyAngularDrag();
+		addMomentFromServer = Vec3.ZERO;
 	}
 	
 	public void applyAngularDrag() {
@@ -1189,10 +1189,16 @@ public abstract class EntityAircraft extends Entity {
 		if (isInvulnerableTo(source)) return false;
 		addHealth(-amount);
 		if (!level.isClientSide && source.isExplosion()) {
-			Vec3 p = UtilGeometry.getClosestPointOnAABB(source.getSourcePosition(), getBoundingBox());
-			Vec3 r = p.subtract(position());
-			Vec3 f = source.getSourcePosition().subtract(p).normalize().scale(amount);
-			Vec3 moment = r.cross(f);
+			Vec3 s = source.getSourcePosition();
+			if (s == null) return true;
+			Vec3 b = UtilGeometry.getClosestPointOnAABB(s, getBoundingBox());
+			Vec3 r = b.subtract(position());
+			Vec3 f;
+			Entity e = source.getDirectEntity();
+			if (s.equals(b) && e != null) 
+				f = e.getDeltaMovement().normalize().scale(amount*10);
+			else f = s.subtract(b).normalize().scale(amount*10);
+ 			Vec3 moment = r.cross(f);
 			addMoment(moment, false);
 			addMomentToClient(moment);
 		}

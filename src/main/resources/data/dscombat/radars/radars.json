@@ -3,7 +3,7 @@
 		{
 			"id": "ar500",
 			"range": 500,
-			"sensitivity": 4,
+			"sensitivity": 2,
 			"fov": 80,
 			"scanRate": 20,
 			"scanAircraft": true,
@@ -15,7 +15,7 @@
 		{
 			"id": "ar1k",
 			"range": 1000,
-			"sensitivity": 4,
+			"sensitivity": 2,
 			"fov": 70,
 			"scanRate": 20,
 			"scanAircraft": true,
@@ -27,7 +27,7 @@
 		{
 			"id": "ar2k",
 			"range": 2000,
-			"sensitivity": 4,
+			"sensitivity": 2,
 			"fov": 70,
 			"scanRate": 20,
 			"scanAircraft": true,
@@ -39,7 +39,7 @@
 		{
 			"id": "gr200",
 			"range": 200,
-			"sensitivity": 2,
+			"sensitivity": 1,
 			"fov": -1,
 			"scanRate": 40,
 			"scanAircraft": true,
@@ -51,7 +51,7 @@
 		{
 			"id": "gr400",
 			"range": 400,
-			"sensitivity": 2,
+			"sensitivity": 1,
 			"fov": -1,
 			"scanRate": 40,
 			"scanAircraft": true,
@@ -63,7 +63,7 @@
 		{
 			"id": "wr400",
 			"range": 400,
-			"sensitivity": 4,
+			"sensitivity": 2,
 			"fov": -1,
 			"scanRate": 30,
 			"scanAircraft": true,
@@ -77,7 +77,7 @@
 		{
 			"id": "wr1k",
 			"range": 1000,
-			"sensitivity": 6,
+			"sensitivity": 2,
 			"fov": -1,
 			"scanRate": 30,
 			"scanAircraft": true,
@@ -91,7 +91,7 @@
 		{
 			"id": "gpr20",
 			"range": 500,
-			"sensitivity": 2,
+			"sensitivity": 1,
 			"fov": -1,
 			"scanRate": 50,
 			"scanAircraft": true,
@@ -105,7 +105,7 @@
 		{
 			"id": "ar20k",
 			"range": 20000,
-			"sensitivity": 10,
+			"sensitivity": 6,
 			"fov": -1,
 			"scanRate": 80,
 			"scanAircraft": true,

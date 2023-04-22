@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents;
@@ -40,16 +41,19 @@ public class PilotOverlay {
 	private static final int stickBaseSize = 60;
 	private static final int stickKnobSize = (int)(stickBaseSize/6);
 	private static final int stickOffset = 1;
-	private static final int radarSize = 120;
-	private static final int radarOffset = 8;
+	private static final int radarSize = 120, radarOffset = 8;
+	private static final int fuelGuageHeight = 60, fuelGuageWidth = 90;
+	private static final int fuelArrowHeight = 10, fuelArrowWidth = 36;
 	private static final ResourceLocation STICK_BASE_CIRCLE = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/stickcanvascircle.png");
 	private static final ResourceLocation STICK_BASE_SQUARE = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/stickcanvassquare.png");
 	private static final ResourceLocation STICK_KNOB = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/stickknob.png");
-	private static final ResourceLocation FUEL = new ResourceLocation(DSCombatMod.MODID,
-            "textures/ui/fuel.png");
+	private static final ResourceLocation FUEL_GUAGE = new ResourceLocation(DSCombatMod.MODID,
+            "textures/ui/fuel_guage.png");
+	private static final ResourceLocation FUEL_GUAGE_ARROW = new ResourceLocation(DSCombatMod.MODID,
+            "textures/ui/fuel_guage_arrow.png");
 	private static final ResourceLocation RADAR = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/radar.png");
 	
@@ -441,15 +445,24 @@ public class PilotOverlay {
 	}
 	
 	private static void drawAircraftFuel(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
-		// TODO 2 this fuel display is ugly
-		RenderSystem.setShaderTexture(0, FUEL);
-        float r = plane.getCurrentFuel() / plane.getMaxFuel();
-        int fh = (int)(r * 128f);
-        int fh2 = 128-fh;
-        GuiComponent.blit(poseStack, width-16, fh2, 
-        		0, fh2, 
-        		16, fh, 
-        		16, 128);
+		RenderSystem.setShaderTexture(0, FUEL_GUAGE);
+        GuiComponent.blit(poseStack, 
+        	width-stickBaseSize-stickKnobSize-3*stickOffset-fuelGuageWidth, 
+        	height-fuelGuageHeight, 
+        	0, 0, fuelGuageWidth, fuelGuageHeight, 
+        	fuelGuageWidth, fuelGuageHeight);
+        RenderSystem.setShaderTexture(0, FUEL_GUAGE_ARROW);
+        float max = plane.getMaxFuel(), r = 0;
+        if (max != 0) r = plane.getCurrentFuel() / max;
+        poseStack.pushPose();
+        poseStack.translate(width-stickBaseSize-stickKnobSize-3*stickOffset-fuelGuageWidth/2, 
+        	height-18, 0);
+        poseStack.mulPose(Vector3f.ZP.rotationDegrees(160f*r+10f));
+        GuiComponent.blit(poseStack, 
+        	-fuelArrowWidth+5, -fuelArrowHeight/2, 
+        	0, 0, fuelArrowWidth, fuelArrowHeight, 
+        	fuelArrowWidth, fuelArrowHeight);
+        poseStack.popPose();
 	}
 	
 	private static void drawAircraftTurretData(Minecraft m, Player player, EntityTurret turret, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {

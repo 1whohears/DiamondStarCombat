@@ -44,7 +44,7 @@
 	
 	"targetType": 1,
 	
-	"turnRadius": 80,
+	"turnRadius": 50,
 	"acceleration": 0.03,
 	"bleed": 0.02,
 	"fuseDist": 2.0,

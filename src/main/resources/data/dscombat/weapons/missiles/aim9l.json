@@ -46,7 +46,7 @@
 	"fuelTicks":300,
 	"maxAmmo":4,
 	
-	"maxRot": 80,
+	"maxRot": 75,
 	"acceleration": 0.03,
 	"bleed": 0.01,
 	"fuseDist": 3,

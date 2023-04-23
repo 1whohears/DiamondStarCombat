@@ -3,8 +3,8 @@ package com.onewhohears.dscombat.entity.weapon;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.onewhohears.dscombat.data.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.data.weapon.IRMissileData;
-import com.onewhohears.dscombat.data.weapon.WeaponDamageSource;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 
 import net.minecraft.world.entity.Entity;
@@ -182,7 +182,7 @@ public class IRMissile extends EntityMissile {
 	
 	@Override
 	protected WeaponDamageSource getImpactDamageSource() {
-		return WeaponDamageSource.ir_missile(getOwner(), this);
+		return WeaponDamageSource.missile_contact(getOwner(), this);
 	}
 
 	@Override

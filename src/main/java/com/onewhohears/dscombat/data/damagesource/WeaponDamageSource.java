@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.data.weapon;
+package com.onewhohears.dscombat.data.damagesource;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -14,38 +14,41 @@ import net.minecraft.world.phys.Vec3;
 public class WeaponDamageSource extends EntityDamageSource {
 	
 	protected final EntityWeapon weapon;
-	protected final float torqueK;
 	
-	public WeaponDamageSource(@Nonnull String damageTypeId, @Nullable Entity shooter, @Nonnull EntityWeapon weapon, boolean explosion, float torque) {
+	public WeaponDamageSource(@Nonnull String damageTypeId, @Nullable Entity shooter, @Nonnull EntityWeapon weapon, boolean explosion) {
 		super(damageTypeId, shooter);
 		this.weapon = weapon;
-		this.torqueK = torque;
-		this.setProjectile();
-		if (explosion) this.setExplosion();
+		setProjectile();
+		if (explosion) setExplosion();
+		// IDEA 7 random custom kill messages
 	}
 	
 	public static WeaponDamageSource bullet(Entity shooter, EntityWeapon weapon) {
-		return new WeaponDamageSource("dscombat.bullet", shooter, weapon, false, 0);
+		return new WeaponDamageSource("dscombat.bullet", shooter, weapon, false);
 	}
 	
 	public static WeaponDamageSource bullet_explode(Entity shooter, EntityWeapon weapon) {
-		return new WeaponDamageSource("dscombat.bullet_explode", shooter, weapon, true, 0.05f);
+		return new WeaponDamageSource("dscombat.bullet_explode", shooter, weapon, true);
 	}
 	
 	public static WeaponDamageSource bomb(Entity shooter, EntityWeapon weapon) {
-		return new WeaponDamageSource("dscombat.bomb", shooter, weapon, true, 0.10f);
+		return new WeaponDamageSource("dscombat.bomb", shooter, weapon, true);
+	}
+	
+	public static WeaponDamageSource missile_contact(Entity shooter, EntityWeapon weapon) {
+		return new WeaponDamageSource("dscombat.missile_contact", shooter, weapon, false);
 	}
 	
 	public static WeaponDamageSource missile(Entity shooter, EntityWeapon weapon) {
-		return new WeaponDamageSource("dscombat.missile", shooter, weapon, true, 0.50f);
+		return new WeaponDamageSource("dscombat.missile", shooter, weapon, true);
 	}
 	
 	public static WeaponDamageSource torpedo(Entity shooter, EntityWeapon weapon) {
-		return new WeaponDamageSource("dscombat.torpedo", shooter, weapon, true, 0.40f);
+		return new WeaponDamageSource("dscombat.torpedo", shooter, weapon, true);
 	}
 	
 	public static WeaponDamageSource ir_missile(Entity shooter, EntityWeapon weapon) {
-		return new WeaponDamageSource("dscombat.ir_missile", shooter, weapon, true, 0.50f);
+		return new WeaponDamageSource("dscombat.ir_missile", shooter, weapon, true);
 	}
 	
 	@Nonnull
@@ -58,10 +61,6 @@ public class WeaponDamageSource extends EntityDamageSource {
 	@Override
 	public Entity getEntity() {
 		return entity;
-	}
-	
-	public float getTorqueK() {
-		return torqueK;
 	}
 	
 	@Override

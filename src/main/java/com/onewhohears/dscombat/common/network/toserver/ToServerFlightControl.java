@@ -23,12 +23,14 @@ public class ToServerFlightControl extends IPacket {
 	public final boolean openMenu;
 	public final boolean gear;
 	public final boolean special;
+	public final boolean special2;
 	public final boolean radarMode;
 	public final boolean bothRoll;
 	
 	public ToServerFlightControl(float throttle, float pitch, float roll, float yaw,
 			boolean mouseMode, boolean flare, boolean shoot, boolean select,
-			boolean openMenu, boolean gear, boolean special, boolean radarMode, boolean bothRoll) {
+			boolean openMenu, boolean gear, boolean special, boolean special2, 
+			boolean radarMode, boolean bothRoll) {
 		this.throttle = throttle;
 		this.pitch = pitch;
 		this.roll = roll;
@@ -40,6 +42,7 @@ public class ToServerFlightControl extends IPacket {
 		this.openMenu = openMenu;
 		this.gear = gear;
 		this.special = special;
+		this.special2 = special2;
 		this.radarMode = radarMode;
 		this.bothRoll = bothRoll;
 	}
@@ -56,6 +59,7 @@ public class ToServerFlightControl extends IPacket {
 		openMenu = buffer.readBoolean();
 		gear = buffer.readBoolean();
 		special = buffer.readBoolean();
+		special2 = buffer.readBoolean();
 		radarMode = buffer.readBoolean();
 		bothRoll = buffer.readBoolean();
 	}
@@ -72,6 +76,7 @@ public class ToServerFlightControl extends IPacket {
 		buffer.writeBoolean(openMenu);
 		buffer.writeBoolean(gear);
 		buffer.writeBoolean(special);
+		buffer.writeBoolean(special2);
 		buffer.writeBoolean(radarMode);
 		buffer.writeBoolean(bothRoll);
 	}
@@ -84,7 +89,7 @@ public class ToServerFlightControl extends IPacket {
 				if (plane.getControllingPassenger() == player) {
 					plane.updateControls(throttle, pitch, roll, yaw,
 							mouseMode, flare, shoot, select, openMenu, 
-							special, radarMode, bothRoll);
+							special, special2, radarMode, bothRoll);
 					if (gear) plane.toggleLandingGear();
 				}
 			}

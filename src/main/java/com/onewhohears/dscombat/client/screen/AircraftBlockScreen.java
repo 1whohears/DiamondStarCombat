@@ -9,7 +9,7 @@ import com.onewhohears.dscombat.common.container.AircraftBlockMenuContainer;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerCraftPlane;
 import com.onewhohears.dscombat.crafting.DSCIngredient;
-import com.onewhohears.dscombat.data.AircraftPresets;
+import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
@@ -128,7 +128,7 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 		font.draw(stack, Component.literal("Pitch Rate: "+data.getDouble("maxpitch")), startX, startY, 0x404040);
 		startY += font.lineHeight;
 		font.draw(stack, Component.literal("Roll Rate: "+data.getDouble("maxroll")), startX, startY, 0x404040);
-		// HOW display plane model
+		// HOW 3 display plane model
 		//Minecraft m = Minecraft.getInstance();
 	}
 	

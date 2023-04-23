@@ -23,7 +23,7 @@ import net.minecraftforge.network.PacketDistributor;
 
 public class PartsManager {
 	
-	// TODO make sure unnecessary add part/radar/weapon packets aren't being sent to client
+	// FIXME 5 make sure unnecessary add part/radar/weapon packets aren't being sent to client
 	
 	private final EntityAircraft parent;
 	private List<PartSlot> slots = new ArrayList<PartSlot>();
@@ -45,12 +45,11 @@ public class PartsManager {
 			CompoundTag tag = list.getCompound(i);
 			slots.add(new PartSlot(tag));
 		}
-		createNewInventory();
 		readData = true;
 	}
 	
 	private void createNewInventory() {
-		//System.out.println("CREATING NEW INVENTORY for slots "+this);
+		//System.out.println("CREATING NEW INVENTORY "+this.toString());
 		inventory = new SimpleContainer(slots.size()) {
 			@Override
 			public void setChanged() {
@@ -125,20 +124,6 @@ public class PartsManager {
 		compound.put("slots", list);
 	}
 	
-	/*public PartsManager(FriendlyByteBuf buffer) {
-		int num = buffer.readInt();
-		for (int i = 0; i < num; ++i) slots.add(new PartSlot(buffer));
-		createNewInventory();
-		readData = true;
-	}*/
-	
-	/*public void read(FriendlyByteBuf buffer) {
-		int num = buffer.readInt();
-		for (int i = 0; i < num; ++i) slots.add(new PartSlot(buffer));
-		createNewInventory();
-		readData = true;
-	}*/
-	
 	public static List<PartSlot> readSlotsFromBuffer(FriendlyByteBuf buffer) {
 		List<PartSlot> ps = new ArrayList<PartSlot>();
 		int num = buffer.readInt();
@@ -153,7 +138,6 @@ public class PartsManager {
 	
 	public void setPartSlots(List<PartSlot> slots) {
 		this.slots = slots;
-		createNewInventory();
 		this.readData = true;
 	}
 	
@@ -187,7 +171,7 @@ public class PartsManager {
 	public String toString() {
 		String s = "Parts:";
 		for (int i = 0; i < slots.size(); ++i) s += slots.get(i).toString();
-		return s;
+		return s + " client?"+parent.level.isClientSide;
 	}
 	
 	public boolean isReadData() {
@@ -276,6 +260,9 @@ public class PartsManager {
 	}
 	
 	public Container getInventory() {
+		this.readData = false;
+		createNewInventory();
+		this.readData = true;
 		return inventory;
 	}
 	

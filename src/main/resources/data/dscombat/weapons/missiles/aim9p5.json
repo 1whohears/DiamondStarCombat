@@ -46,9 +46,9 @@
 	"fuelTicks":300,
 	"maxAmmo":4,
 	
-	"maxRot": 2.5,
+	"maxRot": 70,
 	"acceleration": 0.04,
-	"bleed": 0.006,
+	"bleed": 0.01,
 	"fuseDist": 3,
 	"fov": 70,
 	"flareResistance": 1.0

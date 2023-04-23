@@ -5,8 +5,7 @@
 	"max_health": 800,
 	"health": 800,
 	
-	"weight": 200,
-	"surfacearea": 1.0,
+	"mass": 200,
 	
 	"stealth": 0.6,
 	"idleheat": 15.0,
@@ -15,9 +14,9 @@
 	"maxroll": 2.0,
 	"maxpitch": 2.0,
 	"maxyaw": 2.0,
-	"accroll": 0.3,
-	"accpitch": 0.3,
-	"accyaw": 0.3,
+	"rolltorque": 1,
+	"pitchtorque": 1,
+	"yawtorque": 1,
 	
 	"throttleup": 0.04,
 	"throttledown": 0.04,

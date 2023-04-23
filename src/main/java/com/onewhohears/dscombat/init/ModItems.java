@@ -99,6 +99,7 @@ public class ModItems {
 			() -> new ItemBuffPart(BuffType.DATA_LINK, PartSlot.ADVANCED_INTERNAL));
 	public static final RegistryObject<Item> NIGHT_VISION_HUD = ITEMS.register("night_vision_hud", 
 			() -> new ItemBuffPart(BuffType.NIGHT_VISION_HUD, PartSlot.ADVANCED_INTERNAL));
+	// IDEA 6 radio part buff. can play music disks.
 	
 	// TOOLS
 	public static final RegistryObject<Item> WRENCH = ITEMS.register("wrench", 
@@ -132,10 +133,10 @@ public class ModItems {
 	
 	// ENGINES
 	public static final RegistryObject<Item> C6_ENGINE = ITEMS.register("c6_engine", 
-			() -> new ItemEngine(1.2f, 8f*(float)EntityAircraft.ACC_GRAVITY, 4.0f, 
+			() -> new ItemEngine(1.2f, 9f*(float)EntityAircraft.ACC_GRAVITY, 4.0f, 
 					0.005f, false, PartSlot.INTERNAL_ALL));
 	public static final RegistryObject<Item> C12_ENGINE = ITEMS.register("c12_engine", 
-			() -> new ItemEngine(2.5f, 17f*(float)EntityAircraft.ACC_GRAVITY, 8.0f, 
+			() -> new ItemEngine(2.5f, 18f*(float)EntityAircraft.ACC_GRAVITY, 8.0f, 
 					0.012f, false, PartSlot.INTERNAL_ALL));
 	
 	// RADARS
@@ -178,7 +179,7 @@ public class ModItems {
 	
 	// FLARE DISPENSERS
 	public static final RegistryObject<Item> BASIC_FLARE_DISPENSER = ITEMS.register("basic_flare_dispenser", 
-			() -> new ItemFlareDispenser(0.5f, 0, 20, 5.0f, 100, PartSlot.INTERNAL_ALL));
+			() -> new ItemFlareDispenser(0.5f, 0, 20, 8.0f, 100, PartSlot.INTERNAL_ALL));
 	
 	// WEAPON PARTS
 	public static final RegistryObject<Item> XM12 = ITEMS.register("xm12", 
@@ -187,34 +188,39 @@ public class ModItems {
 			() -> new ItemWeaponPart(2f, "light_missile_rack", PartSlot.EXTERNAL_ALL)); 
 	public static final RegistryObject<Item> HEAVY_MISSILE_RACK = ITEMS.register("heavy_missile_rack", 
 			() -> new ItemWeaponPart(4f, "heavy_missile_rack", PartSlot.EXTERNAL_ALL)); 
+	/**
+	 * IDEA 2 radar jamming pod
+	 * causes victims radar to display random noise
+	 * if your radar is strong enough and you get close enough, you stop getting jammed
+	 */
 	
 	// PLANES
 	public static final RegistryObject<Item> JAVI_PLANE = ITEMS.register("javi_plane", 
-			() -> new ItemAircraft(ModEntities.JAVI_PLANE.get(), "javi_plane", true));
+			() -> new ItemAircraft(ModEntities.JAVI_PLANE.get()));
 	public static final RegistryObject<Item> ALEXIS_PLANE = ITEMS.register("alexis_plane", 
-			() -> new ItemAircraft(ModEntities.ALEXIS_PLANE.get(), "alexis_plane", true));
+			() -> new ItemAircraft(ModEntities.ALEXIS_PLANE.get()));
 	
 	// HELICOPTERS
 	public static final RegistryObject<Item> NOAH_CHOPPER = ITEMS.register("noah_chopper", 
-			() -> new ItemAircraft(ModEntities.NOAH_CHOPPER.get(), "noah_chopper", true));
+			() -> new ItemAircraft(ModEntities.NOAH_CHOPPER.get()));
 	
 	// CARS
 	public static final RegistryObject<Item> ORANGE_TESLA = ITEMS.register("orange_tesla", 
-			() -> new ItemAircraft(ModEntities.ORANGE_TESLA.get(), "orange_tesla", false));
+			() -> new ItemAircraft(ModEntities.ORANGE_TESLA.get()));
 	
 	// TANKS
 	public static final RegistryObject<Item> MRBUDGER_TANK = ITEMS.register("mrbudger_tank", 
-			() -> new ItemAircraft(ModEntities.MRBUDGER_TANK.get(), "mrbudger_tank", false));
+			() -> new ItemAircraft(ModEntities.MRBUDGER_TANK.get()));
 	public static final RegistryObject<Item> SMALL_ROLLER = ITEMS.register("small_roller", 
-			() -> new ItemAircraft(ModEntities.SMALL_ROLLER.get(), "small_roller", false));
+			() -> new ItemAircraft(ModEntities.SMALL_ROLLER.get()));
 	
 	// BOATS
 	public static final RegistryObject<Item> NATHAN_BOAT = ITEMS.register("nathan_boat", 
-			() -> new ItemAircraft(ModEntities.NATHAN_BOAT.get(), "nathan_boat", false));
+			() -> new ItemAircraft(ModEntities.NATHAN_BOAT.get()));
 	
 	// SUBMARINES
 	public static final RegistryObject<Item> ANDOLF_SUB = ITEMS.register("andolf_sub", 
-			() -> new ItemAircraft(ModEntities.ANDOLF_SUB.get(), "andolf_sub", true));
+			() -> new ItemAircraft(ModEntities.ANDOLF_SUB.get()));
 	
 	
 }

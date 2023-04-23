@@ -176,5 +176,30 @@ public class UtilParse {
 		}
 		return null;
 	}
+
+	public static float fixFloatNbt(CompoundTag nbt, String tag, CompoundTag presetNbt, float min) {
+		float f = nbt.getFloat(tag);
+		if (f > min) return f;
+		f = presetNbt.getFloat(tag);
+		nbt.putFloat(tag, f);
+		return f;
+	}
+
+	public static float fixFloatNbt(CompoundTag nbt, String tag, float alt) {
+		if (!nbt.contains(tag)) {
+			nbt.putFloat(tag, alt);
+			return alt;
+		}
+		return nbt.getFloat(tag);
+	}
+	
+	public static String prettyVec3(Vec3 v) {
+		return String.format("[%3.1f,%3.1f,%3.1f]", v.x, v.y, v.z);
+	}
+	
+	public static String prettyVec3(Vec3 v, int decimals) {
+		String f = "%3."+decimals+"f";
+		return String.format("["+f+","+f+","+f+"]", v.x, v.y, v.z);
+	}
 	
 }

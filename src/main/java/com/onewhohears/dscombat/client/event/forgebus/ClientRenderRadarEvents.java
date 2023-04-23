@@ -12,8 +12,8 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexBuffer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
+import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 
 import net.minecraft.client.Minecraft;
@@ -55,6 +55,7 @@ public final class ClientRenderRadarEvents {
 		RenderSystem.disableTexture();
 		GL11.glEnable(GL11.GL_LINE_SMOOTH);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
+		// IDEA 1 show last known target location
 		for (int i = 0; i < pings.size(); ++i) {
 			RadarPing p = pings.get(i);
 			

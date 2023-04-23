@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.data.AircraftTextures;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.core.BlockPos;
@@ -25,8 +24,10 @@ public class EntityBoat extends EntityAircraft {
 	protected double waterLevel;
 	
 	public EntityBoat(EntityType<? extends EntityBoat> entity, Level level, 
-			AircraftTextures textures, RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item) {
-		super(entity, level, textures, engineSound, item, true);
+			RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item,
+			float explodeSize) {
+		super(entity, level, engineSound, item, 
+				true, 6, 10, 4, explodeSize);
 	}
 	
 	@Override
@@ -58,7 +59,7 @@ public class EntityBoat extends EntityAircraft {
 	public void directionGround(Quaternion q) {
 		flatten(q, 4f, 4f, true);
 		if (!isOperational()) return;
-		addTorqueY(inputYaw * getAccelerationYaw() * 0.1f, true);
+		addMomentY(inputYaw * getYawTorque() * 0.1f, true);
 	}
 	
 	@Override
@@ -70,7 +71,7 @@ public class EntityBoat extends EntityAircraft {
 	public void directionWater(Quaternion q) {
 		if (!isOperational()) return;
 		flatten(q, 2f, 2f, true);
-		addTorqueY(inputYaw * getAccelerationYaw(), true);
+		addMomentY(inputYaw * getYawTorque(), true);
 	}
 	
 	@Override
@@ -181,9 +182,10 @@ public class EntityBoat extends EntityAircraft {
 	@Override
 	public void updateControls(float throttle, float pitch, float roll, float yaw,
 			boolean mouseMode, boolean flare, boolean shoot, boolean select,
-			boolean openMenu, boolean special, boolean radarMode, boolean bothRoll) {
+			boolean openMenu, boolean special, boolean special2, boolean radarMode, 
+			boolean bothRoll) {
 		super.updateControls(throttle, pitch, roll, yaw, mouseMode, flare, shoot, 
-				select, openMenu, special, radarMode, bothRoll);
+				select, openMenu, special, special2, radarMode, bothRoll);
 		this.inputThrottle = pitch;
 		this.inputPitch = throttle;
 	}
@@ -218,6 +220,16 @@ public class EntityBoat extends EntityAircraft {
 	@Override
 	public String getOpenMenuError() {
 		return "dscombat.no_menu_moving";
+	}
+
+	@Override
+	public boolean canBreak() {
+		return false;
+	}
+
+	@Override
+	public boolean canToggleLandingGear() {
+		return false;
 	}
 
 }

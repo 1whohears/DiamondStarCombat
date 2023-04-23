@@ -7,32 +7,24 @@ import net.minecraft.client.KeyMapping;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.settings.KeyConflictContext;
 
-public final class KeyInit {
+public final class DSCKeys {
 	
-	private KeyInit() {
+	private DSCKeys() {
 	}
 	
 	public static final String FLIGHT_CONTROL = "key.categories.flight_control"; 
 	
-	public static KeyMapping throttleUpKey;
-	public static KeyMapping throttleDownKey;
-	public static KeyMapping pitchUpKey;
-	public static KeyMapping pitchDownKey;
-	public static KeyMapping rollLeftKey;
-	public static KeyMapping rollRightKey;
-	public static KeyMapping yawLeftKey;
-	public static KeyMapping yawRightKey;
-	public static KeyMapping flareKey;
-	public static KeyMapping mouseModeKey;
-	public static KeyMapping shootKey;
-	public static KeyMapping weaponSelectKey;
-	public static KeyMapping resetMouseKey;
-	public static KeyMapping planeMenuKey;
+	public static KeyMapping throttleUpKey, throttleDownKey;
+	public static KeyMapping pitchUpKey, pitchDownKey;
+	public static KeyMapping rollLeftKey, rollRightKey;
+	public static KeyMapping yawLeftKey, yawRightKey;
+	public static KeyMapping flareKey, weaponSelectKey;
+	public static KeyMapping mouseModeKey, resetMouseKey;
+	public static KeyMapping shootKey, landingGear;
+	public static KeyMapping planeMenuKey, radarModeKey;
+	public static KeyMapping changeSeat, dismount;
+	public static KeyMapping specialKey, special2Key;
 	public static KeyMapping flipControlsKey;
-	public static KeyMapping changeSeat;
-	public static KeyMapping landingGear;
-	public static KeyMapping radarModeKey;
-	public static KeyMapping specialKey;
 	
 	private static RegisterKeyMappingsEvent event;
 	
@@ -52,21 +44,25 @@ public final class KeyInit {
 		weaponSelectKey = registerKey("weapon_select_key", FLIGHT_CONTROL, InputConstants.KEY_G);
 		resetMouseKey = registerKey("reset_mouse_key", FLIGHT_CONTROL, InputConstants.KEY_RALT);
 		planeMenuKey = registerKey("plane_menu_key", FLIGHT_CONTROL, InputConstants.KEY_U);
-		flipControlsKey = registerKey("flip_controls_key", FLIGHT_CONTROL, InputConstants.KEY_LALT);
 		changeSeat = registerKey("change_seat_key", FLIGHT_CONTROL, InputConstants.KEY_SEMICOLON);
 		landingGear = registerKey("landing_gear_key", FLIGHT_CONTROL, InputConstants.KEY_L);
 		radarModeKey = registerKey("radar_mode_key", FLIGHT_CONTROL, InputConstants.KEY_O);
 		specialKey = registerKey("special_key", FLIGHT_CONTROL, InputConstants.KEY_SPACE);
+		special2Key = registerKey("special_2_key", FLIGHT_CONTROL, InputConstants.KEY_LALT);
+		flipControlsKey = registerKey("flip_controls_key", FLIGHT_CONTROL, InputConstants.KEY_LSHIFT);
+		dismount = registerKey("dismount_key", FLIGHT_CONTROL, InputConstants.KEY_H);
 	}
 	
 	private static KeyMapping registerKey(String name, String category, int keycode) {
-		final var key = new KeyMapping("key."+DSCombatMod.MODID+"."+name, KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, keycode, category);
+		final var key = new KeyMapping("key."+DSCombatMod.MODID+"."+name, 
+				KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, keycode, category);
 		event.register(key);
 		return key;
 	}
 	
 	private static KeyMapping registerMouse(String name, String category, int keycode) {
-		final var key = new KeyMapping("key."+DSCombatMod.MODID+"."+name, KeyConflictContext.IN_GAME, InputConstants.Type.MOUSE, keycode, category);
+		final var key = new KeyMapping("key."+DSCombatMod.MODID+"."+name, 
+				KeyConflictContext.IN_GAME, InputConstants.Type.MOUSE, keycode, category);
 		event.register(key);
 		return key;
 	}

@@ -1,10 +1,7 @@
 package com.onewhohears.dscombat.entity.weapon;
 
-import javax.annotation.Nullable;
-
+import com.onewhohears.dscombat.data.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.data.weapon.BulletData;
-import com.onewhohears.dscombat.data.weapon.WeaponDamageSource;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.core.particles.ParticleTypes;
@@ -12,17 +9,10 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.ProjectileUtil;
-import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 public class EntityBullet extends EntityWeapon {
@@ -83,87 +73,12 @@ public class EntityBullet extends EntityWeapon {
 	
 	@Override
 	public void tick() {
-		if (isTestMode()) return;
 		super.tick();
-		//System.out.println("bullet "+this.tickCount+" "+this.level);
-		//System.out.println(this);
-		Vec3 vec3 = this.getDeltaMovement();
-		Vec3 vec32 = this.position();
-		Vec3 vec33 = vec32.add(vec3);
-		HitResult hitresult = this.level.clip(new ClipContext(vec32, vec33, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
-		if (hitresult.getType() != HitResult.Type.MISS) {
-			vec33 = hitresult.getLocation();
-		}
-		Entity owner = getOwner();
-		while(!this.isRemoved()) {
-			EntityHitResult entityhitresult = this.findHitEntity(vec32, vec33);
-			if (entityhitresult != null) {
-				hitresult = entityhitresult;
-			}
-			if (owner != null && hitresult != null && hitresult.getType() == HitResult.Type.ENTITY) {
-				Entity hit = ((EntityHitResult)hitresult).getEntity();
-				System.out.println("BULLET "+this);
-				System.out.println("HIT "+hit);
-				System.out.println("OWNER "+owner);
-				if (owner.equals(hit)) {
-					hitresult = null;
-					entityhitresult = null;
-				} else if (owner instanceof Player player) {
-					if (hit instanceof Player p && !player.canHarmPlayer(p)) {
-						hitresult = null;
-						entityhitresult = null;
-					} else if (hit instanceof EntityAircraft plane) {
-						Entity c = plane.getControllingPassenger();
-						if (player.equals(c) || (c instanceof Player p && !player.canHarmPlayer(p))) {
-							hitresult = null;
-							entityhitresult = null;
-						}
-					}
-				} 
-			}
-			if (hitresult != null && hitresult.getType() != HitResult.Type.MISS && !noPhysics 
-					&& !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, hitresult)) {
-				this.onHit(hitresult);
-				this.hasImpulse = true;
-				break;
-			}
-			if (entityhitresult == null /*|| this.getPierceLevel() <= 0*/) {	
-				break;
-			}
-			hitresult = null;
-		}
-	}
-	
-	@Override
-	public void onHit(HitResult result) {
-		if (this.isRemoved()) return;
-		this.setPos(result.getLocation());
-		super.onHit(result);
-	}
-	
-	@Override
-	public void onHitBlock(BlockHitResult result) {
-		super.onHitBlock(result);
-		//System.out.println("BULLET HIT "+result.getBlockPos());
-		this.kill();
-	}
-	
-	@Override
-	public void onHitEntity(EntityHitResult result) {
-		super.onHitEntity(result);
-		//System.out.println("BULLET HIT "+result.getEntity());
-		DamageSource source = getImpactDamageSource();
-		result.getEntity().hurt(source, getDamage());
-		this.kill();
-	}
-	
-	@Nullable
-	protected EntityHitResult findHitEntity(Vec3 p_36758_, Vec3 p_36759_) {
-		return ProjectileUtil.getEntityHitResult(this.level, this, p_36758_, p_36759_, this.getBoundingBox().expandTowards(this.getDeltaMovement()).inflate(1.0D), this::canHitEntity);
 	}
 	
 	protected void checkExplode() {
-		if (isRemoved()) return;
+		if (tickCount == 0) return;
+		if (!level.hasChunk(chunkPosition().x, chunkPosition().z)) return;
 		if (getExplosive()) {
 			if (!level.isClientSide) {
 				Explosion.BlockInteraction interact = Explosion.BlockInteraction.NONE;
@@ -172,7 +87,7 @@ public class EntityBullet extends EntityWeapon {
 					null, getX(), getY(), getZ(), 
 					getRadius(), getFire(), 
 					interact);
-				System.out.println("EXPLODE "+this);
+				System.out.println("EXPLODE "+this+" "+tickCount);
 			} else {
 				level.addParticle(ParticleTypes.SMOKE, 
 						getX(), getY()+0.5D, getZ(), 
@@ -182,11 +97,12 @@ public class EntityBullet extends EntityWeapon {
 	}
 	
 	@Override
-	protected void motion() {
+	protected void tickSetMove() {
 		Vec3 dir = UtilAngles.rotationToVector(getYRot(), getXRot());
-		this.setDeltaMovement(dir.scale(getSpeed()));
+		setDeltaMovement(dir.scale(getSpeed()));
 	}
 	
+	@Override
 	public float getDamage() {
 		return entityData.get(DAMAGE);
 	}
@@ -237,10 +153,9 @@ public class EntityBullet extends EntityWeapon {
 	
 	@Override
 	public void kill() {
-		//System.out.println("check explode");
-		checkExplode();
-		//System.out.println("super.kill");
+		// ORDER MATTERS
 		super.kill();
+		checkExplode();
 	}
 
 	@Override

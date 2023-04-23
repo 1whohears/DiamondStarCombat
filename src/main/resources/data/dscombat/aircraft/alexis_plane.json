@@ -1,12 +1,12 @@
 {
 	"preset": "alexis_plane",
-	"max_speed": 1.40,
+	"max_speed": 1.45,
 	
 	"max_health": 150,
 	"health": 150,
 	
-	"weight": 20.0,
-	"surfacearea": 12.0,
+	"mass": 20.0,
+	"wing_area": 12.0,
 	
 	"stealth": 0.8,
 	"idleheat": 4.0,
@@ -15,9 +15,9 @@
 	"maxroll": 6.0,
 	"maxpitch": 2.5,
 	"maxyaw": 1.5,
-	"accroll": 0.6,
-	"accpitch": 0.3,
-	"accyaw": 0.5,
+	"rolltorque": 1.0,
+	"pitchtorque": 2.0,
+	"yawtorque": 4.0,
 	
 	"throttleup": 0.04,
 	"throttledown": 0.04,

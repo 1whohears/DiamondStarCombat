@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.util.math;
 
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 public class UtilGeometry {
@@ -95,6 +96,18 @@ public class UtilGeometry {
 	
 	public static boolean isZero(Vec3 v) {
 		return v.x == 0 && v.y == 0 && v.z == 0;
+	}
+	
+	public static Vec3 getClosestPointOnAABB(Vec3 pos, AABB aabb) {
+		if (pos == null) return aabb.getCenter();
+		double rx = pos.x, ry = pos.y, rz = pos.z;
+		if (rx >= aabb.maxX) rx = aabb.maxX;
+		else if (rx <= aabb.minX) rx = aabb.minX;
+		if (ry >= aabb.maxY) ry = aabb.maxY;
+		else if (ry <= aabb.minY) ry = aabb.minY;
+		if (rz >= aabb.maxZ) rz = aabb.maxZ;
+		else if (rz <= aabb.minZ) rz = aabb.minZ;
+		return new Vec3(rx, ry, rz);
 	}
 	
 }

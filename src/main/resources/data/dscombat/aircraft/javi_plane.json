@@ -1,12 +1,12 @@
 {
 	"preset": "javi_plane",
-	"max_speed": 1.15,
+	"max_speed": 1.20,
 	
 	"max_health": 200,
 	"health": 200,
 	
-	"weight": 25,
-	"surfacearea": 16.0,
+	"mass": 25.0,
+	"wing_area": 20.0,
 	
 	"stealth": 1.1,
 	"idleheat": 5.0,
@@ -15,9 +15,9 @@
 	"maxroll": 4.0,
 	"maxpitch": 2.0,
 	"maxyaw": 1.0,
-	"accroll": 0.4,
-	"accpitch": 0.2,
-	"accyaw": 0.3,
+	"rolltorque": 1.0,
+	"pitchtorque": 2.0,
+	"yawtorque": 4.0,
 	
 	"throttleup": 0.04,
 	"throttledown": 0.04,

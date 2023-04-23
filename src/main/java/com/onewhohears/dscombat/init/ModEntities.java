@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.init;
 
 import com.google.common.collect.ImmutableSet;
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.AircraftPresets;
+import com.onewhohears.dscombat.data.aircraft.LiftKGraph;
 import com.onewhohears.dscombat.entity.aircraft.EntityBoat;
 import com.onewhohears.dscombat.entity.aircraft.EntityGroundVehicle;
 import com.onewhohears.dscombat.entity.aircraft.EntityHelicopter;
@@ -41,64 +41,61 @@ public class ModEntities {
 	
 	public static final RegistryObject<EntityType<EntityPlane>> JAVI_PLANE = ENTITIES.register("javi_plane", 
 			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
-					AircraftPresets.getAircraftTextures("javi_plane"),
-					ModSounds.JET_1, ModItems.JAVI_PLANE), 
+					ModSounds.JET_1, ModItems.JAVI_PLANE, 
+					6, 10, 4, 4, 
+					LiftKGraph.JAVI_PLANE_GRAPH, 8f, true), 
 					EntityDimensions.scalable(2.45f, 2.45f)));
 	
 	public static final RegistryObject<EntityType<EntityPlane>> ALEXIS_PLANE = ENTITIES.register("alexis_plane", 
 			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
-					AircraftPresets.getAircraftTextures("alexis_plane"),
-					ModSounds.JET_1, ModItems.ALEXIS_PLANE), 
+					ModSounds.JET_1, ModItems.ALEXIS_PLANE, 
+					4, 8, 2, 3, 
+					LiftKGraph.ALEXIS_PLANE_GRAPH, 8f, false), 
 					EntityDimensions.scalable(2.0f, 2.0f)));
 	
 	// HELICOPTORS
 	
 	public static final RegistryObject<EntityType<EntityHelicopter>> NOAH_CHOPPER = ENTITIES.register("noah_chopper", 
 			() -> createEntityTypeFar((type, level) -> new EntityHelicopter(type, level, 
-					AircraftPresets.getAircraftTextures("noah_chopper"),
-					ModSounds.HELI_1, ModItems.NOAH_CHOPPER, true), 
+					ModSounds.HELI_1, ModItems.NOAH_CHOPPER, true, 
+					8, 6, 4, 4), 
 					EntityDimensions.scalable(2.8f, 2.8f)));
 	
 	// TANKS
 	
 	public static final RegistryObject<EntityType<EntityGroundVehicle>> MRBUDGER_TANK = ENTITIES.register("mrbudger_tank", 
 			() -> createEntityTypeFar((type, level) -> new EntityGroundVehicle(type, level, 
-					AircraftPresets.getAircraftTextures("mrbudger_tank"),
-					ModSounds.TANK_1, ModItems.MRBUDGER_TANK, true), 
+					ModSounds.TANK_1, ModItems.MRBUDGER_TANK, true, 3), 
 					EntityDimensions.scalable(3.0f, 2.5f)));
 	
 	public static final RegistryObject<EntityType<EntityGroundVehicle>> SMALL_ROLLER = ENTITIES.register("small_roller", 
 			() -> createEntityTypeFar((type, level) -> new EntityGroundVehicle(type, level, 
-					AircraftPresets.getAircraftTextures("small_roller"),
-					ModSounds.TANK_1, ModItems.SMALL_ROLLER, true), 
+					ModSounds.TANK_1, ModItems.SMALL_ROLLER, true, 1), 
 					EntityDimensions.scalable(1.5f, 0.8f)));
 	
 	// CARS
 	
 	public static final RegistryObject<EntityType<EntityGroundVehicle>> ORANGE_TESLA = ENTITIES.register("orange_tesla", 
 			() -> createEntityTypeFar((type, level) -> new EntityGroundVehicle(type, level, 
-					AircraftPresets.getAircraftTextures("orange_tesla"),
-					ModSounds.ORANGE_TESLA, ModItems.ORANGE_TESLA, false), 
+					ModSounds.ORANGE_TESLA, ModItems.ORANGE_TESLA, false, 2), 
 					EntityDimensions.scalable(2.5f, 2.15f)));
 	
 	// BOATS
 	
 	public static final RegistryObject<EntityType<EntityBoat>> NATHAN_BOAT = ENTITIES.register("nathan_boat", 
 			() -> createEntityTypeFar((type, level) -> new EntityBoat(type, level, 
-					AircraftPresets.getAircraftTextures("nathan_boat"),
-					ModSounds.BOAT_1, ModItems.NATHAN_BOAT), 
+					ModSounds.BOAT_1, ModItems.NATHAN_BOAT, 2), 
 					EntityDimensions.scalable(3.0f,1.5f)));
 	
 	// SUBMARINES
 	
 	public static final RegistryObject<EntityType<EntitySubmarine>> ANDOLF_SUB = ENTITIES.register("andolf_sub", 
 			() -> createEntityTypeFar((type, level) -> new EntitySubmarine(type, level, 
-					AircraftPresets.getAircraftTextures("andolf_sub"),
-					ModSounds.SUB_1, ModItems.ANDOLF_SUB), 
+					ModSounds.SUB_1, ModItems.ANDOLF_SUB, 4), 
 					EntityDimensions.scalable(4.5f,4.0f)));
 	
 	/* 
-	 * IDEA more vehicles
+	 * IDEA 5 more vehicles
 	 * 
 	 * PLANES
 	 * wooden plane, large wooden plane, something like a spitfire, something like a p51 mustang 
@@ -116,7 +113,7 @@ public class ModEntities {
 	 * 
 	 * weather balloon
 	 * 
-	 * IDEA AI for planes/turrets or an auto pilot module
+	 * IDEA 9 AI for planes/turrets or an auto pilot module
 	 */
 	
 	public static final RegistryObject<EntityType<EntitySeat>> SEAT = ENTITIES.register("seat", 

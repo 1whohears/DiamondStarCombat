@@ -18,14 +18,12 @@ apply plugin: 'maven-publish'
 
 group = 'com.onewhohears.dscombat'
 archivesBaseName = 'dscombat-1.19.2'
-version = '0.5.3'
+version = '0.5.6'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 minecraft {
-	// accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-	
     mappings channel: 'parchment', version: '2022.11.27-1.19.2'
     
     runs {
@@ -89,17 +87,17 @@ dependencies {
 }
 
 jar {
-    manifest {
-        attributes([
-                "Specification-Title"     : "Diamond Star Combat",
-                "Specification-Vendor"    : "1whohears",
-                "Specification-Version"   : version, 
-                "Implementation-Title"    : "Diamond Star Combat",
-                "Implementation-Version"  : version,
-                "Implementation-Vendor"   : "1whohears",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
-        ])
-    }
+	manifest {
+		attributes([
+        	"Specification-Title"     : "Diamond Star Combat",
+			"Specification-Vendor"    : "1whohears",
+			"Specification-Version"   : version, 
+			"Implementation-Title"    : "Diamond Star Combat",
+			"Implementation-Version"  : version,
+			"Implementation-Vendor"   : "1whohears",
+			"Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+		])
+	}
 }
 
 jar.finalizedBy('reobfJar')

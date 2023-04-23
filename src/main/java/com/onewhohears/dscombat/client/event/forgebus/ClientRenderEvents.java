@@ -34,7 +34,7 @@ public class ClientRenderEvents {
 		float[] relangles = UtilAngles.globalToRelativeDegrees(player.getXRot(), player.getYRot(), q);
 		player.setYBodyRot(relangles[1]);
 		player.setYHeadRot(relangles[1]);
-		// HOW set player head model part x rot to relangles[0]
+		// HOW 2 set player head model part x rot to relangles[0]
 		//event.getRenderer().getModel().head.xRot = (float) Math.toRadians(relangles[0]);
 		//event.getRenderer().getModel().head.xRot = 0;
 		/*event.getRenderer().getModel().setupAnim((LocalPlayer)player, 0f, 
@@ -46,7 +46,7 @@ public class ClientRenderEvents {
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
 		if (!(player.getVehicle() instanceof EntitySeat seat)) return;
-		// HOW revive vanilla hand swing effect
+		// HOW 1 revive vanilla hand swing effect also mr crayfish guns doesn't visually work
 		event.getPoseStack().setIdentity();
 	}
 	

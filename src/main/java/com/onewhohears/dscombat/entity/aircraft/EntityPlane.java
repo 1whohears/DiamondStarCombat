@@ -1,11 +1,17 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.data.AircraftTextures;
+import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
+import com.onewhohears.dscombat.data.aircraft.LiftKGraph;
 import com.onewhohears.dscombat.util.UtilEntity;
+import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
@@ -16,15 +22,46 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class EntityPlane extends EntityAircraft {
 	
-	public static final double CO_LIFT = 0.500;
+	public static final EntityDataAccessor<Float> WING_AREA = SynchedEntityData.defineId(EntityPlane.class, EntityDataSerializers.FLOAT);
 	
-	private final float propellerRate = 3.141f, flapsAOABias = 10f;
+	public static final double CO_LIFT = 0.110;
+	
+	public final LiftKGraph liftKGraph;
+	public final float flapsAOABias; // TODO 9.1 animate flaps down
+	public final boolean canAimDown;
+	
+	private final float propellerRate = 3.141f;
 	private float propellerRot = 0, propellerRotOld = 0, aoa = 0, liftK = 0, airFoilSpeedSqr = 0;
 	private Vec3 liftDir = Vec3.ZERO, airFoilAxes = Vec3.ZERO;
 	
 	public EntityPlane(EntityType<? extends EntityPlane> entity, Level level, 
-			AircraftTextures textures, RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item) {
-		super(entity, level, textures, engineSound, item, false);
+			RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item,
+			float Ix, float Iy, float Iz, float explodeSize,
+			LiftKGraph liftKGraph, float flapsAOABias, boolean canAimDown) {
+		super(entity, level, engineSound, item, 
+				false, Ix, Iy, Iz, explodeSize);
+		this.liftKGraph = liftKGraph;
+		this.flapsAOABias = flapsAOABias;
+		this.canAimDown = canAimDown;
+	}
+	
+	@Override
+	public void defineSynchedData() {
+		super.defineSynchedData();
+		entityData.define(WING_AREA, 10f);
+	}
+	
+	@Override
+	public void readAdditionalSaveData(CompoundTag nbt) {
+		super.readAdditionalSaveData(nbt);
+		CompoundTag presetNbt = AircraftPresets.getPreset(defaultPreset);
+		setWingSurfaceArea(UtilParse.fixFloatNbt(nbt, "wing_area", presetNbt, 1));
+	}
+
+	@Override
+	protected void addAdditionalSaveData(CompoundTag compound) {
+		super.addAdditionalSaveData(compound);
+		compound.putFloat("wing_area", getWingSurfaceArea());
 	}
 	
 	@Override
@@ -54,17 +91,17 @@ public class EntityPlane extends EntityAircraft {
 	public void directionAir(Quaternion q) {
 		super.directionAir(q);
 		if (!isOperational()) return;
-		// TODO turn assist button
-		addTorqueX(inputPitch * getAccelerationPitch(), true);
-		addTorqueY(inputYaw * getAccelerationYaw(), true);
-		if (inputBothRoll) flatten(q, 0, getAccelerationRoll(), false);
-		else addTorqueZ(inputRoll * getAccelerationRoll(), true);
+		// IDEA 3 turn assist button
+		addMomentX(inputPitch * getPitchTorque(), true);
+		addMomentY(inputYaw * getYawTorque(), true);
+		if (inputBothRoll) flatten(q, 0, getRollTorque(), false);
+		else addMomentZ(inputRoll * getRollTorque(), true);
 	}
 	
 	@Override
 	public void tickAlways(Quaternion q) {
 		super.tickAlways(q);
-		forces = forces.add(getLiftForce(q));
+		setForces(getForces().add(getLiftForce(q)));
 	}
 	
 	@Override
@@ -81,6 +118,15 @@ public class EntityPlane extends EntityAircraft {
 	@Override
 	public double getDriveAcc() {
 		return 0;
+	}
+	
+	@Override
+	public boolean isBreaking() {
+		return inputSpecial2 && isOnGround();
+	}
+	
+	public boolean isFlapsDown() {
+		return inputSpecial;
 	}
 	
 	@Override
@@ -103,7 +149,7 @@ public class EntityPlane extends EntityAircraft {
 			aoa = (float) UtilGeometry.angleBetweenDegrees(airFoilAxes, u);
 			if (liftDir.dot(u) > 0) aoa *= -1;
 		}
-		if (inputSpecial) aoa += flapsAOABias;
+		if (isFlapsDown()) aoa += flapsAOABias;
 		liftK = (float) getLiftK();
 		//System.out.println("liftK = "+liftK);
 	}
@@ -118,27 +164,16 @@ public class EntityPlane extends EntityAircraft {
 		double air = UtilEntity.getAirPressure(getY());
 		double wing = getWingSurfaceArea();
 		double lift = liftK * air * airFoilSpeedSqr * wing * CO_LIFT;
+		//debug("air        = "+air);
+		//debug("wing speed = "+airFoilSpeedSqr);
+		//debug("aoa        = "+aoa);
+		//debug("liftK      = "+liftK);
+		//debug("lift mag   = "+lift);
 		return lift;
 	}
 	
 	public double getLiftK() {
-		float maxAngle = 30.0f;
-		if (aoa > maxAngle || aoa < -maxAngle) return 0;
-		float stallAngle = 20.0f;
-		double stallK = 0.210;
-		float aoaAbs = Math.abs(aoa);
-		double r = 0;
-		if (aoaAbs <= stallAngle) {
-			double a = -stallK / (stallAngle*stallAngle);
-			double b = -2*stallAngle*a;
-			r =  a*aoaAbs*aoaAbs + b*aoaAbs;
-		} else if (aoaAbs > stallAngle) {
-			double a = -stallK / (maxAngle*maxAngle + stallAngle*stallAngle - 2*maxAngle*stallAngle);
-			double b = -2*stallAngle*a;
-			double c = stallK + a*stallAngle*stallAngle;
-			r = a*aoaAbs*aoaAbs + b*aoaAbs + c;
-		}
-		return Math.signum(aoa) * r;
+		return liftKGraph.getLift(aoa);
 	}
 	
 	@Override
@@ -149,11 +184,11 @@ public class EntityPlane extends EntityAircraft {
 	}
 	
 	@Override
-	public double getSurfaceArea() {
-		double a = super.getSurfaceArea();
+	public double getCrossSectionArea() {
+		double a = super.getCrossSectionArea();
 		a += getWingSurfaceArea() * Math.sin(Math.toRadians(aoa));
-		if (isLandingGear()) a += 2.0 * Math.cos(Math.toRadians(aoa));
-		if (inputSpecial) a += getWingSurfaceArea() / 8 * Math.cos(Math.toRadians(aoa));
+		if (isLandingGear()) a += 4.0 * Math.cos(Math.toRadians(aoa));
+		if (isFlapsDown()) a += getWingSurfaceArea() / 4 * Math.cos(Math.toRadians(aoa));
 		return a;
 	}
 	
@@ -167,6 +202,43 @@ public class EntityPlane extends EntityAircraft {
 	
 	@Override
 	public boolean isCustomBoundingBox() {
+    	return true;
+    }
+	
+	/**
+	 * @return the surface area of the plane wings
+	 */
+	public final float getWingSurfaceArea() {
+		return entityData.get(WING_AREA);
+	}
+	
+	public final void setWingSurfaceArea(float area) {
+		if (area < 0) area = 0;
+		entityData.set(WING_AREA, area);
+	}
+	
+	@Override
+	public boolean isWeaponAngledDown() {
+		return canAimDown && !onGround && inputSpecial2;
+	}
+	
+	@Override
+	public boolean canAngleWeaponDown() {
+    	return canAimDown;
+    }
+
+	@Override
+	public boolean canBreak() {
+		return onGround;
+	}
+
+	@Override
+	public boolean canToggleLandingGear() {
+		return true;
+	}
+	
+	@Override
+	public boolean canFlapsDown() {
     	return true;
     }
 

@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.data.AircraftTextures;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
@@ -29,9 +28,11 @@ public class EntityHelicopter extends EntityAircraft {
 	private float propellerRot, propellerRotOld;
 	private final boolean alwaysLandingGear;
 	
-	public EntityHelicopter(EntityType<? extends EntityHelicopter> entity, Level level, AircraftTextures textures,
-			RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item, boolean alwaysLandingGear) {
-		super(entity, level, textures, engineSound, item, false);
+	public EntityHelicopter(EntityType<? extends EntityHelicopter> entity, Level level,
+			RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item, 
+			boolean alwaysLandingGear, float Ix, float Iy, float Iz, float explodeSize) {
+		super(entity, level, engineSound, item, 
+				false, Ix, Iy, Iz, explodeSize);
 		this.alwaysLandingGear = alwaysLandingGear;
 	}
 	
@@ -81,10 +82,10 @@ public class EntityHelicopter extends EntityAircraft {
 	
 	@Override
 	public void tickAir(Quaternion q) {
-		if (!level.isClientSide && inputSpecial && isOperational()) {
+		if (inputSpecial && isOperational()) {
 			float max_th = getMaxThrust();
 			if (max_th != 0) setCurrentThrottle((float)-getWeightForce().y / max_th);
-			setDeltaMovement(getDeltaMovement().multiply(1, 0.90, 1));
+			setDeltaMovement(getDeltaMovement().multiply(1, 0.95, 1));
 		}
 		super.tickAir(q);
 		Vec3 motion = getDeltaMovement();
@@ -110,17 +111,16 @@ public class EntityHelicopter extends EntityAircraft {
 	public void directionGround(Quaternion q) {
 		if (!isOperational()) return;
 		flatten(q, 4f, 4f, true);
-		torqueY = 0;
 	}
 	
 	@Override
 	public void directionAir(Quaternion q) {
 		super.directionAir(q);
 		if (!isOperational()) return;
-		addTorqueY(inputYaw * getAccelerationYaw(), true);
+		addMomentY(inputYaw * getYawTorque(), true);
 		if (!isFreeLook()) {
-			addTorqueX(inputPitch * getAccelerationPitch(), true);
-			addTorqueZ(inputRoll * getAccelerationRoll(), true);
+			addMomentX(inputPitch * getPitchTorque(), true);
+			addMomentZ(inputRoll * getRollTorque(), true);
 		} else flatten(q, getMaxDeltaPitch(), getMaxDeltaRoll(), false);
 	}
 
@@ -169,6 +169,21 @@ public class EntityHelicopter extends EntityAircraft {
 	
 	@Override
 	public boolean isCustomBoundingBox() {
+    	return true;
+    }
+
+	@Override
+	public boolean canBreak() {
+		return false;
+	}
+
+	@Override
+	public boolean canToggleLandingGear() {
+		return !alwaysLandingGear;
+	}
+	
+	@Override
+	public boolean canHover() {
     	return true;
     }
 

@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.data.AircraftTextures;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
@@ -19,9 +18,10 @@ public class EntityGroundVehicle extends EntityAircraft {
 	protected final float wheelRate = 1.5f;
 	private float wheelLRot, wheelLRotOld, wheelRRot, wheelRRotOld;
 	
-	public EntityGroundVehicle(EntityType<? extends EntityGroundVehicle> entity, Level level, AircraftTextures textures,
-			RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item, boolean isTank) {
-		super(entity, level, textures, engineSound, item, true);
+	public EntityGroundVehicle(EntityType<? extends EntityGroundVehicle> entity, Level level,
+			RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item, boolean isTank, float explodeSize) {
+		super(entity, level, engineSound, item, 
+				true, 8, 12, 8, explodeSize);
 		this.isTank = isTank;
 	}
 	
@@ -57,7 +57,7 @@ public class EntityGroundVehicle extends EntityAircraft {
 	public void directionGround(Quaternion q) {
 		if (isTank && isOperational()) {
 			flatten(q, 4f, 4f, true);
-			addTorqueY(inputYaw * getAccelerationYaw(), true);
+			addMomentY(inputYaw * getYawTorque(), true);
 		} else super.directionGround(q);
 	}
 	
@@ -74,10 +74,17 @@ public class EntityGroundVehicle extends EntityAircraft {
 	@Override
 	public void tickGround(Quaternion q) {
 		super.tickGround(q);
-		if (inputSpecial && isOperational()) {
-			throttleToZero();
-			addFrictionForce(kineticFric);
-		}
+	}
+	
+	@Override
+	public boolean isBreaking() {
+		return inputSpecial;
+	}
+	
+	@Override
+	public void applyBreaks() {
+		throttleToZero();
+		super.applyBreaks();
 	}
 	
 	@Override
@@ -115,9 +122,10 @@ public class EntityGroundVehicle extends EntityAircraft {
 	@Override
 	public void updateControls(float throttle, float pitch, float roll, float yaw,
 			boolean mouseMode, boolean flare, boolean shoot, boolean select,
-			boolean openMenu, boolean special, boolean radarMode, boolean bothRoll) {
+			boolean openMenu, boolean special, boolean special2, boolean radarMode, 
+			boolean bothRoll) {
 		super.updateControls(throttle, pitch, roll, yaw, mouseMode, flare, shoot, 
-				select, openMenu, special, radarMode, bothRoll);
+				select, openMenu, special, special2, radarMode, bothRoll);
 		this.inputThrottle = pitch;
 		this.inputPitch = throttle;
 	}
@@ -135,6 +143,16 @@ public class EntityGroundVehicle extends EntityAircraft {
 	@Override
 	public String getOpenMenuError() {
 		return "dscombat.no_menu_moving";
+	}
+
+	@Override
+	public boolean canBreak() {
+		return true;
+	}
+
+	@Override
+	public boolean canToggleLandingGear() {
+		return false;
 	}
 
 }

@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.data.AircraftTextures;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.nbt.CompoundTag;
@@ -15,8 +14,8 @@ import net.minecraftforge.registries.RegistryObject;
 public class EntitySubmarine extends EntityBoat {
 	
 	public EntitySubmarine(EntityType<? extends EntitySubmarine> entity, Level level, 
-			AircraftTextures textures, RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item) {
-		super(entity, level, textures, engineSound, item);
+			RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item, float explodeSize) {
+		super(entity, level, engineSound, item, explodeSize);
 	}
 	
 	@Override
@@ -59,10 +58,10 @@ public class EntitySubmarine extends EntityBoat {
 		if (!isOperational()) return;
 		if (isFreeLook()) flatten(q, getMaxDeltaPitch(), getMaxDeltaRoll(), false);
 		else {
-			addTorqueX(inputPitch * getAccelerationPitch(), true);
-			addTorqueZ(inputRoll * getAccelerationRoll(), true);
+			addMomentX(inputPitch * getPitchTorque(), true);
+			addMomentZ(inputRoll * getRollTorque(), true);
 		}
-		addTorqueY(inputYaw * getAccelerationYaw(), true);
+		addMomentY(inputYaw * getYawTorque(), true);
 	}
 	
 	@Override
@@ -132,9 +131,10 @@ public class EntitySubmarine extends EntityBoat {
 	@Override
 	public void updateControls(float throttle, float pitch, float roll, float yaw,
 			boolean mouseMode, boolean flare, boolean shoot, boolean select,
-			boolean openMenu, boolean special, boolean radarMode, boolean bothRoll) {
+			boolean openMenu, boolean special, boolean special2, boolean radarMode, 
+			boolean bothRoll) {
 		super.updateControls(throttle, pitch, roll, yaw, mouseMode, flare, shoot, 
-				select, openMenu, special, radarMode, bothRoll);
+				select, openMenu, special, special2, radarMode, bothRoll);
 		if (!isFreeLook()) {
 			this.inputThrottle = throttle;
 			this.inputPitch = pitch;

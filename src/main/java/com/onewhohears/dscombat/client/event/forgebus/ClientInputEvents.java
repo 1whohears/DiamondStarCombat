@@ -2,8 +2,9 @@ package com.onewhohears.dscombat.client.event.forgebus;
 
 import java.util.List;
 
+import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.client.input.KeyInit;
+import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerFlightControl;
 import com.onewhohears.dscombat.common.network.toserver.ToServerShootTurret;
@@ -11,6 +12,7 @@ import com.onewhohears.dscombat.common.network.toserver.ToServerSwitchSeat;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
@@ -21,6 +23,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult.Type;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -34,65 +37,64 @@ public final class ClientInputEvents {
 	private static double mouseCenterX = 0;
 	private static double mouseCenterY = 0;
 	
-	// TODO make client config for deadZone and max
-	private static final double deadZone = 150;
-	private static final double max = 1000;
-	
 	private static final double tan1 = Math.tan(Math.toRadians(1));
 	
 	private static int hoverIndex = -1;
 	
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void clientTickPilotControl(TickEvent.ClientTickEvent event) {
 		if (event.phase != Phase.END) return;
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
 		if (player == null) return;
-		boolean select = KeyInit.weaponSelectKey.consumeClick();
-		boolean openMenu = KeyInit.planeMenuKey.consumeClick();
-		boolean mouseMode = KeyInit.mouseModeKey.consumeClick();
-		boolean gear = KeyInit.landingGear.consumeClick();
-		boolean radarMode = KeyInit.radarModeKey.consumeClick();
+		boolean select = DSCKeys.weaponSelectKey.consumeClick();
+		boolean openMenu = DSCKeys.planeMenuKey.consumeClick();
+		boolean mouseMode = DSCKeys.mouseModeKey.consumeClick();
+		boolean gear = DSCKeys.landingGear.consumeClick();
+		boolean radarMode = DSCKeys.radarModeKey.consumeClick();
 		if (!player.isPassenger()) return;
 		if (!(player.getRootVehicle() instanceof EntityAircraft plane)) return;
 		Entity controller = plane.getControllingPassenger();
 		if (controller == null || !controller.equals(player)) return;
-		if (KeyInit.resetMouseKey.isDown()) centerMouse();
+		if (DSCKeys.resetMouseKey.isDown()) centerMouse();
 		else if (m.screen != null) centerMouse();
 		double mouseX = m.mouseHandler.xpos() - mouseCenterX;
 		double mouseY = -(m.mouseHandler.ypos() - mouseCenterY);
-		boolean flare = KeyInit.flareKey.isDown();
-		boolean shoot = KeyInit.shootKey.isDown();
-		boolean flip = KeyInit.flipControlsKey.isDown();
-		boolean special = KeyInit.specialKey.isDown();
+		boolean flare = DSCKeys.flareKey.isDown();
+		boolean shoot = DSCKeys.shootKey.isDown();
+		boolean flip = DSCKeys.flipControlsKey.isDown();
+		boolean special = DSCKeys.specialKey.isDown();
+		boolean special2 = DSCKeys.special2Key.isDown();
 		float pitch = 0, roll = 0, yaw = 0, throttle = 0;
 		boolean pitchUp, pitchDown, yawLeft, yawRight;
 		boolean rollLeft, rollRight, throttleUp, throttleDown;
 		if (!plane.isFreeLook()) flip = !flip;
 		if (flip) {
-			pitchUp = KeyInit.throttleUpKey.isDown();
-			pitchDown = KeyInit.throttleDownKey.isDown();
-			yawLeft = KeyInit.rollLeftKey.isDown();
-			yawRight = KeyInit.rollRightKey.isDown();
-			rollLeft = KeyInit.yawLeftKey.isDown();
-			rollRight = KeyInit.yawRightKey.isDown();
-			throttleUp = KeyInit.pitchUpKey.isDown();
-			throttleDown = KeyInit.pitchDownKey.isDown();
+			pitchUp = DSCKeys.throttleUpKey.isDown();
+			pitchDown = DSCKeys.throttleDownKey.isDown();
+			yawLeft = DSCKeys.rollLeftKey.isDown();
+			yawRight = DSCKeys.rollRightKey.isDown();
+			rollLeft = DSCKeys.yawLeftKey.isDown();
+			rollRight = DSCKeys.yawRightKey.isDown();
+			throttleUp = DSCKeys.pitchUpKey.isDown();
+			throttleDown = DSCKeys.pitchDownKey.isDown();
 		} else {
-			yawLeft = KeyInit.yawLeftKey.isDown();
-			yawRight = KeyInit.yawRightKey.isDown();
-			pitchUp = KeyInit.pitchUpKey.isDown();
-			pitchDown = KeyInit.pitchDownKey.isDown();
-			rollLeft = KeyInit.rollLeftKey.isDown();
-			rollRight = KeyInit.rollRightKey.isDown();
-			throttleUp = KeyInit.throttleUpKey.isDown();
-			throttleDown = KeyInit.throttleDownKey.isDown();
+			yawLeft = DSCKeys.yawLeftKey.isDown();
+			yawRight = DSCKeys.yawRightKey.isDown();
+			pitchUp = DSCKeys.pitchUpKey.isDown();
+			pitchDown = DSCKeys.pitchDownKey.isDown();
+			rollLeft = DSCKeys.rollLeftKey.isDown();
+			rollRight = DSCKeys.rollRightKey.isDown();
+			throttleUp = DSCKeys.throttleUpKey.isDown();
+			throttleDown = DSCKeys.throttleDownKey.isDown();
 		}
 		if (!plane.isFreeLook()) {
 			double ya = Math.abs(mouseY);
 			double xa = Math.abs(mouseX);
 			float ys = (float) Math.signum(mouseY);
 			float xs = (float) Math.signum(mouseX);
+			double deadZone = Config.CLIENT.mouseStickDeadzoneRadius.get();
+			double max = Config.CLIENT.mouseModeMaxRadius.get();
 			double md = max-deadZone;
 			if (ya > max) {
 				pitch = ys;
@@ -114,26 +116,26 @@ public final class ClientInputEvents {
 		if (throttleUp) throttle += 1;
 		if (throttleDown) throttle -= 1;
 		PacketHandler.INSTANCE.sendToServer(new ToServerFlightControl(
-				throttle, pitch, roll, yaw,
-				mouseMode, flare, shoot, select, openMenu, gear, 
-				special, radarMode, rollLeft && rollRight));
-		plane.updateControls(throttle, pitch, roll, yaw,
+				throttle, pitch, roll, yaw, mouseMode, 
+				flare, shoot, select, openMenu, gear, 
+				special, special2, radarMode, 
+				rollLeft && rollRight));
+		plane.updateControls(throttle, pitch, roll, yaw, 
 				mouseMode, flare, shoot, select, openMenu, 
-				special, radarMode, rollLeft && rollRight);
+				special, special2, radarMode, 
+				rollLeft && rollRight);
 		if (mouseMode && !plane.isFreeLook()) centerMouse();
 	}
 	
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.HIGH)
 	public static void clientTickPassengerControl(TickEvent.ClientTickEvent event) {
 		if (event.phase != Phase.END) return;
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
 		if (player == null || !player.isPassenger()) return;
 		if (!(player.getRootVehicle() instanceof EntityAircraft plane)) return;
-		// DISMOUNT
-		
 		// SWITCH SEAT
-		if (KeyInit.changeSeat.consumeClick()) {
+		if (DSCKeys.changeSeat.consumeClick()) {
 			PacketHandler.INSTANCE.sendToServer(new ToServerSwitchSeat(plane.getId()));
 		}
 		// SELECT RADAR PING
@@ -151,9 +153,19 @@ public final class ClientInputEvents {
 		}
 		if (!hovering) resetHoverIndex();
 		// TURRET SHOOT
-		boolean shoot = KeyInit.shootKey.isDown();
+		boolean shoot = DSCKeys.shootKey.isDown();
 		if (shoot && player.getVehicle() instanceof EntityTurret turret) {
 			PacketHandler.INSTANCE.sendToServer(new ToServerShootTurret(turret));
+		}
+		
+	}
+	
+	@SubscribeEvent(priority = EventPriority.NORMAL)
+	public static void clientMoveInput(MovementInputUpdateEvent event) {
+		Player player = event.getEntity();
+		if (!(player.getVehicle() instanceof EntitySeat plane)) return;
+		if (Config.CLIENT.customDismount.get()) {
+			event.getInput().shiftKeyDown = DSCKeys.dismount.isDown();
 		}
 	}
 	

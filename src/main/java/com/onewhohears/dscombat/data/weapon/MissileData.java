@@ -3,8 +3,9 @@ package com.onewhohears.dscombat.data.weapon;
 import java.util.List;
 
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
-import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
+import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
+import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -15,7 +16,7 @@ import net.minecraft.world.phys.Vec3;
 
 public abstract class MissileData extends BulletData {
 	
-	private float maxRot;
+	private float turnRadius;
 	private double acceleration;
 	private double fuseDist;
 	private float fov;
@@ -24,7 +25,7 @@ public abstract class MissileData extends BulletData {
 	
 	public MissileData(CompoundTag tag) {
 		super(tag);
-		maxRot = tag.getFloat("maxRot");
+		turnRadius = UtilParse.fixFloatNbt(tag, "turnRadius", 100);
 		acceleration = tag.getDouble("acceleration");
 		fuseDist = tag.getDouble("fuseDist");
 		fov = tag.getFloat("fov");
@@ -35,7 +36,7 @@ public abstract class MissileData extends BulletData {
 	@Override
 	public CompoundTag write() {
 		CompoundTag tag = super.write();
-		tag.putFloat("maxRot", maxRot);
+		tag.putFloat("turnRadius", turnRadius);
 		tag.putDouble("acceleration", acceleration);
 		tag.putDouble("fuseDist", fuseDist);
 		tag.putFloat("fov", fov);
@@ -46,7 +47,7 @@ public abstract class MissileData extends BulletData {
 	
 	public MissileData(FriendlyByteBuf buffer) {
 		super(buffer);
-		maxRot = buffer.readFloat();
+		turnRadius = buffer.readFloat();
 		acceleration = buffer.readDouble();
 		fuseDist = buffer.readDouble();
 		fov = buffer.readFloat();
@@ -57,7 +58,7 @@ public abstract class MissileData extends BulletData {
 	@Override
 	public void write(FriendlyByteBuf buffer) {
 		super.write(buffer);
-		buffer.writeFloat(maxRot);
+		buffer.writeFloat(turnRadius);
 		buffer.writeDouble(acceleration);
 		buffer.writeDouble(fuseDist);
 		buffer.writeFloat(fov);
@@ -65,8 +66,8 @@ public abstract class MissileData extends BulletData {
 		buffer.writeInt(fuelTicks);
 	}
 
-	public float getMaxRot() {
-		return maxRot;
+	public float getTurnRadius() {
+		return turnRadius;
 	}
 
 	public double getAcceleration() {
@@ -110,7 +111,7 @@ public abstract class MissileData extends BulletData {
 	public List<ComponentColor> getInfoComponents() {
 		List<ComponentColor> list = super.getInfoComponents();
 		if (getFov() != -1) list.add(new ComponentColor(Component.literal("FOV: ").append(getFov()+""), 0x040404));
-		list.add(new ComponentColor(Component.literal("Turn Rate: ").append(getMaxRot()+""), 0x040404));
+		list.add(new ComponentColor(Component.literal("Turn Radius: ").append(getTurnRadius()+""), 0x040404));
 		list.add(new ComponentColor(Component.literal("Acceleration: ").append(getAcceleration()+""), 0x040404));
 		return list;
 	}

@@ -258,7 +258,7 @@ public class RadarSystem {
 	}
 	
 	public void addRWRWarning(Vec3 pos, boolean isMissile, boolean clientSide) {
-		if (parent == null) return;
+		if (parent == null || !hasRadar()) return;
 		RWRWarning warning = new RWRWarning(pos, isMissile);
 		if (clientSide) rwrWarnings.add(warning);
 		else PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 

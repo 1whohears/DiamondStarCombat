@@ -5,9 +5,11 @@ import java.util.List;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
+import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents;
-import com.onewhohears.dscombat.client.input.KeyInit;
+import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.radar.RadarSystem.RWRWarning;
@@ -17,6 +19,7 @@ import com.onewhohears.dscombat.entity.aircraft.EntityAircraft.AircraftType;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.util.UtilEntity;
+import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.client.Minecraft;
@@ -39,16 +42,19 @@ public class PilotOverlay {
 	private static final int stickBaseSize = 60;
 	private static final int stickKnobSize = (int)(stickBaseSize/6);
 	private static final int stickOffset = 1;
-	private static final int radarSize = 120;
-	private static final int radarOffset = 8;
+	private static final int radarSize = 120, radarOffset = 8;
+	private static final int fuelGuageHeight = 60, fuelGuageWidth = 90;
+	private static final int fuelArrowHeight = 10, fuelArrowWidth = 36;
 	private static final ResourceLocation STICK_BASE_CIRCLE = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/stickcanvascircle.png");
 	private static final ResourceLocation STICK_BASE_SQUARE = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/stickcanvassquare.png");
 	private static final ResourceLocation STICK_KNOB = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/stickknob.png");
-	private static final ResourceLocation FUEL = new ResourceLocation(DSCombatMod.MODID,
-            "textures/ui/fuel.png");
+	private static final ResourceLocation FUEL_GUAGE = new ResourceLocation(DSCombatMod.MODID,
+            "textures/ui/fuel_guage.png");
+	private static final ResourceLocation FUEL_GUAGE_ARROW = new ResourceLocation(DSCombatMod.MODID,
+            "textures/ui/fuel_guage_arrow.png");
 	private static final ResourceLocation RADAR = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/radar.png");
 	
@@ -63,7 +69,7 @@ public class PilotOverlay {
 		drawMissingVanillaOverlays(m, player, plane, gui, poseStack, partialTick, width, height);
 		drawAircraftStats(m, player, plane, gui, poseStack, partialTick, width, height);
 		drawAircraftAngles(m, player, plane, gui, poseStack, partialTick, width, height);
-		drawAircraftWeapons(m, player, plane, gui, poseStack, partialTick, width, height);
+		drawAircraftWeaponsAndKeys(m, player, plane, gui, poseStack, partialTick, width, height);
 		drawAircraftRadarData(m, player, plane, gui, poseStack, partialTick, width, height);
 		drawAircraftControls(m, player, plane, gui, poseStack, partialTick, width, height);
 		drawAircraftThrottle(m, player, plane, gui, poseStack, partialTick, width, height);
@@ -72,7 +78,20 @@ public class PilotOverlay {
 			drawPlaneData(m, player, (EntityPlane)plane, gui, poseStack, partialTick, width, height);
 		if (player.getVehicle() instanceof EntityTurret turret)
 			drawAircraftTurretData(m, player, turret, gui, poseStack, partialTick, width, height);
+		if (Config.CLIENT.debugMode.get()) drawDebug(m, player, plane, gui, poseStack, partialTick, width, height);
 	});
+	
+	private static void drawDebug(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
+		int color = 0x00ff00;
+		GuiComponent.drawString(poseStack, m.font, 
+			"V"+UtilParse.prettyVec3(plane.getDeltaMovement()), width-100, 0, color);
+		GuiComponent.drawString(poseStack, m.font, 
+			"F"+UtilParse.prettyVec3(plane.forces), width-100, 10, color);
+		GuiComponent.drawString(poseStack, m.font, 
+			"A"+UtilParse.prettyVec3(plane.getAngularVel()), width-100, 20, color);
+		GuiComponent.drawString(poseStack, m.font, 
+			"M"+UtilParse.prettyVec3(plane.moment), width-100, 30, color);
+	}
 	
 	private static void drawMissingVanillaOverlays(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
 		Entity camera = m.getCameraEntity();
@@ -89,59 +108,71 @@ public class PilotOverlay {
 	}
 	
 	private static void drawAircraftStats(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
-		// plane speed
+		// plane speed 
 		int s = (int)(plane.getDeltaMovement().length() * 20d);
 		GuiComponent.drawString(poseStack, m.font, 
 				"m/s: "+s, 
-				width/2+11, height-50, 0x00ff00);
+				width-stickBaseSize-stickOffset, 
+	     		height-stickBaseSize-stickOffset-stickKnobSize-stickOffset-10, 
+				0x00ff00);
 		// distance from ground
 		GuiComponent.drawString(poseStack, m.font, 
-				"H: "+UtilEntity.getDistFromGround(plane), 
-				width/2+62, height-50, 0x00ff00);
+				"A: "+UtilEntity.getDistFromGround(plane), 
+				width-stickBaseSize-stickOffset, 
+	     		height-stickBaseSize-stickOffset-stickKnobSize-stickOffset-20, 
+				0x00ff00);
 		// plane health
 		float h = plane.getHealth(), max = plane.getMaxHealth();
 		GuiComponent.drawString(poseStack, m.font, 
-					"Health: "+(int)h+"/"+(int)max, 
-					width/2-90, height-60, getHealthColor(h, max));
+					"H: "+(int)h+"/"+(int)max, 
+					width-stickBaseSize-stickOffset, 
+		     		height-stickBaseSize-stickOffset-stickKnobSize-stickOffset-30, 
+					getHealthColor(h, max));
 		// plane position
-		GuiComponent.drawString(poseStack, m.font, 
+		GuiComponent.drawCenteredString(poseStack, m.font, 
 				"["+plane.getBlockX()+","+plane.getBlockY()+","+plane.getBlockZ()+"]", 
-				width/2+11, height-60, 0x00ff00);
+				width/2, 0, 0x00ff00);
 	}
 	
 	private static void drawAircraftAngles(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
-		// TODO display pitch and roll
 		// HEADING
-		int y = 10;
+		int y = 10, color = 0xe6e600;
         int heading = (int)Mth.wrapDegrees(player.getYRot());
         if (heading < 0) heading += 360f;
         GuiComponent.drawCenteredString(poseStack, m.font, 
-        	heading+"", width/2, y+20, 0x00ff00);
+        	heading+"", width/2, y+20, color);
         int num = 15, degSpace = 3, degPerLine = 3, steps = 3;
         for (int i = -num; i < num; ++i) {
         	int j = i*degPerLine;
         	int x = width/2+j*degSpace-heading%degPerLine*degSpace;
         	GuiComponent.drawCenteredString(poseStack, m.font, 
-            	"|", x, y+10, 0x00ff00);
+            	"|", x, y+10, color);
         	int hl = heading / degPerLine;
         	if ((hl+i) % steps != 0) continue;
         	int h = hl*degPerLine+j;
         	if (h < 0) h += 360;
         	else if (h >= 360) h-= 360;
         	GuiComponent.drawCenteredString(poseStack, m.font, 
-            	h+"", x, y, 0x00ff00);
+        		textByHeading(h), x, y, color);
         }
-        // PITCH
-        int pitch = (int)Mth.wrapDegrees(player.getXRot());
-        
-        // ROLL
-        int roll = (int)plane.zRot;
-        
+	}
+	
+	private static String textByHeading(int h) {
+    	if (h == 0) return "S";
+    	else if (h == 180) return "N";
+    	else if (h == 90) return "W";
+    	else if (h == 270) return "E";
+    	else if (h == 45) return "SW";
+    	else if (h == 135) return "NW";
+    	else if (h == 225) return "NE";
+    	else if (h == 315) return "SE";
+    	return h+"";
 	}
 	
 	private static final MutableComponent weaponSelect = Component.empty().append("->");
-	private static void drawAircraftWeapons(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
-		int wh = 1, x = 1, weaponSelectWidth = m.font.width(weaponSelect)+1, maxNameWidth = 46;
+	private static void drawAircraftWeaponsAndKeys(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
+		int wh=1,x=1,weaponSelectWidth=m.font.width(weaponSelect)+1,maxNameWidth=46,color1=0x7340bf,color2=0x00ff00,color=color1;
+		// WEAPONS
 		WeaponData sw = plane.weaponSystem.getSelected();
 		if (sw != null) {
 		List<WeaponData> weapons = plane.weaponSystem.getWeapons();
@@ -153,30 +184,131 @@ public class PilotOverlay {
 		}
 		maxNameWidth += 4;
 		for (int i = 0; i < weapons.size(); ++i) {
-			x = 1;
+			x = 1; color = color1;
 			WeaponData data = weapons.get(i);
-			if (data.equals(sw)) GuiComponent.drawString(poseStack, m.font, 
-					weaponSelect, x, wh, 0x0000ff);
+			if (data.equals(sw)) {
+				color = color2;
+				GuiComponent.drawString(poseStack, m.font, 
+					weaponSelect, x, wh, color);
+			}
 			x += weaponSelectWidth;
 			GuiComponent.drawString(poseStack, m.font, 
-					names[i], x, wh, 0x0000ff);
+					names[i], x, wh, color);
 			x += maxNameWidth;
 			GuiComponent.drawString(poseStack, m.font, 
 					data.getCurrentAmmo()+"/"+data.getMaxAmmo(), 
-					x, wh, 0x0000ff);
+					x, wh, color);
 			wh += 10;
 		} }
-		// flares
+		// CONTROLS
+		String text = "";
 		if (maxNameWidth < 50) maxNameWidth = 50;
-		x = 1+weaponSelectWidth;
-		GuiComponent.drawString(poseStack, m.font, 
-				"Flares("+KeyInit.flareKey.getKey().getDisplayName().getString()+")", 
-				x, wh, 0x0000ff);
-		x += maxNameWidth;
-		GuiComponent.drawString(poseStack, m.font, 
+		// FLARES
+		if (plane.hasFlares()) {
+			x = 1+weaponSelectWidth;
+			if (plane.inputFlare) color = color2;
+			else color = color1;
+			GuiComponent.drawString(poseStack, m.font, 
+				"Flares("+DSCKeys.flareKey.getKey().getDisplayName().getString()+")", 
+				x, wh, color);
+			x += maxNameWidth;
+			GuiComponent.drawString(poseStack, m.font, 
 				plane.getFlareNum()+"", 
-				x, wh, 0x0000ff);
+				x, wh, color);
+			wh += 10;
+		}
+		// FREE LOOK
+		x = 1+weaponSelectWidth;
+		String key = DSCKeys.mouseModeKey.getKey().getDisplayName().getString();
+		if (plane.isFreeLook()) {
+			text = "MouseMode("+key+")";
+			color = color1;
+		} else {
+			text = "FreeLook("+key+")";
+			color = color2;
+		}
+		GuiComponent.drawString(poseStack, m.font, 
+			text, x, wh, color);
 		wh += 10;
+		// LANDING GEAR
+		if (plane.canToggleLandingGear()) {
+			x = 1+weaponSelectWidth;
+			if (plane.isLandingGear()) {
+    			text = "OUT";
+    			color = color2;
+    		} else {
+    			text = "IN";
+    			color = color1;
+    		}
+    		GuiComponent.drawString(poseStack, m.font, 
+    			"Gear("+DSCKeys.landingGear.getKey().getDisplayName().getString()+")", 
+    			x, wh, color);
+    		x += maxNameWidth;
+    		GuiComponent.drawString(poseStack, m.font, 
+    			text, x, wh, color);
+    		wh += 10;
+		}
+		// BREAKS
+    	if (plane.canBreak()) {
+    		x = 1+weaponSelectWidth;
+    		if (plane.getAircraftType() == AircraftType.PLANE) 
+    			text = DSCKeys.special2Key.getKey().getDisplayName().getString();
+    		else text = DSCKeys.specialKey.getKey().getDisplayName().getString();
+    		if (plane.isBreaking()) color = color2;
+    		else color = color1;
+    		GuiComponent.drawString(poseStack, m.font, 
+    			"Break("+text+")", 
+    			x, wh, color);
+    		wh += 10;
+    	}
+		// FLAPS DOWN
+    	if (plane.canFlapsDown()) {
+    		x = 1+weaponSelectWidth;
+    		text = DSCKeys.specialKey.getKey().getDisplayName().getString();
+    		if (plane.inputSpecial) color = color2;
+    		else color = color1;
+    		GuiComponent.drawString(poseStack, m.font, 
+    			"FlapsDown("+text+")", 
+    			x, wh, color);
+    		wh += 10;
+    	}
+    	// WEAPON ANGLED DOWN
+		if (plane.canAngleWeaponDown()) {
+    		x = 1+weaponSelectWidth;
+    		text = DSCKeys.special2Key.getKey().getDisplayName().getString();
+    		if (plane.inputSpecial2) color = color2;
+    		else color = color1;
+    		GuiComponent.drawString(poseStack, m.font, 
+    			"AimDown("+text+")", 
+    			x, wh, color);
+    		wh += 10;
+		}
+		// HOVER
+		if (plane.canHover()) {
+			x = 1+weaponSelectWidth;
+    		text = DSCKeys.specialKey.getKey().getDisplayName().getString();
+    		if (plane.inputSpecial) color = color2;
+    		else color = color1;
+    		GuiComponent.drawString(poseStack, m.font, 
+    			"Hover("+text+")", 
+    			x, wh, color);
+    		wh += 10;
+		}
+		// PLAYERS ONLY
+        if (plane.radarSystem.hasRadar()) {
+        	x = 1+weaponSelectWidth;
+        	if (plane.inputRadarMode) color = color2;
+        	else color = color1;
+        	GuiComponent.drawString(poseStack, m.font, 
+        		"RMode("+DSCKeys.radarModeKey.getKey().getDisplayName().getString()+")", 
+        		x, wh, color);
+        	x += maxNameWidth;
+        	if (plane.isRadarPlayersOnly()) text = "PLAYER";
+        	else text = "ALL";
+        	GuiComponent.drawString(poseStack, m.font, 
+        		text, x, wh, color);
+        	wh += 10;
+        }
 	}
 	
 	private static void drawAircraftRadarData(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
@@ -191,17 +323,41 @@ public class PilotOverlay {
         int cx = radarOffset + radius;
         int cy = height-radarOffset-radius-5;
         double displayRange = 1000;
-        // HEADING
+        // CARDINAL
+        int card_color = 0x0000ff, radius2 = radius+4;
+        float card_yaw = -plane.getYRot()*Mth.DEG_TO_RAD;
+        GuiComponent.drawCenteredString(poseStack, m.font, "S", 
+    			cx+(int)(Mth.sin(card_yaw)*radius2), 
+    			cy-(int)(Mth.cos(card_yaw)*radius2), 
+    			card_color);
+        card_yaw = (180-plane.getYRot())*Mth.DEG_TO_RAD;
+        GuiComponent.drawCenteredString(poseStack, m.font, "N", 
+    			cx+(int)(Mth.sin(card_yaw)*radius2), 
+    			cy-(int)(Mth.cos(card_yaw)*radius2), 
+    			card_color);
+        card_yaw = (270-plane.getYRot())*Mth.DEG_TO_RAD;
+        GuiComponent.drawCenteredString(poseStack, m.font, "E", 
+    			cx+(int)(Mth.sin(card_yaw)*radius2), 
+    			cy-(int)(Mth.cos(card_yaw)*radius2), 
+    			card_color);
+        card_yaw = (90-plane.getYRot())*Mth.DEG_TO_RAD;
+        GuiComponent.drawCenteredString(poseStack, m.font, "W", 
+    			cx+(int)(Mth.sin(card_yaw)*radius2), 
+    			cy-(int)(Mth.cos(card_yaw)*radius2), 
+    			card_color);
+        // ROLL PITCH YAW
         int heading = (int)plane.getYRot();
         if (heading < 0) heading += 360;
+        int pitch = (int)-plane.getXRot();
+        int roll = (int)plane.zRot;
         GuiComponent.drawCenteredString(poseStack, m.font, 
-    			heading+"", cx, height-radarOffset-radarSize-10, 0x8888ff);
+    		"P: "+pitch+" Y: "+heading+" R: "+roll, cx, height-radarOffset-radarSize-10, 0x8888ff);
         // RWR
         for (RWRWarning warn : radar.getClientRWRWarnings()) {
         	Vec3 dp = warn.pos.subtract(plane.position());
         	float yaw = (UtilAngles.getYaw(dp)-plane.getYRot())*Mth.DEG_TO_RAD;
         	int x = cx + (int)(Mth.sin(yaw)*radius);
-        	int y = cy + (int)(-Mth.cos(yaw)*radius);
+        	int y = cy - (int)(Mth.cos(yaw)*radius);
         	int color = 0xffff00;
         	String symbol = "W";
         	if (warn.isMissile) {
@@ -287,8 +443,9 @@ public class PilotOverlay {
         		stickBaseSize, stickBaseSize);
         RenderSystem.setShaderTexture(0, STICK_KNOB);
         int sy, sb2 = stickBaseSize/2, n = stickKnobSize/2;
-        if (plane.negativeThrottle) sy = height-n-stickOffset-sb2-(int)(plane.getCurrentThrottle()*sb2);
-        else sy = height-n-stickOffset-(int)(plane.getCurrentThrottle()*stickBaseSize);
+        float th = plane.getCurrentThrottle();
+        if (plane.negativeThrottle) sy = height-n-stickOffset-sb2-(int)(th*sb2);
+        else sy = height-n-stickOffset-(int)(th*stickBaseSize);
         GuiComponent.blit(poseStack, 
         		width-stickBaseSize-stickOffset-stickKnobSize-stickOffset, 
         		sy, 
@@ -297,27 +454,37 @@ public class PilotOverlay {
 	}
 	
 	private static void drawAircraftFuel(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
-		RenderSystem.setShaderTexture(0, FUEL);
-        float r = plane.getCurrentFuel() / plane.getMaxFuel();
-        int fh = (int)(r * 128f);
-        int fh2 = 128-fh;
-        GuiComponent.blit(poseStack, width-16, fh2, 
-        		0, fh2, 
-        		16, fh, 
-        		16, 128);
+		RenderSystem.setShaderTexture(0, FUEL_GUAGE);
+        GuiComponent.blit(poseStack, 
+        	width-stickBaseSize-stickKnobSize-3*stickOffset-fuelGuageWidth, 
+        	height-fuelGuageHeight, 
+        	0, 0, fuelGuageWidth, fuelGuageHeight, 
+        	fuelGuageWidth, fuelGuageHeight);
+        RenderSystem.setShaderTexture(0, FUEL_GUAGE_ARROW);
+        float max = plane.getMaxFuel(), r = 0;
+        if (max != 0) r = plane.getCurrentFuel() / max;
+        poseStack.pushPose();
+        poseStack.translate(width-stickBaseSize-stickKnobSize-3*stickOffset-fuelGuageWidth/2, 
+        	height-18, 0);
+        poseStack.mulPose(Vector3f.ZP.rotationDegrees(160f*r+10f));
+        GuiComponent.blit(poseStack, 
+        	-fuelArrowWidth+5, -fuelArrowHeight/2, 
+        	0, 0, fuelArrowWidth, fuelArrowHeight, 
+        	fuelArrowWidth, fuelArrowHeight);
+        poseStack.popPose();
 	}
 	
 	private static void drawAircraftTurretData(Minecraft m, Player player, EntityTurret turret, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
 		GuiComponent.drawString(poseStack, m.font, 
 				"Turret: "+turret.getAmmo(), 
-				width/2-90, 1, 0xffff00);
+				width/2-100, 1, 0xffff00);
 	}
 	
 	private static void drawPlaneData(Minecraft m, Player player, EntityPlane plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
 		GuiComponent.drawString(poseStack, m.font, 
-     		String.format("AOA: %3.3f", plane.getAOA()), 
+     		String.format("AOA: %3.1f", plane.getAOA()), 
      		width-stickBaseSize-stickOffset, 
-     		height-stickBaseSize-stickOffset-stickKnobSize-stickOffset-10, 
+     		height-stickBaseSize-stickOffset-stickKnobSize-stickOffset-40, 
      		0x00ff00);
 	}
 	

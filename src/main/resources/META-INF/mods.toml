@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[41,43)"
+loaderVersion="[40,41)"
 license="MIT License"
 issueTrackerURL="https://github.com/1whohears/DiamondStarCombat/issues"
 showAsResourcePack=false
@@ -19,13 +19,13 @@ showAsResourcePack=false
 [[dependencies.dscombat]]
     modId="forge"
     mandatory=true
-    versionRange="[41,43)"
+    versionRange="[40,41)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.dscombat]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.19,1.19.2)"
+    versionRange="[1.18.2,1.19)"
     ordering="NONE"
     side="BOTH"

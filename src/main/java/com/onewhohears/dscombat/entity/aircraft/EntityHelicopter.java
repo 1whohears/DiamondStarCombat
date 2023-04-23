@@ -82,7 +82,7 @@ public class EntityHelicopter extends EntityAircraft {
 	
 	@Override
 	public void tickAir(Quaternion q) {
-		if (!level.isClientSide && inputSpecial && isOperational()) {
+		if (inputSpecial && isOperational()) {
 			float max_th = getMaxThrust();
 			if (max_th != 0) setCurrentThrottle((float)-getWeightForce().y / max_th);
 			setDeltaMovement(getDeltaMovement().multiply(1, 0.95, 1));

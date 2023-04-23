@@ -286,7 +286,7 @@ public class PilotOverlay {
 		// HOVER
 		if (plane.canHover()) {
 			x = 1+weaponSelectWidth;
-    		text = DSCKeys.special2Key.getKey().getDisplayName().getString();
+    		text = DSCKeys.specialKey.getKey().getDisplayName().getString();
     		if (plane.inputSpecial) color = color2;
     		else color = color1;
     		GuiComponent.drawString(poseStack, m.font, 
@@ -323,13 +323,6 @@ public class PilotOverlay {
         int cx = radarOffset + radius;
         int cy = height-radarOffset-radius-5;
         double displayRange = 1000;
-        // HEADING
-        int heading = (int)plane.getYRot();
-        if (heading < 0) heading += 360;
-        int pitch = (int)plane.getXRot();
-        int roll = (int)plane.zRot;
-        GuiComponent.drawCenteredString(poseStack, m.font, 
-    		"P: "+pitch+" Y: "+heading+" R: "+roll, cx, height-radarOffset-radarSize-10, 0x8888ff);
         // CARDINAL
         int card_color = 0x0000ff, radius2 = radius+4;
         float card_yaw = -plane.getYRot()*Mth.DEG_TO_RAD;
@@ -352,6 +345,13 @@ public class PilotOverlay {
     			cx+(int)(Mth.sin(card_yaw)*radius2), 
     			cy-(int)(Mth.cos(card_yaw)*radius2), 
     			card_color);
+        // ROLL PITCH YAW
+        int heading = (int)plane.getYRot();
+        if (heading < 0) heading += 360;
+        int pitch = (int)-plane.getXRot();
+        int roll = (int)plane.zRot;
+        GuiComponent.drawCenteredString(poseStack, m.font, 
+    		"P: "+pitch+" Y: "+heading+" R: "+roll, cx, height-radarOffset-radarSize-10, 0x8888ff);
         // RWR
         for (RWRWarning warn : radar.getClientRWRWarnings()) {
         	Vec3 dp = warn.pos.subtract(plane.position());

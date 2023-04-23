@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.common.network;
 
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.common.network.toclient.ToClientAddMoment;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddRadar;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddWeapon;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAircraftFuel;
@@ -10,11 +11,11 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientRadarPings;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRecievePlaneData;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRemoveRadar;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRemoveWeapon;
-import com.onewhohears.dscombat.common.network.toclient.ToClientAddMoment;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponAmmo;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponIndex;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftAV;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftQ;
+import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftThrottle;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftToItem;
 import com.onewhohears.dscombat.common.network.toserver.ToServerCraftPlane;
 import com.onewhohears.dscombat.common.network.toserver.ToServerCraftWeapon;
@@ -155,6 +156,11 @@ public final class PacketHandler {
 			.encoder(ToServerAircraftAV::encode)
 			.decoder(ToServerAircraftAV::new)
 			.consumerMainThread(ToServerAircraftAV::handle)
+			.add();
+		net.messageBuilder(ToServerAircraftThrottle.class, index++, NetworkDirection.PLAY_TO_SERVER)
+			.encoder(ToServerAircraftThrottle::encode)
+			.decoder(ToServerAircraftThrottle::new)
+			.consumerMainThread(ToServerAircraftThrottle::handle)
 			.add();
 	}
 	

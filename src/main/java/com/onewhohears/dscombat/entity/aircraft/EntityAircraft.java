@@ -14,6 +14,7 @@ import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddMoment;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftAV;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftQ;
+import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftThrottle;
 import com.onewhohears.dscombat.common.network.toserver.ToServerRequestPlaneData;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
 import com.onewhohears.dscombat.data.aircraft.AircraftTextures;
@@ -133,6 +134,7 @@ public abstract class EntityAircraft extends Entity {
 	public Quaternion prevQ = Quaternion.ONE.copy();
 	public Quaternion clientQ = Quaternion.ONE.copy();
 	public Vec3 clientAV = Vec3.ZERO;
+	public float clientThrottle;
 	
 	public boolean inputMouseMode, inputFlare, inputShoot, inputSelect, inputOpenMenu;
 	public boolean inputSpecial, inputSpecial2, inputRadarMode, inputBothRoll;
@@ -218,6 +220,10 @@ public abstract class EntityAircraft extends Entity {
         		if (isControlledByLocalInstance()) PacketHandler.INSTANCE.sendToServer(
         				new ToServerAircraftAV(this));
         		else clientAV = entityData.get(AV);
+        	} else if (THROTTLE.equals(key)) {
+        		if (isControlledByLocalInstance()) PacketHandler.INSTANCE.sendToServer(
+        				new ToServerAircraftThrottle(this));
+        		else clientThrottle = entityData.get(THROTTLE);
         	} else if (CURRRENT_DYE_ID.equals(key)) {
         		currentTexture = textures.getTexture(getCurrentColorId());
         	}
@@ -1242,14 +1248,16 @@ public abstract class EntityAircraft extends Entity {
      * @return between 1 and 0 or 1 and -1 if negativeThrottle
      */
     public final float getCurrentThrottle() {
-    	return entityData.get(THROTTLE);
+    	if (level.isClientSide) return clientThrottle;
+    	else return entityData.get(THROTTLE);
     }
     
     public final void setCurrentThrottle(float throttle) {
     	if (throttle > 1) throttle = 1;
     	else if (negativeThrottle && throttle < -1) throttle = -1;
     	else if (!negativeThrottle && throttle < 0) throttle = 0;
-    	entityData.set(THROTTLE, throttle);
+    	if (level.isClientSide) clientThrottle = throttle;
+    	else entityData.set(THROTTLE, throttle);
     }
     
     public void throttleToZero() {

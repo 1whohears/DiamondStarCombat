@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.mojang.math.Quaternion;
+import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddWeapon;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRemoveWeapon;
@@ -21,18 +23,18 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
 
 public class WeaponSystem {
 	
+	private final EntityAircraft parent;
+	private boolean readData = false;
 	private List<WeaponData> weapons = new ArrayList<WeaponData>();
 	private int weaponIndex = 0;
-	private EntityAircraft parent;
-	private boolean readData = false;
-	//private HashMap<String, WeaponData> turrets = new HashMap<>();
 	
-	public WeaponSystem() {
-		
+	public WeaponSystem(EntityAircraft parent) {
+		this.parent = parent;
 	}
 	
 	public void read(CompoundTag compound) {
@@ -53,29 +55,21 @@ public class WeaponSystem {
 		//System.out.println(this);
 	}
 	
-	public WeaponSystem(FriendlyByteBuf buffer) {
-		//System.out.println("WEAPON SYSTEM BUFFER");
+	public static List<WeaponData> readWeaponsFromBuffer(FriendlyByteBuf buffer) {
+		List<WeaponData> weapons = new ArrayList<WeaponData>();
 		int num = buffer.readInt();
-		//System.out.println("num = "+num);
 		for (int i = 0; i < num; ++i) weapons.add(DataSerializers.WEAPON_DATA.read(buffer));
-		weaponIndex = buffer.readInt();
-		//System.out.println("weaponIndex = "+weaponIndex);
-		readData = true;
+		return weapons;
 	}
 	
-	public void write(FriendlyByteBuf buffer) {
+	public static void writeWeaponsToBuffer(FriendlyByteBuf buffer, List<WeaponData> weapons) {
 		buffer.writeInt(weapons.size());
 		for (WeaponData w : weapons) w.write(buffer);
-		buffer.writeInt(weaponIndex);
 	}
 	
-	/**
-	 * @param ws copies this weapon system's weapons list and selected weapon index
-	 */
-	public void copy(WeaponSystem ws) {
-		this.weapons = ws.weapons;
-		this.weaponIndex = ws.weaponIndex;
-		this.readData = true;
+	public void setWeapons(List<WeaponData> weapons) {
+		this.weapons = weapons;
+		readData = true;
 	}
 	
 	public boolean addWeapon(WeaponData data, boolean updateClient) {
@@ -83,7 +77,7 @@ public class WeaponSystem {
 		weapons.add(data);
 		if (updateClient) {
 			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
-					new ToClientAddWeapon(parent.getId(), data));
+				new ToClientAddWeapon(parent.getId(), data));
 		}
 		return true;
 	}
@@ -92,7 +86,7 @@ public class WeaponSystem {
 		boolean r = weapons.remove(get(id, slotId));
 		if (r && updateClient) {
 			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
-					new ToClientRemoveWeapon(parent.getId(), id, slotId));
+				new ToClientRemoveWeapon(parent.getId(), id, slotId));
 		}
 	}
 	
@@ -115,15 +109,19 @@ public class WeaponSystem {
 		return weapons.get(weaponIndex);
 	}
 	
+	public int getSelectedIndex() {
+		return weaponIndex;
+	}
+	
 	public boolean shootSelected(Entity controller, boolean consume) {
 		WeaponData data = getSelected();
 		if (data == null) return false;
 		String name = data.getId();
 		String reason = null;
-		data.shoot(parent.level, controller, UtilAngles.getRollAxis(parent.getQ()), null, parent, consume);
+		data.shoot(parent.level, controller, getShootDirection(data), null, parent, consume);
 		if (data.isFailedLaunch()) reason = data.getFailedLaunchReason();
 		for (WeaponData wd : weapons) if (wd.getType() == WeaponType.BULLET && wd.getId().equals(name) && !wd.getSlotId().equals(data.getSlotId())) {
-			wd.shoot(parent.level, controller, parent.getLookAngle(), null, parent, consume);
+			wd.shoot(parent.level, controller, getShootDirection(wd), null, parent, consume);
 			if (reason == null && wd.isFailedLaunch()) reason = wd.getFailedLaunchReason();
 		}
 		if (reason != null && controller instanceof ServerPlayer player) {
@@ -131,6 +129,14 @@ public class WeaponSystem {
 		}
 		return true;
 	}
+	
+	public Vec3 getShootDirection(WeaponData data) {
+		Quaternion q = parent.getQ();
+		if (parent.isWeaponAngledDown() && data.getSlotId().equals("dscombat.frame_1")) {
+			q.mul(Vector3f.XP.rotationDegrees(25f));
+		}
+    	return UtilAngles.getRollAxis(q);
+    }
 	
 	public void selectNextWeapon() {
 		++weaponIndex;
@@ -157,12 +163,12 @@ public class WeaponSystem {
 		for (WeaponData w : weapons) w.tick();
 	}
 	
-	public void setup(EntityAircraft parent) {
-		this.parent = parent;
+	public void setup(/*EntityAircraft parent*/) {
+		//this.parent = parent;
 	}
 	
-	public void clientSetup(EntityAircraft parent) {
-		this.parent = parent;
+	public void clientSetup(/*EntityAircraft parent*/) {
+		//this.parent = parent;
 	}
 	
 	public boolean isReadData() {

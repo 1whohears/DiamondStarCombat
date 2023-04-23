@@ -284,18 +284,16 @@ public class UtilAngles {
     	return a;
     }
     
-    // HOW there has to be a faster way to do this...math majors help please!
     public static float[] globalToRelativeDegrees(float gx, float gy, Quaternion ra) {
     	Vec3 dir = rotationToVector(gy, gx);
-    	Vec3 yaxis = getYawAxis(ra).scale(-1);
-    	Vec3 zaxis = getRollAxis(ra);
-    	Vec3 xaxis = getPitchAxis(ra).scale(-1);
+    	EulerAngles ea = toRadians(ra);
+    	Vec3 yaxis = getYawAxis(ea.pitch, ea.yaw, ea.roll).scale(-1);
+    	Vec3 zaxis = getRollAxis(ea.pitch, ea.yaw);
+    	Vec3 xaxis = getPitchAxis(ea.pitch, ea.yaw, ea.roll).scale(-1);
     	float rx = (float) UtilGeometry.angleBetweenVecPlaneDegrees(dir, yaxis);
-    	double xc = UtilGeometry.componentMagSqrDirByAxis(dir, xaxis);
-    	double zc = UtilGeometry.componentMagSqrDirByAxis(dir, zaxis);
-    	float ry = (float) Math.toDegrees(Math.atan2(
-    			Math.sqrt(Math.abs(xc))*Math.signum(xc), 
-    			Math.sqrt(Math.abs(zc))*Math.signum(zc)));
+    	double xc = UtilGeometry.vecCompMagDirByNormAxis(dir, xaxis);
+    	double zc = UtilGeometry.vecCompMagDirByNormAxis(dir, zaxis);
+    	float ry = (float) Math.toDegrees(Math.atan2(xc, zc));
     	return new float[] {rx, ry};
     }
     

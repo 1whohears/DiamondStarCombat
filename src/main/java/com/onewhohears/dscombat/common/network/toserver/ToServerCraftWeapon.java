@@ -51,8 +51,8 @@ public class ToServerCraftWeapon extends IPacket {
 				DSCIngredient.consumeIngredients(data.ingredients, player.getInventory());
 				ItemStack stack = new ItemStack(data.getItem());
 				stack.setCount(data.craftNum);
-				Containers.dropItemStack(player.level, 
-						pos.getX()+0.5, pos.getY()+1.125, pos.getZ()+0.5, stack);
+				Containers.dropItemStack(player.level, pos.getX()+0.5, 
+						pos.getY()+1.125, pos.getZ()+0.5, stack);
 			}
 			success.set(true);
 		});

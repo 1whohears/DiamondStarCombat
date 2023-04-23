@@ -1,0 +1,302 @@
+{
+	"preset": "andolf_sub",
+	"max_speed": 0.6,
+	
+	"max_health": 800,
+	"health": 800,
+	
+	"mass": 200,
+	
+	"stealth": 0.6,
+	"idleheat": 15.0,
+	
+	"turn_radius": 0,
+	"maxroll": 2.0,
+	"maxpitch": 2.0,
+	"maxyaw": 2.0,
+	"rolltorque": 1,
+	"pitchtorque": 1,
+	"yawtorque": 1,
+	
+	"throttleup": 0.04,
+	"throttledown": 0.04,
+	"landing_gear": true,
+	
+	"slots": [
+		{
+			"name": "dscombat.pilot_seat",
+			"slot_type": 0,
+			"slot_posx": 0.6,
+			"slot_posy": -1.5,
+			"slot_posz": 2.8,
+			"uix": 48,
+			"uiy": 20,
+			"data": {
+				"itemid": "dscombat:seat"
+			}
+		},
+		{
+			"name": "dscombat.seat1",
+			"slot_type": 0,
+			"slot_posx": -0.6,
+			"slot_posy": -1.5,
+			"slot_posz": 2.8,
+			"uix": 68,
+			"uiy": 20,
+			"data": {
+				"itemid": "dscombat:seat"
+			}
+		},
+		{
+			"name": "dscombat.seat2",
+			"slot_type": 0,
+			"slot_posx": 0.6,
+			"slot_posy": -1.5,
+			"slot_posz": 1.6,
+			"uix": 88,
+			"uiy": 20,
+			"data": {
+				"itemid": "dscombat:seat"
+			}
+		},
+		{
+			"name": "dscombat.seat3",
+			"slot_type": 0,
+			"slot_posx": -0.6,
+			"slot_posy": -1.5,
+			"slot_posz": 1.6,
+			"uix": 108,
+			"uiy": 20,
+			"data": {
+				"itemid": "dscombat:seat"
+			}
+		},
+		{
+			"name": "dscombat.seat4",
+			"slot_type": 0,
+			"slot_posx": 0.6,
+			"slot_posy": -1.5,
+			"slot_posz": 0.4,
+			"uix": 128,
+			"uiy": 20,
+			"data": {
+				"itemid": "dscombat:seat"
+			}
+		},
+		{
+			"name": "dscombat.seat5",
+			"slot_type": 0,
+			"slot_posx": -0.6,
+			"slot_posy": -1.5,
+			"slot_posz": 0.4,
+			"uix": 148,
+			"uiy": 20,
+			"data": {
+				"itemid": "dscombat:seat"
+			}
+		},
+		{
+			"name": "dscombat.nose_1",
+			"slot_type": 2,
+			"slot_posx": 0,
+			"slot_posy": -1.6,
+			"slot_posz": 3.5,
+			"uix": 48,
+			"uiy": 80,
+			"data": {
+				"filled": true,
+				"param": "20mm",
+				"itemid": "dscombat:xm12"
+			}
+		},
+		{
+			"name": "dscombat.frame_1",
+			"slot_type": 1,
+			"slot_posx": 2.0,
+			"slot_posy": 0,
+			"slot_posz": 0,
+			"uix": 48,
+			"uiy": 60,
+			"zRot": 90,
+			"data": {
+				"filled": true,
+				"param": "torpedo1",
+				"itemid": "dscombat:heavy_missile_rack"
+			}
+		},
+		{
+			"name": "dscombat.frame_2",
+			"slot_type": 1,
+			"slot_posx": -2.0,
+			"slot_posy": 0,
+			"slot_posz": 0,
+			"uix": 68,
+			"uiy": 60,
+			"zRot": -90,
+			"data": {
+				"filled": true,
+				"param": "torpedo1",
+				"itemid": "dscombat:heavy_missile_rack"
+			}
+		},
+		{
+			"name": "dscombat.frame_3",
+			"slot_type": 1,
+			"slot_posx": 2.0,
+			"slot_posy": 0,
+			"slot_posz": 1,
+			"uix": 88,
+			"uiy": 60,
+			"zRot": 90,
+			"data": {
+				"filled": true,
+				"param": "torpedo1",
+				"itemid": "dscombat:heavy_missile_rack"
+			}
+		},
+		{
+			"name": "dscombat.frame_4",
+			"slot_type": 1,
+			"slot_posx": -2.0,
+			"slot_posy": 0,
+			"slot_posz": 1,
+			"uix": 108,
+			"uiy": 60,
+			"zRot": -90,
+			"data": {
+				"filled": true,
+				"param": "torpedo1",
+				"itemid": "dscombat:heavy_missile_rack"
+			}
+		},
+		{
+			"name": "dscombat.frame_5",
+			"slot_type": 1,
+			"slot_posx": 2.0,
+			"slot_posy": 0,
+			"slot_posz": -1,
+			"uix": 108,
+			"uiy": 60,
+			"zRot": 90,
+			"data": {
+				"filled": true,
+				"param": "torpedo1",
+				"itemid": "dscombat:heavy_missile_rack"
+			}
+		},
+		{
+			"name": "dscombat.frame_6",
+			"slot_type": 1,
+			"slot_posx": -2.0,
+			"slot_posy": 0,
+			"slot_posz": -1,
+			"uix": 128,
+			"uiy": 60,
+			"zRot": -90,
+			"data": {
+				"filled": true,
+				"param": "torpedo1",
+				"itemid": "dscombat:heavy_missile_rack"
+			}
+		},
+		{
+			"name": "dscombat.internal_1",
+			"slot_type": 3,
+			"slot_posx": 0,
+			"slot_posy": 0,
+			"slot_posz": 0,
+			"uix": 48,
+			"uiy": 100,
+			"data": {
+				"itemid": "dscombat:c12_engine"
+			}
+		},
+		{
+			"name": "dscombat.internal_2",
+			"slot_type": 3,
+			"slot_posx": 0,
+			"slot_posy": 0,
+			"slot_posz": 0,
+			"uix": 68,
+			"uiy": 100,
+			"data": {
+				"itemid": "dscombat:c12_engine"
+			}
+		},
+		{
+			"name": "dscombat.internal_3",
+			"slot_type": 3,
+			"slot_posx": 0,
+			"slot_posy": 0,
+			"slot_posz": 0,
+			"uix": 88,
+			"uiy": 100,
+			"data": {
+				"filled": true,
+				"itemid": "dscombat:heavy_fuel_tank"
+			}
+		},
+		{
+			"name": "dscombat.internal_4",
+			"slot_type": 4,
+			"slot_posx": 0,
+			"slot_posy": 0,
+			"slot_posz": 0,
+			"uix": 108,
+			"uiy": 100,
+			"data": {
+				"itemid": "dscombat:wr1k"
+			}
+		},
+		{
+			"name": "dscombat.internal_5",
+			"slot_type": 4,
+			"slot_posx": 0,
+			"slot_posy": 0,
+			"slot_posz": 0,
+			"uix": 128,
+			"uiy": 100
+		},
+		{
+			"name": "dscombat.internal_6",
+			"slot_type": 4,
+			"slot_posx": 0,
+			"slot_posy": 0,
+			"slot_posz": 0,
+			"uix": 148,
+			"uiy": 100
+		}
+	],
+	
+	"dyecolor": 11,
+	"textures": {
+		"11": "dscombat:textures/entities/andolf_sub/blue.png"
+	},
+	
+	"ingredients": [
+		{
+			"item": "minecraft:minecart",
+			"num": 4
+		},
+		{
+			"item": "dscombat:fuselage",
+			"num": 3
+		},
+		{
+			"item": "dscombat:seat",
+			"num": 5
+		},
+		{
+			"item": "minecraft:gold_ingot",
+			"num": 4
+		},
+		{
+			"item": "dscombat:c12_engine",
+			"num": 2
+		},
+		{
+			"item": "dscombat:heavy_fuel_tank",
+			"num": 1
+		}
+	]
+}

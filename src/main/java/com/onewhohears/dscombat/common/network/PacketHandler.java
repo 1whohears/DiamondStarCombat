@@ -1,24 +1,26 @@
 package com.onewhohears.dscombat.common.network;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.common.network.toclient.ToClientAddPart;
+import com.onewhohears.dscombat.common.network.toclient.ToClientAddMoment;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddRadar;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddWeapon;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAircraftFuel;
 import com.onewhohears.dscombat.common.network.toclient.ToClientMissileMove;
+import com.onewhohears.dscombat.common.network.toclient.ToClientRWRWarning;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRadarPings;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRecievePlaneData;
-import com.onewhohears.dscombat.common.network.toclient.ToClientRemovePart;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRemoveRadar;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRemoveWeapon;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponAmmo;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponIndex;
+import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftAV;
+import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftQ;
+import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftThrottle;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftToItem;
 import com.onewhohears.dscombat.common.network.toserver.ToServerCraftPlane;
 import com.onewhohears.dscombat.common.network.toserver.ToServerCraftWeapon;
 import com.onewhohears.dscombat.common.network.toserver.ToServerFlightControl;
 import com.onewhohears.dscombat.common.network.toserver.ToServerPingSelect;
-import com.onewhohears.dscombat.common.network.toserver.ToServerQ;
 import com.onewhohears.dscombat.common.network.toserver.ToServerRequestPlaneData;
 import com.onewhohears.dscombat.common.network.toserver.ToServerShootTurret;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSwitchSeat;
@@ -94,16 +96,6 @@ public final class PacketHandler {
 			.encoder(ToClientRemoveWeapon::encode)
 			.decoder(ToClientRemoveWeapon::new)
 			.consumerMainThread(ToClientRemoveWeapon::handle)
-			.add();
-		net.messageBuilder(ToClientAddPart.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ToClientAddPart::encode)
-			.decoder(ToClientAddPart::new)
-			.consumerMainThread(ToClientAddPart::handle)
-			.add();
-		net.messageBuilder(ToClientRemovePart.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ToClientRemovePart::encode)
-			.decoder(ToClientRemovePart::new)
-			.consumerMainThread(ToClientRemovePart::handle)
 			.add();		
 		net.messageBuilder(ToClientAddRadar.class, index++, NetworkDirection.PLAY_TO_CLIENT)
 			.encoder(ToClientAddRadar::encode)
@@ -140,15 +132,35 @@ public final class PacketHandler {
 			.decoder(ToServerCraftPlane::new)
 			.consumerMainThread(ToServerCraftPlane::handle)
 			.add();
-		net.messageBuilder(ToServerQ.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ToServerQ::encode)
-			.decoder(ToServerQ::new)
-			.consumerMainThread(ToServerQ::handle)
+		net.messageBuilder(ToServerAircraftQ.class, index++, NetworkDirection.PLAY_TO_SERVER)
+			.encoder(ToServerAircraftQ::encode)
+			.decoder(ToServerAircraftQ::new)
+			.consumerMainThread(ToServerAircraftQ::handle)
 			.add();
 		net.messageBuilder(ToServerShootTurret.class, index++, NetworkDirection.PLAY_TO_SERVER)
 			.encoder(ToServerShootTurret::encode)
 			.decoder(ToServerShootTurret::new)
 			.consumerMainThread(ToServerShootTurret::handle)
+			.add();
+		net.messageBuilder(ToClientRWRWarning.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ToClientRWRWarning::encode)
+			.decoder(ToClientRWRWarning::new)
+			.consumerMainThread(ToClientRWRWarning::handle)
+			.add();
+		net.messageBuilder(ToClientAddMoment.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ToClientAddMoment::encode)
+			.decoder(ToClientAddMoment::new)
+			.consumerMainThread(ToClientAddMoment::handle)
+			.add();
+		net.messageBuilder(ToServerAircraftAV.class, index++, NetworkDirection.PLAY_TO_SERVER)
+			.encoder(ToServerAircraftAV::encode)
+			.decoder(ToServerAircraftAV::new)
+			.consumerMainThread(ToServerAircraftAV::handle)
+			.add();
+		net.messageBuilder(ToServerAircraftThrottle.class, index++, NetworkDirection.PLAY_TO_SERVER)
+			.encoder(ToServerAircraftThrottle::encode)
+			.decoder(ToServerAircraftThrottle::new)
+			.consumerMainThread(ToServerAircraftThrottle::handle)
 			.add();
 	}
 	

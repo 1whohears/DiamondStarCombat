@@ -22,10 +22,12 @@ import com.onewhohears.dscombat.data.parts.SeatData;
 import com.onewhohears.dscombat.data.parts.TurretData;
 import com.onewhohears.dscombat.data.parts.WeaponPartData;
 import com.onewhohears.dscombat.data.parts.WeaponRackData;
+import com.onewhohears.dscombat.data.weapon.AntiRadarMissileData;
 import com.onewhohears.dscombat.data.weapon.BombData;
 import com.onewhohears.dscombat.data.weapon.BulletData;
 import com.onewhohears.dscombat.data.weapon.IRMissileData;
 import com.onewhohears.dscombat.data.weapon.PosMissileData;
+import com.onewhohears.dscombat.data.weapon.TorpedoData;
 import com.onewhohears.dscombat.data.weapon.TrackMissileData;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
@@ -167,8 +169,37 @@ public class UtilParse {
 			return new PosMissileData(tag);
 		case TRACK_MISSILE:
 			return new TrackMissileData(tag);
+		case ANTIRADAR_MISSILE:
+			return new AntiRadarMissileData(tag);
+		case TORPEDO:
+			return new TorpedoData(tag);
 		}
 		return null;
+	}
+
+	public static float fixFloatNbt(CompoundTag nbt, String tag, CompoundTag presetNbt, float min) {
+		float f = nbt.getFloat(tag);
+		if (f > min) return f;
+		f = presetNbt.getFloat(tag);
+		nbt.putFloat(tag, f);
+		return f;
+	}
+
+	public static float fixFloatNbt(CompoundTag nbt, String tag, float alt) {
+		if (!nbt.contains(tag)) {
+			nbt.putFloat(tag, alt);
+			return alt;
+		}
+		return nbt.getFloat(tag);
+	}
+	
+	public static String prettyVec3(Vec3 v) {
+		return String.format("[%3.1f,%3.1f,%3.1f]", v.x, v.y, v.z);
+	}
+	
+	public static String prettyVec3(Vec3 v, int decimals) {
+		String f = "%3."+decimals+"f";
+		return String.format("["+f+","+f+","+f+"]", v.x, v.y, v.z);
 	}
 	
 }

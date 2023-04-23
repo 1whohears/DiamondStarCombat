@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.onewhohears.dscombat.common.container.slot.PartItemSlot;
 import com.onewhohears.dscombat.data.parts.PartSlot;
-import com.onewhohears.dscombat.data.parts.PartsManager;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.init.ModContainers;
 
@@ -18,22 +17,20 @@ import net.minecraft.world.item.ItemStack;
 public class AircraftMenuContainer extends AbstractContainerMenu {
 	
 	private Container playerInv;
-	private PartsManager pm;
-	private boolean loaded = false;
+	private Container planeInv;
 	
 	public AircraftMenuContainer(int id, Inventory playerInv) {
 		super(ModContainers.PLANE_MENU.get(), id);
-		System.out.println("AircraftMenuContainer client side "+playerInv.player.level.isClientSide);
+		//System.out.println("AircraftMenuContainer client side "+playerInv.player.level.isClientSide);
 		this.playerInv = playerInv;
 		// display plane parts
 		if (playerInv.player.getRootVehicle() instanceof EntityAircraft plane) {
-			this.pm = plane.partsManager;
-			Container partsInv = pm.getContainer(this);
+			this.planeInv = plane.partsManager.getInventory();
 			List<PartSlot> slots = plane.partsManager.getSlots();
 			// create plane menu container
-			for (int i = 0; i < partsInv.getContainerSize(); ++i) {
+			for (int i = 0; i < planeInv.getContainerSize(); ++i) {
 				//System.out.println("partsInv i = "+i);
-				this.addSlot(new PartItemSlot(partsInv, i, slots.get(i)));
+				this.addSlot(new PartItemSlot(planeInv, i, slots.get(i)));
 			}
 		}
 		// display player inventory
@@ -47,7 +44,6 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
 			//System.out.println("playerInv i = "+i);
 			this.addSlot(new Slot(playerInv, i, 48 + i * 18, 196));
 		}
-		this.loaded = true;
 	}
 
 	@Override
@@ -60,30 +56,32 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
 		super.slotsChanged(inventory);
 	}
 	
-	public void setItem(int i, ItemStack stack) {
-		if (loaded) pm.setItem(i, stack);
-	}
-	
-	public void removeItem(int i, int count) {
-		if (loaded) pm.removeItem(i, count);
-	}
-	
 	@Override
 	public ItemStack quickMoveStack(Player player, int index) {
-		ItemStack stack = ItemStack.EMPTY;
+		if (planeInv == null) return ItemStack.EMPTY;
+		Slot slot = getSlot(index);
+		if (slot == null || !slot.hasItem()) return ItemStack.EMPTY;
+		ItemStack stack1 = slot.getItem();
+		ItemStack stack = stack1.copy();
+		int planeSize = planeInv.getContainerSize();
+		if (index < planeSize) { if (!moveItemStackTo(stack1, 
+				planeSize, slots.size(), true)) {
+			return ItemStack.EMPTY;
+		} } else if (index >= planeSize) { if (!moveItemStackTo(stack1, 
+				0, planeSize, false)) {
+			return ItemStack.EMPTY;
+		} }
+		if (stack1.isEmpty()) slot.set(ItemStack.EMPTY);
+		else slot.setChanged();
 		return stack;
 	}
 	
 	public Container getPlayerInventory() {
         return this.playerInv;
     }
-
-    public PartsManager getPartsInventory() {
-        return this.pm;
-    }
-    
-    public boolean isLoaded() {
-    	return this.loaded;
-    }
+	
+	public Container getPlaneInventory() {
+		return this.planeInv;
+	}
 
 }

@@ -3,8 +3,8 @@ package com.onewhohears.dscombat.data.weapon;
 import java.util.List;
 import java.util.Random;
 
-import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.entity.weapon.EntityBullet;
+import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.nbt.CompoundTag;
@@ -23,28 +23,6 @@ public class BulletData extends WeaponData {
 	private boolean causesFire;
 	private float explosionRadius;
 	private float innacuracy;
-	
-	/*public BulletData(RegistryObject<EntityType<?>> entityType, RegistryObject<SoundEvent> shootSound, List<Ingredient> ingredients,
-			String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, boolean canShootOnGround,
-			float damage, double speed, float innacuracy) {
-		super(entityType, shootSound, ingredients, id, launchPos, maxAge, maxAmmo, fireRate, canShootOnGround);
-		this.damage = damage;
-		this.speed = speed;
-		this.innacuracy = innacuracy;
-	}
-	
-	public BulletData(RegistryObject<EntityType<?>> entityType, RegistryObject<SoundEvent> shootSound, List<Ingredient> ingredients,
-			String id, Vec3 launchPos, int maxAge, int maxAmmo, int fireRate, boolean canShootOnGround,
-			float damage, double speed, float innacuracy, boolean explosive, boolean destroyTerrain, 
-			boolean causesFire, double explosiveDamage, float explosionRadius) {
-		this(entityType, shootSound, ingredients,
-				id, launchPos, maxAge, maxAmmo, fireRate, canShootOnGround, damage, speed, innacuracy);
-		this.explosive = explosive;
-		this.destroyTerrain = destroyTerrain;
-		this.causesFire = causesFire;
-		this.explosiveDamage = explosiveDamage;
-		this.explosionRadius = explosionRadius;
-	}*/
 	
 	public BulletData(CompoundTag tag) {
 		super(tag);

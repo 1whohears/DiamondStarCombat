@@ -7,12 +7,15 @@ import javax.annotation.Nullable;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft.AircraftType;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -48,19 +51,11 @@ public class EntitySeat extends EntityPart {
 	
 	public void init() {
 		super.init();
-		List<Entity> passengers = getPassengers();
-		for (Entity p : passengers) {
-			//System.out.println("CHECK CAMERA "+p);
-			if (p instanceof EntitySeatCamera camera) {
-				//System.out.println("ALREADY CAMERA");
-				return;
-			}
-		}
+		if (getCamera() != null) return;
 		EntitySeatCamera cam = new EntitySeatCamera(level);
 		cam.setPos(position());
 		cam.startRiding(this);
 		level.addFreshEntity(cam);
-		//System.out.println("ADDED CAMERA "+cam);
 	}
 	
 	@Override
@@ -78,6 +73,18 @@ public class EntitySeat extends EntityPart {
 		if (!(getVehicle() instanceof EntityAircraft craft)) {
 			super.positionRider(passenger);
 			return;
+		}
+		if (tickCount % 20 != 0 && passenger instanceof Player player) {
+			if (craft.nightVisionHud) {
+				player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 
+						80, 0, false, false));
+			}	
+			if (craft.getAircraftType() == AircraftType.SUBMARINE) {
+				player.addEffect(new MobEffectInstance(MobEffects.WATER_BREATHING, 
+						80, 0, false, false));
+				player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 
+						80, 0, false, false));
+			}
 		}
 		Vec3 pos = position();
 		Quaternion q;
@@ -107,7 +114,9 @@ public class EntitySeat extends EntityPart {
 	
 	@Override
     public Vec3 getDismountLocationForPassenger(LivingEntity livingEntity) {
-		return super.getDismountLocationForPassenger(livingEntity).add(0, 1, 0);
+		Entity v = getVehicle();
+		if (v != null) return v.getDismountLocationForPassenger(livingEntity);
+		return super.getDismountLocationForPassenger(livingEntity);
 	}
 	
 	@Nullable

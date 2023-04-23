@@ -1,12 +1,11 @@
 {
 	"preset": "mrbudger_tank",
-	"max_speed": 0.5,
+	"max_speed": 0.3,
 	
 	"max_health": 500,
 	"health": 500,
 	
-	"weight": 0.25,
-	"surfacearea": 1.0,
+	"mass": 100,
 	
 	"stealth": 1.0,
 	"idleheat": 20.0,
@@ -14,10 +13,10 @@
 	"turn_radius": 0,
 	"maxroll": 0.0,
 	"maxpitch": 0.0,
-	"maxyaw": 1.0,
-	"accroll": 0.0,
-	"accpitch": 0.0,
-	"accyaw": 0.2,
+	"maxyaw": 2.0,
+	"rolltorque": 0,
+	"pitchtorque": 0,
+	"yawtorque": 8,
 	
 	"throttleup": 0.04,
 	"throttledown": 0.04,
@@ -26,7 +25,7 @@
 	"slots": [
 		{
 			"name": "dscombat.pilot_seat",
-			"slot_type": 0,
+			"slot_type": 6,
 			"slot_posx": 0.0,
 			"slot_posy": 1.4,
 			"slot_posz": 0.0,
@@ -38,7 +37,7 @@
 		},
 		{
 			"name": "dscombat.seat1",
-			"slot_type": 0,
+			"slot_type": 6,
 			"slot_posx": 1.0,
 			"slot_posy": 1.4,
 			"slot_posz": 2.0,
@@ -50,7 +49,7 @@
 		},
 		{
 			"name": "dscombat.seat2",
-			"slot_type": 0,
+			"slot_type": 6,
 			"slot_posx": -1.0,
 			"slot_posy": 1.4,
 			"slot_posz": 2.0,
@@ -62,7 +61,7 @@
 		},
 		{
 			"name": "dscombat.seat3",
-			"slot_type": 0,
+			"slot_type": 6,
 			"slot_posx": 1.0,
 			"slot_posy": 1.4,
 			"slot_posz": -2.0,
@@ -74,7 +73,7 @@
 		},
 		{
 			"name": "dscombat.seat4",
-			"slot_type": 0,
+			"slot_type": 6,
 			"slot_posx": -1.0,
 			"slot_posy": 1.4,
 			"slot_posz": -2.0,
@@ -125,7 +124,10 @@
 	
 	"dyecolor": 0,
 	"textures": {
-		"0": "dscombat:textures/entities/mrbudger_tank.png"
+		"0": "dscombat:textures/entities/mrbudger_tank/yellow.png",
+		"14": "dscombat:textures/entities/mrbudger_tank/red.png",
+		"15": "dscombat:textures/entities/mrbudger_tank/black.png",
+		"11": "dscombat:textures/entities/mrbudger_tank/blue.png"
 	},
 	
 	"ingredients": [

@@ -2,13 +2,11 @@ package com.onewhohears.dscombat.util;
 
 import java.util.List;
 
-import com.onewhohears.dscombat.data.parts.PartData;
-import com.onewhohears.dscombat.data.parts.PartsManager;
+import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.radar.RadarData;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
-import com.onewhohears.dscombat.data.radar.RadarSystem;
+import com.onewhohears.dscombat.data.radar.RadarSystem.RWRWarning;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
-import com.onewhohears.dscombat.data.weapon.WeaponSystem;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 
@@ -39,19 +37,20 @@ public class UtilPacket {
 		}
 	}
 	
-	public static void planeDataPacket(int id, PartsManager pm, WeaponSystem ws, RadarSystem rs) {
+	public static void planeDataPacket(int id, List<PartSlot> slots, List<WeaponData> weapons, int weaponIndex, List<RadarData> radars) {
 		//System.out.println("plane data packet received");
 		//System.out.println(pm.toString());
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityAircraft plane) {
-			plane.partsManager.copy(pm);
-			plane.weaponSystem.copy(ws);
-			plane.radarSystem.copy(rs);
+			plane.weaponSystem.clientSetSelected(weaponIndex);
+			plane.weaponSystem.setWeapons(weapons);
+			plane.radarSystem.setRadars(radars);
+			plane.partsManager.setPartSlots(slots);
 			// ORDER MATTERS
-			plane.weaponSystem.clientSetup(plane);
-			plane.radarSystem.clientSetup(plane);
-			plane.partsManager.clientPartsSetup(plane);
+			plane.weaponSystem.clientSetup();
+			plane.radarSystem.clientSetup();
+			plane.partsManager.clientPartsSetup();
 			//System.out.println("plane data updated");
 		}
 	}
@@ -91,38 +90,6 @@ public class UtilPacket {
 		}
 	}
 	
-	/*public static void addTurretPacket(int id, String slotName, WeaponData data) {
-		Minecraft m = Minecraft.getInstance();
-		Level world = m.level;
-		if (world.getEntity(id) instanceof EntityAircraft plane) {
-			plane.weaponSystem.addTurret(slotName, data, false);
-		}
-	}*/
-	
-	/*public static void removeTurretPacket(int id, String slotName) {
-		Minecraft m = Minecraft.getInstance();
-		Level world = m.level;
-		if (world.getEntity(id) instanceof EntityAircraft plane) {
-			plane.weaponSystem.removeTurret(slotName, false);
-		}
-	}*/
-	
-	public static void addPartPacket(int id, String slotName, PartData data) {
-		Minecraft m = Minecraft.getInstance();
-		Level world = m.level;
-		if (world.getEntity(id) instanceof EntityAircraft plane) {
-			plane.partsManager.addPart(data, slotName, false);
-		}
-	}
-	
-	public static void removePartPacket(int id, String slotName) {
-		Minecraft m = Minecraft.getInstance();
-		Level world = m.level;
-		if (world.getEntity(id) instanceof EntityAircraft plane) {
-			plane.partsManager.removePart(slotName, false);
-		}
-	}
-	
 	public static void addRadarPacket(int id, RadarData data) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
@@ -144,6 +111,22 @@ public class UtilPacket {
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityAircraft plane) {
 			plane.partsManager.readFuelsForClient(fuels);
+		}
+	}
+	
+	public static void rwrPacket(int id, RWRWarning warning) {
+		Minecraft m = Minecraft.getInstance();
+		Level world = m.level;
+		if (world.getEntity(id) instanceof EntityAircraft plane) {
+			plane.radarSystem.getClientRWRWarnings().add(warning);
+		}
+	}
+	
+	public static void addMomentPacket(int id, Vec3 moment) {
+		Minecraft m = Minecraft.getInstance();
+		Level world = m.level;
+		if (world.getEntity(id) instanceof EntityAircraft plane) {
+			plane.addMomentFromServer = plane.addMomentFromServer.add(moment);
 		}
 	}
 	

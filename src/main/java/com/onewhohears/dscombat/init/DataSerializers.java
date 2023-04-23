@@ -13,10 +13,12 @@ import com.onewhohears.dscombat.data.parts.SeatData;
 import com.onewhohears.dscombat.data.parts.TurretData;
 import com.onewhohears.dscombat.data.parts.WeaponPartData;
 import com.onewhohears.dscombat.data.parts.WeaponRackData;
+import com.onewhohears.dscombat.data.weapon.AntiRadarMissileData;
 import com.onewhohears.dscombat.data.weapon.BombData;
 import com.onewhohears.dscombat.data.weapon.BulletData;
 import com.onewhohears.dscombat.data.weapon.IRMissileData;
 import com.onewhohears.dscombat.data.weapon.PosMissileData;
+import com.onewhohears.dscombat.data.weapon.TorpedoData;
 import com.onewhohears.dscombat.data.weapon.TrackMissileData;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 
@@ -103,6 +105,10 @@ public class DataSerializers {
 				return new PosMissileData(buffer);
 			case TRACK_MISSILE:
 				return new TrackMissileData(buffer);
+			case ANTIRADAR_MISSILE:
+				return new AntiRadarMissileData(buffer);
+			case TORPEDO:
+				return new TorpedoData(buffer);
 			}
 			return null;
 		}

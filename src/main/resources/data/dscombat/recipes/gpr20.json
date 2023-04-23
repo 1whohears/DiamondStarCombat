@@ -1,0 +1,19 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"A": {
+			"item": "dscombat:gr400"
+		},
+		"D": {
+			"item": "minecraft:fermented_spider_eye"
+		}
+	},
+	"pattern": [
+		"AAA",
+		"D D"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:gpr20"
+	}
+}

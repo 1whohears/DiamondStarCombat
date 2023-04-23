@@ -8,4 +8,3 @@ src/generated/**/*.json text eol=lf
 build.gradle merge=ours
 src/main/resources/META-INF/mods.toml merge=ours
 $ git config --global merge.ours.driver true
-

@@ -59,9 +59,9 @@ public class AircraftPresets {
 		ItemStack stack = items.get(preset);
 		if (stack == null) {
 			try {
-				stack = new ItemStack(ForgeRegistries.ITEMS.getDelegate(
+				stack = new ItemStack(ForgeRegistries.ITEMS.getHolder(
 						new ResourceLocation(DSCombatMod.MODID, preset))
-							.get().get());
+							.get().value());
 			} catch(NoSuchElementException e) {
 				stack = ItemStack.EMPTY;
 			}

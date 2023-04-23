@@ -32,7 +32,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class DataSerializers {
 	
-	public static final DeferredRegister<EntityDataSerializer<?>> DATA_SERIALIZERS = DeferredRegister.create(ForgeRegistries.Keys.ENTITY_DATA_SERIALIZERS, DSCombatMod.MODID);
+	public static final DeferredRegister<EntityDataSerializer<?>> DATA_SERIALIZERS = DeferredRegister.create(ForgeRegistries.Keys.DATA_SERIALIZERS, DSCombatMod.MODID);
 
     public static void register(IEventBus eventBus) {
         DATA_SERIALIZERS.register(eventBus);

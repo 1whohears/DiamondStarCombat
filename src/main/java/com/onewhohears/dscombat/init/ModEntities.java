@@ -31,7 +31,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class ModEntities {
 	
-	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, DSCombatMod.MODID);
+	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, DSCombatMod.MODID);
 	
 	public static void register(IEventBus eventBus) {
 		ENTITIES.register(eventBus);

@@ -48,8 +48,8 @@ public class DSCIngredient {
 	public ItemStack getDisplayItem() {
 		if (stack == null) {
 			try {
-				stack = new ItemStack(ForgeRegistries.ITEMS.getDelegate(
-						new ResourceLocation(displayItemId)).get().get());
+				stack = new ItemStack(ForgeRegistries.ITEMS.getHolder(
+						new ResourceLocation(displayItemId)).get().value());
 				stack.setCount(cost);
 			} catch(NoSuchElementException e) {
 				stack = ItemStack.EMPTY;

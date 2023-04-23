@@ -370,8 +370,8 @@ public abstract class WeaponData {
 	
 	public EntityType<?> getRackEntityType() {
 		if (rackType == null) {
-			try { rackType = ForgeRegistries.ENTITY_TYPES
-					.getDelegate(new ResourceLocation(rackTypeKey)).get().get(); }
+			try { rackType = ForgeRegistries.ENTITIES
+					.getHolder(new ResourceLocation(rackTypeKey)).get().value(); }
 			catch(NoSuchElementException e) { rackType = ModEntities.XM12.get(); }
 		}
 		return rackType;

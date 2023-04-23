@@ -11,6 +11,6 @@ Join the discord for development updates. Additionally, I appreciate any and all
 
 https://discord.gg/dWgQTRxCJm
 
-Check out my channel where I'll post guides and other videos showing of the mod! 
+Check out my youtube where I'll post guides and other videos showing the mod! 
 
 https://youtu.be/P4Flz0XOtTk

@@ -1,0 +1,20 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"T": {
+			"item": "dscombat:intel_pentium"
+		},
+		"S": {
+			"item": "minecraft:echo_shard"
+		}
+	},
+	"pattern": [
+		" T ",
+		"TST",
+		" T "
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:intel_core_i9x"
+	}
+}

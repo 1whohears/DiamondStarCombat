@@ -1,0 +1,26 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"P": {
+			"item": "dscombat:intel_pentium"
+		},
+		"G": {
+			"item": "minecraft:spider_eye"
+		},
+		"O": {
+			"item": "minecraft:observer"
+		},
+		"I": {
+			"item": "minecraft:iron_ingot"
+		}
+	},
+	"pattern": [
+		"IPI",
+		"IOI",
+		"IGI"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:gr200"
+	}
+}

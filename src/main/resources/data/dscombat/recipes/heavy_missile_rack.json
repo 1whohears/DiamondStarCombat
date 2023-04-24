@@ -1,0 +1,19 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"M": {
+			"item": "dscombat:light_missile_rack"
+		},
+		"I": {
+			"item": "minecraft:iron_ingot"
+		}
+	},
+	"pattern": [
+		"III",
+		"MIM"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:heavy_missile_rack"
+	}
+}

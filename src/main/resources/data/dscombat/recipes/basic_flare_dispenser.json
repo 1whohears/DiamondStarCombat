@@ -1,0 +1,23 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"T": {
+			"item": "dscombat:ti83"
+		},
+		"D": {
+			"item": "minecraft:dispenser"
+		},
+		"B": {
+			"item": "minecraft:blaze_rod"
+		}
+	},
+	"pattern": [
+		"T",
+		"D",
+		"B"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:basic_flare_dispenser"
+	}
+}

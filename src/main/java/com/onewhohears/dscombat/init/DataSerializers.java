@@ -2,14 +2,25 @@ package com.onewhohears.dscombat.init;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.BombData;
-import com.onewhohears.dscombat.data.BulletData;
-import com.onewhohears.dscombat.data.PartData;
-import com.onewhohears.dscombat.data.PartsManager;
-import com.onewhohears.dscombat.data.RadarData;
-import com.onewhohears.dscombat.data.MissileData;
-import com.onewhohears.dscombat.data.SeatData;
-import com.onewhohears.dscombat.data.WeaponData;
+import com.onewhohears.dscombat.data.parts.BuffData;
+import com.onewhohears.dscombat.data.parts.EngineData;
+import com.onewhohears.dscombat.data.parts.ExternalEngineData;
+import com.onewhohears.dscombat.data.parts.FlareDispenserData;
+import com.onewhohears.dscombat.data.parts.FuelTankData;
+import com.onewhohears.dscombat.data.parts.PartData;
+import com.onewhohears.dscombat.data.parts.RadarPartData;
+import com.onewhohears.dscombat.data.parts.SeatData;
+import com.onewhohears.dscombat.data.parts.TurretData;
+import com.onewhohears.dscombat.data.parts.WeaponPartData;
+import com.onewhohears.dscombat.data.parts.WeaponRackData;
+import com.onewhohears.dscombat.data.weapon.AntiRadarMissileData;
+import com.onewhohears.dscombat.data.weapon.BombData;
+import com.onewhohears.dscombat.data.weapon.BulletData;
+import com.onewhohears.dscombat.data.weapon.IRMissileData;
+import com.onewhohears.dscombat.data.weapon.PosMissileData;
+import com.onewhohears.dscombat.data.weapon.TorpedoData;
+import com.onewhohears.dscombat.data.weapon.TrackMissileData;
+import com.onewhohears.dscombat.data.weapon.WeaponData;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataSerializer;
@@ -24,11 +35,11 @@ public class DataSerializers {
 	
 	public static final DeferredRegister<DataSerializerEntry> DATA_SERIALIZERS = DeferredRegister.create(ForgeRegistries.Keys.DATA_SERIALIZERS, DSCombatMod.MODID);
 
-    public static void init(IEventBus eventBus) {
+    public static void register(IEventBus eventBus) {
         DATA_SERIALIZERS.register(eventBus);
     }
 
-    public static final EntityDataSerializer<Quaternion> QUATERNION = new EntityDataSerializer<>() {
+    public static final EntityDataSerializer<Quaternion> QUATERNION = new EntityDataSerializer<Quaternion>() {
 
 		@Override
 		public void write(FriendlyByteBuf buffer, Quaternion q) {
@@ -50,7 +61,7 @@ public class DataSerializers {
     	
     };
     
-    public static final EntityDataSerializer<Vec3> VEC3 = new EntityDataSerializer<>() {
+    public static final EntityDataSerializer<Vec3> VEC3 = new EntityDataSerializer<Vec3>() {
 
 		@Override
 		public void write(FriendlyByteBuf buffer, Vec3 v) {
@@ -71,7 +82,7 @@ public class DataSerializers {
     	
     };
     
-    public static final EntityDataSerializer<WeaponData> WEAPON_DATA = new EntityDataSerializer<>() {
+    public static final EntityDataSerializer<WeaponData> WEAPON_DATA = new EntityDataSerializer<WeaponData>() {
 
 		@Override
 		public void write(FriendlyByteBuf buffer, WeaponData w) {
@@ -80,15 +91,25 @@ public class DataSerializers {
 
 		@Override
 		public WeaponData read(FriendlyByteBuf buffer) {
+			//System.out.println("WEAPON DATA DESERIALIZE");
 			int index = buffer.readInt();
 			WeaponData.WeaponType type = WeaponData.WeaponType.values()[index];
+			//System.out.println("type = "+type.name());
 			switch (type) {
 			case BOMB:
 				return new BombData(buffer);
 			case BULLET:
 				return new BulletData(buffer);
-			case ROCKET:
-				return new MissileData(buffer);
+			case IR_MISSILE:
+				return new IRMissileData(buffer);
+			case POS_MISSILE:
+				return new PosMissileData(buffer);
+			case TRACK_MISSILE:
+				return new TrackMissileData(buffer);
+			case ANTIRADAR_MISSILE:
+				return new AntiRadarMissileData(buffer);
+			case TORPEDO:
+				return new TorpedoData(buffer);
 			}
 			return null;
 		}
@@ -100,26 +121,7 @@ public class DataSerializers {
     	
     };
     
-    public static final EntityDataSerializer<PartsManager> PARTS_MANAGER = new EntityDataSerializer<>() {
-
-		@Override
-		public void write(FriendlyByteBuf buffer, PartsManager w) {
-			w.write(buffer);
-		}
-
-		@Override
-		public PartsManager read(FriendlyByteBuf buffer) {
-			return new PartsManager(buffer);
-		}
-
-		@Override
-		public PartsManager copy(PartsManager w) {
-			return w;
-		}
-    	
-    };
-    
-    public static final EntityDataSerializer<PartData> PART_DATA = new EntityDataSerializer<>() {
+    public static final EntityDataSerializer<PartData> PART_DATA = new EntityDataSerializer<PartData>() {
 
 		@Override
 		public void write(FriendlyByteBuf buffer, PartData p) {
@@ -128,15 +130,31 @@ public class DataSerializers {
 
 		@Override
 		public PartData read(FriendlyByteBuf buffer) {
+			//System.out.println("PART DATA BUFFER");
 			int index = buffer.readInt();
 			PartData.PartType type = PartData.PartType.values()[index];
+			//System.out.println("PART TYPE = "+type.name());
 			switch (type) {
 			case SEAT:
 				return new SeatData(buffer);
 			case TURRENT:
-				return null;
-			case RADAR:
-				return new RadarData(buffer);
+				return new TurretData(buffer);
+			case WEAPON_RACK:
+				return new WeaponRackData(buffer);
+			case INTERNAL_WEAPON:
+				return new WeaponPartData(buffer);
+			case ENGINE:
+				return new EngineData(buffer);
+			case FUEL_TANK:
+				return new FuelTankData(buffer);
+			case INTERNAL_RADAR:
+				return new RadarPartData(buffer);
+			case FLARE_DISPENSER:
+				return new FlareDispenserData(buffer);
+			case EXTERNAL_ENGINE:
+				return new ExternalEngineData(buffer);
+			case BUFF_DATA:
+				return new BuffData(buffer);
 			}
 			return null;
 		}
@@ -156,9 +174,6 @@ public class DataSerializers {
     
     public static final RegistryObject<DataSerializerEntry> SERIALIZER_ENTRY_WEAPONDATA = DATA_SERIALIZERS
     		.register("weapondata", () -> new DataSerializerEntry(WEAPON_DATA));
-    
-    public static final RegistryObject<DataSerializerEntry> SERIALIZER_ENTRY_PARTSMANAGER = DATA_SERIALIZERS
-    		.register("weaponsystem", () -> new DataSerializerEntry(PARTS_MANAGER));
     
     public static final RegistryObject<DataSerializerEntry> SERIALIZER_ENTRY_PARTDATA = DATA_SERIALIZERS
     		.register("partdata", () -> new DataSerializerEntry(PART_DATA));

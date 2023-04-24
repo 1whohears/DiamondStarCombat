@@ -1,0 +1,51 @@
+{
+	"type":2,
+	"id":"agm65l",
+	
+	"entityType":"dscombat:pos_missile_1",
+	"shootSound":"dscombat:rocket_launch_1",
+	"rackType": "dscombat:heavy_missile_rack",
+	
+	"craftNum": 1,
+	"ingredients": [
+		{
+			"item": "minecraft:iron_ingot",
+			"num": 12
+		},
+		{
+			"item": "minecraft:tnt",
+			"num": 3
+		},
+		{
+			"item": "minecraft:coal_block",
+			"num": 2
+		},
+		{
+			"item": "dscombat:ti83",
+			"num": 1
+		}
+	],
+	
+	"fireRate":40,
+	"innacuracy":0.0,
+	"canShootOnGround":false,
+	
+	"damage":60.0,
+	"speed":2.0,
+	"explosionRadius":5.0,
+	
+	"explosive":true,
+	"destroyTerrain":true,
+	"causesFire":true,
+	
+	"maxAge":300,
+	"fuelTicks":300,
+	"maxAmmo":4,
+	
+	"turnRadius": 60,
+	"acceleration": 0.02,
+	"bleed": 0.02,
+	"fuseDist": 1.5,
+	"fov": -1
+	
+}

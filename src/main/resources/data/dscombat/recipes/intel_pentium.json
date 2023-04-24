@@ -1,0 +1,23 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"T": {
+			"item": "dscombat:ti83"
+		},
+		"G": {
+			"item": "minecraft:gold_ingot"
+		},
+		"C": {
+			"item": "minecraft:comparator"
+		}
+	},
+	"pattern": [
+		"GTG",
+		"TCT",
+		"GTG"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:intel_pentium"
+	}
+}

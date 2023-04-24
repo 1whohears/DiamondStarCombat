@@ -1,9 +1,6 @@
 package com.onewhohears.dscombat.util.math;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 public class UtilGeometry {
@@ -11,30 +8,106 @@ public class UtilGeometry {
 	public static boolean isPointInsideCone(Vec3 point, Vec3 origin, Vec3 direction, double maxAngle, double maxDistance) {
 		Vec3 diff = point.subtract(origin);
 		double dist = diff.length();
-		if (dist > maxDistance) return false;
+		if (dist > maxDistance) {
+			//System.out.println(dist+" > max dist "+maxDistance);
+			return false;
+		}
 		double dot = diff.dot(direction);
 		double mag = dist * direction.length();
 		double angle = Math.acos(dot / mag);
 		angle = Math.toDegrees(angle);
-		return angle <= maxAngle;
-	}
-	
-	public static boolean canEntitySeeEntity(Entity e1, Entity e2) {
-		// TODO is this math wrong? radar can't see players as far as it should
-		//System.out.println("can "+e1+" see "+e2);
-		Level level = e1.getLevel();
-		Vec3 diff = e2.position().subtract(e1.position());
-		Vec3 look = diff.normalize();
-		int dist = (int)diff.length();
-		Vec3 pos = e1.position();
-		int k = 0;
-		while (k++ < dist) {
-			BlockState block = level.getBlockState(new BlockPos(pos));
-			//System.out.println(k+" blockstate "+block);
-			if (block != null && !block.isAir()) return false;
-			pos = pos.add(look);
+		if (angle > maxAngle) {
+			//System.out.println(angle+" > max angle "+maxAngle);
+			return false;
 		}
 		return true;
+	}
+	
+	public static double angleBetween(Vec3 dir, Vec3 base) {
+		double dot = dir.dot(base);
+		double mag = Math.sqrt(dir.lengthSqr() * base.lengthSqr());
+		return Math.acos(dot / mag);
+	}
+	
+	public static double angleBetweenDegrees(Vec3 dir, Vec3 base) {
+		return Math.toDegrees(angleBetween(dir, base));
+	}
+	
+	public static double angleBetweenVecPlane(Vec3 dir, Vec3 planeNormal) {
+		double a = angleBetween(dir, planeNormal);
+		return Math.PI/2 - a;
+	}
+	
+	public static double angleBetweenVecPlaneDegrees(Vec3 dir, Vec3 planeNormal) {
+		return Math.toDegrees(angleBetweenVecPlane(dir, planeNormal));
+	}
+	
+	public static Vec3 interceptPos(Vec3 mPos, Vec3 mVel, Vec3 tPos, Vec3 tVel) {
+		double x = interceptComponent(mPos.x, tPos.x, mVel.x, tVel.x);
+		double y = interceptComponent(mPos.y, tPos.y, mVel.y, tVel.y);
+		double z = interceptComponent(mPos.z, tPos.z, mVel.z, tVel.z);
+		return new Vec3(x, y, z);
+	}
+	
+	private static double interceptComponent(double mPos, double tPos, double mVel, double tVel) {
+		double dp = tPos - mPos;
+		double dv = tVel - mVel;
+		if ((dp > 0 && dv < 0) || (dp < 0 && dv > 0))
+			tPos += tVel * dp / -dv;
+		return tPos;
+	}
+	
+	public static Vec3 vecCompByAxis(Vec3 u, Vec3 v) {
+		if (isZero(v)) return Vec3.ZERO;
+		return v.scale(u.dot(v) / v.lengthSqr());
+	}
+	
+	public static Vec3 vecCompByNormAxis(Vec3 u, Vec3 n) {
+		return n.scale(u.dot(n));
+	}
+	
+	public static double vecCompMagSqrDirByAxis(Vec3 u, Vec3 v) {
+		if (isZero(v)) return 0;
+		double dot = u.dot(v);
+		double vl2 = v.lengthSqr();
+		Vec3 vec = v.scale(dot / vl2);
+		return vec.lengthSqr() * Math.signum(dot);
+	}
+	
+	public static double vecCompMagSqrDirByNormAxis(Vec3 u, Vec3 n) {
+		double dot = u.dot(n);
+		Vec3 vec = n.scale(dot);
+		return vec.lengthSqr() * Math.signum(dot);
+	}
+	
+	public static double vecCompMagDirByAxis(Vec3 u, Vec3 v) {
+		if (isZero(v)) return 0;
+		double dot = u.dot(v);
+		double vl2 = v.lengthSqr();
+		Vec3 vec = v.scale(dot / vl2);
+		return vec.length() * Math.signum(dot);
+	}
+	
+	public static double vecCompMagDirByNormAxis(Vec3 u, Vec3 n) {
+		double dot = u.dot(n);
+		Vec3 vec = n.scale(dot);
+		return vec.length() * Math.signum(dot);
+	}
+	
+	public static boolean isZero(Vec3 v) {
+		return v.x == 0 && v.y == 0 && v.z == 0;
+	}
+	
+	public static Vec3 getClosestPointOnAABB(Vec3 pos, AABB aabb) {
+		if (pos == null) return aabb.getCenter();
+		double rx = pos.x, ry = pos.y, rz = pos.z;
+		if (rx >= aabb.maxX) rx = aabb.maxX;
+		else if (rx <= aabb.minX) rx = aabb.minX;
+		if (ry >= aabb.maxY) ry = aabb.maxY;
+		else if (ry <= aabb.minY) ry = aabb.minY;
+		if (rz >= aabb.maxZ) rz = aabb.maxZ;
+		else if (rz <= aabb.minZ) rz = aabb.minZ;
+		return new Vec3(rx, ry, rz);
 	}
 	
 }

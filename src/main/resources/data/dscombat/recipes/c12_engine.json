@@ -1,0 +1,18 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"E": {
+			"item": "dscombat:c6_engine"
+		},
+		"I": {
+			"item": "minecraft:iron_ingot"
+		}
+	},
+	"pattern": [
+		"EIE"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:c12_engine"
+	}
+}

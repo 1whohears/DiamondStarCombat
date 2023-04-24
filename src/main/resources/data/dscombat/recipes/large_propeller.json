@@ -1,0 +1,20 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"P": {
+			"item": "dscombat:propeller"
+		},
+		"B": {
+			"item": "minecraft:iron_block"
+		}
+	},
+	"pattern": [
+		" B ",
+		"BPB",
+		" B "
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:large_propeller"
+	}
+}

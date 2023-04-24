@@ -1,0 +1,18 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"H": {
+			"item": "minecraft:hopper"
+		},
+		"B": {
+			"item": "dscombat:light_fuel_tank"
+		}
+	},
+	"pattern": [
+		"BHB"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:heavy_fuel_tank"
+	}
+}

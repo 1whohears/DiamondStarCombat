@@ -1,0 +1,226 @@
+{
+	"preset": "nathan_boat",
+	"max_speed": 1.3,
+	
+	"max_health": 300,
+	"health": 300,
+	
+	"mass": 10,
+	
+	"stealth": 1.0,
+	"idleheat": 4.0,
+	
+	"turn_radius": 0,
+	"maxroll": 0.0,
+	"maxpitch": 0.0,
+	"maxyaw": 3.5,
+	"rolltorque": 0,
+	"pitchtorque": 0,
+	"yawtorque": 2,
+	
+	"throttleup": 0.05,
+	"throttledown": 0.10,
+	"landing_gear": true,
+	
+	"slots": [
+		{
+			"name": "dscombat.pilot_seat",
+			"slot_type": 0,
+			"slot_posx": 0.80,
+			"slot_posy": 1.2,
+			"slot_posz": -1.13,
+			"uix": 48,
+			"uiy": 20,
+			"data": {
+				"itemid": "dscombat:seat"
+			}
+		},
+		{
+			"name": "dscombat.seat1",
+			"slot_type": 5,
+			"slot_posx": 0.65,
+			"slot_posy": 1.2,
+			"slot_posz": 2.44,
+			"uix": 68,
+			"uiy": 20,
+			"data": {
+				"itemid": "dscombat:minigun_turret"
+			}
+		},
+		{
+			"name": "dscombat.seat2",
+			"slot_type": 5,
+			"slot_posx": -0.65,
+			"slot_posy": 1.2,
+			"slot_posz": 2.44,
+			"uix": 88,
+			"uiy": 20,
+			"data": {
+				"itemid": "dscombat:seat"
+			}
+		},
+		{
+			"name": "dscombat.seat3",
+			"slot_type": 5,
+			"slot_posx": 0.65,
+			"slot_posy": 1.2,
+			"slot_posz": 1.25,
+			"uix": 108,
+			"uiy": 20,
+			"data": {
+				"itemid": "dscombat:seat"
+			}
+		},
+		{
+			"name": "dscombat.seat4",
+			"slot_type": 5,
+			"slot_posx": -0.65,
+			"slot_posy": 1.2,
+			"slot_posz": 1.25,
+			"uix": 128,
+			"uiy": 20,
+			"data": {
+				"itemid": "dscombat:seat"
+			}
+		},
+		{
+			"name": "dscombat.seat5",
+			"slot_type": 5,
+			"slot_posx": 0.65,
+			"slot_posy": 1.2,
+			"slot_posz": -0.06,
+			"uix": 148,
+			"uiy": 20,
+			"data": {
+				"itemid": "dscombat:seat"
+			}
+		},
+		{
+			"name": "dscombat.seat6",
+			"slot_type": 5,
+			"slot_posx": -0.65,
+			"slot_posy": 1.2,
+			"slot_posz": -0.06,
+			"uix": 168,
+			"uiy": 20,
+			"data": {
+				"itemid": "dscombat:seat"
+			}
+		},
+		{
+			"name": "dscombat.frame_1",
+			"slot_type": 1,
+			"slot_posx": 1.5,
+			"slot_posy": 1,
+			"slot_posz": 0,
+			"uix": 48,
+			"uiy": 60,
+			"zRot": 90,
+			"data": {
+				"filled": true,
+				"param": "torpedo1",
+				"itemid": "dscombat:heavy_missile_rack"
+			}
+		},
+		{
+			"name": "dscombat.frame_2",
+			"slot_type": 1,
+			"slot_posx": -1.5,
+			"slot_posy": 1,
+			"slot_posz": 0,
+			"uix": 68,
+			"uiy": 60,
+			"zRot": -90,
+			"data": {
+				"filled": true,
+				"param": "torpedo1",
+				"itemid": "dscombat:heavy_missile_rack"
+			}
+		},
+		{
+			"name": "dscombat.internal_1",
+			"slot_type": 3,
+			"slot_posx": 0,
+			"slot_posy": 0,
+			"slot_posz": 0,
+			"uix": 48,
+			"uiy": 100,
+			"data": {
+				"itemid": "dscombat:c12_engine"
+			}
+		},
+		{
+			"name": "dscombat.internal_2",
+			"slot_type": 3,
+			"slot_posx": 0,
+			"slot_posy": 0,
+			"slot_posz": 0,
+			"uix": 68,
+			"uiy": 100,
+			"data": {
+				"itemid": "dscombat:c12_engine"
+			}
+		},
+		{
+			"name": "dscombat.internal_3",
+			"slot_type": 3,
+			"slot_posx": 0,
+			"slot_posy": 0,
+			"slot_posz": 0,
+			"uix": 88,
+			"uiy": 100,
+			"data": {
+				"filled": true,
+				"itemid": "dscombat:heavy_fuel_tank"
+			}
+		},
+		{
+			"name": "dscombat.internal_4",
+			"slot_type": 4,
+			"slot_posx": 0,
+			"slot_posy": 0,
+			"slot_posz": 0,
+			"uix": 108,
+			"uiy": 100,
+			"data": {
+				"itemid": "dscombat:wr400"
+			}
+		}
+	],
+	
+	"dyecolor": 0,
+	"textures": {
+		"0": "dscombat:textures/entities/nathan_boat/white.png"
+	},
+	
+	"ingredients": [
+		{
+			"item": "minecraft:boat",
+			"num": 4
+		},
+		{
+			"item": "dscombat:fuselage",
+			"num": 1
+		},
+		{
+			"item": "dscombat:seat",
+			"num": 7
+		},
+		{
+			"item": "dscombat:c12_engine",
+			"num": 2
+		},
+		{
+			"item": "dscombat:heavy_fuel_tank",
+			"num": 1
+		},
+		{
+			"item": "dscombat:minigun_turret",
+			"num": 1
+		},
+		{
+			"item": "dscombat:wr400",
+			"num": 1
+		}
+	]
+}

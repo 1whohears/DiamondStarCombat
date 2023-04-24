@@ -1,0 +1,3 @@
+
+public static final AnimationDefinition BASIC_PLANE_PROPELLER_SPIN = AnimationDefinition.Builder.withLength(0.5f).looping().addAnimation("undefined", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0f, KeyframeAnimations.degreeVec(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.5f, KeyframeAnimations.degreeVec(0f, 0f, 720
+f), AnimationChannel.Interpolations.LINEAR))).build();

@@ -1,0 +1,26 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"P": {
+			"item": "dscombat:intel_pentium"
+		},
+		"S": {
+			"item": "dscombat:seat"
+		},
+		"G": {
+			"item": "minecraft:tinted_glass"
+		},
+		"I": {
+			"item": "minecraft:iron_ingot"
+		}
+	},
+	"pattern": [
+		"GGG",
+		"GSG",
+		"IPI"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:advanced_cockpit"
+	}
+}

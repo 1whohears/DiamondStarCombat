@@ -1,0 +1,15 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"W": {
+			"item": "dscombat:wing"
+		}
+	},
+	"pattern": [
+		"WWW"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:large_wing"
+	}
+}

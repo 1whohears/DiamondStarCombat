@@ -1,0 +1,22 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"W": {
+			"item": "minecraft:white_wool"
+		},
+		"M": {
+			"item": "minecraft:minecart"
+		},
+		"L": {
+			"item": "minecraft:leather"
+		}
+	},
+	"pattern": [
+		"WWW",
+		"LML"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:seat"
+	}
+}

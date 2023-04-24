@@ -1,0 +1,23 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"I": {
+			"item": "minecraft:copper_ingot"
+		},
+		"R": {
+			"item": "minecraft:repeater"
+		},
+		"C": {
+			"item": "minecraft:comparator"
+		}
+	},
+	"pattern": [
+		"ICI",
+		"CRC",
+		"ICI"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:ti83"
+	}
+}

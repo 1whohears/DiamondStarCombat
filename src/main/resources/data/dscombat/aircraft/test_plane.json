@@ -1,0 +1,247 @@
+{
+	"preset": "test_plane",
+	"max_speed": 1.5,
+	
+	"max_health": 200,
+	"health": 200,
+	
+	"weight": 0.04,
+	"surfacearea": 1.0,
+	
+	"stealth": 1.0,
+	"idleheat": 8.0,
+	
+	"maxroll": 8.0,
+	"maxpitch": 4.0,
+	"maxyaw": 4.0,
+	"throttleup": 0.04,
+	"throttledown": 0.04,
+	"landing_gear": true,
+	
+	"slots": [
+		{
+			"name": "dscombat.pilot_seat",
+			"slot_type": 0,
+			"slot_posx": 0,
+			"slot_posy": -0.8,
+			"slot_posz": 0,
+			"uix": 48,
+			"uiy": 20,
+			"filled": true,
+			"data": {
+				"type": 0,
+				"weight": 0.001,
+				"itemid": "dscombat:seat"
+			}
+		},
+		{
+			"name": "dscombat.seat2",
+			"slot_type": 0,
+			"slot_posx": 1.0,
+			"slot_posy": -0.5,
+			"slot_posz": 1,
+			"uix": 68,
+			"uiy": 20
+		},
+		{
+			"name": "dscombat.seat3",
+			"slot_type": 0,
+			"slot_posx": -1.0,
+			"slot_posy": -0.5,
+			"slot_posz": 1,
+			"uix": 88,
+			"uiy": 20
+		},
+		{
+			"name": "dscombat.left_wing_1",
+			"slot_type": 1,
+			"slot_posx": 0.8,
+			"slot_posy": 0,
+			"slot_posz": 1,
+			"uix": 48,
+			"uiy": 40
+		},
+		{
+			"name": "dscombat.left_wing_2",
+			"slot_type": 1,
+			"slot_posx": 1.2,
+			"slot_posy": 0,
+			"slot_posz": 1,
+			"uix": 68,
+			"uiy": 40
+		},
+		{
+			"name": "dscombat.left_wing_3",
+			"slot_type": 1,
+			"slot_posx": 1.6,
+			"slot_posy": 0,
+			"slot_posz": 1,
+			"uix": 88,
+			"uiy": 40
+		},
+		{
+			"name": "dscombat.left_wing_4",
+			"slot_type": 1,
+			"slot_posx": 2.0,
+			"slot_posy": 0,
+			"slot_posz": 1,
+			"uix": 108,
+			"uiy": 40
+		},
+		{
+			"name": "dscombat.right_wing_1",
+			"slot_type": 1,
+			"slot_posx": -0.8,
+			"slot_posy": 0,
+			"slot_posz": 1,
+			"uix": 48,
+			"uiy": 60
+		},
+		{
+			"name": "dscombat.right_wing_2",
+			"slot_type": 1,
+			"slot_posx": -1.2,
+			"slot_posy": 0,
+			"slot_posz": 1,
+			"uix": 68,
+			"uiy": 60
+		},
+		{
+			"name": "dscombat.right_wing_3",
+			"slot_type": 1,
+			"slot_posx": -1.6,
+			"slot_posy": 0,
+			"slot_posz": 1,
+			"uix": 88,
+			"uiy": 60
+		},
+		{
+			"name": "dscombat.right_wing_4",
+			"slot_type": 1,
+			"slot_posx": -2.0,
+			"slot_posy": 0,
+			"slot_posz": 1,
+			"uix": 108,
+			"uiy": 60
+		},
+		{
+			"name": "dscombat.frame_1",
+			"slot_type": 2,
+			"slot_posx": 0,
+			"slot_posy": -0.5,
+			"slot_posz": 1,
+			"uix": 48,
+			"uiy": 80
+		},
+		{
+			"name": "dscombat.frame_2",
+			"slot_type": 2,
+			"slot_posx": 0,
+			"slot_posy": -0.5,
+			"slot_posz": 0.3,
+			"uix": 68,
+			"uiy": 80
+		},
+		{
+			"name": "dscombat.frame_3",
+			"slot_type": 2,
+			"slot_posx": 0,
+			"slot_posy": -0.5,
+			"slot_posz": -0.3,
+			"uix": 88,
+			"uiy": 80
+		},
+		{
+			"name": "dscombat.frame_4",
+			"slot_type": 2,
+			"slot_posx": 0,
+			"slot_posy": -0.5,
+			"slot_posz": -1,
+			"uix": 108,
+			"uiy": 80
+		},
+		{
+			"name": "dscombat.internal_1",
+			"slot_type": 3,
+			"slot_posx": 0,
+			"slot_posy": 0,
+			"slot_posz": 0,
+			"uix": 48,
+			"uiy": 100
+		},
+		{
+			"name": "dscombat.internal_2",
+			"slot_type": 3,
+			"slot_posx": 0,
+			"slot_posy": 0,
+			"slot_posz": 0,
+			"uix": 68,
+			"uiy": 100
+		},
+		{
+			"name": "dscombat.internal_3",
+			"slot_type": 3,
+			"slot_posx": 0,
+			"slot_posy": 0,
+			"slot_posz": 0,
+			"uix": 88,
+			"uiy": 100
+		},
+		{
+			"name": "dscombat.internal_4",
+			"slot_type": 3,
+			"slot_posx": 0,
+			"slot_posy": 0,
+			"slot_posz": 0,
+			"uix": 108,
+			"uiy": 100
+		},
+		{
+			"name": "dscombat.internal_5",
+			"slot_type": 4,
+			"slot_posx": 0,
+			"slot_posy": 0,
+			"slot_posz": 0,
+			"uix": 128,
+			"uiy": 100
+		},
+		{
+			"name": "dscombat.internal_6",
+			"slot_type": 4,
+			"slot_posx": 0,
+			"slot_posy": 0,
+			"slot_posz": 0,
+			"uix": 148,
+			"uiy": 100
+		},
+		{
+			"name": "dscombat.internal_7",
+			"slot_type": 4,
+			"slot_posx": 0,
+			"slot_posy": 0,
+			"slot_posz": 0,
+			"uix": 168,
+			"uiy": 100
+		},
+		{
+			"name": "dscombat.internal_8",
+			"slot_type": 4,
+			"slot_posx": 0,
+			"slot_posy": 0,
+			"slot_posz": 0,
+			"uix": 188,
+			"uiy": 100
+		}
+	],
+	
+	"ingredients": [
+		{
+			"item": "minecraft:copper_ingot",
+			"num": 8
+		},
+		{
+			"item": "minecraft:gunpowder",
+			"num": 2
+		}
+	]
+}

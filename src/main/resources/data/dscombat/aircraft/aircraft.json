@@ -1,0 +1,12 @@
+{
+	"aircraft": [
+		"javi_plane.json",
+		"alexis_plane.json",
+		"noah_chopper.json",
+		"mrbudger_tank.json",
+		"small_roller.json",
+		"nathan_boat.json",
+		"andolf_sub.json",
+		"orange_tesla.json"
+	]
+}

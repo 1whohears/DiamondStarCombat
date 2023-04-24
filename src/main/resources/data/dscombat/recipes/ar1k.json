@@ -1,0 +1,19 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"A": {
+			"item": "dscombat:ar500"
+		},
+		"D": {
+			"item": "minecraft:glowstone_dust"
+		}
+	},
+	"pattern": [
+		" A ",
+		"DDD"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:ar1k"
+	}
+}

@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "dscombat:block/weapons_block", "y": 0   },
+        "facing=east":  { "model": "dscombat:block/weapons_block", "y": 90  },
+        "facing=south": { "model": "dscombat:block/weapons_block", "y": 180 },
+        "facing=west":  { "model": "dscombat:block/weapons_block", "y": 270 }
+    }
+}

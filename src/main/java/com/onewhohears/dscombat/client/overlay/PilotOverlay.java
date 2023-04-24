@@ -96,17 +96,12 @@ public class PilotOverlay {
 	private static void drawMissingVanillaOverlays(Minecraft m, Player player, EntityAircraft plane, ForgeIngameGui gui, PoseStack poseStack, float partialTick, int width, int height) {
 		Entity camera = m.getCameraEntity();
 		m.setCameraEntity(player);
-		//gui.setupOverlayRenderState(true, false);
 		ForgeIngameGui.HOTBAR_ELEMENT.render(gui, poseStack, partialTick, width, height);
 		if (gui.shouldDrawSurvivalElements()) {
 			ForgeIngameGui.PLAYER_HEALTH_ELEMENT.render(gui, poseStack, partialTick, width, height);
 			ForgeIngameGui.FOOD_LEVEL_ELEMENT.render(gui, poseStack, partialTick, width, height);
 			ForgeIngameGui.ARMOR_LEVEL_ELEMENT.render(gui, poseStack, partialTick, width, height);
 			ForgeIngameGui.AIR_LEVEL_ELEMENT.render(gui, poseStack, partialTick, width, height);
-			//gui.renderHealth(width, height, poseStack);
-			//gui.renderFood(width, height, poseStack);
-			//renderArmor(width, height, poseStack, m, gui);
-			//renderAir(width, height, poseStack, m, gui);
 		}
 		m.setCameraEntity(camera);
 	}
@@ -510,62 +505,5 @@ public class PilotOverlay {
 		}
 		return red.getRGB();
 	}
-	
-	// ForgeIngameGui.renderArmor is protected for some reason
-	private static void renderArmor(int width, int height, PoseStack poseStack, Minecraft minecraft, ForgeIngameGui gui) {
-        minecraft.getProfiler().push("armor");
-
-        RenderSystem.enableBlend();
-        int left = width / 2 - 91;
-        int top = height - gui.left_height;
-
-        int level = minecraft.player.getArmorValue();
-        for (int i = 1; level > 0 && i < 20; i += 2)
-        {
-            if (i < level)
-            {
-                gui.blit(poseStack, left, top, 34, 9, 9, 9);
-            }
-            else if (i == level)
-            {
-                gui.blit(poseStack, left, top, 25, 9, 9, 9);
-            }
-            else if (i > level)
-            {
-                gui.blit(poseStack, left, top, 16, 9, 9, 9);
-            }
-            left += 8;
-        }
-        gui.left_height += 10;
-
-        RenderSystem.disableBlend();
-        minecraft.getProfiler().pop();
-    }
-	
-	// ForgeIngameGui.renderAir is protected for some reason
-	private static void renderAir(int width, int height, PoseStack poseStack, Minecraft minecraft, ForgeIngameGui gui) {
-        minecraft.getProfiler().push("air");
-        Player player = (Player) minecraft.getCameraEntity();
-        //System.out.println("render air "+player);
-        RenderSystem.enableBlend();
-        int left = width / 2 + 91;
-        int top = height - gui.right_height;
-
-        int air = player.getAirSupply();
-        if (player.isUnderWater() || air < 300)
-        {
-            int full = Mth.ceil((double) (air - 2) * 10.0D / 300.0D);
-            int partial = Mth.ceil((double) air * 10.0D / 300.0D) - full;
-
-            for (int i = 0; i < full + partial; ++i)
-            {
-                gui.blit(poseStack, left - i * 8 - 9, top, (i < full ? 16 : 25), 18, 9, 9);
-            }
-            gui.right_height += 10;
-        }
-
-        RenderSystem.disableBlend();
-        minecraft.getProfiler().pop();
-    }
 	
 }

@@ -33,10 +33,6 @@ public class ModEntities {
 	
 	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, DSCombatMod.MODID);
 	
-	public static void register(IEventBus eventBus) {
-		ENTITIES.register(eventBus);
-	}
-	
 	// PLANES
 	
 	public static final RegistryObject<EntityType<EntityPlane>> JAVI_PLANE = ENTITIES.register("javi_plane", 
@@ -163,5 +159,9 @@ public class ModEntities {
         return new EntityType<>(factory, MobCategory.MISC, true, true, false, 
         		true, ImmutableSet.of(), size, 15, 3);
     }
+	
+	public static void register(IEventBus eventBus) {
+		ENTITIES.register(eventBus);
+	}
 	
 }

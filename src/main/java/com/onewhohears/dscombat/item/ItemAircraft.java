@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.item;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
@@ -8,6 +9,7 @@ import com.onewhohears.dscombat.init.ModItems;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -32,11 +34,12 @@ public class ItemAircraft extends Item {
 	private static final Predicate<Entity> ENTITY_PREDICATE = EntitySelector.NO_SPECTATORS
 			.and(Entity::isPickable);
 	
-	private final EntityType<? extends EntityAircraft> entityType;
+	private final String entityId;
+	private EntityType<? extends EntityAircraft> entityType;
 	
-	public ItemAircraft(EntityType<? extends EntityAircraft> entityType) {
+	public ItemAircraft(String entityId) {
 		super(new Item.Properties().tab(ModItems.AIRCRAFT).stacksTo(1));
-		this.entityType = entityType;
+		this.entityId = entityId;
 	}
 	
 	@Override
@@ -62,7 +65,9 @@ public class ItemAircraft extends Item {
 			if (hitresult.getType() == HitResult.Type.BLOCK) {
 				CompoundTag tag = itemstack.getOrCreateTag();
 				spawnData(tag, player);
-				EntityAircraft e = entityType.create(level);
+				EntityType<? extends EntityAircraft> et = getEntityType();
+				if (et == null) return InteractionResultHolder.pass(itemstack);
+				EntityAircraft e = et.create(level);
 				Vec3 pos = hitresult.getLocation();
 				if (e.isCustomBoundingBox()) e.setPos(pos.add(0, e.getBbHeight()/2d, 0));
 				else e.setPos(pos);
@@ -71,7 +76,7 @@ public class ItemAircraft extends Item {
 				if (!level.isClientSide) {
 					int above = 0;
 					if (e.isCustomBoundingBox()) above = (int)(e.getBbHeight()/2d)+1;
-					Entity entity = entityType.spawn((ServerLevel)level, 
+					Entity entity = et.spawn((ServerLevel)level, 
 							itemstack, player, 
 							new BlockPos(pos).above(above), 
 							MobSpawnType.SPAWN_EGG, 
@@ -103,6 +108,18 @@ public class ItemAircraft extends Item {
 	
 	public String getPresetName() {
 		return ForgeRegistries.ITEMS.getKey(this).getPath();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public EntityType<? extends EntityAircraft> getEntityType() {
+		if (entityType != null) return entityType;
+		try {
+			entityType = (EntityType<? extends EntityAircraft>) ForgeRegistries.ENTITIES
+				.getHolder(new ResourceLocation(entityId)).get().value();
+		} catch (ClassCastException e) {
+		} catch (NoSuchElementException e) {
+		}
+		return entityType;
 	}
 
 }

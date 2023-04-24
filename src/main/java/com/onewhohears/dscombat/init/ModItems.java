@@ -196,31 +196,31 @@ public class ModItems {
 	
 	// PLANES
 	public static final RegistryObject<Item> JAVI_PLANE = ITEMS.register("javi_plane", 
-			() -> new ItemAircraft(ModEntities.JAVI_PLANE.get()));
+			() -> new ItemAircraft(ModEntities.JAVI_PLANE.getId().toString()));
 	public static final RegistryObject<Item> ALEXIS_PLANE = ITEMS.register("alexis_plane", 
-			() -> new ItemAircraft(ModEntities.ALEXIS_PLANE.get()));
+			() -> new ItemAircraft(ModEntities.ALEXIS_PLANE.getId().toString()));
 	
 	// HELICOPTERS
 	public static final RegistryObject<Item> NOAH_CHOPPER = ITEMS.register("noah_chopper", 
-			() -> new ItemAircraft(ModEntities.NOAH_CHOPPER.get()));
+			() -> new ItemAircraft(ModEntities.NOAH_CHOPPER.getId().toString()));
 	
 	// CARS
 	public static final RegistryObject<Item> ORANGE_TESLA = ITEMS.register("orange_tesla", 
-			() -> new ItemAircraft(ModEntities.ORANGE_TESLA.get()));
+			() -> new ItemAircraft(ModEntities.ORANGE_TESLA.getId().toString()));
 	
 	// TANKS
 	public static final RegistryObject<Item> MRBUDGER_TANK = ITEMS.register("mrbudger_tank", 
-			() -> new ItemAircraft(ModEntities.MRBUDGER_TANK.get()));
+			() -> new ItemAircraft(ModEntities.MRBUDGER_TANK.getId().toString()));
 	public static final RegistryObject<Item> SMALL_ROLLER = ITEMS.register("small_roller", 
-			() -> new ItemAircraft(ModEntities.SMALL_ROLLER.get()));
+			() -> new ItemAircraft(ModEntities.SMALL_ROLLER.getId().toString()));
 	
 	// BOATS
 	public static final RegistryObject<Item> NATHAN_BOAT = ITEMS.register("nathan_boat", 
-			() -> new ItemAircraft(ModEntities.NATHAN_BOAT.get()));
+			() -> new ItemAircraft(ModEntities.NATHAN_BOAT.getId().toString()));
 	
 	// SUBMARINES
 	public static final RegistryObject<Item> ANDOLF_SUB = ITEMS.register("andolf_sub", 
-			() -> new ItemAircraft(ModEntities.ANDOLF_SUB.get()));
+			() -> new ItemAircraft(ModEntities.ANDOLF_SUB.getId().toString()));
 	
 	
 }

@@ -5,8 +5,7 @@
 	"max_health": 300,
 	"health": 300,
 	
-	"weight": 0.05,
-	"surfacearea": 1.0,
+	"mass": 30,
 	
 	"stealth": 1.0,
 	"idleheat": 8.0,
@@ -15,9 +14,9 @@
 	"maxroll": 4.0,
 	"maxpitch": 2.0,
 	"maxyaw": 4.0,
-	"accroll": 0.35,
-	"accpitch": 0.3,
-	"accyaw": 0.6,
+	"rolltorque": 1,
+	"pitchtorque": 1,
+	"yawtorque": 2.5,
 	
 	"throttleup": 0.01,
 	"throttledown": 0.01,
@@ -41,7 +40,7 @@
 		},
 		{
 			"name": "dscombat.seat2",
-			"slot_type": 0,
+			"slot_type": 5,
 			"slot_posx": -0.4,
 			"slot_posy": -0.65,
 			"slot_posz": 1.5,
@@ -53,7 +52,7 @@
 		},
 		{
 			"name": "dscombat.seat3",
-			"slot_type": 0,
+			"slot_type": 5,
 			"slot_posx": 0.4,
 			"slot_posy": -0.65,
 			"slot_posz": 0.3,
@@ -65,7 +64,7 @@
 		},
 		{
 			"name": "dscombat.seat4",
-			"slot_type": 0,
+			"slot_type": 5,
 			"slot_posx": -0.4,
 			"slot_posy": -0.65,
 			"slot_posz": 0.3,
@@ -327,7 +326,10 @@
 	
 	"dyecolor": 12,
 	"textures": {
-		"12": "dscombat:textures/entities/noah_chopper.png"
+		"12": "dscombat:textures/entities/noah_chopper/brown.png",
+		"14": "dscombat:textures/entities/noah_chopper/red.png",
+		"15": "dscombat:textures/entities/noah_chopper/black.png",
+		"11": "dscombat:textures/entities/noah_chopper/blue.png"
 	},
 	
 	"ingredients": [
@@ -370,7 +372,8 @@
 		{
 			"item": "dscombat:gr400",
 			"num": 1
-		},{
+		},
+		{
 			"item": "dscombat:minigun_turret",
 			"num": 1
 		}

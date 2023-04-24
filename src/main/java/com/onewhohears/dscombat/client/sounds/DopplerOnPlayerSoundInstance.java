@@ -46,17 +46,9 @@ public class DopplerOnPlayerSoundInstance extends AbstractTickableSoundInstance 
 		volume = initVolume - d2 * 0.000025f;
 		// pitch
 		Vec3 v = entity.position().subtract(player.position());
-		Vec3 v3p = UtilGeometry.componentOfVecByAxis(player.getDeltaMovement(), v);
-		Vec3 v3m = UtilGeometry.componentOfVecByAxis(entity.getDeltaMovement(), v);
-		float vp = (float)v3p.length();
-		float vm = (float)v3m.length();
-		if (!sameDirection(v, v3p)) vp *= -1f;
-		if (!sameDirection(v, v3m)) vm *= -1f;
+		float vp = (float)UtilGeometry.vecCompMagDirByAxis(player.getDeltaMovement(), v);
+		float vm = (float)UtilGeometry.vecCompMagDirByAxis(entity.getDeltaMovement(), v);
 		pitch = initPitch * ((velocitySound + vp)/(velocitySound + vm));
-	}
-	
-	private boolean sameDirection(Vec3 a, Vec3 b) {
-		return Math.signum(a.x) == Math.signum(b.x) && Math.signum(a.y) == Math.signum(b.y) && Math.signum(a.z) == Math.signum(b.z);
 	}
 
 }

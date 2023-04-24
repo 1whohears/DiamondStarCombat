@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.entity.weapon;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.onewhohears.dscombat.data.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.data.weapon.IRMissileData;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 
@@ -34,7 +35,7 @@ public class IRMissile extends EntityMissile {
 	
 	@Override
 	public void tickGuide() {
-		if (tickCount < 20) return;
+		if (tickCount < 10) return;
 		if (tickCount % 10 == 0) findIrTarget();
 		if (target != null) guideToTarget();
 	}
@@ -177,6 +178,16 @@ public class IRMissile extends EntityMissile {
 			this.heat = heat;
 		}
 		
+	}
+	
+	@Override
+	protected WeaponDamageSource getImpactDamageSource() {
+		return WeaponDamageSource.missile_contact(getOwner(), this);
+	}
+
+	@Override
+	protected WeaponDamageSource getExplosionDamageSource() {
+		return WeaponDamageSource.ir_missile(getOwner(), this);
 	}
 
 }

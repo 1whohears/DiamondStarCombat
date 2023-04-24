@@ -162,8 +162,10 @@ public class PartSlot {
 			return "dscombat.slotname_wing";
 		case ADVANCED_INTERNAL:
 			return "dscombat.slotname_advanced_internal";
-		case TURRENT:
-			return "dscombat.slotname_turrent";
+		case TURRET:
+			return "dscombat.slotname_turret";
+		case HEAVY_TURRET:
+			return "dscombat.slotname_turret_heavy";
 		}
 		return "";
 	}
@@ -179,21 +181,23 @@ public class PartSlot {
 	public int getUIY() {
 		return uiy;
 	}
-
+	
 	public static enum SlotType {
 		SEAT,
 		WING,
 		FRAME,
 		INTERNAL,
 		ADVANCED_INTERNAL,
-		TURRENT
+		TURRET,
+		HEAVY_TURRET
 	}
 	
-	public static final SlotType[] SEAT = new SlotType[] {SlotType.SEAT, SlotType.TURRENT};
-	public static final SlotType[] TURRENT = new SlotType[] {SlotType.TURRENT};
-	public static final SlotType[] INTERNAL = new SlotType[] {SlotType.INTERNAL, SlotType.ADVANCED_INTERNAL};
+	public static final SlotType[] SEAT_ALL = new SlotType[] {SlotType.SEAT, SlotType.TURRET, SlotType.HEAVY_TURRET};
+	public static final SlotType[] TURRET_ALL = new SlotType[] {SlotType.TURRET, SlotType.HEAVY_TURRET};
+	public static final SlotType[] TURRET_HEAVY = new SlotType[] {SlotType.HEAVY_TURRET};
+	public static final SlotType[] INTERNAL_ALL = new SlotType[] {SlotType.INTERNAL, SlotType.ADVANCED_INTERNAL};
 	public static final SlotType[] ADVANCED_INTERNAL = new SlotType[] {SlotType.ADVANCED_INTERNAL};
-	public static final SlotType[] EXTERNAL = new SlotType[] {SlotType.WING, SlotType.FRAME};
+	public static final SlotType[] EXTERNAL_ALL = new SlotType[] {SlotType.WING, SlotType.FRAME};
 	
 	public static int getIconOffsetX(SlotType type) {
 		return type.ordinal() * 16;
@@ -210,6 +214,10 @@ public class PartSlot {
 	
 	public float getZRot() {
 		return zRot;
+	}
+	
+	public boolean isPilotSlot() {
+		return getName().equals(PILOT_SLOT_NAME);
 	}
 	
 }

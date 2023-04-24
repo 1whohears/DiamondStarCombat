@@ -63,21 +63,10 @@ public abstract class WeaponData {
 		BOMB,
 		POS_MISSILE,
 		TRACK_MISSILE,
-		IR_MISSILE
+		IR_MISSILE,
+		ANTIRADAR_MISSILE,
+		TORPEDO
 	}
-	
-	/*protected WeaponData(RegistryObject<EntityType<?>> entityType, RegistryObject<SoundEvent> shootSound, List<Ingredient> ingredients,
-			String id, Vec3 pos, int maxAge, int maxAmmo, int fireRate, boolean canShootOnGround) {
-		this.id = id;
-		this.pos = pos;
-		this.maxAge = maxAge;
-		this.maxAmmo = maxAmmo;
-		this.fireRate = fireRate;
-		this.canShootOnGround = canShootOnGround;
-		this.entityType = entityType;
-		this.shootSound = shootSound;
-		this.ingredients = ingredients;
-	}*/
 	
 	public WeaponData(CompoundTag tag) {
 		id = tag.getString("id");
@@ -166,28 +155,28 @@ public abstract class WeaponData {
 	public abstract EntityWeapon getEntity(Level level, Entity owner);
 	
 	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction) {
-		if (!this.checkRecoil()) {
-			this.setLaunchFail(null);
+		if (!checkRecoil()) {
+			setLaunchFail(null);
 			return null;
 		}
-		if (!this.checkAmmo(1, owner)) {
-			this.setLaunchFail("dscombat.no_ammo");
+		if (!checkAmmo(1, owner)) {
+			setLaunchFail("dscombat.no_ammo");
 			return null;
 		}
 		EntityWeapon w = getEntity(level, owner);
 		w.setPos(pos);
-		this.setDirection(w, direction);
+		setDirection(w, direction);
 		return w;
 	}
 	
 	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 direction, EntityAircraft vehicle) {
-		EntityWeapon w = this.getShootEntity(level, owner, vehicle.position(), direction);
+		EntityWeapon w = getShootEntity(level, owner, vehicle.position(), direction);
 		if (w == null) return null;
-		if (!this.canShootOnGround() && vehicle.isOnGround()) {
-			this.setLaunchFail("dscombat.cant_shoot_on_ground");
+		if (!canShootOnGround() && vehicle.isOnGround()) {
+			setLaunchFail("dscombat.cant_shoot_on_ground");
 			return null;
 		}
-		w.setPos(vehicle.position().add(UtilAngles.rotateVector(this.getLaunchPos(), vehicle.getQ())));
+		w.setPos(vehicle.position().add(UtilAngles.rotateVector(getLaunchPos(), vehicle.getQ())));
 		return w;
 	}
 	

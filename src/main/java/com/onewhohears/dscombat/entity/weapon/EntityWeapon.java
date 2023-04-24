@@ -1,6 +1,12 @@
 package com.onewhohears.dscombat.entity.weapon;
 
+import javax.annotation.Nullable;
+
+import com.onewhohears.dscombat.data.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.init.DataSerializers;
+import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
@@ -13,9 +19,16 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.ClipContext.Fluid;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 
 public abstract class EntityWeapon extends Projectile {
@@ -23,6 +36,7 @@ public abstract class EntityWeapon extends Projectile {
 	public static final EntityDataAccessor<Integer> OWNER_ID = SynchedEntityData.defineId(EntityWeapon.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> AGE = SynchedEntityData.defineId(EntityWeapon.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Boolean> TEST_MODE = SynchedEntityData.defineId(EntityWeapon.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Vec3> SHOOT_POS = SynchedEntityData.defineId(EntityWeapon.class, DataSerializers.VEC3);
 	
 	/**
 	 * only set on server side
@@ -45,6 +59,7 @@ public abstract class EntityWeapon extends Projectile {
 		entityData.define(OWNER_ID, -1);
 		entityData.define(AGE, 0);
 		entityData.define(TEST_MODE, false);
+		entityData.define(SHOOT_POS, Vec3.ZERO);
 	}
 	
 	@Override
@@ -65,7 +80,8 @@ public abstract class EntityWeapon extends Projectile {
 		maxAge = compound.getInt("maxAge");
 		if (getOwner() != null) setOwnerId(getOwner().getId());
 		else setOwnerId(-1);
-		this.setTestMode(compound.getBoolean("test_mode"));
+		setTestMode(compound.getBoolean("test_mode"));
+		setShootPos(UtilParse.readVec3(compound, "shoot_pos"));
 	}
 
 	@Override
@@ -76,20 +92,111 @@ public abstract class EntityWeapon extends Projectile {
 		super.addAdditionalSaveData(compound);
 		compound.putInt("tickCount", tickCount);
 		compound.putInt("maxAge", maxAge);
-		compound.putBoolean("test_mode", this.isTestMode());
+		compound.putBoolean("test_mode", isTestMode());
+		UtilParse.writeVec3(compound, getShootPos(), "shoot_pos");
 	}
 	
 	@Override
 	public void tick() {
 		//System.out.println(this+" "+tickCount);
 		if (isTestMode()) return;
- 		motion();
+		if (!level.isClientSide && firstTick) setShootPos(position());
 		super.tick();
+		tickCheckCollide();
+		tickSetMove();
+		setPos(position().add(getDeltaMovement()));
+		checkInsideBlocks();
+		tickAge();
+	}
+	
+	protected void tickAge() {
 		if (!level.isClientSide) {
 			setAge(tickCount);
 			if (tickCount > maxAge) kill();
 		}
-		move(MoverType.SELF, getDeltaMovement());
+	}
+	
+	public Fluid getFluidClipContext() {
+		return ClipContext.Fluid.NONE;
+	}
+	
+	protected void tickCheckCollide() {
+		Vec3 move = getDeltaMovement();
+		Vec3 pos = position();
+		Vec3 next_pos = pos.add(move);
+		HitResult hitresult = level.clip(new ClipContext(pos, next_pos, 
+				ClipContext.Block.COLLIDER, getFluidClipContext(), this));
+		if (hitresult.getType() != HitResult.Type.MISS) next_pos = hitresult.getLocation();
+		Entity owner = getOwner();
+		while(!isRemoved()) {
+			EntityHitResult entityhitresult = findHitEntity(pos, next_pos);
+			if (entityhitresult != null) hitresult = entityhitresult;
+			if (owner != null && hitresult != null && hitresult.getType() == HitResult.Type.ENTITY) {
+				Entity hit = ((EntityHitResult)hitresult).getEntity();
+				System.out.println("BULLET "+this);
+				System.out.println("HIT "+hit);
+				System.out.println("OWNER "+owner);
+				if (hit.equals(owner)) {
+					hitresult = null;
+					entityhitresult = null;
+				} else if (owner instanceof Player player) {
+					if (hit instanceof Player p && !player.canHarmPlayer(p)) {
+						hitresult = null;
+						entityhitresult = null;
+					} else if (hit instanceof EntityAircraft plane) {
+						Entity c = plane.getControllingPassenger();
+						if (player.equals(c) || (c instanceof Player p && !player.canHarmPlayer(p))) {
+							hitresult = null;
+							entityhitresult = null;
+						}
+					}
+				} 
+			}
+			if (hitresult != null && hitresult.getType() != HitResult.Type.MISS && !noPhysics 
+					&& !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, hitresult)) {
+				onHit(hitresult);
+				hasImpulse = true;
+				break;
+			}
+			if (entityhitresult == null) break;
+			hitresult = null;
+		}
+	}
+	
+	@Nullable
+	protected EntityHitResult findHitEntity(Vec3 start, Vec3 end) {
+		return ProjectileUtil.getEntityHitResult(level, this, 
+				start, end, 
+				getBoundingBox().expandTowards(getDeltaMovement()).inflate(1.0D), 
+				this::canHitEntity);
+	}
+	
+	@Override
+	public void onHit(HitResult result) {
+		if (isRemoved()) return;
+		setPos(result.getLocation());
+		super.onHit(result);
+	}
+	
+	@Override
+	public void onHitBlock(BlockHitResult result) {
+		super.onHitBlock(result);
+		//System.out.println("BULLET HIT "+result.getBlockPos());
+		
+		kill();
+	}
+	
+	@Override
+	public void onHitEntity(EntityHitResult result) {
+		super.onHitEntity(result);
+		//System.out.println("BULLET HIT "+result.getEntity());
+		DamageSource source = getImpactDamageSource();
+		result.getEntity().hurt(source, getDamage());
+		kill();
+	}
+	
+	public float getDamage() {
+		return 0;
 	}
 	
 	protected int getOwnerId() {
@@ -99,10 +206,6 @@ public abstract class EntityWeapon extends Projectile {
 	protected void setOwnerId(int id) {
 		entityData.set(OWNER_ID, id);
 	}
-	
-	/*public int getAge() {
-		return entityData.get(AGE);
-	}*/
 	
 	protected void setAge(int age) {
 		entityData.set(AGE, age);
@@ -114,7 +217,12 @@ public abstract class EntityWeapon extends Projectile {
 	}
 	
 	@Override 
-	public boolean canCollideWith(Entity entity) {
+	public boolean canBeCollidedWith() {
+		return false;
+	}
+	
+	@Override
+    public boolean hurt(DamageSource source, float amount) {
 		return false;
 	}
 	
@@ -128,12 +236,7 @@ public abstract class EntityWeapon extends Projectile {
 		return dist < 25000;
 	}
 	
-	@Override
-    public boolean hurt(DamageSource source, float amount) {
-		return false;
-	}
-	
-	protected void motion() {
+	protected void tickSetMove() {
 		
 	}
 	
@@ -191,5 +294,17 @@ public abstract class EntityWeapon extends Projectile {
     public void setTestMode(boolean testMode) {
     	entityData.set(TEST_MODE, testMode);
     }
+    
+    public Vec3 getShootPos() {
+    	return entityData.get(SHOOT_POS);
+    }
+    
+    private void setShootPos(Vec3 pos) {
+    	entityData.set(SHOOT_POS, pos);
+    }
+    
+    protected abstract WeaponDamageSource getImpactDamageSource();
+    
+    protected abstract WeaponDamageSource getExplosionDamageSource();
 
 }

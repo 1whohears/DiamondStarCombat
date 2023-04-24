@@ -1,7 +1,10 @@
 package com.onewhohears.dscombat.entity.weapon;
 
+import javax.annotation.Nullable;
+
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientMissileMove;
+import com.onewhohears.dscombat.data.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.data.weapon.MissileData;
 import com.onewhohears.dscombat.data.weapon.NonTickingMissileManager;
 import com.onewhohears.dscombat.init.ModSounds;
@@ -16,17 +19,22 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.ClipContext.Fluid;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
 
 public abstract class EntityMissile extends EntityBullet {
 	
 	public static final EntityDataAccessor<Float> ACCELERATION = SynchedEntityData.defineId(EntityMissile.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> MAX_ROT = SynchedEntityData.defineId(EntityMissile.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> TURN_RADIUS = SynchedEntityData.defineId(EntityMissile.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> BLEED = SynchedEntityData.defineId(EntityMissile.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Integer> FUEL_TICKS = SynchedEntityData.defineId(EntityMissile.class, EntityDataSerializers.INT);
 	
@@ -50,19 +58,19 @@ public abstract class EntityMissile extends EntityBullet {
 	public EntityMissile(Level level, Entity owner, MissileData data) {
 		super(level, owner, data);
 		if (!level.isClientSide) NonTickingMissileManager.addMissile(this);
-		this.setAcceleration((float)data.getAcceleration());
-		this.setMaxRot(data.getMaxRot());
-		this.setBleed((float)data.getBleed());
+		setAcceleration((float)data.getAcceleration());
+		setTurnRadius(data.getTurnRadius());
+		setBleed((float)data.getBleed());
 		fuseDist = (float) data.getFuseDist();
 		fov = data.getFov();
-		this.setFuelTicks(data.getFuelTicks());
+		setFuelTicks(data.getFuelTicks());
 	}
 	
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
 		entityData.define(ACCELERATION, 0f);
-		entityData.define(MAX_ROT, 0f);
+		entityData.define(TURN_RADIUS, 0f);
 		entityData.define(BLEED, 0f);
 		entityData.define(FUEL_TICKS, 0);
 	}
@@ -70,23 +78,23 @@ public abstract class EntityMissile extends EntityBullet {
 	@Override
 	protected void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
-		this.setAcceleration(compound.getFloat("acc"));
-		this.setMaxRot(compound.getFloat("max_rot"));
-		this.setBleed(compound.getFloat("bleed"));
+		setAcceleration(compound.getFloat("acc"));
+		setTurnRadius(compound.getFloat("turnRadius"));
+		setBleed(compound.getFloat("bleed"));
 		fuseDist = compound.getFloat("fuseDist");
 		fov = compound.getFloat("fov");
-		this.setFuelTicks(compound.getInt("fuelTicks"));
+		setFuelTicks(compound.getInt("fuelTicks"));
 	}
 
 	@Override
 	protected void addAdditionalSaveData(CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
-		compound.putFloat("acc", this.getAcceleration());
-		compound.putFloat("max_rot", this.getMaxRot());
-		compound.putFloat("bleed", this.getBleed());
+		compound.putFloat("acc", getAcceleration());
+		compound.putFloat("turnRadius", getTurnRadius());
+		compound.putFloat("bleed", getBleed());
 		compound.putFloat("fuseDist", fuseDist);
 		compound.putFloat("fov", fov);
-		compound.putInt("fuelTicks", this.getFuelTicks());
+		compound.putInt("fuelTicks", getFuelTicks());
 	}
 	
 	@Override
@@ -106,21 +114,14 @@ public abstract class EntityMissile extends EntityBullet {
 		yRotO = getYRot();
 		if (!level.isClientSide && !isRemoved()) {
 			tickGuide();
-			if (target != null) {
-				if (this.distanceTo(target) <= fuseDist) {
-					this.setPos(target.position());
-					this.kill();
-					if (target instanceof EntityMissile) {
-						target.kill();
-					}
-				}
-			}
+			if (target != null && distanceTo(target) <= fuseDist) kill();
 			if (tickCount % 10 == 0) PacketHandler.INSTANCE.send(
-					PacketDistributor.TRACKING_ENTITY.with(() -> this), 
-					new ToClientMissileMove(getId(), position(), 
-							getDeltaMovement(), getXRot(), getYRot(), targetPos));
+				PacketDistributor.TRACKING_ENTITY.with(() -> this), 
+				new ToClientMissileMove(getId(), position(), 
+					getDeltaMovement(), getXRot(), getYRot(), targetPos));
 		}
 		if (level.isClientSide && !isRemoved()) {
+			// IDEA 4 client side interpolation to better synch missile movement and not look as janky on client?
 			tickClientGuide();
 			Vec3 move = getDeltaMovement();
 			level.addParticle(ParticleTypes.SMOKE, 
@@ -138,101 +139,95 @@ public abstract class EntityMissile extends EntityBullet {
 	
 	public void tickClientGuide() {
 		if (tickCount < 20) return;
-		this.guideToPosition();
+		guideToPosition();
 	}
 	
 	public void guideToPosition() {
-		if (targetPos == null) {
-			//missile.discard();
-			return;
-		}
-		Vec3 gm = targetPos.subtract(this.position());
-		float grx = UtilAngles.getPitch(gm);
-		float gry = UtilAngles.getYaw(gm);
-		float orx = this.getXRot();
-		float ory = this.getYRot();
+		if (targetPos == null) return;
+		Vec3 gm = targetPos.subtract(position());
+		float grx = UtilAngles.getPitch(gm), gry = UtilAngles.getYaw(gm);
+		float orx = getXRot(), ory = getYRot();
 		float nrx = orx, nry = ory;
-		if (Math.abs(grx-orx) < this.getMaxRot()) {
-			nrx = grx;
-		} else if (grx > orx) {
-			nrx += this.getMaxRot();
-		} else if (grx < orx) {
-			nrx -= this.getMaxRot();
-		}
-		if (Math.abs(gry-ory) < this.getMaxRot()) {
-			nry = gry;
-		} else {
+		float rot = getTurnDegrees();
+		if (Math.abs(grx-orx) < rot) nrx = grx;
+		else if (grx > orx) nrx += rot;
+		else if (grx < orx) nrx -= rot;
+		if (Math.abs(gry-ory) < rot) nry = gry;
+		else {
 			if (gry > 90 && ory < -90) {
-				nry -= this.getMaxRot();
+				nry -= rot;
 				if (nry < -180) nry += 360;
 			} else if (ory > 90 && gry < -90) {
-				nry += this.getMaxRot();
+				nry += rot;
 				if (nry > 180) nry -= 360;
 			} else {
-				if (gry > ory) {
-					nry += this.getMaxRot();
-				} else if (gry < ory) {
-					nry -= this.getMaxRot();
-				}
+				if (gry > ory) nry += rot;
+				else if (gry < ory) nry -= rot;
 			}
 		}
 		setXRot(nrx);
 		setYRot(nry);
 	}
 	
+	public float getTurnDegrees() {
+		return (float)getDeltaMovement().length() / getTurnRadius() * Mth.RAD_TO_DEG;
+	}
+	
 	public void guideToTarget() {
 		//System.out.println("target null check");
 		if (target == null) {
-			this.targetPos = null;
+			targetPos = null;
 			return;
 		}
 		//System.out.println("target removed check");
 		if (target.isRemoved()) {
-			this.target = null;
-			this.targetPos = null;
+			target = null;
+			targetPos = null;
 			return;
 		}
-		if (this.tickCount % 10 == 0) {
+		if (tickCount % 10 == 0) {
 			//System.out.println("check target range");
 			if (!checkTargetRange(target, 10000)) {
-				this.target = null;
-				this.targetPos = null;
+				target = null;
+				targetPos = null;
 				return;
 			}
 			//System.out.println("check can see");
 			if (!checkCanSee(target)) {
 				//System.out.println("can't see target");
-				this.target = null;
-				this.targetPos = null;
+				target = null;
+				targetPos = null;
 				return;
 			}
 		}
 		//System.out.println("intercept math");
 		Vec3 tVel = target.getDeltaMovement();
-		if (target.isOnGround()) tVel = tVel.add(0, -tVel.y, 0); // some entities have -0.07 y vel when on ground
+		if (UtilEntity.isOnGroundOrWater(target)) 
+			tVel = tVel.multiply(1, 0, 1);
 		Vec3 pos = UtilGeometry.interceptPos( 
-				this.position(), this.getDeltaMovement(), 
+				position(), getDeltaMovement(), 
 				target.position(), tVel);
-		this.targetPos = pos;
+		targetPos = pos;
 		//System.out.println("guide to position");
-		this.guideToPosition();
+		guideToPosition();
 	}
 	
 	protected boolean checkTargetRange(Entity target, double range) {
-		if (fov == -1) return this.distanceTo(target) <= range;
+		if (fov == -1) return distanceTo(target) <= range;
 		return UtilGeometry.isPointInsideCone(
 				target.position(), 
-				this.position(),
-				this.getLookAngle(), 
+				position(),
+				getLookAngle(), 
 				fov, range);
 	}
 	
 	protected boolean checkCanSee(Entity target) {
-		return UtilEntity.canEntitySeeEntity(this, target);
+		return UtilEntity.canEntitySeeEntity(this, target, 200);
 	}
 	
 	private void engineSound() {
-		UtilClientSafeSoundInstance.dopplerSound(Minecraft.getInstance(), this, ModSounds.MISSILE_ENGINE_1.get(), 
+		UtilClientSafeSoundInstance.dopplerSound(Minecraft.getInstance(), this, 
+				ModSounds.MISSILE_ENGINE_1.get(), 
 				0.8F, 1.0F, 10F);
 	}
 	
@@ -244,6 +239,7 @@ public abstract class EntityMissile extends EntityBullet {
 	public void tickOutRange() {
 		xRotO = getXRot(); 
 		yRotO = getYRot();
+		// uses special kill override function. don't change to discard.
 		if (tickCount > maxAge) { 
 			//System.out.println("old");
 			kill();
@@ -257,13 +253,13 @@ public abstract class EntityMissile extends EntityBullet {
 		//System.out.println("starting tick guide");
 		tickGuide();
 		//System.out.println("starting motion");
-		motion();
+		tickSetMove();
 		//System.out.println("starting set pos");
 		setPos(position().add(getDeltaMovement()));
 	}
 	
 	@Override
-	protected void motion() {
+	protected void tickSetMove() {
 		Vec3 cm = getDeltaMovement();
 		double B = getBleed() * UtilEntity.getAirPressure(getY());
 		double bleed = B * (Math.abs(getXRot()-xRotO)+Math.abs(getYRot()-yRotO));
@@ -284,24 +280,30 @@ public abstract class EntityMissile extends EntityBullet {
 	}
 	
 	public float getHeat() {
-		return 2f;
+		return 4f;
 	}
 	
 	@Override
     public boolean hurt(DamageSource source, float amount) {
-		/*System.out.println("MISSILE GOT HURT!");
-		System.out.println("ENTITY "+source.getEntity());
-		System.out.println("DIRECT ENTITY "+source.getDirectEntity());*/
-		if (this.isRemoved()) return false;
-		if (this.equals(source.getDirectEntity())) return false;
-		this.kill();
+		if (isRemoved()) return false;
+		if (equals(source.getDirectEntity())) return false;
+		kill();
 		return true;
 	}
 	
-	/*@Override
+	@Nullable
+	protected EntityHitResult findHitEntity(Vec3 start, Vec3 end) {
+		return ProjectileUtil.getEntityHitResult(this, 
+				start, end, 
+				getBoundingBox(), 
+				this::canHitEntity, 
+				start.distanceToSqr(end));
+	}
+	
+	@Override
 	public boolean ignoreExplosion() {
 		return false;
-	}*/
+	}
 	
 	public float getAcceleration() {
 		return entityData.get(ACCELERATION);
@@ -327,15 +329,12 @@ public abstract class EntityMissile extends EntityBullet {
 		entityData.set(FUEL_TICKS, fuelTicks);
 	}
 	
-	public float getMaxRot() {
-		float velSqr = (float) getDeltaMovement().lengthSqr();
-		float K = 1;
-		if (velSqr < 1) K = velSqr;
-		return entityData.get(MAX_ROT) * K;
+	public float getTurnRadius() {
+		return entityData.get(TURN_RADIUS);
 	}
 	
-	public void setMaxRot(float max_rot) {
-		entityData.set(MAX_ROT, max_rot);
+	public void setTurnRadius(float max_rot) {
+		entityData.set(TURN_RADIUS, max_rot);
 	}
 	
 	public void discardButTick() {
@@ -370,6 +369,20 @@ public abstract class EntityMissile extends EntityBullet {
 			return 10;
 		}
 		return tickCountRepeats;
+	}
+	
+	public Fluid getFluidClipContext() {
+		return ClipContext.Fluid.SOURCE_ONLY;
+	}
+	
+	@Override
+	protected WeaponDamageSource getImpactDamageSource() {
+		return WeaponDamageSource.missile_contact(getOwner(), this);
+	}
+
+	@Override
+	protected WeaponDamageSource getExplosionDamageSource() {
+		return WeaponDamageSource.missile(getOwner(), this);
 	}
 
 }

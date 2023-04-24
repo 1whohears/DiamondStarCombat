@@ -5,14 +5,11 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.onewhohears.dscombat.common.container.AircraftMenuContainer;
 import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.common.network.toclient.ToClientAddPart;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAircraftFuel;
-import com.onewhohears.dscombat.common.network.toclient.ToClientRemovePart;
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
-import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.item.ItemSeat;
 import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
@@ -20,18 +17,21 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
 
 public class PartsManager {
 	
-	private List<PartSlot> slots = new ArrayList<PartSlot>();
-	private boolean readData = false;
-	private EntityAircraft parent;
+	// FIXME 5 make sure unnecessary add part/radar/weapon packets aren't being sent to client
 	
-	public PartsManager() {
-		
+	private final EntityAircraft parent;
+	private List<PartSlot> slots = new ArrayList<PartSlot>();
+	private Container inventory = new SimpleContainer(0);
+	private boolean readData = false;
+	
+	public PartsManager(EntityAircraft parent) {
+		this.parent = parent;
 	}
 	
 	/**
@@ -48,41 +48,109 @@ public class PartsManager {
 		readData = true;
 	}
 	
+	private void createNewInventory() {
+		//System.out.println("CREATING NEW INVENTORY "+this.toString());
+		inventory = new SimpleContainer(slots.size()) {
+			@Override
+			public void setChanged() {
+				super.setChanged();
+			}
+			@Override
+			public void setItem(int i, ItemStack stack) {
+				//System.out.println("SET ITEM "+i+" "+stack);
+				if (readData) inventorySetItem(i, stack);
+				super.setItem(i, stack);
+			}
+			@Override
+			public ItemStack removeItem(int i, int count) {
+				//System.out.println("REMOVE ITEM "+i);
+				if (readData) inventoryRemoveItem(i, count);
+				return super.removeItem(i, count);
+			}			
+		};
+		for (int i = 0; i < slots.size(); ++i) if (slots.get(i).filled()) {
+			inventory.setItem(i, slots.get(i).getPartData().getNewItemStack());
+			//System.out.println("new item in slot "+i+" "+inventory.getItem(i)+" "+inventory.getItem(i).getTag());
+		}
+	}
+	
+	public void inventorySetItem(int i, ItemStack stack) {
+		if (i < 0 || i >= slots.size()) {
+			System.out.println("WARNING! INDEX "+i+" IS OUT OF BOUNDS IN PARTS MANAGER "+this);
+			return;
+		}
+		PartSlot slot = slots.get(i);
+		Entity pilot = null;
+		if (slot.isPilotSlot()) pilot = parent.getControllingPassenger();
+		if (stack.isEmpty()) {
+			slot.removePartData(parent);
+			if (pilot != null && pilot.getVehicle() == null) {
+				SeatData seatdata = ItemSeat.getDefaultSeat();
+				slot.addPartData(seatdata, parent);
+				parent.rideAvailableSeat(pilot);
+			}
+		} else {
+			PartData data = UtilParse.parsePartFromCompound(stack.getTag());
+			if (data == null) {
+				System.out.println("ERROR! COULD NOT GET PART DATA FROM "+stack+" "+stack.getTag());
+				return;
+			}
+			if (slot.filled()) slot.removePartData(parent);
+			slot.addPartData(data, parent);
+			if (pilot != null && pilot.getVehicle() == null) {
+				parent.rideAvailableSeat(pilot);
+			}
+		}	
+	}
+	
+	public void inventoryRemoveItem(int i, int count) {
+		if (i < 0 || i >= slots.size()) {
+			System.out.println("WARNING! INDEX "+i+" IS OUT OF BOUNDS IN PARTS MANAGER "+this);
+			return;
+		}
+		Entity pilot = null;
+		if (slots.get(i).isPilotSlot()) pilot = parent.getControllingPassenger();
+		slots.get(i).removePartData(parent);
+		if (pilot != null && pilot.getVehicle() == null) {
+			SeatData seatdata = ItemSeat.getDefaultSeat();
+			slots.get(i).addPartData(seatdata, parent);
+			parent.rideAvailableSeat(pilot);
+		}
+	}
+	
 	public void write(CompoundTag compound) {
 		ListTag list = new ListTag();
 		for (PartSlot s : slots) list.add(s.write());
 		compound.put("slots", list);
 	}
 	
-	public PartsManager(FriendlyByteBuf buffer) {
+	public static List<PartSlot> readSlotsFromBuffer(FriendlyByteBuf buffer) {
+		List<PartSlot> ps = new ArrayList<PartSlot>();
 		int num = buffer.readInt();
-		for (int i = 0; i < num; ++i) slots.add(new PartSlot(buffer));
-		readData = true;
+		for (int i = 0; i < num; ++i) ps.add(new PartSlot(buffer));
+		return ps;
 	}
 	
-	public void write(FriendlyByteBuf buffer) {
+	public static void writeSlotsToBuffer(FriendlyByteBuf buffer, List<PartSlot> slots) {
 		buffer.writeInt(slots.size());
 		for (PartSlot p : slots) p.write(buffer);
 	}
 	
-	/**
-	 * @param copy copies this part manager's slot data
-	 */
-	public void copy(PartsManager copy) {
-		this.slots = copy.slots;
-		readData = true;
+	public void setPartSlots(List<PartSlot> slots) {
+		this.slots = slots;
+		this.readData = true;
 	}
 	
-	public void setupParts(EntityAircraft craft) {
-		this.parent = craft;
+	public void setupParts(/*EntityAircraft craft*/) {
+		//this.parent = craft;
 		//System.out.println("setupParts "+this);
-		for (PartSlot p : slots) p.setup(craft);
+		for (PartSlot p : slots) p.setup(parent);
 	}
 	
-	public void clientPartsSetup(EntityAircraft craft) {
-		this.parent = craft;
+	public void clientPartsSetup(/*EntityAircraft craft*/) {
+		//this.parent = craft;
 		//System.out.println("clientPartsSetup "+this);
-		for (PartSlot p : slots) p.clientSetup(craft);
+		for (PartSlot p : slots) p.clientSetup(parent);
 	}
 	
 	public void tickParts() {
@@ -91,42 +159,6 @@ public class PartsManager {
 	
 	public void clientTickParts() {
 		for (PartSlot p : slots) p.clientTick();
-	}
-	
-	public boolean addSlot(String slotName, SlotType slotType, Vec3 slotPos, int uix, int uiy, float zRot) {
-		if (getSlot(slotName) != null) return false;
-		slots.add(new PartSlot(slotName, slotType, slotPos, uix, uiy, zRot));
-		return true;
-	}
-	
-	public boolean addSlot(String slotName, SlotType slotType, double x, double y, double z, int uix, int uiy, float zRot) {
-		if (getSlot(slotName) != null) return false;
-		slots.add(new PartSlot(slotName, slotType, new Vec3(x, y, z), uix, uiy, zRot));
-		return true;
-	}
-	
-	public boolean addPart(PartData part, String slotName, boolean updateClient) {
-		//System.out.println("ADDING PART "+part+" IN SLOT "+slotName);
-		for (PartSlot p : slots) if (p.getName().equals(slotName) && !p.filled()) {
-			boolean ok = p.addPartData(part, parent);
-			if (updateClient && ok) {
-				PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
-						new ToClientAddPart(parent.getId(), slotName, part));
-			}
-			return true;
-		}
-		return false;
-	}
-	
-	public void removePart(String slotName, boolean updateClient) {
-		for (PartSlot p : slots) if (p.getName().equals(slotName)) {
-			boolean ok = p.removePartData(parent);
-			if (updateClient && ok) {
-				PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
-						new ToClientRemovePart(parent.getId(), slotName));
-			}
-			return;
-		}
 	}
 	
 	@Nullable
@@ -139,7 +171,7 @@ public class PartsManager {
 	public String toString() {
 		String s = "Parts:";
 		for (int i = 0; i < slots.size(); ++i) s += slots.get(i).toString();
-		return s;
+		return s + " client?"+parent.level.isClientSide;
 	}
 	
 	public boolean isReadData() {
@@ -223,112 +255,39 @@ public class PartsManager {
 		for (int i = 0; i < tanks.size(); ++i) ((FuelTankData)tanks.get(i).getPartData()).setFuel(fuels[i]);
 	}
 	
-	public Container getContainer(AircraftMenuContainer menu) {
-		//System.out.println("GETTING CONTAINER client side = "+parent.level.isClientSide+" for slots "+this);
-		Container c = new SimpleContainer(slots.size()){
-			@Override
-			public void setChanged() {
-				//menu.slotsChanged(this);
-				super.setChanged();
-			}
-			@Override
-			public void setItem(int i, ItemStack stack) {
-				menu.setItem(i, stack);
-				super.setItem(i, stack);
-			}
-			@Override
-			public ItemStack removeItem(int i, int count) {
-				menu.removeItem(i, count);
-				return super.removeItem(i, count);
-			}
-		};
-		for (int i = 0; i < slots.size(); ++i) if (slots.get(i).filled()) {
-			c.setItem(i, slots.get(i).getPartData().getNewItemStack());
-			//System.out.println("putting item in slot "+i+" "+c.getItem(i)+" "+c.getItem(i).getTag());
-		}
-		return c;
-	}
-	
-	public void setItem(int i, ItemStack stack) {
-		if (i < 0 || i >= slots.size()) {
-			System.out.println("WARNING! INDEX "+i+" IS OUT OF BOUNDS IN PARTS MANAGER "+this);
-			return;
-		}
-		PartSlot slot = slots.get(i);
-		if (stack.isEmpty()) {
-			removePart(slot.getName(), false);
-			return;
-		}
-		if (slot.filled()) removePart(slot.getName(), false);
-		PartData data = UtilParse.parsePartFromCompound(stack.getTag());
-		if (data == null) {
-			System.out.println("ERROR! COULD NOT GET PART DATA FROM "+stack+" "+stack.getTag());
-			return;
-		}
-		addPart(data, slot.getName(), false);
-	}
-	
-	public void removeItem(int i, int count) {
-		if (i < 0 || i >= slots.size()) {
-			System.out.println("WARNING! INDEX "+i+" IS OUT OF BOUNDS IN PARTS MANAGER "+this);
-			return;
-		}
-		removePart(slots.get(i).getName(), false);
-	}
-	
-	/*public void readContainer(Container c) {
-		//System.out.println("READING CHANGED CONTAINER client side "+parent.level.isClientSide+" items "+c);
-		if (c.getContainerSize() != slots.size()) {
-			System.out.println("WARNING! THIS CONTAINER HAS THE WRONG NUMBER OF SLOTS!");
-			return;
-		}
-		for (int i = 0; i < c.getContainerSize(); ++i) {
-			ItemStack stack = c.getItem(i);
-			if (stack.isEmpty()) {
-				removePart(slots.get(i).getName(), false);
-				continue;
-			}
-		}
-		for (int i = 0; i < c.getContainerSize(); ++i) {
-			//System.out.println("### CHECKING CONTAINER "+i);
-			ItemStack stack = c.getItem(i);
-			if (stack.isEmpty()) continue;
-			PartSlot slot = slots.get(i);
-			//System.out.println("stack = "+stack+" "+stack.getTag());
-			//System.out.println("slot = "+slot);
-			PartData data = UtilParse.parsePartFromCompound(stack.getTag());
-			if (data == null) {
-				System.out.println("ERROR! COULD NOT GET PART DATA FROM "+stack+" "+stack.getTag());
-				continue;
-			}
-			if (data.isSetup(slot.getName(), parent)) {
-				//System.out.println("ALREADY SETUP");
-				continue;
-			}
-			//System.out.println("REMOVING");
-			removePart(slot.getName(), false);
-			//System.out.println("ADDING");
-			addPart(data, slot.getName(), false);
-		}
-	}*/
-	
 	public List<PartSlot> getSlots() {
 		return slots;
 	}
 	
+	public Container getInventory() {
+		this.readData = false;
+		createNewInventory();
+		this.readData = true;
+		return inventory;
+	}
+	
 	public List<PartSlot> getFlares() {
 		List<PartSlot> flares = new ArrayList<PartSlot>();
-		for (PartSlot p : slots) if (p.filled() && p.getPartData().getType() == PartType.FLARE_DISPENSER) flares.add(p);
+		for (PartSlot p : slots) 
+			if (p.filled() && p.getPartData().getType() == PartType.FLARE_DISPENSER) 
+				flares.add(p);
 		return flares;
 	}
 	
 	public boolean useFlares(boolean consume) {
-		List<PartSlot> flares = getFlares();
+		if (parent.getFlareNum() < 1) return false;
 		boolean r = false;
-		for (PartSlot p : flares)
+		for (PartSlot p : getFlares())
 			if (((FlareDispenserData)p.getPartData()).flare(consume))
 				r = true;
 		return r;
+	}
+	
+	public int getNumFlares() {
+		int num = 0;
+		for (PartSlot p : getFlares()) 
+			num += ((FlareDispenserData)p.getPartData()).getFlares();
+		return num;
 	}
 	
 }

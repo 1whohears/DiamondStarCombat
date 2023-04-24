@@ -5,8 +5,7 @@
 	"max_health": 30,
 	"health": 30,
 	
-	"weight": 0.01,
-	"surfacearea": 1.0,
+	"mass": 5,
 	
 	"stealth": 1.0,
 	"idleheat": 4.0,
@@ -14,10 +13,10 @@
 	"turn_radius": 0,
 	"maxroll": 0.0,
 	"maxpitch": 0.0,
-	"maxyaw": 2.0,
-	"accroll": 0.0,
-	"accpitch": 0.0,
-	"accyaw": 0.3,
+	"maxyaw": 3.0,
+	"rolltorque": 0,
+	"pitchtorque": 0,
+	"yawtorque": 10,
 	
 	"throttleup": 0.08,
 	"throttledown": 0.08,
@@ -26,7 +25,7 @@
 	"slots": [
 		{
 			"name": "dscombat.pilot_seat",
-			"slot_type": 0,
+			"slot_type": 6,
 			"slot_posx": 0.0,
 			"slot_posy": 0.6,
 			"slot_posz": 0.0,

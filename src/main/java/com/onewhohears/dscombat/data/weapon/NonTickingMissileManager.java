@@ -6,7 +6,6 @@ import java.util.UUID;
 
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.Entity.RemovalReason;
 import net.minecraft.world.level.ChunkPos;
 
@@ -20,7 +19,7 @@ public class NonTickingMissileManager {
 	
 	private static final List<EntityMissile> missiles = new ArrayList<>();
 	
-	public static void serverTick(MinecraftServer server) {
+	public static void serverTick() {
 		for (int i = 0; i < missiles.size(); ++i) 
 			if (!tickMissile(missiles.get(i))) 
 				missiles.remove(i--);

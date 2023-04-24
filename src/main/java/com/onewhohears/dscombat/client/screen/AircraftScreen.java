@@ -18,6 +18,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
@@ -71,8 +72,8 @@ public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContaine
 	public List<Component> getSlotTooltip() {
 		List<Component> c = new ArrayList<Component>();
 		if (this.hoveredSlot instanceof PartItemSlot slot) {
-			MutableComponent type = Component.translatable(slot.data.getTypeName());
-			MutableComponent name = Component.translatable(slot.data.getName());
+			MutableComponent type = new TranslatableComponent(slot.data.getTypeName());
+			MutableComponent name = new TranslatableComponent(slot.data.getName());
 			c.add(type);
 			c.add(name);
 		}
@@ -103,7 +104,7 @@ public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContaine
 	protected void init() {
 		super.init();
 		Button getItemButton = new Button(0, 0, 80, 20, 
-				Component.translatable("dscombat.shrink_plane_button"), 
+				new TranslatableComponent("dscombat.shrink_plane_button"), 
 				onPress -> { onPlaneItemButton(); });
 		getItemButton.x = this.getGuiLeft() + titleLabelX+122;
 		getItemButton.y = this.getGuiTop() + titleLabelY+110;

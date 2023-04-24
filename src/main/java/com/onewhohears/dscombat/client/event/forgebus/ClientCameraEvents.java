@@ -17,7 +17,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.ViewportEvent;
+import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -30,7 +30,7 @@ public class ClientCameraEvents {
 	private static Entity prevCamera;
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
-	public static void cameraSetup(ViewportEvent.ComputeCameraAngles event) {
+	public static void cameraSetup(EntityViewRenderEvent.CameraSetup event) {
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
 		if (player == null) return;
@@ -40,7 +40,7 @@ public class ClientCameraEvents {
 			EntitySeatCamera camera = seat.getCamera();
 			if (camera == null) return;
 			float xi, yi, zi;
-			float pt = (float)event.getPartialTick();
+			float pt = (float)event.getPartialTicks();
 			if (!plane.isFreeLook() && player.equals(plane.getControllingPassenger())) {
 				xi = UtilAngles.lerpAngle(pt, plane.xRotO, plane.getXRot());
 				yi = UtilAngles.lerpAngle180(pt, plane.yRotO, plane.getYRot());
@@ -61,7 +61,7 @@ public class ClientCameraEvents {
 			boolean mirrored = m.options.getCameraType().isMirrored();
 			event.getCamera().setup(m.level, camera, 
 					detached, mirrored, 
-					(float) event.getPartialTick());
+					(float) event.getPartialTicks());
 			if (detached && mirrored) zi *= -1;
 			event.setRoll(zi);
 		} else {

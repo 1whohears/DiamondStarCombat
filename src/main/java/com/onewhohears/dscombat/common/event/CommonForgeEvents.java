@@ -26,7 +26,7 @@ public final class CommonForgeEvents {
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void serverTickEvent(TickEvent.ServerTickEvent event) {
 		if (event.phase != Phase.END) return;
-		NonTickingMissileManager.serverTick(event.getServer());
+		NonTickingMissileManager.serverTick();
 	}
 	
 }

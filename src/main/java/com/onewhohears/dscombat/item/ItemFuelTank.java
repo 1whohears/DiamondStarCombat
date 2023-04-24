@@ -7,6 +7,7 @@ import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -23,7 +24,7 @@ public class ItemFuelTank extends ItemPart {
 	@Override
 	public Component getName(ItemStack stack) {
 		CompoundTag tag = stack.getOrCreateTag();
-		MutableComponent name = Component.translatable(getDescriptionId())
+		MutableComponent name = new TranslatableComponent(getDescriptionId())
 			.append(" "+tag.getInt("fuel")+"/"+tag.getInt("max"));
 		return name;	
 	}

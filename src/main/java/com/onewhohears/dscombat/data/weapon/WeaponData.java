@@ -21,6 +21,8 @@ import com.onewhohears.dscombat.util.math.UtilAngles;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -352,8 +354,8 @@ public abstract class WeaponData {
 	
 	public EntityType<?> getEntityType() {
 		if (entityType == null) {
-			try { entityType = ForgeRegistries.ENTITY_TYPES
-					.getDelegate(new ResourceLocation(entityTypeKey)).get().get(); }
+			try { entityType = ForgeRegistries.ENTITIES
+					.getHolder(new ResourceLocation(entityTypeKey)).get().value(); }
 			catch(NoSuchElementException e) { entityType = ModEntities.BULLET.get(); }
 		}
 		return entityType;
@@ -362,7 +364,7 @@ public abstract class WeaponData {
 	public SoundEvent getShootSound() {
 		if (shootSound == null) {
 			try { shootSound = ForgeRegistries.SOUND_EVENTS
-					.getDelegate(new ResourceLocation(shootSoundKey)).get().get(); }
+					.getHolder(new ResourceLocation(shootSoundKey)).get().value(); }
 			catch(NoSuchElementException e) { shootSound = ModSounds.BULLET_SHOOT_1.get(); }
 		}
 		return shootSound;
@@ -383,9 +385,9 @@ public abstract class WeaponData {
 	public Item getItem() {
 		if (item == null) {
 			try {
-				item = ForgeRegistries.ITEMS.getDelegate(
+				item = ForgeRegistries.ITEMS.getHolder(
 					new ResourceLocation(DSCombatMod.MODID, id))
-						.get().get();
+						.get().value();
 			} catch(NoSuchElementException e) {
 				item = Items.AIR;
 			}
@@ -403,11 +405,11 @@ public abstract class WeaponData {
 	
 	public List<ComponentColor> getInfoComponents() {
 		List<ComponentColor> list = new ArrayList<>();
-		list.add(new ComponentColor(Component.translatable("item.dscombat."+getId()), 0x000000));
-		list.add(new ComponentColor(Component.literal(getType().toString()), 0x0000aa));
-		list.add(new ComponentColor(Component.literal("Max Ammo: ").append(getMaxAmmo()+""), 0x040404));
-		list.add(new ComponentColor(Component.literal("Fire Rate: ").append(getFireRate()+""), 0x040404));
-		list.add(new ComponentColor(Component.literal("Max Age: ").append(getMaxAge()+""), 0x040404));
+		list.add(new ComponentColor(new TranslatableComponent("item.dscombat."+getId()), 0x000000));
+		list.add(new ComponentColor(new TextComponent(getType().toString()), 0x0000aa));
+		list.add(new ComponentColor(new TextComponent("Max Ammo: ").append(getMaxAmmo()+""), 0x040404));
+		list.add(new ComponentColor(new TextComponent("Fire Rate: ").append(getFireRate()+""), 0x040404));
+		list.add(new ComponentColor(new TextComponent("Max Age: ").append(getMaxAge()+""), 0x040404));
 		return list;
 	}
 	

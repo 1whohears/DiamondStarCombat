@@ -162,7 +162,7 @@ public final class ClientInputEvents {
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void clientMoveInput(MovementInputUpdateEvent event) {
-		Player player = event.getEntity();
+		Player player = event.getPlayer();
 		if (!(player.getVehicle() instanceof EntitySeat plane)) return;
 		if (Config.CLIENT.customDismount.get()) {
 			event.getInput().shiftKeyDown = DSCKeys.dismount.isDown();
@@ -193,7 +193,7 @@ public final class ClientInputEvents {
 	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
-	public static void onInteractKey(InputEvent.InteractionKeyMappingTriggered event) {
+	public static void onInteractKey(InputEvent.ClickInputEvent event) {
 		if (!event.isAttack()) return;
 		Minecraft m = Minecraft.getInstance();
 		if (m.hitResult.getType() != Type.ENTITY) return;

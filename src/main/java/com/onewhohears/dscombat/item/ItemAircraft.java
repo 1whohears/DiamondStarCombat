@@ -61,7 +61,6 @@ public class ItemAircraft extends Item {
 			}
 			if (hitresult.getType() == HitResult.Type.BLOCK) {
 				CompoundTag tag = itemstack.getOrCreateTag();
-				//EntityType<? extends EntityAircraft> entitytype = getType(tag);
 				spawnData(tag, player);
 				EntityAircraft e = entityType.create(level);
 				Vec3 pos = hitresult.getLocation();
@@ -78,7 +77,7 @@ public class ItemAircraft extends Item {
 							MobSpawnType.SPAWN_EGG, 
 							false, false);
 					if (entity != null) {
-						level.gameEvent(player, GameEvent.ENTITY_PLACE, pos);
+						level.gameEvent(player, GameEvent.ENTITY_PLACE, new BlockPos(pos));
 						itemstack.shrink(1);
 					}
 				}
@@ -88,14 +87,6 @@ public class ItemAircraft extends Item {
 			} else return InteractionResultHolder.pass(itemstack);
 		}
 	}
-	
-	/*private EntityType<? extends EntityAircraft> getType(CompoundTag nbt) {
-		if (nbt.contains("EntityTag", 10)) return entityType;
-		CompoundTag etag = new CompoundTag();
-		etag.putString("preset", getPresetName());
-		nbt.put("EntityTag", etag);
-		return entityType;
-	}*/
 	
 	private void spawnData(CompoundTag tag, Player player) {
 		if (!tag.contains("EntityTag", 10)) {

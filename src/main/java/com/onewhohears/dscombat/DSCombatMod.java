@@ -1,5 +1,7 @@
 package com.onewhohears.dscombat;
 
+import com.onewhohears.dscombat.client.input.DSCKeys;
+import com.onewhohears.dscombat.client.overlay.PilotOverlay;
 import com.onewhohears.dscombat.client.screen.AircraftBlockScreen;
 import com.onewhohears.dscombat.client.screen.AircraftScreen;
 import com.onewhohears.dscombat.client.screen.WeaponsBlockScreen;
@@ -17,6 +19,7 @@ import com.onewhohears.dscombat.init.ModRecipeSerializers;
 import com.onewhohears.dscombat.init.ModSounds;
 
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraftforge.client.gui.OverlayRegistry;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -57,6 +60,8 @@ public class DSCombatMod {
 	}
     
     private void clientSetup(FMLClientSetupEvent event) {
+    	DSCKeys.init();
+		OverlayRegistry.registerOverlayBottom("aircraft_stats", PilotOverlay.HUD_Aircraft_Stats);
     	MenuScreens.register(ModContainers.PLANE_MENU.get(), AircraftScreen::new);
     	MenuScreens.register(ModContainers.WEAPONS_BLOCK_MENU.get(), WeaponsBlockScreen::new);
     	MenuScreens.register(ModContainers.AIRCRAFT_BLOCK_MENU.get(), AircraftBlockScreen::new);

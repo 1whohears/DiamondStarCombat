@@ -17,6 +17,8 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
@@ -98,36 +100,36 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 	protected void renderLabels(PoseStack stack, int mouseX, int mouseY) {
 		font.draw(stack, title, titleLabelX+38, titleLabelY, 0x404040);
 		font.draw(stack, playerInventoryTitle, inventoryLabelX+38, inventoryLabelY+56, 0x404040);
-		font.draw(stack, Component.translatable("dscombat.ingredients"), titleLabelX+122, titleLabelY+34, 0x00aa00);
+		font.draw(stack, new TranslatableComponent("dscombat.ingredients"), titleLabelX+122, titleLabelY+34, 0x00aa00);
 		// plane stats
 		if (AircraftPresets.presets.size() == 0) return;
 		CompoundTag data = AircraftPresets.presets.get(planeIndex);
 		String preset = data.getString("preset");
-		font.draw(stack, Component.translatable("entity.dscombat."+preset), titleLabelX+38, titleLabelY+34, 0x000000);
+		font.draw(stack, new TranslatableComponent("entity.dscombat."+preset), titleLabelX+38, titleLabelY+34, 0x000000);
 		float scale = 0.5f;
 		stack.scale(scale, scale, scale);
 		float invScale = 1f / scale;
 		int startX = (int)((float)(titleLabelX+38) * invScale);
 		int startY = (int)((float)(titleLabelY+43) * invScale);
 		int initY = startY;
-		font.draw(stack, Component.literal("Health: "+data.getDouble("max_health")), startX, startY, 0x404040);
+		font.draw(stack, new TextComponent("Health: "+data.getDouble("max_health")), startX, startY, 0x404040);
 		startY += font.lineHeight;
-		font.draw(stack, Component.literal("Speed: "+data.getDouble("max_speed")), startX, startY, 0x404040);
+		font.draw(stack, new TextComponent("Speed: "+data.getDouble("max_speed")), startX, startY, 0x404040);
 		startY += font.lineHeight;
-		font.draw(stack, Component.literal("Weight: "+data.getDouble("weight")), startX, startY, 0x404040);
+		font.draw(stack, new TextComponent("Weight: "+data.getDouble("weight")), startX, startY, 0x404040);
 		startY += font.lineHeight;
-		font.draw(stack, Component.literal("Wing Area: "+data.getDouble("surfacearea")), startX, startY, 0x404040);
+		font.draw(stack, new TextComponent("Wing Area: "+data.getDouble("surfacearea")), startX, startY, 0x404040);
 		startY = initY;
 		startX += 80;
-		font.draw(stack, Component.literal("Stealth: "+data.getDouble("stealth")), startX, startY, 0x404040);
+		font.draw(stack, new TextComponent("Stealth: "+data.getDouble("stealth")), startX, startY, 0x404040);
 		startY += font.lineHeight;
-		font.draw(stack, Component.literal("Heat: "+data.getDouble("idleheat")), startX, startY, 0x404040);
+		font.draw(stack, new TextComponent("Heat: "+data.getDouble("idleheat")), startX, startY, 0x404040);
 		startY += font.lineHeight;
-		font.draw(stack, Component.literal("Yaw Rate: "+data.getDouble("maxyaw")), startX, startY, 0x404040);
+		font.draw(stack, new TextComponent("Yaw Rate: "+data.getDouble("maxyaw")), startX, startY, 0x404040);
 		startY += font.lineHeight;
-		font.draw(stack, Component.literal("Pitch Rate: "+data.getDouble("maxpitch")), startX, startY, 0x404040);
+		font.draw(stack, new TextComponent("Pitch Rate: "+data.getDouble("maxpitch")), startX, startY, 0x404040);
 		startY += font.lineHeight;
-		font.draw(stack, Component.literal("Roll Rate: "+data.getDouble("maxroll")), startX, startY, 0x404040);
+		font.draw(stack, new TextComponent("Roll Rate: "+data.getDouble("maxroll")), startX, startY, 0x404040);
 		// HOW 3 display plane model
 		//Minecraft m = Minecraft.getInstance();
 	}
@@ -142,7 +144,7 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 		int wy = startY + 10;
 		// prev
 		Button prevButton = new Button(0, 0, 10, 20, 
-				Component.literal("<"), 
+				new TextComponent("<"), 
 				onPress -> { prevButton(); });
 		prevButton.x = wx;
 		prevButton.y = wy;
@@ -152,7 +154,7 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 		for (int b = 0; b < buttonNum; ++b) {
 			final int c = b;
 			Button acb = new Button(0, 0, 20, 20,
-					Component.empty(),
+					TextComponent.EMPTY,
 					onPress -> { planeButton(c); });
 			acb.x = wx;
 			acb.y = wy;
@@ -161,14 +163,14 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 		}
 		// next
 		Button nextButton = new Button(0, 0, 10, 20, 
-				Component.literal(">"), 
+				new TextComponent(">"), 
 				onPress -> { nextButton(); });
 		nextButton.x = wx;
 		nextButton.y = wy;
 		addRenderableWidget(nextButton);
 		// craft
 		Button craftButton = new Button(0, 0, 80, 20, 
-				Component.translatable("dscombat.craft_button"), 
+				new TranslatableComponent("dscombat.craft_button"), 
 				onPress -> { craftButton(); });
 		craftButton.x = startX+122;
 		craftButton.y = startY+110;
@@ -221,7 +223,7 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 		if (DSCIngredient.hasIngredients(ingredients, player.getInventory())) {
 			PacketHandler.INSTANCE.sendToServer(new ToServerCraftPlane(preset, menu.getPos()));
 		} else {
-			player.displayClientMessage(Component.translatable("dscombat.cant_craft"), true);
+			player.displayClientMessage(new TranslatableComponent("dscombat.cant_craft"), true);
 			minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.VILLAGER_NO, 1.0F));
 		}
 	}

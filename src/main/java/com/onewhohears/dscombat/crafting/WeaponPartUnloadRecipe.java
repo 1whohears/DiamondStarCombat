@@ -13,7 +13,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class WeaponPartUnloadRecipe extends CustomRecipe {
@@ -78,7 +77,7 @@ public class WeaponPartUnloadRecipe extends CustomRecipe {
 		NonNullList<ItemStack> list = NonNullList.withSize(container.getContainerSize(), ItemStack.EMPTY);
 		for(int i = 0; i < list.size(); ++i) {
 			ItemStack stack = container.getItem(i);
-			list.set(i, ForgeHooks.getCraftingRemainingItem(stack));
+			list.set(i, stack.getContainerItem());
 		}
 		return list;
 	}

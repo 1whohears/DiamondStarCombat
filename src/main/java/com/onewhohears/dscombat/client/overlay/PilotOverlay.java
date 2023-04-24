@@ -25,17 +25,17 @@ import com.onewhohears.dscombat.util.math.UtilAngles;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.gui.overlay.ForgeGui;
-import net.minecraftforge.client.gui.overlay.IGuiOverlay;
-import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.client.gui.ForgeIngameGui;
+import net.minecraftforge.client.gui.IIngameOverlay;
 
 public class PilotOverlay {
 	
@@ -58,7 +58,7 @@ public class PilotOverlay {
 	private static final ResourceLocation RADAR = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/radar.png");
 	
-	public static final IGuiOverlay HUD_Aircraft_Stats = ((gui, poseStack, partialTick, width, height) -> {
+	public static final IIngameOverlay HUD_Aircraft_Stats = ((gui, poseStack, partialTick, width, height) -> {
 		Minecraft m = Minecraft.getInstance();
 		if (m.options.hideGui) return;
 		if (m.gameMode.getPlayerMode() == GameType.SPECTATOR) return;
@@ -81,7 +81,7 @@ public class PilotOverlay {
 		if (Config.CLIENT.debugMode.get()) drawDebug(m, player, plane, gui, poseStack, partialTick, width, height);
 	});
 	
-	private static void drawDebug(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
+	private static void drawDebug(Minecraft m, Player player, EntityAircraft plane, ForgeIngameGui gui, PoseStack poseStack, float partialTick, int width, int height) {
 		int color = 0x00ff00;
 		GuiComponent.drawString(poseStack, m.font, 
 			"V"+UtilParse.prettyVec3(plane.getDeltaMovement()), width-100, 0, color);
@@ -93,21 +93,25 @@ public class PilotOverlay {
 			"M"+UtilParse.prettyVec3(plane.moment), width-100, 30, color);
 	}
 	
-	private static void drawMissingVanillaOverlays(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
+	private static void drawMissingVanillaOverlays(Minecraft m, Player player, EntityAircraft plane, ForgeIngameGui gui, PoseStack poseStack, float partialTick, int width, int height) {
 		Entity camera = m.getCameraEntity();
 		m.setCameraEntity(player);
-		gui.setupOverlayRenderState(true, false);
-		gui.renderHotbar(partialTick, poseStack);
+		//gui.setupOverlayRenderState(true, false);
+		ForgeIngameGui.HOTBAR_ELEMENT.render(gui, poseStack, partialTick, width, height);
 		if (gui.shouldDrawSurvivalElements()) {
-			gui.renderHealth(width, height, poseStack);
-			gui.renderFood(width, height, poseStack);
-			renderArmor(width, height, poseStack, m, gui);
-			renderAir(width, height, poseStack, m, gui);
+			ForgeIngameGui.PLAYER_HEALTH_ELEMENT.render(gui, poseStack, partialTick, width, height);
+			ForgeIngameGui.FOOD_LEVEL_ELEMENT.render(gui, poseStack, partialTick, width, height);
+			ForgeIngameGui.ARMOR_LEVEL_ELEMENT.render(gui, poseStack, partialTick, width, height);
+			ForgeIngameGui.AIR_LEVEL_ELEMENT.render(gui, poseStack, partialTick, width, height);
+			//gui.renderHealth(width, height, poseStack);
+			//gui.renderFood(width, height, poseStack);
+			//renderArmor(width, height, poseStack, m, gui);
+			//renderAir(width, height, poseStack, m, gui);
 		}
 		m.setCameraEntity(camera);
 	}
 	
-	private static void drawAircraftStats(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
+	private static void drawAircraftStats(Minecraft m, Player player, EntityAircraft plane, ForgeIngameGui gui, PoseStack poseStack, float partialTick, int width, int height) {
 		// plane speed 
 		int s = (int)(plane.getDeltaMovement().length() * 20d);
 		GuiComponent.drawString(poseStack, m.font, 
@@ -134,7 +138,7 @@ public class PilotOverlay {
 				width/2, 0, 0x00ff00);
 	}
 	
-	private static void drawAircraftAngles(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
+	private static void drawAircraftAngles(Minecraft m, Player player, EntityAircraft plane, ForgeIngameGui gui, PoseStack poseStack, float partialTick, int width, int height) {
 		// HEADING
 		int y = 10, color = 0xe6e600;
         int heading = (int)Mth.wrapDegrees(player.getYRot());
@@ -169,8 +173,8 @@ public class PilotOverlay {
     	return h+"";
 	}
 	
-	private static final MutableComponent weaponSelect = Component.empty().append("->");
-	private static void drawAircraftWeaponsAndKeys(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
+	private static final MutableComponent weaponSelect = new TextComponent("->");
+	private static void drawAircraftWeaponsAndKeys(Minecraft m, Player player, EntityAircraft plane, ForgeIngameGui gui, PoseStack poseStack, float partialTick, int width, int height) {
 		int wh=1,x=1,weaponSelectWidth=m.font.width(weaponSelect)+1,maxNameWidth=46,color1=0x7340bf,color2=0x00ff00,color=color1;
 		// WEAPONS
 		WeaponData sw = plane.weaponSystem.getSelected();
@@ -178,7 +182,7 @@ public class PilotOverlay {
 		List<WeaponData> weapons = plane.weaponSystem.getWeapons();
 		MutableComponent[] names = new MutableComponent[weapons.size()];
 		for (int i = 0; i < weapons.size(); ++i) {
-			names[i] = Component.translatable("item."+DSCombatMod.MODID+"."+weapons.get(i).getId());
+			names[i] = new TranslatableComponent("item."+DSCombatMod.MODID+"."+weapons.get(i).getId());
 			int w = m.font.width(names[i]);
 			if (w > maxNameWidth) maxNameWidth = w;
 		}
@@ -311,7 +315,7 @@ public class PilotOverlay {
         }
 	}
 	
-	private static void drawAircraftRadarData(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
+	private static void drawAircraftRadarData(Minecraft m, Player player, EntityAircraft plane, ForgeIngameGui gui, PoseStack poseStack, float partialTick, int width, int height) {
 		RadarSystem radar = plane.radarSystem;
 		if (!radar.hasRadar()) return;
 		RenderSystem.setShaderTexture(0, RADAR);
@@ -405,7 +409,7 @@ public class PilotOverlay {
 		}
 	}
 	
-	private static void drawAircraftControls(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
+	private static void drawAircraftControls(Minecraft m, Player player, EntityAircraft plane, ForgeIngameGui gui, PoseStack poseStack, float partialTick, int width, int height) {
         // pitch yaw input
         RenderSystem.setShaderTexture(0, STICK_BASE_CIRCLE);
         GuiComponent.blit(poseStack, 
@@ -434,7 +438,7 @@ public class PilotOverlay {
         		stickKnobSize, stickKnobSize);
 	}
 	
-	private static void drawAircraftThrottle(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
+	private static void drawAircraftThrottle(Minecraft m, Player player, EntityAircraft plane, ForgeIngameGui gui, PoseStack poseStack, float partialTick, int width, int height) {
 		RenderSystem.setShaderTexture(0, STICK_BASE_SQUARE);
         GuiComponent.blit(poseStack, 
         		width-stickBaseSize-stickOffset-stickKnobSize-stickOffset, 
@@ -453,7 +457,7 @@ public class PilotOverlay {
         		stickKnobSize, stickKnobSize);
 	}
 	
-	private static void drawAircraftFuel(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
+	private static void drawAircraftFuel(Minecraft m, Player player, EntityAircraft plane, ForgeIngameGui gui, PoseStack poseStack, float partialTick, int width, int height) {
 		RenderSystem.setShaderTexture(0, FUEL_GUAGE);
         GuiComponent.blit(poseStack, 
         	width-stickBaseSize-stickKnobSize-3*stickOffset-fuelGuageWidth, 
@@ -474,13 +478,13 @@ public class PilotOverlay {
         poseStack.popPose();
 	}
 	
-	private static void drawAircraftTurretData(Minecraft m, Player player, EntityTurret turret, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
+	private static void drawAircraftTurretData(Minecraft m, Player player, EntityTurret turret, ForgeIngameGui gui, PoseStack poseStack, float partialTick, int width, int height) {
 		GuiComponent.drawString(poseStack, m.font, 
 				"Turret: "+turret.getAmmo(), 
 				width/2-100, 1, 0xffff00);
 	}
 	
-	private static void drawPlaneData(Minecraft m, Player player, EntityPlane plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
+	private static void drawPlaneData(Minecraft m, Player player, EntityPlane plane, ForgeIngameGui gui, PoseStack poseStack, float partialTick, int width, int height) {
 		GuiComponent.drawString(poseStack, m.font, 
      		String.format("AOA: %3.1f", plane.getAOA()), 
      		width-stickBaseSize-stickOffset, 
@@ -507,13 +511,13 @@ public class PilotOverlay {
 		return red.getRGB();
 	}
 	
-	// ForgeGui.renderArmor is protected for some reason
-	private static void renderArmor(int width, int height, PoseStack poseStack, Minecraft minecraft, ForgeGui gui) {
+	// ForgeIngameGui.renderArmor is protected for some reason
+	private static void renderArmor(int width, int height, PoseStack poseStack, Minecraft minecraft, ForgeIngameGui gui) {
         minecraft.getProfiler().push("armor");
 
         RenderSystem.enableBlend();
         int left = width / 2 - 91;
-        int top = height - gui.leftHeight;
+        int top = height - gui.left_height;
 
         int level = minecraft.player.getArmorValue();
         for (int i = 1; level > 0 && i < 20; i += 2)
@@ -532,23 +536,23 @@ public class PilotOverlay {
             }
             left += 8;
         }
-        gui.leftHeight += 10;
+        gui.left_height += 10;
 
         RenderSystem.disableBlend();
         minecraft.getProfiler().pop();
     }
 	
-	// ForgeGui.renderAir is protected for some reason
-	private static void renderAir(int width, int height, PoseStack poseStack, Minecraft minecraft, ForgeGui gui) {
+	// ForgeIngameGui.renderAir is protected for some reason
+	private static void renderAir(int width, int height, PoseStack poseStack, Minecraft minecraft, ForgeIngameGui gui) {
         minecraft.getProfiler().push("air");
         Player player = (Player) minecraft.getCameraEntity();
         //System.out.println("render air "+player);
         RenderSystem.enableBlend();
         int left = width / 2 + 91;
-        int top = height - gui.rightHeight;
+        int top = height - gui.right_height;
 
         int air = player.getAirSupply();
-        if (player.isEyeInFluidType(ForgeMod.WATER_TYPE.get()) || air < 300)
+        if (player.isUnderWater() || air < 300)
         {
             int full = Mth.ceil((double) (air - 2) * 10.0D / 300.0D);
             int partial = Mth.ceil((double) air * 10.0D / 300.0D) - full;
@@ -557,7 +561,7 @@ public class PilotOverlay {
             {
                 gui.blit(poseStack, left - i * 8 - 9, top, (i < full ? 16 : 25), 18, 9, 9);
             }
-            gui.rightHeight += 10;
+            gui.right_height += 10;
         }
 
         RenderSystem.disableBlend();

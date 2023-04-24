@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -82,10 +83,10 @@ public class WeaponDamageSource extends EntityDamageSource {
 	public Component getLocalizedDeathMessage(LivingEntity livingEntity) {
 		LivingEntity killer = livingEntity.getKillCredit();
 		String s = "death.attack." + msgId;
-		if (killer == null) return Component.translatable(s, livingEntity.getDisplayName());
+		if (killer == null) return new TranslatableComponent(s, livingEntity.getDisplayName());
 		int dist = (int)livingEntity.position().distanceTo(weapon.getShootPos());
 		s += ".player";
-		return Component.translatable(s, livingEntity.getDisplayName(), killer.getDisplayName(), dist+"");
+		return new TranslatableComponent(s, livingEntity.getDisplayName(), killer.getDisplayName(), dist+"");
 	}
 
 }

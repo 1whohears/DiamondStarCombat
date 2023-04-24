@@ -44,7 +44,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -73,7 +73,6 @@ import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.RegistryObject;
@@ -84,14 +83,14 @@ import net.minecraftforge.registries.RegistryObject;
  */
 public abstract class EntityAircraft extends Entity {
 	
+	public static final EntityDataAccessor<Quaternion> Q = SynchedEntityData.defineId(EntityAircraft.class, DataSerializers.QUATERNION);
+	public static final EntityDataAccessor<Vec3> AV = SynchedEntityData.defineId(EntityAircraft.class, DataSerializers.VEC3);
 	public static final EntityDataAccessor<Float> MAX_HEALTH = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
     public static final EntityDataAccessor<Float> HEALTH = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> MAX_SPEED = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> THROTTLE = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> THROTTLEUP = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> THROTTLEDOWN = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Quaternion> Q = SynchedEntityData.defineId(EntityAircraft.class, DataSerializers.QUATERNION);
-	public static final EntityDataAccessor<Vec3> AV = SynchedEntityData.defineId(EntityAircraft.class, DataSerializers.VEC3);
 	public static final EntityDataAccessor<Boolean> FREE_LOOK = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Float> STEALTH = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> MAX_ROLL = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
@@ -868,12 +867,12 @@ public abstract class EntityAircraft extends Entity {
 	
 	public void openMenu(ServerPlayer player) {
 		if (canOpenMenu()) {
-			NetworkHooks.openScreen(player, 
+			NetworkHooks.openGui(player, 
 				new SimpleMenuProvider((windowId, playerInv, p) -> 
 						new AircraftMenuContainer(windowId, playerInv), 
-				Component.translatable("container.dscombat.plane_menu")));
+				new TranslatableComponent("container.dscombat.plane_menu")));
 		} else player.displayClientMessage(
-				Component.translatable(getOpenMenuError()), 
+				new TranslatableComponent(getOpenMenuError()), 
 				true);
 	}
 	
@@ -907,7 +906,7 @@ public abstract class EntityAircraft extends Entity {
 	
 	private void tickLerp() {
 		if (isControlledByLocalInstance()) {
-			syncPacketPositionCodec(getX(), getY(), getZ());
+			setPacketCoordinates(getX(), getY(), getZ());
 			lerpSteps = 0;
 			return;
 		}
@@ -1168,9 +1167,14 @@ public abstract class EntityAircraft extends Entity {
 	}
 
 	@Override
-    public boolean canBeRiddenUnderFluidType(FluidType type, Entity rider) {
-        return true;
-    }
+	public boolean rideableUnderWater() {
+		return true;
+	}
+	
+	@Override
+	public boolean canBeRiddenInWater(Entity rider) {
+		return true;
+	}
     
     @Override
     public double getPassengersRidingOffset() {
@@ -1747,7 +1751,7 @@ public abstract class EntityAircraft extends Entity {
     }
     
     protected void debug(String debug, boolean passengerCheck) {
-    	if (!passengerCheck || (passengerCheck && hasControllingPassenger())) 
+    	if (!passengerCheck || (passengerCheck && getControllingPassenger() != null)) 
     		System.out.println(debug);
     }
     

@@ -1,8 +1,6 @@
 package com.onewhohears.dscombat.client.event;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.client.input.DSCKeys;
-import com.onewhohears.dscombat.client.overlay.PilotOverlay;
 import com.onewhohears.dscombat.client.renderer.RendererEntityAircraft;
 import com.onewhohears.dscombat.client.renderer.RendererEntityInvisible;
 import com.onewhohears.dscombat.client.renderer.RendererEntityPart;
@@ -43,19 +41,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
-import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 @Mod.EventBusSubscriber(modid = DSCombatMod.MODID, bus = Bus.MOD, value = Dist.CLIENT)
 public final class ClientModEvents {
-	
-	@SubscribeEvent
-	public static void clientSetup(RegisterKeyMappingsEvent event) {
-		DSCKeys.init(event);
-	}
 	
 	@SubscribeEvent
 	public static void registerEntityLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
@@ -169,8 +160,4 @@ public final class ClientModEvents {
 		event.registerEntityRenderer(ModEntities.FLARE.get(), RendererEntityInvisible::new);
 	}
 	
-	@SubscribeEvent
-    public static void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
-        event.registerBelowAll("aircraft_stats", PilotOverlay.HUD_Aircraft_Stats);
-    }
 }

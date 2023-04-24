@@ -75,18 +75,20 @@ public final class ClientRenderRadarEvents {
 			if (d < farDist) closeBox(buffer, x, y, z, d);
 			else farSquare(buffer, x, y, z, player);
 			
-			pingBuffer.bind();
-			pingBuffer.upload(buffer.end());
+			buffer.end();
+			pingBuffer.upload(buffer);
 			
 			Vec3 view = m.gameRenderer.getMainCamera().getPosition();
 			PoseStack poseStack = event.getPoseStack();
 			poseStack.pushPose();
 			poseStack.translate(-view.x, -view.y, -view.z);
 			var shader = GameRenderer.getPositionColorShader();
-			pingBuffer.drawWithShader(poseStack.last().pose(), event.getProjectionMatrix().copy(), shader);
+			pingBuffer.drawWithShader(poseStack.last().pose(), 
+					event.getProjectionMatrix().copy(), 
+					shader);
 			poseStack.popPose();
 			
-			VertexBuffer.unbind();
+			//VertexBuffer.unbind();
 		}
 		RenderSystem.depthMask(true);
 		RenderSystem.disableBlend();

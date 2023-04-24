@@ -21,7 +21,7 @@ public class ClientRenderEvents {
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void playerRender(RenderPlayerEvent.Pre event) {
-		Player player = event.getEntity();
+		Player player = event.getPlayer();
 		if (!player.isPassenger()) return;
 		if (!(player.getRootVehicle() instanceof EntityAircraft plane)) return;
 		Minecraft m = Minecraft.getInstance();

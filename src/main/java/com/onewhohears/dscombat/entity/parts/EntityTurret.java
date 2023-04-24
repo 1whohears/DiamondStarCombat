@@ -14,7 +14,7 @@ import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -206,7 +206,7 @@ public class EntityTurret extends EntitySeat {
 		data.shoot(level, shooter, getLookAngle(), pos, null, consume);
 		if (data.isFailedLaunch()) {
 			if (p != null) p.displayClientMessage(
-					Component.translatable(data.getFailedLaunchReason()), 
+					new TranslatableComponent(data.getFailedLaunchReason()), 
 					true);
 		} else {
 			setAmmo(data.getCurrentAmmo());

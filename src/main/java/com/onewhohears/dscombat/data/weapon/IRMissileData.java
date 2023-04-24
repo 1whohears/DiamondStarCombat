@@ -8,7 +8,7 @@ import com.onewhohears.dscombat.entity.weapon.IRMissile;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -75,9 +75,9 @@ public class IRMissileData extends MissileData {
 	@Override
 	public List<ComponentColor> getInfoComponents() {
 		List<ComponentColor> list = super.getInfoComponents();
-		list.add(2, new ComponentColor(Component.literal("TARGETS FLYING"), 0xaaaa00));
-		list.add(3, new ComponentColor(Component.literal("IR GUIDED"), 0xaaaa00));
-		if (getFlareResistance() != 0) if (getFov() != -1) list.add(new ComponentColor(Component.literal("Flare Resistance: ").append(getFlareResistance()+""), 0x040404));
+		list.add(2, new ComponentColor(new TextComponent("TARGETS FLYING"), 0xaaaa00));
+		list.add(3, new ComponentColor(new TextComponent("IR GUIDED"), 0xaaaa00));
+		if (getFlareResistance() != 0) if (getFov() != -1) list.add(new ComponentColor(new TextComponent("Flare Resistance: ").append(getFlareResistance()+""), 0x040404));
 		return list;
 	}
 

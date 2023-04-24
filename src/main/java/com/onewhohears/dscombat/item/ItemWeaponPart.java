@@ -11,6 +11,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -28,11 +29,11 @@ public class ItemWeaponPart extends ItemPart {
 	public Component getName(ItemStack stack) {
 		CompoundTag tag = stack.getOrCreateTag();
 		String weapon = tag.getString("weaponId");
-		MutableComponent name = Component.translatable(getDescriptionId()).append(" ");
+		MutableComponent name = new TranslatableComponent(getDescriptionId()).append(" ");
 		if (weapon.isEmpty()) {
 			name.append("EMPTY");
 		} else {
-			name.append(Component.translatable("item."+DSCombatMod.MODID+"."+weapon))
+			name.append(new TranslatableComponent("item."+DSCombatMod.MODID+"."+weapon))
 				.append(" "+tag.getInt("ammo")+"/"+tag.getInt("max"));
 		}
 		return name;	

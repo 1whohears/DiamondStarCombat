@@ -8,7 +8,7 @@ import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -43,8 +43,8 @@ public class AntiRadarMissileData extends MissileData {
 	@Override
 	public List<ComponentColor> getInfoComponents() {
 		List<ComponentColor> list = super.getInfoComponents();
-		list.add(2, new ComponentColor(Component.literal("TARGETS GROUNDED"), 0xaaaa00));
-		list.add(3, new ComponentColor(Component.literal("ANTI-RADAR GUIDED"), 0xaaaa00));
+		list.add(2, new ComponentColor(new TextComponent("TARGETS GROUNDED"), 0xaaaa00));
+		list.add(3, new ComponentColor(new TextComponent("ANTI-RADAR GUIDED"), 0xaaaa00));
 		return list;
 	}
 	

@@ -17,7 +17,7 @@ import net.minecraft.commands.arguments.CompoundTagArgument;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.commands.arguments.coordinates.Vec3Argument;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 
@@ -46,7 +46,7 @@ public class MissileCommand {
 		if (tag == null) data = WeaponPresets.getDefaultMissile();
 		else data = UtilParse.parseWeaponFromCompound(tag);
 		if (data == null) {
-			context.getSource().sendFailure(Component.literal("Failed to make missile from nbt "+tag.toString()));
+			context.getSource().sendFailure(new TextComponent("Failed to make missile from nbt "+tag.toString()));
 			return 1;
 		}
 		int i = 0;
@@ -65,8 +65,8 @@ public class MissileCommand {
 			//ew.tick();
 			++i;
 		}
-		if (i == 0) context.getSource().sendFailure(Component.literal("No targets found!"));
-		else if (i > 0) context.getSource().sendSuccess(Component.literal("Launched "+i+" missiles!"), true);
+		if (i == 0) context.getSource().sendFailure(new TextComponent("No targets found!"));
+		else if (i > 0) context.getSource().sendSuccess(new TextComponent("Launched "+i+" missiles!"), true);
 		return 1;
 	}
 	

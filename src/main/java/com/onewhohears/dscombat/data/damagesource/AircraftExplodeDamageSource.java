@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.data.damagesource;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -29,11 +30,11 @@ public class AircraftExplodeDamageSource extends DamageSource {
 		Entity killer = aircraft.getControllingPassenger();
 		String s = "death.attack."+msgId;
 		if (killer == null) {
-			return Component.translatable(s, killed.getDisplayName());
+			return new TranslatableComponent(s, killed.getDisplayName());
 		} else if (killed.equals(killer)) {
-			return Component.translatable(s+".self", killed.getDisplayName());
+			return new TranslatableComponent(s+".self", killed.getDisplayName());
 		} else {
-			return Component.translatable(s+".player", killed.getDisplayName(), killer.getDisplayName());
+			return new TranslatableComponent(s+".player", killed.getDisplayName(), killer.getDisplayName());
 		}
 	}
 

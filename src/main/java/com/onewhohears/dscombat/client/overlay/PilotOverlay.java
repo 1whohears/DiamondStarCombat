@@ -373,16 +373,20 @@ public class PilotOverlay {
 		int selected = radar.getClientSelectedPingIndex();
 		int hover = ClientInputEvents.getHoverIndex();
 		if (hover != -1 && hover < pings.size()) {
-			String text = "("+(int)pings.get(hover).pos.distanceTo(plane.position())
-					+" | "+(int)pings.get(hover).pos.y+")";
+			RadarPing ping = pings.get(hover);
+			String text = "("+(int)ping.pos.distanceTo(plane.position())
+					+" | "+(int)ping.pos.y+")";
 			GuiComponent.drawCenteredString(poseStack, m.font, 
 				text, width/2, height/2-20, 0xffff00);
 		}
 		if (selected != -1 && selected < pings.size()) {
-			String text = "("+(int)pings.get(selected).pos.distanceTo(plane.position())
-					+" | "+(int)pings.get(selected).pos.y+")";
+			RadarPing ping = pings.get(selected);
+			String text = "("+(int)ping.pos.distanceTo(plane.position())
+					+" | "+(int)ping.pos.y+")";
+			int color = 0xff0000;
+			if (ping.isFriendly) color = 0x0000ff;
 			GuiComponent.drawCenteredString(poseStack, m.font, 
-				text, cx, height-radarOffset-radarSize-20, 0xff0000);
+				text, cx, height-radarOffset-radarSize-20, color);
 		}
 		for (int i = 0; i < pings.size(); ++i) {
 			RadarPing ping = pings.get(i);

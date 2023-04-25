@@ -3,8 +3,3 @@
 # are changed when only line endings change.
 src/generated/**/.cache/cache text eol=lf
 src/generated/**/*.json text eol=lf
-
-# ignore these files in merges
-build.gradle merge=ours
-src/main/resources/META-INF/mods.toml merge=ours
-$ git config --global merge.ours.driver true

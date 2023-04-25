@@ -121,7 +121,11 @@ public abstract class EntityMissile extends EntityBullet {
 					getDeltaMovement(), getXRot(), getYRot(), targetPos));
 		}
 		if (level.isClientSide && !isRemoved()) {
-			// IDEA 4 client side interpolation to better synch missile movement and not look as janky on client?
+			/**
+			 * FIXME 1 missile movement looks jank for the client
+			 * synch the target entity id integer with client so it tracks the client side entity
+			 * also do some interpolation?
+			 */
 			tickClientGuide();
 			Vec3 move = getDeltaMovement();
 			level.addParticle(ParticleTypes.SMOKE, 
@@ -222,6 +226,7 @@ public abstract class EntityMissile extends EntityBullet {
 	}
 	
 	protected boolean checkCanSee(Entity target) {
+		// TODO 7.1 make radar eye block depth server config
 		return UtilEntity.canEntitySeeEntity(this, target, 200);
 	}
 	

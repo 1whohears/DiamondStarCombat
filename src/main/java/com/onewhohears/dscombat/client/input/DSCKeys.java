@@ -25,6 +25,7 @@ public final class DSCKeys {
 	public static KeyMapping changeSeat, dismount;
 	public static KeyMapping specialKey, special2Key;
 	public static KeyMapping flipControlsKey;
+	// TODO 5.1 select/cycle through pings key
 	
 	public static void init() {
 		throttleUpKey = registerKey("throttle_up_key", FLIGHT_CONTROL, InputConstants.KEY_UP);

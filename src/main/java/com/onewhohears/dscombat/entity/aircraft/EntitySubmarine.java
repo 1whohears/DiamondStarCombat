@@ -101,6 +101,7 @@ public class EntitySubmarine extends EntityBoat {
 		}
 		move = move.add(UtilAngles.getRollAxis(q).scale(getThrustMag()));
 		setDeltaMovement(move);
+		// TODO 3 inputSpecial2 moves submarine to surface
 	}
 	
 	@Override

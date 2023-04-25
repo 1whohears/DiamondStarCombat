@@ -103,13 +103,15 @@ public class ModEntities {
 	 * noah chopper should resemble black hawk
 	 * 
 	 * CARS/TANKS
-	 * Honda Ferrari, Joanna Bike
+	 * Honda Ferrari, Joanna Bike, Mobile SAM
 	 * 
 	 * BOATS/SUBMARINES
 	 * 
-	 * weather balloon
+	 * weather balloon lol
 	 * 
 	 * IDEA 9 AI for planes/turrets or an auto pilot module
+	 * AI turret controllers need time and resources invested to level up
+	 * it would be funny if they were villagers
 	 */
 	
 	public static final RegistryObject<EntityType<EntitySeat>> SEAT = ENTITIES.register("seat", 

@@ -99,7 +99,7 @@ public class ModItems {
 			() -> new ItemBuffPart(BuffType.DATA_LINK, PartSlot.ADVANCED_INTERNAL));
 	public static final RegistryObject<Item> NIGHT_VISION_HUD = ITEMS.register("night_vision_hud", 
 			() -> new ItemBuffPart(BuffType.NIGHT_VISION_HUD, PartSlot.ADVANCED_INTERNAL));
-	// IDEA 6 radio part buff. can play music disks.
+	// TODO 9.1 radio part buff right click vehicle with music disk
 	
 	// TOOLS
 	public static final RegistryObject<Item> WRENCH = ITEMS.register("wrench", 
@@ -132,6 +132,12 @@ public class ModItems {
 			() -> new ItemFuelTank(3f, 0f, 150f, PartSlot.INTERNAL_ALL));
 	
 	// ENGINES
+	/**
+	 * TODO 9.2 add more engine types for different vehicles so they make sense
+	 * internal and external jet engines
+	 * internal "rotational" engines for cars and helicopters
+	 * maybe extra external engines can increase the max speed a bit
+	 */
 	public static final RegistryObject<Item> C6_ENGINE = ITEMS.register("c6_engine", 
 			() -> new ItemEngine(1.2f, 9f*(float)EntityAircraft.ACC_GRAVITY, 4.0f, 
 					0.005f, false, PartSlot.INTERNAL_ALL));
@@ -158,6 +164,7 @@ public class ModItems {
 			() -> new ItemRadarPart(3f, "gpr20", PartSlot.ADVANCED_INTERNAL));
 	public static final RegistryObject<Item> AR20K = ITEMS.register("ar20k", 
 			() -> new ItemRadarPart(7f, "ar20k", PartSlot.ADVANCED_INTERNAL));
+	// IDEA 2 passive under water sonar doesn's show RWR warning
 	
 	// SEATS
 	public static final RegistryObject<Item> SEAT = ITEMS.register("seat", 
@@ -179,7 +186,7 @@ public class ModItems {
 	
 	// FLARE DISPENSERS
 	public static final RegistryObject<Item> BASIC_FLARE_DISPENSER = ITEMS.register("basic_flare_dispenser", 
-			() -> new ItemFlareDispenser(0.5f, 0, 20, 8.0f, 100, PartSlot.INTERNAL_ALL));
+			() -> new ItemFlareDispenser(0.5f, 0, 20, 20.0f, 120, PartSlot.INTERNAL_ALL));
 	
 	// WEAPON PARTS
 	public static final RegistryObject<Item> XM12 = ITEMS.register("xm12", 
@@ -189,7 +196,7 @@ public class ModItems {
 	public static final RegistryObject<Item> HEAVY_MISSILE_RACK = ITEMS.register("heavy_missile_rack", 
 			() -> new ItemWeaponPart(4f, "heavy_missile_rack", PartSlot.EXTERNAL_ALL)); 
 	/**
-	 * IDEA 2 radar jamming pod
+	 * TODO 2.1 radar jamming weapon
 	 * causes victims radar to display random noise
 	 * if your radar is strong enough and you get close enough, you stop getting jammed
 	 */

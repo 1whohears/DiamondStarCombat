@@ -21,7 +21,7 @@ public class WeaponDamageSource extends EntityDamageSource {
 		this.weapon = weapon;
 		setProjectile();
 		if (explosion) setExplosion();
-		// IDEA 7 random custom kill messages
+		// TODO 8 random custom kill messages
 	}
 	
 	public static WeaponDamageSource bullet(Entity shooter, EntityWeapon weapon) {

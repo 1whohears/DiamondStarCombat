@@ -6,6 +6,7 @@ public class LiftKGraph {
 	private static final float[] ALEXIS_PLANE_LIFT  = {  0,-0.78f,-1.04f,-1.15f,-1.20f,-1.18f,-1.15f,-1.11f,-0.99f,-0.84f,0.69f,-0.48f,-0.25f,0,0.25f,0.48f,0.69f,0.84f,0.99f,1.11f,1.15f,1.18f,1.20f,1.15f,1.04f,0.78f, 0};
 	public static final LiftKGraph ALEXIS_PLANE_GRAPH = new LiftKGraph(ALEXIS_PLANE_DEGRESS, ALEXIS_PLANE_LIFT);
 	
+	// TODO 4.2 give javi_plane lift graph unique values
 	private static final int[] JAVI_PLANE_DEGRESS = ALEXIS_PLANE_DEGRESS;
 	private static final float[] JAVI_PLANE_LIFT = ALEXIS_PLANE_LIFT;
 	public static final LiftKGraph JAVI_PLANE_GRAPH = new LiftKGraph(JAVI_PLANE_DEGRESS, JAVI_PLANE_LIFT);

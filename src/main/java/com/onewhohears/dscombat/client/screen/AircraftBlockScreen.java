@@ -130,8 +130,7 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 		font.draw(stack, new TextComponent("Pitch Rate: "+data.getDouble("maxpitch")), startX, startY, 0x404040);
 		startY += font.lineHeight;
 		font.draw(stack, new TextComponent("Roll Rate: "+data.getDouble("maxroll")), startX, startY, 0x404040);
-		// HOW 3 display plane model
-		//Minecraft m = Minecraft.getInstance();
+		// HOW 2 display plane model
 	}
 	
 	@Override

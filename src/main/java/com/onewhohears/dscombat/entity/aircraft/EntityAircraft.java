@@ -110,6 +110,7 @@ public abstract class EntityAircraft extends Entity {
 	public static final EntityDataAccessor<Boolean> PLAYERS_ONLY_RADAR = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Integer> FLARE_NUM = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.INT);
 	
+	// TODO 7.3 make these coefficients server config
 	public static final double ACC_GRAVITY = 0.025;
 	public static final double CO_DRAG = 0.015;
 	public static final double CO_STATIC_FRICTION = 4.10;
@@ -659,7 +660,7 @@ public abstract class EntityAircraft extends Entity {
 	public void move(MoverType type, Vec3 move) {
 		super.move(type, move);
 		if (noPhysics) return;
-		// FIXME 3 add "stepDown" movement code so vehicles don't slowly fall while driving down blocks
+		// FIXME 2 add "stepDown" movement code so vehicles don't slowly fall while driving down blocks
 	}
 	
 	/**
@@ -921,6 +922,7 @@ public abstract class EntityAircraft extends Entity {
 	        --lerpSteps;
 	        setPos(d0, d1, d2);
 	        setRot(getYRot(), getXRot());
+	        // FIXME 6 vehicle quaternion of other vehicles not controlled by client need lerp
 		}
 	}
 	
@@ -937,6 +939,10 @@ public abstract class EntityAircraft extends Entity {
 		if (inputMouseMode) setFreeLook(!isFreeLook());
 		this.inputShoot = shoot;
 		this.inputSelect = select;
+		/**
+		 * TODO 5.2 client should have control of what the selected weapon is
+		 * otherwise one has to wait for server lag for the weapon to switch
+		 */
 		if (inputSelect && !level.isClientSide) weaponSystem.selectNextWeapon();
 		this.inputOpenMenu = openMenu;
 		this.inputSpecial = special;
@@ -971,6 +977,7 @@ public abstract class EntityAircraft extends Entity {
     	entityData.set(FREE_LOOK, freeLook);
     }
     
+    // TODO 5.3 make radar mode enum with OFF/MOBS/PLAYERS/VEHICLES/ALL/PASSIVE
     public final boolean isRadarPlayersOnly() {
     	return entityData.get(PLAYERS_ONLY_RADAR);
     }

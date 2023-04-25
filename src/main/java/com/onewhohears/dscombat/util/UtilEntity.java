@@ -19,6 +19,7 @@ public class UtilEntity {
 	
 	public static boolean canEntitySeeEntity(Entity e1, Entity e2, int maxCheckDist, 
 			double throWater, double throBlock) {
+		// TODO 6 canEntitySeeEntity should check both sides for blocks
 		Level level = e1.getLevel();
 		Vec3 diff = e2.position().subtract(e1.position());
 		Vec3 look = diff.normalize();
@@ -85,6 +86,7 @@ public class UtilEntity {
 	 * @return between 0 (no air pressure) and 1
 	 */
 	public static double getAirPressure(double posY) {
+		// TODO 7.2 make space and water level server configs
 		double space = 10000, water = 64;
 		double scale = 1, exp = 2;
 		if (posY <= water) return scale;

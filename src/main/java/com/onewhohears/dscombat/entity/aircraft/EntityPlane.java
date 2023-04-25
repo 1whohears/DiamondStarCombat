@@ -27,7 +27,7 @@ public class EntityPlane extends EntityAircraft {
 	public static final double CO_LIFT = 0.110;
 	
 	public final LiftKGraph liftKGraph;
-	public final float flapsAOABias; // TODO 9.1 animate flaps down
+	public final float flapsAOABias; // TODO 4.1 animate flaps down
 	public final boolean canAimDown;
 	
 	private final float propellerRate = 3.141f;
@@ -91,7 +91,7 @@ public class EntityPlane extends EntityAircraft {
 	public void directionAir(Quaternion q) {
 		super.directionAir(q);
 		if (!isOperational()) return;
-		// IDEA 3 turn assist button
+		// IDEA 1 turn assist button
 		addMomentX(inputPitch * getPitchTorque(), true);
 		addMomentY(inputYaw * getYawTorque(), true);
 		if (inputBothRoll) flatten(q, 0, getRollTorque(), false);

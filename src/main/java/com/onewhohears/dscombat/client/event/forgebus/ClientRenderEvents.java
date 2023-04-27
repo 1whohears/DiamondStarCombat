@@ -46,7 +46,9 @@ public class ClientRenderEvents {
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
 		if (!(player.getVehicle() instanceof EntitySeat seat)) return;
-		// FIXME 9 revive vanilla hand swing effect also mr crayfish guns doesn't visually work
+		// FIXME 9.1 revive vanilla hand swing effect
+		// FIXME 9.2 mr crayfish guns first person model points in wrong direction
+		// FIXME 9.3 journeymap stats no display when look at waypoint
 		event.getPoseStack().setIdentity();
 	}
 	

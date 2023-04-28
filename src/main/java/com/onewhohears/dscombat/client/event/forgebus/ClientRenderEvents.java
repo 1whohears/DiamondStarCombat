@@ -63,6 +63,8 @@ public class ClientRenderEvents {
 		//model.getHead().xRot = player.getXRot() * Mth.DEG_TO_RAD;
 		model.getHead().yRot = headY * Mth.DEG_TO_RAD;
 		//model.getHead().xRot = -relangles[0] * Mth.DEG_TO_RAD;
+		// cancel the event and change the yaw here?
+		event.getRenderer().render(null, headY, headY, null, null, 0);
 	}
 	
 	/*@SubscribeEvent(priority = EventPriority.NORMAL)

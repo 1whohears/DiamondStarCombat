@@ -853,13 +853,15 @@ public abstract class EntityAircraft extends Entity {
 			weaponSystem.tick();
 			radarSystem.tickUpdateTargets();
 			boolean consume = !isNoConsume();
+			boolean altActionItem = false;
 			if (controller instanceof ServerPlayer player) {
 				if (inputOpenMenu) openMenu(player);
 				if (player.isCreative()) consume = false;
+				if (player.getMainHandItem().getUseDuration() > 0) altActionItem = true;
 			}
 			if (consume) tickFuel();
 			if (newRiderCooldown > 0) --newRiderCooldown;
-			else if (inputShoot) weaponSystem.shootSelected(controller, consume);
+			else if (inputShoot && !altActionItem) weaponSystem.shootSelected(controller, consume);
 			setFlareNum(partsManager.getNumFlares());
 			if (inputFlare && tickCount % 5 == 0) flare(controller, consume);
 		} else {

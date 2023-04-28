@@ -51,6 +51,8 @@ public class ClientCameraEvents {
 				zi = UtilAngles.lerpAngle(pt, plane.zRotO, plane.zRot);
 				xi = player.getXRot();
 				yi = player.getYRot();
+				//xi = player.getViewXRot(pt);
+				//yi = player.getViewYRot(pt);
 			}
 			camera.setXRot(xi);
 			camera.setYRot(yi);

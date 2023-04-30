@@ -165,7 +165,6 @@ public final class ClientModEvents {
 						new ResourceLocation(DSCombatMod.MODID, "textures/entities/xm12.png")));
 		// OTHER
 		event.registerEntityRenderer(ModEntities.SEAT.get(), RendererEntityInvisible::new);
-		event.registerEntityRenderer(ModEntities.CAMERA.get(), RendererEntityInvisible::new);
 		event.registerEntityRenderer(ModEntities.FLARE.get(), RendererEntityInvisible::new);
 	}
 	

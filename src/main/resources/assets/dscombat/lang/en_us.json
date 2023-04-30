@@ -123,6 +123,7 @@
 	"key.dscombat.special_key": "Special",
 	"key.dscombat.special_2_key": "Special 2",
 	"key.dscombat.dismount_key": "Dismount",
+	"key.dscombat.ping_cycle_key": "Ping Cycle",
 	
 	"sounds.dscombat.missile_warning": "Missile Warning",
 	"sounds.dscombat.getting_locked": "Getting Locked",

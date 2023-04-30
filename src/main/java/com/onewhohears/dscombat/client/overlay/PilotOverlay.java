@@ -29,14 +29,11 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
-import net.minecraftforge.client.gui.overlay.GuiOverlayManager;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
-import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 
 public class PilotOverlay {
 	
@@ -67,7 +64,6 @@ public class PilotOverlay {
 		if (!(player.getRootVehicle() instanceof EntityAircraft plane)) return;
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		drawMissingVanillaOverlays(m, player, plane, gui, poseStack, partialTick, width, height);
 		drawAircraftStats(m, player, plane, gui, poseStack, partialTick, width, height);
 		drawAircraftAngles(m, player, plane, gui, poseStack, partialTick, width, height);
 		drawAircraftWeaponsAndKeys(m, player, plane, gui, poseStack, partialTick, width, height);
@@ -92,19 +88,6 @@ public class PilotOverlay {
 			"A"+UtilParse.prettyVec3(plane.getAngularVel()), width-100, 20, color);
 		GuiComponent.drawString(poseStack, m.font, 
 			"M"+UtilParse.prettyVec3(plane.moment), width-100, 30, color);
-	}
-	
-	private static void drawMissingVanillaOverlays(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
-		Entity camera = m.getCameraEntity();
-		m.setCameraEntity(player);
-		getVanillaHotbarOverlay().render(gui, poseStack, partialTick, width, height);
-		if (gui.shouldDrawSurvivalElements()) {
-			getVanillaHealthOverlay().render(gui, poseStack, partialTick, width, height);
-			getVanillaFoodOverlay().render(gui, poseStack, partialTick, width, height);
-			getVanillaArmorOverlay().render(gui, poseStack, partialTick, width, height);
-			getVanillaAirOverlay().render(gui, poseStack, partialTick, width, height);
-		}
-		m.setCameraEntity(camera);
 	}
 	
 	private static void drawAircraftStats(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
@@ -509,37 +492,6 @@ public class PilotOverlay {
     	else if (h == 225) return "NE";
     	else if (h == 315) return "SE";
     	return h+"";
-	}
-	
-	private static IGuiOverlay vanilla_hotbar_overlay;
-	private static IGuiOverlay vanilla_health_overlay;
-	private static IGuiOverlay vanilla_food_overlay;
-	private static IGuiOverlay vanilla_armor_overlay;
-	private static IGuiOverlay vanilla_air_overlay;
-	private static IGuiOverlay getVanillaHotbarOverlay() {
-		if (vanilla_hotbar_overlay == null) vanilla_hotbar_overlay = GuiOverlayManager
-			.findOverlay(VanillaGuiOverlay.HOTBAR.id()).overlay();
-		return vanilla_hotbar_overlay;
-	}
-	private static IGuiOverlay getVanillaHealthOverlay() {
-		if (vanilla_health_overlay == null) vanilla_health_overlay = GuiOverlayManager
-			.findOverlay(VanillaGuiOverlay.PLAYER_HEALTH.id()).overlay();
-		return vanilla_health_overlay;
-	}
-	private static IGuiOverlay getVanillaFoodOverlay() {
-		if (vanilla_food_overlay == null) vanilla_food_overlay = GuiOverlayManager
-			.findOverlay(VanillaGuiOverlay.FOOD_LEVEL.id()).overlay();
-		return vanilla_food_overlay;
-	}
-	private static IGuiOverlay getVanillaArmorOverlay() {
-		if (vanilla_armor_overlay == null) vanilla_armor_overlay = GuiOverlayManager
-			.findOverlay(VanillaGuiOverlay.ARMOR_LEVEL.id()).overlay();
-		return vanilla_armor_overlay;
-	}
-	private static IGuiOverlay getVanillaAirOverlay() {
-		if (vanilla_air_overlay == null) vanilla_air_overlay = GuiOverlayManager
-			.findOverlay(VanillaGuiOverlay.AIR_LEVEL.id()).overlay();
-		return vanilla_air_overlay;
 	}
 	
 }

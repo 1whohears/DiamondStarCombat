@@ -9,7 +9,6 @@ import com.onewhohears.dscombat.entity.aircraft.EntityHelicopter;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 import com.onewhohears.dscombat.entity.aircraft.EntitySubmarine;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
-import com.onewhohears.dscombat.entity.parts.EntitySeatCamera;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
 import com.onewhohears.dscombat.entity.weapon.AntiRadarMissile;
@@ -120,8 +119,6 @@ public class ModEntities {
 	
 	public static final RegistryObject<EntityType<EntitySeat>> SEAT = ENTITIES.register("seat", 
 			() -> createEntityType(EntitySeat::new, EntityDimensions.scalable(0f, 0f)));
-	public static final RegistryObject<EntityType<EntitySeatCamera>> CAMERA = ENTITIES.register("seat_camera", 
-			() -> createEntityType(EntitySeatCamera::new, EntityDimensions.scalable(0f, 0f)));
 	
 	public static final RegistryObject<EntityType<EntityTurret>> MINIGUN_TURRET = ENTITIES.register("minigun_turret", 
 			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 0.0, 0.8), 

@@ -2,11 +2,10 @@ package com.onewhohears.dscombat.entity.weapon;
 
 import javax.annotation.Nullable;
 
-import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.common.network.toclient.ToClientMissileMove;
 import com.onewhohears.dscombat.data.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.data.weapon.MissileData;
 import com.onewhohears.dscombat.data.weapon.NonTickingMissileManager;
+import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.util.UtilClientSafeSoundInstance;
 import com.onewhohears.dscombat.util.UtilEntity;
@@ -29,7 +28,6 @@ import net.minecraft.world.level.ClipContext.Fluid;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.PacketDistributor;
 
 public abstract class EntityMissile extends EntityBullet {
 	
@@ -37,6 +35,8 @@ public abstract class EntityMissile extends EntityBullet {
 	public static final EntityDataAccessor<Float> TURN_RADIUS = SynchedEntityData.defineId(EntityMissile.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> BLEED = SynchedEntityData.defineId(EntityMissile.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Integer> FUEL_TICKS = SynchedEntityData.defineId(EntityMissile.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> TARGET_ID = SynchedEntityData.defineId(EntityMissile.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Vec3> TARGET_POS = SynchedEntityData.defineId(EntityMissile.class, DataSerializers.VEC3);
 	
 	/**
 	 * only set on server side
@@ -46,8 +46,9 @@ public abstract class EntityMissile extends EntityBullet {
 	public Entity target;
 	public Vec3 targetPos;
 	
-	private int prevTickCount, tickCountRepeats, repeatCoolDown;
 	private boolean discardedButTicking;
+	private int prevTickCount, tickCountRepeats, repeatCoolDown, lerpSteps;
+	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot;
 	
 	public EntityMissile(EntityType<? extends EntityMissile> type, Level level) {
 		super(type, level);
@@ -73,6 +74,8 @@ public abstract class EntityMissile extends EntityBullet {
 		entityData.define(TURN_RADIUS, 0f);
 		entityData.define(BLEED, 0f);
 		entityData.define(FUEL_TICKS, 0);
+		entityData.define(TARGET_ID, -1);
+		entityData.define(TARGET_POS, Vec3.ZERO.add(0, -1000, 0));
 	}
 	
 	@Override
@@ -114,18 +117,13 @@ public abstract class EntityMissile extends EntityBullet {
 		yRotO = getYRot();
 		if (!level.isClientSide && !isRemoved()) {
 			tickGuide();
+			if (targetPos != null) setTargetPos(targetPos);
+			else setTargetPos(Vec3.ZERO.add(0, -1000, 0));
+			if (target != null) setTargetId(target.getId());
+			else setTargetId(-1);
 			if (target != null && distanceTo(target) <= fuseDist) kill();
-			if (tickCount % 10 == 0) PacketHandler.INSTANCE.send(
-				PacketDistributor.TRACKING_ENTITY.with(() -> this), 
-				new ToClientMissileMove(getId(), position(), 
-					getDeltaMovement(), getXRot(), getYRot(), targetPos));
 		}
 		if (level.isClientSide && !isRemoved()) {
-			/**
-			 * FIXME 1 missile movement looks jank for the client
-			 * synch the target entity id integer with client so it tracks the client side entity
-			 * also do some interpolation?
-			 */
 			tickClientGuide();
 			Vec3 move = getDeltaMovement();
 			level.addParticle(ParticleTypes.SMOKE, 
@@ -135,14 +133,21 @@ public abstract class EntityMissile extends EntityBullet {
 					-move.z * 0.5D + random.nextGaussian() * 0.05D);
 		}
 		super.tick();
-		//System.out.println("pos = "+position());
-		//System.out.println("vel = "+getDeltaMovement());
+		tickLerp();
 	}
 	
 	public abstract void tickGuide();
 	
 	public void tickClientGuide() {
-		if (tickCount < 20) return;
+		Vec3 tpos = getTargetPos();
+		if (tpos.y == -1000) tpos = null;
+		int tid = getTargetId();
+		if (tid != -1) {
+			Entity t = level.getEntity(tid);
+			if (t != null) targetPos = t.position();
+			else targetPos = tpos;
+		} else targetPos = tpos;
+		System.out.println("targetPos = "+targetPos);
 		guideToPosition();
 	}
 	
@@ -342,6 +347,22 @@ public abstract class EntityMissile extends EntityBullet {
 		entityData.set(TURN_RADIUS, max_rot);
 	}
 	
+	public int getTargetId() {
+		return entityData.get(TARGET_ID);
+	}
+	
+	public void setTargetId(int id) {
+		entityData.set(TARGET_ID, id);
+	}
+	
+	public Vec3 getTargetPos() {
+		return entityData.get(TARGET_POS);
+	}
+	
+	public void setTargetPos(Vec3 pos) {
+		entityData.set(TARGET_POS, pos);
+	}
+	
 	public void discardButTick() {
 		//System.out.println("discard but tick");
 		discard();
@@ -388,6 +409,33 @@ public abstract class EntityMissile extends EntityBullet {
 	@Override
 	protected WeaponDamageSource getExplosionDamageSource() {
 		return WeaponDamageSource.missile(getOwner(), this);
+	}
+	
+	@Override
+	public void lerpTo(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
+        if (x == getX() && y == getY() && z == getZ()) return;
+        lerpX = x; lerpY = y; lerpZ = z;
+        lerpYRot = yaw; lerpXRot = pitch;
+        lerpSteps = 10;
+    }
+	
+	private void tickLerp() {
+		if (!level.isClientSide) {
+			syncPacketPositionCodec(getX(), getY(), getZ());
+			lerpSteps = 0;
+			return;
+		}
+		if (lerpSteps > 0) {
+			double d0 = getX() + (lerpX - getX()) / (double)lerpSteps;
+	        double d1 = getY() + (lerpY - getY()) / (double)lerpSteps;
+	        double d2 = getZ() + (lerpZ - getZ()) / (double)lerpSteps;
+	        double d3 = Mth.wrapDegrees(lerpYRot - (double)getYRot());
+	        setYRot(getYRot() + (float)d3 / (float)lerpSteps);
+	        setXRot(getXRot() + (float)(lerpXRot - (double)getXRot()) / (float)lerpSteps);
+	        --lerpSteps;
+	        setPos(d0, d1, d2);
+	        setRot(getYRot(), getXRot());
+		}
 	}
 
 }

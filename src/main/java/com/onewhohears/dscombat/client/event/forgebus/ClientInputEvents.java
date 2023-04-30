@@ -19,10 +19,7 @@ import com.onewhohears.dscombat.util.math.UtilGeometry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult.Type;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
@@ -190,15 +187,6 @@ public final class ClientInputEvents {
 		return UtilGeometry.isPointInsideCone(ping.pos.add(0, 0.5, 0), 
 				player.getEyePosition(), player.getLookAngle(), 
 				Math.toDegrees(Math.atan2(y, d)), 100000);
-	}
-	
-	@SubscribeEvent(priority = EventPriority.NORMAL)
-	public static void onInteractKey(InputEvent.InteractionKeyMappingTriggered event) {
-		if (!event.isAttack()) return;
-		Minecraft m = Minecraft.getInstance();
-		if (m.hitResult.getType() != Type.ENTITY) return;
-		EntityHitResult hit = (EntityHitResult) m.hitResult;
-		if (hit.getEntity().equals(m.player)) event.setCanceled(true);
 	}
 	
 }

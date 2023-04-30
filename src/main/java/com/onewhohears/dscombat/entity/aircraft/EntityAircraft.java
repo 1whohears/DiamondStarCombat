@@ -211,7 +211,7 @@ public abstract class EntityAircraft extends Entity {
         // if this entity is on the client side and receiving the quaternion of the plane from the server 
         if (level.isClientSide()) {
         	if (Q.equals(key)) {
-        		if (isControlledByLocalInstance()) PacketHandler.INSTANCE.sendToServer(
+        		if (!firstTick && isControlledByLocalInstance()) PacketHandler.INSTANCE.sendToServer(
         				new ToServerAircraftQ(this));
         		else {
         			if (firstTick) {
@@ -221,11 +221,11 @@ public abstract class EntityAircraft extends Entity {
         			} else lerpStepsQ = 10;
         		}
         	} else if (AV.equals(key)) {
-        		if (isControlledByLocalInstance()) PacketHandler.INSTANCE.sendToServer(
+        		if (!firstTick && isControlledByLocalInstance()) PacketHandler.INSTANCE.sendToServer(
         				new ToServerAircraftAV(this));
         		else clientAV = entityData.get(AV);
         	} else if (THROTTLE.equals(key)) {
-        		if (isControlledByLocalInstance()) PacketHandler.INSTANCE.sendToServer(
+        		if (!firstTick && isControlledByLocalInstance()) PacketHandler.INSTANCE.sendToServer(
         				new ToServerAircraftThrottle(this));
         		else clientThrottle = entityData.get(THROTTLE);
         	} else if (CURRRENT_DYE_ID.equals(key)) {

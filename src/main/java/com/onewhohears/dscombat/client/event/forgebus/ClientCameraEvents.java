@@ -3,6 +3,8 @@ package com.onewhohears.dscombat.client.event.forgebus;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import javax.annotation.Nullable;
+
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCursorPosCallbackI;
 
@@ -56,6 +58,7 @@ public class ClientCameraEvents {
 	public static Method vanillaOnMove;
 	public static boolean tried = false;
 	
+	@Nullable
 	public static Method getVanillaOnMove() {
 		if (vanillaOnMove != null) return vanillaOnMove; 
 		if (tried) return null;
@@ -74,7 +77,7 @@ public class ClientCameraEvents {
 			vanillaOnMove.setAccessible(true);
 			return vanillaOnMove;
 		} catch (NoSuchMethodException | SecurityException e) {
-			System.out.println("WARNING: VANILLA MOUSE POS CALLBACK IS NOT onMove");
+			System.out.println("ERROR: VANILLA MOUSE POS CALLBACK IS NOT onMove");
 		}
 		return null;
 	}

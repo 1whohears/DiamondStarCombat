@@ -435,7 +435,6 @@ public abstract class EntityMissile extends EntityBullet {
 	        --lerpSteps;
 	        setPos(d0, d1, d2);
 	        setRot(getYRot(), getXRot());
-	        // FIXME 6 vehicle quaternion of other vehicles not controlled by client need lerp
 		}
 	}
 

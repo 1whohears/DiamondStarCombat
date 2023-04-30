@@ -154,7 +154,7 @@ public abstract class EntityAircraft extends Entity {
 	protected String preset;
 	
 	private ResourceLocation currentTexture;
-	private int lerpSteps, newRiderCooldown, deadTicks;
+	private int lerpSteps, lerpStepsQ, newRiderCooldown, deadTicks;
 	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot;
 	private float landingGearPos, landingGearPosOld;
 	
@@ -214,8 +214,11 @@ public abstract class EntityAircraft extends Entity {
         		if (isControlledByLocalInstance()) PacketHandler.INSTANCE.sendToServer(
         				new ToServerAircraftQ(this));
         		else {
-        			setPrevQ(getClientQ());
-        			setClientQ(getQ());
+        			if (firstTick) {
+        				lerpStepsQ = 0;
+        				setPrevQ(getClientQ());
+            			setClientQ(getQ());
+        			} else lerpStepsQ = 10;
         		}
         	} else if (AV.equals(key)) {
         		if (isControlledByLocalInstance()) PacketHandler.INSTANCE.sendToServer(
@@ -912,6 +915,7 @@ public abstract class EntityAircraft extends Entity {
 		if (isControlledByLocalInstance()) {
 			syncPacketPositionCodec(getX(), getY(), getZ());
 			lerpSteps = 0;
+			lerpStepsQ = 0;
 			return;
 		}
 		if (lerpSteps > 0) {
@@ -924,8 +928,16 @@ public abstract class EntityAircraft extends Entity {
 	        --lerpSteps;
 	        setPos(d0, d1, d2);
 	        setRot(getYRot(), getXRot());
-	        // FIXME 6 vehicle quaternion of other vehicles not controlled by client need lerp
 		}
+        if (lerpStepsQ > 0) {
+            setPrevQ(getClientQ());
+            setClientQ(UtilAngles.lerpQ(1 / lerpStepsQ, prevQ, clientQ));
+            --lerpStepsQ;
+        } else if (lerpStepsQ == 0) {
+        	setPrevQ(getClientQ());
+            setClientQ(getQ());
+            --lerpStepsQ;
+        }
 	}
 	
 	public void updateControls(float throttle, float pitch, float roll, float yaw,

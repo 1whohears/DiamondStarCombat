@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
+import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
 import com.onewhohears.dscombat.data.aircraft.LiftKGraph;
 import com.onewhohears.dscombat.util.UtilEntity;
@@ -24,7 +25,7 @@ public class EntityPlane extends EntityAircraft {
 	
 	public static final EntityDataAccessor<Float> WING_AREA = SynchedEntityData.defineId(EntityPlane.class, EntityDataSerializers.FLOAT);
 	
-	public static final double CO_LIFT = 0.110;
+	public static final double CO_LIFT = Config.SERVER.coLift.get();
 	
 	public final LiftKGraph liftKGraph;
 	public final float flapsAOABias; // TODO 4.1 animate flaps down

@@ -37,8 +37,35 @@ public class Config {
 	
 	public static class Server {
 		
+		public final ForgeConfigSpec.DoubleValue accGravity;
+		public final ForgeConfigSpec.DoubleValue coDrag;
+		public final ForgeConfigSpec.DoubleValue coStaticFriction;
+		public final ForgeConfigSpec.DoubleValue coKineticFriction;
+		public final ForgeConfigSpec.DoubleValue coLift;
+		public final ForgeConfigSpec.DoubleValue collideSpeedThreshHold;
+		public final ForgeConfigSpec.DoubleValue collideSpeedWithGearThreshHold;
+		public final ForgeConfigSpec.DoubleValue collideDamageRate;
+		public final ForgeConfigSpec.DoubleValue maxFallSpeed;
+		
 		public Server(ForgeConfigSpec.Builder builder) {
-			
+			accGravity = builder
+					.defineInRange("accGravity", 0.025, 0, 1);
+			coDrag = builder
+					.defineInRange("coDrag", 0.015, 0, 100);
+			coStaticFriction = builder
+					.defineInRange("coStaticFriction", 4.10, 0, 100);
+			coKineticFriction = builder
+					.defineInRange("coKineticFriction", 1.50, 0, 100);
+			coLift = builder
+					.defineInRange("coLift", 0.110, 0, 100);
+			collideSpeedThreshHold = builder
+					.defineInRange("collideSpeedThreshHold", 0.5, 0, 10);
+			collideSpeedWithGearThreshHold = builder
+					.defineInRange("collideSpeedWithGearThreshHold", 1.5, 0, 10);
+			collideDamageRate = builder
+					.defineInRange("collideDamageRate", 300.0, 0, 1000);
+			maxFallSpeed = builder
+					.defineInRange("maxFallSpeed", 2.5, 0, 10);
 		}
 		
 	}

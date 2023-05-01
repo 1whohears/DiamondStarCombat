@@ -1,8 +1,8 @@
 package com.onewhohears.dscombat.entity.weapon;
 
+import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.data.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.data.weapon.TorpedoData;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.util.UtilEntity;
 
 import net.minecraft.world.entity.Entity;
@@ -13,6 +13,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class TorpedoMissile extends TrackEntityMissile {
+	
+	public final double ACC_GRAVITY = Config.SERVER.accGravity.get();
 	
 	public TorpedoMissile(EntityType<? extends TorpedoMissile> type, Level level) {
 		super(type, level);
@@ -27,7 +29,7 @@ public class TorpedoMissile extends TrackEntityMissile {
 		if (isInWater()) super.tickSetMove();
 		else {
 			Vec3 cm = getDeltaMovement();
-			cm = cm.add(0, -EntityAircraft.ACC_GRAVITY, 0);
+			cm = cm.add(0, -ACC_GRAVITY, 0);
 			setDeltaMovement(cm);
 		}
 	}

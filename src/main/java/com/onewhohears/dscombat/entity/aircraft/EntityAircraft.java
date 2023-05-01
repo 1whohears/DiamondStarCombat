@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
+import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents;
 import com.onewhohears.dscombat.common.container.AircraftMenuContainer;
 import com.onewhohears.dscombat.common.network.IPacket;
@@ -110,15 +111,14 @@ public abstract class EntityAircraft extends Entity {
 	public static final EntityDataAccessor<Boolean> PLAYERS_ONLY_RADAR = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Integer> FLARE_NUM = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.INT);
 	
-	// TODO 7.3 make these coefficients server config
-	public static final double ACC_GRAVITY = 0.025;
-	public static final double CO_DRAG = 0.015;
-	public static final double CO_STATIC_FRICTION = 4.10;
-	public static final double CO_KINETIC_FRICTION = 1.50;
-	public static final float CO_SLIDE_TORQUE = 1.00f;
-	public static final double collideSpeedThreshHold = 0.5d;
-	public static final double collideSpeedWithGearThreshHold = 1.5d;
-	public static final double collideDamageRate = 300d;
+	public final double ACC_GRAVITY = Config.SERVER.accGravity.get();
+	public final double CO_DRAG = Config.SERVER.coDrag.get();
+	public final double CO_STATIC_FRICTION = Config.SERVER.coStaticFriction.get();
+	public final double CO_KINETIC_FRICTION = Config.SERVER.coKineticFriction.get();
+	public final double collideSpeedThreshHold = Config.SERVER.collideSpeedThreshHold.get();
+	public final double collideSpeedWithGearThreshHold = Config.SERVER.collideSpeedWithGearThreshHold.get();
+	public final double collideDamageRate = Config.SERVER.collideDamageRate.get();
+	public final double maxFallSpeed = Config.SERVER.maxFallSpeed.get();
 	
 	public final PartsManager partsManager = new PartsManager(this);
 	public final WeaponSystem weaponSystem = new WeaponSystem(this);
@@ -469,7 +469,7 @@ public abstract class EntityAircraft extends Entity {
 		double velXZ = motionXZ.length();
 		if (velXZ > maxXZ) motionXZ = motionXZ.scale(maxXZ / velXZ);
 		
-		double maxY = 2.5;
+		double maxY = maxFallSpeed;
 		double my = move.y;
 		if (Math.abs(my) > maxY) my = maxY * Math.signum(my);
 		else if (Math.abs(my) < 0.001) my = 0;
@@ -561,7 +561,7 @@ public abstract class EntityAircraft extends Entity {
 		if (!isSliding()) av = av
 				.multiply(1, 0, 1)
 				.add(0, turnDeg, 0);
-		else addMomentY(turnDeg*slideAngleCos*CO_SLIDE_TORQUE, false);
+		else addMomentY(turnDeg*slideAngleCos, false);
 		setAngularVel(av);
 	}
 	

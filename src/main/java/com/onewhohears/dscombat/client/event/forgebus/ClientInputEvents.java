@@ -149,6 +149,8 @@ public final class ClientInputEvents {
 			}
 		}
 		if (!hovering) resetHoverIndex();
+		// CYCLE PING
+		if (DSCKeys.pingCycleKey.consumeClick()) radar.clientSelectNextTarget();
 		// TURRET SHOOT
 		boolean shoot = DSCKeys.shootKey.isDown();
 		if (shoot && player.getVehicle() instanceof EntityTurret turret) {

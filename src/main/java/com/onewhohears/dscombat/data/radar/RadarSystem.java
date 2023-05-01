@@ -166,15 +166,25 @@ public class RadarSystem {
 	}
 	
 	public void clientSelectTarget(RadarPing ping) {
-		int id = ping.id;
 		clientSelectedIndex = -1;
 		for (int i = 0; i < clientTargets.size(); ++i) 
-			if (clientTargets.get(i).id == id) {
+			if (clientTargets.get(i).id == ping.id) {
 				clientSelectedIndex = i;
 				PacketHandler.INSTANCE.sendToServer(
 					new ToServerPingSelect(parent.getId(), ping));
 				break;
 			}
+	}
+	
+	public void clientSelectNextTarget() {
+		int size = getClientRadarPings().size();
+		if (size == 0) return;
+		int s = clientSelectedIndex + 1;
+		if (s >= size) s = 0;
+		clientSelectedIndex = s;
+		PacketHandler.INSTANCE.sendToServer(
+			new ToServerPingSelect(parent.getId(), 
+				clientTargets.get(s)));
 	}
 	
 	public int getClientSelectedPingIndex() {

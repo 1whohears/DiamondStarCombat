@@ -150,7 +150,7 @@ public abstract class EntityAircraft extends Entity {
 	protected boolean hasFlares;
 	protected int xzSpeedDir;
 	protected float xzSpeed, totalMass, xzYaw, slideAngle, slideAngleCos, maxThrust, currentFuel, maxFuel;
-	protected double staticFric, kineticFric;
+	protected double staticFric, kineticFric, airPressure;
 	protected String preset;
 	
 	private ResourceLocation currentTexture;
@@ -637,6 +637,7 @@ public abstract class EntityAircraft extends Entity {
 		currentFuel = partsManager.getCurrentFuel();
 		maxFuel = partsManager.getMaxFuel();
 		hasFlares = partsManager.getFlares().size() > 0;
+		airPressure = UtilEntity.getAirPressure(this);
 	}
 	
 	protected void calcMoveStatsPost(Quaternion q) {
@@ -810,9 +811,8 @@ public abstract class EntityAircraft extends Entity {
 	
 	public double getDragMag() {
 		// Drag = (drag coefficient) * (air pressure) * (speed)^2 * (wing surface area) / 2
-		double air = UtilEntity.getAirPressure(getY());
 		double speedSqr = getDeltaMovement().lengthSqr();
-		return air * speedSqr * getCrossSectionArea() * CO_DRAG;
+		return airPressure * speedSqr * getCrossSectionArea() * CO_DRAG;
 	}
 	
 	public double getCrossSectionArea() {

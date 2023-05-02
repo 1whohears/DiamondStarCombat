@@ -279,7 +279,7 @@ public abstract class EntityMissile extends EntityBullet {
 	@Override
 	protected void tickSetMove() {
 		Vec3 cm = getDeltaMovement();
-		double B = getBleed() * UtilEntity.getAirPressure(getY());
+		double B = getBleed() * UtilEntity.getAirPressure(this);
 		double bleed = B * (Math.abs(getXRot()-xRotO)+Math.abs(getYRot()-yRotO));
 		double vel = cm.length() - bleed;
 		if (tickCount <= getFuelTicks()) vel += getAcceleration();

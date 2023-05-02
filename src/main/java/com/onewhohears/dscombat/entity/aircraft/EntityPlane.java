@@ -4,7 +4,6 @@ import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
 import com.onewhohears.dscombat.data.aircraft.LiftKGraph;
-import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
@@ -162,9 +161,8 @@ public class EntityPlane extends EntityAircraft {
 	
 	public double getLiftMag() {
 		// Lift = (angle of attack coefficient) * (air density) * (speed)^2 * (wing surface area) / 2
-		double air = UtilEntity.getAirPressure(getY());
 		double wing = getWingSurfaceArea();
-		double lift = liftK * air * airFoilSpeedSqr * wing * CO_LIFT;
+		double lift = liftK * airPressure * airFoilSpeedSqr * wing * CO_LIFT;
 		//debug("air        = "+air);
 		//debug("wing speed = "+airFoilSpeedSqr);
 		//debug("aoa        = "+aoa);

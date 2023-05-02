@@ -8,6 +8,7 @@ import net.minecraft.world.entity.vehicle.Minecart;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 
@@ -90,13 +91,22 @@ public class UtilEntity {
 	 * @param posY
 	 * @return between 0 (no air pressure) and 1
 	 */
-	public static double getAirPressure(double posY) {
-		// TODO 7.2 make space and water level server configs
-		double space = 10000, water = 64;
+	public static double getAirPressure(Entity entity) {
+		DimensionType dt = entity.level.dimensionType();
+		// IDEA 6 how high should the atmosphere go based on dimension?
+		double space, surface;
+		if (dt.natural()) {
+			space = 10000;
+			surface = 64;
+		} else {
+			space = 2000;
+			surface = 0;
+		}
 		double scale = 1, exp = 2;
-		if (posY <= water) return scale;
+		double posY = entity.getY();
+		if (posY <= surface) return scale;
 		if (posY > space) return 0;
-		posY -= water;
+		posY -= surface;
 		return Math.pow(Math.abs(posY-space), exp) * Math.pow(space, -exp);
 	}
 	

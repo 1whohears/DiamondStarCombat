@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 
@@ -139,7 +138,7 @@ public class EntityHelicopter extends EntityAircraft {
 	
 	@Override
 	public float getMaxThrust() {
-		return super.getMaxThrust() * (float)UtilEntity.getAirPressure(getY()) * CO_LIFT;
+		return super.getMaxThrust() * (float)airPressure * CO_LIFT;
 	}
 	
 	public float getPropellerRotation(float partialTicks) {

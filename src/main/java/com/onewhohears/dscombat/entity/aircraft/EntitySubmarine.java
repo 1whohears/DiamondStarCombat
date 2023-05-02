@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
@@ -91,17 +90,27 @@ public class EntitySubmarine extends EntityBoat {
 	
 	@Override
 	public void tickWater(Quaternion q) {
+		super.tickWater(q);
 		Vec3 move = getDeltaMovement();
-		if (inputSpecial) move = move.scale(0.75);
-		else move = move.scale(0.925);
 		if (isFreeLook() && isOperational()) {
 			move = move.add(0, inputPitch * 0.04, 0);
 			double max = 0.2;
-			if (Math.abs(move.y) > 0.5) move.multiply(1, max/move.y, 1);
+			if (Math.abs(move.y) > max) move.multiply(1, max/move.y, 1);
 		}
-		move = move.add(UtilAngles.getRollAxis(q).scale(getThrustMag()));
 		setDeltaMovement(move);
-		// TODO 3 inputSpecial2 moves submarine to surface
+	}
+	
+	@Override
+	public double getFloatSpeed() {
+		if (!isOperational()) return super.getFloatSpeed();
+		if (inputSpecial2) return 0.04;
+		return 0;
+	}
+	
+	@Override
+	public boolean willFloat() {
+		if (!isOperational()) return false;
+		return inputSpecial2;
 	}
 	
 	@Override
@@ -112,11 +121,6 @@ public class EntitySubmarine extends EntityBoat {
 	@Override
 	public double getThrustMag() {
 		return super.getThrustMag();
-	}
-
-	@Override
-	public Vec3 getThrustForce(Quaternion q) {
-		return Vec3.ZERO;
 	}
 	
 	@Override
@@ -149,6 +153,11 @@ public class EntitySubmarine extends EntityBoat {
 	
 	@Override
 	public void waterDamage() {
+	}
+	
+	@Override
+	public boolean canBreak() {
+		return true;
 	}
 
 }

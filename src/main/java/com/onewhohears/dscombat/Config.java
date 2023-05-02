@@ -42,6 +42,7 @@ public class Config {
 		public final ForgeConfigSpec.DoubleValue coStaticFriction;
 		public final ForgeConfigSpec.DoubleValue coKineticFriction;
 		public final ForgeConfigSpec.DoubleValue coLift;
+		public final ForgeConfigSpec.DoubleValue coFloat;
 		public final ForgeConfigSpec.DoubleValue collideSpeedThreshHold;
 		public final ForgeConfigSpec.DoubleValue collideSpeedWithGearThreshHold;
 		public final ForgeConfigSpec.DoubleValue collideDamageRate;
@@ -58,6 +59,8 @@ public class Config {
 					.defineInRange("coKineticFriction", 1.50, 0, 100);
 			coLift = builder
 					.defineInRange("coLift", 0.110, 0, 100);
+			coFloat = builder
+					.defineInRange("coFloat", 0.10, 0, 100);
 			collideSpeedThreshHold = builder
 					.defineInRange("collideSpeedThreshHold", 0.5, 0, 10);
 			collideSpeedWithGearThreshHold = builder

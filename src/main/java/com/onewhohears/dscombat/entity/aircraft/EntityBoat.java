@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
+import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.core.BlockPos;
@@ -17,6 +18,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.RegistryObject;
 
 public class EntityBoat extends EntityAircraft {
+	
+	public final double CO_FLOAT = Config.SERVER.coFloat.get();
 	
 	private final float propellerRate = 3.141f;
 	private float propellerRot = 0, propellerRotOld = 0;
@@ -102,26 +105,45 @@ public class EntityBoat extends EntityAircraft {
 	
 	@Override
 	public void tickWater(Quaternion q) {
+		forces = forces.subtract(getWeightForce());
+		waterFriction();
 		Vec3 move = getDeltaMovement();
-		move = move.multiply(0.950, 0.900, 0.950);
 		if (checkInWater()) {
+			double v = getFloatSpeed();
 			if (willFloat()) {
 				double bbh = getBbHeight();
-				double goalY = waterLevel - bbh/2.5;
+				double goalY = waterLevel - bbh*0.2;
+				if (isCustomBoundingBox()) goalY += bbh*0.5;
 				double dy = goalY - getY();
-				if (Math.abs(move.y) < 0.01 && Math.abs(dy) < 0.01) move = move.multiply(1, 0, 1);
-				else move = move.add(0, 0.01 * Math.signum(dy), 0);
+				if (Math.abs(move.y) < v && Math.abs(dy) < v) move = move.multiply(1, 0, 1);
+				else move = move.add(0, v * Math.signum(dy), 0);
 			} 
-			else move = move.add(0, -0.01, 0);
+			else move = move.add(0, -v, 0);
 		}
-		move = move.add(UtilAngles.rotationToVector(getYRot(), 0, getThrustMag()));
 		setDeltaMovement(move);
+	}
+	
+	public double getFloatSpeed() {
+		return 0.02;
+	}
+	
+	public void waterFriction() {
+		Vec3 move = getDeltaMovement();
+		move = move.multiply(1, 0.900, 1);
+		setDeltaMovement(move);
+		if (canBreak() && isBreaking()) addFrictionForce(1);
+		else addFrictionForce(0.1);
+	}
+	
+	@Override
+	public boolean isBreaking() {
+		return inputSpecial;
 	}
 	
 	public boolean willFloat() {
 		if (!isOperational()) return false;
-		float w = getTotalMass();
-		float fc = getBbWidth() * getBbWidth() * 0.05f;
+		float w = getTotalMass() * (float)ACC_GRAVITY;
+		float fc = getBbWidth() * getBbWidth() * (float)CO_FLOAT;
 		return fc > w;
 	}
 	
@@ -159,8 +181,9 @@ public class EntityBoat extends EntityAircraft {
 	
 	@Override
 	public double getMaxSpeedForMotion() {
+		float th = getCurrentThrottle();
 		double max = getMaxSpeed();
-		if (getCurrentThrottle() < 0) return max * 0.2;
+		if (th < 0) return max * 0.25;
     	return max;
     }
 	
@@ -171,7 +194,10 @@ public class EntityBoat extends EntityAircraft {
 
 	@Override
 	public Vec3 getThrustForce(Quaternion q) {
-		return Vec3.ZERO;
+		if (!isInWater()) return Vec3.ZERO;
+		Vec3 direction = UtilAngles.getRollAxis(q);
+		Vec3 thrustForce = direction.scale(getThrustMag());
+		return thrustForce;
 	}
 	
 	@Override

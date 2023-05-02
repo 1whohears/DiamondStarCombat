@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.entity.weapon;
 
 import javax.annotation.Nullable;
 
+import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.data.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.data.weapon.MissileData;
 import com.onewhohears.dscombat.data.weapon.NonTickingMissileManager;
@@ -42,6 +43,7 @@ public abstract class EntityMissile extends EntityBullet {
 	 * only set on server side
 	 */
 	protected float fuseDist, fov;
+	protected int blockCheckDepth, throughWaterDepth, throughBlocksDepth;
 	
 	public Entity target;
 	public Vec3 targetPos;
@@ -54,6 +56,9 @@ public abstract class EntityMissile extends EntityBullet {
 		super(type, level);
 		if (!level.isClientSide) NonTickingMissileManager.addMissile(this);
 		if (level.isClientSide) engineSound();
+		blockCheckDepth = Config.SERVER.maxBlockCheckDepth.get();
+		throughWaterDepth = 0;
+		throughBlocksDepth = 0;
 	}
 	
 	public EntityMissile(Level level, Entity owner, MissileData data) {
@@ -65,6 +70,9 @@ public abstract class EntityMissile extends EntityBullet {
 		fuseDist = (float) data.getFuseDist();
 		fov = data.getFov();
 		setFuelTicks(data.getFuelTicks());
+		blockCheckDepth = Config.SERVER.maxBlockCheckDepth.get();
+		throughWaterDepth = 0;
+		throughBlocksDepth = 0;
 	}
 	
 	@Override
@@ -231,8 +239,8 @@ public abstract class EntityMissile extends EntityBullet {
 	}
 	
 	protected boolean checkCanSee(Entity target) {
-		// TODO 7.1 make radar eye block depth server config
-		return UtilEntity.canEntitySeeEntity(this, target, 200);
+		return UtilEntity.canEntitySeeEntity(this, target, blockCheckDepth, 
+				throughWaterDepth, throughBlocksDepth);
 	}
 	
 	private void engineSound() {

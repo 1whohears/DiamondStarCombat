@@ -13,25 +13,30 @@ import net.minecraft.world.phys.Vec3;
 
 public class UtilEntity {
 	
-	public static boolean canEntitySeeEntity(Entity e1, Entity e2, int maxCheckDist) {
-		return canEntitySeeEntity(e1, e2, maxCheckDist, 0, 0);
+	public static boolean canEntitySeeEntity(Entity e1, Entity e2, int maxBlockCheckDepth) {
+		return canEntitySeeEntity(e1, e2, maxBlockCheckDepth, 0, 0);
 	}
 	
-	public static boolean canEntitySeeEntity(Entity e1, Entity e2, int maxCheckDist, 
+	public static boolean canEntitySeeEntity(Entity e1, Entity e2, int maxBlockCheckDepth, 
 			double throWater, double throBlock) {
-		// TODO 6 canEntitySeeEntity should check both sides for blocks
 		Level level = e1.getLevel();
 		Vec3 diff = e2.position().subtract(e1.position());
 		Vec3 look = diff.normalize();
 		double distance = diff.length();
-		Vec3 pos; int dist;
-		if (distance <= maxCheckDist) {
-			dist = (int)distance;
-			pos = e1.position();
+		double[] through = new double[] {throWater, throBlock};
+		if (distance <= maxBlockCheckDepth) {
+			if (!checkBlocksByRange(level, e1.position(), look, maxBlockCheckDepth, through)) return false;
 		} else {
-			dist = maxCheckDist;
-			pos = e1.position().add(look.scale(distance-maxCheckDist).subtract(look));
+			int maxCheckDist = maxBlockCheckDepth / 2;
+			if (!checkBlocksByRange(level, e1.position(), look, maxCheckDist, through)) return false;
+			if (!checkBlocksByRange(level, 
+				e1.position().add(look.scale(distance-maxCheckDist).subtract(look)), 
+				look, maxCheckDist, through)) return false;
 		}
+		return true;
+	}
+	
+	private static boolean checkBlocksByRange(Level level, Vec3 pos, Vec3 look, int dist, double[] through) {
 		int k = 0;
 		while (k++ < dist) {
 			pos = pos.add(look);
@@ -41,15 +46,15 @@ public class UtilEntity {
 			BlockState block = level.getBlockState(bp);
 			if (block == null || block.isAir()) continue;
 			if (!block.getMaterial().blocksMotion() && !block.getMaterial().isLiquid()) continue;
-			if (throWater <= 0 && throBlock <= 0) return false;
+			if (through[0] <= 0 && through[1] <= 0) return false;
 			if (block.getFluidState().getType().isSame(Fluids.WATER)) {
-				if (throWater > 0) {
-					--throWater;
+				if (through[0] > 0) {
+					--through[0];
 					continue;
 				} else return false;
 			}
-			if (throBlock > 0) {
-				--throBlock;
+			if (through[1] > 0) {
+				--through[1];
 				continue;
 			} else return false;
 		}

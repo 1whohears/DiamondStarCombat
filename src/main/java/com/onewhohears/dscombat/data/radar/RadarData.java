@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.data.radar;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.UtilEntity;
@@ -116,6 +117,7 @@ public class RadarData {
 			freshTargets = false;
 			return;
 		}
+		maxCheckDist = Config.SERVER.maxBlockCheckDepth.get();
 		for (int i = 0; i < pings.size(); ++i) targets.remove(pings.get(i));
 		pings.clear();
 		freshTargets = true;
@@ -217,8 +219,10 @@ public class RadarData {
 		return area >= areaMin;
 	}
 	
+	private int maxCheckDist = 150;
+	
 	private boolean checkCanSee(Entity radar, Entity target) {
-		return UtilEntity.canEntitySeeEntity(radar, target, 200, 
+		return UtilEntity.canEntitySeeEntity(radar, target, maxCheckDist, 
 				throWaterRange, throGroundRange);
 	}
 	

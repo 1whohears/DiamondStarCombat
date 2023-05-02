@@ -47,6 +47,7 @@ public class Config {
 		public final ForgeConfigSpec.DoubleValue collideSpeedWithGearThreshHold;
 		public final ForgeConfigSpec.DoubleValue collideDamageRate;
 		public final ForgeConfigSpec.DoubleValue maxFallSpeed;
+		public final ForgeConfigSpec.IntValue maxBlockCheckDepth;
 		
 		public Server(ForgeConfigSpec.Builder builder) {
 			accGravity = builder
@@ -69,6 +70,10 @@ public class Config {
 					.defineInRange("collideDamageRate", 300.0, 0, 1000);
 			maxFallSpeed = builder
 					.defineInRange("maxFallSpeed", 2.5, 0, 10);
+			maxBlockCheckDepth = builder
+					.comment("The number of blocks between 2 entities to check if they can see eachother.")
+					.worldRestart()
+					.defineInRange("maxBlockCheckDepth", 250, 10, 400);
 		}
 		
 	}

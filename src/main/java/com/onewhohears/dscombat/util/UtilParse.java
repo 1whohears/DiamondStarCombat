@@ -202,4 +202,31 @@ public class UtilParse {
 		return String.format("["+f+","+f+","+f+"]", v.x, v.y, v.z);
 	}
 	
+	public static String getRandomString(String[]... arrays) {
+		int size = 0;
+		for (int i = 0; i < arrays.length; ++i) size += arrays[i].length;
+		int k = 0, r = (int)(Math.random()*size);
+		for (int i = 0; i < arrays.length; ++i) 
+			for (int j = 0; j < arrays[i].length; ++j) 
+				if (k++ == r) return arrays[i][j];
+		return "";
+	}
+	
+	/**
+	 * @param weights this array must be the same size as arrays
+	 * @param arrays
+	 * @return a random string in arrays
+	 */
+	public static String getRandomString(int[] weights, String[]... arrays) {
+		if (weights.length != arrays.length) return "";
+		int size = 0;
+		for (int i = 0; i < arrays.length; ++i) size += arrays[i].length * weights[i];
+		int k = 0, r = (int)(Math.random()*size);
+		for (int i = 0; i < arrays.length; ++i) 
+			for (int w = 0; w < weights[i]; ++w)
+				for (int j = 0; j < arrays[i].length; ++j) 
+					if (k++ == r) return arrays[i][j];
+		return "";
+	}
+	
 }

@@ -15,6 +15,7 @@ public class AircraftExplodeDamageSource extends DamageSource {
 		super(type);
 		setExplosion();
 		this.aircraft = aircraft;
+		// TODO 8.2 random roadkill messages
 	}
 	
 	public static AircraftExplodeDamageSource fall(EntityAircraft aircraft) {

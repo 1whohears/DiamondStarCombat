@@ -8,7 +8,6 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientAircraftFuel;
 import com.onewhohears.dscombat.common.network.toclient.ToClientMissileMove;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRWRWarning;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRadarPings;
-import com.onewhohears.dscombat.common.network.toclient.ToClientRecievePlaneData;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRemoveRadar;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRemoveWeapon;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponAmmo;
@@ -21,7 +20,6 @@ import com.onewhohears.dscombat.common.network.toserver.ToServerCraftPlane;
 import com.onewhohears.dscombat.common.network.toserver.ToServerCraftWeapon;
 import com.onewhohears.dscombat.common.network.toserver.ToServerFlightControl;
 import com.onewhohears.dscombat.common.network.toserver.ToServerPingSelect;
-import com.onewhohears.dscombat.common.network.toserver.ToServerRequestPlaneData;
 import com.onewhohears.dscombat.common.network.toserver.ToServerShootTurret;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSwitchSeat;
 
@@ -67,11 +65,6 @@ public final class PacketHandler {
 			.decoder(ToClientMissileMove::new)
 			.consumerMainThread(ToClientMissileMove::handle)
 			.add();
-		net.messageBuilder(ToClientRecievePlaneData.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ToClientRecievePlaneData::encode)
-			.decoder(ToClientRecievePlaneData::new)
-			.consumerMainThread(ToClientRecievePlaneData::handle)
-			.add();
 		net.messageBuilder(ToClientWeaponAmmo.class, index++, NetworkDirection.PLAY_TO_CLIENT)
 			.encoder(ToClientWeaponAmmo::encode)
 			.decoder(ToClientWeaponAmmo::new)
@@ -82,11 +75,6 @@ public final class PacketHandler {
 			.decoder(ToClientWeaponIndex::new)
 			.consumerMainThread(ToClientWeaponIndex::handle)
 			.add();
-		net.messageBuilder(ToServerRequestPlaneData.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ToServerRequestPlaneData::encode)
-			.decoder(ToServerRequestPlaneData::new)
-			.consumerMainThread(ToServerRequestPlaneData::handle)
-			.add(); 
 		net.messageBuilder(ToClientAddWeapon.class, index++, NetworkDirection.PLAY_TO_CLIENT)
 			.encoder(ToClientAddWeapon::encode)
 			.decoder(ToClientAddWeapon::new)

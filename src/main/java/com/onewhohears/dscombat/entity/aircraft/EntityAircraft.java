@@ -12,11 +12,11 @@ import com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents;
 import com.onewhohears.dscombat.common.container.AircraftMenuContainer;
 import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.common.network.PacketHandler;
+import com.onewhohears.dscombat.common.network.toclient.ToClientAddEntityAircraft;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddMoment;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftAV;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftQ;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftThrottle;
-import com.onewhohears.dscombat.common.network.toserver.ToServerRequestPlaneData;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
 import com.onewhohears.dscombat.data.aircraft.AircraftTextures;
 import com.onewhohears.dscombat.data.damagesource.AircraftExplodeDamageSource;
@@ -1017,13 +1017,11 @@ public abstract class EntityAircraft extends Entity {
 	public void clientSetup() {
 		UtilClientSafeSoundInstance.aircraftEngineSound(
 				Minecraft.getInstance(), this, getEngineSound());
-		PacketHandler.INSTANCE.sendToServer(new ToServerRequestPlaneData(getId()));
 	}
 	
 	@Override
 	public Packet<?> getAddEntityPacket() {
-		// FIXME 5 use this to setup parts, weapons, and radar on client side
-		return NetworkHooks.getEntitySpawningPacket(this);
+		return new ToClientAddEntityAircraft(this);
 	}
 	
 	@Override

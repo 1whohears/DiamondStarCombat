@@ -119,7 +119,7 @@ public class WeaponDamageSource extends EntityDamageSource {
 	@Override
 	public Component getLocalizedDeathMessage(LivingEntity livingEntity) {
 		LivingEntity killer = livingEntity.getKillCredit();
-		String s = "death.attack." + DSCombatMod.MODID + "." + msgId;
+		String s = "death.attack."+DSCombatMod.MODID+"."+msgId;
 		if (killer == null) return Component.translatable(s, livingEntity.getDisplayName());
 		int dist = (int)livingEntity.position().distanceTo(weapon.getShootPos());
 		s += ".player";

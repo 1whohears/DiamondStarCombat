@@ -1022,6 +1022,7 @@ public abstract class EntityAircraft extends Entity {
 	
 	@Override
 	public Packet<?> getAddEntityPacket() {
+		// FIXME 5 use this to setup parts, weapons, and radar on client side
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 	

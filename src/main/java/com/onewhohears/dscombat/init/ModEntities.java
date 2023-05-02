@@ -97,20 +97,21 @@ public class ModEntities {
 	 * IDEA 5 more vehicles
 	 * 
 	 * PLANES
-	 * wooden plane, large wooden plane, something like a spitfire, something like a p51 mustang 
-	 * private jet, large passenger jet, large cargo plane like a galaxy, large radar plane
-	 * Tariku plane will be VTOL
+	 * wooden planes, private jet, large passenger jet
+	 * Spitfire, P51 Mustang, E3 Sentry, C-5 Galaxy, Mig-29, F14, Su-27, Su-57, F22
+	 * Tariku Plane (F35-B VTOL)
 	 * 
 	 * HELICOPTORS
 	 * small unarmed heli, large cargo heli, 2 seated heli with gunner on front bottom
-	 * noah chopper should resemble black hawk
+	 * Noah Chopper should resemble black hawk
 	 * 
 	 * CARS/TANKS
 	 * Honda Ferrari, Joanna Bike, Mobile SAM
 	 * 
 	 * BOATS/SUBMARINES
 	 * 
-	 * weather balloon lol
+	 * OTHER
+	 * Weather Balloon
 	 * 
 	 * IDEA 9 AI for planes/turrets or an auto pilot module
 	 * AI turret controllers need time and resources invested to level up

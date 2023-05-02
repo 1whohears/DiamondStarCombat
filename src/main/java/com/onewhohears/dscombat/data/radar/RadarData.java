@@ -167,9 +167,7 @@ public class RadarData {
 	private boolean checkFriendly(Entity controller, Entity target) {
 		if (controller == null) return false;
 		if (target == null) return false;
-		if (controller.getTeam() == null) return false;
-		if (target.getTeam() == null) return false;
-		return target.getTeam().getName().equals(controller.getTeam().getName());
+		return controller.isAlliedTo(target);
 	}
 	
 	private boolean basicCheck(EntityAircraft radar, Entity ping, double stealth) {

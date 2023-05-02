@@ -72,8 +72,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.scores.Team;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
@@ -173,7 +175,6 @@ public abstract class EntityAircraft extends Entity {
 		this.Iz = Iz;
 		this.explodeSize = explodeSize;
 		this.blocksBuilding = true;
-		// IDEA 8 add collision physics with other entities
 	}
 	
 	@Override
@@ -389,8 +390,8 @@ public abstract class EntityAircraft extends Entity {
 	 * damages plane if it falls 
 	 */
 	public void tickCollisions() {
-		if (tickCount < 300) return;
-		if (verticalCollisionBelow || verticalCollision) {
+		// TODO 3 add collision physics with other entities see EnderDragon.knockBack
+		if (tickCount > 300 && verticalCollision) {
 			double my = Math.abs(prevMotion.y);
 			double th = collideSpeedThreshHold;
 			if (isOperational() && isLandingGear() 
@@ -404,7 +405,7 @@ public abstract class EntityAircraft extends Entity {
 				if (!isOperational()) explode(AircraftExplodeDamageSource.fall(this));
 			}
 		}
-		if (horizontalCollision) {
+		if (horizontalCollision && !minorHorizontalCollision) {
 			double speed = prevMotion.horizontalDistance();
 			if (speed > collideSpeedThreshHold) {
 				float amount = (float)((speed-collideSpeedThreshHold)*collideDamageRate);
@@ -1026,15 +1027,16 @@ public abstract class EntityAircraft extends Entity {
 	
 	@Override
 	public InteractionResult interact(Player player, InteractionHand hand) {
+		if (!isOperational()) return InteractionResult.PASS;
 		if (player.isSecondaryUseActive()) {
 			return InteractionResult.PASS;
 		} else if (player.getRootVehicle() != null && player.getRootVehicle().equals(this)) {
 			return InteractionResult.PASS;
 		} else if (!level.isClientSide) {
-			if (!isOperational()) return InteractionResult.PASS;
 			ItemStack stack = player.getInventory().getSelected();
 			if (!stack.isEmpty()) {
 				Item item = stack.getItem();
+				// TODO 8 custom name by name tag
 				// REFUEL
 				if (item instanceof ItemGasCan) {
 					int md = stack.getMaxDamage();
@@ -1197,10 +1199,27 @@ public abstract class EntityAircraft extends Entity {
     public double getPassengersRidingOffset() {
         return 0;
     }
+    
+    @Override
+    public boolean isPushable() {
+    	return false;
+    }
+    
+    @Override
+    public boolean isPushedByFluid() {
+    	return true;
+    }
 
     @Override
     public boolean canBeCollidedWith() {
         return true;
+    }
+    
+    @Override
+    public boolean canCollideWith(Entity entity) {
+    	if (!super.canCollideWith(entity)) return false;
+    	if (entity.isPushable()) return false;
+    	return true;
     }
 	
     @Override
@@ -1742,11 +1761,6 @@ public abstract class EntityAircraft extends Entity {
     }
     
     @Override
-    public boolean isPushable() {
-    	return false;
-    }
-    
-    @Override
     public Vec3 getDismountLocationForPassenger(LivingEntity livingEntity) {
 		return super.getDismountLocationForPassenger(livingEntity);
 	}
@@ -1795,6 +1809,37 @@ public abstract class EntityAircraft extends Entity {
     
     public boolean canHover() {
     	return false;
+    }
+    
+    @Override
+    public boolean canChangeDimensions() {
+    	return isOperational();
+    }
+    
+    @Override
+    public boolean canRiderInteract() {
+    	return false;
+    }
+    
+    @Override
+    public boolean canTrample(BlockState state, BlockPos pos, float fallDistance) {
+    	return true;
+    }
+    
+    @Override
+    public boolean isAlliedTo(Entity entity) {
+    	if (entity == null) return false;
+    	Entity c = entity.getControllingPassenger();
+    	if (c != null) return isAlliedTo(c.getTeam());
+    	return super.isAlliedTo(entity);
+    }
+    
+    @Override
+    public boolean isAlliedTo(Team team) {
+    	if (team == null) return false;
+    	Entity c = getControllingPassenger();
+		if (c != null) return c.getTeam().isAlliedTo(team);
+    	return super.isAlliedTo(team);
     }
     
 }

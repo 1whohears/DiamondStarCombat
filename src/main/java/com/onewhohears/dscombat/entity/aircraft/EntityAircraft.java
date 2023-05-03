@@ -17,7 +17,7 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientAddMoment;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftAV;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftQ;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftThrottle;
-import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
+import com.onewhohears.dscombat.data.aircraft.AircraftPresetProvider;
 import com.onewhohears.dscombat.data.aircraft.AircraftTextures;
 import com.onewhohears.dscombat.data.damagesource.AircraftExplodeDamageSource;
 import com.onewhohears.dscombat.data.parts.PartSlot;
@@ -166,7 +166,7 @@ public abstract class EntityAircraft extends Entity {
 		super(entityType, level);
 		this.defaultItem = defaultItem;
 		this.defaultPreset = defaultItem.getId().getPath();
-		this.textures = AircraftPresets.getAircraftTextures(defaultPreset);
+		this.textures = AircraftPresetProvider.getAircraftTextures(defaultPreset);
 		this.currentTexture = textures.getDefaultTexture();
 		this.engineSound = engineSound;
 		this.negativeThrottle = negativeThrottle;
@@ -245,7 +245,7 @@ public abstract class EntityAircraft extends Entity {
 		if (nbt.contains("dyecolor")) color = nbt.getInt("dyecolor");
 		preset = nbt.getString("preset");
 		if (preset.isEmpty()) preset = defaultPreset;
-		CompoundTag presetNbt = AircraftPresets.getPreset(preset);
+		CompoundTag presetNbt = AircraftPresetProvider.getPreset(preset);
 		if (!nbt.getBoolean("merged_preset")) nbt.merge(presetNbt);
 		partsManager.read(nbt);
 		weaponSystem.read(nbt);

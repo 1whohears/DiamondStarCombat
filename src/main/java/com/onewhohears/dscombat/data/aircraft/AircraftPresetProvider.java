@@ -1,28 +1,69 @@
 package com.onewhohears.dscombat.data.aircraft;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.crafting.DSCIngredient;
 import com.onewhohears.dscombat.util.UtilParse;
 
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.CachedOutput;
+import net.minecraft.data.DataGenerator;
+import net.minecraft.data.DataProvider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class AircraftPresets {
+public class AircraftPresetProvider implements DataProvider {
 	
 	public static final List<CompoundTag> presets = new ArrayList<>();
 	public static final HashMap<String, List<DSCIngredient>> ingredients = new HashMap<>();
 	public static final HashMap<String, ItemStack> items = new HashMap<>();
 	public static final HashMap<String, AircraftTextures> textures = new HashMap<>();
+	
+	protected final DataGenerator.PathProvider pathProvider;
+    private final Map<ResourceLocation, AircraftPreset> aircraftMap = new HashMap<>();
+
+    protected AircraftPresetProvider(DataGenerator output)
+    {
+        this.pathProvider = output.createPathProvider(DataGenerator.Target.DATA_PACK, "aircraft");
+    }
+	
+	@Override
+	public void run(CachedOutput cache) throws IOException {
+		aircraftMap.clear();
+		Consumer<AircraftPreset> consumer = (aircraft) -> {
+			if (aircraftMap.containsKey(aircraft.getKey())) {
+				throw new IllegalStateException("Duplicate aircraft " + aircraft.getKey());
+			} else {
+				Path path = pathProvider.json(aircraft.getKey());
+				try {
+					DataProvider.saveStable(cache, aircraft.getDataAsJson(), path);
+				} catch (IOException e) {
+					e.printStackTrace();
+	            }
+			}
+		};
+		
+	}
+
+	@Override
+	public String getName() {
+		return "Aircraft: "+DSCombatMod.MODID;
+	}
 	
 	public static void setupPresets() {
 		String dir = "/data/dscombat/aircraft/";

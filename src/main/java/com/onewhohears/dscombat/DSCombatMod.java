@@ -4,7 +4,7 @@ import com.onewhohears.dscombat.client.screen.AircraftBlockScreen;
 import com.onewhohears.dscombat.client.screen.AircraftScreen;
 import com.onewhohears.dscombat.client.screen.WeaponsBlockScreen;
 import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
+import com.onewhohears.dscombat.data.aircraft.AircraftPresetProvider;
 import com.onewhohears.dscombat.data.radar.RadarPresets;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.init.DataSerializers;
@@ -37,7 +37,7 @@ public class DSCombatMod {
     	// ORDER MATTERS
     	WeaponPresets.setupPresets();
     	RadarPresets.setupPresets();
-        AircraftPresets.setupPresets();
+        AircraftPresetProvider.setupPresets();
     	
         ModBlocks.register(eventBus);
         ModContainers.register(eventBus);

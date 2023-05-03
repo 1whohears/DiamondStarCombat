@@ -6,7 +6,7 @@ import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.crafting.DSCIngredient;
-import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
+import com.onewhohears.dscombat.data.aircraft.AircraftPresetProvider;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -46,10 +46,10 @@ public class ToServerCraftPlane extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			ServerPlayer player = ctx.get().getSender();
-			List<DSCIngredient> ingredients = AircraftPresets.getPlaneIngredients(preset);
+			List<DSCIngredient> ingredients = AircraftPresetProvider.getPlaneIngredients(preset);
 			if (DSCIngredient.hasIngredients(ingredients, player.getInventory())) {
 				DSCIngredient.consumeIngredients(ingredients, player.getInventory());
-				ItemStack stack = AircraftPresets.getPlaneDisplayItem(preset).copy();
+				ItemStack stack = AircraftPresetProvider.getPlaneDisplayItem(preset).copy();
 				Containers.dropItemStack(player.level, pos.getX()+0.5, 
 						pos.getY()+1.125, pos.getZ()+0.5, stack);
 			}

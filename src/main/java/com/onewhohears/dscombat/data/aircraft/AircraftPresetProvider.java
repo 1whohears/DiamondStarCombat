@@ -7,18 +7,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.crafting.DSCIngredient;
 import com.onewhohears.dscombat.util.UtilParse;
 
-import net.minecraft.core.HolderLookup;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
@@ -41,6 +38,10 @@ public class AircraftPresetProvider implements DataProvider {
     {
         this.pathProvider = output.createPathProvider(DataGenerator.Target.DATA_PACK, "aircraft");
     }
+    
+    public void registerAircraftPresets() {
+		
+	}
 	
 	@Override
 	public void run(CachedOutput cache) throws IOException {
@@ -57,7 +58,15 @@ public class AircraftPresetProvider implements DataProvider {
 	            }
 			}
 		};
-		
+		generateAircraftPresets(consumer);
+	}
+	
+	protected void generateAircraftPresets(Consumer<AircraftPreset> consumer) {
+		aircraftMap.forEach((key, preset) -> consumer.accept(preset));
+	}
+	
+	public void addPreset(AircraftPreset preset) {
+		aircraftMap.put(preset.getKey(), preset);
 	}
 
 	@Override

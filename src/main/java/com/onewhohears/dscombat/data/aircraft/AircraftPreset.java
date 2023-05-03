@@ -36,13 +36,56 @@ public class AircraftPreset {
 			this.preset = new AircraftPreset(key);
 		}
 		
-		public Builder create(ResourceLocation key) {
+		public static Builder create(ResourceLocation key) {
 			return new Builder(key);
 		}
 		
 		public AircraftPreset build() {
 			preset.dataNBT = UtilParse.getCompoundFromJson(preset.data);
 			return preset;
+		}
+		
+		/**
+		 * all vehicles
+		 */
+		public Builder setMaxSpeed(float max_speed) {
+			return setFloat("max_speed", max_speed);
+		}
+		
+		/**
+		 * all vehicles
+		 */
+		public Builder setMaxHealth(float max_health) {
+			setFloat("health", max_health);
+			return setFloat("max_health", max_health);
+		}
+		
+		/**
+		 * all vehicles
+		 */
+		public Builder setMass(float mass) {
+			return setFloat("mass", mass);
+		}
+		
+		/**
+		 * used by planes
+		 */
+		public Builder setWingArea(float wing_area) {
+			return setFloat("wing_area", wing_area);
+		}
+		
+		/**
+		 * all vehicles
+		 */
+		public Builder setStealth(float stealth) {
+			return setFloat("stealth", stealth);
+		}
+		
+		/**
+		 * all vehicles
+		 */
+		public Builder setIdleHeat(float idleheat) {
+			return setFloat("idleheat", idleheat);
 		}
 		
 		public Builder setBoolean(String key, boolean value) {

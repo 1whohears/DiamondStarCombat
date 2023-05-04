@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.Config;
+import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.core.BlockPos;
@@ -10,7 +11,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.AABB;
@@ -27,9 +27,10 @@ public class EntityBoat extends EntityAircraft {
 	protected double waterLevel;
 	
 	public EntityBoat(EntityType<? extends EntityBoat> entity, Level level, 
-			RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item,
+			AircraftPreset defaultPreset,
+			RegistryObject<SoundEvent> engineSound, 
 			float explodeSize) {
-		super(entity, level, engineSound, item, 
+		super(entity, level, defaultPreset, engineSound,
 				true, 6, 10, 4, explodeSize);
 	}
 	

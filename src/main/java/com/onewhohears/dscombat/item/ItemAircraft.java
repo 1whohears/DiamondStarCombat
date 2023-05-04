@@ -60,9 +60,7 @@ public class ItemAircraft extends Item {
 				}
 			}
 			if (hitresult.getType() == HitResult.Type.BLOCK) {
-				CompoundTag tag = itemstack.getOrCreateTag();
-				//EntityType<? extends EntityAircraft> entitytype = getType(tag);
-				spawnData(tag, player);
+				spawnData(itemstack, player);
 				EntityAircraft e = entityType.create(level);
 				Vec3 pos = hitresult.getLocation();
 				if (e.isCustomBoundingBox()) e.setPos(pos.add(0, e.getBbHeight()/2d, 0));
@@ -89,18 +87,12 @@ public class ItemAircraft extends Item {
 		}
 	}
 	
-	/*private EntityType<? extends EntityAircraft> getType(CompoundTag nbt) {
-		if (nbt.contains("EntityTag", 10)) return entityType;
-		CompoundTag etag = new CompoundTag();
-		etag.putString("preset", getPresetName());
-		nbt.put("EntityTag", etag);
-		return entityType;
-	}*/
-	
-	private void spawnData(CompoundTag tag, Player player) {
+	private void spawnData(ItemStack itemstack, Player player) {
+		CompoundTag tag = itemstack.getOrCreateTag();
 		if (!tag.contains("EntityTag", 10)) {
 			CompoundTag et = new CompoundTag();
-			et.putString("preset", getPresetName());
+			et.putString("preset", getPresetName(itemstack));
+			System.out.println("item aircraft preset "+getPresetName(itemstack));
 			et.putBoolean("merged_preset", false);
 			tag.put("EntityTag", et);
 		}
@@ -110,8 +102,10 @@ public class ItemAircraft extends Item {
 		et.putBoolean("landing_gear", true);
 	}
 	
-	public String getPresetName() {
-		return ForgeRegistries.ITEMS.getKey(this).getPath();
+	public String getPresetName(ItemStack itemstack) {
+		CompoundTag tag = itemstack.getOrCreateTag();
+		if (!tag.contains("preset")) return ForgeRegistries.ITEMS.getKey(this).toString();
+		return tag.getString("preset");
 	}
 
 }

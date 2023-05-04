@@ -17,6 +17,7 @@ import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 
 public class ToClientAddEntityAircraft extends ClientboundAddEntityPacket {
 	
+	public final String preset;
 	public final int weaponIndex;
 	public final List<WeaponData> weapons;
 	public final List<PartSlot> slots;
@@ -24,6 +25,7 @@ public class ToClientAddEntityAircraft extends ClientboundAddEntityPacket {
 	
 	public ToClientAddEntityAircraft(EntityAircraft entity) {
 		super(entity);
+		this.preset = entity.preset;
 		this.weaponIndex = entity.weaponSystem.getSelectedIndex();
 		this.weapons = entity.weaponSystem.getWeapons();
 		this.slots = entity.partsManager.getSlots();
@@ -32,6 +34,7 @@ public class ToClientAddEntityAircraft extends ClientboundAddEntityPacket {
 	
 	public ToClientAddEntityAircraft(FriendlyByteBuf buffer) {
 		super(buffer);
+		preset = buffer.readUtf();
 		weaponIndex = buffer.readInt();
 		weapons = WeaponSystem.readWeaponsFromBuffer(buffer);
 		slots = PartsManager.readSlotsFromBuffer(buffer);
@@ -41,6 +44,7 @@ public class ToClientAddEntityAircraft extends ClientboundAddEntityPacket {
 	@Override
 	public void write(FriendlyByteBuf buffer) {
 		super.write(buffer);
+		buffer.writeUtf(preset);
 		buffer.writeInt(weaponIndex);
 		WeaponSystem.writeWeaponsToBuffer(buffer, weapons);
 		PartsManager.writeSlotsToBuffer(buffer, slots);
@@ -50,7 +54,7 @@ public class ToClientAddEntityAircraft extends ClientboundAddEntityPacket {
 	@Override
 	public void handle(ClientGamePacketListener handler) {
 		super.handle(handler);
-		UtilPacket.planeDataPacket(getId(), slots, weapons, weaponIndex, radars);
+		UtilPacket.planeDataPacket(getId(), preset, slots, weapons, weaponIndex, radars);
 	}
 
 }

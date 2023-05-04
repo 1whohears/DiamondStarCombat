@@ -17,6 +17,8 @@ import com.onewhohears.dscombat.init.ModRecipeSerializers;
 import com.onewhohears.dscombat.init.ModSounds;
 
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.data.DataGenerator;
+import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -37,7 +39,7 @@ public class DSCombatMod {
     	// ORDER MATTERS
     	WeaponPresets.setupPresets();
     	RadarPresets.setupPresets();
-        AircraftPresetProvider.setupPresets();
+        //AircraftPresetProvider.setupPresets();
     	
         ModBlocks.register(eventBus);
         ModContainers.register(eventBus);
@@ -50,6 +52,7 @@ public class DSCombatMod {
     	
     	eventBus.addListener(this::commonSetup);
     	eventBus.addListener(this::clientSetup);
+    	eventBus.addListener(this::onGatherData);
     }
     
     private void commonSetup(FMLCommonSetupEvent event) {
@@ -60,6 +63,12 @@ public class DSCombatMod {
     	MenuScreens.register(ModContainers.PLANE_MENU.get(), AircraftScreen::new);
     	MenuScreens.register(ModContainers.WEAPONS_BLOCK_MENU.get(), WeaponsBlockScreen::new);
     	MenuScreens.register(ModContainers.AIRCRAFT_BLOCK_MENU.get(), AircraftBlockScreen::new);
+    }
+    
+    private void onGatherData(GatherDataEvent event) {
+    	DataGenerator generator = event.getGenerator();
+    	event.includeServer();
+    	generator.addProvider(true, new AircraftPresetProvider(generator));
     }
     
 }

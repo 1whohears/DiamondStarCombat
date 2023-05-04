@@ -2,7 +2,8 @@ package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.Config;
-import com.onewhohears.dscombat.data.aircraft.AircraftPresetProvider;
+import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
+import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
 import com.onewhohears.dscombat.data.aircraft.LiftKGraph;
 import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.math.UtilAngles;
@@ -15,7 +16,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.RegistryObject;
@@ -35,10 +35,11 @@ public class EntityPlane extends EntityAircraft {
 	private Vec3 liftDir = Vec3.ZERO, airFoilAxes = Vec3.ZERO;
 	
 	public EntityPlane(EntityType<? extends EntityPlane> entity, Level level, 
-			RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item,
+			AircraftPreset defaultPreset,
+			RegistryObject<SoundEvent> engineSound,
 			float Ix, float Iy, float Iz, float explodeSize,
 			LiftKGraph liftKGraph, float flapsAOABias, boolean canAimDown) {
-		super(entity, level, engineSound, item, 
+		super(entity, level, defaultPreset, engineSound,
 				false, Ix, Iy, Iz, explodeSize);
 		this.liftKGraph = liftKGraph;
 		this.flapsAOABias = flapsAOABias;
@@ -54,7 +55,7 @@ public class EntityPlane extends EntityAircraft {
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
 		super.readAdditionalSaveData(nbt);
-		CompoundTag presetNbt = AircraftPresetProvider.getPreset(defaultPreset);
+		CompoundTag presetNbt = AircraftPresets.getAircraftPreset(preset).getDataAsNBT();
 		setWingSurfaceArea(UtilParse.fixFloatNbt(nbt, "wing_area", presetNbt, 1));
 	}
 

@@ -17,7 +17,8 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientAddMoment;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftAV;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftQ;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftThrottle;
-import com.onewhohears.dscombat.data.aircraft.AircraftPresetProvider;
+import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
+import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
 import com.onewhohears.dscombat.data.aircraft.AircraftTextures;
 import com.onewhohears.dscombat.data.damagesource.AircraftExplodeDamageSource;
 import com.onewhohears.dscombat.data.parts.PartSlot;
@@ -131,8 +132,13 @@ public abstract class EntityAircraft extends Entity {
 	public final float Ix, Iy, Iz, explodeSize;
 	
 	protected final RegistryObject<SoundEvent> engineSound;
-	protected final RegistryObject<Item> defaultItem;
-	protected final AircraftTextures textures;
+	//protected final RegistryObject<Item> defaultItem;
+	//protected final AircraftTextures textures;
+	
+	public String preset;
+	public ItemStack item;
+	public AircraftTextures textures;
+	private ResourceLocation currentTexture;
 	
 	public Quaternion prevQ = Quaternion.ONE.copy();
 	public Quaternion clientQ = Quaternion.ONE.copy();
@@ -153,21 +159,25 @@ public abstract class EntityAircraft extends Entity {
 	protected int xzSpeedDir;
 	protected float xzSpeed, totalMass, xzYaw, slideAngle, slideAngleCos, maxThrust, currentFuel, maxFuel;
 	protected double staticFric, kineticFric, airPressure;
-	protected String preset;
 	
-	private ResourceLocation currentTexture;
 	private int lerpSteps, lerpStepsQ, newRiderCooldown, deadTicks;
 	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot;
 	private float landingGearPos, landingGearPosOld;
 	
 	public EntityAircraft(EntityType<? extends EntityAircraft> entityType, Level level, 
-			RegistryObject<SoundEvent> engineSound, RegistryObject<Item> defaultItem,
+			AircraftPreset defaultPreset,
+			RegistryObject<SoundEvent> engineSound,
 			boolean negativeThrottle, float Ix, float Iy, float Iz, float explodeSize) {
 		super(entityType, level);
-		this.defaultItem = defaultItem;
-		this.defaultPreset = defaultItem.getId().getPath();
-		this.textures = AircraftPresetProvider.getAircraftTextures(defaultPreset);
+		//this.defaultItem = defaultItem;
+		//this.defaultPreset = defaultItem.getId().toString();
+		//this.textures = AircraftPresetProvider.getAircraftTextures(defaultPreset);
+		//this.currentTexture = textures.getDefaultTexture();
+		this.defaultPreset = defaultPreset.getKey().toString();
+		this.preset = this.defaultPreset;
+		this.textures = defaultPreset.getAircraftTextures();
 		this.currentTexture = textures.getDefaultTexture();
+		this.item = defaultPreset.getItem();
 		this.engineSound = engineSound;
 		this.negativeThrottle = negativeThrottle;
 		this.Ix = Ix;
@@ -245,7 +255,11 @@ public abstract class EntityAircraft extends Entity {
 		if (nbt.contains("dyecolor")) color = nbt.getInt("dyecolor");
 		preset = nbt.getString("preset");
 		if (preset.isEmpty()) preset = defaultPreset;
-		CompoundTag presetNbt = AircraftPresetProvider.getPreset(preset);
+		System.out.println("nbt preset "+preset);
+		AircraftPreset ap = AircraftPresets.getAircraftPreset(preset);
+		textures = ap.getAircraftTextures();
+		item = ap.getItem();
+		CompoundTag presetNbt = ap.getDataAsNBT();
 		if (!nbt.getBoolean("merged_preset")) nbt.merge(presetNbt);
 		partsManager.read(nbt);
 		weaponSystem.read(nbt);
@@ -280,6 +294,7 @@ public abstract class EntityAircraft extends Entity {
 
 	@Override
 	protected void addAdditionalSaveData(CompoundTag compound) {
+		compound.putString("preset", preset);
 		compound.putBoolean("test_mode", isTestMode());
 		compound.putBoolean("no_consume", isNoConsume());
 		compound.putBoolean("merged_preset", true);
@@ -1487,7 +1502,7 @@ public abstract class EntityAircraft extends Entity {
      * @return the item stack with all of this plane's data 
      */
     public ItemStack getItem() {
-    	ItemStack stack = new ItemStack(defaultItem.get());
+    	ItemStack stack = item.copy();
     	CompoundTag tag = new CompoundTag();
     	addAdditionalSaveData(tag);
     	CompoundTag eTag = new CompoundTag();

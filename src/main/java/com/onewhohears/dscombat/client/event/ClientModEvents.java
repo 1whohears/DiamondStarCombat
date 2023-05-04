@@ -53,7 +53,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 public final class ClientModEvents {
 	
 	@SubscribeEvent
-	public static void clientSetup(RegisterKeyMappingsEvent event) {
+	public static void registerKeyMappings(RegisterKeyMappingsEvent event) {
 		DSCKeys.init(event);
 	}
 	

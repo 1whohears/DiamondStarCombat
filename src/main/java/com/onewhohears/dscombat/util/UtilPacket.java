@@ -2,6 +2,8 @@ package com.onewhohears.dscombat.util;
 
 import java.util.List;
 
+import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
+import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.radar.RadarData;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
@@ -37,12 +39,17 @@ public class UtilPacket {
 		}
 	}
 	
-	public static void planeDataPacket(int id, List<PartSlot> slots, List<WeaponData> weapons, int weaponIndex, List<RadarData> radars) {
+	public static void planeDataPacket(int id, String preset, List<PartSlot> slots, List<WeaponData> weapons, int weaponIndex, List<RadarData> radars) {
 		//System.out.println("plane data packet received");
 		//System.out.println(pm.toString());
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityAircraft plane) {
+			plane.preset = preset;
+			AircraftPreset ap = AircraftPresets.getAircraftPreset(preset);
+			plane.textures = ap.getAircraftTextures();
+			plane.item = ap.getItem();
+			
 			plane.weaponSystem.clientSetSelected(weaponIndex);
 			plane.weaponSystem.setWeapons(weapons);
 			plane.radarSystem.setRadars(radars);
@@ -128,6 +135,10 @@ public class UtilPacket {
 		if (world.getEntity(id) instanceof EntityAircraft plane) {
 			plane.addMomentFromServer = plane.addMomentFromServer.add(moment);
 		}
+	}
+	
+	public static void dataPackSynch() {
+		AircraftPresets.resetCachedPresets(Minecraft.getInstance().getResourceManager(), true);
 	}
 	
 }

@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.util;
 
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -36,6 +37,7 @@ import com.onewhohears.dscombat.item.ItemPart;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -68,6 +70,20 @@ public class UtilParse {
 		return getCompoundFromJson(getJsonFromResource(path));
 	}
 	
+	public static JsonObject getJsonFromResource(Resource resource) {
+		JsonObject json;
+		try {
+			BufferedReader br = resource.openAsReader();
+			json = gson.fromJson(br, JsonObject.class);
+			br.close();
+		} catch (Exception e) {
+			System.out.println("ERROR: COULD NOT PARSE JSON "+resource.sourcePackId());
+			e.printStackTrace();
+			return new JsonObject();
+		}
+		return json;
+	}
+	
 	public static JsonObject getJsonFromResource(String path) {
 		JsonObject json;
         InputStreamReader isr;
@@ -75,8 +91,7 @@ public class UtilParse {
         	isr = new InputStreamReader(getResourceAsStream(path));
             json = gson.fromJson(isr, JsonObject.class);
             isr.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
         	System.out.println("ERROR: COULD NOT PARSE JSON "+path);
             e.printStackTrace();
         	return new JsonObject();

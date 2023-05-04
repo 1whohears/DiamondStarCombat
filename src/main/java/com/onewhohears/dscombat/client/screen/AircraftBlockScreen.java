@@ -216,10 +216,8 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 		Player player = m.player;
 		if (player == null) return;
 		AircraftPreset ap = AircraftPresets.getPresets()[planeIndex];
-		String preset = ap.getKey().toString();
-		List<DSCIngredient> ingredients = ap.getIngredients();
-		if (DSCIngredient.hasIngredients(ingredients, player.getInventory())) {
-			PacketHandler.INSTANCE.sendToServer(new ToServerCraftPlane(preset, menu.getPos()));
+		if (DSCIngredient.hasIngredients(ap.getIngredients(), player.getInventory())) {
+			PacketHandler.INSTANCE.sendToServer(new ToServerCraftPlane(ap.getPresetId(), menu.getPos()));
 		} else {
 			player.displayClientMessage(Component.translatable("dscombat.cant_craft"), true);
 			minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.VILLAGER_NO, 1.0F));

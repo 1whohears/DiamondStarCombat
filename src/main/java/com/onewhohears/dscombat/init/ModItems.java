@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.init;
 
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.data.aircraft.DefaultAircraftPresets;
 import com.onewhohears.dscombat.data.parts.BuffData.BuffType;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.TurretData.RotBounds;
@@ -203,31 +204,38 @@ public class ModItems {
 	
 	// PLANES
 	public static final RegistryObject<Item> JAVI_PLANE = ITEMS.register("javi_plane", 
-			() -> new ItemAircraft(ModEntities.JAVI_PLANE.get()));
+			() -> new ItemAircraft(ModEntities.JAVI_PLANE.get(), 
+					DefaultAircraftPresets.DEFAULT_JAVI_PLANE));
 	public static final RegistryObject<Item> ALEXIS_PLANE = ITEMS.register("alexis_plane", 
-			() -> new ItemAircraft(ModEntities.ALEXIS_PLANE.get()));
+			() -> new ItemAircraft(ModEntities.ALEXIS_PLANE.get(), 
+					DefaultAircraftPresets.DEFAULT_ALEXIS_PLANE));
 	
 	// HELICOPTERS
 	public static final RegistryObject<Item> NOAH_CHOPPER = ITEMS.register("noah_chopper", 
-			() -> new ItemAircraft(ModEntities.NOAH_CHOPPER.get()));
+			() -> new ItemAircraft(ModEntities.NOAH_CHOPPER.get(), 
+					DefaultAircraftPresets.DEFAULT_NOAH_CHOPPER));
 	
 	// CARS
 	public static final RegistryObject<Item> ORANGE_TESLA = ITEMS.register("orange_tesla", 
-			() -> new ItemAircraft(ModEntities.ORANGE_TESLA.get()));
+			() -> new ItemAircraft(ModEntities.ORANGE_TESLA.get(), 
+					DefaultAircraftPresets.DEFAULT_ORANGE_TESLA));
 	
 	// TANKS
 	public static final RegistryObject<Item> MRBUDGER_TANK = ITEMS.register("mrbudger_tank", 
-			() -> new ItemAircraft(ModEntities.MRBUDGER_TANK.get()));
+			() -> new ItemAircraft(ModEntities.MRBUDGER_TANK.get(), 
+					DefaultAircraftPresets.DEFAULT_MRBUDGER_TANK));
 	public static final RegistryObject<Item> SMALL_ROLLER = ITEMS.register("small_roller", 
-			() -> new ItemAircraft(ModEntities.SMALL_ROLLER.get()));
+			() -> new ItemAircraft(ModEntities.SMALL_ROLLER.get(), 
+					DefaultAircraftPresets.DEFAULT_SMALL_ROLLER));
 	
 	// BOATS
 	public static final RegistryObject<Item> NATHAN_BOAT = ITEMS.register("nathan_boat", 
-			() -> new ItemAircraft(ModEntities.NATHAN_BOAT.get()));
+			() -> new ItemAircraft(ModEntities.NATHAN_BOAT.get(), 
+					DefaultAircraftPresets.DEFAULT_NATHAN_BOAT));
 	
 	// SUBMARINES
 	public static final RegistryObject<Item> ANDOLF_SUB = ITEMS.register("andolf_sub", 
-			() -> new ItemAircraft(ModEntities.ANDOLF_SUB.get()));
-	
-	
+			() -> new ItemAircraft(ModEntities.ANDOLF_SUB.get(), 
+					DefaultAircraftPresets.DEFAULT_ANDOLF_SUB));
+		
 }

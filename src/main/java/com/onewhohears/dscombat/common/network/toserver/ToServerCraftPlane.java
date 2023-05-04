@@ -48,12 +48,14 @@ public class ToServerCraftPlane extends IPacket {
 		ctx.get().enqueueWork(() -> {
 			ServerPlayer player = ctx.get().getSender();
 			AircraftPreset ap = AircraftPresets.getAircraftPreset(preset);
-			List<DSCIngredient> ingredients = ap.getIngredients();
-			if (DSCIngredient.hasIngredients(ingredients, player.getInventory())) {
-				DSCIngredient.consumeIngredients(ingredients, player.getInventory());
-				ItemStack stack = ap.getItem();
-				Containers.dropItemStack(player.level, pos.getX()+0.5, 
+			if (ap != null) {
+				List<DSCIngredient> ingredients = ap.getIngredients();
+				if (DSCIngredient.hasIngredients(ingredients, player.getInventory())) {
+					DSCIngredient.consumeIngredients(ingredients, player.getInventory());
+					ItemStack stack = ap.getItem();
+					Containers.dropItemStack(player.level, pos.getX()+0.5, 
 						pos.getY()+1.125, pos.getZ()+0.5, stack);
+				}
 			}
 			success.set(true);
 		});

@@ -169,11 +169,7 @@ public abstract class EntityAircraft extends Entity {
 			RegistryObject<SoundEvent> engineSound,
 			boolean negativeThrottle, float Ix, float Iy, float Iz, float explodeSize) {
 		super(entityType, level);
-		//this.defaultItem = defaultItem;
-		//this.defaultPreset = defaultItem.getId().toString();
-		//this.textures = AircraftPresetProvider.getAircraftTextures(defaultPreset);
-		//this.currentTexture = textures.getDefaultTexture();
-		this.defaultPreset = defaultPreset.getKey().toString();
+		this.defaultPreset = defaultPreset.getPresetId();
 		this.preset = this.defaultPreset;
 		this.textures = defaultPreset.getAircraftTextures();
 		this.currentTexture = textures.getDefaultTexture();
@@ -248,15 +244,19 @@ public abstract class EntityAircraft extends Entity {
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
 		// ORDER MATTERS
-		// UtilEntity.fixFloatNbt(nbt, "", presetNbt, 1)
 		setTestMode(nbt.getBoolean("test_mode"));
 		setNoConsume(nbt.getBoolean("no_consume"));
 		int color = -1;
 		if (nbt.contains("dyecolor")) color = nbt.getInt("dyecolor");
 		preset = nbt.getString("preset");
 		if (preset.isEmpty()) preset = defaultPreset;
-		System.out.println("nbt preset "+preset);
 		AircraftPreset ap = AircraftPresets.getAircraftPreset(preset);
+		if (ap == null) {
+			System.out.println("ERROR: preset "+preset+" doesn't exist!");
+			preset = defaultPreset;
+			ap = AircraftPresets.getAircraftPreset(preset);
+		}
+		System.out.println(this+" using nbt preset "+preset);
 		textures = ap.getAircraftTextures();
 		item = ap.getItem();
 		CompoundTag presetNbt = ap.getDataAsNBT();

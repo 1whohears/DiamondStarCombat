@@ -11,7 +11,7 @@ import net.minecraft.world.item.DyeColor;
 public class DefaultAircraftPresets {
 	
 	public static final AircraftPreset DEFAULT_ALEXIS_PLANE = AircraftPreset.Builder
-			.create(new ResourceLocation(DSCombatMod.MODID, "alexis_plane"))
+			.create(DSCombatMod.MODID, "alexis_plane")
 			.setItem(ModItems.ALEXIS_PLANE.getId())
 			.setMaxHealth(150f)
 			.setMass(20f)
@@ -61,7 +61,7 @@ public class DefaultAircraftPresets {
 			.build();
 	
 	public static final AircraftPreset DEFAULT_JAVI_PLANE = AircraftPreset.Builder
-			.create(new ResourceLocation(DSCombatMod.MODID, "javi_plane"))
+			.create(DSCombatMod.MODID, "javi_plane")
 			.setItem(ModItems.JAVI_PLANE.getId())
 			.setMaxHealth(200f)
 			.setMass(25f)
@@ -119,37 +119,37 @@ public class DefaultAircraftPresets {
 	
 	// FIXME 1 finish default presets
 	public static final AircraftPreset DEFAULT_NOAH_CHOPPER = AircraftPreset.Builder
-			.create(new ResourceLocation(DSCombatMod.MODID, "noah_chopper"))
+			.create(DSCombatMod.MODID, "noah_chopper")
 			.setItem(ModItems.NOAH_CHOPPER.getId())
 			
 			.build();
 	
 	public static final AircraftPreset DEFAULT_MRBUDGER_TANK = AircraftPreset.Builder
-			.create(new ResourceLocation(DSCombatMod.MODID, "mrbudger_tank"))
+			.create(DSCombatMod.MODID, "mrbudger_tank")
 			.setItem(ModItems.MRBUDGER_TANK.getId())
 			
 			.build();
 	
 	public static final AircraftPreset DEFAULT_SMALL_ROLLER = AircraftPreset.Builder
-			.create(new ResourceLocation(DSCombatMod.MODID, "small_roller"))
+			.create(DSCombatMod.MODID, "small_roller")
 			.setItem(ModItems.SMALL_ROLLER.getId())
 			
 			.build();
 	
 	public static final AircraftPreset DEFAULT_NATHAN_BOAT = AircraftPreset.Builder
-			.create(new ResourceLocation(DSCombatMod.MODID, "nathan_boat"))
+			.create(DSCombatMod.MODID, "nathan_boat")
 			.setItem(ModItems.NATHAN_BOAT.getId())
 			
 			.build();
 	
 	public static final AircraftPreset DEFAULT_ANDOLF_SUB = AircraftPreset.Builder
-			.create(new ResourceLocation(DSCombatMod.MODID, "andolf_sub"))
+			.create(DSCombatMod.MODID, "andolf_sub")
 			.setItem(ModItems.ANDOLF_SUB.getId())
 			
 			.build();
 	
 	public static final AircraftPreset DEFAULT_ORANGE_TESLA = AircraftPreset.Builder
-			.create(new ResourceLocation(DSCombatMod.MODID, "orange_tesla"))
+			.create(DSCombatMod.MODID, "orange_tesla")
 			.setItem(ModItems.ORANGE_TESLA.getId())
 			
 			.build();

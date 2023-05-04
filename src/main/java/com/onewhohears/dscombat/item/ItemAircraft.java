@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.item;
 import java.util.List;
 import java.util.function.Predicate;
 
+import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.init.ModItems;
 
@@ -25,7 +26,6 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class ItemAircraft extends Item {
 	
@@ -33,10 +33,12 @@ public class ItemAircraft extends Item {
 			.and(Entity::isPickable);
 	
 	private final EntityType<? extends EntityAircraft> entityType;
+	private final String defaultPreset;
 	
-	public ItemAircraft(EntityType<? extends EntityAircraft> entityType) {
+	public ItemAircraft(EntityType<? extends EntityAircraft> entityType, AircraftPreset defaultPreset) {
 		super(new Item.Properties().tab(ModItems.AIRCRAFT).stacksTo(1));
 		this.entityType = entityType;
+		this.defaultPreset = defaultPreset.getPresetId();
 	}
 	
 	@Override
@@ -104,7 +106,7 @@ public class ItemAircraft extends Item {
 	
 	public String getPresetName(ItemStack itemstack) {
 		CompoundTag tag = itemstack.getOrCreateTag();
-		if (!tag.contains("preset")) return ForgeRegistries.ITEMS.getKey(this).toString();
+		if (!tag.contains("preset")) return defaultPreset;
 		return tag.getString("preset");
 	}
 

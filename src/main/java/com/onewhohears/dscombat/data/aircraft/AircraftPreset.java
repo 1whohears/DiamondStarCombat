@@ -22,20 +22,24 @@ public class AircraftPreset {
 	
 	private final ResourceLocation key;
 	private final JsonObject data;
+	private final String presetId;
 	private CompoundTag dataNBT;
 	private List<DSCIngredient> ingredients;
-	private ItemStack displayItem;
+	private ItemStack item;
 	private AircraftTextures textures;
 	
-	private AircraftPreset(ResourceLocation key) {
-		this.key = key;
+	private AircraftPreset(String namespace, String name) {
+		this.key = new ResourceLocation(namespace, name);
 		this.data = new JsonObject();
+		this.presetId = name;
+		this.data.addProperty("preset", name);
 	}
 	
 	public AircraftPreset(ResourceLocation key, JsonObject data) {
 		this.key = key;
 		this.data = data;
 		this.dataNBT = UtilParse.getCompoundFromJson(data);
+		this.presetId = data.get("preset").getAsString();
 	}
 	
 	public CompoundTag getDataAsNBT() {
@@ -50,6 +54,14 @@ public class AircraftPreset {
 		return key;
 	}
 	
+	public String getPresetId() {
+		return presetId;
+	}
+	
+	public String getNameSpace() {
+		return getKey().getNamespace();
+	}
+	
 	public List<DSCIngredient> getIngredients() {
 		if (ingredients == null) {
 			ingredients = DSCIngredient.getIngredients(dataNBT);
@@ -58,15 +70,16 @@ public class AircraftPreset {
 	}
 	
 	public ItemStack getItem() {
-		if (displayItem == null) {
+		if (item == null) {
 			try {
-				displayItem = new ItemStack(ForgeRegistries.ITEMS.getDelegate(
+				item = new ItemStack(ForgeRegistries.ITEMS.getDelegate(
 						new ResourceLocation(data.get("item").getAsString())).get().get());
 			} catch(NoSuchElementException e) {
-				displayItem = ItemStack.EMPTY;
+				item = ItemStack.EMPTY;
 			}
+			item.getOrCreateTag().putString("preset", getPresetId());
 		}
-		return displayItem.copy();
+		return item.copy();
 	}
 	
 	public AircraftTextures getAircraftTextures() {
@@ -80,16 +93,16 @@ public class AircraftPreset {
 		
 		private final AircraftPreset preset;
 		
-		private Builder(ResourceLocation key) {
-			this.preset = new AircraftPreset(key);
+		private Builder(String namespace, String name) {
+			this.preset = new AircraftPreset(namespace, name);
 		}
 		
-		public static Builder create(ResourceLocation key) {
-			return new Builder(key);
+		public static Builder create(String namespace, String name) {
+			return new Builder(namespace, name);
 		}
 		
 		public AircraftPreset build() {
-			setString("preset", this.preset.key.toString());
+			setString("preset", preset.getPresetId());
 			setBoolean("landing_gear", true);
 			preset.dataNBT = UtilParse.getCompoundFromJson(preset.data);
 			return preset;

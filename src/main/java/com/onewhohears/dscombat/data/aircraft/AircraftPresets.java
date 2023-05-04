@@ -37,9 +37,13 @@ public class AircraftPresets {
 		});
 		m.forEach((key, res) -> {
 			JsonObject json = UtilParse.getJsonFromResource(res);
-			System.out.println("ADDING PRESET TO CACHE "+key.toString()+" "+json.toString());
 			AircraftPreset preset = new AircraftPreset(key, json);
-			presets.put(json.get("preset").getAsString(), preset);
+			if (!presets.containsKey(preset.getPresetId())) {
+				System.out.println("ADDING PRESET TO CACHE "+key.toString()+" "+json.toString());
+				presets.put(preset.getPresetId(), preset);
+			} else {
+				System.out.println("ERROR: Can't have 2 presets with the same name! "+key.toString());
+			}
 		});
 	}
 	

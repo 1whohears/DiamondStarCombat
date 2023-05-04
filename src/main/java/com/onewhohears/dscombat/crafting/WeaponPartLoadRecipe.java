@@ -47,7 +47,7 @@ public class WeaponPartLoadRecipe extends CustomRecipe {
 		if (ammo.size() < 1) return false;
 		CompoundTag pTag = part.getOrCreateTag();
 		String partId = pTag.getString("weaponId");
-		String ammoId = ammo.get(0).getItem().getDescriptionId().split("\\.")[2];
+		String ammoId = ItemAmmo.getAmmoId(ammo.get(0));
 		if (partId.isEmpty()) {
 			ListTag list = pTag.getList("compatible", 8);
 			for (int i = 0; i < list.size(); ++i) if (list.getString(i).equals(ammoId)) return true;
@@ -78,9 +78,9 @@ public class WeaponPartLoadRecipe extends CustomRecipe {
 			ItemStack stack  = container.getItem(i);
 			if (stack.isEmpty()) continue;
 			Item item = stack.getItem();
-			if (item instanceof ItemAmmo) {
-				if (id == null) id = item.getDescriptionId().split("\\.")[2];
-				else if (!item.getDescriptionId().split("\\.")[2].equals(id)) return null;
+			if (item instanceof ItemAmmo ia) {
+				if (id == null) id = ia.getAmmoId();
+				else if (!ia.getAmmoId().equals(id)) return null;
 				ammo.add(stack);
 			}
 		}
@@ -93,7 +93,7 @@ public class WeaponPartLoadRecipe extends CustomRecipe {
 		List<ItemStack> ammo = getAmmo(container);
 		if (!isIdSame(part, ammo)) return ItemStack.EMPTY;
 		int ca = 0, ma;
-		String weaponId = ammo.get(0).getItem().getDescriptionId().split("\\.")[2];
+		String weaponId = ItemAmmo.getAmmoId(ammo.get(0));
 		if (part.getOrCreateTag().getString("weaponId").isEmpty()) {
 			ma = WeaponPresets.getById(weaponId).getMaxAmmo();
 		} else {
@@ -118,7 +118,7 @@ public class WeaponPartLoadRecipe extends CustomRecipe {
 		List<ItemStack> ammo = getAmmo(container);
 		int ca = 0, ma;
 		if (part.getOrCreateTag().getString("weaponId").isEmpty()) {
-			String weaponId = ammo.get(0).getItem().getDescriptionId().split("\\.")[2];
+			String weaponId = ItemAmmo.getAmmoId(ammo.get(0));
 			ma = WeaponPresets.getById(weaponId).getMaxAmmo();
 		} else {
 			ca = part.getOrCreateTag().getInt("ammo");

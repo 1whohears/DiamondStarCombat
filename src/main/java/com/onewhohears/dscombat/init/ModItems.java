@@ -46,7 +46,7 @@ public class ModItems {
 			final int size;
 			if (data.getMaxAmmo() < 64) size = data.getMaxAmmo();
 			else size = 64;
-			ITEMS.register(data.getId(), () -> new ItemAmmo(size));
+			ITEMS.register(data.getId(), () -> new ItemAmmo(size, data.getId()));
 		}
 	}
 	

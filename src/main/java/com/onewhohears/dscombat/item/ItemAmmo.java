@@ -8,9 +8,12 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 public class ItemAmmo extends Item {
-
-	public ItemAmmo(int size) {
+	
+	private final String weaponId;
+	
+	public ItemAmmo(int size, String weaponId) {
 		super(weaponProps(size));
+		this.weaponId = weaponId;
 	}
 	
 	public static Properties weaponProps(int stackSize) {
@@ -25,7 +28,12 @@ public class ItemAmmo extends Item {
 	}
 	
 	public String getAmmoId() {
-		return getDescriptionId().split("\\.")[2];
+		return weaponId;
+	}
+	
+	public static String getAmmoId(ItemStack stack) {
+		if (stack.getItem() instanceof ItemAmmo ia) return ia.getAmmoId();
+		return "";
 	}
 
 }

@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.crafting.DSCIngredient;
+import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.util.UtilParse;
@@ -167,6 +168,23 @@ public class AircraftPreset {
 		}
 		
 		/**
+		 * used by all vehicles to add a slot that has an item by default
+		 * @param name a translatable string 
+		 * @param type the type of slot
+		 * @param x the x position of the part relative to the vehicle at 0 rotation
+		 * @param y the y position of the part relative to the vehicle at 0 rotation
+		 * @param z the z position of the part relative to the vehicle at 0 rotation
+		 * @param zRot used to make an external part rotate in degrees to visually connect to the surface
+		 * @param uix the x position of the slot in the aircraft menu
+		 * @param uiy the y position of the slot in the aircraft menu
+		 * @param item resource location of item to get part data from
+		 */
+		public Builder addItemSlot(String name, SlotType type, double x, double y, double z, float zRot, int uix, int uiy, 
+				@Nullable ResourceLocation item) {
+			return addItemSlot(name, type, x, y, z, zRot, uix, uiy, item, null, false);
+		}
+		
+		/**
 		 * used by all vehicles to add a slot that has an item by default.
 		 * meant for internal parts.
 		 * @param name a translatable string 
@@ -252,6 +270,18 @@ public class AircraftPreset {
 		
 		/**
 		 * used by all vehicles to add a slot that has a seat by default
+		 * @param x the x position of the part relative to the vehicle at 0 rotation
+		 * @param y the y position of the part relative to the vehicle at 0 rotation
+		 * @param z the z position of the part relative to the vehicle at 0 rotation
+		 * @param uix the x position of the slot in the aircraft menu
+		 * @param uiy the y position of the slot in the aircraft menu
+		 */
+		public Builder addPilotSeatSlot(double x, double y, double z, int uix, int uiy) {
+			return addItemSlot(PartSlot.PILOT_SLOT_NAME, SlotType.SEAT, x, y, z, 0, uix, uiy, ModItems.SEAT.getId(), null, false);
+		}
+		
+		/**
+		 * used by all vehicles to add a slot that has a seat by default
 		 * @param name a translatable string 
 		 * @param type the type of slot
 		 * @param x the x position of the part relative to the vehicle at 0 rotation
@@ -267,20 +297,35 @@ public class AircraftPreset {
 		/**
 		 * all vehicles
 		 */
-		public Builder setDefaultColor(DyeColor dyecolor) {
+		public Builder setDefaultColor(DyeColor dyecolor, ResourceLocation texture) {
+			setAltTexture(dyecolor, texture);
 			return setInt("dyecolor", dyecolor.getId());
 		}
 		
 		/**
 		 * all vehicles
 		 */
-		public Builder setColorTexture(DyeColor dyecolor, ResourceLocation texture) {
+		public Builder setDefaultTexture(DyeColor dyecolor, String textureId) {
+			return setDefaultColor(dyecolor, new ResourceLocation(textureId));
+		}
+		
+		/**
+		 * all vehicles
+		 */
+		public Builder setAltTexture(DyeColor dyecolor, ResourceLocation texture) {
 			if (!this.preset.data.has("textures")) {
 				this.preset.data.add("textures", new JsonObject());
 			}
 			this.preset.data.get("textures").getAsJsonObject()
 				.addProperty(dyecolor.getId()+"", texture.toString());
 			return this;
+		}
+		
+		/**
+		 * all vehicles
+		 */
+		public Builder setAltTexture(DyeColor dyecolor, String textureId) {
+			return setAltTexture(dyecolor, new ResourceLocation(textureId));
 		}
 		
 		/**
@@ -327,6 +372,7 @@ public class AircraftPreset {
 		
 		/**
 		 * all vehicles
+		 * blocks per tick
 		 */
 		public Builder setMaxSpeed(float max_speed) {
 			return setFloat("max_speed", max_speed);

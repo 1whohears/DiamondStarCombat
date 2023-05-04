@@ -30,6 +30,12 @@ public class AircraftPresetGenerator implements DataProvider {
     protected void registerAircraftPresets() {
 		addPreset(DefaultAircraftPresets.DEFAULT_ALEXIS_PLANE);
 		addPreset(DefaultAircraftPresets.DEFAULT_JAVI_PLANE);
+		addPreset(DefaultAircraftPresets.DEFAULT_NOAH_CHOPPER);
+		addPreset(DefaultAircraftPresets.DEFAULT_MRBUDGER_TANK);
+		addPreset(DefaultAircraftPresets.DEFAULT_SMALL_ROLLER);
+		addPreset(DefaultAircraftPresets.DEFAULT_NATHAN_BOAT);
+		addPreset(DefaultAircraftPresets.DEFAULT_ANDOLF_SUB);
+		addPreset(DefaultAircraftPresets.DEFAULT_ORANGE_TESLA);
 	}
 	
 	@Override

@@ -60,7 +60,7 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 		for (int i = 0; i < buttonNum; ++i) {
 			int index = tabIndex * buttonNum + i;
 			if (index >= AircraftPresets.get().getPresetNum()) break;
-			ItemStack stack = AircraftPresets.get().getPresets()[i].getItem();
+			ItemStack stack = AircraftPresets.get().getPresets()[index].getItem();
 			m.getItemRenderer().renderAndDecorateItem(
 					stack, wx, wy);
 			m.getItemRenderer().renderGuiItemDecorations(font,

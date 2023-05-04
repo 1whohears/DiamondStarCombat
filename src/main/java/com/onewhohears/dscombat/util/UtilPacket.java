@@ -137,8 +137,10 @@ public class UtilPacket {
 		}
 	}
 	
-	public static void dataPackSynch() {
-		AircraftPresets.resetCachedPresets(Minecraft.getInstance().getResourceManager(), true);
+	public static void dataPackSynch(int id) {
+		Minecraft m = Minecraft.getInstance();
+		if (id == -1 || m.player.getId() == id)
+			AircraftPresets.resetCachedPresets(m.getResourceManager(), true);
 	}
 	
 }

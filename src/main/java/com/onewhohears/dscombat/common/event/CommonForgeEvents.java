@@ -8,15 +8,17 @@ import com.onewhohears.dscombat.data.weapon.NonTickingMissileManager;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.event.server.ServerStartedEvent;
+import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.network.PacketDistributor.PacketTarget;
 
 @Mod.EventBusSubscriber(modid = DSCombatMod.MODID, bus = Bus.FORGE)
 public final class CommonForgeEvents {
@@ -38,13 +40,23 @@ public final class CommonForgeEvents {
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void onDatapackSync(OnDatapackSyncEvent event) {
 		System.out.println("DATAPACKSYNCH "+event.getPlayer());
-		PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), 
-				new ToClientDataPackSynch(event.getPlayer()));
+		PacketTarget target;
+		if (event.getPlayer() == null) {
+			target = PacketDistributor.ALL.noArg();
+		} else {
+			target = PacketDistributor.PLAYER.with(() -> event.getPlayer());
+		}
+		PacketHandler.INSTANCE.send(target, new ToClientDataPackSynch());
 	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
-	public static void serverStartedEvent(ServerStartedEvent event) {
-		AircraftPresets.resetCachedPresets(event.getServer().getResourceManager(), false);
+	public static void serverStoppingEvent(ServerStoppingEvent event) {
+		AircraftPresets.close();
+	}
+	
+	@SubscribeEvent(priority = EventPriority.NORMAL)
+	public static void addReloadListener(AddReloadListenerEvent event) {
+		event.addListener(AircraftPresets.get());
 	}
 	
 }

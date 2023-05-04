@@ -15,12 +15,12 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class AircraftPresetProvider implements DataProvider {
+public class AircraftPresetGenerator implements DataProvider {
 	
 	protected final DataGenerator.PathProvider pathProvider;
     private final Map<ResourceLocation, AircraftPreset> aircraftMap = new HashMap<>();
 
-    public AircraftPresetProvider(DataGenerator output) {
+    public AircraftPresetGenerator(DataGenerator output) {
         this.pathProvider = output.createPathProvider(DataGenerator.Target.DATA_PACK, "aircraft");
     }
     

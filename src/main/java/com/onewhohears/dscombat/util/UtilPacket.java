@@ -46,7 +46,7 @@ public class UtilPacket {
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityAircraft plane) {
 			plane.preset = preset;
-			AircraftPreset ap = AircraftPresets.getAircraftPreset(preset);
+			AircraftPreset ap = AircraftPresets.get().getAircraftPreset(preset);
 			plane.textures = ap.getAircraftTextures();
 			plane.item = ap.getItem();
 			
@@ -137,10 +137,8 @@ public class UtilPacket {
 		}
 	}
 	
-	public static void dataPackSynch(int id) {
-		Minecraft m = Minecraft.getInstance();
-		if (id == -1 || m.player.getId() == id)
-			AircraftPresets.resetCachedPresets(m.getResourceManager(), true);
+	public static void dataPackSynch(AircraftPreset[] presets) {
+		AircraftPresets.get().manuallySetPresets(presets);
 	}
 	
 }

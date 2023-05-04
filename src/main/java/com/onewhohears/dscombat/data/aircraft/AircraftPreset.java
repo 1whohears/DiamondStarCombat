@@ -13,6 +13,7 @@ import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
@@ -40,6 +41,19 @@ public class AircraftPreset {
 		this.data = data;
 		this.dataNBT = UtilParse.getCompoundFromJson(data);
 		this.presetId = data.get("preset").getAsString();
+	}
+	
+	public void writeBuffer(FriendlyByteBuf buffer) {
+		buffer.writeUtf(getKey().toString());
+		buffer.writeUtf(data.toString());
+	}
+	
+	public static AircraftPreset readBuffer(FriendlyByteBuf buffer) {
+		String key_string = buffer.readUtf();
+		String json_string = buffer.readUtf();
+		ResourceLocation key = new ResourceLocation(key_string);
+		JsonObject data = UtilParse.GSON.fromJson(json_string, JsonObject.class);
+		return new AircraftPreset(key, data);
 	}
 	
 	public CompoundTag getDataAsNBT() {
@@ -87,6 +101,11 @@ public class AircraftPreset {
 			textures = new AircraftTextures(dataNBT);
 		}
 		return textures;
+	}
+	
+	@Override
+	public String toString() {
+		return getKey().toString()+" "+getDataAsJson().toString();
 	}
 	
 	public static class Builder {

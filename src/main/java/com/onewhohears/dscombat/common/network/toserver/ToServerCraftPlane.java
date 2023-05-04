@@ -47,7 +47,7 @@ public class ToServerCraftPlane extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			ServerPlayer player = ctx.get().getSender();
-			AircraftPreset ap = AircraftPresets.getAircraftPreset(preset);
+			AircraftPreset ap = AircraftPresets.get().getAircraftPreset(preset);
 			if (ap != null) {
 				List<DSCIngredient> ingredients = ap.getIngredients();
 				if (DSCIngredient.hasIngredients(ingredients, player.getInventory())) {

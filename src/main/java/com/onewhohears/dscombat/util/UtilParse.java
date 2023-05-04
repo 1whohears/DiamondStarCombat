@@ -44,7 +44,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class UtilParse {
 	
-	public static final Gson gson = new Gson();
+	public static final Gson GSON = new Gson();
 	
 	public static CompoundTag getComoundFromResource(String path) {
 		CompoundTag compound;
@@ -74,7 +74,7 @@ public class UtilParse {
 		JsonObject json;
 		try {
 			BufferedReader br = resource.openAsReader();
-			json = gson.fromJson(br, JsonObject.class);
+			json = GSON.fromJson(br, JsonObject.class);
 			br.close();
 		} catch (Exception e) {
 			System.out.println("ERROR: COULD NOT PARSE JSON "+resource.sourcePackId());
@@ -89,7 +89,7 @@ public class UtilParse {
         InputStreamReader isr;
         try {
         	isr = new InputStreamReader(getResourceAsStream(path));
-            json = gson.fromJson(isr, JsonObject.class);
+            json = GSON.fromJson(isr, JsonObject.class);
             isr.close();
         } catch (Exception e) {
         	System.out.println("ERROR: COULD NOT PARSE JSON "+path);

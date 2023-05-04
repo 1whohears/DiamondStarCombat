@@ -250,11 +250,11 @@ public abstract class EntityAircraft extends Entity {
 		if (nbt.contains("dyecolor")) color = nbt.getInt("dyecolor");
 		preset = nbt.getString("preset");
 		if (preset.isEmpty()) preset = defaultPreset;
-		AircraftPreset ap = AircraftPresets.getAircraftPreset(preset);
+		AircraftPreset ap = AircraftPresets.get().getAircraftPreset(preset);
 		if (ap == null) {
 			System.out.println("ERROR: preset "+preset+" doesn't exist!");
 			preset = defaultPreset;
-			ap = AircraftPresets.getAircraftPreset(preset);
+			ap = AircraftPresets.get().getAircraftPreset(preset);
 		}
 		System.out.println(this+" using nbt preset "+preset);
 		textures = ap.getAircraftTextures();

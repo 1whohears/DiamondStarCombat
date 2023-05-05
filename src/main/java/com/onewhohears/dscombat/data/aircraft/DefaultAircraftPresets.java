@@ -70,6 +70,9 @@ public class DefaultAircraftPresets {
 			.setSlotItem("dscombat.frame_1", ModItems.XM12.getId(), "20mm", true)
 			.setSlotItem("dscombat.internal_4", ModItems.AR2K.getId())
 			.addIngredient(ModItems.AR2K.getId())
+			.addIngredient(ModItems.HEAVY_MISSILE_RACK.getId(), 2)
+			.addIngredient(ModItems.LIGHT_MISSILE_RACK.getId(), 2)
+			.addIngredient(ModItems.XM12.getId())
 			.build();
 	
 	public static final AircraftPreset DEFAULT_JAVI_PLANE = AircraftPreset.Builder

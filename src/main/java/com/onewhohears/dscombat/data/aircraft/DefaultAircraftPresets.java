@@ -169,7 +169,13 @@ public class DefaultAircraftPresets {
 			.setAltTexture(DyeColor.BLUE, "dscombat:textures/entities/noah_chopper/blue.png")
 			.setAltTexture(DyeColor.RED, "dscombat:textures/entities/noah_chopper/red.png")
 			.setAltTexture(DyeColor.BLACK, "dscombat:textures/entities/noah_chopper/black.png")
+			.addIngredient("minecraft:minecart", 4)
 			.addIngredient(ModItems.FUSELAGE.getId())
+			.addIngredient(ModItems.SEAT.getId(), 4)
+			.addIngredient("minecraft:gold_ingot", 4)
+			.addIngredient(ModItems.C12_ENGINE.getId(), 2)
+			.addIngredient(ModItems.HEAVY_FUEL_TANK.getId())
+			.addIngredient(ModItems.HEAVY_TANK_TURRET.getId())
 			.build();
 	
 	public static final AircraftPreset DEFAULT_SMALL_ROLLER = AircraftPreset.Builder
@@ -188,7 +194,13 @@ public class DefaultAircraftPresets {
 					ModItems.STEVE_UP_SMASH.getId())
 			// FIXME 1.3 finish small roller preset
 			.setDefaultTexture(DyeColor.GRAY, "dscombat:textures/entities/small_roller.png")
+			.addIngredient("minecraft:minecart", 2)
 			.addIngredient(ModItems.FUSELAGE.getId())
+			.addIngredient(ModItems.SEAT.getId(), 1)
+			.addIngredient("minecraft:gold_ingot", 4)
+			.addIngredient(ModItems.C6_ENGINE.getId())
+			.addIngredient(ModItems.LIGHT_FUEL_TANK.getId())
+			.addIngredient(ModItems.STEVE_UP_SMASH.getId())
 			.build();
 	
 	public static final AircraftPreset DEFAULT_NATHAN_BOAT = AircraftPreset.Builder
@@ -206,7 +218,13 @@ public class DefaultAircraftPresets {
 			.addPilotSeatSlot(0.8, 1.2, -1.13, 48, 20)
 			// FIXME 1.4 finish nathan boat preset
 			.setDefaultTexture(DyeColor.WHITE, "dscombat:textures/entities/nathan_boat/white.png")
+			.addIngredient("minecraft:boat", 4)
 			.addIngredient(ModItems.FUSELAGE.getId())
+			.addIngredient(ModItems.SEAT.getId(), 7)
+			.addIngredient(ModItems.C12_ENGINE.getId(), 2)
+			.addIngredient(ModItems.HEAVY_FUEL_TANK.getId())
+			.addIngredient(ModItems.MINIGUN_TURRET.getId())
+			.addIngredient(ModItems.WR400.getId())
 			.build();
 	
 	public static final AircraftPreset DEFAULT_ANDOLF_SUB = AircraftPreset.Builder
@@ -222,9 +240,20 @@ public class DefaultAircraftPresets {
 			.setTurnTorques(1f, 1f, 1f)
 			.setThrottleRate(0.04f, 0.04f)
 			.addPilotSeatSlot(0.6, -1.5, 2.8, 48, 20)
+			.addSeatSlot("dscombat.seat1", -0.6, -1.5, 2.8, 68, 20)
+			.addSeatSlot("dscombat.seat2", 0.6, -1.5, 1.6, 88, 20)
+			.addSeatSlot("dscombat.seat3", -0.6, -1.5, 1.6, 108, 20)
+			.addSeatSlot("dscombat.seat2", 0.6, -1.5, 0.4, 128, 20)
+			.addSeatSlot("dscombat.seat3", -0.6, -1.5, 0.4, 148, 20)
 			// FIXME 1.5 finish andolf sub preset
 			.setDefaultTexture(DyeColor.BLUE, "dscombat:textures/entities/andolf_sub/blue.png")
-			.addIngredient(ModItems.FUSELAGE.getId())
+			.addIngredient("minecraft:minecart", 4)
+			.addIngredient(ModItems.FUSELAGE.getId(), 3)
+			.addIngredient(ModItems.SEAT.getId(), 6)
+			.addIngredient("minecraft:gold_ingot", 4)
+			.addIngredient(ModItems.C12_ENGINE.getId(), 2)
+			.addIngredient(ModItems.HEAVY_FUEL_TANK.getId())
+			.addIngredient(ModItems.WR1K.getId())
 			.build();
 	
 	public static final AircraftPreset DEFAULT_ORANGE_TESLA = AircraftPreset.Builder
@@ -240,8 +269,16 @@ public class DefaultAircraftPresets {
 			.setTurnTorques(0f, 0f, 1f)
 			.setThrottleRate(0.07f, 0.07f)
 			.addPilotSeatSlot(0.5, 0.45, 0.3, 48, 20)
-			// FIXME 1.6 finish orange tesla preset
+			.addSeatSlot("dscombat.seat1", -0.5, 0.45, 0.3, 68, 20)
+			.addSeatSlot("dscombat.seat2", 0.5, 0.45, -0.85, 88, 20)
+			.addSeatSlot("dscombat.seat3", -0.5, 0.45, -0.85, 108, 20)
+			.addItemSlot("dscombat.internal_1", SlotType.INTERNAL, 48, 100, ModItems.C6_ENGINE.getId())
+			.addItemSlot("dscombat.internal_2", SlotType.INTERNAL, 68, 100, ModItems.LIGHT_FUEL_TANK.getId())
 			.setDefaultTexture(DyeColor.ORANGE, "dscombat:textures/entities/orange_tesla/orange.png")
-			.addIngredient(ModItems.FUSELAGE.getId())
+			.addIngredient("minecraft:minecart", 4)
+			.addIngredient(ModItems.FUSELAGE.getId(), 1)
+			.addIngredient(ModItems.SEAT.getId(), 4)
+			.addIngredient(ModItems.C12_ENGINE.getId())
+			.addIngredient(ModItems.LIGHT_FUEL_TANK.getId())
 			.build();
 }

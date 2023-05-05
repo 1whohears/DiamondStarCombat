@@ -37,6 +37,13 @@ public class AircraftPreset {
 		this.data.addProperty("preset", name);
 	}
 	
+	private AircraftPreset(String namespace, String name, AircraftPreset copy) {
+		this.key = new ResourceLocation(namespace, name);
+		this.data = copy.getDataAsJson().deepCopy();
+		this.presetId = name;
+		this.data.addProperty("preset", name);
+	}
+	
 	public AircraftPreset(ResourceLocation key, JsonObject data) {
 		this.key = key;
 		this.data = data;
@@ -117,8 +124,16 @@ public class AircraftPreset {
 			this.preset = new AircraftPreset(namespace, name);
 		}
 		
+		private Builder(String namespace, String name, AircraftPreset copy) {
+			this.preset = new AircraftPreset(namespace, name, copy);
+		}
+		
 		public static Builder create(String namespace, String name) {
 			return new Builder(namespace, name);
+		}
+		
+		public static Builder createFromCopy(String namespace, String name, AircraftPreset copy) {
+			return new Builder(namespace, name, copy);
 		}
 		
 		public AircraftPreset build() {

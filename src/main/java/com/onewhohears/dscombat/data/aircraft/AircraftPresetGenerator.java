@@ -28,14 +28,16 @@ public class AircraftPresetGenerator implements DataProvider {
      * override this method if you want to add your own default presets
      */
     protected void registerAircraftPresets() {
-		addPreset(DefaultAircraftPresets.DEFAULT_ALEXIS_PLANE);
-		addPreset(DefaultAircraftPresets.DEFAULT_JAVI_PLANE);
-		addPreset(DefaultAircraftPresets.DEFAULT_NOAH_CHOPPER);
-		addPreset(DefaultAircraftPresets.DEFAULT_MRBUDGER_TANK);
-		addPreset(DefaultAircraftPresets.DEFAULT_SMALL_ROLLER);
-		addPreset(DefaultAircraftPresets.DEFAULT_NATHAN_BOAT);
-		addPreset(DefaultAircraftPresets.DEFAULT_ANDOLF_SUB);
-		addPreset(DefaultAircraftPresets.DEFAULT_ORANGE_TESLA);
+    	addPresetToGenerate(DefaultAircraftPresets.EMPTY_ALEXIS_PLANE);
+    	addPresetToGenerate(DefaultAircraftPresets.UNARMED_ALEXIS_PLANE);
+		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_ALEXIS_PLANE);
+		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_JAVI_PLANE);
+		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_NOAH_CHOPPER);
+		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_MRBUDGER_TANK);
+		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_SMALL_ROLLER);
+		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_NATHAN_BOAT);
+		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_ANDOLF_SUB);
+		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_ORANGE_TESLA);
 	}
 	
 	@Override
@@ -63,7 +65,7 @@ public class AircraftPresetGenerator implements DataProvider {
 		aircraftMap.forEach((key, preset) -> consumer.accept(preset));
 	}
 	
-	public void addPreset(AircraftPreset preset) {
+	public void addPresetToGenerate(AircraftPreset preset) {
 		aircraftMap.put(preset.getKey(), preset);
 	}
 

@@ -1,6 +1,8 @@
 package com.onewhohears.dscombat.data.aircraft;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nullable;
@@ -31,6 +33,8 @@ public class AircraftPresets extends SimpleJsonResourceReloadListener {
 	private final Map<String, AircraftPreset> presets = new HashMap<>();
 	private boolean setup = false;
 	
+	private AircraftPreset[] craftablePresets;
+	
 	public AircraftPresets() {
 		super(UtilParse.GSON, "aircraft");
 	}
@@ -40,12 +44,27 @@ public class AircraftPresets extends SimpleJsonResourceReloadListener {
 		return presets.get(id);
 	}
 	
-	public AircraftPreset[] getPresets() {
+	public AircraftPreset[] getAllPresets() {
 		return presets.values().toArray(new AircraftPreset[presets.size()]);
 	}
 	
-	public int getPresetNum() {
+	public AircraftPreset[] getCraftablePresets() {
+		if (craftablePresets == null) {
+			List<AircraftPreset> list = new ArrayList<>();
+			presets.forEach((name, preset) -> {
+				if (preset.isCraftable()) list.add(preset);
+			});
+			craftablePresets = list.toArray(new AircraftPreset[list.size()]);
+		}
+		return craftablePresets;
+	}
+	
+	public int getAllPresetNum() {
 		return presets.size();
+	}
+	
+	public int getCraftablePresetNum() {
+		return getCraftablePresets().length;
 	}
 	
 	@Override
@@ -53,6 +72,7 @@ public class AircraftPresets extends SimpleJsonResourceReloadListener {
 		System.out.println("APPLYING AIRCRAFT PRESETS TO COMMON CACHE");
 		setup = false;
 		presets.clear();
+		craftablePresets = null;
 		map.forEach((key, je) -> {
 			System.out.println("ADDING PRESET: "+key.toString()+" "+je.toString());
 			JsonObject data = UtilParse.GSON.fromJson(je, JsonObject.class);
@@ -71,8 +91,8 @@ public class AircraftPresets extends SimpleJsonResourceReloadListener {
 	}
 	
 	public void writeBuffer(FriendlyByteBuf buffer) {
-		buffer.writeInt(getPresetNum());
-		AircraftPreset[] aps = getPresets();
+		buffer.writeInt(getAllPresetNum());
+		AircraftPreset[] aps = getAllPresets();
 		for (int i = 0; i < aps.length; ++i) {
 			aps[i].writeBuffer(buffer);
 		}
@@ -91,6 +111,7 @@ public class AircraftPresets extends SimpleJsonResourceReloadListener {
 		System.out.println("SET COMMON AIRCRAFT PRESET CACHE");
 		setup = false;
 		presets.clear();
+		craftablePresets = null;
 		for (int i = 0; i < presetList.length; ++i) {
 			System.out.println("ADDING PRESET: "+presetList[i].toString());
 			presets.put(presetList[i].getPresetId(), presetList[i]);

@@ -274,6 +274,17 @@
 	"item.dscombat.rifel1": "RIFEL-1",
 	"item.dscombat.torpedo1": "TORPEDO-1",
 	
+	"preset.dscombat.alexis_plane_empty": "Empty Alexis Plane",
+	"preset.dscombat.alexis_plane_unarmed": "Unarmed Alexis Plane",
+	"preset.dscombat.alexis_plane": "Default Alexis Plane",
+	"preset.dscombat.javi_plane": "Default Javi Plane",
+	"preset.dscombat.noah_chopper": "Default Noah Chopper",
+	"preset.dscombat.mrbudger_tank": "Default Mr Budger Tank",
+	"preset.dscombat.small_roller": "Default Small Roller",
+	"preset.dscombat.nathan_boat": "Default Nathan Boat",
+	"preset.dscombat.andolf_sub": "Default Andolf Submarine",
+	"preset.dscombat.orange_tesla": "Default Orange Tesla",
+	
 	"container.dscombat.plane_menu": "Aircraft Menu",
 	"container.dscombat.weapons_block_menu": "Weapons Workbench",
 	"container.dscombat.aircraft_block_menu": "Aircraft Workbench"

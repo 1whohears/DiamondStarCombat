@@ -15,6 +15,7 @@ import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
@@ -84,6 +85,10 @@ public class AircraftPreset {
 		return getKey().getNamespace();
 	}
 	
+	public boolean isCraftable() {
+		return getDataAsJson().get("is_craftable").getAsBoolean();
+	}
+	
 	public List<DSCIngredient> getIngredients() {
 		if (ingredients == null) {
 			ingredients = DSCIngredient.getIngredients(dataNBT);
@@ -111,6 +116,10 @@ public class AircraftPreset {
 		return textures;
 	}
 	
+	public Component getDisplayName() {
+		return Component.translatable("preset."+getNameSpace()+"."+getPresetId());
+	}
+	
 	@Override
 	public String toString() {
 		return getKey().toString()+" "+getDataAsJson().toString();
@@ -119,6 +128,7 @@ public class AircraftPreset {
 	public static class Builder {
 		
 		private final AircraftPreset preset;
+		private boolean is_craftable = false;
 		
 		private Builder(String namespace, String name) {
 			this.preset = new AircraftPreset(namespace, name);
@@ -139,8 +149,19 @@ public class AircraftPreset {
 		public AircraftPreset build() {
 			setString("preset", preset.getPresetId());
 			setBoolean("landing_gear", true);
+			setBoolean("is_craftable", is_craftable);
 			preset.dataNBT = UtilParse.getCompoundFromJson(preset.data);
 			return preset;
+		}
+		
+		/**
+		 * use to make preset appear in aircraft work bench.
+		 * Builder.create/Builder.createFromCopy make presets that
+		 * aren't craftable by default. 
+		 */
+		public Builder setCraftable() {
+			is_craftable = true;
+			return this;
 		}
 		
 		/**

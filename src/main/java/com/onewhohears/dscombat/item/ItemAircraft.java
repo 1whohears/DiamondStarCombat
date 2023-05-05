@@ -3,12 +3,15 @@ package com.onewhohears.dscombat.item;
 import java.util.List;
 import java.util.function.Predicate;
 
+import javax.annotation.Nullable;
+
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.init.ModItems;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -20,6 +23,7 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -62,7 +66,7 @@ public class ItemAircraft extends Item {
 				}
 			}
 			if (hitresult.getType() == HitResult.Type.BLOCK) {
-				spawnData(itemstack, player);
+				ItemStack spawn_data_stack = spawnData(itemstack, player);
 				EntityAircraft e = entityType.create(level);
 				Vec3 pos = hitresult.getLocation();
 				if (e.isCustomBoundingBox()) e.setPos(pos.add(0, e.getBbHeight()/2d, 0));
@@ -73,7 +77,7 @@ public class ItemAircraft extends Item {
 					int above = 0;
 					if (e.isCustomBoundingBox()) above = (int)(e.getBbHeight()/2d)+1;
 					Entity entity = entityType.spawn((ServerLevel)level, 
-							itemstack, player, 
+							spawn_data_stack, player, 
 							new BlockPos(pos).above(above), 
 							MobSpawnType.SPAWN_EGG, 
 							false, false);
@@ -89,8 +93,9 @@ public class ItemAircraft extends Item {
 		}
 	}
 	
-	private void spawnData(ItemStack itemstack, Player player) {
-		CompoundTag tag = itemstack.getOrCreateTag();
+	private ItemStack spawnData(ItemStack itemstack, Player player) {
+		ItemStack copy = itemstack.copy();
+		CompoundTag tag = copy.getOrCreateTag();
 		if (!tag.contains("EntityTag", 10)) {
 			CompoundTag et = new CompoundTag();
 			et.putString("preset", getPresetName(itemstack));
@@ -102,12 +107,21 @@ public class ItemAircraft extends Item {
 		et.putFloat("yRot", player.getYRot());
 		et.putFloat("current_throttle", 0);
 		et.putBoolean("landing_gear", true);
+		return copy;
 	}
 	
 	public String getPresetName(ItemStack itemstack) {
-		CompoundTag tag = itemstack.getOrCreateTag();
-		if (!tag.contains("preset")) return defaultPreset;
+		CompoundTag tag = itemstack.getTag();
+		if (tag == null || !tag.contains("preset")) return defaultPreset;
 		return tag.getString("preset");
+	}
+	
+	@Override
+	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tips, TooltipFlag isAdvanced) {
+		CompoundTag tag = stack.getTag();
+		if (tag == null || !tag.contains("EntityTag")) {
+			tips.add(Component.translatable("preset.dscombat."+getPresetName(stack)));
+		} else tips.add(Component.literal("Filled"));
 	}
 
 }

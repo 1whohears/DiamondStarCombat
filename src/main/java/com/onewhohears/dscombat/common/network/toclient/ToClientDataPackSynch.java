@@ -18,7 +18,7 @@ public class ToClientDataPackSynch extends IPacket {
 	public final AircraftPreset[] presets;
 	
 	public ToClientDataPackSynch() {
-		presets = AircraftPresets.get().getPresets();
+		presets = AircraftPresets.get().getAllPresets();
 	}
 	
 	public ToClientDataPackSynch(FriendlyByteBuf buffer) {

@@ -9,8 +9,8 @@ import net.minecraft.world.item.DyeColor;
 
 public class DefaultAircraftPresets {
 	
-	public static final AircraftPreset DEFAULT_ALEXIS_PLANE = AircraftPreset.Builder
-			.create(DSCombatMod.MODID, "alexis_plane")
+	public static final AircraftPreset EMPTY_ALEXIS_PLANE = AircraftPreset.Builder
+			.create(DSCombatMod.MODID, "alexis_plane_empty")
 			.setItem(ModItems.ALEXIS_PLANE.getId())
 			.setMaxHealth(150f)
 			.setMass(20f)
@@ -22,25 +22,6 @@ public class DefaultAircraftPresets {
 			.setTurnTorques(1f, 2f, 4f)
 			.setThrottleRate(0.04f, 0.08f)
 			.setPlaneWingArea(12f)
-			.addPilotSeatSlot(0, -0.3, 2, 48, 20)
-			.addItemSlot("dscombat.left_wing_1", SlotType.WING, 1.5, -0.3, 0.5, 0, 48, 40, 
-					ModItems.HEAVY_MISSILE_RACK.getId(), "aim120b", true)
-			.addItemSlot("dscombat.left_wing_2", SlotType.WING, 2.5, -0.3, 0.5, 0, 68, 40, 
-					ModItems.LIGHT_MISSILE_RACK.getId(), "aim9x", true)
-			.addEmptySlot("dscombat.left_wing_3", SlotType.WING, 3.5, -0.3, 0.5, 0, 88, 40) 
-			.addItemSlot("dscombat.right_wing_1", SlotType.WING, -1.5, -0.3, 0.5, 0, 48, 60, 
-					ModItems.HEAVY_MISSILE_RACK.getId(), "aim120b", true)
-			.addItemSlot("dscombat.right_wing_2", SlotType.WING, -2.5, -0.3, 0.5, 0, 68, 60, 
-					ModItems.LIGHT_MISSILE_RACK.getId(), "aim9x", true)
-			.addEmptySlot("dscombat.right_wing_3", SlotType.WING, -3.5, -0.3, 0.5, 0, 88, 60) 
-			.addItemSlot("dscombat.frame_1", SlotType.FRAME, 0, -0.4, 2.5, 0, 48, 80, 
-					ModItems.XM12.getId(), "20mm", true)
-			.addItemSlot("dscombat.internal_1", SlotType.INTERNAL, 48, 100, ModItems.C12_ENGINE.getId())
-			.addItemSlot("dscombat.internal_2", SlotType.INTERNAL, 68, 100, ModItems.HEAVY_FUEL_TANK.getId(), true)
-			.addItemSlot("dscombat.internal_3", SlotType.INTERNAL, 88, 100, ModItems.BASIC_FLARE_DISPENSER.getId(), true)
-			.addItemSlot("dscombat.internal_4", SlotType.ADVANCED_INTERNAL, 108, 100, ModItems.AR2K.getId())
-			.addEmptySlot("dscombat.internal_5", SlotType.ADVANCED_INTERNAL, 128, 100)
-			.addEmptySlot("dscombat.internal_6", SlotType.ADVANCED_INTERNAL, 148, 100)
 			.setDefaultTexture(DyeColor.WHITE, "dscombat:textures/entities/alexis_plane/white.png")
 			.setAltTexture(DyeColor.RED, "dscombat:textures/entities/alexis_plane/red.png")
 			.setAltTexture(DyeColor.CYAN, "dscombat:textures/entities/alexis_plane/cyan.png")
@@ -52,15 +33,49 @@ public class DefaultAircraftPresets {
 			.addIngredient(ModItems.WING.getId(), 2)
 			.addIngredient(ModItems.ADVANCED_COCKPIT.getId())
 			.addIngredient("minecraft:gold_ingot", 4)
+			.addPilotSeatSlot(0, -0.3, 2, 48, 20)
+			.addEmptySlot("dscombat.left_wing_1", SlotType.WING, 1.5, -0.3, 0.5, 0, 48, 40)
+			.addEmptySlot("dscombat.left_wing_2", SlotType.WING, 2.5, -0.3, 0.5, 0, 68, 40)
+			.addEmptySlot("dscombat.left_wing_3", SlotType.WING, 3.5, -0.3, 0.5, 0, 88, 40) 
+			.addEmptySlot("dscombat.right_wing_1", SlotType.WING, -1.5, -0.3, 0.5, 0, 48, 60)
+			.addEmptySlot("dscombat.right_wing_2", SlotType.WING, -2.5, -0.3, 0.5, 0, 68, 60)
+			.addEmptySlot("dscombat.right_wing_3", SlotType.WING, -3.5, -0.3, 0.5, 0, 88, 60) 
+			.addEmptySlot("dscombat.frame_1", SlotType.FRAME, 0, -0.4, 2.5, 0, 48, 80)
+			.addEmptySlot("dscombat.internal_1", SlotType.INTERNAL, 48, 100)
+			.addEmptySlot("dscombat.internal_2", SlotType.INTERNAL, 68, 100)
+			.addEmptySlot("dscombat.internal_3", SlotType.INTERNAL, 88, 100)
+			.addEmptySlot("dscombat.internal_4", SlotType.ADVANCED_INTERNAL, 108, 100)
+			.addEmptySlot("dscombat.internal_5", SlotType.ADVANCED_INTERNAL, 128, 100)
+			.addEmptySlot("dscombat.internal_6", SlotType.ADVANCED_INTERNAL, 148, 100)
+			.build();
+	
+	public static final AircraftPreset UNARMED_ALEXIS_PLANE = AircraftPreset.Builder
+			.createFromCopy(DSCombatMod.MODID, "alexis_plane_unarmed", EMPTY_ALEXIS_PLANE)
+			.setCraftable()
+			.setSlotItem("dscombat.internal_1", ModItems.C12_ENGINE.getId())
+			.setSlotItem("dscombat.internal_2", ModItems.HEAVY_FUEL_TANK.getId(), true)
+			.setSlotItem("dscombat.internal_3", ModItems.BASIC_FLARE_DISPENSER.getId(), true)
 			.addIngredient(ModItems.C12_ENGINE.getId())
 			.addIngredient(ModItems.HEAVY_FUEL_TANK.getId())
 			.addIngredient(ModItems.BASIC_FLARE_DISPENSER.getId())
+			.build();
+	
+	public static final AircraftPreset DEFAULT_ALEXIS_PLANE = AircraftPreset.Builder
+			.createFromCopy(DSCombatMod.MODID, "alexis_plane", UNARMED_ALEXIS_PLANE)
+			.setCraftable()
+			.setSlotItem("dscombat.left_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "aim120b", true)
+			.setSlotItem("dscombat.left_wing_2", ModItems.LIGHT_MISSILE_RACK.getId(), "aim9x", true)
+			.setSlotItem("dscombat.right_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "aim120b", true)
+			.setSlotItem("dscombat.right_wing_2", ModItems.LIGHT_MISSILE_RACK.getId(), "aim9x", true)
+			.setSlotItem("dscombat.frame_1", ModItems.XM12.getId(), "20mm", true)
+			.setSlotItem("dscombat.internal_4", ModItems.AR2K.getId())
 			.addIngredient(ModItems.AR2K.getId())
 			.build();
 	
 	public static final AircraftPreset DEFAULT_JAVI_PLANE = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "javi_plane")
 			.setItem(ModItems.JAVI_PLANE.getId())
+			.setCraftable()
 			.setMaxHealth(200f)
 			.setMass(25f)
 			.setMaxSpeed(1.20f)
@@ -117,6 +132,7 @@ public class DefaultAircraftPresets {
 	public static final AircraftPreset DEFAULT_NOAH_CHOPPER = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "noah_chopper")
 			.setItem(ModItems.NOAH_CHOPPER.getId())
+			.setCraftable()
 			.setMaxHealth(300f)
 			.setMass(30f)
 			.setMaxSpeed(0.8f)
@@ -153,6 +169,7 @@ public class DefaultAircraftPresets {
 	public static final AircraftPreset DEFAULT_MRBUDGER_TANK = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "mrbudger_tank")
 			.setItem(ModItems.MRBUDGER_TANK.getId())
+			.setCraftable()
 			.setMaxHealth(500f)
 			.setMass(50f)
 			.setMaxSpeed(0.3f)
@@ -181,6 +198,7 @@ public class DefaultAircraftPresets {
 	public static final AircraftPreset DEFAULT_SMALL_ROLLER = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "small_roller")
 			.setItem(ModItems.SMALL_ROLLER.getId())
+			.setCraftable()
 			.setMaxHealth(30f)
 			.setMass(5f)
 			.setMaxSpeed(0.2f)
@@ -206,6 +224,7 @@ public class DefaultAircraftPresets {
 	public static final AircraftPreset DEFAULT_NATHAN_BOAT = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "nathan_boat")
 			.setItem(ModItems.NATHAN_BOAT.getId())
+			.setCraftable()
 			.setMaxHealth(100f)
 			.setMass(10f)
 			.setMaxSpeed(0.9f)
@@ -230,6 +249,7 @@ public class DefaultAircraftPresets {
 	public static final AircraftPreset DEFAULT_ANDOLF_SUB = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "andolf_sub")
 			.setItem(ModItems.ANDOLF_SUB.getId())
+			.setCraftable()
 			.setMaxHealth(800f)
 			.setMass(200f)
 			.setMaxSpeed(0.6f)
@@ -259,6 +279,7 @@ public class DefaultAircraftPresets {
 	public static final AircraftPreset DEFAULT_ORANGE_TESLA = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "orange_tesla")
 			.setItem(ModItems.ORANGE_TESLA.getId())
+			.setCraftable()
 			.setMaxHealth(50f)
 			.setMass(8f)
 			.setMaxSpeed(0.7f)

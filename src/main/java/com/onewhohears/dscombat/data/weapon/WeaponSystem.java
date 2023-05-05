@@ -71,11 +71,11 @@ public class WeaponSystem {
 		this.weapons = weapons;
 		readData = true;
 	}
-	
+	// FIXME 0 add remove weapons synch with client issues!
 	public boolean addWeapon(WeaponData data, boolean updateClient) {
 		if (get(data.getId(), data.getSlotId()) != null) return false;
 		weapons.add(data);
-		if (updateClient) {
+		if (updateClient && !parent.level.isClientSide) {
 			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
 				new ToClientAddWeapon(parent.getId(), data));
 		}
@@ -84,7 +84,7 @@ public class WeaponSystem {
 	
 	public void removeWeapon(String id, String slotId, boolean updateClient) {
 		boolean r = weapons.remove(get(id, slotId));
-		if (r && updateClient) {
+		if (r && updateClient && !parent.level.isClientSide) {
 			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
 				new ToClientRemoveWeapon(parent.getId(), id, slotId));
 		}

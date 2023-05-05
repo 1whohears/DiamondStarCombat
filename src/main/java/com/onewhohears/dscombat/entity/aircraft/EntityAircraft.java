@@ -680,7 +680,7 @@ public abstract class EntityAircraft extends Entity {
 	public void move(MoverType type, Vec3 move) {
 		super.move(type, move);
 		if (noPhysics) return;
-		// FIXME 2 add "stepDown" movement code so vehicles don't slowly fall while driving down blocks
+		// FIXME 3 add "stepDown" movement code so vehicles don't slowly fall while driving down blocks
 	}
 	
 	/**

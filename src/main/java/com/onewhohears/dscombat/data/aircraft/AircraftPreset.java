@@ -159,10 +159,7 @@ public class AircraftPreset {
 		 */
 		public Builder addItemSlot(String name, SlotType type, double x, double y, double z, float zRot, int uix, int uiy, 
 				@Nullable ResourceLocation item, @Nullable String param, boolean filled) {
-			if (!this.preset.data.has("slots")) {
-				this.preset.data.add("slots", new JsonArray());
-			}
-			JsonObject slot = new JsonObject();
+			JsonObject slot = getSlot(name, true);
 			slot.addProperty("name", name);
 			slot.addProperty("slot_type", type.ordinal());
 			slot.addProperty("slot_posx", x);
@@ -178,8 +175,74 @@ public class AircraftPreset {
 				if (filled) d.addProperty("filled", filled);
 				slot.add("data", d);
 			}
-			this.preset.data.get("slots").getAsJsonArray().add(slot);
 			return this;
+		}
+		
+		/**
+		 * removes item data
+		 * @param name slot that already exists
+		 */
+		public Builder setSlotEmpty(String name) {
+			JsonObject slot = getSlot(name, false);
+			if (slot != null) slot.remove("data");
+			return this;
+		}
+		
+		/**
+		 * sets item data of slot
+		 * @param name slot that already exists
+		 * @param item resource location of item to get part data from
+		 * @param param some part items accept a setting
+		 * @param filled if the item is filled by default
+		 */
+		public Builder setSlotItem(String name, @Nullable ResourceLocation item, @Nullable String param, boolean filled) {
+			if (item == null) return setSlotEmpty(name);
+			JsonObject slot = getSlot(name, false);
+			if (slot == null) return this;
+			JsonObject d = new JsonObject();
+			d.addProperty("itemid", item.toString());
+			if (param != null) d.addProperty("param", param);
+			if (filled) d.addProperty("filled", filled);
+			slot.add("data", d);
+			return this;
+		}
+		
+		/**
+		 * sets item data of slot
+		 * @param name slot that already exists
+		 * @param item resource location of item to get part data from
+		 */
+		public Builder setSlotItem(String name, @Nullable ResourceLocation item) {
+			return setSlotItem(name, item, null, false);
+		}
+		
+		/**
+		 * sets item data of slot
+		 * @param name slot that already exists
+		 * @param item resource location of item to get part data from
+		 * @param filled if the item is filled by default
+		 */
+		public Builder setSlotItem(String name, @Nullable ResourceLocation item, boolean filled) {
+			return setSlotItem(name, item, null, filled);
+		}
+		
+		@Nullable
+		protected JsonObject getSlot(String name, boolean createNew) {
+			if (!this.preset.data.has("slots")) {
+				this.preset.data.add("slots", new JsonArray());
+			}
+			JsonArray slots = this.preset.data.get("slots").getAsJsonArray();
+			for (int i = 0; i < slots.size(); ++i) {
+				JsonObject slot = slots.get(i).getAsJsonObject();
+				if (slot.get("name").getAsString().equals(name)) {
+					return slot;
+				}
+			}
+			if (!createNew) return null;
+			JsonObject slot = new JsonObject();
+			slot.addProperty("name", name);
+			slots.add(slot);
+			return slot;
 		}
 		
 		/**

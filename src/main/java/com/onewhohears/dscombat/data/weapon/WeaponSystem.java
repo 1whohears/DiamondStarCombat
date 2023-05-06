@@ -8,8 +8,6 @@ import javax.annotation.Nullable;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.common.network.toclient.ToClientAddWeapon;
-import com.onewhohears.dscombat.common.network.toclient.ToClientRemoveWeapon;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponIndex;
 import com.onewhohears.dscombat.data.weapon.WeaponData.WeaponType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
@@ -72,22 +70,14 @@ public class WeaponSystem {
 		readData = true;
 	}
 	// FIXME 0 add remove weapons synch with client issues!
-	public boolean addWeapon(WeaponData data, boolean updateClient) {
+	public boolean addWeapon(WeaponData data) {
 		if (get(data.getId(), data.getSlotId()) != null) return false;
 		weapons.add(data);
-		if (updateClient && !parent.level.isClientSide) {
-			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
-				new ToClientAddWeapon(parent.getId(), data));
-		}
 		return true;
 	}
 	
-	public void removeWeapon(String id, String slotId, boolean updateClient) {
-		boolean r = weapons.remove(get(id, slotId));
-		if (r && updateClient && !parent.level.isClientSide) {
-			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
-				new ToClientRemoveWeapon(parent.getId(), id, slotId));
-		}
+	public boolean removeWeapon(String id, String slotId) {
+		return weapons.remove(get(id, slotId));
 	}
 	
 	@Nullable
@@ -161,14 +151,6 @@ public class WeaponSystem {
 	 */
 	public void tick() {
 		for (WeaponData w : weapons) w.tick();
-	}
-	
-	public void setup(/*EntityAircraft parent*/) {
-		//this.parent = parent;
-	}
-	
-	public void clientSetup(/*EntityAircraft parent*/) {
-		//this.parent = parent;
 	}
 	
 	public boolean isReadData() {

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
+import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.radar.RadarData;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
@@ -54,9 +55,7 @@ public class UtilPacket {
 			plane.weaponSystem.setWeapons(weapons);
 			plane.radarSystem.setRadars(radars);
 			plane.partsManager.setPartSlots(slots);
-			// ORDER MATTERS
-			plane.weaponSystem.clientSetup();
-			plane.radarSystem.clientSetup();
+			
 			plane.partsManager.clientPartsSetup();
 			//System.out.println("plane data updated");
 		}
@@ -81,35 +80,21 @@ public class UtilPacket {
 		}
 	}
 	
-	public static void addWeaponPacket(int id, WeaponData data) {
+	public static void addPartPacket(int id, String slotId, PartData data) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityAircraft plane) {
-			plane.weaponSystem.addWeapon(data, false);
+			PartSlot slot = plane.partsManager.getSlot(slotId);
+			if (slot != null) slot.addPartData(data, plane);
 		}
 	}
 	
-	public static void removeWeaponPacket(int id, String wid, String slotId) {
+	public static void removePartPacket(int id, String slotId) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityAircraft plane) {
-			plane.weaponSystem.removeWeapon(wid, slotId, false);
-		}
-	}
-	
-	public static void addRadarPacket(int id, RadarData data) {
-		Minecraft m = Minecraft.getInstance();
-		Level world = m.level;
-		if (world.getEntity(id) instanceof EntityAircraft plane) {
-			plane.radarSystem.addRadar(data, false);
-		}
-	}
-	
-	public static void removeRadarPacket(int id, String rid, String slotId) {
-		Minecraft m = Minecraft.getInstance();
-		Level world = m.level;
-		if (world.getEntity(id) instanceof EntityAircraft plane) {
-			plane.radarSystem.removeRadar(rid, slotId, false);
+			PartSlot slot = plane.partsManager.getSlot(slotId);
+			if (slot != null) slot.removePartData(plane);
 		}
 	}
 	

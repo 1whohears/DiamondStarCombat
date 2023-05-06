@@ -89,12 +89,12 @@ public class WeaponPartData extends PartData {
 			data = WeaponPresets.getNewById(weaponId);
 			if (data == null) return;
 			data.setSlot(slotId);
-			craft.weaponSystem.addWeapon(data, true);
+			craft.weaponSystem.addWeapon(data);
 		}
 		data.setCurrentAmmo(ammo);
 		data.setMaxAmmo(max);
 		data.setLaunchPos(pos);
-		data.updateClientAmmo(craft);
+		if (!craft.level.isClientSide) data.updateClientAmmo(craft);
 	}
 	
 	@Override
@@ -107,7 +107,7 @@ public class WeaponPartData extends PartData {
 	@Override
 	public void remove(String slotId) {
 		super.remove(slotId);
-		this.getParent().weaponSystem.removeWeapon(weaponId, slotId, true);
+		getParent().weaponSystem.removeWeapon(weaponId, slotId);
 	}
 	
 	@Override

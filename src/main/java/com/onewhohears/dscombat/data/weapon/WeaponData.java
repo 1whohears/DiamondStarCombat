@@ -204,6 +204,7 @@ public abstract class WeaponData {
 	
 	public void updateClientAmmo(EntityAircraft vehicle) {
 		if (vehicle == null) return;
+		if (!vehicle.level.isClientSide) return;
 		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> vehicle), 
 				new ToClientWeaponAmmo(vehicle.getId(), getId(), slotId, getCurrentAmmo()));
 	}

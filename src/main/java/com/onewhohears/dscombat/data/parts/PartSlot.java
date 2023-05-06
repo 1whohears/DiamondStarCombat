@@ -2,6 +2,9 @@ package com.onewhohears.dscombat.data.parts;
 
 import javax.annotation.Nullable;
 
+import com.onewhohears.dscombat.common.network.PacketHandler;
+import com.onewhohears.dscombat.common.network.toclient.ToClientAddPart;
+import com.onewhohears.dscombat.common.network.toclient.ToClientRemovePart;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.UtilParse;
@@ -9,12 +12,13 @@ import com.onewhohears.dscombat.util.UtilParse;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.network.PacketDistributor;
 
 public class PartSlot {
 	
 	public static final String PILOT_SLOT_NAME = "dscombat.pilot_seat";
 	
-	private final String name, typeName;
+	private final String slotId, typeName;
 	private final SlotType type;
 	private final Vec3 pos;
 	private final int uix, uiy, offsetX;
@@ -22,7 +26,7 @@ public class PartSlot {
 	private PartData data;
 	
 	protected PartSlot(String name, SlotType type, Vec3 pos, int uix, int uiy, float zRot) {
-		this.name = name;
+		this.slotId = name;
 		this.type = type;
 		this.pos = pos;
 		this.uix = uix;
@@ -33,7 +37,7 @@ public class PartSlot {
 	}
 	
 	public PartSlot(CompoundTag tag) {
-		name = tag.getString("name");
+		slotId = tag.getString("name");
 		type = SlotType.values()[tag.getInt("slot_type")];
 		pos = UtilParse.readVec3(tag, "slot_pos");
 		uix = tag.getInt("uix");
@@ -47,7 +51,7 @@ public class PartSlot {
 	
 	public CompoundTag write() {
 		CompoundTag tag = new CompoundTag();
-		tag.putString("name", name);
+		tag.putString("name", slotId);
 		tag.putInt("slot_type",type.ordinal());
 		UtilParse.writeVec3(tag, pos, "slot_pos");
 		tag.putInt("uix", uix);
@@ -59,7 +63,7 @@ public class PartSlot {
 	
 	public PartSlot(FriendlyByteBuf buffer) {
 		//System.out.println("PART SLOT BUFFER");
-		name = buffer.readUtf();
+		slotId = buffer.readUtf();
 		//System.out.println("name = "+name);
 		type = SlotType.values()[buffer.readInt()];
 		//System.out.println("type = "+type.name());
@@ -79,7 +83,7 @@ public class PartSlot {
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
-		buffer.writeUtf(name);
+		buffer.writeUtf(slotId);
 		buffer.writeInt(type.ordinal());
 		DataSerializers.VEC3.write(buffer, pos);
 		buffer.writeInt(uix);
@@ -98,20 +102,26 @@ public class PartSlot {
 		return data;
 	}
 	
-	public void setup(EntityAircraft plane) {
-		if (filled()) data.setup(plane, name, pos);
+	public void serverSetup(EntityAircraft plane) {
+		if (filled()) {
+			data.setup(plane, slotId, pos);
+			data.serverSetup(plane, slotId, pos);
+		}
 	}
 	
 	public void clientSetup(EntityAircraft plane) {
-		if (filled()) data.clientSetup(plane, name, pos);
+		if (filled()) {
+			data.setup(plane, slotId, pos);
+			data.clientSetup(plane, slotId, pos);
+		}
 	}
 	
 	protected void tick() {
-		if (filled()) data.tick(name);
+		if (filled()) data.tick(slotId);
 	}
 	
 	protected void clientTick() {
-		if (filled()) data.clientTick(name);
+		if (filled()) data.clientTick(slotId);
 	}
 	
 	public boolean addPartData(PartData data, EntityAircraft plane) {
@@ -119,15 +129,25 @@ public class PartSlot {
 		if (!isCompatible(data)) return false;
 		this.data = data;
 		if (plane == null) return true;
-		if (plane.level.isClientSide) data.clientSetup(plane, name, pos);
-		else data.setup(plane, name, pos);
+		data.setup(plane, slotId, pos);
+		if (plane.level.isClientSide) data.clientSetup(plane, slotId, pos);
+		else {
+			data.serverSetup(plane, slotId, pos);
+			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> plane), 
+					new ToClientAddPart(plane.getId(), slotId, data));
+		}
 		return true;
 	}
 	
 	public boolean removePartData(EntityAircraft plane) {
 		if (filled()) {
-			if (plane.level.isClientSide) data.clientRemove(name);
-			else data.remove(name);
+			data.remove(slotId);
+			if (plane.level.isClientSide) data.clientRemove(slotId);
+			else {
+				data.serverRemove(slotId);
+				PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> plane), 
+						new ToClientRemovePart(plane.getId(), slotId));
+			}
 			data = null;
 			return true;
 		}
@@ -143,7 +163,7 @@ public class PartSlot {
 	}
 	
 	public String getName() {
-		return name;
+		return slotId;
 	}
 	
 	public String getTypeName() {
@@ -209,7 +229,7 @@ public class PartSlot {
 	
 	@Override
 	public String toString() {
-		return "["+name+":"+getSlotType().toString()+":"+data+"]";
+		return "["+slotId+":"+getSlotType().toString()+":"+data+"]";
 	}
 	
 	public float getZRot() {

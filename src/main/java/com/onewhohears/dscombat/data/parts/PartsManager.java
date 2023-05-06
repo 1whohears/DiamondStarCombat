@@ -56,13 +56,13 @@ public class PartsManager {
 			@Override
 			public void setItem(int i, ItemStack stack) {
 				//System.out.println("SET ITEM "+i+" "+stack);
-				if (readData) inventorySetItem(i, stack);
+				if (readData && !parent.level.isClientSide) inventorySetItem(i, stack);
 				super.setItem(i, stack);
 			}
 			@Override
 			public ItemStack removeItem(int i, int count) {
 				//System.out.println("REMOVE ITEM "+i);
-				if (readData) inventoryRemoveItem(i, count);
+				if (readData && !parent.level.isClientSide) inventoryRemoveItem(i, count);
 				return super.removeItem(i, count);
 			}			
 		};
@@ -72,7 +72,7 @@ public class PartsManager {
 		}
 	}
 	
-	public void inventorySetItem(int i, ItemStack stack) {
+	private void inventorySetItem(int i, ItemStack stack) {
 		if (i < 0 || i >= slots.size()) {
 			System.out.println("WARNING! INDEX "+i+" IS OUT OF BOUNDS IN PARTS MANAGER "+this);
 			return;
@@ -101,7 +101,7 @@ public class PartsManager {
 		}	
 	}
 	
-	public void inventoryRemoveItem(int i, int count) {
+	private void inventoryRemoveItem(int i, int count) {
 		if (i < 0 || i >= slots.size()) {
 			System.out.println("WARNING! INDEX "+i+" IS OUT OF BOUNDS IN PARTS MANAGER "+this);
 			return;
@@ -139,14 +139,12 @@ public class PartsManager {
 		this.readData = true;
 	}
 	
-	public void setupParts(/*EntityAircraft craft*/) {
-		//this.parent = craft;
+	public void setupParts() {
 		//System.out.println("setupParts "+this);
-		for (PartSlot p : slots) p.setup(parent);
+		for (PartSlot p : slots) p.serverSetup(parent);
 	}
 	
-	public void clientPartsSetup(/*EntityAircraft craft*/) {
-		//this.parent = craft;
+	public void clientPartsSetup() {
 		//System.out.println("clientPartsSetup "+this);
 		for (PartSlot p : slots) p.clientSetup(parent);
 	}

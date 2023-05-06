@@ -1020,9 +1020,6 @@ public abstract class EntityAircraft extends Entity {
      * register parts before calling super in server side
      */
 	public void serverSetup() {
-		// ORDER MATTERS
-		weaponSystem.setup();
-		radarSystem.setup();
 		partsManager.setupParts();
 	}
 	

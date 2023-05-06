@@ -4,8 +4,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.common.network.IPacket;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
-import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.UtilPacket;
 
 import net.minecraft.network.FriendlyByteBuf;
@@ -13,26 +11,26 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent.Context;
 
-public class ToClientAddWeapon extends IPacket {
+public class ToClientRemovePart extends IPacket {
 	
 	public final int id;
-	public final WeaponData data;
+	public final String slotId;
 	
-	public ToClientAddWeapon(int id, WeaponData data) {
+	public ToClientRemovePart(int id, String slotId) {
 		this.id = id;
-		this.data = data;
+		this.slotId = slotId;
 	}
 	
-	public ToClientAddWeapon(FriendlyByteBuf buffer) {
+	public ToClientRemovePart(FriendlyByteBuf buffer) {
 		super(buffer);
 		id = buffer.readInt();
-		data = DataSerializers.WEAPON_DATA.read(buffer);
+		slotId = buffer.readUtf();
 	}
 	
 	@Override
 	public void encode(FriendlyByteBuf buffer) {
 		buffer.writeInt(id);
-		data.write(buffer);
+		buffer.writeUtf(slotId);
 	}
 
 	@Override
@@ -40,7 +38,7 @@ public class ToClientAddWeapon extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilPacket.addWeaponPacket(id, data);
+				UtilPacket.removePartPacket(id, slotId);
 				success.set(true);
 			});
 		});

@@ -8,10 +8,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.common.network.toclient.ToClientAddRadar;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRWRWarning;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRadarPings;
-import com.onewhohears.dscombat.common.network.toclient.ToClientRemoveRadar;
 import com.onewhohears.dscombat.common.network.toserver.ToServerPingSelect;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
@@ -221,23 +219,14 @@ public class RadarSystem {
 		return null;
 	}
 	
-	public boolean addRadar(RadarData r, boolean updateClient) {
+	public boolean addRadar(RadarData r) {
 		if (get(r.getId(), r.getSlotId()) != null) return false;
 		radars.add(r);
-		if (updateClient) {
-			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
-					new ToClientAddRadar(parent.getId(), r));
-		}
 		return true;
 	}
 	
-	public void removeRadar(String id, String slotId, boolean updateClient) {
-		boolean ok = radars.remove(get(id, slotId));
-		if (ok && updateClient) {
-			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
-					new ToClientRemoveRadar(parent.getId(), id, slotId));
-		}
-		return;
+	public boolean removeRadar(String id, String slotId) {
+		return radars.remove(get(id, slotId));
 	}
 	
 	public double getMaxAirRange() {
@@ -257,14 +246,6 @@ public class RadarSystem {
 	
 	public boolean isReadData() {
 		return readData;
-	}
-	
-	public void setup(/*EntityAircraft e*/) {
-		//parent = e;
-	}
-	
-	public void clientSetup(/*EntityAircraft e*/) {
-		//parent = e;
 	}
 	
 	public void addRWRWarning(Vec3 pos, boolean isMissile, boolean clientSide) {

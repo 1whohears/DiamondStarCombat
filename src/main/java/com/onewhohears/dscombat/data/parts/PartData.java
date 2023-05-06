@@ -96,25 +96,31 @@ public abstract class PartData {
 		this.relPos = pos;
 	}
 	
+	public void serverSetup(EntityAircraft craft, String slotId, Vec3 pos) {
+		
+	}
+	
+	public void clientSetup(EntityAircraft craft, String slotId, Vec3 pos) {
+		
+	}
+	
 	public void setup(EntityAircraft craft, String slotId, Vec3 pos) {
 		//System.out.println("setting up part "+this+" client side "+craft.level.isClientSide+" slot "+slotId);
 		setParent(craft);
 		setRelPos(pos);
 	}
 	
-	public void clientSetup(EntityAircraft craft, String slotId, Vec3 pos) {
-		//System.out.println("setting up part "+this+" client side "+craft.level.isClientSide+" slot "+slotId);
-		parent = craft;
-		relPos = pos;
-	}
-	
 	public abstract boolean isSetup(String slotId, EntityAircraft craft);
 	
-	public void remove(String slotId) {
+	public void serverRemove(String slotId) {
 		
 	}
 	
 	public void clientRemove(String slotId) {
+		
+	}
+	
+	public void remove(String slotId) {
 		
 	}
 	

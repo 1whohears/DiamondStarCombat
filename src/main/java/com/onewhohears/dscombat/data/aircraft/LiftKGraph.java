@@ -28,7 +28,8 @@ public class LiftKGraph {
 		int minI = getMinIndex(aoaDegrees);
 		int maxI = getMaxIndex(aoaDegrees);
 		if (minI == maxI) return lift[minI];
-		return (lift[maxI]-lift[minI])/(aoa[maxI]-aoa[minI]) + lift[minI];
+		float d = aoaDegrees - aoa[minI];
+		return d*(lift[maxI]-lift[minI])/(aoa[maxI]-aoa[minI]) + lift[minI];
 	}
 	
 	private int getMinIndex(float degrees) {

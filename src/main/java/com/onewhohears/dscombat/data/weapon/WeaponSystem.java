@@ -69,7 +69,7 @@ public class WeaponSystem {
 		this.weapons = weapons;
 		readData = true;
 	}
-	// FIXME 0 add remove weapons synch with client issues!
+	
 	public boolean addWeapon(WeaponData data) {
 		if (get(data.getId(), data.getSlotId()) != null) return false;
 		weapons.add(data);

@@ -5,7 +5,6 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientAddMoment;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddPart;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAircraftFuel;
 import com.onewhohears.dscombat.common.network.toclient.ToClientDataPackSynch;
-import com.onewhohears.dscombat.common.network.toclient.ToClientMissileMove;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRWRWarning;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRadarPings;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRemovePart;
@@ -58,11 +57,6 @@ public final class PacketHandler {
 			.encoder(ToServerPingSelect::encode)
 			.decoder(ToServerPingSelect::new)
 			.consumerMainThread(ToServerPingSelect::handle)
-			.add();
-		net.messageBuilder(ToClientMissileMove.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ToClientMissileMove::encode)
-			.decoder(ToClientMissileMove::new)
-			.consumerMainThread(ToClientMissileMove::handle)
 			.add();
 		net.messageBuilder(ToClientWeaponAmmo.class, index++, NetworkDirection.PLAY_TO_CLIENT)
 			.encoder(ToClientWeaponAmmo::encode)

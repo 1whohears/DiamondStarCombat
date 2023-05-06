@@ -11,7 +11,6 @@ import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
 import com.onewhohears.dscombat.data.radar.RadarSystem.RWRWarning;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
-import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.level.Level;
@@ -19,20 +18,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class UtilPacket {
 	
-	public static void entityMissileMovePacket(int id, Vec3 pos, Vec3 move, float pitch, float yaw, Vec3 targetPos) {
-		Minecraft m = Minecraft.getInstance();
-		Level world = m.level;
-		if (world.getEntity(id) instanceof EntityMissile e) {
-			e.setPos(pos);
-			e.setDeltaMovement(move);
-			e.setXRot(pitch);
-			e.setYRot(yaw);
-			e.targetPos = targetPos;
-		}
-	}
-	
 	public static void pingsPacket(int id, List<RadarPing> pings) {
-		//System.out.println("ping packet received");
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityAircraft plane) {
@@ -41,8 +27,6 @@ public class UtilPacket {
 	}
 	
 	public static void planeDataPacket(int id, String preset, List<PartSlot> slots, List<WeaponData> weapons, int weaponIndex, List<RadarData> radars) {
-		//System.out.println("plane data packet received");
-		//System.out.println(pm.toString());
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityAircraft plane) {
@@ -50,19 +34,16 @@ public class UtilPacket {
 			AircraftPreset ap = AircraftPresets.get().getAircraftPreset(preset);
 			plane.textures = ap.getAircraftTextures();
 			plane.item = ap.getItem();
-			
-			plane.weaponSystem.clientSetSelected(weaponIndex);
+			// ORDER MATTERS
 			plane.weaponSystem.setWeapons(weapons);
+			plane.weaponSystem.clientSetSelected(weaponIndex);
 			plane.radarSystem.setRadars(radars);
 			plane.partsManager.setPartSlots(slots);
-			
 			plane.partsManager.clientPartsSetup();
-			//System.out.println("plane data updated");
 		}
 	}
 	
 	public static void weaponAmmoPacket(int id, String weaponId, String slotId, int ammo) {
-		//System.out.println("ammo packet received");
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityAircraft plane) {
@@ -72,7 +53,6 @@ public class UtilPacket {
 	}
 	
 	public static void weaponSelectPacket(int id, int index) {
-		//System.out.println("ammo select packet received");
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityAircraft plane) {

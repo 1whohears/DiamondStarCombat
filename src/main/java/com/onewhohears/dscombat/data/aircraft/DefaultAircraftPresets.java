@@ -75,10 +75,9 @@ public class DefaultAircraftPresets {
 			.addIngredient(ModItems.XM12.getId())
 			.build();
 	
-	public static final AircraftPreset DEFAULT_JAVI_PLANE = AircraftPreset.Builder
-			.create(DSCombatMod.MODID, "javi_plane")
+	public static final AircraftPreset EMPTY_JAVI_PLANE = AircraftPreset.Builder
+			.create(DSCombatMod.MODID, "javi_plane_empty")
 			.setItem(ModItems.JAVI_PLANE.getId())
-			.setCraftable()
 			.setMaxHealth(200f)
 			.setMass(25f)
 			.setMaxSpeed(1.20f)
@@ -89,8 +88,31 @@ public class DefaultAircraftPresets {
 			.setTurnTorques(1f, 2f, 4f)
 			.setThrottleRate(0.04f, 0.08f)
 			.setPlaneWingArea(12f)
+			.setDefaultTexture(DyeColor.GREEN, "dscombat:textures/entities/javi_plane/green.png")
+			.setAltTexture(DyeColor.BLUE, "dscombat:textures/entities/javi_plane/blue.png")
+			.setAltTexture(DyeColor.RED, "dscombat:textures/entities/javi_plane/red.png")
+			.setAltTexture(DyeColor.BLACK, "dscombat:textures/entities/javi_plane/black.png")
+			.setAltTexture(DyeColor.PURPLE, "dscombat:textures/entities/javi_plane/purple.png")
+			.addIngredient(ModItems.FUSELAGE.getId(), 2)
+			.addIngredient(ModItems.LARGE_WING.getId(), 2)
+			.addIngredient(ModItems.COCKPIT.getId())
+			.addIngredient("minecraft:gold_ingot", 4)
 			.addPilotSeatSlot(0, -0.4, 3, 48, 20)
 			.addSeatSlot("dscombat.seat2", SlotType.TURRET, 0, -0.4, 2, 68, 20)
+			
+			.build();
+	
+	public static final AircraftPreset UNARMED_JAVI_PLANE = AircraftPreset.Builder
+			.createFromCopy(DSCombatMod.MODID, "javi_plane_unarmed", EMPTY_JAVI_PLANE)
+			.setCraftable()
+			.addIngredient(ModItems.C6_ENGINE.getId(), 2)
+			.addIngredient(ModItems.HEAVY_FUEL_TANK.getId())
+			
+			.build();
+	
+	public static final AircraftPreset DEFAULT_JAVI_PLANE = AircraftPreset.Builder
+			.createFromCopy(DSCombatMod.MODID, "javi_plane", UNARMED_JAVI_PLANE)
+			.setCraftable()
 			// left wing
 			.addItemSlot("dscombat.left_wing_1", SlotType.WING, 1.5, -0.3, 0, 0, 48, 40, 
 					ModItems.HEAVY_MISSILE_RACK.getId(), "aim120b", true)
@@ -116,17 +138,6 @@ public class DefaultAircraftPresets {
 			.addItemSlot("dscombat.internal_4", SlotType.ADVANCED_INTERNAL, 108, 100, ModItems.BASIC_FLARE_DISPENSER.getId(), true)
 			.addItemSlot("dscombat.internal_5", SlotType.ADVANCED_INTERNAL, 128, 100, ModItems.AR1K.getId())
 			.addItemSlot("dscombat.internal_6", SlotType.ADVANCED_INTERNAL, 148, 100, ModItems.GR400.getId())
-			.setDefaultTexture(DyeColor.GREEN, "dscombat:textures/entities/javi_plane/green.png")
-			.setAltTexture(DyeColor.BLUE, "dscombat:textures/entities/javi_plane/blue.png")
-			.setAltTexture(DyeColor.RED, "dscombat:textures/entities/javi_plane/red.png")
-			.setAltTexture(DyeColor.BLACK, "dscombat:textures/entities/javi_plane/black.png")
-			.setAltTexture(DyeColor.PURPLE, "dscombat:textures/entities/javi_plane/purple.png")
-			.addIngredient(ModItems.FUSELAGE.getId(), 2)
-			.addIngredient(ModItems.LARGE_WING.getId(), 2)
-			.addIngredient(ModItems.COCKPIT.getId())
-			.addIngredient("minecraft:gold_ingot", 4)
-			.addIngredient(ModItems.C6_ENGINE.getId(), 2)
-			.addIngredient(ModItems.HEAVY_FUEL_TANK.getId())
 			.addIngredient(ModItems.BASIC_FLARE_DISPENSER.getId())
 			.addIngredient(ModItems.AR1K.getId())
 			.addIngredient(ModItems.GR400.getId())

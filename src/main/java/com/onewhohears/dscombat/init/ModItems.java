@@ -190,6 +190,7 @@ public class ModItems {
 	 * if your radar is strong enough and you get close enough, you stop getting jammed
 	 */
 	
+	// FIXME 5 the changes to ammo item system will cause all ammo items in inventories to die...
 	// AMMO
 	public static final RegistryObject<Item> BULLET = ITEMS.register("bullet", 
 			() -> new ItemAmmo(64, "20mm", WeaponType.BULLET)); 

@@ -11,10 +11,6 @@ import net.minecraft.data.DataGenerator;
 
 public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 	
-	/*
-	 * TODO 0 default aircraft presets are not going to work well until weapon presets are finished and I add a billion null checks
-	 */
-	
 	protected void registerBullets() {
 		addPresetToGenerate(BulletData.Builder
 				.bulletBuilder(DSCombatMod.MODID, "20mm")
@@ -39,7 +35,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.addIngredient("minecraft:gunpowder", 2)
 				.build());
 		addPresetToGenerate(BulletData.Builder
-				.bulletBuilder(DSCombatMod.MODID, "20mm")
+				.bulletBuilder(DSCombatMod.MODID, "50mmhe")
 				.setFireRate(4)
 				.setInnacuracy(0.1f)
 				.setCanShootOnGround(true)

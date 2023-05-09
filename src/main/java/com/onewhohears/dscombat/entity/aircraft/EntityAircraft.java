@@ -241,6 +241,8 @@ public abstract class EntityAircraft extends Entity {
         }
     }
 	
+	// FIXME 0 missing preset data causes aircraft to freeze with an error
+	
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
 		// ORDER MATTERS
@@ -250,13 +252,12 @@ public abstract class EntityAircraft extends Entity {
 		if (nbt.contains("dyecolor")) color = nbt.getInt("dyecolor");
 		preset = nbt.getString("preset");
 		if (preset.isEmpty()) preset = defaultPreset;
-		AircraftPreset ap = AircraftPresets.get().getPreset(preset);
-		if (ap == null) {
-			System.out.println("ERROR: preset "+preset+" doesn't exist!");
+		else if (!AircraftPresets.get().has(preset)) {
 			preset = defaultPreset;
-			ap = AircraftPresets.get().getPreset(preset);
+			System.out.println("ERROR: preset "+preset+" doesn't exist!");
 		}
 		System.out.println(this+" using nbt preset "+preset);
+		AircraftPreset ap = AircraftPresets.get().getPreset(preset);
 		textures = ap.getAircraftTextures();
 		item = ap.getItem();
 		CompoundTag presetNbt = ap.getDataAsNBT();

@@ -31,6 +31,7 @@ public class AircraftPresets extends JsonPresetReloadListener<AircraftPreset> {
 	public AircraftPreset[] getAllPresets() {
 		if (allPresets == null) {
 			allPresets = presetMap.values().toArray(new AircraftPreset[presetMap.size()]);
+			// FIXME 4.1 sort by vehicle type the alphabetically
 		}
 		return allPresets;
 	}

@@ -47,7 +47,7 @@ public class ToServerCraftWeapon extends IPacket {
 		ctx.get().enqueueWork(() -> {
 			ServerPlayer player = ctx.get().getSender();
 			WeaponData data = WeaponPresets.get().getPreset(weaponId);
-			if (DSCIngredient.hasIngredients(data.getIngredients(), player.getInventory())) {
+			if (data != null && DSCIngredient.hasIngredients(data.getIngredients(), player.getInventory())) {
 				DSCIngredient.consumeIngredients(data.getIngredients(), player.getInventory());
 				ItemStack stack = data.getNewItem();
 				stack.setCount(data.getCraftNum());

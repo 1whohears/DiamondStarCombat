@@ -25,7 +25,7 @@ public class WeaponPartLoadRecipe extends CustomRecipe {
 	public WeaponPartLoadRecipe(ResourceLocation id) {
 		super(id);
 	}
-	// FIXME 0.2 verify this recipe works
+	
 	@Override
 	public boolean matches(CraftingContainer container, Level level) {
 		//debugContainer(container, "MATCHES?"); // opens on server side
@@ -77,6 +77,7 @@ public class WeaponPartLoadRecipe extends CustomRecipe {
 		for (int i = 0; i < container.getContainerSize(); ++i) {
 			ItemStack stack  = container.getItem(i);
 			if (stack.isEmpty()) continue;
+			if (!(stack.getItem() instanceof ItemAmmo)) continue;
 			String stackAmmoId = ItemAmmo.getWeaponId(stack);
 			if (stackAmmoId.equals("")) return null;
 			if (id == null) id = stackAmmoId;
@@ -93,6 +94,7 @@ public class WeaponPartLoadRecipe extends CustomRecipe {
 		if (!isIdSame(part, ammo)) return ItemStack.EMPTY;
 		int ca = 0, ma;
 		String weaponId = ItemAmmo.getWeaponId(ammo.get(0));
+		if (!WeaponPresets.get().has(weaponId)) return ItemStack.EMPTY;
 		if (part.getOrCreateTag().getString("weaponId").isEmpty()) {
 			ma = WeaponPresets.get().getPreset(weaponId).getMaxAmmo();
 		} else {
@@ -116,8 +118,9 @@ public class WeaponPartLoadRecipe extends CustomRecipe {
 		ItemStack part = getPart(container);
 		List<ItemStack> ammo = getAmmo(container);
 		int ca = 0, ma;
+		String weaponId = ItemAmmo.getWeaponId(ammo.get(0));
+		if (!WeaponPresets.get().has(weaponId)) return super.getRemainingItems(container);
 		if (part.getOrCreateTag().getString("weaponId").isEmpty()) {
-			String weaponId = ItemAmmo.getWeaponId(ammo.get(0));
 			ma = WeaponPresets.get().getPreset(weaponId).getMaxAmmo();
 		} else {
 			ca = part.getOrCreateTag().getInt("ammo");

@@ -30,16 +30,18 @@ public class UtilPacket {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityAircraft plane) {
-			plane.preset = preset;
-			AircraftPreset ap = AircraftPresets.get().getPreset(preset);
-			plane.textures = ap.getAircraftTextures();
-			plane.item = ap.getItem();
 			// ORDER MATTERS
 			plane.weaponSystem.setWeapons(weapons);
 			plane.weaponSystem.clientSetSelected(weaponIndex);
 			plane.radarSystem.setRadars(radars);
 			plane.partsManager.setPartSlots(slots);
 			plane.partsManager.clientPartsSetup();
+			// PRESET STUFF
+			if (!AircraftPresets.get().has(preset)) return;
+			AircraftPreset ap = AircraftPresets.get().getPreset(preset);
+			plane.textures = ap.getAircraftTextures();
+			plane.item = ap.getItem();
+			plane.preset = preset;
 		}
 	}
 	

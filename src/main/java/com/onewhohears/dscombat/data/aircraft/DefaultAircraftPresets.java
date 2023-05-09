@@ -308,7 +308,7 @@ public class DefaultAircraftPresets {
 			.addSeatSlot("dscombat.seat2", 0.5, 0.45, -0.85, 88, 20)
 			.addSeatSlot("dscombat.seat3", -0.5, 0.45, -0.85, 108, 20)
 			.addItemSlot("dscombat.internal_1", SlotType.INTERNAL, 48, 100, ModItems.C6_ENGINE.getId())
-			.addItemSlot("dscombat.internal_2", SlotType.INTERNAL, 68, 100, ModItems.LIGHT_FUEL_TANK.getId())
+			.addItemSlot("dscombat.internal_2", SlotType.INTERNAL, 68, 100, ModItems.LIGHT_FUEL_TANK.getId(), true)
 			.setDefaultTexture(DyeColor.ORANGE, "dscombat:textures/entities/orange_tesla/orange.png")
 			.addIngredient("minecraft:minecart", 4)
 			.addIngredient(ModItems.FUSELAGE.getId(), 1)

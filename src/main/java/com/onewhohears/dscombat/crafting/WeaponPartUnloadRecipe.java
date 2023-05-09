@@ -21,7 +21,7 @@ public class WeaponPartUnloadRecipe extends CustomRecipe {
 	public WeaponPartUnloadRecipe(ResourceLocation id) {
 		super(id);
 	}
-	// FIXME 0.3 verify this recipe works
+	
 	@Override
 	public boolean matches(CraftingContainer container, Level level) {
 		ItemStack s = null;
@@ -49,8 +49,8 @@ public class WeaponPartUnloadRecipe extends CustomRecipe {
 		}
 		if (part == null) return ItemStack.EMPTY;
 		String partId = part.getOrCreateTag().getString("weaponId");
+		if (!WeaponPresets.get().has(partId)) return ItemStack.EMPTY;
 		WeaponData wd = WeaponPresets.get().getPreset(partId);
-		if (wd == null) return ItemStack.EMPTY;
 		ItemStack ammo = wd.getNewItem();
 		ammo.setCount(part.getOrCreateTag().getInt("ammo"));
 		return ammo;

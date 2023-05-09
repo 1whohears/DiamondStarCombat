@@ -53,7 +53,8 @@ public class RadarSystem {
 		radars.clear();
 		ListTag list = compound.getList("radars", 10);
 		for (int i = 0; i < list.size(); ++i) {
-			radars.add(UtilParse.parseRadarFromCompound(list.getCompound(i)));
+			RadarData r = UtilParse.parseRadarFromCompound(list.getCompound(i));
+			if (r != null) radars.add(r);
 		}
 		readData = true;
 	}

@@ -23,13 +23,8 @@ import com.onewhohears.dscombat.data.parts.SeatData;
 import com.onewhohears.dscombat.data.parts.TurretData;
 import com.onewhohears.dscombat.data.parts.WeaponPartData;
 import com.onewhohears.dscombat.data.parts.WeaponRackData;
-import com.onewhohears.dscombat.data.weapon.AntiRadarMissileData;
-import com.onewhohears.dscombat.data.weapon.BombData;
-import com.onewhohears.dscombat.data.weapon.BulletData;
-import com.onewhohears.dscombat.data.weapon.IRMissileData;
-import com.onewhohears.dscombat.data.weapon.PosMissileData;
-import com.onewhohears.dscombat.data.weapon.TorpedoData;
-import com.onewhohears.dscombat.data.weapon.TrackMissileData;
+import com.onewhohears.dscombat.data.radar.RadarData;
+import com.onewhohears.dscombat.data.radar.RadarPresets;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.item.ItemPart;
@@ -163,33 +158,23 @@ public class UtilParse {
 	@Nullable
 	public static WeaponData parseWeaponFromCompound(CompoundTag tag) {
 		if (tag == null) return null;
-		if (tag.isEmpty()) return null;
-		if (!tag.contains("type")) {
-			String preset = tag.getString("preset");
-			if (preset.isEmpty()) return null;
-			CompoundTag data = WeaponPresets.getNbtById(preset);
-			if (data == null) return null;
-			tag.merge(data);
-		}
-		int index = tag.getInt("type");
-		WeaponData.WeaponType type = WeaponData.WeaponType.values()[index];
-		switch (type) {
-		case BOMB:
-			return new BombData(tag);
-		case BULLET:
-			return new BulletData(tag);
-		case IR_MISSILE:
-			return new IRMissileData(tag);
-		case POS_MISSILE:
-			return new PosMissileData(tag);
-		case TRACK_MISSILE:
-			return new TrackMissileData(tag);
-		case ANTIRADAR_MISSILE:
-			return new AntiRadarMissileData(tag);
-		case TORPEDO:
-			return new TorpedoData(tag);
-		}
-		return null;
+		if (!tag.contains("weaponId")) return null;
+		String weaponId = tag.getString("weaponId");
+		WeaponData data = WeaponPresets.get().getPreset(weaponId);
+		if (data == null) return null;
+		data.readNBT(tag);
+		return data;
+	}
+	
+	@Nullable
+	public static RadarData parseRadarFromCompound(CompoundTag tag) {
+		if (tag == null) return null;
+		if (!tag.contains("id")) return null;
+		String id = tag.getString("id");
+		RadarData data = RadarPresets.get().getPreset(id);
+		if (data == null) return null;
+		data.readNBT(tag);
+		return data;
 	}
 
 	public static float fixFloatNbt(CompoundTag nbt, String tag, CompoundTag presetNbt, float min) {

@@ -1,10 +1,10 @@
 package com.onewhohears.dscombat.item;
 
-import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.data.parts.TurretData;
 import com.onewhohears.dscombat.data.parts.TurretData.RotBounds;
+import com.onewhohears.dscombat.data.weapon.WeaponData;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -29,7 +29,7 @@ public class ItemTurret extends ItemPart {
 	public Component getName(ItemStack stack) {
 		CompoundTag tag = stack.getOrCreateTag();
 		MutableComponent name = Component.translatable(getDescriptionId()).append(" ")
-				.append(Component.translatable("item."+DSCombatMod.MODID+"."+weaponId));
+				.append(WeaponData.makeDisplayName(getCreatorModId(stack), weaponId));
 		int ammo = tag.getInt("ammo");
 		int max = tag.getInt("max");
 		if (max != 0) name.append(" "+ammo+"/"+max);

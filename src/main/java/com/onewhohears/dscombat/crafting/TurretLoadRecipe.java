@@ -24,7 +24,7 @@ public class TurretLoadRecipe extends CustomRecipe {
 	public TurretLoadRecipe(ResourceLocation id) {
 		super(id);
 	}
-
+	// FIXME 0.1 verify this recipe works
 	@Override
 	public boolean matches(CraftingContainer container, Level level) {
 		for (int i = 0; i < container.getContainerSize(); ++i) {
@@ -83,9 +83,9 @@ public class TurretLoadRecipe extends CustomRecipe {
 		List<ItemStack> ammo = getAmmo(container);
 		if (!isIdSame(part, ammo)) return ItemStack.EMPTY;
 		int ca = 0, ma;
-		String weaponId = ammo.get(0).getItem().getDescriptionId().split("\\.")[2];
+		String weaponId = ItemAmmo.getWeaponId(ammo.get(0));
 		if (part.getOrCreateTag().getString("weaponId").isEmpty()) {
-			ma = WeaponPresets.getById(weaponId).getMaxAmmo();
+			ma = WeaponPresets.get().getPreset(weaponId).getMaxAmmo();
 		} else {
 			ca = part.getOrCreateTag().getInt("ammo");
 			ma = part.getOrCreateTag().getInt("max");
@@ -107,8 +107,8 @@ public class TurretLoadRecipe extends CustomRecipe {
 		List<ItemStack> ammo = getAmmo(container);
 		int ca = 0, ma;
 		if (part.getOrCreateTag().getString("weaponId").isEmpty()) {
-			String weaponId = ammo.get(0).getItem().getDescriptionId().split("\\.")[2];
-			ma = WeaponPresets.getById(weaponId).getMaxAmmo();
+			String weaponId = ItemAmmo.getWeaponId(ammo.get(0));
+			ma = WeaponPresets.get().getPreset(weaponId).getMaxAmmo();
 		} else {
 			ca = part.getOrCreateTag().getInt("ammo");
 			ma = part.getOrCreateTag().getInt("max");

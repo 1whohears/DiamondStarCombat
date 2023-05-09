@@ -4,7 +4,9 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientDataPackSynch;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
+import com.onewhohears.dscombat.data.radar.RadarPresets;
 import com.onewhohears.dscombat.data.weapon.NonTickingMissileManager;
+import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 
 import net.minecraft.world.phys.AABB;
@@ -52,11 +54,15 @@ public final class CommonForgeEvents {
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void serverStoppingEvent(ServerStoppingEvent event) {
 		AircraftPresets.close();
+		WeaponPresets.close();
+		RadarPresets.close();
 	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void addReloadListener(AddReloadListenerEvent event) {
 		event.addListener(AircraftPresets.get());
+		event.addListener(WeaponPresets.get());
+		event.addListener(RadarPresets.get());
 	}
 	
 }

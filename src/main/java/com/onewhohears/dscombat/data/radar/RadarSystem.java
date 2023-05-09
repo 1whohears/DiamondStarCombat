@@ -15,6 +15,7 @@ import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.init.DataSerializers;
+import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -51,26 +52,28 @@ public class RadarSystem {
 	public void read(CompoundTag compound) {
 		radars.clear();
 		ListTag list = compound.getList("radars", 10);
-		for (int i = 0; i < list.size(); ++i) radars.add(new RadarData(list.getCompound(i)));
+		for (int i = 0; i < list.size(); ++i) {
+			radars.add(UtilParse.parseRadarFromCompound(list.getCompound(i)));
+		}
 		readData = true;
 	}
 	
 	public void write(CompoundTag compound) {
 		ListTag list = new ListTag();
-		for (int i = 0; i < radars.size(); ++i) list.add(radars.get(i).write());
+		for (int i = 0; i < radars.size(); ++i) list.add(radars.get(i).writeNbt());
 		compound.put("radars", list);
 	}
 	
 	public static List<RadarData> readRadarsFromBuffer(FriendlyByteBuf buffer) {
 		List<RadarData> radars = new ArrayList<RadarData>();
 		int num = buffer.readInt();
-		for (int i = 0; i < num; ++i) radars.add(new RadarData(buffer));
+		for (int i = 0; i < num; ++i) radars.add(DataSerializers.RADAR_DATA.read(buffer));
 		return radars;
 	}
 	
 	public static void writeRadarsToBuffer(FriendlyByteBuf buffer, List<RadarData> radars) {
 		buffer.writeInt(radars.size());
-		for (int i = 0; i < radars.size(); ++i) radars.get(i).write(buffer);
+		for (int i = 0; i < radars.size(); ++i) DataSerializers.RADAR_DATA.write(buffer, radars.get(i));
 	}
 	
 	public void setRadars(List<RadarData> radars) {

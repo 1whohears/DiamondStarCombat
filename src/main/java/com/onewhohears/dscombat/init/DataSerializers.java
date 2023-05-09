@@ -13,14 +13,10 @@ import com.onewhohears.dscombat.data.parts.SeatData;
 import com.onewhohears.dscombat.data.parts.TurretData;
 import com.onewhohears.dscombat.data.parts.WeaponPartData;
 import com.onewhohears.dscombat.data.parts.WeaponRackData;
-import com.onewhohears.dscombat.data.weapon.AntiRadarMissileData;
-import com.onewhohears.dscombat.data.weapon.BombData;
-import com.onewhohears.dscombat.data.weapon.BulletData;
-import com.onewhohears.dscombat.data.weapon.IRMissileData;
-import com.onewhohears.dscombat.data.weapon.PosMissileData;
-import com.onewhohears.dscombat.data.weapon.TorpedoData;
-import com.onewhohears.dscombat.data.weapon.TrackMissileData;
+import com.onewhohears.dscombat.data.radar.RadarData;
+import com.onewhohears.dscombat.data.radar.RadarPresets;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataSerializer;
@@ -81,36 +77,43 @@ public class DataSerializers {
     	
     };
     
+    public static final EntityDataSerializer<RadarData> RADAR_DATA = new EntityDataSerializer<>() {
+
+		@Override
+		public void write(FriendlyByteBuf buffer, RadarData r) {
+			r.writeBuffer(buffer);
+		}
+
+		@Override
+		public RadarData read(FriendlyByteBuf buffer) {
+			String id = buffer.readUtf();
+			RadarData data = RadarPresets.get().getPreset(id);
+			if (data == null) return null;
+			data.readBuffer(buffer);
+			return data;
+		}
+
+		@Override
+		public RadarData copy(RadarData r) {
+			return r;
+		}
+    	
+    };
+    
     public static final EntityDataSerializer<WeaponData> WEAPON_DATA = new EntityDataSerializer<>() {
 
 		@Override
 		public void write(FriendlyByteBuf buffer, WeaponData w) {
-			w.write(buffer);
+			w.writeBuffer(buffer);
 		}
 
 		@Override
 		public WeaponData read(FriendlyByteBuf buffer) {
-			//System.out.println("WEAPON DATA DESERIALIZE");
-			int index = buffer.readInt();
-			WeaponData.WeaponType type = WeaponData.WeaponType.values()[index];
-			//System.out.println("type = "+type.name());
-			switch (type) {
-			case BOMB:
-				return new BombData(buffer);
-			case BULLET:
-				return new BulletData(buffer);
-			case IR_MISSILE:
-				return new IRMissileData(buffer);
-			case POS_MISSILE:
-				return new PosMissileData(buffer);
-			case TRACK_MISSILE:
-				return new TrackMissileData(buffer);
-			case ANTIRADAR_MISSILE:
-				return new AntiRadarMissileData(buffer);
-			case TORPEDO:
-				return new TorpedoData(buffer);
-			}
-			return null;
+			String weaponId = buffer.readUtf();
+			WeaponData data = WeaponPresets.get().getPreset(weaponId);
+			if (data == null) return null;
+			data.readBuffer(buffer);
+			return data;
 		}
 
 		@Override
@@ -170,6 +173,9 @@ public class DataSerializers {
     
     public static final RegistryObject<EntityDataSerializer<?>> SERIALIZER_ENTRY_VEC3 = DATA_SERIALIZERS
     		.register("vec3", () -> VEC3);
+    
+    public static final RegistryObject<EntityDataSerializer<?>> SERIALIZER_ENTRY_RADARDATA = DATA_SERIALIZERS
+    		.register("radardata", () -> RADAR_DATA);
     
     public static final RegistryObject<EntityDataSerializer<?>> SERIALIZER_ENTRY_WEAPONDATA = DATA_SERIALIZERS
     		.register("weapondata", () -> WEAPON_DATA);

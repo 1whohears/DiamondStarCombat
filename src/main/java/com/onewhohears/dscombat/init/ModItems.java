@@ -5,8 +5,7 @@ import com.onewhohears.dscombat.data.aircraft.DefaultAircraftPresets;
 import com.onewhohears.dscombat.data.parts.BuffData.BuffType;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.TurretData.RotBounds;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
-import com.onewhohears.dscombat.data.weapon.WeaponPresets;
+import com.onewhohears.dscombat.data.weapon.WeaponData.WeaponType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.item.ItemAircraft;
 import com.onewhohears.dscombat.item.ItemAmmo;
@@ -36,18 +35,7 @@ public class ModItems {
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, DSCombatMod.MODID);
 	
 	public static void register(IEventBus eventBus) {
-		registerWeaponPresets();
 		ITEMS.register(eventBus);
-	}
-	
-	public static void registerWeaponPresets() {
-		for (int i = 0; i < WeaponPresets.weapons.size(); ++i) {
-			WeaponData data = WeaponPresets.weapons.get(i);
-			final int size;
-			if (data.getMaxAmmo() < 64) size = data.getMaxAmmo();
-			else size = 64;
-			ITEMS.register(data.getId(), () -> new ItemAmmo(size, data.getId()));
-		}
 	}
 	
 	public static final CreativeModeTab PARTS = new CreativeModeTab("parts") {
@@ -191,16 +179,24 @@ public class ModItems {
 	
 	// WEAPON PARTS
 	public static final RegistryObject<Item> XM12 = ITEMS.register("xm12", 
-			() -> new ItemWeaponPart(1f, "xm12", PartSlot.EXTERNAL_ALL)); 
+			() -> new ItemWeaponPart(1f, PartSlot.EXTERNAL_ALL)); 
 	public static final RegistryObject<Item> LIGHT_MISSILE_RACK = ITEMS.register("light_missile_rack", 
-			() -> new ItemWeaponPart(2f, "light_missile_rack", PartSlot.EXTERNAL_ALL)); 
+			() -> new ItemWeaponPart(2f, PartSlot.EXTERNAL_ALL)); 
 	public static final RegistryObject<Item> HEAVY_MISSILE_RACK = ITEMS.register("heavy_missile_rack", 
-			() -> new ItemWeaponPart(4f, "heavy_missile_rack", PartSlot.EXTERNAL_ALL)); 
+			() -> new ItemWeaponPart(4f, PartSlot.EXTERNAL_ALL)); 
 	/**
 	 * TODO 2.1 radar jamming weapon
 	 * causes victims radar to display random noise
 	 * if your radar is strong enough and you get close enough, you stop getting jammed
 	 */
+	
+	// AMMO
+	public static final RegistryObject<Item> BULLET = ITEMS.register("bullet", 
+			() -> new ItemAmmo(64, "20mm", WeaponType.BULLET)); 
+	public static final RegistryObject<Item> TRACK_MISSILE = ITEMS.register("track_missile", 
+			() -> new ItemAmmo(8, "aim120b", WeaponType.TRACK_MISSILE)); 
+	public static final RegistryObject<Item> IR_MISSILE = ITEMS.register("ir_missile", 
+			() -> new ItemAmmo(8, "aim9p5", WeaponType.IR_MISSILE)); 
 	
 	// PLANES
 	public static final RegistryObject<Item> JAVI_PLANE = ITEMS.register("javi_plane", 

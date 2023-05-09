@@ -3,15 +3,18 @@ package com.onewhohears.dscombat.data.radar;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.Config;
+import com.onewhohears.dscombat.data.JsonPreset;
+import com.onewhohears.dscombat.data.PresetBuilder;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.UtilEntity;
-import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
@@ -19,94 +22,115 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-public class RadarData {
+public class RadarData extends JsonPreset {
 	
-	private String id;
-	private Vec3 pos;
-	private double range;
-	private double sensitivity;
-	private double fov;
-	private int scanRate;
-	private boolean scanAircraft;
-	private boolean scanPlayers;
-	private boolean scanMobs;
-	private boolean scanGround;
-	private boolean scanAir;
-	private double throWaterRange;
-	private double throGroundRange;
+	public static class Builder extends PresetBuilder<Builder> {
+
+		public Builder(String namespace, String name, JsonPresetFactory<? extends RadarData> sup) {
+			super(namespace, name, sup);
+		}
+		
+		public static Builder create(String namespace, String name) {
+			return new Builder(namespace, name, (key, json) -> new RadarData(key, json));
+		}
+		
+		public Builder setRange(float range) {
+			return setFloat("range", range);
+		}
+		
+		public Builder setSensitivity(float sensitivity) {
+			return setFloat("sensitivity", sensitivity);
+		}
+		
+		public Builder setFieldOfView(float fov) {
+			return setFloat("fov", fov);
+		}
+		
+		public Builder setScanRate(int scanRate) {
+			return setInt("scanRate", scanRate);
+		}
+		
+		public Builder setScanAircraft(boolean scanAircraft) {
+			return setBoolean("scanAircraft", scanAircraft);
+		}
+		
+		public Builder setScanPlayers(boolean scanPlayers) {
+			return setBoolean("scanPlayers", scanPlayers);
+		}
+		
+		public Builder setScanMobs(boolean scanMobs) {
+			return setBoolean("scanMobs", scanMobs);
+		}
+		
+		public Builder setScanGround(boolean scanGround) {
+			return setBoolean("scanGround", scanGround);
+		}
+		
+		public Builder setScanAir(boolean scanAir) {
+			return setBoolean("scanAir", scanAir);
+		}
+		
+		public Builder setThroWaterRange(float throWaterRange) {
+			return setFloat("throWaterRange", throWaterRange);
+		}
+		
+		public Builder setThroGroundRange(float throGroundRange) {
+			return setFloat("throGroundRange", throGroundRange);
+		}
+		
+	}
+	
+	private final double range;
+	private final double sensitivity;
+	private final double fov;
+	private final int scanRate;
+	private final boolean scanAircraft;
+	private final boolean scanPlayers;
+	private final boolean scanMobs;
+	private final boolean scanGround;
+	private final boolean scanAir;
+	private final double throWaterRange;
+	private final double throGroundRange;
+	
 	private String slotId = "";
-	
+	private Vec3 pos = Vec3.ZERO;
 	private boolean freshTargets;
 	private int scanTicks;
 	private List<RadarPing> pings = new ArrayList<RadarPing>();
 	
-	public RadarData(CompoundTag tag) {
-		id = tag.getString("id");
-		pos = new Vec3(0, 0, 0);
-		range = tag.getDouble("range");
-		sensitivity = UtilParse.fixFloatNbt(tag, "sensitivity", 1);
-		fov = tag.getDouble("fov");
-		scanRate = tag.getInt("scanRate");
-		scanAircraft = tag.getBoolean("scanAircraft");
-		scanPlayers = tag.getBoolean("scanPlayers");
-		scanMobs = tag.getBoolean("scanMobs");
-		scanGround = tag.getBoolean("scanGround");
-		scanAir = tag.getBoolean("scanAir");
-		throWaterRange = tag.getDouble("throWaterRange");
-		throGroundRange = tag.getDouble("throGroundRange");
-		slotId = tag.getString("slotId");
+	public RadarData(ResourceLocation key, JsonObject json) {
+		super(key, json);
+		range = json.get("range").getAsDouble();
+		sensitivity = json.get("sensitivity").getAsDouble();
+		fov = json.get("fov").getAsDouble();
+		scanRate = json.get("scanRate").getAsInt();
+		scanAircraft = json.get("scanAircraft").getAsBoolean();
+		scanPlayers = json.get("scanPlayers").getAsBoolean();
+		scanMobs = json.get("scanMobs").getAsBoolean();
+		scanGround = json.get("scanGround").getAsBoolean();
+		scanAir = json.get("scanAir").getAsBoolean();
+		throWaterRange = json.get("throWaterRange").getAsDouble();
+		throGroundRange = json.get("throGroundRange").getAsDouble();
 	}
 	
-	public CompoundTag write() {
+	public void readNBT(CompoundTag tag) {
+		setSlot(tag.getString("slotId"));
+	}
+	
+	public CompoundTag writeNbt() {
 		CompoundTag tag = new CompoundTag();
-		tag.putString("id", id);
-		// pos
-		tag.putDouble("range", range);
-		tag.putDouble("sensitivity", sensitivity);
-		tag.putDouble("fov", fov);
-		tag.putInt("scanRate", scanRate);
-		tag.putBoolean("scanAircraft", scanAircraft);
-		tag.putBoolean("scanPlayers", scanPlayers);
-		tag.putBoolean("scanMobs", scanMobs);
-		tag.putBoolean("scanGround", scanGround);
-		tag.putBoolean("scanAir", scanAir);
-		tag.putDouble("throWaterRange", throWaterRange);
-		tag.putDouble("throGroundRange", throGroundRange);
+		tag.putString("id", getId());
 		tag.putString("slotId", slotId);
 		return tag;
 	}
 	
-	public RadarData(FriendlyByteBuf buffer) {
-		id = buffer.readUtf();
-		pos = new Vec3(0, 0, 0);
-		range = buffer.readDouble();
-		sensitivity = buffer.readDouble();
-		fov = buffer.readDouble();
-		scanRate = buffer.readInt();
-		scanAircraft = buffer.readBoolean();
-		scanPlayers = buffer.readBoolean();
-		scanMobs = buffer.readBoolean();
-		scanGround = buffer.readBoolean();
-		scanAir = buffer.readBoolean();
-		throWaterRange = buffer.readDouble();
-		throGroundRange = buffer.readDouble();
+	public void readBuffer(FriendlyByteBuf buffer) {
+		// id String is read in DataSerializers
 		slotId = buffer.readUtf();
 	}
 	
-	public void write(FriendlyByteBuf buffer) {
-		buffer.writeUtf(id);
-		// pos
-		buffer.writeDouble(range);
-		buffer.writeDouble(sensitivity);
-		buffer.writeDouble(fov);
-		buffer.writeInt(scanRate);
-		buffer.writeBoolean(scanAircraft);
-		buffer.writeBoolean(scanPlayers);
-		buffer.writeBoolean(scanMobs);
-		buffer.writeBoolean(scanGround);
-		buffer.writeBoolean(scanAir);
-		buffer.writeDouble(throWaterRange);
-		buffer.writeDouble(throGroundRange);
+	public void writeBuffer(FriendlyByteBuf buffer) {
+		buffer.writeUtf(getId());
 		buffer.writeUtf(slotId);
 	}
 	
@@ -232,32 +256,18 @@ public class RadarData {
 		return new AABB(x+w, y+w, z+w, x-w, y-w, z-w);
 	}
 	
-	public String getId() {
-		return id;
-	}
-	
 	public double getRange() {
 		return range;
 	}
 
-	public void setRange(double range) {
-		this.range = range;
-	}
 
 	public double getFov() {
 		return fov;
 	}
 
-	public void setFov(double fov) {
-		this.fov = fov;
-	}
 
 	public int getScanRate() {
 		return scanRate;
-	}
-
-	public void setScanRate(int scanRate) {
-		this.scanRate = scanRate;
 	}
 	
 	public boolean isFreshTargets() {
@@ -275,33 +285,13 @@ public class RadarData {
 	public boolean isScanMobs() {
 		return scanMobs;
 	}
-
-	public void setScanAircraft(boolean scanAircraft) {
-		this.scanAircraft = scanAircraft;
-	}
-
-	public void setScanPlayers(boolean scanPlayers) {
-		this.scanPlayers = scanPlayers;
-	}
-
-	public void setScanMobs(boolean scanMobs) {
-		this.scanMobs = scanMobs;
-	}
 	
 	public boolean isScanGround() {
 		return scanGround;
 	}
 
-	public void setScanGround(boolean scanGround) {
-		this.scanGround = scanGround;
-	}
-
 	public boolean isScanAir() {
 		return scanAir;
-	}
-
-	public void setScanAir(boolean scanAir) {
-		this.scanAir = scanAir;
 	}
 
 	public static class RadarPing {
@@ -337,11 +327,11 @@ public class RadarData {
 	
 	@Override
 	public String toString() {
-		return "["+id+":"+fov+":"+range+"]";
+		return "["+getId()+":"+fov+":"+range+"]";
 	}
 	
 	public RadarData copy() {
-		return new RadarData(write());
+		return new RadarData(getKey(), getJsonData());
 	}
 	
 	public String getSlotId() {
@@ -363,7 +353,7 @@ public class RadarData {
 	public boolean idMatch(String id, String slotId) {
 		if (slotId == null) return false;
 		if (id == null) return false;
-		return this.id.equals(id) && this.slotId.equals(slotId);
+		return getId().equals(id) && slotId.equals(slotId);
 	}
 	
 }

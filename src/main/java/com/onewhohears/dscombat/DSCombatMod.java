@@ -5,8 +5,8 @@ import com.onewhohears.dscombat.client.screen.AircraftScreen;
 import com.onewhohears.dscombat.client.screen.WeaponsBlockScreen;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresetGenerator;
-import com.onewhohears.dscombat.data.radar.RadarPresets;
-import com.onewhohears.dscombat.data.weapon.WeaponPresets;
+import com.onewhohears.dscombat.data.radar.RadarPresetGenerator;
+import com.onewhohears.dscombat.data.weapon.WeaponPresetGenerator;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModBlockEntities;
 import com.onewhohears.dscombat.init.ModBlocks;
@@ -36,10 +36,6 @@ public class DSCombatMod {
     	ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.clientSpec);
     	ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.serverSpec);
     	IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
-    	// ORDER MATTERS
-    	WeaponPresets.setupPresets();
-    	RadarPresets.setupPresets();
-        //AircraftPresetProvider.setupPresets();
     	
         ModBlocks.register(eventBus);
         ModContainers.register(eventBus);
@@ -69,6 +65,8 @@ public class DSCombatMod {
     	DataGenerator generator = event.getGenerator();
     	event.includeServer();
     	generator.addProvider(true, new AircraftPresetGenerator(generator));
+    	generator.addProvider(true, new WeaponPresetGenerator(generator));
+    	generator.addProvider(true, new RadarPresetGenerator(generator));
     }
     
 }

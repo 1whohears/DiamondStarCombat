@@ -4,9 +4,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.common.network.IPacket;
-import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
-import com.onewhohears.dscombat.util.UtilPacket;
+import com.onewhohears.dscombat.data.radar.RadarPresets;
+import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.api.distmarker.Dist;
@@ -15,20 +15,22 @@ import net.minecraftforge.network.NetworkEvent.Context;
 
 public class ToClientDataPackSynch extends IPacket {
 	
-	public final AircraftPreset[] presets;
-	
 	public ToClientDataPackSynch() {
-		presets = AircraftPresets.get().getAllPresets();
+		
 	}
 	
 	public ToClientDataPackSynch(FriendlyByteBuf buffer) {
 		super(buffer);
-		presets = AircraftPresets.readBuffer(buffer);
+		WeaponPresets.get().readBuffer(buffer);
+		RadarPresets.get().readBuffer(buffer);
+		AircraftPresets.get().readBuffer(buffer);
 	}
 	
 	@Override
 	public void encode(FriendlyByteBuf buffer) {
-		AircraftPresets.get().writeBuffer(buffer);
+		WeaponPresets.get().writeToBuffer(buffer);
+		RadarPresets.get().writeToBuffer(buffer);
+		AircraftPresets.get().writeToBuffer(buffer);
 	}
 
 	@Override
@@ -36,7 +38,7 @@ public class ToClientDataPackSynch extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilPacket.dataPackSynch(presets);
+				
 				success.set(true);
 			});
 		});

@@ -21,7 +21,7 @@ public class WeaponPartUnloadRecipe extends CustomRecipe {
 	public WeaponPartUnloadRecipe(ResourceLocation id) {
 		super(id);
 	}
-
+	// FIXME 0.3 verify this recipe works
 	@Override
 	public boolean matches(CraftingContainer container, Level level) {
 		ItemStack s = null;

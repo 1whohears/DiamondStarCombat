@@ -29,7 +29,7 @@ public class WeaponPartData extends PartData {
 	
 	public WeaponPartData(float weight, String preset, String[] compatible, ResourceLocation itemid, SlotType[] compatibleSlots) {
 		this(weight, 0, 0, preset, compatible, itemid, compatibleSlots);
-		WeaponData data = WeaponPresets.getById(preset);
+		WeaponData data = WeaponPresets.get().getPreset(weaponId);
 		if (data != null) {
 			this.ammo = data.getMaxAmmo();
 			this.max = data.getMaxAmmo();
@@ -86,13 +86,13 @@ public class WeaponPartData extends PartData {
 		super.setup(craft, slotId, pos);
 		WeaponData data = craft.weaponSystem.get(weaponId, slotId);
 		if (data == null) {
-			data = WeaponPresets.getNewById(weaponId);
+			data = WeaponPresets.get().getPreset(weaponId);
 			if (data == null) return;
 			data.setSlot(slotId);
 			craft.weaponSystem.addWeapon(data);
 		}
 		data.setCurrentAmmo(ammo);
-		data.setMaxAmmo(max);
+		//data.setMaxAmmo(max);
 		data.setLaunchPos(pos);
 		if (!craft.level.isClientSide) data.updateClientAmmo(craft);
 	}

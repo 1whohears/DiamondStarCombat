@@ -2,29 +2,50 @@ package com.onewhohears.dscombat.data.weapon;
 
 import java.util.List;
 
+import com.google.gson.JsonObject;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 
 public class BombData extends BulletData {
 	
-	public BombData(CompoundTag tag) {
-		super(tag);
+	public static class Builder extends AbstractWeaponBuilders.BombBuilder<Builder> {
+		
+		protected Builder(String namespace, String name, JsonPresetFactory<? extends BombData> sup) {
+			super(namespace, name, sup, WeaponType.BOMB);
+		}
+		
+		public static Builder bombBuilder(String namespace, String name) {
+			return new Builder(namespace, name, (key, json) -> new BombData(key, json));
+		}
+		
+	}
+	
+	public BombData(ResourceLocation key, JsonObject json) {
+		super(key, json);
 	}
 	
 	@Override
-	public CompoundTag write() {
-		CompoundTag tag = super.write();
+	public void readNBT(CompoundTag tag) {
+		super.readNBT(tag);
+	}
+	
+	@Override
+	public CompoundTag writeNbt() {
+		CompoundTag tag = super.writeNbt();
 		// TODO 2.2 make a bomb
 		return tag;
 	}
 	
-	public BombData(FriendlyByteBuf buffer) {
-		super(buffer);
+	@Override
+	public void readBuffer(FriendlyByteBuf buffer) {
+		super.readBuffer(buffer);
 	}
 	
 	@Override
-	public void write(FriendlyByteBuf buffer) {
-		super.write(buffer);
+	public void writeBuffer(FriendlyByteBuf buffer) {
+		super.writeBuffer(buffer);
 	}
 	
 	@Override
@@ -34,7 +55,7 @@ public class BombData extends BulletData {
 	
 	@Override
 	public WeaponData copy() {
-		return new BombData(this.write());
+		return new BombData(getKey(), getJsonData());
 	}
 	
 	@Override

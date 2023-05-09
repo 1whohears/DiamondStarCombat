@@ -169,7 +169,7 @@ public abstract class EntityAircraft extends Entity {
 			RegistryObject<SoundEvent> engineSound,
 			boolean negativeThrottle, float Ix, float Iy, float Iz, float explodeSize) {
 		super(entityType, level);
-		this.defaultPreset = defaultPreset.getPresetId();
+		this.defaultPreset = defaultPreset.getId();
 		this.preset = this.defaultPreset;
 		this.textures = defaultPreset.getAircraftTextures();
 		this.currentTexture = textures.getDefaultTexture();
@@ -250,11 +250,11 @@ public abstract class EntityAircraft extends Entity {
 		if (nbt.contains("dyecolor")) color = nbt.getInt("dyecolor");
 		preset = nbt.getString("preset");
 		if (preset.isEmpty()) preset = defaultPreset;
-		AircraftPreset ap = AircraftPresets.get().getAircraftPreset(preset);
+		AircraftPreset ap = AircraftPresets.get().getPreset(preset);
 		if (ap == null) {
 			System.out.println("ERROR: preset "+preset+" doesn't exist!");
 			preset = defaultPreset;
-			ap = AircraftPresets.get().getAircraftPreset(preset);
+			ap = AircraftPresets.get().getPreset(preset);
 		}
 		System.out.println(this+" using nbt preset "+preset);
 		textures = ap.getAircraftTextures();
@@ -1069,7 +1069,7 @@ public abstract class EntityAircraft extends Entity {
 					return InteractionResult.SUCCESS;
 				// RELOAD
 				} else if (item instanceof ItemAmmo ammo) {
-					String ammoId = ammo.getAmmoId();
+					String ammoId = ItemAmmo.getWeaponId(stack);
 					for (EntityTurret t : getTurrets()) {
 						WeaponData wd = t.getWeaponData();
 						if (wd == null) continue;

@@ -2,68 +2,86 @@ package com.onewhohears.dscombat.data.weapon;
 
 import java.util.List;
 
+import com.google.gson.JsonObject;
+import com.onewhohears.dscombat.data.weapon.WeaponData.WeaponType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
-import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public abstract class MissileData extends BulletData {
 	
-	private float turnRadius;
-	private double acceleration;
-	private double fuseDist;
-	private float fov;
-	private double bleed;
-	private int fuelTicks;
+	public static class Builder extends AbstractWeaponBuilders.MissileBuilder<Builder> {
+
+		protected Builder(String namespace, String name, JsonPresetFactory<? extends MissileData> sup, WeaponType type) {
+			super(namespace, name, sup, type);
+		}
+		
+		public static Builder posMissileBuilder(String namespace, String name) {
+			return new Builder(namespace, name, (key, json) -> new PosMissileData(key, json), WeaponType.POS_MISSILE);
+		}
+		
+		public static Builder irMissileBuilder(String namespace, String name) {
+			return new Builder(namespace, name, (key, json) -> new IRMissileData(key, json), WeaponType.IR_MISSILE);
+		}
+		
+		public static Builder trackMissileBuilder(String namespace, String name) {
+			return new Builder(namespace, name, (key, json) -> new TrackMissileData(key, json), WeaponType.TRACK_MISSILE);
+		}
+		
+		public static Builder torpedoBuilder(String namespace, String name) {
+			return new Builder(namespace, name, (key, json) -> new TorpedoData(key, json), WeaponType.TORPEDO);
+		}
+		
+		public static Builder antiRadarMissileBuilder(String namespace, String name) {
+			return new Builder(namespace, name, (key, json) -> new AntiRadarMissileData(key, json), WeaponType.ANTIRADAR_MISSILE);
+		}
+		
+	}
 	
-	public MissileData(CompoundTag tag) {
-		super(tag);
-		turnRadius = UtilParse.fixFloatNbt(tag, "turnRadius", 100);
-		acceleration = tag.getDouble("acceleration");
-		fuseDist = tag.getDouble("fuseDist");
-		fov = tag.getFloat("fov");
-		bleed = tag.getDouble("bleed");
-		fuelTicks = tag.getInt("fuelTicks");
+	private final float turnRadius;
+	private final double acceleration;
+	private final double fuseDist;
+	private final float fov;
+	private final double bleed;
+	private final int fuelTicks;
+	
+	public MissileData(ResourceLocation key, JsonObject json) {
+		super(key, json);
+		turnRadius = json.get("turnRadius").getAsFloat();
+		acceleration = json.get("acceleration").getAsDouble();
+		fuseDist = json.get("fuseDist").getAsDouble();
+		fov = json.get("fov").getAsFloat();
+		bleed = json.get("bleed").getAsDouble();
+		fuelTicks = json.get("fuelTicks").getAsInt();
 	}
 	
 	@Override
-	public CompoundTag write() {
-		CompoundTag tag = super.write();
-		tag.putFloat("turnRadius", turnRadius);
-		tag.putDouble("acceleration", acceleration);
-		tag.putDouble("fuseDist", fuseDist);
-		tag.putFloat("fov", fov);
-		tag.putDouble("bleed", bleed);
-		tag.putInt("fuelTicks", fuelTicks);
+	public void readNBT(CompoundTag tag) {
+		super.readNBT(tag);
+	}
+	
+	@Override
+	public CompoundTag writeNbt() {
+		CompoundTag tag = super.writeNbt();
 		return tag;
 	}
 	
-	public MissileData(FriendlyByteBuf buffer) {
-		super(buffer);
-		turnRadius = buffer.readFloat();
-		acceleration = buffer.readDouble();
-		fuseDist = buffer.readDouble();
-		fov = buffer.readFloat();
-		bleed = buffer.readDouble();
-		fuelTicks = buffer.readInt();
+	@Override
+	public void readBuffer(FriendlyByteBuf buffer) {
+		super.readBuffer(buffer);
 	}
 	
 	@Override
-	public void write(FriendlyByteBuf buffer) {
-		super.write(buffer);
-		buffer.writeFloat(turnRadius);
-		buffer.writeDouble(acceleration);
-		buffer.writeDouble(fuseDist);
-		buffer.writeFloat(fov);
-		buffer.writeDouble(bleed);
-		buffer.writeInt(fuelTicks);
+	public void writeBuffer(FriendlyByteBuf buffer) {
+		super.writeBuffer(buffer);
 	}
 
 	public float getTurnRadius() {

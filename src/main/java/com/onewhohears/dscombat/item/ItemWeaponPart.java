@@ -1,9 +1,11 @@
 package com.onewhohears.dscombat.item;
 
-import com.onewhohears.dscombat.DSCombatMod;
+import java.util.List;
+
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.data.parts.WeaponRackData;
+import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.init.ModItems;
 
@@ -11,17 +13,15 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class ItemWeaponPart extends ItemPart {
 	
-	public final String[] compatible;
-	
-	public ItemWeaponPart(float weight, String compatibilityType, SlotType[] compatibleSlots) {
+	public ItemWeaponPart(float weight, SlotType[] compatibleSlots) {
 		super(ItemAmmo.weaponProps(1), weight, compatibleSlots);
-		this.compatible = WeaponPresets.getCompatibility(compatibilityType);
 	}
 	
 	@Override
@@ -32,7 +32,7 @@ public class ItemWeaponPart extends ItemPart {
 		if (weapon.isEmpty()) {
 			name.append("EMPTY");
 		} else {
-			name.append(Component.translatable("item."+DSCombatMod.MODID+"."+weapon))
+			name.append(WeaponData.makeDisplayName(getCreatorModId(stack), weapon))
 				.append(" "+tag.getInt("ammo")+"/"+tag.getInt("max"));
 		}
 		return name;	
@@ -41,7 +41,10 @@ public class ItemWeaponPart extends ItemPart {
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
 		if (group.getId() == ModItems.WEAPONS.getId()) {
-			for (int i = 0; i < compatible.length; ++i) addWeaponRack(compatible[i], items);
+			ResourceLocation itemid = ForgeRegistries.ITEMS.getKey(this);
+			List<String> list = WeaponPresets.get().getCompatibleWeapons(itemid);
+			for (int i = 0; i < list.size(); ++i) 
+				addWeaponRack(list.get(i), items);
 		}
 	}
 	
@@ -58,7 +61,10 @@ public class ItemWeaponPart extends ItemPart {
 	
 	@Override
 	public PartData getFilledPartData(String param) {
-		return new WeaponRackData(weight, param, compatible, ForgeRegistries.ITEMS.getKey(this), compatibleSlots);
+		ResourceLocation itemid = ForgeRegistries.ITEMS.getKey(this);
+		List<String> list = WeaponPresets.get().getCompatibleWeapons(itemid);
+		String[] compatible = list.toArray(new String[list.size()]);
+		return new WeaponRackData(weight, param, compatible, itemid, compatibleSlots);
 	}
 
 }

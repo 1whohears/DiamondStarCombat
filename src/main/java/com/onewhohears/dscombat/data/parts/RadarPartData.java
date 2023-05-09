@@ -55,7 +55,7 @@ public class RadarPartData extends PartData {
 		super.setup(craft, slotId, pos);
 		RadarData data = craft.radarSystem.get(radarId, slotId);
 		if (data == null) {
-			data = RadarPresets.getById(radarId);
+			data = RadarPresets.get().getPreset(radarId);
 			if (data == null) return;
 			data.setSlot(slotId);
 			craft.radarSystem.addRadar(data);

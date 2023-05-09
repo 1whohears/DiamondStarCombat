@@ -3,83 +3,91 @@ package com.onewhohears.dscombat.data.weapon;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.onewhohears.dscombat.util.UtilParse;
+import com.onewhohears.dscombat.data.JsonPresetReloadListener;
 
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 
-public class WeaponPresets {
+public class WeaponPresets extends JsonPresetReloadListener<WeaponData> {
 	
-	public static final HashMap<String, String[]> compatibility = new HashMap<String, String[]>();
-	public static final List<WeaponData> weapons = new ArrayList<WeaponData>();
-	public static final List<CompoundTag> weaponNbt = new ArrayList<CompoundTag>();
+	private static WeaponPresets instance;
 	
-	public static void setupPresets() {						
-		String dir = "/data/dscombat/weapons/";
-		JsonObject jo = UtilParse.getJsonFromResource(dir+"weapons.json");
-		
-		JsonArray jaw = jo.get("weapons").getAsJsonArray();
-		for (int i = 0; i < jaw.size(); ++i) add(UtilParse.getCompoundFromJsonResource(dir+jaw.get(i).getAsString()));
-		defaultMissile = (TrackMissileData) getById("aim120b");
-		
-		JsonArray jac = jo.get("compatibility").getAsJsonArray();
-		for (int i = 0; i < jac.size(); ++i) {
-			JsonObject joi = jac.get(i).getAsJsonObject();
-			String type = joi.get("type").getAsString();
-			JsonArray jai = joi.get("weapons").getAsJsonArray();
-			String[] weapons = new String[jai.size()];
-			for (int j = 0; j < weapons.length; ++j) weapons[j] = jai.get(j).getAsString();
-			compatibility.put(type, weapons);
- 		}
+	public static WeaponPresets get() {
+		if (instance == null) instance = new WeaponPresets();
+		return instance;
 	}
 	
-	public static void add(WeaponData data) {
-		//System.out.println("WEAPON PRESET JAVA "+data);
-		weapons.add(data);
-		weaponNbt.add(data.write());
+	public static void close() {
+		instance = null;
 	}
 	
-	public static void add(CompoundTag data) {
-		WeaponData wd = UtilParse.parseWeaponFromCompound(data);
-		//System.out.println("WEAPON PRESET JSON "+wd);
-		if (wd == null) return;
-		weapons.add(wd);
-		weaponNbt.add(data);
-		//System.out.println("ADDED "+wd.getId());
-		//System.out.println("max = "+wd.getMaxAmmo());
+	private Map<String, List<String>> compatibleMap = new HashMap<>();
+	private WeaponData[] weaponList;
+	
+	public WeaponPresets() {
+		super("weapons");
+	}
+	
+	@Override
+	public WeaponData[] getAllPresets() {
+		if (weaponList == null) {
+			weaponList = presetMap.values().toArray(new WeaponData[presetMap.size()]);
+		}
+		return weaponList;
+	}
+	
+	public List<String> getCompatibleWeapons(ResourceLocation weaponPartItemId) {
+		List<String> list = compatibleMap.get(weaponPartItemId.toString());
+		if (list == null) return new ArrayList<>();
+		return list;
+	}
+	
+	@Override
+	protected void resetCache() {
+		weaponList = null;
+		refreshCompatibility();
+	}
+	
+	protected void refreshCompatibility() {
+		compatibleMap.clear();
+		for (int i = 0; i < getAllPresets().length; ++i) {
+			String partId = getAllPresets()[i].getCompatibleWeaponPart();
+			if (partId.isEmpty()) continue;
+			List<String> list = compatibleMap.get(partId);
+			if (list == null) {
+				list = new ArrayList<String>();
+				compatibleMap.put(partId, list);
+			}
+			list.add(getAllPresets()[i].getId());
+		}
+		System.out.println("WEAPON CAPATIBILITY: "+compatibleMap.toString());
 	}
 	
 	@Nullable
-	public static CompoundTag getNbtById(String id) {
-		for (CompoundTag w : weaponNbt) if (w.getString("id").equals(id)) return w;
+	public WeaponData getFromJson(ResourceLocation key, JsonObject json) {
+		int index = json.get("type").getAsInt();
+		WeaponData.WeaponType type = WeaponData.WeaponType.values()[index];
+		switch (type) {
+		case BOMB:
+			return new BombData(key, json);
+		case BULLET:
+			return new BulletData(key, json);
+		case IR_MISSILE:
+			return new IRMissileData(key, json);
+		case POS_MISSILE:
+			return new PosMissileData(key, json);
+		case TRACK_MISSILE:
+			return new TrackMissileData(key, json);
+		case ANTIRADAR_MISSILE:
+			return new AntiRadarMissileData(key, json);
+		case TORPEDO:
+			return new TorpedoData(key, json);
+		}
 		return null;
-	}
-	
-	@Nullable
-	public static WeaponData getNewById(String id) {
-		for (WeaponData w : weapons) if (w.getId().equals(id)) return w.copy();
-		return null;
-	}
-	
-	@Nullable
-	public static WeaponData getById(String id) {
-		for (WeaponData w : weapons) if (w.getId().equals(id)) return w;
-		return null;
-	}
-	
-	private static TrackMissileData defaultMissile;
-	
-	public static TrackMissileData getDefaultMissile() {
-		return (TrackMissileData) defaultMissile.copy();
-	}
-	
-	@Nullable
-	public static String[] getCompatibility(String type) {
-		return compatibility.get(type);
 	}
 	
 }

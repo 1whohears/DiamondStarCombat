@@ -31,7 +31,7 @@ public class UtilPacket {
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityAircraft plane) {
 			plane.preset = preset;
-			AircraftPreset ap = AircraftPresets.get().getAircraftPreset(preset);
+			AircraftPreset ap = AircraftPresets.get().getPreset(preset);
 			plane.textures = ap.getAircraftTextures();
 			plane.item = ap.getItem();
 			// ORDER MATTERS
@@ -100,10 +100,6 @@ public class UtilPacket {
 		if (world.getEntity(id) instanceof EntityAircraft plane) {
 			plane.addMomentFromServer = plane.addMomentFromServer.add(moment);
 		}
-	}
-	
-	public static void dataPackSynch(AircraftPreset[] presets) {
-		AircraftPresets.get().manuallySetPresets(presets);
 	}
 	
 }

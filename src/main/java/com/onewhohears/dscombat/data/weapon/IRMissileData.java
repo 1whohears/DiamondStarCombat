@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.data.weapon;
 
 import java.util.List;
 
+import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.entity.weapon.IRMissile;
@@ -9,35 +10,39 @@ import com.onewhohears.dscombat.entity.weapon.IRMissile;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class IRMissileData extends MissileData {
 	
-	private float flareResistance;
+	private final float flareResistance;
 	
-	public IRMissileData(CompoundTag tag) {
-		super(tag);
-		flareResistance = tag.getFloat("flareResistance");
+	public IRMissileData(ResourceLocation key, JsonObject json) {
+		super(key, json);
+		flareResistance = json.get("flareResistance").getAsFloat();
 	}
 	
 	@Override
-	public CompoundTag write() {
-		CompoundTag tag = super.write();
-		tag.putFloat("flareResistance", flareResistance);
+	public void readNBT(CompoundTag tag) {
+		super.readNBT(tag);
+	}
+	
+	@Override
+	public CompoundTag writeNbt() {
+		CompoundTag tag = super.writeNbt();
 		return tag;
 	}
 	
-	public IRMissileData(FriendlyByteBuf buffer) {
-		super(buffer);
-		flareResistance = buffer.readFloat();
+	@Override
+	public void readBuffer(FriendlyByteBuf buffer) {
+		super.readBuffer(buffer);
 	}
 	
 	@Override
-	public void write(FriendlyByteBuf buffer) {
-		super.write(buffer);
-		buffer.writeFloat(flareResistance);
+	public void writeBuffer(FriendlyByteBuf buffer) {
+		super.writeBuffer(buffer);
 	}
 	
 	@Override
@@ -47,7 +52,7 @@ public class IRMissileData extends MissileData {
 	
 	@Override
 	public WeaponData copy() {
-		return new IRMissileData(this.write());
+		return new IRMissileData(getKey(), getJsonData());
 	}
 	
 	/**

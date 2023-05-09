@@ -8,6 +8,8 @@ import javax.annotation.Nullable;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.crafting.DSCIngredient;
+import com.onewhohears.dscombat.data.JsonPreset;
+import com.onewhohears.dscombat.data.PresetBuilder;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.init.ModItems;
@@ -21,40 +23,21 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class AircraftPreset {
-	
-	private final ResourceLocation key;
-	private final JsonObject data;
-	private final String presetId;
-	private CompoundTag dataNBT;
+public class AircraftPreset extends JsonPreset{
+
+	private final CompoundTag dataNBT;
 	private List<DSCIngredient> ingredients;
 	private ItemStack item;
 	private AircraftTextures textures;
 	
-	private AircraftPreset(String namespace, String name) {
-		this.key = new ResourceLocation(namespace, name);
-		this.data = new JsonObject();
-		this.presetId = name;
-		this.data.addProperty("preset", name);
-	}
-	
-	private AircraftPreset(String namespace, String name, AircraftPreset copy) {
-		this.key = new ResourceLocation(namespace, name);
-		this.data = copy.getDataAsJson().deepCopy();
-		this.presetId = name;
-		this.data.addProperty("preset", name);
-	}
-	
-	public AircraftPreset(ResourceLocation key, JsonObject data) {
-		this.key = key;
-		this.data = data;
-		this.dataNBT = UtilParse.getCompoundFromJson(data);
-		this.presetId = data.get("preset").getAsString();
+	public AircraftPreset(ResourceLocation key, JsonObject json) {
+		super(key, json);
+		this.dataNBT = UtilParse.getCompoundFromJson(json);
 	}
 	
 	public void writeBuffer(FriendlyByteBuf buffer) {
 		buffer.writeUtf(getKey().toString());
-		buffer.writeUtf(data.toString());
+		buffer.writeUtf(getJsonData().toString());
 	}
 	
 	public static AircraftPreset readBuffer(FriendlyByteBuf buffer) {
@@ -69,24 +52,8 @@ public class AircraftPreset {
 		return dataNBT;
 	}
 	
-	public JsonObject getDataAsJson() {
-		return data;
-	}
-	
-	public ResourceLocation getKey() {
-		return key;
-	}
-	
-	public String getPresetId() {
-		return presetId;
-	}
-	
-	public String getNameSpace() {
-		return getKey().getNamespace();
-	}
-	
 	public boolean isCraftable() {
-		return getDataAsJson().get("is_craftable").getAsBoolean();
+		return getJsonData().get("is_craftable").getAsBoolean();
 	}
 	
 	public List<DSCIngredient> getIngredients() {
@@ -100,11 +67,11 @@ public class AircraftPreset {
 		if (item == null) {
 			try {
 				item = new ItemStack(ForgeRegistries.ITEMS.getDelegate(
-						new ResourceLocation(data.get("item").getAsString())).get().get());
+						new ResourceLocation(getJsonData().get("item").getAsString())).get().get());
 			} catch(NoSuchElementException e) {
 				item = ItemStack.EMPTY;
 			}
-			item.getOrCreateTag().putString("preset", getPresetId());
+			item.getOrCreateTag().putString("preset", getId());
 		}
 		return item.copy();
 	}
@@ -117,41 +84,44 @@ public class AircraftPreset {
 	}
 	
 	public Component getDisplayName() {
-		return Component.translatable("preset."+getNameSpace()+"."+getPresetId());
+		return Component.translatable("preset."+getNameSpace()+"."+getId());
 	}
 	
 	@Override
 	public String toString() {
-		return getKey().toString()+" "+getDataAsJson().toString();
+		return getKey().toString()+" "+getJsonData().toString();
 	}
 	
-	public static class Builder {
+	@Override
+	public AircraftPreset copy() {
+		return new AircraftPreset(getKey(), getJsonData());
+	}
+	
+	public static class Builder extends PresetBuilder<Builder>{
 		
-		private final AircraftPreset preset;
 		private boolean is_craftable = false;
 		
-		private Builder(String namespace, String name) {
-			this.preset = new AircraftPreset(namespace, name);
+		protected Builder(String namespace, String name, JsonPresetFactory<? extends JsonPreset> sup) {
+			super(namespace, name, sup);
 		}
 		
-		private Builder(String namespace, String name, AircraftPreset copy) {
-			this.preset = new AircraftPreset(namespace, name, copy);
+		protected Builder(String namespace, String name, JsonPresetFactory<? extends JsonPreset> sup, AircraftPreset copy) {
+			super(namespace, name, sup, copy.getJsonData().deepCopy());
 		}
 		
 		public static Builder create(String namespace, String name) {
-			return new Builder(namespace, name);
+			return new Builder(namespace, name, (key, json) -> new AircraftPreset(key, json));
 		}
 		
 		public static Builder createFromCopy(String namespace, String name, AircraftPreset copy) {
-			return new Builder(namespace, name, copy);
+			return new Builder(namespace, name, (key, json) -> new AircraftPreset(key, json), copy);
 		}
 		
+		@Override
 		public AircraftPreset build() {
-			setString("preset", preset.getPresetId());
 			setBoolean("landing_gear", true);
 			setBoolean("is_craftable", is_craftable);
-			preset.dataNBT = UtilParse.getCompoundFromJson(preset.data);
-			return preset;
+			return super.build();
 		}
 		
 		/**
@@ -249,10 +219,10 @@ public class AircraftPreset {
 		
 		@Nullable
 		protected JsonObject getSlot(String name, boolean createNew) {
-			if (!this.preset.data.has("slots")) {
-				this.preset.data.add("slots", new JsonArray());
+			if (!getData().has("slots")) {
+				getData().add("slots", new JsonArray());
 			}
-			JsonArray slots = this.preset.data.get("slots").getAsJsonArray();
+			JsonArray slots = getData().get("slots").getAsJsonArray();
 			for (int i = 0; i < slots.size(); ++i) {
 				JsonObject slot = slots.get(i).getAsJsonObject();
 				if (slot.get("name").getAsString().equals(name)) {
@@ -412,10 +382,10 @@ public class AircraftPreset {
 		 * all vehicles
 		 */
 		public Builder setAltTexture(DyeColor dyecolor, ResourceLocation texture) {
-			if (!this.preset.data.has("textures")) {
-				this.preset.data.add("textures", new JsonObject());
+			if (!getData().has("textures")) {
+				getData().add("textures", new JsonObject());
 			}
-			this.preset.data.get("textures").getAsJsonObject()
+			getData().get("textures").getAsJsonObject()
 				.addProperty(dyecolor.getId()+"", texture.toString());
 			return this;
 		}
@@ -431,13 +401,13 @@ public class AircraftPreset {
 		 * all vehicles
 		 */
 		public Builder addIngredient(ResourceLocation item, int num) {
-			if (!this.preset.data.has("ingredients")) {
-				this.preset.data.add("ingredients", new JsonArray());
+			if (!getData().has("ingredients")) {
+				getData().add("ingredients", new JsonArray());
 			}
 			JsonObject i = new JsonObject();
 			i.addProperty("item", item.toString());
 			i.addProperty("num", num);
-			this.preset.data.get("ingredients").getAsJsonArray().add(i);
+			getData().get("ingredients").getAsJsonArray().add(i);
 			return this;
 		}
 		
@@ -445,13 +415,13 @@ public class AircraftPreset {
 		 * all vehicles
 		 */
 		public Builder addIngredient(String itemId, int num) {
-			if (!this.preset.data.has("ingredients")) {
-				this.preset.data.add("ingredients", new JsonArray());
+			if (!getData().has("ingredients")) {
+				getData().add("ingredients", new JsonArray());
 			}
 			JsonObject i = new JsonObject();
 			i.addProperty("item", itemId);
 			i.addProperty("num", num);
-			this.preset.data.get("ingredients").getAsJsonArray().add(i);
+			getData().get("ingredients").getAsJsonArray().add(i);
 			return this;
 		}
 		
@@ -555,22 +525,22 @@ public class AircraftPreset {
 		}
 		
 		public Builder setBoolean(String key, boolean value) {
-			this.preset.data.addProperty(key, value);
+			getData().addProperty(key, value);
 			return this;
 		}
 		
 		public Builder setInt(String key, int value) {
-			this.preset.data.addProperty(key, value);
+			getData().addProperty(key, value);
 			return this;
 		}
 		
 		public Builder setFloat(String key, float value) {
-			this.preset.data.addProperty(key, value);
+			getData().addProperty(key, value);
 			return this;
 		}
 		
 		public Builder setString(String key, String value) {
-			this.preset.data.addProperty(key, value);
+			getData().addProperty(key, value);
 			return this;
 		}
 		

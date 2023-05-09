@@ -42,7 +42,7 @@ public class ItemAircraft extends Item {
 	public ItemAircraft(EntityType<? extends EntityAircraft> entityType, AircraftPreset defaultPreset) {
 		super(new Item.Properties().tab(ModItems.AIRCRAFT).stacksTo(1));
 		this.entityType = entityType;
-		this.defaultPreset = defaultPreset.getPresetId();
+		this.defaultPreset = defaultPreset.getId();
 	}
 	
 	@Override

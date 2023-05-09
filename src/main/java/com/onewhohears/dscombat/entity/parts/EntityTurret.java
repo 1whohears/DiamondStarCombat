@@ -78,7 +78,7 @@ public class EntityTurret extends EntitySeat {
 	protected void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
 		data = UtilParse.parseWeaponFromCompound(tag.getCompound("weapondata"));
-		if (data == null) data = WeaponPresets.getNewById(weaponId);
+		if (data == null) data = WeaponPresets.get().getPreset(weaponId);
 		setRotBounds(new RotBounds(tag));
 		setXRot(tag.getFloat("xRot"));
 		setYRot(tag.getFloat("yRot"));
@@ -89,7 +89,7 @@ public class EntityTurret extends EntitySeat {
 	@Override
 	protected void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
-		if (data != null) tag.put("weapondata", data.write());
+		if (data != null) tag.put("weapondata", data.writeNbt());
 		getRotBounds().write(tag);
 		tag.putFloat("xRot", getXRot());
 		tag.putFloat("yRot", getYRot());
@@ -177,7 +177,7 @@ public class EntityTurret extends EntitySeat {
 	
 	public void setWeaponId(String wid) {
 		weaponId = wid;
-		data = WeaponPresets.getNewById(weaponId);
+		data = WeaponPresets.get().getPreset(weaponId);
 	}
 	
 	public String getWeaponId() {

@@ -6,10 +6,11 @@ import java.util.NoSuchElementException;
 
 import javax.annotation.Nullable;
 
-import com.onewhohears.dscombat.DSCombatMod;
+import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponAmmo;
 import com.onewhohears.dscombat.crafting.DSCIngredient;
+import com.onewhohears.dscombat.data.JsonPreset;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.init.DataSerializers;
@@ -21,6 +22,7 @@ import com.onewhohears.dscombat.util.math.UtilAngles;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -35,120 +37,79 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public abstract class WeaponData {
+public abstract class WeaponData extends JsonPreset {
 	
-	public final List<DSCIngredient> ingredients;
-	public final int craftNum;
-	
+	private final List<DSCIngredient> ingredients;
+	private final int craftNum;
+	private final int maxAge;
+	private final int maxAmmo;
+	private final int fireRate;
+	private final boolean canShootOnGround;
 	private final String entityTypeKey;
 	private final String shootSoundKey;
 	private final String rackTypeKey;
+	private final String compatibleWeaponPart;
+	private final String itemKey;
 	
 	private EntityType<?> entityType;
 	private SoundEvent shootSound;
 	private EntityType<?> rackType;
-	private String id;
-	private Vec3 pos = Vec3.ZERO;
-	private int maxAge;
 	private int currentAmmo;
-	private int maxAmmo;
-	private int fireRate;
 	private int recoilTime;
+	private Vec3 pos = Vec3.ZERO;
 	private String failedLaunchReason;
-	private boolean canShootOnGround;
 	private String slotId = "";
 	
-	public static enum WeaponType {
-		BULLET,
-		BOMB,
-		POS_MISSILE,
-		TRACK_MISSILE,
-		IR_MISSILE,
-		ANTIRADAR_MISSILE,
-		TORPEDO
+	public WeaponData(ResourceLocation key, JsonObject json) {
+		super(key, json);
+		this.ingredients = DSCIngredient.getIngredients(json);
+		this.craftNum = json.get("craftNum").getAsInt();
+		this.maxAge = json.get("maxAge").getAsInt();
+		this.maxAmmo = json.get("maxAmmo").getAsInt();
+		this.fireRate = json.get("fireRate").getAsInt();
+		this.canShootOnGround = json.get("canShootOnGround").getAsBoolean();
+		this.entityTypeKey = json.get("entityTypeKey").getAsString();
+		this.shootSoundKey = json.get("shootSoundKey").getAsString();
+		this.rackTypeKey = json.get("rackTypeKey").getAsString();
+		this.compatibleWeaponPart = json.get("compatibleWeaponPart").getAsString();
+		this.itemKey = json.get("itemKey").getAsString();
 	}
 	
-	public WeaponData(CompoundTag tag) {
-		id = tag.getString("id");
-		pos = UtilParse.readVec3(tag, "pos");
-		maxAge = tag.getInt("maxAge");
+	public void readNBT(CompoundTag tag) {
 		currentAmmo = tag.getInt("currentAmmo");
-		maxAmmo = tag.getInt("maxAmmo");
-		fireRate = tag.getInt("fireRate");
-		canShootOnGround = tag.getBoolean("canShootOnGround");
 		slotId = tag.getString("slotId");
-		entityTypeKey = tag.getString("entityType");
-		shootSoundKey = tag.getString("shootSound");
-		rackTypeKey = tag.getString("rackType");
-		ingredients = DSCIngredient.getIngredients(tag);
-		craftNum = tag.getInt("craftNum");
+		pos = UtilParse.readVec3(tag, "pos");
 	}
 	
-	public CompoundTag write() {
+	public CompoundTag writeNbt() {
 		CompoundTag tag = new CompoundTag();
-		tag.putInt("type", this.getType().ordinal());
-		tag.putString("id", getId());
-		UtilParse.writeVec3(tag, pos, "pos");
-		tag.putInt("maxAge", maxAge);
+		tag.putString("weaponId", getId());
 		tag.putInt("currentAmmo", currentAmmo);
-		tag.putInt("maxAmmo", maxAmmo);
-		tag.putInt("fireRate", fireRate);
-		tag.putBoolean("canShootOnGround", canShootOnGround);
+		UtilParse.writeVec3(tag, pos, "pos");
 		tag.putString("slotId", slotId);
-		tag.putString("entityType", entityTypeKey);
-		tag.putString("shootSound", shootSoundKey);
-		tag.putString("rackType", rackTypeKey);
-		DSCIngredient.writeIngredients(ingredients, tag);
-		tag.putInt("craftNum", craftNum);
 		return tag;
 	}
 	
-	public WeaponData(FriendlyByteBuf buffer) {
-		// type int is read in DataSerializers
-		//System.out.println("WEAPON DATA BUFFER");
-		entityTypeKey = buffer.readUtf();
-		//System.out.println("entityTypeKey = "+entityTypeKey);
-		shootSoundKey = buffer.readUtf();
-		//System.out.println("shootSoundKey = "+shootSoundKey);
-		rackTypeKey = buffer.readUtf();
-		//
-		craftNum = buffer.readInt();
-		//System.out.println("craftNum = "+craftNum);
-		ingredients = DSCIngredient.getIngredients(buffer);
-		//System.out.println("ingredients = "+ingredients);
-		id = buffer.readUtf();
-		//System.out.println("id = "+id);
-		pos = DataSerializers.VEC3.read(buffer);
-		//System.out.println("pos = "+pos);
-		maxAge = buffer.readInt();
-		//System.out.println("maxAge = "+maxAge);
+	public void readBuffer(FriendlyByteBuf buffer) {
+		// weaponId String is read in DataSerializers
 		currentAmmo = buffer.readInt();
-		//System.out.println("currentAmmo = "+currentAmmo);
-		maxAmmo = buffer.readInt();
-		//System.out.println("maxAmmo = "+maxAmmo);
-		fireRate = buffer.readInt();
-		//System.out.println("fireRate = "+fireRate);
-		canShootOnGround = buffer.readBoolean();
-		//System.out.println("canShootOnGround = "+canShootOnGround);
 		slotId = buffer.readUtf();
-		//System.out.println("slotId = "+slotId);
+		pos = DataSerializers.VEC3.read(buffer);
 	}
 	
-	public void write(FriendlyByteBuf buffer) {
-		buffer.writeInt(getType().ordinal());
-		buffer.writeUtf(entityTypeKey);
-		buffer.writeUtf(shootSoundKey);
-		buffer.writeUtf(rackTypeKey);
-		buffer.writeInt(craftNum);
-		DSCIngredient.writeIngredients(ingredients, buffer);
-		buffer.writeUtf(id);
-		DataSerializers.VEC3.write(buffer, pos);
-		buffer.writeInt(maxAge);
+	public void writeBuffer(FriendlyByteBuf buffer) {
+		buffer.writeUtf(getId());
 		buffer.writeInt(currentAmmo);
-		buffer.writeInt(maxAmmo);
-		buffer.writeInt(fireRate);
-		buffer.writeBoolean(canShootOnGround);
 		buffer.writeUtf(slotId);
+		DataSerializers.VEC3.write(buffer, pos);
+	}
+	
+	public List<DSCIngredient> getIngredients() {
+		return ingredients;
+	}
+	
+	public int getCraftNum() {
+		return craftNum;
 	}
 	
 	public abstract WeaponType getType();
@@ -229,10 +190,6 @@ public abstract class WeaponData {
 		return recoilTime <= 1;
 	}
 	
-	public String getId() {
-		return id;
-	}
-	
 	public Vec3 getLaunchPos() {
 		return pos;
 	}
@@ -276,25 +233,13 @@ public abstract class WeaponData {
 	public int getMaxAmmo() {
 		return maxAmmo;
 	}
-	
-	public void setMaxAmmo(int max) {
-		maxAmmo = max;
-	}
 
 	public int getFireRate() {
 		return fireRate;
 	}
-
-	public void setFireRate(int fireRate) {
-		this.fireRate = fireRate;
-	}
 	
 	public boolean canShootOnGround() {
 		return canShootOnGround;
-	}
-
-	public void setCanShootOnGround(boolean canShootOnGround) {
-		this.canShootOnGround = canShootOnGround;
 	}
 
 	public boolean isFailedLaunch() {
@@ -318,7 +263,7 @@ public abstract class WeaponData {
 	
 	@Override
 	public boolean equals(Object o) {
-		if (o instanceof WeaponData w) return w.getId().equals(id) && w.getSlotId().equals(slotId);
+		if (o instanceof WeaponData w) return w.getId().equals(getId()) && w.getSlotId().equals(slotId);
 		return false;
 	}
 	
@@ -326,7 +271,7 @@ public abstract class WeaponData {
 	
 	@Override
 	public String toString() {
-		return "["+id+":"+this.getType().toString()+"]";
+		return "["+getId()+":"+this.getType().toString()+"]";
 	}
 	
 	public String getSlotId() {
@@ -348,7 +293,7 @@ public abstract class WeaponData {
 	public boolean idMatch(String id, String slotId) {
 		if (slotId == null) return false;
 		if (id == null) return false;
-		return this.id.equals(id) && this.slotId.equals(slotId);
+		return getId().equals(id) && getSlotId().equals(slotId);
 	}
 	
 	public EntityType<?> getEntityType() {
@@ -381,15 +326,12 @@ public abstract class WeaponData {
 	private Item item;
 	private ItemStack stack;
 	
-	public Item getItem() {
+	private Item getItem() {
 		if (item == null) {
 			try {
 				item = ForgeRegistries.ITEMS.getDelegate(
-					new ResourceLocation(DSCombatMod.MODID, id))
-						.get().get();
-			} catch(NoSuchElementException e) {
-				item = Items.AIR;
-			}
+					new ResourceLocation(itemKey)).get().get();
+			} catch(NoSuchElementException e) { item = Items.AIR; }
 		}
 		return item;
 	}
@@ -398,18 +340,37 @@ public abstract class WeaponData {
 		if (stack == null) {
 			stack = new ItemStack(getItem());
 			stack.setCount(craftNum);
+			CompoundTag tag = new CompoundTag();
+			tag.putString("weapon", getId());
+			stack.setTag(tag);
 		}
 		return stack;
 	}
 	
+	public ItemStack getNewItem() {
+		return getDisplayStack().copy();
+	}
+	
+	public String getCompatibleWeaponPart() {
+		return compatibleWeaponPart;
+	}
+	
 	public List<ComponentColor> getInfoComponents() {
 		List<ComponentColor> list = new ArrayList<>();
-		list.add(new ComponentColor(Component.translatable("item.dscombat."+getId()), 0x000000));
+		list.add(new ComponentColor(getDisplayName(), 0x000000));
 		list.add(new ComponentColor(Component.literal(getType().toString()), 0x0000aa));
 		list.add(new ComponentColor(Component.literal("Max Ammo: ").append(getMaxAmmo()+""), 0x040404));
 		list.add(new ComponentColor(Component.literal("Fire Rate: ").append(getFireRate()+""), 0x040404));
 		list.add(new ComponentColor(Component.literal("Max Age: ").append(getMaxAge()+""), 0x040404));
 		return list;
+	}
+	
+	public Component getDisplayName() {
+		return Component.translatable("weapon."+getNameSpace()+"."+getId());
+	}
+	
+	public static MutableComponent makeDisplayName(String namespace, String id) {
+		return Component.translatable("weapon."+namespace+"."+id);
 	}
 	
 	public static class ComponentColor {
@@ -419,6 +380,16 @@ public abstract class WeaponData {
 			this.component = component;
 			this.color = color;
 		}
+	}
+	
+	public static enum WeaponType {
+		BULLET,
+		BOMB,
+		POS_MISSILE,
+		TRACK_MISSILE,
+		IR_MISSILE,
+		ANTIRADAR_MISSILE,
+		TORPEDO
 	}
 	
 }

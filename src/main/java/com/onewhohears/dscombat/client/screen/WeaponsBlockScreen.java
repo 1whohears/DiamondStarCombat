@@ -41,7 +41,7 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockMenu
 		this.topPos = 0;
 		this.imageWidth = 256;
 		this.imageHeight = 256;
-		maxTab = (int)((float)WeaponPresets.weapons.size() / (float)buttonNum);
+		maxTab = (int)((float)WeaponPresets.get().getPresetNum() / (float)buttonNum);
 	}
 	
 	@Override
@@ -51,7 +51,7 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockMenu
         this.renderTooltip(poseStack, mouseX, mouseY);
         Minecraft m = Minecraft.getInstance();
         RenderSystem.enableBlend();
-        if (WeaponPresets.weapons.size() == 0) return;
+        if (WeaponPresets.get().getPresetNum() == 0) return;
         // render weapon item options
         int startX = getGuiLeft() + titleLabelX;
 		int startY = getGuiTop() + titleLabelY;
@@ -59,8 +59,8 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockMenu
 		int wy = startY + 12;
 		for (int i = 0; i < buttonNum; ++i) {
 			int index = tabIndex * buttonNum + i;
-			if (index >= WeaponPresets.weapons.size()) break;
-			ItemStack stack = WeaponPresets.weapons.get(index).getDisplayStack();
+			if (index >= WeaponPresets.get().getPresetNum()) break;
+			ItemStack stack = WeaponPresets.get().getAllPresets()[index].getDisplayStack();
 			m.getItemRenderer().renderAndDecorateItem(
 					stack, wx, wy);
 			m.getItemRenderer().renderGuiItemDecorations(font,
@@ -68,16 +68,16 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockMenu
 			wx += 20;
 		}
 		// render ingredients
-		WeaponData data = WeaponPresets.weapons.get(weaponIndex);
+		WeaponData data = WeaponPresets.get().getAllPresets()[weaponIndex];
 		int iix = startX + 122;
 		int ix = iix;
 		int iy = startY + 44;
-		for (int i = 0; i < data.ingredients.size(); ++i) {
+		for (int i = 0; i < data.getIngredients().size(); ++i) {
 			if (i != 0 && i % 4 == 0) {
 				ix = iix;
 				iy += 20;
 			}
-			ItemStack stack = data.ingredients.get(i).getDisplayItem();
+			ItemStack stack = data.getIngredients().get(i).getDisplayItem();
 			m.getItemRenderer().renderAndDecorateItem(
 					stack, ix, iy);
 			m.getItemRenderer().renderGuiItemDecorations(font, 
@@ -99,8 +99,8 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockMenu
 		font.draw(stack, playerInventoryTitle, inventoryLabelX+38, inventoryLabelY+56, 0x404040);
 		font.draw(stack, Component.translatable("dscombat.ingredients"), titleLabelX+122, titleLabelY+34, 0x00aa00);
 		// weapon stats
-		if (WeaponPresets.weapons.size() == 0) return;
-		WeaponData data = WeaponPresets.weapons.get(weaponIndex);
+		if (WeaponPresets.get().getPresetNum() == 0) return;
+		WeaponData data = WeaponPresets.get().getAllPresets()[weaponIndex];
 		List<ComponentColor> list = data.getInfoComponents();
 		font.draw(stack, list.get(0).component, 
 				titleLabelX+38, titleLabelY+34, list.get(0).color);
@@ -192,7 +192,7 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockMenu
 	}
 	
 	private void weaponButton(int num) {
-		int max = WeaponPresets.weapons.size();
+		int max = WeaponPresets.get().getPresetNum();
 		int a = tabIndex * buttonNum + num;
 		if (a >= max) weaponIndex = max-1;
 		else weaponIndex = a;
@@ -202,8 +202,8 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockMenu
 		Minecraft m = Minecraft.getInstance();
 		Player player = m.player;
 		if (player == null) return;
-		WeaponData data = WeaponPresets.weapons.get(weaponIndex);
-		if (DSCIngredient.hasIngredients(data.ingredients, player.getInventory())) {
+		WeaponData data = WeaponPresets.get().getAllPresets()[weaponIndex];
+		if (DSCIngredient.hasIngredients(data.getIngredients(), player.getInventory())) {
 			PacketHandler.INSTANCE.sendToServer(new ToServerCraftWeapon(data.getId(), menu.getPos()));
 		} else {
 			player.displayClientMessage(Component.translatable("dscombat.cant_craft"), true);

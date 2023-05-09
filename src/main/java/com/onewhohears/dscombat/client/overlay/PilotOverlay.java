@@ -147,9 +147,9 @@ public class PilotOverlay {
 		WeaponData sw = plane.weaponSystem.getSelected();
 		if (sw != null) {
 		List<WeaponData> weapons = plane.weaponSystem.getWeapons();
-		MutableComponent[] names = new MutableComponent[weapons.size()];
+		Component[] names = new MutableComponent[weapons.size()];
 		for (int i = 0; i < weapons.size(); ++i) {
-			names[i] = Component.translatable("item."+DSCombatMod.MODID+"."+weapons.get(i).getId());
+			names[i] = weapons.get(i).getDisplayName();
 			int w = m.font.width(names[i]);
 			if (w > maxNameWidth) maxNameWidth = w;
 		}

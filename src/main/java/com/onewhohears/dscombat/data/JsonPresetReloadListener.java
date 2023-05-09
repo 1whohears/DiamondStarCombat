@@ -24,11 +24,18 @@ public abstract class JsonPresetReloadListener<T extends JsonPreset> extends Sim
 		super(UtilParse.GSON, directory);
 	}
 	
+	/**
+	 * @param id same as name in the builder
+	 * @return a new instance of preset. null if none have id.
+	 */
 	@Nullable
 	public T getPreset(String id) {
-		T preset = presetMap.get(id);
-		if (preset == null) return null;
-		return preset.copy();
+		if (!has(id)) return null;
+		return presetMap.get(id).copy();
+	}
+	
+	public boolean has(String id) {
+		return presetMap.containsKey(id);
 	}
 	
 	public abstract T[] getAllPresets();

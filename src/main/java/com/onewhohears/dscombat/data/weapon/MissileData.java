@@ -3,7 +3,6 @@ package com.onewhohears.dscombat.data.weapon;
 import java.util.List;
 
 import com.google.gson.JsonObject;
-import com.onewhohears.dscombat.data.weapon.WeaponData.WeaponType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;

@@ -267,8 +267,6 @@ public abstract class WeaponData extends JsonPreset {
 		return false;
 	}
 	
-	public abstract WeaponData copy();
-	
 	@Override
 	public String toString() {
 		return "["+getId()+":"+this.getType().toString()+"]";

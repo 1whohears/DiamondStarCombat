@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.google.gson.JsonObject;
+import com.onewhohears.dscombat.data.JsonPreset;
 import com.onewhohears.dscombat.entity.weapon.EntityBullet;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.util.math.UtilAngles;
@@ -128,8 +129,8 @@ public class BulletData extends WeaponData {
 	}
 
 	@Override
-	public WeaponData copy() {
-		return new BulletData(getKey(), getJsonData());
+	public <T extends JsonPreset> T copy() {
+		return (T) new BulletData(getKey(), getJsonData());
 	}
 	
 	@Override

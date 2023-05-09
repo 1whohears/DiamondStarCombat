@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.data.weapon;
 import java.util.List;
 
 import com.google.gson.JsonObject;
+import com.onewhohears.dscombat.data.JsonPreset;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.entity.weapon.PositionMissile;
@@ -49,8 +50,8 @@ public class PosMissileData extends MissileData {
 	}
 	
 	@Override
-	public WeaponData copy() {
-		return new PosMissileData(getKey(), getJsonData());
+	public <T extends JsonPreset> T copy() {
+		return (T) new PosMissileData(getKey(), getJsonData());
 	}
 	
 	@Override

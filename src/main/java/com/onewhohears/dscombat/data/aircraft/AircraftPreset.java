@@ -93,8 +93,8 @@ public class AircraftPreset extends JsonPreset{
 	}
 	
 	@Override
-	public AircraftPreset copy() {
-		return new AircraftPreset(getKey(), getJsonData());
+	public <T extends JsonPreset> T copy() {
+		return (T) new AircraftPreset(getKey(), getJsonData());
 	}
 	
 	public static class Builder extends PresetBuilder<Builder>{
@@ -118,7 +118,7 @@ public class AircraftPreset extends JsonPreset{
 		}
 		
 		@Override
-		public AircraftPreset build() {
+		public <T extends JsonPreset> T build() {
 			setBoolean("landing_gear", true);
 			setBoolean("is_craftable", is_craftable);
 			return super.build();

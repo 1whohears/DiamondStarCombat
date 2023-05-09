@@ -330,8 +330,8 @@ public class RadarData extends JsonPreset {
 		return "["+getId()+":"+fov+":"+range+"]";
 	}
 	
-	public RadarData copy() {
-		return new RadarData(getKey(), getJsonData());
+	public <T extends JsonPreset> T copy() {
+		return (T) new RadarData(getKey(), getJsonData());
 	}
 	
 	public String getSlotId() {

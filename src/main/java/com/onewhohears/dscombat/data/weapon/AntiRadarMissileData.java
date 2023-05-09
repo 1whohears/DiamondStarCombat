@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.data.weapon;
 import java.util.List;
 
 import com.google.gson.JsonObject;
+import com.onewhohears.dscombat.data.JsonPreset;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.weapon.AntiRadarMissile;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
@@ -56,8 +57,8 @@ public class AntiRadarMissileData extends MissileData {
 	}
 	
 	@Override
-	public WeaponData copy() {
-		return new AntiRadarMissileData(getKey(), getJsonData());
+	public <T extends JsonPreset> T copy() {
+		return (T) new AntiRadarMissileData(getKey(), getJsonData());
 	}
 	
 	@Override

@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.data.weapon;
 import java.util.List;
 
 import com.google.gson.JsonObject;
+import com.onewhohears.dscombat.data.JsonPreset;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -54,8 +55,8 @@ public class BombData extends BulletData {
 	}
 	
 	@Override
-	public WeaponData copy() {
-		return new BombData(getKey(), getJsonData());
+	public <T extends JsonPreset> T copy() {
+		return (T) new BombData(getKey(), getJsonData());
 	}
 	
 	@Override

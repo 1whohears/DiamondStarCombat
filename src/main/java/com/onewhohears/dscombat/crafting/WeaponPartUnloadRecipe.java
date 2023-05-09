@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.crafting;
 
-import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.init.ModRecipeSerializers;
 import com.onewhohears.dscombat.item.ItemWeaponPart;
 
@@ -14,7 +15,6 @@ import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class WeaponPartUnloadRecipe extends CustomRecipe {
 
@@ -49,9 +49,9 @@ public class WeaponPartUnloadRecipe extends CustomRecipe {
 		}
 		if (part == null) return ItemStack.EMPTY;
 		String partId = part.getOrCreateTag().getString("weaponId");
-		Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(DSCombatMod.MODID, partId));
-		if (item == null) return ItemStack.EMPTY;
-		ItemStack ammo = new ItemStack(item);
+		WeaponData wd = WeaponPresets.get().getPreset(partId);
+		if (wd == null) return ItemStack.EMPTY;
+		ItemStack ammo = wd.getNewItem();
 		ammo.setCount(part.getOrCreateTag().getInt("ammo"));
 		return ammo;
 	}

@@ -43,7 +43,7 @@ public class TurretLoadRecipe extends CustomRecipe {
 		if (ammo.size() < 1) return false;
 		CompoundTag pTag = part.getOrCreateTag();
 		String partId = pTag.getString("weaponId");
-		String ammoId = ammo.get(0).getItem().getDescriptionId().split("\\.")[2];
+		String ammoId = ItemAmmo.getWeaponId(ammo.get(0));
 		return partId.equals(ammoId);
 	}
 	
@@ -67,12 +67,11 @@ public class TurretLoadRecipe extends CustomRecipe {
 		for (int i = 0; i < container.getContainerSize(); ++i) {
 			ItemStack stack  = container.getItem(i);
 			if (stack.isEmpty()) continue;
-			Item item = stack.getItem();
-			if (item instanceof ItemAmmo) {
-				if (id == null) id = item.getDescriptionId().split("\\.")[2];
-				else if (!item.getDescriptionId().split("\\.")[2].equals(id)) return null;
-				ammo.add(stack);
-			}
+			String stackAmmoId = ItemAmmo.getWeaponId(stack);
+			if (stackAmmoId.equals("")) return null;
+			if (id == null) id = stackAmmoId;
+			if (!stackAmmoId.equals(id)) return null;
+			ammo.add(stack);
 		}
 		return ammo;
 	}

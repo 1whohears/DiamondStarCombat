@@ -36,7 +36,7 @@ public class WeaponPresets extends JsonPresetReloadListener<WeaponData> {
 	public WeaponData[] getAllPresets() {
 		if (weaponList == null) {
 			weaponList = presetMap.values().toArray(new WeaponData[presetMap.size()]);
-			// FIXME 4.2 sort by weapon type the alphabetically
+			sort(weaponList);
 		}
 		return weaponList;
 	}

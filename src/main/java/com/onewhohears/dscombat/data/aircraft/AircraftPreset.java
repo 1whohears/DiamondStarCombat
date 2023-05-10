@@ -12,6 +12,7 @@ import com.onewhohears.dscombat.data.JsonPreset;
 import com.onewhohears.dscombat.data.PresetBuilder;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.util.UtilParse;
 
@@ -25,6 +26,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class AircraftPreset extends JsonPreset{
 
+	private final AircraftType aircraft_type;
 	private final CompoundTag dataNBT;
 	private List<DSCIngredient> ingredients;
 	private ItemStack item;
@@ -32,6 +34,7 @@ public class AircraftPreset extends JsonPreset{
 	
 	public AircraftPreset(ResourceLocation key, JsonObject json) {
 		super(key, json);
+		this.aircraft_type = AircraftType.values()[json.get("aircraft_type").getAsInt()];
 		this.dataNBT = UtilParse.getCompoundFromJson(json);
 	}
 	
@@ -97,6 +100,14 @@ public class AircraftPreset extends JsonPreset{
 		return (T) new AircraftPreset(getKey(), getJsonData());
 	}
 	
+	@Override
+	public <T extends JsonPreset> int compare(T other) {
+		AircraftPreset ap = (AircraftPreset) other;
+		if (this.aircraft_type != ap.aircraft_type) 
+			return this.aircraft_type.ordinal() - ap.aircraft_type.ordinal();
+		return super.compare(other);
+	}
+	
 	public static class Builder extends PresetBuilder<Builder>{
 		
 		private boolean is_craftable = false;
@@ -122,6 +133,10 @@ public class AircraftPreset extends JsonPreset{
 			setBoolean("landing_gear", true);
 			setBoolean("is_craftable", is_craftable);
 			return super.build();
+		}
+		
+		public Builder setAircraftType(AircraftType aircraft_type) {
+			return setInt("aircraft_type", aircraft_type.ordinal());
 		}
 		
 		/**

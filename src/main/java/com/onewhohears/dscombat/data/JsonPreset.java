@@ -49,4 +49,8 @@ public abstract class JsonPreset {
 		return getKey().toString()+" "+getJsonData().toString();
 	}
 	
+	public <T extends JsonPreset> int compare(T other) {
+		return this.getId().compareToIgnoreCase(other.getId());
+	}
+	
 }

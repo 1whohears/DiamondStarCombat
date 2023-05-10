@@ -262,6 +262,14 @@ public abstract class WeaponData extends JsonPreset {
 	}
 	
 	@Override
+	public <T extends JsonPreset> int compare(T other) {
+		WeaponData wd = (WeaponData) other;
+		if (this.getType() != wd.getType()) 
+			return this.getType().ordinal() - wd.getType().ordinal();
+		return super.compare(other);
+	}
+	
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof WeaponData w) return w.getId().equals(getId()) && w.getSlotId().equals(slotId);
 		return false;

@@ -1,6 +1,9 @@
 package com.onewhohears.dscombat.data;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nullable;
@@ -100,6 +103,14 @@ public abstract class JsonPresetReloadListener<T extends JsonPreset> extends Sim
 		}
 		resetCache();
 		setup = true;
+	}
+	
+	public void sort(List<T> presets) {
+		Collections.sort(presets, (a, b) -> a.compare(b));
+	}
+	
+	public void sort(T[] presets) {
+		Arrays.sort(presets, (a, b) -> a.compare(b));
 	}
 
 }

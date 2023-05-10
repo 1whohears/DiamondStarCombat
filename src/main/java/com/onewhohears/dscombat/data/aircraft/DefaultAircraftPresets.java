@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.data.aircraft;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
 
 import net.minecraft.world.item.DyeColor;
@@ -11,6 +12,7 @@ public class DefaultAircraftPresets {
 	
 	public static final AircraftPreset EMPTY_ALEXIS_PLANE = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "alexis_plane_empty")
+			.setAircraftType(AircraftType.PLANE)
 			.setItem(ModItems.ALEXIS_PLANE.getId())
 			.setMaxHealth(150f)
 			.setMass(20f)
@@ -77,6 +79,7 @@ public class DefaultAircraftPresets {
 	
 	public static final AircraftPreset EMPTY_JAVI_PLANE = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "javi_plane_empty")
+			.setAircraftType(AircraftType.PLANE)
 			.setItem(ModItems.JAVI_PLANE.getId())
 			.setMaxHealth(200f)
 			.setMass(25f)
@@ -145,6 +148,7 @@ public class DefaultAircraftPresets {
 	
 	public static final AircraftPreset DEFAULT_NOAH_CHOPPER = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "noah_chopper")
+			.setAircraftType(AircraftType.HELICOPTER)
 			.setItem(ModItems.NOAH_CHOPPER.getId())
 			.setCraftable()
 			.setMaxHealth(300f)
@@ -182,6 +186,7 @@ public class DefaultAircraftPresets {
 	
 	public static final AircraftPreset DEFAULT_MRBUDGER_TANK = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "mrbudger_tank")
+			.setAircraftType(AircraftType.CAR)
 			.setItem(ModItems.MRBUDGER_TANK.getId())
 			.setCraftable()
 			.setMaxHealth(500f)
@@ -211,6 +216,7 @@ public class DefaultAircraftPresets {
 	
 	public static final AircraftPreset DEFAULT_SMALL_ROLLER = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "small_roller")
+			.setAircraftType(AircraftType.CAR)
 			.setItem(ModItems.SMALL_ROLLER.getId())
 			.setCraftable()
 			.setMaxHealth(30f)
@@ -237,6 +243,7 @@ public class DefaultAircraftPresets {
 	
 	public static final AircraftPreset DEFAULT_NATHAN_BOAT = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "nathan_boat")
+			.setAircraftType(AircraftType.BOAT)
 			.setItem(ModItems.NATHAN_BOAT.getId())
 			.setCraftable()
 			.setMaxHealth(100f)
@@ -262,6 +269,7 @@ public class DefaultAircraftPresets {
 	
 	public static final AircraftPreset DEFAULT_ANDOLF_SUB = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "andolf_sub")
+			.setAircraftType(AircraftType.SUBMARINE)
 			.setItem(ModItems.ANDOLF_SUB.getId())
 			.setCraftable()
 			.setMaxHealth(800f)
@@ -292,6 +300,7 @@ public class DefaultAircraftPresets {
 	
 	public static final AircraftPreset DEFAULT_ORANGE_TESLA = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "orange_tesla")
+			.setAircraftType(AircraftType.CAR)
 			.setItem(ModItems.ORANGE_TESLA.getId())
 			.setCraftable()
 			.setMaxHealth(50f)

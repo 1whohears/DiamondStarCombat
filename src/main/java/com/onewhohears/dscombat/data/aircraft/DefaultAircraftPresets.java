@@ -211,6 +211,7 @@ public class DefaultAircraftPresets {
 	public static final AircraftPreset DEFAULT_NOAH_CHOPPER = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "noah_chopper", UNARMED_NOAH_CHOPPER)
 			.setCraftable()
+			.setSlotItem("dscombat.seat2", ModItems.MINIGUN_TURRET.getId())
 			.setSlotItem("dscombat.left_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "aim120b", true)
 			.setSlotItem("dscombat.left_wing_2", ModItems.HEAVY_MISSILE_RACK.getId(), "agm65g", true)
 			.setSlotItem("dscombat.left_wing_3", ModItems.LIGHT_MISSILE_RACK.getId(), "agm114k", true)

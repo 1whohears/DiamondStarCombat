@@ -92,9 +92,8 @@ public class PilotOverlay {
 	
 	private static void drawAircraftStats(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
 		// plane speed 
-		int s = (int)(plane.getDeltaMovement().length() * 20d);
 		GuiComponent.drawString(poseStack, m.font, 
-				"m/s: "+s, 
+				"m/s: "+String.format("%3.1f", plane.getDeltaMovement().length()*20), 
 				width-stickBaseSize-stickOffset, 
 	     		height-stickBaseSize-stickOffset-stickKnobSize-stickOffset-10, 
 				0x00ff00);

@@ -102,52 +102,52 @@ public class DefaultAircraftPresets {
 			.addIngredient("minecraft:gold_ingot", 4)
 			.addPilotSeatSlot(0, -0.4, 3, 48, 20)
 			.addSeatSlot("dscombat.seat2", SlotType.TURRET, 0, -0.4, 2, 68, 20)
-			
+			.addEmptySlot("dscombat.left_wing_1", SlotType.WING, 1.5, -0.3, 0, 0, 48, 40)
+			.addEmptySlot("dscombat.left_wing_2", SlotType.WING, 3.0, -0.2, 0, 0, 68, 40)
+			.addEmptySlot("dscombat.left_wing_3", SlotType.WING, 4.0, -0.07, 0, 0, 88, 40) 
+			.addEmptySlot("dscombat.left_wing_4", SlotType.WING, 5.0, 0.05, 0, 0, 108, 40) 
+			.addEmptySlot("dscombat.right_wing_1", SlotType.WING, -1.5, -0.3, 0, 0, 48, 60)
+			.addEmptySlot("dscombat.right_wing_2", SlotType.WING, -3.0, -0.2, 0, 0, 68, 60)
+			.addEmptySlot("dscombat.right_wing_3", SlotType.WING, -4.0, -0.07, 0, 0, 88, 60) 
+			.addEmptySlot("dscombat.right_wing_4", SlotType.WING, -5.0, 0.05, 0, 0, 108, 60) 
+			.addEmptySlot("dscombat.frame_1", SlotType.FRAME, 0, -0.65, 3, 0, 48, 80)
+			.addEmptySlot("dscombat.frame_2", SlotType.FRAME, 0, -0.65, 0, 0, 68, 80)
+			.addEmptySlot("dscombat.internal_1", SlotType.INTERNAL, 48, 100)
+			.addEmptySlot("dscombat.internal_2", SlotType.INTERNAL, 68, 100)
+			.addEmptySlot("dscombat.internal_3", SlotType.INTERNAL, 88, 100)
+			.addEmptySlot("dscombat.internal_4", SlotType.ADVANCED_INTERNAL, 108, 100)
+			.addEmptySlot("dscombat.internal_5", SlotType.ADVANCED_INTERNAL, 128, 100)
+			.addEmptySlot("dscombat.internal_6", SlotType.ADVANCED_INTERNAL, 148, 100)
 			.build();
 	
 	public static final AircraftPreset UNARMED_JAVI_PLANE = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "javi_plane_unarmed", EMPTY_JAVI_PLANE)
 			.setCraftable()
+			.setSlotItem("dscombat.internal_2", ModItems.C6_ENGINE.getId())
+			.setSlotItem("dscombat.internal_3", ModItems.HEAVY_FUEL_TANK.getId(), true)
+			.setSlotItem("dscombat.internal_4", ModItems.BASIC_FLARE_DISPENSER.getId(), true)
 			.addIngredient(ModItems.C6_ENGINE.getId(), 2)
 			.addIngredient(ModItems.HEAVY_FUEL_TANK.getId())
-			
+			.addIngredient(ModItems.BASIC_FLARE_DISPENSER.getId())
 			.build();
 	
 	public static final AircraftPreset DEFAULT_JAVI_PLANE = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "javi_plane", UNARMED_JAVI_PLANE)
 			.setCraftable()
-			// left wing
-			.addItemSlot("dscombat.left_wing_1", SlotType.WING, 1.5, -0.3, 0, 0, 48, 40, 
-					ModItems.HEAVY_MISSILE_RACK.getId(), "aim120b", true)
-			.addItemSlot("dscombat.left_wing_2", SlotType.WING, 3.0, -0.2, 0, 0, 68, 40, 
-					ModItems.LIGHT_MISSILE_RACK.getId(), "agm114k", true)
-			.addEmptySlot("dscombat.left_wing_3", SlotType.WING, 4.0, -0.07, 0, 0, 88, 40) 
-			.addEmptySlot("dscombat.left_wing_4", SlotType.WING, 5.0, 0.05, 0, 0, 108, 40) 
-			// right wing
-			.addItemSlot("dscombat.right_wing_1", SlotType.WING, -1.5, -0.3, 0, 0, 48, 60, 
-					ModItems.HEAVY_MISSILE_RACK.getId(), "agm65l", true)
-			.addItemSlot("dscombat.right_wing_2", SlotType.WING, -3.0, -0.2, 0, 0, 68, 60, 
-					ModItems.LIGHT_MISSILE_RACK.getId(), "aim9p5", true)
-			.addEmptySlot("dscombat.right_wing_3", SlotType.WING, -4.0, -0.07, 0, 0, 88, 60) 
-			.addEmptySlot("dscombat.right_wing_4", SlotType.WING, -5.0, 0.05, 0, 0, 108, 60) 
-			// other
-			.addItemSlot("dscombat.frame_1", SlotType.FRAME, 0, -0.65, 3, 0, 48, 80, 
-					ModItems.XM12.getId(), "50mmhe", true)
-			.addItemSlot("dscombat.frame_2", SlotType.FRAME, 0, -0.65, 0, 0, 68, 80, 
-					ModItems.HEAVY_MISSILE_RACK.getId(), "agm84e", true)
-			.addItemSlot("dscombat.internal_1", SlotType.INTERNAL, 48, 100, ModItems.C6_ENGINE.getId())
-			.addItemSlot("dscombat.internal_2", SlotType.INTERNAL, 68, 100, ModItems.C6_ENGINE.getId())
-			.addItemSlot("dscombat.internal_3", SlotType.INTERNAL, 88, 100, ModItems.HEAVY_FUEL_TANK.getId(), true)
-			.addItemSlot("dscombat.internal_4", SlotType.ADVANCED_INTERNAL, 108, 100, ModItems.BASIC_FLARE_DISPENSER.getId(), true)
-			.addItemSlot("dscombat.internal_5", SlotType.ADVANCED_INTERNAL, 128, 100, ModItems.AR1K.getId())
-			.addItemSlot("dscombat.internal_6", SlotType.ADVANCED_INTERNAL, 148, 100, ModItems.GR400.getId())
-			.addIngredient(ModItems.BASIC_FLARE_DISPENSER.getId())
+			.setSlotItem("dscombat.left_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "aim120b", true)
+			.setSlotItem("dscombat.left_wing_2", ModItems.LIGHT_MISSILE_RACK.getId(), "agm114k", true)
+			.setSlotItem("dscombat.right_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "agm65l", true)
+			.setSlotItem("dscombat.right_wing_2", ModItems.LIGHT_MISSILE_RACK.getId(), "aim9p5", true)
+			.setSlotItem("dscombat.frame_1", ModItems.XM12.getId(), "50mmhe", true)
+			.setSlotItem("dscombat.frame_2", ModItems.HEAVY_MISSILE_RACK.getId(), "agm84e", true)
+			.setSlotItem("dscombat.internal_5", ModItems.AR1K.getId())
+			.setSlotItem("dscombat.internal_6", ModItems.GR400.getId())
 			.addIngredient(ModItems.AR1K.getId())
 			.addIngredient(ModItems.GR400.getId())
 			.build();
 	
-	public static final AircraftPreset DEFAULT_NOAH_CHOPPER = AircraftPreset.Builder
-			.create(DSCombatMod.MODID, "noah_chopper")
+	public static final AircraftPreset EMPTY_NOAH_CHOPPER = AircraftPreset.Builder
+			.create(DSCombatMod.MODID, "noah_chopper_empty")
 			.setAircraftType(AircraftType.HELICOPTER)
 			.setItem(ModItems.NOAH_CHOPPER.getId())
 			.setCraftable()
@@ -162,11 +162,29 @@ public class DefaultAircraftPresets {
 			.setThrottleRate(0.01f, 0.02f)
 			.setHeliHoverMovement(0.04f, 0.02f)
 			.addPilotSeatSlot(0.4, -0.65, 1.5, 48, 20)
-			.addItemSlot("dscombat.seat2", SlotType.TURRET, -0.4, -0.65, 1.5, 0, 68, 20,
-					ModItems.MINIGUN_TURRET.getId())
+			.addSeatSlot("dscombat.seat2", SlotType.TURRET, -0.4, -0.65, 1.5, 68, 20)
 			.addSeatSlot("dscombat.seat3", SlotType.TURRET, 0.4, -0.65, 0.3, 88, 20)
 			.addSeatSlot("dscombat.seat4", SlotType.TURRET, -0.4, -0.65, 0.3, 108, 20)
-			// FIXME 1.1 finish noah chopper preset
+			.addEmptySlot("dscombat.left_wing_1", SlotType.WING, 0.75, -0.5, 1.8, 90, 48, 40)
+			.addEmptySlot("dscombat.left_wing_2", SlotType.WING, 0.75, -0.5, 0.9, 90, 68, 40)
+			.addEmptySlot("dscombat.left_wing_3", SlotType.WING, 0.75, -0.5, 0, 90, 88, 40)
+			.addEmptySlot("dscombat.left_wing_4", SlotType.WING, 0.65, 0.5, 0, 90, 108, 40)
+			.addEmptySlot("dscombat.right_wing_1", SlotType.WING, -0.75, -0.5, 1.8, 90, 48, 60)
+			.addEmptySlot("dscombat.right_wing_2", SlotType.WING, -0.75, -0.5, 0.9, 90, 68, 60)
+			.addEmptySlot("dscombat.right_wing_3", SlotType.WING, -0.75, -0.5, 0, 90, 88, 60)
+			.addEmptySlot("dscombat.right_wing_4", SlotType.WING, -0.65, 0.5, 0, 90, 108, 60)
+			.addEmptySlot("dscombat.frame_1", SlotType.FRAME, 0, -0.67, 1.9, 0, 48, 80)
+			.addEmptySlot("dscombat.frame_2", SlotType.FRAME, 0, -0.67, 1.1, 0, 68, 80)
+			.addEmptySlot("dscombat.frame_3", SlotType.FRAME, 0, -0.67, 0.3, 0, 88, 80)
+			.addEmptySlot("dscombat.frame_4", SlotType.FRAME, 0, -0.67, -0.5, 0, 108, 80)
+			.addEmptySlot("dscombat.internal_1", SlotType.INTERNAL, 48, 100)
+			.addEmptySlot("dscombat.internal_2", SlotType.INTERNAL, 68, 100)
+			.addEmptySlot("dscombat.internal_3", SlotType.INTERNAL, 88, 100)
+			.addEmptySlot("dscombat.internal_4", SlotType.INTERNAL, 108, 100)
+			.addEmptySlot("dscombat.internal_5", SlotType.ADVANCED_INTERNAL, 128, 100)
+			.addEmptySlot("dscombat.internal_6", SlotType.ADVANCED_INTERNAL, 148, 100)
+			.addEmptySlot("dscombat.internal_7", SlotType.ADVANCED_INTERNAL, 168, 100)
+			.addEmptySlot("dscombat.internal_8", SlotType.ADVANCED_INTERNAL, 188, 100)
 			.setDefaultTexture(DyeColor.BROWN, "dscombat:textures/entities/noah_chopper/brown.png")
 			.setAltTexture(DyeColor.BLUE, "dscombat:textures/entities/noah_chopper/blue.png")
 			.setAltTexture(DyeColor.RED, "dscombat:textures/entities/noah_chopper/red.png")
@@ -176,9 +194,33 @@ public class DefaultAircraftPresets {
 			.addIngredient(ModItems.PROPELLER.getId())
 			.addIngredient(ModItems.COCKPIT.getId())
 			.addIngredient("minecraft:gold_ingot", 4)
+			.build();
+	
+	public static final AircraftPreset UNARMED_NOAH_CHOPPER = AircraftPreset.Builder
+			.createFromCopy(DSCombatMod.MODID, "noah_chopper_unarmed", EMPTY_NOAH_CHOPPER)
+			.setCraftable()
+			.setSlotItem("internal_1", ModItems.C12_ENGINE.getId())
+			.setSlotItem("internal_2", ModItems.C12_ENGINE.getId())
+			.setSlotItem("internal_3", ModItems.HEAVY_FUEL_TANK.getId())
+			.setSlotItem("internal_4", ModItems.BASIC_FLARE_DISPENSER.getId())
 			.addIngredient(ModItems.C12_ENGINE.getId(), 2)
 			.addIngredient(ModItems.HEAVY_FUEL_TANK.getId())
 			.addIngredient(ModItems.BASIC_FLARE_DISPENSER.getId())
+			.build();
+	
+	public static final AircraftPreset DEFAULT_NOAH_CHOPPER = AircraftPreset.Builder
+			.createFromCopy(DSCombatMod.MODID, "noah_chopper", UNARMED_NOAH_CHOPPER)
+			.setCraftable()
+			.setSlotItem("dscombat.left_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "aim120b", true)
+			.setSlotItem("dscombat.left_wing_2", ModItems.HEAVY_MISSILE_RACK.getId(), "agm65g", true)
+			.setSlotItem("dscombat.left_wing_3", ModItems.LIGHT_MISSILE_RACK.getId(), "agm114k", true)
+			.setSlotItem("dscombat.right_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "agm65l", true)
+			.setSlotItem("dscombat.right_wing_2", ModItems.HEAVY_MISSILE_RACK.getId(), "agm84e", true)
+			.setSlotItem("dscombat.right_wing_3", ModItems.LIGHT_MISSILE_RACK.getId(), "aim9p5", true)
+			.setSlotItem("dscombat.frame_1", ModItems.XM12.getId(), "20mm", true)
+			.setSlotItem("dscombat.frame_2", ModItems.XM12.getId(), "50mmhe", true)
+			.setSlotItem("internal_5", ModItems.AR500.getId())
+			.setSlotItem("internal_6", ModItems.GR400.getId())
 			.addIngredient(ModItems.AR500.getId())
 			.addIngredient(ModItems.GR400.getId())
 			.addIngredient(ModItems.MINIGUN_TURRET.getId())

@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
+import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.init.ModItems;
 
@@ -120,7 +121,10 @@ public class ItemAircraft extends Item {
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tips, TooltipFlag isAdvanced) {
 		CompoundTag tag = stack.getTag();
 		if (tag == null || !tag.contains("EntityTag")) {
-			tips.add(Component.translatable("preset.dscombat."+getPresetName(stack)));
+			String name = getPresetName(stack);
+			AircraftPreset ap = AircraftPresets.get().getPreset(name);
+			if (ap != null) tips.add(ap.getDisplayName());
+			else tips.add(Component.literal(defaultPreset));
 		} else tips.add(Component.literal("Filled"));
 	}
 

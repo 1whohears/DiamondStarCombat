@@ -7,6 +7,40 @@ import net.minecraft.data.DataGenerator;
 
 public class AircraftPresetGenerator extends JsonPresetGenerator<AircraftPreset> {
     
+    @Override
+	protected void registerPresets() {
+    	addPresetToGenerate(DefaultAircraftPresets.EMPTY_ALEXIS_PLANE);
+    	addPresetToGenerate(DefaultAircraftPresets.UNARMED_ALEXIS_PLANE);
+		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_ALEXIS_PLANE);
+		
+		addPresetToGenerate(DefaultAircraftPresets.EMPTY_JAVI_PLANE);
+		addPresetToGenerate(DefaultAircraftPresets.UNARMED_JAVI_PLANE);
+		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_JAVI_PLANE);
+		
+		addPresetToGenerate(DefaultAircraftPresets.EMPTY_NOAH_CHOPPER);
+		addPresetToGenerate(DefaultAircraftPresets.UNARMED_NOAH_CHOPPER);
+		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_NOAH_CHOPPER);
+		
+		// empty
+		// unarmed
+		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_MRBUDGER_TANK);
+		
+		// empty
+		// unarmed
+		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_SMALL_ROLLER);
+		
+		// empty
+		// unarmed
+		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_NATHAN_BOAT);
+		
+		// empty
+		// unarmed
+		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_ANDOLF_SUB);
+		
+		// empty
+		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_ORANGE_TESLA);
+	}
+    
     public AircraftPresetGenerator(DataGenerator output) {
 		super(output, "aircraft");
 	}
@@ -14,20 +48,6 @@ public class AircraftPresetGenerator extends JsonPresetGenerator<AircraftPreset>
     @Override
 	public String getName() {
 		return "Aircraft: "+DSCombatMod.MODID;
-	}
-    
-    @Override
-	protected void registerPresets() {
-    	addPresetToGenerate(DefaultAircraftPresets.EMPTY_ALEXIS_PLANE);
-    	addPresetToGenerate(DefaultAircraftPresets.UNARMED_ALEXIS_PLANE);
-		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_ALEXIS_PLANE);
-		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_JAVI_PLANE);
-		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_NOAH_CHOPPER);
-		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_MRBUDGER_TANK);
-		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_SMALL_ROLLER);
-		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_NATHAN_BOAT);
-		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_ANDOLF_SUB);
-		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_ORANGE_TESLA);
 	}
     
 }

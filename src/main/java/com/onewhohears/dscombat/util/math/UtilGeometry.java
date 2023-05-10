@@ -110,4 +110,8 @@ public class UtilGeometry {
 		return new Vec3(rx, ry, rz);
 	}
 	
+	public static boolean vec3NAN(Vec3 v) {
+		return Double.isNaN(v.x) || Double.isNaN(v.y) || Double.isNaN(v.z);
+	}
+	
 }

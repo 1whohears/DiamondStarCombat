@@ -278,7 +278,7 @@ public abstract class EntityWeapon extends Projectile {
 	
 	@Override
 	public void checkDespawn() {
-		if (this.isTestMode()) return;
+		if (isTestMode()) return;
 		//System.out.println("CHECK DESPAWN");
 		if (!level.isClientSide) {
 			if (!inEntityTickingRange()) {

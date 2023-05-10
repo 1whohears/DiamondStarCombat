@@ -176,7 +176,14 @@ public class PartsManager {
 	
 	public float getPartsWeight() {
 		float total = 0;
-		for (PartSlot p : slots) if (p.filled()) total += p.getPartData().getWeight();
+		for (PartSlot p : slots) if (p.filled()) {
+			float w = p.getPartData().getWeight();
+			if (Float.isNaN(w)) {
+				System.out.println("ERROR: PART WEIGHT IS NAN "+p.toString());
+				continue;
+			}
+			total += w;
+		}
 		return total;
 	}
 	

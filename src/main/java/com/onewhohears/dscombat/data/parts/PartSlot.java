@@ -229,7 +229,7 @@ public class PartSlot {
 	
 	@Override
 	public String toString() {
-		return "["+slotId+":"+getSlotType().toString()+":"+data+"]";
+		return "["+slotId+":"+getSlotType().toString()+":"+data.toString()+"]";
 	}
 	
 	public float getZRot() {

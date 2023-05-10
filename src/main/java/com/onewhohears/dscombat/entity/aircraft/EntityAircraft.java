@@ -241,8 +241,6 @@ public abstract class EntityAircraft extends Entity {
         }
     }
 	
-	// FIXME 0 missing preset data causes aircraft to freeze with an error
-	
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
 		// ORDER MATTERS
@@ -349,10 +347,9 @@ public abstract class EntityAircraft extends Entity {
 	 */
 	@Override
 	public void tick() {
+		if (UtilGeometry.vec3NAN(getDeltaMovement())) setDeltaMovement(Vec3.ZERO);
 		if (firstTick) init(); // MUST BE CALLED BEFORE SUPER
 		super.tick();
-		if (Double.isNaN(getDeltaMovement().length())) 
-            setDeltaMovement(Vec3.ZERO);
 		// SET PREV/OLD
 		prevMotion = getDeltaMovement();
 		forcesO = getForces();
@@ -674,7 +671,9 @@ public abstract class EntityAircraft extends Entity {
 	}
 	
 	public void calcAcc() {
-		setDeltaMovement(getDeltaMovement().add(getForces().scale(1/totalMass)));
+		Vec3 f = getForces();
+		double s = 1/getTotalMass();
+		setDeltaMovement(getDeltaMovement().add(f.scale(s)));
 	}
 	
 	@Override
@@ -725,7 +724,7 @@ public abstract class EntityAircraft extends Entity {
 	}
 	
 	public double getDriveAcc() {
-		return getThrustMag()/totalMass;
+		return getThrustMag()/getTotalMass();
 	}
 	
 	public boolean isBreaking() {
@@ -743,7 +742,7 @@ public abstract class EntityAircraft extends Entity {
 		if (m.x == 0 && m.z == 0) return;
 		Vec3 mn = m.normalize();
  		Vec3 force = mn.scale(-f);
-		Vec3 acc = force.scale(1/totalMass);
+		Vec3 acc = force.scale(1/getTotalMass());
 		if (m.x != 0 && Math.signum(m.x+acc.x) != Math.signum(m.x)) {
 			force = force.multiply(0, 1, 1);
 			m = m.multiply(0, 1, 1);
@@ -761,7 +760,7 @@ public abstract class EntityAircraft extends Entity {
 		if (inputYaw != 0 && max_tr != 0) { // IF TURNING
 			double tr = max_tr * 1 / Math.abs(inputYaw); // inputed turn radius
 			double cen_acc = xzSpeed * xzSpeed / tr; // cen_acc needed to complete turn
-			double cen_force = cen_acc * totalMass; // friction force needed to not slide
+			double cen_force = cen_acc * getTotalMass(); // friction force needed to not slide
 			//debug(cen_force+" >? "+staticFric);
 			if (cen_force >= staticFric) return true; // if cen_force >= static-friction-threshold slide
 		}
@@ -846,6 +845,13 @@ public abstract class EntityAircraft extends Entity {
 	 * @return this mass of the aircraft plus the mass of the parts
 	 */
 	public float getTotalMass() {
+		if (Float.isNaN(totalMass)) {
+			System.out.println("ERROR: NAN MASS? setting to 100 | "+this);
+			totalMass = 100;
+		} else if (totalMass == 0) {
+			System.out.println("ERROR: 0 MASS? setting to 100 | "+this);
+			totalMass = 100;
+		}
 		return totalMass;
 	}
 	
@@ -901,11 +907,12 @@ public abstract class EntityAircraft extends Entity {
 	}
 	
 	public boolean canOpenMenu() {
-		return isOnGround() || isTestMode();
+		return (isOnGround() && xzSpeed < 0.1) || isTestMode();
 	}
 	
 	public String getOpenMenuError() {
-		return "dscombat.no_menu_in_air";
+		if (!isOnGround()) return "dscombat.no_menu_in_air";
+		return "dscombat.no_menu_moving";
 	}
 	
 	public void flare(Entity controller, boolean consume) {
@@ -1797,6 +1804,12 @@ public abstract class EntityAircraft extends Entity {
     	if (!passengerCheck || (passengerCheck && hasControllingPassenger())) 
     		System.out.println(debug);
     }
+    
+    protected void debugTick() {
+		String side = "SERVER";
+		if (level.isClientSide) side = "CLIENT";
+		System.out.println(side+" TICK "+tickCount+" "+this);
+	}
     
     public void toClientPassengers(IPacket packet) {
     	if (level.isClientSide) return;

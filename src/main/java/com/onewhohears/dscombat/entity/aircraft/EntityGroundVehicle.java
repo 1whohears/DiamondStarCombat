@@ -137,11 +137,6 @@ public class EntityGroundVehicle extends EntityAircraft {
 	}
 	
 	@Override
-	public boolean canOpenMenu() {
-		return xzSpeed < 0.1;
-	}
-	
-	@Override
 	public String getOpenMenuError() {
 		return "dscombat.no_menu_moving";
 	}

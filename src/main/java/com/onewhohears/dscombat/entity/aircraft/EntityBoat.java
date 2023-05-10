@@ -241,7 +241,7 @@ public class EntityBoat extends EntityAircraft {
 	
 	@Override
 	public boolean canOpenMenu() {
-		return xzSpeed < 0.1;
+		return xzSpeed < 0.1 || isTestMode();
 	}
 	
 	@Override

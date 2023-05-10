@@ -134,7 +134,7 @@ public abstract class PartData {
 	
 	@Override
 	public String toString() {
-		return "("+getType().name()+")";
+		return "("+getType().name()+","+itemid.toString()+")";
 	}
 	
 	public float getWeight() {

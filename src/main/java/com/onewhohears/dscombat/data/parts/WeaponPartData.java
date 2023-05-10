@@ -130,6 +130,7 @@ public class WeaponPartData extends PartData {
 	
 	@Override
 	public float getWeight() {
+		if (max == 0) return 0;
 		float w = super.getWeight();
 		return w * (float)ammo / (float)max;
 	}

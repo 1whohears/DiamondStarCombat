@@ -65,7 +65,7 @@ public class DefaultAircraftPresets {
 			.setCraftable()
 			.setSlotItem("dscombat.left_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "aim120b", true)
 			.setSlotItem("dscombat.left_wing_2", ModItems.LIGHT_MISSILE_RACK.getId(), "aim9x", true)
-			.setSlotItem("dscombat.right_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "aim120b", true)
+			.setSlotItem("dscombat.right_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "aim120c", true)
 			.setSlotItem("dscombat.right_wing_2", ModItems.LIGHT_MISSILE_RACK.getId(), "aim9x", true)
 			.setSlotItem("dscombat.frame_1", ModItems.XM12.getId(), "20mm", true)
 			.setSlotItem("dscombat.internal_4", ModItems.AR2K.getId())

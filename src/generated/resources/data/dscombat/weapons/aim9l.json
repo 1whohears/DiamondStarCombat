@@ -1,6 +1,6 @@
 {
   "type": 4,
-  "acceleration": 0.04,
+  "acceleration": 0.03,
   "bleed": 0.01,
   "canShootOnGround": false,
   "causesFire": true,
@@ -12,14 +12,14 @@
   "explosionRadius": 3.0,
   "explosive": true,
   "fireRate": 20,
-  "flareResistance": 1.0,
-  "fov": 60.0,
+  "flareResistance": 1.5,
+  "fov": 50.0,
   "fuelTicks": 300,
   "fuseDist": 3.0,
   "ingredients": [
     {
       "item": "minecraft:iron_ingot",
-      "num": 16
+      "num": 12
     },
     {
       "item": "minecraft:tnt",
@@ -31,7 +31,7 @@
     },
     {
       "item": "minecraft:spider_eye",
-      "num": 2
+      "num": 1
     },
     {
       "item": "dscombat:ti83",
@@ -42,9 +42,9 @@
   "itemKey": "dscombat:ir_missile",
   "maxAge": 300,
   "maxAmmo": 4,
-  "presetId": "aim9p5",
+  "presetId": "aim9l",
   "rackTypeKey": "dscombat:light_missile_rack",
   "shootSoundKey": "dscombat:rocket_launch_1",
-  "speed": 2.5,
-  "turnRadius": 70.0
+  "speed": 2.0,
+  "turnRadius": 75.0
 }

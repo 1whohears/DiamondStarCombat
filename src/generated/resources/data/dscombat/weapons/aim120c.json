@@ -1,7 +1,7 @@
 {
   "type": 3,
   "acceleration": 0.05,
-  "bleed": 0.03,
+  "bleed": 0.025,
   "canShootOnGround": false,
   "causesFire": true,
   "compatibleWeaponPart": "dscombat:heavy_missile_rack",
@@ -41,10 +41,10 @@
   "itemKey": "dscombat:track_missile",
   "maxAge": 400,
   "maxAmmo": 3,
-  "presetId": "aim120b",
+  "presetId": "aim120c",
   "rackTypeKey": "dscombat:heavy_missile_rack",
   "shootSoundKey": "dscombat:rocket_launch_1",
-  "speed": 4.0,
+  "speed": 4.5,
   "targetType": 0,
-  "turnRadius": 90.0
+  "turnRadius": 100.0
 }

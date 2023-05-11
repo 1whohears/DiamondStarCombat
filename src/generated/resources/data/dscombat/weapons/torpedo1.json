@@ -1,20 +1,20 @@
 {
-  "type": 3,
-  "acceleration": 0.06,
-  "bleed": 0.05,
+  "type": 6,
+  "acceleration": 0.04,
+  "bleed": 0.04,
   "canShootOnGround": false,
   "causesFire": true,
   "compatibleWeaponPart": "dscombat:heavy_missile_rack",
   "craftNum": 1,
-  "damage": 80.0,
+  "damage": 50.0,
   "destroyTerrain": true,
-  "entityTypeKey": "dscombat:track_missile_1",
-  "explosionRadius": 8.5,
+  "entityTypeKey": "dscombat:torpedo_missile_1",
+  "explosionRadius": 4.0,
   "explosive": true,
-  "fireRate": 80,
-  "fov": 50.0,
-  "fuelTicks": 450,
-  "fuseDist": 4.0,
+  "fireRate": 40,
+  "fov": 60.0,
+  "fuelTicks": 400,
+  "fuseDist": 2.0,
   "ingredients": [
     {
       "item": "minecraft:iron_ingot",
@@ -22,7 +22,7 @@
     },
     {
       "item": "minecraft:tnt",
-      "num": 6
+      "num": 5
     },
     {
       "item": "minecraft:coal_block",
@@ -30,17 +30,17 @@
     },
     {
       "item": "dscombat:ti83",
-      "num": 2
+      "num": 1
     }
   ],
   "innacuracy": 0.0,
-  "itemKey": "dscombat:track_air_missile",
+  "itemKey": "dscombat:torpedo",
   "maxAge": 600,
-  "maxAmmo": 2,
-  "presetId": "aim7mh",
+  "maxAmmo": 3,
+  "presetId": "torpedo1",
   "rackTypeKey": "dscombat:heavy_missile_rack",
   "shootSoundKey": "dscombat:rocket_launch_1",
-  "speed": 3.5,
-  "targetType": 0,
-  "turnRadius": 130.0
+  "speed": 3.0,
+  "targetType": 2,
+  "turnRadius": 80.0
 }

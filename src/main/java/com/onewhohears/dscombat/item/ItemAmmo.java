@@ -2,7 +2,6 @@ package com.onewhohears.dscombat.item;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
-import com.onewhohears.dscombat.data.weapon.WeaponData.WeaponType;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.init.ModItems;
 
@@ -12,24 +11,24 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class ItemAmmo extends Item {
 	
 	private final String defaultWeaponId;
-	private final WeaponType weaponType;
 	
-	public ItemAmmo(int size, String defaultWeaponId, WeaponType type) {
+	public ItemAmmo(int size, String defaultWeaponId) {
 		super(weaponProps(size));
 		this.defaultWeaponId = defaultWeaponId;
-		this.weaponType = type;
 	}
 	
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
 		if (group.getId() != ModItems.WEAPONS.getId()) return;
+		String itemId = ForgeRegistries.ITEMS.getKey(this).toString();
 		for (int i = 0; i < WeaponPresets.get().getPresetNum(); ++i) {
 			WeaponData w = WeaponPresets.get().getAllPresets()[i];
-			if (w.getType() != weaponType) continue;
+			if (!w.getItemKey().equals(itemId)) continue;
 			ItemStack test = new ItemStack(this);
 			CompoundTag tag = new CompoundTag();
 			tag.putString("weapon", w.getId());

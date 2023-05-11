@@ -357,6 +357,10 @@ public abstract class WeaponData extends JsonPreset {
 		return getDisplayStack().copy();
 	}
 	
+	public String getItemKey() {
+		return itemKey;
+	}
+	
 	public String getCompatibleWeaponPart() {
 		return compatibleWeaponPart;
 	}

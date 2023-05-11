@@ -5,7 +5,6 @@ import com.onewhohears.dscombat.data.aircraft.DefaultAircraftPresets;
 import com.onewhohears.dscombat.data.parts.BuffData.BuffType;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.TurretData.RotBounds;
-import com.onewhohears.dscombat.data.weapon.WeaponData.WeaponType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.item.ItemAircraft;
 import com.onewhohears.dscombat.item.ItemAmmo;
@@ -193,11 +192,19 @@ public class ModItems {
 	// FIXME 1 the changes to ammo item system will cause all ammo items in inventories to die...
 	// AMMO
 	public static final RegistryObject<Item> BULLET = ITEMS.register("bullet", 
-			() -> new ItemAmmo(64, "20mm", WeaponType.BULLET)); 
-	public static final RegistryObject<Item> TRACK_MISSILE = ITEMS.register("track_missile", 
-			() -> new ItemAmmo(8, "aim120b", WeaponType.TRACK_MISSILE)); 
+			() -> new ItemAmmo(64, "20mm")); 
+	public static final RegistryObject<Item> TRACK_AIR_MISSILE = ITEMS.register("track_air_missile", 
+			() -> new ItemAmmo(8, "aim120b")); 
+	public static final RegistryObject<Item> TRACK_GROUND_MISSILE = ITEMS.register("track_ground_missile", 
+			() -> new ItemAmmo(8, "agm84e")); 
 	public static final RegistryObject<Item> IR_MISSILE = ITEMS.register("ir_missile", 
-			() -> new ItemAmmo(8, "aim9p5", WeaponType.IR_MISSILE)); 
+			() -> new ItemAmmo(8, "aim9p5")); 
+	public static final RegistryObject<Item> POS_MISSILE = ITEMS.register("pos_missile", 
+			() -> new ItemAmmo(8, "agm114k")); 
+	public static final RegistryObject<Item> TORPEDO = ITEMS.register("torpedo", 
+			() -> new ItemAmmo(8, "torpedo1")); 
+	public static final RegistryObject<Item> ANTIRADAR_MISSILE = ITEMS.register("antiradar_missile", 
+			() -> new ItemAmmo(8, "rifel1")); 
 	
 	// PLANES
 	public static final RegistryObject<Item> JAVI_PLANE = ITEMS.register("javi_plane", 

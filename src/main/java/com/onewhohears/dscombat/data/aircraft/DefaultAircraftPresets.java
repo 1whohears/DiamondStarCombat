@@ -123,6 +123,7 @@ public class DefaultAircraftPresets {
 	public static final AircraftPreset UNARMED_JAVI_PLANE = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "javi_plane_unarmed", EMPTY_JAVI_PLANE)
 			.setCraftable()
+			.setSlotItem("dscombat.internal_1", ModItems.C6_ENGINE.getId())
 			.setSlotItem("dscombat.internal_2", ModItems.C6_ENGINE.getId())
 			.setSlotItem("dscombat.internal_3", ModItems.HEAVY_FUEL_TANK.getId(), true)
 			.setSlotItem("dscombat.internal_4", ModItems.BASIC_FLARE_DISPENSER.getId(), true)
@@ -150,7 +151,6 @@ public class DefaultAircraftPresets {
 			.create(DSCombatMod.MODID, "noah_chopper_empty")
 			.setAircraftType(AircraftType.HELICOPTER)
 			.setItem(ModItems.NOAH_CHOPPER.getId())
-			.setCraftable()
 			.setMaxHealth(300f)
 			.setMass(30f)
 			.setMaxSpeed(0.8f)
@@ -169,10 +169,10 @@ public class DefaultAircraftPresets {
 			.addEmptySlot("dscombat.left_wing_2", SlotType.WING, 0.75, -0.5, 0.9, 90, 68, 40)
 			.addEmptySlot("dscombat.left_wing_3", SlotType.WING, 0.75, -0.5, 0, 90, 88, 40)
 			.addEmptySlot("dscombat.left_wing_4", SlotType.WING, 0.65, 0.5, 0, 90, 108, 40)
-			.addEmptySlot("dscombat.right_wing_1", SlotType.WING, -0.75, -0.5, 1.8, 90, 48, 60)
-			.addEmptySlot("dscombat.right_wing_2", SlotType.WING, -0.75, -0.5, 0.9, 90, 68, 60)
-			.addEmptySlot("dscombat.right_wing_3", SlotType.WING, -0.75, -0.5, 0, 90, 88, 60)
-			.addEmptySlot("dscombat.right_wing_4", SlotType.WING, -0.65, 0.5, 0, 90, 108, 60)
+			.addEmptySlot("dscombat.right_wing_1", SlotType.WING, -0.75, -0.5, 1.8, -90, 48, 60)
+			.addEmptySlot("dscombat.right_wing_2", SlotType.WING, -0.75, -0.5, 0.9, -90, 68, 60)
+			.addEmptySlot("dscombat.right_wing_3", SlotType.WING, -0.75, -0.5, 0, -90, 88, 60)
+			.addEmptySlot("dscombat.right_wing_4", SlotType.WING, -0.65, 0.5, 0, -90, 108, 60)
 			.addEmptySlot("dscombat.frame_1", SlotType.FRAME, 0, -0.67, 1.9, 0, 48, 80)
 			.addEmptySlot("dscombat.frame_2", SlotType.FRAME, 0, -0.67, 1.1, 0, 68, 80)
 			.addEmptySlot("dscombat.frame_3", SlotType.FRAME, 0, -0.67, 0.3, 0, 88, 80)
@@ -201,8 +201,8 @@ public class DefaultAircraftPresets {
 			.setCraftable()
 			.setSlotItem("internal_1", ModItems.C12_ENGINE.getId())
 			.setSlotItem("internal_2", ModItems.C12_ENGINE.getId())
-			.setSlotItem("internal_3", ModItems.HEAVY_FUEL_TANK.getId())
-			.setSlotItem("internal_4", ModItems.BASIC_FLARE_DISPENSER.getId())
+			.setSlotItem("internal_3", ModItems.HEAVY_FUEL_TANK.getId(), true)
+			.setSlotItem("internal_4", ModItems.BASIC_FLARE_DISPENSER.getId(), true)
 			.addIngredient(ModItems.C12_ENGINE.getId(), 2)
 			.addIngredient(ModItems.HEAVY_FUEL_TANK.getId())
 			.addIngredient(ModItems.BASIC_FLARE_DISPENSER.getId())
@@ -227,11 +227,10 @@ public class DefaultAircraftPresets {
 			.addIngredient(ModItems.MINIGUN_TURRET.getId())
 			.build();
 	
-	public static final AircraftPreset DEFAULT_MRBUDGER_TANK = AircraftPreset.Builder
-			.create(DSCombatMod.MODID, "mrbudger_tank")
+	public static final AircraftPreset EMPTY_MRBUDGER_TANK = AircraftPreset.Builder
+			.create(DSCombatMod.MODID, "mrbudger_tank_empty")
 			.setAircraftType(AircraftType.CAR)
 			.setItem(ModItems.MRBUDGER_TANK.getId())
-			.setCraftable()
 			.setMaxHealth(500f)
 			.setMass(50f)
 			.setMaxSpeed(0.3f)
@@ -241,27 +240,45 @@ public class DefaultAircraftPresets {
 			.setMaxTurnRates(0f, 0f, 2f)
 			.setTurnTorques(0f, 0f, 8f)
 			.setThrottleRate(0.04f, 0.04f)
-			.addItemSlot(PartSlot.PILOT_SLOT_NAME, SlotType.HEAVY_TURRET, 0, 1.4, 0, 0, 48, 20,
-					ModItems.HEAVY_TANK_TURRET.getId())
-			// FIXME 1.2 finish budger tank preset
-			.setDefaultTexture(DyeColor.YELLOW, "dscombat:textures/entities/noah_chopper/yellow.png")
-			.setAltTexture(DyeColor.BLUE, "dscombat:textures/entities/noah_chopper/blue.png")
-			.setAltTexture(DyeColor.RED, "dscombat:textures/entities/noah_chopper/red.png")
-			.setAltTexture(DyeColor.BLACK, "dscombat:textures/entities/noah_chopper/black.png")
+			.setDefaultTexture(DyeColor.YELLOW, "dscombat:textures/entities/mrbudger_tank/yellow.png")
+			.setAltTexture(DyeColor.BLUE, "dscombat:textures/entities/mrbudger_tank/blue.png")
+			.setAltTexture(DyeColor.RED, "dscombat:textures/entities/mrbudger_tank/red.png")
+			.setAltTexture(DyeColor.BLACK, "dscombat:textures/entities/mrbudger_tank/black.png")
 			.addIngredient("minecraft:minecart", 4)
 			.addIngredient(ModItems.FUSELAGE.getId())
 			.addIngredient(ModItems.SEAT.getId(), 4)
 			.addIngredient("minecraft:gold_ingot", 4)
+			.addSeatSlot(PartSlot.PILOT_SLOT_NAME, SlotType.HEAVY_TURRET, 0, 1.4, 0, 48, 20)
+			.addSeatSlot("dscombat.seat1", SlotType.HEAVY_TURRET, 1, 1.4, 2, 68, 20)
+			.addSeatSlot("dscombat.seat2", SlotType.HEAVY_TURRET, -1, 1.4, 2, 88, 20)
+			.addSeatSlot("dscombat.seat3", SlotType.HEAVY_TURRET, 1, 1.4, -2, 108, 20)
+			.addSeatSlot("dscombat.seat4", SlotType.HEAVY_TURRET, -1, 1.4, -2, 128, 20)
+			.addEmptySlot("dscombat.internal_1", SlotType.INTERNAL, 48, 100)
+			.addEmptySlot("dscombat.internal_2", SlotType.INTERNAL, 68, 100)
+			.addEmptySlot("dscombat.internal_3", SlotType.INTERNAL, 88, 100)
+			.build();
+	
+	public static final AircraftPreset UNARMED_MRBUDGER_TANK = AircraftPreset.Builder
+			.createFromCopy(DSCombatMod.MODID, "mrbudger_tank_unarmed", EMPTY_MRBUDGER_TANK)
+			.setCraftable()
+			.setSlotItem("dscombat.internal_1", ModItems.C12_ENGINE.getId())
+			.setSlotItem("dscombat.internal_2", ModItems.C12_ENGINE.getId())
+			.setSlotItem("dscombat.internal_3", ModItems.HEAVY_FUEL_TANK.getId(), true)
 			.addIngredient(ModItems.C12_ENGINE.getId(), 2)
 			.addIngredient(ModItems.HEAVY_FUEL_TANK.getId())
+			.build();
+	
+	public static final AircraftPreset DEFAULT_MRBUDGER_TANK = AircraftPreset.Builder
+			.createFromCopy(DSCombatMod.MODID, "mrbudger_tank", UNARMED_MRBUDGER_TANK)
+			.setCraftable()
+			.setSlotItem(PartSlot.PILOT_SLOT_NAME, ModItems.HEAVY_TANK_TURRET.getId(), true)
 			.addIngredient(ModItems.HEAVY_TANK_TURRET.getId())
 			.build();
 	
-	public static final AircraftPreset DEFAULT_SMALL_ROLLER = AircraftPreset.Builder
-			.create(DSCombatMod.MODID, "small_roller")
+	public static final AircraftPreset EMPTY_SMALL_ROLLER = AircraftPreset.Builder
+			.create(DSCombatMod.MODID, "small_roller_empty")
 			.setAircraftType(AircraftType.CAR)
 			.setItem(ModItems.SMALL_ROLLER.getId())
-			.setCraftable()
 			.setMaxHealth(30f)
 			.setMass(5f)
 			.setMaxSpeed(0.2f)
@@ -271,24 +288,36 @@ public class DefaultAircraftPresets {
 			.setMaxTurnRates(0f, 0f, 3f)
 			.setTurnTorques(0f, 0f, 10f)
 			.setThrottleRate(0.08f, 0.08f)
-			.addItemSlot(PartSlot.PILOT_SLOT_NAME, SlotType.HEAVY_TURRET, 0, 0.6, 0, 0, 48, 20,
-					ModItems.STEVE_UP_SMASH.getId())
-			// FIXME 1.3 finish small roller preset
 			.setDefaultTexture(DyeColor.GRAY, "dscombat:textures/entities/small_roller.png")
 			.addIngredient("minecraft:minecart", 2)
 			.addIngredient(ModItems.FUSELAGE.getId())
 			.addIngredient(ModItems.SEAT.getId(), 1)
 			.addIngredient("minecraft:gold_ingot", 4)
+			.addSeatSlot(PartSlot.PILOT_SLOT_NAME, SlotType.HEAVY_TURRET, 0, 0.6, 0, 48, 20)
+			.addEmptySlot("dscombat.internal_1", SlotType.INTERNAL, 48, 100)
+			.addEmptySlot("dscombat.internal_2", SlotType.INTERNAL, 68, 100)
+			.build();
+	
+	public static final AircraftPreset UNARMED_SMALL_ROLLER = AircraftPreset.Builder
+			.createFromCopy(DSCombatMod.MODID, "small_roller_unarmed", EMPTY_SMALL_ROLLER)
+			.setCraftable()
 			.addIngredient(ModItems.C6_ENGINE.getId())
 			.addIngredient(ModItems.LIGHT_FUEL_TANK.getId())
+			.setSlotItem("dscombat.internal_1", ModItems.C6_ENGINE.getId())
+			.setSlotItem("dscombat.internal_2", ModItems.LIGHT_FUEL_TANK.getId(), true)
+			.build();
+	
+	public static final AircraftPreset DEFAULT_SMALL_ROLLER = AircraftPreset.Builder
+			.createFromCopy(DSCombatMod.MODID, "small_roller", UNARMED_SMALL_ROLLER)
+			.setCraftable()
+			.setSlotItem(PartSlot.PILOT_SLOT_NAME, ModItems.STEVE_UP_SMASH.getId(), true)
 			.addIngredient(ModItems.STEVE_UP_SMASH.getId())
 			.build();
 	
-	public static final AircraftPreset DEFAULT_NATHAN_BOAT = AircraftPreset.Builder
-			.create(DSCombatMod.MODID, "nathan_boat")
+	public static final AircraftPreset EMPTY_NATHAN_BOAT = AircraftPreset.Builder
+			.create(DSCombatMod.MODID, "nathan_boat_empty")
 			.setAircraftType(AircraftType.BOAT)
 			.setItem(ModItems.NATHAN_BOAT.getId())
-			.setCraftable()
 			.setMaxHealth(100f)
 			.setMass(10f)
 			.setMaxSpeed(0.9f)
@@ -298,23 +327,50 @@ public class DefaultAircraftPresets {
 			.setMaxTurnRates(0f, 0f, 3.5f)
 			.setTurnTorques(0f, 0f, 2f)
 			.setThrottleRate(0.05f, 0.10f)
-			.addPilotSeatSlot(0.8, 1.2, -1.13, 48, 20)
-			// FIXME 1.4 finish nathan boat preset
 			.setDefaultTexture(DyeColor.WHITE, "dscombat:textures/entities/nathan_boat/white.png")
 			.addIngredient("minecraft:boat", 4)
 			.addIngredient(ModItems.FUSELAGE.getId())
 			.addIngredient(ModItems.SEAT.getId(), 7)
-			.addIngredient(ModItems.C12_ENGINE.getId(), 2)
-			.addIngredient(ModItems.HEAVY_FUEL_TANK.getId())
-			.addIngredient(ModItems.MINIGUN_TURRET.getId())
-			.addIngredient(ModItems.WR400.getId())
+			.addPilotSeatSlot(0.8, 1.2, -1.13, 48, 20)
+			.addSeatSlot("dscombat.seat1", SlotType.TURRET, 0.65, 1.2, 2.44, 68, 20)
+			.addSeatSlot("dscombat.seat2", SlotType.TURRET, -0.65, 1.2, 2.44, 88, 20)
+			.addSeatSlot("dscombat.seat3", SlotType.TURRET, 0.65, 1.2, 1.25, 108, 20)
+			.addSeatSlot("dscombat.seat4", SlotType.TURRET, -0.65, 1.2, 1.25, 128, 20)
+			.addSeatSlot("dscombat.seat5", SlotType.TURRET, 0.65, 1.2, -0.06, 148, 20)
+			.addSeatSlot("dscombat.seat6", SlotType.TURRET, -0.65, 1.2, -0.06, 168, 20)
+			.addEmptySlot("dscombat.frame_1", SlotType.FRAME, 1.5, 1, 0, 90, 48, 60)
+			.addEmptySlot("dscombat.frame_2", SlotType.FRAME, -1.5, 1, 0, -90, 68, 60)
+			.addEmptySlot("dscombat.internal_1", SlotType.INTERNAL, 48, 100)
+			.addEmptySlot("dscombat.internal_2", SlotType.INTERNAL, 68, 100)
+			.addEmptySlot("dscombat.internal_3", SlotType.INTERNAL, 88, 100)
+			.addEmptySlot("dscombat.internal_4", SlotType.ADVANCED_INTERNAL, 108, 100)
 			.build();
 	
-	public static final AircraftPreset DEFAULT_ANDOLF_SUB = AircraftPreset.Builder
-			.create(DSCombatMod.MODID, "andolf_sub")
+	public static final AircraftPreset UNARMED_NATHAN_BOAT = AircraftPreset.Builder
+			.createFromCopy(DSCombatMod.MODID, "nathan_boat_unarmed", EMPTY_NATHAN_BOAT)
+			.setCraftable()
+			.addIngredient(ModItems.C12_ENGINE.getId(), 2)
+			.addIngredient(ModItems.HEAVY_FUEL_TANK.getId())
+			.setSlotItem("dscombat.internal_1", ModItems.C12_ENGINE.getId())
+			.setSlotItem("dscombat.internal_2", ModItems.C12_ENGINE.getId())
+			.setSlotItem("dscombat.internal_3", ModItems.HEAVY_FUEL_TANK.getId(), true)
+			.setSlotItem("dscombat.internal_4", ModItems.WR400.getId())
+			.build();
+	
+	public static final AircraftPreset DEFAULT_NATHAN_BOAT = AircraftPreset.Builder
+			.createFromCopy(DSCombatMod.MODID, "nathan_boat", UNARMED_NATHAN_BOAT)
+			.setCraftable()
+			.addIngredient(ModItems.MINIGUN_TURRET.getId())
+			.addIngredient(ModItems.WR400.getId())
+			.setSlotItem("dscombat.seat1", ModItems.MINIGUN_TURRET.getId())
+			.setSlotItem("dscombat.frame_1", ModItems.HEAVY_MISSILE_RACK.getId(), "torpedo1", true)
+			.setSlotItem("dscombat.frame_2", ModItems.HEAVY_MISSILE_RACK.getId(), "torpedo1", true)
+			.build();
+	
+	public static final AircraftPreset EMPTY_ANDOLF_SUB = AircraftPreset.Builder
+			.create(DSCombatMod.MODID, "andolf_sub_empty")
 			.setAircraftType(AircraftType.SUBMARINE)
 			.setItem(ModItems.ANDOLF_SUB.getId())
-			.setCraftable()
 			.setMaxHealth(800f)
 			.setMass(200f)
 			.setMaxSpeed(0.6f)
@@ -324,21 +380,54 @@ public class DefaultAircraftPresets {
 			.setMaxTurnRates(2f, 2f, 2f)
 			.setTurnTorques(1f, 1f, 1f)
 			.setThrottleRate(0.04f, 0.04f)
-			.addPilotSeatSlot(0.6, -1.5, 2.8, 48, 20)
-			.addSeatSlot("dscombat.seat1", -0.6, -1.5, 2.8, 68, 20)
-			.addSeatSlot("dscombat.seat2", 0.6, -1.5, 1.6, 88, 20)
-			.addSeatSlot("dscombat.seat3", -0.6, -1.5, 1.6, 108, 20)
-			.addSeatSlot("dscombat.seat2", 0.6, -1.5, 0.4, 128, 20)
-			.addSeatSlot("dscombat.seat3", -0.6, -1.5, 0.4, 148, 20)
-			// FIXME 1.5 finish andolf sub preset
 			.setDefaultTexture(DyeColor.BLUE, "dscombat:textures/entities/andolf_sub/blue.png")
 			.addIngredient("minecraft:minecart", 4)
 			.addIngredient(ModItems.FUSELAGE.getId(), 3)
 			.addIngredient(ModItems.SEAT.getId(), 6)
 			.addIngredient("minecraft:gold_ingot", 4)
+			.addPilotSeatSlot(0.6, -1.5, 2.8, 48, 20)
+			.addSeatSlot("dscombat.seat1", -0.6, -1.5, 2.8, 68, 20)
+			.addSeatSlot("dscombat.seat2", 0.6, -1.5, 1.6, 88, 20)
+			.addSeatSlot("dscombat.seat3", -0.6, -1.5, 1.6, 108, 20)
+			.addSeatSlot("dscombat.seat4", 0.6, -1.5, 0.4, 128, 20)
+			.addSeatSlot("dscombat.seat5", -0.6, -1.5, 0.4, 148, 20)
+			.addEmptySlot("dscombat.nose_1", SlotType.FRAME, 0, -1.6, 3.5, 0, 48, 80)
+			.addEmptySlot("dscombat.frame_1", SlotType.FRAME, 2, 0, 1, 90, 48, 60)
+			.addEmptySlot("dscombat.frame_2", SlotType.FRAME, 2, 0, 0, 90, 68, 60)
+			.addEmptySlot("dscombat.frame_3", SlotType.FRAME, 2, 0, -1, 90, 88, 60)
+			.addEmptySlot("dscombat.frame_4", SlotType.FRAME, -2, 0, 1, -90, 108, 60)
+			.addEmptySlot("dscombat.frame_5", SlotType.FRAME, -2, 0, 0, -90, 128, 60)
+			.addEmptySlot("dscombat.frame_6", SlotType.FRAME, -2, 0, -1, -90, 148, 60)
+			.addEmptySlot("dscombat.internal_1", SlotType.INTERNAL, 48, 100)
+			.addEmptySlot("dscombat.internal_2", SlotType.INTERNAL, 68, 100)
+			.addEmptySlot("dscombat.internal_3", SlotType.INTERNAL, 88, 100)
+			.addEmptySlot("dscombat.internal_4", SlotType.ADVANCED_INTERNAL, 108, 100)
+			.addEmptySlot("dscombat.internal_5", SlotType.ADVANCED_INTERNAL, 128, 100)
+			.addEmptySlot("dscombat.internal_6", SlotType.ADVANCED_INTERNAL, 148, 100)
+			.build();
+			
+	public static final AircraftPreset UNARMED_ANDOLF_SUB = AircraftPreset.Builder
+			.createFromCopy(DSCombatMod.MODID, "andolf_sub_unarmed", EMPTY_ANDOLF_SUB)
+			.setCraftable()
 			.addIngredient(ModItems.C12_ENGINE.getId(), 2)
 			.addIngredient(ModItems.HEAVY_FUEL_TANK.getId())
+			.setSlotItem("dscombat.internal_1", ModItems.C12_ENGINE.getId())
+			.setSlotItem("dscombat.internal_2", ModItems.C12_ENGINE.getId())
+			.setSlotItem("dscombat.internal_3", ModItems.HEAVY_FUEL_TANK.getId(), true)
+			.build();
+	
+	public static final AircraftPreset DEFAULT_ANDOLF_SUB = AircraftPreset.Builder
+			.createFromCopy(DSCombatMod.MODID, "andolf_sub", UNARMED_ANDOLF_SUB)
+			.setCraftable()
 			.addIngredient(ModItems.WR1K.getId())
+			.setSlotItem("dscombat.internal_4", ModItems.WR1K.getId())
+			.setSlotItem("dscombat.nose_1", ModItems.XM12.getId(), "20mm", true)
+			.setSlotItem("dscombat.frame_1", ModItems.HEAVY_MISSILE_RACK.getId(), "torpedo1", true)
+			.setSlotItem("dscombat.frame_2", ModItems.HEAVY_MISSILE_RACK.getId(), "torpedo1", true)
+			.setSlotItem("dscombat.frame_3", ModItems.HEAVY_MISSILE_RACK.getId(), "torpedo1", true)
+			.setSlotItem("dscombat.frame_4", ModItems.HEAVY_MISSILE_RACK.getId(), "torpedo1", true)
+			.setSlotItem("dscombat.frame_5", ModItems.HEAVY_MISSILE_RACK.getId(), "torpedo1", true)
+			.setSlotItem("dscombat.frame_6", ModItems.HEAVY_MISSILE_RACK.getId(), "torpedo1", true)
 			.build();
 	
 	public static final AircraftPreset DEFAULT_ORANGE_TESLA = AircraftPreset.Builder

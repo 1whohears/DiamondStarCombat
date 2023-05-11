@@ -155,7 +155,6 @@ public abstract class EntityMissile extends EntityBullet {
 			if (t != null) targetPos = t.position();
 			else targetPos = tpos;
 		} else targetPos = tpos;
-		System.out.println("targetPos = "+targetPos);
 		guideToPosition();
 	}
 	

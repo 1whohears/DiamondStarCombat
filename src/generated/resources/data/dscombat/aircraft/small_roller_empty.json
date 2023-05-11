@@ -1,0 +1,79 @@
+{
+  "aircraft_type": 2,
+  "dyecolor": 7,
+  "health": 30.0,
+  "idleheat": 1.0,
+  "ingredients": [
+    {
+      "item": "minecraft:minecart",
+      "num": 2
+    },
+    {
+      "item": "dscombat:fuselage",
+      "num": 1
+    },
+    {
+      "item": "dscombat:seat",
+      "num": 1
+    },
+    {
+      "item": "minecraft:gold_ingot",
+      "num": 4
+    }
+  ],
+  "is_craftable": false,
+  "item": "dscombat:small_roller",
+  "landing_gear": true,
+  "mass": 5.0,
+  "max_health": 30.0,
+  "max_speed": 0.2,
+  "maxpitch": 0.0,
+  "maxroll": 0.0,
+  "maxyaw": 3.0,
+  "pitchtorque": 0.0,
+  "presetId": "small_roller_empty",
+  "rolltorque": 0.0,
+  "slots": [
+    {
+      "data": {
+        "itemid": "dscombat:seat"
+      },
+      "name": "dscombat.pilot_seat",
+      "slot_posx": 0.0,
+      "slot_posy": 0.6,
+      "slot_posz": 0.0,
+      "slot_type": 6,
+      "uix": 48,
+      "uiy": 20,
+      "zRot": 0.0
+    },
+    {
+      "name": "dscombat.internal_1",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": 3,
+      "uix": 48,
+      "uiy": 100,
+      "zRot": 0.0
+    },
+    {
+      "name": "dscombat.internal_2",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": 3,
+      "uix": 68,
+      "uiy": 100,
+      "zRot": 0.0
+    }
+  ],
+  "stealth": 1.0,
+  "textures": {
+    "7": "dscombat:textures/entities/small_roller.png"
+  },
+  "throttledown": 0.08,
+  "throttleup": 0.08,
+  "turn_radius": 0.0,
+  "yawtorque": 10.0
+}

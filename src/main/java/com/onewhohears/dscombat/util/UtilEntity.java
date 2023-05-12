@@ -18,15 +18,14 @@ public class UtilEntity {
 		return canEntitySeeEntity(e1, e2, maxBlockCheckDepth, 0, 0);
 	}
 	
-	public static boolean canEntitySeeEntity(Entity e1, Entity e2, int maxBlockCheckDepth, 
-			double throWater, double throBlock) {
+	public static boolean canEntitySeeEntity(Entity e1, Entity e2, int maxBlockCheckDepth, double throWater, double throBlock) {
 		Level level = e1.getLevel();
 		Vec3 diff = e2.position().subtract(e1.position());
 		Vec3 look = diff.normalize();
 		double distance = diff.length();
 		double[] through = new double[] {throWater, throBlock};
 		if (distance <= maxBlockCheckDepth) {
-			if (!checkBlocksByRange(level, e1.position(), look, maxBlockCheckDepth, through)) return false;
+			if (!checkBlocksByRange(level, e1.position(), look, (int)distance, through)) return false;
 		} else {
 			int maxCheckDist = maxBlockCheckDepth / 2;
 			if (!checkBlocksByRange(level, e1.position(), look, maxCheckDist, through)) return false;
@@ -38,7 +37,6 @@ public class UtilEntity {
 	}
 	
 	private static boolean checkBlocksByRange(Level level, Vec3 pos, Vec3 look, int dist, double[] through) {
-		// FIXME 0 can see entity is broken
 		int k = 0;
 		while (k++ < dist) {
 			pos = pos.add(look);

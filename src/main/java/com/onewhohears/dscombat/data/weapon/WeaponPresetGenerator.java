@@ -494,12 +494,17 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.build());
 	}
 	
+	protected void registerBombs() {
+		// TODO 2.2 make a bomb
+	}
+	
 	@Override
 	protected void registerPresets() {
 		registerBullets();
 		registerAAMissiles();
 		registerAGMissiles();
 		registerOtherMissiles();
+		registerBombs();
 	}	
 	
 	public WeaponPresetGenerator(DataGenerator output) {

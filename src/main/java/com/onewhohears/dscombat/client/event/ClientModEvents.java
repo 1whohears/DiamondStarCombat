@@ -33,6 +33,7 @@ import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 import com.onewhohears.dscombat.entity.aircraft.EntitySubmarine;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
+import com.onewhohears.dscombat.entity.weapon.EntityBomb;
 import com.onewhohears.dscombat.entity.weapon.EntityBullet;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.init.ModEntities;
@@ -115,6 +116,11 @@ public final class ClientModEvents {
 		event.registerEntityRenderer((EntityType<EntityBullet>)ModEntities.BULLET.get(), 
 				(context) -> new RendererEntityWeapon<EntityBullet>(context, 
 						new EntityModelBullet1<EntityBullet>(models.bakeLayer(EntityModelBullet1.LAYER_LOCATION)),
+						new ResourceLocation(DSCombatMod.MODID, "textures/entities/bullet1.png")));
+		// BOMBS // FIXME 1 give bomb it's own model
+		event.registerEntityRenderer((EntityType<EntityBomb>)ModEntities.BOMB.get(), 
+				(context) -> new RendererEntityWeapon<EntityBomb>(context, 
+						new EntityModelBullet1<EntityBomb>(models.bakeLayer(EntityModelBullet1.LAYER_LOCATION)),
 						new ResourceLocation(DSCombatMod.MODID, "textures/entities/bullet1.png")));
 		// MISSILES
 		event.registerEntityRenderer(ModEntities.POS_MISSILE_1.get(), 

@@ -4,10 +4,18 @@ import java.util.List;
 
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.data.JsonPreset;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.weapon.EntityBomb;
+import com.onewhohears.dscombat.entity.weapon.EntityBullet;
+import com.onewhohears.dscombat.entity.weapon.EntityMissile;
+import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 public class BombData extends BulletData {
 	
@@ -28,6 +36,26 @@ public class BombData extends BulletData {
 	}
 	
 	@Override
+	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction) {
+		EntityBomb bomb = (EntityBomb) super.getShootEntity(level, owner, pos, direction);
+		if (bomb == null) return null;
+		return bomb;
+	}
+	
+	@Override
+	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 direction, EntityAircraft vehicle) {
+		EntityBomb bomb = (EntityBomb) super.getShootEntity(level, owner, direction, vehicle);
+		if (bomb == null) return null;
+		bomb.setDeltaMovement(vehicle.getDeltaMovement());
+		return bomb;
+	}
+	
+	@Override
+	public EntityWeapon getEntity(Level level, Entity owner) {
+		return new EntityBomb(level, owner, this);
+	}
+	
+	@Override
 	public void readNBT(CompoundTag tag) {
 		super.readNBT(tag);
 	}
@@ -35,7 +63,6 @@ public class BombData extends BulletData {
 	@Override
 	public CompoundTag writeNbt() {
 		CompoundTag tag = super.writeNbt();
-		// TODO 2.2 make a bomb
 		return tag;
 	}
 	

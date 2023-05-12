@@ -325,6 +325,14 @@ public class RadarData extends JsonPreset {
 		
 	}
 	
+	public static enum RadarMode {
+		OFF,
+		MOBS,
+		PAYERS,
+		VEHICLES,
+		ALL
+	}
+	
 	@Override
 	public String toString() {
 		return "["+getId()+":"+fov+":"+range+"]";

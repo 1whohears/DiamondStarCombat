@@ -277,6 +277,9 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "itemid": "dscombat:c12_engine"
+      },
       "name": "dscombat.internal_1",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
@@ -287,6 +290,9 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "itemid": "dscombat:c12_engine"
+      },
       "name": "dscombat.internal_2",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
@@ -297,6 +303,10 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "filled": true,
+        "itemid": "dscombat:heavy_fuel_tank"
+      },
       "name": "dscombat.internal_3",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
@@ -307,6 +317,10 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "filled": true,
+        "itemid": "dscombat:basic_flare_dispenser"
+      },
       "name": "dscombat.internal_4",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
@@ -317,6 +331,9 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "itemid": "dscombat:ar500"
+      },
       "name": "dscombat.internal_5",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
@@ -327,6 +344,9 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "itemid": "dscombat:gr400"
+      },
       "name": "dscombat.internal_6",
       "slot_posx": 0.0,
       "slot_posy": 0.0,

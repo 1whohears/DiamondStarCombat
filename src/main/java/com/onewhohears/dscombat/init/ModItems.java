@@ -192,6 +192,8 @@ public class ModItems {
 	// AMMO
 	public static final RegistryObject<Item> BULLET = ITEMS.register("bullet", 
 			() -> new ItemAmmo(64, "20mm")); 
+	public static final RegistryObject<Item> BOMB = ITEMS.register("bomb", 
+			() -> new ItemAmmo(64, "anm57")); 
 	public static final RegistryObject<Item> TRACK_AIR_MISSILE = ITEMS.register("track_air_missile", 
 			() -> new ItemAmmo(8, "aim120b")); 
 	public static final RegistryObject<Item> TRACK_GROUND_MISSILE = ITEMS.register("track_ground_missile", 
@@ -237,7 +239,6 @@ public class ModItems {
 			() -> new ItemAmmo(4, "torpedo1")); 
 	public static final RegistryObject<Item> RIFEL1 = ITEMS.register("rifel1", 
 			() -> new ItemAmmo(4, "rifel1")); 
-	
 	
 	// PLANES
 	public static final RegistryObject<Item> JAVI_PLANE = ITEMS.register("javi_plane", 

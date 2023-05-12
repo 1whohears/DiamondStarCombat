@@ -1,0 +1,31 @@
+{
+  "type": 1,
+  "canShootOnGround": false,
+  "causesFire": false,
+  "compatibleWeaponPart": "dscombat:xm12",
+  "craftNum": 1,
+  "damage": 40.0,
+  "destroyTerrain": true,
+  "entityTypeKey": "dscombat:bomb",
+  "explosionRadius": 7.0,
+  "explosive": true,
+  "fireRate": 17,
+  "ingredients": [
+    {
+      "item": "minecraft:iron_ingot",
+      "num": 12
+    },
+    {
+      "item": "minecraft:tnt",
+      "num": 2
+    }
+  ],
+  "innacuracy": 0.0,
+  "itemKey": "dscombat:bomb",
+  "maxAge": 200,
+  "maxAmmo": 4,
+  "presetId": "anm64",
+  "rackTypeKey": "dscombat:xm12",
+  "shootSoundKey": "dscombat:bullet_shoot_1",
+  "speed": 0.0
+}

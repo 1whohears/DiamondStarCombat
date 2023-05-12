@@ -43,8 +43,7 @@ public class ItemWeaponPart extends ItemPart {
 		if (group.getId() == ModItems.WEAPONS.getId()) {
 			ResourceLocation itemid = ForgeRegistries.ITEMS.getKey(this);
 			List<String> list = WeaponPresets.get().getCompatibleWeapons(itemid);
-			for (int i = 0; i < list.size(); ++i) 
-				addWeaponRack(list.get(i), items);
+			for (int i = 0; i < list.size(); ++i) addWeaponRack(list.get(i), items);
 		}
 	}
 	

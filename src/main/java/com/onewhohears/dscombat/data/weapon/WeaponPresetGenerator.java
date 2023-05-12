@@ -495,7 +495,75 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 	}
 	
 	protected void registerBombs() {
-		// TODO 2.2 make a bomb
+		addPresetToGenerate(BombData.Builder
+				.bombBuilder(DSCombatMod.MODID, "anm30")
+				.setFireRate(5)
+				.setInnacuracy(0f)
+				.setCanShootOnGround(false)
+				.setDamage(20f)
+				.setSpeed(0f)
+				.setExplosionRadius(3)
+				.setExplosive(true)
+				.setDestoryTerrain(true)
+				.setCausesFire(false)
+				.setMaxAmmo(16)
+				.setMaxAge(200)
+				.setItem(ModItems.BOMB.getId())
+				.setEntityType(ModEntities.BOMB.getId())
+				// FIXME 2.1 make a bomb rack, compatible item, and shoot sound
+				.setRackEntityType(ModEntities.XM12.getId())
+				.setShootSound(ModSounds.BULLET_SHOOT_1.getId())
+				.setCompatibleWeaponPart(ModItems.XM12.getId())
+				.setCraftNum(4)
+				.addIngredient("minecraft:iron_ingot", 8)
+				.addIngredient("minecraft:tnt", 2)
+				.build());
+		addPresetToGenerate(BombData.Builder
+				.bombBuilder(DSCombatMod.MODID, "anm57")
+				.setFireRate(9)
+				.setInnacuracy(0f)
+				.setCanShootOnGround(false)
+				.setDamage(30f)
+				.setSpeed(0f)
+				.setExplosionRadius(4.5f)
+				.setExplosive(true)
+				.setDestoryTerrain(true)
+				.setCausesFire(false)
+				.setMaxAmmo(8)
+				.setMaxAge(200)
+				.setItem(ModItems.BOMB.getId())
+				.setEntityType(ModEntities.BOMB.getId())
+				// FIXME 2.2 make a bomb rack, compatible item, and shoot sound
+				.setRackEntityType(ModEntities.XM12.getId())
+				.setShootSound(ModSounds.BULLET_SHOOT_1.getId())
+				.setCompatibleWeaponPart(ModItems.XM12.getId())
+				.setCraftNum(1)
+				.addIngredient("minecraft:iron_ingot", 8)
+				.addIngredient("minecraft:tnt", 1)
+				.build());
+		addPresetToGenerate(BombData.Builder
+				.bombBuilder(DSCombatMod.MODID, "anm64")
+				.setFireRate(17)
+				.setInnacuracy(0f)
+				.setCanShootOnGround(false)
+				.setDamage(40f)
+				.setSpeed(0f)
+				.setExplosionRadius(7)
+				.setExplosive(true)
+				.setDestoryTerrain(true)
+				.setCausesFire(false)
+				.setMaxAmmo(4)
+				.setMaxAge(200)
+				.setItem(ModItems.BOMB.getId())
+				.setEntityType(ModEntities.BOMB.getId())
+				// FIXME 2.3 make a bomb rack, compatible item, and shoot sound
+				.setRackEntityType(ModEntities.XM12.getId())
+				.setShootSound(ModSounds.BULLET_SHOOT_1.getId())
+				.setCompatibleWeaponPart(ModItems.XM12.getId())
+				.setCraftNum(1)
+				.addIngredient("minecraft:iron_ingot", 12)
+				.addIngredient("minecraft:tnt", 2)
+				.build());
 	}
 	
 	@Override

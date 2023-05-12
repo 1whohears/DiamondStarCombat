@@ -117,7 +117,7 @@ public final class ClientModEvents {
 				(context) -> new RendererEntityWeapon<EntityBullet>(context, 
 						new EntityModelBullet1<EntityBullet>(models.bakeLayer(EntityModelBullet1.LAYER_LOCATION)),
 						new ResourceLocation(DSCombatMod.MODID, "textures/entities/bullet1.png")));
-		// BOMBS // FIXME 1 give bomb it's own model
+		// BOMBS // FIXME 2.4 give bomb it's own model
 		event.registerEntityRenderer((EntityType<EntityBomb>)ModEntities.BOMB.get(), 
 				(context) -> new RendererEntityWeapon<EntityBomb>(context, 
 						new EntityModelBullet1<EntityBomb>(models.bakeLayer(EntityModelBullet1.LAYER_LOCATION)),

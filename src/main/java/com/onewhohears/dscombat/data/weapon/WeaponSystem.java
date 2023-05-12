@@ -129,8 +129,10 @@ public class WeaponSystem {
     	return UtilAngles.getRollAxis(q);
     }
 	
-	public void selectNextWeapon() {
-		++weaponIndex;
+	public void selectNextWeapon(int input) {
+		if (input == 1) ++weaponIndex;
+		else if (input == -1) --weaponIndex;
+		else return;
 		checkIndex();
 		//System.out.println("new weapon index "+weaponIndex);
 		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
@@ -144,7 +146,8 @@ public class WeaponSystem {
 	}
 	
 	private void checkIndex() {
-		if (weaponIndex >= weapons.size() || weaponIndex < 0) weaponIndex = 0;
+		if (weaponIndex >= weapons.size()) weaponIndex = 0;
+		else if (weaponIndex < 0) weaponIndex = weapons.size()-1;
 	}
 	
 	/**

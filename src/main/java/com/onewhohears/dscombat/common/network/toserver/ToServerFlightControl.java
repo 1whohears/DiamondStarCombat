@@ -19,7 +19,7 @@ public class ToServerFlightControl extends IPacket {
 	public final boolean mouseMode;
 	public final boolean flare;
 	public final boolean shoot;
-	public final boolean select;
+	public final int select;
 	public final boolean openMenu;
 	public final boolean gear;
 	public final boolean special;
@@ -28,7 +28,7 @@ public class ToServerFlightControl extends IPacket {
 	public final boolean bothRoll;
 	
 	public ToServerFlightControl(float throttle, float pitch, float roll, float yaw,
-			boolean mouseMode, boolean flare, boolean shoot, boolean select,
+			boolean mouseMode, boolean flare, boolean shoot, int select,
 			boolean openMenu, boolean gear, boolean special, boolean special2, 
 			boolean radarMode, boolean bothRoll) {
 		this.throttle = throttle;
@@ -55,7 +55,7 @@ public class ToServerFlightControl extends IPacket {
 		mouseMode = buffer.readBoolean();
 		flare = buffer.readBoolean();
 		shoot = buffer.readBoolean();
-		select = buffer.readBoolean();
+		select = buffer.readInt();
 		openMenu = buffer.readBoolean();
 		gear = buffer.readBoolean();
 		special = buffer.readBoolean();
@@ -72,7 +72,7 @@ public class ToServerFlightControl extends IPacket {
 		buffer.writeBoolean(mouseMode);
 		buffer.writeBoolean(flare);
 		buffer.writeBoolean(shoot);
-		buffer.writeBoolean(select);
+		buffer.writeInt(select);
 		buffer.writeBoolean(openMenu);
 		buffer.writeBoolean(gear);
 		buffer.writeBoolean(special);

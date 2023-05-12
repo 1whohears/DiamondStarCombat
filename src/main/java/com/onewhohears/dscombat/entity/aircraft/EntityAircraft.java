@@ -145,8 +145,9 @@ public abstract class EntityAircraft extends Entity {
 	public Vec3 clientAV = Vec3.ZERO;
 	public float clientThrottle;
 	
-	public boolean inputMouseMode, inputFlare, inputShoot, inputSelect, inputOpenMenu;
+	public boolean inputMouseMode, inputFlare, inputShoot, inputOpenMenu;
 	public boolean inputSpecial, inputSpecial2, inputRadarMode, inputBothRoll;
+	public int inputSelect;
 	public float inputThrottle, inputPitch, inputRoll, inputYaw;
 	public float zRot, zRotO; 
 	public Vec3 prevMotion = Vec3.ZERO;
@@ -965,7 +966,7 @@ public abstract class EntityAircraft extends Entity {
 	}
 	
 	public void updateControls(float throttle, float pitch, float roll, float yaw,
-			boolean mouseMode, boolean flare, boolean shoot, boolean select,
+			boolean mouseMode, boolean flare, boolean shoot, int select,
 			boolean openMenu, boolean special, boolean special2, boolean radarMode, 
 			boolean bothRoll) {
 		this.inputThrottle = throttle;
@@ -978,11 +979,10 @@ public abstract class EntityAircraft extends Entity {
 		this.inputShoot = shoot;
 		this.inputSelect = select;
 		/**
-		 * TODO 5.1 weaponSelect2Key selects key above
 		 * TODO 5.2 client should have control of what the selected weapon is
 		 * otherwise one has to wait for server lag for the weapon to switch
 		 */
-		if (inputSelect && !level.isClientSide) weaponSystem.selectNextWeapon();
+		if (!level.isClientSide) weaponSystem.selectNextWeapon(inputSelect);
 		this.inputOpenMenu = openMenu;
 		this.inputSpecial = special;
 		this.inputSpecial2 = special2;
@@ -999,7 +999,7 @@ public abstract class EntityAircraft extends Entity {
 		this.inputFlare = false;
 		this.inputMouseMode = false;
 		this.inputShoot = false;
-		this.inputSelect = false;
+		this.inputSelect = 0;
 		this.inputOpenMenu = false;
 		this.inputSpecial = false;
 		this.inputSpecial2 = false;

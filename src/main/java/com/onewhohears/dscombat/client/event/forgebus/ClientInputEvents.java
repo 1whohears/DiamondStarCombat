@@ -44,7 +44,9 @@ public final class ClientInputEvents {
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
 		if (player == null) return;
-		boolean select = DSCKeys.weaponSelectKey.consumeClick();
+		int select = 0;
+		if (DSCKeys.weaponSelect2Key.consumeClick()) select = -1;
+		else if (DSCKeys.weaponSelectKey.consumeClick()) select = 1;
 		boolean openMenu = DSCKeys.planeMenuKey.consumeClick();
 		boolean mouseMode = DSCKeys.mouseModeKey.consumeClick();
 		boolean gear = DSCKeys.landingGear.consumeClick();

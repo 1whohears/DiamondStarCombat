@@ -183,6 +183,8 @@ public class ModItems {
 			() -> new ItemWeaponPart(2f, PartSlot.EXTERNAL_ALL)); 
 	public static final RegistryObject<Item> HEAVY_MISSILE_RACK = ITEMS.register("heavy_missile_rack", 
 			() -> new ItemWeaponPart(4f, PartSlot.EXTERNAL_ALL)); 
+	public static final RegistryObject<Item> BOMB_RACK = ITEMS.register("bomb_rack", 
+			() -> new ItemWeaponPart(5f, PartSlot.EXTERNAL_ALL)); 
 	/**
 	 * TODO 2.1 radar jamming weapon
 	 * causes victims radar to display random noise

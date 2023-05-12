@@ -2,7 +2,7 @@
   "type": 1,
   "canShootOnGround": false,
   "causesFire": false,
-  "compatibleWeaponPart": "dscombat:xm12",
+  "compatibleWeaponPart": "dscombat:bomb_rack",
   "craftNum": 1,
   "damage": 30.0,
   "destroyTerrain": true,

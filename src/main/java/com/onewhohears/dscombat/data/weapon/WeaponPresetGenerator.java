@@ -510,10 +510,10 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setMaxAge(200)
 				.setItem(ModItems.BOMB.getId())
 				.setEntityType(ModEntities.BOMB.getId())
-				// FIXME 2.1 make a bomb rack, compatible item, and shoot sound
+				// FIXME 2.1 make a bomb rack, and shoot sound
 				.setRackEntityType(ModEntities.XM12.getId())
 				.setShootSound(ModSounds.BULLET_SHOOT_1.getId())
-				.setCompatibleWeaponPart(ModItems.XM12.getId())
+				.setCompatibleWeaponPart(ModItems.BOMB_RACK.getId())
 				.setCraftNum(4)
 				.addIngredient("minecraft:iron_ingot", 8)
 				.addIngredient("minecraft:tnt", 2)
@@ -533,10 +533,10 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setMaxAge(200)
 				.setItem(ModItems.BOMB.getId())
 				.setEntityType(ModEntities.BOMB.getId())
-				// FIXME 2.2 make a bomb rack, compatible item, and shoot sound
+				// FIXME 2.2 make a bomb rack, and shoot sound
 				.setRackEntityType(ModEntities.XM12.getId())
 				.setShootSound(ModSounds.BULLET_SHOOT_1.getId())
-				.setCompatibleWeaponPart(ModItems.XM12.getId())
+				.setCompatibleWeaponPart(ModItems.BOMB_RACK.getId())
 				.setCraftNum(1)
 				.addIngredient("minecraft:iron_ingot", 8)
 				.addIngredient("minecraft:tnt", 1)
@@ -556,10 +556,10 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setMaxAge(200)
 				.setItem(ModItems.BOMB.getId())
 				.setEntityType(ModEntities.BOMB.getId())
-				// FIXME 2.3 make a bomb rack, compatible item, and shoot sound
+				// FIXME 2.3 make a bomb rack, and shoot sound
 				.setRackEntityType(ModEntities.XM12.getId())
 				.setShootSound(ModSounds.BULLET_SHOOT_1.getId())
-				.setCompatibleWeaponPart(ModItems.XM12.getId())
+				.setCompatibleWeaponPart(ModItems.BOMB_RACK.getId())
 				.setCraftNum(1)
 				.addIngredient("minecraft:iron_ingot", 12)
 				.addIngredient("minecraft:tnt", 2)

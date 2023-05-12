@@ -23,6 +23,7 @@ import com.onewhohears.dscombat.data.aircraft.AircraftTextures;
 import com.onewhohears.dscombat.data.damagesource.AircraftExplodeDamageSource;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartsManager;
+import com.onewhohears.dscombat.data.radar.RadarData.RadarMode;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponSystem;
@@ -111,7 +112,7 @@ public abstract class EntityAircraft extends Entity {
 	public static final EntityDataAccessor<Boolean> TEST_MODE = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Integer> CURRRENT_DYE_ID = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Boolean> NO_CONSUME = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<Boolean> PLAYERS_ONLY_RADAR = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Integer> RADAR_MODE = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> FLARE_NUM = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.INT);
 	
 	public final double ACC_GRAVITY = Config.SERVER.accGravity.get();
@@ -209,7 +210,7 @@ public abstract class EntityAircraft extends Entity {
 		entityData.define(CURRRENT_DYE_ID, 0);
 		entityData.define(TURN_RADIUS, 0f);
 		entityData.define(NO_CONSUME, false);
-		entityData.define(PLAYERS_ONLY_RADAR, false);
+		entityData.define(RADAR_MODE, RadarMode.ALL.ordinal());
 		entityData.define(FLARE_NUM, 0);
 	}
 	
@@ -290,6 +291,7 @@ public abstract class EntityAircraft extends Entity {
 		setClientQ(q);
 		if (color == -1) color = nbt.getInt("dyecolor");
 		setCurrentColor(DyeColor.byId(color));
+		setRadarMode(RadarMode.OFF);
 	}
 
 	@Override
@@ -987,7 +989,7 @@ public abstract class EntityAircraft extends Entity {
 		this.inputSpecial = special;
 		this.inputSpecial2 = special2;
 		this.inputRadarMode = radarMode;
-		if (inputRadarMode) setRadarPlayersOnly(!isRadarPlayersOnly());
+		if (inputRadarMode) setRadarMode(getRadarMode().cycle());
 		this.inputBothRoll = bothRoll;
 	}
 	
@@ -1016,13 +1018,12 @@ public abstract class EntityAircraft extends Entity {
     	entityData.set(FREE_LOOK, freeLook);
     }
     
-    // TODO 5.3 make radar mode enum with OFF/MOBS/PLAYERS/VEHICLES/ALL/PASSIVE
-    public final boolean isRadarPlayersOnly() {
-    	return entityData.get(PLAYERS_ONLY_RADAR);
+    public final RadarMode getRadarMode() {
+    	return RadarMode.values()[entityData.get(RADAR_MODE)];
     }
     
-    public final void setRadarPlayersOnly(boolean playersOnly) {
-    	entityData.set(PLAYERS_ONLY_RADAR, playersOnly);
+    public final void setRadarMode(RadarMode mode) {
+    	entityData.set(RADAR_MODE, mode.ordinal());
     }
 	
     /**

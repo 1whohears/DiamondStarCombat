@@ -18,7 +18,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
@@ -134,7 +133,7 @@ public class RadarData extends JsonPreset {
 		buffer.writeUtf(slotId);
 	}
 	
-	public void tickUpdateTargets(EntityAircraft radar, List<RadarPing> targets) {
+	public void tickUpdateTargets(EntityAircraft radar, List<RadarPing> vehiclePings) {
 		if (scanTicks > scanRate) scanTicks = 0;
 		else {
 			++scanTicks;
@@ -142,49 +141,64 @@ public class RadarData extends JsonPreset {
 			return;
 		}
 		maxCheckDist = Config.SERVER.maxBlockCheckDepth.get();
-		for (int i = 0; i < pings.size(); ++i) targets.remove(pings.get(i));
+		for (int i = 0; i < pings.size(); ++i) vehiclePings.remove(pings.get(i));
 		pings.clear();
 		freshTargets = true;
-		Level level = radar.level;
 		Entity controller = radar.getControllingPassenger();
-		if (scanAircraft) {
-			List<EntityAircraft> list = level.getEntitiesOfClass(
-					EntityAircraft.class, getRadarBoundingBox(radar));
-			for (int i = 0; i < list.size(); ++i) {
-				if (!list.get(i).isOperational()) continue;
-				Entity pilot = list.get(i).getControllingPassenger();
-				if (radar.isRadarPlayersOnly() && pilot == null) continue;
-				if (!basicCheck(radar, list.get(i), list.get(i).getStealth())) continue;
-				RadarPing p = new RadarPing(list.get(i), 
-					checkFriendly(controller, pilot));
-				targets.add(p);
-				pings.add(p);
-				list.get(i).lockedOnto(radar.position());
-			}
+		RadarMode mode = radar.getRadarMode();
+		if (scanAircraft && mode.canScan(RadarMode.VEHICLES)) {
+			scanAircraft(radar, controller, vehiclePings);
 		}
-		if (scanPlayers) {
-			List<Player> list = level.getEntitiesOfClass(
-					Player.class, getRadarBoundingBox(radar));
-			for (int i = 0; i < list.size(); ++i) {
-				if (list.get(i).getRootVehicle() instanceof EntityAircraft) continue;
-				if (!basicCheck(radar, list.get(i), 1)) continue;
-				RadarPing p = new RadarPing(list.get(i), 
+		if (scanPlayers && mode.canScan(RadarMode.PLAYERS)) {
+			scanPlayers(radar, controller, vehiclePings);
+		}
+		if (scanMobs && mode.canScan(RadarMode.MOBS)) {
+			scanMobs(radar, controller, vehiclePings);
+		}
+	}
+	
+	private void scanAircraft(EntityAircraft radar, Entity controller, List<RadarPing> vehiclePings) {
+		//System.out.println("SCANNING VEHICLES");
+		List<EntityAircraft> list = radar.level.getEntitiesOfClass(
+				EntityAircraft.class, getRadarBoundingBox(radar));
+		for (int i = 0; i < list.size(); ++i) {
+			if (!list.get(i).isOperational()) continue;
+			Entity pilot = list.get(i).getControllingPassenger();
+			if (radar.getRadarMode() == RadarMode.PLAYERS && pilot == null) continue;
+			if (!basicCheck(radar, list.get(i), list.get(i).getStealth())) continue;
+			RadarPing p = new RadarPing(list.get(i), 
+				checkFriendly(controller, pilot));
+			vehiclePings.add(p);
+			pings.add(p);
+			list.get(i).lockedOnto(radar.position());
+		}
+	}
+	
+	private void scanPlayers(EntityAircraft radar, Entity controller, List<RadarPing> vehiclePings) {
+		//System.out.println("SCANNING PLAYERS");
+		List<Player> list = radar.level.getEntitiesOfClass(
+				Player.class, getRadarBoundingBox(radar));
+		for (int i = 0; i < list.size(); ++i) {
+			if (list.get(i).getRootVehicle() instanceof EntityAircraft) continue;
+			if (!basicCheck(radar, list.get(i), 1)) continue;
+			RadarPing p = new RadarPing(list.get(i), 
+				checkFriendly(controller, list.get(i)));
+			vehiclePings.add(p);
+			pings.add(p);
+		}
+	}
+	
+	private void scanMobs(EntityAircraft radar, Entity controller, List<RadarPing> vehiclePings) {
+		//System.out.println("SCANNING MOBS");
+		List<Mob> list = radar.level.getEntitiesOfClass(
+				Mob.class, getRadarBoundingBox(radar));
+		for (int i = 0; i < list.size(); ++i) {
+			if (list.get(i).getRootVehicle() instanceof EntityAircraft) continue;
+			if (!basicCheck(radar, list.get(i), 1)) continue;
+			RadarPing p = new RadarPing(list.get(i), 
 					checkFriendly(controller, list.get(i)));
-				targets.add(p);
-				pings.add(p);
-			}
-		}
-		if (scanMobs && !radar.isRadarPlayersOnly()) {
-			List<Mob> list = level.getEntitiesOfClass(
-					Mob.class, getRadarBoundingBox(radar));
-			for (int i = 0; i < list.size(); ++i) {
-				if (list.get(i).getRootVehicle() instanceof EntityAircraft) continue;
-				if (!basicCheck(radar, list.get(i), 1)) continue;
-				RadarPing p = new RadarPing(list.get(i), 
-						checkFriendly(controller, list.get(i)));
-				targets.add(p);
-				pings.add(p);
-			}
+			vehiclePings.add(p);
+			pings.add(p);
 		}
 	}
 	
@@ -328,9 +342,25 @@ public class RadarData extends JsonPreset {
 	public static enum RadarMode {
 		OFF,
 		MOBS,
-		PAYERS,
+		PLAYERS,
 		VEHICLES,
-		ALL
+		ALL;
+		
+		public RadarMode cycle() {
+			int i = this.ordinal();
+			++i;
+			if (i >= RadarMode.values().length) i = 0;
+			return RadarMode.values()[i];
+		}
+		
+		public boolean canScan(RadarMode mode) {
+			if (this == ALL) return true;
+			return this == mode;
+		}
+		
+		public boolean isOff() {
+			return this == OFF;
+		}
 	}
 	
 	@Override

@@ -267,14 +267,13 @@ public class PilotOverlay {
 		// PLAYERS ONLY
         if (plane.radarSystem.hasRadar()) {
         	x = 1+weaponSelectWidth;
-        	if (plane.inputRadarMode) color = color2;
+        	if (plane.getRadarMode().isOff()) color = color2;
         	else color = color1;
         	GuiComponent.drawString(poseStack, m.font, 
         		"RMode("+DSCKeys.radarModeKey.getKey().getDisplayName().getString()+")", 
         		x, wh, color);
         	x += maxNameWidth;
-        	if (plane.isRadarPlayersOnly()) text = "PLAYER";
-        	else text = "ALL";
+        	text = plane.getRadarMode().name();
         	GuiComponent.drawString(poseStack, m.font, 
         		text, x, wh, color);
         	wh += 10;

@@ -38,6 +38,7 @@ public class UtilEntity {
 	}
 	
 	private static boolean checkBlocksByRange(Level level, Vec3 pos, Vec3 look, int dist, double[] through) {
+		// FIXME 0 can see entity is broken
 		int k = 0;
 		while (k++ < dist) {
 			pos = pos.add(look);

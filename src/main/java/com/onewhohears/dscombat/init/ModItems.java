@@ -189,7 +189,6 @@ public class ModItems {
 	 * if your radar is strong enough and you get close enough, you stop getting jammed
 	 */
 	
-	// FIXME 1 the changes to ammo item system will cause all ammo items in inventories to die...
 	// AMMO
 	public static final RegistryObject<Item> BULLET = ITEMS.register("bullet", 
 			() -> new ItemAmmo(64, "20mm")); 
@@ -205,6 +204,40 @@ public class ModItems {
 			() -> new ItemAmmo(8, "torpedo1")); 
 	public static final RegistryObject<Item> ANTIRADAR_MISSILE = ITEMS.register("antiradar_missile", 
 			() -> new ItemAmmo(8, "rifel1")); 
+	
+	public static final RegistryObject<Item> B_20MM = ITEMS.register("20mm", 
+			() -> new ItemAmmo(64, "20mm")); 
+	public static final RegistryObject<Item> B_50MMHE = ITEMS.register("50mmhe", 
+			() -> new ItemAmmo(64, "50mmhe")); 
+	public static final RegistryObject<Item> B_120MMHE = ITEMS.register("120mmhe", 
+			() -> new ItemAmmo(16, "120mmhe")); 
+	public static final RegistryObject<Item> AGM65G = ITEMS.register("agm65g", 
+			() -> new ItemAmmo(8, "agm65g")); 
+	public static final RegistryObject<Item> AGM65L = ITEMS.register("agm65l", 
+			() -> new ItemAmmo(8, "agm65l")); 
+	public static final RegistryObject<Item> AGM84E = ITEMS.register("agm84e", 
+			() -> new ItemAmmo(8, "agm84e")); 
+	public static final RegistryObject<Item> AGM114K = ITEMS.register("agm114k", 
+			() -> new ItemAmmo(16, "agm114k")); 
+	public static final RegistryObject<Item> AIM7F = ITEMS.register("aim7f", 
+			() -> new ItemAmmo(4, "aim7f")); 
+	public static final RegistryObject<Item> AIM7MH = ITEMS.register("aim7mh", 
+			() -> new ItemAmmo(4, "aim7mh")); 
+	public static final RegistryObject<Item> AIM9L = ITEMS.register("aim9l", 
+			() -> new ItemAmmo(8, "aim9l")); 
+	public static final RegistryObject<Item> AIM9P5 = ITEMS.register("aim9p5", 
+			() -> new ItemAmmo(8, "aim9p5")); 
+	public static final RegistryObject<Item> AIM9X = ITEMS.register("aim9x", 
+			() -> new ItemAmmo(8, "aim9x")); 
+	public static final RegistryObject<Item> AIM120B = ITEMS.register("aim120b", 
+			() -> new ItemAmmo(4, "aim120b")); 
+	public static final RegistryObject<Item> AIM120C = ITEMS.register("aim120c", 
+			() -> new ItemAmmo(4, "aim120c")); 
+	public static final RegistryObject<Item> TORPEDO1 = ITEMS.register("torpedo1", 
+			() -> new ItemAmmo(4, "torpedo1")); 
+	public static final RegistryObject<Item> RIFEL1 = ITEMS.register("rifel1", 
+			() -> new ItemAmmo(4, "rifel1")); 
+	
 	
 	// PLANES
 	public static final RegistryObject<Item> JAVI_PLANE = ITEMS.register("javi_plane", 

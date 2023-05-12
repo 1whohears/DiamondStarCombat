@@ -34,7 +34,7 @@
     }
   ],
   "innacuracy": 0.0,
-  "itemKey": "dscombat:track_ground_missile",
+  "itemKey": "dscombat:agm65g",
   "maxAge": 300,
   "maxAmmo": 4,
   "presetId": "agm65g",

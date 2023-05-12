@@ -34,7 +34,7 @@
     }
   ],
   "innacuracy": 0.0,
-  "itemKey": "dscombat:torpedo",
+  "itemKey": "dscombat:torpedo1",
   "maxAge": 600,
   "maxAmmo": 3,
   "presetId": "torpedo1",

@@ -21,7 +21,7 @@
     }
   ],
   "innacuracy": 0.1,
-  "itemKey": "dscombat:bullet",
+  "itemKey": "dscombat:50mmhe",
   "maxAge": 40,
   "maxAmmo": 250,
   "presetId": "50mmhe",

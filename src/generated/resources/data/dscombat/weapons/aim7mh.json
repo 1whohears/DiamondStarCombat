@@ -34,7 +34,7 @@
     }
   ],
   "innacuracy": 0.0,
-  "itemKey": "dscombat:track_air_missile",
+  "itemKey": "dscombat:aim7mh",
   "maxAge": 600,
   "maxAmmo": 2,
   "presetId": "aim7mh",

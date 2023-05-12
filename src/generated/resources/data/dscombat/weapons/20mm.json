@@ -21,7 +21,7 @@
     }
   ],
   "innacuracy": 0.3,
-  "itemKey": "dscombat:bullet",
+  "itemKey": "dscombat:20mm",
   "maxAge": 40,
   "maxAmmo": 500,
   "presetId": "20mm",

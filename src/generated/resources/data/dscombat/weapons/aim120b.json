@@ -38,7 +38,7 @@
     }
   ],
   "innacuracy": 0.0,
-  "itemKey": "dscombat:track_air_missile",
+  "itemKey": "dscombat:aim120b",
   "maxAge": 400,
   "maxAmmo": 3,
   "presetId": "aim120b",

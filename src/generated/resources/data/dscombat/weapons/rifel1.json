@@ -34,7 +34,7 @@
     }
   ],
   "innacuracy": 0.0,
-  "itemKey": "dscombat:antiradar_missile",
+  "itemKey": "dscombat:rifel1",
   "maxAge": 600,
   "maxAmmo": 2,
   "presetId": "rifel1",

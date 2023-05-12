@@ -34,7 +34,7 @@
     }
   ],
   "innacuracy": 0.0,
-  "itemKey": "dscombat:pos_missile",
+  "itemKey": "dscombat:agm65l",
   "maxAge": 300,
   "maxAmmo": 4,
   "presetId": "agm65l",

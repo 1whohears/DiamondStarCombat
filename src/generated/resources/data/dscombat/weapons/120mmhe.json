@@ -21,7 +21,7 @@
     }
   ],
   "innacuracy": 0.04,
-  "itemKey": "dscombat:bullet",
+  "itemKey": "dscombat:120mmhe",
   "maxAge": 40,
   "maxAmmo": 4,
   "presetId": "120mmhe",

@@ -162,6 +162,7 @@
 	"key.dscombat.mouse_mode_key": "Mouse Mode",
 	"key.dscombat.shoot_key": "Shoot Key",
 	"key.dscombat.weapon_select_key": "Weapon Cycle",
+	"key.dscombat.weapon_select_up_key": "Weapon Cycle Inverse",
 	"key.dscombat.reset_mouse_key": "Reset Mouse",
 	"key.dscombat.plane_menu_key": "Plane Menu",
 	"key.dscombat.flip_controls_key": "Flip Controls",

@@ -18,7 +18,8 @@ public final class DSCKeys {
 	public static KeyMapping pitchUpKey, pitchDownKey;
 	public static KeyMapping rollLeftKey, rollRightKey;
 	public static KeyMapping yawLeftKey, yawRightKey;
-	public static KeyMapping flareKey, weaponSelectKey;
+	public static KeyMapping weaponSelectKey, weaponSelect2Key;
+	public static KeyMapping flareKey;
 	public static KeyMapping mouseModeKey, resetMouseKey;
 	public static KeyMapping shootKey, landingGear;
 	public static KeyMapping planeMenuKey;
@@ -48,6 +49,7 @@ public final class DSCKeys {
 		flipControlsKey = registerKey("flip_controls_key", FLIGHT_CONTROL, InputConstants.KEY_LSHIFT);
 		shootKey = registerMouse("shoot_key", FLIGHT_CONTROL, InputConstants.MOUSE_BUTTON_RIGHT);
 		weaponSelectKey = registerKey("weapon_select_key", FLIGHT_CONTROL, InputConstants.KEY_G);
+		weaponSelect2Key = registerKey("weapon_select_up_key", FLIGHT_CONTROL, InputConstants.UNKNOWN.getValue());
 		planeMenuKey = registerKey("plane_menu_key", FLIGHT_CONTROL, InputConstants.KEY_U);
 		changeSeat = registerKey("change_seat_key", FLIGHT_CONTROL, InputConstants.KEY_Y);
 		landingGear = registerKey("landing_gear_key", FLIGHT_CONTROL, InputConstants.KEY_K);

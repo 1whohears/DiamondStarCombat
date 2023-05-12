@@ -978,6 +978,7 @@ public abstract class EntityAircraft extends Entity {
 		this.inputShoot = shoot;
 		this.inputSelect = select;
 		/**
+		 * TODO 5.1 weaponSelect2Key selects key above
 		 * TODO 5.2 client should have control of what the selected weapon is
 		 * otherwise one has to wait for server lag for the weapon to switch
 		 */

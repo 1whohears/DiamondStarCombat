@@ -407,7 +407,6 @@ public abstract class EntityAircraft extends Entity {
 	 * damages plane if it falls 
 	 */
 	public void tickCollisions() {
-		// TODO 3 add collision physics with other entities see EnderDragon.knockBack
 		if (tickCount > 300 && verticalCollision) {
 			double my = Math.abs(prevMotion.y);
 			double th = collideSpeedThreshHold;

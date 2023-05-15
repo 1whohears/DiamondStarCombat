@@ -17,7 +17,7 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
-public class EntityModelOrangeTesla<T extends EntityGroundVehicle> extends EntityControllableModel<T> {
+public class EntityModelOrangeTesla extends EntityControllableModel<EntityGroundVehicle> {
 	
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(DSCombatMod.MODID, "orange_tesla"), "main");
 	private final ModelPart main;
@@ -35,7 +35,7 @@ public class EntityModelOrangeTesla<T extends EntityGroundVehicle> extends Entit
 	}
 	
 	@Override
-	public void renderToBuffer(T entity, float partialTicks, PoseStack poseStack, VertexConsumer vertexConsumer,
+	public void renderToBuffer(EntityGroundVehicle entity, float partialTicks, PoseStack poseStack, VertexConsumer vertexConsumer,
 			int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		poseStack.translate(0, 1.55, 0);
 		poseStack.scale(-1.0F, -1.0F, 1.0F);

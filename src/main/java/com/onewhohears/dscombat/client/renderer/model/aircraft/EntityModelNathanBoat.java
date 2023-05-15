@@ -16,7 +16,7 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
 
-public class EntityModelNathanBoat<T extends EntityBoat> extends EntityControllableModel<T> {
+public class EntityModelNathanBoat extends EntityControllableModel<EntityBoat> {
 	
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(DSCombatMod.MODID, "nathan_boat"), "main");
 	private final ModelPart main;
@@ -30,7 +30,7 @@ public class EntityModelNathanBoat<T extends EntityBoat> extends EntityControlla
 	}
 	
 	@Override
-	public void renderToBuffer(T entity, float partialTicks, PoseStack poseStack, VertexConsumer vertexConsumer,
+	public void renderToBuffer(EntityBoat entity, float partialTicks, PoseStack poseStack, VertexConsumer vertexConsumer,
 			int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		poseStack.translate(0, 1.55, 0);
 		poseStack.scale(-1.0F, -1.0F, 1.0F);

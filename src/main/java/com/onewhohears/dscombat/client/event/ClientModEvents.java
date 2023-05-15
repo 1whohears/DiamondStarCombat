@@ -86,88 +86,88 @@ public final class ClientModEvents {
 		// PLANES
 		event.registerEntityRenderer(ModEntities.JAVI_PLANE.get(), 
 				(context) -> new RendererEntityAircraft<EntityPlane>(context, 
-						new EntityModelJaviPlane<EntityPlane>(models.bakeLayer(EntityModelJaviPlane.LAYER_LOCATION))));
+						new EntityModelJaviPlane(models.bakeLayer(EntityModelJaviPlane.LAYER_LOCATION))));
 		event.registerEntityRenderer(ModEntities.ALEXIS_PLANE.get(), 
 				(context) -> new RendererEntityAircraft<EntityPlane>(context, 
-						new EntityModelAlexisPlane<EntityPlane>(models.bakeLayer(EntityModelAlexisPlane.LAYER_LOCATION))));
+						new EntityModelAlexisPlane(models.bakeLayer(EntityModelAlexisPlane.LAYER_LOCATION))));
 		// HELICOPTERS
 		event.registerEntityRenderer(ModEntities.NOAH_CHOPPER.get(), 
 				(context) -> new RendererEntityAircraft<EntityHelicopter>(context, 
-						new EntityModelNoahChopper<EntityHelicopter>(models.bakeLayer(EntityModelNoahChopper.LAYER_LOCATION))));
+						new EntityModelNoahChopper(models.bakeLayer(EntityModelNoahChopper.LAYER_LOCATION))));
 		// TANKS
 		event.registerEntityRenderer(ModEntities.MRBUDGER_TANK.get(), 
 				(context) -> new RendererEntityAircraft<EntityGroundVehicle>(context, 
-						new EntityModelMrBudgerTank<EntityGroundVehicle>(models.bakeLayer(EntityModelMrBudgerTank.LAYER_LOCATION))));
+						new EntityModelMrBudgerTank(models.bakeLayer(EntityModelMrBudgerTank.LAYER_LOCATION))));
 		event.registerEntityRenderer(ModEntities.SMALL_ROLLER.get(), 
 				(context) -> new RendererEntityAircraft<EntityGroundVehicle>(context, 
-						new EntityModelSmallRoller<EntityGroundVehicle>(models.bakeLayer(EntityModelSmallRoller.LAYER_LOCATION))));
+						new EntityModelSmallRoller(models.bakeLayer(EntityModelSmallRoller.LAYER_LOCATION))));
 		event.registerEntityRenderer(ModEntities.ORANGE_TESLA.get(), 
 				(context) -> new RendererEntityAircraft<EntityGroundVehicle>(context, 
-						new EntityModelOrangeTesla<EntityGroundVehicle>(models.bakeLayer(EntityModelOrangeTesla.LAYER_LOCATION))));
+						new EntityModelOrangeTesla(models.bakeLayer(EntityModelOrangeTesla.LAYER_LOCATION))));
 		// BOATS
 		event.registerEntityRenderer(ModEntities.NATHAN_BOAT.get(), 
 				(context) -> new RendererEntityAircraft<EntityBoat>(context, 
-						new EntityModelNathanBoat<EntityBoat>(models.bakeLayer(EntityModelNathanBoat.LAYER_LOCATION))));
+						new EntityModelNathanBoat(models.bakeLayer(EntityModelNathanBoat.LAYER_LOCATION))));
 		// SUBMARINES
 		event.registerEntityRenderer(ModEntities.ANDOLF_SUB.get(), 
 				(context) -> new RendererEntityAircraft<EntitySubmarine>(context, 
-						new EntityModelAndolfSub<EntitySubmarine>(models.bakeLayer(EntityModelAndolfSub.LAYER_LOCATION))));
+						new EntityModelAndolfSub(models.bakeLayer(EntityModelAndolfSub.LAYER_LOCATION))));
 		// BULLETS
-		event.registerEntityRenderer((EntityType<EntityBullet>)ModEntities.BULLET.get(), 
+		event.registerEntityRenderer(ModEntities.BULLET.get(), 
 				(context) -> new RendererEntityWeapon<EntityBullet>(context, 
-						new EntityModelBullet1<EntityBullet>(models.bakeLayer(EntityModelBullet1.LAYER_LOCATION)),
+						new EntityModelBullet1(models.bakeLayer(EntityModelBullet1.LAYER_LOCATION)),
 						new ResourceLocation(DSCombatMod.MODID, "textures/entities/bullet1.png")));
 		// BOMBS // FIXME 2.4 give bomb it's own model
-		event.registerEntityRenderer((EntityType<EntityBomb>)ModEntities.BOMB.get(), 
+		/*event.registerEntityRenderer(ModEntities.BOMB.get(), 
 				(context) -> new RendererEntityWeapon<EntityBomb>(context, 
 						new EntityModelBullet1<EntityBomb>(models.bakeLayer(EntityModelBullet1.LAYER_LOCATION)),
-						new ResourceLocation(DSCombatMod.MODID, "textures/entities/bullet1.png")));
+						new ResourceLocation(DSCombatMod.MODID, "textures/entities/bullet1.png")));*/
 		// MISSILES
 		event.registerEntityRenderer(ModEntities.POS_MISSILE_1.get(), 
 				(context) -> new RendererEntityWeapon<EntityMissile>(context, 
-						new EntityModelMissile1<EntityMissile>(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)), 
+						new EntityModelMissile1(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)), 
 						new ResourceLocation(DSCombatMod.MODID, "textures/entities/missile1.png")));
 		event.registerEntityRenderer(ModEntities.IR_MISSILE_1.get(), 
 				(context) -> new RendererEntityWeapon<EntityMissile>(context, 
-						new EntityModelMissile1<EntityMissile>(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)),
+						new EntityModelMissile1(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)),
 						new ResourceLocation(DSCombatMod.MODID, "textures/entities/missile3.png")));
 		event.registerEntityRenderer(ModEntities.TRACK_MISSILE_1.get(), 
 				(context) -> new RendererEntityWeapon<EntityMissile>(context, 
-						new EntityModelMissile1<EntityMissile>(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)),
+						new EntityModelMissile1(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)),
 						new ResourceLocation(DSCombatMod.MODID, "textures/entities/missile2.png")));
 		event.registerEntityRenderer(ModEntities.ANTI_RADAR_MISSILE_1.get(), 
 				(context) -> new RendererEntityWeapon<EntityMissile>(context, 
-						new EntityModelMissile1<EntityMissile>(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)),
+						new EntityModelMissile1(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)),
 						new ResourceLocation(DSCombatMod.MODID, "textures/entities/missile4.png")));
 		event.registerEntityRenderer(ModEntities.TORPEDO_MISSILE_1.get(), 
 				(context) -> new RendererEntityWeapon<EntityMissile>(context,
-						new EntityModelMissile1<EntityMissile>(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)),
+						new EntityModelMissile1(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)),
 						new ResourceLocation(DSCombatMod.MODID, "textures/entities/missile5.png")));
 		// TURRETS
 		event.registerEntityRenderer(ModEntities.MINIGUN_TURRET.get(), 
 				(context) -> new RendererEntityTurret<EntityTurret>(context, 
-						new EntityModelMiniGunTurret<EntityTurret>(models.bakeLayer(EntityModelMiniGunTurret.LAYER_LOCATION)),
+						new EntityModelMiniGunTurret(models.bakeLayer(EntityModelMiniGunTurret.LAYER_LOCATION)),
 						new ResourceLocation(DSCombatMod.MODID, "textures/entities/minigun_turret.png")));
 		event.registerEntityRenderer(ModEntities.HEAVY_TANK_TURRET.get(), 
 				(context) -> new RendererEntityTurret<EntityTurret>(context, 
-						new EntityModelHeavyTankTurret<EntityTurret>(models.bakeLayer(EntityModelHeavyTankTurret.LAYER_LOCATION)),
+						new EntityModelHeavyTankTurret(models.bakeLayer(EntityModelHeavyTankTurret.LAYER_LOCATION)),
 						new ResourceLocation(DSCombatMod.MODID, "textures/entities/heavy_tank_turret.png")));
 		event.registerEntityRenderer(ModEntities.STEVE_UP_SMASH.get(), 
 				(context) -> new RendererEntityTurret<EntityTurret>(context, 
-						new EntityModelSteveUpSmash<EntityTurret>(models.bakeLayer(EntityModelSteveUpSmash.LAYER_LOCATION)),
+						new EntityModelSteveUpSmash(models.bakeLayer(EntityModelSteveUpSmash.LAYER_LOCATION)),
 						new ResourceLocation(DSCombatMod.MODID, "textures/entities/steve_up_smash.png")));
 		// MISSILE RACKS
 		event.registerEntityRenderer(ModEntities.LIGHT_MISSILE_RACK.get(), 
 				(context) -> new RendererEntityPart<EntityWeaponRack>(context,
-						new EntityModelLightMissileRack<EntityWeaponRack>(models.bakeLayer(EntityModelLightMissileRack.LAYER_LOCATION)),
+						new EntityModelLightMissileRack(models.bakeLayer(EntityModelLightMissileRack.LAYER_LOCATION)),
 						new ResourceLocation(DSCombatMod.MODID, "textures/entities/light_missile_rack.png")));
 		event.registerEntityRenderer(ModEntities.HEAVY_MISSILE_RACK.get(), 
 				(context) -> new RendererEntityPart<EntityWeaponRack>(context,
-						new EntityModelHeavyMissileRack<EntityWeaponRack>(models.bakeLayer(EntityModelHeavyMissileRack.LAYER_LOCATION)),
+						new EntityModelHeavyMissileRack(models.bakeLayer(EntityModelHeavyMissileRack.LAYER_LOCATION)),
 						new ResourceLocation(DSCombatMod.MODID, "textures/entities/heavy_missile_rack.png")));
 		event.registerEntityRenderer(ModEntities.XM12.get(), 
 				(context) -> new RendererEntityPart<EntityWeaponRack>(context,
-						new EntityModelXM12<EntityWeaponRack>(models.bakeLayer(EntityModelXM12.LAYER_LOCATION)),
+						new EntityModelXM12(models.bakeLayer(EntityModelXM12.LAYER_LOCATION)),
 						new ResourceLocation(DSCombatMod.MODID, "textures/entities/xm12.png")));
 		// OTHER
 		event.registerEntityRenderer(ModEntities.SEAT.get(), RendererEntityInvisible::new);

@@ -16,7 +16,7 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
 
-public class EntityModelLightMissileRack<T extends EntityWeaponRack> extends EntityControllableModel<T>{
+public class EntityModelLightMissileRack extends EntityControllableModel<EntityWeaponRack>{
 	
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(DSCombatMod.MODID, "light_missile_rack"), "main");
 	private final ModelPart main;
@@ -34,7 +34,7 @@ public class EntityModelLightMissileRack<T extends EntityWeaponRack> extends Ent
 	}
 	
 	@Override
-	public void renderToBuffer(T entity, float partialTicks, PoseStack poseStack, VertexConsumer vertexConsumer,
+	public void renderToBuffer(EntityWeaponRack entity, float partialTicks, PoseStack poseStack, VertexConsumer vertexConsumer,
 			int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		poseStack.translate(0, 1.50, 0);
 		poseStack.scale(1.0F, -1.0F, 1.0F);

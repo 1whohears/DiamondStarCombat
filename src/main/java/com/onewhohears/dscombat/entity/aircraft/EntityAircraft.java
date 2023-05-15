@@ -64,7 +64,6 @@ import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
-import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
@@ -430,19 +429,26 @@ public abstract class EntityAircraft extends Entity {
 			}
 		}
 		knockBack(level.getEntities(this, getBoundingBox(), 
-				EntitySelector.NO_CREATIVE_OR_SPECTATOR));
+			(entity) -> {
+				if (this.equals(entity.getRootVehicle())) return false;
+				if (!(entity instanceof LivingEntity)) return false;
+				if (entity.isSpectator()) return false;
+				if (entity instanceof Player p && p.isCreative()) return false;
+				return true;
+			}));
 	}
 	
-	protected void knockBack(List<Entity> pEntities) {
+	protected void knockBack(List<Entity> entities) {
 		double push_factor = 10 * xzSpeed;
+		if (push_factor < 2) push_factor = 2;
 		double d0 = getBoundingBox().getCenter().x;
 		double d1 = getBoundingBox().getCenter().z;
-		for(Entity entity : pEntities) if (entity instanceof LivingEntity) {
+		for(Entity entity : entities) {
 			double d2 = entity.getX() - d0;
 			double d3 = entity.getZ() - d1;
-			double d4 = Math.max(d2 * d2 + d3 * d3, 0.1D);
-			entity.push(d2/d4*push_factor, push_factor*0.1, d3/d4*push_factor);
-			if (push_factor >= 2) {
+			double d4 = Math.max(d2 * d2 + d3 * d3, 0.1);
+			entity.push(d2/d4*push_factor, 0.2, d3/d4*push_factor);
+			if (push_factor > 2) {
 				entity.hurt(AircraftDamageSource.roadKill(this), (float)push_factor*2f);
 			}
 		}

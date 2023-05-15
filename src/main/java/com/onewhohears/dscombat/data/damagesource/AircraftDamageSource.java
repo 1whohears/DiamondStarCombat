@@ -36,7 +36,7 @@ public class AircraftDamageSource extends DamageSource {
 	public static final String[] wallCrashDeaths = {"plane_crash_collide1","plane_crash_collide2","plane_crash_collide3"};
 	
 	public static String getRoadKillDeath() {
-		return UtilParse.getRandomString(crashDeaths, roadKillDeaths);
+		return UtilParse.getRandomString(crashDeaths, roadKillDeaths, wallCrashDeaths);
 	}
 	
 	public static String getFallDeath() {

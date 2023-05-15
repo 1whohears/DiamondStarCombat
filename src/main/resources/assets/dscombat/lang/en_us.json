@@ -148,7 +148,7 @@
 	
 	"death.attack.dscombat.plane_crash_collide1": "%1$s didn't look both ways before crossing",
 	"death.attack.dscombat.plane_crash_collide1.self": "%1$s missed",
-	"death.attack.dscombat.plane_crash_collide1.player": "%1$s was kamikaze'd by %2$s",
+	"death.attack.dscombat.plane_crash_collide1.player": "%1$s didn't check left again in front of %2$s",
 	"death.attack.dscombat.plane_crash_collide2": "%1$s tried to hug a runaway automobile",
 	"death.attack.dscombat.plane_crash_collide2.self": "%1$s was under the influence",
 	"death.attack.dscombat.plane_crash_collide2.player": "%1$s thought %2$s wanted a hug",

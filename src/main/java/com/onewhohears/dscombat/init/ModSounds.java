@@ -18,6 +18,7 @@ public class ModSounds {
 	public static final RegistryObject<SoundEvent> MISSILE_LAUNCH_1 = registerSoundEvent("rocket_launch_1");
 	public static final RegistryObject<SoundEvent> MISSILE_ENGINE_1 = registerSoundEvent("rocket_engine_1");
 	public static final RegistryObject<SoundEvent> BULLET_SHOOT_1 = registerSoundEvent("bullet_shoot_1");
+	public static final RegistryObject<SoundEvent> BOMB_SHOOT_1 = registerSoundEvent("bomb_shoot_1"); // FIXME 2.7 launch bomb sound
 	public static final RegistryObject<SoundEvent> BIPLANE_1 = registerSoundEvent("biplane_1");
 	public static final RegistryObject<SoundEvent> HELI_1 = registerSoundEvent("heli_1");
 	public static final RegistryObject<SoundEvent> JET_1 = registerSoundEvent("jet_1");

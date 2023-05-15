@@ -18,6 +18,8 @@ import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelNoahCh
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelOrangeTesla;
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelSmallRoller;
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelTestPlane;
+import com.onewhohears.dscombat.client.renderer.model.weapon.EntityModelBomb1;
+import com.onewhohears.dscombat.client.renderer.model.weapon.EntityModelBombRack;
 import com.onewhohears.dscombat.client.renderer.model.weapon.EntityModelBullet1;
 import com.onewhohears.dscombat.client.renderer.model.weapon.EntityModelHeavyMissileRack;
 import com.onewhohears.dscombat.client.renderer.model.weapon.EntityModelHeavyTankTurret;
@@ -41,7 +43,6 @@ import com.onewhohears.dscombat.init.ModEntities;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
@@ -78,6 +79,8 @@ public final class ClientModEvents {
 		event.registerLayerDefinition(EntityModelNathanBoat.LAYER_LOCATION, EntityModelNathanBoat::createBodyLayer);
 		event.registerLayerDefinition(EntityModelAndolfSub.LAYER_LOCATION, EntityModelAndolfSub::createBodyLayer);
 		event.registerLayerDefinition(EntityModelOrangeTesla.LAYER_LOCATION, EntityModelOrangeTesla::createBodyLayer);
+		event.registerLayerDefinition(EntityModelBomb1.LAYER_LOCATION, EntityModelBomb1::createBodyLayer);
+		event.registerLayerDefinition(EntityModelBombRack.LAYER_LOCATION, EntityModelBombRack::createBodyLayer);
 	}
 	
 	@SubscribeEvent
@@ -117,11 +120,11 @@ public final class ClientModEvents {
 				(context) -> new RendererEntityWeapon<EntityBullet>(context, 
 						new EntityModelBullet1(models.bakeLayer(EntityModelBullet1.LAYER_LOCATION)),
 						new ResourceLocation(DSCombatMod.MODID, "textures/entities/bullet1.png")));
-		// BOMBS // FIXME 2.4 give bomb it's own model
-		/*event.registerEntityRenderer(ModEntities.BOMB.get(), 
+		// BOMBS
+		event.registerEntityRenderer(ModEntities.BOMB.get(), 
 				(context) -> new RendererEntityWeapon<EntityBomb>(context, 
-						new EntityModelBullet1<EntityBomb>(models.bakeLayer(EntityModelBullet1.LAYER_LOCATION)),
-						new ResourceLocation(DSCombatMod.MODID, "textures/entities/bullet1.png")));*/
+						new EntityModelBomb1(models.bakeLayer(EntityModelBomb1.LAYER_LOCATION)),
+						new ResourceLocation(DSCombatMod.MODID, "textures/entities/bomb1.png")));
 		// MISSILES
 		event.registerEntityRenderer(ModEntities.POS_MISSILE_1.get(), 
 				(context) -> new RendererEntityWeapon<EntityMissile>(context, 
@@ -169,6 +172,10 @@ public final class ClientModEvents {
 				(context) -> new RendererEntityPart<EntityWeaponRack>(context,
 						new EntityModelXM12(models.bakeLayer(EntityModelXM12.LAYER_LOCATION)),
 						new ResourceLocation(DSCombatMod.MODID, "textures/entities/xm12.png")));
+		event.registerEntityRenderer(ModEntities.BOMB_RACK.get(), 
+				(context) -> new RendererEntityPart<EntityWeaponRack>(context,
+						new EntityModelBombRack(models.bakeLayer(EntityModelBombRack.LAYER_LOCATION)),
+						new ResourceLocation(DSCombatMod.MODID, "textures/entities/bomb_rack.png")));
 		// OTHER
 		event.registerEntityRenderer(ModEntities.SEAT.get(), RendererEntityInvisible::new);
 		event.registerEntityRenderer(ModEntities.FLARE.get(), RendererEntityInvisible::new);

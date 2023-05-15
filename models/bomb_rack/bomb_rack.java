@@ -1,42 +1,17 @@
-package com.onewhohears.dscombat.client.renderer.model.weapon;
+// Made with Blockbench 4.6.5
+// Exported for Minecraft version 1.17 or later with Mojang mappings
+// Paste this class into your mod and generate all required imports
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.client.renderer.model.EntityControllableModel;
-import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
 
-import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeDeformation;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.resources.ResourceLocation;
-
-public class EntityModelBombRack extends EntityControllableModel<EntityWeaponRack>{
-	
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(DSCombatMod.MODID, "bomb_rack"), "main");
+public class bomb_rack<T extends Entity> extends EntityModel<T> {
+	// This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("modid", "bomb_rack"), "main");
 	private final ModelPart main;
-	private final ModelPart[] m = new ModelPart[13];
-	
-	public EntityModelBombRack(ModelPart root) {
+
+	public bomb_rack(ModelPart root) {
 		this.main = root.getChild("main");
-		for (int i = 0; i < m.length; ++i) this.m[i] = main.getChild("m"+(i+1));
 	}
-	
-	@Override
-	public void renderToBuffer(EntityWeaponRack entity, float partialTicks, PoseStack poseStack, VertexConsumer vertexConsumer,
-			int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		poseStack.translate(0, 1.50, 0);
-		poseStack.scale(1.0F, -1.0F, 1.0F);
-		int mNum = entity.getAmmoNum();
-		for (int i = 0; i < m.length; ++i) m[i].visible = i < mNum;
-		main.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-	}
-	
+
 	public static LayerDefinition createBodyLayer() {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
@@ -78,4 +53,13 @@ public class EntityModelBombRack extends EntityControllableModel<EntityWeaponRac
 		return LayerDefinition.create(meshdefinition, 64, 64);
 	}
 
+	@Override
+	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+
+	}
+
+	@Override
+	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+		main.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+	}
 }

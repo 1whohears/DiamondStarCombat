@@ -122,6 +122,13 @@
 	"death.attack.dscombat.ir_missile2": "%1$s didn't jam the WEZ",
 	"death.attack.dscombat.ir_missile2.player": "%1$s didn't jam the WEZ from %2$s (%3$sm)",
 	
+	"death.attack.dscombat.roadkill1": "%1$s became roadkill",
+	"death.attack.dscombat.roadkill1.self": "%1$s somehow roadkilled themselves",
+	"death.attack.dscombat.roadkill1.player": "%1$s became roadkill by %2$s",
+	"death.attack.dscombat.roadkill2": "%1$s became a statistic",
+	"death.attack.dscombat.roadkill2.self": "%1$s turned themselves into a statistic",
+	"death.attack.dscombat.roadkill2.player": "%1$s became a statistic with %2$s",
+	
 	"death.attack.dscombat.plane_crash1": "%1$s was killed by intentional game design",
 	"death.attack.dscombat.plane_crash1.self": "%1$s was killed by intentional game design",
 	"death.attack.dscombat.plane_crash1.player": "%1$s was intentional game designed by %2$s",

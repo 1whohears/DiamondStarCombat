@@ -9,34 +9,42 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 
-public class AircraftExplodeDamageSource extends DamageSource {
+public class AircraftDamageSource extends DamageSource {
 	
 	public final EntityAircraft aircraft;
 	
-	public AircraftExplodeDamageSource(String type, EntityAircraft aircraft) {
+	public AircraftDamageSource(String type, EntityAircraft aircraft) {
 		super(type);
-		setExplosion();
 		this.aircraft = aircraft;
 	}
 	
-	public static AircraftExplodeDamageSource fall(EntityAircraft aircraft) {
-		return new AircraftExplodeDamageSource(getFallDeath(), aircraft);
+	public static DamageSource roadKill(EntityAircraft aircraft) {
+		return new AircraftDamageSource(getRoadKillDeath(), aircraft);
 	}
 	
-	public static AircraftExplodeDamageSource collide(EntityAircraft aircraft) {
-		return new AircraftExplodeDamageSource(getCollideDeath(), aircraft);
+	public static DamageSource fall(EntityAircraft aircraft) {
+		return new AircraftDamageSource(getFallDeath(), aircraft).setExplosion();
 	}
 	
+	public static DamageSource collide(EntityAircraft aircraft) {
+		return new AircraftDamageSource(getCollideDeath(), aircraft).setExplosion();
+	}
+	
+	public static final String[] roadKillDeaths = {"roadkill1","roadkill2"};
 	public static final String[] crashDeaths = {"plane_crash1","plane_crash2"};
-	public static final String[] fallDeaths = {"plane_crash_fall1","plane_crash_fall2","plane_crash_fall3"};
-	public static final String[] collideDeaths = {"plane_crash_collide1","plane_crash_collide2","plane_crash_collide3"};
+	public static final String[] fallCrashDeaths = {"plane_crash_fall1","plane_crash_fall2","plane_crash_fall3"};
+	public static final String[] wallCrashDeaths = {"plane_crash_collide1","plane_crash_collide2","plane_crash_collide3"};
+	
+	public static String getRoadKillDeath() {
+		return UtilParse.getRandomString(crashDeaths, roadKillDeaths);
+	}
 	
 	public static String getFallDeath() {
-		return UtilParse.getRandomString(crashDeaths, fallDeaths);
+		return UtilParse.getRandomString(crashDeaths, fallCrashDeaths);
 	}
 	
 	public static String getCollideDeath() {
-		return UtilParse.getRandomString(crashDeaths, collideDeaths);
+		return UtilParse.getRandomString(crashDeaths, wallCrashDeaths);
 	}
 	
 	public Component getLocalizedDeathMessage(LivingEntity killed) {

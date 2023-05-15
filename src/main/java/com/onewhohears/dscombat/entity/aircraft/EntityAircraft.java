@@ -20,7 +20,7 @@ import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftThrottle
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
 import com.onewhohears.dscombat.data.aircraft.AircraftTextures;
-import com.onewhohears.dscombat.data.damagesource.AircraftExplodeDamageSource;
+import com.onewhohears.dscombat.data.damagesource.AircraftDamageSource;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartsManager;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarMode;
@@ -64,6 +64,7 @@ import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
@@ -418,7 +419,7 @@ public abstract class EntityAircraft extends Entity {
 			if (my > th) {
 				float amount = (float)((my-th)*collideDamageRate);
 				hurt(DamageSource.FALL, amount);
-				if (!isOperational()) explode(AircraftExplodeDamageSource.fall(this));
+				if (!isOperational()) explode(AircraftDamageSource.fall(this));
 			}
 		}
 		if (horizontalCollision && !minorHorizontalCollision) {
@@ -426,7 +427,24 @@ public abstract class EntityAircraft extends Entity {
 			if (speed > collideSpeedThreshHold) {
 				float amount = (float)((speed-collideSpeedThreshHold)*collideDamageRate);
 				hurt(DamageSource.FLY_INTO_WALL, amount);
-				if (!isOperational()) explode(AircraftExplodeDamageSource.collide(this));
+				if (!isOperational()) explode(AircraftDamageSource.collide(this));
+			}
+		}
+		knockBack(level.getEntities(this, getBoundingBox(), 
+				EntitySelector.NO_CREATIVE_OR_SPECTATOR));
+	}
+	
+	protected void knockBack(List<Entity> pEntities) {
+		double push_factor = 10 * xzSpeed;
+		double d0 = getBoundingBox().getCenter().x;
+		double d1 = getBoundingBox().getCenter().z;
+		for(Entity entity : pEntities) if (entity instanceof LivingEntity) {
+			double d2 = entity.getX() - d0;
+			double d3 = entity.getZ() - d1;
+			double d4 = Math.max(d2 * d2 + d3 * d3, 0.1D);
+			entity.push(d2/d4*push_factor, push_factor*0.1, d3/d4*push_factor);
+			if (push_factor >= 2) {
+				entity.hurt(AircraftDamageSource.roadKill(this), (float)push_factor*2f);
 			}
 		}
 	}

@@ -32,8 +32,10 @@ public class ItemWeaponPart extends ItemPart {
 		if (weapon.isEmpty()) {
 			name.append("EMPTY");
 		} else {
-			name.append(WeaponData.makeDisplayName(getCreatorModId(stack), weapon))
-				.append(" "+tag.getInt("ammo")+"/"+tag.getInt("max"));
+			WeaponData wd = WeaponPresets.get().getPreset(weapon);
+			if (wd != null) name.append(wd.getDisplayName());
+			else name.append(weapon+"?");
+			name.append(" "+tag.getInt("ammo")+"/"+tag.getInt("max"));
 		}
 		return name;	
 	}

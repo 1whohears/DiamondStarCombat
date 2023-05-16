@@ -122,7 +122,7 @@ public class ItemAircraft extends Item {
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tips, TooltipFlag isAdvanced) {
 		CompoundTag tag = stack.getTag();
 		if (tag == null || !tag.contains("EntityTag")) return;
-		CompoundTag et = tag.getCompound("EntityTag");
+		//CompoundTag et = tag.getCompound("EntityTag");
 		
 	}
 	

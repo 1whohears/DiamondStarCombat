@@ -39,8 +39,10 @@ public class ItemAmmo extends Item {
 	
 	@Override
 	public Component getName(ItemStack stack) {
-		return WeaponData.makeDisplayName(getCreatorModId(stack), getWeaponId(stack))
-				.append(" ").append(Component.translatable(DSCombatMod.MODID+".ammo"));
+		String id = getWeaponId(stack);
+		WeaponData wd = WeaponPresets.get().getPreset(id);
+		if (wd == null) return Component.translatable(getDescriptionId()).append(" unknown preset!");
+		return wd.getDisplayName().append(" ").append(Component.translatable(DSCombatMod.MODID+".ammo"));
 	}
 	
 	public static String getWeaponId(ItemStack stack) {

@@ -375,12 +375,8 @@ public abstract class WeaponData extends JsonPreset {
 		return list;
 	}
 	
-	public Component getDisplayName() {
+	public MutableComponent getDisplayName() {
 		return Component.translatable("weapon."+getNameSpace()+"."+getId());
-	}
-	
-	public static MutableComponent makeDisplayName(String namespace, String id) {
-		return Component.translatable("weapon."+namespace+"."+id);
 	}
 	
 	public static class ComponentColor {

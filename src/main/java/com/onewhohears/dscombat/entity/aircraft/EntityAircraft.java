@@ -1658,7 +1658,7 @@ public abstract class EntityAircraft extends Entity {
      * @param pos the position of the missile
      */
     public void trackedByMissile(Vec3 pos) {
-    	radarSystem.addRWRWarning(pos, true, level.isClientSide);
+    	if (hasControllingPassenger()) radarSystem.addRWRWarning(pos, true, level.isClientSide);
     }
     
     /**
@@ -1666,7 +1666,7 @@ public abstract class EntityAircraft extends Entity {
      * @param pos the position of the radar
      */
     public void lockedOnto(Vec3 pos) {
-    	radarSystem.addRWRWarning(pos, false, level.isClientSide);
+    	if (hasControllingPassenger()) radarSystem.addRWRWarning(pos, false, level.isClientSide);
     }
     
     @Override

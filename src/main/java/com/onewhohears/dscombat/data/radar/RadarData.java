@@ -162,15 +162,15 @@ public class RadarData extends JsonPreset {
 		List<EntityAircraft> list = radar.level.getEntitiesOfClass(
 				EntityAircraft.class, getRadarBoundingBox(radar));
 		for (int i = 0; i < list.size(); ++i) {
-			if (!list.get(i).isOperational()) continue;
-			Entity pilot = list.get(i).getControllingPassenger();
+			EntityAircraft ea = list.get(i);
+			if (!ea.isOperational()) continue;
+			Entity pilot = ea.getControllingPassenger();
 			if (radar.getRadarMode() == RadarMode.PLAYERS && pilot == null) continue;
-			if (!basicCheck(radar, list.get(i), list.get(i).getStealth())) continue;
-			RadarPing p = new RadarPing(list.get(i), 
-				checkFriendly(controller, pilot));
+			if (!basicCheck(radar, ea, ea.getStealth())) continue;
+			RadarPing p = new RadarPing(ea, checkFriendly(controller, pilot));
 			vehiclePings.add(p);
 			pings.add(p);
-			list.get(i).lockedOnto(radar.position());
+			ea.lockedOnto(radar.position());
 		}
 	}
 	

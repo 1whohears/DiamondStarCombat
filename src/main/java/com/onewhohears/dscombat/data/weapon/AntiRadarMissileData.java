@@ -67,8 +67,8 @@ public class AntiRadarMissileData extends MissileData {
 	}
 	
 	@Override
-	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 direction, EntityAircraft vehicle) {
-		AntiRadarMissile missile = (AntiRadarMissile) super.getShootEntity(level, owner, direction, vehicle);
+	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction, EntityAircraft vehicle) {
+		AntiRadarMissile missile = (AntiRadarMissile) super.getShootEntity(level, owner, pos, direction, vehicle);
 		if (missile == null) return null;
 		return missile;
 	}

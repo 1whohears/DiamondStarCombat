@@ -109,10 +109,10 @@ public class WeaponSystem {
 		if (data == null) return false;
 		String name = data.getId();
 		String reason = null;
-		data.shoot(parent.level, controller, getShootDirection(data), null, parent, consume);
+		data.shootFromVehicle(parent.level, controller, getShootDirection(data), parent, consume);
 		if (data.isFailedLaunch()) reason = data.getFailedLaunchReason();
 		for (WeaponData wd : weapons) if (wd.getType() == WeaponType.BULLET && wd.getId().equals(name) && !wd.getSlotId().equals(data.getSlotId())) {
-			wd.shoot(parent.level, controller, getShootDirection(wd), null, parent, consume);
+			wd.shootFromVehicle(parent.level, controller, getShootDirection(wd), parent, consume);
 			if (reason == null && wd.isFailedLaunch()) reason = wd.getFailedLaunchReason();
 		}
 		if (reason != null && controller instanceof ServerPlayer player) {

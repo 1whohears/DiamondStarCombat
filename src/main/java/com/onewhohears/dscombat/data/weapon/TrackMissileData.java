@@ -74,28 +74,29 @@ public class TrackMissileData extends MissileData {
 	}
 	
 	@Override
-	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 direction, EntityAircraft vehicle) {
-		TrackEntityMissile missile = (TrackEntityMissile) super.getShootEntity(level, owner, direction, vehicle);
+	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction, EntityAircraft vehicle) {
+		TrackEntityMissile missile = (TrackEntityMissile) super.getShootEntity(level, owner, pos, direction, vehicle);
 		if (missile == null) return null;
+		if (vehicle == null) return missile;
 		RadarSystem radar = vehicle.radarSystem;
 		if (!radar.hasRadar()) {
-			this.setLaunchFail("dscombat.no_radar");
+			setLaunchFail("dscombat.no_radar");
 			return null;
 		}
 		Entity target = radar.getSelectedTarget(level);
 		if (target == null) {
-			this.setLaunchFail("dscombat.no_target_selected");
+			setLaunchFail("dscombat.no_target_selected");
 			return null;
 		}
 		boolean groundWater = UtilEntity.isOnGroundOrWater(target);
 		if (targetType == TargetType.AIR && groundWater) {
-			this.setLaunchFail("dscombat.air_target_only");
+			setLaunchFail("dscombat.air_target_only");
 			return null;
 		} else if (targetType == TargetType.GROUND && !groundWater) {
-			this.setLaunchFail("dscombat.ground_target_only");
+			setLaunchFail("dscombat.ground_target_only");
 			return null;
 		} else if (targetType == TargetType.WATER && !target.isInWater()) {
-			this.setLaunchFail("dscombat.water_target_only");
+			setLaunchFail("dscombat.water_target_only");
 			return null;
 		}
 		missile.target = target;

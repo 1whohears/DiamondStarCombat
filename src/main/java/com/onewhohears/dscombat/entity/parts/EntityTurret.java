@@ -193,17 +193,19 @@ public class EntityTurret extends EntitySeat {
 		if (level.isClientSide || data == null || newRiderCoolDown > 0) return;
 		boolean consume = true;
 		Vec3 pos = position();
+		EntityAircraft parent = null;
 		if (getVehicle() instanceof EntityAircraft craft) {
 			if (!craft.isOperational()) return;
 			pos = pos.add(UtilAngles.rotateVector(new Vec3(0, weaponOffset, 0), craft.getQ()));
 			if (craft.isNoConsume()) consume = false;
+			parent = craft;
 		}
 		Player p = null;
 		if (shooter instanceof ServerPlayer player) {
 			if (player.isCreative()) consume = false;
 			p = player;
 		}
-		data.shoot(level, shooter, getLookAngle(), pos, null, consume);
+		data.shootFromTurret(level, shooter, getLookAngle(), pos, parent, consume);
 		if (data.isFailedLaunch()) {
 			if (p != null) p.displayClientMessage(
 					Component.translatable(data.getFailedLaunchReason()), 

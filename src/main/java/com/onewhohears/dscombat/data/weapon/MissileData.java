@@ -2,6 +2,8 @@ package com.onewhohears.dscombat.data.weapon;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
@@ -108,19 +110,15 @@ public abstract class MissileData extends BulletData {
 	}
 	
 	@Override
-	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction) {
-		EntityMissile missile = (EntityMissile) super.getShootEntity(level, owner, pos, direction);
+	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction, @Nullable EntityAircraft vehicle) {
+		EntityMissile missile = (EntityMissile) super.getShootEntity(level, owner, pos, direction, vehicle);
 		if (missile == null) return null;
-		missile.setDeltaMovement(direction.scale(1.0));
-		return missile;
-	}
-	
-	@Override
-	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 direction, EntityAircraft vehicle) {
-		EntityMissile missile = (EntityMissile) super.getShootEntity(level, owner, direction, vehicle);
-		if (missile == null) return null;
-		missile.setPos(missile.position().add(vehicle.getDeltaMovement()));
-		missile.setDeltaMovement(vehicle.getDeltaMovement());
+		if (vehicle != null) {
+			missile.setPos(missile.position().add(vehicle.getDeltaMovement()));
+			missile.setDeltaMovement(vehicle.getDeltaMovement());
+		} else {
+			missile.setDeltaMovement(direction.scale(1.0));
+		}
 		return missile;
 	}
 	

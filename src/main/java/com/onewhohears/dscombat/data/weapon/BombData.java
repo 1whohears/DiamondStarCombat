@@ -2,12 +2,12 @@ package com.onewhohears.dscombat.data.weapon;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.data.JsonPreset;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityBomb;
-import com.onewhohears.dscombat.entity.weapon.EntityBullet;
-import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 
 import net.minecraft.nbt.CompoundTag;
@@ -36,17 +36,12 @@ public class BombData extends BulletData {
 	}
 	
 	@Override
-	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction) {
-		EntityBomb bomb = (EntityBomb) super.getShootEntity(level, owner, pos, direction);
+	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction, @Nullable EntityAircraft vehicle) {
+		EntityBomb bomb = (EntityBomb) super.getShootEntity(level, owner, pos, direction, vehicle);
 		if (bomb == null) return null;
-		return bomb;
-	}
-	
-	@Override
-	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 direction, EntityAircraft vehicle) {
-		EntityBomb bomb = (EntityBomb) super.getShootEntity(level, owner, direction, vehicle);
-		if (bomb == null) return null;
-		bomb.setDeltaMovement(vehicle.getDeltaMovement());
+		if (vehicle != null) {
+			bomb.setDeltaMovement(vehicle.getDeltaMovement());
+		}
 		return bomb;
 	}
 	

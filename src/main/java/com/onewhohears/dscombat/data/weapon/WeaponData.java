@@ -115,7 +115,7 @@ public abstract class WeaponData extends JsonPreset {
 	public abstract WeaponType getType();
 	public abstract EntityWeapon getEntity(Level level, Entity owner);
 	
-	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction) {
+	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction, @Nullable EntityAircraft vehicle) {
 		if (!checkRecoil()) {
 			setLaunchFail(null);
 			return null;
@@ -127,17 +127,13 @@ public abstract class WeaponData extends JsonPreset {
 		EntityWeapon w = getEntity(level, owner);
 		w.setPos(pos);
 		setDirection(w, direction);
-		return w;
-	}
-	
-	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 direction, EntityAircraft vehicle) {
-		EntityWeapon w = getShootEntity(level, owner, vehicle.position(), direction);
-		if (w == null) return null;
-		if (!canShootOnGround() && vehicle.isOnGround()) {
-			setLaunchFail("dscombat.cant_shoot_on_ground");
-			return null;
+		if (vehicle != null) {
+			if (!canShootOnGround() && vehicle.isOnGround()) {
+				setLaunchFail("dscombat.cant_shoot_on_ground");
+				return null;
+			}
+			w.setPos(vehicle.position().add(UtilAngles.rotateVector(getLaunchPos(), vehicle.getQ())));
 		}
-		w.setPos(vehicle.position().add(UtilAngles.rotateVector(getLaunchPos(), vehicle.getQ())));
 		return w;
 	}
 	
@@ -148,11 +144,10 @@ public abstract class WeaponData extends JsonPreset {
 		weapon.setYRot(yaw);
 	}
 	
-	public boolean shoot(Level level, Entity owner, Vec3 direction, @Nullable Vec3 pos, @Nullable EntityAircraft vehicle, boolean consume) {
-		EntityWeapon w;
-		if (vehicle == null && pos != null) w = getShootEntity(level, owner, pos, direction);
-		else if (vehicle != null && pos == null) w = getShootEntity(level, owner, direction, vehicle);
-		else return false;
+	public boolean shootFromVehicle(Level level, Entity owner, Vec3 direction, EntityAircraft vehicle, boolean consume) {
+		EntityWeapon w = getShootEntity(level, owner, 
+				vehicle.position().add(UtilAngles.rotateVector(getLaunchPos(), vehicle.getQ())), 
+				direction, vehicle);
 		if (w == null) return false;
 		level.addFreshEntity(w);
 		level.playSound(null, w.blockPosition(), 
@@ -160,6 +155,17 @@ public abstract class WeaponData extends JsonPreset {
 				1f, 1f);
 		setLaunchSuccess(1, owner, consume);
 		updateClientAmmo(vehicle);
+		return true;
+	}
+	
+	public boolean shootFromTurret(Level level, Entity owner, Vec3 direction, Vec3 pos, @Nullable EntityAircraft parent, boolean consume) {
+		EntityWeapon w = getShootEntity(level, owner, pos, direction, parent);
+		if (w == null) return false;
+		level.addFreshEntity(w);
+		level.playSound(null, w.blockPosition(), 
+				getShootSound(), SoundSource.PLAYERS, 
+				1f, 1f);
+		setLaunchSuccess(1, owner, consume);
 		return true;
 	}
 	

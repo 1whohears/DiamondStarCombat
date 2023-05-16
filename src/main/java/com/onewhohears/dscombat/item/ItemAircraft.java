@@ -13,6 +13,7 @@ import com.onewhohears.dscombat.init.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -120,12 +121,30 @@ public class ItemAircraft extends Item {
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tips, TooltipFlag isAdvanced) {
 		CompoundTag tag = stack.getTag();
+		if (tag == null || !tag.contains("EntityTag")) return;
+		CompoundTag et = tag.getCompound("EntityTag");
+		
+	}
+	
+	@Override
+	public Component getName(ItemStack stack) {
+		CompoundTag tag = stack.getTag();
 		if (tag == null || !tag.contains("EntityTag")) {
 			String name = getPresetName(stack);
 			AircraftPreset ap = AircraftPresets.get().getPreset(name);
-			if (ap != null) tips.add(ap.getDisplayName());
-			else tips.add(Component.literal(defaultPreset));
-		} else tips.add(Component.literal("Filled"));
+			if (ap == null) return Component.translatable(getDescriptionId()).append(" unknown preset!");
+			return ap.getDisplayName().setStyle(Style.EMPTY.withColor(0x55FFFF));
+		}
+		String owner = tag.getCompound("EntityTag").getString("owner");
+		if (owner.isEmpty()) owner = "Someone";
+		return Component.literal(owner+"'s ").append(super.getName(stack))
+				.setStyle(Style.EMPTY.withColor(0xFFAA00).withBold(true));
+	}
+	
+	@Override
+	public boolean isFoil(ItemStack stack) {
+		CompoundTag tag = stack.getTag();
+		return tag != null && tag.contains("EntityTag");
 	}
 
 }

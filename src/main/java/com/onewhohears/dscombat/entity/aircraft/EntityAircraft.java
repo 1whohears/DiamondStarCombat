@@ -324,6 +324,8 @@ public abstract class EntityAircraft extends Entity {
 		compound.putFloat("yRot", getYRot());
 		compound.putFloat("zRot", zRot);
 		compound.putInt("dyecolor", getCurrentColorId());
+		Entity c = getControllingPassenger();
+		if (c != null) compound.putString("owner", c.getScoreboardName());
 	}
 	
 	public static enum AircraftType {

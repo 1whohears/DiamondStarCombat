@@ -56,6 +56,10 @@ public class ModEntities {
 					LiftKGraph.ALEXIS_PLANE_GRAPH, 8f, false), 
 					EntityDimensions.scalable(2.0f, 2.0f)));
 	
+	// TODO 0.1 wooden plane
+	
+	// TODO 0.2 giant radar plane
+	
 	// HELICOPTORS
 	
 	public static final RegistryObject<EntityType<EntityHelicopter>> NOAH_CHOPPER = ENTITIES.register("noah_chopper", 
@@ -78,6 +82,8 @@ public class ModEntities {
 					DefaultAircraftPresets.DEFAULT_SMALL_ROLLER,
 					ModSounds.TANK_1, true, 1), 
 					EntityDimensions.scalable(1.5f, 0.8f)));
+	
+	// TODO 0.3 mobile SAM
 	
 	// CARS
 	

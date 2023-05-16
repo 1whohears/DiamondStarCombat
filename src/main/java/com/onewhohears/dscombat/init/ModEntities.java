@@ -58,7 +58,7 @@ public class ModEntities {
 	
 	// TODO 0.1 wooden plane
 	
-	// TODO 0.2 giant radar plane
+	// TODO 0.2 e3sentry
 	
 	// HELICOPTORS
 	
@@ -83,7 +83,7 @@ public class ModEntities {
 					ModSounds.TANK_1, true, 1), 
 					EntityDimensions.scalable(1.5f, 0.8f)));
 	
-	// TODO 0.3 mobile SAM
+	// TODO 0.3 axcel truck
 	
 	// CARS
 	
@@ -146,6 +146,7 @@ public class ModEntities {
 	public static final RegistryObject<EntityType<EntityTurret>> STEVE_UP_SMASH = ENTITIES.register("steve_up_smash", 
 			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 0.0, 3.2), 
 					EntityDimensions.scalable(0.1f, 0.1f)));
+	// TODO 0.4 SAM launcher
 	
 	public static final RegistryObject<EntityType<EntityWeaponRack>> LIGHT_MISSILE_RACK = ENTITIES.register("light_missile_rack", 
 			() -> createEntityType(EntityWeaponRack::new, EntityDimensions.scalable(0.1f, 0.1f)));

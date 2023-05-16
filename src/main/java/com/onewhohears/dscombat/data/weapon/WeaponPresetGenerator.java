@@ -565,7 +565,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 	
 	@Override
 	protected void registerPresets() {
-		// TODO 0.5 re-balance weapon stats
+		// TODO 0.6 re-balance weapon stats
 		registerBullets();
 		registerAAMissiles();
 		registerAGMissiles();

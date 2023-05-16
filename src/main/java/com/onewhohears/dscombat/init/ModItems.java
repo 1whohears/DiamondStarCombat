@@ -121,7 +121,7 @@ public class ModItems {
 	
 	// ENGINES
 	/**
-	 * TODO 0.4 add more engine types for different vehicles so they make sense
+	 * TODO 0.5 add more engine types for different vehicles so they make sense
 	 * internal and external jet engines
 	 * internal "rotational" engines for cars and helicopters
 	 * maybe extra external engines can increase the max speed a bit

@@ -209,15 +209,23 @@ public class PartSlot {
 		INTERNAL,
 		ADVANCED_INTERNAL,
 		TURRET,
-		HEAVY_TURRET
+		HEAVY_TURRET,
+		SPIN_ENGINE,
+		PUSH_ENGINE,
+		HEAVY_FRAME;
+		
+		public static final SlotType[] SEAT_ALL = {SEAT, TURRET, HEAVY_TURRET};
+		public static final SlotType[] TURRET_ALL = {TURRET, HEAVY_TURRET};
+		public static final SlotType[] TURRET_HEAVY = {HEAVY_TURRET};
+		
+		public static final SlotType[] INTERNAL_ALL = {INTERNAL, ADVANCED_INTERNAL, PUSH_ENGINE, SPIN_ENGINE};
+		public static final SlotType[] INTERNAL_ADVANCED = {ADVANCED_INTERNAL};
+		public static final SlotType[] INTERNAL_ENGINE_SPIN = {SPIN_ENGINE};
+		public static final SlotType[] INTERNAL_ENGINE_PUSH = {PUSH_ENGINE};
+		
+		public static final SlotType[] EXTERNAL_ALL = {WING, FRAME, HEAVY_FRAME};
+		public static final SlotType[] EXTERNAL_HEAVY = {HEAVY_FRAME};
 	}
-	
-	public static final SlotType[] SEAT_ALL = new SlotType[] {SlotType.SEAT, SlotType.TURRET, SlotType.HEAVY_TURRET};
-	public static final SlotType[] TURRET_ALL = new SlotType[] {SlotType.TURRET, SlotType.HEAVY_TURRET};
-	public static final SlotType[] TURRET_HEAVY = new SlotType[] {SlotType.HEAVY_TURRET};
-	public static final SlotType[] INTERNAL_ALL = new SlotType[] {SlotType.INTERNAL, SlotType.ADVANCED_INTERNAL};
-	public static final SlotType[] ADVANCED_INTERNAL = new SlotType[] {SlotType.ADVANCED_INTERNAL};
-	public static final SlotType[] EXTERNAL_ALL = new SlotType[] {SlotType.WING, SlotType.FRAME};
 	
 	public static int getIconOffsetX(SlotType type) {
 		return type.ordinal() * 16;

@@ -3,7 +3,8 @@ package com.onewhohears.dscombat.init;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.aircraft.DefaultAircraftPresets;
 import com.onewhohears.dscombat.data.parts.BuffData.BuffType;
-import com.onewhohears.dscombat.data.parts.PartSlot;
+import com.onewhohears.dscombat.data.parts.EngineData.EngineType;
+import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.data.parts.TurretData.RotBounds;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.item.ItemAircraft;
@@ -84,9 +85,9 @@ public class ModItems {
 	
 	// BUFFS
 	public static final RegistryObject<Item> DATA_LINK = ITEMS.register("data_link", 
-			() -> new ItemBuffPart(BuffType.DATA_LINK, PartSlot.ADVANCED_INTERNAL));
+			() -> new ItemBuffPart(BuffType.DATA_LINK, SlotType.INTERNAL_ADVANCED));
 	public static final RegistryObject<Item> NIGHT_VISION_HUD = ITEMS.register("night_vision_hud", 
-			() -> new ItemBuffPart(BuffType.NIGHT_VISION_HUD, PartSlot.ADVANCED_INTERNAL));
+			() -> new ItemBuffPart(BuffType.NIGHT_VISION_HUD, SlotType.INTERNAL_ADVANCED));
 	// TODO 9.1 radio part buff right click vehicle with music disk
 	
 	// TOOLS
@@ -115,9 +116,9 @@ public class ModItems {
 	
 	// FUEL TANKS
 	public static final RegistryObject<Item> LIGHT_FUEL_TANK = ITEMS.register("light_fuel_tank", 
-			() -> new ItemFuelTank(1f, 0f, 50f, PartSlot.INTERNAL_ALL));
+			() -> new ItemFuelTank(1f, 0f, 50f, SlotType.INTERNAL_ALL));
 	public static final RegistryObject<Item> HEAVY_FUEL_TANK = ITEMS.register("heavy_fuel_tank", 
-			() -> new ItemFuelTank(3f, 0f, 150f, PartSlot.INTERNAL_ALL));
+			() -> new ItemFuelTank(3f, 0f, 150f, SlotType.INTERNAL_ALL));
 	
 	// ENGINES
 	/**
@@ -127,64 +128,76 @@ public class ModItems {
 	 * maybe extra external engines can increase the max speed a bit
 	 */
 	public static final RegistryObject<Item> C6_ENGINE = ITEMS.register("c6_engine", 
-			() -> new ItemEngine(1.2f, 9f*0.025f, 4.0f, 
-					0.005f, false, PartSlot.INTERNAL_ALL));
+			() -> new ItemEngine(EngineType.SPIN, 1.1f, 0.25f, 4.0f, 
+					0.005f, false, SlotType.INTERNAL_ENGINE_SPIN));
 	public static final RegistryObject<Item> C12_ENGINE = ITEMS.register("c12_engine", 
-			() -> new ItemEngine(2.5f, 18f*0.025f, 8.0f, 
-					0.012f, false, PartSlot.INTERNAL_ALL));
+			() -> new ItemEngine(EngineType.SPIN, 2.2f, 0.45f, 8.0f, 
+					0.011f, false, SlotType.INTERNAL_ENGINE_SPIN));
+	public static final RegistryObject<Item> TURBOFAN_F25 = ITEMS.register("turbofan_f25", 
+			() -> new ItemEngine(EngineType.PUSH, 1.2f, 0.25f, 4.0f, 
+					0.005f, false, SlotType.INTERNAL_ENGINE_PUSH));
+	public static final RegistryObject<Item> TURBOFAN_F145 = ITEMS.register("turbofan_f145", 
+			() -> new ItemEngine(EngineType.PUSH, 2.5f, 0.45f, 8.0f, 
+					0.011f, false, SlotType.INTERNAL_ENGINE_PUSH));
+	public static final RegistryObject<Item> TURBOFAN_F39 = ITEMS.register("turbofan_f39", 
+			() -> new ItemEngine(EngineType.PUSH, 1.5f, 0.39f, 5.0f, 
+					0.007f, false, SlotType.INTERNAL_ENGINE_PUSH));
+	public static final RegistryObject<Item> CFM56 = ITEMS.register("cfm56", 
+			() -> new ItemEngine(EngineType.PUSH, 3.1f, 0.63f, 9.0f, 
+					0.013f, true, SlotType.INTERNAL_ENGINE_PUSH));
 	
 	// RADARS
 	public static final RegistryObject<Item> AR500 = ITEMS.register("ar500", 
-			() -> new ItemRadarPart(1f, "ar500", PartSlot.ADVANCED_INTERNAL));
+			() -> new ItemRadarPart(1f, "ar500", SlotType.INTERNAL_ADVANCED));
 	public static final RegistryObject<Item> AR1K = ITEMS.register("ar1k", 
-			() -> new ItemRadarPart(1.5f, "ar1k", PartSlot.ADVANCED_INTERNAL));
+			() -> new ItemRadarPart(1.5f, "ar1k", SlotType.INTERNAL_ADVANCED));
 	public static final RegistryObject<Item> AR2K = ITEMS.register("ar2k", 
-			() -> new ItemRadarPart(2.0f, "ar2k", PartSlot.ADVANCED_INTERNAL));
+			() -> new ItemRadarPart(2.0f, "ar2k", SlotType.INTERNAL_ADVANCED));
 	public static final RegistryObject<Item> GR200 = ITEMS.register("gr200", 
-			() -> new ItemRadarPart(1f, "gr200", PartSlot.ADVANCED_INTERNAL));
+			() -> new ItemRadarPart(1f, "gr200", SlotType.INTERNAL_ADVANCED));
 	public static final RegistryObject<Item> GR400 = ITEMS.register("gr400", 
-			() -> new ItemRadarPart(1.5f, "gr400", PartSlot.ADVANCED_INTERNAL));
+			() -> new ItemRadarPart(1.5f, "gr400", SlotType.INTERNAL_ADVANCED));
 	public static final RegistryObject<Item> WR400 = ITEMS.register("wr400", 
-			() -> new ItemRadarPart(1f, "wr400", PartSlot.ADVANCED_INTERNAL));
+			() -> new ItemRadarPart(1f, "wr400", SlotType.INTERNAL_ADVANCED));
 	public static final RegistryObject<Item> WR1K = ITEMS.register("wr1k", 
-			() -> new ItemRadarPart(1.6f, "wr1k", PartSlot.ADVANCED_INTERNAL));
+			() -> new ItemRadarPart(1.6f, "wr1k", SlotType.INTERNAL_ADVANCED));
 	public static final RegistryObject<Item> GPR20 = ITEMS.register("gpr20", 
-			() -> new ItemRadarPart(3f, "gpr20", PartSlot.ADVANCED_INTERNAL));
+			() -> new ItemRadarPart(3f, "gpr20", SlotType.INTERNAL_ADVANCED));
 	public static final RegistryObject<Item> AR20K = ITEMS.register("ar20k", 
-			() -> new ItemRadarPart(7f, "ar20k", PartSlot.ADVANCED_INTERNAL));
+			() -> new ItemRadarPart(7f, "ar20k", SlotType.EXTERNAL_HEAVY));
 	// IDEA 2 passive under water sonar doesn's show RWR warning
 	
 	// SEATS
 	public static final RegistryObject<Item> SEAT = ITEMS.register("seat", 
-			() -> new ItemSeat(0.1f, PartSlot.SEAT_ALL));
+			() -> new ItemSeat(0.1f, SlotType.SEAT_ALL));
 	
 	// TURRENTS
 	public static final RegistryObject<Item> MINIGUN_TURRET = ITEMS.register("minigun_turret", 
-			() -> new ItemTurret(5f, PartSlot.TURRET_ALL, 
+			() -> new ItemTurret(5f, SlotType.TURRET_ALL, 
 					ModEntities.MINIGUN_TURRET.getId().toString(), "20mm",
 					new RotBounds(2f, -30f, 30f)));
 	public static final RegistryObject<Item> HEAVY_TANK_TURRET = ITEMS.register("heavy_tank_turret", 
-			() -> new ItemTurret(10f, PartSlot.TURRET_HEAVY, 
+			() -> new ItemTurret(10f, SlotType.TURRET_HEAVY, 
 					ModEntities.HEAVY_TANK_TURRET.getId().toString(), "120mmhe",
 					new RotBounds(1.5f, -20f, 20f)));
 	public static final RegistryObject<Item> STEVE_UP_SMASH = ITEMS.register("steve_up_smash", 
-			() -> new ItemTurret(15f, PartSlot.TURRET_HEAVY, 
+			() -> new ItemTurret(15f, SlotType.TURRET_HEAVY, 
 					ModEntities.STEVE_UP_SMASH.getId().toString(), "aim9p5",
 					new RotBounds(1f, -30f, 30f)));
 	
 	// FLARE DISPENSERS
 	public static final RegistryObject<Item> BASIC_FLARE_DISPENSER = ITEMS.register("basic_flare_dispenser", 
-			() -> new ItemFlareDispenser(0.5f, 0, 20, 20.0f, 120, PartSlot.INTERNAL_ALL));
+			() -> new ItemFlareDispenser(0.5f, 0, 20, 20.0f, 120, SlotType.INTERNAL_ALL));
 	
 	// WEAPON PARTS
 	public static final RegistryObject<Item> XM12 = ITEMS.register("xm12", 
-			() -> new ItemWeaponPart(1f, PartSlot.EXTERNAL_ALL)); 
+			() -> new ItemWeaponPart(1f, SlotType.EXTERNAL_ALL)); 
 	public static final RegistryObject<Item> LIGHT_MISSILE_RACK = ITEMS.register("light_missile_rack", 
-			() -> new ItemWeaponPart(2f, PartSlot.EXTERNAL_ALL)); 
+			() -> new ItemWeaponPart(2f, SlotType.EXTERNAL_ALL)); 
 	public static final RegistryObject<Item> HEAVY_MISSILE_RACK = ITEMS.register("heavy_missile_rack", 
-			() -> new ItemWeaponPart(4f, PartSlot.EXTERNAL_ALL)); 
+			() -> new ItemWeaponPart(4f, SlotType.EXTERNAL_ALL)); 
 	public static final RegistryObject<Item> BOMB_RACK = ITEMS.register("bomb_rack", 
-			() -> new ItemWeaponPart(5f, PartSlot.EXTERNAL_ALL)); 
+			() -> new ItemWeaponPart(5f, SlotType.EXTERNAL_ALL)); 
 	/**
 	 * TODO 2.1 radar jamming weapon
 	 * causes victims radar to display random noise

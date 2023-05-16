@@ -8,8 +8,8 @@ import net.minecraft.resources.ResourceLocation;
 
 public class ExternalEngineData extends EngineData {
 
-	public ExternalEngineData(float weight, float thrust, float heat, float fuelRate, ResourceLocation itemid, SlotType[] compatibleSlots) {
-		super(weight, thrust, heat, fuelRate, itemid, compatibleSlots);
+	public ExternalEngineData(EngineType engineType, float weight, float thrust, float heat, float fuelRate, ResourceLocation itemid, SlotType[] compatibleSlots) {
+		super(engineType, weight, thrust, heat, fuelRate, itemid, compatibleSlots);
 	}
 	
 	public ExternalEngineData(CompoundTag tag) {

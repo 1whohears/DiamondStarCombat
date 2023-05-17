@@ -78,7 +78,8 @@ public abstract class ItemPart extends Item {
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tips, TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tips, isAdvanced);
 		MutableComponent c = Component.literal("Compatible: ");
-		for (int i = 0; i < compatibleSlots.length; ++i) c.append(compatibleSlots[i].toString()+" ");
+		for (int i = 0; i < compatibleSlots.length; ++i) 
+			c.append(Component.translatable(compatibleSlots[i].getTranslatableName())).append(" ");
 		tips.add(c);
 		tips.add(Component.literal("Mass: "+weight));
 	}

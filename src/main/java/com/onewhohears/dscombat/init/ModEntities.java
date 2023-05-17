@@ -66,7 +66,7 @@ public class ModEntities {
 			() -> createEntityTypeFar((type, level) -> new EntityHelicopter(type, level, 
 					DefaultAircraftPresets.DEFAULT_NOAH_CHOPPER,
 					ModSounds.HELI_1, true, 
-					8, 6, 4, 4), 
+					8, 6, 4, 4, 2.75f), 
 					EntityDimensions.scalable(2.8f, 2.8f)));
 	
 	// TANKS

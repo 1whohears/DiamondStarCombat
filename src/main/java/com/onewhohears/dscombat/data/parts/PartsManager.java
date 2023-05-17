@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAircraftFuel;
+import com.onewhohears.dscombat.data.parts.EngineData.EngineType;
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.item.ItemSeat;
@@ -38,6 +39,7 @@ public class PartsManager {
 	 */
 	public void read(CompoundTag compound) {
 		slots.clear();
+		// FIXME 1 all aircraft in old versions don't have the new engine type slot. they won't be able to move
 		ListTag list = compound.getList("slots", 10);
 		for (int i = 0; i < list.size(); ++i) {
 			CompoundTag tag = list.getCompound(i);
@@ -187,10 +189,21 @@ public class PartsManager {
 		return total;
 	}
 	
-	public float getTotalEngineThrust() {
+	public float getTotalPushThrust() {
 		float total = 0;
-		for (PartSlot p : slots) if (p.filled() && p.getPartData().getType() == PartType.ENGINE) 
-			total += ((EngineData)p.getPartData()).getThrust();
+		for (PartSlot p : slots) if (p.filled() && p.getPartData().getType() == PartType.ENGINE) {
+			EngineData engine = ((EngineData)p.getPartData());
+			if (engine.getEngineType() == EngineType.PUSH) total += engine.getThrust();
+		}
+		return total;
+	}
+	
+	public float getTotalSpinThrust() {
+		float total = 0;
+		for (PartSlot p : slots) if (p.filled() && p.getPartData().getType() == PartType.ENGINE) {
+			EngineData engine = ((EngineData)p.getPartData());
+			if (engine.getEngineType() == EngineType.SPIN) total += engine.getThrust();
+		}
 		return total;
 	}
 	

@@ -159,7 +159,7 @@ public abstract class EntityAircraft extends Entity {
 	
 	protected boolean hasFlares;
 	protected int xzSpeedDir;
-	protected float xzSpeed, totalMass, xzYaw, slideAngle, slideAngleCos, maxThrust, currentFuel, maxFuel;
+	protected float xzSpeed, totalMass, xzYaw, slideAngle, slideAngleCos, maxPushThrust, maxSpinThrust, currentFuel, maxFuel;
 	protected double staticFric, kineticFric, airPressure;
 	
 	private int lerpSteps, lerpStepsQ, newRiderCooldown, deadTicks;
@@ -675,7 +675,8 @@ public abstract class EntityAircraft extends Entity {
 		totalMass = getAircraftMass() + partsManager.getPartsWeight();
 		staticFric = totalMass * ACC_GRAVITY * CO_STATIC_FRICTION;
 		kineticFric = totalMass * ACC_GRAVITY * CO_KINETIC_FRICTION;
-		maxThrust = partsManager.getTotalEngineThrust();
+		maxPushThrust = partsManager.getTotalPushThrust();
+		maxSpinThrust = partsManager.getTotalSpinThrust();
 		currentFuel = partsManager.getCurrentFuel();
 		maxFuel = partsManager.getMaxFuel();
 		hasFlares = partsManager.getFlares().size() > 0;
@@ -752,7 +753,7 @@ public abstract class EntityAircraft extends Entity {
 	}
 	
 	public double getDriveAcc() {
-		return getThrustMag()/getTotalMass();
+		return getSpinThrustMag()/getTotalMass();
 	}
 	
 	public boolean isBreaking() {
@@ -830,16 +831,22 @@ public abstract class EntityAircraft extends Entity {
 	/**
 	 * @return the magnitude of the thrust force based on the engines, throttle, and 0 if no fuel
 	 */
-	public double getThrustMag() {
+	public double getPushThrustMag() {
 		if (getCurrentFuel() <= 0 || !isOperational()) return 0;
-		return getCurrentThrottle() * getMaxThrust();
+		return getCurrentThrottle() * getMaxPushThrust();
 	}
 	
-	/**
-	 * @return the total thrust from the engines in the parts manager
-	 */
-	public float getMaxThrust() {
-		return maxThrust;
+	public float getMaxPushThrust() {
+		return maxPushThrust;
+	}
+	
+	public double getSpinThrustMag() {
+		if (getCurrentFuel() <= 0 || !isOperational()) return 0;
+		return getCurrentThrottle() * getMaxSpinThrust();
+	}
+	
+	public float getMaxSpinThrust() {
+		return maxSpinThrust;
 	}
 	
 	/**
@@ -1197,9 +1204,12 @@ public abstract class EntityAircraft extends Entity {
 	@Nullable
 	@Override
     public Entity getControllingPassenger() {
-        for (EntitySeat seat : getSeats()) 
-        	if (seat.getSlotId().equals(PartSlot.PILOT_SLOT_NAME)) 
+        for (EntitySeat seat : getSeats()) {
+        	String id = seat.getSlotId();
+        	if (id.equals(PartSlot.PILOT_SLOT_NAME) || id.equals("dscombat.pilot_seat")) {
         		return seat.getPlayer();
+        	}
+        }
         return null;
     }
 	

@@ -189,15 +189,15 @@ public class EntityBoat extends EntityAircraft {
     }
 	
 	@Override
-	public double getThrustMag() {
-		return super.getThrustMag();
+	public double getPushThrustMag() {
+		return super.getPushThrustMag();
 	}
 
 	@Override
 	public Vec3 getThrustForce(Quaternion q) {
 		if (!isInWater()) return Vec3.ZERO;
 		Vec3 direction = UtilAngles.getRollAxis(q);
-		Vec3 thrustForce = direction.scale(getThrustMag());
+		Vec3 thrustForce = direction.scale(getPushThrustMag());
 		return thrustForce;
 	}
 	

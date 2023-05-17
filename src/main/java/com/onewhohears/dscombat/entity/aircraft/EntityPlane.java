@@ -179,7 +179,7 @@ public class EntityPlane extends EntityAircraft {
 	@Override
 	public Vec3 getThrustForce(Quaternion q) {
 		Vec3 direction = UtilAngles.getRollAxis(q);
-		Vec3 thrustForce = direction.scale(getThrustMag());
+		Vec3 thrustForce = direction.scale(getPushThrustMag());
 		return thrustForce;
 	}
 	

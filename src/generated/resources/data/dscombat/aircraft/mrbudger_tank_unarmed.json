@@ -46,7 +46,7 @@
       "data": {
         "itemid": "dscombat:seat"
       },
-      "name": "dscombat.pilot_seat",
+      "name": "slotname.dscombat.pilot_seat",
       "slot_posx": 0.0,
       "slot_posy": 1.4,
       "slot_posz": 0.0,
@@ -59,7 +59,7 @@
       "data": {
         "itemid": "dscombat:seat"
       },
-      "name": "dscombat.seat1",
+      "name": "slotname.dscombat.seat1",
       "slot_posx": 1.0,
       "slot_posy": 1.4,
       "slot_posz": 2.0,
@@ -72,7 +72,7 @@
       "data": {
         "itemid": "dscombat:seat"
       },
-      "name": "dscombat.seat2",
+      "name": "slotname.dscombat.seat2",
       "slot_posx": -1.0,
       "slot_posy": 1.4,
       "slot_posz": 2.0,
@@ -85,7 +85,7 @@
       "data": {
         "itemid": "dscombat:seat"
       },
-      "name": "dscombat.seat3",
+      "name": "slotname.dscombat.seat3",
       "slot_posx": 1.0,
       "slot_posy": 1.4,
       "slot_posz": -2.0,
@@ -98,7 +98,7 @@
       "data": {
         "itemid": "dscombat:seat"
       },
-      "name": "dscombat.seat4",
+      "name": "slotname.dscombat.seat4",
       "slot_posx": -1.0,
       "slot_posy": 1.4,
       "slot_posz": -2.0,
@@ -111,11 +111,11 @@
       "data": {
         "itemid": "dscombat:c12_engine"
       },
-      "name": "dscombat.internal_1",
+      "name": "slotname.dscombat.internal_1",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 3,
+      "slot_type": 7,
       "uix": 48,
       "uiy": 100,
       "zRot": 0.0
@@ -124,11 +124,11 @@
       "data": {
         "itemid": "dscombat:c12_engine"
       },
-      "name": "dscombat.internal_2",
+      "name": "slotname.dscombat.internal_2",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 3,
+      "slot_type": 7,
       "uix": 68,
       "uiy": 100,
       "zRot": 0.0
@@ -138,7 +138,7 @@
         "filled": true,
         "itemid": "dscombat:heavy_fuel_tank"
       },
-      "name": "dscombat.internal_3",
+      "name": "slotname.dscombat.internal_3",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,

@@ -68,7 +68,7 @@
       "data": {
         "itemid": "dscombat:seat"
       },
-      "name": "dscombat.pilot_seat",
+      "name": "slotname.dscombat.pilot_seat",
       "slot_posx": 0.4,
       "slot_posy": -0.65,
       "slot_posz": 1.5,
@@ -81,7 +81,7 @@
       "data": {
         "itemid": "dscombat:minigun_turret"
       },
-      "name": "dscombat.seat2",
+      "name": "slotname.dscombat.seat2",
       "slot_posx": -0.4,
       "slot_posy": -0.65,
       "slot_posz": 1.5,
@@ -94,7 +94,7 @@
       "data": {
         "itemid": "dscombat:seat"
       },
-      "name": "dscombat.seat3",
+      "name": "slotname.dscombat.seat3",
       "slot_posx": 0.4,
       "slot_posy": -0.65,
       "slot_posz": 0.3,
@@ -107,7 +107,7 @@
       "data": {
         "itemid": "dscombat:seat"
       },
-      "name": "dscombat.seat4",
+      "name": "slotname.dscombat.seat4",
       "slot_posx": -0.4,
       "slot_posy": -0.65,
       "slot_posz": 0.3,
@@ -122,7 +122,7 @@
         "itemid": "dscombat:heavy_missile_rack",
         "param": "aim120b"
       },
-      "name": "dscombat.left_wing_1",
+      "name": "slotname.dscombat.left_wing_1",
       "slot_posx": 0.75,
       "slot_posy": -0.5,
       "slot_posz": 1.8,
@@ -137,7 +137,7 @@
         "itemid": "dscombat:heavy_missile_rack",
         "param": "agm65g"
       },
-      "name": "dscombat.left_wing_2",
+      "name": "slotname.dscombat.left_wing_2",
       "slot_posx": 0.75,
       "slot_posy": -0.5,
       "slot_posz": 0.9,
@@ -152,7 +152,7 @@
         "itemid": "dscombat:light_missile_rack",
         "param": "agm114k"
       },
-      "name": "dscombat.left_wing_3",
+      "name": "slotname.dscombat.left_wing_3",
       "slot_posx": 0.75,
       "slot_posy": -0.5,
       "slot_posz": 0.0,
@@ -162,7 +162,7 @@
       "zRot": 90.0
     },
     {
-      "name": "dscombat.left_wing_4",
+      "name": "slotname.dscombat.left_wing_4",
       "slot_posx": 0.65,
       "slot_posy": 0.5,
       "slot_posz": 0.0,
@@ -177,7 +177,7 @@
         "itemid": "dscombat:heavy_missile_rack",
         "param": "agm65l"
       },
-      "name": "dscombat.right_wing_1",
+      "name": "slotname.dscombat.right_wing_1",
       "slot_posx": -0.75,
       "slot_posy": -0.5,
       "slot_posz": 1.8,
@@ -192,7 +192,7 @@
         "itemid": "dscombat:heavy_missile_rack",
         "param": "agm84e"
       },
-      "name": "dscombat.right_wing_2",
+      "name": "slotname.dscombat.right_wing_2",
       "slot_posx": -0.75,
       "slot_posy": -0.5,
       "slot_posz": 0.9,
@@ -207,7 +207,7 @@
         "itemid": "dscombat:light_missile_rack",
         "param": "aim9p5"
       },
-      "name": "dscombat.right_wing_3",
+      "name": "slotname.dscombat.right_wing_3",
       "slot_posx": -0.75,
       "slot_posy": -0.5,
       "slot_posz": 0.0,
@@ -217,7 +217,7 @@
       "zRot": -90.0
     },
     {
-      "name": "dscombat.right_wing_4",
+      "name": "slotname.dscombat.right_wing_4",
       "slot_posx": -0.65,
       "slot_posy": 0.5,
       "slot_posz": 0.0,
@@ -232,7 +232,7 @@
         "itemid": "dscombat:xm12",
         "param": "20mm"
       },
-      "name": "dscombat.frame_1",
+      "name": "slotname.dscombat.frame_1",
       "slot_posx": 0.0,
       "slot_posy": -0.67,
       "slot_posz": 1.9,
@@ -247,7 +247,7 @@
         "itemid": "dscombat:xm12",
         "param": "50mmhe"
       },
-      "name": "dscombat.frame_2",
+      "name": "slotname.dscombat.frame_2",
       "slot_posx": 0.0,
       "slot_posy": -0.67,
       "slot_posz": 1.1,
@@ -257,7 +257,7 @@
       "zRot": 0.0
     },
     {
-      "name": "dscombat.frame_3",
+      "name": "slotname.dscombat.frame_3",
       "slot_posx": 0.0,
       "slot_posy": -0.67,
       "slot_posz": 0.3,
@@ -267,7 +267,7 @@
       "zRot": 0.0
     },
     {
-      "name": "dscombat.frame_4",
+      "name": "slotname.dscombat.frame_4",
       "slot_posx": 0.0,
       "slot_posy": -0.67,
       "slot_posz": -0.5,
@@ -280,11 +280,11 @@
       "data": {
         "itemid": "dscombat:c12_engine"
       },
-      "name": "dscombat.internal_1",
+      "name": "slotname.dscombat.internal_1",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 3,
+      "slot_type": 7,
       "uix": 48,
       "uiy": 100,
       "zRot": 0.0
@@ -293,11 +293,11 @@
       "data": {
         "itemid": "dscombat:c12_engine"
       },
-      "name": "dscombat.internal_2",
+      "name": "slotname.dscombat.internal_2",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 3,
+      "slot_type": 7,
       "uix": 68,
       "uiy": 100,
       "zRot": 0.0
@@ -307,7 +307,7 @@
         "filled": true,
         "itemid": "dscombat:heavy_fuel_tank"
       },
-      "name": "dscombat.internal_3",
+      "name": "slotname.dscombat.internal_3",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
@@ -321,7 +321,7 @@
         "filled": true,
         "itemid": "dscombat:basic_flare_dispenser"
       },
-      "name": "dscombat.internal_4",
+      "name": "slotname.dscombat.internal_4",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
@@ -334,7 +334,7 @@
       "data": {
         "itemid": "dscombat:ar500"
       },
-      "name": "dscombat.internal_5",
+      "name": "slotname.dscombat.internal_5",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
@@ -347,7 +347,7 @@
       "data": {
         "itemid": "dscombat:gr400"
       },
-      "name": "dscombat.internal_6",
+      "name": "slotname.dscombat.internal_6",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
@@ -357,7 +357,7 @@
       "zRot": 0.0
     },
     {
-      "name": "dscombat.internal_7",
+      "name": "slotname.dscombat.internal_7",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
@@ -367,7 +367,7 @@
       "zRot": 0.0
     },
     {
-      "name": "dscombat.internal_8",
+      "name": "slotname.dscombat.internal_8",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,

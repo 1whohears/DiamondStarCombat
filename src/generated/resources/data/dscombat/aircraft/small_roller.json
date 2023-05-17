@@ -51,7 +51,7 @@
         "filled": true,
         "itemid": "dscombat:steve_up_smash"
       },
-      "name": "dscombat.pilot_seat",
+      "name": "slotname.dscombat.pilot_seat",
       "slot_posx": 0.0,
       "slot_posy": 0.6,
       "slot_posz": 0.0,
@@ -64,11 +64,11 @@
       "data": {
         "itemid": "dscombat:c6_engine"
       },
-      "name": "dscombat.internal_1",
+      "name": "slotname.dscombat.internal_1",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 3,
+      "slot_type": 7,
       "uix": 48,
       "uiy": 100,
       "zRot": 0.0
@@ -78,7 +78,7 @@
         "filled": true,
         "itemid": "dscombat:light_fuel_tank"
       },
-      "name": "dscombat.internal_2",
+      "name": "slotname.dscombat.internal_2",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,

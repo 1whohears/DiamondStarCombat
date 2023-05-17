@@ -18,10 +18,10 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class EntityHelicopter extends EntityAircraft {
 	
-	public static final float CO_LIFT = 2.75f;
-	
 	public static final EntityDataAccessor<Float> ACC_FORWARD = SynchedEntityData.defineId(EntityHelicopter.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> ACC_SIDE = SynchedEntityData.defineId(EntityHelicopter.class, EntityDataSerializers.FLOAT);
+	
+	public final float heliLiftFactor;
 	
 	private final float propellerRate = 3.141f;
 	private float propellerRot, propellerRotOld;
@@ -30,10 +30,11 @@ public class EntityHelicopter extends EntityAircraft {
 	public EntityHelicopter(EntityType<? extends EntityHelicopter> entity, Level level,
 			AircraftPreset defaultPreset,
 			RegistryObject<SoundEvent> engineSound, 
-			boolean alwaysLandingGear, float Ix, float Iy, float Iz, float explodeSize) {
+			boolean alwaysLandingGear, float Ix, float Iy, float Iz, float explodeSize, float heliLiftFactor) {
 		super(entity, level, defaultPreset, engineSound,
 				false, Ix, Iy, Iz, explodeSize);
 		this.alwaysLandingGear = alwaysLandingGear;
+		this.heliLiftFactor = heliLiftFactor;
 	}
 	
 	@Override
@@ -83,7 +84,7 @@ public class EntityHelicopter extends EntityAircraft {
 	@Override
 	public void tickAir(Quaternion q) {
 		if (inputSpecial && isOperational()) {
-			float max_th = getMaxThrust();
+			float max_th = getMaxPushThrust();
 			if (max_th != 0) setCurrentThrottle((float)-getWeightForce().y / max_th);
 			setDeltaMovement(getDeltaMovement().multiply(1, 0.95, 1));
 		}
@@ -128,18 +129,13 @@ public class EntityHelicopter extends EntityAircraft {
 	@Override
 	public Vec3 getThrustForce(Quaternion q) {
 		Vec3 direction = UtilAngles.getYawAxis(q);
-		Vec3 thrustForce = direction.scale(getThrustMag());
+		Vec3 thrustForce = direction.scale(getPushThrustMag());
 		return thrustForce;
 	}
 	
 	@Override
-	public double getThrustMag() {
-		return super.getThrustMag();
-	}
-	
-	@Override
-	public float getMaxThrust() {
-		return super.getMaxThrust() * (float)airPressure * CO_LIFT;
+	public float getMaxPushThrust() {
+		return getMaxSpinThrust() * (float)airPressure * heliLiftFactor;
 	}
 	
 	public float getPropellerRotation(float partialTicks) {

@@ -16,12 +16,12 @@ import net.minecraftforge.network.PacketDistributor;
 
 public class PartSlot {
 	
-	public static final String PILOT_SLOT_NAME = "dscombat.pilot_seat";
+	public static final String PILOT_SLOT_NAME = "slotname.dscombat.pilot_seat";
 	
-	private final String slotId, typeName;
+	private final String slotId;
 	private final SlotType type;
 	private final Vec3 pos;
-	private final int uix, uiy, offsetX;
+	private final int uix, uiy;
 	private final float zRot;
 	private PartData data;
 	
@@ -32,8 +32,6 @@ public class PartSlot {
 		this.uix = uix;
 		this.uiy = uiy;
 		this.zRot = zRot;
-		this.offsetX = getIconOffsetX(type);
-		this.typeName = getTypeName(type);
 	}
 	
 	public PartSlot(CompoundTag tag) {
@@ -44,9 +42,6 @@ public class PartSlot {
 		uiy = tag.getInt("uiy");
 		zRot = tag.getFloat("zRot");
 		if (tag.contains("data")) data = UtilParse.parsePartFromCompound(tag.getCompound("data"));
-		// not saved
-		offsetX = getIconOffsetX(type);
-		typeName = getTypeName(type);
 	}
 	
 	public CompoundTag write() {
@@ -77,9 +72,6 @@ public class PartSlot {
 		boolean notNull = buffer.readBoolean();
 		//System.out.println("notNull = "+notNull);
 		if (notNull) data = DataSerializers.PART_DATA.read(buffer);
-		// not in packet
-		offsetX = getIconOffsetX(type);
-		typeName = getTypeName(type);
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
@@ -166,30 +158,6 @@ public class PartSlot {
 		return slotId;
 	}
 	
-	public String getTypeName() {
-		return typeName;
-	}
-	
-	public static String getTypeName(SlotType type) {
-		switch (type) {
-		case FRAME:
-			return "dscombat.slotname_frame";
-		case INTERNAL:
-			return "dscombat.slotname_internal";
-		case SEAT:
-			return "dscombat.slotname_seat";
-		case WING:
-			return "dscombat.slotname_wing";
-		case ADVANCED_INTERNAL:
-			return "dscombat.slotname_advanced_internal";
-		case TURRET:
-			return "dscombat.slotname_turret";
-		case HEAVY_TURRET:
-			return "dscombat.slotname_turret_heavy";
-		}
-		return "";
-	}
-	
 	public SlotType getSlotType() {
 		return type;
 	}
@@ -203,16 +171,16 @@ public class PartSlot {
 	}
 	
 	public static enum SlotType {
-		SEAT,
-		WING,
-		FRAME,
-		INTERNAL,
-		ADVANCED_INTERNAL,
-		TURRET,
-		HEAVY_TURRET,
-		SPIN_ENGINE,
-		PUSH_ENGINE,
-		HEAVY_FRAME;
+		SEAT("slottype.dscombat.seat"),
+		WING("slottype.dscombat.wing"),
+		FRAME("slottype.dscombat.frame"),
+		INTERNAL("slottype.dscombat.internal"),
+		ADVANCED_INTERNAL("slottype.dscombat.advanced_internal"),
+		TURRET("slottype.dscombat.turret"),
+		HEAVY_TURRET("slottype.dscombat.heavy_turret"),
+		SPIN_ENGINE("slottype.dscombat.spin_engine"),
+		PUSH_ENGINE("slottype.dscombat.push_engine"),
+		HEAVY_FRAME("slottype.dscombat.heavy_frame");
 		
 		public static final SlotType[] SEAT_ALL = {SEAT, TURRET, HEAVY_TURRET};
 		public static final SlotType[] TURRET_ALL = {TURRET, HEAVY_TURRET};
@@ -225,14 +193,24 @@ public class PartSlot {
 		
 		public static final SlotType[] EXTERNAL_ALL = {WING, FRAME, HEAVY_FRAME};
 		public static final SlotType[] EXTERNAL_HEAVY = {HEAVY_FRAME};
-	}
-	
-	public static int getIconOffsetX(SlotType type) {
-		return type.ordinal() * 16;
-	}
-	
-	public int getIconOffsetX() {
-		return offsetX;
+		
+		private final String translatable;
+		
+		private SlotType(String translatable) {
+			this.translatable = translatable;
+		}
+		
+		public int getIconXOffset() {
+			return ordinal() * 16;
+		}
+		
+		public String getTranslatableName() {
+			return translatable;
+		}
+		
+		public String getLiteralName() {
+			return name();
+		}
 	}
 	
 	@Override
@@ -245,7 +223,7 @@ public class PartSlot {
 	}
 	
 	public boolean isPilotSlot() {
-		return getName().equals(PILOT_SLOT_NAME);
+		return getName().equals(PILOT_SLOT_NAME) || getName().equals("dscombat.pilot_seat");
 	}
 	
 }

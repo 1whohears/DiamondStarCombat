@@ -120,8 +120,8 @@ public class EntitySubmarine extends EntityBoat {
 	}
 	
 	@Override
-	public double getThrustMag() {
-		return super.getThrustMag();
+	public double getPushThrustMag() {
+		return super.getPushThrustMag();
 	}
 	
 	@Override

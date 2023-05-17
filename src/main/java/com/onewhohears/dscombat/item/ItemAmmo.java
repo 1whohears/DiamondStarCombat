@@ -1,6 +1,5 @@
 package com.onewhohears.dscombat.item;
 
-import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.init.ModItems;

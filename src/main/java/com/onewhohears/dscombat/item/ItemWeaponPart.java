@@ -2,6 +2,8 @@ package com.onewhohears.dscombat.item;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.data.parts.WeaponRackData;
@@ -13,9 +15,12 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class ItemWeaponPart extends ItemPart {
@@ -28,16 +33,23 @@ public class ItemWeaponPart extends ItemPart {
 	public Component getName(ItemStack stack) {
 		CompoundTag tag = stack.getOrCreateTag();
 		String weapon = tag.getString("weaponId");
-		MutableComponent name = Component.translatable(getDescriptionId()).append(" ");
+		MutableComponent name = ((MutableComponent)super.getName(stack)).append(" ");
 		if (weapon.isEmpty()) {
 			name.append("EMPTY");
 		} else {
 			WeaponData wd = WeaponPresets.get().getPreset(weapon);
 			if (wd != null) name.append(wd.getDisplayName());
 			else name.append(weapon+"?");
-			name.append(" "+tag.getInt("ammo")+"/"+tag.getInt("max"));
 		}
 		return name;	
+	}
+	
+	@Override
+	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tips, TooltipFlag isAdvanced) {
+		super.appendHoverText(stack, level, tips, isAdvanced);
+		CompoundTag tag = stack.getOrCreateTag();
+		if (tag.getString("weaponId").isEmpty()) return;
+		tips.add(Component.literal("Ammo: "+tag.getInt("ammo")+"/"+tag.getInt("max")).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 	}
 	
 	@Override

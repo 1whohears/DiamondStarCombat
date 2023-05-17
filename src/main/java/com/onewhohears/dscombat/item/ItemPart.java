@@ -12,6 +12,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -75,13 +76,20 @@ public abstract class ItemPart extends Item {
 	}
 	
 	@Override
+	public Component getName(ItemStack stack) {
+		return Component.translatable(getDescriptionId()).setStyle(Style.EMPTY.withColor(0x55FF55));
+	}
+	
+	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tips, TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tips, isAdvanced);
-		MutableComponent c = Component.literal("Compatible: ");
-		for (int i = 0; i < compatibleSlots.length; ++i) 
-			c.append(Component.translatable(compatibleSlots[i].getTranslatableName())).append(" ");
+		MutableComponent c = Component.literal("Compatible: ").setStyle(Style.EMPTY.withColor(0xFFFF55));
+		for (int i = 0; i < compatibleSlots.length; ++i) {
+			if (i != 0) c.append(",");
+			c.append(Component.translatable(compatibleSlots[i].getTranslatableName()));
+		}
 		tips.add(c);
-		tips.add(Component.literal("Mass: "+weight));
+		tips.add(Component.literal("Mass: "+weight).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 	}
 
 }

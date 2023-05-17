@@ -3,8 +3,6 @@ package com.onewhohears.dscombat.item;
 import java.util.List;
 import java.util.function.Predicate;
 
-import javax.annotation.Nullable;
-
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
@@ -25,7 +23,6 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -118,13 +115,13 @@ public class ItemAircraft extends Item {
 		return tag.getString("preset");
 	}
 	
-	@Override
+	/*@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tips, TooltipFlag isAdvanced) {
 		CompoundTag tag = stack.getTag();
 		if (tag == null || !tag.contains("EntityTag")) return;
-		//CompoundTag et = tag.getCompound("EntityTag");
+		CompoundTag et = tag.getCompound("EntityTag");
 		
-	}
+	}*/
 	
 	@Override
 	public Component getName(ItemStack stack) {

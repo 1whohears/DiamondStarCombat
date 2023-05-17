@@ -29,7 +29,7 @@ public class ItemTurret extends ItemPart {
 	@Override
 	public Component getName(ItemStack stack) {
 		CompoundTag tag = stack.getOrCreateTag();
-		MutableComponent name = Component.translatable(getDescriptionId()).append(" ");
+		MutableComponent name = ((MutableComponent)super.getName(stack)).append(" ");
 		WeaponData wd = WeaponPresets.get().getPreset(weaponId);
 		if (wd != null) name.append(wd.getDisplayName());
 		else name.append(weaponId+"?");

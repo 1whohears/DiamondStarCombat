@@ -26,7 +26,7 @@ public class ItemFlareDispenser extends ItemPart {
 	@Override
 	public Component getName(ItemStack stack) {
 		CompoundTag tag = stack.getOrCreateTag();
-		MutableComponent name = Component.translatable(getDescriptionId())
+		MutableComponent name = ((MutableComponent)super.getName(stack))
 			.append(" "+tag.getInt("flares")+"/"+tag.getInt("max"));
 		return name;	
 	}

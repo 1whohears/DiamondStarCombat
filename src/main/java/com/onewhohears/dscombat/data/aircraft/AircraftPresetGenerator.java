@@ -9,7 +9,7 @@ public class AircraftPresetGenerator extends JsonPresetGenerator<AircraftPreset>
     
     @Override
 	protected void registerPresets() {
-    	// TODO 0.7 review all crafting recipes
+    	// TODO 0.8 review all crafting recipes
     	addPresetToGenerate(DefaultAircraftPresets.EMPTY_ALEXIS_PLANE);
     	addPresetToGenerate(DefaultAircraftPresets.UNARMED_ALEXIS_PLANE);
 		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_ALEXIS_PLANE);

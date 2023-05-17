@@ -10,6 +10,8 @@ import net.minecraft.world.item.DyeColor;
 
 public class DefaultAircraftPresets {
 	
+	// TODO 0.7 review aircraft presets so they fit new weapons
+	
 	public static final AircraftPreset EMPTY_ALEXIS_PLANE = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "alexis_plane_empty")
 			.setAircraftType(AircraftType.PLANE)

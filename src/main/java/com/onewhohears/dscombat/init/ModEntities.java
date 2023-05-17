@@ -57,8 +57,22 @@ public class ModEntities {
 					EntityDimensions.scalable(2.0f, 2.0f)));
 	
 	// TODO 0.1 wooden plane
+	public static final RegistryObject<EntityType<EntityPlane>> WOODEN_PLANE = ENTITIES.register("wooden_plane", 
+			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
+					DefaultAircraftPresets.DEFAULT_WOODEN_PLANE,
+					ModSounds.BIPLANE_1,
+					4, 7, 3, 3, 
+					LiftKGraph.WOODEN_PLANE_GRAPH, 6f, false), 
+					EntityDimensions.scalable(1.7f, 1.7f)));
 	
 	// TODO 0.2 e3sentry
+	/*public static final RegistryObject<EntityType<EntityPlane>> E3SENTRY_PLANE = ENTITIES.register("e3sentry_plane", 
+			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
+					DefaultAircraftPresets.DEFAULT_E3SENTRY_PLANE,
+					ModSounds.JET_1,
+					6, 10, 4, 4, 
+					LiftKGraph.E3SENTRY_PLANE_GRAPH, 8f, false), 
+					EntityDimensions.scalable(5.0f, 5.0f)));*/
 	
 	// HELICOPTORS
 	

@@ -87,7 +87,7 @@ public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContaine
 			if (!(menu.slots.get(i) instanceof PartItemSlot slot)) continue;
 			blit(stack, leftPos+slot.x, topPos+slot.y, 
 					slot.data.getSlotType().getIconXOffset(), 0, 
-					16, 16, 160, 16);
+					16, 16, 256, 16);
 		}
 	}
 

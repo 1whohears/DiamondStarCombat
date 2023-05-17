@@ -10,6 +10,7 @@ import com.onewhohears.dscombat.client.renderer.RendererEntityTurret;
 import com.onewhohears.dscombat.client.renderer.RendererEntityWeapon;
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelAlexisPlane;
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelAndolfSub;
+import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelE3Sentry;
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelF16;
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelJaviPlane;
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelMrBudgerTank;
@@ -18,6 +19,7 @@ import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelNoahCh
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelOrangeTesla;
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelSmallRoller;
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelTestPlane;
+import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelWoodenPlane;
 import com.onewhohears.dscombat.client.renderer.model.weapon.EntityModelBomb1;
 import com.onewhohears.dscombat.client.renderer.model.weapon.EntityModelBombRack;
 import com.onewhohears.dscombat.client.renderer.model.weapon.EntityModelBullet1;
@@ -81,6 +83,8 @@ public final class ClientModEvents {
 		event.registerLayerDefinition(EntityModelOrangeTesla.LAYER_LOCATION, EntityModelOrangeTesla::createBodyLayer);
 		event.registerLayerDefinition(EntityModelBomb1.LAYER_LOCATION, EntityModelBomb1::createBodyLayer);
 		event.registerLayerDefinition(EntityModelBombRack.LAYER_LOCATION, EntityModelBombRack::createBodyLayer);
+		event.registerLayerDefinition(EntityModelWoodenPlane.LAYER_LOCATION, EntityModelWoodenPlane::createBodyLayer);
+		event.registerLayerDefinition(EntityModelE3Sentry.LAYER_LOCATION, EntityModelE3Sentry::createBodyLayer);
 	}
 	
 	@SubscribeEvent
@@ -93,6 +97,9 @@ public final class ClientModEvents {
 		event.registerEntityRenderer(ModEntities.ALEXIS_PLANE.get(), 
 				(context) -> new RendererEntityAircraft<EntityPlane>(context, 
 						new EntityModelAlexisPlane(models.bakeLayer(EntityModelAlexisPlane.LAYER_LOCATION))));
+		event.registerEntityRenderer(ModEntities.WOODEN_PLANE.get(), 
+				(context) -> new RendererEntityAircraft<EntityPlane>(context, 
+						new EntityModelWoodenPlane(models.bakeLayer(EntityModelWoodenPlane.LAYER_LOCATION))));
 		// HELICOPTERS
 		event.registerEntityRenderer(ModEntities.NOAH_CHOPPER.get(), 
 				(context) -> new RendererEntityAircraft<EntityHelicopter>(context, 

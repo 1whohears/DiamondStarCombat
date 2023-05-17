@@ -131,7 +131,7 @@ public class ModItems {
 			() -> new ItemEngine(EngineType.PUSH, 1.2f, 0.25f, 4.0f, 
 					0.005f, false, SlotType.INTERNAL_ENGINE_PUSH));
 	public static final RegistryObject<Item> TURBOFAN_F145 = ITEMS.register("turbofan_f145", 
-			() -> new ItemEngine(EngineType.PUSH, 2.5f, 0.45f, 8.0f, 
+			() -> new ItemEngine(EngineType.PUSH, 2.5f, 0.46f, 8.0f, 
 					0.011f, false, SlotType.INTERNAL_ENGINE_PUSH));
 	public static final RegistryObject<Item> TURBOFAN_F39 = ITEMS.register("turbofan_f39", 
 			() -> new ItemEngine(EngineType.PUSH, 1.5f, 0.39f, 5.0f, 
@@ -139,6 +139,9 @@ public class ModItems {
 	public static final RegistryObject<Item> CFM56 = ITEMS.register("cfm56", 
 			() -> new ItemEngine(EngineType.PUSH, 3.1f, 0.63f, 9.0f, 
 					0.013f, true, SlotType.EXTERNAL_ALL));
+	public static final RegistryObject<Item> CM_MANLY_52 = ITEMS.register("cm_manly_52", 
+			() -> new ItemEngine(EngineType.PUSH, 0.8f, 0.12f, 2.0f, 
+					0.004f, false, SlotType.INTERNAL_ENGINE_RADIAL));
 	
 	// RADARS
 	public static final RegistryObject<Item> AR500 = ITEMS.register("ar500", 
@@ -256,6 +259,9 @@ public class ModItems {
 	public static final RegistryObject<Item> ALEXIS_PLANE = ITEMS.register("alexis_plane", 
 			() -> new ItemAircraft(ModEntities.ALEXIS_PLANE.get(), 
 					DefaultAircraftPresets.DEFAULT_ALEXIS_PLANE));
+	public static final RegistryObject<Item> WOODEN_PLANE = ITEMS.register("wooden_plane", 
+			() -> new ItemAircraft(ModEntities.WOODEN_PLANE.get(), 
+					DefaultAircraftPresets.DEFAULT_WOODEN_PLANE));
 	
 	// HELICOPTERS
 	public static final RegistryObject<Item> NOAH_CHOPPER = ITEMS.register("noah_chopper", 

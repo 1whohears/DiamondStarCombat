@@ -39,6 +39,9 @@ public class AircraftPresetGenerator extends JsonPresetGenerator<AircraftPreset>
 		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_ANDOLF_SUB);
 		
 		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_ORANGE_TESLA);
+		
+		addPresetToGenerate(DefaultAircraftPresets.EMPTY_WOODEN_PLANE);
+		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_WOODEN_PLANE);
 	}
     
     public AircraftPresetGenerator(DataGenerator output) {

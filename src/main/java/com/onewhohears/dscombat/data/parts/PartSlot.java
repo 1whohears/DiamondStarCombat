@@ -180,7 +180,8 @@ public class PartSlot {
 		HEAVY_TURRET("slottype.dscombat.heavy_turret"),
 		SPIN_ENGINE("slottype.dscombat.spin_engine"),
 		PUSH_ENGINE("slottype.dscombat.push_engine"),
-		HEAVY_FRAME("slottype.dscombat.heavy_frame");
+		HEAVY_FRAME("slottype.dscombat.heavy_frame"),
+		RADIAL_ENGINE("slottype.dscombat.radial_engine");
 		
 		public static final SlotType[] SEAT_ALL = {SEAT, TURRET, HEAVY_TURRET};
 		public static final SlotType[] TURRET_ALL = {TURRET, HEAVY_TURRET};
@@ -190,6 +191,7 @@ public class PartSlot {
 		public static final SlotType[] INTERNAL_ADVANCED = {ADVANCED_INTERNAL};
 		public static final SlotType[] INTERNAL_ENGINE_SPIN = {SPIN_ENGINE};
 		public static final SlotType[] INTERNAL_ENGINE_PUSH = {PUSH_ENGINE};
+		public static final SlotType[] INTERNAL_ENGINE_RADIAL = {RADIAL_ENGINE};
 		
 		public static final SlotType[] EXTERNAL_ALL = {WING, FRAME, HEAVY_FRAME};
 		public static final SlotType[] EXTERNAL_HEAVY = {HEAVY_FRAME};

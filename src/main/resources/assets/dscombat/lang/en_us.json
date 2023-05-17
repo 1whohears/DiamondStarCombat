@@ -25,9 +25,10 @@
 	"slottype.dscombat.advanced_internal": "Advanced Internal",
 	"slottype.dscombat.turret": "Turret",
 	"slottype.dscombat.heavy_turret": "Heavy Turret",
-	"slottype.dscombat.spin_engine": "Spin Engine",
-	"slottype.dscombat.push_engine": "Push Engine",
+	"slottype.dscombat.spin_engine": "Car Engine",
+	"slottype.dscombat.push_engine": "Jet Engine",
 	"slottype.dscombat.heavy_frame": "Heavy Frame",
+	"slottype.dscombat.radial_engine": "Radial Engine",
 	
 	"slotname.dscombat.pilot_seat": "Pilot Seat",
 	"slotname.dscombat.seat1": "Seat 1",
@@ -314,6 +315,8 @@
 	"preset.dscombat.andolf_sub_unarmed": "Unarmed Andolf Submarine",
 	"preset.dscombat.andolf_sub": "Default Andolf Submarine",
 	"preset.dscombat.orange_tesla": "Default Orange Tesla",
+	"preset.dscombat.wooden_plane_empty": "Empty Wooden Plane",
+	"preset.dscombat.wooden_plane": "Default Wooden Plane",
 	
 	"container.dscombat.plane_menu": "Aircraft Menu",
 	"container.dscombat.weapons_block_menu": "Weapons Workbench",

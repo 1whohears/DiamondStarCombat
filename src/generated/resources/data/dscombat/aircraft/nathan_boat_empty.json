@@ -22,7 +22,7 @@
   "landing_gear": true,
   "mass": 10.0,
   "max_health": 100.0,
-  "max_speed": 0.9,
+  "max_speed": 0.85,
   "maxpitch": 0.0,
   "maxroll": 0.0,
   "maxyaw": 3.5,

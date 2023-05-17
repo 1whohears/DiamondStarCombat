@@ -72,7 +72,7 @@ public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContaine
 		List<Component> c = new ArrayList<Component>();
 		if (this.hoveredSlot instanceof PartItemSlot slot) {
 			c.add(Component.translatable(slot.data.getName()).setStyle(Style.EMPTY.withColor(0xFF55FF)));
-			c.add(Component.translatable(slot.data.getSlotType().getTranslatableName()).setStyle(Style.EMPTY.withColor(0xFFFF55)));
+			c.add(Component.translatable(slot.data.getSlotType().getTranslatableName()).setStyle(Style.EMPTY.withColor(0xFFAA00)));
 		}
 		return c;
 	}

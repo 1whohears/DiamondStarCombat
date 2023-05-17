@@ -138,7 +138,7 @@ public class ModItems {
 					0.007f, false, SlotType.INTERNAL_ENGINE_PUSH));
 	public static final RegistryObject<Item> CFM56 = ITEMS.register("cfm56", 
 			() -> new ItemEngine(EngineType.PUSH, 3.1f, 0.63f, 9.0f, 
-					0.013f, true, SlotType.INTERNAL_ENGINE_PUSH));
+					0.013f, true, SlotType.EXTERNAL_ALL));
 	
 	// RADARS
 	public static final RegistryObject<Item> AR500 = ITEMS.register("ar500", 

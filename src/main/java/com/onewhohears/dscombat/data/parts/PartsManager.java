@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAircraftFuel;
+import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
 import com.onewhohears.dscombat.data.parts.EngineData.EngineType;
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
@@ -24,6 +25,8 @@ import net.minecraftforge.network.PacketDistributor;
 
 public class PartsManager {
 	
+	public static final int SLOT_VERSION = 1;
+	
 	private final EntityAircraft parent;
 	private List<PartSlot> slots = new ArrayList<PartSlot>();
 	private Container inventory = new SimpleContainer(0);
@@ -39,13 +42,23 @@ public class PartsManager {
 	 */
 	public void read(CompoundTag compound) {
 		slots.clear();
-		// FIXME 1 all aircraft in old versions don't have the new engine type slot. they won't be able to move
 		ListTag list = compound.getList("slots", 10);
+		if (compound.getInt("slot_version") < SLOT_VERSION) fixSlots(list);
 		for (int i = 0; i < list.size(); ++i) {
 			CompoundTag tag = list.getCompound(i);
 			slots.add(new PartSlot(tag));
 		}
 		readData = true;
+	}
+	
+	private void fixSlots(ListTag list) {
+		ListTag presetList = AircraftPresets.get().getPreset(parent.preset)
+				.getDataAsNBT().getList("slots", 10);
+		for (int i = 0; i < presetList.size(); ++i) {
+			CompoundTag presetSlot = presetList.getCompound(i);
+			CompoundTag slot = list.getCompound(i);
+			slot.putInt("slot_type", presetSlot.getInt("slot_type"));
+		}
 	}
 	
 	private void createNewInventory() {

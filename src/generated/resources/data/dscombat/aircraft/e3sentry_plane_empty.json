@@ -1,0 +1,118 @@
+{
+  "aircraft_type": 0,
+  "dyecolor": 7,
+  "health": 400.0,
+  "idleheat": 20.0,
+  "ingredients": [
+    {
+      "item": "dscombat:advanced_cockpit",
+      "num": 1
+    }
+  ],
+  "is_craftable": false,
+  "item": "dscombat:e3sentry_plane",
+  "landing_gear": true,
+  "mass": 40.0,
+  "max_health": 400.0,
+  "max_speed": 1.0,
+  "maxpitch": 2.0,
+  "maxroll": 3.0,
+  "maxyaw": 2.0,
+  "pitchtorque": 2.0,
+  "presetId": "e3sentry_plane_empty",
+  "rolltorque": 2.0,
+  "slots": [
+    {
+      "data": {
+        "itemid": "dscombat:seat"
+      },
+      "name": "slotname.dscombat.pilot_seat",
+      "slot_posx": 0.0,
+      "slot_posy": -0.4,
+      "slot_posz": 4.0,
+      "slot_type": 0,
+      "uix": 48,
+      "uiy": 20,
+      "zRot": 0.0
+    },
+    {
+      "name": "slotname.dscombat.left_wing_1",
+      "slot_posx": 3.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": 1,
+      "uix": 48,
+      "uiy": 40,
+      "zRot": 0.0
+    },
+    {
+      "name": "slotname.dscombat.left_wing_2",
+      "slot_posx": 5.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": 1,
+      "uix": 68,
+      "uiy": 40,
+      "zRot": 0.0
+    },
+    {
+      "name": "slotname.dscombat.right_wing_1",
+      "slot_posx": -3.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": 1,
+      "uix": 48,
+      "uiy": 60,
+      "zRot": 0.0
+    },
+    {
+      "name": "slotname.dscombat.right_wing_2",
+      "slot_posx": -5.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": 1,
+      "uix": 68,
+      "uiy": 60,
+      "zRot": 0.0
+    },
+    {
+      "name": "slotname.dscombat.frame_1",
+      "slot_posx": 0.0,
+      "slot_posy": 2.0,
+      "slot_posz": 0.0,
+      "slot_type": 9,
+      "uix": 48,
+      "uiy": 80,
+      "zRot": 0.0
+    },
+    {
+      "name": "slotname.dscombat.internal_1",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": 3,
+      "uix": 48,
+      "uiy": 100,
+      "zRot": 0.0
+    },
+    {
+      "name": "slotname.dscombat.internal_2",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": 3,
+      "uix": 68,
+      "uiy": 100,
+      "zRot": 0.0
+    }
+  ],
+  "stealth": 1.3,
+  "textures": {
+    "7": "dscombat:textures/entities/e3sentry_plane/gray.png"
+  },
+  "throttledown": 0.04,
+  "throttleup": 0.01,
+  "turn_radius": 40.0,
+  "wing_area": 30.0,
+  "yawtorque": 2.0
+}

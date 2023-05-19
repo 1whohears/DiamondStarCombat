@@ -476,7 +476,6 @@ public class DefaultAircraftPresets {
 			.setDefaultTexture(DyeColor.BROWN, "dscombat:textures/entities/wooden_plane/brown.png")
 			.addIngredient("minecraft:oak_planks", 60)
 			.addIngredient(ModItems.COCKPIT.getId())
-			.addIngredient("minecraft:gold_ingot", 4)
 			.addPilotSeatSlot(0, -0.4, 0, 48, 20)
 			.addEmptySlot("slotname.dscombat.left_wing_1", SlotType.WING, 1.5, 0, 0, 0, 48, 40)
 			.addEmptySlot("slotname.dscombat.right_wing_1", SlotType.WING, -1.5, 0, 0, 0, 48, 60)
@@ -492,6 +491,47 @@ public class DefaultAircraftPresets {
 			.addIngredient(ModItems.LIGHT_FUEL_TANK.getId())
 			.setSlotItem("slotname.dscombat.internal_1", ModItems.CM_MANLY_52.getId())
 			.setSlotItem("slotname.dscombat.internal_2", ModItems.LIGHT_FUEL_TANK.getId(), true)
+			.build();
+	
+	public static final AircraftPreset EMPTY_E3SENTRY_PLANE = AircraftPreset.Builder
+			.create(DSCombatMod.MODID, "e3sentry_plane_empty")
+			.setAircraftType(AircraftType.PLANE)
+			.setItem(ModItems.E3SENTRY_PLANE.getId())
+			.setMaxHealth(400f)
+			.setMass(40f)
+			.setMaxSpeed(1.0f)
+			.setStealth(1.3f)
+			.setIdleHeat(20f)
+			.setTurnRadius(40f)
+			.setMaxTurnRates(3f, 2.0f, 2.0f)
+			.setTurnTorques(2.0f, 2.0f, 2.0f)
+			.setThrottleRate(0.01f, 0.04f)
+			.setPlaneWingArea(30f)
+			.setDefaultTexture(DyeColor.GRAY, "dscombat:textures/entities/e3sentry_plane/gray.png")
+			.addIngredient(ModItems.ADVANCED_COCKPIT.getId())
+			.addPilotSeatSlot(0, -0.4, 4, 48, 20)
+			.addEmptySlot("slotname.dscombat.left_wing_1", SlotType.WING, 3, 0, 0, 0, 48, 40)
+			.addEmptySlot("slotname.dscombat.left_wing_2", SlotType.WING, 5, 0, 0, 0, 68, 40)
+			.addEmptySlot("slotname.dscombat.right_wing_1", SlotType.WING, -3, 0, 0, 0, 48, 60)
+			.addEmptySlot("slotname.dscombat.right_wing_2", SlotType.WING, -5, 0, 0, 0, 68, 60)
+			.addEmptySlot("slotname.dscombat.frame_1", SlotType.HEAVY_FRAME, 0, 2, 0, 0, 48, 80)
+			.addEmptySlot("slotname.dscombat.internal_1", SlotType.INTERNAL, 48, 100)
+			.addEmptySlot("slotname.dscombat.internal_2", SlotType.INTERNAL, 68, 100)
+			.build();
+	
+	public static final AircraftPreset DEFAULT_E3SENTRY_PLANE = AircraftPreset.Builder
+			.createFromCopy(DSCombatMod.MODID, "e3sentry_plane", EMPTY_E3SENTRY_PLANE)
+			.setCraftable()
+			.addIngredient(ModItems.CFM56.getId(), 4)
+			.addIngredient(ModItems.HEAVY_FUEL_TANK.getId(), 2)
+			.addIngredient(ModItems.AR20K.getId())
+			.setSlotItem("slotname.dscombat.left_wing_1", ModItems.CFM56.getId())
+			.setSlotItem("slotname.dscombat.left_wing_2", ModItems.CFM56.getId())
+			.setSlotItem("slotname.dscombat.right_wing_1", ModItems.CFM56.getId())
+			.setSlotItem("slotname.dscombat.right_wing_2", ModItems.CFM56.getId())
+			.setSlotItem("slotname.dscombat.frame_1", ModItems.AR20K.getId())
+			.setSlotItem("slotname.dscombat.internal_1", ModItems.HEAVY_FUEL_TANK.getId(), true)
+			.setSlotItem("slotname.dscombat.internal_2", ModItems.HEAVY_FUEL_TANK.getId(), true)
 			.build();
 			
 }

@@ -100,6 +100,9 @@ public final class ClientModEvents {
 		event.registerEntityRenderer(ModEntities.WOODEN_PLANE.get(), 
 				(context) -> new RendererEntityAircraft<EntityPlane>(context, 
 						new EntityModelWoodenPlane(models.bakeLayer(EntityModelWoodenPlane.LAYER_LOCATION))));
+		event.registerEntityRenderer(ModEntities.E3SENTRY_PLANE.get(), 
+				(context) -> new RendererEntityAircraft<EntityPlane>(context, 
+						new EntityModelE3Sentry(models.bakeLayer(EntityModelE3Sentry.LAYER_LOCATION))));
 		// HELICOPTERS
 		event.registerEntityRenderer(ModEntities.NOAH_CHOPPER.get(), 
 				(context) -> new RendererEntityAircraft<EntityHelicopter>(context, 

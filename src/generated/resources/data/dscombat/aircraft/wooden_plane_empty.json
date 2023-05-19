@@ -11,10 +11,6 @@
     {
       "item": "dscombat:cockpit",
       "num": 1
-    },
-    {
-      "item": "minecraft:gold_ingot",
-      "num": 4
     }
   ],
   "is_craftable": false,

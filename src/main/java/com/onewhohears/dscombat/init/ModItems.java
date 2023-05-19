@@ -262,6 +262,9 @@ public class ModItems {
 	public static final RegistryObject<Item> WOODEN_PLANE = ITEMS.register("wooden_plane", 
 			() -> new ItemAircraft(ModEntities.WOODEN_PLANE.get(), 
 					DefaultAircraftPresets.DEFAULT_WOODEN_PLANE));
+	public static final RegistryObject<Item> E3SENTRY_PLANE = ITEMS.register("e3sentry_plane", 
+			() -> new ItemAircraft(ModEntities.E3SENTRY_PLANE.get(), 
+					DefaultAircraftPresets.DEFAULT_E3SENTRY_PLANE));
 	
 	// HELICOPTERS
 	public static final RegistryObject<Item> NOAH_CHOPPER = ITEMS.register("noah_chopper", 

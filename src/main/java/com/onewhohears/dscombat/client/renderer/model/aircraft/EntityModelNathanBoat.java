@@ -15,6 +15,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
 public class EntityModelNathanBoat extends EntityControllableModel<EntityBoat> {
 	
@@ -34,7 +35,7 @@ public class EntityModelNathanBoat extends EntityControllableModel<EntityBoat> {
 			int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		poseStack.translate(0, 1.55, 0);
 		poseStack.scale(-1.0F, -1.0F, 1.0F);
-		float ypi = (float)Math.PI/8;
+		float ypi = Mth.PI/8;
 		this.engine.yRot = -entity.inputYaw * ypi;
 		this.propellor.zRot = entity.getPropellerRotation(partialTicks);
 		main.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);

@@ -15,6 +15,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
 public class EntityModelWoodenPlane extends EntityControllableModel<EntityPlane> {
 	
@@ -39,7 +40,7 @@ public class EntityModelWoodenPlane extends EntityControllableModel<EntityPlane>
 		poseStack.scale(1.0F, -1.0F, 1.0F);
 		propeller.zRot = entity.getPropellerRotation(partialTicks);
 		float gear = entity.getLandingGearPos(partialTicks);
-		float hpi = (float)Math.PI/2;
+		float hpi = Mth.PI/2;
 		back_gear.xRot = gear * hpi;
 		front_gear.xRot = gear * -hpi;
 		body.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);

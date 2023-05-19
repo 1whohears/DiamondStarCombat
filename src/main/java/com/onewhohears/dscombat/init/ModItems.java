@@ -137,8 +137,8 @@ public class ModItems {
 			() -> new ItemEngine(EngineType.PUSH, 1.5f, 0.39f, 5.0f, 
 					0.007f, false, SlotType.INTERNAL_ENGINE_PUSH));
 	public static final RegistryObject<Item> CFM56 = ITEMS.register("cfm56", 
-			() -> new ItemEngine(EngineType.PUSH, 3.1f, 0.63f, 9.0f, 
-					0.013f, true, SlotType.EXTERNAL_ALL));
+			() -> new ItemEngine(EngineType.PUSH, 3.1f, 0.56f, 9.0f, 
+					0.017f, true, SlotType.EXTERNAL_ALL));
 	public static final RegistryObject<Item> CM_MANLY_52 = ITEMS.register("cm_manly_52", 
 			() -> new ItemEngine(EngineType.PUSH, 0.8f, 0.12f, 2.0f, 
 					0.004f, false, SlotType.INTERNAL_ENGINE_RADIAL));

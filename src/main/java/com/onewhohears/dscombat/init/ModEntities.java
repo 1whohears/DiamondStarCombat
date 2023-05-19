@@ -21,6 +21,7 @@ import com.onewhohears.dscombat.entity.weapon.PositionMissile;
 import com.onewhohears.dscombat.entity.weapon.TorpedoMissile;
 import com.onewhohears.dscombat.entity.weapon.TrackEntityMissile;
 
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
@@ -45,7 +46,7 @@ public class ModEntities {
 					DefaultAircraftPresets.DEFAULT_JAVI_PLANE,
 					ModSounds.JET_1,
 					6, 10, 4, 4, 
-					LiftKGraph.JAVI_PLANE_GRAPH, 8f, true), 
+					LiftKGraph.JAVI_PLANE_GRAPH, 8f, true, 0), 
 					EntityDimensions.scalable(2.45f, 2.45f)));
 	
 	public static final RegistryObject<EntityType<EntityPlane>> ALEXIS_PLANE = ENTITIES.register("alexis_plane", 
@@ -53,7 +54,7 @@ public class ModEntities {
 					DefaultAircraftPresets.DEFAULT_ALEXIS_PLANE,
 					ModSounds.JET_1,
 					4, 8, 2, 3, 
-					LiftKGraph.ALEXIS_PLANE_GRAPH, 8f, false), 
+					LiftKGraph.ALEXIS_PLANE_GRAPH, 8f, false, 0), 
 					EntityDimensions.scalable(2.0f, 2.0f)));
 	
 	public static final RegistryObject<EntityType<EntityPlane>> WOODEN_PLANE = ENTITIES.register("wooden_plane", 
@@ -61,7 +62,7 @@ public class ModEntities {
 					DefaultAircraftPresets.DEFAULT_WOODEN_PLANE,
 					ModSounds.BIPLANE_1,
 					4, 7, 3, 3, 
-					LiftKGraph.WOODEN_PLANE_GRAPH, 6f, false), 
+					LiftKGraph.WOODEN_PLANE_GRAPH, 6f, false, Mth.PI), 
 					EntityDimensions.scalable(1.7f, 1.7f)));
 	
 	// TODO 0.2 e3sentry
@@ -70,7 +71,7 @@ public class ModEntities {
 					DefaultAircraftPresets.DEFAULT_E3SENTRY_PLANE,
 					ModSounds.JET_1,
 					10, 12, 8, 7, 
-					LiftKGraph.E3SENTRY_PLANE_GRAPH, 10f, false), 
+					LiftKGraph.E3SENTRY_PLANE_GRAPH, 10f, false, Mth.PI * 0.01f), 
 					EntityDimensions.scalable(4.0f, 4.0f)));
 	
 	// HELICOPTORS

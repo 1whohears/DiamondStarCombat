@@ -217,6 +217,11 @@ public class RadarSystem {
 		return radars.size() > 0;
 	}
 	
+	public boolean hasRadar(String id) {
+		for (RadarData r : radars) if (r.getId().equals(id)) return true;
+		return false;
+	}
+	
 	@Nullable
 	public RadarData get(String id, String slotId) {
 		for (RadarData r : radars) if (r.idMatch(id, slotId)) return r;

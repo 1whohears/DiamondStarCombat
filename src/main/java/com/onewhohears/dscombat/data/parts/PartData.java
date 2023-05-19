@@ -80,6 +80,18 @@ public abstract class PartData {
 	
 	public abstract PartType getType();
 	
+	public boolean isEngine() {
+		return getType() == PartType.ENGINE || getType() == PartType.EXTERNAL_ENGINE;
+	}
+	
+	public boolean isFuelTank() {
+		return getType() == PartType.FUEL_TANK;
+	}
+	
+	public boolean isFlareDispenser() {
+		return getType() == PartType.FLARE_DISPENSER;
+	}
+	
 	public EntityAircraft getParent() {
 		return parent;
 	}

@@ -318,6 +318,8 @@
 	"preset.dscombat.orange_tesla": "Default Orange Tesla",
 	"preset.dscombat.wooden_plane_empty": "Empty Wooden Plane",
 	"preset.dscombat.wooden_plane": "Default Wooden Plane",
+	"preset.dscombat.e3sentry_plane_empty": "Empty E3Sentry",
+	"preset.dscombat.e3sentry_plane": "Default E3Sentry",
 	
 	"container.dscombat.plane_menu": "Aircraft Menu",
 	"container.dscombat.weapons_block_menu": "Weapons Workbench",

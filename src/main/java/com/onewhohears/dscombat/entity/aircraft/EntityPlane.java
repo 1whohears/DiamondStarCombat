@@ -27,10 +27,9 @@ public class EntityPlane extends EntityAircraft {
 	public static final double CO_LIFT = Config.SERVER.coLift.get();
 	
 	public final LiftKGraph liftKGraph;
-	public final float flapsAOABias; // TODO 4.1 animate flaps down
+	public final float propellerRate, flapsAOABias; // TODO 4.1 animate flaps down
 	public final boolean canAimDown;
 	
-	private final float propellerRate = 3.141f;
 	private float propellerRot = 0, propellerRotOld = 0, aoa = 0, liftK = 0, airFoilSpeedSqr = 0;
 	private Vec3 liftDir = Vec3.ZERO, airFoilAxes = Vec3.ZERO;
 	
@@ -38,12 +37,13 @@ public class EntityPlane extends EntityAircraft {
 			AircraftPreset defaultPreset,
 			RegistryObject<SoundEvent> engineSound,
 			float Ix, float Iy, float Iz, float explodeSize,
-			LiftKGraph liftKGraph, float flapsAOABias, boolean canAimDown) {
+			LiftKGraph liftKGraph, float flapsAOABias, boolean canAimDown, float propellerRate) {
 		super(entity, level, defaultPreset, engineSound,
 				false, Ix, Iy, Iz, explodeSize);
 		this.liftKGraph = liftKGraph;
 		this.flapsAOABias = flapsAOABias;
 		this.canAimDown = canAimDown;
+		this.propellerRate = propellerRate;
 	}
 	
 	@Override

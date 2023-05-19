@@ -10,7 +10,7 @@
     },
     {
       "item": "dscombat:cfm56",
-      "num": 4
+      "num": 2
     },
     {
       "item": "dscombat:heavy_fuel_tank",
@@ -24,7 +24,7 @@
   "is_craftable": true,
   "item": "dscombat:e3sentry_plane",
   "landing_gear": true,
-  "mass": 40.0,
+  "mass": 60.0,
   "max_health": 400.0,
   "max_speed": 1.0,
   "maxpitch": 2.0,
@@ -39,9 +39,9 @@
         "itemid": "dscombat:seat"
       },
       "name": "slotname.dscombat.pilot_seat",
-      "slot_posx": 0.0,
-      "slot_posy": -0.4,
-      "slot_posz": 4.0,
+      "slot_posx": -0.5,
+      "slot_posy": -1.35,
+      "slot_posz": 4.8,
       "slot_type": 0,
       "uix": 48,
       "uiy": 20,
@@ -61,9 +61,6 @@
       "zRot": 0.0
     },
     {
-      "data": {
-        "itemid": "dscombat:cfm56"
-      },
       "name": "slotname.dscombat.left_wing_2",
       "slot_posx": 5.0,
       "slot_posy": 0.0,
@@ -87,9 +84,6 @@
       "zRot": 0.0
     },
     {
-      "data": {
-        "itemid": "dscombat:cfm56"
-      },
       "name": "slotname.dscombat.right_wing_2",
       "slot_posx": -5.0,
       "slot_posy": 0.0,

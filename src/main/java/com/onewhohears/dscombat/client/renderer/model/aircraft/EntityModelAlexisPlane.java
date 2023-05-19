@@ -15,6 +15,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
 public class EntityModelAlexisPlane extends EntityControllableModel<EntityPlane> {
 	
@@ -39,7 +40,7 @@ public class EntityModelAlexisPlane extends EntityControllableModel<EntityPlane>
 		poseStack.scale(1.0F, -1.0F, 1.0F);
 		float gear = entity.getLandingGearPos(partialTicks);
 		if (gear < 1) {
-			float hpi = (float)Math.PI/2;
+			float hpi = Mth.PI/2;
 			this.gfront.xRot = gear * -hpi;
 			this.gleft.xRot = gear * hpi;
 			this.gright.xRot = gear * hpi;
@@ -51,8 +52,8 @@ public class EntityModelAlexisPlane extends EntityControllableModel<EntityPlane>
 			this.gleft.visible = false;
 			this.gright.visible = false;
 		}
-		float ypi = (float)Math.PI/8;
-		float ppi = (float)Math.PI/12;
+		float ypi = Mth.PI/8;
+		float ppi = Mth.PI/12;
 		this.stick.zRot = entity.inputYaw * -ypi;
 		this.stick.xRot = entity.inputPitch * ppi;
 		body.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);

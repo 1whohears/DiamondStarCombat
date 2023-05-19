@@ -273,6 +273,7 @@
 	"item.dscombat.andolf_sub": "Andolf Submarine",
 	"item.dscombat.orange_tesla": "Orange Tesla",
 	"item.dscombat.wooden_plane": "Wooden Plane",
+	"item.dscombat.e3sentry_plane": "E3 Sentry",
 	
 	"weapon.dscombat.20mm": "20mm",
 	"weapon.dscombat.50mmhe": "50mm HE",
@@ -318,8 +319,8 @@
 	"preset.dscombat.orange_tesla": "Default Orange Tesla",
 	"preset.dscombat.wooden_plane_empty": "Empty Wooden Plane",
 	"preset.dscombat.wooden_plane": "Default Wooden Plane",
-	"preset.dscombat.e3sentry_plane_empty": "Empty E3Sentry",
-	"preset.dscombat.e3sentry_plane": "Default E3Sentry",
+	"preset.dscombat.e3sentry_plane_empty": "Empty E3 Sentry",
+	"preset.dscombat.e3sentry_plane": "Default E3 Sentry",
 	
 	"container.dscombat.plane_menu": "Aircraft Menu",
 	"container.dscombat.weapons_block_menu": "Weapons Workbench",

@@ -41,7 +41,7 @@ public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(n
 	public void renderToBuffer(EntityPlane entity, float partialTicks, PoseStack poseStack, VertexConsumer vertexConsumer, 
 			int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		poseStack.translate(0, 1.5, 0);
-		poseStack.scale(1.0F, -1.0F, 1.0F);
+		poseStack.scale(-1.0F, -1.0F, 1.0F);
 		if (entity.radarSystem.hasRadar("ar20k")) {
 			radar.yRot = entity.getPropellerRotation(partialTicks);
 			radar.visible = true;

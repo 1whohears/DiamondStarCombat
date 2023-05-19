@@ -291,7 +291,7 @@ public abstract class EntityAircraft extends Entity {
 		setClientQ(q);
 		if (color == -1) color = nbt.getInt("dyecolor");
 		setCurrentColor(DyeColor.byId(color));
-		setRadarMode(RadarMode.OFF);
+		setRadarMode(RadarMode.values()[nbt.getInt("radar_mode")]);
 	}
 
 	@Override
@@ -324,6 +324,7 @@ public abstract class EntityAircraft extends Entity {
 		compound.putFloat("yRot", getYRot());
 		compound.putFloat("zRot", zRot);
 		compound.putInt("dyecolor", getCurrentColorId());
+		compound.putInt("radar_mode", getRadarMode().ordinal());
 		Entity c = getControllingPassenger();
 		if (c != null) compound.putString("owner", c.getScoreboardName());
 	}

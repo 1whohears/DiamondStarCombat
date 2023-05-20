@@ -20,10 +20,10 @@ import net.minecraft.resources.ResourceLocation;
 public class EntityModelSAMLauncher extends EntityControllableModel<EntityTurret>{
 	
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(DSCombatMod.MODID, "sam_launcher"), "main");
-	private final ModelPart main;
+	private final ModelPart body;
 	
 	public EntityModelSAMLauncher(ModelPart root) {
-		this.main = root.getChild("main");
+		this.body = root.getChild("body");
 	}
 	
 	@Override
@@ -32,14 +32,14 @@ public class EntityModelSAMLauncher extends EntityControllableModel<EntityTurret
 		poseStack.translate(0, 1.5, 0);
 		poseStack.scale(1.0F, -1.0F, 1.0F);
 		
-		main.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+		body.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 	
 	public static LayerDefinition createBodyLayer() {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		PartDefinition body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
+		PartDefinition body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create().texOffs(0, 0).addBox(-1.0F, -2.0F, -1.0F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 24.0F, 0.0F));
 
 		return LayerDefinition.create(meshdefinition, 16, 16);
 	}

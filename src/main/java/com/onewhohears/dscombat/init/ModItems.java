@@ -175,13 +175,17 @@ public class ModItems {
 					ModEntities.MINIGUN_TURRET.getId().toString(), "20mm",
 					new RotBounds(2f, -30f, 30f)));
 	public static final RegistryObject<Item> HEAVY_TANK_TURRET = ITEMS.register("heavy_tank_turret", 
-			() -> new ItemTurret(10f, SlotType.TURRET_HEAVY, 
+			() -> new ItemTurret(9f, SlotType.TURRET_HEAVY, 
 					ModEntities.HEAVY_TANK_TURRET.getId().toString(), "120mmhe",
 					new RotBounds(1.5f, -20f, 20f)));
 	public static final RegistryObject<Item> STEVE_UP_SMASH = ITEMS.register("steve_up_smash", 
-			() -> new ItemTurret(15f, SlotType.TURRET_HEAVY, 
+			() -> new ItemTurret(13f, SlotType.TURRET_HEAVY, 
 					ModEntities.STEVE_UP_SMASH.getId().toString(), "aim9p5",
 					new RotBounds(1f, -30f, 30f)));
+	public static final RegistryObject<Item> SAM_LAUNCHER = ITEMS.register("sam_launcher", 
+			() -> new ItemTurret(17f, SlotType.TURRET_HEAVY, 
+					ModEntities.SAM_LAUNCHER.getId().toString(), "aim120b",
+					new RotBounds(0.7f, -30f, 30f)));
 	
 	// FLARE DISPENSERS
 	public static final RegistryObject<Item> BASIC_FLARE_DISPENSER = ITEMS.register("basic_flare_dispenser", 

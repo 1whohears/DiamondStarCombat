@@ -166,6 +166,9 @@ public class ModEntities {
 			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 0.0, 3.2), 
 					EntityDimensions.scalable(0.1f, 0.1f)));
 	// TODO 0.4 SAM launcher
+	public static final RegistryObject<EntityType<EntityTurret>> SAM_LAUNCHER = ENTITIES.register("sam_launcher", 
+			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 0.0, 3.2), 
+					EntityDimensions.scalable(0.1f, 0.1f)));
 	
 	public static final RegistryObject<EntityType<EntityWeaponRack>> LIGHT_MISSILE_RACK = ENTITIES.register("light_missile_rack", 
 			() -> createEntityType(EntityWeaponRack::new, EntityDimensions.scalable(0.1f, 0.1f)));

@@ -10,6 +10,7 @@ import com.onewhohears.dscombat.client.renderer.RendererEntityTurret;
 import com.onewhohears.dscombat.client.renderer.RendererEntityWeapon;
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelAlexisPlane;
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelAndolfSub;
+import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelAxcelTruck;
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelE3Sentry;
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelF16;
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelJaviPlane;
@@ -85,6 +86,7 @@ public final class ClientModEvents {
 		event.registerLayerDefinition(EntityModelBombRack.LAYER_LOCATION, EntityModelBombRack::createBodyLayer);
 		event.registerLayerDefinition(EntityModelWoodenPlane.LAYER_LOCATION, EntityModelWoodenPlane::createBodyLayer);
 		event.registerLayerDefinition(EntityModelE3Sentry.LAYER_LOCATION, EntityModelE3Sentry::createBodyLayer);
+		event.registerLayerDefinition(EntityModelAxcelTruck.LAYER_LOCATION, EntityModelAxcelTruck::createBodyLayer);
 	}
 	
 	@SubscribeEvent
@@ -117,6 +119,9 @@ public final class ClientModEvents {
 		event.registerEntityRenderer(ModEntities.ORANGE_TESLA.get(), 
 				(context) -> new RendererEntityAircraft<EntityGroundVehicle>(context, 
 						new EntityModelOrangeTesla(models.bakeLayer(EntityModelOrangeTesla.LAYER_LOCATION))));
+		event.registerEntityRenderer(ModEntities.AXCEL_TRUCK.get(), 
+				(context) -> new RendererEntityAircraft<EntityGroundVehicle>(context, 
+						new EntityModelAxcelTruck(models.bakeLayer(EntityModelAxcelTruck.LAYER_LOCATION))));
 		// BOATS
 		event.registerEntityRenderer(ModEntities.NATHAN_BOAT.get(), 
 				(context) -> new RendererEntityAircraft<EntityBoat>(context, 

@@ -97,8 +97,6 @@ public class ModEntities {
 					ModSounds.TANK_1, true, 1), 
 					EntityDimensions.scalable(1.5f, 0.8f)));
 	
-	// TODO 0.3 axcel truck
-	
 	// CARS
 	
 	public static final RegistryObject<EntityType<EntityGroundVehicle>> ORANGE_TESLA = ENTITIES.register("orange_tesla", 
@@ -106,6 +104,13 @@ public class ModEntities {
 					DefaultAircraftPresets.DEFAULT_ORANGE_TESLA,
 					ModSounds.ORANGE_TESLA, false, 2), 
 					EntityDimensions.scalable(2.5f, 2.15f)));
+	
+	// TODO 0.3 axcel truck
+	public static final RegistryObject<EntityType<EntityGroundVehicle>> AXCEL_TRUCK = ENTITIES.register("axcel_truck", 
+			() -> createEntityTypeFar((type, level) -> new EntityGroundVehicle(type, level, 
+					null,
+					ModSounds.TANK_1, false, 3), 
+					EntityDimensions.scalable(2.0f, 2.15f)));
 	
 	// BOATS
 	

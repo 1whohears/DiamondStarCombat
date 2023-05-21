@@ -97,7 +97,7 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 	protected void renderLabels(PoseStack stack, int mouseX, int mouseY) {
 		font.draw(stack, title, titleLabelX+38, titleLabelY, 0x404040);
 		font.draw(stack, playerInventoryTitle, inventoryLabelX+38, inventoryLabelY+56, 0x404040);
-		font.draw(stack, Component.translatable("dscombat.ingredients"), titleLabelX+122, titleLabelY+34, 0x00aa00);
+		font.draw(stack, Component.translatable("ui.dscombat.ingredients"), titleLabelX+122, titleLabelY+34, 0x00aa00);
 		// plane stats
 		if (AircraftPresets.get().getCraftablePresetNum() == 0) return;
 		AircraftPreset ap = AircraftPresets.get().getCraftablePresets()[planeIndex];
@@ -167,7 +167,7 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 		addRenderableWidget(nextButton);
 		// craft
 		Button craftButton = new Button(0, 0, 80, 20, 
-				Component.translatable("dscombat.craft_button"), 
+				Component.translatable("ui.dscombat.craft_button"), 
 				onPress -> { craftButton(); });
 		craftButton.x = startX+122;
 		craftButton.y = startY+110;
@@ -219,7 +219,7 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 		if (DSCIngredient.hasIngredients(ap.getIngredients(), player.getInventory())) {
 			PacketHandler.INSTANCE.sendToServer(new ToServerCraftPlane(ap.getId(), menu.getPos()));
 		} else {
-			player.displayClientMessage(Component.translatable("dscombat.cant_craft"), true);
+			player.displayClientMessage(Component.translatable("error.dscombat.cant_craft"), true);
 			minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.VILLAGER_NO, 1.0F));
 		}
 	}

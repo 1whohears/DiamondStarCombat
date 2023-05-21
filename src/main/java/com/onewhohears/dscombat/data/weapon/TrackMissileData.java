@@ -80,23 +80,23 @@ public class TrackMissileData extends MissileData {
 		if (vehicle == null) return missile;
 		RadarSystem radar = vehicle.radarSystem;
 		if (!radar.hasRadar()) {
-			setLaunchFail("dscombat.no_radar");
+			setLaunchFail("error.dscombat.no_radar");
 			return null;
 		}
 		Entity target = radar.getSelectedTarget(level);
 		if (target == null) {
-			setLaunchFail("dscombat.no_target_selected");
+			setLaunchFail("error.dscombat.no_target_selected");
 			return null;
 		}
 		boolean groundWater = UtilEntity.isOnGroundOrWater(target);
 		if (targetType == TargetType.AIR && groundWater) {
-			setLaunchFail("dscombat.air_target_only");
+			setLaunchFail("error.dscombat.air_target_only");
 			return null;
 		} else if (targetType == TargetType.GROUND && !groundWater) {
-			setLaunchFail("dscombat.ground_target_only");
+			setLaunchFail("error.dscombat.ground_target_only");
 			return null;
 		} else if (targetType == TargetType.WATER && !target.isInWater()) {
-			setLaunchFail("dscombat.water_target_only");
+			setLaunchFail("error.dscombat.water_target_only");
 			return null;
 		}
 		missile.target = target;

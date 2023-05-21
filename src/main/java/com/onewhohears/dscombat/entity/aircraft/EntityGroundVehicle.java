@@ -138,7 +138,7 @@ public class EntityGroundVehicle extends EntityAircraft {
 	
 	@Override
 	public String getOpenMenuError() {
-		return "dscombat.no_menu_moving";
+		return "error.dscombat.no_menu_moving";
 	}
 
 	@Override

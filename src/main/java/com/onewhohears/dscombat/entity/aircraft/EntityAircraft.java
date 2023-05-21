@@ -947,8 +947,8 @@ public abstract class EntityAircraft extends Entity {
 	}
 	
 	public String getOpenMenuError() {
-		if (!isOnGround()) return "dscombat.no_menu_in_air";
-		return "dscombat.no_menu_moving";
+		if (!isOnGround()) return "error.dscombat.no_menu_in_air";
+		return "error.dscombat.no_menu_moving";
 	}
 	
 	public void flare(Entity controller, boolean consume) {

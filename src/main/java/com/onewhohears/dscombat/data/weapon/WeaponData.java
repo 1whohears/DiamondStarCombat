@@ -121,7 +121,7 @@ public abstract class WeaponData extends JsonPreset {
 			return null;
 		}
 		if (!checkAmmo(1, owner)) {
-			setLaunchFail("dscombat.no_ammo");
+			setLaunchFail("error.dscombat.no_ammo");
 			return null;
 		}
 		EntityWeapon w = getEntity(level, owner);
@@ -129,7 +129,7 @@ public abstract class WeaponData extends JsonPreset {
 		setDirection(w, direction);
 		if (vehicle != null) {
 			if (!canShootOnGround() && vehicle.isOnGround()) {
-				setLaunchFail("dscombat.cant_shoot_on_ground");
+				setLaunchFail("error.dscombat.cant_shoot_on_ground");
 				return null;
 			}
 			w.setPos(vehicle.position().add(UtilAngles.rotateVector(getLaunchPos(), vehicle.getQ())));

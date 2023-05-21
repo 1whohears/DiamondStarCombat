@@ -40,8 +40,9 @@ public class ItemAmmo extends Item {
 	public Component getName(ItemStack stack) {
 		String id = getWeaponId(stack);
 		WeaponData wd = WeaponPresets.get().getPreset(id);
-		if (wd == null) return Component.translatable(getDescriptionId()).append(" unknown preset!");
-		return wd.getDisplayName().append(" ").append(Component.translatable("text.dscombat.ammo"));
+		if (wd == null) return Component.translatable(getDescriptionId())
+				.append(Component.translatable("error.dscombat.unknown_preset"));
+		return wd.getDisplayName().append(" ").append(Component.translatable("info.dscombat.ammo"));
 	}
 	
 	public static String getWeaponId(ItemStack stack) {

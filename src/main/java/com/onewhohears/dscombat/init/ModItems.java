@@ -98,7 +98,7 @@ public class ModItems {
 	
 	// CREATIVE WANDS
 	public static final RegistryObject<Item> NO_CONSUME_WAND = ITEMS.register("no_consume_wand", 
-			() -> new ItemCreativeWand(new String[] {"dscombat.no_consume_wand_1"}) {
+			() -> new ItemCreativeWand(new String[] {"info.dscombat.no_consume_wand_1"}) {
 				@Override
 				public boolean modifyAircraft(EntityAircraft plane) {
 					plane.setNoConsume(true);

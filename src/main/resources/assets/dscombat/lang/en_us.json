@@ -81,6 +81,8 @@
 	"entity.dscombat.nathan_boat": "Nathan Boat",
 	"entity.dscombat.andolf_sub": "Andolf Submarine",
 	"entity.dscombat.orange_tesla": "Orange Tesla",
+	"entity.dscombat.e3sentry_plane": "E3 Sentry",
+	"entity.dscombat.axcel_truck": "Axcel Truck",
 	"entity.dscombat.bullet": "Bullet",
 	"entity.dscombat.bomb": "Bomb",
 	"entity.dscombat.pos_missile_1": "Pos Missile",
@@ -93,6 +95,7 @@
 	"entity.dscombat.minigun_turret": "Minigun Turret",
 	"entity.dscombat.heavy_tank_turret": "Heavy Tank Turret",
 	"entity.dscombat.steve_up_smash": "Steve Up Smash",
+	"entity.dscombat.sam_launcher": "SAM Launcher",
 	
 	"death.attack.dscombat.salty1": "%1$s was too easy",
 	"death.attack.dscombat.salty1.player": "%1$s was too easy for %2$s (%3$sm)",
@@ -247,6 +250,11 @@
 	
 	"item.dscombat.c6_engine": "6 Cylinder Engine",
 	"item.dscombat.c12_engine": "12 Cylinder Engine",
+	"item.dscombat.turbofan_f25": "Turbofan F25",
+	"item.dscombat.turbofan_f145": "Turbofan F145",
+	"item.dscombat.turbofan_f39": "Turbofan F39",
+	"item.dscombat.cfm56": "CFM 56",
+	"item.dscombat.cm_manly_52": "CM Manly 52",
 	
 	"item.dscombat.ar500": "AR-500",
 	"item.dscombat.ar1k": "AR-1k",
@@ -263,6 +271,7 @@
 	"item.dscombat.minigun_turret": "Minigun Turret",
 	"item.dscombat.heavy_tank_turret": "Heavy Tank Turret",
 	"item.dscombat.steve_up_smash": "Steve Up Smash",
+	"item.dscombat.sam_launcher": "SAM Launcher",
 	
 	"item.dscombat.basic_flare_dispenser": "Basic Flare Dispenser",
 	

@@ -104,7 +104,7 @@ public class RadarSystem {
 				if (player.getTeam() != null && p.getTeam() != null
 						&& player.getTeam().getName().equals(p.getTeam().getName())) {
 					if (p.getRootVehicle() instanceof EntityAircraft plane) {
-						for (RadarPing rp : targets) {
+						for (RadarPing rp : targets) { // FIXME 1 data link is broken (concurrent modification exception)
 							plane.radarSystem.dataLinkTargets.add(rp);
 							plane.radarSystem.targets.add(rp);
 						}

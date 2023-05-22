@@ -12,7 +12,6 @@ import com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents;
 import com.onewhohears.dscombat.common.container.AircraftMenuContainer;
 import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.common.network.toclient.ToClientAddEntityAircraft;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddMoment;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftAV;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftQ;
@@ -23,6 +22,7 @@ import com.onewhohears.dscombat.data.aircraft.AircraftTextures;
 import com.onewhohears.dscombat.data.damagesource.AircraftDamageSource;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartsManager;
+import com.onewhohears.dscombat.data.radar.RadarData;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarMode;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
@@ -47,6 +47,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -78,6 +79,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Team;
+import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
@@ -87,7 +89,7 @@ import net.minecraftforge.registries.RegistryObject;
  * the parent class for planes, helicopters, boats, and ground vehicles
  * @author 1whohears
  */
-public abstract class EntityAircraft extends Entity {
+public abstract class EntityAircraft extends Entity implements IEntityAdditionalSpawnData {
 	
 	public static final EntityDataAccessor<Float> MAX_HEALTH = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
     public static final EntityDataAccessor<Float> HEALTH = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
@@ -989,6 +991,7 @@ public abstract class EntityAircraft extends Entity {
 	        setPos(d0, d1, d2);
 	        setRot(getYRot(), getXRot());
 		}
+		// FIXME 0 rotations on servers don't work
         if (lerpStepsQ > 0) {
             setPrevQ(getClientQ());
             setClientQ(UtilAngles.lerpQ(1 / lerpStepsQ, prevQ, clientQ));
@@ -1076,7 +1079,36 @@ public abstract class EntityAircraft extends Entity {
 	
 	@Override
 	public Packet<?> getAddEntityPacket() {
-		return new ToClientAddEntityAircraft(this);
+		return NetworkHooks.getEntitySpawningPacket(this);
+	}
+	
+	@Override
+	public void readSpawnData(FriendlyByteBuf buffer) {
+		preset = buffer.readUtf();
+		int weaponIndex = buffer.readInt();
+		List<WeaponData> weapons = WeaponSystem.readWeaponsFromBuffer(buffer);
+		List<PartSlot> slots = PartsManager.readSlotsFromBuffer(buffer);
+		List<RadarData> radars = RadarSystem.readRadarsFromBuffer(buffer);
+		// ORDER MATTERS
+		weaponSystem.setWeapons(weapons);
+		weaponSystem.clientSetSelected(weaponIndex);
+		radarSystem.setRadars(radars);
+		partsManager.setPartSlots(slots);
+		partsManager.clientPartsSetup();
+		// PRESET STUFF
+		if (!AircraftPresets.get().has(preset)) return;
+		AircraftPreset ap = AircraftPresets.get().getPreset(preset);
+		textures = ap.getAircraftTextures();
+		item = ap.getItem();
+	}
+	
+	@Override
+	public void writeSpawnData(FriendlyByteBuf buffer) {
+		buffer.writeUtf(preset);
+		buffer.writeInt(weaponSystem.getSelectedIndex());
+		WeaponSystem.writeWeaponsToBuffer(buffer, weaponSystem.getWeapons());
+		PartsManager.writeSlotsToBuffer(buffer, partsManager.getSlots());
+		RadarSystem.writeRadarsToBuffer(buffer, radarSystem.getRadars());
 	}
 	
 	@Override

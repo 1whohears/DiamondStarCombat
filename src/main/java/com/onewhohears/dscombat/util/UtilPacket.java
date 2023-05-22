@@ -2,11 +2,8 @@ package com.onewhohears.dscombat.util;
 
 import java.util.List;
 
-import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
-import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot;
-import com.onewhohears.dscombat.data.radar.RadarData;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
 import com.onewhohears.dscombat.data.radar.RadarSystem.RWRWarning;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
@@ -23,25 +20,6 @@ public class UtilPacket {
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityAircraft plane) {
 			plane.radarSystem.readClientPingsFromServer(pings);
-		}
-	}
-	
-	public static void planeDataPacket(int id, String preset, List<PartSlot> slots, List<WeaponData> weapons, int weaponIndex, List<RadarData> radars) {
-		Minecraft m = Minecraft.getInstance();
-		Level world = m.level;
-		if (world.getEntity(id) instanceof EntityAircraft plane) {
-			// ORDER MATTERS
-			plane.weaponSystem.setWeapons(weapons);
-			plane.weaponSystem.clientSetSelected(weaponIndex);
-			plane.radarSystem.setRadars(radars);
-			plane.partsManager.setPartSlots(slots);
-			plane.partsManager.clientPartsSetup();
-			// PRESET STUFF
-			if (!AircraftPresets.get().has(preset)) return;
-			AircraftPreset ap = AircraftPresets.get().getPreset(preset);
-			plane.textures = ap.getAircraftTextures();
-			plane.item = ap.getItem();
-			plane.preset = preset;
 		}
 	}
 	

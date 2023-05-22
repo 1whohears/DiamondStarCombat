@@ -38,8 +38,8 @@ public final class PacketHandler {
 		SimpleChannel net = NetworkRegistry.ChannelBuilder
 				.named(new ResourceLocation(DSCombatMod.MODID, "messages"))
 				.networkProtocolVersion(() -> PROTOCOL_VERSION)
-                .clientAcceptedVersions(s -> true)
-                .serverAcceptedVersions(s -> true)
+                .clientAcceptedVersions(s -> s.equals(PROTOCOL_VERSION))
+                .serverAcceptedVersions(s -> s.equals(PROTOCOL_VERSION))
                 .simpleChannel();
 		INSTANCE = net;
 		int index = 0;

@@ -54,8 +54,8 @@ public class EntityModelAlexisPlane extends EntityControllableModel<EntityPlane>
 		}
 		float ypi = Mth.PI/8;
 		float ppi = Mth.PI/12;
-		this.stick.zRot = entity.inputYaw * -ypi;
-		this.stick.xRot = entity.inputPitch * ppi;
+		this.stick.zRot = entity.inputs.yaw * -ypi;
+		this.stick.xRot = entity.inputs.pitch * ppi;
 		body.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 	

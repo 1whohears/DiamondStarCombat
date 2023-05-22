@@ -83,7 +83,7 @@ public class EntityHelicopter extends EntityAircraft {
 	
 	@Override
 	public void tickAir(Quaternion q) {
-		if (inputSpecial && isOperational()) {
+		if (inputs.special && isOperational()) {
 			float max_th = getMaxPushThrust();
 			if (max_th != 0) setCurrentThrottle((float)-getWeightForce().y / max_th);
 			setDeltaMovement(getDeltaMovement().multiply(1, 0.95, 1));
@@ -95,10 +95,10 @@ public class EntityHelicopter extends EntityAircraft {
 			EulerAngles a = UtilAngles.toDegrees(q);
 			// pitch forward backward
 			Vec3 fDir = UtilAngles.rotationToVector(a.yaw, 0);
-			motion = motion.add(fDir.scale(inputPitch).scale(getAccForward()));
+			motion = motion.add(fDir.scale(inputs.pitch).scale(getAccForward()));
 			// roll left right
 			Vec3 sDir = UtilAngles.rotationToVector(a.yaw+90, 0);
-			motion = motion.add(sDir.scale(inputRoll).scale(getAccSide()));
+			motion = motion.add(sDir.scale(inputs.roll).scale(getAccSide()));
 		}
 		setDeltaMovement(motion);
 		// IDEA 4 helicopter hover auto pilot mode with inputSpecial2
@@ -119,10 +119,10 @@ public class EntityHelicopter extends EntityAircraft {
 	public void directionAir(Quaternion q) {
 		super.directionAir(q);
 		if (!isOperational()) return;
-		addMomentY(inputYaw * getYawTorque(), true);
+		addMomentY(inputs.yaw * getYawTorque(), true);
 		if (!isFreeLook()) {
-			addMomentX(inputPitch * getPitchTorque(), true);
-			addMomentZ(inputRoll * getRollTorque(), true);
+			addMomentX(inputs.pitch * getPitchTorque(), true);
+			addMomentZ(inputs.roll * getRollTorque(), true);
 		} else flatten(q, getMaxDeltaPitch(), getMaxDeltaRoll(), false);
 	}
 

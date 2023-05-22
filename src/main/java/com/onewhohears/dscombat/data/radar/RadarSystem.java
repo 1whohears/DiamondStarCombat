@@ -101,9 +101,9 @@ public class RadarSystem {
 			List<? extends Player> players = parent.level.players();
 			for (Player p : players) {
 				if (player.equals(p)) continue;
-				if (player.getTeam() != null && p.getTeam() != null
-						&& player.getTeam().getName().equals(p.getTeam().getName())) {
+				if (player.isAlliedTo(p)) {
 					if (p.getRootVehicle() instanceof EntityAircraft plane) {
+						if (plane.equals(parent)) continue;
 						for (RadarPing rp : targets) { // FIXME 1 data link is broken (concurrent modification exception)
 							plane.radarSystem.dataLinkTargets.add(rp);
 							plane.radarSystem.targets.add(rp);

@@ -63,7 +63,7 @@ public class EntityBoat extends EntityAircraft {
 	public void directionGround(Quaternion q) {
 		flatten(q, 4f, 4f, true);
 		if (!isOperational()) return;
-		addMomentY(inputYaw * getYawTorque() * 0.1f, true);
+		addMomentY(inputs.yaw * getYawTorque() * 0.1f, true);
 	}
 	
 	@Override
@@ -75,7 +75,7 @@ public class EntityBoat extends EntityAircraft {
 	public void directionWater(Quaternion q) {
 		if (!isOperational()) return;
 		flatten(q, 2f, 2f, true);
-		addMomentY(inputYaw * getYawTorque(), true);
+		addMomentY(inputs.yaw * getYawTorque(), true);
 	}
 	
 	@Override
@@ -85,7 +85,7 @@ public class EntityBoat extends EntityAircraft {
 	
 	@Override
 	public void tickMovement(Quaternion q) {
-		if (inputSpecial) throttleToZero();
+		if (inputs.special) throttleToZero();
 		super.tickMovement(q);
 	}
 	
@@ -138,7 +138,7 @@ public class EntityBoat extends EntityAircraft {
 	
 	@Override
 	public boolean isBreaking() {
-		return inputSpecial;
+		return inputs.special;
 	}
 	
 	public boolean willFloat() {
@@ -207,14 +207,11 @@ public class EntityBoat extends EntityAircraft {
     }
 	
 	@Override
-	public void updateControls(float throttle, float pitch, float roll, float yaw,
-			boolean mouseMode, boolean flare, boolean shoot, int select,
-			boolean openMenu, boolean special, boolean special2, boolean radarMode, 
-			boolean bothRoll) {
-		super.updateControls(throttle, pitch, roll, yaw, mouseMode, flare, shoot, 
-				select, openMenu, special, special2, radarMode, bothRoll);
-		this.inputThrottle = pitch;
-		this.inputPitch = throttle;
+	public void readInputs() {
+		super.readInputs();
+		float temp = inputs.pitch;
+		inputs.pitch = inputs.throttle;
+		inputs.throttle = temp;
 	}
 	
 	@Override

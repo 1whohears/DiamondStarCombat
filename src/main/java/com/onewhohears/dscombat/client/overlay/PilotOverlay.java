@@ -176,7 +176,7 @@ public class PilotOverlay {
 		// FLARES
 		if (plane.hasFlares()) {
 			x = 1+weaponSelectWidth;
-			if (plane.inputFlare) color = color2;
+			if (plane.inputs.flare) color = color2;
 			else color = color1;
 			GuiComponent.drawString(poseStack, m.font, 
 				"Flares("+DSCKeys.flareKey.getKey().getDisplayName().getString()+")", 
@@ -235,7 +235,7 @@ public class PilotOverlay {
     	if (plane.canFlapsDown()) {
     		x = 1+weaponSelectWidth;
     		text = DSCKeys.specialKey.getKey().getDisplayName().getString();
-    		if (plane.inputSpecial) color = color2;
+    		if (plane.inputs.special) color = color2;
     		else color = color1;
     		GuiComponent.drawString(poseStack, m.font, 
     			"FlapsDown("+text+")", 
@@ -246,7 +246,7 @@ public class PilotOverlay {
 		if (plane.canAngleWeaponDown()) {
     		x = 1+weaponSelectWidth;
     		text = DSCKeys.special2Key.getKey().getDisplayName().getString();
-    		if (plane.inputSpecial2) color = color2;
+    		if (plane.inputs.special2) color = color2;
     		else color = color1;
     		GuiComponent.drawString(poseStack, m.font, 
     			"AimDown("+text+")", 
@@ -257,7 +257,7 @@ public class PilotOverlay {
 		if (plane.canHover()) {
 			x = 1+weaponSelectWidth;
     		text = DSCKeys.specialKey.getKey().getDisplayName().getString();
-    		if (plane.inputSpecial) color = color2;
+    		if (plane.inputs.special) color = color2;
     		else color = color1;
     		GuiComponent.drawString(poseStack, m.font, 
     			"Hover("+text+")", 
@@ -389,8 +389,8 @@ public class PilotOverlay {
         int b = stickBaseSize/2, n = stickKnobSize/2;
         RenderSystem.setShaderTexture(0, STICK_KNOB);
         GuiComponent.blit(poseStack, 
-        		width-b-n-stickOffset+(int)(plane.inputYaw*b), 
-        		height-b-n-stickOffset-(int)(plane.inputPitch*b), 
+        		width-b-n-stickOffset+(int)(plane.inputs.yaw*b), 
+        		height-b-n-stickOffset-(int)(plane.inputs.pitch*b), 
         		0, 0, stickKnobSize, stickKnobSize, 
         		stickKnobSize, stickKnobSize);
 		// roll input
@@ -402,7 +402,7 @@ public class PilotOverlay {
         		stickBaseSize, stickBaseSize);
         RenderSystem.setShaderTexture(0, STICK_KNOB);
         GuiComponent.blit(poseStack, 
-        		width-b-n-stickOffset+(int)(plane.inputRoll*b), 
+        		width-b-n-stickOffset+(int)(plane.inputs.roll*b), 
         		height-stickKnobSize-stickOffset-stickOffset-stickBaseSize, 
         		0, 0, stickKnobSize, stickKnobSize, 
         		stickKnobSize, stickKnobSize);

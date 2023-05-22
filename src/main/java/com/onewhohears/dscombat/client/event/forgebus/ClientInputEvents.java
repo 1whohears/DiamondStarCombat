@@ -6,7 +6,7 @@ import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.common.network.toserver.ToServerFlightControl;
+import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftControl;
 import com.onewhohears.dscombat.common.network.toserver.ToServerShootTurret;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSwitchSeat;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
@@ -114,15 +114,11 @@ public final class ClientInputEvents {
 		if (rollRight) roll += 1;
 		if (throttleUp) throttle += 1;
 		if (throttleDown) throttle -= 1;
-		PacketHandler.INSTANCE.sendToServer(new ToServerFlightControl(
-				throttle, pitch, roll, yaw, mouseMode, 
-				flare, shoot, select, openMenu, gear, 
-				special, special2, radarMode, 
-				rollLeft && rollRight));
-		plane.updateControls(throttle, pitch, roll, yaw, 
+		plane.inputs.update(throttle, pitch, roll, yaw, 
 				mouseMode, flare, shoot, select, openMenu, 
 				special, special2, radarMode, 
-				rollLeft && rollRight);
+				rollLeft && rollRight, gear);
+		PacketHandler.INSTANCE.sendToServer(new ToServerAircraftControl(plane));
 		if (mouseMode && !plane.isFreeLook()) centerMouse();
 	}
 	

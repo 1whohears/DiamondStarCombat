@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.util;
 
 import java.util.List;
 
+import com.onewhohears.dscombat.data.aircraft.AircraftInputs;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
@@ -14,6 +15,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class UtilPacket {
+	
+	public static void aircraftInputsPacket(int id, AircraftInputs inputs) {
+		Minecraft m = Minecraft.getInstance();
+		Level world = m.level;
+		if (world.getEntity(id) instanceof EntityAircraft plane) {
+			if (!plane.isControlledByLocalInstance()) plane.inputs.copy(inputs);
+		}
+	}
 	
 	public static void pingsPacket(int id, List<RadarPing> pings) {
 		Minecraft m = Minecraft.getInstance();

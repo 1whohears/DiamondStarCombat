@@ -93,10 +93,10 @@ public class EntityPlane extends EntityAircraft {
 		super.directionAir(q);
 		if (!isOperational()) return;
 		// IDEA 1 turn assist button
-		addMomentX(inputPitch * getPitchTorque(), true);
-		addMomentY(inputYaw * getYawTorque(), true);
-		if (inputBothRoll) flatten(q, 0, getRollTorque(), false);
-		else addMomentZ(inputRoll * getRollTorque(), true);
+		addMomentX(inputs.pitch * getPitchTorque(), true);
+		addMomentY(inputs.yaw * getYawTorque(), true);
+		if (inputs.bothRoll) flatten(q, 0, getRollTorque(), false);
+		else addMomentZ(inputs.roll * getRollTorque(), true);
 	}
 	
 	@Override
@@ -123,11 +123,11 @@ public class EntityPlane extends EntityAircraft {
 	
 	@Override
 	public boolean isBreaking() {
-		return inputSpecial2 && isOnGround();
+		return inputs.special2 && isOnGround();
 	}
 	
 	public boolean isFlapsDown() {
-		return inputSpecial;
+		return inputs.special;
 	}
 	
 	@Override
@@ -219,7 +219,7 @@ public class EntityPlane extends EntityAircraft {
 	
 	@Override
 	public boolean isWeaponAngledDown() {
-		return canAimDown && !onGround && inputSpecial2;
+		return canAimDown && !onGround && inputs.special2;
 	}
 	
 	@Override

@@ -340,11 +340,11 @@ public class RadarData extends JsonPreset {
 	}
 	
 	public static enum RadarMode {
-		OFF,
-		MOBS,
+		ALL,
 		PLAYERS,
 		VEHICLES,
-		ALL;
+		MOBS,
+		OFF;
 		
 		public RadarMode cycle() {
 			int i = this.ordinal();

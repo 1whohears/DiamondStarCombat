@@ -16,6 +16,7 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientAddMoment;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftAV;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftQ;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftThrottle;
+import com.onewhohears.dscombat.data.aircraft.AircraftInputs;
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
 import com.onewhohears.dscombat.data.aircraft.AircraftTextures;
@@ -126,6 +127,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	public final double collideDamageRate = Config.SERVER.collideDamageRate.get();
 	public final double maxFallSpeed = Config.SERVER.maxFallSpeed.get();
 	
+	public final AircraftInputs inputs = new AircraftInputs();
 	public final PartsManager partsManager = new PartsManager(this);
 	public final WeaponSystem weaponSystem = new WeaponSystem(this);
 	public final RadarSystem radarSystem = new RadarSystem(this);
@@ -135,8 +137,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	public final float Ix, Iy, Iz, explodeSize;
 	
 	protected final RegistryObject<SoundEvent> engineSound;
-	//protected final RegistryObject<Item> defaultItem;
-	//protected final AircraftTextures textures;
 	
 	public String preset;
 	public ItemStack item;
@@ -148,10 +148,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	public Vec3 clientAV = Vec3.ZERO;
 	public float clientThrottle;
 	
-	public boolean inputMouseMode, inputFlare, inputShoot, inputOpenMenu;
-	public boolean inputSpecial, inputSpecial2, inputRadarMode, inputBothRoll;
-	public int inputSelect;
-	public float inputThrottle, inputPitch, inputRoll, inputYaw;
 	public float zRot, zRotO; 
 	public Vec3 prevMotion = Vec3.ZERO;
 	public Vec3 forces = Vec3.ZERO, forcesO = Vec3.ZERO;
@@ -222,23 +218,20 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
         // if this entity is on the client side and receiving the quaternion of the plane from the server 
         if (level.isClientSide()) {
         	if (Q.equals(key)) {
-        		if (!firstTick && isControlledByLocalInstance()) PacketHandler.INSTANCE.sendToServer(
-        				new ToServerAircraftQ(this));
-        		else {
-        			if (firstTick) {
-        				lerpStepsQ = 0;
-        				setPrevQ(getClientQ());
-            			setClientQ(getQ());
-        			} else lerpStepsQ = 10;
+        		if (!firstTick && isControlledByLocalInstance()) {
+        			PacketHandler.INSTANCE.sendToServer(new ToServerAircraftQ(this));
+        		} else {
+        			setPrevQ(getClientQ());
+        			setClientQ(getQ());
         		}
         	} else if (AV.equals(key)) {
-        		if (!firstTick && isControlledByLocalInstance()) PacketHandler.INSTANCE.sendToServer(
-        				new ToServerAircraftAV(this));
-        		else clientAV = entityData.get(AV);
+        		if (!firstTick && isControlledByLocalInstance()) {
+        			PacketHandler.INSTANCE.sendToServer(new ToServerAircraftAV(this));
+        		} else clientAV = entityData.get(AV);
         	} else if (THROTTLE.equals(key)) {
-        		if (!firstTick && isControlledByLocalInstance()) PacketHandler.INSTANCE.sendToServer(
-        				new ToServerAircraftThrottle(this));
-        		else clientThrottle = entityData.get(THROTTLE);
+        		if (!firstTick && isControlledByLocalInstance()) {
+        			PacketHandler.INSTANCE.sendToServer(new ToServerAircraftThrottle(this));
+        		} else clientThrottle = entityData.get(THROTTLE);
         	} else if (CURRRENT_DYE_ID.equals(key)) {
         		currentTexture = textures.getTexture(getCurrentColorId());
         	}
@@ -358,6 +351,8 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		if (UtilGeometry.vec3NAN(getDeltaMovement())) setDeltaMovement(Vec3.ZERO);
 		if (firstTick) init(); // MUST BE CALLED BEFORE SUPER
 		super.tick();
+		// INPUTS
+		readInputs();
 		// SET PREV/OLD
 		prevMotion = getDeltaMovement();
 		forcesO = getForces();
@@ -395,6 +390,19 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		sounds();
 		if (level.isClientSide) clientTick();
 		else serverTick();
+	}
+	
+	public void readInputs() {
+		if (inputs.mouseMode) setFreeLook(!isFreeLook());
+		/**
+		 * TODO 5.2 client should have control of what the selected weapon is
+		 * otherwise one has to wait for server lag for the weapon to switch
+		 */
+		if (!level.isClientSide) {
+			weaponSystem.selectNextWeapon(inputs.select);
+			if (inputs.gear) toggleLandingGear();
+		}
+		if (inputs.radarMode) setRadarMode(getRadarMode().cycle());
 	}
 	
 	/**
@@ -540,8 +548,8 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 			resetControls();
 			return;
 		}
-		if (inputThrottle > 0) increaseThrottle();
-		else if (inputThrottle < 0) decreaseThrottle();
+		if (inputs.throttle > 0) increaseThrottle();
+		else if (inputs.throttle < 0) decreaseThrottle();
 	}
 	
 	/**
@@ -569,9 +577,9 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		float d = getAngularDrag();
 		float dx = d, dy = d, dz = d;
 		if (!onGround) {
-			if (inputPitch != 0) dx = 0;
-			if (inputYaw != 0) dy = 0;
-			if (inputRoll != 0) dz = 0;
+			if (inputs.pitch != 0) dx = 0;
+			if (inputs.yaw != 0) dy = 0;
+			if (inputs.roll != 0) dz = 0;
 		}
 		setAngularVel(new Vec3(
 				getADComponent(av.x, dx, Ix),
@@ -596,11 +604,11 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		flatten(q, 4f, 4f, true);
 		float max_tr = getTurnRadius();
 		Vec3 av = getAngularVel();
-		if (inputYaw == 0 || max_tr == 0) {
+		if (inputs.yaw == 0 || max_tr == 0) {
 			if (!isSliding()) setAngularVel(av.multiply(1, 0, 1));
 			return;
 		}
-		float tr = 1 / inputYaw * max_tr;
+		float tr = 1 / inputs.yaw * max_tr;
 		float turn = xzSpeed / tr * xzSpeedDir;
 		float turnDeg = turn * Mth.RAD_TO_DEG;
 		if (!isSliding()) av = av
@@ -789,8 +797,8 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	
 	protected boolean willSlideFromTurn() {
 		double max_tr = getTurnRadius();
-		if (inputYaw != 0 && max_tr != 0) { // IF TURNING
-			double tr = max_tr * 1 / Math.abs(inputYaw); // inputed turn radius
+		if (inputs.yaw != 0 && max_tr != 0) { // IF TURNING
+			double tr = max_tr * 1 / Math.abs(inputs.yaw); // inputed turn radius
 			double cen_acc = xzSpeed * xzSpeed / tr; // cen_acc needed to complete turn
 			double cen_force = cen_acc * getTotalMass(); // friction force needed to not slide
 			//debug(cen_force+" >? "+staticFric);
@@ -919,15 +927,15 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 			boolean consume = !isNoConsume();
 			boolean altActionItem = false;
 			if (controller instanceof ServerPlayer player) {
-				if (inputOpenMenu) openMenu(player);
+				if (inputs.openMenu) openMenu(player);
 				if (player.isCreative()) consume = false;
 				if (player.getMainHandItem().getUseDuration() > 0) altActionItem = true;
 			}
 			if (consume) tickFuel();
 			if (newRiderCooldown > 0) --newRiderCooldown;
-			else if (inputShoot && !altActionItem) weaponSystem.shootSelected(controller, consume);
+			else if (inputs.shoot && !altActionItem) weaponSystem.shootSelected(controller, consume);
 			setFlareNum(partsManager.getNumFlares());
-			if (inputFlare && tickCount % 5 == 0) flare(controller, consume);
+			if (inputs.flare && tickCount % 5 == 0) flare(controller, consume);
 		} else {
 			radarSystem.clientTick();
 		}
@@ -967,10 +975,8 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	
 	@Override
 	public void lerpTo(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
-        if (x == getX() && y == getY() && z == getZ()) return;
-        lerpX = x; lerpY = y; lerpZ = z;
-        lerpYRot = yaw; lerpXRot = pitch;
-        lerpSteps = 10;
+		lerpX = x; lerpY = y; lerpZ = z;
+		lerpSteps = posRotationIncrements;
     }
 	
 	private void tickLerp() {
@@ -984,65 +990,18 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 			double d0 = getX() + (lerpX - getX()) / (double)lerpSteps;
 	        double d1 = getY() + (lerpY - getY()) / (double)lerpSteps;
 	        double d2 = getZ() + (lerpZ - getZ()) / (double)lerpSteps;
-	        double d3 = Mth.wrapDegrees(lerpYRot - (double)getYRot());
-	        setYRot(getYRot() + (float)d3 / (float)lerpSteps);
-	        setXRot(getXRot() + (float)(lerpXRot - (double)getXRot()) / (float)lerpSteps);
 	        --lerpSteps;
 	        setPos(d0, d1, d2);
-	        setRot(getYRot(), getXRot());
 		}
-		// FIXME 0 rotations on servers don't work
-        if (lerpStepsQ > 0) {
-            setPrevQ(getClientQ());
-            setClientQ(UtilAngles.lerpQ(1 / lerpStepsQ, prevQ, clientQ));
+		// FIXME 0 rotation lerp
+        /*if (lerpStepsQ > 0) {
+            setClientQ(UtilAngles.lerpQ(1 / lerpStepsQ, getPrevQ(), getQ()));
             --lerpStepsQ;
-        } else if (lerpStepsQ == 0) {
-        	setPrevQ(getClientQ());
-            setClientQ(getQ());
-            --lerpStepsQ;
-        }
-	}
-	
-	public void updateControls(float throttle, float pitch, float roll, float yaw,
-			boolean mouseMode, boolean flare, boolean shoot, int select,
-			boolean openMenu, boolean special, boolean special2, boolean radarMode, 
-			boolean bothRoll) {
-		this.inputThrottle = throttle;
-		this.inputPitch = pitch;
-		this.inputRoll = roll;
-		this.inputYaw = yaw;
-		this.inputFlare = flare;
-		this.inputMouseMode = mouseMode;
-		if (inputMouseMode) setFreeLook(!isFreeLook());
-		this.inputShoot = shoot;
-		this.inputSelect = select;
-		/**
-		 * TODO 5.2 client should have control of what the selected weapon is
-		 * otherwise one has to wait for server lag for the weapon to switch
-		 */
-		if (!level.isClientSide) weaponSystem.selectNextWeapon(inputSelect);
-		this.inputOpenMenu = openMenu;
-		this.inputSpecial = special;
-		this.inputSpecial2 = special2;
-		this.inputRadarMode = radarMode;
-		if (inputRadarMode) setRadarMode(getRadarMode().cycle());
-		this.inputBothRoll = bothRoll;
+        }*/
 	}
 	
 	public void resetControls() {
-		this.inputThrottle = 0;
-		this.inputPitch = 0;
-		this.inputRoll = 0;
-		this.inputYaw = 0;
-		this.inputFlare = false;
-		this.inputMouseMode = false;
-		this.inputShoot = false;
-		this.inputSelect = 0;
-		this.inputOpenMenu = false;
-		this.inputSpecial = false;
-		this.inputSpecial2 = false;
-		this.inputRadarMode = false;
-		this.inputBothRoll = false;
+		inputs.reset();
 		this.throttleToZero();
 	}
 	

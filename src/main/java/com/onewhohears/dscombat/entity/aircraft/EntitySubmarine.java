@@ -58,10 +58,10 @@ public class EntitySubmarine extends EntityBoat {
 		if (!isOperational()) return;
 		if (isFreeLook()) flatten(q, getMaxDeltaPitch(), getMaxDeltaRoll(), false);
 		else {
-			addMomentX(inputPitch * getPitchTorque(), true);
-			addMomentZ(inputRoll * getRollTorque(), true);
+			addMomentX(inputs.pitch * getPitchTorque(), true);
+			addMomentZ(inputs.roll * getRollTorque(), true);
 		}
-		addMomentY(inputYaw * getYawTorque(), true);
+		addMomentY(inputs.yaw * getYawTorque(), true);
 	}
 	
 	@Override
@@ -94,7 +94,7 @@ public class EntitySubmarine extends EntityBoat {
 		super.tickWater(q);
 		Vec3 move = getDeltaMovement();
 		if (isFreeLook() && isOperational()) {
-			move = move.add(0, inputPitch * 0.04, 0);
+			move = move.add(0, inputs.pitch * 0.04, 0);
 			double max = 0.2;
 			if (Math.abs(move.y) > max) move.multiply(1, max/move.y, 1);
 		}
@@ -104,14 +104,14 @@ public class EntitySubmarine extends EntityBoat {
 	@Override
 	public double getFloatSpeed() {
 		if (!isOperational()) return super.getFloatSpeed();
-		if (inputSpecial2) return 0.04;
+		if (inputs.special2) return 0.04;
 		return 0;
 	}
 	
 	@Override
 	public boolean willFloat() {
 		if (!isOperational()) return false;
-		return inputSpecial2;
+		return inputs.special2;
 	}
 	
 	@Override
@@ -135,16 +135,11 @@ public class EntitySubmarine extends EntityBoat {
     }
 	
 	@Override
-	public void updateControls(float throttle, float pitch, float roll, float yaw,
-			boolean mouseMode, boolean flare, boolean shoot, int select,
-			boolean openMenu, boolean special, boolean special2, boolean radarMode, 
-			boolean bothRoll) {
-		super.updateControls(throttle, pitch, roll, yaw, mouseMode, flare, shoot, 
-				select, openMenu, special, special2, radarMode, bothRoll);
-		if (!isFreeLook()) {
-			this.inputThrottle = throttle;
-			this.inputPitch = pitch;
-		}
+	public void readInputs() {
+		super.readInputs();
+		float temp = inputs.pitch;
+		inputs.pitch = inputs.throttle;
+		inputs.throttle = temp;
 	}
 	
 	@Override

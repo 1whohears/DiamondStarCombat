@@ -58,7 +58,7 @@ public class EntityGroundVehicle extends EntityAircraft {
 	public void directionGround(Quaternion q) {
 		if (isTank && isOperational()) {
 			flatten(q, 4f, 4f, true);
-			addMomentY(inputYaw * getYawTorque(), true);
+			addMomentY(inputs.yaw * getYawTorque(), true);
 		} else super.directionGround(q);
 	}
 	
@@ -79,7 +79,7 @@ public class EntityGroundVehicle extends EntityAircraft {
 	
 	@Override
 	public boolean isBreaking() {
-		return inputSpecial;
+		return inputs.special;
 	}
 	
 	@Override
@@ -121,14 +121,11 @@ public class EntityGroundVehicle extends EntityAircraft {
     }
 	
 	@Override
-	public void updateControls(float throttle, float pitch, float roll, float yaw,
-			boolean mouseMode, boolean flare, boolean shoot, int select,
-			boolean openMenu, boolean special, boolean special2, boolean radarMode, 
-			boolean bothRoll) {
-		super.updateControls(throttle, pitch, roll, yaw, mouseMode, flare, shoot, 
-				select, openMenu, special, special2, radarMode, bothRoll);
-		this.inputThrottle = pitch;
-		this.inputPitch = throttle;
+	public void readInputs() {
+		super.readInputs();
+		float temp = inputs.pitch;
+		inputs.pitch = inputs.throttle;
+		inputs.throttle = temp;
 	}
 	
 	@Override

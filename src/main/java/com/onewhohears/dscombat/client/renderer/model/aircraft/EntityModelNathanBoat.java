@@ -36,7 +36,7 @@ public class EntityModelNathanBoat extends EntityControllableModel<EntityBoat> {
 		poseStack.translate(0, 1.55, 0);
 		poseStack.scale(-1.0F, -1.0F, 1.0F);
 		float ypi = Mth.PI/8;
-		this.engine.yRot = -entity.inputYaw * ypi;
+		this.engine.yRot = -entity.inputs.yaw * ypi;
 		this.propellor.zRot = entity.getPropellerRotation(partialTicks);
 		main.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}

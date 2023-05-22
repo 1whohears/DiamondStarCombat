@@ -59,6 +59,7 @@ public abstract class WeaponData extends JsonPreset {
 	private Vec3 pos = Vec3.ZERO;
 	private String failedLaunchReason;
 	private String slotId = "";
+	private boolean overrideGroundCheck = false;
 	
 	public WeaponData(ResourceLocation key, JsonObject json) {
 		super(key, json);
@@ -128,11 +129,10 @@ public abstract class WeaponData extends JsonPreset {
 		w.setPos(pos);
 		setDirection(w, direction);
 		if (vehicle != null) {
-			if (!canShootOnGround() && vehicle.isOnGround()) {
+			if (!overrideGroundCheck && !canShootOnGround() && vehicle.isOnGround()) {
 				setLaunchFail("error.dscombat.cant_shoot_on_ground");
 				return null;
 			}
-			w.setPos(vehicle.position().add(UtilAngles.rotateVector(getLaunchPos(), vehicle.getQ())));
 		}
 		return w;
 	}
@@ -145,6 +145,7 @@ public abstract class WeaponData extends JsonPreset {
 	}
 	
 	public boolean shootFromVehicle(Level level, Entity owner, Vec3 direction, EntityAircraft vehicle, boolean consume) {
+		overrideGroundCheck = false;
 		EntityWeapon w = getShootEntity(level, owner, 
 				vehicle.position().add(UtilAngles.rotateVector(getLaunchPos(), vehicle.getQ())), 
 				direction, vehicle);
@@ -159,6 +160,7 @@ public abstract class WeaponData extends JsonPreset {
 	}
 	
 	public boolean shootFromTurret(Level level, Entity owner, Vec3 direction, Vec3 pos, @Nullable EntityAircraft parent, boolean consume) {
+		overrideGroundCheck = true;
 		EntityWeapon w = getShootEntity(level, owner, pos, direction, parent);
 		if (w == null) return false;
 		level.addFreshEntity(w);

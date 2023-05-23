@@ -394,14 +394,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	
 	public void readInputs() {
 		if (inputs.mouseMode) setFreeLook(!isFreeLook());
-		/**
-		 * TODO 5.2 client should have control of what the selected weapon is
-		 * otherwise one has to wait for server lag for the weapon to switch
-		 */
-		if (!level.isClientSide) {
-			weaponSystem.selectNextWeapon(inputs.select);
-			if (inputs.gear) toggleLandingGear();
-		}
+		if (inputs.gear) toggleLandingGear();
 		if (inputs.radarMode) setRadarMode(getRadarMode().cycle());
 	}
 	
@@ -1050,7 +1043,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		List<RadarData> radars = RadarSystem.readRadarsFromBuffer(buffer);
 		// ORDER MATTERS
 		weaponSystem.setWeapons(weapons);
-		weaponSystem.clientSetSelected(weaponIndex);
+		weaponSystem.setSelected(weaponIndex);
 		radarSystem.setRadars(radars);
 		partsManager.setPartSlots(slots);
 		partsManager.clientPartsSetup();

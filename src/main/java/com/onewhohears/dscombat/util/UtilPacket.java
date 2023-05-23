@@ -16,11 +16,14 @@ import net.minecraft.world.phys.Vec3;
 
 public class UtilPacket {
 	
-	public static void aircraftInputsPacket(int id, AircraftInputs inputs) {
+	public static void aircraftInputsPacket(int id, AircraftInputs inputs, int weaponIndex) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityAircraft plane) {
-			if (!plane.isControlledByLocalInstance()) plane.inputs.copy(inputs);
+			if (!plane.isControlledByLocalInstance()) {
+				plane.inputs.copy(inputs);
+				plane.weaponSystem.setSelected(weaponIndex);
+			}
 		}
 	}
 	
@@ -45,7 +48,7 @@ public class UtilPacket {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityAircraft plane) {
-			plane.weaponSystem.clientSetSelected(index);
+			plane.weaponSystem.setSelected(index);
 		}
 	}
 	

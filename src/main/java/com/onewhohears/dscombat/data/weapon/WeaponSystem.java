@@ -7,8 +7,6 @@ import javax.annotation.Nullable;
 
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
-import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponIndex;
 import com.onewhohears.dscombat.data.weapon.WeaponData.WeaponType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.init.DataSerializers;
@@ -22,7 +20,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.PacketDistributor;
 
 public class WeaponSystem {
 	
@@ -123,7 +120,7 @@ public class WeaponSystem {
 	
 	public Vec3 getShootDirection(WeaponData data) {
 		Quaternion q = parent.getQ();
-		if (parent.isWeaponAngledDown() && data.getSlotId().equals("dscombat.frame_1")) {
+		if (parent.isWeaponAngledDown() && data.getSlotId().equals("slotname.dscombat.frame_1")) {
 			q.mul(Vector3f.XP.rotationDegrees(25f));
 		}
     	return UtilAngles.getRollAxis(q);
@@ -135,11 +132,9 @@ public class WeaponSystem {
 		else return;
 		checkIndex();
 		//System.out.println("new weapon index "+weaponIndex);
-		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
-				new ToClientWeaponIndex(parent.getId(), weaponIndex));
 	}
 	
-	public void clientSetSelected(int index) {
+	public void setSelected(int index) {
 		weaponIndex = index;
 		checkIndex();
 		//System.out.println("client new weapon index "+weaponIndex);

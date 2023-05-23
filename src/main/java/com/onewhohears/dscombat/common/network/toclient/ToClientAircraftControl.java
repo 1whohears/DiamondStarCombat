@@ -17,20 +17,24 @@ public class ToClientAircraftControl extends IPacket {
 	
 	public final int id;
 	public final AircraftInputs inputs;
+	public final int weaponIndex;
 	
 	public ToClientAircraftControl(EntityAircraft plane) {
 		this.id = plane.getId();
 		this.inputs = plane.inputs;
+		this.weaponIndex = plane.weaponSystem.getSelectedIndex();
 	}
 	
 	public ToClientAircraftControl(FriendlyByteBuf buffer) {
 		id = buffer.readInt();
 		inputs = new AircraftInputs(buffer);
+		weaponIndex = buffer.readInt();
 	}
 	
 	public void encode(FriendlyByteBuf buffer) {
 		buffer.writeInt(id);
 		inputs.write(buffer);
+		buffer.writeInt(weaponIndex);
 	}
 	
 	@Override
@@ -38,7 +42,7 @@ public class ToClientAircraftControl extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilPacket.aircraftInputsPacket(id, inputs);
+				UtilPacket.aircraftInputsPacket(id, inputs, weaponIndex);
 				success.set(true);
 			});
 		});

@@ -17,17 +17,21 @@ import net.minecraftforge.network.PacketDistributor;
 public class ToServerAircraftControl extends IPacket {
 	
 	public final AircraftInputs inputs;
+	public final int weaponIndex;
 	
 	public ToServerAircraftControl(EntityAircraft plane) {
 		this.inputs = plane.inputs;
+		this.weaponIndex = plane.weaponSystem.getSelectedIndex();
 	}
 	
 	public ToServerAircraftControl(FriendlyByteBuf buffer) {
 		inputs = new AircraftInputs(buffer);
+		weaponIndex = buffer.readInt();
 	}
 	
 	public void encode(FriendlyByteBuf buffer) {
 		inputs.write(buffer);
+		buffer.writeInt(weaponIndex);
 	}
 	
 	public boolean handle(Supplier<NetworkEvent.Context> ctx) {
@@ -37,6 +41,7 @@ public class ToServerAircraftControl extends IPacket {
 			if (player.getRootVehicle() instanceof EntityAircraft plane) {
 				if (plane.getControllingPassenger() == player) {
 					plane.inputs.copy(this.inputs);
+					plane.weaponSystem.setSelected(weaponIndex);
 					PacketHandler.INSTANCE.send(
 						PacketDistributor.TRACKING_ENTITY.with(() -> plane), 
 						new ToClientAircraftControl(plane));

@@ -118,6 +118,7 @@ public final class ClientInputEvents {
 				mouseMode, flare, shoot, select, openMenu, 
 				special, special2, radarMode, 
 				rollLeft && rollRight, gear);
+		plane.weaponSystem.selectNextWeapon(select);
 		PacketHandler.INSTANCE.sendToServer(new ToServerAircraftControl(plane));
 		if (mouseMode && !plane.isFreeLook()) centerMouse();
 	}

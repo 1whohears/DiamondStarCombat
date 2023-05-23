@@ -93,7 +93,7 @@ public class RadarSystem {
 		// PLANE RADARS
 		for (RadarData r : radars) r.tickUpdateTargets(parent, targets);
 		// DATA LINK
-		if (dataLink && parent.level.getGameTime() % 20 == 0) {
+		if (dataLink && parent.tickCount % 20 == 0) {
 			for (int i = 0; i < dataLinkTargets.size(); ++i) targets.remove(dataLinkTargets.get(i));
 			dataLinkTargets.clear();
 			Entity controller = parent.getControllingPassenger();
@@ -101,14 +101,15 @@ public class RadarSystem {
 			List<? extends Player> players = parent.level.players();
 			for (Player p : players) {
 				if (player.equals(p)) continue;
-				if (player.isAlliedTo(p)) {
-					if (p.getRootVehicle() instanceof EntityAircraft plane) {
-						if (plane.equals(parent)) continue;
-						for (RadarPing rp : targets) { // FIXME 1 data link is broken (concurrent modification exception)
-							plane.radarSystem.dataLinkTargets.add(rp);
-							plane.radarSystem.targets.add(rp);
-						}
-					}
+				if (!player.isAlliedTo(p)) continue;
+				if (!(p.getRootVehicle() instanceof EntityAircraft plane)) continue;
+				if (!plane.radarSystem.dataLink) continue;
+				if (plane.equals(parent)) continue;
+				for (RadarPing rp : plane.radarSystem.targets) {
+					if (rp.id == parent.getId()) continue;
+					if (hasTarget(rp.id)) continue;
+					targets.add(rp);
+					dataLinkTargets.add(rp);
 				}
 			}
 		}
@@ -126,6 +127,11 @@ public class RadarSystem {
 		// PACKET
 		if (parent.tickCount % 20 == 0) parent.toClientPassengers(
 				new ToClientRadarPings(parent.getId(), targets));
+	}
+	
+	private boolean hasTarget(int id) {
+		for (RadarPing rp : targets) if (rp.id == id) return true;
+		return false;
 	}
 	
 	private void updateRockets() {

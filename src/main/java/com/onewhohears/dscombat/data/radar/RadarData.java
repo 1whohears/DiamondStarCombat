@@ -170,7 +170,7 @@ public class RadarData extends JsonPreset {
 			RadarPing p = new RadarPing(ea, checkFriendly(controller, pilot));
 			vehiclePings.add(p);
 			pings.add(p);
-			ea.lockedOnto(radar.position());
+			if (!radar.isAlliedTo(ea)) ea.lockedOnto(radar.position());
 		}
 	}
 	
@@ -335,6 +335,12 @@ public class RadarData extends JsonPreset {
 		@Override
 		public String toString() {
 			return "PING["+(int)pos.x+","+(int)pos.y+","+(int)pos.z+"]";
+		}
+		
+		@Override
+		public boolean equals(Object o) {
+			if (o instanceof RadarPing ping && ping.id == this.id) return true;
+			return false;
 		}
 		
 	}

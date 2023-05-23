@@ -993,7 +993,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	        --lerpSteps;
 	        setPos(d0, d1, d2);
 		}
-		// FIXME 0 rotation lerp
+		// FIXME 0 aircraft rotation lerp
         /*if (lerpStepsQ > 0) {
             setClientQ(UtilAngles.lerpQ(1 / lerpStepsQ, getPrevQ(), getQ()));
             --lerpStepsQ;

@@ -1892,7 +1892,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     public boolean isAlliedTo(Team team) {
     	if (team == null) return false;
     	Entity c = getControllingPassenger();
-		if (c != null) return c.getTeam().isAlliedTo(team);
+		if (c != null) return team.isAlliedTo(c.getTeam());
     	return super.isAlliedTo(team);
     }
     

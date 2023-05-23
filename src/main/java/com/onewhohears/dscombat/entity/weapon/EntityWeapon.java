@@ -266,7 +266,7 @@ public abstract class EntityWeapon extends Projectile {
     public boolean isAlliedTo(Team team) {
     	if (team == null) return false;
     	Entity o = getOwner();
-		if (o != null) return o.getTeam().isAlliedTo(team);
+		if (o != null) return team.isAlliedTo(o.getTeam());
     	return super.isAlliedTo(team);
     }
 	

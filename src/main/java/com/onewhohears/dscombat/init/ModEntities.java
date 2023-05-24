@@ -65,7 +65,6 @@ public class ModEntities {
 					LiftKGraph.WOODEN_PLANE_GRAPH, 6f, false, Mth.PI), 
 					EntityDimensions.scalable(1.7f, 1.7f)));
 	
-	// TODO 0.2 e3sentry
 	public static final RegistryObject<EntityType<EntityPlane>> E3SENTRY_PLANE = ENTITIES.register("e3sentry_plane", 
 			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
 					DefaultAircraftPresets.DEFAULT_E3SENTRY_PLANE,

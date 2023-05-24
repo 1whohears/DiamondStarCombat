@@ -79,6 +79,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.scores.Team;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.fluids.FluidType;
@@ -714,6 +715,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		super.move(type, move);
 		if (noPhysics) return;
 		// FIXME 3 add "stepDown" movement code so vehicles don't slowly fall while driving down blocks
+		
 	}
 	
 	/**
@@ -986,7 +988,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	        --lerpSteps;
 	        setPos(d0, d1, d2);
 		}
-		// FIXME 0 aircraft rotation lerp
+		// FIXME 1 aircraft rotation lerp
         /*if (lerpStepsQ > 0) {
             setClientQ(UtilAngles.lerpQ(1 / lerpStepsQ, getPrevQ(), getQ()));
             --lerpStepsQ;

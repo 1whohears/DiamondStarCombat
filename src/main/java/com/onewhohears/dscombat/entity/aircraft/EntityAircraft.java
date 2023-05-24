@@ -714,7 +714,17 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	public void move(MoverType type, Vec3 move) {
 		super.move(type, move);
 		if (noPhysics) return;
-		// FIXME 3 add "stepDown" movement code so vehicles don't slowly fall while driving down blocks
+		if (!isOnGround() || getDeltaMovement().y != 0) return;
+		// FIXME 2 vehicles stop down once when driving off cliff
+		AABB aabb = getBoundingBox();
+		Vec3 down = Vec3.ZERO.add(0,-getStepHeight(), 0);
+		List<VoxelShape> list = level.getEntityCollisions(this, aabb.expandTowards(down));
+		Vec3 collide = collideBoundingBox(this, down, aabb, level, list);
+		if (collide.y < 0) {
+			debug(""+getY());
+			debug(UtilParse.prettyVec3(collide, 1));
+			setPos(getX(), getY()+collide.y, getZ());
+		}
 		
 	}
 	

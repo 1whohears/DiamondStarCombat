@@ -80,6 +80,7 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 			ItemStack stack = ingredients.get(i).getDisplayItem();
 			m.getItemRenderer().renderAndDecorateItem(
 					stack, ix, iy);
+			// FIXME 2 item name and labels aren't appearing
 			m.getItemRenderer().renderGuiItemDecorations(font, 
 					stack, ix, iy);
 			ix += 20;
@@ -97,7 +98,7 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 	protected void renderLabels(PoseStack stack, int mouseX, int mouseY) {
 		font.draw(stack, title, titleLabelX+38, titleLabelY, 0x404040);
 		font.draw(stack, playerInventoryTitle, inventoryLabelX+38, inventoryLabelY+56, 0x404040);
-		font.draw(stack, Component.translatable("ui.dscombat.ingredients"), titleLabelX+122, titleLabelY+34, 0x00aa00);
+		//font.draw(stack, Component.translatable("ui.dscombat.ingredients"), titleLabelX+122, titleLabelY+34, 0x00aa00);
 		// plane stats
 		if (AircraftPresets.get().getCraftablePresetNum() == 0) return;
 		AircraftPreset ap = AircraftPresets.get().getCraftablePresets()[planeIndex];

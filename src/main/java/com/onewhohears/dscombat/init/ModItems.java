@@ -280,6 +280,9 @@ public class ModItems {
 	public static final RegistryObject<Item> ORANGE_TESLA = ITEMS.register("orange_tesla", 
 			() -> new ItemAircraft(ModEntities.ORANGE_TESLA.get(), 
 					DefaultAircraftPresets.DEFAULT_ORANGE_TESLA));
+	public static final RegistryObject<Item> AXCEL_TRUCK = ITEMS.register("axcel_truck", 
+			() -> new ItemAircraft(ModEntities.AXCEL_TRUCK.get(), 
+					DefaultAircraftPresets.DEFAULT_AXCEL_TRUCK));
 	
 	// TANKS
 	public static final RegistryObject<Item> MRBUDGER_TANK = ITEMS.register("mrbudger_tank", 

@@ -553,5 +553,44 @@ public class DefaultAircraftPresets {
 			.setSlotItem("slotname.dscombat.internal_3", ModItems.BASIC_FLARE_DISPENSER.getId(), true)
 			.setSlotItem("slotname.dscombat.internal_5", ModItems.DATA_LINK.getId())
 			.build();
+	
+	public static final AircraftPreset EMPTY_AXCEL_TRUCK = AircraftPreset.Builder
+			.create(DSCombatMod.MODID, "axcel_truck_empty")
+			.setAircraftType(AircraftType.CAR)
+			.setItem(ModItems.AXCEL_TRUCK.getId())
+			.setCraftable()
+			.setMaxHealth(80f)
+			.setMass(15f)
+			.setMaxSpeed(0.5f)
+			.setStealth(1.0f)
+			.setIdleHeat(6f)
+			.setTurnRadius(11f)
+			.setMaxTurnRates(0f, 0f, 4f)
+			.setTurnTorques(0f, 0f, 1f)
+			.setThrottleRate(0.05f, 0.05f)
+			.addPilotSeatSlot(0.5, 0.9, 1, 48, 20)
+			.addSeatSlot("slotname.dscombat.seat2", -0.5, 0.9, 1, 68, 20)
+			.setDefaultTexture(DyeColor.YELLOW, "dscombat:textures/entities/axcel_truck/yellow.png")
+			.addIngredient("minecraft:minecart", 4)
+			.addIngredient(ModItems.FUSELAGE.getId(), 1)
+			.addIngredient(ModItems.SEAT.getId(), 2)
+			.addEmptySlot("slotname.dscombat.cargo_bed_1", SlotType.HEAVY_TURRET, 0, 0.95, -1.5, 0, 48, 40)
+			.addEmptySlot("slotname.dscombat.internal_1", SlotType.SPIN_ENGINE, 48, 60)
+			.addEmptySlot("slotname.dscombat.internal_2", SlotType.INTERNAL, 68, 60)
+			.addEmptySlot("slotname.dscombat.internal_3", SlotType.ADVANCED_INTERNAL, 88, 60)
+			.build();
+	
+	public static final AircraftPreset DEFAULT_AXCEL_TRUCK = AircraftPreset.Builder
+			.createFromCopy(DSCombatMod.MODID, "axcel_truck", EMPTY_AXCEL_TRUCK)
+			.setCraftable()
+			.addIngredient(ModItems.SAM_LAUNCHER.getId())
+			.addIngredient(ModItems.C12_ENGINE.getId())
+			.addIngredient(ModItems.HEAVY_FUEL_TANK.getId())
+			.addIngredient(ModItems.AR2K.getId())
+			.setSlotItem("slotname.dscombat.cargo_bed_1", ModItems.SAM_LAUNCHER.getId())
+			.setSlotItem("slotname.dscombat.internal_1", ModItems.C12_ENGINE.getId())
+			.setSlotItem("slotname.dscombat.internal_2", ModItems.HEAVY_FUEL_TANK.getId(), true)
+			.setSlotItem("slotname.dscombat.internal_3", ModItems.AR2K.getId())
+			.build();
 			
 }

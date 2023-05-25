@@ -43,7 +43,7 @@ public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(n
 		poseStack.translate(0, 1.5, 0);
 		poseStack.scale(-1.0F, -1.0F, 1.0F);
 		if (entity.radarSystem.hasRadar("ar20k")) {
-			radar.yRot = entity.getPropellerRotation(partialTicks);
+			radar.yRot = Mth.lerp(partialTicks, (entity.tickCount-1)*0.02f, entity.tickCount*0.02f);
 			radar.visible = true;
 		} else {
 			radar.visible = false;

@@ -722,8 +722,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		List<VoxelShape> list = level.getEntityCollisions(this, aabb.expandTowards(down));
 		Vec3 collide = collideBoundingBox(this, down, aabb, level, list);
 		if (collide.y < 0 && collide.y >= -getStepHeight()) {
-			debug(""+getY());
-			debug(UtilParse.prettyVec3(collide, 1));
 			setPos(getX(), getY()+collide.y, getZ());
 		}
 	}

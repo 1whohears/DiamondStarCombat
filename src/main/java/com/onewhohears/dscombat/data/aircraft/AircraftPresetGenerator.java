@@ -45,6 +45,9 @@ public class AircraftPresetGenerator extends JsonPresetGenerator<AircraftPreset>
 		
 		addPresetToGenerate(DefaultAircraftPresets.EMPTY_E3SENTRY_PLANE);
 		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_E3SENTRY_PLANE);
+		
+		addPresetToGenerate(DefaultAircraftPresets.EMPTY_AXCEL_TRUCK);
+		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_AXCEL_TRUCK);
 	}
     
     public AircraftPresetGenerator(DataGenerator output) {

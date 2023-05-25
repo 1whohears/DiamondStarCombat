@@ -70,6 +70,7 @@
 	"slotname.dscombat.internal_6": "Internal 6",
 	"slotname.dscombat.internal_7": "Internal 7",
 	"slotname.dscombat.internal_8": "Internal 8",
+	"slotname.dscombat.cargo_bed_1": "Cargo Bed 1",
 	
 	"entity.dscombat.test_plane": "Test Plane",
 	"entity.dscombat.javi_plane": "Javi Plane",
@@ -96,6 +97,7 @@
 	"entity.dscombat.heavy_tank_turret": "Heavy Tank Turret",
 	"entity.dscombat.steve_up_smash": "Steve Up Smash",
 	"entity.dscombat.sam_launcher": "SAM Launcher",
+	"entity.dscombat.axcel_truck": "Axcel Truck",
 	
 	"death.attack.dscombat.salty1": "%1$s was too easy",
 	"death.attack.dscombat.salty1.player": "%1$s was too easy for %2$s (%3$sm)",
@@ -292,6 +294,7 @@
 	"item.dscombat.orange_tesla": "Orange Tesla",
 	"item.dscombat.wooden_plane": "Wooden Plane",
 	"item.dscombat.e3sentry_plane": "E3 Sentry",
+	"item.dscombat.axcel_truck": "Axcel Truck",
 	
 	"weapon.dscombat.20mm": "20mm",
 	"weapon.dscombat.50mmhe": "50mm HE",
@@ -339,6 +342,8 @@
 	"preset.dscombat.wooden_plane": "Default Wooden Plane",
 	"preset.dscombat.e3sentry_plane_empty": "Empty E3 Sentry",
 	"preset.dscombat.e3sentry_plane": "Default E3 Sentry",
+	"preset.dscombat.axcel_truck_empty": "Empty Axcel Truck",
+	"preset.dscombat.axcel_truck": "Default Axcel Truck",
 	
 	"container.dscombat.plane_menu": "Aircraft Menu",
 	"container.dscombat.weapons_block_menu": "Weapons Workbench",

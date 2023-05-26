@@ -3,8 +3,8 @@
   "canShootOnGround": true,
   "causesFire": false,
   "compatibleWeaponPart": "dscombat:xm12",
-  "craftNum": 16,
-  "damage": 30.0,
+  "craftNum": 4,
+  "damage": 20.0,
   "destroyTerrain": true,
   "entityTypeKey": "dscombat:bullet",
   "explosionRadius": 3.0,
@@ -17,10 +17,10 @@
     },
     {
       "item": "minecraft:gunpowder",
-      "num": 4
+      "num": 8
     }
   ],
-  "innacuracy": 0.1,
+  "innacuracy": 0.2,
   "itemKey": "dscombat:50mmhe",
   "maxAge": 40,
   "maxAmmo": 250,

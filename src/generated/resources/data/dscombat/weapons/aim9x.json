@@ -1,29 +1,29 @@
 {
   "type": 4,
   "acceleration": 0.05,
-  "bleed": 0.01,
+  "bleed": 0.02,
   "canShootOnGround": false,
   "causesFire": true,
   "compatibleWeaponPart": "dscombat:light_missile_rack",
   "craftNum": 1,
-  "damage": 45.0,
+  "damage": 40.0,
   "destroyTerrain": true,
   "entityTypeKey": "dscombat:ir_missile_1",
-  "explosionRadius": 4.0,
+  "explosionRadius": 3.0,
   "explosive": true,
   "fireRate": 20,
   "flareResistance": 0.7,
-  "fov": 70.0,
-  "fuelTicks": 300,
+  "fov": 50.0,
+  "fuelTicks": 85,
   "fuseDist": 3.0,
   "ingredients": [
     {
       "item": "minecraft:iron_ingot",
-      "num": 16
+      "num": 10
     },
     {
       "item": "minecraft:tnt",
-      "num": 2
+      "num": 1
     },
     {
       "item": "minecraft:coal_block",
@@ -31,7 +31,7 @@
     },
     {
       "item": "minecraft:spider_eye",
-      "num": 2
+      "num": 8
     },
     {
       "item": "dscombat:intel_pentium",
@@ -40,7 +40,7 @@
   ],
   "innacuracy": 0.0,
   "itemKey": "dscombat:aim9x",
-  "maxAge": 300,
+  "maxAge": 100,
   "maxAmmo": 4,
   "presetId": "aim9x",
   "rackTypeKey": "dscombat:light_missile_rack",

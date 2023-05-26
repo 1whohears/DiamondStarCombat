@@ -4,7 +4,7 @@
   "causesFire": false,
   "compatibleWeaponPart": "dscombat:xm12",
   "craftNum": 64,
-  "damage": 15.0,
+  "damage": 12.0,
   "destroyTerrain": false,
   "entityTypeKey": "dscombat:bullet",
   "explosionRadius": 0.0,
@@ -20,7 +20,7 @@
       "num": 2
     }
   ],
-  "innacuracy": 0.3,
+  "innacuracy": 0.5,
   "itemKey": "dscombat:20mm",
   "maxAge": 40,
   "maxAmmo": 500,

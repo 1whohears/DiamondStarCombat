@@ -1,7 +1,7 @@
 {
   "type": 4,
   "acceleration": 0.04,
-  "bleed": 0.01,
+  "bleed": 0.02,
   "canShootOnGround": false,
   "causesFire": true,
   "compatibleWeaponPart": "dscombat:light_missile_rack",
@@ -13,13 +13,13 @@
   "explosive": true,
   "fireRate": 20,
   "flareResistance": 1.0,
-  "fov": 60.0,
-  "fuelTicks": 300,
+  "fov": 40.0,
+  "fuelTicks": 80,
   "fuseDist": 3.0,
   "ingredients": [
     {
       "item": "minecraft:iron_ingot",
-      "num": 16
+      "num": 8
     },
     {
       "item": "minecraft:tnt",
@@ -31,16 +31,16 @@
     },
     {
       "item": "minecraft:spider_eye",
-      "num": 2
+      "num": 4
     },
     {
       "item": "dscombat:ti83",
-      "num": 1
+      "num": 2
     }
   ],
   "innacuracy": 0.0,
   "itemKey": "dscombat:aim9p5",
-  "maxAge": 300,
+  "maxAge": 100,
   "maxAmmo": 4,
   "presetId": "aim9p5",
   "rackTypeKey": "dscombat:light_missile_rack",

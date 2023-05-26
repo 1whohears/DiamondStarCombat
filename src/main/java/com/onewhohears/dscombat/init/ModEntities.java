@@ -110,6 +110,8 @@ public class ModEntities {
 					ModSounds.TANK_1, false, 3), 
 					EntityDimensions.scalable(2.5f, 3.0f)));
 	
+	// TODO 0.2 fuel truck
+	
 	// BOATS
 	
 	public static final RegistryObject<EntityType<EntityBoat>> NATHAN_BOAT = ENTITIES.register("nathan_boat", 

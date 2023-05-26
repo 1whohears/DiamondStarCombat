@@ -1,24 +1,24 @@
 {
   "type": 3,
-  "acceleration": 0.05,
-  "bleed": 0.025,
+  "acceleration": 0.03,
+  "bleed": 0.02,
   "canShootOnGround": false,
   "causesFire": true,
   "compatibleWeaponPart": "dscombat:heavy_missile_rack",
   "craftNum": 1,
-  "damage": 50.0,
+  "damage": 60.0,
   "destroyTerrain": true,
   "entityTypeKey": "dscombat:track_missile_1",
   "explosionRadius": 5.0,
   "explosive": true,
   "fireRate": 50,
-  "fov": 70.0,
-  "fuelTicks": 250,
+  "fov": 40.0,
+  "fuelTicks": 350,
   "fuseDist": 3.0,
   "ingredients": [
     {
       "item": "minecraft:iron_ingot",
-      "num": 20
+      "num": 15
     },
     {
       "item": "minecraft:tnt",
@@ -26,7 +26,7 @@
     },
     {
       "item": "minecraft:coal_block",
-      "num": 5
+      "num": 6
     },
     {
       "item": "minecraft:amethyst_shard",
@@ -44,7 +44,7 @@
   "presetId": "aim120c",
   "rackTypeKey": "dscombat:heavy_missile_rack",
   "shootSoundKey": "dscombat:rocket_launch_1",
-  "speed": 4.5,
+  "speed": 4.0,
   "targetType": 0,
-  "turnRadius": 100.0
+  "turnRadius": 120.0
 }

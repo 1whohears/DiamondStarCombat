@@ -136,7 +136,6 @@ public class ModItems {
 	public static final RegistryObject<Item> TURBOFAN_F39 = ITEMS.register("turbofan_f39", 
 			() -> new ItemEngine(EngineType.PUSH, 1.5f, 0.39f, 5.0f, 
 					0.007f, false, SlotType.INTERNAL_ENGINE_PUSH));
-	// TODO 0.9 external engine model
 	public static final RegistryObject<Item> CFM56 = ITEMS.register("cfm56", 
 			() -> new ItemEngine(EngineType.PUSH, 3.1f, 0.56f, 9.0f, 
 					0.017f, true, SlotType.EXTERNAL_ALL));

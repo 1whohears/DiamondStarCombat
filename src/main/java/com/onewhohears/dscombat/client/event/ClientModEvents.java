@@ -21,6 +21,7 @@ import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelOrange
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelSmallRoller;
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelTestPlane;
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelWoodenPlane;
+import com.onewhohears.dscombat.client.renderer.model.parts.EntityModelCFM56;
 import com.onewhohears.dscombat.client.renderer.model.weapon.EntityModelBomb1;
 import com.onewhohears.dscombat.client.renderer.model.weapon.EntityModelBombRack;
 import com.onewhohears.dscombat.client.renderer.model.weapon.EntityModelBullet1;
@@ -37,6 +38,7 @@ import com.onewhohears.dscombat.entity.aircraft.EntityGroundVehicle;
 import com.onewhohears.dscombat.entity.aircraft.EntityHelicopter;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 import com.onewhohears.dscombat.entity.aircraft.EntitySubmarine;
+import com.onewhohears.dscombat.entity.parts.EntityEngine;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
 import com.onewhohears.dscombat.entity.weapon.EntityBomb;
@@ -89,6 +91,7 @@ public final class ClientModEvents {
 		event.registerLayerDefinition(EntityModelE3Sentry.LAYER_LOCATION, EntityModelE3Sentry::createBodyLayer);
 		event.registerLayerDefinition(EntityModelAxcelTruck.LAYER_LOCATION, EntityModelAxcelTruck::createBodyLayer);
 		event.registerLayerDefinition(EntityModelSAMLauncher.LAYER_LOCATION, EntityModelSAMLauncher::createBodyLayer);
+		event.registerLayerDefinition(EntityModelCFM56.LAYER_LOCATION, EntityModelCFM56::createBodyLayer);
 	}
 	
 	@SubscribeEvent
@@ -197,6 +200,11 @@ public final class ClientModEvents {
 				(context) -> new RendererEntityPart<EntityWeaponRack>(context,
 						new EntityModelBombRack(models.bakeLayer(EntityModelBombRack.LAYER_LOCATION)),
 						new ResourceLocation(DSCombatMod.MODID, "textures/entities/bomb_rack.png")));
+		// EXTERNAL ENGINES
+		event.registerEntityRenderer(ModEntities.CFM56.get(), 
+				(context) -> new RendererEntityPart<EntityEngine>(context,
+						new EntityModelCFM56(models.bakeLayer(EntityModelCFM56.LAYER_LOCATION)),
+						new ResourceLocation(DSCombatMod.MODID, "textures/entities/cfm56.png")));
 		// OTHER
 		event.registerEntityRenderer(ModEntities.SEAT.get(), RendererEntityInvisible::new);
 		event.registerEntityRenderer(ModEntities.FLARE.get(), RendererEntityInvisible::new);

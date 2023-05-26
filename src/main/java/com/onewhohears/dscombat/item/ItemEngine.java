@@ -22,6 +22,7 @@ public class ItemEngine extends ItemPart {
 	public final EngineType engineType;
 	public final float thrust, heat, fuelRate;
 	public final boolean external;
+	public final String externalEntityKey;
 	
 	public ItemEngine(EngineType engineType, float weight, float thrust, float heat, float fuelRate, boolean external, SlotType[] compatibleSlots) {
 		super(1, weight, compatibleSlots);
@@ -30,11 +31,24 @@ public class ItemEngine extends ItemPart {
 		this.heat = heat;
 		this.fuelRate = fuelRate;
 		this.external = external;
+		this.externalEntityKey = "";
+	}
+	
+	public ItemEngine(EngineType engineType, float weight, float thrust, float heat, float fuelRate, boolean external, 
+			SlotType[] compatibleSlots, String externalEntityKey) {
+		super(1, weight, compatibleSlots);
+		this.engineType = engineType;
+		this.thrust = thrust;
+		this.heat = heat;
+		this.fuelRate = fuelRate;
+		this.external = external;
+		this.externalEntityKey = externalEntityKey;
 	}
 
 	@Override
 	public PartData getPartData() {
-		if (external) return new ExternalEngineData(engineType, weight, thrust, heat, fuelRate, ForgeRegistries.ITEMS.getKey(this), compatibleSlots);
+		if (external) return new ExternalEngineData(engineType, weight, thrust, heat, fuelRate, 
+				ForgeRegistries.ITEMS.getKey(this), compatibleSlots, externalEntityKey);
 		return new EngineData(engineType, weight, thrust, heat, fuelRate, ForgeRegistries.ITEMS.getKey(this), compatibleSlots);
 	}
 	

@@ -233,6 +233,13 @@ public class AircraftPreset extends JsonPreset{
 			return setSlotItem(name, item, null, filled);
 		}
 		
+		public Builder lockSlot(String name) {
+			JsonObject slot = getSlot(name, false);
+			if (slot == null) return this;
+			slot.addProperty("locked", true);
+			return this;
+		}
+		
 		@Nullable
 		protected JsonObject getSlot(String name, boolean createNew) {
 			if (!getData().has("slots")) {

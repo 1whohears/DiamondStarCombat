@@ -163,8 +163,9 @@ public class ModItems {
 			() -> new ItemRadarPart(3f, "gpr20", SlotType.INTERNAL_ADVANCED));
 	public static final RegistryObject<Item> AR20K = ITEMS.register("ar20k", 
 			() -> new ItemRadarPart(7f, "ar20k", SlotType.EXTERNAL_HEAVY));
+	public static final RegistryObject<Item> AXCEL_TRUCK_RADAR = ITEMS.register("axcel_truck_radar", 
+			() -> new ItemRadarPart(3f, "axcel_truck_radar", SlotType.INTERNAL_ADVANCED));
 	// IDEA 2 passive under water sonar doesn's show RWR warning
-	// TODO 0.1 ar2k360 radar that only works on axcel truck
 	
 	// SEATS
 	public static final RegistryObject<Item> SEAT = ITEMS.register("seat", 

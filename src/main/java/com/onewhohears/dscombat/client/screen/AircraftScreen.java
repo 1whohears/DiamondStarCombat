@@ -73,6 +73,7 @@ public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContaine
 		if (this.hoveredSlot instanceof PartItemSlot slot) {
 			c.add(Component.translatable(slot.data.getName()).setStyle(Style.EMPTY.withColor(0xFF55FF)));
 			c.add(Component.translatable(slot.data.getSlotType().getTranslatableName()).setStyle(Style.EMPTY.withColor(0xFFAA00)));
+			if (slot.data.isLocked()) c.add(Component.translatable("info.dscombat.locked").setStyle(Style.EMPTY.withColor(0xAA0000)));
 		}
 		return c;
 	}

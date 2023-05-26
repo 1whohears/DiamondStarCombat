@@ -23,16 +23,8 @@ public class PartSlot {
 	private final Vec3 pos;
 	private final int uix, uiy;
 	private final float zRot;
+	private final boolean locked;
 	private PartData data;
-	
-	protected PartSlot(String name, SlotType type, Vec3 pos, int uix, int uiy, float zRot) {
-		this.slotId = name;
-		this.type = type;
-		this.pos = pos;
-		this.uix = uix;
-		this.uiy = uiy;
-		this.zRot = zRot;
-	}
 	
 	public PartSlot(CompoundTag tag) {
 		slotId = tag.getString("name");
@@ -41,6 +33,7 @@ public class PartSlot {
 		uix = tag.getInt("uix");
 		uiy = tag.getInt("uiy");
 		zRot = tag.getFloat("zRot");
+		locked = tag.getBoolean("locked");
 		if (tag.contains("data")) data = UtilParse.parsePartFromCompound(tag.getCompound("data"));
 	}
 	
@@ -52,6 +45,7 @@ public class PartSlot {
 		tag.putInt("uix", uix);
 		tag.putInt("uiy", uiy);
 		tag.putFloat("zRot", zRot);
+		tag.putBoolean("locked", locked);
 		if (filled()) tag.put("data", data.write());
 		return tag;
 	}
@@ -69,6 +63,7 @@ public class PartSlot {
 		uiy = buffer.readInt();
 		//System.out.println("uiy = "+uiy);
 		zRot = buffer.readFloat();
+		locked = buffer.readBoolean();
 		boolean notNull = buffer.readBoolean();
 		//System.out.println("notNull = "+notNull);
 		if (notNull) data = DataSerializers.PART_DATA.read(buffer);
@@ -81,8 +76,13 @@ public class PartSlot {
 		buffer.writeInt(uix);
 		buffer.writeInt(uiy);
 		buffer.writeFloat(zRot);
+		buffer.writeBoolean(locked);
 		buffer.writeBoolean(filled());
 		if (filled()) data.write(buffer);
+	}
+	
+	public boolean isLocked() {
+		return locked;
 	}
 	
 	public boolean filled() {

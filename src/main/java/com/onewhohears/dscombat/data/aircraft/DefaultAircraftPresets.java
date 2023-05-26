@@ -558,7 +558,6 @@ public class DefaultAircraftPresets {
 			.create(DSCombatMod.MODID, "axcel_truck_empty")
 			.setAircraftType(AircraftType.CAR)
 			.setItem(ModItems.AXCEL_TRUCK.getId())
-			.setCraftable()
 			.setMaxHealth(80f)
 			.setMass(15f)
 			.setMaxSpeed(0.5f)
@@ -574,10 +573,13 @@ public class DefaultAircraftPresets {
 			.addIngredient("minecraft:minecart", 4)
 			.addIngredient(ModItems.FUSELAGE.getId(), 1)
 			.addIngredient(ModItems.SEAT.getId(), 2)
+			.addIngredient(ModItems.AXCEL_TRUCK_RADAR.getId())
 			.addEmptySlot("slotname.dscombat.cargo_bed_1", SlotType.HEAVY_TURRET, 0, 0.95, -1.5, 0, 48, 40)
 			.addEmptySlot("slotname.dscombat.internal_1", SlotType.SPIN_ENGINE, 48, 60)
 			.addEmptySlot("slotname.dscombat.internal_2", SlotType.INTERNAL, 68, 60)
 			.addEmptySlot("slotname.dscombat.internal_3", SlotType.ADVANCED_INTERNAL, 88, 60)
+			.setSlotItem("slotname.dscombat.internal_3", ModItems.AXCEL_TRUCK_RADAR.getId())
+			.lockSlot("slotname.dscombat.internal_3")
 			.build();
 	
 	public static final AircraftPreset DEFAULT_AXCEL_TRUCK = AircraftPreset.Builder
@@ -586,11 +588,9 @@ public class DefaultAircraftPresets {
 			.addIngredient(ModItems.SAM_LAUNCHER.getId())
 			.addIngredient(ModItems.C12_ENGINE.getId())
 			.addIngredient(ModItems.HEAVY_FUEL_TANK.getId())
-			.addIngredient(ModItems.AR2K.getId())
 			.setSlotItem("slotname.dscombat.cargo_bed_1", ModItems.SAM_LAUNCHER.getId())
 			.setSlotItem("slotname.dscombat.internal_1", ModItems.C12_ENGINE.getId())
 			.setSlotItem("slotname.dscombat.internal_2", ModItems.HEAVY_FUEL_TANK.getId(), true)
-			.setSlotItem("slotname.dscombat.internal_3", ModItems.AR2K.getId())
 			.build();
 			
 }

@@ -1,6 +1,7 @@
 {
 	"info.dscombat.ammo": "Ammo",
 	"info.dscombat.no_consume_wand_1": "This Aircraft Won't Consume Fuel/Ammo/Flares",
+	"info.dscombat.locked": "Locked",
 	
 	"ui.dscombat.shrink_plane_button": "Get Plane Item",
 	"ui.dscombat.craft_button": "Assemble",
@@ -267,6 +268,7 @@
 	"item.dscombat.gpr20": "GPR-20",
 	"item.dscombat.wr400": "WR-400",
 	"item.dscombat.wr1k": "WR-1k",
+	"item.dscombat.axcel_truck_radar": "Axcel Truck Radar",
 	
 	"item.dscombat.seat": "Seat",
 	

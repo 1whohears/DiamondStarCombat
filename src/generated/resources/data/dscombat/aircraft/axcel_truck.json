@@ -17,6 +17,10 @@
       "num": 2
     },
     {
+      "item": "dscombat:axcel_truck_radar",
+      "num": 1
+    },
+    {
       "item": "dscombat:sam_launcher",
       "num": 1
     },
@@ -26,10 +30,6 @@
     },
     {
       "item": "dscombat:heavy_fuel_tank",
-      "num": 1
-    },
-    {
-      "item": "dscombat:ar2k",
       "num": 1
     }
   ],
@@ -114,8 +114,9 @@
     },
     {
       "data": {
-        "itemid": "dscombat:ar2k"
+        "itemid": "dscombat:axcel_truck_radar"
       },
+      "locked": true,
       "name": "slotname.dscombat.internal_3",
       "slot_posx": 0.0,
       "slot_posy": 0.0,

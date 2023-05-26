@@ -110,7 +110,7 @@ public class ModEntities {
 					ModSounds.TANK_1, false, 3), 
 					EntityDimensions.scalable(2.5f, 3.0f)));
 	
-	// TODO 0.2 fuel truck
+	// TODO 5 fuel truck
 	
 	// BOATS
 	

@@ -78,11 +78,13 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 				iy += 20;
 			}
 			ItemStack stack = ingredients.get(i).getDisplayItem();
-			m.getItemRenderer().renderAndDecorateItem(
-					stack, ix, iy);
-			// FIXME 2 item name and labels aren't appearing
-			m.getItemRenderer().renderGuiItemDecorations(font, 
-					stack, ix, iy);
+			m.getItemRenderer().renderAndDecorateItem(stack, ix, iy);
+			m.getItemRenderer().renderGuiItemDecorations(font, stack, ix, iy);
+			if (mouseX >= ix && mouseX < (ix+20) && mouseY >= iy && mouseY < (iy+20)) renderTooltip(
+					poseStack, 
+					getTooltipFromItem(stack), 
+					stack.getTooltipImage(), 
+					mouseX, mouseY);
 			ix += 20;
 		}
 	}

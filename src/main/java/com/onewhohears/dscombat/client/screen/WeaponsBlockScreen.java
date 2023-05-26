@@ -78,10 +78,13 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockMenu
 				iy += 20;
 			}
 			ItemStack stack = data.getIngredients().get(i).getDisplayItem();
-			m.getItemRenderer().renderAndDecorateItem(
-					stack, ix, iy);
-			m.getItemRenderer().renderGuiItemDecorations(font, 
-					stack, ix, iy);
+			m.getItemRenderer().renderAndDecorateItem(stack, ix, iy);
+			m.getItemRenderer().renderGuiItemDecorations(font, stack, ix, iy);
+			if (mouseX >= ix && mouseX < (ix+20) && mouseY >= iy && mouseY < (iy+20)) renderTooltip(
+					poseStack, 
+					getTooltipFromItem(stack), 
+					stack.getTooltipImage(), 
+					mouseX, mouseY);
 			ix += 20;
 		}
 	}

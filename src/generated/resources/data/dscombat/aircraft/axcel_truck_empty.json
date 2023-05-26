@@ -19,6 +19,10 @@
     {
       "item": "dscombat:ar2k",
       "num": 1
+    },
+    {
+      "item": "minecraft:gold_ingot",
+      "num": 5
     }
   ],
   "is_craftable": false,

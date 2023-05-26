@@ -71,21 +71,22 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 		List<DSCIngredient> ingredients = AircraftPresets.get().getCraftablePresets()[planeIndex].getIngredients();
 		int iix = startX + 122;
 		int ix = iix;
-		int iy = startY + 44;
+		int iy = startY + 40;
+		int space = 18;
 		for (int i = 0; i < ingredients.size(); ++i) {
 			if (i != 0 && i % 4 == 0) {
 				ix = iix;
-				iy += 20;
+				iy += space;
 			}
 			ItemStack stack = ingredients.get(i).getDisplayItem();
 			m.getItemRenderer().renderAndDecorateItem(stack, ix, iy);
 			m.getItemRenderer().renderGuiItemDecorations(font, stack, ix, iy);
-			if (mouseX >= ix && mouseX < (ix+20) && mouseY >= iy && mouseY < (iy+20)) renderTooltip(
+			if (mouseX >= ix && mouseX < (ix+space) && mouseY >= iy && mouseY < (iy+space)) renderTooltip(
 					poseStack, 
 					getTooltipFromItem(stack), 
 					stack.getTooltipImage(), 
 					mouseX, mouseY);
-			ix += 20;
+			ix += space;
 		}
 	}
 

@@ -6,19 +6,15 @@
   "ingredients": [
     {
       "item": "minecraft:minecart",
-      "num": 2
-    },
-    {
-      "item": "dscombat:fuselage",
-      "num": 1
+      "num": 3
     },
     {
       "item": "dscombat:seat",
       "num": 1
     },
     {
-      "item": "minecraft:gold_ingot",
-      "num": 4
+      "item": "minecraft:iron_ingot",
+      "num": 2
     },
     {
       "item": "dscombat:c6_engine",
@@ -31,6 +27,18 @@
     {
       "item": "dscombat:steve_up_smash",
       "num": 1
+    },
+    {
+      "item": "minecraft:iron_ingot",
+      "num": 24
+    },
+    {
+      "item": "minecraft:redstone",
+      "num": 32
+    },
+    {
+      "item": "minecraft:gunpowder",
+      "num": 12
     }
   ],
   "is_craftable": true,

@@ -11,6 +11,10 @@
     {
       "item": "dscombat:cockpit",
       "num": 1
+    },
+    {
+      "item": "dscombat:propeller",
+      "num": 1
     }
   ],
   "is_craftable": false,

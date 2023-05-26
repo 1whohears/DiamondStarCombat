@@ -24,7 +24,7 @@
     },
     {
       "item": "minecraft:gold_ingot",
-      "num": 4
+      "num": 15
     },
     {
       "item": "dscombat:c12_engine",
@@ -49,6 +49,30 @@
     {
       "item": "dscombat:minigun_turret",
       "num": 1
+    },
+    {
+      "item": "dscombat:heavy_missile_rack",
+      "num": 5
+    },
+    {
+      "item": "dscombat:light_missile_rack",
+      "num": 2
+    },
+    {
+      "item": "minecraft:copper_ingot",
+      "num": 64
+    },
+    {
+      "item": "minecraft:iron_ingot",
+      "num": 64
+    },
+    {
+      "item": "minecraft:redstone",
+      "num": 64
+    },
+    {
+      "item": "minecraft:gunpowder",
+      "num": 64
     }
   ],
   "is_craftable": true,
@@ -229,8 +253,8 @@
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:xm12",
-        "param": "20mm"
+        "itemid": "dscombat:heavy_missile_rack",
+        "param": "rifel1"
       },
       "name": "slotname.dscombat.frame_1",
       "slot_posx": 0.0,
@@ -242,11 +266,6 @@
       "zRot": 0.0
     },
     {
-      "data": {
-        "filled": true,
-        "itemid": "dscombat:xm12",
-        "param": "50mmhe"
-      },
       "name": "slotname.dscombat.frame_2",
       "slot_posx": 0.0,
       "slot_posy": -0.67,

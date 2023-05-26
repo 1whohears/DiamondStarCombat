@@ -18,7 +18,7 @@
     },
     {
       "item": "minecraft:gold_ingot",
-      "num": 4
+      "num": 10
     },
     {
       "item": "dscombat:turbofan_f25",
@@ -39,6 +39,34 @@
     {
       "item": "dscombat:gr400",
       "num": 1
+    },
+    {
+      "item": "dscombat:heavy_missile_rack",
+      "num": 2
+    },
+    {
+      "item": "dscombat:light_missile_rack",
+      "num": 2
+    },
+    {
+      "item": "dscombat:xm12",
+      "num": 1
+    },
+    {
+      "item": "minecraft:copper_ingot",
+      "num": 64
+    },
+    {
+      "item": "minecraft:iron_ingot",
+      "num": 64
+    },
+    {
+      "item": "minecraft:redstone",
+      "num": 64
+    },
+    {
+      "item": "minecraft:gunpowder",
+      "num": 64
     }
   ],
   "is_craftable": true,
@@ -134,7 +162,7 @@
       "data": {
         "filled": true,
         "itemid": "dscombat:heavy_missile_rack",
-        "param": "agm65l"
+        "param": "rifel1"
       },
       "name": "slotname.dscombat.right_wing_1",
       "slot_posx": -1.5,

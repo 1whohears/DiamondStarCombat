@@ -10,8 +10,6 @@ import net.minecraft.world.item.DyeColor;
 
 public class DefaultAircraftPresets {
 	
-	// TODO 0.7 review aircraft presets so they fit new weapons
-	
 	public static final AircraftPreset EMPTY_ALEXIS_PLANE = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "alexis_plane_empty")
 			.setAircraftType(AircraftType.PLANE)
@@ -36,7 +34,7 @@ public class DefaultAircraftPresets {
 			.addIngredient(ModItems.FUSELAGE.getId(), 2)
 			.addIngredient(ModItems.WING.getId(), 2)
 			.addIngredient(ModItems.ADVANCED_COCKPIT.getId())
-			.addIngredient("minecraft:gold_ingot", 4)
+			.addIngredient("minecraft:gold_ingot", 10)
 			.addPilotSeatSlot(0, -0.3, 2, 48, 20)
 			.addEmptySlot("slotname.dscombat.left_wing_1", SlotType.WING, 1.5, -0.3, 0.5, 0, 48, 40)
 			.addEmptySlot("slotname.dscombat.left_wing_2", SlotType.WING, 2.5, -0.3, 0.5, 0, 68, 40)
@@ -77,6 +75,10 @@ public class DefaultAircraftPresets {
 			.addIngredient(ModItems.HEAVY_MISSILE_RACK.getId(), 2)
 			.addIngredient(ModItems.LIGHT_MISSILE_RACK.getId(), 2)
 			.addIngredient(ModItems.XM12.getId())
+			.addIngredient("minecraft:copper_ingot", 64)
+			.addIngredient("minecraft:iron_ingot", 32)
+			.addIngredient("minecraft:redstone", 32)
+			.addIngredient("minecraft:gunpowder", 32)
 			.build();
 	
 	public static final AircraftPreset EMPTY_JAVI_PLANE = AircraftPreset.Builder
@@ -101,7 +103,7 @@ public class DefaultAircraftPresets {
 			.addIngredient(ModItems.FUSELAGE.getId(), 2)
 			.addIngredient(ModItems.LARGE_WING.getId(), 2)
 			.addIngredient(ModItems.COCKPIT.getId())
-			.addIngredient("minecraft:gold_ingot", 4)
+			.addIngredient("minecraft:gold_ingot", 10)
 			.addPilotSeatSlot(0, -0.4, 3, 48, 20)
 			.addSeatSlot("slotname.dscombat.seat2", SlotType.TURRET, 0, -0.4, 2, 68, 20)
 			.addEmptySlot("slotname.dscombat.left_wing_1", SlotType.WING, 1.5, -0.3, 0, 0, 48, 40)
@@ -139,7 +141,7 @@ public class DefaultAircraftPresets {
 			.setCraftable()
 			.setSlotItem("slotname.dscombat.left_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "aim120b", true)
 			.setSlotItem("slotname.dscombat.left_wing_2", ModItems.LIGHT_MISSILE_RACK.getId(), "agm114k", true)
-			.setSlotItem("slotname.dscombat.right_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "agm65l", true)
+			.setSlotItem("slotname.dscombat.right_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "rifel1", true)
 			.setSlotItem("slotname.dscombat.right_wing_2", ModItems.LIGHT_MISSILE_RACK.getId(), "aim9p5", true)
 			.setSlotItem("slotname.dscombat.frame_1", ModItems.XM12.getId(), "50mmhe", true)
 			.setSlotItem("slotname.dscombat.frame_2", ModItems.HEAVY_MISSILE_RACK.getId(), "agm84e", true)
@@ -147,6 +149,13 @@ public class DefaultAircraftPresets {
 			.setSlotItem("slotname.dscombat.internal_6", ModItems.GR400.getId())
 			.addIngredient(ModItems.AR1K.getId())
 			.addIngredient(ModItems.GR400.getId())
+			.addIngredient(ModItems.HEAVY_MISSILE_RACK.getId(), 2)
+			.addIngredient(ModItems.LIGHT_MISSILE_RACK.getId(), 2)
+			.addIngredient(ModItems.XM12.getId())
+			.addIngredient("minecraft:copper_ingot", 64)
+			.addIngredient("minecraft:iron_ingot", 64)
+			.addIngredient("minecraft:redstone", 64)
+			.addIngredient("minecraft:gunpowder", 64)
 			.build();
 	
 	public static final AircraftPreset EMPTY_NOAH_CHOPPER = AircraftPreset.Builder
@@ -195,7 +204,7 @@ public class DefaultAircraftPresets {
 			.addIngredient(ModItems.LARGE_PROPELLER.getId(), 2)
 			.addIngredient(ModItems.PROPELLER.getId())
 			.addIngredient(ModItems.COCKPIT.getId())
-			.addIngredient("minecraft:gold_ingot", 4)
+			.addIngredient("minecraft:gold_ingot", 15)
 			.build();
 	
 	public static final AircraftPreset UNARMED_NOAH_CHOPPER = AircraftPreset.Builder
@@ -220,13 +229,18 @@ public class DefaultAircraftPresets {
 			.setSlotItem("slotname.dscombat.right_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "agm65l", true)
 			.setSlotItem("slotname.dscombat.right_wing_2", ModItems.HEAVY_MISSILE_RACK.getId(), "agm84e", true)
 			.setSlotItem("slotname.dscombat.right_wing_3", ModItems.LIGHT_MISSILE_RACK.getId(), "aim9p5", true)
-			.setSlotItem("slotname.dscombat.frame_1", ModItems.XM12.getId(), "20mm", true)
-			.setSlotItem("slotname.dscombat.frame_2", ModItems.XM12.getId(), "50mmhe", true)
+			.setSlotItem("slotname.dscombat.frame_1", ModItems.HEAVY_MISSILE_RACK.getId(), "rifel1", true)
 			.setSlotItem("slotname.dscombat.internal_5", ModItems.AR500.getId())
 			.setSlotItem("slotname.dscombat.internal_6", ModItems.GR400.getId())
 			.addIngredient(ModItems.AR500.getId())
 			.addIngredient(ModItems.GR400.getId())
 			.addIngredient(ModItems.MINIGUN_TURRET.getId())
+			.addIngredient(ModItems.HEAVY_MISSILE_RACK.getId(), 5)
+			.addIngredient(ModItems.LIGHT_MISSILE_RACK.getId(), 2)
+			.addIngredient("minecraft:copper_ingot", 64)
+			.addIngredient("minecraft:iron_ingot", 64)
+			.addIngredient("minecraft:redstone", 64)
+			.addIngredient("minecraft:gunpowder", 64)
 			.build();
 	
 	public static final AircraftPreset EMPTY_MRBUDGER_TANK = AircraftPreset.Builder
@@ -249,7 +263,7 @@ public class DefaultAircraftPresets {
 			.addIngredient("minecraft:minecart", 4)
 			.addIngredient(ModItems.FUSELAGE.getId())
 			.addIngredient(ModItems.SEAT.getId(), 4)
-			.addIngredient("minecraft:gold_ingot", 4)
+			.addIngredient("minecraft:gold_ingot", 5)
 			.addSeatSlot(PartSlot.PILOT_SLOT_NAME, SlotType.HEAVY_TURRET, 0, 1.4, 0, 48, 20)
 			.addSeatSlot("slotname.dscombat.seat1", SlotType.HEAVY_TURRET, 1, 1.4, 2, 68, 20)
 			.addSeatSlot("slotname.dscombat.seat2", SlotType.HEAVY_TURRET, -1, 1.4, 2, 88, 20)
@@ -275,6 +289,8 @@ public class DefaultAircraftPresets {
 			.setCraftable()
 			.setSlotItem(PartSlot.PILOT_SLOT_NAME, ModItems.HEAVY_TANK_TURRET.getId(), true)
 			.addIngredient(ModItems.HEAVY_TANK_TURRET.getId())
+			.addIngredient("minecraft:copper_ingot", 32)
+			.addIngredient("minecraft:gunpowder", 32)
 			.build();
 	
 	public static final AircraftPreset EMPTY_SMALL_ROLLER = AircraftPreset.Builder
@@ -291,10 +307,9 @@ public class DefaultAircraftPresets {
 			.setTurnTorques(0f, 0f, 10f)
 			.setThrottleRate(0.08f, 0.08f)
 			.setDefaultTexture(DyeColor.GRAY, "dscombat:textures/entities/small_roller.png")
-			.addIngredient("minecraft:minecart", 2)
-			.addIngredient(ModItems.FUSELAGE.getId())
+			.addIngredient("minecraft:minecart", 3)
 			.addIngredient(ModItems.SEAT.getId(), 1)
-			.addIngredient("minecraft:gold_ingot", 4)
+			.addIngredient("minecraft:iron_ingot", 2)
 			.addSeatSlot(PartSlot.PILOT_SLOT_NAME, SlotType.HEAVY_TURRET, 0, 0.6, 0, 48, 20)
 			.addEmptySlot("slotname.dscombat.internal_1", SlotType.SPIN_ENGINE, 48, 100)
 			.addEmptySlot("slotname.dscombat.internal_2", SlotType.INTERNAL, 68, 100)
@@ -314,6 +329,9 @@ public class DefaultAircraftPresets {
 			.setCraftable()
 			.setSlotItem(PartSlot.PILOT_SLOT_NAME, ModItems.STEVE_UP_SMASH.getId(), true)
 			.addIngredient(ModItems.STEVE_UP_SMASH.getId())
+			.addIngredient("minecraft:iron_ingot", 24)
+			.addIngredient("minecraft:redstone", 32)
+			.addIngredient("minecraft:gunpowder", 12)
 			.build();
 	
 	public static final AircraftPreset EMPTY_NATHAN_BOAT = AircraftPreset.Builder
@@ -330,8 +348,8 @@ public class DefaultAircraftPresets {
 			.setTurnTorques(0f, 0f, 2f)
 			.setThrottleRate(0.05f, 0.10f)
 			.setDefaultTexture(DyeColor.WHITE, "dscombat:textures/entities/nathan_boat/white.png")
-			.addIngredient("minecraft:boat", 4)
-			.addIngredient(ModItems.FUSELAGE.getId())
+			.addIngredient("minecraft:oak_boat", 4)
+			.addIngredient("minecraft:iron_ingot", 16)
 			.addIngredient(ModItems.SEAT.getId(), 7)
 			.addPilotSeatSlot(0.8, 1.2, -1.13, 48, 20)
 			.addSeatSlot("slotname.dscombat.seat1", SlotType.TURRET, 0.65, 1.2, 2.44, 68, 20)
@@ -366,6 +384,11 @@ public class DefaultAircraftPresets {
 			.setSlotItem("slotname.dscombat.seat1", ModItems.MINIGUN_TURRET.getId())
 			.setSlotItem("slotname.dscombat.frame_1", ModItems.HEAVY_MISSILE_RACK.getId(), "torpedo1", true)
 			.setSlotItem("slotname.dscombat.frame_2", ModItems.HEAVY_MISSILE_RACK.getId(), "torpedo1", true)
+			.addIngredient("minecraft:copper_ingot", 64)
+			.addIngredient("minecraft:iron_ingot", 32)
+			.addIngredient("minecraft:redstone", 32)
+			.addIngredient("minecraft:gunpowder", 32)
+			.addIngredient(ModItems.HEAVY_MISSILE_RACK.getId(), 2)
 			.build();
 	
 	public static final AircraftPreset EMPTY_ANDOLF_SUB = AircraftPreset.Builder
@@ -382,10 +405,10 @@ public class DefaultAircraftPresets {
 			.setTurnTorques(1f, 1f, 1f)
 			.setThrottleRate(0.04f, 0.04f)
 			.setDefaultTexture(DyeColor.BLUE, "dscombat:textures/entities/andolf_sub/blue.png")
-			.addIngredient("minecraft:minecart", 4)
-			.addIngredient(ModItems.FUSELAGE.getId(), 3)
+			.addIngredient(ModItems.LARGE_PROPELLER.getId(), 1)
+			.addIngredient(ModItems.LARGE_FUSELAGE.getId(), 2)
 			.addIngredient(ModItems.SEAT.getId(), 6)
-			.addIngredient("minecraft:gold_ingot", 4)
+			.addIngredient("minecraft:gold_ingot", 20)
 			.addPilotSeatSlot(0.6, -1.5, 2.8, 48, 20)
 			.addSeatSlot("slotname.dscombat.seat1", -0.6, -1.5, 2.8, 68, 20)
 			.addSeatSlot("slotname.dscombat.seat2", 0.6, -1.5, 1.6, 88, 20)
@@ -429,6 +452,12 @@ public class DefaultAircraftPresets {
 			.setSlotItem("slotname.dscombat.frame_4", ModItems.HEAVY_MISSILE_RACK.getId(), "torpedo1", true)
 			.setSlotItem("slotname.dscombat.frame_5", ModItems.HEAVY_MISSILE_RACK.getId(), "torpedo1", true)
 			.setSlotItem("slotname.dscombat.frame_6", ModItems.HEAVY_MISSILE_RACK.getId(), "torpedo1", true)
+			.addIngredient("minecraft:copper_ingot", 64)
+			.addIngredient("minecraft:iron_ingot", 64)
+			.addIngredient("minecraft:redstone", 64)
+			.addIngredient("minecraft:gunpowder", 64)
+			.addIngredient(ModItems.HEAVY_MISSILE_RACK.getId(), 6)
+			.addIngredient(ModItems.XM12.getId(), 1)
 			.build();
 	
 	public static final AircraftPreset DEFAULT_ORANGE_TESLA = AircraftPreset.Builder
@@ -453,7 +482,6 @@ public class DefaultAircraftPresets {
 			.addItemSlot("slotname.dscombat.internal_2", SlotType.INTERNAL, 68, 100, ModItems.LIGHT_FUEL_TANK.getId(), true)
 			.setDefaultTexture(DyeColor.ORANGE, "dscombat:textures/entities/orange_tesla/orange.png")
 			.addIngredient("minecraft:minecart", 4)
-			.addIngredient(ModItems.FUSELAGE.getId(), 1)
 			.addIngredient(ModItems.SEAT.getId(), 4)
 			.addIngredient(ModItems.C6_ENGINE.getId())
 			.addIngredient(ModItems.LIGHT_FUEL_TANK.getId())
@@ -476,6 +504,7 @@ public class DefaultAircraftPresets {
 			.setDefaultTexture(DyeColor.BROWN, "dscombat:textures/entities/wooden_plane/brown.png")
 			.addIngredient("minecraft:oak_planks", 60)
 			.addIngredient(ModItems.COCKPIT.getId())
+			.addIngredient(ModItems.PROPELLER.getId())
 			.addPilotSeatSlot(0, -0.4, 0, 48, 20)
 			.addEmptySlot("slotname.dscombat.left_wing_1", SlotType.WING, 1.5, 0, 0, 0, 48, 40)
 			.addEmptySlot("slotname.dscombat.right_wing_1", SlotType.WING, -1.5, 0, 0, 0, 48, 60)
@@ -510,6 +539,8 @@ public class DefaultAircraftPresets {
 			.setDefaultTexture(DyeColor.GRAY, "dscombat:textures/entities/e3sentry_plane/gray.png")
 			.addIngredient(ModItems.ADVANCED_COCKPIT.getId())
 			.addIngredient(ModItems.SEAT.getId(), 11)
+			.addIngredient(ModItems.LARGE_FUSELAGE.getId(), 2)
+			.addIngredient("minecraft:gold_ingot", 25)
 			.addPilotSeatSlot(0.5, -1.35, 4.7, 48, 20)
 			.addSeatSlot("slotname.dscombat.seat1", -0.5, -1.35, 4.7, 48, 40)
 			.addSeatSlot("slotname.dscombat.seat2", 0.5, -1.35, 3, 68, 20)
@@ -574,6 +605,7 @@ public class DefaultAircraftPresets {
 			.addIngredient(ModItems.FUSELAGE.getId(), 1)
 			.addIngredient(ModItems.SEAT.getId(), 2)
 			.addIngredient(ModItems.AR2K.getId())
+			.addIngredient("minecraft:gold_ingot", 5)
 			.addEmptySlot("slotname.dscombat.cargo_bed_1", SlotType.HEAVY_TURRET, 0, 0.95, -1.5, 0, 48, 40)
 			.addEmptySlot("slotname.dscombat.internal_1", SlotType.SPIN_ENGINE, 48, 60)
 			.addEmptySlot("slotname.dscombat.internal_2", SlotType.INTERNAL, 68, 60)

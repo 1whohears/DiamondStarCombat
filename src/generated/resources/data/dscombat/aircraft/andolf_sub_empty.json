@@ -5,12 +5,12 @@
   "idleheat": 10.0,
   "ingredients": [
     {
-      "item": "minecraft:minecart",
-      "num": 4
+      "item": "dscombat:large_propeller",
+      "num": 1
     },
     {
-      "item": "dscombat:fuselage",
-      "num": 3
+      "item": "dscombat:large_fuselage",
+      "num": 2
     },
     {
       "item": "dscombat:seat",
@@ -18,7 +18,7 @@
     },
     {
       "item": "minecraft:gold_ingot",
-      "num": 4
+      "num": 20
     }
   ],
   "is_craftable": false,

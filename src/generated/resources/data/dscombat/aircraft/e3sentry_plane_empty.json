@@ -11,6 +11,14 @@
     {
       "item": "dscombat:seat",
       "num": 11
+    },
+    {
+      "item": "dscombat:large_fuselage",
+      "num": 2
+    },
+    {
+      "item": "minecraft:gold_ingot",
+      "num": 25
     }
   ],
   "is_craftable": false,

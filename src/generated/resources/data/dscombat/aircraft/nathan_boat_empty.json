@@ -5,12 +5,12 @@
   "idleheat": 2.0,
   "ingredients": [
     {
-      "item": "minecraft:boat",
+      "item": "minecraft:oak_boat",
       "num": 4
     },
     {
-      "item": "dscombat:fuselage",
-      "num": 1
+      "item": "minecraft:iron_ingot",
+      "num": 16
     },
     {
       "item": "dscombat:seat",

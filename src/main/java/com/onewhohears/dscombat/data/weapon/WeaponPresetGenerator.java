@@ -111,7 +111,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.addIngredient("minecraft:tnt", 5)
 				.addIngredient("minecraft:coal_block", 7)
 				.addIngredient("minecraft:amethyst_shard")
-				.addIngredient("dscombat:ti83", 4)
+				.addIngredient("dscombat:ti83", 3)
 				.build());
 		addPresetToGenerate(MissileData.Builder
 				.trackMissileBuilder(DSCombatMod.MODID, "aim7mh")
@@ -143,7 +143,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.addIngredient("minecraft:tnt", 5)
 				.addIngredient("minecraft:coal_block", 8)
 				.addIngredient("minecraft:amethyst_shard")
-				.addIngredient("dscombat:ti83", 4)
+				.addIngredient("dscombat:ti83", 3)
 				.build());
 		addPresetToGenerate(MissileData.Builder
 				.trackMissileBuilder(DSCombatMod.MODID, "aim120b")
@@ -567,7 +567,6 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 	
 	@Override
 	protected void registerPresets() {
-		// TODO 0.6 re-balance weapon stats
 		registerBullets();
 		registerAAMissiles();
 		registerAGMissiles();

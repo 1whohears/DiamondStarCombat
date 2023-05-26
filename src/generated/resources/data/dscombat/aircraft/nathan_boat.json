@@ -5,12 +5,12 @@
   "idleheat": 2.0,
   "ingredients": [
     {
-      "item": "minecraft:boat",
+      "item": "minecraft:oak_boat",
       "num": 4
     },
     {
-      "item": "dscombat:fuselage",
-      "num": 1
+      "item": "minecraft:iron_ingot",
+      "num": 16
     },
     {
       "item": "dscombat:seat",
@@ -31,6 +31,26 @@
     {
       "item": "dscombat:wr400",
       "num": 1
+    },
+    {
+      "item": "minecraft:copper_ingot",
+      "num": 64
+    },
+    {
+      "item": "minecraft:iron_ingot",
+      "num": 32
+    },
+    {
+      "item": "minecraft:redstone",
+      "num": 32
+    },
+    {
+      "item": "minecraft:gunpowder",
+      "num": 32
+    },
+    {
+      "item": "dscombat:heavy_missile_rack",
+      "num": 2
     }
   ],
   "is_craftable": true,

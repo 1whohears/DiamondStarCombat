@@ -573,7 +573,7 @@ public class DefaultAircraftPresets {
 			.addIngredient("minecraft:minecart", 4)
 			.addIngredient(ModItems.FUSELAGE.getId(), 1)
 			.addIngredient(ModItems.SEAT.getId(), 2)
-			.addIngredient(ModItems.AXCEL_TRUCK_RADAR.getId())
+			.addIngredient(ModItems.AR2K.getId())
 			.addEmptySlot("slotname.dscombat.cargo_bed_1", SlotType.HEAVY_TURRET, 0, 0.95, -1.5, 0, 48, 40)
 			.addEmptySlot("slotname.dscombat.internal_1", SlotType.SPIN_ENGINE, 48, 60)
 			.addEmptySlot("slotname.dscombat.internal_2", SlotType.INTERNAL, 68, 60)

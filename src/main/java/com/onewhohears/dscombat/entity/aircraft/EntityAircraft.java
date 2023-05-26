@@ -921,12 +921,13 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	 * fired on both client and server side to control the plane's weapons, flares, open menu
 	 */
 	public void controlSystem() {
+		if (!isOperational()) return;
 		Entity controller = getControllingPassenger();
-		if (controller == null) return;
+		if (controller == null && !isPlayerRiding()) return;
 		if (!level.isClientSide) {
-			if (!isOperational()) return;
 			weaponSystem.tick();
 			radarSystem.tickUpdateTargets();
+			if (controller == null) return;
 			boolean consume = !isNoConsume();
 			boolean altActionItem = false;
 			if (controller instanceof ServerPlayer player) {
@@ -1207,6 +1208,13 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
         }
         return null;
     }
+	
+	public boolean isPlayerRiding() {
+		for (EntitySeat seat : getSeats()) {
+			if (seat.getPlayer() != null) return true;
+		}
+		return false;
+	}
 	
 	@Override
 	public boolean isPickable() {

@@ -103,6 +103,16 @@
       "uix": 88,
       "uiy": 60,
       "zRot": 0.0
+    },
+    {
+      "name": "slotname.dscombat.internal_4",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": 4,
+      "uix": 108,
+      "uiy": 60,
+      "zRot": 0.0
     }
   ],
   "stealth": 1.0,

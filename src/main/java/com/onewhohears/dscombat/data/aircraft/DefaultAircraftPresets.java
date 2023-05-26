@@ -580,6 +580,7 @@ public class DefaultAircraftPresets {
 			.addEmptySlot("slotname.dscombat.internal_3", SlotType.ADVANCED_INTERNAL, 88, 60)
 			.setSlotItem("slotname.dscombat.internal_3", ModItems.AXCEL_TRUCK_RADAR.getId())
 			.lockSlot("slotname.dscombat.internal_3")
+			.addEmptySlot("slotname.dscombat.internal_4", SlotType.ADVANCED_INTERNAL, 108, 60)
 			.build();
 	
 	public static final AircraftPreset DEFAULT_AXCEL_TRUCK = AircraftPreset.Builder

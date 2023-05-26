@@ -37,6 +37,7 @@ public class AntiRadarMissile extends EntityMissile {
 				EntityAircraft.class, getARBoundingBox());
 		for (int i = 0; i < planes.size(); ++i) {
 			if (!planes.get(i).radarSystem.hasRadar()) continue;
+			if (!planes.get(i).isPlayerRiding()) continue;
 			if (!basicCheck(planes.get(i))) continue;
 			float distSqr = (float)distanceToSqr(planes.get(i));
 			targets.add(new ARTarget(planes.get(i), 

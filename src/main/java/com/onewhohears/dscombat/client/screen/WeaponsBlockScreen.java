@@ -116,6 +116,7 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockMenu
 			//startY += inc;
 			startY += font.lineHeight;
 		}
+		stack.scale(1/scale, 1/scale, 1/scale);
 	}
 	
 	@Override

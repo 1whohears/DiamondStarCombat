@@ -5,7 +5,7 @@
 			"item": "dscombat:seat"
 		},
 		"R": {
-			"item": "dscombat:light_missile_rack"
+			"item": "dscombat:heavy_missile_rack"
 		},
 		"M": {
 			"item": "minecraft:magma_block"
@@ -14,16 +14,16 @@
 			"item": "minecraft:minecart"
 		},
 		"P": {
-			"item": "dscombat:aim9p5"
+			"item": "dscombat:aim120b"
 		}
 	},
 	"pattern": [
-		"PMP",
-		"PRP",
+		"PPP",
+		" R ",
 		"CSC"
 	],
 	"result": {
 		"count": 1,
-		"item": "dscombat:steve_up_smash"
+		"item": "dscombat:sam_launcher"
 	}
 }

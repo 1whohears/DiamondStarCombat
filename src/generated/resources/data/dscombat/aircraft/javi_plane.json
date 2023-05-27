@@ -33,10 +33,6 @@
       "num": 1
     },
     {
-      "item": "dscombat:ar1k",
-      "num": 1
-    },
-    {
       "item": "dscombat:gr400",
       "num": 1
     },
@@ -47,6 +43,10 @@
     {
       "item": "dscombat:light_missile_rack",
       "num": 2
+    },
+    {
+      "item": "dscombat:bomb_rack",
+      "num": 1
     },
     {
       "item": "dscombat:xm12",
@@ -112,7 +112,7 @@
       "data": {
         "filled": true,
         "itemid": "dscombat:heavy_missile_rack",
-        "param": "aim120b"
+        "param": "agm84e"
       },
       "name": "slotname.dscombat.left_wing_1",
       "slot_posx": 1.5,
@@ -226,8 +226,8 @@
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_missile_rack",
-        "param": "agm84e"
+        "itemid": "dscombat:bomb_rack",
+        "param": "anm57"
       },
       "name": "slotname.dscombat.frame_2",
       "slot_posx": 0.0,
@@ -294,7 +294,7 @@
     },
     {
       "data": {
-        "itemid": "dscombat:ar1k"
+        "itemid": "dscombat:gr400"
       },
       "name": "slotname.dscombat.internal_5",
       "slot_posx": 0.0,
@@ -306,9 +306,6 @@
       "zRot": 0.0
     },
     {
-      "data": {
-        "itemid": "dscombat:gr400"
-      },
       "name": "slotname.dscombat.internal_6",
       "slot_posx": 0.0,
       "slot_posy": 0.0,

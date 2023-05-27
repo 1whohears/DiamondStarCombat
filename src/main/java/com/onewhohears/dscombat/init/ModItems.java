@@ -119,7 +119,7 @@ public class ModItems {
 			() -> new ItemFuelTank(1f, 0f, 50f, SlotType.INTERNAL_ALL));
 	public static final RegistryObject<Item> HEAVY_FUEL_TANK = ITEMS.register("heavy_fuel_tank", 
 			() -> new ItemFuelTank(3f, 0f, 150f, SlotType.INTERNAL_ALL));
-	
+	// TODO 0.8 review all crafting recipes
 	// ENGINES
 	public static final RegistryObject<Item> C6_ENGINE = ITEMS.register("c6_engine", 
 			() -> new ItemEngine(EngineType.SPIN, 1.1f, 0.25f, 4.0f, 
@@ -174,19 +174,19 @@ public class ModItems {
 	public static final RegistryObject<Item> MINIGUN_TURRET = ITEMS.register("minigun_turret", 
 			() -> new ItemTurret(5f, SlotType.TURRET_ALL, 
 					ModEntities.MINIGUN_TURRET.getId().toString(), "20mm",
-					new RotBounds(2f, -30f, 30f)));
+					new RotBounds(2f, -40f, 40f)));
 	public static final RegistryObject<Item> HEAVY_TANK_TURRET = ITEMS.register("heavy_tank_turret", 
 			() -> new ItemTurret(9f, SlotType.TURRET_HEAVY, 
 					ModEntities.HEAVY_TANK_TURRET.getId().toString(), "120mmhe",
-					new RotBounds(1.5f, -20f, 20f)));
+					new RotBounds(1.5f, -30f, 30f)));
 	public static final RegistryObject<Item> STEVE_UP_SMASH = ITEMS.register("steve_up_smash", 
 			() -> new ItemTurret(13f, SlotType.TURRET_HEAVY, 
 					ModEntities.STEVE_UP_SMASH.getId().toString(), "aim9p5",
-					new RotBounds(1f, -30f, 30f)));
+					new RotBounds(1f, -10f, 25f)));
 	public static final RegistryObject<Item> SAM_LAUNCHER = ITEMS.register("sam_launcher", 
 			() -> new ItemTurret(17f, SlotType.TURRET_HEAVY, 
 					ModEntities.SAM_LAUNCHER.getId().toString(), "aim120b",
-					new RotBounds(0.7f, -30f, 30f)));
+					new RotBounds(0.7f, -5f, 25f)));
 	
 	// FLARE DISPENSERS
 	public static final RegistryObject<Item> BASIC_FLARE_DISPENSER = ITEMS.register("basic_flare_dispenser", 

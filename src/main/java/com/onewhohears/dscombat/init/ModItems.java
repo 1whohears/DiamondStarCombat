@@ -119,7 +119,7 @@ public class ModItems {
 			() -> new ItemFuelTank(1f, 0f, 50f, SlotType.INTERNAL_ALL));
 	public static final RegistryObject<Item> HEAVY_FUEL_TANK = ITEMS.register("heavy_fuel_tank", 
 			() -> new ItemFuelTank(3f, 0f, 150f, SlotType.INTERNAL_ALL));
-	// TODO 0.8 review all crafting recipes
+	
 	// ENGINES
 	public static final RegistryObject<Item> C6_ENGINE = ITEMS.register("c6_engine", 
 			() -> new ItemEngine(EngineType.SPIN, 1.1f, 0.25f, 4.0f, 
@@ -257,6 +257,7 @@ public class ModItems {
 			() -> new ItemAmmo(4, "torpedo1")); 
 	public static final RegistryObject<Item> RIFEL1 = ITEMS.register("rifel1", 
 			() -> new ItemAmmo(4, "rifel1")); 
+	// IDEA 7 bunker buster (go through some blocks then explode)
 	
 	// PLANES
 	public static final RegistryObject<Item> JAVI_PLANE = ITEMS.register("javi_plane", 

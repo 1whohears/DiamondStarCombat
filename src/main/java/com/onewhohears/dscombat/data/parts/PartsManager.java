@@ -7,7 +7,8 @@ import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAircraftFuel;
-import com.onewhohears.dscombat.data.parts.PartData.PartType;
+import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
+import com.onewhohears.dscombat.data.parts.EngineData.EngineType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.item.ItemSeat;
 import com.onewhohears.dscombat.util.UtilParse;
@@ -23,7 +24,7 @@ import net.minecraftforge.network.PacketDistributor;
 
 public class PartsManager {
 	
-	// FIXME 5 make sure unnecessary add part/radar/weapon packets aren't being sent to client
+	public static final int SLOT_VERSION = 1;
 	
 	private final EntityAircraft parent;
 	private List<PartSlot> slots = new ArrayList<PartSlot>();
@@ -41,11 +42,22 @@ public class PartsManager {
 	public void read(CompoundTag compound) {
 		slots.clear();
 		ListTag list = compound.getList("slots", 10);
+		if (compound.getInt("slot_version") < SLOT_VERSION) fixSlots(list);
 		for (int i = 0; i < list.size(); ++i) {
 			CompoundTag tag = list.getCompound(i);
 			slots.add(new PartSlot(tag));
 		}
 		readData = true;
+	}
+	
+	private void fixSlots(ListTag list) {
+		ListTag presetList = AircraftPresets.get().getPreset(parent.preset)
+				.getDataAsNBT().getList("slots", 10);
+		for (int i = 0; i < presetList.size(); ++i) {
+			CompoundTag presetSlot = presetList.getCompound(i);
+			CompoundTag slot = list.getCompound(i);
+			slot.putInt("slot_type", presetSlot.getInt("slot_type"));
+		}
 	}
 	
 	private void createNewInventory() {
@@ -58,13 +70,13 @@ public class PartsManager {
 			@Override
 			public void setItem(int i, ItemStack stack) {
 				//System.out.println("SET ITEM "+i+" "+stack);
-				if (readData) inventorySetItem(i, stack);
+				if (readData && !parent.level.isClientSide) inventorySetItem(i, stack);
 				super.setItem(i, stack);
 			}
 			@Override
 			public ItemStack removeItem(int i, int count) {
 				//System.out.println("REMOVE ITEM "+i);
-				if (readData) inventoryRemoveItem(i, count);
+				if (readData && !parent.level.isClientSide) inventoryRemoveItem(i, count);
 				return super.removeItem(i, count);
 			}			
 		};
@@ -74,7 +86,7 @@ public class PartsManager {
 		}
 	}
 	
-	public void inventorySetItem(int i, ItemStack stack) {
+	private void inventorySetItem(int i, ItemStack stack) {
 		if (i < 0 || i >= slots.size()) {
 			System.out.println("WARNING! INDEX "+i+" IS OUT OF BOUNDS IN PARTS MANAGER "+this);
 			return;
@@ -103,7 +115,7 @@ public class PartsManager {
 		}	
 	}
 	
-	public void inventoryRemoveItem(int i, int count) {
+	private void inventoryRemoveItem(int i, int count) {
 		if (i < 0 || i >= slots.size()) {
 			System.out.println("WARNING! INDEX "+i+" IS OUT OF BOUNDS IN PARTS MANAGER "+this);
 			return;
@@ -141,14 +153,12 @@ public class PartsManager {
 		this.readData = true;
 	}
 	
-	public void setupParts(/*EntityAircraft craft*/) {
-		//this.parent = craft;
+	public void setupParts() {
 		//System.out.println("setupParts "+this);
-		for (PartSlot p : slots) p.setup(parent);
+		for (PartSlot p : slots) p.serverSetup(parent);
 	}
 	
-	public void clientPartsSetup(/*EntityAircraft craft*/) {
-		//this.parent = craft;
+	public void clientPartsSetup() {
 		//System.out.println("clientPartsSetup "+this);
 		for (PartSlot p : slots) p.clientSetup(parent);
 	}
@@ -180,47 +190,65 @@ public class PartsManager {
 	
 	public float getPartsWeight() {
 		float total = 0;
-		for (PartSlot p : slots) if (p.filled()) total += p.getPartData().getWeight();
+		for (PartSlot p : slots) if (p.filled()) {
+			float w = p.getPartData().getWeight();
+			if (Float.isNaN(w)) {
+				System.out.println("ERROR: PART WEIGHT IS NAN "+p.toString());
+				continue;
+			}
+			total += w;
+		}
 		return total;
 	}
 	
-	public float getTotalEngineThrust() {
+	public float getTotalPushThrust() {
 		float total = 0;
-		for (PartSlot p : slots) if (p.filled() && p.getPartData().getType() == PartType.ENGINE) 
-			total += ((EngineData)p.getPartData()).getThrust();
+		for (PartSlot p : slots) if (p.filled() && p.getPartData().isEngine()) {
+			EngineData engine = ((EngineData)p.getPartData());
+			if (engine.getEngineType() == EngineType.PUSH) total += engine.getThrust();
+		}
+		return total;
+	}
+	
+	public float getTotalSpinThrust() {
+		float total = 0;
+		for (PartSlot p : slots) if (p.filled() && p.getPartData().isEngine()) {
+			EngineData engine = ((EngineData)p.getPartData());
+			if (engine.getEngineType() == EngineType.SPIN) total += engine.getThrust();
+		}
 		return total;
 	}
 	
 	public float getTotalEngineHeat() {
 		float total = 0;
-		for (PartSlot p : slots) if (p.filled() && p.getPartData().getType() == PartType.ENGINE) 
+		for (PartSlot p : slots) if (p.filled() && p.getPartData().isEngine()) 
 			total += ((EngineData)p.getPartData()).getHeat();
 		return total;
 	}
 	
 	public float getTotalEngineFuelConsume() {
 		float total = 0;
-		for (PartSlot p : slots) if (p.filled() && p.getPartData().getType() == PartType.ENGINE) 
+		for (PartSlot p : slots) if (p.filled() && p.getPartData().isEngine()) 
 			total += ((EngineData)p.getPartData()).getFuelPerTick();
 		return total;
 	}
 	
 	public float getCurrentFuel() {
 		float total = 0;
-		for (PartSlot p : slots) if (p.filled() && p.getPartData().getType() == PartType.FUEL_TANK) 
+		for (PartSlot p : slots) if (p.filled() && p.getPartData().isFuelTank()) 
 			total += ((FuelTankData)p.getPartData()).getFuel();
 		return total;
 	}
 	
 	public float getMaxFuel() {
 		float total = 0;
-		for (PartSlot p : slots) if (p.filled() && p.getPartData().getType() == PartType.FUEL_TANK) 
+		for (PartSlot p : slots) if (p.filled() && p.getPartData().isFuelTank()) 
 			total += ((FuelTankData)p.getPartData()).getMaxFuel();
 		return total;
 	}
 	
 	public float addFuel(float fuel) {
-		for (PartSlot p : slots) if (p.filled() && p.getPartData().getType() == PartType.FUEL_TANK) {
+		for (PartSlot p : slots) if (p.filled() && p.getPartData().isFuelTank()) {
 			FuelTankData data = (FuelTankData) p.getPartData();
 			fuel = data.addFuel(fuel);
 			if (fuel == 0) break;
@@ -238,7 +266,7 @@ public class PartsManager {
 	
 	public List<PartSlot> getFuelTanks() {
 		List<PartSlot> tanks = new ArrayList<PartSlot>();
-		for (PartSlot p : slots) if (p.filled() && p.getPartData().getType() == PartType.FUEL_TANK) tanks.add(p);
+		for (PartSlot p : slots) if (p.filled() && p.getPartData().isFuelTank()) tanks.add(p);
 		return tanks;
 	}
 	
@@ -269,7 +297,7 @@ public class PartsManager {
 	public List<PartSlot> getFlares() {
 		List<PartSlot> flares = new ArrayList<PartSlot>();
 		for (PartSlot p : slots) 
-			if (p.filled() && p.getPartData().getType() == PartType.FLARE_DISPENSER) 
+			if (p.filled() && p.getPartData().isFlareDispenser()) 
 				flares.add(p);
 		return flares;
 	}

@@ -33,7 +33,7 @@ public class TurretData extends SeatData {
 		this.weaponId = weaponId;
 		this.turretEntityKey = turrentEntityKey;
 		this.rotBounds = rotBounds;
-		WeaponData data = WeaponPresets.getById(weaponId);
+		WeaponData data = WeaponPresets.get().getPreset(weaponId);
 		if (data != null) {
 			this.ammo = data.getMaxAmmo();
 			this.max = data.getMaxAmmo();
@@ -83,7 +83,7 @@ public class TurretData extends SeatData {
 	}
 	
 	@Override
-	public void setup(EntityAircraft craft, String slotId, Vec3 pos) {
+	public void serverSetup(EntityAircraft craft, String slotId, Vec3 pos) {
 		setParent(craft);
 		setRelPos(pos);
 		EntityTurret t = getTurret(slotId);
@@ -117,7 +117,7 @@ public class TurretData extends SeatData {
 	}
 	
 	@Override
-	public void remove(String slotId) {
+	public void serverRemove(String slotId) {
 		for (EntityPart part : getParent().getPartEntities()) 
 			if (part.getSlotId().equals(slotId)) 
 				part.discard();

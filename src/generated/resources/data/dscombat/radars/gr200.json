@@ -1,0 +1,14 @@
+{
+  "fov": -1.0,
+  "presetId": "gr200",
+  "range": 200.0,
+  "scanAir": false,
+  "scanAircraft": true,
+  "scanGround": true,
+  "scanMobs": true,
+  "scanPlayers": true,
+  "scanRate": 40,
+  "sensitivity": 1.0,
+  "throGroundRange": 0.0,
+  "throWaterRange": 0.0
+}

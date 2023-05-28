@@ -17,7 +17,7 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
 
-public class EntityModelSteveUpSmash<T extends EntityTurret> extends EntityControllableModel<T>{
+public class EntityModelSteveUpSmash extends EntityControllableModel<EntityTurret>{
 	
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(DSCombatMod.MODID, "steve_up_smash"), "main");
 	private final ModelPart main;
@@ -34,7 +34,7 @@ public class EntityModelSteveUpSmash<T extends EntityTurret> extends EntityContr
 	}
 	
 	@Override
-	public void renderToBuffer(T entity, float partialTicks, PoseStack poseStack, VertexConsumer vertexConsumer,
+	public void renderToBuffer(EntityTurret entity, float partialTicks, PoseStack poseStack, VertexConsumer vertexConsumer,
 			int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		poseStack.translate(0, 1.5, 0);
 		poseStack.scale(1.0F, -1.0F, 1.0F);

@@ -30,8 +30,8 @@ public class WeaponRackData extends WeaponPartData {
 	}
 
 	@Override
-	public void setup(EntityAircraft craft, String slotId, Vec3 pos) {
-		super.setup(craft, slotId, pos);
+	public void serverSetup(EntityAircraft craft, String slotId, Vec3 pos) {
+		super.serverSetup(craft, slotId, pos);
 		if (!isEntitySetup(slotId, craft)) {
 			WeaponData data = craft.weaponSystem.get(weaponId, slotId);
 			if (data == null) return;
@@ -55,8 +55,8 @@ public class WeaponRackData extends WeaponPartData {
 	}
 	
 	@Override
-	public void remove(String slotId) {
-		super.remove(slotId);
+	public void serverRemove(String slotId) {
+		super.serverRemove(slotId);
 		for (EntityPart part : getParent().getPartEntities()) 
 			if (part.getSlotId().equals(slotId)) 
 				part.discard();

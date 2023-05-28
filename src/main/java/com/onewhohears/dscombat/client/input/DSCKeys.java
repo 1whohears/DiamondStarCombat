@@ -18,10 +18,12 @@ public final class DSCKeys {
 	public static KeyMapping pitchUpKey, pitchDownKey;
 	public static KeyMapping rollLeftKey, rollRightKey;
 	public static KeyMapping yawLeftKey, yawRightKey;
-	public static KeyMapping flareKey, weaponSelectKey;
+	public static KeyMapping weaponSelectKey, weaponSelect2Key;
+	public static KeyMapping flareKey;
 	public static KeyMapping mouseModeKey, resetMouseKey;
 	public static KeyMapping shootKey, landingGear;
-	public static KeyMapping planeMenuKey, radarModeKey;
+	public static KeyMapping planeMenuKey;
+	public static KeyMapping pingCycleKey, radarModeKey;
 	public static KeyMapping changeSeat, dismount;
 	public static KeyMapping specialKey, special2Key;
 	public static KeyMapping flipControlsKey;
@@ -39,18 +41,20 @@ public final class DSCKeys {
 		yawLeftKey = registerKey("yaw_left_key", FLIGHT_CONTROL, InputConstants.KEY_A);
 		yawRightKey = registerKey("yaw_right_key", FLIGHT_CONTROL, InputConstants.KEY_D);
 		flareKey = registerKey("flare_key", FLIGHT_CONTROL, InputConstants.KEY_V);
+		dismount = registerKey("dismount_key", FLIGHT_CONTROL, InputConstants.KEY_H);
 		mouseModeKey = registerKey("mouse_mode_key", FLIGHT_CONTROL, InputConstants.KEY_LCONTROL);
-		shootKey = registerMouse("shoot_key", FLIGHT_CONTROL, InputConstants.MOUSE_BUTTON_RIGHT);
-		weaponSelectKey = registerKey("weapon_select_key", FLIGHT_CONTROL, InputConstants.KEY_G);
 		resetMouseKey = registerKey("reset_mouse_key", FLIGHT_CONTROL, InputConstants.KEY_RALT);
-		planeMenuKey = registerKey("plane_menu_key", FLIGHT_CONTROL, InputConstants.KEY_U);
-		changeSeat = registerKey("change_seat_key", FLIGHT_CONTROL, InputConstants.KEY_SEMICOLON);
-		landingGear = registerKey("landing_gear_key", FLIGHT_CONTROL, InputConstants.KEY_L);
-		radarModeKey = registerKey("radar_mode_key", FLIGHT_CONTROL, InputConstants.KEY_O);
 		specialKey = registerKey("special_key", FLIGHT_CONTROL, InputConstants.KEY_SPACE);
 		special2Key = registerKey("special_2_key", FLIGHT_CONTROL, InputConstants.KEY_LALT);
 		flipControlsKey = registerKey("flip_controls_key", FLIGHT_CONTROL, InputConstants.KEY_LSHIFT);
-		dismount = registerKey("dismount_key", FLIGHT_CONTROL, InputConstants.KEY_H);
+		shootKey = registerMouse("shoot_key", FLIGHT_CONTROL, InputConstants.MOUSE_BUTTON_RIGHT);
+		weaponSelectKey = registerKey("weapon_select_key", FLIGHT_CONTROL, InputConstants.KEY_G);
+		weaponSelect2Key = registerKey("weapon_select_up_key", FLIGHT_CONTROL, InputConstants.UNKNOWN.getValue());
+		planeMenuKey = registerKey("plane_menu_key", FLIGHT_CONTROL, InputConstants.KEY_U);
+		changeSeat = registerKey("change_seat_key", FLIGHT_CONTROL, InputConstants.KEY_Y);
+		landingGear = registerKey("landing_gear_key", FLIGHT_CONTROL, InputConstants.KEY_K);
+		radarModeKey = registerKey("radar_mode_key", FLIGHT_CONTROL, InputConstants.KEY_O);
+		pingCycleKey = registerKey("ping_cycle_key", FLIGHT_CONTROL, InputConstants.KEY_I);
 	}
 	
 	private static KeyMapping registerKey(String name, String category, int keycode) {

@@ -15,8 +15,9 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
-public class EntityModelAlexisPlane<T extends EntityPlane> extends EntityControllableModel<T> {
+public class EntityModelAlexisPlane extends EntityControllableModel<EntityPlane> {
 	
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(DSCombatMod.MODID, "alexis_plane"), "main");
 	
@@ -33,13 +34,13 @@ public class EntityModelAlexisPlane<T extends EntityPlane> extends EntityControl
 	}
 	
 	@Override
-	public void renderToBuffer(T entity, float partialTicks, PoseStack poseStack, VertexConsumer vertexConsumer,
+	public void renderToBuffer(EntityPlane entity, float partialTicks, PoseStack poseStack, VertexConsumer vertexConsumer,
 			int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		poseStack.translate(0, 1.20, 0);
 		poseStack.scale(1.0F, -1.0F, 1.0F);
 		float gear = entity.getLandingGearPos(partialTicks);
 		if (gear < 1) {
-			float hpi = (float)Math.PI/2;
+			float hpi = Mth.PI/2;
 			this.gfront.xRot = gear * -hpi;
 			this.gleft.xRot = gear * hpi;
 			this.gright.xRot = gear * hpi;
@@ -51,10 +52,10 @@ public class EntityModelAlexisPlane<T extends EntityPlane> extends EntityControl
 			this.gleft.visible = false;
 			this.gright.visible = false;
 		}
-		float ypi = (float)Math.PI/8;
-		float ppi = (float)Math.PI/12;
-		this.stick.zRot = entity.inputYaw * -ypi;
-		this.stick.xRot = entity.inputPitch * ppi;
+		float ypi = Mth.PI/8;
+		float ppi = Mth.PI/12;
+		this.stick.zRot = entity.inputs.yaw * -ypi;
+		this.stick.xRot = entity.inputs.pitch * ppi;
 		body.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 	

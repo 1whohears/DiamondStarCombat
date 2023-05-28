@@ -3,11 +3,15 @@ package com.onewhohears.dscombat.item;
 import java.util.List;
 import java.util.function.Predicate;
 
+import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
+import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.init.ModItems;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -25,7 +29,6 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class ItemAircraft extends Item {
 	
@@ -33,10 +36,12 @@ public class ItemAircraft extends Item {
 			.and(Entity::isPickable);
 	
 	private final EntityType<? extends EntityAircraft> entityType;
+	private final String defaultPreset;
 	
-	public ItemAircraft(EntityType<? extends EntityAircraft> entityType) {
+	public ItemAircraft(EntityType<? extends EntityAircraft> entityType, AircraftPreset defaultPreset) {
 		super(new Item.Properties().tab(ModItems.AIRCRAFT).stacksTo(1));
 		this.entityType = entityType;
+		this.defaultPreset = defaultPreset.getId();
 	}
 	
 	@Override
@@ -60,9 +65,7 @@ public class ItemAircraft extends Item {
 				}
 			}
 			if (hitresult.getType() == HitResult.Type.BLOCK) {
-				CompoundTag tag = itemstack.getOrCreateTag();
-				//EntityType<? extends EntityAircraft> entitytype = getType(tag);
-				spawnData(tag, player);
+				ItemStack spawn_data_stack = spawnData(itemstack, player);
 				EntityAircraft e = entityType.create(level);
 				Vec3 pos = hitresult.getLocation();
 				if (e.isCustomBoundingBox()) e.setPos(pos.add(0, e.getBbHeight()/2d, 0));
@@ -73,7 +76,7 @@ public class ItemAircraft extends Item {
 					int above = 0;
 					if (e.isCustomBoundingBox()) above = (int)(e.getBbHeight()/2d)+1;
 					Entity entity = entityType.spawn((ServerLevel)level, 
-							itemstack, player, 
+							spawn_data_stack, player, 
 							new BlockPos(pos).above(above), 
 							MobSpawnType.SPAWN_EGG, 
 							false, false);
@@ -89,18 +92,13 @@ public class ItemAircraft extends Item {
 		}
 	}
 	
-	/*private EntityType<? extends EntityAircraft> getType(CompoundTag nbt) {
-		if (nbt.contains("EntityTag", 10)) return entityType;
-		CompoundTag etag = new CompoundTag();
-		etag.putString("preset", getPresetName());
-		nbt.put("EntityTag", etag);
-		return entityType;
-	}*/
-	
-	private void spawnData(CompoundTag tag, Player player) {
+	private ItemStack spawnData(ItemStack itemstack, Player player) {
+		ItemStack copy = itemstack.copy();
+		CompoundTag tag = copy.getOrCreateTag();
 		if (!tag.contains("EntityTag", 10)) {
 			CompoundTag et = new CompoundTag();
-			et.putString("preset", getPresetName());
+			et.putString("preset", getPresetName(itemstack));
+			System.out.println("item aircraft preset "+getPresetName(itemstack));
 			et.putBoolean("merged_preset", false);
 			tag.put("EntityTag", et);
 		}
@@ -108,10 +106,42 @@ public class ItemAircraft extends Item {
 		et.putFloat("yRot", player.getYRot());
 		et.putFloat("current_throttle", 0);
 		et.putBoolean("landing_gear", true);
+		return copy;
 	}
 	
-	public String getPresetName() {
-		return ForgeRegistries.ITEMS.getKey(this).getPath();
+	public String getPresetName(ItemStack itemstack) {
+		CompoundTag tag = itemstack.getTag();
+		if (tag == null || !tag.contains("preset")) return defaultPreset;
+		return tag.getString("preset");
+	}
+	
+	/*@Override
+	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tips, TooltipFlag isAdvanced) {
+		CompoundTag tag = stack.getTag();
+		if (tag == null || !tag.contains("EntityTag")) return;
+		CompoundTag et = tag.getCompound("EntityTag");
+		
+	}*/
+	
+	@Override
+	public Component getName(ItemStack stack) {
+		CompoundTag tag = stack.getTag();
+		if (tag == null || !tag.contains("EntityTag")) {
+			String name = getPresetName(stack);
+			AircraftPreset ap = AircraftPresets.get().getPreset(name);
+			if (ap == null) return Component.translatable(getDescriptionId()).append(" unknown preset!");
+			return ap.getDisplayName().setStyle(Style.EMPTY.withColor(0x55FFFF));
+		}
+		String owner = tag.getCompound("EntityTag").getString("owner");
+		if (owner.isEmpty()) owner = "Someone";
+		return Component.literal(owner+"'s ").append(super.getName(stack))
+				.setStyle(Style.EMPTY.withColor(0xFFAA00).withBold(true));
+	}
+	
+	@Override
+	public boolean isFoil(ItemStack stack) {
+		CompoundTag tag = stack.getTag();
+		return tag != null && tag.contains("EntityTag");
 	}
 
 }

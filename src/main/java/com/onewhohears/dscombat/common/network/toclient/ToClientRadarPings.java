@@ -25,7 +25,7 @@ public class ToClientRadarPings extends IPacket {
 	}
 	
 	public ToClientRadarPings(FriendlyByteBuf buffer) {
-		super(buffer);
+		//super(buffer);
 		id = buffer.readInt();
 		pings = new ArrayList<RadarPing>();
 		int num = buffer.readInt();

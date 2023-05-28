@@ -1,7 +1,7 @@
 .gradle
 **/build/
 !src/**/build/
-**/src/generated/
+**/src/generated/resources/.cache
 
 # Ignore Gradle GUI config
 gradle-app.setting

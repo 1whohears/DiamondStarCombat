@@ -1,0 +1,14 @@
+{
+  "fov": -1.0,
+  "presetId": "wr1k",
+  "range": 1000.0,
+  "scanAir": false,
+  "scanAircraft": true,
+  "scanGround": false,
+  "scanMobs": false,
+  "scanPlayers": true,
+  "scanRate": 30,
+  "sensitivity": 2.0,
+  "throGroundRange": 0.0,
+  "throWaterRange": 1000.0
+}

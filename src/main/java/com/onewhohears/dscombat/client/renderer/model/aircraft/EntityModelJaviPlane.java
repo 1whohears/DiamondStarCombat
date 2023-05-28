@@ -15,8 +15,9 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
-public class EntityModelJaviPlane<T extends EntityPlane> extends EntityControllableModel<T> {
+public class EntityModelJaviPlane extends EntityControllableModel<EntityPlane> {
 	
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(DSCombatMod.MODID, "javi_plane"), "main");
 	
@@ -30,6 +31,32 @@ public class EntityModelJaviPlane<T extends EntityPlane> extends EntityControlla
 		this.gleft = root.getChild("gear").getChild("gleft");
 		this.gright = root.getChild("gear").getChild("gright");
 		this.stick = root.getChild("seat").getChild("stick");
+	}
+	
+	@Override
+	public void renderToBuffer(EntityPlane entity, float partialTicks, PoseStack poseStack, VertexConsumer vertexConsumer,
+			int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+		poseStack.translate(0, 1.20, 0);
+		poseStack.scale(1.0F, -1.0F, 1.0F);
+		float gear = entity.getLandingGearPos(partialTicks);
+		if (gear < 1) {
+			float hpi = Mth.PI/2;
+			this.gfront.xRot = gear * -hpi;
+			this.gleft.xRot = gear * hpi;
+			this.gright.xRot = gear * hpi;
+			this.gfront.visible = true;
+			this.gleft.visible = true;
+			this.gright.visible = true;
+		} else {
+			this.gfront.visible = false;
+			this.gleft.visible = false;
+			this.gright.visible = false;
+		}
+		float ypi = Mth.PI/8;
+		float ppi = Mth.PI/12;
+		this.stick.zRot = entity.inputs.yaw * -ypi;
+		this.stick.xRot = entity.inputs.pitch * ppi;
+		root.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 	
 	public static LayerDefinition createBodyLayer() {
@@ -146,32 +173,6 @@ public class EntityModelJaviPlane<T extends EntityPlane> extends EntityControlla
 		.texOffs(40, 33).addBox(0.5F, 12.0F, -1.5F, 1.0F, 3.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offset(30.5F, 0.0F, -3.5F));
 
 		return LayerDefinition.create(meshdefinition, 512, 512);
-	}
-	
-	@Override
-	public void renderToBuffer(T entity, float partialTicks, PoseStack poseStack, VertexConsumer vertexConsumer,
-			int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		poseStack.translate(0, 1.20, 0);
-		poseStack.scale(1.0F, -1.0F, 1.0F);
-		float gear = entity.getLandingGearPos(partialTicks);
-		if (gear < 1) {
-			float hpi = (float)Math.PI/2;
-			this.gfront.xRot = gear * -hpi;
-			this.gleft.xRot = gear * hpi;
-			this.gright.xRot = gear * hpi;
-			this.gfront.visible = true;
-			this.gleft.visible = true;
-			this.gright.visible = true;
-		} else {
-			this.gfront.visible = false;
-			this.gleft.visible = false;
-			this.gright.visible = false;
-		}
-		float ypi = (float)Math.PI/8;
-		float ppi = (float)Math.PI/12;
-		this.stick.zRot = entity.inputYaw * -ypi;
-		this.stick.xRot = entity.inputPitch * ppi;
-		root.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 
 }

@@ -3,6 +3,11 @@ package com.onewhohears.dscombat.data.weapon;
 import java.util.List;
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
+import com.google.gson.JsonObject;
+import com.onewhohears.dscombat.data.JsonPreset;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityBullet;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.util.math.UtilAngles;
@@ -10,66 +15,63 @@ import com.onewhohears.dscombat.util.math.UtilAngles;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class BulletData extends WeaponData {
 	
-	private float damage;
-	private double speed;
-	private boolean explosive;
-	private boolean destroyTerrain;
-	private boolean causesFire;
-	private float explosionRadius;
-	private float innacuracy;
+	public static class Builder extends AbstractWeaponBuilders.BulletBuilder<Builder> {
+
+		protected Builder(String namespace, String name, JsonPresetFactory<? extends BulletData> sup) {
+			super(namespace, name, sup, WeaponType.BULLET);
+		}
+		
+		public static Builder bulletBuilder(String namespace, String name) {
+			return new Builder(namespace, name, (key, json) -> new BulletData(key, json));
+		}
+		
+	}
 	
-	public BulletData(CompoundTag tag) {
-		super(tag);
-		this.damage = tag.getFloat("damage");
-		this.speed = tag.getDouble("speed");
-		this.explosive = tag.getBoolean("explosive");
-		this.destroyTerrain = tag.getBoolean("destroyTerrain");
-		this.causesFire = tag.getBoolean("causesFire");
-		this.explosionRadius = tag.getFloat("explosionRadius");
-		this.innacuracy = tag.getFloat("innacuracy");
+	private final float damage;
+	private final double speed;
+	private final boolean explosive;
+	private final boolean destroyTerrain;
+	private final boolean causesFire;
+	private final float explosionRadius;
+	private final float innacuracy;
+	
+	public BulletData(ResourceLocation key, JsonObject json) {
+		super(key, json);
+		this.damage = json.get("damage").getAsFloat();
+		this.speed = json.get("speed").getAsDouble();
+		this.explosive = json.get("explosive").getAsBoolean();
+		this.destroyTerrain = json.get("destroyTerrain").getAsBoolean();
+		this.causesFire = json.get("causesFire").getAsBoolean();
+		this.explosionRadius = json.get("explosionRadius").getAsFloat();
+		this.innacuracy = json.get("innacuracy").getAsFloat();
 	}
 	
 	@Override
-	public CompoundTag write() {
-		CompoundTag tag = super.write();
-		tag.putFloat("damage", damage);
-		tag.putDouble("speed", speed);
-		tag.putBoolean("explosive", explosive);
-		tag.putBoolean("destroyTerrain", destroyTerrain);
-		tag.putBoolean("causesFire", causesFire);
-		tag.putFloat("explosionRadius", explosionRadius);
-		tag.putFloat("innacuracy", innacuracy);
+	public void readNBT(CompoundTag tag) {
+		super.readNBT(tag);
+	}
+	
+	@Override
+	public CompoundTag writeNbt() {
+		CompoundTag tag = super.writeNbt();
 		return tag;
 	}
 	
-	public BulletData(FriendlyByteBuf buffer) {
-		super(buffer);
-		//System.out.println("BULLET BUFFER");
-		this.damage = buffer.readFloat();
-		this.speed = buffer.readDouble();
-		this.explosive = buffer.readBoolean();
-		this.destroyTerrain = buffer.readBoolean();
-		this.causesFire = buffer.readBoolean();
-		this.explosionRadius = buffer.readFloat();
-		this.innacuracy = buffer.readFloat();
+	@Override
+	public void readBuffer(FriendlyByteBuf buffer) {
+		super.readBuffer(buffer);
 	}
 	
 	@Override
-	public void write(FriendlyByteBuf buffer) {
-		super.write(buffer);
-		buffer.writeFloat(damage);
-		buffer.writeDouble(speed);
-		buffer.writeBoolean(explosive);
-		buffer.writeBoolean(destroyTerrain);
-		buffer.writeBoolean(causesFire);
-		buffer.writeFloat(explosionRadius);
-		buffer.writeFloat(innacuracy);
+	public void writeBuffer(FriendlyByteBuf buffer) {
+		super.writeBuffer(buffer);
 	}
 	
 	@Override
@@ -82,8 +84,8 @@ public class BulletData extends WeaponData {
 	}
 	
 	@Override
-	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction) {
-		EntityBullet bullet = (EntityBullet) super.getShootEntity(level, owner, pos, direction);
+	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction, @Nullable EntityAircraft vehicle) {
+		EntityBullet bullet = (EntityBullet) super.getShootEntity(level, owner, pos, direction, vehicle);
 		if (bullet == null) return null;
 		bullet.setDeltaMovement(direction.scale(speed));
 		return bullet;
@@ -130,8 +132,8 @@ public class BulletData extends WeaponData {
 	}
 
 	@Override
-	public WeaponData copy() {
-		return new BulletData(this.write());
+	public <T extends JsonPreset> T copy() {
+		return (T) new BulletData(getKey(), getJsonData());
 	}
 	
 	@Override

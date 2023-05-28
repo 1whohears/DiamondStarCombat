@@ -1,6 +1,8 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
+import com.onewhohears.dscombat.Config;
+import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.core.BlockPos;
@@ -9,7 +11,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.AABB;
@@ -18,15 +19,18 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class EntityBoat extends EntityAircraft {
 	
+	public final double CO_FLOAT = Config.SERVER.coFloat.get();
+	
 	private final float propellerRate = 3.141f;
 	private float propellerRot = 0, propellerRotOld = 0;
 	
 	protected double waterLevel;
 	
 	public EntityBoat(EntityType<? extends EntityBoat> entity, Level level, 
-			RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item,
+			AircraftPreset defaultPreset,
+			RegistryObject<SoundEvent> engineSound, 
 			float explodeSize) {
-		super(entity, level, engineSound, item, 
+		super(entity, level, defaultPreset, engineSound,
 				true, 6, 10, 4, explodeSize);
 	}
 	
@@ -59,7 +63,7 @@ public class EntityBoat extends EntityAircraft {
 	public void directionGround(Quaternion q) {
 		flatten(q, 4f, 4f, true);
 		if (!isOperational()) return;
-		addMomentY(inputYaw * getYawTorque() * 0.1f, true);
+		addMomentY(inputs.yaw * getYawTorque() * 0.1f, true);
 	}
 	
 	@Override
@@ -71,7 +75,7 @@ public class EntityBoat extends EntityAircraft {
 	public void directionWater(Quaternion q) {
 		if (!isOperational()) return;
 		flatten(q, 2f, 2f, true);
-		addMomentY(inputYaw * getYawTorque(), true);
+		addMomentY(inputs.yaw * getYawTorque(), true);
 	}
 	
 	@Override
@@ -81,7 +85,7 @@ public class EntityBoat extends EntityAircraft {
 	
 	@Override
 	public void tickMovement(Quaternion q) {
-		if (inputSpecial) throttleToZero();
+		if (inputs.special) throttleToZero();
 		super.tickMovement(q);
 	}
 	
@@ -102,26 +106,45 @@ public class EntityBoat extends EntityAircraft {
 	
 	@Override
 	public void tickWater(Quaternion q) {
+		forces = forces.subtract(getWeightForce());
+		waterFriction();
 		Vec3 move = getDeltaMovement();
-		move = move.multiply(0.950, 0.900, 0.950);
 		if (checkInWater()) {
+			double v = getFloatSpeed();
 			if (willFloat()) {
 				double bbh = getBbHeight();
-				double goalY = waterLevel - bbh/2.5;
+				double goalY = waterLevel - bbh*0.2;
+				if (isCustomBoundingBox()) goalY += bbh*0.5;
 				double dy = goalY - getY();
-				if (Math.abs(move.y) < 0.01 && Math.abs(dy) < 0.01) move = move.multiply(1, 0, 1);
-				else move = move.add(0, 0.01 * Math.signum(dy), 0);
+				if (Math.abs(move.y) < v && Math.abs(dy) < v) move = move.multiply(1, 0, 1);
+				else move = move.add(0, v * Math.signum(dy), 0);
 			} 
-			else move = move.add(0, -0.01, 0);
+			else move = move.add(0, -v, 0);
 		}
-		move = move.add(UtilAngles.rotationToVector(getYRot(), 0, getThrustMag()));
 		setDeltaMovement(move);
+	}
+	
+	public double getFloatSpeed() {
+		return 0.02;
+	}
+	
+	public void waterFriction() {
+		Vec3 move = getDeltaMovement();
+		move = move.multiply(1, 0.900, 1);
+		setDeltaMovement(move);
+		if (canBreak() && isBreaking()) addFrictionForce(1);
+		else addFrictionForce(0.1);
+	}
+	
+	@Override
+	public boolean isBreaking() {
+		return inputs.special;
 	}
 	
 	public boolean willFloat() {
 		if (!isOperational()) return false;
-		float w = getTotalMass();
-		float fc = getBbWidth() * getBbWidth() * 0.05f;
+		float w = getTotalMass() * (float)ACC_GRAVITY;
+		float fc = getBbWidth() * getBbWidth() * (float)CO_FLOAT;
 		return fc > w;
 	}
 	
@@ -159,19 +182,23 @@ public class EntityBoat extends EntityAircraft {
 	
 	@Override
 	public double getMaxSpeedForMotion() {
+		float th = getCurrentThrottle();
 		double max = getMaxSpeed();
-		if (getCurrentThrottle() < 0) return max * 0.2;
+		if (th < 0) return max * 0.25;
     	return max;
     }
 	
 	@Override
-	public double getThrustMag() {
-		return super.getThrustMag();
+	public double getPushThrustMag() {
+		return super.getPushThrustMag();
 	}
 
 	@Override
 	public Vec3 getThrustForce(Quaternion q) {
-		return Vec3.ZERO;
+		if (!isInWater()) return Vec3.ZERO;
+		Vec3 direction = UtilAngles.getRollAxis(q);
+		Vec3 thrustForce = direction.scale(getPushThrustMag());
+		return thrustForce;
 	}
 	
 	@Override
@@ -180,14 +207,11 @@ public class EntityBoat extends EntityAircraft {
     }
 	
 	@Override
-	public void updateControls(float throttle, float pitch, float roll, float yaw,
-			boolean mouseMode, boolean flare, boolean shoot, boolean select,
-			boolean openMenu, boolean special, boolean special2, boolean radarMode, 
-			boolean bothRoll) {
-		super.updateControls(throttle, pitch, roll, yaw, mouseMode, flare, shoot, 
-				select, openMenu, special, special2, radarMode, bothRoll);
-		this.inputThrottle = pitch;
-		this.inputPitch = throttle;
+	public void readInputs() {
+		super.readInputs();
+		float temp = inputs.pitch;
+		inputs.pitch = inputs.throttle;
+		inputs.throttle = temp;
 	}
 	
 	@Override
@@ -214,12 +238,12 @@ public class EntityBoat extends EntityAircraft {
 	
 	@Override
 	public boolean canOpenMenu() {
-		return xzSpeed < 0.1;
+		return xzSpeed < 0.1 || isTestMode();
 	}
 	
 	@Override
 	public String getOpenMenuError() {
-		return "dscombat.no_menu_moving";
+		return "error.dscombat.no_menu_moving";
 	}
 
 	@Override

@@ -2,6 +2,8 @@ package com.onewhohears.dscombat.data.weapon;
 
 import java.util.List;
 
+import com.google.gson.JsonObject;
+import com.onewhohears.dscombat.data.JsonPreset;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.weapon.AntiRadarMissile;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
@@ -9,30 +11,36 @@ import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class AntiRadarMissileData extends MissileData {
 
-	public AntiRadarMissileData(CompoundTag tag) {
-		super(tag);
+	public AntiRadarMissileData(ResourceLocation key, JsonObject json) {
+		super(key, json);
 	}
 	
 	@Override
-	public CompoundTag write() {
-		CompoundTag tag = super.write();
-		
+	public void readNBT(CompoundTag tag) {
+		super.readNBT(tag);
+	}
+	
+	@Override
+	public CompoundTag writeNbt() {
+		CompoundTag tag = super.writeNbt();
 		return tag;
 	}
 	
-	public AntiRadarMissileData(FriendlyByteBuf buffer) {
-		super(buffer);
+	@Override
+	public void readBuffer(FriendlyByteBuf buffer) {
+		super.readBuffer(buffer);
 	}
 	
 	@Override
-	public void write(FriendlyByteBuf buffer) {
-		super.write(buffer);
+	public void writeBuffer(FriendlyByteBuf buffer) {
+		super.writeBuffer(buffer);
 	}
 	
 	@Override
@@ -49,8 +57,8 @@ public class AntiRadarMissileData extends MissileData {
 	}
 	
 	@Override
-	public WeaponData copy() {
-		return new AntiRadarMissileData(this.write());
+	public <T extends JsonPreset> T copy() {
+		return (T) new AntiRadarMissileData(getKey(), getJsonData());
 	}
 	
 	@Override
@@ -59,8 +67,8 @@ public class AntiRadarMissileData extends MissileData {
 	}
 	
 	@Override
-	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 direction, EntityAircraft vehicle) {
-		AntiRadarMissile missile = (AntiRadarMissile) super.getShootEntity(level, owner, direction, vehicle);
+	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction, EntityAircraft vehicle) {
+		AntiRadarMissile missile = (AntiRadarMissile) super.getShootEntity(level, owner, pos, direction, vehicle);
 		if (missile == null) return null;
 		return missile;
 	}

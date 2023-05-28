@@ -50,11 +50,6 @@ public class EntitySeat extends EntityPart {
 	
 	public void init() {
 		super.init();
-		if (getCamera() != null) return;
-		EntitySeatCamera cam = new EntitySeatCamera(level);
-		cam.setPos(position());
-		cam.startRiding(this);
-		level.addFreshEntity(cam);
 	}
 	
 	@Override
@@ -89,8 +84,9 @@ public class EntitySeat extends EntityPart {
 		Quaternion q;
 		if (level.isClientSide) q = craft.getClientQ();
 		else q = craft.getQ();
-		double offset = getPassengersRidingOffset() + passenger.getMyRidingOffset();
-		Vec3 passPos = UtilAngles.rotateVector(new Vec3(0, offset, 0), q);
+		double offset = getPassengersRidingOffset() + passenger.getMyRidingOffset() + passenger.getEyeHeight();
+		Vec3 passPos = UtilAngles.rotateVector(new Vec3(0, offset, 0), q)
+				.subtract(0, passenger.getEyeHeight(), 0);
 		passenger.setPos(pos.add(passPos));
 	}
 	
@@ -102,7 +98,6 @@ public class EntitySeat extends EntityPart {
 	@Override
     public boolean canAddPassenger(Entity passenger) {
 		if (passenger instanceof Player) return getPlayer() == null;
-		if (passenger instanceof EntitySeatCamera) return getCamera() == null;
 		return false;
 	}
 	
@@ -122,13 +117,6 @@ public class EntitySeat extends EntityPart {
 	public Player getPlayer() {
 		List<Entity> list = getPassengers();
 		for (Entity e : list) if (e instanceof Player p) return p;
-		return null;
-	}
-	
-	@Nullable
-	public EntitySeatCamera getCamera() {
-		List<Entity> list = getPassengers();
-		for (Entity e : list) if (e instanceof EntitySeatCamera c) return c;
 		return null;
 	}
 	

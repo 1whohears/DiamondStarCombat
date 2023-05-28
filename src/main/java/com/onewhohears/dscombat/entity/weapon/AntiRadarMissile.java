@@ -37,7 +37,7 @@ public class AntiRadarMissile extends EntityMissile {
 				EntityAircraft.class, getARBoundingBox());
 		for (int i = 0; i < planes.size(); ++i) {
 			if (!planes.get(i).radarSystem.hasRadar()) continue;
-			if (planes.get(i).isVehicleOf(getOwner())) continue;
+			if (!planes.get(i).isPlayerRiding()) continue;
 			if (!basicCheck(planes.get(i))) continue;
 			float distSqr = (float)distanceToSqr(planes.get(i));
 			targets.add(new ARTarget(planes.get(i), 
@@ -63,8 +63,8 @@ public class AntiRadarMissile extends EntityMissile {
 		if (!ping.isOnGround()) {
 			return false;
 		}
-		if (ping.equals(getOwner())) {
-			//System.out.println("is owner");
+		if (isAlliedTo(ping)) {
+			//System.out.println("is allied");
 			return false;
 		}
 		if (!checkTargetRange(ping, AR_RANGE)) {

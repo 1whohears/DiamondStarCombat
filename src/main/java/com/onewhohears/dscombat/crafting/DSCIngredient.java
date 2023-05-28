@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -23,12 +26,24 @@ public class DSCIngredient {
 		this.cost = cost;
 	}
 	
+	public DSCIngredient(JsonObject json) {
+		displayItemId = json.get("item").getAsString();
+		cost = json.get("num").getAsInt();
+	}
+	
+	public JsonObject writeJson() {
+		JsonObject json = new JsonObject();
+		json.addProperty("item", displayItemId);
+		json.addProperty("num", cost);
+		return json;
+	}
+	
 	public DSCIngredient(CompoundTag tag) {
 		displayItemId = tag.getString("item");
 		cost = tag.getInt("num");
 	}
 	
-	public CompoundTag write() {
+	public CompoundTag writeNBT() {
 		CompoundTag tag = new CompoundTag();
 		tag.putString("item", displayItemId);
 		tag.putInt("num", cost);
@@ -84,6 +99,13 @@ public class DSCIngredient {
 		}
 	}
 	
+	public static List<DSCIngredient> getIngredients(JsonObject json) {
+		List<DSCIngredient> ingredients = new ArrayList<DSCIngredient>();
+		JsonArray list = json.get("ingredients").getAsJsonArray();
+		for (int i = 0; i < list.size(); ++i) ingredients.add(new DSCIngredient(list.get(i).getAsJsonObject()));
+		return ingredients;
+	}
+	
 	public static List<DSCIngredient> getIngredients(CompoundTag tag) {
 		List<DSCIngredient> ingredients = new ArrayList<DSCIngredient>();
 		ListTag list = tag.getList("ingredients", 10);
@@ -93,7 +115,7 @@ public class DSCIngredient {
 	
 	public static void writeIngredients(List<DSCIngredient> ingredients, CompoundTag tag) {
 		ListTag list = new ListTag();
-		for (int i = 0; i < ingredients.size(); ++i) list.add(ingredients.get(i).write());
+		for (int i = 0; i < ingredients.size(); ++i) list.add(ingredients.get(i).writeNBT());
 		tag.put("ingredients", list);
 	}
 	

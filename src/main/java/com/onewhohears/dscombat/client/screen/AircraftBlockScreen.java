@@ -9,6 +9,7 @@ import com.onewhohears.dscombat.common.container.AircraftBlockMenuContainer;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerCraftPlane;
 import com.onewhohears.dscombat.crafting.DSCIngredient;
+import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
 
 import net.minecraft.client.Minecraft;
@@ -42,7 +43,7 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 		this.topPos = 0;
 		this.imageWidth = 256;
 		this.imageHeight = 256;
-		maxTab = (int)((float)AircraftPresets.presets.size() / (float)buttonNum);
+		maxTab = (int)((float)AircraftPresets.get().getCraftablePresetNum() / (float)buttonNum);
 	}
 	
 	@Override
@@ -52,7 +53,7 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
         this.renderTooltip(poseStack, mouseX, mouseY);
         Minecraft m = Minecraft.getInstance();
         RenderSystem.enableBlend();
-        if (AircraftPresets.presets.size() == 0) return;
+        if (AircraftPresets.get().getCraftablePresetNum() == 0) return;
         // render plane item options
         int startX = getGuiLeft() + titleLabelX;
 		int startY = getGuiTop() + titleLabelY;
@@ -60,9 +61,8 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 		int wy = startY + 12;
 		for (int i = 0; i < buttonNum; ++i) {
 			int index = tabIndex * buttonNum + i;
-			if (index >= AircraftPresets.presets.size()) break;
-			ItemStack stack = AircraftPresets.getPlaneDisplayItem(
-					AircraftPresets.presets.get(index).getString("preset"));
+			if (index >= AircraftPresets.get().getCraftablePresetNum()) break;
+			ItemStack stack = AircraftPresets.get().getCraftablePresets()[index].getItem();
 			m.getItemRenderer().renderAndDecorateItem(
 					stack, wx, wy);
 			m.getItemRenderer().renderGuiItemDecorations(font,
@@ -70,22 +70,25 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 			wx += 20;
 		}
 		// render ingredients
-		List<DSCIngredient> ingredients = AircraftPresets.getPlaneIngredients(
-				AircraftPresets.presets.get(planeIndex).getString("preset"));
+		List<DSCIngredient> ingredients = AircraftPresets.get().getCraftablePresets()[planeIndex].getIngredients();
 		int iix = startX + 122;
 		int ix = iix;
-		int iy = startY + 44;
+		int iy = startY + 40;
+		int space = 18;
 		for (int i = 0; i < ingredients.size(); ++i) {
 			if (i != 0 && i % 4 == 0) {
 				ix = iix;
-				iy += 20;
+				iy += space;
 			}
 			ItemStack stack = ingredients.get(i).getDisplayItem();
-			m.getItemRenderer().renderAndDecorateItem(
-					stack, ix, iy);
-			m.getItemRenderer().renderGuiItemDecorations(font, 
-					stack, ix, iy);
-			ix += 20;
+			m.getItemRenderer().renderAndDecorateItem(stack, ix, iy);
+			m.getItemRenderer().renderGuiItemDecorations(font, stack, ix, iy);
+			if (mouseX >= ix && mouseX < (ix+space) && mouseY >= iy && mouseY < (iy+space)) renderTooltip(
+					poseStack, 
+					getTooltipFromItem(stack), 
+					stack.getTooltipImage(), 
+					mouseX, mouseY);
+			ix += space;
 		}
 	}
 
@@ -100,12 +103,12 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 	protected void renderLabels(PoseStack stack, int mouseX, int mouseY) {
 		font.draw(stack, title, titleLabelX+38, titleLabelY, 0x404040);
 		font.draw(stack, playerInventoryTitle, inventoryLabelX+38, inventoryLabelY+56, 0x404040);
-		font.draw(stack, new TranslatableComponent("dscombat.ingredients"), titleLabelX+122, titleLabelY+34, 0x00aa00);
+		//font.draw(stack, Component.translatable("ui.dscombat.ingredients"), titleLabelX+122, titleLabelY+34, 0x00aa00);
 		// plane stats
-		if (AircraftPresets.presets.size() == 0) return;
-		CompoundTag data = AircraftPresets.presets.get(planeIndex);
-		String preset = data.getString("preset");
-		font.draw(stack, new TranslatableComponent("entity.dscombat."+preset), titleLabelX+38, titleLabelY+34, 0x000000);
+		if (AircraftPresets.get().getCraftablePresetNum() == 0) return;
+		AircraftPreset ap = AircraftPresets.get().getCraftablePresets()[planeIndex];
+		font.draw(stack, ap.getDisplayName(), titleLabelX+38, titleLabelY+34, 0x000000);
+		CompoundTag data = ap.getDataAsNBT();
 		float scale = 0.5f;
 		stack.scale(scale, scale, scale);
 		float invScale = 1f / scale;
@@ -130,7 +133,8 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 		font.draw(stack, new TextComponent("Pitch Rate: "+data.getDouble("maxpitch")), startX, startY, 0x404040);
 		startY += font.lineHeight;
 		font.draw(stack, new TextComponent("Roll Rate: "+data.getDouble("maxroll")), startX, startY, 0x404040);
-		// HOW 3 display plane model
+		stack.scale(1/scale, 1/scale, 1/scale);
+		// HOW 2 display plane model
 		//Minecraft m = Minecraft.getInstance();
 	}
 	
@@ -170,7 +174,7 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 		addRenderableWidget(nextButton);
 		// craft
 		Button craftButton = new Button(0, 0, 80, 20, 
-				new TranslatableComponent("dscombat.craft_button"), 
+				new TranslatableComponent("ui.dscombat.craft_button"), 
 				onPress -> { craftButton(); });
 		craftButton.x = startX+122;
 		craftButton.y = startY+110;
@@ -208,7 +212,7 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 	}
 	
 	private void planeButton(int num) {
-		int max = AircraftPresets.presets.size();
+		int max = AircraftPresets.get().getCraftablePresetNum();
 		int a = tabIndex * buttonNum + num;
 		if (a >= max) planeIndex = max-1;
 		else planeIndex = a;
@@ -218,12 +222,11 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 		Minecraft m = Minecraft.getInstance();
 		Player player = m.player;
 		if (player == null) return;
-		String preset = AircraftPresets.presets.get(planeIndex).getString("preset");
-		List<DSCIngredient> ingredients = AircraftPresets.getPlaneIngredients(preset);
-		if (DSCIngredient.hasIngredients(ingredients, player.getInventory())) {
-			PacketHandler.INSTANCE.sendToServer(new ToServerCraftPlane(preset, menu.getPos()));
+		AircraftPreset ap = AircraftPresets.get().getCraftablePresets()[planeIndex];
+		if (DSCIngredient.hasIngredients(ap.getIngredients(), player.getInventory())) {
+			PacketHandler.INSTANCE.sendToServer(new ToServerCraftPlane(ap.getId(), menu.getPos()));
 		} else {
-			player.displayClientMessage(new TranslatableComponent("dscombat.cant_craft"), true);
+			player.displayClientMessage(new TranslatableComponent("error.dscombat.cant_craft"), true);
 			minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.VILLAGER_NO, 1.0F));
 		}
 	}

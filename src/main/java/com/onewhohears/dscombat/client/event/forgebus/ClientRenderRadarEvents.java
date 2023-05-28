@@ -41,7 +41,7 @@ public final class ClientRenderRadarEvents {
 		if (event.getStage() != Stage.AFTER_PARTICLES) return;
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
-		if (!player.isPassenger()) return;
+		if (player == null || !player.isPassenger()) return;
 		if (!(player.getRootVehicle() instanceof EntityAircraft plane)) return;
 		RadarSystem radar = plane.radarSystem;
 		if (radar == null) return;
@@ -55,7 +55,7 @@ public final class ClientRenderRadarEvents {
 		RenderSystem.disableTexture();
 		GL11.glEnable(GL11.GL_LINE_SMOOTH);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
-		// IDEA 1 show last known target location
+		// TODO 1.1 show last known target location
 		for (int i = 0; i < pings.size(); ++i) {
 			RadarPing p = pings.get(i);
 			

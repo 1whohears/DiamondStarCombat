@@ -1,0 +1,23 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"C": {
+			"item": "dscombat:c6_engine"
+		},
+		"R": {
+			"item": "minecraft:redstone"
+		},
+		"I": {
+			"item": "minecraft:iron_ingot"
+		}
+	},
+	"pattern": [
+		"RIR",
+		"ICI",
+		"RIR"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:cm_manly_52"
+	}
+}

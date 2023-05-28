@@ -1,0 +1,23 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"T": {
+			"item": "dscombat:ti83"
+		},
+		"D": {
+			"item": "minecraft:dropper"
+		},
+		"I": {
+			"item": "minecraft:iron_ingot"
+		}
+	},
+	"pattern": [
+		"ITI",
+		"DID",
+		"DID"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:bomb_rack"
+	}
+}

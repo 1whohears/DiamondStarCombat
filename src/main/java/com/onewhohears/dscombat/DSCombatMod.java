@@ -6,9 +6,9 @@ import com.onewhohears.dscombat.client.screen.AircraftBlockScreen;
 import com.onewhohears.dscombat.client.screen.AircraftScreen;
 import com.onewhohears.dscombat.client.screen.WeaponsBlockScreen;
 import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
-import com.onewhohears.dscombat.data.radar.RadarPresets;
-import com.onewhohears.dscombat.data.weapon.WeaponPresets;
+import com.onewhohears.dscombat.data.aircraft.AircraftPresetGenerator;
+import com.onewhohears.dscombat.data.radar.RadarPresetGenerator;
+import com.onewhohears.dscombat.data.weapon.WeaponPresetGenerator;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModBlockEntities;
 import com.onewhohears.dscombat.init.ModBlocks;
@@ -19,6 +19,7 @@ import com.onewhohears.dscombat.init.ModRecipeSerializers;
 import com.onewhohears.dscombat.init.ModSounds;
 
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.data.DataGenerator;
 import net.minecraftforge.client.gui.OverlayRegistry;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -27,6 +28,7 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 
 @Mod(DSCombatMod.MODID)
 public class DSCombatMod {
@@ -37,10 +39,6 @@ public class DSCombatMod {
     	ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.clientSpec);
     	ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.serverSpec);
     	IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
-    	// ORDER MATTERS
-    	WeaponPresets.setupPresets();
-    	RadarPresets.setupPresets();
-        AircraftPresets.setupPresets();
     	
         ModBlocks.register(eventBus);
         ModContainers.register(eventBus);
@@ -53,6 +51,7 @@ public class DSCombatMod {
     	
     	eventBus.addListener(this::commonSetup);
     	eventBus.addListener(this::clientSetup);
+    	eventBus.addListener(this::onGatherData);
     }
     
     private void commonSetup(FMLCommonSetupEvent event) {
@@ -65,6 +64,14 @@ public class DSCombatMod {
     	MenuScreens.register(ModContainers.PLANE_MENU.get(), AircraftScreen::new);
     	MenuScreens.register(ModContainers.WEAPONS_BLOCK_MENU.get(), WeaponsBlockScreen::new);
     	MenuScreens.register(ModContainers.AIRCRAFT_BLOCK_MENU.get(), AircraftBlockScreen::new);
+    }
+    
+    private void onGatherData(GatherDataEvent event) {
+    	DataGenerator generator = event.getGenerator();
+    	event.includeServer();
+    	generator.addProvider(new AircraftPresetGenerator(generator));
+    	generator.addProvider(new WeaponPresetGenerator(generator));
+    	generator.addProvider(new RadarPresetGenerator(generator));
     }
     
 }

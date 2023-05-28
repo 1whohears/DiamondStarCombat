@@ -29,6 +29,12 @@
 			"dscombat:bullet_shoot_1"
 		]
 	},
+	"bomb_shoot_1": {
+		"subtitle": "sounds.dscombat.bomb_shoot_1",
+		"sounds": [
+			"dscombat:bomb_shoot_1"
+		]
+	},
 	"biplane_1": {
 		"subtitle": "sounds.dscombat.biplane_1",
 		"sounds": [

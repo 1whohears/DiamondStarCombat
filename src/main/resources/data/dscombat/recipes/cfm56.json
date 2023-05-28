@@ -1,20 +1,17 @@
 {
 	"type": "minecraft:crafting_shaped",
 	"key": {
-		"B": {
-			"item": "minecraft:blast_furnace"
-		},
-		"P": {
-			"item": "minecraft:piston"
+		"T": {
+			"item": "dscombat:turbofan_f145"
 		},
 		"I": {
 			"item": "minecraft:iron_ingot"
 		}
 	},
 	"pattern": [
-		"PPP",
-		"PPP",
-		"IBI"
+		" I ",
+		"ITI",
+		" I "
 	],
 	"result": {
 		"count": 1,

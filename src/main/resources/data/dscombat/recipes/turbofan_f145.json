@@ -5,15 +5,15 @@
 			"item": "minecraft:blast_furnace"
 		},
 		"P": {
-			"item": "minecraft:piston"
+			"item": "minecraft:firework_rocket"
 		},
 		"I": {
 			"item": "minecraft:iron_ingot"
 		}
 	},
 	"pattern": [
-		"PPP",
-		"PPP",
+		"PBP",
+		"PBP",
 		"IBI"
 	],
 	"result": {

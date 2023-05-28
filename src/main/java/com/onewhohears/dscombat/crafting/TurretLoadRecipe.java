@@ -24,7 +24,7 @@ public class TurretLoadRecipe extends CustomRecipe {
 	public TurretLoadRecipe(ResourceLocation id) {
 		super(id);
 	}
-
+	
 	@Override
 	public boolean matches(CraftingContainer container, Level level) {
 		for (int i = 0; i < container.getContainerSize(); ++i) {
@@ -43,7 +43,7 @@ public class TurretLoadRecipe extends CustomRecipe {
 		if (ammo.size() < 1) return false;
 		CompoundTag pTag = part.getOrCreateTag();
 		String partId = pTag.getString("weaponId");
-		String ammoId = ammo.get(0).getItem().getDescriptionId().split("\\.")[2];
+		String ammoId = ItemAmmo.getWeaponId(ammo.get(0));
 		return partId.equals(ammoId);
 	}
 	
@@ -67,12 +67,12 @@ public class TurretLoadRecipe extends CustomRecipe {
 		for (int i = 0; i < container.getContainerSize(); ++i) {
 			ItemStack stack  = container.getItem(i);
 			if (stack.isEmpty()) continue;
-			Item item = stack.getItem();
-			if (item instanceof ItemAmmo) {
-				if (id == null) id = item.getDescriptionId().split("\\.")[2];
-				else if (!item.getDescriptionId().split("\\.")[2].equals(id)) return null;
-				ammo.add(stack);
-			}
+			if (!(stack.getItem() instanceof ItemAmmo)) continue;
+			String stackAmmoId = ItemAmmo.getWeaponId(stack);
+			if (stackAmmoId.equals("")) return null;
+			if (id == null) id = stackAmmoId;
+			if (!stackAmmoId.equals(id)) return null;
+			ammo.add(stack);
 		}
 		return ammo;
 	}
@@ -83,9 +83,10 @@ public class TurretLoadRecipe extends CustomRecipe {
 		List<ItemStack> ammo = getAmmo(container);
 		if (!isIdSame(part, ammo)) return ItemStack.EMPTY;
 		int ca = 0, ma;
-		String weaponId = ammo.get(0).getItem().getDescriptionId().split("\\.")[2];
-		if (part.getOrCreateTag().getString("weaponId").isEmpty()) {
-			ma = WeaponPresets.getById(weaponId).getMaxAmmo();
+		String weaponId = ItemAmmo.getWeaponId(ammo.get(0));
+		if (!WeaponPresets.get().has(weaponId)) return ItemStack.EMPTY;
+ 		if (part.getOrCreateTag().getString("weaponId").isEmpty()) {
+			ma = WeaponPresets.get().getPreset(weaponId).getMaxAmmo();
 		} else {
 			ca = part.getOrCreateTag().getInt("ammo");
 			ma = part.getOrCreateTag().getInt("max");
@@ -106,9 +107,10 @@ public class TurretLoadRecipe extends CustomRecipe {
 		ItemStack part = getPart(container);
 		List<ItemStack> ammo = getAmmo(container);
 		int ca = 0, ma;
+		String weaponId = ItemAmmo.getWeaponId(ammo.get(0));
+		if (!WeaponPresets.get().has(weaponId)) return super.getRemainingItems(container);
 		if (part.getOrCreateTag().getString("weaponId").isEmpty()) {
-			String weaponId = ammo.get(0).getItem().getDescriptionId().split("\\.")[2];
-			ma = WeaponPresets.getById(weaponId).getMaxAmmo();
+			ma = WeaponPresets.get().getPreset(weaponId).getMaxAmmo();
 		} else {
 			ca = part.getOrCreateTag().getInt("ammo");
 			ma = part.getOrCreateTag().getInt("max");

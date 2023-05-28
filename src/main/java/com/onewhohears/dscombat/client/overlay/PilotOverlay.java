@@ -29,14 +29,11 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
-import net.minecraftforge.client.gui.overlay.GuiOverlayManager;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
-import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 
 public class PilotOverlay {
 	
@@ -67,7 +64,6 @@ public class PilotOverlay {
 		if (!(player.getRootVehicle() instanceof EntityAircraft plane)) return;
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		drawMissingVanillaOverlays(m, player, plane, gui, poseStack, partialTick, width, height);
 		drawAircraftStats(m, player, plane, gui, poseStack, partialTick, width, height);
 		drawAircraftAngles(m, player, plane, gui, poseStack, partialTick, width, height);
 		drawAircraftWeaponsAndKeys(m, player, plane, gui, poseStack, partialTick, width, height);
@@ -94,24 +90,10 @@ public class PilotOverlay {
 			"M"+UtilParse.prettyVec3(plane.moment), width-100, 30, color);
 	}
 	
-	private static void drawMissingVanillaOverlays(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
-		Entity camera = m.getCameraEntity();
-		m.setCameraEntity(player);
-		getVanillaHotbarOverlay().render(gui, poseStack, partialTick, width, height);
-		if (gui.shouldDrawSurvivalElements()) {
-			getVanillaHealthOverlay().render(gui, poseStack, partialTick, width, height);
-			getVanillaFoodOverlay().render(gui, poseStack, partialTick, width, height);
-			getVanillaArmorOverlay().render(gui, poseStack, partialTick, width, height);
-			getVanillaAirOverlay().render(gui, poseStack, partialTick, width, height);
-		}
-		m.setCameraEntity(camera);
-	}
-	
 	private static void drawAircraftStats(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
 		// plane speed 
-		int s = (int)(plane.getDeltaMovement().length() * 20d);
 		GuiComponent.drawString(poseStack, m.font, 
-				"m/s: "+s, 
+				"m/s: "+String.format("%3.1f", plane.getDeltaMovement().length()*20), 
 				width-stickBaseSize-stickOffset, 
 	     		height-stickBaseSize-stickOffset-stickKnobSize-stickOffset-10, 
 				0x00ff00);
@@ -164,9 +146,9 @@ public class PilotOverlay {
 		WeaponData sw = plane.weaponSystem.getSelected();
 		if (sw != null) {
 		List<WeaponData> weapons = plane.weaponSystem.getWeapons();
-		MutableComponent[] names = new MutableComponent[weapons.size()];
+		Component[] names = new MutableComponent[weapons.size()];
 		for (int i = 0; i < weapons.size(); ++i) {
-			names[i] = Component.translatable("item."+DSCombatMod.MODID+"."+weapons.get(i).getId());
+			names[i] = weapons.get(i).getDisplayName();
 			int w = m.font.width(names[i]);
 			if (w > maxNameWidth) maxNameWidth = w;
 		}
@@ -194,7 +176,7 @@ public class PilotOverlay {
 		// FLARES
 		if (plane.hasFlares()) {
 			x = 1+weaponSelectWidth;
-			if (plane.inputFlare) color = color2;
+			if (plane.inputs.flare) color = color2;
 			else color = color1;
 			GuiComponent.drawString(poseStack, m.font, 
 				"Flares("+DSCKeys.flareKey.getKey().getDisplayName().getString()+")", 
@@ -253,7 +235,7 @@ public class PilotOverlay {
     	if (plane.canFlapsDown()) {
     		x = 1+weaponSelectWidth;
     		text = DSCKeys.specialKey.getKey().getDisplayName().getString();
-    		if (plane.inputSpecial) color = color2;
+    		if (plane.inputs.special) color = color2;
     		else color = color1;
     		GuiComponent.drawString(poseStack, m.font, 
     			"FlapsDown("+text+")", 
@@ -264,7 +246,7 @@ public class PilotOverlay {
 		if (plane.canAngleWeaponDown()) {
     		x = 1+weaponSelectWidth;
     		text = DSCKeys.special2Key.getKey().getDisplayName().getString();
-    		if (plane.inputSpecial2) color = color2;
+    		if (plane.inputs.special2) color = color2;
     		else color = color1;
     		GuiComponent.drawString(poseStack, m.font, 
     			"AimDown("+text+")", 
@@ -275,7 +257,7 @@ public class PilotOverlay {
 		if (plane.canHover()) {
 			x = 1+weaponSelectWidth;
     		text = DSCKeys.specialKey.getKey().getDisplayName().getString();
-    		if (plane.inputSpecial) color = color2;
+    		if (plane.inputs.special) color = color2;
     		else color = color1;
     		GuiComponent.drawString(poseStack, m.font, 
     			"Hover("+text+")", 
@@ -285,14 +267,13 @@ public class PilotOverlay {
 		// PLAYERS ONLY
         if (plane.radarSystem.hasRadar()) {
         	x = 1+weaponSelectWidth;
-        	if (plane.inputRadarMode) color = color2;
+        	if (plane.getRadarMode().isOff()) color = color2;
         	else color = color1;
         	GuiComponent.drawString(poseStack, m.font, 
         		"RMode("+DSCKeys.radarModeKey.getKey().getDisplayName().getString()+")", 
         		x, wh, color);
         	x += maxNameWidth;
-        	if (plane.isRadarPlayersOnly()) text = "PLAYER";
-        	else text = "ALL";
+        	text = plane.getRadarMode().name();
         	GuiComponent.drawString(poseStack, m.font, 
         		text, x, wh, color);
         	wh += 10;
@@ -375,6 +356,7 @@ public class PilotOverlay {
 			if (ping.isFriendly) color = 0x0000ff;
 			GuiComponent.drawCenteredString(poseStack, m.font, 
 				text, cx, height-radarOffset-radarSize-20, color);
+			// TODO 1.2 display intercept with target angle
 		}
 		for (int i = 0; i < pings.size(); ++i) {
 			RadarPing ping = pings.get(i);
@@ -407,8 +389,8 @@ public class PilotOverlay {
         int b = stickBaseSize/2, n = stickKnobSize/2;
         RenderSystem.setShaderTexture(0, STICK_KNOB);
         GuiComponent.blit(poseStack, 
-        		width-b-n-stickOffset+(int)(plane.inputYaw*b), 
-        		height-b-n-stickOffset-(int)(plane.inputPitch*b), 
+        		width-b-n-stickOffset+(int)(plane.inputs.yaw*b), 
+        		height-b-n-stickOffset-(int)(plane.inputs.pitch*b), 
         		0, 0, stickKnobSize, stickKnobSize, 
         		stickKnobSize, stickKnobSize);
 		// roll input
@@ -420,7 +402,7 @@ public class PilotOverlay {
         		stickBaseSize, stickBaseSize);
         RenderSystem.setShaderTexture(0, STICK_KNOB);
         GuiComponent.blit(poseStack, 
-        		width-b-n-stickOffset+(int)(plane.inputRoll*b), 
+        		width-b-n-stickOffset+(int)(plane.inputs.roll*b), 
         		height-stickKnobSize-stickOffset-stickOffset-stickBaseSize, 
         		0, 0, stickKnobSize, stickKnobSize, 
         		stickKnobSize, stickKnobSize);
@@ -509,37 +491,6 @@ public class PilotOverlay {
     	else if (h == 225) return "NE";
     	else if (h == 315) return "SE";
     	return h+"";
-	}
-	
-	private static IGuiOverlay vanilla_hotbar_overlay;
-	private static IGuiOverlay vanilla_health_overlay;
-	private static IGuiOverlay vanilla_food_overlay;
-	private static IGuiOverlay vanilla_armor_overlay;
-	private static IGuiOverlay vanilla_air_overlay;
-	private static IGuiOverlay getVanillaHotbarOverlay() {
-		if (vanilla_hotbar_overlay == null) vanilla_hotbar_overlay = GuiOverlayManager
-			.findOverlay(VanillaGuiOverlay.HOTBAR.id()).overlay();
-		return vanilla_hotbar_overlay;
-	}
-	private static IGuiOverlay getVanillaHealthOverlay() {
-		if (vanilla_health_overlay == null) vanilla_health_overlay = GuiOverlayManager
-			.findOverlay(VanillaGuiOverlay.PLAYER_HEALTH.id()).overlay();
-		return vanilla_health_overlay;
-	}
-	private static IGuiOverlay getVanillaFoodOverlay() {
-		if (vanilla_food_overlay == null) vanilla_food_overlay = GuiOverlayManager
-			.findOverlay(VanillaGuiOverlay.FOOD_LEVEL.id()).overlay();
-		return vanilla_food_overlay;
-	}
-	private static IGuiOverlay getVanillaArmorOverlay() {
-		if (vanilla_armor_overlay == null) vanilla_armor_overlay = GuiOverlayManager
-			.findOverlay(VanillaGuiOverlay.ARMOR_LEVEL.id()).overlay();
-		return vanilla_armor_overlay;
-	}
-	private static IGuiOverlay getVanillaAirOverlay() {
-		if (vanilla_air_overlay == null) vanilla_air_overlay = GuiOverlayManager
-			.findOverlay(VanillaGuiOverlay.AIR_LEVEL.id()).overlay();
-		return vanilla_air_overlay;
 	}
 	
 }

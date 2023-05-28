@@ -48,7 +48,6 @@ public class IRMissile extends EntityMissile {
 		List<EntityAircraft> planes = level.getEntitiesOfClass(
 				EntityAircraft.class, getIrBoundingBox());
 		for (int i = 0; i < planes.size(); ++i) {
-			if (planes.get(i).isVehicleOf(getOwner())) continue;
 			if (!basicCheck(planes.get(i), true)) continue;
 			float distSqr = (float)distanceToSqr(planes.get(i));
 			targets.add(new IrTarget(planes.get(i), planes.get(i).getHeat() / distSqr));
@@ -77,7 +76,6 @@ public class IRMissile extends EntityMissile {
 		for (int i = 0; i < missiles.size(); ++i) {
 			if (this.equals(missiles.get(i))) continue;
  			if (!basicCheck(missiles.get(i), false)) continue;
- 			if (this.getOwner() != null && getOwner().equals(missiles.get(i).getOwner())) continue;
 			float distSqr = (float)distanceToSqr(missiles.get(i));
 			targets.add(new IrTarget(missiles.get(i), missiles.get(i).getHeat() / distSqr));
 		}	
@@ -134,8 +132,8 @@ public class IRMissile extends EntityMissile {
 		if (ping.isInWater()) {
 			return false;
 		}
-		if (ping.equals(getOwner())) {
-			//System.out.println("is owner");
+		if (isAlliedTo(ping)) {
+			//System.out.println("is allied");
 			return false;
 		}
 		if (!checkTargetRange(ping, IR_RANGE)) {

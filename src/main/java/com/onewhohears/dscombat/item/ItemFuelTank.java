@@ -1,13 +1,19 @@
 package com.onewhohears.dscombat.item;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.onewhohears.dscombat.data.parts.FuelTankData;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class ItemFuelTank extends ItemPart {
@@ -21,11 +27,10 @@ public class ItemFuelTank extends ItemPart {
 	}
 	
 	@Override
-	public Component getName(ItemStack stack) {
+	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tips, TooltipFlag isAdvanced) {
+		super.appendHoverText(stack, level, tips, isAdvanced);
 		CompoundTag tag = stack.getOrCreateTag();
-		MutableComponent name = Component.translatable(getDescriptionId())
-			.append(" "+tag.getInt("fuel")+"/"+tag.getInt("max"));
-		return name;	
+		tips.add(Component.literal("Fuel: "+tag.getInt("fuel")+"/"+tag.getInt("max")).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 	}
 
 	@Override

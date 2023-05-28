@@ -1,73 +1,65 @@
 package com.onewhohears.dscombat.data.aircraft;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.NoSuchElementException;
 
-import javax.annotation.Nullable;
+import com.google.gson.JsonObject;
+import com.onewhohears.dscombat.data.JsonPresetReloadListener;
 
-import com.google.gson.JsonArray;
-import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.crafting.DSCIngredient;
-import com.onewhohears.dscombat.util.UtilParse;
-
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.registries.ForgeRegistries;
 
-public class AircraftPresets {
+public class AircraftPresets extends JsonPresetReloadListener<AircraftPreset> {
 	
-	public static final List<CompoundTag> presets = new ArrayList<>();
-	public static final HashMap<String, List<DSCIngredient>> ingredients = new HashMap<>();
-	public static final HashMap<String, ItemStack> items = new HashMap<>();
-	public static final HashMap<String, AircraftTextures> textures = new HashMap<>();
+	private static AircraftPresets instance;
 	
-	public static void setupPresets() {
-		String dir = "/data/dscombat/aircraft/";
-		JsonArray ja = UtilParse.getJsonFromResource(dir+"aircraft.json").get("aircraft").getAsJsonArray();
-		for (int i = 0; i < ja.size(); ++i) 
-			presets.add(UtilParse.getCompoundFromJsonResource(dir+ja.get(i).getAsString()));
+	public static AircraftPresets get() {
+		if (instance == null) instance = new AircraftPresets();
+		return instance;
 	}
 	
-	@Nullable
-	public static CompoundTag getPreset(String preset) {
-		for (CompoundTag tag : presets) if (tag.getString("preset").equals(preset)) return tag;
-		return null;
+	public static void close() {
+		instance = null;
 	}
 	
-	public static AircraftTextures getAircraftTextures(String preset) {
-		AircraftTextures at = textures.get(preset);
-		if (at == null) {
-			at = new AircraftTextures(getPreset(preset));
-			textures.put(preset, at);
+	private AircraftPreset[] allPresets;
+	private AircraftPreset[] craftablePresets;
+	
+	public AircraftPresets() {
+		super("aircraft");
+	}
+	
+	public AircraftPreset[] getAllPresets() {
+		if (allPresets == null) {
+			allPresets = presetMap.values().toArray(new AircraftPreset[presetMap.size()]);
 		}
-		return at;
+		return allPresets;
 	}
 	
-	public static List<DSCIngredient> getPlaneIngredients(String preset) {
-		List<DSCIngredient> ing = ingredients.get(preset);
-		if (ing == null) {
-			ing = DSCIngredient.getIngredients(getPreset(preset));
-			ingredients.put(preset, ing);
+	public AircraftPreset[] getCraftablePresets() {
+		if (craftablePresets == null) {
+			List<AircraftPreset> list = new ArrayList<>();
+			presetMap.forEach((name, preset) -> {
+				if (preset.isCraftable()) list.add(preset);
+			});
+			craftablePresets = list.toArray(new AircraftPreset[list.size()]);
+			sort(craftablePresets);
 		}
-		return ing;
+		return craftablePresets;
 	}
 	
-	public static ItemStack getPlaneDisplayItem(String preset) {
-		ItemStack stack = items.get(preset);
-		if (stack == null) {
-			try {
-				stack = new ItemStack(ForgeRegistries.ITEMS.getDelegate(
-						new ResourceLocation(DSCombatMod.MODID, preset))
-							.get().get());
-			} catch(NoSuchElementException e) {
-				stack = ItemStack.EMPTY;
-			}
-			items.put(preset, stack);
-		}
-		return stack;
+	public int getCraftablePresetNum() {
+		return getCraftablePresets().length;
+	}
+
+	@Override
+	public AircraftPreset getFromJson(ResourceLocation key, JsonObject json) {
+		return new AircraftPreset(key, json);
+	}
+
+	@Override
+	protected void resetCache() {
+		allPresets = null;
+		craftablePresets = null;
 	}
 	
 }

@@ -1,0 +1,20 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"T": {
+			"item": "dscombat:turbofan_f145"
+		},
+		"I": {
+			"item": "minecraft:iron_ingot"
+		}
+	},
+	"pattern": [
+		" I ",
+		"ITI",
+		" I "
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:cfm56"
+	}
+}

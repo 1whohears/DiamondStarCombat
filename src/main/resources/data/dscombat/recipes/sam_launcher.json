@@ -1,0 +1,26 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"S": {
+			"item": "dscombat:seat"
+		},
+		"R": {
+			"item": "dscombat:heavy_missile_rack"
+		},
+		"C": {
+			"item": "minecraft:minecart"
+		},
+		"P": {
+			"item": "dscombat:aim120b"
+		}
+	},
+	"pattern": [
+		"PPP",
+		" R ",
+		"CSC"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:sam_launcher"
+	}
+}

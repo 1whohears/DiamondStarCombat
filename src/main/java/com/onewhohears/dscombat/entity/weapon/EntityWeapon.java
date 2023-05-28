@@ -4,7 +4,6 @@ import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.data.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.UtilParse;
 
@@ -19,7 +18,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.ClipContext;
@@ -29,6 +27,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.scores.Team;
 import net.minecraftforge.network.NetworkHooks;
 
 public abstract class EntityWeapon extends Projectile {
@@ -136,21 +135,10 @@ public abstract class EntityWeapon extends Projectile {
 				System.out.println("BULLET "+this);
 				System.out.println("HIT "+hit);
 				System.out.println("OWNER "+owner);
-				if (hit.equals(owner)) {
+				if (hit.isAlliedTo(owner)) {
 					hitresult = null;
 					entityhitresult = null;
-				} else if (owner instanceof Player player) {
-					if (hit instanceof Player p && !player.canHarmPlayer(p)) {
-						hitresult = null;
-						entityhitresult = null;
-					} else if (hit instanceof EntityAircraft plane) {
-						Entity c = plane.getControllingPassenger();
-						if (player.equals(c) || (c instanceof Player p && !player.canHarmPlayer(p))) {
-							hitresult = null;
-							entityhitresult = null;
-						}
-					}
-				} 
+				}
 			}
 			if (hitresult != null && hitresult.getType() != HitResult.Type.MISS && !noPhysics 
 					&& !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, hitresult)) {
@@ -258,6 +246,31 @@ public abstract class EntityWeapon extends Projectile {
 	}
 	
 	@Override
+    public boolean isAlliedTo(Entity entity) {
+		if (entity == null) return false;
+    	Entity o = getOwner();
+    	if (entity.equals(o)) return true;
+    	if (entity instanceof Projectile p) {
+    		Entity po = p.getOwner();
+    		if (po != null && po.equals(o)) return true;
+    	}
+    	Entity c = entity.getControllingPassenger();
+    	if (c != null) {
+    		if (c.equals(o)) return true;
+    		return isAlliedTo(c.getTeam());
+    	}
+    	return super.isAlliedTo(entity);
+    }
+    
+    @Override
+    public boolean isAlliedTo(Team team) {
+    	if (team == null) return false;
+    	Entity o = getOwner();
+		if (o != null) return team.isAlliedTo(o.getTeam());
+    	return super.isAlliedTo(team);
+    }
+	
+	@Override
 	public void remove(Entity.RemovalReason reason) {
 		super.remove(reason);
 		//System.out.println("REMOVED "+reason.toString()+" "+this);
@@ -265,7 +278,7 @@ public abstract class EntityWeapon extends Projectile {
 	
 	@Override
 	public void checkDespawn() {
-		if (this.isTestMode()) return;
+		if (isTestMode()) return;
 		//System.out.println("CHECK DESPAWN");
 		if (!level.isClientSide) {
 			if (!inEntityTickingRange()) {

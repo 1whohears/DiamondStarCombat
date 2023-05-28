@@ -14,8 +14,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class WeaponPartData extends PartData {
 	
-	protected String weaponId;
 	private final String[] compatible;
+	protected String weaponId;
 	private int ammo;
 	private int max;
 	
@@ -23,13 +23,14 @@ public class WeaponPartData extends PartData {
 		super(weight, itemid, compatibleSlots);
 		this.compatible = compatible;
 		this.weaponId = preset;
+		if (!WeaponPresets.get().has(weaponId)) weaponId = "";
 		this.ammo = ammo;
 		this.max = max;
 	}
 	
 	public WeaponPartData(float weight, String preset, String[] compatible, ResourceLocation itemid, SlotType[] compatibleSlots) {
 		this(weight, 0, 0, preset, compatible, itemid, compatibleSlots);
-		WeaponData data = WeaponPresets.getById(preset);
+		WeaponData data = WeaponPresets.get().getPreset(weaponId);
 		if (data != null) {
 			this.ammo = data.getMaxAmmo();
 			this.max = data.getMaxAmmo();
@@ -42,6 +43,7 @@ public class WeaponPartData extends PartData {
 		compatible = new String[list.size()];
 		for (int i = 0; i < list.size(); ++i) compatible[i] = list.getString(i);
 		weaponId = tag.getString("weaponId");
+		if (!WeaponPresets.get().has(weaponId)) weaponId = "";
 		ammo = tag.getInt("ammo");
 		max = tag.getInt("max");
 	}
@@ -86,15 +88,15 @@ public class WeaponPartData extends PartData {
 		super.setup(craft, slotId, pos);
 		WeaponData data = craft.weaponSystem.get(weaponId, slotId);
 		if (data == null) {
-			data = WeaponPresets.getNewById(weaponId);
+			data = WeaponPresets.get().getPreset(weaponId);
 			if (data == null) return;
 			data.setSlot(slotId);
-			craft.weaponSystem.addWeapon(data, true);
+			craft.weaponSystem.addWeapon(data);
 		}
 		data.setCurrentAmmo(ammo);
-		data.setMaxAmmo(max);
+		//data.setMaxAmmo(max);
 		data.setLaunchPos(pos);
-		data.updateClientAmmo(craft);
+		if (!craft.level.isClientSide) data.updateClientAmmo(craft);
 	}
 	
 	@Override
@@ -107,7 +109,7 @@ public class WeaponPartData extends PartData {
 	@Override
 	public void remove(String slotId) {
 		super.remove(slotId);
-		this.getParent().weaponSystem.removeWeapon(weaponId, slotId, true);
+		getParent().weaponSystem.removeWeapon(weaponId, slotId);
 	}
 	
 	@Override
@@ -128,6 +130,7 @@ public class WeaponPartData extends PartData {
 	
 	@Override
 	public float getWeight() {
+		if (max == 0) return 0;
 		float w = super.getWeight();
 		return w * (float)ammo / (float)max;
 	}

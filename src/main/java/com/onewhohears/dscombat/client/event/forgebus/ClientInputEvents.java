@@ -6,7 +6,7 @@ import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.common.network.toserver.ToServerFlightControl;
+import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftControl;
 import com.onewhohears.dscombat.common.network.toserver.ToServerShootTurret;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSwitchSeat;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
@@ -19,10 +19,7 @@ import com.onewhohears.dscombat.util.math.UtilGeometry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult.Type;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
@@ -47,7 +44,9 @@ public final class ClientInputEvents {
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
 		if (player == null) return;
-		boolean select = DSCKeys.weaponSelectKey.consumeClick();
+		int select = 0;
+		if (DSCKeys.weaponSelect2Key.consumeClick()) select = -1;
+		else if (DSCKeys.weaponSelectKey.consumeClick()) select = 1;
 		boolean openMenu = DSCKeys.planeMenuKey.consumeClick();
 		boolean mouseMode = DSCKeys.mouseModeKey.consumeClick();
 		boolean gear = DSCKeys.landingGear.consumeClick();
@@ -115,15 +114,12 @@ public final class ClientInputEvents {
 		if (rollRight) roll += 1;
 		if (throttleUp) throttle += 1;
 		if (throttleDown) throttle -= 1;
-		PacketHandler.INSTANCE.sendToServer(new ToServerFlightControl(
-				throttle, pitch, roll, yaw, mouseMode, 
-				flare, shoot, select, openMenu, gear, 
-				special, special2, radarMode, 
-				rollLeft && rollRight));
-		plane.updateControls(throttle, pitch, roll, yaw, 
+		plane.inputs.update(throttle, pitch, roll, yaw, 
 				mouseMode, flare, shoot, select, openMenu, 
 				special, special2, radarMode, 
-				rollLeft && rollRight);
+				rollLeft && rollRight, gear);
+		plane.weaponSystem.selectNextWeapon(select);
+		PacketHandler.INSTANCE.sendToServer(new ToServerAircraftControl(plane));
 		if (mouseMode && !plane.isFreeLook()) centerMouse();
 	}
 	
@@ -152,6 +148,8 @@ public final class ClientInputEvents {
 			}
 		}
 		if (!hovering) resetHoverIndex();
+		// CYCLE PING
+		if (DSCKeys.pingCycleKey.consumeClick()) radar.clientSelectNextTarget();
 		// TURRET SHOOT
 		boolean shoot = DSCKeys.shootKey.isDown();
 		if (shoot && player.getVehicle() instanceof EntityTurret turret) {
@@ -190,15 +188,6 @@ public final class ClientInputEvents {
 		return UtilGeometry.isPointInsideCone(ping.pos.add(0, 0.5, 0), 
 				player.getEyePosition(), player.getLookAngle(), 
 				Math.toDegrees(Math.atan2(y, d)), 100000);
-	}
-	
-	@SubscribeEvent(priority = EventPriority.NORMAL)
-	public static void onInteractKey(InputEvent.InteractionKeyMappingTriggered event) {
-		if (!event.isAttack()) return;
-		Minecraft m = Minecraft.getInstance();
-		if (m.hitResult.getType() != Type.ENTITY) return;
-		EntityHitResult hit = (EntityHitResult) m.hitResult;
-		if (hit.getEntity().equals(m.player)) event.setCanceled(true);
 	}
 	
 }

@@ -27,6 +27,7 @@ public final class DSCKeys {
 	public static KeyMapping changeSeat, dismount;
 	public static KeyMapping specialKey, special2Key;
 	public static KeyMapping flipControlsKey;
+	// TODO 5.1 select/cycle through pings key
 	
 	private static RegisterKeyMappingsEvent event;
 	

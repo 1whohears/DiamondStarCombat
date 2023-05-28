@@ -99,6 +99,7 @@ public class EntitySubmarine extends EntityBoat {
 			if (Math.abs(move.y) > max) move.multiply(1, max/move.y, 1);
 		}
 		setDeltaMovement(move);
+		// TODO 3 inputSpecial2 moves submarine to surface
 	}
 	
 	@Override

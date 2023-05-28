@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.util.UtilEntity;
+import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 
@@ -12,28 +12,29 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.RegistryObject;
 
 public class EntityHelicopter extends EntityAircraft {
 	
-	public static final float CO_LIFT = 2.75f;
-	
 	public static final EntityDataAccessor<Float> ACC_FORWARD = SynchedEntityData.defineId(EntityHelicopter.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> ACC_SIDE = SynchedEntityData.defineId(EntityHelicopter.class, EntityDataSerializers.FLOAT);
+	
+	public final float heliLiftFactor;
 	
 	private final float propellerRate = 3.141f;
 	private float propellerRot, propellerRotOld;
 	private final boolean alwaysLandingGear;
 	
 	public EntityHelicopter(EntityType<? extends EntityHelicopter> entity, Level level,
-			RegistryObject<SoundEvent> engineSound, RegistryObject<Item> item, 
-			boolean alwaysLandingGear, float Ix, float Iy, float Iz, float explodeSize) {
-		super(entity, level, engineSound, item, 
+			AircraftPreset defaultPreset,
+			RegistryObject<SoundEvent> engineSound, 
+			boolean alwaysLandingGear, float Ix, float Iy, float Iz, float explodeSize, float heliLiftFactor) {
+		super(entity, level, defaultPreset, engineSound,
 				false, Ix, Iy, Iz, explodeSize);
 		this.alwaysLandingGear = alwaysLandingGear;
+		this.heliLiftFactor = heliLiftFactor;
 	}
 	
 	@Override
@@ -82,8 +83,8 @@ public class EntityHelicopter extends EntityAircraft {
 	
 	@Override
 	public void tickAir(Quaternion q) {
-		if (inputSpecial && isOperational()) {
-			float max_th = getMaxThrust();
+		if (inputs.special && isOperational()) {
+			float max_th = getMaxPushThrust();
 			if (max_th != 0) setCurrentThrottle((float)-getWeightForce().y / max_th);
 			setDeltaMovement(getDeltaMovement().multiply(1, 0.95, 1));
 		}
@@ -94,12 +95,13 @@ public class EntityHelicopter extends EntityAircraft {
 			EulerAngles a = UtilAngles.toDegrees(q);
 			// pitch forward backward
 			Vec3 fDir = UtilAngles.rotationToVector(a.yaw, 0);
-			motion = motion.add(fDir.scale(inputPitch).scale(getAccForward()));
+			motion = motion.add(fDir.scale(inputs.pitch).scale(getAccForward()));
 			// roll left right
 			Vec3 sDir = UtilAngles.rotationToVector(a.yaw+90, 0);
-			motion = motion.add(sDir.scale(inputRoll).scale(getAccSide()));
+			motion = motion.add(sDir.scale(inputs.roll).scale(getAccSide()));
 		}
 		setDeltaMovement(motion);
+		// IDEA 4 helicopter hover auto pilot mode with inputSpecial2
 	}
 	
 	@Override
@@ -117,28 +119,23 @@ public class EntityHelicopter extends EntityAircraft {
 	public void directionAir(Quaternion q) {
 		super.directionAir(q);
 		if (!isOperational()) return;
-		addMomentY(inputYaw * getYawTorque(), true);
+		addMomentY(inputs.yaw * getYawTorque(), true);
 		if (!isFreeLook()) {
-			addMomentX(inputPitch * getPitchTorque(), true);
-			addMomentZ(inputRoll * getRollTorque(), true);
+			addMomentX(inputs.pitch * getPitchTorque(), true);
+			addMomentZ(inputs.roll * getRollTorque(), true);
 		} else flatten(q, getMaxDeltaPitch(), getMaxDeltaRoll(), false);
 	}
 
 	@Override
 	public Vec3 getThrustForce(Quaternion q) {
 		Vec3 direction = UtilAngles.getYawAxis(q);
-		Vec3 thrustForce = direction.scale(getThrustMag());
+		Vec3 thrustForce = direction.scale(getPushThrustMag());
 		return thrustForce;
 	}
 	
 	@Override
-	public double getThrustMag() {
-		return super.getThrustMag();
-	}
-	
-	@Override
-	public float getMaxThrust() {
-		return super.getMaxThrust() * (float)UtilEntity.getAirPressure(getY()) * CO_LIFT;
+	public float getMaxPushThrust() {
+		return getMaxSpinThrust() * (float)airPressure * heliLiftFactor;
 	}
 	
 	public float getPropellerRotation(float partialTicks) {

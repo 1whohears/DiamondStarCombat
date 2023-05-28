@@ -29,8 +29,8 @@ public class SeatData extends PartData {
 	}
 
 	@Override
-	public void setup(EntityAircraft craft, String slotId, Vec3 pos) {
-		super.setup(craft, slotId, pos);
+	public void serverSetup(EntityAircraft craft, String slotId, Vec3 pos) {
+		super.serverSetup(craft, slotId, pos);
 		if (isSetup(slotId, craft)) {
 			//System.out.println("ALREADY SEAT "+slotId);
 			return;
@@ -54,8 +54,8 @@ public class SeatData extends PartData {
 	}
 	
 	@Override
-	public void remove(String slotId) {
-		super.remove(slotId);
+	public void serverRemove(String slotId) {
+		super.serverRemove(slotId);
 		//System.out.println("removing seat of slot "+slotId);
 		for (EntitySeat seat : this.getParent().getSeats()) {
 			//System.out.println("checking seat "+seat.getSlotId());

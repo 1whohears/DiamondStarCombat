@@ -1,9 +1,13 @@
 package com.onewhohears.dscombat.item;
 
-import com.onewhohears.dscombat.DSCombatMod;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.data.parts.WeaponRackData;
+import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.init.ModItems;
 
@@ -11,37 +15,49 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class ItemWeaponPart extends ItemPart {
 	
-	public final String[] compatible;
-	
-	public ItemWeaponPart(float weight, String compatibilityType, SlotType[] compatibleSlots) {
+	public ItemWeaponPart(float weight, SlotType[] compatibleSlots) {
 		super(ItemAmmo.weaponProps(1), weight, compatibleSlots);
-		this.compatible = WeaponPresets.getCompatibility(compatibilityType);
 	}
 	
 	@Override
 	public Component getName(ItemStack stack) {
 		CompoundTag tag = stack.getOrCreateTag();
 		String weapon = tag.getString("weaponId");
-		MutableComponent name = Component.translatable(getDescriptionId()).append(" ");
+		MutableComponent name = ((MutableComponent)super.getName(stack)).append(" ");
 		if (weapon.isEmpty()) {
 			name.append("EMPTY");
 		} else {
-			name.append(Component.translatable("item."+DSCombatMod.MODID+"."+weapon))
-				.append(" "+tag.getInt("ammo")+"/"+tag.getInt("max"));
+			WeaponData wd = WeaponPresets.get().getPreset(weapon);
+			if (wd != null) name.append(wd.getDisplayName());
+			else name.append(weapon+"?");
 		}
 		return name;	
 	}
 	
 	@Override
+	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tips, TooltipFlag isAdvanced) {
+		super.appendHoverText(stack, level, tips, isAdvanced);
+		CompoundTag tag = stack.getOrCreateTag();
+		if (tag.getString("weaponId").isEmpty()) return;
+		tips.add(Component.literal("Ammo: "+tag.getInt("ammo")+"/"+tag.getInt("max")).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+	}
+	
+	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
 		if (group.getId() == ModItems.WEAPONS.getId()) {
-			for (int i = 0; i < compatible.length; ++i) addWeaponRack(compatible[i], items);
+			ResourceLocation itemid = ForgeRegistries.ITEMS.getKey(this);
+			List<String> list = WeaponPresets.get().getCompatibleWeapons(itemid);
+			for (int i = 0; i < list.size(); ++i) addWeaponRack(list.get(i), items);
 		}
 	}
 	
@@ -58,7 +74,10 @@ public class ItemWeaponPart extends ItemPart {
 	
 	@Override
 	public PartData getFilledPartData(String param) {
-		return new WeaponRackData(weight, param, compatible, ForgeRegistries.ITEMS.getKey(this), compatibleSlots);
+		ResourceLocation itemid = ForgeRegistries.ITEMS.getKey(this);
+		List<String> list = WeaponPresets.get().getCompatibleWeapons(itemid);
+		String[] compatible = list.toArray(new String[list.size()]);
+		return new WeaponRackData(weight, param, compatible, itemid, compatibleSlots);
 	}
 
 }

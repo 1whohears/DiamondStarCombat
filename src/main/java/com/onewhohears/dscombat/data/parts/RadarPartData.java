@@ -55,10 +55,10 @@ public class RadarPartData extends PartData {
 		super.setup(craft, slotId, pos);
 		RadarData data = craft.radarSystem.get(radarId, slotId);
 		if (data == null) {
-			data = RadarPresets.getById(radarId);
+			data = RadarPresets.get().getPreset(radarId);
 			if (data == null) return;
 			data.setSlot(slotId);
-			craft.radarSystem.addRadar(data, true);
+			craft.radarSystem.addRadar(data);
 		}
 	}
 	
@@ -71,8 +71,8 @@ public class RadarPartData extends PartData {
 	
 	@Override
 	public void remove(String slotId) {
-		super.remove(slotId);
-		this.getParent().radarSystem.removeRadar(radarId, slotId, true);
+		super.serverRemove(slotId);
+		getParent().radarSystem.removeRadar(radarId, slotId);
 	}
 	
 	@Override

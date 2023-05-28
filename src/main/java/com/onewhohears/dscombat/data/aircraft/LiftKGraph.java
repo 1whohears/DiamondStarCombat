@@ -6,9 +6,20 @@ public class LiftKGraph {
 	private static final float[] ALEXIS_PLANE_LIFT  = {  0,-0.78f,-1.04f,-1.15f,-1.20f,-1.18f,-1.15f,-1.11f,-0.99f,-0.84f,0.69f,-0.48f,-0.25f,0,0.25f,0.48f,0.69f,0.84f,0.99f,1.11f,1.15f,1.18f,1.20f,1.15f,1.04f,0.78f, 0};
 	public static final LiftKGraph ALEXIS_PLANE_GRAPH = new LiftKGraph(ALEXIS_PLANE_DEGRESS, ALEXIS_PLANE_LIFT);
 	
+	// TODO 4.2 give javi_plane lift graph unique values
 	private static final int[] JAVI_PLANE_DEGRESS = ALEXIS_PLANE_DEGRESS;
 	private static final float[] JAVI_PLANE_LIFT = ALEXIS_PLANE_LIFT;
 	public static final LiftKGraph JAVI_PLANE_GRAPH = new LiftKGraph(JAVI_PLANE_DEGRESS, JAVI_PLANE_LIFT);
+	
+	// TODO 4.3 give wooden_plane lift graph unique values
+	private static final int[] WOODEN_PLANE_DEGRESS = ALEXIS_PLANE_DEGRESS;
+	private static final float[] WOODEN_PLANE_LIFT = ALEXIS_PLANE_LIFT;
+	public static final LiftKGraph WOODEN_PLANE_GRAPH = new LiftKGraph(WOODEN_PLANE_DEGRESS, WOODEN_PLANE_LIFT);
+	
+	// TODO 4.4 give e3sentry_plane lift graph unique values
+	private static final int[] E3SENTRY_PLANE_DEGRESS = ALEXIS_PLANE_DEGRESS;
+	private static final float[] E3SENTRY_PLANE_LIFT = ALEXIS_PLANE_LIFT;
+	public static final LiftKGraph E3SENTRY_PLANE_GRAPH = new LiftKGraph(E3SENTRY_PLANE_DEGRESS, E3SENTRY_PLANE_LIFT);
 	
 	private final int[] aoa;
 	private final float[] lift;
@@ -27,7 +38,8 @@ public class LiftKGraph {
 		int minI = getMinIndex(aoaDegrees);
 		int maxI = getMaxIndex(aoaDegrees);
 		if (minI == maxI) return lift[minI];
-		return (lift[maxI]-lift[minI])/(aoa[maxI]-aoa[minI]) + lift[minI];
+		float d = aoaDegrees - aoa[minI];
+		return d*(lift[maxI]-lift[minI])/(aoa[maxI]-aoa[minI]) + lift[minI];
 	}
 	
 	private int getMinIndex(float degrees) {

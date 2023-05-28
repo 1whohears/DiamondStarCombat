@@ -29,13 +29,11 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
-import net.minecraftforge.common.ForgeMod;
 
 public class PilotOverlay {
 	
@@ -66,7 +64,6 @@ public class PilotOverlay {
 		if (!(player.getRootVehicle() instanceof EntityAircraft plane)) return;
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		drawMissingVanillaOverlays(m, player, plane, gui, poseStack, partialTick, width, height);
 		drawAircraftStats(m, player, plane, gui, poseStack, partialTick, width, height);
 		drawAircraftAngles(m, player, plane, gui, poseStack, partialTick, width, height);
 		drawAircraftWeaponsAndKeys(m, player, plane, gui, poseStack, partialTick, width, height);
@@ -93,25 +90,10 @@ public class PilotOverlay {
 			"M"+UtilParse.prettyVec3(plane.moment), width-100, 30, color);
 	}
 	
-	private static void drawMissingVanillaOverlays(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
-		Entity camera = m.getCameraEntity();
-		m.setCameraEntity(player);
-		gui.setupOverlayRenderState(true, false);
-		gui.renderHotbar(partialTick, poseStack);
-		if (gui.shouldDrawSurvivalElements()) {
-			gui.renderHealth(width, height, poseStack);
-			gui.renderFood(width, height, poseStack);
-			renderArmor(width, height, poseStack, m, gui);
-			renderAir(width, height, poseStack, m, gui);
-		}
-		m.setCameraEntity(camera);
-	}
-	
 	private static void drawAircraftStats(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
 		// plane speed 
-		int s = (int)(plane.getDeltaMovement().length() * 20d);
 		GuiComponent.drawString(poseStack, m.font, 
-				"m/s: "+s, 
+				"m/s: "+String.format("%3.1f", plane.getDeltaMovement().length()*20), 
 				width-stickBaseSize-stickOffset, 
 	     		height-stickBaseSize-stickOffset-stickKnobSize-stickOffset-10, 
 				0x00ff00);
@@ -157,18 +139,6 @@ public class PilotOverlay {
         }
 	}
 	
-	private static String textByHeading(int h) {
-    	if (h == 0) return "S";
-    	else if (h == 180) return "N";
-    	else if (h == 90) return "W";
-    	else if (h == 270) return "E";
-    	else if (h == 45) return "SW";
-    	else if (h == 135) return "NW";
-    	else if (h == 225) return "NE";
-    	else if (h == 315) return "SE";
-    	return h+"";
-	}
-	
 	private static final MutableComponent weaponSelect = Component.empty().append("->");
 	private static void drawAircraftWeaponsAndKeys(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
 		int wh=1,x=1,weaponSelectWidth=m.font.width(weaponSelect)+1,maxNameWidth=46,color1=0x7340bf,color2=0x00ff00,color=color1;
@@ -176,9 +146,9 @@ public class PilotOverlay {
 		WeaponData sw = plane.weaponSystem.getSelected();
 		if (sw != null) {
 		List<WeaponData> weapons = plane.weaponSystem.getWeapons();
-		MutableComponent[] names = new MutableComponent[weapons.size()];
+		Component[] names = new MutableComponent[weapons.size()];
 		for (int i = 0; i < weapons.size(); ++i) {
-			names[i] = Component.translatable("item."+DSCombatMod.MODID+"."+weapons.get(i).getId());
+			names[i] = weapons.get(i).getDisplayName();
 			int w = m.font.width(names[i]);
 			if (w > maxNameWidth) maxNameWidth = w;
 		}
@@ -206,7 +176,7 @@ public class PilotOverlay {
 		// FLARES
 		if (plane.hasFlares()) {
 			x = 1+weaponSelectWidth;
-			if (plane.inputFlare) color = color2;
+			if (plane.inputs.flare) color = color2;
 			else color = color1;
 			GuiComponent.drawString(poseStack, m.font, 
 				"Flares("+DSCKeys.flareKey.getKey().getDisplayName().getString()+")", 
@@ -265,7 +235,7 @@ public class PilotOverlay {
     	if (plane.canFlapsDown()) {
     		x = 1+weaponSelectWidth;
     		text = DSCKeys.specialKey.getKey().getDisplayName().getString();
-    		if (plane.inputSpecial) color = color2;
+    		if (plane.inputs.special) color = color2;
     		else color = color1;
     		GuiComponent.drawString(poseStack, m.font, 
     			"FlapsDown("+text+")", 
@@ -276,7 +246,7 @@ public class PilotOverlay {
 		if (plane.canAngleWeaponDown()) {
     		x = 1+weaponSelectWidth;
     		text = DSCKeys.special2Key.getKey().getDisplayName().getString();
-    		if (plane.inputSpecial2) color = color2;
+    		if (plane.inputs.special2) color = color2;
     		else color = color1;
     		GuiComponent.drawString(poseStack, m.font, 
     			"AimDown("+text+")", 
@@ -287,7 +257,7 @@ public class PilotOverlay {
 		if (plane.canHover()) {
 			x = 1+weaponSelectWidth;
     		text = DSCKeys.specialKey.getKey().getDisplayName().getString();
-    		if (plane.inputSpecial) color = color2;
+    		if (plane.inputs.special) color = color2;
     		else color = color1;
     		GuiComponent.drawString(poseStack, m.font, 
     			"Hover("+text+")", 
@@ -297,14 +267,13 @@ public class PilotOverlay {
 		// PLAYERS ONLY
         if (plane.radarSystem.hasRadar()) {
         	x = 1+weaponSelectWidth;
-        	if (plane.inputRadarMode) color = color2;
+        	if (plane.getRadarMode().isOff()) color = color2;
         	else color = color1;
         	GuiComponent.drawString(poseStack, m.font, 
         		"RMode("+DSCKeys.radarModeKey.getKey().getDisplayName().getString()+")", 
         		x, wh, color);
         	x += maxNameWidth;
-        	if (plane.isRadarPlayersOnly()) text = "PLAYER";
-        	else text = "ALL";
+        	text = plane.getRadarMode().name();
         	GuiComponent.drawString(poseStack, m.font, 
         		text, x, wh, color);
         	wh += 10;
@@ -373,16 +342,21 @@ public class PilotOverlay {
 		int selected = radar.getClientSelectedPingIndex();
 		int hover = ClientInputEvents.getHoverIndex();
 		if (hover != -1 && hover < pings.size()) {
-			String text = "("+(int)pings.get(hover).pos.distanceTo(plane.position())
-					+" | "+(int)pings.get(hover).pos.y+")";
+			RadarPing ping = pings.get(hover);
+			String text = "("+(int)ping.pos.distanceTo(plane.position())
+					+" | "+(int)ping.pos.y+")";
 			GuiComponent.drawCenteredString(poseStack, m.font, 
 				text, width/2, height/2-20, 0xffff00);
 		}
 		if (selected != -1 && selected < pings.size()) {
-			String text = "("+(int)pings.get(selected).pos.distanceTo(plane.position())
-					+" | "+(int)pings.get(selected).pos.y+")";
+			RadarPing ping = pings.get(selected);
+			String text = "("+(int)ping.pos.distanceTo(plane.position())
+					+" | "+(int)ping.pos.y+")";
+			int color = 0xff0000;
+			if (ping.isFriendly) color = 0x0000ff;
 			GuiComponent.drawCenteredString(poseStack, m.font, 
-				text, cx, height-radarOffset-radarSize-20, 0xff0000);
+				text, cx, height-radarOffset-radarSize-20, color);
+			// TODO 1.2 display intercept with target angle
 		}
 		for (int i = 0; i < pings.size(); ++i) {
 			RadarPing ping = pings.get(i);
@@ -415,8 +389,8 @@ public class PilotOverlay {
         int b = stickBaseSize/2, n = stickKnobSize/2;
         RenderSystem.setShaderTexture(0, STICK_KNOB);
         GuiComponent.blit(poseStack, 
-        		width-b-n-stickOffset+(int)(plane.inputYaw*b), 
-        		height-b-n-stickOffset-(int)(plane.inputPitch*b), 
+        		width-b-n-stickOffset+(int)(plane.inputs.yaw*b), 
+        		height-b-n-stickOffset-(int)(plane.inputs.pitch*b), 
         		0, 0, stickKnobSize, stickKnobSize, 
         		stickKnobSize, stickKnobSize);
 		// roll input
@@ -428,7 +402,7 @@ public class PilotOverlay {
         		stickBaseSize, stickBaseSize);
         RenderSystem.setShaderTexture(0, STICK_KNOB);
         GuiComponent.blit(poseStack, 
-        		width-b-n-stickOffset+(int)(plane.inputRoll*b), 
+        		width-b-n-stickOffset+(int)(plane.inputs.roll*b), 
         		height-stickKnobSize-stickOffset-stickOffset-stickBaseSize, 
         		0, 0, stickKnobSize, stickKnobSize, 
         		stickKnobSize, stickKnobSize);
@@ -507,61 +481,16 @@ public class PilotOverlay {
 		return red.getRGB();
 	}
 	
-	// ForgeGui.renderArmor is protected for some reason
-	private static void renderArmor(int width, int height, PoseStack poseStack, Minecraft minecraft, ForgeGui gui) {
-        minecraft.getProfiler().push("armor");
-
-        RenderSystem.enableBlend();
-        int left = width / 2 - 91;
-        int top = height - gui.leftHeight;
-
-        int level = minecraft.player.getArmorValue();
-        for (int i = 1; level > 0 && i < 20; i += 2)
-        {
-            if (i < level)
-            {
-                gui.blit(poseStack, left, top, 34, 9, 9, 9);
-            }
-            else if (i == level)
-            {
-                gui.blit(poseStack, left, top, 25, 9, 9, 9);
-            }
-            else if (i > level)
-            {
-                gui.blit(poseStack, left, top, 16, 9, 9, 9);
-            }
-            left += 8;
-        }
-        gui.leftHeight += 10;
-
-        RenderSystem.disableBlend();
-        minecraft.getProfiler().pop();
-    }
-	
-	// ForgeGui.renderAir is protected for some reason
-	private static void renderAir(int width, int height, PoseStack poseStack, Minecraft minecraft, ForgeGui gui) {
-        minecraft.getProfiler().push("air");
-        Player player = (Player) minecraft.getCameraEntity();
-        //System.out.println("render air "+player);
-        RenderSystem.enableBlend();
-        int left = width / 2 + 91;
-        int top = height - gui.rightHeight;
-
-        int air = player.getAirSupply();
-        if (player.isEyeInFluidType(ForgeMod.WATER_TYPE.get()) || air < 300)
-        {
-            int full = Mth.ceil((double) (air - 2) * 10.0D / 300.0D);
-            int partial = Mth.ceil((double) air * 10.0D / 300.0D) - full;
-
-            for (int i = 0; i < full + partial; ++i)
-            {
-                gui.blit(poseStack, left - i * 8 - 9, top, (i < full ? 16 : 25), 18, 9, 9);
-            }
-            gui.rightHeight += 10;
-        }
-
-        RenderSystem.disableBlend();
-        minecraft.getProfiler().pop();
-    }
+	private static String textByHeading(int h) {
+    	if (h == 0) return "S";
+    	else if (h == 180) return "N";
+    	else if (h == 90) return "W";
+    	else if (h == 270) return "E";
+    	else if (h == 45) return "SW";
+    	else if (h == 135) return "NW";
+    	else if (h == 225) return "NE";
+    	else if (h == 315) return "SE";
+    	return h+"";
+	}
 	
 }

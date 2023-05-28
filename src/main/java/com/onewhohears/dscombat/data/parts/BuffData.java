@@ -56,8 +56,8 @@ public class BuffData extends PartData {
 	}
 	
 	@Override
-	public void setup(EntityAircraft craft, String slotId, Vec3 pos) {
-		super.setup(craft, slotId, pos);
+	public void serverSetup(EntityAircraft craft, String slotId, Vec3 pos) {
+		super.serverSetup(craft, slotId, pos);
 		switch (type) {
 		case DATA_LINK:
 			getParent().radarSystem.dataLink = true;
@@ -69,8 +69,8 @@ public class BuffData extends PartData {
 	}
 	
 	@Override
-	public void remove(String slotId) {
-		super.remove(slotId);
+	public void serverRemove(String slotId) {
+		super.serverRemove(slotId);
 		switch (type) {
 		case DATA_LINK:
 			getParent().radarSystem.dataLink = false;

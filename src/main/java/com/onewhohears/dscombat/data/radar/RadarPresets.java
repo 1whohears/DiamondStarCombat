@@ -1,50 +1,45 @@
 package com.onewhohears.dscombat.data.radar;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Nullable;
-
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.onewhohears.dscombat.util.UtilParse;
+import com.onewhohears.dscombat.data.JsonPresetReloadListener;
 
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 
-public class RadarPresets {
+public class RadarPresets extends JsonPresetReloadListener<RadarData> {
 	
-	public static List<RadarData> radars = new ArrayList<RadarData>();
-	public static List<CompoundTag> radarNbt = new ArrayList<CompoundTag>();
+	private static RadarPresets instance;
 	
-	public static void setupPresets() {
-		String dir = "/data/dscombat/radars/";
-		JsonObject jo = UtilParse.getJsonFromResource(dir+"radars.json");
-		
-		JsonArray jar = jo.get("radars").getAsJsonArray();
-		for (int i = 0; i < jar.size(); ++i) add(UtilParse.getCompoundFromJson(jar.get(i).getAsJsonObject()));
+	public static RadarPresets get() {
+		if (instance == null) instance = new RadarPresets();
+		return instance;
 	}
 	
-	public static void add(RadarData data) {
-		radars.add(data);
-		radarNbt.add(data.write());
+	public static void close() {
+		instance = null;
 	}
 	
-	public static void add(CompoundTag tag) {
-		RadarData data = new RadarData(tag);
-		radars.add(data);
-		radarNbt.add(tag);
-	}
+	private RadarData[] radarList;
 	
-	@Nullable
-	public static CompoundTag getNbtById(String id) {
-		for (CompoundTag w : radarNbt) if (w.getString("id").equals(id)) return w.copy();
-		return null;
+	public RadarPresets() {
+		super("radars");
 	}
-	
-	@Nullable
-	public static RadarData getById(String id) {
-		for (RadarData r : radars) if (r.getId().equals(id)) return r.copy();
-		return null;
+
+	@Override
+	public RadarData[] getAllPresets() {
+		if (radarList == null) {
+			radarList = presetMap.values().toArray(new RadarData[presetMap.size()]);
+		}
+		return radarList;
+	}
+
+	@Override
+	public RadarData getFromJson(ResourceLocation key, JsonObject json) {
+		return new RadarData(key, json);
+	}
+
+	@Override
+	protected void resetCache() {
+		radarList = null;
 	}
 	
 }

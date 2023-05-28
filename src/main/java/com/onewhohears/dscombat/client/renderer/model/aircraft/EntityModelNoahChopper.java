@@ -16,7 +16,7 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
 
-public class EntityModelNoahChopper<T extends EntityHelicopter> extends EntityControllableModel<T> {
+public class EntityModelNoahChopper extends EntityControllableModel<EntityHelicopter> {
 	
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(DSCombatMod.MODID, "noah_chopper"), "main");
 	private final ModelPart body;
@@ -27,6 +27,16 @@ public class EntityModelNoahChopper<T extends EntityHelicopter> extends EntityCo
 		this.body = root.getChild("body");
 		this.top_rotor = body.getChild("bladetop");
 		this.tail_rotor = body.getChild("tail").getChild("bladetail");
+	}
+	
+	@Override
+	public void renderToBuffer(EntityHelicopter entity, float partialTicks, PoseStack poseStack, VertexConsumer vertexConsumer,
+			int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+		poseStack.translate(0, 1.5, 0);
+		poseStack.scale(1.0F, -1.0F, 1.0F);
+		top_rotor.yRot = entity.getPropellerRotation(partialTicks);
+		tail_rotor.xRot = entity.getPropellerRotation(partialTicks);
+		body.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 
 	public static LayerDefinition createBodyLayer() {
@@ -77,16 +87,6 @@ public class EntityModelNoahChopper<T extends EntityHelicopter> extends EntityCo
 		.texOffs(0, 121).addBox(-60.0F, -3.0F, -2.0F, 120.0F, 1.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -33.0F, 0.0F));
 
 		return LayerDefinition.create(meshdefinition, 256, 256);
-	}
-	
-	@Override
-	public void renderToBuffer(T entity, float partialTicks, PoseStack poseStack, VertexConsumer vertexConsumer,
-			int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		poseStack.translate(0, 1.5, 0);
-		poseStack.scale(1.0F, -1.0F, 1.0F);
-		top_rotor.yRot = entity.getPropellerRotation(partialTicks);
-		tail_rotor.xRot = entity.getPropellerRotation(partialTicks);
-		body.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 
 }

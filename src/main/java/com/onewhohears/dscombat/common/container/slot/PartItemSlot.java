@@ -48,31 +48,7 @@ public class PartItemSlot extends Slot {
 	
 	@Override
 	public boolean mayPickup(Player player) {
-		/*if (data.getName().equals(PartSlot.PILOT_SLOT_NAME)) {
-			if (!data.filled()) return false;
-			PartData pd = data.getPartData();
-			if (pd.getType() == PartType.SEAT) {
-				this.getItem().setCount(0);
-			}
-		}*/
-		return true;
-	}
-	
-	@Override
-	public void set(ItemStack stack) {
-		/*System.out.println("set "+stack);
-		if (data.getName().equals(PartSlot.PILOT_SLOT_NAME)) {
-			if (stack.isEmpty()) {
-				stack = ModItems.SEAT.get().getDefaultInstance();
-				System.out.println("setting to default seat");
-			} else if (data.filled()) {
-				PartData pd = data.getPartData();
-				if (pd.getType() == PartType.SEAT) {
-					container.setItem(getSlotIndex(), ItemStack.EMPTY);
-				}
-			} 
-		}*/
-		super.set(stack);
+		return !data.isLocked();
 	}
 
 }

@@ -42,11 +42,15 @@ public class MissileCommand {
 	}
 	
 	private int testMissile(CommandContext<CommandSourceStack> context, Collection<? extends Entity> targets, Vec3 pos, CompoundTag tag, Entity owner) throws CommandSyntaxException {
+		String defaultId = "aim120b";
 		WeaponData data;
-		if (tag == null) data = WeaponPresets.getDefaultMissile();
+		if (tag == null) data = WeaponPresets.get().getPreset(defaultId);
 		else data = UtilParse.parseWeaponFromCompound(tag);
 		if (data == null) {
-			context.getSource().sendFailure(Component.literal("Failed to make missile from nbt "+tag.toString()));
+			String error;
+			if (tag != null) error = "Failed to make missile from nbt "+tag.toString();
+			else error = "Failed to make missile from default missile "+defaultId;
+			context.getSource().sendFailure(Component.literal(error));
 			return 1;
 		}
 		int i = 0;

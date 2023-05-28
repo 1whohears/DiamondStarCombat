@@ -17,7 +17,7 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
-public class EntityModelOrangeTesla<T extends EntityGroundVehicle> extends EntityControllableModel<T> {
+public class EntityModelOrangeTesla extends EntityControllableModel<EntityGroundVehicle> {
 	
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(DSCombatMod.MODID, "orange_tesla"), "main");
 	private final ModelPart main;
@@ -35,14 +35,14 @@ public class EntityModelOrangeTesla<T extends EntityGroundVehicle> extends Entit
 	}
 	
 	@Override
-	public void renderToBuffer(T entity, float partialTicks, PoseStack poseStack, VertexConsumer vertexConsumer,
+	public void renderToBuffer(EntityGroundVehicle entity, float partialTicks, PoseStack poseStack, VertexConsumer vertexConsumer,
 			int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		poseStack.translate(0, 1.55, 0);
 		poseStack.scale(-1.0F, -1.0F, 1.0F);
 		float yf = Mth.PI/4;
-		stearing.zRot = entity.inputYaw * yf;
-		wheels[0].yRot = entity.inputYaw * yf;
-		wheels[2].yRot = entity.inputYaw * yf;
+		stearing.zRot = entity.inputs.yaw * yf;
+		wheels[0].yRot = entity.inputs.yaw * yf;
+		wheels[2].yRot = entity.inputs.yaw * yf;
 		for (int i = 0; i < 2; ++i) wheels[i].xRot = -entity.getWheelLeftRotation(partialTicks);
 		for (int i = 2; i < 4; ++i) wheels[i].xRot = -entity.getWheelRightRotation(partialTicks);
 		main.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);

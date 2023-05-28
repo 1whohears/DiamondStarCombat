@@ -8,15 +8,14 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.common.network.toclient.ToClientAddRadar;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRWRWarning;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRadarPings;
-import com.onewhohears.dscombat.common.network.toclient.ToClientRemoveRadar;
 import com.onewhohears.dscombat.common.network.toserver.ToServerPingSelect;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.init.DataSerializers;
+import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -53,26 +52,29 @@ public class RadarSystem {
 	public void read(CompoundTag compound) {
 		radars.clear();
 		ListTag list = compound.getList("radars", 10);
-		for (int i = 0; i < list.size(); ++i) radars.add(new RadarData(list.getCompound(i)));
+		for (int i = 0; i < list.size(); ++i) {
+			RadarData r = UtilParse.parseRadarFromCompound(list.getCompound(i));
+			if (r != null) radars.add(r);
+		}
 		readData = true;
 	}
 	
 	public void write(CompoundTag compound) {
 		ListTag list = new ListTag();
-		for (int i = 0; i < radars.size(); ++i) list.add(radars.get(i).write());
+		for (int i = 0; i < radars.size(); ++i) list.add(radars.get(i).writeNbt());
 		compound.put("radars", list);
 	}
 	
 	public static List<RadarData> readRadarsFromBuffer(FriendlyByteBuf buffer) {
 		List<RadarData> radars = new ArrayList<RadarData>();
 		int num = buffer.readInt();
-		for (int i = 0; i < num; ++i) radars.add(new RadarData(buffer));
+		for (int i = 0; i < num; ++i) radars.add(DataSerializers.RADAR_DATA.read(buffer));
 		return radars;
 	}
 	
 	public static void writeRadarsToBuffer(FriendlyByteBuf buffer, List<RadarData> radars) {
 		buffer.writeInt(radars.size());
-		for (int i = 0; i < radars.size(); ++i) radars.get(i).write(buffer);
+		for (int i = 0; i < radars.size(); ++i) DataSerializers.RADAR_DATA.write(buffer, radars.get(i));
 	}
 	
 	public void setRadars(List<RadarData> radars) {
@@ -91,7 +93,7 @@ public class RadarSystem {
 		// PLANE RADARS
 		for (RadarData r : radars) r.tickUpdateTargets(parent, targets);
 		// DATA LINK
-		if (dataLink && parent.level.getGameTime() % 20 == 0) {
+		if (dataLink && parent.tickCount % 20 == 0) {
 			for (int i = 0; i < dataLinkTargets.size(); ++i) targets.remove(dataLinkTargets.get(i));
 			dataLinkTargets.clear();
 			Entity controller = parent.getControllingPassenger();
@@ -99,14 +101,15 @@ public class RadarSystem {
 			List<? extends Player> players = parent.level.players();
 			for (Player p : players) {
 				if (player.equals(p)) continue;
-				if (player.getTeam() != null && p.getTeam() != null
-						&& player.getTeam().getName().equals(p.getTeam().getName())) {
-					if (p.getRootVehicle() instanceof EntityAircraft plane) {
-						for (RadarPing rp : targets) {
-							plane.radarSystem.dataLinkTargets.add(rp);
-							plane.radarSystem.targets.add(rp);
-						}
-					}
+				if (!player.isAlliedTo(p)) continue;
+				if (!(p.getRootVehicle() instanceof EntityAircraft plane)) continue;
+				if (!plane.radarSystem.dataLink) continue;
+				if (plane.equals(parent)) continue;
+				for (RadarPing rp : plane.radarSystem.targets) {
+					if (rp.id == parent.getId()) continue;
+					if (hasTarget(rp.id)) continue;
+					targets.add(rp);
+					dataLinkTargets.add(rp);
 				}
 			}
 		}
@@ -124,6 +127,11 @@ public class RadarSystem {
 		// PACKET
 		if (parent.tickCount % 20 == 0) parent.toClientPassengers(
 				new ToClientRadarPings(parent.getId(), targets));
+	}
+	
+	private boolean hasTarget(int id) {
+		for (RadarPing rp : targets) if (rp.id == id) return true;
+		return false;
 	}
 	
 	private void updateRockets() {
@@ -166,15 +174,25 @@ public class RadarSystem {
 	}
 	
 	public void clientSelectTarget(RadarPing ping) {
-		int id = ping.id;
 		clientSelectedIndex = -1;
 		for (int i = 0; i < clientTargets.size(); ++i) 
-			if (clientTargets.get(i).id == id) {
+			if (clientTargets.get(i).id == ping.id) {
 				clientSelectedIndex = i;
 				PacketHandler.INSTANCE.sendToServer(
 					new ToServerPingSelect(parent.getId(), ping));
 				break;
 			}
+	}
+	
+	public void clientSelectNextTarget() {
+		int size = getClientRadarPings().size();
+		if (size == 0) return;
+		int s = clientSelectedIndex + 1;
+		if (s >= size) s = 0;
+		clientSelectedIndex = s;
+		PacketHandler.INSTANCE.sendToServer(
+			new ToServerPingSelect(parent.getId(), 
+				clientTargets.get(s)));
 	}
 	
 	public int getClientSelectedPingIndex() {
@@ -205,29 +223,25 @@ public class RadarSystem {
 		return radars.size() > 0;
 	}
 	
+	public boolean hasRadar(String id) {
+		for (RadarData r : radars) if (r.getId().equals(id)) return true;
+		return false;
+	}
+	
 	@Nullable
 	public RadarData get(String id, String slotId) {
 		for (RadarData r : radars) if (r.idMatch(id, slotId)) return r;
 		return null;
 	}
 	
-	public boolean addRadar(RadarData r, boolean updateClient) {
+	public boolean addRadar(RadarData r) {
 		if (get(r.getId(), r.getSlotId()) != null) return false;
 		radars.add(r);
-		if (updateClient) {
-			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
-					new ToClientAddRadar(parent.getId(), r));
-		}
 		return true;
 	}
 	
-	public void removeRadar(String id, String slotId, boolean updateClient) {
-		boolean ok = radars.remove(get(id, slotId));
-		if (ok && updateClient) {
-			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
-					new ToClientRemoveRadar(parent.getId(), id, slotId));
-		}
-		return;
+	public boolean removeRadar(String id, String slotId) {
+		return radars.remove(get(id, slotId));
 	}
 	
 	public double getMaxAirRange() {
@@ -247,14 +261,6 @@ public class RadarSystem {
 	
 	public boolean isReadData() {
 		return readData;
-	}
-	
-	public void setup(/*EntityAircraft e*/) {
-		//parent = e;
-	}
-	
-	public void clientSetup(/*EntityAircraft e*/) {
-		//parent = e;
 	}
 	
 	public void addRWRWarning(Vec3 pos, boolean isMissile, boolean clientSide) {

@@ -8,29 +8,35 @@ import net.minecraft.world.entity.vehicle.Minecart;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 
 public class UtilEntity {
 	
-	public static boolean canEntitySeeEntity(Entity e1, Entity e2, int maxCheckDist) {
-		return canEntitySeeEntity(e1, e2, maxCheckDist, 0, 0);
+	public static boolean canEntitySeeEntity(Entity e1, Entity e2, int maxBlockCheckDepth) {
+		return canEntitySeeEntity(e1, e2, maxBlockCheckDepth, 0, 0);
 	}
 	
-	public static boolean canEntitySeeEntity(Entity e1, Entity e2, int maxCheckDist, 
-			double throWater, double throBlock) {
+	public static boolean canEntitySeeEntity(Entity e1, Entity e2, int maxBlockCheckDepth, double throWater, double throBlock) {
 		Level level = e1.getLevel();
 		Vec3 diff = e2.position().subtract(e1.position());
 		Vec3 look = diff.normalize();
 		double distance = diff.length();
-		Vec3 pos; int dist;
-		if (distance <= maxCheckDist) {
-			dist = (int)distance;
-			pos = e1.position();
+		double[] through = new double[] {throWater, throBlock};
+		if (distance <= maxBlockCheckDepth) {
+			if (!checkBlocksByRange(level, e1.position(), look, (int)distance, through)) return false;
 		} else {
-			dist = maxCheckDist;
-			pos = e1.position().add(look.scale(distance-maxCheckDist).subtract(look));
+			int maxCheckDist = maxBlockCheckDepth / 2;
+			if (!checkBlocksByRange(level, e1.position(), look, maxCheckDist, through)) return false;
+			if (!checkBlocksByRange(level, 
+				e1.position().add(look.scale(distance-maxCheckDist).subtract(look)), 
+				look, maxCheckDist, through)) return false;
 		}
+		return true;
+	}
+	
+	private static boolean checkBlocksByRange(Level level, Vec3 pos, Vec3 look, int dist, double[] through) {
 		int k = 0;
 		while (k++ < dist) {
 			pos = pos.add(look);
@@ -40,15 +46,15 @@ public class UtilEntity {
 			BlockState block = level.getBlockState(bp);
 			if (block == null || block.isAir()) continue;
 			if (!block.getMaterial().blocksMotion() && !block.getMaterial().isLiquid()) continue;
-			if (throWater <= 0 && throBlock <= 0) return false;
+			if (through[0] <= 0 && through[1] <= 0) return false;
 			if (block.getFluidState().getType().isSame(Fluids.WATER)) {
-				if (throWater > 0) {
-					--throWater;
+				if (through[0] > 0) {
+					--through[0];
 					continue;
 				} else return false;
 			}
-			if (throBlock > 0) {
-				--throBlock;
+			if (through[1] > 0) {
+				--through[1];
 				continue;
 			} else return false;
 		}
@@ -84,12 +90,22 @@ public class UtilEntity {
 	 * @param posY
 	 * @return between 0 (no air pressure) and 1
 	 */
-	public static double getAirPressure(double posY) {
-		double space = 10000, water = 64;
+	public static double getAirPressure(Entity entity) {
+		DimensionType dt = entity.level.dimensionType();
+		// IDEA 6 how high should the atmosphere go based on dimension?
+		double space, surface;
+		if (dt.natural()) {
+			space = 10000;
+			surface = 64;
+		} else {
+			space = 2000;
+			surface = 0;
+		}
 		double scale = 1, exp = 2;
-		if (posY <= water) return scale;
+		double posY = entity.getY();
+		if (posY <= surface) return scale;
 		if (posY > space) return 0;
-		posY -= water;
+		posY -= surface;
 		return Math.pow(Math.abs(posY-space), exp) * Math.pow(space, -exp);
 	}
 	

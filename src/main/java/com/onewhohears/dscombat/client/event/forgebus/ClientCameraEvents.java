@@ -3,19 +3,18 @@ package com.onewhohears.dscombat.client.event.forgebus;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import javax.annotation.Nullable;
+
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCursorPosCallbackI;
 
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
-import com.onewhohears.dscombat.entity.parts.EntitySeat;
-import com.onewhohears.dscombat.entity.parts.EntitySeatCamera;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
-import net.minecraft.world.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.event.TickEvent;
@@ -27,46 +26,24 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 @Mod.EventBusSubscriber(modid = DSCombatMod.MODID, bus = Bus.FORGE, value = Dist.CLIENT)
 public class ClientCameraEvents {
 	
-	private static Entity prevCamera;
-	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void cameraSetup(ViewportEvent.ComputeCameraAngles event) {
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
-		if (player == null) return;
-		prevCamera = m.getCameraEntity();
-		if (player.getVehicle() instanceof EntitySeat seat 
-				&& seat.getVehicle() instanceof EntityAircraft plane) {
-			EntitySeatCamera camera = seat.getCamera();
-			if (camera == null) return;
-			float xi, yi, zi;
-			float pt = (float)event.getPartialTick();
-			if (!plane.isFreeLook() && player.equals(plane.getControllingPassenger())) {
-				xi = UtilAngles.lerpAngle(pt, plane.xRotO, plane.getXRot());
-				yi = UtilAngles.lerpAngle180(pt, plane.yRotO, plane.getYRot());
-				zi = UtilAngles.lerpAngle(pt, plane.zRotO, plane.zRot);
-				player.setXRot(xi);
-				player.setYRot(yi);
-			} else {
-				zi = UtilAngles.lerpAngle(pt, plane.zRotO, plane.zRot);
-				xi = player.getXRot();
-				yi = player.getYRot();
-			}
-			camera.setXRot(xi);
-			camera.setYRot(yi);
-			camera.xRotO = xi;
-			camera.yRotO = yi;
-			if (!prevCamera.equals(camera)) m.setCameraEntity(camera);
-			boolean detached = !m.options.getCameraType().isFirstPerson();
-			boolean mirrored = m.options.getCameraType().isMirrored();
-			event.getCamera().setup(m.level, camera, 
-					detached, mirrored, 
-					(float) event.getPartialTick());
-			if (detached && mirrored) zi *= -1;
-			event.setRoll(zi);
-		} else {
-			if (!prevCamera.equals(player)) m.setCameraEntity(player);
+		if (player == null || !player.isPassenger()) return;
+		if (!(player.getRootVehicle() instanceof EntityAircraft plane)) return;
+		float pt = (float)event.getPartialTick();
+		if (!plane.isFreeLook() && player.equals(plane.getControllingPassenger())) {
+			float xi = UtilAngles.lerpAngle(pt, plane.xRotO, plane.getXRot());
+			float yi = UtilAngles.lerpAngle180(pt, plane.yRotO, plane.getYRot());
+			player.setXRot(xi);
+			player.setYRot(yi);
 		}
+		boolean detached = !m.options.getCameraType().isFirstPerson();
+		boolean mirrored = m.options.getCameraType().isMirrored();
+		float zi = UtilAngles.lerpAngle(pt, plane.zRotO, plane.zRot);
+		if (detached && mirrored) zi *= -1;
+		event.setRoll(zi);
 	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
@@ -81,6 +58,7 @@ public class ClientCameraEvents {
 	public static Method vanillaOnMove;
 	public static boolean tried = false;
 	
+	@Nullable
 	public static Method getVanillaOnMove() {
 		if (vanillaOnMove != null) return vanillaOnMove; 
 		if (tried) return null;
@@ -99,7 +77,7 @@ public class ClientCameraEvents {
 			vanillaOnMove.setAccessible(true);
 			return vanillaOnMove;
 		} catch (NoSuchMethodException | SecurityException e) {
-			System.out.println("WARNING: VANILLA MOUSE POS CALLBACK IS NOT onMove");
+			System.out.println("ERROR: VANILLA MOUSE POS CALLBACK IS NOT onMove");
 		}
 		return null;
 	}

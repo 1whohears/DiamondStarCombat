@@ -33,6 +33,19 @@ public class EntityModelTestPlane<T extends EntityPlane> extends EntityControlla
 		this.gearleft = body.getChild("gearleft");
 		this.gearright = body.getChild("gearright");
 	}
+	
+	@Override
+	public void renderToBuffer(T entity, float partialTicks, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+		poseStack.translate(0, 1.5, 0);
+		poseStack.scale(1.0F, -1.0F, 1.0F);
+		propeller.zRot = entity.getPropellerRotation(partialTicks);
+		float gear = entity.getLandingGearPos(partialTicks);
+		float hpi = (float)Math.PI/2;
+		gearback.xRot = gear * -hpi;
+		gearleft.zRot = gear * (hpi-0.01f);
+		gearright.zRot = gear * -(hpi-0.01f);
+		body.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+	}
 
 	public static LayerDefinition createBodyLayer() {
 		MeshDefinition meshdefinition = new MeshDefinition();
@@ -70,19 +83,6 @@ public class EntityModelTestPlane<T extends EntityPlane> extends EntityControlla
 		.texOffs(0, 13).addBox(-1.0F, 9.0F, -1.0F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(-25.0F, 0.0F, -16.0F));
 
 		return LayerDefinition.create(meshdefinition, 128, 128);
-	}
-
-	@Override
-	public void renderToBuffer(T entity, float partialTicks, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		poseStack.translate(0, 1.5, 0);
-		poseStack.scale(1.0F, -1.0F, 1.0F);
-		propeller.zRot = entity.getPropellerRotation(partialTicks);
-		float gear = entity.getLandingGearPos(partialTicks);
-		float hpi = (float)Math.PI/2;
-		gearback.xRot = gear * -hpi;
-		gearleft.zRot = gear * (hpi-0.01f);
-		gearright.zRot = gear * -(hpi-0.01f);
-		body.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 	
 }

@@ -68,11 +68,11 @@ public class UtilParse {
 	public static JsonObject getJsonFromResource(Resource resource) {
 		JsonObject json;
 		try {
-			BufferedReader br = resource.openAsReader();
+			BufferedReader br = new BufferedReader(new InputStreamReader(resource.getInputStream()));
 			json = GSON.fromJson(br, JsonObject.class);
 			br.close();
 		} catch (Exception e) {
-			System.out.println("ERROR: COULD NOT PARSE JSON "+resource.sourcePackId());
+			System.out.println("ERROR: COULD NOT PARSE JSON "+resource.getSourceName());
 			e.printStackTrace();
 			return new JsonObject();
 		}

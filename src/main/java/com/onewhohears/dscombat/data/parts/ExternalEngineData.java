@@ -55,8 +55,8 @@ public class ExternalEngineData extends EngineData {
 	
 	protected EntityType<?> getEntityType() {
 		try {
-			return ForgeRegistries.ENTITY_TYPES.getDelegate(
-					new ResourceLocation(entityTypeKey)).get().get();
+			return ForgeRegistries.ENTITIES.getHolder(
+					new ResourceLocation(entityTypeKey)).get().value();
 		} catch(NoSuchElementException e) { 
 			return ModEntities.CFM56.get(); 
 		}

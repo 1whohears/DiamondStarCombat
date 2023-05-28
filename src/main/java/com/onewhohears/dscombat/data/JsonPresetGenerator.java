@@ -1,26 +1,36 @@
 package com.onewhohears.dscombat.data;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
 
 import com.google.common.collect.Sets;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 
-import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
+import net.minecraft.data.HashCache;
 import net.minecraft.resources.ResourceLocation;
 
 public abstract class JsonPresetGenerator<T extends JsonPreset> implements DataProvider {
 	
-	protected final DataGenerator.PathProvider pathProvider;
+	private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().create();
+	
+	protected final DataGenerator generator;
+	protected final String kind;
     private final Map<ResourceLocation, T> gen_map = new HashMap<>();
 
-    public JsonPresetGenerator(DataGenerator output, String kind) {
-        this.pathProvider = output.createPathProvider(DataGenerator.Target.DATA_PACK, kind);
+    public JsonPresetGenerator(DataGenerator generator, String kind) {
+        this.generator = generator;
+        this.kind = kind;
     }
 	
     /**
@@ -29,7 +39,7 @@ public abstract class JsonPresetGenerator<T extends JsonPreset> implements DataP
     protected abstract void registerPresets();
 	
 	@Override
-	public void run(CachedOutput cache) throws IOException {
+	public void run(HashCache cache) throws IOException {
 		gen_map.clear();
 		registerPresets();
 		Set<ResourceLocation> set = Sets.newHashSet();
@@ -38,9 +48,18 @@ public abstract class JsonPresetGenerator<T extends JsonPreset> implements DataP
 			if (!set.add(preset.getKey())) {
 				throw new IllegalStateException("Duplicate Preset! " + preset.getKey());
 			} else {
-				Path path = pathProvider.json(preset.getKey());
+				Path path = generator.getOutputFolder().resolve("data/"+preset.getNameSpace()+"/"+kind+"/"+preset.getKey().getPath()+".json");
 				try {
-					DataProvider.saveStable(cache, preset.getJsonData(), path);
+					JsonObject object = preset.getJsonData();
+	                String rawJson = GSON.toJson(object);
+	                String hash = SHA1.hashUnencodedChars(rawJson).toString();
+	                if(!Objects.equals(cache.getHash(path), hash) || !Files.exists(path)) {
+	                    Files.createDirectories(path.getParent());
+	                    try(BufferedWriter writer = Files.newBufferedWriter(path)) {
+	                        writer.write(rawJson);
+	                    }
+	                }
+	                cache.putNew(path, hash);
 				} catch (IOException e) {
 					e.printStackTrace();
 	            }

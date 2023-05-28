@@ -18,8 +18,8 @@ import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
@@ -70,8 +70,8 @@ public class AircraftPreset extends JsonPreset{
 	public ItemStack getItem() {
 		if (item == null) {
 			try {
-				item = new ItemStack(ForgeRegistries.ITEMS.getDelegate(
-						new ResourceLocation(getJsonData().get("item").getAsString())).get().get());
+				item = new ItemStack(ForgeRegistries.ITEMS.getHolder(
+						new ResourceLocation(getJsonData().get("item").getAsString())).get().value());
 			} catch(NoSuchElementException e) {
 				item = ItemStack.EMPTY;
 			}
@@ -88,7 +88,7 @@ public class AircraftPreset extends JsonPreset{
 	}
 	
 	public MutableComponent getDisplayName() {
-		return Component.translatable("preset."+getNameSpace()+"."+getId());
+		return new TranslatableComponent("preset."+getNameSpace()+"."+getId());
 	}
 	
 	@Override

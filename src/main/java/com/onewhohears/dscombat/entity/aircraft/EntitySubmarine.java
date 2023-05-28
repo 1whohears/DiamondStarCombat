@@ -120,8 +120,8 @@ public class EntitySubmarine extends EntityBoat {
 	}
 	
 	@Override
-	public double getPushThrustMag() {
-		return super.getPushThrustMag();
+	public float getMaxPushThrust() {
+		return getMaxSpinThrust();
 	}
 	
 	@Override
@@ -137,9 +137,6 @@ public class EntitySubmarine extends EntityBoat {
 	@Override
 	public void readInputs() {
 		super.readInputs();
-		float temp = inputs.pitch;
-		inputs.pitch = inputs.throttle;
-		inputs.throttle = temp;
 	}
 	
 	@Override

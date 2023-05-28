@@ -27,13 +27,14 @@ import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.gui.overlay.ForgeGui;
-import net.minecraftforge.client.gui.overlay.IGuiOverlay;
+import net.minecraftforge.client.gui.ForgeIngameGui;
+import net.minecraftforge.client.gui.IIngameOverlay;
 
 public class PilotOverlay {
 	
@@ -56,7 +57,7 @@ public class PilotOverlay {
 	private static final ResourceLocation RADAR = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/radar.png");
 	
-	public static final IGuiOverlay HUD_Aircraft_Stats = ((gui, poseStack, partialTick, width, height) -> {
+	public static final IIngameOverlay HUD_Aircraft_Stats = ((gui, poseStack, partialTick, width, height) -> {
 		Minecraft m = Minecraft.getInstance();
 		if (m.options.hideGui) return;
 		if (m.gameMode.getPlayerMode() == GameType.SPECTATOR) return;
@@ -78,7 +79,7 @@ public class PilotOverlay {
 		if (Config.CLIENT.debugMode.get()) drawDebug(m, player, plane, gui, poseStack, partialTick, width, height);
 	});
 	
-	private static void drawDebug(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
+	private static void drawDebug(Minecraft m, Player player, EntityAircraft plane, ForgeIngameGui gui, PoseStack poseStack, float partialTick, int width, int height) {
 		int color = 0x00ff00;
 		GuiComponent.drawString(poseStack, m.font, 
 			"V"+UtilParse.prettyVec3(plane.getDeltaMovement()), width-100, 0, color);
@@ -90,7 +91,7 @@ public class PilotOverlay {
 			"M"+UtilParse.prettyVec3(plane.moment), width-100, 30, color);
 	}
 	
-	private static void drawAircraftStats(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
+	private static void drawAircraftStats(Minecraft m, Player player, EntityAircraft plane, ForgeIngameGui gui, PoseStack poseStack, float partialTick, int width, int height) {
 		// plane speed 
 		GuiComponent.drawString(poseStack, m.font, 
 				"m/s: "+String.format("%3.1f", plane.getDeltaMovement().length()*20), 
@@ -116,7 +117,7 @@ public class PilotOverlay {
 				width/2, 0, 0x00ff00);
 	}
 	
-	private static void drawAircraftAngles(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
+	private static void drawAircraftAngles(Minecraft m, Player player, EntityAircraft plane, ForgeIngameGui gui, PoseStack poseStack, float partialTick, int width, int height) {
 		// HEADING
 		int y = 10, color = 0xe6e600;
         int heading = (int)Mth.wrapDegrees(player.getYRot());
@@ -139,8 +140,8 @@ public class PilotOverlay {
         }
 	}
 	
-	private static final MutableComponent weaponSelect = Component.empty().append("->");
-	private static void drawAircraftWeaponsAndKeys(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
+	private static final MutableComponent weaponSelect = new TextComponent("->");
+	private static void drawAircraftWeaponsAndKeys(Minecraft m, Player player, EntityAircraft plane, ForgeIngameGui gui, PoseStack poseStack, float partialTick, int width, int height) {
 		int wh=1,x=1,weaponSelectWidth=m.font.width(weaponSelect)+1,maxNameWidth=46,color1=0x7340bf,color2=0x00ff00,color=color1;
 		// WEAPONS
 		WeaponData sw = plane.weaponSystem.getSelected();
@@ -280,7 +281,7 @@ public class PilotOverlay {
         }
 	}
 	
-	private static void drawAircraftRadarData(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
+	private static void drawAircraftRadarData(Minecraft m, Player player, EntityAircraft plane, ForgeIngameGui gui, PoseStack poseStack, float partialTick, int width, int height) {
 		RadarSystem radar = plane.radarSystem;
 		if (!radar.hasRadar()) return;
 		RenderSystem.setShaderTexture(0, RADAR);
@@ -356,7 +357,6 @@ public class PilotOverlay {
 			if (ping.isFriendly) color = 0x0000ff;
 			GuiComponent.drawCenteredString(poseStack, m.font, 
 				text, cx, height-radarOffset-radarSize-20, color);
-			// TODO 1.2 display intercept with target angle
 		}
 		for (int i = 0; i < pings.size(); ++i) {
 			RadarPing ping = pings.get(i);
@@ -379,7 +379,7 @@ public class PilotOverlay {
 		}
 	}
 	
-	private static void drawAircraftControls(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
+	private static void drawAircraftControls(Minecraft m, Player player, EntityAircraft plane, ForgeIngameGui gui, PoseStack poseStack, float partialTick, int width, int height) {
         // pitch yaw input
         RenderSystem.setShaderTexture(0, STICK_BASE_CIRCLE);
         GuiComponent.blit(poseStack, 
@@ -408,7 +408,7 @@ public class PilotOverlay {
         		stickKnobSize, stickKnobSize);
 	}
 	
-	private static void drawAircraftThrottle(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
+	private static void drawAircraftThrottle(Minecraft m, Player player, EntityAircraft plane, ForgeIngameGui gui, PoseStack poseStack, float partialTick, int width, int height) {
 		RenderSystem.setShaderTexture(0, STICK_BASE_SQUARE);
         GuiComponent.blit(poseStack, 
         		width-stickBaseSize-stickOffset-stickKnobSize-stickOffset, 
@@ -427,7 +427,7 @@ public class PilotOverlay {
         		stickKnobSize, stickKnobSize);
 	}
 	
-	private static void drawAircraftFuel(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
+	private static void drawAircraftFuel(Minecraft m, Player player, EntityAircraft plane, ForgeIngameGui gui, PoseStack poseStack, float partialTick, int width, int height) {
 		RenderSystem.setShaderTexture(0, FUEL_GUAGE);
         GuiComponent.blit(poseStack, 
         	width-stickBaseSize-stickKnobSize-3*stickOffset-fuelGuageWidth, 
@@ -448,13 +448,13 @@ public class PilotOverlay {
         poseStack.popPose();
 	}
 	
-	private static void drawAircraftTurretData(Minecraft m, Player player, EntityTurret turret, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
+	private static void drawAircraftTurretData(Minecraft m, Player player, EntityTurret turret, ForgeIngameGui gui, PoseStack poseStack, float partialTick, int width, int height) {
 		GuiComponent.drawString(poseStack, m.font, 
 				"Turret: "+turret.getAmmo(), 
 				width/2-100, 1, 0xffff00);
 	}
 	
-	private static void drawPlaneData(Minecraft m, Player player, EntityPlane plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
+	private static void drawPlaneData(Minecraft m, Player player, EntityPlane plane, ForgeIngameGui gui, PoseStack poseStack, float partialTick, int width, int height) {
 		GuiComponent.drawString(poseStack, m.font, 
      		String.format("AOA: %3.1f", plane.getAOA()), 
      		width-stickBaseSize-stickOffset, 

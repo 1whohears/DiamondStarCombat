@@ -71,7 +71,7 @@ public class AircraftBlock extends BaseEntityBlock {
         if (!pLevel.isClientSide()) {
             BlockEntity entity = pLevel.getBlockEntity(pPos);
             if(entity instanceof AircraftBlockEntity) {
-                NetworkHooks.openScreen(((ServerPlayer)pPlayer), (AircraftBlockEntity)entity, pPos);
+                NetworkHooks.openGui(((ServerPlayer)pPlayer), (AircraftBlockEntity)entity, pPos);
             } else {
                 throw new IllegalStateException("Our Container provider is missing!");
             }

@@ -17,7 +17,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class ModContainers {
 	
-	public static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, DSCombatMod.MODID);
+	public static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, DSCombatMod.MODID);
 	
 	public static void register(IEventBus eventBus) {
 		CONTAINERS.register(eventBus);

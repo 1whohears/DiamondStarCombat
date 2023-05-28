@@ -18,6 +18,8 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
@@ -100,7 +102,7 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockMenu
 	protected void renderLabels(PoseStack stack, int mouseX, int mouseY) {
 		font.draw(stack, title, titleLabelX+38, titleLabelY, 0x404040);
 		font.draw(stack, playerInventoryTitle, inventoryLabelX+38, inventoryLabelY+56, 0x404040);
-		font.draw(stack, Component.translatable("ui.dscombat.ingredients"), titleLabelX+122, titleLabelY+34, 0x00aa00);
+		font.draw(stack, new TranslatableComponent("ui.dscombat.ingredients"), titleLabelX+122, titleLabelY+34, 0x00aa00);
 		// weapon stats
 		if (WeaponPresets.get().getPresetNum() == 0) return;
 		WeaponData data = WeaponPresets.get().getAllPresets()[weaponIndex];
@@ -132,7 +134,7 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockMenu
 		int wy = startY + 10;
 		// prev
 		Button prevButton = new Button(0, 0, 10, 20, 
-				Component.literal("<"), 
+				new TextComponent("<"), 
 				onPress -> { prevButton(); });
 		prevButton.x = wx;
 		prevButton.y = wy;
@@ -142,7 +144,7 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockMenu
 		for (int b = 0; b < buttonNum; ++b) {
 			final int c = b;
 			Button acb = new Button(0, 0, 20, 20,
-					Component.empty(),
+					TextComponent.EMPTY,
 					onPress -> { weaponButton(c); });
 			acb.x = wx;
 			acb.y = wy;
@@ -151,14 +153,14 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockMenu
 		}
 		// next
 		Button nextButton = new Button(0, 0, 10, 20, 
-				Component.literal(">"), 
+				new TextComponent(">"), 
 				onPress -> { nextButton(); });
 		nextButton.x = wx;
 		nextButton.y = wy;
 		addRenderableWidget(nextButton);
 		// craft
 		Button craftButton = new Button(0, 0, 80, 20, 
-				Component.translatable("ui.dscombat.craft_button"), 
+				new TranslatableComponent("ui.dscombat.craft_button"), 
 				onPress -> { craftButton(); });
 		craftButton.x = startX+122;
 		craftButton.y = startY+110;
@@ -210,7 +212,7 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockMenu
 		if (DSCIngredient.hasIngredients(data.getIngredients(), player.getInventory())) {
 			PacketHandler.INSTANCE.sendToServer(new ToServerCraftWeapon(data.getId(), menu.getPos()));
 		} else {
-			player.displayClientMessage(Component.translatable("error.dscombat.cant_craft"), true);
+			player.displayClientMessage(new TranslatableComponent("error.dscombat.cant_craft"), true);
 			minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.VILLAGER_NO, 1.0F));
 		}
 	}

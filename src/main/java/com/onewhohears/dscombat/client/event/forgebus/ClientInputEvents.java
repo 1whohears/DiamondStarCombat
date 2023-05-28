@@ -160,7 +160,7 @@ public final class ClientInputEvents {
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void clientMoveInput(MovementInputUpdateEvent event) {
-		Player player = event.getEntity();
+		Player player = event.getPlayer();
 		if (!(player.getVehicle() instanceof EntitySeat plane)) return;
 		if (Config.CLIENT.customDismount.get()) {
 			event.getInput().shiftKeyDown = DSCKeys.dismount.isDown();

@@ -4,7 +4,6 @@ import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
-import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
@@ -19,7 +18,7 @@ public class DopplerOnPlayerSoundInstance extends AbstractTickableSoundInstance 
 	protected float initPitch;
 	
 	public DopplerOnPlayerSoundInstance(SoundEvent sound, LocalPlayer player, Entity entity, float initVolume, float initPitch, float velSound) {
-		super(sound, SoundSource.PLAYERS, SoundInstance.createUnseededRandom());
+		super(sound, SoundSource.PLAYERS);
 		this.player = player;
 		this.entity = entity;
 		this.looping = true;

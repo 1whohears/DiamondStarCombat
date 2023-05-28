@@ -22,7 +22,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.fluids.FluidType;
 
 public class EntitySeat extends EntityPart {
 	
@@ -126,11 +125,16 @@ public class EntitySeat extends EntityPart {
     public Entity getControllingPassenger() {
 		return getPlayer();
     }
-
-    @Override
-    public boolean canBeRiddenUnderFluidType(FluidType type, Entity rider) {
-        return true;
-    }
+	
+	@Override
+	public boolean rideableUnderWater() {
+		return true;
+	}
+	
+	@Override
+	public boolean canBeRiddenInWater(Entity rider) {
+		return true;
+	}
     
     @Override
     public double getPassengersRidingOffset() {

@@ -160,10 +160,9 @@ public abstract class PartData {
 	private ItemStack stack;
 	
 	public ItemStack getNewItemStack() {
-		//System.out.println("GETTING ITEM STACK "+itemid);
 		if (stack == null) {
 			try {
-				Item i = ForgeRegistries.ITEMS.getDelegate(itemid).get().get();
+				Item i = ForgeRegistries.ITEMS.getHolder(itemid).get().value();
 				stack = new ItemStack(i);
 			} catch(NoSuchElementException e) {
 				stack = ItemStack.EMPTY;

@@ -121,7 +121,7 @@ public class UtilParse {
 			String itemId = tag.getString("itemid");
 			Item item;
 			try {
-				item = ForgeRegistries.ITEMS.getDelegate(new ResourceLocation(itemId)).get().get();
+				item = ForgeRegistries.ITEMS.getHolder(new ResourceLocation(itemId)).get().value();
 			} catch(NoSuchElementException e) {
 				return null;
 			}

@@ -11,7 +11,7 @@ import com.onewhohears.dscombat.util.UtilEntity;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
@@ -70,7 +70,7 @@ public class PosMissileData extends MissileData {
 	@Override
 	public List<ComponentColor> getInfoComponents() {
 		List<ComponentColor> list = super.getInfoComponents();
-		list.add(2, new ComponentColor(Component.literal("TARGETS POSITION"), 0xaaaa00));
+		list.add(2, new ComponentColor(new TextComponent("TARGETS POSITION"), 0xaaaa00));
 		return list;
 	}
 

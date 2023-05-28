@@ -16,7 +16,7 @@ import com.onewhohears.dscombat.util.math.UtilAngles;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.ViewportEvent;
+import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -27,12 +27,12 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 public class ClientCameraEvents {
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
-	public static void cameraSetup(ViewportEvent.ComputeCameraAngles event) {
+	public static void cameraSetup(EntityViewRenderEvent.CameraSetup event) {
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
 		if (player == null || !player.isPassenger()) return;
 		if (!(player.getRootVehicle() instanceof EntityAircraft plane)) return;
-		float pt = (float)event.getPartialTick();
+		float pt = (float)event.getPartialTicks();
 		if (!plane.isFreeLook() && player.equals(plane.getControllingPassenger())) {
 			float xi = UtilAngles.lerpAngle(pt, plane.xRotO, plane.getXRot());
 			float yi = UtilAngles.lerpAngle180(pt, plane.yRotO, plane.getYRot());

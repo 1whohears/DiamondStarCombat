@@ -126,8 +126,8 @@ public class TurretData extends SeatData {
 	@SuppressWarnings("unchecked")
 	public EntityType<? extends EntityTurret> getTurretType() {
 		if (turretType == null) {
-			try { turretType = (EntityType<? extends EntityTurret>) ForgeRegistries.ENTITY_TYPES
-					.getDelegate(new ResourceLocation(turretEntityKey)).get().get(); }
+			try { turretType = (EntityType<? extends EntityTurret>) ForgeRegistries.ENTITIES
+					.getHolder(new ResourceLocation(turretEntityKey)).get().value(); }
 			catch(NoSuchElementException e) { turretType = ModEntities.MINIGUN_TURRET.get(); }
 			catch(ClassCastException e) { turretType = ModEntities.MINIGUN_TURRET.get(); }
 		}

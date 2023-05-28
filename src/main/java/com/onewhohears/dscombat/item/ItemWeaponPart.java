@@ -16,6 +16,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -49,7 +50,7 @@ public class ItemWeaponPart extends ItemPart {
 		super.appendHoverText(stack, level, tips, isAdvanced);
 		CompoundTag tag = stack.getOrCreateTag();
 		if (tag.getString("weaponId").isEmpty()) return;
-		tips.add(Component.literal("Ammo: "+tag.getInt("ammo")+"/"+tag.getInt("max")).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		tips.add(new TextComponent("Ammo: "+tag.getInt("ammo")+"/"+tag.getInt("max")).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 	}
 	
 	@Override

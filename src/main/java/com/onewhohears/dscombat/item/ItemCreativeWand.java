@@ -8,6 +8,7 @@ import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.init.ModItems;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -36,7 +37,7 @@ public class ItemCreativeWand extends Item {
 	public void appendHoverText(ItemStack stack, Level level, List<Component> tooltips, TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tooltips, isAdvanced);
 		if (translatableTooltips != null) for (int i = 0; i < translatableTooltips.length; ++i) {
-			tooltips.add(Component.translatable(translatableTooltips[i]));
+			tooltips.add(new TranslatableComponent(translatableTooltips[i]));
 		}
 	}
 	

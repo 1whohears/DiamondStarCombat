@@ -11,6 +11,7 @@ import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -30,7 +31,7 @@ public class ItemFuelTank extends ItemPart {
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tips, TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tips, isAdvanced);
 		CompoundTag tag = stack.getOrCreateTag();
-		tips.add(Component.literal("Fuel: "+tag.getInt("fuel")+"/"+tag.getInt("max")).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		tips.add(new TextComponent("Fuel: "+tag.getInt("fuel")+"/"+tag.getInt("max")).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 	}
 
 	@Override

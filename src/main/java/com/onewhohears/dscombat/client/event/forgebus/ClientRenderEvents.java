@@ -19,7 +19,7 @@ public class ClientRenderEvents {
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void playerRenderPre(RenderPlayerEvent.Pre event) {
-		Player player = event.getEntity();
+		Player player = event.getPlayer();
 		if (!player.isPassenger()) return;
 		if (!(player.getRootVehicle() instanceof EntityAircraft plane)) return;
 		Quaternion q = UtilAngles.lerpQ(event.getPartialTick(), plane.getPrevQ(), plane.getClientQ());
@@ -41,7 +41,7 @@ public class ClientRenderEvents {
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void playerRenderPost(RenderPlayerEvent.Post event) {
-		Player player = event.getEntity();
+		Player player = event.getPlayer();
 		if (!player.isPassenger()) return;
 		if (!(player.getRootVehicle() instanceof EntityAircraft plane)) return;
 		player.setYHeadRot(player.getYRot());

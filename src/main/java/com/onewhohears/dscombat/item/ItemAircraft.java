@@ -12,6 +12,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -81,7 +83,7 @@ public class ItemAircraft extends Item {
 							MobSpawnType.SPAWN_EGG, 
 							false, false);
 					if (entity != null) {
-						level.gameEvent(player, GameEvent.ENTITY_PLACE, pos);
+						level.gameEvent(player, GameEvent.ENTITY_PLACE, new BlockPos(pos));
 						itemstack.shrink(1);
 					}
 				}
@@ -129,12 +131,12 @@ public class ItemAircraft extends Item {
 		if (tag == null || !tag.contains("EntityTag")) {
 			String name = getPresetName(stack);
 			AircraftPreset ap = AircraftPresets.get().getPreset(name);
-			if (ap == null) return Component.translatable(getDescriptionId()).append(" unknown preset!");
+			if (ap == null) return new TranslatableComponent(getDescriptionId()).append(" unknown preset!");
 			return ap.getDisplayName().setStyle(Style.EMPTY.withColor(0x55FFFF));
 		}
 		String owner = tag.getCompound("EntityTag").getString("owner");
 		if (owner.isEmpty()) owner = "Someone";
-		return Component.literal(owner+"'s ").append(super.getName(stack))
+		return new TextComponent(owner+"'s ").append(super.getName(stack))
 				.setStyle(Style.EMPTY.withColor(0xFFAA00).withBold(true));
 	}
 	

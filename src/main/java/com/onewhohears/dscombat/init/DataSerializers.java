@@ -22,19 +22,20 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.DataSerializerEntry;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class DataSerializers {
 	
-	public static final DeferredRegister<EntityDataSerializer<?>> DATA_SERIALIZERS = DeferredRegister.create(ForgeRegistries.Keys.ENTITY_DATA_SERIALIZERS, DSCombatMod.MODID);
+	public static final DeferredRegister<DataSerializerEntry> DATA_SERIALIZERS = DeferredRegister.create(ForgeRegistries.Keys.DATA_SERIALIZERS, DSCombatMod.MODID);
 
     public static void register(IEventBus eventBus) {
         DATA_SERIALIZERS.register(eventBus);
     }
 
-    public static final EntityDataSerializer<Quaternion> QUATERNION = new EntityDataSerializer<>() {
+    public static final EntityDataSerializer<Quaternion> QUATERNION = new EntityDataSerializer<Quaternion>() {
 
 		@Override
 		public void write(FriendlyByteBuf buffer, Quaternion q) {
@@ -56,7 +57,7 @@ public class DataSerializers {
     	
     };
     
-    public static final EntityDataSerializer<Vec3> VEC3 = new EntityDataSerializer<>() {
+    public static final EntityDataSerializer<Vec3> VEC3 = new EntityDataSerializer<Vec3>() {
 
 		@Override
 		public void write(FriendlyByteBuf buffer, Vec3 v) {
@@ -77,7 +78,7 @@ public class DataSerializers {
     	
     };
     
-    public static final EntityDataSerializer<RadarData> RADAR_DATA = new EntityDataSerializer<>() {
+    public static final EntityDataSerializer<RadarData> RADAR_DATA = new EntityDataSerializer<RadarData>() {
 
 		@Override
 		public void write(FriendlyByteBuf buffer, RadarData r) {
@@ -100,7 +101,7 @@ public class DataSerializers {
     	
     };
     
-    public static final EntityDataSerializer<WeaponData> WEAPON_DATA = new EntityDataSerializer<>() {
+    public static final EntityDataSerializer<WeaponData> WEAPON_DATA = new EntityDataSerializer<WeaponData>() {
 
 		@Override
 		public void write(FriendlyByteBuf buffer, WeaponData w) {
@@ -123,7 +124,7 @@ public class DataSerializers {
     	
     };
     
-    public static final EntityDataSerializer<PartData> PART_DATA = new EntityDataSerializer<>() {
+    public static final EntityDataSerializer<PartData> PART_DATA = new EntityDataSerializer<PartData>() {
 
 		@Override
 		public void write(FriendlyByteBuf buffer, PartData p) {
@@ -168,18 +169,18 @@ public class DataSerializers {
     	
     };
 
-    public static final RegistryObject<EntityDataSerializer<?>> SERIALIZER_ENTRY_QUATERNION = DATA_SERIALIZERS
-    		.register("quaternion", () -> QUATERNION);
+    public static final RegistryObject<DataSerializerEntry> SERIALIZER_ENTRY_QUATERNION = DATA_SERIALIZERS
+    		.register("quaternion", () -> new DataSerializerEntry(QUATERNION));
     
-    public static final RegistryObject<EntityDataSerializer<?>> SERIALIZER_ENTRY_VEC3 = DATA_SERIALIZERS
-    		.register("vec3", () -> VEC3);
+    public static final RegistryObject<DataSerializerEntry> SERIALIZER_ENTRY_VEC3 = DATA_SERIALIZERS
+    		.register("vec3", () -> new DataSerializerEntry(VEC3));
     
-    public static final RegistryObject<EntityDataSerializer<?>> SERIALIZER_ENTRY_RADARDATA = DATA_SERIALIZERS
-    		.register("radardata", () -> RADAR_DATA);
+    public static final RegistryObject<DataSerializerEntry> SERIALIZER_ENTRY_RADARDATA = DATA_SERIALIZERS
+    		.register("radardata", () -> new DataSerializerEntry(RADAR_DATA));
     
-    public static final RegistryObject<EntityDataSerializer<?>> SERIALIZER_ENTRY_WEAPONDATA = DATA_SERIALIZERS
-    		.register("weapondata", () -> WEAPON_DATA);
+    public static final RegistryObject<DataSerializerEntry> SERIALIZER_ENTRY_WEAPONDATA = DATA_SERIALIZERS
+    		.register("weapondata", () -> new DataSerializerEntry(WEAPON_DATA));
     
-    public static final RegistryObject<EntityDataSerializer<?>> SERIALIZER_ENTRY_PARTDATA = DATA_SERIALIZERS
-    		.register("partdata", () -> PART_DATA);
+    public static final RegistryObject<DataSerializerEntry> SERIALIZER_ENTRY_PARTDATA = DATA_SERIALIZERS
+    		.register("partdata", () -> new DataSerializerEntry(PART_DATA));
 }

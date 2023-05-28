@@ -11,7 +11,7 @@ import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
@@ -125,9 +125,9 @@ public abstract class MissileData extends BulletData {
 	@Override
 	public List<ComponentColor> getInfoComponents() {
 		List<ComponentColor> list = super.getInfoComponents();
-		if (getFov() != -1) list.add(new ComponentColor(Component.literal("FOV: ").append(getFov()+""), 0x040404));
-		list.add(new ComponentColor(Component.literal("Turn Radius: ").append(getTurnRadius()+""), 0x040404));
-		list.add(new ComponentColor(Component.literal("Acceleration: ").append(getAcceleration()+""), 0x040404));
+		if (getFov() != -1) list.add(new ComponentColor(new TextComponent("FOV: ").append(getFov()+""), 0x040404));
+		list.add(new ComponentColor(new TextComponent("Turn Radius: ").append(getTurnRadius()+""), 0x040404));
+		list.add(new ComponentColor(new TextComponent("Acceleration: ").append(getAcceleration()+""), 0x040404));
 		return list;
 	}
 

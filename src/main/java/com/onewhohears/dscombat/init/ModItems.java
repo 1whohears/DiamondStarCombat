@@ -121,6 +121,12 @@ public class ModItems {
 			() -> new ItemFuelTank(3f, 0f, 150f, SlotType.INTERNAL_ALL));
 	
 	// ENGINES
+	/**
+	 * TODO 9.2 add more engine types for different vehicles so they make sense
+	 * internal and external jet engines
+	 * internal "rotational" engines for cars and helicopters
+	 * maybe extra external engines can increase the max speed a bit
+	 */
 	public static final RegistryObject<Item> C6_ENGINE = ITEMS.register("c6_engine", 
 			() -> new ItemEngine(EngineType.SPIN, 1.1f, 0.25f, 4.0f, 
 					0.005f, false, SlotType.INTERNAL_ENGINE_SPIN));

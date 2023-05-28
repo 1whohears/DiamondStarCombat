@@ -428,7 +428,7 @@ public abstract class EntityMissile extends EntityBullet {
 	
 	private void tickLerp() {
 		if (!level.isClientSide) {
-			syncPacketPositionCodec(getX(), getY(), getZ());
+			setPacketCoordinates(getX(), getY(), getZ());
 			lerpSteps = 0;
 			return;
 		}

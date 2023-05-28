@@ -7,6 +7,7 @@ import com.onewhohears.dscombat.init.ModItems;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -40,9 +41,9 @@ public class ItemAmmo extends Item {
 	public Component getName(ItemStack stack) {
 		String id = getWeaponId(stack);
 		WeaponData wd = WeaponPresets.get().getPreset(id);
-		if (wd == null) return Component.translatable(getDescriptionId())
-				.append(Component.translatable("error.dscombat.unknown_preset"));
-		return wd.getDisplayName().append(" ").append(Component.translatable("info.dscombat.ammo"));
+		if (wd == null) return new TranslatableComponent(getDescriptionId())
+				.append(new TranslatableComponent("error.dscombat.unknown_preset"));
+		return wd.getDisplayName().append(" ").append(new TranslatableComponent("info.dscombat.ammo"));
 	}
 	
 	public static String getWeaponId(ItemStack stack) {

@@ -18,6 +18,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
@@ -71,9 +72,9 @@ public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContaine
 	public List<Component> getSlotTooltip() {
 		List<Component> c = new ArrayList<Component>();
 		if (this.hoveredSlot instanceof PartItemSlot slot) {
-			c.add(Component.translatable(slot.data.getName()).setStyle(Style.EMPTY.withColor(0xFF55FF)));
-			c.add(Component.translatable(slot.data.getSlotType().getTranslatableName()).setStyle(Style.EMPTY.withColor(0xFFAA00)));
-			if (slot.data.isLocked()) c.add(Component.translatable("info.dscombat.locked").setStyle(Style.EMPTY.withColor(0xAA0000)));
+			c.add(new TranslatableComponent(slot.data.getName()).setStyle(Style.EMPTY.withColor(0xFF55FF)));
+			c.add(new TranslatableComponent(slot.data.getSlotType().getTranslatableName()).setStyle(Style.EMPTY.withColor(0xFFAA00)));
+			if (slot.data.isLocked()) c.add(new TranslatableComponent("info.dscombat.locked").setStyle(Style.EMPTY.withColor(0xAA0000)));
 		}
 		return c;
 	}
@@ -102,7 +103,7 @@ public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContaine
 	protected void init() {
 		super.init();
 		Button getItemButton = new Button(0, 0, 80, 20, 
-				Component.translatable("ui.dscombat.shrink_plane_button"), 
+				new TranslatableComponent("ui.dscombat.shrink_plane_button"), 
 				onPress -> { onPlaneItemButton(); });
 		getItemButton.x = this.getGuiLeft() + titleLabelX+122;
 		getItemButton.y = this.getGuiTop() + titleLabelY+110;

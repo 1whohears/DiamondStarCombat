@@ -1,5 +1,7 @@
 package com.onewhohears.dscombat;
 
+import com.onewhohears.dscombat.client.input.DSCKeys;
+import com.onewhohears.dscombat.client.overlay.PilotOverlay;
 import com.onewhohears.dscombat.client.screen.AircraftBlockScreen;
 import com.onewhohears.dscombat.client.screen.AircraftScreen;
 import com.onewhohears.dscombat.client.screen.WeaponsBlockScreen;
@@ -18,7 +20,7 @@ import com.onewhohears.dscombat.init.ModSounds;
 
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.data.DataGenerator;
-import net.minecraftforge.data.event.GatherDataEvent;
+import net.minecraftforge.client.gui.OverlayRegistry;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -26,6 +28,7 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 
 @Mod(DSCombatMod.MODID)
 public class DSCombatMod {
@@ -56,6 +59,8 @@ public class DSCombatMod {
 	}
     
     private void clientSetup(FMLClientSetupEvent event) {
+    	DSCKeys.init();
+		OverlayRegistry.registerOverlayBottom("aircraft_stats", PilotOverlay.HUD_Aircraft_Stats);
     	MenuScreens.register(ModContainers.PLANE_MENU.get(), AircraftScreen::new);
     	MenuScreens.register(ModContainers.WEAPONS_BLOCK_MENU.get(), WeaponsBlockScreen::new);
     	MenuScreens.register(ModContainers.AIRCRAFT_BLOCK_MENU.get(), AircraftBlockScreen::new);
@@ -64,9 +69,9 @@ public class DSCombatMod {
     private void onGatherData(GatherDataEvent event) {
     	DataGenerator generator = event.getGenerator();
     	event.includeServer();
-    	generator.addProvider(true, new AircraftPresetGenerator(generator));
-    	generator.addProvider(true, new WeaponPresetGenerator(generator));
-    	generator.addProvider(true, new RadarPresetGenerator(generator));
+    	generator.addProvider(new AircraftPresetGenerator(generator));
+    	generator.addProvider(new WeaponPresetGenerator(generator));
+    	generator.addProvider(new RadarPresetGenerator(generator));
     }
     
 }

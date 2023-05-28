@@ -23,6 +23,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -312,8 +314,8 @@ public abstract class WeaponData extends JsonPreset {
 	
 	public EntityType<?> getEntityType() {
 		if (entityType == null) {
-			try { entityType = ForgeRegistries.ENTITY_TYPES
-					.getDelegate(new ResourceLocation(entityTypeKey)).get().get(); }
+			try { entityType = ForgeRegistries.ENTITIES
+					.getHolder(new ResourceLocation(entityTypeKey)).get().value(); }
 			catch(NoSuchElementException e) { entityType = ModEntities.BULLET.get(); }
 		}
 		return entityType;
@@ -322,7 +324,7 @@ public abstract class WeaponData extends JsonPreset {
 	public SoundEvent getShootSound() {
 		if (shootSound == null) {
 			try { shootSound = ForgeRegistries.SOUND_EVENTS
-					.getDelegate(new ResourceLocation(shootSoundKey)).get().get(); }
+					.getHolder(new ResourceLocation(shootSoundKey)).get().value(); }
 			catch(NoSuchElementException e) { shootSound = ModSounds.BULLET_SHOOT_1.get(); }
 		}
 		return shootSound;
@@ -330,8 +332,8 @@ public abstract class WeaponData extends JsonPreset {
 	
 	public EntityType<?> getRackEntityType() {
 		if (rackType == null) {
-			try { rackType = ForgeRegistries.ENTITY_TYPES
-					.getDelegate(new ResourceLocation(rackTypeKey)).get().get(); }
+			try { rackType = ForgeRegistries.ENTITIES
+					.getHolder(new ResourceLocation(rackTypeKey)).get().value(); }
 			catch(NoSuchElementException e) { rackType = ModEntities.XM12.get(); }
 		}
 		return rackType;
@@ -343,8 +345,8 @@ public abstract class WeaponData extends JsonPreset {
 	private Item getItem() {
 		if (item == null) {
 			try {
-				item = ForgeRegistries.ITEMS.getDelegate(
-					new ResourceLocation(itemKey)).get().get();
+				item = ForgeRegistries.ITEMS.getHolder(
+					new ResourceLocation(itemKey)).get().value();
 			} catch(NoSuchElementException e) { item = Items.AIR; }
 		}
 		return item;
@@ -376,15 +378,15 @@ public abstract class WeaponData extends JsonPreset {
 	public List<ComponentColor> getInfoComponents() {
 		List<ComponentColor> list = new ArrayList<>();
 		list.add(new ComponentColor(getDisplayName(), 0x000000));
-		list.add(new ComponentColor(Component.literal(getType().toString()), 0x0000aa));
-		list.add(new ComponentColor(Component.literal("Max Ammo: ").append(getMaxAmmo()+""), 0x040404));
-		list.add(new ComponentColor(Component.literal("Fire Rate: ").append(getFireRate()+""), 0x040404));
-		list.add(new ComponentColor(Component.literal("Max Age: ").append(getMaxAge()+""), 0x040404));
+		list.add(new ComponentColor(new TextComponent(getType().toString()), 0x0000aa));
+		list.add(new ComponentColor(new TextComponent("Max Ammo: ").append(getMaxAmmo()+""), 0x040404));
+		list.add(new ComponentColor(new TextComponent("Fire Rate: ").append(getFireRate()+""), 0x040404));
+		list.add(new ComponentColor(new TextComponent("Max Age: ").append(getMaxAge()+""), 0x040404));
 		return list;
 	}
 	
 	public MutableComponent getDisplayName() {
-		return Component.translatable("weapon."+getNameSpace()+"."+getId());
+		return new TranslatableComponent("weapon."+getNameSpace()+"."+getId());
 	}
 	
 	public static class ComponentColor {

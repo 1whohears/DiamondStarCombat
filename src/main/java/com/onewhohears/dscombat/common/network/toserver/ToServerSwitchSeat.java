@@ -7,7 +7,7 @@ import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent.Context;
@@ -42,7 +42,7 @@ public class ToServerSwitchSeat extends IPacket {
 			ServerLevel level = player.getLevel();
 			if (level.getEntity(id) instanceof EntityAircraft plane) {
 				if (!plane.switchSeat(player)) player.displayClientMessage(
-						Component.translatable("dscombat.no_open_seats"), 
+						new TranslatableComponent("dscombat.no_open_seats"), 
 						true);
 			}
 		});

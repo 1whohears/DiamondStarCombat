@@ -267,47 +267,47 @@ public class ModItems {
 	
 	// PLANES
 	public static final RegistryObject<Item> JAVI_PLANE = ITEMS.register("javi_plane", 
-			() -> new ItemAircraft(ModEntities.JAVI_PLANE.get(), 
+			() -> new ItemAircraft(ModEntities.JAVI_PLANE.getId().toString(), 
 					DefaultAircraftPresets.DEFAULT_JAVI_PLANE));
 	public static final RegistryObject<Item> ALEXIS_PLANE = ITEMS.register("alexis_plane", 
-			() -> new ItemAircraft(ModEntities.ALEXIS_PLANE.get(), 
+			() -> new ItemAircraft(ModEntities.ALEXIS_PLANE.getId().toString(), 
 					DefaultAircraftPresets.DEFAULT_ALEXIS_PLANE));
 	public static final RegistryObject<Item> WOODEN_PLANE = ITEMS.register("wooden_plane", 
-			() -> new ItemAircraft(ModEntities.WOODEN_PLANE.get(), 
+			() -> new ItemAircraft(ModEntities.WOODEN_PLANE.getId().toString(), 
 					DefaultAircraftPresets.DEFAULT_WOODEN_PLANE));
 	public static final RegistryObject<Item> E3SENTRY_PLANE = ITEMS.register("e3sentry_plane", 
-			() -> new ItemAircraft(ModEntities.E3SENTRY_PLANE.get(), 
+			() -> new ItemAircraft(ModEntities.E3SENTRY_PLANE.getId().toString(), 
 					DefaultAircraftPresets.DEFAULT_E3SENTRY_PLANE));
 	
 	// HELICOPTERS
 	public static final RegistryObject<Item> NOAH_CHOPPER = ITEMS.register("noah_chopper", 
-			() -> new ItemAircraft(ModEntities.NOAH_CHOPPER.get(), 
+			() -> new ItemAircraft(ModEntities.NOAH_CHOPPER.getId().toString(), 
 					DefaultAircraftPresets.DEFAULT_NOAH_CHOPPER));
 	
 	// CARS
 	public static final RegistryObject<Item> ORANGE_TESLA = ITEMS.register("orange_tesla", 
-			() -> new ItemAircraft(ModEntities.ORANGE_TESLA.get(), 
+			() -> new ItemAircraft(ModEntities.ORANGE_TESLA.getId().toString(), 
 					DefaultAircraftPresets.DEFAULT_ORANGE_TESLA));
 	public static final RegistryObject<Item> AXCEL_TRUCK = ITEMS.register("axcel_truck", 
-			() -> new ItemAircraft(ModEntities.AXCEL_TRUCK.get(), 
+			() -> new ItemAircraft(ModEntities.AXCEL_TRUCK.getId().toString(), 
 					DefaultAircraftPresets.DEFAULT_AXCEL_TRUCK));
 	
 	// TANKS
 	public static final RegistryObject<Item> MRBUDGER_TANK = ITEMS.register("mrbudger_tank", 
-			() -> new ItemAircraft(ModEntities.MRBUDGER_TANK.get(), 
+			() -> new ItemAircraft(ModEntities.MRBUDGER_TANK.getId().toString(), 
 					DefaultAircraftPresets.DEFAULT_MRBUDGER_TANK));
 	public static final RegistryObject<Item> SMALL_ROLLER = ITEMS.register("small_roller", 
-			() -> new ItemAircraft(ModEntities.SMALL_ROLLER.get(), 
+			() -> new ItemAircraft(ModEntities.SMALL_ROLLER.getId().toString(), 
 					DefaultAircraftPresets.DEFAULT_SMALL_ROLLER));
 	
 	// BOATS
 	public static final RegistryObject<Item> NATHAN_BOAT = ITEMS.register("nathan_boat", 
-			() -> new ItemAircraft(ModEntities.NATHAN_BOAT.get(), 
+			() -> new ItemAircraft(ModEntities.NATHAN_BOAT.getId().toString(), 
 					DefaultAircraftPresets.DEFAULT_NATHAN_BOAT));
 	
 	// SUBMARINES
 	public static final RegistryObject<Item> ANDOLF_SUB = ITEMS.register("andolf_sub", 
-			() -> new ItemAircraft(ModEntities.ANDOLF_SUB.get(), 
+			() -> new ItemAircraft(ModEntities.ANDOLF_SUB.getId().toString(), 
 					DefaultAircraftPresets.DEFAULT_ANDOLF_SUB));
 		
 }

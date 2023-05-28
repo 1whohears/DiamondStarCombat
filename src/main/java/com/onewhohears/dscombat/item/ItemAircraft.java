@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.item;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
@@ -14,6 +15,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -31,18 +33,21 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class ItemAircraft extends Item {
 	
 	private static final Predicate<Entity> ENTITY_PREDICATE = EntitySelector.NO_SPECTATORS
 			.and(Entity::isPickable);
 	
-	private final EntityType<? extends EntityAircraft> entityType;
+	private final String entityId;
 	private final String defaultPreset;
 	
-	public ItemAircraft(EntityType<? extends EntityAircraft> entityType, AircraftPreset defaultPreset) {
+	private EntityType<? extends EntityAircraft> entityType;
+	
+	public ItemAircraft(String entityId, AircraftPreset defaultPreset) {
 		super(new Item.Properties().tab(ModItems.AIRCRAFT).stacksTo(1));
-		this.entityType = entityType;
+		this.entityId = entityId;
 		this.defaultPreset = defaultPreset.getId();
 	}
 	
@@ -68,7 +73,7 @@ public class ItemAircraft extends Item {
 			}
 			if (hitresult.getType() == HitResult.Type.BLOCK) {
 				ItemStack spawn_data_stack = spawnData(itemstack, player);
-				EntityAircraft e = entityType.create(level);
+				EntityAircraft e = getEntityType().create(level);
 				Vec3 pos = hitresult.getLocation();
 				if (e.isCustomBoundingBox()) e.setPos(pos.add(0, e.getBbHeight()/2d, 0));
 				else e.setPos(pos);
@@ -77,7 +82,7 @@ public class ItemAircraft extends Item {
 				if (!level.isClientSide) {
 					int above = 0;
 					if (e.isCustomBoundingBox()) above = (int)(e.getBbHeight()/2d)+1;
-					Entity entity = entityType.spawn((ServerLevel)level, 
+					Entity entity = getEntityType().spawn((ServerLevel)level, 
 							spawn_data_stack, player, 
 							new BlockPos(pos).above(above), 
 							MobSpawnType.SPAWN_EGG, 
@@ -117,14 +122,6 @@ public class ItemAircraft extends Item {
 		return tag.getString("preset");
 	}
 	
-	/*@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tips, TooltipFlag isAdvanced) {
-		CompoundTag tag = stack.getTag();
-		if (tag == null || !tag.contains("EntityTag")) return;
-		CompoundTag et = tag.getCompound("EntityTag");
-		
-	}*/
-	
 	@Override
 	public Component getName(ItemStack stack) {
 		CompoundTag tag = stack.getTag();
@@ -144,6 +141,21 @@ public class ItemAircraft extends Item {
 	public boolean isFoil(ItemStack stack) {
 		CompoundTag tag = stack.getTag();
 		return tag != null && tag.contains("EntityTag");
+	}
+	
+	/**
+	 * DO NOT DELETE THIS WHEN MERGING
+	 */
+	@SuppressWarnings("unchecked")
+	public EntityType<? extends EntityAircraft> getEntityType() {
+		if (entityType != null) return entityType;
+		try {
+			entityType = (EntityType<? extends EntityAircraft>) ForgeRegistries.ENTITIES
+				.getHolder(new ResourceLocation(entityId)).get().value();
+		} catch (ClassCastException e) {
+		} catch (NoSuchElementException e) {
+		}
+		return entityType;
 	}
 
 }

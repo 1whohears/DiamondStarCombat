@@ -35,10 +35,7 @@ public class ToServerAircraftToItem extends IPacket {
 		ctx.get().enqueueWork(() -> {
 			Level level = ctx.get().getSender().level;
 			if (level.getEntity(id) instanceof EntityAircraft plane) {
-				ItemStack stack = plane.getItem();
-				ItemEntity e = new ItemEntity(level, plane.getX(), plane.getY(), plane.getZ(), stack);
-				level.addFreshEntity(e);
-				plane.discard();
+				plane.becomeItem();
 			}
 			success.set(true);
 		});

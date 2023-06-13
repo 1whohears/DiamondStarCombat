@@ -69,6 +69,7 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.DyeItem;
@@ -1076,12 +1077,11 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	
 	@Override
 	public InteractionResult interact(Player player, InteractionHand hand) {
+		if (xzSpeed > 0.2) return InteractionResult.PASS;
+		if (player.isSecondaryUseActive()) return InteractionResult.PASS;
 		if (!isOperational()) return InteractionResult.PASS;
-		if (player.isSecondaryUseActive()) {
-			return InteractionResult.PASS;
-		} else if (player.getRootVehicle() != null && player.getRootVehicle().equals(this)) {
-			return InteractionResult.PASS;
-		} else if (!level.isClientSide) {
+		if (player.getRootVehicle() != null && player.getRootVehicle().equals(this)) return InteractionResult.PASS;
+		if (!level.isClientSide) {
 			ItemStack stack = player.getInventory().getSelected();
 			if (!stack.isEmpty()) {
 				Item item = stack.getItem();
@@ -1554,6 +1554,18 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     	eTag.put("EntityTag", tag);
     	stack.setTag(eTag);
     	return stack;
+    }
+    
+    public void becomeItem() {
+    	if (level.isClientSide) return;
+    	if (tickCount < 600 && getControllingPassenger() instanceof Player player) {
+    		player.displayClientMessage(Component.translatable("error.dscombat.cant_item_yet"), true);
+    		return;
+    	}
+    	ItemStack stack = getItem();
+		ItemEntity e = new ItemEntity(level, getX(), getY(), getZ(), stack);
+		level.addFreshEntity(e);
+		discard();
     }
     
     @Override

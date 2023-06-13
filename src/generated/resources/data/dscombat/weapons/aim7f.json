@@ -12,8 +12,8 @@
   "explosionRadius": 7.0,
   "explosive": true,
   "fireRate": 80,
-  "fov": 30.0,
-  "fuelTicks": 400,
+  "fov": 15.0,
+  "fuelTicks": 450,
   "fuseDist": 4.0,
   "ingredients": [
     {
@@ -39,12 +39,12 @@
   ],
   "innacuracy": 0.0,
   "itemKey": "dscombat:aim7f",
-  "maxAge": 500,
+  "maxAge": 560,
   "maxAmmo": 2,
   "presetId": "aim7f",
   "rackTypeKey": "dscombat:heavy_missile_rack",
   "shootSoundKey": "dscombat:rocket_launch_1",
-  "speed": 3.5,
+  "speed": 3.2,
   "targetType": 0,
-  "turnRadius": 140.0
+  "turnRadius": 200.0
 }

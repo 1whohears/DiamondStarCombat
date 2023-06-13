@@ -1,7 +1,7 @@
 {
   "type": 6,
   "acceleration": 0.04,
-  "bleed": 0.04,
+  "bleed": 0.05,
   "canShootOnGround": false,
   "causesFire": true,
   "compatibleWeaponPart": "dscombat:heavy_missile_rack",
@@ -12,7 +12,7 @@
   "explosionRadius": 4.0,
   "explosive": true,
   "fireRate": 40,
-  "fov": 60.0,
+  "fov": 40.0,
   "fuelTicks": 400,
   "fuseDist": 2.0,
   "ingredients": [
@@ -40,7 +40,7 @@
   "presetId": "torpedo1",
   "rackTypeKey": "dscombat:heavy_missile_rack",
   "shootSoundKey": "dscombat:rocket_launch_1",
-  "speed": 3.0,
+  "speed": 2.5,
   "targetType": 2,
   "turnRadius": 80.0
 }

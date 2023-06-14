@@ -98,7 +98,7 @@
         "param": "aim120b"
       },
       "name": "slotname.dscombat.left_wing_1",
-      "slot_posx": 1.5,
+      "slot_posx": 1.8,
       "slot_posy": -0.3,
       "slot_posz": 0.5,
       "slot_type": 1,
@@ -113,21 +113,11 @@
         "param": "aim9x"
       },
       "name": "slotname.dscombat.left_wing_2",
-      "slot_posx": 2.5,
+      "slot_posx": 3.2,
       "slot_posy": -0.3,
       "slot_posz": 0.5,
       "slot_type": 1,
       "uix": 68,
-      "uiy": 40,
-      "zRot": 0.0
-    },
-    {
-      "name": "slotname.dscombat.left_wing_3",
-      "slot_posx": 3.5,
-      "slot_posy": -0.3,
-      "slot_posz": 0.5,
-      "slot_type": 1,
-      "uix": 88,
       "uiy": 40,
       "zRot": 0.0
     },
@@ -138,7 +128,7 @@
         "param": "aim120c"
       },
       "name": "slotname.dscombat.right_wing_1",
-      "slot_posx": -1.5,
+      "slot_posx": -1.8,
       "slot_posy": -0.3,
       "slot_posz": 0.5,
       "slot_type": 1,
@@ -153,21 +143,11 @@
         "param": "aim9x"
       },
       "name": "slotname.dscombat.right_wing_2",
-      "slot_posx": -2.5,
+      "slot_posx": -3.2,
       "slot_posy": -0.3,
       "slot_posz": 0.5,
       "slot_type": 1,
       "uix": 68,
-      "uiy": 60,
-      "zRot": 0.0
-    },
-    {
-      "name": "slotname.dscombat.right_wing_3",
-      "slot_posx": -3.5,
-      "slot_posy": -0.3,
-      "slot_posz": 0.5,
-      "slot_type": 1,
-      "uix": 88,
       "uiy": 60,
       "zRot": 0.0
     },

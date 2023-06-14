@@ -48,6 +48,7 @@ public class Config {
 		public final ForgeConfigSpec.DoubleValue collideDamageRate;
 		public final ForgeConfigSpec.DoubleValue maxFallSpeed;
 		public final ForgeConfigSpec.IntValue maxBlockCheckDepth;
+		public final ForgeConfigSpec.DoubleValue toItemCooldown;
 		
 		public Server(ForgeConfigSpec.Builder builder) {
 			accGravity = builder
@@ -74,6 +75,10 @@ public class Config {
 					.comment("The number of blocks between 2 entities to check if they can see eachother.")
 					.worldRestart()
 					.defineInRange("maxBlockCheckDepth", 250, 10, 400);
+			toItemCooldown = builder
+					.comment("Seconds before a vehicle can become an item.")
+					.worldRestart()
+					.defineInRange("toItemCooldown", 30.0, 0, 600.0);
 		}
 		
 	}

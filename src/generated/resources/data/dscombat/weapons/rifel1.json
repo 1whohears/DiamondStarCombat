@@ -39,6 +39,7 @@
   "maxAmmo": 2,
   "presetId": "rifel1",
   "rackTypeKey": "dscombat:heavy_missile_rack",
+  "scan_range": 1200.0,
   "shootSoundKey": "dscombat:rocket_launch_1",
   "speed": 3.0,
   "turnRadius": 160.0

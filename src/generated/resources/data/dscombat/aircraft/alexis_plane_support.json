@@ -35,6 +35,42 @@
     {
       "item": "dscombat:data_link",
       "num": 1
+    },
+    {
+      "item": "dscombat:ar2k",
+      "num": 1
+    },
+    {
+      "item": "dscombat:gr400",
+      "num": 1
+    },
+    {
+      "item": "dscombat:heavy_missile_rack",
+      "num": 3
+    },
+    {
+      "item": "dscombat:light_missile_rack",
+      "num": 1
+    },
+    {
+      "item": "dscombat:xm12",
+      "num": 1
+    },
+    {
+      "item": "minecraft:copper_ingot",
+      "num": 64
+    },
+    {
+      "item": "minecraft:iron_ingot",
+      "num": 32
+    },
+    {
+      "item": "minecraft:redstone",
+      "num": 32
+    },
+    {
+      "item": "minecraft:gunpowder",
+      "num": 32
     }
   ],
   "is_craftable": true,
@@ -47,7 +83,7 @@
   "maxroll": 6.0,
   "maxyaw": 1.5,
   "pitchtorque": 2.0,
-  "presetId": "alexis_plane_unarmed",
+  "presetId": "alexis_plane_support",
   "rolltorque": 1.0,
   "slots": [
     {
@@ -64,6 +100,11 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "filled": true,
+        "itemid": "dscombat:heavy_missile_rack",
+        "param": "agm84e"
+      },
       "name": "slotname.dscombat.left_wing_1",
       "slot_posx": 1.8,
       "slot_posy": -0.3,
@@ -74,6 +115,11 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "filled": true,
+        "itemid": "dscombat:heavy_missile_rack",
+        "param": "aim120b"
+      },
       "name": "slotname.dscombat.left_wing_2",
       "slot_posx": 3.2,
       "slot_posy": -0.3,
@@ -84,6 +130,11 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "filled": true,
+        "itemid": "dscombat:heavy_missile_rack",
+        "param": "rifel1"
+      },
       "name": "slotname.dscombat.right_wing_1",
       "slot_posx": -1.8,
       "slot_posy": -0.3,
@@ -94,6 +145,11 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "filled": true,
+        "itemid": "dscombat:light_missile_rack",
+        "param": "agm114k"
+      },
       "name": "slotname.dscombat.right_wing_2",
       "slot_posx": -3.2,
       "slot_posy": -0.3,
@@ -104,6 +160,11 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "filled": true,
+        "itemid": "dscombat:xm12",
+        "param": "50mmhe"
+      },
       "name": "slotname.dscombat.frame_1",
       "slot_posx": 0.0,
       "slot_posy": -0.4,
@@ -155,6 +216,9 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "itemid": "dscombat:ar2k"
+      },
       "name": "slotname.dscombat.internal_4",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
@@ -165,6 +229,9 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "itemid": "dscombat:gr400"
+      },
       "name": "slotname.dscombat.internal_5",
       "slot_posx": 0.0,
       "slot_posy": 0.0,

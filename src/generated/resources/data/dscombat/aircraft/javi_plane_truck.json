@@ -1,19 +1,19 @@
 {
   "aircraft_type": 0,
-  "dyecolor": 0,
-  "health": 150.0,
-  "idleheat": 4.0,
+  "dyecolor": 13,
+  "health": 200.0,
+  "idleheat": 5.0,
   "ingredients": [
     {
       "item": "dscombat:fuselage",
       "num": 2
     },
     {
-      "item": "dscombat:wing",
+      "item": "dscombat:large_wing",
       "num": 2
     },
     {
-      "item": "dscombat:advanced_cockpit",
+      "item": "dscombat:cockpit",
       "num": 1
     },
     {
@@ -21,8 +21,8 @@
       "num": 10
     },
     {
-      "item": "dscombat:turbofan_f145",
-      "num": 1
+      "item": "dscombat:turbofan_f25",
+      "num": 2
     },
     {
       "item": "dscombat:heavy_fuel_tank",
@@ -30,10 +30,6 @@
     },
     {
       "item": "dscombat:basic_flare_dispenser",
-      "num": 1
-    },
-    {
-      "item": "dscombat:data_link",
       "num": 1
     },
     {
@@ -53,34 +49,42 @@
       "num": 1
     },
     {
+      "item": "dscombat:data_link",
+      "num": 1
+    },
+    {
       "item": "minecraft:copper_ingot",
       "num": 64
     },
     {
       "item": "minecraft:iron_ingot",
-      "num": 32
+      "num": 64
     },
     {
       "item": "minecraft:redstone",
-      "num": 32
+      "num": 64
     },
     {
       "item": "minecraft:gunpowder",
+      "num": 64
+    },
+    {
+      "item": "minecraft:tnt",
       "num": 32
     }
   ],
   "is_craftable": true,
-  "item": "dscombat:alexis_plane",
+  "item": "dscombat:javi_plane",
   "landing_gear": true,
-  "mass": 20.0,
-  "max_health": 150.0,
-  "max_speed": 1.45,
-  "maxpitch": 2.5,
-  "maxroll": 6.0,
-  "maxyaw": 1.5,
-  "pitchtorque": 2.0,
-  "presetId": "alexis_plane",
-  "rolltorque": 1.0,
+  "mass": 25.0,
+  "max_health": 200.0,
+  "max_speed": 1.2,
+  "maxpitch": 2.1,
+  "maxroll": 4.0,
+  "maxyaw": 1.1,
+  "pitchtorque": 2.5,
+  "presetId": "javi_plane_truck",
+  "rolltorque": 1.5,
   "slots": [
     {
       "data": {
@@ -88,8 +92,8 @@
       },
       "name": "slotname.dscombat.pilot_seat",
       "slot_posx": 0.0,
-      "slot_posy": -0.3,
-      "slot_posz": 2.0,
+      "slot_posy": -0.4,
+      "slot_posz": 3.0,
       "slot_type": 0,
       "uix": 48,
       "uiy": 20,
@@ -97,14 +101,27 @@
     },
     {
       "data": {
+        "itemid": "dscombat:seat"
+      },
+      "name": "slotname.dscombat.seat2",
+      "slot_posx": 0.0,
+      "slot_posy": -0.4,
+      "slot_posz": 2.0,
+      "slot_type": 5,
+      "uix": 68,
+      "uiy": 20,
+      "zRot": 0.0
+    },
+    {
+      "data": {
         "filled": true,
         "itemid": "dscombat:heavy_missile_rack",
-        "param": "aim120b"
+        "param": "aim7mh"
       },
       "name": "slotname.dscombat.left_wing_1",
-      "slot_posx": 1.8,
+      "slot_posx": 1.5,
       "slot_posy": -0.3,
-      "slot_posz": 0.5,
+      "slot_posz": 0.0,
       "slot_type": 1,
       "uix": 48,
       "uiy": 40,
@@ -113,13 +130,13 @@
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:light_missile_rack",
-        "param": "aim9x"
+        "itemid": "dscombat:heavy_missile_rack",
+        "param": "aim7f"
       },
       "name": "slotname.dscombat.left_wing_2",
-      "slot_posx": 3.2,
-      "slot_posy": -0.3,
-      "slot_posz": 0.5,
+      "slot_posx": 3.0,
+      "slot_posy": -0.2,
+      "slot_posz": 0.0,
       "slot_type": 1,
       "uix": 68,
       "uiy": 40,
@@ -131,10 +148,40 @@
         "itemid": "dscombat:heavy_missile_rack",
         "param": "aim120c"
       },
+      "name": "slotname.dscombat.left_wing_3",
+      "slot_posx": 4.0,
+      "slot_posy": -0.07,
+      "slot_posz": 0.0,
+      "slot_type": 1,
+      "uix": 88,
+      "uiy": 40,
+      "zRot": 0.0
+    },
+    {
+      "data": {
+        "filled": true,
+        "itemid": "dscombat:heavy_missile_rack",
+        "param": "aim120b"
+      },
+      "name": "slotname.dscombat.left_wing_4",
+      "slot_posx": 5.0,
+      "slot_posy": 0.05,
+      "slot_posz": 0.0,
+      "slot_type": 1,
+      "uix": 108,
+      "uiy": 40,
+      "zRot": 0.0
+    },
+    {
+      "data": {
+        "filled": true,
+        "itemid": "dscombat:heavy_missile_rack",
+        "param": "aim7mh"
+      },
       "name": "slotname.dscombat.right_wing_1",
-      "slot_posx": -1.8,
+      "slot_posx": -1.5,
       "slot_posy": -0.3,
-      "slot_posz": 0.5,
+      "slot_posz": 0.0,
       "slot_type": 1,
       "uix": 48,
       "uiy": 60,
@@ -143,15 +190,45 @@
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:light_missile_rack",
-        "param": "aim9x"
+        "itemid": "dscombat:heavy_missile_rack",
+        "param": "aim7f"
       },
       "name": "slotname.dscombat.right_wing_2",
-      "slot_posx": -3.2,
-      "slot_posy": -0.3,
-      "slot_posz": 0.5,
+      "slot_posx": -3.0,
+      "slot_posy": -0.2,
+      "slot_posz": 0.0,
       "slot_type": 1,
       "uix": 68,
+      "uiy": 60,
+      "zRot": 0.0
+    },
+    {
+      "data": {
+        "filled": true,
+        "itemid": "dscombat:heavy_missile_rack",
+        "param": "aim120c"
+      },
+      "name": "slotname.dscombat.right_wing_3",
+      "slot_posx": -4.0,
+      "slot_posy": -0.07,
+      "slot_posz": 0.0,
+      "slot_type": 1,
+      "uix": 88,
+      "uiy": 60,
+      "zRot": 0.0
+    },
+    {
+      "data": {
+        "filled": true,
+        "itemid": "dscombat:heavy_missile_rack",
+        "param": "aim120b"
+      },
+      "name": "slotname.dscombat.right_wing_4",
+      "slot_posx": -5.0,
+      "slot_posy": 0.05,
+      "slot_posz": 0.0,
+      "slot_type": 1,
+      "uix": 108,
       "uiy": 60,
       "zRot": 0.0
     },
@@ -163,8 +240,8 @@
       },
       "name": "slotname.dscombat.frame_1",
       "slot_posx": 0.0,
-      "slot_posy": -0.4,
-      "slot_posz": 2.5,
+      "slot_posy": -0.65,
+      "slot_posz": 3.0,
       "slot_type": 2,
       "uix": 48,
       "uiy": 80,
@@ -172,7 +249,22 @@
     },
     {
       "data": {
-        "itemid": "dscombat:turbofan_f145"
+        "filled": true,
+        "itemid": "dscombat:light_missile_rack",
+        "param": "aim9p5"
+      },
+      "name": "slotname.dscombat.frame_2",
+      "slot_posx": 0.0,
+      "slot_posy": -0.65,
+      "slot_posz": 0.0,
+      "slot_type": 2,
+      "uix": 68,
+      "uiy": 80,
+      "zRot": 0.0
+    },
+    {
+      "data": {
+        "itemid": "dscombat:turbofan_f25"
       },
       "name": "slotname.dscombat.internal_1",
       "slot_posx": 0.0,
@@ -185,14 +277,13 @@
     },
     {
       "data": {
-        "filled": true,
-        "itemid": "dscombat:heavy_fuel_tank"
+        "itemid": "dscombat:turbofan_f25"
       },
       "name": "slotname.dscombat.internal_2",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 3,
+      "slot_type": 8,
       "uix": 68,
       "uiy": 100,
       "zRot": 0.0
@@ -200,7 +291,7 @@
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:basic_flare_dispenser"
+        "itemid": "dscombat:heavy_fuel_tank"
       },
       "name": "slotname.dscombat.internal_3",
       "slot_posx": 0.0,
@@ -213,7 +304,8 @@
     },
     {
       "data": {
-        "itemid": "dscombat:ar2k"
+        "filled": true,
+        "itemid": "dscombat:basic_flare_dispenser"
       },
       "name": "slotname.dscombat.internal_4",
       "slot_posx": 0.0,
@@ -225,6 +317,9 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "itemid": "dscombat:ar2k"
+      },
       "name": "slotname.dscombat.internal_5",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
@@ -248,19 +343,17 @@
       "zRot": 0.0
     }
   ],
-  "stealth": 0.8,
+  "stealth": 1.1,
   "textures": {
-    "0": "dscombat:textures/entities/alexis_plane/white.png",
-    "1": "dscombat:textures/entities/alexis_plane/orange.png",
-    "10": "dscombat:textures/entities/alexis_plane/purple.png",
-    "11": "dscombat:textures/entities/alexis_plane/blue.png",
-    "14": "dscombat:textures/entities/alexis_plane/red.png",
-    "15": "dscombat:textures/entities/alexis_plane/black.png",
-    "9": "dscombat:textures/entities/alexis_plane/cyan.png"
+    "10": "dscombat:textures/entities/javi_plane/purple.png",
+    "11": "dscombat:textures/entities/javi_plane/blue.png",
+    "13": "dscombat:textures/entities/javi_plane/green.png",
+    "14": "dscombat:textures/entities/javi_plane/red.png",
+    "15": "dscombat:textures/entities/javi_plane/black.png"
   },
   "throttledown": 0.08,
   "throttleup": 0.04,
-  "turn_radius": 10.0,
+  "turn_radius": 12.0,
   "wing_area": 12.0,
-  "yawtorque": 4.0
+  "yawtorque": 4.5
 }

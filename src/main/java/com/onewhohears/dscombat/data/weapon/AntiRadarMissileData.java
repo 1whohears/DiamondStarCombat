@@ -17,9 +17,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class AntiRadarMissileData extends MissileData {
-
+	
+	private final double scan_range;
+	
 	public AntiRadarMissileData(ResourceLocation key, JsonObject json) {
 		super(key, json);
+		scan_range = json.get("scan_range").getAsDouble();
 	}
 	
 	@Override
@@ -71,6 +74,10 @@ public class AntiRadarMissileData extends MissileData {
 		AntiRadarMissile missile = (AntiRadarMissile) super.getShootEntity(level, owner, pos, direction, vehicle);
 		if (missile == null) return null;
 		return missile;
+	}
+	
+	public double getScanRange() {
+		return scan_range;
 	}
 
 }

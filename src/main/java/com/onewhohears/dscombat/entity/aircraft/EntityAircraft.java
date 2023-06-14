@@ -1562,7 +1562,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     
     public void becomeItem() {
     	if (level.isClientSide) return;
-    	if (tickCount < 600 && getControllingPassenger() instanceof Player player) {
+    	if (tickCount/20 < Config.SERVER.toItemCooldown.get() && getControllingPassenger() instanceof Player player) {
     		player.displayClientMessage(Component.translatable("error.dscombat.cant_item_yet"), true);
     		return;
     	}

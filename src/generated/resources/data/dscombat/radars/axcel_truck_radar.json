@@ -8,7 +8,7 @@
   "scanMobs": false,
   "scanPlayers": true,
   "scanRate": 30,
-  "sensitivity": 1.0,
+  "sensitivity": 0.3,
   "throGroundRange": 0.0,
   "throWaterRange": 0.0
 }

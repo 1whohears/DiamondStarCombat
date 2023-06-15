@@ -38,11 +38,11 @@
     },
     {
       "item": "dscombat:heavy_missile_rack",
-      "num": 2
+      "num": 8
     },
     {
       "item": "dscombat:light_missile_rack",
-      "num": 2
+      "num": 1
     },
     {
       "item": "dscombat:xm12",
@@ -354,6 +354,6 @@
   "throttledown": 0.08,
   "throttleup": 0.04,
   "turn_radius": 12.0,
-  "wing_area": 12.0,
+  "wing_area": 18.0,
   "yawtorque": 4.5
 }

@@ -163,6 +163,13 @@ public class AbstractWeaponBuilders {
 			return setInt("targetType", targetType.ordinal());
 		}
 		
+		/**
+		 * Anti Radar Missile only
+		 */
+		public C setScanRange(float scan_range) {
+			return setFloat("scan_range", scan_range);
+		}
+		
 	}
 	
 }

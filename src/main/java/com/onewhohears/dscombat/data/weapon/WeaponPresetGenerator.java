@@ -452,6 +452,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setBleed(0.02f)
 				.setFuseDistance(2f)
 				.setFieldOfView(30f)
+				.setScanRange(1200f)
 				.setItem(ModItems.RIFEL1.getId())
 				.setEntityType(ModEntities.ANTI_RADAR_MISSILE_1.getId())
 				.setRackEntityType(ModEntities.HEAVY_MISSILE_RACK.getId())

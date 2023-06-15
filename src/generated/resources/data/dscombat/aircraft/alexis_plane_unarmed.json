@@ -31,6 +31,10 @@
     {
       "item": "dscombat:basic_flare_dispenser",
       "num": 1
+    },
+    {
+      "item": "dscombat:data_link",
+      "num": 1
     }
   ],
   "is_craftable": true,
@@ -61,7 +65,7 @@
     },
     {
       "name": "slotname.dscombat.left_wing_1",
-      "slot_posx": 1.5,
+      "slot_posx": 1.8,
       "slot_posy": -0.3,
       "slot_posz": 0.5,
       "slot_type": 1,
@@ -71,7 +75,7 @@
     },
     {
       "name": "slotname.dscombat.left_wing_2",
-      "slot_posx": 2.5,
+      "slot_posx": 3.2,
       "slot_posy": -0.3,
       "slot_posz": 0.5,
       "slot_type": 1,
@@ -80,18 +84,8 @@
       "zRot": 0.0
     },
     {
-      "name": "slotname.dscombat.left_wing_3",
-      "slot_posx": 3.5,
-      "slot_posy": -0.3,
-      "slot_posz": 0.5,
-      "slot_type": 1,
-      "uix": 88,
-      "uiy": 40,
-      "zRot": 0.0
-    },
-    {
       "name": "slotname.dscombat.right_wing_1",
-      "slot_posx": -1.5,
+      "slot_posx": -1.8,
       "slot_posy": -0.3,
       "slot_posz": 0.5,
       "slot_type": 1,
@@ -101,21 +95,11 @@
     },
     {
       "name": "slotname.dscombat.right_wing_2",
-      "slot_posx": -2.5,
+      "slot_posx": -3.2,
       "slot_posy": -0.3,
       "slot_posz": 0.5,
       "slot_type": 1,
       "uix": 68,
-      "uiy": 60,
-      "zRot": 0.0
-    },
-    {
-      "name": "slotname.dscombat.right_wing_3",
-      "slot_posx": -3.5,
-      "slot_posy": -0.3,
-      "slot_posz": 0.5,
-      "slot_type": 1,
-      "uix": 88,
       "uiy": 60,
       "zRot": 0.0
     },
@@ -191,6 +175,9 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "itemid": "dscombat:data_link"
+      },
       "name": "slotname.dscombat.internal_6",
       "slot_posx": 0.0,
       "slot_posy": 0.0,

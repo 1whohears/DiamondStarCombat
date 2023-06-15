@@ -19,6 +19,7 @@
 	"error.dscombat.ground_target_only": "This Weapon only tracks Grounded Targets",
 	"error.dscombat.water_target_only": "This Weapon only tracks Targets in Water",
 	"error.dscombat.unknown_preset": "Unknown Preset!",
+	"error.dscombat.cant_item_yet": "This vehicle must exist for 30 seconds to become an item!",
 	
 	"slottype.dscombat.frame": "Frame",
 	"slottype.dscombat.internal": "Internal",

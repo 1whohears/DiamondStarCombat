@@ -12,8 +12,8 @@
   "explosionRadius": 5.0,
   "explosive": true,
   "fireRate": 50,
-  "fov": 40.0,
-  "fuelTicks": 350,
+  "fov": 20.0,
+  "fuelTicks": 300,
   "fuseDist": 3.0,
   "ingredients": [
     {
@@ -39,12 +39,12 @@
   ],
   "innacuracy": 0.0,
   "itemKey": "dscombat:aim120c",
-  "maxAge": 400,
+  "maxAge": 350,
   "maxAmmo": 3,
   "presetId": "aim120c",
   "rackTypeKey": "dscombat:heavy_missile_rack",
   "shootSoundKey": "dscombat:rocket_launch_1",
   "speed": 4.0,
   "targetType": 0,
-  "turnRadius": 120.0
+  "turnRadius": 160.0
 }

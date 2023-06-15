@@ -28,6 +28,11 @@ public class AntiRadarMissile extends EntityMissile {
 		if (target != null) guideToTarget();
 	}
 	
+	@Override
+	public boolean dieIfNoTargetOutsideTickRange() {
+		return false;
+	}
+	
 	protected List<ARTarget> targets = new ArrayList<ARTarget>();
 	
 	protected void findARTarget() {
@@ -79,7 +84,7 @@ public class AntiRadarMissile extends EntityMissile {
 		return true;
 	}
 	
-	private static final double AR_RANGE = 1000D;
+	private static final double AR_RANGE = 2000D;
 	
 	protected AABB getARBoundingBox() {
 		double x = getX();

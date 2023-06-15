@@ -25,5 +25,10 @@ public class EntityEngine extends EntityPart {
 	public PartType getPartType() {
 		return PartType.EXTERNAL_ENGINE;
 	}
+	
+	@Override
+	public boolean shouldRenderAtSqrDistance(double dist) {
+		return dist < 65536;
+	}
 
 }

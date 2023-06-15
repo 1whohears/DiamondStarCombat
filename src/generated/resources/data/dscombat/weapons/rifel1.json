@@ -12,7 +12,7 @@
   "explosionRadius": 8.0,
   "explosive": true,
   "fireRate": 40,
-  "fov": 40.0,
+  "fov": 30.0,
   "fuelTicks": 400,
   "fuseDist": 2.0,
   "ingredients": [
@@ -39,7 +39,8 @@
   "maxAmmo": 2,
   "presetId": "rifel1",
   "rackTypeKey": "dscombat:heavy_missile_rack",
+  "scan_range": 1200.0,
   "shootSoundKey": "dscombat:rocket_launch_1",
-  "speed": 4.0,
-  "turnRadius": 100.0
+  "speed": 3.0,
+  "turnRadius": 160.0
 }

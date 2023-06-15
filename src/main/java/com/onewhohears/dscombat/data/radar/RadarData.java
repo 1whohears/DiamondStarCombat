@@ -146,8 +146,8 @@ public class RadarData extends JsonPreset {
 		freshTargets = true;
 		Entity controller = radar.getControllingPassenger();
 		RadarMode mode = radar.getRadarMode();
-		if (scanAircraft && mode.canScan(RadarMode.VEHICLES)) {
-			scanAircraft(radar, controller, vehiclePings);
+		if (scanAircraft && (mode.canScan(RadarMode.VEHICLES) || mode.isPlayersOnly())) {
+			scanAircraft(radar, controller, vehiclePings, mode.isPlayersOnly());
 		}
 		if (scanPlayers && mode.canScan(RadarMode.PLAYERS)) {
 			scanPlayers(radar, controller, vehiclePings);
@@ -157,17 +157,16 @@ public class RadarData extends JsonPreset {
 		}
 	}
 	
-	private void scanAircraft(EntityAircraft radar, Entity controller, List<RadarPing> vehiclePings) {
+	private void scanAircraft(EntityAircraft radar, Entity controller, List<RadarPing> vehiclePings, boolean playersOnly) {
 		//System.out.println("SCANNING VEHICLES");
 		List<EntityAircraft> list = radar.level.getEntitiesOfClass(
 				EntityAircraft.class, getRadarBoundingBox(radar));
 		for (int i = 0; i < list.size(); ++i) {
 			EntityAircraft ea = list.get(i);
 			if (!ea.isOperational()) continue;
-			Entity pilot = ea.getControllingPassenger();
-			if (radar.getRadarMode() == RadarMode.PLAYERS && pilot == null) continue;
+			if (playersOnly && !ea.hasControllingPassenger()) continue;
 			if (!basicCheck(radar, ea, ea.getStealth())) continue;
-			RadarPing p = new RadarPing(ea, checkFriendly(controller, pilot));
+			RadarPing p = new RadarPing(ea, checkFriendly(controller, ea));
 			vehiclePings.add(p);
 			pings.add(p);
 			if (!radar.isAlliedTo(ea)) ea.lockedOnto(radar.position());
@@ -179,10 +178,10 @@ public class RadarData extends JsonPreset {
 		List<Player> list = radar.level.getEntitiesOfClass(
 				Player.class, getRadarBoundingBox(radar));
 		for (int i = 0; i < list.size(); ++i) {
-			if (list.get(i).getRootVehicle() instanceof EntityAircraft) continue;
-			if (!basicCheck(radar, list.get(i), 1)) continue;
-			RadarPing p = new RadarPing(list.get(i), 
-				checkFriendly(controller, list.get(i)));
+			Player target = list.get(i);
+			if (target.isPassenger() && target.getRootVehicle() instanceof EntityAircraft ea) continue;
+			if (!basicCheck(radar, target, 1)) continue;
+			RadarPing p = new RadarPing(target, checkFriendly(controller, target));
 			vehiclePings.add(p);
 			pings.add(p);
 		}
@@ -203,9 +202,9 @@ public class RadarData extends JsonPreset {
 	}
 	
 	private boolean checkFriendly(Entity controller, Entity target) {
-		if (controller == null) return false;
 		if (target == null) return false;
-		return controller.isAlliedTo(target);
+		if (controller == null) return false;
+		return target.isAlliedTo(controller);
 	}
 	
 	private boolean basicCheck(EntityAircraft radar, Entity ping, double stealth) {
@@ -362,6 +361,10 @@ public class RadarData extends JsonPreset {
 		public boolean canScan(RadarMode mode) {
 			if (this == ALL) return true;
 			return this == mode;
+		}
+		
+		public boolean isPlayersOnly() {
+			return this == PLAYERS;
 		}
 		
 		public boolean isOff() {

@@ -12,10 +12,14 @@ public class AircraftPresetGenerator extends JsonPresetGenerator<AircraftPreset>
     	addPresetToGenerate(DefaultAircraftPresets.EMPTY_ALEXIS_PLANE);
     	addPresetToGenerate(DefaultAircraftPresets.UNARMED_ALEXIS_PLANE);
 		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_ALEXIS_PLANE);
+		addPresetToGenerate(DefaultAircraftPresets.SUPPORT_ALEXIS_PLANE);
+		addPresetToGenerate(DefaultAircraftPresets.SNIPER_ALEXIS_PLANE);
 		
 		addPresetToGenerate(DefaultAircraftPresets.EMPTY_JAVI_PLANE);
 		addPresetToGenerate(DefaultAircraftPresets.UNARMED_JAVI_PLANE);
 		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_JAVI_PLANE);
+		addPresetToGenerate(DefaultAircraftPresets.BOMBER_JAVI_PLANE);
+		addPresetToGenerate(DefaultAircraftPresets.TRUCK_JAVI_PLANE);
 		
 		addPresetToGenerate(DefaultAircraftPresets.EMPTY_NOAH_CHOPPER);
 		addPresetToGenerate(DefaultAircraftPresets.UNARMED_NOAH_CHOPPER);

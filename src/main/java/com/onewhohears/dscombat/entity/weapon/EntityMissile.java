@@ -262,7 +262,7 @@ public abstract class EntityMissile extends EntityBullet {
 			kill();
 			return;
 		}
-		if (targetPos == null) {
+		if (dieIfNoTargetOutsideTickRange() && targetPos == null) {
 			//System.out.println("no target pos");
 			kill();
 			return;
@@ -273,6 +273,10 @@ public abstract class EntityMissile extends EntityBullet {
 		tickSetMove();
 		//System.out.println("starting set pos");
 		setPos(position().add(getDeltaMovement()));
+	}
+	
+	public boolean dieIfNoTargetOutsideTickRange() {
+		return true;
 	}
 	
 	@Override

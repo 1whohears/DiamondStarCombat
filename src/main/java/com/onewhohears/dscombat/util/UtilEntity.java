@@ -95,7 +95,7 @@ public class UtilEntity {
 		// IDEA 6 how high should the atmosphere go based on dimension?
 		double space, surface;
 		if (dt.natural()) {
-			space = 10000;
+			space = 2500;
 			surface = 64;
 		} else {
 			space = 2000;

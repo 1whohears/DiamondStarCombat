@@ -1,5 +1,6 @@
 {
   "aircraft_type": 4,
+  "displayName": "preset.dscombat.andolf_sub_unarmed",
   "dyecolor": 11,
   "health": 800.0,
   "idleheat": 10.0,

@@ -8,6 +8,7 @@
   "craftNum": 1,
   "damage": 50.0,
   "destroyTerrain": true,
+  "displayName": "preset.dscombat.torpedo1",
   "entityTypeKey": "dscombat:torpedo_missile_1",
   "explosionRadius": 4.0,
   "explosive": true,

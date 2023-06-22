@@ -101,6 +101,9 @@
 	"entity.dscombat.sam_launcher": "SAM Launcher",
 	"entity.dscombat.axcel_truck": "Axcel Truck",
 	
+	"entity.minecraft.villager.dscombat.weapons_engineer": "Weapons Engineer",
+	"entity.minecraft.villager.dscombat.aircraft_engineer": "Aircraft Engineer",
+	
 	"block.dscombat.weapons_block": "Weapons Workbench",
 	"block.dscombat.aircraft_block": "Aircraft Workbench",
 	

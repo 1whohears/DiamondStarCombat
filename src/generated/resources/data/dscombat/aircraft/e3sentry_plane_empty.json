@@ -1,5 +1,6 @@
 {
   "aircraft_type": 0,
+  "displayName": "preset.dscombat.e3sentry_plane_empty",
   "dyecolor": 7,
   "health": 400.0,
   "idleheat": 20.0,

@@ -1,4 +1,5 @@
 {
+  "displayName": "preset.dscombat.ar500",
   "fov": 70.0,
   "presetId": "ar500",
   "range": 500.0,
@@ -8,7 +9,7 @@
   "scanMobs": false,
   "scanPlayers": true,
   "scanRate": 20,
-  "sensitivity": 2.0,
+  "sensitivity": 0.3,
   "throGroundRange": 0.0,
   "throWaterRange": 0.0
 }

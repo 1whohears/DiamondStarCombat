@@ -8,6 +8,7 @@
   "craftNum": 1,
   "damage": 60.0,
   "destroyTerrain": true,
+  "displayName": "preset.dscombat.agm65g",
   "entityTypeKey": "dscombat:track_missile_1",
   "explosionRadius": 5.0,
   "explosive": true,

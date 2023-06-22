@@ -1,5 +1,6 @@
 {
   "aircraft_type": 2,
+  "displayName": "preset.dscombat.axcel_truck_empty",
   "dyecolor": 4,
   "health": 80.0,
   "idleheat": 6.0,

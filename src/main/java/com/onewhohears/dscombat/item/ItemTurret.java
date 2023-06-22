@@ -31,7 +31,7 @@ public class ItemTurret extends ItemPart {
 		CompoundTag tag = stack.getOrCreateTag();
 		MutableComponent name = ((MutableComponent)super.getName(stack)).append(" ");
 		WeaponData wd = WeaponPresets.get().getPreset(weaponId);
-		if (wd != null) name.append(wd.getDisplayName());
+		if (wd != null) name.append(wd.getDisplayNameComponent());
 		else name.append(weaponId+"?");
 		int ammo = tag.getInt("ammo");
 		int max = tag.getInt("max");

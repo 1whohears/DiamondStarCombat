@@ -93,6 +93,7 @@ public class RadarSystem {
 		// PLANE RADARS
 		for (RadarData r : radars) r.tickUpdateTargets(parent, targets);
 		// DATA LINK
+		// FIXME 3 data link is broken on servers?
 		if (dataLink && parent.tickCount % 20 == 0) {
 			for (int i = 0; i < dataLinkTargets.size(); ++i) targets.remove(dataLinkTargets.get(i));
 			dataLinkTargets.clear();

@@ -120,6 +120,11 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	public static final EntityDataAccessor<Integer> RADAR_MODE = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> FLARE_NUM = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.INT);
 	
+	public final AircraftInputs inputs = new AircraftInputs();
+	public final PartsManager partsManager = new PartsManager(this);
+	public final WeaponSystem weaponSystem = new WeaponSystem(this);
+	public final RadarSystem radarSystem = new RadarSystem(this);
+	
 	public final double ACC_GRAVITY = Config.SERVER.accGravity.get();
 	public final double CO_DRAG = Config.SERVER.coDrag.get();
 	public final double CO_STATIC_FRICTION = Config.SERVER.coStaticFriction.get();
@@ -128,11 +133,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	public final double collideSpeedWithGearThreshHold = Config.SERVER.collideSpeedWithGearThreshHold.get();
 	public final double collideDamageRate = Config.SERVER.collideDamageRate.get();
 	public final double maxFallSpeed = Config.SERVER.maxFallSpeed.get();
-	
-	public final AircraftInputs inputs = new AircraftInputs();
-	public final PartsManager partsManager = new PartsManager(this);
-	public final WeaponSystem weaponSystem = new WeaponSystem(this);
-	public final RadarSystem radarSystem = new RadarSystem(this);
+	public final boolean autoDataLink = Config.SERVER.autoDataLink.get();
 	
 	public final String defaultPreset;
 	public final boolean negativeThrottle;

@@ -32,7 +32,8 @@ public abstract class PartData {
 		INTERNAL_RADAR,
 		FLARE_DISPENSER,
 		EXTERNAL_ENGINE,
-		BUFF_DATA
+		BUFF_DATA,
+		RADIO
 	}
 	
 	protected PartData(float weight, ResourceLocation itemid, SlotType[] compatibleSlots) {

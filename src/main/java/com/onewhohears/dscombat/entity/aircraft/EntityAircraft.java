@@ -1087,6 +1087,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 			if (!stack.isEmpty()) {
 				Item item = stack.getItem();
 				// TODO 8 custom name by name tag
+				// TODO 9.1 radio part buff right click vehicle with music disk
 				// REFUEL
 				if (item instanceof ItemGasCan) {
 					int md = stack.getMaxDamage();

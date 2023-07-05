@@ -9,7 +9,7 @@ import com.onewhohears.dscombat.data.parts.RadioData;
 
 public class ItemRadio extends ItemPart {
 
-	protected ItemRadio() {
+	public ItemRadio() {
 		super(1, 0.1f, SlotType.INTERNAL_ALL);
 	}
 

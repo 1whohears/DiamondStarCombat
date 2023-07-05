@@ -17,6 +17,7 @@ import com.onewhohears.dscombat.item.ItemFuelTank;
 import com.onewhohears.dscombat.item.ItemGasCan;
 import com.onewhohears.dscombat.item.ItemPart;
 import com.onewhohears.dscombat.item.ItemRadarPart;
+import com.onewhohears.dscombat.item.ItemRadio;
 import com.onewhohears.dscombat.item.ItemRepairTool;
 import com.onewhohears.dscombat.item.ItemSeat;
 import com.onewhohears.dscombat.item.ItemTurret;
@@ -88,7 +89,8 @@ public class ModItems {
 			() -> new ItemBuffPart(BuffType.DATA_LINK, SlotType.INTERNAL_ADVANCED));
 	public static final RegistryObject<Item> NIGHT_VISION_HUD = ITEMS.register("night_vision_hud", 
 			() -> new ItemBuffPart(BuffType.NIGHT_VISION_HUD, SlotType.INTERNAL_ADVANCED));
-	// TODO 9.1 radio part buff right click vehicle with music disk
+	public static final RegistryObject<Item> RADIO = ITEMS.register("radio", 
+			() -> new ItemRadio());
 	
 	// TOOLS
 	public static final RegistryObject<Item> WRENCH = ITEMS.register("wrench", 

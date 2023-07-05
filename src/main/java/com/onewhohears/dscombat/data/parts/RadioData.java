@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class RadioData extends PartData {
 	
-	private final String disk;
+	private String disk;
 	
 	public RadioData(ResourceLocation itemid, String disk) {
 		super(0.1f, itemid, SlotType.INTERNAL_ALL);
@@ -49,7 +49,25 @@ public class RadioData extends PartData {
 	
 	@Override
 	protected void clientTick(String slotId) {
+		if (disk.isEmpty()) return;
 		// TODO 9.2 play music on client side
+	}
+	
+	/**
+	 * use from server side
+	 * @param disk music disk item id
+	 */
+	public void setDisk(String disk) {
+		// TODO 9.3 set disk packet
+		this.disk = disk;
+	}
+	
+	/**
+	 * use from server side
+	 */
+	public void removeDisk() {
+		// TODO 9.4 remove disk packet
+		this.disk = "";
 	}
 
 }

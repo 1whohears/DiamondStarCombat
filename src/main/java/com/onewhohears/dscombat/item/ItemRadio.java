@@ -3,6 +3,10 @@ package com.onewhohears.dscombat.item;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 
+import net.minecraftforge.registries.ForgeRegistries;
+
+import com.onewhohears.dscombat.data.parts.RadioData;
+
 public class ItemRadio extends ItemPart {
 
 	protected ItemRadio() {
@@ -11,8 +15,7 @@ public class ItemRadio extends ItemPart {
 
 	@Override
 	public PartData getPartData() {
-		// TODO Auto-generated method stub
-		return null;
+		return new RadioData(ForgeRegistries.ITEMS.getKey(this), "");
 	}
 
 }

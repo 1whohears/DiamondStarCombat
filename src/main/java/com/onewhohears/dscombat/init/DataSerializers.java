@@ -9,6 +9,7 @@ import com.onewhohears.dscombat.data.parts.FlareDispenserData;
 import com.onewhohears.dscombat.data.parts.FuelTankData;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.RadarPartData;
+import com.onewhohears.dscombat.data.parts.RadioData;
 import com.onewhohears.dscombat.data.parts.SeatData;
 import com.onewhohears.dscombat.data.parts.TurretData;
 import com.onewhohears.dscombat.data.parts.WeaponPartData;
@@ -157,6 +158,8 @@ public class DataSerializers {
 				return new ExternalEngineData(buffer);
 			case BUFF_DATA:
 				return new BuffData(buffer);
+			case RADIO:
+				return new RadioData(buffer);
 			}
 			return null;
 		}

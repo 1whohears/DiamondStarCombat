@@ -19,6 +19,7 @@ import com.onewhohears.dscombat.data.parts.FuelTankData;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.data.parts.RadarPartData;
+import com.onewhohears.dscombat.data.parts.RadioData;
 import com.onewhohears.dscombat.data.parts.SeatData;
 import com.onewhohears.dscombat.data.parts.TurretData;
 import com.onewhohears.dscombat.data.parts.WeaponPartData;
@@ -151,6 +152,8 @@ public class UtilParse {
 			return new ExternalEngineData(tag);
 		case BUFF_DATA:
 			return new BuffData(tag);
+		case RADIO:
+			return new RadioData(tag);
 		}
 		return null;
 	}

@@ -9,16 +9,32 @@ import net.minecraft.resources.ResourceLocation;
 
 public class RadioData extends PartData {
 	
-	public RadioData(ResourceLocation itemid) {
+	private final String disk;
+	
+	public RadioData(ResourceLocation itemid, String disk) {
 		super(0.1f, itemid, SlotType.INTERNAL_ALL);
+		this.disk = disk;
 	}
 
 	public RadioData(CompoundTag tag) {
 		super(tag);
+		disk = tag.getString("disk");
+	}
+	
+	public CompoundTag write() {
+		CompoundTag tag = super.write();
+		tag.putString("disk", disk);
+		return tag;
 	}
 
 	public RadioData(FriendlyByteBuf buffer) {
 		super(buffer);
+		disk = buffer.readUtf();
+	}
+	
+	public void write(FriendlyByteBuf buffer) {
+		super.write(buffer);
+		buffer.writeUtf(disk);
 	}
 	
 	@Override
@@ -28,8 +44,12 @@ public class RadioData extends PartData {
 
 	@Override
 	public boolean isSetup(String slotId, EntityAircraft craft) {
-		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	@Override
+	protected void clientTick(String slotId) {
+		// TODO 9.2 play music on client side
 	}
 
 }

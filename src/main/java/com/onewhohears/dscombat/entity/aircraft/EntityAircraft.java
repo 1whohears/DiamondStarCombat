@@ -75,6 +75,8 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.NameTagItem;
+import net.minecraft.world.item.RecordItem;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -119,6 +121,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	public static final EntityDataAccessor<Boolean> NO_CONSUME = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Integer> RADAR_MODE = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> FLARE_NUM = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<String> RADIO_SONG = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.STRING);
 	
 	public final AircraftInputs inputs = new AircraftInputs();
 	public final PartsManager partsManager = new PartsManager(this);
@@ -213,6 +216,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		entityData.define(NO_CONSUME, false);
 		entityData.define(RADAR_MODE, RadarMode.ALL.ordinal());
 		entityData.define(FLARE_NUM, 0);
+		entityData.define(RADIO_SONG, "");
 	}
 	
 	@Override
@@ -290,6 +294,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		if (color == -1) color = nbt.getInt("dyecolor");
 		setCurrentColor(DyeColor.byId(color));
 		setRadarMode(RadarMode.values()[nbt.getInt("radar_mode")]);
+		setRadioSong(nbt.getString("radio_song"));
 	}
 
 	@Override
@@ -323,6 +328,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		compound.putFloat("zRot", zRot);
 		compound.putInt("dyecolor", getCurrentColorId());
 		compound.putInt("radar_mode", getRadarMode().ordinal());
+		compound.putString("radio_song", getRadioSong());
 		Entity c = getControllingPassenger();
 		if (c != null) compound.putString("owner", c.getScoreboardName());
 	}
@@ -1026,6 +1032,18 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     public final void setRadarMode(RadarMode mode) {
     	entityData.set(RADAR_MODE, mode.ordinal());
     }
+    
+    public final String getRadioSong() {
+    	return entityData.get(RADIO_SONG);
+    }
+    
+    public final void setRadioSong(String song) {
+    	entityData.set(RADIO_SONG, song);
+    }
+    
+    public final void turnRadioOff() {
+    	entityData.set(RADIO_SONG, "");
+    }
 	
     /**
      * register parts before calling super in server side
@@ -1086,8 +1104,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 			ItemStack stack = player.getInventory().getSelected();
 			if (!stack.isEmpty()) {
 				Item item = stack.getItem();
-				// TODO 8 custom name by name tag
-				// TODO 9.1 radio part buff right click vehicle with music disk
 				// REFUEL
 				if (item instanceof ItemGasCan) {
 					int md = stack.getMaxDamage();
@@ -1128,6 +1144,15 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 						stack.shrink(1);
 						return InteractionResult.CONSUME;
 					}
+					return InteractionResult.PASS;
+				// RADIO
+				} else if (item instanceof RecordItem disk) {
+					if (!partsManager.hasRadio()) return InteractionResult.PASS;
+					setRadioSong(disk.getSound().getLocation().toString());
+					return InteractionResult.SUCCESS;
+				// CUSTOM NAME
+				} else if (item instanceof NameTagItem name) {
+					// TODO 8 custom name by name tag
 					return InteractionResult.PASS;
 				// CREATIVE WAND
 				} else if (item instanceof ItemCreativeWand wand) {
@@ -1677,6 +1702,9 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     			level.playSound(p, new BlockPos(p.position()), 
     	    		ModSounds.GETTING_LOCKED.get(), SoundSource.PLAYERS, 1f, 1f);
         	}
+    	}
+    	if (partsManager.hasRadio()) {
+    		// TODO 9 play radio audio
     	}
     } 
     

@@ -318,4 +318,11 @@ public class PartsManager {
 		return num;
 	}
 	
+	public boolean hasRadio() {
+		for (PartSlot p : slots) 
+			if (p.filled() && p.getPartData().isRadio())
+				return true;
+		return false;
+	}
+	
 }

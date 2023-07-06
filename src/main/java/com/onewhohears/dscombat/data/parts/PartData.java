@@ -32,8 +32,7 @@ public abstract class PartData {
 		INTERNAL_RADAR,
 		FLARE_DISPENSER,
 		EXTERNAL_ENGINE,
-		BUFF_DATA,
-		RADIO
+		BUFF_DATA
 	}
 	
 	protected PartData(float weight, ResourceLocation itemid, SlotType[] compatibleSlots) {
@@ -91,6 +90,10 @@ public abstract class PartData {
 	
 	public boolean isFlareDispenser() {
 		return getType() == PartType.FLARE_DISPENSER;
+	}
+	
+	public boolean isRadio() {
+		return false;
 	}
 	
 	public EntityAircraft getParent() {

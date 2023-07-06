@@ -159,7 +159,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	public Vec3 forces = Vec3.ZERO, forcesO = Vec3.ZERO;
 	public Vec3 moment = Vec3.ZERO, momentO = Vec3.ZERO, addMomentFromServer = Vec3.ZERO;
 	
-	public boolean nightVisionHud = false;
+	public boolean nightVisionHud = false, hasRadio = false;
 	
 	protected boolean hasFlares;
 	protected int xzSpeedDir;
@@ -241,6 +241,11 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
         		} else clientThrottle = entityData.get(THROTTLE);
         	} else if (CURRRENT_DYE_ID.equals(key)) {
         		currentTexture = textures.getTexture(getCurrentColorId());
+        	} else if (RADIO_SONG.equals(key)) {
+        		String sound = getRadioSong();
+        		//System.out.println("SONG UPDATE "+sound);
+        		if (!sound.isEmpty()) UtilClientSafeSoundInstance.aircraftRadio(
+        				Minecraft.getInstance(), this, sound);
         	}
         }
     }
@@ -414,6 +419,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		tickCollisions();
 		waterDamage();
 		if (!isTestMode() && !isOperational()) tickNoHealth();
+		if (hasRadioSong() && (!isOperational() || !hasRadio)) turnRadioOff();
 	}
 	
 	/**
@@ -1037,12 +1043,16 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     	return entityData.get(RADIO_SONG);
     }
     
+    public boolean hasRadioSong() {
+    	return !getRadioSong().isEmpty();
+    }
+    
     public final void setRadioSong(String song) {
     	entityData.set(RADIO_SONG, song);
     }
     
-    public final void turnRadioOff() {
-    	entityData.set(RADIO_SONG, "");
+    public void turnRadioOff() {
+    	setRadioSong("");
     }
 	
     /**
@@ -1147,7 +1157,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 					return InteractionResult.PASS;
 				// RADIO
 				} else if (item instanceof RecordItem disk) {
-					if (!partsManager.hasRadio()) return InteractionResult.PASS;
+					if (!hasRadio) return InteractionResult.PASS;
 					setRadioSong(disk.getSound().getLocation().toString());
 					return InteractionResult.SUCCESS;
 				// CUSTOM NAME
@@ -1702,9 +1712,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     			level.playSound(p, new BlockPos(p.position()), 
     	    		ModSounds.GETTING_LOCKED.get(), SoundSource.PLAYERS, 1f, 1f);
         	}
-    	}
-    	if (partsManager.hasRadio()) {
-    		// TODO 9 play radio audio
     	}
     } 
     

@@ -67,7 +67,7 @@ public class BuffData extends PartData {
 			getParent().nightVisionHud = true;
 			break;
 		case RADIO:
-			
+			getParent().hasRadio = true;
 			break;
 		}
 	}
@@ -83,7 +83,7 @@ public class BuffData extends PartData {
 			getParent().nightVisionHud = false;
 			break;
 		case RADIO:
-			
+			getParent().hasRadio = false;
 			break;
 		}
 	}

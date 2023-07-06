@@ -75,6 +75,8 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.NameTagItem;
+import net.minecraft.world.item.RecordItem;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -119,6 +121,12 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	public static final EntityDataAccessor<Boolean> NO_CONSUME = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Integer> RADAR_MODE = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> FLARE_NUM = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<String> RADIO_SONG = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.STRING);
+	
+	public final AircraftInputs inputs = new AircraftInputs();
+	public final PartsManager partsManager = new PartsManager(this);
+	public final WeaponSystem weaponSystem = new WeaponSystem(this);
+	public final RadarSystem radarSystem = new RadarSystem(this);
 	
 	public final double ACC_GRAVITY = Config.SERVER.accGravity.get();
 	public final double CO_DRAG = Config.SERVER.coDrag.get();
@@ -128,11 +136,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	public final double collideSpeedWithGearThreshHold = Config.SERVER.collideSpeedWithGearThreshHold.get();
 	public final double collideDamageRate = Config.SERVER.collideDamageRate.get();
 	public final double maxFallSpeed = Config.SERVER.maxFallSpeed.get();
-	
-	public final AircraftInputs inputs = new AircraftInputs();
-	public final PartsManager partsManager = new PartsManager(this);
-	public final WeaponSystem weaponSystem = new WeaponSystem(this);
-	public final RadarSystem radarSystem = new RadarSystem(this);
+	public final boolean autoDataLink = Config.SERVER.autoDataLink.get();
 	
 	public final String defaultPreset;
 	public final boolean negativeThrottle;
@@ -155,7 +159,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	public Vec3 forces = Vec3.ZERO, forcesO = Vec3.ZERO;
 	public Vec3 moment = Vec3.ZERO, momentO = Vec3.ZERO, addMomentFromServer = Vec3.ZERO;
 	
-	public boolean nightVisionHud = false;
+	public boolean nightVisionHud = false, hasRadio = false;
 	
 	protected boolean hasFlares;
 	protected int xzSpeedDir;
@@ -212,6 +216,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		entityData.define(NO_CONSUME, false);
 		entityData.define(RADAR_MODE, RadarMode.ALL.ordinal());
 		entityData.define(FLARE_NUM, 0);
+		entityData.define(RADIO_SONG, "");
 	}
 	
 	@Override
@@ -236,6 +241,11 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
         		} else clientThrottle = entityData.get(THROTTLE);
         	} else if (CURRRENT_DYE_ID.equals(key)) {
         		currentTexture = textures.getTexture(getCurrentColorId());
+        	} else if (RADIO_SONG.equals(key)) {
+        		String sound = getRadioSong();
+        		//System.out.println("SONG UPDATE "+sound);
+        		if (!sound.isEmpty()) UtilClientSafeSoundInstance.aircraftRadio(
+        				Minecraft.getInstance(), this, sound);
         	}
         }
     }
@@ -289,6 +299,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		if (color == -1) color = nbt.getInt("dyecolor");
 		setCurrentColor(DyeColor.byId(color));
 		setRadarMode(RadarMode.values()[nbt.getInt("radar_mode")]);
+		setRadioSong(nbt.getString("radio_song"));
 	}
 
 	@Override
@@ -322,6 +333,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		compound.putFloat("zRot", zRot);
 		compound.putInt("dyecolor", getCurrentColorId());
 		compound.putInt("radar_mode", getRadarMode().ordinal());
+		compound.putString("radio_song", getRadioSong());
 		Entity c = getControllingPassenger();
 		if (c != null) compound.putString("owner", c.getScoreboardName());
 	}
@@ -407,6 +419,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		tickCollisions();
 		waterDamage();
 		if (!isTestMode() && !isOperational()) tickNoHealth();
+		if (hasRadioSong() && (!isOperational() || !hasRadio)) turnRadioOff();
 	}
 	
 	/**
@@ -1025,6 +1038,22 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     public final void setRadarMode(RadarMode mode) {
     	entityData.set(RADAR_MODE, mode.ordinal());
     }
+    
+    public final String getRadioSong() {
+    	return entityData.get(RADIO_SONG);
+    }
+    
+    public boolean hasRadioSong() {
+    	return !getRadioSong().isEmpty();
+    }
+    
+    public final void setRadioSong(String song) {
+    	entityData.set(RADIO_SONG, song);
+    }
+    
+    public void turnRadioOff() {
+    	setRadioSong("");
+    }
 	
     /**
      * register parts before calling super in server side
@@ -1085,7 +1114,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 			ItemStack stack = player.getInventory().getSelected();
 			if (!stack.isEmpty()) {
 				Item item = stack.getItem();
-				// TODO 8 custom name by name tag
 				// REFUEL
 				if (item instanceof ItemGasCan) {
 					int md = stack.getMaxDamage();
@@ -1126,6 +1154,15 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 						stack.shrink(1);
 						return InteractionResult.CONSUME;
 					}
+					return InteractionResult.PASS;
+				// RADIO
+				} else if (item instanceof RecordItem disk) {
+					if (!hasRadio) return InteractionResult.PASS;
+					setRadioSong(disk.getSound().getLocation().toString());
+					return InteractionResult.SUCCESS;
+				// CUSTOM NAME
+				} else if (item instanceof NameTagItem name) {
+					// TODO 8 custom name by name tag
 					return InteractionResult.PASS;
 				// CREATIVE WAND
 				} else if (item instanceof ItemCreativeWand wand) {

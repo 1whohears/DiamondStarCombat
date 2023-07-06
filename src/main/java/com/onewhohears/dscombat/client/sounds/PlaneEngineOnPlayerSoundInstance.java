@@ -5,7 +5,7 @@ import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.sounds.SoundEvent;
 
-public class PlaneEngineOnPlayerSoundInstance extends DopplerOnPlayerSoundInstance {
+public class PlaneEngineOnPlayerSoundInstance extends DopplerSoundInstance {
 
 	public PlaneEngineOnPlayerSoundInstance(SoundEvent sound, LocalPlayer player, EntityAircraft entity, float velSound) {
 		super(sound, player, entity, 1.0f, 1.0f, velSound);

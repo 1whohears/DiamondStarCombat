@@ -312,23 +312,42 @@ public class RadarData extends JsonPreset {
 		public final int id;
 		public final Vec3 pos;
 		public final boolean isFriendly;
+		private boolean isShared;
 		
 		public RadarPing(Entity ping, boolean isFriendly) {
 			id = ping.getId();
 			pos = ping.position();
 			this.isFriendly = isFriendly;
+			this.isShared = false;
+		}
+		
+		private RadarPing(int id, Vec3 pos, boolean isFriendly, boolean isShared) {
+			this.id = id;
+			this.pos = pos;
+			this.isFriendly = isFriendly;
+			this.isShared = isShared;
 		}
 		
 		public RadarPing(FriendlyByteBuf buffer) {
 			id = buffer.readInt();
 			pos = DataSerializers.VEC3.read(buffer);
 			isFriendly = buffer.readBoolean();
+			isShared = buffer.readBoolean();
 		}
 		
 		public void write(FriendlyByteBuf buffer) {
 			buffer.writeInt(id);
 			DataSerializers.VEC3.write(buffer, pos);
 			buffer.writeBoolean(isFriendly);
+			buffer.writeBoolean(isShared);
+		}
+		
+		public boolean isShared() {
+			return this.isShared;
+		}
+		
+		public RadarPing getCopy(boolean isShared) {
+			return new RadarPing(id, pos, isFriendly, isShared);
 		}
 		
 		@Override

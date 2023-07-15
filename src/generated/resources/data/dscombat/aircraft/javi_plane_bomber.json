@@ -1,5 +1,6 @@
 {
   "aircraft_type": 0,
+  "displayName": "preset.dscombat.javi_plane_bomber",
   "dyecolor": 13,
   "health": 200.0,
   "idleheat": 5.0,

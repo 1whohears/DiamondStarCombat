@@ -1,5 +1,6 @@
 {
   "aircraft_type": 2,
+  "displayName": "preset.dscombat.orange_tesla",
   "dyecolor": 1,
   "health": 40.0,
   "idleheat": 4.0,

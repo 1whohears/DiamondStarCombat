@@ -2,8 +2,11 @@ package com.onewhohears.dscombat.common.event;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.command.MissileCommand;
+import com.onewhohears.dscombat.data.villager.DSCVillagerTrades;
+import com.onewhohears.dscombat.init.ModVillagers;
 
 import net.minecraftforge.event.RegisterCommandsEvent;
+import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.server.command.ConfigCommand;
@@ -16,6 +19,12 @@ public final class ModEvents {
 		new MissileCommand(event.getDispatcher());
 		ConfigCommand.register(event.getDispatcher());
 		// IDEA 3 set position guided missile position with command
+	}
+	
+	@SubscribeEvent
+	public static void customVillagerTrades(VillagerTradesEvent event) {
+		if (event.getType() == ModVillagers.WEAPONS_ENGINEER.get()) DSCVillagerTrades.putWeaponEngineerTrades(event.getTrades());
+		else if (event.getType() == ModVillagers.AIRCRAFT_ENGINEER.get()) DSCVillagerTrades.putAircraftEngineerTrades(event.getTrades());
 	}
 	
 }

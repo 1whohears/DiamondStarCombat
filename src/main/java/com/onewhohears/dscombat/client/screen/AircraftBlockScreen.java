@@ -105,7 +105,7 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 		// plane stats
 		if (AircraftPresets.get().getCraftablePresetNum() == 0) return;
 		AircraftPreset ap = AircraftPresets.get().getCraftablePresets()[planeIndex];
-		font.draw(stack, ap.getDisplayName(), titleLabelX+38, titleLabelY+34, 0x000000);
+		font.draw(stack, ap.getDisplayNameComponent(), titleLabelX+38, titleLabelY+34, 0x000000);
 		CompoundTag data = ap.getDataAsNBT();
 		float scale = 0.5f;
 		stack.scale(scale, scale, scale);
@@ -113,6 +113,7 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 		int startX = (int)((float)(titleLabelX+38) * invScale);
 		int startY = (int)((float)(titleLabelY+43) * invScale);
 		int initY = startY;
+		// FIXME 2 fix aircraft preset display stats
 		font.draw(stack, Component.literal("Health: "+data.getDouble("max_health")), startX, startY, 0x404040);
 		startY += font.lineHeight;
 		font.draw(stack, Component.literal("Speed: "+data.getDouble("max_speed")), startX, startY, 0x404040);

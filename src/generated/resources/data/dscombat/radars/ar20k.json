@@ -1,4 +1,5 @@
 {
+  "displayName": "preset.dscombat.ar20k",
   "fov": -1.0,
   "presetId": "ar20k",
   "range": 20000.0,
@@ -8,7 +9,7 @@
   "scanMobs": false,
   "scanPlayers": true,
   "scanRate": 80,
-  "sensitivity": 4.0,
+  "sensitivity": 0.5,
   "throGroundRange": 0.0,
   "throWaterRange": 0.0
 }

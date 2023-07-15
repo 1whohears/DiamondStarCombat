@@ -1,5 +1,6 @@
 {
   "aircraft_type": 2,
+  "displayName": "preset.dscombat.small_roller",
   "dyecolor": 7,
   "health": 30.0,
   "idleheat": 1.0,

@@ -39,10 +39,6 @@ public abstract class ItemPart extends Item {
 		return new Item.Properties().tab(ModItems.PARTS).stacksTo(stackSize);
 	}
 	
-	public String getIdPart() {
-		return getDescriptionId().split("\\.")[2];
-	}
-	
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
 		if (group.getId() == ModItems.PARTS.getId()) {

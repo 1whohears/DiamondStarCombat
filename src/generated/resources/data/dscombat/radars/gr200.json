@@ -1,4 +1,5 @@
 {
+  "displayName": "preset.dscombat.gr200",
   "fov": -1.0,
   "presetId": "gr200",
   "range": 200.0,
@@ -8,7 +9,7 @@
   "scanMobs": true,
   "scanPlayers": true,
   "scanRate": 40,
-  "sensitivity": 1.0,
+  "sensitivity": 0.8,
   "throGroundRange": 0.0,
   "throWaterRange": 0.0
 }

@@ -1,13 +1,16 @@
 package com.onewhohears.dscombat.util;
 
-import com.onewhohears.dscombat.client.sounds.DopplerOnPlayerSoundInstance;
+import com.onewhohears.dscombat.client.sounds.DopplerSoundInstance;
 import com.onewhohears.dscombat.client.sounds.PlaneEngineOnPlayerSoundInstance;
+import com.onewhohears.dscombat.client.sounds.PlaneMusicSoundInstance;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class UtilClientSafeSoundInstance {
 	
@@ -15,7 +18,7 @@ public class UtilClientSafeSoundInstance {
 			float initVolume, float initPitch, float velSound) {
 		LocalPlayer p = m.player;
 		if (p == null) return;
-		m.getSoundManager().play(new DopplerOnPlayerSoundInstance(sound, 
+		m.getSoundManager().play(new DopplerSoundInstance(sound, 
 				p, entity, initVolume, initPitch, velSound));
 	}
 	
@@ -24,6 +27,22 @@ public class UtilClientSafeSoundInstance {
 		if (p == null) return;
 		m.getSoundManager().play(new PlaneEngineOnPlayerSoundInstance(sound, 
 				p, plane, 10F));
+	}
+	
+	public static void aircraftRadio(Minecraft m, EntityAircraft plane, SoundEvent sound) {
+		LocalPlayer p = m.player;
+		if (p == null) return;
+		m.getSoundManager().play(new PlaneMusicSoundInstance(sound, 
+				p, plane, 40F));
+	}
+	
+	public static void aircraftRadio(Minecraft m, EntityAircraft plane, String sound) {
+		SoundEvent se = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(sound));
+		if (se == null) {
+			System.out.println("ERROR: "+sound+" does not exist!");
+			return;
+		}
+		aircraftRadio(m, plane, se);
 	}
 	
 }

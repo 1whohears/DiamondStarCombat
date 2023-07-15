@@ -38,7 +38,6 @@ public class RadarSystem {
 	private int selectedIndex = -1;
 	private List<RadarPing> clientTargets = new ArrayList<RadarPing>();
 	private int clientSelectedIndex = -1;
-	private List<RadarPing> dataLinkTargets = new ArrayList<RadarPing>();
 	
 	private List<RWRWarning> rwrWarnings = new ArrayList<RWRWarning>();
 	private boolean rwrMissile, rwrRadar;
@@ -86,6 +85,10 @@ public class RadarSystem {
 		return radars;
 	}
 	
+	public boolean hasDataLink() {
+		return dataLink || parent.autoDataLink;
+	}
+	
 	public void tickUpdateTargets() {
 		RadarPing old = null; 
 		if (selectedIndex != -1 && selectedIndex < targets.size()) old = targets.get(selectedIndex);
@@ -93,9 +96,9 @@ public class RadarSystem {
 		// PLANE RADARS
 		for (RadarData r : radars) r.tickUpdateTargets(parent, targets);
 		// DATA LINK
-		if (dataLink && parent.tickCount % 20 == 0) {
-			for (int i = 0; i < dataLinkTargets.size(); ++i) targets.remove(dataLinkTargets.get(i));
-			dataLinkTargets.clear();
+		// FIXME 3 data link is broken on servers?
+		if (hasDataLink() && parent.tickCount % 20 == 0) {
+			clearDataLink();
 			Entity controller = parent.getControllingPassenger();
 			if (!(controller instanceof Player player)) return;
 			List<? extends Player> players = parent.level.players();
@@ -103,13 +106,12 @@ public class RadarSystem {
 				if (player.equals(p)) continue;
 				if (!player.isAlliedTo(p)) continue;
 				if (!(p.getRootVehicle() instanceof EntityAircraft plane)) continue;
-				if (!plane.radarSystem.dataLink) continue;
+				if (!plane.radarSystem.hasDataLink()) continue;
 				if (plane.equals(parent)) continue;
 				for (RadarPing rp : plane.radarSystem.targets) {
 					if (rp.id == parent.getId()) continue;
 					if (hasTarget(rp.id)) continue;
-					targets.add(rp);
-					dataLinkTargets.add(rp);
+					targets.add(rp.getCopy(true));
 				}
 			}
 		}
@@ -132,6 +134,14 @@ public class RadarSystem {
 	private boolean hasTarget(int id) {
 		for (RadarPing rp : targets) if (rp.id == id) return true;
 		return false;
+	}
+	
+	private void clearDataLink() {
+		for (int i = 0; i < targets.size(); ++i) {
+			if (targets.get(i).isShared()) {
+				targets.remove(i--);
+			}
+		}
 	}
 	
 	private void updateRockets() {

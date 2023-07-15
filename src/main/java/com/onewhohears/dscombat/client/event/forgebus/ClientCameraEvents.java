@@ -22,6 +22,8 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper.UnableToFindMethodException;
 
 @Mod.EventBusSubscriber(modid = DSCombatMod.MODID, bus = Bus.FORGE, value = Dist.CLIENT)
 public class ClientCameraEvents {
@@ -64,22 +66,12 @@ public class ClientCameraEvents {
 		if (tried) return null;
 		tried = true;
 		try {
-			vanillaOnMove = MouseHandler.class.getDeclaredMethod(
-				"m_91561_", long.class, double.class, double.class);
-			vanillaOnMove.setAccessible(true);
-			return vanillaOnMove;
-		} catch (NoSuchMethodException | SecurityException e) {
-			System.out.println("WARNING: VANILLA MOUSE POS CALLBACK IS NOT m_91561_");
+			vanillaOnMove = ObfuscationReflectionHelper.findMethod(MouseHandler.class, "m_91561_", 
+				long.class, double.class, double.class);
+		} catch (UnableToFindMethodException e) {
+			System.out.println("ERROR: VANILLA MOUSE POS CALLBACK IS NOT m_91561_");
 		}
-		try {
-			vanillaOnMove = MouseHandler.class.getDeclaredMethod(
-				"onMove", long.class, double.class, double.class);
-			vanillaOnMove.setAccessible(true);
-			return vanillaOnMove;
-		} catch (NoSuchMethodException | SecurityException e) {
-			System.out.println("ERROR: VANILLA MOUSE POS CALLBACK IS NOT onMove");
-		}
-		return null;
+		return vanillaOnMove;
 	}
 	
 	public static final GLFWCursorPosCallbackI customMouseCallback = (window, x, y) -> {

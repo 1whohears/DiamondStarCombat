@@ -9,16 +9,22 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 
-public class DopplerOnPlayerSoundInstance extends AbstractTickableSoundInstance {
+public class DopplerSoundInstance extends AbstractTickableSoundInstance {
 	
 	protected final LocalPlayer player;
 	protected final Entity entity;
 	protected final float velocitySound;
+	protected final float volDecreaseRate;
 	protected float initVolume;
 	protected float initPitch;
 	
-	public DopplerOnPlayerSoundInstance(SoundEvent sound, LocalPlayer player, Entity entity, float initVolume, float initPitch, float velSound) {
-		super(sound, SoundSource.PLAYERS);
+	public DopplerSoundInstance(SoundEvent sound, LocalPlayer player, Entity entity, float initVolume, float initPitch, float velSound) {
+		this(sound, player, entity, SoundSource.PLAYERS, initVolume, initPitch, velSound, 0.000025f);
+	}
+	
+	public DopplerSoundInstance(SoundEvent sound, LocalPlayer player, Entity entity, SoundSource soundSource, 
+			float initVolume, float initPitch, float velSound, float volDecreaseRate) {
+		super(sound, soundSource);
 		this.player = player;
 		this.entity = entity;
 		this.looping = true;
@@ -28,6 +34,7 @@ public class DopplerOnPlayerSoundInstance extends AbstractTickableSoundInstance 
 		this.pitch = initPitch;
 		this.initPitch = initPitch;
 		this.velocitySound = velSound;
+		this.volDecreaseRate = volDecreaseRate;
 	}
 
 	@Override
@@ -42,7 +49,7 @@ public class DopplerOnPlayerSoundInstance extends AbstractTickableSoundInstance 
 		this.z = entity.getZ();
 		// volume
 		float d2 = (float)player.distanceToSqr(entity);
-		volume = initVolume - d2 * 0.000025f;
+		volume = initVolume - d2 * volDecreaseRate;
 		// pitch
 		Vec3 v = entity.position().subtract(player.position());
 		float vp = (float)UtilGeometry.vecCompMagDirByAxis(player.getDeltaMovement(), v);

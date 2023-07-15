@@ -1,8 +1,119 @@
 {
+  "presetId": "axcel_truck",
+  "displayName": "preset.dscombat.axcel_truck",
   "aircraft_type": 2,
-  "dyecolor": 4,
+  "item": "dscombat:axcel_truck",
   "health": 80.0,
+  "max_health": 80.0,
+  "mass": 15.0,
+  "max_speed": 0.5,
+  "stealth": 1.0,
   "idleheat": 6.0,
+  "turn_radius": 11.0,
+  "maxroll": 0.0,
+  "maxpitch": 0.0,
+  "maxyaw": 4.0,
+  "rolltorque": 0.0,
+  "pitchtorque": 0.0,
+  "yawtorque": 1.0,
+  "throttledown": 0.05,
+  "throttleup": 0.05,
+  "slots": [
+    {
+      "name": "slotname.dscombat.pilot_seat",
+      "slot_type": 0,
+      "slot_posx": 0.5,
+      "slot_posy": 0.9,
+      "slot_posz": 1.0,
+      "uix": 48,
+      "uiy": 20,
+      "zRot": 0.0,
+      "data": {
+        "itemid": "dscombat:seat"
+      }
+    },
+    {
+      "name": "slotname.dscombat.seat2",
+      "slot_type": 0,
+      "slot_posx": -0.5,
+      "slot_posy": 0.9,
+      "slot_posz": 1.0,
+      "uix": 68,
+      "uiy": 20,
+      "zRot": 0.0,
+      "data": {
+        "itemid": "dscombat:seat"
+      }
+    },
+    {
+      "name": "slotname.dscombat.cargo_bed_1",
+      "slot_type": 6,
+      "slot_posx": 0.0,
+      "slot_posy": 0.95,
+      "slot_posz": -1.5,
+      "uix": 48,
+      "uiy": 40,
+      "zRot": 0.0,
+      "data": {
+        "itemid": "dscombat:sam_launcher"
+      }
+    },
+    {
+      "name": "slotname.dscombat.internal_1",
+      "slot_type": 7,
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "uix": 48,
+      "uiy": 60,
+      "zRot": 0.0,
+      "data": {
+        "itemid": "dscombat:c12_engine"
+      }
+    },
+    {
+      "name": "slotname.dscombat.internal_2",
+      "slot_type": 3,
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "uix": 68,
+      "uiy": 60,
+      "zRot": 0.0,
+      "data": {
+        "itemid": "dscombat:heavy_fuel_tank",
+        "filled": true
+      }
+    },
+    {
+      "name": "slotname.dscombat.internal_3",
+      "slot_type": 4,
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "uix": 88,
+      "uiy": 60,
+      "zRot": 0.0,
+      "data": {
+        "itemid": "dscombat:axcel_truck_radar"
+      },
+      "locked": true
+    },
+    {
+      "name": "slotname.dscombat.internal_4",
+      "slot_type": 4,
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "uix": 108,
+      "uiy": 60,
+      "zRot": 0.0
+    }
+  ],
+  "textures": {
+    "4": "dscombat:textures/entities/axcel_truck/yellow.png"
+  },
+  "dyecolor": 4,
   "ingredients": [
     {
       "item": "minecraft:minecart",
@@ -37,116 +148,6 @@
       "num": 1
     }
   ],
-  "is_craftable": true,
-  "item": "dscombat:axcel_truck",
   "landing_gear": true,
-  "mass": 15.0,
-  "max_health": 80.0,
-  "max_speed": 0.5,
-  "maxpitch": 0.0,
-  "maxroll": 0.0,
-  "maxyaw": 4.0,
-  "pitchtorque": 0.0,
-  "presetId": "axcel_truck",
-  "rolltorque": 0.0,
-  "slots": [
-    {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
-      "name": "slotname.dscombat.pilot_seat",
-      "slot_posx": 0.5,
-      "slot_posy": 0.9,
-      "slot_posz": 1.0,
-      "slot_type": 0,
-      "uix": 48,
-      "uiy": 20,
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
-      "name": "slotname.dscombat.seat2",
-      "slot_posx": -0.5,
-      "slot_posy": 0.9,
-      "slot_posz": 1.0,
-      "slot_type": 0,
-      "uix": 68,
-      "uiy": 20,
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:sam_launcher"
-      },
-      "name": "slotname.dscombat.cargo_bed_1",
-      "slot_posx": 0.0,
-      "slot_posy": 0.95,
-      "slot_posz": -1.5,
-      "slot_type": 6,
-      "uix": 48,
-      "uiy": 40,
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:c12_engine"
-      },
-      "name": "slotname.dscombat.internal_1",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": 7,
-      "uix": 48,
-      "uiy": 60,
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "filled": true,
-        "itemid": "dscombat:heavy_fuel_tank"
-      },
-      "name": "slotname.dscombat.internal_2",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": 3,
-      "uix": 68,
-      "uiy": 60,
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:axcel_truck_radar"
-      },
-      "locked": true,
-      "name": "slotname.dscombat.internal_3",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": 4,
-      "uix": 88,
-      "uiy": 60,
-      "zRot": 0.0
-    },
-    {
-      "name": "slotname.dscombat.internal_4",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": 4,
-      "uix": 108,
-      "uiy": 60,
-      "zRot": 0.0
-    }
-  ],
-  "stealth": 1.0,
-  "textures": {
-    "4": "dscombat:textures/entities/axcel_truck/yellow.png"
-  },
-  "throttledown": 0.05,
-  "throttleup": 0.05,
-  "turn_radius": 11.0,
-  "yawtorque": 1.0
+  "is_craftable": true
 }

@@ -42,8 +42,8 @@ public class ToServerSwitchSeat extends IPacket {
 			ServerLevel level = player.getLevel();
 			if (level.getEntity(id) instanceof EntityAircraft plane) {
 				if (!plane.switchSeat(player)) player.displayClientMessage(
-						new TranslatableComponent("dscombat.no_open_seats"), 
-						true);
+					new TranslatableComponent("error.dscombat.no_open_seats"), 
+					true);
 			}
 		});
 		ctx.get().setPacketHandled(true);

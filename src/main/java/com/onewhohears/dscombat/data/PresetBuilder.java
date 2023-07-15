@@ -17,6 +17,7 @@ public abstract class PresetBuilder<C extends PresetBuilder<C>> {
 		key = new ResourceLocation(namespace, name);
 		data = new JsonObject();
 		data.addProperty("presetId", name);
+		data.addProperty("displayName", "preset."+namespace+"."+name);
 		this.sup = sup;
 	}
 	
@@ -25,6 +26,7 @@ public abstract class PresetBuilder<C extends PresetBuilder<C>> {
 		key = new ResourceLocation(namespace, name);
 		data = copy;
 		data.addProperty("presetId", name);
+		data.addProperty("displayName", "preset."+namespace+"."+name);
 		this.sup = sup;
 	}
 	
@@ -42,6 +44,10 @@ public abstract class PresetBuilder<C extends PresetBuilder<C>> {
 	
 	public JsonObject getData() {
 		return data;
+	}
+	
+	public C setDisplayName(String name) {
+		return setString("displayName", name);
 	}
 	
 	public C setBoolean(String key, boolean value) {

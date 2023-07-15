@@ -92,6 +92,10 @@ public abstract class PartData {
 		return getType() == PartType.FLARE_DISPENSER;
 	}
 	
+	public boolean isRadio() {
+		return false;
+	}
+	
 	public EntityAircraft getParent() {
 		return parent;
 	}

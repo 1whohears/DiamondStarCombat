@@ -1,8 +1,34 @@
 {
+  "presetId": "alexis_plane_unarmed",
+  "displayName": "preset.dscombat.alexis_plane_unarmed",
   "aircraft_type": 0,
-  "dyecolor": 0,
+  "item": "dscombat:alexis_plane",
   "health": 150.0,
+  "max_health": 150.0,
+  "mass": 20.0,
+  "max_speed": 1.45,
+  "stealth": 0.8,
   "idleheat": 4.0,
+  "turn_radius": 10.0,
+  "maxroll": 6.0,
+  "maxpitch": 2.5,
+  "maxyaw": 1.5,
+  "rolltorque": 1.0,
+  "pitchtorque": 2.0,
+  "yawtorque": 4.0,
+  "throttledown": 0.08,
+  "throttleup": 0.04,
+  "wing_area": 12.0,
+  "textures": {
+    "0": "dscombat:textures/entities/alexis_plane/white.png",
+    "14": "dscombat:textures/entities/alexis_plane/red.png",
+    "9": "dscombat:textures/entities/alexis_plane/cyan.png",
+    "15": "dscombat:textures/entities/alexis_plane/black.png",
+    "1": "dscombat:textures/entities/alexis_plane/orange.png",
+    "11": "dscombat:textures/entities/alexis_plane/blue.png",
+    "10": "dscombat:textures/entities/alexis_plane/purple.png"
+  },
+  "dyecolor": 0,
   "ingredients": [
     {
       "item": "dscombat:fuselage",
@@ -37,170 +63,145 @@
       "num": 1
     }
   ],
-  "is_craftable": true,
-  "item": "dscombat:alexis_plane",
-  "landing_gear": true,
-  "mass": 20.0,
-  "max_health": 150.0,
-  "max_speed": 1.45,
-  "maxpitch": 2.5,
-  "maxroll": 6.0,
-  "maxyaw": 1.5,
-  "pitchtorque": 2.0,
-  "presetId": "alexis_plane_unarmed",
-  "rolltorque": 1.0,
   "slots": [
     {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
       "name": "slotname.dscombat.pilot_seat",
+      "slot_type": 0,
       "slot_posx": 0.0,
       "slot_posy": -0.3,
       "slot_posz": 2.0,
-      "slot_type": 0,
       "uix": 48,
       "uiy": 20,
-      "zRot": 0.0
+      "zRot": 0.0,
+      "data": {
+        "itemid": "dscombat:seat"
+      }
     },
     {
       "name": "slotname.dscombat.left_wing_1",
+      "slot_type": 1,
       "slot_posx": 1.8,
       "slot_posy": -0.3,
       "slot_posz": 0.5,
-      "slot_type": 1,
       "uix": 48,
       "uiy": 40,
       "zRot": 0.0
     },
     {
       "name": "slotname.dscombat.left_wing_2",
+      "slot_type": 1,
       "slot_posx": 3.2,
       "slot_posy": -0.3,
       "slot_posz": 0.5,
-      "slot_type": 1,
       "uix": 68,
       "uiy": 40,
       "zRot": 0.0
     },
     {
       "name": "slotname.dscombat.right_wing_1",
+      "slot_type": 1,
       "slot_posx": -1.8,
       "slot_posy": -0.3,
       "slot_posz": 0.5,
-      "slot_type": 1,
       "uix": 48,
       "uiy": 60,
       "zRot": 0.0
     },
     {
       "name": "slotname.dscombat.right_wing_2",
+      "slot_type": 1,
       "slot_posx": -3.2,
       "slot_posy": -0.3,
       "slot_posz": 0.5,
-      "slot_type": 1,
       "uix": 68,
       "uiy": 60,
       "zRot": 0.0
     },
     {
       "name": "slotname.dscombat.frame_1",
+      "slot_type": 2,
       "slot_posx": 0.0,
       "slot_posy": -0.4,
       "slot_posz": 2.5,
-      "slot_type": 2,
       "uix": 48,
       "uiy": 80,
       "zRot": 0.0
     },
     {
-      "data": {
-        "itemid": "dscombat:turbofan_f145"
-      },
       "name": "slotname.dscombat.internal_1",
+      "slot_type": 8,
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 8,
       "uix": 48,
       "uiy": 100,
-      "zRot": 0.0
+      "zRot": 0.0,
+      "data": {
+        "itemid": "dscombat:turbofan_f145"
+      }
     },
     {
-      "data": {
-        "filled": true,
-        "itemid": "dscombat:heavy_fuel_tank"
-      },
       "name": "slotname.dscombat.internal_2",
+      "slot_type": 3,
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 3,
       "uix": 68,
       "uiy": 100,
-      "zRot": 0.0
+      "zRot": 0.0,
+      "data": {
+        "itemid": "dscombat:heavy_fuel_tank",
+        "filled": true
+      }
     },
     {
-      "data": {
-        "filled": true,
-        "itemid": "dscombat:basic_flare_dispenser"
-      },
       "name": "slotname.dscombat.internal_3",
+      "slot_type": 3,
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 3,
       "uix": 88,
       "uiy": 100,
-      "zRot": 0.0
+      "zRot": 0.0,
+      "data": {
+        "itemid": "dscombat:basic_flare_dispenser",
+        "filled": true
+      }
     },
     {
       "name": "slotname.dscombat.internal_4",
+      "slot_type": 4,
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 4,
       "uix": 108,
       "uiy": 100,
       "zRot": 0.0
     },
     {
       "name": "slotname.dscombat.internal_5",
+      "slot_type": 4,
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 4,
       "uix": 128,
       "uiy": 100,
       "zRot": 0.0
     },
     {
-      "data": {
-        "itemid": "dscombat:data_link"
-      },
       "name": "slotname.dscombat.internal_6",
+      "slot_type": 4,
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 4,
       "uix": 148,
       "uiy": 100,
-      "zRot": 0.0
+      "zRot": 0.0,
+      "data": {
+        "itemid": "dscombat:data_link"
+      }
     }
   ],
-  "stealth": 0.8,
-  "textures": {
-    "0": "dscombat:textures/entities/alexis_plane/white.png",
-    "1": "dscombat:textures/entities/alexis_plane/orange.png",
-    "10": "dscombat:textures/entities/alexis_plane/purple.png",
-    "11": "dscombat:textures/entities/alexis_plane/blue.png",
-    "14": "dscombat:textures/entities/alexis_plane/red.png",
-    "15": "dscombat:textures/entities/alexis_plane/black.png",
-    "9": "dscombat:textures/entities/alexis_plane/cyan.png"
-  },
-  "throttledown": 0.08,
-  "throttleup": 0.04,
-  "turn_radius": 10.0,
-  "wing_area": 12.0,
-  "yawtorque": 4.0
+  "landing_gear": true,
+  "is_craftable": true
 }

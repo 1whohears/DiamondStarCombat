@@ -49,6 +49,7 @@ public class Config {
 		public final ForgeConfigSpec.DoubleValue maxFallSpeed;
 		public final ForgeConfigSpec.IntValue maxBlockCheckDepth;
 		public final ForgeConfigSpec.DoubleValue toItemCooldown;
+		public final ForgeConfigSpec.BooleanValue autoDataLink;
 		
 		public Server(ForgeConfigSpec.Builder builder) {
 			accGravity = builder
@@ -73,12 +74,13 @@ public class Config {
 					.defineInRange("maxFallSpeed", 2.5, 0, 10);
 			maxBlockCheckDepth = builder
 					.comment("The number of blocks between 2 entities to check if they can see eachother.")
-					.worldRestart()
 					.defineInRange("maxBlockCheckDepth", 250, 10, 400);
 			toItemCooldown = builder
 					.comment("Seconds before a vehicle can become an item.")
-					.worldRestart()
 					.defineInRange("toItemCooldown", 30.0, 0, 600.0);
+			autoDataLink = builder
+					.comment("All vehicles will behave as if they have datalink even if they don't have the module.")
+					.define("autoDataLink", false);
 		}
 		
 	}

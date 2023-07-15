@@ -6,6 +6,7 @@
   "craftNum": 64,
   "damage": 12.0,
   "destroyTerrain": false,
+  "displayName": "preset.dscombat.20mm",
   "entityTypeKey": "dscombat:bullet",
   "explosionRadius": 0.0,
   "explosive": false,

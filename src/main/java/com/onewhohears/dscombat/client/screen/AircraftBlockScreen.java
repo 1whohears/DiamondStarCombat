@@ -107,7 +107,7 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 		// plane stats
 		if (AircraftPresets.get().getCraftablePresetNum() == 0) return;
 		AircraftPreset ap = AircraftPresets.get().getCraftablePresets()[planeIndex];
-		font.draw(stack, ap.getDisplayName(), titleLabelX+38, titleLabelY+34, 0x000000);
+		font.draw(stack, ap.getDisplayNameComponent(), titleLabelX+38, titleLabelY+34, 0x000000);
 		CompoundTag data = ap.getDataAsNBT();
 		float scale = 0.5f;
 		stack.scale(scale, scale, scale);

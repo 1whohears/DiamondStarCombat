@@ -22,9 +22,7 @@ import com.onewhohears.dscombat.util.math.UtilAngles;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -377,16 +375,12 @@ public abstract class WeaponData extends JsonPreset {
 	
 	public List<ComponentColor> getInfoComponents() {
 		List<ComponentColor> list = new ArrayList<>();
-		list.add(new ComponentColor(getDisplayName(), 0x000000));
+		list.add(new ComponentColor(getDisplayNameComponent(), 0x000000));
 		list.add(new ComponentColor(new TextComponent(getType().toString()), 0x0000aa));
 		list.add(new ComponentColor(new TextComponent("Max Ammo: ").append(getMaxAmmo()+""), 0x040404));
 		list.add(new ComponentColor(new TextComponent("Fire Rate: ").append(getFireRate()+""), 0x040404));
 		list.add(new ComponentColor(new TextComponent("Max Age: ").append(getMaxAge()+""), 0x040404));
 		return list;
-	}
-	
-	public MutableComponent getDisplayName() {
-		return new TranslatableComponent("weapon."+getNameSpace()+"."+getId());
 	}
 	
 	public static class ComponentColor {

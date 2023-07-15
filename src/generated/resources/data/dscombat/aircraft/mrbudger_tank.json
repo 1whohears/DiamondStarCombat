@@ -1,5 +1,6 @@
 {
   "aircraft_type": 2,
+  "displayName": "preset.dscombat.mrbudger_tank",
   "dyecolor": 4,
   "health": 500.0,
   "idleheat": 10.0,

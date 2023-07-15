@@ -8,6 +8,7 @@
   "craftNum": 1,
   "damage": 60.0,
   "destroyTerrain": true,
+  "displayName": "preset.dscombat.rifel1",
   "entityTypeKey": "dscombat:anti_radar_missile_1",
   "explosionRadius": 8.0,
   "explosive": true,

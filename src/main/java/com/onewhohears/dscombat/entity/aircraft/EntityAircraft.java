@@ -1671,7 +1671,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
      * plays all the sounds for the players in the plane
      */
     public void sounds() {
-    	if (level.isClientSide) {
+    	if (level.isClientSide && isOperational()) {
     		if (tickCount % 4 == 0 && radarSystem.isTrackedByMissile()) for (Player p : getRidingPlayers()) {
     			level.playSound(p, new BlockPos(p.position()), 
 	    			ModSounds.MISSILE_WARNING.get(), SoundSource.PLAYERS, 1f, 1f);

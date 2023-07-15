@@ -23,6 +23,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper.UnableToFindMethodException;
 
 @Mod.EventBusSubscriber(modid = DSCombatMod.MODID, bus = Bus.FORGE, value = Dist.CLIENT)
 public class ClientCameraEvents {
@@ -64,8 +65,12 @@ public class ClientCameraEvents {
 		if (vanillaOnMove != null) return vanillaOnMove; 
 		if (tried) return null;
 		tried = true;
-		vanillaOnMove = ObfuscationReflectionHelper.findMethod(MouseHandler.class, "onMove", 
+		try {
+			vanillaOnMove = ObfuscationReflectionHelper.findMethod(MouseHandler.class, "m_91561_", 
 				long.class, double.class, double.class);
+		} catch (UnableToFindMethodException e) {
+			System.out.println("ERROR: VANILLA MOUSE POS CALLBACK IS NOT m_91561_");
+		}
 		return vanillaOnMove;
 	}
 	

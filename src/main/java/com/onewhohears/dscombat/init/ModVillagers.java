@@ -21,26 +21,30 @@ import net.minecraftforge.registries.RegistryObject;
 public class ModVillagers {
 	
 	public static final DeferredRegister<PoiType> POI_TYPES = DeferredRegister.create(ForgeRegistries.POI_TYPES, DSCombatMod.MODID);
-	public static final DeferredRegister<VillagerProfession> VILLAGER_PROS = DeferredRegister.create(ForgeRegistries.VILLAGER_PROFESSIONS, DSCombatMod.MODID);
+	public static final DeferredRegister<VillagerProfession> VILLAGER_PROS = DeferredRegister.create(ForgeRegistries.PROFESSIONS, DSCombatMod.MODID);
 	
 	public static final RegistryObject<PoiType> WEAPON_POI = POI_TYPES.register("weapon_workbench_poi", 
-			() -> new PoiType(getBlockStates(ModBlocks.WEAPONS_BLOCK.get()), 1, 1));
+			() -> new PoiType("weapon_workbench_poi", 
+					getBlockStates(ModBlocks.WEAPONS_BLOCK.get()), 
+					1, 1));
 	
 	public static final RegistryObject<PoiType> AIRCRAFT_POI = POI_TYPES.register("aircraft_workbench_poi", 
-			() -> new PoiType(getBlockStates(ModBlocks.AIRCRAFT_BLOCK.get()), 1, 1));
+			() -> new PoiType("aircraft_workbench_poi", 
+					getBlockStates(ModBlocks.AIRCRAFT_BLOCK.get()), 
+					1, 1));
 	
 	public static final RegistryObject<VillagerProfession> WEAPONS_ENGINEER = VILLAGER_PROS.register("weapons_engineer", 
 			() -> new VillagerProfession("weapons_engineer", 
-					(site) -> { return site.is(WEAPON_POI.getId()); }, 
-					(site) -> { return site.is(WEAPON_POI.getId()); }, 
-					ImmutableSet.of(), ImmutableSet.of(),
+					WEAPON_POI.get(), 
+					ImmutableSet.of(), 
+					ImmutableSet.of(),
 					SoundEvents.VILLAGER_WORK_WEAPONSMITH));
 	
 	public static final RegistryObject<VillagerProfession> AIRCRAFT_ENGINEER = VILLAGER_PROS.register("aircraft_engineer", 
 			() -> new VillagerProfession("aircraft_engineer", 
-					(site) -> { return site.is(AIRCRAFT_POI.getId()); }, 
-					(site) -> { return site.is(AIRCRAFT_POI.getId()); }, 
-					ImmutableSet.of(), ImmutableSet.of(),
+					AIRCRAFT_POI.get(), 
+					ImmutableSet.of(), 
+					ImmutableSet.of(),
 					SoundEvents.VILLAGER_WORK_WEAPONSMITH));
 	
     public static void registerPOIs() {

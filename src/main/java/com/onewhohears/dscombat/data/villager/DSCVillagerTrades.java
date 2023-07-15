@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.data.villager;
 
 import java.util.List;
+import java.util.Random;
 
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.item.ItemPart;
@@ -8,7 +9,6 @@ import com.onewhohears.dscombat.item.ItemPart;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.npc.VillagerTrades.ItemListing;
@@ -88,9 +88,9 @@ public class DSCVillagerTrades {
 			this.villagerXp = villagerXp;
 			this.priceMultiplier = 0.05F;
 		}
-		
+
 		@Override
-		public MerchantOffer getOffer(Entity trader, RandomSource random) {
+		public MerchantOffer getOffer(Entity trader, Random random) {
 			ItemStack costA = new ItemStack(item, num);
 			ItemStack result = new ItemStack(Items.EMERALD, value);
 			return new MerchantOffer(costA, result, 
@@ -123,7 +123,7 @@ public class DSCVillagerTrades {
 			this(item, 1, cost, maxUses, villagerXp);
 		}
 		
-		public int getCost(RandomSource random) {
+		public int getCost(Random random) {
 			return cost;
 		}
 		
@@ -133,7 +133,7 @@ public class DSCVillagerTrades {
 			return stack;
 		}
 
-		public MerchantOffer getOffer(Entity trader, RandomSource random) {
+		public MerchantOffer getOffer(Entity trader, Random random) {
 			ItemStack costA, costB;
 			int emeralds = getCost(random);
 			if (emeralds > 64) {
@@ -178,7 +178,7 @@ public class DSCVillagerTrades {
 		}
 		
 		@Override
-		public int getCost(RandomSource random) {
+		public int getCost(Random random) {
 			return Mth.nextInt(random, cost, maxCost);
 		}
 		

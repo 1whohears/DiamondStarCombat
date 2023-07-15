@@ -1,16 +1,23 @@
 {
-  "type": 0,
-  "canShootOnGround": true,
-  "causesFire": false,
-  "compatibleWeaponPart": "dscombat:xm12",
-  "craftNum": 4,
-  "damage": 20.0,
-  "destroyTerrain": true,
+  "presetId": "50mmhe",
   "displayName": "preset.dscombat.50mmhe",
-  "entityTypeKey": "dscombat:bullet",
+  "fireRate": 4,
+  "innacuracy": 0.2,
+  "canShootOnGround": true,
+  "damage": 20.0,
+  "speed": 10.0,
   "explosionRadius": 3.0,
   "explosive": true,
-  "fireRate": 4,
+  "destroyTerrain": true,
+  "causesFire": false,
+  "maxAmmo": 250,
+  "maxAge": 40,
+  "itemKey": "dscombat:50mmhe",
+  "entityTypeKey": "dscombat:bullet",
+  "rackTypeKey": "dscombat:xm12",
+  "shootSoundKey": "dscombat:bullet_shoot_1",
+  "compatibleWeaponPart": "dscombat:xm12",
+  "craftNum": 4,
   "ingredients": [
     {
       "item": "minecraft:copper_ingot",
@@ -21,12 +28,5 @@
       "num": 8
     }
   ],
-  "innacuracy": 0.2,
-  "itemKey": "dscombat:50mmhe",
-  "maxAge": 40,
-  "maxAmmo": 250,
-  "presetId": "50mmhe",
-  "rackTypeKey": "dscombat:xm12",
-  "shootSoundKey": "dscombat:bullet_shoot_1",
-  "speed": 10.0
+  "type": 0
 }

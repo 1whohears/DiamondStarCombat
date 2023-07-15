@@ -1,9 +1,108 @@
 {
-  "aircraft_type": 2,
+  "presetId": "orange_tesla",
   "displayName": "preset.dscombat.orange_tesla",
-  "dyecolor": 1,
+  "aircraft_type": 2,
+  "item": "dscombat:orange_tesla",
   "health": 40.0,
+  "max_health": 40.0,
+  "mass": 8.0,
+  "max_speed": 0.65,
+  "stealth": 1.0,
   "idleheat": 4.0,
+  "turn_radius": 7.0,
+  "maxroll": 0.0,
+  "maxpitch": 0.0,
+  "maxyaw": 4.0,
+  "rolltorque": 0.0,
+  "pitchtorque": 0.0,
+  "yawtorque": 1.0,
+  "throttledown": 0.07,
+  "throttleup": 0.07,
+  "slots": [
+    {
+      "name": "slotname.dscombat.pilot_seat",
+      "slot_type": 0,
+      "slot_posx": 0.5,
+      "slot_posy": 0.45,
+      "slot_posz": 0.3,
+      "uix": 48,
+      "uiy": 20,
+      "zRot": 0.0,
+      "data": {
+        "itemid": "dscombat:seat"
+      }
+    },
+    {
+      "name": "slotname.dscombat.seat1",
+      "slot_type": 0,
+      "slot_posx": -0.5,
+      "slot_posy": 0.45,
+      "slot_posz": 0.3,
+      "uix": 68,
+      "uiy": 20,
+      "zRot": 0.0,
+      "data": {
+        "itemid": "dscombat:seat"
+      }
+    },
+    {
+      "name": "slotname.dscombat.seat2",
+      "slot_type": 0,
+      "slot_posx": 0.5,
+      "slot_posy": 0.45,
+      "slot_posz": -0.85,
+      "uix": 88,
+      "uiy": 20,
+      "zRot": 0.0,
+      "data": {
+        "itemid": "dscombat:seat"
+      }
+    },
+    {
+      "name": "slotname.dscombat.seat3",
+      "slot_type": 0,
+      "slot_posx": -0.5,
+      "slot_posy": 0.45,
+      "slot_posz": -0.85,
+      "uix": 108,
+      "uiy": 20,
+      "zRot": 0.0,
+      "data": {
+        "itemid": "dscombat:seat"
+      }
+    },
+    {
+      "name": "slotname.dscombat.internal_1",
+      "slot_type": 7,
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "uix": 48,
+      "uiy": 100,
+      "zRot": 0.0,
+      "data": {
+        "itemid": "dscombat:c6_engine"
+      }
+    },
+    {
+      "name": "slotname.dscombat.internal_2",
+      "slot_type": 3,
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "uix": 68,
+      "uiy": 100,
+      "zRot": 0.0,
+      "data": {
+        "itemid": "dscombat:light_fuel_tank",
+        "filled": true
+      }
+    }
+  ],
+  "textures": {
+    "1": "dscombat:textures/entities/orange_tesla/orange.png"
+  },
+  "dyecolor": 1,
   "ingredients": [
     {
       "item": "minecraft:minecart",
@@ -22,105 +121,6 @@
       "num": 1
     }
   ],
-  "is_craftable": true,
-  "item": "dscombat:orange_tesla",
   "landing_gear": true,
-  "mass": 8.0,
-  "max_health": 40.0,
-  "max_speed": 0.65,
-  "maxpitch": 0.0,
-  "maxroll": 0.0,
-  "maxyaw": 4.0,
-  "pitchtorque": 0.0,
-  "presetId": "orange_tesla",
-  "rolltorque": 0.0,
-  "slots": [
-    {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
-      "name": "slotname.dscombat.pilot_seat",
-      "slot_posx": 0.5,
-      "slot_posy": 0.45,
-      "slot_posz": 0.3,
-      "slot_type": 0,
-      "uix": 48,
-      "uiy": 20,
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
-      "name": "slotname.dscombat.seat1",
-      "slot_posx": -0.5,
-      "slot_posy": 0.45,
-      "slot_posz": 0.3,
-      "slot_type": 0,
-      "uix": 68,
-      "uiy": 20,
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
-      "name": "slotname.dscombat.seat2",
-      "slot_posx": 0.5,
-      "slot_posy": 0.45,
-      "slot_posz": -0.85,
-      "slot_type": 0,
-      "uix": 88,
-      "uiy": 20,
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
-      "name": "slotname.dscombat.seat3",
-      "slot_posx": -0.5,
-      "slot_posy": 0.45,
-      "slot_posz": -0.85,
-      "slot_type": 0,
-      "uix": 108,
-      "uiy": 20,
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:c6_engine"
-      },
-      "name": "slotname.dscombat.internal_1",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": 7,
-      "uix": 48,
-      "uiy": 100,
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "filled": true,
-        "itemid": "dscombat:light_fuel_tank"
-      },
-      "name": "slotname.dscombat.internal_2",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": 3,
-      "uix": 68,
-      "uiy": 100,
-      "zRot": 0.0
-    }
-  ],
-  "stealth": 1.0,
-  "textures": {
-    "1": "dscombat:textures/entities/orange_tesla/orange.png"
-  },
-  "throttledown": 0.07,
-  "throttleup": 0.07,
-  "turn_radius": 7.0,
-  "yawtorque": 1.0
+  "is_craftable": true
 }

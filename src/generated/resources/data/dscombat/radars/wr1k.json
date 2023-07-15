@@ -1,15 +1,15 @@
 {
-  "displayName": "preset.dscombat.wr1k",
-  "fov": -1.0,
   "presetId": "wr1k",
+  "displayName": "preset.dscombat.wr1k",
   "range": 1000.0,
-  "scanAir": false,
-  "scanAircraft": true,
-  "scanGround": false,
-  "scanMobs": false,
-  "scanPlayers": true,
-  "scanRate": 30,
-  "sensitivity": 0.5,
   "throGroundRange": 0.0,
-  "throWaterRange": 1000.0
+  "throWaterRange": 1000.0,
+  "sensitivity": 0.5,
+  "fov": -1.0,
+  "scanRate": 30,
+  "scanAircraft": true,
+  "scanPlayers": true,
+  "scanMobs": false,
+  "scanGround": false,
+  "scanAir": false
 }

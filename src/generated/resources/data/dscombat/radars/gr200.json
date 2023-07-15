@@ -1,15 +1,15 @@
 {
-  "displayName": "preset.dscombat.gr200",
-  "fov": -1.0,
   "presetId": "gr200",
+  "displayName": "preset.dscombat.gr200",
   "range": 200.0,
-  "scanAir": false,
-  "scanAircraft": true,
-  "scanGround": true,
-  "scanMobs": true,
-  "scanPlayers": true,
-  "scanRate": 40,
-  "sensitivity": 0.8,
   "throGroundRange": 0.0,
-  "throWaterRange": 0.0
+  "throWaterRange": 0.0,
+  "sensitivity": 0.8,
+  "fov": -1.0,
+  "scanRate": 40,
+  "scanAircraft": true,
+  "scanPlayers": true,
+  "scanMobs": true,
+  "scanGround": true,
+  "scanAir": false
 }

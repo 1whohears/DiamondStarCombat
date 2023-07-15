@@ -12,7 +12,8 @@ public class BuffData extends PartData {
 	
 	public static enum BuffType {
 		DATA_LINK,
-		NIGHT_VISION_HUD
+		NIGHT_VISION_HUD,
+		RADIO
 	}
 	
 	private final BuffType type;
@@ -65,6 +66,9 @@ public class BuffData extends PartData {
 		case NIGHT_VISION_HUD:
 			getParent().nightVisionHud = true;
 			break;
+		case RADIO:
+			getParent().hasRadio = true;
+			break;
 		}
 	}
 	
@@ -78,7 +82,15 @@ public class BuffData extends PartData {
 		case NIGHT_VISION_HUD:
 			getParent().nightVisionHud = false;
 			break;
+		case RADIO:
+			getParent().hasRadio = false;
+			break;
 		}
+	}
+	
+	@Override
+	public boolean isRadio() {
+		return type == BuffType.RADIO;
 	}
 
 }

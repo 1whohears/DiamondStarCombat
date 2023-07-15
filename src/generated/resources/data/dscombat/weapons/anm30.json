@@ -6,6 +6,7 @@
   "craftNum": 4,
   "damage": 20.0,
   "destroyTerrain": true,
+  "displayName": "preset.dscombat.anm30",
   "entityTypeKey": "dscombat:bomb",
   "explosionRadius": 3.0,
   "explosive": true,

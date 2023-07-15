@@ -130,7 +130,7 @@ public class ItemAircraft extends Item {
 			String name = getPresetName(stack);
 			AircraftPreset ap = AircraftPresets.get().getPreset(name);
 			if (ap == null) return Component.translatable(getDescriptionId()).append(" unknown preset!");
-			return ap.getDisplayName().setStyle(Style.EMPTY.withColor(0x55FFFF));
+			return ap.getDisplayNameComponent().setStyle(Style.EMPTY.withColor(0x55FFFF));
 		}
 		String owner = tag.getCompound("EntityTag").getString("owner");
 		if (owner.isEmpty()) owner = "Someone";

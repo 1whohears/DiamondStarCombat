@@ -15,6 +15,7 @@ import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModRecipeSerializers;
 import com.onewhohears.dscombat.init.ModSounds;
+import com.onewhohears.dscombat.init.ModVillagers;
 
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.data.DataGenerator;
@@ -45,6 +46,7 @@ public class DSCombatMod {
         ModSounds.register(eventBus);
         ModBlockEntities.register(eventBus);
     	DataSerializers.register(eventBus);
+    	ModVillagers.register(eventBus);
     	
     	eventBus.addListener(this::commonSetup);
     	eventBus.addListener(this::clientSetup);
@@ -53,6 +55,9 @@ public class DSCombatMod {
     
     private void commonSetup(FMLCommonSetupEvent event) {
 		PacketHandler.register();
+		event.enqueueWork(() -> {
+			ModVillagers.registerPOIs();
+		});
 	}
     
     private void clientSetup(FMLClientSetupEvent event) {

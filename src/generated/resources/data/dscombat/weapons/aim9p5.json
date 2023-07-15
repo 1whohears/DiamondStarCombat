@@ -8,6 +8,7 @@
   "craftNum": 1,
   "damage": 40.0,
   "destroyTerrain": true,
+  "displayName": "preset.dscombat.aim9p5",
   "entityTypeKey": "dscombat:ir_missile_1",
   "explosionRadius": 3.0,
   "explosive": true,

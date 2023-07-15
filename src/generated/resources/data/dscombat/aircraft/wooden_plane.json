@@ -1,5 +1,6 @@
 {
   "aircraft_type": 0,
+  "displayName": "preset.dscombat.wooden_plane",
   "dyecolor": 12,
   "health": 40.0,
   "idleheat": 1.0,

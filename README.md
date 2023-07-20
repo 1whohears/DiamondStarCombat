@@ -14,3 +14,7 @@ https://discord.gg/dWgQTRxCJm
 Check out my youtube where I'll post guides and other videos showing the mod! 
 
 https://youtu.be/P4Flz0XOtTk
+
+## Special Thanks
+
+**pretzelpenguin777**: Improved Noah Chopper Model

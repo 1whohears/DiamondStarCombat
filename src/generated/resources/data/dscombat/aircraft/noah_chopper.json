@@ -104,7 +104,7 @@
     },
     {
       "data": {
-        "itemid": "dscombat:minigun_turret"
+        "itemid": "dscombat:seat"
       },
       "name": "slotname.dscombat.seat2",
       "slot_posx": -0.4,
@@ -117,7 +117,7 @@
     },
     {
       "data": {
-        "itemid": "dscombat:seat"
+        "itemid": "dscombat:minigun_turret"
       },
       "name": "slotname.dscombat.seat3",
       "slot_posx": 0.4,
@@ -400,7 +400,7 @@
   "stealth": 1.2,
   "textures": {
     "11": "dscombat:textures/entities/noah_chopper/blue.png",
-    "12": "dscombat:textures/entities/noah_chopper/brown.png",
+    "12": "dscombat:textures/entities/noah_chopper/noah_chopper_test.png",
     "14": "dscombat:textures/entities/noah_chopper/red.png",
     "15": "dscombat:textures/entities/noah_chopper/black.png"
   },

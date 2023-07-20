@@ -286,7 +286,7 @@ public class DefaultAircraftPresets {
 			.addEmptySlot("slotname.dscombat.internal_6", SlotType.ADVANCED_INTERNAL, 148, 100)
 			.addEmptySlot("slotname.dscombat.internal_7", SlotType.ADVANCED_INTERNAL, 168, 100)
 			.addEmptySlot("slotname.dscombat.internal_8", SlotType.ADVANCED_INTERNAL, 188, 100)
-			.setDefaultTexture(DyeColor.BROWN, "dscombat:textures/entities/noah_chopper/brown.png")
+			.setDefaultTexture(DyeColor.BROWN, "dscombat:textures/entities/noah_chopper/noah_chopper_test.png")
 			.setAltTexture(DyeColor.BLUE, "dscombat:textures/entities/noah_chopper/blue.png")
 			.setAltTexture(DyeColor.RED, "dscombat:textures/entities/noah_chopper/red.png")
 			.setAltTexture(DyeColor.BLACK, "dscombat:textures/entities/noah_chopper/black.png")
@@ -312,7 +312,7 @@ public class DefaultAircraftPresets {
 	public static final AircraftPreset DEFAULT_NOAH_CHOPPER = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "noah_chopper", UNARMED_NOAH_CHOPPER)
 			.setCraftable()
-			.setSlotItem("slotname.dscombat.seat2", ModItems.MINIGUN_TURRET.getId())
+			.setSlotItem("slotname.dscombat.seat3", ModItems.MINIGUN_TURRET.getId())
 			.setSlotItem("slotname.dscombat.left_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "aim120b", true)
 			.setSlotItem("slotname.dscombat.left_wing_2", ModItems.HEAVY_MISSILE_RACK.getId(), "agm65g", true)
 			.setSlotItem("slotname.dscombat.left_wing_3", ModItems.LIGHT_MISSILE_RACK.getId(), "agm114k", true)

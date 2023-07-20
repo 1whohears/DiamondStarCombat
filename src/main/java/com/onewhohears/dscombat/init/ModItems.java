@@ -59,6 +59,11 @@ public class ModItems {
 		}
 	};
 	
+	// DISKS
+	
+	// IDEA 8.1 Jupiter Missiles and Anadyr from blowback ost
+	// IDEA 8.1 disk 911?
+	
 	// PARTS
 	public static final RegistryObject<Item> TI83 = ITEMS.register("ti83", 
 			() -> new Item(ItemPart.partProps(64)));

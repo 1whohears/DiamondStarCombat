@@ -10,6 +10,8 @@ public class Config {
 		
 		public final ForgeConfigSpec.DoubleValue mouseModeMaxRadius;
 		public final ForgeConfigSpec.DoubleValue mouseStickDeadzoneRadius;
+		// TODO 0.5 invert vertical mouse mode config
+		// TODO 0.5 horizontal mouse mode controls roll config
 		public final ForgeConfigSpec.BooleanValue cameraTurnRelativeToVehicle;
 		public final ForgeConfigSpec.BooleanValue customDismount;
 		public final ForgeConfigSpec.BooleanValue debugMode;

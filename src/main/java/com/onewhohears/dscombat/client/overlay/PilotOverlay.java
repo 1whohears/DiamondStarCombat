@@ -41,8 +41,8 @@ public class PilotOverlay {
 	private static final int stickKnobSize = (int)(stickBaseSize/6);
 	private static final int padding = 1;
 	private static final int radarSize = 120, radarOffset = 8;
-	private static final int fuelGuageHeight = 60, fuelGuageWidth = 90;
-	private static final int fuelArrowHeight = 10, fuelArrowWidth = 36;
+	private static final int fuelGuageHeight = 40, fuelGuageWidth = 60;
+	private static final int fuelArrowHeight = 7, fuelArrowWidth = 24;
 	private static final ResourceLocation STICK_BASE_CIRCLE = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/stickcanvascircle.png");
 	private static final ResourceLocation STICK_BASE_SQUARE = new ResourceLocation(DSCombatMod.MODID,
@@ -460,22 +460,24 @@ public class PilotOverlay {
 	
 	private static void drawAircraftFuel(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
 		// TODO 0.2 redo plane fuel
+		int x = width-stickBaseSize-stickKnobSize-3*padding-fuelGuageWidth;
+		int y = height-fuelGuageHeight;
 		RenderSystem.setShaderTexture(0, FUEL_GUAGE);
         GuiComponent.blit(poseStack, 
-        	width-stickBaseSize-stickKnobSize-3*padding-fuelGuageWidth, 
-        	height-fuelGuageHeight, 
-        	0, 0, fuelGuageWidth, fuelGuageHeight, 
+        	x, y, 
+        	0, 0, 
+        	fuelGuageWidth, fuelGuageHeight, 
         	fuelGuageWidth, fuelGuageHeight);
         RenderSystem.setShaderTexture(0, FUEL_GUAGE_ARROW);
         float max = plane.getMaxFuel(), r = 0;
         if (max != 0) r = plane.getCurrentFuel() / max;
         poseStack.pushPose();
-        poseStack.translate(width-stickBaseSize-stickKnobSize-3*padding-fuelGuageWidth/2, 
-        	height-18, 0);
+        poseStack.translate(x+fuelGuageWidth/2, y+24, 0);
         poseStack.mulPose(Vector3f.ZP.rotationDegrees(160f*r+10f));
         GuiComponent.blit(poseStack, 
         	-fuelArrowWidth+5, -fuelArrowHeight/2, 
-        	0, 0, fuelArrowWidth, fuelArrowHeight, 
+        	0, 0, 
+        	fuelArrowWidth, fuelArrowHeight, 
         	fuelArrowWidth, fuelArrowHeight);
         poseStack.popPose();
 	}

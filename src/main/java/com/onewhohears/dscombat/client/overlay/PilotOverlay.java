@@ -414,31 +414,46 @@ public class PilotOverlay {
 	}
 	
 	private static void drawAircraftControls(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
-        // TODO 0.2 redo overlay control stick
+		int x = width-stickBaseSize-padding;
+		int y = height-padding;
+		// rudder (yaw input)
+		if (plane.isAircraft()) {
+			y -= pedalHeight;
+			if (plane.inputs.yaw < 0) RenderSystem.setShaderTexture(0, RUDDER_PEDAL_PUSHED);
+			else RenderSystem.setShaderTexture(0, RUDDER_PEDAL);
+			GuiComponent.blit(poseStack, 
+        		x, y, 
+        		0, 0, 
+        		pedalWidth, pedalHeight, 
+        		pedalWidth, pedalHeight);
+			if (plane.inputs.yaw > 0) RenderSystem.setShaderTexture(0, RUDDER_PEDAL_PUSHED);
+			else RenderSystem.setShaderTexture(0, RUDDER_PEDAL);
+			GuiComponent.blit(poseStack, 
+        		x+stickBaseSize-pedalWidth, y, 
+        		0, 0, 
+        		pedalWidth, pedalHeight, 
+        		pedalWidth, pedalHeight);
+		}
 		// stick (pitch roll input)
         RenderSystem.setShaderTexture(0, STICK_BASE);
+        y -= stickBaseSize;
         GuiComponent.blit(poseStack, 
-        		width-stickBaseSize-padding, height-stickBaseSize-padding, 
+        		x, y, 
         		0, 0, 
         		stickBaseSize, stickBaseSize, 
         		stickBaseSize, stickBaseSize);
-        int b = stickBaseSize/2, n = stickKnobSize/2;
         RenderSystem.setShaderTexture(0, STICK_KNOB);
+        int b = stickBaseSize/2, n = stickKnobSize/2;
+        // FIXME 4 fix diagonals on overlay stick
+        float xinput;
+        if (plane.isAircraft()) xinput = plane.inputs.roll;
+        else xinput = plane.inputs.yaw;
         GuiComponent.blit(poseStack, 
-        		width-b-n-padding+(int)(plane.inputs.yaw*b), 
-        		height-b-n-padding-(int)(plane.inputs.pitch*b), 
+        		x+b-n+(int)(xinput*b), 
+        		y+b-n+(int)(plane.inputs.pitch*b), 
         		0, 0, 
         		stickKnobSize, stickKnobSize, 
         		stickKnobSize, stickKnobSize);
-		// rudder (yaw input)
-        RenderSystem.setShaderTexture(0, RUDDER_PEDAL_PUSHED);
-        RenderSystem.setShaderTexture(0, RUDDER_PEDAL);
-        GuiComponent.blit(poseStack, 
-        		width-stickBaseSize-padding, 
-        		height-stickBaseSize-padding-stickKnobSize-padding, 
-        		0, 0, 
-        		stickBaseSize, stickKnobSize, 
-        		stickBaseSize, stickBaseSize);
 	}
 	
 	private static void drawAircraftThrottle(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {

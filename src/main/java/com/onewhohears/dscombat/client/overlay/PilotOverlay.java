@@ -37,22 +37,29 @@ import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 
 public class PilotOverlay {
 	
+	private static final int padding = 1;
+	
 	private static final int stickBaseSize = 60;
 	private static final int stickKnobSize = (int)(stickBaseSize/6);
-	private static final int padding = 1;
-	private static final int radarSize = 120, radarOffset = 8;
+	private static final ResourceLocation STICK_BASE = new ResourceLocation(DSCombatMod.MODID,
+            "textures/ui/stick_base.png");
+	private static final ResourceLocation STICK_KNOB = new ResourceLocation(DSCombatMod.MODID,
+            "textures/ui/stick_knob.png");
+	
+	private static int pedalHeight = 25, pedalWidth = 20;
+	private static final ResourceLocation RUDDER_PEDAL = new ResourceLocation(DSCombatMod.MODID,
+            "textures/ui/rudder_pedal.png");
+	private static final ResourceLocation RUDDER_PEDAL_PUSHED = new ResourceLocation(DSCombatMod.MODID,
+            "textures/ui/rudder_pedal_pushed.png");
+	
 	private static final int fuelGuageHeight = 40, fuelGuageWidth = 60;
 	private static final int fuelArrowHeight = 7, fuelArrowWidth = 24;
-	private static final ResourceLocation STICK_BASE_CIRCLE = new ResourceLocation(DSCombatMod.MODID,
-            "textures/ui/stickcanvascircle.png");
-	private static final ResourceLocation STICK_BASE_SQUARE = new ResourceLocation(DSCombatMod.MODID,
-            "textures/ui/stickcanvassquare.png");
-	private static final ResourceLocation STICK_KNOB = new ResourceLocation(DSCombatMod.MODID,
-            "textures/ui/stickknob.png");
 	private static final ResourceLocation FUEL_GUAGE = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/fuel_guage.png");
 	private static final ResourceLocation FUEL_GUAGE_ARROW = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/fuel_guage_arrow.png");
+	
+	private static final int radarSize = 120, radarOffset = 8;
 	private static final ResourceLocation RADAR = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/radar.png");
 	
@@ -408,32 +415,30 @@ public class PilotOverlay {
 	
 	private static void drawAircraftControls(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
         // TODO 0.2 redo overlay control stick
-		// pitch yaw input
-        RenderSystem.setShaderTexture(0, STICK_BASE_CIRCLE);
+		// stick (pitch roll input)
+        RenderSystem.setShaderTexture(0, STICK_BASE);
         GuiComponent.blit(poseStack, 
         		width-stickBaseSize-padding, height-stickBaseSize-padding, 
-        		0, 0, stickBaseSize, stickBaseSize, 
+        		0, 0, 
+        		stickBaseSize, stickBaseSize, 
         		stickBaseSize, stickBaseSize);
         int b = stickBaseSize/2, n = stickKnobSize/2;
         RenderSystem.setShaderTexture(0, STICK_KNOB);
         GuiComponent.blit(poseStack, 
         		width-b-n-padding+(int)(plane.inputs.yaw*b), 
         		height-b-n-padding-(int)(plane.inputs.pitch*b), 
-        		0, 0, stickKnobSize, stickKnobSize, 
+        		0, 0, 
+        		stickKnobSize, stickKnobSize, 
         		stickKnobSize, stickKnobSize);
-		// roll input
-        RenderSystem.setShaderTexture(0, STICK_BASE_SQUARE);
+		// rudder (yaw input)
+        RenderSystem.setShaderTexture(0, RUDDER_PEDAL_PUSHED);
+        RenderSystem.setShaderTexture(0, RUDDER_PEDAL);
         GuiComponent.blit(poseStack, 
         		width-stickBaseSize-padding, 
         		height-stickBaseSize-padding-stickKnobSize-padding, 
-        		0, 0, stickBaseSize, stickKnobSize, 
+        		0, 0, 
+        		stickBaseSize, stickKnobSize, 
         		stickBaseSize, stickBaseSize);
-        RenderSystem.setShaderTexture(0, STICK_KNOB);
-        GuiComponent.blit(poseStack, 
-        		width-b-n-padding+(int)(plane.inputs.roll*b), 
-        		height-stickKnobSize-padding-padding-stickBaseSize, 
-        		0, 0, stickKnobSize, stickKnobSize, 
-        		stickKnobSize, stickKnobSize);
 	}
 	
 	private static void drawAircraftThrottle(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {

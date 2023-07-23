@@ -82,7 +82,7 @@ public class PilotOverlay {
 	private static final ResourceLocation TURN_COORD_NEEDLE = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/turn_coord_needle.png");
 	
-	private static final int throttleRailLength = 60, throttleWidth = 10, throttleKnobHeight = 10;
+	private static final int throttleRailLength = 70, throttleWidth = 10, throttleKnobHeight = 10;
 	private static final ResourceLocation THROTTLE_RAIL = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/throttle_rail.png");
 	private static final ResourceLocation THROTTLE_HANDLE = new ResourceLocation(DSCombatMod.MODID,
@@ -126,26 +126,22 @@ public class PilotOverlay {
 	}
 	
 	private static void drawAircraftStats(Minecraft m, Player player, EntityAircraft plane, ForgeIngameGui gui, PoseStack poseStack, float partialTick, int width, int height) {
-		// TODO 0.2 redo plane speed 
+		int x = width-stickBaseSize-padding;
+		int y = height-stickBaseSize-padding*3-fuelGuageHeight-10;
+		if (plane.isAircraft()) y -= pedalHeight;
 		GuiComponent.drawString(poseStack, m.font, 
 				"m/s: "+String.format("%3.1f", plane.getDeltaMovement().length()*20), 
-				width-stickBaseSize-padding, 
-	     		height-stickBaseSize-padding-stickKnobSize-padding-10, 
+				x, y, 
 				0x00ff00);
-		// TODO 0.2 redo distance from ground
 		GuiComponent.drawString(poseStack, m.font, 
 				"A: "+UtilEntity.getDistFromSeaLevel(plane), 
-				width-stickBaseSize-padding, 
-	     		height-stickBaseSize-padding-stickKnobSize-padding-20, 
+				x, y-10, 
 				0x00ff00);
-		// TODO 0.2 redo plane health
 		float h = plane.getHealth(), max = plane.getMaxHealth();
 		GuiComponent.drawString(poseStack, m.font, 
 					"H: "+(int)h+"/"+(int)max, 
-					width-stickBaseSize-padding, 
-		     		height-stickBaseSize-padding-stickKnobSize-padding-30, 
+					x, y-20, 
 					getHealthColor(h, max));
-		// TODO 0.2 redo plane position
 		GuiComponent.drawCenteredString(poseStack, m.font, 
 				"["+plane.getBlockX()+","+plane.getBlockY()+","+plane.getBlockZ()+"]", 
 				width/2, 0, 0x00ff00);
@@ -444,13 +440,17 @@ public class PilotOverlay {
         		stickBaseSize, stickBaseSize);
         RenderSystem.setShaderTexture(0, STICK_KNOB);
         int b = stickBaseSize/2, n = stickKnobSize/2;
-        // FIXME 4 fix diagonals on overlay stick
-        float xinput;
+        float xinput, yinput = plane.inputs.pitch;
         if (plane.isAircraft()) xinput = plane.inputs.roll;
         else xinput = plane.inputs.yaw;
+        float l = Mth.sqrt(xinput*xinput + yinput*yinput);
+        if (l > 1) {
+        	xinput = xinput / l;
+        	yinput = yinput / l;
+        }
         GuiComponent.blit(poseStack, 
         		x+b-n+(int)(xinput*b), 
-        		y+b-n+(int)(plane.inputs.pitch*b), 
+        		y+b-n+(int)(yinput*b), 
         		0, 0, 
         		stickKnobSize, stickKnobSize, 
         		stickKnobSize, stickKnobSize);
@@ -479,9 +479,9 @@ public class PilotOverlay {
 	}
 	
 	private static void drawAircraftFuel(Minecraft m, Player player, EntityAircraft plane, ForgeIngameGui gui, PoseStack poseStack, float partialTick, int width, int height) {
-		// TODO 0.2 redo plane fuel
-		int x = width-stickBaseSize-stickKnobSize-3*padding-fuelGuageWidth;
-		int y = height-fuelGuageHeight;
+		int x = width-padding-fuelGuageWidth;
+		int y = height-stickBaseSize-padding*2-fuelGuageHeight;
+		if (plane.isAircraft()) y -= pedalHeight;
 		RenderSystem.setShaderTexture(0, FUEL_GUAGE);
         GuiComponent.blit(poseStack, 
         	x, y, 
@@ -512,12 +512,13 @@ public class PilotOverlay {
 		GuiComponent.drawString(poseStack, m.font, 
      		String.format("AOA: %3.1f", plane.getAOA()), 
      		width-stickBaseSize-padding, 
-     		height-stickBaseSize-padding-stickKnobSize-padding-40, 
+     		height-stickBaseSize-pedalHeight-fuelGuageHeight-padding*3-40, 
      		0x00ff00);
 	}
 	
 	private static void drawPlaneAttitude(Minecraft m, Player player, EntityPlane plane, ForgeIngameGui gui, PoseStack poseStack, float partialTick, int width, int height) {
-		int attX = width-attitudeSize-padding, attY = padding;
+		int attX = width-attitudeSize-padding*3-stickBaseSize-throttleWidth;
+		int attY = height-padding*2-turnCooSize-attitudeSize;
 		RenderSystem.setShaderTexture(0, ATTITUDE_BASE);
 		GuiComponent.blit(poseStack, 
 				attX, attY, 
@@ -551,7 +552,8 @@ public class PilotOverlay {
 	}
 	
 	private static void drawPlaneTurnCoordinator(Minecraft m, Player player, EntityPlane plane, ForgeIngameGui gui, PoseStack poseStack, float partialTick, int width, int height) {
-		int tcX = width-turnCooSize-padding, tcY = padding*2+attitudeSize;
+		int tcX = width-turnCooSize-padding*3-stickBaseSize-throttleWidth;
+		int tcY = height-padding-turnCooSize;
 		RenderSystem.setShaderTexture(0, TURN_COORD_BASE);
 		GuiComponent.blit(poseStack, 
 				tcX, tcY, 

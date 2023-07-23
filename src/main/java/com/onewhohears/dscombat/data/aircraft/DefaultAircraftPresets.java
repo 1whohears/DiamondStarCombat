@@ -134,7 +134,7 @@ public class DefaultAircraftPresets {
 			.setTurnTorques(1.5f, 2.5f, 4.5f)
 			.setThrottleRate(0.04f, 0.08f)
 			.setPlaneWingArea(18f)
-			.setDefaultTexture(DyeColor.GREEN, "dscombat:textures/entities/javi_plane/green.png")
+			.setDefaultTexture(DyeColor.GREEN, "dscombat:textures/entities/javi_plane/test.png")
 			.setAltTexture(DyeColor.BLUE, "dscombat:textures/entities/javi_plane/blue.png")
 			.setAltTexture(DyeColor.RED, "dscombat:textures/entities/javi_plane/red.png")
 			.setAltTexture(DyeColor.BLACK, "dscombat:textures/entities/javi_plane/black.png")

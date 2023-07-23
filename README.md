@@ -17,4 +17,4 @@ https://youtu.be/P4Flz0XOtTk
 
 ## Special Thanks
 
-**pretzelpenguin777**: Improved Noah Chopper Model
+__**pretzelpenguin777**__: Improved **Noah Chopper** and **Javi Plane** Model

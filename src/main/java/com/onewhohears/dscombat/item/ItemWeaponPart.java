@@ -51,6 +51,7 @@ public class ItemWeaponPart extends ItemPart {
 		CompoundTag tag = stack.getOrCreateTag();
 		if (tag.getString("weaponId").isEmpty()) return;
 		tips.add(new TextComponent("Ammo: "+tag.getInt("ammo")+"/"+tag.getInt("max")).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		// TODO 1.4 show weapon stats in weapon part tooltip
 	}
 	
 	@Override

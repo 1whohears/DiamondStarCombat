@@ -115,7 +115,8 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 		int startX = (int)((float)(titleLabelX+38) * invScale);
 		int startY = (int)((float)(titleLabelY+43) * invScale);
 		int initY = startY;
-		// FIXME 2 fix aircraft preset display stats
+		// FIXME 6 fix aircraft preset display stats
+		font.draw(stack, new TextComponent("Health: "+data.getDouble("max_health")), startX, startY, 0x404040);
 		startY += font.lineHeight;
 		font.draw(stack, new TextComponent("Speed: "+data.getDouble("max_speed")), startX, startY, 0x404040);
 		startY += font.lineHeight;

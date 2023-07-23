@@ -10,8 +10,8 @@ public class Config {
 		
 		public final ForgeConfigSpec.DoubleValue mouseModeMaxRadius;
 		public final ForgeConfigSpec.DoubleValue mouseStickDeadzoneRadius;
-		// TODO 0.5 invert vertical mouse mode config
-		// TODO 0.5 horizontal mouse mode controls roll config
+		// TODO 0.1 invert vertical mouse mode config
+		// TODO 0.2 horizontal mouse mode controls roll config
 		public final ForgeConfigSpec.BooleanValue cameraTurnRelativeToVehicle;
 		public final ForgeConfigSpec.BooleanValue customDismount;
 		public final ForgeConfigSpec.BooleanValue debugMode;
@@ -52,6 +52,7 @@ public class Config {
 		public final ForgeConfigSpec.IntValue maxBlockCheckDepth;
 		public final ForgeConfigSpec.DoubleValue toItemCooldown;
 		public final ForgeConfigSpec.BooleanValue autoDataLink;
+		// TODO 7.2 baby mode for planes disabled by default
 		
 		public Server(ForgeConfigSpec.Builder builder) {
 			accGravity = builder

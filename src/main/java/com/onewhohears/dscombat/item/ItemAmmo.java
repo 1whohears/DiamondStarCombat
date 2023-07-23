@@ -46,7 +46,7 @@ public class ItemAmmo extends Item {
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tips, TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tips, isAdvanced);
-		// TODO 3.1 show weapon stats
+		// TODO 1.1 show weapon stats in ammo tooltip
 	}
 	
 	@Override

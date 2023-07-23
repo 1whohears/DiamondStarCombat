@@ -33,7 +33,7 @@ import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 
 @Mod(DSCombatMod.MODID)
 public class DSCombatMod {
-	
+	// FIXME 9 improve documentation
 	public static final String MODID = "dscombat";
 
     public DSCombatMod() {

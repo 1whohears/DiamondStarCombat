@@ -32,6 +32,8 @@ public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContaine
 	private static final ResourceLocation SLOTS_TEXTURE = new ResourceLocation(DSCombatMod.MODID,
 			"textures/ui/slots.png");
 	
+	// TODO 1.2 make aircraft menu less ugly/more organised/customisable via client resource pack
+	
 	public AircraftScreen(AircraftMenuContainer pMenu, Inventory pPlayerInventory, Component title) {
 		super(pMenu, pPlayerInventory, title);
 		this.leftPos = 0;

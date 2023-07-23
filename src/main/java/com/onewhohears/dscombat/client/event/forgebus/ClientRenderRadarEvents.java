@@ -55,7 +55,7 @@ public final class ClientRenderRadarEvents {
 		RenderSystem.disableTexture();
 		GL11.glEnable(GL11.GL_LINE_SMOOTH);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
-		// TODO 1.1 show last known target location
+		// TODO 6.1 show last known target location
 		for (int i = 0; i < pings.size(); ++i) {
 			RadarPing p = pings.get(i);
 			

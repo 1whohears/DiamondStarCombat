@@ -269,7 +269,7 @@ public class ModItems {
 			() -> new ItemAmmo(4, "torpedo1")); 
 	public static final RegistryObject<Item> RIFEL1 = ITEMS.register("rifel1", 
 			() -> new ItemAmmo(4, "rifel1")); 
-	// IDEA 7 bunker buster (go through some blocks then explode)
+	// TODO 2.2 bunker buster (go through some blocks then explode)
 	
 	// PLANES
 	public static final RegistryObject<Item> JAVI_PLANE = ITEMS.register("javi_plane", 

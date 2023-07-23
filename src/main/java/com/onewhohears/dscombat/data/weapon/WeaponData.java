@@ -61,6 +61,9 @@ public abstract class WeaponData extends JsonPreset {
 	private String slotId = "";
 	private boolean overrideGroundCheck = false;
 	
+	// TODO 1.5 improve the weapon name system or make better conventions to more easily understand weapon stats
+	// TODO 1.6 display little icons next to a weapon name (in aircraft overlay) to show what kind of weapon it is
+	
 	public WeaponData(ResourceLocation key, JsonObject json) {
 		super(key, json);
 		this.ingredients = DSCIngredient.getIngredients(json);

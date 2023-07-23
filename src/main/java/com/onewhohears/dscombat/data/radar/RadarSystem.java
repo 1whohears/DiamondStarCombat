@@ -96,7 +96,7 @@ public class RadarSystem {
 		// PLANE RADARS
 		for (RadarData r : radars) r.tickUpdateTargets(parent, targets);
 		// DATA LINK
-		// FIXME 3 data link is broken on servers?
+		// FIXME 2 data link is broken on servers?
 		if (hasDataLink() && parent.tickCount % 20 == 0) {
 			clearDataLink();
 			Entity controller = parent.getControllingPassenger();

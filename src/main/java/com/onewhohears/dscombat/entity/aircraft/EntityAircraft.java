@@ -170,6 +170,10 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot;
 	private float landingGearPos, landingGearPosOld;
 	
+	// TODO 3.1 vehicle armor plating that reduces damage 
+	// TODO 3.2 reduce damage passengers receive based on armor. make it configurable. especially explosive damage.
+	// TODO 8.2 creative mode middle click should give aircraft item
+	
 	public EntityAircraft(EntityType<? extends EntityAircraft> entityType, Level level, 
 			AircraftPreset defaultPreset,
 			RegistryObject<SoundEvent> engineSound,
@@ -1015,7 +1019,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	        --lerpSteps;
 	        setPos(d0, d1, d2);
 		}
-		// FIXME 1 aircraft rotation lerp
+		// FIXME 5 aircraft rotation lerp
         /*if (lerpStepsQ > 0) {
             setClientQ(UtilAngles.lerpQ(1 / lerpStepsQ, getPrevQ(), getQ()));
             --lerpStepsQ;
@@ -1166,7 +1170,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 					return InteractionResult.SUCCESS;
 				// CUSTOM NAME
 				} else if (item instanceof NameTagItem name) {
-					// TODO 8 custom name by name tag
+					// TODO 8.1 display custom vehicle name from name tag
 					return InteractionResult.PASS;
 				// CREATIVE WAND
 				} else if (item instanceof ItemCreativeWand wand) {

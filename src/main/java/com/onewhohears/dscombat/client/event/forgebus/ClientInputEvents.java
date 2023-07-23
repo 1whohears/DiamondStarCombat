@@ -88,6 +88,7 @@ public final class ClientInputEvents {
 			throttleDown = DSCKeys.throttleDownKey.isDown();
 		}
 		if (!plane.isFreeLook()) {
+			// FIXME 1 mouse mode sucks. check how other mods do it
 			double ya = Math.abs(mouseY);
 			double xa = Math.abs(mouseX);
 			float ys = (float) Math.signum(mouseY);

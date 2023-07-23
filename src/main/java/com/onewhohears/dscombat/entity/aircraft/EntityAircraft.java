@@ -348,6 +348,10 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	
 	public abstract AircraftType getAircraftType();
 	
+	public boolean isAircraft() {
+		return getAircraftType() == AircraftType.PLANE || getAircraftType() == AircraftType.HELICOPTER;
+	}
+	
 	/**
 	 * called on this entities first tick on client and server side
 	 * this function fires clientSetup() and serverSetup()

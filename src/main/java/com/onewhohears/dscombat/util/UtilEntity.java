@@ -74,6 +74,10 @@ public class UtilEntity {
 		return dist;
 	}
 	
+	public static int getDistFromSeaLevel(Entity e) {
+		return (int)e.getY() - 64;
+	}
+	
 	public static Vec3 getLookingAtBlockPos(Entity e, int max) {
 		Level level = e.level;
 		Vec3 look = e.getLookAngle();

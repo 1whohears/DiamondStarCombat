@@ -43,6 +43,7 @@ public class IRMissile extends EntityMissile {
 	protected List<IrTarget> targets = new ArrayList<IrTarget>();
 	
 	protected void findIrTarget() {
+		// FIXME 3.1 make ir missile target entity type and their heat values configurable so entities other mod entities can be targeted
 		targets.clear();
 		// planes
 		List<EntityAircraft> planes = level.getEntitiesOfClass(

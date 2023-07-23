@@ -30,7 +30,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(DSCombatMod.MODID)
 public class DSCombatMod {
-	
+	// FIXME 9 improve documentation
 	public static final String MODID = "dscombat";
 
     public DSCombatMod() {

@@ -386,7 +386,7 @@ public class PilotOverlay {
 			if (ping.isFriendly) color = 0x0000ff;
 			GuiComponent.drawCenteredString(poseStack, m.font, 
 				text, cx, height-radarOffset-radarSize-20, color);
-			// TODO 1.2 display intercept with target angle
+			// TODO 6.2 display intercept with target angle
 		}
 		for (int i = 0; i < pings.size(); ++i) {
 			RadarPing ping = pings.get(i);

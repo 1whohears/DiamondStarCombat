@@ -16,12 +16,11 @@ import net.minecraftforge.network.PacketDistributor;
 
 public class PartSlot {
 	
-	public static final String PILOT_SLOT_NAME = "slotname.dscombat.pilot_seat";
+	public static final String PILOT_SLOT_NAME = "pilot_seat";
 	
 	private final String slotId;
 	private final SlotType type;
 	private final Vec3 pos;
-	private final int uix, uiy;
 	private final float zRot;
 	private final boolean locked;
 	private PartData data;
@@ -30,8 +29,6 @@ public class PartSlot {
 		slotId = tag.getString("name");
 		type = SlotType.values()[tag.getInt("slot_type")];
 		pos = UtilParse.readVec3(tag, "slot_pos");
-		uix = tag.getInt("uix");
-		uiy = tag.getInt("uiy");
 		zRot = tag.getFloat("zRot");
 		locked = tag.getBoolean("locked");
 		if (tag.contains("data")) data = UtilParse.parsePartFromCompound(tag.getCompound("data"));
@@ -42,8 +39,6 @@ public class PartSlot {
 		tag.putString("name", slotId);
 		tag.putInt("slot_type",type.ordinal());
 		UtilParse.writeVec3(tag, pos, "slot_pos");
-		tag.putInt("uix", uix);
-		tag.putInt("uiy", uiy);
 		tag.putFloat("zRot", zRot);
 		tag.putBoolean("locked", locked);
 		if (filled()) tag.put("data", data.write());
@@ -58,10 +53,6 @@ public class PartSlot {
 		//System.out.println("type = "+type.name());
 		pos = DataSerializers.VEC3.read(buffer);
 		//System.out.println("pos = "+pos);
-		uix = buffer.readInt();
-		//System.out.println("uix = "+uix);
-		uiy = buffer.readInt();
-		//System.out.println("uiy = "+uiy);
 		zRot = buffer.readFloat();
 		locked = buffer.readBoolean();
 		boolean notNull = buffer.readBoolean();
@@ -73,8 +64,6 @@ public class PartSlot {
 		buffer.writeUtf(slotId);
 		buffer.writeInt(type.ordinal());
 		DataSerializers.VEC3.write(buffer, pos);
-		buffer.writeInt(uix);
-		buffer.writeInt(uiy);
 		buffer.writeFloat(zRot);
 		buffer.writeBoolean(locked);
 		buffer.writeBoolean(filled());
@@ -154,20 +143,20 @@ public class PartSlot {
 		return false;
 	}
 	
-	public String getName() {
+	public String getSlotId() {
+		if (slotId.startsWith("slotname.dscombat.")) return slotId.substring("slotname.dscombat.".length(), slotId.length());
+		if (slotId.startsWith("dscombat.")) return slotId.substring("dscombat.".length(), slotId.length());
 		return slotId;
+	}
+	
+	public String getTranslatableName() {
+		if (slotId.startsWith("slotname.dscombat.")) return slotId;
+		if (slotId.startsWith("dscombat.")) return "slotname."+slotId;
+		return "slotname.dscombat."+slotId;
 	}
 	
 	public SlotType getSlotType() {
 		return type;
-	}
-	
-	public int getUIX() {
-		return uix;
-	}
-	
-	public int getUIY() {
-		return uiy;
 	}
 	
 	public static enum SlotType {
@@ -225,7 +214,11 @@ public class PartSlot {
 	}
 	
 	public boolean isPilotSlot() {
-		return getName().equals(PILOT_SLOT_NAME) || getName().equals("dscombat.pilot_seat");
+		return isPilotSeat(getSlotId());
+	}
+	
+	public static boolean isPilotSeat(String slotId) {
+		return slotId.equals(PILOT_SLOT_NAME) || slotId.equals("dscombat.pilot_seat") || slotId.equals("slotname.dscombat.pilot_seat");
 	}
 	
 }

@@ -35,63 +35,51 @@
       "data": {
         "itemid": "dscombat:seat"
       },
-      "name": "slotname.dscombat.pilot_seat",
+      "name": "pilot_seat",
       "slot_posx": 0.0,
       "slot_posy": -0.4,
       "slot_posz": 0.0,
       "slot_type": 0,
-      "uix": 48,
-      "uiy": 20,
       "zRot": 0.0
     },
     {
-      "name": "slotname.dscombat.left_wing_1",
+      "name": "left_wing_1",
       "slot_posx": 1.5,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
       "slot_type": 1,
-      "uix": 48,
-      "uiy": 40,
       "zRot": 0.0
     },
     {
-      "name": "slotname.dscombat.right_wing_1",
+      "name": "right_wing_1",
       "slot_posx": -1.5,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
       "slot_type": 1,
-      "uix": 48,
-      "uiy": 60,
       "zRot": 0.0
     },
     {
-      "name": "slotname.dscombat.internal_1",
+      "name": "internal_1",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
       "slot_type": 10,
-      "uix": 48,
-      "uiy": 100,
       "zRot": 0.0
     },
     {
-      "name": "slotname.dscombat.internal_2",
+      "name": "internal_2",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
       "slot_type": 3,
-      "uix": 68,
-      "uiy": 100,
       "zRot": 0.0
     },
     {
-      "name": "slotname.dscombat.internal_3",
+      "name": "internal_3",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
       "slot_type": 3,
-      "uix": 88,
-      "uiy": 100,
       "zRot": 0.0
     }
   ],

@@ -85,6 +85,11 @@ public class AircraftPreset extends JsonPreset{
 		return textures;
 	}
 	
+	public String getClientPresetId() {
+		if (!getJsonData().has("client_preset_id")) return getId();
+		return getJsonData().get("client_preset_id").getAsString();
+	}
+	
 	@Override
 	public String toString() {
 		return getKey().toString()+" "+getJsonData().toString();
@@ -103,7 +108,7 @@ public class AircraftPreset extends JsonPreset{
 		return super.compare(other);
 	}
 	
-	public static class Builder extends PresetBuilder<Builder>{
+	public static class Builder extends PresetBuilder<Builder> {
 		
 		private boolean is_craftable = false;
 		
@@ -130,6 +135,10 @@ public class AircraftPreset extends JsonPreset{
 			return super.build();
 		}
 		
+		public Builder setClientPresetId(String id) {
+			return setString("client_preset_id", id);
+		}
+		
 		public Builder setAircraftType(AircraftType aircraft_type) {
 			return setInt("aircraft_type", aircraft_type.ordinal());
 		}
@@ -152,13 +161,11 @@ public class AircraftPreset extends JsonPreset{
 		 * @param y the y position of the part relative to the vehicle at 0 rotation
 		 * @param z the z position of the part relative to the vehicle at 0 rotation
 		 * @param zRot used to make an external part rotate in degrees to visually connect to the surface
-		 * @param uix the x position of the slot in the aircraft menu
-		 * @param uiy the y position of the slot in the aircraft menu
 		 * @param item resource location of item to get part data from
 		 * @param param some part items accept a setting
 		 * @param filled if the item is filled by default
 		 */
-		public Builder addItemSlot(String name, SlotType type, double x, double y, double z, float zRot, int uix, int uiy, 
+		public Builder addItemSlot(String name, SlotType type, double x, double y, double z, float zRot,  
 				@Nullable ResourceLocation item, @Nullable String param, boolean filled) {
 			JsonObject slot = getSlot(name, true);
 			slot.addProperty("name", name);
@@ -166,8 +173,6 @@ public class AircraftPreset extends JsonPreset{
 			slot.addProperty("slot_posx", x);
 			slot.addProperty("slot_posy", y);
 			slot.addProperty("slot_posz", z);
-			slot.addProperty("uix", uix);
-			slot.addProperty("uiy", uiy);
 			slot.addProperty("zRot", zRot);
 			if (item != null) {
 				JsonObject d = new JsonObject();
@@ -261,13 +266,11 @@ public class AircraftPreset extends JsonPreset{
 		 * @param y the y position of the part relative to the vehicle at 0 rotation
 		 * @param z the z position of the part relative to the vehicle at 0 rotation
 		 * @param zRot used to make an external part rotate in degrees to visually connect to the surface
-		 * @param uix the x position of the slot in the aircraft menu
-		 * @param uiy the y position of the slot in the aircraft menu
 		 * @param item resource location of item to get part data from
 		 */
-		public Builder addItemSlot(String name, SlotType type, double x, double y, double z, float zRot, int uix, int uiy, 
+		public Builder addItemSlot(String name, SlotType type, double x, double y, double z, float zRot, 
 				@Nullable ResourceLocation item) {
-			return addItemSlot(name, type, x, y, z, zRot, uix, uiy, item, null, false);
+			return addItemSlot(name, type, x, y, z, zRot, item, null, false);
 		}
 		
 		/**
@@ -275,15 +278,13 @@ public class AircraftPreset extends JsonPreset{
 		 * meant for internal parts.
 		 * @param name a translatable string 
 		 * @param type the type of slot
-		 * @param uix the x position of the slot in the aircraft menu
-		 * @param uiy the y position of the slot in the aircraft menu
 		 * @param item resource location of item to get part data from
 		 * @param param some part items accept a setting
 		 * @param filled if the item is filled by default
 		 */
-		public Builder addItemSlot(String name, SlotType type, int uix, int uiy, 
+		public Builder addItemSlot(String name, SlotType type, 
 				@Nullable ResourceLocation item, @Nullable String param, boolean filled) {
-			return addItemSlot(name, type, 0, 0, 0, 0, uix, uiy, item, param, filled);
+			return addItemSlot(name, type, 0, 0, 0, 0, item, param, filled);
 		}
 		
 		/**
@@ -291,14 +292,12 @@ public class AircraftPreset extends JsonPreset{
 		 * meant for internal parts.
 		 * @param name a translatable string 
 		 * @param type the type of slot
-		 * @param uix the x position of the slot in the aircraft menu
-		 * @param uiy the y position of the slot in the aircraft menu
 		 * @param item resource location of item to get part data from
 		 * @param filled if the item is filled by default
 		 */
-		public Builder addItemSlot(String name, SlotType type, int uix, int uiy, 
+		public Builder addItemSlot(String name, SlotType type, 
 				@Nullable ResourceLocation item, boolean filled) {
-			return addItemSlot(name, type, 0, 0, 0, 0, uix, uiy, item, null, filled);
+			return addItemSlot(name, type, 0, 0, 0, 0, item, null, filled);
 		}
 		
 		/**
@@ -306,12 +305,10 @@ public class AircraftPreset extends JsonPreset{
 		 * meant for internal parts.
 		 * @param name a translatable string 
 		 * @param type the type of slot
-		 * @param uix the x position of the slot in the aircraft menu
-		 * @param uiy the y position of the slot in the aircraft menu
 		 * @param item resource location of item to get part data from
 		 */
-		public Builder addItemSlot(String name, SlotType type, int uix, int uiy, @Nullable ResourceLocation item) {
-			return addItemSlot(name, type, 0, 0, 0, 0, uix, uiy, item, null, false);
+		public Builder addItemSlot(String name, SlotType type, @Nullable ResourceLocation item) {
+			return addItemSlot(name, type, 0, 0, 0, 0, item, null, false);
 		}
 		
 		/**
@@ -322,11 +319,9 @@ public class AircraftPreset extends JsonPreset{
 		 * @param y the y position of the part relative to the vehicle at 0 rotation
 		 * @param z the z position of the part relative to the vehicle at 0 rotation
 		 * @param zRot used to make an external part rotate in degrees to visually connect to the surface
-		 * @param uix the x position of the slot in the aircraft menu
-		 * @param uiy the y position of the slot in the aircraft menu
 		 */
-		public Builder addEmptySlot(String name, SlotType type, double x, double y, double z, float zRot, int uix, int uiy) {
-			return addItemSlot(name, type, x, y, z, zRot, uix, uiy, null, null, false);
+		public Builder addEmptySlot(String name, SlotType type, double x, double y, double z, float zRot) {
+			return addItemSlot(name, type, x, y, z, zRot, null, null, false);
 		}
 		
 		/**
@@ -334,11 +329,9 @@ public class AircraftPreset extends JsonPreset{
 		 * meant for internal parts.
 		 * @param name a translatable string 
 		 * @param type the type of slot
-		 * @param uix the x position of the slot in the aircraft menu
-		 * @param uiy the y position of the slot in the aircraft menu
 		 */
-		public Builder addEmptySlot(String name, SlotType type, int uix, int uiy) {
-			return addItemSlot(name, type, 0, 0, 0, 0, uix, uiy, null, null, false);
+		public Builder addEmptySlot(String name, SlotType type) {
+			return addItemSlot(name, type, 0, 0, 0, 0, null, null, false);
 		}
 		
 		/**
@@ -347,11 +340,9 @@ public class AircraftPreset extends JsonPreset{
 		 * @param x the x position of the part relative to the vehicle at 0 rotation
 		 * @param y the y position of the part relative to the vehicle at 0 rotation
 		 * @param z the z position of the part relative to the vehicle at 0 rotation
-		 * @param uix the x position of the slot in the aircraft menu
-		 * @param uiy the y position of the slot in the aircraft menu
 		 */
-		public Builder addSeatSlot(String name, double x, double y, double z, int uix, int uiy) {
-			return addItemSlot(name, SlotType.SEAT, x, y, z, 0, uix, uiy, ModItems.SEAT.getId(), null, false);
+		public Builder addSeatSlot(String name, double x, double y, double z) {
+			return addItemSlot(name, SlotType.SEAT, x, y, z, 0, ModItems.SEAT.getId(), null, false);
 		}
 		
 		/**
@@ -359,11 +350,9 @@ public class AircraftPreset extends JsonPreset{
 		 * @param x the x position of the part relative to the vehicle at 0 rotation
 		 * @param y the y position of the part relative to the vehicle at 0 rotation
 		 * @param z the z position of the part relative to the vehicle at 0 rotation
-		 * @param uix the x position of the slot in the aircraft menu
-		 * @param uiy the y position of the slot in the aircraft menu
 		 */
-		public Builder addPilotSeatSlot(double x, double y, double z, int uix, int uiy) {
-			return addItemSlot(PartSlot.PILOT_SLOT_NAME, SlotType.SEAT, x, y, z, 0, uix, uiy, ModItems.SEAT.getId(), null, false);
+		public Builder addPilotSeatSlot(double x, double y, double z) {
+			return addItemSlot(PartSlot.PILOT_SLOT_NAME, SlotType.SEAT, x, y, z, 0, ModItems.SEAT.getId(), null, false);
 		}
 		
 		/**
@@ -373,11 +362,9 @@ public class AircraftPreset extends JsonPreset{
 		 * @param x the x position of the part relative to the vehicle at 0 rotation
 		 * @param y the y position of the part relative to the vehicle at 0 rotation
 		 * @param z the z position of the part relative to the vehicle at 0 rotation
-		 * @param uix the x position of the slot in the aircraft menu
-		 * @param uiy the y position of the slot in the aircraft menu
 		 */
-		public Builder addSeatSlot(String name, SlotType type, double x, double y, double z, int uix, int uiy) {
-			return addItemSlot(name, type, x, y, z, 0, uix, uiy, ModItems.SEAT.getId(), null, false);
+		public Builder addSeatSlot(String name, SlotType type, double x, double y, double z) {
+			return addItemSlot(name, type, x, y, z, 0, ModItems.SEAT.getId(), null, false);
 		}
 		
 		/**

@@ -43,56 +43,46 @@
       "data": {
         "itemid": "dscombat:seat"
       },
-      "name": "slotname.dscombat.pilot_seat",
+      "name": "pilot_seat",
       "slot_posx": 0.5,
       "slot_posy": 0.9,
       "slot_posz": 1.0,
       "slot_type": 0,
-      "uix": 48,
-      "uiy": 20,
       "zRot": 0.0
     },
     {
       "data": {
         "itemid": "dscombat:seat"
       },
-      "name": "slotname.dscombat.seat2",
+      "name": "seat2",
       "slot_posx": -0.5,
       "slot_posy": 0.9,
       "slot_posz": 1.0,
       "slot_type": 0,
-      "uix": 68,
-      "uiy": 20,
       "zRot": 0.0
     },
     {
-      "name": "slotname.dscombat.cargo_bed_1",
+      "name": "cargo_bed_1",
       "slot_posx": 0.0,
       "slot_posy": 0.95,
       "slot_posz": -1.5,
       "slot_type": 6,
-      "uix": 48,
-      "uiy": 40,
       "zRot": 0.0
     },
     {
-      "name": "slotname.dscombat.internal_1",
+      "name": "internal_1",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
       "slot_type": 7,
-      "uix": 48,
-      "uiy": 60,
       "zRot": 0.0
     },
     {
-      "name": "slotname.dscombat.internal_2",
+      "name": "internal_2",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
       "slot_type": 3,
-      "uix": 68,
-      "uiy": 60,
       "zRot": 0.0
     },
     {
@@ -100,23 +90,19 @@
         "itemid": "dscombat:axcel_truck_radar"
       },
       "locked": true,
-      "name": "slotname.dscombat.internal_3",
+      "name": "internal_3",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
       "slot_type": 4,
-      "uix": 88,
-      "uiy": 60,
       "zRot": 0.0
     },
     {
-      "name": "slotname.dscombat.internal_4",
+      "name": "internal_4",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
       "slot_type": 4,
-      "uix": 108,
-      "uiy": 60,
       "zRot": 0.0
     }
   ],

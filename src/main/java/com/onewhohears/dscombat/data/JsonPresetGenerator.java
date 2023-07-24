@@ -22,6 +22,10 @@ public abstract class JsonPresetGenerator<T extends JsonPreset> implements DataP
     public JsonPresetGenerator(DataGenerator output, String kind) {
         this.pathProvider = output.createPathProvider(DataGenerator.Target.DATA_PACK, kind);
     }
+    
+    public JsonPresetGenerator(DataGenerator output, String kind, DataGenerator.Target target) {
+        this.pathProvider = output.createPathProvider(target, kind);
+    }
 	
     /**
      * override this method if you want to add your own default presets

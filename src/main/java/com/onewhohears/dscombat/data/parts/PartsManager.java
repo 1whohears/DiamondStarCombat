@@ -173,7 +173,7 @@ public class PartsManager {
 	
 	@Nullable
 	public PartSlot getSlot(String slotName) {
-		for (PartSlot p : slots) if (p.getName().equals(slotName)) return p;
+		for (PartSlot p : slots) if (p.getSlotId().equals(slotName)) return p;
 		return null;
 	}
 	

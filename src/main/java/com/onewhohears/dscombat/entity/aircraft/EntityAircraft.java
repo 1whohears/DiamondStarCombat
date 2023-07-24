@@ -138,7 +138,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	public final double maxFallSpeed = Config.SERVER.maxFallSpeed.get();
 	public final boolean autoDataLink = Config.SERVER.autoDataLink.get();
 	
-	public final String defaultPreset;
+	public final String defaultPreset, clientPreset;
 	public final boolean negativeThrottle;
 	public final float Ix, Iy, Iz, explodeSize;
 	
@@ -181,6 +181,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		super(entityType, level);
 		this.defaultPreset = defaultPreset.getId();
 		this.preset = this.defaultPreset;
+		this.clientPreset = defaultPreset.getClientPresetId();
 		this.textures = defaultPreset.getAircraftTextures();
 		this.currentTexture = textures.getDefaultTexture();
 		this.item = defaultPreset.getItem();
@@ -1190,7 +1191,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	
 	private boolean ridePilotSeat(Entity e, List<EntitySeat> seats) {
 		for (EntitySeat seat : seats) 
-			if (seat.getSlotId().equals(PartSlot.PILOT_SLOT_NAME)) {
+			if (seat.isPilotSeat()) {
 				if (e.startRiding(seat)) {
 					newRiderCooldown = 10;
 					return true;
@@ -1246,8 +1247,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	@Override
     public Entity getControllingPassenger() {
         for (EntitySeat seat : getSeats()) {
-        	String id = seat.getSlotId();
-        	if (id.equals(PartSlot.PILOT_SLOT_NAME) || id.equals("dscombat.pilot_seat")) {
+        	if (seat.isPilotSeat()) {
         		return seat.getPlayer();
         	}
         }

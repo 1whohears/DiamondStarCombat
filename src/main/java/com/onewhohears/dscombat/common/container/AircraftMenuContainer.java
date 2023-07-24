@@ -3,6 +3,9 @@ package com.onewhohears.dscombat.common.container;
 import java.util.List;
 
 import com.onewhohears.dscombat.common.container.slot.PartItemSlot;
+import com.onewhohears.dscombat.data.aircraft.AircraftClientPreset;
+import com.onewhohears.dscombat.data.aircraft.AircraftClientPreset.UIPos;
+import com.onewhohears.dscombat.data.aircraft.AircraftClientPresets;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.init.ModContainers;
@@ -18,6 +21,7 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
 	
 	private Container playerInv;
 	private Container planeInv;
+	private AircraftClientPreset clientData;
 	
 	public AircraftMenuContainer(int id, Inventory playerInv) {
 		super(ModContainers.PLANE_MENU.get(), id);
@@ -27,10 +31,19 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
 		if (playerInv.player.getRootVehicle() instanceof EntityAircraft plane) {
 			this.planeInv = plane.partsManager.getInventory();
 			List<PartSlot> slots = plane.partsManager.getSlots();
+			//System.out.println("client preset = "+plane.clientPreset);
+			clientData = AircraftClientPresets.get().getPreset(plane.clientPreset);
+			//System.out.println("acp not null = "+(acp != null));
 			// create plane menu container
 			for (int i = 0; i < planeInv.getContainerSize(); ++i) {
-				//System.out.println("partsInv i = "+i);
-				this.addSlot(new PartItemSlot(planeInv, i, slots.get(i)));
+				int x = 0, y = 0;
+				if (clientData != null) {
+					UIPos uip = clientData.getSlotPos(slots.get(i).getSlotId());
+					x = uip.getX();
+					y = uip.getY();
+				}
+				//System.out.println("partsInv i = "+i+" x = "+x+" y = "+y);
+				this.addSlot(new PartItemSlot(planeInv, i, slots.get(i), x, y));
 			}
 		}
 		// display player inventory
@@ -82,6 +95,10 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
 	
 	public Container getPlaneInventory() {
 		return this.planeInv;
+	}
+	
+	public AircraftClientPreset getClientData() {
+		return clientData;
 	}
 
 }

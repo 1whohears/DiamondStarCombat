@@ -39,95 +39,79 @@
       "data": {
         "itemid": "dscombat:seat"
       },
-      "name": "slotname.dscombat.pilot_seat",
+      "name": "pilot_seat",
       "slot_posx": 0.0,
       "slot_posy": 1.4,
       "slot_posz": 0.0,
       "slot_type": 6,
-      "uix": 48,
-      "uiy": 20,
       "zRot": 0.0
     },
     {
       "data": {
         "itemid": "dscombat:seat"
       },
-      "name": "slotname.dscombat.seat1",
+      "name": "seat1",
       "slot_posx": 1.0,
       "slot_posy": 1.4,
       "slot_posz": 2.0,
       "slot_type": 6,
-      "uix": 68,
-      "uiy": 20,
       "zRot": 0.0
     },
     {
       "data": {
         "itemid": "dscombat:seat"
       },
-      "name": "slotname.dscombat.seat2",
+      "name": "seat2",
       "slot_posx": -1.0,
       "slot_posy": 1.4,
       "slot_posz": 2.0,
       "slot_type": 6,
-      "uix": 88,
-      "uiy": 20,
       "zRot": 0.0
     },
     {
       "data": {
         "itemid": "dscombat:seat"
       },
-      "name": "slotname.dscombat.seat3",
+      "name": "seat3",
       "slot_posx": 1.0,
       "slot_posy": 1.4,
       "slot_posz": -2.0,
       "slot_type": 6,
-      "uix": 108,
-      "uiy": 20,
       "zRot": 0.0
     },
     {
       "data": {
         "itemid": "dscombat:seat"
       },
-      "name": "slotname.dscombat.seat4",
+      "name": "seat4",
       "slot_posx": -1.0,
       "slot_posy": 1.4,
       "slot_posz": -2.0,
       "slot_type": 6,
-      "uix": 128,
-      "uiy": 20,
       "zRot": 0.0
     },
     {
-      "name": "slotname.dscombat.internal_1",
+      "name": "internal_1",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
       "slot_type": 7,
-      "uix": 48,
-      "uiy": 100,
       "zRot": 0.0
     },
     {
-      "name": "slotname.dscombat.internal_2",
+      "name": "internal_2",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
       "slot_type": 7,
-      "uix": 68,
-      "uiy": 100,
       "zRot": 0.0
     },
     {
-      "name": "slotname.dscombat.internal_3",
+      "name": "internal_3",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
       "slot_type": 3,
-      "uix": 88,
-      "uiy": 100,
       "zRot": 0.0
     }
   ],

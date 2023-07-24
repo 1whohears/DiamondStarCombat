@@ -1,0 +1,22 @@
+{
+  "displayName": "preset.dscombat.small_roller",
+  "inventory_background": "dscombat:textures/ui/vehicle_inventory_backgrounds/small_roller.png",
+  "inventory_slots_pos": [
+    {
+      "slot_name": "pilot_seat",
+      "slot_ui_x": 48,
+      "slot_ui_y": 20
+    },
+    {
+      "slot_name": "internal_1",
+      "slot_ui_x": 48,
+      "slot_ui_y": 100
+    },
+    {
+      "slot_name": "internal_2",
+      "slot_ui_x": 68,
+      "slot_ui_y": 100
+    }
+  ],
+  "presetId": "small_roller"
+}

@@ -71,91 +71,77 @@
       "data": {
         "itemid": "dscombat:seat"
       },
-      "name": "slotname.dscombat.pilot_seat",
+      "name": "pilot_seat",
       "slot_posx": 0.8,
       "slot_posy": 1.2,
       "slot_posz": -1.13,
       "slot_type": 0,
-      "uix": 48,
-      "uiy": 20,
       "zRot": 0.0
     },
     {
       "data": {
         "itemid": "dscombat:minigun_turret"
       },
-      "name": "slotname.dscombat.seat1",
+      "name": "seat1",
       "slot_posx": 0.65,
       "slot_posy": 1.2,
       "slot_posz": 2.44,
       "slot_type": 5,
-      "uix": 68,
-      "uiy": 20,
       "zRot": 0.0
     },
     {
       "data": {
         "itemid": "dscombat:seat"
       },
-      "name": "slotname.dscombat.seat2",
+      "name": "seat2",
       "slot_posx": -0.65,
       "slot_posy": 1.2,
       "slot_posz": 2.44,
       "slot_type": 5,
-      "uix": 88,
-      "uiy": 20,
       "zRot": 0.0
     },
     {
       "data": {
         "itemid": "dscombat:seat"
       },
-      "name": "slotname.dscombat.seat3",
+      "name": "seat3",
       "slot_posx": 0.65,
       "slot_posy": 1.2,
       "slot_posz": 1.25,
       "slot_type": 5,
-      "uix": 108,
-      "uiy": 20,
       "zRot": 0.0
     },
     {
       "data": {
         "itemid": "dscombat:seat"
       },
-      "name": "slotname.dscombat.seat4",
+      "name": "seat4",
       "slot_posx": -0.65,
       "slot_posy": 1.2,
       "slot_posz": 1.25,
       "slot_type": 5,
-      "uix": 128,
-      "uiy": 20,
       "zRot": 0.0
     },
     {
       "data": {
         "itemid": "dscombat:seat"
       },
-      "name": "slotname.dscombat.seat5",
+      "name": "seat5",
       "slot_posx": 0.65,
       "slot_posy": 1.2,
       "slot_posz": -0.06,
       "slot_type": 5,
-      "uix": 148,
-      "uiy": 20,
       "zRot": 0.0
     },
     {
       "data": {
         "itemid": "dscombat:seat"
       },
-      "name": "slotname.dscombat.seat6",
+      "name": "seat6",
       "slot_posx": -0.65,
       "slot_posy": 1.2,
       "slot_posz": -0.06,
       "slot_type": 5,
-      "uix": 168,
-      "uiy": 20,
       "zRot": 0.0
     },
     {
@@ -164,13 +150,11 @@
         "itemid": "dscombat:heavy_missile_rack",
         "param": "torpedo1"
       },
-      "name": "slotname.dscombat.frame_1",
+      "name": "frame_1",
       "slot_posx": 1.5,
       "slot_posy": 1.0,
       "slot_posz": 0.0,
       "slot_type": 2,
-      "uix": 48,
-      "uiy": 60,
       "zRot": 90.0
     },
     {
@@ -179,26 +163,22 @@
         "itemid": "dscombat:heavy_missile_rack",
         "param": "torpedo1"
       },
-      "name": "slotname.dscombat.frame_2",
+      "name": "frame_2",
       "slot_posx": -1.5,
       "slot_posy": 1.0,
       "slot_posz": 0.0,
       "slot_type": 2,
-      "uix": 68,
-      "uiy": 60,
       "zRot": -90.0
     },
     {
       "data": {
         "itemid": "dscombat:turbofan_f145"
       },
-      "name": "slotname.dscombat.internal_1",
+      "name": "internal_1",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
       "slot_type": 8,
-      "uix": 48,
-      "uiy": 100,
       "zRot": 0.0
     },
     {
@@ -206,36 +186,30 @@
         "filled": true,
         "itemid": "dscombat:heavy_fuel_tank"
       },
-      "name": "slotname.dscombat.internal_2",
+      "name": "internal_2",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
       "slot_type": 3,
-      "uix": 68,
-      "uiy": 100,
       "zRot": 0.0
     },
     {
-      "name": "slotname.dscombat.internal_3",
+      "name": "internal_3",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
       "slot_type": 3,
-      "uix": 88,
-      "uiy": 100,
       "zRot": 0.0
     },
     {
       "data": {
         "itemid": "dscombat:wr400"
       },
-      "name": "slotname.dscombat.internal_4",
+      "name": "internal_4",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
       "slot_type": 4,
-      "uix": 108,
-      "uiy": 100,
       "zRot": 0.0
     }
   ],

@@ -14,8 +14,8 @@ public class PartItemSlot extends Slot {
 	
 	public final PartSlot data;
 	
-	public PartItemSlot(Container container, int slot, PartSlot data) {
-		super(container, slot, data.getUIX(), data.getUIY());
+	public PartItemSlot(Container container, int slot, PartSlot data, int x, int y) {
+		super(container, slot, x, y);
 		this.data = data;
 	}
 	

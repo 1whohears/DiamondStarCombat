@@ -4,6 +4,7 @@ import com.onewhohears.dscombat.client.screen.AircraftBlockScreen;
 import com.onewhohears.dscombat.client.screen.AircraftScreen;
 import com.onewhohears.dscombat.client.screen.WeaponsBlockScreen;
 import com.onewhohears.dscombat.common.network.PacketHandler;
+import com.onewhohears.dscombat.data.aircraft.AircraftClientPresetGenerator;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresetGenerator;
 import com.onewhohears.dscombat.data.radar.RadarPresetGenerator;
 import com.onewhohears.dscombat.data.weapon.WeaponPresetGenerator;
@@ -68,10 +69,14 @@ public class DSCombatMod {
     
     private void onGatherData(GatherDataEvent event) {
     	DataGenerator generator = event.getGenerator();
-    	event.includeServer();
-    	generator.addProvider(true, new AircraftPresetGenerator(generator));
-    	generator.addProvider(true, new WeaponPresetGenerator(generator));
-    	generator.addProvider(true, new RadarPresetGenerator(generator));
+    	if (event.includeServer()) {
+    		generator.addProvider(true, new AircraftPresetGenerator(generator));
+    		generator.addProvider(true, new WeaponPresetGenerator(generator));
+    		generator.addProvider(true, new RadarPresetGenerator(generator));
+    	}
+    	if (event.includeClient()) {
+    		generator.addProvider(true, new AircraftClientPresetGenerator(generator));
+    	}
     }
     
 }

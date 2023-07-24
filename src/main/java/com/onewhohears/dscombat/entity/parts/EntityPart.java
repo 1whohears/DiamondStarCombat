@@ -108,5 +108,9 @@ public abstract class EntityPart extends Entity {
 	}
 	
 	public abstract PartType getPartType();
+	
+	public boolean isPilotSeat() {
+		return PartSlot.isPilotSeat(getSlotId());
+	}
 
 }

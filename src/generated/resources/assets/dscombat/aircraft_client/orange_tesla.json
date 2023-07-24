@@ -1,0 +1,37 @@
+{
+  "displayName": "preset.dscombat.orange_tesla",
+  "inventory_background": "dscombat:textures/ui/vehicle_inventory_backgrounds/orange_tesla.png",
+  "inventory_slots_pos": [
+    {
+      "slot_name": "pilot_seat",
+      "slot_ui_x": 48,
+      "slot_ui_y": 20
+    },
+    {
+      "slot_name": "seat1",
+      "slot_ui_x": 68,
+      "slot_ui_y": 20
+    },
+    {
+      "slot_name": "seat2",
+      "slot_ui_x": 88,
+      "slot_ui_y": 20
+    },
+    {
+      "slot_name": "seat3",
+      "slot_ui_x": 108,
+      "slot_ui_y": 20
+    },
+    {
+      "slot_name": "internal_1",
+      "slot_ui_x": 48,
+      "slot_ui_y": 100
+    },
+    {
+      "slot_name": "internal_2",
+      "slot_ui_x": 68,
+      "slot_ui_y": 100
+    }
+  ],
+  "presetId": "orange_tesla"
+}

@@ -31,7 +31,7 @@ public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContaine
 	private static final ResourceLocation SLOTS_TEXTURE = new ResourceLocation(DSCombatMod.MODID,
 			"textures/ui/slots.png");
 	
-	// TODO 1.2 make aircraft menu less ugly/more organised/customisable via client resource pack
+	// TODO 1.2 make default aircraft menus less ugly/more organized
 	
 	public AircraftScreen(AircraftMenuContainer pMenu, Inventory pPlayerInventory, Component title) {
 		super(pMenu, pPlayerInventory, title);
@@ -73,7 +73,7 @@ public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContaine
 	public List<Component> getSlotTooltip() {
 		List<Component> c = new ArrayList<Component>();
 		if (this.hoveredSlot instanceof PartItemSlot slot) {
-			c.add(Component.translatable(slot.data.getName()).setStyle(Style.EMPTY.withColor(0xFF55FF)));
+			c.add(Component.translatable(slot.data.getTranslatableName()).setStyle(Style.EMPTY.withColor(0xFF55FF)));
 			c.add(Component.translatable(slot.data.getSlotType().getTranslatableName()).setStyle(Style.EMPTY.withColor(0xFFAA00)));
 			if (slot.data.isLocked()) c.add(Component.translatable("info.dscombat.locked").setStyle(Style.EMPTY.withColor(0xAA0000)));
 		}
@@ -85,6 +85,10 @@ public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContaine
 		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
 		RenderSystem.setShaderTexture(0, BG_TEXTURE);
 		blit(stack, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		if (menu.getClientData() != null) {
+			RenderSystem.setShaderTexture(0, menu.getClientData().getBackground());
+			blit(stack, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		}
 		RenderSystem.setShaderTexture(0, SLOTS_TEXTURE);
 		for (int i = 0; i < menu.slots.size(); ++i) {
 			if (!(menu.slots.get(i) instanceof PartItemSlot slot)) continue;

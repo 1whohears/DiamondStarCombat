@@ -1,8 +1,5 @@
 package com.onewhohears.dscombat.client.renderer.model.aircraft;
 
-import org.lwjgl.opengl.GL11;
-
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.onewhohears.dscombat.DSCombatMod;
@@ -39,8 +36,6 @@ public class EntityModelAlexisPlane extends EntityControllableModel<EntityPlane>
 	@Override
 	public void renderToBuffer(EntityPlane entity, float partialTicks, PoseStack poseStack, VertexConsumer vertexConsumer,
 			int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		//GL11.glEnable(GL11.GL_BLEND);
-		RenderSystem.enableBlend();
 		poseStack.translate(0, 0.4, 0);
 		poseStack.scale(0.9F, -0.9F, -0.9F);
 		float gear = entity.getLandingGearPos(partialTicks);
@@ -62,8 +57,6 @@ public class EntityModelAlexisPlane extends EntityControllableModel<EntityPlane>
 		this.stick.zRot = entity.inputs.yaw * -ypi;
 		this.stick.xRot = entity.inputs.pitch * ppi;
 		Plane.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-		//GL11.glDisable(GL11.GL_BLEND);
-		RenderSystem.disableBlend();
 	}
 	
 	public static LayerDefinition createBodyLayer() {

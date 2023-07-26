@@ -161,7 +161,7 @@
   ],
   "stealth": 0.8,
   "textures": {
-    "0": "dscombat:textures/entities/alexis_plane/white.png",
+    "0": "dscombat:textures/entities/alexis_plane/test.png",
     "1": "dscombat:textures/entities/alexis_plane/orange.png",
     "10": "dscombat:textures/entities/alexis_plane/purple.png",
     "11": "dscombat:textures/entities/alexis_plane/blue.png",

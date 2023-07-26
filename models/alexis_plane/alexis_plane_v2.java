@@ -1,71 +1,17 @@
-package com.onewhohears.dscombat.client.renderer.model.aircraft;
+// Made with Blockbench 4.7.4
+// Exported for Minecraft version 1.17 or later with Mojang mappings
+// Paste this class into your mod and generate all required imports
 
-import org.lwjgl.opengl.GL11;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.client.renderer.model.EntityControllableModel;
-import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
-
-import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeDeformation;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
-
-public class EntityModelAlexisPlane extends EntityControllableModel<EntityPlane> {
-	
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(DSCombatMod.MODID, "alexis_plane"), "main");
-	
+public class alexis_plane<T extends Entity> extends EntityModel<T> {
+	// This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("modid", "alexis_plane"), "main");
 	private final ModelPart Plane;
-	private final ModelPart gfront, gleft, gright;
-	private final ModelPart stick;
 
-	public EntityModelAlexisPlane(ModelPart root) {
+	public alexis_plane(ModelPart root) {
 		this.Plane = root.getChild("Plane");
-		this.gfront = Plane.getChild("gear").getChild("set1");
-		this.gleft = Plane.getChild("gear").getChild("setL");
-		this.gright = Plane.getChild("gear").getChild("setR");
-		this.stick = Plane.getChild("Cockpit").getChild("Controls").getChild("controlstick");
 	}
-	
-	@Override
-	public void renderToBuffer(EntityPlane entity, float partialTicks, PoseStack poseStack, VertexConsumer vertexConsumer,
-			int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		//GL11.glEnable(GL11.GL_BLEND);
-		RenderSystem.enableBlend();
-		poseStack.translate(0, 0.4, 0);
-		poseStack.scale(0.9F, -0.9F, -0.9F);
-		float gear = entity.getLandingGearPos(partialTicks);
-		if (gear < 1) {
-			float hpi = Mth.PI/2;
-			this.gfront.xRot = gear * -hpi;
-			this.gleft.xRot = gear * hpi;
-			this.gright.xRot = gear * hpi;
-			this.gfront.visible = true;
-			this.gleft.visible = true;
-			this.gright.visible = true;
-		} else {
-			this.gfront.visible = false;
-			this.gleft.visible = false;
-			this.gright.visible = false;
-		}
-		float ypi = Mth.PI/8;
-		float ppi = Mth.PI/12;
-		this.stick.zRot = entity.inputs.yaw * -ypi;
-		this.stick.xRot = entity.inputs.pitch * ppi;
-		Plane.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-		//GL11.glDisable(GL11.GL_BLEND);
-		RenderSystem.disableBlend();
-	}
-	
+
 	public static LayerDefinition createBodyLayer() {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
@@ -83,8 +29,8 @@ public class EntityModelAlexisPlane extends EntityControllableModel<EntityPlane>
 
 		PartDefinition Controls = Cockpit.addOrReplaceChild("Controls", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-		PartDefinition controlstick = Controls.addOrReplaceChild("controlstick", CubeListBuilder.create().texOffs(0, 26).addBox(-1.9983F, -44.2532F, -32.2861F, 2.5F, 4.0F, 3.0F, new CubeDeformation(0.0F))
-		.texOffs(68, 50).addBox(-1.7483F, -40.2532F, -31.7861F, 2.0F, 13.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+		PartDefinition controlstick = Controls.addOrReplaceChild("controlstick", CubeListBuilder.create().texOffs(0, 26).addBox(-1.25F, -17.25F, -1.5F, 2.5F, 4.0F, 3.0F, new CubeDeformation(0.0F))
+		.texOffs(68, 50).addBox(-1.0F, -13.25F, -1.0F, 2.0F, 13.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.7483F, -27.0032F, -30.7861F, 0.5236F, 0.0F, 0.3927F));
 
 		PartDefinition RightRudder = Controls.addOrReplaceChild("RightRudder", CubeListBuilder.create(), PartPose.offset(-5.6817F, -32.4398F, -36.2997F));
 
@@ -196,7 +142,7 @@ public class EntityModelAlexisPlane extends EntityControllableModel<EntityPlane>
 
 		PartDefinition Runder_lead_edge_r1 = Lwing.addOrReplaceChild("Runder_lead_edge_r1", CubeListBuilder.create().texOffs(268, 535).addBox(-58.0F, -1.0F, -27.0F, 116.0F, 2.0F, 54.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(50.7226F, -24.6F, 75.8627F, 0.0F, -0.6981F, 0.0F));
 
-		PartDefinition left_flaperons = Lwing.addOrReplaceChild("left_flaperons", CubeListBuilder.create().texOffs(392, 36).addBox(-27.0F, -3.0F, -18.5F, 54.0F, 6.0F, 13.0F, new CubeDeformation(0.0F)), PartPose.offset(50.5085F, -26.7008F, 139.9611F));
+		PartDefinition left_flaperons = Lwing.addOrReplaceChild("left_flaperons", CubeListBuilder.create().texOffs(392, 36).addBox(-27.0F, -3.0F, -18.5F, 54.0F, 6.0F, 13.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(50.5085F, -26.7008F, 139.9611F, -1.309F, 0.0F, 0.0F));
 
 		PartDefinition Rwing = wings.addOrReplaceChild("Rwing", CubeListBuilder.create().texOffs(257, 379).addBox(-112.5085F, -25.7708F, 92.4611F, 35.0F, 2.0F, 42.0F, new CubeDeformation(0.0F))
 		.texOffs(72, 309).addBox(-112.5085F, -29.7008F, 102.4611F, 35.0F, 4.0F, 32.0F, new CubeDeformation(0.0F))
@@ -311,41 +257,50 @@ public class EntityModelAlexisPlane extends EntityControllableModel<EntityPlane>
 
 		PartDefinition x_centered_r2 = hull_connector.addOrReplaceChild("x_centered_r2", CubeListBuilder.create().texOffs(341, 291).addBox(-8.5F, -1.5F, -12.0F, 17.0F, 3.0F, 24.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -24.6381F, 214.9029F, 0.2618F, 0.0F, 0.0F));
 
-		PartDefinition hexadecagon2 = Afterburner2.addOrReplaceChild("hexadecagon", CubeListBuilder.create(), PartPose.offset(8.0F, -34.0F, 249.0F));
+		PartDefinition hexadecagon = Afterburner2.addOrReplaceChild("hexadecagon", CubeListBuilder.create(), PartPose.offset(8.0F, -34.0F, 249.0F));
 
-		PartDefinition hexadecagon_r8 = hexadecagon2.addOrReplaceChild("hexadecagon_r8", CubeListBuilder.create().texOffs(627, 76).addBox(-17.5957F, -3.5F, -20.0F, 4.0F, 7.0F, 27.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-4.3861F, -6.5031F, 3.7175F, 0.0F, 0.2182F, 0.3927F));
+		PartDefinition hexadecagon_r8 = hexadecagon.addOrReplaceChild("hexadecagon_r8", CubeListBuilder.create().texOffs(627, 76).addBox(-17.5957F, -3.5F, -20.0F, 4.0F, 7.0F, 27.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-4.3861F, -6.5031F, 3.7175F, 0.0F, 0.2182F, 0.3927F));
 
-		PartDefinition hexadecagon_r9 = hexadecagon2.addOrReplaceChild("hexadecagon_r9", CubeListBuilder.create().texOffs(627, 113).addBox(-17.5957F, -3.5F, -20.0F, 4.0F, 7.0F, 27.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-4.0883F, -8.0F, 3.7175F, 0.0F, 0.2182F, 0.0F));
+		PartDefinition hexadecagon_r9 = hexadecagon.addOrReplaceChild("hexadecagon_r9", CubeListBuilder.create().texOffs(627, 113).addBox(-17.5957F, -3.5F, -20.0F, 4.0F, 7.0F, 27.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-4.0883F, -8.0F, 3.7175F, 0.0F, 0.2182F, 0.0F));
 
-		PartDefinition hexadecagon_r10 = hexadecagon2.addOrReplaceChild("hexadecagon_r10", CubeListBuilder.create().texOffs(628, 39).addBox(-17.5957F, -3.5F, -20.0F, 4.0F, 7.0F, 27.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-4.3861F, -9.4969F, 3.7175F, 0.0F, 0.2182F, -0.3927F));
+		PartDefinition hexadecagon_r10 = hexadecagon.addOrReplaceChild("hexadecagon_r10", CubeListBuilder.create().texOffs(628, 39).addBox(-17.5957F, -3.5F, -20.0F, 4.0F, 7.0F, 27.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-4.3861F, -9.4969F, 3.7175F, 0.0F, 0.2182F, -0.3927F));
 
-		PartDefinition hexadecagon_r11 = hexadecagon2.addOrReplaceChild("hexadecagon_r11", CubeListBuilder.create().texOffs(628, 258).addBox(13.5957F, -3.5F, -20.0F, 4.0F, 7.0F, 27.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-11.6139F, -9.4969F, 3.7175F, 0.0F, -0.2182F, 0.3927F));
+		PartDefinition hexadecagon_r11 = hexadecagon.addOrReplaceChild("hexadecagon_r11", CubeListBuilder.create().texOffs(628, 258).addBox(13.5957F, -3.5F, -20.0F, 4.0F, 7.0F, 27.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-11.6139F, -9.4969F, 3.7175F, 0.0F, -0.2182F, 0.3927F));
 
-		PartDefinition hexadecagon_r12 = hexadecagon2.addOrReplaceChild("hexadecagon_r12", CubeListBuilder.create().texOffs(559, 628).addBox(13.5957F, -3.5F, -20.0F, 4.0F, 7.0F, 27.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-11.9117F, -8.0F, 3.7175F, 0.0F, -0.2182F, 0.0F));
+		PartDefinition hexadecagon_r12 = hexadecagon.addOrReplaceChild("hexadecagon_r12", CubeListBuilder.create().texOffs(559, 628).addBox(13.5957F, -3.5F, -20.0F, 4.0F, 7.0F, 27.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-11.9117F, -8.0F, 3.7175F, 0.0F, -0.2182F, 0.0F));
 
-		PartDefinition hexadecagon_r13 = hexadecagon2.addOrReplaceChild("hexadecagon_r13", CubeListBuilder.create().texOffs(81, 629).addBox(13.5957F, -3.5F, -20.0F, 4.0F, 7.0F, 27.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-11.6139F, -6.5031F, 3.7175F, 0.0F, -0.2182F, -0.3927F));
+		PartDefinition hexadecagon_r13 = hexadecagon.addOrReplaceChild("hexadecagon_r13", CubeListBuilder.create().texOffs(81, 629).addBox(13.5957F, -3.5F, -20.0F, 4.0F, 7.0F, 27.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-11.6139F, -6.5031F, 3.7175F, 0.0F, -0.2182F, -0.3927F));
 
-		PartDefinition hexadecagon_r14 = hexadecagon2.addOrReplaceChild("hexadecagon_r14", CubeListBuilder.create().texOffs(257, 246).addBox(-3.5F, -17.5957F, -20.0F, 7.0F, 4.0F, 27.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-10.766F, -5.234F, 3.7175F, -0.2182F, 0.0F, 0.7854F));
+		PartDefinition hexadecagon_r14 = hexadecagon.addOrReplaceChild("hexadecagon_r14", CubeListBuilder.create().texOffs(257, 246).addBox(-3.5F, -17.5957F, -20.0F, 7.0F, 4.0F, 27.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-10.766F, -5.234F, 3.7175F, -0.2182F, 0.0F, 0.7854F));
 
-		PartDefinition hexadecagon_r15 = hexadecagon2.addOrReplaceChild("hexadecagon_r15", CubeListBuilder.create().texOffs(0, 563).addBox(-3.5F, -17.5957F, -30.0F, 7.0F, 4.0F, 37.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-9.4969F, -4.3861F, 3.7175F, -0.2182F, 0.0F, 0.3927F));
+		PartDefinition hexadecagon_r15 = hexadecagon.addOrReplaceChild("hexadecagon_r15", CubeListBuilder.create().texOffs(0, 563).addBox(-3.5F, -17.5957F, -30.0F, 7.0F, 4.0F, 37.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-9.4969F, -4.3861F, 3.7175F, -0.2182F, 0.0F, 0.3927F));
 
-		PartDefinition hexadecagon_r16 = hexadecagon2.addOrReplaceChild("hexadecagon_r16", CubeListBuilder.create().texOffs(554, 479).addBox(-3.5F, -17.5957F, -28.0F, 7.0F, 4.0F, 35.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-8.0F, -4.0883F, 3.7175F, -0.2182F, 0.0F, 0.0F));
+		PartDefinition hexadecagon_r16 = hexadecagon.addOrReplaceChild("hexadecagon_r16", CubeListBuilder.create().texOffs(554, 479).addBox(-3.5F, -17.5957F, -28.0F, 7.0F, 4.0F, 35.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-8.0F, -4.0883F, 3.7175F, -0.2182F, 0.0F, 0.0F));
 
-		PartDefinition hexadecagon_r17 = hexadecagon2.addOrReplaceChild("hexadecagon_r17", CubeListBuilder.create().texOffs(577, 283).addBox(-3.5F, -17.5957F, -30.0F, 7.0F, 4.0F, 37.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-6.5031F, -4.3861F, 3.7175F, -0.2182F, 0.0F, -0.3927F));
+		PartDefinition hexadecagon_r17 = hexadecagon.addOrReplaceChild("hexadecagon_r17", CubeListBuilder.create().texOffs(577, 283).addBox(-3.5F, -17.5957F, -30.0F, 7.0F, 4.0F, 37.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-6.5031F, -4.3861F, 3.7175F, -0.2182F, 0.0F, -0.3927F));
 
-		PartDefinition hexadecagon_r18 = hexadecagon2.addOrReplaceChild("hexadecagon_r18", CubeListBuilder.create().texOffs(257, 277).addBox(-3.5F, -17.5957F, -20.0F, 7.0F, 4.0F, 27.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-5.234F, -5.234F, 3.7175F, -0.2182F, 0.0F, -0.7854F));
+		PartDefinition hexadecagon_r18 = hexadecagon.addOrReplaceChild("hexadecagon_r18", CubeListBuilder.create().texOffs(257, 277).addBox(-3.5F, -17.5957F, -20.0F, 7.0F, 4.0F, 27.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-5.234F, -5.234F, 3.7175F, -0.2182F, 0.0F, -0.7854F));
 
-		PartDefinition hexadecagon_r19 = hexadecagon2.addOrReplaceChild("hexadecagon_r19", CubeListBuilder.create().texOffs(138, 364).addBox(-3.5F, 13.5957F, -20.0F, 7.0F, 4.0F, 27.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-5.234F, -10.766F, 3.7175F, 0.2182F, 0.0F, 0.7854F));
+		PartDefinition hexadecagon_r19 = hexadecagon.addOrReplaceChild("hexadecagon_r19", CubeListBuilder.create().texOffs(138, 364).addBox(-3.5F, 13.5957F, -20.0F, 7.0F, 4.0F, 27.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-5.234F, -10.766F, 3.7175F, 0.2182F, 0.0F, 0.7854F));
 
-		PartDefinition hexadecagon_r20 = hexadecagon2.addOrReplaceChild("hexadecagon_r20", CubeListBuilder.create().texOffs(141, 395).addBox(-3.5F, 13.5957F, -20.0F, 7.0F, 4.0F, 27.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-6.5031F, -11.6139F, 3.7175F, 0.2182F, 0.0F, 0.3927F));
+		PartDefinition hexadecagon_r20 = hexadecagon.addOrReplaceChild("hexadecagon_r20", CubeListBuilder.create().texOffs(141, 395).addBox(-3.5F, 13.5957F, -20.0F, 7.0F, 4.0F, 27.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-6.5031F, -11.6139F, 3.7175F, 0.2182F, 0.0F, 0.3927F));
 
-		PartDefinition hexadecagon_r21 = hexadecagon2.addOrReplaceChild("hexadecagon_r21", CubeListBuilder.create().texOffs(458, 55).addBox(-3.5F, 13.5957F, -20.0F, 7.0F, 4.0F, 27.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-8.0F, -11.9117F, 3.7175F, 0.2182F, 0.0F, 0.0F));
+		PartDefinition hexadecagon_r21 = hexadecagon.addOrReplaceChild("hexadecagon_r21", CubeListBuilder.create().texOffs(458, 55).addBox(-3.5F, 13.5957F, -20.0F, 7.0F, 4.0F, 27.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-8.0F, -11.9117F, 3.7175F, 0.2182F, 0.0F, 0.0F));
 
-		PartDefinition hexadecagon_r22 = hexadecagon2.addOrReplaceChild("hexadecagon_r22", CubeListBuilder.create().texOffs(0, 604).addBox(-3.5F, 13.5957F, -20.0F, 7.0F, 4.0F, 27.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-9.4969F, -11.6139F, 3.7175F, 0.2182F, 0.0F, -0.3927F));
+		PartDefinition hexadecagon_r22 = hexadecagon.addOrReplaceChild("hexadecagon_r22", CubeListBuilder.create().texOffs(0, 604).addBox(-3.5F, 13.5957F, -20.0F, 7.0F, 4.0F, 27.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-9.4969F, -11.6139F, 3.7175F, 0.2182F, 0.0F, -0.3927F));
 
-		PartDefinition hexadecagon_r23 = hexadecagon2.addOrReplaceChild("hexadecagon_r23", CubeListBuilder.create().texOffs(609, 328).addBox(-3.5F, 13.5957F, -20.0F, 7.0F, 4.0F, 27.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-10.766F, -10.766F, 3.7175F, 0.2182F, 0.0F, -0.7854F));
+		PartDefinition hexadecagon_r23 = hexadecagon.addOrReplaceChild("hexadecagon_r23", CubeListBuilder.create().texOffs(609, 328).addBox(-3.5F, 13.5957F, -20.0F, 7.0F, 4.0F, 27.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-10.766F, -10.766F, 3.7175F, 0.2182F, 0.0F, -0.7854F));
 
 		return LayerDefinition.create(meshdefinition, 1024, 1024);
 	}
 
+	@Override
+	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+
+	}
+
+	@Override
+	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+		Plane.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+	}
 }

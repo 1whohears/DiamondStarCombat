@@ -18,3 +18,5 @@ https://youtu.be/P4Flz0XOtTk
 ## Special Thanks
 
 __**pretzelpenguin777**__: Improved **Noah Chopper** and **Javi Plane** Model
+
+__**kawaiicakes_**__: Improved **Alexis Plane** Model

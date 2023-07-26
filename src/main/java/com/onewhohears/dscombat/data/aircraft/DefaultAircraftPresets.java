@@ -24,7 +24,7 @@ public class DefaultAircraftPresets {
 			.setTurnTorques(1f, 2f, 4f)
 			.setThrottleRate(0.04f, 0.08f)
 			.setPlaneWingArea(12f)
-			.setDefaultTexture(DyeColor.WHITE, "dscombat:textures/entities/alexis_plane/white.png")
+			.setDefaultTexture(DyeColor.WHITE, "dscombat:textures/entities/alexis_plane/test.png")
 			.setAltTexture(DyeColor.RED, "dscombat:textures/entities/alexis_plane/red.png")
 			.setAltTexture(DyeColor.CYAN, "dscombat:textures/entities/alexis_plane/cyan.png")
 			.setAltTexture(DyeColor.BLACK, "dscombat:textures/entities/alexis_plane/black.png")

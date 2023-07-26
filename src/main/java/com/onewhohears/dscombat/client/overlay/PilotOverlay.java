@@ -398,12 +398,11 @@ public class PilotOverlay {
         	int y = cy + (int)(-Mth.cos(yaw)*radius*dist);
         	int color = 0x00ff00;
         	String symbol = "o";
+        	if (ping.isFriendly) symbol = "F";
         	if (i == selected) color = 0xff0000;
         	else if (i == hover) color = 0xffff00;
-        	else if (ping.isFriendly) {
-        		color = 0x0000ff;
-        		symbol = "F";
-        	}
+        	else if (ping.isFriendly) color = 0x0000ff;
+        	else if (ping.isShared()) color = 0x66cdaa;
         	GuiComponent.drawCenteredString(poseStack, m.font, 
         			symbol, x, y, color);
 		}

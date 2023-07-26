@@ -62,6 +62,7 @@ public final class ClientRenderRadarEvents {
 			if (i == selected) setSelectedColor();
 			else if (i == ClientInputEvents.getHoverIndex()) setHoverColor();
 			else if (p.isFriendly) setFriendlyColor();
+			else if (p.isShared()) setSharedColor();
 			else setDefaultColor();
 			
 			var tesselator = Tesselator.getInstance();
@@ -116,6 +117,10 @@ public final class ClientRenderRadarEvents {
 	
 	private static void setFriendlyColor() {
 		colorR = 0; colorG = 0; colorB = 255; colorA = 255;
+	}
+	
+	private static void setSharedColor() {
+		colorR = 102; colorG = 205; colorB = 170; colorA = 255;
 	}
 	
 	private static void closeBox(BufferBuilder buffer, double x, double y, double z, double d) {

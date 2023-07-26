@@ -96,23 +96,25 @@ public class RadarSystem {
 		// PLANE RADARS
 		for (RadarData r : radars) r.tickUpdateTargets(parent, targets);
 		// DATA LINK
-		// FIXME 2 data link is broken on servers?
-		if (hasDataLink() && parent.tickCount % 20 == 0) {
+		if (parent.tickCount % 20 == 0) {
 			clearDataLink();
-			Entity controller = parent.getControllingPassenger();
-			if (!(controller instanceof Player player)) return;
-			List<? extends Player> players = parent.level.players();
-			for (Player p : players) {
-				if (player.equals(p)) continue;
-				if (!player.isAlliedTo(p)) continue;
-				if (!(p.getRootVehicle() instanceof EntityAircraft plane)) continue;
-				if (!plane.radarSystem.hasDataLink()) continue;
-				if (plane.equals(parent)) continue;
-				for (RadarPing rp : plane.radarSystem.targets) {
-					if (rp.id == parent.getId()) continue;
-					if (hasTarget(rp.id)) continue;
-					targets.add(rp.getCopy(true));
-				}
+			if (hasDataLink()) {
+				Entity controller = parent.getControllingPassenger();
+				if (!(controller instanceof Player player)) return;
+				List<? extends Player> players = parent.level.players();
+				for (Player p : players) {
+					if (player.equals(p)) continue;
+					if (!player.isAlliedTo(p)) continue;
+					if (!(p.getRootVehicle() instanceof EntityAircraft plane)) continue;
+					if (!plane.radarSystem.hasDataLink()) continue;
+					if (plane.equals(parent)) continue;
+					for (RadarPing rp : plane.radarSystem.targets) {
+						if (rp.id == parent.getId()) continue;
+						if (rp.isShared()) continue;
+						if (hasTarget(rp.id)) continue;
+						targets.add(rp.getCopy(true));
+					}
+				} 
 			}
 		}
 		// PICK PREVIOUS TARGET

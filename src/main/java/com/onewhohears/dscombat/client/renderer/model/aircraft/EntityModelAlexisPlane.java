@@ -36,7 +36,7 @@ public class EntityModelAlexisPlane extends EntityControllableModel<EntityPlane>
 	@Override
 	public void renderToBuffer(EntityPlane entity, float partialTicks, PoseStack poseStack, VertexConsumer vertexConsumer,
 			int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		poseStack.translate(0, 0.4, 0);
+		poseStack.translate(0, -0.6, 5);
 		poseStack.scale(0.9F, -0.9F, -0.9F);
 		float gear = entity.getLandingGearPos(partialTicks);
 		if (gear < 1) {

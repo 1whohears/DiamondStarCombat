@@ -35,7 +35,7 @@ public class DefaultAircraftPresets {
 			.addIngredient(ModItems.WING.getId(), 2)
 			.addIngredient(ModItems.ADVANCED_COCKPIT.getId())
 			.addIngredient("minecraft:gold_ingot", 10)
-			.addPilotSeatSlot(0, -0.3, 2, 48, 20)
+			.addPilotSeatSlot(0, 0.65, 6.5, 48, 20)
 			.addEmptySlot("slotname.dscombat.left_wing_1", SlotType.WING, 1.8, -0.3, 0.5, 0, 48, 40)
 			.addEmptySlot("slotname.dscombat.left_wing_2", SlotType.WING, 3.2, -0.3, 0.5, 0, 68, 40)
 			.addEmptySlot("slotname.dscombat.right_wing_1", SlotType.WING, -1.8, -0.3, 0.5, 0, 48, 60)

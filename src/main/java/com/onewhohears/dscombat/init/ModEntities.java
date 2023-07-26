@@ -56,7 +56,7 @@ public class ModEntities {
 					ModSounds.JET_1,
 					4, 8, 2, 3, 
 					LiftKGraph.ALEXIS_PLANE_GRAPH, 8f, false, 0), 
-					EntityDimensions.scalable(2.0f, 2.0f)));
+					EntityDimensions.scalable(4.0f, 4.0f)));
 	
 	public static final RegistryObject<EntityType<EntityPlane>> WOODEN_PLANE = ENTITIES.register("wooden_plane", 
 			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 

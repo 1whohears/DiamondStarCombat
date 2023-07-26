@@ -93,5 +93,9 @@
       "slot_ui_y": 100
     }
   ],
-  "presetId": "javi_plane"
+  "presetId": "javi_plane",
+  "textures": {
+    "default_texture_path": "dscombat:textures/entity/javi_plane/",
+    "overrides": {}
+  }
 }

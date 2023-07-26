@@ -1,7 +1,6 @@
 {
   "aircraft_type": 0,
   "displayName": "preset.dscombat.wooden_plane_empty",
-  "dyecolor": 12,
   "health": 40.0,
   "idleheat": 1.0,
   "ingredients": [
@@ -27,6 +26,7 @@
   "maxpitch": 3.0,
   "maxroll": 5.0,
   "maxyaw": 2.0,
+  "paintjob_color": 12,
   "pitchtorque": 2.5,
   "presetId": "wooden_plane_empty",
   "rolltorque": 1.5,
@@ -84,9 +84,6 @@
     }
   ],
   "stealth": 1.0,
-  "textures": {
-    "12": "dscombat:textures/entities/wooden_plane/brown.png"
-  },
   "throttledown": 0.06,
   "throttleup": 0.02,
   "turn_radius": 16.0,

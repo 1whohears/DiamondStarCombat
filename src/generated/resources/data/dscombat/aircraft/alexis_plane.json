@@ -1,7 +1,6 @@
 {
   "aircraft_type": 0,
   "displayName": "preset.dscombat.alexis_plane",
-  "dyecolor": 0,
   "health": 150.0,
   "idleheat": 4.0,
   "ingredients": [
@@ -79,6 +78,7 @@
   "maxpitch": 2.5,
   "maxroll": 6.0,
   "maxyaw": 1.5,
+  "paintjob_color": 0,
   "pitchtorque": 2.0,
   "presetId": "alexis_plane",
   "rolltorque": 1.0,
@@ -226,15 +226,6 @@
     }
   ],
   "stealth": 0.8,
-  "textures": {
-    "0": "dscombat:textures/entities/alexis_plane/white.png",
-    "1": "dscombat:textures/entities/alexis_plane/orange.png",
-    "10": "dscombat:textures/entities/alexis_plane/purple.png",
-    "11": "dscombat:textures/entities/alexis_plane/blue.png",
-    "14": "dscombat:textures/entities/alexis_plane/red.png",
-    "15": "dscombat:textures/entities/alexis_plane/black.png",
-    "9": "dscombat:textures/entities/alexis_plane/cyan.png"
-  },
   "throttledown": 0.08,
   "throttleup": 0.04,
   "turn_radius": 10.0,

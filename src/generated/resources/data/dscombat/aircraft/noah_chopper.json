@@ -3,7 +3,6 @@
   "accSide": 0.02,
   "aircraft_type": 1,
   "displayName": "preset.dscombat.noah_chopper",
-  "dyecolor": 12,
   "health": 300.0,
   "idleheat": 8.0,
   "ingredients": [
@@ -85,6 +84,7 @@
   "maxpitch": 2.0,
   "maxroll": 4.0,
   "maxyaw": 4.0,
+  "paintjob_color": 12,
   "pitchtorque": 1.0,
   "presetId": "noah_chopper",
   "rolltorque": 1.0,
@@ -350,12 +350,6 @@
     }
   ],
   "stealth": 1.2,
-  "textures": {
-    "11": "dscombat:textures/entities/noah_chopper/blue.png",
-    "12": "dscombat:textures/entities/noah_chopper/brown.png",
-    "14": "dscombat:textures/entities/noah_chopper/red.png",
-    "15": "dscombat:textures/entities/noah_chopper/black.png"
-  },
   "throttledown": 0.02,
   "throttleup": 0.01,
   "turn_radius": 0.0,

@@ -1,7 +1,6 @@
 {
   "aircraft_type": 2,
   "displayName": "preset.dscombat.small_roller_unarmed",
-  "dyecolor": 7,
   "health": 30.0,
   "idleheat": 1.0,
   "ingredients": [
@@ -35,6 +34,7 @@
   "maxpitch": 0.0,
   "maxroll": 0.0,
   "maxyaw": 3.0,
+  "paintjob_color": 7,
   "pitchtorque": 0.0,
   "presetId": "small_roller_unarmed",
   "rolltorque": 0.0,
@@ -75,9 +75,6 @@
     }
   ],
   "stealth": 1.0,
-  "textures": {
-    "7": "dscombat:textures/entities/small_roller.png"
-  },
   "throttledown": 0.08,
   "throttleup": 0.08,
   "turn_radius": 0.0,

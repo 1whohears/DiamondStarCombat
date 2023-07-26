@@ -53,5 +53,26 @@
       "slot_ui_y": 100
     }
   ],
-  "presetId": "wooden_plane"
+  "presetId": "wooden_plane",
+  "textures": {
+    "default_texture_path": "dscombat:textures/entity/wooden_plane/",
+    "overrides": {
+      "black": "dscombat:textures/entity/wooden_plane/brown",
+      "blue": "dscombat:textures/entity/wooden_plane/brown",
+      "brown": "dscombat:textures/entity/wooden_plane/brown",
+      "cyan": "dscombat:textures/entity/wooden_plane/brown",
+      "gray": "dscombat:textures/entity/wooden_plane/brown",
+      "green": "dscombat:textures/entity/wooden_plane/brown",
+      "light_blue": "dscombat:textures/entity/wooden_plane/brown",
+      "light_gray": "dscombat:textures/entity/wooden_plane/brown",
+      "lime": "dscombat:textures/entity/wooden_plane/brown",
+      "magenta": "dscombat:textures/entity/wooden_plane/brown",
+      "orange": "dscombat:textures/entity/wooden_plane/brown",
+      "pink": "dscombat:textures/entity/wooden_plane/brown",
+      "purple": "dscombat:textures/entity/wooden_plane/brown",
+      "red": "dscombat:textures/entity/wooden_plane/brown",
+      "white": "dscombat:textures/entity/wooden_plane/brown",
+      "yellow": "dscombat:textures/entity/wooden_plane/brown"
+    }
+  }
 }

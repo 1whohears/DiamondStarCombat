@@ -16,6 +16,8 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientAddMoment;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftAV;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftQ;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftThrottle;
+import com.onewhohears.dscombat.data.aircraft.AircraftClientPreset;
+import com.onewhohears.dscombat.data.aircraft.AircraftClientPresets;
 import com.onewhohears.dscombat.data.aircraft.AircraftInputs;
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
@@ -138,7 +140,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	public final double maxFallSpeed = Config.SERVER.maxFallSpeed.get();
 	public final boolean autoDataLink = Config.SERVER.autoDataLink.get();
 	
-	public final String defaultPreset, clientPreset;
+	public final String defaultPreset;
 	public final boolean negativeThrottle;
 	public final float Ix, Iy, Iz, explodeSize;
 	
@@ -146,7 +148,13 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	
 	public String preset;
 	public ItemStack item;
+	/**
+	 * CLIENT ONLY
+	 */
 	public AircraftTextures textures;
+	/**
+	 * CLIENT ONLY
+	 */
 	private ResourceLocation currentTexture;
 	
 	public Quaternion prevQ = Quaternion.ONE.copy();
@@ -182,9 +190,11 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		super(entityType, level);
 		this.defaultPreset = defaultPreset.getId();
 		this.preset = this.defaultPreset;
-		this.clientPreset = defaultPreset.getClientPresetId();
-		this.textures = defaultPreset.getAircraftTextures();
-		this.currentTexture = textures.getDefaultTexture();
+		if (level.isClientSide) {
+			AircraftClientPreset acp = AircraftClientPresets.get().getPreset(this.defaultPreset);
+			this.textures = acp.getAircraftTextures();
+			this.currentTexture = textures.getTexture(defaultPreset.getDefaultPaintJob());
+		}
 		this.item = defaultPreset.getItem();
 		this.engineSound = engineSound;
 		this.negativeThrottle = negativeThrottle;
@@ -217,7 +227,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		entityData.define(MASS, 1f);
 		entityData.define(LANDING_GEAR, false);
 		entityData.define(TEST_MODE, false);
-		entityData.define(CURRRENT_DYE_ID, 0);
+		entityData.define(CURRRENT_DYE_ID, -1);
 		entityData.define(TURN_RADIUS, 0f);
 		entityData.define(NO_CONSUME, false);
 		entityData.define(RADAR_MODE, RadarMode.ALL.ordinal());
@@ -263,6 +273,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		setNoConsume(nbt.getBoolean("no_consume"));
 		int color = -1;
 		if (nbt.contains("dyecolor")) color = nbt.getInt("dyecolor");
+		else if (nbt.contains("paintjob_color")) color = nbt.getInt("paintjob_color");
 		preset = nbt.getString("preset");
 		if (preset.isEmpty()) preset = defaultPreset;
 		else if (!AircraftPresets.get().has(preset)) {
@@ -271,7 +282,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		}
 		System.out.println(this+" using nbt preset "+preset);
 		AircraftPreset ap = AircraftPresets.get().getPreset(preset);
-		textures = ap.getAircraftTextures();
 		item = ap.getItem();
 		CompoundTag presetNbt = ap.getDataAsNBT();
 		if (!nbt.getBoolean("merged_preset")) nbt.merge(presetNbt);
@@ -302,7 +312,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		setQ(q);
 		setPrevQ(q);
 		setClientQ(q);
-		if (color == -1) color = nbt.getInt("dyecolor");
+		if (color == -1) color = nbt.getInt("paintjob_color");
 		setCurrentColor(DyeColor.byId(color));
 		setRadarMode(RadarMode.values()[nbt.getInt("radar_mode")]);
 		setRadioSong(nbt.getString("radio_song"));
@@ -337,7 +347,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		compound.putFloat("xRot", getXRot());
 		compound.putFloat("yRot", getYRot());
 		compound.putFloat("zRot", zRot);
-		compound.putInt("dyecolor", getCurrentColorId());
+		compound.putInt("paintjob_color", getCurrentColorId());
 		compound.putInt("radar_mode", getRadarMode().ordinal());
 		compound.putString("radio_song", getRadioSong());
 		Entity c = getControllingPassenger();
@@ -1101,7 +1111,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		// PRESET STUFF
 		if (!AircraftPresets.get().has(preset)) return;
 		AircraftPreset ap = AircraftPresets.get().getPreset(preset);
-		textures = ap.getAircraftTextures();
 		item = ap.getItem();
 	}
 	
@@ -1581,6 +1590,9 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     	entityData.set(STEALTH, stealth);
     }
     
+    /**
+     * CLIENT ONLY
+     */
     public ResourceLocation getTexture() {
     	return currentTexture;
     }
@@ -1851,7 +1863,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     public boolean setCurrentColor(DyeColor color) {
     	int id = color.getId();
     	if (id == getCurrentColorId()) return false;
-    	if (!textures.hasTexture(id)) return false;
     	entityData.set(CURRRENT_DYE_ID, id);
     	return true;
     }

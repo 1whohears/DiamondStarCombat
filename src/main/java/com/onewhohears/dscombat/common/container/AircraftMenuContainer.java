@@ -32,7 +32,7 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
 			this.planeInv = plane.partsManager.getInventory();
 			List<PartSlot> slots = plane.partsManager.getSlots();
 			//System.out.println("client preset = "+plane.clientPreset);
-			clientData = AircraftClientPresets.get().getPreset(plane.clientPreset);
+			clientData = AircraftClientPresets.get().getPreset(plane.defaultPreset);
 			//System.out.println("acp not null = "+(acp != null));
 			// create plane menu container
 			for (int i = 0; i < planeInv.getContainerSize(); ++i) {

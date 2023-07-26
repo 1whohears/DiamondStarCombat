@@ -29,7 +29,6 @@ public class AircraftPreset extends JsonPreset{
 	private final CompoundTag dataNBT;
 	private List<DSCIngredient> ingredients;
 	private ItemStack item;
-	private AircraftTextures textures;
 	
 	public AircraftPreset(ResourceLocation key, JsonObject json) {
 		super(key, json);
@@ -78,16 +77,8 @@ public class AircraftPreset extends JsonPreset{
 		return item.copy();
 	}
 	
-	public AircraftTextures getAircraftTextures() {
-		if (textures == null) {
-			textures = new AircraftTextures(dataNBT);
-		}
-		return textures;
-	}
-	
-	public String getClientPresetId() {
-		if (!getJsonData().has("client_preset_id")) return getId();
-		return getJsonData().get("client_preset_id").getAsString();
+	public int getDefaultPaintJob() {
+		return getJsonData().get("paintjob_color").getAsInt();
 	}
 	
 	@Override
@@ -133,10 +124,6 @@ public class AircraftPreset extends JsonPreset{
 			setBoolean("landing_gear", true);
 			setBoolean("is_craftable", is_craftable);
 			return super.build();
-		}
-		
-		public Builder setClientPresetId(String id) {
-			return setString("client_preset_id", id);
 		}
 		
 		public Builder setAircraftType(AircraftType aircraft_type) {
@@ -370,35 +357,8 @@ public class AircraftPreset extends JsonPreset{
 		/**
 		 * all vehicles
 		 */
-		public Builder setDefaultColor(DyeColor dyecolor, ResourceLocation texture) {
-			setAltTexture(dyecolor, texture);
-			return setInt("dyecolor", dyecolor.getId());
-		}
-		
-		/**
-		 * all vehicles
-		 */
-		public Builder setDefaultTexture(DyeColor dyecolor, String textureId) {
-			return setDefaultColor(dyecolor, new ResourceLocation(textureId));
-		}
-		
-		/**
-		 * all vehicles
-		 */
-		public Builder setAltTexture(DyeColor dyecolor, ResourceLocation texture) {
-			if (!getData().has("textures")) {
-				getData().add("textures", new JsonObject());
-			}
-			getData().get("textures").getAsJsonObject()
-				.addProperty(dyecolor.getId()+"", texture.toString());
-			return this;
-		}
-		
-		/**
-		 * all vehicles
-		 */
-		public Builder setAltTexture(DyeColor dyecolor, String textureId) {
-			return setAltTexture(dyecolor, new ResourceLocation(textureId));
+		public Builder setDefaultColor(DyeColor dyecolor) {
+			return setInt("paintjob_color", dyecolor.getId());
 		}
 		
 		/**

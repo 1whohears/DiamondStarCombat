@@ -1,7 +1,6 @@
 {
   "aircraft_type": 2,
   "displayName": "preset.dscombat.mrbudger_tank_unarmed",
-  "dyecolor": 4,
   "health": 500.0,
   "idleheat": 10.0,
   "ingredients": [
@@ -39,6 +38,7 @@
   "maxpitch": 0.0,
   "maxroll": 0.0,
   "maxyaw": 2.0,
+  "paintjob_color": 4,
   "pitchtorque": 0.0,
   "presetId": "mrbudger_tank_unarmed",
   "rolltorque": 0.0,
@@ -134,12 +134,6 @@
     }
   ],
   "stealth": 1.0,
-  "textures": {
-    "11": "dscombat:textures/entities/mrbudger_tank/blue.png",
-    "14": "dscombat:textures/entities/mrbudger_tank/red.png",
-    "15": "dscombat:textures/entities/mrbudger_tank/black.png",
-    "4": "dscombat:textures/entities/mrbudger_tank/yellow.png"
-  },
   "throttledown": 0.04,
   "throttleup": 0.04,
   "turn_radius": 0.0,

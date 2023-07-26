@@ -63,5 +63,9 @@
       "slot_ui_y": 100
     }
   ],
-  "presetId": "alexis_plane"
+  "presetId": "alexis_plane",
+  "textures": {
+    "default_texture_path": "dscombat:textures/entity/alexis_plane/",
+    "overrides": {}
+  }
 }

@@ -1,7 +1,6 @@
 {
   "aircraft_type": 2,
   "displayName": "preset.dscombat.axcel_truck",
-  "dyecolor": 4,
   "health": 80.0,
   "idleheat": 6.0,
   "ingredients": [
@@ -47,6 +46,7 @@
   "maxpitch": 0.0,
   "maxroll": 0.0,
   "maxyaw": 4.0,
+  "paintjob_color": 4,
   "pitchtorque": 0.0,
   "presetId": "axcel_truck",
   "rolltorque": 0.0,
@@ -129,9 +129,6 @@
     }
   ],
   "stealth": 1.0,
-  "textures": {
-    "4": "dscombat:textures/entities/axcel_truck/yellow.png"
-  },
   "throttledown": 0.05,
   "throttleup": 0.05,
   "turn_radius": 11.0,

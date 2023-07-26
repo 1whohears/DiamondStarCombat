@@ -1,7 +1,6 @@
 {
   "aircraft_type": 3,
   "displayName": "preset.dscombat.nathan_boat",
-  "dyecolor": 0,
   "health": 100.0,
   "idleheat": 2.0,
   "ingredients": [
@@ -63,6 +62,7 @@
   "maxpitch": 0.0,
   "maxroll": 0.0,
   "maxyaw": 3.5,
+  "paintjob_color": 0,
   "pitchtorque": 0.0,
   "presetId": "nathan_boat",
   "rolltorque": 0.0,
@@ -214,9 +214,6 @@
     }
   ],
   "stealth": 1.0,
-  "textures": {
-    "0": "dscombat:textures/entities/nathan_boat/white.png"
-  },
   "throttledown": 0.1,
   "throttleup": 0.05,
   "turn_radius": 0.0,

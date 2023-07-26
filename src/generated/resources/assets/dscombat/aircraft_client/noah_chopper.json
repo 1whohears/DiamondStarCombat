@@ -123,5 +123,9 @@
       "slot_ui_y": 100
     }
   ],
-  "presetId": "noah_chopper"
+  "presetId": "noah_chopper",
+  "textures": {
+    "default_texture_path": "dscombat:textures/entity/noah_chopper/",
+    "overrides": {}
+  }
 }

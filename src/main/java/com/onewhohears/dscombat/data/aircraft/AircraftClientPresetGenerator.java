@@ -89,6 +89,7 @@ public class AircraftClientPresetGenerator extends JsonPresetGenerator<AircraftC
 				.addUIPos(PartSlot.PILOT_SLOT_NAME, 48, 20)
 				.addUIPos("internal_1", 48, 100)
 				.addUIPos("internal_2", 68, 100)
+				.makeOneTexture("dscombat:textures/entity/small_roller/gray")
 				.build());
 		addPresetToGenerate(AircraftClientPreset.Builder.create(DSCombatMod.MODID, "nathan_boat")
 				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/nathan_boat.png")
@@ -134,6 +135,7 @@ public class AircraftClientPresetGenerator extends JsonPresetGenerator<AircraftC
 				.addUIPos("seat3", 108, 20)
 				.addUIPos("internal_1", 48, 100)
 				.addUIPos("internal_2", 68, 100)
+				.makeOneTexture("dscombat:textures/entity/orange_tesla/orange")
 				.build());
 		addPresetToGenerate(AircraftClientPreset.Builder.create(DSCombatMod.MODID, "wooden_plane")
 				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/wooden_plane.png")
@@ -147,6 +149,7 @@ public class AircraftClientPresetGenerator extends JsonPresetGenerator<AircraftC
 				.addUIPos("internal_1", 48, 100)
 				.addUIPos("internal_2", 68, 100)
 				.addUIPos("internal_3", 88, 100)
+				.makeOneTexture("dscombat:textures/entity/wooden_plane/brown")
 				.build());
 		addPresetToGenerate(AircraftClientPreset.Builder.create(DSCombatMod.MODID, "e3sentry_plane")
 				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/e3sentry_plane.png")

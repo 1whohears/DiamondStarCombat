@@ -43,5 +43,9 @@
       "slot_ui_y": 100
     }
   ],
-  "presetId": "mrbudger_tank"
+  "presetId": "mrbudger_tank",
+  "textures": {
+    "default_texture_path": "dscombat:textures/entity/mrbudger_tank/",
+    "overrides": {}
+  }
 }

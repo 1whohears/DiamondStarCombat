@@ -38,5 +38,9 @@
       "slot_ui_y": 100
     }
   ],
-  "presetId": "axcel_truck"
+  "presetId": "axcel_truck",
+  "textures": {
+    "default_texture_path": "dscombat:textures/entity/axcel_truck/",
+    "overrides": {}
+  }
 }

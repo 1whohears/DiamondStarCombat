@@ -1,7 +1,6 @@
 {
   "aircraft_type": 4,
   "displayName": "preset.dscombat.andolf_sub_empty",
-  "dyecolor": 11,
   "health": 800.0,
   "idleheat": 10.0,
   "ingredients": [
@@ -31,6 +30,7 @@
   "maxpitch": 2.0,
   "maxroll": 2.0,
   "maxyaw": 2.0,
+  "paintjob_color": 11,
   "pitchtorque": 1.0,
   "presetId": "andolf_sub_empty",
   "rolltorque": 1.0,
@@ -207,9 +207,6 @@
     }
   ],
   "stealth": 0.6,
-  "textures": {
-    "11": "dscombat:textures/entities/andolf_sub/blue.png"
-  },
   "throttledown": 0.04,
   "throttleup": 0.04,
   "turn_radius": 0.0,

@@ -128,5 +128,9 @@
       "slot_ui_y": 100
     }
   ],
-  "presetId": "e3sentry_plane"
+  "presetId": "e3sentry_plane",
+  "textures": {
+    "default_texture_path": "dscombat:textures/entity/e3sentry_plane/",
+    "overrides": {}
+  }
 }

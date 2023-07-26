@@ -1,7 +1,6 @@
 {
   "aircraft_type": 0,
   "displayName": "preset.dscombat.javi_plane_truck",
-  "dyecolor": 13,
   "health": 200.0,
   "idleheat": 5.0,
   "ingredients": [
@@ -83,6 +82,7 @@
   "maxpitch": 2.1,
   "maxroll": 4.0,
   "maxyaw": 1.1,
+  "paintjob_color": 13,
   "pitchtorque": 2.5,
   "presetId": "javi_plane_truck",
   "rolltorque": 1.5,
@@ -309,13 +309,6 @@
     }
   ],
   "stealth": 1.1,
-  "textures": {
-    "10": "dscombat:textures/entities/javi_plane/purple.png",
-    "11": "dscombat:textures/entities/javi_plane/blue.png",
-    "13": "dscombat:textures/entities/javi_plane/green.png",
-    "14": "dscombat:textures/entities/javi_plane/red.png",
-    "15": "dscombat:textures/entities/javi_plane/black.png"
-  },
   "throttledown": 0.08,
   "throttleup": 0.04,
   "turn_radius": 12.0,

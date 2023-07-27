@@ -1,62 +1,19 @@
-package com.onewhohears.dscombat.client.renderer.model.aircraft;
+// Made with Blockbench 4.7.4
+// Exported for Minecraft version 1.17 or later with Mojang mappings
+// Paste this class into your mod and generate all required imports
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.client.renderer.model.EntityControllableModel;
-import com.onewhohears.dscombat.entity.aircraft.EntityGroundVehicle;
 
-import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeDeformation;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
-
-public class EntityModelAxcelTruck extends EntityControllableModel<EntityGroundVehicle> {
-	
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(DSCombatMod.MODID, "axcel_truck"), "main");
-	
+public class axcel_truck<T extends Entity> extends EntityModel<T> {
+	// This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("modid", "axcel_truck"), "main");
 	private final ModelPart body;
-	private final ModelPart radar;
-	private final ModelPart stearing;
-	private final ModelPart[] wheels = new ModelPart[6];
+	private final ModelPart fuel;
 
-	public EntityModelAxcelTruck(ModelPart root) {
+	public axcel_truck(ModelPart root) {
 		this.body = root.getChild("body");
-		this.radar = body.getChild("radar");
-		this.stearing = body.getChild("stearing");
-		ModelPart w = body.getChild("wheels");
-		wheels[0] = w.getChild("w1");
-		wheels[1] = w.getChild("w3");
-		wheels[2] = w.getChild("w4");
-		wheels[3] = w.getChild("w2");
-		wheels[4] = w.getChild("w5");
-		wheels[5] = w.getChild("w6");
+		this.fuel = root.getChild("fuel");
 	}
-	
-	@Override
-	public void renderToBuffer(EntityGroundVehicle entity, float partialTicks, PoseStack poseStack, VertexConsumer vertexConsumer, 
-			int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		poseStack.translate(0, 1.5, 0);
-		poseStack.scale(-1.0F, -1.0F, 1.0F);
-		float yf = Mth.PI*0.25f;
-		if (entity.radarSystem.hasRadar()) {
-			radar.visible = true;
-			radar.yRot = Mth.lerp(partialTicks, (entity.tickCount-1)*0.1f, entity.tickCount*0.1f);
-		} else radar.visible = false;
-		stearing.zRot = entity.inputs.yaw * yf;
-		wheels[0].yRot = entity.inputs.yaw * yf;
-		wheels[3].yRot = entity.inputs.yaw * yf;
-		for (int i = 0; i < 3; ++i) wheels[i].xRot = -entity.getWheelLeftRotation(partialTicks);
-		for (int i = 3; i < 6; ++i) wheels[i].xRot = -entity.getWheelRightRotation(partialTicks);
-		body.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-	}
-	
+
 	public static LayerDefinition createBodyLayer() {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
@@ -494,4 +451,14 @@ public class EntityModelAxcelTruck extends EntityControllableModel<EntityGroundV
 		return LayerDefinition.create(meshdefinition, 1024, 1024);
 	}
 
+	@Override
+	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+
+	}
+
+	@Override
+	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+		body.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+		fuel.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+	}
 }

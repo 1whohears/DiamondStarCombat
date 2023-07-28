@@ -42,7 +42,7 @@ public class AntiRadarMissile extends EntityMissile {
 	protected List<ARTarget> targets = new ArrayList<ARTarget>();
 	
 	protected void findARTarget() {
-		// FIXME 3.2 make anti radar missile target entity type configurable so entities other mod entities can be targeted
+		// IDEA 7 make anti radar missile target entity type configurable so entities other mod entities can be targeted
 		targets.clear();
 		// planes
 		List<EntityAircraft> planes = level.getEntitiesOfClass(

@@ -182,6 +182,10 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	// TODO 3.1 vehicle armor plating that reduces damage 
 	// TODO 3.2 reduce damage passengers receive based on armor. make it configurable. especially explosive damage.
 	// TODO 8.2 creative mode middle click should give aircraft item
+	// TODO 5.2 bitchin betty
+	// TODO 5.3 ir/anti radar targeting tone
+	// TODO 5.4 aircraft breaks apart when damaged
+	// FIXME refactor EntityAircraft to EntityVehicle
 	
 	public EntityAircraft(EntityType<? extends EntityAircraft> entityType, Level level, 
 			AircraftPreset defaultPreset,
@@ -285,6 +289,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		item = ap.getItem();
 		CompoundTag presetNbt = ap.getDataAsNBT();
 		if (!nbt.getBoolean("merged_preset")) nbt.merge(presetNbt);
+		// FIXME 2 possibly all slot stats but definitely just slot positions should be forced and not configurable
 		partsManager.read(nbt);
 		weaponSystem.read(nbt);
 		radarSystem.read(nbt);

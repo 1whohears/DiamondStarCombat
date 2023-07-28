@@ -685,7 +685,7 @@ public class DefaultAircraftPresets {
 			.addEmptySlot("internal_2", SlotType.INTERNAL)
 			.addEmptySlot("internal_3", SlotType.ADVANCED_INTERNAL)
 			.setSlotItem("internal_3", ModItems.AXCEL_TRUCK_RADAR.getId())
-			.lockSlot("internal_3")
+			.lockSlot("internal_3") // TODO 2.5 make axcel truck radar removable
 			.addEmptySlot("internal_4", SlotType.ADVANCED_INTERNAL)
 			.build();
 	

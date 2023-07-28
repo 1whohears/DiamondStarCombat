@@ -149,9 +149,10 @@ public class ModEntities {
 	 * OTHER
 	 * Weather Balloon
 	 * 
-	 * IDEA 9 AI for planes/turrets or an auto pilot module
+	 * IDEA 9.1 AI for planes/turrets or an auto pilot module
 	 * AI turret controllers need time and resources invested to level up
 	 * it would be funny if they were villagers
+	 * IDEA 9.2 pillager outposts with air defense
 	 */
 	
 	public static final RegistryObject<EntityType<EntitySeat>> SEAT = ENTITIES.register("seat", 

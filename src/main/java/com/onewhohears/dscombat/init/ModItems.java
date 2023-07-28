@@ -62,7 +62,8 @@ public class ModItems {
 	// DISKS
 	
 	// IDEA 8.1 Jupiter Missiles and Anadyr from blowback ost
-	// IDEA 8.1 disk 911?
+	// IDEA 8.2 disk 911?
+	// IDEA 8.3 the missile knows where it is disk
 	
 	// PARTS
 	public static final RegistryObject<Item> TI83 = ITEMS.register("ti83", 
@@ -101,6 +102,7 @@ public class ModItems {
 			() -> new ItemRepairTool(20, 5));
 	public static final RegistryObject<Item> THICK_WRENCH = ITEMS.register("thick_wrench", 
 			() -> new ItemRepairTool(200, 5));
+	// TODO 2.3 parachute/emergency ejection
 	
 	// CREATIVE WANDS
 	public static final RegistryObject<Item> NO_CONSUME_WAND = ITEMS.register("no_consume_wand", 

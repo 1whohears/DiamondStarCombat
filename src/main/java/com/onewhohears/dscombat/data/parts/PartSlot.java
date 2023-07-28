@@ -138,6 +138,7 @@ public class PartSlot {
 	public boolean isCompatible(PartData data) {
 		//System.out.println("is "+data+" compatible with "+this);
 		if (data == null) return false;
+		// TODO 7.4 check for duplicates
 		SlotType[] types = data.getCompatibleSlots();
 		for (int i = 0; i < types.length; ++i) if (types[i] == getSlotType()) return true;
 		return false;
@@ -159,6 +160,8 @@ public class PartSlot {
 		return type;
 	}
 	
+	// FIXME 3 slot type should be read an a string id in preset data and not an int
+	// TODO 2.4 light/med/heavy turret slot type
 	public static enum SlotType {
 		SEAT("slottype.dscombat.seat"),
 		WING("slottype.dscombat.wing"),

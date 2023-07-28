@@ -36,6 +36,7 @@ public class DSCombatMod {
 
     public DSCombatMod() {
     	ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.clientSpec);
+    	ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.commonSpec);
     	ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.serverSpec);
     	IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
     	

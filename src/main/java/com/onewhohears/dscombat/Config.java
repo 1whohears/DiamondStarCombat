@@ -1,5 +1,8 @@
 package com.onewhohears.dscombat;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.apache.commons.lang3.tuple.Pair;
 
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -33,6 +36,42 @@ public class Config {
 			debugMode = builder
 					.comment("Stats for nerds.")
 					.define("debugMode", false);
+		}
+		
+	}
+	
+	public static class Common {
+		
+		// TODO 7.3 configurable entities that the radar considers vehicles/mobs
+		/**
+		 * classname
+		 */
+		//public final ForgeConfigSpec.ConfigValue<List<? extends String>> radarVehicles;
+		/**
+		 * classname
+		 */
+		//public final ForgeConfigSpec.ConfigValue<List<? extends String>> radarMobs;
+		/**
+		 * classname/heat
+		 */
+		public final ForgeConfigSpec.ConfigValue<List<? extends String>> irEntities;
+		
+		public Common(ForgeConfigSpec.Builder builder) {
+			/*radarVehicles = builder
+					.defineList("radarVehicles", 
+					Arrays.asList(), 
+					entry -> true);
+			radarMobs = builder.defineList("radarMobs", 
+					Arrays.asList(""), 
+					entry -> true);*/
+			irEntities = builder
+				.comment("entities that ir missiles will target (path to entity class)/(heat value)")
+				.defineList("irEntities", 
+						Arrays.asList(
+							"net.minecraft.world.entity.projectile.FireworkRocketEntity/2.5f", 
+							"net.minecraft.world.entity.Mob/0.4f",
+							"xyz.przemyk.simpleplanes.entities.PlaneEntity/6.0f"), 
+					entry -> true);
 		}
 		
 	}
@@ -90,6 +129,9 @@ public class Config {
 	
 	static final ForgeConfigSpec clientSpec;
 	public static final Config.Client CLIENT;
+	
+	static final ForgeConfigSpec commonSpec;
+	public static final Config.Common COMMON;
 
 	static final ForgeConfigSpec serverSpec;
 	public static final Config.Server SERVER;
@@ -99,6 +141,11 @@ public class Config {
         		.configure(Config.Client::new);
         clientSpec = clientSpecPair.getRight();
         CLIENT = clientSpecPair.getLeft();
+        
+        final Pair<Common, ForgeConfigSpec> commonSpecPair = new ForgeConfigSpec.Builder()
+        		.configure(Common::new);
+        commonSpec = commonSpecPair.getRight();
+        COMMON = commonSpecPair.getLeft();
 
         final Pair<Server, ForgeConfigSpec> serverSpecPair = new ForgeConfigSpec.Builder()
         		.configure(Server::new);

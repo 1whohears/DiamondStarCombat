@@ -5,14 +5,12 @@ import java.util.List;
 
 import com.onewhohears.dscombat.data.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.data.weapon.IRMissileData;
+import com.onewhohears.dscombat.data.weapon.RadarTargetTypes;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.entity.projectile.FireworkRocketEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 
@@ -43,7 +41,6 @@ public class IRMissile extends EntityMissile {
 	protected List<IrTarget> targets = new ArrayList<IrTarget>();
 	
 	protected void findIrTarget() {
-		// FIXME 3.1 make ir missile target entity type and their heat values configurable so entities other mod entities can be targeted
 		targets.clear();
 		// planes
 		List<EntityAircraft> planes = level.getEntitiesOfClass(
@@ -57,19 +54,10 @@ public class IRMissile extends EntityMissile {
 		List<Player> players = level.getEntitiesOfClass(
 				Player.class, getIrBoundingBox());
 		for (int i = 0; i < players.size(); ++i) {
-			if (players.get(i).getRootVehicle() instanceof EntityAircraft) continue;
+			//if (players.get(i).isPassenger() && players.get(i).getRootVehicle() instanceof EntityAircraft) continue;
 			if (!basicCheck(players.get(i), true)) continue;
 			float distSqr = (float)distanceToSqr(players.get(i));
-			targets.add(new IrTarget(players.get(i), 1f / distSqr));
-		}
-		// mobs
-		List<Mob> mobs = level.getEntitiesOfClass(
-				Mob.class, getIrBoundingBox());
-		for (int i = 0; i < mobs.size(); ++i) {
-			if (mobs.get(i).getRootVehicle() instanceof EntityAircraft) continue;
-			if (!basicCheck(mobs.get(i), true)) continue;
-			float distSqr = (float)distanceToSqr(mobs.get(i));
-			targets.add(new IrTarget(mobs.get(i), getMobHeat(mobs.get(i)) / distSqr));
+			targets.add(new IrTarget(players.get(i), 0.2f / distSqr));
 		}
 		// missiles
 		List<EntityMissile> missiles = level.getEntitiesOfClass(
@@ -89,24 +77,19 @@ public class IRMissile extends EntityMissile {
 			targets.add(new IrTarget(flares.get(i), 
 					flares.get(i).getHeat() / distSqr * flareResistance));
 		}
-		// fire arrows
-		List<AbstractArrow> arrows = level.getEntitiesOfClass(
-				AbstractArrow.class, getIrBoundingBox());
-		for (int i = 0; i < arrows.size(); ++i) {
-			if (!arrows.get(i).isOnFire()) continue;
-			if (!basicCheck(arrows.get(i), false)) continue;
-			float distSqr = (float)distanceToSqr(arrows.get(i));
-			targets.add(new IrTarget(arrows.get(i), 
-					2f / distSqr * flareResistance));
-		}
-		// fire works
-		List<FireworkRocketEntity> foreworks = level.getEntitiesOfClass(
-				FireworkRocketEntity.class, getIrBoundingBox());
-		for (int i = 0; i < foreworks.size(); ++i) {
-			if (!basicCheck(foreworks.get(i), false)) continue;
-			float distSqr = (float)distanceToSqr(foreworks.get(i));
-			targets.add(new IrTarget(foreworks.get(i), 
-					2f / distSqr * flareResistance));
+		// other
+		for (int j = 0; j < RadarTargetTypes.get().getIrEntityClasses().size(); ++j) {
+			Class<? extends Entity> clazz = RadarTargetTypes.get().getIrEntityClasses().get(j);
+			float heat = RadarTargetTypes.get().getIrEntityHeats().get(j);
+			List<? extends Entity> entities = level.getEntitiesOfClass(
+					clazz, getIrBoundingBox());
+			for (int i = 0; i < entities.size(); ++i) {
+				if (entities.get(i).isPassenger()) continue;
+				if (!basicCheck(entities.get(i), false)) continue;
+				float distSqr = (float)distanceToSqr(entities.get(i));
+				targets.add(new IrTarget(entities.get(i), 
+						getSpecificEntityHeat(entities.get(i), heat) / distSqr));
+			}
 		}
 		// pick target
 		if (targets.size() == 0) {
@@ -149,12 +132,13 @@ public class IRMissile extends EntityMissile {
 		return true;
 	}
 	
-	protected static float getMobHeat(Mob mob) {
-		if (mob.getType().equals(EntityType.BLAZE)) return 10f;
-		if (mob.getType().equals(EntityType.MAGMA_CUBE)) return 8f;
-		if (mob.getType().equals(EntityType.WITHER)) return 200f;
-		if (mob.getType().equals(EntityType.ENDER_DRAGON)) return 100f;
-		return 1f;
+	protected static float getSpecificEntityHeat(Entity e, float instead) {
+		// FIXME 3.3 custom entity type configurable heat
+		if (e.getType().equals(EntityType.BLAZE)) return 10f;
+		if (e.getType().equals(EntityType.MAGMA_CUBE)) return 8f;
+		if (e.getType().equals(EntityType.WITHER)) return 200f;
+		if (e.getType().equals(EntityType.ENDER_DRAGON)) return 100f;
+		return instead;
 	}
 	
 	protected static final double IR_RANGE = 300d;

@@ -133,12 +133,7 @@ public class IRMissile extends EntityMissile {
 	}
 	
 	protected static float getSpecificEntityHeat(Entity e, float instead) {
-		// FIXME 3.3 custom entity type configurable heat
-		if (e.getType().equals(EntityType.BLAZE)) return 10f;
-		if (e.getType().equals(EntityType.MAGMA_CUBE)) return 8f;
-		if (e.getType().equals(EntityType.WITHER)) return 200f;
-		if (e.getType().equals(EntityType.ENDER_DRAGON)) return 100f;
-		return instead;
+		return RadarTargetTypes.get().getEntityHeat(EntityType.getKey(e.getType()).toString(), instead);
 	}
 	
 	protected static final double IR_RANGE = 300d;

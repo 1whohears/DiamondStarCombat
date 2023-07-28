@@ -55,6 +55,10 @@ public class Config {
 		 * classname/heat
 		 */
 		public final ForgeConfigSpec.ConfigValue<List<? extends String>> irEntities;
+		/**
+		 * entity_id/heat
+		 */
+		public final ForgeConfigSpec.ConfigValue<List<? extends String>> specificEntityHeat;
 		
 		public Common(ForgeConfigSpec.Builder builder) {
 			/*radarVehicles = builder
@@ -65,12 +69,21 @@ public class Config {
 					Arrays.asList(""), 
 					entry -> true);*/
 			irEntities = builder
-				.comment("entities that ir missiles will target (path to entity class)/(heat value)")
+				.comment("entities that ir missiles will target (path to entity class)/(default heat value)")
 				.defineList("irEntities", 
-						Arrays.asList(
+					Arrays.asList(
 							"net.minecraft.world.entity.projectile.FireworkRocketEntity/2.5f", 
 							"net.minecraft.world.entity.Mob/0.4f",
 							"xyz.przemyk.simpleplanes.entities.PlaneEntity/6.0f"), 
+					entry -> true);
+			specificEntityHeat = builder
+				.comment("entities with a specific heat value (entity_id)/(heat value override)")
+				.defineList("specificEntityHeat", 
+					Arrays.asList(
+							"minecraft:blaze/10f",
+							"minecraft:magma_cube/8f",
+							"minecraft:wither/200f",
+							"minecraft:ender_dragon/100f"), 
 					entry -> true);
 		}
 		

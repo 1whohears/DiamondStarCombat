@@ -12,7 +12,6 @@ import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelAlexis
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelAndolfSub;
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelAxcelTruck;
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelE3Sentry;
-import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelF16;
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelJaviPlane;
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelMrBudgerTank;
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelNathanBoat;
@@ -72,7 +71,7 @@ public final class ClientModEvents {
 		event.registerLayerDefinition(EntityModelTestPlane.LAYER_LOCATION, EntityModelTestPlane::createBodyLayer);
 		event.registerLayerDefinition(EntityModelBullet1.LAYER_LOCATION, EntityModelBullet1::createBodyLayer);
 		event.registerLayerDefinition(EntityModelMissile1.LAYER_LOCATION, EntityModelMissile1::createBodyLayer);
-		event.registerLayerDefinition(EntityModelF16.LAYER_LOCATION, EntityModelF16::createBodyLayer);
+		//event.registerLayerDefinition(EntityModelF16.LAYER_LOCATION, EntityModelF16::createBodyLayer);
 		event.registerLayerDefinition(EntityModelNoahChopper.LAYER_LOCATION, EntityModelNoahChopper::createBodyLayer);
 		event.registerLayerDefinition(EntityModelAlexisPlane.LAYER_LOCATION, EntityModelAlexisPlane::createBodyLayer);
 		event.registerLayerDefinition(EntityModelJaviPlane.LAYER_LOCATION, EntityModelJaviPlane::createBodyLayer);

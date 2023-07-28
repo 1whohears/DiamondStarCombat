@@ -178,7 +178,8 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot;
 	private float landingGearPos, landingGearPosOld;
 	
-	// FIXME 0 fix lag spikes causing plane to crash
+	// FIXME 0.1 fix lag spikes causing plane to crash
+	// FIXME 0.2 fix weird desynch issue leading to player falling out of plane
 	// TODO 3.1 vehicle armor plating that reduces damage 
 	// TODO 3.2 reduce damage passengers receive based on armor. make it configurable. especially explosive damage.
 	// TODO 8.2 creative mode middle click should give aircraft item

@@ -156,7 +156,7 @@ public class AircraftPreset extends JsonPreset{
 				@Nullable ResourceLocation item, @Nullable String param, boolean filled) {
 			JsonObject slot = getSlot(name, true);
 			slot.addProperty("name", name);
-			slot.addProperty("slot_type", type.ordinal());
+			slot.addProperty("slot_type", type.getSlotTypeName());
 			slot.addProperty("slot_posx", x);
 			slot.addProperty("slot_posy", y);
 			slot.addProperty("slot_posz", z);

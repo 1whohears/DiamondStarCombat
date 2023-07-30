@@ -28,8 +28,6 @@ public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContaine
 	
 	private static final ResourceLocation BG_TEXTURE = new ResourceLocation(DSCombatMod.MODID,
 			"textures/ui/aircraft_screen.png");
-	private static final ResourceLocation SLOTS_TEXTURE = new ResourceLocation(DSCombatMod.MODID,
-			"textures/ui/slots.png");
 	
 	// TODO 1.2 make default aircraft menus less ugly/more organized
 	
@@ -89,12 +87,13 @@ public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContaine
 			RenderSystem.setShaderTexture(0, menu.getClientData().getBackground());
 			blit(stack, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 		}
-		RenderSystem.setShaderTexture(0, SLOTS_TEXTURE);
 		for (int i = 0; i < menu.slots.size(); ++i) {
 			if (!(menu.slots.get(i) instanceof PartItemSlot slot)) continue;
+			RenderSystem.setShaderTexture(0, slot.data.getSlotType().getBgTexture());
 			blit(stack, leftPos+slot.x, topPos+slot.y, 
-					slot.data.getSlotType().getIconXOffset(), 0, 
-					16, 16, 256, 16);
+					0, 0, 
+					16, 16, 
+					16, 16);
 		}
 	}
 

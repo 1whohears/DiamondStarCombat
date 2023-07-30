@@ -290,8 +290,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		item = ap.getItem();
 		CompoundTag presetNbt = ap.getDataAsNBT();
 		if (!nbt.getBoolean("merged_preset")) nbt.merge(presetNbt);
-		// FIXME 2 possibly all slot stats but definitely just slot positions should be forced and not configurable
-		partsManager.read(nbt);
+		partsManager.read(nbt, presetNbt);
 		weaponSystem.read(nbt);
 		radarSystem.read(nbt);
 		setMaxSpeed(nbt.getFloat("max_speed"));

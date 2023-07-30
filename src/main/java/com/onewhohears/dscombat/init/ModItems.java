@@ -180,7 +180,7 @@ public class ModItems {
 	
 	// TURRENTS
 	public static final RegistryObject<Item> MINIGUN_TURRET = ITEMS.register("minigun_turret", 
-			() -> new ItemTurret(5f, SlotType.TURRET_ALL, 
+			() -> new ItemTurret(5f, SlotType.TURRET_MED, 
 					ModEntities.MINIGUN_TURRET.getId().toString(), "20mm",
 					new RotBounds(2f, -40f, 40f)));
 	public static final RegistryObject<Item> HEAVY_TANK_TURRET = ITEMS.register("heavy_tank_turret", 

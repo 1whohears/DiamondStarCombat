@@ -11,6 +11,7 @@ import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
 
@@ -25,19 +26,22 @@ public class PartSlot {
 	private final boolean locked;
 	private PartData data;
 	
-	public PartSlot(CompoundTag tag) {
-		slotId = tag.getString("name");
-		type = SlotType.values()[tag.getInt("slot_type")];
-		pos = UtilParse.readVec3(tag, "slot_pos");
-		zRot = tag.getFloat("zRot");
-		locked = tag.getBoolean("locked");
-		if (tag.contains("data")) data = UtilParse.parsePartFromCompound(tag.getCompound("data"));
+	public PartSlot(CompoundTag entityNbt, @Nullable CompoundTag presetNbt) {
+		slotId = entityNbt.getString("name");
+		locked = entityNbt.getBoolean("locked");
+		if (entityNbt.contains("data")) data = UtilParse.parsePartFromCompound(entityNbt.getCompound("data"));
+		if (presetNbt == null) presetNbt = entityNbt;
+		if (presetNbt.getTagType("slot_type") == CompoundTag.TAG_INT) {
+			type = SlotType.getByOldOrdinal(presetNbt.getInt("slot_type"));
+		} else type = SlotType.getByName(presetNbt.getString("slot_type"));
+		pos = UtilParse.readVec3(presetNbt, "slot_pos");
+		zRot = presetNbt.getFloat("zRot");
 	}
 	
 	public CompoundTag write() {
 		CompoundTag tag = new CompoundTag();
 		tag.putString("name", slotId);
-		tag.putInt("slot_type",type.ordinal());
+		tag.putString("slot_type",type.getSlotTypeName());
 		UtilParse.writeVec3(tag, pos, "slot_pos");
 		tag.putFloat("zRot", zRot);
 		tag.putBoolean("locked", locked);
@@ -49,7 +53,7 @@ public class PartSlot {
 		//System.out.println("PART SLOT BUFFER");
 		slotId = buffer.readUtf();
 		//System.out.println("name = "+name);
-		type = SlotType.values()[buffer.readInt()];
+		type = SlotType.getByName(buffer.readUtf());
 		//System.out.println("type = "+type.name());
 		pos = DataSerializers.VEC3.read(buffer);
 		//System.out.println("pos = "+pos);
@@ -62,7 +66,7 @@ public class PartSlot {
 	
 	public void write(FriendlyByteBuf buffer) {
 		buffer.writeUtf(slotId);
-		buffer.writeInt(type.ordinal());
+		buffer.writeUtf(type.getSlotTypeName());
 		DataSerializers.VEC3.write(buffer, pos);
 		buffer.writeFloat(zRot);
 		buffer.writeBoolean(locked);
@@ -144,10 +148,14 @@ public class PartSlot {
 		return false;
 	}
 	
-	public String getSlotId() {
+	public static String getSlotId(String slotId) {
 		if (slotId.startsWith("slotname.dscombat.")) return slotId.substring("slotname.dscombat.".length(), slotId.length());
 		if (slotId.startsWith("dscombat.")) return slotId.substring("dscombat.".length(), slotId.length());
 		return slotId;
+	}
+	
+	public String getSlotId() {
+		return getSlotId(slotId);
 	}
 	
 	public String getTranslatableName() {
@@ -160,23 +168,26 @@ public class PartSlot {
 		return type;
 	}
 	
-	// FIXME 3 slot type should be read an a string id in preset data and not an int
-	// TODO 2.4 light/med/heavy turret slot type
 	public static enum SlotType {
-		SEAT("slottype.dscombat.seat"),
-		WING("slottype.dscombat.wing"),
-		FRAME("slottype.dscombat.frame"),
-		INTERNAL("slottype.dscombat.internal"),
-		ADVANCED_INTERNAL("slottype.dscombat.advanced_internal"),
-		TURRET("slottype.dscombat.turret"),
-		HEAVY_TURRET("slottype.dscombat.heavy_turret"),
-		SPIN_ENGINE("slottype.dscombat.spin_engine"),
-		PUSH_ENGINE("slottype.dscombat.push_engine"),
-		HEAVY_FRAME("slottype.dscombat.heavy_frame"),
-		RADIAL_ENGINE("slottype.dscombat.radial_engine");
+		SEAT("seat"),
+		LIGHT_TURRET("light_turret"),
+		MED_TURRET("med_turret"),
+		HEAVY_TURRET("heavy_turret"),
 		
-		public static final SlotType[] SEAT_ALL = {SEAT, TURRET, HEAVY_TURRET};
-		public static final SlotType[] TURRET_ALL = {TURRET, HEAVY_TURRET};
+		WING("wing"),
+		FRAME("frame"),
+		HEAVY_FRAME("heavy_frame"),
+		
+		INTERNAL("internal"),
+		ADVANCED_INTERNAL("advanced_internal"),
+		
+		SPIN_ENGINE("spin_engine"),
+		PUSH_ENGINE("push_engine"),
+		RADIAL_ENGINE("radial_engine");
+		
+		public static final SlotType[] SEAT_ALL = {SEAT, LIGHT_TURRET, MED_TURRET, HEAVY_TURRET};
+		public static final SlotType[] TURRET_LIGHT = {LIGHT_TURRET, MED_TURRET, HEAVY_TURRET};
+		public static final SlotType[] TURRET_MED = {MED_TURRET, HEAVY_TURRET};
 		public static final SlotType[] TURRET_HEAVY = {HEAVY_TURRET};
 		
 		public static final SlotType[] INTERNAL_ALL = {INTERNAL, ADVANCED_INTERNAL, PUSH_ENGINE, SPIN_ENGINE};
@@ -188,22 +199,50 @@ public class PartSlot {
 		public static final SlotType[] EXTERNAL_ALL = {WING, FRAME, HEAVY_FRAME};
 		public static final SlotType[] EXTERNAL_HEAVY = {HEAVY_FRAME};
 		
-		private final String translatable;
-		
-		private SlotType(String translatable) {
-			this.translatable = translatable;
+		@Nullable
+		public static SlotType getByName(String name) {
+			for (int i = 0; i < values().length; ++i)
+				if (values()[i].getSlotTypeName().equals(name)) 
+					return values()[i];
+			return null;
 		}
 		
-		public int getIconXOffset() {
-			return ordinal() * 16;
+		@Nullable
+		public static SlotType getByOldOrdinal(int o) {
+			switch (o) {
+			case 0: return SEAT;
+			case 1: return WING;
+			case 2: return FRAME;
+			case 3: return INTERNAL;
+			case 4: return ADVANCED_INTERNAL;
+			case 5: return MED_TURRET;
+			case 6: return HEAVY_TURRET;
+			case 7: return SPIN_ENGINE;
+			case 8: return PUSH_ENGINE;
+			case 9: return HEAVY_FRAME;
+			case 10: return RADIAL_ENGINE;
+			}
+			return null;
+		}
+		
+		private final String slotTypeName;
+		private final ResourceLocation bg_texture;
+		
+		private SlotType(String slotTypeName) {
+			this.slotTypeName = slotTypeName;
+			this.bg_texture = new ResourceLocation("textures/ui/slots/"+slotTypeName+".png");
+		}
+		
+		public String getSlotTypeName() {
+			return slotTypeName;
+		}
+		
+		public ResourceLocation getBgTexture() {
+			return bg_texture;
 		}
 		
 		public String getTranslatableName() {
-			return translatable;
-		}
-		
-		public String getLiteralName() {
-			return name();
+			return "slottype.dscombat."+slotTypeName;
 		}
 	}
 	

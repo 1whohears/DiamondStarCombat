@@ -37,17 +37,32 @@ public class PartsManager {
 	
 	/**
 	 * deletes all slot data currently in the list and reads from this compound
-	 * @param compound
+	 * @param entityNbt
 	 */
-	public void read(CompoundTag compound) {
+	public void read(CompoundTag entityNbt, CompoundTag presetNbt) {
 		slots.clear();
-		ListTag list = compound.getList("slots", 10);
-		if (compound.getInt("slot_version") < SLOT_VERSION) fixSlots(list);
-		for (int i = 0; i < list.size(); ++i) {
-			CompoundTag tag = list.getCompound(i);
-			slots.add(new PartSlot(tag));
+		ListTag entityNbtList = entityNbt.getList("slots", 10);
+		ListTag presetNbtList = presetNbt.getList("slots", 10);
+		if (entityNbt.getInt("slot_version") < SLOT_VERSION) fixSlots(entityNbtList);
+		for (int i = 0; i < entityNbtList.size(); ++i) {
+			CompoundTag entitySlot = entityNbtList.getCompound(i);
+			CompoundTag presetSlot = findPresetSlot(entitySlot, presetNbtList);
+			slots.add(new PartSlot(entitySlot, presetSlot));
 		}
 		readData = true;
+	}
+	
+	@Nullable
+	private CompoundTag findPresetSlot(CompoundTag entitySlot, ListTag presetNbtList) {
+		String slotId = entitySlot.getString("name");
+		for (int i = 0; i < presetNbtList.size(); ++i) {
+			CompoundTag presetSlot = presetNbtList.getCompound(i);
+			String presetSlotId = presetSlot.getString("name");
+			if (PartSlot.getSlotId(slotId).equals(PartSlot.getSlotId(presetSlotId))) {
+				return presetSlot;
+			}
+		}
+		return null;
 	}
 	
 	private void fixSlots(ListTag list) {

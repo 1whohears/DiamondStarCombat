@@ -160,7 +160,7 @@ public class AbstractWeaponBuilders {
 		 * Track Missile only
 		 */
 		public C setTargetType(TargetType targetType) {
-			return setInt("targetType", targetType.ordinal());
+			return setString("targetType", targetType.name());
 		}
 		
 		/**

@@ -89,7 +89,7 @@
       },
       "name": "slotname.dscombat.pilot_seat",
       "slot_posx": 0.0,
-      "slot_posy": 0.65,
+      "slot_posy": 0.55,
       "slot_posz": 6.5,
       "slot_type": 0,
       "uix": 48,
@@ -251,7 +251,7 @@
   ],
   "stealth": 0.8,
   "textures": {
-    "0": "dscombat:textures/entities/alexis_plane/test.png",
+    "0": "dscombat:textures/entities/alexis_plane/v3_template.png",
     "1": "dscombat:textures/entities/alexis_plane/orange.png",
     "10": "dscombat:textures/entities/alexis_plane/purple.png",
     "11": "dscombat:textures/entities/alexis_plane/blue.png",

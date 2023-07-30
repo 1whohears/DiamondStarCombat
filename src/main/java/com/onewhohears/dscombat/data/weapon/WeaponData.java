@@ -401,7 +401,31 @@ public abstract class WeaponData extends JsonPreset {
 		TRACK_MISSILE,
 		IR_MISSILE,
 		ANTIRADAR_MISSILE,
-		TORPEDO
+		TORPEDO;
+		
+		@Nullable
+		public static WeaponType getById(String id) {
+			for (int i = 0; i < values().length; ++i) {
+				if (values()[i].getId().equals(id)) 
+					return values()[i];
+			}
+			return null;
+		}
+		
+		private final String id;
+		
+		private WeaponType() {
+			this.id = name().toLowerCase();
+		}
+		
+		public String getId() {
+			return id;
+		}
+		
+		@Override
+		public String toString() {
+			return getId();
+		}
 	}
 	
 }

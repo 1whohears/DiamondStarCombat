@@ -21,7 +21,7 @@ public class AbstractWeaponBuilders {
 		
 		@Override
 		public <T extends JsonPreset> T build() {
-			getData().addProperty("type", type.ordinal());
+			getData().addProperty("type", type.getId());
 			return super.build();
 		}
 

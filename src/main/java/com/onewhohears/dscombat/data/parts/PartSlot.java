@@ -237,6 +237,11 @@ public class PartSlot {
 			return slotTypeName;
 		}
 		
+		@Override
+		public String toString() {
+			return getSlotTypeName();
+		}
+		
 		public ResourceLocation getBgTexture() {
 			return bg_texture;
 		}

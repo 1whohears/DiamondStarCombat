@@ -27,6 +27,10 @@ public class PartSlot {
 	private PartData data;
 	
 	public PartSlot(CompoundTag entityNbt, @Nullable CompoundTag presetNbt) {
+		//System.out.println("READING NEW PART SLOT");
+		//System.out.println("entity = "+entityNbt.toString());
+		//if (presetNbt != null) System.out.println("preset = "+presetNbt.toString());
+		//else System.out.println("preset = null");
 		slotId = entityNbt.getString("name");
 		locked = entityNbt.getBoolean("locked");
 		if (entityNbt.contains("data")) data = UtilParse.parsePartFromCompound(entityNbt.getCompound("data"));
@@ -36,6 +40,7 @@ public class PartSlot {
 		} else type = SlotType.getByName(presetNbt.getString("slot_type"));
 		pos = UtilParse.readVec3(presetNbt, "slot_pos");
 		zRot = presetNbt.getFloat("zRot");
+		//System.out.println("pos = "+pos);
 	}
 	
 	public CompoundTag write() {
@@ -72,6 +77,10 @@ public class PartSlot {
 		buffer.writeBoolean(locked);
 		buffer.writeBoolean(filled());
 		if (filled()) data.write(buffer);
+	}
+	
+	public Vec3 getRelPos() {
+		return pos;
 	}
 	
 	public boolean isLocked() {
@@ -230,7 +239,7 @@ public class PartSlot {
 		
 		private SlotType(String slotTypeName) {
 			this.slotTypeName = slotTypeName;
-			this.bg_texture = new ResourceLocation("textures/ui/slots/"+slotTypeName+".png");
+			this.bg_texture = new ResourceLocation("dscombat:textures/ui/slots/"+slotTypeName+".png");
 		}
 		
 		public String getSlotTypeName() {

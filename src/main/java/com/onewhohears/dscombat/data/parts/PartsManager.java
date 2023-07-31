@@ -43,7 +43,6 @@ public class PartsManager {
 		slots.clear();
 		ListTag entityNbtList = entityNbt.getList("slots", 10);
 		ListTag presetNbtList = presetNbt.getList("slots", 10);
-		if (entityNbt.getInt("slot_version") < SLOT_VERSION) fixSlots(entityNbtList);
 		for (int i = 0; i < entityNbtList.size(); ++i) {
 			CompoundTag entitySlot = entityNbtList.getCompound(i);
 			CompoundTag presetSlot = findPresetSlot(entitySlot, presetNbtList);
@@ -63,16 +62,6 @@ public class PartsManager {
 			}
 		}
 		return null;
-	}
-	
-	private void fixSlots(ListTag list) {
-		ListTag presetList = AircraftPresets.get().getPreset(parent.preset)
-				.getDataAsNBT().getList("slots", 10);
-		for (int i = 0; i < presetList.size(); ++i) {
-			CompoundTag presetSlot = presetList.getCompound(i);
-			CompoundTag slot = list.getCompound(i);
-			slot.putInt("slot_type", presetSlot.getInt("slot_type"));
-		}
 	}
 	
 	private void createNewInventory() {

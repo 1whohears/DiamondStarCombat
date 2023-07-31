@@ -87,7 +87,7 @@
       "slot_posx": 0.0,
       "slot_posy": -0.3,
       "slot_posz": 2.0,
-      "slot_type": 0,
+      "slot_type": "seat",
       "zRot": 0.0
     },
     {
@@ -100,7 +100,7 @@
       "slot_posx": 1.8,
       "slot_posy": -0.3,
       "slot_posz": 0.5,
-      "slot_type": 1,
+      "slot_type": "wing",
       "zRot": 0.0
     },
     {
@@ -113,7 +113,7 @@
       "slot_posx": 3.2,
       "slot_posy": -0.3,
       "slot_posz": 0.5,
-      "slot_type": 1,
+      "slot_type": "wing",
       "zRot": 0.0
     },
     {
@@ -126,7 +126,7 @@
       "slot_posx": -1.8,
       "slot_posy": -0.3,
       "slot_posz": 0.5,
-      "slot_type": 1,
+      "slot_type": "wing",
       "zRot": 0.0
     },
     {
@@ -139,7 +139,7 @@
       "slot_posx": -3.2,
       "slot_posy": -0.3,
       "slot_posz": 0.5,
-      "slot_type": 1,
+      "slot_type": "wing",
       "zRot": 0.0
     },
     {
@@ -152,7 +152,7 @@
       "slot_posx": 0.0,
       "slot_posy": -0.4,
       "slot_posz": 2.5,
-      "slot_type": 2,
+      "slot_type": "frame",
       "zRot": 0.0
     },
     {
@@ -163,7 +163,7 @@
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 8,
+      "slot_type": "push_engine",
       "zRot": 0.0
     },
     {
@@ -175,7 +175,7 @@
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 3,
+      "slot_type": "internal",
       "zRot": 0.0
     },
     {
@@ -187,7 +187,7 @@
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 3,
+      "slot_type": "internal",
       "zRot": 0.0
     },
     {
@@ -198,7 +198,7 @@
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 4,
+      "slot_type": "advanced_internal",
       "zRot": 0.0
     },
     {
@@ -206,7 +206,7 @@
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 4,
+      "slot_type": "advanced_internal",
       "zRot": 0.0
     },
     {
@@ -217,7 +217,7 @@
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 4,
+      "slot_type": "advanced_internal",
       "zRot": 0.0
     }
   ],

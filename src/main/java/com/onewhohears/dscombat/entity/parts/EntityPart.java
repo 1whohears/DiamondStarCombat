@@ -23,6 +23,8 @@ public abstract class EntityPart extends Entity {
 	public static final EntityDataAccessor<Vec3> POS = SynchedEntityData.defineId(EntityPart.class, DataSerializers.VEC3);
 	public static final EntityDataAccessor<String> SLOT_ID = SynchedEntityData.defineId(EntityPart.class, EntityDataSerializers.STRING);
 	
+	private float z_rot;
+	
 	protected EntityPart(EntityType<?> pEntityType, Level pLevel) {
 		super(pEntityType, pLevel);
 	}
@@ -57,7 +59,13 @@ public abstract class EntityPart extends Entity {
 	}
 	
 	public void init() {
-		
+		if (getVehicle() instanceof EntityAircraft plane) {
+			PartSlot ps = plane.partsManager.getSlot(getSlotId());
+			if (ps != null) {
+				z_rot = ps.getZRot();
+				setRelativePos(ps.getRelPos());
+			}
+		}
 	}
 	
 	@Override
@@ -96,10 +104,7 @@ public abstract class EntityPart extends Entity {
 	public abstract boolean shouldRender();
 	
 	public float getZRot() {
-		if (!(getVehicle() instanceof EntityAircraft plane)) return 0;
-		PartSlot ps = plane.partsManager.getSlot(getSlotId());
-		if (ps == null) return 0;
-		return ps.getZRot();
+		return z_rot;
 	}
 	
 	@Override 

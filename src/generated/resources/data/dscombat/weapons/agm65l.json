@@ -1,5 +1,5 @@
 {
-  "type": 2,
+  "type": "pos_missile",
   "acceleration": 0.025,
   "bleed": 0.02,
   "canShootOnGround": false,

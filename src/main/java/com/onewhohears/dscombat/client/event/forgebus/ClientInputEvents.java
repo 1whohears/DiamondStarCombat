@@ -23,6 +23,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
+import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -189,6 +190,27 @@ public final class ClientInputEvents {
 		return UtilGeometry.isPointInsideCone(ping.pos.add(0, 0.5, 0), 
 				player.getEyePosition(), player.getLookAngle(), 
 				Math.toDegrees(Math.atan2(y, d)), 100000);
+	}
+	
+	@SubscribeEvent
+	public static void entityMountEvent(EntityMountEvent event) {
+		if (!event.isDismounting()) return;
+		Entity mounting = event.getEntityMounting();
+		if (!(mounting instanceof Player)) return;
+		Entity mounted = event.getEntityBeingMounted();
+		if (!(mounted instanceof EntitySeat)) return;
+		System.out.println("ENTITY MOUNT EVENT");
+		System.out.println("is dismounting "+event.isDismounting());
+		System.out.println("mounting "+mounting);
+		System.out.println("mounted  "+mounted);
+		StackTraceElement[] stack = Thread.currentThread().getStackTrace();
+		System.out.println("stack trace = ");
+		for (int i = 0; i < stack.length; ++i) {
+			System.out.println(stack[i].toString());
+		}
+		boolean cancel = !DSCKeys.dismount.isDown();
+		event.setCanceled(cancel);
+		if (cancel) System.out.println("EVENT CANCELED");
 	}
 	
 }

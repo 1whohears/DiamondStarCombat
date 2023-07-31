@@ -1,5 +1,5 @@
 {
-  "type": 0,
+  "type": "bullet",
   "canShootOnGround": true,
   "causesFire": false,
   "compatibleWeaponPart": "",

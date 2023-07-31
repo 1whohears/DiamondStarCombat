@@ -75,7 +75,7 @@
       "slot_posx": 0.8,
       "slot_posy": 1.2,
       "slot_posz": -1.13,
-      "slot_type": 0,
+      "slot_type": "seat",
       "zRot": 0.0
     },
     {
@@ -86,7 +86,7 @@
       "slot_posx": 0.65,
       "slot_posy": 1.2,
       "slot_posz": 2.44,
-      "slot_type": 5,
+      "slot_type": "med_turret",
       "zRot": 0.0
     },
     {
@@ -97,7 +97,7 @@
       "slot_posx": -0.65,
       "slot_posy": 1.2,
       "slot_posz": 2.44,
-      "slot_type": 5,
+      "slot_type": "med_turret",
       "zRot": 0.0
     },
     {
@@ -108,7 +108,7 @@
       "slot_posx": 0.65,
       "slot_posy": 1.2,
       "slot_posz": 1.25,
-      "slot_type": 5,
+      "slot_type": "med_turret",
       "zRot": 0.0
     },
     {
@@ -119,7 +119,7 @@
       "slot_posx": -0.65,
       "slot_posy": 1.2,
       "slot_posz": 1.25,
-      "slot_type": 5,
+      "slot_type": "med_turret",
       "zRot": 0.0
     },
     {
@@ -130,7 +130,7 @@
       "slot_posx": 0.65,
       "slot_posy": 1.2,
       "slot_posz": -0.06,
-      "slot_type": 5,
+      "slot_type": "med_turret",
       "zRot": 0.0
     },
     {
@@ -141,7 +141,7 @@
       "slot_posx": -0.65,
       "slot_posy": 1.2,
       "slot_posz": -0.06,
-      "slot_type": 5,
+      "slot_type": "med_turret",
       "zRot": 0.0
     },
     {
@@ -154,7 +154,7 @@
       "slot_posx": 1.5,
       "slot_posy": 1.0,
       "slot_posz": 0.0,
-      "slot_type": 2,
+      "slot_type": "frame",
       "zRot": 90.0
     },
     {
@@ -167,7 +167,7 @@
       "slot_posx": -1.5,
       "slot_posy": 1.0,
       "slot_posz": 0.0,
-      "slot_type": 2,
+      "slot_type": "frame",
       "zRot": -90.0
     },
     {
@@ -178,7 +178,7 @@
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 8,
+      "slot_type": "push_engine",
       "zRot": 0.0
     },
     {
@@ -190,7 +190,7 @@
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 3,
+      "slot_type": "internal",
       "zRot": 0.0
     },
     {
@@ -198,7 +198,7 @@
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 3,
+      "slot_type": "internal",
       "zRot": 0.0
     },
     {
@@ -209,7 +209,7 @@
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 4,
+      "slot_type": "advanced_internal",
       "zRot": 0.0
     }
   ],

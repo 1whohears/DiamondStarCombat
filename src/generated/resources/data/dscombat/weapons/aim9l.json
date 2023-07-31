@@ -1,5 +1,5 @@
 {
-  "type": 4,
+  "type": "ir_missile",
   "acceleration": 0.04,
   "bleed": 0.02,
   "canShootOnGround": false,

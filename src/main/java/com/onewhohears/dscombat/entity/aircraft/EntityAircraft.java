@@ -138,7 +138,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	public final double collideSpeedWithGearThreshHold = Config.SERVER.collideSpeedWithGearThreshHold.get();
 	public final double collideDamageRate = Config.SERVER.collideDamageRate.get();
 	public final double maxFallSpeed = Config.SERVER.maxFallSpeed.get();
-	public final boolean autoDataLink = Config.SERVER.autoDataLink.get();
+	public final boolean autoDataLink = Config.COMMON.autoDataLink.get();
 	
 	public final String defaultPreset;
 	public final boolean negativeThrottle;
@@ -1208,6 +1208,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		for (EntitySeat seat : seats) 
 			if (seat.isPilotSeat()) {
 				if (e.startRiding(seat)) {
+					System.out.println("pilot seat");
 					newRiderCooldown = 10;
 					return true;
 				} else return false;
@@ -1216,10 +1217,15 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	}
 	
 	public boolean rideAvailableSeat(Entity e) {
+		System.out.println("Ride Available Seat "+e);
 		List<EntitySeat> seats = getSeats();
 		if (ridePilotSeat(e, seats)) return true;
 		for (EntitySeat seat : seats) 
-			if (e.startRiding(seat)) return true;
+			if (e.startRiding(seat)) {
+				System.out.println("other seat");
+				return true;
+			}
+		System.out.println("fail");
 		return false;
 	}
 	
@@ -1621,7 +1627,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     
     public void becomeItem() {
     	if (level.isClientSide) return;
-    	if (tickCount/20 < Config.SERVER.toItemCooldown.get() && getControllingPassenger() instanceof Player player) {
+    	if (tickCount/20 < Config.COMMON.toItemCooldown.get() && getControllingPassenger() instanceof Player player) {
     		player.displayClientMessage(Component.translatable("error.dscombat.cant_item_yet"), true);
     		return;
     	}
@@ -1979,6 +1985,11 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     	Entity c = getControllingPassenger();
 		if (c != null) return team.isAlliedTo(c.getTeam());
     	return super.isAlliedTo(team);
+    }
+    
+    @Override
+    public void checkDespawn() {
+    	super.checkDespawn();
     }
     
 }

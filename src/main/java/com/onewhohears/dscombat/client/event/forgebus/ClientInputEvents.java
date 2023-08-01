@@ -194,7 +194,8 @@ public final class ClientInputEvents {
 	
 	@SubscribeEvent
 	public static void entityMountEvent(EntityMountEvent event) {
-		if (!event.isDismounting()) return;
+		// FIXME 0.3 what to do with this dismount event
+		/*if (!event.isDismounting()) return;
 		Entity mounting = event.getEntityMounting();
 		if (!(mounting instanceof Player)) return;
 		Entity mounted = event.getEntityBeingMounted();
@@ -210,7 +211,7 @@ public final class ClientInputEvents {
 		}
 		boolean cancel = !DSCKeys.dismount.isDown();
 		event.setCanceled(cancel);
-		if (cancel) System.out.println("EVENT CANCELED");
+		if (cancel) System.out.println("EVENT CANCELED");*/
 	}
 	
 }

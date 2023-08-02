@@ -7,6 +7,7 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftControl;
+import com.onewhohears.dscombat.common.network.toserver.ToServerDismount;
 import com.onewhohears.dscombat.common.network.toserver.ToServerShootTurret;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSwitchSeat;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
@@ -17,6 +18,7 @@ import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
@@ -157,15 +159,22 @@ public final class ClientInputEvents {
 		if (shoot && player.getVehicle() instanceof EntityTurret turret) {
 			PacketHandler.INSTANCE.sendToServer(new ToServerShootTurret(turret));
 		}
-		
+		// DISMOUNT 
+		if (Config.CLIENT.customDismount.get() && DSCKeys.dismount.isDown()) {
+			PacketHandler.INSTANCE.sendToServer(new ToServerDismount());
+			inputDismountTime = System.currentTimeMillis();
+		}
 	}
+	
+	private static long inputDismountTime;
+	private static final long maxInputDismoubtTime = 2000;
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void clientMoveInput(MovementInputUpdateEvent event) {
 		Player player = event.getEntity();
 		if (!(player.getVehicle() instanceof EntitySeat plane)) return;
 		if (Config.CLIENT.customDismount.get()) {
-			event.getInput().shiftKeyDown = DSCKeys.dismount.isDown();
+			event.getInput().shiftKeyDown = false;
 		}
 	}
 	
@@ -192,15 +201,16 @@ public final class ClientInputEvents {
 				Math.toDegrees(Math.atan2(y, d)), 100000);
 	}
 	
-	@SubscribeEvent
-	public static void entityMountEvent(EntityMountEvent event) {
-		// FIXME 0.3 what to do with this dismount event
-		/*if (!event.isDismounting()) return;
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
+	public static void seatDismountAircraft(EntityMountEvent event) {
+		// FIXME 0.4 what to do with this dismount event
+		if (!event.isDismounting()) return;
 		Entity mounting = event.getEntityMounting();
-		if (!(mounting instanceof Player)) return;
+		if (!mounting.level.isClientSide) return;
+		if (!(mounting instanceof EntitySeat)) return;
 		Entity mounted = event.getEntityBeingMounted();
-		if (!(mounted instanceof EntitySeat)) return;
-		System.out.println("ENTITY MOUNT EVENT");
+		if (!(mounted instanceof EntityAircraft)) return;
+		System.out.println("SEAT DISMOUNT AIRCRAFT");
 		System.out.println("is dismounting "+event.isDismounting());
 		System.out.println("mounting "+mounting);
 		System.out.println("mounted  "+mounted);
@@ -209,9 +219,47 @@ public final class ClientInputEvents {
 		for (int i = 0; i < stack.length; ++i) {
 			System.out.println(stack[i].toString());
 		}
-		boolean cancel = !DSCKeys.dismount.isDown();
+		/*boolean cancel = !mounted.isRemoved() && mounting.isRemoved();
 		event.setCanceled(cancel);
-		if (cancel) System.out.println("EVENT CANCELED");*/
+		if (cancel) {
+			if (mounting.isRemoved()) {
+				System.out.println("seat is removed reviving");
+				mounting.revive();
+			}
+			System.out.println("EVENT CANCELED");
+		} else System.out.println("EVENT PASSED");*/
+	}
+	
+	@SubscribeEvent(priority = EventPriority.HIGH)
+	public static void playerDismountSeat(EntityMountEvent event) {
+		// FIXME 0.3 what to do with this dismount event
+		// do I need to stop the seat from getting dismounted on the plane?
+		if (!event.isDismounting()) return;
+		Entity mounting = event.getEntityMounting();
+		if (!mounting.level.isClientSide) return;
+		if (!(mounting instanceof LocalPlayer)) return;
+		Entity mounted = event.getEntityBeingMounted();
+		if (!(mounted instanceof EntitySeat)) return;
+		System.out.println("PLAYER DISMOUNT SEAT");
+		System.out.println("is dismounting "+event.isDismounting());
+		System.out.println("mounting "+mounting);
+		System.out.println("mounted  "+mounted);
+		System.out.println("mounted vehicle = "+mounted.getVehicle());
+		StackTraceElement[] stack = Thread.currentThread().getStackTrace();
+		System.out.println("stack trace = ");
+		for (int i = 0; i < stack.length; ++i) {
+			System.out.println(stack[i].toString());
+		}
+		/*long diff = System.currentTimeMillis() - inputDismountTime;
+		boolean cancel = diff > maxInputDismoubtTime && mounted.isRemoved() && mounted.getVehicle() == null;
+		event.setCanceled(cancel);
+		if (cancel) {
+			System.out.println("is removed reviving and vehicle is null");
+			mounted.revive();
+			mounting.startRiding(mounted);
+			System.out.println("EVENT CANCELED "+diff);
+		}
+		else System.out.println("EVENT PASSED "+diff);*/
 	}
 	
 }

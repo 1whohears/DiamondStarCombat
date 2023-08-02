@@ -17,6 +17,7 @@ import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftThrottle
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftToItem;
 import com.onewhohears.dscombat.common.network.toserver.ToServerCraftPlane;
 import com.onewhohears.dscombat.common.network.toserver.ToServerCraftWeapon;
+import com.onewhohears.dscombat.common.network.toserver.ToServerDismount;
 import com.onewhohears.dscombat.common.network.toserver.ToServerPingSelect;
 import com.onewhohears.dscombat.common.network.toserver.ToServerShootTurret;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSwitchSeat;
@@ -137,6 +138,11 @@ public final class PacketHandler {
 			.encoder(ToClientDataPackSynch::encode)
 			.decoder(ToClientDataPackSynch::new)
 			.consumerMainThread(ToClientDataPackSynch::handle)
+			.add();
+		net.messageBuilder(ToServerDismount.class, index++, NetworkDirection.PLAY_TO_SERVER)
+			.encoder(ToServerDismount::encode)
+			.decoder(ToServerDismount::new)
+			.consumerMainThread(ToServerDismount::handle)
 			.add();
 	}
 	

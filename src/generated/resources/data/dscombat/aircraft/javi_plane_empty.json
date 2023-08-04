@@ -1,5 +1,6 @@
 {
   "aircraft_type": 0,
+  "cross_sec_area": 6.25,
   "displayName": "preset.dscombat.javi_plane_empty",
   "health": 200.0,
   "idleheat": 5.0,

@@ -1,5 +1,6 @@
 {
   "aircraft_type": 0,
+  "cross_sec_area": 4.0,
   "displayName": "preset.dscombat.alexis_plane_support",
   "health": 150.0,
   "idleheat": 4.0,
@@ -94,7 +95,7 @@
       "name": "pilot_seat",
       "slot_posx": 0.0,
       "slot_posy": 0.5,
-      "slot_posz": 6.5,
+      "slot_posz": 6.35,
       "slot_type": "seat",
       "zRot": 0.0
     },

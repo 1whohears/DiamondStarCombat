@@ -124,6 +124,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	public static final EntityDataAccessor<Integer> RADAR_MODE = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> FLARE_NUM = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<String> RADIO_SONG = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.STRING);
+	public static final EntityDataAccessor<Float> CROSS_SEC_AREA = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
 	
 	public final AircraftInputs inputs = new AircraftInputs();
 	public final PartsManager partsManager = new PartsManager(this);
@@ -237,6 +238,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		entityData.define(RADAR_MODE, RadarMode.ALL.ordinal());
 		entityData.define(FLARE_NUM, 0);
 		entityData.define(RADIO_SONG, "");
+		entityData.define(CROSS_SEC_AREA, 1f);
 	}
 	
 	@Override
@@ -296,6 +298,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		setMaxHealth(nbt.getFloat("max_health"));
 		setHealth(nbt.getFloat("health"));
 		setStealth(nbt.getFloat("stealth"));
+		setBaseCrossSecArea(UtilParse.fixFloatNbt(nbt, "cross_sec_area", presetNbt, 1));
 		setTurnRadius(nbt.getFloat("turn_radius"));
 		setMaxDeltaRoll(nbt.getFloat("maxroll"));
 		setMaxDeltaPitch(nbt.getFloat("maxpitch"));
@@ -335,6 +338,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		compound.putFloat("max_health", getMaxHealth());
 		compound.putFloat("health", getHealth());
 		compound.putFloat("stealth", getStealth());
+		compound.putFloat("cross_sec_area", getBaseCrossSecArea());
 		compound.putFloat("turn_radius", getTurnRadius());
 		compound.putFloat("maxroll", getMaxDeltaRoll());
 		compound.putFloat("maxpitch", getMaxDeltaPitch());
@@ -919,8 +923,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	}
 	
 	public double getCrossSectionArea() {
-		// FIXME 2 make cross sec area independent preset data
-		double a = getBbHeight() * getBbWidth();
+		double a = getBaseCrossSecArea();
 		if (!isOperational()) a += 4;
 		return a;
 	}
@@ -1551,6 +1554,14 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
      */
     public final void setPrevQ(Quaternion q) {
         prevQ = q.copy();
+    }
+    
+    public final float getBaseCrossSecArea() {
+    	return entityData.get(CROSS_SEC_AREA);
+    }
+    
+    public final void setBaseCrossSecArea(float area) {
+    	entityData.set(CROSS_SEC_AREA, area);
     }
     
     public final Vec3 getMoment() {

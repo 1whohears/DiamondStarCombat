@@ -1,5 +1,6 @@
 {
   "aircraft_type": 2,
+  "cross_sec_area": 7.5,
   "displayName": "preset.dscombat.mrbudger_tank_unarmed",
   "health": 500.0,
   "idleheat": 10.0,

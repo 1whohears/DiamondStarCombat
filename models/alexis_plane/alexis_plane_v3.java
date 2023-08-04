@@ -1,4 +1,4 @@
-// Made with Blockbench 4.8.0
+// Made with Blockbench 4.8.1
 // Exported for Minecraft version 1.17 or later with Mojang mappings
 // Paste this class into your mod and generate all required imports
 
@@ -40,23 +40,23 @@ public class alexis_plane_v3<T extends Entity> extends EntityModel<T> {
 
 		PartDefinition rudder_right_r2 = LeftRudder.addOrReplaceChild("rudder_right_r2", CubeListBuilder.create().texOffs(24, 0).addBox(-1.5F, -0.5F, -2.0F, 3.0F, 1.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -2.0F, -1.0F, -0.4363F, 0.0F, 0.0F));
 
-		PartDefinition Canopy = Cockpit.addOrReplaceChild("Canopy", CubeListBuilder.create(), PartPose.offset(0.0F, 4.0F, 0.0F));
+		PartDefinition Canopy = Cockpit.addOrReplaceChild("Canopy", CubeListBuilder.create(), PartPose.offset(0.0F, -45.0F, 19.0F));
 
 		PartDefinition port_c_r1 = Canopy.addOrReplaceChild("port_c_r1", CubeListBuilder.create().texOffs(93, 309).addBox(-1.02F, -7.0F, -13.5F, 2.0F, 14.0F, 27.0F, new CubeDeformation(0.0F))
-		.texOffs(581, 568).addBox(-21.98F, -7.0F, -13.5F, 2.0F, 14.0F, 27.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(9.7517F, -46.0325F, 10.4116F, -0.6109F, 0.0F, 0.0F));
+		.texOffs(581, 568).addBox(-21.98F, -7.0F, -13.5F, 2.0F, 14.0F, 27.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(9.7517F, 2.9675F, -8.5884F, -0.6109F, 0.0F, 0.0F));
 
 		PartDefinition port_b_r1 = Canopy.addOrReplaceChild("port_b_r1", CubeListBuilder.create().texOffs(146, 70).addBox(-1.01F, -9.5F, -16.5F, 2.0F, 19.0F, 33.0F, new CubeDeformation(0.0F))
-		.texOffs(0, 230).addBox(-21.99F, -9.5F, -16.5F, 2.0F, 19.0F, 33.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(9.7517F, -51.4841F, -13.8971F, -0.0873F, 0.0F, 0.0F));
+		.texOffs(0, 230).addBox(-21.99F, -9.5F, -16.5F, 2.0F, 19.0F, 33.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(9.7517F, -2.4841F, -32.8971F, -0.0873F, 0.0F, 0.0F));
 
-		PartDefinition port_a_r1 = Canopy.addOrReplaceChild("port_a_r1", CubeListBuilder.create().texOffs(491, 70).addBox(-1.0F, -14.0F, -6.5F, 2.0F, 28.0F, 15.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(9.7417F, -49.0314F, -37.2463F, -0.9599F, 0.0F, 0.0F));
+		PartDefinition port_a_r1 = Canopy.addOrReplaceChild("port_a_r1", CubeListBuilder.create().texOffs(491, 70).addBox(-1.0F, -14.0F, -6.5F, 2.0F, 28.0F, 15.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(9.7417F, -0.0314F, -56.2463F, -0.9599F, 0.0F, 0.0F));
 
-		PartDefinition starboard_a_r1 = Canopy.addOrReplaceChild("starboard_a_r1", CubeListBuilder.create().texOffs(320, 31).addBox(-1.0F, -14.0F, -7.5F, 2.0F, 28.0F, 15.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-11.2383F, -48.2123F, -36.6727F, -0.9599F, 0.0F, 0.0F));
+		PartDefinition starboard_a_r1 = Canopy.addOrReplaceChild("starboard_a_r1", CubeListBuilder.create().texOffs(320, 31).addBox(-1.0F, -14.0F, -7.5F, 2.0F, 28.0F, 15.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-11.2383F, 0.7877F, -55.6727F, -0.9599F, 0.0F, 0.0F));
 
-		PartDefinition cockpit_r1 = Canopy.addOrReplaceChild("cockpit_r1", CubeListBuilder.create().texOffs(21, 543).addBox(-9.5F, -1.0F, -13.5F, 19.0F, 2.0F, 27.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.7483F, -50.9474F, 13.853F, -0.6109F, 0.0F, 0.0F));
+		PartDefinition cockpit_r1 = Canopy.addOrReplaceChild("cockpit_r1", CubeListBuilder.create().texOffs(21, 543).addBox(-9.5F, -1.0F, -13.5F, 19.0F, 2.0F, 27.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.7483F, -1.9474F, -5.147F, -0.6109F, 0.0F, 0.0F));
 
-		PartDefinition cockpit_r2 = Canopy.addOrReplaceChild("cockpit_r2", CubeListBuilder.create().texOffs(358, 399).addBox(-9.5F, -1.0F, -16.5F, 19.0F, 2.0F, 33.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.7483F, -59.9517F, -13.1563F, -0.0873F, 0.0F, 0.0F));
+		PartDefinition cockpit_r2 = Canopy.addOrReplaceChild("cockpit_r2", CubeListBuilder.create().texOffs(358, 399).addBox(-9.5F, -1.0F, -16.5F, 19.0F, 2.0F, 33.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.7483F, -10.9517F, -32.1563F, -0.0873F, 0.0F, 0.0F));
 
-		PartDefinition cockpitfront_r1 = Canopy.addOrReplaceChild("cockpitfront_r1", CubeListBuilder.create().texOffs(0, 95).addBox(-9.5F, -14.0F, -1.0F, 19.0F, 28.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.7583F, -53.5368F, -40.4009F, -0.9599F, 0.0F, 0.0F));
+		PartDefinition cockpitfront_r1 = Canopy.addOrReplaceChild("cockpitfront_r1", CubeListBuilder.create().texOffs(0, 95).addBox(-9.5F, -14.0F, -1.0F, 19.0F, 28.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.7583F, -4.5368F, -59.4009F, -0.9599F, 0.0F, 0.0F));
 
 		PartDefinition Body = Plane.addOrReplaceChild("Body", CubeListBuilder.create().texOffs(0, 309).addBox(-9.2483F, -22.0834F, -42.0F, 17.0F, 6.0F, 59.0F, new CubeDeformation(0.0F))
 		.texOffs(0, 230).addBox(-12.2483F, -40.0834F, 17.0F, 23.0F, 24.0F, 211.0F, new CubeDeformation(0.0F))

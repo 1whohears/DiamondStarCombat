@@ -2,6 +2,7 @@
   "accForward": 0.04,
   "accSide": 0.02,
   "aircraft_type": 1,
+  "cross_sec_area": 7.84,
   "displayName": "preset.dscombat.noah_chopper_unarmed",
   "health": 300.0,
   "idleheat": 8.0,

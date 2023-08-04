@@ -1,5 +1,6 @@
 {
   "aircraft_type": 2,
+  "cross_sec_area": 1.2,
   "displayName": "preset.dscombat.small_roller",
   "health": 30.0,
   "idleheat": 1.0,

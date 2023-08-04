@@ -436,6 +436,13 @@ public class AircraftPreset extends JsonPreset{
 		/**
 		 * all vehicles
 		 */
+		public Builder setCrossSecArea(float area) {
+			return setFloat("cross_sec_area", area);
+		}
+		
+		/**
+		 * all vehicles
+		 */
 		public Builder setStealth(float stealth) {
 			return setFloat("stealth", stealth);
 		}

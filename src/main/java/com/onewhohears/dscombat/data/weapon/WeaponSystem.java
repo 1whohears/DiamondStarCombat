@@ -115,6 +115,7 @@ public class WeaponSystem {
 		if (reason != null && controller instanceof ServerPlayer player) {
 			player.displayClientMessage(Component.translatable(reason), true);
 		}
+		if (reason == null) parent.lastShootTime = parent.tickCount;
 		return true;
 	}
 	

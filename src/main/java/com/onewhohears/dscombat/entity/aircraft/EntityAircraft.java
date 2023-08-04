@@ -158,6 +158,11 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	 */
 	private ResourceLocation currentTexture;
 	
+	/**
+	 * SERVER ONLY
+	 */
+	public int lastShootTime = -1;
+	
 	public Quaternion prevQ = Quaternion.ONE.copy();
 	public Quaternion clientQ = Quaternion.ONE.copy();
 	public Vec3 clientAV = Vec3.ZERO;
@@ -1635,7 +1640,9 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     
     public void becomeItem() {
     	if (level.isClientSide) return;
-    	if (tickCount/20 < Config.COMMON.freshEntityToItemCooldown.get() && getControllingPassenger() instanceof Player player) {
+    	boolean cancel = tickCount/20 < Config.COMMON.freshEntityToItemCooldown.get() 
+    			|| (lastShootTime != -1 && (tickCount-lastShootTime)/20 < Config.COMMON.usedWeaponToItemCooldown.get());
+    	if (cancel && getControllingPassenger() instanceof Player player) {
     		player.displayClientMessage(Component.translatable("error.dscombat.cant_item_yet"), true);
     		return;
     	}

@@ -45,7 +45,6 @@ public class Config {
 		
 		public final ForgeConfigSpec.IntValue maxBlockCheckDepth;
 		public final ForgeConfigSpec.DoubleValue freshEntityToItemCooldown;
-		// TODO 7.5 to item cool down after weapon is fired
 		public final ForgeConfigSpec.DoubleValue usedWeaponToItemCooldown;
 		public final ForgeConfigSpec.BooleanValue autoDataLink;
 		// TODO 7.2 baby mode for planes disabled by default
@@ -91,16 +90,16 @@ public class Config {
 				.comment("entities that ir missiles will target (path to entity class)/(default heat value)")
 				.defineList("irEntities", 
 					Arrays.asList(
-							"net.minecraft.world.entity.projectile.FireworkRocketEntity/2.5f", 
+							"net.minecraft.world.entity.projectile.FireworkRocketEntity/5f", 
 							"net.minecraft.world.entity.Mob/0.4f",
-							"xyz.przemyk.simpleplanes.entities.PlaneEntity/6.0f"), 
+							"xyz.przemyk.simpleplanes.entities.PlaneEntity/10.0f"), 
 					entry -> true);
 			specificEntityHeat = builder
 				.comment("entities with a specific heat value (entity_id)/(heat value override)")
 				.defineList("specificEntityHeat", 
 					Arrays.asList(
-							"minecraft:blaze/10f",
-							"minecraft:magma_cube/8f",
+							"minecraft:blaze/20f",
+							"minecraft:magma_cube/12f",
 							"minecraft:wither/200f",
 							"minecraft:ender_dragon/100f"), 
 					entry -> true);

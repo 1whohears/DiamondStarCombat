@@ -13,8 +13,7 @@ public class Config {
 		
 		public final ForgeConfigSpec.DoubleValue mouseModeMaxRadius;
 		public final ForgeConfigSpec.DoubleValue mouseStickDeadzoneRadius;
-		// TODO 0.1 invert vertical mouse mode config
-		// TODO 0.2 horizontal mouse mode controls roll config
+		public final ForgeConfigSpec.BooleanValue invertY;
 		public final ForgeConfigSpec.BooleanValue cameraTurnRelativeToVehicle;
 		public final ForgeConfigSpec.BooleanValue customDismount;
 		public final ForgeConfigSpec.BooleanValue debugMode;
@@ -26,6 +25,8 @@ public class Config {
 			mouseStickDeadzoneRadius = builder
 					.comment("Only for vehicles in Mouse Mode. How far your mouse must move from rest to register an input.")
 					.defineInRange("mouseStickDeadzoneRadius", 100d, 0, 1000d);
+			invertY = builder
+					.define("invertY", false);
 			cameraTurnRelativeToVehicle = builder
 					.comment("If enabled, turning your player head may feel more natural.")
 					.worldRestart()

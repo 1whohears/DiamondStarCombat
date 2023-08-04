@@ -8,6 +8,7 @@ import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftControl;
 import com.onewhohears.dscombat.common.network.toserver.ToServerDismount;
+import com.onewhohears.dscombat.common.network.toserver.ToServerSeatPos;
 import com.onewhohears.dscombat.common.network.toserver.ToServerShootTurret;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSwitchSeat;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
@@ -18,14 +19,12 @@ import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -134,6 +133,10 @@ public final class ClientInputEvents {
 		final var player = m.player;
 		if (player == null || !player.isPassenger()) return;
 		if (!(player.getRootVehicle() instanceof EntityAircraft plane)) return;
+		// TELL SERVER WHERE THE SEAT IS INCASE LAG CAUSES VIOLENCE
+		if (player.tickCount % 40 == 0) {
+			PacketHandler.INSTANCE.sendToServer(new ToServerSeatPos(player.getVehicle().position()));
+		}
 		// SWITCH SEAT
 		if (DSCKeys.changeSeat.consumeClick()) {
 			PacketHandler.INSTANCE.sendToServer(new ToServerSwitchSeat(plane.getId()));
@@ -162,12 +165,8 @@ public final class ClientInputEvents {
 		// DISMOUNT 
 		if (Config.CLIENT.customDismount.get() && DSCKeys.dismount.isDown()) {
 			PacketHandler.INSTANCE.sendToServer(new ToServerDismount());
-			inputDismountTime = System.currentTimeMillis();
 		}
 	}
-	
-	private static long inputDismountTime;
-	private static final long maxInputDismoubtTime = 2000;
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void clientMoveInput(MovementInputUpdateEvent event) {
@@ -201,9 +200,8 @@ public final class ClientInputEvents {
 				Math.toDegrees(Math.atan2(y, d)), 100000);
 	}
 	
-	@SubscribeEvent(priority = EventPriority.HIGHEST)
+	/*@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void seatDismountAircraft(EntityMountEvent event) {
-		// FIXME 0.4 what to do with this dismount event
 		if (!event.isDismounting()) return;
 		Entity mounting = event.getEntityMounting();
 		if (!mounting.level.isClientSide) return;
@@ -218,22 +216,12 @@ public final class ClientInputEvents {
 		System.out.println("stack trace = ");
 		for (int i = 0; i < stack.length; ++i) {
 			System.out.println(stack[i].toString());
+			if (stack[i].toString().contains("net.minecraft.client.main.Main")) break;
 		}
-		/*boolean cancel = !mounted.isRemoved() && mounting.isRemoved();
-		event.setCanceled(cancel);
-		if (cancel) {
-			if (mounting.isRemoved()) {
-				System.out.println("seat is removed reviving");
-				mounting.revive();
-			}
-			System.out.println("EVENT CANCELED");
-		} else System.out.println("EVENT PASSED");*/
-	}
+	}*/
 	
-	@SubscribeEvent(priority = EventPriority.HIGH)
+	/*@SubscribeEvent(priority = EventPriority.HIGH)
 	public static void playerDismountSeat(EntityMountEvent event) {
-		// FIXME 0.3 what to do with this dismount event
-		// do I need to stop the seat from getting dismounted on the plane?
 		if (!event.isDismounting()) return;
 		Entity mounting = event.getEntityMounting();
 		if (!mounting.level.isClientSide) return;
@@ -249,17 +237,8 @@ public final class ClientInputEvents {
 		System.out.println("stack trace = ");
 		for (int i = 0; i < stack.length; ++i) {
 			System.out.println(stack[i].toString());
+			if (stack[i].toString().contains("net.minecraft.client.main.Main")) break;
 		}
-		/*long diff = System.currentTimeMillis() - inputDismountTime;
-		boolean cancel = diff > maxInputDismoubtTime && mounted.isRemoved() && mounted.getVehicle() == null;
-		event.setCanceled(cancel);
-		if (cancel) {
-			System.out.println("is removed reviving and vehicle is null");
-			mounted.revive();
-			mounting.startRiding(mounted);
-			System.out.println("EVENT CANCELED "+diff);
-		}
-		else System.out.println("EVENT PASSED "+diff);*/
-	}
+	}*/
 	
 }

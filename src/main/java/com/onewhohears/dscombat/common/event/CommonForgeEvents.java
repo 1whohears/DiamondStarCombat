@@ -14,6 +14,7 @@ import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -63,6 +64,26 @@ public final class CommonForgeEvents {
 		event.addListener(AircraftPresets.get());
 		event.addListener(WeaponPresets.get());
 		event.addListener(RadarPresets.get());
+	}
+	
+	@SubscribeEvent(priority = EventPriority.NORMAL)
+	public static void stopTrackingEvent(PlayerEvent.StopTracking event) {
+		//if (!event.getTarget().isVehicle()) return;
+		if (!(event.getTarget() instanceof EntitySeat seat)) return;
+		if (!event.getTarget().equals(event.getEntity().getVehicle())) return;
+		//if (!plane.isVehicleOf(event.getEntity())) return;
+		System.out.println("STOP TRACKING EVENT "+event.getEntity().level.getGameTime()+" "+(int)(System.currentTimeMillis()*0.001));
+		System.out.println("seat   = "+event.getTarget()+" "+event.getTarget().tickCount);
+		System.out.println("plane  = "+event.getEntity().getRootVehicle()+" "+event.getEntity().getRootVehicle().tickCount);
+		System.out.println("player = "+event.getEntity()+" "+event.getEntity().tickCount);
+		System.out.println("distance = "+event.getEntity().distanceTo(event.getTarget()));
+		//System.out.println("is same = "+event.getTarget().equals(event.getEntity().getVehicle()));
+		/*System.out.println("stack trace = ");
+		StackTraceElement[] stack = Thread.currentThread().getStackTrace();
+		for (int i = 0; i < stack.length; ++i) {
+			System.out.println(stack[i].toString());
+			if (stack[i].toString().contains("net.minecraft.client.main.Main")) break;
+		}*/
 	}
 	
 }

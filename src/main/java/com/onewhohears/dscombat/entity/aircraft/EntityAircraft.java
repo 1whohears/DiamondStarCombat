@@ -179,7 +179,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	private float landingGearPos, landingGearPosOld;
 	
 	// FIXME 0.1 fix lag spikes causing plane to crash
-	// FIXME 0.2 fix weird desynch issue leading to player falling out of plane
 	// TODO 3.1 vehicle armor plating that reduces damage 
 	// TODO 3.2 reduce damage passengers receive based on armor. make it configurable. especially explosive damage.
 	// TODO 8.2 creative mode middle click should give aircraft item
@@ -285,7 +284,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 			preset = defaultPreset;
 			System.out.println("ERROR: preset "+preset+" doesn't exist!");
 		}
-		System.out.println(this+" using nbt preset "+preset);
+		//System.out.println(this+" using nbt preset "+preset);
 		AircraftPreset ap = AircraftPresets.get().getPreset(preset);
 		item = ap.getItem();
 		CompoundTag presetNbt = ap.getDataAsNBT();
@@ -1208,7 +1207,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		for (EntitySeat seat : seats) 
 			if (seat.isPilotSeat()) {
 				if (e.startRiding(seat)) {
-					System.out.println("pilot seat");
 					newRiderCooldown = 10;
 					return true;
 				} else return false;
@@ -1217,15 +1215,12 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	}
 	
 	public boolean rideAvailableSeat(Entity e) {
-		System.out.println("Ride Available Seat "+e);
 		List<EntitySeat> seats = getSeats();
 		if (ridePilotSeat(e, seats)) return true;
 		for (EntitySeat seat : seats) 
 			if (e.startRiding(seat)) {
-				System.out.println("other seat");
 				return true;
 			}
-		System.out.println("fail");
 		return false;
 	}
 	
@@ -1241,7 +1236,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 			}
 		}
 		if (seatIndex == -1) return false; // player not riding seat
-		System.out.println("riding seat "+seatIndex);
+		//System.out.println("riding seat "+seatIndex);
 		int i = 0, j = seatIndex+1;
 		while (i < seats.size()-1) {
 			if (j >= seats.size()) j = 0;
@@ -1261,6 +1256,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 			else q = getQ();
  			Vec3 seatPos = UtilAngles.rotateVector(part.getRelativePos(), q);
 			passenger.setPos(position().add(seatPos));
+			//passenger.setDeltaMovement(getDeltaMovement());
 		}
 	}
 	

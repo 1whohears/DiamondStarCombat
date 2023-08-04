@@ -96,6 +96,23 @@
   "presetId": "javi_plane",
   "textures": {
     "default_texture_path": "dscombat:textures/entity/javi_plane/",
-    "overrides": {}
+    "overrides": {
+      "black": "dscombat:textures/entity/javi_plane/test",
+      "blue": "dscombat:textures/entity/javi_plane/test",
+      "brown": "dscombat:textures/entity/javi_plane/test",
+      "cyan": "dscombat:textures/entity/javi_plane/test",
+      "gray": "dscombat:textures/entity/javi_plane/test",
+      "green": "dscombat:textures/entity/javi_plane/test",
+      "light_blue": "dscombat:textures/entity/javi_plane/test",
+      "light_gray": "dscombat:textures/entity/javi_plane/test",
+      "lime": "dscombat:textures/entity/javi_plane/test",
+      "magenta": "dscombat:textures/entity/javi_plane/test",
+      "orange": "dscombat:textures/entity/javi_plane/test",
+      "pink": "dscombat:textures/entity/javi_plane/test",
+      "purple": "dscombat:textures/entity/javi_plane/test",
+      "red": "dscombat:textures/entity/javi_plane/test",
+      "white": "dscombat:textures/entity/javi_plane/test",
+      "yellow": "dscombat:textures/entity/javi_plane/test"
+    }
   }
 }

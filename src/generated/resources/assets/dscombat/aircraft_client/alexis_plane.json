@@ -66,6 +66,23 @@
   "presetId": "alexis_plane",
   "textures": {
     "default_texture_path": "dscombat:textures/entity/alexis_plane/",
-    "overrides": {}
+    "overrides": {
+      "black": "dscombat:textures/entity/alexis_plane/v3_template",
+      "blue": "dscombat:textures/entity/alexis_plane/v3_template",
+      "brown": "dscombat:textures/entity/alexis_plane/v3_template",
+      "cyan": "dscombat:textures/entity/alexis_plane/v3_template",
+      "gray": "dscombat:textures/entity/alexis_plane/v3_template",
+      "green": "dscombat:textures/entity/alexis_plane/v3_template",
+      "light_blue": "dscombat:textures/entity/alexis_plane/v3_template",
+      "light_gray": "dscombat:textures/entity/alexis_plane/v3_template",
+      "lime": "dscombat:textures/entity/alexis_plane/v3_template",
+      "magenta": "dscombat:textures/entity/alexis_plane/v3_template",
+      "orange": "dscombat:textures/entity/alexis_plane/v3_template",
+      "pink": "dscombat:textures/entity/alexis_plane/v3_template",
+      "purple": "dscombat:textures/entity/alexis_plane/v3_template",
+      "red": "dscombat:textures/entity/alexis_plane/v3_template",
+      "white": "dscombat:textures/entity/alexis_plane/v3_template",
+      "yellow": "dscombat:textures/entity/alexis_plane/v3_template"
+    }
   }
 }

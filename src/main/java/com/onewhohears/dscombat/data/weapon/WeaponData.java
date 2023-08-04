@@ -155,18 +155,20 @@ public abstract class WeaponData extends JsonPreset {
 				1f, 1f);
 		setLaunchSuccess(1, owner, consume);
 		updateClientAmmo(vehicle);
+		vehicle.lastShootTime = vehicle.tickCount;
 		return true;
 	}
 	
-	public boolean shootFromTurret(Level level, Entity owner, Vec3 direction, Vec3 pos, @Nullable EntityAircraft parent, boolean consume) {
+	public boolean shootFromTurret(Level level, Entity owner, Vec3 direction, Vec3 pos, @Nullable EntityAircraft vehicle, boolean consume) {
 		overrideGroundCheck = true;
-		EntityWeapon w = getShootEntity(level, owner, pos, direction, parent);
+		EntityWeapon w = getShootEntity(level, owner, pos, direction, vehicle);
 		if (w == null) return false;
 		level.addFreshEntity(w);
 		level.playSound(null, w.blockPosition(), 
 				getShootSound(), SoundSource.PLAYERS, 
 				1f, 1f);
 		setLaunchSuccess(1, owner, consume);
+		if (vehicle != null) vehicle.lastShootTime = vehicle.tickCount;
 		return true;
 	}
 	

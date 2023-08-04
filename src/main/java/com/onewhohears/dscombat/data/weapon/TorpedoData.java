@@ -74,4 +74,9 @@ public class TorpedoData extends TrackMissileData {
 		return missile;
 	}
 	
+	@Override
+	public String getWeaponTypeCode() {
+		return "TR";
+	}
+	
 }

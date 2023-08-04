@@ -79,5 +79,10 @@ public class AntiRadarMissileData extends MissileData {
 	public double getScanRange() {
 		return scan_range;
 	}
+	
+	@Override
+	public String getWeaponTypeCode() {
+		return "AGAR";
+	}
 
 }

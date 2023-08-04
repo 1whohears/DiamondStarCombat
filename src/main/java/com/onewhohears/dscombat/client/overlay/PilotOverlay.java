@@ -171,7 +171,7 @@ public class PilotOverlay {
 	
 	private static final MutableComponent weaponSelect = Component.empty().append("->");
 	private static void drawAircraftWeaponsAndKeys(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
-		int wh=1,x=1,weaponSelectWidth=m.font.width(weaponSelect)+1,maxNameWidth=46,color1=0x7340bf,color2=0x00ff00,color=color1;
+		int wh=1,x=1,weaponSelectWidth=m.font.width(weaponSelect)+1,maxNameWidth=46,maxTypeWidth=10,color1=0x7340bf,color2=0x00ff00,color=color1;
 		// WEAPONS
 		WeaponData sw = plane.weaponSystem.getSelected();
 		if (sw != null) {
@@ -183,6 +183,13 @@ public class PilotOverlay {
 			if (w > maxNameWidth) maxNameWidth = w;
 		}
 		maxNameWidth += 4;
+		Component[] types = new MutableComponent[weapons.size()];
+		for (int i = 0; i < weapons.size(); ++i) {
+			types[i] = Component.literal(weapons.get(i).getWeaponTypeCode());
+			int w = m.font.width(types[i]);
+			if (w > maxTypeWidth) maxTypeWidth = w;
+		}
+		maxTypeWidth += 4;
 		for (int i = 0; i < weapons.size(); ++i) {
 			x = 1; color = color1;
 			WeaponData data = weapons.get(i);
@@ -195,6 +202,9 @@ public class PilotOverlay {
 			GuiComponent.drawString(poseStack, m.font, 
 					names[i], x, wh, color);
 			x += maxNameWidth;
+			GuiComponent.drawString(poseStack, m.font, 
+					types[i], x, wh, color);
+			x += maxTypeWidth;
 			GuiComponent.drawString(poseStack, m.font, 
 					data.getCurrentAmmo()+"/"+data.getMaxAmmo(), 
 					x, wh, color);

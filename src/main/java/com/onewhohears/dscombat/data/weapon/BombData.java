@@ -87,4 +87,11 @@ public class BombData extends BulletData {
 		
 		return list;
 	}
+	
+	@Override
+	public String getWeaponTypeCode() {
+		String code = "B";
+		if (isCausesFire()) code += "I";
+		return code;
+	}
 }

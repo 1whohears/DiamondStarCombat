@@ -27,7 +27,7 @@ public class EntityPlane extends EntityAircraft {
 	public static final double CO_LIFT = Config.SERVER.coLift.get();
 	
 	public final LiftKGraph liftKGraph;
-	public final float propellerRate, flapsAOABias; // TODO 5.1 animate flaps down
+	public final float propellerRate, flapsAOABias;
 	public final boolean canAimDown;
 	
 	private float propellerRot = 0, propellerRotOld = 0, aoa = 0, liftK = 0, airFoilSpeedSqr = 0;

@@ -38,7 +38,10 @@ public class ItemWeaponPart extends ItemPart {
 			name.append("EMPTY");
 		} else {
 			WeaponData wd = WeaponPresets.get().getPreset(weapon);
-			if (wd != null) name.append(wd.getDisplayNameComponent());
+			if (wd != null) {
+				name.append(wd.getDisplayNameComponent()).append(" ")
+					.append(Component.literal(wd.getWeaponTypeCode()));
+			}
 			else name.append(weapon+"?");
 		}
 		return name;	

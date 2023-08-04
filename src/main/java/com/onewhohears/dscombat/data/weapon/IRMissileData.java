@@ -86,5 +86,10 @@ public class IRMissileData extends MissileData {
 		if (getFlareResistance() != 0) if (getFov() != -1) list.add(new ComponentColor(Component.literal("Flare Resistance: ").append(getFlareResistance()+""), 0x040404));
 		return list;
 	}
+	
+	@Override
+	public String getWeaponTypeCode() {
+		return "AAIR";
+	}
 
 }

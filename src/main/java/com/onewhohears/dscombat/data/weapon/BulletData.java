@@ -150,4 +150,12 @@ public class BulletData extends WeaponData {
 		return list;
 	}
 
+	@Override
+	public String getWeaponTypeCode() {
+		String code = "S";
+		if (isExplosive()) code += "E";
+		if (isCausesFire()) code += "I";
+		return code;
+	}
+
 }

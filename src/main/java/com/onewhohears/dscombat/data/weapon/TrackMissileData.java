@@ -120,5 +120,23 @@ public class TrackMissileData extends MissileData {
 		list.add(3, new ComponentColor(Component.literal("SELF GUIDED"), 0xaaaa00));
 		return list;
 	}
+	
+	@Override
+	public String getWeaponTypeCode() {
+		String code = "";
+		switch(getTargetType()) {
+		case AIR:
+			code = "AA";
+			break;
+		case GROUND:
+			code = "AG";
+			break;
+		case WATER:
+			code = "AW";
+			break;
+		}
+		code += "R";
+		return code;
+	}
 
 }

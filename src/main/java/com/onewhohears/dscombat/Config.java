@@ -44,8 +44,9 @@ public class Config {
 	public static class Common {
 		
 		public final ForgeConfigSpec.IntValue maxBlockCheckDepth;
-		public final ForgeConfigSpec.DoubleValue toItemCooldown;
+		public final ForgeConfigSpec.DoubleValue freshEntityToItemCooldown;
 		// TODO 7.5 to item cool down after weapon is fired
+		public final ForgeConfigSpec.DoubleValue usedWeaponToItemCooldown;
 		public final ForgeConfigSpec.BooleanValue autoDataLink;
 		// TODO 7.2 baby mode for planes disabled by default
 		// TODO 7.3 configurable entities that the radar considers vehicles/mobs
@@ -73,9 +74,12 @@ public class Config {
 			autoDataLink = builder
 					.comment("All vehicles will behave as if they have datalink even if they don't have the module.")
 					.define("autoDataLink", false);
-			toItemCooldown = builder
-					.comment("Seconds before a vehicle can become an item.")
-					.defineInRange("toItemCooldown", 30.0, 0, 600.0);
+			freshEntityToItemCooldown = builder
+					.comment("Seconds before a fresh vehicle entity can become an item.")
+					.defineInRange("freshEntityToItemCooldown", 30.0, 0, 600.0);
+			usedWeaponToItemCooldown = builder
+					.comment("Seconds before a vehicle entity that used a weapon can become an item.")
+					.defineInRange("usedWeaponToItemCooldown", 30.0, 0, 600.0);
 			/*radarVehicles = builder
 					.defineList("radarVehicles", 
 					Arrays.asList(), 

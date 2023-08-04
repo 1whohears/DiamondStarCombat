@@ -1,64 +1,17 @@
-package com.onewhohears.dscombat.client.renderer.model.aircraft;
+// Made with Blockbench 4.8.0
+// Exported for Minecraft version 1.17 or later with Mojang mappings
+// Paste this class into your mod and generate all required imports
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.client.renderer.model.EntityControllableModel;
-import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 
-import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeDeformation;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
-
-public class EntityModelAlexisPlane extends EntityControllableModel<EntityPlane> {
-	
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(DSCombatMod.MODID, "alexis_plane"), "main");
-	
+public class alexis_plane_v3<T extends Entity> extends EntityModel<T> {
+	// This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("modid", "alexis_plane_v3"), "main");
 	private final ModelPart Plane;
-	private final ModelPart gfront, gleft, gright;
-	private final ModelPart stick;
 
-	public EntityModelAlexisPlane(ModelPart root) {
+	public alexis_plane_v3(ModelPart root) {
 		this.Plane = root.getChild("Plane");
-		this.gfront = Plane.getChild("gear").getChild("setF");
-		this.gleft = Plane.getChild("gear").getChild("setL");
-		this.gright = Plane.getChild("gear").getChild("setR");
-		this.stick = Plane.getChild("Cockpit").getChild("Controls").getChild("controlstick");
 	}
-	
-	@Override
-	public void renderToBuffer(EntityPlane entity, float partialTicks, PoseStack poseStack, VertexConsumer vertexConsumer,
-			int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		poseStack.translate(0, -0.6, 5);
-		poseStack.scale(0.9F, -0.9F, -0.9F);
-		float gear = entity.getLandingGearPos(partialTicks);
-		if (gear < 1) {
-			float hpi = Mth.PI/2;
-			this.gfront.xRot = gear * -hpi;
-			this.gleft.xRot = gear * hpi;
-			this.gright.xRot = gear * hpi;
-			this.gfront.visible = true;
-			this.gleft.visible = true;
-			this.gright.visible = true;
-		} else {
-			this.gfront.visible = false;
-			this.gleft.visible = false;
-			this.gright.visible = false;
-		}
-		float ypi = Mth.PI/8;
-		float ppi = Mth.PI/12;
-		this.stick.zRot = entity.inputs.yaw * -ypi;
-		this.stick.xRot = entity.inputs.pitch * ppi;
-		Plane.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-	}
-	
+
 	public static LayerDefinition createBodyLayer() {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
@@ -360,4 +313,13 @@ public class EntityModelAlexisPlane extends EntityControllableModel<EntityPlane>
 		return LayerDefinition.create(meshdefinition, 1024, 1024);
 	}
 
+	@Override
+	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+
+	}
+
+	@Override
+	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+		Plane.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+	}
 }

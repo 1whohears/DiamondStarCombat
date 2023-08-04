@@ -1,42 +1,15 @@
-package com.onewhohears.dscombat.client.renderer.model.aircraft;
+// Made with Blockbench 4.7.2
+// Exported for Minecraft version 1.17 or later with Mojang mappings
+// Paste this class into your mod and generate all required imports
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.client.renderer.model.EntityControllableModel;
-import com.onewhohears.dscombat.entity.aircraft.EntityHelicopter;
 
-import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeDeformation;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.resources.ResourceLocation;
-
-public class EntityModelNoahChopper extends EntityControllableModel<EntityHelicopter> {
-	
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(DSCombatMod.MODID, "noah_chopper"), "main");
+public class noah_chopper<T extends Entity> extends EntityModel<T> {
+	// This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("modid", "noah_chopper"), "main");
 	private final ModelPart body;
-	private final ModelPart top_rotor;
-	private final ModelPart tail_rotor;
 
-	public EntityModelNoahChopper(ModelPart root) {
+	public noah_chopper(ModelPart root) {
 		this.body = root.getChild("body");
-		this.top_rotor = body.getChild("bladetop");
-		this.tail_rotor = body.getChild("tail").getChild("bladetail");
-	}
-	
-	@Override
-	public void renderToBuffer(EntityHelicopter entity, float partialTicks, PoseStack poseStack, VertexConsumer vertexConsumer,
-			int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		poseStack.translate(0, 1.5, 0);
-		poseStack.scale(1.0F, -1.0F, 1.0F);
-		top_rotor.yRot = entity.getPropellerRotation(partialTicks);
-		tail_rotor.xRot = entity.getPropellerRotation(partialTicks);
-		body.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 
 	public static LayerDefinition createBodyLayer() {
@@ -129,4 +102,13 @@ public class EntityModelNoahChopper extends EntityControllableModel<EntityHelico
 		return LayerDefinition.create(meshdefinition, 512, 512);
 	}
 
+	@Override
+	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+
+	}
+
+	@Override
+	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+		body.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+	}
 }

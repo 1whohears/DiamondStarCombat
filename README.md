@@ -15,7 +15,10 @@ Check out my youtube where I'll post guides and other videos showing the mod!
 
 https://youtu.be/P4Flz0XOtTk
 
-
 ## Special Thanks
 
-__**gabyloko**__: Spanish Translations
+__**pretzelpenguin777**__: Improved **Noah Chopper** and **Javi Plane** Model
+
+**__kawaiicakes___**: Improved **Alexis Plane** Model
+
+__**gabyloko**__: Improved **Andolf Sub Model** and **Spanish Translations**

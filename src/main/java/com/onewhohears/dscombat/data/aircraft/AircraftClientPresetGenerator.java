@@ -12,7 +12,8 @@ public class AircraftClientPresetGenerator extends JsonPresetGenerator<AircraftC
 	protected void registerPresets() {
 		addPresetToGenerate(AircraftClientPreset.Builder.create(DSCombatMod.MODID, "alexis_plane")
 				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/alexis_plane.png")
-				.addUIPos(PartSlot.PILOT_SLOT_NAME, 48,20)
+				.makeOneTexture("dscombat:textures/entity/alexis_plane/v3_template")
+				.addUIPos(PartSlot.PILOT_SLOT_NAME, 48, 20)
 				.addUIPos("left_wing_1", 48, 40)
 				.addUIPos("left_wing_2", 68, 40)
 				.addUIPos("right_wing_1", 48, 60)
@@ -27,6 +28,7 @@ public class AircraftClientPresetGenerator extends JsonPresetGenerator<AircraftC
 				.build());
 		addPresetToGenerate(AircraftClientPreset.Builder.create(DSCombatMod.MODID, "javi_plane")
 				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/javi_plane.png")
+				.makeOneTexture("dscombat:textures/entity/javi_plane/test")
 				.addUIPos(PartSlot.PILOT_SLOT_NAME, 48, 20)
 				.addUIPos("seat2", 68, 20)
 				.addUIPos("left_wing_1", 48, 40)
@@ -48,6 +50,7 @@ public class AircraftClientPresetGenerator extends JsonPresetGenerator<AircraftC
 				.build());
 		addPresetToGenerate(AircraftClientPreset.Builder.create(DSCombatMod.MODID, "noah_chopper")
 				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/noah_chopper.png")
+				.makeOneTexture("dscombat:textures/entity/noah_chopper/noah_chopper_test")
 				.addUIPos(PartSlot.PILOT_SLOT_NAME, 48, 20)
 				.addUIPos("seat2", 68, 20)
 				.addUIPos("seat3", 88, 20)
@@ -181,6 +184,7 @@ public class AircraftClientPresetGenerator extends JsonPresetGenerator<AircraftC
 				.build());
 		addPresetToGenerate(AircraftClientPreset.Builder.create(DSCombatMod.MODID, "axcel_truck")
 				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/axcel_truck.png")
+				.makeOneTexture("dscombat:textures/entity/axcel_truck/brown")
 				.addUIPos(PartSlot.PILOT_SLOT_NAME, 48, 20)
 				.addUIPos("seat2", 68, 20)
 				.addUIPos("cargo_bed_1", 48, 80)

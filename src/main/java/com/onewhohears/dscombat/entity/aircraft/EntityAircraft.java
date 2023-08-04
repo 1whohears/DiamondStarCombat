@@ -919,6 +919,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	}
 	
 	public double getCrossSectionArea() {
+		// FIXME 2 make cross sec area independent preset data
 		double a = getBbHeight() * getBbWidth();
 		if (!isOperational()) a += 4;
 		return a;

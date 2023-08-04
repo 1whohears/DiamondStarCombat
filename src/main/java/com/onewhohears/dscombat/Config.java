@@ -44,6 +44,7 @@ public class Config {
 		
 		public final ForgeConfigSpec.IntValue maxBlockCheckDepth;
 		public final ForgeConfigSpec.DoubleValue toItemCooldown;
+		// TODO 7.5 to item cool down after weapon is fired
 		public final ForgeConfigSpec.BooleanValue autoDataLink;
 		// TODO 7.2 baby mode for planes disabled by default
 		// TODO 7.3 configurable entities that the radar considers vehicles/mobs

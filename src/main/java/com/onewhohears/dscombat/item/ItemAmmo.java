@@ -1,5 +1,9 @@
 package com.onewhohears.dscombat.item;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.init.ModItems;
@@ -10,6 +14,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class ItemAmmo extends Item {
@@ -34,6 +40,12 @@ public class ItemAmmo extends Item {
 			test.setTag(tag);
 			items.add(test);
 		}
+	}
+	
+	@Override
+	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tips, TooltipFlag isAdvanced) {
+		super.appendHoverText(stack, level, tips, isAdvanced);
+		// TODO 1.1 show weapon stats in ammo tooltip
 	}
 	
 	@Override

@@ -1,5 +1,5 @@
 {
-  "type": 3,
+  "type": "track_missile",
   "acceleration": 0.02,
   "bleed": 0.03,
   "canShootOnGround": false,
@@ -46,6 +46,6 @@
   "rackTypeKey": "dscombat:heavy_missile_rack",
   "shootSoundKey": "dscombat:rocket_launch_1",
   "speed": 3.2,
-  "targetType": 0,
+  "targetType": "AIR",
   "turnRadius": 220.0
 }

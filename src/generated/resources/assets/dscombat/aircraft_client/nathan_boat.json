@@ -1,0 +1,71 @@
+{
+  "displayName": "preset.dscombat.nathan_boat",
+  "inventory_background": "dscombat:textures/ui/vehicle_inventory_backgrounds/nathan_boat.png",
+  "inventory_slots_pos": [
+    {
+      "slot_name": "pilot_seat",
+      "slot_ui_x": 48,
+      "slot_ui_y": 20
+    },
+    {
+      "slot_name": "seat2",
+      "slot_ui_x": 68,
+      "slot_ui_y": 20
+    },
+    {
+      "slot_name": "seat3",
+      "slot_ui_x": 88,
+      "slot_ui_y": 20
+    },
+    {
+      "slot_name": "seat4",
+      "slot_ui_x": 108,
+      "slot_ui_y": 20
+    },
+    {
+      "slot_name": "seat5",
+      "slot_ui_x": 128,
+      "slot_ui_y": 20
+    },
+    {
+      "slot_name": "seat6",
+      "slot_ui_x": 148,
+      "slot_ui_y": 20
+    },
+    {
+      "slot_name": "frame_1",
+      "slot_ui_x": 48,
+      "slot_ui_y": 80
+    },
+    {
+      "slot_name": "frame_2",
+      "slot_ui_x": 68,
+      "slot_ui_y": 80
+    },
+    {
+      "slot_name": "internal_1",
+      "slot_ui_x": 48,
+      "slot_ui_y": 100
+    },
+    {
+      "slot_name": "internal_2",
+      "slot_ui_x": 68,
+      "slot_ui_y": 100
+    },
+    {
+      "slot_name": "internal_3",
+      "slot_ui_x": 88,
+      "slot_ui_y": 100
+    },
+    {
+      "slot_name": "internal_4",
+      "slot_ui_x": 108,
+      "slot_ui_y": 100
+    }
+  ],
+  "presetId": "nathan_boat",
+  "textures": {
+    "default_texture_path": "dscombat:textures/entity/nathan_boat/",
+    "overrides": {}
+  }
+}

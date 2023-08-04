@@ -140,7 +140,7 @@ public class RadarData extends JsonPreset {
 			freshTargets = false;
 			return;
 		}
-		maxCheckDist = Config.SERVER.maxBlockCheckDepth.get();
+		maxCheckDist = Config.COMMON.maxBlockCheckDepth.get();
 		for (int i = 0; i < pings.size(); ++i) vehiclePings.remove(pings.get(i));
 		pings.clear();
 		freshTargets = true;

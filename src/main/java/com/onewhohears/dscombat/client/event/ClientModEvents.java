@@ -12,7 +12,6 @@ import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelAlexis
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelAndolfSub;
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelAxcelTruck;
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelE3Sentry;
-import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelF16;
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelJaviPlane;
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelMrBudgerTank;
 import com.onewhohears.dscombat.client.renderer.model.aircraft.EntityModelNathanBoat;
@@ -33,6 +32,7 @@ import com.onewhohears.dscombat.client.renderer.model.weapon.EntityModelMissile1
 import com.onewhohears.dscombat.client.renderer.model.weapon.EntityModelSAMLauncher;
 import com.onewhohears.dscombat.client.renderer.model.weapon.EntityModelSteveUpSmash;
 import com.onewhohears.dscombat.client.renderer.model.weapon.EntityModelXM12;
+import com.onewhohears.dscombat.data.aircraft.AircraftClientPresets;
 import com.onewhohears.dscombat.entity.aircraft.EntityBoat;
 import com.onewhohears.dscombat.entity.aircraft.EntityGroundVehicle;
 import com.onewhohears.dscombat.entity.aircraft.EntityHelicopter;
@@ -51,6 +51,7 @@ import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -70,7 +71,7 @@ public final class ClientModEvents {
 		event.registerLayerDefinition(EntityModelTestPlane.LAYER_LOCATION, EntityModelTestPlane::createBodyLayer);
 		event.registerLayerDefinition(EntityModelBullet1.LAYER_LOCATION, EntityModelBullet1::createBodyLayer);
 		event.registerLayerDefinition(EntityModelMissile1.LAYER_LOCATION, EntityModelMissile1::createBodyLayer);
-		event.registerLayerDefinition(EntityModelF16.LAYER_LOCATION, EntityModelF16::createBodyLayer);
+		//event.registerLayerDefinition(EntityModelF16.LAYER_LOCATION, EntityModelF16::createBodyLayer);
 		event.registerLayerDefinition(EntityModelNoahChopper.LAYER_LOCATION, EntityModelNoahChopper::createBodyLayer);
 		event.registerLayerDefinition(EntityModelAlexisPlane.LAYER_LOCATION, EntityModelAlexisPlane::createBodyLayer);
 		event.registerLayerDefinition(EntityModelJaviPlane.LAYER_LOCATION, EntityModelJaviPlane::createBodyLayer);
@@ -214,4 +215,9 @@ public final class ClientModEvents {
     public static void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
         event.registerBelowAll("aircraft_stats", PilotOverlay.HUD_Aircraft_Stats);
     }
+	
+	@SubscribeEvent
+	public static void registerClientReloadListener(RegisterClientReloadListenersEvent event) {
+		event.registerReloadListener(AircraftClientPresets.get());
+	}
 }

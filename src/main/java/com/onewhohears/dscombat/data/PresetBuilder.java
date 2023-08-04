@@ -19,6 +19,7 @@ public abstract class PresetBuilder<C extends PresetBuilder<C>> {
 		data.addProperty("presetId", name);
 		data.addProperty("displayName", "preset."+namespace+"."+name);
 		this.sup = sup;
+		setupJsonData();
 	}
 	
 	public PresetBuilder(String namespace, String name, JsonPresetFactory<? extends JsonPreset> sup, JsonObject copy) {
@@ -28,10 +29,15 @@ public abstract class PresetBuilder<C extends PresetBuilder<C>> {
 		data.addProperty("presetId", name);
 		data.addProperty("displayName", "preset."+namespace+"."+name);
 		this.sup = sup;
+		setupJsonData();
 	}
 	
 	public <T extends JsonPreset> T build() {
 		return (T) sup.create(getKey(), getData());
+	}
+	
+	protected void setupJsonData() {
+		
 	}
 	
 	public String getPresetId() {

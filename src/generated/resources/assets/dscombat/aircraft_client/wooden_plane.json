@@ -1,0 +1,78 @@
+{
+  "displayName": "preset.dscombat.wooden_plane",
+  "inventory_background": "dscombat:textures/ui/vehicle_inventory_backgrounds/wooden_plane.png",
+  "inventory_slots_pos": [
+    {
+      "slot_name": "pilot_seat",
+      "slot_ui_x": 48,
+      "slot_ui_y": 20
+    },
+    {
+      "slot_name": "left_wing_1",
+      "slot_ui_x": 48,
+      "slot_ui_y": 40
+    },
+    {
+      "slot_name": "right_wing_1",
+      "slot_ui_x": 48,
+      "slot_ui_y": 60
+    },
+    {
+      "slot_name": "frame_1",
+      "slot_ui_x": 48,
+      "slot_ui_y": 80
+    },
+    {
+      "slot_name": "frame_2",
+      "slot_ui_x": 68,
+      "slot_ui_y": 80
+    },
+    {
+      "slot_name": "frame_3",
+      "slot_ui_x": 88,
+      "slot_ui_y": 80
+    },
+    {
+      "slot_name": "frame_4",
+      "slot_ui_x": 108,
+      "slot_ui_y": 80
+    },
+    {
+      "slot_name": "internal_1",
+      "slot_ui_x": 48,
+      "slot_ui_y": 100
+    },
+    {
+      "slot_name": "internal_2",
+      "slot_ui_x": 68,
+      "slot_ui_y": 100
+    },
+    {
+      "slot_name": "internal_3",
+      "slot_ui_x": 88,
+      "slot_ui_y": 100
+    }
+  ],
+  "presetId": "wooden_plane",
+  "textures": {
+    "default_texture_path": "dscombat:textures/entity/wooden_plane/",
+    "overrides": {
+      "black": "dscombat:textures/entity/wooden_plane/brown",
+      "blue": "dscombat:textures/entity/wooden_plane/brown",
+      "brown": "dscombat:textures/entity/wooden_plane/brown",
+      "cyan": "dscombat:textures/entity/wooden_plane/brown",
+      "gray": "dscombat:textures/entity/wooden_plane/brown",
+      "green": "dscombat:textures/entity/wooden_plane/brown",
+      "light_blue": "dscombat:textures/entity/wooden_plane/brown",
+      "light_gray": "dscombat:textures/entity/wooden_plane/brown",
+      "lime": "dscombat:textures/entity/wooden_plane/brown",
+      "magenta": "dscombat:textures/entity/wooden_plane/brown",
+      "orange": "dscombat:textures/entity/wooden_plane/brown",
+      "pink": "dscombat:textures/entity/wooden_plane/brown",
+      "purple": "dscombat:textures/entity/wooden_plane/brown",
+      "red": "dscombat:textures/entity/wooden_plane/brown",
+      "white": "dscombat:textures/entity/wooden_plane/brown",
+      "yellow": "dscombat:textures/entity/wooden_plane/brown"
+    }
+  }
+}

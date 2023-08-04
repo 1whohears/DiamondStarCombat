@@ -20,3 +20,5 @@ https://youtu.be/P4Flz0XOtTk
 __**pretzelpenguin777**__: Improved **Noah Chopper** and **Javi Plane** Model
 
 **__kawaiicakes___**: Improved **Alexis Plane** Model
+
+__**gabyloko**__: Improved **Andolf Sub Model** and **Spanish Translations**

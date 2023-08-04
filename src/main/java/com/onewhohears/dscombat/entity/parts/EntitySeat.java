@@ -56,7 +56,23 @@ public class EntitySeat extends EntityPart {
 	@Override
 	public void tick() {
 		super.tick();
+		//tickLerp();
 	}
+	
+	/*protected void tickLerp() {
+		Entity controller = getControllingPassenger();
+		if (!level.isClientSide && level.getGameTime() % 10 == 0 && controller != null) {
+			System.out.println("SEAT TEST DATA "+level.getGameTime()+" "+(int)(System.currentTimeMillis()*0.001));
+			System.out.println("seat   = "+this+" "+this.tickCount);
+			System.out.println("plane  = "+this.getVehicle()+" "+this.getVehicle().tickCount);
+			System.out.println("player = "+controller+" "+controller.tickCount);
+			System.out.println("distance = "+this.distanceTo(controller));
+		}
+		if (isControlledByLocalInstance()) {
+			syncPacketPositionCodec(getX(), getY(), getZ());
+			return;
+		}
+	}*/
 	
 	@Override
 	public InteractionResult interact(Player player, InteractionHand hand) {

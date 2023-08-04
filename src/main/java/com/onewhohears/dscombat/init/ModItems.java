@@ -59,6 +59,12 @@ public class ModItems {
 		}
 	};
 	
+	// DISKS
+	
+	// IDEA 8.1 Jupiter Missiles and Anadyr from blowback ost
+	// IDEA 8.2 disk 911?
+	// IDEA 8.3 the missile knows where it is disk
+	
 	// PARTS
 	public static final RegistryObject<Item> TI83 = ITEMS.register("ti83", 
 			() -> new Item(ItemPart.partProps(64)));
@@ -96,6 +102,7 @@ public class ModItems {
 			() -> new ItemRepairTool(20, 5));
 	public static final RegistryObject<Item> THICK_WRENCH = ITEMS.register("thick_wrench", 
 			() -> new ItemRepairTool(200, 5));
+	// TODO 2.3 parachute/emergency ejection
 	
 	// CREATIVE WANDS
 	public static final RegistryObject<Item> NO_CONSUME_WAND = ITEMS.register("no_consume_wand", 
@@ -173,7 +180,7 @@ public class ModItems {
 	
 	// TURRENTS
 	public static final RegistryObject<Item> MINIGUN_TURRET = ITEMS.register("minigun_turret", 
-			() -> new ItemTurret(5f, SlotType.TURRET_ALL, 
+			() -> new ItemTurret(5f, SlotType.TURRET_MED, 
 					ModEntities.MINIGUN_TURRET.getId().toString(), "20mm",
 					new RotBounds(2f, -40f, 40f)));
 	public static final RegistryObject<Item> HEAVY_TANK_TURRET = ITEMS.register("heavy_tank_turret", 
@@ -258,7 +265,7 @@ public class ModItems {
 			() -> new ItemAmmo(4, "torpedo1")); 
 	public static final RegistryObject<Item> RIFEL1 = ITEMS.register("rifel1", 
 			() -> new ItemAmmo(4, "rifel1")); 
-	// IDEA 7 bunker buster (go through some blocks then explode)
+	// TODO 2.2 bunker buster (go through some blocks then explode)
 	
 	// PLANES
 	public static final RegistryObject<Item> JAVI_PLANE = ITEMS.register("javi_plane", 

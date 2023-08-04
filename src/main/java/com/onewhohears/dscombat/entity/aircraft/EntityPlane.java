@@ -9,6 +9,7 @@ import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
+import net.minecraft.core.Direction.Plane;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -27,10 +28,12 @@ public class EntityPlane extends EntityAircraft {
 	public static final double CO_LIFT = Config.SERVER.coLift.get();
 	
 	public final LiftKGraph liftKGraph;
-	public final float propellerRate, flapsAOABias; // TODO 4.1 animate flaps down
+	public final float propellerRate, flapsAOABias; // TODO 5.1 animate flaps down
 	public final boolean canAimDown;
 	
 	private float propellerRot = 0, propellerRotOld = 0, aoa = 0, liftK = 0, airFoilSpeedSqr = 0;
+	private float centripetalForce, centrifugalForce; 
+	private double liftMag;
 	private Vec3 liftDir = Vec3.ZERO, airFoilAxes = Vec3.ZERO;
 	
 	public EntityPlane(EntityType<? extends EntityPlane> entity, Level level, 
@@ -92,7 +95,7 @@ public class EntityPlane extends EntityAircraft {
 	public void directionAir(Quaternion q) {
 		super.directionAir(q);
 		if (!isOperational()) return;
-		// IDEA 1 turn assist button
+		// IDEA 1 turn assist button? (maybe have it as a server config if it's available or not)
 		addMomentX(inputs.pitch * getPitchTorque(), true);
 		addMomentY(inputs.yaw * getYawTorque(), true);
 		if (inputs.bothRoll) flatten(q, 0, getRollTorque(), false);
@@ -109,6 +112,7 @@ public class EntityPlane extends EntityAircraft {
 	protected void calcMoveStatsPre(Quaternion q) {
 		super.calcMoveStatsPre(q);
 		calculateAOA(q);
+		calculateLift(q);
 	}
 	
 	@Override
@@ -147,12 +151,31 @@ public class EntityPlane extends EntityAircraft {
 		if (isOnGround() || UtilGeometry.isZero(u)) {
 			aoa = 0;
 		} else {
-			aoa = (float) UtilGeometry.angleBetweenDegrees(airFoilAxes, u);
-			if (liftDir.dot(u) > 0) aoa *= -1;
+			aoa = (float)UtilGeometry.angleBetweenVecPlaneDegrees(u, liftDir.scale(-1));
 		}
 		if (isFlapsDown()) aoa += flapsAOABias;
 		liftK = (float) getLiftK();
 		//System.out.println("liftK = "+liftK);
+	}
+	
+	public float getYawRate() {
+		return getYRot() - yRotO;
+	}
+	
+	protected void calculateLift(Quaternion q) {
+		// Lift = (angle of attack coefficient) * (air density) * (speed)^2 * (wing surface area) / 2
+		double wing = getWingSurfaceArea();
+		liftMag = liftK * airPressure * airFoilSpeedSqr * wing * CO_LIFT;
+		Vec3 lift = getLiftForce(q);
+		Vec3 cenAxis = UtilAngles.getRollAxis(0, (getYRot()+90)*Mth.DEG_TO_RAD);
+		centripetalForce = (float) UtilGeometry.vecCompMagDirByNormAxis(lift, cenAxis);
+		// F = m * v * w
+		centrifugalForce = getTotalMass() * xzSpeed * getYawRate()*Mth.DEG_TO_RAD;
+		if (Mth.abs(centripetalForce) < 0.01) centripetalForce = 0;
+		if (Mth.abs(centrifugalForce) < 0.01) centrifugalForce = 0;
+		//debug("#####");
+		//debug("centripetalForce = "+centripetalForce);
+		//debug("centrifugalForce = "+centrifugalForce);
 	}
 	
 	public Vec3 getLiftForce(Quaternion q) {
@@ -161,15 +184,7 @@ public class EntityPlane extends EntityAircraft {
 	}
 	
 	public double getLiftMag() {
-		// Lift = (angle of attack coefficient) * (air density) * (speed)^2 * (wing surface area) / 2
-		double wing = getWingSurfaceArea();
-		double lift = liftK * airPressure * airFoilSpeedSqr * wing * CO_LIFT;
-		//debug("air        = "+air);
-		//debug("wing speed = "+airFoilSpeedSqr);
-		//debug("aoa        = "+aoa);
-		//debug("liftK      = "+liftK);
-		//debug("lift mag   = "+lift);
-		return lift;
+		return liftMag;
 	}
 	
 	public double getLiftK() {
@@ -241,5 +256,13 @@ public class EntityPlane extends EntityAircraft {
 	public boolean canFlapsDown() {
     	return true;
     }
+	
+	public float getCentripetalForce() {
+		return centripetalForce;
+	}
+	
+	public float getCentrifugalForce() {
+		return centrifugalForce;
+	}
 
 }

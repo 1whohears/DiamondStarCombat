@@ -1,7 +1,6 @@
 {
   "aircraft_type": 2,
   "displayName": "preset.dscombat.small_roller",
-  "dyecolor": 7,
   "health": 30.0,
   "idleheat": 1.0,
   "ingredients": [
@@ -51,6 +50,7 @@
   "maxpitch": 0.0,
   "maxroll": 0.0,
   "maxyaw": 3.0,
+  "paintjob_color": 7,
   "pitchtorque": 0.0,
   "presetId": "small_roller",
   "rolltorque": 0.0,
@@ -60,26 +60,22 @@
         "filled": true,
         "itemid": "dscombat:steve_up_smash"
       },
-      "name": "slotname.dscombat.pilot_seat",
+      "name": "pilot_seat",
       "slot_posx": 0.0,
       "slot_posy": 0.6,
       "slot_posz": 0.0,
-      "slot_type": 6,
-      "uix": 48,
-      "uiy": 20,
+      "slot_type": "heavy_turret",
       "zRot": 0.0
     },
     {
       "data": {
         "itemid": "dscombat:c6_engine"
       },
-      "name": "slotname.dscombat.internal_1",
+      "name": "internal_1",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 7,
-      "uix": 48,
-      "uiy": 100,
+      "slot_type": "spin_engine",
       "zRot": 0.0
     },
     {
@@ -87,20 +83,15 @@
         "filled": true,
         "itemid": "dscombat:light_fuel_tank"
       },
-      "name": "slotname.dscombat.internal_2",
+      "name": "internal_2",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 3,
-      "uix": 68,
-      "uiy": 100,
+      "slot_type": "internal",
       "zRot": 0.0
     }
   ],
   "stealth": 1.0,
-  "textures": {
-    "7": "dscombat:textures/entities/small_roller.png"
-  },
   "throttledown": 0.08,
   "throttleup": 0.08,
   "turn_radius": 0.0,

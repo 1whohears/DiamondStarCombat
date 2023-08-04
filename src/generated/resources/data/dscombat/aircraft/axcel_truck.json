@@ -1,7 +1,6 @@
 {
   "aircraft_type": 2,
   "displayName": "preset.dscombat.axcel_truck",
-  "dyecolor": 4,
   "health": 80.0,
   "idleheat": 6.0,
   "ingredients": [
@@ -47,6 +46,7 @@
   "maxpitch": 0.0,
   "maxroll": 0.0,
   "maxyaw": 4.0,
+  "paintjob_color": 4,
   "pitchtorque": 0.0,
   "presetId": "axcel_truck",
   "rolltorque": 0.0,
@@ -55,52 +55,44 @@
       "data": {
         "itemid": "dscombat:seat"
       },
-      "name": "slotname.dscombat.pilot_seat",
+      "name": "pilot_seat",
       "slot_posx": 0.5,
       "slot_posy": 0.9,
       "slot_posz": 1.0,
-      "slot_type": 0,
-      "uix": 48,
-      "uiy": 20,
+      "slot_type": "seat",
       "zRot": 0.0
     },
     {
       "data": {
         "itemid": "dscombat:seat"
       },
-      "name": "slotname.dscombat.seat2",
+      "name": "seat2",
       "slot_posx": -0.5,
       "slot_posy": 0.9,
       "slot_posz": 1.0,
-      "slot_type": 0,
-      "uix": 68,
-      "uiy": 20,
+      "slot_type": "seat",
       "zRot": 0.0
     },
     {
       "data": {
         "itemid": "dscombat:sam_launcher"
       },
-      "name": "slotname.dscombat.cargo_bed_1",
+      "name": "cargo_bed_1",
       "slot_posx": 0.0,
       "slot_posy": 0.95,
       "slot_posz": -1.5,
-      "slot_type": 6,
-      "uix": 48,
-      "uiy": 40,
+      "slot_type": "heavy_turret",
       "zRot": 0.0
     },
     {
       "data": {
         "itemid": "dscombat:c12_engine"
       },
-      "name": "slotname.dscombat.internal_1",
+      "name": "internal_1",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 7,
-      "uix": 48,
-      "uiy": 60,
+      "slot_type": "spin_engine",
       "zRot": 0.0
     },
     {
@@ -108,13 +100,11 @@
         "filled": true,
         "itemid": "dscombat:heavy_fuel_tank"
       },
-      "name": "slotname.dscombat.internal_2",
+      "name": "internal_2",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 3,
-      "uix": 68,
-      "uiy": 60,
+      "slot_type": "internal",
       "zRot": 0.0
     },
     {
@@ -122,30 +112,23 @@
         "itemid": "dscombat:axcel_truck_radar"
       },
       "locked": true,
-      "name": "slotname.dscombat.internal_3",
+      "name": "internal_3",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 4,
-      "uix": 88,
-      "uiy": 60,
+      "slot_type": "advanced_internal",
       "zRot": 0.0
     },
     {
-      "name": "slotname.dscombat.internal_4",
+      "name": "internal_4",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 4,
-      "uix": 108,
-      "uiy": 60,
+      "slot_type": "advanced_internal",
       "zRot": 0.0
     }
   ],
   "stealth": 1.0,
-  "textures": {
-    "4": "dscombat:textures/entities/axcel_truck/yellow.png"
-  },
   "throttledown": 0.05,
   "throttleup": 0.05,
   "turn_radius": 11.0,

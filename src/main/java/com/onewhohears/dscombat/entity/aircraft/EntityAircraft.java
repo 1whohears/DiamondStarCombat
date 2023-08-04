@@ -16,6 +16,8 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientAddMoment;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftAV;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftQ;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftThrottle;
+import com.onewhohears.dscombat.data.aircraft.AircraftClientPreset;
+import com.onewhohears.dscombat.data.aircraft.AircraftClientPresets;
 import com.onewhohears.dscombat.data.aircraft.AircraftInputs;
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
@@ -136,7 +138,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	public final double collideSpeedWithGearThreshHold = Config.SERVER.collideSpeedWithGearThreshHold.get();
 	public final double collideDamageRate = Config.SERVER.collideDamageRate.get();
 	public final double maxFallSpeed = Config.SERVER.maxFallSpeed.get();
-	public final boolean autoDataLink = Config.SERVER.autoDataLink.get();
+	public final boolean autoDataLink = Config.COMMON.autoDataLink.get();
 	
 	public final String defaultPreset;
 	public final boolean negativeThrottle;
@@ -146,7 +148,13 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	
 	public String preset;
 	public ItemStack item;
+	/**
+	 * CLIENT ONLY
+	 */
 	public AircraftTextures textures;
+	/**
+	 * CLIENT ONLY
+	 */
 	private ResourceLocation currentTexture;
 	
 	public Quaternion prevQ = Quaternion.ONE.copy();
@@ -170,6 +178,15 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot;
 	private float landingGearPos, landingGearPosOld;
 	
+	// FIXME 0.1 fix lag spikes causing plane to crash
+	// TODO 3.1 vehicle armor plating that reduces damage 
+	// TODO 3.2 reduce damage passengers receive based on armor. make it configurable. especially explosive damage.
+	// TODO 8.2 creative mode middle click should give aircraft item
+	// TODO 5.2 bitchin betty
+	// TODO 5.3 ir/anti radar targeting tone
+	// TODO 5.4 aircraft breaks apart when damaged
+	// FIXME refactor EntityAircraft to EntityVehicle
+	
 	public EntityAircraft(EntityType<? extends EntityAircraft> entityType, Level level, 
 			AircraftPreset defaultPreset,
 			RegistryObject<SoundEvent> engineSound,
@@ -177,8 +194,11 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		super(entityType, level);
 		this.defaultPreset = defaultPreset.getId();
 		this.preset = this.defaultPreset;
-		this.textures = defaultPreset.getAircraftTextures();
-		this.currentTexture = textures.getDefaultTexture();
+		if (level.isClientSide) {
+			AircraftClientPreset acp = AircraftClientPresets.get().getPreset(this.defaultPreset);
+			this.textures = acp.getAircraftTextures();
+			this.currentTexture = textures.getTexture(defaultPreset.getDefaultPaintJob());
+		}
 		this.item = defaultPreset.getItem();
 		this.engineSound = engineSound;
 		this.negativeThrottle = negativeThrottle;
@@ -211,7 +231,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		entityData.define(MASS, 1f);
 		entityData.define(LANDING_GEAR, false);
 		entityData.define(TEST_MODE, false);
-		entityData.define(CURRRENT_DYE_ID, 0);
+		entityData.define(CURRRENT_DYE_ID, -1);
 		entityData.define(TURN_RADIUS, 0f);
 		entityData.define(NO_CONSUME, false);
 		entityData.define(RADAR_MODE, RadarMode.ALL.ordinal());
@@ -257,19 +277,19 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		setNoConsume(nbt.getBoolean("no_consume"));
 		int color = -1;
 		if (nbt.contains("dyecolor")) color = nbt.getInt("dyecolor");
+		else if (nbt.contains("paintjob_color")) color = nbt.getInt("paintjob_color");
 		preset = nbt.getString("preset");
 		if (preset.isEmpty()) preset = defaultPreset;
 		else if (!AircraftPresets.get().has(preset)) {
 			preset = defaultPreset;
 			System.out.println("ERROR: preset "+preset+" doesn't exist!");
 		}
-		System.out.println(this+" using nbt preset "+preset);
+		//System.out.println(this+" using nbt preset "+preset);
 		AircraftPreset ap = AircraftPresets.get().getPreset(preset);
-		textures = ap.getAircraftTextures();
 		item = ap.getItem();
 		CompoundTag presetNbt = ap.getDataAsNBT();
 		if (!nbt.getBoolean("merged_preset")) nbt.merge(presetNbt);
-		partsManager.read(nbt);
+		partsManager.read(nbt, presetNbt);
 		weaponSystem.read(nbt);
 		radarSystem.read(nbt);
 		setMaxSpeed(nbt.getFloat("max_speed"));
@@ -296,7 +316,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		setQ(q);
 		setPrevQ(q);
 		setClientQ(q);
-		if (color == -1) color = nbt.getInt("dyecolor");
+		if (color == -1) color = nbt.getInt("paintjob_color");
 		setCurrentColor(DyeColor.byId(color));
 		setRadarMode(RadarMode.values()[nbt.getInt("radar_mode")]);
 		setRadioSong(nbt.getString("radio_song"));
@@ -331,7 +351,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		compound.putFloat("xRot", getXRot());
 		compound.putFloat("yRot", getYRot());
 		compound.putFloat("zRot", zRot);
-		compound.putInt("dyecolor", getCurrentColorId());
+		compound.putInt("paintjob_color", getCurrentColorId());
 		compound.putInt("radar_mode", getRadarMode().ordinal());
 		compound.putString("radio_song", getRadioSong());
 		Entity c = getControllingPassenger();
@@ -347,6 +367,10 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	}
 	
 	public abstract AircraftType getAircraftType();
+	
+	public boolean isAircraft() {
+		return getAircraftType() == AircraftType.PLANE || getAircraftType() == AircraftType.HELICOPTER;
+	}
 	
 	/**
 	 * called on this entities first tick on client and server side
@@ -1011,7 +1035,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	        --lerpSteps;
 	        setPos(d0, d1, d2);
 		}
-		// FIXME 1 aircraft rotation lerp
+		// FIXME 5 aircraft rotation lerp
         /*if (lerpStepsQ > 0) {
             setClientQ(UtilAngles.lerpQ(1 / lerpStepsQ, getPrevQ(), getQ()));
             --lerpStepsQ;
@@ -1091,7 +1115,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		// PRESET STUFF
 		if (!AircraftPresets.get().has(preset)) return;
 		AircraftPreset ap = AircraftPresets.get().getPreset(preset);
-		textures = ap.getAircraftTextures();
 		item = ap.getItem();
 	}
 	
@@ -1162,7 +1185,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 					return InteractionResult.SUCCESS;
 				// CUSTOM NAME
 				} else if (item instanceof NameTagItem name) {
-					// TODO 8 custom name by name tag
+					// TODO 8.1 display custom vehicle name from name tag
 					return InteractionResult.PASS;
 				// CREATIVE WAND
 				} else if (item instanceof ItemCreativeWand wand) {
@@ -1182,7 +1205,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	
 	private boolean ridePilotSeat(Entity e, List<EntitySeat> seats) {
 		for (EntitySeat seat : seats) 
-			if (seat.getSlotId().equals(PartSlot.PILOT_SLOT_NAME)) {
+			if (seat.isPilotSeat()) {
 				if (e.startRiding(seat)) {
 					newRiderCooldown = 10;
 					return true;
@@ -1195,7 +1218,9 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		List<EntitySeat> seats = getSeats();
 		if (ridePilotSeat(e, seats)) return true;
 		for (EntitySeat seat : seats) 
-			if (e.startRiding(seat)) return true;
+			if (e.startRiding(seat)) {
+				return true;
+			}
 		return false;
 	}
 	
@@ -1211,7 +1236,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 			}
 		}
 		if (seatIndex == -1) return false; // player not riding seat
-		System.out.println("riding seat "+seatIndex);
+		//System.out.println("riding seat "+seatIndex);
 		int i = 0, j = seatIndex+1;
 		while (i < seats.size()-1) {
 			if (j >= seats.size()) j = 0;
@@ -1231,6 +1256,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 			else q = getQ();
  			Vec3 seatPos = UtilAngles.rotateVector(part.getRelativePos(), q);
 			passenger.setPos(position().add(seatPos));
+			//passenger.setDeltaMovement(getDeltaMovement());
 		}
 	}
 	
@@ -1238,8 +1264,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	@Override
     public Entity getControllingPassenger() {
         for (EntitySeat seat : getSeats()) {
-        	String id = seat.getSlotId();
-        	if (id.equals(PartSlot.PILOT_SLOT_NAME) || id.equals("dscombat.pilot_seat")) {
+        	if (seat.isPilotSeat()) {
         		return seat.getPlayer();
         	}
         }
@@ -1572,6 +1597,9 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     	entityData.set(STEALTH, stealth);
     }
     
+    /**
+     * CLIENT ONLY
+     */
     public ResourceLocation getTexture() {
     	return currentTexture;
     }
@@ -1595,7 +1623,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     
     public void becomeItem() {
     	if (level.isClientSide) return;
-    	if (tickCount/20 < Config.SERVER.toItemCooldown.get() && getControllingPassenger() instanceof Player player) {
+    	if (tickCount/20 < Config.COMMON.toItemCooldown.get() && getControllingPassenger() instanceof Player player) {
     		player.displayClientMessage(Component.translatable("error.dscombat.cant_item_yet"), true);
     		return;
     	}
@@ -1842,7 +1870,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     public boolean setCurrentColor(DyeColor color) {
     	int id = color.getId();
     	if (id == getCurrentColorId()) return false;
-    	if (!textures.hasTexture(id)) return false;
     	entityData.set(CURRRENT_DYE_ID, id);
     	return true;
     }
@@ -1954,6 +1981,11 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     	Entity c = getControllingPassenger();
 		if (c != null) return team.isAlliedTo(c.getTeam());
     	return super.isAlliedTo(team);
+    }
+    
+    @Override
+    public void checkDespawn() {
+    	super.checkDespawn();
     }
     
 }

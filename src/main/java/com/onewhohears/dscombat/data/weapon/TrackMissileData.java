@@ -30,7 +30,7 @@ public class TrackMissileData extends MissileData {
 
 	public TrackMissileData(ResourceLocation key, JsonObject json) {
 		super(key, json);
-		targetType = TargetType.values()[json.get("targetType").getAsInt()];
+		targetType = TargetType.valueOf(json.get("targetType").getAsString());
 	}
 	
 	@Override

@@ -21,7 +21,7 @@ public class AbstractWeaponBuilders {
 		
 		@Override
 		public <T extends JsonPreset> T build() {
-			getData().addProperty("type", type.ordinal());
+			getData().addProperty("type", type.getId());
 			return super.build();
 		}
 
@@ -160,7 +160,7 @@ public class AbstractWeaponBuilders {
 		 * Track Missile only
 		 */
 		public C setTargetType(TargetType targetType) {
-			return setInt("targetType", targetType.ordinal());
+			return setString("targetType", targetType.name());
 		}
 		
 		/**

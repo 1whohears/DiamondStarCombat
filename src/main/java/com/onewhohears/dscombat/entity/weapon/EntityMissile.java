@@ -56,7 +56,7 @@ public abstract class EntityMissile extends EntityBullet {
 		super(type, level);
 		if (!level.isClientSide) NonTickingMissileManager.addMissile(this);
 		if (level.isClientSide) engineSound();
-		blockCheckDepth = Config.SERVER.maxBlockCheckDepth.get();
+		blockCheckDepth = Config.COMMON.maxBlockCheckDepth.get();
 		throughWaterDepth = 0;
 		throughBlocksDepth = 0;
 	}
@@ -70,7 +70,7 @@ public abstract class EntityMissile extends EntityBullet {
 		fuseDist = (float) data.getFuseDist();
 		fov = data.getFov();
 		setFuelTicks(data.getFuelTicks());
-		blockCheckDepth = Config.SERVER.maxBlockCheckDepth.get();
+		blockCheckDepth = Config.COMMON.maxBlockCheckDepth.get();
 		throughWaterDepth = 0;
 		throughBlocksDepth = 0;
 	}

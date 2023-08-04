@@ -1,5 +1,5 @@
 {
-  "type": 6,
+  "type": "torpedo",
   "acceleration": 0.04,
   "bleed": 0.05,
   "canShootOnGround": false,
@@ -42,6 +42,6 @@
   "rackTypeKey": "dscombat:heavy_missile_rack",
   "shootSoundKey": "dscombat:rocket_launch_1",
   "speed": 2.5,
-  "targetType": 2,
+  "targetType": "WATER",
   "turnRadius": 80.0
 }

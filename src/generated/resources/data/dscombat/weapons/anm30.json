@@ -1,5 +1,5 @@
 {
-  "type": 1,
+  "type": "bomb",
   "canShootOnGround": false,
   "causesFire": false,
   "compatibleWeaponPart": "dscombat:bomb_rack",

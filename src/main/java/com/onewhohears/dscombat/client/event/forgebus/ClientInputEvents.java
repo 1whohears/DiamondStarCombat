@@ -7,6 +7,8 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftControl;
+import com.onewhohears.dscombat.common.network.toserver.ToServerDismount;
+import com.onewhohears.dscombat.common.network.toserver.ToServerSeatPos;
 import com.onewhohears.dscombat.common.network.toserver.ToServerShootTurret;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSwitchSeat;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
@@ -88,6 +90,7 @@ public final class ClientInputEvents {
 			throttleDown = DSCKeys.throttleDownKey.isDown();
 		}
 		if (!plane.isFreeLook()) {
+			// FIXME 1 mouse mode sucks. check how other mods do it
 			double ya = Math.abs(mouseY);
 			double xa = Math.abs(mouseX);
 			float ys = (float) Math.signum(mouseY);
@@ -130,6 +133,10 @@ public final class ClientInputEvents {
 		final var player = m.player;
 		if (player == null || !player.isPassenger()) return;
 		if (!(player.getRootVehicle() instanceof EntityAircraft plane)) return;
+		// TELL SERVER WHERE THE SEAT IS INCASE LAG CAUSES VIOLENCE
+		if (player.tickCount % 40 == 0) {
+			PacketHandler.INSTANCE.sendToServer(new ToServerSeatPos(player.getVehicle().position()));
+		}
 		// SWITCH SEAT
 		if (DSCKeys.changeSeat.consumeClick()) {
 			PacketHandler.INSTANCE.sendToServer(new ToServerSwitchSeat(plane.getId()));
@@ -155,7 +162,10 @@ public final class ClientInputEvents {
 		if (shoot && player.getVehicle() instanceof EntityTurret turret) {
 			PacketHandler.INSTANCE.sendToServer(new ToServerShootTurret(turret));
 		}
-		
+		// DISMOUNT 
+		if (Config.CLIENT.customDismount.get() && DSCKeys.dismount.isDown()) {
+			PacketHandler.INSTANCE.sendToServer(new ToServerDismount());
+		}
 	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
@@ -163,7 +173,7 @@ public final class ClientInputEvents {
 		Player player = event.getEntity();
 		if (!(player.getVehicle() instanceof EntitySeat plane)) return;
 		if (Config.CLIENT.customDismount.get()) {
-			event.getInput().shiftKeyDown = DSCKeys.dismount.isDown();
+			event.getInput().shiftKeyDown = false;
 		}
 	}
 	
@@ -189,5 +199,46 @@ public final class ClientInputEvents {
 				player.getEyePosition(), player.getLookAngle(), 
 				Math.toDegrees(Math.atan2(y, d)), 100000);
 	}
+	
+	/*@SubscribeEvent(priority = EventPriority.HIGHEST)
+	public static void seatDismountAircraft(EntityMountEvent event) {
+		if (!event.isDismounting()) return;
+		Entity mounting = event.getEntityMounting();
+		if (!mounting.level.isClientSide) return;
+		if (!(mounting instanceof EntitySeat)) return;
+		Entity mounted = event.getEntityBeingMounted();
+		if (!(mounted instanceof EntityAircraft)) return;
+		System.out.println("SEAT DISMOUNT AIRCRAFT");
+		System.out.println("is dismounting "+event.isDismounting());
+		System.out.println("mounting "+mounting);
+		System.out.println("mounted  "+mounted);
+		StackTraceElement[] stack = Thread.currentThread().getStackTrace();
+		System.out.println("stack trace = ");
+		for (int i = 0; i < stack.length; ++i) {
+			System.out.println(stack[i].toString());
+			if (stack[i].toString().contains("net.minecraft.client.main.Main")) break;
+		}
+	}*/
+	
+	/*@SubscribeEvent(priority = EventPriority.HIGH)
+	public static void playerDismountSeat(EntityMountEvent event) {
+		if (!event.isDismounting()) return;
+		Entity mounting = event.getEntityMounting();
+		if (!mounting.level.isClientSide) return;
+		if (!(mounting instanceof LocalPlayer)) return;
+		Entity mounted = event.getEntityBeingMounted();
+		if (!(mounted instanceof EntitySeat)) return;
+		System.out.println("PLAYER DISMOUNT SEAT");
+		System.out.println("is dismounting "+event.isDismounting());
+		System.out.println("mounting "+mounting);
+		System.out.println("mounted  "+mounted);
+		System.out.println("mounted vehicle = "+mounted.getVehicle());
+		StackTraceElement[] stack = Thread.currentThread().getStackTrace();
+		System.out.println("stack trace = ");
+		for (int i = 0; i < stack.length; ++i) {
+			System.out.println(stack[i].toString());
+			if (stack[i].toString().contains("net.minecraft.client.main.Main")) break;
+		}
+	}*/
 	
 }

@@ -48,15 +48,14 @@ public class Config {
 		public final ForgeConfigSpec.DoubleValue usedWeaponToItemCooldown;
 		public final ForgeConfigSpec.BooleanValue autoDataLink;
 		// TODO 7.2 baby mode for planes disabled by default
-		// TODO 7.3 configurable entities that the radar considers vehicles/mobs
 		/**
 		 * classname
 		 */
-		//public final ForgeConfigSpec.ConfigValue<List<? extends String>> radarVehicles;
+		public final ForgeConfigSpec.ConfigValue<List<? extends String>> radarVehicles;
 		/**
 		 * classname
 		 */
-		//public final ForgeConfigSpec.ConfigValue<List<? extends String>> radarMobs;
+		public final ForgeConfigSpec.ConfigValue<List<? extends String>> radarMobs;
 		/**
 		 * classname/heat
 		 */
@@ -79,13 +78,17 @@ public class Config {
 			usedWeaponToItemCooldown = builder
 					.comment("Seconds before a vehicle entity that used a weapon can become an item.")
 					.defineInRange("usedWeaponToItemCooldown", 30.0, 0, 600.0);
-			/*radarVehicles = builder
+			radarVehicles = builder
 					.defineList("radarVehicles", 
-					Arrays.asList(), 
+					Arrays.asList(
+							"net.minecraft.world.entity.vehicle.Boat",
+							"net.minecraft.world.entity.vehicle.AbstractMinecart",
+							"xyz.przemyk.simpleplanes.entities.PlaneEntity"), 
 					entry -> true);
 			radarMobs = builder.defineList("radarMobs", 
-					Arrays.asList(""), 
-					entry -> true);*/
+					Arrays.asList(
+							"net.minecraft.world.entity.Mob"), 
+					entry -> true);
 			irEntities = builder
 				.comment("entities that ir missiles will target (path to entity class)/(default heat value)")
 				.defineList("irEntities", 

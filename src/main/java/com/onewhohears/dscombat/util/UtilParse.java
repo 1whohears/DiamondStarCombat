@@ -33,6 +33,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -227,6 +228,15 @@ public class UtilParse {
 				for (int j = 0; j < arrays[i].length; ++j) 
 					if (k++ == r) return arrays[i][j];
 		return "";
+	}
+	
+	@Nullable
+	public static Class<? extends Entity> getEntityClass(String className) {
+		try {
+			return Class.forName(className, false, UtilParse.class.getClassLoader()).asSubclass(Entity.class);
+		} catch (ClassNotFoundException e) {
+			return null;
+		}
 	}
 	
 }

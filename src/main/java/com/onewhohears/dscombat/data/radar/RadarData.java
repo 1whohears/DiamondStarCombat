@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.data.JsonPreset;
 import com.onewhohears.dscombat.data.PresetBuilder;
+import com.onewhohears.dscombat.data.weapon.RadarTargetTypes;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.UtilEntity;
@@ -16,7 +17,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -163,13 +163,25 @@ public class RadarData extends JsonPreset {
 				EntityAircraft.class, getRadarBoundingBox(radar));
 		for (int i = 0; i < list.size(); ++i) {
 			EntityAircraft ea = list.get(i);
-			if (!ea.isOperational()) continue;
 			if (playersOnly && !ea.hasControllingPassenger()) continue;
 			if (!basicCheck(radar, ea, ea.getStealth())) continue;
 			RadarPing p = new RadarPing(ea, checkFriendly(controller, ea));
 			vehiclePings.add(p);
 			pings.add(p);
 			if (!radar.isAlliedTo(ea)) ea.lockedOnto(radar.position());
+		}
+		for (int j = 0; j < RadarTargetTypes.get().getRadarVehicleClasses().size(); ++j) {
+			Class<? extends Entity> clazz = RadarTargetTypes.get().getRadarVehicleClasses().get(j);
+			List<? extends Entity> entities = radar.level.getEntitiesOfClass(
+					clazz, getRadarBoundingBox(radar));
+			for (int i = 0; i < entities.size(); ++i) {
+				Entity e = entities.get(i);
+				if (playersOnly && e.hasControllingPassenger()) continue;
+				if (!basicCheck(radar, e, 1)) continue;
+				RadarPing p = new RadarPing(e, checkFriendly(controller, e));
+				vehiclePings.add(p);
+				pings.add(p);
+			}
 		}
 	}
 	
@@ -179,7 +191,7 @@ public class RadarData extends JsonPreset {
 				Player.class, getRadarBoundingBox(radar));
 		for (int i = 0; i < list.size(); ++i) {
 			Player target = list.get(i);
-			if (target.isPassenger() && target.getRootVehicle() instanceof EntityAircraft ea) continue;
+			if (target.isPassenger()) continue;
 			if (!basicCheck(radar, target, 1)) continue;
 			RadarPing p = new RadarPing(target, checkFriendly(controller, target));
 			vehiclePings.add(p);
@@ -189,15 +201,18 @@ public class RadarData extends JsonPreset {
 	
 	private void scanMobs(EntityAircraft radar, Entity controller, List<RadarPing> vehiclePings) {
 		//System.out.println("SCANNING MOBS");
-		List<Mob> list = radar.level.getEntitiesOfClass(
-				Mob.class, getRadarBoundingBox(radar));
-		for (int i = 0; i < list.size(); ++i) {
-			if (list.get(i).getRootVehicle() instanceof EntityAircraft) continue;
-			if (!basicCheck(radar, list.get(i), 1)) continue;
-			RadarPing p = new RadarPing(list.get(i), 
-					checkFriendly(controller, list.get(i)));
-			vehiclePings.add(p);
-			pings.add(p);
+		for (int j = 0; j < RadarTargetTypes.get().getRadarMobClasses().size(); ++j) {
+			Class<? extends Entity> clazz = RadarTargetTypes.get().getRadarMobClasses().get(j);
+			List<? extends Entity> list = radar.level.getEntitiesOfClass(
+					clazz, getRadarBoundingBox(radar));
+			for (int i = 0; i < list.size(); ++i) {
+				if (list.get(i).isPassenger()) continue;
+				if (!basicCheck(radar, list.get(i), 1)) continue;
+				RadarPing p = new RadarPing(list.get(i), 
+						checkFriendly(controller, list.get(i)));
+				vehiclePings.add(p);
+				pings.add(p);
+			}
 		}
 	}
 	

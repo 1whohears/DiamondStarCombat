@@ -29,7 +29,7 @@ public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContaine
 	private static final ResourceLocation BG_TEXTURE = new ResourceLocation(DSCombatMod.MODID,
 			"textures/ui/aircraft_screen.png");
 	
-	// TODO 1.2 make default aircraft menus less ugly/more organized
+	// TODO 1.3 make default aircraft menus less ugly/more organized
 	
 	public AircraftScreen(AircraftMenuContainer pMenu, Inventory pPlayerInventory, Component title) {
 		super(pMenu, pPlayerInventory, title);

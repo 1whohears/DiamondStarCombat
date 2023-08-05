@@ -43,7 +43,7 @@ public abstract class EntityMissile extends EntityBullet {
 	 * only set on server side
 	 */
 	protected float fuseDist, fov;
-	protected int blockCheckDepth, throughWaterDepth, throughBlocksDepth;
+	protected int throughWaterDepth, throughBlocksDepth;
 	
 	public Entity target;
 	public Vec3 targetPos;
@@ -56,7 +56,6 @@ public abstract class EntityMissile extends EntityBullet {
 		super(type, level);
 		if (!level.isClientSide) NonTickingMissileManager.addMissile(this);
 		if (level.isClientSide) engineSound();
-		blockCheckDepth = Config.COMMON.maxBlockCheckDepth.get();
 		throughWaterDepth = 0;
 		throughBlocksDepth = 0;
 	}
@@ -70,7 +69,6 @@ public abstract class EntityMissile extends EntityBullet {
 		fuseDist = (float) data.getFuseDist();
 		fov = data.getFov();
 		setFuelTicks(data.getFuelTicks());
-		blockCheckDepth = Config.COMMON.maxBlockCheckDepth.get();
 		throughWaterDepth = 0;
 		throughBlocksDepth = 0;
 	}
@@ -228,17 +226,21 @@ public abstract class EntityMissile extends EntityBullet {
 		guideToPosition();
 	}
 	
-	protected boolean checkTargetRange(Entity target, double range) {
-		if (fov == -1) return distanceTo(target) <= range;
+	protected static boolean checkTargetRange(Entity weapon, Entity target, float fov, double range) {
+		if (fov == -1) return weapon.distanceTo(target) <= range;
 		return UtilGeometry.isPointInsideCone(
 				target.position(), 
-				position(),
-				getLookAngle(), 
+				weapon.position(),
+				weapon.getLookAngle(), 
 				fov, range);
 	}
 	
+	protected boolean checkTargetRange(Entity target, double range) {
+		return checkTargetRange(this, target, fov, range);
+	}
+	
 	protected boolean checkCanSee(Entity target) {
-		return UtilEntity.canEntitySeeEntity(this, target, blockCheckDepth, 
+		return UtilEntity.canEntitySeeEntity(this, target, Config.COMMON.maxBlockCheckDepth.get(), 
 				throughWaterDepth, throughBlocksDepth);
 	}
 	

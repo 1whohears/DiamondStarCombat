@@ -1,12 +1,16 @@
 package com.onewhohears.dscombat.data.weapon;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.data.JsonPreset;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.entity.weapon.IRMissile;
+import com.onewhohears.dscombat.entity.weapon.IRMissile.IrTarget;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -90,6 +94,18 @@ public class IRMissileData extends MissileData {
 	@Override
 	public String getWeaponTypeCode() {
 		return "AAIR";
+	}
+	
+	protected List<IrTarget> targets = new ArrayList<IrTarget>();
+	
+	@Override
+	public void tick(@Nullable EntityAircraft parent, boolean isSelected) {
+		super.tick(parent, isSelected);
+		if (!isSelected || parent == null) return;
+		if (parent.tickCount % 10 == 0) {
+			IRMissile.updateIRTargetsList(parent, targets, flareResistance, getFov());
+			if (targets.size() > 0) parent.playIRTone();
+		}
 	}
 
 }

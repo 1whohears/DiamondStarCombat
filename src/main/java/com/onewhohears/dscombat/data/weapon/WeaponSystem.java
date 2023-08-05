@@ -149,7 +149,9 @@ public class WeaponSystem {
 	 * called by this weapon system's entity tick function server side
 	 */
 	public void tick() {
-		for (WeaponData w : weapons) w.tick();
+		for (int i = 0; i < weapons.size(); ++i) {
+			weapons.get(i).tick(parent, i == getSelectedIndex());
+		}
 	}
 	
 	public boolean isReadData() {

@@ -179,7 +179,7 @@ public abstract class WeaponData extends JsonPreset {
 				new ToClientWeaponAmmo(vehicle.getId(), getId(), slotId, getCurrentAmmo()));
 	}
 	
-	public void tick() {
+	public void tick(@Nullable EntityAircraft parent, boolean isSelected) {
 		if (recoilTime > 1) --recoilTime;
 	}
 	

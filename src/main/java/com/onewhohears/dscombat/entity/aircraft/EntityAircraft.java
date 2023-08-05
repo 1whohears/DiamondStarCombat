@@ -184,12 +184,11 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot;
 	private float landingGearPos, landingGearPosOld;
 	
-	// FIXME 0.1 fix lag spikes causing plane to crash
+	// FIXME 0 fix lag spikes can cause plane velocity to go back to what is was before leading to crashes
 	// TODO 3.1 vehicle armor plating that reduces damage 
 	// TODO 3.2 reduce damage passengers receive based on armor. make it configurable. especially explosive damage.
 	// TODO 8.2 creative mode middle click should give aircraft item
 	// TODO 5.2 bitchin betty
-	// TODO 5.3 ir/anti radar targeting tone
 	// TODO 5.4 aircraft breaks apart when damaged
 	// FIXME refactor EntityAircraft to EntityVehicle
 	
@@ -1044,7 +1043,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	        --lerpSteps;
 	        setPos(d0, d1, d2);
 		}
-		// FIXME 5 aircraft rotation lerp
+		// FIXME 2 aircraft rotation lerp
         /*if (lerpStepsQ > 0) {
             setClientQ(UtilAngles.lerpQ(1 / lerpStepsQ, getPrevQ(), getQ()));
             --lerpStepsQ;
@@ -1778,6 +1777,10 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     	if (hasControllingPassenger()) radarSystem.addRWRWarning(pos, false, level.isClientSide);
     }
     
+    public void playIRTone() {
+    	// TODO 5.3 play ir targeting tone
+    }
+    
     @Override
     protected AABB makeBoundingBox() {
     	if (isCustomBoundingBox()) return makeCustomBoundingBox();
@@ -2000,11 +2003,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     	Entity c = getControllingPassenger();
 		if (c != null) return team.isAlliedTo(c.getTeam());
     	return super.isAlliedTo(team);
-    }
-    
-    @Override
-    public void checkDespawn() {
-    	super.checkDespawn();
     }
     
 }

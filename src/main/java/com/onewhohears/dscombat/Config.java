@@ -26,10 +26,10 @@ public class Config {
 					.comment("Only for vehicles in Mouse Mode. How far your mouse must move from rest to register an input.")
 					.defineInRange("mouseStickDeadzoneRadius", 100d, 0, 1000d);
 			invertY = builder
+					.comment("Invert vertical inputs.")
 					.define("invertY", false);
 			cameraTurnRelativeToVehicle = builder
 					.comment("If enabled, turning your player head may feel more natural.")
-					.worldRestart()
 					.define("cameraTurnRelativeToVehicle", true);
 			customDismount = builder
 					.comment("If enabled, your sneak key binding becomes Special2, and Special2 binding becomes dismount.")

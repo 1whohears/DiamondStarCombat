@@ -300,10 +300,6 @@ public abstract class EntityMissile extends EntityBullet {
 		}*/
 	}
 	
-	public float getHeat() {
-		return 4f;
-	}
-	
 	@Override
     public boolean hurt(DamageSource source, float amount) {
 		if (isRemoved()) return false;

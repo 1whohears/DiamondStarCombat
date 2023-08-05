@@ -10,7 +10,6 @@ import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 
@@ -49,24 +48,6 @@ public class IRMissile extends EntityMissile {
 			if (!basicCheck(planes.get(i), true)) continue;
 			float distSqr = (float)distanceToSqr(planes.get(i));
 			targets.add(new IrTarget(planes.get(i), planes.get(i).getHeat() / distSqr));
-		}
-		// players
-		List<Player> players = level.getEntitiesOfClass(
-				Player.class, getIrBoundingBox());
-		for (int i = 0; i < players.size(); ++i) {
-			//if (players.get(i).isPassenger() && players.get(i).getRootVehicle() instanceof EntityAircraft) continue;
-			if (!basicCheck(players.get(i), true)) continue;
-			float distSqr = (float)distanceToSqr(players.get(i));
-			targets.add(new IrTarget(players.get(i), 0.2f / distSqr));
-		}
-		// missiles
-		List<EntityMissile> missiles = level.getEntitiesOfClass(
-				EntityMissile.class, getIrBoundingBox());
-		for (int i = 0; i < missiles.size(); ++i) {
-			if (this.equals(missiles.get(i))) continue;
- 			if (!basicCheck(missiles.get(i), false)) continue;
-			float distSqr = (float)distanceToSqr(missiles.get(i));
-			targets.add(new IrTarget(missiles.get(i), missiles.get(i).getHeat() / distSqr));
 		}	
 		// flares
 		List<EntityFlare> flares = level.getEntitiesOfClass(
@@ -109,6 +90,10 @@ public class IRMissile extends EntityMissile {
 	
 	protected boolean basicCheck(Entity ping, boolean checkGround) {
 		//System.out.println("target? "+ping);
+		if (this.equals(ping)) {
+			//System.out.println("same");
+			return false;
+		}
 		if (checkGround && ping.isOnGround()) {
 			//System.out.println("on ground");
 			return false;

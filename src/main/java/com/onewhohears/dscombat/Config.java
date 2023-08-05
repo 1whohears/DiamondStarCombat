@@ -90,9 +90,12 @@ public class Config {
 				.comment("entities that ir missiles will target (path to entity class)/(default heat value)")
 				.defineList("irEntities", 
 					Arrays.asList(
-							"net.minecraft.world.entity.projectile.FireworkRocketEntity/5f", 
+							"net.minecraft.world.entity.player.Player/0.5f",
 							"net.minecraft.world.entity.Mob/0.4f",
-							"xyz.przemyk.simpleplanes.entities.PlaneEntity/10.0f"), 
+							"net.minecraft.world.entity.projectile.FireworkRocketEntity/5f",
+							"com.onewhohears.dscombat.entity.weapon.EntityMissile/7.0f",
+							"com.mrcrayfish.guns.entity.MissileEntity/7.0f",
+							"xyz.przemyk.simpleplanes.entities.PlaneEntity/8.0f"),
 					entry -> true);
 			specificEntityHeat = builder
 				.comment("entities with a specific heat value (entity_id)/(heat value override)")

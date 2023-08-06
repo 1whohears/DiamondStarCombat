@@ -101,10 +101,15 @@ public class IRMissileData extends MissileData {
 	@Override
 	public void tick(@Nullable EntityAircraft parent, boolean isSelected) {
 		super.tick(parent, isSelected);
-		if (!isSelected || parent == null) return;
+		if (parent == null) return;
 		if (parent.tickCount % 10 == 0) {
+			if (!isSelected) {
+				parent.stopIRTone();
+				return;
+			}
 			IRMissile.updateIRTargetsList(parent, targets, flareResistance, getFov());
 			if (targets.size() > 0) parent.playIRTone();
+			else parent.stopIRTone();
 		}
 	}
 

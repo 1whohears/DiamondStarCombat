@@ -125,6 +125,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	public static final EntityDataAccessor<Integer> FLARE_NUM = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<String> RADIO_SONG = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.STRING);
 	public static final EntityDataAccessor<Float> CROSS_SEC_AREA = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Boolean> PLAY_IR_TONE = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.BOOLEAN);
 	
 	public final AircraftInputs inputs = new AircraftInputs();
 	public final PartsManager partsManager = new PartsManager(this);
@@ -243,6 +244,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		entityData.define(FLARE_NUM, 0);
 		entityData.define(RADIO_SONG, "");
 		entityData.define(CROSS_SEC_AREA, 1f);
+		entityData.define(PLAY_IR_TONE, false);
 	}
 	
 	@Override
@@ -1758,6 +1760,10 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     			level.playSound(p, new BlockPos(p.position()), 
     	    		ModSounds.GETTING_LOCKED.get(), SoundSource.PLAYERS, 1f, 1f);
         	}
+    		if (tickCount % 10 == 0 && shouldPlayIRTone()) for (Player p : getRidingPlayers()) {
+    			level.playSound(p, new BlockPos(p.position()), 
+    	    			ModSounds.FOX2_TONE_1.get(), SoundSource.PLAYERS, 0.5f, 1f);
+    		}
     	}
     } 
     
@@ -1778,7 +1784,15 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     }
     
     public void playIRTone() {
-    	// TODO 5.3 play ir targeting tone
+    	entityData.set(PLAY_IR_TONE, true);
+    }
+    
+    public void stopIRTone() {
+    	entityData.set(PLAY_IR_TONE, false);
+    }
+    
+    public boolean shouldPlayIRTone() {
+    	return entityData.get(PLAY_IR_TONE);
     }
     
     @Override

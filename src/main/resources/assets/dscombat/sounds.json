@@ -82,5 +82,11 @@
 		"sounds": [
 			"dscombat:sub_1"
 		]
+	},
+	"fox2_tone_1": {
+		"subtitle": "sounds.dscombat.fox2_tone_1",
+		"sounds": [
+			"dscombat:fox2_tone_1"
+		]
 	}
 }

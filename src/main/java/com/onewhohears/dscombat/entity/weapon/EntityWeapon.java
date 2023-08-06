@@ -42,6 +42,8 @@ public abstract class EntityWeapon extends Projectile {
 	 */
 	protected int maxAge;
 	
+	// FIXME 3 missile will sometimes kill the pilot right at launch for some reason
+	// maybe don't allow it to explode until it has existed for some amount of time
 	public EntityWeapon(EntityType<? extends EntityWeapon> type, Level level) {
 		super(type, level);
 	}

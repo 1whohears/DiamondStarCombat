@@ -27,6 +27,7 @@ public class ModSounds {
 	public static final RegistryObject<SoundEvent> TANK_1 = registerSoundEvent("tank_1");
 	public static final RegistryObject<SoundEvent> BOAT_1 = registerSoundEvent("boat_1");
 	public static final RegistryObject<SoundEvent> SUB_1 = registerSoundEvent("sub_1");
+	public static final RegistryObject<SoundEvent> FOX2_TONE_1 = registerSoundEvent("fox2_tone_1");
 	// TODO 9.4 brrrr sound for javi plane
 	
 	public static void register(IEventBus eventBus) {

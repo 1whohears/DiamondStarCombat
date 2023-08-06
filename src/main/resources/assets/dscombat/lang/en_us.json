@@ -283,6 +283,7 @@
 	"sounds.dscombat.tank_1": "Tank Engine",
 	"sounds.dscombat.boat_1": "Boat Engine",
 	"sounds.dscombat.sub_1": "Submarine Engine",
+	"sounds.dscombat.fox2_tone_1": "Fox2 Tone 1",
 	
 	"death.attack.dscombat.salty1": "%1$s was too easy",
 	"death.attack.dscombat.salty1.player": "%1$s was too easy for %2$s (%3$sm)",

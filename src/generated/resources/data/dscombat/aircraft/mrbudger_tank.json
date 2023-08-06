@@ -145,6 +145,14 @@
       "slot_posz": 0.0,
       "slot_type": "internal",
       "zRot": 0.0
+    },
+    {
+      "name": "internal_4",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": "internal",
+      "zRot": 0.0
     }
   ],
   "stealth": 1.0,

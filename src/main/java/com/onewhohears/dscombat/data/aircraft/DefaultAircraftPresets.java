@@ -350,6 +350,7 @@ public class DefaultAircraftPresets {
 			.addEmptySlot("internal_1", SlotType.SPIN_ENGINE)
 			.addEmptySlot("internal_2", SlotType.SPIN_ENGINE)
 			.addEmptySlot("internal_3", SlotType.INTERNAL)
+			.addEmptySlot("internal_4", SlotType.INTERNAL)
 			.build();
 	
 	public static final AircraftPreset UNARMED_MRBUDGER_TANK = AircraftPreset.Builder

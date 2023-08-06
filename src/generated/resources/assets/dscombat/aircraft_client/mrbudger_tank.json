@@ -8,22 +8,22 @@
       "slot_ui_y": 20
     },
     {
-      "slot_name": "seat2",
+      "slot_name": "seat1",
       "slot_ui_x": 68,
       "slot_ui_y": 20
     },
     {
-      "slot_name": "seat3",
+      "slot_name": "seat2",
       "slot_ui_x": 88,
       "slot_ui_y": 20
     },
     {
-      "slot_name": "seat4",
+      "slot_name": "seat3",
       "slot_ui_x": 108,
       "slot_ui_y": 20
     },
     {
-      "slot_name": "seat5",
+      "slot_name": "seat4",
       "slot_ui_x": 128,
       "slot_ui_y": 20
     },
@@ -40,6 +40,11 @@
     {
       "slot_name": "internal_3",
       "slot_ui_x": 88,
+      "slot_ui_y": 100
+    },
+    {
+      "slot_name": "internal_4",
+      "slot_ui_x": 108,
       "slot_ui_y": 100
     }
   ],

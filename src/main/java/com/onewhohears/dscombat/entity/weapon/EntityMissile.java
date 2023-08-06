@@ -311,6 +311,7 @@ public abstract class EntityMissile extends EntityBullet {
 	}
 	
 	@Nullable
+	@Override
 	protected EntityHitResult findHitEntity(Vec3 start, Vec3 end) {
 		return ProjectileUtil.getEntityHitResult(this, 
 				start, end, 

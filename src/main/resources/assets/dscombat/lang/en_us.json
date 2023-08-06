@@ -190,6 +190,9 @@
 	"item.dscombat.e3sentry_plane": "E3 Sentry",
 	"item.dscombat.axcel_truck": "Axcel Truck",
 	
+	"item.dscombat.the_missile_knows_disc": "Music Disc",
+	"item.dscombat.the_missile_knows_disc.desc": "US Air Force - The Missile Knows Where It Is",
+	
 	"preset.dscombat.20mm": "20mm",
 	"preset.dscombat.50mmhe": "50mm HE",
 	"preset.dscombat.120mmhe": "120mm HE",
@@ -284,6 +287,7 @@
 	"sounds.dscombat.boat_1": "Boat Engine",
 	"sounds.dscombat.sub_1": "Submarine Engine",
 	"sounds.dscombat.fox2_tone_1": "Fox2 Tone 1",
+	"sounds.dscombat.missile_knows_where": "The Missile Knows Where It Is",
 	
 	"death.attack.dscombat.salty1": "%1$s was too easy",
 	"death.attack.dscombat.salty1.player": "%1$s was too easy for %2$s (%3$sm)",

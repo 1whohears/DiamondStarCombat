@@ -88,5 +88,11 @@
 		"sounds": [
 			"dscombat:fox2_tone_1"
 		]
+	},
+	"missile_knows_where": {
+		"subtitle": "sounds.dscombat.missile_knows_where",
+		"sounds": [
+			"dscombat:missile_knows_where"
+		]
 	}
 }

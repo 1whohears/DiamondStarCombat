@@ -25,6 +25,8 @@ import com.onewhohears.dscombat.item.ItemWeaponPart;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.RecordItem;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -63,7 +65,9 @@ public class ModItems {
 	
 	// IDEA 8.1 Jupiter Missiles and Anadyr from blowback ost
 	// IDEA 8.2 disk 911?
-	// IDEA 8.3 the missile knows where it is disk
+	public static final RegistryObject<Item> MISSILE_KNOWS_WHERE_DISK = ITEMS.register("the_missile_knows_disc", 
+			() -> new RecordItem(15, () -> ModSounds.MISSILE_KNOWS_WHERE.get(), 
+					(new Item.Properties()).stacksTo(1).tab(CreativeModeTab.TAB_MISC).rarity(Rarity.RARE), 1980));
 	
 	// PARTS
 	public static final RegistryObject<Item> TI83 = ITEMS.register("ti83", 

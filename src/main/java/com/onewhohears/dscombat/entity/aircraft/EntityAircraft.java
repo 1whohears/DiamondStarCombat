@@ -1755,14 +1755,17 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     	if (level.isClientSide && isOperational()) {
     		if (tickCount % 4 == 0 && radarSystem.isTrackedByMissile()) for (Player p : getRidingPlayers()) {
     			level.playSound(p, new BlockPos(p.position()), 
-	    			ModSounds.MISSILE_WARNING.get(), SoundSource.PLAYERS, 1f, 1f);
+	    			ModSounds.MISSILE_WARNING.get(), SoundSource.PLAYERS, 
+	    			Config.CLIENT.rwrWarningVol.get().floatValue(), 1f);
     		} else if (tickCount % 8 == 0 && radarSystem.isTrackedByRadar()) for (Player p : getRidingPlayers()) {
     			level.playSound(p, new BlockPos(p.position()), 
-    	    		ModSounds.GETTING_LOCKED.get(), SoundSource.PLAYERS, 1f, 1f);
+    	    		ModSounds.GETTING_LOCKED.get(), SoundSource.PLAYERS, 
+    	    		Config.CLIENT.missileWarningVol.get().floatValue(), 1f);
         	}
     		if (tickCount % 10 == 0 && shouldPlayIRTone()) for (Player p : getRidingPlayers()) {
     			level.playSound(p, new BlockPos(p.position()), 
-    	    			ModSounds.FOX2_TONE_1.get(), SoundSource.PLAYERS, 0.5f, 1f);
+    	    			ModSounds.FOX2_TONE_1.get(), SoundSource.PLAYERS, 
+    	    			Config.CLIENT.irTargetToneVol.get().floatValue(), 1f);
     		}
     	}
     } 

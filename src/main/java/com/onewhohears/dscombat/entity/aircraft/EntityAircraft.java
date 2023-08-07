@@ -1081,7 +1081,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     }
     
     public void cycleRadarMode() {
-    	this.radarMode.cycle();
+    	this.radarMode = this.radarMode.cycle();
     }
     
     public final String getRadioSong() {

@@ -189,7 +189,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	// FIXME 0 fix lag spikes can cause plane velocity to go back to what is was before leading to crashes
 	// TODO 3.1 vehicle armor plating that reduces damage 
 	// TODO 3.2 reduce damage passengers receive based on armor. make it configurable. especially explosive damage.
-	// TODO 8.2 creative mode middle click should give aircraft item
 	// TODO 5.2 bitchin betty
 	// TODO 5.4 aircraft breaks apart when damaged
 	// FIXME refactor EntityAircraft to EntityVehicle
@@ -1672,6 +1671,11 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		ItemEntity e = new ItemEntity(level, getX(), getY(), getZ(), stack);
 		level.addFreshEntity(e);
 		discard();
+    }
+    
+    @Override
+    public ItemStack getPickResult() {
+    	return getItem();
     }
     
     @Override

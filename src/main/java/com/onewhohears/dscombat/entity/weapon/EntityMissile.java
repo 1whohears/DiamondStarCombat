@@ -310,16 +310,6 @@ public abstract class EntityMissile extends EntityBullet {
 		return true;
 	}
 	
-	@Nullable
-	@Override
-	protected EntityHitResult findHitEntity(Vec3 start, Vec3 end) {
-		return ProjectileUtil.getEntityHitResult(this, 
-				start, end, 
-				getBoundingBox(), 
-				this::canHitEntity, 
-				start.distanceToSqr(end));
-	}
-	
 	@Override
 	public boolean ignoreExplosion() {
 		return false;

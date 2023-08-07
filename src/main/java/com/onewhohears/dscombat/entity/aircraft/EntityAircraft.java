@@ -13,6 +13,7 @@ import com.onewhohears.dscombat.common.container.AircraftMenuContainer;
 import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddMoment;
+import com.onewhohears.dscombat.common.network.toclient.ToClientAircraftControl;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftAV;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftQ;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftThrottle;
@@ -449,6 +450,13 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		waterDamage();
 		if (!isTestMode() && !isOperational()) tickNoHealth();
 		if (hasRadioSong() && (!isOperational() || !hasRadio)) turnRadioOff();
+	}
+	
+	public void synchControlsToClient() {
+		if (level.isClientSide) return;
+		PacketHandler.INSTANCE.send(
+			PacketDistributor.TRACKING_ENTITY.with(() -> this), 
+			new ToClientAircraftControl(this));
 	}
 	
 	/**

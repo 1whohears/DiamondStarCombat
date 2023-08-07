@@ -35,6 +35,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -114,7 +115,16 @@ public class UtilParse {
 	}
 	
 	@Nullable
+	public static PartData parsePartFromItem(ItemStack stack) {
+		//System.out.println("parsePartFromItem = "+stack+" "+stack.getTag());
+		if (!(stack.getItem() instanceof ItemPart part)) return null;
+		if (stack.hasTag()) return parsePartFromCompound(stack.getTag());
+		return part.getPartData();
+	}
+	
+	@Nullable
 	public static PartData parsePartFromCompound(CompoundTag tag) {
+		//System.out.println("parsePartFromCompound tag = "+tag);
 		if (tag == null) return null;
 		if (tag.isEmpty()) return null;
 		if (!tag.contains("type")) {

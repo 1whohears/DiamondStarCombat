@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAircraftFuel;
-import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
 import com.onewhohears.dscombat.data.parts.EngineData.EngineType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.item.ItemSeat;
@@ -106,7 +105,7 @@ public class PartsManager {
 				parent.rideAvailableSeat(pilot);
 			}
 		} else {
-			PartData data = UtilParse.parsePartFromCompound(stack.getTag());
+			PartData data = UtilParse.parsePartFromItem(stack);
 			if (data == null) {
 				System.out.println("ERROR! COULD NOT GET PART DATA FROM "+stack+" "+stack.getTag());
 				return;

@@ -184,7 +184,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	private float landingGearPos, landingGearPosOld;
 	
 	protected RadarMode radarMode = RadarMode.ALL;
-	protected boolean isLandingGear, isFreeLook;
+	protected boolean isLandingGear, isFreeLook = true;
 	
 	// FIXME 0 fix lag spikes can cause plane velocity to go back to what is was before leading to crashes
 	// TODO 3.1 vehicle armor plating that reduces damage 

@@ -121,7 +121,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	public static final EntityDataAccessor<Boolean> TEST_MODE = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Integer> CURRRENT_DYE_ID = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Boolean> NO_CONSUME = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<Integer> RADAR_MODE = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> FLARE_NUM = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<String> RADIO_SONG = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.STRING);
 	public static final EntityDataAccessor<Float> CROSS_SEC_AREA = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
@@ -185,6 +184,8 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot;
 	private float landingGearPos, landingGearPosOld;
 	
+	protected RadarMode radarMode = RadarMode.ALL;
+	
 	// FIXME 0 fix lag spikes can cause plane velocity to go back to what is was before leading to crashes
 	// TODO 3.1 vehicle armor plating that reduces damage 
 	// TODO 3.2 reduce damage passengers receive based on armor. make it configurable. especially explosive damage.
@@ -240,7 +241,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		entityData.define(CURRRENT_DYE_ID, -1);
 		entityData.define(TURN_RADIUS, 0f);
 		entityData.define(NO_CONSUME, false);
-		entityData.define(RADAR_MODE, RadarMode.ALL.ordinal());
 		entityData.define(FLARE_NUM, 0);
 		entityData.define(RADIO_SONG, "");
 		entityData.define(CROSS_SEC_AREA, 1f);
@@ -443,7 +443,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	public void readInputs() {
 		if (inputs.mouseMode) setFreeLook(!isFreeLook());
 		if (inputs.gear) toggleLandingGear();
-		if (inputs.radarMode) setRadarMode(getRadarMode().cycle());
 	}
 	
 	/**
@@ -1065,12 +1064,16 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     	entityData.set(FREE_LOOK, freeLook);
     }
     
-    public final RadarMode getRadarMode() {
-    	return RadarMode.values()[entityData.get(RADAR_MODE)];
+    public RadarMode getRadarMode() {
+    	return radarMode;
     }
     
-    public final void setRadarMode(RadarMode mode) {
-    	entityData.set(RADAR_MODE, mode.ordinal());
+    public void setRadarMode(RadarMode mode) {
+    	this.radarMode = mode;
+    }
+    
+    public void cycleRadarMode() {
+    	this.radarMode.cycle();
     }
     
     public final String getRadioSong() {
@@ -1113,6 +1116,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	public void readSpawnData(FriendlyByteBuf buffer) {
 		preset = buffer.readUtf();
 		int weaponIndex = buffer.readInt();
+		int radarMode = buffer.readInt();
 		List<WeaponData> weapons = WeaponSystem.readWeaponsFromBuffer(buffer);
 		List<PartSlot> slots = PartsManager.readSlotsFromBuffer(buffer);
 		List<RadarData> radars = RadarSystem.readRadarsFromBuffer(buffer);
@@ -1126,12 +1130,15 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		if (!AircraftPresets.get().has(preset)) return;
 		AircraftPreset ap = AircraftPresets.get().getPreset(preset);
 		item = ap.getItem();
+		// OTHER
+		setRadarMode(RadarMode.byId(radarMode));
 	}
 	
 	@Override
 	public void writeSpawnData(FriendlyByteBuf buffer) {
 		buffer.writeUtf(preset);
 		buffer.writeInt(weaponSystem.getSelectedIndex());
+		buffer.writeInt(getRadarMode().ordinal());
 		WeaponSystem.writeWeaponsToBuffer(buffer, weaponSystem.getWeapons());
 		PartsManager.writeSlotsToBuffer(buffer, partsManager.getSlots());
 		RadarSystem.writeRadarsToBuffer(buffer, radarSystem.getRadars());

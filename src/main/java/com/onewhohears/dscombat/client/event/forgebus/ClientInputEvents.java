@@ -130,10 +130,11 @@ public final class ClientInputEvents {
 		if (throttleUp) throttle += 1;
 		if (throttleDown) throttle -= 1;
 		plane.inputs.update(throttle, pitch, roll, yaw, 
-				mouseMode, flare, shoot, select, openMenu, 
-				special, special2, radarMode, 
+				mouseMode, flare, shoot, openMenu, 
+				special, special2, 
 				rollLeft && rollRight, gear);
 		plane.weaponSystem.selectNextWeapon(select);
+		if (radarMode) plane.cycleRadarMode();
 		PacketHandler.INSTANCE.sendToServer(new ToServerAircraftControl(plane));
 		if (mouseMode && !plane.isFreeLook()) centerMouse();
 	}

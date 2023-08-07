@@ -404,6 +404,11 @@ public class RadarData extends JsonPreset {
 		public boolean isOff() {
 			return this == OFF;
 		}
+		
+		public static RadarMode byId(int id) {
+			if (id < 0 || id >= values().length) return ALL;
+			return values()[id];
+		}
 	}
 	
 	@Override

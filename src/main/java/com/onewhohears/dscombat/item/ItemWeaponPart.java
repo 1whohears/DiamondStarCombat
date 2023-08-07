@@ -51,9 +51,11 @@ public class ItemWeaponPart extends ItemPart {
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tips, TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tips, isAdvanced);
 		CompoundTag tag = stack.getOrCreateTag();
-		if (tag.getString("weaponId").isEmpty()) return;
+		String id = tag.getString("weaponId");
+		if (id.isEmpty()) return;
 		tips.add(Component.literal("Ammo: "+tag.getInt("ammo")+"/"+tag.getInt("max")).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
-		// TODO 1.2 show weapon stats in weapon part tooltip
+		WeaponData wd = WeaponPresets.get().getPreset(id);
+		wd.addToolTips(tips);
 	}
 	
 	@Override

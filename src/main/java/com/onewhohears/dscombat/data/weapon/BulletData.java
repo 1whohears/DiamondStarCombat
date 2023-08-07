@@ -15,6 +15,7 @@ import com.onewhohears.dscombat.util.math.UtilAngles;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
@@ -134,6 +135,15 @@ public class BulletData extends WeaponData {
 	@Override
 	public <T extends JsonPreset> T copy() {
 		return (T) new BulletData(getKey(), getJsonData());
+	}
+	
+	@Override
+	public void addToolTips(List<Component> tips) {
+		super.addToolTips(tips);
+		tips.add(Component.literal("Damage: ").append(getDamage()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		tips.add(Component.literal("Max Speed: ").append(getDamage()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		if (isExplosive()) tips.add(Component.literal("Explosion Radius: ")
+				.append(getExplosionRadius()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 	}
 	
 	@Override

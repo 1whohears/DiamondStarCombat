@@ -17,7 +17,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class UtilPacket {
 	
-	public static void aircraftInputsPacket(int id, AircraftInputs inputs, int weaponIndex, RadarMode radarMode) {
+	public static void aircraftInputsPacket(int id, AircraftInputs inputs, int weaponIndex, RadarMode radarMode,
+			boolean isLandingGear, boolean isFreeLook) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityAircraft plane) {
@@ -25,6 +26,8 @@ public class UtilPacket {
 				plane.inputs.copy(inputs);
 				plane.weaponSystem.setSelected(weaponIndex);
 				plane.setRadarMode(radarMode);
+				plane.setLandingGear(isLandingGear);
+				plane.setFreeLook(isFreeLook);
 			}
 		}
 	}

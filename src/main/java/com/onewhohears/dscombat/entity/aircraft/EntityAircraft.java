@@ -106,7 +106,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	public static final EntityDataAccessor<Float> THROTTLEDOWN = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Quaternion> Q = SynchedEntityData.defineId(EntityAircraft.class, DataSerializers.QUATERNION);
 	public static final EntityDataAccessor<Vec3> AV = SynchedEntityData.defineId(EntityAircraft.class, DataSerializers.VEC3);
-	public static final EntityDataAccessor<Boolean> FREE_LOOK = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Float> STEALTH = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> MAX_ROLL = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> MAX_PITCH = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
@@ -117,7 +116,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	public static final EntityDataAccessor<Float> YAW_TORQUE = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> IDLEHEAT = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> MASS = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Boolean> LANDING_GEAR = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> TEST_MODE = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Integer> CURRRENT_DYE_ID = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Boolean> NO_CONSUME = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.BOOLEAN);
@@ -185,6 +183,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	private float landingGearPos, landingGearPosOld;
 	
 	protected RadarMode radarMode = RadarMode.ALL;
+	protected boolean isLandingGear, isFreeLook;
 	
 	// FIXME 0 fix lag spikes can cause plane velocity to go back to what is was before leading to crashes
 	// TODO 3.1 vehicle armor plating that reduces damage 
@@ -226,7 +225,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		entityData.define(THROTTLEDOWN, 0.05f);
 		entityData.define(Q, Quaternion.ONE);
 		entityData.define(AV, Vec3.ZERO);
-		entityData.define(FREE_LOOK, true);
 		entityData.define(STEALTH, 1f);
 		entityData.define(MAX_ROLL, 1f);
 		entityData.define(MAX_PITCH, 1f);
@@ -236,7 +234,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		entityData.define(YAW_TORQUE, 1f);
 		entityData.define(IDLEHEAT, 1f);
 		entityData.define(MASS, 1f);
-		entityData.define(LANDING_GEAR, false);
 		entityData.define(TEST_MODE, false);
 		entityData.define(CURRRENT_DYE_ID, -1);
 		entityData.define(TURN_RADIUS, 0f);
@@ -441,8 +438,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	}
 	
 	public void readInputs() {
-		if (inputs.mouseMode) setFreeLook(!isFreeLook());
-		if (inputs.gear) toggleLandingGear();
+		
 	}
 	
 	/**
@@ -1057,11 +1053,15 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	}
 	
 	public final boolean isFreeLook() {
-    	return entityData.get(FREE_LOOK);
+    	return isFreeLook;
     }
     
     public final void setFreeLook(boolean freeLook) {
-    	entityData.set(FREE_LOOK, freeLook);
+    	this.isFreeLook = freeLook;
+    }
+    
+    public void toggleFreeLook() {
+    	setFreeLook(!isFreeLook());
     }
     
     public RadarMode getRadarMode() {
@@ -1117,6 +1117,8 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		preset = buffer.readUtf();
 		int weaponIndex = buffer.readInt();
 		int radarMode = buffer.readInt();
+		boolean gear = buffer.readBoolean();
+		boolean freeLook = buffer.readBoolean();
 		List<WeaponData> weapons = WeaponSystem.readWeaponsFromBuffer(buffer);
 		List<PartSlot> slots = PartsManager.readSlotsFromBuffer(buffer);
 		List<RadarData> radars = RadarSystem.readRadarsFromBuffer(buffer);
@@ -1132,6 +1134,8 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		item = ap.getItem();
 		// OTHER
 		setRadarMode(RadarMode.byId(radarMode));
+		setLandingGear(gear);
+		setFreeLook(freeLook);
 	}
 	
 	@Override
@@ -1139,6 +1143,8 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		buffer.writeUtf(preset);
 		buffer.writeInt(weaponSystem.getSelectedIndex());
 		buffer.writeInt(getRadarMode().ordinal());
+		buffer.writeBoolean(isLandingGear());
+		buffer.writeBoolean(isFreeLook());
 		WeaponSystem.writeWeaponsToBuffer(buffer, weaponSystem.getWeapons());
 		PartsManager.writeSlotsToBuffer(buffer, partsManager.getSlots());
 		RadarSystem.writeRadarsToBuffer(buffer, radarSystem.getRadars());
@@ -1760,16 +1766,18 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
      */
     public void sounds() {
     	if (level.isClientSide && isOperational()) {
-    		if (tickCount % 4 == 0 && radarSystem.isTrackedByMissile()) for (Player p : getRidingPlayers()) {
+    		Minecraft m = Minecraft.getInstance();
+    		Player p = m.player;
+    		if (tickCount % 4 == 0 && radarSystem.isTrackedByMissile()) {
     			level.playSound(p, new BlockPos(p.position()), 
 	    			ModSounds.MISSILE_WARNING.get(), SoundSource.PLAYERS, 
 	    			Config.CLIENT.rwrWarningVol.get().floatValue(), 1f);
-    		} else if (tickCount % 8 == 0 && radarSystem.isTrackedByRadar()) for (Player p : getRidingPlayers()) {
+    		} else if (tickCount % 8 == 0 && radarSystem.isTrackedByRadar()) {
     			level.playSound(p, new BlockPos(p.position()), 
     	    		ModSounds.GETTING_LOCKED.get(), SoundSource.PLAYERS, 
     	    		Config.CLIENT.missileWarningVol.get().floatValue(), 1f);
         	}
-    		if (tickCount % 10 == 0 && shouldPlayIRTone()) for (Player p : getRidingPlayers()) {
+    		if (tickCount % 10 == 0 && shouldPlayIRTone()) {
     			level.playSound(p, new BlockPos(p.position()), 
     	    			ModSounds.FOX2_TONE_1.get(), SoundSource.PLAYERS, 
     	    			Config.CLIENT.irTargetToneVol.get().floatValue(), 1f);
@@ -1859,14 +1867,14 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
      * @return true if landing gear is out false if folded
      */
     public boolean isLandingGear() {
-    	return entityData.get(LANDING_GEAR);
+    	return isLandingGear;
     }
     
     /**
      * @param gear true if landing gear is out false if folded
      */
     public void setLandingGear(boolean gear) {
-    	entityData.set(LANDING_GEAR, gear);
+    	this.isLandingGear = gear;
     }
     
     public boolean isTestMode() {

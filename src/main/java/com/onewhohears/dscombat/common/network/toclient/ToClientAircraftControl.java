@@ -20,12 +20,16 @@ public class ToClientAircraftControl extends IPacket {
 	public final AircraftInputs inputs;
 	public final int weaponIndex;
 	public final int radarMode;
+	public final boolean isFreeLook;
+	public final boolean isLandingGear;
 	
 	public ToClientAircraftControl(EntityAircraft plane) {
 		this.id = plane.getId();
 		this.inputs = plane.inputs;
 		this.weaponIndex = plane.weaponSystem.getSelectedIndex();
 		this.radarMode = plane.getRadarMode().ordinal();
+		this.isFreeLook = plane.isFreeLook();
+		this.isLandingGear = plane.isLandingGear();
 	}
 	
 	public ToClientAircraftControl(FriendlyByteBuf buffer) {
@@ -33,6 +37,8 @@ public class ToClientAircraftControl extends IPacket {
 		inputs = new AircraftInputs(buffer);
 		weaponIndex = buffer.readInt();
 		radarMode = buffer.readInt();
+		isFreeLook = buffer.readBoolean();
+		isLandingGear = buffer.readBoolean();
 	}
 	
 	public void encode(FriendlyByteBuf buffer) {
@@ -40,6 +46,8 @@ public class ToClientAircraftControl extends IPacket {
 		inputs.write(buffer);
 		buffer.writeInt(weaponIndex);
 		buffer.writeInt(radarMode);
+		buffer.writeBoolean(isFreeLook);
+		buffer.writeBoolean(isLandingGear);
 	}
 	
 	@Override
@@ -47,7 +55,7 @@ public class ToClientAircraftControl extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilPacket.aircraftInputsPacket(id, inputs, weaponIndex, RadarMode.byId(radarMode));
+				UtilPacket.aircraftInputsPacket(id, inputs, weaponIndex, RadarMode.byId(radarMode), isLandingGear, isFreeLook);
 				success.set(true);
 			});
 		});

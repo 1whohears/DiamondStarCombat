@@ -20,23 +20,31 @@ public class ToServerAircraftControl extends IPacket {
 	public final AircraftInputs inputs;
 	public final int weaponIndex;
 	public final int radarMode;
+	public final boolean isLandingGear;
+	public final boolean isFreeLook;
 	
 	public ToServerAircraftControl(EntityAircraft plane) {
 		this.inputs = plane.inputs;
 		this.weaponIndex = plane.weaponSystem.getSelectedIndex();
 		this.radarMode = plane.getRadarMode().ordinal();
+		this.isLandingGear = plane.isLandingGear();
+		this.isFreeLook = plane.isFreeLook();
 	}
 	
 	public ToServerAircraftControl(FriendlyByteBuf buffer) {
 		inputs = new AircraftInputs(buffer);
 		weaponIndex = buffer.readInt();
 		radarMode = buffer.readInt();
+		isLandingGear = buffer.readBoolean();
+		isFreeLook = buffer.readBoolean();
 	}
 	
 	public void encode(FriendlyByteBuf buffer) {
 		inputs.write(buffer);
 		buffer.writeInt(weaponIndex);
 		buffer.writeInt(radarMode);
+		buffer.writeBoolean(isLandingGear);
+		buffer.writeBoolean(isFreeLook);
 	}
 	
 	public boolean handle(Supplier<NetworkEvent.Context> ctx) {
@@ -48,6 +56,8 @@ public class ToServerAircraftControl extends IPacket {
 					plane.inputs.copy(this.inputs);
 					plane.weaponSystem.setSelected(weaponIndex);
 					plane.setRadarMode(RadarMode.byId(radarMode));
+					plane.setLandingGear(isLandingGear);
+					plane.setFreeLook(isFreeLook);
 					PacketHandler.INSTANCE.send(
 						PacketDistributor.TRACKING_ENTITY.with(() -> plane), 
 						new ToClientAircraftControl(plane));

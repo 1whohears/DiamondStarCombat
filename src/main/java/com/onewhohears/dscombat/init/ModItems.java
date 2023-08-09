@@ -175,6 +175,8 @@ public class ModItems {
 			() -> new ItemRadarPart(1.6f, "wr1k", SlotType.INTERNAL_ADVANCED));
 	public static final RegistryObject<Item> GPR20 = ITEMS.register("gpr20", 
 			() -> new ItemRadarPart(3f, "gpr20", SlotType.INTERNAL_ADVANCED));
+	public static final RegistryObject<Item> GPR100 = ITEMS.register("gpr100", 
+			() -> new ItemRadarPart(3f, "gpr100", SlotType.INTERNAL_ADVANCED));
 	public static final RegistryObject<Item> AR20K = ITEMS.register("ar20k", 
 			() -> new ItemRadarPart(7f, "ar20k", SlotType.EXTERNAL_HEAVY));
 	public static final RegistryObject<Item> AXCEL_TRUCK_RADAR = ITEMS.register("axcel_truck_radar", 

@@ -149,6 +149,20 @@ public class RadarPresetGenerator extends JsonPresetGenerator<RadarData> {
 				.setScanGround(true)
 				.setScanAir(false)
 				.build());
+		addPresetToGenerate(RadarData.Builder
+				.create(DSCombatMod.MODID, "gpr100")
+				.setRange(500f)
+				.setThroGroundRange(20f)
+				.setThroWaterRange(0f)
+				.setSensitivity(0.8f)
+				.setFieldOfView(-1f)
+				.setScanRate(50)
+				.setScanAircraft(true)
+				.setScanPlayers(true)
+				.setScanMobs(false)
+				.setScanGround(true)
+				.setScanAir(false)
+				.build());
 	}
 	
 	public RadarPresetGenerator(DataGenerator output) {

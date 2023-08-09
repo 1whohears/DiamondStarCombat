@@ -414,6 +414,15 @@ public class DefaultAircraftPresets {
 			.addIngredient("minecraft:gunpowder", 12)
 			.build();
 	
+	public static final AircraftPreset TANK_SMALL_ROLLER = AircraftPreset.Builder
+			.createFromCopy(DSCombatMod.MODID, "small_roller_tank", UNARMED_SMALL_ROLLER)
+			.setCraftable()
+			.setSlotItem(PartSlot.PILOT_SLOT_NAME, ModItems.HEAVY_TANK_TURRET.getId(), true)
+			.addIngredient(ModItems.HEAVY_TANK_TURRET.getId())
+			.addIngredient("minecraft:iron_ingot", 32)
+			.addIngredient("minecraft:gunpowder", 24)
+			.build();
+	
 	public static final AircraftPreset EMPTY_NATHAN_BOAT = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "nathan_boat_empty")
 			.setAircraftType(AircraftType.BOAT)

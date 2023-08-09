@@ -32,6 +32,7 @@ public class AircraftPresetGenerator extends JsonPresetGenerator<AircraftPreset>
 		addPresetToGenerate(DefaultAircraftPresets.EMPTY_SMALL_ROLLER);
 		addPresetToGenerate(DefaultAircraftPresets.UNARMED_SMALL_ROLLER);
 		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_SMALL_ROLLER);
+		addPresetToGenerate(DefaultAircraftPresets.TANK_SMALL_ROLLER);
 		
 		addPresetToGenerate(DefaultAircraftPresets.EMPTY_NATHAN_BOAT);
 		addPresetToGenerate(DefaultAircraftPresets.UNARMED_NATHAN_BOAT);

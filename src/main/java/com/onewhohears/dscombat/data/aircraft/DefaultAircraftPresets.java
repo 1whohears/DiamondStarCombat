@@ -699,14 +699,12 @@ public class DefaultAircraftPresets {
 			.addIngredient("minecraft:minecart", 4)
 			.addIngredient(ModItems.FUSELAGE.getId(), 1)
 			.addIngredient(ModItems.SEAT.getId(), 2)
-			.addIngredient(ModItems.AR2K.getId())
 			.addIngredient("minecraft:gold_ingot", 5)
 			.addEmptySlot("cargo_bed_1", SlotType.HEAVY_TURRET, 0, 0.95, -1.5, 0)
+			.addEmptySlot("frame_1", SlotType.ADVANCED_FRAME, 0, 2.95, 1, 180)
 			.addEmptySlot("internal_1", SlotType.SPIN_ENGINE)
 			.addEmptySlot("internal_2", SlotType.INTERNAL)
 			.addEmptySlot("internal_3", SlotType.ADVANCED_INTERNAL)
-			.setSlotItem("internal_3", ModItems.AXCEL_TRUCK_RADAR.getId())
-			.lockSlot("internal_3") // TODO 2.5 make axcel truck radar removable
 			.addEmptySlot("internal_4", SlotType.ADVANCED_INTERNAL)
 			.build();
 	
@@ -716,6 +714,8 @@ public class DefaultAircraftPresets {
 			.addIngredient(ModItems.SAM_LAUNCHER.getId())
 			.addIngredient(ModItems.C12_ENGINE.getId())
 			.addIngredient(ModItems.HEAVY_FUEL_TANK.getId())
+			.addIngredient(ModItems.AR2K.getId())
+			.setSlotItem("frame_1", ModItems.AXCEL_TRUCK_RADAR.getId())
 			.setSlotItem("cargo_bed_1", ModItems.SAM_LAUNCHER.getId())
 			.setSlotItem("internal_1", ModItems.C12_ENGINE.getId())
 			.setSlotItem("internal_2", ModItems.HEAVY_FUEL_TANK.getId(), true)

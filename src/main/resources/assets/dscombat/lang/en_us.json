@@ -31,6 +31,7 @@
 	"slottype.dscombat.spin_engine": "Car Engine",
 	"slottype.dscombat.push_engine": "Jet Engine",
 	"slottype.dscombat.heavy_frame": "Heavy Frame",
+	"slottype.dscombat.advanced_frame": "Advanced Frame",
 	"slottype.dscombat.radial_engine": "Radial Engine",
 	
 	"slotname.dscombat.pilot_seat": "Pilot Seat",

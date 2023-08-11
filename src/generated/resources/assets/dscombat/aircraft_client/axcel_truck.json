@@ -13,8 +13,13 @@
       "slot_ui_y": 20
     },
     {
-      "slot_name": "cargo_bed_1",
+      "slot_name": "frame_1",
       "slot_ui_x": 48,
+      "slot_ui_y": 80
+    },
+    {
+      "slot_name": "cargo_bed_1",
+      "slot_ui_x": 68,
       "slot_ui_y": 80
     },
     {

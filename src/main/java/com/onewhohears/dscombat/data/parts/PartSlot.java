@@ -186,6 +186,7 @@ public class PartSlot {
 		WING("wing"),
 		FRAME("frame"),
 		HEAVY_FRAME("heavy_frame"),
+		ADVANCED_FRAME("advanced_frame"),
 		
 		INTERNAL("internal"),
 		ADVANCED_INTERNAL("advanced_internal"),
@@ -205,8 +206,9 @@ public class PartSlot {
 		public static final SlotType[] INTERNAL_ENGINE_PUSH = {PUSH_ENGINE};
 		public static final SlotType[] INTERNAL_ENGINE_RADIAL = {RADIAL_ENGINE};
 		
-		public static final SlotType[] EXTERNAL_ALL = {WING, FRAME, HEAVY_FRAME};
+		public static final SlotType[] EXTERNAL_ALL = {WING, FRAME, HEAVY_FRAME, ADVANCED_FRAME};
 		public static final SlotType[] EXTERNAL_HEAVY = {HEAVY_FRAME};
+		public static final SlotType[] EXTERNAL_ADVANCED = {ADVANCED_FRAME};
 		
 		@Nullable
 		public static SlotType getByName(String name) {

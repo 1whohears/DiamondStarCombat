@@ -186,7 +186,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	protected RadarMode radarMode = RadarMode.ALL;
 	protected boolean isLandingGear, isFreeLook = true;
 	
-	// FIXME 0 fix lag spikes can cause plane velocity to go back to what is was before leading to crashes
 	// TODO 3.1 vehicle armor plating that reduces damage 
 	// TODO 3.2 reduce damage passengers receive based on armor. make it configurable. especially explosive damage.
 	// TODO 5.2 bitchin betty
@@ -1025,6 +1024,18 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	public void tickParts() {
 		if (level.isClientSide) partsManager.clientTickParts();
 		else partsManager.tickParts();
+	}
+	
+	@Override
+	public void lerpMotion(double x, double y, double z) {
+		if (!isControlledByLocalInstance()) {
+			super.lerpMotion(x, y, z);
+			return;
+		}
+		// FIXME 0 test if this lerpMotion override fixes the vehicle motion lag back issue
+		/*System.out.println("LERP MOTION");
+		System.out.println("client = "+getDeltaMovement());
+		System.out.println("lerp = "+x+", "+y+", "+z);*/
 	}
 	
 	@Override

@@ -3,64 +3,64 @@
   "inventory_background": "dscombat:textures/ui/vehicle_inventory_backgrounds/alexis_plane.png",
   "inventory_slots_pos": [
     {
-      "slot_name": "pilot_seat",
-      "slot_ui_x": 48,
-      "slot_ui_y": 20
-    },
-    {
-      "slot_name": "left_wing_1",
-      "slot_ui_x": 48,
-      "slot_ui_y": 40
-    },
-    {
-      "slot_name": "left_wing_2",
-      "slot_ui_x": 68,
-      "slot_ui_y": 40
-    },
-    {
-      "slot_name": "right_wing_1",
-      "slot_ui_x": 48,
-      "slot_ui_y": 60
-    },
-    {
-      "slot_name": "right_wing_2",
-      "slot_ui_x": 68,
-      "slot_ui_y": 60
-    },
-    {
       "slot_name": "frame_1",
-      "slot_ui_x": 48,
-      "slot_ui_y": 80
+      "slot_ui_x": 120,
+      "slot_ui_y": 2
     },
     {
-      "slot_name": "internal_1",
-      "slot_ui_x": 48,
-      "slot_ui_y": 100
-    },
-    {
-      "slot_name": "internal_2",
-      "slot_ui_x": 68,
-      "slot_ui_y": 100
-    },
-    {
-      "slot_name": "internal_3",
-      "slot_ui_x": 88,
-      "slot_ui_y": 100
+      "slot_name": "pilot_seat",
+      "slot_ui_x": 120,
+      "slot_ui_y": 21
     },
     {
       "slot_name": "internal_4",
-      "slot_ui_x": 108,
-      "slot_ui_y": 100
+      "slot_ui_x": 111,
+      "slot_ui_y": 40
     },
     {
       "slot_name": "internal_5",
-      "slot_ui_x": 128,
-      "slot_ui_y": 100
+      "slot_ui_x": 129,
+      "slot_ui_y": 40
     },
     {
       "slot_name": "internal_6",
-      "slot_ui_x": 148,
+      "slot_ui_x": 120,
+      "slot_ui_y": 58
+    },
+    {
+      "slot_name": "internal_3",
+      "slot_ui_x": 129,
+      "slot_ui_y": 78
+    },
+    {
+      "slot_name": "internal_2",
+      "slot_ui_x": 111,
+      "slot_ui_y": 78
+    },
+    {
+      "slot_name": "internal_1",
+      "slot_ui_x": 120,
       "slot_ui_y": 100
+    },
+    {
+      "slot_name": "left_wing_1",
+      "slot_ui_x": 75,
+      "slot_ui_y": 57
+    },
+    {
+      "slot_name": "left_wing_2",
+      "slot_ui_x": 93,
+      "slot_ui_y": 57
+    },
+    {
+      "slot_name": "right_wing_1",
+      "slot_ui_x": 147,
+      "slot_ui_y": 57
+    },
+    {
+      "slot_name": "right_wing_2",
+      "slot_ui_x": 165,
+      "slot_ui_y": 57
     }
   ],
   "presetId": "alexis_plane",

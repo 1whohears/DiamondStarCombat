@@ -94,7 +94,7 @@ import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.RegistryObject;
 
 /**
- * the parent class for planes, helicopters, boats, and ground vehicles
+ * the parent class for all vehicle entities in this mod
  * @author 1whohears
  */
 public abstract class EntityAircraft extends Entity implements IEntityAdditionalSpawnData {
@@ -146,8 +146,13 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	
 	protected final RegistryObject<SoundEvent> engineSound;
 	
+	/**
+	 * this vehicle's original preset. 
+	 * will be {@link defaultPreset} if it's not defined in its NBT.
+	 * synched with client.  
+	 */
 	public String preset;
-	public ItemStack item;
+	protected ItemStack item;
 	/**
 	 * CLIENT ONLY
 	 */
@@ -274,6 +279,11 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
         }
     }
 	
+	/**
+	 * if this is a brand new entity and has no nbt custom data then the fresh entity nbt will
+	 * merge with this vehicle's preset nbt. see {@link AircraftPresets}.
+	 * you could summon a vehicle with nbt {preset:"some preset name"} to override the {@link EntityAircraft#defaultPreset}
+ 	 */
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
 		// ORDER MATTERS
@@ -282,16 +292,20 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		int color = -1;
 		if (nbt.contains("dyecolor")) color = nbt.getInt("dyecolor");
 		else if (nbt.contains("paintjob_color")) color = nbt.getInt("paintjob_color");
+		// check if preset was defined
 		preset = nbt.getString("preset");
+		// if not use the default preset
 		if (preset.isEmpty()) preset = defaultPreset;
+		// check if the preset exists
 		else if (!AircraftPresets.get().has(preset)) {
 			preset = defaultPreset;
 			System.out.println("ERROR: preset "+preset+" doesn't exist!");
 		}
-		//System.out.println(this+" using nbt preset "+preset);
+		// get the preset data
 		AircraftPreset ap = AircraftPresets.get().getPreset(preset);
 		item = ap.getItem();
 		CompoundTag presetNbt = ap.getDataAsNBT();
+		// merge if this entity hasn't merged yet
 		if (!nbt.getBoolean("merged_preset")) nbt.merge(presetNbt);
 		partsManager.read(nbt, presetNbt);
 		weaponSystem.read(nbt);
@@ -328,40 +342,40 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag compound) {
-		compound.putString("preset", preset);
-		compound.putBoolean("test_mode", isTestMode());
-		compound.putBoolean("no_consume", isNoConsume());
-		compound.putBoolean("merged_preset", true);
-		partsManager.write(compound);
-		weaponSystem.write(compound);
-		radarSystem.write(compound);
-		compound.putFloat("max_speed", getMaxSpeed());
-		compound.putFloat("max_health", getMaxHealth());
-		compound.putFloat("health", getHealth());
-		compound.putFloat("stealth", getStealth());
-		compound.putFloat("cross_sec_area", getBaseCrossSecArea());
-		compound.putFloat("turn_radius", getTurnRadius());
-		compound.putFloat("maxroll", getMaxDeltaRoll());
-		compound.putFloat("maxpitch", getMaxDeltaPitch());
-		compound.putFloat("maxyaw", getMaxDeltaYaw());
-		compound.putFloat("rolltorque", getRollTorque());
-		compound.putFloat("pitchtorque", getPitchTorque());
-		compound.putFloat("yawtorque", getYawTorque());
-		compound.putFloat("throttleup", getThrottleIncreaseRate());
-		compound.putFloat("throttledown", getThrottleDecreaseRate());
-		compound.putFloat("idleheat", getIdleHeat());
-		compound.putFloat("mass", getAircraftMass());
-		compound.putBoolean("landing_gear", isLandingGear());
-		compound.putFloat("current_throttle", getCurrentThrottle());
-		compound.putFloat("xRot", getXRot());
-		compound.putFloat("yRot", getYRot());
-		compound.putFloat("zRot", zRot);
-		compound.putInt("paintjob_color", getCurrentColorId());
-		compound.putInt("radar_mode", getRadarMode().ordinal());
-		compound.putString("radio_song", getRadioSong());
+	protected void addAdditionalSaveData(CompoundTag nbt) {
+		nbt.putString("preset", preset);
+		nbt.putBoolean("test_mode", isTestMode());
+		nbt.putBoolean("no_consume", isNoConsume());
+		nbt.putBoolean("merged_preset", true);
+		partsManager.write(nbt);
+		weaponSystem.write(nbt);
+		radarSystem.write(nbt);
+		nbt.putFloat("max_speed", getMaxSpeed());
+		nbt.putFloat("max_health", getMaxHealth());
+		nbt.putFloat("health", getHealth());
+		nbt.putFloat("stealth", getStealth());
+		nbt.putFloat("cross_sec_area", getBaseCrossSecArea());
+		nbt.putFloat("turn_radius", getTurnRadius());
+		nbt.putFloat("maxroll", getMaxDeltaRoll());
+		nbt.putFloat("maxpitch", getMaxDeltaPitch());
+		nbt.putFloat("maxyaw", getMaxDeltaYaw());
+		nbt.putFloat("rolltorque", getRollTorque());
+		nbt.putFloat("pitchtorque", getPitchTorque());
+		nbt.putFloat("yawtorque", getYawTorque());
+		nbt.putFloat("throttleup", getThrottleIncreaseRate());
+		nbt.putFloat("throttledown", getThrottleDecreaseRate());
+		nbt.putFloat("idleheat", getIdleHeat());
+		nbt.putFloat("mass", getAircraftMass());
+		nbt.putBoolean("landing_gear", isLandingGear());
+		nbt.putFloat("current_throttle", getCurrentThrottle());
+		nbt.putFloat("xRot", getXRot());
+		nbt.putFloat("yRot", getYRot());
+		nbt.putFloat("zRot", zRot);
+		nbt.putInt("paintjob_color", getCurrentColorId());
+		nbt.putInt("radar_mode", getRadarMode().ordinal());
+		nbt.putString("radio_song", getRadioSong());
 		Entity c = getControllingPassenger();
-		if (c != null) compound.putString("owner", c.getScoreboardName());
+		if (c != null) nbt.putString("owner", c.getScoreboardName());
 	}
 	
 	public static enum AircraftType {
@@ -380,7 +394,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	
 	/**
 	 * called on this entities first tick on client and server side
-	 * this function fires clientSetup() and serverSetup()
 	 */
 	public void init() {
 		if (!level.isClientSide) serverSetup();
@@ -436,12 +449,17 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		else serverTick();
 	}
 	
+	/**
+	 * called every tick on client and server side.
+	 * used to change inputs based on the vehicle.
+	 * {@link EntityGroundVehicle} will flip throttle with pitch since cars/tanks don't use pitch.
+	 */
 	public void readInputs() {
 		
 	}
 	
 	/**
-	 * called on server side
+	 * called on server side every tick
 	 */
 	public void serverTick() {
 		tickCollisions();
@@ -450,6 +468,14 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		if (hasRadioSong() && (!isOperational() || !hasRadio)) turnRadioOff();
 	}
 	
+	/**
+	 * SERVER SIDE ONLY
+	 * called externally to synch a vehicle's inputs with client's that aren't controlling this vehicle.
+	 * normally used by {@link com.onewhohears.dscombat.common.network.toserver.ToServerAircraftControl}
+	 * which is called by {@link com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents}
+	 * to the controlling player can synch their inputs with every other client.
+	 * could also be used by a server side AI to synch a vehicle's inputs with all client's.
+	 */
 	public void synchControlsToClient() {
 		if (level.isClientSide) return;
 		PacketHandler.INSTANCE.send(
@@ -458,8 +484,8 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	}
 	
 	/**
-	 * called on server tick 
-	 * damages plane if it falls 
+	 * called on server tick.
+	 * damages plane if it falls or collides with a wall at speeds defined in config.
 	 */
 	public void tickCollisions() {
 		if (tickCount > 300 && verticalCollision) {
@@ -510,11 +536,19 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		}
 	}
 	
+	/**
+	 * called on server tick.
+	 * damages the vehicle if in water.
+	 */
 	public void waterDamage() {
 		if (tickCount % 20 == 0 && isInWater() && isOperational()) 
 			hurt(DamageSource.DROWN, 5);
 	}
 	
+	/**
+	 * called on server tick if health = 0.
+	 * removed the entity if the vehicle has no health for 500 ticks or 25 seconds
+	 */
 	public void tickNoHealth() {
 		if (deadTicks++ > 500) {
 			kill();
@@ -522,6 +556,9 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		}
 	}
 	
+	/**
+	 * @return if health is greater than 0
+	 */
 	public boolean isOperational() {
 		return getHealth() > 0;
 	}
@@ -531,7 +568,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	}
 	
 	/**
-	 * called on client side
+	 * called on client side every tick.
 	 */
 	public void clientTick() {
 		tickHealthSmoke();
@@ -555,7 +592,8 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	}
 	
 	/**
-	 * restricts the motion of the craft based on max speed
+	 * called every tick after movement is calculated.
+	 * restricts the motion of the craft based on max horizontal speed and max vertical speed.
 	 */
 	public void motionClamp() {
 		Vec3 move = getDeltaMovement();
@@ -574,13 +612,17 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		setDeltaMovement(motionXZ.x, my, motionXZ.z);
 	}
 	
+	/**
+	 * @return the max speed {@link EntityAircraft#motionClamp} tests for.
+	 */
 	public double getMaxSpeedForMotion() {
 		return getMaxSpeed();
 	}
 	
 	/**
-	 * changes this craft's throttle every tick based on inputThrottle 
-	 * also resets the controls if there isn't a controlling passenger
+	 * called on every tick.
+	 * changes this craft's throttle every tick based on inputThrottle.
+	 * also resets the controls if there isn't a controlling passenger.
 	 */
 	public void tickThrottle() {
 		if (currentFuel <= 0) {
@@ -596,8 +638,11 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	}
 	
 	/**
-	 * reads player input to change the direction of the craft
-	 * @param q the current direction of the craft
+	 * called every tick.
+	 * reads player input to change the direction of the craft.
+	 * also calls {@link EntityAircraft#directionGround(Quaternion)}, {@link EntityAircraft#directionWater(Quaternion)},
+	 * and {@link EntityAircraft#directionAir(Quaternion)} to change direction based on the named conditions.
+	 * @param q the current direction of the vehicle
 	 */
 	public void controlDirection(Quaternion q) {
 		if (onGround) directionGround(q);
@@ -642,6 +687,10 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		else return 1.0f;
  	}
 	
+	/**
+	 * called every tick to change the vehicle direction if on the ground. 
+	 * @param q the current direction of the vehicle
+	 */
 	public void directionGround(Quaternion q) {
 		if (!isOperational()) return;
 		flatten(q, 4f, 4f, true);
@@ -661,14 +710,29 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		setAngularVel(av);
 	}
 	
+	/**
+	 * called every tick to change the vehicle direction if in the air.
+	 * @param q the current direction of the vehicle
+	 */
 	public void directionAir(Quaternion q) {
 		
 	}
 	
+	/**
+	 * called every tick to change the vehicle direction if in the water.
+	 * @param q the current direction of the vehicle
+	 */
 	public void directionWater(Quaternion q) {
 		directionAir(q);
 	}
 	
+	/**
+	 * used to make the vehicle level with the ground or water.
+	 * @param q the current direction of the vehicle
+	 * @param dPitch
+	 * @param dRoll
+	 * @param forced
+	 */
 	public void flatten(Quaternion q, float dPitch, float dRoll, boolean forced) {
 		Vec3 av = getAngularVel();
 		float x = (float)av.x, z = (float)av.z;
@@ -725,6 +789,11 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		addMoment(Vec3.ZERO.add(0, 0, moment), control);
 	}
 	
+	/**
+	 * cache all needed physics values BEFORE calculating movement.
+	 * instead of calculating values multiple times per tick.
+	 * @param q the current direction of the vehicle
+	 */
 	protected void calcMoveStatsPre(Quaternion q) {
 		totalMass = getAircraftMass() + partsManager.getPartsWeight();
 		staticFric = totalMass * ACC_GRAVITY * CO_STATIC_FRICTION;
@@ -737,6 +806,11 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		airPressure = UtilEntity.getAirPressure(this);
 	}
 	
+	/**
+	 * cache some needed physics values AFTER calculating movement.
+	 * instead of calculating values multiple times per tick.
+	 * @param q the current direction of the vehicle
+	 */
 	protected void calcMoveStatsPost(Quaternion q) {
 		Vec3 m = getDeltaMovement();
 		float y = getYRot();
@@ -753,6 +827,11 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		if (Math.abs(slideAngle) > 90) xzSpeedDir = -1;
 	}
 	
+	/**
+	 * called every tick on server and client side.
+	 * after forces are calculated. see {@link EntityAircraft#tickMovement(Quaternion)}.
+	 * F=M*A -> A=F/M then A is added to current velocity
+	 */
 	public void calcAcc() {
 		Vec3 f = getForces();
 		double s = 1/getTotalMass();
@@ -765,6 +844,12 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		if (!noPhysics && isOnGround() && getDeltaMovement().y == 0) stepDown(move);
 	}
 	
+	/**
+	 * custom physics used to "step down" from a stair step.
+	 * appears like the entity teleport down from small ledges.
+	 * added to avoid vehicles floating down from stair step ledges. 
+	 * @param move current velocity
+	 */
 	protected void stepDown(Vec3 move) {
 		AABB aabb = getBoundingBox();
 		Vec3 down = new Vec3(0,-getStepHeight()-0.1, 0); // this -0.1 is needed trust me
@@ -776,9 +861,13 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	}
 	
 	/**
-	 * called on both client and server side every tick to change the craft's movement 
-	 * a force is a Vec3 to be added to this entities motion or getDeltaMovement()
-	 * in Minecraft an entitie's motion is the blocks an entity will move per tick
+	 * called on both client and server side every tick to calculate the vehicle's forces this tick.
+	 * calls the following based on entity's current state: 
+	 * {@link EntityAircraft#tickAlways(Quaternion)},
+	 * {@link EntityAircraft#tickGround(Quaternion)},
+	 * {@link EntityAircraft#tickGroundWater(Quaternion)},
+	 * {@link EntityAircraft#tickWater(Quaternion)},
+	 * {@link EntityAircraft#tickAir(Quaternion)}.
 	 * @param q the plane's current rotation
 	 */
 	public void tickMovement(Quaternion q) {
@@ -789,6 +878,11 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		else tickAir(q);
 	}
 	
+	/**
+	 * called on both client and server side every tick to calculate the vehicle's forces in any context.
+	 * called by {@link EntityAircraft#tickMovement(Quaternion)}.
+	 * @param q the plane's current rotation
+	 */
 	public void tickAlways(Quaternion q) {
 		Vec3 f = getForces();
 		f = f.add(getWeightForce());
@@ -797,7 +891,8 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	}
 	
 	/**
-	 * called on both client and server side every tick when the craft is on the ground
+	 * called on both client and server side every tick to calculate the vehicle's forces when on the ground.
+	 * called by {@link EntityAircraft#tickMovement(Quaternion)}.
 	 * @param q the plane's current rotation
 	 */
 	public void tickGround(Quaternion q) {
@@ -815,6 +910,9 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		if (isBreaking() && isOperational()) applyBreaks();
 	}
 	
+	/**
+	 * @return the acceleration while driving 
+	 */
 	public double getDriveAcc() {
 		return getSpinThrustMag()/getTotalMass();
 	}
@@ -869,7 +967,8 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	}
 	
 	/**
-	 * called on both client and server side every tick when the craft is in the air
+	 * called on both client and server side every tick to calculate the vehicle's forces when in air.
+	 * called by {@link EntityAircraft#tickMovement(Quaternion)}.
 	 * @param q the plane's current rotation
 	 */
 	public void tickAir(Quaternion q) {
@@ -877,10 +976,20 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		resetFallDistance();
 	}
 	
+	/**
+	 * called on both client and server side every tick to calculate the vehicle's forces in when floating in water.
+	 * called by {@link EntityAircraft#tickMovement(Quaternion)}.
+	 * @param q the plane's current rotation
+	 */
 	public void tickWater(Quaternion q) {
 		tickAir(q);
 	}
 	
+	/**
+	 * called on both client and server side every tick to calculate the vehicle's forces when at the bottom of water.
+	 * called by {@link EntityAircraft#tickMovement(Quaternion)}.
+	 * @param q the plane's current rotation
+	 */
 	public void tickGroundWater(Quaternion q) {
 		tickGround(q);
 	}
@@ -899,15 +1008,24 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		return getCurrentThrottle() * getMaxPushThrust();
 	}
 	
+	/**
+	 * @return max possible push force magnitude assuming max throttle. 
+	 */
 	public float getMaxPushThrust() {
 		return maxPushThrust;
 	}
 	
+	/**
+	 * @return the magnitude of the spin force based on the engines, throttle, and 0 if no fuel
+	 */
 	public double getSpinThrustMag() {
 		if (getCurrentFuel() <= 0 || !isOperational()) return 0;
 		return getCurrentThrottle() * getMaxSpinThrust();
 	}
 	
+	/**
+	 * @return max possible spin force magnitude assuming max throttle. 
+	 */
 	public float getMaxSpinThrust() {
 		return maxSpinThrust;
 	}
@@ -923,18 +1041,29 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		return dragForce;
 	}
 	
+	/**
+	 * @return the magnitude of the drag force
+	 */
 	public double getDragMag() {
 		// Drag = (drag coefficient) * (air pressure) * (speed)^2 * (wing surface area) / 2
 		double speedSqr = getDeltaMovement().lengthSqr();
 		return airPressure * speedSqr * getCrossSectionArea() * CO_DRAG;
 	}
 	
+	/**
+	 * modifies {@link EntityAircraft#getBaseCrossSecArea()} for physics.
+	 * this function returns a larger value if a plane's flaps are down for example.
+	 * @return this vehicle's cross sectional area for drag and radar.
+	 */
 	public double getCrossSectionArea() {
 		double a = getBaseCrossSecArea();
 		if (!isOperational()) a += 4;
 		return a;
 	}
 	
+	/**
+	 * @return srly bro you dont know what this is?
+	 */
 	public Vec3 getWeightForce() {
 		return new Vec3(0, -getTotalMass() * ACC_GRAVITY, 0);
 	}
@@ -954,16 +1083,20 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	}
 	
 	/**
-	 * this is NOT the total weight
-	 * @return the weight of the fuselage 
+	 * this is NOT the total mass. 
+	 * see {@link EntityAircraft#getTotalMass()}
+	 * @return the mass of the vehicle. not including parts.
 	 */
 	public final float getAircraftMass() {
 		return entityData.get(MASS);
 	}
 	
-	public final void setAircraftMass(float weight) {
-		if (weight < 0) weight = 0;
-		entityData.set(MASS, weight);
+	/**
+	 * @param mass the mass of the vehicle not including parts.
+	 */
+	public final void setAircraftMass(float mass) {
+		if (mass < 0) mass = 0;
+		entityData.set(MASS, mass);
 	}
 	
 	/**
@@ -1019,13 +1152,16 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	}
 	
 	/**
-	 * ticks the parts manager
+	 * ticks the parts manager on client and server side
 	 */
 	public void tickParts() {
 		if (level.isClientSide) partsManager.clientTickParts();
 		else partsManager.tickParts();
 	}
 	
+	/**
+	 * Override to stop lag backs from causing planes to crash.
+	 */
 	@Override
 	public void lerpMotion(double x, double y, double z) {
 		if (!isControlledByLocalInstance()) {
@@ -1065,6 +1201,9 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
         }*/
 	}
 	
+	/**
+	 * called to reset controls if there is no pilot
+	 */
 	public void resetControls() {
 		inputs.reset();
 		this.throttleToZero();
@@ -1111,14 +1250,14 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     }
 	
     /**
-     * register parts before calling super in server side
+     * called in {@link EntityAircraft#init()} by server side
      */
 	public void serverSetup() {
 		partsManager.setupParts();
 	}
 	
 	/**
-	 * gets the part manager, weapon system, and radar system data from the server
+	 * called in {@link EntityAircraft#init()} by client side
 	 */
 	public void clientSetup() {
 		UtilClientSafeSoundInstance.aircraftEngineSound(
@@ -1289,6 +1428,10 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		return false;
 	}
 	
+	/**
+	 * all part entities ride the vehicle using the vanilla passenger system.
+	 * the part's position is set based on the vehicle's rotation.
+	 */
 	@Override
     public void positionRider(Entity passenger) {
 		if (passenger instanceof EntityPart part) {
@@ -1297,7 +1440,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 			else q = getQ();
  			Vec3 seatPos = UtilAngles.rotateVector(part.getRelativePos(), q);
 			passenger.setPos(position().add(seatPos));
-			//passenger.setDeltaMovement(getDeltaMovement());
 		}
 	}
 	
@@ -1442,6 +1584,9 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     	return entityData.get(MAX_SPEED);
     }
     
+    /**
+     * @param maxSpeed the max speed of the craft along the x and z axis
+     */
     public final void setMaxSpeed(float maxSpeed) {
     	entityData.set(MAX_SPEED, maxSpeed);
     }
@@ -1454,6 +1599,9 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     	else return entityData.get(THROTTLE);
     }
     
+    /**
+     * @param throttle between 1 and 0 or 1 and -1 if negativeThrottle
+     */
     public final void setCurrentThrottle(float throttle) {
     	if (throttle > 1) throttle = 1;
     	else if (negativeThrottle && throttle < -1) throttle = -1;
@@ -1462,6 +1610,9 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     	else entityData.set(THROTTLE, throttle);
     }
     
+    /**
+     * call this every tick to bring throttle back to zero.
+     */
     public void throttleToZero() {
     	float th = getCurrentThrottle();
     	if (th == 0) return;
@@ -1670,6 +1821,9 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     	return stack;
     }
     
+    /**
+     * SERVER SIDE ONLY
+     */
     public void becomeItem() {
     	if (level.isClientSide) return;
     	boolean cancel = tickCount/20 < Config.COMMON.freshEntityToItemCooldown.get() 
@@ -1785,7 +1939,8 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     }
     
     /**
-     * plays all the sounds for the players in the plane
+     * called every tick on client and server side.
+     * plays all the sounds for the players in the plane.
      */
     public void sounds() {
     	if (level.isClientSide && isOperational()) {
@@ -1851,6 +2006,10 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
         		pX+(double)f, pY+(double)f1, pZ+(double)f);
     }
     
+    /**
+     * the custom bounding box draws the box so that the entity position is in the middle of the box in all 3 dimensions
+     * @return if this entity should use {@link EntityAircraft#makeCustomBoundingBox()}
+     */
     public boolean isCustomBoundingBox() {
     	return false;
     }
@@ -1900,10 +2059,16 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     	this.isLandingGear = gear;
     }
     
+    /**
+     * @return if this vehicle will update it's forces and move
+     */
     public boolean isTestMode() {
     	return entityData.get(TEST_MODE);
     }
     
+    /**
+     * @param testMode if this vehicle will update it's forces and move
+     */
     public void setTestMode(boolean testMode) {
     	entityData.set(TEST_MODE, testMode);
     }
@@ -1964,10 +2129,16 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		return 0.6f;
 	}
     
+    /**
+     * @return if this vehicle will consume fuel or ammo
+     */
     public boolean isNoConsume() {
     	return entityData.get(NO_CONSUME);
     }
     
+    /**
+     * @param noConsume if this vehicle will consume fuel or ammo
+     */
     public void setNoConsume(boolean noConsume) {
     	entityData.set(NO_CONSUME, noConsume);
     }
@@ -1981,6 +2152,10 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     	return entityData.get(FLARE_NUM);
     }
     
+    /**
+     * outside mods shouldn't use this. does not change the actual number of flares.
+     * @param flares a number of flares to synch with the client
+     */
     public void setFlareNum(int flares) {
     	entityData.set(FLARE_NUM, flares);
     }

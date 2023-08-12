@@ -2,6 +2,12 @@ package com.onewhohears.dscombat.data.aircraft;
 
 import net.minecraft.network.FriendlyByteBuf;
 
+/**
+ * used to centrally organise some vehicle's inputs.
+ * see {@link com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents} 
+ * to see how these inputs are sent to server.
+ * @author 1whohears
+ */
 public class AircraftInputs {
 	
 	public boolean flare, shoot, openMenu;

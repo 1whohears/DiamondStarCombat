@@ -21,6 +21,19 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.PacketDistributor;
 
+/**
+ * manages the parts/inventory system for {@link EntityAircraft}.
+ * reads the entity's nbt to load the saved parts.
+ * communicates with {@link com.onewhohears.dscombat.data.radar.WeaponSystem} 
+ * and {@link com.onewhohears.dscombat.data.radar.RadarSystem} to update a vehicle's 
+ * available weapons/radars based on parts. 
+ * used to add/update/remove parts.
+ * used to access various information about the parts in a vehicle.
+ * this part manager has a list of {@link PartSlot}.
+ * each {@link PartSlot} is either empty or has {@link PartData}.
+ * will synch part data with client.
+ * @author 1whohears
+ */
 public class PartsManager {
 	
 	public static final int SLOT_VERSION = 1;
@@ -35,7 +48,11 @@ public class PartsManager {
 	}
 	
 	/**
-	 * deletes all slot data currently in the list and reads from this compound
+	 * deletes all cached slot data.
+	 * reads new slot data from the entity's nbt and preset data.
+	 * preset data from a data pack an data the entity spawned with are merged 
+	 * so that old entities can be updated (example: if slot positions are changed for a new model)
+	 * while preserving changes a player made to a vehicle's inventory.
 	 * @param entityNbt
 	 */
 	public void read(CompoundTag entityNbt, CompoundTag presetNbt) {

@@ -5,6 +5,16 @@ import com.onewhohears.dscombat.data.JsonPreset.JsonPresetFactory;
 
 import net.minecraft.resources.ResourceLocation;
 
+/**
+ * the parent class for json preset builders. usually called within a {@link JsonPresetGenerator}.
+ * 
+ * see {@link com.onewhohears.dscombat.data.aircraft.AircraftPreset},
+ * {@link com.onewhohears.dscombat.data.weapon.AbstractWeaponBuilders},
+ * and {@link com.onewhohears.dscombat.data.radar.RadarData} for example builders.
+ * 
+ * @author 1whohears
+ * @param <C>
+ */
 public abstract class PresetBuilder<C extends PresetBuilder<C>> {
 	
 	private final String name;

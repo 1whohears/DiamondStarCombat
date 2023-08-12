@@ -11,6 +11,15 @@ import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 
+/**
+ * a json file from asset pack reader for this mod's asset system.
+ * see {@link com.onewhohears.dscombat.data.aircraft.AircraftClientPresets} for examples.
+ * 
+ * see {@link JsonPresetGenerator} for a way to generate json assets.
+ * 
+ * @author 1whohears
+ * @param <T> the type of preset this reader builds from json files
+ */
 public abstract class JsonPresetAssetReader<T extends JsonPreset> implements ResourceManagerReloadListener {
 	
 	protected final Map<String, T> presetMap = new HashMap<>();

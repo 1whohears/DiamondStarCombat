@@ -21,6 +21,14 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 
+/**
+ * manages available weapons for {@link EntityAircraft}.
+ * available weapons are found in a list of {@link WeaponData}.
+ * used to fire a vehicle's selected weapon.
+ * will synch ammo numbers and other info with client.
+ * will tell a pilot why a weapon launch failed.
+ * @author 1whohears
+ */
 public class WeaponSystem {
 	
 	private final EntityAircraft parent;

@@ -26,6 +26,15 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
 
+/**
+ * manages the radar/targeting/rwr system for {@link EntityAircraft}.
+ * individual radars are abstracted into {@link RadarData}.
+ * individual radars update the radar system's link of {@link RadarPing} on the server side.
+ * the updated link of pings are then sent to the client. 
+ * the client then tells the server which ping is selected.
+ * then the {@link WeaponSystem} gets the target entity from here.
+ * @author 1whohears
+ */
 public class RadarSystem {
 	
 	private final EntityAircraft parent;

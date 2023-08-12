@@ -29,6 +29,22 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
+/**
+ * This is the main class of the Diamond Star Combat mod.
+ * Some events are registered here but most are subscribed via Annotation. 
+ * Here are some of the event classes and other possibly relevant Entry Points:
+ * 
+ * {@link com.onewhohears.dscombat.client.event.forgebus.ClientCameraEvents}
+ * {@link com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents}
+ * {@link com.onewhohears.dscombat.client.event.forgebus.ClientRenderEvents}
+ * {@link com.onewhohears.dscombat.client.event.forgebus.ClientRenderRadarEvents}
+ * {@link com.onewhohears.dscombat.client.event.ClientModEvents}
+ * {@link com.onewhohears.dscombat.client.overlay.PilotOverlay}
+ * {@link com.onewhohears.dscombat.common.event.CommonForgeEvents}
+ * {@link com.onewhohears.dscombat.entity.aircraft.EntityAircraft}
+ * 
+ * @author 1whohears
+ */
 @Mod(DSCombatMod.MODID)
 public class DSCombatMod {
 	// FIXME 9 improve documentation

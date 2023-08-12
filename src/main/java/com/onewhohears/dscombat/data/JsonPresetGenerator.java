@@ -14,13 +14,33 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.resources.ResourceLocation;
 
+/**
+ * use this to generate json preset files. 
+ * call {@link JsonPresetGenerator#addPresetToGenerate(JsonPreset)} inside a
+ * {@link JsonPresetGenerator#registerPresets()} override.
+ * use a {@link PresetBuilder} to make the presets to register.
+ * 
+ * see {@link com.onewhohears.dscombat.data.weapon.WeaponPresetGenerator},
+ * {@link com.onewhohears.dscombat.data.radar.RadarPresetGenerator},
+ * {@link com.onewhohears.dscombat.data.aircraft.AircraftPresetGenerator},
+ * and {@link com.onewhohears.dscombat.data.aircraft.AircraftClientPresetGenerator} for examples.
+ * see {@link JsonPresetReloadListener} for a way to read these json presets.
+ * 
+ * @author 1whohears
+ * @param <T> the type of preset this reader builds from json files
+ */
 public abstract class JsonPresetGenerator<T extends JsonPreset> implements DataProvider {
 	
 	protected final DataGenerator.PathProvider pathProvider;
     private final Map<ResourceLocation, T> gen_map = new HashMap<>();
-
+    
+    /**
+     * for data pack data generation
+     * @param output
+     * @param kind
+     */
     public JsonPresetGenerator(DataGenerator output, String kind) {
-        this.pathProvider = output.createPathProvider(DataGenerator.Target.DATA_PACK, kind);
+        this(output, kind, DataGenerator.Target.DATA_PACK);
     }
     
     public JsonPresetGenerator(DataGenerator output, String kind, DataGenerator.Target target) {

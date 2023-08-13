@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.util;
 
+import com.onewhohears.dscombat.data.weapon.RadarTargetTypes;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 
 import net.minecraft.core.BlockPos;
@@ -65,8 +66,9 @@ public class UtilEntity {
 	
 	public static double getCrossSectionalArea(Entity entity) {
 		if (entity instanceof EntityAircraft plane) return plane.getCrossSectionArea();
-		// TODO 7.1 configurable cross sec area by entity type (fix for boats and minecarts)
-		return entity.getBbHeight() * entity.getBbWidth();
+		return RadarTargetTypes.get().getEntityCrossSectionalArea(
+				entity.getType().toString(), 
+				entity.getBbHeight()*entity.getBbWidth());
 	}
 	
 	public static int getDistFromGround(Entity e) {

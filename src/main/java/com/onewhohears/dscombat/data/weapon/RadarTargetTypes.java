@@ -35,6 +35,8 @@ public class RadarTargetTypes {
 	
 	private List<Class<? extends Entity>> radarMobClasses = new ArrayList<>();
 	
+	private Map<String, Float> entityAreas = new HashMap<>();
+	
 	private RadarTargetTypes() {
 	}
 	
@@ -44,6 +46,7 @@ public class RadarTargetTypes {
 		readEntityHeats();
 		readRadarVehicles();
 		readRadarMobs();
+		readEntityAreas();
 	}
 	
 	private void readIRMissiles() {
@@ -146,6 +149,35 @@ public class RadarTargetTypes {
 	
 	public List<Class<? extends Entity>> getRadarMobClasses() {
 		return radarMobClasses;
+	}
+	
+	private void readEntityAreas() {
+		entityAreas.clear();
+		List<? extends String> areaList =  Config.COMMON.radarCrossSecAreas.get();
+		for (int i = 0; i < areaList.size(); ++i) {
+			String a = areaList.get(i);
+			if (!a.contains("/")) continue;
+			String[] split = a.split("/");
+			if (split.length != 2) continue;
+			String entityId = split[0];
+			if (!ForgeRegistries.ENTITY_TYPES.containsKey(new ResourceLocation(entityId))) {
+				System.out.println("ERROR: "+entityId+" does not exist! Radars will not read that area value!");
+				continue;
+			}
+			System.out.println("ADDED ENTITY AREA OVERRIDE: "+a);
+			float area = 0;
+			try {
+				area = Float.parseFloat(split[1]);
+			} catch (NumberFormatException e) {
+				System.out.println("ERROR: "+split[1]+" is not a number!");
+			}
+			entityAreas.put(entityId, area);
+		}
+	}
+	
+	public float getEntityCrossSectionalArea(String id, float alt) {
+		if (!entityAreas.containsKey(id)) return alt;
+		return entityAreas.get(id);
 	}
 	
 }

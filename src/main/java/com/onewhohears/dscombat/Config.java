@@ -69,6 +69,10 @@ public class Config {
 		 */
 		public final ForgeConfigSpec.ConfigValue<List<? extends String>> radarMobs;
 		/**
+		 * entity_id/area
+		 */
+		public final ForgeConfigSpec.ConfigValue<List<? extends String>> radarCrossSecAreas;
+		/**
 		 * classname/heat
 		 */
 		public final ForgeConfigSpec.ConfigValue<List<? extends String>> irEntities;
@@ -101,8 +105,17 @@ public class Config {
 					Arrays.asList(
 							"net.minecraft.world.entity.Mob"), 
 					entry -> true);
+			radarCrossSecAreas = builder
+					.comment("smaller values means its harder for a radar to see."
+							+ " most radars have a sensitivity of at least 0.5m^2."
+							+ " [entity_id]/[cross sectional area override (float)]")
+					.defineList("specificEntityHeat", 
+						Arrays.asList(
+								"minecraft:boat/1.0f",
+								"minecraft:minecart/1.0f"), 
+						entry -> true);
 			irEntities = builder
-				.comment("entities that ir missiles will target (path to entity class)/(default heat value)")
+				.comment("entities that ir missiles will target [path to entity class]/[default heat value (float)]")
 				.defineList("irEntities", 
 					Arrays.asList(
 							"net.minecraft.world.entity.player.Player/0.5f",
@@ -113,7 +126,7 @@ public class Config {
 							"xyz.przemyk.simpleplanes.entities.PlaneEntity/8.0f"),
 					entry -> true);
 			specificEntityHeat = builder
-				.comment("entities with a specific heat value (entity_id)/(heat value override)")
+				.comment("entities with a specific heat value [entity_id]/[heat value override (float)]")
 				.defineList("specificEntityHeat", 
 					Arrays.asList(
 							"minecraft:blaze/20f",

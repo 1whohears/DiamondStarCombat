@@ -133,6 +133,8 @@ public class RadarData extends JsonPreset {
 		buffer.writeUtf(slotId);
 	}
 	
+	private int maxCheckDist = 150;
+	
 	public void tickUpdateTargets(EntityAircraft radar, List<RadarPing> vehiclePings) {
 		if (scanTicks > scanRate) scanTicks = 0;
 		else {
@@ -262,14 +264,11 @@ public class RadarData extends JsonPreset {
 			return false;
 		}
 		double area = stealth;
-		if (target instanceof EntityAircraft plane) area *= plane.getCrossSectionArea();
-		else area *= target.getBbHeight() * target.getBbWidth();
+		area *= UtilEntity.getCrossSectionalArea(target);
 		double areaMin = (1-Math.pow(range,-2)*Math.pow(dist-range,2))*sensitivity;
 		//System.out.println("area = "+area+" min = "+areaMin);
 		return area >= areaMin;
 	}
-	
-	private int maxCheckDist = 150;
 	
 	private boolean checkCanSee(Entity radar, Entity target) {
 		return UtilEntity.canEntitySeeEntity(radar, target, maxCheckDist, 

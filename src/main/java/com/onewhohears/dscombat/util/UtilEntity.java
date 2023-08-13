@@ -1,5 +1,7 @@
 package com.onewhohears.dscombat.util;
 
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -59,6 +61,12 @@ public class UtilEntity {
 			} else return false;
 		}
 		return true;
+	}
+	
+	public static double getCrossSectionalArea(Entity entity) {
+		if (entity instanceof EntityAircraft plane) return plane.getCrossSectionArea();
+		// TODO 7.1 configurable cross sec area by entity type (fix for boats and minecarts)
+		return entity.getBbHeight() * entity.getBbWidth();
 	}
 	
 	public static int getDistFromGround(Entity e) {

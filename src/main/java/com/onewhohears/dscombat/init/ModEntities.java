@@ -16,6 +16,7 @@ import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
 import com.onewhohears.dscombat.entity.weapon.AntiRadarMissile;
 import com.onewhohears.dscombat.entity.weapon.EntityBomb;
 import com.onewhohears.dscombat.entity.weapon.EntityBullet;
+import com.onewhohears.dscombat.entity.weapon.EntityBunkerBuster;
 import com.onewhohears.dscombat.entity.weapon.EntityFlare;
 import com.onewhohears.dscombat.entity.weapon.IRMissile;
 import com.onewhohears.dscombat.entity.weapon.PositionMissile;
@@ -187,6 +188,8 @@ public class ModEntities {
 			() -> createEntityType(EntityBullet::new, EntityDimensions.scalable(0.15f, 0.15f)));
 	public static final RegistryObject<EntityType<EntityBomb>> BOMB = ENTITIES.register("bomb", 
 			() -> createEntityType(EntityBomb::new, EntityDimensions.scalable(0.6f, 0.6f)));
+	public static final RegistryObject<EntityType<EntityBunkerBuster>> GRUETZ_BUNKER_BUSTER = ENTITIES.register("gruetz_bunker_buster", 
+			() -> createEntityType(EntityBunkerBuster::new, EntityDimensions.scalable(1.2f, 1.2f)));
 	public static final RegistryObject<EntityType<PositionMissile>> POS_MISSILE_1 = ENTITIES.register("pos_missile_1", 
 			() -> createEntityTypeFar(PositionMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
 	public static final RegistryObject<EntityType<IRMissile>> IR_MISSILE_1 = ENTITIES.register("ir_missile_1", 

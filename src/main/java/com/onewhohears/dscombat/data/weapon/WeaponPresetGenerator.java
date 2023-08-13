@@ -566,6 +566,33 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.build());
 	}
 	
+	protected void registerOther() {
+		addPresetToGenerate(BunkerBusterData.Builder
+				.bunkerBusterBuilder(DSCombatMod.MODID, "gruetz_bunker_buster")
+				.setFireRate(60)
+				.setInnacuracy(0f)
+				.setCanShootOnGround(true)
+				.setDamage(50f)
+				.setSpeed(0f)
+				.setExplosionRadius(8)
+				.setExplosive(true)
+				.setDestoryTerrain(true)
+				.setCausesFire(false)
+				.setMaxAmmo(1)
+				.setMaxAge(300)
+				.setBlockStrength(50)
+				.setItem(ModItems.GRUETZ_BUNKER_BUSTER.getId())
+				.setEntityType(ModEntities.GRUETZ_BUNKER_BUSTER.getId())
+				.setRackEntityType(ModEntities.BOMB_RACK.getId())
+				.setShootSound(ModSounds.BOMB_SHOOT_1.getId())
+				.setCompatibleWeaponPart(ModItems.BOMB_RACK.getId())
+				.setCraftNum(1)
+				.addIngredient("minecraft:iron_ingot", 30)
+				.addIngredient("minecraft:tnt", 6)
+				.addIngredient("minecraft:diamond_pickaxe")
+				.build());
+	}
+	
 	@Override
 	protected void registerPresets() {
 		registerBullets();
@@ -573,6 +600,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 		registerAGMissiles();
 		registerOtherMissiles();
 		registerBombs();
+		registerOther();
 	}	
 	
 	public WeaponPresetGenerator(DataGenerator output) {

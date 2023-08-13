@@ -125,8 +125,7 @@ public abstract class EntityWeapon extends Projectile {
 		Vec3 move = getDeltaMovement();
 		Vec3 pos = position();
 		Vec3 next_pos = pos.add(move);
-		HitResult hitresult = level.clip(new ClipContext(pos, next_pos, 
-				ClipContext.Block.COLLIDER, getFluidClipContext(), this));
+		HitResult hitresult = checkBlockCollide();
 		if (hitresult.getType() != HitResult.Type.MISS) next_pos = hitresult.getLocation();
 		Entity owner = getOwner();
 		while(!isRemoved()) {
@@ -153,6 +152,11 @@ public abstract class EntityWeapon extends Projectile {
 		}
 	}
 	
+	protected BlockHitResult checkBlockCollide() {
+		return level.clip(new ClipContext(position(), position().add(getDeltaMovement()), 
+				ClipContext.Block.COLLIDER, getFluidClipContext(), this));
+	}
+	
 	@Nullable
 	protected EntityHitResult findHitEntity(Vec3 start, Vec3 end) {
 		return ProjectileUtil.getEntityHitResult(level, this, 
@@ -172,7 +176,6 @@ public abstract class EntityWeapon extends Projectile {
 	public void onHitBlock(BlockHitResult result) {
 		super.onHitBlock(result);
 		//System.out.println("BULLET HIT "+result.getBlockPos());
-		
 		kill();
 	}
 	

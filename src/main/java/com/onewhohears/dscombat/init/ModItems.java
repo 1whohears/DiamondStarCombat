@@ -274,7 +274,8 @@ public class ModItems {
 			() -> new ItemAmmo(4, "torpedo1")); 
 	public static final RegistryObject<Item> RIFEL1 = ITEMS.register("rifel1", 
 			() -> new ItemAmmo(4, "rifel1")); 
-	// TODO 2.2 bunker buster (go through some blocks then explode)
+	public static final RegistryObject<Item> GRUETZ_BUNKER_BUSTER = ITEMS.register("gruetz_bunker_buster", 
+			() -> new ItemAmmo(1, "gruetz_bunker_buster")); 
 	
 	// PLANES
 	public static final RegistryObject<Item> JAVI_PLANE = ITEMS.register("javi_plane", 

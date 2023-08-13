@@ -146,6 +146,12 @@ public final class ClientModEvents {
 				(context) -> new RendererEntityWeapon<EntityBomb>(context, 
 						new EntityModelBomb1(models.bakeLayer(EntityModelBomb1.LAYER_LOCATION)),
 						new ResourceLocation(DSCombatMod.MODID, "textures/entities/bomb1.png")));
+		// BUNKER BUSTERS
+		// TODO 2.2 give gruetz it's own model and texture
+		event.registerEntityRenderer(ModEntities.GRUETZ_BUNKER_BUSTER.get(), 
+				(context) -> new RendererEntityWeapon<EntityBomb>(context, 
+						new EntityModelBomb1(models.bakeLayer(EntityModelBomb1.LAYER_LOCATION)),
+						new ResourceLocation(DSCombatMod.MODID, "textures/entities/bomb1.png")));
 		// MISSILES
 		event.registerEntityRenderer(ModEntities.POS_MISSILE_1.get(), 
 				(context) -> new RendererEntityWeapon<EntityMissile>(context, 

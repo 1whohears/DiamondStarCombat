@@ -119,6 +119,18 @@ public class AbstractWeaponBuilders {
 		
 	}
 	
+	public abstract static class BunkerBusterBuilder<C extends BunkerBusterBuilder<C>> extends BombBuilder<C> {
+		
+		protected BunkerBusterBuilder(String namespace, String name, JsonPresetFactory<? extends BunkerBusterData> sup, WeaponType type) {
+			super(namespace, name, sup, type);
+		}
+		
+		public C setBlockStrength(float blockStrength) {
+			return setFloat("blockStrength", blockStrength);
+		}
+		
+	}
+	
 	public abstract static class MissileBuilder<C extends MissileBuilder<C>> extends BulletBuilder<C> {
 		
 		protected MissileBuilder(String namespace, String name, JsonPresetFactory<? extends MissileData> sup, WeaponType type) {

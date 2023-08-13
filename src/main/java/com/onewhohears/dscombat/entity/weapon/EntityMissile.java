@@ -393,6 +393,7 @@ public abstract class EntityMissile extends EntityBullet {
 		return tickCountRepeats;
 	}
 	
+	@Override
 	public Fluid getFluidClipContext() {
 		return ClipContext.Fluid.SOURCE_ONLY;
 	}

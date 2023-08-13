@@ -409,7 +409,8 @@ public abstract class WeaponData extends JsonPreset {
 		TRACK_MISSILE,
 		IR_MISSILE,
 		ANTIRADAR_MISSILE,
-		TORPEDO;
+		TORPEDO,
+		BUNKER_BUSTER;
 		
 		@Nullable
 		public static WeaponType getById(String id) {

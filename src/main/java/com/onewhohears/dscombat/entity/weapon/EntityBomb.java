@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.entity.weapon;
 
-import com.onewhohears.dscombat.data.weapon.BulletData;
+import com.onewhohears.dscombat.Config;
+import com.onewhohears.dscombat.data.weapon.BombData;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -12,13 +13,13 @@ public class EntityBomb extends EntityBullet {
 		super(type, level);
 	}
 	
-	public EntityBomb(Level level, Entity owner, BulletData data) {
+	public EntityBomb(Level level, Entity owner, BombData data) {
 		super(level, owner, data);
 	}
 	
 	@Override
 	protected void tickSetMove() {
-		setDeltaMovement(getDeltaMovement().add(0, -0.05, 0));
+		setDeltaMovement(getDeltaMovement().add(0, -Config.SERVER.accGravity.get(), 0));
 	}
 
 }

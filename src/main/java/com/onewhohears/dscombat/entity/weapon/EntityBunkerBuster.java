@@ -48,11 +48,10 @@ public class EntityBunkerBuster extends EntityBomb {
 			if (getBlockStrength() >= hit_block_strength) {
 				level.destroyBlock(hit.getBlockPos(), true, this);
 				reduceBlockStrength(hit_block_strength);
-			}
-			else return hit;
+			} else return hit;
 			hit = super.checkBlockCollide();
 		}
-		return null;
+		return hit;
 	}
 	
 	@Override

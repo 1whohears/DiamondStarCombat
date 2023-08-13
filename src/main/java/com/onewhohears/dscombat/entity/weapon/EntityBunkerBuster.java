@@ -45,7 +45,10 @@ public class EntityBunkerBuster extends EntityBomb {
 		BlockHitResult hit = super.checkBlockCollide();
 		while (hit.getType() != HitResult.Type.MISS) {
 			int hit_block_strength = BunkerBusterData.getBlockStrength(level.getBlockState(hit.getBlockPos()));
-			if (getBlockStrength() >= hit_block_strength) reduceBlockStrength(hit_block_strength);
+			if (getBlockStrength() >= hit_block_strength) {
+				level.destroyBlock(hit.getBlockPos(), true, this);
+				reduceBlockStrength(hit_block_strength);
+			}
 			else return hit;
 			hit = super.checkBlockCollide();
 		}

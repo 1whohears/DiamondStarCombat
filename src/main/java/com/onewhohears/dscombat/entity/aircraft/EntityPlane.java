@@ -9,7 +9,6 @@ import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -17,7 +16,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.RegistryObject;
@@ -270,8 +268,6 @@ public class EntityPlane extends EntityAircraft {
 	public void sounds() {
 		super.sounds();
     	if (level.isClientSide && isOperational()) {
-    		Minecraft m = Minecraft.getInstance();
-    		if (!isVehicleOf(m.player)) return;
     		// TODO 5.2 bitchin betty
     		// pull up
     		// over g

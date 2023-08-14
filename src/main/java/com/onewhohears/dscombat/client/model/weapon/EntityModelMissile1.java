@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.client.renderer.model.weapon;
+package com.onewhohears.dscombat.client.model.weapon;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

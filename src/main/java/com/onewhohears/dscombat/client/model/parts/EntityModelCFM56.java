@@ -1,9 +1,9 @@
-package com.onewhohears.dscombat.client.renderer.model.parts;
+package com.onewhohears.dscombat.client.model.parts;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.client.renderer.model.EntityControllableModel;
+import com.onewhohears.dscombat.client.model.EntityControllableModel;
 import com.onewhohears.dscombat.entity.parts.EntityEngine;
 
 import net.minecraft.client.model.geom.ModelLayerLocation;

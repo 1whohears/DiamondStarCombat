@@ -1,9 +1,9 @@
-package com.onewhohears.dscombat.client.renderer.model.weapon;
+package com.onewhohears.dscombat.client.model.weapon;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.client.renderer.model.EntityControllableModel;
+import com.onewhohears.dscombat.client.model.EntityControllableModel;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 

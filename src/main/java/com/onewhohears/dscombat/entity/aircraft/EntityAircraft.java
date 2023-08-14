@@ -1945,19 +1945,18 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     public void sounds() {
     	if (level.isClientSide && isOperational()) {
     		Minecraft m = Minecraft.getInstance();
-    		Player p = m.player;
-    		if (!isVehicleOf(p)) return;
+    		if (!isVehicleOf(m.player)) return;
     		if (tickCount % 4 == 0 && radarSystem.isTrackedByMissile()) {
-    			level.playSound(p, new BlockPos(p.position()), 
+    			level.playSound(m.player, new BlockPos(m.player.position()), 
 	    			ModSounds.MISSILE_WARNING.get(), SoundSource.PLAYERS, 
 	    			Config.CLIENT.rwrWarningVol.get().floatValue(), 1f);
     		} else if (tickCount % 8 == 0 && radarSystem.isTrackedByRadar()) {
-    			level.playSound(p, new BlockPos(p.position()), 
+    			level.playSound(m.player, new BlockPos(m.player.position()), 
     	    		ModSounds.GETTING_LOCKED.get(), SoundSource.PLAYERS, 
     	    		Config.CLIENT.missileWarningVol.get().floatValue(), 1f);
         	}
     		if (tickCount % 10 == 0 && shouldPlayIRTone()) {
-    			level.playSound(p, new BlockPos(p.position()), 
+    			level.playSound(m.player, new BlockPos(m.player.position()), 
     	    			ModSounds.FOX2_TONE_1.get(), SoundSource.PLAYERS, 
     	    			Config.CLIENT.irTargetToneVol.get().floatValue(), 1f);
     		}

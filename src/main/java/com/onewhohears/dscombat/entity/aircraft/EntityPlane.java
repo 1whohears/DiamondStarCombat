@@ -271,8 +271,7 @@ public class EntityPlane extends EntityAircraft {
 		super.sounds();
     	if (level.isClientSide && isOperational()) {
     		Minecraft m = Minecraft.getInstance();
-    		Player p = m.player;
-    		if (!isVehicleOf(p)) return;
+    		if (!isVehicleOf(m.player)) return;
     		// TODO 5.2 bitchin betty
     		// pull up
     		// over g

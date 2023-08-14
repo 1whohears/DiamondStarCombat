@@ -6,12 +6,15 @@ import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.data.JsonPreset;
+import com.onewhohears.dscombat.data.weapon.WeaponData.ComponentColor;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityBomb;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
@@ -79,6 +82,11 @@ public class BombData extends BulletData {
 	@Override
 	public <T extends JsonPreset> T copy() {
 		return (T) new BombData(getKey(), getJsonData());
+	}
+	
+	@Override
+	public void addToolTips(List<Component> tips) {
+		super.addToolTips(tips);
 	}
 	
 	@Override

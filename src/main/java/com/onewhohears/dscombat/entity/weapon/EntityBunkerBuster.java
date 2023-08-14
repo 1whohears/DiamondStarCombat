@@ -52,7 +52,6 @@ public class EntityBunkerBuster extends EntityBomb {
 		while (it.hasNext()) {
 			VoxelShape voxel = it.next();
 			BlockPos pos = new BlockPos(voxel.bounds().getCenter());
-			System.out.println("voxel = "+pos);
 			int hit_block_strength = getBlockStrength(pos);
 			if (getBlockStrength() >= hit_block_strength) {
 				level.destroyBlock(pos, true, this);

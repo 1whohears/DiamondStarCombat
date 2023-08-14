@@ -18,6 +18,7 @@ import com.onewhohears.dscombat.client.model.parts.EntityModelCFM56;
 import com.onewhohears.dscombat.client.model.weapon.EntityModelBomb1;
 import com.onewhohears.dscombat.client.model.weapon.EntityModelBombRack;
 import com.onewhohears.dscombat.client.model.weapon.EntityModelBullet1;
+import com.onewhohears.dscombat.client.model.weapon.EntityModelGruetzBB;
 import com.onewhohears.dscombat.client.model.weapon.EntityModelHeavyMissileRack;
 import com.onewhohears.dscombat.client.model.weapon.EntityModelHeavyTankTurret;
 import com.onewhohears.dscombat.client.model.weapon.EntityModelLightMissileRack;
@@ -43,6 +44,7 @@ import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
 import com.onewhohears.dscombat.entity.weapon.EntityBomb;
 import com.onewhohears.dscombat.entity.weapon.EntityBullet;
+import com.onewhohears.dscombat.entity.weapon.EntityBunkerBuster;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.init.ModEntities;
 
@@ -93,6 +95,7 @@ public final class ClientModEvents {
 		event.registerLayerDefinition(EntityModelAxcelTruck.LAYER_LOCATION, EntityModelAxcelTruck::createBodyLayer);
 		event.registerLayerDefinition(EntityModelSAMLauncher.LAYER_LOCATION, EntityModelSAMLauncher::createBodyLayer);
 		event.registerLayerDefinition(EntityModelCFM56.LAYER_LOCATION, EntityModelCFM56::createBodyLayer);
+		event.registerLayerDefinition(EntityModelGruetzBB.LAYER_LOCATION, EntityModelGruetzBB::createBodyLayer);
 	}
 	
 	@SubscribeEvent
@@ -147,11 +150,10 @@ public final class ClientModEvents {
 						new EntityModelBomb1(models.bakeLayer(EntityModelBomb1.LAYER_LOCATION)),
 						new ResourceLocation(DSCombatMod.MODID, "textures/entities/bomb1.png")));
 		// BUNKER BUSTERS
-		// TODO 2.2 give gruetz it's own model and texture
 		event.registerEntityRenderer(ModEntities.GRUETZ_BUNKER_BUSTER.get(), 
-				(context) -> new RendererEntityWeapon<EntityBomb>(context, 
-						new EntityModelBomb1(models.bakeLayer(EntityModelBomb1.LAYER_LOCATION)),
-						new ResourceLocation(DSCombatMod.MODID, "textures/entities/bomb1.png")));
+				(context) -> new RendererEntityWeapon<EntityBunkerBuster>(context, 
+						new EntityModelGruetzBB(models.bakeLayer(EntityModelGruetzBB.LAYER_LOCATION)),
+						new ResourceLocation(DSCombatMod.MODID, "textures/entity/weapon/gruetz_bunker_buster.png")));
 		// MISSILES
 		event.registerEntityRenderer(ModEntities.POS_MISSILE_1.get(), 
 				(context) -> new RendererEntityWeapon<EntityMissile>(context, 

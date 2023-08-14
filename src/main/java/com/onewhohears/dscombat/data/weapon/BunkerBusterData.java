@@ -15,15 +15,9 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 public class BunkerBusterData extends BombData {
-	
-	public static int getBlockStrength(BlockState block_state) {
-		if (block_state == null) return 0;
-		return 1;
-	}
 	
 	public static class Builder extends AbstractWeaponBuilders.BunkerBusterBuilder<Builder> {
 		

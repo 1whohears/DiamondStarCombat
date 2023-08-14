@@ -1,7 +1,10 @@
 package com.onewhohears.dscombat.entity.weapon;
 
+import java.util.Iterator;
+
 import com.onewhohears.dscombat.data.weapon.BunkerBusterData;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -9,8 +12,11 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class EntityBunkerBuster extends EntityBomb {
 	
@@ -42,16 +48,27 @@ public class EntityBunkerBuster extends EntityBomb {
 	
 	@Override
 	protected BlockHitResult checkBlockCollide() {
-		BlockHitResult hit = super.checkBlockCollide();
-		while (hit.getType() != HitResult.Type.MISS) {
-			int hit_block_strength = BunkerBusterData.getBlockStrength(level.getBlockState(hit.getBlockPos()));
+		Iterator<VoxelShape> it = level.getBlockCollisions(this, getBoundingBox().expandTowards(getDeltaMovement())).iterator();
+		while (it.hasNext()) {
+			VoxelShape voxel = it.next();
+			BlockPos pos = new BlockPos(voxel.bounds().getCenter());
+			System.out.println("voxel = "+pos);
+			int hit_block_strength = getBlockStrength(pos);
 			if (getBlockStrength() >= hit_block_strength) {
-				level.destroyBlock(hit.getBlockPos(), true, this);
+				level.destroyBlock(pos, true, this);
 				reduceBlockStrength(hit_block_strength);
-			} else return hit;
-			hit = super.checkBlockCollide();
+			} else {
+				return new BlockHitResult(voxel.bounds().getCenter(), getDirection(), pos, false);
+			}
 		}
-		return hit;
+		Vec3 p = position().add(getDeltaMovement());
+		return BlockHitResult.miss(p, getDirection(), new BlockPos(p));
+	}
+	
+	protected int getBlockStrength(BlockPos pos) {
+		BlockState bs = level.getBlockState(pos);
+		if (bs.is(Blocks.BEDROCK)) return Integer.MAX_VALUE;
+		return (int) bs.getExplosionResistance(level, pos, null);
 	}
 	
 	@Override

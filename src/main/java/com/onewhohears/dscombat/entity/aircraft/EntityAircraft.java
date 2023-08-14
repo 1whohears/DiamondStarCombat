@@ -1167,10 +1167,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 			super.lerpMotion(x, y, z);
 			return;
 		}
-		// FIXME 0 test if this lerpMotion override fixes the vehicle motion lag back issue
-		/*System.out.println("LERP MOTION");
-		System.out.println("client = "+getDeltaMovement());
-		System.out.println("lerp = "+x+", "+y+", "+z);*/
 	}
 	
 	@Override

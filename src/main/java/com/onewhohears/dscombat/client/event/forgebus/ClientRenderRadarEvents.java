@@ -38,7 +38,7 @@ public final class ClientRenderRadarEvents {
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void renderLevelStage(RenderLevelStageEvent event) {
-		if (event.getStage() != Stage.AFTER_SOLID_BLOCKS) return;
+		if (event.getStage() != Stage.AFTER_TRIPWIRE_BLOCKS) return;
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
 		if (player == null || !player.isPassenger()) return;

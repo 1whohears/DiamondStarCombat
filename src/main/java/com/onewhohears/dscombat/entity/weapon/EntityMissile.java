@@ -236,8 +236,9 @@ public abstract class EntityMissile extends EntityBullet {
 	}
 	
 	protected boolean checkCanSee(Entity target) {
+		// throWaterRange+0.5 is needed for ground radar to see boats in water
 		return UtilEntity.canEntitySeeEntity(this, target, Config.COMMON.maxBlockCheckDepth.get(), 
-				throughWaterDepth, throughBlocksDepth);
+				throughWaterDepth+0.5, throughBlocksDepth);
 	}
 	
 	private void engineSound() {

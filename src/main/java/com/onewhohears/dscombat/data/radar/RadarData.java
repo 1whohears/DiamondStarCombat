@@ -178,7 +178,7 @@ public class RadarData extends JsonPreset {
 					clazz, getRadarBoundingBox(radar));
 			for (int i = 0; i < entities.size(); ++i) {
 				Entity e = entities.get(i);
-				if (playersOnly && e.hasControllingPassenger()) continue;
+				if (playersOnly && !(e.getControllingPassenger() instanceof Player)) continue;
 				if (!basicCheck(radar, e, 1)) continue;
 				RadarPing p = new RadarPing(e, checkFriendly(controller, e));
 				vehiclePings.add(p);
@@ -242,8 +242,8 @@ public class RadarData extends JsonPreset {
 	private boolean groundCheck(Entity ping) {
 		if (throWaterRange > 0 && ping.isInWater()) return true;
 		boolean groundWater = UtilEntity.isOnGroundOrWater(ping);
-		if (scanGround) if (groundWater) return true;
-		if (scanAir) if (!groundWater) return true;
+		if (scanGround && groundWater) return true;
+		if (scanAir && !groundWater) return true;
 		return false;
 	}
 	
@@ -271,8 +271,9 @@ public class RadarData extends JsonPreset {
 	}
 	
 	private boolean checkCanSee(Entity radar, Entity target) {
+		// throWaterRange+0.5 is needed for ground radar to see boats in water
 		return UtilEntity.canEntitySeeEntity(radar, target, maxCheckDist, 
-				throWaterRange, throGroundRange);
+				throWaterRange+0.5, throGroundRange);
 	}
 	
 	private AABB getRadarBoundingBox(Entity radar) {

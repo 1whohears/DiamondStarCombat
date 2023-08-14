@@ -130,7 +130,8 @@ public class UtilEntity {
 			if (rv instanceof Minecart) return true;
 			if (rv.isOnGround() || isHeadAboveWater(rv)) return true;
 		}
-		if (entity instanceof Player p) if (p.isFallFlying()) return false;		
+		if (entity instanceof Player p && p.isFallFlying()) return false;
+		if (entity instanceof Minecart) return true;
 		if (!entity.isInWater() && entity.isSprinting() && entity.fallDistance < 1.15) return true;
 		if (entity.isOnGround() || isHeadAboveWater(entity)) return true;
 		return false;

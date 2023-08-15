@@ -99,6 +99,7 @@ public class Config {
 					Arrays.asList(
 							"net.minecraft.world.entity.vehicle.Boat",
 							"net.minecraft.world.entity.vehicle.AbstractMinecart",
+							"com.onewhohears.dscombat.entity.EntityParachute",
 							"xyz.przemyk.simpleplanes.entities.PlaneEntity"), 
 					entry -> true);
 			radarMobs = builder.defineList("radarMobs", 
@@ -112,7 +113,8 @@ public class Config {
 					.defineList("specificEntityHeat", 
 						Arrays.asList(
 								"minecraft:boat/1.0f",
-								"minecraft:minecart/1.0f"), 
+								"minecraft:minecart/1.0f",
+								"dscombat:parachute/1.0f"), 
 						entry -> true);
 			irEntities = builder
 				.comment("entities that ir missiles will target [path to entity class]/[default heat value (float)]")

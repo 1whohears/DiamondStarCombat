@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.client.event;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCKeys;
+import com.onewhohears.dscombat.client.model.EntityModelParachute;
 import com.onewhohears.dscombat.client.model.aircraft.EntityModelAlexisPlane;
 import com.onewhohears.dscombat.client.model.aircraft.EntityModelAndolfSub;
 import com.onewhohears.dscombat.client.model.aircraft.EntityModelAxcelTruck;
@@ -30,6 +31,7 @@ import com.onewhohears.dscombat.client.model.weapon.EntityModelXM12;
 import com.onewhohears.dscombat.client.overlay.PilotOverlay;
 import com.onewhohears.dscombat.client.renderer.RendererEntityAircraft;
 import com.onewhohears.dscombat.client.renderer.RendererEntityInvisible;
+import com.onewhohears.dscombat.client.renderer.RendererEntityParachute;
 import com.onewhohears.dscombat.client.renderer.RendererEntityPart;
 import com.onewhohears.dscombat.client.renderer.RendererEntityTurret;
 import com.onewhohears.dscombat.client.renderer.RendererEntityWeapon;
@@ -96,6 +98,7 @@ public final class ClientModEvents {
 		event.registerLayerDefinition(EntityModelSAMLauncher.LAYER_LOCATION, EntityModelSAMLauncher::createBodyLayer);
 		event.registerLayerDefinition(EntityModelCFM56.LAYER_LOCATION, EntityModelCFM56::createBodyLayer);
 		event.registerLayerDefinition(EntityModelGruetzBB.LAYER_LOCATION, EntityModelGruetzBB::createBodyLayer);
+		event.registerLayerDefinition(EntityModelParachute.LAYER_LOCATION, EntityModelParachute::createBodyLayer);
 	}
 	
 	@SubscribeEvent
@@ -217,6 +220,10 @@ public final class ClientModEvents {
 		// OTHER
 		event.registerEntityRenderer(ModEntities.SEAT.get(), RendererEntityInvisible::new);
 		event.registerEntityRenderer(ModEntities.FLARE.get(), RendererEntityInvisible::new);
+		event.registerEntityRenderer(ModEntities.PARACHUTE.get(), 
+				(context) -> new RendererEntityParachute(context, 
+						new EntityModelParachute(models.bakeLayer(EntityModelParachute.LAYER_LOCATION)), 
+						new ResourceLocation(DSCombatMod.MODID, "textures/entity/part/parachute.png")));
 	}
 	
 	@SubscribeEvent

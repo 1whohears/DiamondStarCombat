@@ -15,6 +15,7 @@ import com.onewhohears.dscombat.item.ItemEngine;
 import com.onewhohears.dscombat.item.ItemFlareDispenser;
 import com.onewhohears.dscombat.item.ItemFuelTank;
 import com.onewhohears.dscombat.item.ItemGasCan;
+import com.onewhohears.dscombat.item.ItemParachute;
 import com.onewhohears.dscombat.item.ItemPart;
 import com.onewhohears.dscombat.item.ItemRadarPart;
 import com.onewhohears.dscombat.item.ItemRepairTool;
@@ -109,7 +110,8 @@ public class ModItems {
 			() -> new ItemRepairTool(20, 5));
 	public static final RegistryObject<Item> THICK_WRENCH = ITEMS.register("thick_wrench", 
 			() -> new ItemRepairTool(200, 5));
-	// TODO 2.3 parachute/emergency ejection
+	public static final RegistryObject<Item> PARACHUTE = ITEMS.register("parachute", 
+			() -> new ItemParachute());
 	
 	// CREATIVE WANDS
 	public static final RegistryObject<Item> NO_CONSUME_WAND = ITEMS.register("no_consume_wand", 

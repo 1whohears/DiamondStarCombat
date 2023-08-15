@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.aircraft.DefaultAircraftPresets;
 import com.onewhohears.dscombat.data.aircraft.LiftKGraph;
+import com.onewhohears.dscombat.entity.EntityParachute;
 import com.onewhohears.dscombat.entity.aircraft.EntityBoat;
 import com.onewhohears.dscombat.entity.aircraft.EntityGroundVehicle;
 import com.onewhohears.dscombat.entity.aircraft.EntityHelicopter;
@@ -204,6 +205,8 @@ public class ModEntities {
 	
 	public static final RegistryObject<EntityType<EntityFlare>> FLARE = ENTITIES.register("flare", 
 			() -> createEntityType(EntityFlare::new, EntityDimensions.scalable(0f, 0f)));
+	public static final RegistryObject<EntityType<EntityParachute>> PARACHUTE = ENTITIES.register("parachute", 
+			() -> createEntityType(EntityParachute::new, EntityDimensions.scalable(0.625f, 0.125f)));
 	
 	private static <T extends Entity> EntityType<T> createEntityType(EntityType.EntityFactory<T> factory, EntityDimensions size) {
         return new EntityType<>(factory, MobCategory.MISC, true, true, false, 

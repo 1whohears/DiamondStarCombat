@@ -45,6 +45,7 @@ public class ItemAmmo extends Item {
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tips, TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tips, isAdvanced);
+		if (!isAdvanced.isAdvanced()) return;
 		String id = getWeaponId(stack);
 		WeaponData wd = WeaponPresets.get().getPreset(id);
 		if (wd == null) return;

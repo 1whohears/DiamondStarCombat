@@ -50,6 +50,7 @@ public class ItemWeaponPart extends ItemPart {
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tips, TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tips, isAdvanced);
+		if (!isAdvanced.isAdvanced()) return;
 		CompoundTag tag = stack.getOrCreateTag();
 		String id = tag.getString("weaponId");
 		if (id.isEmpty()) return;

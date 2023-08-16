@@ -375,6 +375,9 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		nbt.putString("radio_song", getRadioSong());
 		Entity c = getControllingPassenger();
 		if (c != null) nbt.putString("owner", c.getScoreboardName());
+		Component name = getCustomName();
+        if (name != null) nbt.putString("CustomName", Component.Serializer.toJson(name));
+        if (isCustomNameVisible()) nbt.putBoolean("CustomNameVisible", isCustomNameVisible());
 	}
 	
 	public static enum AircraftType {
@@ -382,17 +385,25 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		HELICOPTER,
 		CAR,
 		BOAT,
-		SUBMARINE
+		SUBMARINE;
+		
+		public boolean isAircraft() {
+			return this == PLANE || this == HELICOPTER;
+		}
+		
+		public boolean shouldIgnoreInvertY() {
+			return this != PLANE;
+		}
 	}
 	
 	public abstract AircraftType getAircraftType();
 	
 	public boolean isAircraft() {
-		return getAircraftType() == AircraftType.PLANE || getAircraftType() == AircraftType.HELICOPTER;
+		return getAircraftType().isAircraft();
 	}
 	
 	public boolean ignoreInvertY() {
-		return !isAircraft();
+		return !getAircraftType().shouldIgnoreInvertY();
 	}
 	
 	/**
@@ -1359,7 +1370,12 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 					return InteractionResult.SUCCESS;
 				// CUSTOM NAME
 				} else if (item instanceof NameTagItem name) {
-					// TODO 8.1 display custom vehicle name from name tag
+					if (stack.hasCustomHoverName()) {
+						setCustomName(stack.getHoverName());
+						setCustomNameVisible(true);
+						stack.shrink(1);
+						return InteractionResult.CONSUME;
+					}
 					return InteractionResult.PASS;
 				// CREATIVE WAND
 				} else if (item instanceof ItemCreativeWand wand) {

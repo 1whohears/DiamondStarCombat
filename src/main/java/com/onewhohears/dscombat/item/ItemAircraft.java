@@ -3,6 +3,8 @@ package com.onewhohears.dscombat.item;
 import java.util.List;
 import java.util.function.Predicate;
 
+import javax.annotation.Nullable;
+
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
@@ -23,6 +25,7 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -106,6 +109,13 @@ public class ItemAircraft extends Item {
 		et.putFloat("yRot", player.getYRot());
 		et.putFloat("current_throttle", 0);
 		et.putBoolean("landing_gear", true);
+		if (tag.contains("display", 10)) {
+			CompoundTag display = tag.getCompound("display");
+			if (display.contains("Name", 8)) {
+				et.putString("CustomName", display.getString("Name"));
+				et.putBoolean("CustomNameVisible", true);
+			}
+		}
 		return copy;
 	}
 	
@@ -115,13 +125,15 @@ public class ItemAircraft extends Item {
 		return tag.getString("preset");
 	}
 	
-	/*@Override
+	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tips, TooltipFlag isAdvanced) {
+		super.appendHoverText(stack, level, tips, isAdvanced);
+		if (!isAdvanced.isAdvanced()) return;
 		CompoundTag tag = stack.getTag();
 		if (tag == null || !tag.contains("EntityTag")) return;
 		CompoundTag et = tag.getCompound("EntityTag");
-		
-	}*/
+		// TODO 1.1 show some advanced tool tips for aircraft
+	}
 	
 	@Override
 	public Component getName(ItemStack stack) {
@@ -132,7 +144,13 @@ public class ItemAircraft extends Item {
 			if (ap == null) return Component.translatable(getDescriptionId()).append(" unknown preset!");
 			return ap.getDisplayNameComponent().setStyle(Style.EMPTY.withColor(0x55FFFF));
 		}
-		String owner = tag.getCompound("EntityTag").getString("owner");
+		CompoundTag etag = tag.getCompound("EntityTag");
+		if (etag.contains("CustomName", 8)) {
+			String cn = etag.getString("CustomName");
+			try { return Component.Serializer.fromJson(cn); } 
+			catch (Exception e) {}
+		}
+		String owner = etag.getString("owner");
 		if (owner.isEmpty()) owner = "Someone";
 		return Component.literal(owner+"'s ").append(super.getName(stack))
 				.setStyle(Style.EMPTY.withColor(0xFFAA00).withBold(true));

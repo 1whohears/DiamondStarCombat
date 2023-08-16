@@ -391,6 +391,10 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		return getAircraftType() == AircraftType.PLANE || getAircraftType() == AircraftType.HELICOPTER;
 	}
 	
+	public boolean ignoreInvertY() {
+		return !isAircraft();
+	}
+	
 	/**
 	 * called on this entities first tick on client and server side
 	 */

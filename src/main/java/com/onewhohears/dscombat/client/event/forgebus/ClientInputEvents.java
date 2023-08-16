@@ -101,6 +101,7 @@ public final class ClientInputEvents {
 			rollRight = DSCKeys.rollRightKey.isDown();
 		}
 		int invertY = Config.CLIENT.invertY.get() ? -1 : 1;
+		if (plane.ignoreInvertY()) invertY = -1;
 		if (!plane.isFreeLook()) {
 			// FIXME 1 mouse mode sucks. check how other mods do it
 			double ya = Math.abs(mouseY);

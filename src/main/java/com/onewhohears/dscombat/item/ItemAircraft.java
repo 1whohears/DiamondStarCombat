@@ -11,6 +11,7 @@ import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.init.ModItems;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
@@ -23,6 +24,7 @@ import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -160,6 +162,17 @@ public class ItemAircraft extends Item {
 	public boolean isFoil(ItemStack stack) {
 		CompoundTag tag = stack.getTag();
 		return tag != null && tag.contains("EntityTag");
+	}
+	
+	@Override
+	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
+		if (group.getId() != ModItems.AIRCRAFT.getId()) return;
+		AircraftPreset[] presets = AircraftPresets.get().getAllPresets();
+		for (int i = 0; i < presets.length; ++i) {
+			if (presets[i].getItem().getDescriptionId().equals(this.getDescriptionId())) {
+				items.add(presets[i].getItem());
+			}
+		}
 	}
 
 }

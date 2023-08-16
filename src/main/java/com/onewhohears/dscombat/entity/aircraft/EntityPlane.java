@@ -94,7 +94,6 @@ public class EntityPlane extends EntityAircraft {
 	public void directionAir(Quaternion q) {
 		super.directionAir(q);
 		if (!isOperational()) return;
-		// IDEA 1 turn assist button? (maybe have it as a server config if it's available or not)
 		addMomentX(inputs.pitch * getPitchTorque(), true);
 		addMomentY(inputs.yaw * getYawTorque(), true);
 		if (inputs.bothRoll) flatten(q, 0, getRollTorque(), false);
@@ -268,7 +267,7 @@ public class EntityPlane extends EntityAircraft {
 	public void sounds() {
 		super.sounds();
     	if (level.isClientSide && isOperational()) {
-    		// TODO 5.2 bitchin betty
+    		// TODO 8.2 bitchin betty
     		// pull up
     		// over g
     		// aoa stall

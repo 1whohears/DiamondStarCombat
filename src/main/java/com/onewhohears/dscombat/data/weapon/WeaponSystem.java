@@ -128,7 +128,7 @@ public class WeaponSystem {
 	
 	public Vec3 getShootDirection(WeaponData data) {
 		Quaternion q = parent.getQ();
-		if (parent.isWeaponAngledDown() && data.getSlotId().equals("slotname.dscombat.frame_1")) {
+		if (parent.isWeaponAngledDown() && data.canAngleDown()) {
 			q.mul(Vector3f.XP.rotationDegrees(25f));
 		}
     	return UtilAngles.getRollAxis(q);

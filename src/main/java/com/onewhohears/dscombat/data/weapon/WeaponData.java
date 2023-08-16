@@ -200,6 +200,10 @@ public abstract class WeaponData extends JsonPreset {
 		return recoilTime <= 1;
 	}
 	
+	public boolean canAngleDown() {
+		return getType() == WeaponType.BULLET;
+	}
+	
 	public Vec3 getLaunchPos() {
 		return pos;
 	}

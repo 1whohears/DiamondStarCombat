@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
@@ -14,6 +15,7 @@ import net.minecraftforge.network.NetworkHooks;
 
 public class EntityParachute extends Entity {
 	
+	public static final float DECELERATION_RATE = 0.15f;
 	public static final float FALL_SPEED = -0.10f;
 	
 	public EntityParachute(EntityType<?> type, Level level) {
@@ -33,7 +35,7 @@ public class EntityParachute extends Entity {
 	public void tickMovement() {
 		Vec3 move = getDeltaMovement();
 		float mx = Mth.approach((float)move.x, 0, 0.005f);
-		float my = Mth.approach((float)move.y, FALL_SPEED, 0.006f);
+		float my = Mth.approach((float)move.y, FALL_SPEED, DECELERATION_RATE);
 		float mz = Mth.approach((float)move.z, 0, 0.005f);
 		setDeltaMovement(new Vec3(mx, my, mz));
 	}
@@ -49,6 +51,13 @@ public class EntityParachute extends Entity {
 			syncPacketPositionCodec(getX(), getY(), getZ());
 			return;
 		}
+	}
+	
+	@Override
+	public boolean causeFallDamage(float fallDistance, float multiplier, DamageSource source) {
+		float my = (float)getDeltaMovement().y;
+		float dist = Mth.abs(FALL_SPEED-my)*8;
+		return super.causeFallDamage(dist, multiplier, source);
 	}
 	
 	@Override

@@ -1,0 +1,23 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"W": {
+			"item": "minecraft:white_wool"
+		},
+		"S": {
+			"item": "minecraft:string"
+		},
+		"L": {
+			"item": "minecraft:leather"
+		}
+	},
+	"pattern": [
+		"WWW",
+		"S S",
+		"LLL"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:parachute"
+	}
+}

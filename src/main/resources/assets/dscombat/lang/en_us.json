@@ -97,6 +97,7 @@
 	"entity.dscombat.torpedo_missile_1": "Torpedo",
 	"entity.dscombat.flare": "Flare",
 	"entity.dscombat.seat": "Seat",
+	"entity.dscombat.parachute": "Parachute",
 	"entity.dscombat.minigun_turret": "Minigun Turret",
 	"entity.dscombat.heavy_tank_turret": "Heavy Tank Turret",
 	"entity.dscombat.steve_up_smash": "Steve Up Smash",
@@ -166,6 +167,7 @@
 	"item.dscombat.axcel_truck_radar": "Axcel Truck Radar",
 	
 	"item.dscombat.seat": "Seat",
+	"item.dscombat.parachute": "Parachute",
 	
 	"item.dscombat.minigun_turret": "Minigun Turret",
 	"item.dscombat.heavy_tank_turret": "Heavy Tank Turret",

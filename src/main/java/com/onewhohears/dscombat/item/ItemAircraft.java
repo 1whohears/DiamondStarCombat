@@ -134,7 +134,12 @@ public class ItemAircraft extends Item {
 		CompoundTag tag = stack.getTag();
 		if (tag == null || !tag.contains("EntityTag")) return;
 		CompoundTag et = tag.getCompound("EntityTag");
-		// TODO 1.1 show some advanced tool tips for aircraft
+		if (et.contains("health")) tips.add(Component.literal("Health: ")
+				.append(et.getFloat("health")+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		if (et.contains("fuel")) tips.add(Component.literal("Fuel: ")
+				.append(et.getFloat("fuel")+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		if (et.contains("flares")) tips.add(Component.literal("Flares: ")
+				.append(et.getFloat("flares")+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 	}
 	
 	@Override

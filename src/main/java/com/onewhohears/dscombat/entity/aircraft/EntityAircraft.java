@@ -378,6 +378,8 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		Component name = getCustomName();
         if (name != null) nbt.putString("CustomName", Component.Serializer.toJson(name));
         if (isCustomNameVisible()) nbt.putBoolean("CustomNameVisible", isCustomNameVisible());
+        nbt.putFloat("fuel", getCurrentFuel());
+        nbt.putFloat("flares", getFlareNum());
 	}
 	
 	public static enum AircraftType {

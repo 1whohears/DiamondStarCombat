@@ -8,6 +8,8 @@ import net.minecraft.data.DataGenerator;
 
 public class AircraftClientPresetGenerator extends JsonPresetGenerator<AircraftClientPreset> {
 	
+	// TODO 1.3 make default aircraft menus less ugly/more organised
+	
 	@Override
 	protected void registerPresets() {
 		int alexis_middle_x = 120, alexis_wing_y = 57;

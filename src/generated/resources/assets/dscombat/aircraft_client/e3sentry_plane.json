@@ -4,128 +4,128 @@
   "inventory_slots_pos": [
     {
       "slot_name": "pilot_seat",
-      "slot_ui_x": 48,
-      "slot_ui_y": 20
-    },
-    {
-      "slot_name": "seat1",
-      "slot_ui_x": 68,
-      "slot_ui_y": 20
+      "slot_ui_x": 102,
+      "slot_ui_y": 5
     },
     {
       "slot_name": "seat2",
-      "slot_ui_x": 88,
-      "slot_ui_y": 20
+      "slot_ui_x": 102,
+      "slot_ui_y": 23
     },
     {
       "slot_name": "seat3",
-      "slot_ui_x": 108,
-      "slot_ui_y": 20
+      "slot_ui_x": 102,
+      "slot_ui_y": 41
     },
     {
       "slot_name": "seat4",
-      "slot_ui_x": 128,
-      "slot_ui_y": 20
+      "slot_ui_x": 102,
+      "slot_ui_y": 59
     },
     {
       "slot_name": "seat5",
-      "slot_ui_x": 148,
-      "slot_ui_y": 20
+      "slot_ui_x": 102,
+      "slot_ui_y": 77
     },
     {
       "slot_name": "seat6",
-      "slot_ui_x": 48,
-      "slot_ui_y": 40
+      "slot_ui_x": 102,
+      "slot_ui_y": 95
+    },
+    {
+      "slot_name": "seat1",
+      "slot_ui_x": 138,
+      "slot_ui_y": 5
     },
     {
       "slot_name": "seat7",
-      "slot_ui_x": 68,
-      "slot_ui_y": 40
+      "slot_ui_x": 138,
+      "slot_ui_y": 23
     },
     {
       "slot_name": "seat8",
-      "slot_ui_x": 88,
-      "slot_ui_y": 40
+      "slot_ui_x": 138,
+      "slot_ui_y": 41
     },
     {
       "slot_name": "seat9",
-      "slot_ui_x": 108,
-      "slot_ui_y": 40
+      "slot_ui_x": 138,
+      "slot_ui_y": 59
     },
     {
       "slot_name": "seat10",
-      "slot_ui_x": 128,
-      "slot_ui_y": 40
+      "slot_ui_x": 138,
+      "slot_ui_y": 77
     },
     {
       "slot_name": "seat11",
-      "slot_ui_x": 148,
-      "slot_ui_y": 40
+      "slot_ui_x": 138,
+      "slot_ui_y": 95
     },
     {
       "slot_name": "left_wing_1",
-      "slot_ui_x": 48,
-      "slot_ui_y": 60
+      "slot_ui_x": 80,
+      "slot_ui_y": 50
     },
     {
       "slot_name": "left_wing_2",
-      "slot_ui_x": 68,
-      "slot_ui_y": 60
+      "slot_ui_x": 60,
+      "slot_ui_y": 50
     },
     {
       "slot_name": "right_wing_1",
-      "slot_ui_x": 48,
-      "slot_ui_y": 60
+      "slot_ui_x": 160,
+      "slot_ui_y": 50
     },
     {
       "slot_name": "right_wing_2",
-      "slot_ui_x": 68,
-      "slot_ui_y": 60
+      "slot_ui_x": 180,
+      "slot_ui_y": 50
     },
     {
       "slot_name": "frame_1",
-      "slot_ui_x": 48,
-      "slot_ui_y": 80
+      "slot_ui_x": 120,
+      "slot_ui_y": 59
     },
     {
       "slot_name": "internal_1",
-      "slot_ui_x": 48,
-      "slot_ui_y": 100
+      "slot_ui_x": 120,
+      "slot_ui_y": 5
     },
     {
       "slot_name": "internal_2",
-      "slot_ui_x": 68,
-      "slot_ui_y": 100
+      "slot_ui_x": 120,
+      "slot_ui_y": 23
     },
     {
       "slot_name": "internal_3",
-      "slot_ui_x": 88,
-      "slot_ui_y": 100
+      "slot_ui_x": 120,
+      "slot_ui_y": 41
     },
     {
       "slot_name": "internal_4",
-      "slot_ui_x": 108,
-      "slot_ui_y": 100
+      "slot_ui_x": 120,
+      "slot_ui_y": 77
     },
     {
       "slot_name": "internal_5",
-      "slot_ui_x": 128,
-      "slot_ui_y": 100
+      "slot_ui_x": 120,
+      "slot_ui_y": 95
     },
     {
       "slot_name": "internal_6",
-      "slot_ui_x": 148,
-      "slot_ui_y": 100
+      "slot_ui_x": 84,
+      "slot_ui_y": 95
     },
     {
       "slot_name": "internal_7",
-      "slot_ui_x": 168,
-      "slot_ui_y": 100
+      "slot_ui_x": 120,
+      "slot_ui_y": 113
     },
     {
       "slot_name": "internal_8",
-      "slot_ui_x": 188,
-      "slot_ui_y": 100
+      "slot_ui_x": 156,
+      "slot_ui_y": 95
     }
   ],
   "presetId": "e3sentry_plane",

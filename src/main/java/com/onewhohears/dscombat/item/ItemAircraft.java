@@ -135,11 +135,11 @@ public class ItemAircraft extends Item {
 		if (tag == null || !tag.contains("EntityTag")) return;
 		CompoundTag et = tag.getCompound("EntityTag");
 		if (et.contains("health")) tips.add(Component.literal("Health: ")
-				.append(et.getFloat("health")+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+				.append((int)et.getFloat("health")+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 		if (et.contains("fuel")) tips.add(Component.literal("Fuel: ")
-				.append(et.getFloat("fuel")+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+				.append((int)et.getFloat("fuel")+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 		if (et.contains("flares")) tips.add(Component.literal("Flares: ")
-				.append(et.getFloat("flares")+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+				.append((int)et.getFloat("flares")+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 	}
 	
 	@Override

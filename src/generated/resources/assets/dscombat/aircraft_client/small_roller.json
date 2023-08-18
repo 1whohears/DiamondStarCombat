@@ -4,18 +4,18 @@
   "inventory_slots_pos": [
     {
       "slot_name": "pilot_seat",
-      "slot_ui_x": 48,
-      "slot_ui_y": 20
+      "slot_ui_x": 120,
+      "slot_ui_y": 50
     },
     {
       "slot_name": "internal_1",
-      "slot_ui_x": 48,
-      "slot_ui_y": 100
+      "slot_ui_x": 111,
+      "slot_ui_y": 70
     },
     {
       "slot_name": "internal_2",
-      "slot_ui_x": 68,
-      "slot_ui_y": 100
+      "slot_ui_x": 129,
+      "slot_ui_y": 70
     }
   ],
   "presetId": "small_roller",

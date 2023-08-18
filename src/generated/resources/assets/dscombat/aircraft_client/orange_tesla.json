@@ -4,33 +4,33 @@
   "inventory_slots_pos": [
     {
       "slot_name": "pilot_seat",
-      "slot_ui_x": 48,
-      "slot_ui_y": 20
+      "slot_ui_x": 102,
+      "slot_ui_y": 50
     },
     {
       "slot_name": "seat1",
-      "slot_ui_x": 68,
-      "slot_ui_y": 20
+      "slot_ui_x": 138,
+      "slot_ui_y": 50
     },
     {
       "slot_name": "seat2",
-      "slot_ui_x": 88,
-      "slot_ui_y": 20
+      "slot_ui_x": 102,
+      "slot_ui_y": 70
     },
     {
       "slot_name": "seat3",
-      "slot_ui_x": 108,
-      "slot_ui_y": 20
+      "slot_ui_x": 138,
+      "slot_ui_y": 70
     },
     {
       "slot_name": "internal_1",
-      "slot_ui_x": 48,
-      "slot_ui_y": 100
+      "slot_ui_x": 120,
+      "slot_ui_y": 25
     },
     {
       "slot_name": "internal_2",
-      "slot_ui_x": 68,
-      "slot_ui_y": 100
+      "slot_ui_x": 120,
+      "slot_ui_y": 45
     }
   ],
   "presetId": "orange_tesla",

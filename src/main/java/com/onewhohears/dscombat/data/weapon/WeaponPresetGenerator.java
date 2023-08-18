@@ -590,6 +590,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.addIngredient("minecraft:iron_ingot", 40)
 				.addIngredient("minecraft:tnt", 16)
 				.addIngredient("minecraft:diamond_pickaxe")
+				.addIngredient(ModItems.TI83.getId())
 				.build());
 	}
 	

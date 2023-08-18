@@ -24,6 +24,10 @@
     {
       "item": "minecraft:diamond_pickaxe",
       "num": 1
+    },
+    {
+      "item": "dscombat:ti83",
+      "num": 1
     }
   ],
   "innacuracy": 0.0,

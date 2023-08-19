@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.entity.aircraft;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
@@ -15,6 +16,7 @@ import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddMoment;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAircraftControl;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftAV;
+import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftCollide;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftQ;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftThrottle;
 import com.onewhohears.dscombat.data.aircraft.AircraftClientPreset;
@@ -456,6 +458,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 			motionClamp();
 			move(MoverType.SELF, getDeltaMovement());
 			calcMoveStatsPost(q);
+			tickCollisions();
 		}
 		tickLerp();
         // OTHER
@@ -479,8 +482,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	 * called on server side every tick
 	 */
 	public void serverTick() {
-		// FIXME 2.2 collisions should be processed by pilot client side. server side if no pilot.
-		tickCollisions();
 		waterDamage();
 		if (!isTestMode() && !isOperational()) tickNoHealth();
 		if (hasRadioSong() && (!isOperational() || !hasRadio)) turnRadioOff();
@@ -502,40 +503,66 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	}
 	
 	/**
-	 * called on server tick.
+	 * called on both client and server side
 	 * damages plane if it falls or collides with a wall at speeds defined in config.
 	 */
 	public void tickCollisions() {
-		if (tickCount > 300 && verticalCollision) {
+		if (!level.isClientSide) {
+			if (!hasControllingPassenger()) wallCollisions();
+			knockBack(level.getEntities(this, getBoundingBox(), 
+					getKnockbackPredicate()));
+		} else {
+			if (isControlledByLocalInstance()) wallCollisions();
+		}
+	}
+	
+	protected void wallCollisions() {
+		if (verticalCollision) {
 			double my = Math.abs(prevMotion.y);
 			double th = collideSpeedThreshHold;
 			if (isOperational() && isLandingGear() 
-					&& (getXRot() < 15f && getXRot() > -15f)
-					&& (zRot < 15f && zRot > -15f)) {
+					&& Mth.abs(getXRot()) < 15f
+					&& Mth.abs(zRot) < 15f) {
 				th = collideSpeedWithGearThreshHold;
 			}
 			if (my > th) {
 				float amount = (float)((my-th)*collideDamageRate);
-				hurt(DamageSource.FALL, amount);
-				if (!isOperational()) explode(AircraftDamageSource.fall(this));
+				collideHurt(amount, true);
 			}
 		}
 		if (horizontalCollision && !minorHorizontalCollision) {
 			double speed = prevMotion.horizontalDistance();
 			if (speed > collideSpeedThreshHold) {
 				float amount = (float)((speed-collideSpeedThreshHold)*collideDamageRate);
-				hurt(DamageSource.FLY_INTO_WALL, amount);
-				if (!isOperational()) explode(AircraftDamageSource.collide(this));
+				collideHurt(amount, false);
 			}
 		}
-		knockBack(level.getEntities(this, getBoundingBox(), 
-			(entity) -> {
-				if (this.equals(entity.getRootVehicle())) return false;
-				if (!(entity instanceof LivingEntity)) return false;
-				if (entity.isSpectator()) return false;
-				if (entity instanceof Player p && p.isCreative()) return false;
-				return true;
-			}));
+	}
+	
+	/**
+	 * hurt the vehicle if there is a collision
+	 * @param amount amount of damage done by collision
+	 * @param isFall true if vertical collision, false if horizontal
+	 */
+	public void collideHurt(float amount, boolean isFall) {
+		if (!level.isClientSide) {
+			if (tickCount < 200) return;
+			if (isFall) hurt(DamageSource.FALL, amount);
+			else hurt(DamageSource.FLY_INTO_WALL, amount);
+		} else {
+			PacketHandler.INSTANCE.sendToServer(
+				new ToServerAircraftCollide(getId(), amount, isFall));
+		}
+	}
+	
+	protected Predicate<? super Entity> getKnockbackPredicate() {
+		return ((entity) -> {
+			if (this.equals(entity.getRootVehicle())) return false;
+			if (entity.isSpectator()) return false;
+			if (!(entity instanceof LivingEntity)) return false;
+			if (entity instanceof Player p && p.isCreative()) return false;
+			return true;
+		});
 	}
 	
 	protected void knockBack(List<Entity> entities) {
@@ -1562,7 +1589,21 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		if (!level.isClientSide && isOperational()) level.playSound(null, 
 			blockPosition(), ModSounds.VEHICLE_HIT_1.get(), 
 			SoundSource.PLAYERS, 0.5f, 1.0f);
+		if (!level.isClientSide && !isOperational()) {
+			checkExplodeWhenKilled(source);
+		}
 		return true;
+	}
+	
+	protected boolean checkExplodeWhenKilled(DamageSource source) {
+		if (source.getMsgId().equals(DamageSource.FALL.getMsgId())) {
+			explode(AircraftDamageSource.fall(this));
+			return true;
+		} else if (source.getMsgId().equals(DamageSource.FLY_INTO_WALL.getMsgId())) {
+			explode(AircraftDamageSource.collide(this));
+			return true;
+		}
+		return false;
 	}
 	
 	public void addMomentToClient(Vec3 moment) {

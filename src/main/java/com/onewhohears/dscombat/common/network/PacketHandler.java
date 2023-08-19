@@ -11,6 +11,7 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientRadarPings;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRemovePart;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponAmmo;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftAV;
+import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftCollide;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftControl;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftQ;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftThrottle;
@@ -149,6 +150,11 @@ public final class PacketHandler {
 			.encoder(ToServerSeatPos::encode)
 			.decoder(ToServerSeatPos::new)
 			.consumerMainThread(ToServerSeatPos::handle)
+			.add();
+		net.messageBuilder(ToServerAircraftCollide.class, index++, NetworkDirection.PLAY_TO_SERVER)
+			.encoder(ToServerAircraftCollide::encode)
+			.decoder(ToServerAircraftCollide::new)
+			.consumerMainThread(ToServerAircraftCollide::handle)
 			.add();
 	}
 	

@@ -68,7 +68,7 @@ public class IRMissile extends EntityMissile {
 					clazz, getIrBoundingBox(weapon));
 			for (int i = 0; i < entities.size(); ++i) {
 				if (entities.get(i).isPassenger()) continue;
-				if (!basicCheck(weapon, entities.get(i), false, fov)) continue;
+				if (!basicCheck(weapon, entities.get(i), true, fov)) continue;
 				float distSqr = (float)weapon.distanceToSqr(entities.get(i));
 				targets.add(new IrTarget(entities.get(i), 
 						getSpecificEntityHeat(entities.get(i), heat) / distSqr));

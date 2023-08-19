@@ -179,7 +179,9 @@ public final class ClientInputEvents {
 		// CYCLE PING
 		if (DSCKeys.pingCycleKey.consumeClick()) radar.clientSelectNextTarget();
 		// TURRET SHOOT
-		boolean shoot = DSCKeys.shootKey.isDown();
+		boolean shoot = DSCKeys.shootKey.isDown()
+				&& (System.currentTimeMillis()-mountTime) > MOUNT_SHOOT_COOLDOWN 
+				&& !player.isUsingItem();
 		if (shoot && player.getVehicle() instanceof EntityTurret turret) {
 			PacketHandler.INSTANCE.sendToServer(new ToServerShootTurret(turret));
 		}

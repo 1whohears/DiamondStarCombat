@@ -50,8 +50,11 @@ public class ToServerAircraftControl extends IPacket {
 			ServerPlayer player = ctx.get().getSender();
 			if (player.getRootVehicle() instanceof EntityAircraft plane) {
 				if (plane.getControllingPassenger() == player) {
-					plane.inputs.copy(this.inputs);
+					// weapon system
 					plane.weaponSystem.setSelected(weaponIndex);
+					if (inputs.shoot) plane.weaponSystem.shootSelected(player);
+					// other
+					plane.inputs.copy(this.inputs);
 					plane.setRadarMode(RadarMode.byId(radarMode));
 					plane.setLandingGear(isLandingGear);
 					plane.setFreeLook(isFreeLook);

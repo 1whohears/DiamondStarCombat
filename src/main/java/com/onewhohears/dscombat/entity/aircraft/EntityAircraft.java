@@ -184,7 +184,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	protected float xzSpeed, totalMass, xzYaw, slideAngle, slideAngleCos, maxPushThrust, maxSpinThrust, currentFuel, maxFuel;
 	protected double staticFric, kineticFric, airPressure;
 	
-	private int lerpSteps, lerpStepsQ, newRiderCooldown, deadTicks;
+	private int lerpSteps, lerpStepsQ, deadTicks;
 	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot;
 	private float landingGearPos, landingGearPosOld;
 	
@@ -1127,15 +1127,11 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 			radarSystem.tickUpdateTargets();
 			if (controller == null) return;
 			boolean consume = !isNoConsume();
-			boolean altActionItem = false;
 			if (controller instanceof ServerPlayer player) {
 				if (inputs.openMenu) openMenu(player);
 				if (player.isCreative()) consume = false;
-				if (player.getMainHandItem().getUseDuration() > 0) altActionItem = true;
 			}
 			if (consume) tickFuel();
-			if (newRiderCooldown > 0) --newRiderCooldown;
-			else if (inputs.shoot && !altActionItem) weaponSystem.shootSelected(controller, consume);
 			setFlareNum(partsManager.getNumFlares());
 			if (inputs.flare && tickCount % 5 == 0) flare(controller, consume);
 		} else {
@@ -1397,12 +1393,8 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	
 	private boolean ridePilotSeat(Entity e, List<EntitySeat> seats) {
 		for (EntitySeat seat : seats) 
-			if (seat.isPilotSeat()) {
-				if (e.startRiding(seat)) {
-					newRiderCooldown = 10;
-					return true;
-				} else return false;
-			}
+			if (seat.isPilotSeat()) 
+				return e.startRiding(seat);
 		return false;
 	}
 	

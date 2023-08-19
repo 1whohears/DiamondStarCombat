@@ -19,6 +19,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
 /**
@@ -107,6 +108,13 @@ public class WeaponSystem {
 	
 	public int getSelectedIndex() {
 		return weaponIndex;
+	}
+	
+	public boolean shootSelected(Entity controller) {
+		boolean consume = true;
+		if (parent.isNoConsume()) consume = false;
+		else if (controller instanceof Player p && p.isCreative()) consume = false;
+		return shootSelected(controller, consume);
 	}
 	
 	public boolean shootSelected(Entity controller, boolean consume) {

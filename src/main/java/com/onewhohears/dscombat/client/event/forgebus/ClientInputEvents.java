@@ -25,6 +25,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
+import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -39,6 +40,9 @@ public final class ClientInputEvents {
 	private static final double tan1 = Math.tan(Math.toRadians(1));
 	
 	private static int hoverIndex = -1;
+	
+	private static final long MOUNT_SHOOT_COOLDOWN = 500;
+	private static long mountTime;
 	
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void clientTickPilotControl(TickEvent.ClientTickEvent event) {
@@ -62,7 +66,9 @@ public final class ClientInputEvents {
 		double mouseX = m.mouseHandler.xpos() - mouseCenterX;
 		double mouseY = -(m.mouseHandler.ypos() - mouseCenterY);
 		boolean flare = DSCKeys.flareKey.isDown();
-		boolean shoot = DSCKeys.shootKey.isDown();
+		boolean shoot = DSCKeys.shootKey.isDown() 
+						&& (System.currentTimeMillis()-mountTime) > MOUNT_SHOOT_COOLDOWN 
+						&& !player.isUsingItem();
 		boolean flip = DSCKeys.flipControlsKey.isDown();
 		boolean special = DSCKeys.specialKey.isDown();
 		boolean special2 = DSCKeys.special2Key.isDown();
@@ -215,45 +221,15 @@ public final class ClientInputEvents {
 				Math.toDegrees(Math.atan2(y, d)), 100000);
 	}
 	
-	/*@SubscribeEvent(priority = EventPriority.HIGHEST)
-	public static void seatDismountAircraft(EntityMountEvent event) {
-		if (!event.isDismounting()) return;
+	@SubscribeEvent(priority = EventPriority.HIGH)
+	public static void playerMountSeat(EntityMountEvent event) {
+		if (!event.isMounting()) return;
 		Entity mounting = event.getEntityMounting();
 		if (!mounting.level.isClientSide) return;
-		if (!(mounting instanceof EntitySeat)) return;
-		Entity mounted = event.getEntityBeingMounted();
-		if (!(mounted instanceof EntityAircraft)) return;
-		System.out.println("SEAT DISMOUNT AIRCRAFT");
-		System.out.println("is dismounting "+event.isDismounting());
-		System.out.println("mounting "+mounting);
-		System.out.println("mounted  "+mounted);
-		StackTraceElement[] stack = Thread.currentThread().getStackTrace();
-		System.out.println("stack trace = ");
-		for (int i = 0; i < stack.length; ++i) {
-			System.out.println(stack[i].toString());
-			if (stack[i].toString().contains("net.minecraft.client.main.Main")) break;
-		}
-	}*/
-	
-	/*@SubscribeEvent(priority = EventPriority.HIGH)
-	public static void playerDismountSeat(EntityMountEvent event) {
-		if (!event.isDismounting()) return;
-		Entity mounting = event.getEntityMounting();
-		if (!mounting.level.isClientSide) return;
-		if (!(mounting instanceof LocalPlayer)) return;
+		if (!(mounting instanceof Player)) return;
 		Entity mounted = event.getEntityBeingMounted();
 		if (!(mounted instanceof EntitySeat)) return;
-		System.out.println("PLAYER DISMOUNT SEAT");
-		System.out.println("is dismounting "+event.isDismounting());
-		System.out.println("mounting "+mounting);
-		System.out.println("mounted  "+mounted);
-		System.out.println("mounted vehicle = "+mounted.getVehicle());
-		StackTraceElement[] stack = Thread.currentThread().getStackTrace();
-		System.out.println("stack trace = ");
-		for (int i = 0; i < stack.length; ++i) {
-			System.out.println(stack[i].toString());
-			if (stack[i].toString().contains("net.minecraft.client.main.Main")) break;
-		}
-	}*/
+		mountTime = System.currentTimeMillis();
+	}
 	
 }

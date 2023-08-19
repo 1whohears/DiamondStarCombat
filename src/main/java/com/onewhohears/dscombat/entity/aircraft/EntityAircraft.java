@@ -194,6 +194,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	// TODO 3.1 vehicle armor plating that reduces damage 
 	// TODO 3.2 reduce damage passengers receive based on armor. make it configurable. especially explosive damage.
 	// TODO 5.4 aircraft breaks apart when damaged
+	// FIXME 2.1 planes piloted by other players move extremely whack. probably because motion isn't syncing properly
 	// FIXME refactor EntityAircraft to EntityVehicle
 	
 	public EntityAircraft(EntityType<? extends EntityAircraft> entityType, Level level, 
@@ -478,6 +479,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	 * called on server side every tick
 	 */
 	public void serverTick() {
+		// FIXME 2.2 collisions should be processed by pilot client side. server side if no pilot.
 		tickCollisions();
 		waterDamage();
 		if (!isTestMode() && !isOperational()) tickNoHealth();

@@ -22,8 +22,8 @@ public class AircraftClientPresetGenerator extends JsonPresetGenerator<AircraftC
 				.addUIPos("internal_3", alexis_middle_x+9, 78)
 				.addUIPos("internal_2", alexis_middle_x-9, 78)
 				.addUIPos("internal_1", alexis_middle_x, 100)
-				.addUIPos("left_wing_1", alexis_middle_x-45, alexis_wing_y)
-				.addUIPos("left_wing_2", alexis_middle_x-27, alexis_wing_y)
+				.addUIPos("left_wing_1", alexis_middle_x-27, alexis_wing_y)
+				.addUIPos("left_wing_2", alexis_middle_x-45, alexis_wing_y)
 				.addUIPos("right_wing_1", alexis_middle_x+27, alexis_wing_y)
 				.addUIPos("right_wing_2", alexis_middle_x+45, alexis_wing_y)
 				.build());

@@ -44,12 +44,12 @@
     },
     {
       "slot_name": "left_wing_1",
-      "slot_ui_x": 75,
+      "slot_ui_x": 93,
       "slot_ui_y": 57
     },
     {
       "slot_name": "left_wing_2",
-      "slot_ui_x": 93,
+      "slot_ui_x": 75,
       "slot_ui_y": 57
     },
     {

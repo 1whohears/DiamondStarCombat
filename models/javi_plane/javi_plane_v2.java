@@ -1,4 +1,4 @@
-// Made with Blockbench 4.7.4
+// Made with Blockbench 4.8.1
 // Exported for Minecraft version 1.17 or later with Mojang mappings
 // Paste this class into your mod and generate all required imports
 
@@ -46,17 +46,19 @@ public class javi_plane<T extends Entity> extends EntityModel<T> {
 
 		PartDefinition cube_r6 = body.addOrReplaceChild("cube_r6", CubeListBuilder.create().texOffs(202, 213).addBox(-1.0F, 2.0F, -64.0F, 4.5663F, 7.5232F, 45.7606F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-10.396F, -1.8973F, 1.0255F, -0.0873F, -0.0436F, 0.0F));
 
-		PartDefinition cube_r7 = body.addOrReplaceChild("cube_r7", CubeListBuilder.create().texOffs(44, 0).addBox(9.0F, -31.0F, -4.0F, 1.0F, 25.0F, 12.0F, new CubeDeformation(0.0F))
-		.texOffs(0, 0).addBox(-9.0F, -31.0F, 7.0F, 18.0F, 25.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(0, 42).addBox(-9.0F, -31.0F, -4.0F, 1.0F, 25.0F, 12.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -15.513F, 67.2282F, 1.8326F, 0.0F, 0.0F));
+		PartDefinition canopy = body.addOrReplaceChild("canopy", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-		PartDefinition cube_r8 = body.addOrReplaceChild("cube_r8", CubeListBuilder.create().texOffs(101, 172).addBox(9.0F, -3.0F, -1.5F, 1.0F, 9.0F, 5.0F, new CubeDeformation(0.0F))
-		.texOffs(0, 26).addBox(-9.0F, -3.0F, 2.5F, 18.0F, 9.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(36, 122).addBox(-9.0F, -3.0F, -1.5F, 1.0F, 9.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -8.4288F, 33.7409F, 2.3998F, 0.0F, 0.0F));
+		PartDefinition cube_r7 = canopy.addOrReplaceChild("cube_r7", CubeListBuilder.create().texOffs(57, 442).addBox(9.0F, -3.0F, -1.5F, 1.0F, 9.0F, 5.0F, new CubeDeformation(0.0F))
+		.texOffs(298, 498).addBox(-9.0F, -3.0F, -1.5F, 1.0F, 9.0F, 5.0F, new CubeDeformation(0.0F))
+		.texOffs(137, 502).addBox(-9.0F, -3.0F, 2.5F, 18.0F, 9.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -8.4288F, 33.7409F, 2.3998F, 0.0F, 0.0F));
 
-		PartDefinition cube_r9 = body.addOrReplaceChild("cube_r9", CubeListBuilder.create().texOffs(26, 42).addBox(-9.0F, -9.0F, -8.0F, 1.0F, 16.0F, 5.0F, new CubeDeformation(0.0F))
-		.texOffs(70, 9).addBox(9.0F, -9.0F, -8.0F, 1.0F, 16.0F, 5.0F, new CubeDeformation(0.0F))
-		.texOffs(80, 263).addBox(-9.0F, -9.0F, -4.0F, 18.0F, 16.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -16.0358F, 66.9817F, 0.6109F, 0.0F, 0.0F));
+		PartDefinition cube_r8 = canopy.addOrReplaceChild("cube_r8", CubeListBuilder.create().texOffs(237, 475).addBox(9.0F, -31.0F, -4.0F, 1.0F, 25.0F, 12.0F, new CubeDeformation(0.0F))
+		.texOffs(56, 475).addBox(-9.0F, -31.0F, -4.0F, 1.0F, 25.0F, 12.0F, new CubeDeformation(0.0F))
+		.texOffs(0, 453).addBox(-9.0F, -31.0F, 7.0F, 18.0F, 25.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -15.513F, 67.2282F, 1.8326F, 0.0F, 0.0F));
+
+		PartDefinition cube_r9 = canopy.addOrReplaceChild("cube_r9", CubeListBuilder.create().texOffs(196, 491).addBox(9.0F, -9.0F, -8.0F, 1.0F, 16.0F, 5.0F, new CubeDeformation(0.0F))
+		.texOffs(100, 491).addBox(-9.0F, -9.0F, -8.0F, 1.0F, 16.0F, 5.0F, new CubeDeformation(0.0F))
+		.texOffs(0, 495).addBox(-9.0F, -9.0F, -4.0F, 18.0F, 16.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -16.0358F, 66.9817F, 0.6109F, 0.0F, 0.0F));
 
 		PartDefinition nose = fuselage.addOrReplaceChild("nose", CubeListBuilder.create(), PartPose.offset(0.0F, 3.0F, 14.0F));
 
@@ -99,25 +101,23 @@ public class javi_plane<T extends Entity> extends EntityModel<T> {
 		.texOffs(186, 31).addBox(31.5F, -28.4F, -60.05F, 1.05F, 26.25F, 16.8F, new CubeDeformation(0.0F))
 		.texOffs(156, 230).addBox(6.3F, -6.35F, -59.0F, 25.2F, 1.05F, 15.75F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-		PartDefinition cube_r22 = tail.addOrReplaceChild("cube_r22", CubeListBuilder.create().texOffs(156, 213).addBox(-13.65F, -0.525F, -7.875F, 26.25F, 1.05F, 15.75F, new CubeDeformation(0.0F))
-		.texOffs(93, 61).addBox(-13.65F, -0.525F, -7.875F, 26.25F, 1.05F, 15.75F, new CubeDeformation(0.0F))
-		.texOffs(55, 226).addBox(-13.65F, -0.525F, -7.875F, 26.25F, 1.05F, 15.75F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(17.7239F, -5.825F, -53.4326F, 0.0F, -0.1745F, 0.0F));
-
-		PartDefinition cube_r23 = tail.addOrReplaceChild("cube_r23", CubeListBuilder.create().texOffs(344, 11).addBox(-0.525F, -12.075F, -7.35F, 1.05F, 25.2F, 16.8F, new CubeDeformation(0.0F))
+		PartDefinition cube_r22 = tail.addOrReplaceChild("cube_r22", CubeListBuilder.create().texOffs(344, 11).addBox(-0.525F, -12.075F, -7.35F, 1.05F, 25.2F, 16.8F, new CubeDeformation(0.0F))
 		.texOffs(0, 46).addBox(-0.525F, 13.125F, 5.25F, 1.05F, 1.05F, 4.2F, new CubeDeformation(0.0F))
 		.texOffs(0, 345).addBox(-64.575F, -12.075F, -7.35F, 1.05F, 25.2F, 16.8F, new CubeDeformation(0.0F))
 		.texOffs(78, 26).addBox(-64.575F, 13.125F, 5.25F, 1.05F, 1.05F, 4.2F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(32.025F, -15.5473F, -51.6116F, 0.0873F, 0.0F, 0.0F));
 
-		PartDefinition cube_r24 = tail.addOrReplaceChild("cube_r24", CubeListBuilder.create().texOffs(30, 84).addBox(-0.525F, 2.625F, -1.575F, 1.05F, 3.15F, 2.1F, new CubeDeformation(0.0F))
+		PartDefinition cube_r23 = tail.addOrReplaceChild("cube_r23", CubeListBuilder.create().texOffs(30, 84).addBox(-0.525F, 2.625F, -1.575F, 1.05F, 3.15F, 2.1F, new CubeDeformation(0.0F))
 		.texOffs(36, 84).addBox(-64.575F, 2.625F, -1.575F, 1.05F, 3.15F, 2.1F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(32.025F, -4.652F, -39.7807F, -0.6545F, 0.0F, 0.0F));
 
-		PartDefinition cube_r25 = tail.addOrReplaceChild("cube_r25", CubeListBuilder.create().texOffs(44, 42).addBox(-0.525F, -1.05F, -9.45F, 1.05F, 2.1F, 17.85F, new CubeDeformation(0.0F))
+		PartDefinition cube_r24 = tail.addOrReplaceChild("cube_r24", CubeListBuilder.create().texOffs(44, 42).addBox(-0.525F, -1.05F, -9.45F, 1.05F, 2.1F, 17.85F, new CubeDeformation(0.0F))
 		.texOffs(44, 62).addBox(-64.575F, -1.05F, -9.45F, 1.05F, 2.1F, 17.85F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(32.025F, -1.8883F, -51.0708F, -0.1309F, 0.0F, 0.0F));
 
-		PartDefinition cube_r26 = tail.addOrReplaceChild("cube_r26", CubeListBuilder.create().texOffs(0, 105).addBox(-0.525F, -12.075F, -7.35F, 1.05F, 26.25F, 16.8F, new CubeDeformation(0.0F))
+		PartDefinition cube_r25 = tail.addOrReplaceChild("cube_r25", CubeListBuilder.create().texOffs(0, 105).addBox(-0.525F, -12.075F, -7.35F, 1.05F, 26.25F, 16.8F, new CubeDeformation(0.0F))
 		.texOffs(172, 163).addBox(-64.575F, -12.075F, -7.35F, 1.05F, 26.25F, 16.8F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(32.025F, -15.7304F, -53.7804F, -0.0873F, 0.0F, 0.0F));
 
-		PartDefinition cube_r27 = tail.addOrReplaceChild("cube_r27", CubeListBuilder.create().texOffs(55, 209).addBox(-12.6F, -0.525F, -7.875F, 26.25F, 1.05F, 15.75F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-17.7239F, -5.825F, -53.4326F, 0.0F, 0.1745F, 0.0F));
+		PartDefinition cube_r26 = tail.addOrReplaceChild("cube_r26", CubeListBuilder.create().texOffs(55, 209).addBox(-12.6F, -0.525F, -7.875F, 26.25F, 1.05F, 15.75F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-17.7239F, -5.825F, -53.4326F, 0.0F, 0.1745F, 0.0F));
+
+		PartDefinition cube_r27 = tail.addOrReplaceChild("cube_r27", CubeListBuilder.create().texOffs(55, 226).addBox(-13.65F, -0.525F, -7.875F, 26.25F, 1.05F, 15.75F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(17.7239F, -5.825F, -53.4326F, 0.0F, -0.1745F, 0.0F));
 
 		PartDefinition cube_r28 = tail.addOrReplaceChild("cube_r28", CubeListBuilder.create().texOffs(171, 163).addBox(-6.0F, -6.0F, -11.75F, 12.0F, 4.0F, 45.75F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 5.0F, -52.0F, -0.0873F, 0.0F, 0.0F));
 
@@ -145,9 +145,9 @@ public class javi_plane<T extends Entity> extends EntityModel<T> {
 
 		PartDefinition gear = partdefinition.addOrReplaceChild("gear", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
 
-		PartDefinition gfront = gear.addOrReplaceChild("gfront", CubeListBuilder.create().texOffs(47, 105).addBox(-0.5F, 0.0F, 8.5F, 1.0F, 8.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(203, 17).addBox(-1.5F, 4.0F, 6.5F, 1.0F, 5.0F, 5.0F, new CubeDeformation(0.0F))
-		.texOffs(125, 198).addBox(0.5F, 4.0F, 6.5F, 1.0F, 5.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 6.0F, 42.5F));
+		PartDefinition gfront = gear.addOrReplaceChild("gfront", CubeListBuilder.create().texOffs(47, 105).addBox(-0.5F, 0.0F, -0.5F, 1.0F, 8.0F, 1.0F, new CubeDeformation(0.0F))
+		.texOffs(203, 17).addBox(-1.5F, 4.0F, -2.5F, 1.0F, 5.0F, 5.0F, new CubeDeformation(0.0F))
+		.texOffs(125, 198).addBox(0.5F, 4.0F, -2.5F, 1.0F, 5.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 6.0F, 51.5F));
 
 		PartDefinition gleft = gear.addOrReplaceChild("gleft", CubeListBuilder.create().texOffs(82, 42).addBox(-0.5F, 0.0F, -0.5F, 1.0F, 14.0F, 1.0F, new CubeDeformation(0.0F))
 		.texOffs(17, 189).addBox(-1.5F, 10.0F, -2.5F, 1.0F, 5.0F, 5.0F, new CubeDeformation(0.0F))

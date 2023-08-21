@@ -145,7 +145,7 @@ public class RadarPresetGenerator extends JsonPresetGenerator<RadarData> {
 				.setScanRate(50)
 				.setScanAircraft(true)
 				.setScanPlayers(true)
-				.setScanMobs(false)
+				.setScanMobs(true)
 				.setScanGround(true)
 				.setScanAir(false)
 				.build());
@@ -159,7 +159,7 @@ public class RadarPresetGenerator extends JsonPresetGenerator<RadarData> {
 				.setScanRate(50)
 				.setScanAircraft(true)
 				.setScanPlayers(true)
-				.setScanMobs(false)
+				.setScanMobs(true)
 				.setScanGround(true)
 				.setScanAir(false)
 				.build());

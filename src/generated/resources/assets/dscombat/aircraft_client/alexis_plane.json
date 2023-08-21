@@ -67,22 +67,22 @@
   "textures": {
     "default_texture_path": "dscombat:textures/entity/alexis_plane/",
     "overrides": {
-      "black": "dscombat:textures/entity/alexis_plane/v3_template",
-      "blue": "dscombat:textures/entity/alexis_plane/v3_template",
-      "brown": "dscombat:textures/entity/alexis_plane/v3_template",
-      "cyan": "dscombat:textures/entity/alexis_plane/v3_template",
-      "gray": "dscombat:textures/entity/alexis_plane/v3_template",
-      "green": "dscombat:textures/entity/alexis_plane/v3_template",
-      "light_blue": "dscombat:textures/entity/alexis_plane/v3_template",
-      "light_gray": "dscombat:textures/entity/alexis_plane/v3_template",
-      "lime": "dscombat:textures/entity/alexis_plane/v3_template",
-      "magenta": "dscombat:textures/entity/alexis_plane/v3_template",
-      "orange": "dscombat:textures/entity/alexis_plane/v3_template",
-      "pink": "dscombat:textures/entity/alexis_plane/v3_template",
-      "purple": "dscombat:textures/entity/alexis_plane/v3_template",
-      "red": "dscombat:textures/entity/alexis_plane/v3_template",
-      "white": "dscombat:textures/entity/alexis_plane/v3_template",
-      "yellow": "dscombat:textures/entity/alexis_plane/v3_template"
+      "black": "dscombat:textures/entity/alexis_plane/v3_temp",
+      "blue": "dscombat:textures/entity/alexis_plane/v3_temp",
+      "brown": "dscombat:textures/entity/alexis_plane/v3_temp",
+      "cyan": "dscombat:textures/entity/alexis_plane/v3_temp",
+      "gray": "dscombat:textures/entity/alexis_plane/v3_temp",
+      "green": "dscombat:textures/entity/alexis_plane/v3_temp",
+      "light_blue": "dscombat:textures/entity/alexis_plane/v3_temp",
+      "light_gray": "dscombat:textures/entity/alexis_plane/v3_temp",
+      "lime": "dscombat:textures/entity/alexis_plane/v3_temp",
+      "magenta": "dscombat:textures/entity/alexis_plane/v3_temp",
+      "orange": "dscombat:textures/entity/alexis_plane/v3_temp",
+      "pink": "dscombat:textures/entity/alexis_plane/v3_temp",
+      "purple": "dscombat:textures/entity/alexis_plane/v3_temp",
+      "red": "dscombat:textures/entity/alexis_plane/v3_temp",
+      "white": "dscombat:textures/entity/alexis_plane/v3_temp",
+      "yellow": "dscombat:textures/entity/alexis_plane/v3_temp"
     }
   }
 }

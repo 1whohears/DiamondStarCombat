@@ -13,7 +13,7 @@ public class AircraftClientPresetGenerator extends JsonPresetGenerator<AircraftC
 		int alexis_middle_x = 120, alexis_wing_y = 57;
 		addPresetToGenerate(AircraftClientPreset.Builder.create(DSCombatMod.MODID, "alexis_plane")
 				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/alexis_plane.png")
-				.makeOneTexture("dscombat:textures/entity/alexis_plane/v3_template")
+				.makeOneTexture("dscombat:textures/entity/alexis_plane/v3_temp")
 				.addUIPos("frame_1", alexis_middle_x, 2)
 				.addUIPos(PartSlot.PILOT_SLOT_NAME, alexis_middle_x, 21)
 				.addUIPos("internal_4", alexis_middle_x-9, 40)
@@ -30,7 +30,7 @@ public class AircraftClientPresetGenerator extends JsonPresetGenerator<AircraftC
 		int javi_middle_x = 124, javi_wing_y = 50;
 		addPresetToGenerate(AircraftClientPreset.Builder.create(DSCombatMod.MODID, "javi_plane")
 				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/javi_plane.png")
-				.makeOneTexture("dscombat:textures/entity/javi_plane/test")
+				.makeOneTexture("dscombat:textures/entity/javi_plane/buh")
 				.addUIPos("frame_1", javi_middle_x+18, 0)
 				.addUIPos(PartSlot.PILOT_SLOT_NAME, javi_middle_x, 9)
 				.addUIPos("seat2", javi_middle_x, 27)

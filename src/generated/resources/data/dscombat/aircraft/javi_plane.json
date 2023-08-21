@@ -143,7 +143,7 @@
     {
       "name": "left_wing_4",
       "slot_posx": 5.0,
-      "slot_posy": 0.05,
+      "slot_posy": -0.05,
       "slot_posz": 0.0,
       "slot_type": "wing",
       "zRot": 0.0
@@ -185,7 +185,7 @@
     {
       "name": "right_wing_4",
       "slot_posx": -5.0,
-      "slot_posy": 0.05,
+      "slot_posy": -0.05,
       "slot_posz": 0.0,
       "slot_type": "wing",
       "zRot": 0.0
@@ -198,7 +198,7 @@
       },
       "name": "frame_1",
       "slot_posx": 0.0,
-      "slot_posy": -0.65,
+      "slot_posy": -0.7,
       "slot_posz": 3.0,
       "slot_type": "frame",
       "zRot": 0.0
@@ -211,7 +211,7 @@
       },
       "name": "frame_2",
       "slot_posx": 0.0,
-      "slot_posy": -0.65,
+      "slot_posy": -0.7,
       "slot_posz": 0.0,
       "slot_type": "frame",
       "zRot": 0.0

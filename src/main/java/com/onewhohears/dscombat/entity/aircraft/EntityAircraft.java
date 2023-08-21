@@ -83,6 +83,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.NameTagItem;
 import net.minecraft.world.item.RecordItem;
 import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -1590,6 +1591,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 			SoundSource.PLAYERS, 0.5f, 1.0f);
 		if (!level.isClientSide && !isOperational()) {
 			checkExplodeWhenKilled(source);
+			dropInventory();
 		}
 		return true;
 	}
@@ -1603,6 +1605,12 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 			return true;
 		}
 		return false;
+	}
+	
+	public void dropInventory() {
+		if (level.isClientSide) return;
+		if (!level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) return;
+		partsManager.dropAllItems();
 	}
 	
 	public void addMomentToClient(Vec3 moment) {

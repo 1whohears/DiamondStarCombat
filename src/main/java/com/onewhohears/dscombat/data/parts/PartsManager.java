@@ -16,6 +16,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
+import net.minecraft.world.Containers;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
@@ -305,6 +306,17 @@ public class PartsManager {
 	
 	public List<PartSlot> getSlots() {
 		return slots;
+	}
+	
+	public void dropAllItems() {
+		if (parent.level.isClientSide) return;
+		Containers.dropContents(parent.level, parent.blockPosition().above(1), getInventory());
+		removeAllParts();
+	}
+	
+	public void removeAllParts() {
+		if (parent.level.isClientSide) return;
+		for (int i = 0; i < slots.size(); ++i) slots.get(i).removePartData(parent);
 	}
 	
 	public Container getInventory() {

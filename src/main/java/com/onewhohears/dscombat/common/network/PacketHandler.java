@@ -10,11 +10,9 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientRWRWarning;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRadarPings;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRemovePart;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponAmmo;
-import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftAV;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftCollide;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftControl;
-import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftMotion;
-import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftQ;
+import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftMoveRot;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftThrottle;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftToItem;
 import com.onewhohears.dscombat.common.network.toserver.ToServerCraftPlane;
@@ -107,11 +105,6 @@ public final class PacketHandler {
 			.decoder(ToServerCraftPlane::new)
 			.consumerMainThread(ToServerCraftPlane::handle)
 			.add();
-		net.messageBuilder(ToServerAircraftQ.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ToServerAircraftQ::encode)
-			.decoder(ToServerAircraftQ::new)
-			.consumerMainThread(ToServerAircraftQ::handle)
-			.add();
 		net.messageBuilder(ToServerShootTurret.class, index++, NetworkDirection.PLAY_TO_SERVER)
 			.encoder(ToServerShootTurret::encode)
 			.decoder(ToServerShootTurret::new)
@@ -126,11 +119,6 @@ public final class PacketHandler {
 			.encoder(ToClientAddMoment::encode)
 			.decoder(ToClientAddMoment::new)
 			.consumerMainThread(ToClientAddMoment::handle)
-			.add();
-		net.messageBuilder(ToServerAircraftAV.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ToServerAircraftAV::encode)
-			.decoder(ToServerAircraftAV::new)
-			.consumerMainThread(ToServerAircraftAV::handle)
 			.add();
 		net.messageBuilder(ToServerAircraftThrottle.class, index++, NetworkDirection.PLAY_TO_SERVER)
 			.encoder(ToServerAircraftThrottle::encode)
@@ -157,10 +145,10 @@ public final class PacketHandler {
 			.decoder(ToServerAircraftCollide::new)
 			.consumerMainThread(ToServerAircraftCollide::handle)
 			.add();
-		net.messageBuilder(ToServerAircraftMotion.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ToServerAircraftMotion::encode)
-			.decoder(ToServerAircraftMotion::new)
-			.consumerMainThread(ToServerAircraftMotion::handle)
+		net.messageBuilder(ToServerAircraftMoveRot.class, index++, NetworkDirection.PLAY_TO_SERVER)
+			.encoder(ToServerAircraftMoveRot::encode)
+			.decoder(ToServerAircraftMoveRot::new)
+			.consumerMainThread(ToServerAircraftMoveRot::handle)
 			.add();
 	}
 	

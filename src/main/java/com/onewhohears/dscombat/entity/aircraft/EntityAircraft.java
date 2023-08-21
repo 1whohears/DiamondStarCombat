@@ -15,10 +15,8 @@ import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddMoment;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAircraftControl;
-import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftAV;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftCollide;
-import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftMotion;
-import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftQ;
+import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftMoveRot;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftThrottle;
 import com.onewhohears.dscombat.data.aircraft.AircraftClientPreset;
 import com.onewhohears.dscombat.data.aircraft.AircraftClientPresets;
@@ -257,16 +255,14 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
         // if this entity is on the client side and receiving the quaternion of the plane from the server 
         if (!level.isClientSide()) return;
         if (Q.equals(key)) {
-    		if (!firstTick && isControlledByLocalInstance()) {
-    			PacketHandler.INSTANCE.sendToServer(new ToServerAircraftQ(this));
-    		} else {
+    		if (!isControlledByLocalInstance()) {
     			setPrevQ(getClientQ());
     			setClientQ(getQ());
     		}
     	} else if (AV.equals(key)) {
-    		if (!firstTick && isControlledByLocalInstance()) {
-    			PacketHandler.INSTANCE.sendToServer(new ToServerAircraftAV(this));
-    		} else clientAV = entityData.get(AV);
+    		if (!isControlledByLocalInstance()) {
+    			clientAV = entityData.get(AV);
+    		} 
     	} else if (THROTTLE.equals(key)) {
     		if (!firstTick && isControlledByLocalInstance()) {
     			PacketHandler.INSTANCE.sendToServer(new ToServerAircraftThrottle(this));
@@ -1205,7 +1201,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	private void tickLerp() {
 		if (isControlledByLocalInstance()) {
 			syncPacketPositionCodec(getX(), getY(), getZ());
-			synchMotion();
+			synchMoveRot();
 			lerpSteps = 0;
 			lerpStepsQ = 0;
 			return;
@@ -1219,9 +1215,9 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		}
 	}
 	
-	private void synchMotion() {
+	private void synchMoveRot() {
 		if (!level.isClientSide || tickCount % 20 != 0) return;
-		PacketHandler.INSTANCE.sendToServer(new ToServerAircraftMotion(this));
+		PacketHandler.INSTANCE.sendToServer(new ToServerAircraftMoveRot(this));
 	}
 	
 	/**
@@ -1564,6 +1560,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		if (isInvulnerableTo(source)) return false;
 		addHealth(-amount);
 		if (!level.isClientSide && source.isExplosion()) {
+			// FIXME 2 when vehicle explodes it doesn't move on pilot client side causing de-synch
 			Vec3 s = source.getSourcePosition();
 			if (s == null) return true;
 			Vec3 b = UtilGeometry.getClosestPointOnAABB(s, getBoundingBox());

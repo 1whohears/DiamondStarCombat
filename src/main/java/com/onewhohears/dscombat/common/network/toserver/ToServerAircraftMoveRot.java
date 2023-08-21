@@ -11,27 +11,36 @@ import com.onewhohears.dscombat.init.DataSerializers;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkEvent.Context;
 
-public class ToServerAircraftQ extends IPacket {
+public class ToServerAircraftMoveRot extends IPacket {
 	
 	public final int id;
+	public final Vec3 motion;
 	public final Quaternion q;
+	public final Vec3 av;
 	
-	public ToServerAircraftQ(EntityAircraft e) {
+	public ToServerAircraftMoveRot(EntityAircraft e) {
 		this.id = e.getId();
+		this.motion = e.getDeltaMovement();
 		this.q = e.getClientQ();
+		this.av = e.clientAV;
 	}
 	
-	public ToServerAircraftQ(FriendlyByteBuf buffer) {
+	public ToServerAircraftMoveRot(FriendlyByteBuf buffer) {
 		id = buffer.readInt();
+		motion = DataSerializers.VEC3.read(buffer);
 		q = DataSerializers.QUATERNION.read(buffer);
+		av = DataSerializers.VEC3.read(buffer);
 	}
 	
 	@Override
 	public void encode(FriendlyByteBuf buffer) {
 		buffer.writeInt(id);
+		DataSerializers.VEC3.write(buffer, motion);
 		DataSerializers.QUATERNION.write(buffer, q);
+		DataSerializers.VEC3.write(buffer, av);
 	}
 
 	@Override
@@ -42,8 +51,10 @@ public class ToServerAircraftQ extends IPacket {
 			ServerPlayer player = ctx.get().getSender();
 			ServerLevel level = player.getLevel();
 			if (level.getEntity(id) instanceof EntityAircraft plane) {
+				plane.setDeltaMovement(motion);
 				plane.setPrevQ(plane.getQ());
 				plane.setQ(q);
+				plane.setAngularVel(av);
 			}
 		});
 		ctx.get().setPacketHandled(true);

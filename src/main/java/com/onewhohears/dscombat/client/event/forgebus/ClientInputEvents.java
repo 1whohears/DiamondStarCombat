@@ -75,39 +75,35 @@ public final class ClientInputEvents {
 		float pitch = 0, roll = 0, yaw = 0, throttle = 0;
 		boolean pitchUp, pitchDown, yawLeft, yawRight;
 		boolean rollLeft, rollRight, throttleUp, throttleDown;
-		if (!plane.isFreeLook()) {
-			pitchUp = DSCKeys.throttleUpKey.isDown();
-			pitchDown = DSCKeys.throttleDownKey.isDown();
-			throttleUp = DSCKeys.pitchUpKey.isDown();
-			throttleDown = DSCKeys.pitchDownKey.isDown();
-			
-			yawLeft = DSCKeys.yawLeftKey.isDown();
-			yawRight = DSCKeys.yawRightKey.isDown();
-			rollLeft = DSCKeys.rollLeftKey.isDown();
-			rollRight = DSCKeys.rollRightKey.isDown();
-		} else if (flip) {
-			pitchUp = DSCKeys.throttleUpKey.isDown();
-			pitchDown = DSCKeys.throttleDownKey.isDown();
-			throttleUp = DSCKeys.pitchUpKey.isDown();
-			throttleDown = DSCKeys.pitchDownKey.isDown();
-			
+		// should yaw/roll flip
+		if (flip) {
 			yawLeft = DSCKeys.rollLeftKey.isDown();
 			yawRight = DSCKeys.rollRightKey.isDown();
 			rollLeft = DSCKeys.yawLeftKey.isDown();
 			rollRight = DSCKeys.yawRightKey.isDown();
 		} else {
-			pitchUp = DSCKeys.pitchUpKey.isDown();
-			pitchDown = DSCKeys.pitchDownKey.isDown();
-			throttleUp = DSCKeys.throttleUpKey.isDown();
-			throttleDown = DSCKeys.throttleDownKey.isDown();
-			
 			yawLeft = DSCKeys.yawLeftKey.isDown();
 			yawRight = DSCKeys.yawRightKey.isDown();
 			rollLeft = DSCKeys.rollLeftKey.isDown();
 			rollRight = DSCKeys.rollRightKey.isDown();
 		}
+		// should pitch/throttle flip
+		boolean type_flip = plane.getAircraftType().flipPitchThrottle;
+		boolean mode = !plane.isFreeLook();
+		if ((!type_flip && (flip ^ mode)) || (type_flip && !flip)) {
+			pitchUp = DSCKeys.throttleUpKey.isDown();
+			pitchDown = DSCKeys.throttleDownKey.isDown();
+			throttleUp = DSCKeys.pitchUpKey.isDown();
+			throttleDown = DSCKeys.pitchDownKey.isDown();
+		} else {
+			pitchUp = DSCKeys.pitchUpKey.isDown();
+			pitchDown = DSCKeys.pitchDownKey.isDown();
+			throttleUp = DSCKeys.throttleUpKey.isDown();
+			throttleDown = DSCKeys.throttleDownKey.isDown();
+		}
+		// should invert
 		int invertY = Config.CLIENT.invertY.get() ? -1 : 1;
-		if (plane.ignoreInvertY()) invertY = -1;
+		if (plane.getAircraftType().ignoreInvertY) invertY = -1;
 		if (!plane.isFreeLook()) {
 			// FIXME 1 mouse mode sucks. check how other mods do it
 			double ya = Math.abs(mouseY);

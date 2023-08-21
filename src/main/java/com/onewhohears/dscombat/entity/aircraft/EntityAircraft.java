@@ -386,29 +386,25 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	}
 	
 	public static enum AircraftType {
-		PLANE,
-		HELICOPTER,
-		CAR,
-		BOAT,
-		SUBMARINE;
+		PLANE(true, false, false),
+		HELICOPTER(true, false, true),
+		CAR(false, true, true),
+		BOAT(false, true, true),
+		SUBMARINE(false, true, true);
 		
-		public boolean isAircraft() {
-			return this == PLANE || this == HELICOPTER;
-		}
+		public final boolean isAircraft, flipPitchThrottle, ignoreInvertY;
 		
-		public boolean shouldIgnoreInvertY() {
-			return this != PLANE;
+		private AircraftType(boolean isAircraft, boolean flipPitchThrottle, boolean ignoreInvertY) {
+			this.isAircraft = isAircraft;
+			this.flipPitchThrottle = flipPitchThrottle;
+			this.ignoreInvertY = ignoreInvertY;
 		}
 	}
 	
 	public abstract AircraftType getAircraftType();
 	
 	public boolean isAircraft() {
-		return getAircraftType().isAircraft();
-	}
-	
-	public boolean ignoreInvertY() {
-		return !getAircraftType().shouldIgnoreInvertY();
+		return getAircraftType().isAircraft;
 	}
 	
 	/**
@@ -427,8 +423,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		if (UtilGeometry.vec3NAN(getDeltaMovement())) setDeltaMovement(Vec3.ZERO);
 		if (firstTick) init(); // MUST BE CALLED BEFORE SUPER
 		super.tick();
-		// INPUTS
-		readInputs();
 		// SET PREV/OLD
 		prevMotion = getDeltaMovement();
 		forcesO = getForces();
@@ -467,15 +461,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		sounds();
 		if (level.isClientSide) clientTick();
 		else serverTick();
-	}
-	
-	/**
-	 * called every tick on client and server side.
-	 * used to change inputs based on the vehicle.
-	 * {@link EntityGroundVehicle} will flip throttle with pitch since cars/tanks don't use pitch.
-	 */
-	public void readInputs() {
-		
 	}
 	
 	/**

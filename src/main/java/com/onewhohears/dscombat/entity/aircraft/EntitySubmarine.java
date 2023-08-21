@@ -135,11 +135,6 @@ public class EntitySubmarine extends EntityBoat {
     }
 	
 	@Override
-	public void readInputs() {
-		super.readInputs();
-	}
-	
-	@Override
 	public float getStepHeight() {
 		return 0.2f;
 	}

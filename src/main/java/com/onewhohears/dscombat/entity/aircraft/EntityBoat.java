@@ -207,14 +207,6 @@ public class EntityBoat extends EntityAircraft {
     }
 	
 	@Override
-	public void readInputs() {
-		super.readInputs();
-		float temp = inputs.pitch;
-		inputs.pitch = inputs.throttle;
-		inputs.throttle = temp;
-	}
-	
-	@Override
 	public float getStepHeight() {
 		return 0.2f;
 	}

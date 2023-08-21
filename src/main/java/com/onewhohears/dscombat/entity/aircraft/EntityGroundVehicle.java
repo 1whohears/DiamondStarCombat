@@ -121,14 +121,6 @@ public class EntityGroundVehicle extends EntityAircraft {
     }
 	
 	@Override
-	public void readInputs() {
-		super.readInputs();
-		float temp = inputs.pitch;
-		inputs.pitch = inputs.throttle;
-		inputs.throttle = temp;
-	}
-	
-	@Override
 	public float getStepHeight() {
 		return 1.0f;
 	}

@@ -17,6 +17,7 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientAddMoment;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAircraftControl;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftAV;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftCollide;
+import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftMotion;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftQ;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftThrottle;
 import com.onewhohears.dscombat.data.aircraft.AircraftClientPreset;
@@ -254,31 +255,30 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
         super.onSyncedDataUpdated(key);
         // if this entity is on the client side and receiving the quaternion of the plane from the server 
-        if (level.isClientSide()) {
-        	if (Q.equals(key)) {
-        		if (!firstTick && isControlledByLocalInstance()) {
-        			PacketHandler.INSTANCE.sendToServer(new ToServerAircraftQ(this));
-        		} else {
-        			setPrevQ(getClientQ());
-        			setClientQ(getQ());
-        		}
-        	} else if (AV.equals(key)) {
-        		if (!firstTick && isControlledByLocalInstance()) {
-        			PacketHandler.INSTANCE.sendToServer(new ToServerAircraftAV(this));
-        		} else clientAV = entityData.get(AV);
-        	} else if (THROTTLE.equals(key)) {
-        		if (!firstTick && isControlledByLocalInstance()) {
-        			PacketHandler.INSTANCE.sendToServer(new ToServerAircraftThrottle(this));
-        		} else clientThrottle = entityData.get(THROTTLE);
-        	} else if (CURRRENT_DYE_ID.equals(key)) {
-        		currentTexture = textures.getTexture(getCurrentColorId());
-        	} else if (RADIO_SONG.equals(key)) {
-        		String sound = getRadioSong();
-        		//System.out.println("SONG UPDATE "+sound);
-        		if (!sound.isEmpty()) UtilClientSafeSoundInstance.aircraftRadio(
-        				Minecraft.getInstance(), this, sound);
-        	}
-        }
+        if (!level.isClientSide()) return;
+        if (Q.equals(key)) {
+    		if (!firstTick && isControlledByLocalInstance()) {
+    			PacketHandler.INSTANCE.sendToServer(new ToServerAircraftQ(this));
+    		} else {
+    			setPrevQ(getClientQ());
+    			setClientQ(getQ());
+    		}
+    	} else if (AV.equals(key)) {
+    		if (!firstTick && isControlledByLocalInstance()) {
+    			PacketHandler.INSTANCE.sendToServer(new ToServerAircraftAV(this));
+    		} else clientAV = entityData.get(AV);
+    	} else if (THROTTLE.equals(key)) {
+    		if (!firstTick && isControlledByLocalInstance()) {
+    			PacketHandler.INSTANCE.sendToServer(new ToServerAircraftThrottle(this));
+    		} else clientThrottle = entityData.get(THROTTLE);
+    	} else if (CURRRENT_DYE_ID.equals(key)) {
+    		currentTexture = textures.getTexture(getCurrentColorId());
+    	} else if (RADIO_SONG.equals(key)) {
+    		String sound = getRadioSong();
+    		//System.out.println("SONG UPDATE "+sound);
+    		if (!sound.isEmpty()) UtilClientSafeSoundInstance.aircraftRadio(
+    				Minecraft.getInstance(), this, sound);
+    	}
     }
 	
 	/**
@@ -1205,6 +1205,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	private void tickLerp() {
 		if (isControlledByLocalInstance()) {
 			syncPacketPositionCodec(getX(), getY(), getZ());
+			synchMotion();
 			lerpSteps = 0;
 			lerpStepsQ = 0;
 			return;
@@ -1216,6 +1217,11 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	        --lerpSteps;
 	        setPos(d0, d1, d2);
 		}
+	}
+	
+	private void synchMotion() {
+		if (!level.isClientSide || tickCount % 20 != 0) return;
+		PacketHandler.INSTANCE.sendToServer(new ToServerAircraftMotion(this));
 	}
 	
 	/**

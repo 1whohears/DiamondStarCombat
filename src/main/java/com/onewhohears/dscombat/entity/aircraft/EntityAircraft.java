@@ -1560,6 +1560,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	@Override
     public boolean hurt(DamageSource source, float amount) {
 		if (isInvulnerableTo(source)) return false;
+		if (!source.isFire()) System.out.println("hurt "+this+" is exp "+source.isExplosion()+" damage = "+amount);
 		addHealth(-amount);
 		if (!level.isClientSide && isOperational()) level.playSound(null, 
 			blockPosition(), ModSounds.VEHICLE_HIT_1.get(), 
@@ -1622,7 +1623,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	public static final double EXP_MOMENT_FACTOR = 100;
 	
 	public void customExplosionHandler(Explosion exp) {
-		// FIXME 2.2 custom explosion effects on vehicles
 		Vec3 s = exp.getPosition();
 		Vec3 b = UtilGeometry.getClosestPointOnAABB(s, getBoundingBox());
 		Vec3 r = b.subtract(position());
@@ -1641,32 +1641,34 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		double dist_check = Math.sqrt(this.distanceToSqr(s)) / (double)diameter;
 		if (dist_check > 1.0d) return;
 		
+		Entity exp_entity = exp.getDamageSource().getDirectEntity();
 		double dx = getX() - s.x;
         double dy = getY() - s.y;
         double dz = getZ() - s.z;
         double d = Math.sqrt(dx*dx + dy*dy + dz*dz);
-        if (d == 0) return;
+        if (Double.isNaN(d) || Double.isInfinite(d)) return;
+        if (d == 0) {
+        	if (exp_entity != null) {
+        		Vec3 dir = exp_entity.getLookAngle();
+        		dx = dir.x; dy = dir.y; dz = dir.z;
+        	} else { dx = 0; dy = 1; dz = 0; }
+        } else { dx /= d; dy /= d; dz /= d; }
         
-        dx /= d; dy /= d; dz /= d;
         double seen_percent = Explosion.getSeenPercent(s, this);
         double exp_factor = (1.0D - dist_check) * seen_percent;
         
         float amount = (float)((int)((exp_factor*exp_factor+exp_factor)/2d*7d*(double)diameter+1d));
         hurt(exp.getDamageSource(), amount*EXP_DAMAGE_FACTOR);
-        System.out.println("damage = "+amount);
         
-        Vec3 force = new Vec3(dx*exp_factor, dy*exp_factor, dx*exp_factor).scale(EXP_FORCE_FACTOR);
+        Vec3 force = new Vec3(dx*exp_factor, dy*exp_factor, dz*exp_factor).scale(EXP_FORCE_FACTOR);
         addForceBetweenTicks = addForceBetweenTicks.add(force);
-        System.out.println("force = "+force);
         
 		Vec3 f;
-		Entity e = exp.getDamageSource().getDirectEntity();
-		if (s.equals(b) && e != null) 
-			f = e.getDeltaMovement().normalize().scale(exp_factor*EXP_MOMENT_FACTOR);
+		if (s.equals(b) && exp_entity != null) 
+			f = exp_entity.getDeltaMovement().normalize().scale(exp_factor*EXP_MOMENT_FACTOR);
 		else f = s.subtract(b).normalize().scale(exp_factor*EXP_MOMENT_FACTOR);
 		Vec3 moment = r.cross(f);
 		addMomentBetweenTicks = addMomentBetweenTicks.add(moment);
-		System.out.println("moment = "+moment);
 		
 		addForceMomentToClient(force, moment);
 	}

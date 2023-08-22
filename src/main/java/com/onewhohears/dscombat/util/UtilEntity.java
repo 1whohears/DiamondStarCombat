@@ -1,5 +1,9 @@
 package com.onewhohears.dscombat.util;
 
+import java.lang.reflect.Field;
+
+import javax.annotation.Nullable;
+
 import com.onewhohears.dscombat.data.weapon.RadarTargetTypes;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 
@@ -9,6 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.entity.vehicle.Minecart;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
@@ -139,6 +144,22 @@ public class UtilEntity {
 	
 	public static boolean isHeadAboveWater(Entity entity) {
 		return entity.isInWater() && !entity.isUnderWater();
+	}
+	
+	private static Field explosion_radius_field = null;
+	private static boolean tried_to_get_explosion_radius_field = false;
+	
+	@Nullable
+	public static Field getExplosionRadiusField() {
+		if (!tried_to_get_explosion_radius_field) {
+			try {
+				explosion_radius_field = Explosion.class.getDeclaredField("radius");
+				explosion_radius_field.setAccessible(true);
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return explosion_radius_field;
 	}
 	
 }

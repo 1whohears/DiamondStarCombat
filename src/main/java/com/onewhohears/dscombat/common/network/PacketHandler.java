@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.common.network;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.common.network.toclient.ToClientAddMoment;
+import com.onewhohears.dscombat.common.network.toclient.ToClientAddForceMoment;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddPart;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAircraftControl;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAircraftFuel;
@@ -115,10 +115,10 @@ public final class PacketHandler {
 			.decoder(ToClientRWRWarning::new)
 			.consumerMainThread(ToClientRWRWarning::handle)
 			.add();
-		net.messageBuilder(ToClientAddMoment.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ToClientAddMoment::encode)
-			.decoder(ToClientAddMoment::new)
-			.consumerMainThread(ToClientAddMoment::handle)
+		net.messageBuilder(ToClientAddForceMoment.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ToClientAddForceMoment::encode)
+			.decoder(ToClientAddForceMoment::new)
+			.consumerMainThread(ToClientAddForceMoment::handle)
 			.add();
 		net.messageBuilder(ToServerAircraftThrottle.class, index++, NetworkDirection.PLAY_TO_SERVER)
 			.encoder(ToServerAircraftThrottle::encode)

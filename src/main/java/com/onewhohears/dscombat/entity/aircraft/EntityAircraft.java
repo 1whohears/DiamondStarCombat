@@ -13,7 +13,7 @@ import com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents;
 import com.onewhohears.dscombat.common.container.AircraftMenuContainer;
 import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.common.network.toclient.ToClientAddMoment;
+import com.onewhohears.dscombat.common.network.toclient.ToClientAddForceMoment;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAircraftControl;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftCollide;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftMoveRot;
@@ -176,8 +176,8 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	
 	public float zRot, zRotO; 
 	public Vec3 prevMotion = Vec3.ZERO;
-	public Vec3 forces = Vec3.ZERO, forcesO = Vec3.ZERO;
-	public Vec3 moment = Vec3.ZERO, momentO = Vec3.ZERO, addMomentFromServer = Vec3.ZERO;
+	public Vec3 forces = Vec3.ZERO, forcesO = Vec3.ZERO, addForceBetweenTicks = Vec3.ZERO;
+	public Vec3 moment = Vec3.ZERO, momentO = Vec3.ZERO, addMomentBetweenTicks = Vec3.ZERO;
 	
 	public boolean nightVisionHud = false, hasRadio = false;
 	
@@ -674,7 +674,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		if (onGround) directionGround(q);
 		else if (isInWater()) directionWater(q);
 		else directionAir(q);
-		Vec3 m = getMoment().add(addMomentFromServer), av = getAngularVel();
+		Vec3 m = getMoment().add(addMomentBetweenTicks), av = getAngularVel();
 		if (!UtilGeometry.isZero(m)) {
 			av = av.add(m.x/Ix, m.y/Iy, m.z/Iz);
 			setAngularVel(av);
@@ -683,7 +683,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		q.mul(Vector3f.YN.rotationDegrees((float)av.y));
 		q.mul(Vector3f.ZP.rotationDegrees((float)av.z));
 		applyAngularDrag();
-		addMomentFromServer = Vec3.ZERO;
+		addMomentBetweenTicks = Vec3.ZERO;
 	}
 	
 	public void applyAngularDrag() {
@@ -859,9 +859,11 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	 * F=M*A -> A=F/M then A is added to current velocity
 	 */
 	public void calcAcc() {
-		Vec3 f = getForces();
+		if (!addForceBetweenTicks.equals(Vec3.ZERO)) System.out.println("add force "+addForceBetweenTicks+" "+this);
+		Vec3 f = getForces().add(addForceBetweenTicks);
 		double s = 1/getTotalMass();
 		setDeltaMovement(getDeltaMovement().add(f.scale(s)));
+		addForceBetweenTicks = Vec3.ZERO;
 	}
 	
 	@Override
@@ -1559,21 +1561,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     public boolean hurt(DamageSource source, float amount) {
 		if (isInvulnerableTo(source)) return false;
 		addHealth(-amount);
-		if (!level.isClientSide && source.isExplosion()) {
-			// FIXME 2 when vehicle explodes it doesn't move on pilot client side causing de-synch
-			Vec3 s = source.getSourcePosition();
-			if (s == null) return true;
-			Vec3 b = UtilGeometry.getClosestPointOnAABB(s, getBoundingBox());
-			Vec3 r = b.subtract(position());
-			Vec3 f;
-			Entity e = source.getDirectEntity();
-			if (s.equals(b) && e != null) 
-				f = e.getDeltaMovement().normalize().scale(amount*10);
-			else f = s.subtract(b).normalize().scale(amount*10);
- 			Vec3 moment = r.cross(f);
-			addMoment(moment, false);
-			addMomentToClient(moment);
-		}
 		if (!level.isClientSide && isOperational()) level.playSound(null, 
 			blockPosition(), ModSounds.VEHICLE_HIT_1.get(), 
 			SoundSource.PLAYERS, 0.5f, 1.0f);
@@ -1601,10 +1588,10 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		partsManager.dropAllItems();
 	}
 	
-	public void addMomentToClient(Vec3 moment) {
+	public void addForceMomentToClient(Vec3 force, Vec3 moment) {
 		if (level.isClientSide) return;
 		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), 
-				new ToClientAddMoment(this, moment));
+				new ToClientAddForceMoment(this, force, moment));
 	}
 	
 	public void explode(DamageSource source) {
@@ -1618,6 +1605,70 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 				getX(), getY()+0.5D, getZ(), 
 				0.0D, 0.0D, 0.0D);
 		}
+	}
+	
+	/**
+	 * ignoring vanilla explosion effects.
+	 * see {@link EntityAircraft#customExplosionHandler(Explosion)}
+	 * for custom explosion handling.
+	 */
+	@Override
+	public boolean ignoreExplosion() {
+		return true;
+	}
+	
+	public static final float EXP_DAMAGE_FACTOR = 1f;
+	public static final double EXP_FORCE_FACTOR = 100;
+	public static final double EXP_MOMENT_FACTOR = 100;
+	
+	public void customExplosionHandler(Explosion exp) {
+		// FIXME 2.2 custom explosion effects on vehicles
+		Vec3 s = exp.getPosition();
+		Vec3 b = UtilGeometry.getClosestPointOnAABB(s, getBoundingBox());
+		Vec3 r = b.subtract(position());
+		
+		float diameter = 6f;
+		if (UtilEntity.getExplosionRadiusField() != null) {
+			try {
+				diameter = (float)UtilEntity.getExplosionRadiusField().get(exp) * 2;
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		double dist_check = Math.sqrt(this.distanceToSqr(s)) / (double)diameter;
+		if (dist_check > 1.0d) return;
+		
+		double dx = getX() - s.x;
+        double dy = getY() - s.y;
+        double dz = getZ() - s.z;
+        double d = Math.sqrt(dx*dx + dy*dy + dz*dz);
+        if (d == 0) return;
+        
+        dx /= d; dy /= d; dz /= d;
+        double seen_percent = Explosion.getSeenPercent(s, this);
+        double exp_factor = (1.0D - dist_check) * seen_percent;
+        
+        float amount = (float)((int)((exp_factor*exp_factor+exp_factor)/2d*7d*(double)diameter+1d));
+        hurt(exp.getDamageSource(), amount*EXP_DAMAGE_FACTOR);
+        System.out.println("damage = "+amount);
+        
+        Vec3 force = new Vec3(dx*exp_factor, dy*exp_factor, dx*exp_factor).scale(EXP_FORCE_FACTOR);
+        addForceBetweenTicks = addForceBetweenTicks.add(force);
+        System.out.println("force = "+force);
+        
+		Vec3 f;
+		Entity e = exp.getDamageSource().getDirectEntity();
+		if (s.equals(b) && e != null) 
+			f = e.getDeltaMovement().normalize().scale(exp_factor*EXP_MOMENT_FACTOR);
+		else f = s.subtract(b).normalize().scale(exp_factor*EXP_MOMENT_FACTOR);
+		Vec3 moment = r.cross(f);
+		addMomentBetweenTicks = addMomentBetweenTicks.add(moment);
+		System.out.println("moment = "+moment);
+		
+		addForceMomentToClient(force, moment);
 	}
 	
 	/**

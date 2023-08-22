@@ -14,24 +14,28 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent.Context;
 
-public class ToClientAddMoment extends IPacket {
+public class ToClientAddForceMoment extends IPacket {
 	
 	public final int id;
+	public final Vec3 force;
 	public final Vec3 moment;
 	
-	public ToClientAddMoment(EntityAircraft craft, Vec3 moment) {
+	public ToClientAddForceMoment(EntityAircraft craft, Vec3 force, Vec3 moment) {
 		this.id = craft.getId();
+		this.force = force;
 		this.moment = moment;
 	}
 	
-	public ToClientAddMoment(FriendlyByteBuf buffer) {
+	public ToClientAddForceMoment(FriendlyByteBuf buffer) {
 		id = buffer.readInt();
+		force = DataSerializers.VEC3.read(buffer);
 		moment = DataSerializers.VEC3.read(buffer);
 	}
 	
 	@Override
 	public void encode(FriendlyByteBuf buffer) {
 		buffer.writeInt(id);
+		DataSerializers.VEC3.write(buffer, force);
 		DataSerializers.VEC3.write(buffer, moment);
 	}
 
@@ -40,7 +44,7 @@ public class ToClientAddMoment extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilPacket.addMomentPacket(id, moment);
+				UtilPacket.addMomentPacket(id, force, moment);
 				success.set(true);
 			});
 		});

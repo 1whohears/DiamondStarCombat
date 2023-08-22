@@ -91,11 +91,13 @@ public class UtilPacket {
 		}
 	}
 	
-	public static void addMomentPacket(int id, Vec3 moment) {
+	public static void addMomentPacket(int id, Vec3 force, Vec3 moment) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityAircraft plane) {
-			plane.addMomentFromServer = plane.addMomentFromServer.add(moment);
+			System.out.println("adding from server "+force+" "+moment);
+			plane.addForceBetweenTicks = plane.addForceBetweenTicks.add(force);
+			plane.addMomentBetweenTicks = plane.addMomentBetweenTicks.add(moment);
 		}
 	}
 	

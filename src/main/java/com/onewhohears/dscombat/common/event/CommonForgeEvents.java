@@ -7,6 +7,7 @@ import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
 import com.onewhohears.dscombat.data.radar.RadarPresets;
 import com.onewhohears.dscombat.data.weapon.NonTickingMissileManager;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 
 import net.minecraft.world.phys.AABB;
@@ -14,6 +15,7 @@ import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
+import net.minecraftforge.event.level.ExplosionEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -24,6 +26,14 @@ import net.minecraftforge.network.PacketDistributor.PacketTarget;
 
 @Mod.EventBusSubscriber(modid = DSCombatMod.MODID, bus = Bus.FORGE)
 public final class CommonForgeEvents {
+	
+	@SubscribeEvent(priority = EventPriority.NORMAL)
+	public static void explosionEvent(ExplosionEvent.Detonate event) {
+		for (int i = 0; i < event.getAffectedEntities().size(); ++i) {
+			if (!(event.getAffectedEntities().get(i) instanceof EntityAircraft plane)) continue;
+			plane.customExplosionHandler(event.getExplosion());
+		}
+	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void playerTick(TickEvent.PlayerTickEvent event) {

@@ -153,11 +153,18 @@ public class UtilEntity {
 	public static Field getExplosionRadiusField() {
 		if (!tried_to_get_explosion_radius_field) {
 			try {
-				explosion_radius_field = Explosion.class.getDeclaredField("radius");
+				explosion_radius_field = Explosion.class.getDeclaredField("f_46017_");
 				explosion_radius_field.setAccessible(true);
 			} catch(Exception e) {
-				e.printStackTrace();
+				try {
+					explosion_radius_field = Explosion.class.getDeclaredField("radius");
+					explosion_radius_field.setAccessible(true);
+				} catch(Exception e2) {
+					e.printStackTrace();
+					e2.printStackTrace();
+				}
 			}
+			tried_to_get_explosion_radius_field = true;
 		}
 		return explosion_radius_field;
 	}

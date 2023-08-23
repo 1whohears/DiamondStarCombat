@@ -316,7 +316,9 @@ public class PartsManager {
 	
 	public void removeAllParts() {
 		if (parent.level.isClientSide) return;
-		for (int i = 0; i < slots.size(); ++i) slots.get(i).removePartData(parent);
+		for (int i = 0; i < slots.size(); ++i) {
+			if (!slots.get(i).isSeat()) slots.get(i).removePartData(parent);
+		}
 	}
 	
 	public Container getInventory() {

@@ -1560,7 +1560,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	@Override
     public boolean hurt(DamageSource source, float amount) {
 		if (isInvulnerableTo(source)) return false;
-		if (!source.isFire()) System.out.println("hurt "+this+" is exp "+source.isExplosion()+" damage = "+amount);
 		addHealth(-amount);
 		if (!level.isClientSide && isOperational()) level.playSound(null, 
 			blockPosition(), ModSounds.VEHICLE_HIT_1.get(), 

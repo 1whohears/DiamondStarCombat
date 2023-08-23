@@ -32,7 +32,11 @@ public abstract class PartData {
 		INTERNAL_RADAR,
 		FLARE_DISPENSER,
 		EXTERNAL_ENGINE,
-		BUFF_DATA
+		BUFF_DATA;
+		
+		public boolean isSeat() {
+			return this == SEAT || this == TURRENT;
+		}
 	}
 	
 	protected PartData(float weight, ResourceLocation itemid, SlotType[] compatibleSlots) {
@@ -90,6 +94,10 @@ public abstract class PartData {
 	
 	public boolean isFlareDispenser() {
 		return getType() == PartType.FLARE_DISPENSER;
+	}
+	
+	public boolean isSeat() {
+		return getType().isSeat();
 	}
 	
 	public boolean isRadio() {

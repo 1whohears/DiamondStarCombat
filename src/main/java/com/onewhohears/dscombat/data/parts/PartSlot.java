@@ -148,6 +148,13 @@ public class PartSlot {
 		return false;
 	}
 	
+	public boolean isSeat() {
+		if (data != null) {
+			data.isSeat();
+		}
+		return false;
+	}
+	
 	public boolean isCompatible(PartData data) {
 		//System.out.println("is "+data+" compatible with "+this);
 		if (data == null) return false;

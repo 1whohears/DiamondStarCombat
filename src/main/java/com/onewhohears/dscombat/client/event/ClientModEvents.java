@@ -160,8 +160,11 @@ public final class ClientModEvents {
 						new EntityModelGruetzBB(models.bakeLayer(EntityModelGruetzBB.LAYER_LOCATION)),
 						new ResourceLocation(DSCombatMod.MODID, "textures/entity/weapon/gruetz_bunker_buster.png")));
 		// MISSILES
-		// FIXME 0 why is half the missile model missing?
 		event.registerEntityRenderer(ModEntities.AIM9L.get(), 
+				(context) -> new RendererObjEntity<EntityMissile>(context, "aim9l"));
+		event.registerEntityRenderer(ModEntities.AIM9P5.get(), 
+				(context) -> new RendererObjEntity<EntityMissile>(context, "aim9l"));
+		event.registerEntityRenderer(ModEntities.AIM9X.get(), 
 				(context) -> new RendererObjEntity<EntityMissile>(context, "aim9l"));
 		event.registerEntityRenderer(ModEntities.AIM120B.get(), 
 				(context) -> new RendererObjEntity<EntityMissile>(context, "battleship"));

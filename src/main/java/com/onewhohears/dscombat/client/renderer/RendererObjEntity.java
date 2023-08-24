@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.data.model.ObjEntityModels;
 
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -35,10 +36,17 @@ public class RendererObjEntity<T extends Entity> extends EntityRenderer<T> {
 	
 	@Override
 	public void render(T entity, float yaw, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int lightmap) {
+		poseStack.pushPose();
+		//poseStack.translate(entity.getX(), entity.getY(), entity.getZ());
+		poseStack.mulPose(Vector3f.YN.rotationDegrees(entity.getViewYRot(partialTicks)));
+		poseStack.mulPose(Vector3f.XP.rotationDegrees(entity.getViewXRot(partialTicks)));
+		
 		getModel().render(poseStack, bufferSource, 
 				(texture) -> { return RenderType.entityTranslucent(texture); }, 
 				lightmap, OverlayTexture.NO_OVERLAY, partialTicks, 
 				Transforms.EMPTY);
+		
+		poseStack.popPose();
 		super.render(entity, yaw, partialTicks, poseStack, bufferSource, lightmap);
 	}
 

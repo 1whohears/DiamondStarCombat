@@ -9,7 +9,7 @@
   "damage": 60.0,
   "destroyTerrain": true,
   "displayName": "preset.dscombat.aim120b",
-  "entityTypeKey": "dscombat:track_missile_1",
+  "entityTypeKey": "dscombat:aim120b",
   "explosionRadius": 5.0,
   "explosive": true,
   "fireRate": 50,

@@ -35,7 +35,9 @@ import com.onewhohears.dscombat.client.renderer.RendererEntityParachute;
 import com.onewhohears.dscombat.client.renderer.RendererEntityPart;
 import com.onewhohears.dscombat.client.renderer.RendererEntityTurret;
 import com.onewhohears.dscombat.client.renderer.RendererEntityWeapon;
+import com.onewhohears.dscombat.client.renderer.RendererObjEntity;
 import com.onewhohears.dscombat.data.aircraft.AircraftClientPresets;
+import com.onewhohears.dscombat.data.model.ObjEntityModels;
 import com.onewhohears.dscombat.entity.aircraft.EntityBoat;
 import com.onewhohears.dscombat.entity.aircraft.EntityGroundVehicle;
 import com.onewhohears.dscombat.entity.aircraft.EntityHelicopter;
@@ -158,6 +160,9 @@ public final class ClientModEvents {
 						new EntityModelGruetzBB(models.bakeLayer(EntityModelGruetzBB.LAYER_LOCATION)),
 						new ResourceLocation(DSCombatMod.MODID, "textures/entity/weapon/gruetz_bunker_buster.png")));
 		// MISSILES
+		// FIXME 0 why is half the missile model missing?
+		event.registerEntityRenderer(ModEntities.AIM9L.get(), 
+				(context) -> new RendererObjEntity<EntityMissile>(context, "aim9l"));
 		event.registerEntityRenderer(ModEntities.POS_MISSILE_1.get(), 
 				(context) -> new RendererEntityWeapon<EntityMissile>(context, 
 						new EntityModelMissile1(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)), 
@@ -234,5 +239,6 @@ public final class ClientModEvents {
 	@SubscribeEvent
 	public static void registerClientReloadListener(RegisterClientReloadListenersEvent event) {
 		event.registerReloadListener(AircraftClientPresets.get());
+		event.registerReloadListener(ObjEntityModels.get());
 	}
 }

@@ -230,7 +230,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setFieldOfView(30f)
 				.setFlareResistance(1.5f)
 				.setItem(ModItems.AIM9L.getId())
-				.setEntityType(ModEntities.IR_MISSILE_1.getId())
+				.setEntityType(ModEntities.AIM9L.getId())
 				.setRackEntityType(ModEntities.LIGHT_MISSILE_RACK.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getId())
 				.setCompatibleWeaponPart(ModItems.LIGHT_MISSILE_RACK.getId())

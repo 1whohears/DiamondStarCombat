@@ -132,8 +132,8 @@ public class EntityBoat extends EntityAircraft {
 		Vec3 move = getDeltaMovement();
 		move = move.multiply(1, 0.900, 1);
 		setDeltaMovement(move);
-		if (canBreak() && isBreaking()) addFrictionForce(1);
-		else addFrictionForce(0.1);
+		if (canBreak() && isBreaking()) addFrictionForce(2);
+		else addFrictionForce(0.2);
 	}
 	
 	@Override
@@ -240,7 +240,7 @@ public class EntityBoat extends EntityAircraft {
 
 	@Override
 	public boolean canBreak() {
-		return false;
+		return true;
 	}
 
 	@Override

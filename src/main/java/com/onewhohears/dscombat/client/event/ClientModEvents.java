@@ -15,6 +15,7 @@ import com.onewhohears.dscombat.client.model.aircraft.EntityModelOrangeTesla;
 import com.onewhohears.dscombat.client.model.aircraft.EntityModelSmallRoller;
 import com.onewhohears.dscombat.client.model.aircraft.EntityModelTestPlane;
 import com.onewhohears.dscombat.client.model.aircraft.EntityModelWoodenPlane;
+import com.onewhohears.dscombat.client.model.obj.ObjEntityModels;
 import com.onewhohears.dscombat.client.model.parts.EntityModelCFM56;
 import com.onewhohears.dscombat.client.model.weapon.EntityModelBomb1;
 import com.onewhohears.dscombat.client.model.weapon.EntityModelBombRack;
@@ -35,9 +36,9 @@ import com.onewhohears.dscombat.client.renderer.RendererEntityParachute;
 import com.onewhohears.dscombat.client.renderer.RendererEntityPart;
 import com.onewhohears.dscombat.client.renderer.RendererEntityTurret;
 import com.onewhohears.dscombat.client.renderer.RendererEntityWeapon;
+import com.onewhohears.dscombat.client.renderer.RendererObjAircraft;
 import com.onewhohears.dscombat.client.renderer.RendererObjEntity;
 import com.onewhohears.dscombat.data.aircraft.AircraftClientPresets;
-import com.onewhohears.dscombat.data.model.ObjEntityModels;
 import com.onewhohears.dscombat.entity.aircraft.EntityBoat;
 import com.onewhohears.dscombat.entity.aircraft.EntityGroundVehicle;
 import com.onewhohears.dscombat.entity.aircraft.EntityHelicopter;
@@ -140,6 +141,8 @@ public final class ClientModEvents {
 		event.registerEntityRenderer(ModEntities.NATHAN_BOAT.get(), 
 				(context) -> new RendererEntityAircraft<EntityBoat>(context, 
 						new EntityModelNathanBoat(models.bakeLayer(EntityModelNathanBoat.LAYER_LOCATION))));
+		event.registerEntityRenderer(ModEntities.GRONK_BATTLESHIP.get(), 
+				(context) -> new RendererObjAircraft<EntityBoat>(context, "battleship"));
 		// SUBMARINES
 		event.registerEntityRenderer(ModEntities.ANDOLF_SUB.get(), 
 				(context) -> new RendererEntityAircraft<EntitySubmarine>(context, 
@@ -165,11 +168,11 @@ public final class ClientModEvents {
 		event.registerEntityRenderer(ModEntities.AIM9P5.get(), 
 				(context) -> new RendererObjEntity<EntityMissile>(context, "aim9l"));
 		event.registerEntityRenderer(ModEntities.AIM9X.get(), 
-				(context) -> new RendererObjEntity<EntityMissile>(context, "aim9l"));
+				(context) -> new RendererObjEntity<EntityMissile>(context, "aim9x"));
 		event.registerEntityRenderer(ModEntities.AIM120B.get(), 
-				(context) -> new RendererObjEntity<EntityMissile>(context, "battleship"));
+				(context) -> new RendererObjEntity<EntityMissile>(context, "aim120b"));
 		event.registerEntityRenderer(ModEntities.AIM120C.get(), 
-				(context) -> new RendererObjEntity<EntityMissile>(context, "simple_test"));
+				(context) -> new RendererObjEntity<EntityMissile>(context, "aim120b"));
 		event.registerEntityRenderer(ModEntities.POS_MISSILE_1.get(), 
 				(context) -> new RendererEntityWeapon<EntityMissile>(context, 
 						new EntityModelMissile1(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)), 

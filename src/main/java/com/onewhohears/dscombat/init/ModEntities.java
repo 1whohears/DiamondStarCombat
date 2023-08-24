@@ -123,6 +123,12 @@ public class ModEntities {
 					ModSounds.BOAT_1, 2), 
 					EntityDimensions.scalable(3.0f,1.5f)));
 	
+	public static final RegistryObject<EntityType<EntityBoat>> GRONK_BATTLESHIP = ENTITIES.register("gronk_battleship", 
+			() -> createEntityTypeFar((type, level) -> new EntityBoat(type, level, 
+					DefaultAircraftPresets.DEFAULT_GRONK_BATTLESHIP,
+					ModSounds.BOAT_1, 6), 
+					EntityDimensions.scalable(14f,6f)));
+	
 	// SUBMARINES
 	
 	public static final RegistryObject<EntityType<EntitySubmarine>> ANDOLF_SUB = ENTITIES.register("andolf_sub", 

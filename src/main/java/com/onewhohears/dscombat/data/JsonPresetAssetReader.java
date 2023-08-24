@@ -35,7 +35,7 @@ public abstract class JsonPresetAssetReader<T extends JsonPreset> implements Res
 		presetMap.clear();
 		manager.listResources(directory, (key) -> {
             return key.getPath().endsWith(".json");
-         }).forEach((key, resource) -> {
+		}).forEach((key, resource) -> {
 			System.out.println("key = "+key);
 			try {
 				T data = getPresetFromResource(key, resource);

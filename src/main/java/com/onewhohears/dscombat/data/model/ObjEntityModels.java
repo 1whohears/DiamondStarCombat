@@ -49,7 +49,7 @@ public class ObjEntityModels implements ResourceManagerReloadListener {
 			StandaloneGeometryBakingContext ctx = StandaloneGeometryBakingContext.create(obj.modelLocation);
 			CompositeRenderable comp = obj.bakeRenderable(ctx);
 			models.put(key, comp);
-			System.out.println("BAKED "+key+" "+obj.getRootComponentNames().size());
+			System.out.println("BAKED "+key+" "+obj.getRootComponentNames().size()+" "+obj.getConfigurableComponentNames().size());
 		});
 	}
 	
@@ -65,14 +65,17 @@ public class ObjEntityModels implements ResourceManagerReloadListener {
 					System.out.println("ERROR: Can't have 2 models with the same path! "+key);
 					return;
 				}
-				ObjModel model = ObjModel.parse(
-						new ObjTokenizer(resource.open()), 
+				ObjTokenizer tokenizer = new ObjTokenizer(resource.open());
+				ObjModel model = ObjModel.parse(tokenizer, 
 						new ModelSettings(key, 
 							false, false, true, false, 
 							null));
+				tokenizer.close();
 				String name = new File(key.getPath()).getName().replace(FILE_TYPE, "");
 				unbakedModels.putIfAbsent(name, model);
 				System.out.println("ADDING = "+key);
+				model.getConfigurableComponentNames().forEach((n) -> {System.out.println(n);});
+				System.out.println(" ");
 			} catch (Exception e) {
 				System.out.println("ERROR: SKIPPING "+key);
 				e.printStackTrace();

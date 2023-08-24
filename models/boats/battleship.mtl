@@ -1,4 +1,4 @@
 # Made in Blockbench 4.8.1
 newmtl m_a515dd80-5b94-3ae4-a2b9-8fd3f66e5e6f
-map_Kd dscombat:entity/boats/battleship
+map_Kd battleship.png 
 newmtl none

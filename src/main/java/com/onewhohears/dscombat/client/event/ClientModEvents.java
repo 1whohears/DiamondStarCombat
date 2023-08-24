@@ -163,6 +163,10 @@ public final class ClientModEvents {
 		// FIXME 0 why is half the missile model missing?
 		event.registerEntityRenderer(ModEntities.AIM9L.get(), 
 				(context) -> new RendererObjEntity<EntityMissile>(context, "aim9l"));
+		event.registerEntityRenderer(ModEntities.AIM120B.get(), 
+				(context) -> new RendererObjEntity<EntityMissile>(context, "battleship"));
+		event.registerEntityRenderer(ModEntities.AIM120C.get(), 
+				(context) -> new RendererObjEntity<EntityMissile>(context, "simple_test"));
 		event.registerEntityRenderer(ModEntities.POS_MISSILE_1.get(), 
 				(context) -> new RendererEntityWeapon<EntityMissile>(context, 
 						new EntityModelMissile1(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)), 

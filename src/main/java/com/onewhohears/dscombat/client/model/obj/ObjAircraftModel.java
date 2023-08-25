@@ -1,16 +1,14 @@
-package com.onewhohears.dscombat.client.renderer;
+package com.onewhohears.dscombat.client.model.obj;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
-import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
+public class ObjAircraftModel<T extends EntityAircraft> extends ObjEntityModel<T> {
 
-public class RendererObjAircraft<T extends EntityAircraft> extends RendererObjEntity<T> {
-
-	public RendererObjAircraft(Context ctx, String modelId) {
-		super(ctx, modelId);
+	public ObjAircraftModel(String modelId) {
+		super(modelId);
 	}
 	
 	@Override

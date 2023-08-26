@@ -135,7 +135,6 @@ public class ObjEntityModels implements ResourceManagerReloadListener {
 				scale3d[2] = json.get("scalez").getAsFloat();
 			}
 		}
-		
 	}
 
 }

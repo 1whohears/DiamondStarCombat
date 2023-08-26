@@ -325,4 +325,20 @@ public class UtilAngles {
     	return pivotRot(x, y, z, Vector3f.ZP.rotationDegrees(degrees));
     }
     
+    public static Matrix4f pivotPixelsRot(float x, float y, float z, Quaternion rot) {
+    	return pivotRot(x/16f, y/16f, z/16f, rot);
+    }
+    
+    public static Matrix4f pivotPixelsRotX(float x, float y, float z, float degrees) {
+    	return pivotPixelsRot(x, y, z, Vector3f.XP.rotationDegrees(degrees));
+    }
+    
+    public static Matrix4f pivotPixelsRotY(float x, float y, float z, float degrees) {
+    	return pivotPixelsRot(x, y, z, Vector3f.YP.rotationDegrees(degrees));
+    }
+    
+    public static Matrix4f pivotPixelsRotZ(float x, float y, float z, float degrees) {
+    	return pivotPixelsRot(x, y, z, Vector3f.ZP.rotationDegrees(degrees));
+    }
+    
 }

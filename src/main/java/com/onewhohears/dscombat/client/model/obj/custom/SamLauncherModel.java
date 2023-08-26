@@ -18,7 +18,7 @@ public class SamLauncherModel extends ObjTurretModel<EntityTurret> {
 	protected Transforms getComponentTransforms(EntityTurret entity, float partialTicks) {
 		float xrothead = UtilAngles.lerpAngle(partialTicks, entity.xRotRelO, entity.getRelRotX());
 		ImmutableMap<String, Matrix4f> transforms = ImmutableMap.<String, Matrix4f>builder()
-			.put("launcher", UtilAngles.pivotRotX(0, 17f/16f, -9f/16f, xrothead))
+			.put("launcher", UtilAngles.pivotPixelsRotX(0, 17f, -9f, xrothead))
 			.build();
 		return Transforms.of(transforms);
 	}

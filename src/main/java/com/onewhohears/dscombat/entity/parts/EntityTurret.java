@@ -242,7 +242,7 @@ public class EntityTurret extends EntitySeat {
 	}
 	
 	public RotBounds getRotBounds() {
-		return new RotBounds(getRotRate(), getMinRotX(), getMaxRotX());
+		return RotBounds.create(getRotRate(), getMinRotX(), getMaxRotX());
 	}
 	
 	public void setMinRotX(float rot) {

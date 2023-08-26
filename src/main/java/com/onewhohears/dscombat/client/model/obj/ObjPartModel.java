@@ -8,7 +8,7 @@ import com.onewhohears.dscombat.entity.parts.EntityPart;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 public class ObjPartModel<T extends EntityPart> extends ObjEntityModel<T> {
-
+	
 	public ObjPartModel(String modelId) {
 		super(modelId);
 	}

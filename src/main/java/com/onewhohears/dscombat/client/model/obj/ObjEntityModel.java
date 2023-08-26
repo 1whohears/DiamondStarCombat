@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.client.model.obj;
 import javax.annotation.Nullable;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.model.obj.ObjEntityModels.ModelOverrides;
 
@@ -10,11 +11,13 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.entity.Entity;
-import net.minecraftforge.client.model.renderable.CompositeRenderable.Transforms;
 import net.minecraftforge.client.model.renderable.CompositeRenderable;
+import net.minecraftforge.client.model.renderable.CompositeRenderable.Transforms;
 import net.minecraftforge.client.model.renderable.ITextureRenderTypeLookup;
 
 public class ObjEntityModel<T extends Entity> {
+	
+	public static final Matrix4f INVISIBLE = Matrix4f.createScaleMatrix(0, 0, 0);
 	
 	public final String modelId;
 	

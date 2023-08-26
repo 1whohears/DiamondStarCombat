@@ -291,7 +291,7 @@
       "zRot": 0.0
     }
   ],
-  "stealth": 0.6,
+  "stealth": 0.05,
   "throttledown": 0.04,
   "throttleup": 0.04,
   "turn_radius": 0.0,

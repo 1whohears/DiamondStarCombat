@@ -51,7 +51,6 @@ public abstract class EntityMissile extends EntityBullet {
 	public EntityMissile(EntityType<? extends EntityMissile> type, Level level) {
 		super(type, level);
 		if (!level.isClientSide) NonTickingMissileManager.addMissile(this);
-		if (level.isClientSide) engineSound();
 		throughWaterDepth = 0;
 		throughBlocksDepth = 0;
 	}
@@ -133,6 +132,7 @@ public abstract class EntityMissile extends EntityBullet {
 					-move.x * 0.5D + random.nextGaussian() * 0.05D, 
 					-move.y * 0.5D + random.nextGaussian() * 0.05D, 
 					-move.z * 0.5D + random.nextGaussian() * 0.05D);
+			if (firstTick) engineSound();
 		}
 		super.tick();
 		tickLerp();

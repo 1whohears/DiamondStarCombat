@@ -123,6 +123,12 @@ public class ModEntities {
 					ModSounds.BOAT_1, 2), 
 					EntityDimensions.scalable(3.0f,1.5f)));
 	
+	public static final RegistryObject<EntityType<EntityBoat>> GRONK_BATTLESHIP = ENTITIES.register("gronk_battleship", 
+			() -> createEntityTypeFar((type, level) -> new EntityBoat(type, level, 
+					DefaultAircraftPresets.DEFAULT_GRONK_BATTLESHIP,
+					ModSounds.BOAT_1, 6), 
+					EntityDimensions.scalable(14f,6f)));
+	
 	// SUBMARINES
 	
 	public static final RegistryObject<EntityType<EntitySubmarine>> ANDOLF_SUB = ENTITIES.register("andolf_sub", 
@@ -202,6 +208,17 @@ public class ModEntities {
 			() -> createEntityTypeFar(AntiRadarMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
 	public static final RegistryObject<EntityType<TorpedoMissile>> TORPEDO_MISSILE_1 = ENTITIES.register("torpedo_missile_1", 
 			() -> createEntityTypeFar(TorpedoMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
+	
+	public static final RegistryObject<EntityType<IRMissile>> AIM9L = ENTITIES.register("aim9l", 
+			() -> createEntityTypeFar(IRMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
+	public static final RegistryObject<EntityType<IRMissile>> AIM9P5 = ENTITIES.register("aim9p5", 
+			() -> createEntityTypeFar(IRMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
+	public static final RegistryObject<EntityType<IRMissile>> AIM9X = ENTITIES.register("aim9x", 
+			() -> createEntityTypeFar(IRMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
+	public static final RegistryObject<EntityType<TrackEntityMissile>> AIM120B = ENTITIES.register("aim120b", 
+			() -> createEntityTypeFar(TrackEntityMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
+	public static final RegistryObject<EntityType<TrackEntityMissile>> AIM120C = ENTITIES.register("aim120c", 
+			() -> createEntityTypeFar(TrackEntityMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
 	
 	public static final RegistryObject<EntityType<EntityFlare>> FLARE = ENTITIES.register("flare", 
 			() -> createEntityType(EntityFlare::new, EntityDimensions.scalable(0f, 0f)));

@@ -9,7 +9,7 @@
   "damage": 40.0,
   "destroyTerrain": true,
   "displayName": "preset.dscombat.aim9l",
-  "entityTypeKey": "dscombat:ir_missile_1",
+  "entityTypeKey": "dscombat:aim9l",
   "explosionRadius": 3.0,
   "explosive": true,
   "fireRate": 20,

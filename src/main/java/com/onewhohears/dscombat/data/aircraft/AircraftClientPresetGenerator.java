@@ -204,6 +204,10 @@ public class AircraftClientPresetGenerator extends JsonPresetGenerator<AircraftC
 				.addUIPos("internal_3", axcel_middle_x-9, 100)
 				.addUIPos("internal_4", axcel_middle_x+9, 100)
 				.build());
+		addPresetToGenerate(AircraftClientPreset.Builder.create(DSCombatMod.MODID, "gronk_battleship")
+				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/gronk_battleship.png")
+				.makeOneTexture("dscombat:textures/entity/boats/battleship")
+				.build());
 	}
 	
 	public AircraftClientPresetGenerator(DataGenerator output) {

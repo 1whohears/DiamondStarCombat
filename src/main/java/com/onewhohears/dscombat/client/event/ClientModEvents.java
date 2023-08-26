@@ -181,6 +181,9 @@ public final class ClientModEvents {
 		event.registerEntityRenderer(ModEntities.AIM120C.get(), 
 				(context) -> new RendererObjEntity<EntityMissile>(context, 
 						new ObjEntityModel<>("aim120b")));
+		event.registerEntityRenderer(ModEntities.PAC3.get(), 
+				(context) -> new RendererObjEntity<EntityMissile>(context, 
+						new ObjEntityModel<>("aim120b")));
 		event.registerEntityRenderer(ModEntities.POS_MISSILE_1.get(), 
 				(context) -> new RendererEntityWeapon<EntityMissile>(context, 
 						new EntityModelMissile1(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)), 

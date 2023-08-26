@@ -94,8 +94,8 @@ public class ObjEntityModels implements ResourceManagerReloadListener {
 				tokenizer.close();
 				unbakedModels.putIfAbsent(name, model);
 				System.out.println("ADDING = "+key);
-				model.getConfigurableComponentNames().forEach((n) -> {System.out.println(n);});
-				System.out.println(" ");
+				//model.getConfigurableComponentNames().forEach((n) -> {System.out.println(n);});
+				//System.out.println(" ");
 			} catch (Exception e) {
 				System.out.println("ERROR: SKIPPING "+key);
 				e.printStackTrace();

@@ -23,11 +23,11 @@ public class ObjEntityModel<T extends Entity> {
 	}
 	
 	public void render(T entity, PoseStack poseStack, MultiBufferSource bufferSource, int lightmap, float partialTicks) {
-		handleOverrides(entity, partialTicks, poseStack);
+		handleGlobalOverrides(entity, partialTicks, poseStack);
 		rotate(entity, partialTicks, poseStack);
 		getModel().render(poseStack, bufferSource, getTextureRenderTypeLookup(), 
 				getLight(entity, lightmap), getOverlay(entity), partialTicks, 
-				getTransforms(entity, partialTicks));
+				getComponentTransforms(entity, partialTicks));
 	}
 	
 	protected void rotate(T entity, float partialTicks, PoseStack poseStack) {
@@ -35,10 +35,9 @@ public class ObjEntityModel<T extends Entity> {
 		poseStack.mulPose(Vector3f.XP.rotationDegrees(entity.getViewXRot(partialTicks)));
 	}
 	
-	protected void handleOverrides(T entity, float partialTicks, PoseStack poseStack) {
+	protected void handleGlobalOverrides(T entity, float partialTicks, PoseStack poseStack) {
 		ModelOverrides o = getModelOverride();
 		if (o == null) return;
-		if (o.rot180) poseStack.mulPose(Vector3f.YN.rotationDegrees(180));
 		poseStack.scale(o.scale * o.scale3d[0], o.scale * o.scale3d[1], o.scale * o.scale3d[2]);
 	}
 	
@@ -52,7 +51,7 @@ public class ObjEntityModel<T extends Entity> {
 		return ObjEntityModels.get().getModelOverride(modelId);
 	}
 	
-	protected Transforms getTransforms(T entity, float partialTicks) {
+	protected Transforms getComponentTransforms(T entity, float partialTicks) {
 		return Transforms.EMPTY;
 	}
 	

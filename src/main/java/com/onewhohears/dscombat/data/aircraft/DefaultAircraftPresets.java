@@ -700,7 +700,7 @@ public class DefaultAircraftPresets {
 			.addIngredient(ModItems.FUSELAGE.getId(), 1)
 			.addIngredient(ModItems.SEAT.getId(), 2)
 			.addIngredient("minecraft:gold_ingot", 5)
-			.addEmptySlot("cargo_bed_1", SlotType.HEAVY_TURRET, 0, 0.95, -1.5, 0)
+			.addEmptySlot("cargo_bed_1", SlotType.HEAVY_TURRET, 0, 1, -2.75, 0)
 			.addEmptySlot("frame_1", SlotType.ADVANCED_FRAME, 0, 2.95, 1, 180)
 			.addEmptySlot("internal_1", SlotType.SPIN_ENGINE)
 			.addEmptySlot("internal_2", SlotType.INTERNAL)

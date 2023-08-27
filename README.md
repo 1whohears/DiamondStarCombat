@@ -23,4 +23,6 @@ __**pretzelpenguin777**__: Improved **Noah Chopper**, **Javi Plane**, and **Axce
 
 __**gabyloko**__: Improved **Andolf Sub Model** and **Spanish Translations**
 
+__**.ceoofgoogle**__: All the Big Epic Boat modles.
+
 __**d_water_loo**__: **Russian Translations**

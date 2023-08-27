@@ -60,14 +60,14 @@ public class DataSerializers {
 
 		@Override
 		public void write(FriendlyByteBuf buffer, Vec3 v) {
-			buffer.writeDouble(v.x);
-			buffer.writeDouble(v.y);
-			buffer.writeDouble(v.z);
+			buffer.writeFloat((float)v.x);
+			buffer.writeFloat((float)v.y);
+			buffer.writeFloat((float)v.z);
 		}
 
 		@Override
 		public Vec3 read(FriendlyByteBuf buffer) {
-			return new Vec3(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
+			return new Vec3(buffer.readFloat(), buffer.readFloat(), buffer.readFloat());
 		}
 
 		@Override

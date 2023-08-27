@@ -101,37 +101,31 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 	protected void renderLabels(PoseStack stack, int mouseX, int mouseY) {
 		font.draw(stack, title, titleLabelX+38, titleLabelY, 0x404040);
 		font.draw(stack, playerInventoryTitle, inventoryLabelX+38, inventoryLabelY+56, 0x404040);
-		//font.draw(stack, Component.translatable("ui.dscombat.ingredients"), titleLabelX+122, titleLabelY+34, 0x00aa00);
 		// plane stats
 		if (AircraftPresets.get().getCraftablePresetNum() == 0) return;
 		AircraftPreset ap = AircraftPresets.get().getCraftablePresets()[planeIndex];
 		font.draw(stack, ap.getDisplayNameComponent(), titleLabelX+38, titleLabelY+34, 0x000000);
 		CompoundTag data = ap.getDataAsNBT();
-		float scale = 0.5f;
+		float scale = 0.7f;
 		stack.scale(scale, scale, scale);
 		float invScale = 1f / scale;
 		int startX = (int)((float)(titleLabelX+38) * invScale);
 		int startY = (int)((float)(titleLabelY+43) * invScale);
-		int initY = startY;
-		// FIXME 2 fix aircraft preset display stats
 		font.draw(stack, Component.literal("Health: "+data.getDouble("max_health")), startX, startY, 0x404040);
 		startY += font.lineHeight;
-		font.draw(stack, Component.literal("Speed: "+data.getDouble("max_speed")), startX, startY, 0x404040);
+		font.draw(stack, Component.literal("Max Speed: "+(int)(data.getDouble("max_speed")*20)+" m/s"), startX, startY, 0x404040);
 		startY += font.lineHeight;
-		font.draw(stack, Component.literal("Weight: "+data.getDouble("weight")), startX, startY, 0x404040);
+		font.draw(stack, Component.literal("Mass: "+data.getDouble("mass")+" Anvils"), startX, startY, 0x404040);
 		startY += font.lineHeight;
-		font.draw(stack, Component.literal("Wing Area: "+data.getDouble("surfacearea")), startX, startY, 0x404040);
-		startY = initY;
-		startX += 80;
-		font.draw(stack, Component.literal("Stealth: "+data.getDouble("stealth")), startX, startY, 0x404040);
+		font.draw(stack, Component.literal("Radar Absorption: "+data.getDouble("stealth")), startX, startY, 0x404040);
 		startY += font.lineHeight;
-		font.draw(stack, Component.literal("Heat: "+data.getDouble("idleheat")), startX, startY, 0x404040);
+		font.draw(stack, Component.literal("Idle Heat: "+data.getDouble("idleheat")), startX, startY, 0x404040);
 		startY += font.lineHeight;
-		font.draw(stack, Component.literal("Yaw Rate: "+data.getDouble("maxyaw")), startX, startY, 0x404040);
+		font.draw(stack, Component.literal("Yaw: "+(int)(data.getDouble("maxyaw")*20)+" deg/tick"), startX, startY, 0x404040);
 		startY += font.lineHeight;
-		font.draw(stack, Component.literal("Pitch Rate: "+data.getDouble("maxpitch")), startX, startY, 0x404040);
+		font.draw(stack, Component.literal("Pitch: "+(int)(data.getDouble("maxpitch")*20)+" deg/tick"), startX, startY, 0x404040);
 		startY += font.lineHeight;
-		font.draw(stack, Component.literal("Roll Rate: "+data.getDouble("maxroll")), startX, startY, 0x404040);
+		font.draw(stack, Component.literal("Roll: "+(int)(data.getDouble("maxroll")*20)+" deg/tick"), startX, startY, 0x404040);
 		stack.scale(1/scale, 1/scale, 1/scale);
 		// HOW 2 display plane model
 		//Minecraft m = Minecraft.getInstance();

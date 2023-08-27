@@ -18,6 +18,18 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 
+/**
+ * a json file from datapacks reader for this mod's preset system.
+ * comes with ways to sort the presets and synch the preset info with the client.
+ * see {@link com.onewhohears.dscombat.data.aircraft.AircraftPresets},
+ * {@link com.onewhohears.dscombat.data.weapon.WeaponPresets},
+ * and {@link com.onewhohears.dscombat.data.radar.RadarPresets} for examples.
+ * 
+ * see {@link JsonPresetGenerator} for a way to generate json presets.
+ * 
+ * @author 1whohears
+ * @param <T> the type of preset this reader builds from json files
+ */
 public abstract class JsonPresetReloadListener<T extends JsonPreset> extends SimpleJsonResourceReloadListener {
 	
 	protected final Map<String, T> presetMap = new HashMap<>();

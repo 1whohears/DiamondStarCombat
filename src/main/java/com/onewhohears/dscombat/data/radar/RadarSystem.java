@@ -26,6 +26,15 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
 
+/**
+ * manages the radar/targeting/rwr system for {@link EntityAircraft}.
+ * individual radars are abstracted into {@link RadarData}.
+ * individual radars update the radar system's link of {@link RadarPing} on the server side.
+ * the updated link of pings are then sent to the client. 
+ * the client then tells the server which ping is selected.
+ * then the {@link WeaponSystem} gets the target entity from here.
+ * @author 1whohears
+ */
 public class RadarSystem {
 	
 	private final EntityAircraft parent;
@@ -96,23 +105,25 @@ public class RadarSystem {
 		// PLANE RADARS
 		for (RadarData r : radars) r.tickUpdateTargets(parent, targets);
 		// DATA LINK
-		// FIXME 3 data link is broken on servers?
-		if (hasDataLink() && parent.tickCount % 20 == 0) {
+		if (parent.tickCount % 20 == 0) {
 			clearDataLink();
-			Entity controller = parent.getControllingPassenger();
-			if (!(controller instanceof Player player)) return;
-			List<? extends Player> players = parent.level.players();
-			for (Player p : players) {
-				if (player.equals(p)) continue;
-				if (!player.isAlliedTo(p)) continue;
-				if (!(p.getRootVehicle() instanceof EntityAircraft plane)) continue;
-				if (!plane.radarSystem.hasDataLink()) continue;
-				if (plane.equals(parent)) continue;
-				for (RadarPing rp : plane.radarSystem.targets) {
-					if (rp.id == parent.getId()) continue;
-					if (hasTarget(rp.id)) continue;
-					targets.add(rp.getCopy(true));
-				}
+			if (hasDataLink()) {
+				Entity controller = parent.getControllingPassenger();
+				if (!(controller instanceof Player player)) return;
+				List<? extends Player> players = parent.level.players();
+				for (Player p : players) {
+					if (player.equals(p)) continue;
+					if (!player.isAlliedTo(p)) continue;
+					if (!(p.getRootVehicle() instanceof EntityAircraft plane)) continue;
+					if (!plane.radarSystem.hasDataLink()) continue;
+					if (plane.equals(parent)) continue;
+					for (RadarPing rp : plane.radarSystem.targets) {
+						if (rp.id == parent.getId()) continue;
+						if (rp.isShared()) continue;
+						if (hasTarget(rp.id)) continue;
+						targets.add(rp.getCopy(true));
+					}
+				} 
 			}
 		}
 		// PICK PREVIOUS TARGET

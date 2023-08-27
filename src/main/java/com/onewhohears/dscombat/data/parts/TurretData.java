@@ -15,6 +15,7 @@ import com.onewhohears.dscombat.init.ModEntities;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -144,27 +145,23 @@ public class TurretData extends SeatData {
 	
 	public static class RotBounds {
 		public final float minRotX, maxRotX;
-		//public final float minRotY, maxRotY;
 		public final float rotRate;
-		public RotBounds(float rotRate, /*float minRotY,*/ float minRotX, /*float maxRotY,*/ float maxRotX) {
+		public static RotBounds create(float rotRate, float maxLookUpAngle, float maxLookDownAngle) {
+			return new RotBounds(Mth.abs(rotRate), -Mth.abs(maxLookUpAngle), Mth.abs(maxLookDownAngle));
+		}
+		private RotBounds(float rotRate, float minRotX, float maxRotX) {
 			this.minRotX = minRotX;
 			this.maxRotX = maxRotX;
-			//this.minRotY = minRotY;
-			//this.maxRotY = maxRotY;
 			this.rotRate = rotRate;
 		}
 		public RotBounds(CompoundTag tag) {
 			this.minRotX = tag.getFloat("minRotX");
 			this.maxRotX = tag.getFloat("maxRotX");
-			//this.minRotY = tag.getFloat("minRotY");
-			//this.maxRotY = tag.getFloat("maxRotY");
 			this.rotRate = tag.getFloat("rotRate");
 		}
 		public void write(CompoundTag tag) {
 			tag.putFloat("minRotX", minRotX);
 			tag.putFloat("maxRotX", maxRotX);
-			//tag.putFloat("minRotY", minRotY);
-			//tag.putFloat("maxRotY", maxRotY);
 			tag.putFloat("rotRate", rotRate);
 		}
 		public RotBounds(FriendlyByteBuf buffer) {
@@ -177,8 +174,6 @@ public class TurretData extends SeatData {
 		public void write(FriendlyByteBuf buffer) {
 			buffer.writeFloat(minRotX);
 			buffer.writeFloat(maxRotX);
-			//buffer.writeFloat(minRotY);
-			//buffer.writeFloat(maxRotY);
 			buffer.writeFloat(rotRate);
 		}
 	}

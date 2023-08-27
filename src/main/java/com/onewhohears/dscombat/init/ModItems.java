@@ -15,6 +15,7 @@ import com.onewhohears.dscombat.item.ItemEngine;
 import com.onewhohears.dscombat.item.ItemFlareDispenser;
 import com.onewhohears.dscombat.item.ItemFuelTank;
 import com.onewhohears.dscombat.item.ItemGasCan;
+import com.onewhohears.dscombat.item.ItemParachute;
 import com.onewhohears.dscombat.item.ItemPart;
 import com.onewhohears.dscombat.item.ItemRadarPart;
 import com.onewhohears.dscombat.item.ItemRepairTool;
@@ -25,6 +26,8 @@ import com.onewhohears.dscombat.item.ItemWeaponPart;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.RecordItem;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -58,6 +61,17 @@ public class ModItems {
 			return new ItemStack(ModItems.NOAH_CHOPPER.get());
 		}
 	};
+	
+	// DISKS
+	
+	// IDEA 8.1 Jupiter Missiles and Anadyr from blowback ost
+	// IDEA 8.2 disk 911?
+	public static final RegistryObject<Item> MISSILE_KNOWS_WHERE_DISC = ITEMS.register("the_missile_knows_disc", 
+		() -> new RecordItem(15, () -> ModSounds.MISSILE_KNOWS_WHERE.get(), 
+			(new Item.Properties()).stacksTo(1).tab(CreativeModeTab.TAB_MISC).rarity(Rarity.RARE), 1980));
+	public static final RegistryObject<Item> ORANGE_TESLA_DISC = ITEMS.register("orange_tesla_disc", 
+		() -> new RecordItem(14, () -> ModSounds.ORANGE_TESLA.get(), 
+			(new Item.Properties()).stacksTo(1).tab(CreativeModeTab.TAB_MISC).rarity(Rarity.RARE), 1080));
 	
 	// PARTS
 	public static final RegistryObject<Item> TI83 = ITEMS.register("ti83", 
@@ -96,6 +110,8 @@ public class ModItems {
 			() -> new ItemRepairTool(20, 5));
 	public static final RegistryObject<Item> THICK_WRENCH = ITEMS.register("thick_wrench", 
 			() -> new ItemRepairTool(200, 5));
+	public static final RegistryObject<Item> PARACHUTE = ITEMS.register("parachute", 
+			() -> new ItemParachute());
 	
 	// CREATIVE WANDS
 	public static final RegistryObject<Item> NO_CONSUME_WAND = ITEMS.register("no_consume_wand", 
@@ -161,10 +177,12 @@ public class ModItems {
 			() -> new ItemRadarPart(1.6f, "wr1k", SlotType.INTERNAL_ADVANCED));
 	public static final RegistryObject<Item> GPR20 = ITEMS.register("gpr20", 
 			() -> new ItemRadarPart(3f, "gpr20", SlotType.INTERNAL_ADVANCED));
+	public static final RegistryObject<Item> GPR100 = ITEMS.register("gpr100", 
+			() -> new ItemRadarPart(3f, "gpr100", SlotType.INTERNAL_ADVANCED));
 	public static final RegistryObject<Item> AR20K = ITEMS.register("ar20k", 
 			() -> new ItemRadarPart(7f, "ar20k", SlotType.EXTERNAL_HEAVY));
 	public static final RegistryObject<Item> AXCEL_TRUCK_RADAR = ITEMS.register("axcel_truck_radar", 
-			() -> new ItemRadarPart(3f, "axcel_truck_radar", SlotType.INTERNAL_ADVANCED));
+			() -> new ItemRadarPart(3f, "axcel_truck_radar", SlotType.EXTERNAL_ADVANCED));
 	// IDEA 2 passive under water sonar doesn's show RWR warning
 	
 	// SEATS
@@ -173,21 +191,21 @@ public class ModItems {
 	
 	// TURRENTS
 	public static final RegistryObject<Item> MINIGUN_TURRET = ITEMS.register("minigun_turret", 
-			() -> new ItemTurret(5f, SlotType.TURRET_ALL, 
+			() -> new ItemTurret(5f, SlotType.TURRET_MED, 
 					ModEntities.MINIGUN_TURRET.getId().toString(), "20mm",
-					new RotBounds(2f, -40f, 40f)));
+					RotBounds.create(2.5f,50f, 50f)));
 	public static final RegistryObject<Item> HEAVY_TANK_TURRET = ITEMS.register("heavy_tank_turret", 
 			() -> new ItemTurret(9f, SlotType.TURRET_HEAVY, 
 					ModEntities.HEAVY_TANK_TURRET.getId().toString(), "120mmhe",
-					new RotBounds(1.5f, -30f, 30f)));
+					RotBounds.create(1.0f, 30f, 30f)));
 	public static final RegistryObject<Item> STEVE_UP_SMASH = ITEMS.register("steve_up_smash", 
 			() -> new ItemTurret(13f, SlotType.TURRET_HEAVY, 
 					ModEntities.STEVE_UP_SMASH.getId().toString(), "aim9p5",
-					new RotBounds(1f, -10f, 25f)));
+					RotBounds.create(1.8f, 25f, 25f)));
 	public static final RegistryObject<Item> SAM_LAUNCHER = ITEMS.register("sam_launcher", 
 			() -> new ItemTurret(17f, SlotType.TURRET_HEAVY, 
-					ModEntities.SAM_LAUNCHER.getId().toString(), "aim120b",
-					new RotBounds(0.7f, -5f, 25f)));
+					ModEntities.SAM_LAUNCHER.getId().toString(), "pac3",
+					RotBounds.create(1.3f, 25f, 25f)));
 	
 	// FLARE DISPENSERS
 	public static final RegistryObject<Item> BASIC_FLARE_DISPENSER = ITEMS.register("basic_flare_dispenser", 
@@ -258,7 +276,8 @@ public class ModItems {
 			() -> new ItemAmmo(4, "torpedo1")); 
 	public static final RegistryObject<Item> RIFEL1 = ITEMS.register("rifel1", 
 			() -> new ItemAmmo(4, "rifel1")); 
-	// IDEA 7 bunker buster (go through some blocks then explode)
+	public static final RegistryObject<Item> GRUETZ_BUNKER_BUSTER = ITEMS.register("gruetz_bunker_buster", 
+			() -> new ItemAmmo(1, "gruetz_bunker_buster")); 
 	
 	// PLANES
 	public static final RegistryObject<Item> JAVI_PLANE = ITEMS.register("javi_plane", 
@@ -299,6 +318,9 @@ public class ModItems {
 	public static final RegistryObject<Item> NATHAN_BOAT = ITEMS.register("nathan_boat", 
 			() -> new ItemAircraft(ModEntities.NATHAN_BOAT.get(), 
 					DefaultAircraftPresets.DEFAULT_NATHAN_BOAT));
+	public static final RegistryObject<Item> GRONK_BATTLESHIP = ITEMS.register("gronk_battleship", 
+			() -> new ItemAircraft(ModEntities.GRONK_BATTLESHIP.get(), 
+					DefaultAircraftPresets.DEFAULT_GRONK_BATTLESHIP));
 	
 	// SUBMARINES
 	public static final RegistryObject<Item> ANDOLF_SUB = ITEMS.register("andolf_sub", 

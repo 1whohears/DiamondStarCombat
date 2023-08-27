@@ -6,7 +6,7 @@
   "scanAir": false,
   "scanAircraft": true,
   "scanGround": true,
-  "scanMobs": false,
+  "scanMobs": true,
   "scanPlayers": true,
   "scanRate": 50,
   "sensitivity": 0.8,

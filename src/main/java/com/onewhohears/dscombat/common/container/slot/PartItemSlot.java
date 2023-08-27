@@ -4,7 +4,6 @@ import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.util.UtilParse;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
@@ -14,8 +13,8 @@ public class PartItemSlot extends Slot {
 	
 	public final PartSlot data;
 	
-	public PartItemSlot(Container container, int slot, PartSlot data) {
-		super(container, slot, data.getUIX(), data.getUIY());
+	public PartItemSlot(Container container, int slot, PartSlot data, int x, int y) {
+		super(container, slot, x, y);
 		this.data = data;
 	}
 	
@@ -38,9 +37,7 @@ public class PartItemSlot extends Slot {
 	@Override
 	public boolean mayPlace(ItemStack stack) {
 		//System.out.println("is "+stack+" compatible with tag "+stack.getOrCreateTag());
-		CompoundTag tag = stack.getOrCreateTag();
-		if (tag.isEmpty()) return false;
-		PartData part = UtilParse.parsePartFromCompound(tag);
+		PartData part = UtilParse.parsePartFromItem(stack);
 		if (part == null) return false;
 		if (data.isCompatible(part)) return true;
 		return false;

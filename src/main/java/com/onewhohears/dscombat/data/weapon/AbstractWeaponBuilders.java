@@ -21,7 +21,7 @@ public class AbstractWeaponBuilders {
 		
 		@Override
 		public <T extends JsonPreset> T build() {
-			getData().addProperty("type", type.ordinal());
+			getData().addProperty("type", type.getId());
 			return super.build();
 		}
 
@@ -119,6 +119,18 @@ public class AbstractWeaponBuilders {
 		
 	}
 	
+	public abstract static class BunkerBusterBuilder<C extends BunkerBusterBuilder<C>> extends BombBuilder<C> {
+		
+		protected BunkerBusterBuilder(String namespace, String name, JsonPresetFactory<? extends BunkerBusterData> sup, WeaponType type) {
+			super(namespace, name, sup, type);
+		}
+		
+		public C setBlockStrength(float blockStrength) {
+			return setFloat("blockStrength", blockStrength);
+		}
+		
+	}
+	
 	public abstract static class MissileBuilder<C extends MissileBuilder<C>> extends BulletBuilder<C> {
 		
 		protected MissileBuilder(String namespace, String name, JsonPresetFactory<? extends MissileData> sup, WeaponType type) {
@@ -160,7 +172,7 @@ public class AbstractWeaponBuilders {
 		 * Track Missile only
 		 */
 		public C setTargetType(TargetType targetType) {
-			return setInt("targetType", targetType.ordinal());
+			return setString("targetType", targetType.name());
 		}
 		
 		/**

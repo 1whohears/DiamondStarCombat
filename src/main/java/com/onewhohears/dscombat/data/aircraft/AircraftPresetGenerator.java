@@ -32,6 +32,7 @@ public class AircraftPresetGenerator extends JsonPresetGenerator<AircraftPreset>
 		addPresetToGenerate(DefaultAircraftPresets.EMPTY_SMALL_ROLLER);
 		addPresetToGenerate(DefaultAircraftPresets.UNARMED_SMALL_ROLLER);
 		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_SMALL_ROLLER);
+		addPresetToGenerate(DefaultAircraftPresets.TANK_SMALL_ROLLER);
 		
 		addPresetToGenerate(DefaultAircraftPresets.EMPTY_NATHAN_BOAT);
 		addPresetToGenerate(DefaultAircraftPresets.UNARMED_NATHAN_BOAT);
@@ -51,6 +52,10 @@ public class AircraftPresetGenerator extends JsonPresetGenerator<AircraftPreset>
 		
 		addPresetToGenerate(DefaultAircraftPresets.EMPTY_AXCEL_TRUCK);
 		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_AXCEL_TRUCK);
+		
+		addPresetToGenerate(DefaultAircraftPresets.EMPTY_GRONK_BATTLESHIP);
+		addPresetToGenerate(DefaultAircraftPresets.UNARMED_GRONK_BATTLESHIP);
+		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_GRONK_BATTLESHIP);
 	}
     
     public AircraftPresetGenerator(DataGenerator output) {

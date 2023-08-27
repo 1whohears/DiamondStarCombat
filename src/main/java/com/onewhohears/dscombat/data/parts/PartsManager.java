@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAircraftFuel;
-import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
 import com.onewhohears.dscombat.data.parts.EngineData.EngineType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.item.ItemSeat;
@@ -17,11 +16,25 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
+import net.minecraft.world.Containers;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.PacketDistributor;
 
+/**
+ * manages the parts/inventory system for {@link EntityAircraft}.
+ * reads the entity's nbt to load the saved parts.
+ * communicates with {@link com.onewhohears.dscombat.data.radar.WeaponSystem} 
+ * and {@link com.onewhohears.dscombat.data.radar.RadarSystem} to update a vehicle's 
+ * available weapons/radars based on parts. 
+ * used to add/update/remove parts.
+ * used to access various information about the parts in a vehicle.
+ * this part manager has a list of {@link PartSlot}.
+ * each {@link PartSlot} is either empty or has {@link PartData}.
+ * will synch part data with client.
+ * @author 1whohears
+ */
 public class PartsManager {
 	
 	public static final int SLOT_VERSION = 1;
@@ -36,28 +49,36 @@ public class PartsManager {
 	}
 	
 	/**
-	 * deletes all slot data currently in the list and reads from this compound
-	 * @param compound
+	 * deletes all cached slot data.
+	 * reads new slot data from the entity's nbt and preset data.
+	 * preset data from a data pack an data the entity spawned with are merged 
+	 * so that old entities can be updated (example: if slot positions are changed for a new model)
+	 * while preserving changes a player made to a vehicle's inventory.
+	 * @param entityNbt
 	 */
-	public void read(CompoundTag compound) {
+	public void read(CompoundTag entityNbt, CompoundTag presetNbt) {
 		slots.clear();
-		ListTag list = compound.getList("slots", 10);
-		if (compound.getInt("slot_version") < SLOT_VERSION) fixSlots(list);
-		for (int i = 0; i < list.size(); ++i) {
-			CompoundTag tag = list.getCompound(i);
-			slots.add(new PartSlot(tag));
+		ListTag entityNbtList = entityNbt.getList("slots", 10);
+		ListTag presetNbtList = presetNbt.getList("slots", 10);
+		for (int i = 0; i < entityNbtList.size(); ++i) {
+			CompoundTag entitySlot = entityNbtList.getCompound(i);
+			CompoundTag presetSlot = findPresetSlot(entitySlot, presetNbtList);
+			slots.add(new PartSlot(entitySlot, presetSlot));
 		}
 		readData = true;
 	}
 	
-	private void fixSlots(ListTag list) {
-		ListTag presetList = AircraftPresets.get().getPreset(parent.preset)
-				.getDataAsNBT().getList("slots", 10);
-		for (int i = 0; i < presetList.size(); ++i) {
-			CompoundTag presetSlot = presetList.getCompound(i);
-			CompoundTag slot = list.getCompound(i);
-			slot.putInt("slot_type", presetSlot.getInt("slot_type"));
+	@Nullable
+	private CompoundTag findPresetSlot(CompoundTag entitySlot, ListTag presetNbtList) {
+		String slotId = entitySlot.getString("name");
+		for (int i = 0; i < presetNbtList.size(); ++i) {
+			CompoundTag presetSlot = presetNbtList.getCompound(i);
+			String presetSlotId = presetSlot.getString("name");
+			if (PartSlot.getSlotId(slotId).equals(PartSlot.getSlotId(presetSlotId))) {
+				return presetSlot;
+			}
 		}
+		return null;
 	}
 	
 	private void createNewInventory() {
@@ -102,7 +123,7 @@ public class PartsManager {
 				parent.rideAvailableSeat(pilot);
 			}
 		} else {
-			PartData data = UtilParse.parsePartFromCompound(stack.getTag());
+			PartData data = UtilParse.parsePartFromItem(stack);
 			if (data == null) {
 				System.out.println("ERROR! COULD NOT GET PART DATA FROM "+stack+" "+stack.getTag());
 				return;
@@ -173,7 +194,7 @@ public class PartsManager {
 	
 	@Nullable
 	public PartSlot getSlot(String slotName) {
-		for (PartSlot p : slots) if (p.getName().equals(slotName)) return p;
+		for (PartSlot p : slots) if (p.getSlotId().equals(slotName)) return p;
 		return null;
 	}
 	
@@ -285,6 +306,19 @@ public class PartsManager {
 	
 	public List<PartSlot> getSlots() {
 		return slots;
+	}
+	
+	public void dropAllItems() {
+		if (parent.level.isClientSide) return;
+		Containers.dropContents(parent.level, parent.blockPosition().above(1), getInventory());
+		removeAllParts();
+	}
+	
+	public void removeAllParts() {
+		if (parent.level.isClientSide) return;
+		for (int i = 0; i < slots.size(); ++i) {
+			if (!slots.get(i).isSeat()) slots.get(i).removePartData(parent);
+		}
 	}
 	
 	public Container getInventory() {

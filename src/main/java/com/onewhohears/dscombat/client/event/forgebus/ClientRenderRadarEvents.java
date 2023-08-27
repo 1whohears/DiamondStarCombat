@@ -38,7 +38,7 @@ public final class ClientRenderRadarEvents {
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void renderLevelStage(RenderLevelStageEvent event) {
-		if (event.getStage() != Stage.AFTER_PARTICLES) return;
+		if (event.getStage() != Stage.AFTER_TRIPWIRE_BLOCKS) return;
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
 		if (player == null || !player.isPassenger()) return;
@@ -55,13 +55,14 @@ public final class ClientRenderRadarEvents {
 		RenderSystem.disableTexture();
 		GL11.glEnable(GL11.GL_LINE_SMOOTH);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
-		// TODO 1.1 show last known target location
+		// TODO 6.1 show last known target location
 		for (int i = 0; i < pings.size(); ++i) {
 			RadarPing p = pings.get(i);
 			
 			if (i == selected) setSelectedColor();
 			else if (i == ClientInputEvents.getHoverIndex()) setHoverColor();
 			else if (p.isFriendly) setFriendlyColor();
+			else if (p.isShared()) setSharedColor();
 			else setDefaultColor();
 			
 			var tesselator = Tesselator.getInstance();
@@ -116,6 +117,10 @@ public final class ClientRenderRadarEvents {
 	
 	private static void setFriendlyColor() {
 		colorR = 0; colorG = 0; colorB = 255; colorA = 255;
+	}
+	
+	private static void setSharedColor() {
+		colorR = 102; colorG = 205; colorB = 170; colorA = 255;
 	}
 	
 	private static void closeBox(BufferBuilder buffer, double x, double y, double z, double d) {

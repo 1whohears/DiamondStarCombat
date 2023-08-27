@@ -12,6 +12,7 @@ import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
@@ -120,6 +121,13 @@ public abstract class MissileData extends BulletData {
 			missile.setDeltaMovement(direction.scale(1.0));
 		}
 		return missile;
+	}
+	
+	@Override
+	public void addToolTips(List<Component> tips) {
+		super.addToolTips(tips);
+		if (getFov() != -1) tips.add(Component.literal("FOV: ").append(getFov()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		tips.add(Component.literal("Turn Radius: ").append(getTurnRadius()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 	}
 	
 	@Override

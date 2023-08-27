@@ -22,6 +22,7 @@ import com.onewhohears.dscombat.util.math.UtilAngles;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -155,18 +156,20 @@ public abstract class WeaponData extends JsonPreset {
 				1f, 1f);
 		setLaunchSuccess(1, owner, consume);
 		updateClientAmmo(vehicle);
+		vehicle.lastShootTime = vehicle.tickCount;
 		return true;
 	}
 	
-	public boolean shootFromTurret(Level level, Entity owner, Vec3 direction, Vec3 pos, @Nullable EntityAircraft parent, boolean consume) {
+	public boolean shootFromTurret(Level level, Entity owner, Vec3 direction, Vec3 pos, @Nullable EntityAircraft vehicle, boolean consume) {
 		overrideGroundCheck = true;
-		EntityWeapon w = getShootEntity(level, owner, pos, direction, parent);
+		EntityWeapon w = getShootEntity(level, owner, pos, direction, vehicle);
 		if (w == null) return false;
 		level.addFreshEntity(w);
 		level.playSound(null, w.blockPosition(), 
 				getShootSound(), SoundSource.PLAYERS, 
 				1f, 1f);
 		setLaunchSuccess(1, owner, consume);
+		if (vehicle != null) vehicle.lastShootTime = vehicle.tickCount;
 		return true;
 	}
 	
@@ -177,7 +180,7 @@ public abstract class WeaponData extends JsonPreset {
 				new ToClientWeaponAmmo(vehicle.getId(), getId(), slotId, getCurrentAmmo()));
 	}
 	
-	public void tick() {
+	public void tick(@Nullable EntityAircraft parent, boolean isSelected) {
 		if (recoilTime > 1) --recoilTime;
 	}
 	
@@ -195,6 +198,10 @@ public abstract class WeaponData extends JsonPreset {
 	
 	public boolean checkRecoil() {
 		return recoilTime <= 1;
+	}
+	
+	public boolean canAngleDown() {
+		return getType() == WeaponType.BULLET;
 	}
 	
 	public Vec3 getLaunchPos() {
@@ -372,6 +379,14 @@ public abstract class WeaponData extends JsonPreset {
 		return compatibleWeaponPart;
 	}
 	
+	public abstract String getWeaponTypeCode();
+	
+	public void addToolTips(List<Component> tips) {
+		tips.add(Component.literal("Fire Rate: ").append(getFireRate()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		tips.add(Component.literal("Max Age: ").append(getMaxAge()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		if (!canShootOnGround) tips.add(Component.literal("Must Fly").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+	}
+	
 	public List<ComponentColor> getInfoComponents() {
 		List<ComponentColor> list = new ArrayList<>();
 		list.add(new ComponentColor(getDisplayNameComponent(), 0x000000));
@@ -398,7 +413,32 @@ public abstract class WeaponData extends JsonPreset {
 		TRACK_MISSILE,
 		IR_MISSILE,
 		ANTIRADAR_MISSILE,
-		TORPEDO
+		TORPEDO,
+		BUNKER_BUSTER;
+		
+		@Nullable
+		public static WeaponType getById(String id) {
+			for (int i = 0; i < values().length; ++i) {
+				if (values()[i].getId().equals(id)) 
+					return values()[i];
+			}
+			return null;
+		}
+		
+		private final String id;
+		
+		private WeaponType() {
+			this.id = name().toLowerCase();
+		}
+		
+		public String getId() {
+			return id;
+		}
+		
+		@Override
+		public String toString() {
+			return getId();
+		}
 	}
 	
 }

@@ -1,7 +1,7 @@
 {
   "aircraft_type": 2,
+  "cross_sec_area": 7.5,
   "displayName": "preset.dscombat.mrbudger_tank",
-  "dyecolor": 4,
   "health": 500.0,
   "idleheat": 10.0,
   "ingredients": [
@@ -51,6 +51,7 @@
   "maxpitch": 0.0,
   "maxroll": 0.0,
   "maxyaw": 2.0,
+  "paintjob_color": 4,
   "pitchtorque": 0.0,
   "presetId": "mrbudger_tank",
   "rolltorque": 0.0,
@@ -60,91 +61,77 @@
         "filled": true,
         "itemid": "dscombat:heavy_tank_turret"
       },
-      "name": "slotname.dscombat.pilot_seat",
+      "name": "pilot_seat",
       "slot_posx": 0.0,
       "slot_posy": 1.4,
       "slot_posz": 0.0,
-      "slot_type": 6,
-      "uix": 48,
-      "uiy": 20,
+      "slot_type": "heavy_turret",
       "zRot": 0.0
     },
     {
       "data": {
         "itemid": "dscombat:seat"
       },
-      "name": "slotname.dscombat.seat1",
+      "name": "seat1",
       "slot_posx": 1.0,
       "slot_posy": 1.4,
       "slot_posz": 2.0,
-      "slot_type": 6,
-      "uix": 68,
-      "uiy": 20,
+      "slot_type": "heavy_turret",
       "zRot": 0.0
     },
     {
       "data": {
         "itemid": "dscombat:seat"
       },
-      "name": "slotname.dscombat.seat2",
+      "name": "seat2",
       "slot_posx": -1.0,
       "slot_posy": 1.4,
       "slot_posz": 2.0,
-      "slot_type": 6,
-      "uix": 88,
-      "uiy": 20,
+      "slot_type": "heavy_turret",
       "zRot": 0.0
     },
     {
       "data": {
         "itemid": "dscombat:seat"
       },
-      "name": "slotname.dscombat.seat3",
+      "name": "seat3",
       "slot_posx": 1.0,
       "slot_posy": 1.4,
       "slot_posz": -2.0,
-      "slot_type": 6,
-      "uix": 108,
-      "uiy": 20,
+      "slot_type": "heavy_turret",
       "zRot": 0.0
     },
     {
       "data": {
         "itemid": "dscombat:seat"
       },
-      "name": "slotname.dscombat.seat4",
+      "name": "seat4",
       "slot_posx": -1.0,
       "slot_posy": 1.4,
       "slot_posz": -2.0,
-      "slot_type": 6,
-      "uix": 128,
-      "uiy": 20,
+      "slot_type": "heavy_turret",
       "zRot": 0.0
     },
     {
       "data": {
         "itemid": "dscombat:c12_engine"
       },
-      "name": "slotname.dscombat.internal_1",
+      "name": "internal_1",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 7,
-      "uix": 48,
-      "uiy": 100,
+      "slot_type": "spin_engine",
       "zRot": 0.0
     },
     {
       "data": {
         "itemid": "dscombat:c12_engine"
       },
-      "name": "slotname.dscombat.internal_2",
+      "name": "internal_2",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 7,
-      "uix": 68,
-      "uiy": 100,
+      "slot_type": "spin_engine",
       "zRot": 0.0
     },
     {
@@ -152,23 +139,23 @@
         "filled": true,
         "itemid": "dscombat:heavy_fuel_tank"
       },
-      "name": "slotname.dscombat.internal_3",
+      "name": "internal_3",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 3,
-      "uix": 88,
-      "uiy": 100,
+      "slot_type": "internal",
+      "zRot": 0.0
+    },
+    {
+      "name": "internal_4",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": "internal",
       "zRot": 0.0
     }
   ],
   "stealth": 1.0,
-  "textures": {
-    "11": "dscombat:textures/entities/mrbudger_tank/blue.png",
-    "14": "dscombat:textures/entities/mrbudger_tank/red.png",
-    "15": "dscombat:textures/entities/mrbudger_tank/black.png",
-    "4": "dscombat:textures/entities/mrbudger_tank/yellow.png"
-  },
   "throttledown": 0.04,
   "throttleup": 0.04,
   "turn_radius": 0.0,

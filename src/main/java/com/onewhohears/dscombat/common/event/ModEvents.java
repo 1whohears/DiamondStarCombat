@@ -18,7 +18,8 @@ public final class ModEvents {
 	public static void registerCommands(RegisterCommandsEvent event) {
 		new MissileCommand(event.getDispatcher());
 		ConfigCommand.register(event.getDispatcher());
-		// IDEA 3 set position guided missile position with command
+		// IDEA 3.1 fuel and ammo consumption game rules
+		// IDEA 3.2 set position guided missile position with command
 	}
 	
 	@SubscribeEvent

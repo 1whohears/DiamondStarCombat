@@ -52,6 +52,8 @@ public class EntityTurret extends EntitySeat {
 	 */
 	private int newRiderCoolDown;
 	
+	// TODO 4.1 option to change turret camera position. so camera could be under the aircraft
+	
 	public EntityTurret(EntityType<?> type, Level level, double passengerOffset, double weaponOffset) {
 		super(type, level);
 		this.passengerOffset = passengerOffset;
@@ -111,14 +113,15 @@ public class EntityTurret extends EntitySeat {
 		if (player == null) return;
 		Quaternion ra = Quaternion.ONE;
 		if (!level.isClientSide) {
-			if (data != null) data.tick();
 			if (newRiderCoolDown > 0) --newRiderCoolDown;
-			
 			float rely = yRotRelO, relx = xRotRelO;
 			float rotrate = getRotRate(), minrotx = getMinRotX(), maxrotx = getMaxRotX();
+			EntityAircraft ea = null;
 			if (getVehicle() instanceof EntityAircraft plane) {
 				ra = plane.getQ();
-			}
+				ea = plane;
+			}  
+			if (data != null) data.tick(ea, true);
 			float[] relangles = UtilAngles.globalToRelativeDegrees(player.getXRot(), player.getYRot(), ra);
 			
 			float rg1 = relangles[1] + 360, rg2 = relangles[1] - 360;
@@ -239,7 +242,7 @@ public class EntityTurret extends EntitySeat {
 	}
 	
 	public RotBounds getRotBounds() {
-		return new RotBounds(getRotRate(), getMinRotX(), getMaxRotX());
+		return RotBounds.create(getRotRate(), getMinRotX(), getMaxRotX());
 	}
 	
 	public void setMinRotX(float rot) {

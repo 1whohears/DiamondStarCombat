@@ -28,8 +28,6 @@ public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContaine
 	
 	private static final ResourceLocation BG_TEXTURE = new ResourceLocation(DSCombatMod.MODID,
 			"textures/ui/aircraft_screen.png");
-	private static final ResourceLocation SLOTS_TEXTURE = new ResourceLocation(DSCombatMod.MODID,
-			"textures/ui/slots.png");
 	
 	public AircraftScreen(AircraftMenuContainer pMenu, Inventory pPlayerInventory, Component title) {
 		super(pMenu, pPlayerInventory, title);
@@ -71,7 +69,7 @@ public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContaine
 	public List<Component> getSlotTooltip() {
 		List<Component> c = new ArrayList<Component>();
 		if (this.hoveredSlot instanceof PartItemSlot slot) {
-			c.add(Component.translatable(slot.data.getName()).setStyle(Style.EMPTY.withColor(0xFF55FF)));
+			c.add(Component.translatable(slot.data.getTranslatableName()).setStyle(Style.EMPTY.withColor(0xFF55FF)));
 			c.add(Component.translatable(slot.data.getSlotType().getTranslatableName()).setStyle(Style.EMPTY.withColor(0xFFAA00)));
 			if (slot.data.isLocked()) c.add(Component.translatable("info.dscombat.locked").setStyle(Style.EMPTY.withColor(0xAA0000)));
 		}
@@ -83,12 +81,17 @@ public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContaine
 		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
 		RenderSystem.setShaderTexture(0, BG_TEXTURE);
 		blit(stack, leftPos, topPos, 0, 0, imageWidth, imageHeight);
-		RenderSystem.setShaderTexture(0, SLOTS_TEXTURE);
+		if (menu.getClientData() != null) {
+			RenderSystem.setShaderTexture(0, menu.getClientData().getBackground());
+			blit(stack, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		}
 		for (int i = 0; i < menu.slots.size(); ++i) {
 			if (!(menu.slots.get(i) instanceof PartItemSlot slot)) continue;
+			RenderSystem.setShaderTexture(0, slot.data.getSlotType().getBgTexture());
 			blit(stack, leftPos+slot.x, topPos+slot.y, 
-					slot.data.getSlotType().getIconXOffset(), 0, 
-					16, 16, 256, 16);
+					0, 0, 
+					16, 16, 
+					16, 16);
 		}
 	}
 

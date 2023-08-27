@@ -1,0 +1,41 @@
+{
+  "type": "bunker_buster",
+  "blockStrength": 1500.0,
+  "canShootOnGround": true,
+  "causesFire": false,
+  "compatibleWeaponPart": "dscombat:bomb_rack",
+  "craftNum": 1,
+  "damage": 50.0,
+  "destroyTerrain": true,
+  "displayName": "preset.dscombat.gruetz_bunker_buster",
+  "entityTypeKey": "dscombat:gruetz_bunker_buster",
+  "explosionRadius": 16.0,
+  "explosive": true,
+  "fireRate": 60,
+  "ingredients": [
+    {
+      "item": "minecraft:iron_ingot",
+      "num": 40
+    },
+    {
+      "item": "minecraft:tnt",
+      "num": 16
+    },
+    {
+      "item": "minecraft:diamond_pickaxe",
+      "num": 1
+    },
+    {
+      "item": "dscombat:ti83",
+      "num": 1
+    }
+  ],
+  "innacuracy": 0.0,
+  "itemKey": "dscombat:gruetz_bunker_buster",
+  "maxAge": 300,
+  "maxAmmo": 1,
+  "presetId": "gruetz_bunker_buster",
+  "rackTypeKey": "dscombat:bomb_rack",
+  "shootSoundKey": "dscombat:bomb_shoot_1",
+  "speed": 0.0
+}

@@ -132,8 +132,8 @@ public class EntityBoat extends EntityAircraft {
 		Vec3 move = getDeltaMovement();
 		move = move.multiply(1, 0.900, 1);
 		setDeltaMovement(move);
-		if (canBreak() && isBreaking()) addFrictionForce(1);
-		else addFrictionForce(0.1);
+		if (canBreak() && isBreaking()) addFrictionForce(2);
+		else addFrictionForce(0.2);
 	}
 	
 	@Override
@@ -207,14 +207,6 @@ public class EntityBoat extends EntityAircraft {
     }
 	
 	@Override
-	public void readInputs() {
-		super.readInputs();
-		float temp = inputs.pitch;
-		inputs.pitch = inputs.throttle;
-		inputs.throttle = temp;
-	}
-	
-	@Override
 	public float getStepHeight() {
 		return 0.2f;
 	}
@@ -248,7 +240,7 @@ public class EntityBoat extends EntityAircraft {
 
 	@Override
 	public boolean canBreak() {
-		return false;
+		return true;
 	}
 
 	@Override

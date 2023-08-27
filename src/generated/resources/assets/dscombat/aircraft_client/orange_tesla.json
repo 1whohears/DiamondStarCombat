@@ -1,0 +1,58 @@
+{
+  "displayName": "preset.dscombat.orange_tesla",
+  "inventory_background": "dscombat:textures/ui/vehicle_inventory_backgrounds/orange_tesla.png",
+  "inventory_slots_pos": [
+    {
+      "slot_name": "pilot_seat",
+      "slot_ui_x": 102,
+      "slot_ui_y": 50
+    },
+    {
+      "slot_name": "seat1",
+      "slot_ui_x": 138,
+      "slot_ui_y": 50
+    },
+    {
+      "slot_name": "seat2",
+      "slot_ui_x": 102,
+      "slot_ui_y": 70
+    },
+    {
+      "slot_name": "seat3",
+      "slot_ui_x": 138,
+      "slot_ui_y": 70
+    },
+    {
+      "slot_name": "internal_1",
+      "slot_ui_x": 120,
+      "slot_ui_y": 25
+    },
+    {
+      "slot_name": "internal_2",
+      "slot_ui_x": 120,
+      "slot_ui_y": 45
+    }
+  ],
+  "presetId": "orange_tesla",
+  "textures": {
+    "default_texture_path": "dscombat:textures/entity/orange_tesla/",
+    "overrides": {
+      "black": "dscombat:textures/entity/orange_tesla/orange",
+      "blue": "dscombat:textures/entity/orange_tesla/orange",
+      "brown": "dscombat:textures/entity/orange_tesla/orange",
+      "cyan": "dscombat:textures/entity/orange_tesla/orange",
+      "gray": "dscombat:textures/entity/orange_tesla/orange",
+      "green": "dscombat:textures/entity/orange_tesla/orange",
+      "light_blue": "dscombat:textures/entity/orange_tesla/orange",
+      "light_gray": "dscombat:textures/entity/orange_tesla/orange",
+      "lime": "dscombat:textures/entity/orange_tesla/orange",
+      "magenta": "dscombat:textures/entity/orange_tesla/orange",
+      "orange": "dscombat:textures/entity/orange_tesla/orange",
+      "pink": "dscombat:textures/entity/orange_tesla/orange",
+      "purple": "dscombat:textures/entity/orange_tesla/orange",
+      "red": "dscombat:textures/entity/orange_tesla/orange",
+      "white": "dscombat:textures/entity/orange_tesla/orange",
+      "yellow": "dscombat:textures/entity/orange_tesla/orange"
+    }
+  }
+}

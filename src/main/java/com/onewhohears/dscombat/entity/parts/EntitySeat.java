@@ -56,6 +56,7 @@ public class EntitySeat extends EntityPart {
 	@Override
 	public void tick() {
 		super.tick();
+		//tickLerp();
 	}
 	
 	@Override

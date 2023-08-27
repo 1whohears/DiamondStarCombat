@@ -1,7 +1,7 @@
 {
   "aircraft_type": 0,
+  "cross_sec_area": 2.89,
   "displayName": "preset.dscombat.wooden_plane_empty",
-  "dyecolor": 12,
   "health": 40.0,
   "idleheat": 1.0,
   "ingredients": [
@@ -27,6 +27,7 @@
   "maxpitch": 3.0,
   "maxroll": 5.0,
   "maxyaw": 2.0,
+  "paintjob_color": 12,
   "pitchtorque": 2.5,
   "presetId": "wooden_plane_empty",
   "rolltorque": 1.5,
@@ -35,70 +36,55 @@
       "data": {
         "itemid": "dscombat:seat"
       },
-      "name": "slotname.dscombat.pilot_seat",
+      "name": "pilot_seat",
       "slot_posx": 0.0,
       "slot_posy": -0.4,
       "slot_posz": 0.0,
-      "slot_type": 0,
-      "uix": 48,
-      "uiy": 20,
+      "slot_type": "seat",
       "zRot": 0.0
     },
     {
-      "name": "slotname.dscombat.left_wing_1",
+      "name": "left_wing_1",
       "slot_posx": 1.5,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 1,
-      "uix": 48,
-      "uiy": 40,
+      "slot_type": "wing",
       "zRot": 0.0
     },
     {
-      "name": "slotname.dscombat.right_wing_1",
+      "name": "right_wing_1",
       "slot_posx": -1.5,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 1,
-      "uix": 48,
-      "uiy": 60,
+      "slot_type": "wing",
       "zRot": 0.0
     },
     {
-      "name": "slotname.dscombat.internal_1",
+      "name": "internal_1",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 10,
-      "uix": 48,
-      "uiy": 100,
+      "slot_type": "radial_engine",
       "zRot": 0.0
     },
     {
-      "name": "slotname.dscombat.internal_2",
+      "name": "internal_2",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 3,
-      "uix": 68,
-      "uiy": 100,
+      "slot_type": "internal",
       "zRot": 0.0
     },
     {
-      "name": "slotname.dscombat.internal_3",
+      "name": "internal_3",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 3,
-      "uix": 88,
-      "uiy": 100,
+      "slot_type": "internal",
       "zRot": 0.0
     }
   ],
   "stealth": 1.0,
-  "textures": {
-    "12": "dscombat:textures/entities/wooden_plane/brown.png"
-  },
   "throttledown": 0.06,
   "throttleup": 0.02,
   "turn_radius": 16.0,

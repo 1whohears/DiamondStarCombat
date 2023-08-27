@@ -38,7 +38,10 @@ public class ItemWeaponPart extends ItemPart {
 			name.append("EMPTY");
 		} else {
 			WeaponData wd = WeaponPresets.get().getPreset(weapon);
-			if (wd != null) name.append(wd.getDisplayNameComponent());
+			if (wd != null) {
+				name.append(wd.getDisplayNameComponent()).append(" ")
+					.append(Component.literal(wd.getWeaponTypeCode()));
+			}
 			else name.append(weapon+"?");
 		}
 		return name;	
@@ -47,9 +50,13 @@ public class ItemWeaponPart extends ItemPart {
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tips, TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tips, isAdvanced);
+		if (!isAdvanced.isAdvanced()) return;
 		CompoundTag tag = stack.getOrCreateTag();
-		if (tag.getString("weaponId").isEmpty()) return;
+		String id = tag.getString("weaponId");
+		if (id.isEmpty()) return;
 		tips.add(Component.literal("Ammo: "+tag.getInt("ammo")+"/"+tag.getInt("max")).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		WeaponData wd = WeaponPresets.get().getPreset(id);
+		wd.addToolTips(tips);
 	}
 	
 	@Override

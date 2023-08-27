@@ -1,5 +1,5 @@
 {
-  "type": 3,
+  "type": "track_missile",
   "acceleration": 0.03,
   "bleed": 0.02,
   "canShootOnGround": false,
@@ -9,11 +9,11 @@
   "damage": 60.0,
   "destroyTerrain": true,
   "displayName": "preset.dscombat.aim120c",
-  "entityTypeKey": "dscombat:track_missile_1",
+  "entityTypeKey": "dscombat:aim120c",
   "explosionRadius": 5.0,
   "explosive": true,
   "fireRate": 50,
-  "fov": 20.0,
+  "fov": 25.0,
   "fuelTicks": 300,
   "fuseDist": 3.0,
   "ingredients": [
@@ -46,6 +46,6 @@
   "rackTypeKey": "dscombat:heavy_missile_rack",
   "shootSoundKey": "dscombat:rocket_launch_1",
   "speed": 4.0,
-  "targetType": 0,
+  "targetType": "AIR",
   "turnRadius": 160.0
 }

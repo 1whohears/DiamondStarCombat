@@ -73,5 +73,10 @@ public class PosMissileData extends MissileData {
 		list.add(2, new ComponentColor(Component.literal("TARGETS POSITION"), 0xaaaa00));
 		return list;
 	}
+	
+	@Override
+	public String getWeaponTypeCode() {
+		return "AGP";
+	}
 
 }

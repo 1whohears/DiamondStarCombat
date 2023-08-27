@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.data.JsonPreset;
 import com.onewhohears.dscombat.data.PresetBuilder;
+import com.onewhohears.dscombat.data.weapon.RadarTargetTypes;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.UtilEntity;
@@ -16,7 +17,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -133,6 +133,8 @@ public class RadarData extends JsonPreset {
 		buffer.writeUtf(slotId);
 	}
 	
+	private int maxCheckDist = 150;
+	
 	public void tickUpdateTargets(EntityAircraft radar, List<RadarPing> vehiclePings) {
 		if (scanTicks > scanRate) scanTicks = 0;
 		else {
@@ -140,7 +142,7 @@ public class RadarData extends JsonPreset {
 			freshTargets = false;
 			return;
 		}
-		maxCheckDist = Config.SERVER.maxBlockCheckDepth.get();
+		maxCheckDist = Config.COMMON.maxBlockCheckDepth.get();
 		for (int i = 0; i < pings.size(); ++i) vehiclePings.remove(pings.get(i));
 		pings.clear();
 		freshTargets = true;
@@ -163,13 +165,25 @@ public class RadarData extends JsonPreset {
 				EntityAircraft.class, getRadarBoundingBox(radar));
 		for (int i = 0; i < list.size(); ++i) {
 			EntityAircraft ea = list.get(i);
-			if (!ea.isOperational()) continue;
 			if (playersOnly && !ea.hasControllingPassenger()) continue;
 			if (!basicCheck(radar, ea, ea.getStealth())) continue;
 			RadarPing p = new RadarPing(ea, checkFriendly(controller, ea));
 			vehiclePings.add(p);
 			pings.add(p);
 			if (!radar.isAlliedTo(ea)) ea.lockedOnto(radar.position());
+		}
+		for (int j = 0; j < RadarTargetTypes.get().getRadarVehicleClasses().size(); ++j) {
+			Class<? extends Entity> clazz = RadarTargetTypes.get().getRadarVehicleClasses().get(j);
+			List<? extends Entity> entities = radar.level.getEntitiesOfClass(
+					clazz, getRadarBoundingBox(radar));
+			for (int i = 0; i < entities.size(); ++i) {
+				Entity e = entities.get(i);
+				if (playersOnly && !(e.getControllingPassenger() instanceof Player)) continue;
+				if (!basicCheck(radar, e, 1)) continue;
+				RadarPing p = new RadarPing(e, checkFriendly(controller, e));
+				vehiclePings.add(p);
+				pings.add(p);
+			}
 		}
 	}
 	
@@ -179,7 +193,7 @@ public class RadarData extends JsonPreset {
 				Player.class, getRadarBoundingBox(radar));
 		for (int i = 0; i < list.size(); ++i) {
 			Player target = list.get(i);
-			if (target.isPassenger() && target.getRootVehicle() instanceof EntityAircraft ea) continue;
+			if (target.isPassenger()) continue;
 			if (!basicCheck(radar, target, 1)) continue;
 			RadarPing p = new RadarPing(target, checkFriendly(controller, target));
 			vehiclePings.add(p);
@@ -189,15 +203,18 @@ public class RadarData extends JsonPreset {
 	
 	private void scanMobs(EntityAircraft radar, Entity controller, List<RadarPing> vehiclePings) {
 		//System.out.println("SCANNING MOBS");
-		List<Mob> list = radar.level.getEntitiesOfClass(
-				Mob.class, getRadarBoundingBox(radar));
-		for (int i = 0; i < list.size(); ++i) {
-			if (list.get(i).getRootVehicle() instanceof EntityAircraft) continue;
-			if (!basicCheck(radar, list.get(i), 1)) continue;
-			RadarPing p = new RadarPing(list.get(i), 
-					checkFriendly(controller, list.get(i)));
-			vehiclePings.add(p);
-			pings.add(p);
+		for (int j = 0; j < RadarTargetTypes.get().getRadarMobClasses().size(); ++j) {
+			Class<? extends Entity> clazz = RadarTargetTypes.get().getRadarMobClasses().get(j);
+			List<? extends Entity> list = radar.level.getEntitiesOfClass(
+					clazz, getRadarBoundingBox(radar));
+			for (int i = 0; i < list.size(); ++i) {
+				if (list.get(i).isPassenger()) continue;
+				if (!basicCheck(radar, list.get(i), 1)) continue;
+				RadarPing p = new RadarPing(list.get(i), 
+						checkFriendly(controller, list.get(i)));
+				vehiclePings.add(p);
+				pings.add(p);
+			}
 		}
 	}
 	
@@ -225,8 +242,8 @@ public class RadarData extends JsonPreset {
 	private boolean groundCheck(Entity ping) {
 		if (throWaterRange > 0 && ping.isInWater()) return true;
 		boolean groundWater = UtilEntity.isOnGroundOrWater(ping);
-		if (scanGround) if (groundWater) return true;
-		if (scanAir) if (!groundWater) return true;
+		if (scanGround && groundWater) return true;
+		if (scanAir && !groundWater) return true;
 		return false;
 	}
 	
@@ -247,18 +264,16 @@ public class RadarData extends JsonPreset {
 			return false;
 		}
 		double area = stealth;
-		if (target instanceof EntityAircraft plane) area *= plane.getCrossSectionArea();
-		else area *= target.getBbHeight() * target.getBbWidth();
+		area *= UtilEntity.getCrossSectionalArea(target);
 		double areaMin = (1-Math.pow(range,-2)*Math.pow(dist-range,2))*sensitivity;
 		//System.out.println("area = "+area+" min = "+areaMin);
 		return area >= areaMin;
 	}
 	
-	private int maxCheckDist = 150;
-	
 	private boolean checkCanSee(Entity radar, Entity target) {
+		// throWaterRange+0.5 is needed for ground radar to see boats in water
 		return UtilEntity.canEntitySeeEntity(radar, target, maxCheckDist, 
-				throWaterRange, throGroundRange);
+				throWaterRange+0.5, throGroundRange);
 	}
 	
 	private AABB getRadarBoundingBox(Entity radar) {
@@ -388,6 +403,11 @@ public class RadarData extends JsonPreset {
 		
 		public boolean isOff() {
 			return this == OFF;
+		}
+		
+		public static RadarMode byId(int id) {
+			if (id < 0 || id >= values().length) return ALL;
+			return values()[id];
 		}
 	}
 	

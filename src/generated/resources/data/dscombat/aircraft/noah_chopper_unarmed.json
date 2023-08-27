@@ -2,8 +2,8 @@
   "accForward": 0.04,
   "accSide": 0.02,
   "aircraft_type": 1,
+  "cross_sec_area": 7.84,
   "displayName": "preset.dscombat.noah_chopper_unarmed",
-  "dyecolor": 12,
   "health": 300.0,
   "idleheat": 8.0,
   "ingredients": [
@@ -49,6 +49,7 @@
   "maxpitch": 2.0,
   "maxroll": 4.0,
   "maxyaw": 4.0,
+  "paintjob_color": 12,
   "pitchtorque": 1.0,
   "presetId": "noah_chopper_unarmed",
   "rolltorque": 1.0,
@@ -57,198 +58,162 @@
       "data": {
         "itemid": "dscombat:seat"
       },
-      "name": "slotname.dscombat.pilot_seat",
+      "name": "pilot_seat",
       "slot_posx": 0.4,
       "slot_posy": -0.65,
       "slot_posz": 1.5,
-      "slot_type": 0,
-      "uix": 48,
-      "uiy": 20,
+      "slot_type": "seat",
       "zRot": 0.0
     },
     {
       "data": {
         "itemid": "dscombat:seat"
       },
-      "name": "slotname.dscombat.seat2",
+      "name": "seat2",
       "slot_posx": -0.4,
       "slot_posy": -0.65,
       "slot_posz": 1.5,
-      "slot_type": 5,
-      "uix": 68,
-      "uiy": 20,
+      "slot_type": "med_turret",
       "zRot": 0.0
     },
     {
       "data": {
         "itemid": "dscombat:seat"
       },
-      "name": "slotname.dscombat.seat3",
+      "name": "seat3",
       "slot_posx": 0.4,
       "slot_posy": -0.65,
       "slot_posz": 0.3,
-      "slot_type": 5,
-      "uix": 88,
-      "uiy": 20,
+      "slot_type": "med_turret",
       "zRot": 0.0
     },
     {
       "data": {
         "itemid": "dscombat:seat"
       },
-      "name": "slotname.dscombat.seat4",
+      "name": "seat4",
       "slot_posx": -0.4,
       "slot_posy": -0.65,
       "slot_posz": 0.3,
-      "slot_type": 5,
-      "uix": 108,
-      "uiy": 20,
+      "slot_type": "med_turret",
       "zRot": 0.0
     },
     {
-      "name": "slotname.dscombat.left_wing_1",
+      "name": "left_wing_1",
       "slot_posx": 0.75,
       "slot_posy": -0.5,
       "slot_posz": 1.8,
-      "slot_type": 1,
-      "uix": 48,
-      "uiy": 40,
+      "slot_type": "wing",
       "zRot": 90.0
     },
     {
-      "name": "slotname.dscombat.left_wing_2",
+      "name": "left_wing_2",
       "slot_posx": 0.75,
       "slot_posy": -0.5,
       "slot_posz": 0.9,
-      "slot_type": 1,
-      "uix": 68,
-      "uiy": 40,
+      "slot_type": "wing",
       "zRot": 90.0
     },
     {
-      "name": "slotname.dscombat.left_wing_3",
+      "name": "left_wing_3",
       "slot_posx": 0.75,
       "slot_posy": -0.5,
       "slot_posz": 0.0,
-      "slot_type": 1,
-      "uix": 88,
-      "uiy": 40,
+      "slot_type": "wing",
       "zRot": 90.0
     },
     {
-      "name": "slotname.dscombat.left_wing_4",
+      "name": "left_wing_4",
       "slot_posx": 0.65,
       "slot_posy": 0.5,
       "slot_posz": 0.0,
-      "slot_type": 1,
-      "uix": 108,
-      "uiy": 40,
+      "slot_type": "wing",
       "zRot": 90.0
     },
     {
-      "name": "slotname.dscombat.right_wing_1",
+      "name": "right_wing_1",
       "slot_posx": -0.75,
       "slot_posy": -0.5,
       "slot_posz": 1.8,
-      "slot_type": 1,
-      "uix": 48,
-      "uiy": 60,
+      "slot_type": "wing",
       "zRot": -90.0
     },
     {
-      "name": "slotname.dscombat.right_wing_2",
+      "name": "right_wing_2",
       "slot_posx": -0.75,
       "slot_posy": -0.5,
       "slot_posz": 0.9,
-      "slot_type": 1,
-      "uix": 68,
-      "uiy": 60,
+      "slot_type": "wing",
       "zRot": -90.0
     },
     {
-      "name": "slotname.dscombat.right_wing_3",
+      "name": "right_wing_3",
       "slot_posx": -0.75,
       "slot_posy": -0.5,
       "slot_posz": 0.0,
-      "slot_type": 1,
-      "uix": 88,
-      "uiy": 60,
+      "slot_type": "wing",
       "zRot": -90.0
     },
     {
-      "name": "slotname.dscombat.right_wing_4",
+      "name": "right_wing_4",
       "slot_posx": -0.65,
       "slot_posy": 0.5,
       "slot_posz": 0.0,
-      "slot_type": 1,
-      "uix": 108,
-      "uiy": 60,
+      "slot_type": "wing",
       "zRot": -90.0
     },
     {
-      "name": "slotname.dscombat.frame_1",
+      "name": "frame_1",
       "slot_posx": 0.0,
       "slot_posy": -0.67,
       "slot_posz": 1.9,
-      "slot_type": 2,
-      "uix": 48,
-      "uiy": 80,
+      "slot_type": "frame",
       "zRot": 0.0
     },
     {
-      "name": "slotname.dscombat.frame_2",
+      "name": "frame_2",
       "slot_posx": 0.0,
       "slot_posy": -0.67,
       "slot_posz": 1.1,
-      "slot_type": 2,
-      "uix": 68,
-      "uiy": 80,
+      "slot_type": "frame",
       "zRot": 0.0
     },
     {
-      "name": "slotname.dscombat.frame_3",
+      "name": "frame_3",
       "slot_posx": 0.0,
       "slot_posy": -0.67,
       "slot_posz": 0.3,
-      "slot_type": 2,
-      "uix": 88,
-      "uiy": 80,
+      "slot_type": "frame",
       "zRot": 0.0
     },
     {
-      "name": "slotname.dscombat.frame_4",
+      "name": "frame_4",
       "slot_posx": 0.0,
       "slot_posy": -0.67,
       "slot_posz": -0.5,
-      "slot_type": 2,
-      "uix": 108,
-      "uiy": 80,
+      "slot_type": "frame",
       "zRot": 0.0
     },
     {
       "data": {
         "itemid": "dscombat:c12_engine"
       },
-      "name": "slotname.dscombat.internal_1",
+      "name": "internal_1",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 7,
-      "uix": 48,
-      "uiy": 100,
+      "slot_type": "spin_engine",
       "zRot": 0.0
     },
     {
       "data": {
         "itemid": "dscombat:c12_engine"
       },
-      "name": "slotname.dscombat.internal_2",
+      "name": "internal_2",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 7,
-      "uix": 68,
-      "uiy": 100,
+      "slot_type": "spin_engine",
       "zRot": 0.0
     },
     {
@@ -256,13 +221,11 @@
         "filled": true,
         "itemid": "dscombat:heavy_fuel_tank"
       },
-      "name": "slotname.dscombat.internal_3",
+      "name": "internal_3",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 3,
-      "uix": 88,
-      "uiy": 100,
+      "slot_type": "internal",
       "zRot": 0.0
     },
     {
@@ -270,63 +233,47 @@
         "filled": true,
         "itemid": "dscombat:basic_flare_dispenser"
       },
-      "name": "slotname.dscombat.internal_4",
+      "name": "internal_4",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 3,
-      "uix": 108,
-      "uiy": 100,
+      "slot_type": "internal",
       "zRot": 0.0
     },
     {
-      "name": "slotname.dscombat.internal_5",
+      "name": "internal_5",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 4,
-      "uix": 128,
-      "uiy": 100,
+      "slot_type": "advanced_internal",
       "zRot": 0.0
     },
     {
-      "name": "slotname.dscombat.internal_6",
+      "name": "internal_6",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 4,
-      "uix": 148,
-      "uiy": 100,
+      "slot_type": "advanced_internal",
       "zRot": 0.0
     },
     {
-      "name": "slotname.dscombat.internal_7",
+      "name": "internal_7",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 4,
-      "uix": 168,
-      "uiy": 100,
+      "slot_type": "advanced_internal",
       "zRot": 0.0
     },
     {
-      "name": "slotname.dscombat.internal_8",
+      "name": "internal_8",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": 4,
-      "uix": 188,
-      "uiy": 100,
+      "slot_type": "advanced_internal",
       "zRot": 0.0
     }
   ],
   "stealth": 1.2,
-  "textures": {
-    "11": "dscombat:textures/entities/noah_chopper/blue.png",
-    "12": "dscombat:textures/entities/noah_chopper/brown.png",
-    "14": "dscombat:textures/entities/noah_chopper/red.png",
-    "15": "dscombat:textures/entities/noah_chopper/black.png"
-  },
   "throttledown": 0.02,
   "throttleup": 0.01,
   "turn_radius": 0.0,

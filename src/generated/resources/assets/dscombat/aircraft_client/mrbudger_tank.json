@@ -1,0 +1,56 @@
+{
+  "displayName": "preset.dscombat.mrbudger_tank",
+  "inventory_background": "dscombat:textures/ui/vehicle_inventory_backgrounds/mrbudger_tank.png",
+  "inventory_slots_pos": [
+    {
+      "slot_name": "pilot_seat",
+      "slot_ui_x": 120,
+      "slot_ui_y": 50
+    },
+    {
+      "slot_name": "seat1",
+      "slot_ui_x": 140,
+      "slot_ui_y": 12
+    },
+    {
+      "slot_name": "seat2",
+      "slot_ui_x": 100,
+      "slot_ui_y": 12
+    },
+    {
+      "slot_name": "seat3",
+      "slot_ui_x": 140,
+      "slot_ui_y": 90
+    },
+    {
+      "slot_name": "seat4",
+      "slot_ui_x": 100,
+      "slot_ui_y": 90
+    },
+    {
+      "slot_name": "internal_1",
+      "slot_ui_x": 111,
+      "slot_ui_y": 30
+    },
+    {
+      "slot_name": "internal_2",
+      "slot_ui_x": 129,
+      "slot_ui_y": 30
+    },
+    {
+      "slot_name": "internal_3",
+      "slot_ui_x": 111,
+      "slot_ui_y": 70
+    },
+    {
+      "slot_name": "internal_4",
+      "slot_ui_x": 129,
+      "slot_ui_y": 70
+    }
+  ],
+  "presetId": "mrbudger_tank",
+  "textures": {
+    "default_texture_path": "dscombat:textures/entity/mrbudger_tank/",
+    "overrides": {}
+  }
+}

@@ -14,3 +14,13 @@ https://discord.gg/dWgQTRxCJm
 Check out my youtube where I'll post guides and other videos showing the mod! 
 
 https://youtu.be/P4Flz0XOtTk
+
+## Special Thanks
+
+__**pretzelpenguin777**__: Improved **Noah Chopper**, **Javi Plane**, and **Axcel Truck** Model
+
+**__kawaiicakes___**: Improved **Alexis Plane** Model
+
+__**gabyloko**__: Improved **Andolf Sub Model** and **Spanish Translations**
+
+__**d_water_loo**__: **Russian Translations**

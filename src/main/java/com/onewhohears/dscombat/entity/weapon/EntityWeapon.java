@@ -42,6 +42,8 @@ public abstract class EntityWeapon extends Projectile {
 	 */
 	protected int maxAge;
 	
+	// FIXME 3.1 when server lags missile gets spawned behind vehicle leading to it hitting pilot sometimes
+	// maybe don't allow it to explode until it has existed for some amount of time
 	public EntityWeapon(EntityType<? extends EntityWeapon> type, Level level) {
 		super(type, level);
 	}
@@ -123,8 +125,7 @@ public abstract class EntityWeapon extends Projectile {
 		Vec3 move = getDeltaMovement();
 		Vec3 pos = position();
 		Vec3 next_pos = pos.add(move);
-		HitResult hitresult = level.clip(new ClipContext(pos, next_pos, 
-				ClipContext.Block.COLLIDER, getFluidClipContext(), this));
+		HitResult hitresult = checkBlockCollide();
 		if (hitresult.getType() != HitResult.Type.MISS) next_pos = hitresult.getLocation();
 		Entity owner = getOwner();
 		while(!isRemoved()) {
@@ -151,6 +152,11 @@ public abstract class EntityWeapon extends Projectile {
 		}
 	}
 	
+	protected BlockHitResult checkBlockCollide() {
+		return level.clip(new ClipContext(position(), position().add(getDeltaMovement()), 
+				ClipContext.Block.COLLIDER, getFluidClipContext(), this));
+	}
+	
 	@Nullable
 	protected EntityHitResult findHitEntity(Vec3 start, Vec3 end) {
 		return ProjectileUtil.getEntityHitResult(level, this, 
@@ -170,17 +176,15 @@ public abstract class EntityWeapon extends Projectile {
 	public void onHitBlock(BlockHitResult result) {
 		super.onHitBlock(result);
 		//System.out.println("BULLET HIT "+result.getBlockPos());
-		
 		kill();
 	}
 	
 	@Override
 	public void onHitEntity(EntityHitResult result) {
 		super.onHitEntity(result);
-		//System.out.println("BULLET HIT "+result.getEntity());
-		DamageSource source = getImpactDamageSource();
-		result.getEntity().hurt(source, getDamage());
+		System.out.println("BULLET HIT "+result.getEntity());
 		kill();
+		result.getEntity().hurt(getImpactDamageSource(), getDamage());
 	}
 	
 	public float getDamage() {

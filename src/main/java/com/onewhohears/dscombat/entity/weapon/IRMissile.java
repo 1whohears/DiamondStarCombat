@@ -3,16 +3,15 @@ package com.onewhohears.dscombat.entity.weapon;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.data.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.data.weapon.IRMissileData;
+import com.onewhohears.dscombat.data.weapon.RadarTargetTypes;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.util.UtilEntity;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.entity.projectile.FireworkRocketEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 
@@ -42,71 +41,43 @@ public class IRMissile extends EntityMissile {
 	
 	protected List<IrTarget> targets = new ArrayList<IrTarget>();
 	
-	protected void findIrTarget() {
+	public static void updateIRTargetsList(Entity weapon, List<IrTarget> targets, float flareResistance, float fov) {
 		targets.clear();
 		// planes
-		List<EntityAircraft> planes = level.getEntitiesOfClass(
-				EntityAircraft.class, getIrBoundingBox());
+		List<EntityAircraft> planes = weapon.level.getEntitiesOfClass(
+				EntityAircraft.class, getIrBoundingBox(weapon));
 		for (int i = 0; i < planes.size(); ++i) {
-			if (!basicCheck(planes.get(i), true)) continue;
-			float distSqr = (float)distanceToSqr(planes.get(i));
+			if (!basicCheck(weapon, planes.get(i), true, fov)) continue;
+			float distSqr = (float)weapon.distanceToSqr(planes.get(i));
 			targets.add(new IrTarget(planes.get(i), planes.get(i).getHeat() / distSqr));
-		}
-		// players
-		List<Player> players = level.getEntitiesOfClass(
-				Player.class, getIrBoundingBox());
-		for (int i = 0; i < players.size(); ++i) {
-			if (players.get(i).getRootVehicle() instanceof EntityAircraft) continue;
-			if (!basicCheck(players.get(i), true)) continue;
-			float distSqr = (float)distanceToSqr(players.get(i));
-			targets.add(new IrTarget(players.get(i), 1f / distSqr));
-		}
-		// mobs
-		List<Mob> mobs = level.getEntitiesOfClass(
-				Mob.class, getIrBoundingBox());
-		for (int i = 0; i < mobs.size(); ++i) {
-			if (mobs.get(i).getRootVehicle() instanceof EntityAircraft) continue;
-			if (!basicCheck(mobs.get(i), true)) continue;
-			float distSqr = (float)distanceToSqr(mobs.get(i));
-			targets.add(new IrTarget(mobs.get(i), getMobHeat(mobs.get(i)) / distSqr));
-		}
-		// missiles
-		List<EntityMissile> missiles = level.getEntitiesOfClass(
-				EntityMissile.class, getIrBoundingBox());
-		for (int i = 0; i < missiles.size(); ++i) {
-			if (this.equals(missiles.get(i))) continue;
- 			if (!basicCheck(missiles.get(i), false)) continue;
-			float distSqr = (float)distanceToSqr(missiles.get(i));
-			targets.add(new IrTarget(missiles.get(i), missiles.get(i).getHeat() / distSqr));
 		}	
 		// flares
-		List<EntityFlare> flares = level.getEntitiesOfClass(
-				EntityFlare.class, getIrBoundingBox());
+		List<EntityFlare> flares = weapon.level.getEntitiesOfClass(
+				EntityFlare.class, getIrBoundingBox(weapon));
 		for (int i = 0; i < flares.size(); ++i) {
-			if (!basicCheck(flares.get(i), false)) continue;
-			float distSqr = (float)distanceToSqr(flares.get(i));
+			if (!basicCheck(weapon, flares.get(i), false, fov)) continue;
+			float distSqr = (float)weapon.distanceToSqr(flares.get(i));
 			targets.add(new IrTarget(flares.get(i), 
 					flares.get(i).getHeat() / distSqr * flareResistance));
 		}
-		// fire arrows
-		List<AbstractArrow> arrows = level.getEntitiesOfClass(
-				AbstractArrow.class, getIrBoundingBox());
-		for (int i = 0; i < arrows.size(); ++i) {
-			if (!arrows.get(i).isOnFire()) continue;
-			if (!basicCheck(arrows.get(i), false)) continue;
-			float distSqr = (float)distanceToSqr(arrows.get(i));
-			targets.add(new IrTarget(arrows.get(i), 
-					2f / distSqr * flareResistance));
+		// other
+		for (int j = 0; j < RadarTargetTypes.get().getIrEntityClasses().size(); ++j) {
+			Class<? extends Entity> clazz = RadarTargetTypes.get().getIrEntityClasses().get(j);
+			float heat = RadarTargetTypes.get().getIrEntityHeats().get(j);
+			List<? extends Entity> entities = weapon.level.getEntitiesOfClass(
+					clazz, getIrBoundingBox(weapon));
+			for (int i = 0; i < entities.size(); ++i) {
+				if (entities.get(i).isPassenger()) continue;
+				if (!basicCheck(weapon, entities.get(i), true, fov)) continue;
+				float distSqr = (float)weapon.distanceToSqr(entities.get(i));
+				targets.add(new IrTarget(entities.get(i), 
+						getSpecificEntityHeat(entities.get(i), heat) / distSqr));
+			}
 		}
-		// fire works
-		List<FireworkRocketEntity> foreworks = level.getEntitiesOfClass(
-				FireworkRocketEntity.class, getIrBoundingBox());
-		for (int i = 0; i < foreworks.size(); ++i) {
-			if (!basicCheck(foreworks.get(i), false)) continue;
-			float distSqr = (float)distanceToSqr(foreworks.get(i));
-			targets.add(new IrTarget(foreworks.get(i), 
-					2f / distSqr * flareResistance));
-		}
+	}
+	
+	protected void findIrTarget() {
+		updateIRTargetsList(this, targets, flareResistance, fov);
 		// pick target
 		if (targets.size() == 0) {
 			this.target = null;
@@ -123,8 +94,12 @@ public class IRMissile extends EntityMissile {
 		//System.out.println("TARGET FOUND "+missile.target);
 	}
 	
-	protected boolean basicCheck(Entity ping, boolean checkGround) {
+	protected static boolean basicCheck(Entity weapon, Entity ping, boolean checkGround, float fov) {
 		//System.out.println("target? "+ping);
+		if (weapon.equals(ping)) {
+			//System.out.println("same");
+			return false;
+		}
 		if (checkGround && ping.isOnGround()) {
 			//System.out.println("on ground");
 			return false;
@@ -132,15 +107,16 @@ public class IRMissile extends EntityMissile {
 		if (ping.isInWater()) {
 			return false;
 		}
-		if (isAlliedTo(ping)) {
+		if (weapon.isAlliedTo(ping)) {
 			//System.out.println("is allied");
 			return false;
 		}
-		if (!checkTargetRange(ping, IR_RANGE)) {
+		if (!checkTargetRange(weapon, ping, fov, IR_RANGE)) {
 			//System.out.println("not in cone");
 			return false;
 		}
-		if (!checkCanSee(ping)) {
+		if (!UtilEntity.canEntitySeeEntity(weapon, ping, 
+				Config.COMMON.maxBlockCheckDepth.get(), 0, 0)) {
 			//System.out.println("can't see");
 			return false;
 		}
@@ -148,20 +124,16 @@ public class IRMissile extends EntityMissile {
 		return true;
 	}
 	
-	protected static float getMobHeat(Mob mob) {
-		if (mob.getType().equals(EntityType.BLAZE)) return 10f;
-		if (mob.getType().equals(EntityType.MAGMA_CUBE)) return 8f;
-		if (mob.getType().equals(EntityType.WITHER)) return 200f;
-		if (mob.getType().equals(EntityType.ENDER_DRAGON)) return 100f;
-		return 1f;
+	protected static float getSpecificEntityHeat(Entity e, float instead) {
+		return RadarTargetTypes.get().getEntityHeat(EntityType.getKey(e.getType()).toString(), instead);
 	}
 	
-	protected static final double IR_RANGE = 300d;
+	public static final double IR_RANGE = 300d;
 	
-	protected AABB getIrBoundingBox() {
-		double x = getX();
-		double y = getY();
-		double z = getZ();
+	public static AABB getIrBoundingBox(Entity e) {
+		double x = e.getX();
+		double y = e.getY();
+		double z = e.getZ();
 		double w = IR_RANGE;
 		return new AABB(x+w, y+w, z+w, x-w, y-w, z-w);
 	}

@@ -15,6 +15,7 @@ import com.onewhohears.dscombat.util.math.UtilAngles;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
@@ -137,6 +138,15 @@ public class BulletData extends WeaponData {
 	}
 	
 	@Override
+	public void addToolTips(List<Component> tips) {
+		super.addToolTips(tips);
+		tips.add(Component.literal("Damage: ").append(getDamage()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		tips.add(Component.literal("Max Speed: ").append(getDamage()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		if (isExplosive()) tips.add(Component.literal("Explosion Radius: ")
+				.append(getExplosionRadius()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+	}
+	
+	@Override
 	public List<ComponentColor> getInfoComponents() {
 		List<ComponentColor> list = super.getInfoComponents();
 		list.add(new ComponentColor(Component.literal("Damage: ").append(getDamage()+""), 0x040404));
@@ -148,6 +158,14 @@ public class BulletData extends WeaponData {
 		}
 		if (isCausesFire()) list.add(new ComponentColor(Component.literal("INCENDIARY"), 0xaa0000));
 		return list;
+	}
+
+	@Override
+	public String getWeaponTypeCode() {
+		String code = "S";
+		if (isExplosive()) code += "E";
+		if (isCausesFire()) code += "I";
+		return code;
 	}
 
 }

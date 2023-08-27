@@ -6,6 +6,17 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 
+/**
+ * used to store preset data and parse data from json files.
+ * see {@link JsonPresetReloadListener} for how the presets are read from datapacks.
+ * see {@link JsonPresetGenerator} for how presets are built by minecraft data generators.
+ * see {@link PresetBuilder} for an abstract preset builder for the generator to use.
+ * 
+ * see {@link com.onewhohears.dscombat.data.aircraft.AircraftPreset},
+ * {@link com.onewhohears.dscombat.data.weapon.WeaponData},
+ * and {@link com.onewhohears.dscombat.data.radar.RadarData} for examples.
+ * @author 1whohears
+ */
 public abstract class JsonPreset {
 	
 	private final ResourceLocation key;

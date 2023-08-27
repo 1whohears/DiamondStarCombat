@@ -19,8 +19,17 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
+/**
+ * manages available weapons for {@link EntityAircraft}.
+ * available weapons are found in a list of {@link WeaponData}.
+ * used to fire a vehicle's selected weapon.
+ * will synch ammo numbers and other info with client.
+ * will tell a pilot why a weapon launch failed.
+ * @author 1whohears
+ */
 public class WeaponSystem {
 	
 	private final EntityAircraft parent;
@@ -101,6 +110,13 @@ public class WeaponSystem {
 		return weaponIndex;
 	}
 	
+	public boolean shootSelected(Entity controller) {
+		boolean consume = true;
+		if (parent.isNoConsume()) consume = false;
+		else if (controller instanceof Player p && p.isCreative()) consume = false;
+		return shootSelected(controller, consume);
+	}
+	
 	public boolean shootSelected(Entity controller, boolean consume) {
 		WeaponData data = getSelected();
 		if (data == null) return false;
@@ -120,7 +136,7 @@ public class WeaponSystem {
 	
 	public Vec3 getShootDirection(WeaponData data) {
 		Quaternion q = parent.getQ();
-		if (parent.isWeaponAngledDown() && data.getSlotId().equals("slotname.dscombat.frame_1")) {
+		if (parent.isWeaponAngledDown() && data.canAngleDown()) {
 			q.mul(Vector3f.XP.rotationDegrees(25f));
 		}
     	return UtilAngles.getRollAxis(q);
@@ -149,7 +165,9 @@ public class WeaponSystem {
 	 * called by this weapon system's entity tick function server side
 	 */
 	public void tick() {
-		for (WeaponData w : weapons) w.tick();
+		for (int i = 0; i < weapons.size(); ++i) {
+			weapons.get(i).tick(parent, i == getSelectedIndex());
+		}
 	}
 	
 	public boolean isReadData() {

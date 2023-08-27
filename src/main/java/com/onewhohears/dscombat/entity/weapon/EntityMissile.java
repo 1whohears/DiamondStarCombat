@@ -1,7 +1,5 @@
 package com.onewhohears.dscombat.entity.weapon;
 
-import javax.annotation.Nullable;
-
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.data.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.data.weapon.MissileData;
@@ -23,11 +21,9 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.ClipContext.Fluid;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 
 public abstract class EntityMissile extends EntityBullet {
@@ -43,7 +39,7 @@ public abstract class EntityMissile extends EntityBullet {
 	 * only set on server side
 	 */
 	protected float fuseDist, fov;
-	protected int blockCheckDepth, throughWaterDepth, throughBlocksDepth;
+	protected int throughWaterDepth, throughBlocksDepth;
 	
 	public Entity target;
 	public Vec3 targetPos;
@@ -55,8 +51,6 @@ public abstract class EntityMissile extends EntityBullet {
 	public EntityMissile(EntityType<? extends EntityMissile> type, Level level) {
 		super(type, level);
 		if (!level.isClientSide) NonTickingMissileManager.addMissile(this);
-		if (level.isClientSide) engineSound();
-		blockCheckDepth = Config.SERVER.maxBlockCheckDepth.get();
 		throughWaterDepth = 0;
 		throughBlocksDepth = 0;
 	}
@@ -70,7 +64,6 @@ public abstract class EntityMissile extends EntityBullet {
 		fuseDist = (float) data.getFuseDist();
 		fov = data.getFov();
 		setFuelTicks(data.getFuelTicks());
-		blockCheckDepth = Config.SERVER.maxBlockCheckDepth.get();
 		throughWaterDepth = 0;
 		throughBlocksDepth = 0;
 	}
@@ -139,6 +132,7 @@ public abstract class EntityMissile extends EntityBullet {
 					-move.x * 0.5D + random.nextGaussian() * 0.05D, 
 					-move.y * 0.5D + random.nextGaussian() * 0.05D, 
 					-move.z * 0.5D + random.nextGaussian() * 0.05D);
+			if (firstTick) engineSound();
 		}
 		super.tick();
 		tickLerp();
@@ -228,18 +222,23 @@ public abstract class EntityMissile extends EntityBullet {
 		guideToPosition();
 	}
 	
-	protected boolean checkTargetRange(Entity target, double range) {
-		if (fov == -1) return distanceTo(target) <= range;
+	protected static boolean checkTargetRange(Entity weapon, Entity target, float fov, double range) {
+		if (fov == -1) return weapon.distanceTo(target) <= range;
 		return UtilGeometry.isPointInsideCone(
 				target.position(), 
-				position(),
-				getLookAngle(), 
+				weapon.position(),
+				weapon.getLookAngle(), 
 				fov, range);
 	}
 	
+	protected boolean checkTargetRange(Entity target, double range) {
+		return checkTargetRange(this, target, fov, range);
+	}
+	
 	protected boolean checkCanSee(Entity target) {
-		return UtilEntity.canEntitySeeEntity(this, target, blockCheckDepth, 
-				throughWaterDepth, throughBlocksDepth);
+		// throWaterRange+0.5 is needed for ground radar to see boats in water
+		return UtilEntity.canEntitySeeEntity(this, target, Config.COMMON.maxBlockCheckDepth.get(), 
+				throughWaterDepth+0.5, throughBlocksDepth);
 	}
 	
 	private void engineSound() {
@@ -300,25 +299,12 @@ public abstract class EntityMissile extends EntityBullet {
 		}*/
 	}
 	
-	public float getHeat() {
-		return 4f;
-	}
-	
 	@Override
     public boolean hurt(DamageSource source, float amount) {
 		if (isRemoved()) return false;
 		if (equals(source.getDirectEntity())) return false;
 		kill();
 		return true;
-	}
-	
-	@Nullable
-	protected EntityHitResult findHitEntity(Vec3 start, Vec3 end) {
-		return ProjectileUtil.getEntityHitResult(this, 
-				start, end, 
-				getBoundingBox(), 
-				this::canHitEntity, 
-				start.distanceToSqr(end));
 	}
 	
 	@Override
@@ -408,6 +394,7 @@ public abstract class EntityMissile extends EntityBullet {
 		return tickCountRepeats;
 	}
 	
+	@Override
 	public Fluid getFluidClipContext() {
 		return ClipContext.Fluid.SOURCE_ONLY;
 	}

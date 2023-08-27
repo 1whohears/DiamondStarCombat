@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.util.math;
 
+import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 
@@ -303,6 +304,41 @@ public class UtilAngles {
     	r.mul(Vector3f.XP.rotationDegrees(rx));
     	EulerAngles ea = toDegrees(r);
     	return new float[] {(float)ea.pitch, (float)ea.yaw};
+    }
+    
+    public static Matrix4f pivotRot(float x, float y, float z, Quaternion rot) {
+		Matrix4f mat = Matrix4f.createTranslateMatrix(x, y, z);
+		mat.multiply(rot);
+		mat.multiply(Matrix4f.createTranslateMatrix(-x, -y, -z));
+		return mat;
+	}
+    
+    public static Matrix4f pivotRotX(float x, float y, float z, float degrees) {
+    	return pivotRot(x, y, z, Vector3f.XP.rotationDegrees(degrees));
+    }
+    
+    public static Matrix4f pivotRotY(float x, float y, float z, float degrees) {
+    	return pivotRot(x, y, z, Vector3f.YP.rotationDegrees(degrees));
+    }
+    
+    public static Matrix4f pivotRotZ(float x, float y, float z, float degrees) {
+    	return pivotRot(x, y, z, Vector3f.ZP.rotationDegrees(degrees));
+    }
+    
+    public static Matrix4f pivotPixelsRot(float x, float y, float z, Quaternion rot) {
+    	return pivotRot(x/16f, y/16f, z/16f, rot);
+    }
+    
+    public static Matrix4f pivotPixelsRotX(float x, float y, float z, float degrees) {
+    	return pivotPixelsRot(x, y, z, Vector3f.XP.rotationDegrees(degrees));
+    }
+    
+    public static Matrix4f pivotPixelsRotY(float x, float y, float z, float degrees) {
+    	return pivotPixelsRot(x, y, z, Vector3f.YP.rotationDegrees(degrees));
+    }
+    
+    public static Matrix4f pivotPixelsRotZ(float x, float y, float z, float degrees) {
+    	return pivotPixelsRot(x, y, z, Vector3f.ZP.rotationDegrees(degrees));
     }
     
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import com.onewhohears.dscombat.data.aircraft.AircraftInputs;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot;
+import com.onewhohears.dscombat.data.radar.RadarData.RadarMode;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
 import com.onewhohears.dscombat.data.radar.RadarSystem.RWRWarning;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
@@ -16,13 +17,17 @@ import net.minecraft.world.phys.Vec3;
 
 public class UtilPacket {
 	
-	public static void aircraftInputsPacket(int id, AircraftInputs inputs, int weaponIndex) {
+	public static void aircraftInputsPacket(int id, AircraftInputs inputs, int weaponIndex, RadarMode radarMode,
+			boolean isLandingGear, boolean isFreeLook) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityAircraft plane) {
 			if (!plane.isControlledByLocalInstance()) {
 				plane.inputs.copy(inputs);
 				plane.weaponSystem.setSelected(weaponIndex);
+				plane.setRadarMode(radarMode);
+				plane.setLandingGear(isLandingGear);
+				plane.setFreeLook(isFreeLook);
 			}
 		}
 	}
@@ -86,11 +91,13 @@ public class UtilPacket {
 		}
 	}
 	
-	public static void addMomentPacket(int id, Vec3 moment) {
+	public static void addMomentPacket(int id, Vec3 force, Vec3 moment) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityAircraft plane) {
-			plane.addMomentFromServer = plane.addMomentFromServer.add(moment);
+			System.out.println("adding from server "+force+" "+moment);
+			plane.addForceBetweenTicks = plane.addForceBetweenTicks.add(force);
+			plane.addMomentBetweenTicks = plane.addMomentBetweenTicks.add(moment);
 		}
 	}
 	

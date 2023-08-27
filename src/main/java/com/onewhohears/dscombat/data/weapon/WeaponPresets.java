@@ -70,8 +70,8 @@ public class WeaponPresets extends JsonPresetReloadListener<WeaponData> {
 	
 	@Nullable
 	public WeaponData getFromJson(ResourceLocation key, JsonObject json) {
-		int index = json.get("type").getAsInt();
-		WeaponData.WeaponType type = WeaponData.WeaponType.values()[index];
+		String id = json.get("type").getAsString();
+		WeaponData.WeaponType type = WeaponData.WeaponType.getById(id);
 		switch (type) {
 		case BOMB:
 			return new BombData(key, json);
@@ -87,6 +87,8 @@ public class WeaponPresets extends JsonPresetReloadListener<WeaponData> {
 			return new AntiRadarMissileData(key, json);
 		case TORPEDO:
 			return new TorpedoData(key, json);
+		case BUNKER_BUSTER:
+			return new BunkerBusterData(key, json);
 		}
 		return null;
 	}

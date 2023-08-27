@@ -40,6 +40,10 @@ public class ClientCameraEvents {
 			float yi = UtilAngles.lerpAngle180(pt, plane.yRotO, plane.getYRot());
 			player.setXRot(xi);
 			player.setYRot(yi);
+			player.xRotO = xi;
+			player.yRotO = yi;
+			event.setPitch(xi);
+			event.setYaw(yi);
 		}
 		boolean detached = !m.options.getCameraType().isFirstPerson();
 		boolean mirrored = m.options.getCameraType().isMirrored();

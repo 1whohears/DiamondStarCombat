@@ -29,7 +29,6 @@ import com.onewhohears.dscombat.client.model.weapon.EntityModelHeavyTankTurret;
 import com.onewhohears.dscombat.client.model.weapon.EntityModelLightMissileRack;
 import com.onewhohears.dscombat.client.model.weapon.EntityModelMiniGunTurret;
 import com.onewhohears.dscombat.client.model.weapon.EntityModelMissile1;
-import com.onewhohears.dscombat.client.model.weapon.EntityModelSAMLauncher;
 import com.onewhohears.dscombat.client.model.weapon.EntityModelSteveUpSmash;
 import com.onewhohears.dscombat.client.model.weapon.EntityModelXM12;
 import com.onewhohears.dscombat.client.overlay.PilotOverlay;
@@ -100,7 +99,7 @@ public final class ClientModEvents {
 		event.registerLayerDefinition(EntityModelWoodenPlane.LAYER_LOCATION, EntityModelWoodenPlane::createBodyLayer);
 		event.registerLayerDefinition(EntityModelE3Sentry.LAYER_LOCATION, EntityModelE3Sentry::createBodyLayer);
 		event.registerLayerDefinition(EntityModelAxcelTruck.LAYER_LOCATION, EntityModelAxcelTruck::createBodyLayer);
-		event.registerLayerDefinition(EntityModelSAMLauncher.LAYER_LOCATION, EntityModelSAMLauncher::createBodyLayer);
+		//event.registerLayerDefinition(EntityModelSAMLauncher.LAYER_LOCATION, EntityModelSAMLauncher::createBodyLayer);
 		event.registerLayerDefinition(EntityModelCFM56.LAYER_LOCATION, EntityModelCFM56::createBodyLayer);
 		event.registerLayerDefinition(EntityModelGruetzBB.LAYER_LOCATION, EntityModelGruetzBB::createBodyLayer);
 		event.registerLayerDefinition(EntityModelParachute.LAYER_LOCATION, EntityModelParachute::createBodyLayer);

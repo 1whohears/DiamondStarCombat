@@ -786,9 +786,9 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		double x = moment.x, y = moment.y, z = moment.z;
 		if (control) {
 			Vec3 av = getAngularVel();
-			x = getControlMomentComponent(m.x, moment.x, av.x, getMaxDeltaPitch(), Ix);
-			y = getControlMomentComponent(m.y, moment.y, av.y, getMaxDeltaYaw(), Iy);
-			z = getControlMomentComponent(m.z, moment.z, av.z, getMaxDeltaRoll(), Iz);
+			x = getControlMomentComponent(m.x, moment.x, av.x, getControlMaxDeltaPitch(), Ix);
+			y = getControlMomentComponent(m.y, moment.y, av.y, getControlMaxDeltaYaw(), Iy);
+			z = getControlMomentComponent(m.z, moment.z, av.z, getControlMaxDeltaRoll(), Iz);
 		}
 		setMoment(m.add(x, y, z));
 	}
@@ -813,6 +813,18 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	
 	public void addMomentZ(float moment, boolean control) {
 		addMoment(Vec3.ZERO.add(0, 0, moment), control);
+	}
+	
+	public float getControlMaxDeltaPitch() {
+		return getMaxDeltaPitch() * Mth.abs(inputs.pitch);
+	}
+	
+	public float getControlMaxDeltaYaw() {
+		return getMaxDeltaYaw() * Mth.abs(inputs.yaw);
+	}
+	
+	public float getControlMaxDeltaRoll() {
+		return getMaxDeltaRoll() * Mth.abs(inputs.roll);
 	}
 	
 	/**

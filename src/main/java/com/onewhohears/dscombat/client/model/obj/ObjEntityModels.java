@@ -51,8 +51,10 @@ public class ObjEntityModels implements ResourceManagerReloadListener {
 		return modelOverrides.get(name);
 	}
 	
+	public static final String NULL_MODEL_NAME = "simple_test";
+	
 	public CompositeRenderable getBakedModel(String name) {
-		if (!models.containsKey(name)) CompositeRenderable.builder().get();
+		if (!models.containsKey(name)) return models.get(NULL_MODEL_NAME);
 		return models.get(name);
 	}
 	

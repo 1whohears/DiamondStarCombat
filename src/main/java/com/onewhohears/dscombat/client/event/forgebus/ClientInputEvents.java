@@ -19,6 +19,7 @@ import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
@@ -108,21 +109,33 @@ public final class ClientInputEvents {
 			// FIXME 1 mouse mode sucks. check how other mods do it
 			double ya = Math.abs(mouseY);
 			double xa = Math.abs(mouseX);
-			float ys = (float) Math.signum(mouseY);
+			float ys = (float) Math.signum(mouseY) * -invertY;
 			float xs = (float) Math.signum(mouseX);
 			double deadZone = Config.CLIENT.mouseStickDeadzoneRadius.get();
 			double max = Config.CLIENT.mouseModeMaxRadius.get();
 			double md = max-deadZone;
+			// control pitch
 			if (ya > max) {
-				pitch = ys * invertY;
-				mouseCenterY -= (ya - max) * ys;
-			} else if (ya > deadZone) 
-				pitch = (float) ((ya-deadZone) / md) * ys * invertY;
+				pitch = ys;
+				mouseCenterY += (ya - max) * ys;
+			} else if (ya > deadZone) {
+				pitch = (float)((ya-deadZone)/md) * ys;
+			}
+			if (m.mouseHandler.getYVelocity() == 0) {
+				mouseCenterY = (int)Mth.approach((float)mouseCenterY, (float)m.mouseHandler.ypos(), 
+						Config.CLIENT.mouseYReturnRate.get().floatValue());
+			}
+			// control roll
 			if (xa > max) {
 				roll = xs;
 				mouseCenterX += (xa - max) * xs;
-			} else if (xa > deadZone) 
-				roll = (float) ((xa-deadZone) / md) * xs;
+			} else if (xa > deadZone) {
+				roll = (float)((xa-deadZone)/md) * xs;
+			}
+			if (m.mouseHandler.getXVelocity() == 0) {
+				mouseCenterX = (int)Mth.approach((float)mouseCenterX, (float)m.mouseHandler.xpos(), 
+						Config.CLIENT.mouseXReturnRate.get().floatValue());
+			}
 		}
 		if (pitchUp && !pitchDown) pitch = -1 * invertY;
 		if (pitchDown && !pitchUp) pitch = 1 * invertY;

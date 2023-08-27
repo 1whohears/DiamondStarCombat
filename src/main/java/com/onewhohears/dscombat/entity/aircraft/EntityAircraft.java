@@ -1578,7 +1578,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 			SoundSource.PLAYERS, 0.5f, 1.0f);
 		if (!level.isClientSide && !isOperational()) {
 			checkExplodeWhenKilled(source);
-			dropInventory();
+			if (getDeadTicks() == 0) dropInventory();
 		}
 		return true;
 	}

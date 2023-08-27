@@ -135,6 +135,8 @@ public class PartSlot {
 	
 	public boolean removePartData(EntityAircraft plane) {
 		if (filled()) {
+			// FIXME 2 player is still getting kicked from plane when it dies
+			System.out.println("removing "+data);
 			data.remove(slotId);
 			if (plane.level.isClientSide) data.clientRemove(slotId);
 			else {

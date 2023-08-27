@@ -103,6 +103,13 @@
 	"entity.dscombat.steve_up_smash": "Steve Up Smash",
 	"entity.dscombat.sam_launcher": "SAM Launcher",
 	"entity.dscombat.axcel_truck": "Axcel Truck",
+	"entity.dscombat.gronk_battleship": "Gronk Battleship",
+	"entity.dscombat.aim9l": "AIM-9L",
+	"entity.dscombat.aim9p5": "AIM9-P5",
+	"entity.dscombat.aim9x": "AIM-9X",
+	"entity.dscombat.aim120b": "AIM-120B",
+	"entity.dscombat.aim120c": "AIM-120C",
+	"entity.dscombat.pac3": "PAC-3",
 	
 	"entity.minecraft.villager.dscombat.weapons_engineer": "Weapons Engineer",
 	"entity.minecraft.villager.dscombat.aircraft_engineer": "Aircraft Engineer",
@@ -194,6 +201,7 @@
 	"item.dscombat.wooden_plane": "Wooden Plane",
 	"item.dscombat.e3sentry_plane": "E3 Sentry",
 	"item.dscombat.axcel_truck": "Axcel Truck",
+	"item.dscombat.gronk_battleship": "Gronk Battleship",
 	
 	"item.dscombat.the_missile_knows_disc": "Music Disc",
 	"item.dscombat.the_missile_knows_disc.desc": "US Air Force - The Missile Knows Where It Is",
@@ -220,6 +228,7 @@
 	"preset.dscombat.rifel1": "RIFEL-1",
 	"preset.dscombat.torpedo1": "TORPEDO-1",
 	"preset.dscombat.gruetz_bunker_buster": "GRUETZ-BB",
+	"preset.dscombat.pac3": "PAC-3",
 	
 	"preset.dscombat.alexis_plane_empty": "Empty Alexis Plane",
 	"preset.dscombat.alexis_plane_unarmed": "Unarmed Alexis Plane",
@@ -239,6 +248,7 @@
 	"preset.dscombat.mrbudger_tank": "Default Mr Budger Tank",
 	"preset.dscombat.small_roller_empty": "Empty Small Roller",
 	"preset.dscombat.small_roller_unarmed": "Unarmed Small Roller",
+	"preset.dscombat.small_roller_tank": "Baby Tank",
 	"preset.dscombat.small_roller": "Default Small Roller",
 	"preset.dscombat.nathan_boat_empty": "Empty Nathan Boat",
 	"preset.dscombat.nathan_boat_unarmed": "Unarmed Nathan Boat",
@@ -253,6 +263,9 @@
 	"preset.dscombat.e3sentry_plane": "Default E3 Sentry",
 	"preset.dscombat.axcel_truck_empty": "Empty Axcel Truck",
 	"preset.dscombat.axcel_truck": "Default Axcel Truck",
+	"preset.dscombat.gronk_battleship_empty": "Empty Gronk Battleship",
+	"preset.dscombat.gronk_battleship_unarmed": "Unarmed Gronk Battleship",
+	"preset.dscombat.gronk_battleship": "Default Gronk Battleship",
 	
 	"key.categories.flight_control": "Diamond Star Combat Flight Control",
 	

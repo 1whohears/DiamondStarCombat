@@ -290,13 +290,6 @@ public abstract class EntityMissile extends EntityBullet {
 		else if (vel <= 0) vel = 0;
 		Vec3 nm = getLookAngle().scale(vel);
 		setDeltaMovement(nm);
-		/*if (!level.isClientSide) {
-			System.out.println("speed = "+vel);
-			System.out.println("bleed = "+bleed);
-			System.out.println("fuelAge = "+getFuelTicks());
-			System.out.println("x  = "+getXRot()+" y  = "+getYRot());
-			System.out.println("xO = "+xRotO    +" yO = "+yRotO);
-		}*/
 	}
 	
 	@Override
@@ -397,6 +390,11 @@ public abstract class EntityMissile extends EntityBullet {
 	@Override
 	public Fluid getFluidClipContext() {
 		return ClipContext.Fluid.SOURCE_ONLY;
+	}
+	
+	@Override
+	public int minExplodeAge() {
+		return 20;
 	}
 	
 	@Override

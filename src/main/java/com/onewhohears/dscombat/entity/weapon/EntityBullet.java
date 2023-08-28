@@ -77,7 +77,7 @@ public class EntityBullet extends EntityWeapon {
 	}
 	
 	protected void checkExplode() {
-		if (tickCount == 0) return;
+		if (tickCount < minExplodeAge()) return;
 		if (!level.hasChunk(chunkPosition().x, chunkPosition().z)) return;
 		if (getExplosive()) {
 			if (!level.isClientSide) {
@@ -94,6 +94,10 @@ public class EntityBullet extends EntityWeapon {
 						0.0D, 0.0D, 0.0D);
 			}
 		}
+	}
+	
+	public int minExplodeAge() {
+		return 1;
 	}
 	
 	@Override

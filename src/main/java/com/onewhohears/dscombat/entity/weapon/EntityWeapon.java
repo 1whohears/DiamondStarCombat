@@ -203,6 +203,10 @@ public abstract class EntityWeapon extends Projectile {
 		entityData.set(AGE, age);
 	}
 	
+	public int getAge() {
+		return entityData.get(AGE);
+	}
+	
 	@Override
 	public boolean ignoreExplosion() {
 		return true;

@@ -2,7 +2,7 @@
 	"type": "minecraft:crafting_shaped",
 	"key": {
 		"W": {
-			"item": "dscombat:thick_wrench"
+			"item": "dscombat:wrench"
 		},
 		"S": {
 			"item": "minecraft:smithing_table"

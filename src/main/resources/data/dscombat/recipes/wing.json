@@ -3,14 +3,11 @@
 	"key": {
 		"I": {
 			"item": "minecraft:iron_ingot"
-		},
-		"B": {
-			"item": "minecraft:iron_block"
 		}
 	},
 	"pattern": [
-		"BII",
-		"II "
+		"III",
+		"I  "
 	],
 	"result": {
 		"count": 1,

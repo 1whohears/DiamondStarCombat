@@ -1,18 +1,21 @@
 {
 	"type": "minecraft:crafting_shaped",
 	"key": {
-		"T": {
-			"item": "dscombat:ti83"
+		"L": {
+			"item": "minecraft:level"
 		},
 		"D": {
 			"item": "minecraft:dropper"
 		},
 		"I": {
 			"item": "minecraft:iron_ingot"
+		},
+		"S": {
+			"item": "minecraft:smooth_stone"
 		}
 	},
 	"pattern": [
-		"ITI",
+		"SLS",
 		"DID",
 		"DID"
 	],

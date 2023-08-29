@@ -1,8 +1,8 @@
 {
 	"type": "minecraft:crafting_shaped",
 	"key": {
-		"T": {
-			"item": "dscombat:ti83"
+		"L": {
+			"item": "minecraft:lever"
 		},
 		"D": {
 			"item": "minecraft:dispenser"
@@ -12,7 +12,7 @@
 		}
 	},
 	"pattern": [
-		"T",
+		"L",
 		"D",
 		"B"
 	],

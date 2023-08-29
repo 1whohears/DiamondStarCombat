@@ -19,7 +19,7 @@
   "ingredients": [
     {
       "item": "minecraft:iron_ingot",
-      "num": 24
+      "num": 12
     },
     {
       "item": "minecraft:tnt",
@@ -27,7 +27,7 @@
     },
     {
       "item": "minecraft:coal_block",
-      "num": 8
+      "num": 4
     },
     {
       "item": "dscombat:ti83",

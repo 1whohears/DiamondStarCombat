@@ -19,7 +19,7 @@
   "ingredients": [
     {
       "item": "minecraft:iron_ingot",
-      "num": 15
+      "num": 8
     },
     {
       "item": "minecraft:tnt",
@@ -30,7 +30,7 @@
       "num": 6
     },
     {
-      "item": "minecraft:amethyst_shard",
+      "item": "minecraft:ender_eye",
       "num": 1
     },
     {

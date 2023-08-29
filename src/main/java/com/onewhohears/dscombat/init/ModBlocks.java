@@ -10,7 +10,6 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -36,10 +35,10 @@ public class ModBlocks {
     }
 	
 	public static final RegistryObject<Block> WEAPONS_BLOCK = registerBlock("weapons_block", 
-			() -> new WeaponsBlock(BlockBehaviour.Properties.of(Material.METAL)
-                    .strength(6f).requiresCorrectToolForDrops().noOcclusion()), ModItems.WEAPONS);
+			() -> new WeaponsBlock(Block.Properties.of(Material.METAL)
+                    .strength(1.5f).noOcclusion().explosionResistance(6f)), ModItems.WEAPONS);
 	public static final RegistryObject<Block> AIRCRAFT_BLOCK = registerBlock("aircraft_block", 
-			() -> new AircraftBlock(BlockBehaviour.Properties.of(Material.METAL)
-                    .strength(6f).requiresCorrectToolForDrops().noOcclusion()), ModItems.AIRCRAFT);
+			() -> new AircraftBlock(Block.Properties.of(Material.METAL)
+                    .strength(1.5f).noOcclusion().explosionResistance(6f)), ModItems.AIRCRAFT);
 	
 }

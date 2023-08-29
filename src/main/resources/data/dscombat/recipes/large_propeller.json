@@ -6,12 +6,15 @@
 		},
 		"B": {
 			"item": "minecraft:iron_block"
+		},
+		"I": {
+			"item": "minecraft:iron_ingot"
 		}
 	},
 	"pattern": [
-		" B ",
-		"BPB",
-		" B "
+		"III",
+		"IPI",
+		"III"
 	],
 	"result": {
 		"count": 1,

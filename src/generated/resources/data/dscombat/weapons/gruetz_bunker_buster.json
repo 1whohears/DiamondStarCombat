@@ -9,17 +9,17 @@
   "destroyTerrain": true,
   "displayName": "preset.dscombat.gruetz_bunker_buster",
   "entityTypeKey": "dscombat:gruetz_bunker_buster",
-  "explosionRadius": 16.0,
+  "explosionRadius": 12.0,
   "explosive": true,
   "fireRate": 60,
   "ingredients": [
     {
       "item": "minecraft:iron_ingot",
-      "num": 40
+      "num": 16
     },
     {
       "item": "minecraft:tnt",
-      "num": 16
+      "num": 8
     },
     {
       "item": "minecraft:diamond_pickaxe",

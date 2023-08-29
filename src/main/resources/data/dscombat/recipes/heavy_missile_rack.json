@@ -1,16 +1,23 @@
 {
 	"type": "minecraft:crafting_shaped",
 	"key": {
-		"M": {
-			"item": "dscombat:light_missile_rack"
-		},
 		"I": {
 			"item": "minecraft:iron_ingot"
+		},
+		"T": {
+			"item": "dscombat:ti83"
+		},
+		"D": {
+			"item": "minecraft:dispenser"
+		},
+		"S": {
+			"item": "minecraft:smooth_stone"
 		}
 	},
 	"pattern": [
-		"III",
-		"MIM"
+		"STS",
+		"DID",
+		"DID"
 	],
 	"result": {
 		"count": 1,

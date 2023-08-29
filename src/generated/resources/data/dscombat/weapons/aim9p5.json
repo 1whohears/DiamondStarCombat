@@ -20,7 +20,7 @@
   "ingredients": [
     {
       "item": "minecraft:iron_ingot",
-      "num": 8
+      "num": 4
     },
     {
       "item": "minecraft:tnt",
@@ -28,11 +28,11 @@
     },
     {
       "item": "minecraft:coal_block",
-      "num": 3
+      "num": 1
     },
     {
       "item": "minecraft:spider_eye",
-      "num": 4
+      "num": 2
     },
     {
       "item": "dscombat:ti83",

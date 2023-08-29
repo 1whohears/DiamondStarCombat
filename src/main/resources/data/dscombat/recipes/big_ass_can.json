@@ -9,9 +9,9 @@
 		}
 	},
 	"pattern": [
-		" C ",
 		"CCC",
-		"III"
+		"CCC",
+		"I I"
 	],
 	"result": {
 		"count": 1,

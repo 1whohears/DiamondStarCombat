@@ -3,7 +3,7 @@
   "canShootOnGround": true,
   "causesFire": false,
   "compatibleWeaponPart": "dscombat:xm12",
-  "craftNum": 4,
+  "craftNum": 10,
   "damage": 20.0,
   "destroyTerrain": true,
   "displayName": "preset.dscombat.50mmhe",
@@ -14,7 +14,7 @@
   "ingredients": [
     {
       "item": "minecraft:copper_ingot",
-      "num": 8
+      "num": 5
     },
     {
       "item": "minecraft:gunpowder",

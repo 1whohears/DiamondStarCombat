@@ -1,16 +1,20 @@
 {
 	"type": "minecraft:crafting_shaped",
 	"key": {
-		"H": {
-			"item": "minecraft:hopper"
+		"T": {
+			"item": "minecraft:stick"
+		},
+		"S": {
+			"item": "minecraft:smooth_stone"
 		},
 		"B": {
 			"item": "minecraft:bucket"
 		}
 	},
 	"pattern": [
-		" H ",
-		"BBB"
+		"T",
+		"S",
+		"B"
 	],
 	"result": {
 		"count": 1,

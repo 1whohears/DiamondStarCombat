@@ -1,15 +1,20 @@
 {
 	"type": "minecraft:crafting_shaped",
 	"key": {
-		"H": {
-			"item": "minecraft:hopper"
+		"T": {
+			"item": "minecraft:stick"
 		},
-		"B": {
-			"item": "dscombat:light_fuel_tank"
+		"S": {
+			"item": "minecraft:smooth_stone"
+		},
+		"C": {
+			"item": "dscombat:cauldron"
 		}
 	},
 	"pattern": [
-		"BHB"
+		"T ",
+		"SS",
+		"CC"
 	],
 	"result": {
 		"count": 1,

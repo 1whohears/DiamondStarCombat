@@ -149,9 +149,7 @@ public class PartSlot {
 	}
 	
 	public boolean isSeat() {
-		if (data != null) {
-			data.isSeat();
-		}
+		if (data != null) return data.isSeat();
 		return false;
 	}
 	

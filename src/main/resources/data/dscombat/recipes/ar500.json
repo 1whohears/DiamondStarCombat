@@ -4,20 +4,19 @@
 		"P": {
 			"item": "dscombat:intel_pentium"
 		},
-		"G": {
-			"item": "minecraft:ghast_tear"
+		"R": {
+			"item": "minecraft:redstone"
 		},
 		"O": {
 			"item": "minecraft:observer"
 		},
 		"I": {
-			"item": "minecraft:iron_ingot"
+			"item": "minecraft:copper_ingot"
 		}
 	},
 	"pattern": [
-		"IPI",
-		"IOI",
-		"IGI"
+		"RPI",
+		"IOR"
 	],
 	"result": {
 		"count": 1,

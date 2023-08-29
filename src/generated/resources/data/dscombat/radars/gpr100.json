@@ -10,6 +10,6 @@
   "scanPlayers": true,
   "scanRate": 50,
   "sensitivity": 0.8,
-  "throGroundRange": 20.0,
+  "throGroundRange": 100.0,
   "throWaterRange": 0.0
 }

@@ -6,11 +6,14 @@
 		},
 		"D": {
 			"item": "minecraft:glowstone_dust"
+		},
+		"G": {
+			"item": "minecraft:ghast_tear"
 		}
 	},
 	"pattern": [
 		" A ",
-		"DDD"
+		"DGD"
 	],
 	"result": {
 		"count": 1,

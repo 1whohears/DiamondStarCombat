@@ -4,16 +4,14 @@
 		"W": {
 			"item": "minecraft:white_wool"
 		},
-		"M": {
-			"item": "minecraft:minecart"
-		},
 		"L": {
 			"item": "minecraft:leather"
 		}
 	},
 	"pattern": [
-		"WWW",
-		"LML"
+		"  W",
+		"  W",
+		"LLW"
 	],
 	"result": {
 		"count": 1,

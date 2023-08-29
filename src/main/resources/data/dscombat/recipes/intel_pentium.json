@@ -9,12 +9,15 @@
 		},
 		"C": {
 			"item": "minecraft:comparator"
+		},
+		"D": {
+			"item": "minecraft:redstone"
 		}
 	},
 	"pattern": [
-		"GTG",
+		"DTG",
 		"TCT",
-		"GTG"
+		"GTD"
 	],
 	"result": {
 		"count": 1,

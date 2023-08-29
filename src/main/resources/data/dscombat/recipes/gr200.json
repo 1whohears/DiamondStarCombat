@@ -11,13 +11,15 @@
 			"item": "minecraft:observer"
 		},
 		"I": {
-			"item": "minecraft:iron_ingot"
+			"item": "minecraft:copper_ingot"
+		},
+		"R": {
+			"item": "minecraft:redstone"
 		}
 	},
 	"pattern": [
-		"IPI",
-		"IOI",
-		"IGI"
+		"RPI",
+		"IOG"
 	],
 	"result": {
 		"count": 1,

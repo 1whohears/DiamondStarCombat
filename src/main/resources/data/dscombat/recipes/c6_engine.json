@@ -1,8 +1,8 @@
 {
 	"type": "minecraft:crafting_shaped",
 	"key": {
-		"B": {
-			"item": "minecraft:blast_furnace"
+		"F": {
+			"item": "minecraft:furnace"
 		},
 		"P": {
 			"item": "minecraft:piston"
@@ -12,9 +12,9 @@
 		}
 	},
 	"pattern": [
-		"PPP",
-		"PPP",
-		"IBI"
+		" I ",
+		"PFP",
+		" I "
 	],
 	"result": {
 		"count": 1,

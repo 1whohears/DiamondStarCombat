@@ -9,8 +9,8 @@
 		}
 	},
 	"pattern": [
-		" A ",
-		"SSS"
+		"A",
+		"S"
 	],
 	"result": {
 		"count": 1,

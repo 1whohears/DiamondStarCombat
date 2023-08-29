@@ -3,10 +3,14 @@
 	"key": {
 		"W": {
 			"item": "dscombat:wing"
+		},
+		"I": {
+			"item": "minecraft:iron_ingot"
 		}
 	},
 	"pattern": [
-		"WWW"
+		"WWI",
+		"I  "
 	],
 	"result": {
 		"count": 1,

@@ -9,12 +9,15 @@
 		},
 		"C": {
 			"item": "minecraft:comparator"
+		},
+		"D": {
+			"item": "minecraft:redstone"
 		}
 	},
 	"pattern": [
-		"ICI",
-		"CRC",
-		"ICI"
+		"DID",
+		"RCR",
+		"DID"
 	],
 	"result": {
 		"count": 1,

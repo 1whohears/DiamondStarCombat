@@ -10,7 +10,7 @@
   "destroyTerrain": true,
   "displayName": "preset.dscombat.pac3",
   "entityTypeKey": "dscombat:pac3",
-  "explosionRadius": 5.0,
+  "explosionRadius": 6.0,
   "explosive": true,
   "fireRate": 40,
   "fov": 35.0,
@@ -19,18 +19,18 @@
   "ingredients": [
     {
       "item": "minecraft:iron_ingot",
-      "num": 20
+      "num": 10
     },
     {
       "item": "minecraft:tnt",
-      "num": 5
+      "num": 6
     },
     {
       "item": "minecraft:coal_block",
       "num": 6
     },
     {
-      "item": "minecraft:amethyst_shard",
+      "item": "minecraft:ender_eye",
       "num": 1
     },
     {

@@ -32,7 +32,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setCompatibleWeaponPart(ModItems.XM12.getId())
 				.setCraftNum(64)
 				.addIngredient("minecraft:copper_ingot", 8)
-				.addIngredient("minecraft:gunpowder", 2)
+				.addIngredient("minecraft:gunpowder", 1)
 				.build());
 		addPresetToGenerate(BulletData.Builder
 				.bulletBuilder(DSCombatMod.MODID, "50mmhe")
@@ -52,8 +52,8 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setRackEntityType(ModEntities.XM12.getId())
 				.setShootSound(ModSounds.BULLET_SHOOT_1.getId())
 				.setCompatibleWeaponPart(ModItems.XM12.getId())
-				.setCraftNum(4)
-				.addIngredient("minecraft:copper_ingot", 8)
+				.setCraftNum(10)
+				.addIngredient("minecraft:copper_ingot", 5)
 				.addIngredient("minecraft:gunpowder", 8)
 				.build());
 		addPresetToGenerate(BulletData.Builder
@@ -75,8 +75,8 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setShootSound(ModSounds.BULLET_SHOOT_1.getId())
 				.setNoCompatible()
 				.setCraftNum(1)
-				.addIngredient("minecraft:copper_ingot", 8)
-				.addIngredient("minecraft:gunpowder", 8)
+				.addIngredient("minecraft:copper_ingot", 4)
+				.addIngredient("minecraft:gunpowder", 5)
 				.build());
 	}
 	
@@ -107,11 +107,11 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getId())
 				.setCompatibleWeaponPart(ModItems.HEAVY_MISSILE_RACK.getId())
 				.setCraftNum(1)
-				.addIngredient("minecraft:iron_ingot", 20)
+				.addIngredient("minecraft:iron_ingot", 12)
 				.addIngredient("minecraft:tnt", 5)
 				.addIngredient("minecraft:coal_block", 7)
-				.addIngredient("minecraft:amethyst_shard")
-				.addIngredient("dscombat:ti83", 3)
+				.addIngredient("minecraft:ender_eye")
+				.addIngredient("dscombat:ti83", 2)
 				.build());
 		addPresetToGenerate(MissileData.Builder
 				.trackMissileBuilder(DSCombatMod.MODID, "aim7mh")
@@ -139,11 +139,11 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getId())
 				.setCompatibleWeaponPart(ModItems.HEAVY_MISSILE_RACK.getId())
 				.setCraftNum(1)
-				.addIngredient("minecraft:iron_ingot", 20)
+				.addIngredient("minecraft:iron_ingot", 12)
 				.addIngredient("minecraft:tnt", 5)
 				.addIngredient("minecraft:coal_block", 8)
-				.addIngredient("minecraft:amethyst_shard")
-				.addIngredient("dscombat:ti83", 3)
+				.addIngredient("minecraft:ender_eye")
+				.addIngredient("dscombat:ti83", 2)
 				.build());
 		addPresetToGenerate(MissileData.Builder
 				.trackMissileBuilder(DSCombatMod.MODID, "aim120b")
@@ -171,10 +171,10 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getId())
 				.setCompatibleWeaponPart(ModItems.HEAVY_MISSILE_RACK.getId())
 				.setCraftNum(1)
-				.addIngredient("minecraft:iron_ingot", 15)
+				.addIngredient("minecraft:iron_ingot", 8)
 				.addIngredient("minecraft:tnt", 3)
 				.addIngredient("minecraft:coal_block", 5)
-				.addIngredient("minecraft:amethyst_shard")
+				.addIngredient("minecraft:ender_eye")
 				.addIngredient("dscombat:intel_pentium")
 				.build());
 		addPresetToGenerate(MissileData.Builder
@@ -203,10 +203,10 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getId())
 				.setCompatibleWeaponPart(ModItems.HEAVY_MISSILE_RACK.getId())
 				.setCraftNum(1)
-				.addIngredient("minecraft:iron_ingot", 15)
+				.addIngredient("minecraft:iron_ingot", 8)
 				.addIngredient("minecraft:tnt", 3)
 				.addIngredient("minecraft:coal_block", 6)
-				.addIngredient("minecraft:amethyst_shard")
+				.addIngredient("minecraft:ender_eye")
 				.addIngredient("dscombat:intel_pentium")
 				.build());
 		addPresetToGenerate(MissileData.Builder
@@ -216,7 +216,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setCanShootOnGround(false)
 				.setDamage(100f)
 				.setSpeed(4.1f)
-				.setExplosionRadius(5f)
+				.setExplosionRadius(6f)
 				.setExplosive(true)
 				.setDestoryTerrain(true)
 				.setCausesFire(true)
@@ -235,10 +235,10 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getId())
 				.setCompatibleWeaponPart(ModItems.HEAVY_MISSILE_RACK.getId())
 				.setCraftNum(1)
-				.addIngredient("minecraft:iron_ingot",20)
-				.addIngredient("minecraft:tnt", 5)
+				.addIngredient("minecraft:iron_ingot",10)
+				.addIngredient("minecraft:tnt", 6)
 				.addIngredient("minecraft:coal_block", 6)
-				.addIngredient("minecraft:amethyst_shard")
+				.addIngredient("minecraft:ender_eye")
 				.addIngredient("dscombat:intel_pentium")
 				.build());
 		addPresetToGenerate(MissileData.Builder
@@ -267,9 +267,9 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getId())
 				.setCompatibleWeaponPart(ModItems.LIGHT_MISSILE_RACK.getId())
 				.setCraftNum(1)
-				.addIngredient("minecraft:iron_ingot", 8)
+				.addIngredient("minecraft:iron_ingot", 4)
 				.addIngredient("minecraft:tnt", 1)
-				.addIngredient("minecraft:coal_block", 3)
+				.addIngredient("minecraft:coal_block", 1)
 				.addIngredient("minecraft:spider_eye", 1)
 				.addIngredient("dscombat:ti83")
 				.build());
@@ -299,10 +299,10 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getId())
 				.setCompatibleWeaponPart(ModItems.LIGHT_MISSILE_RACK.getId())
 				.setCraftNum(1)
-				.addIngredient("minecraft:iron_ingot", 8)
+				.addIngredient("minecraft:iron_ingot", 4)
 				.addIngredient("minecraft:tnt", 1)
-				.addIngredient("minecraft:coal_block", 3)
-				.addIngredient("minecraft:spider_eye", 4)
+				.addIngredient("minecraft:coal_block", 1)
+				.addIngredient("minecraft:spider_eye", 2)
 				.addIngredient("dscombat:ti83", 2)
 				.build());
 		addPresetToGenerate(MissileData.Builder
@@ -331,10 +331,10 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getId())
 				.setCompatibleWeaponPart(ModItems.LIGHT_MISSILE_RACK.getId())
 				.setCraftNum(1)
-				.addIngredient("minecraft:iron_ingot", 10)
+				.addIngredient("minecraft:iron_ingot", 5)
 				.addIngredient("minecraft:tnt", 1)
-				.addIngredient("minecraft:coal_block", 4)
-				.addIngredient("minecraft:spider_eye", 8)
+				.addIngredient("minecraft:coal_block", 2)
+				.addIngredient("minecraft:spider_eye", 4)
 				.addIngredient("dscombat:intel_pentium")
 				.build());
 	}
@@ -365,9 +365,9 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getId())
 				.setCompatibleWeaponPart(ModItems.LIGHT_MISSILE_RACK.getId())
 				.setCraftNum(1)
-				.addIngredient("minecraft:iron_ingot", 8)
+				.addIngredient("minecraft:iron_ingot", 3)
 				.addIngredient("minecraft:tnt", 1)
-				.addIngredient("minecraft:coal_block", 2)
+				.addIngredient("minecraft:coal_block", 1)
 				.addIngredient("dscombat:ti83")
 				.build());
 		addPresetToGenerate(MissileData.Builder
@@ -395,7 +395,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getId())
 				.setCompatibleWeaponPart(ModItems.HEAVY_MISSILE_RACK.getId())
 				.setCraftNum(1)
-				.addIngredient("minecraft:iron_ingot", 12)
+				.addIngredient("minecraft:iron_ingot", 5)
 				.addIngredient("minecraft:tnt", 3)
 				.addIngredient("minecraft:coal_block", 2)
 				.addIngredient("dscombat:ti83")
@@ -426,7 +426,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getId())
 				.setCompatibleWeaponPart(ModItems.HEAVY_MISSILE_RACK.getId())
 				.setCraftNum(1)
-				.addIngredient("minecraft:iron_ingot", 12)
+				.addIngredient("minecraft:iron_ingot", 5)
 				.addIngredient("minecraft:tnt", 3)
 				.addIngredient("minecraft:coal_block", 2)
 				.addIngredient("dscombat:ti83")
@@ -457,9 +457,9 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getId())
 				.setCompatibleWeaponPart(ModItems.HEAVY_MISSILE_RACK.getId())
 				.setCraftNum(1)
-				.addIngredient("minecraft:iron_ingot", 20)
+				.addIngredient("minecraft:iron_ingot", 6)
 				.addIngredient("minecraft:tnt", 3)
-				.addIngredient("minecraft:coal_block", 4)
+				.addIngredient("minecraft:coal_block", 3)
 				.addIngredient("dscombat:ti83", 2)
 				.build());
 	}
@@ -491,7 +491,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getId())
 				.setCompatibleWeaponPart(ModItems.HEAVY_MISSILE_RACK.getId())
 				.setCraftNum(1)
-				.addIngredient("minecraft:iron_ingot", 20)
+				.addIngredient("minecraft:iron_ingot", 12)
 				.addIngredient("minecraft:tnt", 4)
 				.addIngredient("minecraft:coal_block", 4)
 				.addIngredient("dscombat:intel_pentium")
@@ -522,9 +522,9 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getId())
 				.setCompatibleWeaponPart(ModItems.HEAVY_MISSILE_RACK.getId())
 				.setCraftNum(1)
-				.addIngredient("minecraft:iron_ingot", 24)
+				.addIngredient("minecraft:iron_ingot", 12)
 				.addIngredient("minecraft:tnt", 5)
-				.addIngredient("minecraft:coal_block", 8)
+				.addIngredient("minecraft:coal_block", 4)
 				.addIngredient("dscombat:ti83")
 				.build());
 	}
@@ -549,8 +549,8 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setShootSound(ModSounds.BOMB_SHOOT_1.getId())
 				.setCompatibleWeaponPart(ModItems.BOMB_RACK.getId())
 				.setCraftNum(4)
-				.addIngredient("minecraft:iron_ingot", 8)
-				.addIngredient("minecraft:tnt", 2)
+				.addIngredient("minecraft:iron_ingot", 2)
+				.addIngredient("minecraft:tnt", 1)
 				.build());
 		addPresetToGenerate(BombData.Builder
 				.bombBuilder(DSCombatMod.MODID, "anm57")
@@ -571,8 +571,8 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setShootSound(ModSounds.BOMB_SHOOT_1.getId())
 				.setCompatibleWeaponPart(ModItems.BOMB_RACK.getId())
 				.setCraftNum(1)
-				.addIngredient("minecraft:iron_ingot", 8)
-				.addIngredient("minecraft:tnt", 1)
+				.addIngredient("minecraft:iron_ingot", 4)
+				.addIngredient("minecraft:tnt", 2)
 				.build());
 		addPresetToGenerate(BombData.Builder
 				.bombBuilder(DSCombatMod.MODID, "anm64")
@@ -593,8 +593,8 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setShootSound(ModSounds.BOMB_SHOOT_1.getId())
 				.setCompatibleWeaponPart(ModItems.BOMB_RACK.getId())
 				.setCraftNum(1)
-				.addIngredient("minecraft:iron_ingot", 12)
-				.addIngredient("minecraft:tnt", 2)
+				.addIngredient("minecraft:iron_ingot", 6)
+				.addIngredient("minecraft:tnt", 3)
 				.build());
 	}
 	
@@ -606,7 +606,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setCanShootOnGround(true)
 				.setDamage(50f)
 				.setSpeed(0f)
-				.setExplosionRadius(16)
+				.setExplosionRadius(12)
 				.setExplosive(true)
 				.setDestoryTerrain(true)
 				.setCausesFire(false)
@@ -619,8 +619,8 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setShootSound(ModSounds.BOMB_SHOOT_1.getId())
 				.setCompatibleWeaponPart(ModItems.BOMB_RACK.getId())
 				.setCraftNum(1)
-				.addIngredient("minecraft:iron_ingot", 40)
-				.addIngredient("minecraft:tnt", 16)
+				.addIngredient("minecraft:iron_ingot", 16)
+				.addIngredient("minecraft:tnt", 8)
 				.addIngredient("minecraft:diamond_pickaxe")
 				.addIngredient(ModItems.TI83.getId())
 				.build());

@@ -152,7 +152,7 @@ public class RadarPresetGenerator extends JsonPresetGenerator<RadarData> {
 		addPresetToGenerate(RadarData.Builder
 				.create(DSCombatMod.MODID, "gpr100")
 				.setRange(500f)
-				.setThroGroundRange(20f)
+				.setThroGroundRange(100f)
 				.setThroWaterRange(0f)
 				.setSensitivity(0.8f)
 				.setFieldOfView(-1f)

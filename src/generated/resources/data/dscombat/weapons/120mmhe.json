@@ -14,11 +14,11 @@
   "ingredients": [
     {
       "item": "minecraft:copper_ingot",
-      "num": 8
+      "num": 4
     },
     {
       "item": "minecraft:gunpowder",
-      "num": 8
+      "num": 5
     }
   ],
   "innacuracy": 0.04,

@@ -14,11 +14,11 @@
   "ingredients": [
     {
       "item": "minecraft:iron_ingot",
-      "num": 8
+      "num": 4
     },
     {
       "item": "minecraft:tnt",
-      "num": 1
+      "num": 2
     }
   ],
   "innacuracy": 0.0,

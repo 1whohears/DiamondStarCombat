@@ -36,9 +36,9 @@ public class ModBlocks {
 	
 	public static final RegistryObject<Block> WEAPONS_BLOCK = registerBlock("weapons_block", 
 			() -> new WeaponsBlock(Block.Properties.of(Material.METAL)
-                    .strength(1.5f).noOcclusion()), ModItems.WEAPONS);
+                    .strength(1.5f).noOcclusion().explosionResistance(6f)), ModItems.WEAPONS);
 	public static final RegistryObject<Block> AIRCRAFT_BLOCK = registerBlock("aircraft_block", 
 			() -> new AircraftBlock(Block.Properties.of(Material.METAL)
-                    .strength(1.5f).noOcclusion()), ModItems.AIRCRAFT);
+                    .strength(1.5f).noOcclusion().explosionResistance(6f)), ModItems.AIRCRAFT);
 	
 }

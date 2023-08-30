@@ -261,6 +261,8 @@
 	"preset.dscombat.orange_tesla": "Default Orange Tesla",
 	"preset.dscombat.wooden_plane_empty": "Empty Wooden Plane",
 	"preset.dscombat.wooden_plane": "Default Wooden Plane",
+	"preset.dscombat.wooden_plane_bomber": "Bomber Wooden Plane",
+	"preset.dscombat.wooden_plane_fighter": "Fighter Wooden Plane",
 	"preset.dscombat.e3sentry_plane_empty": "Empty E3 Sentry",
 	"preset.dscombat.e3sentry_plane": "Default E3 Sentry",
 	"preset.dscombat.axcel_truck_empty": "Empty Axcel Truck",

@@ -134,6 +134,7 @@ public class DefaultAircraftPresets {
 			.addIngredient(ModItems.FUSELAGE.getId(), 2)
 			.addIngredient(ModItems.LARGE_WING.getId(), 2)
 			.addIngredient(ModItems.COCKPIT.getId())
+			.addIngredient(ModItems.SEAT.getId())
 			.addIngredient("minecraft:gold_ingot", 10)
 			.addPilotSeatSlot(0, -0.55, 3.35)
 			.addSeatSlot("seat2", SlotType.MED_TURRET, 0, -0.55, 2.35)
@@ -284,6 +285,7 @@ public class DefaultAircraftPresets {
 			.addIngredient(ModItems.LARGE_PROPELLER.getId(), 2)
 			.addIngredient(ModItems.PROPELLER.getId())
 			.addIngredient(ModItems.COCKPIT.getId())
+			.addIngredient(ModItems.SEAT.getId(), 3)
 			.addIngredient("minecraft:gold_ingot", 15)
 			.build();
 	
@@ -613,6 +615,26 @@ public class DefaultAircraftPresets {
 			.addIngredient(ModItems.LIGHT_FUEL_TANK.getId())
 			.setSlotItem("internal_1", ModItems.CM_MANLY_52.getId())
 			.setSlotItem("internal_2", ModItems.LIGHT_FUEL_TANK.getId(), true)
+			.build();
+	
+	public static final AircraftPreset BOMBER_WOODEN_PLANE = AircraftPreset.Builder
+			.createFromCopy(DSCombatMod.MODID, "wooden_plane_bomber", DEFAULT_WOODEN_PLANE)
+			.setCraftable()
+			.setSlotItem("left_wing_1", ModItems.BOMB_RACK.getId(), "anm30", true)
+			.setSlotItem("right_wing_1", ModItems.BOMB_RACK.getId(), "anm57", true)
+			.addIngredient("minecraft:tnt", 30)
+			.addIngredient("minecraft:iron_ingot", 60)
+			.addIngredient(ModItems.BOMB_RACK.getId(), 2)
+			.build();
+	
+	public static final AircraftPreset FIGHTER_WOODEN_PLANE = AircraftPreset.Builder
+			.createFromCopy(DSCombatMod.MODID, "wooden_plane_fighter", DEFAULT_WOODEN_PLANE)
+			.setCraftable()
+			.setSlotItem("left_wing_1", ModItems.XM12.getId(), "20mm", true)
+			.setSlotItem("right_wing_1", ModItems.XM12.getId(), "20mm", true)
+			.addIngredient("minecraft:gunpowder", 15)
+			.addIngredient("minecraft:copper_ingot", 60)
+			.addIngredient(ModItems.XM12.getId(), 2)
 			.build();
 	
 	public static final AircraftPreset EMPTY_E3SENTRY_PLANE = AircraftPreset.Builder

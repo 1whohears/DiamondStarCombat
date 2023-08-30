@@ -141,6 +141,7 @@ public class PartsManager {
 			System.out.println("WARNING! INDEX "+i+" IS OUT OF BOUNDS IN PARTS MANAGER "+this);
 			return;
 		}
+		// FIXME 4 pilot seat dupe
 		Entity pilot = null;
 		if (slots.get(i).isPilotSlot()) pilot = parent.getControllingPassenger();
 		slots.get(i).removePartData(parent);

@@ -9,9 +9,9 @@
 		}
 	},
 	"pattern": [
-		"III",
-		"IPI",
-		"III"
+		"  I",
+		" P ",
+		"I  "
 	],
 	"result": {
 		"count": 1,

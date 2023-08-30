@@ -8,7 +8,7 @@
 			"item": "minecraft:smooth_stone"
 		},
 		"C": {
-			"item": "dscombat:cauldron"
+			"item": "minecraft:cauldron"
 		}
 	},
 	"pattern": [

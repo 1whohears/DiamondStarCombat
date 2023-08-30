@@ -786,9 +786,13 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		double x = moment.x, y = moment.y, z = moment.z;
 		if (control) {
 			Vec3 av = getAngularVel();
-			x = getControlMomentComponent(m.x, moment.x, av.x, getControlMaxDeltaPitch(), Ix);
+			// FIXME 2 this is causing rotations to not be smooth reverting to origional
+			/*x = getControlMomentComponent(m.x, moment.x, av.x, getControlMaxDeltaPitch(), Ix);
 			y = getControlMomentComponent(m.y, moment.y, av.y, getControlMaxDeltaYaw(), Iy);
-			z = getControlMomentComponent(m.z, moment.z, av.z, getControlMaxDeltaRoll(), Iz);
+			z = getControlMomentComponent(m.z, moment.z, av.z, getControlMaxDeltaRoll(), Iz);*/
+			x = getControlMomentComponent(m.x, moment.x, av.x, getMaxDeltaPitch(), Ix);
+			y = getControlMomentComponent(m.y, moment.y, av.y, getMaxDeltaYaw(), Iy);
+			z = getControlMomentComponent(m.z, moment.z, av.z, getMaxDeltaRoll(), Iz);
 		}
 		setMoment(m.add(x, y, z));
 	}

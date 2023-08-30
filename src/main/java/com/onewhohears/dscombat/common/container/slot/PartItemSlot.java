@@ -1,20 +1,22 @@
 package com.onewhohears.dscombat.common.container.slot;
 
+import com.onewhohears.dscombat.common.container.AircraftMenuContainer;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.util.UtilParse;
 
-import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
 public class PartItemSlot extends Slot {
 	
+	public final AircraftMenuContainer menu;
 	public final PartSlot data;
 	
-	public PartItemSlot(Container container, int slot, PartSlot data, int x, int y) {
-		super(container, slot, x, y);
+	public PartItemSlot(AircraftMenuContainer menu, int slot, PartSlot data, int x, int y) {
+		super(menu.getPlaneInventory(), slot, x, y);
+		this.menu = menu;
 		this.data = data;
 	}
 	
@@ -45,6 +47,8 @@ public class PartItemSlot extends Slot {
 	
 	@Override
 	public boolean mayPickup(Player player) {
+		if (!(data.isPilotSlot() && data.isNormalSeat()))
+			return mayPlace(menu.getCarried());
 		return !data.isLocked();
 	}
 

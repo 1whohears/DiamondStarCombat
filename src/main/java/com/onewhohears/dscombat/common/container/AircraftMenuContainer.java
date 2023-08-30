@@ -43,7 +43,7 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
 					y = uip.getY();
 				}
 				//System.out.println("partsInv i = "+i+" x = "+x+" y = "+y);
-				this.addSlot(new PartItemSlot(planeInv, i, slots.get(i), x, y));
+				this.addSlot(new PartItemSlot(this, i, slots.get(i), x, y));
 			}
 		}
 		// display player inventory

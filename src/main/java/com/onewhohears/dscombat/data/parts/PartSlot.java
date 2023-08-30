@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddPart;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRemovePart;
+import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.UtilParse;
@@ -150,6 +151,11 @@ public class PartSlot {
 	
 	public boolean isSeat() {
 		if (data != null) return data.isSeat();
+		return false;
+	}
+	
+	public boolean isNormalSeat() {
+		if (data != null) return data.getType() == PartType.SEAT;
 		return false;
 	}
 	

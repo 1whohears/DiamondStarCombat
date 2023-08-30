@@ -1,15 +1,20 @@
 {
 	"type": "minecraft:crafting_shaped",
 	"key": {
-		"E": {
-			"item": "dscombat:c6_engine"
+		"F": {
+			"item": "minecraft:furnace"
+		},
+		"P": {
+			"item": "minecraft:piston"
 		},
 		"I": {
 			"item": "minecraft:iron_ingot"
 		}
 	},
 	"pattern": [
-		"EIE"
+		"IPI",
+		"PFP",
+		"IPI"
 	],
 	"result": {
 		"count": 1,

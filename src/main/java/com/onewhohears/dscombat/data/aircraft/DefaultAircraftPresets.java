@@ -293,10 +293,8 @@ public class DefaultAircraftPresets {
 			.setSlotItem("internal_1", ModItems.C12_ENGINE.getId())
 			.setSlotItem("internal_2", ModItems.C12_ENGINE.getId())
 			.setSlotItem("internal_3", ModItems.HEAVY_FUEL_TANK.getId(), true)
-			.setSlotItem("internal_4", ModItems.BASIC_FLARE_DISPENSER.getId(), true)
 			.addIngredient(ModItems.C12_ENGINE.getId(), 2)
 			.addIngredient(ModItems.HEAVY_FUEL_TANK.getId())
-			.addIngredient(ModItems.BASIC_FLARE_DISPENSER.getId())
 			.build();
 	
 	public static final AircraftPreset DEFAULT_NOAH_CHOPPER = AircraftPreset.Builder
@@ -312,11 +310,13 @@ public class DefaultAircraftPresets {
 			.setSlotItem("frame_1", ModItems.HEAVY_MISSILE_RACK.getId(), "rifel1", true)
 			.setSlotItem("internal_5", ModItems.AR500.getId())
 			.setSlotItem("internal_6", ModItems.GR400.getId())
+			.setSlotItem("internal_4", ModItems.BASIC_FLARE_DISPENSER.getId(), true)
 			.addIngredient(ModItems.AR500.getId())
 			.addIngredient(ModItems.GR400.getId())
 			.addIngredient(ModItems.MINIGUN_TURRET.getId())
 			.addIngredient(ModItems.HEAVY_MISSILE_RACK.getId(), 5)
 			.addIngredient(ModItems.LIGHT_MISSILE_RACK.getId(), 2)
+			.addIngredient(ModItems.BASIC_FLARE_DISPENSER.getId())
 			.addIngredient("minecraft:copper_ingot", 64)
 			.addIngredient("minecraft:iron_ingot", 64)
 			.addIngredient("minecraft:redstone", 64)
@@ -595,7 +595,7 @@ public class DefaultAircraftPresets {
 			.setThrottleRate(0.02f, 0.06f)
 			.setPlaneWingArea(6f)
 			.setDefaultColor(DyeColor.BROWN)
-			.addIngredient("minecraft:oak_planks", 30)
+			.addIngredient("minecraft:planks", 30)
 			.addIngredient(ModItems.COCKPIT.getId())
 			.addIngredient(ModItems.PROPELLER.getId())
 			.addPilotSeatSlot(0, -0.4, 0)

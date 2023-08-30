@@ -6,7 +6,7 @@
   "idleheat": 1.0,
   "ingredients": [
     {
-      "item": "minecraft:oak_planks",
+      "item": "minecraft:planks",
       "num": 30
     },
     {

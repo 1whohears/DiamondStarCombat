@@ -36,10 +36,6 @@
       "num": 1
     },
     {
-      "item": "dscombat:basic_flare_dispenser",
-      "num": 1
-    },
-    {
       "item": "dscombat:ar500",
       "num": 1
     },
@@ -58,6 +54,10 @@
     {
       "item": "dscombat:light_missile_rack",
       "num": 2
+    },
+    {
+      "item": "dscombat:basic_flare_dispenser",
+      "num": 1
     },
     {
       "item": "minecraft:copper_ingot",

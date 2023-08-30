@@ -34,10 +34,6 @@
     {
       "item": "dscombat:heavy_fuel_tank",
       "num": 1
-    },
-    {
-      "item": "dscombat:basic_flare_dispenser",
-      "num": 1
     }
   ],
   "is_craftable": true,
@@ -229,10 +225,6 @@
       "zRot": 0.0
     },
     {
-      "data": {
-        "filled": true,
-        "itemid": "dscombat:basic_flare_dispenser"
-      },
       "name": "internal_4",
       "slot_posx": 0.0,
       "slot_posy": 0.0,

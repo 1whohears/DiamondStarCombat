@@ -47,9 +47,9 @@ public class PartItemSlot extends Slot {
 	
 	@Override
 	public boolean mayPickup(Player player) {
-		if (!(data.isPilotSlot() && data.isNormalSeat()))
-			return mayPlace(menu.getCarried());
-		return !data.isLocked();
+		if (data.isLocked()) return false;
+		if (data.isPilotSlot()) return mayPlace(menu.getCarried());
+		return true;
 	}
 
 }

@@ -6,7 +6,7 @@
   "idleheat": 1.0,
   "ingredients": [
     {
-      "item": "minecraft:planks",
+      "item": "minecraft:oak_planks",
       "num": 30
     },
     {
@@ -27,14 +27,14 @@
     },
     {
       "item": "minecraft:tnt",
-      "num": 30
+      "num": 12
     },
     {
       "item": "minecraft:iron_ingot",
-      "num": 60
+      "num": 36
     },
     {
-      "item": "dscombat:bomb_rack",
+      "item": "dscombat:light_missile_rack",
       "num": 2
     }
   ],
@@ -66,8 +66,8 @@
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:bomb_rack",
-        "param": "anm30"
+        "itemid": "dscombat:light_missile_rack",
+        "param": "agm114k"
       },
       "name": "left_wing_1",
       "slot_posx": 1.5,
@@ -79,8 +79,8 @@
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:bomb_rack",
-        "param": "anm57"
+        "itemid": "dscombat:light_missile_rack",
+        "param": "agm114k"
       },
       "name": "right_wing_1",
       "slot_posx": -1.5,

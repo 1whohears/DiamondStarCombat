@@ -10,7 +10,7 @@
   "destroyTerrain": true,
   "displayName": "preset.dscombat.agm114k",
   "entityTypeKey": "dscombat:pos_missile_1",
-  "explosionRadius": 3.0,
+  "explosionRadius": 3.5,
   "explosive": true,
   "fireRate": 20,
   "fov": -1.0,

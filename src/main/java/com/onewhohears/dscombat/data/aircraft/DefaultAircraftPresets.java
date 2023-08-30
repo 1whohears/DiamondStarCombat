@@ -597,7 +597,7 @@ public class DefaultAircraftPresets {
 			.setThrottleRate(0.02f, 0.06f)
 			.setPlaneWingArea(6f)
 			.setDefaultColor(DyeColor.BROWN)
-			.addIngredient("minecraft:planks", 30)
+			.addIngredient("minecraft:oak_planks", 30)
 			.addIngredient(ModItems.COCKPIT.getId())
 			.addIngredient(ModItems.PROPELLER.getId())
 			.addPilotSeatSlot(0, -0.4, 0)
@@ -620,11 +620,11 @@ public class DefaultAircraftPresets {
 	public static final AircraftPreset BOMBER_WOODEN_PLANE = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "wooden_plane_bomber", DEFAULT_WOODEN_PLANE)
 			.setCraftable()
-			.setSlotItem("left_wing_1", ModItems.BOMB_RACK.getId(), "anm30", true)
-			.setSlotItem("right_wing_1", ModItems.BOMB_RACK.getId(), "anm57", true)
-			.addIngredient("minecraft:tnt", 30)
-			.addIngredient("minecraft:iron_ingot", 60)
-			.addIngredient(ModItems.BOMB_RACK.getId(), 2)
+			.setSlotItem("left_wing_1", ModItems.LIGHT_MISSILE_RACK.getId(), "agm114k", true)
+			.setSlotItem("right_wing_1", ModItems.LIGHT_MISSILE_RACK.getId(), "agm114k", true)
+			.addIngredient("minecraft:tnt", 12)
+			.addIngredient("minecraft:iron_ingot", 36)
+			.addIngredient(ModItems.LIGHT_MISSILE_RACK.getId(), 2)
 			.build();
 	
 	public static final AircraftPreset FIGHTER_WOODEN_PLANE = AircraftPreset.Builder

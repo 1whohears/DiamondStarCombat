@@ -8,7 +8,7 @@
 			"item": "minecraft:glass"
 		},
 		"P": {
-			"item": "minecraft:planks"
+			"tag": "minecraft:planks"
 		}
 	},
 	"pattern": [

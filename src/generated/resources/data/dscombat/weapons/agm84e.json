@@ -10,7 +10,7 @@
   "destroyTerrain": true,
   "displayName": "preset.dscombat.agm84e",
   "entityTypeKey": "dscombat:track_missile_1",
-  "explosionRadius": 4.0,
+  "explosionRadius": 4.5,
   "explosive": true,
   "fireRate": 50,
   "fov": -1.0,

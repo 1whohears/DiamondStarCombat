@@ -702,7 +702,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	}
 	
 	private double getADComponent(double v, float d, float I) {
-		double a = Math.abs(v) - d/Ix;
+		double a = Math.abs(v) - d/I;
 		if (a < 0) return 0;
 		return a * Math.signum(v);
 	}
@@ -786,13 +786,9 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		double x = moment.x, y = moment.y, z = moment.z;
 		if (control) {
 			Vec3 av = getAngularVel();
-			// FIXME 2 this is causing rotations to not be smooth reverting to origional
-			/*x = getControlMomentComponent(m.x, moment.x, av.x, getControlMaxDeltaPitch(), Ix);
-			y = getControlMomentComponent(m.y, moment.y, av.y, getControlMaxDeltaYaw(), Iy);
-			z = getControlMomentComponent(m.z, moment.z, av.z, getControlMaxDeltaRoll(), Iz);*/
-			x = getControlMomentComponent(m.x, moment.x, av.x, getMaxDeltaPitch(), Ix);
-			y = getControlMomentComponent(m.y, moment.y, av.y, getMaxDeltaYaw(), Iy);
-			z = getControlMomentComponent(m.z, moment.z, av.z, getMaxDeltaRoll(), Iz);
+			if (moment.x != 0) x = getControlMomentComponent(m.x, moment.x, av.x, getControlMaxDeltaPitch(), Ix);
+			if (moment.y != 0) y = getControlMomentComponent(m.y, moment.y, av.y, getControlMaxDeltaYaw(), Iy);
+			if (moment.z != 0) z = getControlMomentComponent(m.z, moment.z, av.z, getControlMaxDeltaRoll(), Iz);
 		}
 		setMoment(m.add(x, y, z));
 	}

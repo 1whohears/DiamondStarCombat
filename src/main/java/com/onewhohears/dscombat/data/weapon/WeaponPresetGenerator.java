@@ -13,6 +13,27 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 	
 	protected void registerBullets() {
 		addPresetToGenerate(BulletData.Builder
+				.bulletBuilder(DSCombatMod.MODID, "10mm")
+				.setFireRate(1)
+				.setInnacuracy(1.2f)
+				.setCanShootOnGround(true)
+				.setDamage(6f)
+				.setSpeed(12f)
+				.setExplosionRadius(0)
+				.setExplosive(false)
+				.setDestoryTerrain(false)
+				.setCausesFire(false)
+				.setMaxAmmo(1000)
+				.setMaxAge(40)
+				.setItem(ModItems.BULLET.getId())
+				.setEntityType(ModEntities.BULLET.getId())
+				.setRackEntityType(ModEntities.XM12.getId())
+				.setShootSound(ModSounds.BULLET_SHOOT_1.getId())
+				.setCompatibleWeaponPart(ModItems.XM12.getId())
+				.setCraftNum(64)
+				.addIngredient("minecraft:copper_ingot", 4)
+				.build());
+		addPresetToGenerate(BulletData.Builder
 				.bulletBuilder(DSCombatMod.MODID, "20mm")
 				.setFireRate(1)
 				.setInnacuracy(0.5f)
@@ -30,9 +51,8 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setRackEntityType(ModEntities.XM12.getId())
 				.setShootSound(ModSounds.BULLET_SHOOT_1.getId())
 				.setCompatibleWeaponPart(ModItems.XM12.getId())
-				.setCraftNum(64)
-				.addIngredient("minecraft:copper_ingot", 8)
-				.addIngredient("minecraft:gunpowder", 1)
+				.setCraftNum(32)
+				.addIngredient("minecraft:copper_ingot", 4)
 				.build());
 		addPresetToGenerate(BulletData.Builder
 				.bulletBuilder(DSCombatMod.MODID, "50mmhe")
@@ -40,7 +60,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setInnacuracy(0.2f)
 				.setCanShootOnGround(true)
 				.setDamage(20f)
-				.setSpeed(10f)
+				.setSpeed(9f)
 				.setExplosionRadius(3f)
 				.setExplosive(true)
 				.setDestoryTerrain(true)
@@ -52,9 +72,9 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setRackEntityType(ModEntities.XM12.getId())
 				.setShootSound(ModSounds.BULLET_SHOOT_1.getId())
 				.setCompatibleWeaponPart(ModItems.XM12.getId())
-				.setCraftNum(10)
-				.addIngredient("minecraft:copper_ingot", 5)
-				.addIngredient("minecraft:gunpowder", 8)
+				.setCraftNum(16)
+				.addIngredient("minecraft:copper_ingot", 8)
+				.addIngredient("minecraft:gunpowder", 5)
 				.build());
 		addPresetToGenerate(BulletData.Builder
 				.bulletBuilder(DSCombatMod.MODID, "120mmhe")
@@ -62,7 +82,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setInnacuracy(0.04f)
 				.setCanShootOnGround(true)
 				.setDamage(40f)
-				.setSpeed(10f)
+				.setSpeed(8f)
 				.setExplosionRadius(6f)
 				.setExplosive(true)
 				.setDestoryTerrain(true)

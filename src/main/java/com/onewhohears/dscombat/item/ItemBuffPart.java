@@ -11,14 +11,14 @@ public class ItemBuffPart extends ItemPart {
 
 	public final BuffType type;
 	
-	public ItemBuffPart(BuffType type, SlotType[] compatibleSlots) {
-		super(1, 0, compatibleSlots);
+	public ItemBuffPart(BuffType type, SlotType[] compatibleSlots, float weight) {
+		super(1, weight, compatibleSlots);
 		this.type = type;
 	}
 
 	@Override
 	public PartData getPartData() {
-		return new BuffData(type, ForgeRegistries.ITEMS.getKey(this), compatibleSlots);
+		return new BuffData(type, ForgeRegistries.ITEMS.getKey(this), compatibleSlots, weight);
 	}
 
 }

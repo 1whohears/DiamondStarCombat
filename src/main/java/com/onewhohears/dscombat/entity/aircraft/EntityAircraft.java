@@ -2026,8 +2026,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     }
     
     public float getTotalArmor() {
-    	// TODO 3.1 additional vehicle armor parts
-    	return getBaseArmor();
+    	return getBaseArmor() + partsManager.getTotalExtraArmor();
     }
     
     public List<Player> getRidingPlayers() {

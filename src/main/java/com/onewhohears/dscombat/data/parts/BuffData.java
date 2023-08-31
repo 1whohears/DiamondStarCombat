@@ -13,13 +13,14 @@ public class BuffData extends PartData {
 	public static enum BuffType {
 		DATA_LINK,
 		NIGHT_VISION_HUD,
-		RADIO
+		RADIO,
+		ARMOR
 	}
 	
 	private final BuffType type;
 	
-	public BuffData(BuffType type, ResourceLocation itemid, SlotType[] compatibleSlots) {
-		super(0, itemid, compatibleSlots);
+	public BuffData(BuffType type, ResourceLocation itemid, SlotType[] compatibleSlots, float weight) {
+		super(weight, itemid, compatibleSlots);
 		this.type = type;
 	}
 	
@@ -69,6 +70,8 @@ public class BuffData extends PartData {
 		case RADIO:
 			getParent().hasRadio = true;
 			break;
+		case ARMOR:
+			break;
 		}
 	}
 	
@@ -85,12 +88,20 @@ public class BuffData extends PartData {
 		case RADIO:
 			getParent().hasRadio = false;
 			break;
+		case ARMOR:
+			break;
 		}
 	}
 	
 	@Override
 	public boolean isRadio() {
 		return type == BuffType.RADIO;
+	}
+	
+	@Override
+	public float getAdditionalArmor() {
+		if (type == BuffType.ARMOR) return 4f;
+		return 0f;
 	}
 
 }

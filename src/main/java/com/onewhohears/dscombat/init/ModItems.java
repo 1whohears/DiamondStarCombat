@@ -99,11 +99,13 @@ public class ModItems {
 	
 	// BUFFS
 	public static final RegistryObject<Item> DATA_LINK = ITEMS.register("data_link", 
-			() -> new ItemBuffPart(BuffType.DATA_LINK, SlotType.INTERNAL_ADVANCED));
+			() -> new ItemBuffPart(BuffType.DATA_LINK, SlotType.INTERNAL_ADVANCED, 0f));
 	public static final RegistryObject<Item> NIGHT_VISION_HUD = ITEMS.register("night_vision_hud", 
-			() -> new ItemBuffPart(BuffType.NIGHT_VISION_HUD, SlotType.INTERNAL_ADVANCED));
+			() -> new ItemBuffPart(BuffType.NIGHT_VISION_HUD, SlotType.INTERNAL_ADVANCED, 0f));
 	public static final RegistryObject<Item> RADIO = ITEMS.register("radio", 
-			() -> new ItemBuffPart(BuffType.RADIO, SlotType.INTERNAL_ALL));
+			() -> new ItemBuffPart(BuffType.RADIO, SlotType.INTERNAL_ALL, 0f));
+	public static final RegistryObject<Item> ARMOR_PIECE = ITEMS.register("armor_piece", 
+			() -> new ItemBuffPart(BuffType.ARMOR, SlotType.EXTERNAL_ALL, 4f));
 	
 	// TOOLS
 	public static final RegistryObject<Item> WRENCH = ITEMS.register("wrench", 

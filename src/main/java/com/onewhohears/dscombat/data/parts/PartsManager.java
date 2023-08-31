@@ -352,4 +352,10 @@ public class PartsManager {
 		return num;
 	}
 	
+	public float getTotalExtraArmor() {
+		float armor = 0;
+		for (PartSlot p : slots) if (p.filled()) armor += p.getPartData().getAdditionalArmor();
+		return armor;
+	}
+	
 }

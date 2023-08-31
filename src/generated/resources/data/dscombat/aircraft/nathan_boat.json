@@ -1,5 +1,6 @@
 {
   "aircraft_type": 3,
+  "base_armor": 1.0,
   "cross_sec_area": 4.5,
   "displayName": "preset.dscombat.nathan_boat",
   "health": 100.0,

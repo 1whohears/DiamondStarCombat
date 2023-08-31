@@ -126,6 +126,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	public static final EntityDataAccessor<String> RADIO_SONG = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.STRING);
 	public static final EntityDataAccessor<Float> CROSS_SEC_AREA = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Boolean> PLAY_IR_TONE = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Float> BASE_ARMOR = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
 	
 	public final AircraftInputs inputs = new AircraftInputs();
 	public final PartsManager partsManager = new PartsManager(this);
@@ -182,7 +183,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	public boolean nightVisionHud = false, hasRadio = false;
 	
 	protected boolean hasFlares;
-	protected int xzSpeedDir;
+	protected int xzSpeedDir, hurtByFireTime;
 	protected float xzSpeed, totalMass, xzYaw, slideAngle, slideAngleCos, maxPushThrust, maxSpinThrust, currentFuel, maxFuel;
 	protected double staticFric, kineticFric, airPressure;
 	
@@ -193,8 +194,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	protected RadarMode radarMode = RadarMode.ALL;
 	protected boolean isLandingGear, isFreeLook = true;
 	
-	// TODO 3.1 vehicle armor plating that reduces damage 
-	// TODO 3.2 reduce damage passengers receive based on armor. make it configurable. especially explosive damage.
 	// TODO 5.4 aircraft breaks apart when damaged
 	// FIXME refactor EntityAircraft to EntityVehicle
 	
@@ -247,6 +246,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		entityData.define(RADIO_SONG, "");
 		entityData.define(CROSS_SEC_AREA, 1f);
 		entityData.define(PLAY_IR_TONE, false);
+		entityData.define(BASE_ARMOR, 0f);
 	}
 	
 	@Override
@@ -324,6 +324,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		setThrottleDecreaseRate(nbt.getFloat("throttledown"));
 		setIdleHeat(nbt.getFloat("idleheat"));
 		setAircraftMass(UtilParse.fixFloatNbt(nbt, "mass", presetNbt, 1));
+		setBaseArmor(UtilParse.fixFloatNbt(nbt, "base_armor", presetNbt, 0));
 		setLandingGear(nbt.getBoolean("landing_gear"));
 		setCurrentThrottle(nbt.getFloat("current_throttle"));
 		setXRot(nbt.getFloat("xRot"));
@@ -364,6 +365,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		nbt.putFloat("throttledown", getThrottleDecreaseRate());
 		nbt.putFloat("idleheat", getIdleHeat());
 		nbt.putFloat("mass", getAircraftMass());
+		nbt.putFloat("base_armor", getBaseArmor());
 		nbt.putBoolean("landing_gear", isLandingGear());
 		nbt.putFloat("current_throttle", getCurrentThrottle());
 		nbt.putFloat("xRot", getXRot());
@@ -1564,7 +1566,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     public boolean isInvulnerableTo(DamageSource source) {
     	if (isTestMode()) return true;
     	if (super.isInvulnerableTo(source)) return true;
-    	if (source.isFire() && tickCount%8 != 0) return true;
+    	if (source.isFire() && (hurtByFireTime-tickCount) < 10) return true;
     	if (isVehicleOf(source.getEntity())) return true;
     	return false;
     }
@@ -1572,6 +1574,8 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	@Override
     public boolean hurt(DamageSource source, float amount) {
 		if (isInvulnerableTo(source)) return false;
+		if (source.isFire()) hurtByFireTime = tickCount;
+		amount -= amount*getTotalArmor()*0.01f*Config.COMMON.armorStrength.get();
 		addHealth(-amount);
 		if (!level.isClientSide && isOperational()) level.playSound(null, 
 			blockPosition(), ModSounds.VEHICLE_HIT_1.get(), 
@@ -2010,6 +2014,19 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
      */
     public float getEngineHeat() {
     	return partsManager.getTotalEngineHeat();
+    }
+    
+    public final float getBaseArmor() {
+    	return entityData.get(BASE_ARMOR);
+    }
+    
+    public final void setBaseArmor(float armor) {
+    	entityData.set(BASE_ARMOR, armor);
+    }
+    
+    public float getTotalArmor() {
+    	// TODO 3.1 additional vehicle armor parts
+    	return getBaseArmor();
     }
     
     public List<Player> getRidingPlayers() {

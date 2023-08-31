@@ -427,6 +427,13 @@ public class AircraftPreset extends JsonPreset{
 		}
 		
 		/**
+		 * all vehicles
+		 */
+		public Builder setBaseArmor(float armor) {
+			return setFloat("base_armor", armor);
+		}
+		
+		/**
 		 * used by planes
 		 */
 		public Builder setPlaneWingArea(float wing_area) {

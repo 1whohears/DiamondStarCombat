@@ -1,12 +1,13 @@
 {
   "aircraft_type": 0,
+  "base_armor": 0.0,
   "cross_sec_area": 2.89,
   "displayName": "preset.dscombat.wooden_plane_empty",
   "health": 40.0,
   "idleheat": 1.0,
   "ingredients": [
     {
-      "item": "minecraft:planks",
+      "item": "minecraft:oak_planks",
       "num": 30
     },
     {

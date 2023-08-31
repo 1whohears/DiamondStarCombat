@@ -1,5 +1,6 @@
 {
   "aircraft_type": 0,
+  "base_armor": 0.0,
   "cross_sec_area": 2.89,
   "displayName": "preset.dscombat.wooden_plane_fighter",
   "health": 40.0,

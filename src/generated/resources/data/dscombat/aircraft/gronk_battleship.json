@@ -1,5 +1,6 @@
 {
   "aircraft_type": 3,
+  "base_armor": 15.0,
   "cross_sec_area": 7.5,
   "displayName": "preset.dscombat.gronk_battleship",
   "health": 600.0,

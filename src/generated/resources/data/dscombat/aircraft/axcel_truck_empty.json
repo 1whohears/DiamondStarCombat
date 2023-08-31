@@ -1,5 +1,6 @@
 {
   "aircraft_type": 2,
+  "base_armor": 8.0,
   "cross_sec_area": 7.5,
   "displayName": "preset.dscombat.axcel_truck_empty",
   "health": 80.0,

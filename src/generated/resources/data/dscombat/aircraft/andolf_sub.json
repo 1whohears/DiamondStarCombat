@@ -1,5 +1,6 @@
 {
   "aircraft_type": 4,
+  "base_armor": 20.0,
   "cross_sec_area": 18.0,
   "displayName": "preset.dscombat.andolf_sub",
   "health": 800.0,

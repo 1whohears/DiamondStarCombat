@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.common.event;
 
+import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientDataPackSynch;
@@ -15,6 +16,7 @@ import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.level.ExplosionEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -26,6 +28,13 @@ import net.minecraftforge.network.PacketDistributor.PacketTarget;
 
 @Mod.EventBusSubscriber(modid = DSCombatMod.MODID, bus = Bus.FORGE)
 public final class CommonForgeEvents {
+	
+	@SubscribeEvent(priority = EventPriority.NORMAL)
+	public static void playerHurtEvent(LivingHurtEvent event) {
+		if (event.getSource().isBypassArmor() || event.getSource().isMagic()) return;
+		if (!event.getEntity().isPassenger() || !(event.getEntity().getRootVehicle() instanceof EntityAircraft plane)) return;
+		event.setAmount(Math.max(0, event.getAmount()-event.getAmount()*plane.getTotalArmor()*0.01f*Config.COMMON.armorStrength.get().floatValue()));
+	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void explosionEvent(ExplosionEvent.Detonate event) {

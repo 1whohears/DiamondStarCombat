@@ -67,6 +67,7 @@ public class Config {
 		public final ForgeConfigSpec.DoubleValue freshEntityToItemCooldown;
 		public final ForgeConfigSpec.DoubleValue usedWeaponToItemCooldown;
 		public final ForgeConfigSpec.BooleanValue autoDataLink;
+		public final ForgeConfigSpec.DoubleValue armorStrength;
 		// TODO 7.2 baby mode for planes disabled by default
 		/**
 		 * classname
@@ -98,10 +99,13 @@ public class Config {
 					.define("autoDataLink", false);
 			freshEntityToItemCooldown = builder
 					.comment("Seconds before a fresh vehicle entity can become an item.")
-					.defineInRange("freshEntityToItemCooldown", 30.0, 0, 600.0);
+					.defineInRange("freshEntityToItemCooldown", 0.0, 0, 600.0);
 			usedWeaponToItemCooldown = builder
 					.comment("Seconds before a vehicle entity that used a weapon can become an item.")
 					.defineInRange("usedWeaponToItemCooldown", 30.0, 0, 600.0);
+			armorStrength = builder
+					.comment("Percentage 1 point of vehicle armor reduces.")
+					.defineInRange("armorStrength", 4.0, 0, 100.0);
 			radarVehicles = builder
 					.defineList("radarVehicles", 
 					Arrays.asList(

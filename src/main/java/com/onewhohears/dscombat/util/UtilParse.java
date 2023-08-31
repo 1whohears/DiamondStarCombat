@@ -189,11 +189,13 @@ public class UtilParse {
 	}
 
 	public static float fixFloatNbt(CompoundTag nbt, String tag, CompoundTag presetNbt, float min) {
-		float f = nbt.getFloat(tag);
-		if (f > min) return f;
-		f = presetNbt.getFloat(tag);
-		nbt.putFloat(tag, f);
-		return f;
+		if (nbt.contains(tag)) {
+			float f = nbt.getFloat(tag);
+			if (f > min) return f;
+		} 
+		float nbtf = presetNbt.getFloat(tag);
+		nbt.putFloat(tag, nbtf);
+		return nbtf;
 	}
 
 	public static float fixFloatNbt(CompoundTag nbt, String tag, float alt) {

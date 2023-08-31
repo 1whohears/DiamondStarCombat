@@ -1575,7 +1575,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     public boolean hurt(DamageSource source, float amount) {
 		if (isInvulnerableTo(source)) return false;
 		if (source.isFire()) hurtByFireTime = tickCount;
-		amount -= amount*getTotalArmor()*0.01f*Config.COMMON.armorStrength.get();
+		if (!source.isBypassArmor()) amount -= amount*getTotalArmor()*0.01f*Config.COMMON.armorStrength.get();
 		if (amount < 0) amount = 0;
 		addHealth(-amount);
 		if (!level.isClientSide && isOperational()) level.playSound(null, 

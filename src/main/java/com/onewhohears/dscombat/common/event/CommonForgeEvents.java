@@ -46,6 +46,11 @@ public final class CommonForgeEvents {
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void playerTick(TickEvent.PlayerTickEvent event) {
+		// CANCEL ELYTRA
+		if (event.player.isFallFlying() && Config.COMMON.disableElytra.get()) {
+			event.player.stopFallFlying();
+		}
+		// CHANGE HITBOX
 		if (!(event.player.getVehicle() instanceof EntitySeat seat)) return;
 		double x = seat.getX(), y = seat.getY(), z = seat.getZ();
 		double w = event.player.getBbWidth()/2;

@@ -68,6 +68,7 @@ public class Config {
 		public final ForgeConfigSpec.DoubleValue usedWeaponToItemCooldown;
 		public final ForgeConfigSpec.BooleanValue autoDataLink;
 		public final ForgeConfigSpec.DoubleValue armorStrength;
+		public final ForgeConfigSpec.BooleanValue disableElytra;
 		// TODO 7.2 baby mode for planes disabled by default
 		/**
 		 * classname
@@ -106,6 +107,9 @@ public class Config {
 			armorStrength = builder
 					.comment("Percentage 1 point of vehicle armor reduces.")
 					.defineInRange("armorStrength", 4.0, 0, 100.0);
+			disableElytra = builder
+					.comment("Prevent all players from flying in an Elytra.")
+					.define("disableElytra", false);
 			radarVehicles = builder
 					.defineList("radarVehicles", 
 					Arrays.asList(

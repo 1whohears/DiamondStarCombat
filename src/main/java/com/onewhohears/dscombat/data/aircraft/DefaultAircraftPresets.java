@@ -634,8 +634,7 @@ public class DefaultAircraftPresets {
 			.setCraftable()
 			.setSlotItem("left_wing_1", ModItems.XM12.getId(), "20mm", true)
 			.setSlotItem("right_wing_1", ModItems.XM12.getId(), "20mm", true)
-			.addIngredient("minecraft:gunpowder", 15)
-			.addIngredient("minecraft:copper_ingot", 60)
+			.addIngredient("minecraft:copper_ingot", 64)
 			.addIngredient(ModItems.XM12.getId(), 2)
 			.build();
 	

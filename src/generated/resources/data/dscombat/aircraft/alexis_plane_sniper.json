@@ -56,15 +56,15 @@
     },
     {
       "item": "minecraft:iron_ingot",
-      "num": 32
+      "num": 64
     },
     {
       "item": "minecraft:redstone",
-      "num": 32
+      "num": 64
     },
     {
       "item": "minecraft:gunpowder",
-      "num": 32
+      "num": 64
     }
   ],
   "is_craftable": true,

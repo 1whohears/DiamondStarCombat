@@ -12,6 +12,7 @@ import net.minecraft.data.DataGenerator;
 public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 	
 	protected void registerBullets() {
+		// max ammo cost: 63 copper
 		addPresetToGenerate(BulletData.Builder
 				.bulletBuilder(DSCombatMod.MODID, "10mm")
 				.setFireRate(1)
@@ -33,6 +34,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setCraftNum(64)
 				.addIngredient("minecraft:copper_ingot", 4)
 				.build());
+		// max ammo cost: 63 copper
 		addPresetToGenerate(BulletData.Builder
 				.bulletBuilder(DSCombatMod.MODID, "20mm")
 				.setFireRate(1)
@@ -54,6 +56,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setCraftNum(32)
 				.addIngredient("minecraft:copper_ingot", 4)
 				.build());
+		// max ammo cost: 125 copper, 78 gun powder
 		addPresetToGenerate(BulletData.Builder
 				.bulletBuilder(DSCombatMod.MODID, "50mmhe")
 				.setFireRate(4)
@@ -76,6 +79,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.addIngredient("minecraft:copper_ingot", 8)
 				.addIngredient("minecraft:gunpowder", 5)
 				.build());
+		// max ammo cost: 64 copper, 80 gunpowder
 		addPresetToGenerate(BulletData.Builder
 				.bulletBuilder(DSCombatMod.MODID, "120mmhe")
 				.setFireRate(30)
@@ -101,6 +105,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 	}
 	
 	protected void registerAAMissiles() {
+		// max ammo cost: 24 iron, 10 tnt (50 gunpowder), 14 coal block, 4 ti83 (8 redstone)
 		addPresetToGenerate(MissileData.Builder
 				.trackMissileBuilder(DSCombatMod.MODID, "aim7f")
 				.setFireRate(80)
@@ -119,7 +124,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setAcceleration(0.02f)
 				.setBleed(0.03f)
 				.setFuseDistance(4f)
-				.setFieldOfView(20f)
+				.setFieldOfView(25f)
 				.setTargetType(TargetType.AIR)
 				.setItem(ModItems.AIM7F.getId())
 				.setEntityType(ModEntities.TRACK_MISSILE_1.getId())
@@ -133,6 +138,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.addIngredient("minecraft:ender_eye")
 				.addIngredient("dscombat:ti83", 2)
 				.build());
+		// max ammo cost: 24 iron, 10 tnt (50 gunpowder), 14 coal block, 4 ti83 (8 redstone)
 		addPresetToGenerate(MissileData.Builder
 				.trackMissileBuilder(DSCombatMod.MODID, "aim7mh")
 				.setFireRate(80)
@@ -151,7 +157,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setAcceleration(0.02f)
 				.setBleed(0.03f)
 				.setFuseDistance(4f)
-				.setFieldOfView(15f)
+				.setFieldOfView(20f)
 				.setTargetType(TargetType.AIR)
 				.setItem(ModItems.AIM7MH.getId())
 				.setEntityType(ModEntities.TRACK_MISSILE_1.getId())
@@ -165,6 +171,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.addIngredient("minecraft:ender_eye")
 				.addIngredient("dscombat:ti83", 2)
 				.build());
+		// max ammo cost: 24 iron, 9 tnt (45 gunpowder), 15 coal block, 3 pentium (30 redstone)
 		addPresetToGenerate(MissileData.Builder
 				.trackMissileBuilder(DSCombatMod.MODID, "aim120b")
 				.setFireRate(50)
@@ -183,7 +190,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setAcceleration(0.03f)
 				.setBleed(0.02f)
 				.setFuseDistance(3f)
-				.setFieldOfView(30f)
+				.setFieldOfView(45f)
 				.setTargetType(TargetType.AIR)
 				.setItem(ModItems.AIM120B.getId())
 				.setEntityType(ModEntities.AIM120B.getId())
@@ -197,6 +204,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.addIngredient("minecraft:ender_eye")
 				.addIngredient("dscombat:intel_pentium")
 				.build());
+		// max ammo cost: 24 iron, 9 tnt (45 gunpowder), 18 coal block, 3 pentium (30 redstone)
 		addPresetToGenerate(MissileData.Builder
 				.trackMissileBuilder(DSCombatMod.MODID, "aim120c")
 				.setFireRate(50)
@@ -215,7 +223,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setAcceleration(0.03f)
 				.setBleed(0.02f)
 				.setFuseDistance(3f)
-				.setFieldOfView(25f)
+				.setFieldOfView(40f)
 				.setTargetType(TargetType.AIR)
 				.setItem(ModItems.AIM120C.getId())
 				.setEntityType(ModEntities.AIM120C.getId())
@@ -229,6 +237,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.addIngredient("minecraft:ender_eye")
 				.addIngredient("dscombat:intel_pentium")
 				.build());
+		// max ammo cost: 40 iron, 24 tnt (120 gunpowder), 24 coal block, 4 pentium (40 redstone)
 		addPresetToGenerate(MissileData.Builder
 				.trackMissileBuilder(DSCombatMod.MODID, "pac3")
 				.setFireRate(40)
@@ -261,6 +270,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.addIngredient("minecraft:ender_eye")
 				.addIngredient("dscombat:intel_pentium")
 				.build());
+		// max ammo cost: 16 iron, 4 tnt (20 gunpowder), 4 coal block, 4 ti83 (8 redstone)
 		addPresetToGenerate(MissileData.Builder
 				.irMissileBuilder(DSCombatMod.MODID, "aim9l")
 				.setFireRate(20)
@@ -268,7 +278,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setCanShootOnGround(false)
 				.setDamage(40f)
 				.setSpeed(2.0f)
-				.setExplosionRadius(3f)
+				.setExplosionRadius(3.5f)
 				.setExplosive(true)
 				.setDestoryTerrain(true)
 				.setCausesFire(true)
@@ -293,6 +303,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.addIngredient("minecraft:spider_eye", 1)
 				.addIngredient("dscombat:ti83")
 				.build());
+		// max ammo cost: 16 iron, 4 tnt (20 gunpowder), 4 coal block, 8 ti83 (16 redstone)
 		addPresetToGenerate(MissileData.Builder
 				.irMissileBuilder(DSCombatMod.MODID, "aim9p5")
 				.setFireRate(20)
@@ -300,7 +311,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setCanShootOnGround(false)
 				.setDamage(40f)
 				.setSpeed(2.5f)
-				.setExplosionRadius(3f)
+				.setExplosionRadius(3.5f)
 				.setExplosive(true)
 				.setDestoryTerrain(true)
 				.setCausesFire(true)
@@ -325,6 +336,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.addIngredient("minecraft:spider_eye", 2)
 				.addIngredient("dscombat:ti83", 2)
 				.build());
+		// max ammo cost: 20 iron, 4 tnt (20 gunpowder), 8 coal block, 4 pentium (40 redstone)
 		addPresetToGenerate(MissileData.Builder
 				.irMissileBuilder(DSCombatMod.MODID, "aim9x")
 				.setFireRate(20)
@@ -332,7 +344,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setCanShootOnGround(false)
 				.setDamage(40f)
 				.setSpeed(3f)
-				.setExplosionRadius(3f)
+				.setExplosionRadius(3.5f)
 				.setExplosive(true)
 				.setDestoryTerrain(true)
 				.setCausesFire(true)
@@ -360,6 +372,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 	}
 	
 	protected void registerAGMissiles() {
+		// max ammo cost: 18 iron, 6 tnt (30 gunpowder), 6 coal block, 6 ti83 (12 redstone)
 		addPresetToGenerate(MissileData.Builder
 				.posMissileBuilder(DSCombatMod.MODID, "agm114k")
 				.setFireRate(20)
@@ -390,6 +403,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.addIngredient("minecraft:coal_block", 1)
 				.addIngredient("dscombat:ti83")
 				.build());
+		// max ammo cost: 20 iron, 12 tnt (60 gunpowder), 8 coal block, 4 ti83 (8 redstone)
 		addPresetToGenerate(MissileData.Builder
 				.posMissileBuilder(DSCombatMod.MODID, "agm65l")
 				.setFireRate(40)
@@ -420,6 +434,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.addIngredient("minecraft:coal_block", 2)
 				.addIngredient("dscombat:ti83")
 				.build());
+		// max ammo cost: 20 iron, 12 tnt (60 gunpowder), 8 coal block, 4 ti83 (8 redstone)
 		addPresetToGenerate(MissileData.Builder
 				.trackMissileBuilder(DSCombatMod.MODID, "agm65g")
 				.setTargetType(TargetType.GROUND)
@@ -451,6 +466,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.addIngredient("minecraft:coal_block", 2)
 				.addIngredient("dscombat:ti83")
 				.build());
+		// max ammo cost: 18 iron, 9 tnt (45 gunpowder), 9 coal block, 6 ti83 (12 redstone)
 		addPresetToGenerate(MissileData.Builder
 				.trackMissileBuilder(DSCombatMod.MODID, "agm84e")
 				.setTargetType(TargetType.GROUND)
@@ -485,6 +501,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 	}
 	
 	protected void registerOtherMissiles() {
+		// max ammo cost: 24 iron, 8 tnt (40 gunpowder), 8 coal block, 2 pentium (20 redstone)
 		addPresetToGenerate(MissileData.Builder
 				.antiRadarMissileBuilder(DSCombatMod.MODID, "rifel1")
 				.setFireRate(40)
@@ -516,6 +533,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.addIngredient("minecraft:coal_block", 4)
 				.addIngredient("dscombat:intel_pentium")
 				.build());
+		// max ammo cost: 36 iron, 6 tnt (30 gunpowder), 12 coal block, 6 ti83 (12 redstone)
 		addPresetToGenerate(MissileData.Builder
 				.torpedoBuilder(DSCombatMod.MODID, "torpedo1")
 				.setFireRate(40)
@@ -543,13 +561,14 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setCompatibleWeaponPart(ModItems.HEAVY_MISSILE_RACK.getId())
 				.setCraftNum(1)
 				.addIngredient("minecraft:iron_ingot", 12)
-				.addIngredient("minecraft:tnt", 5)
+				.addIngredient("minecraft:tnt", 2)
 				.addIngredient("minecraft:coal_block", 4)
-				.addIngredient("dscombat:ti83")
+				.addIngredient("dscombat:ti83", 2)
 				.build());
 	}
 	
 	protected void registerBombs() {
+		// max ammo cost: 32 iron, 16 tnt (80 gunpowder)
 		addPresetToGenerate(BombData.Builder
 				.bombBuilder(DSCombatMod.MODID, "anm30")
 				.setFireRate(5)
@@ -557,7 +576,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setCanShootOnGround(false)
 				.setDamage(20f)
 				.setSpeed(0f)
-				.setExplosionRadius(3)
+				.setExplosionRadius(3.5f)
 				.setExplosive(true)
 				.setDestoryTerrain(true)
 				.setCausesFire(false)
@@ -572,6 +591,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.addIngredient("minecraft:iron_ingot", 2)
 				.addIngredient("minecraft:tnt", 1)
 				.build());
+		// max ammo cost: 32 iron, 16 tnt (80 gunpowder)
 		addPresetToGenerate(BombData.Builder
 				.bombBuilder(DSCombatMod.MODID, "anm57")
 				.setFireRate(9)
@@ -594,6 +614,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.addIngredient("minecraft:iron_ingot", 4)
 				.addIngredient("minecraft:tnt", 2)
 				.build());
+		// max ammo cost: 24 iron, 12 tnt (60 gunpowder)
 		addPresetToGenerate(BombData.Builder
 				.bombBuilder(DSCombatMod.MODID, "anm64")
 				.setFireRate(17)

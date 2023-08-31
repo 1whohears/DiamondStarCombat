@@ -29,14 +29,6 @@
     {
       "item": "dscombat:heavy_tank_turret",
       "num": 1
-    },
-    {
-      "item": "minecraft:iron_ingot",
-      "num": 32
-    },
-    {
-      "item": "minecraft:gunpowder",
-      "num": 24
     }
   ],
   "is_craftable": true,

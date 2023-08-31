@@ -35,20 +35,16 @@
       "num": 1
     },
     {
-      "item": "minecraft:copper_ingot",
+      "item": "minecraft:iron_ingot",
       "num": 64
     },
     {
-      "item": "minecraft:iron_ingot",
-      "num": 32
-    },
-    {
       "item": "minecraft:redstone",
-      "num": 32
+      "num": 24
     },
     {
       "item": "minecraft:gunpowder",
-      "num": 32
+      "num": 60
     },
     {
       "item": "dscombat:heavy_missile_rack",

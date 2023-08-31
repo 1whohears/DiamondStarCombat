@@ -61,6 +61,7 @@ public class DefaultAircraftPresets {
 	public static final AircraftPreset DEFAULT_ALEXIS_PLANE = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "alexis_plane", UNARMED_ALEXIS_PLANE)
 			.setCraftable()
+			// actual weapon costs: 63 copper, 88 iron, 130 gunpowder, 140 redstone
 			.setSlotItem("left_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "aim120b", true)
 			.setSlotItem("left_wing_2", ModItems.LIGHT_MISSILE_RACK.getId(), "aim9x", true)
 			.setSlotItem("right_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "aim120c", true)
@@ -71,10 +72,10 @@ public class DefaultAircraftPresets {
 			.addIngredient(ModItems.HEAVY_MISSILE_RACK.getId(), 2)
 			.addIngredient(ModItems.LIGHT_MISSILE_RACK.getId(), 2)
 			.addIngredient(ModItems.XM12.getId())
-			.addIngredient("minecraft:copper_ingot", 64)
-			.addIngredient("minecraft:iron_ingot", 32)
-			.addIngredient("minecraft:redstone", 32)
-			.addIngredient("minecraft:gunpowder", 32)
+			.addIngredient("minecraft:copper_ingot", 63)
+			.addIngredient("minecraft:iron_ingot", 64)
+			.addIngredient("minecraft:redstone", 64)
+			.addIngredient("minecraft:gunpowder", 64)
 			.build();
 	
 	public static final AircraftPreset SUPPORT_ALEXIS_PLANE = AircraftPreset.Builder
@@ -93,9 +94,9 @@ public class DefaultAircraftPresets {
 			.addIngredient(ModItems.LIGHT_MISSILE_RACK.getId(), 1)
 			.addIngredient(ModItems.XM12.getId())
 			.addIngredient("minecraft:copper_ingot", 64)
-			.addIngredient("minecraft:iron_ingot", 32)
-			.addIngredient("minecraft:redstone", 32)
-			.addIngredient("minecraft:gunpowder", 32)
+			.addIngredient("minecraft:iron_ingot", 64)
+			.addIngredient("minecraft:redstone", 64)
+			.addIngredient("minecraft:gunpowder", 64)
 			.build();
 	
 	public static final AircraftPreset SNIPER_ALEXIS_PLANE = AircraftPreset.Builder
@@ -111,9 +112,9 @@ public class DefaultAircraftPresets {
 			.addIngredient(ModItems.HEAVY_MISSILE_RACK.getId(), 4)
 			.addIngredient(ModItems.LIGHT_MISSILE_RACK.getId(), 1)
 			.addIngredient("minecraft:copper_ingot", 64)
-			.addIngredient("minecraft:iron_ingot", 32)
-			.addIngredient("minecraft:redstone", 32)
-			.addIngredient("minecraft:gunpowder", 32)
+			.addIngredient("minecraft:iron_ingot", 64)
+			.addIngredient("minecraft:redstone", 64)
+			.addIngredient("minecraft:gunpowder", 64)
 			.build();
 	
 	public static final AircraftPreset EMPTY_JAVI_PLANE = AircraftPreset.Builder
@@ -213,7 +214,6 @@ public class DefaultAircraftPresets {
 			.addIngredient("minecraft:iron_ingot", 64)
 			.addIngredient("minecraft:redstone", 64)
 			.addIngredient("minecraft:gunpowder", 64)
-			.addIngredient("minecraft:tnt", 32)
 			.build();
 	
 	public static final AircraftPreset TRUCK_JAVI_PLANE = AircraftPreset.Builder
@@ -240,7 +240,6 @@ public class DefaultAircraftPresets {
 			.addIngredient("minecraft:iron_ingot", 64)
 			.addIngredient("minecraft:redstone", 64)
 			.addIngredient("minecraft:gunpowder", 64)
-			.addIngredient("minecraft:tnt", 32)
 			.build();
 	
 	public static final AircraftPreset EMPTY_NOAH_CHOPPER = AircraftPreset.Builder
@@ -416,9 +415,6 @@ public class DefaultAircraftPresets {
 			.setCraftable()
 			.setSlotItem(PartSlot.PILOT_SLOT_NAME, ModItems.STEVE_UP_SMASH.getId(), true)
 			.addIngredient(ModItems.STEVE_UP_SMASH.getId())
-			.addIngredient("minecraft:iron_ingot", 24)
-			.addIngredient("minecraft:redstone", 32)
-			.addIngredient("minecraft:gunpowder", 12)
 			.build();
 	
 	public static final AircraftPreset TANK_SMALL_ROLLER = AircraftPreset.Builder
@@ -426,8 +422,6 @@ public class DefaultAircraftPresets {
 			.setCraftable()
 			.setSlotItem(PartSlot.PILOT_SLOT_NAME, ModItems.HEAVY_TANK_TURRET.getId(), true)
 			.addIngredient(ModItems.HEAVY_TANK_TURRET.getId())
-			.addIngredient("minecraft:iron_ingot", 32)
-			.addIngredient("minecraft:gunpowder", 24)
 			.build();
 	
 	public static final AircraftPreset EMPTY_NATHAN_BOAT = AircraftPreset.Builder
@@ -482,10 +476,9 @@ public class DefaultAircraftPresets {
 			.setSlotItem("seat1", ModItems.MINIGUN_TURRET.getId())
 			.setSlotItem("frame_1", ModItems.HEAVY_MISSILE_RACK.getId(), "torpedo1", true)
 			.setSlotItem("frame_2", ModItems.HEAVY_MISSILE_RACK.getId(), "torpedo1", true)
-			.addIngredient("minecraft:copper_ingot", 64)
-			.addIngredient("minecraft:iron_ingot", 32)
-			.addIngredient("minecraft:redstone", 32)
-			.addIngredient("minecraft:gunpowder", 32)
+			.addIngredient("minecraft:iron_ingot", 64)
+			.addIngredient("minecraft:redstone", 24)
+			.addIngredient("minecraft:gunpowder", 60)
 			.addIngredient(ModItems.HEAVY_MISSILE_RACK.getId(), 2)
 			.build();
 	
@@ -552,7 +545,7 @@ public class DefaultAircraftPresets {
 			.setSlotItem("frame_4", ModItems.HEAVY_MISSILE_RACK.getId(), "torpedo1", true)
 			.setSlotItem("frame_5", ModItems.HEAVY_MISSILE_RACK.getId(), "torpedo1", true)
 			.setSlotItem("frame_6", ModItems.HEAVY_MISSILE_RACK.getId(), "torpedo1", true)
-			.addIngredient("minecraft:copper_ingot", 64)
+			.addIngredient("minecraft:copper_ingot", 63)
 			.addIngredient("minecraft:iron_ingot", 64)
 			.addIngredient("minecraft:redstone", 64)
 			.addIngredient("minecraft:gunpowder", 64)
@@ -826,7 +819,7 @@ public class DefaultAircraftPresets {
 			.setSlotItem("seat8", ModItems.SAM_LAUNCHER.getId())
 			.addIngredient("minecraft:copper_ingot", 64)
 			.addIngredient("minecraft:iron_ingot", 64)
-			.addIngredient("minecraft:redstone", 64)
+			.addIngredient("minecraft:redstone", 48)
 			.addIngredient("minecraft:gunpowder", 64)
 			.build();
 			

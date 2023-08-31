@@ -13,7 +13,7 @@
   "explosionRadius": 7.0,
   "explosive": true,
   "fireRate": 80,
-  "fov": 15.0,
+  "fov": 20.0,
   "fuelTicks": 580,
   "fuseDist": 4.0,
   "ingredients": [

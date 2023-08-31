@@ -29,18 +29,6 @@
     {
       "item": "dscombat:steve_up_smash",
       "num": 1
-    },
-    {
-      "item": "minecraft:iron_ingot",
-      "num": 24
-    },
-    {
-      "item": "minecraft:redstone",
-      "num": 32
-    },
-    {
-      "item": "minecraft:gunpowder",
-      "num": 12
     }
   ],
   "is_craftable": true,

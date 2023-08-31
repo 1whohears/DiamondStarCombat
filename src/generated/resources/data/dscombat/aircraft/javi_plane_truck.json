@@ -73,10 +73,6 @@
     {
       "item": "minecraft:gunpowder",
       "num": 64
-    },
-    {
-      "item": "minecraft:tnt",
-      "num": 32
     }
   ],
   "is_craftable": true,

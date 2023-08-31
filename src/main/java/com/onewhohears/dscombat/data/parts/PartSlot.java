@@ -162,7 +162,7 @@ public class PartSlot {
 	public boolean isCompatible(PartData data) {
 		//System.out.println("is "+data+" compatible with "+this);
 		if (data == null) return false;
-		// TODO 7.4 check for duplicates
+		// HOW 3 check for duplicates
 		SlotType[] types = data.getCompatibleSlots();
 		for (int i = 0; i < types.length; ++i) if (types[i] == getSlotType()) return true;
 		return false;

@@ -29,6 +29,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -164,19 +165,20 @@ public class ModEntities {
 	 */
 	
 	public static final RegistryObject<EntityType<EntitySeat>> SEAT = ENTITIES.register("seat", 
-			() -> createEntityType(EntitySeat::new, EntityDimensions.scalable(0f, 0f)));
+			() -> createEntityType((type, level) -> new EntitySeat(type, level, Vec3.ZERO), 
+					EntityDimensions.scalable(0f, 0f)));
 	
 	public static final RegistryObject<EntityType<EntityTurret>> MINIGUN_TURRET = ENTITIES.register("minigun_turret", 
-			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 0.0, 0.8), 
+			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, Vec3.ZERO, 0.8), 
 					EntityDimensions.scalable(0.1f, 0.1f)));
 	public static final RegistryObject<EntityType<EntityTurret>> HEAVY_TANK_TURRET = ENTITIES.register("heavy_tank_turret", 
-			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 0.0, 0.5), 
+			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, Vec3.ZERO, 0.5), 
 					EntityDimensions.scalable(0.1f, 0.1f)));
 	public static final RegistryObject<EntityType<EntityTurret>> STEVE_UP_SMASH = ENTITIES.register("steve_up_smash", 
-			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 0.0, 3.2), 
+			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, Vec3.ZERO, 3.2), 
 					EntityDimensions.scalable(0.1f, 0.1f)));
 	public static final RegistryObject<EntityType<EntityTurret>> SAM_LAUNCHER = ENTITIES.register("sam_launcher", 
-			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 0.0, 2.7), 
+			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, Vec3.ZERO, 2.7), 
 					EntityDimensions.scalable(0.1f, 0.1f)));
 	
 	public static final RegistryObject<EntityType<EntityWeaponRack>> LIGHT_MISSILE_RACK = ENTITIES.register("light_missile_rack", 

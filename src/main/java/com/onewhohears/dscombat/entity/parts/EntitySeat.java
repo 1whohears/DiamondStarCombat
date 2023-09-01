@@ -8,7 +8,6 @@ import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft.AircraftType;
-import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.nbt.CompoundTag;
@@ -26,12 +25,11 @@ import net.minecraftforge.fluids.FluidType;
 
 public class EntitySeat extends EntityPart {
 	
-	public EntitySeat(EntityType<?> type, Level level) {
-		super(type, level);
-	}
+	public final Vec3 passengerOffset;
 	
-	public EntitySeat(Level level, String slotId, Vec3 pos) {
-		super(ModEntities.SEAT.get(), level, slotId, pos);
+	public EntitySeat(EntityType<?> type, Level level, Vec3 passengerOffset) {
+		super(type, level);
+		this.passengerOffset = passengerOffset;
 	}
 
 	@Override
@@ -135,7 +133,7 @@ public class EntitySeat extends EntityPart {
     
     @Override
     public double getPassengersRidingOffset() {
-        return 0.0;
+        return passengerOffset.y;
     }
 
 	@Override

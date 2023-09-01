@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.data.parts;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
+import com.onewhohears.dscombat.init.ModEntities;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -35,7 +36,9 @@ public class SeatData extends PartData {
 			//System.out.println("ALREADY SEAT "+slotId);
 			return;
 		}
-		EntitySeat seat = new EntitySeat(craft.level, slotId, pos);
+		EntitySeat seat = ModEntities.SEAT.get().create(craft.level);
+		seat.setSlotId(slotId);
+		seat.setRelativePos(getRelPos());
 		seat.setPos(craft.position());
 		seat.startRiding(craft);
 		craft.level.addFreshEntity(seat);

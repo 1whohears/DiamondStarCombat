@@ -2,7 +2,7 @@
   "aircraft_type": 0,
   "base_armor": 0.0,
   "cross_sec_area": 2.89,
-  "displayName": "preset.dscombat.wooden_plane_empty",
+  "displayName": "preset.dscombat.wooden_plane_fighter",
   "health": 40.0,
   "idleheat": 1.0,
   "ingredients": [
@@ -17,9 +17,25 @@
     {
       "item": "dscombat:propeller",
       "num": 1
+    },
+    {
+      "item": "dscombat:cm_manly_52",
+      "num": 1
+    },
+    {
+      "item": "dscombat:light_fuel_tank",
+      "num": 1
+    },
+    {
+      "item": "minecraft:copper_ingot",
+      "num": 64
+    },
+    {
+      "item": "dscombat:xm12",
+      "num": 2
     }
   ],
-  "is_craftable": false,
+  "is_craftable": true,
   "item": "dscombat:wooden_plane",
   "landing_gear": true,
   "mass": 8.0,
@@ -30,7 +46,7 @@
   "maxyaw": 2.0,
   "paintjob_color": 12,
   "pitchtorque": 2.5,
-  "presetId": "wooden_plane_empty",
+  "presetId": "wooden_plane_fighter",
   "rolltorque": 1.5,
   "slots": [
     {
@@ -45,6 +61,11 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "filled": true,
+        "itemid": "dscombat:xm12",
+        "param": "20mm"
+      },
       "name": "left_wing_1",
       "slot_posx": 1.5,
       "slot_posy": 0.0,
@@ -53,6 +74,11 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "filled": true,
+        "itemid": "dscombat:xm12",
+        "param": "20mm"
+      },
       "name": "right_wing_1",
       "slot_posx": -1.5,
       "slot_posy": 0.0,
@@ -61,6 +87,9 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "itemid": "dscombat:cm_manly_52"
+      },
       "name": "internal_1",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
@@ -69,6 +98,10 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "filled": true,
+        "itemid": "dscombat:light_fuel_tank"
+      },
       "name": "internal_2",
       "slot_posx": 0.0,
       "slot_posy": 0.0,

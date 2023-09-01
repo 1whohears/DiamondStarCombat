@@ -1,5 +1,6 @@
 {
   "aircraft_type": 2,
+  "base_armor": 16.0,
   "cross_sec_area": 7.5,
   "displayName": "preset.dscombat.mrbudger_tank",
   "health": 500.0,

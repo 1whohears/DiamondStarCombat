@@ -2,6 +2,7 @@
   "accForward": 0.04,
   "accSide": 0.02,
   "aircraft_type": 1,
+  "base_armor": 5.0,
   "cross_sec_area": 7.84,
   "displayName": "preset.dscombat.noah_chopper_unarmed",
   "health": 300.0,
@@ -24,6 +25,10 @@
       "num": 1
     },
     {
+      "item": "dscombat:seat",
+      "num": 3
+    },
+    {
       "item": "minecraft:gold_ingot",
       "num": 15
     },
@@ -33,10 +38,6 @@
     },
     {
       "item": "dscombat:heavy_fuel_tank",
-      "num": 1
-    },
-    {
-      "item": "dscombat:basic_flare_dispenser",
       "num": 1
     }
   ],
@@ -229,10 +230,6 @@
       "zRot": 0.0
     },
     {
-      "data": {
-        "filled": true,
-        "itemid": "dscombat:basic_flare_dispenser"
-      },
       "name": "internal_4",
       "slot_posx": 0.0,
       "slot_posy": 0.0,

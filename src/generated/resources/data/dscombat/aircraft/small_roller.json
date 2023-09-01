@@ -1,5 +1,6 @@
 {
   "aircraft_type": 2,
+  "base_armor": 0.0,
   "cross_sec_area": 1.2,
   "displayName": "preset.dscombat.small_roller",
   "health": 30.0,
@@ -28,18 +29,6 @@
     {
       "item": "dscombat:steve_up_smash",
       "num": 1
-    },
-    {
-      "item": "minecraft:iron_ingot",
-      "num": 24
-    },
-    {
-      "item": "minecraft:redstone",
-      "num": 32
-    },
-    {
-      "item": "minecraft:gunpowder",
-      "num": 12
     }
   ],
   "is_craftable": true,

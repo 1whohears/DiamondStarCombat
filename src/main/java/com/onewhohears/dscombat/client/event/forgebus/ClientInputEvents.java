@@ -117,7 +117,7 @@ public final class ClientInputEvents {
 			// control pitch
 			if (ya > max) {
 				pitch = ys;
-				mouseCenterY += (ya - max) * ys;
+				mouseCenterY -= (ya - max) * ys;
 			} else if (ya > deadZone) {
 				pitch = (float)((ya-deadZone)/md) * ys;
 			}

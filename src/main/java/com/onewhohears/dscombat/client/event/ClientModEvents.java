@@ -170,7 +170,7 @@ public final class ClientModEvents {
 						new ObjEntityModel<>("aim9l")));
 		event.registerEntityRenderer(ModEntities.AIM9P5.get(), 
 				(context) -> new RendererObjEntity<EntityMissile>(context, 
-						new ObjEntityModel<>("aim9l")));
+						new ObjEntityModel<>("aim9p5")));
 		event.registerEntityRenderer(ModEntities.AIM9X.get(), 
 				(context) -> new RendererObjEntity<EntityMissile>(context, 
 						new ObjEntityModel<>("aim9x")));

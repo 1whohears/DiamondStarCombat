@@ -104,6 +104,10 @@ public abstract class PartData {
 		return false;
 	}
 	
+	public float getAdditionalArmor() {
+		return 0;
+	}
+	
 	public EntityAircraft getParent() {
 		return parent;
 	}

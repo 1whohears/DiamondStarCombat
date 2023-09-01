@@ -35,7 +35,7 @@ public class EntityTurret extends EntitySeat {
 	public static final EntityDataAccessor<Float> RELROTX = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> RELROTY = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.FLOAT);
 	
-	public final double passengerOffset, weaponOffset;
+	public final double weaponOffset;
 	
 	public float xRotRelO, yRotRelO;
 	
@@ -54,9 +54,8 @@ public class EntityTurret extends EntitySeat {
 	
 	// TODO 4.1 option to change turret camera position. so camera could be under the aircraft
 	
-	public EntityTurret(EntityType<?> type, Level level, double passengerOffset, double weaponOffset) {
-		super(type, level);
-		this.passengerOffset = passengerOffset;
+	public EntityTurret(EntityType<?> type, Level level, Vec3 offset, double weaponOffset) {
+		super(type, level, offset);
 		this.weaponOffset = weaponOffset;
 	}
 
@@ -161,6 +160,19 @@ public class EntityTurret extends EntitySeat {
 	}
 	
 	@Override
+	protected Vec3 getPassengerRelPos(Entity passenger, EntityAircraft craft) {
+		Quaternion q;
+		if (level.isClientSide) q = craft.getClientQ();
+		else q = craft.getQ();
+		double offset = getPassengersRidingOffset() + passenger.getMyRidingOffset() + passenger.getEyeHeight();
+		return UtilAngles.rotateVector(new Vec3(
+					passengerOffset.x*Mth.cos(getRelRotY()*Mth.DEG_TO_RAD)+passengerOffset.z*Mth.sin(getRelRotY()*Mth.DEG_TO_RAD), 
+					offset, 
+					passengerOffset.z*Mth.cos(getRelRotY()*Mth.DEG_TO_RAD)+passengerOffset.x*Mth.sin(getRelRotY()*Mth.DEG_TO_RAD)
+				), q).subtract(0, passenger.getEyeHeight(), 0);
+	}
+	
+	@Override
 	public boolean shouldRender() {
 		return true;
 	}
@@ -224,11 +236,6 @@ public class EntityTurret extends EntitySeat {
 			}
 		}
 	}
-	
-	@Override
-    public double getPassengersRidingOffset() {
-        return passengerOffset;
-    }
 	
 	@Override
 	public PartType getPartType() {

@@ -1,5 +1,6 @@
 {
   "aircraft_type": 0,
+  "base_armor": 2.0,
   "cross_sec_area": 4.0,
   "displayName": "preset.dscombat.alexis_plane_empty",
   "health": 150.0,

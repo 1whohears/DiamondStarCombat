@@ -1,5 +1,6 @@
 {
   "aircraft_type": 3,
+  "base_armor": 1.0,
   "cross_sec_area": 4.5,
   "displayName": "preset.dscombat.nathan_boat",
   "health": 100.0,
@@ -34,20 +35,16 @@
       "num": 1
     },
     {
-      "item": "minecraft:copper_ingot",
+      "item": "minecraft:iron_ingot",
       "num": 64
     },
     {
-      "item": "minecraft:iron_ingot",
-      "num": 32
-    },
-    {
       "item": "minecraft:redstone",
-      "num": 32
+      "num": 24
     },
     {
       "item": "minecraft:gunpowder",
-      "num": 32
+      "num": 60
     },
     {
       "item": "dscombat:heavy_missile_rack",

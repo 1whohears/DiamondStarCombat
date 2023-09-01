@@ -9,9 +9,9 @@
 		}
 	},
 	"pattern": [
-		"  W",
-		"  W",
-		"LLW"
+		" W",
+		" W",
+		"LW"
 	],
 	"result": {
 		"count": 1,

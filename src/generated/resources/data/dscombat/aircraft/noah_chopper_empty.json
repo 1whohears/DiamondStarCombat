@@ -2,6 +2,7 @@
   "accForward": 0.04,
   "accSide": 0.02,
   "aircraft_type": 1,
+  "base_armor": 5.0,
   "cross_sec_area": 7.84,
   "displayName": "preset.dscombat.noah_chopper_empty",
   "health": 300.0,
@@ -22,6 +23,10 @@
     {
       "item": "dscombat:cockpit",
       "num": 1
+    },
+    {
+      "item": "dscombat:seat",
+      "num": 3
     },
     {
       "item": "minecraft:gold_ingot",

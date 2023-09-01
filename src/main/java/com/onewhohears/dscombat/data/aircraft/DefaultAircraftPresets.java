@@ -20,6 +20,7 @@ public class DefaultAircraftPresets {
 			.setStealth(0.8f)
 			.setCrossSecArea(4f)
 			.setIdleHeat(4f)
+			.setBaseArmor(2f)
 			.setTurnRadius(10f)
 			.setMaxTurnRates(6f, 2.5f, 1.5f)
 			.setTurnTorques(1f, 2f, 4f)
@@ -60,6 +61,7 @@ public class DefaultAircraftPresets {
 	public static final AircraftPreset DEFAULT_ALEXIS_PLANE = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "alexis_plane", UNARMED_ALEXIS_PLANE)
 			.setCraftable()
+			// actual weapon costs: 63 copper, 88 iron, 130 gunpowder, 140 redstone
 			.setSlotItem("left_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "aim120b", true)
 			.setSlotItem("left_wing_2", ModItems.LIGHT_MISSILE_RACK.getId(), "aim9x", true)
 			.setSlotItem("right_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "aim120c", true)
@@ -70,10 +72,10 @@ public class DefaultAircraftPresets {
 			.addIngredient(ModItems.HEAVY_MISSILE_RACK.getId(), 2)
 			.addIngredient(ModItems.LIGHT_MISSILE_RACK.getId(), 2)
 			.addIngredient(ModItems.XM12.getId())
-			.addIngredient("minecraft:copper_ingot", 64)
-			.addIngredient("minecraft:iron_ingot", 32)
-			.addIngredient("minecraft:redstone", 32)
-			.addIngredient("minecraft:gunpowder", 32)
+			.addIngredient("minecraft:copper_ingot", 63)
+			.addIngredient("minecraft:iron_ingot", 64)
+			.addIngredient("minecraft:redstone", 64)
+			.addIngredient("minecraft:gunpowder", 64)
 			.build();
 	
 	public static final AircraftPreset SUPPORT_ALEXIS_PLANE = AircraftPreset.Builder
@@ -92,9 +94,9 @@ public class DefaultAircraftPresets {
 			.addIngredient(ModItems.LIGHT_MISSILE_RACK.getId(), 1)
 			.addIngredient(ModItems.XM12.getId())
 			.addIngredient("minecraft:copper_ingot", 64)
-			.addIngredient("minecraft:iron_ingot", 32)
-			.addIngredient("minecraft:redstone", 32)
-			.addIngredient("minecraft:gunpowder", 32)
+			.addIngredient("minecraft:iron_ingot", 64)
+			.addIngredient("minecraft:redstone", 64)
+			.addIngredient("minecraft:gunpowder", 64)
 			.build();
 	
 	public static final AircraftPreset SNIPER_ALEXIS_PLANE = AircraftPreset.Builder
@@ -110,9 +112,9 @@ public class DefaultAircraftPresets {
 			.addIngredient(ModItems.HEAVY_MISSILE_RACK.getId(), 4)
 			.addIngredient(ModItems.LIGHT_MISSILE_RACK.getId(), 1)
 			.addIngredient("minecraft:copper_ingot", 64)
-			.addIngredient("minecraft:iron_ingot", 32)
-			.addIngredient("minecraft:redstone", 32)
-			.addIngredient("minecraft:gunpowder", 32)
+			.addIngredient("minecraft:iron_ingot", 64)
+			.addIngredient("minecraft:redstone", 64)
+			.addIngredient("minecraft:gunpowder", 64)
 			.build();
 	
 	public static final AircraftPreset EMPTY_JAVI_PLANE = AircraftPreset.Builder
@@ -125,6 +127,7 @@ public class DefaultAircraftPresets {
 			.setStealth(1.1f)
 			.setCrossSecArea(6.25f)
 			.setIdleHeat(5f)
+			.setBaseArmor(9f)
 			.setTurnRadius(12f)
 			.setMaxTurnRates(4f, 2.1f, 1.1f)
 			.setTurnTorques(1.5f, 2.5f, 4.5f)
@@ -134,6 +137,7 @@ public class DefaultAircraftPresets {
 			.addIngredient(ModItems.FUSELAGE.getId(), 2)
 			.addIngredient(ModItems.LARGE_WING.getId(), 2)
 			.addIngredient(ModItems.COCKPIT.getId())
+			.addIngredient(ModItems.SEAT.getId())
 			.addIngredient("minecraft:gold_ingot", 10)
 			.addPilotSeatSlot(0, -0.55, 3.35)
 			.addSeatSlot("seat2", SlotType.MED_TURRET, 0, -0.55, 2.35)
@@ -210,7 +214,6 @@ public class DefaultAircraftPresets {
 			.addIngredient("minecraft:iron_ingot", 64)
 			.addIngredient("minecraft:redstone", 64)
 			.addIngredient("minecraft:gunpowder", 64)
-			.addIngredient("minecraft:tnt", 32)
 			.build();
 	
 	public static final AircraftPreset TRUCK_JAVI_PLANE = AircraftPreset.Builder
@@ -237,7 +240,6 @@ public class DefaultAircraftPresets {
 			.addIngredient("minecraft:iron_ingot", 64)
 			.addIngredient("minecraft:redstone", 64)
 			.addIngredient("minecraft:gunpowder", 64)
-			.addIngredient("minecraft:tnt", 32)
 			.build();
 	
 	public static final AircraftPreset EMPTY_NOAH_CHOPPER = AircraftPreset.Builder
@@ -250,6 +252,7 @@ public class DefaultAircraftPresets {
 			.setStealth(1.2f)
 			.setCrossSecArea(7.84f)
 			.setIdleHeat(8f)
+			.setBaseArmor(5f)
 			.setTurnRadius(0f)
 			.setMaxTurnRates(4f, 2f, 4f)
 			.setTurnTorques(1f, 1f, 2.5f)
@@ -284,6 +287,7 @@ public class DefaultAircraftPresets {
 			.addIngredient(ModItems.LARGE_PROPELLER.getId(), 2)
 			.addIngredient(ModItems.PROPELLER.getId())
 			.addIngredient(ModItems.COCKPIT.getId())
+			.addIngredient(ModItems.SEAT.getId(), 3)
 			.addIngredient("minecraft:gold_ingot", 15)
 			.build();
 	
@@ -293,10 +297,8 @@ public class DefaultAircraftPresets {
 			.setSlotItem("internal_1", ModItems.C12_ENGINE.getId())
 			.setSlotItem("internal_2", ModItems.C12_ENGINE.getId())
 			.setSlotItem("internal_3", ModItems.HEAVY_FUEL_TANK.getId(), true)
-			.setSlotItem("internal_4", ModItems.BASIC_FLARE_DISPENSER.getId(), true)
 			.addIngredient(ModItems.C12_ENGINE.getId(), 2)
 			.addIngredient(ModItems.HEAVY_FUEL_TANK.getId())
-			.addIngredient(ModItems.BASIC_FLARE_DISPENSER.getId())
 			.build();
 	
 	public static final AircraftPreset DEFAULT_NOAH_CHOPPER = AircraftPreset.Builder
@@ -312,11 +314,13 @@ public class DefaultAircraftPresets {
 			.setSlotItem("frame_1", ModItems.HEAVY_MISSILE_RACK.getId(), "rifel1", true)
 			.setSlotItem("internal_5", ModItems.AR500.getId())
 			.setSlotItem("internal_6", ModItems.GR400.getId())
+			.setSlotItem("internal_4", ModItems.BASIC_FLARE_DISPENSER.getId(), true)
 			.addIngredient(ModItems.AR500.getId())
 			.addIngredient(ModItems.GR400.getId())
 			.addIngredient(ModItems.MINIGUN_TURRET.getId())
 			.addIngredient(ModItems.HEAVY_MISSILE_RACK.getId(), 5)
 			.addIngredient(ModItems.LIGHT_MISSILE_RACK.getId(), 2)
+			.addIngredient(ModItems.BASIC_FLARE_DISPENSER.getId())
 			.addIngredient("minecraft:copper_ingot", 64)
 			.addIngredient("minecraft:iron_ingot", 64)
 			.addIngredient("minecraft:redstone", 64)
@@ -333,6 +337,7 @@ public class DefaultAircraftPresets {
 			.setStealth(1.0f)
 			.setCrossSecArea(7.5f)
 			.setIdleHeat(10f)
+			.setBaseArmor(16f)
 			.setTurnRadius(0f)
 			.setMaxTurnRates(0f, 0f, 2f)
 			.setTurnTorques(0f, 0f, 8f)
@@ -382,6 +387,7 @@ public class DefaultAircraftPresets {
 			.setStealth(1.0f)
 			.setCrossSecArea(1.2f)
 			.setIdleHeat(1f)
+			.setBaseArmor(0f)
 			.setTurnRadius(0f)
 			.setMaxTurnRates(0f, 0f, 3f)
 			.setTurnTorques(0f, 0f, 10f)
@@ -409,9 +415,6 @@ public class DefaultAircraftPresets {
 			.setCraftable()
 			.setSlotItem(PartSlot.PILOT_SLOT_NAME, ModItems.STEVE_UP_SMASH.getId(), true)
 			.addIngredient(ModItems.STEVE_UP_SMASH.getId())
-			.addIngredient("minecraft:iron_ingot", 24)
-			.addIngredient("minecraft:redstone", 32)
-			.addIngredient("minecraft:gunpowder", 12)
 			.build();
 	
 	public static final AircraftPreset TANK_SMALL_ROLLER = AircraftPreset.Builder
@@ -419,8 +422,6 @@ public class DefaultAircraftPresets {
 			.setCraftable()
 			.setSlotItem(PartSlot.PILOT_SLOT_NAME, ModItems.HEAVY_TANK_TURRET.getId(), true)
 			.addIngredient(ModItems.HEAVY_TANK_TURRET.getId())
-			.addIngredient("minecraft:iron_ingot", 32)
-			.addIngredient("minecraft:gunpowder", 24)
 			.build();
 	
 	public static final AircraftPreset EMPTY_NATHAN_BOAT = AircraftPreset.Builder
@@ -433,6 +434,7 @@ public class DefaultAircraftPresets {
 			.setStealth(1.0f)
 			.setCrossSecArea(4.5f)
 			.setIdleHeat(2f)
+			.setBaseArmor(1f)
 			.setTurnRadius(0f)
 			.setMaxTurnRates(0f, 0f, 3.5f)
 			.setTurnTorques(0f, 0f, 2f)
@@ -474,10 +476,9 @@ public class DefaultAircraftPresets {
 			.setSlotItem("seat1", ModItems.MINIGUN_TURRET.getId())
 			.setSlotItem("frame_1", ModItems.HEAVY_MISSILE_RACK.getId(), "torpedo1", true)
 			.setSlotItem("frame_2", ModItems.HEAVY_MISSILE_RACK.getId(), "torpedo1", true)
-			.addIngredient("minecraft:copper_ingot", 64)
-			.addIngredient("minecraft:iron_ingot", 32)
-			.addIngredient("minecraft:redstone", 32)
-			.addIngredient("minecraft:gunpowder", 32)
+			.addIngredient("minecraft:iron_ingot", 64)
+			.addIngredient("minecraft:redstone", 24)
+			.addIngredient("minecraft:gunpowder", 60)
 			.addIngredient(ModItems.HEAVY_MISSILE_RACK.getId(), 2)
 			.build();
 	
@@ -491,6 +492,7 @@ public class DefaultAircraftPresets {
 			.setStealth(0.05f)
 			.setCrossSecArea(18f)
 			.setIdleHeat(10f)
+			.setBaseArmor(20f)
 			.setTurnRadius(0f)
 			.setMaxTurnRates(2f, 2f, 2f)
 			.setTurnTorques(1f, 1f, 1f)
@@ -543,7 +545,7 @@ public class DefaultAircraftPresets {
 			.setSlotItem("frame_4", ModItems.HEAVY_MISSILE_RACK.getId(), "torpedo1", true)
 			.setSlotItem("frame_5", ModItems.HEAVY_MISSILE_RACK.getId(), "torpedo1", true)
 			.setSlotItem("frame_6", ModItems.HEAVY_MISSILE_RACK.getId(), "torpedo1", true)
-			.addIngredient("minecraft:copper_ingot", 64)
+			.addIngredient("minecraft:copper_ingot", 63)
 			.addIngredient("minecraft:iron_ingot", 64)
 			.addIngredient("minecraft:redstone", 64)
 			.addIngredient("minecraft:gunpowder", 64)
@@ -562,6 +564,7 @@ public class DefaultAircraftPresets {
 			.setStealth(1.0f)
 			.setCrossSecArea(5.375f)
 			.setIdleHeat(4f)
+			.setBaseArmor(1f)
 			.setTurnRadius(7f)
 			.setMaxTurnRates(0f, 0f, 4f)
 			.setTurnTorques(0f, 0f, 1f)
@@ -589,6 +592,7 @@ public class DefaultAircraftPresets {
 			.setStealth(1.0f)
 			.setCrossSecArea(2.89f)
 			.setIdleHeat(1f)
+			.setBaseArmor(0f)
 			.setTurnRadius(16f)
 			.setMaxTurnRates(5f, 3.0f, 2.0f)
 			.setTurnTorques(1.5f, 2.5f, 4.5f)
@@ -615,6 +619,25 @@ public class DefaultAircraftPresets {
 			.setSlotItem("internal_2", ModItems.LIGHT_FUEL_TANK.getId(), true)
 			.build();
 	
+	public static final AircraftPreset BOMBER_WOODEN_PLANE = AircraftPreset.Builder
+			.createFromCopy(DSCombatMod.MODID, "wooden_plane_bomber", DEFAULT_WOODEN_PLANE)
+			.setCraftable()
+			.setSlotItem("left_wing_1", ModItems.LIGHT_MISSILE_RACK.getId(), "agm114k", true)
+			.setSlotItem("right_wing_1", ModItems.LIGHT_MISSILE_RACK.getId(), "agm114k", true)
+			.addIngredient("minecraft:tnt", 12)
+			.addIngredient("minecraft:iron_ingot", 36)
+			.addIngredient(ModItems.LIGHT_MISSILE_RACK.getId(), 2)
+			.build();
+	
+	public static final AircraftPreset FIGHTER_WOODEN_PLANE = AircraftPreset.Builder
+			.createFromCopy(DSCombatMod.MODID, "wooden_plane_fighter", DEFAULT_WOODEN_PLANE)
+			.setCraftable()
+			.setSlotItem("left_wing_1", ModItems.XM12.getId(), "20mm", true)
+			.setSlotItem("right_wing_1", ModItems.XM12.getId(), "20mm", true)
+			.addIngredient("minecraft:copper_ingot", 64)
+			.addIngredient(ModItems.XM12.getId(), 2)
+			.build();
+	
 	public static final AircraftPreset EMPTY_E3SENTRY_PLANE = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "e3sentry_plane_empty")
 			.setAircraftType(AircraftType.PLANE)
@@ -625,6 +648,7 @@ public class DefaultAircraftPresets {
 			.setStealth(1.3f)
 			.setCrossSecArea(16f)
 			.setIdleHeat(20f)
+			.setBaseArmor(4f)
 			.setTurnRadius(40f)
 			.setMaxTurnRates(3f, 2.0f, 2.0f)
 			.setTurnTorques(2.0f, 2.0f, 2.0f)
@@ -689,6 +713,7 @@ public class DefaultAircraftPresets {
 			.setStealth(1.0f)
 			.setCrossSecArea(7.5f)
 			.setIdleHeat(6f)
+			.setBaseArmor(8f)
 			.setTurnRadius(11f)
 			.setMaxTurnRates(0f, 0f, 4f)
 			.setTurnTorques(0f, 0f, 1f)
@@ -731,6 +756,7 @@ public class DefaultAircraftPresets {
 			.setStealth(0.9f)
 			.setCrossSecArea(7.5f)
 			.setIdleHeat(4f)
+			.setBaseArmor(15f)
 			.setTurnRadius(0f)
 			.setMaxTurnRates(0f, 0f, 1.5f)
 			.setTurnTorques(0f, 0f, 2f)
@@ -792,7 +818,7 @@ public class DefaultAircraftPresets {
 			.setSlotItem("seat8", ModItems.SAM_LAUNCHER.getId())
 			.addIngredient("minecraft:copper_ingot", 64)
 			.addIngredient("minecraft:iron_ingot", 64)
-			.addIngredient("minecraft:redstone", 64)
+			.addIngredient("minecraft:redstone", 48)
 			.addIngredient("minecraft:gunpowder", 64)
 			.build();
 			

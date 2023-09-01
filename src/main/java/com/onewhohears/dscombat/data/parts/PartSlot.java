@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddPart;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRemovePart;
+import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.UtilParse;
@@ -153,10 +154,15 @@ public class PartSlot {
 		return false;
 	}
 	
+	public boolean isNormalSeat() {
+		if (data != null) return data.getType() == PartType.SEAT;
+		return false;
+	}
+	
 	public boolean isCompatible(PartData data) {
 		//System.out.println("is "+data+" compatible with "+this);
 		if (data == null) return false;
-		// TODO 7.4 check for duplicates
+		// HOW 3 check for duplicates
 		SlotType[] types = data.getCompatibleSlots();
 		for (int i = 0; i < types.length; ++i) if (types[i] == getSlotType()) return true;
 		return false;

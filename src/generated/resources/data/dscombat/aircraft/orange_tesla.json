@@ -1,5 +1,6 @@
 {
   "aircraft_type": 2,
+  "base_armor": 1.0,
   "cross_sec_area": 5.375,
   "displayName": "preset.dscombat.orange_tesla",
   "health": 40.0,

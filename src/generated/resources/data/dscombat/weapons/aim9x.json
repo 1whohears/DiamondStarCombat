@@ -10,7 +10,7 @@
   "destroyTerrain": true,
   "displayName": "preset.dscombat.aim9x",
   "entityTypeKey": "dscombat:aim9x",
-  "explosionRadius": 3.0,
+  "explosionRadius": 3.5,
   "explosive": true,
   "fireRate": 20,
   "flareResistance": 0.7,

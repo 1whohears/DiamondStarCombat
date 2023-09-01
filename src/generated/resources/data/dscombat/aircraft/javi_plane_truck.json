@@ -1,5 +1,6 @@
 {
   "aircraft_type": 0,
+  "base_armor": 9.0,
   "cross_sec_area": 6.25,
   "displayName": "preset.dscombat.javi_plane_truck",
   "health": 200.0,
@@ -15,6 +16,10 @@
     },
     {
       "item": "dscombat:cockpit",
+      "num": 1
+    },
+    {
+      "item": "dscombat:seat",
       "num": 1
     },
     {
@@ -68,10 +73,6 @@
     {
       "item": "minecraft:gunpowder",
       "num": 64
-    },
-    {
-      "item": "minecraft:tnt",
-      "num": 32
     }
   ],
   "is_craftable": true,

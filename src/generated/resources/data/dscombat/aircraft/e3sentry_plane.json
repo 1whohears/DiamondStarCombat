@@ -1,5 +1,6 @@
 {
   "aircraft_type": 0,
+  "base_armor": 4.0,
   "cross_sec_area": 16.0,
   "displayName": "preset.dscombat.e3sentry_plane",
   "health": 400.0,

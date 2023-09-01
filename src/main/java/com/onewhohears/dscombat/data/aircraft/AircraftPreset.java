@@ -226,12 +226,19 @@ public class AircraftPreset extends JsonPreset{
 			return this;
 		}
 		
+		protected JsonArray getSlots() {
+			if (!getData().has("slots")) {
+				getData().add("slots", new JsonArray());
+			}
+			return getData().get("slots").getAsJsonArray();
+		}
+		
 		@Nullable
 		protected JsonObject getSlot(String name, boolean createNew) {
 			if (!getData().has("slots")) {
 				getData().add("slots", new JsonArray());
 			}
-			JsonArray slots = getData().get("slots").getAsJsonArray();
+			JsonArray slots = getSlots();
 			for (int i = 0; i < slots.size(); ++i) {
 				JsonObject slot = slots.get(i).getAsJsonObject();
 				if (slot.get("name").getAsString().equals(name)) {
@@ -364,20 +371,6 @@ public class AircraftPreset extends JsonPreset{
 		/**
 		 * all vehicles
 		 */
-		public Builder addIngredient(ResourceLocation item, int num) {
-			if (!getData().has("ingredients")) {
-				getData().add("ingredients", new JsonArray());
-			}
-			JsonObject i = new JsonObject();
-			i.addProperty("item", item.toString());
-			i.addProperty("num", num);
-			getData().get("ingredients").getAsJsonArray().add(i);
-			return this;
-		}
-		
-		/**
-		 * all vehicles
-		 */
 		public Builder addIngredient(String itemId, int num) {
 			if (!getData().has("ingredients")) {
 				getData().add("ingredients", new JsonArray());
@@ -387,6 +380,13 @@ public class AircraftPreset extends JsonPreset{
 			i.addProperty("num", num);
 			getData().get("ingredients").getAsJsonArray().add(i);
 			return this;
+		}
+		
+		/**
+		 * all vehicles
+		 */
+		public Builder addIngredient(ResourceLocation item, int num) {
+			return addIngredient(item.toString(), num);
 		}
 		
 		/**
@@ -424,6 +424,13 @@ public class AircraftPreset extends JsonPreset{
 		 */
 		public Builder setMass(float mass) {
 			return setFloat("mass", mass);
+		}
+		
+		/**
+		 * all vehicles
+		 */
+		public Builder setBaseArmor(float armor) {
+			return setFloat("base_armor", armor);
 		}
 		
 		/**

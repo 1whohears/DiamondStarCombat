@@ -121,7 +121,7 @@ public class PilotOverlay {
 		GuiComponent.drawString(poseStack, m.font, 
 			"A"+UtilParse.prettyVec3(plane.getAngularVel(), 2), width-100, 20, color);
 		GuiComponent.drawString(poseStack, m.font, 
-			"M"+UtilParse.prettyVec3(plane.moment, 2), width-100, 30, color);
+			"M"+UtilParse.prettyVec3(plane.getMoment(), 2), width-100, 30, color);
 	}
 	
 	private static void drawAircraftStats(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {

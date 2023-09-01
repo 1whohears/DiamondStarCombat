@@ -8,7 +8,6 @@ import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft.AircraftType;
-import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.nbt.CompoundTag;
@@ -26,12 +25,11 @@ import net.minecraftforge.fluids.FluidType;
 
 public class EntitySeat extends EntityPart {
 	
-	public EntitySeat(EntityType<?> type, Level level) {
-		super(type, level);
-	}
+	public final Vec3 passengerOffset;
 	
-	public EntitySeat(Level level, String slotId, Vec3 pos) {
-		super(ModEntities.SEAT.get(), level, slotId, pos);
+	public EntitySeat(EntityType<?> type, Level level, Vec3 offset) {
+		super(type, level);
+		this.passengerOffset = offset;
 	}
 
 	@Override
@@ -56,7 +54,6 @@ public class EntitySeat extends EntityPart {
 	@Override
 	public void tick() {
 		super.tick();
-		//tickLerp();
 	}
 	
 	@Override
@@ -82,14 +79,16 @@ public class EntitySeat extends EntityPart {
 						80, 0, false, false));
 			}
 		}
-		Vec3 pos = position();
+		passenger.setPos(position().add(getPassengerRelPos(passenger, craft)));
+	}
+	
+	protected Vec3 getPassengerRelPos(Entity passenger, EntityAircraft craft) {
 		Quaternion q;
 		if (level.isClientSide) q = craft.getClientQ();
 		else q = craft.getQ();
 		double offset = getPassengersRidingOffset() + passenger.getMyRidingOffset() + passenger.getEyeHeight();
-		Vec3 passPos = UtilAngles.rotateVector(new Vec3(0, offset, 0), q)
+		return UtilAngles.rotateVector(new Vec3(0, offset, 0), q)
 				.subtract(0, passenger.getEyeHeight(), 0);
-		passenger.setPos(pos.add(passPos));
 	}
 	
 	@Override
@@ -135,7 +134,7 @@ public class EntitySeat extends EntityPart {
     
     @Override
     public double getPassengersRidingOffset() {
-        return 0.0;
+        return passengerOffset.y;
     }
 
 	@Override

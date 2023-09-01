@@ -1,5 +1,6 @@
 {
   "aircraft_type": 2,
+  "base_armor": 0.0,
   "cross_sec_area": 1.2,
   "displayName": "preset.dscombat.small_roller_tank",
   "health": 30.0,
@@ -28,14 +29,6 @@
     {
       "item": "dscombat:heavy_tank_turret",
       "num": 1
-    },
-    {
-      "item": "minecraft:iron_ingot",
-      "num": 32
-    },
-    {
-      "item": "minecraft:gunpowder",
-      "num": 24
     }
   ],
   "is_craftable": true,

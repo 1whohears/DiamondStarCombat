@@ -2,6 +2,7 @@
   "accForward": 0.04,
   "accSide": 0.02,
   "aircraft_type": 1,
+  "base_armor": 5.0,
   "cross_sec_area": 7.84,
   "displayName": "preset.dscombat.noah_chopper",
   "health": 300.0,
@@ -24,6 +25,10 @@
       "num": 1
     },
     {
+      "item": "dscombat:seat",
+      "num": 3
+    },
+    {
       "item": "minecraft:gold_ingot",
       "num": 15
     },
@@ -33,10 +38,6 @@
     },
     {
       "item": "dscombat:heavy_fuel_tank",
-      "num": 1
-    },
-    {
-      "item": "dscombat:basic_flare_dispenser",
       "num": 1
     },
     {
@@ -58,6 +59,10 @@
     {
       "item": "dscombat:light_missile_rack",
       "num": 2
+    },
+    {
+      "item": "dscombat:basic_flare_dispenser",
+      "num": 1
     },
     {
       "item": "minecraft:copper_ingot",

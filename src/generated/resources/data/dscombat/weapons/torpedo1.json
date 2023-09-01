@@ -23,7 +23,7 @@
     },
     {
       "item": "minecraft:tnt",
-      "num": 5
+      "num": 2
     },
     {
       "item": "minecraft:coal_block",
@@ -31,7 +31,7 @@
     },
     {
       "item": "dscombat:ti83",
-      "num": 1
+      "num": 2
     }
   ],
   "innacuracy": 0.0,

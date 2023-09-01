@@ -1,5 +1,6 @@
 {
   "aircraft_type": 0,
+  "base_armor": 2.0,
   "cross_sec_area": 4.0,
   "displayName": "preset.dscombat.alexis_plane_support",
   "health": 150.0,
@@ -63,15 +64,15 @@
     },
     {
       "item": "minecraft:iron_ingot",
-      "num": 32
+      "num": 64
     },
     {
       "item": "minecraft:redstone",
-      "num": 32
+      "num": 64
     },
     {
       "item": "minecraft:gunpowder",
-      "num": 32
+      "num": 64
     }
   ],
   "is_craftable": true,

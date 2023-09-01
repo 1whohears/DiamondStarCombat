@@ -54,8 +54,8 @@ public class EntityTurret extends EntitySeat {
 	
 	// TODO 4.1 option to change turret camera position. so camera could be under the aircraft
 	
-	public EntityTurret(EntityType<?> type, Level level, Vec3 passengerOffset, double weaponOffset) {
-		super(type, level, passengerOffset);
+	public EntityTurret(EntityType<?> type, Level level, Vec3 offset, double weaponOffset) {
+		super(type, level, offset);
 		this.weaponOffset = weaponOffset;
 	}
 
@@ -157,6 +157,19 @@ public class EntityTurret extends EntitySeat {
 			System.out.println("playerx = "+player.getXRot()+" playery = "+player.getYRot());
 			System.out.println("globalx = "+global[0]       +" globaly = "+global[1]);
 		}*/
+	}
+	
+	@Override
+	protected Vec3 getPassengerRelPos(Entity passenger, EntityAircraft craft) {
+		Quaternion q;
+		if (level.isClientSide) q = craft.getClientQ();
+		else q = craft.getQ();
+		double offset = getPassengersRidingOffset() + passenger.getMyRidingOffset() + passenger.getEyeHeight();
+		return UtilAngles.rotateVector(new Vec3(
+					passengerOffset.x*Mth.cos(getRelRotY()*Mth.DEG_TO_RAD)+passengerOffset.z*Mth.sin(getRelRotY()*Mth.DEG_TO_RAD), 
+					offset, 
+					passengerOffset.z*Mth.cos(getRelRotY()*Mth.DEG_TO_RAD)+passengerOffset.x*Mth.sin(getRelRotY()*Mth.DEG_TO_RAD)
+				), q).subtract(0, passenger.getEyeHeight(), 0);
 	}
 	
 	@Override

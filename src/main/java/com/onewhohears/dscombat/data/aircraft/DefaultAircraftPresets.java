@@ -362,9 +362,8 @@ public class DefaultAircraftPresets {
 			.createFromCopy(DSCombatMod.MODID, "mrbudger_tank_unarmed", EMPTY_MRBUDGER_TANK)
 			.setCraftable()
 			.setSlotItem("internal_1", ModItems.C12_ENGINE.getId())
-			.setSlotItem("internal_2", ModItems.C12_ENGINE.getId())
 			.setSlotItem("internal_3", ModItems.HEAVY_FUEL_TANK.getId(), true)
-			.addIngredient(ModItems.C12_ENGINE.getId(), 2)
+			.addIngredient(ModItems.C12_ENGINE.getId(), 1)
 			.addIngredient(ModItems.HEAVY_FUEL_TANK.getId())
 			.build();
 	
@@ -373,8 +372,6 @@ public class DefaultAircraftPresets {
 			.setCraftable()
 			.setSlotItem(PartSlot.PILOT_SLOT_NAME, ModItems.HEAVY_TANK_TURRET.getId(), true)
 			.addIngredient(ModItems.HEAVY_TANK_TURRET.getId())
-			.addIngredient("minecraft:copper_ingot", 32)
-			.addIngredient("minecraft:gunpowder", 32)
 			.build();
 	
 	public static final AircraftPreset EMPTY_SMALL_ROLLER = AircraftPreset.Builder

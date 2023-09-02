@@ -25,7 +25,7 @@ public class ItemEngine extends ItemPart {
 	public final String externalEntityKey;
 	
 	public ItemEngine(EngineType engineType, float weight, float thrust, float heat, float fuelRate, boolean external, SlotType[] compatibleSlots) {
-		super(1, weight, compatibleSlots);
+		super(4, weight, compatibleSlots);
 		this.engineType = engineType;
 		this.thrust = thrust;
 		this.heat = heat;

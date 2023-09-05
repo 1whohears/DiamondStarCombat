@@ -602,7 +602,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.trackMissileBuilder(DSCombatMod.MODID, "rgm84")
 				.setFireRate(40)
 				.setInnacuracy(0f)
-				.setCanShootOnGround(false)
+				.setCanShootOnGround(true)
 				.setDamage(50f)
 				.setSpeed(2.5f)
 				.setExplosionRadius(4f)

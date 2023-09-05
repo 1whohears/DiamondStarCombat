@@ -131,35 +131,35 @@
     },
     {
       "name": "frame_2",
-      "slot_posx": 7.0,
+      "slot_posx": 6.0,
       "slot_posy": 4.0,
       "slot_posz": 2.0,
-      "slot_type": "frame",
-      "zRot": 90.0
+      "slot_type": "light_turret",
+      "zRot": 0.0
     },
     {
       "name": "frame_3",
-      "slot_posx": -7.0,
+      "slot_posx": -6.0,
       "slot_posy": 4.0,
       "slot_posz": 2.0,
-      "slot_type": "frame",
-      "zRot": -90.0
+      "slot_type": "light_turret",
+      "zRot": 0.0
     },
     {
       "name": "frame_4",
-      "slot_posx": 7.0,
+      "slot_posx": 6.0,
       "slot_posy": 4.0,
       "slot_posz": -2.0,
-      "slot_type": "frame",
-      "zRot": 90.0
+      "slot_type": "light_turret",
+      "zRot": 0.0
     },
     {
       "name": "frame_5",
-      "slot_posx": -7.0,
+      "slot_posx": -6.0,
       "slot_posy": 4.0,
       "slot_posz": -2.0,
-      "slot_type": "frame",
-      "zRot": -90.0
+      "slot_type": "light_turret",
+      "zRot": 0.0
     },
     {
       "name": "internal_1",

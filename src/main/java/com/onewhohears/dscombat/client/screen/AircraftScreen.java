@@ -104,10 +104,10 @@ public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContaine
 	@Override
 	protected void init() {
 		super.init();
-		Button getItemButton = new Button(0, 0, 80, 20, 
+		Button getItemButton = new Button(0, 0, 60, 20, 
 				Component.translatable("ui.dscombat.shrink_plane_button"), 
 				onPress -> { onPlaneItemButton(); });
-		getItemButton.x = this.getGuiLeft() + titleLabelX+122;
+		getItemButton.x = this.getGuiLeft() + titleLabelX+144;
 		getItemButton.y = this.getGuiTop() + titleLabelY+110;
 		this.addRenderableWidget(getItemButton);
 	}

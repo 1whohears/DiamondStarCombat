@@ -2,7 +2,7 @@
   "type": "track_missile",
   "acceleration": 0.04,
   "bleed": 0.05,
-  "canShootOnGround": false,
+  "canShootOnGround": true,
   "causesFire": true,
   "compatibleWeaponPart": "dscombat:adl",
   "craftNum": 1,

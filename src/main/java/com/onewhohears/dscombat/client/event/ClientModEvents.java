@@ -183,7 +183,7 @@ public final class ClientModEvents {
 						new ObjEntityModel<>("aim120b")));
 		event.registerEntityRenderer(ModEntities.AIM120C.get(), 
 				(context) -> new RendererObjEntity<EntityMissile>(context, 
-						new ObjEntityModel<>("aim120b")));
+						new ObjEntityModel<>("aim120c")));
 		event.registerEntityRenderer(ModEntities.PAC3.get(), 
 				(context) -> new RendererObjEntity<EntityMissile>(context, 
 						new ObjEntityModel<>("aim120b")));

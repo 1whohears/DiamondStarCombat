@@ -193,21 +193,29 @@ public class ModItems {
 	
 	// TURRENTS
 	public static final RegistryObject<Item> MINIGUN_TURRET = ITEMS.register("minigun_turret", 
-			() -> new ItemTurret(5f, SlotType.TURRET_MED, 
+			() -> new ItemTurret(4f, SlotType.TURRET_MED, 
 					ModEntities.MINIGUN_TURRET.getId().toString(), "20mm",
 					RotBounds.create(2.5f,50f, 50f)));
 	public static final RegistryObject<Item> HEAVY_TANK_TURRET = ITEMS.register("heavy_tank_turret", 
-			() -> new ItemTurret(9f, SlotType.TURRET_HEAVY, 
+			() -> new ItemTurret(8f, SlotType.TURRET_HEAVY, 
 					ModEntities.HEAVY_TANK_TURRET.getId().toString(), "120mmhe",
 					RotBounds.create(1.0f, 30f, 30f)));
 	public static final RegistryObject<Item> STEVE_UP_SMASH = ITEMS.register("steve_up_smash", 
-			() -> new ItemTurret(13f, SlotType.TURRET_HEAVY, 
+			() -> new ItemTurret(10f, SlotType.TURRET_HEAVY, 
 					ModEntities.STEVE_UP_SMASH.getId().toString(), "aim9p5",
 					RotBounds.create(1.8f, 25f, 25f)));
 	public static final RegistryObject<Item> SAM_LAUNCHER = ITEMS.register("sam_launcher", 
-			() -> new ItemTurret(17f, SlotType.TURRET_HEAVY, 
+			() -> new ItemTurret(13f, SlotType.TURRET_HEAVY, 
 					ModEntities.SAM_LAUNCHER.getId().toString(), "pac3",
 					RotBounds.create(1.3f, 25f, 25f)));
+	public static final RegistryObject<Item> MLS = ITEMS.register("mls", 
+			() -> new ItemTurret(11f, SlotType.TURRET_HEAVY, 
+					ModEntities.MLS.getId().toString(), "rgm84",
+					RotBounds.create(1.9f, 20f, 20f)));
+	public static final RegistryObject<Item> TORPEDO_TUBES = ITEMS.register("torpedo_tubes", 
+			() -> new ItemTurret(10f, SlotType.TURRET_HEAVY, 
+					ModEntities.TORPEDO_TUBES.getId().toString(), "torpedo1",
+					RotBounds.create(1.6f, 5f, 5f)));
 	
 	// FLARE DISPENSERS
 	public static final RegistryObject<Item> BASIC_FLARE_DISPENSER = ITEMS.register("basic_flare_dispenser", 
@@ -215,13 +223,17 @@ public class ModItems {
 	
 	// WEAPON PARTS
 	public static final RegistryObject<Item> XM12 = ITEMS.register("xm12", 
-			() -> new ItemWeaponPart(1f, SlotType.EXTERNAL_ALL)); 
+			() -> new ItemWeaponPart(1f, SlotType.EXTERNAL_ALL, 0)); 
 	public static final RegistryObject<Item> LIGHT_MISSILE_RACK = ITEMS.register("light_missile_rack", 
-			() -> new ItemWeaponPart(2f, SlotType.EXTERNAL_ALL)); 
+			() -> new ItemWeaponPart(2f, SlotType.EXTERNAL_ALL, 0)); 
 	public static final RegistryObject<Item> HEAVY_MISSILE_RACK = ITEMS.register("heavy_missile_rack", 
-			() -> new ItemWeaponPart(4f, SlotType.EXTERNAL_ALL)); 
+			() -> new ItemWeaponPart(4f, SlotType.EXTERNAL_ALL, 0)); 
 	public static final RegistryObject<Item> BOMB_RACK = ITEMS.register("bomb_rack", 
-			() -> new ItemWeaponPart(5f, SlotType.EXTERNAL_ALL)); 
+			() -> new ItemWeaponPart(5f, SlotType.EXTERNAL_ALL, 0)); 
+	public static final RegistryObject<Item> ADL = ITEMS.register("adl", 
+			() -> new ItemWeaponPart(7f, SlotType.EXTERNAL_HEAVY, 20)); 
+	public static final RegistryObject<Item> VLS = ITEMS.register("vls", 
+			() -> new ItemWeaponPart(7f, SlotType.EXTERNAL_HEAVY, 90)); 
 	/**
 	 * TODO 2.1 radar jamming weapon
 	 * causes victims radar to display random noise

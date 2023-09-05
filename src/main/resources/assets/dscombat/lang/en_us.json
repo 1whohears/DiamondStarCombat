@@ -114,6 +114,10 @@
 	"entity.dscombat.pac3": "PAC-3",
 	"entity.dscombat.aim7f": "AIM-7F",
 	"entity.dscombat.aim7mh": "AIM-7MH",
+	"entity.dscombat.mls": "MLS",
+	"entity.dscombat.torpedo_tubes": "Torpedo Tubes",
+	"entity.dscombat.adl": "ADL",
+	"entity.dscombat.vls": "VLS",
 	
 	"entity.minecraft.villager.dscombat.weapons_engineer": "Weapons Engineer",
 	"entity.minecraft.villager.dscombat.aircraft_engineer": "Aircraft Engineer",
@@ -185,6 +189,8 @@
 	"item.dscombat.heavy_tank_turret": "Heavy Tank Turret",
 	"item.dscombat.steve_up_smash": "Steve Up Smash",
 	"item.dscombat.sam_launcher": "SAM Launcher",
+	"item.dscombat.mls": "MLS",
+	"item.dscombat.torpedo_tubes": "Torpedo Tubes",
 	
 	"item.dscombat.basic_flare_dispenser": "Basic Flare Dispenser",
 	
@@ -192,6 +198,8 @@
 	"item.dscombat.light_missile_rack": "Light Missile Rack",
 	"item.dscombat.heavy_missile_rack": "Heavy Missile Rack",
 	"item.dscombat.bomb_rack": "Bomb Rack",
+	"item.dscombat.adl": "ADL",
+	"item.dscombat.vls": "VLS",
 	
 	"item.dscombat.test_plane": "Test Plane",
 	"item.dscombat.javi_plane": "Javi Plane",
@@ -235,6 +243,8 @@
 	"preset.dscombat.torpedo1": "TORPEDO-1",
 	"preset.dscombat.gruetz_bunker_buster": "GRUETZ-BB",
 	"preset.dscombat.pac3": "PAC-3",
+	"preset.dscombat.bgm109": "BGM-109",
+	"preset.dscombat.rgm84": "RGM-84",
 	
 	"preset.dscombat.alexis_plane_empty": "Empty Alexis Plane",
 	"preset.dscombat.alexis_plane_unarmed": "Unarmed Alexis Plane",

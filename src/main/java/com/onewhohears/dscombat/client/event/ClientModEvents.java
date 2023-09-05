@@ -18,7 +18,11 @@ import com.onewhohears.dscombat.client.model.aircraft.EntityModelWoodenPlane;
 import com.onewhohears.dscombat.client.model.obj.ObjAircraftModel;
 import com.onewhohears.dscombat.client.model.obj.ObjEntityModel;
 import com.onewhohears.dscombat.client.model.obj.ObjEntityModels;
+import com.onewhohears.dscombat.client.model.obj.ObjPartModel;
+import com.onewhohears.dscombat.client.model.obj.custom.MLSModel;
 import com.onewhohears.dscombat.client.model.obj.custom.SamLauncherModel;
+import com.onewhohears.dscombat.client.model.obj.custom.TorpedoTubesModel;
+import com.onewhohears.dscombat.client.model.obj.custom.VLSModel;
 import com.onewhohears.dscombat.client.model.parts.EntityModelCFM56;
 import com.onewhohears.dscombat.client.model.weapon.EntityModelBomb1;
 import com.onewhohears.dscombat.client.model.weapon.EntityModelBombRack;
@@ -225,6 +229,12 @@ public final class ClientModEvents {
 		event.registerEntityRenderer(ModEntities.SAM_LAUNCHER.get(), 
 				(context) -> new RendererObjEntity<EntityTurret>(context, 
 						new SamLauncherModel()));
+		event.registerEntityRenderer(ModEntities.MLS.get(), 
+				(context) -> new RendererObjEntity<EntityTurret>(context, 
+						new MLSModel()));
+		event.registerEntityRenderer(ModEntities.TORPEDO_TUBES.get(), 
+				(context) -> new RendererObjEntity<EntityTurret>(context, 
+						new TorpedoTubesModel()));
 		// MISSILE RACKS
 		event.registerEntityRenderer(ModEntities.LIGHT_MISSILE_RACK.get(), 
 				(context) -> new RendererEntityPart<EntityWeaponRack>(context,
@@ -242,6 +252,12 @@ public final class ClientModEvents {
 				(context) -> new RendererEntityPart<EntityWeaponRack>(context,
 						new EntityModelBombRack(models.bakeLayer(EntityModelBombRack.LAYER_LOCATION)),
 						new ResourceLocation(DSCombatMod.MODID, "textures/entities/bomb_rack.png")));
+		event.registerEntityRenderer(ModEntities.ADL.get(), 
+				(context) -> new RendererObjEntity<EntityWeaponRack>(context, 
+						new ObjPartModel<>("adl")));
+		event.registerEntityRenderer(ModEntities.VLS.get(), 
+				(context) -> new RendererObjEntity<EntityWeaponRack>(context, 
+						new VLSModel()));
 		// EXTERNAL ENGINES
 		event.registerEntityRenderer(ModEntities.CFM56.get(), 
 				(context) -> new RendererEntityPart<EntityEngine>(context,

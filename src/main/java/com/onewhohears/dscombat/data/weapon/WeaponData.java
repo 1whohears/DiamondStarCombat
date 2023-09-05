@@ -60,6 +60,7 @@ public abstract class WeaponData extends JsonPreset {
 	private String failedLaunchReason;
 	private String slotId = "";
 	private boolean overrideGroundCheck = false;
+	private float changeLaunchPitch = 0;
 	
 	public WeaponData(ResourceLocation key, JsonObject json) {
 		super(key, json);
@@ -140,7 +141,7 @@ public abstract class WeaponData extends JsonPreset {
 	public void setDirection(EntityWeapon weapon, Vec3 direction) {
 		float pitch = UtilAngles.getPitch(direction);
 		float yaw = UtilAngles.getYaw(direction);
-		weapon.setXRot(pitch);
+		weapon.setXRot(pitch-changeLaunchPitch);
 		weapon.setYRot(yaw);
 	}
 	
@@ -254,6 +255,10 @@ public abstract class WeaponData extends JsonPreset {
 	
 	public boolean canShootOnGround() {
 		return canShootOnGround;
+	}
+	
+	public void setChangeLaunchPitch(float degrees) {
+		changeLaunchPitch = degrees;
 	}
 
 	public boolean isFailedLaunch() {

@@ -112,6 +112,8 @@
 	"entity.dscombat.aim120b": "AIM-120B",
 	"entity.dscombat.aim120c": "AIM-120C",
 	"entity.dscombat.pac3": "PAC-3",
+	"entity.dscombat.aim7f": "AIM-7F",
+	"entity.dscombat.aim7mh": "AIM-7MH",
 	
 	"entity.minecraft.villager.dscombat.weapons_engineer": "Weapons Engineer",
 	"entity.minecraft.villager.dscombat.aircraft_engineer": "Aircraft Engineer",

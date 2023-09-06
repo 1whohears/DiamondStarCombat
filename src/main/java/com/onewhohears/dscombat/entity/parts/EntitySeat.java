@@ -111,7 +111,7 @@ public class EntitySeat extends EntityPart {
 	
 	@Override
     public boolean canAddPassenger(Entity passenger) {
-		if (passenger instanceof Player) return getPlayer() == null;
+		if (passenger instanceof LivingEntity) return getPassenger() == null;
 		return false;
 	}
 	
@@ -121,16 +121,21 @@ public class EntitySeat extends EntityPart {
     }
 	
 	@Override
-    public Vec3 getDismountLocationForPassenger(LivingEntity livingEntity) {
-		/*Entity v = getVehicle();
-		if (v != null) return v.getDismountLocationForPassenger(livingEntity);*/
-		return super.getDismountLocationForPassenger(livingEntity);
+    public Vec3 getDismountLocationForPassenger(LivingEntity entity) {
+		return super.getDismountLocationForPassenger(entity);
 	}
 	
 	@Nullable
 	public Player getPlayer() {
 		List<Entity> list = getPassengers();
 		for (Entity e : list) if (e instanceof Player p) return p;
+		return null;
+	}
+	
+	@Nullable
+	public LivingEntity getPassenger() {
+		List<Entity> list = getPassengers();
+		for (Entity e : list) if (e instanceof LivingEntity l) return l;
 		return null;
 	}
 	
@@ -157,7 +162,7 @@ public class EntitySeat extends EntityPart {
 	
 	@Override
     public boolean hurt(DamageSource source, float amount) {
-		Player p = getPlayer();
+		LivingEntity p = getPassenger();
 		if (p == null) return true;
 		p.hurt(source, amount);
 		return true;

@@ -493,7 +493,11 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	public void tickCollisions() {
 		if (!level.isClientSide) {
 			if (!hasControllingPassenger()) wallCollisions();
-			knockBack(level.getEntities(this, getBoundingBox(), 
+			if (xzSpeed < 0.1) ride(level.getEntities(this, 
+					getBoundingBox().inflate(0.1), 
+					getRidePredicate()));
+			knockBack(level.getEntities(this, 
+					getBoundingBox(), 
 					getKnockbackPredicate()));
 		} else {
 			if (isControlledByLocalInstance()) wallCollisions();
@@ -563,6 +567,20 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 				entity.hurt(AircraftDamageSource.roadKill(this), (float)push_factor*2f);
 			}
 		}
+	}
+	
+	protected Predicate<? super Entity> getRidePredicate() {
+		return ((entity) -> {
+			if (this.equals(entity.getRootVehicle())) return false;
+			if (entity.isSpectator()) return false;
+			if (!(entity instanceof LivingEntity)) return false;
+			if (entity instanceof Player) return false;
+			return true;
+		});
+	}
+	
+	protected void ride(List<Entity> entities) {
+		for(Entity entity : entities) ridePassengerSeat(entity);
 	}
 	
 	/**
@@ -1427,6 +1445,14 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		for (EntitySeat seat : seats) 
 			if (seat.isPilotSeat()) 
 				return e.startRiding(seat);
+		return false;
+	}
+	
+	public boolean ridePassengerSeat(Entity e) {
+		List<EntitySeat> seats = getSeats();
+		for (EntitySeat seat : seats) 
+			if (!seat.isPilotSeat() && e.startRiding(seat)) 
+				return true;
 		return false;
 	}
 	

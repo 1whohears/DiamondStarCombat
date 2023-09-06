@@ -107,8 +107,18 @@ public abstract class EntityPart extends Entity {
 		return z_rot;
 	}
 	
+	@Override
+	public boolean isPickable() {
+		return false;
+	}
+	
 	@Override 
 	public boolean canCollideWith(Entity entity) {
+		return false;
+	}
+	
+	@Override
+	public boolean canBeCollidedWith() {
 		return false;
 	}
 	

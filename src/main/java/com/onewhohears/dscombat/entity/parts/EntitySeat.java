@@ -58,7 +58,13 @@ public class EntitySeat extends EntityPart {
 	
 	@Override
 	public InteractionResult interact(Player player, InteractionHand hand) {
+		// TODO 1 right click seat location to ride
 		return InteractionResult.PASS;
+	}
+	
+	@Override
+	public boolean isPickable() {
+		return true;
 	}
 	
 	@Override

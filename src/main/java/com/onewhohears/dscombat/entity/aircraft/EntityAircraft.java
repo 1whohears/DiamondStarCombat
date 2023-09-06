@@ -1933,21 +1933,27 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     	return stack;
     }
     
+    public boolean canBecomeItem() {
+    	return tickCount/20 > Config.COMMON.freshEntityToItemCooldown.get() 
+    			&& (lastShootTime == -1 || (tickCount-lastShootTime)/20 > Config.COMMON.usedWeaponToItemCooldown.get());
+    }
+    
+    /**
+     * SERVER SIDE ONLY
+     */
+    public void becomeItem(Vec3 pos) {
+    	if (level.isClientSide) return;
+    	ItemStack stack = getItem();
+		ItemEntity e = new ItemEntity(level, pos.x, pos.y, pos.z, stack);
+		level.addFreshEntity(e);
+		discard();
+    }
+    
     /**
      * SERVER SIDE ONLY
      */
     public void becomeItem() {
-    	if (level.isClientSide) return;
-    	boolean cancel = tickCount/20 < Config.COMMON.freshEntityToItemCooldown.get() 
-    			|| (lastShootTime != -1 && (tickCount-lastShootTime)/20 < Config.COMMON.usedWeaponToItemCooldown.get());
-    	if (cancel && getControllingPassenger() instanceof Player player) {
-    		player.displayClientMessage(Component.translatable("error.dscombat.cant_item_yet"), true);
-    		return;
-    	}
-    	ItemStack stack = getItem();
-		ItemEntity e = new ItemEntity(level, getX(), getY(), getZ(), stack);
-		level.addFreshEntity(e);
-		discard();
+    	becomeItem(position());
     }
     
     @Override

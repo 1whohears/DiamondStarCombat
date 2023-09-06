@@ -194,7 +194,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	protected RadarMode radarMode = RadarMode.ALL;
 	protected boolean isLandingGear, isFreeLook = true;
 	
-	// TODO 3.1 allow living entities to ride vehicles
 	// TODO 5.4 aircraft breaks apart when damaged
 	// FIXME refactor EntityAircraft to EntityVehicle
 	

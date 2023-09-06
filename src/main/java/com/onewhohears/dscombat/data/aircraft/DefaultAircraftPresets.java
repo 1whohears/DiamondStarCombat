@@ -51,11 +51,9 @@ public class DefaultAircraftPresets {
 			.setSlotItem("internal_1", ModItems.TURBOFAN_F145.getId())
 			.setSlotItem("internal_2", ModItems.HEAVY_FUEL_TANK.getId(), true)
 			.setSlotItem("internal_3", ModItems.BASIC_FLARE_DISPENSER.getId(), true)
-			.setSlotItem("internal_6", ModItems.DATA_LINK.getId())
 			.addIngredient(ModItems.TURBOFAN_F145.getId())
 			.addIngredient(ModItems.HEAVY_FUEL_TANK.getId())
 			.addIngredient(ModItems.BASIC_FLARE_DISPENSER.getId())
-			.addIngredient(ModItems.DATA_LINK.getId())
 			.build();
 	
 	public static final AircraftPreset DEFAULT_ALEXIS_PLANE = AircraftPreset.Builder
@@ -230,12 +228,10 @@ public class DefaultAircraftPresets {
 			.setSlotItem("frame_1", ModItems.XM12.getId(), "20mm", true)
 			.setSlotItem("frame_2", ModItems.LIGHT_MISSILE_RACK.getId(), "aim9p5", true)
 			.setSlotItem("internal_5", ModItems.AR2K.getId())
-			.setSlotItem("internal_6", ModItems.DATA_LINK.getId())
 			.addIngredient(ModItems.AR2K.getId())
 			.addIngredient(ModItems.HEAVY_MISSILE_RACK.getId(), 8)
 			.addIngredient(ModItems.LIGHT_MISSILE_RACK.getId(), 1)
 			.addIngredient(ModItems.XM12.getId())
-			.addIngredient(ModItems.DATA_LINK.getId())
 			.addIngredient("minecraft:copper_ingot", 64)
 			.addIngredient("minecraft:iron_ingot", 64)
 			.addIngredient("minecraft:redstone", 64)

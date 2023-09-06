@@ -33,10 +33,6 @@
     {
       "item": "dscombat:basic_flare_dispenser",
       "num": 1
-    },
-    {
-      "item": "dscombat:data_link",
-      "num": 1
     }
   ],
   "is_craftable": true,
@@ -156,9 +152,6 @@
       "zRot": 0.0
     },
     {
-      "data": {
-        "itemid": "dscombat:data_link"
-      },
       "name": "internal_6",
       "slot_posx": 0.0,
       "slot_posy": 0.0,

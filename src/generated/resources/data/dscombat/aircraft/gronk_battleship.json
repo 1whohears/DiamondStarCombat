@@ -8,7 +8,7 @@
   "ingredients": [
     {
       "item": "dscombat:large_fuselage",
-      "num": 2
+      "num": 3
     },
     {
       "item": "minecraft:boat",
@@ -49,6 +49,10 @@
     {
       "item": "dscombat:mls",
       "num": 1
+    },
+    {
+      "item": "dscombat:minigun_turret",
+      "num": 2
     },
     {
       "item": "minecraft:copper_ingot",
@@ -171,6 +175,28 @@
       "slot_posy": 4.0,
       "slot_posz": -22.0,
       "slot_type": "heavy_turret",
+      "zRot": 0.0
+    },
+    {
+      "data": {
+        "itemid": "dscombat:minigun_turret"
+      },
+      "name": "seat9",
+      "slot_posx": 0.0,
+      "slot_posy": 6.0,
+      "slot_posz": 7.0,
+      "slot_type": "med_turret",
+      "zRot": 0.0
+    },
+    {
+      "data": {
+        "itemid": "dscombat:minigun_turret"
+      },
+      "name": "seat10",
+      "slot_posx": 0.0,
+      "slot_posy": 6.0,
+      "slot_posz": -7.0,
+      "slot_type": "med_turret",
       "zRot": 0.0
     },
     {

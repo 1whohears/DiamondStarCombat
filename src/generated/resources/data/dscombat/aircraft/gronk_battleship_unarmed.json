@@ -8,7 +8,7 @@
   "ingredients": [
     {
       "item": "dscombat:large_fuselage",
-      "num": 2
+      "num": 3
     },
     {
       "item": "minecraft:boat",
@@ -135,6 +135,28 @@
       "slot_posy": 4.0,
       "slot_posz": -22.0,
       "slot_type": "heavy_turret",
+      "zRot": 0.0
+    },
+    {
+      "data": {
+        "itemid": "dscombat:seat"
+      },
+      "name": "seat9",
+      "slot_posx": 0.0,
+      "slot_posy": 6.0,
+      "slot_posz": 7.0,
+      "slot_type": "med_turret",
+      "zRot": 0.0
+    },
+    {
+      "data": {
+        "itemid": "dscombat:seat"
+      },
+      "name": "seat10",
+      "slot_posx": 0.0,
+      "slot_posy": 6.0,
+      "slot_posz": -7.0,
+      "slot_type": "med_turret",
       "zRot": 0.0
     },
     {

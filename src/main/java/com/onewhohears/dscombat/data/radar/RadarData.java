@@ -293,7 +293,6 @@ public class RadarData extends JsonPreset {
 		return fov;
 	}
 
-
 	public int getScanRate() {
 		return scanRate;
 	}
@@ -434,6 +433,10 @@ public class RadarData extends JsonPreset {
 	
 	public void setInternal() {
 		this.slotId = "";
+	}
+	
+	public void setPos(Vec3 pos) {
+		this.pos = pos;
 	}
 	
 	public boolean idMatch(String id, String slotId) {

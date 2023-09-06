@@ -93,11 +93,6 @@ public abstract class EntityPart extends Entity {
 	
 	@Override
     public boolean hurt(DamageSource source, float amount) {
-		/* THIS IS NO
-		if (source.isExplosion() || source.isFire() || source.isMagic()) return false;
-		Entity v = this.getRootVehicle();
-		if (v != null) v.hurt(source, amount);
-		return true;*/
 		return false;
 	}
 	

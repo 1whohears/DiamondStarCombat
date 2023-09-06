@@ -9,9 +9,7 @@ import com.onewhohears.dscombat.data.radar.RadarPresets;
 import com.onewhohears.dscombat.data.weapon.NonTickingMissileManager;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
-import com.onewhohears.dscombat.entity.parts.EntitySeat;
 
-import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.TickEvent;
@@ -51,10 +49,10 @@ public final class CommonForgeEvents {
 			event.player.stopFallFlying();
 		}
 		// CHANGE HITBOX
-		if (!(event.player.getVehicle() instanceof EntitySeat seat)) return;
+		/*if (!(event.player.getVehicle() instanceof EntitySeat seat)) return;
 		double x = seat.getX(), y = seat.getY(), z = seat.getZ();
 		double w = event.player.getBbWidth()/2;
-		event.player.setBoundingBox(new AABB(x-w, y-w, z-w, x+w, y+w, z+w));
+		event.player.setBoundingBox(new AABB(x-w, y-w, z-w, x+w, y+w, z+w));*/
 	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)

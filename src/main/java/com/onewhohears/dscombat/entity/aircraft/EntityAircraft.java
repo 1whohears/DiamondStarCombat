@@ -1414,8 +1414,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 					return InteractionResult.PASS;
 				}
 			}
-			boolean okay = rideAvailableSeat(player);
-			return okay ? InteractionResult.CONSUME : InteractionResult.PASS;
+			return rideAvailableSeat(player) ? InteractionResult.CONSUME : InteractionResult.PASS;
 		} else if (level.isClientSide) {	
 			Minecraft m = Minecraft.getInstance();
 			if (m.player.equals(player)) ClientInputEvents.centerMouse();

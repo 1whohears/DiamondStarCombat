@@ -164,7 +164,7 @@ public class ModEntities {
 	 * IDEA 9.2 pillager outposts with air defense
 	 */
 	
-	public static final EntityDimensions SEAT_SIZE = EntityDimensions.scalable(0.1f, 0.1f);
+	public static final EntityDimensions SEAT_SIZE = EntityDimensions.scalable(0.8f, 0.8f);
 	
 	public static final RegistryObject<EntityType<EntitySeat>> SEAT = ENTITIES.register("seat", 
 			() -> createEntityType((type, level) -> new EntitySeat(type, level, 

@@ -99,7 +99,7 @@ public class BulletData extends WeaponData {
 		Random r = new Random();
 		pitch = pitch + (r.nextFloat()-0.5f) * 2f * innacuracy;
 		yaw = yaw + (r.nextFloat()-0.5f) * 2f * innacuracy;
-		weapon.setXRot(pitch);
+		weapon.setXRot(pitch-changeLaunchPitch);
 		weapon.setYRot(yaw);
 		direction.subtract(direction).add(UtilAngles.rotationToVector(yaw, pitch));
 	}

@@ -204,7 +204,7 @@ public abstract class EntityMissile extends EntityBullet {
 			}
 			//System.out.println("check can see");
 			if (!checkCanSee(target)) {
-				//System.out.println("can't see target");
+				System.out.println("can't see target");
 				target = null;
 				targetPos = null;
 				return;
@@ -238,7 +238,7 @@ public abstract class EntityMissile extends EntityBullet {
 	protected boolean checkCanSee(Entity target) {
 		// throWaterRange+0.5 is needed for ground radar to see boats in water
 		return UtilEntity.canEntitySeeEntity(this, target, Config.COMMON.maxBlockCheckDepth.get(), 
-				throughWaterDepth+0.5, throughBlocksDepth);
+				throughWaterDepth+10, throughBlocksDepth);
 	}
 	
 	private void engineSound() {

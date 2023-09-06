@@ -19,7 +19,6 @@ public class TrackEntityMissile extends EntityMissile {
 
 	@Override
 	public void tickGuide() {
-		if (tickCount < 20) return;
 		guideToTarget();
 		if (!level.isClientSide && tickCount % 10 == 0 && target instanceof EntityAircraft plane) {
 			plane.trackedByMissile(position());

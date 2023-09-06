@@ -49,13 +49,13 @@ public class WeaponRackData extends WeaponPartData {
 	@Override
 	public void serverSetup(EntityAircraft craft, String slotId, Vec3 pos) {
 		super.serverSetup(craft, slotId, pos);
+		WeaponData data = craft.weaponSystem.get(weaponId, slotId);
+		if (data == null) return;
+		data.setChangeLaunchPitch(changeLaunchPitch);
 		if (!isEntitySetup(slotId, craft)) {
-			WeaponData data = craft.weaponSystem.get(weaponId, slotId);
-			if (data == null) return;
 			EntityWeaponRack rack = new EntityWeaponRack(data.getRackEntityType(), craft.level, slotId, pos);
 			rack.setPos(craft.position());
 			rack.startRiding(craft);
-			data.setChangeLaunchPitch(changeLaunchPitch);
 			craft.level.addFreshEntity(rack);
 		}
 	}

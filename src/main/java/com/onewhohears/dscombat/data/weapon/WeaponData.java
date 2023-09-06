@@ -60,7 +60,7 @@ public abstract class WeaponData extends JsonPreset {
 	private String failedLaunchReason;
 	private String slotId = "";
 	private boolean overrideGroundCheck = false;
-	private float changeLaunchPitch = 0;
+	protected float changeLaunchPitch = 0;
 	
 	public WeaponData(ResourceLocation key, JsonObject json) {
 		super(key, json);

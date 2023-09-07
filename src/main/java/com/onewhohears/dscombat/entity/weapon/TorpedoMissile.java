@@ -17,12 +17,10 @@ public class TorpedoMissile extends TrackEntityMissile {
 	
 	public TorpedoMissile(EntityType<? extends TorpedoMissile> type, Level level) {
 		super(type, level);
-		throughWaterDepth = 10000;
 	}
 	
 	public TorpedoMissile(Level level, Entity owner, TorpedoData data) {
 		super(level, owner, data);
-		throughWaterDepth = 10000;
 	}
 	
 	@Override

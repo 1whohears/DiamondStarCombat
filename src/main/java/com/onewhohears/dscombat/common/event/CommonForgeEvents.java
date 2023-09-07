@@ -53,12 +53,10 @@ public final class CommonForgeEvents {
 			event.player.stopFallFlying();
 		}
 		// CHANGE HITBOX
-		if (!(event.player.getVehicle() instanceof EntitySeat seat)) return;
-		/*double x = seat.getX(), y = seat.getY(), z = seat.getZ();
-		double w = event.player.getBbWidth()/2;
-		event.player.setBoundingBox(new AABB(x-w, y-w, z-w, x+w, y+w, z+w));*/
+		/*if (!(event.player.getVehicle() instanceof EntitySeat seat)) return;
 		double x = seat.getX(), y = seat.getY(), z = seat.getZ();
-		event.player.setBoundingBox(new AABB(x, y, z, x, y, z));
+		double w = 0.1; //event.player.getBbWidth()/2;
+		event.player.setBoundingBox(new AABB(x-w, y-w, z-w, x+w, y+w, z+w));*/
 	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)

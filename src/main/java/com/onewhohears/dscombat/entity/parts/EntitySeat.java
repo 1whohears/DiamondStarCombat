@@ -162,6 +162,7 @@ public class EntitySeat extends EntityPart {
 	
 	@Override
     public boolean hurt(DamageSource source, float amount) {
+		if (source.isExplosion() || source.isMagic()) return true;
 		LivingEntity p = getPassenger();
 		if (p == null) return true;
 		p.hurt(source, amount);
@@ -171,6 +172,11 @@ public class EntitySeat extends EntityPart {
 	@Override
 	public PartType getPartType() {
 		return PartType.SEAT;
+	}
+	
+	@Override
+	public boolean fireImmune() {
+		return true;
 	}
 
 }

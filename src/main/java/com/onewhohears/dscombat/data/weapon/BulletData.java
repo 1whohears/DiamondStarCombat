@@ -88,7 +88,7 @@ public class BulletData extends WeaponData {
 	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction, @Nullable EntityAircraft vehicle) {
 		EntityBullet bullet = (EntityBullet) super.getShootEntity(level, owner, pos, direction, vehicle);
 		if (bullet == null) return null;
-		bullet.setDeltaMovement(direction.scale(speed));
+		bullet.setDeltaMovement(bullet.getLookAngle().scale(speed));
 		return bullet;
 	}
 	
@@ -101,7 +101,6 @@ public class BulletData extends WeaponData {
 		yaw = yaw + (r.nextFloat()-0.5f) * 2f * innacuracy;
 		weapon.setXRot(pitch-changeLaunchPitch);
 		weapon.setYRot(yaw);
-		direction.subtract(direction).add(UtilAngles.rotationToVector(yaw, pitch));
 	}
 	
 	public float getDamage() {

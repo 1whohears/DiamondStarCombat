@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.entity.weapon;
 
+import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.data.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.data.weapon.BulletData;
 import com.onewhohears.dscombat.util.math.UtilAngles;
@@ -73,6 +74,10 @@ public class EntityBullet extends EntityWeapon {
 	
 	@Override
 	public void tick() {
+		if (firstTick) {
+			Vec3 dir = UtilAngles.rotationToVector(getYRot(), getXRot());
+			setDeltaMovement(dir.scale(getSpeed()));
+		}
 		super.tick();
 	}
 	
@@ -102,8 +107,7 @@ public class EntityBullet extends EntityWeapon {
 	
 	@Override
 	protected void tickSetMove() {
-		Vec3 dir = UtilAngles.rotationToVector(getYRot(), getXRot());
-		setDeltaMovement(dir.scale(getSpeed()));
+		setDeltaMovement(getDeltaMovement().add(0, -Config.SERVER.accGravity.get()*2, 0));
 	}
 	
 	@Override

@@ -8,6 +8,7 @@ import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
+import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -54,6 +55,8 @@ public abstract class MissileData extends BulletData {
 	private final float fov;
 	private final double bleed;
 	private final int fuelTicks;
+	private final int seeThroWater;
+	private final int seeThroBlock;
 	
 	public MissileData(ResourceLocation key, JsonObject json) {
 		super(key, json);
@@ -63,6 +66,8 @@ public abstract class MissileData extends BulletData {
 		fov = json.get("fov").getAsFloat();
 		bleed = json.get("bleed").getAsDouble();
 		fuelTicks = json.get("fuelTicks").getAsInt();
+		seeThroWater = UtilParse.getIntSafe(json, "seeThroWater", 0);
+		seeThroBlock = UtilParse.getIntSafe(json, "seeThroBlock", 0);
 	}
 	
 	@Override
@@ -108,6 +113,14 @@ public abstract class MissileData extends BulletData {
 	
 	public int getFuelTicks() {
 		return fuelTicks;
+	}
+	
+	public int getSeeThroWater() {
+		return seeThroWater;
+	}
+	
+	public int getSeeThroBlock() {
+		return seeThroBlock;
 	}
 	
 	@Override

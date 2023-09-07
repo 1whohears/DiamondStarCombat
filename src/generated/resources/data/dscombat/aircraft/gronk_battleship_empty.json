@@ -8,7 +8,7 @@
   "ingredients": [
     {
       "item": "dscombat:large_fuselage",
-      "num": 2
+      "num": 3
     },
     {
       "item": "minecraft:boat",
@@ -122,6 +122,28 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "itemid": "dscombat:seat"
+      },
+      "name": "seat9",
+      "slot_posx": 0.0,
+      "slot_posy": 6.0,
+      "slot_posz": 7.0,
+      "slot_type": "med_turret",
+      "zRot": 0.0
+    },
+    {
+      "data": {
+        "itemid": "dscombat:seat"
+      },
+      "name": "seat10",
+      "slot_posx": 0.0,
+      "slot_posy": 6.0,
+      "slot_posz": -7.0,
+      "slot_type": "med_turret",
+      "zRot": 0.0
+    },
+    {
       "name": "frame_1",
       "slot_posx": 0.0,
       "slot_posy": 9.0,
@@ -131,35 +153,35 @@
     },
     {
       "name": "frame_2",
-      "slot_posx": 7.0,
+      "slot_posx": 6.0,
       "slot_posy": 4.0,
       "slot_posz": 2.0,
-      "slot_type": "frame",
-      "zRot": 90.0
+      "slot_type": "light_turret",
+      "zRot": 0.0
     },
     {
       "name": "frame_3",
-      "slot_posx": -7.0,
+      "slot_posx": -6.0,
       "slot_posy": 4.0,
       "slot_posz": 2.0,
-      "slot_type": "frame",
-      "zRot": -90.0
+      "slot_type": "light_turret",
+      "zRot": 0.0
     },
     {
       "name": "frame_4",
-      "slot_posx": 7.0,
+      "slot_posx": 6.0,
       "slot_posy": 4.0,
       "slot_posz": -2.0,
-      "slot_type": "frame",
-      "zRot": 90.0
+      "slot_type": "light_turret",
+      "zRot": 0.0
     },
     {
       "name": "frame_5",
-      "slot_posx": -7.0,
+      "slot_posx": -6.0,
       "slot_posy": 4.0,
       "slot_posz": -2.0,
-      "slot_type": "frame",
-      "zRot": -90.0
+      "slot_type": "light_turret",
+      "zRot": 0.0
     },
     {
       "name": "internal_1",

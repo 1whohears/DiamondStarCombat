@@ -34,7 +34,6 @@ public class IRMissile extends EntityMissile {
 	
 	@Override
 	public void tickGuide() {
-		if (tickCount < 10) return;
 		if (tickCount % 10 == 0) findIrTarget();
 		if (target != null) guideToTarget();
 	}

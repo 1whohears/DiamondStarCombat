@@ -29,7 +29,6 @@ public class AntiRadarMissile extends EntityMissile {
 	
 	@Override
 	public void tickGuide() {
-		if (tickCount < 20) return;
 		if (tickCount % 10 == 0) findARTarget();
 		if (target != null) guideToTarget();
 	}

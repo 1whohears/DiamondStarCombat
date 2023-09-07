@@ -24,7 +24,7 @@
     },
     {
       "item": "dscombat:c12_engine",
-      "num": 2
+      "num": 1
     },
     {
       "item": "dscombat:heavy_fuel_tank",
@@ -33,14 +33,6 @@
     {
       "item": "dscombat:heavy_tank_turret",
       "num": 1
-    },
-    {
-      "item": "minecraft:copper_ingot",
-      "num": 32
-    },
-    {
-      "item": "minecraft:gunpowder",
-      "num": 32
     }
   ],
   "is_craftable": true,
@@ -125,9 +117,6 @@
       "zRot": 0.0
     },
     {
-      "data": {
-        "itemid": "dscombat:c12_engine"
-      },
       "name": "internal_2",
       "slot_posx": 0.0,
       "slot_posy": 0.0,

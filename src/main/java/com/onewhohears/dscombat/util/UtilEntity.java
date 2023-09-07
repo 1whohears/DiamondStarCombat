@@ -22,26 +22,30 @@ import net.minecraft.world.phys.Vec3;
 
 public class UtilEntity {
 	
+	public static boolean canPosSeeEntity(Vec3 pos, Entity entity, int maxBlockCheckDepth, double throWater, double throBlock) {
+		Level level = entity.getLevel();
+		Vec3 diff = entity.getBoundingBox().getCenter().subtract(pos);
+		Vec3 look = diff.normalize();
+		double distance = diff.length();
+		double[] through = new double[] {throWater, throBlock};
+		if (distance <= maxBlockCheckDepth) {
+			if (!checkBlocksByRange(level, pos, look, (int)distance, through)) return false;
+		} else {
+			int maxCheckDist = maxBlockCheckDepth / 2;
+			if (!checkBlocksByRange(level, pos, look, maxCheckDist, through)) return false;
+			if (!checkBlocksByRange(level, 
+				pos.add(look.scale(distance-maxCheckDist).subtract(look)), 
+				look, maxCheckDist, through)) return false;
+		}
+		return true;
+	}
+	
 	public static boolean canEntitySeeEntity(Entity e1, Entity e2, int maxBlockCheckDepth) {
 		return canEntitySeeEntity(e1, e2, maxBlockCheckDepth, 0, 0);
 	}
 	
 	public static boolean canEntitySeeEntity(Entity e1, Entity e2, int maxBlockCheckDepth, double throWater, double throBlock) {
-		Level level = e1.getLevel();
-		Vec3 diff = e2.position().subtract(e1.position());
-		Vec3 look = diff.normalize();
-		double distance = diff.length();
-		double[] through = new double[] {throWater, throBlock};
-		if (distance <= maxBlockCheckDepth) {
-			if (!checkBlocksByRange(level, e1.position(), look, (int)distance, through)) return false;
-		} else {
-			int maxCheckDist = maxBlockCheckDepth / 2;
-			if (!checkBlocksByRange(level, e1.position(), look, maxCheckDist, through)) return false;
-			if (!checkBlocksByRange(level, 
-				e1.position().add(look.scale(distance-maxCheckDist).subtract(look)), 
-				look, maxCheckDist, through)) return false;
-		}
-		return true;
+		return canPosSeeEntity(e1.position(), e2, maxBlockCheckDepth, throWater, throBlock);
 	}
 	
 	private static boolean checkBlocksByRange(Level level, Vec3 pos, Vec3 look, int dist, double[] through) {

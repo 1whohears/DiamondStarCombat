@@ -39,7 +39,10 @@ public abstract class EntityMissile extends EntityBullet {
 	 * only set on server side
 	 */
 	protected float fuseDist, fov;
-	protected int throughWaterDepth, throughBlocksDepth;
+	/**
+	 * only set on server side
+	 */
+	protected int seeThroWater, seeThroBlock;
 	
 	public Entity target;
 	public Vec3 targetPos;
@@ -51,8 +54,6 @@ public abstract class EntityMissile extends EntityBullet {
 	public EntityMissile(EntityType<? extends EntityMissile> type, Level level) {
 		super(type, level);
 		if (!level.isClientSide) NonTickingMissileManager.addMissile(this);
-		throughWaterDepth = 0;
-		throughBlocksDepth = 0;
 	}
 	
 	public EntityMissile(Level level, Entity owner, MissileData data) {
@@ -64,8 +65,8 @@ public abstract class EntityMissile extends EntityBullet {
 		fuseDist = (float) data.getFuseDist();
 		fov = data.getFov();
 		setFuelTicks(data.getFuelTicks());
-		throughWaterDepth = 0;
-		throughBlocksDepth = 0;
+		seeThroWater = data.getSeeThroWater();
+		seeThroBlock = data.getSeeThroBlock();
 	}
 	
 	@Override
@@ -88,6 +89,8 @@ public abstract class EntityMissile extends EntityBullet {
 		fuseDist = compound.getFloat("fuseDist");
 		fov = compound.getFloat("fov");
 		setFuelTicks(compound.getInt("fuelTicks"));
+		seeThroWater = compound.getInt("seeThroWater");
+		seeThroBlock = compound.getInt("seeThroBlock");
 	}
 
 	@Override
@@ -99,6 +102,8 @@ public abstract class EntityMissile extends EntityBullet {
 		compound.putFloat("fuseDist", fuseDist);
 		compound.putFloat("fov", fov);
 		compound.putInt("fuelTicks", getFuelTicks());
+		compound.putInt("seeThroWater", seeThroWater);
+		compound.putInt("seeThroBlock", seeThroBlock);
 	}
 	
 	@Override
@@ -204,7 +209,7 @@ public abstract class EntityMissile extends EntityBullet {
 			}
 			//System.out.println("check can see");
 			if (!checkCanSee(target)) {
-				//System.out.println("can't see target");
+				System.out.println("can't see target");
 				target = null;
 				targetPos = null;
 				return;
@@ -215,8 +220,8 @@ public abstract class EntityMissile extends EntityBullet {
 		if (UtilEntity.isOnGroundOrWater(target)) 
 			tVel = tVel.multiply(1, 0, 1);
 		Vec3 pos = UtilGeometry.interceptPos( 
-				position(), getDeltaMovement(), 
-				target.position(), tVel);
+			position(), getDeltaMovement(), 
+			target.getBoundingBox().getCenter(), tVel);
 		targetPos = pos;
 		//System.out.println("guide to position");
 		guideToPosition();
@@ -236,9 +241,9 @@ public abstract class EntityMissile extends EntityBullet {
 	}
 	
 	protected boolean checkCanSee(Entity target) {
-		// throWaterRange+0.5 is needed for ground radar to see boats in water
+		// throWaterRange+1 is needed for ground radar to see boats in water
 		return UtilEntity.canEntitySeeEntity(this, target, Config.COMMON.maxBlockCheckDepth.get(), 
-				throughWaterDepth+0.5, throughBlocksDepth);
+				seeThroWater+1, seeThroBlock);
 	}
 	
 	private void engineSound() {

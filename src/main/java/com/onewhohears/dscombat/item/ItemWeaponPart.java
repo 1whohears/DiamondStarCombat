@@ -25,8 +25,11 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class ItemWeaponPart extends ItemPart {
 	
-	public ItemWeaponPart(float weight, SlotType[] compatibleSlots) {
-		super(ItemAmmo.weaponProps(1), weight, compatibleSlots);
+	public final float launchPitch;
+	
+	public ItemWeaponPart(float weight, SlotType[] compatibleSlots, float launchPitch) {
+		super(ItemAmmo.weaponProps(8), weight, compatibleSlots);
+		this.launchPitch = launchPitch;
 	}
 	
 	@Override
@@ -84,7 +87,7 @@ public class ItemWeaponPart extends ItemPart {
 		ResourceLocation itemid = ForgeRegistries.ITEMS.getKey(this);
 		List<String> list = WeaponPresets.get().getCompatibleWeapons(itemid);
 		String[] compatible = list.toArray(new String[list.size()]);
-		return new WeaponRackData(weight, param, compatible, itemid, compatibleSlots);
+		return new WeaponRackData(weight, param, compatible, itemid, compatibleSlots, launchPitch);
 	}
 
 }

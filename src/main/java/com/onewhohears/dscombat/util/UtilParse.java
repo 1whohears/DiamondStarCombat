@@ -251,4 +251,9 @@ public class UtilParse {
 		}
 	}
 	
+	public static int getIntSafe(JsonObject json, String name, int alt) {
+		if (!json.has(name)) return alt;
+		return json.get(name).getAsInt();
+	}
+	
 }

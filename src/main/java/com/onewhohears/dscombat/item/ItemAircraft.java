@@ -103,7 +103,7 @@ public class ItemAircraft extends Item {
 		if (!tag.contains("EntityTag", 10)) {
 			CompoundTag et = new CompoundTag();
 			et.putString("preset", getPresetName(itemstack));
-			System.out.println("item aircraft preset "+getPresetName(itemstack));
+			//System.out.println("item aircraft preset "+getPresetName(itemstack));
 			et.putBoolean("merged_preset", false);
 			tag.put("EntityTag", et);
 		}

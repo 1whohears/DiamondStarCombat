@@ -161,6 +161,14 @@ public class AbstractWeaponBuilders {
 			return setInt("fuelTicks", fuelTicks);
 		}
 		
+		public C setSeeThroWaterNum(int water) {
+			return setInt("seeThroWater", water);
+		}
+		
+		public C setSeeThroBlockNum(int block) {
+			return setInt("seeThroBlock", block);
+		}
+		
 		/**
 		 * IR Missiles only
 		 */

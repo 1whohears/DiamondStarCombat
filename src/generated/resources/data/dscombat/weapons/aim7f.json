@@ -9,7 +9,7 @@
   "damage": 80.0,
   "destroyTerrain": true,
   "displayName": "preset.dscombat.aim7f",
-  "entityTypeKey": "dscombat:track_missile_1",
+  "entityTypeKey": "dscombat:aim7f",
   "explosionRadius": 7.0,
   "explosive": true,
   "fireRate": 80,

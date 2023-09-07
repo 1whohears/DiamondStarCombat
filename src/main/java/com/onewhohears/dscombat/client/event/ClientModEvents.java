@@ -18,7 +18,11 @@ import com.onewhohears.dscombat.client.model.aircraft.EntityModelWoodenPlane;
 import com.onewhohears.dscombat.client.model.obj.ObjAircraftModel;
 import com.onewhohears.dscombat.client.model.obj.ObjEntityModel;
 import com.onewhohears.dscombat.client.model.obj.ObjEntityModels;
+import com.onewhohears.dscombat.client.model.obj.ObjPartModel;
+import com.onewhohears.dscombat.client.model.obj.custom.MLSModel;
 import com.onewhohears.dscombat.client.model.obj.custom.SamLauncherModel;
+import com.onewhohears.dscombat.client.model.obj.custom.TorpedoTubesModel;
+import com.onewhohears.dscombat.client.model.obj.custom.VLSModel;
 import com.onewhohears.dscombat.client.model.parts.EntityModelCFM56;
 import com.onewhohears.dscombat.client.model.weapon.EntityModelBomb1;
 import com.onewhohears.dscombat.client.model.weapon.EntityModelBombRack;
@@ -179,10 +183,16 @@ public final class ClientModEvents {
 						new ObjEntityModel<>("aim120b")));
 		event.registerEntityRenderer(ModEntities.AIM120C.get(), 
 				(context) -> new RendererObjEntity<EntityMissile>(context, 
-						new ObjEntityModel<>("aim120b")));
+						new ObjEntityModel<>("aim120c")));
 		event.registerEntityRenderer(ModEntities.PAC3.get(), 
 				(context) -> new RendererObjEntity<EntityMissile>(context, 
 						new ObjEntityModel<>("aim120b")));
+		event.registerEntityRenderer(ModEntities.AIM7F.get(), 
+				(context) -> new RendererObjEntity<EntityMissile>(context, 
+						new ObjEntityModel<>("aim7f")));
+		event.registerEntityRenderer(ModEntities.AIM7MH.get(), 
+				(context) -> new RendererObjEntity<EntityMissile>(context, 
+						new ObjEntityModel<>("aim7mh")));
 		event.registerEntityRenderer(ModEntities.POS_MISSILE_1.get(), 
 				(context) -> new RendererEntityWeapon<EntityMissile>(context, 
 						new EntityModelMissile1(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)), 
@@ -219,6 +229,12 @@ public final class ClientModEvents {
 		event.registerEntityRenderer(ModEntities.SAM_LAUNCHER.get(), 
 				(context) -> new RendererObjEntity<EntityTurret>(context, 
 						new SamLauncherModel()));
+		event.registerEntityRenderer(ModEntities.MLS.get(), 
+				(context) -> new RendererObjEntity<EntityTurret>(context, 
+						new MLSModel()));
+		event.registerEntityRenderer(ModEntities.TORPEDO_TUBES.get(), 
+				(context) -> new RendererObjEntity<EntityTurret>(context, 
+						new TorpedoTubesModel()));
 		// MISSILE RACKS
 		event.registerEntityRenderer(ModEntities.LIGHT_MISSILE_RACK.get(), 
 				(context) -> new RendererEntityPart<EntityWeaponRack>(context,
@@ -236,6 +252,12 @@ public final class ClientModEvents {
 				(context) -> new RendererEntityPart<EntityWeaponRack>(context,
 						new EntityModelBombRack(models.bakeLayer(EntityModelBombRack.LAYER_LOCATION)),
 						new ResourceLocation(DSCombatMod.MODID, "textures/entities/bomb_rack.png")));
+		event.registerEntityRenderer(ModEntities.ADL.get(), 
+				(context) -> new RendererObjEntity<EntityWeaponRack>(context, 
+						new ObjPartModel<>("adl")));
+		event.registerEntityRenderer(ModEntities.VLS.get(), 
+				(context) -> new RendererObjEntity<EntityWeaponRack>(context, 
+						new VLSModel()));
 		// EXTERNAL ENGINES
 		event.registerEntityRenderer(ModEntities.CFM56.get(), 
 				(context) -> new RendererEntityPart<EntityEngine>(context,

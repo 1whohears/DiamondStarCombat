@@ -492,7 +492,11 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	public void tickCollisions() {
 		if (!level.isClientSide) {
 			if (!hasControllingPassenger()) wallCollisions();
-			knockBack(level.getEntities(this, getBoundingBox(), 
+			if (xzSpeed < 0.1) ride(level.getEntities(this, 
+					getBoundingBox().inflate(0.1), 
+					getRidePredicate()));
+			knockBack(level.getEntities(this, 
+					getBoundingBox(), 
 					getKnockbackPredicate()));
 		} else {
 			if (isControlledByLocalInstance()) wallCollisions();
@@ -562,6 +566,20 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 				entity.hurt(AircraftDamageSource.roadKill(this), (float)push_factor*2f);
 			}
 		}
+	}
+	
+	protected Predicate<? super Entity> getRidePredicate() {
+		return ((entity) -> {
+			if (this.equals(entity.getRootVehicle())) return false;
+			if (entity.isSpectator()) return false;
+			if (!(entity instanceof LivingEntity)) return false;
+			if (entity instanceof Player) return false;
+			return true;
+		});
+	}
+	
+	protected void ride(List<Entity> entities) {
+		for(Entity entity : entities) ridePassengerSeat(entity);
 	}
 	
 	/**
@@ -1413,8 +1431,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 					return InteractionResult.PASS;
 				}
 			}
-			boolean okay = rideAvailableSeat(player);
-			return okay ? InteractionResult.CONSUME : InteractionResult.PASS;
+			return rideAvailableSeat(player) ? InteractionResult.CONSUME : InteractionResult.PASS;
 		} else if (level.isClientSide) {	
 			Minecraft m = Minecraft.getInstance();
 			if (m.player.equals(player)) ClientInputEvents.centerMouse();
@@ -1427,6 +1444,14 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		for (EntitySeat seat : seats) 
 			if (seat.isPilotSeat()) 
 				return e.startRiding(seat);
+		return false;
+	}
+	
+	public boolean ridePassengerSeat(Entity e) {
+		List<EntitySeat> seats = getSeats();
+		for (EntitySeat seat : seats) 
+			if (!seat.isPilotSeat() && e.startRiding(seat)) 
+				return true;
 		return false;
 	}
 	
@@ -1933,21 +1958,27 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     	return stack;
     }
     
+    public boolean canBecomeItem() {
+    	return tickCount/20 > Config.COMMON.freshEntityToItemCooldown.get() 
+    			&& (lastShootTime == -1 || (tickCount-lastShootTime)/20 > Config.COMMON.usedWeaponToItemCooldown.get());
+    }
+    
+    /**
+     * SERVER SIDE ONLY
+     */
+    public void becomeItem(Vec3 pos) {
+    	if (level.isClientSide) return;
+    	ItemStack stack = getItem();
+		ItemEntity e = new ItemEntity(level, pos.x, pos.y, pos.z, stack);
+		level.addFreshEntity(e);
+		discard();
+    }
+    
     /**
      * SERVER SIDE ONLY
      */
     public void becomeItem() {
-    	if (level.isClientSide) return;
-    	boolean cancel = tickCount/20 < Config.COMMON.freshEntityToItemCooldown.get() 
-    			|| (lastShootTime != -1 && (tickCount-lastShootTime)/20 < Config.COMMON.usedWeaponToItemCooldown.get());
-    	if (cancel && getControllingPassenger() instanceof Player player) {
-    		player.displayClientMessage(Component.translatable("error.dscombat.cant_item_yet"), true);
-    		return;
-    	}
-    	ItemStack stack = getItem();
-		ItemEntity e = new ItemEntity(level, getX(), getY(), getZ(), stack);
-		level.addFreshEntity(e);
-		discard();
+    	becomeItem(position());
     }
     
     @Override

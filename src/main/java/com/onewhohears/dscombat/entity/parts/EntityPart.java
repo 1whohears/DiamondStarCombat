@@ -93,11 +93,6 @@ public abstract class EntityPart extends Entity {
 	
 	@Override
     public boolean hurt(DamageSource source, float amount) {
-		/* THIS IS NO
-		if (source.isExplosion() || source.isFire() || source.isMagic()) return false;
-		Entity v = this.getRootVehicle();
-		if (v != null) v.hurt(source, amount);
-		return true;*/
 		return false;
 	}
 	
@@ -107,8 +102,18 @@ public abstract class EntityPart extends Entity {
 		return z_rot;
 	}
 	
+	@Override
+	public boolean isPickable() {
+		return false;
+	}
+	
 	@Override 
 	public boolean canCollideWith(Entity entity) {
+		return false;
+	}
+	
+	@Override
+	public boolean canBeCollidedWith() {
 		return false;
 	}
 	

@@ -38,7 +38,9 @@ public final class ClientRenderRadarEvents {
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void renderLevelStage(RenderLevelStageEvent event) {
+		// FIXME 2 can't see radar pings that are behind blocks
 		if (event.getStage() != Stage.AFTER_TRIPWIRE_BLOCKS) return;
+		//if (event.getStage() != Stage.AFTER_PARTICLES) return;
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
 		if (player == null || !player.isPassenger()) return;

@@ -12,7 +12,7 @@ public class ItemRadarPart extends ItemPart {
 	public final String preset;
 	
 	public ItemRadarPart(float weight, String preset, SlotType[] compatibleSlots) {
-		super(1, weight, compatibleSlots);
+		super(4, weight, compatibleSlots);
 		this.preset = preset;
 	}
 

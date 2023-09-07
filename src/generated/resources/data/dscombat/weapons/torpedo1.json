@@ -40,6 +40,7 @@
   "maxAmmo": 3,
   "presetId": "torpedo1",
   "rackTypeKey": "dscombat:heavy_missile_rack",
+  "seeThroWater": 10000,
   "shootSoundKey": "dscombat:rocket_launch_1",
   "speed": 2.5,
   "targetType": "WATER",

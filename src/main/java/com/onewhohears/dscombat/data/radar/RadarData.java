@@ -272,8 +272,8 @@ public class RadarData extends JsonPreset {
 	
 	private boolean checkCanSee(Entity radar, Entity target) {
 		// throWaterRange+0.5 is needed for ground radar to see boats in water
-		return UtilEntity.canEntitySeeEntity(radar, target, maxCheckDist, 
-				throWaterRange+0.5, throGroundRange);
+		return UtilEntity.canPosSeeEntity(radar.position().add(pos), target, maxCheckDist, 
+				throWaterRange+1, throGroundRange);
 	}
 	
 	private AABB getRadarBoundingBox(Entity radar) {
@@ -292,7 +292,6 @@ public class RadarData extends JsonPreset {
 	public double getFov() {
 		return fov;
 	}
-
 
 	public int getScanRate() {
 		return scanRate;
@@ -434,6 +433,10 @@ public class RadarData extends JsonPreset {
 	
 	public void setInternal() {
 		this.slotId = "";
+	}
+	
+	public void setPos(Vec3 pos) {
+		this.pos = pos;
 	}
 	
 	public boolean idMatch(String id, String slotId) {

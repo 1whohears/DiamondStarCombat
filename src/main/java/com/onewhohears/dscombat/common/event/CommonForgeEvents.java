@@ -33,7 +33,9 @@ public final class CommonForgeEvents {
 	public static void playerHurtEvent(LivingHurtEvent event) {
 		if (event.getSource().isBypassArmor() || event.getSource().isMagic()) return;
 		if (!event.getEntity().isPassenger() || !(event.getEntity().getRootVehicle() instanceof EntityAircraft plane)) return;
-		event.setAmount(Math.max(0, event.getAmount()-event.getAmount()*plane.getTotalArmor()*0.01f*Config.COMMON.armorStrength.get().floatValue()));
+		float a = event.getAmount();
+		//System.out.println("PLAYER HURT "+event.getEntity()+" "+a);
+		event.setAmount(Math.max(0, a-a*plane.getTotalArmor()*0.01f*Config.COMMON.armorStrength.get().floatValue()));
 	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
@@ -51,10 +53,10 @@ public final class CommonForgeEvents {
 			event.player.stopFallFlying();
 		}
 		// CHANGE HITBOX
-		if (!(event.player.getVehicle() instanceof EntitySeat seat)) return;
+		/*if (!(event.player.getVehicle() instanceof EntitySeat seat)) return;
 		double x = seat.getX(), y = seat.getY(), z = seat.getZ();
-		double w = event.player.getBbWidth()/2;
-		event.player.setBoundingBox(new AABB(x-w, y-w, z-w, x+w, y+w, z+w));
+		double w = 0.1; //event.player.getBbWidth()/2;
+		event.player.setBoundingBox(new AABB(x-w, y-w, z-w, x+w, y+w, z+w));*/
 	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)

@@ -12,29 +12,47 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 
 public class WeaponRackData extends WeaponPartData {
-
-	public WeaponRackData(float weight, int ammo, int max, String preset, String[] compatible, ResourceLocation itemid, SlotType[] compatibleSlots) {
+	
+	public final float changeLaunchPitch;
+	
+	public WeaponRackData(float weight, int ammo, int max, String preset, String[] compatible, ResourceLocation itemid, SlotType[] compatibleSlots, float launchPitch) {
 		super(weight, ammo, max, preset, compatible, itemid, compatibleSlots);
+		this.changeLaunchPitch = launchPitch;
 	}
 	
-	public WeaponRackData(float weight, String preset, String[] compatible, ResourceLocation itemid, SlotType[] compatibleSlots) {
+	public WeaponRackData(float weight, String preset, String[] compatible, ResourceLocation itemid, SlotType[] compatibleSlots, float launchPitch) {
 		super(weight, preset, compatible, itemid, compatibleSlots);
+		this.changeLaunchPitch = launchPitch;
+	}
+	
+	public CompoundTag write() {
+		CompoundTag tag = super.write();
+		tag.putFloat("changeLaunchPitch", changeLaunchPitch);
+		return tag;
 	}
 	
 	public WeaponRackData(CompoundTag tag) {
 		super(tag);
+		changeLaunchPitch = tag.getFloat("changeLaunchPitch");
 	}
-
+	
+	public void write(FriendlyByteBuf buffer) {
+		super.write(buffer);
+		buffer.writeFloat(changeLaunchPitch);
+	}
+	
 	public WeaponRackData(FriendlyByteBuf buffer) {
 		super(buffer);
+		changeLaunchPitch = buffer.readFloat();
 	}
 
 	@Override
 	public void serverSetup(EntityAircraft craft, String slotId, Vec3 pos) {
 		super.serverSetup(craft, slotId, pos);
+		WeaponData data = craft.weaponSystem.get(weaponId, slotId);
+		if (data == null) return;
+		data.setChangeLaunchPitch(changeLaunchPitch);
 		if (!isEntitySetup(slotId, craft)) {
-			WeaponData data = craft.weaponSystem.get(weaponId, slotId);
-			if (data == null) return;
 			EntityWeaponRack rack = new EntityWeaponRack(data.getRackEntityType(), craft.level, slotId, pos);
 			rack.setPos(craft.position());
 			rack.startRiding(craft);

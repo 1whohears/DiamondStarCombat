@@ -18,8 +18,7 @@ public class PositionMissile extends EntityMissile {
 	
 	@Override
 	public void tickGuide() {
-		if (tickCount < 20) return;
-		this.guideToPosition();
+		guideToPosition();
 	}
 
 }

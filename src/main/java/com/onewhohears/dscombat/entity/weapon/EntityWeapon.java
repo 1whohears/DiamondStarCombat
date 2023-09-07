@@ -166,6 +166,11 @@ public abstract class EntityWeapon extends Projectile {
 	}
 	
 	@Override
+	protected boolean canHitEntity(Entity entity) {
+		return super.canHitEntity(entity) && canCollideWith(entity) && !isAlliedTo(entity);
+	}
+	
+	@Override
 	public void onHit(HitResult result) {
 		if (isRemoved()) return;
 		setPos(result.getLocation());

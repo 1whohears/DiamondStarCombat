@@ -164,34 +164,48 @@ public class ModEntities {
 	 * IDEA 9.2 pillager outposts with air defense
 	 */
 	
+	public static final EntityDimensions SEAT_SIZE = EntityDimensions.scalable(1.0f, 1.0f);
+	
 	public static final RegistryObject<EntityType<EntitySeat>> SEAT = ENTITIES.register("seat", 
-			() -> createEntityType((type, level) -> new EntitySeat(type, level, Vec3.ZERO), 
-					EntityDimensions.scalable(0f, 0f)));
+			() -> createEntityType((type, level) -> new EntitySeat(type, level, 
+					Vec3.ZERO), SEAT_SIZE));
 	
 	public static final RegistryObject<EntityType<EntityTurret>> MINIGUN_TURRET = ENTITIES.register("minigun_turret", 
-			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, Vec3.ZERO, 0.8), 
-					EntityDimensions.scalable(0.1f, 0.1f)));
+			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 
+					Vec3.ZERO, 0.8), SEAT_SIZE));
 	public static final RegistryObject<EntityType<EntityTurret>> HEAVY_TANK_TURRET = ENTITIES.register("heavy_tank_turret", 
-			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, Vec3.ZERO, 0.5), 
-					EntityDimensions.scalable(0.1f, 0.1f)));
+			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 
+					Vec3.ZERO, 0.5), SEAT_SIZE));
 	public static final RegistryObject<EntityType<EntityTurret>> STEVE_UP_SMASH = ENTITIES.register("steve_up_smash", 
-			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, Vec3.ZERO, 3.2), 
-					EntityDimensions.scalable(0.1f, 0.1f)));
+			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 
+					Vec3.ZERO, 3.2), SEAT_SIZE));
 	public static final RegistryObject<EntityType<EntityTurret>> SAM_LAUNCHER = ENTITIES.register("sam_launcher", 
-			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, new Vec3(1.2, 0.4, 0), 2.7), 
-					EntityDimensions.scalable(0.1f, 0.1f)));
+			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 
+					new Vec3(1.2, 0.4, 0), 2.7), SEAT_SIZE));
+	public static final RegistryObject<EntityType<EntityTurret>> MLS = ENTITIES.register("mls", 
+			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 
+					new Vec3(1.2, 0, 0), 1), SEAT_SIZE));
+	public static final RegistryObject<EntityType<EntityTurret>> TORPEDO_TUBES = ENTITIES.register("torpedo_tubes", 
+			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 
+					new Vec3(0, 1.8, 0), 1), SEAT_SIZE));
+	
+	public static final EntityDimensions TINY = EntityDimensions.scalable(0.1f, 0.1f);
 	
 	public static final RegistryObject<EntityType<EntityWeaponRack>> LIGHT_MISSILE_RACK = ENTITIES.register("light_missile_rack", 
-			() -> createEntityType(EntityWeaponRack::new, EntityDimensions.scalable(0.1f, 0.1f)));
+			() -> createEntityType(EntityWeaponRack::new, TINY));
 	public static final RegistryObject<EntityType<EntityWeaponRack>> HEAVY_MISSILE_RACK = ENTITIES.register("heavy_missile_rack", 
-			() -> createEntityType(EntityWeaponRack::new, EntityDimensions.scalable(0.1f, 0.1f)));
+			() -> createEntityType(EntityWeaponRack::new, TINY));
 	public static final RegistryObject<EntityType<EntityWeaponRack>> XM12 = ENTITIES.register("xm12", 
-			() -> createEntityType(EntityWeaponRack::new, EntityDimensions.scalable(0.1f, 0.1f)));
+			() -> createEntityType(EntityWeaponRack::new, TINY));
 	public static final RegistryObject<EntityType<EntityWeaponRack>> BOMB_RACK = ENTITIES.register("bomb_rack", 
-			() -> createEntityType(EntityWeaponRack::new, EntityDimensions.scalable(0.1f, 0.1f)));
+			() -> createEntityType(EntityWeaponRack::new, TINY));
+	public static final RegistryObject<EntityType<EntityWeaponRack>> ADL = ENTITIES.register("adl", 
+			() -> createEntityType(EntityWeaponRack::new, TINY));
+	public static final RegistryObject<EntityType<EntityWeaponRack>> VLS = ENTITIES.register("vls", 
+			() -> createEntityType(EntityWeaponRack::new, TINY));
 	
 	public static final RegistryObject<EntityType<EntityEngine>> CFM56 = ENTITIES.register("cfm56", 
-			() -> createEntityType(EntityEngine::new, EntityDimensions.scalable(0.1f, 0.1f)));
+			() -> createEntityType(EntityEngine::new, TINY));
 	
 	public static final RegistryObject<EntityType<EntityBullet>> BULLET = ENTITIES.register("bullet", 
 			() -> createEntityType(EntityBullet::new, EntityDimensions.scalable(0.15f, 0.15f)));
@@ -222,6 +236,10 @@ public class ModEntities {
 	public static final RegistryObject<EntityType<TrackEntityMissile>> AIM120C = ENTITIES.register("aim120c", 
 			() -> createEntityTypeFar(TrackEntityMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
 	public static final RegistryObject<EntityType<TrackEntityMissile>> PAC3 = ENTITIES.register("pac3", 
+			() -> createEntityTypeFar(TrackEntityMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
+	public static final RegistryObject<EntityType<TrackEntityMissile>> AIM7F = ENTITIES.register("aim7f", 
+			() -> createEntityTypeFar(TrackEntityMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
+	public static final RegistryObject<EntityType<TrackEntityMissile>> AIM7MH = ENTITIES.register("aim7mh", 
 			() -> createEntityTypeFar(TrackEntityMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
 	
 	public static final RegistryObject<EntityType<EntityFlare>> FLARE = ENTITIES.register("flare", 

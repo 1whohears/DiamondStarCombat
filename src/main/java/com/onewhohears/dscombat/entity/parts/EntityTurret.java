@@ -22,6 +22,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -108,8 +109,8 @@ public class EntityTurret extends EntitySeat {
 		super.tick();
 		xRotRelO = getRelRotX();
 		yRotRelO = getRelRotY();
-		Player player = getPlayer();
-		if (player == null) return;
+		LivingEntity gunner = getPassenger();
+		if (gunner == null) return;
 		Quaternion ra = Quaternion.ONE;
 		if (!level.isClientSide) {
 			if (newRiderCoolDown > 0) --newRiderCoolDown;
@@ -121,7 +122,7 @@ public class EntityTurret extends EntitySeat {
 				ea = plane;
 			}  
 			if (data != null) data.tick(ea, true);
-			float[] relangles = UtilAngles.globalToRelativeDegrees(player.getXRot(), player.getYRot(), ra);
+			float[] relangles = UtilAngles.globalToRelativeDegrees(gunner.getXRot(), gunner.getYHeadRot(), ra);
 			
 			float rg1 = relangles[1] + 360, rg2 = relangles[1] - 360;
 			float d1 = Math.abs(rg1-rely), d2 = Math.abs(rg2-rely), d3 =  Math.abs(relangles[1]-rely);

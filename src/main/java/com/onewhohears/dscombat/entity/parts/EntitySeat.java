@@ -13,6 +13,7 @@ import com.onewhohears.dscombat.util.math.UtilAngles;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -58,7 +59,19 @@ public class EntitySeat extends EntityPart {
 	
 	@Override
 	public InteractionResult interact(Player player, InteractionHand hand) {
-		return InteractionResult.PASS;
+		if (player.isSecondaryUseActive()) {
+			return InteractionResult.PASS;
+		} else if (!level.isClientSide) {
+			if (player.startRiding(this)) return InteractionResult.CONSUME;
+			if (getVehicle() != null && player.startRiding(getVehicle())) return InteractionResult.CONSUME;
+			return InteractionResult.PASS;
+		}
+		return InteractionResult.SUCCESS;
+	}
+	
+	@Override
+	public boolean isPickable() {
+		return true;
 	}
 	
 	@Override
@@ -98,7 +111,7 @@ public class EntitySeat extends EntityPart {
 	
 	@Override
     public boolean canAddPassenger(Entity passenger) {
-		if (passenger instanceof Player) return getPlayer() == null;
+		if (passenger instanceof LivingEntity) return getPassenger() == null;
 		return false;
 	}
 	
@@ -108,16 +121,21 @@ public class EntitySeat extends EntityPart {
     }
 	
 	@Override
-    public Vec3 getDismountLocationForPassenger(LivingEntity livingEntity) {
-		Entity v = getVehicle();
-		if (v != null) return v.getDismountLocationForPassenger(livingEntity);
-		return super.getDismountLocationForPassenger(livingEntity);
+    public Vec3 getDismountLocationForPassenger(LivingEntity entity) {
+		return super.getDismountLocationForPassenger(entity);
 	}
 	
 	@Nullable
 	public Player getPlayer() {
 		List<Entity> list = getPassengers();
 		for (Entity e : list) if (e instanceof Player p) return p;
+		return null;
+	}
+	
+	@Nullable
+	public LivingEntity getPassenger() {
+		List<Entity> list = getPassengers();
+		for (Entity e : list) if (e instanceof LivingEntity l) return l;
 		return null;
 	}
 	
@@ -141,10 +159,24 @@ public class EntitySeat extends EntityPart {
 	public boolean shouldRender() {
 		return false;
 	}
+	
+	@Override
+    public boolean hurt(DamageSource source, float amount) {
+		if (source.isExplosion() || source.isMagic()) return true;
+		LivingEntity p = getPassenger();
+		if (p == null) return true;
+		p.hurt(source, amount);
+		return true;
+	}
 
 	@Override
 	public PartType getPartType() {
 		return PartType.SEAT;
+	}
+	
+	@Override
+	public boolean fireImmune() {
+		return true;
 	}
 
 }

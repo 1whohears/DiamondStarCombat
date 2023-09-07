@@ -323,6 +323,7 @@ public class PilotOverlay {
 	private static void drawAircraftRadarData(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
 		RadarSystem radar = plane.radarSystem;
 		if (!radar.hasRadar()) return;
+		// RADAR SCREEN
 		RenderSystem.setShaderTexture(0, RADAR);
         GuiComponent.blit(poseStack, 
         		radarOffset, height-radarOffset-radarSize, 
@@ -376,7 +377,7 @@ public class PilotOverlay {
         	GuiComponent.drawCenteredString(poseStack, m.font, 
         			symbol, x, y, color);
         }
-		// PINGS
+		// LOOK AT PING DATA
 		List<RadarPing> pings = radar.getClientRadarPings();
 		if (pings == null || pings.size() == 0) return;
 		int selected = radar.getClientSelectedPingIndex();
@@ -397,6 +398,7 @@ public class PilotOverlay {
 			GuiComponent.drawCenteredString(poseStack, m.font, 
 				text, cx, height-radarOffset-radarSize-20, color);
 		}
+		// PINGS ON SCREEN AND HUD
 		for (int i = 0; i < pings.size(); ++i) {
 			RadarPing ping = pings.get(i);
 			Vec3 dp = ping.pos.subtract(plane.position());
@@ -414,6 +416,15 @@ public class PilotOverlay {
         	else if (ping.isShared()) color = 0x66cdaa;
         	GuiComponent.drawCenteredString(poseStack, m.font, 
         			symbol, x, y, color);
+        	// FIXME 2.2 draw radar pings in overlay instead of as lines in world
+        	// using EntityRenderer#renderNameTag as an example
+        	poseStack.pushPose();
+        	poseStack.translate(ping.pos.x, ping.pos.y, ping.pos.z); // maybe this works?
+        	poseStack.mulPose(m.getEntityRenderDispatcher().cameraOrientation());
+        	//poseStack.scale(-0.025F, -0.025F, 0.025F); // change to whatever is needed
+        	GuiComponent.drawCenteredString(poseStack, m.font, "O", 
+        			0, 0, color); // maybe works?
+        	poseStack.popPose();
 		}
 	}
 	

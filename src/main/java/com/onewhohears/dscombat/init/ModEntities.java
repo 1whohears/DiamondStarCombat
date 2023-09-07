@@ -184,10 +184,10 @@ public class ModEntities {
 					new Vec3(1.2, 0.4, 0), 2.7), SEAT_SIZE));
 	public static final RegistryObject<EntityType<EntityTurret>> MLS = ENTITIES.register("mls", 
 			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 
-					Vec3.ZERO, 1), SEAT_SIZE));
+					new Vec3(1.2, 0, 0), 1), SEAT_SIZE));
 	public static final RegistryObject<EntityType<EntityTurret>> TORPEDO_TUBES = ENTITIES.register("torpedo_tubes", 
 			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 
-					Vec3.ZERO, 1), SEAT_SIZE));
+					new Vec3(0, 1.8, 0), 1), SEAT_SIZE));
 	
 	public static final EntityDimensions TINY = EntityDimensions.scalable(0.1f, 0.1f);
 	

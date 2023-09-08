@@ -262,7 +262,10 @@ public class RadarSystem {
 	}
 	
 	public boolean removeRadar(String id, String slotId) {
-		return radars.remove(get(id, slotId));
+		RadarData radar = get(id, slotId);
+		if (radar == null) return false;
+		radar.resetPings(targets);
+		return radars.remove(radar);
 	}
 	
 	public double getMaxAirRange() {

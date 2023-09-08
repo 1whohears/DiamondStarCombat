@@ -135,6 +135,11 @@ public class RadarData extends JsonPreset {
 	
 	private int maxCheckDist = 150;
 	
+	public void resetPings(List<RadarPing> vehiclePings) {
+		for (int i = 0; i < pings.size(); ++i) vehiclePings.remove(pings.get(i));
+		pings.clear();
+	}
+	
 	public void tickUpdateTargets(EntityAircraft radar, List<RadarPing> vehiclePings) {
 		if (scanTicks > scanRate) scanTicks = 0;
 		else {
@@ -143,8 +148,7 @@ public class RadarData extends JsonPreset {
 			return;
 		}
 		maxCheckDist = Config.COMMON.maxBlockCheckDepth.get();
-		for (int i = 0; i < pings.size(); ++i) vehiclePings.remove(pings.get(i));
-		pings.clear();
+		resetPings(vehiclePings);
 		freshTargets = true;
 		Entity controller = radar.getControllingPassenger();
 		RadarMode mode = radar.getRadarMode();

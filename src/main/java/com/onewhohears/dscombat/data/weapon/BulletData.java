@@ -140,7 +140,7 @@ public class BulletData extends WeaponData {
 	public void addToolTips(List<Component> tips) {
 		super.addToolTips(tips);
 		tips.add(Component.literal("Damage: ").append(getDamage()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
-		tips.add(Component.literal("Max Speed: ").append(getDamage()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		tips.add(Component.literal("Max Speed: ").append(getSpeed()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 		if (isExplosive()) tips.add(Component.literal("Explosion Radius: ")
 				.append(getExplosionRadius()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 	}

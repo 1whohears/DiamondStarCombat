@@ -24,7 +24,7 @@ public class ItemGasCan extends Item {
 		BlockPos pos = new BlockPos(ctx.getClickLocation());
 		BlockState state = ctx.getLevel().getBlockState(pos);
 		if (!(state.is(Blocks.COAL_ORE) || state.is(Blocks.DEEPSLATE_COAL_ORE))) return InteractionResult.PASS;
-		stack.setDamageValue(Math.max(d-10, 0));
+		stack.setDamageValue(Math.max(d-20, 0));
 		ctx.getLevel().destroyBlock(pos, false);
 		return InteractionResult.CONSUME;
 	}

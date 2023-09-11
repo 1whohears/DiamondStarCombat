@@ -1,5 +1,9 @@
 package com.onewhohears.dscombat.util.math;
 
+import com.mojang.math.Matrix4f;
+import com.mojang.math.Vector3f;
+import com.mojang.math.Vector4f;
+
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
@@ -112,6 +116,18 @@ public class UtilGeometry {
 	
 	public static boolean vec3NAN(Vec3 v) {
 		return Double.isNaN(v.x) || Double.isNaN(v.y) || Double.isNaN(v.z);
+	}
+	
+	public static int[] worldToScreenPos(Vec3 world_pos, Matrix4f view_mat, Matrix4f proj_mat, int width, int height) {
+		Vector4f clipSpace = new Vector4f((float)world_pos.x, (float)world_pos.y, (float)world_pos.z, 1f);
+		clipSpace.transform(view_mat);
+		clipSpace.transform(proj_mat);
+		if (clipSpace.w() == 0) return new int[] {-1,-1};
+		Vector3f ndcSpace = new Vector3f(clipSpace);
+		ndcSpace.mul(1/clipSpace.w());
+		int win_x = (int)((ndcSpace.x()+1f)/2f*width);
+		int win_y = (int)((ndcSpace.y()+1f)/2f*height);
+		return new int[] {win_x, win_y};
 	}
 	
 }

@@ -9,6 +9,7 @@ import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents;
+import com.onewhohears.dscombat.client.event.forgebus.ClientRenderRadarEvents;
 import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
@@ -21,6 +22,7 @@ import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.math.UtilAngles;
+import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
@@ -417,14 +419,13 @@ public class PilotOverlay {
         	GuiComponent.drawCenteredString(poseStack, m.font, 
         			symbol, x, y, color);
         	// FIXME 2.2 draw radar pings in overlay instead of as lines in world
-        	// using EntityRenderer#renderNameTag as an example
-        	poseStack.pushPose();
-        	poseStack.translate(ping.pos.x, ping.pos.y, ping.pos.z); // maybe this works?
-        	poseStack.mulPose(m.getEntityRenderDispatcher().cameraOrientation());
-        	//poseStack.scale(-0.025F, -0.025F, 0.025F); // change to whatever is needed
+        	int[] screen_pos = UtilGeometry.worldToScreenPos(ping.pos, 
+        			ClientRenderRadarEvents.getViewMatrix(), 
+        			ClientRenderRadarEvents.getProjMatrix(), 
+        			width, height);
+        	if (screen_pos[0] < 0 || screen_pos[1] < 0) continue;
         	GuiComponent.drawCenteredString(poseStack, m.font, "O", 
-        			0, 0, color); // maybe works?
-        	poseStack.popPose();
+        			screen_pos[0], height-screen_pos[1]-5, color);
 		}
 	}
 	

@@ -11,6 +11,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexBuffer;
 import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.math.Matrix4f;
+import com.mojang.math.Vector3f;
+import com.mojang.math.Vector4f;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
@@ -31,12 +34,54 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 @Mod.EventBusSubscriber(modid = DSCombatMod.MODID, bus = Bus.FORGE, value = Dist.CLIENT)
 public final class ClientRenderRadarEvents {
 	
+	private static Matrix4f viewMat = new Matrix4f();
+	private static Matrix4f projMat = new Matrix4f();
+	
+	@SubscribeEvent(priority = EventPriority.NORMAL)
+	public static void getViewMatrices(RenderLevelStageEvent event) {
+		if (event.getStage() != Stage.AFTER_TRIPWIRE_BLOCKS) return;
+		Minecraft m = Minecraft.getInstance();
+		Vec3 view = m.gameRenderer.getMainCamera().getPosition();
+		PoseStack poseStack = event.getPoseStack();
+		poseStack.pushPose();
+		poseStack.translate(-view.x, -view.y, -view.z);
+		viewMat = poseStack.last().pose();
+		projMat = event.getProjectionMatrix();
+		poseStack.popPose();
+	}
+	
+	private static void test(float x, float y, float z, Matrix4f viewMat, Matrix4f projMat, Minecraft m) {
+		System.out.println("\nPING TEST "+x+" "+y+" "+z);
+		System.out.println("viewMat = "+viewMat);
+		System.out.println("projMat = "+projMat);
+		Vector4f clipSpace = new Vector4f(x, y, z, 1f);
+		clipSpace.transform(viewMat);
+		clipSpace.transform(projMat);
+		System.out.println("clipSpace = "+clipSpace);
+		if (clipSpace.w() == 0) return;
+		Vector3f ndcSpace = new Vector3f(clipSpace);
+		ndcSpace.mul(1/clipSpace.w());
+		System.out.println("ndcSpace = "+ndcSpace);
+		int win_x = (int)((ndcSpace.x()+1f)/2f*m.getWindow().getWidth());
+		int win_y = (int)((ndcSpace.y()+1f)/2f*m.getWindow().getHeight());
+		System.out.println("win_x = "+win_x);
+		System.out.println("win_y = "+win_y);
+	}
+	
+	public static Matrix4f getViewMatrix() {
+		return viewMat;
+	}
+	
+	public static Matrix4f getProjMatrix() {
+		return projMat;
+	}
+	
 	private static VertexBuffer pingBuffer;
 	private static int colorR, colorG, colorB, colorA;
 	private static final double farDist = 300;
 	private static final double tan1 = Math.tan(Math.toRadians(1));
 	
-	@SubscribeEvent(priority = EventPriority.NORMAL)
+	//@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void renderLevelStage(RenderLevelStageEvent event) {
 		// FIXME 2.1 can't see radar pings that are behind blocks
 		if (event.getStage() != Stage.AFTER_TRIPWIRE_BLOCKS) return;
@@ -57,6 +102,9 @@ public final class ClientRenderRadarEvents {
 		RenderSystem.disableTexture();
 		GL11.glEnable(GL11.GL_LINE_SMOOTH);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
+		PoseStack poseStack = event.getPoseStack();
+		Vec3 view = m.gameRenderer.getMainCamera().getPosition();
+		var shader = GameRenderer.getPositionColorShader();
 		// TODO 6.1 show last known target location
 		for (int i = 0; i < pings.size(); ++i) {
 			RadarPing p = pings.get(i);
@@ -81,12 +129,12 @@ public final class ClientRenderRadarEvents {
 			pingBuffer.bind();
 			pingBuffer.upload(buffer.end());
 			
-			Vec3 view = m.gameRenderer.getMainCamera().getPosition();
-			PoseStack poseStack = event.getPoseStack();
 			poseStack.pushPose();
 			poseStack.translate(-view.x, -view.y, -view.z);
-			var shader = GameRenderer.getPositionColorShader();
-			pingBuffer.drawWithShader(poseStack.last().pose(), event.getProjectionMatrix().copy(), shader);
+			Matrix4f viewMat = poseStack.last().pose();
+			Matrix4f projMat = event.getProjectionMatrix().copy();
+			test((float)x, (float)y, (float)z, viewMat, projMat, m);
+			pingBuffer.drawWithShader(viewMat, projMat, shader);
 			poseStack.popPose();
 			
 			VertexBuffer.unbind();

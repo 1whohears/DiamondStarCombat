@@ -440,7 +440,6 @@ public class PilotOverlay {
         	GuiComponent.drawCenteredString(poseStack, m.font, 
         			symbol, x, y, color);
         	// HUD
-        	// FIXME 2.1 don't draw pings if behind camera
         	int[] screen_pos = UtilGeometry.worldToScreenPos(
         			ping.pos.add(0, 0.5, 0), 
         			ClientRenderEvents.getViewMatrix(), 
@@ -448,7 +447,7 @@ public class PilotOverlay {
         			width, height);
         	if (screen_pos[0] < 0 || screen_pos[1] < 0) continue;
         	int x_win = screen_pos[0], y_win = height - screen_pos[1];
-        	int size = 20;
+        	int size = 20; // FIXME 2.1 change circle size based on distance
         	RenderSystem.setShaderTexture(0, hud);
             GuiComponent.blit(poseStack, 
             		x_win-size/2, y_win-size/2, 

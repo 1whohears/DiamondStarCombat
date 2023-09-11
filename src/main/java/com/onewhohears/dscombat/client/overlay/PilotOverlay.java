@@ -9,7 +9,7 @@ import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents;
-import com.onewhohears.dscombat.client.event.forgebus.ClientRenderRadarEvents;
+import com.onewhohears.dscombat.client.event.forgebus.ClientRenderEvents;
 import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
@@ -420,8 +420,8 @@ public class PilotOverlay {
         			symbol, x, y, color);
         	// FIXME 2.2 draw radar pings in overlay instead of as lines in world
         	int[] screen_pos = UtilGeometry.worldToScreenPos(ping.pos, 
-        			ClientRenderRadarEvents.getViewMatrix(), 
-        			ClientRenderRadarEvents.getProjMatrix(), 
+        			ClientRenderEvents.getViewMatrix(), 
+        			ClientRenderEvents.getProjMatrix(), 
         			width, height);
         	if (screen_pos[0] < 0 || screen_pos[1] < 0) continue;
         	GuiComponent.drawCenteredString(poseStack, m.font, "O", 

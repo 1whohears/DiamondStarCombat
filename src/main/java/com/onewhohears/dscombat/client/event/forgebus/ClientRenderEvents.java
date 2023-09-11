@@ -1,14 +1,19 @@
 package com.onewhohears.dscombat.client.event.forgebus;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.client.event.RenderLevelStageEvent.Stage;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -48,6 +53,30 @@ public class ClientRenderEvents {
 		player.yHeadRotO = player.getYRot();
 		player.setYBodyRot(player.getYRot());
 		player.yBodyRotO = player.getYRot();
+	}
+	
+	private static Matrix4f viewMat = new Matrix4f();
+	private static Matrix4f projMat = new Matrix4f();
+	
+	@SubscribeEvent(priority = EventPriority.NORMAL)
+	public static void getViewMatrices(RenderLevelStageEvent event) {
+		if (event.getStage() != Stage.AFTER_TRIPWIRE_BLOCKS) return;
+		Minecraft m = Minecraft.getInstance();
+		Vec3 view = m.gameRenderer.getMainCamera().getPosition();
+		PoseStack poseStack = event.getPoseStack();
+		poseStack.pushPose();
+		poseStack.translate(-view.x, -view.y, -view.z);
+		viewMat = poseStack.last().pose();
+		projMat = event.getProjectionMatrix();
+		poseStack.popPose();
+	}
+	
+	public static Matrix4f getViewMatrix() {
+		return viewMat;
+	}
+	
+	public static Matrix4f getProjMatrix() {
+		return projMat;
 	}
 	
 }

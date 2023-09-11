@@ -21,7 +21,7 @@ public class ItemFuelTank extends ItemPart {
 	public final float fuel, max;
 	
 	public ItemFuelTank(float weight, float fuel, float max, SlotType[] compatibleSlots) {
-		super(1, weight, compatibleSlots);
+		super(4, weight, compatibleSlots);
 		this.fuel = fuel;
 		this.max = max;
 	}

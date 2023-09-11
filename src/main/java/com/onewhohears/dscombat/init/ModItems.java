@@ -93,9 +93,9 @@ public class ModItems {
 	public static final RegistryObject<Item> LARGE_PROPELLER = ITEMS.register("large_propeller", 
 			() -> new Item(ItemPart.partProps(16)));
 	public static final RegistryObject<Item> COCKPIT = ITEMS.register("cockpit", 
-			() -> new Item(ItemPart.partProps(4)));
+			() -> new Item(ItemPart.partProps(8)));
 	public static final RegistryObject<Item> ADVANCED_COCKPIT = ITEMS.register("advanced_cockpit", 
-			() -> new Item(ItemPart.partProps(1)));
+			() -> new Item(ItemPart.partProps(8)));
 	
 	// BUFFS
 	public static final RegistryObject<Item> DATA_LINK = ITEMS.register("data_link", 

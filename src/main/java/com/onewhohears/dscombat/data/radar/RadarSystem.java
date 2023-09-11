@@ -142,7 +142,12 @@ public class RadarSystem {
 				new ToClientRadarPings(parent.getId(), targets));
 	}
 	
-	private boolean hasTarget(int id) {
+	public int getClientPingIndexByEntityId(int id) {
+		for (int i = 0; i < clientTargets.size(); ++i) if (clientTargets.get(i).id == id) return i;
+		return -1;
+	}
+	
+	public boolean hasTarget(int id) {
 		for (RadarPing rp : targets) if (rp.id == id) return true;
 		return false;
 	}

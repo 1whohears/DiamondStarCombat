@@ -441,13 +441,14 @@ public class PilotOverlay {
         			symbol, x, y, color);
         	// HUD
         	int[] screen_pos = UtilGeometry.worldToScreenPos(
-        			ping.pos.add(0, 0.5, 0), 
+        			ping.pos, 
         			ClientRenderEvents.getViewMatrix(), 
         			ClientRenderEvents.getProjMatrix(), 
         			width, height);
         	if (screen_pos[0] < 0 || screen_pos[1] < 0) continue;
         	int x_win = screen_pos[0], y_win = height - screen_pos[1];
-        	int size = 20; // FIXME 2.1 change circle size based on distance
+        	int min = 2, max = 6;
+        	int size = Math.max(min, (int)(max-dist/200*(max-min))); // FIXME 2.1 change circle size based on distance
         	RenderSystem.setShaderTexture(0, hud);
             GuiComponent.blit(poseStack, 
             		x_win-size/2, y_win-size/2, 

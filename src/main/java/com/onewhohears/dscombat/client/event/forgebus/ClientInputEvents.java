@@ -224,10 +224,10 @@ public final class ClientInputEvents {
 	}
 	
 	private static boolean isPlayerLookingAtPing(Player player, RadarPing ping) {
-		double d = ping.pos.distanceTo(player.position());
+		double d = ping.pos.distanceTo(player.getEyePosition());
 		double y = tan1*d;
 		if (y < 1) y = 1;
-		return UtilGeometry.isPointInsideCone(ping.pos.add(0, 0.5, 0), 
+		return UtilGeometry.isPointInsideCone(ping.pos, 
 				player.getEyePosition(), player.getLookAngle(), 
 				Math.toDegrees(Math.atan2(y, d)), 100000);
 	}

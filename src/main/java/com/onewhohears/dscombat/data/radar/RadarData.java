@@ -334,7 +334,7 @@ public class RadarData extends JsonPreset {
 		
 		public RadarPing(Entity ping, boolean isFriendly) {
 			id = ping.getId();
-			pos = ping.position();
+			pos = ping.getBoundingBox().getCenter();
 			this.isFriendly = isFriendly;
 			this.isShared = false;
 		}

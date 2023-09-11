@@ -425,7 +425,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setFuseDistance(2f)
 				.setFieldOfView(-1f)
 				.setItem(ModItems.AGM114K.getId())
-				.setEntityType(ModEntities.POS_MISSILE_1.getId())
+				.setEntityType(ModEntities.AGM114K.getId())
 				.setRackEntityType(ModEntities.LIGHT_MISSILE_RACK.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getId())
 				.setCompatibleWeaponPart(ModItems.LIGHT_MISSILE_RACK.getId())

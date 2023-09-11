@@ -580,7 +580,7 @@ public class PilotOverlay {
 	        	turnCooSize, turnCooSize, 
 	        	turnCooSize, turnCooSize);
 		RenderSystem.setShaderTexture(0, TURN_COORD_BALL);
-		int move = (int)((plane.getCentripetalForce()-plane.getCentrifugalForce())*10);
+		int move = (int)((plane.getCentripetalForce()-plane.getCentrifugalForce())*40);
 		GuiComponent.blit(poseStack, 
 				tcX+move, tcY, 
 	        	0, 0, 

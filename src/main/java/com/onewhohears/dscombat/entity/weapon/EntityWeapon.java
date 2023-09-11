@@ -42,8 +42,6 @@ public abstract class EntityWeapon extends Projectile {
 	 */
 	protected int maxAge;
 	
-	// FIXME 3.1 when server lags missile gets spawned behind vehicle leading to it hitting pilot sometimes
-	// maybe don't allow it to explode until it has existed for some amount of time
 	public EntityWeapon(EntityType<? extends EntityWeapon> type, Level level) {
 		super(type, level);
 	}

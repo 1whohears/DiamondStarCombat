@@ -194,6 +194,9 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	protected RadarMode radarMode = RadarMode.ALL;
 	protected boolean isLandingGear, isFreeLook = true;
 	
+	// FIXME 1.1 fix aircraft texture/variant texture system
+	// TODO 5.1 custom hit box system so players can walk on boats
+	// TODO 5.2 allow big boats to have a heli pad and runway
 	// TODO 5.4 aircraft breaks apart when damaged
 	// FIXME refactor EntityAircraft to EntityVehicle
 	

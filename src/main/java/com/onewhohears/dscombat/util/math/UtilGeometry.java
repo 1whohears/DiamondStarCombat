@@ -122,7 +122,7 @@ public class UtilGeometry {
 		Vector4f clipSpace = new Vector4f((float)world_pos.x, (float)world_pos.y, (float)world_pos.z, 1f);
 		clipSpace.transform(view_mat);
 		clipSpace.transform(proj_mat);
-		if (clipSpace.w() <= 0) return new int[] {-1,-1}; // FIXME 2.2 are pings not in camera view if w <= 0?
+		if (clipSpace.w() <= 0) return new int[] {-1,-1};
 		Vector3f ndcSpace = new Vector3f(clipSpace);
 		ndcSpace.mul(1/clipSpace.w());
 		int win_x = (int)((ndcSpace.x()+1f)/2f*width);

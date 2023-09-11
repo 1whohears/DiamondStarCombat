@@ -2,23 +2,23 @@ package com.onewhohears.dscombat.data.aircraft;
 
 public class LiftKGraph {
 	
-	private static final int[] ALEXIS_PLANE_DEGRESS = {-20,   -18,   -17,   -16,   -15,   -14,   -13,   -12,   -10,    -8,   -6,    -4,    -2,0,    2,    4,    6,    8,   10,   12,   13,   14,   15,   16,   17,   18,20};
-	private static final float[] ALEXIS_PLANE_LIFT  = {  0,-0.78f,-1.04f,-1.15f,-1.20f,-1.18f,-1.15f,-1.11f,-0.99f,-0.84f,0.69f,-0.48f,-0.25f,0,0.25f,0.48f,0.69f,0.84f,0.99f,1.11f,1.15f,1.18f,1.20f,1.15f,1.04f,0.78f, 0};
+	private static final int[] ALEXIS_PLANE_DEGRESS = {-36,  -34,   -32,   -30,   -28,  -26,   -24,   -22,   -20,   -18,   -16,   -14,   -12,   -10,    -8,    -6,    -4,   -2,0,   2,    4,    6,    8,   10,   12,   14,   16,   18,   20,   22,   24,  26,   28,   30,   32,  34,36};
+	private static final float[] ALEXIS_PLANE_LIFT  = {  0,-0.4f,-0.78f,-1.04f,-1.18f,-1.2f,-1.18f,-1.15f,-1.11f,-1.06f,-0.99f,-0.89f,-0.79f,-0.68f,-0.58f,-0.48f,-0.36f,-0.2f,0,0.2f,0.36f,0.48f,0.58f,0.68f,0.79f,0.89f,0.99f,1.06f,1.11f,1.15f,1.18f,1.2f,1.18f,1.04f,0.78f,0.4f,0};
 	public static final LiftKGraph ALEXIS_PLANE_GRAPH = new LiftKGraph(ALEXIS_PLANE_DEGRESS, ALEXIS_PLANE_LIFT);
 	
 	// TODO 9.1 give javi_plane lift graph unique values
-	private static final int[] JAVI_PLANE_DEGRESS = ALEXIS_PLANE_DEGRESS;
-	private static final float[] JAVI_PLANE_LIFT = ALEXIS_PLANE_LIFT;
+	private static final int[] JAVI_PLANE_DEGRESS = {-20,   -18,   -17,   -16,   -15,   -14,   -13,   -12,   -10,    -8,   -6,    -4,    -2,0,    2,    4,    6,    8,   10,   12,   13,   14,   15,   16,   17,   18,20};
+	private static final float[] JAVI_PLANE_LIFT  = {  0,-0.78f,-1.04f,-1.15f,-1.20f,-1.18f,-1.15f,-1.11f,-0.99f,-0.84f,0.69f,-0.48f,-0.25f,0,0.25f,0.48f,0.69f,0.84f,0.99f,1.11f,1.15f,1.18f,1.20f,1.15f,1.04f,0.78f, 0};
 	public static final LiftKGraph JAVI_PLANE_GRAPH = new LiftKGraph(JAVI_PLANE_DEGRESS, JAVI_PLANE_LIFT);
 	
 	// TODO 9.2 give wooden_plane lift graph unique values
-	private static final int[] WOODEN_PLANE_DEGRESS = ALEXIS_PLANE_DEGRESS;
-	private static final float[] WOODEN_PLANE_LIFT = ALEXIS_PLANE_LIFT;
+	private static final int[] WOODEN_PLANE_DEGRESS = {-20,   -18,   -17,   -16,   -15,   -14,   -13,   -12,   -10,    -8,   -6,    -4,    -2,0,    2,    4,    6,    8,   10,   12,   13,   14,   15,   16,   17,   18,20};
+	private static final float[] WOODEN_PLANE_LIFT  = {  0,-0.78f,-1.04f,-1.15f,-1.20f,-1.18f,-1.15f,-1.11f,-0.99f,-0.84f,0.69f,-0.48f,-0.25f,0,0.25f,0.48f,0.69f,0.84f,0.99f,1.11f,1.15f,1.18f,1.20f,1.15f,1.04f,0.78f, 0};
 	public static final LiftKGraph WOODEN_PLANE_GRAPH = new LiftKGraph(WOODEN_PLANE_DEGRESS, WOODEN_PLANE_LIFT);
 	
 	// TODO 9.3 give e3sentry_plane lift graph unique values
-	private static final int[] E3SENTRY_PLANE_DEGRESS = ALEXIS_PLANE_DEGRESS;
-	private static final float[] E3SENTRY_PLANE_LIFT = ALEXIS_PLANE_LIFT;
+	private static final int[] E3SENTRY_PLANE_DEGRESS = {-20,   -18,   -17,   -16,   -15,   -14,   -13,   -12,   -10,    -8,   -6,    -4,    -2,0,    2,    4,    6,    8,   10,   12,   13,   14,   15,   16,   17,   18,20};
+	private static final float[] E3SENTRY_PLANE_LIFT  = {  0,-0.78f,-1.04f,-1.15f,-1.20f,-1.18f,-1.15f,-1.11f,-0.99f,-0.84f,0.69f,-0.48f,-0.25f,0,0.25f,0.48f,0.69f,0.84f,0.99f,1.11f,1.15f,1.18f,1.20f,1.15f,1.04f,0.78f, 0};
 	public static final LiftKGraph E3SENTRY_PLANE_GRAPH = new LiftKGraph(E3SENTRY_PLANE_DEGRESS, E3SENTRY_PLANE_LIFT);
 	
 	private final int[] aoa;

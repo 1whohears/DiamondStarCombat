@@ -11,7 +11,7 @@ import net.minecraftforge.client.model.renderable.CompositeRenderable.Transforms
 public class MLSModel extends ObjTurretModel<EntityTurret> {
 
 	public MLSModel() {
-		super("mls");
+		super("mls", true);
 	}
 	
 	@Override

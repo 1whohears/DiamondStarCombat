@@ -188,6 +188,18 @@ public class ModEntities {
 	public static final RegistryObject<EntityType<EntityTurret>> TORPEDO_TUBES = ENTITIES.register("torpedo_tubes", 
 			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 
 					new Vec3(0, 1.8, 0), 1), SEAT_SIZE));
+	public static final RegistryObject<EntityType<EntityTurret>> AA_TURRET = ENTITIES.register("aa_turret", 
+			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 
+					new Vec3(0, 0.5, 0), 1.03125), SEAT_SIZE));
+	public static final RegistryObject<EntityType<EntityTurret>> CWIS = ENTITIES.register("cwis", 
+			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 
+					new Vec3(0, 0.5, 0), 0.6875), SEAT_SIZE));
+	public static final RegistryObject<EntityType<EntityTurret>> MARK7_CANNON = ENTITIES.register("mark7_cannon", 
+			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 
+					new Vec3(0, 0.5, 0), 0.625), SEAT_SIZE));
+	public static final RegistryObject<EntityType<EntityTurret>> MARK45_CANNON = ENTITIES.register("mark45_cannon", 
+			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 
+					new Vec3(0, 0.5, 0), 0.5625), SEAT_SIZE));
 	
 	public static final EntityDimensions TINY = EntityDimensions.scalable(0.1f, 0.1f);
 	

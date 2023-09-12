@@ -174,7 +174,7 @@
       "name": "frame_2",
       "slot_posx": 6.0,
       "slot_posy": 4.0,
-      "slot_posz": 2.0,
+      "slot_posz": 4.0,
       "slot_type": "light_turret",
       "zRot": 0.0
     },
@@ -182,7 +182,7 @@
       "name": "frame_3",
       "slot_posx": -6.0,
       "slot_posy": 4.0,
-      "slot_posz": 2.0,
+      "slot_posz": 4.0,
       "slot_type": "light_turret",
       "zRot": 0.0
     },
@@ -190,7 +190,7 @@
       "name": "frame_4",
       "slot_posx": 6.0,
       "slot_posy": 4.0,
-      "slot_posz": -2.0,
+      "slot_posz": -4.0,
       "slot_type": "light_turret",
       "zRot": 0.0
     },
@@ -198,7 +198,7 @@
       "name": "frame_5",
       "slot_posx": -6.0,
       "slot_posy": 4.0,
-      "slot_posz": -2.0,
+      "slot_posz": -4.0,
       "slot_type": "light_turret",
       "zRot": 0.0
     },

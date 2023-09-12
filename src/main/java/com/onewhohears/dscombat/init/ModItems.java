@@ -208,6 +208,7 @@ public class ModItems {
 			() -> new ItemTurret(13f, SlotType.TURRET_HEAVY, 
 					ModEntities.SAM_LAUNCHER.getId().toString(), "pac3",
 					RotBounds.create(1.3f, 25f, 25f)));
+	// TODO 1.1 recipes for new turrets
 	public static final RegistryObject<Item> MLS = ITEMS.register("mls", 
 			() -> new ItemTurret(11f, SlotType.TURRET_HEAVY, 
 					ModEntities.MLS.getId().toString(), "rgm84",
@@ -216,6 +217,22 @@ public class ModItems {
 			() -> new ItemTurret(10f, SlotType.TURRET_HEAVY, 
 					ModEntities.TORPEDO_TUBES.getId().toString(), "torpedo1",
 					RotBounds.create(1.6f, 5f, 5f)));
+	public static final RegistryObject<Item> AA_TURRET = ITEMS.register("aa_turret", 
+			() -> new ItemTurret(2.5f, SlotType.TURRET_LIGHT, 
+					ModEntities.AA_TURRET.getId().toString(), "10mm",
+					RotBounds.create(3.0f, 30f, 30f)));
+	public static final RegistryObject<Item> CWIS = ITEMS.register("cwis", 
+			() -> new ItemTurret(4.5f, SlotType.TURRET_MED, 
+					ModEntities.CWIS.getId().toString(), "10mm",
+					RotBounds.create(2.0f, 75f, 30f)));
+	public static final RegistryObject<Item> MARK7_CANNON = ITEMS.register("mark7_cannon", 
+			() -> new ItemTurret(11f, SlotType.TURRET_HEAVY, 
+					ModEntities.MARK7_CANNON.getId().toString(), "120mmhe",
+					RotBounds.create(0.9f, 30f, 15f)));
+	public static final RegistryObject<Item> MARK45_CANNON = ITEMS.register("mark45_cannon", 
+			() -> new ItemTurret(6f, SlotType.TURRET_MED, 
+					ModEntities.MARK45_CANNON.getId().toString(), "120mmhe",
+					RotBounds.create(1.1f, 30f, 15f)));
 	
 	// FLARE DISPENSERS
 	public static final RegistryObject<Item> BASIC_FLARE_DISPENSER = ITEMS.register("basic_flare_dispenser", 
@@ -229,7 +246,8 @@ public class ModItems {
 	public static final RegistryObject<Item> HEAVY_MISSILE_RACK = ITEMS.register("heavy_missile_rack", 
 			() -> new ItemWeaponPart(4f, SlotType.EXTERNAL_ALL, 0)); 
 	public static final RegistryObject<Item> BOMB_RACK = ITEMS.register("bomb_rack", 
-			() -> new ItemWeaponPart(5f, SlotType.EXTERNAL_ALL, 0)); 
+			() -> new ItemWeaponPart(5f, SlotType.EXTERNAL_ALL, 0));
+	// TODO 1.2 recipes for new racks
 	public static final RegistryObject<Item> ADL = ITEMS.register("adl", 
 			() -> new ItemWeaponPart(7f, SlotType.EXTERNAL_HEAVY, 20)); 
 	public static final RegistryObject<Item> VLS = ITEMS.register("vls", 

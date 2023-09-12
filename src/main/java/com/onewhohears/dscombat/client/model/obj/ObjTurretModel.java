@@ -6,15 +6,19 @@ import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 public class ObjTurretModel<T extends EntityTurret> extends ObjPartModel<T> {
-
-	public ObjTurretModel(String modelId) {
+	
+	protected final boolean rotYawAll;
+	
+	public ObjTurretModel(String modelId, boolean rotYawAll) {
 		super(modelId);
+		this.rotYawAll = rotYawAll;
 	}
 	
 	@Override
 	protected void rotate(T entity, float partialTicks, PoseStack poseStack) {
 		super.rotate(entity, partialTicks, poseStack);
-		poseStack.mulPose(Vector3f.YN.rotationDegrees(UtilAngles.lerpAngle180(partialTicks, entity.yRotRelO, entity.getRelRotY())));
+		if (rotYawAll) poseStack.mulPose(Vector3f.YN.rotationDegrees(UtilAngles.lerpAngle180(
+				partialTicks, entity.yRotRelO, entity.getRelRotY())));
 	}
 
 }

@@ -447,11 +447,11 @@ public class PilotOverlay {
         			width, height);
         	if (screen_pos[0] < 0 || screen_pos[1] < 0) continue;
         	int x_win = screen_pos[0], y_win = height - screen_pos[1];
-        	int min = 2, max = 6;
+        	int min = 2, max = 8;
         	int size = Math.max(min, (int)(max-dist/200*(max-min))); // FIXME 2.1 change circle size based on distance
         	RenderSystem.setShaderTexture(0, hud);
             GuiComponent.blit(poseStack, 
-            		x_win-size/2, y_win-size/2, 
+            		x_win-size/2, y_win-size*3/4, 
             		0, 0, size, size, 
             		size, size);
 		}
@@ -609,7 +609,7 @@ public class PilotOverlay {
 	        	turnCooSize, turnCooSize, 
 	        	turnCooSize, turnCooSize);
 		RenderSystem.setShaderTexture(0, TURN_COORD_BALL);
-		int move = (int)((plane.getCentripetalForce()-plane.getCentrifugalForce())*40);
+		int move = (int)((plane.getCentripetalForce()-plane.getCentrifugalForce())*25);
 		GuiComponent.blit(poseStack, 
 				tcX+move, tcY, 
 	        	0, 0, 

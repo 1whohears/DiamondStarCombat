@@ -119,6 +119,10 @@
 	"entity.dscombat.torpedo_tubes": "Torpedo Tubes",
 	"entity.dscombat.adl": "ADL",
 	"entity.dscombat.vls": "VLS",
+	"entity.dscombat.aa_turret": "AA Turret",
+	"entity.dscombat.cwis": "CWIS",
+	"entity.dscombat.mark7_cannon": "Mark 7 Cannon",
+	"entity.dscombat.mark45_cannon": "Mark 45 Cannon",
 	
 	"entity.minecraft.villager.dscombat.weapons_engineer": "Weapons Engineer",
 	"entity.minecraft.villager.dscombat.aircraft_engineer": "Aircraft Engineer",
@@ -192,6 +196,10 @@
 	"item.dscombat.sam_launcher": "SAM Launcher",
 	"item.dscombat.mls": "MLS",
 	"item.dscombat.torpedo_tubes": "Torpedo Tubes",
+	"item.dscombat.aa_turret": "AA Turret",
+	"item.dscombat.cwis": "CWIS",
+	"item.dscombat.mark7_cannon": "Mark 7 Cannon",
+	"item.dscombat.mark45_cannon": "Mark 45 Cannon",
 	
 	"item.dscombat.basic_flare_dispenser": "Basic Flare Dispenser",
 	

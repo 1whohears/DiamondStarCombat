@@ -19,7 +19,11 @@ import com.onewhohears.dscombat.client.model.obj.ObjAircraftModel;
 import com.onewhohears.dscombat.client.model.obj.ObjEntityModel;
 import com.onewhohears.dscombat.client.model.obj.ObjEntityModels;
 import com.onewhohears.dscombat.client.model.obj.ObjPartModel;
+import com.onewhohears.dscombat.client.model.obj.custom.AATurretModel;
+import com.onewhohears.dscombat.client.model.obj.custom.CWISModel;
 import com.onewhohears.dscombat.client.model.obj.custom.MLSModel;
+import com.onewhohears.dscombat.client.model.obj.custom.Mark45GunModel;
+import com.onewhohears.dscombat.client.model.obj.custom.Mark7GunModel;
 import com.onewhohears.dscombat.client.model.obj.custom.SamLauncherModel;
 import com.onewhohears.dscombat.client.model.obj.custom.TorpedoTubesModel;
 import com.onewhohears.dscombat.client.model.obj.custom.VLSModel;
@@ -238,6 +242,18 @@ public final class ClientModEvents {
 		event.registerEntityRenderer(ModEntities.TORPEDO_TUBES.get(), 
 				(context) -> new RendererObjEntity<EntityTurret>(context, 
 						new TorpedoTubesModel()));
+		event.registerEntityRenderer(ModEntities.AA_TURRET.get(), 
+				(context) -> new RendererObjEntity<EntityTurret>(context, 
+						new AATurretModel()));
+		event.registerEntityRenderer(ModEntities.CWIS.get(), 
+				(context) -> new RendererObjEntity<EntityTurret>(context, 
+						new CWISModel()));
+		event.registerEntityRenderer(ModEntities.MARK7_CANNON.get(), 
+				(context) -> new RendererObjEntity<EntityTurret>(context, 
+						new Mark7GunModel()));
+		event.registerEntityRenderer(ModEntities.MARK45_CANNON.get(), 
+				(context) -> new RendererObjEntity<EntityTurret>(context, 
+						new Mark45GunModel()));
 		// MISSILE RACKS
 		event.registerEntityRenderer(ModEntities.LIGHT_MISSILE_RACK.get(), 
 				(context) -> new RendererEntityPart<EntityWeaponRack>(context,

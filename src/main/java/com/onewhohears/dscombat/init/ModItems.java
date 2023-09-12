@@ -216,6 +216,22 @@ public class ModItems {
 			() -> new ItemTurret(10f, SlotType.TURRET_HEAVY, 
 					ModEntities.TORPEDO_TUBES.getId().toString(), "torpedo1",
 					RotBounds.create(1.6f, 5f, 5f)));
+	public static final RegistryObject<Item> AA_TURRET = ITEMS.register("aa_turret", 
+			() -> new ItemTurret(2.5f, SlotType.TURRET_LIGHT, 
+					ModEntities.AA_TURRET.getId().toString(), "10mm",
+					RotBounds.create(3.0f, 30f, 30f)));
+	public static final RegistryObject<Item> CWIS = ITEMS.register("cwis", 
+			() -> new ItemTurret(4.5f, SlotType.TURRET_MED, 
+					ModEntities.CWIS.getId().toString(), "10mm",
+					RotBounds.create(2.0f, 75f, 30f)));
+	public static final RegistryObject<Item> MARK7_CANNON = ITEMS.register("mark7_cannon", 
+			() -> new ItemTurret(11f, SlotType.TURRET_HEAVY, 
+					ModEntities.MARK7_CANNON.getId().toString(), "120mmhe",
+					RotBounds.create(0.9f, 30f, 15f)));
+	public static final RegistryObject<Item> MARK45_CANNON = ITEMS.register("mark45_cannon", 
+			() -> new ItemTurret(6f, SlotType.TURRET_MED, 
+					ModEntities.MARK45_CANNON.getId().toString(), "120mmhe",
+					RotBounds.create(1.1f, 30f, 15f)));
 	
 	// FLARE DISPENSERS
 	public static final RegistryObject<Item> BASIC_FLARE_DISPENSER = ITEMS.register("basic_flare_dispenser", 

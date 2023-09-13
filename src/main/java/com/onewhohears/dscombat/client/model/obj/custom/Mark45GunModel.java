@@ -19,7 +19,7 @@ public class Mark45GunModel extends ObjTurretModel<EntityTurret> {
 	@Override
 	protected Transforms getComponentTransforms(EntityTurret entity, float partialTicks) {
 		float xrothead = UtilAngles.lerpAngle(partialTicks, entity.xRotRelO, entity.getRelRotX());
-		Matrix4f xrothead_mat = UtilAngles.pivotPixelsRotZ(0, 9f, -11f, xrothead);
+		Matrix4f xrothead_mat = UtilAngles.pivotPixelsRotX(0, 9f, -11f, -xrothead);
 		ImmutableMap<String, Matrix4f> transforms = ImmutableMap.<String, Matrix4f>builder()
 			.put("cube", xrothead_mat)
 			.build();

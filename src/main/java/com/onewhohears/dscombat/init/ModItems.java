@@ -221,9 +221,9 @@ public class ModItems {
 			() -> new ItemTurret(2.5f, SlotType.TURRET_LIGHT, 
 					ModEntities.AA_TURRET.getId().toString(), "10mm",
 					RotBounds.create(3.0f, 30f, 30f)));
-	public static final RegistryObject<Item> CWIS = ITEMS.register("cwis", 
+	public static final RegistryObject<Item> CIWS = ITEMS.register("ciws", 
 			() -> new ItemTurret(4.5f, SlotType.TURRET_MED, 
-					ModEntities.CWIS.getId().toString(), "10mm",
+					ModEntities.CIWS.getId().toString(), "10mm",
 					RotBounds.create(2.0f, 75f, 30f)));
 	public static final RegistryObject<Item> MARK7_CANNON = ITEMS.register("mark7_cannon", 
 			() -> new ItemTurret(11f, SlotType.TURRET_HEAVY, 

@@ -10,16 +10,16 @@ import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraftforge.client.model.renderable.CompositeRenderable.Transforms;
 
-public class CWISModel extends ObjTurretModel<EntityTurret> {
+public class CIWSModel extends ObjTurretModel<EntityTurret> {
 
-	public CWISModel() {
-		super("cwis", true);
+	public CIWSModel() {
+		super("ciws", true);
 	}
 	
 	@Override
 	protected Transforms getComponentTransforms(EntityTurret entity, float partialTicks) {
 		float xrothead = UtilAngles.lerpAngle(partialTicks, entity.xRotRelO, entity.getRelRotX());
-		Matrix4f xrothead_mat = UtilAngles.pivotPixelsRotZ(0, 14f, 0, xrothead);
+		Matrix4f xrothead_mat = UtilAngles.pivotPixelsRotX(0, 14f, 0, -xrothead);
 		ImmutableMap<String, Matrix4f> transforms = ImmutableMap.<String, Matrix4f>builder()
 			.put("head", xrothead_mat)
 			.build();

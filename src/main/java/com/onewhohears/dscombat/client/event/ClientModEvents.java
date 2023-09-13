@@ -20,7 +20,7 @@ import com.onewhohears.dscombat.client.model.obj.ObjEntityModel;
 import com.onewhohears.dscombat.client.model.obj.ObjEntityModels;
 import com.onewhohears.dscombat.client.model.obj.ObjPartModel;
 import com.onewhohears.dscombat.client.model.obj.custom.AATurretModel;
-import com.onewhohears.dscombat.client.model.obj.custom.CWISModel;
+import com.onewhohears.dscombat.client.model.obj.custom.CIWSModel;
 import com.onewhohears.dscombat.client.model.obj.custom.MLSModel;
 import com.onewhohears.dscombat.client.model.obj.custom.Mark45GunModel;
 import com.onewhohears.dscombat.client.model.obj.custom.Mark7GunModel;
@@ -248,9 +248,9 @@ public final class ClientModEvents {
 		event.registerEntityRenderer(ModEntities.AA_TURRET.get(), 
 				(context) -> new RendererObjEntity<EntityTurret>(context, 
 						new AATurretModel()));
-		event.registerEntityRenderer(ModEntities.CWIS.get(), 
+		event.registerEntityRenderer(ModEntities.CIWS.get(), 
 				(context) -> new RendererObjEntity<EntityTurret>(context, 
-						new CWISModel()));
+						new CIWSModel()));
 		event.registerEntityRenderer(ModEntities.MARK7_CANNON.get(), 
 				(context) -> new RendererObjEntity<EntityTurret>(context, 
 						new Mark7GunModel()));

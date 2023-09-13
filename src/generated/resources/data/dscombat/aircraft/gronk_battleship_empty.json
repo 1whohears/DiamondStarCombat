@@ -122,9 +122,6 @@
       "zRot": 0.0
     },
     {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
       "name": "seat9",
       "slot_posx": 0.0,
       "slot_posy": 6.0,
@@ -133,9 +130,6 @@
       "zRot": 0.0
     },
     {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
       "name": "seat10",
       "slot_posx": 0.0,
       "slot_posy": 6.0,

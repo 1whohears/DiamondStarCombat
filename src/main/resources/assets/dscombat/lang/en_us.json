@@ -120,7 +120,7 @@
 	"entity.dscombat.adl": "ADL",
 	"entity.dscombat.vls": "VLS",
 	"entity.dscombat.aa_turret": "AA Turret",
-	"entity.dscombat.cwis": "CWIS",
+	"entity.dscombat.ciws": "CIWS",
 	"entity.dscombat.mark7_cannon": "Mark 7 Cannon",
 	"entity.dscombat.mark45_cannon": "Mark 45 Cannon",
 	
@@ -197,7 +197,7 @@
 	"item.dscombat.mls": "MLS",
 	"item.dscombat.torpedo_tubes": "Torpedo Tubes",
 	"item.dscombat.aa_turret": "AA Turret",
-	"item.dscombat.cwis": "CWIS",
+	"item.dscombat.ciws": "CIWS",
 	"item.dscombat.mark7_cannon": "Mark 7 Cannon",
 	"item.dscombat.mark45_cannon": "Mark 45 Cannon",
 	

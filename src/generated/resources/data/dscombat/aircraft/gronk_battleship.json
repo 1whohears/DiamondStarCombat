@@ -39,12 +39,16 @@
       "num": 4
     },
     {
-      "item": "dscombat:cwis",
+      "item": "dscombat:aa_turret",
+      "num": 4
+    },
+    {
+      "item": "dscombat:ciws",
       "num": 1
     },
     {
-      "item": "dscombat:aa_turret",
-      "num": 4
+      "item": "dscombat:mark45_cannon",
+      "num": 1
     },
     {
       "item": "minecraft:copper_ingot",
@@ -163,7 +167,7 @@
     },
     {
       "data": {
-        "itemid": "dscombat:cwis"
+        "itemid": "dscombat:ciws"
       },
       "name": "seat9",
       "slot_posx": 0.0,
@@ -174,7 +178,7 @@
     },
     {
       "data": {
-        "itemid": "dscombat:seat"
+        "itemid": "dscombat:mark45_cannon"
       },
       "name": "seat10",
       "slot_posx": 0.0,

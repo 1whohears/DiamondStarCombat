@@ -191,9 +191,9 @@ public class ModEntities {
 	public static final RegistryObject<EntityType<EntityTurret>> AA_TURRET = ENTITIES.register("aa_turret", 
 			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 
 					new Vec3(0, 0.5, 0), 1.03125), SEAT_SIZE));
-	public static final RegistryObject<EntityType<EntityTurret>> CWIS = ENTITIES.register("cwis", 
+	public static final RegistryObject<EntityType<EntityTurret>> CIWS = ENTITIES.register("ciws", 
 			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 
-					new Vec3(0, 0.5, 0), 0.6875), SEAT_SIZE));
+					new Vec3(1, 0.5, 0), 0.6875), SEAT_SIZE));
 	public static final RegistryObject<EntityType<EntityTurret>> MARK7_CANNON = ENTITIES.register("mark7_cannon", 
 			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 
 					new Vec3(0, 0.5, 0), 0.625), SEAT_SIZE));

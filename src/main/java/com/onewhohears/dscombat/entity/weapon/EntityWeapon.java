@@ -165,7 +165,7 @@ public abstract class EntityWeapon extends Projectile {
 	
 	@Override
 	protected boolean canHitEntity(Entity entity) {
-		return super.canHitEntity(entity) && canCollideWith(entity) && !isAlliedTo(entity);
+		return super.canHitEntity(entity) && !isAlliedTo(entity);
 	}
 	
 	@Override

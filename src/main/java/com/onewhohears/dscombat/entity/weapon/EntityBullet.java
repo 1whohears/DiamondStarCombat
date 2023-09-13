@@ -73,12 +73,9 @@ public class EntityBullet extends EntityWeapon {
 	}
 	
 	@Override
-	public void tick() {
-		if (firstTick) {
-			Vec3 dir = UtilAngles.rotationToVector(getYRot(), getXRot());
-			setDeltaMovement(dir.scale(getSpeed()));
-		}
-		super.tick();
+	public void init() {
+		Vec3 dir = UtilAngles.rotationToVector(getYRot(), getXRot());
+		setDeltaMovement(dir.scale(getSpeed()));
 	}
 	
 	protected void checkExplode() {
@@ -107,6 +104,7 @@ public class EntityBullet extends EntityWeapon {
 	
 	@Override
 	protected void tickSetMove() {
+		// FIXME 4 bullets moving wacko
 		setDeltaMovement(getDeltaMovement().add(0, -Config.SERVER.accGravity.get()*2, 0));
 	}
 	

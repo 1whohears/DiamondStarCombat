@@ -11,6 +11,7 @@ import com.onewhohears.dscombat.entity.aircraft.EntityHelicopter;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 import com.onewhohears.dscombat.entity.aircraft.EntitySubmarine;
 import com.onewhohears.dscombat.entity.parts.EntityEngine;
+import com.onewhohears.dscombat.entity.parts.EntityRadar;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
@@ -218,6 +219,11 @@ public class ModEntities {
 	
 	public static final RegistryObject<EntityType<EntityEngine>> CFM56 = ENTITIES.register("cfm56", 
 			() -> createEntityType(EntityEngine::new, TINY));
+	
+	public static final RegistryObject<EntityType<EntityRadar>> AIR_SCAN_A = ENTITIES.register("air_scan_a", 
+			() -> createEntityType(EntityRadar::new, TINY));
+	public static final RegistryObject<EntityType<EntityRadar>> AIR_SCAN_B = ENTITIES.register("air_scan_b", 
+			() -> createEntityType(EntityRadar::new, TINY));
 	
 	public static final RegistryObject<EntityType<EntityBullet>> BULLET = ENTITIES.register("bullet", 
 			() -> createEntityType(EntityBullet::new, EntityDimensions.scalable(0.15f, 0.15f)));

@@ -521,7 +521,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setFieldOfView(-1f)
 				.setSeeThroBlockNum(4)
 				.setItem(ModItems.AGM84E.getId())
-				.setEntityType(ModEntities.TRACK_MISSILE_1.getId())
+				.setEntityType(ModEntities.AGM84E.getId())
 				.setRackEntityType(ModEntities.HEAVY_MISSILE_RACK.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getId())
 				.setCompatibleWeaponPart(ModItems.HEAVY_MISSILE_RACK.getId())

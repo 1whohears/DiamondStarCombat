@@ -1,0 +1,15 @@
+{
+  "displayName": "preset.dscombat.air_scan_b",
+  "fov": -1.0,
+  "presetId": "air_scan_b",
+  "range": 1800.0,
+  "scanAir": true,
+  "scanAircraft": true,
+  "scanGround": false,
+  "scanMobs": true,
+  "scanPlayers": true,
+  "scanRate": 20,
+  "sensitivity": 0.7,
+  "throGroundRange": 0.0,
+  "throWaterRange": 0.0
+}

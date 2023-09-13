@@ -29,8 +29,8 @@ public abstract class EntityPart extends Entity {
 	
 	private float z_rot;
 	
-	protected EntityPart(EntityType<?> pEntityType, Level pLevel) {
-		super(pEntityType, pLevel);
+	protected EntityPart(EntityType<?> entityType, Level level) {
+		super(entityType, level);
 	}
 	
 	protected EntityPart(EntityType<?> entityType, Level level, String slotId, Vec3 pos) {

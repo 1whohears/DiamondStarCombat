@@ -31,7 +31,7 @@
       "num": 1
     },
     {
-      "item": "dscombat:ar2k",
+      "item": "dscombat:ar1k",
       "num": 1
     }
   ],
@@ -155,7 +155,7 @@
     },
     {
       "data": {
-        "itemid": "dscombat:axcel_truck_radar"
+        "itemid": "dscombat:air_scan_a"
       },
       "name": "frame_1",
       "slot_posx": 0.0,

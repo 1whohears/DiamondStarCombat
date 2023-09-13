@@ -95,10 +95,15 @@ public abstract class EntityWeapon extends Projectile {
 		UtilParse.writeVec3(compound, getShootPos(), "shoot_pos");
 	}
 	
+	public void init() {
+		
+	}
+	
 	@Override
 	public void tick() {
 		//System.out.println(this+" "+tickCount);
 		if (isTestMode()) return;
+		if (firstTick) init();
 		if (!level.isClientSide && firstTick) setShootPos(position());
 		super.tick();
 		tickCheckCollide();

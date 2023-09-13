@@ -4,7 +4,7 @@ import java.util.NoSuchElementException;
 
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
-import com.onewhohears.dscombat.entity.parts.EntityEngine;
+import com.onewhohears.dscombat.entity.parts.EntityRadar;
 import com.onewhohears.dscombat.init.ModEntities;
 
 import net.minecraft.nbt.CompoundTag;
@@ -14,19 +14,13 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class ExternalEngineData extends EngineData {
+public class ExternalRadarPartData extends RadarPartData {
 	
 	public final String entityTypeKey;
 	
-	public ExternalEngineData(EngineType engineType, float weight, float thrust, float heat, float fuelRate, 
-			ResourceLocation itemid, SlotType[] compatibleSlots, String entityTypeKey) {
-		super(engineType, weight, thrust, heat, fuelRate, itemid, compatibleSlots);
+	public ExternalRadarPartData(float weight, String preset, ResourceLocation itemid, SlotType[] compatibleSlots, String entityTypeKey) {
+		super(weight, preset, itemid, compatibleSlots);
 		this.entityTypeKey = entityTypeKey;
-	}
-	
-	public ExternalEngineData(CompoundTag tag) {
-		super(tag);
-		entityTypeKey = tag.getString("entityTypeKey");
 	}
 	
 	@Override
@@ -36,9 +30,9 @@ public class ExternalEngineData extends EngineData {
 		return tag;
 	}
 	
-	public ExternalEngineData(FriendlyByteBuf buffer) {
-		super(buffer);
-		entityTypeKey = buffer.readUtf();
+	public ExternalRadarPartData(CompoundTag tag) {
+		super(tag);
+		entityTypeKey = tag.getString("entityTypeKey");
 	}
 	
 	@Override
@@ -47,9 +41,31 @@ public class ExternalEngineData extends EngineData {
 		buffer.writeUtf(entityTypeKey);
 	}
 	
+	public ExternalRadarPartData(FriendlyByteBuf buffer) {
+		super(buffer);
+		entityTypeKey = buffer.readUtf();
+	}
+	
+	@Override
+	public void serverSetup(EntityAircraft craft, String slotId, Vec3 pos) {
+		super.serverSetup(craft, slotId, pos);
+		if (!isEntitySetup(slotId, craft)) {
+			EntityRadar radar = new EntityRadar(getEntityType(), craft.level, slotId, pos);
+			radar.setPos(craft.position());
+			radar.startRiding(craft);
+			craft.level.addFreshEntity(radar);
+		}
+	}
+	
+	@Override
+	public void serverRemove(String slotId) {
+		super.serverRemove(slotId);
+		removeEntity(slotId);
+	}
+	
 	@Override
 	public PartType getType() {
-		return PartType.EXTERNAL_ENGINE;
+		return PartType.EXTERNAL_RADAR;
 	}
 	
 	protected EntityType<?> getEntityType() {
@@ -59,23 +75,6 @@ public class ExternalEngineData extends EngineData {
 		} catch(NoSuchElementException e) { 
 			return ModEntities.CFM56.get(); 
 		}
-	}
-	
-	@Override
-	public void serverSetup(EntityAircraft craft, String slotId, Vec3 pos) {
-		super.serverSetup(craft, slotId, pos);
-		if (!isEntitySetup(slotId, craft)) {
-			EntityEngine engine = new EntityEngine(getEntityType(), craft.level, slotId, pos);
-			engine.setPos(craft.position());
-			engine.startRiding(craft);
-			craft.level.addFreshEntity(engine);
-		}
-	}
-	
-	@Override
-	public void serverRemove(String slotId) {
-		super.serverRemove(slotId);
-		removeEntity(slotId);
 	}
 
 }

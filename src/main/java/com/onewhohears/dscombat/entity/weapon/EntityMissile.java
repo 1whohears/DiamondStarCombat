@@ -107,6 +107,11 @@ public abstract class EntityMissile extends EntityBullet {
 	}
 	
 	@Override
+	public void init() {
+		
+	}
+	
+	@Override
 	public void tick() {
 		if (isTestMode()) {
 			if (level.isClientSide) {

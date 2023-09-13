@@ -43,12 +43,8 @@
       "num": 4
     },
     {
-      "item": "dscombat:ciws",
-      "num": 1
-    },
-    {
       "item": "dscombat:mark45_cannon",
-      "num": 1
+      "num": 2
     },
     {
       "item": "minecraft:copper_ingot",
@@ -167,7 +163,7 @@
     },
     {
       "data": {
-        "itemid": "dscombat:ciws"
+        "itemid": "dscombat:mark45_cannon"
       },
       "name": "seat9",
       "slot_posx": 0.0,

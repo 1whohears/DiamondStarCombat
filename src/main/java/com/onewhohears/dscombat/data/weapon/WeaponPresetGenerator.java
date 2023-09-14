@@ -102,6 +102,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.addIngredient("minecraft:copper_ingot", 4)
 				.addIngredient("minecraft:gunpowder", 5)
 				.build());
+		// TODO 2.2 bullets for knew guns
 	}
 	
 	protected void registerAAMissiles() {

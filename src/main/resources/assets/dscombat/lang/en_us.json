@@ -123,6 +123,10 @@
 	"entity.dscombat.ciws": "CIWS",
 	"entity.dscombat.mark7_cannon": "Mark 7 Cannon",
 	"entity.dscombat.mark45_cannon": "Mark 45 Cannon",
+	"entity.dscombat.air_scan_a": "Air Scan A",
+	"entity.dscombat.air_scan_b": "Air Scan B",
+	"entity.dscombat.survey_all_a": "Survey All A",
+	"entity.dscombat.survey_all_b": "Survey All B",
 	
 	"entity.minecraft.villager.dscombat.weapons_engineer": "Weapons Engineer",
 	"entity.minecraft.villager.dscombat.aircraft_engineer": "Aircraft Engineer",
@@ -186,6 +190,10 @@
 	"item.dscombat.wr400": "WR-400",
 	"item.dscombat.wr1k": "WR-1k",
 	"item.dscombat.axcel_truck_radar": "Axcel Truck Radar",
+	"item.dscombat.air_scan_a": "Air Scan A",
+	"item.dscombat.air_scan_b": "Air Scan B",
+	"item.dscombat.survey_all_a": "Survey All A",
+	"item.dscombat.survey_all_b": "Survey All B",
 	
 	"item.dscombat.seat": "Seat",
 	"item.dscombat.parachute": "Parachute",

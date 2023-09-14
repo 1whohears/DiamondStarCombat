@@ -1400,8 +1400,8 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 						if (wd == null) continue;
 						if (!wd.getId().equals(ammoId)) continue;
 						int o = wd.addAmmo(stack.getCount());
-						// FIXME 3 adding ammo to turrets not saving
 						t.setAmmo(wd.getCurrentAmmo());
+						t.updateDataAmmo();
 						stack.setCount(o);
 						if (stack.getCount() == 0) return InteractionResult.SUCCESS;
 					}

@@ -187,6 +187,16 @@ public class EntityTurret extends EntitySeat {
 		entityData.set(AMMO, ammo);
 	}
 	
+	public void updateDataAmmo() {
+		if (getRootVehicle() instanceof EntityAircraft plane) {
+			PartSlot slot = plane.partsManager.getSlot(getSlotId());
+			if (slot != null && slot.filled() && slot.getPartData().getType() == PartType.TURRENT) { 
+				TurretData td = (TurretData) slot.getPartData();
+				td.setAmmo(getAmmo());
+			}
+		}
+	}
+	
 	public int getAmmo() {
 		return entityData.get(AMMO);
 	}
@@ -228,13 +238,7 @@ public class EntityTurret extends EntitySeat {
 					true);
 		} else {
 			setAmmo(data.getCurrentAmmo());
-			if (getRootVehicle() instanceof EntityAircraft plane) {
-				PartSlot slot = plane.partsManager.getSlot(getSlotId());
-				if (slot != null && slot.filled() && slot.getPartData().getType() == PartType.TURRENT) { 
-					TurretData td = (TurretData) slot.getPartData();
-					td.setAmmo(data.getCurrentAmmo());
-				}
-			}
+			updateDataAmmo();
 		}
 	}
 	

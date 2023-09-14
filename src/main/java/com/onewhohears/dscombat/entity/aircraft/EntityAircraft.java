@@ -72,6 +72,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -576,8 +577,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		return ((entity) -> {
 			if (this.equals(entity.getRootVehicle())) return false;
 			if (entity.isSpectator()) return false;
-			if (!(entity instanceof LivingEntity)) return false;
-			if (entity instanceof Player) return false;
+			if (!(entity instanceof Mob)) return false;
 			return true;
 		});
 	}

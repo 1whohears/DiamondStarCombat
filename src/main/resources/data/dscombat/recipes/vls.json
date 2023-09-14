@@ -1,0 +1,20 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"T": {
+			"item": "dscombat:ti83"
+		},
+		"D": {
+			"item": "minecraft:dispenser"
+		}
+	},
+	"pattern": [
+		"DDD",
+		"DTD",
+		"DDD"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:vls"
+	}
+}

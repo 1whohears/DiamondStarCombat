@@ -1,0 +1,15 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"G": {
+			"item": "dscombat:heavy_tank_turret"
+		}
+	},
+	"pattern": [
+		"GGG"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:mark7_cannon"
+	}
+}

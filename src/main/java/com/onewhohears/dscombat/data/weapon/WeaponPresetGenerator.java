@@ -113,7 +113,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setExplosive(true)
 				.setDestoryTerrain(true)
 				.setCausesFire(true)
-				.setMaxAmmo(12)
+				.setMaxAmmo(36)
 				.setMaxAge(40)
 				.setItem(ModItems.B_120MMHE.getId())
 				.setEntityType(ModEntities.BULLET.getId())
@@ -122,11 +122,11 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setNoCompatible()
 				.setCraftNum(1)
 				.addIngredient("minecraft:copper_ingot", 10)
-				.addIngredient("minecraft:gunpowder", 9)
+				.addIngredient("minecraft:gunpowder", 7)
 				.build());
 		addPresetToGenerate(BulletData.Builder
 				.bulletBuilder(DSCombatMod.MODID, "127mm")
-				.setFireRate(15)
+				.setFireRate(12)
 				.setInnacuracy(0.1f)
 				.setCanShootOnGround(true)
 				.setDamage(60f)
@@ -142,10 +142,9 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setNoRack()
 				.setShootSound(ModSounds.BULLET_SHOOT_1.getId())
 				.setNoCompatible()
-				.setCraftNum(2)
-				.addIngredient("minecraft:copper_ingot", 9)
+				.setCraftNum(1)
+				.addIngredient("minecraft:copper_ingot", 5)
 				.build());
-		// TODO 2.2 bullets for new guns
 	}
 	
 	protected void registerAAMissiles() {

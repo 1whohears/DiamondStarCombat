@@ -37,6 +37,7 @@ public class EntityTurret extends EntitySeat {
 	public static final EntityDataAccessor<Float> RELROTY = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.FLOAT);
 	
 	public final double weaponOffset;
+	public final ShootType shootType;
 	
 	public float xRotRelO, yRotRelO;
 	
@@ -58,6 +59,13 @@ public class EntityTurret extends EntitySeat {
 	public EntityTurret(EntityType<?> type, Level level, Vec3 offset, double weaponOffset) {
 		super(type, level, offset);
 		this.weaponOffset = weaponOffset;
+		this.shootType = ShootType.NORMAL;
+	}
+	
+	public EntityTurret(EntityType<?> type, Level level, Vec3 offset, double weaponOffset, ShootType shootType) {
+		super(type, level, offset);
+		this.weaponOffset = weaponOffset;
+		this.shootType = shootType;
 	}
 
 	@Override
@@ -231,7 +239,9 @@ public class EntityTurret extends EntitySeat {
 			if (player.isCreative()) consume = false;
 			p = player;
 		}
+		boolean couldShoot = data.checkRecoil();
 		data.shootFromTurret(level, shooter, getLookAngle(), pos, parent, consume);
+		if (couldShoot) specialShoot(shooter, pos, parent, consume);
 		if (data.isFailedLaunch()) {
 			if (p != null) p.displayClientMessage(
 					Component.translatable(data.getFailedLaunchReason()), 
@@ -239,6 +249,19 @@ public class EntityTurret extends EntitySeat {
 		} else {
 			setAmmo(data.getCurrentAmmo());
 			updateDataAmmo();
+		}
+	}
+	
+	protected void specialShoot(Entity shooter, Vec3 pos, EntityAircraft parent, boolean consume) {
+		if (shootType == ShootType.NORMAL) return;
+		System.out.println("SPECIAL SHOOT "+shootType);
+		if (shootType == ShootType.MARK7) {
+			float d = 1;
+			float yRad = getYRot() * Mth.DEG_TO_RAD;
+			Vec3 posL = pos.add(new Vec3(-d*Mth.cos(yRad), 0, -d*Mth.sign(yRad))); 
+			Vec3 posR = pos.add(new Vec3(d*Mth.cos(yRad), 0, d*Mth.sign(yRad)));
+			data.shootFromTurret(level, shooter, getLookAngle(), posL, parent, consume, true);
+			data.shootFromTurret(level, shooter, getLookAngle(), posR, parent, consume, true);
 		}
 	}
 	
@@ -301,6 +324,11 @@ public class EntityTurret extends EntitySeat {
     protected void addPassenger(Entity passenger) {
         super.addPassenger(passenger);
         newRiderCoolDown = 10;
+	}
+	
+	public static enum ShootType {
+		NORMAL,
+		MARK7
 	}
 
 }

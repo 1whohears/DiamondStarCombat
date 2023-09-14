@@ -3,18 +3,18 @@
   "canShootOnGround": true,
   "causesFire": false,
   "compatibleWeaponPart": "",
-  "craftNum": 2,
+  "craftNum": 1,
   "damage": 60.0,
   "destroyTerrain": false,
   "displayName": "preset.dscombat.127mm",
   "entityTypeKey": "dscombat:bullet",
   "explosionRadius": 0.0,
   "explosive": false,
-  "fireRate": 15,
+  "fireRate": 12,
   "ingredients": [
     {
       "item": "minecraft:copper_ingot",
-      "num": 9
+      "num": 5
     }
   ],
   "innacuracy": 0.1,

@@ -10,14 +10,14 @@
 		"C": {
 			"item": "minecraft:copper_block"
 		},
-		"G": {
-			"item": "minecraft:gunpowder"
+		"T": {
+			"item": "minecraft:tnt"
 		}
 	},
 	"pattern": [
-		"IIG",
+		"IIT",
 		"CCS",
-		"IIG"
+		"IIT"
 	],
 	"result": {
 		"count": 1,

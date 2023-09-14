@@ -12,12 +12,12 @@
 		}
 	},
 	"pattern": [
-		" CC",
+		"  C",
 		"IIS",
-		" CC"
+		"  C"
 	],
 	"result": {
 		"count": 1,
-		"item": "dscombat:minigun_turret"
+		"item": "dscombat:aa_turret"
 	}
 }

@@ -18,13 +18,13 @@
     },
     {
       "item": "minecraft:gunpowder",
-      "num": 9
+      "num": 7
     }
   ],
   "innacuracy": 0.15,
   "itemKey": "dscombat:120mmhe",
   "maxAge": 40,
-  "maxAmmo": 12,
+  "maxAmmo": 36,
   "presetId": "406mmhe",
   "rackTypeKey": "",
   "shootSoundKey": "dscombat:bullet_shoot_1",

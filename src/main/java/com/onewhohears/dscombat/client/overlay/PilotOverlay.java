@@ -448,7 +448,7 @@ public class PilotOverlay {
         	if (screen_pos[0] < 0 || screen_pos[1] < 0) continue;
         	int x_win = screen_pos[0], y_win = height - screen_pos[1];
         	int min = 2, max = 8;
-        	int size = Math.max(min, (int)(max-dist/200*(max-min))); // FIXME 2.1 change circle size based on distance
+        	int size = Math.max(min, (int)(max-dist/200*(max-min)));
         	RenderSystem.setShaderTexture(0, hud);
             GuiComponent.blit(poseStack, 
             		x_win-size/2, y_win-size*3/4, 

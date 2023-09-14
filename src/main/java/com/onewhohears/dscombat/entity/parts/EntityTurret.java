@@ -119,6 +119,7 @@ public class EntityTurret extends EntitySeat {
 		yRotRelO = getRelRotY();
 		LivingEntity gunner = getPassenger();
 		if (gunner == null) return;
+		// TODO 6.1 certain mobs aim and shoot in turrets. some are better at aiming than others
 		Quaternion ra = Quaternion.ONE;
 		if (!level.isClientSide) {
 			if (newRiderCoolDown > 0) --newRiderCoolDown;
@@ -152,20 +153,10 @@ public class EntityTurret extends EntitySeat {
 			
 			setRelRotX(Mth.wrapDegrees(relx+dx));
 			setRelRotY(Mth.wrapDegrees(rely+dy));
-			
-			/*System.out.println("TURRET SERVER TICK "+tickCount);
-			System.out.println("relgoaly = "+relangles[1]);
-			System.out.println("relyn    = "+getRelRotY());
-			System.out.println("relgoalx = "+relangles[0]);
-			System.out.println("relxn    = "+getRelRotX());*/
 		}
 		float[] global = UtilAngles.relativeToGlobalDegrees(getRelRotX(), getRelRotY(), ra);
 		setXRot(global[0]);
 		setYRot(global[1]);
-		/*if (!level.isClientSide) {
-			System.out.println("playerx = "+player.getXRot()+" playery = "+player.getYRot());
-			System.out.println("globalx = "+global[0]       +" globaly = "+global[1]);
-		}*/
 	}
 	
 	@Override

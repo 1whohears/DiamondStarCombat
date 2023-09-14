@@ -186,7 +186,6 @@ public class ModItems {
 	public static final RegistryObject<Item> AXCEL_TRUCK_RADAR = ITEMS.register("axcel_truck_radar", 
 			() -> new ItemRadarPart(3f, "axcel_truck_radar", SlotType.EXTERNAL_ADVANCED));
 	// IDEA 2 passive under water sonar doesn's show RWR warning
-	// TODO 1.3 new radar recipes
 	public static final RegistryObject<Item> AIR_SCAN_A = ITEMS.register("air_scan_a", 
 			() -> new ItemRadarPart(3f, "air_scan_a", SlotType.EXTERNAL_ADVANCED, 
 					ModEntities.AIR_SCAN_A.getId().toString()));

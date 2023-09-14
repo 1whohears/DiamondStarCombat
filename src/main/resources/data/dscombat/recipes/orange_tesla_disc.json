@@ -1,0 +1,17 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"O": {
+			"item": "dscombat:orange_tesla"
+		}
+	},
+	"pattern": [
+		"OOO",
+		"O O",
+		"OOO"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:orange_tesla_disc"
+	}
+}

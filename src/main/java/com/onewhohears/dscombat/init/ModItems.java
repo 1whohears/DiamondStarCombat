@@ -193,6 +193,12 @@ public class ModItems {
 	public static final RegistryObject<Item> AIR_SCAN_B = ITEMS.register("air_scan_b", 
 			() -> new ItemRadarPart(3f, "air_scan_b", SlotType.EXTERNAL_ADVANCED, 
 					ModEntities.AIR_SCAN_B.getId().toString()));
+	public static final RegistryObject<Item> SURVEY_ALL_A = ITEMS.register("survey_all_a", 
+			() -> new ItemRadarPart(3f, "survey_all_a", SlotType.EXTERNAL_ADVANCED, 
+					ModEntities.SURVEY_ALL_A.getId().toString()));
+	public static final RegistryObject<Item> SURVEY_ALL_B = ITEMS.register("survey_all_b", 
+			() -> new ItemRadarPart(3f, "survey_all_b", SlotType.EXTERNAL_ADVANCED, 
+					ModEntities.SURVEY_ALL_B.getId().toString()));
 	
 	// SEATS
 	public static final RegistryObject<Item> SEAT = ITEMS.register("seat", 

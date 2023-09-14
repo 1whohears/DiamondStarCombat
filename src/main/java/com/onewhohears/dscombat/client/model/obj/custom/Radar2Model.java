@@ -17,7 +17,7 @@ public class Radar2Model extends ObjRadarModel {
 	
 	@Override
 	protected Transforms getComponentTransforms(EntityRadar entity, float partialTicks) {
-		float rot_rate = Mth.PI/2;
+		float rot_rate = Mth.PI;
 		float xrothead = UtilAngles.lerpAngle(partialTicks, entity.tickCount*rot_rate, (entity.tickCount+1)*rot_rate);
 		Matrix4f xrothead_mat = UtilAngles.pivotRotY(0, 0, 0, xrothead);
 		ImmutableMap<String, Matrix4f> transforms = ImmutableMap.<String, Matrix4f>builder()

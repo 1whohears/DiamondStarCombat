@@ -1,0 +1,15 @@
+{
+  "displayName": "preset.dscombat.survey_all_a",
+  "fov": -1.0,
+  "presetId": "survey_all_a",
+  "range": 600.0,
+  "scanAir": true,
+  "scanAircraft": true,
+  "scanGround": true,
+  "scanMobs": true,
+  "scanPlayers": true,
+  "scanRate": 20,
+  "sensitivity": 0.9,
+  "throGroundRange": 0.0,
+  "throWaterRange": 10.0
+}

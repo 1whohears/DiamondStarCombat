@@ -224,6 +224,10 @@ public class ModEntities {
 			() -> createEntityType(EntityRadar::new, TINY));
 	public static final RegistryObject<EntityType<EntityRadar>> AIR_SCAN_B = ENTITIES.register("air_scan_b", 
 			() -> createEntityType(EntityRadar::new, TINY));
+	public static final RegistryObject<EntityType<EntityRadar>> SURVEY_ALL_A = ENTITIES.register("survey_all_a", 
+			() -> createEntityType(EntityRadar::new, TINY));
+	public static final RegistryObject<EntityType<EntityRadar>> SURVEY_ALL_B = ENTITIES.register("survey_all_b", 
+			() -> createEntityType(EntityRadar::new, TINY));
 	
 	public static final RegistryObject<EntityType<EntityBullet>> BULLET = ENTITIES.register("bullet", 
 			() -> createEntityType(EntityBullet::new, EntityDimensions.scalable(0.15f, 0.15f)));

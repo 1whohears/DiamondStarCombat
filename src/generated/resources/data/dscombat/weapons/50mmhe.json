@@ -21,7 +21,7 @@
       "num": 5
     }
   ],
-  "innacuracy": 0.2,
+  "innacuracy": 0.25,
   "itemKey": "dscombat:50mmhe",
   "maxAge": 40,
   "maxAmmo": 250,

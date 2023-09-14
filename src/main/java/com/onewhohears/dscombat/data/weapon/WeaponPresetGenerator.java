@@ -60,7 +60,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 		addPresetToGenerate(BulletData.Builder
 				.bulletBuilder(DSCombatMod.MODID, "50mmhe")
 				.setFireRate(4)
-				.setInnacuracy(0.2f)
+				.setInnacuracy(0.25f)
 				.setCanShootOnGround(true)
 				.setDamage(20f)
 				.setSpeed(9f)
@@ -83,11 +83,11 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 		addPresetToGenerate(BulletData.Builder
 				.bulletBuilder(DSCombatMod.MODID, "120mmhe")
 				.setFireRate(30)
-				.setInnacuracy(0.04f)
+				.setInnacuracy(0.08f)
 				.setCanShootOnGround(true)
 				.setDamage(40f)
 				.setSpeed(8f)
-				.setExplosionRadius(6f)
+				.setExplosionRadius(4.5f)
 				.setExplosive(true)
 				.setDestoryTerrain(true)
 				.setCausesFire(false)
@@ -102,7 +102,50 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.addIngredient("minecraft:copper_ingot", 4)
 				.addIngredient("minecraft:gunpowder", 5)
 				.build());
-		// TODO 2.2 bullets for knew guns
+		addPresetToGenerate(BulletData.Builder
+				.bulletBuilder(DSCombatMod.MODID, "406mmhe")
+				.setFireRate(60)
+				.setInnacuracy(0.15f)
+				.setCanShootOnGround(true)
+				.setDamage(80f)
+				.setSpeed(5f)
+				.setExplosionRadius(7f)
+				.setExplosive(true)
+				.setDestoryTerrain(true)
+				.setCausesFire(true)
+				.setMaxAmmo(12)
+				.setMaxAge(40)
+				.setItem(ModItems.B_120MMHE.getId())
+				.setEntityType(ModEntities.BULLET.getId())
+				.setNoRack()
+				.setShootSound(ModSounds.BULLET_SHOOT_1.getId())
+				.setNoCompatible()
+				.setCraftNum(1)
+				.addIngredient("minecraft:copper_ingot", 10)
+				.addIngredient("minecraft:gunpowder", 9)
+				.build());
+		addPresetToGenerate(BulletData.Builder
+				.bulletBuilder(DSCombatMod.MODID, "127mm")
+				.setFireRate(15)
+				.setInnacuracy(0.1f)
+				.setCanShootOnGround(true)
+				.setDamage(60f)
+				.setSpeed(7f)
+				.setExplosionRadius(0)
+				.setExplosive(false)
+				.setDestoryTerrain(false)
+				.setCausesFire(false)
+				.setMaxAmmo(50)
+				.setMaxAge(40)
+				.setItem(ModItems.BULLET.getId())
+				.setEntityType(ModEntities.BULLET.getId())
+				.setNoRack()
+				.setShootSound(ModSounds.BULLET_SHOOT_1.getId())
+				.setNoCompatible()
+				.setCraftNum(2)
+				.addIngredient("minecraft:copper_ingot", 9)
+				.build());
+		// TODO 2.2 bullets for new guns
 	}
 	
 	protected void registerAAMissiles() {

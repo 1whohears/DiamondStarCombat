@@ -240,11 +240,11 @@ public class ModItems {
 					RotBounds.create(2.0f, 75f, 30f)));
 	public static final RegistryObject<Item> MARK7_CANNON = ITEMS.register("mark7_cannon", 
 			() -> new ItemTurret(11f, SlotType.TURRET_HEAVY, 
-					ModEntities.MARK7_CANNON.getId().toString(), "120mmhe",
+					ModEntities.MARK7_CANNON.getId().toString(), "406mmhe",
 					RotBounds.create(0.9f, 30f, 15f)));
 	public static final RegistryObject<Item> MARK45_CANNON = ITEMS.register("mark45_cannon", 
 			() -> new ItemTurret(6f, SlotType.TURRET_MED, 
-					ModEntities.MARK45_CANNON.getId().toString(), "120mmhe",
+					ModEntities.MARK45_CANNON.getId().toString(), "127mm",
 					RotBounds.create(1.1f, 30f, 15f)));
 	
 	// FLARE DISPENSERS

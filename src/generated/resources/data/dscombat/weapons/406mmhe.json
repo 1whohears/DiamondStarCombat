@@ -1,32 +1,32 @@
 {
   "type": "bullet",
   "canShootOnGround": true,
-  "causesFire": false,
+  "causesFire": true,
   "compatibleWeaponPart": "",
   "craftNum": 1,
-  "damage": 40.0,
+  "damage": 80.0,
   "destroyTerrain": true,
-  "displayName": "preset.dscombat.120mmhe",
+  "displayName": "preset.dscombat.406mmhe",
   "entityTypeKey": "dscombat:bullet",
-  "explosionRadius": 4.5,
+  "explosionRadius": 7.0,
   "explosive": true,
-  "fireRate": 30,
+  "fireRate": 60,
   "ingredients": [
     {
       "item": "minecraft:copper_ingot",
-      "num": 4
+      "num": 10
     },
     {
       "item": "minecraft:gunpowder",
-      "num": 5
+      "num": 9
     }
   ],
-  "innacuracy": 0.08,
+  "innacuracy": 0.15,
   "itemKey": "dscombat:120mmhe",
   "maxAge": 40,
-  "maxAmmo": 16,
-  "presetId": "120mmhe",
+  "maxAmmo": 12,
+  "presetId": "406mmhe",
   "rackTypeKey": "",
   "shootSoundKey": "dscombat:bullet_shoot_1",
-  "speed": 8.0
+  "speed": 5.0
 }

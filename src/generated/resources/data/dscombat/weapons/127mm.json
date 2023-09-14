@@ -1,0 +1,28 @@
+{
+  "type": "bullet",
+  "canShootOnGround": true,
+  "causesFire": false,
+  "compatibleWeaponPart": "",
+  "craftNum": 2,
+  "damage": 60.0,
+  "destroyTerrain": false,
+  "displayName": "preset.dscombat.127mm",
+  "entityTypeKey": "dscombat:bullet",
+  "explosionRadius": 0.0,
+  "explosive": false,
+  "fireRate": 15,
+  "ingredients": [
+    {
+      "item": "minecraft:copper_ingot",
+      "num": 9
+    }
+  ],
+  "innacuracy": 0.1,
+  "itemKey": "dscombat:bullet",
+  "maxAge": 40,
+  "maxAmmo": 50,
+  "presetId": "127mm",
+  "rackTypeKey": "",
+  "shootSoundKey": "dscombat:bullet_shoot_1",
+  "speed": 7.0
+}

@@ -237,10 +237,15 @@ public abstract class EntityWeapon extends Projectile {
 	
 	@Override
 	public boolean shouldRenderAtSqrDistance(double dist) {
-		return dist < 25000;
+		return dist < 65536;
 	}
 	
 	protected void tickSetMove() {
+		
+	}
+	
+	@Override
+	public void lerpMotion(double x, double y, double z) {
 		
 	}
 	

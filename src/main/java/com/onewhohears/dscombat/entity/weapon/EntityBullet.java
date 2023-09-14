@@ -92,8 +92,8 @@ public class EntityBullet extends EntityWeapon {
 				System.out.println("EXPLODE "+this+" "+tickCount);
 			} else {
 				level.addParticle(ParticleTypes.SMOKE, 
-						getX(), getY()+0.5D, getZ(), 
-						0.0D, 0.0D, 0.0D);
+					getX(), getY()+0.5D, getZ(), 
+					0.0D, 0.0D, 0.0D);
 			}
 		}
 	}
@@ -104,8 +104,7 @@ public class EntityBullet extends EntityWeapon {
 	
 	@Override
 	protected void tickSetMove() {
-		// FIXME 4 bullets moving wacko
-		setDeltaMovement(getDeltaMovement().add(0, -Config.SERVER.accGravity.get()*2, 0));
+		setDeltaMovement(getDeltaMovement().add(0, -Config.SERVER.accGravity.get()*4, 0));
 	}
 	
 	@Override

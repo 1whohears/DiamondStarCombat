@@ -28,5 +28,11 @@ public class ObjPartModel<T extends EntityPart> extends ObjEntityModel<T> {
 		}
 		poseStack.mulPose(Vector3f.ZP.rotationDegrees(entity.getZRot()));
 	}
+	
+	@Override
+	protected int getLight(T entity, int lightmap) {
+		if (entity.getVehicle() instanceof EntityAircraft plane && !plane.isOperational()) return 1;
+		return lightmap;
+	}
 
 }

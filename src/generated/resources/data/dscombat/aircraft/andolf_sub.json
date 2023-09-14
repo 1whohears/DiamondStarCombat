@@ -150,7 +150,7 @@
       "slot_posy": -1.6,
       "slot_posz": 3.5,
       "slot_type": "frame",
-      "zRot": 0.0
+      "zRot": 180.0
     },
     {
       "data": {
@@ -163,7 +163,7 @@
       "slot_posy": 0.0,
       "slot_posz": 1.0,
       "slot_type": "frame",
-      "zRot": 90.0
+      "zRot": -90.0
     },
     {
       "data": {
@@ -176,7 +176,7 @@
       "slot_posy": 0.0,
       "slot_posz": 0.0,
       "slot_type": "frame",
-      "zRot": 90.0
+      "zRot": -90.0
     },
     {
       "data": {
@@ -189,7 +189,7 @@
       "slot_posy": 0.0,
       "slot_posz": -1.0,
       "slot_type": "frame",
-      "zRot": 90.0
+      "zRot": -90.0
     },
     {
       "data": {
@@ -202,7 +202,7 @@
       "slot_posy": 0.0,
       "slot_posz": 1.0,
       "slot_type": "frame",
-      "zRot": -90.0
+      "zRot": 90.0
     },
     {
       "data": {
@@ -215,7 +215,7 @@
       "slot_posy": 0.0,
       "slot_posz": 0.0,
       "slot_type": "frame",
-      "zRot": -90.0
+      "zRot": 90.0
     },
     {
       "data": {
@@ -228,7 +228,7 @@
       "slot_posy": 0.0,
       "slot_posz": -1.0,
       "slot_type": "frame",
-      "zRot": -90.0
+      "zRot": 90.0
     },
     {
       "data": {

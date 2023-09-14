@@ -15,7 +15,9 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
+@Deprecated
 public class EntityModelCFM56 extends EntityControllableModel<EntityEngine> {
 	
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(DSCombatMod.MODID, "cfm56"), "main");
@@ -30,6 +32,7 @@ public class EntityModelCFM56 extends EntityControllableModel<EntityEngine> {
 			int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		poseStack.translate(0, 1.50, 0);
 		poseStack.scale(1.0F, -1.0F, 1.0F);
+		body.zRot = Mth.PI;
 		body.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 	

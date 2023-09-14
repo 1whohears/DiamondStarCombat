@@ -15,7 +15,9 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
+@Deprecated
 public class EntityModelBombRack extends EntityControllableModel<EntityWeaponRack>{
 	
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(DSCombatMod.MODID, "bomb_rack"), "main");
@@ -34,6 +36,7 @@ public class EntityModelBombRack extends EntityControllableModel<EntityWeaponRac
 		poseStack.scale(1.0F, -1.0F, 1.0F);
 		int mNum = entity.getAmmoNum();
 		for (int i = 0; i < m.length; ++i) m[i].visible = i < mNum;
+		main.zRot = Mth.PI;
 		main.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 	

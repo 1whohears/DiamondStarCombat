@@ -107,7 +107,7 @@
       "slot_posy": 0.15,
       "slot_posz": 0.0,
       "slot_type": "wing",
-      "zRot": 0.0
+      "zRot": 180.0
     },
     {
       "data": {
@@ -120,7 +120,7 @@
       "slot_posy": 0.15,
       "slot_posz": 0.0,
       "slot_type": "wing",
-      "zRot": 0.0
+      "zRot": 180.0
     },
     {
       "data": {
@@ -133,7 +133,7 @@
       "slot_posy": 0.15,
       "slot_posz": 0.0,
       "slot_type": "wing",
-      "zRot": 0.0
+      "zRot": 180.0
     },
     {
       "data": {
@@ -146,7 +146,7 @@
       "slot_posy": 0.15,
       "slot_posz": 0.0,
       "slot_type": "wing",
-      "zRot": 0.0
+      "zRot": 180.0
     },
     {
       "data": {
@@ -159,7 +159,7 @@
       "slot_posy": -0.04,
       "slot_posz": 8.5,
       "slot_type": "frame",
-      "zRot": 0.0
+      "zRot": 180.0
     },
     {
       "data": {

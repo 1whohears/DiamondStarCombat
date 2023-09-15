@@ -9,7 +9,7 @@
   "damage": 60.0,
   "destroyTerrain": true,
   "displayName": "preset.dscombat.agm65l",
-  "entityTypeKey": "dscombat:pos_missile_1",
+  "entityTypeKey": "dscombat:agm65l",
   "explosionRadius": 5.5,
   "explosive": true,
   "fireRate": 40,

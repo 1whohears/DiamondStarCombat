@@ -1,0 +1,23 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"S": {
+			"item": "dscombat:survey_all_a"
+		},
+		"G": {
+			"item": "minecraft:ghast_tear"
+		},
+		"I": {
+			"item": "minecraft:iron_ingot"
+		}
+	},
+	"pattern": [
+		" I ",
+		"GSG",
+		" I "
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:survey_all_b"
+	}
+}

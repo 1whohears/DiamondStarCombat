@@ -18,6 +18,11 @@ public class EntityBomb extends EntityBullet {
 	}
 	
 	@Override
+	public void init() {
+		
+	}
+	
+	@Override
 	protected void tickSetMove() {
 		setDeltaMovement(getDeltaMovement().add(0, -Config.SERVER.accGravity.get(), 0));
 	}

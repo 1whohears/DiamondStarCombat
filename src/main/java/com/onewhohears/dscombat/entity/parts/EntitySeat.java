@@ -142,7 +142,9 @@ public class EntitySeat extends EntityPart {
 	@Nullable
 	@Override
     public Entity getControllingPassenger() {
-		return getPlayer();
+		Player p = getPlayer();
+		if (p == null) return super.getControllingPassenger();
+		return p;
     }
 
     @Override
@@ -163,9 +165,9 @@ public class EntitySeat extends EntityPart {
 	@Override
     public boolean hurt(DamageSource source, float amount) {
 		if (source.isExplosion() || source.isMagic()) return true;
-		LivingEntity p = getPassenger();
-		if (p == null) return true;
-		p.hurt(source, amount);
+		Entity v = getVehicle();
+		if (v == null) return false;
+		v.hurt(source, amount);
 		return true;
 	}
 

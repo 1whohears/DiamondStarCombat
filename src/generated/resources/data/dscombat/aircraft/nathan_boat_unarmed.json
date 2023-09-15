@@ -124,7 +124,7 @@
       "slot_posy": 1.0,
       "slot_posz": 0.0,
       "slot_type": "frame",
-      "zRot": 90.0
+      "zRot": -90.0
     },
     {
       "name": "frame_2",
@@ -132,7 +132,7 @@
       "slot_posy": 1.0,
       "slot_posz": 0.0,
       "slot_type": "frame",
-      "zRot": -90.0
+      "zRot": 90.0
     },
     {
       "data": {

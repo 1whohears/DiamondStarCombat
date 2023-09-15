@@ -5,7 +5,6 @@ import java.util.NoSuchElementException;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.parts.EntityEngine;
-import com.onewhohears.dscombat.entity.parts.EntityPart;
 import com.onewhohears.dscombat.init.ModEntities;
 
 import net.minecraft.nbt.CompoundTag;
@@ -17,7 +16,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class ExternalEngineData extends EngineData {
 	
-	private final String entityTypeKey;
+	public final String entityTypeKey;
 	
 	public ExternalEngineData(EngineType engineType, float weight, float thrust, float heat, float fuelRate, 
 			ResourceLocation itemid, SlotType[] compatibleSlots, String entityTypeKey) {
@@ -73,20 +72,10 @@ public class ExternalEngineData extends EngineData {
 		}
 	}
 	
-	
-	public boolean isEntitySetup(String slotId, EntityAircraft craft) {
-		for (EntityPart part : craft.getPartEntities()) 
-			if (part.getPartType() == getType() && part.getSlotId().equals(slotId)) 
-				return true;
-		return false;
-	}
-	
 	@Override
 	public void serverRemove(String slotId) {
 		super.serverRemove(slotId);
-		for (EntityPart part : getParent().getPartEntities()) 
-			if (part.getSlotId().equals(slotId)) 
-				part.discard();
+		removeEntity(slotId);
 	}
 
 }

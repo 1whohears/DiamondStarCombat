@@ -109,21 +109,6 @@ public class TurretData extends SeatData {
 		return t;
 	}
 	
-	@Override
-	public boolean isSetup(String slotId, EntityAircraft craft) {
-		for (EntityPart part : craft.getPartEntities()) 
-			if (part.getPartType() == getType() && part.getSlotId().equals(slotId)) 
-				return true;
-		return false;
-	}
-	
-	@Override
-	public void serverRemove(String slotId) {
-		for (EntityPart part : getParent().getPartEntities()) 
-			if (part.getSlotId().equals(slotId)) 
-				part.discard();
-	}
-	
 	@SuppressWarnings("unchecked")
 	public EntityType<? extends EntityTurret> getTurretType() {
 		if (turretType == null) {

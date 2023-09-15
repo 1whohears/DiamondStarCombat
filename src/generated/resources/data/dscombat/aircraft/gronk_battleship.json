@@ -31,27 +31,19 @@
       "num": 1
     },
     {
-      "item": "dscombat:ar2k",
+      "item": "dscombat:ar1k",
       "num": 1
     },
     {
-      "item": "dscombat:adl",
-      "num": 1
+      "item": "dscombat:mark7_cannon",
+      "num": 4
     },
     {
-      "item": "dscombat:vls",
-      "num": 1
+      "item": "dscombat:aa_turret",
+      "num": 4
     },
     {
-      "item": "dscombat:torpedo_tubes",
-      "num": 1
-    },
-    {
-      "item": "dscombat:mls",
-      "num": 1
-    },
-    {
-      "item": "dscombat:minigun_turret",
+      "item": "dscombat:mark45_cannon",
       "num": 2
     },
     {
@@ -61,10 +53,6 @@
     {
       "item": "minecraft:iron_ingot",
       "num": 64
-    },
-    {
-      "item": "minecraft:redstone",
-      "num": 48
     },
     {
       "item": "minecraft:gunpowder",
@@ -131,9 +119,7 @@
     },
     {
       "data": {
-        "filled": true,
-        "itemid": "dscombat:adl",
-        "param": "rgm84"
+        "itemid": "dscombat:mark7_cannon"
       },
       "name": "seat5",
       "slot_posx": 0.0,
@@ -144,9 +130,7 @@
     },
     {
       "data": {
-        "filled": true,
-        "itemid": "dscombat:vls",
-        "param": "bgm109"
+        "itemid": "dscombat:mark7_cannon"
       },
       "name": "seat6",
       "slot_posx": 0.0,
@@ -157,7 +141,7 @@
     },
     {
       "data": {
-        "itemid": "dscombat:torpedo_tubes"
+        "itemid": "dscombat:mark7_cannon"
       },
       "name": "seat7",
       "slot_posx": 0.0,
@@ -168,7 +152,7 @@
     },
     {
       "data": {
-        "itemid": "dscombat:mls"
+        "itemid": "dscombat:mark7_cannon"
       },
       "name": "seat8",
       "slot_posx": 0.0,
@@ -179,7 +163,7 @@
     },
     {
       "data": {
-        "itemid": "dscombat:minigun_turret"
+        "itemid": "dscombat:mark45_cannon"
       },
       "name": "seat9",
       "slot_posx": 0.0,
@@ -190,7 +174,7 @@
     },
     {
       "data": {
-        "itemid": "dscombat:minigun_turret"
+        "itemid": "dscombat:mark45_cannon"
       },
       "name": "seat10",
       "slot_posx": 0.0,
@@ -201,7 +185,7 @@
     },
     {
       "data": {
-        "itemid": "dscombat:axcel_truck_radar"
+        "itemid": "dscombat:air_scan_a"
       },
       "name": "frame_1",
       "slot_posx": 0.0,
@@ -211,34 +195,46 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "itemid": "dscombat:aa_turret"
+      },
       "name": "frame_2",
       "slot_posx": 6.0,
       "slot_posy": 4.0,
-      "slot_posz": 2.0,
+      "slot_posz": 4.0,
       "slot_type": "light_turret",
       "zRot": 0.0
     },
     {
+      "data": {
+        "itemid": "dscombat:aa_turret"
+      },
       "name": "frame_3",
       "slot_posx": -6.0,
       "slot_posy": 4.0,
-      "slot_posz": 2.0,
+      "slot_posz": 4.0,
       "slot_type": "light_turret",
       "zRot": 0.0
     },
     {
+      "data": {
+        "itemid": "dscombat:aa_turret"
+      },
       "name": "frame_4",
       "slot_posx": 6.0,
       "slot_posy": 4.0,
-      "slot_posz": -2.0,
+      "slot_posz": -4.0,
       "slot_type": "light_turret",
       "zRot": 0.0
     },
     {
+      "data": {
+        "itemid": "dscombat:aa_turret"
+      },
       "name": "frame_5",
       "slot_posx": -6.0,
       "slot_posy": 4.0,
-      "slot_posz": -2.0,
+      "slot_posz": -4.0,
       "slot_type": "light_turret",
       "zRot": 0.0
     },

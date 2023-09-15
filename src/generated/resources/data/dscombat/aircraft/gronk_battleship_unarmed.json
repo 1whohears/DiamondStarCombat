@@ -31,7 +31,7 @@
       "num": 1
     },
     {
-      "item": "dscombat:ar2k",
+      "item": "dscombat:ar1k",
       "num": 1
     }
   ],
@@ -138,9 +138,6 @@
       "zRot": 0.0
     },
     {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
       "name": "seat9",
       "slot_posx": 0.0,
       "slot_posy": 6.0,
@@ -149,9 +146,6 @@
       "zRot": 0.0
     },
     {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
       "name": "seat10",
       "slot_posx": 0.0,
       "slot_posy": 6.0,
@@ -161,7 +155,7 @@
     },
     {
       "data": {
-        "itemid": "dscombat:axcel_truck_radar"
+        "itemid": "dscombat:air_scan_a"
       },
       "name": "frame_1",
       "slot_posx": 0.0,
@@ -174,7 +168,7 @@
       "name": "frame_2",
       "slot_posx": 6.0,
       "slot_posy": 4.0,
-      "slot_posz": 2.0,
+      "slot_posz": 4.0,
       "slot_type": "light_turret",
       "zRot": 0.0
     },
@@ -182,7 +176,7 @@
       "name": "frame_3",
       "slot_posx": -6.0,
       "slot_posy": 4.0,
-      "slot_posz": 2.0,
+      "slot_posz": 4.0,
       "slot_type": "light_turret",
       "zRot": 0.0
     },
@@ -190,7 +184,7 @@
       "name": "frame_4",
       "slot_posx": 6.0,
       "slot_posy": 4.0,
-      "slot_posz": -2.0,
+      "slot_posz": -4.0,
       "slot_type": "light_turret",
       "zRot": 0.0
     },
@@ -198,7 +192,7 @@
       "name": "frame_5",
       "slot_posx": -6.0,
       "slot_posy": 4.0,
-      "slot_posz": -2.0,
+      "slot_posz": -4.0,
       "slot_type": "light_turret",
       "zRot": 0.0
     },

@@ -15,7 +15,9 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
+@Deprecated
 public class EntityModelXM12 extends EntityControllableModel<EntityWeaponRack> {
 	
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(DSCombatMod.MODID, "xm12"), "main");
@@ -30,6 +32,7 @@ public class EntityModelXM12 extends EntityControllableModel<EntityWeaponRack> {
 			int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		poseStack.translate(0, 1.50, 0);
 		poseStack.scale(1.0F, -1.0F, 1.0F);
+		main.zRot = Mth.PI;
 		main.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 	

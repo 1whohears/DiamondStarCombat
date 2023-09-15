@@ -9,6 +9,7 @@ import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents;
+import com.onewhohears.dscombat.client.event.forgebus.ClientRenderEvents;
 import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
@@ -21,6 +22,7 @@ import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.math.UtilAngles;
+import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
@@ -62,6 +64,16 @@ public class PilotOverlay {
 	private static final int radarSize = 120, radarOffset = 8;
 	private static final ResourceLocation RADAR = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/radar.png");
+	private static final ResourceLocation HUD_PING = new ResourceLocation(DSCombatMod.MODID,
+            "textures/ui/hud_ping.png");
+	private static final ResourceLocation HUD_PING_HOVER = new ResourceLocation(DSCombatMod.MODID,
+            "textures/ui/hud_ping_hover.png");
+	private static final ResourceLocation HUD_PING_SELECT = new ResourceLocation(DSCombatMod.MODID,
+            "textures/ui/hud_ping_select.png");
+	private static final ResourceLocation HUD_PING_FRIEND = new ResourceLocation(DSCombatMod.MODID,
+            "textures/ui/hud_ping_friend.png");
+	private static final ResourceLocation HUD_PING_SHARED = new ResourceLocation(DSCombatMod.MODID,
+            "textures/ui/hud_ping_shared.png");
 	
 	private static final int attitudeSize = 80;
 	private static final ResourceLocation ATTITUDE_BASE = new ResourceLocation(DSCombatMod.MODID,
@@ -323,6 +335,7 @@ public class PilotOverlay {
 	private static void drawAircraftRadarData(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
 		RadarSystem radar = plane.radarSystem;
 		if (!radar.hasRadar()) return;
+		// RADAR SCREEN
 		RenderSystem.setShaderTexture(0, RADAR);
         GuiComponent.blit(poseStack, 
         		radarOffset, height-radarOffset-radarSize, 
@@ -376,7 +389,7 @@ public class PilotOverlay {
         	GuiComponent.drawCenteredString(poseStack, m.font, 
         			symbol, x, y, color);
         }
-		// PINGS
+		// LOOK AT PING DATA
 		List<RadarPing> pings = radar.getClientRadarPings();
 		if (pings == null || pings.size() == 0) return;
 		int selected = radar.getClientSelectedPingIndex();
@@ -397,8 +410,10 @@ public class PilotOverlay {
 			GuiComponent.drawCenteredString(poseStack, m.font, 
 				text, cx, height-radarOffset-radarSize-20, color);
 		}
+		// PINGS ON SCREEN AND HUD
 		for (int i = 0; i < pings.size(); ++i) {
 			RadarPing ping = pings.get(i);
+			// SCREEN
 			Vec3 dp = ping.pos.subtract(plane.position());
 			double dist = dp.multiply(1, 0, 1).length()/displayRange;
 			if (dist > 1) dist = 1;
@@ -407,13 +422,38 @@ public class PilotOverlay {
         	int y = cy + (int)(-Mth.cos(yaw)*radius*dist);
         	int color = 0x00ff00;
         	String symbol = "o";
+        	ResourceLocation hud = HUD_PING;
         	if (ping.isFriendly) symbol = "F";
-        	if (i == selected) color = 0xff0000;
-        	else if (i == hover) color = 0xffff00;
-        	else if (ping.isFriendly) color = 0x0000ff;
-        	else if (ping.isShared()) color = 0x66cdaa;
+        	if (i == selected) {
+        		color = 0xff0000;
+        		hud = HUD_PING_SELECT;
+        	} else if (i == hover) {
+        		color = 0xffff00;
+        		hud = HUD_PING_HOVER;
+        	} else if (ping.isFriendly) {
+        		color = 0x0000ff;
+        		hud = HUD_PING_FRIEND;
+        	} else if (ping.isShared()) {
+        		color = 0x66cdaa;
+        		hud = HUD_PING_SHARED;
+        	}
         	GuiComponent.drawCenteredString(poseStack, m.font, 
         			symbol, x, y, color);
+        	// HUD
+        	int[] screen_pos = UtilGeometry.worldToScreenPos(
+        			ping.pos, 
+        			ClientRenderEvents.getViewMatrix(), 
+        			ClientRenderEvents.getProjMatrix(), 
+        			width, height);
+        	if (screen_pos[0] < 0 || screen_pos[1] < 0) continue;
+        	int x_win = screen_pos[0], y_win = height - screen_pos[1];
+        	int min = 2, max = 8;
+        	int size = Math.max(min, (int)(max-dist/200*(max-min)));
+        	RenderSystem.setShaderTexture(0, hud);
+            GuiComponent.blit(poseStack, 
+            		x_win-size/2, y_win-size*3/4, 
+            		0, 0, size, size, 
+            		size, size);
 		}
 	}
 	
@@ -569,7 +609,7 @@ public class PilotOverlay {
 	        	turnCooSize, turnCooSize, 
 	        	turnCooSize, turnCooSize);
 		RenderSystem.setShaderTexture(0, TURN_COORD_BALL);
-		int move = (int)((plane.getCentripetalForce()-plane.getCentrifugalForce())*10);
+		int move = (int)((plane.getCentripetalForce()-plane.getCentrifugalForce())*25);
 		GuiComponent.blit(poseStack, 
 				tcX+move, tcY, 
 	        	0, 0, 

@@ -9,7 +9,7 @@
   "damage": 60.0,
   "destroyTerrain": true,
   "displayName": "preset.dscombat.agm84e",
-  "entityTypeKey": "dscombat:track_missile_1",
+  "entityTypeKey": "dscombat:agm84e",
   "explosionRadius": 4.5,
   "explosive": true,
   "fireRate": 50,

@@ -47,24 +47,13 @@ public class SeatData extends PartData {
 	
 	@Override
 	public boolean isSetup(String slotId, EntityAircraft craft) {
-		//System.out.println("is this seat setup "+slotId);
-		for (EntitySeat seat : craft.getSeats()) {
-			//System.out.println("check seat slot "+seat.getSlotId());
-			if (seat.getPartType() == getType() && seat.getSlotId().equals(slotId)) 
-				return true;
-		}
-		return false;
+		return isEntitySetup(slotId, craft);
 	}
 	
 	@Override
 	public void serverRemove(String slotId) {
 		super.serverRemove(slotId);
-		//System.out.println("removing seat of slot "+slotId);
-		for (EntitySeat seat : this.getParent().getSeats()) {
-			//System.out.println("checking seat "+seat.getSlotId());
-			if (seat.getSlotId().equals(slotId))
-					seat.discard();
-		}
+		removeEntity(slotId);
 	}
 
 }

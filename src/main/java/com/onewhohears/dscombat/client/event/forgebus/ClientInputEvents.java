@@ -106,7 +106,6 @@ public final class ClientInputEvents {
 		int invertY = Config.CLIENT.invertY.get() ? -1 : 1;
 		if (plane.getAircraftType().ignoreInvertY) invertY = -1;
 		if (!plane.isFreeLook()) {
-			// FIXME 1 mouse mode sucks. check how other mods do it
 			double ya = Math.abs(mouseY);
 			double xa = Math.abs(mouseX);
 			float ys = (float) Math.signum(mouseY) * -invertY;
@@ -224,10 +223,10 @@ public final class ClientInputEvents {
 	}
 	
 	private static boolean isPlayerLookingAtPing(Player player, RadarPing ping) {
-		double d = ping.pos.distanceTo(player.position());
+		double d = ping.pos.distanceTo(player.getEyePosition());
 		double y = tan1*d;
 		if (y < 1) y = 1;
-		return UtilGeometry.isPointInsideCone(ping.pos.add(0, 0.5, 0), 
+		return UtilGeometry.isPointInsideCone(ping.pos, 
 				player.getEyePosition(), player.getLookAngle(), 
 				Math.toDegrees(Math.atan2(y, d)), 100000);
 	}

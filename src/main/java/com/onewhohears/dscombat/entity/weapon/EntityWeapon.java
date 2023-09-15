@@ -42,8 +42,6 @@ public abstract class EntityWeapon extends Projectile {
 	 */
 	protected int maxAge;
 	
-	// FIXME 3.1 when server lags missile gets spawned behind vehicle leading to it hitting pilot sometimes
-	// maybe don't allow it to explode until it has existed for some amount of time
 	public EntityWeapon(EntityType<? extends EntityWeapon> type, Level level) {
 		super(type, level);
 	}
@@ -97,10 +95,15 @@ public abstract class EntityWeapon extends Projectile {
 		UtilParse.writeVec3(compound, getShootPos(), "shoot_pos");
 	}
 	
+	public void init() {
+		
+	}
+	
 	@Override
 	public void tick() {
 		//System.out.println(this+" "+tickCount);
 		if (isTestMode()) return;
+		if (firstTick) init();
 		if (!level.isClientSide && firstTick) setShootPos(position());
 		super.tick();
 		tickCheckCollide();
@@ -167,7 +170,7 @@ public abstract class EntityWeapon extends Projectile {
 	
 	@Override
 	protected boolean canHitEntity(Entity entity) {
-		return super.canHitEntity(entity) && canCollideWith(entity) && !isAlliedTo(entity);
+		return super.canHitEntity(entity) && !isAlliedTo(entity);
 	}
 	
 	@Override
@@ -234,10 +237,15 @@ public abstract class EntityWeapon extends Projectile {
 	
 	@Override
 	public boolean shouldRenderAtSqrDistance(double dist) {
-		return dist < 25000;
+		return dist < 65536;
 	}
 	
 	protected void tickSetMove() {
+		
+	}
+	
+	@Override
+	public void lerpMotion(double x, double y, double z) {
 		
 	}
 	

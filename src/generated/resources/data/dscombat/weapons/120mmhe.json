@@ -8,7 +8,7 @@
   "destroyTerrain": true,
   "displayName": "preset.dscombat.120mmhe",
   "entityTypeKey": "dscombat:bullet",
-  "explosionRadius": 6.0,
+  "explosionRadius": 4.5,
   "explosive": true,
   "fireRate": 30,
   "ingredients": [
@@ -21,7 +21,7 @@
       "num": 5
     }
   ],
-  "innacuracy": 0.04,
+  "innacuracy": 0.08,
   "itemKey": "dscombat:120mmhe",
   "maxAge": 40,
   "maxAmmo": 16,

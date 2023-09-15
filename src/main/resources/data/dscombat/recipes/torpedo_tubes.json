@@ -1,0 +1,26 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"S": {
+			"item": "dscombat:seat"
+		},
+		"R": {
+			"item": "dscombat:heavy_missile_rack"
+		},
+		"C": {
+			"item": "minecraft:iron_ingot"
+		},
+		"P": {
+			"item": "dscombat:torpedo1"
+		}
+	},
+	"pattern": [
+		" P ",
+		"PRP",
+		"CSC"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:torpedo_tubes"
+	}
+}

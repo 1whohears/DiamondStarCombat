@@ -71,7 +71,7 @@ public abstract class JsonPresetReloadListener<T extends JsonPreset> extends Sim
 		setup = false;
 		presetMap.clear();
 		map.forEach((key, je) -> { try {
-			System.out.println("ADD: "+key.toString()+" "+je.toString());
+			System.out.println("ADD: "+key.toString()/*+" "+je.toString()*/);
 			JsonObject json = UtilParse.GSON.fromJson(je, JsonObject.class);
 			T data = getFromJson(key, json);
 			if (data == null) {

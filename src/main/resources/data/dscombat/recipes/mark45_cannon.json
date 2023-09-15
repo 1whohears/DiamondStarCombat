@@ -1,0 +1,23 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"S": {
+			"item": "dscombat:seat"
+		},
+		"I": {
+			"item": "minecraft:iron_block"
+		},
+		"C": {
+			"item": "minecraft:copper_block"
+		}
+	},
+	"pattern": [
+		"II ",
+		"CCS",
+		"II "
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:mark45_cannon"
+	}
+}

@@ -72,6 +72,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -194,6 +195,10 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	protected RadarMode radarMode = RadarMode.ALL;
 	protected boolean isLandingGear, isFreeLook = true;
 	
+	// FIXME 1.1 fix aircraft texture/variant texture system
+	// TODO 5.1 custom hit box system so players can walk on boats
+	// TODO 5.2 allow big boats to have a heli pad and runway
+	// TODO 5.3 some external parts can take damage and break if hit
 	// TODO 5.4 aircraft breaks apart when damaged
 	// FIXME refactor EntityAircraft to EntityVehicle
 	
@@ -572,8 +577,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		return ((entity) -> {
 			if (this.equals(entity.getRootVehicle())) return false;
 			if (entity.isSpectator()) return false;
-			if (!(entity instanceof LivingEntity)) return false;
-			if (entity instanceof Player) return false;
+			if (!(entity instanceof Mob)) return false;
 			return true;
 		});
 	}
@@ -1398,6 +1402,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 						if (!wd.getId().equals(ammoId)) continue;
 						int o = wd.addAmmo(stack.getCount());
 						t.setAmmo(wd.getCurrentAmmo());
+						t.updateDataAmmo();
 						stack.setCount(o);
 						if (stack.getCount() == 0) return InteractionResult.SUCCESS;
 					}

@@ -45,7 +45,7 @@ public class EntityModelAxcelTruck extends EntityControllableModel<EntityGroundV
 		poseStack.translate(0, 1.5, 0);
 		poseStack.scale(-1.0F, -1.0F, 1.0F);
 		float yf = Mth.PI*0.25f;
-		if (entity.radarSystem.hasRadar()) {
+		if (entity.radarSystem.hasRadar("axcel_truck_radar")) {
 			radar.visible = true;
 			radar.yRot = Mth.lerp(partialTicks, (entity.tickCount-1)*0.1f, entity.tickCount*0.1f);
 		} else radar.visible = false;

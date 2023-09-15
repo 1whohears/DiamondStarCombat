@@ -11,8 +11,10 @@ import com.onewhohears.dscombat.entity.aircraft.EntityHelicopter;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 import com.onewhohears.dscombat.entity.aircraft.EntitySubmarine;
 import com.onewhohears.dscombat.entity.parts.EntityEngine;
+import com.onewhohears.dscombat.entity.parts.EntityRadar;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
+import com.onewhohears.dscombat.entity.parts.EntityTurret.ShootType;
 import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
 import com.onewhohears.dscombat.entity.weapon.AntiRadarMissile;
 import com.onewhohears.dscombat.entity.weapon.EntityBomb;
@@ -188,6 +190,18 @@ public class ModEntities {
 	public static final RegistryObject<EntityType<EntityTurret>> TORPEDO_TUBES = ENTITIES.register("torpedo_tubes", 
 			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 
 					new Vec3(0, 1.8, 0), 1), SEAT_SIZE));
+	public static final RegistryObject<EntityType<EntityTurret>> AA_TURRET = ENTITIES.register("aa_turret", 
+			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 
+					new Vec3(0, 0.5, 0), 1.03125), SEAT_SIZE));
+	public static final RegistryObject<EntityType<EntityTurret>> CIWS = ENTITIES.register("ciws", 
+			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 
+					new Vec3(1, 0.5, 0), 0.6875), SEAT_SIZE));
+	public static final RegistryObject<EntityType<EntityTurret>> MARK7_CANNON = ENTITIES.register("mark7_cannon", 
+			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 
+					new Vec3(0, 0.5, 0), 0.625, ShootType.MARK7), SEAT_SIZE));
+	public static final RegistryObject<EntityType<EntityTurret>> MARK45_CANNON = ENTITIES.register("mark45_cannon", 
+			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 
+					new Vec3(0, 0.5, 0), 0.5625), SEAT_SIZE));
 	
 	public static final EntityDimensions TINY = EntityDimensions.scalable(0.1f, 0.1f);
 	
@@ -206,6 +220,15 @@ public class ModEntities {
 	
 	public static final RegistryObject<EntityType<EntityEngine>> CFM56 = ENTITIES.register("cfm56", 
 			() -> createEntityType(EntityEngine::new, TINY));
+	
+	public static final RegistryObject<EntityType<EntityRadar>> AIR_SCAN_A = ENTITIES.register("air_scan_a", 
+			() -> createEntityType(EntityRadar::new, TINY));
+	public static final RegistryObject<EntityType<EntityRadar>> AIR_SCAN_B = ENTITIES.register("air_scan_b", 
+			() -> createEntityType(EntityRadar::new, TINY));
+	public static final RegistryObject<EntityType<EntityRadar>> SURVEY_ALL_A = ENTITIES.register("survey_all_a", 
+			() -> createEntityType(EntityRadar::new, TINY));
+	public static final RegistryObject<EntityType<EntityRadar>> SURVEY_ALL_B = ENTITIES.register("survey_all_b", 
+			() -> createEntityType(EntityRadar::new, TINY));
 	
 	public static final RegistryObject<EntityType<EntityBullet>> BULLET = ENTITIES.register("bullet", 
 			() -> createEntityType(EntityBullet::new, EntityDimensions.scalable(0.15f, 0.15f)));
@@ -240,6 +263,14 @@ public class ModEntities {
 	public static final RegistryObject<EntityType<TrackEntityMissile>> AIM7F = ENTITIES.register("aim7f", 
 			() -> createEntityTypeFar(TrackEntityMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
 	public static final RegistryObject<EntityType<TrackEntityMissile>> AIM7MH = ENTITIES.register("aim7mh", 
+			() -> createEntityTypeFar(TrackEntityMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
+	public static final RegistryObject<EntityType<PositionMissile>> AGM114K = ENTITIES.register("agm114k", 
+			() -> createEntityTypeFar(PositionMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
+	public static final RegistryObject<EntityType<PositionMissile>> AGM84E = ENTITIES.register("agm84e", 
+			() -> createEntityTypeFar(PositionMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
+	public static final RegistryObject<EntityType<PositionMissile>> AGM65L = ENTITIES.register("agm65l", 
+			() -> createEntityTypeFar(PositionMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
+	public static final RegistryObject<EntityType<TrackEntityMissile>> AGM65G = ENTITIES.register("agm65g", 
 			() -> createEntityTypeFar(TrackEntityMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
 	
 	public static final RegistryObject<EntityType<EntityFlare>> FLARE = ENTITIES.register("flare", 

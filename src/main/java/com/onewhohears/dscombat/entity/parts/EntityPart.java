@@ -1,6 +1,9 @@
 package com.onewhohears.dscombat.entity.parts;
 
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
+
+import javax.annotation.Nullable;
+
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.init.DataSerializers;
@@ -16,6 +19,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.scores.Team;
 import net.minecraftforge.network.NetworkHooks;
 
 public abstract class EntityPart extends Entity {
@@ -25,8 +29,8 @@ public abstract class EntityPart extends Entity {
 	
 	private float z_rot;
 	
-	protected EntityPart(EntityType<?> pEntityType, Level pLevel) {
-		super(pEntityType, pLevel);
+	protected EntityPart(EntityType<?> entityType, Level level) {
+		super(entityType, level);
 	}
 	
 	protected EntityPart(EntityType<?> entityType, Level level, String slotId, Vec3 pos) {
@@ -122,5 +126,31 @@ public abstract class EntityPart extends Entity {
 	public boolean isPilotSeat() {
 		return PartSlot.isPilotSeat(getSlotId());
 	}
+	
+	@Override
+    public boolean isAlliedTo(Entity entity) {
+    	if (entity == null) return false;
+    	Entity c = entity.getControllingPassenger();
+    	if (c != null) return isAlliedTo(c.getTeam());
+    	return super.isAlliedTo(entity);
+    }
+    
+    @Override
+    public boolean isAlliedTo(Team team) {
+    	if (team == null) return false;
+    	Entity v = getVehicle();
+    	if (v == null) return false;
+    	Entity c = v.getControllingPassenger();
+		if (c != null) return team.isAlliedTo(c.getTeam());
+    	return super.isAlliedTo(team);
+    }
+    
+    @Nullable
+	@Override
+    public Entity getControllingPassenger() {
+    	Entity v = getVehicle();
+    	if (v == null) return null;
+		return v.getControllingPassenger();
+    }
 
 }

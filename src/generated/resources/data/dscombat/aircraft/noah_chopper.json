@@ -150,7 +150,7 @@
       "slot_posy": -0.5,
       "slot_posz": 1.8,
       "slot_type": "wing",
-      "zRot": 90.0
+      "zRot": -90.0
     },
     {
       "data": {
@@ -163,7 +163,7 @@
       "slot_posy": -0.5,
       "slot_posz": 0.9,
       "slot_type": "wing",
-      "zRot": 90.0
+      "zRot": -90.0
     },
     {
       "data": {
@@ -176,7 +176,7 @@
       "slot_posy": -0.5,
       "slot_posz": 0.0,
       "slot_type": "wing",
-      "zRot": 90.0
+      "zRot": -90.0
     },
     {
       "name": "left_wing_4",
@@ -184,7 +184,7 @@
       "slot_posy": 0.5,
       "slot_posz": 0.0,
       "slot_type": "wing",
-      "zRot": 90.0
+      "zRot": -90.0
     },
     {
       "data": {
@@ -197,7 +197,7 @@
       "slot_posy": -0.5,
       "slot_posz": 1.8,
       "slot_type": "wing",
-      "zRot": -90.0
+      "zRot": 90.0
     },
     {
       "data": {
@@ -210,7 +210,7 @@
       "slot_posy": -0.5,
       "slot_posz": 0.9,
       "slot_type": "wing",
-      "zRot": -90.0
+      "zRot": 90.0
     },
     {
       "data": {
@@ -223,7 +223,7 @@
       "slot_posy": -0.5,
       "slot_posz": 0.0,
       "slot_type": "wing",
-      "zRot": -90.0
+      "zRot": 90.0
     },
     {
       "name": "right_wing_4",
@@ -231,7 +231,7 @@
       "slot_posy": 0.5,
       "slot_posz": 0.0,
       "slot_type": "wing",
-      "zRot": -90.0
+      "zRot": 90.0
     },
     {
       "data": {
@@ -244,7 +244,7 @@
       "slot_posy": -0.67,
       "slot_posz": 1.9,
       "slot_type": "frame",
-      "zRot": 0.0
+      "zRot": 180.0
     },
     {
       "name": "frame_2",
@@ -252,7 +252,7 @@
       "slot_posy": -0.67,
       "slot_posz": 1.1,
       "slot_type": "frame",
-      "zRot": 0.0
+      "zRot": 180.0
     },
     {
       "name": "frame_3",
@@ -260,7 +260,7 @@
       "slot_posy": -0.67,
       "slot_posz": 0.3,
       "slot_type": "frame",
-      "zRot": 0.0
+      "zRot": 180.0
     },
     {
       "name": "frame_4",
@@ -268,7 +268,7 @@
       "slot_posy": -0.67,
       "slot_posz": -0.5,
       "slot_type": "frame",
-      "zRot": 0.0
+      "zRot": 180.0
     },
     {
       "data": {

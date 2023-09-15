@@ -1,0 +1,26 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"A": {
+			"item": "dscombat:air_scan_a"
+		},
+		"G": {
+			"item": "minecraft:glowstone_dust"
+		},
+		"T": {
+			"item": "minecraft:ghast_tear"
+		},
+		"I": {
+			"item": "minecraft:iron_ingot"
+		}
+	},
+	"pattern": [
+		"IIG",
+		" AT",
+		"IIG"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:air_scan_b"
+	}
+}

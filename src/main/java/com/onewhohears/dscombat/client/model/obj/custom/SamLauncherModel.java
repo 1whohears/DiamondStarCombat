@@ -11,7 +11,7 @@ import net.minecraftforge.client.model.renderable.CompositeRenderable.Transforms
 public class SamLauncherModel extends ObjTurretModel<EntityTurret> {
 
 	public SamLauncherModel() {
-		super("samlauncherv3");
+		super("samlauncherv3", true);
 	}
 	
 	@Override

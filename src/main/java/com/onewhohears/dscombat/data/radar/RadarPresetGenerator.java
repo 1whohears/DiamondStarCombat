@@ -163,6 +163,62 @@ public class RadarPresetGenerator extends JsonPresetGenerator<RadarData> {
 				.setScanGround(true)
 				.setScanAir(false)
 				.build());
+		addPresetToGenerate(RadarData.Builder
+				.create(DSCombatMod.MODID, "air_scan_a")
+				.setRange(1400f)
+				.setThroGroundRange(0f)
+				.setThroWaterRange(0f)
+				.setSensitivity(0.8f)
+				.setFieldOfView(-1f)
+				.setScanRate(20)
+				.setScanAircraft(true)
+				.setScanPlayers(true)
+				.setScanMobs(true)
+				.setScanGround(false)
+				.setScanAir(true)
+				.build());
+		addPresetToGenerate(RadarData.Builder
+				.create(DSCombatMod.MODID, "air_scan_b")
+				.setRange(1800f)
+				.setThroGroundRange(0f)
+				.setThroWaterRange(0f)
+				.setSensitivity(0.7f)
+				.setFieldOfView(-1f)
+				.setScanRate(20)
+				.setScanAircraft(true)
+				.setScanPlayers(true)
+				.setScanMobs(true)
+				.setScanGround(false)
+				.setScanAir(true)
+				.build());
+		addPresetToGenerate(RadarData.Builder
+				.create(DSCombatMod.MODID, "survey_all_a")
+				.setRange(600f)
+				.setThroGroundRange(0f)
+				.setThroWaterRange(10f)
+				.setSensitivity(0.9f)
+				.setFieldOfView(-1f)
+				.setScanRate(20)
+				.setScanAircraft(true)
+				.setScanPlayers(true)
+				.setScanMobs(true)
+				.setScanGround(true)
+				.setScanAir(true)
+				.build());
+		addPresetToGenerate(RadarData.Builder
+				.create(DSCombatMod.MODID, "survey_all_b")
+				.setRange(1200f)
+				.setThroGroundRange(0f)
+				.setThroWaterRange(10f)
+				.setSensitivity(0.8f)
+				.setFieldOfView(-1f)
+				.setScanRate(20)
+				.setScanAircraft(true)
+				.setScanPlayers(true)
+				.setScanMobs(true)
+				.setScanGround(true)
+				.setScanAir(true)
+				.build());
 	}
 	
 	public RadarPresetGenerator(DataGenerator output) {

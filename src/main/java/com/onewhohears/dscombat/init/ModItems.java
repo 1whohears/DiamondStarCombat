@@ -93,9 +93,9 @@ public class ModItems {
 	public static final RegistryObject<Item> LARGE_PROPELLER = ITEMS.register("large_propeller", 
 			() -> new Item(ItemPart.partProps(16)));
 	public static final RegistryObject<Item> COCKPIT = ITEMS.register("cockpit", 
-			() -> new Item(ItemPart.partProps(4)));
+			() -> new Item(ItemPart.partProps(8)));
 	public static final RegistryObject<Item> ADVANCED_COCKPIT = ITEMS.register("advanced_cockpit", 
-			() -> new Item(ItemPart.partProps(1)));
+			() -> new Item(ItemPart.partProps(8)));
 	
 	// BUFFS
 	public static final RegistryObject<Item> DATA_LINK = ITEMS.register("data_link", 
@@ -186,6 +186,18 @@ public class ModItems {
 	public static final RegistryObject<Item> AXCEL_TRUCK_RADAR = ITEMS.register("axcel_truck_radar", 
 			() -> new ItemRadarPart(3f, "axcel_truck_radar", SlotType.EXTERNAL_ADVANCED));
 	// IDEA 2 passive under water sonar doesn's show RWR warning
+	public static final RegistryObject<Item> AIR_SCAN_A = ITEMS.register("air_scan_a", 
+			() -> new ItemRadarPart(3f, "air_scan_a", SlotType.EXTERNAL_ADVANCED, 
+					ModEntities.AIR_SCAN_A.getId().toString()));
+	public static final RegistryObject<Item> AIR_SCAN_B = ITEMS.register("air_scan_b", 
+			() -> new ItemRadarPart(3f, "air_scan_b", SlotType.EXTERNAL_ADVANCED, 
+					ModEntities.AIR_SCAN_B.getId().toString()));
+	public static final RegistryObject<Item> SURVEY_ALL_A = ITEMS.register("survey_all_a", 
+			() -> new ItemRadarPart(3f, "survey_all_a", SlotType.EXTERNAL_ADVANCED, 
+					ModEntities.SURVEY_ALL_A.getId().toString()));
+	public static final RegistryObject<Item> SURVEY_ALL_B = ITEMS.register("survey_all_b", 
+			() -> new ItemRadarPart(3f, "survey_all_b", SlotType.EXTERNAL_ADVANCED, 
+					ModEntities.SURVEY_ALL_B.getId().toString()));
 	
 	// SEATS
 	public static final RegistryObject<Item> SEAT = ITEMS.register("seat", 
@@ -216,6 +228,22 @@ public class ModItems {
 			() -> new ItemTurret(10f, SlotType.TURRET_HEAVY, 
 					ModEntities.TORPEDO_TUBES.getId().toString(), "torpedo1",
 					RotBounds.create(1.6f, 5f, 5f)));
+	public static final RegistryObject<Item> AA_TURRET = ITEMS.register("aa_turret", 
+			() -> new ItemTurret(2.5f, SlotType.TURRET_LIGHT, 
+					ModEntities.AA_TURRET.getId().toString(), "10mm",
+					RotBounds.create(3.0f, 30f, 30f)));
+	public static final RegistryObject<Item> CIWS = ITEMS.register("ciws", 
+			() -> new ItemTurret(4.5f, SlotType.TURRET_MED, 
+					ModEntities.CIWS.getId().toString(), "10mm",
+					RotBounds.create(2.0f, 75f, 30f)));
+	public static final RegistryObject<Item> MARK7_CANNON = ITEMS.register("mark7_cannon", 
+			() -> new ItemTurret(11f, SlotType.TURRET_HEAVY, 
+					ModEntities.MARK7_CANNON.getId().toString(), "406mmhe",
+					RotBounds.create(0.9f, 30f, 15f)));
+	public static final RegistryObject<Item> MARK45_CANNON = ITEMS.register("mark45_cannon", 
+			() -> new ItemTurret(6f, SlotType.TURRET_MED, 
+					ModEntities.MARK45_CANNON.getId().toString(), "127mm",
+					RotBounds.create(1.1f, 30f, 15f)));
 	
 	// FLARE DISPENSERS
 	public static final RegistryObject<Item> BASIC_FLARE_DISPENSER = ITEMS.register("basic_flare_dispenser", 
@@ -229,7 +257,7 @@ public class ModItems {
 	public static final RegistryObject<Item> HEAVY_MISSILE_RACK = ITEMS.register("heavy_missile_rack", 
 			() -> new ItemWeaponPart(4f, SlotType.EXTERNAL_ALL, 0)); 
 	public static final RegistryObject<Item> BOMB_RACK = ITEMS.register("bomb_rack", 
-			() -> new ItemWeaponPart(5f, SlotType.EXTERNAL_ALL, 0)); 
+			() -> new ItemWeaponPart(5f, SlotType.EXTERNAL_ALL, 0));
 	public static final RegistryObject<Item> ADL = ITEMS.register("adl", 
 			() -> new ItemWeaponPart(7f, SlotType.EXTERNAL_HEAVY, 20)); 
 	public static final RegistryObject<Item> VLS = ITEMS.register("vls", 

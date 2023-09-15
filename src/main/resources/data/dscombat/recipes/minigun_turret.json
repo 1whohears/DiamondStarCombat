@@ -9,15 +9,12 @@
 		},
 		"C": {
 			"item": "minecraft:copper_block"
-		},
-		"G": {
-			"item": "minecraft:gunpowder"
 		}
 	},
 	"pattern": [
-		"GGG",
+		" CC",
 		"IIS",
-		"CCC"
+		" CC"
 	],
 	"result": {
 		"count": 1,

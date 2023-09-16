@@ -232,6 +232,7 @@ public class ModItems {
 			() -> new ItemTurret(2.5f, SlotType.TURRET_LIGHT, 
 					ModEntities.AA_TURRET.getId().toString(), "10mm",
 					RotBounds.create(3.0f, 30f, 30f)));
+	// TODO 1 make ciws recipe
 	public static final RegistryObject<Item> CIWS = ITEMS.register("ciws", 
 			() -> new ItemTurret(4.5f, SlotType.TURRET_MED, 
 					ModEntities.CIWS.getId().toString(), "10mm",

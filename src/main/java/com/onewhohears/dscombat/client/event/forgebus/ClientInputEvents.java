@@ -67,9 +67,7 @@ public final class ClientInputEvents {
 		double mouseX = m.mouseHandler.xpos() - mouseCenterX;
 		double mouseY = -(m.mouseHandler.ypos() - mouseCenterY);
 		boolean flare = DSCKeys.flareKey.isDown();
-		boolean shoot = DSCKeys.shootKey.isDown() 
-						&& (System.currentTimeMillis()-mountTime) > MOUNT_SHOOT_COOLDOWN 
-						&& !player.isUsingItem();
+		boolean shoot = DSCKeys.shootKey.isDown() && playerCanShoot(player);
 		boolean flip = DSCKeys.flipControlsKey.isDown();
 		boolean special = DSCKeys.specialKey.isDown();
 		boolean special2 = DSCKeys.special2Key.isDown();
@@ -187,9 +185,7 @@ public final class ClientInputEvents {
 		// CYCLE PING
 		if (DSCKeys.pingCycleKey.consumeClick()) radar.clientSelectNextTarget();
 		// TURRET SHOOT
-		boolean shoot = DSCKeys.shootKey.isDown()
-				&& (System.currentTimeMillis()-mountTime) > MOUNT_SHOOT_COOLDOWN 
-				&& !player.isUsingItem();
+		boolean shoot = DSCKeys.shootKey.isDown() && playerCanShoot(player);
 		if (shoot && player.getVehicle() instanceof EntityTurret turret) {
 			PacketHandler.INSTANCE.sendToServer(new ToServerShootTurret(turret));
 		}
@@ -199,10 +195,15 @@ public final class ClientInputEvents {
 		}
 	}
 	
+	private static boolean playerCanShoot(Player player) {
+		// TODO 1 should be able to shoot when using shield
+		return (System.currentTimeMillis()-mountTime) > MOUNT_SHOOT_COOLDOWN  && !player.isUsingItem();
+	}
+	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void clientMoveInput(MovementInputUpdateEvent event) {
 		Player player = event.getEntity();
-		if (!(player.getVehicle() instanceof EntitySeat plane)) return;
+		if (!(player.getVehicle() instanceof EntitySeat)) return;
 		if (Config.CLIENT.customDismount.get()) {
 			event.getInput().shiftKeyDown = false;
 		}

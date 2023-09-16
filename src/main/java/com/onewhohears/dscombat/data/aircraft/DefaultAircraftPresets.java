@@ -756,7 +756,7 @@ public class DefaultAircraftPresets {
 			.setThrottleRate(0.05f, 0.10f)
 			.setDefaultColor(DyeColor.WHITE)
 			.addIngredient(ModItems.LARGE_FUSELAGE.getId(), 3)
-			.addIngredient("minecraft:boat", 4)
+			.addIngredient("minecraft:oak_boat", 4)
 			.addIngredient(ModItems.SEAT.getId(), 4)
 			.addPilotSeatSlot(0.8, 6, 4.5)
 			.addSeatSlot("seat2", SlotType.SEAT, -0.8, 6, 4.5)

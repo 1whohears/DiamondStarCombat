@@ -52,7 +52,7 @@ public class ModEntities {
 					DefaultAircraftPresets.DEFAULT_JAVI_PLANE,
 					ModSounds.JET_1,
 					6, 10, 4, 4, 
-					LiftKGraph.JAVI_PLANE_GRAPH, 8f, true, 0), 
+					LiftKGraph.JAVI_PLANE_GRAPH, 9f, true, 0), 
 					EntityDimensions.scalable(2.45f, 2.45f)));
 	
 	public static final RegistryObject<EntityType<EntityPlane>> ALEXIS_PLANE = ENTITIES.register("alexis_plane", 
@@ -60,7 +60,7 @@ public class ModEntities {
 					DefaultAircraftPresets.DEFAULT_ALEXIS_PLANE,
 					ModSounds.JET_1,
 					4, 8, 2, 3, 
-					LiftKGraph.ALEXIS_PLANE_GRAPH, 8f, false, 0), 
+					LiftKGraph.ALEXIS_PLANE_GRAPH, 6f, false, 0), 
 					EntityDimensions.scalable(4.0f, 4.0f)));
 	
 	public static final RegistryObject<EntityType<EntityPlane>> WOODEN_PLANE = ENTITIES.register("wooden_plane", 
@@ -68,7 +68,7 @@ public class ModEntities {
 					DefaultAircraftPresets.DEFAULT_WOODEN_PLANE,
 					ModSounds.BIPLANE_1,
 					4, 7, 3, 3, 
-					LiftKGraph.WOODEN_PLANE_GRAPH, 6f, false, Mth.PI), 
+					LiftKGraph.WOODEN_PLANE_GRAPH, 8f, false, Mth.PI), 
 					EntityDimensions.scalable(1.7f, 1.7f)));
 	
 	public static final RegistryObject<EntityType<EntityPlane>> E3SENTRY_PLANE = ENTITIES.register("e3sentry_plane", 

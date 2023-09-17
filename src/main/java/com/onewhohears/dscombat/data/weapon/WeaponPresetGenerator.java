@@ -332,7 +332,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setAcceleration(0.05f)
 				.setBleed(0.05f)
 				.setFuseDistance(2f)
-				.setFieldOfView(60f)
+				.setFieldOfView(80f)
 				.setTargetType(TargetType.AIR)
 				.setItem(ModItems.TRACK_AIR_MISSILE.getId())
 				.setEntityType(ModEntities.AIM120C.getId())

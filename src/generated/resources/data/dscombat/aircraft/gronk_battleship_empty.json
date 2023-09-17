@@ -78,9 +78,6 @@
       "zRot": 0.0
     },
     {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
       "name": "seat5",
       "slot_posx": 0.0,
       "slot_posy": 5.0,
@@ -89,9 +86,6 @@
       "zRot": 0.0
     },
     {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
       "name": "seat6",
       "slot_posx": 0.0,
       "slot_posy": 5.0,
@@ -100,9 +94,6 @@
       "zRot": 0.0
     },
     {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
       "name": "seat7",
       "slot_posx": 0.0,
       "slot_posy": 4.0,
@@ -111,9 +102,6 @@
       "zRot": 0.0
     },
     {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
       "name": "seat8",
       "slot_posx": 0.0,
       "slot_posy": 4.0,

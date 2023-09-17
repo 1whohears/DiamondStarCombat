@@ -117,10 +117,6 @@ public abstract class WeaponData extends JsonPreset {
 	public abstract WeaponType getType();
 	public abstract EntityWeapon getEntity(Level level, Entity owner);
 	
-	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction, @Nullable EntityAircraft vehicle) {
-		return getShootEntity(level, owner, pos, direction, vehicle, false);
-	}
-	
 	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction, @Nullable EntityAircraft vehicle, boolean ignoreRecoil) {
 		if (isNoWeapon()) {
 			setLaunchFail(null);
@@ -158,7 +154,7 @@ public abstract class WeaponData extends JsonPreset {
 		overrideGroundCheck = false;
 		EntityWeapon w = getShootEntity(level, owner, 
 				vehicle.position().add(UtilAngles.rotateVector(getLaunchPos(), vehicle.getQ())), 
-				direction, vehicle);
+				direction, vehicle, false);
 		if (w == null) return false;
 		level.addFreshEntity(w);
 		level.playSound(null, w.blockPosition(), 

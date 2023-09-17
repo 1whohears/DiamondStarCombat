@@ -38,7 +38,7 @@
   "is_craftable": true,
   "item": "dscombat:wooden_plane",
   "landing_gear": true,
-  "mass": 8.0,
+  "mass": 6.0,
   "max_health": 40.0,
   "max_speed": 0.9,
   "maxpitch": 3.0,

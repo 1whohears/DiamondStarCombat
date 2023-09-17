@@ -580,7 +580,7 @@ public class DefaultAircraftPresets {
 			.setAircraftType(AircraftType.PLANE)
 			.setItem(ModItems.WOODEN_PLANE.getId())
 			.setMaxHealth(40f)
-			.setMass(8f)
+			.setMass(6f)
 			.setMaxSpeed(0.9f)
 			.setStealth(1.0f)
 			.setCrossSecArea(2.89f)

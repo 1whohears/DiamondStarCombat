@@ -200,6 +200,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	// TODO 5.2 allow big boats to have a heli pad and runway
 	// TODO 5.3 some external parts can take damage and break if hit
 	// TODO 5.4 aircraft breaks apart when damaged
+	// TODO 5.5 customizable damage multipliers based on the weapon and vehicle multiplier so missiles can 1 shot planes if desired
 	// FIXME refactor EntityAircraft to EntityVehicle
 	
 	public EntityAircraft(EntityType<? extends EntityAircraft> entityType, Level level, 

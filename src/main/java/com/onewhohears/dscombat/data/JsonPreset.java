@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.data;
 
 import com.google.gson.JsonObject;
+import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -27,8 +28,8 @@ public abstract class JsonPreset {
 	public JsonPreset(ResourceLocation key, JsonObject json) {
 		this.key = key;
 		this.data = json;
-		this.id = json.get("presetId").getAsString();
-		this.displayName = json.get("displayName").getAsString();
+		this.id = UtilParse.getStringSafe(json, "presetId", "");
+		this.displayName = UtilParse.getStringSafe(json, "displayName", "preset.dscombat."+id);
 	}
 	
 	public ResourceLocation getKey() {

@@ -9,12 +9,9 @@ import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.data.weapon.WeaponData.WeaponType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
-import com.onewhohears.dscombat.init.DataSerializers;
-import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -39,42 +36,42 @@ public class WeaponSystem {
 	
 	public WeaponSystem(EntityAircraft parent) {
 		this.parent = parent;
-		// TODO 1.2 no weapon option/safety weapon
+		weapons.add(NoWeaponData.get());
 	}
 	
 	public void read(CompoundTag compound) {
-		weapons.clear();
+		/*weapons.clear();
 		this.weaponIndex = compound.getInt("index");
 		ListTag list = compound.getList("weapons", 10);
 		for (int i = 0; i < list.size(); ++i) {
 			WeaponData w = UtilParse.parseWeaponFromCompound(list.getCompound(i));
 			if (w != null) weapons.add(w);
-		}
+		}*/
 		readData = true;
 	}
 	
 	public void write(CompoundTag compound) {
-		ListTag list = new ListTag();
-		for (WeaponData w : weapons) list.add(w.writeNbt());
+		/*ListTag list = new ListTag();
+		for (WeaponData w : weapons) if (!w.isNoWeapon()) list.add(w.writeNbt());
 		compound.put("weapons", list);
-		compound.putInt("index", weaponIndex);
+		compound.putInt("index", weaponIndex);*/
 		//System.out.println(this);
 	}
 	
 	public static List<WeaponData> readWeaponsFromBuffer(FriendlyByteBuf buffer) {
 		List<WeaponData> weapons = new ArrayList<WeaponData>();
-		int num = buffer.readInt();
-		for (int i = 0; i < num; ++i) weapons.add(DataSerializers.WEAPON_DATA.read(buffer));
+		//int num = buffer.readInt();
+		//for (int i = 0; i < num; ++i) weapons.add(DataSerializers.WEAPON_DATA.read(buffer));
 		return weapons;
 	}
 	
 	public static void writeWeaponsToBuffer(FriendlyByteBuf buffer, List<WeaponData> weapons) {
-		buffer.writeInt(weapons.size());
-		for (WeaponData w : weapons) DataSerializers.WEAPON_DATA.write(buffer, w);
+		//buffer.writeInt(weapons.size());
+		//for (WeaponData w : weapons) DataSerializers.WEAPON_DATA.write(buffer, w);
 	}
 	
 	public void setWeapons(List<WeaponData> weapons) {
-		this.weapons = weapons;
+		//this.weapons = weapons;
 		readData = true;
 	}
 	

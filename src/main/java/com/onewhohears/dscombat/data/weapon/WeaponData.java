@@ -65,16 +65,16 @@ public abstract class WeaponData extends JsonPreset {
 	public WeaponData(ResourceLocation key, JsonObject json) {
 		super(key, json);
 		this.ingredients = DSCIngredient.getIngredients(json);
-		this.craftNum = json.get("craftNum").getAsInt();
-		this.maxAge = json.get("maxAge").getAsInt();
-		this.maxAmmo = json.get("maxAmmo").getAsInt();
-		this.fireRate = json.get("fireRate").getAsInt();
-		this.canShootOnGround = json.get("canShootOnGround").getAsBoolean();
-		this.entityTypeKey = json.get("entityTypeKey").getAsString();
-		this.shootSoundKey = json.get("shootSoundKey").getAsString();
-		this.rackTypeKey = json.get("rackTypeKey").getAsString();
-		this.compatibleWeaponPart = json.get("compatibleWeaponPart").getAsString();
-		this.itemKey = json.get("itemKey").getAsString();
+		this.craftNum = UtilParse.getIntSafe(json, "craftNum", 0);
+		this.maxAge = UtilParse.getIntSafe(json, "maxAge", 0);
+		this.maxAmmo = UtilParse.getIntSafe(json, "maxAmmo", 0);
+		this.fireRate = UtilParse.getIntSafe(json, "fireRate", 0);
+		this.canShootOnGround = UtilParse.getBooleanSafe(json, "canShootOnGround", false);
+		this.entityTypeKey = UtilParse.getStringSafe(json, "entityTypeKey", "");
+		this.shootSoundKey = UtilParse.getStringSafe(json, "shootSoundKey", "");
+		this.rackTypeKey = UtilParse.getStringSafe(json, "rackTypeKey", "");
+		this.compatibleWeaponPart = UtilParse.getStringSafe(json, "compatibleWeaponPart", "");
+		this.itemKey = UtilParse.getStringSafe(json, "itemKey", "");
 	}
 	
 	public void readNBT(CompoundTag tag) {
@@ -86,7 +86,7 @@ public abstract class WeaponData extends JsonPreset {
 	public CompoundTag writeNbt() {
 		CompoundTag tag = new CompoundTag();
 		tag.putString("weaponId", getId());
-		tag.putInt("currentAmmo", currentAmmo);
+		tag.putInt("currentAmmo", getCurrentAmmo());
 		UtilParse.writeVec3(tag, pos, "pos");
 		tag.putString("slotId", slotId);
 		return tag;
@@ -101,7 +101,7 @@ public abstract class WeaponData extends JsonPreset {
 	
 	public void writeBuffer(FriendlyByteBuf buffer) {
 		buffer.writeUtf(getId());
-		buffer.writeInt(currentAmmo);
+		buffer.writeInt(getCurrentAmmo());
 		buffer.writeUtf(slotId);
 		DataSerializers.VEC3.write(buffer, pos);
 	}
@@ -122,6 +122,10 @@ public abstract class WeaponData extends JsonPreset {
 	}
 	
 	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction, @Nullable EntityAircraft vehicle, boolean ignoreRecoil) {
+		if (isNoWeapon()) {
+			setLaunchFail(null);
+			return null;
+		}
 		if (!ignoreRecoil && !checkRecoil()) {
 			setLaunchFail(null);
 			return null;
@@ -131,6 +135,7 @@ public abstract class WeaponData extends JsonPreset {
 			return null;
 		}
 		EntityWeapon w = getEntity(level, owner);
+		if (w == null) return null;
 		w.setPos(pos);
 		setDirection(w, direction);
 		if (vehicle != null) {
@@ -202,7 +207,7 @@ public abstract class WeaponData extends JsonPreset {
 		if (shooter instanceof ServerPlayer p) {
 			if (p.isCreative()) return true;
 		}
-		return currentAmmo >= ammoNum;
+		return getCurrentAmmo() >= ammoNum;
 	}
 	
 	public boolean checkRecoil() {
@@ -240,7 +245,7 @@ public abstract class WeaponData extends JsonPreset {
 	 * @return overflow
 	 */
 	public int addAmmo(int num) {
-		int total = currentAmmo+num;
+		int total = getCurrentAmmo()+num;
 		int r = 0;
 		if (total > maxAmmo) {
 			r = total - maxAmmo;
@@ -419,6 +424,10 @@ public abstract class WeaponData extends JsonPreset {
 		}
 	}
 	
+	public boolean isNoWeapon() {
+		return getType() == WeaponType.NONE;
+	}
+	
 	public static enum WeaponType {
 		BULLET,
 		BOMB,
@@ -427,7 +436,8 @@ public abstract class WeaponData extends JsonPreset {
 		IR_MISSILE,
 		ANTIRADAR_MISSILE,
 		TORPEDO,
-		BUNKER_BUSTER;
+		BUNKER_BUSTER,
+		NONE;
 		
 		@Nullable
 		public static WeaponType getById(String id) {

@@ -254,9 +254,24 @@ public class UtilParse {
 		}
 	}
 	
+	public static boolean getBooleanSafe(JsonObject json, String name, boolean alt) {
+		if (!json.has(name)) return alt;
+		return json.get(name).getAsBoolean();
+	}
+	
 	public static int getIntSafe(JsonObject json, String name, int alt) {
 		if (!json.has(name)) return alt;
 		return json.get(name).getAsInt();
+	}
+	
+	public static float getFloatSafe(JsonObject json, String name, float alt) {
+		if (!json.has(name)) return alt;
+		return json.get(name).getAsFloat();
+	}
+	
+	public static String getStringSafe(JsonObject json, String name, String alt) {
+		if (!json.has(name)) return alt;
+		return json.get(name).getAsString();
 	}
 	
 }

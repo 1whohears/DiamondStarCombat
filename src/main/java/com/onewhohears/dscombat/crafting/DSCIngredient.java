@@ -101,6 +101,7 @@ public class DSCIngredient {
 	
 	public static List<DSCIngredient> getIngredients(JsonObject json) {
 		List<DSCIngredient> ingredients = new ArrayList<DSCIngredient>();
+		if (!json.has("ingredients")) return ingredients;
 		JsonArray list = json.get("ingredients").getAsJsonArray();
 		for (int i = 0; i < list.size(); ++i) ingredients.add(new DSCIngredient(list.get(i).getAsJsonObject()));
 		return ingredients;
@@ -108,6 +109,7 @@ public class DSCIngredient {
 	
 	public static List<DSCIngredient> getIngredients(CompoundTag tag) {
 		List<DSCIngredient> ingredients = new ArrayList<DSCIngredient>();
+		if (!tag.contains("ingredients")) return ingredients;
 		ListTag list = tag.getList("ingredients", 10);
 		for (int i = 0; i < list.size(); ++i) ingredients.add(new DSCIngredient(list.getCompound(i)));
 		return ingredients;

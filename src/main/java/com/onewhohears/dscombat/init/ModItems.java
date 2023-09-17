@@ -161,6 +161,7 @@ public class ModItems {
 	public static final RegistryObject<Item> CM_MANLY_52 = ITEMS.register("cm_manly_52", 
 			() -> new ItemEngine(EngineType.PUSH, 0.8f, 0.12f, 2.0f, 
 					0.004f, false, SlotType.INTERNAL_ENGINE_RADIAL));
+	// TODO 2.2 engines that make sense for boats
 	
 	// RADARS
 	public static final RegistryObject<Item> AR500 = ITEMS.register("ar500", 
@@ -232,7 +233,7 @@ public class ModItems {
 			() -> new ItemTurret(2.5f, SlotType.TURRET_LIGHT, 
 					ModEntities.AA_TURRET.getId().toString(), "10mm",
 					RotBounds.create(3.0f, 30f, 30f)));
-	// TODO 1 make ciws recipe
+	// TODO 1.1 make ciws recipe
 	public static final RegistryObject<Item> CIWS = ITEMS.register("ciws", 
 			() -> new ItemTurret(4.5f, SlotType.TURRET_MED, 
 					ModEntities.CIWS.getId().toString(), "10mm",

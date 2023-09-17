@@ -44,6 +44,7 @@ public class ClientCameraEvents {
 			player.yRotO = yi;
 			event.setPitch(xi);
 			event.setYaw(yi);
+			// TODO 4.2 make 3rd person camera farther to see whole vehicle
 		}
 		boolean detached = !m.options.getCameraType().isFirstPerson();
 		boolean mirrored = m.options.getCameraType().isMirrored();

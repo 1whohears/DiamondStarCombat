@@ -39,7 +39,7 @@ public class WeaponSystem {
 	
 	public WeaponSystem(EntityAircraft parent) {
 		this.parent = parent;
-		// TODO 1 no weapon option/safety weapon
+		// TODO 1.2 no weapon option/safety weapon
 	}
 	
 	public void read(CompoundTag compound) {

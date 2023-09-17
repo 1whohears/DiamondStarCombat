@@ -196,7 +196,7 @@ public final class ClientInputEvents {
 	}
 	
 	private static boolean playerCanShoot(Player player) {
-		// TODO 1 should be able to shoot when using shield
+		// TODO 1.3 should be able to shoot when using shield
 		return (System.currentTimeMillis()-mountTime) > MOUNT_SHOOT_COOLDOWN  && !player.isUsingItem();
 	}
 	

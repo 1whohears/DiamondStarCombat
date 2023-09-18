@@ -232,7 +232,7 @@ public class BoatPresets {
 			.addSeatSlot("seat4", SlotType.SEAT, -1.6, 5, 2.2)
 			.addEmptySlot("seat5", SlotType.HEAVY_TURRET, 0, 5, 9, 0)
 			.addEmptySlot("seat6", SlotType.HEAVY_TURRET, 0, 4, 15, 0)
-			.addEmptySlot("seat7", SlotType.HEAVY_TURRET, 0, 4, -10, 0)
+			.addEmptySlot("seat7", SlotType.HEAVY_TURRET, 0, 4, -13, 0)
 			.addEmptySlot("seat8", SlotType.LIGHT_TURRET, 0, 5, -8, 0)
 			.addEmptySlot("frame_1", SlotType.ADVANCED_FRAME, 0, 8, 0, 0)
 			.addEmptySlot("frame_2", SlotType.MED_TURRET, 0, 8, 4, 0)

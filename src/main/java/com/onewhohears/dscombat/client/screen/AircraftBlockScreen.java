@@ -123,11 +123,11 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 		startY += font.lineHeight;
 		font.draw(stack, Component.literal("Base Armor: "+data.getFloat("base_armor")), startX, startY, 0x404040);
 		startY += font.lineHeight;
-		font.draw(stack, Component.literal("Yaw: "+(int)(data.getDouble("maxyaw")*20)+" deg/tick"), startX, startY, 0x404040);
+		font.draw(stack, Component.literal("Yaw: "+(int)(data.getDouble("maxyaw")*20)+" deg/sec"), startX, startY, 0x404040);
 		startY += font.lineHeight;
-		font.draw(stack, Component.literal("Pitch: "+(int)(data.getDouble("maxpitch")*20)+" deg/tick"), startX, startY, 0x404040);
+		font.draw(stack, Component.literal("Pitch: "+(int)(data.getDouble("maxpitch")*20)+" deg/sec"), startX, startY, 0x404040);
 		startY += font.lineHeight;
-		font.draw(stack, Component.literal("Roll: "+(int)(data.getDouble("maxroll")*20)+" deg/tick"), startX, startY, 0x404040);
+		font.draw(stack, Component.literal("Roll: "+(int)(data.getDouble("maxroll")*20)+" deg/sec"), startX, startY, 0x404040);
 		stack.scale(1/scale, 1/scale, 1/scale);
 		// HOW 2 display plane model
 		//Minecraft m = Minecraft.getInstance();

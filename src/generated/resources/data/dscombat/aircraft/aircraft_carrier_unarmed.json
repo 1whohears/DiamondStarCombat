@@ -1,14 +1,14 @@
 {
   "aircraft_type": 3,
-  "base_armor": 15.0,
-  "cross_sec_area": 7.5,
-  "displayName": "preset.dscombat.gronk_battleship_empty",
-  "health": 600.0,
-  "idleheat": 4.0,
+  "base_armor": 18.0,
+  "cross_sec_area": 10.5,
+  "displayName": "preset.dscombat.aircraft_carrier_unarmed",
+  "health": 900.0,
+  "idleheat": 8.0,
   "ingredients": [
     {
       "item": "dscombat:large_fuselage",
-      "num": 4
+      "num": 6
     },
     {
       "item": "minecraft:oak_planks",
@@ -19,18 +19,18 @@
       "num": 4
     }
   ],
-  "is_craftable": false,
-  "item": "dscombat:gronk_battleship",
+  "is_craftable": true,
+  "item": "dscombat:aircraft_carrier",
   "landing_gear": true,
-  "mass": 150.0,
-  "max_health": 600.0,
-  "max_speed": 0.6,
+  "mass": 250.0,
+  "max_health": 900.0,
+  "max_speed": 0.25,
   "maxpitch": 0.0,
   "maxroll": 0.0,
-  "maxyaw": 1.0,
+  "maxyaw": 0.6,
   "paintjob_color": 8,
   "pitchtorque": 0.0,
-  "presetId": "gronk_battleship_empty",
+  "presetId": "aircraft_carrier_unarmed",
   "rolltorque": 0.0,
   "slots": [
     {
@@ -234,7 +234,7 @@
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": "internal",
+      "slot_type": "advanced_internal",
       "zRot": 0.0
     },
     {
@@ -242,13 +242,13 @@
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": "internal",
+      "slot_type": "advanced_internal",
       "zRot": 0.0
     }
   ],
-  "stealth": 0.9,
+  "stealth": 1.2,
   "throttledown": 0.1,
   "throttleup": 0.05,
   "turn_radius": 0.0,
-  "yawtorque": 1.0
+  "yawtorque": 2.0
 }

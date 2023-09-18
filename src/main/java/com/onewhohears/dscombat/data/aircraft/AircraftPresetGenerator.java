@@ -2,6 +2,14 @@ package com.onewhohears.dscombat.data.aircraft;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.JsonPresetGenerator;
+import com.onewhohears.dscombat.data.aircraft.presets.AlexisPresets;
+import com.onewhohears.dscombat.data.aircraft.presets.BoatPresets;
+import com.onewhohears.dscombat.data.aircraft.presets.CarPresets;
+import com.onewhohears.dscombat.data.aircraft.presets.HeliPresets;
+import com.onewhohears.dscombat.data.aircraft.presets.JaviPresets;
+import com.onewhohears.dscombat.data.aircraft.presets.PlanePresets;
+import com.onewhohears.dscombat.data.aircraft.presets.SubPresets;
+import com.onewhohears.dscombat.data.aircraft.presets.TankPresets;
 
 import net.minecraft.data.DataGenerator;
 
@@ -9,55 +17,71 @@ public class AircraftPresetGenerator extends JsonPresetGenerator<AircraftPreset>
     
     @Override
 	protected void registerPresets() {
-    	addPresetToGenerate(DefaultAircraftPresets.EMPTY_ALEXIS_PLANE);
-    	addPresetToGenerate(DefaultAircraftPresets.UNARMED_ALEXIS_PLANE);
-		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_ALEXIS_PLANE);
-		addPresetToGenerate(DefaultAircraftPresets.SUPPORT_ALEXIS_PLANE);
-		addPresetToGenerate(DefaultAircraftPresets.SNIPER_ALEXIS_PLANE);
+    	addPresetToGenerate(AlexisPresets.EMPTY_ALEXIS_PLANE);
+    	addPresetToGenerate(AlexisPresets.UNARMED_ALEXIS_PLANE);
+		addPresetToGenerate(AlexisPresets.DEFAULT_ALEXIS_PLANE);
+		addPresetToGenerate(AlexisPresets.SUPPORT_ALEXIS_PLANE);
+		addPresetToGenerate(AlexisPresets.SNIPER_ALEXIS_PLANE);
 		
-		addPresetToGenerate(DefaultAircraftPresets.EMPTY_JAVI_PLANE);
-		addPresetToGenerate(DefaultAircraftPresets.UNARMED_JAVI_PLANE);
-		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_JAVI_PLANE);
-		addPresetToGenerate(DefaultAircraftPresets.BOMBER_JAVI_PLANE);
-		addPresetToGenerate(DefaultAircraftPresets.TRUCK_JAVI_PLANE);
+		addPresetToGenerate(JaviPresets.EMPTY_JAVI_PLANE);
+		addPresetToGenerate(JaviPresets.UNARMED_JAVI_PLANE);
+		addPresetToGenerate(JaviPresets.DEFAULT_JAVI_PLANE);
+		addPresetToGenerate(JaviPresets.BOMBER_JAVI_PLANE);
+		addPresetToGenerate(JaviPresets.TRUCK_JAVI_PLANE);
 		
-		addPresetToGenerate(DefaultAircraftPresets.EMPTY_NOAH_CHOPPER);
-		addPresetToGenerate(DefaultAircraftPresets.UNARMED_NOAH_CHOPPER);
-		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_NOAH_CHOPPER);
+		addPresetToGenerate(HeliPresets.EMPTY_NOAH_CHOPPER);
+		addPresetToGenerate(HeliPresets.UNARMED_NOAH_CHOPPER);
+		addPresetToGenerate(HeliPresets.DEFAULT_NOAH_CHOPPER);
 		
-		addPresetToGenerate(DefaultAircraftPresets.EMPTY_MRBUDGER_TANK);
-		addPresetToGenerate(DefaultAircraftPresets.UNARMED_MRBUDGER_TANK);
-		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_MRBUDGER_TANK);
+		addPresetToGenerate(TankPresets.EMPTY_MRBUDGER_TANK);
+		addPresetToGenerate(TankPresets.UNARMED_MRBUDGER_TANK);
+		addPresetToGenerate(TankPresets.DEFAULT_MRBUDGER_TANK);
 		
-		addPresetToGenerate(DefaultAircraftPresets.EMPTY_SMALL_ROLLER);
-		addPresetToGenerate(DefaultAircraftPresets.UNARMED_SMALL_ROLLER);
-		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_SMALL_ROLLER);
-		addPresetToGenerate(DefaultAircraftPresets.TANK_SMALL_ROLLER);
+		addPresetToGenerate(TankPresets.EMPTY_SMALL_ROLLER);
+		addPresetToGenerate(TankPresets.UNARMED_SMALL_ROLLER);
+		addPresetToGenerate(TankPresets.DEFAULT_SMALL_ROLLER);
+		addPresetToGenerate(TankPresets.TANK_SMALL_ROLLER);
 		
-		addPresetToGenerate(DefaultAircraftPresets.EMPTY_NATHAN_BOAT);
-		addPresetToGenerate(DefaultAircraftPresets.UNARMED_NATHAN_BOAT);
-		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_NATHAN_BOAT);
+		addPresetToGenerate(BoatPresets.EMPTY_NATHAN_BOAT);
+		addPresetToGenerate(BoatPresets.UNARMED_NATHAN_BOAT);
+		addPresetToGenerate(BoatPresets.DEFAULT_NATHAN_BOAT);
 		
-		addPresetToGenerate(DefaultAircraftPresets.EMPTY_ANDOLF_SUB);
-		addPresetToGenerate(DefaultAircraftPresets.UNARMED_ANDOLF_SUB);
-		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_ANDOLF_SUB);
+		addPresetToGenerate(SubPresets.EMPTY_ANDOLF_SUB);
+		addPresetToGenerate(SubPresets.UNARMED_ANDOLF_SUB);
+		addPresetToGenerate(SubPresets.DEFAULT_ANDOLF_SUB);
 		
-		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_ORANGE_TESLA);
+		addPresetToGenerate(CarPresets.DEFAULT_ORANGE_TESLA);
 		
-		addPresetToGenerate(DefaultAircraftPresets.EMPTY_WOODEN_PLANE);
-		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_WOODEN_PLANE);
-		addPresetToGenerate(DefaultAircraftPresets.BOMBER_WOODEN_PLANE);
-		addPresetToGenerate(DefaultAircraftPresets.FIGHTER_WOODEN_PLANE);
+		addPresetToGenerate(PlanePresets.EMPTY_WOODEN_PLANE);
+		addPresetToGenerate(PlanePresets.DEFAULT_WOODEN_PLANE);
+		addPresetToGenerate(PlanePresets.BOMBER_WOODEN_PLANE);
+		addPresetToGenerate(PlanePresets.FIGHTER_WOODEN_PLANE);
 		
-		addPresetToGenerate(DefaultAircraftPresets.EMPTY_E3SENTRY_PLANE);
-		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_E3SENTRY_PLANE);
+		addPresetToGenerate(PlanePresets.EMPTY_E3SENTRY_PLANE);
+		addPresetToGenerate(PlanePresets.DEFAULT_E3SENTRY_PLANE);
 		
-		addPresetToGenerate(DefaultAircraftPresets.EMPTY_AXCEL_TRUCK);
-		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_AXCEL_TRUCK);
+		addPresetToGenerate(CarPresets.EMPTY_AXCEL_TRUCK);
+		addPresetToGenerate(CarPresets.DEFAULT_AXCEL_TRUCK);
 		
-		addPresetToGenerate(DefaultAircraftPresets.EMPTY_GRONK_BATTLESHIP);
-		addPresetToGenerate(DefaultAircraftPresets.UNARMED_GRONK_BATTLESHIP);
-		addPresetToGenerate(DefaultAircraftPresets.DEFAULT_GRONK_BATTLESHIP);
+		addPresetToGenerate(BoatPresets.EMPTY_GRONK_BATTLESHIP);
+		addPresetToGenerate(BoatPresets.UNARMED_GRONK_BATTLESHIP);
+		addPresetToGenerate(BoatPresets.DEFAULT_GRONK_BATTLESHIP);
+		
+		addPresetToGenerate(BoatPresets.EMPTY_DESTROYER);
+		addPresetToGenerate(BoatPresets.UNARMED_DESTROYER);
+		addPresetToGenerate(BoatPresets.DEFAULT_DESTROYER);
+		
+		addPresetToGenerate(BoatPresets.EMPTY_CRUISER);
+		addPresetToGenerate(BoatPresets.UNARMED_CRUISER);
+		addPresetToGenerate(BoatPresets.DEFAULT_CRUISER);
+		
+		addPresetToGenerate(BoatPresets.EMPTY_CORVETTE);
+		addPresetToGenerate(BoatPresets.UNARMED_CORVETTE);
+		addPresetToGenerate(BoatPresets.DEFAULT_CORVETTE);
+		
+		addPresetToGenerate(BoatPresets.EMPTY_AIRCRAFT_CARRIER);
+		addPresetToGenerate(BoatPresets.UNARMED_AIRCRAFT_CARRIER);
+		addPresetToGenerate(BoatPresets.DEFAULT_AIRCRAFT_CARRIER);
 	}
     
     public AircraftPresetGenerator(DataGenerator output) {

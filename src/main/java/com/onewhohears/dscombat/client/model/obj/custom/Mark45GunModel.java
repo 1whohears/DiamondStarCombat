@@ -13,7 +13,7 @@ import net.minecraftforge.client.model.renderable.CompositeRenderable.Transforms
 public class Mark45GunModel extends ObjTurretModel<EntityTurret> {
 
 	public Mark45GunModel() {
-		super("naval_gun", true);
+		super("naval_gun_v2", true);
 	}
 	
 	@Override

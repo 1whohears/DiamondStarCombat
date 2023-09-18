@@ -1,7 +1,14 @@
 package com.onewhohears.dscombat.init;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.aircraft.DefaultAircraftPresets;
+import com.onewhohears.dscombat.data.aircraft.presets.AlexisPresets;
+import com.onewhohears.dscombat.data.aircraft.presets.BoatPresets;
+import com.onewhohears.dscombat.data.aircraft.presets.CarPresets;
+import com.onewhohears.dscombat.data.aircraft.presets.HeliPresets;
+import com.onewhohears.dscombat.data.aircraft.presets.JaviPresets;
+import com.onewhohears.dscombat.data.aircraft.presets.PlanePresets;
+import com.onewhohears.dscombat.data.aircraft.presets.SubPresets;
+import com.onewhohears.dscombat.data.aircraft.presets.TankPresets;
 import com.onewhohears.dscombat.data.parts.BuffData.BuffType;
 import com.onewhohears.dscombat.data.parts.EngineData.EngineType;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
@@ -206,7 +213,7 @@ public class ModItems {
 	
 	// TURRENTS
 	public static final RegistryObject<Item> MINIGUN_TURRET = ITEMS.register("minigun_turret", 
-			() -> new ItemTurret(4f, SlotType.TURRET_MED, 
+			() -> new ItemTurret(4f, SlotType.TURRET_LIGHT, 
 					ModEntities.MINIGUN_TURRET.getId().toString(), "20mm",
 					RotBounds.create(2.5f,50f, 50f)));
 	public static final RegistryObject<Item> HEAVY_TANK_TURRET = ITEMS.register("heavy_tank_turret", 
@@ -214,7 +221,7 @@ public class ModItems {
 					ModEntities.HEAVY_TANK_TURRET.getId().toString(), "120mmhe",
 					RotBounds.create(1.0f, 30f, 30f)));
 	public static final RegistryObject<Item> STEVE_UP_SMASH = ITEMS.register("steve_up_smash", 
-			() -> new ItemTurret(10f, SlotType.TURRET_HEAVY, 
+			() -> new ItemTurret(10f, SlotType.TURRET_MED, 
 					ModEntities.STEVE_UP_SMASH.getId().toString(), "aim9p5",
 					RotBounds.create(1.8f, 25f, 25f)));
 	public static final RegistryObject<Item> SAM_LAUNCHER = ITEMS.register("sam_launcher", 
@@ -226,7 +233,7 @@ public class ModItems {
 					ModEntities.MLS.getId().toString(), "rgm84",
 					RotBounds.create(1.9f, 20f, 20f)));
 	public static final RegistryObject<Item> TORPEDO_TUBES = ITEMS.register("torpedo_tubes", 
-			() -> new ItemTurret(10f, SlotType.TURRET_HEAVY, 
+			() -> new ItemTurret(10f, SlotType.TURRET_MED, 
 					ModEntities.TORPEDO_TUBES.getId().toString(), "torpedo1",
 					RotBounds.create(1.6f, 5f, 5f)));
 	public static final RegistryObject<Item> AA_TURRET = ITEMS.register("aa_turret", 
@@ -325,49 +332,61 @@ public class ModItems {
 	// PLANES
 	public static final RegistryObject<Item> JAVI_PLANE = ITEMS.register("javi_plane", 
 			() -> new ItemAircraft(ModEntities.JAVI_PLANE.get(), 
-					DefaultAircraftPresets.DEFAULT_JAVI_PLANE));
+					JaviPresets.DEFAULT_JAVI_PLANE));
 	public static final RegistryObject<Item> ALEXIS_PLANE = ITEMS.register("alexis_plane", 
 			() -> new ItemAircraft(ModEntities.ALEXIS_PLANE.get(), 
-					DefaultAircraftPresets.DEFAULT_ALEXIS_PLANE));
+					AlexisPresets.DEFAULT_ALEXIS_PLANE));
 	public static final RegistryObject<Item> WOODEN_PLANE = ITEMS.register("wooden_plane", 
 			() -> new ItemAircraft(ModEntities.WOODEN_PLANE.get(), 
-					DefaultAircraftPresets.DEFAULT_WOODEN_PLANE));
+					PlanePresets.DEFAULT_WOODEN_PLANE));
 	public static final RegistryObject<Item> E3SENTRY_PLANE = ITEMS.register("e3sentry_plane", 
 			() -> new ItemAircraft(ModEntities.E3SENTRY_PLANE.get(), 
-					DefaultAircraftPresets.DEFAULT_E3SENTRY_PLANE));
+					PlanePresets.DEFAULT_E3SENTRY_PLANE));
 	
 	// HELICOPTERS
 	public static final RegistryObject<Item> NOAH_CHOPPER = ITEMS.register("noah_chopper", 
 			() -> new ItemAircraft(ModEntities.NOAH_CHOPPER.get(), 
-					DefaultAircraftPresets.DEFAULT_NOAH_CHOPPER));
+					HeliPresets.DEFAULT_NOAH_CHOPPER));
 	
 	// CARS
 	public static final RegistryObject<Item> ORANGE_TESLA = ITEMS.register("orange_tesla", 
 			() -> new ItemAircraft(ModEntities.ORANGE_TESLA.get(), 
-					DefaultAircraftPresets.DEFAULT_ORANGE_TESLA));
+					CarPresets.DEFAULT_ORANGE_TESLA));
 	public static final RegistryObject<Item> AXCEL_TRUCK = ITEMS.register("axcel_truck", 
 			() -> new ItemAircraft(ModEntities.AXCEL_TRUCK.get(), 
-					DefaultAircraftPresets.DEFAULT_AXCEL_TRUCK));
+					CarPresets.DEFAULT_AXCEL_TRUCK));
 	
 	// TANKS
 	public static final RegistryObject<Item> MRBUDGER_TANK = ITEMS.register("mrbudger_tank", 
 			() -> new ItemAircraft(ModEntities.MRBUDGER_TANK.get(), 
-					DefaultAircraftPresets.DEFAULT_MRBUDGER_TANK));
+					TankPresets.DEFAULT_MRBUDGER_TANK));
 	public static final RegistryObject<Item> SMALL_ROLLER = ITEMS.register("small_roller", 
 			() -> new ItemAircraft(ModEntities.SMALL_ROLLER.get(), 
-					DefaultAircraftPresets.DEFAULT_SMALL_ROLLER));
+					TankPresets.DEFAULT_SMALL_ROLLER));
 	
 	// BOATS
 	public static final RegistryObject<Item> NATHAN_BOAT = ITEMS.register("nathan_boat", 
 			() -> new ItemAircraft(ModEntities.NATHAN_BOAT.get(), 
-					DefaultAircraftPresets.DEFAULT_NATHAN_BOAT));
+					BoatPresets.DEFAULT_NATHAN_BOAT));
 	public static final RegistryObject<Item> GRONK_BATTLESHIP = ITEMS.register("gronk_battleship", 
 			() -> new ItemAircraft(ModEntities.GRONK_BATTLESHIP.get(), 
-					DefaultAircraftPresets.DEFAULT_GRONK_BATTLESHIP));
+					BoatPresets.DEFAULT_GRONK_BATTLESHIP));
+	public static final RegistryObject<Item> DESTROYER = ITEMS.register("destroyer", 
+			() -> new ItemAircraft(ModEntities.DESTROYER.get(), 
+					BoatPresets.DEFAULT_DESTROYER));
+	public static final RegistryObject<Item> CRUISER = ITEMS.register("cruiser", 
+			() -> new ItemAircraft(ModEntities.CRUISER.get(), 
+					BoatPresets.DEFAULT_CRUISER));
+	public static final RegistryObject<Item> CORVETTE = ITEMS.register("corvette", 
+			() -> new ItemAircraft(ModEntities.CORVETTE.get(), 
+					BoatPresets.DEFAULT_CORVETTE));
+	public static final RegistryObject<Item> AIRCRAFT_CARRIER = ITEMS.register("aircraft_carrier", 
+			() -> new ItemAircraft(ModEntities.AIRCRAFT_CARRIER.get(), 
+					BoatPresets.DEFAULT_AIRCRAFT_CARRIER));
 	
 	// SUBMARINES
 	public static final RegistryObject<Item> ANDOLF_SUB = ITEMS.register("andolf_sub", 
 			() -> new ItemAircraft(ModEntities.ANDOLF_SUB.get(), 
-					DefaultAircraftPresets.DEFAULT_ANDOLF_SUB));
+					SubPresets.DEFAULT_ANDOLF_SUB));
 		
 }

@@ -97,7 +97,7 @@
       "name": "seat7",
       "slot_posx": 0.0,
       "slot_posy": 4.0,
-      "slot_posz": -13.0,
+      "slot_posz": -14.0,
       "slot_type": "heavy_turret",
       "zRot": 0.0
     },
@@ -113,7 +113,7 @@
       "name": "frame_1",
       "slot_posx": 0.0,
       "slot_posy": 8.0,
-      "slot_posz": 0.0,
+      "slot_posz": 0.5,
       "slot_type": "advanced_frame",
       "zRot": 0.0
     },
@@ -121,7 +121,7 @@
       "name": "frame_2",
       "slot_posx": 0.0,
       "slot_posy": 8.0,
-      "slot_posz": 4.0,
+      "slot_posz": 4.5,
       "slot_type": "med_turret",
       "zRot": 0.0
     },

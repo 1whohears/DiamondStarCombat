@@ -46,9 +46,9 @@
         "itemid": "dscombat:seat"
       },
       "name": "pilot_seat",
-      "slot_posx": 0.8,
+      "slot_posx": 1.0,
       "slot_posy": 3.0,
-      "slot_posz": 4.5,
+      "slot_posz": 1.5,
       "slot_type": "seat",
       "zRot": 0.0
     },
@@ -57,9 +57,9 @@
         "itemid": "dscombat:seat"
       },
       "name": "seat2",
-      "slot_posx": -0.8,
+      "slot_posx": -1.0,
       "slot_posy": 3.0,
-      "slot_posz": 4.5,
+      "slot_posz": 1.5,
       "slot_type": "seat",
       "zRot": 0.0
     },
@@ -68,9 +68,9 @@
         "itemid": "dscombat:seat"
       },
       "name": "seat3",
-      "slot_posx": 0.8,
+      "slot_posx": 1.0,
       "slot_posy": 3.0,
-      "slot_posz": 2.2,
+      "slot_posz": -0.5,
       "slot_type": "seat",
       "zRot": 0.0
     },
@@ -79,9 +79,9 @@
         "itemid": "dscombat:seat"
       },
       "name": "seat4",
-      "slot_posx": -0.8,
+      "slot_posx": -1.0,
       "slot_posy": 3.0,
-      "slot_posz": 2.2,
+      "slot_posz": -0.5,
       "slot_type": "seat",
       "zRot": 0.0
     },
@@ -89,7 +89,7 @@
       "name": "seat5",
       "slot_posx": 0.0,
       "slot_posy": 3.0,
-      "slot_posz": 13.0,
+      "slot_posz": 5.0,
       "slot_type": "heavy_turret",
       "zRot": 0.0
     },
@@ -97,7 +97,7 @@
       "name": "seat6",
       "slot_posx": 0.0,
       "slot_posy": 3.0,
-      "slot_posz": -13.0,
+      "slot_posz": -7.0,
       "slot_type": "med_turret",
       "zRot": 0.0
     },
@@ -105,7 +105,7 @@
       "name": "frame_1",
       "slot_posx": 0.0,
       "slot_posy": 5.5,
-      "slot_posz": -3.0,
+      "slot_posz": -3.5,
       "slot_type": "advanced_frame",
       "zRot": 0.0
     },
@@ -113,7 +113,7 @@
       "name": "frame_2",
       "slot_posx": 0.0,
       "slot_posy": 6.0,
-      "slot_posz": 0.0,
+      "slot_posz": 0.5,
       "slot_type": "light_turret",
       "zRot": 0.0
     },

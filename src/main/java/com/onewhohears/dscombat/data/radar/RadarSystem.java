@@ -15,10 +15,7 @@ import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.init.DataSerializers;
-import com.onewhohears.dscombat.util.UtilParse;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -32,7 +29,7 @@ import net.minecraftforge.network.PacketDistributor;
  * individual radars update the radar system's link of {@link RadarPing} on the server side.
  * the updated link of pings are then sent to the client. 
  * the client then tells the server which ping is selected.
- * then the {@link WeaponSystem} gets the target entity from here.
+ * then the {@link com.onewhohears.dscombat.data.weapon.WeaponSystem} gets the target entity from here.
  * @author 1whohears
  */
 public class RadarSystem {
@@ -55,39 +52,6 @@ public class RadarSystem {
 	
 	public RadarSystem(EntityAircraft parent) {
 		this.parent = parent;
-	}
-	
-	public void read(CompoundTag compound) {
-		radars.clear();
-		ListTag list = compound.getList("radars", 10);
-		for (int i = 0; i < list.size(); ++i) {
-			RadarData r = UtilParse.parseRadarFromCompound(list.getCompound(i));
-			if (r != null) radars.add(r);
-		}
-		readData = true;
-	}
-	
-	public void write(CompoundTag compound) {
-		ListTag list = new ListTag();
-		for (int i = 0; i < radars.size(); ++i) list.add(radars.get(i).writeNbt());
-		compound.put("radars", list);
-	}
-	
-	public static List<RadarData> readRadarsFromBuffer(FriendlyByteBuf buffer) {
-		List<RadarData> radars = new ArrayList<RadarData>();
-		int num = buffer.readInt();
-		for (int i = 0; i < num; ++i) radars.add(DataSerializers.RADAR_DATA.read(buffer));
-		return radars;
-	}
-	
-	public static void writeRadarsToBuffer(FriendlyByteBuf buffer, List<RadarData> radars) {
-		buffer.writeInt(radars.size());
-		for (int i = 0; i < radars.size(); ++i) DataSerializers.RADAR_DATA.write(buffer, radars.get(i));
-	}
-	
-	public void setRadars(List<RadarData> radars) {
-		this.radars = radars;
-		readData = true;
 	}
 	
 	public List<RadarData> getRadars() {

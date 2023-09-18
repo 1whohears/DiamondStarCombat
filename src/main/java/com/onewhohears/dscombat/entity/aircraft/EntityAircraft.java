@@ -27,7 +27,6 @@ import com.onewhohears.dscombat.data.aircraft.AircraftTextures;
 import com.onewhohears.dscombat.data.damagesource.AircraftDamageSource;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartsManager;
-import com.onewhohears.dscombat.data.radar.RadarData;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarMode;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
@@ -312,8 +311,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		// merge if this entity hasn't merged yet
 		if (!nbt.getBoolean("merged_preset")) nbt.merge(presetNbt);
 		partsManager.read(nbt, presetNbt);
-		weaponSystem.read(nbt);
-		radarSystem.read(nbt);
 		setMaxSpeed(nbt.getFloat("max_speed"));
 		setMaxHealth(nbt.getFloat("max_health"));
 		setHealth(nbt.getFloat("health"));
@@ -353,8 +350,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		nbt.putBoolean("no_consume", isNoConsume());
 		nbt.putBoolean("merged_preset", true);
 		partsManager.write(nbt);
-		weaponSystem.write(nbt);
-		radarSystem.write(nbt);
 		nbt.putFloat("max_speed", getMaxSpeed());
 		nbt.putFloat("max_health", getMaxHealth());
 		nbt.putFloat("health", getHealth());
@@ -1334,13 +1329,9 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		int radarMode = buffer.readInt();
 		boolean gear = buffer.readBoolean();
 		boolean freeLook = buffer.readBoolean();
-		List<WeaponData> weapons = WeaponSystem.readWeaponsFromBuffer(buffer);
 		List<PartSlot> slots = PartsManager.readSlotsFromBuffer(buffer);
-		List<RadarData> radars = RadarSystem.readRadarsFromBuffer(buffer);
 		// ORDER MATTERS
-		weaponSystem.setWeapons(weapons);
 		weaponSystem.setSelected(weaponIndex);
-		radarSystem.setRadars(radars);
 		partsManager.setPartSlots(slots);
 		partsManager.clientPartsSetup();
 		// PRESET STUFF
@@ -1360,9 +1351,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		buffer.writeInt(getRadarMode().ordinal());
 		buffer.writeBoolean(isLandingGear());
 		buffer.writeBoolean(isFreeLook());
-		WeaponSystem.writeWeaponsToBuffer(buffer, weaponSystem.getWeapons());
 		PartsManager.writeSlotsToBuffer(buffer, partsManager.getSlots());
-		RadarSystem.writeRadarsToBuffer(buffer, radarSystem.getRadars());
 	}
 	
 	@Override

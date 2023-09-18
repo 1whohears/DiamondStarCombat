@@ -11,8 +11,6 @@ import com.onewhohears.dscombat.data.weapon.WeaponData.WeaponType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -37,42 +35,6 @@ public class WeaponSystem {
 	public WeaponSystem(EntityAircraft parent) {
 		this.parent = parent;
 		weapons.add(NoWeaponData.get());
-	}
-	
-	public void read(CompoundTag compound) {
-		/*weapons.clear();
-		this.weaponIndex = compound.getInt("index");
-		ListTag list = compound.getList("weapons", 10);
-		for (int i = 0; i < list.size(); ++i) {
-			WeaponData w = UtilParse.parseWeaponFromCompound(list.getCompound(i));
-			if (w != null) weapons.add(w);
-		}*/
-		readData = true;
-	}
-	
-	public void write(CompoundTag compound) {
-		/*ListTag list = new ListTag();
-		for (WeaponData w : weapons) if (!w.isNoWeapon()) list.add(w.writeNbt());
-		compound.put("weapons", list);
-		compound.putInt("index", weaponIndex);*/
-		//System.out.println(this);
-	}
-	
-	public static List<WeaponData> readWeaponsFromBuffer(FriendlyByteBuf buffer) {
-		List<WeaponData> weapons = new ArrayList<WeaponData>();
-		//int num = buffer.readInt();
-		//for (int i = 0; i < num; ++i) weapons.add(DataSerializers.WEAPON_DATA.read(buffer));
-		return weapons;
-	}
-	
-	public static void writeWeaponsToBuffer(FriendlyByteBuf buffer, List<WeaponData> weapons) {
-		//buffer.writeInt(weapons.size());
-		//for (WeaponData w : weapons) DataSerializers.WEAPON_DATA.write(buffer, w);
-	}
-	
-	public void setWeapons(List<WeaponData> weapons) {
-		//this.weapons = weapons;
-		readData = true;
 	}
 	
 	public boolean addWeapon(WeaponData data) {

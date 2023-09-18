@@ -69,6 +69,7 @@ public class Config {
 		public final ForgeConfigSpec.BooleanValue autoDataLink;
 		public final ForgeConfigSpec.DoubleValue armorStrength;
 		public final ForgeConfigSpec.BooleanValue disableElytra;
+		// TODO 7.1 plane speed multiplier
 		// TODO 7.2 baby mode for planes disabled by default
 		/**
 		 * classname

@@ -27,6 +27,7 @@ public final class DSCKeys {
 	public static KeyMapping changeSeat, dismount;
 	public static KeyMapping specialKey, special2Key;
 	public static KeyMapping flipControlsKey;
+	// IDEA 4.2 temp burner boost key
 	
 	private static RegisterKeyMappingsEvent event;
 	

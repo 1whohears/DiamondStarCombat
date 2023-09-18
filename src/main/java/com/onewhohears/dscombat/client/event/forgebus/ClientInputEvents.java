@@ -105,6 +105,7 @@ public final class ClientInputEvents {
 		int invertY = Config.CLIENT.invertY.get() ? -1 : 1;
 		if (plane.getAircraftType().ignoreInvertY) invertY = -1;
 		if (!plane.isFreeLook()) {
+			// FIXME 2 fix mouse mode
 			double ya = Math.abs(mouseY);
 			double xa = Math.abs(mouseX);
 			float ys = (float) Math.signum(mouseY) * -invertY;

@@ -179,6 +179,7 @@ public class PilotOverlay {
         	GuiComponent.drawCenteredString(poseStack, m.font, 
         		textByHeading(h), x, y, color);
         }
+        // TODO 1.2 draw pitch, roll, and cursor elements to hud
 	}
 	
 	private static final MutableComponent weaponSelect = Component.empty().append("->");

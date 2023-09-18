@@ -25,6 +25,34 @@
     {
       "item": "dscombat:heavy_fuel_tank",
       "num": 2
+    },
+    {
+      "item": "dscombat:vls",
+      "num": 2
+    },
+    {
+      "item": "dscombat:mls",
+      "num": 1
+    },
+    {
+      "item": "dscombat:ciws",
+      "num": 1
+    },
+    {
+      "item": "dscombat:aa_turret",
+      "num": 3
+    },
+    {
+      "item": "dscombat:torpedo_tubes",
+      "num": 2
+    },
+    {
+      "item": "dscombat:air_scan_b",
+      "num": 1
+    },
+    {
+      "item": "dscombat:wr1k",
+      "num": 1
     }
   ],
   "is_craftable": true,
@@ -86,6 +114,11 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "filled": true,
+        "itemid": "dscombat:vls",
+        "param": "bgm109"
+      },
       "name": "seat5",
       "slot_posx": 0.0,
       "slot_posy": 5.0,
@@ -94,6 +127,9 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "itemid": "dscombat:mls"
+      },
       "name": "seat6",
       "slot_posx": 0.0,
       "slot_posy": 4.0,
@@ -102,6 +138,11 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "filled": true,
+        "itemid": "dscombat:vls",
+        "param": "bgm109"
+      },
       "name": "seat7",
       "slot_posx": 0.0,
       "slot_posy": 4.0,
@@ -110,6 +151,9 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "itemid": "dscombat:aa_turret"
+      },
       "name": "seat8",
       "slot_posx": 0.0,
       "slot_posy": 5.0,
@@ -118,6 +162,9 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "itemid": "dscombat:air_scan_b"
+      },
       "name": "frame_1",
       "slot_posx": 0.0,
       "slot_posy": 8.0,
@@ -126,6 +173,9 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "itemid": "dscombat:ciws"
+      },
       "name": "frame_2",
       "slot_posx": 0.0,
       "slot_posy": 8.0,
@@ -134,6 +184,9 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "itemid": "dscombat:aa_turret"
+      },
       "name": "frame_3",
       "slot_posx": 5.0,
       "slot_posy": 4.0,
@@ -142,6 +195,9 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "itemid": "dscombat:aa_turret"
+      },
       "name": "frame_4",
       "slot_posx": -5.0,
       "slot_posy": 4.0,
@@ -150,6 +206,9 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "itemid": "dscombat:torpedo_tubes"
+      },
       "name": "frame_5",
       "slot_posx": 5.0,
       "slot_posy": 4.0,
@@ -158,6 +217,9 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "itemid": "dscombat:torpedo_tubes"
+      },
       "name": "frame_6",
       "slot_posx": -5.0,
       "slot_posy": 4.0,
@@ -228,6 +290,9 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "itemid": "dscombat:wr1k"
+      },
       "name": "internal_7",
       "slot_posx": 0.0,
       "slot_posy": 0.0,

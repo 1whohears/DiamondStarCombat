@@ -25,6 +25,22 @@
     {
       "item": "dscombat:heavy_fuel_tank",
       "num": 2
+    },
+    {
+      "item": "dscombat:torpedo_tubes",
+      "num": 1
+    },
+    {
+      "item": "dscombat:mark45_cannon",
+      "num": 1
+    },
+    {
+      "item": "dscombat:aa_turret",
+      "num": 1
+    },
+    {
+      "item": "dscombat:survey_all_a",
+      "num": 1
     }
   ],
   "is_craftable": true,
@@ -86,22 +102,31 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "itemid": "dscombat:mark45_cannon"
+      },
       "name": "seat5",
       "slot_posx": 0.0,
       "slot_posy": 3.0,
       "slot_posz": 5.0,
-      "slot_type": "heavy_turret",
-      "zRot": 0.0
-    },
-    {
-      "name": "seat6",
-      "slot_posx": 0.0,
-      "slot_posy": 3.0,
-      "slot_posz": -7.0,
       "slot_type": "med_turret",
       "zRot": 0.0
     },
     {
+      "data": {
+        "itemid": "dscombat:torpedo_tubes"
+      },
+      "name": "seat6",
+      "slot_posx": 0.0,
+      "slot_posy": 3.0,
+      "slot_posz": -7.0,
+      "slot_type": "heavy_turret",
+      "zRot": 0.0
+    },
+    {
+      "data": {
+        "itemid": "dscombat:survey_all_a"
+      },
       "name": "frame_1",
       "slot_posx": 0.0,
       "slot_posy": 5.5,
@@ -110,6 +135,9 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "itemid": "dscombat:aa_turret"
+      },
       "name": "frame_2",
       "slot_posx": 0.0,
       "slot_posy": 6.0,

@@ -491,6 +491,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	 * damages plane if it falls or collides with a wall at speeds defined in config.
 	 */
 	public void tickCollisions() {
+		// TODO 9.1 break grass and leaves or just weak blocks when driving through them
 		if (!level.isClientSide) {
 			if (!hasControllingPassenger()) wallCollisions();
 			if (xzSpeed < 0.1) ride(level.getEntities(this, 

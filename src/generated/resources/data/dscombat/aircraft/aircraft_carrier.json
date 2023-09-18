@@ -25,6 +25,26 @@
     {
       "item": "dscombat:heavy_fuel_tank",
       "num": 2
+    },
+    {
+      "item": "dscombat:vls",
+      "num": 2
+    },
+    {
+      "item": "dscombat:mls",
+      "num": 1
+    },
+    {
+      "item": "dscombat:ciws",
+      "num": 1
+    },
+    {
+      "item": "dscombat:aa_turret",
+      "num": 2
+    },
+    {
+      "item": "dscombat:survey_all_b",
+      "num": 1
     }
   ],
   "is_craftable": true,
@@ -130,6 +150,9 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "itemid": "dscombat:mls"
+      },
       "name": "seat9",
       "slot_posx": -9.0,
       "slot_posy": 6.0,
@@ -138,6 +161,11 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "filled": true,
+        "itemid": "dscombat:vls",
+        "param": "bgm109"
+      },
       "name": "seat10",
       "slot_posx": -9.0,
       "slot_posy": 6.0,
@@ -146,6 +174,9 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "itemid": "dscombat:survey_all_b"
+      },
       "name": "frame_1",
       "slot_posx": -9.0,
       "slot_posy": 10.0,
@@ -154,6 +185,9 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "itemid": "dscombat:aa_turret"
+      },
       "name": "frame_2",
       "slot_posx": 9.0,
       "slot_posy": 6.0,
@@ -162,6 +196,9 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "itemid": "dscombat:ciws"
+      },
       "name": "frame_3",
       "slot_posx": 9.0,
       "slot_posy": 6.0,
@@ -170,6 +207,9 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "itemid": "dscombat:aa_turret"
+      },
       "name": "frame_4",
       "slot_posx": 9.0,
       "slot_posy": 6.0,

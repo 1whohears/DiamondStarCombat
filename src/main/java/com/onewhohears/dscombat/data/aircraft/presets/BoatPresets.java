@@ -205,6 +205,21 @@ public class BoatPresets {
 	public static final AircraftPreset DEFAULT_DESTROYER = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "destroyer", UNARMED_DESTROYER)
 			.setCraftable()
+			.setSlotItem("seat5", ModItems.ADL.getId(), "rgm84", true)
+			.setSlotItem("seat6", ModItems.MLS.getId())
+			.setSlotItem("frame_1", ModItems.SURVEY_ALL_B.getId())
+			.setSlotItem("frame_2", ModItems.AA_TURRET.getId())
+			.setSlotItem("frame_3", ModItems.AA_TURRET.getId())
+			.setSlotItem("frame_4", ModItems.AA_TURRET.getId())
+			.setSlotItem("frame_5", ModItems.TORPEDO_TUBES.getId())
+			.setSlotItem("frame_6", ModItems.TORPEDO_TUBES.getId())
+			.setSlotItem("internal_7", ModItems.WR1K.getId())
+			.addIngredient(ModItems.ADL.getId())
+			.addIngredient(ModItems.MLS.getId())
+			.addIngredient(ModItems.AA_TURRET.getId(), 3)
+			.addIngredient(ModItems.TORPEDO_TUBES.getId(), 2)
+			.addIngredient(ModItems.SURVEY_ALL_B.getId())
+			.addIngredient(ModItems.WR1K.getId())
 			.build();
 	
 	public static final AircraftPreset EMPTY_CRUISER = AircraftPreset.Builder
@@ -266,6 +281,24 @@ public class BoatPresets {
 	public static final AircraftPreset DEFAULT_CRUISER = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "cruiser", UNARMED_CRUISER)
 			.setCraftable()
+			.setSlotItem("seat5", ModItems.VLS.getId(), "bgm109", true)
+			.setSlotItem("seat6", ModItems.MLS.getId())
+			.setSlotItem("seat7", ModItems.VLS.getId(), "bgm109", true)
+			.setSlotItem("seat8", ModItems.AA_TURRET.getId())
+			.setSlotItem("frame_1", ModItems.AIR_SCAN_B.getId())
+			.setSlotItem("frame_2", ModItems.CIWS.getId())
+			.setSlotItem("frame_3", ModItems.AA_TURRET.getId())
+			.setSlotItem("frame_4", ModItems.AA_TURRET.getId())
+			.setSlotItem("frame_5", ModItems.TORPEDO_TUBES.getId())
+			.setSlotItem("frame_6", ModItems.TORPEDO_TUBES.getId())
+			.setSlotItem("internal_7", ModItems.WR1K.getId())
+			.addIngredient(ModItems.VLS.getId(), 2)
+			.addIngredient(ModItems.MLS.getId())
+			.addIngredient(ModItems.CIWS.getId())
+			.addIngredient(ModItems.AA_TURRET.getId(), 3)
+			.addIngredient(ModItems.TORPEDO_TUBES.getId(), 2)
+			.addIngredient(ModItems.AIR_SCAN_B.getId())
+			.addIngredient(ModItems.WR1K.getId())
 			.build();
 	
 	public static final AircraftPreset EMPTY_CORVETTE = AircraftPreset.Builder
@@ -291,8 +324,8 @@ public class BoatPresets {
 			.addSeatSlot("seat2", SlotType.SEAT, -1.0, 3, 1.5)
 			.addSeatSlot("seat3", SlotType.SEAT, 1.0, 3, -0.5)
 			.addSeatSlot("seat4", SlotType.SEAT, -1.0, 3, -0.5)
-			.addEmptySlot("seat5", SlotType.HEAVY_TURRET, 0, 3, 5, 0)
-			.addEmptySlot("seat6", SlotType.MED_TURRET, 0, 3, -7, 0)
+			.addEmptySlot("seat5", SlotType.MED_TURRET, 0, 3, 5, 0)
+			.addEmptySlot("seat6", SlotType.HEAVY_TURRET, 0, 3, -7, 0)
 			.addEmptySlot("frame_1", SlotType.ADVANCED_FRAME, 0, 5.5, -3.5, 0)
 			.addEmptySlot("frame_2", SlotType.LIGHT_TURRET, 0, 6, 0.5, 0)
 			.addEmptySlot("internal_1", SlotType.PUSH_ENGINE)
@@ -319,6 +352,14 @@ public class BoatPresets {
 	public static final AircraftPreset DEFAULT_CORVETTE = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "corvette", UNARMED_CORVETTE)
 			.setCraftable()
+			.setSlotItem("seat5", ModItems.MARK45_CANNON.getId())
+			.setSlotItem("seat6", ModItems.TORPEDO_TUBES.getId())
+			.setSlotItem("frame_1", ModItems.SURVEY_ALL_A.getId())
+			.setSlotItem("frame_2", ModItems.AA_TURRET.getId())
+			.addIngredient(ModItems.TORPEDO_TUBES.getId())
+			.addIngredient(ModItems.MARK45_CANNON.getId())
+			.addIngredient(ModItems.AA_TURRET.getId())
+			.addIngredient(ModItems.SURVEY_ALL_A.getId())
 			.build();
 	
 	public static final AircraftPreset EMPTY_AIRCRAFT_CARRIER = AircraftPreset.Builder
@@ -380,6 +421,17 @@ public class BoatPresets {
 	public static final AircraftPreset DEFAULT_AIRCRAFT_CARRIER = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "aircraft_carrier", UNARMED_AIRCRAFT_CARRIER)
 			.setCraftable()
+			.setSlotItem("seat9", ModItems.MLS.getId())
+			.setSlotItem("seat10", ModItems.VLS.getId(), "bgm109", true)
+			.setSlotItem("frame_1", ModItems.SURVEY_ALL_B.getId())
+			.setSlotItem("frame_2", ModItems.AA_TURRET.getId())
+			.setSlotItem("frame_3", ModItems.CIWS.getId())
+			.setSlotItem("frame_4", ModItems.AA_TURRET.getId())
+			.addIngredient(ModItems.VLS.getId(), 2)
+			.addIngredient(ModItems.MLS.getId())
+			.addIngredient(ModItems.CIWS.getId())
+			.addIngredient(ModItems.AA_TURRET.getId(), 2)
+			.addIngredient(ModItems.SURVEY_ALL_B.getId())
 			.build();
 	
 }

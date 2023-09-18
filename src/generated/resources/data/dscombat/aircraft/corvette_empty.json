@@ -22,7 +22,7 @@
   "is_craftable": false,
   "item": "dscombat:corvette",
   "landing_gear": true,
-  "mass": 80.0,
+  "mass": 70.0,
   "max_health": 250.0,
   "max_speed": 0.95,
   "maxpitch": 0.0,
@@ -39,7 +39,7 @@
       },
       "name": "pilot_seat",
       "slot_posx": 0.8,
-      "slot_posy": 6.0,
+      "slot_posy": 3.0,
       "slot_posz": 4.5,
       "slot_type": "seat",
       "zRot": 0.0
@@ -50,7 +50,7 @@
       },
       "name": "seat2",
       "slot_posx": -0.8,
-      "slot_posy": 6.0,
+      "slot_posy": 3.0,
       "slot_posz": 4.5,
       "slot_type": "seat",
       "zRot": 0.0
@@ -61,7 +61,7 @@
       },
       "name": "seat3",
       "slot_posx": 0.8,
-      "slot_posy": 6.0,
+      "slot_posy": 3.0,
       "slot_posz": 2.2,
       "slot_type": "seat",
       "zRot": 0.0
@@ -72,7 +72,7 @@
       },
       "name": "seat4",
       "slot_posx": -0.8,
-      "slot_posy": 6.0,
+      "slot_posy": 3.0,
       "slot_posz": 2.2,
       "slot_type": "seat",
       "zRot": 0.0
@@ -80,7 +80,7 @@
     {
       "name": "seat5",
       "slot_posx": 0.0,
-      "slot_posy": 5.0,
+      "slot_posy": 3.0,
       "slot_posz": 13.0,
       "slot_type": "heavy_turret",
       "zRot": 0.0
@@ -88,80 +88,24 @@
     {
       "name": "seat6",
       "slot_posx": 0.0,
-      "slot_posy": 5.0,
+      "slot_posy": 3.0,
       "slot_posz": -13.0,
-      "slot_type": "heavy_turret",
-      "zRot": 0.0
-    },
-    {
-      "name": "seat7",
-      "slot_posx": 0.0,
-      "slot_posy": 4.0,
-      "slot_posz": 22.0,
-      "slot_type": "heavy_turret",
-      "zRot": 0.0
-    },
-    {
-      "name": "seat8",
-      "slot_posx": 0.0,
-      "slot_posy": 4.0,
-      "slot_posz": -22.0,
-      "slot_type": "heavy_turret",
-      "zRot": 0.0
-    },
-    {
-      "name": "seat9",
-      "slot_posx": 0.0,
-      "slot_posy": 6.0,
-      "slot_posz": 7.0,
-      "slot_type": "med_turret",
-      "zRot": 0.0
-    },
-    {
-      "name": "seat10",
-      "slot_posx": 0.0,
-      "slot_posy": 6.0,
-      "slot_posz": -7.0,
       "slot_type": "med_turret",
       "zRot": 0.0
     },
     {
       "name": "frame_1",
       "slot_posx": 0.0,
-      "slot_posy": 9.0,
-      "slot_posz": 3.0,
+      "slot_posy": 5.5,
+      "slot_posz": -3.0,
       "slot_type": "advanced_frame",
       "zRot": 0.0
     },
     {
       "name": "frame_2",
-      "slot_posx": 6.0,
-      "slot_posy": 4.0,
-      "slot_posz": 4.0,
-      "slot_type": "light_turret",
-      "zRot": 0.0
-    },
-    {
-      "name": "frame_3",
-      "slot_posx": -6.0,
-      "slot_posy": 4.0,
-      "slot_posz": 4.0,
-      "slot_type": "light_turret",
-      "zRot": 0.0
-    },
-    {
-      "name": "frame_4",
-      "slot_posx": 6.0,
-      "slot_posy": 4.0,
-      "slot_posz": -4.0,
-      "slot_type": "light_turret",
-      "zRot": 0.0
-    },
-    {
-      "name": "frame_5",
-      "slot_posx": -6.0,
-      "slot_posy": 4.0,
-      "slot_posz": -4.0,
+      "slot_posx": 0.0,
+      "slot_posy": 6.0,
+      "slot_posz": 0.0,
       "slot_type": "light_turret",
       "zRot": 0.0
     },
@@ -206,14 +150,6 @@
       "zRot": 0.0
     },
     {
-      "name": "internal_6",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "internal",
-      "zRot": 0.0
-    },
-    {
       "name": "internal_7",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
@@ -231,14 +167,6 @@
     },
     {
       "name": "internal_9",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "advanced_internal",
-      "zRot": 0.0
-    },
-    {
-      "name": "internal_10",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,

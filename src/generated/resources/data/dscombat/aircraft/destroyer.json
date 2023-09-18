@@ -17,12 +17,20 @@
     {
       "item": "dscombat:seat",
       "num": 4
+    },
+    {
+      "item": "dscombat:turbofan_f145",
+      "num": 2
+    },
+    {
+      "item": "dscombat:heavy_fuel_tank",
+      "num": 2
     }
   ],
   "is_craftable": true,
   "item": "dscombat:destroyer",
   "landing_gear": true,
-  "mass": 110.0,
+  "mass": 100.0,
   "max_health": 400.0,
   "max_speed": 0.8,
   "maxpitch": 0.0,
@@ -81,7 +89,7 @@
       "name": "seat5",
       "slot_posx": 0.0,
       "slot_posy": 4.0,
-      "slot_posz": 13.0,
+      "slot_posz": 11.0,
       "slot_type": "heavy_turret",
       "zRot": 0.0
     },
@@ -97,7 +105,7 @@
       "name": "frame_1",
       "slot_posx": 0.0,
       "slot_posy": 7.0,
-      "slot_posz": 3.0,
+      "slot_posz": 2.0,
       "slot_type": "advanced_frame",
       "zRot": 0.0
     },
@@ -105,13 +113,13 @@
       "name": "frame_2",
       "slot_posx": 0.0,
       "slot_posy": 7.0,
-      "slot_posz": 6.0,
+      "slot_posz": 5.5,
       "slot_type": "light_turret",
       "zRot": 0.0
     },
     {
       "name": "frame_3",
-      "slot_posx": 4.0,
+      "slot_posx": 3.0,
       "slot_posy": 4.0,
       "slot_posz": -2.0,
       "slot_type": "light_turret",
@@ -119,7 +127,7 @@
     },
     {
       "name": "frame_4",
-      "slot_posx": -4.0,
+      "slot_posx": -3.0,
       "slot_posy": 4.0,
       "slot_posz": -2.0,
       "slot_type": "light_turret",
@@ -127,7 +135,7 @@
     },
     {
       "name": "frame_5",
-      "slot_posx": 4.0,
+      "slot_posx": 3.0,
       "slot_posy": 4.0,
       "slot_posz": -6.0,
       "slot_type": "med_turret",
@@ -135,13 +143,16 @@
     },
     {
       "name": "frame_6",
-      "slot_posx": -4.0,
+      "slot_posx": -3.0,
       "slot_posy": 4.0,
       "slot_posz": -6.0,
       "slot_type": "med_turret",
       "zRot": 0.0
     },
     {
+      "data": {
+        "itemid": "dscombat:turbofan_f145"
+      },
       "name": "internal_1",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
@@ -150,6 +161,9 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "itemid": "dscombat:turbofan_f145"
+      },
       "name": "internal_2",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
@@ -158,6 +172,10 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "filled": true,
+        "itemid": "dscombat:heavy_fuel_tank"
+      },
       "name": "internal_3",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
@@ -166,6 +184,10 @@
       "zRot": 0.0
     },
     {
+      "data": {
+        "filled": true,
+        "itemid": "dscombat:heavy_fuel_tank"
+      },
       "name": "internal_4",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
@@ -210,7 +232,7 @@
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": "advanced_internal",
+      "slot_type": "internal",
       "zRot": 0.0
     },
     {
@@ -218,7 +240,7 @@
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": "advanced_internal",
+      "slot_type": "internal",
       "zRot": 0.0
     }
   ],

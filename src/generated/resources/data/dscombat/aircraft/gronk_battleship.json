@@ -24,14 +24,10 @@
     },
     {
       "item": "dscombat:heavy_fuel_tank",
-      "num": 1
+      "num": 2
     },
     {
-      "item": "dscombat:wr1k",
-      "num": 1
-    },
-    {
-      "item": "dscombat:ar1k",
+      "item": "dscombat:survey_all_a",
       "num": 1
     },
     {
@@ -185,7 +181,7 @@
     },
     {
       "data": {
-        "itemid": "dscombat:air_scan_a"
+        "itemid": "dscombat:survey_all_a"
       },
       "name": "frame_1",
       "slot_posx": 0.0,
@@ -301,9 +297,6 @@
       "zRot": 0.0
     },
     {
-      "data": {
-        "itemid": "dscombat:wr1k"
-      },
       "name": "internal_7",
       "slot_posx": 0.0,
       "slot_posy": 0.0,

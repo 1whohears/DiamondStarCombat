@@ -85,6 +85,19 @@ public class AircraftClientPreset extends JsonPreset {
 			return this;
 		}
 		
+		public Builder setAllUIPos(int x_start, int y_start, int cols, String... names) {
+			int x = x_start, y = y_start;
+			for (int i = 0; i < names.length; ++i) {
+				if (i != 0 && i % cols == 0) {
+					y += 18;
+					x = x_start;
+				}
+				addUIPos(names[i], x, y);
+				x += 18;
+			}
+			return this;
+		}
+		
 		public Builder makeOneTexture(String path) {
 			JsonObject overrides = getData().getAsJsonObject("textures").getAsJsonObject("overrides");
 			for (int i = 0; i < DyeColor.values().length; ++i) {

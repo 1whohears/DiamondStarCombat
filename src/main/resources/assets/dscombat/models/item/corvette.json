@@ -1,7 +1,7 @@
 {
 	"loader": "forge:obj",
 	"flip-v": true,
-	"model": "dscombat:models/entity/battleship.obj",
+	"model": "dscombat:models/entity/corvette.obj",
 	"display": {
 		"thirdperson_righthand": {
 			"rotation": [75, 45, 0],

@@ -226,6 +226,7 @@
       "zRot": 0.0
     }
   ],
+  "sort_factor": 5,
   "stealth": 0.05,
   "throttledown": 0.04,
   "throttleup": 0.04,

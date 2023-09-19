@@ -12,6 +12,7 @@ public class JaviPresets {
 	
 	public static final AircraftPreset EMPTY_JAVI_PLANE = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "javi_plane_empty")
+			.setSortFactor(9)
 			.setAircraftType(AircraftType.PLANE)
 			.setItem(ModItems.JAVI_PLANE.getId())
 			.setMaxHealth(200f)

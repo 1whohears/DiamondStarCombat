@@ -12,6 +12,7 @@ public class SubPresets {
 	
 	public static final AircraftPreset EMPTY_ANDOLF_SUB = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "andolf_sub_empty")
+			.setSortFactor(5)
 			.setAircraftType(AircraftType.SUBMARINE)
 			.setItem(ModItems.ANDOLF_SUB.getId())
 			.setMaxHealth(800f)

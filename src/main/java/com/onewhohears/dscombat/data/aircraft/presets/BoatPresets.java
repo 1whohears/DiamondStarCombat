@@ -12,6 +12,7 @@ public class BoatPresets {
 	
 	public static final AircraftPreset EMPTY_NATHAN_BOAT = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "nathan_boat_empty")
+			.setSortFactor(0)
 			.setAircraftType(AircraftType.BOAT)
 			.setItem(ModItems.NATHAN_BOAT.getId())
 			.setMaxHealth(100f)
@@ -69,6 +70,7 @@ public class BoatPresets {
 	
 	public static final AircraftPreset EMPTY_GRONK_BATTLESHIP = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "gronk_battleship_empty")
+			.setSortFactor(1)
 			.setAircraftType(AircraftType.BOAT)
 			.setItem(ModItems.GRONK_BATTLESHIP.getId())
 			.setMaxHealth(600f)
@@ -148,6 +150,7 @@ public class BoatPresets {
 	
 	public static final AircraftPreset EMPTY_DESTROYER = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "destroyer_empty")
+			.setSortFactor(2)
 			.setAircraftType(AircraftType.BOAT)
 			.setItem(ModItems.DESTROYER.getId())
 			.setMaxHealth(400f)
@@ -221,6 +224,7 @@ public class BoatPresets {
 	
 	public static final AircraftPreset EMPTY_CRUISER = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "cruiser_empty")
+			.setSortFactor(3)
 			.setAircraftType(AircraftType.BOAT)
 			.setItem(ModItems.CRUISER.getId())
 			.setMaxHealth(500f)
@@ -299,6 +303,7 @@ public class BoatPresets {
 	
 	public static final AircraftPreset EMPTY_CORVETTE = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "corvette_empty")
+			.setSortFactor(4)
 			.setAircraftType(AircraftType.BOAT)
 			.setItem(ModItems.CORVETTE.getId())
 			.setMaxHealth(250f)
@@ -359,6 +364,7 @@ public class BoatPresets {
 	
 	public static final AircraftPreset EMPTY_AIRCRAFT_CARRIER = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "aircraft_carrier_empty")
+			.setSortFactor(5)
 			.setAircraftType(AircraftType.BOAT)
 			.setItem(ModItems.AIRCRAFT_CARRIER.getId())
 			.setMaxHealth(900f)

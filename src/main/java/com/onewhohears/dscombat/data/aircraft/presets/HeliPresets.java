@@ -12,6 +12,7 @@ public class HeliPresets {
 	
 	public static final AircraftPreset EMPTY_NOAH_CHOPPER = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "noah_chopper_empty")
+			.setSortFactor(4)
 			.setAircraftType(AircraftType.HELICOPTER)
 			.setItem(ModItems.NOAH_CHOPPER.getId())
 			.setMaxHealth(300f)

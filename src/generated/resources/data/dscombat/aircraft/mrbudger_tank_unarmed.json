@@ -35,7 +35,7 @@
       "num": 1
     }
   ],
-  "is_craftable": false,
+  "is_craftable": true,
   "item": "dscombat:mrbudger_tank",
   "landing_gear": true,
   "mass": 50.0,
@@ -144,6 +144,7 @@
       "zRot": 0.0
     }
   ],
+  "sort_factor": 4,
   "stealth": 1.0,
   "throttledown": 0.04,
   "throttleup": 0.04,

@@ -12,6 +12,7 @@ public class PlanePresets {
 	
 	public static final AircraftPreset EMPTY_WOODEN_PLANE = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "wooden_plane_empty")
+			.setSortFactor(0)
 			.setAircraftType(AircraftType.PLANE)
 			.setItem(ModItems.WOODEN_PLANE.getId())
 			.setMaxHealth(40f)
@@ -66,6 +67,7 @@ public class PlanePresets {
 	
 	public static final AircraftPreset EMPTY_E3SENTRY_PLANE = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "e3sentry_plane_empty")
+			.setSortFactor(15)
 			.setAircraftType(AircraftType.PLANE)
 			.setItem(ModItems.E3SENTRY_PLANE.getId())
 			.setMaxHealth(400f)
@@ -119,13 +121,11 @@ public class PlanePresets {
 			.addIngredient(ModItems.HEAVY_FUEL_TANK.getId(), 2)
 			.addIngredient(ModItems.AR20K.getId())
 			.addIngredient(ModItems.DATA_LINK.getId())
-			.addIngredient(ModItems.BASIC_FLARE_DISPENSER.getId())
 			.setSlotItem("left_wing_1", ModItems.CFM56.getId())
 			.setSlotItem("right_wing_1", ModItems.CFM56.getId())
 			.setSlotItem("frame_1", ModItems.AR20K.getId())
 			.setSlotItem("internal_1", ModItems.HEAVY_FUEL_TANK.getId(), true)
 			.setSlotItem("internal_2", ModItems.HEAVY_FUEL_TANK.getId(), true)
-			.setSlotItem("internal_3", ModItems.BASIC_FLARE_DISPENSER.getId(), true)
 			.setSlotItem("internal_5", ModItems.DATA_LINK.getId())
 			.build();
 	

@@ -12,6 +12,7 @@ public class AlexisPresets {
 	
 	public static final AircraftPreset EMPTY_ALEXIS_PLANE = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "alexis_plane_empty")
+			.setSortFactor(10)
 			.setAircraftType(AircraftType.PLANE)
 			.setItem(ModItems.ALEXIS_PLANE.getId())
 			.setMaxHealth(150f)

@@ -40,15 +40,19 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 		this.imageWidth = 352;
 		this.imageHeight = 260;
 		this.bg_tex_size = 512;
+		this.titleLabelX = 122;
+		this.titleLabelY = 24;
+		this.inventoryLabelX = 96;
+		this.inventoryLabelY = 146;
 	}
 	
 	@Override
 	public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
-		// TODO 1.3 new aircraft workbench ui texture 
 		this.renderBackground(poseStack);
 		super.render(poseStack, mouseX, mouseY, partialTicks);
         this.renderTooltip(poseStack, mouseX, mouseY);
         this.renderIngredients(poseStack, mouseX, mouseY, partialTicks);
+        this.renderVehicle(poseStack, mouseX, mouseY, partialTicks);
 	}
 	
 	@Override
@@ -60,13 +64,22 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 				bg_tex_size, bg_tex_size);
 	}
 	
+	protected void renderVehicle(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+		AircraftPreset ap = tab.getSelectedPreset();
+        if (ap == null) return;
+		Minecraft m = Minecraft.getInstance();
+        ItemStack stack = ap.getItem();
+        // TODO 1.3 render 3d vehicle 
+        m.getItemRenderer().renderAndDecorateItem(stack, leftPos+170, topPos+60);
+	}
+	
 	protected void renderIngredients(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+		AircraftPreset ap = tab.getSelectedPreset();
+        if (ap == null) return;
 		Minecraft m = Minecraft.getInstance();
         RenderSystem.enableBlend();
-        if (tab.getSelectedPreset() == null) return;
-		List<DSCIngredient> ingredients = tab.getSelectedPreset().getIngredients();
-		int startX = leftPos+97;
-		int startY = topPos+122;
+		List<DSCIngredient> ingredients = ap.getIngredients();
+		int startX = leftPos+97, startY = topPos+122;
 		int ix = startX, iy = startY;
 		int space = 18;
 		for (int i = 0; i < ingredients.size(); ++i) {
@@ -84,53 +97,73 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 	
 	@Override
 	protected void renderLabels(PoseStack stack, int mouseX, int mouseY) {
-		//font.draw(stack, title, titleLabelX, titleLabelY, 0x404040);
 		font.draw(stack, playerInventoryTitle, inventoryLabelX, inventoryLabelY, 0x404040);
 		// plane stats
 		AircraftPreset ap = tab.getSelectedPreset();
 		if (ap == null) return;
-		font.draw(stack, ap.getDisplayNameComponent(), leftPos+120, topPos+24, 0x000000);
+		font.draw(stack, ap.getDisplayNameComponent(), titleLabelX, titleLabelY, 0x000000);
 		CompoundTag data = ap.getDataAsNBT();
-		float scale = 0.7f;
+		float scale = 0.8f;
 		stack.scale(scale, scale, scale);
 		float invScale = 1f / scale;
-		int startX = (int)((float)(leftPos+290) * invScale);
-		int startY = (int)((float)(topPos+30) * invScale);
-		font.draw(stack, Component.literal("Health: "+data.getDouble("max_health")), startX, startY, 0x404040);
+		int startX = (int)(294f * invScale);
+		int startY = (int)(34f * invScale);
+		int pColor = 0x4CFF00;
+		font.draw(stack, Component.literal("Health: "+data.getDouble("max_health")), startX, startY, pColor);
 		startY += font.lineHeight;
-		font.draw(stack, Component.literal("Max Speed: "+(int)(data.getDouble("max_speed")*20)+" m/s"), startX, startY, 0x404040);
+		font.draw(stack, Component.literal("Max Speed: "+(int)(data.getDouble("max_speed")*20)+" m/s"), startX, startY, pColor);
 		startY += font.lineHeight;
-		font.draw(stack, Component.literal("Mass: "+data.getDouble("mass")+" Anvils"), startX, startY, 0x404040);
+		font.draw(stack, Component.literal("Mass: "+data.getDouble("mass")+" Anvils"), startX, startY, pColor);
 		startY += font.lineHeight;
-		font.draw(stack, Component.literal("Radar Absorption: "+data.getDouble("stealth")), startX, startY, 0x404040);
+		font.draw(stack, Component.literal("Radar Absorption: "+data.getDouble("stealth")), startX, startY, pColor);
 		startY += font.lineHeight;
-		font.draw(stack, Component.literal("Idle Heat: "+data.getDouble("idleheat")), startX, startY, 0x404040);
+		font.draw(stack, Component.literal("Idle Heat: "+data.getDouble("idleheat")), startX, startY, pColor);
 		startY += font.lineHeight;
-		font.draw(stack, Component.literal("Base Armor: "+data.getFloat("base_armor")), startX, startY, 0x404040);
+		font.draw(stack, Component.literal("Base Armor: "+data.getFloat("base_armor")), startX, startY, pColor);
 		startY += font.lineHeight;
-		font.draw(stack, Component.literal("Yaw: "+(int)(data.getDouble("maxyaw")*20)+" deg/sec"), startX, startY, 0x404040);
+		font.draw(stack, Component.literal("Yaw: "+(int)(data.getDouble("maxyaw")*20)+" deg/sec"), startX, startY, pColor);
 		startY += font.lineHeight;
-		font.draw(stack, Component.literal("Pitch: "+(int)(data.getDouble("maxpitch")*20)+" deg/sec"), startX, startY, 0x404040);
+		font.draw(stack, Component.literal("Pitch: "+(int)(data.getDouble("maxpitch")*20)+" deg/sec"), startX, startY, pColor);
 		startY += font.lineHeight;
-		font.draw(stack, Component.literal("Roll: "+(int)(data.getDouble("maxroll")*20)+" deg/sec"), startX, startY, 0x404040);
+		font.draw(stack, Component.literal("Roll: "+(int)(data.getDouble("maxroll")*20)+" deg/sec"), startX, startY, pColor);
 		stack.scale(1/scale, 1/scale, 1/scale);
-		// HOW 2 display plane model
 	}
 	
 	@Override
 	protected void init() {
 		super.init();
-		//this.titleLabelX = leftPos + 0;
-		//this.titleLabelY = topPos + 0;
-		this.inventoryLabelX = leftPos + 94;
-		this.inventoryLabelY = topPos + 140;
-		int startX = leftPos;
-		int startY = topPos;
 		// tabs
-		
+		Button tankButton = new ImageButton(0, 0, 45, 20, 
+				83, 0, 300, 
+				BG_TEXTURE, 512, 512,
+				onPress -> { tabButton(AircraftTab.TANKS); });
+		tankButton.x = leftPos+83;
+		tankButton.y = topPos;
+		addRenderableWidget(tankButton);
+		Button heliButton = new ImageButton(0, 0, 45, 20, 
+				130, 0, 300, 
+				BG_TEXTURE, 512, 512,
+				onPress -> { tabButton(AircraftTab.HELIS); });
+		heliButton.x = leftPos+130;
+		heliButton.y = topPos;
+		addRenderableWidget(heliButton);
+		Button planeButton = new ImageButton(0, 0, 45, 20, 
+				177, 0, 300, 
+				BG_TEXTURE, 512, 512,
+				onPress -> { tabButton(AircraftTab.PLANES); });
+		planeButton.x = leftPos+177;
+		planeButton.y = topPos;
+		addRenderableWidget(planeButton);
+		Button boatButton = new ImageButton(0, 0, 45, 20, 
+				224, 0, 300, 
+				BG_TEXTURE, 512, 512,
+				onPress -> { tabButton(AircraftTab.BOATS); });
+		boatButton.x = leftPos+224;
+		boatButton.y = topPos;
+		addRenderableWidget(boatButton);
 		// prev
 		Button prevButton = new ImageButton(0, 0, 41, 10, 
-				78, 52, 0, 
+				78, 52, 230, 
 				BG_TEXTURE, 512, 512,
 				onPress -> { prevButton(); });
 		prevButton.x = leftPos+78;
@@ -138,7 +171,7 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 		addRenderableWidget(prevButton);
 		// next
 		Button nextButton = new ImageButton(0, 0, 41, 10, 
-				233, 52, 0, 
+				233, 52, 230, 
 				BG_TEXTURE, 512, 512,
 				onPress -> { nextButton(); });
 		nextButton.x = leftPos+233;
@@ -149,7 +182,7 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 				Component.translatable("ui.dscombat.craft_button"), 
 				onPress -> { craftButton(); });
 		craftButton.x = leftPos+140;
-		craftButton.y = topPos+88;
+		craftButton.y = topPos+86;
 		addRenderableWidget(craftButton);
 	}
 	
@@ -171,6 +204,10 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 	@Override
 	public boolean mouseReleased(double mouseX, double mouseY, int button) {
 		return super.mouseReleased(mouseX, mouseY, button);
+	}
+	
+	private void tabButton(AircraftTab tab) {
+		this.tab = tab;
 	}
 	
 	private void prevButton() {

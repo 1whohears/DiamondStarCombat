@@ -12,6 +12,7 @@ public class CarPresets {
 	
 	public static final AircraftPreset DEFAULT_ORANGE_TESLA = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "orange_tesla")
+			.setSortFactor(10)
 			.setAircraftType(AircraftType.CAR)
 			.setItem(ModItems.ORANGE_TESLA.getId())
 			.setCraftable()
@@ -41,6 +42,7 @@ public class CarPresets {
 	
 	public static final AircraftPreset EMPTY_AXCEL_TRUCK = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "axcel_truck_empty")
+			.setSortFactor(5)
 			.setAircraftType(AircraftType.CAR)
 			.setItem(ModItems.AXCEL_TRUCK.getId())
 			.setMaxHealth(80f)

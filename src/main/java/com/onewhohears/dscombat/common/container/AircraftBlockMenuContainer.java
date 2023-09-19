@@ -21,15 +21,14 @@ public class AircraftBlockMenuContainer extends AbstractContainerMenu {
 		this.aircraftBlock = aircraftBlock;
 		this.pos = aircraftBlock.getBlockPos();
 		// display player inventory
+		int startX = 97;
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				//System.out.println("playerInv i = "+i+" j = "+j);
-				this.addSlot(new Slot(playerInv, j + i * 9 + 9, 48 + j * 18, 138 + i * 18));
+				this.addSlot(new Slot(playerInv, j + i * 9 + 9, startX + j * 18, 157 + i * 18));
 			}
 		}
 		for(int i = 0; i < 9; i++) {
-			//System.out.println("playerInv i = "+i);
-			this.addSlot(new Slot(playerInv, i, 48 + i * 18, 196));
+			this.addSlot(new Slot(playerInv, i, startX + i * 18, 215));
 		}
 		this.loaded = true;
 	}

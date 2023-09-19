@@ -13,6 +13,7 @@ public class TankPresets {
 	
 	public static final AircraftPreset EMPTY_MRBUDGER_TANK = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "mrbudger_tank_empty")
+			.setSortFactor(4)
 			.setAircraftType(AircraftType.CAR)
 			.setItem(ModItems.MRBUDGER_TANK.getId())
 			.setMaxHealth(500f)
@@ -44,6 +45,7 @@ public class TankPresets {
 	
 	public static final AircraftPreset UNARMED_MRBUDGER_TANK = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "mrbudger_tank_unarmed", EMPTY_MRBUDGER_TANK)
+			.setCraftable()
 			.setSlotItem("internal_1", ModItems.C12_ENGINE.getId())
 			.setSlotItem("internal_3", ModItems.HEAVY_FUEL_TANK.getId(), true)
 			.setSlotItem(PartSlot.PILOT_SLOT_NAME, ModItems.HEAVY_TANK_TURRET.getId(), false)
@@ -54,13 +56,13 @@ public class TankPresets {
 	
 	public static final AircraftPreset DEFAULT_MRBUDGER_TANK = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "mrbudger_tank", UNARMED_MRBUDGER_TANK)
-			.setCraftable()
 			.setSlotItem(PartSlot.PILOT_SLOT_NAME, ModItems.HEAVY_TANK_TURRET.getId(), true)
 			.addIngredient(ModItems.B_120MMHE.getId(), 16)
 			.build();
 	
 	public static final AircraftPreset EMPTY_SMALL_ROLLER = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "small_roller_empty")
+			.setSortFactor(1)
 			.setAircraftType(AircraftType.CAR)
 			.setItem(ModItems.SMALL_ROLLER.getId())
 			.setMaxHealth(30f)

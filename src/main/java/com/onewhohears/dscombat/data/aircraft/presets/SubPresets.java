@@ -63,7 +63,6 @@ public class SubPresets {
 	
 	public static final AircraftPreset DEFAULT_ANDOLF_SUB = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "andolf_sub", UNARMED_ANDOLF_SUB)
-			.setCraftable()
 			.addIngredient(ModItems.WR1K.getId())
 			.setSlotItem("internal_4", ModItems.WR1K.getId())
 			.setSlotItem("nose_1", ModItems.XM12.getId(), "20mm", true)

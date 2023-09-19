@@ -75,7 +75,7 @@
       "num": 64
     }
   ],
-  "is_craftable": true,
+  "is_craftable": false,
   "item": "dscombat:javi_plane",
   "landing_gear": true,
   "mass": 25.0,

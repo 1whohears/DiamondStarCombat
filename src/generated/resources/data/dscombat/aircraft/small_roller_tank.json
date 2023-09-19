@@ -29,9 +29,13 @@
     {
       "item": "dscombat:heavy_tank_turret",
       "num": 1
+    },
+    {
+      "item": "dscombat:120mmhe",
+      "num": 16
     }
   ],
-  "is_craftable": true,
+  "is_craftable": false,
   "item": "dscombat:small_roller",
   "landing_gear": true,
   "mass": 5.0,

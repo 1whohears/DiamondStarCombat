@@ -26,17 +26,18 @@ public class TurretData extends SeatData {
 	private final String turretEntityKey;
 	private final RotBounds rotBounds;
 	private EntityType<? extends EntityTurret> turretType;
-	private int ammo;
-	private int max;
+	private int ammo = 0;
+	private int max = 0;
 	
-	public TurretData(float weight, ResourceLocation itemid, SlotType[] compatibleSlots, String turrentEntityKey, String weaponId, RotBounds rotBounds) {
+	public TurretData(float weight, ResourceLocation itemid, SlotType[] compatibleSlots, 
+			String turrentEntityKey, String weaponId, RotBounds rotBounds, boolean filled) {
 		super(weight, itemid, compatibleSlots);
 		this.weaponId = weaponId;
 		this.turretEntityKey = turrentEntityKey;
 		this.rotBounds = rotBounds;
 		WeaponData data = WeaponPresets.get().getPreset(weaponId);
 		if (data != null) {
-			this.ammo = data.getMaxAmmo();
+			if (filled) this.ammo = data.getMaxAmmo();
 			this.max = data.getMaxAmmo();
 		}
 	}
@@ -152,8 +153,6 @@ public class TurretData extends SeatData {
 		public RotBounds(FriendlyByteBuf buffer) {
 			this.minRotX = buffer.readFloat();
 			this.maxRotX = buffer.readFloat();
-			//this.minRotY = buffer.readFloat();
-			//this.maxRotY = buffer.readFloat();
 			this.rotRate = buffer.readFloat();
 		}
 		public void write(FriendlyByteBuf buffer) {

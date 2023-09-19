@@ -58,7 +58,6 @@ public class AlexisPresets {
 	
 	public static final AircraftPreset DEFAULT_ALEXIS_PLANE = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "alexis_plane", UNARMED_ALEXIS_PLANE)
-			.setCraftable()
 			// actual weapon costs: 63 copper, 88 iron, 130 gunpowder, 140 redstone
 			.setSlotItem("left_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "aim120b", true)
 			.setSlotItem("left_wing_2", ModItems.LIGHT_MISSILE_RACK.getId(), "aim9x", true)
@@ -78,7 +77,6 @@ public class AlexisPresets {
 	
 	public static final AircraftPreset SUPPORT_ALEXIS_PLANE = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "alexis_plane_support", UNARMED_ALEXIS_PLANE)
-			.setCraftable()
 			.setSlotItem("left_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "agm84e", true)
 			.setSlotItem("left_wing_2", ModItems.HEAVY_MISSILE_RACK.getId(), "aim120b", true)
 			.setSlotItem("right_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "rifel1", true)
@@ -99,7 +97,6 @@ public class AlexisPresets {
 	
 	public static final AircraftPreset SNIPER_ALEXIS_PLANE = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "alexis_plane_sniper", UNARMED_ALEXIS_PLANE)
-			.setCraftable()
 			.setSlotItem("left_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "aim7mh", true)
 			.setSlotItem("left_wing_2", ModItems.HEAVY_MISSILE_RACK.getId(), "aim120c", true)
 			.setSlotItem("right_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "aim7f", true)

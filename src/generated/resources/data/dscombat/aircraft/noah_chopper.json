@@ -81,7 +81,7 @@
       "num": 64
     }
   ],
-  "is_craftable": true,
+  "is_craftable": false,
   "item": "dscombat:noah_chopper",
   "landing_gear": true,
   "mass": 30.0,
@@ -108,6 +108,7 @@
     },
     {
       "data": {
+        "filled": true,
         "itemid": "dscombat:minigun_turret"
       },
       "name": "seat2",

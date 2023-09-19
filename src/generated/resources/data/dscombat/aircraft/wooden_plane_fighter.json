@@ -35,7 +35,7 @@
       "num": 2
     }
   ],
-  "is_craftable": true,
+  "is_craftable": false,
   "item": "dscombat:wooden_plane",
   "landing_gear": true,
   "mass": 6.0,

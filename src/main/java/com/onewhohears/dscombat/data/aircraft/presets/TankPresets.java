@@ -44,9 +44,10 @@ public class TankPresets {
 	
 	public static final AircraftPreset UNARMED_MRBUDGER_TANK = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "mrbudger_tank_unarmed", EMPTY_MRBUDGER_TANK)
-			.setCraftable()
 			.setSlotItem("internal_1", ModItems.C12_ENGINE.getId())
 			.setSlotItem("internal_3", ModItems.HEAVY_FUEL_TANK.getId(), true)
+			.setSlotItem(PartSlot.PILOT_SLOT_NAME, ModItems.HEAVY_TANK_TURRET.getId(), false)
+			.addIngredient(ModItems.HEAVY_TANK_TURRET.getId())
 			.addIngredient(ModItems.C12_ENGINE.getId(), 1)
 			.addIngredient(ModItems.HEAVY_FUEL_TANK.getId())
 			.build();
@@ -55,7 +56,7 @@ public class TankPresets {
 			.createFromCopy(DSCombatMod.MODID, "mrbudger_tank", UNARMED_MRBUDGER_TANK)
 			.setCraftable()
 			.setSlotItem(PartSlot.PILOT_SLOT_NAME, ModItems.HEAVY_TANK_TURRET.getId(), true)
-			.addIngredient(ModItems.HEAVY_TANK_TURRET.getId())
+			.addIngredient(ModItems.B_120MMHE.getId(), 16)
 			.build();
 	
 	public static final AircraftPreset EMPTY_SMALL_ROLLER = AircraftPreset.Builder
@@ -93,16 +94,16 @@ public class TankPresets {
 	
 	public static final AircraftPreset DEFAULT_SMALL_ROLLER = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "small_roller", UNARMED_SMALL_ROLLER)
-			.setCraftable()
 			.setSlotItem(PartSlot.PILOT_SLOT_NAME, ModItems.STEVE_UP_SMASH.getId(), true)
 			.addIngredient(ModItems.STEVE_UP_SMASH.getId())
+			.addIngredient(ModItems.AIM9P5.getId(), 4)
 			.build();
 	
 	public static final AircraftPreset TANK_SMALL_ROLLER = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "small_roller_tank", UNARMED_SMALL_ROLLER)
-			.setCraftable()
 			.setSlotItem(PartSlot.PILOT_SLOT_NAME, ModItems.HEAVY_TANK_TURRET.getId(), true)
 			.addIngredient(ModItems.HEAVY_TANK_TURRET.getId())
+			.addIngredient(ModItems.B_120MMHE.getId(), 16)
 			.build();
 	
 }

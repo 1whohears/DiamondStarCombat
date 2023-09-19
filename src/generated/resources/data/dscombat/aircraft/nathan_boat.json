@@ -51,7 +51,7 @@
       "num": 2
     }
   ],
-  "is_craftable": true,
+  "is_craftable": false,
   "item": "dscombat:nathan_boat",
   "landing_gear": true,
   "mass": 10.0,
@@ -78,6 +78,7 @@
     },
     {
       "data": {
+        "filled": true,
         "itemid": "dscombat:minigun_turret"
       },
       "name": "seat1",

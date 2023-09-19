@@ -212,6 +212,7 @@ public class ModItems {
 			() -> new ItemSeat(0.1f, SlotType.SEAT_ALL));
 	
 	// TURRENTS
+	// TODO 1.5 turrets when crafted should not have any ammo so redo all turret recipes
 	public static final RegistryObject<Item> MINIGUN_TURRET = ITEMS.register("minigun_turret", 
 			() -> new ItemTurret(4f, SlotType.TURRET_LIGHT, 
 					ModEntities.MINIGUN_TURRET.getId().toString(), "20mm",

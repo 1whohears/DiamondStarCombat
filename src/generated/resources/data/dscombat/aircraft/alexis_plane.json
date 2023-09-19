@@ -67,7 +67,7 @@
       "num": 64
     }
   ],
-  "is_craftable": true,
+  "is_craftable": false,
   "item": "dscombat:alexis_plane",
   "landing_gear": true,
   "mass": 20.0,

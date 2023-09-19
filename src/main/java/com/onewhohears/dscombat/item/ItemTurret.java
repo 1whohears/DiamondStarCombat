@@ -41,10 +41,17 @@ public class ItemTurret extends ItemPart {
 		if (max != 0) name.append(" "+ammo+"/"+max);
 		return name;	
 	}
-
+	
+	@Override
+	public PartData getFilledPartData(String param) {
+		return new TurretData(weight, ForgeRegistries.ITEMS.getKey(this), 
+				compatibleSlots, turrentEntityKey, weaponId, rotBounds, true);
+	}
+	
 	@Override
 	public PartData getPartData() {
-		return new TurretData(weight, ForgeRegistries.ITEMS.getKey(this), compatibleSlots, turrentEntityKey, weaponId, rotBounds);
+		return new TurretData(weight, ForgeRegistries.ITEMS.getKey(this), 
+				compatibleSlots, turrentEntityKey, weaponId, rotBounds, false);
 	}
 
 }

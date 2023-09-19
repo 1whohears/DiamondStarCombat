@@ -47,7 +47,7 @@
       "num": 1
     }
   ],
-  "is_craftable": true,
+  "is_craftable": false,
   "item": "dscombat:aircraft_carrier",
   "landing_gear": true,
   "mass": 250.0,
@@ -151,6 +151,7 @@
     },
     {
       "data": {
+        "filled": true,
         "itemid": "dscombat:mls"
       },
       "name": "seat9",
@@ -186,6 +187,7 @@
     },
     {
       "data": {
+        "filled": true,
         "itemid": "dscombat:aa_turret"
       },
       "name": "frame_2",
@@ -197,6 +199,7 @@
     },
     {
       "data": {
+        "filled": true,
         "itemid": "dscombat:ciws"
       },
       "name": "frame_3",
@@ -208,6 +211,7 @@
     },
     {
       "data": {
+        "filled": true,
         "itemid": "dscombat:aa_turret"
       },
       "name": "frame_4",

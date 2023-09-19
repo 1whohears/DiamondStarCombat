@@ -2,7 +2,7 @@
   "aircraft_type": 2,
   "base_armor": 8.0,
   "cross_sec_area": 7.5,
-  "displayName": "preset.dscombat.axcel_truck",
+  "displayName": "preset.dscombat.axcel_truck_unarmed",
   "health": 80.0,
   "idleheat": 6.0,
   "ingredients": [
@@ -29,17 +29,9 @@
     {
       "item": "dscombat:heavy_fuel_tank",
       "num": 1
-    },
-    {
-      "item": "dscombat:sam_launcher",
-      "num": 1
-    },
-    {
-      "item": "dscombat:air_scan_a",
-      "num": 1
     }
   ],
-  "is_craftable": false,
+  "is_craftable": true,
   "item": "dscombat:axcel_truck",
   "landing_gear": true,
   "mass": 15.0,
@@ -50,7 +42,7 @@
   "maxyaw": 4.0,
   "paintjob_color": 4,
   "pitchtorque": 0.0,
-  "presetId": "axcel_truck",
+  "presetId": "axcel_truck_unarmed",
   "rolltorque": 0.0,
   "slots": [
     {
@@ -76,10 +68,6 @@
       "zRot": 0.0
     },
     {
-      "data": {
-        "filled": true,
-        "itemid": "dscombat:sam_launcher"
-      },
       "name": "cargo_bed_1",
       "slot_posx": 0.0,
       "slot_posy": 1.0,
@@ -88,9 +76,6 @@
       "zRot": 0.0
     },
     {
-      "data": {
-        "itemid": "dscombat:axcel_truck_radar"
-      },
       "name": "frame_1",
       "slot_posx": 0.0,
       "slot_posy": 2.95,

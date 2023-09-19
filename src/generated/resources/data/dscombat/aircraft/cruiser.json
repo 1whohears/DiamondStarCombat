@@ -55,7 +55,7 @@
       "num": 1
     }
   ],
-  "is_craftable": true,
+  "is_craftable": false,
   "item": "dscombat:cruiser",
   "landing_gear": true,
   "mass": 140.0,
@@ -128,6 +128,7 @@
     },
     {
       "data": {
+        "filled": true,
         "itemid": "dscombat:mls"
       },
       "name": "seat6",
@@ -152,6 +153,7 @@
     },
     {
       "data": {
+        "filled": true,
         "itemid": "dscombat:aa_turret"
       },
       "name": "seat8",
@@ -174,6 +176,7 @@
     },
     {
       "data": {
+        "filled": true,
         "itemid": "dscombat:ciws"
       },
       "name": "frame_2",
@@ -185,6 +188,7 @@
     },
     {
       "data": {
+        "filled": true,
         "itemid": "dscombat:aa_turret"
       },
       "name": "frame_3",
@@ -196,6 +200,7 @@
     },
     {
       "data": {
+        "filled": true,
         "itemid": "dscombat:aa_turret"
       },
       "name": "frame_4",
@@ -207,6 +212,7 @@
     },
     {
       "data": {
+        "filled": true,
         "itemid": "dscombat:torpedo_tubes"
       },
       "name": "frame_5",
@@ -218,6 +224,7 @@
     },
     {
       "data": {
+        "filled": true,
         "itemid": "dscombat:torpedo_tubes"
       },
       "name": "frame_6",

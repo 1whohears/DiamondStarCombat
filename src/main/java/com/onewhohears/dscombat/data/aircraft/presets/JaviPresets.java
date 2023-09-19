@@ -66,7 +66,6 @@ public class JaviPresets {
 	
 	public static final AircraftPreset DEFAULT_JAVI_PLANE = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "javi_plane", UNARMED_JAVI_PLANE)
-			.setCraftable()
 			.setSlotItem("left_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "agm84e", true)
 			.setSlotItem("left_wing_2", ModItems.LIGHT_MISSILE_RACK.getId(), "agm114k", true)
 			.setSlotItem("right_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "rifel1", true)
@@ -87,7 +86,6 @@ public class JaviPresets {
 	
 	public static final AircraftPreset BOMBER_JAVI_PLANE = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "javi_plane_bomber", UNARMED_JAVI_PLANE)
-			.setCraftable()
 			.setSlotItem("left_wing_1", ModItems.BOMB_RACK.getId(), "anm30", true)
 			.setSlotItem("left_wing_2", ModItems.HEAVY_MISSILE_RACK.getId(), "agm84e", true)
 			.setSlotItem("left_wing_3", ModItems.LIGHT_MISSILE_RACK.getId(), "agm114k", true)
@@ -111,7 +109,6 @@ public class JaviPresets {
 	
 	public static final AircraftPreset TRUCK_JAVI_PLANE = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "javi_plane_truck", UNARMED_JAVI_PLANE)
-			.setCraftable()
 			.setSlotItem("left_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "aim7mh", true)
 			.setSlotItem("left_wing_2", ModItems.HEAVY_MISSILE_RACK.getId(), "aim7f", true)
 			.setSlotItem("left_wing_3", ModItems.HEAVY_MISSILE_RACK.getId(), "aim120c", true)

@@ -49,7 +49,6 @@ public class PlanePresets {
 	
 	public static final AircraftPreset BOMBER_WOODEN_PLANE = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "wooden_plane_bomber", DEFAULT_WOODEN_PLANE)
-			.setCraftable()
 			.setSlotItem("left_wing_1", ModItems.LIGHT_MISSILE_RACK.getId(), "agm114k", true)
 			.setSlotItem("right_wing_1", ModItems.LIGHT_MISSILE_RACK.getId(), "agm114k", true)
 			.addIngredient("minecraft:tnt", 12)
@@ -59,7 +58,6 @@ public class PlanePresets {
 	
 	public static final AircraftPreset FIGHTER_WOODEN_PLANE = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "wooden_plane_fighter", DEFAULT_WOODEN_PLANE)
-			.setCraftable()
 			.setSlotItem("left_wing_1", ModItems.XM12.getId(), "20mm", true)
 			.setSlotItem("right_wing_1", ModItems.XM12.getId(), "20mm", true)
 			.addIngredient("minecraft:copper_ingot", 64)

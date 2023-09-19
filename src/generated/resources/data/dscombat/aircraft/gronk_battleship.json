@@ -55,7 +55,7 @@
       "num": 64
     }
   ],
-  "is_craftable": true,
+  "is_craftable": false,
   "item": "dscombat:gronk_battleship",
   "landing_gear": true,
   "mass": 150.0,
@@ -115,6 +115,7 @@
     },
     {
       "data": {
+        "filled": true,
         "itemid": "dscombat:mark7_cannon"
       },
       "name": "seat5",
@@ -126,6 +127,7 @@
     },
     {
       "data": {
+        "filled": true,
         "itemid": "dscombat:mark7_cannon"
       },
       "name": "seat6",
@@ -137,6 +139,7 @@
     },
     {
       "data": {
+        "filled": true,
         "itemid": "dscombat:mark7_cannon"
       },
       "name": "seat7",
@@ -148,6 +151,7 @@
     },
     {
       "data": {
+        "filled": true,
         "itemid": "dscombat:mark7_cannon"
       },
       "name": "seat8",
@@ -159,6 +163,7 @@
     },
     {
       "data": {
+        "filled": true,
         "itemid": "dscombat:mark45_cannon"
       },
       "name": "seat9",
@@ -170,6 +175,7 @@
     },
     {
       "data": {
+        "filled": true,
         "itemid": "dscombat:mark45_cannon"
       },
       "name": "seat10",
@@ -192,6 +198,7 @@
     },
     {
       "data": {
+        "filled": true,
         "itemid": "dscombat:aa_turret"
       },
       "name": "frame_2",
@@ -203,6 +210,7 @@
     },
     {
       "data": {
+        "filled": true,
         "itemid": "dscombat:aa_turret"
       },
       "name": "frame_3",
@@ -214,6 +222,7 @@
     },
     {
       "data": {
+        "filled": true,
         "itemid": "dscombat:aa_turret"
       },
       "name": "frame_4",
@@ -225,6 +234,7 @@
     },
     {
       "data": {
+        "filled": true,
         "itemid": "dscombat:aa_turret"
       },
       "name": "frame_5",

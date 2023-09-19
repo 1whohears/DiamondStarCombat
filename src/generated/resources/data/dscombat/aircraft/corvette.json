@@ -43,7 +43,7 @@
       "num": 1
     }
   ],
-  "is_craftable": true,
+  "is_craftable": false,
   "item": "dscombat:corvette",
   "landing_gear": true,
   "mass": 70.0,
@@ -103,6 +103,7 @@
     },
     {
       "data": {
+        "filled": true,
         "itemid": "dscombat:mark45_cannon"
       },
       "name": "seat5",
@@ -114,6 +115,7 @@
     },
     {
       "data": {
+        "filled": true,
         "itemid": "dscombat:torpedo_tubes"
       },
       "name": "seat6",
@@ -136,6 +138,7 @@
     },
     {
       "data": {
+        "filled": true,
         "itemid": "dscombat:aa_turret"
       },
       "name": "frame_2",

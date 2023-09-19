@@ -17,7 +17,7 @@ public class AircraftPresetGenerator extends JsonPresetGenerator<AircraftPreset>
     
     @Override
 	protected void registerPresets() {
-    	// TODO 1.4 only the unarmed presets should be craftable
+    	// TODO 1.4 give all vehicles better recipes
     	addPresetToGenerate(AlexisPresets.EMPTY_ALEXIS_PLANE);
     	addPresetToGenerate(AlexisPresets.UNARMED_ALEXIS_PLANE);
 		addPresetToGenerate(AlexisPresets.DEFAULT_ALEXIS_PLANE);
@@ -62,6 +62,7 @@ public class AircraftPresetGenerator extends JsonPresetGenerator<AircraftPreset>
 		addPresetToGenerate(PlanePresets.DEFAULT_E3SENTRY_PLANE);
 		
 		addPresetToGenerate(CarPresets.EMPTY_AXCEL_TRUCK);
+		addPresetToGenerate(CarPresets.UNARMED_AXCEL_TRUCK);
 		addPresetToGenerate(CarPresets.DEFAULT_AXCEL_TRUCK);
 		
 		addPresetToGenerate(BoatPresets.EMPTY_GRONK_BATTLESHIP);

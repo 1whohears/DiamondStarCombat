@@ -69,17 +69,21 @@ public class CarPresets {
 			.addEmptySlot("internal_4", SlotType.ADVANCED_INTERNAL)
 			.build();
 	
-	public static final AircraftPreset DEFAULT_AXCEL_TRUCK = AircraftPreset.Builder
-			.createFromCopy(DSCombatMod.MODID, "axcel_truck", EMPTY_AXCEL_TRUCK)
+	public static final AircraftPreset UNARMED_AXCEL_TRUCK = AircraftPreset.Builder
+			.createFromCopy(DSCombatMod.MODID, "axcel_truck_unarmed", EMPTY_AXCEL_TRUCK)
 			.setCraftable()
-			.addIngredient(ModItems.SAM_LAUNCHER.getId())
 			.addIngredient(ModItems.C12_ENGINE.getId())
 			.addIngredient(ModItems.HEAVY_FUEL_TANK.getId())
-			.addIngredient(ModItems.AR2K.getId())
-			.setSlotItem("frame_1", ModItems.AXCEL_TRUCK_RADAR.getId())
-			.setSlotItem("cargo_bed_1", ModItems.SAM_LAUNCHER.getId())
 			.setSlotItem("internal_1", ModItems.C12_ENGINE.getId())
 			.setSlotItem("internal_2", ModItems.HEAVY_FUEL_TANK.getId(), true)
+			.build();
+	
+	public static final AircraftPreset DEFAULT_AXCEL_TRUCK = AircraftPreset.Builder
+			.createFromCopy(DSCombatMod.MODID, "axcel_truck", UNARMED_AXCEL_TRUCK)
+			.addIngredient(ModItems.SAM_LAUNCHER.getId())
+			.addIngredient(ModItems.AIR_SCAN_A.getId())
+			.setSlotItem("frame_1", ModItems.AXCEL_TRUCK_RADAR.getId())
+			.setSlotItem("cargo_bed_1", ModItems.SAM_LAUNCHER.getId(), true)
 			.build();
 	
 }

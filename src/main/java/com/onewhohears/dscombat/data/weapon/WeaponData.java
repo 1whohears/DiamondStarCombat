@@ -396,6 +396,9 @@ public abstract class WeaponData extends JsonPreset {
 	public abstract String getWeaponTypeCode();
 	
 	public void addToolTips(List<Component> tips) {
+		if (!compatibleWeaponPart.isEmpty()) tips.add(Component.literal("Compatible: ")
+			.append(Component.translatable(compatibleWeaponPart))
+			.setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 		tips.add(Component.literal("Fire Rate: ").append(getFireRate()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 		tips.add(Component.literal("Max Age: ").append(getMaxAge()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 		if (!canShootOnGround) tips.add(Component.literal("Must Fly").setStyle(Style.EMPTY.withColor(0xAAAAAA)));

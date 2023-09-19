@@ -270,6 +270,7 @@ public class ModItems {
 			() -> new ItemWeaponPart(7f, SlotType.EXTERNAL_HEAVY, 20)); 
 	public static final RegistryObject<Item> VLS = ITEMS.register("vls", 
 			() -> new ItemWeaponPart(7f, SlotType.EXTERNAL_HEAVY, 90)); 
+	// TODO 2.4 avenger gun for javi
 	/**
 	 * TODO 2.1 radar jamming weapon
 	 * causes victims radar to display random noise

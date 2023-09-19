@@ -17,6 +17,7 @@ public class AircraftPresetGenerator extends JsonPresetGenerator<AircraftPreset>
     
     @Override
 	protected void registerPresets() {
+    	// TODO 1.4 only the unarmed presets should be craftable
     	addPresetToGenerate(AlexisPresets.EMPTY_ALEXIS_PLANE);
     	addPresetToGenerate(AlexisPresets.UNARMED_ALEXIS_PLANE);
 		addPresetToGenerate(AlexisPresets.DEFAULT_ALEXIS_PLANE);

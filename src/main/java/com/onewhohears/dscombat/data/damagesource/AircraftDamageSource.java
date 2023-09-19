@@ -47,6 +47,7 @@ public class AircraftDamageSource extends DamageSource {
 		return UtilParse.getRandomString(crashDeaths, wallCrashDeaths);
 	}
 	
+	@Override
 	public Component getLocalizedDeathMessage(LivingEntity killed) {
 		Entity killer = aircraft.getControllingPassenger();
 		String s = "death.attack."+DSCombatMod.MODID+"."+msgId;

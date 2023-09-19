@@ -21,8 +21,8 @@ public class AircraftPresets extends JsonPresetReloadListener<AircraftPreset> {
 		instance = null;
 	}
 	
-	private AircraftPreset[] allPresets;
-	private AircraftPreset[] craftablePresets;
+	private AircraftPreset[] allPresets, allCraftablePresets;
+	private AircraftPreset[] tanks, helis, planes, boats;
 	
 	public AircraftPresets() {
 		super("aircraft");
@@ -36,19 +36,67 @@ public class AircraftPresets extends JsonPresetReloadListener<AircraftPreset> {
 	}
 	
 	public AircraftPreset[] getCraftablePresets() {
-		if (craftablePresets == null) {
+		if (allCraftablePresets == null) {
 			List<AircraftPreset> list = new ArrayList<>();
 			presetMap.forEach((name, preset) -> {
 				if (preset.isCraftable()) list.add(preset);
 			});
-			craftablePresets = list.toArray(new AircraftPreset[list.size()]);
-			sort(craftablePresets);
+			allCraftablePresets = list.toArray(new AircraftPreset[list.size()]);
+			sort(allCraftablePresets);
 		}
-		return craftablePresets;
+		return allCraftablePresets;
 	}
 	
 	public int getCraftablePresetNum() {
 		return getCraftablePresets().length;
+	}
+	
+	public AircraftPreset[] getCraftableTanks() {
+		if (tanks == null) {
+			List<AircraftPreset> list = new ArrayList<>();
+			presetMap.forEach((name, preset) -> {
+				if (preset.isCraftable() && preset.getAircraftType().isTank()) list.add(preset);
+			});
+			tanks = list.toArray(new AircraftPreset[list.size()]);
+			sort(tanks);
+		}
+		return tanks;
+	}
+	
+	public AircraftPreset[] getCraftableHelis() {
+		if (helis == null) {
+			List<AircraftPreset> list = new ArrayList<>();
+			presetMap.forEach((name, preset) -> {
+				if (preset.isCraftable() && preset.getAircraftType().isHeli()) list.add(preset);
+			});
+			helis = list.toArray(new AircraftPreset[list.size()]);
+			sort(helis);
+		}
+		return helis;
+	}
+	
+	public AircraftPreset[] getCraftablePlanes() {
+		if (planes == null) {
+			List<AircraftPreset> list = new ArrayList<>();
+			presetMap.forEach((name, preset) -> {
+				if (preset.isCraftable() && preset.getAircraftType().isPlane()) list.add(preset);
+			});
+			planes = list.toArray(new AircraftPreset[list.size()]);
+			sort(planes);
+		}
+		return planes;
+	}
+
+	public AircraftPreset[] getCraftableBoats() {
+		if (boats == null) {
+			List<AircraftPreset> list = new ArrayList<>();
+			presetMap.forEach((name, preset) -> {
+				if (preset.isCraftable() && preset.getAircraftType().isBoat()) list.add(preset);
+			});
+			boats = list.toArray(new AircraftPreset[list.size()]);
+			sort(boats);
+		}
+		return boats;
 	}
 
 	@Override
@@ -59,7 +107,7 @@ public class AircraftPresets extends JsonPresetReloadListener<AircraftPreset> {
 	@Override
 	protected void resetCache() {
 		allPresets = null;
-		craftablePresets = null;
+		allCraftablePresets = null;
 	}
 	
 }

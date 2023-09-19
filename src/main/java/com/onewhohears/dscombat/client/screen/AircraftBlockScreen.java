@@ -2,6 +2,8 @@ package com.onewhohears.dscombat.client.screen;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
@@ -14,6 +16,7 @@ import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.nbt.CompoundTag;
@@ -27,21 +30,16 @@ import net.minecraft.world.item.ItemStack;
 public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMenuContainer> {
 	
 	private static final ResourceLocation BG_TEXTURE = new ResourceLocation(DSCombatMod.MODID,
-			"textures/ui/aircraft_screen.png");
+			"textures/ui/vehicle_forge_ui.png");
+	private final int bg_tex_size;
 	
-	private static final int buttonNum = 7;
-	
-	private final int maxTab;
-	private int tabIndex = 0;
-	private int planeIndex = 0;
+	private AircraftTab tab = AircraftTab.TANKS;
 	
 	public AircraftBlockScreen(AircraftBlockMenuContainer menu, Inventory playerInv, Component title) {
 		super(menu, playerInv, title);
-		this.leftPos = 0;
-		this.topPos = 0;
-		this.imageWidth = 256;
-		this.imageHeight = 256;
-		maxTab = (int)((float)AircraftPresets.get().getCraftablePresetNum() / (float)buttonNum);
+		this.imageWidth = 352;
+		this.imageHeight = 260;
+		this.bg_tex_size = 512;
 	}
 	
 	@Override
@@ -50,35 +48,28 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 		this.renderBackground(poseStack);
 		super.render(poseStack, mouseX, mouseY, partialTicks);
         this.renderTooltip(poseStack, mouseX, mouseY);
-        Minecraft m = Minecraft.getInstance();
+        this.renderIngredients(poseStack, mouseX, mouseY, partialTicks);
+	}
+	
+	@Override
+	protected void renderBg(PoseStack stack, float pTicks, int mouseX, int mouseY) {
+		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+		RenderSystem.setShaderTexture(0, BG_TEXTURE);
+		blit(stack, leftPos, topPos, 0, 0, 
+				imageWidth, imageHeight, 
+				bg_tex_size, bg_tex_size);
+	}
+	
+	protected void renderIngredients(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+		Minecraft m = Minecraft.getInstance();
         RenderSystem.enableBlend();
-        if (AircraftPresets.get().getCraftablePresetNum() == 0) return;
-        // render plane item options
-        int startX = getGuiLeft() + titleLabelX;
-		int startY = getGuiTop() + titleLabelY;
-		int wx = startX + 51;
-		int wy = startY + 12;
-		for (int i = 0; i < buttonNum; ++i) {
-			int index = tabIndex * buttonNum + i;
-			if (index >= AircraftPresets.get().getCraftablePresetNum()) break;
-			ItemStack stack = AircraftPresets.get().getCraftablePresets()[index].getItem();
-			m.getItemRenderer().renderAndDecorateItem(
-					stack, wx, wy);
-			m.getItemRenderer().renderGuiItemDecorations(font,
-					stack, wx, wy);
-			wx += 20;
-		}
-		// render ingredients
-		List<DSCIngredient> ingredients = AircraftPresets.get().getCraftablePresets()[planeIndex].getIngredients();
-		int iix = startX + 122;
-		int ix = iix;
-		int iy = startY + 40;
+        if (tab.getSelectedPreset() == null) return;
+		List<DSCIngredient> ingredients = tab.getSelectedPreset().getIngredients();
+		int startX = leftPos+97;
+		int startY = topPos+122;
+		int ix = startX, iy = startY;
 		int space = 18;
 		for (int i = 0; i < ingredients.size(); ++i) {
-			if (i != 0 && i % 4 == 0) {
-				ix = iix;
-				iy += space;
-			}
 			ItemStack stack = ingredients.get(i).getDisplayItem();
 			m.getItemRenderer().renderAndDecorateItem(stack, ix, iy);
 			m.getItemRenderer().renderGuiItemDecorations(font, stack, ix, iy);
@@ -90,28 +81,21 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 			ix += space;
 		}
 	}
-
-	@Override
-	protected void renderBg(PoseStack stack, float pTicks, int mouseX, int mouseY) {
-		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-		RenderSystem.setShaderTexture(0, BG_TEXTURE);
-		blit(stack, leftPos, topPos, 0, 0, imageWidth, imageHeight);
-	}
 	
 	@Override
 	protected void renderLabels(PoseStack stack, int mouseX, int mouseY) {
-		font.draw(stack, title, titleLabelX+38, titleLabelY, 0x404040);
-		font.draw(stack, playerInventoryTitle, inventoryLabelX+38, inventoryLabelY+56, 0x404040);
+		//font.draw(stack, title, titleLabelX, titleLabelY, 0x404040);
+		font.draw(stack, playerInventoryTitle, inventoryLabelX, inventoryLabelY, 0x404040);
 		// plane stats
-		if (AircraftPresets.get().getCraftablePresetNum() == 0) return;
-		AircraftPreset ap = AircraftPresets.get().getCraftablePresets()[planeIndex];
-		font.draw(stack, ap.getDisplayNameComponent(), titleLabelX+38, titleLabelY+34, 0x000000);
+		AircraftPreset ap = tab.getSelectedPreset();
+		if (ap == null) return;
+		font.draw(stack, ap.getDisplayNameComponent(), leftPos+120, topPos+24, 0x000000);
 		CompoundTag data = ap.getDataAsNBT();
 		float scale = 0.7f;
 		stack.scale(scale, scale, scale);
 		float invScale = 1f / scale;
-		int startX = (int)((float)(titleLabelX+38) * invScale);
-		int startY = (int)((float)(titleLabelY+43) * invScale);
+		int startX = (int)((float)(leftPos+290) * invScale);
+		int startY = (int)((float)(topPos+30) * invScale);
 		font.draw(stack, Component.literal("Health: "+data.getDouble("max_health")), startX, startY, 0x404040);
 		startY += font.lineHeight;
 		font.draw(stack, Component.literal("Max Speed: "+(int)(data.getDouble("max_speed")*20)+" m/s"), startX, startY, 0x404040);
@@ -131,49 +115,41 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 		font.draw(stack, Component.literal("Roll: "+(int)(data.getDouble("maxroll")*20)+" deg/sec"), startX, startY, 0x404040);
 		stack.scale(1/scale, 1/scale, 1/scale);
 		// HOW 2 display plane model
-		//Minecraft m = Minecraft.getInstance();
 	}
 	
 	@Override
 	protected void init() {
 		super.init();
-		int startX = getGuiLeft() + titleLabelX;
-		int startY = getGuiTop() + titleLabelY;
-		// weapons buttons
-		int wx = startX + 39;
-		int wy = startY + 10;
+		//this.titleLabelX = leftPos + 0;
+		//this.titleLabelY = topPos + 0;
+		this.inventoryLabelX = leftPos + 94;
+		this.inventoryLabelY = topPos + 140;
+		int startX = leftPos;
+		int startY = topPos;
+		// tabs
+		
 		// prev
-		Button prevButton = new Button(0, 0, 10, 20, 
-				Component.literal("<"), 
+		Button prevButton = new ImageButton(0, 0, 41, 10, 
+				78, 52, 0, 
+				BG_TEXTURE, 512, 512,
 				onPress -> { prevButton(); });
-		prevButton.x = wx;
-		prevButton.y = wy;
+		prevButton.x = leftPos+78;
+		prevButton.y = topPos+52;
 		addRenderableWidget(prevButton);
-		// buttons
-		wx += 10;
-		for (int b = 0; b < buttonNum; ++b) {
-			final int c = b;
-			Button acb = new Button(0, 0, 20, 20,
-					Component.empty(),
-					onPress -> { planeButton(c); });
-			acb.x = wx;
-			acb.y = wy;
-			addRenderableWidget(acb);
-			wx += 20;
-		}
 		// next
-		Button nextButton = new Button(0, 0, 10, 20, 
-				Component.literal(">"), 
+		Button nextButton = new ImageButton(0, 0, 41, 10, 
+				233, 52, 0, 
+				BG_TEXTURE, 512, 512,
 				onPress -> { nextButton(); });
-		nextButton.x = wx;
-		nextButton.y = wy;
+		nextButton.x = leftPos+233;
+		nextButton.y = topPos+52;
 		addRenderableWidget(nextButton);
 		// craft
 		Button craftButton = new Button(0, 0, 80, 20, 
 				Component.translatable("ui.dscombat.craft_button"), 
 				onPress -> { craftButton(); });
-		craftButton.x = startX+122;
-		craftButton.y = startY+110;
+		craftButton.x = leftPos+140;
+		craftButton.y = topPos+88;
 		addRenderableWidget(craftButton);
 	}
 	
@@ -198,33 +174,77 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 	}
 	
 	private void prevButton() {
-		tabIndex -= 1;
-		if (tabIndex < 0) tabIndex = maxTab;
+		tab.cycleIndexLeft();
 	}
 	
 	private void nextButton() {
-		tabIndex += 1;
-		if (tabIndex > maxTab) tabIndex = 0;
-	}
-	
-	private void planeButton(int num) {
-		int max = AircraftPresets.get().getCraftablePresetNum();
-		int a = tabIndex * buttonNum + num;
-		if (a >= max) planeIndex = max-1;
-		else planeIndex = a;
+		tab.cycleIndexRight();
 	}
 	
 	private void craftButton() {
 		Minecraft m = Minecraft.getInstance();
 		Player player = m.player;
 		if (player == null) return;
-		AircraftPreset ap = AircraftPresets.get().getCraftablePresets()[planeIndex];
+		AircraftPreset ap = tab.getSelectedPreset();
+		if (ap == null) return;
 		if (DSCIngredient.hasIngredients(ap.getIngredients(), player.getInventory())) {
 			PacketHandler.INSTANCE.sendToServer(new ToServerCraftPlane(ap.getId(), menu.getPos()));
 		} else {
 			player.displayClientMessage(Component.translatable("error.dscombat.cant_craft"), true);
 			minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.VILLAGER_NO, 1.0F));
 		}
+	}
+	
+	public static enum AircraftTab {
+		TANKS(() -> AircraftPresets.get().getCraftableTanks()),
+		HELIS(() -> AircraftPresets.get().getCraftableHelis()),
+		PLANES(() -> AircraftPresets.get().getCraftablePlanes()),
+		BOATS(() -> AircraftPresets.get().getCraftableBoats());
+		
+		private AircraftPresetList presetFactory;
+		private int index = 0;
+		
+		private AircraftTab(AircraftPresetList presetFactory) {
+			this.presetFactory = presetFactory;
+		}
+		
+		public AircraftPreset[] getPresets() {
+			return presetFactory.get();
+		}
+		
+		public int getIndex() {
+			return checkIndex();
+		}
+		
+		private int checkIndex() {
+			if (getPresets().length == 0) index = -1;
+			else if (index >= getPresets().length) index = getPresets().length-1;
+			else if (index < 0) index = 0;
+			return index;
+		}
+		
+		@Nullable
+		public AircraftPreset getSelectedPreset() {
+			if (checkIndex() == -1) return null;
+			return getPresets()[getIndex()];
+		}
+		
+		public int cycleIndexRight() {
+			++index;
+			if (index >= getPresets().length) index = 0;
+			return index;
+		}
+		
+		public int cycleIndexLeft() {
+			--index;
+			if (index < 0) index = getPresets().length-1;
+			return index;
+		}
+		
+	}
+	
+	public static interface AircraftPresetList {
+		AircraftPreset[] get();
 	}
 
 }

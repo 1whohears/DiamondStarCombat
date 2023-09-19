@@ -398,6 +398,22 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 			this.flipPitchThrottle = flipPitchThrottle;
 			this.ignoreInvertY = ignoreInvertY;
 		}
+		
+		public boolean isTank() {
+			return this == CAR;
+		}
+		
+		public boolean isHeli() {
+			return this == HELICOPTER;
+		}
+		
+		public boolean isPlane() {
+			return this == PLANE;
+		}
+		
+		public boolean isBoat() {
+			return this == BOAT || this == SUBMARINE;
+		}
 	}
 	
 	public abstract AircraftType getAircraftType();

@@ -91,11 +91,15 @@ public class AircraftPreset extends JsonPreset{
 		return (T) new AircraftPreset(getKey(), getJsonData());
 	}
 	
+	public AircraftType getAircraftType() {
+		return aircraft_type;
+	}
+	
 	@Override
 	public <T extends JsonPreset> int compare(T other) {
 		AircraftPreset ap = (AircraftPreset) other;
-		if (this.aircraft_type != ap.aircraft_type) 
-			return this.aircraft_type.ordinal() - ap.aircraft_type.ordinal();
+		if (this.getAircraftType() != ap.getAircraftType()) 
+			return this.getAircraftType().ordinal() - ap.getAircraftType().ordinal();
 		return super.compare(other);
 	}
 	

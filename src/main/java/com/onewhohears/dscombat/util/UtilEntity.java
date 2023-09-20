@@ -94,7 +94,11 @@ public class UtilEntity {
 	}
 	
 	public static int getDistFromSeaLevel(Entity e) {
-		return (int)e.getY() - 64;
+		DimensionType dt = e.level.dimensionType();
+		int sea;
+		if (dt.natural()) sea = 64;
+		else sea = 0;
+		return (int)e.getY() - sea;
 	}
 	
 	public static Vec3 getLookingAtBlockPos(Entity e, int max) {
@@ -115,7 +119,6 @@ public class UtilEntity {
 	 */
 	public static double getAirPressure(Entity entity) {
 		DimensionType dt = entity.level.dimensionType();
-		// IDEA 6 how high should the atmosphere go based on dimension?
 		double space, surface;
 		if (dt.natural()) {
 			space = 2500;

@@ -194,7 +194,9 @@ public class ModEntities {
 	 * IDEA 9.1 AI for planes/turrets or an auto pilot module
 	 * AI turret controllers need time and resources invested to level up
 	 * it would be funny if they were villagers
-	 * IDEA 9.2 pillager outposts with air defense
+	 * IDEA 9.2 pillager outposts with air defence
+	 * 
+	 * IDEA 9.3 large physical hanger to craft vehicle/put weapons on them
 	 */
 	
 	public static final EntityDimensions SEAT_SIZE = EntityDimensions.scalable(1.0f, 1.0f);

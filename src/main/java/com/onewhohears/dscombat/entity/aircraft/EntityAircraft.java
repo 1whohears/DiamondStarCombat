@@ -146,6 +146,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	public final String defaultPreset;
 	public final boolean negativeThrottle;
 	public final float Ix, Iy, Iz, explodeSize;
+	public final double camDist;
 	
 	protected final RegistryObject<SoundEvent> engineSound;
 	
@@ -204,9 +205,9 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	// FIXME refactor EntityAircraft to EntityVehicle
 	
 	public EntityAircraft(EntityType<? extends EntityAircraft> entityType, Level level, 
-			AircraftPreset defaultPreset,
-			RegistryObject<SoundEvent> engineSound,
-			boolean negativeThrottle, float Ix, float Iy, float Iz, float explodeSize) {
+			AircraftPreset defaultPreset, RegistryObject<SoundEvent> engineSound,
+			boolean negativeThrottle, float Ix, float Iy, float Iz, 
+			float explodeSize, double camDist) {
 		super(entityType, level);
 		this.defaultPreset = defaultPreset.getId();
 		this.preset = this.defaultPreset;
@@ -222,6 +223,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		this.Iy = Iy;
 		this.Iz = Iz;
 		this.explodeSize = explodeSize;
+		this.camDist = camDist;
 		this.blocksBuilding = true;
 	}
 	

@@ -54,8 +54,6 @@ public class EntityTurret extends EntitySeat {
 	 */
 	private int newRiderCoolDown;
 	
-	// TODO 4.1 option to change turret camera position. so camera could be under the aircraft
-	
 	public EntityTurret(EntityType<?> type, Level level, Vec3 offset, double weaponOffset) {
 		super(type, level, offset);
 		this.weaponOffset = weaponOffset;

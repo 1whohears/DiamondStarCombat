@@ -9,9 +9,6 @@
 		},
 		"I": {
 			"item": "minecraft:iron_ingot"
-		},
-		"S": {
-			"item": "minecraft:smooth_stone"
 		}
 	},
 	"pattern": [

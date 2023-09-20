@@ -36,12 +36,12 @@ public class EntityPlane extends EntityAircraft {
 	private Vec3 liftDir = Vec3.ZERO, airFoilAxes = Vec3.ZERO;
 	
 	public EntityPlane(EntityType<? extends EntityPlane> entity, Level level, 
-			AircraftPreset defaultPreset,
-			RegistryObject<SoundEvent> engineSound,
+			AircraftPreset defaultPreset, RegistryObject<SoundEvent> engineSound,
 			float Ix, float Iy, float Iz, float explodeSize,
-			LiftKGraph liftKGraph, float flapsAOABias, boolean canAimDown, float propellerRate) {
+			LiftKGraph liftKGraph, float flapsAOABias, boolean canAimDown, 
+			float propellerRate, double camDist) {
 		super(entity, level, defaultPreset, engineSound,
-				false, Ix, Iy, Iz, explodeSize);
+				false, Ix, Iy, Iz, explodeSize, camDist);
 		this.liftKGraph = liftKGraph;
 		this.flapsAOABias = flapsAOABias;
 		this.canAimDown = canAimDown;

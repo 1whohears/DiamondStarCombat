@@ -54,7 +54,7 @@
   "is_craftable": true,
   "item": "dscombat:e3sentry_plane",
   "landing_gear": true,
-  "mass": 60.0,
+  "mass": 50.0,
   "max_health": 400.0,
   "max_speed": 1.0,
   "maxpitch": 2.0,
@@ -327,6 +327,6 @@
   "throttledown": 0.04,
   "throttleup": 0.01,
   "turn_radius": 40.0,
-  "wing_area": 30.0,
+  "wing_area": 36.0,
   "yawtorque": 2.0
 }

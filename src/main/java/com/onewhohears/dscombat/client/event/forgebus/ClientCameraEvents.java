@@ -8,13 +8,19 @@ import javax.annotation.Nullable;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCursorPosCallbackI;
 
+import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.event.TickEvent;
@@ -35,7 +41,8 @@ public class ClientCameraEvents {
 		if (player == null || !player.isPassenger()) return;
 		if (!(player.getRootVehicle() instanceof EntityAircraft plane)) return;
 		float pt = (float)event.getPartialTick();
-		if (!plane.isFreeLook() && player.equals(plane.getControllingPassenger())) {
+		boolean isController = player.equals(plane.getControllingPassenger());
+		if (!plane.isFreeLook() && isController) {
 			float xi = UtilAngles.lerpAngle(pt, plane.xRotO, plane.getXRot());
 			float yi = UtilAngles.lerpAngle180(pt, plane.yRotO, plane.getYRot());
 			player.setXRot(xi);
@@ -44,13 +51,52 @@ public class ClientCameraEvents {
 			player.yRotO = yi;
 			event.setPitch(xi);
 			event.setYaw(yi);
-			// TODO 4.2 make 3rd person camera farther to see whole vehicle
 		}
 		boolean detached = !m.options.getCameraType().isFirstPerson();
 		boolean mirrored = m.options.getCameraType().isMirrored();
 		float zi = UtilAngles.lerpAngle(pt, plane.zRotO, plane.zRot);
 		if (detached && mirrored) zi *= -1;
 		event.setRoll(zi);
+		if (detached && isController && plane.camDist > 4 && getCameraMove() != null) {
+			// TODO 4.1 option to change turret camera position. so camera could be under the aircraft
+			double vehicleCamDist = Math.min(0, 4-getMaxDist(event.getCamera(), player, plane.camDist));
+			try {
+				getCameraMove().invoke(event.getCamera(), vehicleCamDist, 0, 0);
+			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public static double getMaxDist(Camera cam, Player player, double dist) {
+		Vec3 from = cam.getPosition();
+		Vector3f d = cam.getLookVector().copy();
+		d.mul((float)-dist);
+		Vec3 to = from.add(d.x(), d.y(), d.z());
+		HitResult hitresult = player.level.clip(new ClipContext(from, to, 
+				ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, player));
+		if (hitresult.getType() != HitResult.Type.MISS) {
+			double d0 = hitresult.getLocation().distanceTo(from);
+			if (d0 < dist) dist = d0;
+		}
+		return dist;
+	}
+	
+	public static Method cameraMove;
+	public static boolean tried1;
+	
+	@Nullable
+	public static Method getCameraMove() {
+		if (cameraMove != null) return cameraMove; 
+		if (tried1) return null;
+		tried1 = true;
+		try {
+			cameraMove = ObfuscationReflectionHelper.findMethod(Camera.class, "move", 
+					double.class, double.class, double.class);
+		} catch (UnableToFindMethodException e) {
+			System.out.println("ERROR: THE CAMERA MOVE METHOD IS NOT move");
+		}
+		return cameraMove;
 	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)

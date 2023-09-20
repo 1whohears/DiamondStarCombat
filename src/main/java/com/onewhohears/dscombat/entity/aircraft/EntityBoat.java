@@ -29,9 +29,9 @@ public class EntityBoat extends EntityAircraft {
 	public EntityBoat(EntityType<? extends EntityBoat> entity, Level level, 
 			AircraftPreset defaultPreset,
 			RegistryObject<SoundEvent> engineSound, 
-			float explodeSize) {
+			float explodeSize, double camDist) {
 		super(entity, level, defaultPreset, engineSound,
-				true, 6, 10, 4, explodeSize);
+				true, 6, 10, 4, explodeSize, camDist);
 	}
 	
 	@Override

@@ -21,6 +21,10 @@
     {
       "item": "minecraft:gold_ingot",
       "num": 10
+    },
+    {
+      "item": "minecraft:glass",
+      "num": 4
     }
   ],
   "is_craftable": false,

@@ -7,16 +7,20 @@
   "idleheat": 2.0,
   "ingredients": [
     {
-      "item": "minecraft:oak_boat",
-      "num": 4
-    },
-    {
       "item": "minecraft:iron_ingot",
       "num": 10
     },
     {
       "item": "dscombat:seat",
       "num": 7
+    },
+    {
+      "item": "dscombat:propeller",
+      "num": 1
+    },
+    {
+      "item": "minecraft:light_gray_dye",
+      "num": 3
     },
     {
       "item": "dscombat:turbofan_f145",
@@ -60,7 +64,7 @@
       "slot_posx": 0.65,
       "slot_posy": 1.2,
       "slot_posz": 2.44,
-      "slot_type": "med_turret",
+      "slot_type": "light_turret",
       "zRot": 0.0
     },
     {
@@ -71,7 +75,7 @@
       "slot_posx": -0.65,
       "slot_posy": 1.2,
       "slot_posz": 2.44,
-      "slot_type": "med_turret",
+      "slot_type": "light_turret",
       "zRot": 0.0
     },
     {
@@ -82,7 +86,7 @@
       "slot_posx": 0.65,
       "slot_posy": 1.2,
       "slot_posz": 1.25,
-      "slot_type": "med_turret",
+      "slot_type": "light_turret",
       "zRot": 0.0
     },
     {
@@ -93,7 +97,7 @@
       "slot_posx": -0.65,
       "slot_posy": 1.2,
       "slot_posz": 1.25,
-      "slot_type": "med_turret",
+      "slot_type": "light_turret",
       "zRot": 0.0
     },
     {
@@ -104,7 +108,7 @@
       "slot_posx": 0.65,
       "slot_posy": 1.2,
       "slot_posz": -0.06,
-      "slot_type": "med_turret",
+      "slot_type": "light_turret",
       "zRot": 0.0
     },
     {
@@ -115,7 +119,7 @@
       "slot_posx": -0.65,
       "slot_posy": 1.2,
       "slot_posz": -0.06,
-      "slot_type": "med_turret",
+      "slot_type": "light_turret",
       "zRot": 0.0
     },
     {

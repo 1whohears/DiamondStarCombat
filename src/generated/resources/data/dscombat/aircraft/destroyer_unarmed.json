@@ -15,8 +15,16 @@
       "num": 48
     },
     {
+      "item": "minecraft:light_gray_dye",
+      "num": 9
+    },
+    {
       "item": "dscombat:seat",
       "num": 4
+    },
+    {
+      "item": "dscombat:propeller",
+      "num": 3
     },
     {
       "item": "dscombat:turbofan_f145",

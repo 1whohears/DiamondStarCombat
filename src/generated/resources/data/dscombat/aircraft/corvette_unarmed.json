@@ -12,11 +12,19 @@
     },
     {
       "item": "minecraft:oak_planks",
-      "num": 64
+      "num": 32
     },
     {
       "item": "dscombat:seat",
       "num": 4
+    },
+    {
+      "item": "dscombat:propeller",
+      "num": 2
+    },
+    {
+      "item": "minecraft:light_gray_dye",
+      "num": 6
     },
     {
       "item": "dscombat:turbofan_f145",

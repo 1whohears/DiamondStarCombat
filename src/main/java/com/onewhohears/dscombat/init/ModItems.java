@@ -87,22 +87,28 @@ public class ModItems {
 			() -> new Item(ItemPart.partProps(64)));
 	public static final RegistryObject<Item> INTEL_CORE_I9X = ITEMS.register("intel_core_i9x", 
 			() -> new Item(ItemPart.partProps(64)));
+	public static final RegistryObject<Item> WHEEL = ITEMS.register("wheel", 
+			() -> new Item(ItemPart.partProps(64)));
+	public static final RegistryObject<Item> LARGE_WHEEL = ITEMS.register("large_wheel", 
+			() -> new Item(ItemPart.partProps(64)));
+	public static final RegistryObject<Item> TANK_TRACK = ITEMS.register("tank_track", 
+			() -> new Item(ItemPart.partProps(64)));
 	public static final RegistryObject<Item> FUSELAGE = ITEMS.register("fuselage", 
-			() -> new Item(ItemPart.partProps(32)));
+			() -> new Item(ItemPart.partProps(64)));
 	public static final RegistryObject<Item> LARGE_FUSELAGE = ITEMS.register("large_fuselage", 
-			() -> new Item(ItemPart.partProps(16)));
+			() -> new Item(ItemPart.partProps(64)));
 	public static final RegistryObject<Item> WING = ITEMS.register("wing", 
-			() -> new Item(ItemPart.partProps(32)));
+			() -> new Item(ItemPart.partProps(64)));
 	public static final RegistryObject<Item> LARGE_WING = ITEMS.register("large_wing", 
-			() -> new Item(ItemPart.partProps(16)));
+			() -> new Item(ItemPart.partProps(64)));
 	public static final RegistryObject<Item> PROPELLER = ITEMS.register("propeller", 
-			() -> new Item(ItemPart.partProps(32)));
+			() -> new Item(ItemPart.partProps(64)));
 	public static final RegistryObject<Item> LARGE_PROPELLER = ITEMS.register("large_propeller", 
-			() -> new Item(ItemPart.partProps(16)));
+			() -> new Item(ItemPart.partProps(64)));
 	public static final RegistryObject<Item> COCKPIT = ITEMS.register("cockpit", 
-			() -> new Item(ItemPart.partProps(8)));
+			() -> new Item(ItemPart.partProps(16)));
 	public static final RegistryObject<Item> ADVANCED_COCKPIT = ITEMS.register("advanced_cockpit", 
-			() -> new Item(ItemPart.partProps(8)));
+			() -> new Item(ItemPart.partProps(16)));
 	
 	// BUFFS
 	public static final RegistryObject<Item> DATA_LINK = ITEMS.register("data_link", 

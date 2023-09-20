@@ -34,10 +34,12 @@ public class CarPresets {
 			.addItemSlot("internal_1", SlotType.SPIN_ENGINE, ModItems.C6_ENGINE.getId())
 			.addItemSlot("internal_2", SlotType.INTERNAL, ModItems.LIGHT_FUEL_TANK.getId(), true)
 			.setDefaultColor(DyeColor.ORANGE)
-			.addIngredient("minecraft:minecart", 2)
 			.addIngredient(ModItems.SEAT.getId(), 4)
 			.addIngredient(ModItems.C6_ENGINE.getId())
 			.addIngredient(ModItems.LIGHT_FUEL_TANK.getId())
+			.addIngredient(ModItems.WHEEL.getId(), 4)
+			.addIngredient("minecraft:iron_ingot", 10)
+			.addIngredient("minecraft:orange_dye", 4)
 			.build();
 	
 	public static final AircraftPreset EMPTY_AXCEL_TRUCK = AircraftPreset.Builder
@@ -59,9 +61,10 @@ public class CarPresets {
 			.addPilotSeatSlot(0.5, 0.9, 1)
 			.addSeatSlot("seat2", -0.5, 0.9, 1)
 			.setDefaultColor(DyeColor.YELLOW)
-			.addIngredient("minecraft:minecart", 2)
-			.addIngredient(ModItems.FUSELAGE.getId(), 1)
 			.addIngredient(ModItems.SEAT.getId(), 2)
+			.addIngredient(ModItems.WHEEL.getId(), 6)
+			.addIngredient("minecraft:yellow_dye", 6)
+			.addIngredient("minecraft:iron_ingot", 24)
 			.addIngredient("minecraft:gold_ingot", 3)
 			.addEmptySlot("cargo_bed_1", SlotType.HEAVY_TURRET, 0, 1, -2.75, 0)
 			.addEmptySlot("frame_1", SlotType.ADVANCED_FRAME, 0, 2.95, 1, 0)

@@ -8,7 +8,7 @@
   "ingredients": [
     {
       "item": "dscombat:fuselage",
-      "num": 2
+      "num": 1
     },
     {
       "item": "dscombat:large_wing",
@@ -21,6 +21,14 @@
     {
       "item": "dscombat:seat",
       "num": 1
+    },
+    {
+      "item": "dscombat:wheel",
+      "num": 3
+    },
+    {
+      "item": "minecraft:light_gray_dye",
+      "num": 6
     },
     {
       "item": "minecraft:gold_ingot",

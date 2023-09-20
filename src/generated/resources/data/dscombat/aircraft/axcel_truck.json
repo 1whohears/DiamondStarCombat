@@ -7,16 +7,20 @@
   "idleheat": 6.0,
   "ingredients": [
     {
-      "item": "minecraft:minecart",
-      "num": 2
-    },
-    {
-      "item": "dscombat:fuselage",
-      "num": 1
-    },
-    {
       "item": "dscombat:seat",
       "num": 2
+    },
+    {
+      "item": "dscombat:wheel",
+      "num": 6
+    },
+    {
+      "item": "minecraft:yellow_dye",
+      "num": 6
+    },
+    {
+      "item": "minecraft:iron_ingot",
+      "num": 24
     },
     {
       "item": "minecraft:gold_ingot",

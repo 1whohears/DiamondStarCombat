@@ -1,0 +1,20 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"I": {
+			"item": "minecraft:iron_ingot"
+		},
+		"K": {
+			"item": "minecraft:dried_kelp"
+		}
+	},
+	"pattern": [
+		" K ",
+		"KIK",
+		" K "
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:wheel"
+	}
+}

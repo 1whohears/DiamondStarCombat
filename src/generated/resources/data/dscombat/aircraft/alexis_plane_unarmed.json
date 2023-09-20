@@ -8,7 +8,7 @@
   "ingredients": [
     {
       "item": "dscombat:fuselage",
-      "num": 2
+      "num": 1
     },
     {
       "item": "dscombat:wing",
@@ -17,6 +17,14 @@
     {
       "item": "dscombat:advanced_cockpit",
       "num": 1
+    },
+    {
+      "item": "dscombat:wheel",
+      "num": 3
+    },
+    {
+      "item": "minecraft:light_gray_dye",
+      "num": 5
     },
     {
       "item": "minecraft:gold_ingot",
@@ -29,10 +37,6 @@
     {
       "item": "dscombat:heavy_fuel_tank",
       "num": 1
-    },
-    {
-      "item": "dscombat:basic_flare_dispenser",
-      "num": 1
     }
   ],
   "is_craftable": true,
@@ -44,7 +48,7 @@
   "maxpitch": 2.5,
   "maxroll": 6.0,
   "maxyaw": 1.5,
-  "paintjob_color": 0,
+  "paintjob_color": 8,
   "pitchtorque": 2.0,
   "presetId": "alexis_plane_unarmed",
   "rolltorque": 1.0,
@@ -124,10 +128,6 @@
       "zRot": 0.0
     },
     {
-      "data": {
-        "filled": true,
-        "itemid": "dscombat:basic_flare_dispenser"
-      },
       "name": "internal_3",
       "slot_posx": 0.0,
       "slot_posy": 0.0,

@@ -92,6 +92,10 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 		int ix = startX, iy = startY;
 		int space = 18;
 		for (int i = 0; i < ingredients.size(); ++i) {
+			if (i == 9) {
+				ix = startX;
+				iy += 18;
+			}
 			ItemStack stack = ingredients.get(i).getDisplayItem();
 			m.getItemRenderer().renderAndDecorateItem(stack, ix, iy);
 			m.getItemRenderer().renderGuiItemDecorations(font, stack, ix, iy);

@@ -7,15 +7,15 @@
   "idleheat": 1.0,
   "ingredients": [
     {
-      "item": "minecraft:minecart",
-      "num": 2
-    },
-    {
       "item": "dscombat:seat",
       "num": 1
     },
     {
       "item": "minecraft:iron_ingot",
+      "num": 5
+    },
+    {
+      "item": "dscombat:tank_track",
       "num": 2
     }
   ],
@@ -41,7 +41,7 @@
       "slot_posx": 0.0,
       "slot_posy": 0.6,
       "slot_posz": 0.0,
-      "slot_type": "heavy_turret",
+      "slot_type": "med_turret",
       "zRot": 0.0
     },
     {

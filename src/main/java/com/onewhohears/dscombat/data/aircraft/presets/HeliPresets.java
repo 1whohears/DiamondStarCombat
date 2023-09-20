@@ -57,7 +57,9 @@ public class HeliPresets {
 			.addIngredient(ModItems.PROPELLER.getId())
 			.addIngredient(ModItems.COCKPIT.getId())
 			.addIngredient(ModItems.SEAT.getId(), 3)
+			.addIngredient("minecraft:green_dye", 4)
 			.addIngredient("minecraft:gold_ingot", 15)
+			.addIngredient("iron_ingot", 4)
 			.build();
 	
 	public static final AircraftPreset UNARMED_NOAH_CHOPPER = AircraftPreset.Builder

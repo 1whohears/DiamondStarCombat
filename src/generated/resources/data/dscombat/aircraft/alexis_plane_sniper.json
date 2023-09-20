@@ -8,7 +8,7 @@
   "ingredients": [
     {
       "item": "dscombat:fuselage",
-      "num": 2
+      "num": 1
     },
     {
       "item": "dscombat:wing",
@@ -17,6 +17,14 @@
     {
       "item": "dscombat:advanced_cockpit",
       "num": 1
+    },
+    {
+      "item": "dscombat:wheel",
+      "num": 3
+    },
+    {
+      "item": "minecraft:light_gray_dye",
+      "num": 5
     },
     {
       "item": "minecraft:gold_ingot",
@@ -31,10 +39,6 @@
       "num": 1
     },
     {
-      "item": "dscombat:basic_flare_dispenser",
-      "num": 1
-    },
-    {
       "item": "dscombat:ar2k",
       "num": 1
     },
@@ -44,6 +48,10 @@
     },
     {
       "item": "dscombat:light_missile_rack",
+      "num": 1
+    },
+    {
+      "item": "dscombat:basic_flare_dispenser",
       "num": 1
     },
     {
@@ -72,7 +80,7 @@
   "maxpitch": 2.5,
   "maxroll": 6.0,
   "maxyaw": 1.5,
-  "paintjob_color": 0,
+  "paintjob_color": 8,
   "pitchtorque": 2.0,
   "presetId": "alexis_plane_sniper",
   "rolltorque": 1.0,

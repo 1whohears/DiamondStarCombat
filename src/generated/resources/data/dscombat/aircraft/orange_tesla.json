@@ -7,10 +7,6 @@
   "idleheat": 4.0,
   "ingredients": [
     {
-      "item": "minecraft:minecart",
-      "num": 2
-    },
-    {
       "item": "dscombat:seat",
       "num": 4
     },
@@ -21,6 +17,18 @@
     {
       "item": "dscombat:light_fuel_tank",
       "num": 1
+    },
+    {
+      "item": "dscombat:wheel",
+      "num": 4
+    },
+    {
+      "item": "minecraft:iron_ingot",
+      "num": 10
+    },
+    {
+      "item": "minecraft:orange_dye",
+      "num": 4
     }
   ],
   "is_craftable": true,

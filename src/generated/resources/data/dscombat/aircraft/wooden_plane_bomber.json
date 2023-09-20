@@ -11,12 +11,16 @@
       "num": 30
     },
     {
-      "item": "dscombat:cockpit",
+      "item": "dscombat:seat",
       "num": 1
     },
     {
       "item": "dscombat:propeller",
       "num": 1
+    },
+    {
+      "item": "dscombat:wheel",
+      "num": 2
     },
     {
       "item": "dscombat:cm_manly_52",
@@ -127,6 +131,6 @@
   "throttledown": 0.06,
   "throttleup": 0.02,
   "turn_radius": 16.0,
-  "wing_area": 6.0,
+  "wing_area": 6.5,
   "yawtorque": 4.5
 }

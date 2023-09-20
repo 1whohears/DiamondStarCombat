@@ -31,6 +31,7 @@ public class SubPresets {
 			.addIngredient(ModItems.LARGE_FUSELAGE.getId(), 2)
 			.addIngredient(ModItems.SEAT.getId(), 6)
 			.addIngredient("minecraft:gold_ingot", 10)
+			.addIngredient("minecraft:glass", 4)
 			.addPilotSeatSlot(0.6, -1.5, 2.8)
 			.addSeatSlot("seat1", -0.6, -1.5, 2.8)
 			.addSeatSlot("seat2", 0.6, -1.5, 1.6)

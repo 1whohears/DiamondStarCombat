@@ -17,6 +17,14 @@
     {
       "item": "dscombat:seat",
       "num": 4
+    },
+    {
+      "item": "dscombat:propeller",
+      "num": 3
+    },
+    {
+      "item": "minecraft:light_gray_dye",
+      "num": 11
     }
   ],
   "is_craftable": false,

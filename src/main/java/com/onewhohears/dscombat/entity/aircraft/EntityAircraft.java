@@ -613,7 +613,8 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	 * removed the entity if the vehicle has no health for 500 ticks or 25 seconds
 	 */
 	public void tickNoHealth() {
-		if (deadTicks++ > 500) {
+		if (deadTicks++ > 400) {
+			dropInventory();
 			kill();
 			return;
 		}
@@ -1620,7 +1621,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 			SoundSource.PLAYERS, 0.5f, 1.0f);
 		if (!level.isClientSide && !isOperational()) {
 			checkExplodeWhenKilled(source);
-			if (getDeadTicks() == 0) dropInventory();
 		}
 		return true;
 	}

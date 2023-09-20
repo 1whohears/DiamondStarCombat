@@ -10,11 +10,11 @@
   "entityTypeKey": "dscombat:bomb",
   "explosionRadius": 4.5,
   "explosive": true,
-  "fireRate": 9,
+  "fireRate": 6,
   "ingredients": [
     {
       "item": "minecraft:iron_ingot",
-      "num": 4
+      "num": 2
     },
     {
       "item": "minecraft:tnt",
@@ -24,7 +24,7 @@
   "innacuracy": 0.0,
   "itemKey": "dscombat:bomb",
   "maxAge": 200,
-  "maxAmmo": 16,
+  "maxAmmo": 20,
   "presetId": "anm57",
   "rackTypeKey": "dscombat:bomb_rack",
   "shootSoundKey": "dscombat:bomb_shoot_1",

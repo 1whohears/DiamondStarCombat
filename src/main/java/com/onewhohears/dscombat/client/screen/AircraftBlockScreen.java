@@ -53,6 +53,7 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
         this.renderTooltip(poseStack, mouseX, mouseY);
         this.renderIngredients(poseStack, mouseX, mouseY, partialTicks);
         this.renderVehicle(poseStack, mouseX, mouseY, partialTicks);
+        this.renderBookmark(poseStack, mouseX, mouseY, partialTicks);
 	}
 	
 	@Override
@@ -61,6 +62,14 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 		RenderSystem.setShaderTexture(0, BG_TEXTURE);
 		blit(stack, leftPos, topPos, 0, 0, 
 				imageWidth, imageHeight, 
+				bg_tex_size, bg_tex_size);
+	}
+	
+	protected void renderBookmark(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+		RenderSystem.setShaderTexture(0, BG_TEXTURE);
+		blit(poseStack, leftPos+tab.getBookmarkXPos(), topPos, 
+				352, 0, 7, 11, 
 				bg_tex_size, bg_tex_size);
 	}
 	
@@ -103,7 +112,7 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 		if (ap == null) return;
 		font.draw(stack, ap.getDisplayNameComponent(), titleLabelX, titleLabelY, 0x000000);
 		CompoundTag data = ap.getDataAsNBT();
-		float scale = 0.8f;
+		float scale = 0.9f;
 		stack.scale(scale, scale, scale);
 		float invScale = 1f / scale;
 		int startX = (int)(294f * invScale);
@@ -186,26 +195,6 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 		addRenderableWidget(craftButton);
 	}
 	
-	@Override
-	public void containerTick() {
-		super.containerTick();
-	}
-	
-	@Override
-	public boolean mouseScrolled(double mouseX, double mouseY, double scroll) {
-		return super.mouseScrolled(mouseX, mouseY, scroll);
-	}
-	
-	@Override
-	public boolean mouseClicked(double mouseX, double mouseY, int button) {
-		return super.mouseClicked(mouseX, mouseY, button);
-	}
-	
-	@Override
-	public boolean mouseReleased(double mouseX, double mouseY, int button) {
-		return super.mouseReleased(mouseX, mouseY, button);
-	}
-	
 	private void tabButton(AircraftTab tab) {
 		this.tab = tab;
 	}
@@ -233,16 +222,18 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 	}
 	
 	public static enum AircraftTab {
-		TANKS(() -> AircraftPresets.get().getCraftableTanks()),
-		HELIS(() -> AircraftPresets.get().getCraftableHelis()),
-		PLANES(() -> AircraftPresets.get().getCraftablePlanes()),
-		BOATS(() -> AircraftPresets.get().getCraftableBoats());
+		TANKS(() -> AircraftPresets.get().getCraftableTanks(), 86),
+		HELIS(() -> AircraftPresets.get().getCraftableHelis(), 133),
+		PLANES(() -> AircraftPresets.get().getCraftablePlanes(), 180),
+		BOATS(() -> AircraftPresets.get().getCraftableBoats(), 227);
 		
 		private AircraftPresetList presetFactory;
 		private int index = 0;
+		private final int bookmarkX;
 		
-		private AircraftTab(AircraftPresetList presetFactory) {
+		private AircraftTab(AircraftPresetList presetFactory, int bookmarkX) {
 			this.presetFactory = presetFactory;
+			this.bookmarkX = bookmarkX;
 		}
 		
 		public AircraftPreset[] getPresets() {
@@ -276,6 +267,10 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 			--index;
 			if (index < 0) index = getPresets().length-1;
 			return index;
+		}
+		
+		public int getBookmarkXPos() {
+			return bookmarkX;
 		}
 		
 	}

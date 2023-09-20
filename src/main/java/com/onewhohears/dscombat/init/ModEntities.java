@@ -229,10 +229,10 @@ public class ModEntities {
 					new Vec3(1, 0.5, 0), 0.6875), SEAT_SIZE));
 	public static final RegistryObject<EntityType<EntityTurret>> MARK7_CANNON = ENTITIES.register("mark7_cannon", 
 			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 
-					new Vec3(0, 0.5, 0), 0.625, ShootType.MARK7), SEAT_SIZE));
+					new Vec3(0, 1.5, 0), 1.625, ShootType.MARK7), SEAT_SIZE));
 	public static final RegistryObject<EntityType<EntityTurret>> MARK45_CANNON = ENTITIES.register("mark45_cannon", 
 			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 
-					new Vec3(0, 0.5, 0), 0.5625), SEAT_SIZE));
+					new Vec3(0, 1.5, 0), 1.5625), SEAT_SIZE));
 	
 	public static final EntityDimensions TINY = EntityDimensions.scalable(0.1f, 0.1f);
 	

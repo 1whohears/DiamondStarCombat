@@ -7,17 +7,14 @@
 		"I": {
 			"item": "minecraft:iron_block"
 		},
-		"C": {
-			"item": "minecraft:copper_block"
-		},
 		"T": {
 			"item": "minecraft:tnt"
 		}
 	},
 	"pattern": [
-		"IIT",
-		"CCS",
-		"IIT"
+		" TI",
+		"IIS",
+		" TI"
 	],
 	"result": {
 		"count": 1,

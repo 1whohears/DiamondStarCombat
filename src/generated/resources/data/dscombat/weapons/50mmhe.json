@@ -18,10 +18,10 @@
     },
     {
       "item": "minecraft:gunpowder",
-      "num": 5
+      "num": 10
     }
   ],
-  "innacuracy": 0.25,
+  "innacuracy": 1.0,
   "itemKey": "dscombat:50mmhe",
   "maxAge": 40,
   "maxAmmo": 250,

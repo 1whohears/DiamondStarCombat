@@ -34,6 +34,7 @@ public class Mark7GunModel extends ObjTurretModel<EntityTurret> {
 	@Override
 	protected void rotate(EntityTurret entity, float partialTicks, PoseStack poseStack) {
 		super.rotate(entity, partialTicks, poseStack);
+		poseStack.translate(0, 0.5, 0);
 		poseStack.mulPose(Vector3f.YP.rotationDegrees(180f));
 	}
 

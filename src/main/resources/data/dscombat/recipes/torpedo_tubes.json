@@ -7,17 +7,14 @@
 		"R": {
 			"item": "dscombat:heavy_missile_rack"
 		},
-		"C": {
+		"I": {
 			"item": "minecraft:iron_ingot"
-		},
-		"P": {
-			"item": "dscombat:torpedo1"
 		}
 	},
 	"pattern": [
-		" P ",
-		"PRP",
-		"CSC"
+		" I ",
+		"IRI",
+		" S "
 	],
 	"result": {
 		"count": 1,

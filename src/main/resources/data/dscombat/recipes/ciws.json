@@ -7,13 +7,13 @@
 		"I": {
 			"item": "minecraft:iron_block"
 		},
-		"C": {
-			"item": "minecraft:copper_block"
+		"G": {
+			"item": "minecraft:gold_ingot"
 		}
 	},
 	"pattern": [
-		"IC",
-		"IM"
+		"  I",
+		"GGM"
 	],
 	"result": {
 		"count": 1,

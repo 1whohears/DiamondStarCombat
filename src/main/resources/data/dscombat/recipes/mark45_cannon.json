@@ -8,13 +8,16 @@
 			"item": "minecraft:iron_block"
 		},
 		"C": {
-			"item": "minecraft:copper_block"
+			"item": "minecraft:iron_ingot"
+		},
+		"G": {
+			"item": "minecraft:gold_ingot"
 		}
 	},
 	"pattern": [
-		"II ",
-		"CCS",
-		"II "
+		"  I",
+		"CIS",
+		"  I"
 	],
 	"result": {
 		"count": 1,

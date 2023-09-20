@@ -7,17 +7,14 @@
 		"G": {
 			"item": "minecraft:gold_ingot"
 		},
-		"C": {
-			"item": "minecraft:comparator"
-		},
 		"D": {
 			"item": "minecraft:redstone"
 		}
 	},
 	"pattern": [
-		"DTG",
-		"TCT",
-		"GTD"
+		"DT ",
+		"TGT",
+		" TD"
 	],
 	"result": {
 		"count": 1,

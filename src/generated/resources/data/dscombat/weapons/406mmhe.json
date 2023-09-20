@@ -4,7 +4,7 @@
   "causesFire": true,
   "compatibleWeaponPart": "",
   "craftNum": 1,
-  "damage": 80.0,
+  "damage": 70.0,
   "destroyTerrain": true,
   "displayName": "preset.dscombat.406mmhe",
   "entityTypeKey": "dscombat:bullet",
@@ -18,10 +18,10 @@
     },
     {
       "item": "minecraft:gunpowder",
-      "num": 7
+      "num": 8
     }
   ],
-  "innacuracy": 0.15,
+  "innacuracy": 1.1,
   "itemKey": "dscombat:120mmhe",
   "maxAge": 40,
   "maxAmmo": 36,

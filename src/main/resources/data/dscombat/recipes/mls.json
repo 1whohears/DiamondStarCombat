@@ -9,15 +9,12 @@
 		},
 		"I": {
 			"item": "minecraft:iron_ingot"
-		},
-		"P": {
-			"item": "dscombat:torpedo1"
 		}
 	},
 	"pattern": [
-		"P P",
-		"PRP",
-		"ISI"
+		"II",
+		"IR",
+		" S"
 	],
 	"result": {
 		"count": 1,

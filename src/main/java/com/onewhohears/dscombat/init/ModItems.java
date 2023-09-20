@@ -212,15 +212,30 @@ public class ModItems {
 			() -> new ItemSeat(0.1f, SlotType.SEAT_ALL));
 	
 	// TURRENTS
-	// TODO 1.5 turrets when crafted should not have any ammo so redo all turret recipes
+	public static final RegistryObject<Item> AA_TURRET = ITEMS.register("aa_turret", 
+			() -> new ItemTurret(2.5f, SlotType.TURRET_LIGHT, 
+					ModEntities.AA_TURRET.getId().toString(), "15mm",
+					RotBounds.create(3.0f, 30f, 30f)));
 	public static final RegistryObject<Item> MINIGUN_TURRET = ITEMS.register("minigun_turret", 
-			() -> new ItemTurret(4f, SlotType.TURRET_LIGHT, 
-					ModEntities.MINIGUN_TURRET.getId().toString(), "20mm",
+			() -> new ItemTurret(3.5f, SlotType.TURRET_LIGHT, 
+					ModEntities.MINIGUN_TURRET.getId().toString(), "10mm",
 					RotBounds.create(2.5f,50f, 50f)));
+	public static final RegistryObject<Item> CIWS = ITEMS.register("ciws", 
+			() -> new ItemTurret(4.5f, SlotType.TURRET_LIGHT, 
+					ModEntities.CIWS.getId().toString(), "20mm",
+					RotBounds.create(2.0f, 75f, 30f)));
+	public static final RegistryObject<Item> MARK45_CANNON = ITEMS.register("mark45_cannon", 
+			() -> new ItemTurret(6f, SlotType.TURRET_MED, 
+					ModEntities.MARK45_CANNON.getId().toString(), "127mm",
+					RotBounds.create(1.1f, 30f, 15f)));
 	public static final RegistryObject<Item> HEAVY_TANK_TURRET = ITEMS.register("heavy_tank_turret", 
-			() -> new ItemTurret(8f, SlotType.TURRET_HEAVY, 
+			() -> new ItemTurret(8f, SlotType.TURRET_MED, 
 					ModEntities.HEAVY_TANK_TURRET.getId().toString(), "120mmhe",
 					RotBounds.create(1.0f, 30f, 30f)));
+	public static final RegistryObject<Item> MARK7_CANNON = ITEMS.register("mark7_cannon", 
+			() -> new ItemTurret(11f, SlotType.TURRET_HEAVY, 
+					ModEntities.MARK7_CANNON.getId().toString(), "406mmhe",
+					RotBounds.create(0.9f, 30f, 15f)));
 	public static final RegistryObject<Item> STEVE_UP_SMASH = ITEMS.register("steve_up_smash", 
 			() -> new ItemTurret(10f, SlotType.TURRET_MED, 
 					ModEntities.STEVE_UP_SMASH.getId().toString(), "aim9p5",
@@ -229,30 +244,15 @@ public class ModItems {
 			() -> new ItemTurret(13f, SlotType.TURRET_HEAVY, 
 					ModEntities.SAM_LAUNCHER.getId().toString(), "pac3",
 					RotBounds.create(1.3f, 25f, 25f)));
-	public static final RegistryObject<Item> MLS = ITEMS.register("mls", 
-			() -> new ItemTurret(11f, SlotType.TURRET_HEAVY, 
-					ModEntities.MLS.getId().toString(), "rgm84",
-					RotBounds.create(1.9f, 20f, 20f)));
 	public static final RegistryObject<Item> TORPEDO_TUBES = ITEMS.register("torpedo_tubes", 
 			() -> new ItemTurret(10f, SlotType.TURRET_MED, 
 					ModEntities.TORPEDO_TUBES.getId().toString(), "torpedo1",
 					RotBounds.create(1.6f, 5f, 5f)));
-	public static final RegistryObject<Item> AA_TURRET = ITEMS.register("aa_turret", 
-			() -> new ItemTurret(2.5f, SlotType.TURRET_LIGHT, 
-					ModEntities.AA_TURRET.getId().toString(), "10mm",
-					RotBounds.create(3.0f, 30f, 30f)));
-	public static final RegistryObject<Item> CIWS = ITEMS.register("ciws", 
-			() -> new ItemTurret(4.5f, SlotType.TURRET_MED, 
-					ModEntities.CIWS.getId().toString(), "10mm",
-					RotBounds.create(2.0f, 75f, 30f)));
-	public static final RegistryObject<Item> MARK7_CANNON = ITEMS.register("mark7_cannon", 
+	public static final RegistryObject<Item> MLS = ITEMS.register("mls", 
 			() -> new ItemTurret(11f, SlotType.TURRET_HEAVY, 
-					ModEntities.MARK7_CANNON.getId().toString(), "406mmhe",
-					RotBounds.create(0.9f, 30f, 15f)));
-	public static final RegistryObject<Item> MARK45_CANNON = ITEMS.register("mark45_cannon", 
-			() -> new ItemTurret(6f, SlotType.TURRET_MED, 
-					ModEntities.MARK45_CANNON.getId().toString(), "127mm",
-					RotBounds.create(1.1f, 30f, 15f)));
+					ModEntities.MLS.getId().toString(), "rgm84",
+					RotBounds.create(1.9f, 20f, 20f)));
+	
 	
 	// FLARE DISPENSERS
 	public static final RegistryObject<Item> BASIC_FLARE_DISPENSER = ITEMS.register("basic_flare_dispenser", 

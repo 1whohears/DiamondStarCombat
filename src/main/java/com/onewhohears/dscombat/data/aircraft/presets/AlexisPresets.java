@@ -26,7 +26,7 @@ public class AlexisPresets {
 			.setMaxTurnRates(6f, 2.5f, 1.5f)
 			.setTurnTorques(1f, 2f, 4f)
 			.setThrottleRate(0.04f, 0.08f)
-			.setPlaneWingArea(12f)
+			.setPlaneWingArea(14f)
 			.setDefaultColor(DyeColor.LIGHT_GRAY)
 			.addIngredient(ModItems.FUSELAGE.getId(), 1)
 			.addIngredient(ModItems.WING.getId(), 2)

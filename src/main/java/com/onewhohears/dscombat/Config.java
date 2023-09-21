@@ -180,7 +180,7 @@ public class Config {
 			coKineticFriction = builder
 					.defineInRange("coKineticFriction", 1.50, 0, 100);
 			coLift = builder
-					.defineInRange("lift_constant", 0.075, 0, 100);
+					.defineInRange("lift_constant", 0.0925, 0, 100);
 			coFloat = builder
 					.defineInRange("coFloat", 0.10, 0, 100);
 			collideSpeedThreshHold = builder

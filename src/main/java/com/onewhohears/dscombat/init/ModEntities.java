@@ -59,7 +59,7 @@ public class ModEntities {
 					JaviPresets.DEFAULT_JAVI_PLANE,
 					ModSounds.JET_1,
 					6, 10, 4, 4, 
-					LiftKGraph.JAVI_PLANE_GRAPH, 9f, true, 0, 9), 
+					LiftKGraph.JAVI_PLANE_GRAPH, 10f, true, 0, 9), 
 					EntityDimensions.scalable(2.45f, 2.45f)));
 	
 	public static final RegistryObject<EntityType<EntityPlane>> ALEXIS_PLANE = ENTITIES.register("alexis_plane", 
@@ -67,7 +67,7 @@ public class ModEntities {
 					AlexisPresets.DEFAULT_ALEXIS_PLANE,
 					ModSounds.JET_1,
 					4, 8, 2, 3, 
-					LiftKGraph.ALEXIS_PLANE_GRAPH, 6f, false, 0, 17), 
+					LiftKGraph.ALEXIS_PLANE_GRAPH, 8f, false, 0, 17), 
 					EntityDimensions.scalable(4.0f, 4.0f)));
 	
 	public static final RegistryObject<EntityType<EntityPlane>> WOODEN_PLANE = ENTITIES.register("wooden_plane", 

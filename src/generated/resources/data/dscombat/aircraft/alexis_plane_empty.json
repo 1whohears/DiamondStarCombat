@@ -150,6 +150,6 @@
   "throttledown": 0.08,
   "throttleup": 0.04,
   "turn_radius": 10.0,
-  "wing_area": 12.0,
+  "wing_area": 14.0,
   "yawtorque": 4.0
 }

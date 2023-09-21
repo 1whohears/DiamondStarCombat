@@ -181,4 +181,9 @@ public class EntitySeat extends EntityPart {
 		return true;
 	}
 
+	@Override
+	public boolean canGetHurt() {
+		return false;
+	}
+
 }

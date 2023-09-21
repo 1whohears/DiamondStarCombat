@@ -14,6 +14,7 @@ public class EntityEngine extends EntityPart {
 	
 	public EntityEngine(EntityType<?> type, Level level, String slotId, Vec3 pos) {
 		super(type, level, slotId, pos);
+		setHealth(10);
 	}
 	
 	@Override
@@ -29,6 +30,11 @@ public class EntityEngine extends EntityPart {
 	@Override
 	public boolean shouldRenderAtSqrDistance(double dist) {
 		return dist < 65536;
+	}
+
+	@Override
+	public boolean canGetHurt() {
+		return true;
 	}
 
 }

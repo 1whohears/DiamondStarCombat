@@ -20,6 +20,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -318,6 +319,18 @@ public class EntityTurret extends EntitySeat {
 	public static enum ShootType {
 		NORMAL,
 		MARK7
+	}
+	
+	@Override
+	public boolean canGetHurt() {
+		return true;
+	}
+	
+	@Override
+    public boolean hurt(DamageSource source, float amount) {
+		addHealth(-amount);
+		if (getHealth() <= 0) kill();
+		return true;
 	}
 
 }

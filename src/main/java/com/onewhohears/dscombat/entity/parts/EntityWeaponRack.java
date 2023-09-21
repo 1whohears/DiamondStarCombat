@@ -39,5 +39,10 @@ public class EntityWeaponRack extends EntityPart {
 	public PartType getPartType() {
 		return PartType.WEAPON_RACK;
 	}
+	
+	@Override
+	public boolean canGetHurt() {
+		return false;
+	}
 
 }

@@ -135,18 +135,16 @@ public class PartSlot {
 	}
 	
 	public boolean removePartData(EntityAircraft plane) {
-		if (filled()) {
-			data.remove(slotId);
-			if (plane.level.isClientSide) data.clientRemove(slotId);
-			else {
-				data.serverRemove(slotId);
-				PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> plane), 
-						new ToClientRemovePart(plane.getId(), slotId));
-			}
-			data = null;
-			return true;
+		if (!filled()) return false;
+		data.remove(slotId);
+		if (plane.level.isClientSide) data.clientRemove(slotId);
+		else {
+			data.serverRemove(slotId);
+			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> plane), 
+					new ToClientRemovePart(plane.getId(), slotId));
 		}
-		return false;
+		data = null;
+		return true;
 	}
 	
 	public boolean isSeat() {

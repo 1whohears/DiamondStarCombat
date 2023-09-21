@@ -1606,7 +1606,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     public boolean isInvulnerableTo(DamageSource source) {
     	if (isTestMode()) return true;
     	if (super.isInvulnerableTo(source)) return true;
-    	if (source.isFire() && (hurtByFireTime-tickCount) < 10) return true;
+    	if (source.isFire() && (tickCount-hurtByFireTime) < 10) return true;
     	if (isVehicleOf(source.getEntity())) return true;
     	return false;
     }

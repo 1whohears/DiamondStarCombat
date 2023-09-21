@@ -1614,7 +1614,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     public boolean hurt(DamageSource source, float amount) {
 		if (isInvulnerableTo(source)) return false;
 		if (source.isFire()) hurtByFireTime = tickCount;
-		addHealth(-getActualDamageBySource(source, amount));
+		addHealth(-calcDamageBySource(source, amount));
 		if (!level.isClientSide && isOperational()) level.playSound(null, 
 			blockPosition(), ModSounds.VEHICLE_HIT_1.get(), 
 			SoundSource.PLAYERS, 0.5f, 1.0f);
@@ -1624,11 +1624,17 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		return true;
 	}
 	
-	public float getActualDamageBySource(DamageSource source, float amount) {
-		// TODO 5.5 customisable damage multipliers based on the weapon and vehicle multiplier so missiles can 1 shot planes if desired
-		
+	public float calcDamageBySource(DamageSource source, float amount) {
+		if (source.isProjectile()) amount = calcProjDamageBySource(source, amount);
 		if (!source.isBypassArmor()) amount -= amount*getTotalArmor()*0.01f*Config.COMMON.armorStrength.get();
 		if (amount < 0) amount = 0;
+		// TODO 5.5 test damage multipliers
+		System.out.println("damage = "+amount);
+		return amount;
+	}
+	
+	public float calcProjDamageBySource(DamageSource source, float amount) {
+		if (!source.isExplosion()) amount *= Config.COMMON.bulletDamageFactor.get().floatValue();
 		return amount;
 	}
 	
@@ -1678,7 +1684,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		return true;
 	}
 	
-	public static final float EXP_DAMAGE_FACTOR = 1f;
 	public static final double EXP_FORCE_FACTOR = 100;
 	public static final double EXP_MOMENT_FACTOR = 100;
 	
@@ -1718,7 +1723,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
         double exp_factor = (1.0D - dist_check) * seen_percent;
         
         float amount = (float)((int)((exp_factor*exp_factor+exp_factor)/2d*7d*(double)diameter+1d));
-        hurt(exp.getDamageSource(), amount*EXP_DAMAGE_FACTOR);
+        hurt(exp.getDamageSource(), amount*Config.COMMON.explodeDamageFactor.get().floatValue());
         
         Vec3 force = new Vec3(dx*exp_factor, dy*exp_factor, dz*exp_factor).scale(EXP_FORCE_FACTOR);
         addForceBetweenTicks = addForceBetweenTicks.add(force);

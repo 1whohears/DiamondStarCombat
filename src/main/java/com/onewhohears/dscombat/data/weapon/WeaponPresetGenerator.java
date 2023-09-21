@@ -362,7 +362,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setFireRate(20)
 				.setInnacuracy(0f)
 				.setCanShootOnGround(true)
-				.setDamage(40f)
+				.setDamage(70f)
 				.setSpeed(3f)
 				.setExplosionRadius(3.5f)
 				.setExplosive(true)

@@ -25,17 +25,18 @@ public class WeaponDamageSource extends EntityDamageSource {
 		this.weapon = weapon;
 		setProjectile();
 		if (type.explosion) setExplosion();
+		if (type.bypassArmor) bypassArmor();
 		this.deathMsgId = type.deathMessages.get();
 	}
 	
 	public enum WeaponDamageType {
-		BULLET("bullet", () -> getBulletDeath(), false),
-		BULLET_EXPLODE("bullet_explode", () -> getBulletExplodeDeath(), true),
-		BOMB("bomb", () -> getBombDeath(), true),
-		MISSILE_CONTACT("missile_contact", () -> getMissileContactDeath(), false),
-		MISSILE("missile", () -> getMissileDeath(), true),
-		TORPEDO("tordepo", () -> getTorpedoDeath(), true),
-		IR_MISSILE("ir_missile", () -> getIRMissileDeath(), true);
+		BULLET("bullet", () -> getBulletDeath(), false, false),
+		BULLET_EXPLODE("bullet_explode", () -> getBulletExplodeDeath(), true, false),
+		BOMB("bomb", () -> getBombDeath(), true, false),
+		MISSILE_CONTACT("missile_contact", () -> getMissileContactDeath(), false, true),
+		MISSILE("missile", () -> getMissileDeath(), true, false),
+		TORPEDO("tordepo", () -> getTorpedoDeath(), true, false),
+		IR_MISSILE("ir_missile", () -> getIRMissileDeath(), true, false);
 		@Nullable
 		public static WeaponDamageType byId(String id) {
 			for (WeaponDamageType wdt : values()) if (wdt.damageTypeId.equals(id)) return wdt;
@@ -43,11 +44,12 @@ public class WeaponDamageSource extends EntityDamageSource {
 		}
 		public final String damageTypeId;
 		public final RandomDeathMessageFactory deathMessages;
-		public final boolean explosion;
-		private WeaponDamageType(String damageTypeId, RandomDeathMessageFactory deathMessages, boolean explosion) {
+		public final boolean explosion, bypassArmor;
+		private WeaponDamageType(String damageTypeId, RandomDeathMessageFactory deathMessages, boolean explosion, boolean bypassArmor) {
 			this.damageTypeId = damageTypeId;
 			this.deathMessages = deathMessages;
 			this.explosion = explosion;
+			this.bypassArmor = bypassArmor;
 		}
 		public WeaponDamageSource getSource(@Nullable Entity shooter, @Nonnull EntityWeapon weapon) {
 			return new WeaponDamageSource(this, shooter, weapon);

@@ -69,6 +69,9 @@ public class Config {
 		public final ForgeConfigSpec.BooleanValue autoDataLink;
 		public final ForgeConfigSpec.DoubleValue armorStrength;
 		public final ForgeConfigSpec.BooleanValue disableElytra;
+		public final ForgeConfigSpec.DoubleValue bulletDamageFactor;
+		public final ForgeConfigSpec.DoubleValue explodeDamageFactor;
+		public final ForgeConfigSpec.DoubleValue planeBulletFactor;
 		// TODO 7.1 plane speed multiplier
 		// TODO 7.2 baby mode for planes disabled by default
 		/**
@@ -111,6 +114,15 @@ public class Config {
 			disableElytra = builder
 					.comment("Prevent all players from flying in an Elytra.")
 					.define("disableElytra", false);
+			bulletDamageFactor = builder
+					.comment("Multiplier for damage non explosive pojectiles (bullets) deal to vehicles.")
+					.defineInRange("bulletDamageFactor", 0.2, 0, 100.0);
+			explodeDamageFactor = builder
+					.comment("Multiplier for damage missile explosions deal to vehicles.")
+					.defineInRange("explodeDamageFactor", 4.0, 0, 100.0);
+			planeBulletFactor = builder
+					.comment("Multiplier for damage non explosive bullets from this mod deal to planes only.")
+					.defineInRange("planeBulletFactor", 0.4, 0, 100.0);
 			radarVehicles = builder
 					.defineList("radarVehicles", 
 					Arrays.asList(

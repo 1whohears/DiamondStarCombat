@@ -5,6 +5,7 @@ import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
 import com.onewhohears.dscombat.data.aircraft.LiftKGraph;
+import com.onewhohears.dscombat.data.damagesource.WeaponDamageSource.WeaponDamageType;
 import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
@@ -15,6 +16,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -274,5 +276,12 @@ public class EntityPlane extends EntityAircraft {
     		// gear still out
     	}
     } 
+	
+	@Override
+	public float calcProjDamageBySource(DamageSource source, float amount) {
+		WeaponDamageType wdt = WeaponDamageType.byId(source.getMsgId());
+		if (wdt != null && wdt.isContact()) return amount*Config.COMMON.planeBulletFactor.get().floatValue();
+		return super.calcProjDamageBySource(source, amount);
+	}
 
 }

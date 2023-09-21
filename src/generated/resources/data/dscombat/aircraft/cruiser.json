@@ -27,7 +27,7 @@
       "num": 11
     },
     {
-      "item": "dscombat:turbofan_f145",
+      "item": "dscombat:compound_turbine",
       "num": 2
     },
     {
@@ -244,24 +244,24 @@
     },
     {
       "data": {
-        "itemid": "dscombat:turbofan_f145"
+        "itemid": "dscombat:compound_turbine"
       },
       "name": "internal_1",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": "push_engine",
+      "slot_type": "radial_engine",
       "zRot": 0.0
     },
     {
       "data": {
-        "itemid": "dscombat:turbofan_f145"
+        "itemid": "dscombat:compound_turbine"
       },
       "name": "internal_2",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": "push_engine",
+      "slot_type": "radial_engine",
       "zRot": 0.0
     },
     {

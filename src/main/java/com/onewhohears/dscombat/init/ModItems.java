@@ -174,7 +174,9 @@ public class ModItems {
 	public static final RegistryObject<Item> CM_MANLY_52 = ITEMS.register("cm_manly_52", 
 			() -> new ItemEngine(EngineType.PUSH, 0.8f, 0.12f, 2.0f, 
 					0.004f, false, SlotType.INTERNAL_ENGINE_RADIAL));
-	// TODO 2.2 engines that make sense for boats
+	public static final RegistryObject<Item> COMPOUND_TURBINE = ITEMS.register("compound_turbine", 
+			() -> new ItemEngine(EngineType.PUSH, 6f, 0.68f, 8.0f, 
+					0.019f, false, SlotType.INTERNAL_ENGINE_RADIAL));
 	
 	// RADARS
 	public static final RegistryObject<Item> AR500 = ITEMS.register("ar500", 

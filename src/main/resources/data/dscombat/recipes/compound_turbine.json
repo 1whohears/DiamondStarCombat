@@ -1,0 +1,23 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"C": {
+			"item": "dscombat:c12_engine"
+		},
+		"F": {
+			"item": "minecraft:blast_furnace"
+		},
+		"I": {
+			"item": "minecraft:iron_ingot"
+		}
+	},
+	"pattern": [
+		" I ",
+		"ICI",
+		" F "
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:cm_manly_52"
+	}
+}

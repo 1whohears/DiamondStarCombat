@@ -409,12 +409,12 @@ public abstract class EntityMissile extends EntityBullet {
 	
 	@Override
 	protected WeaponDamageSource getImpactDamageSource() {
-		return WeaponDamageSource.missile_contact(getOwner(), this);
+		return WeaponDamageSource.WeaponDamageType.MISSILE_CONTACT.getSource(getOwner(), this);
 	}
 
 	@Override
 	protected WeaponDamageSource getExplosionDamageSource() {
-		return WeaponDamageSource.missile(getOwner(), this);
+		return WeaponDamageSource.WeaponDamageType.MISSILE.getSource(getOwner(), this);
 	}
 	
 	@Override

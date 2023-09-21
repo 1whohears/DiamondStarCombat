@@ -199,7 +199,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	// TODO 5.1 custom hit box system so players can walk on boats
 	// TODO 5.2 allow big boats to have a heli pad and runway
 	// TODO 5.4 aircraft breaks apart when damaged
-	// TODO 5.5 customizable damage multipliers based on the weapon and vehicle multiplier so missiles can 1 shot planes if desired
 	// TODO 5.6 place and remove external parts from outside the vehicle
 	// FIXME refactor EntityAircraft to EntityVehicle
 	
@@ -1615,9 +1614,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     public boolean hurt(DamageSource source, float amount) {
 		if (isInvulnerableTo(source)) return false;
 		if (source.isFire()) hurtByFireTime = tickCount;
-		if (!source.isBypassArmor()) amount -= amount*getTotalArmor()*0.01f*Config.COMMON.armorStrength.get();
-		if (amount < 0) amount = 0;
-		addHealth(-amount);
+		addHealth(-getActualDamageBySource(source, amount));
 		if (!level.isClientSide && isOperational()) level.playSound(null, 
 			blockPosition(), ModSounds.VEHICLE_HIT_1.get(), 
 			SoundSource.PLAYERS, 0.5f, 1.0f);
@@ -1625,6 +1622,14 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 			checkExplodeWhenKilled(source);
 		}
 		return true;
+	}
+	
+	public float getActualDamageBySource(DamageSource source, float amount) {
+		// TODO 5.5 customisable damage multipliers based on the weapon and vehicle multiplier so missiles can 1 shot planes if desired
+		
+		if (!source.isBypassArmor()) amount -= amount*getTotalArmor()*0.01f*Config.COMMON.armorStrength.get();
+		if (amount < 0) amount = 0;
+		return amount;
 	}
 	
 	protected boolean checkExplodeWhenKilled(DamageSource source) {

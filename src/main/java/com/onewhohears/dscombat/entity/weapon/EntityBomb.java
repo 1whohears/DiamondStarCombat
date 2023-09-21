@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.entity.weapon;
 
 import com.onewhohears.dscombat.Config;
+import com.onewhohears.dscombat.data.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.data.weapon.BombData;
 
 import net.minecraft.world.entity.Entity;
@@ -25,6 +26,16 @@ public class EntityBomb extends EntityBullet {
 	@Override
 	protected void tickSetMove() {
 		setDeltaMovement(getDeltaMovement().add(0, -Config.SERVER.accGravity.get()*4, 0));
+	}
+	
+	@Override
+	protected WeaponDamageSource getImpactDamageSource() {
+		return WeaponDamageSource.WeaponDamageType.BOMB.getSource(getOwner(), this);
+	}
+	
+	@Override
+	protected WeaponDamageSource getExplosionDamageSource() {
+		return WeaponDamageSource.WeaponDamageType.BOMB.getSource(getOwner(), this);
 	}
 
 }

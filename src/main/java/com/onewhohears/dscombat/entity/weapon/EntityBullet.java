@@ -165,12 +165,12 @@ public class EntityBullet extends EntityWeapon {
 
 	@Override
 	protected WeaponDamageSource getImpactDamageSource() {
-		return WeaponDamageSource.bullet(getOwner(), this);
+		return WeaponDamageSource.WeaponDamageType.BULLET.getSource(getOwner(), this);
 	}
 
 	@Override
 	protected WeaponDamageSource getExplosionDamageSource() {
-		return WeaponDamageSource.bullet_explode(getOwner(), this);
+		return WeaponDamageSource.WeaponDamageType.BULLET_EXPLODE.getSource(getOwner(), this);
 	}
 
 }

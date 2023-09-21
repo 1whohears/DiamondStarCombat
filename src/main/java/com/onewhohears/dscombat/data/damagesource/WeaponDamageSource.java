@@ -15,41 +15,57 @@ import net.minecraft.world.phys.Vec3;
 
 public class WeaponDamageSource extends EntityDamageSource {
 	
+	protected final WeaponDamageType type;
 	protected final EntityWeapon weapon;
+	protected final String deathMsgId;
 	
-	public WeaponDamageSource(@Nonnull String damageTypeId, @Nullable Entity shooter, @Nonnull EntityWeapon weapon, boolean explosion) {
-		super(damageTypeId, shooter);
+	public WeaponDamageSource(WeaponDamageType type, @Nullable Entity shooter, @Nonnull EntityWeapon weapon) {
+		super(type.damageTypeId, shooter);
+		this.type = type;
 		this.weapon = weapon;
 		setProjectile();
-		if (explosion) setExplosion();
+		if (type.explosion) setExplosion();
+		this.deathMsgId = type.deathMessages.get();
 	}
 	
-	public static WeaponDamageSource bullet(Entity shooter, EntityWeapon weapon) {
-		return new WeaponDamageSource(getBulletDeath(), shooter, weapon, false);
+	public enum WeaponDamageType {
+		BULLET("bullet", () -> getBulletDeath(), false),
+		BULLET_EXPLODE("bullet_explode", () -> getBulletExplodeDeath(), true),
+		BOMB("bomb", () -> getBombDeath(), true),
+		MISSILE_CONTACT("missile_contact", () -> getMissileContactDeath(), false),
+		MISSILE("missile", () -> getMissileDeath(), true),
+		TORPEDO("tordepo", () -> getTorpedoDeath(), true),
+		IR_MISSILE("ir_missile", () -> getIRMissileDeath(), true);
+		@Nullable
+		public static WeaponDamageType byId(String id) {
+			for (WeaponDamageType wdt : values()) if (wdt.damageTypeId.equals(id)) return wdt;
+			return null;
+		}
+		public final String damageTypeId;
+		public final RandomDeathMessageFactory deathMessages;
+		public final boolean explosion;
+		private WeaponDamageType(String damageTypeId, RandomDeathMessageFactory deathMessages, boolean explosion) {
+			this.damageTypeId = damageTypeId;
+			this.deathMessages = deathMessages;
+			this.explosion = explosion;
+		}
+		public WeaponDamageSource getSource(@Nullable Entity shooter, @Nonnull EntityWeapon weapon) {
+			return new WeaponDamageSource(this, shooter, weapon);
+		}
+		public boolean isContact() {
+			return this == BULLET || this == MISSILE_CONTACT;
+		}
+		public boolean isMissileExplode() {
+			return this == MISSILE || this == TORPEDO || this == IR_MISSILE;
+		}
 	}
 	
-	public static WeaponDamageSource bullet_explode(Entity shooter, EntityWeapon weapon) {
-		return new WeaponDamageSource(getBulletExplodeDeath(), shooter, weapon, true);
+	public interface RandomDeathMessageFactory {
+		String get();
 	}
 	
-	public static WeaponDamageSource bomb(Entity shooter, EntityWeapon weapon) {
-		return new WeaponDamageSource(getBombDeath(), shooter, weapon, true);
-	}
-	
-	public static WeaponDamageSource missile_contact(Entity shooter, EntityWeapon weapon) {
-		return new WeaponDamageSource(getMissileContactDeath(), shooter, weapon, false);
-	}
-	
-	public static WeaponDamageSource missile(Entity shooter, EntityWeapon weapon) {
-		return new WeaponDamageSource(getMissileDeath(), shooter, weapon, true);
-	}
-	
-	public static WeaponDamageSource torpedo(Entity shooter, EntityWeapon weapon) {
-		return new WeaponDamageSource(getTorpedoDeath(), shooter, weapon, true);
-	}
-	
-	public static WeaponDamageSource ir_missile(Entity shooter, EntityWeapon weapon) {
-		return new WeaponDamageSource(getIRMissileDeath(), shooter, weapon, true);
+	public WeaponDamageType getWeaponDamageType() {
+		return type;
 	}
 	
 	public static final String[] saltyDeaths = {"salty1"};
@@ -119,7 +135,7 @@ public class WeaponDamageSource extends EntityDamageSource {
 	@Override
 	public Component getLocalizedDeathMessage(LivingEntity livingEntity) {
 		LivingEntity killer = livingEntity.getKillCredit();
-		String s = "death.attack."+DSCombatMod.MODID+"."+msgId;
+		String s = "death.attack."+DSCombatMod.MODID+"."+deathMsgId;
 		if (killer == null) return Component.translatable(s, livingEntity.getDisplayName());
 		int dist = (int)livingEntity.position().distanceTo(weapon.getShootPos());
 		s += ".player";

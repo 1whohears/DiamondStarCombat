@@ -1628,8 +1628,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		if (source.isProjectile()) amount = calcProjDamageBySource(source, amount);
 		if (!source.isBypassArmor()) amount -= amount*getTotalArmor()*0.01f*Config.COMMON.armorStrength.get();
 		if (amount < 0) amount = 0;
-		// TODO 5.5 test damage multipliers
-		System.out.println("damage = "+amount);
 		return amount;
 	}
 	

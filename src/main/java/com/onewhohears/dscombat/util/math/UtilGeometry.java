@@ -130,4 +130,8 @@ public class UtilGeometry {
 		return new int[] {win_x, win_y};
 	}
 	
+	public static Vector3f convertVector(Vec3 v) {
+		return new Vector3f((float)v.x, (float)v.y, (float)v.z);
+	}
+	
 }

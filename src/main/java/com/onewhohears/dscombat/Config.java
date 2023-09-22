@@ -119,10 +119,10 @@ public class Config {
 					.defineInRange("bulletDamageFactor", 0.2, 0, 100.0);
 			explodeDamageFactor = builder
 					.comment("Multiplier for damage missile explosions deal to vehicles.")
-					.defineInRange("explodeDamageFactor", 4.0, 0, 100.0);
+					.defineInRange("explodeDamageFactor", 10.0, 0, 100.0);
 			planeBulletFactor = builder
 					.comment("Multiplier for damage non explosive bullets from this mod deal to planes only.")
-					.defineInRange("planeBulletFactor", 0.4, 0, 100.0);
+					.defineInRange("planeBulletFactor", 0.5, 0, 100.0);
 			radarVehicles = builder
 					.defineList("radarVehicles", 
 					Arrays.asList(

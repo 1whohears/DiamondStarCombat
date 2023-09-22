@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.entity.weapon;
 
+import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.data.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.data.weapon.MissileData;
@@ -164,29 +165,21 @@ public abstract class EntityMissile extends EntityBullet {
 	
 	public void guideToPosition() {
 		if (targetPos == null) return;
-		Vec3 gm = targetPos.subtract(position());
-		float grx = UtilAngles.getPitch(gm), gry = UtilAngles.getYaw(gm);
-		float orx = getXRot(), ory = getYRot();
-		float nrx = orx, nry = ory;
+		Vec3 goal_dir = targetPos.subtract(position());
+		Vec3 cur_dir = getLookAngle();
+		float deg_diff = (float)UtilGeometry.angleBetweenDegrees(goal_dir, cur_dir);
 		float rot = getTurnDegrees();
-		if (Math.abs(grx-orx) < rot) nrx = grx;
-		else if (grx > orx) nrx += rot;
-		else if (grx < orx) nrx -= rot;
-		if (Math.abs(gry-ory) < rot) nry = gry;
-		else {
-			if (gry > 90 && ory < -90) {
-				nry -= rot;
-				if (nry < -180) nry += 360;
-			} else if (ory > 90 && gry < -90) {
-				nry += rot;
-				if (nry > 180) nry -= 360;
-			} else {
-				if (gry > ory) nry += rot;
-				else if (gry < ory) nry -= rot;
-			}
+		if (deg_diff <= rot) {
+			setXRot(UtilAngles.getPitch(goal_dir));
+			setYRot(UtilAngles.getYaw(goal_dir));
+		} else {
+			Vec3 P = cur_dir.cross(goal_dir).normalize();
+			Vec3 new_dir = UtilAngles.rotateVector(cur_dir, new Quaternion(
+					UtilGeometry.convertVector(P), 
+					rot, true));
+			setXRot(UtilAngles.getPitch(new_dir));
+			setYRot(UtilAngles.getYaw(new_dir));
 		}
-		setXRot(nrx);
-		setYRot(nry);
 	}
 	
 	public float getTurnDegrees() {

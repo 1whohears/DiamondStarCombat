@@ -36,7 +36,7 @@ public class JaviPresets {
 			.addIngredient("minecraft:light_gray_dye", 6)
 			.addIngredient("minecraft:gold_ingot", 10)
 			.addPilotSeatSlot(0, -0.55, 3.35)
-			.addSeatSlot("seat2", SlotType.MED_TURRET, 0, -0.55, 2.35)
+			.addSeatSlot("seat2", SlotType.LIGHT_TURRET, 0, -0.55, 2.35)
 			.addEmptySlot("left_wing_1", SlotType.WING, 1.5, -0.3, 0, 180)
 			.addEmptySlot("left_wing_2", SlotType.WING, 3.0, -0.2, 0, 180)
 			.addEmptySlot("left_wing_3", SlotType.WING, 4.0, -0.07, 0, 180) 

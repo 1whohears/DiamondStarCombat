@@ -90,13 +90,20 @@ public class ClientCameraEvents {
 		if (cameraMove != null) return cameraMove; 
 		if (tried1) return null;
 		tried1 = true;
+		cameraMove = tryGetCameraMove("m_90568_");
+		if (cameraMove == null) cameraMove = tryGetCameraMove("move");
+		return cameraMove;
+	}
+	
+	@Nullable
+	private static Method tryGetCameraMove(String methodName) {
 		try {
-			cameraMove = ObfuscationReflectionHelper.findMethod(Camera.class, "move", 
+			return ObfuscationReflectionHelper.findMethod(Camera.class, methodName, 
 					double.class, double.class, double.class);
 		} catch (UnableToFindMethodException e) {
-			System.out.println("ERROR: THE CAMERA MOVE METHOD IS NOT move");
+			System.out.println("ERROR: THE CAMERA MOVE METHOD IS NOT "+methodName);
+			return null;
 		}
-		return cameraMove;
 	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)

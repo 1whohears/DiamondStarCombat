@@ -78,7 +78,7 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
         if (ap == null) return;
 		Minecraft m = Minecraft.getInstance();
         ItemStack stack = ap.getItem();
-        m.getItemRenderer().renderAndDecorateItem(stack, leftPos+170, topPos+60);
+        m.getItemRenderer().renderAndDecorateItem(stack, leftPos+170, topPos+50);
         // HOW 2 render 3d vehicle and make it spin
 	}
 	

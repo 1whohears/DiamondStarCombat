@@ -234,6 +234,47 @@ public class AircraftClientPresetGenerator extends JsonPresetGenerator<AircraftC
 				.addUIPos("internal_9", gronk_middle_x+18, 40+18)
 				.addUIPos("internal_10", gronk_middle_x+18*2, 40+18)
 				.build());
+		int x_start = 48, y_start = 15;
+		addPresetToGenerate(AircraftClientPreset.Builder.create(DSCombatMod.MODID, "destroyer")
+				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/gronk_battleship.png")
+				.makeOneTexture("dscombat:textures/entity/boats/battleship")
+				.setAllUIPos(x_start, y_start, 8, 
+					PartSlot.PILOT_SLOT_NAME, "seat2", "seat3", "seat4", 
+					"seat5", "seat6", "seat7", "seat8", "seat9", "seat10", 
+					"frame_1", "frame_2", "frame_3", "frame_4", "frame_5", "frame_6",
+					"internal_1", "internal_2", "internal_3", "internal_4", "internal_5", 
+					"internal_6", "internal_7", "internal_8", "internal_9", "internal_10")
+				.build());
+		addPresetToGenerate(AircraftClientPreset.Builder.create(DSCombatMod.MODID, "cruiser")
+				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/gronk_battleship.png")
+				.makeOneTexture("dscombat:textures/entity/boats/battleship")
+				.setAllUIPos(x_start, y_start, 8, 
+					PartSlot.PILOT_SLOT_NAME, "seat2", "seat3", "seat4", 
+					"seat5", "seat6", "seat7", "seat8", "seat9", "seat10", 
+					"frame_1", "frame_2", "frame_3", "frame_4", "frame_5", "frame_6",
+					"internal_1", "internal_2", "internal_3", "internal_4", "internal_5", 
+					"internal_6", "internal_7", "internal_8", "internal_9", "internal_10")
+				.build());
+		addPresetToGenerate(AircraftClientPreset.Builder.create(DSCombatMod.MODID, "corvette")
+				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/gronk_battleship.png")
+				.makeOneTexture("dscombat:textures/entity/boats/battleship")
+				.setAllUIPos(x_start, y_start, 8, 
+					PartSlot.PILOT_SLOT_NAME, "seat2", "seat3", "seat4", 
+					"seat5", "seat6", "seat7", "seat8", "seat9", "seat10", 
+					"frame_1", "frame_2", "frame_3", "frame_4", "frame_5", "frame_6",
+					"internal_1", "internal_2", "internal_3", "internal_4", "internal_5", 
+					"internal_6", "internal_7", "internal_8", "internal_9", "internal_10")
+				.build());
+		addPresetToGenerate(AircraftClientPreset.Builder.create(DSCombatMod.MODID, "aircraft_carrier")
+				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/gronk_battleship.png")
+				.makeOneTexture("dscombat:textures/entity/boats/battleship")
+				.setAllUIPos(x_start, y_start, 8, 
+					PartSlot.PILOT_SLOT_NAME, "seat2", "seat3", "seat4", 
+					"seat5", "seat6", "seat7", "seat8", "seat9", "seat10", 
+					"frame_1", "frame_2", "frame_3", "frame_4", "frame_5", "frame_6",
+					"internal_1", "internal_2", "internal_3", "internal_4", "internal_5", 
+					"internal_6", "internal_7", "internal_8", "internal_9", "internal_10")
+				.build());
 	}
 	
 	public AircraftClientPresetGenerator(DataGenerator output) {

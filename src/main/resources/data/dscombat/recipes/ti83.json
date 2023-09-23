@@ -15,9 +15,9 @@
 		}
 	},
 	"pattern": [
-		"DID",
-		"RCR",
-		"DID"
+		"DI",
+		"RC",
+		"DI"
 	],
 	"result": {
 		"count": 1,

@@ -8,13 +8,15 @@
 			"item": "minecraft:iron_block"
 		},
 		"C": {
-			"item": "minecraft:copper_block"
+			"item": "minecraft:iron_ingot"
+		},
+		"D": {
+			"item": "minecraft:dispenser"
 		}
 	},
 	"pattern": [
-		" CC",
-		"IIS",
-		" CC"
+		"DCS",
+		" II"
 	],
 	"result": {
 		"count": 1,

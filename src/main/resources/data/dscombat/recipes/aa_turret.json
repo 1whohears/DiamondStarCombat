@@ -7,14 +7,13 @@
 		"I": {
 			"item": "minecraft:iron_block"
 		},
-		"C": {
-			"item": "minecraft:copper_block"
+		"D": {
+			"item": "minecraft:dispenser"
 		}
 	},
 	"pattern": [
-		"  C",
-		"IIS",
-		"  C"
+		"DDS",
+		"  I"
 	],
 	"result": {
 		"count": 1,

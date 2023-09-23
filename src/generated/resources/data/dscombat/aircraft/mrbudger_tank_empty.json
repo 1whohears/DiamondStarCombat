@@ -7,20 +7,24 @@
   "idleheat": 10.0,
   "ingredients": [
     {
-      "item": "minecraft:minecart",
-      "num": 4
-    },
-    {
-      "item": "dscombat:fuselage",
-      "num": 1
-    },
-    {
       "item": "dscombat:seat",
       "num": 4
     },
     {
+      "item": "dscombat:tank_track",
+      "num": 4
+    },
+    {
+      "item": "minecraft:iron_ingot",
+      "num": 30
+    },
+    {
       "item": "minecraft:gold_ingot",
       "num": 5
+    },
+    {
+      "item": "minecraft:yellow_dye",
+      "num": 4
     }
   ],
   "is_craftable": false,
@@ -56,7 +60,7 @@
       "slot_posx": 1.0,
       "slot_posy": 1.4,
       "slot_posz": 2.0,
-      "slot_type": "heavy_turret",
+      "slot_type": "med_turret",
       "zRot": 0.0
     },
     {
@@ -67,7 +71,7 @@
       "slot_posx": -1.0,
       "slot_posy": 1.4,
       "slot_posz": 2.0,
-      "slot_type": "heavy_turret",
+      "slot_type": "med_turret",
       "zRot": 0.0
     },
     {
@@ -78,7 +82,7 @@
       "slot_posx": 1.0,
       "slot_posy": 1.4,
       "slot_posz": -2.0,
-      "slot_type": "heavy_turret",
+      "slot_type": "med_turret",
       "zRot": 0.0
     },
     {
@@ -89,7 +93,7 @@
       "slot_posx": -1.0,
       "slot_posy": 1.4,
       "slot_posz": -2.0,
-      "slot_type": "heavy_turret",
+      "slot_type": "med_turret",
       "zRot": 0.0
     },
     {
@@ -125,6 +129,7 @@
       "zRot": 0.0
     }
   ],
+  "sort_factor": 4,
   "stealth": 1.0,
   "throttledown": 0.04,
   "throttleup": 0.04,

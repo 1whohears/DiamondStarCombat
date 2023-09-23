@@ -27,7 +27,6 @@ import com.onewhohears.dscombat.data.aircraft.AircraftTextures;
 import com.onewhohears.dscombat.data.damagesource.AircraftDamageSource;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartsManager;
-import com.onewhohears.dscombat.data.radar.RadarData;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarMode;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
@@ -147,6 +146,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	public final String defaultPreset;
 	public final boolean negativeThrottle;
 	public final float Ix, Iy, Iz, explodeSize;
+	public final double camDist;
 	
 	protected final RegistryObject<SoundEvent> engineSound;
 	
@@ -198,14 +198,14 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	// FIXME 1.1 fix aircraft texture/variant texture system
 	// TODO 5.1 custom hit box system so players can walk on boats
 	// TODO 5.2 allow big boats to have a heli pad and runway
-	// TODO 5.3 some external parts can take damage and break if hit
 	// TODO 5.4 aircraft breaks apart when damaged
+	// TODO 5.6 place and remove external parts from outside the vehicle
 	// FIXME refactor EntityAircraft to EntityVehicle
 	
 	public EntityAircraft(EntityType<? extends EntityAircraft> entityType, Level level, 
-			AircraftPreset defaultPreset,
-			RegistryObject<SoundEvent> engineSound,
-			boolean negativeThrottle, float Ix, float Iy, float Iz, float explodeSize) {
+			AircraftPreset defaultPreset, RegistryObject<SoundEvent> engineSound,
+			boolean negativeThrottle, float Ix, float Iy, float Iz, 
+			float explodeSize, double camDist) {
 		super(entityType, level);
 		this.defaultPreset = defaultPreset.getId();
 		this.preset = this.defaultPreset;
@@ -221,6 +221,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		this.Iy = Iy;
 		this.Iz = Iz;
 		this.explodeSize = explodeSize;
+		this.camDist = camDist;
 		this.blocksBuilding = true;
 	}
 	
@@ -311,8 +312,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		// merge if this entity hasn't merged yet
 		if (!nbt.getBoolean("merged_preset")) nbt.merge(presetNbt);
 		partsManager.read(nbt, presetNbt);
-		weaponSystem.read(nbt);
-		radarSystem.read(nbt);
 		setMaxSpeed(nbt.getFloat("max_speed"));
 		setMaxHealth(nbt.getFloat("max_health"));
 		setHealth(nbt.getFloat("health"));
@@ -352,8 +351,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		nbt.putBoolean("no_consume", isNoConsume());
 		nbt.putBoolean("merged_preset", true);
 		partsManager.write(nbt);
-		weaponSystem.write(nbt);
-		radarSystem.write(nbt);
 		nbt.putFloat("max_speed", getMaxSpeed());
 		nbt.putFloat("max_health", getMaxHealth());
 		nbt.putFloat("health", getHealth());
@@ -401,6 +398,22 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 			this.isAircraft = isAircraft;
 			this.flipPitchThrottle = flipPitchThrottle;
 			this.ignoreInvertY = ignoreInvertY;
+		}
+		
+		public boolean isTank() {
+			return this == CAR;
+		}
+		
+		public boolean isHeli() {
+			return this == HELICOPTER;
+		}
+		
+		public boolean isPlane() {
+			return this == PLANE;
+		}
+		
+		public boolean isBoat() {
+			return this == BOAT || this == SUBMARINE;
 		}
 	}
 	
@@ -495,6 +508,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	 * damages plane if it falls or collides with a wall at speeds defined in config.
 	 */
 	public void tickCollisions() {
+		// TODO 9.1 break grass and leaves or just weak blocks when driving through them
 		if (!level.isClientSide) {
 			if (!hasControllingPassenger()) wallCollisions();
 			if (xzSpeed < 0.1) ride(level.getEntities(this, 
@@ -600,7 +614,8 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	 * removed the entity if the vehicle has no health for 500 ticks or 25 seconds
 	 */
 	public void tickNoHealth() {
-		if (deadTicks++ > 500) {
+		if (deadTicks++ > 400) {
+			dropInventory();
 			kill();
 			return;
 		}
@@ -1333,13 +1348,9 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		int radarMode = buffer.readInt();
 		boolean gear = buffer.readBoolean();
 		boolean freeLook = buffer.readBoolean();
-		List<WeaponData> weapons = WeaponSystem.readWeaponsFromBuffer(buffer);
 		List<PartSlot> slots = PartsManager.readSlotsFromBuffer(buffer);
-		List<RadarData> radars = RadarSystem.readRadarsFromBuffer(buffer);
 		// ORDER MATTERS
-		weaponSystem.setWeapons(weapons);
 		weaponSystem.setSelected(weaponIndex);
-		radarSystem.setRadars(radars);
 		partsManager.setPartSlots(slots);
 		partsManager.clientPartsSetup();
 		// PRESET STUFF
@@ -1359,9 +1370,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		buffer.writeInt(getRadarMode().ordinal());
 		buffer.writeBoolean(isLandingGear());
 		buffer.writeBoolean(isFreeLook());
-		WeaponSystem.writeWeaponsToBuffer(buffer, weaponSystem.getWeapons());
 		PartsManager.writeSlotsToBuffer(buffer, partsManager.getSlots());
-		RadarSystem.writeRadarsToBuffer(buffer, radarSystem.getRadars());
 	}
 	
 	@Override
@@ -1596,7 +1605,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     public boolean isInvulnerableTo(DamageSource source) {
     	if (isTestMode()) return true;
     	if (super.isInvulnerableTo(source)) return true;
-    	if (source.isFire() && (hurtByFireTime-tickCount) < 10) return true;
+    	if (source.isFire() && (tickCount-hurtByFireTime) < 10) return true;
     	if (isVehicleOf(source.getEntity())) return true;
     	return false;
     }
@@ -1605,17 +1614,26 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     public boolean hurt(DamageSource source, float amount) {
 		if (isInvulnerableTo(source)) return false;
 		if (source.isFire()) hurtByFireTime = tickCount;
-		if (!source.isBypassArmor()) amount -= amount*getTotalArmor()*0.01f*Config.COMMON.armorStrength.get();
-		if (amount < 0) amount = 0;
-		addHealth(-amount);
+		addHealth(-calcDamageBySource(source, amount));
 		if (!level.isClientSide && isOperational()) level.playSound(null, 
 			blockPosition(), ModSounds.VEHICLE_HIT_1.get(), 
 			SoundSource.PLAYERS, 0.5f, 1.0f);
 		if (!level.isClientSide && !isOperational()) {
 			checkExplodeWhenKilled(source);
-			if (getDeadTicks() == 0) dropInventory();
 		}
 		return true;
+	}
+	
+	public float calcDamageBySource(DamageSource source, float amount) {
+		if (source.isProjectile()) amount = calcProjDamageBySource(source, amount);
+		if (!source.isBypassArmor()) amount -= amount*getTotalArmor()*0.01f*Config.COMMON.armorStrength.get();
+		if (amount < 0) amount = 0;
+		return amount;
+	}
+	
+	public float calcProjDamageBySource(DamageSource source, float amount) {
+		if (!source.isExplosion()) amount *= Config.COMMON.bulletDamageFactor.get().floatValue();
+		return amount;
 	}
 	
 	protected boolean checkExplodeWhenKilled(DamageSource source) {
@@ -1664,7 +1682,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		return true;
 	}
 	
-	public static final float EXP_DAMAGE_FACTOR = 1f;
 	public static final double EXP_FORCE_FACTOR = 100;
 	public static final double EXP_MOMENT_FACTOR = 100;
 	
@@ -1704,7 +1721,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
         double exp_factor = (1.0D - dist_check) * seen_percent;
         
         float amount = (float)((int)((exp_factor*exp_factor+exp_factor)/2d*7d*(double)diameter+1d));
-        hurt(exp.getDamageSource(), amount*EXP_DAMAGE_FACTOR);
+        hurt(exp.getDamageSource(), amount*Config.COMMON.explodeDamageFactor.get().floatValue());
         
         Vec3 force = new Vec3(dx*exp_factor, dy*exp_factor, dz*exp_factor).scale(EXP_FORCE_FACTOR);
         addForceBetweenTicks = addForceBetweenTicks.add(force);

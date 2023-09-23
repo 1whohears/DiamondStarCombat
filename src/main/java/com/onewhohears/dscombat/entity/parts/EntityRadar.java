@@ -14,6 +14,7 @@ public class EntityRadar extends EntityPart {
 	
 	public EntityRadar(EntityType<?> type, Level level, String slotId, Vec3 pos) {
 		super(type, level, slotId, pos);
+		setHealth(6);
 	}
 
 	@Override
@@ -29,6 +30,11 @@ public class EntityRadar extends EntityPart {
 	@Override
 	public PartType getPartType() {
 		return PartType.EXTERNAL_RADAR;
+	}
+
+	@Override
+	public boolean canGetHurt() {
+		return true;
 	}
 
 }

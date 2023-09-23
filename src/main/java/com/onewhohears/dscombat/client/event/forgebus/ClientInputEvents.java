@@ -22,6 +22,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.event.TickEvent;
@@ -67,9 +68,7 @@ public final class ClientInputEvents {
 		double mouseX = m.mouseHandler.xpos() - mouseCenterX;
 		double mouseY = -(m.mouseHandler.ypos() - mouseCenterY);
 		boolean flare = DSCKeys.flareKey.isDown();
-		boolean shoot = DSCKeys.shootKey.isDown() 
-						&& (System.currentTimeMillis()-mountTime) > MOUNT_SHOOT_COOLDOWN 
-						&& !player.isUsingItem();
+		boolean shoot = DSCKeys.shootKey.isDown() && playerCanShoot(player);
 		boolean flip = DSCKeys.flipControlsKey.isDown();
 		boolean special = DSCKeys.specialKey.isDown();
 		boolean special2 = DSCKeys.special2Key.isDown();
@@ -106,6 +105,7 @@ public final class ClientInputEvents {
 		int invertY = Config.CLIENT.invertY.get() ? -1 : 1;
 		if (plane.getAircraftType().ignoreInvertY) invertY = -1;
 		if (!plane.isFreeLook()) {
+			// FIXME 2 fix mouse mode
 			double ya = Math.abs(mouseY);
 			double xa = Math.abs(mouseX);
 			float ys = (float) Math.signum(mouseY) * -invertY;
@@ -187,9 +187,7 @@ public final class ClientInputEvents {
 		// CYCLE PING
 		if (DSCKeys.pingCycleKey.consumeClick()) radar.clientSelectNextTarget();
 		// TURRET SHOOT
-		boolean shoot = DSCKeys.shootKey.isDown()
-				&& (System.currentTimeMillis()-mountTime) > MOUNT_SHOOT_COOLDOWN 
-				&& !player.isUsingItem();
+		boolean shoot = DSCKeys.shootKey.isDown() && playerCanShoot(player);
 		if (shoot && player.getVehicle() instanceof EntityTurret turret) {
 			PacketHandler.INSTANCE.sendToServer(new ToServerShootTurret(turret));
 		}
@@ -199,10 +197,15 @@ public final class ClientInputEvents {
 		}
 	}
 	
+	private static boolean playerCanShoot(Player player) {
+		return (System.currentTimeMillis()-mountTime) > MOUNT_SHOOT_COOLDOWN 
+				&& (!player.isUsingItem() || player.getItemInHand(player.getUsedItemHand()).is(Items.SHIELD));
+	}
+	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void clientMoveInput(MovementInputUpdateEvent event) {
 		Player player = event.getEntity();
-		if (!(player.getVehicle() instanceof EntitySeat plane)) return;
+		if (!(player.getVehicle() instanceof EntitySeat)) return;
 		if (Config.CLIENT.customDismount.get()) {
 			event.getInput().shiftKeyDown = false;
 		}

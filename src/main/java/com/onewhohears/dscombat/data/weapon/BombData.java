@@ -37,8 +37,8 @@ public class BombData extends BulletData {
 	}
 	
 	@Override
-	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction, @Nullable EntityAircraft vehicle) {
-		EntityBomb bomb = (EntityBomb) super.getShootEntity(level, owner, pos, direction, vehicle);
+	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction, @Nullable EntityAircraft vehicle, boolean ignoreRecoil) {
+		EntityBomb bomb = (EntityBomb) super.getShootEntity(level, owner, pos, direction, vehicle, ignoreRecoil);
 		if (bomb == null) return null;
 		if (vehicle != null) {
 			bomb.setDeltaMovement(vehicle.getDeltaMovement());

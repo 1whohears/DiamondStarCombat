@@ -18,12 +18,14 @@ public class ItemTurret extends ItemPart {
 	public final String weaponId;
 	public final String turrentEntityKey;
 	public final RotBounds rotBounds;
+	public final float health;
 	
-	public ItemTurret(float weight, SlotType[] compatibleSlots, String turrentEntityKey, String weaponId, RotBounds rotBounds) {
+	public ItemTurret(float weight, SlotType[] compatibleSlots, String turrentEntityKey, String weaponId, RotBounds rotBounds, float health) {
 		super(1, weight, compatibleSlots);
 		this.weaponId = weaponId;
 		this.turrentEntityKey = turrentEntityKey;
 		this.rotBounds = rotBounds;
+		this.health = health;
 	}
 	
 	@Override
@@ -41,10 +43,17 @@ public class ItemTurret extends ItemPart {
 		if (max != 0) name.append(" "+ammo+"/"+max);
 		return name;	
 	}
-
+	
+	@Override
+	public PartData getFilledPartData(String param) {
+		return new TurretData(weight, ForgeRegistries.ITEMS.getKey(this), 
+				compatibleSlots, turrentEntityKey, weaponId, rotBounds, true, health);
+	}
+	
 	@Override
 	public PartData getPartData() {
-		return new TurretData(weight, ForgeRegistries.ITEMS.getKey(this), compatibleSlots, turrentEntityKey, weaponId, rotBounds);
+		return new TurretData(weight, ForgeRegistries.ITEMS.getKey(this), 
+				compatibleSlots, turrentEntityKey, weaponId, rotBounds, false, health);
 	}
 
 }

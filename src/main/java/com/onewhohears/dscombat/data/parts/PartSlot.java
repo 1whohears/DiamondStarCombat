@@ -28,10 +28,6 @@ public class PartSlot {
 	private PartData data;
 	
 	public PartSlot(CompoundTag entityNbt, @Nullable CompoundTag presetNbt) {
-		//System.out.println("READING NEW PART SLOT");
-		//System.out.println("entity = "+entityNbt.toString());
-		//if (presetNbt != null) System.out.println("preset = "+presetNbt.toString());
-		//else System.out.println("preset = null");
 		slotId = entityNbt.getString("name");
 		locked = entityNbt.getBoolean("locked");
 		if (entityNbt.contains("data")) data = UtilParse.parsePartFromCompound(entityNbt.getCompound("data"));
@@ -41,7 +37,6 @@ public class PartSlot {
 		} else type = SlotType.getByName(presetNbt.getString("slot_type"));
 		pos = UtilParse.readVec3(presetNbt, "slot_pos");
 		zRot = presetNbt.getFloat("zRot");
-		//System.out.println("pos = "+pos);
 	}
 	
 	public CompoundTag write() {
@@ -56,17 +51,12 @@ public class PartSlot {
 	}
 	
 	public PartSlot(FriendlyByteBuf buffer) {
-		//System.out.println("PART SLOT BUFFER");
 		slotId = buffer.readUtf();
-		//System.out.println("name = "+name);
 		type = SlotType.getByName(buffer.readUtf());
-		//System.out.println("type = "+type.name());
 		pos = DataSerializers.VEC3.read(buffer);
-		//System.out.println("pos = "+pos);
 		zRot = buffer.readFloat();
 		locked = buffer.readBoolean();
 		boolean notNull = buffer.readBoolean();
-		//System.out.println("notNull = "+notNull);
 		if (notNull) data = DataSerializers.PART_DATA.read(buffer);
 	}
 	
@@ -135,18 +125,16 @@ public class PartSlot {
 	}
 	
 	public boolean removePartData(EntityAircraft plane) {
-		if (filled()) {
-			data.remove(slotId);
-			if (plane.level.isClientSide) data.clientRemove(slotId);
-			else {
-				data.serverRemove(slotId);
-				PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> plane), 
-						new ToClientRemovePart(plane.getId(), slotId));
-			}
-			data = null;
-			return true;
+		if (!filled()) return false;
+		data.remove(slotId);
+		if (plane.level.isClientSide) data.clientRemove(slotId);
+		else {
+			data.serverRemove(slotId);
+			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> plane), 
+					new ToClientRemovePart(plane.getId(), slotId));
 		}
-		return false;
+		data = null;
+		return true;
 	}
 	
 	public boolean isSeat() {

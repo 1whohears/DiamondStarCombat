@@ -19,10 +19,10 @@ public class EntityGroundVehicle extends EntityAircraft {
 	private float wheelLRot, wheelLRotOld, wheelRRot, wheelRRotOld;
 	
 	public EntityGroundVehicle(EntityType<? extends EntityGroundVehicle> entity, Level level,
-			AircraftPreset defaultPreset,
-			RegistryObject<SoundEvent> engineSound, boolean isTank, float explodeSize) {
+			AircraftPreset defaultPreset, RegistryObject<SoundEvent> engineSound, 
+			boolean isTank, float explodeSize, double camDist) {
 		super(entity, level, defaultPreset, engineSound,
-				true, 8, 12, 8, explodeSize);
+				true, 8, 12, 8, explodeSize, camDist);
 		this.isTank = isTank;
 	}
 	

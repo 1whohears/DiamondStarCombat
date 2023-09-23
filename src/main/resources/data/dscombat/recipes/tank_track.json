@@ -1,0 +1,20 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"I": {
+			"item": "minecraft:iron_ingot"
+		},
+		"K": {
+			"item": "minecraft:dried_kelp"
+		}
+	},
+	"pattern": [
+		"KKK",
+		"I I",
+		"KKK"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:tank_track"
+	}
+}

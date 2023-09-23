@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.data;
 
 import com.google.gson.JsonObject;
+import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -23,12 +24,14 @@ public abstract class JsonPreset {
 	private final JsonObject data;
 	private final String id;
 	private final String displayName;
+	private final int sort_factor;
 	
 	public JsonPreset(ResourceLocation key, JsonObject json) {
 		this.key = key;
 		this.data = json;
-		this.id = json.get("presetId").getAsString();
-		this.displayName = json.get("displayName").getAsString();
+		this.id = UtilParse.getStringSafe(json, "presetId", "");
+		this.displayName = UtilParse.getStringSafe(json, "displayName", "preset.dscombat."+id);
+		this.sort_factor = UtilParse.getIntSafe(json, "sort_factor", 0);
 	}
 	
 	public ResourceLocation getKey() {
@@ -57,6 +60,10 @@ public abstract class JsonPreset {
 		return Component.literal(dn);
 	}
 	
+	public int getSortFactor() {
+		return sort_factor;
+	}
+	
 	public abstract <T extends JsonPreset> T copy();
 	
 	public interface JsonPresetFactory<T extends JsonPreset> {
@@ -75,6 +82,8 @@ public abstract class JsonPreset {
 	}
 	
 	public <T extends JsonPreset> int compare(T other) {
+		if (this.getSortFactor() != other.getSortFactor()) 
+			return this.getSortFactor() - other.getSortFactor();
 		return this.getId().compareToIgnoreCase(other.getId());
 	}
 	

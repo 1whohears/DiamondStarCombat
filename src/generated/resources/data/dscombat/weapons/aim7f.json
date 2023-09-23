@@ -41,7 +41,7 @@
   "innacuracy": 0.0,
   "itemKey": "dscombat:aim7f",
   "maxAge": 560,
-  "maxAmmo": 2,
+  "maxAmmo": 3,
   "presetId": "aim7f",
   "rackTypeKey": "dscombat:heavy_missile_rack",
   "shootSoundKey": "dscombat:rocket_launch_1",

@@ -7,10 +7,6 @@
   "idleheat": 2.0,
   "ingredients": [
     {
-      "item": "minecraft:oak_boat",
-      "num": 4
-    },
-    {
       "item": "minecraft:iron_ingot",
       "num": 10
     },
@@ -19,7 +15,15 @@
       "num": 7
     },
     {
-      "item": "dscombat:turbofan_f145",
+      "item": "dscombat:propeller",
+      "num": 1
+    },
+    {
+      "item": "minecraft:light_gray_dye",
+      "num": 3
+    },
+    {
+      "item": "dscombat:cm_manly_52",
       "num": 1
     },
     {
@@ -60,7 +64,7 @@
       "slot_posx": 0.65,
       "slot_posy": 1.2,
       "slot_posz": 2.44,
-      "slot_type": "med_turret",
+      "slot_type": "light_turret",
       "zRot": 0.0
     },
     {
@@ -71,7 +75,7 @@
       "slot_posx": -0.65,
       "slot_posy": 1.2,
       "slot_posz": 2.44,
-      "slot_type": "med_turret",
+      "slot_type": "light_turret",
       "zRot": 0.0
     },
     {
@@ -82,7 +86,7 @@
       "slot_posx": 0.65,
       "slot_posy": 1.2,
       "slot_posz": 1.25,
-      "slot_type": "med_turret",
+      "slot_type": "light_turret",
       "zRot": 0.0
     },
     {
@@ -93,7 +97,7 @@
       "slot_posx": -0.65,
       "slot_posy": 1.2,
       "slot_posz": 1.25,
-      "slot_type": "med_turret",
+      "slot_type": "light_turret",
       "zRot": 0.0
     },
     {
@@ -104,7 +108,7 @@
       "slot_posx": 0.65,
       "slot_posy": 1.2,
       "slot_posz": -0.06,
-      "slot_type": "med_turret",
+      "slot_type": "light_turret",
       "zRot": 0.0
     },
     {
@@ -115,7 +119,7 @@
       "slot_posx": -0.65,
       "slot_posy": 1.2,
       "slot_posz": -0.06,
-      "slot_type": "med_turret",
+      "slot_type": "light_turret",
       "zRot": 0.0
     },
     {
@@ -136,13 +140,13 @@
     },
     {
       "data": {
-        "itemid": "dscombat:turbofan_f145"
+        "itemid": "dscombat:cm_manly_52"
       },
       "name": "internal_1",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": "push_engine",
+      "slot_type": "radial_engine",
       "zRot": 0.0
     },
     {
@@ -177,6 +181,7 @@
       "zRot": 0.0
     }
   ],
+  "sort_factor": 0,
   "stealth": 1.0,
   "throttledown": 0.1,
   "throttleup": 0.05,

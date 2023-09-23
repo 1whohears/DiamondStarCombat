@@ -7,15 +7,15 @@
   "idleheat": 1.0,
   "ingredients": [
     {
-      "item": "minecraft:minecart",
-      "num": 2
-    },
-    {
       "item": "dscombat:seat",
       "num": 1
     },
     {
       "item": "minecraft:iron_ingot",
+      "num": 5
+    },
+    {
+      "item": "dscombat:tank_track",
       "num": 2
     },
     {
@@ -29,9 +29,13 @@
     {
       "item": "dscombat:steve_up_smash",
       "num": 1
+    },
+    {
+      "item": "dscombat:aim9p5",
+      "num": 4
     }
   ],
-  "is_craftable": true,
+  "is_craftable": false,
   "item": "dscombat:small_roller",
   "landing_gear": true,
   "mass": 5.0,
@@ -54,7 +58,7 @@
       "slot_posx": 0.0,
       "slot_posy": 0.6,
       "slot_posz": 0.0,
-      "slot_type": "heavy_turret",
+      "slot_type": "med_turret",
       "zRot": 0.0
     },
     {
@@ -81,6 +85,7 @@
       "zRot": 0.0
     }
   ],
+  "sort_factor": 1,
   "stealth": 1.0,
   "throttledown": 0.08,
   "throttleup": 0.08,

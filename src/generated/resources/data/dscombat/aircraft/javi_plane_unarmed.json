@@ -8,7 +8,7 @@
   "ingredients": [
     {
       "item": "dscombat:fuselage",
-      "num": 2
+      "num": 1
     },
     {
       "item": "dscombat:large_wing",
@@ -23,8 +23,20 @@
       "num": 1
     },
     {
+      "item": "dscombat:wheel",
+      "num": 3
+    },
+    {
+      "item": "minecraft:light_gray_dye",
+      "num": 6
+    },
+    {
       "item": "minecraft:gold_ingot",
       "num": 10
+    },
+    {
+      "item": "dscombat:xm12",
+      "num": 1
     },
     {
       "item": "dscombat:turbofan_f25",
@@ -32,10 +44,6 @@
     },
     {
       "item": "dscombat:heavy_fuel_tank",
-      "num": 1
-    },
-    {
-      "item": "dscombat:basic_flare_dispenser",
       "num": 1
     }
   ],
@@ -140,6 +148,9 @@
       "zRot": 180.0
     },
     {
+      "data": {
+        "itemid": "dscombat:xm12"
+      },
       "name": "frame_1",
       "slot_posx": 0.0,
       "slot_posy": -0.7,
@@ -190,10 +201,6 @@
       "zRot": 0.0
     },
     {
-      "data": {
-        "filled": true,
-        "itemid": "dscombat:basic_flare_dispenser"
-      },
       "name": "internal_4",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
@@ -218,6 +225,7 @@
       "zRot": 0.0
     }
   ],
+  "sort_factor": 9,
   "stealth": 1.1,
   "throttledown": 0.08,
   "throttleup": 0.04,

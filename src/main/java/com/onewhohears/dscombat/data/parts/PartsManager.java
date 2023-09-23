@@ -193,9 +193,16 @@ public class PartsManager {
 	}
 	
 	@Nullable
-	public PartSlot getSlot(String slotName) {
-		for (PartSlot p : slots) if (p.getSlotId().equals(slotName)) return p;
+	public PartSlot getSlot(String slotId) {
+		for (PartSlot p : slots) if (p.getSlotId().equals(slotId)) return p;
 		return null;
+	}
+	
+	public boolean killPartInSlot(String slotId) {
+		PartSlot slot = getSlot(slotId);
+		if (slot == null) return false;
+		slot.removePartData(parent);
+		return true;
 	}
 	
 	@Override

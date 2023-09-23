@@ -11,18 +11,22 @@
       "num": 30
     },
     {
-      "item": "dscombat:cockpit",
+      "item": "dscombat:seat",
       "num": 1
     },
     {
       "item": "dscombat:propeller",
       "num": 1
+    },
+    {
+      "item": "dscombat:wheel",
+      "num": 2
     }
   ],
   "is_craftable": false,
   "item": "dscombat:wooden_plane",
   "landing_gear": true,
-  "mass": 8.0,
+  "mass": 6.0,
   "max_health": 40.0,
   "max_speed": 0.9,
   "maxpitch": 3.0,
@@ -85,10 +89,11 @@
       "zRot": 0.0
     }
   ],
+  "sort_factor": 0,
   "stealth": 1.0,
   "throttledown": 0.06,
   "throttleup": 0.02,
   "turn_radius": 16.0,
-  "wing_area": 6.0,
+  "wing_area": 6.5,
   "yawtorque": 4.5
 }

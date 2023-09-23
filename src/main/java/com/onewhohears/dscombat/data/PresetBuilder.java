@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.data;
 
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.data.JsonPreset.JsonPresetFactory;
+import com.onewhohears.dscombat.data.aircraft.AircraftPreset.Builder;
 
 import net.minecraft.resources.ResourceLocation;
 
@@ -60,6 +61,10 @@ public abstract class PresetBuilder<C extends PresetBuilder<C>> {
 	
 	public JsonObject getData() {
 		return data;
+	}
+	
+	public C setSortFactor(int sort_factor) {
+		return setInt("sort_factor", sort_factor);
 	}
 	
 	public C setDisplayName(String name) {

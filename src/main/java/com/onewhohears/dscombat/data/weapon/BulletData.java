@@ -85,8 +85,8 @@ public class BulletData extends WeaponData {
 	}
 	
 	@Override
-	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction, @Nullable EntityAircraft vehicle) {
-		EntityBullet bullet = (EntityBullet) super.getShootEntity(level, owner, pos, direction, vehicle);
+	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction, @Nullable EntityAircraft vehicle, boolean ignoreRecoil) {
+		EntityBullet bullet = (EntityBullet) super.getShootEntity(level, owner, pos, direction, vehicle, ignoreRecoil);
 		if (bullet == null) return null;
 		bullet.setDeltaMovement(bullet.getLookAngle().scale(speed));
 		return bullet;

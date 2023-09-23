@@ -29,8 +29,16 @@
       "num": 3
     },
     {
+      "item": "minecraft:green_dye",
+      "num": 4
+    },
+    {
       "item": "minecraft:gold_ingot",
       "num": 15
+    },
+    {
+      "item": "iron_ingot",
+      "num": 4
     },
     {
       "item": "dscombat:c12_engine",
@@ -270,6 +278,7 @@
       "zRot": 0.0
     }
   ],
+  "sort_factor": 4,
   "stealth": 1.2,
   "throttledown": 0.02,
   "throttleup": 0.01,

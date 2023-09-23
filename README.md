@@ -17,7 +17,7 @@ https://youtu.be/P4Flz0XOtTk
 
 ## Special Thanks
 
-__**pretzelpenguin777**__: Improved **Noah Chopper**, **Javi Plane**, and **Axcel Truck** Model
+__**pretzelpenguin777**__: Improved **Noah Chopper**, **Javi Plane**, **Axcel Truck**, and nearly all Missile Models
 
 **__kawaiicakes___**: Improved **Alexis Plane** Model
 
@@ -26,3 +26,7 @@ __**gabyloko**__: Improved **Andolf Sub Model** and **Spanish Translations**
 __**.ceoofgoogle**__: All the Big Epic Boat modles.
 
 __**d_water_loo**__: **Russian Translations**
+
+__**.ceoofgoogle:**__ All the Big Epic Boat modles and new turret/external radar models.
+
+__**blackbirdantlion**__: **Improved Vehicle Workbench UI Texture**

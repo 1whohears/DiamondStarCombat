@@ -23,6 +23,10 @@
       "num": 10
     },
     {
+      "item": "minecraft:glass",
+      "num": 4
+    },
+    {
       "item": "dscombat:c12_engine",
       "num": 2
     },
@@ -226,6 +230,7 @@
       "zRot": 0.0
     }
   ],
+  "sort_factor": 5,
   "stealth": 0.05,
   "throttledown": 0.04,
   "throttleup": 0.04,

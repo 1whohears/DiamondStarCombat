@@ -1,0 +1,158 @@
+{
+  "displayName": "preset.dscombat.destroyer",
+  "inventory_background": "dscombat:textures/ui/vehicle_inventory_backgrounds/gronk_battleship.png",
+  "inventory_slots_pos": [
+    {
+      "slot_name": "pilot_seat",
+      "slot_ui_x": 48,
+      "slot_ui_y": 15
+    },
+    {
+      "slot_name": "seat2",
+      "slot_ui_x": 66,
+      "slot_ui_y": 15
+    },
+    {
+      "slot_name": "seat3",
+      "slot_ui_x": 84,
+      "slot_ui_y": 15
+    },
+    {
+      "slot_name": "seat4",
+      "slot_ui_x": 102,
+      "slot_ui_y": 15
+    },
+    {
+      "slot_name": "seat5",
+      "slot_ui_x": 120,
+      "slot_ui_y": 15
+    },
+    {
+      "slot_name": "seat6",
+      "slot_ui_x": 138,
+      "slot_ui_y": 15
+    },
+    {
+      "slot_name": "seat7",
+      "slot_ui_x": 156,
+      "slot_ui_y": 15
+    },
+    {
+      "slot_name": "seat8",
+      "slot_ui_x": 174,
+      "slot_ui_y": 15
+    },
+    {
+      "slot_name": "seat9",
+      "slot_ui_x": 48,
+      "slot_ui_y": 33
+    },
+    {
+      "slot_name": "seat10",
+      "slot_ui_x": 66,
+      "slot_ui_y": 33
+    },
+    {
+      "slot_name": "frame_1",
+      "slot_ui_x": 84,
+      "slot_ui_y": 33
+    },
+    {
+      "slot_name": "frame_2",
+      "slot_ui_x": 102,
+      "slot_ui_y": 33
+    },
+    {
+      "slot_name": "frame_3",
+      "slot_ui_x": 120,
+      "slot_ui_y": 33
+    },
+    {
+      "slot_name": "frame_4",
+      "slot_ui_x": 138,
+      "slot_ui_y": 33
+    },
+    {
+      "slot_name": "frame_5",
+      "slot_ui_x": 156,
+      "slot_ui_y": 33
+    },
+    {
+      "slot_name": "frame_6",
+      "slot_ui_x": 174,
+      "slot_ui_y": 33
+    },
+    {
+      "slot_name": "internal_1",
+      "slot_ui_x": 48,
+      "slot_ui_y": 51
+    },
+    {
+      "slot_name": "internal_2",
+      "slot_ui_x": 66,
+      "slot_ui_y": 51
+    },
+    {
+      "slot_name": "internal_3",
+      "slot_ui_x": 84,
+      "slot_ui_y": 51
+    },
+    {
+      "slot_name": "internal_4",
+      "slot_ui_x": 102,
+      "slot_ui_y": 51
+    },
+    {
+      "slot_name": "internal_5",
+      "slot_ui_x": 120,
+      "slot_ui_y": 51
+    },
+    {
+      "slot_name": "internal_6",
+      "slot_ui_x": 138,
+      "slot_ui_y": 51
+    },
+    {
+      "slot_name": "internal_7",
+      "slot_ui_x": 156,
+      "slot_ui_y": 51
+    },
+    {
+      "slot_name": "internal_8",
+      "slot_ui_x": 174,
+      "slot_ui_y": 51
+    },
+    {
+      "slot_name": "internal_9",
+      "slot_ui_x": 48,
+      "slot_ui_y": 69
+    },
+    {
+      "slot_name": "internal_10",
+      "slot_ui_x": 66,
+      "slot_ui_y": 69
+    }
+  ],
+  "presetId": "destroyer",
+  "textures": {
+    "default_texture_path": "dscombat:textures/entity/destroyer/",
+    "overrides": {
+      "black": "dscombat:textures/entity/boats/battleship",
+      "blue": "dscombat:textures/entity/boats/battleship",
+      "brown": "dscombat:textures/entity/boats/battleship",
+      "cyan": "dscombat:textures/entity/boats/battleship",
+      "gray": "dscombat:textures/entity/boats/battleship",
+      "green": "dscombat:textures/entity/boats/battleship",
+      "light_blue": "dscombat:textures/entity/boats/battleship",
+      "light_gray": "dscombat:textures/entity/boats/battleship",
+      "lime": "dscombat:textures/entity/boats/battleship",
+      "magenta": "dscombat:textures/entity/boats/battleship",
+      "orange": "dscombat:textures/entity/boats/battleship",
+      "pink": "dscombat:textures/entity/boats/battleship",
+      "purple": "dscombat:textures/entity/boats/battleship",
+      "red": "dscombat:textures/entity/boats/battleship",
+      "white": "dscombat:textures/entity/boats/battleship",
+      "yellow": "dscombat:textures/entity/boats/battleship"
+    }
+  }
+}

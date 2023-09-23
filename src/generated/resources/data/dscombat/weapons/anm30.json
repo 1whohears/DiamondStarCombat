@@ -3,18 +3,18 @@
   "canShootOnGround": false,
   "causesFire": false,
   "compatibleWeaponPart": "dscombat:bomb_rack",
-  "craftNum": 4,
+  "craftNum": 1,
   "damage": 20.0,
   "destroyTerrain": true,
   "displayName": "preset.dscombat.anm30",
   "entityTypeKey": "dscombat:bomb",
   "explosionRadius": 3.5,
   "explosive": true,
-  "fireRate": 5,
+  "fireRate": 4,
   "ingredients": [
     {
       "item": "minecraft:iron_ingot",
-      "num": 2
+      "num": 1
     },
     {
       "item": "minecraft:tnt",
@@ -24,7 +24,7 @@
   "innacuracy": 0.0,
   "itemKey": "dscombat:bomb",
   "maxAge": 200,
-  "maxAmmo": 16,
+  "maxAmmo": 40,
   "presetId": "anm30",
   "rackTypeKey": "dscombat:bomb_rack",
   "shootSoundKey": "dscombat:bomb_shoot_1",

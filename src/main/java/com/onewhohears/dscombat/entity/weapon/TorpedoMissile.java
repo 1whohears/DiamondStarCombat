@@ -40,12 +40,12 @@ public class TorpedoMissile extends TrackEntityMissile {
 	
 	@Override
 	protected WeaponDamageSource getImpactDamageSource() {
-		return WeaponDamageSource.missile_contact(getOwner(), this);
+		return WeaponDamageSource.WeaponDamageType.MISSILE_CONTACT.getSource(getOwner(), this);
 	}
 
 	@Override
 	protected WeaponDamageSource getExplosionDamageSource() {
-		return WeaponDamageSource.torpedo(getOwner(), this);
+		return WeaponDamageSource.WeaponDamageType.TORPEDO.getSource(getOwner(), this);
 	}
 	
 }

@@ -9,18 +9,12 @@
 		},
 		"M": {
 			"item": "minecraft:magma_block"
-		},
-		"C": {
-			"item": "minecraft:minecart"
-		},
-		"P": {
-			"item": "dscombat:aim9p5"
 		}
 	},
 	"pattern": [
-		"PMP",
-		"PRP",
-		"CSC"
+		"M",
+		"R",
+		"S"
 	],
 	"result": {
 		"count": 1,

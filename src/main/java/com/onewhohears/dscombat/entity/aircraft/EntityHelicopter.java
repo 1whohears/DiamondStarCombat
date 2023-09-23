@@ -28,11 +28,11 @@ public class EntityHelicopter extends EntityAircraft {
 	private final boolean alwaysLandingGear;
 	
 	public EntityHelicopter(EntityType<? extends EntityHelicopter> entity, Level level,
-			AircraftPreset defaultPreset,
-			RegistryObject<SoundEvent> engineSound, 
-			boolean alwaysLandingGear, float Ix, float Iy, float Iz, float explodeSize, float heliLiftFactor) {
+			AircraftPreset defaultPreset, RegistryObject<SoundEvent> engineSound, 
+			boolean alwaysLandingGear, float Ix, float Iy, float Iz, float explodeSize, 
+			float heliLiftFactor, double camDist) {
 		super(entity, level, defaultPreset, engineSound,
-				false, Ix, Iy, Iz, explodeSize);
+				false, Ix, Iy, Iz, explodeSize, camDist);
 		this.alwaysLandingGear = alwaysLandingGear;
 		this.heliLiftFactor = heliLiftFactor;
 	}

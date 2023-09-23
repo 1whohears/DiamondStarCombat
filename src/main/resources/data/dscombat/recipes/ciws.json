@@ -1,0 +1,22 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"M": {
+			"item": "dscombat:minigun_turret"
+		},
+		"I": {
+			"item": "minecraft:iron_block"
+		},
+		"G": {
+			"item": "minecraft:gold_ingot"
+		}
+	},
+	"pattern": [
+		"  I",
+		"GGM"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:ciws"
+	}
+}

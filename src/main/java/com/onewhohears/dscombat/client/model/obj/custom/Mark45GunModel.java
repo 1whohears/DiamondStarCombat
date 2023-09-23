@@ -13,7 +13,7 @@ import net.minecraftforge.client.model.renderable.CompositeRenderable.Transforms
 public class Mark45GunModel extends ObjTurretModel<EntityTurret> {
 
 	public Mark45GunModel() {
-		super("naval_gun", true);
+		super("naval_gun_v2", true);
 	}
 	
 	@Override
@@ -29,6 +29,7 @@ public class Mark45GunModel extends ObjTurretModel<EntityTurret> {
 	@Override
 	protected void rotate(EntityTurret entity, float partialTicks, PoseStack poseStack) {
 		super.rotate(entity, partialTicks, poseStack);
+		poseStack.translate(0, 0.5, 0);
 		poseStack.mulPose(Vector3f.YP.rotationDegrees(180f));
 	}
 

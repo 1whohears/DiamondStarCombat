@@ -23,6 +23,7 @@ import com.onewhohears.dscombat.client.model.obj.custom.AATurretModel;
 import com.onewhohears.dscombat.client.model.obj.custom.BallRadarModel;
 import com.onewhohears.dscombat.client.model.obj.custom.BombRackModel;
 import com.onewhohears.dscombat.client.model.obj.custom.CIWSModel;
+import com.onewhohears.dscombat.client.model.obj.custom.CorvetteModel;
 import com.onewhohears.dscombat.client.model.obj.custom.HeavyMissileRackModel;
 import com.onewhohears.dscombat.client.model.obj.custom.LightMissileRackModel;
 import com.onewhohears.dscombat.client.model.obj.custom.MLSModel;
@@ -155,6 +156,18 @@ public final class ClientModEvents {
 		event.registerEntityRenderer(ModEntities.GRONK_BATTLESHIP.get(), 
 				(context) -> new RendererObjEntity<EntityBoat>(context, 
 						new ObjAircraftModel<>("battleship")));
+		event.registerEntityRenderer(ModEntities.DESTROYER.get(), 
+				(context) -> new RendererObjEntity<EntityBoat>(context, 
+						new ObjAircraftModel<>("destroyer")));
+		event.registerEntityRenderer(ModEntities.CRUISER.get(), 
+				(context) -> new RendererObjEntity<EntityBoat>(context, 
+						new ObjAircraftModel<>("cruiser")));
+		event.registerEntityRenderer(ModEntities.CORVETTE.get(), 
+				(context) -> new RendererObjEntity<EntityBoat>(context, 
+						new CorvetteModel()));
+		event.registerEntityRenderer(ModEntities.AIRCRAFT_CARRIER.get(), 
+				(context) -> new RendererObjEntity<EntityBoat>(context, 
+						new ObjAircraftModel<>("carrier")));
 		// SUBMARINES
 		event.registerEntityRenderer(ModEntities.ANDOLF_SUB.get(), 
 				(context) -> new RendererEntityAircraft<EntitySubmarine>(context, 
@@ -192,7 +205,7 @@ public final class ClientModEvents {
 						new ObjEntityModel<>("aim120c")));
 		event.registerEntityRenderer(ModEntities.PAC3.get(), 
 				(context) -> new RendererObjEntity<EntityMissile>(context, 
-						new ObjEntityModel<>("aim120b")));
+						new ObjEntityModel<>("pac3")));
 		event.registerEntityRenderer(ModEntities.AIM7F.get(), 
 				(context) -> new RendererObjEntity<EntityMissile>(context, 
 						new ObjEntityModel<>("aim7f")));

@@ -5,18 +5,15 @@
 			"item": "dscombat:ti83"
 		},
 		"D": {
-			"item": "minecraft:dispenser"
+			"item": "minecraft:dropper"
 		},
 		"I": {
 			"item": "minecraft:iron_ingot"
-		},
-		"S": {
-			"item": "minecraft:smooth_stone"
 		}
 	},
 	"pattern": [
-		"STS",
-		"DID"
+		"ITI",
+		" D "
 	],
 	"result": {
 		"count": 1,

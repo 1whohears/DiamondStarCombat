@@ -17,7 +17,7 @@
       "num": 4
     }
   ],
-  "innacuracy": 1.2,
+  "innacuracy": 2.2,
   "itemKey": "dscombat:bullet",
   "maxAge": 40,
   "maxAmmo": 1000,

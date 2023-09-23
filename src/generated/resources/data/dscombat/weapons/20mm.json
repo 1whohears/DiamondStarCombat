@@ -17,7 +17,7 @@
       "num": 4
     }
   ],
-  "innacuracy": 0.5,
+  "innacuracy": 1.1,
   "itemKey": "dscombat:20mm",
   "maxAge": 40,
   "maxAmmo": 500,

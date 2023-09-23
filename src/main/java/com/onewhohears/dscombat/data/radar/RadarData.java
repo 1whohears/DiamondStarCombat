@@ -330,6 +330,7 @@ public class RadarData extends JsonPreset {
 		public final int id;
 		public final Vec3 pos;
 		public final boolean isFriendly;
+		public final PingType pingType;
 		private boolean isShared;
 		
 		public RadarPing(Entity ping, boolean isFriendly) {
@@ -337,13 +338,15 @@ public class RadarData extends JsonPreset {
 			pos = ping.getBoundingBox().getCenter();
 			this.isFriendly = isFriendly;
 			this.isShared = false;
+			this.pingType = PingType.getByEntity(ping);
 		}
 		
-		private RadarPing(int id, Vec3 pos, boolean isFriendly, boolean isShared) {
+		private RadarPing(int id, Vec3 pos, boolean isFriendly, boolean isShared, PingType pingType) {
 			this.id = id;
 			this.pos = pos;
 			this.isFriendly = isFriendly;
 			this.isShared = isShared;
+			this.pingType = pingType;
 		}
 		
 		public RadarPing(FriendlyByteBuf buffer) {
@@ -351,6 +354,7 @@ public class RadarData extends JsonPreset {
 			pos = DataSerializers.VEC3.read(buffer);
 			isFriendly = buffer.readBoolean();
 			isShared = buffer.readBoolean();
+			pingType = PingType.getById(buffer.readByte());
 		}
 		
 		public void write(FriendlyByteBuf buffer) {
@@ -358,6 +362,7 @@ public class RadarData extends JsonPreset {
 			DataSerializers.VEC3.write(buffer, pos);
 			buffer.writeBoolean(isFriendly);
 			buffer.writeBoolean(isShared);
+			buffer.writeByte(pingType.id);
 		}
 		
 		public boolean isShared() {
@@ -365,7 +370,7 @@ public class RadarData extends JsonPreset {
 		}
 		
 		public RadarPing getCopy(boolean isShared) {
-			return new RadarPing(id, pos, isFriendly, isShared);
+			return new RadarPing(id, pos, isFriendly, isShared, pingType);
 		}
 		
 		@Override
@@ -379,6 +384,31 @@ public class RadarData extends JsonPreset {
 			return false;
 		}
 		
+	}
+	
+	public static enum PingType {
+		GROUND((byte)0),
+		AIR((byte)1),
+		WATER((byte)2);
+		
+		public final byte id;
+		
+		private PingType(byte id) {
+			this.id = id;
+		}
+		
+		public static PingType getById(byte id) {
+			for (int i = 0; i < values().length; ++i) 
+				if (values()[i].id == id) 
+					return values()[i];
+			return GROUND;
+		}
+		
+		public static PingType getByEntity(Entity e) {
+			if (e.isInWater()) return WATER;
+			if (UtilEntity.isOnGroundOrWater(e)) return GROUND;
+			return AIR;
+		}
 	}
 	
 	public static enum RadarMode {

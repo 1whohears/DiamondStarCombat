@@ -68,8 +68,8 @@ public class TorpedoData extends TrackMissileData {
 	}
 	
 	@Override
-	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction, EntityAircraft vehicle) {
-		TorpedoMissile missile = (TorpedoMissile) super.getShootEntity(level, owner, pos, direction, vehicle);
+	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction, EntityAircraft vehicle, boolean ignoreRecoil) {
+		TorpedoMissile missile = (TorpedoMissile) super.getShootEntity(level, owner, pos, direction, vehicle, ignoreRecoil);
 		if (missile == null) return null;
 		return missile;
 	}

@@ -8,31 +8,31 @@
   "ingredients": [
     {
       "item": "dscombat:large_fuselage",
-      "num": 3
+      "num": 4
     },
     {
-      "item": "minecraft:boat",
-      "num": 4
+      "item": "minecraft:oak_planks",
+      "num": 64
     },
     {
       "item": "dscombat:seat",
       "num": 4
     },
     {
-      "item": "dscombat:turbofan_f145",
+      "item": "dscombat:propeller",
+      "num": 3
+    },
+    {
+      "item": "minecraft:light_gray_dye",
+      "num": 10
+    },
+    {
+      "item": "dscombat:compound_turbine",
       "num": 2
     },
     {
       "item": "dscombat:heavy_fuel_tank",
-      "num": 1
-    },
-    {
-      "item": "dscombat:wr1k",
-      "num": 1
-    },
-    {
-      "item": "dscombat:ar1k",
-      "num": 1
+      "num": 2
     }
   ],
   "is_craftable": true,
@@ -43,8 +43,8 @@
   "max_speed": 0.6,
   "maxpitch": 0.0,
   "maxroll": 0.0,
-  "maxyaw": 1.5,
-  "paintjob_color": 0,
+  "maxyaw": 1.0,
+  "paintjob_color": 8,
   "pitchtorque": 0.0,
   "presetId": "gronk_battleship_unarmed",
   "rolltorque": 0.0,
@@ -94,46 +94,34 @@
       "zRot": 0.0
     },
     {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
       "name": "seat5",
       "slot_posx": 0.0,
       "slot_posy": 5.0,
-      "slot_posz": 13.0,
+      "slot_posz": 11.5,
       "slot_type": "heavy_turret",
       "zRot": 0.0
     },
     {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
       "name": "seat6",
       "slot_posx": 0.0,
       "slot_posy": 5.0,
-      "slot_posz": -13.0,
+      "slot_posz": -12.0,
       "slot_type": "heavy_turret",
       "zRot": 0.0
     },
     {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
       "name": "seat7",
       "slot_posx": 0.0,
       "slot_posy": 4.0,
-      "slot_posz": 22.0,
+      "slot_posz": 18.0,
       "slot_type": "heavy_turret",
       "zRot": 0.0
     },
     {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
       "name": "seat8",
       "slot_posx": 0.0,
       "slot_posy": 4.0,
-      "slot_posz": -22.0,
+      "slot_posz": -19.0,
       "slot_type": "heavy_turret",
       "zRot": 0.0
     },
@@ -154,9 +142,6 @@
       "zRot": 0.0
     },
     {
-      "data": {
-        "itemid": "dscombat:air_scan_a"
-      },
       "name": "frame_1",
       "slot_posx": 0.0,
       "slot_posy": 9.0,
@@ -198,24 +183,24 @@
     },
     {
       "data": {
-        "itemid": "dscombat:turbofan_f145"
+        "itemid": "dscombat:compound_turbine"
       },
       "name": "internal_1",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": "push_engine",
+      "slot_type": "radial_engine",
       "zRot": 0.0
     },
     {
       "data": {
-        "itemid": "dscombat:turbofan_f145"
+        "itemid": "dscombat:compound_turbine"
       },
       "name": "internal_2",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": "push_engine",
+      "slot_type": "radial_engine",
       "zRot": 0.0
     },
     {
@@ -259,9 +244,6 @@
       "zRot": 0.0
     },
     {
-      "data": {
-        "itemid": "dscombat:wr1k"
-      },
       "name": "internal_7",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
@@ -282,7 +264,7 @@
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": "advanced_internal",
+      "slot_type": "internal",
       "zRot": 0.0
     },
     {
@@ -290,13 +272,14 @@
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": "advanced_internal",
+      "slot_type": "internal",
       "zRot": 0.0
     }
   ],
+  "sort_factor": 1,
   "stealth": 0.9,
   "throttledown": 0.1,
   "throttleup": 0.05,
   "turn_radius": 0.0,
-  "yawtorque": 2.0
+  "yawtorque": 1.0
 }

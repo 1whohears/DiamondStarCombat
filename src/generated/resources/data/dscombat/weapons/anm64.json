@@ -8,23 +8,23 @@
   "destroyTerrain": true,
   "displayName": "preset.dscombat.anm64",
   "entityTypeKey": "dscombat:bomb",
-  "explosionRadius": 7.0,
+  "explosionRadius": 8.5,
   "explosive": true,
-  "fireRate": 17,
+  "fireRate": 11,
   "ingredients": [
     {
       "item": "minecraft:iron_ingot",
-      "num": 6
+      "num": 4
     },
     {
       "item": "minecraft:tnt",
-      "num": 3
+      "num": 4
     }
   ],
   "innacuracy": 0.0,
   "itemKey": "dscombat:bomb",
   "maxAge": 200,
-  "maxAmmo": 4,
+  "maxAmmo": 10,
   "presetId": "anm64",
   "rackTypeKey": "dscombat:bomb_rack",
   "shootSoundKey": "dscombat:bomb_shoot_1",

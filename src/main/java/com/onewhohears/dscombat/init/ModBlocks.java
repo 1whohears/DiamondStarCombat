@@ -41,4 +41,6 @@ public class ModBlocks {
 			() -> new AircraftBlock(Block.Properties.of(Material.METAL)
                     .strength(1.5f).noOcclusion().explosionResistance(6f)), ModItems.AIRCRAFT);
 	
+	// TODO 2.3 block to put stationary turrets on
+	
 }

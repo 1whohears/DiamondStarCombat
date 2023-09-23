@@ -179,6 +179,7 @@ public class PilotOverlay {
         	GuiComponent.drawCenteredString(poseStack, m.font, 
         		textByHeading(h), x, y, color);
         }
+        // TODO 1.2 draw pitch, roll, and cursor elements to hud
 	}
 	
 	private static final MutableComponent weaponSelect = Component.empty().append("->");
@@ -420,6 +421,7 @@ public class PilotOverlay {
         	float yaw = (UtilAngles.getYaw(dp)-plane.getYRot())*Mth.DEG_TO_RAD;
         	int x = cx + (int)(Mth.sin(yaw)*radius*dist);
         	int y = cy + (int)(-Mth.cos(yaw)*radius*dist);
+        	// TODO 1.1 use different colors/symbols to separate ground, navy, and aerial radar pings
         	int color = 0x00ff00;
         	String symbol = "o";
         	ResourceLocation hud = HUD_PING;

@@ -7,24 +7,24 @@
   "idleheat": 6.0,
   "ingredients": [
     {
-      "item": "minecraft:minecart",
-      "num": 2
-    },
-    {
-      "item": "dscombat:fuselage",
-      "num": 1
-    },
-    {
       "item": "dscombat:seat",
       "num": 2
     },
     {
-      "item": "minecraft:gold_ingot",
-      "num": 3
+      "item": "dscombat:wheel",
+      "num": 6
     },
     {
-      "item": "dscombat:sam_launcher",
-      "num": 1
+      "item": "minecraft:yellow_dye",
+      "num": 6
+    },
+    {
+      "item": "minecraft:iron_ingot",
+      "num": 24
+    },
+    {
+      "item": "minecraft:gold_ingot",
+      "num": 3
     },
     {
       "item": "dscombat:c12_engine",
@@ -35,11 +35,15 @@
       "num": 1
     },
     {
-      "item": "dscombat:ar2k",
+      "item": "dscombat:sam_launcher",
+      "num": 1
+    },
+    {
+      "item": "dscombat:air_scan_a",
       "num": 1
     }
   ],
-  "is_craftable": true,
+  "is_craftable": false,
   "item": "dscombat:axcel_truck",
   "landing_gear": true,
   "mass": 15.0,
@@ -77,6 +81,7 @@
     },
     {
       "data": {
+        "filled": true,
         "itemid": "dscombat:sam_launcher"
       },
       "name": "cargo_bed_1",
@@ -137,6 +142,7 @@
       "zRot": 0.0
     }
   ],
+  "sort_factor": 5,
   "stealth": 1.0,
   "throttledown": 0.05,
   "throttleup": 0.05,

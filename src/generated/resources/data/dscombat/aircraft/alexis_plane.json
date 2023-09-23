@@ -8,7 +8,7 @@
   "ingredients": [
     {
       "item": "dscombat:fuselage",
-      "num": 2
+      "num": 1
     },
     {
       "item": "dscombat:wing",
@@ -17,6 +17,14 @@
     {
       "item": "dscombat:advanced_cockpit",
       "num": 1
+    },
+    {
+      "item": "dscombat:wheel",
+      "num": 3
+    },
+    {
+      "item": "minecraft:light_gray_dye",
+      "num": 5
     },
     {
       "item": "minecraft:gold_ingot",
@@ -28,10 +36,6 @@
     },
     {
       "item": "dscombat:heavy_fuel_tank",
-      "num": 1
-    },
-    {
-      "item": "dscombat:basic_flare_dispenser",
       "num": 1
     },
     {
@@ -51,6 +55,10 @@
       "num": 1
     },
     {
+      "item": "dscombat:basic_flare_dispenser",
+      "num": 1
+    },
+    {
       "item": "minecraft:copper_ingot",
       "num": 63
     },
@@ -67,7 +75,7 @@
       "num": 64
     }
   ],
-  "is_craftable": true,
+  "is_craftable": false,
   "item": "dscombat:alexis_plane",
   "landing_gear": true,
   "mass": 20.0,
@@ -76,7 +84,7 @@
   "maxpitch": 2.5,
   "maxroll": 6.0,
   "maxyaw": 1.5,
-  "paintjob_color": 0,
+  "paintjob_color": 8,
   "pitchtorque": 2.0,
   "presetId": "alexis_plane",
   "rolltorque": 1.0,
@@ -220,10 +228,11 @@
       "zRot": 0.0
     }
   ],
+  "sort_factor": 10,
   "stealth": 0.8,
   "throttledown": 0.08,
   "throttleup": 0.04,
   "turn_radius": 10.0,
-  "wing_area": 12.0,
+  "wing_area": 14.0,
   "yawtorque": 4.0
 }

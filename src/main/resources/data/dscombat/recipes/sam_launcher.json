@@ -7,17 +7,14 @@
 		"R": {
 			"item": "dscombat:heavy_missile_rack"
 		},
-		"C": {
-			"item": "minecraft:minecart"
-		},
-		"P": {
-			"item": "dscombat:aim120b"
+		"I": {
+			"item": "minecraft:iron_ingot"
 		}
 	},
 	"pattern": [
-		"PPP",
+		"III",
 		" R ",
-		"CSC"
+		" S "
 	],
 	"result": {
 		"count": 1,

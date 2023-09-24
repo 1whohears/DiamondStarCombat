@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
@@ -24,6 +25,7 @@ import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.GameRenderer;
@@ -34,6 +36,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 
@@ -412,6 +415,23 @@ public class PilotOverlay {
 				text, cx, height-radarOffset-radarSize-20, color);
 		}
 		// PINGS ON SCREEN AND HUD
+		Camera cam = m.gameRenderer.getMainCamera();
+		Vec3 view = cam.getPosition();
+		poseStack.pushPose();
+		poseStack.mulPose(Vector3f.ZP.rotationDegrees(plane.zRot));
+		poseStack.mulPose(Vector3f.XP.rotationDegrees(cam.getXRot()));
+		poseStack.mulPose(Vector3f.YP.rotationDegrees(cam.getYRot()+180f));
+		poseStack.translate(-view.x, -view.y, -view.z);
+    	Matrix4f view_mat = poseStack.last().pose().copy();
+    	poseStack.popPose();
+    	/*Matrix4f proj_mat = m.gameRenderer.getProjectionMatrix(
+    			ForgeHooksClient.getFieldOfView(m.gameRenderer, cam, partialTick, 
+    			m.options.fov().get().intValue(), true));*/
+    	Matrix4f proj_mat = ClientRenderEvents.getProjMatrix();
+    	/*System.out.println("VIEW MAT   = "+view_mat);
+    	System.out.println("VIEW MAT 2 = "+ClientRenderEvents.getViewMatrix());
+    	System.out.println("PROJ MAT   = "+proj_mat);
+    	System.out.println("PROJ MAT 2 = "+ClientRenderEvents.getProjMatrix());*/
 		for (int i = 0; i < pings.size(); ++i) {
 			RadarPing ping = pings.get(i);
 			// SCREEN
@@ -442,11 +462,8 @@ public class PilotOverlay {
         	GuiComponent.drawCenteredString(poseStack, m.font, 
         			symbol, x, y, color);
         	// HUD
-        	int[] screen_pos = UtilGeometry.worldToScreenPos(
-        			ping.pos, 
-        			ClientRenderEvents.getViewMatrix(), 
-        			ClientRenderEvents.getProjMatrix(), 
-        			width, height);
+        	int[] screen_pos = UtilGeometry.worldToScreenPos(ping.pos, 
+        			view_mat, proj_mat, width, height);
         	if (screen_pos[0] < 0 || screen_pos[1] < 0) continue;
         	int x_win = screen_pos[0], y_win = height - screen_pos[1];
         	int min = 2, max = 8;

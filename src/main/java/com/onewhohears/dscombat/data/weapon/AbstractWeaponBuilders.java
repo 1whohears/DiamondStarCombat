@@ -184,6 +184,20 @@ public class AbstractWeaponBuilders {
 		}
 		
 		/**
+		 * Track Missile only
+		 */
+		public C setNotActiveTrack() {
+			return setBoolean("activeTrack", false);
+		}
+		
+		/**
+		 * Track Missile only
+		 */
+		public C setActiveTrack() {
+			return setBoolean("activeTrack", true);
+		}
+		
+		/**
 		 * Anti Radar Missile only
 		 */
 		public C setScanRange(float scan_range) {

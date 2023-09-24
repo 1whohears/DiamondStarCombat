@@ -9,6 +9,7 @@ import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.entity.weapon.TrackEntityMissile;
 import com.onewhohears.dscombat.util.UtilEntity;
+import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -27,10 +28,12 @@ public class TrackMissileData extends MissileData {
 	}
 	
 	private final TargetType targetType;
+	private final boolean active;
 
 	public TrackMissileData(ResourceLocation key, JsonObject json) {
 		super(key, json);
 		targetType = TargetType.valueOf(json.get("targetType").getAsString());
+		active = UtilParse.getBooleanSafe(json, "activeTrack", true);
 	}
 	
 	@Override
@@ -66,6 +69,10 @@ public class TrackMissileData extends MissileData {
 	
 	public TargetType getTargetType() {
 		return targetType;
+	}
+	
+	public boolean isActiveTrack() {
+		return active;
 	}
 	
 	@Override
@@ -118,6 +125,8 @@ public class TrackMissileData extends MissileData {
 			break;
 		}
 		list.add(3, new ComponentColor(Component.literal("SELF GUIDED"), 0xaaaa00));
+		if (active) list.add(4, new ComponentColor(Component.literal("ACTIVE TRACK"), 0xaaaa00));
+		else list.add(4, new ComponentColor(Component.literal("SEMI ACTIVE"), 0xaaaa00));
 		return list;
 	}
 	
@@ -136,6 +145,8 @@ public class TrackMissileData extends MissileData {
 			break;
 		}
 		code += "R";
+		if (active) code += "AT";
+		else code += "SA";
 		return code;
 	}
 

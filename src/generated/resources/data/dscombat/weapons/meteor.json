@@ -1,30 +1,30 @@
 {
   "type": "track_missile",
-  "acceleration": 0.03,
+  "acceleration": 0.04,
   "activeTrack": true,
   "bleed": 0.03,
   "canShootOnGround": false,
   "causesFire": true,
-  "compatibleWeaponPart": "",
+  "compatibleWeaponPart": "dscombat:heavy_missile_rack",
   "craftNum": 1,
-  "damage": 90.0,
+  "damage": 65.0,
   "destroyTerrain": true,
-  "displayName": "preset.dscombat.pac3",
-  "entityTypeKey": "dscombat:pac3",
-  "explosionRadius": 7.0,
+  "displayName": "preset.dscombat.meteor",
+  "entityTypeKey": "dscombat:meteor",
+  "explosionRadius": 5.0,
   "explosive": true,
-  "fireRate": 40,
-  "fov": 40.0,
-  "fuelTicks": 250,
-  "fuseDist": 3.0,
+  "fireRate": 50,
+  "fov": 50.0,
+  "fuelTicks": 400,
+  "fuseDist": 4.0,
   "ingredients": [
     {
       "item": "minecraft:iron_ingot",
-      "num": 10
+      "num": 8
     },
     {
       "item": "minecraft:tnt",
-      "num": 6
+      "num": 3
     },
     {
       "item": "minecraft:coal_block",
@@ -41,12 +41,12 @@
   ],
   "innacuracy": 0.0,
   "itemKey": "dscombat:track_air_missile",
-  "maxAge": 300,
-  "maxAmmo": 4,
-  "presetId": "pac3",
-  "rackTypeKey": "",
+  "maxAge": 500,
+  "maxAmmo": 2,
+  "presetId": "meteor",
+  "rackTypeKey": "dscombat:heavy_missile_rack",
   "shootSoundKey": "dscombat:rocket_launch_1",
-  "speed": 4.1,
+  "speed": 6.0,
   "targetType": "AIR",
-  "turnRadius": 240.0
+  "turnRadius": 160.0
 }

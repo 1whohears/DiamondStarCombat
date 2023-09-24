@@ -1,6 +1,7 @@
 {
   "type": "torpedo",
   "acceleration": 0.04,
+  "activeTrack": true,
   "bleed": 0.05,
   "canShootOnGround": false,
   "causesFire": true,

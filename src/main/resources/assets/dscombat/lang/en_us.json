@@ -112,6 +112,7 @@
 	"entity.dscombat.aim120b": "AIM-120B",
 	"entity.dscombat.aim120c": "AIM-120C",
 	"entity.dscombat.pac3": "PAC-3",
+	"entity.dscombat.meteor": "METEOR",
 	"entity.dscombat.aim7f": "AIM-7F",
 	"entity.dscombat.aim7mh": "AIM-7MH",
 	"entity.dscombat.agm114k": "AGM-114K",
@@ -283,6 +284,7 @@
 	"preset.dscombat.pac3": "PAC-3",
 	"preset.dscombat.bgm109": "BGM-109",
 	"preset.dscombat.rgm84": "RGM-84",
+	"preset.dscombat.meteor": "METEOR",
 	
 	"preset.dscombat.alexis_plane_empty": "Empty Alexis Plane",
 	"preset.dscombat.alexis_plane_unarmed": "Unarmed Alexis Plane",

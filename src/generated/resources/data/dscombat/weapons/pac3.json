@@ -15,12 +15,12 @@
   "explosive": true,
   "fireRate": 40,
   "fov": 40.0,
-  "fuelTicks": 250,
+  "fuelTicks": 200,
   "fuseDist": 3.0,
   "ingredients": [
     {
       "item": "minecraft:iron_ingot",
-      "num": 10
+      "num": 14
     },
     {
       "item": "minecraft:tnt",
@@ -28,7 +28,7 @@
     },
     {
       "item": "minecraft:coal_block",
-      "num": 6
+      "num": 3
     },
     {
       "item": "minecraft:ender_eye",
@@ -46,7 +46,7 @@
   "presetId": "pac3",
   "rackTypeKey": "",
   "shootSoundKey": "dscombat:rocket_launch_1",
-  "speed": 4.1,
+  "speed": 4.0,
   "targetType": "AIR",
-  "turnRadius": 240.0
+  "turnRadius": 190.0
 }

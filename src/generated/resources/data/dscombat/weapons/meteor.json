@@ -20,18 +20,22 @@
   "ingredients": [
     {
       "item": "minecraft:iron_ingot",
-      "num": 8
+      "num": 16
     },
     {
       "item": "minecraft:tnt",
-      "num": 3
+      "num": 4
     },
     {
       "item": "minecraft:coal_block",
-      "num": 6
+      "num": 4
     },
     {
       "item": "minecraft:ender_eye",
+      "num": 1
+    },
+    {
+      "item": "minecraft:diamond",
       "num": 1
     },
     {

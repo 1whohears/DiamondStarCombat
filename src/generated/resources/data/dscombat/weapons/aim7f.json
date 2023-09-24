@@ -24,14 +24,14 @@
     },
     {
       "item": "minecraft:tnt",
-      "num": 5
+      "num": 4
     },
     {
       "item": "minecraft:coal_block",
-      "num": 7
+      "num": 1
     },
     {
-      "item": "minecraft:ender_eye",
+      "item": "minecraft:lightning_rod",
       "num": 1
     },
     {

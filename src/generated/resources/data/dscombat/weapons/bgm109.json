@@ -20,7 +20,7 @@
   "ingredients": [
     {
       "item": "minecraft:iron_ingot",
-      "num": 3
+      "num": 10
     },
     {
       "item": "minecraft:tnt",
@@ -31,8 +31,12 @@
       "num": 1
     },
     {
-      "item": "dscombat:intel_pentium",
+      "item": "minecraft:lightning_rod",
       "num": 1
+    },
+    {
+      "item": "dscombat:ti83",
+      "num": 2
     }
   ],
   "innacuracy": 0.0,
@@ -44,5 +48,5 @@
   "shootSoundKey": "dscombat:rocket_launch_1",
   "speed": 3.5,
   "targetType": "AIR",
-  "turnRadius": 100.0
+  "turnRadius": 170.0
 }

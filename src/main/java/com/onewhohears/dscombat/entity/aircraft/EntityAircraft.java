@@ -73,6 +73,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
@@ -200,6 +201,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	// TODO 5.2 allow big boats to have a heli pad and runway
 	// TODO 5.4 aircraft breaks apart when damaged
 	// TODO 5.6 place and remove external parts from outside the vehicle
+	// TODO 2.5 add chaff 
 	// FIXME refactor EntityAircraft to EntityVehicle
 	
 	public EntityAircraft(EntityType<? extends EntityAircraft> entityType, Level level, 
@@ -2188,6 +2190,17 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
      */
     public boolean isCustomBoundingBox() {
     	return false;
+    }
+    
+    @Override
+    protected AABB getBoundingBoxForPose(Pose pose) {
+    	return makeBoundingBox();
+    }
+    
+    @Override
+    public AABB getBoundingBoxForCulling() {
+    	// FIXME 3 big vehicles wont render at certain camera angles
+    	return getBoundingBox();
     }
     
     /**

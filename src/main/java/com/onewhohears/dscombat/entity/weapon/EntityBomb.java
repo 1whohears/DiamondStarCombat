@@ -37,5 +37,10 @@ public class EntityBomb extends EntityBullet {
 	protected WeaponDamageSource getExplosionDamageSource() {
 		return WeaponDamageSource.WeaponDamageType.BOMB.getSource(getOwner(), this);
 	}
+	
+	@Override
+	public boolean isPickable() {
+		return true;
+	}
 
 }

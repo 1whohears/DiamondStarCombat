@@ -299,6 +299,7 @@ public abstract class EntityMissile extends EntityBullet {
     public boolean hurt(DamageSource source, float amount) {
 		if (isRemoved()) return false;
 		if (equals(source.getDirectEntity())) return false;
+		if (isAlliedTo(source.getEntity())) return false;
 		kill();
 		return true;
 	}
@@ -435,6 +436,11 @@ public abstract class EntityMissile extends EntityBullet {
 	        setPos(d0, d1, d2);
 	        setRot(getYRot(), getXRot());
 		}
+	}
+	
+	@Override
+	public boolean isPickable() {
+		return true;
 	}
 
 }

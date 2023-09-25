@@ -118,16 +118,21 @@ public class UtilGeometry {
 		return Double.isNaN(v.x) || Double.isNaN(v.y) || Double.isNaN(v.z);
 	}
 	
-	public static int[] worldToScreenPos(Vec3 world_pos, Matrix4f view_mat, Matrix4f proj_mat, int width, int height) {
+	public static int[] worldToScreenPosInt(Vec3 world_pos, Matrix4f view_mat, Matrix4f proj_mat, int width, int height) {
+		float[] sp = worldToScreenPos(world_pos, view_mat, proj_mat, width, height);
+		return new int[] {(int)sp[0], (int)sp[1]};
+	}
+	
+	public static float[] worldToScreenPos(Vec3 world_pos, Matrix4f view_mat, Matrix4f proj_mat, int width, int height) {
 		Vector4f clipSpace = new Vector4f((float)world_pos.x, (float)world_pos.y, (float)world_pos.z, 1f);
 		clipSpace.transform(view_mat);
 		clipSpace.transform(proj_mat);
-		if (clipSpace.w() <= 0) return new int[] {-1,-1};
+		if (clipSpace.w() <= 0) return new float[] {-1,-1};
 		Vector3f ndcSpace = new Vector3f(clipSpace);
 		ndcSpace.mul(1/clipSpace.w());
-		int win_x = (int)((ndcSpace.x()+1f)/2f*width);
-		int win_y = (int)((ndcSpace.y()+1f)/2f*height);
-		return new int[] {win_x, win_y};
+		float win_x = (ndcSpace.x()+1f)/2f*width;
+		float win_y = (ndcSpace.y()+1f)/2f*height;
+		return new float[] {win_x, win_y};
 	}
 	
 	public static Vector3f convertVector(Vec3 v) {

@@ -1,7 +1,5 @@
 package com.onewhohears.dscombat.client.event.forgebus;
 
-import java.util.List;
-
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCKeys;
@@ -172,18 +170,8 @@ public final class ClientInputEvents {
 		}
 		// SELECT RADAR PING
 		RadarSystem radar = plane.radarSystem;
-		List<RadarPing> pings = radar.getClientRadarPings();
-		boolean hovering = false;
-		for (int i = 0; i < pings.size(); ++i) {
-			RadarPing p = pings.get(i);
-			if (isPlayerLookingAtPing(player, p)) {
-				hoverIndex = i;
-				hovering = true;
-				if (m.mouseHandler.isLeftPressed()) radar.clientSelectTarget(p);
-				break;
-			}
-		}
-		if (!hovering) resetHoverIndex();
+		if (isHovering() && m.mouseHandler.isLeftPressed()) 
+			radar.clientSelectTarget(radar.getClientRadarPings().get(getHoverIndex()));
 		// CYCLE PING
 		if (DSCKeys.pingCycleKey.consumeClick()) radar.clientSelectNextTarget();
 		// TURRET SHOOT
@@ -221,17 +209,16 @@ public final class ClientInputEvents {
 		return hoverIndex;
 	}
 	
-	private static void resetHoverIndex() {
+	public static void setHoverIndex(int index) {
+		hoverIndex = index;
+	}
+	
+	public static void resetHoverIndex() {
 		hoverIndex = -1;
 	}
 	
-	private static boolean isPlayerLookingAtPing(Player player, RadarPing ping) {
-		double d = ping.pos.distanceTo(player.getEyePosition());
-		double y = tan1*d;
-		if (y < 1) y = 1;
-		return UtilGeometry.isPointInsideCone(ping.pos, 
-				player.getEyePosition(), player.getLookAngle(), 
-				Math.toDegrees(Math.atan2(y, d)), 100000);
+	public static boolean isHovering() {
+		return hoverIndex != -1;
 	}
 	
 	@SubscribeEvent(priority = EventPriority.HIGH)

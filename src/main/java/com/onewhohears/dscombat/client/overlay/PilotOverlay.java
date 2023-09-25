@@ -36,7 +36,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 
@@ -67,8 +66,10 @@ public class PilotOverlay {
 	private static final int radarSize = 120, radarOffset = 8;
 	private static final ResourceLocation RADAR = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/radar.png");
-	private static final ResourceLocation HUD_PING = new ResourceLocation(DSCombatMod.MODID,
+	private static final ResourceLocation PING_HUD = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/hud_ping.png");
+	private static final ResourceLocation HUD_PING = new ResourceLocation(DSCombatMod.MODID,
+            "textures/ui/ping_hud.png");
 	private static final ResourceLocation HUD_PING_HOVER = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/hud_ping_hover.png");
 	private static final ResourceLocation HUD_PING_SELECT = new ResourceLocation(DSCombatMod.MODID,
@@ -432,6 +433,8 @@ public class PilotOverlay {
     	System.out.println("VIEW MAT 2 = "+ClientRenderEvents.getViewMatrix());
     	System.out.println("PROJ MAT   = "+proj_mat);
     	System.out.println("PROJ MAT 2 = "+ClientRenderEvents.getProjMatrix());*/
+    	float cursorX = width/2f, cursorY = height/2f;
+    	boolean hovering = false;
 		for (int i = 0; i < pings.size(); ++i) {
 			RadarPing ping = pings.get(i);
 			// SCREEN
@@ -444,37 +447,49 @@ public class PilotOverlay {
         	// TODO 1.1 use different colors/symbols to separate ground, navy, and aerial radar pings
         	int color = 0x00ff00;
         	String symbol = "o";
-        	ResourceLocation hud = HUD_PING;
         	if (ping.isFriendly) symbol = "F";
+        	int hud_ping_offset = 0;
         	if (i == selected) {
         		color = 0xff0000;
-        		hud = HUD_PING_SELECT;
+        		hud_ping_offset = 400;
         	} else if (i == hover) {
         		color = 0xffff00;
-        		hud = HUD_PING_HOVER;
+        		hud_ping_offset = hud_ping_anim[(player.tickCount/6)%6];
         	} else if (ping.isFriendly) {
         		color = 0x0000ff;
-        		hud = HUD_PING_FRIEND;
+        		//hud = HUD_PING_FRIEND;
         	} else if (ping.isShared()) {
         		color = 0x66cdaa;
-        		hud = HUD_PING_SHARED;
+        		//hud = HUD_PING_SHARED;
         	}
         	GuiComponent.drawCenteredString(poseStack, m.font, 
         			symbol, x, y, color);
         	// HUD
-        	int[] screen_pos = UtilGeometry.worldToScreenPos(ping.pos, 
+        	float[] screen_pos = UtilGeometry.worldToScreenPos(ping.pos, 
         			view_mat, proj_mat, width, height);
         	if (screen_pos[0] < 0 || screen_pos[1] < 0) continue;
-        	int x_win = screen_pos[0], y_win = height - screen_pos[1];
-        	int min = 2, max = 8;
-        	int size = Math.max(min, (int)(max-dist/200*(max-min)));
-        	RenderSystem.setShaderTexture(0, hud);
+        	float x_win = screen_pos[0], y_win = height - screen_pos[1];
+        	RenderSystem.setShaderTexture(0, HUD_PING);
+        	int size = 100;
+        	float scale = 0.20f, adj = size*scale/2f, x_pos = x_win-adj, y_pos = y_win-adj;
+        	poseStack.pushPose();
+        	poseStack.translate(x_pos, y_pos, 0);
+        	poseStack.scale(scale, scale, scale);
             GuiComponent.blit(poseStack, 
-            		x_win-size/2, y_win-size*3/4, 
-            		0, 0, size, size, 
-            		size, size);
+            		0, 0, 0, hud_ping_offset, 
+            		100, 100, 
+            		100, 500);
+            poseStack.popPose();
+            if (!hovering && cursorX < x_win+adj && cursorX > x_win-adj 
+            		&& cursorY < y_win+adj && cursorY > y_win-adj) {
+            	ClientInputEvents.setHoverIndex(i);
+            	hovering = true;
+            }
 		}
+		if (!hovering) ClientInputEvents.resetHoverIndex();
 	}
+	
+	private static final int[] hud_ping_anim = new int[] {0,100,200,300,200,100};
 	
 	private static void drawAircraftControls(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
 		int x = width-stickBaseSize-padding;

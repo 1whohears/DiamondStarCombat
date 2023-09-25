@@ -67,17 +67,9 @@ public class PilotOverlay {
 	private static final ResourceLocation RADAR = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/radar.png");
 	private static final ResourceLocation PING_HUD = new ResourceLocation(DSCombatMod.MODID,
-            "textures/ui/hud_ping.png");
-	private static final ResourceLocation HUD_PING = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/ping_hud.png");
-	private static final ResourceLocation HUD_PING_HOVER = new ResourceLocation(DSCombatMod.MODID,
-            "textures/ui/hud_ping_hover.png");
-	private static final ResourceLocation HUD_PING_SELECT = new ResourceLocation(DSCombatMod.MODID,
-            "textures/ui/hud_ping_select.png");
-	private static final ResourceLocation HUD_PING_FRIEND = new ResourceLocation(DSCombatMod.MODID,
-            "textures/ui/hud_ping_friend.png");
-	private static final ResourceLocation HUD_PING_SHARED = new ResourceLocation(DSCombatMod.MODID,
-            "textures/ui/hud_ping_shared.png");
+	private static final ResourceLocation PING_DATA = new ResourceLocation(DSCombatMod.MODID,
+            "textures/ui/ping_data.png");
 	
 	private static final int attitudeSize = 80;
 	private static final ResourceLocation ATTITUDE_BASE = new ResourceLocation(DSCombatMod.MODID,
@@ -439,12 +431,12 @@ public class PilotOverlay {
 			RadarPing ping = pings.get(i);
 			// SCREEN
 			Vec3 dp = ping.pos.subtract(plane.position());
-			double dist = dp.multiply(1, 0, 1).length()/displayRange;
-			if (dist > 1) dist = 1;
+			double dist = dp.multiply(1, 0, 1).length();
+			double screen_dist = dist/displayRange;
+			if (screen_dist > 1) screen_dist = 1;
         	float yaw = (UtilAngles.getYaw(dp)-plane.getYRot())*Mth.DEG_TO_RAD;
-        	int x = cx + (int)(Mth.sin(yaw)*radius*dist);
-        	int y = cy + (int)(-Mth.cos(yaw)*radius*dist);
-        	// TODO 1.1 use different colors/symbols to separate ground, navy, and aerial radar pings
+        	int x = cx + (int)(Mth.sin(yaw)*radius*screen_dist);
+        	int y = cy + (int)(-Mth.cos(yaw)*radius*screen_dist);
         	int color = 0x00ff00;
         	String symbol = "o";
         	if (ping.isFriendly) symbol = "F";
@@ -455,13 +447,9 @@ public class PilotOverlay {
         	} else if (i == hover) {
         		color = 0xffff00;
         		hud_ping_offset = hud_ping_anim[(player.tickCount/6)%6];
-        	} else if (ping.isFriendly) {
-        		color = 0x0000ff;
-        		//hud = HUD_PING_FRIEND;
-        	} else if (ping.isShared()) {
-        		color = 0x66cdaa;
-        		//hud = HUD_PING_SHARED;
-        	}
+        	} 
+        	else if (ping.isFriendly) color = 0x0000ff;
+        	else if (ping.isShared()) color = 0x66cdaa;
         	GuiComponent.drawCenteredString(poseStack, m.font, 
         			symbol, x, y, color);
         	// HUD
@@ -469,16 +457,39 @@ public class PilotOverlay {
         			view_mat, proj_mat, width, height);
         	if (screen_pos[0] < 0 || screen_pos[1] < 0) continue;
         	float x_win = screen_pos[0], y_win = height - screen_pos[1];
-        	RenderSystem.setShaderTexture(0, HUD_PING);
         	int size = 100;
-        	float scale = 0.20f, adj = size*scale/2f, x_pos = x_win-adj, y_pos = y_win-adj;
+        	float min = 0.2f, max = 0.45f, max_dist = 1000f;
+        	float scale = (float) Math.max(min, max-(dist/max_dist*(max-min)));
+        	float adj = size*scale/2f, x_pos = x_win-adj, y_pos = y_win-adj;
         	poseStack.pushPose();
         	poseStack.translate(x_pos, y_pos, 0);
         	poseStack.scale(scale, scale, scale);
+        	RenderSystem.setShaderTexture(0, PING_HUD);
             GuiComponent.blit(poseStack, 
             		0, 0, 0, hud_ping_offset, 
             		100, 100, 
             		100, 500);
+            RenderSystem.setShaderTexture(0, PING_DATA);
+            GuiComponent.blit(poseStack, 
+            		0, 0, ping.entityType.getIconOffset(), 0, 
+            		100, 100, 
+            		500, 200);
+            GuiComponent.blit(poseStack, 
+            		0, 0, ping.terrainType.getIconOffset(), 100, 
+            		100, 100, 
+            		500, 200);
+            if (ping.isFriendly) {
+            	GuiComponent.blit(poseStack, 
+                		0, 0, 400, 0, 
+                		100, 100, 
+                		500, 200);
+            }
+            if (ping.isShared()) {
+            	GuiComponent.blit(poseStack, 
+                		0, 0, 400, 100, 
+                		100, 100, 
+                		500, 200);
+            }
             poseStack.popPose();
             if (!hovering && cursorX < x_win+adj && cursorX > x_win-adj 
             		&& cursorY < y_win+adj && cursorY > y_win-adj) {

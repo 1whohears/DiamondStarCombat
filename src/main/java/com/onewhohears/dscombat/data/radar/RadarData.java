@@ -171,7 +171,9 @@ public class RadarData extends JsonPreset {
 			EntityAircraft ea = list.get(i);
 			if (playersOnly && !ea.hasControllingPassenger()) continue;
 			if (!basicCheck(radar, ea, ea.getStealth())) continue;
-			RadarPing p = new RadarPing(ea, checkFriendly(controller, ea));
+			RadarPing p = new RadarPing(ea, 
+					checkFriendly(controller, ea), 
+					PingEntityType.VEHICLE);
 			vehiclePings.add(p);
 			pings.add(p);
 			if (!radar.isAlliedTo(ea)) ea.lockedOnto(radar.position());
@@ -184,7 +186,9 @@ public class RadarData extends JsonPreset {
 				Entity e = entities.get(i);
 				if (playersOnly && !(e.getControllingPassenger() instanceof Player)) continue;
 				if (!basicCheck(radar, e, 1)) continue;
-				RadarPing p = new RadarPing(e, checkFriendly(controller, e));
+				RadarPing p = new RadarPing(e, 
+						checkFriendly(controller, e), 
+						PingEntityType.VEHICLE);
 				vehiclePings.add(p);
 				pings.add(p);
 			}
@@ -199,7 +203,9 @@ public class RadarData extends JsonPreset {
 			Player target = list.get(i);
 			if (target.isPassenger()) continue;
 			if (!basicCheck(radar, target, 1)) continue;
-			RadarPing p = new RadarPing(target, checkFriendly(controller, target));
+			RadarPing p = new RadarPing(target, 
+					checkFriendly(controller, target),
+					PingEntityType.PLAYER);
 			vehiclePings.add(p);
 			pings.add(p);
 		}
@@ -215,7 +221,8 @@ public class RadarData extends JsonPreset {
 				if (list.get(i).isPassenger()) continue;
 				if (!basicCheck(radar, list.get(i), 1)) continue;
 				RadarPing p = new RadarPing(list.get(i), 
-						checkFriendly(controller, list.get(i)));
+						checkFriendly(controller, list.get(i)), 
+						PingEntityType.FRIENDLY_MOB);
 				vehiclePings.add(p);
 				pings.add(p);
 			}
@@ -330,23 +337,26 @@ public class RadarData extends JsonPreset {
 		public final int id;
 		public final Vec3 pos;
 		public final boolean isFriendly;
-		public final PingType pingType;
+		public final PingTerrainType terrainType;
+		public final PingEntityType entityType;
 		private boolean isShared;
 		
-		public RadarPing(Entity ping, boolean isFriendly) {
+		public RadarPing(Entity ping, boolean isFriendly, PingEntityType entityType) {
 			id = ping.getId();
 			pos = ping.getBoundingBox().getCenter();
 			this.isFriendly = isFriendly;
 			this.isShared = false;
-			this.pingType = PingType.getByEntity(ping);
+			this.terrainType = PingTerrainType.getByEntity(ping);
+			this.entityType = entityType;
 		}
 		
-		private RadarPing(int id, Vec3 pos, boolean isFriendly, boolean isShared, PingType pingType) {
+		private RadarPing(int id, Vec3 pos, boolean isFriendly, boolean isShared, PingTerrainType terrainType, PingEntityType entityType) {
 			this.id = id;
 			this.pos = pos;
 			this.isFriendly = isFriendly;
 			this.isShared = isShared;
-			this.pingType = pingType;
+			this.terrainType = terrainType;
+			this.entityType = entityType;
 		}
 		
 		public RadarPing(FriendlyByteBuf buffer) {
@@ -354,7 +364,8 @@ public class RadarData extends JsonPreset {
 			pos = DataSerializers.VEC3.read(buffer);
 			isFriendly = buffer.readBoolean();
 			isShared = buffer.readBoolean();
-			pingType = PingType.getById(buffer.readByte());
+			terrainType = PingTerrainType.getById(buffer.readByte());
+			entityType = PingEntityType.getById(buffer.readByte());
 		}
 		
 		public void write(FriendlyByteBuf buffer) {
@@ -362,7 +373,8 @@ public class RadarData extends JsonPreset {
 			DataSerializers.VEC3.write(buffer, pos);
 			buffer.writeBoolean(isFriendly);
 			buffer.writeBoolean(isShared);
-			buffer.writeByte(pingType.id);
+			buffer.writeByte(terrainType.id);
+			buffer.writeByte(entityType.id);
 		}
 		
 		public boolean isShared() {
@@ -370,7 +382,7 @@ public class RadarData extends JsonPreset {
 		}
 		
 		public RadarPing getCopy(boolean isShared) {
-			return new RadarPing(id, pos, isFriendly, isShared, pingType);
+			return new RadarPing(id, pos, isFriendly, isShared, terrainType, entityType);
 		}
 		
 		@Override
@@ -386,28 +398,60 @@ public class RadarData extends JsonPreset {
 		
 	}
 	
-	public static enum PingType {
-		GROUND((byte)0),
-		AIR((byte)1),
-		WATER((byte)2);
+	public static enum PingTerrainType {
+		GROUND((byte)0, 0),
+		AIR((byte)1, 200),
+		WATER((byte)2, 100);
 		
 		public final byte id;
+		public final int offset;
 		
-		private PingType(byte id) {
+		private PingTerrainType(byte id, int offset) {
 			this.id = id;
+			this.offset = offset;
 		}
 		
-		public static PingType getById(byte id) {
+		public int getIconOffset() {
+			return offset;
+		}
+		
+		public static PingTerrainType getById(byte id) {
 			for (int i = 0; i < values().length; ++i) 
 				if (values()[i].id == id) 
 					return values()[i];
 			return GROUND;
 		}
 		
-		public static PingType getByEntity(Entity e) {
+		public static PingTerrainType getByEntity(Entity e) {
 			if (e.isInWater()) return WATER;
 			if (UtilEntity.isOnGroundOrWater(e)) return GROUND;
 			return AIR;
+		}
+	}
+	
+	public static enum PingEntityType {
+		PLAYER((byte)0, 0),
+		HOSTILE_MOB((byte)1, 100),
+		FRIENDLY_MOB((byte)2, 200),
+		VEHICLE((byte)3, 300);
+		
+		public final byte id;
+		public final int offset;
+		
+		private PingEntityType(byte id, int offset) {
+			this.id = id;
+			this.offset = offset;
+		}
+		
+		public int getIconOffset() {
+			return offset;
+		}
+		
+		public static PingEntityType getById(byte id) {
+			for (int i = 0; i < values().length; ++i) 
+				if (values()[i].id == id) 
+					return values()[i];
+			return FRIENDLY_MOB;
 		}
 	}
 	

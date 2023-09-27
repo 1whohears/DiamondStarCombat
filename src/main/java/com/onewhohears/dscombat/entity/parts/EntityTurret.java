@@ -24,6 +24,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -118,7 +119,6 @@ public class EntityTurret extends EntitySeat {
 		yRotRelO = getRelRotY();
 		LivingEntity gunner = getPassenger();
 		if (gunner == null) return;
-		// TODO 6.1 certain mobs aim and shoot in turrets. some are better at aiming than others
 		Quaternion ra = Quaternion.ONE;
 		if (!level.isClientSide) {
 			if (newRiderCoolDown > 0) --newRiderCoolDown;
@@ -169,6 +169,29 @@ public class EntityTurret extends EntitySeat {
 					offset, 
 					passengerOffset.z*Mth.cos(getRelRotY()*Mth.DEG_TO_RAD)+passengerOffset.x*Mth.sin(getRelRotY()*Mth.DEG_TO_RAD)
 				), q).subtract(0, passenger.getEyeHeight(), 0);
+	}
+	
+	protected void addTurretAI(Mob entity) {
+		// TODO 6.1 add turret AI goals for mobs
+		//entity.goalSelector.addGoal(0, null);
+		//entity.targetSelector.addGoal(0, null);
+	}
+	
+	protected void removeTurretAI(Mob entity) {
+		
+	}
+	
+	@Override
+    protected void addPassenger(Entity passenger) {
+        super.addPassenger(passenger);
+        newRiderCoolDown = 10;
+        if (passenger instanceof Mob m) addTurretAI(m);
+	}
+	
+	@Override
+	protected void removePassenger(Entity passenger) {
+		super.removePassenger(passenger);
+		if (passenger instanceof Mob m) removeTurretAI(m);
 	}
 	
 	@Override
@@ -308,12 +331,6 @@ public class EntityTurret extends EntitySeat {
 	
 	public void setRelRotY(float degrees) {
 		entityData.set(RELROTY, degrees);
-	}
-	
-	@Override
-    protected void addPassenger(Entity passenger) {
-        super.addPassenger(passenger);
-        newRiderCoolDown = 10;
 	}
 	
 	public static enum ShootType {

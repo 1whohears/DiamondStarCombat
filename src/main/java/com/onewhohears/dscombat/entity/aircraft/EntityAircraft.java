@@ -630,6 +630,11 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		}
 	}
 	
+	@Override
+	public boolean isAlive() {
+		return !isRemoved() && isOperational();
+	}
+	
 	/**
 	 * @return if health is greater than 0
 	 */

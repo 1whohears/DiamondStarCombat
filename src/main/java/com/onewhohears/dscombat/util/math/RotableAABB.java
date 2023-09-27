@@ -57,9 +57,9 @@ public class RotableAABB {
 		return UtilAngles.rotateVector(rel_pos, rot).add(getCenter());
 	}
 	
-	public Vec3 getTangetVel(Vec3 rel_pos, Vec3 ang_vel) {
+	/*public Vec3 getTangetVel(Vec3 rel_pos, Vec3 ang_vel) {
 		
-	}
+	}*/
 	
 	public static Vec3 extentsFromBB(AABB bb) {
 		return new Vec3(bb.getXsize()/2, bb.getYsize()/2, bb.getZsize()/2);

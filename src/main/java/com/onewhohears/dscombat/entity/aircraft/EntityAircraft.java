@@ -91,6 +91,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.scores.Team;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
+import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
@@ -196,6 +197,8 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	protected RadarMode radarMode = RadarMode.ALL;
 	protected boolean isLandingGear, isFreeLook = true;
 	
+	private RotableHitbox[] hitboxes;
+	
 	// FIXME 1.1 fix aircraft texture/variant texture system
 	// TODO 5.1 custom hit box system so players can walk on boats
 	// TODO 5.2 allow big boats to have a heli pad and runway
@@ -225,6 +228,10 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		this.explodeSize = explodeSize;
 		this.camDist = camDist;
 		this.blocksBuilding = true;
+	}
+	
+	public void addHitboxes() {
+		
 	}
 	
 	@Override
@@ -2423,5 +2430,19 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		if (c != null) return team.isAlliedTo(c.getTeam());
     	return super.isAlliedTo(team);
     }
+    
+    @Override
+	public boolean isMultipartEntity() {
+		return true;
+	}
+	
+	@Override
+	public PartEntity<?>[] getParts() {
+		return getHitboxes();
+	}
+	
+	public RotableHitbox[] getHitboxes() {
+		return hitboxes;
+	}
     
 }

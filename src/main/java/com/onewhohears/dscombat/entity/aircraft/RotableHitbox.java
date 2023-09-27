@@ -75,9 +75,9 @@ public class RotableHitbox extends PartEntity<EntityAircraft> {
 		List<Entity> list = level.getEntities(this, getBoundingBox(), canMoveEntity());
 		for (Entity entity : list) {
 			Vec3 entity_move = entity.getDeltaMovement().add(parent_move);
-			entity_move.add(hitbox.getTangetVel(
+			/*entity_move.add(hitbox.getTangetVel(
 				entity.position().subtract(hitbox.getCenter()), 
-				parent_rot));
+				parent_rot));*/
 			entity.setDeltaMovement(entity_move);
 		}
 	}
@@ -122,6 +122,10 @@ public class RotableHitbox extends PartEntity<EntityAircraft> {
 	
 	public float getPrecision() {
 		return precision;
+	}
+	
+	public SubCollider[] getSubColliders() {
+		return subColliders;
 	}
 	
 	@Override
@@ -179,6 +183,16 @@ public class RotableHitbox extends PartEntity<EntityAircraft> {
 
 	@Override
 	protected void addAdditionalSaveData(CompoundTag nbt) {
+	}
+	
+	@Override
+	public boolean isMultipartEntity() {
+		return true;
+	}
+	
+	@Override
+	public PartEntity<?>[] getParts() {
+		return getSubColliders();
 	}
 
 }

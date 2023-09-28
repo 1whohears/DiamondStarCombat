@@ -197,7 +197,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	protected RadarMode radarMode = RadarMode.ALL;
 	protected boolean isLandingGear, isFreeLook = true;
 	
-	private RotableHitbox[] hitboxes;
+	protected RotableHitbox[] hitboxes = new RotableHitbox[0];
 	
 	// FIXME 1.1 fix aircraft texture/variant texture system
 	// TODO 5.1 custom hit box system so players can walk on boats
@@ -228,10 +228,10 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		this.explodeSize = explodeSize;
 		this.camDist = camDist;
 		this.blocksBuilding = true;
+		addHitboxes();
 	}
 	
 	public void addHitboxes() {
-		
 	}
 	
 	@Override

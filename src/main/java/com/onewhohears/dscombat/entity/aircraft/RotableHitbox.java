@@ -41,6 +41,7 @@ public class RotableHitbox extends PartEntity<EntityAircraft> {
 	
 	@Override
 	public void tick() {
+		System.out.println(this+" "+tickCount);
 		positionSelf();
 		positionSubColliders();
 		positionEntities();
@@ -100,8 +101,9 @@ public class RotableHitbox extends PartEntity<EntityAircraft> {
 	
 	@Override
     protected AABB makeBoundingBox() {
-		double pX = getX(), pY = getY(), pZ = getZ();
     	EntityDimensions d = getDimensions(getPose());
+    	if (d == null) return super.makeBoundingBox();
+    	double pX = getX(), pY = getY(), pZ = getZ();
     	double f = d.width / 2.0F;
         double f1 = d.height / 2.0F;
         return new AABB(pX-f, pY-f1, pZ-f, 

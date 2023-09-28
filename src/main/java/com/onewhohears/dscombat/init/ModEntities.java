@@ -17,6 +17,7 @@ import com.onewhohears.dscombat.entity.aircraft.EntityGroundVehicle;
 import com.onewhohears.dscombat.entity.aircraft.EntityHelicopter;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 import com.onewhohears.dscombat.entity.aircraft.EntitySubmarine;
+import com.onewhohears.dscombat.entity.aircraft.custom.EntityAircraftCarrier;
 import com.onewhohears.dscombat.entity.parts.EntityEngine;
 import com.onewhohears.dscombat.entity.parts.EntityRadar;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
@@ -157,10 +158,8 @@ public class ModEntities {
 					ModSounds.BOAT_1, 8, 13), 
 					EntityDimensions.scalable(7f,3f)));
 	
-	public static final RegistryObject<EntityType<EntityBoat>> AIRCRAFT_CARRIER = ENTITIES.register("aircraft_carrier", 
-			() -> createEntityTypeFar((type, level) -> new EntityBoat(type, level, 
-					BoatPresets.DEFAULT_AIRCRAFT_CARRIER,
-					ModSounds.BOAT_1, 8, 34), 
+	public static final RegistryObject<EntityType<EntityAircraftCarrier>> AIRCRAFT_CARRIER = ENTITIES.register("aircraft_carrier", 
+			() -> createEntityTypeFar((type, level) -> new EntityAircraftCarrier(level), 
 					EntityDimensions.scalable(25f,6f)));
 	
 	// SUBMARINES

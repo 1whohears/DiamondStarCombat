@@ -38,8 +38,9 @@ public class SubCollider extends PartEntity<RotableHitbox> {
 	
 	@Override
     protected AABB makeBoundingBox() {
+		EntityDimensions d = getDimensions(getPose());
+    	if (d == null) return super.makeBoundingBox();
 		double pX = getX(), pY = getY(), pZ = getZ();
-    	EntityDimensions d = getDimensions(getPose());
     	double f = d.width / 2.0F;
         double f1 = d.height / 2.0F;
         return new AABB(pX-f, pY-f1, pZ-f, 

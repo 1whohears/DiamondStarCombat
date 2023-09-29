@@ -28,6 +28,7 @@ public class SubCollider extends PartEntity<RotableHitbox> {
 	
 	@Override
 	public void tick() {
+		setOldPosAndRot();
 		firstTick = false;
 	}
 	

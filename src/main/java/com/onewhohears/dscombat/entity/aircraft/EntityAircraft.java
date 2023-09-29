@@ -229,6 +229,13 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		this.camDist = camDist;
 		this.blocksBuilding = true;
 		addHitboxes();
+		setId(ENTITY_COUNTER.getAndAdd(hitboxes.length+1)+1);
+	}
+	
+	@Override
+	public void setId(int id) {
+		super.setId(id);
+		for (int i = 0; i < hitboxes.length; i++) hitboxes[i].setId(id+i+1);
 	}
 	
 	public void addHitboxes() {
@@ -480,12 +487,18 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 			tickCollisions();
 		}
 		tickLerp();
+		// HITBOXES
+		tickHitboxes();
         // OTHER
 		controlSystem();
         tickParts();
 		sounds();
 		if (level.isClientSide) clientTick();
 		else serverTick();
+	}
+	
+	public void tickHitboxes() {
+		for (RotableHitbox box : hitboxes) box.tick();
 	}
 	
 	/**

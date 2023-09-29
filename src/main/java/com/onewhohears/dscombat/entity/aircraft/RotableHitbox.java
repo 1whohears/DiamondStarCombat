@@ -37,15 +37,22 @@ public class RotableHitbox extends PartEntity<EntityAircraft> {
 		refreshDimensions();
 		createSubColliders();
 		positionSubColliders();
+		setId(ENTITY_COUNTER.getAndAdd(subColliders.length+1)+1);
 	}
 	
 	@Override
 	public void tick() {
-		System.out.println(this+" "+tickCount);
 		positionSelf();
 		positionSubColliders();
 		positionEntities();
 		firstTick = false;
+		System.out.println(this+" "+tickCount++);
+	}
+	
+	@Override
+	public void setId(int id) {
+		super.setId(id);
+		for (int i = 0; i < subColliders.length; i++) subColliders[i].setId(id+i+1);
 	}
 	
 	protected void createSubColliders() {
@@ -56,6 +63,7 @@ public class RotableHitbox extends PartEntity<EntityAircraft> {
 	}
 	
 	protected void positionSelf() {
+		setOldPosAndRot();
 		Quaternion q;
 		if (level.isClientSide) q = getParent().getClientQ();
 		else q = getParent().getQ();

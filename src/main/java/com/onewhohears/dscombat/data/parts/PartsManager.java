@@ -201,7 +201,14 @@ public class PartsManager {
 	public boolean killPartInSlot(String slotId) {
 		PartSlot slot = getSlot(slotId);
 		if (slot == null) return false;
+		Entity pilot = null;
+		if (slot.isPilotSlot()) pilot = parent.getControllingPassenger();
 		slot.removePartData(parent);
+		if (pilot != null && pilot.getVehicle() == null) {
+			SeatData seatdata = ItemSeat.getDefaultSeat();
+			slot.addPartData(seatdata, parent);
+			parent.rideAvailableSeat(pilot);
+		}
 		return true;
 	}
 	

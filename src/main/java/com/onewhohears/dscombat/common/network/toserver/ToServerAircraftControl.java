@@ -19,6 +19,7 @@ public class ToServerAircraftControl extends IPacket {
 	public final int radarMode;
 	public final boolean isLandingGear;
 	public final boolean isFreeLook;
+	public final float throttle;
 	
 	public ToServerAircraftControl(EntityAircraft plane) {
 		this.inputs = plane.inputs;
@@ -26,6 +27,7 @@ public class ToServerAircraftControl extends IPacket {
 		this.radarMode = plane.getRadarMode().ordinal();
 		this.isLandingGear = plane.isLandingGear();
 		this.isFreeLook = plane.isFreeLook();
+		this.throttle = plane.getCurrentThrottle();
 	}
 	
 	public ToServerAircraftControl(FriendlyByteBuf buffer) {
@@ -34,6 +36,7 @@ public class ToServerAircraftControl extends IPacket {
 		radarMode = buffer.readInt();
 		isLandingGear = buffer.readBoolean();
 		isFreeLook = buffer.readBoolean();
+		throttle = buffer.readFloat();
 	}
 	
 	public void encode(FriendlyByteBuf buffer) {
@@ -42,6 +45,7 @@ public class ToServerAircraftControl extends IPacket {
 		buffer.writeInt(radarMode);
 		buffer.writeBoolean(isLandingGear);
 		buffer.writeBoolean(isFreeLook);
+		buffer.writeFloat(throttle);
 	}
 	
 	public boolean handle(Supplier<NetworkEvent.Context> ctx) {
@@ -58,6 +62,7 @@ public class ToServerAircraftControl extends IPacket {
 					plane.setRadarMode(RadarMode.byId(radarMode));
 					plane.setLandingGear(isLandingGear);
 					plane.setFreeLook(isFreeLook);
+					plane.setCurrentThrottle(throttle);
 					plane.synchControlsToClient();
 				}
 			}

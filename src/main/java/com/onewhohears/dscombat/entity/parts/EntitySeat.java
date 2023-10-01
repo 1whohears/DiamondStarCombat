@@ -10,7 +10,6 @@ import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft.AircraftType;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -31,30 +30,6 @@ public class EntitySeat extends EntityPart {
 	public EntitySeat(EntityType<?> type, Level level, Vec3 offset) {
 		super(type, level);
 		this.passengerOffset = offset;
-	}
-
-	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-	}
-
-	@Override
-	protected void readAdditionalSaveData(CompoundTag compound) {
-		super.readAdditionalSaveData(compound);
-	}
-
-	@Override
-	protected void addAdditionalSaveData(CompoundTag compound) {
-		super.addAdditionalSaveData(compound);
-	}
-	
-	public void init() {
-		super.init();
-	}
-	
-	@Override
-	public void tick() {
-		super.tick();
 	}
 	
 	@Override

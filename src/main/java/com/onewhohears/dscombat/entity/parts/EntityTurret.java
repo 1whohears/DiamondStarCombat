@@ -80,11 +80,6 @@ public class EntityTurret extends EntitySeat {
 	}
 	
 	@Override
-    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
-        super.onSyncedDataUpdated(key);
-    }
-	
-	@Override
 	protected void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
 		data = UtilParse.parseWeaponFromCompound(tag.getCompound("weapondata"));

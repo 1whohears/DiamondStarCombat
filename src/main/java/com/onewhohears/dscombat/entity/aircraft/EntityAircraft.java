@@ -17,7 +17,6 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientAddForceMoment;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAircraftControl;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftCollide;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftMoveRot;
-import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftThrottle;
 import com.onewhohears.dscombat.data.aircraft.AircraftClientPreset;
 import com.onewhohears.dscombat.data.aircraft.AircraftClientPresets;
 import com.onewhohears.dscombat.data.aircraft.AircraftInputs;
@@ -106,7 +105,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	public static final EntityDataAccessor<Float> MAX_HEALTH = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
     public static final EntityDataAccessor<Float> HEALTH = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> MAX_SPEED = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> THROTTLE = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> THROTTLEUP = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> THROTTLEDOWN = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Quaternion> Q = SynchedEntityData.defineId(EntityAircraft.class, DataSerializers.QUATERNION);
@@ -176,7 +174,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	public Quaternion prevQ = Quaternion.ONE.copy();
 	public Quaternion clientQ = Quaternion.ONE.copy();
 	public Vec3 clientAV = Vec3.ZERO;
-	public float clientThrottle;
 	
 	public float zRot, zRotO; 
 	public Vec3 prevMotion = Vec3.ZERO;
@@ -196,6 +193,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	
 	protected RadarMode radarMode = RadarMode.ALL;
 	protected boolean isLandingGear, isFreeLook = true;
+	protected float throttle;
 	
 	protected RotableHitbox[] hitboxes = new RotableHitbox[0];
 	
@@ -246,7 +244,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		entityData.define(MAX_HEALTH, 100f);
         entityData.define(HEALTH, 100f);
 		entityData.define(MAX_SPEED, 1.0f);
-		entityData.define(THROTTLE, 0.0f);
 		entityData.define(THROTTLEUP, 0.05f);
 		entityData.define(THROTTLEDOWN, 0.05f);
 		entityData.define(Q, Quaternion.ONE);
@@ -285,10 +282,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     		if (!isControlledByLocalInstance()) {
     			clientAV = entityData.get(AV);
     		} 
-    	} else if (THROTTLE.equals(key)) {
-    		if (!firstTick && isControlledByLocalInstance()) {
-    			PacketHandler.INSTANCE.sendToServer(new ToServerAircraftThrottle(this));
-    		} else clientThrottle = entityData.get(THROTTLE);
     	} else if (CURRRENT_DYE_ID.equals(key)) {
     		currentTexture = textures.getTexture(getCurrentColorId());
     	} else if (RADIO_SONG.equals(key)) {
@@ -521,7 +514,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	public void synchControlsToClient() {
 		if (level.isClientSide) return;
 		PacketHandler.INSTANCE.send(
-			PacketDistributor.TRACKING_ENTITY.with(() -> this), 
+			PacketDistributor.TRACKING_ENTITY.with(() -> this),
 			new ToClientAircraftControl(this));
 	}
 	
@@ -1781,8 +1774,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
      * @return between 1 and 0 or 1 and -1 if negativeThrottle
      */
     public final float getCurrentThrottle() {
-    	if (level.isClientSide) return clientThrottle;
-    	else return entityData.get(THROTTLE);
+    	return throttle;
     }
     
     /**
@@ -1792,8 +1784,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     	if (throttle > 1) throttle = 1;
     	else if (negativeThrottle && throttle < -1) throttle = -1;
     	else if (!negativeThrottle && throttle < 0) throttle = 0;
-    	if (level.isClientSide) clientThrottle = throttle;
-    	else entityData.set(THROTTLE, throttle);
+    	this.throttle = throttle;
     }
     
     /**

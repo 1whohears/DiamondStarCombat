@@ -32,6 +32,8 @@ public abstract class EntityPart extends Entity {
 	
 	private float z_rot;
 	
+	// FIXME 4 make all EntityPart the forge PartEntity and make the player directly a passenger of the vehicle
+	
 	protected EntityPart(EntityType<?> entityType, Level level) {
 		super(entityType, level);
 	}

@@ -18,36 +18,40 @@ public class ToClientAircraftControl extends IPacket {
 	
 	public final int id;
 	public final AircraftInputs inputs;
-	public final int weaponIndex;
-	public final int radarMode;
+	public final byte weaponIndex;
+	public final byte radarMode;
 	public final boolean isFreeLook;
 	public final boolean isLandingGear;
+	public final float throttle;
 	
 	public ToClientAircraftControl(EntityAircraft plane) {
 		this.id = plane.getId();
 		this.inputs = plane.inputs;
-		this.weaponIndex = plane.weaponSystem.getSelectedIndex();
-		this.radarMode = plane.getRadarMode().ordinal();
+		this.weaponIndex = (byte) plane.weaponSystem.getSelectedIndex();
+		this.radarMode = (byte) plane.getRadarMode().ordinal();
 		this.isFreeLook = plane.isFreeLook();
 		this.isLandingGear = plane.isLandingGear();
+		this.throttle = plane.getCurrentThrottle();
 	}
 	
 	public ToClientAircraftControl(FriendlyByteBuf buffer) {
 		id = buffer.readInt();
 		inputs = new AircraftInputs(buffer);
-		weaponIndex = buffer.readInt();
-		radarMode = buffer.readInt();
+		weaponIndex = buffer.readByte();
+		radarMode = buffer.readByte();
 		isFreeLook = buffer.readBoolean();
 		isLandingGear = buffer.readBoolean();
+		throttle = buffer.readFloat();
 	}
 	
 	public void encode(FriendlyByteBuf buffer) {
 		buffer.writeInt(id);
 		inputs.write(buffer);
-		buffer.writeInt(weaponIndex);
-		buffer.writeInt(radarMode);
+		buffer.writeByte(weaponIndex);
+		buffer.writeByte(radarMode);
 		buffer.writeBoolean(isFreeLook);
 		buffer.writeBoolean(isLandingGear);
+		buffer.writeFloat(throttle);
 	}
 	
 	@Override
@@ -55,7 +59,7 @@ public class ToClientAircraftControl extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilPacket.aircraftInputsPacket(id, inputs, weaponIndex, RadarMode.byId(radarMode), isLandingGear, isFreeLook);
+				UtilPacket.aircraftInputsPacket(id, inputs, weaponIndex, RadarMode.byId(radarMode), isLandingGear, isFreeLook, throttle);
 				success.set(true);
 			});
 		});

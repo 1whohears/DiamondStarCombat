@@ -26,6 +26,8 @@ public class RotableHitbox extends PartEntity<EntityAircraft> {
 	private final float precision;
 	private SubCollider[] subColliders;
 	
+	// FIXME 5 the hitbox shouldn't be an entity cause it would probably cause performance issues. will have to create a custom collision system...pain
+	
 	public RotableHitbox(EntityAircraft parent, String name, Vec3 size, Vec3 rel_pos, float precision) {
 		super(parent);
 		this.name = name;

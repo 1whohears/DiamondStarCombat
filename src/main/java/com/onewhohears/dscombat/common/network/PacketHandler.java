@@ -13,7 +13,6 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponAmmo;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftCollide;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftControl;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftMoveRot;
-import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftThrottle;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftToItem;
 import com.onewhohears.dscombat.common.network.toserver.ToServerCraftPlane;
 import com.onewhohears.dscombat.common.network.toserver.ToServerCraftWeapon;
@@ -119,11 +118,6 @@ public final class PacketHandler {
 			.encoder(ToClientAddForceMoment::encode)
 			.decoder(ToClientAddForceMoment::new)
 			.consumerMainThread(ToClientAddForceMoment::handle)
-			.add();
-		net.messageBuilder(ToServerAircraftThrottle.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ToServerAircraftThrottle::encode)
-			.decoder(ToServerAircraftThrottle::new)
-			.consumerMainThread(ToServerAircraftThrottle::handle)
 			.add();
 		net.messageBuilder(ToClientDataPackSynch.class, index++, NetworkDirection.PLAY_TO_CLIENT)
 			.encoder(ToClientDataPackSynch::encode)

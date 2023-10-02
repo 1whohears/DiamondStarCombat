@@ -6,7 +6,6 @@ import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftControl;
 import com.onewhohears.dscombat.common.network.toserver.ToServerDismount;
-import com.onewhohears.dscombat.common.network.toserver.ToServerSeatPos;
 import com.onewhohears.dscombat.common.network.toserver.ToServerShootTurret;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSwitchSeat;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
@@ -156,10 +155,6 @@ public final class ClientInputEvents {
 		final var player = m.player;
 		if (player == null || !player.isPassenger()) return;
 		if (!(player.getRootVehicle() instanceof EntityAircraft plane)) return;
-		// TELL SERVER WHERE THE SEAT IS INCASE LAG CAUSES VIOLENCE
-		if (player.tickCount % 40 == 0) {
-			PacketHandler.INSTANCE.sendToServer(new ToServerSeatPos(player.getVehicle().position()));
-		}
 		// SWITCH SEAT
 		if (DSCKeys.changeSeat.consumeClick()) {
 			PacketHandler.INSTANCE.sendToServer(new ToServerSwitchSeat(plane.getId()));

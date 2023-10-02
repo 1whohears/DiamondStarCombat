@@ -4,12 +4,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
-import com.onewhohears.dscombat.entity.parts.EntityPart;
+import com.onewhohears.dscombat.entity.parts.EntityVehiclePart;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.client.renderer.MultiBufferSource;
 
-public class ObjPartModel<T extends EntityPart> extends ObjEntityModel<T> {
+public class ObjPartModel<T extends EntityVehiclePart> extends ObjEntityModel<T> {
 	
 	public ObjPartModel(String modelId) {
 		super(modelId);

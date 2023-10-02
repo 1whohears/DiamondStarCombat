@@ -5,11 +5,8 @@ import javax.annotation.Nullable;
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
-import com.onewhohears.dscombat.init.DataSerializers;
-import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -17,91 +14,47 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Team;
-import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.entity.PartEntity;
 
-public abstract class EntityPart extends Entity {
+public abstract class EntityVehiclePart extends PartEntity<EntityAircraft> {
 	
-	public static final EntityDataAccessor<Vec3> POS = SynchedEntityData.defineId(EntityPart.class, DataSerializers.VEC3);
-	public static final EntityDataAccessor<String> SLOT_ID = SynchedEntityData.defineId(EntityPart.class, EntityDataSerializers.STRING);
-	public static final EntityDataAccessor<Float> HEALTH = SynchedEntityData.defineId(EntityPart.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> HEALTH = SynchedEntityData.defineId(EntityVehiclePart.class, EntityDataSerializers.FLOAT);
 	
-	private float z_rot;
+	private final String slotId;
+	private final Vec3 rel_pos;
+	private final float z_rot;
+	private final EntityDimensions size;
 	
 	// FIXME 4 make all EntityPart the forge PartEntity and make the player directly a passenger of the vehicle
 	
-	protected EntityPart(EntityType<?> entityType, Level level) {
-		super(entityType, level);
-	}
-	
-	protected EntityPart(EntityType<?> entityType, Level level, String slotId, Vec3 pos) {
-		this(entityType, level);
-		this.setRelativePos(pos);
-		this.setSlotId(slotId);
+	protected EntityVehiclePart(EntityAircraft parent, String slotId, Vec3 pos, float z_rot, float width, float height) {
+		super(parent);
+		this.slotId = slotId;
+		this.rel_pos = pos;
+		this.z_rot = z_rot;
+		size = EntityDimensions.scalable(width, height);
 		if (!canGetHurt()) setHealth(1000);
-	}
-
-	@Override
-	protected void defineSynchedData() {
-		entityData.define(POS, Vec3.ZERO);
-		entityData.define(SLOT_ID, "");
-		entityData.define(HEALTH, 0f);
-	}
-
-	@Override
-	protected void readAdditionalSaveData(CompoundTag compound) {
-		setRelativePos(UtilParse.readVec3(compound, "relpos"));
-		setSlotId(compound.getString("slotid"));
-		setHealth(compound.getFloat("health"));
-	}
-
-	@Override
-	protected void addAdditionalSaveData(CompoundTag compound) {
-		UtilParse.writeVec3(compound, getRelativePos(), "relpos");
-		compound.putString("slotid", getSlotId());
-		compound.putFloat("health", getHealth());
-	}
-
-	@Override
-	public Packet<?> getAddEntityPacket() {
-		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 	
 	public void init() {
-		if (getVehicle() instanceof EntityAircraft plane) {
-			PartSlot ps = plane.partsManager.getSlot(getSlotId());
-			if (ps != null) {
-				z_rot = ps.getZRot();
-				setRelativePos(ps.getRelPos());
-			}
-		}
 	}
 	
 	@Override
 	public void tick() {
 		if (firstTick) init();
 		super.tick();
-		if (!level.isClientSide && tickCount > 10 && getVehicle() == null) kill(); 
 	}
 	
 	public Vec3 getRelativePos() {
-		return entityData.get(POS);
-	}
-	
-	public void setRelativePos(Vec3 pos) {
-		entityData.set(POS, pos);
+		return rel_pos;
 	}
 	
 	public String getSlotId() {
-		return entityData.get(SLOT_ID);
-	}
-	
-	public void setSlotId(String id) {
-		entityData.set(SLOT_ID, id);
+		return slotId;
 	}
 	
 	@Override
@@ -172,7 +125,7 @@ public abstract class EntityPart extends Entity {
     @Nullable
 	@Override
     public Entity getControllingPassenger() {
-    	Entity v = getVehicle();
+    	Entity v = getParent();
     	if (v == null) return null;
 		return v.getControllingPassenger();
     }
@@ -201,5 +154,32 @@ public abstract class EntityPart extends Entity {
         return new AABB(pX-f, pY-f1, pZ-f, 
         		pX+f, pY, pZ+f);
     }
+    
+    @Override
+	public EntityDimensions getDimensions(Pose pose) {
+		return size;
+	}
+    
+	@Override
+	public boolean is(Entity entity) {
+		return this == entity || getParent() == entity;
+	}
+	
+	@Override
+	public boolean shouldBeSaved() {
+		return false;
+	}
+    
+    @Override
+	protected void defineSynchedData() {
+	}
+
+	@Override
+	protected void readAdditionalSaveData(CompoundTag compound) {
+	}
+
+	@Override
+	protected void addAdditionalSaveData(CompoundTag compound) {
+	}
 
 }

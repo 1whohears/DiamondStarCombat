@@ -4,7 +4,7 @@ import java.util.NoSuchElementException;
 
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
-import com.onewhohears.dscombat.entity.parts.EntityPart;
+import com.onewhohears.dscombat.entity.parts.EntityVehiclePart;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -38,6 +38,10 @@ public abstract class PartData {
 		
 		public boolean isSeat() {
 			return this == SEAT || this == TURRENT;
+		}
+		
+		public boolean isTurret() {
+			return this == TURRENT;
 		}
 	}
 	
@@ -193,14 +197,14 @@ public abstract class PartData {
 	}
 	
 	public boolean isEntitySetup(String slotId, EntityAircraft craft) {
-		for (EntityPart part : craft.getPartEntities()) 
+		for (EntityVehiclePart part : craft.getPartEntities()) 
 			if (part.getPartType() == getType() && part.getSlotId().equals(slotId)) 
 				return true;
 		return false;
 	}
 	
 	public void removeEntity(String slotId) {
-		for (EntityPart part : getParent().getPartEntities()) 
+		for (EntityVehiclePart part : getParent().getPartEntities()) 
 			if (part.getSlotId().equals(slotId)) 
 				part.discard();
 	}

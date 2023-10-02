@@ -30,9 +30,9 @@ import com.onewhohears.dscombat.data.radar.RadarData.RadarMode;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponSystem;
-import com.onewhohears.dscombat.entity.parts.EntityPart;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
+import com.onewhohears.dscombat.entity.parts.EntityVehiclePart;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.item.ItemAmmo;
@@ -66,6 +66,8 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
@@ -132,6 +134,8 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	public final PartsManager partsManager = new PartsManager(this);
 	public final WeaponSystem weaponSystem = new WeaponSystem(this);
 	public final RadarSystem radarSystem = new RadarSystem(this);
+	
+	protected final List<EntityVehiclePart> parts = new  ArrayList<EntityVehiclePart>();
 	
 	public final double ACC_GRAVITY = Config.SERVER.accGravity.get();
 	public final double CO_DRAG = Config.SERVER.coDrag.get();
@@ -480,9 +484,8 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 			tickCollisions();
 		}
 		tickLerp();
-		// HITBOXES
-		tickHitboxes();
         // OTHER
+		tickPartEntities();
 		controlSystem();
         tickParts();
 		sounds();
@@ -490,7 +493,15 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		else serverTick();
 	}
 	
-	public void tickHitboxes() {
+	public void tickPartEntities() {
+		for (EntityVehiclePart part : parts) {
+			Quaternion q;
+			if (level.isClientSide) q = getClientQ();
+			else q = getQ();
+ 			Vec3 seatPos = UtilAngles.rotateVector(part.getRelativePos(), q);
+ 			part.setPos(position().add(seatPos));
+			part.tick();
+		}
 		for (RotableHitbox box : hitboxes) box.tick();
 	}
 	
@@ -602,7 +613,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		}
 	}
 	
-	protected Predicate<? super Entity> getRidePredicate() {
+	private Predicate<? super Entity> getRidePredicate() {
 		return ((entity) -> {
 			if (this.equals(entity.getRootVehicle())) return false;
 			if (entity.isSpectator()) return false;
@@ -611,8 +622,8 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		});
 	}
 	
-	protected void ride(List<Entity> entities) {
-		for(Entity entity : entities) ridePassengerSeat(entity);
+	private void ride(List<Entity> entities) {
+		for(Entity entity : entities) ridePassengerSeat((Mob)entity);
 	}
 	
 	/**
@@ -1474,33 +1485,42 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		return InteractionResult.SUCCESS;
 	}
 	
-	private boolean ridePilotSeat(Entity e, List<EntitySeat> seats) {
+	private boolean ridePilotSeat(LivingEntity e, List<EntitySeat> seats) {
 		for (EntitySeat seat : seats) 
-			if (seat.isPilotSeat()) 
-				return e.startRiding(seat);
-		return false;
-	}
-	
-	public boolean ridePassengerSeat(Entity e) {
-		List<EntitySeat> seats = getSeats();
-		for (EntitySeat seat : seats) 
-			if (!seat.isPilotSeat() && e.startRiding(seat)) 
-				return true;
-		return false;
-	}
-	
-	public boolean rideAvailableSeat(Entity e) {
-		List<EntitySeat> seats = getSeats();
-		if (ridePilotSeat(e, seats)) return true;
-		for (EntitySeat seat : seats) 
-			if (e.startRiding(seat)) {
-				return true;
+			if (seat.isPilotSeat() && seat.isVacant()) {
+				seat.setPassenger(e);
+				return e.startRiding(this);
 			}
 		return false;
 	}
 	
-	public boolean switchSeat(Entity e) {
+	public boolean ridePassengerSeat(LivingEntity e) {
 		List<EntitySeat> seats = getSeats();
+		for (EntitySeat seat : seats) 
+			if (!seat.isPilotSeat() && seat.isVacant()) {
+				seat.setPassenger(e);
+				return e.startRiding(this);
+			}
+		return false;
+	}
+	
+	public boolean rideAvailableSeat(LivingEntity e, String slot_pos) {
+		
+	}
+	
+	public boolean rideAvailableSeat(LivingEntity e) {
+		List<EntitySeat> seats = getSeats();
+		if (ridePilotSeat(e, seats)) return true;
+		for (EntitySeat seat : seats) 
+			if (seat.isVacant()) {
+				seat.setPassenger(e);
+				return e.startRiding(this);
+			}
+		return false;
+	}
+	
+	public boolean switchSeat(LivingEntity e) {
+		/*List<EntitySeat> seats = getSeats();
 		int seatIndex = -1;
 		for (int i = 0; i < seats.size(); ++i) {
 			Player p = seats.get(i).getPlayer();
@@ -1511,7 +1531,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 			}
 		}
 		if (seatIndex == -1) return false; // player not riding seat
-		//System.out.println("riding seat "+seatIndex);
 		int i = 0, j = seatIndex+1;
 		while (i < seats.size()-1) {
 			if (j >= seats.size()) j = 0;
@@ -1520,7 +1539,8 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 			}
 			++i; ++j;
 		}
-		return false;
+		return false;*/
+		
 	}
 	
 	/**
@@ -1529,12 +1549,17 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	 */
 	@Override
     public void positionRider(Entity passenger) {
-		if (passenger instanceof EntityPart part) {
-			Quaternion q;
-			if (level.isClientSide) q = getClientQ();
-			else q = getQ();
- 			Vec3 seatPos = UtilAngles.rotateVector(part.getRelativePos(), q);
-			passenger.setPos(position().add(seatPos));
+		if (tickCount % 20 != 0 && passenger instanceof Player player) {
+			if (nightVisionHud) {
+				player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 
+						80, 0, false, false));
+			}	
+			if (getAircraftType() == AircraftType.SUBMARINE) {
+				player.addEffect(new MobEffectInstance(MobEffects.WATER_BREATHING, 
+						80, 0, false, false));
+				player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 
+						80, 0, false, false));
+			}
 		}
 	}
 	
@@ -1550,11 +1575,36 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     }
 	
 	public boolean isPlayerRiding() {
-		for (EntitySeat seat : getSeats()) {
-			if (seat.getPlayer() != null) return true;
-		}
-		return false;
+		return getRidingPlayers().size() > 0;
 	}
+	
+	public List<Player> getRidingPlayers() {
+    	List<Player> players = new ArrayList<>();
+    	for (Entity p : getPassengers()) 
+    		if (p instanceof Player player) 
+    			players.add(player); 
+    	return players;
+    }
+    
+    public List<EntitySeat> getSeats() {
+    	List<EntitySeat> seats = new ArrayList<>();
+    	for (EntityVehiclePart p : parts)
+    		if (p.getPartType().isSeat()) 
+    			seats.add((EntitySeat)p);
+    	return seats;
+    }
+    
+    public List<EntityTurret> getTurrets() {
+    	List<EntityTurret> turrets = new ArrayList<>();
+    	for (EntityVehiclePart p : parts)
+    		if (p.getPartType().isTurret())
+    			turrets.add((EntityTurret)p);
+    	return turrets;
+    }
+    
+    public List<EntityVehiclePart> getPartEntities() {
+    	return parts;
+    }
 	
 	@Override
 	public boolean isPickable() {
@@ -1568,7 +1618,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	
 	@Override
     protected boolean canAddPassenger(Entity passenger) {
-		return passenger instanceof EntityPart;
+		
 	}
 	
 	@Override
@@ -1580,12 +1630,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		if (e == null) return false;
 		List<Entity> list = getPassengers();
 		if (list.contains(e)) return true;
-		for (Entity l : list) {
-			if (l instanceof EntitySeat seat) {
-				List<Entity> list2 = seat.getPassengers();
-				if (list2.contains(e)) return true;
-			}
-		}
 		return false;
 	}
 
@@ -2100,39 +2144,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     	return getBaseArmor() + partsManager.getTotalExtraArmor();
     }
     
-    public List<Player> getRidingPlayers() {
-    	List<Player> players = new ArrayList<>();
-    	for (EntitySeat seat : getSeats()) {
-    		Player p = seat.getPlayer();
-			if (p != null) players.add(p); 
-    	}
-    	return players;
-    }
-    
-    public List<EntitySeat> getSeats() {
-    	List<EntitySeat> seats = new ArrayList<>();
-    	for (Entity e : getPassengers())
-    		if (e instanceof EntitySeat seat) 
-    			seats.add(seat);
-    	return seats;
-    }
-    
-    public List<EntityTurret> getTurrets() {
-    	List<EntityTurret> turrets = new ArrayList<>();
-    	for (Entity e : getPassengers())
-    		if (e instanceof EntityTurret turret)
-    			turrets.add(turret);
-    	return turrets;
-    }
-    
-    public List<EntityPart> getPartEntities() {
-    	List<EntityPart> parts = new ArrayList<>();
-    	for (Entity e : getPassengers())
-    		if (e instanceof EntityPart part)
-    			parts.add(part);
-    	return parts;
-    }
-    
     /**
      * called every tick on client and server side.
      * plays all the sounds for the players in the plane.
@@ -2447,7 +2458,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	
 	@Override
 	public PartEntity<?>[] getParts() {
-		return getHitboxes();
+		return parts.toArray(new PartEntity<?>[parts.size()]);
 	}
 	
 	public RotableHitbox[] getHitboxes() {

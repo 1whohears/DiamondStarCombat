@@ -8,7 +8,7 @@ import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
-import com.onewhohears.dscombat.entity.parts.EntityPart;
+import com.onewhohears.dscombat.entity.parts.EntityVehiclePart;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.init.ModEntities;
 
@@ -102,7 +102,7 @@ public class TurretData extends SeatData {
 	public EntityTurret getTurret(String slotId) {
 		EntityAircraft craft = getParent();
 		if (craft == null) return null;
-		for (EntityPart part : craft.getPartEntities()) 
+		for (EntityVehiclePart part : craft.getPartEntities()) 
 			if (part.getSlotId().equals(slotId) && part.getType().equals(getTurretType())) 
 				return (EntityTurret) part;
 		EntityTurret t = getTurretType().create(craft.level);

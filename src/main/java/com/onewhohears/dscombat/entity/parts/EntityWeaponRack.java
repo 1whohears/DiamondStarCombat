@@ -4,23 +4,16 @@ import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class EntityWeaponRack extends EntityPart {
+public class EntityWeaponRack extends EntityVehiclePart {
 	
-	public EntityWeaponRack(EntityType<?> type, Level level) {
-		super(type, level);
-	}
-	
-	public EntityWeaponRack(EntityType<?> type, Level level, String slotId, Vec3 pos) {
-		super(type, level, slotId, pos);
+	public EntityWeaponRack(EntityAircraft parent, String slotId, Vec3 pos, float z_rot, float width, float height) {
+		super(parent, slotId, pos, z_rot, width, height);
 	}
 	
 	public int getAmmoNum() {
-		if (!(getVehicle() instanceof EntityAircraft plane)) return 0;
-		WeaponData wd = plane.weaponSystem.get(getSlotId());
+		WeaponData wd = getParent().weaponSystem.get(getSlotId());
 		if (wd == null) return 0;
 		return wd.getCurrentAmmo();
 	}

@@ -22,24 +22,20 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class EntityTurret extends EntitySeat {
 	
 	public static final EntityDataAccessor<Integer> AMMO = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.INT);
-	public static final EntityDataAccessor<Float> MINROTX = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> MAXROTX = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> ROTRATE = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> RELROTX = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> RELROTY = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.FLOAT);
 	
 	public final double weaponOffset;
 	public final ShootType shootType;
+	public final RotBounds rotBounds;
 	
 	public float xRotRelO, yRotRelO;
 	
@@ -56,25 +52,26 @@ public class EntityTurret extends EntitySeat {
 	 */
 	private int newRiderCoolDown;
 	
-	public EntityTurret(EntityType<?> type, Level level, Vec3 offset, double weaponOffset) {
-		super(type, level, offset);
+	public EntityTurret(EntityAircraft parent, String slotId, Vec3 pos, float z_rot, float width, float height, 
+			Vec3 offset, double weaponOffset, RotBounds rotBounds) {
+		super(parent, slotId, pos, z_rot, width, height, offset);
 		this.weaponOffset = weaponOffset;
 		this.shootType = ShootType.NORMAL;
+		this.rotBounds = rotBounds;
 	}
 	
-	public EntityTurret(EntityType<?> type, Level level, Vec3 offset, double weaponOffset, ShootType shootType) {
-		super(type, level, offset);
+	public EntityTurret(EntityAircraft parent, String slotId, Vec3 pos, float z_rot, float width, float height, 
+			Vec3 offset, double weaponOffset, RotBounds rotBounds, ShootType shootType) {
+		super(parent, slotId, pos, z_rot, width, height, offset);
 		this.weaponOffset = weaponOffset;
 		this.shootType = shootType;
+		this.rotBounds = rotBounds;
 	}
 
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
 		entityData.define(AMMO, 0);
-		entityData.define(MINROTX, 0f);
-		entityData.define(MAXROTX, 0f);
-		entityData.define(ROTRATE, 0f);
 		entityData.define(RELROTX, 0f);
 		entityData.define(RELROTY, 0f);
 	}
@@ -84,7 +81,6 @@ public class EntityTurret extends EntitySeat {
 		super.readAdditionalSaveData(tag);
 		data = UtilParse.parseWeaponFromCompound(tag.getCompound("weapondata"));
 		if (data == null) data = WeaponPresets.get().getPreset(weaponId);
-		setRotBounds(new RotBounds(tag));
 		setXRot(tag.getFloat("xRot"));
 		setYRot(tag.getFloat("yRot"));
 		setRelRotX(tag.getFloat("relrotx"));
@@ -95,7 +91,6 @@ public class EntityTurret extends EntitySeat {
 	protected void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
 		if (data != null) tag.put("weapondata", data.writeNbt());
-		getRotBounds().write(tag);
 		tag.putFloat("xRot", getXRot());
 		tag.putFloat("yRot", getYRot());
 		tag.putFloat("relrotx", getRelRotX());
@@ -118,13 +113,10 @@ public class EntityTurret extends EntitySeat {
 		if (!level.isClientSide) {
 			if (newRiderCoolDown > 0) --newRiderCoolDown;
 			float rely = yRotRelO, relx = xRotRelO;
-			float rotrate = getRotRate(), minrotx = getMinRotX(), maxrotx = getMaxRotX();
-			EntityAircraft ea = null;
-			if (getVehicle() instanceof EntityAircraft plane) {
-				ra = plane.getQ();
-				ea = plane;
-			}  
-			if (data != null) data.tick(ea, true);
+			float rotrate = rotBounds.rotRate, minrotx = rotBounds.minRotX, maxrotx = rotBounds.maxRotX;
+			ra = getParent().getQ();
+			
+			if (data != null) data.tick(getParent(), true);
 			float[] relangles = UtilAngles.globalToRelativeDegrees(gunner.getXRot(), gunner.getYHeadRot(), ra);
 			
 			float rg1 = relangles[1] + 360, rg2 = relangles[1] - 360;
@@ -154,39 +146,40 @@ public class EntityTurret extends EntitySeat {
 	}
 	
 	@Override
-	protected Vec3 getPassengerRelPos(Entity passenger, EntityAircraft craft) {
+	public Vec3 positionPassenger() {
 		Quaternion q;
-		if (level.isClientSide) q = craft.getClientQ();
-		else q = craft.getQ();
-		double offset = getPassengersRidingOffset() + passenger.getMyRidingOffset() + passenger.getEyeHeight();
+		if (level.isClientSide) q = getParent().getClientQ();
+		else q = getParent().getQ();
+		double offset = getPassengersRidingOffset() + getPassenger().getMyRidingOffset() + getPassenger().getEyeHeight();
 		return UtilAngles.rotateVector(new Vec3(
 					passengerOffset.x*Mth.cos(getRelRotY()*Mth.DEG_TO_RAD)+passengerOffset.z*Mth.sin(getRelRotY()*Mth.DEG_TO_RAD), 
 					offset, 
 					passengerOffset.z*Mth.cos(getRelRotY()*Mth.DEG_TO_RAD)+passengerOffset.x*Mth.sin(getRelRotY()*Mth.DEG_TO_RAD)
-				), q).subtract(0, passenger.getEyeHeight(), 0);
+				), q).subtract(0, getPassenger().getEyeHeight(), 0).add(position());
 	}
 	
-	protected void addTurretAI(Mob entity) {
+	@Override
+	public boolean setPassenger(LivingEntity passenger) {
+		if (!super.setPassenger(passenger)) return false;
+		newRiderCoolDown = 10;
+		if (getPassenger() instanceof Mob m) addTurretAI(m);
+		return true;
+	}
+	
+	public void addTurretAI(Mob entity) {
 		// TODO 6.1 add turret AI goals for mobs
 		//entity.goalSelector.addGoal(0, null);
 		//entity.targetSelector.addGoal(0, null);
 	}
 	
-	protected void removeTurretAI(Mob entity) {
+	@Override
+	public void removePassenger() {
+		if (getPassenger() instanceof Mob m) removeTurretAI(m);
+		super.removePassenger();
+	}
+	
+	public void removeTurretAI(Mob entity) {
 		
-	}
-	
-	@Override
-    protected void addPassenger(Entity passenger) {
-        super.addPassenger(passenger);
-        newRiderCoolDown = 10;
-        if (passenger instanceof Mob m) addTurretAI(m);
-	}
-	
-	@Override
-	protected void removePassenger(Entity passenger) {
-		super.removePassenger(passenger);
-		if (passenger instanceof Mob m) removeTurretAI(m);
 	}
 	
 	@Override
@@ -204,12 +197,10 @@ public class EntityTurret extends EntitySeat {
 	}
 	
 	public void updateDataAmmo() {
-		if (getRootVehicle() instanceof EntityAircraft plane) {
-			PartSlot slot = plane.partsManager.getSlot(getSlotId());
-			if (slot != null && slot.filled() && slot.getPartData().getType() == PartType.TURRENT) { 
-				TurretData td = (TurretData) slot.getPartData();
-				td.setAmmo(getAmmo());
-			}
+		PartSlot slot = getParent().partsManager.getSlot(getSlotId());
+		if (slot != null && slot.filled() && slot.getPartData().getType() == PartType.TURRENT) { 
+			TurretData td = (TurretData) slot.getPartData();
+			td.setAmmo(getAmmo());
 		}
 	}
 	
@@ -235,21 +226,17 @@ public class EntityTurret extends EntitySeat {
 		if (level.isClientSide || data == null || newRiderCoolDown > 0) return;
 		boolean consume = true;
 		Vec3 pos = position();
-		EntityAircraft parent = null;
-		if (getVehicle() instanceof EntityAircraft craft) {
-			if (!craft.isOperational()) return;
-			pos = pos.add(UtilAngles.rotateVector(new Vec3(0, weaponOffset, 0), craft.getQ()));
-			if (craft.isNoConsume()) consume = false;
-			parent = craft;
-		}
+		if (!getParent().isOperational()) return;
+		pos = pos.add(UtilAngles.rotateVector(new Vec3(0, weaponOffset, 0), getParent().getQ()));
+		if (getParent().isNoConsume()) consume = false;
 		Player p = null;
 		if (shooter instanceof ServerPlayer player) {
 			if (player.isCreative()) consume = false;
 			p = player;
 		}
 		boolean couldShoot = data.checkRecoil();
-		data.shootFromTurret(level, shooter, getLookAngle(), pos, parent, consume);
-		if (couldShoot) specialShoot(shooter, pos, parent, consume);
+		data.shootFromTurret(level, shooter, getLookAngle(), pos, getParent(), consume);
+		if (couldShoot) specialShoot(shooter, pos, getParent(), consume);
 		if (data.isFailedLaunch()) {
 			if (p != null) p.displayClientMessage(
 					Component.translatable(data.getFailedLaunchReason()), 
@@ -262,7 +249,6 @@ public class EntityTurret extends EntitySeat {
 	
 	protected void specialShoot(Entity shooter, Vec3 pos, EntityAircraft parent, boolean consume) {
 		if (shootType == ShootType.NORMAL) return;
-		System.out.println("SPECIAL SHOOT "+shootType);
 		if (shootType == ShootType.MARK7) {
 			float d = 1;
 			float yRad = getYRot() * Mth.DEG_TO_RAD;
@@ -278,38 +264,8 @@ public class EntityTurret extends EntitySeat {
 		return PartType.TURRENT;
 	}
 	
-	public void setRotBounds(RotBounds rb) {
-		setMinRotX(rb.minRotX);
-		setMaxRotX(rb.maxRotX);
-		setRotRate(rb.rotRate);
-	}
-	
 	public RotBounds getRotBounds() {
-		return RotBounds.create(getRotRate(), getMinRotX(), getMaxRotX());
-	}
-	
-	public void setMinRotX(float rot) {
-		entityData.set(MINROTX, rot);
-	}
-	
-	public void setMaxRotX(float rot) {
-		entityData.set(MAXROTX, rot);
-	}
-	
-	public void setRotRate(float rot) {
-		entityData.set(ROTRATE, rot);
-	}
-	
-	public float getMinRotX() {
-		return entityData.get(MINROTX);
-	}
-	
-	public float getMaxRotX() {
-		return entityData.get(MAXROTX);
-	}
-	
-	public float getRotRate() {
-		return entityData.get(ROTRATE);
+		return rotBounds;
 	}
 	
 	public float getRelRotX() {

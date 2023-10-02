@@ -2,6 +2,8 @@ package com.onewhohears.dscombat.data.parts;
 
 import java.util.NoSuchElementException;
 
+import javax.annotation.Nullable;
+
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.parts.EntityVehiclePart;
@@ -9,6 +11,7 @@ import com.onewhohears.dscombat.entity.parts.EntityVehiclePart;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
@@ -16,12 +19,15 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public abstract class PartData {
 	
-	public Vec3 relPos = Vec3.ZERO;
-	
 	private final SlotType[] compatibleSlots;
 	private final ResourceLocation itemid;
 	private final float weight;
+	private final String modelId;
+	private final EntityDimensions size;
 	private EntityAircraft parent;
+	private String slotId;
+	private Vec3 relPos = Vec3.ZERO;
+	private float zRot = 0f;
 	
 	public static enum PartType {
 		SEAT,
@@ -45,10 +51,17 @@ public abstract class PartData {
 		}
 	}
 	
-	protected PartData(float weight, ResourceLocation itemid, SlotType[] compatibleSlots) {
+	protected PartData(float weight, ResourceLocation itemid, SlotType[] compatibleSlots, 
+			String modelId, EntityDimensions size) {
 		this.weight = weight;
 		this.itemid = itemid;
 		this.compatibleSlots = compatibleSlots;
+		this.modelId = modelId;
+		this.size = size;
+	}
+	
+	protected PartData(float weight, ResourceLocation itemid, SlotType[] compatibleSlots) {
+		this(weight, itemid, compatibleSlots, "", EntityDimensions.scalable(0, 0));
 	}
 	
 	public PartData(CompoundTag tag) {
@@ -57,6 +70,10 @@ public abstract class PartData {
 		int[] cs = tag.getIntArray("compatibleSlots");
 		compatibleSlots = new SlotType[cs.length];
 		for (int i = 0; i < cs.length; ++i) compatibleSlots[i] = SlotType.values()[cs[i]];
+		modelId = tag.getString("modelId");
+		float w = tag.getFloat("entity_width");
+		float h = tag.getFloat("entity_height");
+		size = EntityDimensions.scalable(w, h);
 	}
 	
 	public CompoundTag write() {
@@ -67,6 +84,9 @@ public abstract class PartData {
 		int[] cs = new int[compatibleSlots.length];
 		for (int i = 0; i < compatibleSlots.length; ++i) cs[i] = compatibleSlots[i].ordinal();
 		tag.putIntArray("compatibleSlots", cs);
+		tag.putString("modelId", modelId);
+		tag.putFloat("entity_width", size.width);
+		tag.putFloat("entity_height", size.width);
 		return tag;
 	}
 	
@@ -74,6 +94,10 @@ public abstract class PartData {
 		// type int is read in DataSerializers
 		weight = buffer.readFloat();
 		itemid = new ResourceLocation(buffer.readUtf());
+		modelId = buffer.readUtf();
+		float w = buffer.readFloat();
+		float h = buffer.readFloat();
+		size = EntityDimensions.scalable(w, h);
 		int[] cs = buffer.readVarIntArray();
 		compatibleSlots = new SlotType[cs.length];
 		for (int i = 0; i < cs.length; ++i) compatibleSlots[i] = SlotType.values()[cs[i]];
@@ -83,6 +107,9 @@ public abstract class PartData {
 		buffer.writeInt(this.getType().ordinal());
 		buffer.writeFloat(weight);
 		buffer.writeUtf(itemid.toString());
+		buffer.writeUtf(modelId);
+		buffer.writeFloat(size.width);
+		buffer.writeFloat(size.height);
 		int[] cs = new int[compatibleSlots.length];
 		for (int i = 0; i < compatibleSlots.length; ++i) cs[i] = compatibleSlots[i].ordinal();
 		buffer.writeVarIntArray(cs);
@@ -114,12 +141,28 @@ public abstract class PartData {
 		return 0;
 	}
 	
+	public String getModelId() {
+		return modelId;
+	}
+	
+	public EntityDimensions getExternalEntitySize() {
+		return size;
+	}
+	
 	public EntityAircraft getParent() {
 		return parent;
 	}
 	
 	public Vec3 getRelPos() {
 		return relPos;
+	}
+	
+	public String getSlotId() {
+		return slotId;
+	}
+	
+	public float getZRot() {
+		return zRot;
 	}
 	
 	protected void setParent(EntityAircraft parent) {
@@ -130,40 +173,60 @@ public abstract class PartData {
 		this.relPos = pos;
 	}
 	
-	public void serverSetup(EntityAircraft craft, String slotId, Vec3 pos) {
-		
+	protected void setSlotId(String slotId) {
+		this.slotId = slotId;
 	}
 	
-	public void clientSetup(EntityAircraft craft, String slotId, Vec3 pos) {
-		
+	protected void setZRot(float zRot) {
+		this.zRot = zRot;
 	}
 	
-	public void setup(EntityAircraft craft, String slotId, Vec3 pos) {
+	public void setup(EntityAircraft craft, String slotId, Vec3 pos, float zRot) {
 		//System.out.println("setting up part "+this+" client side "+craft.level.isClientSide+" slot "+slotId);
 		setParent(craft);
 		setRelPos(pos);
+		setSlotId(slotId);
+		setZRot(zRot);
+		setupPartEntity();
 	}
 	
-	public abstract boolean isSetup(String slotId, EntityAircraft craft);
-	
-	public void serverRemove(String slotId) {
-		
+	public void serverSetup() {
 	}
 	
-	public void clientRemove(String slotId) {
-		
+	public void clientSetup() {
 	}
 	
-	public void remove(String slotId) {
-		
+	public abstract boolean hasExternalPartEntity();
+	
+	@Nullable
+	public abstract EntityVehiclePart getPartEntity();
+	
+	public void setupPartEntity() {
+		if (!hasExternalPartEntity()) return;
+		EntityVehiclePart part = getPartEntity();
+		if (part == null) return;
+		getParent().addPartEntity(part);
 	}
 	
-	protected void tick(String slotId) {
-		
+	public void removePartEntity() {
+		if (!hasExternalPartEntity()) return;
+		getParent().removePartEntity(getSlotId());
 	}
 	
-	protected void clientTick(String slotId) {
-		
+	public void remove() {
+		removePartEntity();
+	}
+	
+	public void serverRemove() {
+	}
+	
+	public void clientRemove() {
+	}
+	
+	protected void tick() {
+	}
+	
+	protected void clientTick() {
 	}
 	
 	@Override
@@ -194,19 +257,6 @@ public abstract class PartData {
 		ItemStack s = stack.copy();
 		s.setTag(write());
 		return s;
-	}
-	
-	public boolean isEntitySetup(String slotId, EntityAircraft craft) {
-		for (EntityVehiclePart part : craft.getPartEntities()) 
-			if (part.getPartType() == getType() && part.getSlotId().equals(slotId)) 
-				return true;
-		return false;
-	}
-	
-	public void removeEntity(String slotId) {
-		for (EntityVehiclePart part : getParent().getPartEntities()) 
-			if (part.getSlotId().equals(slotId)) 
-				part.discard();
 	}
 	
 }

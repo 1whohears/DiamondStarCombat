@@ -18,12 +18,6 @@ import com.onewhohears.dscombat.entity.aircraft.EntityHelicopter;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 import com.onewhohears.dscombat.entity.aircraft.EntitySubmarine;
 import com.onewhohears.dscombat.entity.aircraft.custom.EntityAircraftCarrier;
-import com.onewhohears.dscombat.entity.parts.EntityEngine;
-import com.onewhohears.dscombat.entity.parts.EntityRadar;
-import com.onewhohears.dscombat.entity.parts.EntitySeat;
-import com.onewhohears.dscombat.entity.parts.EntityTurret;
-import com.onewhohears.dscombat.entity.parts.EntityTurret.ShootType;
-import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
 import com.onewhohears.dscombat.entity.weapon.AntiRadarMissile;
 import com.onewhohears.dscombat.entity.weapon.EntityBomb;
 import com.onewhohears.dscombat.entity.weapon.EntityBullet;
@@ -39,7 +33,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -200,7 +193,7 @@ public class ModEntities {
 	
 	public static final EntityDimensions SEAT_SIZE = EntityDimensions.scalable(0.8f, 0.8f);
 	
-	public static final RegistryObject<EntityType<EntitySeat>> SEAT = ENTITIES.register("seat", 
+	/*public static final RegistryObject<EntityType<EntitySeat>> SEAT = ENTITIES.register("seat", 
 			() -> createEntityType((type, level) -> new EntitySeat(type, level, 
 					Vec3.ZERO), SEAT_SIZE));
 	
@@ -270,7 +263,7 @@ public class ModEntities {
 	public static final RegistryObject<EntityType<EntityRadar>> SURVEY_ALL_A = ENTITIES.register("survey_all_a", 
 			() -> createEntityType(EntityRadar::new, EntityDimensions.scalable(1.0f, 0.5f)));
 	public static final RegistryObject<EntityType<EntityRadar>> SURVEY_ALL_B = ENTITIES.register("survey_all_b", 
-			() -> createEntityType(EntityRadar::new, EntityDimensions.scalable(1.0f, 1.0f)));
+			() -> createEntityType(EntityRadar::new, EntityDimensions.scalable(1.0f, 1.0f)));*/
 	
 	public static final RegistryObject<EntityType<EntityBullet>> BULLET = ENTITIES.register("bullet", 
 			() -> createEntityType(EntityBullet::new, EntityDimensions.scalable(0.15f, 0.15f)));

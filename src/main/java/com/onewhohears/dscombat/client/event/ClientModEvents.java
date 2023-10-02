@@ -248,6 +248,7 @@ public final class ClientModEvents {
 						new EntityModelMissile1(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)),
 						new ResourceLocation(DSCombatMod.MODID, "textures/entities/missile5.png")));
 		// TURRETS
+		// FIXME 6 going to need to register all of these custom obj model classes in a custom registry so they can be rendered in the aircraft renderer
 		event.registerEntityRenderer(ModEntities.MINIGUN_TURRET.get(), 
 				(context) -> new RendererEntityTurret<EntityTurret>(context, 
 						new EntityModelMiniGunTurret(models.bakeLayer(EntityModelMiniGunTurret.LAYER_LOCATION)),

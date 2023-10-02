@@ -47,13 +47,12 @@ public abstract class WeaponData extends JsonPreset {
 	private final boolean canShootOnGround;
 	private final String entityTypeKey;
 	private final String shootSoundKey;
-	private final String rackTypeKey;
+	private final String rackModelId;
 	private final String compatibleWeaponPart;
 	private final String itemKey;
 	
 	private EntityType<?> entityType;
 	private SoundEvent shootSound;
-	private EntityType<?> rackType;
 	private int currentAmmo;
 	private int recoilTime;
 	private Vec3 pos = Vec3.ZERO;
@@ -72,7 +71,7 @@ public abstract class WeaponData extends JsonPreset {
 		this.canShootOnGround = UtilParse.getBooleanSafe(json, "canShootOnGround", false);
 		this.entityTypeKey = UtilParse.getStringSafe(json, "entityTypeKey", "");
 		this.shootSoundKey = UtilParse.getStringSafe(json, "shootSoundKey", "");
-		this.rackTypeKey = UtilParse.getStringSafe(json, "rackTypeKey", "");
+		this.rackModelId = UtilParse.getStringSafe(json, "rackModelId", "");
 		this.compatibleWeaponPart = UtilParse.getStringSafe(json, "compatibleWeaponPart", "");
 		this.itemKey = UtilParse.getStringSafe(json, "itemKey", "");
 	}
@@ -348,13 +347,8 @@ public abstract class WeaponData extends JsonPreset {
 		return shootSound;
 	}
 	
-	public EntityType<?> getRackEntityType() {
-		if (rackType == null) {
-			try { rackType = ForgeRegistries.ENTITY_TYPES
-					.getDelegate(new ResourceLocation(rackTypeKey)).get().get(); }
-			catch(NoSuchElementException e) { rackType = ModEntities.XM12.get(); }
-		}
-		return rackType;
+	public String getRackModelId() {
+		return rackModelId;
 	}
 	
 	private Item item;

@@ -1,11 +1,14 @@
 package com.onewhohears.dscombat.data.parts;
 
+import javax.annotation.Nullable;
+
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.parts.EntityVehiclePart;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityDimensions;
 
 public class EngineData extends PartData {
 	
@@ -14,8 +17,18 @@ public class EngineData extends PartData {
 	private final float heat;
 	private final float fuelRate;
 	
-	public EngineData(EngineType engineType, float weight, float thrust, float heat, float fuelRate, ResourceLocation itemid, SlotType[] compatibleSlots) {
+	public EngineData(EngineType engineType, float weight, float thrust, float heat, float fuelRate, 
+			ResourceLocation itemid, SlotType[] compatibleSlots) {
 		super(weight, itemid, compatibleSlots);
+		this.engineType = engineType;
+		this.thrust = thrust;
+		this.heat = heat;
+		this.fuelRate = fuelRate;
+	}
+	
+	protected EngineData(EngineType engineType, float weight, float thrust, float heat, float fuelRate, 
+			ResourceLocation itemid, SlotType[] compatibleSlots, String modelId, EntityDimensions size) {
+		super(weight, itemid, compatibleSlots, modelId, size);
 		this.engineType = engineType;
 		this.thrust = thrust;
 		this.heat = heat;
@@ -59,11 +72,6 @@ public class EngineData extends PartData {
 	public PartType getType() {
 		return PartType.ENGINE;
 	}
-
-	@Override
-	public boolean isSetup(String slotId, EntityAircraft craft) {
-		return false;
-	}
 	
 	public EngineType getEngineType() {
 		return engineType;
@@ -84,6 +92,17 @@ public class EngineData extends PartData {
 	public static enum EngineType {
 		SPIN,
 		PUSH
+	}
+	
+	@Nullable
+	@Override
+	public EntityVehiclePart getPartEntity() {
+		return null;
+	}
+
+	@Override
+	public boolean hasExternalPartEntity() {
+		return false;
 	}
 
 }

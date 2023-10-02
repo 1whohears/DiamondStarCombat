@@ -11,7 +11,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
@@ -19,10 +19,10 @@ public class EntitySeat extends EntityVehiclePart {
 	
 	public final Vec3 passengerOffset;
 	
-	private LivingEntity passenger;
+	private Entity passenger;
 	
-	public EntitySeat(EntityAircraft parent, String slotId, Vec3 pos, float z_rot, float width, float height, Vec3 offset) {
-		super(parent, slotId, pos, z_rot, width, height);
+	public EntitySeat(EntityAircraft parent, String modelId, EntityDimensions size, String slotId, Vec3 pos, float z_rot, Vec3 offset) {
+		super(parent, modelId, size, slotId, pos, z_rot);
 		this.passengerOffset = offset;
 	}
 	
@@ -31,7 +31,7 @@ public class EntitySeat extends EntityVehiclePart {
 		if (player.isSecondaryUseActive()) {
 			return InteractionResult.PASS;
 		} else if (!level.isClientSide) {
-			if (getParent().rideAvailableSeat(player, getSlotId())) return InteractionResult.CONSUME;
+			if (getParent().ridePreferredSeat(player, getSlotId())) return InteractionResult.CONSUME;
 			return InteractionResult.PASS;
 		}
 		return InteractionResult.SUCCESS;
@@ -57,7 +57,7 @@ public class EntitySeat extends EntityVehiclePart {
 				.subtract(0, getPassenger().getEyeHeight(), 0).add(position());
 	}
 	
-	public boolean setPassenger(LivingEntity passenger) {
+	public boolean setPassenger(Entity passenger) {
 		if (isOccupied()) return false;
 		this.passenger = passenger;
 		return true;
@@ -74,7 +74,7 @@ public class EntitySeat extends EntityVehiclePart {
 	}
 	
 	@Nullable
-	public LivingEntity getPassenger() {
+	public Entity getPassenger() {
 		return passenger;
 	}
 	

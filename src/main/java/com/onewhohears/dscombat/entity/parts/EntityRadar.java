@@ -3,12 +3,13 @@ package com.onewhohears.dscombat.entity.parts;
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.phys.Vec3;
 
 public class EntityRadar extends EntityVehiclePart {
 	
-	public EntityRadar(EntityAircraft parent, String slotId, Vec3 pos, float z_rot, float width, float height) {
-		super(parent, slotId, pos, z_rot, width, height);
+	public EntityRadar(EntityAircraft parent, String modelId, EntityDimensions size, String slotId, Vec3 pos, float z_rot) {
+		super(parent, modelId, size, slotId, pos, z_rot);
 		setHealth(6);
 	}
 

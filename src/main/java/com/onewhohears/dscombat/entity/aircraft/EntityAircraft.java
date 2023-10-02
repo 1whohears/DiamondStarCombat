@@ -1405,6 +1405,11 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	}
 	
 	@Override
+	public boolean isPickable() {
+		return true;
+	}
+	
+	@Override
 	public InteractionResult interact(Player player, InteractionHand hand) {
 		if (xzSpeed > 0.2) return InteractionResult.PASS;
 		if (player.isSecondaryUseActive()) return InteractionResult.PASS;
@@ -1485,65 +1490,8 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		return InteractionResult.SUCCESS;
 	}
 	
-	private boolean ridePilotSeat(LivingEntity e, List<EntitySeat> seats) {
-		for (EntitySeat seat : seats) 
-			if (seat.isPilotSeat() && seat.setPassenger(e)) 
-				return e.startRiding(this);
-		return false;
-	}
-	
-	public boolean ridePassengerSeat(LivingEntity e) {
-		List<EntitySeat> seats = getSeats();
-		for (EntitySeat seat : seats) 
-			if (!seat.isPilotSeat() && seat.setPassenger(e)) 
-				return e.startRiding(this);
-		return false;
-	}
-	
-	public boolean rideAvailableSeat(LivingEntity e, String slotId) {
-		EntityVehiclePart p = getPartById(slotId);
-		if (p != null && p.getPartType().isSeat()) 
-			if (((EntitySeat)p).setPassenger(e)) 
-				return e.startRiding(this);
-		return rideAvailableSeat(e);
-	}
-	
-	public boolean rideAvailableSeat(LivingEntity e) {
-		List<EntitySeat> seats = getSeats();
-		if (ridePilotSeat(e, seats)) return true;
-		for (EntitySeat seat : seats) 
-			if (seat.setPassenger(e)) 
-				return e.startRiding(this);
-		return false;
-	}
-	
-	public boolean switchSeat(LivingEntity e) {
-		/*List<EntitySeat> seats = getSeats();
-		int seatIndex = -1;
-		for (int i = 0; i < seats.size(); ++i) {
-			Player p = seats.get(i).getPlayer();
-			if (p == null) continue;
-			if (p.equals(e)) {
-				seatIndex = i;
-				break;
-			}
-		}
-		if (seatIndex == -1) return false; // player not riding seat
-		int i = 0, j = seatIndex+1;
-		while (i < seats.size()-1) {
-			if (j >= seats.size()) j = 0;
-			if (e.startRiding(seats.get(j))) {
-				return true;
-			}
-			++i; ++j;
-		}
-		return false;*/
-		
-	}
-	
 	/**
-	 * all part entities ride the vehicle using the vanilla passenger system.
-	 * the part's position is set based on the vehicle's rotation.
+	 * gives players special effects. actual rider positioning is handled in the seat entities
 	 */
 	@Override
     public void positionRider(Entity passenger) {
@@ -1561,15 +1509,63 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		}
 	}
 	
+	public boolean rideAvailableSeat(Entity e) {
+		if (ridePilotSeat(e)) return true;
+		List<EntitySeat> seats = getVacantSeats();
+		if (seats.size() == 0) return false;
+		return rideSeat(e, seats.get(0));
+	}
+	
+	private boolean ridePilotSeat(Entity e) {
+		EntitySeat pilot = getPilotSeat();
+		if (pilot != null && pilot.isVacant()) 
+			return rideSeat(e, pilot);
+		return false;
+	}
+	
+	public boolean ridePassengerSeat(Entity e) {
+		for (EntitySeat seat : getVacantSeats()) 
+			if (!seat.isPilotSeat()) 
+				return rideSeat(e, seat);
+		return false;
+	}
+	
+	public boolean ridePreferredSeat(Entity e, String slotId) {
+		EntityVehiclePart part = getPartById(slotId);
+		if (!part.getPartType().isSeat()) return false;
+		EntitySeat seat = (EntitySeat)part;
+		if (seat.isOccupied()) return false;
+		return rideSeat(e, seat);
+	}
+	
+	public boolean switchSeat(Entity e) {
+		List<EntitySeat> seats = getSeats();
+		int seatIndex = -1;
+		for (int i = 0; i < seats.size(); ++i) {
+			Entity p = seats.get(i).getPassenger();
+			if (p == null) continue;
+			if (p.equals(e)) {
+				seatIndex = i;
+				break;
+			}
+		}
+		if (seatIndex == -1) return false; // player not riding seat
+		int i = 0, j = seatIndex+1;
+		while (i < seats.size()-1) {
+			if (j >= seats.size()) j = 0;
+			if (seats.get(j).isVacant()) 
+				return rideSeat(e, seats.get(j));
+			++i; ++j;
+		}
+		return false;
+	}
+	
 	@Nullable
 	@Override
     public Entity getControllingPassenger() {
-        for (EntitySeat seat : getSeats()) {
-        	if (seat.isPilotSeat()) {
-        		return seat.getPlayer();
-        	}
-        }
-        return null;
+        EntitySeat pilotseat = getPilotSeat();
+        if (pilotseat == null) return null;
+        return pilotseat.getPlayer();
     }
 	
 	public boolean isPlayerRiding() {
@@ -1584,6 +1580,20 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     	return players;
     }
     
+	public List<EntitySeat> getVacantSeats() {
+		List<EntitySeat> seats = new ArrayList<>();
+    	for (EntitySeat p : getSeats())
+    		if (p.isVacant()) seats.add(p);
+    	return seats;
+    }
+	
+	@Nullable
+	public EntitySeat getPilotSeat() {
+		for (EntitySeat seat : getSeats()) 
+        	if (seat.isPilotSeat()) return seat;
+        return null;
+	}
+	
     public List<EntitySeat> getSeats() {
     	List<EntitySeat> seats = new ArrayList<>();
     	for (EntityVehiclePart p : parts)
@@ -1600,8 +1610,15 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     	return turrets;
     }
     
-    public List<EntityVehiclePart> getPartEntities() {
-    	return parts;
+    public boolean addPartEntity(EntityVehiclePart part) {
+    	if (getPartById(part.getSlotId()) != null) return false;
+    	return parts.add(part);
+    }
+    
+    public boolean removePartEntity(String slotId) {
+    	EntityVehiclePart part = getPartById(slotId);
+    	if (part == null) return false;
+    	return parts.remove(part);
     }
     
     @Nullable
@@ -1611,20 +1628,44 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     			return part;
     	return null;
     }
+    
+    @Nullable
+	public EntitySeat getPassengerSeat(Entity passenger) {
+		for (EntitySeat seat : getSeats())
+			if (seat.getPassenger().equals(passenger)) 
+				return seat;
+		return null;
+    }
 	
-	@Override
-	public boolean isPickable() {
-		return !isRemoved();
+	protected boolean rideSeat(Entity passenger, EntitySeat seat) {
+		if (seat.isOccupied()) return false;
+		EntitySeat current = getPassengerSeat(passenger);
+		if (current != null) current.removePassenger();
+		if (!seat.setPassenger(passenger)) return false;
+		return passenger.startRiding(this, true);
 	}
 	
 	@Override
     protected void addPassenger(Entity passenger) {
         super.addPassenger(passenger);
+        EntitySeat seat = getPassengerSeat(passenger);
+        if (seat != null) return;
+        for (EntitySeat v : getVacantSeats()) {
+        	v.setPassenger(passenger);
+        	break;
+        }
+	}
+	
+	@Override
+	public void removePassenger(Entity passenger) {
+		super.removePassenger(passenger);
+		EntitySeat seat = getPassengerSeat(passenger);
+		if (seat != null) seat.removePassenger();
 	}
 	
 	@Override
     protected boolean canAddPassenger(Entity passenger) {
-		
+		return getVacantSeats().size() > 0;
 	}
 	
 	@Override

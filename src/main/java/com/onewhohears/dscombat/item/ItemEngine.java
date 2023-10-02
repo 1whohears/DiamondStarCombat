@@ -12,6 +12,7 @@ import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -22,7 +23,8 @@ public class ItemEngine extends ItemPart {
 	public final EngineType engineType;
 	public final float thrust, heat, fuelRate;
 	public final boolean external;
-	public final String externalEntityKey;
+	public final String modelId;
+	public final EntityDimensions size;
 	
 	public ItemEngine(EngineType engineType, float weight, float thrust, float heat, float fuelRate, boolean external, SlotType[] compatibleSlots) {
 		super(8, weight, compatibleSlots);
@@ -31,24 +33,26 @@ public class ItemEngine extends ItemPart {
 		this.heat = heat;
 		this.fuelRate = fuelRate;
 		this.external = external;
-		this.externalEntityKey = "";
+		this.modelId = "";
+		this.size = null;
 	}
 	
 	public ItemEngine(EngineType engineType, float weight, float thrust, float heat, float fuelRate, boolean external, 
-			SlotType[] compatibleSlots, String externalEntityKey) {
+			SlotType[] compatibleSlots, String modelId, EntityDimensions size) {
 		super(8, weight, compatibleSlots);
 		this.engineType = engineType;
 		this.thrust = thrust;
 		this.heat = heat;
 		this.fuelRate = fuelRate;
 		this.external = external;
-		this.externalEntityKey = externalEntityKey;
+		this.modelId = modelId;
+		this.size = size;
 	}
 
 	@Override
 	public PartData getPartData() {
 		if (external) return new ExternalEngineData(engineType, weight, thrust, heat, fuelRate, 
-				ForgeRegistries.ITEMS.getKey(this), compatibleSlots, externalEntityKey);
+				ForgeRegistries.ITEMS.getKey(this), compatibleSlots, modelId, size);
 		return new EngineData(engineType, weight, thrust, heat, fuelRate, ForgeRegistries.ITEMS.getKey(this), compatibleSlots);
 	}
 	

@@ -1,7 +1,9 @@
 package com.onewhohears.dscombat.data.parts;
 
+import javax.annotation.Nullable;
+
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.parts.EntityVehiclePart;
 import com.onewhohears.dscombat.entity.weapon.EntityFlare;
 
 import net.minecraft.nbt.CompoundTag;
@@ -61,11 +63,6 @@ public class FlareDispenserData extends PartData {
 	public PartType getType() {
 		return PartType.FLARE_DISPENSER;
 	}
-
-	@Override
-	public boolean isSetup(String slotId, EntityAircraft craft) {
-		return false;
-	}
 	
 	/**
 	 * @param flares
@@ -110,10 +107,21 @@ public class FlareDispenserData extends PartData {
 		if (getFlares() <= 0) return false;
 		Level level = getParent().level;
 		EntityFlare flare = new EntityFlare(level, heat, age, 3);
-		flare.setPos(getParent().position().add(relPos));
+		flare.setPos(getParent().position().add(getRelPos()));
 		level.addFreshEntity(flare);
 		if (consume) addFlares(-1);
 		return true;
+	}
+	
+	@Nullable
+	@Override
+	public EntityVehiclePart getPartEntity() {
+		return null;
+	}
+
+	@Override
+	public boolean hasExternalPartEntity() {
+		return false;
 	}
 
 }

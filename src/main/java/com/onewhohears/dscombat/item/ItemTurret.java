@@ -10,22 +10,31 @@ import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class ItemTurret extends ItemPart {
 	
 	public final String weaponId;
-	public final String turrentEntityKey;
 	public final RotBounds rotBounds;
 	public final float health;
+	public final String modelId;
+	public final EntityDimensions size;
+	public final Vec3 offset;
+	public final double weaponOffset;
 	
-	public ItemTurret(float weight, SlotType[] compatibleSlots, String turrentEntityKey, String weaponId, RotBounds rotBounds, float health) {
+	public ItemTurret(float weight, SlotType[] compatibleSlots, String modelId, EntityDimensions size, 
+			String weaponId, RotBounds rotBounds, float health, Vec3 offset, double weaponOffset) {
 		super(1, weight, compatibleSlots);
 		this.weaponId = weaponId;
-		this.turrentEntityKey = turrentEntityKey;
+		this.modelId = modelId;
+		this.size = size;
 		this.rotBounds = rotBounds;
 		this.health = health;
+		this.offset = offset;
+		this.weaponOffset = weaponOffset;
 	}
 	
 	@Override
@@ -47,13 +56,15 @@ public class ItemTurret extends ItemPart {
 	@Override
 	public PartData getFilledPartData(String param) {
 		return new TurretData(weight, ForgeRegistries.ITEMS.getKey(this), 
-				compatibleSlots, turrentEntityKey, weaponId, rotBounds, true, health);
+				compatibleSlots, weaponId, rotBounds, true, health, 
+				modelId, size, offset, weaponOffset);
 	}
 	
 	@Override
 	public PartData getPartData() {
 		return new TurretData(weight, ForgeRegistries.ITEMS.getKey(this), 
-				compatibleSlots, turrentEntityKey, weaponId, rotBounds, false, health);
+				compatibleSlots, weaponId, rotBounds, false, health,
+				modelId, size, offset, weaponOffset);
 	}
 
 }

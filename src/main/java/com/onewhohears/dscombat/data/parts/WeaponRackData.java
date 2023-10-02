@@ -2,22 +2,17 @@ package com.onewhohears.dscombat.data.parts;
 
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.parts.EntityVehiclePart;
 import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.entity.EntityDimensions;
 
 public class WeaponRackData extends WeaponPartData {
 	
 	public final float changeLaunchPitch;
-	
-	public WeaponRackData(float weight, int ammo, int max, String preset, String[] compatible, ResourceLocation itemid, SlotType[] compatibleSlots, float launchPitch) {
-		super(weight, ammo, max, preset, compatible, itemid, compatibleSlots);
-		this.changeLaunchPitch = launchPitch;
-	}
 	
 	public WeaponRackData(float weight, String preset, String[] compatible, ResourceLocation itemid, SlotType[] compatibleSlots, float launchPitch) {
 		super(weight, preset, compatible, itemid, compatibleSlots);
@@ -44,25 +39,20 @@ public class WeaponRackData extends WeaponPartData {
 		super(buffer);
 		changeLaunchPitch = buffer.readFloat();
 	}
-
+	
 	@Override
-	public void serverSetup(EntityAircraft craft, String slotId, Vec3 pos) {
-		super.serverSetup(craft, slotId, pos);
-		WeaponData data = craft.weaponSystem.get(weaponId, slotId);
-		if (data == null) return;
+	public EntityVehiclePart getPartEntity() {
+		WeaponData data = getParent().weaponSystem.get(weaponId, getSlotId());
+		if (data == null) return null;
 		data.setChangeLaunchPitch(changeLaunchPitch);
-		if (!isEntitySetup(slotId, craft)) {
-			EntityWeaponRack rack = new EntityWeaponRack(data.getRackEntityType(), craft.level, slotId, pos);
-			rack.setPos(craft.position());
-			rack.startRiding(craft);
-			craft.level.addFreshEntity(rack);
-		}
+		return new EntityWeaponRack(getParent(), data.getRackModelId(), 
+				EntityDimensions.scalable(0.1f, 0.1f), 
+				getSlotId(), getRelPos(), getZRot());
 	}
 	
 	@Override
-	public void serverRemove(String slotId) {
-		super.serverRemove(slotId);
-		removeEntity(slotId);
+	public boolean hasExternalPartEntity() {
+		return true;
 	}
 	
 	@Override

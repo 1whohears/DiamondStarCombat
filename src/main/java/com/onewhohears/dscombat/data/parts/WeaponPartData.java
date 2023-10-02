@@ -1,9 +1,12 @@
 package com.onewhohears.dscombat.data.parts;
 
+import javax.annotation.Nullable;
+
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.parts.EntityVehiclePart;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -19,17 +22,11 @@ public class WeaponPartData extends PartData {
 	private int ammo;
 	private int max;
 	
-	public WeaponPartData(float weight, int ammo, int max, String preset, String[] compatible, ResourceLocation itemid, SlotType[] compatibleSlots) {
+	public WeaponPartData(float weight, String preset, String[] compatible, ResourceLocation itemid, SlotType[] compatibleSlots) {
 		super(weight, itemid, compatibleSlots);
 		this.compatible = compatible;
 		this.weaponId = preset;
 		if (!WeaponPresets.get().has(weaponId)) weaponId = "";
-		this.ammo = ammo;
-		this.max = max;
-	}
-	
-	public WeaponPartData(float weight, String preset, String[] compatible, ResourceLocation itemid, SlotType[] compatibleSlots) {
-		this(weight, 0, 0, preset, compatible, itemid, compatibleSlots);
 		WeaponData data = WeaponPresets.get().getPreset(weaponId);
 		if (data != null) {
 			this.ammo = data.getMaxAmmo();
@@ -84,8 +81,8 @@ public class WeaponPartData extends PartData {
 	}
 	
 	@Override
-	public void setup(EntityAircraft craft, String slotId, Vec3 pos) {
-		super.setup(craft, slotId, pos);
+	public void setup(EntityAircraft craft, String slotId, Vec3 pos, float zRot) {
+		super.setup(craft, slotId, pos, zRot);
 		WeaponData data = craft.weaponSystem.get(weaponId, slotId);
 		if (data == null) {
 			data = WeaponPresets.get().getPreset(weaponId);
@@ -100,22 +97,15 @@ public class WeaponPartData extends PartData {
 	}
 	
 	@Override
-	public boolean isSetup(String slotId, EntityAircraft craft) {
-		WeaponData data = craft.weaponSystem.get(weaponId, slotId);
-		if (data == null) return false;
-		return data.getCurrentAmmo() == ammo && data.getMaxAmmo() == max;
+	public void remove() {
+		super.remove();
+		getParent().weaponSystem.removeWeapon(weaponId, getSlotId());
 	}
 	
 	@Override
-	public void remove(String slotId) {
-		super.remove(slotId);
-		getParent().weaponSystem.removeWeapon(weaponId, slotId);
-	}
-	
-	@Override
-	public void tick(String slotId) {
-		super.tick(slotId);
-		WeaponData data = getParent().weaponSystem.get(weaponId, slotId);
+	public void tick() {
+		super.tick();
+		WeaponData data = getParent().weaponSystem.get(weaponId, getSlotId());
 		if (data != null) {
 			ammo = data.getCurrentAmmo();
 			max = data.getMaxAmmo();
@@ -123,9 +113,9 @@ public class WeaponPartData extends PartData {
 	}
 	
 	@Override
-	public void clientTick(String slotId) {
-		super.clientTick(slotId);
-		this.tick(slotId);
+	public void clientTick() {
+		super.clientTick();
+		this.tick();
 	}
 	
 	@Override
@@ -140,6 +130,17 @@ public class WeaponPartData extends PartData {
 		for (int i = 0; i < compatible.length; ++i) {
 			if (compatible[i].equals(preset)) return true;
 		}
+		return false;
+	}
+	
+	@Nullable
+	@Override
+	public EntityVehiclePart getPartEntity() {
+		return null;
+	}
+
+	@Override
+	public boolean hasExternalPartEntity() {
 		return false;
 	}
 

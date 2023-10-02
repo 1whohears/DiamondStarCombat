@@ -1,13 +1,17 @@
 package com.onewhohears.dscombat.data.parts;
 
+import javax.annotation.Nullable;
+
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.data.radar.RadarData;
 import com.onewhohears.dscombat.data.radar.RadarPresets;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.parts.EntityVehiclePart;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.phys.Vec3;
 
 public class RadarPartData extends PartData {
@@ -16,6 +20,12 @@ public class RadarPartData extends PartData {
 	
 	public RadarPartData(float weight, String preset, ResourceLocation itemid, SlotType[] compatibleSlots) {
 		super(weight, itemid, compatibleSlots);
+		this.radarId = preset;
+	}
+	
+	protected RadarPartData(float weight, String preset, ResourceLocation itemid, SlotType[] compatibleSlots,
+			String modelId, EntityDimensions size) {
+		super(weight, itemid, compatibleSlots, modelId, size);
 		this.radarId = preset;
 	}
 	
@@ -46,8 +56,8 @@ public class RadarPartData extends PartData {
 	}
 	
 	@Override
-	public void setup(EntityAircraft craft, String slotId, Vec3 pos) {
-		super.setup(craft, slotId, pos);
+	public void setup(EntityAircraft craft, String slotId, Vec3 pos, float zRot) {
+		super.setup(craft, slotId, pos, zRot);
 		RadarData data = craft.radarSystem.get(radarId, slotId);
 		if (data == null) {
 			data = RadarPresets.get().getPreset(radarId);
@@ -59,31 +69,20 @@ public class RadarPartData extends PartData {
 	}
 	
 	@Override
-	public boolean isSetup(String slotId, EntityAircraft craft) {
-		RadarData data = craft.radarSystem.get(radarId, slotId);
-		if (data == null) return false;
-		return true;
+	public void remove() {
+		super.serverRemove();
+		getParent().radarSystem.removeRadar(radarId, getSlotId());
 	}
 	
+	@Nullable
 	@Override
-	public void remove(String slotId) {
-		super.serverRemove(slotId);
-		getParent().radarSystem.removeRadar(radarId, slotId);
+	public EntityVehiclePart getPartEntity() {
+		return null;
 	}
-	
+
 	@Override
-	public void tick(String slotId) {
-		super.tick(slotId);
-		/*RadarData data = this.getParent().radarSystem.get(radarId, slotId);
-		if (data != null) {
-			
-		}*/
-	}
-	
-	@Override
-	public void clientTick(String slotId) {
-		super.clientTick(slotId);
-		//this.tick(slotId);
+	public boolean hasExternalPartEntity() {
+		return false;
 	}
 
 }

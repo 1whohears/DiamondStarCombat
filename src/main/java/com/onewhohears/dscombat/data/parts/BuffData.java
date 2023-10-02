@@ -1,12 +1,13 @@
 package com.onewhohears.dscombat.data.parts;
 
+import javax.annotation.Nullable;
+
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.parts.EntityVehiclePart;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.phys.Vec3;
 
 public class BuffData extends PartData {
 	
@@ -51,15 +52,10 @@ public class BuffData extends PartData {
 	public PartType getType() {
 		return PartType.BUFF_DATA;
 	}
-
-	@Override
-	public boolean isSetup(String slotId, EntityAircraft craft) {
-		return false;
-	}
 	
 	@Override
-	public void serverSetup(EntityAircraft craft, String slotId, Vec3 pos) {
-		super.serverSetup(craft, slotId, pos);
+	public void serverSetup() {
+		super.serverSetup();
 		switch (type) {
 		case DATA_LINK:
 			getParent().radarSystem.dataLink = true;
@@ -76,8 +72,8 @@ public class BuffData extends PartData {
 	}
 	
 	@Override
-	public void serverRemove(String slotId) {
-		super.serverRemove(slotId);
+	public void serverRemove() {
+		super.serverRemove();
 		switch (type) {
 		case DATA_LINK:
 			getParent().radarSystem.dataLink = false;
@@ -102,6 +98,17 @@ public class BuffData extends PartData {
 	public float getAdditionalArmor() {
 		if (type == BuffType.ARMOR) return 4f;
 		return 0f;
+	}
+	
+	@Nullable
+	@Override
+	public EntityVehiclePart getPartEntity() {
+		return null;
+	}
+
+	@Override
+	public boolean hasExternalPartEntity() {
+		return false;
 	}
 
 }

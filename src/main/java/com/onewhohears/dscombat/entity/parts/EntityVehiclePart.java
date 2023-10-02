@@ -24,19 +24,21 @@ public abstract class EntityVehiclePart extends PartEntity<EntityAircraft> {
 	
 	public static final EntityDataAccessor<Float> HEALTH = SynchedEntityData.defineId(EntityVehiclePart.class, EntityDataSerializers.FLOAT);
 	
+	private final String modelId;
+	private final EntityDimensions size;
 	private final String slotId;
 	private final Vec3 rel_pos;
 	private final float z_rot;
-	private final EntityDimensions size;
 	
 	// FIXME 4 make all EntityPart the forge PartEntity and make the player directly a passenger of the vehicle
 	
-	protected EntityVehiclePart(EntityAircraft parent, String slotId, Vec3 pos, float z_rot, float width, float height) {
+	protected EntityVehiclePart(EntityAircraft parent, String modelId, EntityDimensions size, String slotId, Vec3 pos, float z_rot) {
 		super(parent);
+		this.modelId = modelId;
+		this.size = size;
 		this.slotId = slotId;
 		this.rel_pos = pos;
 		this.z_rot = z_rot;
-		size = EntityDimensions.scalable(width, height);
 		if (!canGetHurt()) setHealth(1000);
 	}
 	
@@ -49,12 +51,20 @@ public abstract class EntityVehiclePart extends PartEntity<EntityAircraft> {
 		super.tick();
 	}
 	
+	public String getModelId() {
+		return modelId;
+	}
+	
 	public Vec3 getRelativePos() {
 		return rel_pos;
 	}
 	
 	public String getSlotId() {
 		return slotId;
+	}
+	
+	public float getZRot() {
+		return z_rot;
 	}
 	
 	@Override
@@ -79,10 +89,6 @@ public abstract class EntityVehiclePart extends PartEntity<EntityAircraft> {
 	
 	public abstract boolean shouldRender();
 	
-	public float getZRot() {
-		return z_rot;
-	}
-	
 	@Override
 	public boolean isPickable() {
 		return canGetHurt();
@@ -97,6 +103,16 @@ public abstract class EntityVehiclePart extends PartEntity<EntityAircraft> {
 	public boolean canBeCollidedWith() {
 		return false;
 	}
+	
+	@Override
+    protected boolean canAddPassenger(Entity passenger) {
+		return false;
+	}
+	
+	@Override
+    protected boolean canRide(Entity entityIn) {
+        return false;
+    }
 	
 	public abstract PartType getPartType();
 	

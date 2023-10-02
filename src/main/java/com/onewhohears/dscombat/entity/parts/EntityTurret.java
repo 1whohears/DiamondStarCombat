@@ -22,7 +22,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
@@ -52,17 +52,17 @@ public class EntityTurret extends EntitySeat {
 	 */
 	private int newRiderCoolDown;
 	
-	public EntityTurret(EntityAircraft parent, String slotId, Vec3 pos, float z_rot, float width, float height, 
+	public EntityTurret(EntityAircraft parent, String modelId, EntityDimensions size, String slotId, Vec3 pos, float z_rot, 
 			Vec3 offset, double weaponOffset, RotBounds rotBounds) {
-		super(parent, slotId, pos, z_rot, width, height, offset);
+		super(parent, modelId, size, slotId, pos, z_rot, offset);
 		this.weaponOffset = weaponOffset;
 		this.shootType = ShootType.NORMAL;
 		this.rotBounds = rotBounds;
 	}
 	
-	public EntityTurret(EntityAircraft parent, String slotId, Vec3 pos, float z_rot, float width, float height, 
+	public EntityTurret(EntityAircraft parent, String modelId, EntityDimensions size, String slotId, Vec3 pos, float z_rot, 
 			Vec3 offset, double weaponOffset, RotBounds rotBounds, ShootType shootType) {
-		super(parent, slotId, pos, z_rot, width, height, offset);
+		super(parent, modelId, size, slotId, pos, z_rot, offset);
 		this.weaponOffset = weaponOffset;
 		this.shootType = shootType;
 		this.rotBounds = rotBounds;
@@ -107,7 +107,7 @@ public class EntityTurret extends EntitySeat {
 		super.tick();
 		xRotRelO = getRelRotX();
 		yRotRelO = getRelRotY();
-		LivingEntity gunner = getPassenger();
+		Entity gunner = getPassenger();
 		if (gunner == null) return;
 		Quaternion ra = Quaternion.ONE;
 		if (!level.isClientSide) {
@@ -159,23 +159,23 @@ public class EntityTurret extends EntitySeat {
 	}
 	
 	@Override
-	public boolean setPassenger(LivingEntity passenger) {
+	public boolean setPassenger(Entity passenger) {
 		if (!super.setPassenger(passenger)) return false;
 		newRiderCoolDown = 10;
 		if (getPassenger() instanceof Mob m) addTurretAI(m);
 		return true;
 	}
 	
-	public void addTurretAI(Mob entity) {
-		// TODO 6.1 add turret AI goals for mobs
-		//entity.goalSelector.addGoal(0, null);
-		//entity.targetSelector.addGoal(0, null);
-	}
-	
 	@Override
 	public void removePassenger() {
 		if (getPassenger() instanceof Mob m) removeTurretAI(m);
 		super.removePassenger();
+	}
+	
+	public void addTurretAI(Mob entity) {
+		// TODO 6.1 add turret AI goals for mobs
+		//entity.goalSelector.addGoal(0, null);
+		//entity.targetSelector.addGoal(0, null);
 	}
 	
 	public void removeTurretAI(Mob entity) {

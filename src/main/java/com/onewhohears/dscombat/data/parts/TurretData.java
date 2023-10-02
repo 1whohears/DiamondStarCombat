@@ -1,42 +1,39 @@
 package com.onewhohears.dscombat.data.parts;
 
-import java.util.NoSuchElementException;
-
-import javax.annotation.Nullable;
-
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
-import com.onewhohears.dscombat.entity.parts.EntityVehiclePart;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
-import com.onewhohears.dscombat.init.ModEntities;
+import com.onewhohears.dscombat.entity.parts.EntityVehiclePart;
+import com.onewhohears.dscombat.init.DataSerializers;
+import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class TurretData extends SeatData {
 	
 	private final String weaponId;
-	private final String turretEntityKey;
 	private final RotBounds rotBounds;
 	private final float health;
-	private EntityType<? extends EntityTurret> turretType;
+	private final Vec3 offset;
+	private final double weaponOffset;
 	private int ammo = 0;
 	private int max = 0;
 	
 	public TurretData(float weight, ResourceLocation itemid, SlotType[] compatibleSlots, 
-			String turrentEntityKey, String weaponId, RotBounds rotBounds, boolean filled, float health) {
-		super(weight, itemid, compatibleSlots);
+			String weaponId, RotBounds rotBounds, boolean filled, float health,
+			String modelId, EntityDimensions size, Vec3 offset, double weaponOffset) {
+		super(weight, itemid, compatibleSlots, modelId, size);
 		this.weaponId = weaponId;
-		this.turretEntityKey = turrentEntityKey;
 		this.rotBounds = rotBounds;
 		this.health = health;
+		this.offset = offset;
+		this.weaponOffset = weaponOffset;
 		WeaponData data = WeaponPresets.get().getPreset(weaponId);
 		if (data != null) {
 			if (filled) this.ammo = data.getMaxAmmo();
@@ -47,42 +44,46 @@ public class TurretData extends SeatData {
 	public TurretData(CompoundTag tag) {
 		super(tag);
 		weaponId = tag.getString("weaponId");
-		turretEntityKey = tag.getString("turretEntity");
 		rotBounds = new RotBounds(tag);
 		health = tag.getFloat("health");
 		ammo = tag.getInt("ammo");
 		max = tag.getInt("max");
+		offset = UtilParse.readVec3(tag, "offset");
+		weaponOffset = tag.getFloat("weaponOffset");
 	}
 	
 	public CompoundTag write() {
 		CompoundTag tag = super.write();
 		tag.putString("weaponId", weaponId);
-		tag.putString("turretEntity", turretEntityKey);
 		rotBounds.write(tag);
 		tag.putFloat("health", health);
 		tag.putInt("ammo", ammo);
 		tag.putInt("max", max);
+		UtilParse.writeVec3(tag, offset, "offset");
+		tag.putFloat("weaponOffset", (float)weaponOffset);
 		return tag;
 	}
 
 	public TurretData(FriendlyByteBuf buffer) {
 		super(buffer);
 		weaponId = buffer.readUtf();
-		turretEntityKey = buffer.readUtf();
 		rotBounds = new RotBounds(buffer);
 		health = buffer.readFloat();
 		ammo = buffer.readInt();
 		max = buffer.readInt();
+		offset = DataSerializers.VEC3.read(buffer);
+		weaponOffset = buffer.readFloat();
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
 		super.write(buffer);
 		buffer.writeUtf(weaponId);
-		buffer.writeUtf(turretEntityKey);
 		rotBounds.write(buffer);
 		buffer.writeFloat(health);
 		buffer.writeInt(ammo);
 		buffer.writeInt(max);
+		DataSerializers.VEC3.write(buffer, offset);
+		buffer.writeFloat((float)weaponOffset);
 	}
 	
 	@Override
@@ -91,45 +92,29 @@ public class TurretData extends SeatData {
 	}
 	
 	@Override
-	public void serverSetup(EntityAircraft craft, String slotId, Vec3 pos) {
-		setParent(craft);
-		setRelPos(pos);
-		EntityTurret t = getTurret(slotId);
-		t.setAmmo(ammo);
+	public EntityVehiclePart getPartEntity() {
+		EntityTurret turret = new EntityTurret(getParent(), getModelId(), getExternalEntitySize(),
+				getSlotId(), getRelPos(), getZRot(), getPassengerOffset(), 
+				getWeaponOffset(), getRotBounds());
+		turret.setHealth(health);
+		return turret;
 	}
-	
-	@Nullable
-	public EntityTurret getTurret(String slotId) {
-		EntityAircraft craft = getParent();
-		if (craft == null) return null;
-		for (EntityVehiclePart part : craft.getPartEntities()) 
-			if (part.getSlotId().equals(slotId) && part.getType().equals(getTurretType())) 
-				return (EntityTurret) part;
-		EntityTurret t = getTurretType().create(craft.level);
-		t.setSlotId(slotId);
-		t.setRelativePos(getRelPos());
-		t.setHealth(health);
-		t.setPos(craft.position());
-		t.startRiding(craft);
-		t.setWeaponId(weaponId);
-		t.setRotBounds(rotBounds);
-		craft.level.addFreshEntity(t);
-		return t;
-	}
-	
-	@SuppressWarnings("unchecked")
-	public EntityType<? extends EntityTurret> getTurretType() {
-		if (turretType == null) {
-			try { turretType = (EntityType<? extends EntityTurret>) ForgeRegistries.ENTITY_TYPES
-					.getDelegate(new ResourceLocation(turretEntityKey)).get().get(); }
-			catch(NoSuchElementException e) { turretType = ModEntities.MINIGUN_TURRET.get(); }
-			catch(ClassCastException e) { turretType = ModEntities.MINIGUN_TURRET.get(); }
-		}
-		return turretType;
+
+	@Override
+	public boolean hasExternalPartEntity() {
+		return true;
 	}
 	
 	public void setAmmo(int ammo) {
 		this.ammo = ammo;
+	}
+	
+	public Vec3 getPassengerOffset() {
+		return offset;
+	}
+	
+	public double getWeaponOffset() {
+		return weaponOffset;
 	}
 	
 	public RotBounds getRotBounds() {

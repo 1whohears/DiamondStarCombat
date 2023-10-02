@@ -19,7 +19,7 @@ public class ObjEntityModel<T extends Entity> {
 	
 	public static final Matrix4f INVISIBLE = Matrix4f.createScaleMatrix(0, 0, 0);
 	
-	public final String modelId;
+	private final String modelId;
 	
 	public ObjEntityModel(String modelId) {
 		this.modelId = modelId;
@@ -68,6 +68,10 @@ public class ObjEntityModel<T extends Entity> {
 	
 	protected int getOverlay(T entity) {
 		return OverlayTexture.NO_OVERLAY;
+	}
+	
+	public String getModelId() {
+		return modelId;
 	}
 	
 }

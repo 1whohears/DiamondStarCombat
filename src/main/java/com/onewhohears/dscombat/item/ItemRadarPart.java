@@ -5,31 +5,36 @@ import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.data.parts.RadarPartData;
 
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class ItemRadarPart extends ItemPart {
 	
 	public final String preset;
-	public final String entityTypeKey;
 	public final boolean external;
+	public final String modelId;
+	public final EntityDimensions size;
 	
 	public ItemRadarPart(float weight, String preset, SlotType[] compatibleSlots) {
 		super(8, weight, compatibleSlots);
 		this.preset = preset;
 		this.external = false;
-		this.entityTypeKey = "";
+		this.modelId = "";
+		this.size = null;
 	}
 	
-	public ItemRadarPart(float weight, String preset, SlotType[] compatibleSlots, String externalEntityTypeKey) {
+	public ItemRadarPart(float weight, String preset, SlotType[] compatibleSlots, String modelId, EntityDimensions size) {
 		super(4, weight, compatibleSlots);
 		this.preset = preset;
 		this.external = true;
-		this.entityTypeKey = externalEntityTypeKey;
+		this.modelId = modelId;
+		this.size = size;
 	}
 
 	@Override
 	public PartData getPartData() {
-		if (external) return new ExternalRadarPartData(weight, preset, ForgeRegistries.ITEMS.getKey(this), compatibleSlots, entityTypeKey);
+		if (external) return new ExternalRadarPartData(weight, preset, ForgeRegistries.ITEMS.getKey(this), 
+				compatibleSlots, modelId, size);
 		return new RadarPartData(weight, preset, ForgeRegistries.ITEMS.getKey(this), compatibleSlots);
 	}
 

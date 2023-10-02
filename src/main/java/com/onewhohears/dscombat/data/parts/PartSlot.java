@@ -89,24 +89,24 @@ public class PartSlot {
 	
 	public void serverSetup(EntityAircraft plane) {
 		if (filled()) {
-			data.setup(plane, slotId, pos);
-			data.serverSetup(plane, slotId, pos);
+			data.setup(plane, slotId, pos, zRot);
+			data.serverSetup();
 		}
 	}
 	
 	public void clientSetup(EntityAircraft plane) {
 		if (filled()) {
-			data.setup(plane, slotId, pos);
-			data.clientSetup(plane, slotId, pos);
+			data.setup(plane, slotId, pos, zRot);
+			data.clientSetup();
 		}
 	}
 	
 	protected void tick() {
-		if (filled()) data.tick(slotId);
+		if (filled()) data.tick();
 	}
 	
 	protected void clientTick() {
-		if (filled()) data.clientTick(slotId);
+		if (filled()) data.clientTick();
 	}
 	
 	public boolean addPartData(PartData data, EntityAircraft plane) {
@@ -114,10 +114,10 @@ public class PartSlot {
 		if (!isCompatible(data)) return false;
 		this.data = data;
 		if (plane == null) return true;
-		data.setup(plane, slotId, pos);
-		if (plane.level.isClientSide) data.clientSetup(plane, slotId, pos);
+		data.setup(plane, slotId, pos, zRot);
+		if (plane.level.isClientSide) data.clientSetup();
 		else {
-			data.serverSetup(plane, slotId, pos);
+			data.serverSetup();
 			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> plane), 
 					new ToClientAddPart(plane.getId(), slotId, data));
 		}
@@ -126,10 +126,10 @@ public class PartSlot {
 	
 	public boolean removePartData(EntityAircraft plane) {
 		if (!filled()) return false;
-		data.remove(slotId);
-		if (plane.level.isClientSide) data.clientRemove(slotId);
+		data.remove();
+		if (plane.level.isClientSide) data.clientRemove();
 		else {
-			data.serverRemove(slotId);
+			data.serverRemove();
 			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> plane), 
 					new ToClientRemovePart(plane.getId(), slotId));
 		}

@@ -17,13 +17,13 @@ public class BallRadarModel extends ObjRadarModel {
 	@Nullable
 	@Override
 	public CompositeRenderable getModel() {
-		return ObjEntityModels.get().getBakedModel(modelId); // maybe use ball_radar_triple
+		return ObjEntityModels.get().getBakedModel(getModelId()); // maybe use ball_radar_triple
 	}
 	
 	@Nullable
 	@Override
 	public ModelOverrides getModelOverride() {
-		return ObjEntityModels.get().getModelOverride(modelId); // maybe use ball_radar_triple
+		return ObjEntityModels.get().getModelOverride(getModelId()); // maybe use ball_radar_triple
 	}
 
 }

@@ -1,7 +1,9 @@
 package com.onewhohears.dscombat.data.parts;
 
+import javax.annotation.Nullable;
+
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.parts.EntityVehiclePart;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -47,16 +49,6 @@ public class FuelTankData extends PartData {
 	public PartType getType() {
 		return PartType.FUEL_TANK;
 	}
-
-	@Override
-	public boolean isSetup(String slotId, EntityAircraft craft) {
-		return false;
-	}
-
-	/*@Override
-	public ItemStack getItemStack() {
-		return null;
-	}*/
 	
 	/**
 	 * @param fuel
@@ -95,6 +87,17 @@ public class FuelTankData extends PartData {
 	public float getWeight() {
 		float w = super.getWeight();
 		return w * fuel / max;
+	}
+	
+	@Nullable
+	@Override
+	public EntityVehiclePart getPartEntity() {
+		return null;
+	}
+
+	@Override
+	public boolean hasExternalPartEntity() {
+		return false;
 	}
 
 }

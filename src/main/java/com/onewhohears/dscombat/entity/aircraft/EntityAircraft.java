@@ -1487,35 +1487,33 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	
 	private boolean ridePilotSeat(LivingEntity e, List<EntitySeat> seats) {
 		for (EntitySeat seat : seats) 
-			if (seat.isPilotSeat() && seat.isVacant()) {
-				seat.setPassenger(e);
+			if (seat.isPilotSeat() && seat.setPassenger(e)) 
 				return e.startRiding(this);
-			}
 		return false;
 	}
 	
 	public boolean ridePassengerSeat(LivingEntity e) {
 		List<EntitySeat> seats = getSeats();
 		for (EntitySeat seat : seats) 
-			if (!seat.isPilotSeat() && seat.isVacant()) {
-				seat.setPassenger(e);
+			if (!seat.isPilotSeat() && seat.setPassenger(e)) 
 				return e.startRiding(this);
-			}
 		return false;
 	}
 	
-	public boolean rideAvailableSeat(LivingEntity e, String slot_pos) {
-		
+	public boolean rideAvailableSeat(LivingEntity e, String slotId) {
+		EntityVehiclePart p = getPartById(slotId);
+		if (p != null && p.getPartType().isSeat()) 
+			if (((EntitySeat)p).setPassenger(e)) 
+				return e.startRiding(this);
+		return rideAvailableSeat(e);
 	}
 	
 	public boolean rideAvailableSeat(LivingEntity e) {
 		List<EntitySeat> seats = getSeats();
 		if (ridePilotSeat(e, seats)) return true;
 		for (EntitySeat seat : seats) 
-			if (seat.isVacant()) {
-				seat.setPassenger(e);
+			if (seat.setPassenger(e)) 
 				return e.startRiding(this);
-			}
 		return false;
 	}
 	
@@ -1604,6 +1602,14 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     
     public List<EntityVehiclePart> getPartEntities() {
     	return parts;
+    }
+    
+    @Nullable
+    public EntityVehiclePart getPartById(String slotId) {
+    	for (EntityVehiclePart part : parts) 
+    		if (part.getSlotId().equals(slotId)) 
+    			return part;
+    	return null;
     }
 	
 	@Override

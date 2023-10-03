@@ -2508,6 +2508,10 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		return parts.toArray(new PartEntity<?>[parts.size()]);
 	}
 	
+	public List<EntityVehiclePart> getVehicleParts() {
+		return parts;
+	}
+	
 	public RotableHitbox[] getHitboxes() {
 		return hitboxes;
 	}

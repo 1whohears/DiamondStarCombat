@@ -43,10 +43,10 @@ import com.onewhohears.dscombat.client.model.weapon.EntityModelMiniGunTurret;
 import com.onewhohears.dscombat.client.model.weapon.EntityModelMissile1;
 import com.onewhohears.dscombat.client.model.weapon.EntityModelSteveUpSmash;
 import com.onewhohears.dscombat.client.overlay.PilotOverlay;
+import com.onewhohears.dscombat.client.renderer.RenderVehiclePartsManager;
 import com.onewhohears.dscombat.client.renderer.RendererEntityAircraft;
 import com.onewhohears.dscombat.client.renderer.RendererEntityInvisible;
 import com.onewhohears.dscombat.client.renderer.RendererEntityParachute;
-import com.onewhohears.dscombat.client.renderer.RendererEntityTurret;
 import com.onewhohears.dscombat.client.renderer.RendererEntityWeapon;
 import com.onewhohears.dscombat.client.renderer.RendererObjEntity;
 import com.onewhohears.dscombat.data.aircraft.AircraftClientPresets;
@@ -55,10 +55,6 @@ import com.onewhohears.dscombat.entity.aircraft.EntityGroundVehicle;
 import com.onewhohears.dscombat.entity.aircraft.EntityHelicopter;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 import com.onewhohears.dscombat.entity.aircraft.EntitySubmarine;
-import com.onewhohears.dscombat.entity.parts.EntityEngine;
-import com.onewhohears.dscombat.entity.parts.EntityRadar;
-import com.onewhohears.dscombat.entity.parts.EntityTurret;
-import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
 import com.onewhohears.dscombat.entity.weapon.EntityBomb;
 import com.onewhohears.dscombat.entity.weapon.EntityBullet;
 import com.onewhohears.dscombat.entity.weapon.EntityBunkerBuster;
@@ -248,8 +244,7 @@ public final class ClientModEvents {
 						new EntityModelMissile1(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)),
 						new ResourceLocation(DSCombatMod.MODID, "textures/entities/missile5.png")));
 		// TURRETS
-		// FIXME 6 going to need to register all of these custom obj model classes in a custom registry so they can be rendered in the aircraft renderer
-		event.registerEntityRenderer(ModEntities.MINIGUN_TURRET.get(), 
+		/*event.registerEntityRenderer(ModEntities.MINIGUN_TURRET.get(), 
 				(context) -> new RendererEntityTurret<EntityTurret>(context, 
 						new EntityModelMiniGunTurret(models.bakeLayer(EntityModelMiniGunTurret.LAYER_LOCATION)),
 						new ResourceLocation(DSCombatMod.MODID, "textures/entities/minigun_turret.png")));
@@ -260,11 +255,16 @@ public final class ClientModEvents {
 		event.registerEntityRenderer(ModEntities.STEVE_UP_SMASH.get(), 
 				(context) -> new RendererEntityTurret<EntityTurret>(context, 
 						new EntityModelSteveUpSmash(models.bakeLayer(EntityModelSteveUpSmash.LAYER_LOCATION)),
-						new ResourceLocation(DSCombatMod.MODID, "textures/entities/steve_up_smash.png")));
-		event.registerEntityRenderer(ModEntities.SAM_LAUNCHER.get(), 
-				(context) -> new RendererObjEntity<EntityTurret>(context, 
-						new SamLauncherModel()));
-		event.registerEntityRenderer(ModEntities.MLS.get(), 
+						new ResourceLocation(DSCombatMod.MODID, "textures/entities/steve_up_smash.png")));*/
+		RenderVehiclePartsManager.clear();
+		RenderVehiclePartsManager.addModel("samlauncher", new SamLauncherModel());
+		RenderVehiclePartsManager.addModel("mls", new MLSModel());
+		RenderVehiclePartsManager.addModel("torpedo", new TorpedoTubesModel());
+		RenderVehiclePartsManager.addModel("aaturret", new AATurretModel());
+		RenderVehiclePartsManager.addModel("ciws", new CIWSModel());
+		RenderVehiclePartsManager.addModel("mark7", new Mark7GunModel());
+		RenderVehiclePartsManager.addModel("mark45", new Mark45GunModel());
+		/*event.registerEntityRenderer(ModEntities.MLS.get(), 
 				(context) -> new RendererObjEntity<EntityTurret>(context, 
 						new MLSModel()));
 		event.registerEntityRenderer(ModEntities.TORPEDO_TUBES.get(), 
@@ -281,9 +281,13 @@ public final class ClientModEvents {
 						new Mark7GunModel()));
 		event.registerEntityRenderer(ModEntities.MARK45_CANNON.get(), 
 				(context) -> new RendererObjEntity<EntityTurret>(context, 
-						new Mark45GunModel()));
+						new Mark45GunModel()));*/
 		// RADARS
-		event.registerEntityRenderer(ModEntities.AIR_SCAN_A.get(), 
+		RenderVehiclePartsManager.addModel("radar1", new Radar1Model());
+		RenderVehiclePartsManager.addModel("radar2", new Radar2Model());
+		RenderVehiclePartsManager.addModel("radarstick", new StickRadarModel());
+		RenderVehiclePartsManager.addModel("radarball", new BallRadarModel());
+		/*event.registerEntityRenderer(ModEntities.AIR_SCAN_A.get(), 
 				(context) -> new RendererObjEntity<EntityRadar>(context, 
 						new Radar1Model()));
 		event.registerEntityRenderer(ModEntities.AIR_SCAN_B.get(), 
@@ -294,9 +298,15 @@ public final class ClientModEvents {
 						new StickRadarModel()));
 		event.registerEntityRenderer(ModEntities.SURVEY_ALL_B.get(), 
 				(context) -> new RendererObjEntity<EntityRadar>(context, 
-						new BallRadarModel()));
+						new BallRadarModel()));*/
 		// MISSILE RACKS
-		event.registerEntityRenderer(ModEntities.XM12.get(), 
+		RenderVehiclePartsManager.addModel("xm12", new ObjPartModel<>("xm12"));
+		RenderVehiclePartsManager.addModel("light_missile_rack", new LightMissileRackModel());
+		RenderVehiclePartsManager.addModel("heavy_missile_rack", new HeavyMissileRackModel());
+		RenderVehiclePartsManager.addModel("bomb_rack", new BombRackModel());
+		RenderVehiclePartsManager.addModel("adl", new ObjPartModel<>("adl"));
+		RenderVehiclePartsManager.addModel("vls", new VLSModel());
+		/*event.registerEntityRenderer(ModEntities.XM12.get(), 
 				(context) -> new RendererObjEntity<EntityWeaponRack>(context, 
 						new ObjPartModel<>("xm12")));
 		event.registerEntityRenderer(ModEntities.LIGHT_MISSILE_RACK.get(), 
@@ -313,13 +323,14 @@ public final class ClientModEvents {
 						new ObjPartModel<>("adl")));
 		event.registerEntityRenderer(ModEntities.VLS.get(), 
 				(context) -> new RendererObjEntity<EntityWeaponRack>(context, 
-						new VLSModel()));
+						new VLSModel()));*/
 		// EXTERNAL ENGINES
-		event.registerEntityRenderer(ModEntities.CFM56.get(), 
+		RenderVehiclePartsManager.addModel("cfm56", new ObjPartModel<>("cfm56"));
+		/*event.registerEntityRenderer(ModEntities.CFM56.get(), 
 				(context) -> new RendererObjEntity<EntityEngine>(context, 
-						new ObjPartModel<>("cfm56")));
+						new ObjPartModel<>("cfm56")));*/
 		// OTHER
-		event.registerEntityRenderer(ModEntities.SEAT.get(), RendererEntityInvisible::new);
+		//event.registerEntityRenderer(ModEntities.SEAT.get(), RendererEntityInvisible::new);
 		event.registerEntityRenderer(ModEntities.FLARE.get(), RendererEntityInvisible::new);
 		event.registerEntityRenderer(ModEntities.PARACHUTE.get(), 
 				(context) -> new RendererEntityParachute(context, 

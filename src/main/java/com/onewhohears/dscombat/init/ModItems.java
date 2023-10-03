@@ -14,6 +14,7 @@ import com.onewhohears.dscombat.data.parts.EngineData.EngineType;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.data.parts.TurretData.RotBounds;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.parts.EntityTurret.ShootType;
 import com.onewhohears.dscombat.item.ItemAircraft;
 import com.onewhohears.dscombat.item.ItemAmmo;
 import com.onewhohears.dscombat.item.ItemBuffPart;
@@ -30,11 +31,13 @@ import com.onewhohears.dscombat.item.ItemSeat;
 import com.onewhohears.dscombat.item.ItemTurret;
 import com.onewhohears.dscombat.item.ItemWeaponPart;
 
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.RecordItem;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -204,16 +207,16 @@ public class ModItems {
 	// IDEA 2 passive under water sonar doesn's show RWR warning
 	public static final RegistryObject<Item> AIR_SCAN_A = ITEMS.register("air_scan_a", 
 			() -> new ItemRadarPart(3f, "air_scan_a", SlotType.EXTERNAL_ADVANCED, 
-					ModEntities.AIR_SCAN_A.getId().toString()));
+					"radar1", EntityDimensions.scalable(1.0f, 1.0f)));
 	public static final RegistryObject<Item> AIR_SCAN_B = ITEMS.register("air_scan_b", 
 			() -> new ItemRadarPart(3f, "air_scan_b", SlotType.EXTERNAL_ADVANCED, 
-					ModEntities.AIR_SCAN_B.getId().toString()));
+					"radar2", EntityDimensions.scalable(1.0f, 1.0f)));
 	public static final RegistryObject<Item> SURVEY_ALL_A = ITEMS.register("survey_all_a", 
 			() -> new ItemRadarPart(3f, "survey_all_a", SlotType.EXTERNAL_ADVANCED, 
-					ModEntities.SURVEY_ALL_A.getId().toString()));
+					"radarstick", EntityDimensions.scalable(1.0f, 0.5f)));
 	public static final RegistryObject<Item> SURVEY_ALL_B = ITEMS.register("survey_all_b", 
 			() -> new ItemRadarPart(3f, "survey_all_b", SlotType.EXTERNAL_ADVANCED, 
-					ModEntities.SURVEY_ALL_B.getId().toString()));
+					"radarball", EntityDimensions.scalable(1.0f, 1.0f)));
 	
 	// SEATS
 	public static final RegistryObject<Item> SEAT = ITEMS.register("seat", 
@@ -222,44 +225,54 @@ public class ModItems {
 	// TURRENTS
 	public static final RegistryObject<Item> AA_TURRET = ITEMS.register("aa_turret", 
 			() -> new ItemTurret(2.5f, SlotType.TURRET_LIGHT, 
-					ModEntities.AA_TURRET.getId().toString(), "15mm",
-					RotBounds.create(3.0f, 30f, 30f), 20));
+					"aaturret", EntityDimensions.scalable(1.0f, 1.25f), "15mm",
+					RotBounds.create(3.0f, 30f, 30f), 20, 
+					new Vec3(0, 0.5, 0), 1.03125));
 	public static final RegistryObject<Item> MINIGUN_TURRET = ITEMS.register("minigun_turret", 
 			() -> new ItemTurret(3.5f, SlotType.TURRET_LIGHT, 
-					ModEntities.MINIGUN_TURRET.getId().toString(), "10mm",
-					RotBounds.create(2.5f,50f, 50f), 20));
+					"minigun", EntityDimensions.scalable(1.0f, 1.25f), "10mm",
+					RotBounds.create(2.5f,50f, 50f), 20,
+					Vec3.ZERO, 0.8));
 	public static final RegistryObject<Item> CIWS = ITEMS.register("ciws", 
 			() -> new ItemTurret(4.5f, SlotType.TURRET_LIGHT, 
-					ModEntities.CIWS.getId().toString(), "20mm",
-					RotBounds.create(2.0f, 75f, 30f), 40));
+					"ciws", EntityDimensions.scalable(1.0f, 1.25f), "20mm",
+					RotBounds.create(2.0f, 75f, 30f), 40, 
+					new Vec3(1, 0.5, 0), 0.6875));
 	public static final RegistryObject<Item> MARK45_CANNON = ITEMS.register("mark45_cannon", 
 			() -> new ItemTurret(6f, SlotType.TURRET_MED, 
-					ModEntities.MARK45_CANNON.getId().toString(), "127mm",
-					RotBounds.create(1.1f, 30f, 15f), 60));
+					"mark45", EntityDimensions.scalable(1.0f, 1.25f), "127mm",
+					RotBounds.create(1.1f, 30f, 15f), 60, 
+					new Vec3(0, 1.5, 0), 1.5625));
 	public static final RegistryObject<Item> HEAVY_TANK_TURRET = ITEMS.register("heavy_tank_turret", 
 			() -> new ItemTurret(8f, SlotType.TURRET_MED, 
-					ModEntities.HEAVY_TANK_TURRET.getId().toString(), "120mmhe",
-					RotBounds.create(1.0f, 30f, 30f), 60));
+					"tankgun", EntityDimensions.scalable(1.0f, 1.25f), "120mmhe",
+					RotBounds.create(1.0f, 30f, 30f), 60, 
+					Vec3.ZERO, 0.5));
 	public static final RegistryObject<Item> MARK7_CANNON = ITEMS.register("mark7_cannon", 
 			() -> new ItemTurret(11f, SlotType.TURRET_HEAVY, 
-					ModEntities.MARK7_CANNON.getId().toString(), "406mmhe",
-					RotBounds.create(0.9f, 30f, 15f), 100));
+					"mark7", EntityDimensions.scalable(1.0f, 1.25f), "406mmhe",
+					RotBounds.create(0.9f, 30f, 15f), 100, 
+					new Vec3(0, 1.5, 0), 1.625, ShootType.MARK7));
 	public static final RegistryObject<Item> STEVE_UP_SMASH = ITEMS.register("steve_up_smash", 
 			() -> new ItemTurret(10f, SlotType.TURRET_MED, 
-					ModEntities.STEVE_UP_SMASH.getId().toString(), "aim9p5",
-					RotBounds.create(1.8f, 25f, 25f), 20));
+					"steveup", EntityDimensions.scalable(1.0f, 1.25f), "aim9p5",
+					RotBounds.create(1.8f, 25f, 25f), 20, 
+					Vec3.ZERO, 3.2));
 	public static final RegistryObject<Item> SAM_LAUNCHER = ITEMS.register("sam_launcher", 
 			() -> new ItemTurret(13f, SlotType.TURRET_HEAVY, 
-					ModEntities.SAM_LAUNCHER.getId().toString(), "pac3",
-					RotBounds.create(1.3f, 25f, 25f), 30));
+					"samlauncher", EntityDimensions.scalable(1.0f, 1.25f), "pac3",
+					RotBounds.create(1.3f, 25f, 25f), 30, 
+					new Vec3(1.2, 0.4, 0), 2.7));
 	public static final RegistryObject<Item> TORPEDO_TUBES = ITEMS.register("torpedo_tubes", 
 			() -> new ItemTurret(10f, SlotType.TURRET_MED, 
-					ModEntities.TORPEDO_TUBES.getId().toString(), "torpedo1",
-					RotBounds.create(1.6f, 5f, 5f), 30));
+					"torpedo", EntityDimensions.scalable(1.0f, 1.25f), "torpedo1",
+					RotBounds.create(1.6f, 5f, 5f), 30, 
+					new Vec3(0, 1.8, 0), 1));
 	public static final RegistryObject<Item> MLS = ITEMS.register("mls", 
 			() -> new ItemTurret(11f, SlotType.TURRET_HEAVY, 
-					ModEntities.MLS.getId().toString(), "rgm84",
-					RotBounds.create(1.9f, 20f, 20f), 30));
+					"mls", EntityDimensions.scalable(1.0f, 1.25f), "rgm84",
+					RotBounds.create(1.9f, 20f, 20f), 30, 
+					new Vec3(1.2, 0, 0), 1));
 	
 	
 	// FLARE DISPENSERS

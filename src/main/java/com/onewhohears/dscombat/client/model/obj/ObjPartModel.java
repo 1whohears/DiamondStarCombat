@@ -22,10 +22,8 @@ public class ObjPartModel<T extends EntityVehiclePart> extends ObjEntityModel<T>
 	
 	@Override
 	protected void rotate(T entity, float partialTicks, PoseStack poseStack) {
-		if (entity.getVehicle() instanceof EntityAircraft plane) {
-			Quaternion q = UtilAngles.lerpQ(partialTicks, plane.getPrevQ(), plane.getClientQ());
-			poseStack.mulPose(q);
-		}
+		Quaternion q = UtilAngles.lerpQ(partialTicks, entity.getParent().getPrevQ(), entity.getParent().getClientQ());
+		poseStack.mulPose(q);
 		poseStack.mulPose(Vector3f.ZP.rotationDegrees(entity.getZRot()));
 	}
 	

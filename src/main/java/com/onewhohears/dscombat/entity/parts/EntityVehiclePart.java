@@ -30,8 +30,6 @@ public abstract class EntityVehiclePart extends PartEntity<EntityAircraft> {
 	private final Vec3 rel_pos;
 	private final float z_rot;
 	
-	// FIXME 4 make all EntityPart the forge PartEntity and make the player directly a passenger of the vehicle
-	
 	protected EntityVehiclePart(EntityAircraft parent, String modelId, EntityDimensions size, String slotId, Vec3 pos, float z_rot) {
 		super(parent);
 		this.modelId = modelId;

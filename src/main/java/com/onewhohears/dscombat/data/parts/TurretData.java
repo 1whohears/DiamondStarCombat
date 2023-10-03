@@ -4,6 +4,7 @@ import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
+import com.onewhohears.dscombat.entity.parts.EntityTurret.ShootType;
 import com.onewhohears.dscombat.entity.parts.EntityVehiclePart;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.UtilParse;
@@ -22,18 +23,20 @@ public class TurretData extends SeatData {
 	private final float health;
 	private final Vec3 offset;
 	private final double weaponOffset;
+	private final ShootType shootType;
 	private int ammo = 0;
 	private int max = 0;
 	
 	public TurretData(float weight, ResourceLocation itemid, SlotType[] compatibleSlots, 
 			String weaponId, RotBounds rotBounds, boolean filled, float health,
-			String modelId, EntityDimensions size, Vec3 offset, double weaponOffset) {
+			String modelId, EntityDimensions size, Vec3 offset, double weaponOffset, ShootType shootType) {
 		super(weight, itemid, compatibleSlots, modelId, size);
 		this.weaponId = weaponId;
 		this.rotBounds = rotBounds;
 		this.health = health;
 		this.offset = offset;
 		this.weaponOffset = weaponOffset;
+		this.shootType = shootType;
 		WeaponData data = WeaponPresets.get().getPreset(weaponId);
 		if (data != null) {
 			if (filled) this.ammo = data.getMaxAmmo();
@@ -50,6 +53,7 @@ public class TurretData extends SeatData {
 		max = tag.getInt("max");
 		offset = UtilParse.readVec3(tag, "offset");
 		weaponOffset = tag.getFloat("weaponOffset");
+		shootType = ShootType.valueOf(tag.getString("shootType"));
 	}
 	
 	public CompoundTag write() {
@@ -61,6 +65,7 @@ public class TurretData extends SeatData {
 		tag.putInt("max", max);
 		UtilParse.writeVec3(tag, offset, "offset");
 		tag.putFloat("weaponOffset", (float)weaponOffset);
+		tag.putString("shootType", shootType.name());
 		return tag;
 	}
 
@@ -73,6 +78,7 @@ public class TurretData extends SeatData {
 		max = buffer.readInt();
 		offset = DataSerializers.VEC3.read(buffer);
 		weaponOffset = buffer.readFloat();
+		shootType = ShootType.values()[buffer.readInt()];
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
@@ -84,6 +90,7 @@ public class TurretData extends SeatData {
 		buffer.writeInt(max);
 		DataSerializers.VEC3.write(buffer, offset);
 		buffer.writeFloat((float)weaponOffset);
+		buffer.writeInt(shootType.ordinal());
 	}
 	
 	@Override
@@ -95,7 +102,7 @@ public class TurretData extends SeatData {
 	public EntityVehiclePart getPartEntity() {
 		EntityTurret turret = new EntityTurret(getParent(), getModelId(), getExternalEntitySize(),
 				getSlotId(), getRelPos(), getZRot(), getPassengerOffset(), 
-				getWeaponOffset(), getRotBounds());
+				getWeaponOffset(), getRotBounds(), getShootType());
 		turret.setHealth(health);
 		return turret;
 	}
@@ -119,6 +126,10 @@ public class TurretData extends SeatData {
 	
 	public RotBounds getRotBounds() {
 		return rotBounds;
+	}
+	
+	public ShootType getShootType() {
+		return shootType;
 	}
 	
 	public static class RotBounds {

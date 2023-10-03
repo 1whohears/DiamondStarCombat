@@ -40,6 +40,8 @@ public class RendererEntityAircraft<T extends EntityAircraft> extends EntityRend
 		model.renderToBuffer(entity, partialTicks, poseStack, vertexconsumer, packedLight, 
 				OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
 		
+		RenderVehiclePartsManager.renderVehicleParts(entity, poseStack, multiBufferSource, packedLight, partialTicks);
+		
         poseStack.popPose();
 		
         super.render(entity, entityYaw, partialTicks, poseStack, multiBufferSource, packedLight);

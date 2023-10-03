@@ -26,7 +26,7 @@
   "maxAge": 200,
   "maxAmmo": 20,
   "presetId": "anm57",
-  "rackTypeKey": "dscombat:bomb_rack",
+  "rackModelId": "bomb_rack",
   "shootSoundKey": "dscombat:bomb_shoot_1",
   "speed": 0.0
 }

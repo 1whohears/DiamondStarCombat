@@ -40,7 +40,7 @@
   "maxAge": 600,
   "maxAmmo": 4,
   "presetId": "rgm84",
-  "rackTypeKey": "dscombat:adl",
+  "rackModelId": "adl",
   "seeThroWater": 100,
   "shootSoundKey": "dscombat:rocket_launch_1",
   "speed": 2.5,

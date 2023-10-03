@@ -82,7 +82,6 @@ public class WeaponPartData extends PartData {
 	
 	@Override
 	public void setup(EntityAircraft craft, String slotId, Vec3 pos, float zRot) {
-		super.setup(craft, slotId, pos, zRot);
 		WeaponData data = craft.weaponSystem.get(weaponId, slotId);
 		if (data == null) {
 			data = WeaponPresets.get().getPreset(weaponId);
@@ -91,9 +90,9 @@ public class WeaponPartData extends PartData {
 			craft.weaponSystem.addWeapon(data);
 		}
 		data.setCurrentAmmo(ammo);
-		//data.setMaxAmmo(max);
 		data.setLaunchPos(pos);
 		if (!craft.level.isClientSide) data.updateClientAmmo(craft);
+		super.setup(craft, slotId, pos, zRot);
 	}
 	
 	@Override

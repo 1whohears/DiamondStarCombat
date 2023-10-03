@@ -57,11 +57,12 @@ public abstract class PartData {
 		this.itemid = itemid;
 		this.compatibleSlots = compatibleSlots;
 		this.modelId = modelId;
+		if (size == null) size = EntityDimensions.scalable(0.1f, 0.1f);
 		this.size = size;
 	}
 	
 	protected PartData(float weight, ResourceLocation itemid, SlotType[] compatibleSlots) {
-		this(weight, itemid, compatibleSlots, "", EntityDimensions.scalable(0, 0));
+		this(weight, itemid, compatibleSlots, "", EntityDimensions.scalable(0.1f, 0.1f));
 	}
 	
 	public PartData(CompoundTag tag) {

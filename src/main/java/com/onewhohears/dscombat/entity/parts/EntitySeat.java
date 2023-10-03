@@ -7,6 +7,9 @@ import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -16,6 +19,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
 public class EntitySeat extends EntityVehiclePart {
+	
+	public static final EntityDataAccessor<Integer> PASSID = SynchedEntityData.defineId(EntitySeat.class, EntityDataSerializers.INT);
 	
 	public final Vec3 passengerOffset;
 	
@@ -42,13 +47,7 @@ public class EntitySeat extends EntityVehiclePart {
 		return true;
 	}
 	
-	@Override
-	public void tick() {
-		super.tick();
-		positionPassenger();
-	}
-	
-	protected void positionPassenger() {
+	public void positionPassenger() {
 		Entity passenger = getPassenger();
 		if (passenger == null) return;
 		Quaternion q;
@@ -63,16 +62,20 @@ public class EntitySeat extends EntityVehiclePart {
 	public boolean setPassenger(Entity passenger) {
 		if (isOccupied()) return false;
 		this.passenger = passenger;
+		setPassengerId(passenger.getId());
+		System.out.println("setting passenger "+this+" to "+passenger);
 		return true;
 	}
 	
 	public void removePassenger() {
-		this.passenger =  null;
+		this.passenger = null;
+		setPassengerId(-1);
+		System.out.println("removing passenger "+this);
 	}
 	
 	@Nullable
 	public Player getPlayer() {
-		if (passenger instanceof Player p) return p;
+		if (getPassenger() instanceof Player p) return p;
 		return null;
 	}
 	
@@ -82,11 +85,11 @@ public class EntitySeat extends EntityVehiclePart {
 	}
 	
 	public boolean isOccupied() {
-		return passenger != null;
+		return getPassenger() != null;
 	}
 	
 	public boolean isVacant() {
-		return passenger == null;
+		return getPassenger() == null;
 	}
 	
 	@Nullable
@@ -127,6 +130,32 @@ public class EntitySeat extends EntityVehiclePart {
 	@Override
 	public boolean canGetHurt() {
 		return false;
+	}
+	
+	@Override
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+    	entityData.define(PASSID, -1);
+	}
+	
+	@Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
+		super.onSyncedDataUpdated(key);
+		if (!getParent().getLevel().isClientSide()) return;
+		if (key.equals(PASSID)) {
+			int passid = getPassengerId();
+			if (passid == -1) passenger = null;
+			else passenger = getParent().getLevel().getEntity(passid);
+			System.out.println("synching passid "+passid+" "+this);
+		}
+	}
+	
+	protected int getPassengerId() {
+		return entityData.get(PASSID);
+	}
+	
+	protected void setPassengerId(int id) {
+		entityData.set(PASSID, id);
 	}
 
 }

@@ -39,7 +39,7 @@
   "maxAge": 200,
   "maxAmmo": 6,
   "presetId": "agm114k",
-  "rackTypeKey": "dscombat:light_missile_rack",
+  "rackModelId": "light_missile_rack",
   "shootSoundKey": "dscombat:rocket_launch_1",
   "speed": 3.0,
   "turnRadius": 30.0

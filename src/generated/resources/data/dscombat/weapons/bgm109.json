@@ -44,7 +44,7 @@
   "maxAge": 172,
   "maxAmmo": 16,
   "presetId": "bgm109",
-  "rackTypeKey": "dscombat:vls",
+  "rackModelId": "vls",
   "shootSoundKey": "dscombat:rocket_launch_1",
   "speed": 3.5,
   "targetType": "AIR",

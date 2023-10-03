@@ -38,10 +38,7 @@ import com.onewhohears.dscombat.client.model.obj.custom.VLSModel;
 import com.onewhohears.dscombat.client.model.weapon.EntityModelBomb1;
 import com.onewhohears.dscombat.client.model.weapon.EntityModelBullet1;
 import com.onewhohears.dscombat.client.model.weapon.EntityModelGruetzBB;
-import com.onewhohears.dscombat.client.model.weapon.EntityModelHeavyTankTurret;
-import com.onewhohears.dscombat.client.model.weapon.EntityModelMiniGunTurret;
 import com.onewhohears.dscombat.client.model.weapon.EntityModelMissile1;
-import com.onewhohears.dscombat.client.model.weapon.EntityModelSteveUpSmash;
 import com.onewhohears.dscombat.client.overlay.PilotOverlay;
 import com.onewhohears.dscombat.client.renderer.RenderVehiclePartsManager;
 import com.onewhohears.dscombat.client.renderer.RendererEntityAircraft;
@@ -93,11 +90,11 @@ public final class ClientModEvents {
 		//event.registerLayerDefinition(EntityModelLightMissileRack.LAYER_LOCATION, EntityModelLightMissileRack::createBodyLayer);
 		//event.registerLayerDefinition(EntityModelHeavyMissileRack.LAYER_LOCATION, EntityModelHeavyMissileRack::createBodyLayer);
 		//event.registerLayerDefinition(EntityModelXM12.LAYER_LOCATION, EntityModelXM12::createBodyLayer);
-		event.registerLayerDefinition(EntityModelMiniGunTurret.LAYER_LOCATION, EntityModelMiniGunTurret::createBodyLayer);
+		//event.registerLayerDefinition(EntityModelMiniGunTurret.LAYER_LOCATION, EntityModelMiniGunTurret::createBodyLayer);
 		event.registerLayerDefinition(EntityModelMrBudgerTank.LAYER_LOCATION, EntityModelMrBudgerTank::createBodyLayer);
-		event.registerLayerDefinition(EntityModelHeavyTankTurret.LAYER_LOCATION, EntityModelHeavyTankTurret::createBodyLayer);
+		//event.registerLayerDefinition(EntityModelHeavyTankTurret.LAYER_LOCATION, EntityModelHeavyTankTurret::createBodyLayer);
 		event.registerLayerDefinition(EntityModelSmallRoller.LAYER_LOCATION, EntityModelSmallRoller::createBodyLayer);
-		event.registerLayerDefinition(EntityModelSteveUpSmash.LAYER_LOCATION, EntityModelSteveUpSmash::createBodyLayer);
+		//event.registerLayerDefinition(EntityModelSteveUpSmash.LAYER_LOCATION, EntityModelSteveUpSmash::createBodyLayer);
 		event.registerLayerDefinition(EntityModelNathanBoat.LAYER_LOCATION, EntityModelNathanBoat::createBodyLayer);
 		event.registerLayerDefinition(EntityModelAndolfSub.LAYER_LOCATION, EntityModelAndolfSub::createBodyLayer);
 		event.registerLayerDefinition(EntityModelOrangeTesla.LAYER_LOCATION, EntityModelOrangeTesla::createBodyLayer);
@@ -110,6 +107,7 @@ public final class ClientModEvents {
 		//event.registerLayerDefinition(EntityModelCFM56.LAYER_LOCATION, EntityModelCFM56::createBodyLayer);
 		event.registerLayerDefinition(EntityModelGruetzBB.LAYER_LOCATION, EntityModelGruetzBB::createBodyLayer);
 		event.registerLayerDefinition(EntityModelParachute.LAYER_LOCATION, EntityModelParachute::createBodyLayer);
+		RenderVehiclePartsManager.clear();
 	}
 	
 	@SubscribeEvent
@@ -256,7 +254,6 @@ public final class ClientModEvents {
 				(context) -> new RendererEntityTurret<EntityTurret>(context, 
 						new EntityModelSteveUpSmash(models.bakeLayer(EntityModelSteveUpSmash.LAYER_LOCATION)),
 						new ResourceLocation(DSCombatMod.MODID, "textures/entities/steve_up_smash.png")));*/
-		RenderVehiclePartsManager.clear();
 		RenderVehiclePartsManager.addModel("samlauncher", new SamLauncherModel());
 		RenderVehiclePartsManager.addModel("mls", new MLSModel());
 		RenderVehiclePartsManager.addModel("torpedo", new TorpedoTubesModel());

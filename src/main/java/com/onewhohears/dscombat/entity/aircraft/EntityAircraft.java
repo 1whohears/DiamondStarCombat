@@ -500,7 +500,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 			else q = getQ();
  			Vec3 seatPos = UtilAngles.rotateVector(part.getRelativePos(), q);
  			part.setPos(position().add(seatPos));
-			part.tick();
+			//part.tick();
 		}
 		for (RotableHitbox box : hitboxes) box.tick();
 	}
@@ -1491,10 +1491,15 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	}
 	
 	/**
-	 * gives players special effects. actual rider positioning is handled in the seat entities
+	 * also gives players special effects
 	 */
 	@Override
     public void positionRider(Entity passenger) {
+		// position rider
+		EntitySeat seat = getPassengerSeat(passenger);
+		if (seat != null) seat.positionPassenger();
+		System.out.println("pos rider "+passenger+" in "+seat);
+		// give player effects
 		if (tickCount % 20 != 0 && passenger instanceof Player player) {
 			if (nightVisionHud) {
 				player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 
@@ -1539,11 +1544,12 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	}
 	
 	public boolean switchSeat(Entity e) {
-		System.out.println("switch seat pass = "+e);
 		List<EntitySeat> seats = getSeats();
+		System.out.println("switch seat pass = "+e+" "+seats.size()+" possible seats");
 		int seatIndex = -1;
 		for (int i = 0; i < seats.size(); ++i) {
 			Entity p = seats.get(i).getPassenger();
+			System.out.println(seats.get(i)+" pass = "+p);
 			if (p == null) continue;
 			if (p.equals(e)) {
 				seatIndex = i;
@@ -1615,12 +1621,14 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     
     public boolean addPartEntity(EntityVehiclePart part) {
     	if (getPartById(part.getSlotId()) != null) return false;
+    	level.addFreshEntity(part);
     	return parts.add(part);
     }
     
     public boolean removePartEntity(String slotId) {
     	EntityVehiclePart part = getPartById(slotId);
     	if (part == null) return false;
+    	part.discard();
     	return parts.remove(part);
     }
     
@@ -1652,11 +1660,11 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	@Override
     protected void addPassenger(Entity passenger) {
         super.addPassenger(passenger);
+        if (level.isClientSide) return;
         EntitySeat seat = getPassengerSeat(passenger);
-        System.out.println(this+" adding passenger "+passenger+" in "+seat);
+        System.out.println("adding passenger to "+this+" as "+passenger+" in "+seat);
         if (seat != null) return;
-        for (EntitySeat v : getVacantSeats()) {
-        	v.setPassenger(passenger);
+        for (EntitySeat v : getVacantSeats()) if (v.setPassenger(passenger)) {
         	System.out.println("nevermind actually in "+v);
         	break;
         }
@@ -2511,7 +2519,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	
 	@Override
 	public PartEntity<?>[] getParts() {
-		return parts.toArray(new PartEntity<?>[parts.size()]);
+		return getHitboxes();
 	}
 	
 	public List<EntityVehiclePart> getVehicleParts() {

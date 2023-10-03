@@ -40,7 +40,7 @@
   "maxAge": 300,
   "maxAmmo": 3,
   "presetId": "agm84e",
-  "rackTypeKey": "dscombat:heavy_missile_rack",
+  "rackModelId": "heavy_missile_rack",
   "seeThroBlock": 4,
   "shootSoundKey": "dscombat:rocket_launch_1",
   "speed": 2.5,

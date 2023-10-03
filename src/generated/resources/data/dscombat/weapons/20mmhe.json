@@ -26,7 +26,7 @@
   "maxAge": 40,
   "maxAmmo": 500,
   "presetId": "20mmhe",
-  "rackTypeKey": "dscombat:xm12",
+  "rackModelId": "xm12",
   "shootSoundKey": "dscombat:bullet_shoot_1",
   "speed": 10.0
 }

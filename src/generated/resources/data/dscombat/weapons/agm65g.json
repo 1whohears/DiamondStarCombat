@@ -40,7 +40,7 @@
   "maxAge": 300,
   "maxAmmo": 4,
   "presetId": "agm65g",
-  "rackTypeKey": "dscombat:heavy_missile_rack",
+  "rackModelId": "heavy_missile_rack",
   "shootSoundKey": "dscombat:rocket_launch_1",
   "speed": 2.0,
   "targetType": "GROUND",

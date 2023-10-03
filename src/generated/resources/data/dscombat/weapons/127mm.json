@@ -22,7 +22,7 @@
   "maxAge": 40,
   "maxAmmo": 50,
   "presetId": "127mm",
-  "rackTypeKey": "",
+  "rackModelId": "",
   "shootSoundKey": "dscombat:bullet_shoot_1",
   "speed": 7.0
 }

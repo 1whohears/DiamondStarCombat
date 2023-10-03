@@ -7,6 +7,7 @@ import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -18,26 +19,34 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Team;
-import net.minecraftforge.entity.PartEntity;
 
-public abstract class EntityVehiclePart extends PartEntity<EntityAircraft> {
+public abstract class EntityVehiclePart extends Entity {
 	
 	public static final EntityDataAccessor<Float> HEALTH = SynchedEntityData.defineId(EntityVehiclePart.class, EntityDataSerializers.FLOAT);
 	
+	private final EntityAircraft parent;
 	private final String modelId;
 	private final EntityDimensions size;
 	private final String slotId;
 	private final Vec3 rel_pos;
 	private final float z_rot;
 	
+	// FIXME 4 the forge part entity class is really annoying. maybe making it an unregistered entity works?
+	
 	protected EntityVehiclePart(EntityAircraft parent, String modelId, EntityDimensions size, String slotId, Vec3 pos, float z_rot) {
-		super(parent);
+		super(parent.getType(), parent.getLevel());
+		this.parent = parent;
 		this.modelId = modelId;
 		this.size = size;
 		this.slotId = slotId;
 		this.rel_pos = pos;
 		this.z_rot = z_rot;
 		if (!canGetHurt()) setHealth(1000);
+		setPos(parent.position());
+	}
+	
+	public EntityAircraft getParent() {
+		return parent;
 	}
 	
 	public void init() {
@@ -47,7 +56,7 @@ public abstract class EntityVehiclePart extends PartEntity<EntityAircraft> {
 	public void tick() {
 		if (firstTick) init();
 		super.tick();
-		setOldPosAndRot();
+		//setOldPosAndRot();
 	}
 	
 	public String getModelId() {
@@ -158,17 +167,18 @@ public abstract class EntityVehiclePart extends PartEntity<EntityAircraft> {
     
     @Override
     protected AABB makeBoundingBox() {
-    	if (Mth.abs(getZRot()) <= 90) return super.makeBoundingBox();
-    	double pX = getX(), pY = getY(), pZ = getZ();
     	EntityDimensions d = getDimensions(getPose());
+    	double pX = getX(), pY = getY(), pZ = getZ();
     	double f = d.width / 2.0F;
         double f1 = d.height;
-        return new AABB(pX-f, pY-f1, pZ-f, 
-        		pX+f, pY, pZ+f);
+        if (Mth.abs(getZRot()) > 90) f1 *= -1;
+        return new AABB(pX-f, pY, pZ-f, 
+        		pX+f, pY+f1, pZ+f);
     }
     
     @Override
 	public EntityDimensions getDimensions(Pose pose) {
+    	if (size == null) return super.getDimensions(pose);
 		return size;
 	}
     
@@ -200,6 +210,21 @@ public abstract class EntityVehiclePart extends PartEntity<EntityAircraft> {
 
 	@Override
 	protected void addAdditionalSaveData(CompoundTag compound) {
+	}
+	
+	@Override
+    public Packet<?> getAddEntityPacket() {
+        throw new UnsupportedOperationException();
+    }
+	
+	@Override
+	public boolean shouldRender(double lerpX, double lerpY, double lerpZ) {
+		return false;
+	}
+	
+	@Override
+	public boolean shouldRenderAtSqrDistance(double dist) {
+		return false;
 	}
 
 }

@@ -24,7 +24,7 @@ public class TurretShootGoal extends Goal {
 	
 	@Override
 	public boolean canUse() {
-		if (mob.getVehicle() == null || !mob.getVehicle().equals(turret)) return false;
+		if (!turret.getParent().getPassengerSeat(mob).equals(turret)) return false;
 		Entity target_entity = mob.getTarget();
 		if (target_entity != null && target_entity.isAlive()) {
 			target = target_entity;

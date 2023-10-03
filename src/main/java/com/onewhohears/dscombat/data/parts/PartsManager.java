@@ -117,7 +117,7 @@ public class PartsManager {
 		if (slot.isPilotSlot()) pilot = parent.getControllingPassenger();
 		if (stack.isEmpty()) {
 			slot.removePartData(parent);
-			if (pilot != null && pilot.getVehicle() == null) {
+			if (pilot != null && !pilot.isPassenger()) {
 				SeatData seatdata = ItemSeat.getDefaultSeat();
 				slot.addPartData(seatdata, parent);
 				parent.rideAvailableSeat(pilot);
@@ -130,7 +130,7 @@ public class PartsManager {
 			}
 			if (slot.filled()) slot.removePartData(parent);
 			slot.addPartData(data, parent);
-			if (pilot != null && pilot.getVehicle() == null) {
+			if (pilot != null && !pilot.isPassenger()) {
 				parent.rideAvailableSeat(pilot);
 			}
 		}	
@@ -144,7 +144,7 @@ public class PartsManager {
 		Entity pilot = null;
 		if (slots.get(i).isPilotSlot()) pilot = parent.getControllingPassenger();
 		slots.get(i).removePartData(parent);
-		if (pilot != null && pilot.getVehicle() == null) {
+		if (pilot != null && !pilot.isPassenger()) {
 			SeatData seatdata = ItemSeat.getDefaultSeat();
 			slots.get(i).addPartData(seatdata, parent);
 			parent.rideAvailableSeat(pilot);
@@ -204,7 +204,7 @@ public class PartsManager {
 		Entity pilot = null;
 		if (slot.isPilotSlot()) pilot = parent.getControllingPassenger();
 		slot.removePartData(parent);
-		if (pilot != null && pilot.getVehicle() == null) {
+		if (pilot != null && !pilot.isPassenger()) {
 			SeatData seatdata = ItemSeat.getDefaultSeat();
 			slot.addPartData(seatdata, parent);
 			parent.rideAvailableSeat(pilot);

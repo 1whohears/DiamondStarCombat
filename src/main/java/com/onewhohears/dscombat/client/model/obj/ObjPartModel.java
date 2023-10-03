@@ -29,7 +29,7 @@ public class ObjPartModel<T extends EntityVehiclePart> extends ObjEntityModel<T>
 	
 	@Override
 	protected int getLight(T entity, int lightmap) {
-		if (entity.getVehicle() instanceof EntityAircraft plane && !plane.isOperational()) return 1;
+		if (entity.getParent().isOperational()) return 1;
 		return lightmap;
 	}
 

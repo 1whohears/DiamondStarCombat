@@ -146,16 +146,19 @@ public class EntityTurret extends EntitySeat {
 	}
 	
 	@Override
-	public Vec3 positionPassenger() {
+	public void positionPassenger() {
+		Entity passenger = getPassenger();
+		if (passenger == null) return;
 		Quaternion q;
 		if (level.isClientSide) q = getParent().getClientQ();
 		else q = getParent().getQ();
-		double offset = getPassengersRidingOffset() + getPassenger().getMyRidingOffset() + getPassenger().getEyeHeight();
-		return UtilAngles.rotateVector(new Vec3(
+		double offset = getPassengersRidingOffset() + passenger.getMyRidingOffset() + passenger.getEyeHeight();
+		Vec3 rel = UtilAngles.rotateVector(new Vec3(
 					passengerOffset.x*Mth.cos(getRelRotY()*Mth.DEG_TO_RAD)+passengerOffset.z*Mth.sin(getRelRotY()*Mth.DEG_TO_RAD), 
 					offset, 
 					passengerOffset.z*Mth.cos(getRelRotY()*Mth.DEG_TO_RAD)+passengerOffset.x*Mth.sin(getRelRotY()*Mth.DEG_TO_RAD)
-				), q).subtract(0, getPassenger().getEyeHeight(), 0).add(position());
+				), q).subtract(0, passenger.getEyeHeight(), 0);
+		passenger.setPos(position().add(rel));
 	}
 	
 	@Override

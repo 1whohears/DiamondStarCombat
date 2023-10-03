@@ -47,6 +47,7 @@ public abstract class EntityVehiclePart extends PartEntity<EntityAircraft> {
 	public void tick() {
 		if (firstTick) init();
 		super.tick();
+		setOldPosAndRot();
 	}
 	
 	public String getModelId() {
@@ -75,8 +76,7 @@ public abstract class EntityVehiclePart extends PartEntity<EntityAircraft> {
 	
 	public void onDeath() {
 		if (!canGetHurt()) return;
-		if (!(getVehicle() instanceof EntityAircraft plane)) return;
-		plane.partsManager.killPartInSlot(getSlotId());
+		getParent().partsManager.killPartInSlot(getSlotId());
 	}
 	
 	@Override
@@ -129,9 +129,7 @@ public abstract class EntityVehiclePart extends PartEntity<EntityAircraft> {
     @Override
     public boolean isAlliedTo(Team team) {
     	if (team == null) return false;
-    	Entity v = getVehicle();
-    	if (v == null) return false;
-    	Entity c = v.getControllingPassenger();
+    	Entity c = getParent().getControllingPassenger();
 		if (c != null) return team.isAlliedTo(c.getTeam());
     	return super.isAlliedTo(team);
     }
@@ -183,9 +181,17 @@ public abstract class EntityVehiclePart extends PartEntity<EntityAircraft> {
 	public boolean shouldBeSaved() {
 		return false;
 	}
+	
+	@Override
+	public String toString() {
+		String s = super.toString();
+		s += getPartType().toString()+" "+getSlotId()+" "+getRelativePos()+" "+getModelId();
+		return s;
+	}
     
     @Override
 	protected void defineSynchedData() {
+    	entityData.define(HEALTH, 0f);
 	}
 
 	@Override

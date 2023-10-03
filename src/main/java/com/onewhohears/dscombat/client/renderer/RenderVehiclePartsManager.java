@@ -29,8 +29,12 @@ public class RenderVehiclePartsManager {
 	public static void renderVehicleParts(EntityAircraft entity, PoseStack poseStack, MultiBufferSource bufferSource, int lightmap, float partialTicks) {
 		for (EntityVehiclePart part : entity.getVehicleParts()) {
 			if (!part.shouldRender()) continue;
+			System.out.println("trying to render "+part);
 			ObjPartModel<EntityVehiclePart> model = models.get(part.getModelId());
-			if (model == null) continue;
+			if (model == null) {
+				System.out.println(part.getModelId()+" isnt here dumb dumb");
+				continue;
+			}
 			Vec3 rel = part.position().subtract(entity.position());
 			poseStack.translate(rel.x, rel.y, rel.z);
 			model.render(part, poseStack, bufferSource, lightmap, partialTicks);

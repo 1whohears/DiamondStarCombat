@@ -48,13 +48,16 @@ public class EntitySeat extends EntityVehiclePart {
 		positionPassenger();
 	}
 	
-	protected Vec3 positionPassenger() {
+	protected void positionPassenger() {
+		Entity passenger = getPassenger();
+		if (passenger == null) return;
 		Quaternion q;
 		if (level.isClientSide) q = getParent().getClientQ();
 		else q = getParent().getQ();
-		double offset = getPassengersRidingOffset() + getPassenger().getMyRidingOffset() + getPassenger().getEyeHeight();
-		return UtilAngles.rotateVector(new Vec3(0, offset, 0), q)
-				.subtract(0, getPassenger().getEyeHeight(), 0).add(position());
+		double offset = getPassengersRidingOffset() + passenger.getMyRidingOffset() + passenger.getEyeHeight();
+		Vec3 rel = UtilAngles.rotateVector(new Vec3(0, offset, 0), q)
+				.subtract(0, passenger.getEyeHeight(), 0);
+		passenger.setPos(position().add(rel));
 	}
 	
 	public boolean setPassenger(Entity passenger) {
@@ -107,7 +110,7 @@ public class EntitySeat extends EntityVehiclePart {
 	@Override
     public boolean hurt(DamageSource source, float amount) {
 		if (source.isExplosion() || source.isMagic()) return true;
-		getVehicle().hurt(source, amount);
+		getParent().hurt(source, amount);
 		return true;
 	}
 

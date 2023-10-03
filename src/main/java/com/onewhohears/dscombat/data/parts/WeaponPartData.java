@@ -105,6 +105,10 @@ public class WeaponPartData extends PartData {
 	@Override
 	public void tick() {
 		super.tick();
+		/*if (getParent() == null) {
+			System.out.println("PARENT IS NULL "+weaponId);
+			return;
+		}*/
 		WeaponData data = getParent().weaponSystem.get(weaponId, getSlotId());
 		if (data != null) {
 			ammo = data.getCurrentAmmo();

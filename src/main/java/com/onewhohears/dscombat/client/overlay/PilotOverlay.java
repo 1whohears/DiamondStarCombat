@@ -19,6 +19,7 @@ import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft.AircraftType;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
+import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.UtilParse;
@@ -115,8 +116,10 @@ public class PilotOverlay {
 			drawPlaneAttitude(m, player, (EntityPlane)plane, gui, poseStack, partialTick, width, height);
 			drawPlaneTurnCoordinator(m, player, (EntityPlane)plane, gui, poseStack, partialTick, width, height);
 		}
-		if (player.getVehicle() instanceof EntityTurret turret)
-			drawAircraftTurretData(m, player, turret, gui, poseStack, partialTick, width, height);
+		EntitySeat seat = plane.getPassengerSeat(player);
+		if (seat != null && seat.getPartType().isTurret()) {
+			drawAircraftTurretData(m, player, (EntityTurret)seat, gui, poseStack, partialTick, width, height);
+		}
 		if (Config.CLIENT.debugMode.get()) drawDebug(m, player, plane, gui, poseStack, partialTick, width, height);
 	});
 	

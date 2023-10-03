@@ -166,9 +166,11 @@ public final class ClientInputEvents {
 		// CYCLE PING
 		if (DSCKeys.pingCycleKey.consumeClick()) radar.clientSelectNextTarget();
 		// TURRET SHOOT
-		boolean shoot = DSCKeys.shootKey.isDown() && playerCanShoot(player);
-		if (shoot && player.getVehicle() instanceof EntityTurret turret) {
-			PacketHandler.INSTANCE.sendToServer(new ToServerShootTurret(turret));
+		if (DSCKeys.shootKey.isDown() && playerCanShoot(player)) {
+			EntitySeat seat = plane.getPassengerSeat(player);
+			if (seat != null && seat.getPartType().isTurret()) {
+				PacketHandler.INSTANCE.sendToServer(new ToServerShootTurret((EntityTurret)seat));
+			}
 		}
 		// DISMOUNT 
 		if (Config.CLIENT.customDismount.get() && DSCKeys.dismount.isDown()) {
@@ -184,7 +186,7 @@ public final class ClientInputEvents {
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void clientMoveInput(MovementInputUpdateEvent event) {
 		Player player = event.getEntity();
-		if (!(player.getVehicle() instanceof EntitySeat)) return;
+		if (!(player.getRootVehicle() instanceof EntityAircraft)) return;
 		if (Config.CLIENT.customDismount.get()) {
 			event.getInput().shiftKeyDown = false;
 		}
@@ -219,7 +221,7 @@ public final class ClientInputEvents {
 		if (!mounting.level.isClientSide) return;
 		if (!(mounting instanceof Player)) return;
 		Entity mounted = event.getEntityBeingMounted();
-		if (!(mounted instanceof EntitySeat)) return;
+		if (!(mounted instanceof EntityAircraft)) return;
 		mountTime = System.currentTimeMillis();
 	}
 	

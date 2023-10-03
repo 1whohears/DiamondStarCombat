@@ -1539,6 +1539,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	}
 	
 	public boolean switchSeat(Entity e) {
+		System.out.println("switch seat pass = "+e);
 		List<EntitySeat> seats = getSeats();
 		int seatIndex = -1;
 		for (int i = 0; i < seats.size(); ++i) {
@@ -1549,12 +1550,14 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 				break;
 			}
 		}
+		System.out.println("seat index = "+seatIndex);
 		if (seatIndex == -1) return false; // player not riding seat
 		int i = 0, j = seatIndex+1;
 		while (i < seats.size()-1) {
 			if (j >= seats.size()) j = 0;
-			if (seats.get(j).isVacant()) 
+			if (seats.get(j).isVacant()) {
 				return rideSeat(e, seats.get(j));
+			}
 			++i; ++j;
 		}
 		return false;
@@ -1632,7 +1635,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     @Nullable
 	public EntitySeat getPassengerSeat(Entity passenger) {
 		for (EntitySeat seat : getSeats())
-			if (seat.getPassenger().equals(passenger)) 
+			if (seat.isOccupied() && passenger.equals(seat.getPassenger())) 
 				return seat;
 		return null;
     }
@@ -1642,6 +1645,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		EntitySeat current = getPassengerSeat(passenger);
 		if (current != null) current.removePassenger();
 		if (!seat.setPassenger(passenger)) return false;
+		System.out.println(passenger+" riding "+seat);
 		return passenger.startRiding(this, true);
 	}
 	
@@ -1649,9 +1653,11 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     protected void addPassenger(Entity passenger) {
         super.addPassenger(passenger);
         EntitySeat seat = getPassengerSeat(passenger);
+        System.out.println(this+" adding passenger "+passenger+" in "+seat);
         if (seat != null) return;
         for (EntitySeat v : getVacantSeats()) {
         	v.setPassenger(passenger);
+        	System.out.println("nevermind actually in "+v);
         	break;
         }
 	}

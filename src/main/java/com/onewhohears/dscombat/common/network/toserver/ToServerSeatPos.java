@@ -13,9 +13,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkEvent.Context;
 
 @Deprecated
-/**
- * FIXME 6 this packet shouldn't be needed once 4 is complete
- */
 public class ToServerSeatPos extends IPacket {
 			
 	public final Vec3 seatPos;

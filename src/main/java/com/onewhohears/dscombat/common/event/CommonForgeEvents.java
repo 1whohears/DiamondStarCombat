@@ -15,6 +15,8 @@ import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.level.ChunkWatchEvent;
 import net.minecraftforge.event.level.ExplosionEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -87,6 +89,27 @@ public final class CommonForgeEvents {
 		event.addListener(AircraftPresets.get());
 		event.addListener(WeaponPresets.get());
 		event.addListener(RadarPresets.get());
+	}
+	
+	@SubscribeEvent(priority = EventPriority.NORMAL)
+	public static void stopTrackingEvent(PlayerEvent.StopTracking event) {
+		
+	}
+	
+	@SubscribeEvent(priority = EventPriority.NORMAL)
+	public static void chunkWatchEvent(ChunkWatchEvent.Watch event) {
+		System.out.println("CHUNK WATCH EVENT");
+		System.out.println("event chunk  = "+event.getPos());
+		System.out.println("player chunk = "+event.getPlayer().chunkPosition());
+		if (event.getPlayer().getVehicle() != null) 
+		System.out.println("seat chunk   = "+event.getPlayer().getVehicle().chunkPosition());
+		System.out.println("level tick   = "+event.getLevel().getGameTime());
+		
+		/*StackTraceElement[] stack = Thread.currentThread().getStackTrace();
+		for (int i = 0; i < stack.length; ++i) {
+			System.out.println(stack[i].toString());
+			if (stack[i].toString().contains("net.minecraft.client.main.Main")) break;
+		}*/
 	}
 	
 }

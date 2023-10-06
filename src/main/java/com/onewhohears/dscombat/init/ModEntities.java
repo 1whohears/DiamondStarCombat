@@ -12,6 +12,7 @@ import com.onewhohears.dscombat.data.aircraft.presets.PlanePresets;
 import com.onewhohears.dscombat.data.aircraft.presets.SubPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.TankPresets;
 import com.onewhohears.dscombat.entity.EntityParachute;
+import com.onewhohears.dscombat.entity.TestBoat;
 import com.onewhohears.dscombat.entity.aircraft.EntityBoat;
 import com.onewhohears.dscombat.entity.aircraft.EntityGroundVehicle;
 import com.onewhohears.dscombat.entity.aircraft.EntityHelicopter;
@@ -52,6 +53,10 @@ public class ModEntities {
 	public static void register(IEventBus eventBus) {
 		ENTITIES.register(eventBus);
 	}
+	
+	public static final RegistryObject<EntityType<TestBoat>> TEST_BOAT = ENTITIES.register("test_boat", 
+			() -> createEntityTypeFar((type, level) -> new TestBoat(type, level), 
+					EntityDimensions.scalable(1.375F, 0.5625F)));
 	
 	// PLANES
 	

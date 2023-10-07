@@ -32,8 +32,6 @@ public abstract class EntityPart extends Entity {
 	
 	private float z_rot;
 	
-	// FIXME 4 the reform-passenger-system branch has turned out to be a complete failure. 
-	
 	protected EntityPart(EntityType<?> entityType, Level level) {
 		super(entityType, level);
 	}

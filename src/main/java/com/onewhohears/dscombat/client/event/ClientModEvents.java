@@ -67,7 +67,6 @@ import com.onewhohears.dscombat.init.ModEntities;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
-import net.minecraft.client.renderer.entity.BoatRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -120,8 +119,6 @@ public final class ClientModEvents {
 	@SubscribeEvent
 	public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
 		EntityModelSet models = Minecraft.getInstance().getEntityModels();
-		event.registerEntityRenderer(ModEntities.TEST_BOAT.get(), 
-				(context) -> new BoatRenderer(context, false));
 		// PLANES
 		event.registerEntityRenderer(ModEntities.JAVI_PLANE.get(), 
 				(context) -> new RendererEntityAircraft<EntityPlane>(context, 

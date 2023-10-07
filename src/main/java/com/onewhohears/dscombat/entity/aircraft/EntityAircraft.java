@@ -1535,7 +1535,10 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 			else q = getQ();
  			Vec3 seatPos = UtilAngles.rotateVector(part.getRelativePos(), q);
 			passenger.setPos(position().add(seatPos));
-		}
+			return;
+		} 
+		EntitySeat seat = getPassengerSeat(passenger);
+		if (seat != null) seat.positionRider(passenger);
 	}
 	
 	@Nullable
@@ -1575,6 +1578,14 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     protected boolean canRide(Entity entityIn) {
         return false;
     }
+	
+	@Nullable
+	public EntitySeat getPassengerSeat(Entity p) {
+		for (EntitySeat seat : getSeats()) 
+			if (p.equals(seat.getPassenger())) 
+				return seat;
+		return null;
+	}
 	
 	public boolean isVehicleOf(Entity e) {
 		if (e == null) return false;

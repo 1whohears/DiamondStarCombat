@@ -34,7 +34,7 @@ import net.minecraftforge.fml.util.ObfuscationReflectionHelper.UnableToFindMetho
 @Mod.EventBusSubscriber(modid = DSCombatMod.MODID, bus = Bus.FORGE, value = Dist.CLIENT)
 public class ClientCameraEvents {
 	
-	@SubscribeEvent(priority = EventPriority.NORMAL)
+	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public static void cameraSetup(ViewportEvent.ComputeCameraAngles event) {
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;

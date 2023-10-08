@@ -10,6 +10,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.PartEntity;
 
+@Deprecated
 public class SubCollider extends PartEntity<RotableHitbox> {
 
 	private final int subId;

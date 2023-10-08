@@ -187,8 +187,8 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	protected float xzSpeed, totalMass, xzYaw, slideAngle, slideAngleCos, maxPushThrust, maxSpinThrust, currentFuel, maxFuel;
 	protected double staticFric, kineticFric, airPressure;
 	
-	private int lerpSteps, lerpStepsQ, deadTicks;
-	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot;
+	private int lerpSteps, deadTicks;
+	private double lerpX, lerpY, lerpZ;
 	private float landingGearPos, landingGearPosOld;
 	
 	protected RadarMode radarMode = RadarMode.ALL;
@@ -392,6 +392,41 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
         if (isCustomNameVisible()) nbt.putBoolean("CustomNameVisible", isCustomNameVisible());
         nbt.putFloat("fuel", getCurrentFuel());
         nbt.putFloat("flares", getFlareNum());
+	}
+	
+	@Override
+	public void readSpawnData(FriendlyByteBuf buffer) {
+		preset = buffer.readUtf();
+		int weaponIndex = buffer.readInt();
+		int radarMode = buffer.readInt();
+		boolean gear = buffer.readBoolean();
+		boolean freeLook = buffer.readBoolean();
+		float throttle = buffer.readFloat();
+		List<PartSlot> slots = PartsManager.readSlotsFromBuffer(buffer);
+		// ORDER MATTERS
+		weaponSystem.setSelected(weaponIndex);
+		partsManager.setPartSlots(slots);
+		partsManager.clientPartsSetup();
+		// PRESET STUFF
+		if (!AircraftPresets.get().has(preset)) return;
+		AircraftPreset ap = AircraftPresets.get().getPreset(preset);
+		item = ap.getItem();
+		// OTHER
+		setRadarMode(RadarMode.byId(radarMode));
+		setLandingGear(gear);
+		setFreeLook(freeLook);
+		setCurrentThrottle(throttle);
+	}
+	
+	@Override
+	public void writeSpawnData(FriendlyByteBuf buffer) {
+		buffer.writeUtf(preset);
+		buffer.writeInt(weaponSystem.getSelectedIndex());
+		buffer.writeInt(getRadarMode().ordinal());
+		buffer.writeBoolean(isLandingGear());
+		buffer.writeBoolean(isFreeLook());
+		buffer.writeFloat(getCurrentThrottle());
+		PartsManager.writeSlotsToBuffer(buffer, partsManager.getSlots());
 	}
 	
 	public static enum AircraftType {
@@ -1276,7 +1311,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 			syncPacketPositionCodec(getX(), getY(), getZ());
 			synchMoveRot();
 			lerpSteps = 0;
-			lerpStepsQ = 0;
 			return;
 		}
 		if (lerpSteps > 0) {
@@ -1359,38 +1393,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	@Override
 	public Packet<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
-	}
-	
-	@Override
-	public void readSpawnData(FriendlyByteBuf buffer) {
-		preset = buffer.readUtf();
-		int weaponIndex = buffer.readInt();
-		int radarMode = buffer.readInt();
-		boolean gear = buffer.readBoolean();
-		boolean freeLook = buffer.readBoolean();
-		List<PartSlot> slots = PartsManager.readSlotsFromBuffer(buffer);
-		// ORDER MATTERS
-		weaponSystem.setSelected(weaponIndex);
-		partsManager.setPartSlots(slots);
-		partsManager.clientPartsSetup();
-		// PRESET STUFF
-		if (!AircraftPresets.get().has(preset)) return;
-		AircraftPreset ap = AircraftPresets.get().getPreset(preset);
-		item = ap.getItem();
-		// OTHER
-		setRadarMode(RadarMode.byId(radarMode));
-		setLandingGear(gear);
-		setFreeLook(freeLook);
-	}
-	
-	@Override
-	public void writeSpawnData(FriendlyByteBuf buffer) {
-		buffer.writeUtf(preset);
-		buffer.writeInt(weaponSystem.getSelectedIndex());
-		buffer.writeInt(getRadarMode().ordinal());
-		buffer.writeBoolean(isLandingGear());
-		buffer.writeBoolean(isFreeLook());
-		PartsManager.writeSlotsToBuffer(buffer, partsManager.getSlots());
 	}
 	
 	@Override

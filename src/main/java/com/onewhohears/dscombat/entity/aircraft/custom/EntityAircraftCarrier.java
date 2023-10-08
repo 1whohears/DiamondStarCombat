@@ -2,10 +2,12 @@ package com.onewhohears.dscombat.entity.aircraft.custom;
 
 import com.onewhohears.dscombat.data.aircraft.presets.BoatPresets;
 import com.onewhohears.dscombat.entity.aircraft.EntityBoat;
+import com.onewhohears.dscombat.entity.aircraft.RotableHitbox;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.init.ModSounds;
 
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 public class EntityAircraftCarrier extends EntityBoat {
 
@@ -17,9 +19,9 @@ public class EntityAircraftCarrier extends EntityBoat {
 	
 	@Override
 	public void addHitboxes() {
-		/*hitboxes = new RotableHitbox[1];
+		hitboxes = new RotableHitbox[1];
 		hitboxes[0] = new RotableHitbox(this, "runway", 
-				new Vec3(25, 1, 50), new Vec3(0, 5.25, 0), 1f);*/
+				new Vec3(25, 1, 50), new Vec3(0, 5.5, 0), 1f);
 	}
 
 }

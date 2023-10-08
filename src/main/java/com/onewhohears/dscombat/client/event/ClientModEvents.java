@@ -48,6 +48,7 @@ import com.onewhohears.dscombat.client.renderer.RendererEntityInvisible;
 import com.onewhohears.dscombat.client.renderer.RendererEntityParachute;
 import com.onewhohears.dscombat.client.renderer.RendererEntityTurret;
 import com.onewhohears.dscombat.client.renderer.RendererEntityWeapon;
+import com.onewhohears.dscombat.client.renderer.RendererObjAircraft;
 import com.onewhohears.dscombat.client.renderer.RendererObjEntity;
 import com.onewhohears.dscombat.data.aircraft.AircraftClientPresets;
 import com.onewhohears.dscombat.entity.aircraft.EntityBoat;
@@ -154,19 +155,19 @@ public final class ClientModEvents {
 				(context) -> new RendererEntityAircraft<EntityBoat>(context, 
 						new EntityModelNathanBoat(models.bakeLayer(EntityModelNathanBoat.LAYER_LOCATION))));
 		event.registerEntityRenderer(ModEntities.GRONK_BATTLESHIP.get(), 
-				(context) -> new RendererObjEntity<EntityBoat>(context, 
+				(context) -> new RendererObjAircraft<EntityBoat>(context, 
 						new ObjAircraftModel<>("battleship")));
 		event.registerEntityRenderer(ModEntities.DESTROYER.get(), 
-				(context) -> new RendererObjEntity<EntityBoat>(context, 
+				(context) -> new RendererObjAircraft<EntityBoat>(context, 
 						new ObjAircraftModel<>("destroyer")));
 		event.registerEntityRenderer(ModEntities.CRUISER.get(), 
-				(context) -> new RendererObjEntity<EntityBoat>(context, 
+				(context) -> new RendererObjAircraft<EntityBoat>(context, 
 						new ObjAircraftModel<>("cruiser")));
 		event.registerEntityRenderer(ModEntities.CORVETTE.get(), 
-				(context) -> new RendererObjEntity<EntityBoat>(context, 
+				(context) -> new RendererObjAircraft<EntityBoat>(context, 
 						new CorvetteModel()));
 		event.registerEntityRenderer(ModEntities.AIRCRAFT_CARRIER.get(), 
-				(context) -> new RendererObjEntity<EntityBoat>(context, 
+				(context) -> new RendererObjAircraft<EntityBoat>(context, 
 						new ObjAircraftModel<>("carrier")));
 		// SUBMARINES
 		event.registerEntityRenderer(ModEntities.ANDOLF_SUB.get(), 

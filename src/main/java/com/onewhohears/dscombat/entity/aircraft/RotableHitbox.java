@@ -24,7 +24,6 @@ public class RotableHitbox extends PartEntity<EntityAircraft> {
 	private final EntityDimensions size;
 	private final Vec3 rel_pos;
 	private final float precision;
-	private SubCollider[] subColliders;
 	
 	// FIXME 5 the hitbox shouldn't be an entity cause it would probably cause performance issues. will have to create a custom collision system...pain
 	
@@ -37,31 +36,13 @@ public class RotableHitbox extends PartEntity<EntityAircraft> {
 		this.precision = precision;
 		this.noPhysics = true;
 		refreshDimensions();
-		createSubColliders();
-		positionSubColliders();
-		setId(ENTITY_COUNTER.getAndAdd(subColliders.length+1)+1);
 	}
 	
 	@Override
 	public void tick() {
 		positionSelf();
-		positionSubColliders();
 		positionEntities();
 		firstTick = false;
-		System.out.println(this+" "+tickCount++);
-	}
-	
-	@Override
-	public void setId(int id) {
-		super.setId(id);
-		for (int i = 0; i < subColliders.length; i++) subColliders[i].setId(id+i+1);
-	}
-	
-	protected void createSubColliders() {
-		List<Vec3> pos = hitbox.createRelPosList(getPrecision());
-		subColliders = new SubCollider[pos.size()];
-		for (int i = 0; i < pos.size(); ++i) subColliders[i] = new SubCollider(
-				this, i, getPrecision(), pos.get(i));
 	}
 	
 	protected void positionSelf() {
@@ -73,11 +54,6 @@ public class RotableHitbox extends PartEntity<EntityAircraft> {
 		setPos(pos);
 		hitbox.setCenter(pos);
 		hitbox.setRot(q);
-	}
-	
-	protected void positionSubColliders() {
-		for (int i = 0; i < subColliders.length; ++i) 
-			subColliders[i].setPos(hitbox.repositionSubCollider(subColliders[i].getRelPos()));
 	}
 	
 	protected void positionEntities() {
@@ -96,11 +72,9 @@ public class RotableHitbox extends PartEntity<EntityAircraft> {
 	public Predicate<? super Entity> canMoveEntity() {
 		return (entity) -> {
 			if (entity.noPhysics) return false;
-			if (!entity.verticalCollisionBelow) return false;
-			AABB groundBox = entity.getBoundingBox().setMaxY(0.1).move(0, -0.1, 0);
-			List<Entity> sub_list = level.getEntities(entity, groundBox, 
-					(e) -> {return e instanceof SubCollider;});
-			return sub_list.size() != 0;
+			if (entity.equals(getParent())) return false;
+			if (entity.getRootVehicle().equals(getParent())) return false;
+			return hitbox.isClipping(entity.getBoundingBox().expandTowards(entity.getDeltaMovement()), 0.1);
 		};
 	}
 	
@@ -134,10 +108,6 @@ public class RotableHitbox extends PartEntity<EntityAircraft> {
 	
 	public float getPrecision() {
 		return precision;
-	}
-	
-	public SubCollider[] getSubColliders() {
-		return subColliders;
 	}
 	
 	@Override
@@ -195,16 +165,6 @@ public class RotableHitbox extends PartEntity<EntityAircraft> {
 
 	@Override
 	protected void addAdditionalSaveData(CompoundTag nbt) {
-	}
-	
-	@Override
-	public boolean isMultipartEntity() {
-		return true;
-	}
-	
-	@Override
-	public PartEntity<?>[] getParts() {
-		return getSubColliders();
 	}
 
 }

@@ -5,12 +5,10 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix3f;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.model.obj.ObjAircraftModel;
 import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.aircraft.RotableHitbox;
 import com.onewhohears.dscombat.util.math.UtilAngles;
-import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -24,11 +22,16 @@ public class RendererObjAircraft<T extends EntityAircraft> extends RendererObjEn
 		super(ctx, model);
 	}
 	
+	private boolean shouldRenderHitboxes(T entity) {
+		if (entity.isInvisible() || !entity.isMultipartEntity()) return false;
+		Minecraft m = Minecraft.getInstance();
+		return !m.showOnlyReducedInfo() && m.getEntityRenderDispatcher().shouldRenderHitBoxes();
+	}
+	
 	@Override
 	public void render(T entity, float yaw, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int lightmap) {
 		super.render(entity, yaw, partialTicks, poseStack, bufferSource, lightmap);
-		Minecraft m = Minecraft.getInstance();
-		if (entity.isInvisible() || m.showOnlyReducedInfo() || !entity.isMultipartEntity()) return;
+		if (!shouldRenderHitboxes(entity)) return;
 		VertexConsumer buff = bufferSource.getBuffer(RenderType.lines());
 		Quaternion q = UtilAngles.lerpQ(partialTicks, entity.getPrevQ(), entity.getClientQ());
 		for (RotableHitbox hitbox : entity.getHitboxes()) {

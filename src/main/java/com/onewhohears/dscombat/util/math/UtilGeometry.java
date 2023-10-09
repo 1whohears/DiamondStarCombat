@@ -139,4 +139,8 @@ public class UtilGeometry {
 		return new Vector3f((float)v.x, (float)v.y, (float)v.z);
 	}
 	
+	public static Vec3 getBBFeet(AABB bb) {
+		return new Vec3(bb.getCenter().x, bb.minY, bb.getCenter().z);
+	}
+	
 }

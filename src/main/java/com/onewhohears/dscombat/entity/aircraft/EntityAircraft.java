@@ -179,6 +179,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	public Vec3 prevMotion = Vec3.ZERO;
 	public Vec3 forces = Vec3.ZERO, forcesO = Vec3.ZERO, addForceBetweenTicks = Vec3.ZERO;
 	public Vec3 moment = Vec3.ZERO, momentO = Vec3.ZERO, addMomentBetweenTicks = Vec3.ZERO;
+	protected Quaternion rotRate = Quaternion.ONE;
 	
 	public boolean nightVisionHud = false, hasRadio = false;
 	
@@ -198,8 +199,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	protected RotableHitbox[] hitboxes = new RotableHitbox[0];
 	
 	// FIXME 1.1 fix aircraft texture/variant texture system
-	// TODO 5.1 custom hit box system so players can walk on boats
-	// TODO 5.2 allow big boats to have a heli pad and runway
+	// TODO 5.1 give big boats platforms with the RotableHitbox system
 	// TODO 5.4 aircraft breaks apart when damaged
 	// TODO 5.6 place and remove external parts from outside the vehicle
 	// TODO 2.5 add chaff 
@@ -491,14 +491,11 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		setMoment(Vec3.ZERO);
 		// SET DIRECTION
 		zRotO = zRot;
-		Quaternion q;
-		if (level.isClientSide) q = getClientQ();
-		else q = getQ();
+		Quaternion q = getQBySide();
 		setPrevQ(q);
 		controlDirection(q);
 		q.normalize();
-		if (level.isClientSide) setClientQ(q);
-		else setQ(q);
+		setQBySide(q);
 		EulerAngles angles = UtilAngles.toDegrees(q);
 		setXRot((float)angles.pitch);
 		setYRot((float)angles.yaw);
@@ -773,9 +770,12 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 			av = av.add(m.x/Ix, m.y/Iy, m.z/Iz);
 			setAngularVel(av);
 		}
-		q.mul(Vector3f.XN.rotationDegrees((float)av.x));
-		q.mul(Vector3f.YN.rotationDegrees((float)av.y));
-		q.mul(Vector3f.ZP.rotationDegrees((float)av.z));
+		rotRate.set(0, 0, 0, 1);
+		rotRate.mul(Vector3f.XN.rotationDegrees((float)av.x));
+		rotRate.mul(Vector3f.YN.rotationDegrees((float)av.y));
+		rotRate.mul(Vector3f.ZP.rotationDegrees((float)av.z));
+		q.mul(rotRate);
+		rotRate.normalize();
 		applyAngularDrag();
 		addMomentBetweenTicks = Vec3.ZERO;
 	}
@@ -1890,6 +1890,20 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     
     public void decreaseThrottle() {
     	setCurrentThrottle(getCurrentThrottle() - getThrottleDecreaseRate());
+    }
+    
+    public final Quaternion getQBySide() {
+    	if (level.isClientSide) return getClientQ();
+    	else return getQ();
+    }
+    
+    public final void setQBySide(Quaternion q) {
+    	if (level.isClientSide) setClientQ(q);
+    	else setQ(q);
+    }
+    
+    public final Quaternion getQRate() {
+    	return rotRate.copy();
     }
     
     /**

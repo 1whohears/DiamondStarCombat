@@ -25,8 +25,6 @@ public class RotableHitbox extends PartEntity<EntityAircraft> {
 	private final Vec3 rel_pos;
 	private final float precision;
 	
-	// FIXME 5 the hitbox shouldn't be an entity cause it would probably cause performance issues. will have to create a custom collision system...pain
-	
 	public RotableHitbox(EntityAircraft parent, String name, Vec3 size, Vec3 rel_pos, float precision) {
 		super(parent);
 		this.name = name;
@@ -35,6 +33,7 @@ public class RotableHitbox extends PartEntity<EntityAircraft> {
 		this.rel_pos = rel_pos;
 		this.precision = precision;
 		this.noPhysics = true;
+		this.blocksBuilding = true;
 		refreshDimensions();
 	}
 	
@@ -53,36 +52,54 @@ public class RotableHitbox extends PartEntity<EntityAircraft> {
 		Vec3 pos = getParent().position().add(UtilAngles.rotateVector(getRelPos(), q));
 		setPos(pos);
 		hitbox.setCenter(pos);
-		hitbox.setRot(q);
 	}
 	
 	protected void positionEntities() {
 		Vec3 parent_move = getParent().getDeltaMovement();
-		Vec3 parent_rot = getParent().getAngularVel();
 		List<Entity> list = level.getEntities(this, getBoundingBox(), canMoveEntity());
+		//System.out.println("collision list size = "+list.size());
 		for (Entity entity : list) {
-			//fix position
-			Vec3 collide = hitbox.getCollidePos(entity.getBoundingBox().expandTowards(entity.getDeltaMovement()), 0.1);
+			/**
+			 * FIXME 4 this custom collision code works somewhat but lots of issues still
+			 * are there performance issues? my laptop frame rate drops when an aircraft carrier exists
+			 * the translations from vehicle rotations probably only work well in the y axis
+			 * can't place anything on the platform
+			 * when the vehicle moves or rotates, the passengers experience chopy movement
+			 */
+			Vec3 collide = hitbox.getCollidePos(entity.getBoundingBox().expandTowards(entity.getDeltaMovement()), 
+					0.1, getParent().getQBySide());
+			//System.out.println("collide "+(collide!=null)+" "+entity);
 			if (collide == null) continue;
+			//System.out.println("colliding "+entity);
+			// set is colliding
 			entity.resetFallDistance();
 			entity.setOnGround(true);
-			entity.setPos(collide.add(parent_move));
-			// change speed
+			entity.verticalCollision = true;
+			entity.verticalCollisionBelow = true;
+			// get new entity position
+			double dy = entity.position().y-entity.getBoundingBox().minY;
+			Vec3 entity_pos = collide.add(0, dy, 0);
+			Vec3 parent_rot_move = hitbox.getTangetVel(entity_pos, getParent().getAngularVel(), 
+					getParent().getQBySide());
+			//System.out.println("parent_rot_move = "+parent_rot_move);
+			entity_pos = entity_pos.add(parent_rot_move); // add translation from vehicle rotation
+			entity_pos = entity_pos.add(parent_move); // add translation from vehicle move
+			entity.setPos(entity_pos);
+			// prevent moving down
 			Vec3 entity_move = entity.getDeltaMovement();
 			if (entity_move.y < 0) entity_move = entity_move.multiply(1, 0, 1);
-			//entity_move = entity_move.add(parent_move);
-			/*entity_move.add(hitbox.getTangetVel(
-				entity.position().subtract(hitbox.getCenter()), 
-				parent_rot));*/
 			entity.setDeltaMovement(entity_move);
-			//System.out.println("collide "+entity+" "+entity_move);
+			if (entity instanceof EntityAircraft plane) {
+				Vec3 forces = plane.getForces();
+				if (forces.y < 0) plane.setForces(forces.multiply(1, 0, 1));
+			}
 		}
 	}
 	
 	public Predicate<? super Entity> canMoveEntity() {
 		return (entity) -> {
 			if (entity.noPhysics) return false;
-			if (entity.equals(getParent())) return false;
+			if (!entity.canCollideWith(getParent())) return false;
 			if (entity.getRootVehicle().equals(getParent())) return false;
 			return true;
 		};

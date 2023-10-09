@@ -68,6 +68,22 @@ public class UtilAngles {
         Vec3 vec = rotationToVector(yaw, pitch);
         return vec.scale(size / vec.length());
     }
+    
+    public static void normalizeRCloseToONE(Quaternion q, float d) {
+    	q.normalize();
+    	if (Mth.abs(Mth.abs(q.r())-1) < d) q.set(0, 0, 0, 1);
+    }
+    
+    public static Quaternion qDiff(Quaternion q1, Quaternion q2) {
+    	System.out.println("current "+q1+" prev"+q2);
+    	if (q1.equals(q2)) return Quaternion.ONE.copy();
+    	Quaternion iq2 = q2.copy();
+    	iq2.conj();
+    	Quaternion d = q1.copy();
+    	d.mul(iq2);
+    	d.normalize();
+    	return d;
+    }
 
     public static EulerAngles toRadians(Quaternion q) {
         EulerAngles angles = new EulerAngles();
@@ -286,8 +302,9 @@ public class UtilAngles {
     }
     
     public static Vec3 rotateVectorInverse(Vec3 n, Quaternion q) {
-    	q.conj();
-    	return rotateVector(n, q);
+    	Quaternion q1 = q.copy();
+    	q1.conj();
+    	return rotateVector(n, q1);
     }
     
     public static float[] globalToRelativeDegrees(float gx, float gy, Quaternion ra) {

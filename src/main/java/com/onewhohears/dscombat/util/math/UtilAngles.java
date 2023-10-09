@@ -285,6 +285,11 @@ public class UtilAngles {
     	return a;
     }
     
+    public static Vec3 rotateVectorInverse(Vec3 n, Quaternion q) {
+    	q.conj();
+    	return rotateVector(n, q);
+    }
+    
     public static float[] globalToRelativeDegrees(float gx, float gy, Quaternion ra) {
     	Vec3 dir = rotationToVector(gy, gx);
     	EulerAngles ea = toRadians(ra);

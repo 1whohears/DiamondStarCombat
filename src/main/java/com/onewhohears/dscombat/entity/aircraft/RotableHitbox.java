@@ -61,11 +61,21 @@ public class RotableHitbox extends PartEntity<EntityAircraft> {
 		Vec3 parent_rot = getParent().getAngularVel();
 		List<Entity> list = level.getEntities(this, getBoundingBox(), canMoveEntity());
 		for (Entity entity : list) {
-			Vec3 entity_move = entity.getDeltaMovement().add(parent_move);
+			//fix position
+			Vec3 collide = hitbox.getCollidePos(entity.getBoundingBox().expandTowards(entity.getDeltaMovement()), 0.1);
+			if (collide == null) continue;
+			entity.resetFallDistance();
+			entity.setOnGround(true);
+			entity.setPos(collide.add(parent_move));
+			// change speed
+			Vec3 entity_move = entity.getDeltaMovement();
+			if (entity_move.y < 0) entity_move = entity_move.multiply(1, 0, 1);
+			//entity_move = entity_move.add(parent_move);
 			/*entity_move.add(hitbox.getTangetVel(
 				entity.position().subtract(hitbox.getCenter()), 
 				parent_rot));*/
 			entity.setDeltaMovement(entity_move);
+			//System.out.println("collide "+entity+" "+entity_move);
 		}
 	}
 	
@@ -74,7 +84,7 @@ public class RotableHitbox extends PartEntity<EntityAircraft> {
 			if (entity.noPhysics) return false;
 			if (entity.equals(getParent())) return false;
 			if (entity.getRootVehicle().equals(getParent())) return false;
-			return hitbox.isClipping(entity.getBoundingBox().expandTowards(entity.getDeltaMovement()), 0.1);
+			return true;
 		};
 	}
 	

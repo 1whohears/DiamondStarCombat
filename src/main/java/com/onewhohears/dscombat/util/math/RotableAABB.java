@@ -1,5 +1,7 @@
 package com.onewhohears.dscombat.util.math;
 
+import javax.annotation.Nullable;
+
 import com.mojang.math.Quaternion;
 
 import net.minecraft.world.entity.EntityDimensions;
@@ -33,20 +35,30 @@ public class RotableAABB {
 		return new RotableAABB(center, extents, rot);
 	}
 	
-	public boolean isClipping(AABB bb, double skin) {
-		// this definitely will not work lol
+	@Nullable
+	public Vec3 getCollidePos(AABB bb, double skin) {
 		Vec3 bbbottom = new Vec3(bb.getCenter().x, bb.minY, bb.getCenter().z);
 		Vec3 dc = bbbottom.subtract(getCenter());
-		Vec3 rot_dc = UtilAngles.rotateVector(dc, getRot());
-		boolean r = rot_dc.x<getRotExtents().x && rot_dc.x>-getRotExtents().x
-				&& rot_dc.y<getRotExtents().y+skin && rot_dc.y>-getRotExtents().y
-				&& rot_dc.z<getRotExtents().z && rot_dc.z>-getRotExtents().z;
-		System.out.println("IS CLIPPING? "+r);
-		System.out.println("dc      = "+dc);
-		System.out.println("rot_dc  = "+rot_dc);
-		System.out.println("rot_ext = "+getRotExtents());
-		return r;
+		Vec3 rot_dc = UtilAngles.rotateVectorInverse(dc, getRot());
+		Vec3 ext = getExtents();
+		boolean collide = rot_dc.x<ext.x && rot_dc.x>-ext.x
+					   && rot_dc.y<ext.y+skin && rot_dc.y>-ext.y
+					   && rot_dc.z<ext.z && rot_dc.z>-ext.z;
+		if (!collide) return null;
+		return new Vec3 (bbbottom.x, getCenter().y+ext.y, bbbottom.z);
 	}
+	
+	/*private boolean isFeetClipping(AABB bb, double skin) {
+		Vec3 bbbottom = new Vec3(bb.getCenter().x, bb.minY, bb.getCenter().z);
+		Vec3 dc = bbbottom.subtract(getCenter());
+		Vec3 rot_dc = UtilAngles.rotateVectorInverse(dc, getRot());
+		Vec3 ext = getExtents();
+		boolean r = rot_dc.x<ext.x && rot_dc.x>-ext.x
+				&& rot_dc.y<ext.y+skin && rot_dc.y>-ext.y
+				&& rot_dc.z<ext.z && rot_dc.z>-ext.z;
+		System.out.println("IS CLIPPING? "+r);
+		return r;
+	}*/
 	
 	/*public Vec3 getTangetVel(Vec3 rel_pos, Vec3 ang_vel) {
 	

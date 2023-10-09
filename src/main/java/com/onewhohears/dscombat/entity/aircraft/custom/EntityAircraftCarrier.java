@@ -21,7 +21,7 @@ public class EntityAircraftCarrier extends EntityBoat {
 	public void addHitboxes() {
 		hitboxes = new RotableHitbox[1];
 		hitboxes[0] = new RotableHitbox(this, "runway", 
-				new Vec3(25, 1, 50), new Vec3(0, 5.5, 0), 1f);
+				new Vec3(25, 1, 50), new Vec3(0, 5.51, 0), 1f);
 	}
 
 }

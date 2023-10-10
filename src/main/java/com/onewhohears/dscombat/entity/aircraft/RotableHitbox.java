@@ -56,8 +56,11 @@ public class RotableHitbox extends PartEntity<EntityAircraft> {
 	
 	protected void positionEntities() {
 		Vec3 parent_move = getParent().getDeltaMovement();
+		Vec3 parent_rot_rate = getParent().getAngularVel();
+		Quaternion rot = getParent().getQBySide();
 		List<Entity> list = level.getEntities(this, getBoundingBox(), canMoveEntity());
 		//System.out.println("collision list size = "+list.size());
+		System.out.println("client side?"+level.isClientSide);
 		for (Entity entity : list) {
 			/**
 			 * FIXME 4 this custom collision code works somewhat but lots of issues still
@@ -65,33 +68,29 @@ public class RotableHitbox extends PartEntity<EntityAircraft> {
 			 * the translations from vehicle rotations probably only work well in the y axis
 			 * can't place anything on the platform
 			 * when the vehicle moves or rotates, the passengers experience chopy movement
+			 * when the chunks load, entities that were on the platform may start falling before platform loads
+			 * can pass through hitbox when falling too fast
 			 */
-			Vec3 collide = hitbox.getCollidePos(entity.getBoundingBox().expandTowards(entity.getDeltaMovement()), 
-					0.1, getParent().getQBySide());
+			Vec3 entity_move = entity.getDeltaMovement();
+			Vec3 collide = hitbox.getCollidePos(0.1, entity.getBoundingBox(), entity_move,
+					entity.position(), parent_move, parent_rot_rate, rot);
 			//System.out.println("collide "+(collide!=null)+" "+entity);
 			if (collide == null) continue;
-			//System.out.println("colliding "+entity);
+			System.out.println("colliding "+entity);
+			entity.setPos(collide);
 			// set is colliding
+			// cause fall damage
 			entity.resetFallDistance();
 			entity.setOnGround(true);
 			entity.verticalCollision = true;
 			entity.verticalCollisionBelow = true;
-			// get new entity position
-			double dy = entity.position().y-entity.getBoundingBox().minY;
-			Vec3 entity_pos = collide.add(0, dy, 0);
-			Vec3 parent_rot_move = hitbox.getTangetVel(entity_pos, getParent().getAngularVel(), 
-					getParent().getQBySide());
-			//System.out.println("parent_rot_move = "+parent_rot_move);
-			entity_pos = entity_pos.add(parent_rot_move); // add translation from vehicle rotation
-			entity_pos = entity_pos.add(parent_move); // add translation from vehicle move
-			entity.setPos(entity_pos);
 			// prevent moving down
-			Vec3 entity_move = entity.getDeltaMovement();
 			if (entity_move.y < 0) entity_move = entity_move.multiply(1, 0, 1);
 			entity.setDeltaMovement(entity_move);
 			if (entity instanceof EntityAircraft plane) {
 				Vec3 forces = plane.getForces();
-				if (forces.y < 0) plane.setForces(forces.multiply(1, 0, 1));
+				if (forces.y < 0) forces = forces.multiply(1, 0, 1);
+				plane.setForces(forces);
 			}
 		}
 	}

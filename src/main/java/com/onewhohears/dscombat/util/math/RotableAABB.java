@@ -35,23 +35,32 @@ public class RotableAABB {
 	}
 	
 	@Nullable
-	public Vec3 getCollidePos(AABB bb, double skin, Quaternion rot) {
-		Vec3 bbbottom = UtilGeometry.getBBFeet(bb);
-		Vec3 dc = bbbottom.subtract(getCenter());
+	public Vec3 getCollidePos(double skin, AABB bb, Vec3 entity_move, Vec3 entity_pos, Vec3 parent_move, Vec3 rot_rate, Quaternion rot) {
+		Vec3 bb_bottom = UtilGeometry.getBBFeet(bb);
+		Vec3 dc = bb_bottom.subtract(getCenter());
 		Vec3 rot_dc = UtilAngles.rotateVectorInverse(dc, rot);
 		Vec3 ext = getExtents();
-		boolean collide = rot_dc.x<ext.x && rot_dc.x>-ext.x
-					   && rot_dc.y<ext.y+skin && rot_dc.y>-ext.y
-					   && rot_dc.z<ext.z && rot_dc.z>-ext.z;
-		if (!collide) return null;
-		return new Vec3 (bbbottom.x, getCenter().y+ext.y, bbbottom.z);
-	}
-	
-	public Vec3 getTangetVel(Vec3 pos, Vec3 rot_rate, Quaternion rot) {
-		Vec3 dc = pos.subtract(getCenter());
-		Vec3 rot_dc = UtilAngles.rotateVectorInverse(dc, rot);
+		boolean isXZCollide = rot_dc.x<ext.x && rot_dc.x>-ext.x
+						   && rot_dc.z<ext.z && rot_dc.z>-ext.z;
+					     //&& rot_dc.y<ext.y+skin && rot_dc.y>-ext.y;
+		if (!isXZCollide) return null;
+		Vec3 rel_rot_collide = new Vec3(rot_dc.x, ext.y, rot_dc.z);
+		Vec3 rel_collide = UtilAngles.rotateVector(rel_rot_collide, rot);
+		double collideY = getCenter().y+rel_collide.y;
+		double dcy = collideY-bb_bottom.y;
+		System.out.println("dcy = "+dcy+" y_move = "+entity_move.y);
+		if (Math.abs(dcy) > skin) {
+			if (entity_move.y == 0) return null;
+			if (Math.signum(dcy) != Math.signum(entity_move.y)) return null;
+			if (entity_move.y < 0 && dcy < entity_move.y) return null;
+			if (entity_move.y > 0 && dcy > entity_move.y) return null;
+		}
+		Vec3 collide = new Vec3(bb_bottom.x, collideY, bb_bottom.z);
+		double dy = entity_pos.y-bb_bottom.y;
+		collide = collide.add(0, dy, 0);
 		Vec3 rel_tan_vel = rot_rate.scale(Mth.DEG_TO_RAD).multiply(-1,-1,1).cross(rot_dc);
-		return UtilAngles.rotateVector(rel_tan_vel, rot);
+		Vec3 tan_vel = UtilAngles.rotateVector(rel_tan_vel, rot);
+		return collide.add(tan_vel).add(parent_move);
 	}
 	
 	public static Vec3 extentsFromBB(AABB bb) {

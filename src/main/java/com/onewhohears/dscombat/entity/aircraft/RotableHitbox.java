@@ -69,21 +69,20 @@ public class RotableHitbox extends PartEntity<EntityAircraft> {
 			 * can't place anything on the platform
 			 * when the vehicle moves or rotates, the passengers experience chopy movement
 			 * when the chunks load, entities that were on the platform may start falling before platform loads
-			 * can pass through hitbox when falling too fast
 			 */
 			Vec3 entity_move = entity.getDeltaMovement();
-			Vec3 collide = hitbox.getCollidePos(0.1, entity.getBoundingBox(), entity_move,
+			Vec3 collide = hitbox.getFeetCollidePos(0.1, entity.getBoundingBox(), entity_move,
 					entity.position(), parent_move, parent_rot_rate, rot);
 			//System.out.println("collide "+(collide!=null)+" "+entity);
 			if (collide == null) continue;
-			System.out.println("colliding "+entity);
 			entity.setPos(collide);
+			System.out.println("colliding "+entity);
 			// set is colliding
-			// cause fall damage
-			entity.resetFallDistance();
 			entity.setOnGround(true);
 			entity.verticalCollision = true;
 			entity.verticalCollisionBelow = true;
+			entity.causeFallDamage(entity.fallDistance, 1, DamageSource.FALL);
+			entity.resetFallDistance();
 			// prevent moving down
 			if (entity_move.y < 0) entity_move = entity_move.multiply(1, 0, 1);
 			entity.setDeltaMovement(entity_move);
@@ -99,6 +98,7 @@ public class RotableHitbox extends PartEntity<EntityAircraft> {
 		return (entity) -> {
 			if (entity.noPhysics) return false;
 			if (!entity.canCollideWith(getParent())) return false;
+			if (entity.isPassenger()) return false;
 			if (entity.getRootVehicle().equals(getParent())) return false;
 			return true;
 		};

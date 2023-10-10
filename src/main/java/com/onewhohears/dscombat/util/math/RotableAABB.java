@@ -35,7 +35,7 @@ public class RotableAABB {
 	}
 	
 	@Nullable
-	public Vec3 getCollidePos(double skin, AABB bb, Vec3 entity_move, Vec3 entity_pos, Vec3 parent_move, Vec3 rot_rate, Quaternion rot) {
+	public Vec3 getFeetCollidePos(double skin, AABB bb, Vec3 entity_move, Vec3 entity_pos, Vec3 parent_move, Vec3 rot_rate, Quaternion rot) {
 		Vec3 bb_bottom = UtilGeometry.getBBFeet(bb);
 		Vec3 dc = bb_bottom.subtract(getCenter());
 		Vec3 rot_dc = UtilAngles.rotateVectorInverse(dc, rot);

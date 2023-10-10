@@ -570,19 +570,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	}
 	
 	protected void wallCollisions() {
-		if (verticalCollision) {
-			double my = Math.abs(prevMotion.y);
-			double th = collideSpeedThreshHold;
-			if (isOperational() && isLandingGear() 
-					&& Mth.abs(getXRot()) < 15f
-					&& Mth.abs(zRot) < 15f) {
-				th = collideSpeedWithGearThreshHold;
-			}
-			if (my > th) {
-				float amount = (float)((my-th)*collideDamageRate);
-				collideHurt(amount, true);
-			}
-		}
+		if (verticalCollision) verticalCollision();
 		if (horizontalCollision && !minorHorizontalCollision) {
 			double speed = prevMotion.horizontalDistance();
 			if (speed > collideSpeedThreshHold) {
@@ -590,6 +578,26 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 				collideHurt(amount, false);
 			}
 		}
+	}
+	
+	protected void verticalCollision() {
+		double my = Math.abs(prevMotion.y);
+		double th = collideSpeedThreshHold;
+		if (isOperational() && isLandingGear() 
+				&& Mth.abs(getXRot()) < 15f
+				&& Mth.abs(zRot) < 15f) {
+			th = collideSpeedWithGearThreshHold;
+		}
+		if (my > th) {
+			float amount = (float)((my-th)*collideDamageRate);
+			collideHurt(amount, true);
+		}
+	}
+	
+	@Override
+	public boolean causeFallDamage(float dist, float mult, DamageSource source) {
+		verticalCollision();
+		return true;
 	}
 	
 	/**

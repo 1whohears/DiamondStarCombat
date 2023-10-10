@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import com.mojang.math.Quaternion;
+import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.util.math.RotableAABB;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
@@ -24,15 +25,13 @@ public class RotableHitbox extends PartEntity<EntityAircraft> {
 	private final RotableAABB hitbox;
 	private final EntityDimensions size;
 	private final Vec3 rel_pos;
-	private final float precision;
 	
-	public RotableHitbox(EntityAircraft parent, String name, Vec3 size, Vec3 rel_pos, float precision) {
+	public RotableHitbox(EntityAircraft parent, String name, Vector3f size, Vec3 rel_pos) {
 		super(parent);
 		this.name = name;
-		this.hitbox = new RotableAABB(size.x, size.y, size.z);
+		this.hitbox = new RotableAABB(size.x(), size.y(), size.z());
 		this.size = hitbox.getMaxDimensions();
 		this.rel_pos = rel_pos;
-		this.precision = precision;
 		this.noPhysics = true;
 		this.blocksBuilding = true;
 		refreshDimensions();
@@ -47,12 +46,10 @@ public class RotableHitbox extends PartEntity<EntityAircraft> {
 	
 	protected void positionSelf() {
 		setOldPosAndRot();
-		Quaternion q;
-		if (level.isClientSide) q = getParent().getClientQ();
-		else q = getParent().getQ();
+		Quaternion q = getParent().getQBySide();
 		Vec3 pos = getParent().position().add(UtilAngles.rotateVector(getRelPos(), q));
 		setPos(pos);
-		hitbox.setCenter(pos);
+		hitbox.setCenter(UtilGeometry.convertVector(pos));
 	}
 	
 	protected void positionEntities() {
@@ -80,7 +77,7 @@ public class RotableHitbox extends PartEntity<EntityAircraft> {
 					entity_move, rot, parent_move, parent_rot_rate);
 			//System.out.println("collide "+(collide!=null)+" "+entity);
 			if (collide == null) continue;
-			System.out.println("colliding "+entity+" "+collide);
+			System.out.println("colliding "+entity);
 			double dy = entity_pos.y-entity_bb.minY;
 			entity.setPos(collide.add(0, dy, 0));
 			entity.setYRot(entity.getYRot()-(float)parent_rot_rate.y);
@@ -136,10 +133,6 @@ public class RotableHitbox extends PartEntity<EntityAircraft> {
 	
 	public Vec3 getRelPos() {
 		return rel_pos;
-	}
-	
-	public float getPrecision() {
-		return precision;
 	}
 	
 	@Override

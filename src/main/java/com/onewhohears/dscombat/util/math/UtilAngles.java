@@ -302,8 +302,7 @@ public class UtilAngles {
     }
     
     public static Vec3 rotateVectorInverse(Vec3 n, Quaternion q) {
-    	Quaternion q1 = q.copy();
-    	q1.conj();
+    	Quaternion q1 = q.copy(); q1.conj();
     	return rotateVector(n, q1);
     }
     

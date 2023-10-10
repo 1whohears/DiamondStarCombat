@@ -143,4 +143,8 @@ public class UtilGeometry {
 		return new Vec3(bb.getCenter().x, bb.minY, bb.getCenter().z);
 	}
 	
+	public static Vec3 toFloats(Vec3 v) {
+		return new Vec3((float)v.x, (float)v.y, (float)v.z);
+	}
+	
 }

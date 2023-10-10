@@ -35,32 +35,52 @@ public class RotableAABB {
 	}
 	
 	@Nullable
-	public Vec3 getCollidePos(double skin, AABB bb, Vec3 entity_move, Vec3 entity_pos, Vec3 parent_move, Vec3 rot_rate, Quaternion rot) {
-		Vec3 bb_bottom = UtilGeometry.getBBFeet(bb);
-		Vec3 dc = bb_bottom.subtract(getCenter());
-		Vec3 rot_dc = UtilAngles.rotateVectorInverse(dc, rot);
-		Vec3 ext = getExtents();
-		boolean isXZCollide = rot_dc.x<ext.x && rot_dc.x>-ext.x
-						   && rot_dc.z<ext.z && rot_dc.z>-ext.z;
-					     //&& rot_dc.y<ext.y+skin && rot_dc.y>-ext.y;
-		if (!isXZCollide) return null;
-		Vec3 rel_rot_collide = new Vec3(rot_dc.x, ext.y, rot_dc.z);
+	public Vec3 getCollideMovePos(Vec3 entity_pos, Vec3 entity_move, Quaternion rot, Vec3 parent_move, Vec3 rot_rate) {
+		Vec3 rel_rot_collide = getRelRotCollidePos(entity_pos, entity_move, rot);
+		if (rel_rot_collide == null) return null;
 		Vec3 rel_collide = UtilAngles.rotateVector(rel_rot_collide, rot);
-		double collideY = getCenter().y+rel_collide.y;
-		double dcy = collideY-bb_bottom.y;
-		System.out.println("dcy = "+dcy+" y_move = "+entity_move.y);
-		if (Math.abs(dcy) > skin) {
-			if (entity_move.y == 0) return null;
-			if (Math.signum(dcy) != Math.signum(entity_move.y)) return null;
-			if (entity_move.y < 0 && dcy < entity_move.y) return null;
-			if (entity_move.y > 0 && dcy > entity_move.y) return null;
-		}
-		Vec3 collide = new Vec3(bb_bottom.x, collideY, bb_bottom.z);
-		double dy = entity_pos.y-bb_bottom.y;
-		collide = collide.add(0, dy, 0);
-		Vec3 rel_tan_vel = rot_rate.scale(Mth.DEG_TO_RAD).multiply(-1,-1,1).cross(rot_dc);
+		Vec3 rel_tan_vel = rot_rate.scale(Mth.DEG_TO_RAD).multiply(-1,-1,1).cross(rel_rot_collide);
 		Vec3 tan_vel = UtilAngles.rotateVector(rel_tan_vel, rot);
-		return collide.add(tan_vel).add(parent_move);
+		return rel_collide.add(getCenter()).add(tan_vel).add(parent_move);
+	}
+	
+	@Nullable
+	private Vec3 getRelRotCollidePos(Vec3 entity_pos, Vec3 entity_move, Quaternion rot) {
+		Vec3 dc = entity_pos.subtract(getCenter());
+		Vec3 rot_dc = UtilAngles.rotateVectorInverse(dc, rot);
+		Vec3 rot_move = UtilAngles.rotateVectorInverse(entity_move, rot);
+		return collideRelRotComponents(rot_dc, rot_move);
+	}
+	
+	@Nullable
+	private Vec3 collideRelRotComponents(Vec3 rot_dc, Vec3 rot_move) {
+		Vec3 ext = getExtents();
+		double cx = collideRelRotComponent(rot_dc.x, rot_move.x, ext.x, false);
+		if (Double.isNaN(cx)) return null;
+		double cy = collideRelRotComponent(rot_dc.y, rot_move.y, ext.y, true);
+		if (Double.isNaN(cy)) return null;
+		double cz = collideRelRotComponent(rot_dc.z, rot_move.z, ext.z, false);
+		if (Double.isNaN(cz)) return null;
+		return new Vec3(cx, cy, cz);
+	}
+	
+	private double collideRelRotComponent(double rel_rot_pos, double rot_move, double ext, boolean push) {
+		if (rel_rot_pos >= 0) {
+			double de = ext - rel_rot_pos;
+			if (de >= 0) {
+				if (push) return ext; // inside the collider so push back
+				return rel_rot_pos; // inside but don't move (xz axis)
+			} 
+			if (rot_move <= de) return ext; // outside but would move through the collider
+		} else {
+			double de = -ext - rel_rot_pos;
+			if (de <= 0) {
+				if (push) return -ext; // inside the collider so push back
+				return rel_rot_pos; // inside but don't move (xz axis)
+			}
+			if (rot_move >= de) return -ext; // outside but would move through the collider
+		}
+		return Double.NaN;
 	}
 	
 	public static Vec3 extentsFromBB(AABB bb) {

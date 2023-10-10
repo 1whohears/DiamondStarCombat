@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.util.math.RotableAABB;
 import com.onewhohears.dscombat.util.math.UtilAngles;
+import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -71,15 +72,20 @@ public class RotableHitbox extends PartEntity<EntityAircraft> {
 			 * when the chunks load, entities that were on the platform may start falling before platform loads
 			 * can pass through hitbox when falling too fast
 			 */
+			AABB entity_bb = entity.getBoundingBox();
+			Vec3 entity_pos = entity.position();
+			Vec3 entity_feet = UtilGeometry.getBBFeet(entity_bb);
 			Vec3 entity_move = entity.getDeltaMovement();
-			Vec3 collide = hitbox.getCollidePos(0.1, entity.getBoundingBox(), entity_move,
-					entity.position(), parent_move, parent_rot_rate, rot);
+			Vec3 collide = hitbox.getCollideMovePos(entity_feet, 
+					entity_move, rot, parent_move, parent_rot_rate);
 			//System.out.println("collide "+(collide!=null)+" "+entity);
 			if (collide == null) continue;
-			System.out.println("colliding "+entity);
-			entity.setPos(collide);
+			System.out.println("colliding "+entity+" "+collide);
+			double dy = entity_pos.y-entity_bb.minY;
+			entity.setPos(collide.add(0, dy, 0));
+			entity.setYRot(entity.getYRot()-(float)parent_rot_rate.y);
 			// set is colliding
-			// cause fall damage
+			entity.causeFallDamage(entity.fallDistance, 1, DamageSource.FALL);
 			entity.resetFallDistance();
 			entity.setOnGround(true);
 			entity.verticalCollision = true;

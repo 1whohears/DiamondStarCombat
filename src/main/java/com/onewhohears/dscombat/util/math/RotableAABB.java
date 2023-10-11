@@ -51,16 +51,18 @@ public class RotableAABB {
 		rel_tan_vel.mul(Mth.DEG_TO_RAD);
 		rel_tan_vel.mul(-1,-1,1);
 		rel_tan_vel.cross(rel_rot_collide);
-		Vector3f tan_vel = rel_tan_vel.copy(); tan_vel.transform(rot);
-		Vector3f collide = rel_rot_collide.copy(); collide.transform(rot);
-		System.out.println("rel_rot_collide = "+rel_rot_collide);
-		System.out.println("rel_collide = "+collide);
+		Vector3f tan_vel = UtilAngles.rotateVector(rel_tan_vel, rot);
+		Vector3f collide = UtilAngles.rotateVector(rel_rot_collide, rot);
+		//System.out.println("rel_rot_collide = "+rel_rot_collide);
+		//System.out.println("rel_collide     = "+collide);
 		collide.add(getCenter());
 		collide.add(tan_vel);
 		collide.add(parent_move);
-		System.out.println("tan_vel = "+tan_vel);
-		System.out.println("parent_move = "+parent_move);
-		System.out.println("collide = "+collide);
+		//System.out.println("tan_vel     = "+tan_vel);
+		//System.out.println("parent_move = "+parent_move);
+		//System.out.println("collide = "+collide);
+		Vector3f diff = collide.copy(); diff.sub(entity_pos);
+		System.out.println("diff = "+diff);
 		return collide;
 	}
 	
@@ -69,15 +71,15 @@ public class RotableAABB {
 		Vector3f dc = entity_pos.copy();
 		dc.sub(getCenter());
 		Quaternion roti = rot.copy(); roti.conj();
-		Vector3f rot_dc = dc.copy(); rot_dc.transform(roti);
-		Vector3f rot_move = entity_move.copy(); rot_move.transform(roti);
-		System.out.println("center = "+getCenter());
-		System.out.println("entity_pos = "+entity_pos);
-		System.out.println("entity_move = "+entity_move);
-		System.out.println("dc = "+dc);
-		System.out.println("rot = "+rot);
-		System.out.println("rot_dc = "+rot_dc);
-		System.out.println("rot_move = "+rot_move);
+		Vector3f rot_dc = UtilAngles.rotateVector(dc, roti);
+		Vector3f rot_move = UtilAngles.rotateVector(entity_move, roti);
+		//System.out.println("center = "+getCenter());
+		//System.out.println("rot = "+rot);
+		//System.out.println("entity_pos = "+entity_pos);
+		//System.out.println("dc     = "+dc);
+		//System.out.println("rot_dc = "+rot_dc);
+		//System.out.println("entity_move = "+entity_move);
+		//System.out.println("rot_move = "+rot_move);
 		return collideRelRotComponents(rot_dc, rot_move);
 	}
 	
@@ -86,14 +88,16 @@ public class RotableAABB {
 		Vector3f ext = getExtents();
 		float cx = collideRelRotComponent(rot_dc.x(), rot_move.x(), ext.x(), false);
 		if (Float.isNaN(cx)) return null;
-		float cy = collideRelRotComponent(rot_dc.y(), rot_move.y(), ext.y(), true);
-		if (Float.isNaN(cy)) return null;
 		float cz = collideRelRotComponent(rot_dc.z(), rot_move.z(), ext.z(), false);
 		if (Float.isNaN(cz)) return null;
+		float cy = collideRelRotComponent(rot_dc.y(), rot_move.y(), ext.y(), true);
+		if (Float.isNaN(cy)) return null;
 		return new Vector3f(cx, cy, cz);
 	}
 	
 	private float collideRelRotComponent(float rel_rot_pos, float rot_move, float ext, boolean push) {
+		//if (rel_rot_pos < 0) ext *= -1;
+		//double de = ext - rel_rot_pos;
 		if (rel_rot_pos >= 0) {
 			double de = ext - rel_rot_pos;
 			if (de >= 0) {

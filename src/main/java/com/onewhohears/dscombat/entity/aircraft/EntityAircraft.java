@@ -179,7 +179,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	public Vec3 prevMotion = Vec3.ZERO;
 	public Vec3 forces = Vec3.ZERO, forcesO = Vec3.ZERO, addForceBetweenTicks = Vec3.ZERO;
 	public Vec3 moment = Vec3.ZERO, momentO = Vec3.ZERO, addMomentBetweenTicks = Vec3.ZERO;
-	protected Quaternion rotRate = Quaternion.ONE;
 	
 	public boolean nightVisionHud = false, hasRadio = false;
 	
@@ -494,7 +493,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		Quaternion q = getQBySide();
 		setPrevQ(q);
 		controlDirection(q);
-		q.normalize();
+		//q.normalize(); // this was causing horrendous precision errors in the hitbox colliders
 		setQBySide(q);
 		EulerAngles angles = UtilAngles.toDegrees(q);
 		setXRot((float)angles.pitch);
@@ -778,12 +777,9 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 			av = av.add(m.x/Ix, m.y/Iy, m.z/Iz);
 			setAngularVel(av);
 		}
-		rotRate.set(0, 0, 0, 1);
-		rotRate.mul(Vector3f.XN.rotationDegrees((float)av.x));
-		rotRate.mul(Vector3f.YN.rotationDegrees((float)av.y));
-		rotRate.mul(Vector3f.ZP.rotationDegrees((float)av.z));
-		q.mul(rotRate);
-		rotRate.normalize();
+		q.mul(Vector3f.XN.rotationDegrees((float)av.x));
+		q.mul(Vector3f.YN.rotationDegrees((float)av.y));
+		q.mul(Vector3f.ZP.rotationDegrees((float)av.z));
 		applyAngularDrag();
 		addMomentBetweenTicks = Vec3.ZERO;
 	}
@@ -1908,10 +1904,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     public final void setQBySide(Quaternion q) {
     	if (level.isClientSide) setClientQ(q);
     	else setQ(q);
-    }
-    
-    public final Quaternion getQRate() {
-    	return rotRate.copy();
     }
     
     /**

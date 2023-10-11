@@ -75,7 +75,6 @@ public class UtilAngles {
     }
     
     public static Quaternion qDiff(Quaternion q1, Quaternion q2) {
-    	System.out.println("current "+q1+" prev"+q2);
     	if (q1.equals(q2)) return Quaternion.ONE.copy();
     	Quaternion iq2 = q2.copy();
     	iq2.conj();
@@ -141,7 +140,6 @@ public class UtilAngles {
         } else {
             return new Quaternion(0, 0, 0, 0);
         }
-
     }
     
     /**
@@ -150,8 +148,7 @@ public class UtilAngles {
      * @param roll degrees
      * @return
      */
-    public static Quaternion toQuaternion(double yaw, double pitch, double roll) { // yaw (Z), pitch (Y), roll (X)
-        // Abbreviations for the various angular functions
+    public static Quaternion toQuaternion(double yaw, double pitch, double roll) {
         yaw = -Math.toRadians(yaw);
         pitch = Math.toRadians(pitch);
         roll = Math.toRadians(roll);
@@ -167,7 +164,7 @@ public class UtilAngles {
         float z = (float) (sr * cp * cy - cr * sp * sy);
         float x = (float) (cr * sp * cy + sr * cp * sy);
         float y = (float) (cr * cp * sy - sr * sp * cy);
-
+        
         return new Quaternion(x, y, z, w);
     }
 
@@ -292,12 +289,13 @@ public class UtilAngles {
 	}
     
     public static Vector3f rotateVector(Vector3f n, Quaternion q) {
-    	Quaternion nq = new Quaternion(n.x(), n.y(), n.z(), 0);
+    	float p = 1000, pi = 0.001f;
+    	Quaternion nq = new Quaternion(n.x()*p, n.y()*p, n.z()*p, 0);
     	Quaternion cq = q.copy(); cq.conj();
     	Quaternion q1 = q.copy();
     	q1.mul(nq);
     	q1.mul(cq);
-    	return new Vector3f(q1.i(), q1.j(), q1.k());
+    	return new Vector3f(q1.i()*pi, q1.j()*pi, q1.k()*pi);
     }
     
     public static Vector3f rotateVectorInverse(Vector3f n, Quaternion q) {

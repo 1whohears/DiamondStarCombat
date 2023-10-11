@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.init;
 
 import com.google.common.collect.ImmutableSet;
+import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.aircraft.LiftKGraph;
 import com.onewhohears.dscombat.data.aircraft.presets.AlexisPresets;
@@ -17,7 +18,7 @@ import com.onewhohears.dscombat.entity.aircraft.EntityGroundVehicle;
 import com.onewhohears.dscombat.entity.aircraft.EntityHelicopter;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 import com.onewhohears.dscombat.entity.aircraft.EntitySubmarine;
-import com.onewhohears.dscombat.entity.aircraft.custom.EntityAircraftCarrier;
+import com.onewhohears.dscombat.entity.aircraft.RotableHitbox;
 import com.onewhohears.dscombat.entity.parts.EntityEngine;
 import com.onewhohears.dscombat.entity.parts.EntityRadar;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
@@ -158,9 +159,17 @@ public class ModEntities {
 					ModSounds.BOAT_1, 8, 13), 
 					EntityDimensions.scalable(7f,3f)));
 	
-	public static final RegistryObject<EntityType<EntityAircraftCarrier>> AIRCRAFT_CARRIER = ENTITIES.register("aircraft_carrier", 
-			() -> createEntityTypeFar((type, level) -> new EntityAircraftCarrier(level), 
-					EntityDimensions.scalable(25f,6f)));
+	public static final RegistryObject<EntityType<EntityBoat>> AIRCRAFT_CARRIER = ENTITIES.register("aircraft_carrier", 
+			() -> createEntityTypeFar((type, level) -> new EntityBoat(type, level, 
+					BoatPresets.DEFAULT_AIRCRAFT_CARRIER, ModSounds.BOAT_1, 10, 34) {
+						@Override
+						public void addHitboxes() {
+							hitboxes = new RotableHitbox[1];
+							hitboxes[0] = new RotableHitbox(this, "runway", 
+									new Vector3f(25, 1, 50), 
+									new Vec3(0, 5.51, 0));
+						}
+				}, EntityDimensions.scalable(25f,6f)));
 	
 	// SUBMARINES
 	

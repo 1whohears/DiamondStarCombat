@@ -291,6 +291,20 @@ public class UtilAngles {
 						-(SY*SR+CY*SP*CR));
 	}
     
+    public static Vector3f rotateVector(Vector3f n, Quaternion q) {
+    	Quaternion nq = new Quaternion(n.x(), n.y(), n.z(), 0);
+    	Quaternion cq = q.copy(); cq.conj();
+    	Quaternion q1 = q.copy();
+    	q1.mul(nq);
+    	q1.mul(cq);
+    	return new Vector3f(q1.i(), q1.j(), q1.k());
+    }
+    
+    public static Vector3f rotateVectorInverse(Vector3f n, Quaternion q) {
+    	Quaternion q1 = q.copy(); q1.conj();
+    	return rotateVector(n, q1);
+    }
+    
     public static Vec3 rotateVector(Vec3 n, Quaternion q) {
     	Quaternion nq = new Quaternion((float)n.x, (float)n.y, (float)n.z, 0);
     	Quaternion cq = q.copy(); cq.conj();
@@ -302,8 +316,7 @@ public class UtilAngles {
     }
     
     public static Vec3 rotateVectorInverse(Vec3 n, Quaternion q) {
-    	Quaternion q1 = q.copy();
-    	q1.conj();
+    	Quaternion q1 = q.copy(); q1.conj();
     	return rotateVector(n, q1);
     }
     

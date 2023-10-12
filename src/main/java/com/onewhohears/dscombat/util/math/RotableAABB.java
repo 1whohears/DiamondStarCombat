@@ -85,14 +85,51 @@ public class RotableAABB {
 	
 	@Nullable
 	private Vector3f collideRelRotComponents(Vector3f rot_dc, Vector3f rot_move) {
+		/**
+		 * going to need to check which side player is colliding with, then set motion in that direction to zero, 
+		 * and prevent motion into that side. then it is known which axis the player needs to be pushed into the ext.
+		 */
 		Vector3f ext = getExtents();
+		boolean insideX = rot_dc.x() < ext.x() && rot_dc.x() > -ext.x();
+		boolean insideY = rot_dc.y() < ext.y() && rot_dc.y() > -ext.y();
+		boolean insideZ = rot_dc.z() < ext.z() && rot_dc.z() > -ext.z();
+		if (insideX && insideY && insideZ) {
+			// inside the box so assume push player to top of box
+			// set y vel to 0
+			return new Vector3f(rot_dc.x(), ext.y(), rot_dc.z());
+		} 
+		if (insideX && insideZ) {
+			float de = getDExt(rot_dc.y(), ext.y());
+			float side = Math.signum(de);
+			// above or below the y face. check if moving into or already on
+			// if so set y vel to 0 and push to y ext
+			// else return null
+		} else if (insideX && insideY) {
+			// above or below the z face. check if moving into or already on
+			// if so set z vel to 0 and push to z ext
+			// else return null
+		} else if (insideY && insideZ) {
+			// above or below the y face. check if moving into or already on
+			// if so set z vel to 0 and push to z ext
+			// else return null
+		}
 		float cx = collideRelRotComponent(rot_dc.x(), rot_move.x(), ext.x(), false);
 		if (Float.isNaN(cx)) return null;
 		float cz = collideRelRotComponent(rot_dc.z(), rot_move.z(), ext.z(), false);
 		if (Float.isNaN(cz)) return null;
-		float cy = collideRelRotComponent(rot_dc.y(), rot_move.y(), ext.y(), true);
-		if (Float.isNaN(cy)) return null;
+		boolean outside = Math.abs(cx) == ext.x() || Math.abs(cz) == ext.z();
+		float cy = rot_dc.y();
+		if (outside) {
+			cy = collideRelRotComponent(rot_dc.y(), rot_move.y(), ext.y(), true);
+			if (Float.isNaN(cy)) return null;
+		}
 		return new Vector3f(cx, cy, cz);
+	}
+	
+	private float getDExt(float rel_rot_pos, float ext) {
+		if (rel_rot_pos >= ext) return rel_rot_pos-ext;
+		else if (rel_rot_pos <= -ext) return rel_rot_pos+ext;
+		return Float.NaN;
 	}
 	
 	private float collideRelRotComponent(float rel_rot_pos, float rot_move, float ext, boolean push) {

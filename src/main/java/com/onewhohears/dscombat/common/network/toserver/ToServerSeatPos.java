@@ -12,10 +12,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkEvent.Context;
 
-@Deprecated
-/**
- * FIXME 6 this packet shouldn't be needed once 4 is complete
- */
 public class ToServerSeatPos extends IPacket {
 			
 	public final Vec3 seatPos;
@@ -41,7 +37,7 @@ public class ToServerSeatPos extends IPacket {
 			success.set(true);
 			ServerPlayer player = ctx.get().getSender();
 			if (player.isPassenger() && player.getVehicle() instanceof EntitySeat) {
-				player.getVehicle().setPos(seatPos);
+				player.getVehicle().setPosRaw(seatPos.x, seatPos.y, seatPos.z);
 			}
 			//System.out.println("ToServerSeatPos = "+seatPos);
 		});

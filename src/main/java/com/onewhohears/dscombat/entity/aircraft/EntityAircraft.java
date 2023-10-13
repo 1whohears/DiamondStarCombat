@@ -187,8 +187,8 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	protected float xzSpeed, totalMass, xzYaw, slideAngle, slideAngleCos, maxPushThrust, maxSpinThrust, currentFuel, maxFuel;
 	protected double staticFric, kineticFric, airPressure;
 	
-	private int lerpSteps, lerpStepsQ, deadTicks;
-	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot;
+	private int lerpSteps, deadTicks;
+	private double lerpX, lerpY, lerpZ;
 	private float landingGearPos, landingGearPosOld;
 	
 	protected RadarMode radarMode = RadarMode.ALL;
@@ -198,8 +198,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	protected RotableHitbox[] hitboxes = new RotableHitbox[0];
 	
 	// FIXME 1.1 fix aircraft texture/variant texture system
-	// TODO 5.1 custom hit box system so players can walk on boats
-	// TODO 5.2 allow big boats to have a heli pad and runway
+	// TODO 5.1 give big boats platforms with the RotableHitbox system
 	// TODO 5.4 aircraft breaks apart when damaged
 	// TODO 5.6 place and remove external parts from outside the vehicle
 	// TODO 2.5 add chaff 
@@ -394,6 +393,41 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
         nbt.putFloat("flares", getFlareNum());
 	}
 	
+	@Override
+	public void readSpawnData(FriendlyByteBuf buffer) {
+		preset = buffer.readUtf();
+		int weaponIndex = buffer.readInt();
+		int radarMode = buffer.readInt();
+		boolean gear = buffer.readBoolean();
+		boolean freeLook = buffer.readBoolean();
+		float throttle = buffer.readFloat();
+		List<PartSlot> slots = PartsManager.readSlotsFromBuffer(buffer);
+		// ORDER MATTERS
+		weaponSystem.setSelected(weaponIndex);
+		partsManager.setPartSlots(slots);
+		partsManager.clientPartsSetup();
+		// PRESET STUFF
+		if (!AircraftPresets.get().has(preset)) return;
+		AircraftPreset ap = AircraftPresets.get().getPreset(preset);
+		item = ap.getItem();
+		// OTHER
+		setRadarMode(RadarMode.byId(radarMode));
+		setLandingGear(gear);
+		setFreeLook(freeLook);
+		setCurrentThrottle(throttle);
+	}
+	
+	@Override
+	public void writeSpawnData(FriendlyByteBuf buffer) {
+		buffer.writeUtf(preset);
+		buffer.writeInt(weaponSystem.getSelectedIndex());
+		buffer.writeInt(getRadarMode().ordinal());
+		buffer.writeBoolean(isLandingGear());
+		buffer.writeBoolean(isFreeLook());
+		buffer.writeFloat(getCurrentThrottle());
+		PartsManager.writeSlotsToBuffer(buffer, partsManager.getSlots());
+	}
+	
 	public static enum AircraftType {
 		PLANE(true, false, false),
 		HELICOPTER(true, false, true),
@@ -456,14 +490,11 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 		setMoment(Vec3.ZERO);
 		// SET DIRECTION
 		zRotO = zRot;
-		Quaternion q;
-		if (level.isClientSide) q = getClientQ();
-		else q = getQ();
+		Quaternion q = getQBySide();
 		setPrevQ(q);
 		controlDirection(q);
-		q.normalize();
-		if (level.isClientSide) setClientQ(q);
-		else setQ(q);
+		//q.normalize(); // this was causing horrendous precision errors in the hitbox colliders
+		setQBySide(q);
 		EulerAngles angles = UtilAngles.toDegrees(q);
 		setXRot((float)angles.pitch);
 		setYRot((float)angles.yaw);
@@ -538,19 +569,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	}
 	
 	protected void wallCollisions() {
-		if (verticalCollision) {
-			double my = Math.abs(prevMotion.y);
-			double th = collideSpeedThreshHold;
-			if (isOperational() && isLandingGear() 
-					&& Mth.abs(getXRot()) < 15f
-					&& Mth.abs(zRot) < 15f) {
-				th = collideSpeedWithGearThreshHold;
-			}
-			if (my > th) {
-				float amount = (float)((my-th)*collideDamageRate);
-				collideHurt(amount, true);
-			}
-		}
+		if (verticalCollision) verticalCollision();
 		if (horizontalCollision && !minorHorizontalCollision) {
 			double speed = prevMotion.horizontalDistance();
 			if (speed > collideSpeedThreshHold) {
@@ -558,6 +577,26 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 				collideHurt(amount, false);
 			}
 		}
+	}
+	
+	protected void verticalCollision() {
+		double my = Math.abs(prevMotion.y);
+		double th = collideSpeedThreshHold;
+		if (isOperational() && isLandingGear() 
+				&& Mth.abs(getXRot()) < 15f
+				&& Mth.abs(zRot) < 15f) {
+			th = collideSpeedWithGearThreshHold;
+		}
+		if (my > th) {
+			float amount = (float)((my-th)*collideDamageRate);
+			collideHurt(amount, true);
+		}
+	}
+	
+	@Override
+	public boolean causeFallDamage(float dist, float mult, DamageSource source) {
+		verticalCollision();
+		return true;
 	}
 	
 	/**
@@ -1276,7 +1315,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 			syncPacketPositionCodec(getX(), getY(), getZ());
 			synchMoveRot();
 			lerpSteps = 0;
-			lerpStepsQ = 0;
 			return;
 		}
 		if (lerpSteps > 0) {
@@ -1359,38 +1397,6 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	@Override
 	public Packet<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
-	}
-	
-	@Override
-	public void readSpawnData(FriendlyByteBuf buffer) {
-		preset = buffer.readUtf();
-		int weaponIndex = buffer.readInt();
-		int radarMode = buffer.readInt();
-		boolean gear = buffer.readBoolean();
-		boolean freeLook = buffer.readBoolean();
-		List<PartSlot> slots = PartsManager.readSlotsFromBuffer(buffer);
-		// ORDER MATTERS
-		weaponSystem.setSelected(weaponIndex);
-		partsManager.setPartSlots(slots);
-		partsManager.clientPartsSetup();
-		// PRESET STUFF
-		if (!AircraftPresets.get().has(preset)) return;
-		AircraftPreset ap = AircraftPresets.get().getPreset(preset);
-		item = ap.getItem();
-		// OTHER
-		setRadarMode(RadarMode.byId(radarMode));
-		setLandingGear(gear);
-		setFreeLook(freeLook);
-	}
-	
-	@Override
-	public void writeSpawnData(FriendlyByteBuf buffer) {
-		buffer.writeUtf(preset);
-		buffer.writeInt(weaponSystem.getSelectedIndex());
-		buffer.writeInt(getRadarMode().ordinal());
-		buffer.writeBoolean(isLandingGear());
-		buffer.writeBoolean(isFreeLook());
-		PartsManager.writeSlotsToBuffer(buffer, partsManager.getSlots());
 	}
 	
 	@Override
@@ -1535,7 +1541,10 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 			else q = getQ();
  			Vec3 seatPos = UtilAngles.rotateVector(part.getRelativePos(), q);
 			passenger.setPos(position().add(seatPos));
-		}
+			return;
+		} 
+		EntitySeat seat = getPassengerSeat(passenger);
+		if (seat != null) seat.positionRider(passenger);
 	}
 	
 	@Nullable
@@ -1575,6 +1584,14 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     protected boolean canRide(Entity entityIn) {
         return false;
     }
+	
+	@Nullable
+	public EntitySeat getPassengerSeat(Entity p) {
+		for (EntitySeat seat : getSeats()) 
+			if (p.equals(seat.getPassenger())) 
+				return seat;
+		return null;
+	}
 	
 	public boolean isVehicleOf(Entity e) {
 		if (e == null) return false;
@@ -1877,6 +1894,16 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     
     public void decreaseThrottle() {
     	setCurrentThrottle(getCurrentThrottle() - getThrottleDecreaseRate());
+    }
+    
+    public final Quaternion getQBySide() {
+    	if (level.isClientSide) return getClientQ();
+    	else return getQ();
+    }
+    
+    public final void setQBySide(Quaternion q) {
+    	if (level.isClientSide) setClientQ(q);
+    	else setQ(q);
     }
     
     /**

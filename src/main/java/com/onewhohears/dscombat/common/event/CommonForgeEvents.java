@@ -89,4 +89,20 @@ public final class CommonForgeEvents {
 		event.addListener(RadarPresets.get());
 	}
 	
+	/*@SubscribeEvent(priority = EventPriority.NORMAL)
+	public static void chunkWatchEvent(ChunkWatchEvent.Watch event) {
+		System.out.println("CHUNK WATCH EVENT");
+		System.out.println("event chunk  = "+event.getPos());
+		System.out.println("player chunk = "+event.getPlayer().chunkPosition());
+		if (event.getPlayer().getVehicle() != null) 
+		System.out.println("seat chunk   = "+event.getPlayer().getVehicle().chunkPosition());
+		System.out.println("level tick   = "+event.getLevel().getGameTime());
+		
+		StackTraceElement[] stack = Thread.currentThread().getStackTrace();
+		for (int i = 0; i < stack.length; ++i) {
+			System.out.println(stack[i].toString());
+			if (stack[i].toString().contains("net.minecraft.client.main.Main")) break;
+		}
+	}*/
+	
 }

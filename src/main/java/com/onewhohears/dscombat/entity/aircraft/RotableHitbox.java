@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import com.mojang.math.Quaternion;
+import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.util.math.RotableAABB;
 import com.onewhohears.dscombat.util.math.UtilAngles;
+import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -23,84 +25,87 @@ public class RotableHitbox extends PartEntity<EntityAircraft> {
 	private final RotableAABB hitbox;
 	private final EntityDimensions size;
 	private final Vec3 rel_pos;
-	private final float precision;
-	private SubCollider[] subColliders;
 	
-	// FIXME 5 the hitbox shouldn't be an entity cause it would probably cause performance issues. will have to create a custom collision system...pain
-	
-	public RotableHitbox(EntityAircraft parent, String name, Vec3 size, Vec3 rel_pos, float precision) {
+	public RotableHitbox(EntityAircraft parent, String name, Vector3f size, Vec3 rel_pos) {
 		super(parent);
 		this.name = name;
-		this.hitbox = new RotableAABB(size.x, size.y, size.z);
+		this.hitbox = new RotableAABB(size.x(), size.y(), size.z());
 		this.size = hitbox.getMaxDimensions();
 		this.rel_pos = rel_pos;
-		this.precision = precision;
 		this.noPhysics = true;
+		this.blocksBuilding = true;
 		refreshDimensions();
-		createSubColliders();
-		positionSubColliders();
-		setId(ENTITY_COUNTER.getAndAdd(subColliders.length+1)+1);
 	}
 	
 	@Override
 	public void tick() {
 		positionSelf();
-		positionSubColliders();
 		positionEntities();
 		firstTick = false;
-		System.out.println(this+" "+tickCount++);
-	}
-	
-	@Override
-	public void setId(int id) {
-		super.setId(id);
-		for (int i = 0; i < subColliders.length; i++) subColliders[i].setId(id+i+1);
-	}
-	
-	protected void createSubColliders() {
-		List<Vec3> pos = hitbox.createRelPosList(getPrecision());
-		subColliders = new SubCollider[pos.size()];
-		for (int i = 0; i < pos.size(); ++i) subColliders[i] = new SubCollider(
-				this, i, getPrecision(), pos.get(i));
 	}
 	
 	protected void positionSelf() {
 		setOldPosAndRot();
-		Quaternion q;
-		if (level.isClientSide) q = getParent().getClientQ();
-		else q = getParent().getQ();
+		Quaternion q = getParent().getQBySide();
 		Vec3 pos = getParent().position().add(UtilAngles.rotateVector(getRelPos(), q));
 		setPos(pos);
-		hitbox.setCenter(pos);
-		hitbox.setRot(q);
-	}
-	
-	protected void positionSubColliders() {
-		for (int i = 0; i < subColliders.length; ++i) 
-			subColliders[i].setPos(hitbox.repositionSubCollider(subColliders[i].getRelPos()));
+		hitbox.setCenter(UtilGeometry.convertVector(pos));
 	}
 	
 	protected void positionEntities() {
 		Vec3 parent_move = getParent().getDeltaMovement();
-		Vec3 parent_rot = getParent().getAngularVel();
+		Vec3 parent_rot_rate = getParent().getAngularVel();
+		Quaternion rot = getParent().getQBySide();
 		List<Entity> list = level.getEntities(this, getBoundingBox(), canMoveEntity());
+		//System.out.println("collision list size = "+list.size());
+		System.out.println("client side?"+level.isClientSide);
 		for (Entity entity : list) {
-			Vec3 entity_move = entity.getDeltaMovement().add(parent_move);
-			/*entity_move.add(hitbox.getTangetVel(
-				entity.position().subtract(hitbox.getCenter()), 
-				parent_rot));*/
+			/**
+			 * FIXME 4 this custom collision code works somewhat but lots of issues still
+			 * are there performance issues? my laptop frame rate drops when an aircraft carrier exists
+			 * the translations from vehicle rotations probably only work well in the y axis
+			 * can't place anything on the platform
+			 * when the vehicle moves or rotates, the passengers experience chopy movement
+			 * when the chunks load, entities that were on the platform may start falling before platform loads
+			 */
+			AABB entity_bb = entity.getBoundingBox();
+			Vec3 entity_pos = entity.position();
+			Vec3 entity_feet = UtilGeometry.getBBFeet(entity_bb);
+			Vec3 entity_move = entity.getDeltaMovement();
+			Vec3 collide = hitbox.getCollideMovePos(entity_feet, 
+					entity_move, rot, parent_move, parent_rot_rate);
+			//System.out.println("collide "+(collide!=null)+" "+entity);
+			if (collide == null) continue;
+			System.out.println("colliding "+entity);
+			double dy = entity_pos.y-entity_bb.minY;
+			entity.setPos(collide.add(0, dy, 0));
+			entity.setYRot(entity.getYRot()-(float)parent_rot_rate.y);
+			// set is colliding
+			entity.causeFallDamage(entity.fallDistance, 1, DamageSource.FALL);
+			entity.resetFallDistance();
+			entity.setOnGround(true);
+			entity.verticalCollision = true;
+			entity.verticalCollisionBelow = true;
+			entity.causeFallDamage(entity.fallDistance, 1, DamageSource.FALL);
+			entity.resetFallDistance();
+			// prevent moving down
+			if (entity_move.y < 0) entity_move = entity_move.multiply(1, 0, 1);
 			entity.setDeltaMovement(entity_move);
+			if (entity instanceof EntityAircraft plane) {
+				Vec3 forces = plane.getForces();
+				if (forces.y < 0) forces = forces.multiply(1, 0, 1);
+				plane.setForces(forces);
+			}
 		}
 	}
 	
 	public Predicate<? super Entity> canMoveEntity() {
 		return (entity) -> {
 			if (entity.noPhysics) return false;
-			if (!entity.verticalCollisionBelow) return false;
-			AABB groundBox = entity.getBoundingBox().setMaxY(0.1).move(0, -0.1, 0);
-			List<Entity> sub_list = level.getEntities(entity, groundBox, 
-					(e) -> {return e instanceof SubCollider;});
-			return sub_list.size() != 0;
+			if (!entity.canCollideWith(getParent())) return false;
+			if (entity.isPassenger()) return false;
+			if (entity.getRootVehicle().equals(getParent())) return false;
+			return true;
 		};
 	}
 	
@@ -130,14 +135,6 @@ public class RotableHitbox extends PartEntity<EntityAircraft> {
 	
 	public Vec3 getRelPos() {
 		return rel_pos;
-	}
-	
-	public float getPrecision() {
-		return precision;
-	}
-	
-	public SubCollider[] getSubColliders() {
-		return subColliders;
 	}
 	
 	@Override
@@ -195,16 +192,6 @@ public class RotableHitbox extends PartEntity<EntityAircraft> {
 
 	@Override
 	protected void addAdditionalSaveData(CompoundTag nbt) {
-	}
-	
-	@Override
-	public boolean isMultipartEntity() {
-		return true;
-	}
-	
-	@Override
-	public PartEntity<?>[] getParts() {
-		return getSubColliders();
 	}
 
 }

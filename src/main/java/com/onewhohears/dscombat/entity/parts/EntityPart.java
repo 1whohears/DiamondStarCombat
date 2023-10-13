@@ -32,8 +32,6 @@ public abstract class EntityPart extends Entity {
 	
 	private float z_rot;
 	
-	// FIXME 4 make all EntityPart the forge PartEntity and make the player directly a passenger of the vehicle
-	
 	protected EntityPart(EntityType<?> entityType, Level level) {
 		super(entityType, level);
 	}
@@ -85,7 +83,7 @@ public abstract class EntityPart extends Entity {
 	public void tick() {
 		if (firstTick) init();
 		super.tick();
-		if (!level.isClientSide && tickCount > 10 && getVehicle() == null) kill(); 
+		if (!level.isClientSide && tickCount > 10 && getVehicle() == null) discard();
 	}
 	
 	public Vec3 getRelativePos() {

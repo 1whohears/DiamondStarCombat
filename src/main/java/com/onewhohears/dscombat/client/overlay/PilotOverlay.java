@@ -410,8 +410,9 @@ public class PilotOverlay {
 		// PINGS ON SCREEN AND HUD
 		Camera cam = m.gameRenderer.getMainCamera();
 		Vec3 view = cam.getPosition();
+		float z_rot = UtilAngles.lerpAngle(partialTick, plane.zRotO, plane.zRot);
 		poseStack.pushPose();
-		poseStack.mulPose(Vector3f.ZP.rotationDegrees(plane.zRot));
+		poseStack.mulPose(Vector3f.ZP.rotationDegrees(z_rot));
 		poseStack.mulPose(Vector3f.XP.rotationDegrees(cam.getXRot()));
 		poseStack.mulPose(Vector3f.YP.rotationDegrees(cam.getYRot()+180f));
 		poseStack.translate(-view.x, -view.y, -view.z);

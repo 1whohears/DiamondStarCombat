@@ -158,10 +158,6 @@ public final class ClientInputEvents {
 		if (!(player.getRootVehicle() instanceof EntityAircraft plane)) return;
 		// TELL SERVER WHERE THE SEAT IS INCASE LAG CAUSES VIOLENCE
 		/**
-		 * if the seat and the root vehicle are in different chunks a million ClientboundLevelChunkWithLightPacket packets are sent
-		 * this is NOT caused by ToServerSeatPos as a test without that packet was conducted
-		 * the ModernFix mod solves this issue
-		 * 
 		 * HOW 4 the culprit of the seat desync issue is net.minecraft.server.level.ChunkMap.TrackedEntity.updatePlayer
 		 * sometimes when the server lags the seat position on the server side doesn't get updated with the plane and the player
 		 * so the server thinks the seat is outside the player render distance and sends a discard packet to the client

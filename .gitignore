@@ -26,3 +26,7 @@ build
 *.launch
 **/run/
 aoa_graphs/~$aoa_graphs.xlsx
+/.idea/.gitignore
+/.idea/gradle.xml
+/.idea/misc.xml
+/.idea/vcs.xml

@@ -18,6 +18,7 @@ public class VehicleOverlay {
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
+		// TODO: make method bodies in overlay subclasses consistent with style
 		// TODO: potentially refactor overlays to a singleton pattern so there isn't constant instantiation?
 		// Something needs to be done WRT the above comment. I don't like this implementation.
 		new DebugOverlay(screenWidth, screenHeight).render(poseStack);

@@ -116,16 +116,6 @@ public class RadarOverlay extends VehicleOverlayComponent {
         int selected = radar.getClientSelectedPingIndex();
         int hover = ClientInputEvents.getHoverIndex();
         boolean isNatural = vehicle.level.dimensionType().natural();
-        
-        if (hover != -1 && hover < pings.size()) {
-            RadarData.RadarPing ping = pings.get(hover);
-            int dist = (int) ping.getPosForClient().distanceTo(vehicle.position());
-            int alt = UtilEntity.getDistFromSeaLevel(ping.getPosForClient().y, isNatural);
-            String text = "(" + dist + " | " + alt + ")";
-            drawCenteredString(poseStack, getFont(),
-                    text, screenWidth / 2, screenHeight / 2 - 20, 0xffff00);
-        }
-
         if (selected != -1 && selected < pings.size()) {
             RadarData.RadarPing ping = pings.get(selected);
             int dist = (int) ping.getPosForClient().distanceTo(vehicle.position());
@@ -136,7 +126,6 @@ public class RadarOverlay extends VehicleOverlayComponent {
             drawCenteredString(poseStack, getFont(),
                     text, centerX, screenHeight - RADAR_OFFSET - RADAR_SIZE - 20, color);
         }
-
         // PINGS ON SCREEN AND HUD
         Camera cam = Minecraft.getInstance().gameRenderer.getMainCamera();
         Vec3 view = cam.getPosition();
@@ -222,5 +211,14 @@ public class RadarOverlay extends VehicleOverlayComponent {
             }
         }
         if (!hovering) ClientInputEvents.resetHoverIndex();
+        // LOOK AT PING DATA LAYER ORDER FIX
+        if (hover != -1 && hover < pings.size()) {
+            RadarData.RadarPing ping = pings.get(hover);
+            int dist = (int) ping.getPosForClient().distanceTo(vehicle.position());
+            int alt = UtilEntity.getDistFromSeaLevel(ping.getPosForClient().y, isNatural);
+            String text = "(" + dist + " | " + alt + ")";
+            drawCenteredString(poseStack, getFont(),
+                    text, screenWidth / 2, screenHeight / 2 - 20, 0xffff00);
+        }
     }
 }

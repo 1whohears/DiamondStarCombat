@@ -27,8 +27,7 @@ public class TurnCoordinatorOverlay extends VehicleOverlayComponent {
         if (!shouldRender()) return;
         EntityPlane plane = (EntityPlane) getPlayerVehicle();
 
-        // TODO: make magic numbers 60 & 10 public in ThrottleVehicleOverlay
-        final int xOrigin = this.screenWidth - TURN_COORD_SIZE - PADDING * 3 - 60 - 10;
+        final int xOrigin = this.screenWidth - TURN_COORD_SIZE - PADDING * 3 - STICK_BASE_SIZE - STICK_KNOB_SIZE;
         final int yOrigin = this.screenHeight - PADDING - TURN_COORD_SIZE;
 
         RenderSystem.setShaderTexture(0, TURN_COORD_BASE);

@@ -109,12 +109,14 @@ public class WeaponPartData extends PartData {
 	@Override
 	public void remove(String slotId) {
 		super.remove(slotId);
+		if (getParent() == null) return;
 		getParent().weaponSystem.removeWeapon(weaponId, slotId);
 	}
 	
 	@Override
 	public void tick(String slotId) {
 		super.tick(slotId);
+		if (getParent() == null) return;
 		WeaponData data = getParent().weaponSystem.get(weaponId, slotId);
 		if (data != null) {
 			ammo = data.getCurrentAmmo();

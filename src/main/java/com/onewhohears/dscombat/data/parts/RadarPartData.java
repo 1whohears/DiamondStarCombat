@@ -68,6 +68,7 @@ public class RadarPartData extends PartData {
 	@Override
 	public void remove(String slotId) {
 		super.serverRemove(slotId);
+		if (getParent() == null) return;
 		getParent().radarSystem.removeRadar(radarId, slotId);
 	}
 	

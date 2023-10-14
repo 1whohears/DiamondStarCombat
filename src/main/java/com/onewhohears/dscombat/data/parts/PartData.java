@@ -200,6 +200,7 @@ public abstract class PartData {
 	}
 	
 	public void removeEntity(String slotId) {
+		if (getParent() == null) return;
 		for (EntityPart part : getParent().getPartEntities()) 
 			if (part.getSlotId().equals(slotId)) 
 				part.discard();

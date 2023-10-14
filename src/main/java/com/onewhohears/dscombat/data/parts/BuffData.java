@@ -78,6 +78,7 @@ public class BuffData extends PartData {
 	@Override
 	public void serverRemove(String slotId) {
 		super.serverRemove(slotId);
+		if (getParent() == null) return;
 		switch (type) {
 		case DATA_LINK:
 			getParent().radarSystem.dataLink = false;

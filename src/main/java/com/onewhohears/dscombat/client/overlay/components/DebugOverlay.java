@@ -33,6 +33,6 @@ public class DebugOverlay extends VehicleOverlayComponent {
 
     @Override
     public boolean shouldRender() {
-        return getPlayerVehicle() instanceof EntityAircraft && Config.CLIENT.debugMode.get();
+        return vehicleIsAircraft() && Config.CLIENT.debugMode.get();
     }
 }

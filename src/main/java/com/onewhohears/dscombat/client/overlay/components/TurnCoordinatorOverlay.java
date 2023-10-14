@@ -62,6 +62,6 @@ public class TurnCoordinatorOverlay extends VehicleOverlayComponent {
 
     @Override
     public boolean shouldRender() {
-        return getPlayerVehicle() instanceof EntityPlane;
+        return vehicleIsPlane();
     }
 }

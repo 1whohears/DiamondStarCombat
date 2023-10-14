@@ -1,6 +1,8 @@
 package com.onewhohears.dscombat.client.overlay;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
@@ -24,6 +26,14 @@ public abstract class VehicleOverlayComponent extends GuiComponent {
     @Nullable
     protected static Entity getPlayerVehicle() {
         return Minecraft.getInstance().player != null ? Minecraft.getInstance().player.getRootVehicle() : null;
+    }
+
+    protected static boolean vehicleIsAircraft() {
+        return getPlayerVehicle() instanceof EntityAircraft;
+    }
+
+    protected static boolean vehicleIsPlane() {
+        return getPlayerVehicle() instanceof EntityPlane;
     }
 
     protected static Font getFont() {

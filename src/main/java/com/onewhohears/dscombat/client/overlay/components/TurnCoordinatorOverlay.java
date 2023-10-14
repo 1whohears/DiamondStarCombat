@@ -6,7 +6,6 @@ import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
-import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.resources.ResourceLocation;
 
 public class TurnCoordinatorOverlay extends VehicleOverlayComponent {
@@ -29,19 +28,27 @@ public class TurnCoordinatorOverlay extends VehicleOverlayComponent {
         int yOrigin = screenHeight - PADDING - TURN_COORD_SIZE;
 
         RenderSystem.setShaderTexture(0, TURN_COORD_BASE);
-        blit(poseStack, xOrigin, yOrigin, 0, 0, TURN_COORD_SIZE, TURN_COORD_SIZE, TURN_COORD_SIZE, TURN_COORD_SIZE);
+        blit(poseStack,
+                xOrigin, yOrigin,
+                0, 0,
+                TURN_COORD_SIZE, TURN_COORD_SIZE,
+                TURN_COORD_SIZE, TURN_COORD_SIZE);
 
         RenderSystem.setShaderTexture(0, TURN_COORD_BALL);
         // FIXME: #getCentripetalForce can return a NullPointerException?
         int xTranslation = (int) ((plane.getCentripetalForce() - plane.getCentrifugalForce()) * 25);
-        blit(poseStack, xOrigin + xTranslation, yOrigin, 0, 0, TURN_COORD_SIZE, TURN_COORD_SIZE, TURN_COORD_SIZE, TURN_COORD_SIZE);
+        blit(poseStack,
+                xOrigin + xTranslation, yOrigin,
+                0, 0,
+                TURN_COORD_SIZE, TURN_COORD_SIZE,
+                TURN_COORD_SIZE, TURN_COORD_SIZE);
 
         RenderSystem.setShaderTexture(0, TURN_COORD_NEEDLE);
         poseStack.pushPose();
         poseStack.translate(xOrigin + (double) TURN_COORD_SIZE / 2, yOrigin + (double) TURN_COORD_SIZE / 2, 0);
         float yawRate = plane.getYawRate() * 20 / 40 * 30; // yawRate /  (indicator rate) * (indicator angle)
         poseStack.mulPose(Vector3f.ZP.rotationDegrees(yawRate));
-        GuiComponent.blit(poseStack,
+        blit(poseStack,
                 -TURN_COORD_SIZE / 2, -TURN_COORD_SIZE / 2,
                 0, 0,
                 TURN_COORD_SIZE, TURN_COORD_SIZE,

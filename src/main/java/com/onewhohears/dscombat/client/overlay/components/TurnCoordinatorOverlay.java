@@ -18,14 +18,18 @@ public class TurnCoordinatorOverlay extends VehicleOverlayComponent {
 
     public static final int TURN_COORD_SIZE = 80;
 
+    public TurnCoordinatorOverlay(int screenWidth, int screenHeight) {
+        super(screenWidth, screenHeight);
+    }
+
     @Override
-    public void render(PoseStack poseStack, int screenWidth, int screenHeight) {
+    public void render(PoseStack poseStack) {
         if (!shouldRender()) return;
         EntityPlane plane = (EntityPlane) getPlayerVehicle();
 
         // TODO: make magic numbers 60 & 10 public in ThrottleVehicleOverlay
-        int xOrigin = screenWidth - TURN_COORD_SIZE - PADDING * 3 - 60 - 10;
-        int yOrigin = screenHeight - PADDING - TURN_COORD_SIZE;
+        final int xOrigin = this.screenWidth - TURN_COORD_SIZE - PADDING * 3 - 60 - 10;
+        final int yOrigin = this.screenHeight - PADDING - TURN_COORD_SIZE;
 
         RenderSystem.setShaderTexture(0, TURN_COORD_BASE);
         blit(poseStack,
@@ -35,7 +39,7 @@ public class TurnCoordinatorOverlay extends VehicleOverlayComponent {
                 TURN_COORD_SIZE, TURN_COORD_SIZE);
 
         RenderSystem.setShaderTexture(0, TURN_COORD_BALL);
-        // FIXME: #getCentripetalForce can return a NullPointerException?
+        // FIXME: #getCentripetalForce can throw a NullPointerException?
         int xTranslation = (int) ((plane.getCentripetalForce() - plane.getCentrifugalForce()) * 25);
         blit(poseStack,
                 xOrigin + xTranslation, yOrigin,

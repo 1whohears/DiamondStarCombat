@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.client.overlay;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
@@ -23,6 +24,10 @@ public abstract class VehicleOverlayComponent extends GuiComponent {
     @Nullable
     protected static Entity getPlayerVehicle() {
         return Minecraft.getInstance().player != null ? Minecraft.getInstance().player.getRootVehicle() : null;
+    }
+
+    protected static Font getFont() {
+        return Minecraft.getInstance().font;
     }
 
     public VehicleOverlayComponent(int screenWidth, int screenHeight) {

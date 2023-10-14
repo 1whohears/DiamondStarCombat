@@ -12,6 +12,7 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents;
 import com.onewhohears.dscombat.client.event.forgebus.ClientRenderEvents;
 import com.onewhohears.dscombat.client.input.DSCKeys;
+import com.onewhohears.dscombat.client.overlay.components.DebugOverlay;
 import com.onewhohears.dscombat.client.overlay.components.TurnCoordinatorOverlay;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
@@ -37,9 +38,12 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 
+@OnlyIn(Dist.CLIENT)
 public class VehicleOverlay {
 	
 	private static final int padding = 1;
@@ -105,6 +109,7 @@ public class VehicleOverlay {
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		new TurnCoordinatorOverlay(screenWidth, screenHeight).render(poseStack);
+		new DebugOverlay(screenWidth, screenHeight).render(poseStack);
 		drawAircraftStats(m, player, plane, gui, poseStack, partialTick, screenWidth, screenHeight);
 		drawAircraftAngles(m, player, plane, gui, poseStack, partialTick, screenWidth, screenHeight);
 		drawAircraftWeaponsAndKeys(m, player, plane, gui, poseStack, partialTick, screenWidth, screenHeight);

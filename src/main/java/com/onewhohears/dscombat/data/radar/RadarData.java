@@ -18,6 +18,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
@@ -340,6 +341,7 @@ public class RadarData extends JsonPreset {
 		public final PingTerrainType terrainType;
 		public final PingEntityType entityType;
 		private boolean isShared;
+		private Vec3 clientPos;
 		
 		public RadarPing(Entity ping, boolean isFriendly, PingEntityType entityType) {
 			id = ping.getId();
@@ -383,6 +385,20 @@ public class RadarData extends JsonPreset {
 		
 		public RadarPing getCopy(boolean isShared) {
 			return new RadarPing(id, pos, isFriendly, isShared, terrainType, entityType);
+		}
+		
+		public Vec3 getPosForClient() {
+			if (clientPos != null) return clientPos;
+			return pos;
+		}
+		
+		public void setClientPos(Level level) {
+			Entity e = level.getEntity(id);
+			if (e == null) {
+				clientPos = null;
+				return;
+			}
+			clientPos = e.getBoundingBox().getCenter();
 		}
 		
 		@Override

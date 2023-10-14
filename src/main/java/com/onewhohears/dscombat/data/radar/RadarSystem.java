@@ -284,6 +284,7 @@ public class RadarSystem {
 				if (++n.age > 10) it.remove();
 			}
 		}
+		for (RadarPing ping : clientTargets) ping.setClientPos(parent.level);
 	}
 	
 	public List<RWRWarning> getClientRWRWarnings() {

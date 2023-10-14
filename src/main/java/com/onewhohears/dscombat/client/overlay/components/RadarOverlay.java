@@ -117,16 +117,16 @@ public class RadarOverlay extends VehicleOverlayComponent {
 
         if (hover != -1 && hover < pings.size()) {
             RadarData.RadarPing ping = pings.get(hover);
-            String text = "(" + (int) ping.pos.distanceTo(vehicle.position())
-                    + " | " + (int) ping.pos.y + ")";
+            String text = "(" + (int) ping.getPosForClient().distanceTo(vehicle.position())
+                    + " | " + (int) ping.getPosForClient().y + ")";
             drawCenteredString(poseStack, getFont(),
                     text, screenWidth / 2, screenHeight / 2 - 20, 0xffff00);
         }
 
         if (selected != -1 && selected < pings.size()) {
             RadarData.RadarPing ping = pings.get(selected);
-            String text = "(" + (int) ping.pos.distanceTo(vehicle.position())
-                    + " | " + (int) ping.pos.y + ")";
+            String text = "(" + (int) ping.getPosForClient().distanceTo(vehicle.position())
+                    + " | " + (int) ping.getPosForClient().y + ")";
             int color = 0xff0000;
             if (ping.isFriendly) color = 0x0000ff;
             drawCenteredString(poseStack, getFont(),
@@ -150,7 +150,7 @@ public class RadarOverlay extends VehicleOverlayComponent {
         for (int i = 0; i < pings.size(); ++i) {
             RadarData.RadarPing ping = pings.get(i);
             // SCREEN
-            Vec3 dp = ping.pos.subtract(vehicle.position());
+            Vec3 dp = ping.getPosForClient().subtract(vehicle.position());
             double dist = dp.multiply(1, 0, 1).length();
             double screen_dist = dist/displayRange;
             if (screen_dist > 1) screen_dist = 1;
@@ -173,7 +173,7 @@ public class RadarOverlay extends VehicleOverlayComponent {
             drawCenteredString(poseStack, getFont(),
                     symbol, x, y, color);
             // HUD
-            float[] screen_pos = UtilGeometry.worldToScreenPos(ping.pos,
+            float[] screen_pos = UtilGeometry.worldToScreenPos(ping.getPosForClient(),
                     view_mat, proj_mat, screenWidth, screenHeight);
             if (screen_pos[0] < 0 || screen_pos[1] < 0) continue;
             float x_win = screen_pos[0], y_win = screenHeight - screen_pos[1];

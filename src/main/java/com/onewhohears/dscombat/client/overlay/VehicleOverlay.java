@@ -39,7 +39,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 
-public class PilotOverlay {
+public class VehicleOverlay {
 	
 	private static final int padding = 1;
 	

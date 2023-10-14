@@ -3,59 +3,17 @@ package com.onewhohears.dscombat.client.event;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.client.model.EntityModelParachute;
-import com.onewhohears.dscombat.client.model.aircraft.EntityModelAlexisPlane;
-import com.onewhohears.dscombat.client.model.aircraft.EntityModelAndolfSub;
-import com.onewhohears.dscombat.client.model.aircraft.EntityModelAxcelTruck;
-import com.onewhohears.dscombat.client.model.aircraft.EntityModelE3Sentry;
-import com.onewhohears.dscombat.client.model.aircraft.EntityModelJaviPlane;
-import com.onewhohears.dscombat.client.model.aircraft.EntityModelMrBudgerTank;
-import com.onewhohears.dscombat.client.model.aircraft.EntityModelNathanBoat;
-import com.onewhohears.dscombat.client.model.aircraft.EntityModelNoahChopper;
-import com.onewhohears.dscombat.client.model.aircraft.EntityModelOrangeTesla;
-import com.onewhohears.dscombat.client.model.aircraft.EntityModelSmallRoller;
-import com.onewhohears.dscombat.client.model.aircraft.EntityModelTestPlane;
-import com.onewhohears.dscombat.client.model.aircraft.EntityModelWoodenPlane;
+import com.onewhohears.dscombat.client.model.aircraft.*;
 import com.onewhohears.dscombat.client.model.obj.ObjAircraftModel;
 import com.onewhohears.dscombat.client.model.obj.ObjEntityModel;
 import com.onewhohears.dscombat.client.model.obj.ObjEntityModels;
 import com.onewhohears.dscombat.client.model.obj.ObjPartModel;
-import com.onewhohears.dscombat.client.model.obj.custom.AATurretModel;
-import com.onewhohears.dscombat.client.model.obj.custom.BallRadarModel;
-import com.onewhohears.dscombat.client.model.obj.custom.BombRackModel;
-import com.onewhohears.dscombat.client.model.obj.custom.CIWSModel;
-import com.onewhohears.dscombat.client.model.obj.custom.CorvetteModel;
-import com.onewhohears.dscombat.client.model.obj.custom.HeavyMissileRackModel;
-import com.onewhohears.dscombat.client.model.obj.custom.LightMissileRackModel;
-import com.onewhohears.dscombat.client.model.obj.custom.MLSModel;
-import com.onewhohears.dscombat.client.model.obj.custom.Mark45GunModel;
-import com.onewhohears.dscombat.client.model.obj.custom.Mark7GunModel;
-import com.onewhohears.dscombat.client.model.obj.custom.Radar1Model;
-import com.onewhohears.dscombat.client.model.obj.custom.Radar2Model;
-import com.onewhohears.dscombat.client.model.obj.custom.SamLauncherModel;
-import com.onewhohears.dscombat.client.model.obj.custom.StickRadarModel;
-import com.onewhohears.dscombat.client.model.obj.custom.TorpedoTubesModel;
-import com.onewhohears.dscombat.client.model.obj.custom.VLSModel;
-import com.onewhohears.dscombat.client.model.weapon.EntityModelBomb1;
-import com.onewhohears.dscombat.client.model.weapon.EntityModelBullet1;
-import com.onewhohears.dscombat.client.model.weapon.EntityModelGruetzBB;
-import com.onewhohears.dscombat.client.model.weapon.EntityModelHeavyTankTurret;
-import com.onewhohears.dscombat.client.model.weapon.EntityModelMiniGunTurret;
-import com.onewhohears.dscombat.client.model.weapon.EntityModelMissile1;
-import com.onewhohears.dscombat.client.model.weapon.EntityModelSteveUpSmash;
-import com.onewhohears.dscombat.client.overlay.PilotOverlay;
-import com.onewhohears.dscombat.client.renderer.RendererEntityAircraft;
-import com.onewhohears.dscombat.client.renderer.RendererEntityInvisible;
-import com.onewhohears.dscombat.client.renderer.RendererEntityParachute;
-import com.onewhohears.dscombat.client.renderer.RendererEntityTurret;
-import com.onewhohears.dscombat.client.renderer.RendererEntityWeapon;
-import com.onewhohears.dscombat.client.renderer.RendererObjAircraft;
-import com.onewhohears.dscombat.client.renderer.RendererObjEntity;
+import com.onewhohears.dscombat.client.model.obj.custom.*;
+import com.onewhohears.dscombat.client.model.weapon.*;
+import com.onewhohears.dscombat.client.overlay.VehicleOverlay;
+import com.onewhohears.dscombat.client.renderer.*;
 import com.onewhohears.dscombat.data.aircraft.AircraftClientPresets;
-import com.onewhohears.dscombat.entity.aircraft.EntityBoat;
-import com.onewhohears.dscombat.entity.aircraft.EntityGroundVehicle;
-import com.onewhohears.dscombat.entity.aircraft.EntityHelicopter;
-import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
-import com.onewhohears.dscombat.entity.aircraft.EntitySubmarine;
+import com.onewhohears.dscombat.entity.aircraft.*;
 import com.onewhohears.dscombat.entity.parts.EntityEngine;
 import com.onewhohears.dscombat.entity.parts.EntityRadar;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
@@ -65,7 +23,6 @@ import com.onewhohears.dscombat.entity.weapon.EntityBullet;
 import com.onewhohears.dscombat.entity.weapon.EntityBunkerBuster;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.init.ModEntities;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.resources.ResourceLocation;
@@ -329,7 +286,7 @@ public final class ClientModEvents {
 	
 	@SubscribeEvent
     public static void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
-        event.registerBelowAll("aircraft_stats", PilotOverlay.HUD_Aircraft_Stats);
+        event.registerBelowAll("aircraft_stats", VehicleOverlay.HUD_Aircraft_Stats);
     }
 	
 	@SubscribeEvent

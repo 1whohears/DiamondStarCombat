@@ -164,10 +164,13 @@ public class ModEntities {
 					BoatPresets.DEFAULT_AIRCRAFT_CARRIER, ModSounds.BOAT_1, 10, 34) {
 						@Override
 						public void addHitboxes() {
-							hitboxes = new RotableHitbox[1];
+							hitboxes = new RotableHitbox[2];
 							hitboxes[0] = new RotableHitbox(this, "runway", 
-									new Vector3f(25, 1, 50), 
-									new Vec3(0, 5.51, 0));
+									new Vector3f(16, 6.04f, 50), 
+									new Vec3(0, 3, 0));
+							hitboxes[1] = new RotableHitbox(this, "side_plat", 
+									new Vector3f(25, 3.03f, 25), 
+									new Vec3(0, 4.5, 0));
 						}
 				}, EntityDimensions.scalable(25f,6f)));
 	

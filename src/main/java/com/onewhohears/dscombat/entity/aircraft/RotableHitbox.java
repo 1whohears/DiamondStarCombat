@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.util.math.RotableAABB;
+import com.onewhohears.dscombat.util.math.RotableAABB.CollisionData;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
@@ -58,43 +59,48 @@ public class RotableHitbox extends PartEntity<EntityVehicle> {
 		Quaternion rot = getParent().getQBySide();
 		List<Entity> list = level.getEntities(this, getBoundingBox(), canMoveEntity());
 		//System.out.println("collision list size = "+list.size());
-		System.out.println("client side?"+level.isClientSide);
+		//System.out.println("client side?"+level.isClientSide);
 		for (Entity entity : list) {
 			/**
 			 * FIXME 4 this custom collision code works somewhat but lots of issues still
-			 * are there performance issues? my laptop frame rate drops when an aircraft carrier exists
-			 * the translations from vehicle rotations probably only work well in the y axis
+			 * are there performance issues?
 			 * can't place anything on the platform
 			 * when the vehicle moves or rotates, the passengers experience chopy movement
 			 * when the chunks load, entities that were on the platform may start falling before platform loads
+			 * collisions are only checked at the player's feet position for now
+			 * most importantly this code is horrendous and ugly
 			 */
 			AABB entity_bb = entity.getBoundingBox();
 			Vec3 entity_pos = entity.position();
 			Vec3 entity_feet = UtilGeometry.getBBFeet(entity_bb);
-			Vec3 entity_move = entity.getDeltaMovement();
+			Vector3f entity_move = UtilGeometry.convertVector(entity.getDeltaMovement());
+			CollisionData data = new CollisionData();
 			Vec3 collide = hitbox.getCollideMovePos(entity_feet, 
-					entity_move, rot, parent_move, parent_rot_rate);
+					entity_move, rot, parent_move, parent_rot_rate, data);
 			//System.out.println("collide "+(collide!=null)+" "+entity);
 			if (collide == null) continue;
-			System.out.println("colliding "+entity);
+			//System.out.println("colliding "+entity);
 			double dy = entity_pos.y-entity_bb.minY;
 			entity.setPos(collide.add(0, dy, 0));
 			entity.setYRot(entity.getYRot()-(float)parent_rot_rate.y);
 			// set is colliding
-			entity.causeFallDamage(entity.fallDistance, 1, DamageSource.FALL);
-			entity.resetFallDistance();
-			entity.setOnGround(true);
-			entity.verticalCollision = true;
-			entity.verticalCollisionBelow = true;
-			entity.causeFallDamage(entity.fallDistance, 1, DamageSource.FALL);
-			entity.resetFallDistance();
-			// prevent moving down
-			if (entity_move.y < 0) entity_move = entity_move.multiply(1, 0, 1);
-			entity.setDeltaMovement(entity_move);
+			if (data.dir.getAxis().isVertical()) {
+				entity.setOnGround(true);
+				entity.verticalCollision = true;
+				entity.verticalCollisionBelow = true;
+				entity.causeFallDamage(entity.fallDistance, 1, DamageSource.FALL);
+				entity.resetFallDistance();
+			}
+			if (data.dir.getAxis().isHorizontal()) {
+				entity.horizontalCollision = true;
+				// horizontal collide damage
+			}
+			// change movement based on collision
+			entity.setDeltaMovement(UtilGeometry.convertVector(entity_move));
+			//if (entity_move.y < 0) entity_move = entity_move.multiply(1, 0, 1);
+			//entity.setDeltaMovement(entity_move);
 			if (entity instanceof EntityVehicle plane) {
-				Vec3 forces = plane.getForces();
-				if (forces.y < 0) forces = forces.multiply(1, 0, 1);
-				plane.setForces(forces);
+				plane.getQBySide().mul(Vector3f.YP.rotationDegrees((float)parent_rot_rate.y));
 			}
 		}
 	}

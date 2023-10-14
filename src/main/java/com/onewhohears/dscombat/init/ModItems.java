@@ -261,7 +261,6 @@ public class ModItems {
 					ModEntities.MLS.getId().toString(), "rgm84",
 					RotBounds.create(1.9f, 20f, 20f), 30));
 	
-	
 	// FLARE DISPENSERS
 	public static final RegistryObject<Item> BASIC_FLARE_DISPENSER = ITEMS.register("basic_flare_dispenser", 
 			() -> new ItemFlareDispenser(0.5f, 0, 20, 20.0f, 120, SlotType.INTERNAL_ALL));
@@ -339,6 +338,7 @@ public class ModItems {
 	public static final RegistryObject<Item> GRUETZ_BUNKER_BUSTER = ITEMS.register("gruetz_bunker_buster", 
 			() -> new ItemAmmo(1, "gruetz_bunker_buster")); 
 	
+	// FIXME 5 vehicle items not showing in creative search
 	// PLANES
 	public static final RegistryObject<Item> JAVI_PLANE = ITEMS.register("javi_plane", 
 			() -> new ItemAircraft(ModEntities.JAVI_PLANE.get(), 

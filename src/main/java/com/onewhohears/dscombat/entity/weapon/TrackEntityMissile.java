@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.entity.weapon;
 
 import com.onewhohears.dscombat.data.weapon.TrackMissileData;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
@@ -40,7 +40,7 @@ public class TrackEntityMissile extends EntityMissile {
 	public void tickGuide() {
 		if (!active && !level.isClientSide) notActiveCheckTarget();
 		guideToTarget();
-		if (!level.isClientSide && tickCount % 10 == 0 && target instanceof EntityAircraft plane) {
+		if (!level.isClientSide && tickCount % 10 == 0 && target instanceof EntityVehicle plane) {
 			plane.trackedByMissile(position());
 		}
 	}
@@ -52,7 +52,7 @@ public class TrackEntityMissile extends EntityMissile {
 			target = null;
 			return;
 		}
-		if (!(owner.getRootVehicle() instanceof EntityAircraft plane)) {
+		if (!(owner.getRootVehicle() instanceof EntityVehicle plane)) {
 			target = null;
 			return;
 		}

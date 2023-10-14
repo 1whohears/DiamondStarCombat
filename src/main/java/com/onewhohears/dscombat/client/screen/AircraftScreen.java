@@ -11,7 +11,7 @@ import com.onewhohears.dscombat.common.container.AircraftMenuContainer;
 import com.onewhohears.dscombat.common.container.slot.PartItemSlot;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftToItem;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
@@ -121,7 +121,7 @@ public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContaine
 			return;
 		}
 		Entity rv = m.player.getRootVehicle();
-		if (!(rv instanceof EntityAircraft plane)) {
+		if (!(rv instanceof EntityVehicle plane)) {
 			m.setScreen(null);
 			return;
 		}

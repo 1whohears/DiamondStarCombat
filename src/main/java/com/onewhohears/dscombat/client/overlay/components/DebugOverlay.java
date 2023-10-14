@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.client.overlay.components;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.util.UtilParse;
 
 public class DebugOverlay extends VehicleOverlayComponent {
@@ -13,7 +13,7 @@ public class DebugOverlay extends VehicleOverlayComponent {
 
     @Override
     public void render(PoseStack poseStack, int screenWidth, int screenHeight) {
-        if ((!(getPlayerVehicle() instanceof EntityAircraft vehicle)) || !(Config.CLIENT.debugMode.get())) return;
+        if ((!(getPlayerVehicle() instanceof EntityVehicle vehicle)) || !(Config.CLIENT.debugMode.get())) return;
 
         int color = 0x00ff00;
         drawString(poseStack, getFont(),

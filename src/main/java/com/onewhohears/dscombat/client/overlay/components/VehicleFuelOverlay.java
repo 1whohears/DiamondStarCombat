@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import net.minecraft.resources.ResourceLocation;
 
 import static com.onewhohears.dscombat.client.overlay.components.VehicleControlOverlay.PEDAL_HEIGHT;
@@ -26,7 +26,7 @@ public class VehicleFuelOverlay extends VehicleOverlayComponent {
 
     @Override
     public void render(PoseStack poseStack, int screenWidth, int screenHeight) {
-        if (!(getPlayerVehicle() instanceof EntityAircraft vehicle)) return;
+        if (!(getPlayerVehicle() instanceof EntityVehicle vehicle)) return;
 
         int xOrigin = screenWidth - PADDING - FUEL_GAUGE_WIDTH;
         int yOrigin = screenHeight - STICK_BASE_SIZE - PADDING * 2 - FUEL_GAUGE_HEIGHT;

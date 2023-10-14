@@ -7,7 +7,7 @@ import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.init.ModItems;
 
 import net.minecraft.core.BlockPos;
@@ -40,10 +40,10 @@ public class ItemAircraft extends Item {
 	private static final Predicate<Entity> ENTITY_PREDICATE = EntitySelector.NO_SPECTATORS
 			.and(Entity::isPickable);
 	
-	private final EntityType<? extends EntityAircraft> entityType;
+	private final EntityType<? extends EntityVehicle> entityType;
 	private final String defaultPreset;
 	
-	public ItemAircraft(EntityType<? extends EntityAircraft> entityType, AircraftPreset defaultPreset) {
+	public ItemAircraft(EntityType<? extends EntityVehicle> entityType, AircraftPreset defaultPreset) {
 		super(new Item.Properties().tab(ModItems.AIRCRAFT).stacksTo(1));
 		this.entityType = entityType;
 		this.defaultPreset = defaultPreset.getId();
@@ -71,7 +71,7 @@ public class ItemAircraft extends Item {
 			}
 			if (hitresult.getType() == HitResult.Type.BLOCK) {
 				ItemStack spawn_data_stack = spawnData(itemstack, player);
-				EntityAircraft e = entityType.create(level);
+				EntityVehicle e = entityType.create(level);
 				Vec3 pos = hitresult.getLocation();
 				if (e.isCustomBoundingBox()) e.setPos(pos.add(0, e.getBbHeight()/2d, 0));
 				else e.setPos(pos);

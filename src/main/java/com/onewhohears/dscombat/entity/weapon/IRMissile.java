@@ -7,7 +7,7 @@ import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.data.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.data.weapon.IRMissileData;
 import com.onewhohears.dscombat.data.weapon.RadarTargetTypes;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.util.UtilEntity;
 
 import net.minecraft.world.entity.Entity;
@@ -43,8 +43,8 @@ public class IRMissile extends EntityMissile {
 	public static void updateIRTargetsList(Entity weapon, List<IrTarget> targets, float flareResistance, float fov) {
 		targets.clear();
 		// planes
-		List<EntityAircraft> planes = weapon.level.getEntitiesOfClass(
-				EntityAircraft.class, getIrBoundingBox(weapon));
+		List<EntityVehicle> planes = weapon.level.getEntitiesOfClass(
+				EntityVehicle.class, getIrBoundingBox(weapon));
 		for (int i = 0; i < planes.size(); ++i) {
 			if (!basicCheck(weapon, planes.get(i), true, fov)) continue;
 			float distSqr = (float)weapon.distanceToSqr(planes.get(i));

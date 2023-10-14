@@ -17,7 +17,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.RegistryObject;
 
-public class EntityBoat extends EntityAircraft {
+public class EntityBoat extends EntityVehicle {
 	
 	public final double CO_FLOAT = Config.SERVER.coFloat.get();
 	

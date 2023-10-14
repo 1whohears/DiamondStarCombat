@@ -9,7 +9,7 @@ import com.onewhohears.dscombat.data.parts.TurretData;
 import com.onewhohears.dscombat.data.parts.TurretData.RotBounds;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
@@ -119,8 +119,8 @@ public class EntityTurret extends EntitySeat {
 			if (newRiderCoolDown > 0) --newRiderCoolDown;
 			float rely = yRotRelO, relx = xRotRelO;
 			float rotrate = getRotRate(), minrotx = getMinRotX(), maxrotx = getMaxRotX();
-			EntityAircraft ea = null;
-			if (getVehicle() instanceof EntityAircraft plane) {
+			EntityVehicle ea = null;
+			if (getVehicle() instanceof EntityVehicle plane) {
 				ra = plane.getQ();
 				ea = plane;
 			}  
@@ -154,7 +154,7 @@ public class EntityTurret extends EntitySeat {
 	}
 	
 	@Override
-	protected Vec3 getPassengerRelPos(Entity passenger, EntityAircraft craft) {
+	protected Vec3 getPassengerRelPos(Entity passenger, EntityVehicle craft) {
 		Quaternion q;
 		if (level.isClientSide) q = craft.getClientQ();
 		else q = craft.getQ();
@@ -204,7 +204,7 @@ public class EntityTurret extends EntitySeat {
 	}
 	
 	public void updateDataAmmo() {
-		if (getRootVehicle() instanceof EntityAircraft plane) {
+		if (getRootVehicle() instanceof EntityVehicle plane) {
 			PartSlot slot = plane.partsManager.getSlot(getSlotId());
 			if (slot != null && slot.filled() && slot.getPartData().getType() == PartType.TURRENT) { 
 				TurretData td = (TurretData) slot.getPartData();
@@ -235,8 +235,8 @@ public class EntityTurret extends EntitySeat {
 		if (level.isClientSide || data == null || newRiderCoolDown > 0) return;
 		boolean consume = true;
 		Vec3 pos = position();
-		EntityAircraft parent = null;
-		if (getVehicle() instanceof EntityAircraft craft) {
+		EntityVehicle parent = null;
+		if (getVehicle() instanceof EntityVehicle craft) {
 			if (!craft.isOperational()) return;
 			pos = pos.add(UtilAngles.rotateVector(new Vec3(0, weaponOffset, 0), craft.getQ()));
 			if (craft.isNoConsume()) consume = false;
@@ -260,7 +260,7 @@ public class EntityTurret extends EntitySeat {
 		}
 	}
 	
-	protected void specialShoot(Entity shooter, Vec3 pos, EntityAircraft parent, boolean consume) {
+	protected void specialShoot(Entity shooter, Vec3 pos, EntityVehicle parent, boolean consume) {
 		if (shootType == ShootType.NORMAL) return;
 		System.out.println("SPECIAL SHOOT "+shootType);
 		if (shootType == ShootType.MARK7) {

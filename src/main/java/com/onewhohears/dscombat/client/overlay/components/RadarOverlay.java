@@ -10,7 +10,7 @@ import com.onewhohears.dscombat.client.event.forgebus.ClientRenderEvents;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.data.radar.RadarData;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 import net.minecraft.client.Camera;
@@ -44,7 +44,7 @@ public class RadarOverlay extends VehicleOverlayComponent {
 
     @Override
     public void render(PoseStack poseStack, int screenWidth, int screenHeight) {
-        if (!(getPlayerVehicle() instanceof EntityAircraft vehicle)) return;
+        if (!(getPlayerVehicle() instanceof EntityVehicle vehicle)) return;
         RadarSystem radar = vehicle.radarSystem;
         if (!radar.hasRadar()) return;
         

@@ -7,7 +7,7 @@ import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.data.JsonPreset;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.entity.weapon.IRMissile;
 import com.onewhohears.dscombat.entity.weapon.IRMissile.IrTarget;
@@ -76,7 +76,7 @@ public class IRMissileData extends MissileData {
 	}
 	
 	@Override
-	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction, EntityAircraft vehicle, boolean ignoreRecoil) {
+	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction, EntityVehicle vehicle, boolean ignoreRecoil) {
 		IRMissile missile = (IRMissile) super.getShootEntity(level, owner, pos, direction, vehicle, ignoreRecoil);
 		if (missile == null) return null;
 		return missile;
@@ -99,7 +99,7 @@ public class IRMissileData extends MissileData {
 	protected List<IrTarget> targets = new ArrayList<IrTarget>();
 	
 	@Override
-	public void tick(@Nullable EntityAircraft parent, boolean isSelected) {
+	public void tick(@Nullable EntityVehicle parent, boolean isSelected) {
 		super.tick(parent, isSelected);
 		if (parent == null) return;
 		if (parent.tickCount % 10 == 0) {

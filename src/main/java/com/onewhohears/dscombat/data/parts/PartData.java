@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.data.parts;
 import java.util.NoSuchElementException;
 
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntityPart;
 
 import net.minecraft.nbt.CompoundTag;
@@ -21,7 +21,7 @@ public abstract class PartData {
 	private final SlotType[] compatibleSlots;
 	private final ResourceLocation itemid;
 	private final float weight;
-	private EntityAircraft parent;
+	private EntityVehicle parent;
 	
 	public static enum PartType {
 		SEAT,
@@ -110,7 +110,7 @@ public abstract class PartData {
 		return 0;
 	}
 	
-	public EntityAircraft getParent() {
+	public EntityVehicle getParent() {
 		return parent;
 	}
 	
@@ -118,7 +118,7 @@ public abstract class PartData {
 		return relPos;
 	}
 	
-	protected void setParent(EntityAircraft parent) {
+	protected void setParent(EntityVehicle parent) {
 		this.parent = parent;
 	}
 	
@@ -126,21 +126,21 @@ public abstract class PartData {
 		this.relPos = pos;
 	}
 	
-	public void serverSetup(EntityAircraft craft, String slotId, Vec3 pos) {
+	public void serverSetup(EntityVehicle craft, String slotId, Vec3 pos) {
 		
 	}
 	
-	public void clientSetup(EntityAircraft craft, String slotId, Vec3 pos) {
+	public void clientSetup(EntityVehicle craft, String slotId, Vec3 pos) {
 		
 	}
 	
-	public void setup(EntityAircraft craft, String slotId, Vec3 pos) {
+	public void setup(EntityVehicle craft, String slotId, Vec3 pos) {
 		//System.out.println("setting up part "+this+" client side "+craft.level.isClientSide+" slot "+slotId);
 		setParent(craft);
 		setRelPos(pos);
 	}
 	
-	public abstract boolean isSetup(String slotId, EntityAircraft craft);
+	public abstract boolean isSetup(String slotId, EntityVehicle craft);
 	
 	public void serverRemove(String slotId) {
 		
@@ -192,7 +192,7 @@ public abstract class PartData {
 		return s;
 	}
 	
-	public boolean isEntitySetup(String slotId, EntityAircraft craft) {
+	public boolean isEntitySetup(String slotId, EntityVehicle craft) {
 		for (EntityPart part : craft.getPartEntities()) 
 			if (part.getPartType() == getType() && part.getSlotId().equals(slotId)) 
 				return true;

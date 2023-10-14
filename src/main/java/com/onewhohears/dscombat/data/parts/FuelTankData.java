@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.data.parts;
 
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -49,7 +49,7 @@ public class FuelTankData extends PartData {
 	}
 
 	@Override
-	public boolean isSetup(String slotId, EntityAircraft craft) {
+	public boolean isSetup(String slotId, EntityVehicle craft) {
 		return false;
 	}
 

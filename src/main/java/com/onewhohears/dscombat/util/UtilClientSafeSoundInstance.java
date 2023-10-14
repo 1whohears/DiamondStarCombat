@@ -5,7 +5,7 @@ import java.util.NoSuchElementException;
 import com.onewhohears.dscombat.client.sounds.DopplerSoundInstance;
 import com.onewhohears.dscombat.client.sounds.PlaneEngineOnPlayerSoundInstance;
 import com.onewhohears.dscombat.client.sounds.PlaneMusicSoundInstance;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -24,21 +24,21 @@ public class UtilClientSafeSoundInstance {
 				p, entity, initVolume, initPitch, velSound));
 	}
 	
-	public static void aircraftEngineSound(Minecraft m, EntityAircraft plane, SoundEvent sound) {
+	public static void aircraftEngineSound(Minecraft m, EntityVehicle plane, SoundEvent sound) {
 		LocalPlayer p = m.player;
 		if (p == null) return;
 		m.getSoundManager().play(new PlaneEngineOnPlayerSoundInstance(sound, 
 				p, plane, 10F));
 	}
 	
-	public static void aircraftRadio(Minecraft m, EntityAircraft plane, SoundEvent sound) {
+	public static void aircraftRadio(Minecraft m, EntityVehicle plane, SoundEvent sound) {
 		LocalPlayer p = m.player;
 		if (p == null) return;
 		m.getSoundManager().play(new PlaneMusicSoundInstance(sound, 
 				p, plane, 40F));
 	}
 	
-	public static void aircraftRadio(Minecraft m, EntityAircraft plane, String sound) {
+	public static void aircraftRadio(Minecraft m, EntityVehicle plane, String sound) {
 		try {
 			SoundEvent se = ForgeRegistries.SOUND_EVENTS.getDelegate(new ResourceLocation(sound)).get().get();
 			aircraftRadio(m, plane, se);

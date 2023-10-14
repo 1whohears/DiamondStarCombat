@@ -5,7 +5,7 @@ import java.lang.reflect.Field;
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.data.weapon.RadarTargetTypes;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
@@ -74,7 +74,7 @@ public class UtilEntity {
 	}
 	
 	public static double getCrossSectionalArea(Entity entity) {
-		if (entity instanceof EntityAircraft plane) return plane.getCrossSectionArea();
+		if (entity instanceof EntityVehicle plane) return plane.getCrossSectionArea();
 		return RadarTargetTypes.get().getEntityCrossSectionalArea(
 				entity.getType().toString(), 
 				entity.getBbHeight()*entity.getBbWidth());

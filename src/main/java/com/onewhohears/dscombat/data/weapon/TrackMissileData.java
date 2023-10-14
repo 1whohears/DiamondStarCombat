@@ -5,7 +5,7 @@ import java.util.List;
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.data.JsonPreset;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.entity.weapon.TrackEntityMissile;
 import com.onewhohears.dscombat.util.UtilEntity;
@@ -81,7 +81,7 @@ public class TrackMissileData extends MissileData {
 	}
 	
 	@Override
-	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction, EntityAircraft vehicle, boolean ignoreRecoil) {
+	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction, EntityVehicle vehicle, boolean ignoreRecoil) {
 		TrackEntityMissile missile = (TrackEntityMissile) super.getShootEntity(level, owner, pos, direction, vehicle, ignoreRecoil);
 		if (missile == null) return null;
 		if (vehicle == null) return missile;

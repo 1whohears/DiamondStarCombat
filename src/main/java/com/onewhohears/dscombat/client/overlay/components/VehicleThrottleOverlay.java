@@ -4,7 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import net.minecraft.resources.ResourceLocation;
 
 import static com.onewhohears.dscombat.client.overlay.components.VehicleControlOverlay.STICK_BASE_SIZE;
@@ -23,7 +23,7 @@ public class VehicleThrottleOverlay extends VehicleOverlayComponent {
 
     @Override
     public void render(PoseStack poseStack, int screenWidth, int screenHeight) {
-        if (!(getPlayerVehicle() instanceof EntityAircraft vehicle)) return;
+        if (!(getPlayerVehicle() instanceof EntityVehicle vehicle)) return;
 
         int x = screenWidth - STICK_BASE_SIZE - PADDING - THROTTLE_WIDTH - PADDING;
         int y = screenHeight - THROTTLE_RAIL_LENGTH - PADDING;

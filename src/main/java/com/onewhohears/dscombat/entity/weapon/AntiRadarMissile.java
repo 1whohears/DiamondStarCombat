@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.onewhohears.dscombat.data.weapon.AntiRadarMissileData;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -44,8 +44,8 @@ public class AntiRadarMissile extends EntityMissile {
 		// IDEA 7 make anti radar missile target entity type configurable so entities other mod entities can be targeted
 		targets.clear();
 		// planes
-		List<EntityAircraft> planes = level.getEntitiesOfClass(
-				EntityAircraft.class, getARBoundingBox());
+		List<EntityVehicle> planes = level.getEntitiesOfClass(
+				EntityVehicle.class, getARBoundingBox());
 		for (int i = 0; i < planes.size(); ++i) {
 			if (!planes.get(i).radarSystem.hasRadar()) continue;
 			if (!planes.get(i).isPlayerRiding()) continue;

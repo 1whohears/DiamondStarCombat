@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
@@ -40,7 +40,7 @@ public class ToServerPingSelect extends IPacket {
 			success.set(true);
 			ServerPlayer player = ctx.get().getSender();
 			ServerLevel level = player.getLevel();
-			if (level.getEntity(id) instanceof EntityAircraft plane) {
+			if (level.getEntity(id) instanceof EntityVehicle plane) {
 				plane.radarSystem.selectTarget(ping);
 			}
 		});

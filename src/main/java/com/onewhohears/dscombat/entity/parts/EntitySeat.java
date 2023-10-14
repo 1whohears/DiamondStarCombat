@@ -6,8 +6,8 @@ import javax.annotation.Nullable;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft.AircraftType;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.world.InteractionHand;
@@ -51,7 +51,7 @@ public class EntitySeat extends EntityPart {
 	
 	@Override
     public void positionRider(Entity passenger) {
-		if (!(getVehicle() instanceof EntityAircraft craft)) {
+		if (!(getVehicle() instanceof EntityVehicle craft)) {
 			super.positionRider(passenger);
 			return;
 		}
@@ -70,7 +70,7 @@ public class EntitySeat extends EntityPart {
 		passenger.setPos(position().add(getPassengerRelPos(passenger, craft)));
 	}
 	
-	protected Vec3 getPassengerRelPos(Entity passenger, EntityAircraft craft) {
+	protected Vec3 getPassengerRelPos(Entity passenger, EntityVehicle craft) {
 		Quaternion q;
 		if (level.isClientSide) q = craft.getClientQ();
 		else q = craft.getQ();
@@ -92,7 +92,7 @@ public class EntitySeat extends EntityPart {
 	
 	@Override
     protected boolean canRide(Entity entityIn) {
-		return entityIn instanceof EntityAircraft;
+		return entityIn instanceof EntityVehicle;
     }
 	
 	@Override

@@ -6,7 +6,7 @@ import java.util.function.Supplier;
 import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.data.aircraft.AircraftInputs;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarMode;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -21,7 +21,7 @@ public class ToServerAircraftControl extends IPacket {
 	public final boolean isFreeLook;
 	public final float throttle;
 	
-	public ToServerAircraftControl(EntityAircraft plane) {
+	public ToServerAircraftControl(EntityVehicle plane) {
 		this.inputs = plane.inputs;
 		this.weaponIndex = plane.weaponSystem.getSelectedIndex();
 		this.radarMode = plane.getRadarMode().ordinal();
@@ -52,7 +52,7 @@ public class ToServerAircraftControl extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			ServerPlayer player = ctx.get().getSender();
-			if (player.getRootVehicle() instanceof EntityAircraft plane) {
+			if (player.getRootVehicle() instanceof EntityVehicle plane) {
 				if (plane.getControllingPassenger() == player) {
 					// weapon system
 					plane.weaponSystem.setSelected(weaponIndex);

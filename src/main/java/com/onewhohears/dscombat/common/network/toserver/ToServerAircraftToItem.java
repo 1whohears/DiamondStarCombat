@@ -4,7 +4,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.common.network.IPacket;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -37,7 +37,7 @@ public class ToServerAircraftToItem extends IPacket {
 			success.set(true);
 			ServerPlayer player = ctx.get().getSender();
 			Level level = player.level;
-			if (!(level.getEntity(id) instanceof EntityAircraft plane)) return;
+			if (!(level.getEntity(id) instanceof EntityVehicle plane)) return;
 			if (!plane.canBecomeItem()) {
 		    	player.displayClientMessage(
 		    		Component.translatable("error.dscombat.cant_item_yet"), 

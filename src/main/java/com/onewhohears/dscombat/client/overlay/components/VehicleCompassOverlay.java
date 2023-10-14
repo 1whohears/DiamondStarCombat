@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.client.overlay.components;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
 
@@ -14,7 +14,7 @@ public class VehicleCompassOverlay extends VehicleOverlayComponent {
 
     @Override
     public void render(PoseStack poseStack, int screenWidth, int screenHeight) {
-        if (!(getPlayerVehicle() instanceof EntityAircraft)) return;
+        if (!(getPlayerVehicle() instanceof EntityVehicle)) return;
 
         // HEADING
         int y = 10, color = 0xe6e600;

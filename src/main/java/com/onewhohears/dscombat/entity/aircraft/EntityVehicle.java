@@ -100,33 +100,33 @@ import net.minecraftforge.registries.RegistryObject;
  * the parent class for all vehicle entities in this mod
  * @author 1whohears
  */
-public abstract class EntityAircraft extends Entity implements IEntityAdditionalSpawnData {
+public abstract class EntityVehicle extends Entity implements IEntityAdditionalSpawnData {
 	
-	public static final EntityDataAccessor<Float> MAX_HEALTH = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
-    public static final EntityDataAccessor<Float> HEALTH = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> MAX_SPEED = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> THROTTLEUP = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> THROTTLEDOWN = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Quaternion> Q = SynchedEntityData.defineId(EntityAircraft.class, DataSerializers.QUATERNION);
-	public static final EntityDataAccessor<Vec3> AV = SynchedEntityData.defineId(EntityAircraft.class, DataSerializers.VEC3);
-	public static final EntityDataAccessor<Float> STEALTH = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> MAX_ROLL = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> MAX_PITCH = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> MAX_YAW = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> TURN_RADIUS = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> ROLL_TORQUE = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> PITCH_TORQUE = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> YAW_TORQUE = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> IDLEHEAT = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> MASS = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Boolean> TEST_MODE = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<Integer> CURRRENT_DYE_ID = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.INT);
-	public static final EntityDataAccessor<Boolean> NO_CONSUME = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<Integer> FLARE_NUM = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.INT);
-	public static final EntityDataAccessor<String> RADIO_SONG = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.STRING);
-	public static final EntityDataAccessor<Float> CROSS_SEC_AREA = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Boolean> PLAY_IR_TONE = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<Float> BASE_ARMOR = SynchedEntityData.defineId(EntityAircraft.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> MAX_HEALTH = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
+    public static final EntityDataAccessor<Float> HEALTH = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> MAX_SPEED = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> THROTTLEUP = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> THROTTLEDOWN = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Quaternion> Q = SynchedEntityData.defineId(EntityVehicle.class, DataSerializers.QUATERNION);
+	public static final EntityDataAccessor<Vec3> AV = SynchedEntityData.defineId(EntityVehicle.class, DataSerializers.VEC3);
+	public static final EntityDataAccessor<Float> STEALTH = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> MAX_ROLL = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> MAX_PITCH = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> MAX_YAW = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> TURN_RADIUS = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> ROLL_TORQUE = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> PITCH_TORQUE = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> YAW_TORQUE = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> IDLEHEAT = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> MASS = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Boolean> TEST_MODE = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Integer> CURRRENT_DYE_ID = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Boolean> NO_CONSUME = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Integer> FLARE_NUM = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<String> RADIO_SONG = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.STRING);
+	public static final EntityDataAccessor<Float> CROSS_SEC_AREA = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Boolean> PLAY_IR_TONE = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Float> BASE_ARMOR = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
 	
 	public final AircraftInputs inputs = new AircraftInputs();
 	public final PartsManager partsManager = new PartsManager(this);
@@ -201,13 +201,12 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	// TODO 5.1 give big boats platforms with the RotableHitbox system
 	// TODO 5.4 aircraft breaks apart when damaged
 	// TODO 5.6 place and remove external parts from outside the vehicle
-	// TODO 2.5 add chaff 
-	// FIXME refactor EntityAircraft to EntityVehicle
+	// TODO 2.5 add chaff
 	
-	public EntityAircraft(EntityType<? extends EntityAircraft> entityType, Level level, 
-			AircraftPreset defaultPreset, RegistryObject<SoundEvent> engineSound,
-			boolean negativeThrottle, float Ix, float Iy, float Iz, 
-			float explodeSize, double camDist) {
+	public EntityVehicle(EntityType<? extends EntityVehicle> entityType, Level level,
+						 AircraftPreset defaultPreset, RegistryObject<SoundEvent> engineSound,
+						 boolean negativeThrottle, float Ix, float Iy, float Iz,
+						 float explodeSize, double camDist) {
 		super(entityType, level);
 		this.defaultPreset = defaultPreset.getId();
 		this.preset = this.defaultPreset;
@@ -294,7 +293,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	/**
 	 * if this is a brand new entity and has no nbt custom data then the fresh entity nbt will
 	 * merge with this vehicle's preset nbt. see {@link AircraftPresets}.
-	 * you could summon a vehicle with nbt {preset:"some preset name"} to override the {@link EntityAircraft#defaultPreset}
+	 * you could summon a vehicle with nbt {preset:"some preset name"} to override the {@link EntityVehicle#defaultPreset}
  	 */
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
@@ -737,7 +736,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	}
 	
 	/**
-	 * @return the max speed {@link EntityAircraft#motionClamp} tests for.
+	 * @return the max speed {@link EntityVehicle#motionClamp} tests for.
 	 */
 	public double getMaxSpeedForMotion() {
 		return getMaxSpeed();
@@ -764,8 +763,8 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	/**
 	 * called every tick.
 	 * reads player input to change the direction of the craft.
-	 * also calls {@link EntityAircraft#directionGround(Quaternion)}, {@link EntityAircraft#directionWater(Quaternion)},
-	 * and {@link EntityAircraft#directionAir(Quaternion)} to change direction based on the named conditions.
+	 * also calls {@link EntityVehicle#directionGround(Quaternion)}, {@link EntityVehicle#directionWater(Quaternion)},
+	 * and {@link EntityVehicle#directionAir(Quaternion)} to change direction based on the named conditions.
 	 * @param q the current direction of the vehicle
 	 */
 	public void controlDirection(Quaternion q) {
@@ -965,7 +964,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	
 	/**
 	 * called every tick on server and client side.
-	 * after forces are calculated. see {@link EntityAircraft#tickMovement(Quaternion)}.
+	 * after forces are calculated. see {@link EntityVehicle#tickMovement(Quaternion)}.
 	 * F=M*A -> A=F/M then A is added to current velocity
 	 */
 	public void calcAcc() {
@@ -1001,11 +1000,11 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	/**
 	 * called on both client and server side every tick to calculate the vehicle's forces this tick.
 	 * calls the following based on entity's current state: 
-	 * {@link EntityAircraft#tickAlways(Quaternion)},
-	 * {@link EntityAircraft#tickGround(Quaternion)},
-	 * {@link EntityAircraft#tickGroundWater(Quaternion)},
-	 * {@link EntityAircraft#tickWater(Quaternion)},
-	 * {@link EntityAircraft#tickAir(Quaternion)}.
+	 * {@link EntityVehicle#tickAlways(Quaternion)},
+	 * {@link EntityVehicle#tickGround(Quaternion)},
+	 * {@link EntityVehicle#tickGroundWater(Quaternion)},
+	 * {@link EntityVehicle#tickWater(Quaternion)},
+	 * {@link EntityVehicle#tickAir(Quaternion)}.
 	 * @param q the plane's current rotation
 	 */
 	public void tickMovement(Quaternion q) {
@@ -1018,7 +1017,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	
 	/**
 	 * called on both client and server side every tick to calculate the vehicle's forces in any context.
-	 * called by {@link EntityAircraft#tickMovement(Quaternion)}.
+	 * called by {@link EntityVehicle#tickMovement(Quaternion)}.
 	 * @param q the plane's current rotation
 	 */
 	public void tickAlways(Quaternion q) {
@@ -1030,7 +1029,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	
 	/**
 	 * called on both client and server side every tick to calculate the vehicle's forces when on the ground.
-	 * called by {@link EntityAircraft#tickMovement(Quaternion)}.
+	 * called by {@link EntityVehicle#tickMovement(Quaternion)}.
 	 * @param q the plane's current rotation
 	 */
 	public void tickGround(Quaternion q) {
@@ -1106,7 +1105,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	
 	/**
 	 * called on both client and server side every tick to calculate the vehicle's forces when in air.
-	 * called by {@link EntityAircraft#tickMovement(Quaternion)}.
+	 * called by {@link EntityVehicle#tickMovement(Quaternion)}.
 	 * @param q the plane's current rotation
 	 */
 	public void tickAir(Quaternion q) {
@@ -1116,7 +1115,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	
 	/**
 	 * called on both client and server side every tick to calculate the vehicle's forces in when floating in water.
-	 * called by {@link EntityAircraft#tickMovement(Quaternion)}.
+	 * called by {@link EntityVehicle#tickMovement(Quaternion)}.
 	 * @param q the plane's current rotation
 	 */
 	public void tickWater(Quaternion q) {
@@ -1125,7 +1124,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	
 	/**
 	 * called on both client and server side every tick to calculate the vehicle's forces when at the bottom of water.
-	 * called by {@link EntityAircraft#tickMovement(Quaternion)}.
+	 * called by {@link EntityVehicle#tickMovement(Quaternion)}.
 	 * @param q the plane's current rotation
 	 */
 	public void tickGroundWater(Quaternion q) {
@@ -1189,7 +1188,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	}
 	
 	/**
-	 * modifies {@link EntityAircraft#getBaseCrossSecArea()} for physics.
+	 * modifies {@link EntityVehicle#getBaseCrossSecArea()} for physics.
 	 * this function returns a larger value if a plane's flaps are down for example.
 	 * @return this vehicle's cross sectional area for drag and radar.
 	 */
@@ -1222,7 +1221,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	
 	/**
 	 * this is NOT the total mass. 
-	 * see {@link EntityAircraft#getTotalMass()}
+	 * see {@link EntityVehicle#getTotalMass()}
 	 * @return the mass of the vehicle. not including parts.
 	 */
 	public final float getAircraftMass() {
@@ -1380,14 +1379,14 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     }
 	
     /**
-     * called in {@link EntityAircraft#init()} by server side
+     * called in {@link EntityVehicle#init()} by server side
      */
 	public void serverSetup() {
 		partsManager.setupParts();
 	}
 	
 	/**
-	 * called in {@link EntityAircraft#init()} by client side
+	 * called in {@link EntityVehicle#init()} by client side
 	 */
 	public void clientSetup() {
 		UtilClientSafeSoundInstance.aircraftEngineSound(
@@ -1711,7 +1710,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
 	
 	/**
 	 * ignoring vanilla explosion effects.
-	 * see {@link EntityAircraft#customExplosionHandler(Explosion)}
+	 * see {@link EntityVehicle#customExplosionHandler(Explosion)}
 	 * for custom explosion handling.
 	 */
 	@Override
@@ -2229,7 +2228,7 @@ public abstract class EntityAircraft extends Entity implements IEntityAdditional
     
     /**
      * the custom bounding box draws the box so that the entity position is in the middle of the box in all 3 dimensions
-     * @return if this entity should use {@link EntityAircraft#makeCustomBoundingBox()}
+     * @return if this entity should use {@link EntityVehicle#makeCustomBoundingBox()}
      */
     public boolean isCustomBoundingBox() {
     	return false;

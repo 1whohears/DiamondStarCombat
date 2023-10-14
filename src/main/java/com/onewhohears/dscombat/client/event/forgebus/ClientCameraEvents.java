@@ -11,7 +11,7 @@ import org.lwjgl.glfw.GLFWCursorPosCallbackI;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.client.Camera;
@@ -39,7 +39,7 @@ public class ClientCameraEvents {
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
 		if (player == null || !player.isPassenger()) return;
-		if (!(player.getRootVehicle() instanceof EntityAircraft plane)) return;
+		if (!(player.getRootVehicle() instanceof EntityVehicle plane)) return;
 		float pt = (float)event.getPartialTick();
 		boolean isController = player.equals(plane.getControllingPassenger());
 		if (!plane.isFreeLook() && isController) {
@@ -138,7 +138,7 @@ public class ClientCameraEvents {
 			double xn = x, yn = y;
 			if (window != m.getWindow().getWindow()) return;
 			if (m.player != null && m.screen == null 
-					&& m.player.getRootVehicle() instanceof EntityAircraft craft
+					&& m.player.getRootVehicle() instanceof EntityVehicle craft
 					&& craft.isFreeLook()) {
 				double r = Math.toRadians(craft.zRot);
 				double dx = x - m.mouseHandler.xpos();

@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.data.damagesource;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.network.chat.Component;
@@ -11,22 +11,22 @@ import net.minecraft.world.entity.LivingEntity;
 
 public class AircraftDamageSource extends DamageSource {
 	
-	public final EntityAircraft aircraft;
+	public final EntityVehicle aircraft;
 	
-	public AircraftDamageSource(String type, EntityAircraft aircraft) {
+	public AircraftDamageSource(String type, EntityVehicle aircraft) {
 		super(type);
 		this.aircraft = aircraft;
 	}
 	
-	public static DamageSource roadKill(EntityAircraft aircraft) {
+	public static DamageSource roadKill(EntityVehicle aircraft) {
 		return new AircraftDamageSource(getRoadKillDeath(), aircraft);
 	}
 	
-	public static DamageSource fall(EntityAircraft aircraft) {
+	public static DamageSource fall(EntityVehicle aircraft) {
 		return new AircraftDamageSource(getFallDeath(), aircraft).setExplosion();
 	}
 	
-	public static DamageSource collide(EntityAircraft aircraft) {
+	public static DamageSource collide(EntityVehicle aircraft) {
 		return new AircraftDamageSource(getCollideDeath(), aircraft).setExplosion();
 	}
 	

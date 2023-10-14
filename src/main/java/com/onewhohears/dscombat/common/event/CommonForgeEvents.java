@@ -8,7 +8,7 @@ import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
 import com.onewhohears.dscombat.data.radar.RadarPresets;
 import com.onewhohears.dscombat.data.weapon.NonTickingMissileManager;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
@@ -30,7 +30,7 @@ public final class CommonForgeEvents {
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void playerHurtEvent(LivingHurtEvent event) {
 		if (event.getSource().isBypassArmor() || event.getSource().isMagic()) return;
-		if (!event.getEntity().isPassenger() || !(event.getEntity().getRootVehicle() instanceof EntityAircraft plane)) return;
+		if (!event.getEntity().isPassenger() || !(event.getEntity().getRootVehicle() instanceof EntityVehicle plane)) return;
 		float a = event.getAmount();
 		//System.out.println("PLAYER HURT "+event.getEntity()+" "+a);
 		event.setAmount(Math.max(0, a-a*plane.getTotalArmor()*0.01f*Config.COMMON.armorStrength.get().floatValue()));
@@ -39,7 +39,7 @@ public final class CommonForgeEvents {
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void explosionEvent(ExplosionEvent.Detonate event) {
 		for (int i = 0; i < event.getAffectedEntities().size(); ++i) {
-			if (!(event.getAffectedEntities().get(i) instanceof EntityAircraft plane)) continue;
+			if (!(event.getAffectedEntities().get(i) instanceof EntityVehicle plane)) continue;
 			plane.customExplosionHandler(event.getExplosion());
 		}
 	}

@@ -13,7 +13,7 @@ import com.onewhohears.dscombat.data.parts.BuffData.BuffType;
 import com.onewhohears.dscombat.data.parts.EngineData.EngineType;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.data.parts.TurretData.RotBounds;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.item.ItemAircraft;
 import com.onewhohears.dscombat.item.ItemAmmo;
 import com.onewhohears.dscombat.item.ItemBuffPart;
@@ -132,7 +132,7 @@ public class ModItems {
 	public static final RegistryObject<Item> NO_CONSUME_WAND = ITEMS.register("no_consume_wand", 
 			() -> new ItemCreativeWand(new String[] {"info.dscombat.no_consume_wand_1"}) {
 				@Override
-				public boolean modifyAircraft(EntityAircraft plane) {
+				public boolean modifyAircraft(EntityVehicle plane) {
 					plane.setNoConsume(true);
 					return true;
 				}

@@ -4,7 +4,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.common.network.IPacket;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -40,7 +40,7 @@ public class ToServerSwitchSeat extends IPacket {
 			success.set(true);
 			ServerPlayer player = ctx.get().getSender();
 			ServerLevel level = player.getLevel();
-			if (level.getEntity(id) instanceof EntityAircraft plane) {
+			if (level.getEntity(id) instanceof EntityVehicle plane) {
 				if (!plane.switchSeat(player)) player.displayClientMessage(
 						Component.translatable("error.dscombat.no_open_seats"), 
 						true);

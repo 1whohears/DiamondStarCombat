@@ -19,14 +19,14 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.PartEntity;
 
-public class RotableHitbox extends PartEntity<EntityAircraft> {
+public class RotableHitbox extends PartEntity<EntityVehicle> {
 	
 	private final String name;
 	private final RotableAABB hitbox;
 	private final EntityDimensions size;
 	private final Vec3 rel_pos;
 	
-	public RotableHitbox(EntityAircraft parent, String name, Vector3f size, Vec3 rel_pos) {
+	public RotableHitbox(EntityVehicle parent, String name, Vector3f size, Vec3 rel_pos) {
 		super(parent);
 		this.name = name;
 		this.hitbox = new RotableAABB(size.x(), size.y(), size.z());
@@ -91,7 +91,7 @@ public class RotableHitbox extends PartEntity<EntityAircraft> {
 			// prevent moving down
 			if (entity_move.y < 0) entity_move = entity_move.multiply(1, 0, 1);
 			entity.setDeltaMovement(entity_move);
-			if (entity instanceof EntityAircraft plane) {
+			if (entity instanceof EntityVehicle plane) {
 				Vec3 forces = plane.getForces();
 				if (forces.y < 0) forces = forces.multiply(1, 0, 1);
 				plane.setForces(forces);

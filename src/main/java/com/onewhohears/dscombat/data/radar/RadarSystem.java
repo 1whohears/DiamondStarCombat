@@ -12,7 +12,7 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientRWRWarning;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRadarPings;
 import com.onewhohears.dscombat.common.network.toserver.ToServerPingSelect;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.init.DataSerializers;
 
@@ -24,7 +24,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
 
 /**
- * manages the radar/targeting/rwr system for {@link EntityAircraft}.
+ * manages the radar/targeting/rwr system for {@link EntityVehicle}.
  * individual radars are abstracted into {@link RadarData}.
  * individual radars update the radar system's link of {@link RadarPing} on the server side.
  * the updated link of pings are then sent to the client. 
@@ -34,7 +34,7 @@ import net.minecraftforge.network.PacketDistributor;
  */
 public class RadarSystem {
 	
-	private final EntityAircraft parent;
+	private final EntityVehicle parent;
 	private boolean readData = false;
 	
 	private List<RadarData> radars = new ArrayList<RadarData>();
@@ -50,7 +50,7 @@ public class RadarSystem {
 	
 	public boolean dataLink = false;
 	
-	public RadarSystem(EntityAircraft parent) {
+	public RadarSystem(EntityVehicle parent) {
 		this.parent = parent;
 	}
 	
@@ -78,7 +78,7 @@ public class RadarSystem {
 				for (Player p : players) {
 					if (player.equals(p)) continue;
 					if (!player.isAlliedTo(p)) continue;
-					if (!(p.getRootVehicle() instanceof EntityAircraft plane)) continue;
+					if (!(p.getRootVehicle() instanceof EntityVehicle plane)) continue;
 					if (!plane.radarSystem.hasDataLink()) continue;
 					if (plane.equals(parent)) continue;
 					for (RadarPing rp : plane.radarSystem.targets) {
@@ -94,7 +94,7 @@ public class RadarSystem {
 		if (old != null) for (int i = 0; i < targets.size(); ++i) 
 			if (targets.get(i).id == old.id) {
 				selectedIndex = i;
-				if (getSelectedTarget(parent.level) instanceof EntityAircraft plane) {
+				if (getSelectedTarget(parent.level) instanceof EntityVehicle plane) {
 					plane.lockedOnto(parent.position());
 				}
 				break;

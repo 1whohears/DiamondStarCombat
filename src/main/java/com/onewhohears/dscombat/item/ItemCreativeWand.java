@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.init.ModItems;
 
 import net.minecraft.network.chat.Component;
@@ -28,7 +28,7 @@ public class ItemCreativeWand extends Item {
 	 * @param plane aircraft to modify
 	 * @return if the modification was successful
 	 */
-	public boolean modifyAircraft(EntityAircraft plane) {
+	public boolean modifyAircraft(EntityVehicle plane) {
 		return false;
 	}
 

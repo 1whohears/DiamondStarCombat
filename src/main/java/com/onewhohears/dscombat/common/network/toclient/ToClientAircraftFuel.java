@@ -4,7 +4,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.common.network.IPacket;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.util.UtilPacket;
 
 import net.minecraft.network.FriendlyByteBuf;
@@ -17,7 +17,7 @@ public class ToClientAircraftFuel extends IPacket {
 	public final int id;
 	public final float[] fuels;
 	
-	public ToClientAircraftFuel(EntityAircraft plane) {
+	public ToClientAircraftFuel(EntityVehicle plane) {
 		this.id = plane.getId();
 		this.fuels = plane.partsManager.getFuelsForClient();
 	}

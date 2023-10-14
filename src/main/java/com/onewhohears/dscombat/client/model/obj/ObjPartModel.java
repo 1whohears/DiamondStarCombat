@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.client.model.obj;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntityPart;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
@@ -22,7 +22,7 @@ public class ObjPartModel<T extends EntityPart> extends ObjEntityModel<T> {
 	
 	@Override
 	protected void rotate(T entity, float partialTicks, PoseStack poseStack) {
-		if (entity.getVehicle() instanceof EntityAircraft plane) {
+		if (entity.getVehicle() instanceof EntityVehicle plane) {
 			Quaternion q = UtilAngles.lerpQ(partialTicks, plane.getPrevQ(), plane.getClientQ());
 			poseStack.mulPose(q);
 		}
@@ -31,7 +31,7 @@ public class ObjPartModel<T extends EntityPart> extends ObjEntityModel<T> {
 	
 	@Override
 	protected int getLight(T entity, int lightmap) {
-		if (entity.getVehicle() instanceof EntityAircraft plane && !plane.isOperational()) return 1;
+		if (entity.getVehicle() instanceof EntityVehicle plane && !plane.isOperational()) return 1;
 		return lightmap;
 	}
 

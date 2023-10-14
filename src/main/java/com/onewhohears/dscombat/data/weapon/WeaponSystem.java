@@ -8,7 +8,7 @@ import javax.annotation.Nullable;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.data.weapon.WeaponData.WeaponType;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.network.chat.Component;
@@ -18,7 +18,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * manages available weapons for {@link EntityAircraft}.
+ * manages available weapons for {@link EntityVehicle}.
  * available weapons are found in a list of {@link WeaponData}.
  * used to fire a vehicle's selected weapon.
  * will synch ammo numbers and other info with client.
@@ -27,12 +27,12 @@ import net.minecraft.world.phys.Vec3;
  */
 public class WeaponSystem {
 	
-	private final EntityAircraft parent;
+	private final EntityVehicle parent;
 	private boolean readData = false;
 	private List<WeaponData> weapons = new ArrayList<WeaponData>();
 	private int weaponIndex = 0;
 	
-	public WeaponSystem(EntityAircraft parent) {
+	public WeaponSystem(EntityVehicle parent) {
 		this.parent = parent;
 		weapons.add(NoWeaponData.get());
 	}

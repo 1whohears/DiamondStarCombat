@@ -7,7 +7,7 @@ import javax.annotation.Nullable;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntityPart;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.init.ModEntities;
@@ -91,7 +91,7 @@ public class TurretData extends SeatData {
 	}
 	
 	@Override
-	public void serverSetup(EntityAircraft craft, String slotId, Vec3 pos) {
+	public void serverSetup(EntityVehicle craft, String slotId, Vec3 pos) {
 		setParent(craft);
 		setRelPos(pos);
 		EntityTurret t = getTurret(slotId);
@@ -100,7 +100,7 @@ public class TurretData extends SeatData {
 	
 	@Nullable
 	public EntityTurret getTurret(String slotId) {
-		EntityAircraft craft = getParent();
+		EntityVehicle craft = getParent();
 		if (craft == null) return null;
 		for (EntityPart part : craft.getPartEntities()) 
 			if (part.getSlotId().equals(slotId) && part.getType().equals(getTurretType())) 

@@ -7,7 +7,7 @@ import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.data.JsonPreset;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.weapon.EntityBullet;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.util.math.UtilAngles;
@@ -85,7 +85,7 @@ public class BulletData extends WeaponData {
 	}
 	
 	@Override
-	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction, @Nullable EntityAircraft vehicle, boolean ignoreRecoil) {
+	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction, @Nullable EntityVehicle vehicle, boolean ignoreRecoil) {
 		EntityBullet bullet = (EntityBullet) super.getShootEntity(level, owner, pos, direction, vehicle, ignoreRecoil);
 		if (bullet == null) return null;
 		bullet.setDeltaMovement(bullet.getLookAngle().scale(speed));

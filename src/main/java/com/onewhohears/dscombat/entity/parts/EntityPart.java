@@ -4,7 +4,7 @@ import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.data.parts.PartSlot;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.UtilParse;
 
@@ -70,7 +70,7 @@ public abstract class EntityPart extends Entity {
 	}
 	
 	public void init() {
-		if (getVehicle() instanceof EntityAircraft plane) {
+		if (getVehicle() instanceof EntityVehicle plane) {
 			PartSlot ps = plane.partsManager.getSlot(getSlotId());
 			if (ps != null) {
 				z_rot = ps.getZRot();
@@ -112,7 +112,7 @@ public abstract class EntityPart extends Entity {
 	
 	public void onDeath() {
 		if (!canGetHurt()) return;
-		if (!(getVehicle() instanceof EntityAircraft plane)) return;
+		if (!(getVehicle() instanceof EntityVehicle plane)) return;
 		plane.partsManager.killPartInSlot(getSlotId());
 	}
 	

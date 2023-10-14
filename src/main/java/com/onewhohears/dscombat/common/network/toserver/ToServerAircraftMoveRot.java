@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.common.network.IPacket;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.init.DataSerializers;
 
 import net.minecraft.network.FriendlyByteBuf;
@@ -21,7 +21,7 @@ public class ToServerAircraftMoveRot extends IPacket {
 	public final Quaternion q;
 	public final Vec3 av;
 	
-	public ToServerAircraftMoveRot(EntityAircraft e) {
+	public ToServerAircraftMoveRot(EntityVehicle e) {
 		this.id = e.getId();
 		this.motion = e.getDeltaMovement();
 		this.q = e.getClientQ();
@@ -50,7 +50,7 @@ public class ToServerAircraftMoveRot extends IPacket {
 			success.set(true);
 			ServerPlayer player = ctx.get().getSender();
 			ServerLevel level = player.getLevel();
-			if (level.getEntity(id) instanceof EntityAircraft plane) {
+			if (level.getEntity(id) instanceof EntityVehicle plane) {
 				plane.setDeltaMovement(motion);
 				plane.setPrevQ(plane.getQ());
 				plane.setQ(q);

@@ -9,6 +9,7 @@ import com.onewhohears.dscombat.data.aircraft.AircraftClientPresetGenerator;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresetGenerator;
 import com.onewhohears.dscombat.data.radar.RadarPresetGenerator;
 import com.onewhohears.dscombat.data.weapon.WeaponPresetGenerator;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModBlockEntities;
 import com.onewhohears.dscombat.init.ModBlocks;
@@ -42,7 +43,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
  * {@link com.onewhohears.dscombat.client.event.ClientModEvents}
  * {@link VehicleOverlay}
  * {@link com.onewhohears.dscombat.common.event.CommonForgeEvents}
- * {@link com.onewhohears.dscombat.entity.aircraft.EntityAircraft}
+ * {@link EntityVehicle}
  * 
  * @author 1whohears
  */

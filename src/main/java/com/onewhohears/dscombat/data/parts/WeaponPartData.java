@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.data.parts;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -84,7 +84,7 @@ public class WeaponPartData extends PartData {
 	}
 	
 	@Override
-	public void setup(EntityAircraft craft, String slotId, Vec3 pos) {
+	public void setup(EntityVehicle craft, String slotId, Vec3 pos) {
 		super.setup(craft, slotId, pos);
 		WeaponData data = craft.weaponSystem.get(weaponId, slotId);
 		if (data == null) {
@@ -100,7 +100,7 @@ public class WeaponPartData extends PartData {
 	}
 	
 	@Override
-	public boolean isSetup(String slotId, EntityAircraft craft) {
+	public boolean isSetup(String slotId, EntityVehicle craft) {
 		WeaponData data = craft.weaponSystem.get(weaponId, slotId);
 		if (data == null) return false;
 		return data.getCurrentAmmo() == ammo && data.getMaxAmmo() == max;

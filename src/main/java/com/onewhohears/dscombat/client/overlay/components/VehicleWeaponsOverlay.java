@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 
@@ -19,7 +19,7 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
 
     @Override
     public void render(PoseStack poseStack, int screenWidth, int screenHeight) {
-        if (!(getPlayerVehicle() instanceof EntityAircraft vehicle)) return;
+        if (!(getPlayerVehicle() instanceof EntityVehicle vehicle)) return;
         
         int wh=1,x,weaponSelectWidth=getFont().width(WEAPON_SELECT)+1,maxNameWidth=46,maxTypeWidth=10,color1=0x7340bf,color2=0x00ff00,color;
         // WEAPONS
@@ -111,7 +111,7 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
         // BREAKS
         if (vehicle.canBreak()) {
             x = 1+weaponSelectWidth;
-            if (vehicle.getAircraftType() == EntityAircraft.AircraftType.PLANE)
+            if (vehicle.getAircraftType() == EntityVehicle.AircraftType.PLANE)
                 text = DSCKeys.special2Key.getKey().getDisplayName().getString();
             else text = DSCKeys.specialKey.getKey().getDisplayName().getString();
             if (vehicle.isBreaking()) color = color2;

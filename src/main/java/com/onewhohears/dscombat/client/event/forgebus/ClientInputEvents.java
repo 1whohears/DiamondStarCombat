@@ -10,7 +10,7 @@ import com.onewhohears.dscombat.common.network.toserver.ToServerSeatPos;
 import com.onewhohears.dscombat.common.network.toserver.ToServerShootTurret;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSwitchSeat;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 
@@ -54,7 +54,7 @@ public final class ClientInputEvents {
 		boolean gear = DSCKeys.landingGear.consumeClick();
 		boolean radarMode = DSCKeys.radarModeKey.consumeClick();
 		if (!player.isPassenger()) return;
-		if (!(player.getRootVehicle() instanceof EntityAircraft plane)) return;
+		if (!(player.getRootVehicle() instanceof EntityVehicle plane)) return;
 		Entity controller = plane.getControllingPassenger();
 		if (controller == null || !controller.equals(player)) return;
 		if (DSCKeys.resetMouseKey.isDown()) centerMouse();
@@ -155,7 +155,7 @@ public final class ClientInputEvents {
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
 		if (player == null || !player.isPassenger()) return;
-		if (!(player.getRootVehicle() instanceof EntityAircraft plane)) return;
+		if (!(player.getRootVehicle() instanceof EntityVehicle plane)) return;
 		// TELL SERVER WHERE THE SEAT IS INCASE LAG CAUSES VIOLENCE
 		/**
 		 * HOW 4 the culprit of the seat desync issue is net.minecraft.server.level.ChunkMap.TrackedEntity.updatePlayer

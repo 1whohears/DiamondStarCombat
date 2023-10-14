@@ -7,7 +7,7 @@ import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.model.obj.ObjAircraftModel;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.aircraft.RotableHitbox;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
@@ -17,7 +17,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.world.phys.Vec3;
 
-public class RendererObjAircraft<T extends EntityAircraft> extends RendererObjEntity<T> {
+public class RendererObjAircraft<T extends EntityVehicle> extends RendererObjEntity<T> {
 
 	public RendererObjAircraft(Context ctx, ObjAircraftModel<T> model) {
 		super(ctx, model);

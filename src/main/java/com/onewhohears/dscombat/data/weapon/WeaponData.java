@@ -11,7 +11,7 @@ import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponAmmo;
 import com.onewhohears.dscombat.crafting.DSCIngredient;
 import com.onewhohears.dscombat.data.JsonPreset;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModEntities;
@@ -117,7 +117,7 @@ public abstract class WeaponData extends JsonPreset {
 	public abstract WeaponType getType();
 	public abstract EntityWeapon getEntity(Level level, Entity owner);
 	
-	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction, @Nullable EntityAircraft vehicle, boolean ignoreRecoil) {
+	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction, @Nullable EntityVehicle vehicle, boolean ignoreRecoil) {
 		if (isNoWeapon()) {
 			setLaunchFail(null);
 			return null;
@@ -150,7 +150,7 @@ public abstract class WeaponData extends JsonPreset {
 		weapon.setYRot(yaw);
 	}
 	
-	public boolean shootFromVehicle(Level level, Entity owner, Vec3 direction, EntityAircraft vehicle, boolean consume) {
+	public boolean shootFromVehicle(Level level, Entity owner, Vec3 direction, EntityVehicle vehicle, boolean consume) {
 		overrideGroundCheck = false;
 		EntityWeapon w = getShootEntity(level, owner, 
 				vehicle.position().add(UtilAngles.rotateVector(getLaunchPos(), vehicle.getQ())), 
@@ -166,11 +166,11 @@ public abstract class WeaponData extends JsonPreset {
 		return true;
 	}
 	
-	public boolean shootFromTurret(Level level, Entity owner, Vec3 direction, Vec3 pos, @Nullable EntityAircraft vehicle, boolean consume) {
+	public boolean shootFromTurret(Level level, Entity owner, Vec3 direction, Vec3 pos, @Nullable EntityVehicle vehicle, boolean consume) {
 		return shootFromTurret(level, owner, direction, pos, vehicle, consume, false);
 	}
 	
-	public boolean shootFromTurret(Level level, Entity owner, Vec3 direction, Vec3 pos, @Nullable EntityAircraft vehicle, boolean consume, boolean ignoreRecoil) {
+	public boolean shootFromTurret(Level level, Entity owner, Vec3 direction, Vec3 pos, @Nullable EntityVehicle vehicle, boolean consume, boolean ignoreRecoil) {
 		overrideGroundCheck = true;
 		EntityWeapon w = getShootEntity(level, owner, pos, direction, vehicle, ignoreRecoil);
 		if (w == null) return false;
@@ -183,14 +183,14 @@ public abstract class WeaponData extends JsonPreset {
 		return true;
 	}
 	
-	public void updateClientAmmo(EntityAircraft vehicle) {
+	public void updateClientAmmo(EntityVehicle vehicle) {
 		if (vehicle == null) return;
 		if (vehicle.level.isClientSide) return;
 		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> vehicle), 
 				new ToClientWeaponAmmo(vehicle.getId(), getId(), slotId, getCurrentAmmo()));
 	}
 	
-	public void tick(@Nullable EntityAircraft parent, boolean isSelected) {
+	public void tick(@Nullable EntityVehicle parent, boolean isSelected) {
 		if (recoilTime > 1) --recoilTime;
 	}
 	

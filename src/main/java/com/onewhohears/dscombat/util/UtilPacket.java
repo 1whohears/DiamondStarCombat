@@ -9,7 +9,7 @@ import com.onewhohears.dscombat.data.radar.RadarData.RadarMode;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
 import com.onewhohears.dscombat.data.radar.RadarSystem.RWRWarning;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.level.Level;
@@ -21,7 +21,7 @@ public class UtilPacket {
 			boolean isLandingGear, boolean isFreeLook, float throttle) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
-		if (world.getEntity(id) instanceof EntityAircraft plane) {
+		if (world.getEntity(id) instanceof EntityVehicle plane) {
 			if (!plane.isControlledByLocalInstance()) {
 				plane.inputs.copy(inputs);
 				plane.weaponSystem.setSelected(weaponIndex);
@@ -36,7 +36,7 @@ public class UtilPacket {
 	public static void pingsPacket(int id, List<RadarPing> pings) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
-		if (world.getEntity(id) instanceof EntityAircraft plane) {
+		if (world.getEntity(id) instanceof EntityVehicle plane) {
 			plane.radarSystem.readClientPingsFromServer(pings);
 		}
 	}
@@ -44,7 +44,7 @@ public class UtilPacket {
 	public static void weaponAmmoPacket(int id, String weaponId, String slotId, int ammo) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
-		if (world.getEntity(id) instanceof EntityAircraft plane) {
+		if (world.getEntity(id) instanceof EntityVehicle plane) {
 			WeaponData w = plane.weaponSystem.get(weaponId, slotId);
 			if (w != null) w.setCurrentAmmo(ammo);
 		}
@@ -53,7 +53,7 @@ public class UtilPacket {
 	public static void weaponSelectPacket(int id, int index) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
-		if (world.getEntity(id) instanceof EntityAircraft plane) {
+		if (world.getEntity(id) instanceof EntityVehicle plane) {
 			plane.weaponSystem.setSelected(index);
 		}
 	}
@@ -61,7 +61,7 @@ public class UtilPacket {
 	public static void addPartPacket(int id, String slotId, PartData data) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
-		if (world.getEntity(id) instanceof EntityAircraft plane) {
+		if (world.getEntity(id) instanceof EntityVehicle plane) {
 			PartSlot slot = plane.partsManager.getSlot(slotId);
 			if (slot != null) slot.addPartData(data, plane);
 		}
@@ -70,7 +70,7 @@ public class UtilPacket {
 	public static void removePartPacket(int id, String slotId) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
-		if (world.getEntity(id) instanceof EntityAircraft plane) {
+		if (world.getEntity(id) instanceof EntityVehicle plane) {
 			PartSlot slot = plane.partsManager.getSlot(slotId);
 			if (slot != null) slot.removePartData(plane);
 		}
@@ -79,7 +79,7 @@ public class UtilPacket {
 	public static void setAircraftFuel(int id, float[] fuels) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
-		if (world.getEntity(id) instanceof EntityAircraft plane) {
+		if (world.getEntity(id) instanceof EntityVehicle plane) {
 			plane.partsManager.readFuelsForClient(fuels);
 		}
 	}
@@ -87,7 +87,7 @@ public class UtilPacket {
 	public static void rwrPacket(int id, RWRWarning warning) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
-		if (world.getEntity(id) instanceof EntityAircraft plane) {
+		if (world.getEntity(id) instanceof EntityVehicle plane) {
 			plane.radarSystem.getClientRWRWarnings().add(warning);
 		}
 	}
@@ -95,7 +95,7 @@ public class UtilPacket {
 	public static void addMomentPacket(int id, Vec3 force, Vec3 moment) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
-		if (world.getEntity(id) instanceof EntityAircraft plane) {
+		if (world.getEntity(id) instanceof EntityVehicle plane) {
 			System.out.println("adding from server "+force+" "+moment);
 			plane.addForceBetweenTicks = plane.addForceBetweenTicks.add(force);
 			plane.addMomentBetweenTicks = plane.addMomentBetweenTicks.add(moment);

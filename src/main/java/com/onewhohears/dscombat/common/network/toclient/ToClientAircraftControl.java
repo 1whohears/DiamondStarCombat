@@ -6,7 +6,7 @@ import java.util.function.Supplier;
 import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.data.aircraft.AircraftInputs;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarMode;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.util.UtilPacket;
 
 import net.minecraft.network.FriendlyByteBuf;
@@ -24,7 +24,7 @@ public class ToClientAircraftControl extends IPacket {
 	public final boolean isLandingGear;
 	public final float throttle;
 	
-	public ToClientAircraftControl(EntityAircraft plane) {
+	public ToClientAircraftControl(EntityVehicle plane) {
 		this.id = plane.getId();
 		this.inputs = plane.inputs;
 		this.weaponIndex = (byte) plane.weaponSystem.getSelectedIndex();

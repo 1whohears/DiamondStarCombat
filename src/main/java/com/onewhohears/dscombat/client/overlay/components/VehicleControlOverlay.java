@@ -27,8 +27,7 @@ public class VehicleControlOverlay extends VehicleOverlayComponent {
 
     @Override
     public void render(PoseStack poseStack) {
-        if (!vehicleIsAircraft()) return;
-        EntityAircraft vehicle = (EntityAircraft) getPlayerVehicle();
+        if (!(getPlayerVehicle() instanceof EntityAircraft vehicle)) return;
 
         int xOrigin = this.screenWidth - STICK_BASE_SIZE - PADDING;
         int yOrigin = this.screenHeight - PADDING;

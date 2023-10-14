@@ -28,14 +28,6 @@ public abstract class VehicleOverlayComponent extends GuiComponent {
         return Minecraft.getInstance().player != null ? Minecraft.getInstance().player.getRootVehicle() : null;
     }
 
-    protected static boolean vehicleIsAircraft() {
-        return getPlayerVehicle() instanceof EntityAircraft;
-    }
-
-    protected static boolean vehicleIsPlane() {
-        return getPlayerVehicle() instanceof EntityPlane;
-    }
-
     protected static Font getFont() {
         return Minecraft.getInstance().font;
     }

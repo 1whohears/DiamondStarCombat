@@ -1,24 +1,13 @@
 package com.onewhohears.dscombat.client.overlay;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.client.overlay.components.*;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft.AircraftType;
-import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
-import com.onewhohears.dscombat.entity.parts.EntityTurret;
-
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
-
-import static com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent.PADDING;
-import static com.onewhohears.dscombat.client.overlay.components.VehicleControlOverlay.STICK_BASE_SIZE;
 
 @OnlyIn(Dist.CLIENT)
 public class VehicleOverlay {

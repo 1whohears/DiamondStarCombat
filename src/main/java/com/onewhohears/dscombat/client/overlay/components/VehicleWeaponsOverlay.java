@@ -166,6 +166,7 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
             text = vehicle.getRadarMode().name();
             drawString(poseStack, getFont(),
                     text, x, wh, color);
+            // what is this
             wh += 10;
         }
     }

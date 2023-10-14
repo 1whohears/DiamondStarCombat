@@ -46,6 +46,4 @@ public abstract class VehicleOverlayComponent extends GuiComponent {
     }
 
     public abstract void render(PoseStack poseStack);
-
-    public abstract boolean shouldRender();
 }

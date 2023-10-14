@@ -95,10 +95,14 @@ public class UtilEntity {
 	
 	public static int getDistFromSeaLevel(Entity e) {
 		DimensionType dt = e.level.dimensionType();
+		return getDistFromSeaLevel(e.position().y, dt.natural());
+	}
+	
+	public static int getDistFromSeaLevel(double yPos, boolean isNatural) {
 		int sea;
-		if (dt.natural()) sea = 64;
+		if (isNatural) sea = 64;
 		else sea = 0;
-		return (int)e.getY() - sea;
+		return (int)yPos - sea;
 	}
 	
 	public static Vec3 getLookingAtBlockPos(Entity e, int max) {

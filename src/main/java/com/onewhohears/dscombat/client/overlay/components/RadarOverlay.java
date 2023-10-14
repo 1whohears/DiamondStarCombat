@@ -11,6 +11,7 @@ import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.data.radar.RadarData;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 import net.minecraft.client.Camera;
@@ -114,19 +115,22 @@ public class RadarOverlay extends VehicleOverlayComponent {
         if (pings.isEmpty()) return;
         int selected = radar.getClientSelectedPingIndex();
         int hover = ClientInputEvents.getHoverIndex();
-
+        boolean isNatural = vehicle.level.dimensionType().natural();
+        
         if (hover != -1 && hover < pings.size()) {
             RadarData.RadarPing ping = pings.get(hover);
-            String text = "(" + (int) ping.getPosForClient().distanceTo(vehicle.position())
-                    + " | " + (int) ping.getPosForClient().y + ")";
+            int dist = (int) ping.getPosForClient().distanceTo(vehicle.position());
+            int alt = UtilEntity.getDistFromSeaLevel(ping.getPosForClient().y, isNatural);
+            String text = "(" + dist + " | " + alt + ")";
             drawCenteredString(poseStack, getFont(),
                     text, screenWidth / 2, screenHeight / 2 - 20, 0xffff00);
         }
 
         if (selected != -1 && selected < pings.size()) {
             RadarData.RadarPing ping = pings.get(selected);
-            String text = "(" + (int) ping.getPosForClient().distanceTo(vehicle.position())
-                    + " | " + (int) ping.getPosForClient().y + ")";
+            int dist = (int) ping.getPosForClient().distanceTo(vehicle.position());
+            int alt = UtilEntity.getDistFromSeaLevel(ping.getPosForClient().y, isNatural);
+            String text = "(" + dist + " | " + alt + ")";
             int color = 0xff0000;
             if (ping.isFriendly) color = 0x0000ff;
             drawCenteredString(poseStack, getFont(),

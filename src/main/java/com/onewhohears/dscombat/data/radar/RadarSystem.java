@@ -207,6 +207,7 @@ public class RadarSystem {
 					break;
 				}
 		}
+		updateClientPingPos();
 	}
 	
 	public boolean hasRadar() {
@@ -284,6 +285,10 @@ public class RadarSystem {
 				if (++n.age > 10) it.remove();
 			}
 		}
+		updateClientPingPos();
+	}
+	
+	private void updateClientPingPos() {
 		for (RadarPing ping : clientTargets) ping.setClientPos(parent.level);
 	}
 	

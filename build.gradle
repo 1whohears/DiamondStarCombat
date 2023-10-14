@@ -3,10 +3,14 @@ buildscript {
         maven { url = 'https://maven.minecraftforge.net' }
         maven { url = 'https://maven.parchmentmc.org' }
         mavenCentral()
+        maven { url = 'https://repo.spongepowered.org/maven' }
+        maven { url = 'https://maven.xillio.com/artifactory/libs-release' }
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
         classpath 'org.parchmentmc:librarian:1.+'
+        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
+        classpath group: 'com.diffplug.eclipse.apt', name: 'com.diffplug.eclipse.apt.gradle.plugin', version: '3.41.1'
     }
 }
 
@@ -15,6 +19,8 @@ apply plugin: 'org.parchmentmc.librarian.forgegradle'
 // DO NOT CHANGE ABOVE
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
+apply plugin: 'org.spongepowered.mixin'
+apply plugin: 'com.diffplug.eclipse.apt'
 
 group = 'com.onewhohears.dscombat'
 archivesBaseName = 'dscombat-1.19.2'
@@ -80,10 +86,12 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
+	maven { url "https://cursemaven.com" }
 }
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.19.2-43.2.0'
+    implementation fg.deobf("curse.maven:modernfix-790626:4792392")
 }
 
 jar {

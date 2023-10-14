@@ -17,6 +17,7 @@ import org.jetbrains.annotations.Nullable;
  */
 @OnlyIn(Dist.CLIENT)
 public abstract class VehicleOverlayComponent extends GuiComponent {
+    protected final int screenWidth, screenHeight;
     protected static final int PADDING = 1;
 
     @Nullable
@@ -24,7 +25,12 @@ public abstract class VehicleOverlayComponent extends GuiComponent {
         return Minecraft.getInstance().player != null ? Minecraft.getInstance().player.getRootVehicle() : null;
     }
 
-    public abstract void render(PoseStack poseStack, int screenWidth, int screenHeight);
+    public VehicleOverlayComponent(int screenWidth, int screenHeight) {
+        this.screenWidth = screenWidth;
+        this.screenHeight = screenHeight;
+    }
+
+    public abstract void render(PoseStack poseStack);
 
     public abstract boolean shouldRender();
 }

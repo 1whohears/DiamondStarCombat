@@ -104,6 +104,7 @@ public class VehicleOverlay {
 		if (!(player.getRootVehicle() instanceof EntityAircraft plane)) return;
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		new TurnCoordinatorOverlay(screenWidth, screenHeight).render(poseStack);
 		drawAircraftStats(m, player, plane, gui, poseStack, partialTick, screenWidth, screenHeight);
 		drawAircraftAngles(m, player, plane, gui, poseStack, partialTick, screenWidth, screenHeight);
 		drawAircraftWeaponsAndKeys(m, player, plane, gui, poseStack, partialTick, screenWidth, screenHeight);
@@ -114,7 +115,6 @@ public class VehicleOverlay {
 		if (plane.getAircraftType() == AircraftType.PLANE) {
 			drawPlaneData(m, player, (EntityPlane)plane, gui, poseStack, partialTick, screenWidth, screenHeight);
 			drawPlaneAttitude(m, player, (EntityPlane)plane, gui, poseStack, partialTick, screenWidth, screenHeight);
-			new TurnCoordinatorOverlay(screenWidth, screenHeight).render(poseStack);
 		}
 		if (player.getVehicle() instanceof EntityTurret turret)
 			drawAircraftTurretData(m, player, turret, gui, poseStack, partialTick, screenWidth, screenHeight);

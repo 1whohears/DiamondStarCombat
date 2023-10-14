@@ -8,12 +8,12 @@ import net.minecraft.util.Mth;
 
 // FIXME: FPS does NOT like this. drawCenteredString seems to be the culprit
 public class VehicleCompassOverlay extends VehicleOverlayComponent {
-    public VehicleCompassOverlay(int screenWidth, int screenHeight) {
-        super(screenWidth, screenHeight);
+    public VehicleCompassOverlay(PoseStack poseStack, int screenWidth, int screenHeight) {
+        super(poseStack, screenWidth, screenHeight);
     }
 
     @Override
-    public void render(PoseStack poseStack) {
+    public void render(PoseStack poseStack, int screenWidth, int screenHeight) {
         if (!(getPlayerVehicle() instanceof EntityAircraft)) return;
 
         // HEADING
@@ -21,11 +21,11 @@ public class VehicleCompassOverlay extends VehicleOverlayComponent {
         int heading = (int) Mth.wrapDegrees(Minecraft.getInstance().player.getYRot());
         if (heading < 0) heading += 360f;
         drawCenteredString(poseStack, getFont(),
-                heading+"", this.screenWidth/2, y+20, color);
+                heading+"", screenWidth/2, y+20, color);
         int num = 15, degSpace = 3, degPerLine = 3, steps = 3;
         for (int i = -num; i < num; ++i) {
             int j = i*degPerLine;
-            int x = this.screenWidth/2+j*degSpace-heading%degPerLine*degSpace;
+            int x = screenWidth/2+j*degSpace-heading%degPerLine*degSpace;
             drawCenteredString(poseStack, getFont(),
                     "|", x, y+10, color);
             int hl = heading / degPerLine;

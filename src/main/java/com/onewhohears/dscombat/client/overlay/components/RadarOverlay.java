@@ -33,15 +33,17 @@ public class RadarOverlay extends VehicleOverlayComponent {
 
     protected static final int[] HUD_PING_ANIM = new int[] {0,100,200,300,200,100};
 
-    protected final float partialTick;
-    
-    public RadarOverlay(int screenWidth, int screenHeight, float partialTick) {
-        super(screenWidth, screenHeight);
-        this.partialTick = partialTick;
+    protected static float PARTIAL_TICK;
+    public static void setPartialTick(float partialTick) {
+        PARTIAL_TICK = partialTick;
+    }
+
+    public RadarOverlay(PoseStack poseStack, int screenWidth, int screenHeight) {
+        super(poseStack, screenWidth, screenHeight);
     }
 
     @Override
-    public void render(PoseStack poseStack) {
+    public void render(PoseStack poseStack, int screenWidth, int screenHeight) {
         if (!(getPlayerVehicle() instanceof EntityAircraft vehicle)) return;
         RadarSystem radar = vehicle.radarSystem;
         if (!radar.hasRadar()) return;
@@ -49,13 +51,13 @@ public class RadarOverlay extends VehicleOverlayComponent {
         // RADAR BACKDROP
         RenderSystem.setShaderTexture(0, RADAR);
         blit(poseStack,
-                RADAR_OFFSET, this.screenHeight - RADAR_OFFSET - RADAR_SIZE,
+                RADAR_OFFSET, screenHeight - RADAR_OFFSET - RADAR_SIZE,
                 0, 0, RADAR_SIZE, RADAR_SIZE,
                 RADAR_SIZE, RADAR_SIZE);
         
         int searchRadius = RADAR_SIZE / 2;
         int cx = RADAR_OFFSET + searchRadius;
-        int cy = this.screenHeight - RADAR_OFFSET - searchRadius - 5;
+        int cy = screenHeight - RADAR_OFFSET - searchRadius - 5;
         double displayRange = 1000;
         
         // CARDINAL
@@ -90,7 +92,7 @@ public class RadarOverlay extends VehicleOverlayComponent {
         int pitch = (int) -vehicle.getXRot();
         int roll = (int) vehicle.zRot;
         drawCenteredString(poseStack, getFont(),
-                "P: "+pitch+" Y: "+heading+" R: "+roll, cx, this.screenHeight - RADAR_OFFSET - RADAR_SIZE -10, 0x8888ff);
+                "P: "+pitch+" Y: "+heading+" R: "+roll, cx, screenHeight - RADAR_OFFSET - RADAR_SIZE -10, 0x8888ff);
 
         // RWR
         for (RadarSystem.RWRWarning warn : radar.getClientRWRWarnings()) {
@@ -118,7 +120,7 @@ public class RadarOverlay extends VehicleOverlayComponent {
             String text = "(" + (int) ping.pos.distanceTo(vehicle.position())
                     + " | " + (int) ping.pos.y + ")";
             drawCenteredString(poseStack, getFont(),
-                    text, this.screenWidth / 2, this.screenHeight / 2 - 20, 0xffff00);
+                    text, screenWidth / 2, screenHeight / 2 - 20, 0xffff00);
         }
 
         if (selected != -1 && selected < pings.size()) {
@@ -128,13 +130,13 @@ public class RadarOverlay extends VehicleOverlayComponent {
             int color = 0xff0000;
             if (ping.isFriendly) color = 0x0000ff;
             drawCenteredString(poseStack, getFont(),
-                    text, cx, this.screenHeight - RADAR_OFFSET - RADAR_SIZE - 20, color);
+                    text, cx, screenHeight - RADAR_OFFSET - RADAR_SIZE - 20, color);
         }
 
         // PINGS ON SCREEN AND HUD
         Camera cam = Minecraft.getInstance().gameRenderer.getMainCamera();
         Vec3 view = cam.getPosition();
-        float z_rot = UtilAngles.lerpAngle(this.partialTick, vehicle.zRotO, vehicle.zRot);
+        float z_rot = UtilAngles.lerpAngle(PARTIAL_TICK, vehicle.zRotO, vehicle.zRot);
         poseStack.pushPose();
         poseStack.mulPose(Vector3f.ZP.rotationDegrees(z_rot));
         poseStack.mulPose(Vector3f.XP.rotationDegrees(cam.getXRot()));
@@ -143,7 +145,7 @@ public class RadarOverlay extends VehicleOverlayComponent {
         Matrix4f view_mat = poseStack.last().pose().copy();
         poseStack.popPose();
         Matrix4f proj_mat = ClientRenderEvents.getProjMatrix();
-        float cursorX = this.screenWidth / 2F, cursorY = this.screenHeight / 2F;
+        float cursorX = screenWidth / 2F, cursorY = screenHeight / 2F;
         boolean hovering = false;
         for (int i = 0; i < pings.size(); ++i) {
             RadarData.RadarPing ping = pings.get(i);
@@ -172,9 +174,9 @@ public class RadarOverlay extends VehicleOverlayComponent {
                     symbol, x, y, color);
             // HUD
             float[] screen_pos = UtilGeometry.worldToScreenPos(ping.pos,
-                    view_mat, proj_mat, this.screenWidth, this.screenHeight);
+                    view_mat, proj_mat, screenWidth, screenHeight);
             if (screen_pos[0] < 0 || screen_pos[1] < 0) continue;
-            float x_win = screen_pos[0], y_win = this.screenHeight - screen_pos[1];
+            float x_win = screen_pos[0], y_win = screenHeight - screen_pos[1];
             int size = 100;
             float min = 0.2f, max = 0.45f, max_dist = 1000f;
             float scale = (float) Math.max(min, max-(dist/max_dist*(max-min)));

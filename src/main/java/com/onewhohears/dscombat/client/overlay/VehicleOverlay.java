@@ -18,20 +18,20 @@ public class VehicleOverlay {
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
-		// TODO: make method bodies in overlay subclasses consistent with style
-		// TODO: potentially refactor overlays to a singleton pattern so there isn't constant instantiation?
-		// Something needs to be done WRT the above comment. I don't like this implementation.
-		new DebugOverlay(screenWidth, screenHeight).render(poseStack);
-		new PlaneAttitudeOverlay(screenWidth, screenHeight).render(poseStack);
-		new PlaneDataOverlay(screenWidth, screenHeight).render(poseStack);
-		new RadarOverlay(screenWidth, screenHeight, partialTick).render(poseStack);
-		new VehicleCompassOverlay(screenWidth, screenHeight).render(poseStack);
-		new VehicleControlOverlay(screenWidth, screenHeight).render(poseStack);
-		new VehicleStatsOverlay(screenWidth, screenHeight).render(poseStack);
-		new VehicleFuelOverlay(screenWidth, screenHeight).render(poseStack);
-		new VehicleThrottleOverlay(screenWidth, screenHeight).render(poseStack);
-		new VehicleWeaponsOverlay(screenWidth, screenHeight).render(poseStack);
-		new TurnCoordinatorOverlay(screenWidth, screenHeight).render(poseStack);
-		new TurretDataOverlay(screenWidth, screenHeight).render(poseStack);
+		// TODO: make method bodies in these subclasses consistent with style
+		new DebugOverlay(poseStack, screenWidth, screenHeight);
+		new PlaneAttitudeOverlay(poseStack, screenWidth, screenHeight);
+		new PlaneDataOverlay(poseStack, screenWidth, screenHeight);
+		// Unfortunately, lerp lags behind by a frame if not done like this... But is that even an issue?
+		RadarOverlay.setPartialTick(partialTick);
+		new RadarOverlay(poseStack, screenWidth, screenHeight);
+		new VehicleCompassOverlay(poseStack, screenWidth, screenHeight);
+		new VehicleControlOverlay(poseStack, screenWidth, screenHeight);
+		new VehicleStatsOverlay(poseStack, screenWidth, screenHeight);
+		new VehicleFuelOverlay(poseStack, screenWidth, screenHeight);
+		new VehicleThrottleOverlay(poseStack, screenWidth, screenHeight);
+		new VehicleWeaponsOverlay(poseStack, screenWidth, screenHeight);
+		new TurnCoordinatorOverlay(poseStack, screenWidth, screenHeight);
+		new TurretDataOverlay(poseStack, screenWidth, screenHeight);
 	});
 }

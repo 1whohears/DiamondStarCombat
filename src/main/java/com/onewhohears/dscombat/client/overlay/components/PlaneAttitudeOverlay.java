@@ -25,16 +25,16 @@ public class PlaneAttitudeOverlay extends VehicleOverlayComponent {
 
     private static final int ATTITUDE_SIZE = 80;
     
-    public PlaneAttitudeOverlay(int screenWidth, int screenHeight) {
-        super(screenWidth, screenHeight);
+    public PlaneAttitudeOverlay(PoseStack poseStack, int screenWidth, int screenHeight) {
+        super(poseStack, screenWidth, screenHeight);
     }
 
     @Override
-    public void render(PoseStack poseStack) {
+    public void render(PoseStack poseStack, int screenWidth, int screenHeight) {
         if (!(getPlayerVehicle() instanceof EntityPlane plane)) return;
         
-        int attX = this.screenWidth - ATTITUDE_SIZE - PADDING *3- STICK_BASE_SIZE - THROTTLE_WIDTH;
-        int attY = this.screenHeight - PADDING *2- TURN_COORD_SIZE- ATTITUDE_SIZE;
+        int attX = screenWidth - ATTITUDE_SIZE - PADDING *3- STICK_BASE_SIZE - THROTTLE_WIDTH;
+        int attY = screenHeight - PADDING *2- TURN_COORD_SIZE- ATTITUDE_SIZE;
         RenderSystem.setShaderTexture(0, ATTITUDE_BASE);
         blit(poseStack,
                 attX, attY,

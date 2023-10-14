@@ -20,16 +20,16 @@ public class VehicleFuelOverlay extends VehicleOverlayComponent {
     public static final int FUEL_GAUGE_HEIGHT = 40, FUEL_GAUGE_WIDTH = 60;
     public static final int FUEL_ARROW_HEIGHT = 7, FUEL_ARROW_WIDTH = 24;
 
-    public VehicleFuelOverlay(int screenWidth, int screenHeight) {
-        super(screenWidth, screenHeight);
+    public VehicleFuelOverlay(PoseStack poseStack, int screenWidth, int screenHeight) {
+        super(poseStack, screenWidth, screenHeight);
     }
 
     @Override
-    public void render(PoseStack poseStack) {
+    public void render(PoseStack poseStack, int screenWidth, int screenHeight) {
         if (!(getPlayerVehicle() instanceof EntityAircraft vehicle)) return;
 
-        int xOrigin = this.screenWidth - PADDING - FUEL_GAUGE_WIDTH;
-        int yOrigin = this.screenHeight - STICK_BASE_SIZE - PADDING * 2 - FUEL_GAUGE_HEIGHT;
+        int xOrigin = screenWidth - PADDING - FUEL_GAUGE_WIDTH;
+        int yOrigin = screenHeight - STICK_BASE_SIZE - PADDING * 2 - FUEL_GAUGE_HEIGHT;
         if (vehicle.isAircraft()) yOrigin -= PEDAL_HEIGHT;
 
         RenderSystem.setShaderTexture(0, FUEL_GAUGE);

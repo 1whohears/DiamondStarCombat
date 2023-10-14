@@ -21,16 +21,16 @@ public class VehicleControlOverlay extends VehicleOverlayComponent {
     public static final int STICK_BASE_SIZE = 60, STICK_KNOB_SIZE = STICK_BASE_SIZE / 6;
     protected static int PEDAL_HEIGHT = 25, PEDAL_WIDTH = 20;
 
-    public VehicleControlOverlay(int screenWidth, int screenHeight) {
-        super(screenWidth, screenHeight);
+    public VehicleControlOverlay(PoseStack poseStack, int screenWidth, int screenHeight) {
+        super(poseStack, screenWidth, screenHeight);
     }
 
     @Override
-    public void render(PoseStack poseStack) {
+    public void render(PoseStack poseStack, int screenWidth, int screenHeight) {
         if (!(getPlayerVehicle() instanceof EntityAircraft vehicle)) return;
 
-        int xOrigin = this.screenWidth - STICK_BASE_SIZE - PADDING;
-        int yOrigin = this.screenHeight - PADDING;
+        int xOrigin = screenWidth - STICK_BASE_SIZE - PADDING;
+        int yOrigin = screenHeight - PADDING;
 
         // rudder (yaw input)
         if (vehicle.isAircraft()) {

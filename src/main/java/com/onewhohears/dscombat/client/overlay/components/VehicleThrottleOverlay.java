@@ -17,16 +17,16 @@ public class VehicleThrottleOverlay extends VehicleOverlayComponent {
 
     public static final int THROTTLE_RAIL_LENGTH = 70, THROTTLE_WIDTH = 10, THROTTLE_KNOB_HEIGHT = 10;
 
-    public VehicleThrottleOverlay(int screenWidth, int screenHeight) {
-        super(screenWidth, screenHeight);
+    public VehicleThrottleOverlay(PoseStack poseStack, int screenWidth, int screenHeight) {
+        super(poseStack, screenWidth, screenHeight);
     }
 
     @Override
-    public void render(PoseStack poseStack) {
+    public void render(PoseStack poseStack, int screenWidth, int screenHeight) {
         if (!(getPlayerVehicle() instanceof EntityAircraft vehicle)) return;
 
-        int x = this.screenWidth - STICK_BASE_SIZE - PADDING - THROTTLE_WIDTH - PADDING;
-        int y = this.screenHeight - THROTTLE_RAIL_LENGTH - PADDING;
+        int x = screenWidth - STICK_BASE_SIZE - PADDING - THROTTLE_WIDTH - PADDING;
+        int y = screenHeight - THROTTLE_RAIL_LENGTH - PADDING;
         RenderSystem.setShaderTexture(0, THROTTLE_RAIL);
         blit(poseStack,
                 x, y,

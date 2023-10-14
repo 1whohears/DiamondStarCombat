@@ -19,16 +19,16 @@ public class VehicleStatsOverlay extends VehicleOverlayComponent {
     public static final float CHANGE_G = (float) GREEN_ME_SAY_ALONE_RAMP.getGreen() / (START - END);
     public static final float CHANGE_R = (float) RED.getRed() / (START - END);
 
-    public VehicleStatsOverlay(int screenWidth, int screenHeight) {
-        super(screenWidth, screenHeight);
+    public VehicleStatsOverlay(PoseStack poseStack, int screenWidth, int screenHeight) {
+        super(poseStack, screenWidth, screenHeight);
     }
 
     @Override
-    public void render(PoseStack poseStack) {
+    public void render(PoseStack poseStack, int screenWidth, int screenHeight) {
         if (!(getPlayerVehicle() instanceof EntityAircraft vehicle)) return;
 
-        int xOrigin = this.screenWidth - STICK_BASE_SIZE - PADDING;
-        int yOrigin = this.screenHeight - STICK_BASE_SIZE - PADDING * 3 - FUEL_GAUGE_HEIGHT - 10;
+        int xOrigin = screenWidth - STICK_BASE_SIZE - PADDING;
+        int yOrigin = screenHeight - STICK_BASE_SIZE - PADDING * 3 - FUEL_GAUGE_HEIGHT - 10;
         
         if (vehicle.isAircraft()) yOrigin -= PEDAL_HEIGHT;
 
@@ -48,7 +48,7 @@ public class VehicleStatsOverlay extends VehicleOverlayComponent {
                 getHealthColor(h, max));
         drawCenteredString(poseStack, getFont(),
                 "["+vehicle.getBlockX()+","+vehicle.getBlockY()+","+vehicle.getBlockZ()+"]",
-                this.screenWidth / 2, 0, 0x00ff00);
+                screenWidth / 2, 0, 0x00ff00);
     }
 
     private static int getHealthColor(float health, float max) {

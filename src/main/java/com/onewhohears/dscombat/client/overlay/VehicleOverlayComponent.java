@@ -1,8 +1,6 @@
 package com.onewhohears.dscombat.client.overlay;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
-import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
@@ -12,15 +10,13 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Implementations are encouraged to 'feed' data into method bodies directly as opposed to passing them in
- * calls. Anyhow, I've laid it out like this so the logic for a piece of the GUI is all in its own class.
+ * I've laid it out like this so the logic for a piece of the GUI is all in its own class.
  * Ultimately there is at most one <code>LocalPlayer</code> and <code>Minecraft</code> instance on a client at
  * any given time, so this *should* be fine.
  * @author kawaiicakes
  */
 @OnlyIn(Dist.CLIENT)
 public abstract class VehicleOverlayComponent extends GuiComponent {
-    protected final int screenWidth, screenHeight;
     protected static final int PADDING = 1;
 
     @Nullable
@@ -32,10 +28,9 @@ public abstract class VehicleOverlayComponent extends GuiComponent {
         return Minecraft.getInstance().font;
     }
 
-    public VehicleOverlayComponent(int screenWidth, int screenHeight) {
-        this.screenWidth = screenWidth;
-        this.screenHeight = screenHeight;
+    public VehicleOverlayComponent(PoseStack poseStack, int screenWidth, int screenHeight) {
+        render(poseStack, screenWidth, screenHeight);
     }
 
-    public abstract void render(PoseStack poseStack);
+    public abstract void render(PoseStack poseStack, int screenWidth, int screenHeight);
 }

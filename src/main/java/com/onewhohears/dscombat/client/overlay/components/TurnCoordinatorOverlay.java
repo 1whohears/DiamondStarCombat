@@ -21,16 +21,16 @@ public class TurnCoordinatorOverlay extends VehicleOverlayComponent {
 
     public static final int TURN_COORD_SIZE = 80;
 
-    public TurnCoordinatorOverlay(int screenWidth, int screenHeight) {
-        super(screenWidth, screenHeight);
+    public TurnCoordinatorOverlay(PoseStack poseStack, int screenWidth, int screenHeight) {
+        super(poseStack, screenWidth, screenHeight);
     }
 
     @Override
-    public void render(PoseStack poseStack) {
+    public void render(PoseStack poseStack, int screenWidth, int screenHeight) {
         if (!(getPlayerVehicle() instanceof EntityPlane plane)) return;
 
-        final int xOrigin = this.screenWidth - TURN_COORD_SIZE - PADDING * 3 - STICK_BASE_SIZE - STICK_KNOB_SIZE;
-        final int yOrigin = this.screenHeight - PADDING - TURN_COORD_SIZE;
+        final int xOrigin = screenWidth - TURN_COORD_SIZE - PADDING * 3 - STICK_BASE_SIZE - STICK_KNOB_SIZE;
+        final int yOrigin = screenHeight - PADDING - TURN_COORD_SIZE;
 
         RenderSystem.setShaderTexture(0, TURN_COORD_BASE);
         blit(poseStack,

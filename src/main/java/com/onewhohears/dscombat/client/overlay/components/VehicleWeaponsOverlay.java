@@ -13,12 +13,12 @@ import java.util.List;
 public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
     private static final MutableComponent WEAPON_SELECT = Component.empty().append("->");
     
-    public VehicleWeaponsOverlay(int screenWidth, int screenHeight) {
-        super(screenWidth, screenHeight);
+    public VehicleWeaponsOverlay(PoseStack poseStack, int screenWidth, int screenHeight) {
+        super(poseStack, screenWidth, screenHeight);
     }
 
     @Override
-    public void render(PoseStack poseStack) {
+    public void render(PoseStack poseStack, int screenWidth, int screenHeight) {
         if (!(getPlayerVehicle() instanceof EntityAircraft vehicle)) return;
         
         int wh=1,x,weaponSelectWidth=getFont().width(WEAPON_SELECT)+1,maxNameWidth=46,maxTypeWidth=10,color1=0x7340bf,color2=0x00ff00,color;

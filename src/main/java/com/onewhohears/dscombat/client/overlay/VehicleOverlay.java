@@ -12,6 +12,7 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents;
 import com.onewhohears.dscombat.client.event.forgebus.ClientRenderEvents;
 import com.onewhohears.dscombat.client.input.DSCKeys;
+import com.onewhohears.dscombat.client.overlay.components.TurnCoordinatorOverlay;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.radar.RadarSystem.RWRWarning;
@@ -95,7 +96,7 @@ public class VehicleOverlay {
 	private static final ResourceLocation THROTTLE_HANDLE = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/throttle_handle.png");
 	
-	public static final IGuiOverlay HUD_Aircraft_Stats = ((gui, poseStack, partialTick, width, height) -> {
+	public static final IGuiOverlay HUD_Aircraft_Stats = ((gui, poseStack, partialTick, screenWidth, screenHeight) -> {
 		Minecraft m = Minecraft.getInstance();
 		if (m.options.hideGui) return;
 		if (m.gameMode.getPlayerMode() == GameType.SPECTATOR) return;
@@ -103,21 +104,21 @@ public class VehicleOverlay {
 		if (!(player.getRootVehicle() instanceof EntityAircraft plane)) return;
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		drawAircraftStats(m, player, plane, gui, poseStack, partialTick, width, height);
-		drawAircraftAngles(m, player, plane, gui, poseStack, partialTick, width, height);
-		drawAircraftWeaponsAndKeys(m, player, plane, gui, poseStack, partialTick, width, height);
-		drawAircraftRadarData(m, player, plane, gui, poseStack, partialTick, width, height);
-		drawAircraftControls(m, player, plane, gui, poseStack, partialTick, width, height);
-		drawAircraftThrottle(m, player, plane, gui, poseStack, partialTick, width, height);
-		drawAircraftFuel(m, player, plane, gui, poseStack, partialTick, width, height);
+		drawAircraftStats(m, player, plane, gui, poseStack, partialTick, screenWidth, screenHeight);
+		drawAircraftAngles(m, player, plane, gui, poseStack, partialTick, screenWidth, screenHeight);
+		drawAircraftWeaponsAndKeys(m, player, plane, gui, poseStack, partialTick, screenWidth, screenHeight);
+		drawAircraftRadarData(m, player, plane, gui, poseStack, partialTick, screenWidth, screenHeight);
+		drawAircraftControls(m, player, plane, gui, poseStack, partialTick, screenWidth, screenHeight);
+		drawAircraftThrottle(m, player, plane, gui, poseStack, partialTick, screenWidth, screenHeight);
+		drawAircraftFuel(m, player, plane, gui, poseStack, partialTick, screenWidth, screenHeight);
 		if (plane.getAircraftType() == AircraftType.PLANE) {
-			drawPlaneData(m, player, (EntityPlane)plane, gui, poseStack, partialTick, width, height);
-			drawPlaneAttitude(m, player, (EntityPlane)plane, gui, poseStack, partialTick, width, height);
-			drawPlaneTurnCoordinator(m, player, (EntityPlane)plane, gui, poseStack, partialTick, width, height);
+			drawPlaneData(m, player, (EntityPlane)plane, gui, poseStack, partialTick, screenWidth, screenHeight);
+			drawPlaneAttitude(m, player, (EntityPlane)plane, gui, poseStack, partialTick, screenWidth, screenHeight);
+			new TurnCoordinatorOverlay(screenWidth, screenHeight).render(poseStack);
 		}
 		if (player.getVehicle() instanceof EntityTurret turret)
-			drawAircraftTurretData(m, player, turret, gui, poseStack, partialTick, width, height);
-		if (Config.CLIENT.debugMode.get()) drawDebug(m, player, plane, gui, poseStack, partialTick, width, height);
+			drawAircraftTurretData(m, player, turret, gui, poseStack, partialTick, screenWidth, screenHeight);
+		if (Config.CLIENT.debugMode.get()) drawDebug(m, player, plane, gui, poseStack, partialTick, screenWidth, screenHeight);
 	});
 	
 	private static void drawDebug(Minecraft m, Player player, EntityAircraft plane, ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {

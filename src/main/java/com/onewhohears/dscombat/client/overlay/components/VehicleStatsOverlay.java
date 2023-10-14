@@ -41,23 +41,23 @@ public class VehicleStatsOverlay extends VehicleOverlayComponent {
                 xOrigin, yOrigin-10,
                 0x00ff00);
 
-        float h = vehicle.getHealth(), max = vehicle.getMaxHealth();
+        float health = vehicle.getHealth(), maxHealth = vehicle.getMaxHealth();
         drawString(poseStack, getFont(),
-                "H: "+(int)h+"/"+(int)max,
+                "H: "+(int)health+"/"+(int)maxHealth,
                 xOrigin, yOrigin-20,
-                getHealthColor(h, max));
+                getHealthColor(health, maxHealth));
         drawCenteredString(poseStack, getFont(),
                 "["+vehicle.getBlockX()+","+vehicle.getBlockY()+","+vehicle.getBlockZ()+"]",
                 screenWidth / 2, 0, 0x00ff00);
     }
 
     private static int getHealthColor(float health, float max) {
-        float r = health / max;
-        if (r >= START) return GREEN_ME_SAY_ALONE_RAMP.getRGB();
-        if (r < START && r > END) {
+        float healthPercent = health / max;
+        if (healthPercent >= START) return GREEN_ME_SAY_ALONE_RAMP.getRGB();
+        if (healthPercent < START && healthPercent > END) {
             return new Color(
-                    (int)(CHANGE_R *(START -r)),
-                    (int)(CHANGE_G *(r- END)),
+                    (int)(CHANGE_R *(START -healthPercent)),
+                    (int)(CHANGE_G *(healthPercent- END)),
                     0).getRGB();
         }
         return RED.getRGB();

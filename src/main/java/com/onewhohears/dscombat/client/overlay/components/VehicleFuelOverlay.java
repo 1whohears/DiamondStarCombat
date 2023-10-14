@@ -39,13 +39,13 @@ public class VehicleFuelOverlay extends VehicleOverlayComponent {
                 FUEL_GAUGE_WIDTH, FUEL_GAUGE_HEIGHT,
                 FUEL_GAUGE_WIDTH, FUEL_GAUGE_HEIGHT);
 
-        float max = vehicle.getMaxFuel(), r = 0;
-        if (max != 0) r = vehicle.getCurrentFuel() / max;
+        float max = vehicle.getMaxFuel(), fuelPercent = 0;
+        if (max != 0) fuelPercent = vehicle.getCurrentFuel() / max;
 
         RenderSystem.setShaderTexture(0, FUEL_GAUGE_ARROW);
         poseStack.pushPose();
         poseStack.translate(xOrigin + (double) FUEL_GAUGE_WIDTH / 2, yOrigin + 24, 0);
-        poseStack.mulPose(Vector3f.ZP.rotationDegrees(160F * r + 10F));
+        poseStack.mulPose(Vector3f.ZP.rotationDegrees(160F * fuelPercent + 10F));
         blit(poseStack,
                 -FUEL_ARROW_WIDTH + 5, -FUEL_ARROW_HEIGHT / 2,
                 0, 0,

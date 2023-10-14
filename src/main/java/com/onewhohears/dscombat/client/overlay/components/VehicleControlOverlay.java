@@ -61,24 +61,22 @@ public class VehicleControlOverlay extends VehicleOverlayComponent {
                 STICK_BASE_SIZE, STICK_BASE_SIZE);
         RenderSystem.setShaderTexture(0, STICK_KNOB);
 
-        // FIXME idk what these single-letter variables are doing at a glance. consider renaming them
-
-        int b = STICK_BASE_SIZE / 2, n = STICK_KNOB_SIZE / 2;
+        int baseSizeHalf = STICK_BASE_SIZE / 2, knobSizeHalf = STICK_KNOB_SIZE / 2;
         float xinput, yinput = vehicle.inputs.pitch;
 
         if (vehicle.isAircraft()) xinput = vehicle.inputs.roll;
         else xinput = vehicle.inputs.yaw;
 
         // PIE HAT GORE-US
-        float l = Mth.sqrt(xinput * xinput + yinput * yinput);
-        if (l > 1) {
-            xinput = xinput / l;
-            yinput = yinput / l;
+        float inputLength = Mth.sqrt(xinput * xinput + yinput * yinput);
+        if (inputLength > 1) {
+            xinput = xinput / inputLength;
+            yinput = yinput / inputLength;
         }
 
         blit(poseStack,
-                xOrigin + b - n + (int) (xinput * b),
-                yOrigin + b - n + (int) (yinput * b),
+                xOrigin + baseSizeHalf - knobSizeHalf + (int) (xinput * baseSizeHalf),
+                yOrigin + baseSizeHalf - knobSizeHalf + (int) (yinput * baseSizeHalf),
                 0, 0,
                 STICK_KNOB_SIZE, STICK_KNOB_SIZE,
                 STICK_KNOB_SIZE, STICK_KNOB_SIZE);

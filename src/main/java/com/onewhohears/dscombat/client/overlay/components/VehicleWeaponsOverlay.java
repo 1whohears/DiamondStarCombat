@@ -21,10 +21,11 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
     public void render(PoseStack poseStack, int screenWidth, int screenHeight) {
         if (!(getPlayerVehicle() instanceof EntityVehicle vehicle)) return;
         
-        int wh=1,x,weaponSelectWidth=getFont().width(WEAPON_SELECT)+1,maxNameWidth=46,maxTypeWidth=10,color1=0x7340bf,color2=0x00ff00,color;
+        int yPos=1, xPos, weaponSelectWidth=getFont().width(WEAPON_SELECT)+1, maxNameWidth=46, maxTypeWidth=10;
+        int color1=0x7340bf, color2=0x00ff00, color;
         // WEAPONS
-        WeaponData sw = vehicle.weaponSystem.getSelected();
-        if (sw != null) {
+        WeaponData selectedWeapon = vehicle.weaponSystem.getSelected();
+        if (selectedWeapon != null) {
             List<WeaponData> weapons = vehicle.weaponSystem.getWeapons();
             Component[] names = new MutableComponent[weapons.size()];
             for (int i = 0; i < weapons.size(); ++i) {
@@ -41,44 +42,44 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
             }
             maxTypeWidth += 4;
             for (int i = 0; i < weapons.size(); ++i) {
-                x = 1; color = color1;
+                xPos = 1; color = color1;
                 WeaponData data = weapons.get(i);
-                if (data.equals(sw)) {
+                if (data.equals(selectedWeapon)) {
                     color = color2;
                     drawString(poseStack, getFont(),
-                            WEAPON_SELECT, x, wh, color);
+                            WEAPON_SELECT, xPos, yPos, color);
                 }
-                x += weaponSelectWidth;
+                xPos += weaponSelectWidth;
                 drawString(poseStack, getFont(),
-                        names[i], x, wh, color);
-                x += maxNameWidth;
+                        names[i], xPos, yPos, color);
+                xPos += maxNameWidth;
                 drawString(poseStack, getFont(),
-                        types[i], x, wh, color);
-                x += maxTypeWidth;
+                        types[i], xPos, yPos, color);
+                xPos += maxTypeWidth;
                 drawString(poseStack, getFont(),
                         data.getCurrentAmmo()+"/"+data.getMaxAmmo(),
-                        x, wh, color);
-                wh += 10;
+                        xPos, yPos, color);
+                yPos += 10;
             } }
         // CONTROLS
         String text;
         if (maxNameWidth < 50) maxNameWidth = 50;
         // FLARES
         if (vehicle.hasFlares()) {
-            x = 1+weaponSelectWidth;
+            xPos = 1+weaponSelectWidth;
             if (vehicle.inputs.flare) color = color2;
             else color = color1;
             drawString(poseStack, getFont(),
                     "Flares("+ DSCKeys.flareKey.getKey().getDisplayName().getString()+")",
-                    x, wh, color);
-            x += maxNameWidth;
+                    xPos, yPos, color);
+            xPos += maxNameWidth;
             drawString(poseStack, getFont(),
                     vehicle.getFlareNum()+"",
-                    x, wh, color);
-            wh += 10;
+                    xPos, yPos, color);
+            yPos += 10;
         }
         // FREE LOOK
-        x = 1+weaponSelectWidth;
+        xPos = 1+weaponSelectWidth;
         String key = DSCKeys.mouseModeKey.getKey().getDisplayName().getString();
         if (vehicle.isFreeLook()) {
             text = "MouseMode("+key+")";
@@ -88,11 +89,11 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
             color = color2;
         }
         drawString(poseStack, getFont(),
-                text, x, wh, color);
-        wh += 10;
+                text, xPos, yPos, color);
+        yPos += 10;
         // LANDING GEAR
         if (vehicle.canToggleLandingGear()) {
-            x = 1+weaponSelectWidth;
+            xPos = 1+weaponSelectWidth;
             if (vehicle.isLandingGear()) {
                 text = "OUT";
                 color = color2;
@@ -102,15 +103,15 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
             }
             drawString(poseStack, getFont(),
                     "Gear("+DSCKeys.landingGear.getKey().getDisplayName().getString()+")",
-                    x, wh, color);
-            x += maxNameWidth;
+                    xPos, yPos, color);
+            xPos += maxNameWidth;
             drawString(poseStack, getFont(),
-                    text, x, wh, color);
-            wh += 10;
+                    text, xPos, yPos, color);
+            yPos += 10;
         }
         // BREAKS
         if (vehicle.canBreak()) {
-            x = 1+weaponSelectWidth;
+            xPos = 1+weaponSelectWidth;
             if (vehicle.getAircraftType() == EntityVehicle.AircraftType.PLANE)
                 text = DSCKeys.special2Key.getKey().getDisplayName().getString();
             else text = DSCKeys.specialKey.getKey().getDisplayName().getString();
@@ -118,56 +119,56 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
             else color = color1;
             drawString(poseStack, getFont(),
                     "Break("+text+")",
-                    x, wh, color);
-            wh += 10;
+                    xPos, yPos, color);
+            yPos += 10;
         }
         // FLAPS DOWN
         if (vehicle.canFlapsDown()) {
-            x = 1+weaponSelectWidth;
+            xPos = 1+weaponSelectWidth;
             text = DSCKeys.specialKey.getKey().getDisplayName().getString();
             if (vehicle.inputs.special) color = color2;
             else color = color1;
             drawString(poseStack, getFont(),
                     "FlapsDown("+text+")",
-                    x, wh, color);
-            wh += 10;
+                    xPos, yPos, color);
+            yPos += 10;
         }
         // WEAPON ANGLED DOWN
         if (vehicle.canAngleWeaponDown()) {
-            x = 1+weaponSelectWidth;
+            xPos = 1+weaponSelectWidth;
             text = DSCKeys.special2Key.getKey().getDisplayName().getString();
             if (vehicle.inputs.special2) color = color2;
             else color = color1;
             drawString(poseStack, getFont(),
                     "AimDown("+text+")",
-                    x, wh, color);
-            wh += 10;
+                    xPos, yPos, color);
+            yPos += 10;
         }
         // HOVER
         if (vehicle.canHover()) {
-            x = 1+weaponSelectWidth;
+            xPos = 1+weaponSelectWidth;
             text = DSCKeys.specialKey.getKey().getDisplayName().getString();
             if (vehicle.inputs.special) color = color2;
             else color = color1;
             drawString(poseStack, getFont(),
                     "Hover("+text+")",
-                    x, wh, color);
-            wh += 10;
+                    xPos, yPos, color);
+            yPos += 10;
         }
         // PLAYERS ONLY
         if (vehicle.radarSystem.hasRadar()) {
-            x = 1+weaponSelectWidth;
+            xPos = 1+weaponSelectWidth;
             if (vehicle.getRadarMode().isOff()) color = color2;
             else color = color1;
             drawString(poseStack, getFont(),
                     "RMode("+DSCKeys.radarModeKey.getKey().getDisplayName().getString()+")",
-                    x, wh, color);
-            x += maxNameWidth;
+                    xPos, yPos, color);
+            xPos += maxNameWidth;
             text = vehicle.getRadarMode().name();
             drawString(poseStack, getFont(),
-                    text, x, wh, color);
+                    text, xPos, yPos, color);
             // what is this
-            wh += 10;
+            yPos += 10;
         }
     }
 }

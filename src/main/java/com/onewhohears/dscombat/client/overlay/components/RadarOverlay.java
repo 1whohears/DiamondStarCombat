@@ -56,34 +56,34 @@ public class RadarOverlay extends VehicleOverlayComponent {
                 RADAR_SIZE, RADAR_SIZE);
         
         int searchRadius = RADAR_SIZE / 2;
-        int cx = RADAR_OFFSET + searchRadius;
-        int cy = screenHeight - RADAR_OFFSET - searchRadius - 5;
+        int centerX = RADAR_OFFSET + searchRadius;
+        int centerY = screenHeight - RADAR_OFFSET - searchRadius - 5;
         double displayRange = 1000;
         
         // CARDINAL
         int card_color = 0x0000ff, searchRadius2 = searchRadius + 4;
         float card_yaw = -vehicle.getYRot() * Mth.DEG_TO_RAD;
         drawCenteredString(poseStack, getFont(), "S",
-                cx + (int) (Mth.sin(card_yaw) * searchRadius2),
-                cy - (int) (Mth.cos(card_yaw) * searchRadius2),
+                centerX + (int) (Mth.sin(card_yaw) * searchRadius2),
+                centerY - (int) (Mth.cos(card_yaw) * searchRadius2),
                 card_color);
         
         card_yaw = (180 - vehicle.getYRot()) * Mth.DEG_TO_RAD;
         drawCenteredString(poseStack, getFont(), "N",
-                cx + (int) (Mth.sin(card_yaw) * searchRadius2),
-                cy- (int) (Mth.cos(card_yaw) * searchRadius2),
+                centerX + (int) (Mth.sin(card_yaw) * searchRadius2),
+                centerY- (int) (Mth.cos(card_yaw) * searchRadius2),
                 card_color);
         
         card_yaw = (270 - vehicle.getYRot()) * Mth.DEG_TO_RAD;
         drawCenteredString(poseStack, getFont(), "E",
-                cx + (int) (Mth.sin(card_yaw) * searchRadius2),
-                cy - (int) (Mth.cos(card_yaw) * searchRadius2),
+                centerX + (int) (Mth.sin(card_yaw) * searchRadius2),
+                centerY - (int) (Mth.cos(card_yaw) * searchRadius2),
                 card_color);
         
         card_yaw = (90 - vehicle.getYRot()) * Mth.DEG_TO_RAD;
         drawCenteredString(poseStack, getFont(), "W",
-                cx + (int) (Mth.sin(card_yaw) * searchRadius2),
-                cy - (int) (Mth.cos(card_yaw) * searchRadius2),
+                centerX + (int) (Mth.sin(card_yaw) * searchRadius2),
+                centerY - (int) (Mth.cos(card_yaw) * searchRadius2),
                 card_color);
         
         // ROLL PITCH YAW
@@ -92,14 +92,14 @@ public class RadarOverlay extends VehicleOverlayComponent {
         int pitch = (int) -vehicle.getXRot();
         int roll = (int) vehicle.zRot;
         drawCenteredString(poseStack, getFont(),
-                "P: "+pitch+" Y: "+heading+" R: "+roll, cx, screenHeight - RADAR_OFFSET - RADAR_SIZE -10, 0x8888ff);
+                "P: "+pitch+" Y: "+heading+" R: "+roll, centerX, screenHeight - RADAR_OFFSET - RADAR_SIZE -10, 0x8888ff);
 
         // RWR
         for (RadarSystem.RWRWarning warn : radar.getClientRWRWarnings()) {
             Vec3 dp = warn.pos.subtract(vehicle.position());
             float yaw = (UtilAngles.getYaw(dp)-vehicle.getYRot())*Mth.DEG_TO_RAD;
-            int x = cx + (int)(Mth.sin(yaw)*searchRadius);
-            int y = cy - (int)(Mth.cos(yaw)*searchRadius);
+            int x = centerX + (int)(Mth.sin(yaw)*searchRadius);
+            int y = centerY - (int)(Mth.cos(yaw)*searchRadius);
             int color = 0xffff00;
             String symbol = "W";
             if (warn.isMissile) {
@@ -130,7 +130,7 @@ public class RadarOverlay extends VehicleOverlayComponent {
             int color = 0xff0000;
             if (ping.isFriendly) color = 0x0000ff;
             drawCenteredString(poseStack, getFont(),
-                    text, cx, screenHeight - RADAR_OFFSET - RADAR_SIZE - 20, color);
+                    text, centerX, screenHeight - RADAR_OFFSET - RADAR_SIZE - 20, color);
         }
 
         // PINGS ON SCREEN AND HUD
@@ -155,8 +155,8 @@ public class RadarOverlay extends VehicleOverlayComponent {
             double screen_dist = dist/displayRange;
             if (screen_dist > 1) screen_dist = 1;
             float yaw = (UtilAngles.getYaw(dp)-vehicle.getYRot())*Mth.DEG_TO_RAD;
-            int x = cx + (int)(Mth.sin(yaw)*searchRadius*screen_dist);
-            int y = cy + (int)(-Mth.cos(yaw)*searchRadius*screen_dist);
+            int x = centerX + (int)(Mth.sin(yaw)*searchRadius*screen_dist);
+            int y = centerY + (int)(-Mth.cos(yaw)*searchRadius*screen_dist);
             int color = 0x00ff00;
             String symbol = "o";
             if (ping.isFriendly) symbol = "F";

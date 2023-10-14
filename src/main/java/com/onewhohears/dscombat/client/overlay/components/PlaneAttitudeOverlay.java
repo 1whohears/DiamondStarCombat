@@ -45,8 +45,8 @@ public class PlaneAttitudeOverlay extends VehicleOverlayComponent {
         poseStack.pushPose();
         poseStack.translate(attX+ (double) ATTITUDE_SIZE /2, attY+ (double) ATTITUDE_SIZE /2, 0);
         poseStack.mulPose(Vector3f.ZP.rotationDegrees(-plane.zRot));
-        int p = (int)(Mth.clamp(-plane.getXRot(), -30, 30) * ATTITUDE_SIZE * 0.0055);
-        poseStack.translate(0, p, 0);
+        int pitchPointY = (int)(Mth.clamp(-plane.getXRot(), -30, 30) * ATTITUDE_SIZE * 0.0055);
+        poseStack.translate(0, pitchPointY, 0);
         blit(poseStack,
                 -ATTITUDE_SIZE /2, -ATTITUDE_SIZE /2,
                 0, 0,

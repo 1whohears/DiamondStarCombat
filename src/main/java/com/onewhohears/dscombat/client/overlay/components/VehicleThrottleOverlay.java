@@ -25,22 +25,22 @@ public class VehicleThrottleOverlay extends VehicleOverlayComponent {
     public void render(PoseStack poseStack, int screenWidth, int screenHeight) {
         if (!(getPlayerVehicle() instanceof EntityVehicle vehicle)) return;
 
-        int x = screenWidth - STICK_BASE_SIZE - PADDING - THROTTLE_WIDTH - PADDING;
-        int y = screenHeight - THROTTLE_RAIL_LENGTH - PADDING;
+        int xOrigin = screenWidth - STICK_BASE_SIZE - PADDING - THROTTLE_WIDTH - PADDING;
+        int yOrigin = screenHeight - THROTTLE_RAIL_LENGTH - PADDING;
         RenderSystem.setShaderTexture(0, THROTTLE_RAIL);
         blit(poseStack,
-                x, y,
+                xOrigin, yOrigin,
                 0, 0,
                 THROTTLE_WIDTH, THROTTLE_RAIL_LENGTH,
                 THROTTLE_WIDTH, THROTTLE_RAIL_LENGTH);
         RenderSystem.setShaderTexture(0, THROTTLE_HANDLE);
-        int sy = y+ THROTTLE_RAIL_LENGTH - THROTTLE_KNOB_HEIGHT;
-        int l = THROTTLE_RAIL_LENGTH - THROTTLE_KNOB_HEIGHT;
-        float th = vehicle.getCurrentThrottle();
-        if (vehicle.negativeThrottle) sy = sy-l/2-(int)(th*l/2);
-        else sy = sy-(int)(th*l);
+        int throttleYPos = yOrigin+ THROTTLE_RAIL_LENGTH - THROTTLE_KNOB_HEIGHT;
+        int throttleLength = THROTTLE_RAIL_LENGTH - THROTTLE_KNOB_HEIGHT;
+        float throttle = vehicle.getCurrentThrottle();
+        if (vehicle.negativeThrottle) throttleYPos = throttleYPos-throttleLength/2-(int)(throttle*throttleLength/2);
+        else throttleYPos = throttleYPos-(int)(throttle*throttleLength);
         blit(poseStack,
-                x, sy,
+                xOrigin, throttleYPos,
                 0, 0,
                 THROTTLE_WIDTH, THROTTLE_KNOB_HEIGHT,
                 THROTTLE_WIDTH, THROTTLE_KNOB_HEIGHT);

@@ -1,0 +1,57 @@
+package com.onewhohears.dscombat.client.overlay.components;
+
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
+import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
+import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import net.minecraft.resources.ResourceLocation;
+
+import static com.onewhohears.dscombat.client.overlay.components.VehicleControlOverlay.PEDAL_HEIGHT;
+import static com.onewhohears.dscombat.client.overlay.components.VehicleControlOverlay.STICK_BASE_SIZE;
+
+public class VehicleFuelOverlay extends VehicleOverlayComponent {
+    public static final ResourceLocation FUEL_GAUGE = new ResourceLocation(DSCombatMod.MODID,
+            "textures/ui/fuel_guage.png");
+    public static final ResourceLocation FUEL_GAUGE_ARROW = new ResourceLocation(DSCombatMod.MODID,
+            "textures/ui/fuel_guage_arrow.png");
+
+    public static final int FUEL_GAUGE_HEIGHT = 40, FUEL_GAUGE_WIDTH = 60;
+    public static final int FUEL_ARROW_HEIGHT = 7, FUEL_ARROW_WIDTH = 24;
+
+    public VehicleFuelOverlay(int screenWidth, int screenHeight) {
+        super(screenWidth, screenHeight);
+    }
+
+    @Override
+    public void render(PoseStack poseStack) {
+        if (!vehicleIsAircraft()) return;
+        EntityAircraft vehicle = (EntityAircraft) getPlayerVehicle();
+
+        int xOrigin = this.screenWidth - PADDING - FUEL_GAUGE_WIDTH;
+        int yOrigin = this.screenHeight - STICK_BASE_SIZE - PADDING * 2 - FUEL_GAUGE_HEIGHT;
+        if (vehicle.isAircraft()) yOrigin -= PEDAL_HEIGHT;
+
+        RenderSystem.setShaderTexture(0, FUEL_GAUGE);
+        blit(poseStack,
+                xOrigin, yOrigin,
+                0, 0,
+                FUEL_GAUGE_WIDTH, FUEL_GAUGE_HEIGHT,
+                FUEL_GAUGE_WIDTH, FUEL_GAUGE_HEIGHT);
+
+        float max = vehicle.getMaxFuel(), r = 0;
+        if (max != 0) r = vehicle.getCurrentFuel() / max;
+
+        RenderSystem.setShaderTexture(0, FUEL_GAUGE_ARROW);
+        poseStack.pushPose();
+        poseStack.translate(xOrigin + (double) FUEL_GAUGE_WIDTH / 2, yOrigin + 24, 0);
+        poseStack.mulPose(Vector3f.ZP.rotationDegrees(160F * r + 10F));
+        blit(poseStack,
+                -FUEL_ARROW_WIDTH + 5, -FUEL_ARROW_HEIGHT / 2,
+                0, 0,
+                FUEL_ARROW_WIDTH, FUEL_ARROW_HEIGHT,
+                FUEL_ARROW_WIDTH, FUEL_ARROW_HEIGHT);
+        poseStack.popPose();
+    }
+}

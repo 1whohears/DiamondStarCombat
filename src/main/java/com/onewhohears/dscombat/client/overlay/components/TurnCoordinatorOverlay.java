@@ -8,12 +8,15 @@ import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 import net.minecraft.resources.ResourceLocation;
 
+import static com.onewhohears.dscombat.client.overlay.components.VehicleControlOverlay.STICK_BASE_SIZE;
+import static com.onewhohears.dscombat.client.overlay.components.VehicleControlOverlay.STICK_KNOB_SIZE;
+
 public class TurnCoordinatorOverlay extends VehicleOverlayComponent {
-    private static final ResourceLocation TURN_COORD_BASE = new ResourceLocation(DSCombatMod.MODID,
+    public static final ResourceLocation TURN_COORD_BASE = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/turn_coord_base.png");
-    private static final ResourceLocation TURN_COORD_BALL = new ResourceLocation(DSCombatMod.MODID,
+    public static final ResourceLocation TURN_COORD_BALL = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/turn_coord_ball.png");
-    private static final ResourceLocation TURN_COORD_NEEDLE = new ResourceLocation(DSCombatMod.MODID,
+    public static final ResourceLocation TURN_COORD_NEEDLE = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/turn_coord_needle.png");
 
     public static final int TURN_COORD_SIZE = 80;
@@ -24,7 +27,7 @@ public class TurnCoordinatorOverlay extends VehicleOverlayComponent {
 
     @Override
     public void render(PoseStack poseStack) {
-        if (!shouldRender()) return;
+        if (!vehicleIsPlane()) return;
         EntityPlane plane = (EntityPlane) getPlayerVehicle();
 
         final int xOrigin = this.screenWidth - TURN_COORD_SIZE - PADDING * 3 - STICK_BASE_SIZE - STICK_KNOB_SIZE;
@@ -57,10 +60,5 @@ public class TurnCoordinatorOverlay extends VehicleOverlayComponent {
                 TURN_COORD_SIZE, TURN_COORD_SIZE,
                 TURN_COORD_SIZE, TURN_COORD_SIZE);
         poseStack.popPose();
-    }
-
-    @Override
-    public boolean shouldRender() {
-        return vehicleIsPlane();
     }
 }

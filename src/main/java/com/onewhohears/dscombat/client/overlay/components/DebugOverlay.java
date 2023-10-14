@@ -13,7 +13,7 @@ public class DebugOverlay extends VehicleOverlayComponent {
 
     @Override
     public void render(PoseStack poseStack) {
-        if (!shouldRender()) return;
+        if ((!vehicleIsAircraft()) || !(Config.CLIENT.debugMode.get())) return;
         EntityAircraft vehicle = (EntityAircraft) getPlayerVehicle();
 
         int color = 0x00ff00;
@@ -29,10 +29,5 @@ public class DebugOverlay extends VehicleOverlayComponent {
         drawString(poseStack, getFont(),
                 "M"+UtilParse.prettyVec3(vehicle.getMoment(), 2),
                 this.screenWidth - 100, 30, color);
-    }
-
-    @Override
-    public boolean shouldRender() {
-        return vehicleIsAircraft() && Config.CLIENT.debugMode.get();
     }
 }

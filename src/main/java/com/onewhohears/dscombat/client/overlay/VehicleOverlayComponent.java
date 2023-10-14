@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.client.overlay;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.world.entity.Entity;
@@ -16,12 +17,14 @@ import org.jetbrains.annotations.Nullable;
  */
 @OnlyIn(Dist.CLIENT)
 public abstract class VehicleOverlayComponent extends GuiComponent {
+    protected static final int PADDING = 1;
+
     @Nullable
     protected static Entity getPlayerVehicle() {
         return Minecraft.getInstance().player != null ? Minecraft.getInstance().player.getRootVehicle() : null;
     }
 
-    public abstract void render();
+    public abstract void render(PoseStack poseStack, int screenWidth, int screenHeight);
 
     public abstract boolean shouldRender();
 }

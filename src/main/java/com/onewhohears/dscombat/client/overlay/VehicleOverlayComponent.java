@@ -22,7 +22,6 @@ import org.jetbrains.annotations.Nullable;
 public abstract class VehicleOverlayComponent extends GuiComponent {
     protected final int screenWidth, screenHeight;
     protected static final int PADDING = 1;
-    protected static final int STICK_BASE_SIZE = 60, STICK_KNOB_SIZE = STICK_BASE_SIZE / 6;
 
     @Nullable
     protected static Entity getPlayerVehicle() {

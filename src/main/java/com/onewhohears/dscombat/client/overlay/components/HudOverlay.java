@@ -35,10 +35,11 @@ public class HudOverlay extends VehicleOverlayComponent {
         RenderSystem.setShaderTexture(0, HUD);
         RenderSystem.enableBlend();
 
-        // Left vertical bound
         blit(poseStack,
                 (screenWidth - VERTICAL_BOUNDS_WIDTH) / 2, (screenHeight - VERTICAL_BOUNDS_HEIGHT) / 2,
                 0, 0,
                 VERTICAL_BOUNDS_WIDTH, VERTICAL_BOUNDS_HEIGHT);
+
+        RenderSystem.disableBlend();
     }
 }

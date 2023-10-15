@@ -2468,7 +2468,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     
     @Override
 	public boolean isMultipartEntity() {
-		return true;
+		return getParts().length > 0;
 	}
 	
 	@Override

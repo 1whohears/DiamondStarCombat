@@ -166,10 +166,10 @@ public class ModEntities {
 						public void addHitboxes() {
 							hitboxes = new RotableHitbox[2];
 							hitboxes[0] = new RotableHitbox(this, "runway", 
-									new Vector3f(16, 6.04f, 50), 
+									new Vector3f(16, 6.02f, 50), 
 									new Vec3(0, 3, 0));
 							hitboxes[1] = new RotableHitbox(this, "side_plat", 
-									new Vector3f(25, 3.03f, 25), 
+									new Vector3f(25, 3.02f, 24), 
 									new Vec3(0, 4.5, 0));
 						}
 				}, EntityDimensions.scalable(25f,6f)));
@@ -205,7 +205,7 @@ public class ModEntities {
 	 * IDEA 9.1 AI for planes/turrets or an auto pilot module
 	 * AI turret controllers need time and resources invested to level up
 	 * it would be funny if they were villagers
-	 * IDEA 9.2 pillager outposts with air defence
+	 * IDEA 9.2 pillager outposts with air defense
 	 * 
 	 * IDEA 9.3 large physical hanger to craft vehicle/put weapons on them
 	 */

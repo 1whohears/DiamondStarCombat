@@ -1,10 +1,12 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.function.Predicate;
 
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
+import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.math.RotableAABB;
 import com.onewhohears.dscombat.util.math.RotableAABB.CollisionData;
 import com.onewhohears.dscombat.util.math.UtilAngles;
@@ -16,7 +18,9 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.PartEntity;
 
@@ -62,19 +66,44 @@ public class RotableHitbox extends PartEntity<EntityVehicle> {
 		//System.out.println("client side?"+level.isClientSide);
 		for (Entity entity : list) {
 			/**
-			 * FIXME 4 this custom collision code works somewhat but lots of issues still
+			 * FIXME 4.1 this custom collision code works somewhat but lots of issues still
 			 * are there performance issues?
 			 * can't place anything on the platform
 			 * when the vehicle moves or rotates, the passengers experience chopy movement
 			 * when the chunks load, entities that were on the platform may start falling before platform loads
 			 * collisions are only checked at the player's feet position for now
+			 * explosive projectiles only damage the vehicle if they hit the center where the parent hitbox is
 			 * most importantly this code is horrendous and ugly
 			 */
-			AABB entity_bb = entity.getBoundingBox();
-			Vec3 entity_pos = entity.position();
-			Vec3 entity_feet = UtilGeometry.getBBFeet(entity_bb);
-			Vector3f entity_move = UtilGeometry.convertVector(entity.getDeltaMovement());
 			CollisionData data = new CollisionData();
+			Vec3 entity_pos = entity.position();
+			Vector3f entity_move = UtilGeometry.convertVector(entity.getDeltaMovement());
+			// projectile collide
+			if (entity instanceof Projectile pro) {
+				Vec3 collide = hitbox.getCollidePos(entity_pos, entity_move, rot, data);
+				if (collide == null) continue;
+				if (UtilEntity.getCanHitEntityMethod() == null) continue;
+				boolean canHit = false;
+				try {
+					canHit = (boolean) UtilEntity.getCanHitEntityMethod().invoke(pro, getParent());
+				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+					e.printStackTrace();
+				}
+				if (!canHit) continue;
+				if (UtilEntity.getOnHitEntityMethod() == null) continue;
+				pro.setPos(collide);
+				EntityHitResult hit = new EntityHitResult(this, collide);
+				try {
+					UtilEntity.getOnHitEntityMethod().invoke(entity, hit);
+				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+					e.printStackTrace();
+				}
+				continue;
+			}
+			// other entity collide
+			float yMoveBefore = entity_move.y();
+			AABB entity_bb = entity.getBoundingBox();
+			Vec3 entity_feet = UtilGeometry.getBBFeet(entity_bb);
 			Vec3 collide = hitbox.getCollideMovePos(entity_feet, 
 					entity_move, rot, parent_move, parent_rot_rate, data);
 			//System.out.println("collide "+(collide!=null)+" "+entity);
@@ -90,6 +119,7 @@ public class RotableHitbox extends PartEntity<EntityVehicle> {
 				entity.verticalCollisionBelow = true;
 				entity.causeFallDamage(entity.fallDistance, 1, DamageSource.FALL);
 				entity.resetFallDistance();
+				entity_move.add(yMoveBefore*data.normal.x(), 0, yMoveBefore*data.normal.z()); // prevents slide
 			}
 			if (data.dir.getAxis().isHorizontal()) {
 				entity.horizontalCollision = true;
@@ -97,10 +127,10 @@ public class RotableHitbox extends PartEntity<EntityVehicle> {
 			}
 			// change movement based on collision
 			entity.setDeltaMovement(UtilGeometry.convertVector(entity_move));
-			//if (entity_move.y < 0) entity_move = entity_move.multiply(1, 0, 1);
-			//entity.setDeltaMovement(entity_move);
-			if (entity instanceof EntityVehicle plane) {
-				plane.getQBySide().mul(Vector3f.YP.rotationDegrees((float)parent_rot_rate.y));
+			if (entity instanceof EntityVehicle vehicle) {
+				Quaternion q = vehicle.getQBySide();
+				q.mul(Vector3f.YN.rotationDegrees((float)parent_rot_rate.y));
+				vehicle.setQBySide(q);
 			}
 		}
 	}
@@ -108,6 +138,7 @@ public class RotableHitbox extends PartEntity<EntityVehicle> {
 	public Predicate<? super Entity> canMoveEntity() {
 		return (entity) -> {
 			if (entity.noPhysics) return false;
+			if (entity.isRemoved()) return false;
 			if (!entity.canCollideWith(getParent())) return false;
 			if (entity.isPassenger()) return false;
 			if (entity.getRootVehicle().equals(getParent())) return false;

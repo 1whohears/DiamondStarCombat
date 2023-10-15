@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.util;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 import javax.annotation.Nullable;
 
@@ -10,6 +11,7 @@ import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.entity.vehicle.Minecart;
 import net.minecraft.world.level.ChunkPos;
@@ -18,6 +20,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 
 public class UtilEntity {
@@ -178,6 +181,52 @@ public class UtilEntity {
 			tried_to_get_explosion_radius_field = true;
 		}
 		return explosion_radius_field;
+	}
+	
+	private static Method on_hit_entity_method = null;
+	private static boolean tried_on_hit_entity_method = false;
+	
+	@Nullable
+	public static Method getOnHitEntityMethod() {
+		if (!tried_on_hit_entity_method) {
+			try {
+				on_hit_entity_method = Projectile.class.getDeclaredMethod("m_5790_", EntityHitResult.class);
+				on_hit_entity_method.setAccessible(true);
+			} catch(Exception e) {
+				try {
+					on_hit_entity_method = Projectile.class.getDeclaredMethod("onHitEntity", EntityHitResult.class);
+					on_hit_entity_method.setAccessible(true);
+				} catch(Exception e2) {
+					e.printStackTrace();
+					e2.printStackTrace();
+				}
+			}
+			tried_on_hit_entity_method = true;
+		}
+		return on_hit_entity_method;
+	}
+	
+	private static Method can_hit_entity_method = null;
+	private static boolean tried_can_hit_entity_method = false;
+	
+	@Nullable
+	public static Method getCanHitEntityMethod() {
+		if (!tried_can_hit_entity_method) {
+			try {
+				can_hit_entity_method = Projectile.class.getDeclaredMethod("m_5603_", Entity.class);
+				can_hit_entity_method.setAccessible(true);
+			} catch(Exception e) {
+				try {
+					can_hit_entity_method = Projectile.class.getDeclaredMethod("canHitEntity", Entity.class);
+					can_hit_entity_method.setAccessible(true);
+				} catch(Exception e2) {
+					e.printStackTrace();
+					e2.printStackTrace();
+				}
+			}
+			tried_can_hit_entity_method = true;
+		}
+		return can_hit_entity_method;
 	}
 	
 }

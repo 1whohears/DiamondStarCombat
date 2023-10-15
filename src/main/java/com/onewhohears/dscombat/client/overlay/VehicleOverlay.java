@@ -20,6 +20,7 @@ public class VehicleOverlay {
 
 		// TODO: make method bodies in these subclasses consistent with style
 		DebugOverlay			.renderIfAllowed(poseStack, screenWidth, screenHeight);
+		HudOverlay				.renderIfAllowed(poseStack, screenWidth, screenHeight);
 		PlaneAttitudeOverlay	.renderIfAllowed(poseStack, screenWidth, screenHeight);
 		PlaneDataOverlay		.renderIfAllowed(poseStack, screenWidth, screenHeight);
 		RadarOverlay			.renderIfAllowed(poseStack, screenWidth, screenHeight, partialTick);

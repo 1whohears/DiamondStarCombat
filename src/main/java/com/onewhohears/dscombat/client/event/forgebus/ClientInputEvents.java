@@ -31,7 +31,8 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 @Mod.EventBusSubscriber(modid = DSCombatMod.MODID, bus = Bus.FORGE, value = Dist.CLIENT)
 public final class ClientInputEvents {
-	
+	public static boolean MOUSE_MODE;
+
 	private static double mouseCenterX = 0;
 	private static double mouseCenterY = 0;
 	
@@ -50,7 +51,7 @@ public final class ClientInputEvents {
 		if (DSCKeys.weaponSelect2Key.consumeClick()) select = -1;
 		else if (DSCKeys.weaponSelectKey.consumeClick()) select = 1;
 		boolean openMenu = DSCKeys.planeMenuKey.consumeClick();
-		boolean mouseMode = DSCKeys.mouseModeKey.consumeClick();
+		MOUSE_MODE = DSCKeys.mouseModeKey.consumeClick();
 		boolean gear = DSCKeys.landingGear.consumeClick();
 		boolean radarMode = DSCKeys.radarModeKey.consumeClick();
 		if (!player.isPassenger()) return;
@@ -143,10 +144,10 @@ public final class ClientInputEvents {
 				rollLeft && rollRight);
 		plane.weaponSystem.selectNextWeapon(select);
 		if (radarMode) plane.cycleRadarMode();
-		if (mouseMode) plane.toggleFreeLook();
+		if (MOUSE_MODE) plane.toggleFreeLook();
 		if (gear) plane.toggleLandingGear();
 		PacketHandler.INSTANCE.sendToServer(new ToServerAircraftControl(plane));
-		if (mouseMode && !plane.isFreeLook()) centerMouse();
+		if (MOUSE_MODE && !plane.isFreeLook()) centerMouse();
 	}
 	
 	@SubscribeEvent(priority = EventPriority.HIGH)

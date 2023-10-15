@@ -26,7 +26,7 @@ public class ToServerAircraftControl extends IPacket {
 		this.weaponIndex = plane.weaponSystem.getSelectedIndex();
 		this.radarMode = plane.getRadarMode().ordinal();
 		this.isLandingGear = plane.isLandingGear();
-		this.isFreeLook = plane.isFreeLook();
+		this.isFreeLook = plane.onlyFreeLook();
 		this.throttle = plane.getCurrentThrottle();
 	}
 	
@@ -61,7 +61,7 @@ public class ToServerAircraftControl extends IPacket {
 					plane.inputs.copy(this.inputs);
 					plane.setRadarMode(RadarMode.byId(radarMode));
 					plane.setLandingGear(isLandingGear);
-					plane.setFreeLook(isFreeLook);
+					plane.setOnlyFreeLook(isFreeLook);
 					plane.setCurrentThrottle(throttle);
 					plane.synchControlsToClient();
 				}

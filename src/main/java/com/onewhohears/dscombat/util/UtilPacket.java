@@ -27,7 +27,7 @@ public class UtilPacket {
 				plane.weaponSystem.setSelected(weaponIndex);
 				plane.setRadarMode(radarMode);
 				plane.setLandingGear(isLandingGear);
-				plane.setFreeLook(isFreeLook);
+				plane.setOnlyFreeLook(isFreeLook);
 				plane.setCurrentThrottle(throttle);
 			}
 		}

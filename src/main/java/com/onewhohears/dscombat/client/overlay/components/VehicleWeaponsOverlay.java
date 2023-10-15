@@ -85,7 +85,7 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
         // FREE LOOK
         xPos = 1+weaponSelectWidth;
         String key = DSCKeys.mouseModeKey.getKey().getDisplayName().getString();
-        if (vehicle.isFreeLook()) {
+        if (vehicle.onlyFreeLook()) {
             text = "MouseMode("+key+")";
             color = color1;
         } else {

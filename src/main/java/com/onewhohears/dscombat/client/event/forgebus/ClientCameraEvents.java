@@ -42,7 +42,7 @@ public class ClientCameraEvents {
 		if (!(player.getRootVehicle() instanceof EntityVehicle plane)) return;
 		float pt = (float)event.getPartialTick();
 		boolean isController = player.equals(plane.getControllingPassenger());
-		if (!plane.isFreeLook() && isController) {
+		if (!plane.onlyFreeLook() && isController) {
 			float xi = UtilAngles.lerpAngle(pt, plane.xRotO, plane.getXRot());
 			float yi = UtilAngles.lerpAngle180(pt, plane.yRotO, plane.getYRot());
 			player.setXRot(xi);
@@ -139,7 +139,7 @@ public class ClientCameraEvents {
 			if (window != m.getWindow().getWindow()) return;
 			if (m.player != null && m.screen == null 
 					&& m.player.getRootVehicle() instanceof EntityVehicle craft
-					&& craft.isFreeLook()) {
+					&& craft.onlyFreeLook()) {
 				double r = Math.toRadians(craft.zRot);
 				double dx = x - m.mouseHandler.xpos();
 				double dy = y - m.mouseHandler.ypos();

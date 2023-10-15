@@ -30,7 +30,7 @@ public class HudOverlay extends VehicleOverlayComponent {
     @Override
     protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
         if (!(getPlayerVehicle() instanceof EntityPlane plane)) return;
-        if (MOUSE_MODE || plane.isFreeLook()) return;
+        if (MOUSE_MODE || plane.onlyFreeLook()) return;
 
         RenderSystem.setShaderTexture(0, HUD);
         RenderSystem.enableBlend();

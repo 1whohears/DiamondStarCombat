@@ -84,7 +84,7 @@ public final class ClientInputEvents {
 		}
 		// should pitch/throttle flip
 		boolean type_flip = plane.getAircraftType().flipPitchThrottle;
-		boolean mode = !plane.isFreeLook();
+		boolean mode = !plane.onlyFreeLook();
 		if ((!type_flip && (flip ^ mode)) || (type_flip && !flip)) {
 			pitchUp = DSCKeys.throttleUpKey.isDown();
 			pitchDown = DSCKeys.throttleDownKey.isDown();
@@ -99,7 +99,7 @@ public final class ClientInputEvents {
 		// should invert
 		int invertY = Config.CLIENT.invertY.get() ? -1 : 1;
 		if (plane.getAircraftType().ignoreInvertY) invertY = -1;
-		if (!plane.isFreeLook()) {
+		if (!plane.onlyFreeLook()) {
 			// FIXME 2 fix mouse mode
 			double ya = Math.abs(mouseY);
 			double xa = Math.abs(mouseX);
@@ -147,7 +147,7 @@ public final class ClientInputEvents {
 		if (MOUSE_MODE) plane.toggleFreeLook();
 		if (gear) plane.toggleLandingGear();
 		PacketHandler.INSTANCE.sendToServer(new ToServerAircraftControl(plane));
-		if (MOUSE_MODE && !plane.isFreeLook()) centerMouse();
+		if (MOUSE_MODE && !plane.onlyFreeLook()) centerMouse();
 	}
 	
 	@SubscribeEvent(priority = EventPriority.HIGH)

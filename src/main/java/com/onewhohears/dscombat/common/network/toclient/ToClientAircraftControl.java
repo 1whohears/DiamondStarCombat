@@ -29,7 +29,7 @@ public class ToClientAircraftControl extends IPacket {
 		this.inputs = plane.inputs;
 		this.weaponIndex = (byte) plane.weaponSystem.getSelectedIndex();
 		this.radarMode = (byte) plane.getRadarMode().ordinal();
-		this.isFreeLook = plane.isFreeLook();
+		this.isFreeLook = plane.onlyFreeLook();
 		this.isLandingGear = plane.isLandingGear();
 		this.throttle = plane.getCurrentThrottle();
 	}

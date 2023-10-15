@@ -8,6 +8,8 @@ import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
+import java.util.Objects;
+
 public class VehicleControlOverlay extends VehicleOverlayComponent {
     public static final ResourceLocation RUDDER_PEDAL = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/rudder_pedal.png");
@@ -21,12 +23,17 @@ public class VehicleControlOverlay extends VehicleOverlayComponent {
     public static final int STICK_BASE_SIZE = 60, STICK_KNOB_SIZE = STICK_BASE_SIZE / 6;
     protected static int PEDAL_HEIGHT = 25, PEDAL_WIDTH = 20;
 
-    public VehicleControlOverlay(PoseStack poseStack, int screenWidth, int screenHeight) {
-        super(poseStack, screenWidth, screenHeight);
+    private static VehicleControlOverlay INSTANCE;
+
+    public static void renderIfAllowed(PoseStack poseStack, int screenWidth, int screenHeight) {
+        if (Objects.isNull(INSTANCE)) INSTANCE = new VehicleControlOverlay();
+        INSTANCE.render(poseStack, screenWidth, screenHeight);
     }
 
+    private VehicleControlOverlay() {}
+
     @Override
-    public void render(PoseStack poseStack, int screenWidth, int screenHeight) {
+    protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
         if (!(getPlayerVehicle() instanceof EntityVehicle vehicle)) return;
 
         int xOrigin = screenWidth - STICK_BASE_SIZE - PADDING;

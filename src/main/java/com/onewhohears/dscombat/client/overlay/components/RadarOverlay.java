@@ -21,6 +21,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
+import java.util.Objects;
 
 public class RadarOverlay extends VehicleOverlayComponent {
     public static final ResourceLocation RADAR = new ResourceLocation(DSCombatMod.MODID,
@@ -35,16 +36,18 @@ public class RadarOverlay extends VehicleOverlayComponent {
     protected static final int[] HUD_PING_ANIM = new int[] {0,100,200,300,200,100};
 
     protected static float PARTIAL_TICK;
-    public static void setPartialTick(float partialTick) {
+    private static RadarOverlay INSTANCE;
+
+    public static void renderIfAllowed(PoseStack poseStack, int screenWidth, int screenHeight, float partialTick) {
+        if (Objects.isNull(INSTANCE)) INSTANCE = new RadarOverlay();
         PARTIAL_TICK = partialTick;
+        INSTANCE.render(poseStack, screenWidth, screenHeight);
     }
 
-    public RadarOverlay(PoseStack poseStack, int screenWidth, int screenHeight) {
-        super(poseStack, screenWidth, screenHeight);
-    }
+    private RadarOverlay() {}
 
     @Override
-    public void render(PoseStack poseStack, int screenWidth, int screenHeight) {
+    protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
         if (!(getPlayerVehicle() instanceof EntityVehicle vehicle)) return;
         RadarSystem radar = vehicle.radarSystem;
         if (!radar.hasRadar()) return;
@@ -159,7 +162,7 @@ public class RadarOverlay extends VehicleOverlayComponent {
                 hud_ping_offset = 400;
             } else if (i == hover) {
                 color = 0xffff00;
-                hud_ping_offset = HUD_PING_ANIM[(Minecraft.getInstance().player.tickCount/6)%6];
+                hud_ping_offset = HUD_PING_ANIM[(getPlayer().tickCount/6)%6];
             }
             else if (ping.isFriendly) color = 0x0000ff;
             else if (ping.isShared()) color = 0x66cdaa;

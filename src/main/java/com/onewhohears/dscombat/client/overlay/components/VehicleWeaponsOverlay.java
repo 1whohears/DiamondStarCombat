@@ -9,16 +9,20 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 
 import java.util.List;
+import java.util.Objects;
 
 public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
-    private static final MutableComponent WEAPON_SELECT = Component.empty().append("->");
-    
-    public VehicleWeaponsOverlay(PoseStack poseStack, int screenWidth, int screenHeight) {
-        super(poseStack, screenWidth, screenHeight);
+    private static VehicleWeaponsOverlay INSTANCE;
+
+    public static void renderIfAllowed(PoseStack poseStack, int screenWidth, int screenHeight) {
+        if (Objects.isNull(INSTANCE)) INSTANCE = new VehicleWeaponsOverlay();
+        INSTANCE.render(poseStack, screenWidth, screenHeight);
     }
+    
+    private VehicleWeaponsOverlay() {}
 
     @Override
-    public void render(PoseStack poseStack, int screenWidth, int screenHeight) {
+    protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
         if (!(getPlayerVehicle() instanceof EntityVehicle vehicle)) return;
         
         int yPos=1, xPos, weaponSelectWidth=getFont().width(WEAPON_SELECT)+1, maxNameWidth=46, maxTypeWidth=10;
@@ -171,4 +175,6 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
             yPos += 10;
         }
     }
+
+    private static final MutableComponent WEAPON_SELECT = Component.empty().append("->");
 }

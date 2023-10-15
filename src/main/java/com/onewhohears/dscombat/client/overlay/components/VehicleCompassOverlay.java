@@ -6,20 +6,27 @@ import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
 
+import java.util.Objects;
+
 // FIXME: FPS does NOT like this. drawCenteredString seems to be the culprit
 public class VehicleCompassOverlay extends VehicleOverlayComponent {
-    public VehicleCompassOverlay(PoseStack poseStack, int screenWidth, int screenHeight) {
-        super(poseStack, screenWidth, screenHeight);
+    private static VehicleCompassOverlay INSTANCE;
+
+    public static void renderIfAllowed(PoseStack poseStack, int screenWidth, int screenHeight) {
+        if (Objects.isNull(INSTANCE)) INSTANCE = new VehicleCompassOverlay();
+        INSTANCE.render(poseStack, screenWidth, screenHeight);
     }
 
+    private VehicleCompassOverlay() {}
+
     @Override
-    public void render(PoseStack poseStack, int screenWidth, int screenHeight) {
+    protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
         if (!(getPlayerVehicle() instanceof EntityVehicle)) return;
 
         // HEADING
         int y = 10, color = 0xe6e600;
         int heading = (int) Mth.wrapDegrees(Minecraft.getInstance().player.getYRot());
-        if (heading < 0) heading += 360f;
+        if (heading < 0) heading += (int) 360f;
         drawCenteredString(poseStack, getFont(),
                 heading+"", screenWidth/2, y+20, color);
         int num = 15, degSpace = 3, degPerLine = 3, steps = 3;

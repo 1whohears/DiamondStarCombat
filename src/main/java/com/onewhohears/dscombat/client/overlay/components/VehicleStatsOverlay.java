@@ -6,6 +6,7 @@ import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.util.UtilEntity;
 
 import java.awt.*;
+import java.util.Objects;
 
 import static com.onewhohears.dscombat.client.overlay.components.VehicleControlOverlay.PEDAL_HEIGHT;
 import static com.onewhohears.dscombat.client.overlay.components.VehicleControlOverlay.STICK_BASE_SIZE;
@@ -19,12 +20,17 @@ public class VehicleStatsOverlay extends VehicleOverlayComponent {
     public static final float CHANGE_G = (float) GREEN_ME_SAY_ALONE_RAMP.getGreen() / (START - END);
     public static final float CHANGE_R = (float) RED.getRed() / (START - END);
 
-    public VehicleStatsOverlay(PoseStack poseStack, int screenWidth, int screenHeight) {
-        super(poseStack, screenWidth, screenHeight);
+    private static VehicleStatsOverlay INSTANCE;
+
+    public static void renderIfAllowed(PoseStack poseStack, int screenWidth, int screenHeight) {
+        if (Objects.isNull(INSTANCE)) INSTANCE = new VehicleStatsOverlay();
+        INSTANCE.render(poseStack, screenWidth, screenHeight);
     }
 
+    private VehicleStatsOverlay() {}
+
     @Override
-    public void render(PoseStack poseStack, int screenWidth, int screenHeight) {
+    protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
         if (!(getPlayerVehicle() instanceof EntityVehicle vehicle)) return;
 
         int xOrigin = screenWidth - STICK_BASE_SIZE - PADDING;

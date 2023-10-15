@@ -19,19 +19,17 @@ public class VehicleOverlay {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
 		// TODO: make method bodies in these subclasses consistent with style
-		new DebugOverlay(poseStack, screenWidth, screenHeight);
-		new PlaneAttitudeOverlay(poseStack, screenWidth, screenHeight);
-		new PlaneDataOverlay(poseStack, screenWidth, screenHeight);
-		// Unfortunately, lerp lags behind by a frame if not done like this... But is that even an issue?
-		RadarOverlay.setPartialTick(partialTick);
-		new RadarOverlay(poseStack, screenWidth, screenHeight);
-		new VehicleCompassOverlay(poseStack, screenWidth, screenHeight);
-		new VehicleControlOverlay(poseStack, screenWidth, screenHeight);
-		new VehicleStatsOverlay(poseStack, screenWidth, screenHeight);
-		new VehicleFuelOverlay(poseStack, screenWidth, screenHeight);
-		new VehicleThrottleOverlay(poseStack, screenWidth, screenHeight);
-		new VehicleWeaponsOverlay(poseStack, screenWidth, screenHeight);
-		new TurnCoordinatorOverlay(poseStack, screenWidth, screenHeight);
-		new TurretDataOverlay(poseStack, screenWidth, screenHeight);
+		DebugOverlay			.renderIfAllowed(poseStack, screenWidth, screenHeight);
+		PlaneAttitudeOverlay	.renderIfAllowed(poseStack, screenWidth, screenHeight);
+		PlaneDataOverlay		.renderIfAllowed(poseStack, screenWidth, screenHeight);
+		RadarOverlay			.renderIfAllowed(poseStack, screenWidth, screenHeight, partialTick);
+		TurnCoordinatorOverlay	.renderIfAllowed(poseStack, screenWidth, screenHeight);
+		TurretDataOverlay		.renderIfAllowed(poseStack, screenWidth, screenHeight);
+		VehicleCompassOverlay	.renderIfAllowed(poseStack, screenWidth, screenHeight);
+		VehicleControlOverlay	.renderIfAllowed(poseStack, screenWidth, screenHeight);
+		VehicleFuelOverlay		.renderIfAllowed(poseStack, screenWidth, screenHeight);
+		VehicleStatsOverlay		.renderIfAllowed(poseStack, screenWidth, screenHeight);
+		VehicleThrottleOverlay	.renderIfAllowed(poseStack, screenWidth, screenHeight);
+		VehicleWeaponsOverlay	.renderIfAllowed(poseStack, screenWidth, screenHeight);
 	});
 }

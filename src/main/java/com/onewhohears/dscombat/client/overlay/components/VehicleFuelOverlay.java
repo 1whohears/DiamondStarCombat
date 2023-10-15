@@ -8,6 +8,8 @@ import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import net.minecraft.resources.ResourceLocation;
 
+import java.util.Objects;
+
 import static com.onewhohears.dscombat.client.overlay.components.VehicleControlOverlay.PEDAL_HEIGHT;
 import static com.onewhohears.dscombat.client.overlay.components.VehicleControlOverlay.STICK_BASE_SIZE;
 
@@ -20,12 +22,17 @@ public class VehicleFuelOverlay extends VehicleOverlayComponent {
     public static final int FUEL_GAUGE_HEIGHT = 40, FUEL_GAUGE_WIDTH = 60;
     public static final int FUEL_ARROW_HEIGHT = 7, FUEL_ARROW_WIDTH = 24;
 
-    public VehicleFuelOverlay(PoseStack poseStack, int screenWidth, int screenHeight) {
-        super(poseStack, screenWidth, screenHeight);
+    private static VehicleFuelOverlay INSTANCE;
+
+    public static void renderIfAllowed(PoseStack poseStack, int screenWidth, int screenHeight) {
+        if (Objects.isNull(INSTANCE)) INSTANCE = new VehicleFuelOverlay();
+        INSTANCE.render(poseStack, screenWidth, screenHeight);
     }
 
+    private VehicleFuelOverlay() {}
+
     @Override
-    public void render(PoseStack poseStack, int screenWidth, int screenHeight) {
+    protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
         if (!(getPlayerVehicle() instanceof EntityVehicle vehicle)) return;
 
         int xOrigin = screenWidth - PADDING - FUEL_GAUGE_WIDTH;

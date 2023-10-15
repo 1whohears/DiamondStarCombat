@@ -7,6 +7,8 @@ import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import net.minecraft.resources.ResourceLocation;
 
+import java.util.Objects;
+
 import static com.onewhohears.dscombat.client.overlay.components.VehicleControlOverlay.STICK_BASE_SIZE;
 
 public class VehicleThrottleOverlay extends VehicleOverlayComponent {
@@ -17,12 +19,17 @@ public class VehicleThrottleOverlay extends VehicleOverlayComponent {
 
     public static final int THROTTLE_RAIL_LENGTH = 70, THROTTLE_WIDTH = 10, THROTTLE_KNOB_HEIGHT = 10;
 
-    public VehicleThrottleOverlay(PoseStack poseStack, int screenWidth, int screenHeight) {
-        super(poseStack, screenWidth, screenHeight);
+    private static VehicleThrottleOverlay INSTANCE;
+
+    public static void renderIfAllowed(PoseStack poseStack, int screenWidth, int screenHeight) {
+        if (Objects.isNull(INSTANCE)) INSTANCE = new VehicleThrottleOverlay();
+        INSTANCE.render(poseStack, screenWidth, screenHeight);
     }
 
+    private VehicleThrottleOverlay() {}
+
     @Override
-    public void render(PoseStack poseStack, int screenWidth, int screenHeight) {
+    protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
         if (!(getPlayerVehicle() instanceof EntityVehicle vehicle)) return;
 
         int xOrigin = screenWidth - STICK_BASE_SIZE - PADDING - THROTTLE_WIDTH - PADDING;

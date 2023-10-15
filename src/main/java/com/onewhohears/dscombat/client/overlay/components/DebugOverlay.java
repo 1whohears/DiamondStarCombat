@@ -6,10 +6,17 @@ import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.util.UtilParse;
 
+import java.util.Objects;
+
 public class DebugOverlay extends VehicleOverlayComponent {
-    public DebugOverlay(PoseStack poseStack, int screenWidth, int screenHeight) {
-        super(poseStack, screenWidth, screenHeight);
+    private static DebugOverlay INSTANCE;
+
+    public static void renderIfAllowed(PoseStack poseStack, int screenWidth, int screenHeight) {
+        if (Objects.isNull(INSTANCE)) INSTANCE = new DebugOverlay();
+        INSTANCE.render(poseStack, screenWidth, screenHeight);
     }
+
+    private DebugOverlay() {}
 
     @Override
     public void render(PoseStack poseStack, int screenWidth, int screenHeight) {

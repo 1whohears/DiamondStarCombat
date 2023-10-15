@@ -8,6 +8,8 @@ import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 import net.minecraft.resources.ResourceLocation;
 
+import java.util.Objects;
+
 import static com.onewhohears.dscombat.client.overlay.components.VehicleControlOverlay.STICK_BASE_SIZE;
 import static com.onewhohears.dscombat.client.overlay.components.VehicleControlOverlay.STICK_KNOB_SIZE;
 
@@ -21,12 +23,17 @@ public class TurnCoordinatorOverlay extends VehicleOverlayComponent {
 
     public static final int TURN_COORD_SIZE = 80;
 
-    public TurnCoordinatorOverlay(PoseStack poseStack, int screenWidth, int screenHeight) {
-        super(poseStack, screenWidth, screenHeight);
+    private static TurnCoordinatorOverlay INSTANCE;
+
+    public static void renderIfAllowed(PoseStack poseStack, int screenWidth, int screenHeight) {
+        if (Objects.isNull(INSTANCE)) INSTANCE = new TurnCoordinatorOverlay();
+        INSTANCE.render(poseStack, screenWidth, screenHeight);
     }
 
+    private TurnCoordinatorOverlay() {}
+
     @Override
-    public void render(PoseStack poseStack, int screenWidth, int screenHeight) {
+    protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
         if (!(getPlayerVehicle() instanceof EntityPlane plane)) return;
 
         final int xOrigin = screenWidth - TURN_COORD_SIZE - PADDING * 3 - STICK_BASE_SIZE - STICK_KNOB_SIZE;

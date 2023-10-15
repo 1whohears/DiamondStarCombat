@@ -9,6 +9,8 @@ import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
+import java.util.Objects;
+
 import static com.onewhohears.dscombat.client.overlay.components.TurnCoordinatorOverlay.TURN_COORD_SIZE;
 import static com.onewhohears.dscombat.client.overlay.components.VehicleControlOverlay.STICK_BASE_SIZE;
 import static com.onewhohears.dscombat.client.overlay.components.VehicleThrottleOverlay.THROTTLE_WIDTH;
@@ -24,13 +26,18 @@ public class PlaneAttitudeOverlay extends VehicleOverlayComponent {
             "textures/ui/attitude_front.png");
 
     private static final int ATTITUDE_SIZE = 80;
-    
-    public PlaneAttitudeOverlay(PoseStack poseStack, int screenWidth, int screenHeight) {
-        super(poseStack, screenWidth, screenHeight);
+
+    private static PlaneAttitudeOverlay INSTANCE;
+
+    public static void renderIfAllowed(PoseStack poseStack, int screenWidth, int screenHeight) {
+        if (Objects.isNull(INSTANCE)) INSTANCE = new PlaneAttitudeOverlay();
+        INSTANCE.render(poseStack, screenWidth, screenHeight);
     }
 
+    private PlaneAttitudeOverlay() {}
+
     @Override
-    public void render(PoseStack poseStack, int screenWidth, int screenHeight) {
+    protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
         if (!(getPlayerVehicle() instanceof EntityPlane plane)) return;
         
         int attX = screenWidth - ATTITUDE_SIZE - PADDING *3- STICK_BASE_SIZE - THROTTLE_WIDTH;

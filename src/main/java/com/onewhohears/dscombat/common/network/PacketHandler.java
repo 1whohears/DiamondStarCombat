@@ -34,7 +34,8 @@ public final class PacketHandler {
 	private static final String PROTOCOL_VERSION = "1.0";
 	
 	public static SimpleChannel INSTANCE;
-	
+
+	// FIXME: find cause of error spam thrown by L900 in ClientPacketListener
 	public static void register() {
 		SimpleChannel net = NetworkRegistry.ChannelBuilder
 				.named(new ResourceLocation(DSCombatMod.MODID, "messages"))

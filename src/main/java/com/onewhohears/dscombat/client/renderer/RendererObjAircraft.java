@@ -43,7 +43,7 @@ public class RendererObjAircraft<T extends EntityVehicle> extends RendererObjEnt
 	
 	private void drawRotableHitboxOutline(RotableHitbox hitbox, PoseStack poseStack, VertexConsumer buff, Quaternion q) {
 		poseStack.pushPose();
-		Vec3 trans = hitbox.getRelPos();
+		Vec3 trans = UtilAngles.rotateVector(hitbox.getRelPos(), q);
 		poseStack.translate(trans.x, trans.y, trans.z);
 		Matrix4f m4 = poseStack.last().pose();
 		Matrix3f m3 = poseStack.last().normal();

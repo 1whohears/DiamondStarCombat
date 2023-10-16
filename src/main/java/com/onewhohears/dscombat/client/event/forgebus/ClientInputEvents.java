@@ -54,7 +54,10 @@ public final class ClientInputEvents {
 		boolean gear = DSCKeys.landingGear.consumeClick();
 		boolean radarMode = DSCKeys.radarModeKey.consumeClick();
 		if (!player.isPassenger()) return;
-		if (!(player.getRootVehicle() instanceof EntityVehicle plane)) return;
+		if (!(player.getRootVehicle() instanceof EntityVehicle plane)) {
+			MOUSE_MODE = false;
+			return;
+		}
 		if (DSCKeys.mouseModeKey.consumeClick()) {
 			MOUSE_MODE = !MOUSE_MODE;
 			plane.toggleFreeLook();

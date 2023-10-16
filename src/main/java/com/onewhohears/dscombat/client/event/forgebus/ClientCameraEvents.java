@@ -58,7 +58,10 @@ public class ClientCameraEvents {
 		if (detached && mirrored) zi *= -1;
 		event.setRoll(zi);
 		if (detached && isController && plane.camDist > 4 && getCameraMove() != null) {
+			// TODO 4.2 making third person work in mouse mode (again, à la garry's mod WAC planes)
 			// TODO 4.1 option to change turret camera position. so camera could be under the aircraft
+			// To add onto this, a thermal camera option would be nice too; or in the future, an attack helicopter
+			// could have a movable turret
 			double vehicleCamDist = Math.min(0, 4-getMaxDist(event.getCamera(), player, plane.camDist));
 			try {
 				getCameraMove().invoke(event.getCamera(), vehicleCamDist, 0, 0);

@@ -31,7 +31,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 @Mod.EventBusSubscriber(modid = DSCombatMod.MODID, bus = Bus.FORGE, value = Dist.CLIENT)
 public final class ClientInputEvents {
-	public static boolean MOUSE_MODE;
+	public static boolean MOUSE_MODE = false;
 
 	private static double mouseCenterX = 0;
 	private static double mouseCenterY = 0;
@@ -51,11 +51,14 @@ public final class ClientInputEvents {
 		if (DSCKeys.weaponSelect2Key.consumeClick()) select = -1;
 		else if (DSCKeys.weaponSelectKey.consumeClick()) select = 1;
 		boolean openMenu = DSCKeys.planeMenuKey.consumeClick();
-		MOUSE_MODE = DSCKeys.mouseModeKey.consumeClick();
 		boolean gear = DSCKeys.landingGear.consumeClick();
 		boolean radarMode = DSCKeys.radarModeKey.consumeClick();
 		if (!player.isPassenger()) return;
 		if (!(player.getRootVehicle() instanceof EntityVehicle plane)) return;
+		if (DSCKeys.mouseModeKey.consumeClick()) {
+			MOUSE_MODE = !MOUSE_MODE;
+			plane.toggleFreeLook();
+		}
 		Entity controller = plane.getControllingPassenger();
 		if (controller == null || !controller.equals(player)) return;
 		if (DSCKeys.resetMouseKey.isDown()) centerMouse();
@@ -144,7 +147,6 @@ public final class ClientInputEvents {
 				rollLeft && rollRight);
 		plane.weaponSystem.selectNextWeapon(select);
 		if (radarMode) plane.cycleRadarMode();
-		if (MOUSE_MODE) plane.toggleFreeLook();
 		if (gear) plane.toggleLandingGear();
 		PacketHandler.INSTANCE.sendToServer(new ToServerAircraftControl(plane));
 		if (MOUSE_MODE && !plane.onlyFreeLook()) centerMouse();

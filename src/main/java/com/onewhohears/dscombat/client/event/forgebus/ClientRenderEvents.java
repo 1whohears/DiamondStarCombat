@@ -6,18 +6,23 @@ import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.util.math.UtilAngles;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
-import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent.Stage;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+
+import java.util.Objects;
+
+import static com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents.MOUSE_MODE;
+import static net.minecraftforge.client.gui.overlay.VanillaGuiOverlay.*;
 
 @Mod.EventBusSubscriber(modid = DSCombatMod.MODID, bus = Bus.FORGE, value = Dist.CLIENT)
 public class ClientRenderEvents {
@@ -69,6 +74,21 @@ public class ClientRenderEvents {
 		viewMat = poseStack.last().pose();
 		projMat = event.getProjectionMatrix();
 		poseStack.popPose();
+	}
+
+	// TODO: register our overlays under more IDs in case modders/us in the future need to selectively disable overlays
+	// TODO: add some config to allow disabling other mods' overlays
+	@SubscribeEvent
+	public static void onRenderGui(RenderGuiOverlayEvent.Pre event) {
+		if (!MOUSE_MODE) return;
+		if (!(Minecraft.getInstance().player.getRootVehicle() instanceof EntityVehicle)) return;
+
+		if (Objects.equals(event.getOverlay().id(), HOTBAR.id())) event.setCanceled(true);
+		if (Objects.equals(event.getOverlay().id(), CROSSHAIR.id())) event.setCanceled(true);
+		if (Objects.equals(event.getOverlay().id(), PLAYER_HEALTH.id())) event.setCanceled(true);
+		if (Objects.equals(event.getOverlay().id(), ARMOR_LEVEL.id())) event.setCanceled(true);
+		if (Objects.equals(event.getOverlay().id(), FOOD_LEVEL.id())) event.setCanceled(true);
+		if (Objects.equals(event.getOverlay().id(), EXPERIENCE_BAR.id())) event.setCanceled(true);
 	}
 	
 	public static Matrix4f getViewMatrix() {

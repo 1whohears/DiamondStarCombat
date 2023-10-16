@@ -17,7 +17,11 @@ public class HudOverlay extends VehicleOverlayComponent {
 
     public static final byte VERTICAL_BOUNDS_WIDTH = 69;
     public static final byte VERTICAL_BOUNDS_HEIGHT = 121;
-    public static final byte ARBITRARY_SPACING = 20;
+    public static final byte HORIZONTAL_BOUNDS_UV_HEIGHT = 42;
+    public static final byte HORIZONTAL_BOUNDS_U_OFFSET = 69; // nice
+    public static final byte HORIZONTAL_BOUNDS_V_OFFSET_DEFAULT = 41;
+    public static final byte HORIZONTAL_BOUNDS_WIDTH_NO_NUMBERS = 37;
+    public static final byte HORIZONTAL_BOUNDS_WIDTH_WITH_NUMBERS = 44;
 
     private static HudOverlay INSTANCE;
 
@@ -30,7 +34,7 @@ public class HudOverlay extends VehicleOverlayComponent {
     @Override
     protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
         if (!(getPlayerVehicle() instanceof EntityPlane plane)) return;
-        if (MOUSE_MODE || plane.onlyFreeLook()) return;
+        if (!MOUSE_MODE || plane.onlyFreeLook()) return;
 
         RenderSystem.setShaderTexture(0, HUD);
         RenderSystem.enableBlend();
@@ -39,6 +43,11 @@ public class HudOverlay extends VehicleOverlayComponent {
                 (screenWidth - VERTICAL_BOUNDS_WIDTH) / 2, (screenHeight - VERTICAL_BOUNDS_HEIGHT) / 2,
                 0, 0,
                 VERTICAL_BOUNDS_WIDTH, VERTICAL_BOUNDS_HEIGHT);
+
+        blit(poseStack,
+                (screenWidth - HORIZONTAL_BOUNDS_WIDTH_NO_NUMBERS) / 2, ((screenHeight - VERTICAL_BOUNDS_HEIGHT) / 2) + HORIZONTAL_BOUNDS_V_OFFSET_DEFAULT - 1,
+                HORIZONTAL_BOUNDS_U_OFFSET, HORIZONTAL_BOUNDS_V_OFFSET_DEFAULT,
+                HORIZONTAL_BOUNDS_WIDTH_NO_NUMBERS, HORIZONTAL_BOUNDS_UV_HEIGHT);
 
         RenderSystem.disableBlend();
     }

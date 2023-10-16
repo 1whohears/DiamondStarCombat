@@ -14,14 +14,16 @@ import static com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents.M
 public class HudOverlay extends VehicleOverlayComponent {
     public static final ResourceLocation HUD = new ResourceLocation(MODID,
             "textures/ui/hud_overlay.png");
-
-    public static final byte VERTICAL_BOUNDS_WIDTH = 69;
+    public static final float SCALE_MULTIPLIER = 1.4F;
+    public static final byte VERTICAL_BOUNDS_WIDTH = 69; //nice
     public static final byte VERTICAL_BOUNDS_HEIGHT = 121;
     public static final byte HORIZONTAL_BOUNDS_UV_HEIGHT = 42;
     public static final byte HORIZONTAL_BOUNDS_U_OFFSET = 69; // nice
     public static final byte HORIZONTAL_BOUNDS_V_OFFSET_DEFAULT = 41;
     public static final byte HORIZONTAL_BOUNDS_WIDTH_NO_NUMBERS = 37;
-    public static final byte HORIZONTAL_BOUNDS_WIDTH_WITH_NUMBERS = 44;
+    public static final byte NUMBERS_U_OFFSET = 105;
+    public static final byte NUMBERS_UV_WIDTH = 6;
+    public static final byte NUMBERS_UV_HEIGHT = 8;
 
     private static HudOverlay INSTANCE;
 
@@ -39,10 +41,15 @@ public class HudOverlay extends VehicleOverlayComponent {
         RenderSystem.setShaderTexture(0, HUD);
         RenderSystem.enableBlend();
 
+        poseStack.pushPose();
+        poseStack.scale(SCALE_MULTIPLIER, 1, 1);
+
         blit(poseStack,
-                (screenWidth - VERTICAL_BOUNDS_WIDTH) / 2, (screenHeight - VERTICAL_BOUNDS_HEIGHT) / 2,
+                ((screenWidth - (int) (VERTICAL_BOUNDS_WIDTH * SCALE_MULTIPLIER)) / 2), (screenHeight - VERTICAL_BOUNDS_HEIGHT) / 2,
                 0, 0,
                 VERTICAL_BOUNDS_WIDTH, VERTICAL_BOUNDS_HEIGHT);
+
+        poseStack.popPose();
 
         // TODO: PoseStack manipulation to scale the entire thing down may be necessary for more fine movement
         blit(poseStack,
@@ -50,6 +57,21 @@ public class HudOverlay extends VehicleOverlayComponent {
                 HORIZONTAL_BOUNDS_U_OFFSET, HORIZONTAL_BOUNDS_V_OFFSET_DEFAULT + (int) plane.getXRot(),
                 HORIZONTAL_BOUNDS_WIDTH_NO_NUMBERS, HORIZONTAL_BOUNDS_UV_HEIGHT);
 
+        this.drawNumber(0, poseStack,
+                ((screenWidth - NUMBERS_UV_WIDTH) / 2) + 7, (screenHeight - NUMBERS_UV_HEIGHT) / 2);
+
         RenderSystem.disableBlend();
+    }
+
+    /**
+     * Draws a 1-digit sexy HUD display number.
+     * @param number the number drawn from 0 to 9 inclusive
+     */
+    private void drawNumber(int number, PoseStack poseStack, int xOrigin, int yOrigin) throws IllegalArgumentException {
+        if (number > 9 || number < 0) throw new IllegalArgumentException("Argument MUST be between 0 to 9 inclusive");
+        blit(poseStack,
+                xOrigin, yOrigin,
+                ((number * 7) - (number - 1)) + NUMBERS_U_OFFSET, 0,
+                NUMBERS_UV_WIDTH, NUMBERS_UV_HEIGHT);
     }
 }

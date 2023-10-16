@@ -44,9 +44,10 @@ public class HudOverlay extends VehicleOverlayComponent {
                 0, 0,
                 VERTICAL_BOUNDS_WIDTH, VERTICAL_BOUNDS_HEIGHT);
 
+        // TODO: PoseStack manipulation to scale the entire thing down may be necessary for more fine movement
         blit(poseStack,
                 (screenWidth - HORIZONTAL_BOUNDS_WIDTH_NO_NUMBERS) / 2, ((screenHeight - VERTICAL_BOUNDS_HEIGHT) / 2) + HORIZONTAL_BOUNDS_V_OFFSET_DEFAULT - 1,
-                HORIZONTAL_BOUNDS_U_OFFSET, HORIZONTAL_BOUNDS_V_OFFSET_DEFAULT,
+                HORIZONTAL_BOUNDS_U_OFFSET, HORIZONTAL_BOUNDS_V_OFFSET_DEFAULT + (int) plane.getXRot(),
                 HORIZONTAL_BOUNDS_WIDTH_NO_NUMBERS, HORIZONTAL_BOUNDS_UV_HEIGHT);
 
         RenderSystem.disableBlend();

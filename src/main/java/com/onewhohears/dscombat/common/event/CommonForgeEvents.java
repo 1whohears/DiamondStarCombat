@@ -9,6 +9,7 @@ import com.onewhohears.dscombat.data.radar.RadarPresets;
 import com.onewhohears.dscombat.data.weapon.NonTickingMissileManager;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.game.GameManager;
 
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
@@ -16,6 +17,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.level.ExplosionEvent;
+import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -61,6 +63,7 @@ public final class CommonForgeEvents {
 	public static void serverTickEvent(TickEvent.ServerTickEvent event) {
 		if (event.phase != Phase.END) return;
 		NonTickingMissileManager.serverTick(event.getServer());
+		GameManager.serverTick(event.getServer());
 	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
@@ -76,10 +79,16 @@ public final class CommonForgeEvents {
 	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
+	public static void serverStartedEvent(ServerStartedEvent event) {
+		GameManager.serverStarted(event.getServer());
+	}
+	
+	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void serverStoppingEvent(ServerStoppingEvent event) {
 		AircraftPresets.close();
 		WeaponPresets.close();
 		RadarPresets.close();
+		GameManager.serverStopping(event.getServer());
 	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)

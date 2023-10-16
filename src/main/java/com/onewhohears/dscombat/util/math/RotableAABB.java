@@ -38,7 +38,23 @@ public class RotableAABB {
 	
 	public static class CollisionData {
 		public Direction dir = Direction.NORTH;
-		public Vector3f collide_direction = new Vector3f();
+		public Vector3f normal = new Vector3f();
+	}
+	
+	@Nullable
+	public Vec3 getCollidePos(Vec3 entity_pos, Vector3f entity_move, Quaternion rot, CollisionData data) {
+		Vector3f collide = getCollidePos(UtilGeometry.convertVector(entity_pos), entity_move, rot, data);
+		if (collide == null) return null;
+		return UtilGeometry.convertVector(collide);
+	}
+	
+	@Nullable
+	public Vector3f getCollidePos(Vector3f entity_pos, Vector3f entity_move, Quaternion rot, CollisionData data) {
+		Vector3f rel_rot_collide = getRelRotCollidePos(entity_pos, entity_move, rot, data);
+		if (rel_rot_collide == null) return null;
+		Vector3f collide = UtilAngles.rotateVector(rel_rot_collide, rot);
+		collide.add(getCenter());
+		return collide;
 	}
 	
 	@Nullable
@@ -67,7 +83,7 @@ public class RotableAABB {
 		//System.out.println("tan_vel     = "+tan_vel);
 		//System.out.println("parent_move = "+parent_move);
 		//System.out.println("collide = "+collide);
-		Vector3f diff = collide.copy(); diff.sub(entity_pos);
+		//Vector3f diff = collide.copy(); diff.sub(entity_pos);
 		//System.out.println("diff = "+diff);
 		return collide;
 	}
@@ -88,10 +104,10 @@ public class RotableAABB {
 		//System.out.println("rot_move = "+rot_move);
 		entity_move.transform(roti);
 		Vector3f crrc = collideRelRotComponents(rel_rot_pos, entity_move, data);
-		// need to check which move components are zero then rot that collision direction 
+		if (crrc == null) return null;
 		entity_move.transform(rot);
-		data.collide_direction.transform(rot);
-		data.dir = Direction.getNearest(data.collide_direction.x(), data.collide_direction.y(), data.collide_direction.z());
+		data.normal.transform(rot);
+		data.dir = Direction.getNearest(data.normal.x(), data.normal.y(), data.normal.z());
 		return crrc;
 	}
 	
@@ -105,9 +121,6 @@ public class RotableAABB {
 			float dx = Math.min(Mth.abs(ext.x()-rel_rot_pos.x()), Mth.abs(-ext.x()-rel_rot_pos.x()));
 			float dy = Math.min(Mth.abs(ext.y()-rel_rot_pos.y()), Mth.abs(-ext.y()-rel_rot_pos.y()))+0.1f;
 			float dz = Math.min(Mth.abs(ext.z()-rel_rot_pos.z()), Mth.abs(-ext.z()-rel_rot_pos.z()));
-			/*System.out.println("dx = "+dx);
-			System.out.println("dy = "+dy);
-			System.out.println("dz = "+dz);*/
 			if (isAbsSmallest(dz, dy, dx)) return getZCollide(rel_rot_pos, rot_move, ext.z()*Math.signum(rel_rot_pos.z()), data);
 			else if (isAbsSmallest(dx, dy, dz)) return getXCollide(rel_rot_pos, rot_move, ext.x()*Math.signum(rel_rot_pos.x()), data);
 			else if (isAbsSmallest(dy, dz, dx)) return getYCollide(rel_rot_pos, rot_move, ext.y()*Math.signum(rel_rot_pos.y()), data);
@@ -123,19 +136,19 @@ public class RotableAABB {
 	}
 	
 	private Vector3f getZCollide(Vector3f rel_rot_pos, Vector3f rot_move, float cz, CollisionData data) {
-		data.collide_direction.set(0, 0, Math.signum(cz));
+		data.normal.set(0, 0, Math.signum(cz));
 		rot_move.mul(1, 1, 0);
 		return new Vector3f(rel_rot_pos.x(), rel_rot_pos.y(), cz);
 	}
 	
 	private Vector3f getXCollide(Vector3f rel_rot_pos, Vector3f rot_move, float cx, CollisionData data) {
-		data.collide_direction.set(Math.signum(cx), 0, 0);
+		data.normal.set(Math.signum(cx), 0, 0);
 		rot_move.mul(0, 1, 1);
 		return new Vector3f(cx, rel_rot_pos.y(), rel_rot_pos.z());
 	}
 	
 	private Vector3f getYCollide(Vector3f rel_rot_pos, Vector3f rot_move, float cy, CollisionData data) {
-		data.collide_direction.set(0, Math.signum(cy), 0);
+		data.normal.set(0, Math.signum(cy), 0);
 		rot_move.mul(1, 0, 1);
 		return new Vector3f(rel_rot_pos.x(), cy, rel_rot_pos.z());
 	}

@@ -137,27 +137,66 @@ public class ModEntities {
 	
 	public static final RegistryObject<EntityType<EntityBoat>> GRONK_BATTLESHIP = ENTITIES.register("gronk_battleship", 
 			() -> createEntityTypeFar((type, level) -> new EntityBoat(type, level, 
-					BoatPresets.DEFAULT_GRONK_BATTLESHIP,
-					ModSounds.BOAT_1, 8, 30), 
-					EntityDimensions.scalable(14f,6f)));
+					BoatPresets.DEFAULT_GRONK_BATTLESHIP, ModSounds.BOAT_1, 8, 30) {
+						@Override
+						public void addHitboxes() {
+							hitboxes = new RotableHitbox[5];
+							hitboxes[0] = new RotableHitbox(this, "plat0", 
+									new Vector3f(14, 4.02f, 34), 
+									new Vec3(0, 2, -0.5));
+							hitboxes[1] = new RotableHitbox(this, "plat1", 
+									new Vector3f(9, 1.02f, 30), 
+									new Vec3(0, 4.5, -0.5));
+							hitboxes[2] = new RotableHitbox(this, "plat1", 
+									new Vector3f(6, 1.02f, 18), 
+									new Vec3(0, 5.5, -0.5));
+							hitboxes[3] = new RotableHitbox(this, "front", 
+									new Vector3f(8, 2.02f, 8), 
+									new Vec3(0, 3, 20.5));
+							hitboxes[4] = new RotableHitbox(this, "back", 
+									new Vector3f(8, 2.02f, 8), 
+									new Vec3(0, 3, -21.5));
+						}
+					}, EntityDimensions.scalable(14f,4f)));
 	
 	public static final RegistryObject<EntityType<EntityBoat>> DESTROYER = ENTITIES.register("destroyer", 
 			() -> createEntityTypeFar((type, level) -> new EntityBoat(type, level, 
-					BoatPresets.DEFAULT_DESTROYER,
-					ModSounds.BOAT_1, 8, 22), 
-					EntityDimensions.scalable(10f,4f)));
+					BoatPresets.DEFAULT_DESTROYER, ModSounds.BOAT_1, 8, 22) {
+						@Override
+						public void addHitboxes() {
+							hitboxes = new RotableHitbox[1];
+							hitboxes[0] = new RotableHitbox(this, "plat0", 
+								new Vector3f(10, 4.02f, 27.6f), 
+								new Vec3(0, 2, 0));
+						}
+					}, EntityDimensions.scalable(10f,4f)));
 	
 	public static final RegistryObject<EntityType<EntityBoat>> CRUISER = ENTITIES.register("cruiser", 
 			() -> createEntityTypeFar((type, level) -> new EntityBoat(type, level, 
-					BoatPresets.DEFAULT_CRUISER,
-					ModSounds.BOAT_1, 8, 26), 
-					EntityDimensions.scalable(12f,5f)));
+					BoatPresets.DEFAULT_CRUISER, ModSounds.BOAT_1, 8, 26) {
+						@Override
+						public void addHitboxes() {
+							hitboxes = new RotableHitbox[2];
+							hitboxes[0] = new RotableHitbox(this, "plat0", 
+									new Vector3f(12, 4.02f, 35.6f), 
+									new Vec3(0, 2, -2));
+							hitboxes[1] = new RotableHitbox(this, "plat1", 
+									new Vector3f(7, 1.02f, 21), 
+									new Vec3(0, 4.5, 0.8));
+						}
+					}, EntityDimensions.scalable(12f,4f)));
 	
 	public static final RegistryObject<EntityType<EntityBoat>> CORVETTE = ENTITIES.register("corvette", 
 			() -> createEntityTypeFar((type, level) -> new EntityBoat(type, level, 
-					BoatPresets.DEFAULT_CORVETTE,
-					ModSounds.BOAT_1, 8, 13), 
-					EntityDimensions.scalable(7f,3f)));
+					BoatPresets.DEFAULT_CORVETTE, ModSounds.BOAT_1, 8, 13) {
+						@Override
+						public void addHitboxes() {
+							hitboxes = new RotableHitbox[1];
+							hitboxes[0] = new RotableHitbox(this, "plat0", 
+									new Vector3f(7, 3.02f, 16), 
+									new Vec3(0, 1.5, -2));
+						}
+					}, EntityDimensions.scalable(7f,3f)));
 	
 	public static final RegistryObject<EntityType<EntityBoat>> AIRCRAFT_CARRIER = ENTITIES.register("aircraft_carrier", 
 			() -> createEntityTypeFar((type, level) -> new EntityBoat(type, level, 
@@ -166,13 +205,13 @@ public class ModEntities {
 						public void addHitboxes() {
 							hitboxes = new RotableHitbox[2];
 							hitboxes[0] = new RotableHitbox(this, "runway", 
-									new Vector3f(16, 6.04f, 50), 
+									new Vector3f(16, 6.02f, 50), 
 									new Vec3(0, 3, 0));
 							hitboxes[1] = new RotableHitbox(this, "side_plat", 
-									new Vector3f(25, 3.03f, 25), 
+									new Vector3f(25, 3.02f, 24), 
 									new Vec3(0, 4.5, 0));
 						}
-				}, EntityDimensions.scalable(25f,6f)));
+					}, EntityDimensions.scalable(25f,6f)));
 	
 	// SUBMARINES
 	
@@ -205,7 +244,7 @@ public class ModEntities {
 	 * IDEA 9.1 AI for planes/turrets or an auto pilot module
 	 * AI turret controllers need time and resources invested to level up
 	 * it would be funny if they were villagers
-	 * IDEA 9.2 pillager outposts with air defence
+	 * IDEA 9.2 pillager outposts with air defense
 	 * 
 	 * IDEA 9.3 large physical hanger to craft vehicle/put weapons on them
 	 */

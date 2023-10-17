@@ -20,7 +20,7 @@ public class HudOverlay extends VehicleOverlayComponent {
     public static final byte VERTICAL_BOUNDS_HEIGHT = 124;
     public static final byte VERTICAL_BOUNDS_U_OFFSET = 78;
     public static final byte HORIZONTAL_BOUNDS_U_WIDTH = 67;
-    public static final byte HORIZONTAL_BOUNDS_U_WIDTH_WIDE = 78;
+    public static final byte HORIZONTAL_BOUNDS_U_WIDTH_WIDE = 77;
     public static final short HORIZONTAL_BOUNDS_V_HEIGHT = 71;
     public static final byte HORIZONTAL_BOUNDS_U_OFFSET = 1;
     public static final short HORIZONTAL_BOUNDS_V_OFFSET_0 = 112;
@@ -35,6 +35,9 @@ public class HudOverlay extends VehicleOverlayComponent {
     }
 
     private HudOverlay() {}
+
+    // FIXME: switching b/w planes while mouse mode is on causes it to break
+    // Suggested fix is to tick MOUSE_MODE = false whenever the player is not in a vehicle.
     @Override
     protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
         if (!(getPlayerVehicle() instanceof EntityPlane plane)) return;
@@ -57,12 +60,13 @@ public class HudOverlay extends VehicleOverlayComponent {
         RenderSystem.disableDepthTest();
     }
 
+    // FIXME: different resolutions/screen sizes will cause these values to not line up properly (usually by one or two pixels)
     private static void drawAttitudeOverlay(PoseStack poseStack, int screenWidth, int screenHeight, EntityPlane plane) {
         poseStack.pushPose();
 
         blit(poseStack,
                 ((screenWidth - HORIZONTAL_BOUNDS_U_WIDTH) / 2) + 1, ((screenHeight - HORIZONTAL_BOUNDS_V_HEIGHT) / 2) + 1,
-                HORIZONTAL_BOUNDS_U_OFFSET, HORIZONTAL_BOUNDS_V_OFFSET_0 + (int) (plane.getXRot() * (5/3)),
+                HORIZONTAL_BOUNDS_U_OFFSET, HORIZONTAL_BOUNDS_V_OFFSET_0 + (int) (plane.getXRot() * 8 / 5),
                 HORIZONTAL_BOUNDS_U_WIDTH_WIDE, HORIZONTAL_BOUNDS_V_HEIGHT,
                 HUD_TEXTURE_WIDTH, HUD_TEXTURE_HEIGHT);
 

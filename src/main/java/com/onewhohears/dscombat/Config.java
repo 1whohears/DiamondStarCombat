@@ -66,9 +66,7 @@ public class Config {
 		public final ForgeConfigSpec.IntValue maxBlockCheckDepth;
 		public final ForgeConfigSpec.DoubleValue freshEntityToItemCooldown;
 		public final ForgeConfigSpec.DoubleValue usedWeaponToItemCooldown;
-		public final ForgeConfigSpec.BooleanValue autoDataLink;
 		public final ForgeConfigSpec.DoubleValue armorStrength;
-		public final ForgeConfigSpec.BooleanValue disableElytra;
 		public final ForgeConfigSpec.DoubleValue bulletDamageFactor;
 		public final ForgeConfigSpec.DoubleValue explodeDamageFactor;
 		public final ForgeConfigSpec.DoubleValue planeBulletFactor;
@@ -99,9 +97,6 @@ public class Config {
 			maxBlockCheckDepth = builder
 					.comment("The number of blocks between 2 entities to check if they can see eachother.")
 					.defineInRange("maxBlockCheckDepth", 250, 10, 400);
-			autoDataLink = builder
-					.comment("All vehicles will behave as if they have datalink even if they don't have the module.")
-					.define("autoDataLink", false);
 			freshEntityToItemCooldown = builder
 					.comment("Seconds before a fresh vehicle entity can become an item.")
 					.defineInRange("freshEntityToItemCooldown", 0.0, 0, 600.0);
@@ -111,9 +106,6 @@ public class Config {
 			armorStrength = builder
 					.comment("Percentage 1 point of vehicle armor reduces.")
 					.defineInRange("armorStrength", 4.0, 0, 100.0);
-			disableElytra = builder
-					.comment("Prevent all players from flying in an Elytra.")
-					.define("disableElytra", false);
 			bulletDamageFactor = builder
 					.comment("Multiplier for damage non explosive pojectiles (bullets) deal to vehicles.")
 					.defineInRange("bulletDamageFactor", 0.2, 0, 100.0);

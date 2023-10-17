@@ -455,6 +455,12 @@
 	"death.attack.dscombat.plane_crash_collide2.player": "%1$s thought %2$s wanted a hug",
 	"death.attack.dscombat.plane_crash_collide3": "%1$s was run over by rouge self driving Tesla",
 	"death.attack.dscombat.plane_crash_collide3.self": "%1$s was sleeping in a self driving Tesla",
-	"death.attack.dscombat.plane_crash_collide3.player": "%1$s was a deer in the headlights of %2$s"
+	"death.attack.dscombat.plane_crash_collide3.player": "%1$s was a deer in the headlights of %2$s",
+	
+	"gamerule.consumeFuel": "Vehicle Consume Fuel",
+	"gamerule.consumeAmmo": "Vehicle Consume Ammo",
+	"gamerule.consumeFlares": "Vehicle Consume Flares",
+	"gamerule.dataLinkAlwaysOn": "Data Link Always On",
+	"gamerule.disableElytraFlying": "Disable Elytra Flying"
 	
 }

@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
+import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.TurretData;
 import com.onewhohears.dscombat.data.parts.TurretData.RotBounds;
@@ -247,9 +248,10 @@ public class EntityTurret extends EntitySeat {
 			if (player.isCreative()) consume = false;
 			p = player;
 		}
+		boolean consumeAmmo = parent.level.getGameRules().getBoolean(DSCGameRules.CONSUME_AMMO);
 		boolean couldShoot = data.checkRecoil();
-		data.shootFromTurret(level, shooter, getLookAngle(), pos, parent, consume);
-		if (couldShoot) specialShoot(shooter, pos, parent, consume);
+		data.shootFromTurret(level, shooter, getLookAngle(), pos, parent, consume && consumeAmmo);
+		if (couldShoot) specialShoot(shooter, pos, parent, consume && consumeAmmo);
 		if (data.isFailedLaunch()) {
 			if (p != null) p.displayClientMessage(
 					Component.translatable(data.getFailedLaunchReason()), 

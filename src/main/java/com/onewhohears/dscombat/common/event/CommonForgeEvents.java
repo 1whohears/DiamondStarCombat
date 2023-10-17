@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.common.event;
 
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientDataPackSynch;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
@@ -49,7 +50,7 @@ public final class CommonForgeEvents {
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void playerTick(TickEvent.PlayerTickEvent event) {
 		// CANCEL ELYTRA
-		if (event.player.isFallFlying() && Config.COMMON.disableElytra.get()) {
+		if (event.player.isFallFlying() && event.player.level.getGameRules().getBoolean(DSCGameRules.DISABLE_ELYTRA_FLYING)) {
 			event.player.stopFallFlying();
 		}
 		// CHANGE HITBOX

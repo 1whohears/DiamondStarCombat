@@ -4,6 +4,7 @@ import com.onewhohears.dscombat.client.overlay.VehicleOverlay;
 import com.onewhohears.dscombat.client.screen.AircraftBlockScreen;
 import com.onewhohears.dscombat.client.screen.AircraftScreen;
 import com.onewhohears.dscombat.client.screen.WeaponsBlockScreen;
+import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.data.aircraft.AircraftClientPresetGenerator;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresetGenerator;
@@ -75,6 +76,7 @@ public class DSCombatMod {
     
     private void commonSetup(FMLCommonSetupEvent event) {
 		PacketHandler.register();
+		DSCGameRules.registerAll();
 		event.enqueueWork(() -> {
 			ModVillagers.registerPOIs();
 		});

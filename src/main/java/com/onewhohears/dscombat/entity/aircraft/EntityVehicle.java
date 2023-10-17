@@ -10,6 +10,7 @@ import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents;
+import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.common.container.AircraftMenuContainer;
 import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.common.network.PacketHandler;
@@ -141,7 +142,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public final double collideSpeedWithGearThreshHold = Config.SERVER.collideSpeedWithGearThreshHold.get();
 	public final double collideDamageRate = Config.SERVER.collideDamageRate.get();
 	public final double maxFallSpeed = Config.SERVER.maxFallSpeed.get();
-	public final boolean autoDataLink = Config.COMMON.autoDataLink.get();
 	
 	public final String defaultPreset;
 	public final boolean negativeThrottle;
@@ -1251,9 +1251,13 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 				if (inputs.openMenu) openMenu(player);
 				if (player.isCreative()) consume = false;
 			}
-			if (consume) tickFuel();
+			boolean consumeFuel = level.getGameRules().getBoolean(DSCGameRules.CONSUME_FULE);
+			if (consume && consumeFuel) tickFuel();
 			setFlareNum(partsManager.getNumFlares());
-			if (inputs.flare && tickCount % 5 == 0) flare(controller, consume);
+			if (inputs.flare && tickCount % 5 == 0) {
+				boolean consumeFlares = level.getGameRules().getBoolean(DSCGameRules.CONSUME_FLARES);
+				flare(controller, consume && consumeFlares);
+			}
 		} else {
 			radarSystem.clientTick();
 		}

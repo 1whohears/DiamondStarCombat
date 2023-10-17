@@ -14,9 +14,8 @@ import static com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents.M
 public class HudOverlay extends VehicleOverlayComponent {
     public static final ResourceLocation HUD = new ResourceLocation(MODID,
             "textures/ui/hud_overlay.png");
-    public static final float SCALE_MULTIPLIER = 1.4F;
-    public static final byte VERTICAL_BOUNDS_WIDTH = 69; //nice
-    public static final byte VERTICAL_BOUNDS_HEIGHT = 121;
+    public static final byte VERTICAL_BOUNDS_WIDTH = 125;
+    public static final byte VERTICAL_BOUNDS_HEIGHT = 124;
     public static final byte HORIZONTAL_BOUNDS_UV_HEIGHT = 42;
     public static final byte HORIZONTAL_BOUNDS_U_OFFSET = 69; // nice
     public static final byte HORIZONTAL_BOUNDS_V_OFFSET_DEFAULT = 41;
@@ -41,24 +40,18 @@ public class HudOverlay extends VehicleOverlayComponent {
         RenderSystem.setShaderTexture(0, HUD);
         RenderSystem.enableBlend();
 
-        poseStack.pushPose();
-        poseStack.scale(SCALE_MULTIPLIER, 1, 1);
-
         blit(poseStack,
-                ((screenWidth - (int) (VERTICAL_BOUNDS_WIDTH * SCALE_MULTIPLIER)) / 2), (screenHeight - VERTICAL_BOUNDS_HEIGHT) / 2,
+                ((screenWidth - VERTICAL_BOUNDS_WIDTH) / 2), (screenHeight - VERTICAL_BOUNDS_HEIGHT) / 2,
                 0, 0,
                 VERTICAL_BOUNDS_WIDTH, VERTICAL_BOUNDS_HEIGHT);
 
-        poseStack.popPose();
-
         // TODO: PoseStack manipulation to scale the entire thing down may be necessary for more fine movement
+        /* b
         blit(poseStack,
                 (screenWidth - HORIZONTAL_BOUNDS_WIDTH_NO_NUMBERS) / 2, ((screenHeight - VERTICAL_BOUNDS_HEIGHT) / 2) + HORIZONTAL_BOUNDS_V_OFFSET_DEFAULT - 1,
                 HORIZONTAL_BOUNDS_U_OFFSET, HORIZONTAL_BOUNDS_V_OFFSET_DEFAULT + (int) plane.getXRot(),
                 HORIZONTAL_BOUNDS_WIDTH_NO_NUMBERS, HORIZONTAL_BOUNDS_UV_HEIGHT);
-
-        this.drawNumber(0, poseStack,
-                ((screenWidth - NUMBERS_UV_WIDTH) / 2) + 7, (screenHeight - NUMBERS_UV_HEIGHT) / 2);
+        */
 
         RenderSystem.disableBlend();
     }

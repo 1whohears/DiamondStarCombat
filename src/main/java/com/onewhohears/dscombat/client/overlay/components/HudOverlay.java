@@ -14,12 +14,16 @@ import static com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents.M
 public class HudOverlay extends VehicleOverlayComponent {
     public static final ResourceLocation HUD = new ResourceLocation(MODID,
             "textures/ui/hud_overlay.png");
+    public static final short HUD_TEXTURE_WIDTH = 320;
+    public static final short HUD_TEXTURE_HEIGHT = 294;
     public static final byte VERTICAL_BOUNDS_WIDTH = 125;
     public static final byte VERTICAL_BOUNDS_HEIGHT = 124;
+    public static final byte VERTICAL_BOUNDS_U_OFFSET = 78;
     public static final byte HORIZONTAL_BOUNDS_U_WIDTH = 67;
-    public static final byte HORIZONTAL_BOUNDS_V_HEIGHT = 6;
-    public static final short HORIZONTAL_BOUNDS_U_OFFSET = 186;
-    public static final byte HORIZONTAL_BOUNDS_V_OFFSET_0 = 29;
+    public static final byte HORIZONTAL_BOUNDS_U_WIDTH_WIDE = 78;
+    public static final short HORIZONTAL_BOUNDS_V_HEIGHT = 71;
+    public static final byte HORIZONTAL_BOUNDS_U_OFFSET = 1;
+    public static final short HORIZONTAL_BOUNDS_V_OFFSET_0 = 112;
     public static final byte NUMBERS_UV_WIDTH = 6;
     public static final byte NUMBERS_UV_HEIGHT = 8;
 
@@ -37,20 +41,32 @@ public class HudOverlay extends VehicleOverlayComponent {
         if (!MOUSE_MODE || plane.onlyFreeLook()) return;
 
         RenderSystem.setShaderTexture(0, HUD);
+        RenderSystem.enableDepthTest();
         RenderSystem.enableBlend();
 
         blit(poseStack,
                 ((screenWidth - VERTICAL_BOUNDS_WIDTH) / 2), (screenHeight - VERTICAL_BOUNDS_HEIGHT) / 2,
-                0, 0,
-                VERTICAL_BOUNDS_WIDTH, VERTICAL_BOUNDS_HEIGHT);
+                VERTICAL_BOUNDS_U_OFFSET, 0,
+                VERTICAL_BOUNDS_WIDTH, VERTICAL_BOUNDS_HEIGHT,
+                HUD_TEXTURE_WIDTH, HUD_TEXTURE_HEIGHT);
 
-        // TODO: PoseStack manipulation to scale the entire thing down may be necessary for more fine movement
-        blit(poseStack,
-                (screenWidth - HORIZONTAL_BOUNDS_U_WIDTH) / 2, (screenHeight / 2) - 1,
-                HORIZONTAL_BOUNDS_U_OFFSET, HORIZONTAL_BOUNDS_V_OFFSET_0 + (int) plane.getXRot(),
-                HORIZONTAL_BOUNDS_U_WIDTH, HORIZONTAL_BOUNDS_V_HEIGHT);
+        drawAttitudeOverlay(poseStack, screenWidth, screenHeight, plane);
+
 
         RenderSystem.disableBlend();
+        RenderSystem.disableDepthTest();
+    }
+
+    private static void drawAttitudeOverlay(PoseStack poseStack, int screenWidth, int screenHeight, EntityPlane plane) {
+        poseStack.pushPose();
+
+        blit(poseStack,
+                ((screenWidth - HORIZONTAL_BOUNDS_U_WIDTH) / 2) + 1, ((screenHeight - HORIZONTAL_BOUNDS_V_HEIGHT) / 2) + 1,
+                HORIZONTAL_BOUNDS_U_OFFSET, HORIZONTAL_BOUNDS_V_OFFSET_0 + (int) (plane.getXRot() * (5/3)),
+                HORIZONTAL_BOUNDS_U_WIDTH_WIDE, HORIZONTAL_BOUNDS_V_HEIGHT,
+                HUD_TEXTURE_WIDTH, HUD_TEXTURE_HEIGHT);
+
+        poseStack.popPose();
     }
 
     /**

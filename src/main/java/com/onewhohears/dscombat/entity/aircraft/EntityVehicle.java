@@ -2028,8 +2028,9 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     }
     
     public boolean canBecomeItem() {
-    	return tickCount/20 > Config.COMMON.freshEntityToItemCooldown.get() 
-    			&& (lastShootTime == -1 || (tickCount-lastShootTime)/20 > Config.COMMON.usedWeaponToItemCooldown.get());
+    	int fresh = level.getGameRules().getInt(DSCGameRules.ITEM_COOLDOWN_VEHICLE_FRESH);
+    	int shoot = level.getGameRules().getInt(DSCGameRules.ITEM_COOLDOWN_VEHICLE_SHOOT);
+    	return tickCount/20 > fresh && (lastShootTime == -1 || (tickCount-lastShootTime)/20 > shoot);
     }
     
     /**

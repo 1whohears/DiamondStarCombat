@@ -64,14 +64,11 @@ public class Config {
 	public static class Common {
 		
 		public final ForgeConfigSpec.IntValue maxBlockCheckDepth;
-		public final ForgeConfigSpec.DoubleValue freshEntityToItemCooldown;
-		public final ForgeConfigSpec.DoubleValue usedWeaponToItemCooldown;
 		public final ForgeConfigSpec.DoubleValue armorStrength;
 		public final ForgeConfigSpec.DoubleValue bulletDamageFactor;
 		public final ForgeConfigSpec.DoubleValue explodeDamageFactor;
 		public final ForgeConfigSpec.DoubleValue planeBulletFactor;
 		// TODO 7.1 plane speed multiplier
-		// TODO 7.2 baby mode for planes disabled by default
 		/**
 		 * classname
 		 */
@@ -97,12 +94,6 @@ public class Config {
 			maxBlockCheckDepth = builder
 					.comment("The number of blocks between 2 entities to check if they can see eachother.")
 					.defineInRange("maxBlockCheckDepth", 250, 10, 400);
-			freshEntityToItemCooldown = builder
-					.comment("Seconds before a fresh vehicle entity can become an item.")
-					.defineInRange("freshEntityToItemCooldown", 0.0, 0, 600.0);
-			usedWeaponToItemCooldown = builder
-					.comment("Seconds before a vehicle entity that used a weapon can become an item.")
-					.defineInRange("usedWeaponToItemCooldown", 30.0, 0, 600.0);
 			armorStrength = builder
 					.comment("Percentage 1 point of vehicle armor reduces.")
 					.defineInRange("armorStrength", 4.0, 0, 100.0);

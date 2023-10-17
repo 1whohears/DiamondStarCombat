@@ -461,6 +461,8 @@
 	"gamerule.consumeAmmo": "Vehicle Consume Ammo",
 	"gamerule.consumeFlares": "Vehicle Consume Flares",
 	"gamerule.dataLinkAlwaysOn": "Data Link Always On",
-	"gamerule.disableElytraFlying": "Disable Elytra Flying"
+	"gamerule.disableElytraFlying": "Disable Elytra Flying",
+	"gamerule.itemCooldownVehicleFresh": "Fresh Vehicle To Item Cooldown",
+	"gamerule.itemCooldownVehicleShoot": "Shoot Vehicle To Item Cooldown"
 	
 }

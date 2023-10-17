@@ -16,11 +16,10 @@ public class HudOverlay extends VehicleOverlayComponent {
             "textures/ui/hud_overlay.png");
     public static final byte VERTICAL_BOUNDS_WIDTH = 125;
     public static final byte VERTICAL_BOUNDS_HEIGHT = 124;
-    public static final byte HORIZONTAL_BOUNDS_UV_HEIGHT = 42;
-    public static final byte HORIZONTAL_BOUNDS_U_OFFSET = 69; // nice
-    public static final byte HORIZONTAL_BOUNDS_V_OFFSET_DEFAULT = 41;
-    public static final byte HORIZONTAL_BOUNDS_WIDTH_NO_NUMBERS = 37;
-    public static final byte NUMBERS_U_OFFSET = 105;
+    public static final byte HORIZONTAL_BOUNDS_U_WIDTH = 67;
+    public static final byte HORIZONTAL_BOUNDS_V_HEIGHT = 6;
+    public static final short HORIZONTAL_BOUNDS_U_OFFSET = 186;
+    public static final byte HORIZONTAL_BOUNDS_V_OFFSET_0 = 29;
     public static final byte NUMBERS_UV_WIDTH = 6;
     public static final byte NUMBERS_UV_HEIGHT = 8;
 
@@ -46,12 +45,10 @@ public class HudOverlay extends VehicleOverlayComponent {
                 VERTICAL_BOUNDS_WIDTH, VERTICAL_BOUNDS_HEIGHT);
 
         // TODO: PoseStack manipulation to scale the entire thing down may be necessary for more fine movement
-        /* b
         blit(poseStack,
-                (screenWidth - HORIZONTAL_BOUNDS_WIDTH_NO_NUMBERS) / 2, ((screenHeight - VERTICAL_BOUNDS_HEIGHT) / 2) + HORIZONTAL_BOUNDS_V_OFFSET_DEFAULT - 1,
-                HORIZONTAL_BOUNDS_U_OFFSET, HORIZONTAL_BOUNDS_V_OFFSET_DEFAULT + (int) plane.getXRot(),
-                HORIZONTAL_BOUNDS_WIDTH_NO_NUMBERS, HORIZONTAL_BOUNDS_UV_HEIGHT);
-        */
+                (screenWidth - HORIZONTAL_BOUNDS_U_WIDTH) / 2, (screenHeight / 2) - 1,
+                HORIZONTAL_BOUNDS_U_OFFSET, HORIZONTAL_BOUNDS_V_OFFSET_0 + (int) plane.getXRot(),
+                HORIZONTAL_BOUNDS_U_WIDTH, HORIZONTAL_BOUNDS_V_HEIGHT);
 
         RenderSystem.disableBlend();
     }
@@ -64,7 +61,7 @@ public class HudOverlay extends VehicleOverlayComponent {
         if (number > 9 || number < 0) throw new IllegalArgumentException("Argument MUST be between 0 to 9 inclusive");
         blit(poseStack,
                 xOrigin, yOrigin,
-                ((number * 7) - (number - 1)) + NUMBERS_U_OFFSET, 0,
+                ((number * 7) - (number - 1)) + HORIZONTAL_BOUNDS_U_OFFSET, 0,
                 NUMBERS_UV_WIDTH, NUMBERS_UV_HEIGHT);
     }
 }

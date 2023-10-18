@@ -203,11 +203,6 @@ public class RotableHitbox extends PartEntity<EntityVehicle> {
 	public EntityDimensions getDimensions(Pose pPose) {
 		return size;
 	}
-    
-	@Override
-	public boolean is(Entity entity) {
-		return this == entity || getParent() == entity;
-	}
 	
 	@Override
 	public Packet<?> getAddEntityPacket() {

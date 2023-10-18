@@ -17,6 +17,8 @@ import static com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents.M
 public class HudOverlay extends VehicleOverlayComponent {
     public static final ResourceLocation HUD = new ResourceLocation(MODID,
             "textures/ui/hud_overlay.png");
+    public static final ResourceLocation ATTITUDE_TEXTURE = new ResourceLocation(MODID,
+            "textures/ui/hud_attitude.png");
 
     public static final Color GREEN_ME_SAY_ALONE_RAMP = new Color(0, 255, 0);
     public static final Color RED = new Color(255, 0, 0);
@@ -25,15 +27,12 @@ public class HudOverlay extends VehicleOverlayComponent {
     public static final float CHANGE_G = (float) GREEN_ME_SAY_ALONE_RAMP.getGreen() / (START - END);
     public static final float CHANGE_R = (float) RED.getRed() / (START - END);
 
-    public static final short HUD_TEXTURE_WIDTH = 320;
-    public static final short HUD_TEXTURE_HEIGHT = 294;
+    public static final byte ATTITUDE_TEXTURE_WIDTH = 78;
+    public static final short ATTITUDE_TEXTURE_HEIGHT = 294;
     public static final byte VERTICAL_BOUNDS_WIDTH = 125;
     public static final byte VERTICAL_BOUNDS_HEIGHT = 124;
-    public static final byte VERTICAL_BOUNDS_U_OFFSET = 78;
     public static final byte HORIZONTAL_BOUNDS_U_WIDTH = 67;
-    public static final byte HORIZONTAL_BOUNDS_U_WIDTH_WIDE = 77;
     public static final short HORIZONTAL_BOUNDS_V_HEIGHT = 71;
-    public static final byte HORIZONTAL_BOUNDS_U_OFFSET = 1;
     public static final short HORIZONTAL_BOUNDS_V_OFFSET_0 = 112;
     public static final byte NUMBERS_UV_WIDTH = 6;
     public static final byte NUMBERS_UV_HEIGHT = 8;
@@ -64,9 +63,8 @@ public class HudOverlay extends VehicleOverlayComponent {
         // TODO: vertical bounds change colour w/ vehicle health
         blit(poseStack,
                 ((screenWidth - VERTICAL_BOUNDS_WIDTH) / 2), (screenHeight - VERTICAL_BOUNDS_HEIGHT) / 2,
-                VERTICAL_BOUNDS_U_OFFSET, 0,
-                VERTICAL_BOUNDS_WIDTH, VERTICAL_BOUNDS_HEIGHT,
-                HUD_TEXTURE_WIDTH, HUD_TEXTURE_HEIGHT);
+                0, 0,
+                VERTICAL_BOUNDS_WIDTH, VERTICAL_BOUNDS_HEIGHT);
 
         drawAttitudeOverlay(poseStack, screenWidth, screenHeight, plane);
 
@@ -112,13 +110,15 @@ public class HudOverlay extends VehicleOverlayComponent {
 
     // FIXME: different resolutions/screen sizes will cause these values to not line up properly (usually by one or two pixels)
     // FIXME: behaviour near +-90 degrees pitch
-    private static void drawAttitudeOverlay(PoseStack poseStack, int screenWidth, int screenHeight, EntityPlane plane) {
+    private void drawAttitudeOverlay(PoseStack poseStack, int screenWidth, int screenHeight, EntityPlane plane) {
         poseStack.pushPose();
 
-        int xOrigin = ((screenWidth - HORIZONTAL_BOUNDS_U_WIDTH) / 2) + 1;
+        RenderSystem.setShaderTexture(0, ATTITUDE_TEXTURE);
+
+        int xOrigin = ((screenWidth - HORIZONTAL_BOUNDS_U_WIDTH) / 2);
         int yOrigin = ((screenHeight - HORIZONTAL_BOUNDS_V_HEIGHT) / 2) + 1;
 
-        poseStack.translate(xOrigin + (double) HORIZONTAL_BOUNDS_U_WIDTH / 2, yOrigin + (double) HORIZONTAL_BOUNDS_V_HEIGHT / 2, HORIZONTAL_BOUNDS_BLIT_OFFSET);
+        poseStack.translate(xOrigin + (double) (HORIZONTAL_BOUNDS_U_WIDTH - 1) / 2, yOrigin + (double) HORIZONTAL_BOUNDS_V_HEIGHT / 2, HORIZONTAL_BOUNDS_BLIT_OFFSET);
         poseStack.mulPose(Vector3f.ZP.rotationDegrees(-plane.zRot));
 
         // TODO: make this look less jarring
@@ -126,9 +126,9 @@ public class HudOverlay extends VehicleOverlayComponent {
 
         blit(poseStack,
                 -HORIZONTAL_BOUNDS_U_WIDTH / 2, -HORIZONTAL_BOUNDS_V_HEIGHT / 2,
-                HORIZONTAL_BOUNDS_U_OFFSET, HORIZONTAL_BOUNDS_V_OFFSET_0 + (int) (plane.getXRot() * 8 / 5),
-                HORIZONTAL_BOUNDS_U_WIDTH_WIDE, HORIZONTAL_BOUNDS_V_HEIGHT,
-                HUD_TEXTURE_WIDTH, HUD_TEXTURE_HEIGHT);
+                0, HORIZONTAL_BOUNDS_V_OFFSET_0 + (int) (plane.getXRot() * 8 / 5),
+                ATTITUDE_TEXTURE_WIDTH, HORIZONTAL_BOUNDS_V_HEIGHT,
+                ATTITUDE_TEXTURE_WIDTH, ATTITUDE_TEXTURE_HEIGHT);
 
         poseStack.popPose();
     }
@@ -141,7 +141,7 @@ public class HudOverlay extends VehicleOverlayComponent {
         if (number > 9 || number < 0) throw new IllegalArgumentException("Argument MUST be between 0 to 9 inclusive");
         blit(poseStack,
                 xOrigin, yOrigin,
-                ((number * 7) - (number - 1)) + HORIZONTAL_BOUNDS_U_OFFSET, 0,
+                ((number * 7) - (number - 1)), 0,
                 NUMBERS_UV_WIDTH, NUMBERS_UV_HEIGHT);
     }
     private static int getHealthColor(float health, float max) {

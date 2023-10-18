@@ -124,7 +124,8 @@ public class EntityPlane extends EntityVehicle {
 	public double getDriveAcc() {
 		return 0;
 	}
-	
+
+	// TODO: nerf brakes? or make their strength configurable?
 	@Override
 	public boolean isBreaking() {
 		return inputs.special2 && isOnGround();

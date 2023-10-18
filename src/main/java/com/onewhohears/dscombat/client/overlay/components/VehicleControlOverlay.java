@@ -10,6 +10,7 @@ import net.minecraft.util.Mth;
 
 import java.util.Objects;
 
+// TODO: redo texture
 public class VehicleControlOverlay extends VehicleOverlayComponent {
     public static final ResourceLocation RUDDER_PEDAL = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/rudder_pedal.png");

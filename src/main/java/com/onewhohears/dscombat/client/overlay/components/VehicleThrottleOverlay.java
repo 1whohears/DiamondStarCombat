@@ -11,6 +11,7 @@ import java.util.Objects;
 
 import static com.onewhohears.dscombat.client.overlay.components.VehicleControlOverlay.STICK_BASE_SIZE;
 
+// TODO: redo texture
 public class VehicleThrottleOverlay extends VehicleOverlayComponent {
     public static final ResourceLocation THROTTLE_RAIL = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/throttle_rail.png");

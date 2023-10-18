@@ -13,6 +13,7 @@ import java.util.Objects;
 import static com.onewhohears.dscombat.client.overlay.components.VehicleControlOverlay.PEDAL_HEIGHT;
 import static com.onewhohears.dscombat.client.overlay.components.VehicleControlOverlay.STICK_BASE_SIZE;
 
+// TODO: redo texture
 public class VehicleFuelOverlay extends VehicleOverlayComponent {
     public static final ResourceLocation FUEL_GAUGE = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/fuel_guage.png");

@@ -15,6 +15,7 @@ import static com.onewhohears.dscombat.client.overlay.components.TurnCoordinator
 import static com.onewhohears.dscombat.client.overlay.components.VehicleControlOverlay.STICK_BASE_SIZE;
 import static com.onewhohears.dscombat.client.overlay.components.VehicleThrottleOverlay.THROTTLE_WIDTH;
 
+// TODO: redo texture
 public class PlaneAttitudeOverlay extends VehicleOverlayComponent {
     public static final ResourceLocation ATTITUDE_BASE = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/attitude_base.png");

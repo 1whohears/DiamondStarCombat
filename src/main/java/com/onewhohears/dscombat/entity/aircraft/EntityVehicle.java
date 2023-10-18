@@ -101,6 +101,7 @@ import net.minecraftforge.registries.RegistryObject;
  * the parent class for all vehicle entities in this mod
  * @author 1whohears
  */
+// TODO: mouse mode handling has configurable sensitivity; higher by default. inputs have 'inertia'
 public abstract class EntityVehicle extends Entity implements IEntityAdditionalSpawnData {
 	
 	public static final EntityDataAccessor<Float> MAX_HEALTH = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);

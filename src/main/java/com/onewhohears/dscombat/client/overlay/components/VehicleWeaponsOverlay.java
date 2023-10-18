@@ -11,6 +11,7 @@ import net.minecraft.network.chat.MutableComponent;
 import java.util.List;
 import java.util.Objects;
 
+// TODO: overhaul
 public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
     private static VehicleWeaponsOverlay INSTANCE;
 

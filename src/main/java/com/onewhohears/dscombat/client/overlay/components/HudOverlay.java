@@ -61,6 +61,7 @@ public class HudOverlay extends VehicleOverlayComponent {
         RenderSystem.enableDepthTest();
         RenderSystem.enableBlend();
 
+        // TODO: vertical bounds change colour w/ vehicle health
         blit(poseStack,
                 ((screenWidth - VERTICAL_BOUNDS_WIDTH) / 2), (screenHeight - VERTICAL_BOUNDS_HEIGHT) / 2,
                 VERTICAL_BOUNDS_U_OFFSET, 0,
@@ -143,7 +144,6 @@ public class HudOverlay extends VehicleOverlayComponent {
                 ((number * 7) - (number - 1)) + HORIZONTAL_BOUNDS_U_OFFSET, 0,
                 NUMBERS_UV_WIDTH, NUMBERS_UV_HEIGHT);
     }
-
     private static int getHealthColor(float health, float max) {
         float healthPercent = health / max;
         if (healthPercent >= START) return GREEN_ME_SAY_ALONE_RAMP.getRGB();

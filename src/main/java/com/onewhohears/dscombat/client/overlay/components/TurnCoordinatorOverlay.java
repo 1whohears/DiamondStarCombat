@@ -13,6 +13,7 @@ import java.util.Objects;
 import static com.onewhohears.dscombat.client.overlay.components.VehicleControlOverlay.STICK_BASE_SIZE;
 import static com.onewhohears.dscombat.client.overlay.components.VehicleControlOverlay.STICK_KNOB_SIZE;
 
+// TODO: redo texture
 public class TurnCoordinatorOverlay extends VehicleOverlayComponent {
     public static final ResourceLocation TURN_COORD_BASE = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/turn_coord_base.png");

@@ -462,6 +462,9 @@
 	"gamerule.dataLinkAlwaysOn": "Data Link Always On",
 	"gamerule.disableElytraFlying": "Disable Elytra Flying",
 	"gamerule.itemCooldownVehicleFresh": "Fresh Vehicle To Item Cooldown",
-	"gamerule.itemCooldownVehicleShoot": "Shoot Vehicle To Item Cooldown"
+	"gamerule.itemCooldownVehicleShoot": "Shoot Vehicle To Item Cooldown",
+	"gamerule.weaponHitFeedback": "Weapon Hit Feedback",
+	"gamerule.broadcastMissileHit": "Broadcast Missile Hit",
+	"gamerule.broadcastMissileHitTeamOnly": "Broadcast Missile Hit Team Only"
 	
 }

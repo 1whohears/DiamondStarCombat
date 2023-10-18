@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.entity.weapon;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.Config;
+import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.data.weapon.MissileData;
 import com.onewhohears.dscombat.data.weapon.NonTickingMissileManager;
@@ -15,9 +16,12 @@ import com.onewhohears.dscombat.util.math.UtilGeometry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -25,6 +29,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.ClipContext.Fluid;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 
 public abstract class EntityMissile extends EntityBullet {
@@ -441,6 +446,31 @@ public abstract class EntityMissile extends EntityBullet {
 	@Override
 	public boolean isPickable() {
 		return true;
+	}
+	
+	@Override
+	public void onHitEntity(EntityHitResult result) {
+		super.onHitEntity(result);
+		if (level.isClientSide) return;
+		if (level.getGameRules().getBoolean(DSCGameRules.BROADCAST_MISSILE_HIT)) {
+			Entity entity = result.getEntity();
+			if (entity == null) return;
+			Entity owner = getOwner();
+			if (!(owner instanceof ServerPlayer player)) return;
+			MutableComponent message = Component.literal("Missile from ").append(player.getDisplayName())
+					.append(" impacted ");
+			if (entity.isPassenger()) {
+				
+			} else {
+				message.append(entity.getDisplayName());
+			}
+			// TODO 1.2 a message sent to the missile launcher that the missile hit. enabled by gamerule.
+			if (level.getGameRules().getBoolean(DSCGameRules.BROADCAST_MISSILE_HIT_TEAM_ONLY)) {
+				
+			} else {
+				
+			}
+		}
 	}
 
 }

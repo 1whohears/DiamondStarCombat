@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.entity.weapon;
 
 import javax.annotation.Nullable;
 
+import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.init.DataSerializers;
@@ -193,6 +194,10 @@ public abstract class EntityWeapon extends Projectile {
 		System.out.println("BULLET HIT "+result.getEntity());
 		kill();
 		result.getEntity().hurt(getImpactDamageSource(), getDamage());
+		if (!level.isClientSide) return;
+		if (level.getGameRules().getBoolean(DSCGameRules.WEAPON_HIT_FEEDBACK)) {
+			// TODO 1.1 some kind of visual feedback when a weapon hits an entity target
+		}
 	}
 	
 	public float getDamage() {

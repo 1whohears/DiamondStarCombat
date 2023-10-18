@@ -1,5 +1,7 @@
 package com.onewhohears.dscombat.entity.weapon;
 
+import java.util.List;
+
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.command.DSCGameRules;
@@ -455,20 +457,20 @@ public abstract class EntityMissile extends EntityBullet {
 		if (level.getGameRules().getBoolean(DSCGameRules.BROADCAST_MISSILE_HIT)) {
 			Entity entity = result.getEntity();
 			if (entity == null) return;
+			ServerPlayer targetPlayer = null;
+			if (entity instanceof ServerPlayer tsp) targetPlayer = tsp;
+			else if (entity.getControllingPassenger() instanceof ServerPlayer tsp) targetPlayer = tsp;
+			if (targetPlayer == null) return;
 			Entity owner = getOwner();
-			if (!(owner instanceof ServerPlayer player)) return;
-			MutableComponent message = Component.literal("Missile from ").append(player.getDisplayName())
-					.append(" impacted ");
-			if (entity.isPassenger()) {
-				
-			} else {
-				message.append(entity.getDisplayName());
-			}
-			// TODO 1.2 a message sent to the missile launcher that the missile hit. enabled by gamerule.
-			if (level.getGameRules().getBoolean(DSCGameRules.BROADCAST_MISSILE_HIT_TEAM_ONLY)) {
-				
-			} else {
-				
+			if (!(owner instanceof ServerPlayer ownerPlayer)) return;
+			MutableComponent message = Component.literal("Missile from ").append(ownerPlayer.getDisplayName())
+					.append(" impacted ").append(targetPlayer.getDisplayName());
+			boolean teamOnly = level.getGameRules().getBoolean(DSCGameRules.BROADCAST_MISSILE_HIT_TEAM_ONLY);
+			List<ServerPlayer> players = level.getServer().getPlayerList().getPlayers();
+			for (ServerPlayer player : players) {
+				if (teamOnly && (ownerPlayer.getTeam() == null || player.getTeam() == null || 
+						!ownerPlayer.getTeam().getName().equals(player.getTeam().getName()))) continue;
+				player.displayClientMessage(message, false);
 			}
 		}
 	}

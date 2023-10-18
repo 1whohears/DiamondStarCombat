@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.client.overlay.components;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 import net.minecraft.resources.ResourceLocation;
@@ -26,6 +27,7 @@ public class HudOverlay extends VehicleOverlayComponent {
     public static final short HORIZONTAL_BOUNDS_V_OFFSET_0 = 112;
     public static final byte NUMBERS_UV_WIDTH = 6;
     public static final byte NUMBERS_UV_HEIGHT = 8;
+    public static final byte HORIZONTAL_BOUNDS_BLIT_OFFSET = -2;
 
     private static HudOverlay INSTANCE;
 
@@ -61,11 +63,21 @@ public class HudOverlay extends VehicleOverlayComponent {
     }
 
     // FIXME: different resolutions/screen sizes will cause these values to not line up properly (usually by one or two pixels)
+    // FIXME: behaviour near +-90 degrees pitch
     private static void drawAttitudeOverlay(PoseStack poseStack, int screenWidth, int screenHeight, EntityPlane plane) {
         poseStack.pushPose();
 
+        int xOrigin = ((screenWidth - HORIZONTAL_BOUNDS_U_WIDTH) / 2) + 1;
+        int yOrigin = ((screenHeight - HORIZONTAL_BOUNDS_V_HEIGHT) / 2) + 1;
+
+        poseStack.translate(xOrigin + (double) HORIZONTAL_BOUNDS_U_WIDTH / 2, yOrigin + (double) HORIZONTAL_BOUNDS_V_HEIGHT / 2, HORIZONTAL_BOUNDS_BLIT_OFFSET);
+        poseStack.mulPose(Vector3f.ZP.rotationDegrees(-plane.zRot));
+
+        // TODO: make this look less jarring
+        poseStack.translate(-(plane.getYawRate() * 5.6), 0, 0);
+
         blit(poseStack,
-                ((screenWidth - HORIZONTAL_BOUNDS_U_WIDTH) / 2) + 1, ((screenHeight - HORIZONTAL_BOUNDS_V_HEIGHT) / 2) + 1,
+                -HORIZONTAL_BOUNDS_U_WIDTH / 2, -HORIZONTAL_BOUNDS_V_HEIGHT / 2,
                 HORIZONTAL_BOUNDS_U_OFFSET, HORIZONTAL_BOUNDS_V_OFFSET_0 + (int) (plane.getXRot() * 8 / 5),
                 HORIZONTAL_BOUNDS_U_WIDTH_WIDE, HORIZONTAL_BOUNDS_V_HEIGHT,
                 HUD_TEXTURE_WIDTH, HUD_TEXTURE_HEIGHT);

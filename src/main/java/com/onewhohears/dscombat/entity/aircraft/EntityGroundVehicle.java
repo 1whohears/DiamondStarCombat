@@ -78,7 +78,7 @@ public class EntityGroundVehicle extends EntityVehicle {
 	}
 	
 	@Override
-	public boolean isBreaking() {
+	public boolean isBraking() {
 		return inputs.special;
 	}
 	
@@ -131,7 +131,7 @@ public class EntityGroundVehicle extends EntityVehicle {
 	}
 
 	@Override
-	public boolean canBreak() {
+	public boolean canBrake() {
 		return true;
 	}
 

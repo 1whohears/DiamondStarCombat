@@ -127,7 +127,7 @@ public class EntityPlane extends EntityVehicle {
 
 	// TODO: nerf brakes? or make their strength configurable?
 	@Override
-	public boolean isBreaking() {
+	public boolean isBraking() {
 		return inputs.special2 && isOnGround();
 	}
 	
@@ -244,7 +244,7 @@ public class EntityPlane extends EntityVehicle {
     }
 
 	@Override
-	public boolean canBreak() {
+	public boolean canBrake() {
 		return onGround;
 	}
 

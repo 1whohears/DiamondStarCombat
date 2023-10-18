@@ -1044,7 +1044,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			setDeltaMovement(n.scale(xzSpeed*xzSpeedDir + getDriveAcc()));
 			if (getCurrentThrottle() == 0 && xzSpeed != 0) addFrictionForce(0.1);
 		}
-		if (isBreaking() && isOperational()) applyBreaks();
+		if (isBraking() && isOperational()) applyBreaks();
 	}
 	
 	/**
@@ -1054,11 +1054,11 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		return getSpinThrustMag()/getTotalMass();
 	}
 	
-	public boolean isBreaking() {
+	public boolean isBraking() {
 		return false;
 	}
 	
-	public abstract boolean canBreak();
+	public abstract boolean canBrake();
 	
 	public void applyBreaks() {
 		addFrictionForce(kineticFric);

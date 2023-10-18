@@ -115,12 +115,12 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
             yPos += 10;
         }
         // BREAKS
-        if (vehicle.canBreak()) {
+        if (vehicle.canBrake()) {
             xPos = 1+weaponSelectWidth;
             if (vehicle.getAircraftType() == EntityVehicle.AircraftType.PLANE)
                 text = DSCKeys.special2Key.getKey().getDisplayName().getString();
             else text = DSCKeys.specialKey.getKey().getDisplayName().getString();
-            if (vehicle.isBreaking()) color = color2;
+            if (vehicle.isBraking()) color = color2;
             else color = color1;
             drawString(poseStack, getFont(),
                     "Break("+text+")",

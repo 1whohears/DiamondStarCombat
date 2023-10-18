@@ -170,7 +170,7 @@ public class EntityHelicopter extends EntityVehicle {
     }
 
 	@Override
-	public boolean canBreak() {
+	public boolean canBrake() {
 		return false;
 	}
 

@@ -132,12 +132,12 @@ public class EntityBoat extends EntityVehicle {
 		Vec3 move = getDeltaMovement();
 		move = move.multiply(1, 0.900, 1);
 		setDeltaMovement(move);
-		if (canBreak() && isBreaking()) addFrictionForce(2);
+		if (canBrake() && isBraking()) addFrictionForce(2);
 		else addFrictionForce(0.2);
 	}
 	
 	@Override
-	public boolean isBreaking() {
+	public boolean isBraking() {
 		return inputs.special;
 	}
 	
@@ -239,7 +239,7 @@ public class EntityBoat extends EntityVehicle {
 	}
 
 	@Override
-	public boolean canBreak() {
+	public boolean canBrake() {
 		return true;
 	}
 

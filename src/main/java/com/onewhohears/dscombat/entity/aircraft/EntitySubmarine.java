@@ -144,7 +144,7 @@ public class EntitySubmarine extends EntityBoat {
 	}
 	
 	@Override
-	public boolean canBreak() {
+	public boolean canBrake() {
 		return true;
 	}
 

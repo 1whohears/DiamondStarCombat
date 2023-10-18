@@ -6,6 +6,7 @@ import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 
 import java.util.Objects;
 
+import static com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents.MOUSE_MODE;
 import static com.onewhohears.dscombat.client.overlay.components.VehicleControlOverlay.PEDAL_HEIGHT;
 import static com.onewhohears.dscombat.client.overlay.components.VehicleControlOverlay.STICK_BASE_SIZE;
 import static com.onewhohears.dscombat.client.overlay.components.VehicleFuelOverlay.FUEL_GAUGE_HEIGHT;
@@ -23,6 +24,7 @@ public class PlaneDataOverlay extends VehicleOverlayComponent {
     @Override
     protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
         if (!(getPlayerVehicle() instanceof EntityPlane plane)) return;
+        if (MOUSE_MODE) return;
 
         drawString(poseStack, getFont(),
                 String.format("AOA: %3.1f", plane.getAOA()),

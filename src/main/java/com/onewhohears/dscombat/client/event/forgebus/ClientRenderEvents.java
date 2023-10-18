@@ -11,6 +11,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent.Stage;
 import net.minecraftforge.client.event.RenderPlayerEvent;
@@ -89,6 +90,15 @@ public class ClientRenderEvents {
 		if (Objects.equals(event.getOverlay().id(), ARMOR_LEVEL.id())) event.setCanceled(true);
 		if (Objects.equals(event.getOverlay().id(), FOOD_LEVEL.id())) event.setCanceled(true);
 		if (Objects.equals(event.getOverlay().id(), EXPERIENCE_BAR.id())) event.setCanceled(true);
+		if (Objects.equals(event.getOverlay().id(), ITEM_NAME.id())) event.setCanceled(true);
+	}
+
+	@SubscribeEvent
+	public static void onRenderHand(RenderHandEvent event) {
+		if (!MOUSE_MODE) return;
+		if (!(Minecraft.getInstance().player.getRootVehicle() instanceof EntityVehicle)) return;
+
+		event.setCanceled(true);
 	}
 	
 	public static Matrix4f getViewMatrix() {

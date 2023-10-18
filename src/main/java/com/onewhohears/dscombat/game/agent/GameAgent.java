@@ -30,7 +30,7 @@ public abstract class GameAgent<D extends GameData> {
 	protected void tickDead(MinecraftServer server) {
 	}
 	
-	public void onLifeLost(MinecraftServer server) {
+	public void onDeath(MinecraftServer server) {
 		lives = Math.max(lives-1, 0);
 	}
 	

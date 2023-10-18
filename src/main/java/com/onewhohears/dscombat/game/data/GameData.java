@@ -20,17 +20,15 @@ public abstract class GameData {
 	private final String id;
 	private final Map<String, GameAgent<?>> agents = new HashMap<>();
 	private final Map<String, GamePhase<?>> phases = new HashMap<>();
+	private final GamePhase<?> firstPhase;
 	private GamePhase<?> currentPhase;
 	private int age;
 	private boolean isStarted, isStopped;
 	
 	protected GameData(String id, GamePhase<?>...gamePhases) {
 		this.id = id;
-		if (gamePhases != null && gamePhases.length > 0) {
-			currentPhase = gamePhases[0];
-			for (GamePhase<?> phase : gamePhases) 
-				phases.put(phase.getId(), phase);
-		}
+		firstPhase = gamePhases[0];
+		for (GamePhase<?> phase : gamePhases) phases.put(phase.getId(), phase);
 	}
 	
 	public void serverTick(MinecraftServer server) {
@@ -59,11 +57,14 @@ public abstract class GameData {
 		isStarted = false;
 		isStopped = false;
 		age = 0;
+		agents.clear();
+		phases.forEach((id, phase) -> phase.onReset(server));
 	}
 	
 	public void start(MinecraftServer server) {
 		isStarted = true;
 		isStopped = false;
+		changePhase(server, firstPhase.getId());
 	}
 	
 	public void stop(MinecraftServer server) {

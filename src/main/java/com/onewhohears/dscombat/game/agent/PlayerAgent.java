@@ -44,6 +44,12 @@ public class PlayerAgent<D extends GameData> extends GameAgent<D> {
 	}
 	
 	@Override
+	public void onDeath(MinecraftServer server) {
+		super.onDeath(server);
+		
+	}
+	
+	@Override
 	public boolean canTickAgent(MinecraftServer server) {
 		return getPlayer(server) != null && player.isAddedToWorld();
 	}

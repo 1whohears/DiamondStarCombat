@@ -8,16 +8,23 @@ import com.onewhohears.dscombat.game.data.GameData;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.damagesource.DamageSource;
 
 public class PlayerAgent<D extends GameData> extends GameAgent<D> {
 	
 	private UUID playerId;
 	private ServerPlayer player;
+	private TeamAgent<D> teamAgent;
 	
-	public PlayerAgent(ServerPlayer player, D gameData) {
+	public PlayerAgent(ServerPlayer player, D gameData, @Nullable TeamAgent<D> teamAgent) {
 		super(player.getStringUUID(), gameData);
 		this.playerId = player.getUUID();
 		this.player = player;
+		this.teamAgent = teamAgent;
+	}
+	
+	public PlayerAgent(ServerPlayer player, D gameData) {
+		this(player, gameData, null);
 	}
 	
 	@Override
@@ -44,8 +51,8 @@ public class PlayerAgent<D extends GameData> extends GameAgent<D> {
 	}
 	
 	@Override
-	public void onDeath(MinecraftServer server) {
-		super.onDeath(server);
+	public void onDeath(MinecraftServer server, @Nullable DamageSource source) {
+		super.onDeath(server, source);
 		
 	}
 	
@@ -75,6 +82,16 @@ public class PlayerAgent<D extends GameData> extends GameAgent<D> {
 	@Override
 	public boolean isTeam() {
 		return false;
+	}
+	
+	@Override
+	public boolean isPlayerOnTeam() {
+		return teamAgent != null;
+	}
+	
+	@Nullable
+	public TeamAgent<D> getTeamAgent() {
+		return teamAgent;
 	}
 
 }

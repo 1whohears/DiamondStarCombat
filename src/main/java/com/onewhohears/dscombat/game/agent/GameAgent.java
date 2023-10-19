@@ -1,8 +1,11 @@
 package com.onewhohears.dscombat.game.agent;
 
+import javax.annotation.Nullable;
+
 import com.onewhohears.dscombat.game.data.GameData;
 
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.damagesource.DamageSource;
 
 public abstract class GameAgent<D extends GameData> {
 	
@@ -30,7 +33,7 @@ public abstract class GameAgent<D extends GameData> {
 	protected void tickDead(MinecraftServer server) {
 	}
 	
-	public void onDeath(MinecraftServer server) {
+	public void onDeath(MinecraftServer server, @Nullable DamageSource source) {
 		lives = Math.max(lives-1, 0);
 	}
 	
@@ -70,6 +73,7 @@ public abstract class GameAgent<D extends GameData> {
 	}
 	
 	public abstract boolean isPlayer();
+	public abstract boolean isPlayerOnTeam();
 	public abstract boolean isTeam();
 	
 }

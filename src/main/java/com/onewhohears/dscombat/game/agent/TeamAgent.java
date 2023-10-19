@@ -47,7 +47,8 @@ public class TeamAgent<D extends GameData> extends GameAgent<D> {
 		for (String username : usernames) {
 			if (playerAgents.containsKey(username)) continue;
 			ServerPlayer player = server.getPlayerList().getPlayerByName(username);
-			if (player != null) playerAgents.put(username, getGameData().createPlayerAgent(player));
+			if (player != null) playerAgents.put(username, 
+					getGameData().createTeamPlayerAgent(player, this));
 		}
 	}
 	
@@ -75,6 +76,11 @@ public class TeamAgent<D extends GameData> extends GameAgent<D> {
 
 	@Override
 	public boolean isPlayer() {
+		return false;
+	}
+	
+	@Override
+	public boolean isPlayerOnTeam() {
 		return false;
 	}
 

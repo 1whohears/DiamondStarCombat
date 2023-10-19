@@ -134,6 +134,7 @@ public abstract class GameData {
 	}
 	
 	public abstract <D extends GameData> PlayerAgent<D> createPlayerAgent(ServerPlayer player);
+	public abstract <D extends GameData> PlayerAgent<D> createTeamPlayerAgent(ServerPlayer player, TeamAgent<D> teamAgent);
 	public abstract <D extends GameData> TeamAgent<D> createTeamAgent(PlayerTeam team);
 	
 	@SuppressWarnings("unchecked")

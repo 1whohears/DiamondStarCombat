@@ -1,13 +1,17 @@
 package com.onewhohears.dscombat.game;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nullable;
 
+import com.onewhohears.dscombat.game.agent.PlayerAgent;
 import com.onewhohears.dscombat.game.data.GameData;
 
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
 
 public class GameManager {
 	
@@ -104,6 +108,15 @@ public class GameManager {
 	
 	public interface GameGenerator {
 		GameData create(String gameInstanceId);
+	}
+	
+	public static List<PlayerAgent<?>> getPlayerAgents(ServerPlayer player) {
+		List<PlayerAgent<?>> agents = new ArrayList<>();
+		for (GameData game : runningGames.values()) {
+			PlayerAgent<?> agent = game.getPlayerAgentByUUID(player.getStringUUID());
+			if (agent != null) agents.add(agent);
+		}
+		return agents;
 	}
 	
 }

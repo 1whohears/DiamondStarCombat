@@ -11,11 +11,15 @@ import com.onewhohears.dscombat.data.weapon.NonTickingMissileManager;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.game.GameManager;
+import com.onewhohears.dscombat.game.agent.PlayerAgent;
 
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.level.ExplosionEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
@@ -31,12 +35,21 @@ import net.minecraftforge.network.PacketDistributor.PacketTarget;
 public final class CommonForgeEvents {
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
-	public static void playerHurtEvent(LivingHurtEvent event) {
+	public static void livingHurtEvent(LivingHurtEvent event) {
 		if (event.getSource().isBypassArmor() || event.getSource().isMagic()) return;
 		if (!event.getEntity().isPassenger() || !(event.getEntity().getRootVehicle() instanceof EntityVehicle plane)) return;
 		float a = event.getAmount();
 		//System.out.println("PLAYER HURT "+event.getEntity()+" "+a);
 		event.setAmount(Math.max(0, a-a*plane.getTotalArmor()*0.01f*Config.COMMON.armorStrength.get().floatValue()));
+	}
+	
+	@SubscribeEvent(priority = EventPriority.NORMAL)
+	public static void livingDeathEvent(LivingDeathEvent event) {
+		LivingEntity living = event.getEntity();
+		if (living.level.isClientSide) return;
+		if (living instanceof ServerPlayer player) 
+			for (PlayerAgent<?> agent : GameManager.getPlayerAgents(player)) 
+				agent.onDeath(player.getServer(), event.getSource());
 	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)

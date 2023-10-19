@@ -9,6 +9,7 @@ import com.onewhohears.dscombat.game.agent.GameAgent;
 import com.onewhohears.dscombat.game.agent.PlayerAgent;
 import com.onewhohears.dscombat.game.agent.TeamAgent;
 import com.onewhohears.dscombat.game.phase.GamePhase;
+import com.onewhohears.dscombat.game.phase.SetupPhase;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -20,15 +21,20 @@ public abstract class GameData {
 	private final String id;
 	private final Map<String, GameAgent<?>> agents = new HashMap<>();
 	private final Map<String, GamePhase<?>> phases = new HashMap<>();
-	private final GamePhase<?> firstPhase;
+	private final SetupPhase<?> setupPhase;
+	private final GamePhase<?> nextPhase;
 	private GamePhase<?> currentPhase;
 	private int age;
 	private boolean isStarted, isStopped;
 	
-	protected GameData(String id, GamePhase<?>...gamePhases) {
+	protected GameData(String id, SetupPhase<?> setupPhase, GamePhase<?> nextPhase, GamePhase<?>...otherPhases) {
 		this.id = id;
-		firstPhase = gamePhases[0];
-		for (GamePhase<?> phase : gamePhases) phases.put(phase.getId(), phase);
+		this.setupPhase = setupPhase;
+		this.nextPhase = nextPhase;
+		phases.put(setupPhase.getId(), setupPhase);
+		phases.put(nextPhase.getId(), nextPhase);
+		for (GamePhase<?> phase : otherPhases) phases.put(phase.getId(), phase);
+		currentPhase = setupPhase;
 	}
 	
 	public void serverTick(MinecraftServer server) {
@@ -39,7 +45,7 @@ public abstract class GameData {
 	
 	public void tickGame(MinecraftServer server) {
 		++age;
-		if (currentPhase != null) currentPhase.tickPhase(server);
+		currentPhase.tickPhase(server);
 		agents.forEach((id, agent) -> {
 			if (agent.canTickAgent(server)) agent.tickAgent(server);
 		});
@@ -53,6 +59,15 @@ public abstract class GameData {
 		return true;
 	}
 	
+	public boolean finishSetupPhase(MinecraftServer server) {
+		if (!canFinishSetupPhase(server)) return false;
+		return changePhase(server, nextPhase.getId());
+	}
+	
+	public boolean canFinishSetupPhase(MinecraftServer server) {
+		return agents.size() >= 2;
+	}
+	
 	public void reset(MinecraftServer server) {
 		isStarted = false;
 		isStopped = false;
@@ -64,7 +79,7 @@ public abstract class GameData {
 	public void start(MinecraftServer server) {
 		isStarted = true;
 		isStopped = false;
-		changePhase(server, firstPhase.getId());
+		changePhase(server, setupPhase.getId());
 	}
 	
 	public void stop(MinecraftServer server) {
@@ -74,6 +89,10 @@ public abstract class GameData {
 	
 	public boolean shouldTickGame(MinecraftServer server) {
 		return isStarted() && !isStopped();
+	}
+	
+	public boolean isSetupPhase() {
+		return isStarted() && currentPhase.isSetupPhase();
 	}
 	
 	public boolean shouldStart(MinecraftServer server) {
@@ -107,6 +126,13 @@ public abstract class GameData {
 	public abstract boolean canAddIndividualPlayers();
 	public abstract boolean canAddTeams();
 	
+	public String getSetupInfo() {
+		String info = "";
+		if (canAddIndividualPlayers()) info += "use add_player to add players to the game. ";
+		if (canAddTeams()) info += "use add_team to add teams to the game. ";
+		return info;
+	}
+	
 	public abstract <D extends GameData> PlayerAgent<D> createPlayerAgent(ServerPlayer player);
 	public abstract <D extends GameData> TeamAgent<D> createTeamAgent(PlayerTeam team);
 	
@@ -135,6 +161,10 @@ public abstract class GameData {
 	@Nullable
 	public GameAgent<?> getAgentById(String id) {
 		return agents.get(id);
+	}
+	
+	public boolean removeAgentById(String id) {
+		return agents.remove(id) != null;
 	}
 	
 	@Nullable

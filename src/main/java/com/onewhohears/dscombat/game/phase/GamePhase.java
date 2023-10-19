@@ -63,4 +63,8 @@ public abstract class GamePhase<T extends GameData> {
 		return age;
 	}
 	
+	public boolean isSetupPhase() {
+		return false;
+	}
+	
 }

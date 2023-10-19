@@ -24,7 +24,7 @@ import net.minecraft.world.phys.Vec3;
 public class MissileCommand {
 	
 	public MissileCommand(CommandDispatcher<CommandSourceStack> d) {
-		d.register(Commands.literal("missile").requires(null).requires((stack) -> { return stack.hasPermission(2);})
+		d.register(Commands.literal("missile").requires((stack) -> { return stack.hasPermission(2);})
 			.then(Commands.argument("target", EntityArgument.entities())
 			.then(Commands.argument("pos", Vec3Argument.vec3()).executes((context) -> {
 				return testMissile(context, EntityArgument.getEntities(context, "target"), 

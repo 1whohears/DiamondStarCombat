@@ -21,9 +21,11 @@ public class GameManager {
 	public static void registerGames() {
 		// TODO 3.1 create and register the following minigame modes
 		// team/ffa death match (1 or multiple lives)
+		// easy/fair dog fight resets (both players tp to runway when an aircraft is destroyed)
 		// bomb the flag/s
 		// team/ffa territory control
-		// survive the hoards
+		// one volunteer runs away from everyone else
+		// zombie apocalypse
 		// TODO 3.4 shop system
 		// TODO 3.5 load custom game presets from data packs
 		// TODO 3.6 this game system should probably be a separate mod as an optional dependency...

@@ -37,24 +37,11 @@ public class DSCGameRules {
 	}
 	
 	public static GameRules.Key<GameRules.BooleanValue> registerBoolean(String name, boolean defaultValue, GameRules.Category category) {
-		return GameRules.register(name, category, createBooleanType(defaultValue));
+		return GameRules.register(name, category, GameRules.BooleanValue.create(defaultValue));
 	}
 	
 	public static GameRules.Key<GameRules.IntegerValue> registerInteger(String name, int defaultValue, GameRules.Category category) {
 		return GameRules.register(name, category, createIntType(defaultValue));
-	}
-	
-	@SuppressWarnings("unchecked")
-	public static GameRules.Type<GameRules.BooleanValue> createBooleanType(boolean defaultValue) {
-		try {
-			Method m = ObfuscationReflectionHelper.findMethod(GameRules.BooleanValue.class, "m_46250_", boolean.class);
-			m.setAccessible(true);
-			return (GameRules.Type<GameRules.BooleanValue>) m.invoke(null, defaultValue);
-		} catch (Exception e) {
-			System.out.println("FAILED TO CREATE GAMERULE");
-			e.printStackTrace();
-		}
-		return null;
 	}
 	
 	@SuppressWarnings("unchecked")

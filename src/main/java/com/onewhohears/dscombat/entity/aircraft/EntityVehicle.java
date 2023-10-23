@@ -20,10 +20,11 @@ import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftCollide;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftMoveRot;
 import com.onewhohears.dscombat.data.aircraft.AircraftClientPreset;
 import com.onewhohears.dscombat.data.aircraft.AircraftClientPresets;
-import com.onewhohears.dscombat.data.aircraft.VehicleInputManager;
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
 import com.onewhohears.dscombat.data.aircraft.AircraftTextures;
+import com.onewhohears.dscombat.data.aircraft.VehicleInputManager;
+import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager;
 import com.onewhohears.dscombat.data.damagesource.AircraftDamageSource;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartsManager;
@@ -35,12 +36,10 @@ import com.onewhohears.dscombat.entity.parts.EntityPart;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.init.DataSerializers;
-import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.item.ItemAmmo;
 import com.onewhohears.dscombat.item.ItemCreativeWand;
 import com.onewhohears.dscombat.item.ItemGasCan;
 import com.onewhohears.dscombat.item.ItemRepairTool;
-import com.onewhohears.dscombat.util.UtilClientSafeSoundInstance;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.math.UtilAngles;
@@ -61,7 +60,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -131,6 +129,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public static final EntityDataAccessor<Float> BASE_ARMOR = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
 	
 	public final VehicleInputManager inputs = new VehicleInputManager();
+	public final VehicleSoundManager soundManager = new VehicleSoundManager(this);
 	public final PartsManager partsManager = new PartsManager(this);
 	public final WeaponSystem weaponSystem = new WeaponSystem(this);
 	public final RadarSystem radarSystem = new RadarSystem(this);
@@ -283,10 +282,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     	} else if (CURRRENT_DYE_ID.equals(key)) {
     		currentTexture = textures.getTexture(getCurrentColorId());
     	} else if (RADIO_SONG.equals(key)) {
-    		String sound = getRadioSong();
-    		//System.out.println("SONG UPDATE "+sound);
-    		if (!sound.isEmpty()) UtilClientSafeSoundInstance.aircraftRadio(
-    				Minecraft.getInstance(), this, sound);
+    		soundManager.onRadioSongUpdate(getRadioSong());
     	}
     }
 	
@@ -515,7 +511,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
         // OTHER
 		controlSystem();
         tickParts();
-		sounds();
+		soundManager.onTick();
 		if (level.isClientSide) clientTick();
 		else serverTick();
 	}
@@ -1393,8 +1389,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 * called in {@link EntityVehicle#init()} by client side
 	 */
 	public void clientSetup() {
-		UtilClientSafeSoundInstance.aircraftEngineSound(
-				Minecraft.getInstance(), this, getEngineSound());
+		soundManager.onClientInit();
 	}
 	
 	@Override
@@ -1655,9 +1650,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		if (isInvulnerableTo(source)) return false;
 		if (source.isFire()) hurtByFireTime = tickCount;
 		addHealth(-calcDamageBySource(source, amount));
-		if (!level.isClientSide && isOperational()) level.playSound(null, 
-			blockPosition(), ModSounds.VEHICLE_HIT_1.get(), 
-			SoundSource.PLAYERS, 0.5f, 1.0f);
+		soundManager.onHurt(source, amount);
 		if (!level.isClientSide && !isOperational()) {
 			checkExplodeWhenKilled(source);
 		}
@@ -2163,30 +2156,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     			parts.add(part);
     	return parts;
     }
-    
-    /**
-     * called every tick on client and server side.
-     * plays all the sounds for the players in the plane.
-     */
-    public void sounds() {
-    	if (level.isClientSide && isOperational()) {
-    		// THE PLAYER FOR LOOP IS REQUIRED OTHERWISE YOU GET FUCKED BY JAVA CLASS LOADER
-    		if (tickCount % 4 == 0 && radarSystem.isTrackedByMissile()) for (Player p : getRidingPlayers()) {
-    			level.playSound(p, new BlockPos(p.position()), 
-	    			ModSounds.MISSILE_WARNING.get(), SoundSource.PLAYERS, 
-	    			Config.CLIENT.rwrWarningVol.get().floatValue(), 1f);
-    		} else if (tickCount % 8 == 0 && radarSystem.isTrackedByRadar()) for (Player p : getRidingPlayers()) {
-    			level.playSound(p, new BlockPos(p.position()), 
-    	    		ModSounds.GETTING_LOCKED.get(), SoundSource.PLAYERS, 
-    	    		Config.CLIENT.missileWarningVol.get().floatValue(), 1f);
-        	}
-    		if (tickCount % 10 == 0 && shouldPlayIRTone()) for (Player p : getRidingPlayers()) {
-    			level.playSound(p, new BlockPos(p.position()), 
-    	    			ModSounds.FOX2_TONE_1.get(), SoundSource.PLAYERS, 
-    	    			Config.CLIENT.irTargetToneVol.get().floatValue(), 1f);
-    		}
-    	}
-    } 
     
     /**
      * entity tracking missile calls this server side when tracking this plane

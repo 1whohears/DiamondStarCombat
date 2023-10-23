@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.util;
 import java.util.NoSuchElementException;
 
 import com.onewhohears.dscombat.client.sounds.DopplerSoundInstance;
-import com.onewhohears.dscombat.client.sounds.PlaneEngineOnPlayerSoundInstance;
+import com.onewhohears.dscombat.client.sounds.VehicleEngineSoundInstance;
 import com.onewhohears.dscombat.client.sounds.PlaneMusicSoundInstance;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 
@@ -24,11 +24,18 @@ public class UtilClientSafeSoundInstance {
 				p, entity, initVolume, initPitch, velSound));
 	}
 	
-	public static void aircraftEngineSound(Minecraft m, EntityVehicle plane, SoundEvent sound) {
+	public static void nonPassengerVehicleEngineSound(Minecraft m, EntityVehicle plane, SoundEvent sound) {
 		LocalPlayer p = m.player;
 		if (p == null) return;
-		m.getSoundManager().play(new PlaneEngineOnPlayerSoundInstance(sound, 
-				p, plane, 10F));
+		m.getSoundManager().play(new VehicleEngineSoundInstance(sound, 
+				p, plane, 10F, false));
+	}
+	
+	public static void passengerVehicleEngineSound(Minecraft m, EntityVehicle plane, SoundEvent sound) {
+		LocalPlayer p = m.player;
+		if (p == null) return;
+		m.getSoundManager().play(new VehicleEngineSoundInstance(sound, 
+				p, plane, 10F, true));
 	}
 	
 	public static void aircraftRadio(Minecraft m, EntityVehicle plane, SoundEvent sound) {

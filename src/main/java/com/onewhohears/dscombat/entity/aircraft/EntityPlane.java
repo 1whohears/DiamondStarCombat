@@ -267,18 +267,6 @@ public class EntityPlane extends EntityVehicle {
 	}
 	
 	@Override
-	public void sounds() {
-		super.sounds();
-    	if (level.isClientSide && isOperational()) {
-    		// TODO 8.2 bitchin betty
-    		// pull up
-    		// over g
-    		// aoa stall
-    		// gear still out
-    	}
-    } 
-	
-	@Override
 	public float calcProjDamageBySource(DamageSource source, float amount) {
 		WeaponDamageType wdt = WeaponDamageType.byId(source.getMsgId());
 		if (wdt != null && wdt.isContact()) return amount*Config.COMMON.planeBulletFactor.get().floatValue();

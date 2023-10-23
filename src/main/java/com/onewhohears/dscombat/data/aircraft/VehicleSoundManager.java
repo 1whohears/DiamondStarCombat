@@ -69,11 +69,11 @@ public class VehicleSoundManager {
 	}
 	
 	public SoundEvent getNonPassengerEngineSound() {
-		return parent.getEngineSound();
+		return parent.vehicleData.externalEngineSound.get();
 	}
 	
 	public SoundEvent getPassengerEngineSound() {
-		return parent.getEngineSound();
+		return parent.vehicleData.internalEngineSound.get();
 	}
 	
 	public void onHurt(DamageSource source, float amount) {

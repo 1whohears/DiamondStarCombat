@@ -1,29 +1,20 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
+import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.RegistryObject;
 
 public class EntityGroundVehicle extends EntityVehicle {
 	
-	public final boolean isTank;
-	
-	protected final float wheelRate = 1.5f;
 	private float wheelLRot, wheelLRotOld, wheelRRot, wheelRRotOld;
 	
-	public EntityGroundVehicle(EntityType<? extends EntityGroundVehicle> entity, Level level,
-			AircraftPreset defaultPreset, RegistryObject<SoundEvent> engineSound, 
-			boolean isTank, float explodeSize, double camDist) {
-		super(entity, level, defaultPreset, engineSound,
-				true, 8, 12, 8, explodeSize, camDist);
-		this.isTank = isTank;
+	public EntityGroundVehicle(EntityType<? extends EntityGroundVehicle> entity, Level level, ImmutableVehicleData vehicleData) {
+		super(entity, level, vehicleData);
 	}
 	
 	@Override
@@ -56,7 +47,7 @@ public class EntityGroundVehicle extends EntityVehicle {
 	
 	@Override
 	public void directionGround(Quaternion q) {
-		if (isTank && isOperational()) {
+		if (vehicleData.isTank && isOperational()) {
 			flatten(q, 4f, 4f, true);
 			addMomentY(inputs.yaw * getYawTorque(), true);
 		} else super.directionGround(q);
@@ -103,8 +94,8 @@ public class EntityGroundVehicle extends EntityVehicle {
 		super.clientTick();
 		wheelLRotOld = wheelLRot;
 		wheelRRotOld = wheelRRot;
-		wheelLRot += xzSpeed * wheelRate * xzSpeedDir;
-		wheelRRot += xzSpeed * wheelRate * xzSpeedDir;
+		wheelLRot += xzSpeed * vehicleData.spinRate * xzSpeedDir;
+		wheelRRot += xzSpeed * vehicleData.spinRate * xzSpeedDir;
 	}
 	
 	public float getWheelLeftRotation(float partialTicks) {

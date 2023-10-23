@@ -3,15 +3,7 @@ package com.onewhohears.dscombat.init;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.aircraft.LiftKGraph;
-import com.onewhohears.dscombat.data.aircraft.presets.AlexisPresets;
-import com.onewhohears.dscombat.data.aircraft.presets.BoatPresets;
-import com.onewhohears.dscombat.data.aircraft.presets.CarPresets;
-import com.onewhohears.dscombat.data.aircraft.presets.HeliPresets;
-import com.onewhohears.dscombat.data.aircraft.presets.JaviPresets;
-import com.onewhohears.dscombat.data.aircraft.presets.PlanePresets;
-import com.onewhohears.dscombat.data.aircraft.presets.SubPresets;
-import com.onewhohears.dscombat.data.aircraft.presets.TankPresets;
+import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData;
 import com.onewhohears.dscombat.entity.EntityParachute;
 import com.onewhohears.dscombat.entity.aircraft.EntityBoat;
 import com.onewhohears.dscombat.entity.aircraft.EntityGroundVehicle;
@@ -35,7 +27,6 @@ import com.onewhohears.dscombat.entity.weapon.PositionMissile;
 import com.onewhohears.dscombat.entity.weapon.TorpedoMissile;
 import com.onewhohears.dscombat.entity.weapon.TrackEntityMissile;
 
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
@@ -58,71 +49,53 @@ public class ModEntities {
 	
 	public static final RegistryObject<EntityType<EntityPlane>> JAVI_PLANE = ENTITIES.register("javi_plane", 
 			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
-					JaviPresets.DEFAULT_JAVI_PLANE,
-					ModSounds.JET_1,
-					6, 10, 4, 4, 
-					LiftKGraph.JAVI_PLANE_GRAPH, 10f, true, 0, 9), 
+					ImmutableVehicleData.JAVI_PLANE_DATA), 
 					EntityDimensions.scalable(2.45f, 2.45f)));
 	
 	public static final RegistryObject<EntityType<EntityPlane>> ALEXIS_PLANE = ENTITIES.register("alexis_plane", 
 			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
-					AlexisPresets.DEFAULT_ALEXIS_PLANE,
-					ModSounds.JET_1,
-					4, 8, 2, 3, 
-					LiftKGraph.ALEXIS_PLANE_GRAPH, 8f, false, 0, 17), 
+					ImmutableVehicleData.ALEXIS_PLANE_DATA), 
 					EntityDimensions.scalable(4.0f, 4.0f)));
 	
 	public static final RegistryObject<EntityType<EntityPlane>> WOODEN_PLANE = ENTITIES.register("wooden_plane", 
 			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
-					PlanePresets.DEFAULT_WOODEN_PLANE,
-					ModSounds.BIPLANE_1,
-					4, 7, 3, 3, 
-					LiftKGraph.WOODEN_PLANE_GRAPH, 8f, false, Mth.PI, 4), 
+					ImmutableVehicleData.WOODEN_PLANE_DATA), 
 					EntityDimensions.scalable(1.7f, 1.7f)));
 	
 	public static final RegistryObject<EntityType<EntityPlane>> E3SENTRY_PLANE = ENTITIES.register("e3sentry_plane", 
 			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
-					PlanePresets.DEFAULT_E3SENTRY_PLANE,
-					ModSounds.JET_1,
-					10, 12, 8, 7, 
-					LiftKGraph.E3SENTRY_PLANE_GRAPH, 10f, false, Mth.PI * 0.01f, 12), 
+					ImmutableVehicleData.E3SENTRY_PLANE_DATA), 
 					EntityDimensions.scalable(4.0f, 4.0f)));
 	
 	// HELICOPTORS
 	
 	public static final RegistryObject<EntityType<EntityHelicopter>> NOAH_CHOPPER = ENTITIES.register("noah_chopper", 
 			() -> createEntityTypeFar((type, level) -> new EntityHelicopter(type, level, 
-					HeliPresets.DEFAULT_NOAH_CHOPPER,
-					ModSounds.HELI_1, true, 
-					8, 6, 4, 4, 2.75f, 6), 
+					ImmutableVehicleData.NOAH_CHOPPER_DATA), 
 					EntityDimensions.scalable(2.8f, 2.8f)));
 	
 	// TANKS
 	
 	public static final RegistryObject<EntityType<EntityGroundVehicle>> MRBUDGER_TANK = ENTITIES.register("mrbudger_tank", 
 			() -> createEntityTypeFar((type, level) -> new EntityGroundVehicle(type, level, 
-					TankPresets.DEFAULT_MRBUDGER_TANK,
-					ModSounds.TANK_1, true, 3, 4), 
+					ImmutableVehicleData.MRBUDGER_TANK_DATA), 
 					EntityDimensions.scalable(3.0f, 2.5f)));
 	
 	public static final RegistryObject<EntityType<EntityGroundVehicle>> SMALL_ROLLER = ENTITIES.register("small_roller", 
 			() -> createEntityTypeFar((type, level) -> new EntityGroundVehicle(type, level, 
-					TankPresets.DEFAULT_SMALL_ROLLER,
-					ModSounds.TANK_1, true, 1, 4), 
+					ImmutableVehicleData.SMALL_ROLLER_DATA), 
 					EntityDimensions.scalable(1.5f, 0.8f)));
 	
 	// CARS
 	
 	public static final RegistryObject<EntityType<EntityGroundVehicle>> ORANGE_TESLA = ENTITIES.register("orange_tesla", 
 			() -> createEntityTypeFar((type, level) -> new EntityGroundVehicle(type, level, 
-					CarPresets.DEFAULT_ORANGE_TESLA,
-					ModSounds.ORANGE_TESLA, false, 2, 4), 
+					ImmutableVehicleData.ORANGE_TESLA_DATA), 
 					EntityDimensions.scalable(2.5f, 2.15f)));
 	
 	public static final RegistryObject<EntityType<EntityGroundVehicle>> AXCEL_TRUCK = ENTITIES.register("axcel_truck", 
 			() -> createEntityTypeFar((type, level) -> new EntityGroundVehicle(type, level, 
-					CarPresets.DEFAULT_AXCEL_TRUCK,
-					ModSounds.TANK_1, false, 3, 7), 
+					ImmutableVehicleData.AXCEL_TRUCK_DATA), 
 					EntityDimensions.scalable(2.5f, 3.0f)));
 	
 	// TODO 2.6 fuel truck
@@ -131,13 +104,12 @@ public class ModEntities {
 	
 	public static final RegistryObject<EntityType<EntityBoat>> NATHAN_BOAT = ENTITIES.register("nathan_boat", 
 			() -> createEntityTypeFar((type, level) -> new EntityBoat(type, level, 
-					BoatPresets.DEFAULT_NATHAN_BOAT,
-					ModSounds.BOAT_1, 2, 4), 
+					ImmutableVehicleData.NATHA_BOAT_DATA), 
 					EntityDimensions.scalable(3.0f,1.5f)));
 	
 	public static final RegistryObject<EntityType<EntityBoat>> GRONK_BATTLESHIP = ENTITIES.register("gronk_battleship", 
 			() -> createEntityTypeFar((type, level) -> new EntityBoat(type, level, 
-					BoatPresets.DEFAULT_GRONK_BATTLESHIP, ModSounds.BOAT_1, 8, 30) {
+					ImmutableVehicleData.GRONK_BATTLESHIP_DATA) {
 						@Override
 						public void addHitboxes() {
 							hitboxes = new RotableHitbox[5];
@@ -161,7 +133,7 @@ public class ModEntities {
 	
 	public static final RegistryObject<EntityType<EntityBoat>> DESTROYER = ENTITIES.register("destroyer", 
 			() -> createEntityTypeFar((type, level) -> new EntityBoat(type, level, 
-					BoatPresets.DEFAULT_DESTROYER, ModSounds.BOAT_1, 8, 22) {
+					ImmutableVehicleData.DESTROYER_DATA) {
 						@Override
 						public void addHitboxes() {
 							hitboxes = new RotableHitbox[1];
@@ -173,7 +145,7 @@ public class ModEntities {
 	
 	public static final RegistryObject<EntityType<EntityBoat>> CRUISER = ENTITIES.register("cruiser", 
 			() -> createEntityTypeFar((type, level) -> new EntityBoat(type, level, 
-					BoatPresets.DEFAULT_CRUISER, ModSounds.BOAT_1, 8, 26) {
+					ImmutableVehicleData.CRUISER_DATA) {
 						@Override
 						public void addHitboxes() {
 							hitboxes = new RotableHitbox[2];
@@ -188,7 +160,7 @@ public class ModEntities {
 	
 	public static final RegistryObject<EntityType<EntityBoat>> CORVETTE = ENTITIES.register("corvette", 
 			() -> createEntityTypeFar((type, level) -> new EntityBoat(type, level, 
-					BoatPresets.DEFAULT_CORVETTE, ModSounds.BOAT_1, 8, 13) {
+					ImmutableVehicleData.CORVETTE_DATA) {
 						@Override
 						public void addHitboxes() {
 							hitboxes = new RotableHitbox[1];
@@ -200,7 +172,7 @@ public class ModEntities {
 	
 	public static final RegistryObject<EntityType<EntityBoat>> AIRCRAFT_CARRIER = ENTITIES.register("aircraft_carrier", 
 			() -> createEntityTypeFar((type, level) -> new EntityBoat(type, level, 
-					BoatPresets.DEFAULT_AIRCRAFT_CARRIER, ModSounds.BOAT_1, 10, 34) {
+					ImmutableVehicleData.AIRCRAFT_CARRIER_DATA) {
 						@Override
 						public void addHitboxes() {
 							hitboxes = new RotableHitbox[2];
@@ -217,8 +189,7 @@ public class ModEntities {
 	
 	public static final RegistryObject<EntityType<EntitySubmarine>> ANDOLF_SUB = ENTITIES.register("andolf_sub", 
 			() -> createEntityTypeFar((type, level) -> new EntitySubmarine(type, level, 
-					SubPresets.DEFAULT_ANDOLF_SUB,
-					ModSounds.SUB_1, 4, 12), 
+					ImmutableVehicleData.ANDOLF_SUB_DATA), 
 					EntityDimensions.scalable(4.5f,4.0f)));
 	
 	/* 

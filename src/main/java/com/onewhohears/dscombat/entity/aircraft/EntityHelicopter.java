@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
+import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 
@@ -9,32 +9,20 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.RegistryObject;
 
 public class EntityHelicopter extends EntityVehicle {
 	
 	public static final EntityDataAccessor<Float> ACC_FORWARD = SynchedEntityData.defineId(EntityHelicopter.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> ACC_SIDE = SynchedEntityData.defineId(EntityHelicopter.class, EntityDataSerializers.FLOAT);
 	
-	public final float heliLiftFactor;
-	
-	private final float propellerRate = 3.141f;
 	private float propellerRot, propellerRotOld;
-	private final boolean alwaysLandingGear;
 	
-	public EntityHelicopter(EntityType<? extends EntityHelicopter> entity, Level level,
-			AircraftPreset defaultPreset, RegistryObject<SoundEvent> engineSound, 
-			boolean alwaysLandingGear, float Ix, float Iy, float Iz, float explodeSize, 
-			float heliLiftFactor, double camDist) {
-		super(entity, level, defaultPreset, engineSound,
-				false, Ix, Iy, Iz, explodeSize, camDist);
-		this.alwaysLandingGear = alwaysLandingGear;
-		this.heliLiftFactor = heliLiftFactor;
+	public EntityHelicopter(EntityType<? extends EntityHelicopter> entity, Level level, ImmutableVehicleData vehicleData) {
+		super(entity, level, vehicleData);
 	}
 	
 	@Override
@@ -68,7 +56,7 @@ public class EntityHelicopter extends EntityVehicle {
 		super.clientTick();
 		float th = getCurrentThrottle();
 		propellerRotOld = propellerRot;
-		propellerRot += th * propellerRate;
+		propellerRot += th * vehicleData.spinRate;
 	}
 	
 	@Override
@@ -135,7 +123,7 @@ public class EntityHelicopter extends EntityVehicle {
 	
 	@Override
 	public float getMaxPushThrust() {
-		return getMaxSpinThrust() * (float)airPressure * heliLiftFactor;
+		return getMaxSpinThrust() * (float)airPressure * vehicleData.heliLiftFactor;
 	}
 	
 	public float getPropellerRotation(float partialTicks) {
@@ -144,7 +132,7 @@ public class EntityHelicopter extends EntityVehicle {
 	
 	@Override
 	public boolean isLandingGear() {
-		if (alwaysLandingGear) return true;
+		if (vehicleData.alwaysLandingGear) return true;
     	return super.isLandingGear();
     }
 	
@@ -176,7 +164,7 @@ public class EntityHelicopter extends EntityVehicle {
 
 	@Override
 	public boolean canToggleLandingGear() {
-		return !alwaysLandingGear;
+		return !vehicleData.alwaysLandingGear;
 	}
 	
 	@Override

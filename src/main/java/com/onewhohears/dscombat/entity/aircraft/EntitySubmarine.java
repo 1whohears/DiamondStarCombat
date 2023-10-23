@@ -1,21 +1,17 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
+import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.RegistryObject;
 
 public class EntitySubmarine extends EntityBoat {
 	
-	public EntitySubmarine(EntityType<? extends EntitySubmarine> entity, Level level, 
-			AircraftPreset defaultPreset, RegistryObject<SoundEvent> engineSound, 
-			float explodeSize, double camDist) {
-		super(entity, level, defaultPreset, engineSound, explodeSize, camDist);
+	public EntitySubmarine(EntityType<? extends EntitySubmarine> entity, Level level, ImmutableVehicleData vehicleData) {
+		super(entity, level, vehicleData);
 	}
 	
 	@Override

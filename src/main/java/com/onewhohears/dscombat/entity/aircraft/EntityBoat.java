@@ -2,12 +2,11 @@ package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.Config;
-import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
+import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
@@ -15,23 +14,17 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.RegistryObject;
 
 public class EntityBoat extends EntityVehicle {
 	
 	public final double CO_FLOAT = Config.SERVER.coFloat.get();
 	
-	private final float propellerRate = 3.141f;
 	private float propellerRot = 0, propellerRotOld = 0;
 	
 	protected double waterLevel;
 	
-	public EntityBoat(EntityType<? extends EntityBoat> entity, Level level, 
-			AircraftPreset defaultPreset,
-			RegistryObject<SoundEvent> engineSound, 
-			float explodeSize, double camDist) {
-		super(entity, level, defaultPreset, engineSound,
-				true, 6, 10, 4, explodeSize, camDist);
+	public EntityBoat(EntityType<? extends EntityBoat> entity, Level level, ImmutableVehicleData vehicleData) {
+		super(entity, level, vehicleData);
 	}
 	
 	@Override
@@ -221,7 +214,7 @@ public class EntityBoat extends EntityVehicle {
 		super.clientTick();
 		float th = getCurrentThrottle();
 		propellerRotOld = propellerRot;
-		propellerRot += th * propellerRate;
+		propellerRot += th * vehicleData.spinRate;
 	}
 	
 	public float getPropellerRotation(float partialTicks) {

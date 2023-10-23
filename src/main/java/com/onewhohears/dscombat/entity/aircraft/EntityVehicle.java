@@ -23,6 +23,7 @@ import com.onewhohears.dscombat.data.aircraft.AircraftClientPresets;
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
 import com.onewhohears.dscombat.data.aircraft.AircraftTextures;
+import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData;
 import com.onewhohears.dscombat.data.aircraft.VehicleInputManager;
 import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager;
 import com.onewhohears.dscombat.data.damagesource.AircraftDamageSource;
@@ -58,7 +59,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -93,7 +93,6 @@ import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.registries.RegistryObject;
 
 /**
  * the parent class for all vehicle entities in this mod
@@ -133,6 +132,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public final PartsManager partsManager = new PartsManager(this);
 	public final WeaponSystem weaponSystem = new WeaponSystem(this);
 	public final RadarSystem radarSystem = new RadarSystem(this);
+	public final String defaultPreset;
+	public final ImmutableVehicleData vehicleData;
 	
 	public final double ACC_GRAVITY = Config.SERVER.accGravity.get();
 	public final double CO_DRAG = Config.SERVER.coDrag.get();
@@ -142,13 +143,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public final double collideSpeedWithGearThreshHold = Config.SERVER.collideSpeedWithGearThreshHold.get();
 	public final double collideDamageRate = Config.SERVER.collideDamageRate.get();
 	public final double maxFallSpeed = Config.SERVER.maxFallSpeed.get();
-	
-	public final String defaultPreset;
-	public final boolean negativeThrottle;
-	public final float Ix, Iy, Iz, explodeSize;
-	public final double camDist;
-	
-	protected final RegistryObject<SoundEvent> engineSound;
 	
 	/**
 	 * this vehicle's original preset. 
@@ -202,26 +196,17 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	// TODO 5.6 place and remove external parts from outside the vehicle
 	// TODO 2.5 add chaff
 	
-	public EntityVehicle(EntityType<? extends EntityVehicle> entityType, Level level,
-						 AircraftPreset defaultPreset, RegistryObject<SoundEvent> engineSound,
-						 boolean negativeThrottle, float Ix, float Iy, float Iz,
-						 float explodeSize, double camDist) {
+	public EntityVehicle(EntityType<? extends EntityVehicle> entityType, Level level, ImmutableVehicleData vehicleData) {
 		super(entityType, level);
-		this.defaultPreset = defaultPreset.getId();
+		this.vehicleData = vehicleData;
+		this.defaultPreset = vehicleData.defaultPreset.getId();
 		this.preset = this.defaultPreset;
 		if (level.isClientSide) {
 			AircraftClientPreset acp = AircraftClientPresets.get().getPreset(this.defaultPreset);
 			this.textures = acp.getAircraftTextures();
-			this.currentTexture = textures.getTexture(defaultPreset.getDefaultPaintJob());
+			this.currentTexture = textures.getTexture(vehicleData.defaultPreset.getDefaultPaintJob());
 		}
-		this.item = defaultPreset.getItem();
-		this.engineSound = engineSound;
-		this.negativeThrottle = negativeThrottle;
-		this.Ix = Ix;
-		this.Iy = Iy;
-		this.Iz = Iz;
-		this.explodeSize = explodeSize;
-		this.camDist = camDist;
+		this.item = vehicleData.defaultPreset.getItem();
 		this.blocksBuilding = true;
 		addHitboxes();
 		setId(ENTITY_COUNTER.getAndAdd(hitboxes.length+1)+1);
@@ -769,7 +754,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		else directionAir(q);
 		Vec3 m = getMoment().add(addMomentBetweenTicks), av = getAngularVel();
 		if (!UtilGeometry.isZero(m)) {
-			av = av.add(m.x/Ix, m.y/Iy, m.z/Iz);
+			av = av.add(m.x/vehicleData.Ix, m.y/vehicleData.Iy, m.z/vehicleData.Iz);
 			setAngularVel(av);
 		}
 		q.mul(Vector3f.XN.rotationDegrees((float)av.x));
@@ -789,9 +774,9 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			if (inputs.roll != 0) dz = 0;
 		}
 		setAngularVel(new Vec3(
-				getADComponent(av.x, dx, Ix),
-				getADComponent(av.y, dy, Iy),
-				getADComponent(av.z, dz, Iz)));
+				getADComponent(av.x, dx, vehicleData.Ix),
+				getADComponent(av.y, dy, vehicleData.Iy),
+				getADComponent(av.z, dz, vehicleData.Iz)));
 	}
 	
 	private double getADComponent(double v, float d, float I) {
@@ -879,9 +864,9 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		double x = moment.x, y = moment.y, z = moment.z;
 		if (control) {
 			Vec3 av = getAngularVel();
-			if (moment.x != 0) x = getControlMomentComponent(m.x, moment.x, av.x, getControlMaxDeltaPitch(), Ix);
-			if (moment.y != 0) y = getControlMomentComponent(m.y, moment.y, av.y, getControlMaxDeltaYaw(), Iy);
-			if (moment.z != 0) z = getControlMomentComponent(m.z, moment.z, av.z, getControlMaxDeltaRoll(), Iz);
+			if (moment.x != 0) x = getControlMomentComponent(m.x, moment.x, av.x, getControlMaxDeltaPitch(), vehicleData.Ix);
+			if (moment.y != 0) y = getControlMomentComponent(m.y, moment.y, av.y, getControlMaxDeltaYaw(), vehicleData.Iy);
+			if (moment.z != 0) z = getControlMomentComponent(m.z, moment.z, av.z, getControlMaxDeltaRoll(), vehicleData.Iz);
 		}
 		setMoment(m.add(x, y, z));
 	}
@@ -1696,7 +1681,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		if (!level.isClientSide) {
 			level.explode(this, source,
 				null, getX(), getY(), getZ(), 
-				explodeSize, true, 
+				vehicleData.crashExplosionRadius, true, 
 				Explosion.BlockInteraction.BREAK);
 		} else {
 			level.addParticle(ParticleTypes.LARGE_SMOKE, 
@@ -1795,8 +1780,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
      */
     public final void setCurrentThrottle(float throttle) {
     	if (throttle > 1) throttle = 1;
-    	else if (negativeThrottle && throttle < -1) throttle = -1;
-    	else if (!negativeThrottle && throttle < 0) throttle = 0;
+    	else if (vehicleData.negativeThrottle && throttle < -1) throttle = -1;
+    	else if (!vehicleData.negativeThrottle && throttle < 0) throttle = 0;
     	this.throttle = throttle;
     }
     
@@ -2002,10 +1987,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
      */
     public ResourceLocation getTexture() {
     	return currentTexture;
-    }
-    
-    public SoundEvent getEngineSound() {
-    	return engineSound.get();
     }
     
     /**

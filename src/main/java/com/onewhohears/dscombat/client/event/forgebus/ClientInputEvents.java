@@ -4,7 +4,6 @@ import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftControl;
 import com.onewhohears.dscombat.common.network.toserver.ToServerDismount;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSeatPos;
 import com.onewhohears.dscombat.common.network.toserver.ToServerShootTurret;
@@ -47,12 +46,12 @@ public final class ClientInputEvents {
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
 		if (player == null) return;
-		int select = 0;
-		if (DSCKeys.weaponSelect2Key.consumeClick()) select = -1;
-		else if (DSCKeys.weaponSelectKey.consumeClick()) select = 1;
+		int selectNextWeapon = 0;
+		if (DSCKeys.weaponSelect2Key.consumeClick()) selectNextWeapon = -1;
+		else if (DSCKeys.weaponSelectKey.consumeClick()) selectNextWeapon = 1;
 		boolean openMenu = DSCKeys.planeMenuKey.consumeClick();
-		boolean gear = DSCKeys.landingGear.consumeClick();
-		boolean radarMode = DSCKeys.radarModeKey.consumeClick();
+		boolean toggleGear = DSCKeys.landingGear.consumeClick();
+		boolean cycleRadarMode = DSCKeys.radarModeKey.consumeClick();
 		if (!player.isPassenger()) return;
 		if (!(player.getRootVehicle() instanceof EntityVehicle plane)) {
 			MOUSE_MODE = false;
@@ -145,13 +144,11 @@ public final class ClientInputEvents {
 		if (rollRight) roll += 1;
 		if (throttleUp) throttle += 1;
 		if (throttleDown) throttle -= 1;
-		plane.inputs.update(throttle, pitch, roll, yaw, 
+		plane.inputs.clientUpdateServerControls(plane, 
+				throttle, pitch, roll, yaw, 
 				flare, shoot, openMenu, special, special2, 
-				rollLeft && rollRight);
-		plane.weaponSystem.selectNextWeapon(select);
-		if (radarMode) plane.cycleRadarMode();
-		if (gear) plane.toggleLandingGear();
-		PacketHandler.INSTANCE.sendToServer(new ToServerAircraftControl(plane));
+				rollLeft && rollRight, 
+				selectNextWeapon, cycleRadarMode, toggleGear);
 		if (MOUSE_MODE && !plane.onlyFreeLook()) centerMouse();
 	}
 	

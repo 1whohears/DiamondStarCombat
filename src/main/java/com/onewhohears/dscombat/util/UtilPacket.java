@@ -2,10 +2,9 @@ package com.onewhohears.dscombat.util;
 
 import java.util.List;
 
-import com.onewhohears.dscombat.data.aircraft.AircraftInputs;
+import com.onewhohears.dscombat.data.aircraft.VehicleInputManager;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot;
-import com.onewhohears.dscombat.data.radar.RadarData.RadarMode;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
 import com.onewhohears.dscombat.data.radar.RadarSystem.RWRWarning;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
@@ -17,18 +16,12 @@ import net.minecraft.world.phys.Vec3;
 
 public class UtilPacket {
 	
-	public static void aircraftInputsPacket(int id, AircraftInputs inputs, int weaponIndex, RadarMode radarMode,
-			boolean isLandingGear, boolean isFreeLook, float throttle) {
+	public static void aircraftInputsPacket(int id, VehicleInputManager inputs) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityVehicle plane) {
 			if (!plane.isControlledByLocalInstance()) {
-				plane.inputs.copy(inputs);
-				plane.weaponSystem.setSelected(weaponIndex);
-				plane.setRadarMode(radarMode);
-				plane.setLandingGear(isLandingGear);
-				plane.setOnlyFreeLook(isFreeLook);
-				plane.setCurrentThrottle(throttle);
+				plane.inputs.updateInputsFromPacket(inputs, plane);
 			}
 		}
 	}

@@ -89,6 +89,8 @@ public class WeaponPresets extends JsonPresetReloadListener<WeaponData> {
 			return new TorpedoData(key, json);
 		case BUNKER_BUSTER:
 			return new BunkerBusterData(key, json);
+		case NONE:
+			return null;
 		}
 		return null;
 	}

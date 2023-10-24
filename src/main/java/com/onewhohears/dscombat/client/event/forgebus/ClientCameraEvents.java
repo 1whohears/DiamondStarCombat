@@ -1,10 +1,5 @@
 package com.onewhohears.dscombat.client.event.forgebus;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
-import javax.annotation.Nullable;
-
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCursorPosCallbackI;
 
@@ -16,7 +11,6 @@ import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.MouseHandler;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.HitResult;
@@ -28,8 +22,6 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
-import net.minecraftforge.fml.util.ObfuscationReflectionHelper.UnableToFindMethodException;
 
 @Mod.EventBusSubscriber(modid = DSCombatMod.MODID, bus = Bus.FORGE, value = Dist.CLIENT)
 public class ClientCameraEvents {
@@ -58,17 +50,13 @@ public class ClientCameraEvents {
 		if (detached && mirrored) zi *= -1;
 		event.setRoll(zi);
 		double camDist = plane.vehicleData.cameraDistance;
-		if (detached && isController && camDist > 4 && getCameraMove() != null) {
+		if (detached && isController && camDist > 4) {
 			// TODO 4.2 making third person work in mouse mode (again, à la garry's mod WAC planes)
 			// TODO 4.1 option to change turret camera position. so camera could be under the aircraft
 			// To add onto this, a thermal camera option would be nice too; or in the future, an attack helicopter
 			// could have a movable turret
 			double vehicleCamDist = Math.min(0, 4-getMaxDist(event.getCamera(), player, camDist));
-			try {
-				getCameraMove().invoke(event.getCamera(), vehicleCamDist, 0, 0);
-			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-				e.printStackTrace();
-			}
+			event.getCamera().move(vehicleCamDist, 0, 0);
 		}
 	}
 	
@@ -86,54 +74,12 @@ public class ClientCameraEvents {
 		return dist;
 	}
 	
-	public static Method cameraMove;
-	public static boolean tried1;
-	
-	@Nullable
-	public static Method getCameraMove() {
-		if (cameraMove != null) return cameraMove; 
-		if (tried1) return null;
-		tried1 = true;
-		cameraMove = tryGetCameraMove("m_90568_");
-		if (cameraMove == null) cameraMove = tryGetCameraMove("move");
-		return cameraMove;
-	}
-	
-	@Nullable
-	private static Method tryGetCameraMove(String methodName) {
-		try {
-			return ObfuscationReflectionHelper.findMethod(Camera.class, methodName, 
-					double.class, double.class, double.class);
-		} catch (UnableToFindMethodException e) {
-			System.out.println("ERROR: THE CAMERA MOVE METHOD IS NOT "+methodName);
-			return null;
-		}
-	}
-	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void clientTickSetMouseCallback(TickEvent.ClientTickEvent event) {
 		Minecraft m = Minecraft.getInstance();
 		if (m.player == null || m.player.tickCount != 1) return;
 		if (!Config.CLIENT.cameraTurnRelativeToVehicle.get()) return;
-		if (getVanillaOnMove() == null) return;
 		GLFW.glfwSetCursorPosCallback(m.getWindow().getWindow(), ClientCameraEvents.customMouseCallback);
-	}
-	
-	public static Method vanillaOnMove;
-	public static boolean tried = false;
-	
-	@Nullable
-	public static Method getVanillaOnMove() {
-		if (vanillaOnMove != null) return vanillaOnMove; 
-		if (tried) return null;
-		tried = true;
-		try {
-			vanillaOnMove = ObfuscationReflectionHelper.findMethod(MouseHandler.class, "m_91561_", 
-				long.class, double.class, double.class);
-		} catch (UnableToFindMethodException e) {
-			System.out.println("ERROR: VANILLA MOUSE POS CALLBACK IS NOT m_91561_");
-		}
-		return vanillaOnMove;
 	}
 	
 	public static final GLFWCursorPosCallbackI customMouseCallback = (window, x, y) -> {
@@ -151,10 +97,7 @@ public class ClientCameraEvents {
 				yn = dy*Math.cos(r) + dx*Math.sin(r) + m.mouseHandler.ypos();
 				GLFW.glfwSetCursorPos(window, xn, yn);
 			}
-			try { getVanillaOnMove().invoke(m.mouseHandler, window, xn, yn); } 
-			catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-				e.printStackTrace();
-			}
+			m.mouseHandler.onMove(window, xn, yn);
 		});
 	};
 	

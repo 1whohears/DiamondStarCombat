@@ -1,9 +1,6 @@
 package com.onewhohears.dscombat.command;
 
-import java.lang.reflect.Method;
-
 import net.minecraft.world.level.GameRules;
-import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 public class DSCGameRules {
 	
@@ -41,20 +38,7 @@ public class DSCGameRules {
 	}
 	
 	public static GameRules.Key<GameRules.IntegerValue> registerInteger(String name, int defaultValue, GameRules.Category category) {
-		return GameRules.register(name, category, createIntType(defaultValue));
-	}
-	
-	@SuppressWarnings("unchecked")
-	public static GameRules.Type<GameRules.IntegerValue> createIntType(int defaultValue) {
-		try {
-			Method m = ObfuscationReflectionHelper.findMethod(GameRules.IntegerValue.class, "m_46252_", int.class);
-			m.setAccessible(true);
-			return (GameRules.Type<GameRules.IntegerValue>) m.invoke(null, defaultValue);
-		} catch (Exception e) {
-			System.out.println("FAILED TO CREATE GAMERULE");
-			e.printStackTrace();
-		}
-		return null;
+		return GameRules.register(name, category, GameRules.IntegerValue.create(defaultValue));
 	}
 	
 }

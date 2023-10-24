@@ -1,12 +1,10 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.function.Predicate;
 
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
-import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.math.RotableAABB;
 import com.onewhohears.dscombat.util.math.RotableAABB.CollisionData;
 import com.onewhohears.dscombat.util.math.UtilAngles;
@@ -82,22 +80,11 @@ public class RotableHitbox extends PartEntity<EntityVehicle> {
 			if (entity instanceof Projectile pro) {
 				Vec3 collide = hitbox.getCollidePos(entity_pos, entity_move, rot, data);
 				if (collide == null) continue;
-				if (UtilEntity.getCanHitEntityMethod() == null) continue;
-				boolean canHit = false;
-				try {
-					canHit = (boolean) UtilEntity.getCanHitEntityMethod().invoke(pro, getParent());
-				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-					e.printStackTrace();
-				}
+				boolean canHit = pro.canHitEntity(getParent());
 				if (!canHit) continue;
-				if (UtilEntity.getOnHitEntityMethod() == null) continue;
 				pro.setPos(collide);
 				EntityHitResult hit = new EntityHitResult(this, collide);
-				try {
-					UtilEntity.getOnHitEntityMethod().invoke(entity, hit);
-				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-					e.printStackTrace();
-				}
+				pro.onHitEntity(hit);
 				continue;
 			}
 			// other entity collide

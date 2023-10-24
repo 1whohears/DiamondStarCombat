@@ -1708,17 +1708,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		Vec3 b = UtilGeometry.getClosestPointOnAABB(s, getBoundingBox());
 		Vec3 r = b.subtract(position());
 		
-		float diameter = 6f;
-		if (UtilEntity.getExplosionRadiusField() != null) {
-			try {
-				diameter = (float)UtilEntity.getExplosionRadiusField().get(exp) * 2;
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			}
-		}
-		
+		float diameter = exp.radius * 2f;
 		double dist_check = Math.sqrt(this.distanceToSqr(s)) / (double)diameter;
 		if (dist_check > 1.0d) return;
 		

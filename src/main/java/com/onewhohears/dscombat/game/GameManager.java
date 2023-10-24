@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.game.agent.PlayerAgent;
+import com.onewhohears.dscombat.game.data.DeathMatchData;
 import com.onewhohears.dscombat.game.data.GameData;
 
 import net.minecraft.server.MinecraftServer;
@@ -23,6 +24,9 @@ public class GameManager {
 	 * register all games here
 	 */
 	public static void registerGames() {
+		registerGame("simple_team_deathmatch", (id) -> {
+			return DeathMatchData.createSimpleTeamDeathMatch(id);
+		});
 		// TODO 3.1 create and register the following minigame modes
 		// team/ffa death match (1 or multiple lives)
 		// easy/fair dog fight resets (both players tp to runway when an aircraft is destroyed)

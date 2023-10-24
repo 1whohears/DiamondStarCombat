@@ -38,14 +38,14 @@ public abstract class GameAgent<D extends GameData> {
 	}
 	
 	public boolean isDead() {
-		return lives <= 0;
+		return getLives() <= 0;
 	}
 	
-	public void resetAgent(int initLives, int initMoney) {
+	public void resetAgent() {
 		age = 0;
 		score = 0;
-		lives = initLives;
-		money = initMoney;
+		money = 0;
+		lives = getGameData().getInitialLives();
 	}
 	
 	public String getId() {
@@ -68,8 +68,16 @@ public abstract class GameAgent<D extends GameData> {
 		return lives;
 	}
 	
+	public void setLives(int lives) {
+		this.lives = lives;
+	}
+	
 	public int getMoney() {
 		return money;
+	}
+	
+	public void setMoney(int money) {
+		this.money = money;
 	}
 	
 	public abstract boolean isPlayer();

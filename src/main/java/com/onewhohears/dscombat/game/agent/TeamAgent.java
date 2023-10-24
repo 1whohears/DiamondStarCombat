@@ -1,7 +1,9 @@
 package com.onewhohears.dscombat.game.agent;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nullable;
@@ -34,7 +36,8 @@ public class TeamAgent<D extends GameData> extends GameAgent<D> {
 	
 	protected void tickPlayerAgents(MinecraftServer server) {
 		playerAgents.forEach((username, player) -> {
-			player.tickAgent(server, this);
+			player.tickAgent(server);
+			getGameData().getCurrentPhase().tickPlayerAgent(server, player);
 		});
 	}
 	
@@ -47,8 +50,11 @@ public class TeamAgent<D extends GameData> extends GameAgent<D> {
 		for (String username : usernames) {
 			if (playerAgents.containsKey(username)) continue;
 			ServerPlayer player = server.getPlayerList().getPlayerByName(username);
-			if (player != null) playerAgents.put(username, 
-					getGameData().createTeamPlayerAgent(player, this));
+			if (player != null) {
+				PlayerAgent<D> agent = getGameData().createPlayerAgent(player);
+				agent.setTeamAgent(this);
+				playerAgents.put(username, agent);
+			}
 		}
 	}
 	
@@ -72,6 +78,30 @@ public class TeamAgent<D extends GameData> extends GameAgent<D> {
 			if (agent.getId().equals(uuid)) 
 				return agent;
 		return null;
+	}
+	
+	public Collection<PlayerAgent<D>> getPlayerAgents() {
+		return playerAgents.values();
+	}
+	
+	public List<PlayerAgent<D>> getLivingPlayerAgents() {
+		List<PlayerAgent<D>> living = new ArrayList<>();
+		for (PlayerAgent<D> agent : playerAgents.values()) 
+			if (!agent.isDead()) living.add(agent);
+		return living;
+	}
+	
+	@Override
+	public void resetAgent() {
+		super.resetAgent();
+		playerAgents.forEach((username, player) -> {
+			player.resetAgent();
+		});
+	}
+	
+	@Override
+	public boolean isDead() {
+		return getLivingPlayerAgents().size() == 0;
 	}
 
 	@Override

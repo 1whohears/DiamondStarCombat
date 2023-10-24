@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
@@ -18,9 +19,12 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.commands.arguments.TeamArgument;
+import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.PlayerTeam;
 
 public class GameCommand {
@@ -53,7 +57,33 @@ public class GameCommand {
 				.then(Commands.literal("remove_player")
 					.then(Commands.argument("player", EntityArgument.players())
 					.executes(commandRemovePlayers())))
+				.then(Commands.literal("set_center")
+						.then(Commands.argument("game_center", BlockPosArgument.blockPos())
+						.executes(commandSetCenter())))
+				.then(Commands.literal("set_size")
+						.then(Commands.argument("game_size", DoubleArgumentType.doubleArg(-5.9999968E7D, 5.9999968E7D))
+						.executes(commandSetSize())))
 			);
+	}
+	
+	private GameSetupCommand commandSetSize() {
+		return (context, gameData) -> {
+			double size = DoubleArgumentType.getDouble(context, "game_size");
+			gameData.setGameBorderSize(size);
+			Component message = Component.literal("Changed "+gameData.getId()+" game size to "+size);
+			context.getSource().sendSuccess(message, true);
+			return 1;
+		};
+	}
+	
+	private GameSetupCommand commandSetCenter() {
+		return (context, gameData) -> {
+			BlockPos pos = BlockPosArgument.getSpawnablePos(context, "game_center");
+			gameData.setGameCenter(new Vec3(pos.getX(), pos.getY(), pos.getZ()), context.getSource().getServer());
+			Component message = Component.literal("Changed "+gameData.getId()+" center pos!");
+			context.getSource().sendSuccess(message, true);
+			return 1;
+		};
 	}
 	
 	private GameSetupCommand commandStartGame() {
@@ -178,6 +208,7 @@ public class GameCommand {
 				context.getSource().sendFailure(message);
 				return 0;
 			}
+			gameData.setGameCenter(context.getSource().getPosition());
 			MutableComponent message = Component.literal("Started new game of type "+gameTypeId+" called "+gameInstanceId+".");
 			message.append("\nUse /game setup "+gameInstanceId+" to configure the game.");
 			message.append("\n"+gameData.getSetupInfo());

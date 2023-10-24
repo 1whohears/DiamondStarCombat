@@ -1,20 +1,18 @@
 package com.onewhohears.dscombat.game.phase;
 
 import com.onewhohears.dscombat.game.condition.NeverExitCondition;
-import com.onewhohears.dscombat.game.condition.PhaseExitCondition;
 import com.onewhohears.dscombat.game.data.GameData;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
 
 public abstract class SetupPhase<T extends GameData> extends GamePhase<T> {
-
-	protected SetupPhase(String id, T gameData) {
-		this(id, gameData, new NeverExitCondition<T>());
-	}
 	
-	@SafeVarargs
-	protected SetupPhase(String id, T gameData, PhaseExitCondition<T>... exitConditions) {
-		super(id, gameData, exitConditions);
+	protected boolean smallWorldBorderStartArea;
+	protected boolean forceAdventureMode;
+	
+	protected SetupPhase(String id, T gameData) {
+		super(id, gameData, new NeverExitCondition<>());
 	}
 	
 	@Override
@@ -30,6 +28,10 @@ public abstract class SetupPhase<T extends GameData> extends GamePhase<T> {
 	@Override
 	public void onStart(MinecraftServer server) {
 		super.onStart(server);
+		if (smallWorldBorderStartArea) {
+			BlockPos pos = new BlockPos(getGameData().getGameCenter());
+			server.overworld().setDefaultSpawnPos(pos, 0);
+		}
 	}
 	
 	@Override
@@ -38,8 +40,23 @@ public abstract class SetupPhase<T extends GameData> extends GamePhase<T> {
 	}
 	
 	@Override
+	public boolean isForceAdventureMode() {
+		return forceAdventureMode;
+	}
+	
+	@Override
 	public boolean isSetupPhase() {
 		return true;
+	}
+	
+	@Override
+	public boolean hasWorldBorder() {
+		return smallWorldBorderStartArea;
+	}
+	
+	@Override
+	public double getWorldBorderSize() {
+		return 32;
 	}
 	
 }

@@ -16,44 +16,25 @@ public class PlayerAgent<D extends GameData> extends GameAgent<D> {
 	private ServerPlayer player;
 	private TeamAgent<D> teamAgent;
 	
-	public PlayerAgent(ServerPlayer player, D gameData, @Nullable TeamAgent<D> teamAgent) {
+	public PlayerAgent(ServerPlayer player, D gameData) {
 		super(player.getStringUUID(), gameData);
 		this.playerId = player.getUUID();
 		this.player = player;
-		this.teamAgent = teamAgent;
-	}
-	
-	public PlayerAgent(ServerPlayer player, D gameData) {
-		this(player, gameData, null);
 	}
 	
 	@Override
 	public void tickAgent(MinecraftServer server) {
 		super.tickAgent(server);
-		ServerPlayer player = getPlayer(server);
-		if (player == null) return;
-		
-	}
-	
-	public void tickAgent(MinecraftServer server, TeamAgent<D> team) {
-		tickAgent(server);
-		ServerPlayer player = getPlayer(server);
-		if (player == null) return;
-		
 	}
 	
 	@Override
 	protected void tickDead(MinecraftServer server) {
 		super.tickDead(server);
-		ServerPlayer player = getPlayer(server);
-		if (player == null) return;
-		
 	}
 	
 	@Override
 	public void onDeath(MinecraftServer server, @Nullable DamageSource source) {
 		super.onDeath(server, source);
-		
 	}
 	
 	@Override
@@ -92,6 +73,10 @@ public class PlayerAgent<D extends GameData> extends GameAgent<D> {
 	@Nullable
 	public TeamAgent<D> getTeamAgent() {
 		return teamAgent;
+	}
+	
+	public void setTeamAgent(TeamAgent<D> teamAgent) {
+		this.teamAgent = teamAgent;
 	}
 
 }

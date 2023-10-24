@@ -25,7 +25,7 @@ public class DeathMatchPlayPhase<T extends DeathMatchData> extends GamePhase<T> 
 	@Override
 	public void onStart(MinecraftServer server) {
 		super.onStart(server);
-		// tp spread out and set player respawn points
+		getGameData().tpPlayersToSpawnPosition(server);
 	}
 	
 	@Override

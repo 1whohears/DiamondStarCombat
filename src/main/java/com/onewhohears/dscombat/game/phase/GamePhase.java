@@ -72,9 +72,16 @@ public abstract class GamePhase<T extends GameData> {
 		WorldBorder border = server.overworld().getWorldBorder();
 		if (hasWorldBorder()) {
 			double size = getWorldBorderSize();
+			double endSize = getWorldBorderEndSize();
 			long time = getWorldBorderChangeTime();
-			if (size != -1 && time != -1) border.lerpSizeBetween(border.getSize(), size, time);
-			else if (size != -1) border.setSize(size);
+			if (size != -1 && time != -1 && endSize != -1) {
+				border.setSize(size);
+				border.lerpSizeBetween(endSize, size, time);
+			} else if (size != -1 && time != -1) {
+				border.lerpSizeBetween(border.getSize(), size, time);
+			} else if (size != -1) {
+				border.setSize(size);
+			}
 			Vec3 center = getGameData().getGameCenter();
 			border.setCenter(center.x, center.z);
 		} else border.applySettings(WorldBorder.DEFAULT_SETTINGS);
@@ -110,6 +117,10 @@ public abstract class GamePhase<T extends GameData> {
 	
 	public boolean hasWorldBorder() {
 		return false;
+	}
+	
+	public double getWorldBorderEndSize() {
+		return -1;
 	}
 	
 	public double getWorldBorderSize() {

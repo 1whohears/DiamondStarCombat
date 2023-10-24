@@ -31,7 +31,7 @@ public abstract class GameData {
 	private boolean isStarted, isStopped;
 	
 	protected Vec3 gameCenter = Vec3.ZERO;
-	protected boolean canAddIndividualPlayers, canAddTeams;
+	protected boolean canAddIndividualPlayers, canAddTeams, requiresSetRespawnPos;
 	protected int initialLives = 3;
 	protected double gameBorderSize = 1000;
 	
@@ -82,11 +82,12 @@ public abstract class GameData {
 		if (!isSetupPhase()) return false;
 		if (!canFinishSetupPhase(server)) return false;
 		currentPhase.onStop(server);
+		if (requiresSetRespawnPos()) applyAllAgentRespawnPoints(server);
 		return changePhase(server, nextPhase.getId());
 	}
 	
 	public boolean canFinishSetupPhase(MinecraftServer server) {
-		return agents.size() >= 2;
+		return agents.size() >= 2 && areAgentRespawnPosSet();
 	}
 	
 	public void reset(MinecraftServer server) {
@@ -156,6 +157,10 @@ public abstract class GameData {
 		return initialLives;
 	}
 	
+	public void setInitialLives(int lives) {
+		this.initialLives = lives;
+	}
+	
 	public void setGameCenter(Vec3 center) {
 		gameCenter = center;
 	}
@@ -181,12 +186,26 @@ public abstract class GameData {
 		return currentPhase;
 	}
 	
+	public boolean requiresSetRespawnPos() {
+		return requiresSetRespawnPos;
+	}
+	
+	public boolean areAgentRespawnPosSet() {
+		if (!requiresSetRespawnPos()) return true;
+		for (GameAgent<?> agent : agents.values()) 
+			if (!agent.hasRespawnPoint()) 
+				return false;
+		return true;
+	}
+	
 	public String getSetupInfo() {
 		String info = "";
 		if (canAddIndividualPlayers()) info += "use add_player to add players to the game. ";
 		if (canAddTeams()) info += "use add_team to add teams to the game. ";
 		info += "use set_center to set the middle of the game. ";
 		info += "use set_size to set the game world border size and random start position distance. ";
+		if (requiresSetRespawnPos()) info += "use set_spawn to set a player or team spawnpoint. ";
+		info += "use set_lives to set the number of initial lives. ";
 		return info;
 	}
 	
@@ -304,6 +323,29 @@ public abstract class GameData {
 		agents.forEach((id, agent) -> {
 			agent.resetAgent();
 		});
+	}
+	
+	public void applyAllAgentRespawnPoints(MinecraftServer server) {
+		agents.forEach((id, agent) -> {
+			agent.applySpawnPoint(server);
+		});
+	}
+	
+	public void tpPlayersToSpawnPosition(MinecraftServer server) {
+		agents.forEach((id, agent) -> {
+			agent.tpToSpawnPoint(server);
+		});
+	}
+	
+	public void spreadPlayers(MinecraftServer server) {
+		// TODO 3.7 spread players at start of game option
+	}
+	
+	public void announceWinners(MinecraftServer server) {
+		List<GameAgent<?>> winners = getLivingAgents();
+		if (winners.size() != 1) return;
+		GameAgent<?> winner = winners.get(0);
+		winner.onWin(server);
 	}
 	
 }

@@ -25,7 +25,10 @@ public class GameManager {
 	 */
 	public static void registerGames() {
 		registerGame("simple_team_deathmatch", (id) -> {
-			return DeathMatchData.createSimpleTeamDeathMatch(id);
+			return DeathMatchData.createSimpleTeamDeathMatch(id, 3);
+		});
+		registerGame("simple_ffa_deathmatch", (id) -> {
+			return DeathMatchData.createSimpleFFADeathMatch(id, 3);
 		});
 		// TODO 3.1 create and register the following minigame modes
 		// team/ffa death match (1 or multiple lives)

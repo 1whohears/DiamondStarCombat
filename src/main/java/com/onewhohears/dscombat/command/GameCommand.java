@@ -6,13 +6,17 @@ import java.util.Collection;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import com.onewhohears.dscombat.game.GameManager;
+import com.onewhohears.dscombat.game.agent.PlayerAgent;
+import com.onewhohears.dscombat.game.agent.TeamAgent;
 import com.onewhohears.dscombat.game.data.GameData;
+import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -24,7 +28,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.PlayerTeam;
 
 public class GameCommand {
@@ -58,12 +61,77 @@ public class GameCommand {
 					.then(Commands.argument("player", EntityArgument.players())
 					.executes(commandRemovePlayers())))
 				.then(Commands.literal("set_center")
-						.then(Commands.argument("game_center", BlockPosArgument.blockPos())
-						.executes(commandSetCenter())))
+					.then(Commands.argument("game_center", BlockPosArgument.blockPos())
+					.executes(commandSetCenter())))
 				.then(Commands.literal("set_size")
-						.then(Commands.argument("game_size", DoubleArgumentType.doubleArg(-5.9999968E7D, 5.9999968E7D))
-						.executes(commandSetSize())))
+					.then(Commands.argument("game_size", DoubleArgumentType.doubleArg(-5.9999968E7D, 5.9999968E7D))
+					.executes(commandSetSize())))
+				.then(Commands.literal("set_spawn")
+					.then(Commands.argument("player", EntityArgument.players())
+						.then(Commands.argument("spawn_pos", BlockPosArgument.blockPos())
+							.executes(commandSetPlayerSpawn())))
+					.then(Commands.argument("team", TeamArgument.team())
+						.then(Commands.argument("spawn_pos", BlockPosArgument.blockPos())
+							.executes(commandSetTeamSpawn()))))
+				.then(Commands.literal("set_lives")
+					.then(Commands.argument("lives", IntegerArgumentType.integer(1))
+					.executes(commandSetLives())))
 			);
+	}
+	
+	private GameSetupCommand commandSetLives() {
+		return (context, gameData) -> {
+			int lives = IntegerArgumentType.getInteger(context, "lives");
+			gameData.setInitialLives(lives);
+			Component message = Component.literal("Set "+gameData.getId()+" initial lives to "+lives);
+			context.getSource().sendSuccess(message, true);
+			return 1;
+		};
+	}
+	
+	private GameSetupCommand commandSetPlayerSpawn() {
+		return (context, gameData) -> {
+			Collection<ServerPlayer> players = EntityArgument.getPlayers(context, "player");
+			if (players.size() == 0) {
+				Component message = Component.literal("No player spawnpoints were changed");
+				context.getSource().sendSuccess(message, true);
+				return 1;
+			}
+			BlockPos pos = BlockPosArgument.getSpawnablePos(context, "spawn_pos");
+			for (ServerPlayer player : players) {
+				PlayerAgent<?> agent = gameData.getPlayerAgentByUUID(player.getStringUUID());
+				if (agent == null) {
+					Component message = Component.literal("The player ").append(player.getDisplayName())
+							.append(" is not in the game "+gameData.getId());
+					context.getSource().sendFailure(message);
+					continue;
+				}
+				agent.setRespawnPoint(UtilGeometry.toVec3(pos));
+				Component message = Component.literal("Set ").append(player.getDisplayName())
+						.append(" spawn point to "+pos.toShortString());
+				context.getSource().sendSuccess(message, true);
+			}
+			return 1;
+		};
+	}
+	
+	private GameSetupCommand commandSetTeamSpawn() {
+		return (context, gameData) -> {
+			PlayerTeam team = TeamArgument.getTeam(context, "team");
+			BlockPos pos = BlockPosArgument.getSpawnablePos(context, "spawn_pos");
+			TeamAgent<?> agent = gameData.getTeamAgentByName(team.getName());
+			if (agent == null) {
+				Component message = Component.literal("The team ").append(team.getDisplayName())
+						.append(" is not in the game "+gameData.getId());
+				context.getSource().sendFailure(message);
+				return 0;
+			}
+			agent.setRespawnPoint(UtilGeometry.toVec3(pos));
+			Component message = Component.literal("Set ").append(team.getDisplayName())
+					.append(" spawn point to "+pos.toShortString());
+			context.getSource().sendSuccess(message, true);
+			return 1;
+		};
 	}
 	
 	private GameSetupCommand commandSetSize() {
@@ -79,7 +147,7 @@ public class GameCommand {
 	private GameSetupCommand commandSetCenter() {
 		return (context, gameData) -> {
 			BlockPos pos = BlockPosArgument.getSpawnablePos(context, "game_center");
-			gameData.setGameCenter(new Vec3(pos.getX(), pos.getY(), pos.getZ()), context.getSource().getServer());
+			gameData.setGameCenter(UtilGeometry.toVec3(pos), context.getSource().getServer());
 			Component message = Component.literal("Changed "+gameData.getId()+" center pos!");
 			context.getSource().sendSuccess(message, true);
 			return 1;

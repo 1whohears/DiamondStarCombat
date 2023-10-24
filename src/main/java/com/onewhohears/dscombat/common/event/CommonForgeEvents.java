@@ -49,7 +49,8 @@ public final class CommonForgeEvents {
 		if (living.level.isClientSide) return;
 		if (living instanceof ServerPlayer player) 
 			for (PlayerAgent<?> agent : GameManager.getPlayerAgents(player)) 
-				agent.onDeath(player.getServer(), event.getSource());
+				if (agent.shouldRunOnDeath()) 
+					agent.onDeath(player.getServer(), event.getSource());
 	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)

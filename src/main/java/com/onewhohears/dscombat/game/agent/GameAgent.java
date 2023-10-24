@@ -6,6 +6,7 @@ import com.onewhohears.dscombat.game.data.GameData;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.phys.Vec3;
 
 public abstract class GameAgent<D extends GameData> {
 	
@@ -15,6 +16,7 @@ public abstract class GameAgent<D extends GameData> {
 	private int score;
 	private int lives;
 	private int money;
+	private Vec3 respawnPoint;
 	
 	protected GameAgent(String id, D gameData) {
 		this.id = id;
@@ -35,6 +37,10 @@ public abstract class GameAgent<D extends GameData> {
 	
 	public void onDeath(MinecraftServer server, @Nullable DamageSource source) {
 		lives = Math.max(lives-1, 0);
+	}
+	
+	public boolean shouldRunOnDeath() {
+		return !getGameData().isSetupPhase();
 	}
 	
 	public boolean isDead() {
@@ -80,8 +86,25 @@ public abstract class GameAgent<D extends GameData> {
 		this.money = money;
 	}
 	
+	@Nullable
+	public Vec3 getRespawnPoint() {
+		return respawnPoint;
+	}
+	
+	public void setRespawnPoint(Vec3 pos) {
+		this.respawnPoint = pos;
+	}
+	
+	public boolean hasRespawnPoint() {
+		return respawnPoint != null;
+	}
+	
 	public abstract boolean isPlayer();
 	public abstract boolean isPlayerOnTeam();
 	public abstract boolean isTeam();
+	
+	public abstract void applySpawnPoint(MinecraftServer server);
+	public abstract void tpToSpawnPoint(MinecraftServer server);
+	public abstract void onWin(MinecraftServer server);
 	
 }

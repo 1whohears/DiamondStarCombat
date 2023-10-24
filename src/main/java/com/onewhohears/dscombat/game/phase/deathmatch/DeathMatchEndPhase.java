@@ -25,6 +25,7 @@ public class DeathMatchEndPhase<T extends DeathMatchData> extends GamePhase<T> {
 	@Override
 	public void onStart(MinecraftServer server) {
 		super.onStart(server);
+		getGameData().announceWinners(server);
 	}
 	
 	@Override

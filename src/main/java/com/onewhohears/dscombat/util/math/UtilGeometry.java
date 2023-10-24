@@ -4,6 +4,7 @@ import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
@@ -149,6 +150,10 @@ public class UtilGeometry {
 	
 	public static Vec3 toFloats(Vec3 v) {
 		return new Vec3((float)v.x, (float)v.y, (float)v.z);
+	}
+	
+	public static Vec3 toVec3(BlockPos pos) {
+		return new Vec3(pos.getX(), pos.getY(), pos.getZ());
 	}
 	
 }

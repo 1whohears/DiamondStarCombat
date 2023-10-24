@@ -119,4 +119,24 @@ public class TeamAgent<D extends GameData> extends GameAgent<D> {
 		return true;
 	}
 
+	@Override
+	public void applySpawnPoint(MinecraftServer server) {
+		if (!hasRespawnPoint()) return;
+		for (PlayerAgent<?> agent : playerAgents.values()) {
+			agent.setRespawnPoint(getRespawnPoint());
+			agent.applySpawnPoint(server);
+		}
+	}
+
+	@Override
+	public void tpToSpawnPoint(MinecraftServer server) {
+		for (PlayerAgent<?> agent : playerAgents.values()) 
+			agent.tpToSpawnPoint(server);
+	}
+	
+	@Override
+	public void onWin(MinecraftServer server) {
+		// TODO 3.8.2 announce winning team
+	}
+
 }

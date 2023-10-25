@@ -26,6 +26,7 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -53,6 +54,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 public class DSCombatMod {
 	
 	public static final String MODID = "dscombat";
+	
+	public static boolean minigamesLoaded = false;
 
     public DSCombatMod() {
     	ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.clientSpec);
@@ -73,12 +76,14 @@ public class DSCombatMod {
     	eventBus.addListener(this::commonSetup);
     	eventBus.addListener(this::clientSetup);
     	eventBus.addListener(this::onGatherData);
+    	
+    	minigamesLoaded = ModList.get().isLoaded("minigames");
     }
     
     private void commonSetup(FMLCommonSetupEvent event) {
 		PacketHandler.register();
 		DSCGameRules.registerAll();
-		DSCMiniGames.registerGames();
+		if (minigamesLoaded) DSCMiniGames.registerGames();
 		event.enqueueWork(() -> {
 			ModVillagers.registerPOIs();
 		});

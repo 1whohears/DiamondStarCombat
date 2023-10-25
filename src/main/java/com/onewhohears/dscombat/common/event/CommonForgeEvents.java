@@ -10,19 +10,13 @@ import com.onewhohears.dscombat.data.radar.RadarPresets;
 import com.onewhohears.dscombat.data.weapon.NonTickingMissileManager;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
-import com.onewhohears.dscombat.game.GameManager;
-import com.onewhohears.dscombat.game.agent.PlayerAgent;
 
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.level.ExplosionEvent;
-import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -41,16 +35,6 @@ public final class CommonForgeEvents {
 		float a = event.getAmount();
 		//System.out.println("PLAYER HURT "+event.getEntity()+" "+a);
 		event.setAmount(Math.max(0, a-a*plane.getTotalArmor()*0.01f*Config.COMMON.armorStrength.get().floatValue()));
-	}
-	
-	@SubscribeEvent(priority = EventPriority.NORMAL)
-	public static void livingDeathEvent(LivingDeathEvent event) {
-		LivingEntity living = event.getEntity();
-		if (living.level.isClientSide) return;
-		if (living instanceof ServerPlayer player) 
-			for (PlayerAgent<?> agent : GameManager.getPlayerAgents(player)) 
-				if (agent.shouldRunOnDeath()) 
-					agent.onDeath(player.getServer(), event.getSource());
 	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
@@ -78,7 +62,6 @@ public final class CommonForgeEvents {
 	public static void serverTickEvent(TickEvent.ServerTickEvent event) {
 		if (event.phase != Phase.END) return;
 		NonTickingMissileManager.serverTick(event.getServer());
-		GameManager.serverTick(event.getServer());
 	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
@@ -94,16 +77,10 @@ public final class CommonForgeEvents {
 	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
-	public static void serverStartedEvent(ServerStartedEvent event) {
-		GameManager.serverStarted(event.getServer());
-	}
-	
-	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void serverStoppingEvent(ServerStoppingEvent event) {
 		AircraftPresets.close();
 		WeaponPresets.close();
 		RadarPresets.close();
-		GameManager.serverStopping(event.getServer());
 	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)

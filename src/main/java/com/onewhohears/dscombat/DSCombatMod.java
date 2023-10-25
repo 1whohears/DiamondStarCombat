@@ -11,7 +11,6 @@ import com.onewhohears.dscombat.data.aircraft.AircraftPresetGenerator;
 import com.onewhohears.dscombat.data.radar.RadarPresetGenerator;
 import com.onewhohears.dscombat.data.weapon.WeaponPresetGenerator;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
-import com.onewhohears.dscombat.game.GameManager;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModBlockEntities;
 import com.onewhohears.dscombat.init.ModBlocks;
@@ -78,7 +77,6 @@ public class DSCombatMod {
     private void commonSetup(FMLCommonSetupEvent event) {
 		PacketHandler.register();
 		DSCGameRules.registerAll();
-		GameManager.registerGames();
 		event.enqueueWork(() -> {
 			ModVillagers.registerPOIs();
 		});

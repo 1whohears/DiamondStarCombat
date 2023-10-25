@@ -20,6 +20,7 @@ import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModRecipeSerializers;
 import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.init.ModVillagers;
+import com.onewhohears.dscombat.minigame.DSCMiniGames;
 
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.data.DataGenerator;
@@ -77,6 +78,7 @@ public class DSCombatMod {
     private void commonSetup(FMLCommonSetupEvent event) {
 		PacketHandler.register();
 		DSCGameRules.registerAll();
+		DSCMiniGames.registerGames();
 		event.enqueueWork(() -> {
 			ModVillagers.registerPOIs();
 		});

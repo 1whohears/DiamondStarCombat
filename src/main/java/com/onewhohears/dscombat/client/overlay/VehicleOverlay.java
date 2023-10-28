@@ -33,4 +33,5 @@ public class VehicleOverlay {
 		VehicleThrottleOverlay	.renderIfAllowed(poseStack, screenWidth, screenHeight);
 		VehicleWeaponsOverlay	.renderIfAllowed(poseStack, screenWidth, screenHeight);
 	});
+	
 }

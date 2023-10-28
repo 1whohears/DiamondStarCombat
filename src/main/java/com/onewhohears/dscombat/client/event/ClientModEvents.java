@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.client.event;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.client.model.EntityModelParachute;
+import com.onewhohears.dscombat.client.model.InWorldScreenModel;
 import com.onewhohears.dscombat.client.model.aircraft.EntityModelAlexisPlane;
 import com.onewhohears.dscombat.client.model.aircraft.EntityModelAndolfSub;
 import com.onewhohears.dscombat.client.model.aircraft.EntityModelAxcelTruck;
@@ -103,6 +104,7 @@ public final class ClientModEvents {
 		//event.registerLayerDefinition(EntityModelCFM56.LAYER_LOCATION, EntityModelCFM56::createBodyLayer);
 		event.registerLayerDefinition(EntityModelGruetzBB.LAYER_LOCATION, EntityModelGruetzBB::createBodyLayer);
 		event.registerLayerDefinition(EntityModelParachute.LAYER_LOCATION, EntityModelParachute::createBodyLayer);
+		event.registerLayerDefinition(InWorldScreenModel.LAYER_LOCATION, InWorldScreenModel::createBodyLayer);
 	}
 	
 	@SubscribeEvent

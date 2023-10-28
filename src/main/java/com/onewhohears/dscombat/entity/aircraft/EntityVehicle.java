@@ -69,7 +69,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -537,9 +536,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		// TODO 9.1 break grass and leaves or just weak blocks when driving through them
 		if (!level.isClientSide) {
 			if (!hasControllingPassenger()) wallCollisions();
-			if (xzSpeed < 0.1) ride(level.getEntities(this, 
-					getBoundingBox().inflate(0.1), 
-					getRidePredicate()));
 			knockBack(level.getEntities(this, 
 					getBoundingBox(), 
 					getKnockbackPredicate()));
@@ -619,19 +615,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 				entity.hurt(AircraftDamageSource.roadKill(this), (float)push_factor*2f);
 			}
 		}
-	}
-	
-	protected Predicate<? super Entity> getRidePredicate() {
-		return ((entity) -> {
-			if (this.equals(entity.getRootVehicle())) return false;
-			if (entity.isSpectator()) return false;
-			if (!(entity instanceof Mob)) return false;
-			return true;
-		});
-	}
-	
-	protected void ride(List<Entity> entities) {
-		for(Entity entity : entities) ridePassengerSeat(entity);
 	}
 	
 	/**
@@ -941,6 +924,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		}
 		xzSpeedDir = 1;
 		if (Math.abs(slideAngle) > 90) xzSpeedDir = -1;
+	}
+	
+	public float getXZSpeed() {
+		return xzSpeed;
 	}
 	
 	/**

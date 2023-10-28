@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.entity.parts;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
@@ -18,6 +19,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -30,6 +32,33 @@ public class EntitySeat extends EntityPart {
 	public EntitySeat(EntityType<?> type, Level level, Vec3 offset) {
 		super(type, level);
 		this.passengerOffset = offset;
+	}
+	
+	public void tick() {
+		super.tick();
+		tickRideCollision();
+	}
+	
+	protected void tickRideCollision() {
+		if (isPilotSeat()) return;
+		if (getPassenger() != null) return;
+		if (!(getVehicle() instanceof EntityVehicle vehicle)) return;
+		if (vehicle.getXZSpeed() > 0.1) return;
+		List<Entity> entities = level.getEntities(this, 
+			getBoundingBox().inflate(0.1), 
+			getRidePredicate());
+		for (Entity entity : entities) 
+			if (entity.startRiding(this)) 
+				return;
+	}
+	
+	protected Predicate<? super Entity> getRidePredicate() {
+		return ((entity) -> {
+			if (this.equals(entity.getRootVehicle())) return false;
+			if (entity.isSpectator()) return false;
+			if (!(entity instanceof Mob)) return false;
+			return true;
+		});
 	}
 	
 	@Override

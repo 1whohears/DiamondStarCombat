@@ -3,13 +3,15 @@ package com.onewhohears.dscombat.entity.parts;
 import javax.annotation.Nullable;
 
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.command.DSCGameRules;
+import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.TurretData;
 import com.onewhohears.dscombat.data.parts.TurretData.RotBounds;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
+import com.onewhohears.dscombat.entity.ai.goal.TurretShootGoal;
+import com.onewhohears.dscombat.entity.ai.goal.TurretTargetGoal;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.math.UtilAngles;
@@ -26,6 +28,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -167,14 +171,42 @@ public class EntityTurret extends EntitySeat {
 				), q).subtract(0, passenger.getEyeHeight(), 0);
 	}
 	
-	protected void addTurretAI(Mob entity) {
-		// TODO 6.1 add turret AI goals for mobs
-		//entity.goalSelector.addGoal(0, null);
-		//entity.targetSelector.addGoal(0, null);
+	protected Goal shootGoal, targetGoal;
+	
+	protected void addTurretAI(Mob mob) {
+		shootGoal = makeShootGoal(mob);
+		mob.goalSelector.addGoal(0, shootGoal);
+		if (mob instanceof Monster) {
+			targetGoal = makeTargetPlayerGoal(mob);
+			mob.targetSelector.addGoal(0, targetGoal);
+		}
 	}
 	
-	protected void removeTurretAI(Mob entity) {
-		
+	protected void removeTurretAI(Mob mob) {
+		if (shootGoal != null) {
+			mob.goalSelector.removeGoal(shootGoal);
+			shootGoal = null;
+		}
+		if (targetGoal != null) {
+			mob.targetSelector.removeGoal(targetGoal);
+			targetGoal = null;
+		}
+	}
+	
+	protected Goal makeShootGoal(Mob mob) {
+		return new TurretShootGoal(mob, this);
+	}
+	
+	protected Goal makeTargetPlayerGoal(Mob mob) {
+		return TurretTargetGoal.targetPlayers(mob, this);
+	}
+	
+	public double getHorizontalRange() {
+		return 400;
+	}
+	
+	public double getVerticalRange() {
+		return 200;
 	}
 	
 	@Override

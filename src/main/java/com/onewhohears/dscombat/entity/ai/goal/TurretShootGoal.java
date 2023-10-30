@@ -19,7 +19,9 @@ public class TurretShootGoal extends Goal {
 	
 	@Override
 	public void tick() {
-		
+		super.tick();
+		if (target == null) return;
+		// TODO 6.1 turret AI shoot at target
 	}
 	
 	@Override
@@ -32,14 +34,17 @@ public class TurretShootGoal extends Goal {
 		} else return false;
 	}
 	
+	@Override
 	public boolean canContinueToUse() {
 		return canUse() || target.isAlive() && !mob.getNavigation().isDone();
 	}
 	
+	@Override
 	public void stop() {
 		target = null;
 	}
 	
+	@Override
 	public boolean requiresUpdateEveryTick() {
 		return true;
 	}

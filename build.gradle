@@ -95,7 +95,7 @@ repositories {
 dependencies {
     minecraft 'net.minecraftforge:forge:1.19.2-43.2.0'
     implementation fg.deobf("curse.maven:modernfix-790626:4792392")
-    implementation fg.deobf("com.1whohears.minigames:minigames-1.19.2:0.0.1")
+    implementation fg.deobf("com.1whohears.minigames:minigames-1.19.2:0.0.2")
 }
 
 jar {

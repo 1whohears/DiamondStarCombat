@@ -40,6 +40,6 @@ showAsResourcePack=false
 [[dependencies.dscombat]]
     modId="minigames"
     mandatory=false
-    versionRange="[0.0.1,)"
+    versionRange="[0.0.2,)"
     ordering="NONE"
     side="BOTH"

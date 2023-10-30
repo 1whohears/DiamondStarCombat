@@ -20,7 +20,6 @@ import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModRecipeSerializers;
 import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.init.ModVillagers;
-import com.onewhohears.dscombat.minigame.DSCMiniGames;
 
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.data.DataGenerator;
@@ -73,17 +72,17 @@ public class DSCombatMod {
     	DataSerializers.register(eventBus);
     	ModVillagers.register(eventBus);
     	
+    	minigamesLoaded = ModList.get().isLoaded("minigames");
+    	
     	eventBus.addListener(this::commonSetup);
     	eventBus.addListener(this::clientSetup);
     	eventBus.addListener(this::onGatherData);
-    	
-    	minigamesLoaded = ModList.get().isLoaded("minigames");
     }
     
     private void commonSetup(FMLCommonSetupEvent event) {
 		PacketHandler.register();
 		DSCGameRules.registerAll();
-		if (minigamesLoaded) DSCMiniGames.registerGames();
+		DependencySafety.fmlCommonSetup();
 		event.enqueueWork(() -> {
 			ModVillagers.registerPOIs();
 		});

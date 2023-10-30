@@ -1,5 +1,8 @@
 package com.onewhohears.dscombat.minigame;
 
+import com.onewhohears.dscombat.minigame.data.DogFightData;
+import com.onewhohears.minigames.minigame.MiniGameManager;
+
 public class DSCMiniGames {
 	
 	/**
@@ -12,6 +15,8 @@ public class DSCMiniGames {
 		 * easy/fair dog fight resets (both players tp to runway when an aircraft is destroyed)
 		 * bomb the flag/s
 		 */
+		MiniGameManager.registerGame("simple_dog_fight", (instanceId, gameTypeId) -> 
+			DogFightData.createSimpleFFADogFight(instanceId, gameTypeId));
 	}
 	
 }

@@ -24,7 +24,7 @@ apply plugin: 'com.diffplug.eclipse.apt'
 
 group = 'com.onewhohears.dscombat'
 archivesBaseName = 'dscombat-1.19.2'
-version = '0.9.0-alpha.1'
+version = '0.9.0-alpha.2'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
@@ -88,11 +88,14 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
 	maven { url "https://cursemaven.com" }
+	// temporarily using a free maven repo until I publish to curse forge
+	maven { url "https://repo.repsy.io/mvn/1whohears/minigames" }
 }
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.19.2-43.2.0'
     implementation fg.deobf("curse.maven:modernfix-790626:4792392")
+    implementation fg.deobf("com.1whohears.minigames:minigames-1.19.2:0.0.1")
 }
 
 jar {

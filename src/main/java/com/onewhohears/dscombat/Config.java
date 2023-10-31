@@ -68,7 +68,6 @@ public class Config {
 		public final ForgeConfigSpec.DoubleValue bulletDamageFactor;
 		public final ForgeConfigSpec.DoubleValue explodeDamageFactor;
 		public final ForgeConfigSpec.DoubleValue planeBulletFactor;
-		// TODO 7.1 plane speed multiplier
 		/**
 		 * classname
 		 */

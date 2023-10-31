@@ -16,7 +16,9 @@ public class DSCGameRules {
 	public static GameRules.Key<GameRules.BooleanValue> BROADCAST_MISSILE_HIT_TEAM_ONLY;
 	public static GameRules.Key<GameRules.BooleanValue> MOBS_USE_TURRETS;
 	public static GameRules.Key<GameRules.IntegerValue> MOB_TURRET_VERTICAL_RANGE;
-	// TODO 7.2 baby mode (arcade mode) for planes disabled by default
+	// TODO 7.1 plane speed percent multiplier gamerule 
+	// TODO 7.2 baby mode gamerule (arcade mode) for planes disabled by default
+	// TODO 7.3 can mobs ride vehicles gamerule
 	
 	public static void registerAll() {
 		CONSUME_FULE = registerBoolean("consumeFuel", true, GameRules.Category.PLAYER);

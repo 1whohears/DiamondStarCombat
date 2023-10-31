@@ -24,7 +24,7 @@ apply plugin: 'com.diffplug.eclipse.apt'
 
 group = 'com.onewhohears.dscombat'
 archivesBaseName = 'dscombat-1.19.2'
-version = '0.9.0-alpha.2'
+version = '0.9.0-alpha.3'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
@@ -95,6 +95,7 @@ repositories {
 dependencies {
     minecraft 'net.minecraftforge:forge:1.19.2-43.2.0'
     implementation fg.deobf("curse.maven:modernfix-790626:4792392")
+    // https://github.com/1whohears/CustomMiniGames
     implementation fg.deobf("com.1whohears.minigames:minigames-1.19.2:0.0.2")
 }
 

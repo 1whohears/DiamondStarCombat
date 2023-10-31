@@ -53,6 +53,13 @@ public class UtilAngles {
     public static double wrapSubtractDegrees(double p_203302_0_, double p_203302_1_) {
         return Mth.wrapDegrees(p_203302_1_ - p_203302_0_);
     }
+    
+    public static float rotLerp(float currentAngle, float targetAngle, float stepSize) {
+    	float f = Mth.wrapDegrees(targetAngle - currentAngle);
+    	if (f > stepSize) f = stepSize;
+    	if (f < -stepSize) f = -stepSize;
+        return currentAngle + f;
+     }
 
     public static Vec3 rotationToVector(double yaw, double pitch) {
         yaw = Math.toRadians(yaw);

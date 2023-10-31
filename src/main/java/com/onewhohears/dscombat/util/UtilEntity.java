@@ -2,9 +2,11 @@ package com.onewhohears.dscombat.util;
 
 import com.onewhohears.dscombat.data.weapon.RadarTargetTypes;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.entity.vehicle.Minecart;
@@ -150,6 +152,20 @@ public class UtilEntity {
 	
 	public static boolean isHeadAboveWater(Entity entity) {
 		return entity.isInWater() && !entity.isUnderWater();
+	}
+	
+	public static void entityLookAtPos(Entity entity, Vec3 pos, float headTurnRate) {
+		Vec3 diff = pos.subtract(entity.getEyePosition());
+		float yRot = UtilAngles.getYaw(diff);
+		float xRot = UtilAngles.getPitch(diff);
+		float newYRot = UtilAngles.rotLerp(entity.getYRot(), yRot, headTurnRate);
+		float newXRot = UtilAngles.rotLerp(entity.getXRot(), xRot, headTurnRate);
+		entity.setYRot(newYRot);
+		entity.setXRot(newXRot);
+	}
+	
+	public static void mobLookAtPos(Mob mob, Vec3 pos, float headTurnRate) {
+		mob.getLookControl().setLookAt(pos.x, pos.y, pos.z, headTurnRate, headTurnRate);
 	}
 	
 }

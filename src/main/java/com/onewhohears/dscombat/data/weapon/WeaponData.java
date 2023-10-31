@@ -437,7 +437,6 @@ public abstract class WeaponData extends JsonPreset {
 		TORPEDO,
 		BUNKER_BUSTER,
 		NONE;
-		
 		@Nullable
 		public static WeaponType getById(String id) {
 			for (int i = 0; i < values().length; ++i) {
@@ -446,24 +445,25 @@ public abstract class WeaponData extends JsonPreset {
 			}
 			return null;
 		}
-		
 		private final String id;
-		
 		private WeaponType() {
 			this.id = name().toLowerCase();
 		}
-		
 		public String getId() {
 			return id;
 		}
-		
 		@Override
 		public String toString() {
 			return getId();
 		}
-		
 		public boolean isBullet() {
 			return this == BULLET;
+		}
+		public boolean isTrackMissile() {
+			return this == TRACK_MISSILE;
+		}
+		public boolean isIRMissile() {
+			return this == IR_MISSILE;
 		}
 	}
 	

@@ -122,6 +122,12 @@ public abstract class EntityPart extends Entity {
 		super.kill();
 	}
 	
+	@Nullable
+	public EntityVehicle getParentVehicle() {
+		if (getVehicle() instanceof EntityVehicle vehicle) return vehicle;
+		return null;
+	}
+	
 	public abstract boolean shouldRender();
 	
 	public float getZRot() {

@@ -9,6 +9,7 @@ import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.weapon.BulletData;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.weapon.EntityBullet;
 import com.onewhohears.dscombat.util.UtilEntity;
@@ -54,9 +55,9 @@ public class TurretShootGoal extends Goal {
 	 * the mob shoots up to 25 degrees off the target location and updates once a second
 	 */
 	public static final ShootFunction DUMBASS_SHOOT = (mob, turret, target, prevTargetPos) -> {
-		prevTargetPos = inaccurateShootPos(mob, target, prevTargetPos, 20, 25);
+		prevTargetPos = inaccurateShootPos(mob, turret, target, prevTargetPos, 20, 25, false);
 		UtilEntity.mobLookAtPos(mob, prevTargetPos, mob.getHeadRotSpeed());
-		turret.shoot(mob);
+		if (canShootTurret(mob, turret, target, prevTargetPos, 360, false, false)) turret.shoot(mob);
 		return prevTargetPos;
 	};
 	
@@ -64,9 +65,9 @@ public class TurretShootGoal extends Goal {
 	 * the mob shoots up to 10 degrees off the target location and updates twice a second
 	 */
 	public static final ShootFunction STUPID_SHOOT = (mob, turret, target, prevTargetPos) -> {
-		prevTargetPos = inaccurateShootPos(mob, target, prevTargetPos, 10, 10);
+		prevTargetPos = inaccurateShootPos(mob, turret, target, prevTargetPos, 10, 10, false);
 		UtilEntity.mobLookAtPos(mob, prevTargetPos, mob.getHeadRotSpeed());
-		if (isLookingAtTarget(turret, prevTargetPos, 20)) turret.shoot(mob);
+		if (canShootTurret(mob, turret, target, prevTargetPos, 20, true, false)) turret.shoot(mob);
 		return prevTargetPos;
 	};
 	
@@ -74,9 +75,9 @@ public class TurretShootGoal extends Goal {
 	 * the mob shoots up to 5 degrees off the target location and updates twice a second
 	 */
 	public static final ShootFunction NORMAL_SHOOT = (mob, turret, target, prevTargetPos) -> {
-		prevTargetPos = inaccurateShootPos(mob, target, prevTargetPos, 10, 5);
+		prevTargetPos = inaccurateShootPos(mob, turret, target, prevTargetPos, 10, 5, true);
 		UtilEntity.mobLookAtPos(mob, prevTargetPos, mob.getHeadRotSpeed());
-		if (isLookingAtTarget(turret, prevTargetPos, 10)) turret.shoot(mob);
+		if (canShootTurret(mob, turret, target, prevTargetPos, 10, true, true)) turret.shoot(mob);
 		return prevTargetPos;
 	};
 	
@@ -85,38 +86,50 @@ public class TurretShootGoal extends Goal {
 	 * the mob shoots up to 3 degrees off the target location and updates twice a second
 	 */
 	public static final ShootFunction SMART_SHOOT = (mob, turret, target, prevTargetPos) -> {
-		if (prevTargetPos == null || mob.tickCount % 10 == 0) {
+		prevTargetPos = inaccurateShootPos(mob, turret, target, prevTargetPos, 8, 2, true);
+		UtilEntity.mobLookAtPos(mob, prevTargetPos, mob.getHeadRotSpeed());
+		if (canShootTurret(mob, turret, target, prevTargetPos, 5, true, true)) turret.shoot(mob);
+		return prevTargetPos;
+	};
+	
+	public static Vec3 inaccurateShootPos(Mob mob, EntityTurret turret, LivingEntity target, 
+			Vec3 prevTargetPos, int updateRate, float inaccuracy, boolean accountGravity) {
+		if (prevTargetPos == null || mob.tickCount % updateRate == 0) {
+			Vec3 origin = turret.getEyePosition();
 			Vec3 targetPos = target.getEyePosition();
 			WeaponData wd = turret.getWeaponData();
-			if (wd != null && wd.getType().isBullet()) {
+			if (accountGravity && wd != null && wd.getType().isBullet()) {
 				double speed = ((BulletData)wd).getSpeed();
 				if (speed <= 0) speed = 0.01;
-				double dist = mob.getEyePosition().distanceTo(targetPos);
+				double dist = origin.distanceTo(targetPos);
 				double time = dist / speed;
 				double adjust = 0.5*Config.SERVER.accGravity.get()*EntityBullet.BULLET_GRAVITY_SCALE*time*time;
 				targetPos = targetPos.add(0, adjust, 0);
 			}
-			prevTargetPos = UtilGeometry.inaccurateTargetPos(
-					mob.getEyePosition(), targetPos, 3);
-		}
-		UtilEntity.mobLookAtPos(mob, prevTargetPos, mob.getHeadRotSpeed());
-		if (isLookingAtTarget(turret, prevTargetPos, 5)) turret.shoot(mob);
-		return prevTargetPos;
-	};
-	
-	public static Vec3 inaccurateShootPos(Mob mob, LivingEntity target, Vec3 prevTargetPos, int updateRate, float inaccuracy) {
-		if (prevTargetPos == null || mob.tickCount % updateRate == 0) {
-			prevTargetPos = UtilGeometry.inaccurateTargetPos(mob.getEyePosition(), 
-					target.getEyePosition(), inaccuracy);
+			prevTargetPos = UtilGeometry.inaccurateTargetPos(origin, targetPos, inaccuracy);
 		}
 		return prevTargetPos;
 	}
 	
-	public static boolean isLookingAtTarget(EntityTurret turret, Vec3 targetPos, float error) {
+	public static boolean canShootTurret(Mob mob, EntityTurret turret, LivingEntity target, 
+			Vec3 targetPos, float aimError, boolean useIRMis, boolean useTrackMis) {
+		WeaponData wd = turret.getWeaponData();
+		if (wd == null) return false;
+		if (!wd.checkRecoil() || wd.getCurrentAmmo() <= 0) return false;
 		Vec3 turretLook = turret.getLookAngle();
 		Vec3 diff = targetPos.subtract(turret.getEyePosition());
 		double angle = UtilGeometry.angleBetweenDegrees(diff, turretLook);
-		return angle <= error;
+		if (angle > aimError) return false;
+		if (useIRMis && wd.getType().isIRMissile()) {
+			if (UtilEntity.isOnGroundOrWater(target)) return false;
+		} else if (useTrackMis && wd.getType().isTrackMissile()) {
+			EntityVehicle vehicle = turret.getParentVehicle();
+			if (vehicle == null) return false;
+			if (!vehicle.radarSystem.hasRadar()) return false;
+			if (!vehicle.radarSystem.hasTarget(target)) return false;
+			vehicle.radarSystem.selectTarget(target);
+		}
+		return true;
 	}
 	
 	public static ShootFunction getShootFunctionByMob(Mob mob) {

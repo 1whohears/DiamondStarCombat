@@ -112,6 +112,15 @@ public class RadarSystem {
 		return -1;
 	}
 	
+	public boolean hasTarget(Entity entity) {
+		if (hasTarget(entity.getId())) return true;
+		if (entity.isPassenger()) {
+			Entity v = entity.getRootVehicle();
+			if (hasTarget(v.getId())) return true;
+		}
+		return false;
+	}
+	
 	public boolean hasTarget(int id) {
 		for (RadarPing rp : targets) if (rp.id == id) return true;
 		return false;
@@ -149,11 +158,23 @@ public class RadarSystem {
 	}
 	
 	public void selectTarget(RadarPing ping) {
-		int id = ping.id;
+		selectTarget(ping.id);
+	}
+	
+	public void selectTarget(int id) {
 		selectedIndex = -1;
 		for (int i = 0; i < targets.size(); ++i) if (targets.get(i).id == id) {
 			selectedIndex = i;
 			break;
+		}
+	}
+	
+	public void selectTarget(Entity entity) {
+		selectedIndex = -1;
+		if (hasTarget(entity.getId())) selectTarget(entity.getId());
+		else if (entity.isPassenger()) {
+			Entity v = entity.getRootVehicle();
+			if (hasTarget(v.getId())) selectTarget(v.getId());
 		}
 	}
 	

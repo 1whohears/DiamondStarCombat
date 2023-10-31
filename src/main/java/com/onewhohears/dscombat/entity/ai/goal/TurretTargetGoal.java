@@ -2,7 +2,10 @@ package com.onewhohears.dscombat.entity.ai.goal;
 
 import java.util.function.Predicate;
 
+import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
+import com.onewhohears.dscombat.util.UtilEntity;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
@@ -15,24 +18,36 @@ import net.minecraft.world.phys.AABB;
 public class TurretTargetGoal<T extends LivingEntity> extends NearestAttackableTargetGoal<T> {
 	
 	public static TurretTargetGoal<Player> targetPlayers(Mob mob, EntityTurret turret) {
-		return new TurretTargetGoal<>(mob, turret, Player.class, turret.getHorizontalRange(), checkCanTarget(mob, false));
+		return new TurretTargetGoal<>(mob, turret, Player.class, turret.getHorizontalRange(), 
+				checkCanTarget(mob, turret, false));
 	}
 	
 	public static TurretTargetGoal<LivingEntity> targetEnemy(Mob mob, EntityTurret turret) {
-		return new TurretTargetGoal<>(mob, turret, LivingEntity.class, turret.getHorizontalRange(), checkCanTarget(mob, true));
+		return new TurretTargetGoal<>(mob, turret, LivingEntity.class, turret.getHorizontalRange(), 
+				checkCanTarget(mob, turret, true));
 	}
 	
-	public static Predicate<LivingEntity> checkCanTarget(Mob mob, boolean enemyCheck) {
+	public static Predicate<LivingEntity> checkCanTarget(Mob mob, EntityTurret turret, boolean enemyCheck) {
 		return (entity) -> {
+			WeaponData wd = turret.getWeaponData();
+			if (wd == null) return false;
 			if (entity == null) return false;
+			if (entity.isRemoved()) return false;
+			if (entity.isDeadOrDying()) return false;
 			if (!entity.isAttackable()) return false;
 			if (entity.isSpectator()) return false;
-			if (entity.isDeadOrDying()) return false;
 			if (mob.isAlliedTo(entity)) return false;
 			if (enemyCheck) {
 				if (mob.getTeam() == null && entity instanceof Player) return false;
 				if (!(entity instanceof Enemy)) return false;
-			} 
+			}
+			if (wd.getType().isIRMissile()) {
+				if (UtilEntity.isOnGroundOrWater(entity)) return false;
+			} else if (wd.getType().isTrackMissile()) {
+				EntityVehicle vehicle = turret.getParentVehicle();
+				if (vehicle == null) return false;
+				if (!vehicle.radarSystem.hasTarget(entity)) return false;
+			}
 			return true;
 		};
 	}
@@ -42,6 +57,14 @@ public class TurretTargetGoal<T extends LivingEntity> extends NearestAttackableT
 	
 	@Override
 	protected void findTarget() {
+		WeaponData wd = turret.getWeaponData();
+		EntityVehicle vehicle = turret.getParentVehicle();
+		if (wd == null || vehicle == null) return;
+		if (wd.getType().isTrackMissile()) {
+			// TODO 6.2 radar missile turret mobs choose target from radar system targets list
+			
+			//return;
+		}
 		if (targetType != Player.class && targetType != ServerPlayer.class) {
 			target = mob.level.getNearestEntity(mob.level.getEntitiesOfClass(targetType, 
 					getTargetSearchArea(getFollowDistance()), (entity) -> true), targetConditions, 

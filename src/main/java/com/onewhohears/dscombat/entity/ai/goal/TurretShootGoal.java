@@ -66,7 +66,7 @@ public class TurretShootGoal extends Goal {
 	public static final ShootFunction STUPID_SHOOT = (mob, turret, target, prevTargetPos) -> {
 		prevTargetPos = inaccurateShootPos(mob, target, prevTargetPos, 10, 10);
 		UtilEntity.mobLookAtPos(mob, prevTargetPos, mob.getHeadRotSpeed());
-		turret.shoot(mob);
+		if (isLookingAtTarget(turret, prevTargetPos, 20)) turret.shoot(mob);
 		return prevTargetPos;
 	};
 	
@@ -76,7 +76,7 @@ public class TurretShootGoal extends Goal {
 	public static final ShootFunction NORMAL_SHOOT = (mob, turret, target, prevTargetPos) -> {
 		prevTargetPos = inaccurateShootPos(mob, target, prevTargetPos, 10, 5);
 		UtilEntity.mobLookAtPos(mob, prevTargetPos, mob.getHeadRotSpeed());
-		turret.shoot(mob);
+		if (isLookingAtTarget(turret, prevTargetPos, 10)) turret.shoot(mob);
 		return prevTargetPos;
 	};
 	
@@ -100,7 +100,7 @@ public class TurretShootGoal extends Goal {
 					mob.getEyePosition(), targetPos, 3);
 		}
 		UtilEntity.mobLookAtPos(mob, prevTargetPos, mob.getHeadRotSpeed());
-		turret.shoot(mob);
+		if (isLookingAtTarget(turret, prevTargetPos, 5)) turret.shoot(mob);
 		return prevTargetPos;
 	};
 	
@@ -110,6 +110,13 @@ public class TurretShootGoal extends Goal {
 					target.getEyePosition(), inaccuracy);
 		}
 		return prevTargetPos;
+	}
+	
+	public static boolean isLookingAtTarget(EntityTurret turret, Vec3 targetPos, float error) {
+		Vec3 turretLook = turret.getLookAngle();
+		Vec3 diff = targetPos.subtract(turret.getEyePosition());
+		double angle = UtilGeometry.angleBetweenDegrees(diff, turretLook);
+		return angle <= error;
 	}
 	
 	public static ShootFunction getShootFunctionByMob(Mob mob) {

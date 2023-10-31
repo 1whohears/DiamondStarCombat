@@ -210,11 +210,12 @@ public class EntityTurret extends EntitySeat {
 	}
 	
 	public double getHorizontalRange() {
+		// TODO 6.3 determine turret ai range based on weapon stats
 		return 400;
 	}
 	
 	public double getVerticalRange() {
-		return 200;
+		return level.getGameRules().getInt(DSCGameRules.MOB_TURRET_VERTICAL_RANGE);
 	}
 	
 	@Override

@@ -15,6 +15,7 @@ public class DSCGameRules {
 	public static GameRules.Key<GameRules.BooleanValue> BROADCAST_MISSILE_HIT;
 	public static GameRules.Key<GameRules.BooleanValue> BROADCAST_MISSILE_HIT_TEAM_ONLY;
 	public static GameRules.Key<GameRules.BooleanValue> MOBS_USE_TURRETS;
+	public static GameRules.Key<GameRules.IntegerValue> MOB_TURRET_VERTICAL_RANGE;
 	// TODO 7.2 baby mode (arcade mode) for planes disabled by default
 	
 	public static void registerAll() {
@@ -29,6 +30,7 @@ public class DSCGameRules {
 		BROADCAST_MISSILE_HIT = registerBoolean("broadcastMissileHit", true, GameRules.Category.CHAT);
 		BROADCAST_MISSILE_HIT_TEAM_ONLY = registerBoolean("broadcastMissileHitTeamOnly", false, GameRules.Category.CHAT);
 		MOBS_USE_TURRETS = registerBoolean("mobsUseTurrets", true, GameRules.Category.MOBS);
+		MOB_TURRET_VERTICAL_RANGE = registerInteger("mobTurretVerticalRange", 300, GameRules.Category.MOBS);
 	}
 	
 	public static GameRules.Key<GameRules.BooleanValue> registerBoolean(String name, boolean defaultValue) {

@@ -456,16 +456,16 @@
 	"death.attack.dscombat.plane_crash_collide3.self": "%1$s was sleeping in a self driving Tesla",
 	"death.attack.dscombat.plane_crash_collide3.player": "%1$s was a deer in the headlights of %2$s",
 	
-	"gamerule.consumeFuel": "Vehicle Consume Fuel",
-	"gamerule.consumeAmmo": "Vehicle Consume Ammo",
-	"gamerule.consumeFlares": "Vehicle Consume Flares",
-	"gamerule.dataLinkAlwaysOn": "Data Link Always On",
-	"gamerule.disableElytraFlying": "Disable Elytra Flying",
-	"gamerule.itemCooldownVehicleFresh": "Fresh Vehicle To Item Cooldown",
-	"gamerule.itemCooldownVehicleShoot": "Shoot Vehicle To Item Cooldown",
-	"gamerule.weaponHitFeedback": "Weapon Hit Feedback",
-	"gamerule.broadcastMissileHit": "Broadcast Missile Hit",
-	"gamerule.broadcastMissileHitTeamOnly": "Broadcast Missile Hit Team Only",
-	"gamerule.mobsUseTurrets": "Can Mobs Use Turrets"
-	
+	"gamerule.consumeFuel": "DSC Vehicle Consume Fuel",
+	"gamerule.consumeAmmo": "DSC Vehicle Consume Ammo",
+	"gamerule.consumeFlares": "DSC Vehicle Consume Flares",
+	"gamerule.dataLinkAlwaysOn": "DSC Data Link Always On",
+	"gamerule.disableElytraFlying": "DSC Disable Elytra Flying",
+	"gamerule.itemCooldownVehicleFresh": "DSC Fresh Vehicle To Item Cooldown",
+	"gamerule.itemCooldownVehicleShoot": "DSC Shoot Vehicle To Item Cooldown",
+	"gamerule.weaponHitFeedback": "DSC Weapon Hit Feedback",
+	"gamerule.broadcastMissileHit": "DSC Broadcast Missile Hit",
+	"gamerule.broadcastMissileHitTeamOnly": "DSC Broadcast Missile Hit Team Only",
+	"gamerule.mobsUseTurrets": "DSC Can Mobs Use Turrets",
+	"gamerule.mobTurretVerticalRange": "DSC Mob Turret AI Vertical Range"
 }

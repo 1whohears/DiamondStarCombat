@@ -465,6 +465,7 @@
 	"gamerule.itemCooldownVehicleShoot": "Shoot Vehicle To Item Cooldown",
 	"gamerule.weaponHitFeedback": "Weapon Hit Feedback",
 	"gamerule.broadcastMissileHit": "Broadcast Missile Hit",
-	"gamerule.broadcastMissileHitTeamOnly": "Broadcast Missile Hit Team Only"
+	"gamerule.broadcastMissileHitTeamOnly": "Broadcast Missile Hit Team Only",
+	"gamerule.mobsUseTurrets": "Can Mobs Use Turrets"
 	
 }

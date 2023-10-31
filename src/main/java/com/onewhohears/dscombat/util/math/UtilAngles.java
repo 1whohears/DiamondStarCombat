@@ -1,5 +1,7 @@
 package com.onewhohears.dscombat.util.math;
 
+import java.util.Random;
+
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
@@ -74,6 +76,15 @@ public class UtilAngles {
     public static Vec3 rotationToVector(double yaw, double pitch, double size) {
         Vec3 vec = rotationToVector(yaw, pitch);
         return vec.scale(size / vec.length());
+    }
+    
+    public static Vec3 inaccurateDirection(Vec3 dir, float inaccuracy) {
+    	float yaw = getYaw(dir);
+    	float pitch = getPitch(dir);
+    	Random r = new Random();
+    	yaw = yaw + (r.nextFloat()-0.5f) * 2f * inaccuracy;
+		pitch = pitch + (r.nextFloat()-0.5f) * 2f * inaccuracy;
+		return rotationToVector(yaw, pitch);
     }
     
     public static void normalizeRCloseToONE(Quaternion q, float d) {

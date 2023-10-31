@@ -461,6 +461,10 @@ public abstract class WeaponData extends JsonPreset {
 		public String toString() {
 			return getId();
 		}
+		
+		public boolean isBullet() {
+			return this == BULLET;
+		}
 	}
 	
 }

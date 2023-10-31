@@ -25,7 +25,7 @@ public class EntityBomb extends EntityBullet {
 	
 	@Override
 	protected void tickSetMove() {
-		setDeltaMovement(getDeltaMovement().add(0, -Config.SERVER.accGravity.get()*4, 0));
+		setDeltaMovement(getDeltaMovement().add(0, -Config.SERVER.accGravity.get()*BULLET_GRAVITY_SCALE, 0));
 	}
 	
 	@Override

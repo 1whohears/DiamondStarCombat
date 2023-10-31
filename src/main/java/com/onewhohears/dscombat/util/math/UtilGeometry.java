@@ -1,10 +1,13 @@
 package com.onewhohears.dscombat.util.math;
 
+import java.util.Random;
+
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
@@ -154,6 +157,14 @@ public class UtilGeometry {
 	
 	public static Vec3 toVec3(BlockPos pos) {
 		return new Vec3(pos.getX(), pos.getY(), pos.getZ());
+	}
+	
+	public static final Random RANDOM = new Random();
+	
+	public static Vec3 inaccurateTargetPos(Vec3 origin, Vec3 targetPos, float inaccuracy) {
+		double dist = origin.distanceTo(targetPos);
+		double i = dist*Math.tan(Mth.DEG_TO_RAD*inaccuracy);
+		return targetPos.add((RANDOM.nextDouble()-0.5)*i, (RANDOM.nextDouble()-0.5)*i, (RANDOM.nextDouble()-0.5)*i);
 	}
 	
 }

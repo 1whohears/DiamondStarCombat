@@ -2179,6 +2179,11 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     	return getBoundingBox();
     }
     
+    @Override
+    public double getEyeY() {
+    	return getBoundingBox().getCenter().y;
+    }
+    
     /**
      * @return the total fuel this aircraft can hold
      */

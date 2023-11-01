@@ -21,7 +21,7 @@ public class UtilEntity {
 	
 	public static boolean canPosSeeEntity(Vec3 pos, Entity entity, int maxBlockCheckDepth, double throWater, double throBlock) {
 		Level level = entity.getLevel();
-		Vec3 diff = entity.getBoundingBox().getCenter().subtract(pos);
+		Vec3 diff = entity.getEyePosition().subtract(pos);
 		Vec3 look = diff.normalize();
 		double distance = diff.length();
 		double[] through = new double[] {throWater, throBlock};
@@ -42,7 +42,7 @@ public class UtilEntity {
 	}
 	
 	public static boolean canEntitySeeEntity(Entity e1, Entity e2, int maxBlockCheckDepth, double throWater, double throBlock) {
-		return canPosSeeEntity(e1.position(), e2, maxBlockCheckDepth, throWater, throBlock);
+		return canPosSeeEntity(e1.getEyePosition(), e2, maxBlockCheckDepth, throWater, throBlock);
 	}
 	
 	private static boolean checkBlocksByRange(Level level, Vec3 pos, Vec3 look, int dist, double[] through) {

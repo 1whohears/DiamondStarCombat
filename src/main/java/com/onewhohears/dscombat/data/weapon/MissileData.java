@@ -137,6 +137,11 @@ public abstract class MissileData extends BulletData {
 	}
 	
 	@Override
+	public double getMobTurretRange() {
+		return Math.max(1500, getSpeed() * getMaxAge());
+	}
+	
+	@Override
 	public void addToolTips(List<Component> tips) {
 		super.addToolTips(tips);
 		if (getFov() != -1) tips.add(Component.literal("FOV: ").append(getFov()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));

@@ -130,6 +130,11 @@ public class BulletData extends WeaponData {
 	public float getInnacuracy() {
 		return innacuracy;
 	}
+	
+	@Override
+	public double getMobTurretRange() {
+		return Math.max(300, getSpeed() * getMaxAge());
+	}
 
 	@Override
 	public <T extends JsonPreset> T copy() {

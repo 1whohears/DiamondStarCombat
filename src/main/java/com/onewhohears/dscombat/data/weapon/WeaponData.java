@@ -269,6 +269,8 @@ public abstract class WeaponData extends JsonPreset {
 	public void setChangeLaunchPitch(float degrees) {
 		changeLaunchPitch = degrees;
 	}
+	
+	public abstract double getMobTurretRange();
 
 	public boolean isFailedLaunch() {
 		return failedLaunchReason != null;

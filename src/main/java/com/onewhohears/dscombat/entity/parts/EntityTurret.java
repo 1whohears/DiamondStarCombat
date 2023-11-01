@@ -217,8 +217,9 @@ public class EntityTurret extends EntitySeat {
 	}
 	
 	public double getHorizontalRange() {
-		// TODO 6.3 determine turret ai range based on weapon stats
-		return 400;
+		WeaponData wd = getWeaponData();
+		if (wd == null) return 400;
+		return wd.getMobTurretRange();
 	}
 	
 	public double getVerticalRange() {

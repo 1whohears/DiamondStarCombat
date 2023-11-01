@@ -52,6 +52,11 @@ public class BombData extends BulletData {
 	}
 	
 	@Override
+	public double getMobTurretRange() {
+		return 20;
+	}
+	
+	@Override
 	public void readNBT(CompoundTag tag) {
 		super.readNBT(tag);
 	}

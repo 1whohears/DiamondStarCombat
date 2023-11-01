@@ -51,4 +51,9 @@ public class NoWeaponData extends WeaponData {
 		return (T) new NoWeaponData();
 	}
 
+	@Override
+	public double getMobTurretRange() {
+		return 0;
+	}
+
 }

@@ -19,12 +19,12 @@ import net.minecraft.world.phys.AABB;
 public class TurretTargetGoal<T extends LivingEntity> extends NearestAttackableTargetGoal<T> {
 	
 	public static TurretTargetGoal<Player> targetPlayers(Mob mob, EntityTurret turret) {
-		return new TurretTargetGoal<>(mob, turret, Player.class, turret.getHorizontalRange(), 
+		return new TurretTargetGoal<>(mob, turret, Player.class, turret.getAIHorizontalRange(), 
 				checkCanTarget(mob, turret, false));
 	}
 	
 	public static TurretTargetGoal<LivingEntity> targetEnemy(Mob mob, EntityTurret turret) {
-		return new TurretTargetGoal<>(mob, turret, LivingEntity.class, turret.getHorizontalRange(), 
+		return new TurretTargetGoal<>(mob, turret, LivingEntity.class, turret.getAIHorizontalRange(), 
 				checkCanTarget(mob, turret, true));
 	}
 	
@@ -44,7 +44,7 @@ public class TurretTargetGoal<T extends LivingEntity> extends NearestAttackableT
 			}
 			if (wd.getType().isIRMissile()) {
 				if (UtilEntity.isOnGroundOrWater(entity)) return false;
-			} else if (wd.getType().isTrackMissile()) {
+			} else if (wd.requiresRadar()) {
 				EntityVehicle vehicle = turret.getParentVehicle();
 				if (vehicle == null) return false;
 				if (!vehicle.radarSystem.hasTarget(entity)) return false;
@@ -86,9 +86,15 @@ public class TurretTargetGoal<T extends LivingEntity> extends NearestAttackableT
         return true;
 	}
 	
+	@Override
+	public void stop() {
+		mob.setTarget((LivingEntity)null);
+		target = null;
+	}
+	
 	private TurretTargetGoal(Mob mob, EntityTurret turret,  
 			Class<T> type, double range, Predicate<LivingEntity> check) {
-		super(mob, type, 0, 
+		super(mob, type, 8, 
 				false, false, check);
 		this.turret = turret;
 		this.range = range;
@@ -97,15 +103,11 @@ public class TurretTargetGoal<T extends LivingEntity> extends NearestAttackableT
 	
 	@Override
 	protected AABB getTargetSearchArea(double targetDistance) {
-		return mob.getBoundingBox().inflate(getHorizontalRange(), getVerticalRange(), getHorizontalRange());
-	}
-	
-	public double getHorizontalRange() {
-		return turret.getHorizontalRange();
+		return mob.getBoundingBox().inflate(getFollowDistance(), getVerticalRange(), getFollowDistance());
 	}
 	
 	public double getVerticalRange() {
-		return turret.getVerticalRange();
+		return turret.getAIVerticalRange();
 	}
 	
 	@Override

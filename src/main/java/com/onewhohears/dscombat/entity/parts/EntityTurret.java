@@ -209,20 +209,20 @@ public class EntityTurret extends EntitySeat {
 		return TurretTargetGoal.targetEnemy(mob, this);
 	}
 	
-	public boolean isMobUsingRadar() {
+	public boolean isAIUsingRadar() {
 		if (targetGoal == null) return false;
 		WeaponData wd = getWeaponData();
 		if (wd == null) return false;
 		return wd.requiresRadar();
 	}
 	
-	public double getHorizontalRange() {
+	public double getAIHorizontalRange() {
 		WeaponData wd = getWeaponData();
 		if (wd == null) return 300;
 		return wd.getMobTurretRange();
 	}
 	
-	public double getVerticalRange() {
+	public double getAIVerticalRange() {
 		return level.getGameRules().getInt(DSCGameRules.MOB_TURRET_VERTICAL_RANGE);
 	}
 	

@@ -76,8 +76,8 @@ public class TrackMissileData extends MissileData {
 	}
 	
 	@Override
-	public boolean couldRadarWeaponTargetEntity(Entity entity) {
-		if (!super.couldRadarWeaponTargetEntity(entity)) return false;
+	public boolean couldRadarWeaponTargetEntity(Entity entity, Entity radar) {
+		if (!super.couldRadarWeaponTargetEntity(entity, radar)) return false;
 		boolean groundWater = UtilEntity.isOnGroundOrWater(entity);
 		if (targetType == TargetType.AIR && groundWater) return false;
 		else if (targetType == TargetType.GROUND && !groundWater) return false;

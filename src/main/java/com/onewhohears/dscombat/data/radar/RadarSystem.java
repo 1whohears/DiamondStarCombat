@@ -70,7 +70,7 @@ public class RadarSystem {
 	}
 	
 	public boolean canServerTick() {
-		return parent.isPlayerRiding() || (parent.level.getGameRules().getBoolean(DSCGameRules.MOBS_TICK_RADAR) && parent.isMobUsingRadar());
+		return parent.isPlayerRiding() || (parent.level.getGameRules().getBoolean(DSCGameRules.MOBS_TICK_RADAR) && parent.isAIUsingRadar());
 	}
 	
 	public void tickUpdateTargets() {
@@ -199,7 +199,7 @@ public class RadarSystem {
 			if (ping.isFriendly) continue;
 			Entity entity = parent.level.getEntity(ping.id);
 			if (entity instanceof LivingEntity target 
-					&& wd.couldRadarWeaponTargetEntity(target)) 
+					&& wd.couldRadarWeaponTargetEntity(entity, parent)) 
 				return target;
 		}
 		return null;
@@ -213,11 +213,11 @@ public class RadarSystem {
 			if (entity == null) continue;
 			if (entity instanceof Player target 
 					&& !target.isCreative()
-					&& wd.couldRadarWeaponTargetEntity(target)) 
+					&& wd.couldRadarWeaponTargetEntity(entity, parent)) 
 				return target;
 			else if (entity.getControllingPassenger() instanceof Player target 
 					&& !target.isCreative()
-					&& wd.couldRadarWeaponTargetEntity(target)) 
+					&& wd.couldRadarWeaponTargetEntity(entity, parent)) 
 				return target;
 		}
 		return null;

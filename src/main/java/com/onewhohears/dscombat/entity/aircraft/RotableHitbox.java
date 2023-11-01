@@ -36,7 +36,7 @@ public class RotableHitbox extends PartEntity<EntityVehicle> {
 		this.size = hitbox.getMaxDimensions();
 		this.rel_pos = rel_pos;
 		this.noPhysics = true;
-		this.blocksBuilding = true;
+		// this.blocksBuilding = true;
 		refreshDimensions();
 	}
 	

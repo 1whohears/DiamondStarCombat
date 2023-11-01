@@ -1530,9 +1530,9 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		return false;
 	}
 	
-	public boolean isMobUsingRadar() {
+	public boolean isAIUsingRadar() {
 		for (EntityTurret turret : getTurrets()) 
-			if (turret.isMobUsingRadar()) 
+			if (turret.isAIUsingRadar()) 
 				return true;
 		return false;
 	}

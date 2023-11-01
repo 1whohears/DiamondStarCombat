@@ -57,7 +57,7 @@ public class TurretShootGoal extends Goal {
 	public static final ShootFunction DUMBASS_SHOOT = (mob, turret, target, prevTargetPos) -> {
 		prevTargetPos = inaccurateShootPos(mob, turret, target, prevTargetPos, 20, 25, false);
 		UtilEntity.mobLookAtPos(mob, prevTargetPos, mob.getHeadRotSpeed());
-		if (canShootTurret(mob, turret, target, prevTargetPos, 360, false, false)) turret.shoot(mob);
+		if (shouldShootTurret(mob, turret, target, prevTargetPos, 360, false, false)) turret.shoot(mob);
 		return prevTargetPos;
 	};
 	
@@ -67,7 +67,7 @@ public class TurretShootGoal extends Goal {
 	public static final ShootFunction STUPID_SHOOT = (mob, turret, target, prevTargetPos) -> {
 		prevTargetPos = inaccurateShootPos(mob, turret, target, prevTargetPos, 10, 10, false);
 		UtilEntity.mobLookAtPos(mob, prevTargetPos, mob.getHeadRotSpeed());
-		if (canShootTurret(mob, turret, target, prevTargetPos, 20, true, false)) turret.shoot(mob);
+		if (shouldShootTurret(mob, turret, target, prevTargetPos, 20, true, false)) turret.shoot(mob);
 		return prevTargetPos;
 	};
 	
@@ -77,7 +77,7 @@ public class TurretShootGoal extends Goal {
 	public static final ShootFunction NORMAL_SHOOT = (mob, turret, target, prevTargetPos) -> {
 		prevTargetPos = inaccurateShootPos(mob, turret, target, prevTargetPos, 10, 5, true);
 		UtilEntity.mobLookAtPos(mob, prevTargetPos, mob.getHeadRotSpeed());
-		if (canShootTurret(mob, turret, target, prevTargetPos, 10, true, true)) turret.shoot(mob);
+		if (shouldShootTurret(mob, turret, target, prevTargetPos, 10, true, true)) turret.shoot(mob);
 		return prevTargetPos;
 	};
 	
@@ -88,7 +88,7 @@ public class TurretShootGoal extends Goal {
 	public static final ShootFunction SMART_SHOOT = (mob, turret, target, prevTargetPos) -> {
 		prevTargetPos = inaccurateShootPos(mob, turret, target, prevTargetPos, 8, 2, true);
 		UtilEntity.mobLookAtPos(mob, prevTargetPos, mob.getHeadRotSpeed());
-		if (canShootTurret(mob, turret, target, prevTargetPos, 5, true, true)) turret.shoot(mob);
+		if (shouldShootTurret(mob, turret, target, prevTargetPos, 5, true, true)) turret.shoot(mob);
 		return prevTargetPos;
 	};
 	
@@ -103,6 +103,7 @@ public class TurretShootGoal extends Goal {
 				if (speed <= 0) speed = 0.01;
 				double dist = origin.distanceTo(targetPos);
 				double time = dist / speed;
+				// TODO 6.4 this math is not entirely accurate
 				double adjust = 0.5*Config.SERVER.accGravity.get()*EntityBullet.BULLET_GRAVITY_SCALE*time*time;
 				targetPos = targetPos.add(0, adjust, 0);
 			}
@@ -111,24 +112,28 @@ public class TurretShootGoal extends Goal {
 		return prevTargetPos;
 	}
 	
-	public static boolean canShootTurret(Mob mob, EntityTurret turret, LivingEntity target, 
+	public static boolean shouldShootTurret(Mob mob, EntityTurret turret, LivingEntity target, 
 			Vec3 targetPos, float aimError, boolean useIRMis, boolean useTrackMis) {
 		WeaponData wd = turret.getWeaponData();
 		if (wd == null) return false;
 		if (!wd.checkRecoil() || wd.getCurrentAmmo() <= 0) return false;
-		Vec3 turretLook = turret.getLookAngle();
-		Vec3 diff = targetPos.subtract(turret.getEyePosition());
-		double angle = UtilGeometry.angleBetweenDegrees(diff, turretLook);
-		if (angle > aimError) return false;
+		// TODO 6.2 wait longer before shooting missile again (waste less ammo)
+		// TODO 6.3 increase vertical aim error for missiles
 		if (useIRMis && wd.getType().isIRMissile()) {
+			aimError += 8;
 			if (UtilEntity.isOnGroundOrWater(target)) return false;
 		} else if (useTrackMis && wd.requiresRadar()) {
+			aimError += 4;
 			EntityVehicle vehicle = turret.getParentVehicle();
 			if (vehicle == null) return false;
 			if (!vehicle.radarSystem.hasRadar()) return false;
 			if (!vehicle.radarSystem.hasTarget(target)) return false;
 			vehicle.radarSystem.selectTarget(target);
 		}
+		Vec3 turretLook = turret.getLookAngle();
+		Vec3 diff = targetPos.subtract(turret.getEyePosition());
+		double angle = UtilGeometry.angleBetweenDegrees(diff, turretLook);
+		if (angle > aimError) return false;
 		return true;
 	}
 	

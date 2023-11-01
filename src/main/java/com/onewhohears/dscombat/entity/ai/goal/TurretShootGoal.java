@@ -122,7 +122,7 @@ public class TurretShootGoal extends Goal {
 		if (angle > aimError) return false;
 		if (useIRMis && wd.getType().isIRMissile()) {
 			if (UtilEntity.isOnGroundOrWater(target)) return false;
-		} else if (useTrackMis && wd.getType().isTrackMissile()) {
+		} else if (useTrackMis && wd.requiresRadar()) {
 			EntityVehicle vehicle = turret.getParentVehicle();
 			if (vehicle == null) return false;
 			if (!vehicle.radarSystem.hasRadar()) return false;

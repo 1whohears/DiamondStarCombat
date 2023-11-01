@@ -60,7 +60,7 @@ public class TurretTargetGoal<T extends LivingEntity> extends NearestAttackableT
 		WeaponData wd = turret.getWeaponData();
 		EntityVehicle vehicle = turret.getParentVehicle();
 		if (wd == null || vehicle == null) return;
-		if (wd.getType().isTrackMissile()) {
+		if (wd.requiresRadar()) {
 			// TODO 6.2 radar missile turret mobs choose target from radar system targets list
 			
 			//return;

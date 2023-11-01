@@ -209,6 +209,13 @@ public class EntityTurret extends EntitySeat {
 		return TurretTargetGoal.targetEnemy(mob, this);
 	}
 	
+	public boolean isMobUsingRadar() {
+		if (targetGoal == null) return false;
+		WeaponData wd = getWeaponData();
+		if (wd == null) return false;
+		return wd.requiresRadar();
+	}
+	
 	public double getHorizontalRange() {
 		// TODO 6.3 determine turret ai range based on weapon stats
 		return 400;

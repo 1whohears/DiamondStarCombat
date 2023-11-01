@@ -1209,11 +1209,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 */
 	public void controlSystem() {
 		if (!isOperational()) return;
+		radarSystem.tick();
 		Entity controller = getControllingPassenger();
-		if (controller == null && !isPlayerRiding()) return;
 		if (!level.isClientSide) {
-			weaponSystem.tick();
-			radarSystem.tickUpdateTargets();
+			weaponSystem.serverTick();
 			if (controller == null) return;
 			boolean consume = !isNoConsume();
 			if (controller instanceof ServerPlayer player) {
@@ -1227,8 +1226,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 				boolean consumeFlares = level.getGameRules().getBoolean(DSCGameRules.CONSUME_FLARES);
 				flare(controller, consume && consumeFlares);
 			}
-		} else {
-			radarSystem.clientTick();
 		}
 	}
 	
@@ -1520,18 +1517,23 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	@Nullable
 	@Override
     public Entity getControllingPassenger() {
-        for (EntitySeat seat : getSeats()) {
-        	if (seat.isPilotSeat()) {
+        for (EntitySeat seat : getSeats()) 
+        	if (seat.isPilotSeat()) 
         		return seat.getPlayer();
-        	}
-        }
         return null;
     }
 	
 	public boolean isPlayerRiding() {
-		for (EntitySeat seat : getSeats()) {
-			if (seat.getPlayer() != null) return true;
-		}
+		for (EntitySeat seat : getSeats()) 
+			if (seat.getPlayer() != null) 
+				return true;
+		return false;
+	}
+	
+	public boolean isMobUsingRadar() {
+		for (EntityTurret turret : getTurrets()) 
+			if (turret.isMobUsingRadar()) 
+				return true;
 		return false;
 	}
 	

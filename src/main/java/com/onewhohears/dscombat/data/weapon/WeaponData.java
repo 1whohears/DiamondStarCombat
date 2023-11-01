@@ -211,7 +211,7 @@ public abstract class WeaponData extends JsonPreset {
 	}
 	
 	public boolean canAngleDown() {
-		return getType() == WeaponType.BULLET;
+		return getType().isBullet();
 	}
 	
 	public Vec3 getLaunchPos() {
@@ -424,7 +424,11 @@ public abstract class WeaponData extends JsonPreset {
 	}
 	
 	public boolean isNoWeapon() {
-		return getType() == WeaponType.NONE;
+		return getType().isNone();
+	}
+	
+	public boolean requiresRadar() {
+		return getType().requiresRadar();
 	}
 	
 	public static enum WeaponType {
@@ -439,10 +443,9 @@ public abstract class WeaponData extends JsonPreset {
 		NONE;
 		@Nullable
 		public static WeaponType getById(String id) {
-			for (int i = 0; i < values().length; ++i) {
+			for (int i = 0; i < values().length; ++i) 
 				if (values()[i].getId().equals(id)) 
 					return values()[i];
-			}
 			return null;
 		}
 		private final String id;
@@ -456,14 +459,20 @@ public abstract class WeaponData extends JsonPreset {
 		public String toString() {
 			return getId();
 		}
+		public boolean isNone() {
+			return this == NONE;
+		}
 		public boolean isBullet() {
 			return this == BULLET;
 		}
 		public boolean isTrackMissile() {
-			return this == TRACK_MISSILE;
+			return this == TRACK_MISSILE || this == TORPEDO;
 		}
 		public boolean isIRMissile() {
 			return this == IR_MISSILE;
+		}
+		public boolean requiresRadar() {
+			return isTrackMissile();
 		}
 	}
 	

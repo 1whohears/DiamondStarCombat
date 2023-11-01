@@ -86,7 +86,7 @@ public class WeaponSystem {
 		String reason = null;
 		data.shootFromVehicle(parent.level, controller, getShootDirection(data), parent, consume);
 		if (data.isFailedLaunch()) reason = data.getFailedLaunchReason();
-		for (WeaponData wd : weapons) if (wd.getType() == WeaponType.BULLET && wd.getId().equals(name) && !wd.getSlotId().equals(data.getSlotId())) {
+		for (WeaponData wd : weapons) if (wd.getType().isBullet() && wd.getId().equals(name) && !wd.getSlotId().equals(data.getSlotId())) {
 			wd.shootFromVehicle(parent.level, controller, getShootDirection(wd), parent, consume);
 			if (reason == null && wd.isFailedLaunch()) reason = wd.getFailedLaunchReason();
 		}
@@ -126,7 +126,7 @@ public class WeaponSystem {
 	/**
 	 * called by this weapon system's entity tick function server side
 	 */
-	public void tick() {
+	public void serverTick() {
 		for (int i = 0; i < weapons.size(); ++i) {
 			weapons.get(i).tick(parent, i == getSelectedIndex());
 		}

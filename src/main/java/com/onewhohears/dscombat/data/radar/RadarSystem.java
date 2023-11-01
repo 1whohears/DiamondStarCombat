@@ -63,6 +63,15 @@ public class RadarSystem {
 		return dataLink || parent.level.getGameRules().getBoolean(DSCGameRules.DATA_LINK_ALWAYS_ON);
 	}
 	
+	public void tick() {
+		if (parent.level.isClientSide) clientTick();
+		else if (canServerTick()) serverTick();
+	}
+	
+	public boolean canServerTick() {
+		return parent.isPlayerRiding() || (parent.level.getGameRules().getBoolean(DSCGameRules.MOBS_TICK_RADAR) && parent.isMobUsingRadar());
+	}
+	
 	public void tickUpdateTargets() {
 		RadarPing old = null; 
 		if (selectedIndex != -1 && selectedIndex < targets.size()) old = targets.get(selectedIndex);
@@ -293,6 +302,10 @@ public class RadarSystem {
 	
 	public boolean isTrackedByRadar() {
 		return rwrRadar;
+	}
+	
+	public void serverTick() {
+		tickUpdateTargets();
 	}
 	
 	public void clientTick() {

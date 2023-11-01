@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.Config;
+import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
 import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData;
 import com.onewhohears.dscombat.data.damagesource.WeaponDamageSource.WeaponDamageType;
@@ -107,6 +108,15 @@ public class EntityPlane extends EntityVehicle {
 	@Override
 	public double getDriveAcc() {
 		return 0;
+	}
+	
+	@Override
+	public double getMaxSpeedForMotion() {
+		return super.getMaxSpeedForMotion() * getPlaneSpeedPercent();
+	}
+	
+	public double getPlaneSpeedPercent() {
+		return level.getGameRules().getInt(DSCGameRules.PLANE_SPEED_PERCENT) * 0.01;
 	}
 
 	// TODO: nerf brakes? or make their strength configurable?

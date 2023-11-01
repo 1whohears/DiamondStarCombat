@@ -469,5 +469,6 @@
 	"gamerule.mobsUseTurrets": "DSC Can Mobs Use Turrets",
 	"gamerule.mobTurretVerticalRange": "DSC Mob Turret AI Vertical Range",
 	"gamerule.mobsTickRadar": "DSC Mob Passengers Tick Radar",
-	"gamerule.mobsRideVehicles": "DSC Can Mobs Ride Vehicles"
+	"gamerule.mobsRideVehicles": "DSC Can Mobs Ride Vehicles",
+	"gamerule.planeSpeedPercent": "DSC Plane Speed Percent"
 }

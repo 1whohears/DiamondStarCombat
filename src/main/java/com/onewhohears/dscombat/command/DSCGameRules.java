@@ -17,9 +17,9 @@ public class DSCGameRules {
 	public static GameRules.Key<GameRules.BooleanValue> MOBS_USE_TURRETS;
 	public static GameRules.Key<GameRules.IntegerValue> MOB_TURRET_VERTICAL_RANGE;
 	public static GameRules.Key<GameRules.BooleanValue> MOBS_TICK_RADAR;
+	public static GameRules.Key<GameRules.BooleanValue> MOBS_RIDE_VEHICLES;
 	// TODO 7.1 plane speed percent multiplier gamerule 
 	// TODO 7.2 baby mode gamerule (arcade mode) for planes disabled by default
-	// TODO 7.3 can mobs ride vehicles gamerule
 	
 	public static void registerAll() {
 		CONSUME_FULE = registerBoolean("consumeFuel", true, GameRules.Category.PLAYER);
@@ -35,6 +35,7 @@ public class DSCGameRules {
 		MOBS_USE_TURRETS = registerBoolean("mobsUseTurrets", true, GameRules.Category.MOBS);
 		MOB_TURRET_VERTICAL_RANGE = registerInteger("mobTurretVerticalRange", 300, GameRules.Category.MOBS);
 		MOBS_TICK_RADAR = registerBoolean("mobsTickRadar", true, GameRules.Category.MOBS);
+		MOBS_RIDE_VEHICLES = registerBoolean("mobsRideVehicles", true, GameRules.Category.MOBS);
 	}
 	
 	public static GameRules.Key<GameRules.BooleanValue> registerBoolean(String name, boolean defaultValue) {

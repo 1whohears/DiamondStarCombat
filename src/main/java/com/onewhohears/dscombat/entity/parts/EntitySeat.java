@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 import javax.annotation.Nullable;
 
 import com.mojang.math.Quaternion;
+import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
@@ -36,7 +37,8 @@ public class EntitySeat extends EntityPart {
 	
 	public void tick() {
 		super.tick();
-		tickRideCollision();
+		if (!level.isClientSide && level.getGameRules().getBoolean(DSCGameRules.MOBS_RIDE_VEHICLES)) 
+			tickRideCollision();
 	}
 	
 	protected void tickRideCollision() {

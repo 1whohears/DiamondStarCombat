@@ -48,7 +48,7 @@ public class AntiRadarMissile extends EntityMissile {
 				EntityVehicle.class, getARBoundingBox());
 		for (int i = 0; i < planes.size(); ++i) {
 			if (!planes.get(i).radarSystem.hasRadar()) continue;
-			if (!planes.get(i).isPlayerRiding()) continue;
+			if (!planes.get(i).radarSystem.canServerTick()) continue;
 			if (!basicCheck(planes.get(i))) continue;
 			float distSqr = (float)distanceToSqr(planes.get(i));
 			targets.add(new ARTarget(planes.get(i), 
@@ -62,9 +62,9 @@ public class AntiRadarMissile extends EntityMissile {
 			return;
 		}
 		ARTarget max = targets.get(0);
-		for (int i = 1; i < targets.size(); ++i) {
-			if (targets.get(i).radiation > max.radiation) max = targets.get(i);
-		}
+		for (int i = 1; i < targets.size(); ++i) 
+			if (targets.get(i).radiation > max.radiation) 
+				max = targets.get(i);
 		this.target = max.entity;
 		this.targetPos = max.entity.position();
 	}

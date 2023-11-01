@@ -218,7 +218,7 @@ public class EntityTurret extends EntitySeat {
 	
 	public double getHorizontalRange() {
 		WeaponData wd = getWeaponData();
-		if (wd == null) return 400;
+		if (wd == null) return 300;
 		return wd.getMobTurretRange();
 	}
 	

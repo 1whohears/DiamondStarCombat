@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.entity.ai.goal;
 
 import java.util.function.Predicate;
 
+import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
@@ -48,6 +49,7 @@ public class TurretTargetGoal<T extends LivingEntity> extends NearestAttackableT
 				if (vehicle == null) return false;
 				if (!vehicle.radarSystem.hasTarget(entity)) return false;
 			}
+			if (!UtilEntity.canEntitySeeEntity(mob, entity, Config.COMMON.maxBlockCheckDepth.get())) return false;
 			return true;
 		};
 	}
@@ -74,13 +76,23 @@ public class TurretTargetGoal<T extends LivingEntity> extends NearestAttackableT
 					mob, mob.getX(), mob.getEyeY(), mob.getZ());
 	}
 	
+	@Override
+	public boolean canContinueToUse() {
+		LivingEntity living = mob.getTarget();
+		if (living == null) living = target;
+		if (living == null) return false;
+		if (mob.tickCount%10==0 && !targetConditions.test(mob, living)) return false;
+		mob.setTarget(living);
+        return true;
+	}
+	
 	private TurretTargetGoal(Mob mob, EntityTurret turret,  
 			Class<T> type, double range, Predicate<LivingEntity> check) {
 		super(mob, type, 0, 
-				true, false, check);
+				false, false, check);
 		this.turret = turret;
 		this.range = range;
-		this.setUnseenMemoryTicks(20);
+		this.targetConditions.ignoreLineOfSight(); // vanilla line of sight has a limit of 128 blocks
 	}
 	
 	@Override

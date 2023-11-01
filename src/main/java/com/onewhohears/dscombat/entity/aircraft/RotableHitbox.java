@@ -65,10 +65,10 @@ public class RotableHitbox extends PartEntity<EntityVehicle> {
 		for (Entity entity : list) {
 			/**
 			 * FIXME 4.1 this custom collision code works somewhat but lots of issues still
+			 * when the chunks load, entities that were on the platform may start falling before platform loads
 			 * are there performance issues?
 			 * can't place anything on the platform
 			 * when the vehicle moves or rotates, the passengers experience chopy movement
-			 * when the chunks load, entities that were on the platform may start falling before platform loads
 			 * collisions are only checked at the player's feet position for now
 			 * explosive projectiles only damage the vehicle if they hit the center where the parent hitbox is
 			 * most importantly this code is horrendous and ugly

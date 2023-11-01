@@ -76,6 +76,16 @@ public class TrackMissileData extends MissileData {
 	}
 	
 	@Override
+	public boolean couldRadarWeaponTargetEntity(Entity entity) {
+		if (!super.couldRadarWeaponTargetEntity(entity)) return false;
+		boolean groundWater = UtilEntity.isOnGroundOrWater(entity);
+		if (targetType == TargetType.AIR && groundWater) return false;
+		else if (targetType == TargetType.GROUND && !groundWater) return false;
+		else if (targetType == TargetType.WATER && !entity.isInWater()) return false;
+		return true;
+	}
+	
+	@Override
 	public EntityWeapon getEntity(Level level, Entity owner) {
 		return new TrackEntityMissile(level, owner, this);
 	}
@@ -90,7 +100,7 @@ public class TrackMissileData extends MissileData {
 			setLaunchFail("error.dscombat.no_radar");
 			return null;
 		}
-		Entity target = radar.getSelectedTarget(level);
+		Entity target = radar.getSelectedTarget();
 		if (target == null) {
 			setLaunchFail("error.dscombat.no_target_selected");
 			return null;

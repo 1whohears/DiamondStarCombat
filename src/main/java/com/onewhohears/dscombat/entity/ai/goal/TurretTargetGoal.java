@@ -61,18 +61,17 @@ public class TurretTargetGoal<T extends LivingEntity> extends NearestAttackableT
 		EntityVehicle vehicle = turret.getParentVehicle();
 		if (wd == null || vehicle == null) return;
 		if (wd.requiresRadar()) {
-			// TODO 6.2 radar missile turret mobs choose target from radar system targets list
-			
-			//return;
+			if (targetType != Player.class && targetType != ServerPlayer.class) 
+				target = vehicle.radarSystem.getLivingTargetByWeapon(wd);
+			else target = vehicle.radarSystem.getPlayerTargetByWeapon(wd);
+			return;
 		}
-		if (targetType != Player.class && targetType != ServerPlayer.class) {
+		if (targetType != Player.class && targetType != ServerPlayer.class) 
 			target = mob.level.getNearestEntity(mob.level.getEntitiesOfClass(targetType, 
 					getTargetSearchArea(getFollowDistance()), (entity) -> true), targetConditions, 
 					mob, mob.getX(), mob.getEyeY(), mob.getZ());
-		} else {
-			target = mob.level.getNearestPlayer(targetConditions, 
+		else target = mob.level.getNearestPlayer(targetConditions, 
 					mob, mob.getX(), mob.getEyeY(), mob.getZ());
-		}
 	}
 	
 	private TurretTargetGoal(Mob mob, EntityTurret turret,  

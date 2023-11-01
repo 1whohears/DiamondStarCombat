@@ -13,14 +13,15 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientRWRWarning;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRadarPings;
 import com.onewhohears.dscombat.common.network.toserver.ToServerPingSelect;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
+import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.init.DataSerializers;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
 
@@ -104,7 +105,7 @@ public class RadarSystem {
 		if (old != null) for (int i = 0; i < targets.size(); ++i) 
 			if (targets.get(i).id == old.id) {
 				selectedIndex = i;
-				if (getSelectedTarget(parent.level) instanceof EntityVehicle plane) {
+				if (getSelectedTarget() instanceof EntityVehicle plane) {
 					plane.lockedOnto(parent.position());
 				}
 				break;
@@ -136,11 +137,9 @@ public class RadarSystem {
 	}
 	
 	private void clearDataLink() {
-		for (int i = 0; i < targets.size(); ++i) {
-			if (targets.get(i).isShared()) {
+		for (int i = 0; i < targets.size(); ++i) 
+			if (targets.get(i).isShared()) 
 				targets.remove(i--);
-			}
-		}
 	}
 	
 	private void updateRockets() {
@@ -188,10 +187,40 @@ public class RadarSystem {
 	}
 	
 	@Nullable
-	public Entity getSelectedTarget(Level level) {
+	public Entity getSelectedTarget() {
 		if (selectedIndex == -1) return null;
 		int id = targets.get(selectedIndex).id;
-		return level.getEntity(id);
+		return parent.level.getEntity(id);
+	}
+	
+	@Nullable
+	public LivingEntity getLivingTargetByWeapon(WeaponData wd) {
+		for (RadarPing ping : targets) {
+			if (ping.isFriendly) continue;
+			Entity entity = parent.level.getEntity(ping.id);
+			if (entity instanceof LivingEntity target 
+					&& wd.couldRadarWeaponTargetEntity(target)) 
+				return target;
+		}
+		return null;
+	}
+	
+	@Nullable
+	public Player getPlayerTargetByWeapon(WeaponData wd) {
+		for (RadarPing ping : targets) {
+			if (ping.isFriendly) continue;
+			Entity entity = parent.level.getEntity(ping.id);
+			if (entity == null) continue;
+			if (entity instanceof Player target 
+					&& !target.isCreative()
+					&& wd.couldRadarWeaponTargetEntity(target)) 
+				return target;
+			else if (entity.getControllingPassenger() instanceof Player target 
+					&& !target.isCreative()
+					&& wd.couldRadarWeaponTargetEntity(target)) 
+				return target;
+		}
+		return null;
 	}
 	
 	public void clientSelectTarget(RadarPing ping) {

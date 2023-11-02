@@ -64,10 +64,6 @@ public class Config {
 	public static class Common {
 		
 		public final ForgeConfigSpec.IntValue maxBlockCheckDepth;
-		public final ForgeConfigSpec.DoubleValue armorStrength;
-		public final ForgeConfigSpec.DoubleValue bulletDamageFactor;
-		public final ForgeConfigSpec.DoubleValue explodeDamageFactor;
-		public final ForgeConfigSpec.DoubleValue planeBulletFactor;
 		/**
 		 * classname
 		 */
@@ -93,18 +89,6 @@ public class Config {
 			maxBlockCheckDepth = builder
 					.comment("The number of blocks between 2 entities to check if they can see eachother.")
 					.defineInRange("maxBlockCheckDepth", 250, 10, 400);
-			armorStrength = builder
-					.comment("Percentage 1 point of vehicle armor reduces.")
-					.defineInRange("armorStrength", 4.0, 0, 100.0);
-			bulletDamageFactor = builder
-					.comment("Multiplier for damage non explosive pojectiles (bullets) deal to vehicles.")
-					.defineInRange("bulletDamageFactor", 0.2, 0, 100.0);
-			explodeDamageFactor = builder
-					.comment("Multiplier for damage missile explosions deal to vehicles.")
-					.defineInRange("explodeDamageFactor", 10.0, 0, 100.0);
-			planeBulletFactor = builder
-					.comment("Multiplier for damage non explosive bullets from this mod deal to planes only.")
-					.defineInRange("planeBulletFactor", 0.5, 0, 100.0);
 			radarVehicles = builder
 					.defineList("radarVehicles", 
 					Arrays.asList(

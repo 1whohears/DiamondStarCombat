@@ -1,6 +1,5 @@
 package com.onewhohears.dscombat.common.event;
 
-import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.common.network.PacketHandler;
@@ -34,7 +33,7 @@ public final class CommonForgeEvents {
 		if (!event.getEntity().isPassenger() || !(event.getEntity().getRootVehicle() instanceof EntityVehicle plane)) return;
 		float a = event.getAmount();
 		//System.out.println("PLAYER HURT "+event.getEntity()+" "+a);
-		event.setAmount(Math.max(0, a-a*plane.getTotalArmor()*0.01f*Config.COMMON.armorStrength.get().floatValue()));
+		event.setAmount(Math.max(0, a-a*plane.getTotalArmor()*DSCGameRules.getVehicleArmorStrengthFactor(plane.level)));
 	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)

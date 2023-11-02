@@ -73,6 +73,7 @@ public class VehicleSoundManager {
 	}
 	
 	public SoundEvent getPassengerEngineSound() {
+		// FIXME 6 can't hear passenger sounds when in 3rd person of big vehicle
 		return parent.vehicleData.internalEngineSound.get();
 	}
 	

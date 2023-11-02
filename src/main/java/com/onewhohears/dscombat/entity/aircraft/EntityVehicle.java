@@ -1634,13 +1634,13 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	public float calcDamageBySource(DamageSource source, float amount) {
 		if (source.isProjectile()) amount = calcProjDamageBySource(source, amount);
-		if (!source.isBypassArmor()) amount -= amount*getTotalArmor()*0.01f*Config.COMMON.armorStrength.get();
+		if (!source.isBypassArmor()) amount -= amount*getTotalArmor()*DSCGameRules.getVehicleArmorStrengthFactor(level);
 		if (amount < 0) amount = 0;
 		return amount;
 	}
 	
 	public float calcProjDamageBySource(DamageSource source, float amount) {
-		if (!source.isExplosion()) amount *= Config.COMMON.bulletDamageFactor.get().floatValue();
+		if (!source.isExplosion()) amount *= DSCGameRules.getBulletDamageVehicleFactor(level);
 		return amount;
 	}
 	
@@ -1719,7 +1719,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
         double exp_factor = (1.0D - dist_check) * seen_percent;
         
         float amount = (float)((int)((exp_factor*exp_factor+exp_factor)/2d*7d*(double)diameter+1d));
-        hurt(exp.getDamageSource(), amount*Config.COMMON.explodeDamageFactor.get().floatValue());
+        hurt(exp.getDamageSource(), amount*DSCGameRules.getExplodeDamagerVehicleFactor(level));
         
         Vec3 force = new Vec3(dx*exp_factor, dy*exp_factor, dz*exp_factor).scale(EXP_FORCE_FACTOR);
         addForceBetweenTicks = addForceBetweenTicks.add(force);

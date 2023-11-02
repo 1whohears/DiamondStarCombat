@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.command;
 
 import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
 
 public class DSCGameRules {
 	
@@ -19,6 +20,10 @@ public class DSCGameRules {
 	public static GameRules.Key<GameRules.BooleanValue> MOBS_TICK_RADAR;
 	public static GameRules.Key<GameRules.BooleanValue> MOBS_RIDE_VEHICLES;
 	public static GameRules.Key<GameRules.IntegerValue> PLANE_SPEED_PERCENT;
+	public static GameRules.Key<GameRules.IntegerValue> VEHICLE_ARMOR_PERCENT;
+	public static GameRules.Key<GameRules.IntegerValue> BULLET_DAMAGE_VEHICLE_PER;
+	public static GameRules.Key<GameRules.IntegerValue> EXPLO_DAMAGE_VEHICLE_PER;
+	public static GameRules.Key<GameRules.IntegerValue> BULLET_DAMAGE_PLANE_PER;
 	// TODO 7.1 baby mode gamerule (arcade mode) for planes disabled by default
 	
 	public static void registerAll() {
@@ -37,6 +42,10 @@ public class DSCGameRules {
 		MOBS_TICK_RADAR = registerBoolean("mobsTickRadar", true, GameRules.Category.MOBS);
 		MOBS_RIDE_VEHICLES = registerBoolean("mobsRideVehicles", true, GameRules.Category.MOBS);
 		PLANE_SPEED_PERCENT = registerInteger("planeSpeedPercent", 100, GameRules.Category.PLAYER);
+		VEHICLE_ARMOR_PERCENT = registerInteger("vehicleArmorStrengthPercent", 4, GameRules.Category.PLAYER);
+		BULLET_DAMAGE_VEHICLE_PER = registerInteger("bulletDamageVehiclePercent", 20, GameRules.Category.PLAYER);
+		EXPLO_DAMAGE_VEHICLE_PER = registerInteger("explosionDamageVehiclePercent", 1000, GameRules.Category.PLAYER);
+		BULLET_DAMAGE_PLANE_PER = registerInteger("bulletDamagePlanePercent", 50, GameRules.Category.PLAYER);
 	}
 	
 	public static GameRules.Key<GameRules.BooleanValue> registerBoolean(String name, boolean defaultValue) {
@@ -49,6 +58,22 @@ public class DSCGameRules {
 	
 	public static GameRules.Key<GameRules.IntegerValue> registerInteger(String name, int defaultValue, GameRules.Category category) {
 		return GameRules.register(name, category, GameRules.IntegerValue.create(defaultValue));
+	}
+	
+	public static float getVehicleArmorStrengthFactor(Level level) {
+		return level.getGameRules().getInt(VEHICLE_ARMOR_PERCENT) * 0.01f;
+	}
+	
+	public static float getBulletDamageVehicleFactor(Level level) {
+		return level.getGameRules().getInt(BULLET_DAMAGE_VEHICLE_PER) * 0.01f;
+	}
+	
+	public static float getExplodeDamagerVehicleFactor(Level level) {
+		return level.getGameRules().getInt(EXPLO_DAMAGE_VEHICLE_PER) * 0.01f;
+	}
+	
+	public static float getBulletDamagePlaneFactor(Level level) {
+		return level.getGameRules().getInt(BULLET_DAMAGE_PLANE_PER) * 0.01f;
 	}
 	
 }

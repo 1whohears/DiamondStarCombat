@@ -263,7 +263,7 @@ public class EntityPlane extends EntityVehicle {
 	@Override
 	public float calcProjDamageBySource(DamageSource source, float amount) {
 		WeaponDamageType wdt = WeaponDamageType.byId(source.getMsgId());
-		if (wdt != null && wdt.isContact()) return amount*Config.COMMON.planeBulletFactor.get().floatValue();
+		if (wdt != null && wdt.isContact()) return amount*DSCGameRules.getBulletDamagePlaneFactor(level);
 		return super.calcProjDamageBySource(source, amount);
 	}
 

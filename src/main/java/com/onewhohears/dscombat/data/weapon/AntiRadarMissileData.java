@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.data.JsonPreset;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.weapon.AntiRadarMissile;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 
@@ -14,7 +13,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 
 public class AntiRadarMissileData extends MissileData {
 	
@@ -70,8 +68,8 @@ public class AntiRadarMissileData extends MissileData {
 	}
 	
 	@Override
-	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction, EntityVehicle vehicle, boolean ignoreRecoil) {
-		AntiRadarMissile missile = (AntiRadarMissile) super.getShootEntity(level, owner, pos, direction, vehicle, ignoreRecoil);
+	public EntityWeapon getShootEntity(WeaponShootParameters params) {
+		AntiRadarMissile missile = (AntiRadarMissile) super.getShootEntity(params);
 		if (missile == null) return null;
 		return missile;
 	}

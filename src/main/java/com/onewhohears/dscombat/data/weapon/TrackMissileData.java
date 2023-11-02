@@ -5,7 +5,6 @@ import java.util.List;
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.data.JsonPreset;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.entity.weapon.TrackEntityMissile;
 import com.onewhohears.dscombat.util.UtilEntity;
@@ -17,7 +16,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 
 public class TrackMissileData extends MissileData {
 	
@@ -91,11 +89,11 @@ public class TrackMissileData extends MissileData {
 	}
 	
 	@Override
-	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction, EntityVehicle vehicle, boolean ignoreRecoil) {
-		TrackEntityMissile missile = (TrackEntityMissile) super.getShootEntity(level, owner, pos, direction, vehicle, ignoreRecoil);
+	public EntityWeapon getShootEntity(WeaponShootParameters params) {
+		TrackEntityMissile missile = (TrackEntityMissile) super.getShootEntity(params);
 		if (missile == null) return null;
-		if (vehicle == null) return missile;
-		RadarSystem radar = vehicle.radarSystem;
+		if (params.vehicle == null) return missile;
+		RadarSystem radar = params.vehicle.radarSystem;
 		if (!radar.hasRadar()) {
 			setLaunchFail("error.dscombat.no_radar");
 			return null;

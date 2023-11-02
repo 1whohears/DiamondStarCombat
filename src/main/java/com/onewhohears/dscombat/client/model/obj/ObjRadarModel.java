@@ -6,6 +6,7 @@ public class ObjRadarModel extends ObjPartModel<EntityRadar> {
 
 	public ObjRadarModel(String modelId) {
 		super(modelId);
+		// TODO 5.1 radar masts
 	}
 
 }

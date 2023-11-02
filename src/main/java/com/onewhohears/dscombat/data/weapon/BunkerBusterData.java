@@ -2,11 +2,8 @@ package com.onewhohears.dscombat.data.weapon;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.data.JsonPreset;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.weapon.EntityBunkerBuster;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 
@@ -17,7 +14,6 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 
 public class BunkerBusterData extends BombData {
 	
@@ -45,8 +41,8 @@ public class BunkerBusterData extends BombData {
 	}
 	
 	@Override
-	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction, @Nullable EntityVehicle vehicle, boolean ignoreRecoil) {
-		EntityBunkerBuster bomb = (EntityBunkerBuster) super.getShootEntity(level, owner, pos, direction, vehicle, ignoreRecoil);
+	public EntityWeapon getShootEntity(WeaponShootParameters params) {
+		EntityBunkerBuster bomb = (EntityBunkerBuster) super.getShootEntity(params);
 		if (bomb == null) return null;
 		return bomb;
 	}

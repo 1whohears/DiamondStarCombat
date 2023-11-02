@@ -2,11 +2,8 @@ package com.onewhohears.dscombat.data.weapon;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.data.JsonPreset;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.weapon.EntityBomb;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 
@@ -16,7 +13,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 
 public class BombData extends BulletData {
 	
@@ -37,11 +33,11 @@ public class BombData extends BulletData {
 	}
 	
 	@Override
-	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction, @Nullable EntityVehicle vehicle, boolean ignoreRecoil) {
-		EntityBomb bomb = (EntityBomb) super.getShootEntity(level, owner, pos, direction, vehicle, ignoreRecoil);
+	public EntityWeapon getShootEntity(WeaponShootParameters params) {
+		EntityBomb bomb = (EntityBomb) super.getShootEntity(params);
 		if (bomb == null) return null;
-		if (vehicle != null) {
-			bomb.setDeltaMovement(vehicle.getDeltaMovement());
+		if (params.vehicle != null) {
+			bomb.setDeltaMovement(params.vehicle.getDeltaMovement());
 		}
 		return bomb;
 	}

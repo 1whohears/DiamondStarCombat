@@ -194,6 +194,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	// TODO 5.4 aircraft breaks apart when damaged
 	// TODO 5.6 place and remove external parts from outside the vehicle
 	// TODO 2.5 add chaff
+	// TODO 2.7 cargo system
 	
 	public EntityVehicle(EntityType<? extends EntityVehicle> entityType, Level level, ImmutableVehicleData vehicleData) {
 		super(entityType, level);

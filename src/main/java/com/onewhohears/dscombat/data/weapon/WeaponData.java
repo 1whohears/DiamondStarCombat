@@ -117,25 +117,25 @@ public abstract class WeaponData extends JsonPreset {
 	public abstract WeaponType getType();
 	public abstract EntityWeapon getEntity(Level level, Entity owner);
 	
-	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction, @Nullable EntityVehicle vehicle, boolean ignoreRecoil) {
+	public EntityWeapon getShootEntity(WeaponShootParameters params) {
 		if (isNoWeapon()) {
 			setLaunchFail(null);
 			return null;
 		}
-		if (!ignoreRecoil && !checkRecoil()) {
+		if (!params.ignoreRecoil && !checkRecoil()) {
 			setLaunchFail(null);
 			return null;
 		}
-		if (!checkAmmo(1, owner)) {
+		if (!checkAmmo(1, params.owner)) {
 			setLaunchFail("error.dscombat.no_ammo");
 			return null;
 		}
-		EntityWeapon w = getEntity(level, owner);
+		EntityWeapon w = getEntity(params.level, params.owner);
 		if (w == null) return null;
 		w.setPos(pos);
-		setDirection(w, direction);
-		if (vehicle != null) {
-			if (!overrideGroundCheck && !canShootOnGround() && vehicle.isOnGround()) {
+		setDirection(w, params.direction);
+		if (params.vehicle != null) {
+			if (!overrideGroundCheck && !canShootOnGround() && params.vehicle.isOnGround()) {
 				setLaunchFail("error.dscombat.cant_shoot_on_ground");
 				return null;
 			}
@@ -152,9 +152,9 @@ public abstract class WeaponData extends JsonPreset {
 	
 	public boolean shootFromVehicle(Level level, Entity owner, Vec3 direction, EntityVehicle vehicle, boolean consume) {
 		overrideGroundCheck = false;
-		EntityWeapon w = getShootEntity(level, owner, 
+		EntityWeapon w = getShootEntity(new WeaponShootParameters(level, owner, 
 				vehicle.position().add(UtilAngles.rotateVector(getLaunchPos(), vehicle.getQ())), 
-				direction, vehicle, false);
+				direction, vehicle, false, false));
 		if (w == null) return false;
 		level.addFreshEntity(w);
 		level.playSound(null, w.blockPosition(), 
@@ -172,7 +172,8 @@ public abstract class WeaponData extends JsonPreset {
 	
 	public boolean shootFromTurret(Level level, Entity owner, Vec3 direction, Vec3 pos, @Nullable EntityVehicle vehicle, boolean consume, boolean ignoreRecoil) {
 		overrideGroundCheck = true;
-		EntityWeapon w = getShootEntity(level, owner, pos, direction, vehicle, ignoreRecoil);
+		EntityWeapon w = getShootEntity(new WeaponShootParameters(level, owner, 
+				pos, direction, vehicle, ignoreRecoil, true));
 		if (w == null) return false;
 		level.addFreshEntity(w);
 		level.playSound(null, w.blockPosition(), 

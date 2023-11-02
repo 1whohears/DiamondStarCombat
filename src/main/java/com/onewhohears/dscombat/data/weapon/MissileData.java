@@ -2,10 +2,7 @@ package com.onewhohears.dscombat.data.weapon;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import com.google.gson.JsonObject;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.util.UtilParse;
@@ -15,8 +12,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public abstract class MissileData extends BulletData {
@@ -124,14 +119,16 @@ public abstract class MissileData extends BulletData {
 	}
 	
 	@Override
-	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction, @Nullable EntityVehicle vehicle, boolean ignoreRecoil) {
-		EntityMissile missile = (EntityMissile) super.getShootEntity(level, owner, pos, direction, vehicle, ignoreRecoil);
+	public EntityWeapon getShootEntity(WeaponShootParameters params) {
+		EntityMissile missile = (EntityMissile) super.getShootEntity(params);
 		if (missile == null) return null;
-		if (vehicle != null) {
-			missile.setPos(missile.position().add(vehicle.getDeltaMovement()));
-			missile.setDeltaMovement(vehicle.getDeltaMovement());
+		if (params.vehicle != null) {
+			missile.setPos(missile.position().add(params.vehicle.getDeltaMovement()));
+			Vec3 move = params.vehicle.getDeltaMovement();
+			if (params.isTurret) move = move.add(params.direction.scale(1.0));
+			missile.setDeltaMovement(move);
 		} else {
-			missile.setDeltaMovement(direction.scale(1.0));
+			missile.setDeltaMovement(params.direction.scale(1.0));
 		}
 		return missile;
 	}

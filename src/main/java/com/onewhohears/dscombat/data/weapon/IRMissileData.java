@@ -18,7 +18,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 
 public class IRMissileData extends MissileData {
 	
@@ -76,8 +75,8 @@ public class IRMissileData extends MissileData {
 	}
 	
 	@Override
-	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction, EntityVehicle vehicle, boolean ignoreRecoil) {
-		IRMissile missile = (IRMissile) super.getShootEntity(level, owner, pos, direction, vehicle, ignoreRecoil);
+	public EntityWeapon getShootEntity(WeaponShootParameters params) {
+		IRMissile missile = (IRMissile) super.getShootEntity(params);
 		if (missile == null) return null;
 		return missile;
 	}

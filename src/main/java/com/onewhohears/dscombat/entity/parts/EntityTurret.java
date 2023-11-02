@@ -60,7 +60,7 @@ public class EntityTurret extends EntitySeat {
 	/**
 	 * only used on server side
 	 */
-	private int newRiderCoolDown;
+	private int newRiderCoolDown, lastShootTime;
 	
 	public EntityTurret(EntityType<?> type, Level level, Vec3 offset, double weaponOffset) {
 		super(type, level, offset);
@@ -306,6 +306,7 @@ public class EntityTurret extends EntitySeat {
 					Component.translatable(data.getFailedLaunchReason()), 
 					true);
 		} else {
+			lastShootTime = tickCount;
 			setAmmo(data.getCurrentAmmo());
 			updateDataAmmo();
 		}
@@ -322,6 +323,10 @@ public class EntityTurret extends EntitySeat {
 			data.shootFromTurret(level, shooter, getLookAngle(), posL, parent, consume, true);
 			data.shootFromTurret(level, shooter, getLookAngle(), posR, parent, consume, true);
 		}
+	}
+	
+	public int getLastShootTime() {
+		return lastShootTime;
 	}
 	
 	@Override

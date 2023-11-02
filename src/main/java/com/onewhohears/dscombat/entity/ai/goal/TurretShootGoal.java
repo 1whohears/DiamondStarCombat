@@ -15,7 +15,6 @@ import com.onewhohears.dscombat.entity.weapon.EntityBullet;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -123,17 +122,18 @@ public class TurretShootGoal extends Goal {
 		WeaponData wd = turret.getWeaponData();
 		if (wd == null) return false;
 		if (!wd.checkRecoil() || wd.getCurrentAmmo() <= 0) return false;
-		// TODO 6.2 wait longer before shooting missile again (waste less ammo)
 		if (useIRMis && wd.getType().isIRMissile()) {
-			aimError += 6;
+			if (turret.tickCount-turret.getLastShootTime() < wd.getMaxAge()*0.5) return false;
 			if (UtilEntity.isOnGroundOrWater(target)) return false;
+			aimError += 6;
 		} else if (useTrackMis && wd.requiresRadar()) {
-			aimError += 3;
+			if (turret.tickCount-turret.getLastShootTime() < wd.getMaxAge()*0.5) return false;
 			EntityVehicle vehicle = turret.getParentVehicle();
 			if (vehicle == null) return false;
 			if (!vehicle.radarSystem.hasRadar()) return false;
 			if (!vehicle.radarSystem.hasTarget(target)) return false;
 			vehicle.radarSystem.selectTarget(target);
+			aimError += 3;
 		}
 		Vec3 turretLook = turret.getLookAngle();
 		Vec3 diff = targetPos.subtract(turret.getEyePosition());
@@ -196,7 +196,7 @@ public class TurretShootGoal extends Goal {
 	public boolean canUse() {
 		if (!mob.level.getGameRules().getBoolean(DSCGameRules.MOBS_USE_TURRETS)) return false;
 		if (mob.getVehicle() == null || !mob.getVehicle().equals(turret)) return false;
-		Entity target_entity = mob.getTarget();
+		LivingEntity target_entity = mob.getTarget();
 		return target_entity != null && target_entity.isAlive();
 	}
 	

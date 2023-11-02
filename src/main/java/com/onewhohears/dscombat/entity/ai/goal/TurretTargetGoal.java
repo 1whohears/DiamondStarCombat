@@ -38,8 +38,13 @@ public class TurretTargetGoal<T extends LivingEntity> extends NearestAttackableT
 			if (!entity.isAttackable()) return false;
 			if (entity.isSpectator()) return false;
 			if (mob.isAlliedTo(entity)) return false;
+			boolean isPlayer = false;
+			if (entity instanceof Player player) {
+				isPlayer = true;
+				if (player.isCreative()) return false;
+			}
 			if (enemyCheck) {
-				if (mob.getTeam() == null && entity instanceof Player) return false;
+				if (mob.getTeam() == null && isPlayer) return false;
 				if (!(entity instanceof Enemy)) return false;
 			}
 			if (wd.getType().isIRMissile()) {

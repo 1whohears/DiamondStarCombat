@@ -165,7 +165,7 @@ public class UtilEntity {
 	}
 	
 	public static void mobLookAtPos(Mob mob, Vec3 pos, float headTurnRate) {
-		mob.getLookControl().setLookAt(pos.x, pos.y, pos.z, headTurnRate, headTurnRate);
+		mob.getLookControl().setLookAt(pos.x, pos.y, pos.z, headTurnRate, 360);
 	}
 	
 }

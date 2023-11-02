@@ -101,11 +101,17 @@ public class TurretShootGoal extends Goal {
 			if (accountGravity && wd != null && wd.getType().isBullet()) {
 				double speed = ((BulletData)wd).getSpeed();
 				if (speed <= 0) speed = 0.01;
-				double dist = origin.distanceTo(targetPos);
-				double time = dist / speed;
-				// TODO 6.4 this math is not entirely accurate
-				double adjust = 0.5*Config.SERVER.accGravity.get()*EntityBullet.BULLET_GRAVITY_SCALE*time*time;
-				targetPos = targetPos.add(0, adjust, 0);
+				double g = -Config.SERVER.accGravity.get()*EntityBullet.BULLET_GRAVITY_SCALE;
+				Vec3 diff = targetPos.subtract(origin);
+				double r = diff.horizontalDistance();
+				double h = diff.y;
+				double div = r/speed;
+				double z = 0.5*g*div*div;
+				double[] roots = UtilGeometry.rootsNoI(z, r, z-h);
+				if (roots != null) {
+					double root = Math.min(roots[0], roots[1]);
+					targetPos = new Vec3(targetPos.x, origin.y+root*r, targetPos.z);
+				}
 			}
 			prevTargetPos = UtilGeometry.inaccurateTargetPos(origin, targetPos, inaccuracy);
 		}
@@ -118,12 +124,11 @@ public class TurretShootGoal extends Goal {
 		if (wd == null) return false;
 		if (!wd.checkRecoil() || wd.getCurrentAmmo() <= 0) return false;
 		// TODO 6.2 wait longer before shooting missile again (waste less ammo)
-		// TODO 6.3 increase vertical aim error for missiles
 		if (useIRMis && wd.getType().isIRMissile()) {
-			aimError += 8;
+			aimError += 6;
 			if (UtilEntity.isOnGroundOrWater(target)) return false;
 		} else if (useTrackMis && wd.requiresRadar()) {
-			aimError += 4;
+			aimError += 3;
 			EntityVehicle vehicle = turret.getParentVehicle();
 			if (vehicle == null) return false;
 			if (!vehicle.radarSystem.hasRadar()) return false;

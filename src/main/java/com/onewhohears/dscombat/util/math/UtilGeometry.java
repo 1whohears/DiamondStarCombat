@@ -2,6 +2,8 @@ package com.onewhohears.dscombat.util.math;
 
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
@@ -165,6 +167,55 @@ public class UtilGeometry {
 		double dist = origin.distanceTo(targetPos);
 		double i = dist*Math.tan(Mth.DEG_TO_RAD*inaccuracy);
 		return targetPos.add((RANDOM.nextDouble()-0.5)*i, (RANDOM.nextDouble()-0.5)*i, (RANDOM.nextDouble()-0.5)*i);
+	}
+	
+	/**
+	 * @return double array size 4 of roots. root 1 real, root 1 imaginary, root2 real, root2 imaginary
+	 */
+	public static double[] roots(double a, double b, double c) {
+		double[] roots = new double[4];
+		double d = b*b - 4*a*c;
+		if (d > 0) {
+			double sqrtD = Math.sqrt(d);
+			roots[0] = (-b + sqrtD) / (2*a);
+			roots[1] = 0;
+			roots[2] = (-b - sqrtD) / (2*a);
+			roots[3] = 0;
+		} else if (d == 0) {
+			double root = -b / (2*a);
+			roots[0] = root;
+			roots[1] = 0;
+			roots[2] = root;
+			roots[3] = 0;
+		} else {
+			double real = -b / (2*a);
+			double imaginary = Math.sqrt(-d) / (2 * a);
+			roots[0] = real;
+			roots[1] = imaginary;
+			roots[2] = real;
+			roots[3] = -imaginary;
+		}
+		return roots;
+	}
+	
+	/**
+	 * @return double array size 2 of roots. null if imaginary.
+	 */
+	@Nullable
+	public static double[] rootsNoI(double a, double b, double c) {
+		double d = b*b - 4*a*c;
+		if (d < 0) return null;
+		double[] roots = new double[2];
+		if (d == 0) {
+			double root = -b / (2*a);
+			roots[0] = root;
+			roots[1] = root;
+		} else {
+			double sqrtD = Math.sqrt(d);
+			roots[0] = (-b + sqrtD) / (2*a);
+			roots[1] = (-b - sqrtD) / (2*a);
+		}
+		return roots;
 	}
 	
 }

@@ -138,9 +138,9 @@ public abstract class EntityWeapon extends Projectile {
 			if (entityhitresult != null) hitresult = entityhitresult;
 			if (owner != null && hitresult != null && hitresult.getType() == HitResult.Type.ENTITY) {
 				Entity hit = ((EntityHitResult)hitresult).getEntity();
-				System.out.println("BULLET "+this);
+				/*System.out.println("BULLET "+this);
 				System.out.println("HIT "+hit);
-				System.out.println("OWNER "+owner);
+				System.out.println("OWNER "+owner);*/
 				if (hit.isAlliedTo(owner)) {
 					hitresult = null;
 					entityhitresult = null;

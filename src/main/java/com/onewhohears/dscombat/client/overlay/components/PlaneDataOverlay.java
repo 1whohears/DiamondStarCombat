@@ -23,7 +23,7 @@ public class PlaneDataOverlay extends VehicleOverlayComponent {
 
     @Override
     protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
-        if (!(getPlayerVehicle() instanceof EntityPlane plane)) return;
+        if (!(getPlayerRootVehicle() instanceof EntityPlane plane)) return;
         if (MOUSE_MODE) return;
 
         drawString(poseStack, getFont(),

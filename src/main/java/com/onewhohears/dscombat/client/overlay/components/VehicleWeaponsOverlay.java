@@ -24,7 +24,7 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
 
     @Override
     protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
-        if (!(getPlayerVehicle() instanceof EntityVehicle vehicle)) return;
+        if (!(getPlayerRootVehicle() instanceof EntityVehicle vehicle)) return;
         
         int yPos=1, xPos, weaponSelectWidth=getFont().width(WEAPON_SELECT)+1, maxNameWidth=46, maxTypeWidth=10;
         int color1=0x7340bf, color2=0x00ff00, color;

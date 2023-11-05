@@ -35,7 +35,7 @@ public class TurnCoordinatorOverlay extends VehicleOverlayComponent {
 
     @Override
     protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
-        if (!(getPlayerVehicle() instanceof EntityPlane plane)) return;
+        if (!(getPlayerRootVehicle() instanceof EntityPlane plane)) return;
 
         final int xOrigin = screenWidth - TURN_COORD_SIZE - PADDING * 3 - STICK_BASE_SIZE - STICK_KNOB_SIZE;
         final int yOrigin = screenHeight - PADDING - TURN_COORD_SIZE;

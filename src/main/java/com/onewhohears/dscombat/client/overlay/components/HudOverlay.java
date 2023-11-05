@@ -51,7 +51,7 @@ public class HudOverlay extends VehicleOverlayComponent {
     // Suggested fix is to tick MOUSE_MODE = false whenever the player is not in a vehicle.
     @Override
     protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
-        if (!(getPlayerVehicle() instanceof EntityPlane plane)) return;
+        if (!(getPlayerRootVehicle() instanceof EntityPlane plane)) return;
         if (!MOUSE_MODE || plane.onlyFreeLook()) return;
 
         drawStrings(poseStack, screenWidth, screenHeight, plane);

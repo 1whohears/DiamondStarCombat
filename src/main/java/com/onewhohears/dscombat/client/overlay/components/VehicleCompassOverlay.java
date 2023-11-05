@@ -32,7 +32,7 @@ public class VehicleCompassOverlay extends VehicleOverlayComponent {
 
     @Override
     protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
-        if (!(getPlayerVehicle() instanceof EntityVehicle)) return;
+        if (!(getPlayerRootVehicle() instanceof EntityVehicle)) return;
 
         // HEADING
         int y = 10, color = 0xe6e600;

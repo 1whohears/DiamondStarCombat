@@ -48,7 +48,7 @@ public class RadarOverlay extends VehicleOverlayComponent {
 
     @Override
     protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
-        if (!(getPlayerVehicle() instanceof EntityVehicle vehicle)) return;
+        if (!(getPlayerRootVehicle() instanceof EntityVehicle vehicle)) return;
         RadarSystem radar = vehicle.radarSystem;
         if (!radar.hasRadar()) return;
         

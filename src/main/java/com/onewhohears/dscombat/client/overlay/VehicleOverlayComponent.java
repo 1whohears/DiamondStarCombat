@@ -33,8 +33,13 @@ public abstract class VehicleOverlayComponent extends GuiComponent {
     }
 
     @Nullable
-    protected static Entity getPlayerVehicle() {
+    protected static Entity getPlayerRootVehicle() {
         return getPlayer() != null ? getPlayer().getRootVehicle() : null;
+    }
+    
+    @Nullable
+    protected static Entity getPlayerVehicle() {
+        return getPlayer() != null ? getPlayer().getVehicle() : null;
     }
 
     protected static Font getFont() {

@@ -35,7 +35,7 @@ public class VehicleControlOverlay extends VehicleOverlayComponent {
 
     @Override
     protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
-        if (!(getPlayerVehicle() instanceof EntityVehicle vehicle)) return;
+        if (!(getPlayerRootVehicle() instanceof EntityVehicle vehicle)) return;
 
         int xOrigin = screenWidth - STICK_BASE_SIZE - PADDING;
         int yOrigin = screenHeight - PADDING;

@@ -20,7 +20,7 @@ public class DebugOverlay extends VehicleOverlayComponent {
 
     @Override
     public void render(PoseStack poseStack, int screenWidth, int screenHeight) {
-        if ((!(getPlayerVehicle() instanceof EntityVehicle vehicle)) || !(Config.CLIENT.debugMode.get())) return;
+        if ((!(getPlayerRootVehicle() instanceof EntityVehicle vehicle)) || !(Config.CLIENT.debugMode.get())) return;
 
         int color = 0x00ff00;
         drawString(poseStack, getFont(),

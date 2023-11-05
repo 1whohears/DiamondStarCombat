@@ -39,7 +39,7 @@ public class PlaneAttitudeOverlay extends VehicleOverlayComponent {
 
     @Override
     protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
-        if (!(getPlayerVehicle() instanceof EntityPlane plane)) return;
+        if (!(getPlayerRootVehicle() instanceof EntityPlane plane)) return;
         
         int attX = screenWidth - ATTITUDE_SIZE - PADDING *3- STICK_BASE_SIZE - THROTTLE_WIDTH;
         int attY = screenHeight - PADDING *2- TURN_COORD_SIZE- ATTITUDE_SIZE;

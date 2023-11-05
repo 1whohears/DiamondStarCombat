@@ -31,7 +31,7 @@ public class VehicleThrottleOverlay extends VehicleOverlayComponent {
 
     @Override
     protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
-        if (!(getPlayerVehicle() instanceof EntityVehicle vehicle)) return;
+        if (!(getPlayerRootVehicle() instanceof EntityVehicle vehicle)) return;
 
         int xOrigin = screenWidth - STICK_BASE_SIZE - PADDING - THROTTLE_WIDTH - PADDING;
         int yOrigin = screenHeight - THROTTLE_RAIL_LENGTH - PADDING;

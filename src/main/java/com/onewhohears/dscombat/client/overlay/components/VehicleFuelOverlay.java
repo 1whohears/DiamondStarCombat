@@ -34,7 +34,7 @@ public class VehicleFuelOverlay extends VehicleOverlayComponent {
 
     @Override
     protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
-        if (!(getPlayerVehicle() instanceof EntityVehicle vehicle)) return;
+        if (!(getPlayerRootVehicle() instanceof EntityVehicle vehicle)) return;
 
         int xOrigin = screenWidth - PADDING - FUEL_GAUGE_WIDTH;
         int yOrigin = screenHeight - STICK_BASE_SIZE - PADDING * 2 - FUEL_GAUGE_HEIGHT;

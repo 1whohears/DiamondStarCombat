@@ -68,6 +68,7 @@ public class EntitySeat extends EntityPart {
 		if (player.isSecondaryUseActive()) {
 			return InteractionResult.PASS;
 		} else if (!level.isClientSide) {
+			if (player.isPassenger()) return InteractionResult.PASS;
 			if (player.startRiding(this)) return InteractionResult.CONSUME;
 			if (getVehicle() != null && player.startRiding(getVehicle())) return InteractionResult.CONSUME;
 			return InteractionResult.PASS;

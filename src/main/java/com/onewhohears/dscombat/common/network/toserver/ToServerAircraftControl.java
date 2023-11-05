@@ -39,6 +39,7 @@ public class ToServerAircraftControl extends IPacket {
 			ServerLevel level = player.getLevel();
 			if (level.getEntity(id) instanceof EntityVehicle plane) {
 				plane.inputs.updateInputsFromPacket(inputs, plane);
+				plane.synchControlsToClient();
 			}
 			success.set(true);
 		});

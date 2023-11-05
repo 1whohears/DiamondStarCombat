@@ -13,7 +13,7 @@ public interface OverlayOnVehicleRenderer<T extends EntityVehicle> extends Textu
 	
 	public default void renderOverlayComponents(T vehicle, PoseStack poseStack, 
 			MultiBufferSource bufferSource, int packedLight, float partialTicks) {
-		poseStack.pushPose();
+		/*poseStack.pushPose();
 		// TODO 1.3 render radar and other overlay component's onto the vehicle's dash
 		Quaternion q = UtilAngles.lerpQ(partialTicks, vehicle.getPrevQ(), vehicle.getClientQ());
         poseStack.mulPose(q);
@@ -23,7 +23,7 @@ public interface OverlayOnVehicleRenderer<T extends EntityVehicle> extends Textu
 		renderTexture(vehicle, RadarOverlay.RADAR, poseStack, bufferSource, packedLight, 
 				Vec3.ZERO, 1, 1, 45, 90, 0);
 		
-		poseStack.popPose();
+		poseStack.popPose();*/
 	}
 	
 }

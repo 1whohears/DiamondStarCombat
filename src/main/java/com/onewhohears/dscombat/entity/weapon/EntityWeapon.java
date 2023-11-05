@@ -29,6 +29,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Team;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.network.NetworkHooks;
 
 public abstract class EntityWeapon extends Projectile {
@@ -146,7 +147,7 @@ public abstract class EntityWeapon extends Projectile {
 				}
 			}
 			if (hitresult != null && hitresult.getType() != HitResult.Type.MISS && !noPhysics 
-					&& !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, hitresult)) {
+					&& !ForgeEventFactory.onProjectileImpact(this, hitresult)) {
 				onHit(hitresult);
 				hasImpulse = true;
 				break;

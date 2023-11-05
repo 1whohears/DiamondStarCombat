@@ -1,12 +1,14 @@
 package com.onewhohears.dscombat.client.renderer;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
-import com.onewhohears.dscombat.client.model.InWorldScreenModel;
+import java.io.IOException;
+import java.io.InputStream;
 
+import com.mojang.blaze3d.platform.NativeImage;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
+
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
@@ -25,14 +27,18 @@ public interface TextureOnEntityRenderer<T extends Entity> {
 		// TODO 1.2 how to render an image onto an entity
 		poseStack.pushPose();
 		
-		InWorldScreenModel model = InWorldScreenModel.get();
 		poseStack.mulPose(Vector3f.XP.rotationDegrees(xRot));
 		poseStack.mulPose(Vector3f.YP.rotationDegrees(yRot));
 		poseStack.mulPose(Vector3f.ZP.rotationDegrees(zRot));
 		// transform pose stack to fit all the position rotation parameters
-		VertexConsumer vertexconsumer = bufferSource.getBuffer(model.renderType(texture));
-		model.renderToBuffer(poseStack, vertexconsumer, packedLight, 
-				OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		NativeImage image = null;
+		try {
+			InputStream stream = Minecraft.getInstance().getResourceManager().getResource(texture).get().open();
+			image = NativeImage.read(stream);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		
 		poseStack.popPose();
 	}

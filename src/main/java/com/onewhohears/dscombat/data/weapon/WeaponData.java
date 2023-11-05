@@ -132,7 +132,7 @@ public abstract class WeaponData extends JsonPreset {
 		}
 		EntityWeapon w = getEntity(params.level, params.owner);
 		if (w == null) return null;
-		w.setPos(pos);
+		w.setPos(params.pos);
 		setDirection(w, params.direction);
 		if (params.vehicle != null) {
 			if (!overrideGroundCheck && !canShootOnGround() && params.vehicle.isOnGround()) {
@@ -312,7 +312,7 @@ public abstract class WeaponData extends JsonPreset {
 	
 	@Override
 	public String toString() {
-		return "["+getId()+":"+this.getType().toString()+"]";
+		return "["+getType().toString()+":"+getId()+"]";
 	}
 	
 	public String getSlotId() {

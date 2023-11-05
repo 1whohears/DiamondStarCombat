@@ -18,6 +18,11 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 
+@Deprecated
+/**
+ * use {@link net.minecraft.client.renderer.entity.ItemFrameRenderer} for example of how to use 
+ * {@link net.minecraft.client.renderer.texture.DynamicTexture} instead
+ */
 public class InWorldScreenModel extends Model {
 	
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(DSCombatMod.MODID, "in_world_screen"), "main");

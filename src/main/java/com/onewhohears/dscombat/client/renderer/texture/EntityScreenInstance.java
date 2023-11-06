@@ -70,6 +70,7 @@ public abstract class EntityScreenInstance implements AutoCloseable {
 	 * @param color AGBR (alpha, green, blue, red) 0xAAGGBBRR
 	 */
 	protected void drawPlus(int x, int y, int r, int color) {
+		// TODO 1.2 thickness parameter
 		for (int i = x-r; i <= x+r; ++i) setPixel(i, y, color);
 		for (int j = y-r; j <= y+r; ++j) setPixel(x, j, color);
 	}

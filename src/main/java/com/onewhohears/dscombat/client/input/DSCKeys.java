@@ -12,7 +12,10 @@ public final class DSCKeys {
 	private DSCKeys() {
 	}
 	
-	public static final String FLIGHT_CONTROL = "key.categories.flight_control"; 
+	public static final String VEHICLE_MOVE_CONTROL = "key.categories.vehicle_move_control"; 
+	public static final String VEHICLE_CONTROL_UTIL = "key.categories.vehicle_control_util"; 
+	public static final String VEHICLE_PASSENGER_CONTROL = "key.categories.vehicle_passenger_control"; 
+	public static final String VEHICLE_COMBAT_CONTROL = "key.categories.vehicle_combat_control"; 
 	
 	public static KeyMapping throttleUpKey, throttleDownKey;
 	public static KeyMapping pitchUpKey, pitchDownKey;
@@ -33,30 +36,34 @@ public final class DSCKeys {
 	
 	public static void init(RegisterKeyMappingsEvent e) {
 		event = e;
-		throttleUpKey = registerKey("throttle_up_key", FLIGHT_CONTROL, InputConstants.KEY_UP);
-		throttleDownKey = registerKey("throttle_down_key", FLIGHT_CONTROL, InputConstants.KEY_DOWN);
-		pitchUpKey = registerKey("pitch_up_key", FLIGHT_CONTROL, InputConstants.KEY_W);
-		pitchDownKey = registerKey("pitch_down_key", FLIGHT_CONTROL, InputConstants.KEY_S);
-		rollLeftKey = registerKey("roll_left_key", FLIGHT_CONTROL, InputConstants.KEY_LEFT);
-		rollRightKey = registerKey("roll_right_key", FLIGHT_CONTROL, InputConstants.KEY_RIGHT);
-		yawLeftKey = registerKey("yaw_left_key", FLIGHT_CONTROL, InputConstants.KEY_A);
-		yawRightKey = registerKey("yaw_right_key", FLIGHT_CONTROL, InputConstants.KEY_D);
-		flareKey = registerKey("flare_key", FLIGHT_CONTROL, InputConstants.KEY_V);
-		dismount = registerKey("dismount_key", FLIGHT_CONTROL, InputConstants.KEY_H);
-		mouseModeKey = registerKey("mouse_mode_key", FLIGHT_CONTROL, InputConstants.KEY_NUMPAD0);
-		resetMouseKey = registerKey("reset_mouse_key", FLIGHT_CONTROL, InputConstants.KEY_RALT);
-		specialKey = registerKey("special_key", FLIGHT_CONTROL, InputConstants.KEY_SPACE);
-		special2Key = registerKey("special_2_key", FLIGHT_CONTROL, InputConstants.KEY_LALT);
-		flipControlsKey = registerKey("flip_controls_key", FLIGHT_CONTROL, InputConstants.KEY_LSHIFT);
-		shootKey = registerMouse("shoot_key", FLIGHT_CONTROL, InputConstants.MOUSE_BUTTON_RIGHT);
-		weaponSelectKey = registerKey("weapon_select_key", FLIGHT_CONTROL, InputConstants.KEY_G);
-		weaponSelect2Key = registerKey("weapon_select_up_key", FLIGHT_CONTROL, InputConstants.UNKNOWN.getValue());
-		planeMenuKey = registerKey("plane_menu_key", FLIGHT_CONTROL, InputConstants.KEY_U);
-		changeSeat = registerKey("change_seat_key", FLIGHT_CONTROL, InputConstants.KEY_Y);
-		landingGear = registerKey("landing_gear_key", FLIGHT_CONTROL, InputConstants.KEY_K);
-		radarModeKey = registerKey("radar_mode_key", FLIGHT_CONTROL, InputConstants.KEY_O);
-		pingCycleKey = registerKey("ping_cycle_key", FLIGHT_CONTROL, InputConstants.KEY_I);
-		radarDisplayRangeKey = registerKey("radar_display_range_key", FLIGHT_CONTROL, InputConstants.KEY_NUMPAD1);
+		// MOVE CONTROL
+		throttleUpKey = registerKey("throttle_up_key", VEHICLE_MOVE_CONTROL, InputConstants.KEY_UP);
+		throttleDownKey = registerKey("throttle_down_key", VEHICLE_MOVE_CONTROL, InputConstants.KEY_DOWN);
+		pitchUpKey = registerKey("pitch_up_key", VEHICLE_MOVE_CONTROL, InputConstants.KEY_W);
+		pitchDownKey = registerKey("pitch_down_key", VEHICLE_MOVE_CONTROL, InputConstants.KEY_S);
+		rollLeftKey = registerKey("roll_left_key", VEHICLE_MOVE_CONTROL, InputConstants.KEY_LEFT);
+		rollRightKey = registerKey("roll_right_key", VEHICLE_MOVE_CONTROL, InputConstants.KEY_RIGHT);
+		yawLeftKey = registerKey("yaw_left_key", VEHICLE_MOVE_CONTROL, InputConstants.KEY_A);
+		yawRightKey = registerKey("yaw_right_key", VEHICLE_MOVE_CONTROL, InputConstants.KEY_D);
+		// CONTROL UTIL
+		mouseModeKey = registerKey("mouse_mode_key", VEHICLE_CONTROL_UTIL, InputConstants.KEY_LCONTROL);
+		flipControlsKey = registerKey("flip_controls_key", VEHICLE_CONTROL_UTIL, InputConstants.KEY_LSHIFT);
+		resetMouseKey = registerKey("reset_mouse_key", VEHICLE_CONTROL_UTIL, InputConstants.KEY_RALT);
+		// PASSENGER CONTROL
+		planeMenuKey = registerKey("plane_menu_key", VEHICLE_PASSENGER_CONTROL, InputConstants.KEY_U);
+		dismount = registerKey("dismount_key", VEHICLE_PASSENGER_CONTROL, InputConstants.KEY_H);
+		changeSeat = registerKey("change_seat_key", VEHICLE_PASSENGER_CONTROL, InputConstants.KEY_Y);
+		landingGear = registerKey("landing_gear_key", VEHICLE_PASSENGER_CONTROL, InputConstants.KEY_K);
+		specialKey = registerKey("special_key", VEHICLE_PASSENGER_CONTROL, InputConstants.KEY_SPACE);
+		special2Key = registerKey("special_2_key", VEHICLE_PASSENGER_CONTROL, InputConstants.KEY_LALT);
+		// COMBAT CONTROL
+		shootKey = registerMouse("shoot_key", VEHICLE_COMBAT_CONTROL, InputConstants.MOUSE_BUTTON_RIGHT);
+		weaponSelectKey = registerKey("weapon_select_key", VEHICLE_COMBAT_CONTROL, InputConstants.KEY_G);
+		weaponSelect2Key = registerKey("weapon_select_up_key", VEHICLE_COMBAT_CONTROL, InputConstants.UNKNOWN.getValue());
+		flareKey = registerKey("flare_key", VEHICLE_COMBAT_CONTROL, InputConstants.KEY_V);
+		radarModeKey = registerKey("radar_mode_key", VEHICLE_COMBAT_CONTROL, InputConstants.KEY_O);
+		pingCycleKey = registerKey("ping_cycle_key", VEHICLE_COMBAT_CONTROL, InputConstants.KEY_I);
+		radarDisplayRangeKey = registerKey("radar_display_range_key", VEHICLE_COMBAT_CONTROL, InputConstants.KEY_NUMPAD1);
 	}
 	
 	private static KeyMapping registerKey(String name, String category, int keycode) {

@@ -24,9 +24,15 @@ public class RadarScreenInstance extends EntityScreenInstance {
 		return vehicle.radarSystem.checkClientPingsRefreshed();
 	}
 	
-	protected void drawPing(int x, int y, int color) {
+	protected void drawPingAtPos(RadarData.RadarPing ping, int x, int y, boolean selected, boolean hover) {
 		// TODO 1.2 draw cool shapes for radar pings
-		drawCircle(x, y, 4, color);
+		// ABGR format for some reason
+		int color = 0xff00ff00;
+		if (selected) color = 0xff0000ff;
+		else if (hover) color = 0xff00ffff;
+		else if (ping.isFriendly) color = 0xffff0000;
+		else if (ping.isShared()) color = 0xffaacd66;
+		drawPlus(x, y, 4, color);
 	}
 	
 	@Override
@@ -39,25 +45,31 @@ public class RadarScreenInstance extends EntityScreenInstance {
 		int width = dynamicTexture.getPixels().getWidth();
 		int height = dynamicTexture.getPixels().getHeight();
 		int centerX = width/2, centerY = height/2;
-		int screenRadius = height/2;
-		// TODO 1.4 how to deal with pings clumping on top of each other
+		int textureRadius = height/2;
+		// render all other pings first
 		for (int i = 0; i < pings.size(); ++i) {
+			if (i == selected || i == hover) continue;
 			RadarData.RadarPing ping = pings.get(i);
-			Vec3 dp = ping.getPosForClient().subtract(vehicle.position());
-			double dist = dp.horizontalDistance();
-			double screen_dist = dist/ClientInputEvents.getRadarDisplayRange();
-			if (screen_dist > 1) screen_dist = 1;
-			float yaw = (UtilAngles.getYaw(dp)-vehicle.getYRot())*Mth.DEG_TO_RAD;
-			int x = Math.min(centerX + (int)(-Mth.sin(yaw)*screenRadius*screen_dist), width-1);
-			int y = Math.min(centerY + (int)(Mth.cos(yaw)*screenRadius*screen_dist), height-1);
-			// ABGR format for some reason
-			int color = 0xff00ff00;
-			if (i == selected) color = 0xff0000ff;
-			else if (i == hover) color = 0xff00ffff;
-			else if (ping.isFriendly) color = 0xffff0000;
-			else if (ping.isShared()) color = 0xffaacd66;
-			drawPing(x, y, color);
+			drawPing(ping, vehicle, false, false, centerX, centerY, textureRadius, width, height);
 		}
+		// render hover next
+		if (hover > -1 && hover < pings.size()) 
+			drawPing(pings.get(selected), vehicle, false, true, centerX, centerY, textureRadius, width, height);
+		// render selected last
+		if (selected > -1 && selected < pings.size()) 
+			drawPing(pings.get(hover), vehicle, true, false, centerX, centerY, textureRadius, width, height);
+	}
+	
+	protected void drawPing(RadarData.RadarPing ping, EntityVehicle vehicle, boolean selected, boolean hover,
+			int centerX, int centerY, int textureRadius, int width, int height) {
+		Vec3 dp = ping.getPosForClient().subtract(vehicle.position());
+		double dist = dp.horizontalDistance();
+		double screen_dist = dist/ClientInputEvents.getRadarDisplayRange();
+		if (screen_dist > 1) screen_dist = 1;
+		float yaw = (UtilAngles.getYaw(dp)-vehicle.getYRot())*Mth.DEG_TO_RAD;
+		int x = Math.min(centerX + (int)(-Mth.sin(yaw)*textureRadius*screen_dist), width-1);
+		int y = Math.min(centerY + (int)(Mth.cos(yaw)*textureRadius*screen_dist), height-1);
+		drawPingAtPos(ping, x, y, selected, hover);
 	}
 
 }

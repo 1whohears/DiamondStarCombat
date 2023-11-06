@@ -69,7 +69,23 @@ public abstract class EntityScreenInstance implements AutoCloseable {
 	/**
 	 * @param color AGBR (alpha, green, blue, red) 0xAAGGBBRR
 	 */
-	protected void drawCircle(int x, int y, int r, int color) {
+	protected void drawPlus(int x, int y, int r, int color) {
+		for (int i = x-r; i <= x+r; ++i) setPixel(i, y, color);
+		for (int j = y-r; j <= y+r; ++j) setPixel(x, j, color);
+	}
+	
+	/**
+	 * @param color AGBR (alpha, green, blue, red) 0xAAGGBBRR
+	 */
+	protected void drawCross(int x, int y, int r, int color) {
+		for (int i = x-r, j = y-r; i <= x+r; ++i) setPixel(i, j++, color);
+		for (int i = x-r, j = y+r; i <= x+r; ++i) setPixel(i, j--, color);
+	}
+	
+	/**
+	 * @param color AGBR (alpha, green, blue, red) 0xAAGGBBRR
+	 */
+	protected void drawHollowCircle(int x, int y, int r, int color) {
 		float minAngle = (float)Math.atan(1f/(float)r)*0.9f;
 		if (minAngle == 0) {
 			setPixel(x, y, color);

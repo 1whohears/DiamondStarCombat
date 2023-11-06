@@ -14,8 +14,16 @@ import net.minecraft.world.phys.Vec3;
 
 public class RadarScreenInstance extends EntityScreenInstance {
 	
+	protected final int width, height, centerX, centerY, textureRadius, pingIconRadius;
+	
 	public RadarScreenInstance(int id) {
 		super("radar", id, RadarOverlay.RADAR);
+		width = dynamicTexture.getPixels().getWidth();
+		height = dynamicTexture.getPixels().getHeight();
+		centerX = width/2; 
+		centerY = height/2;
+		textureRadius = height/2;
+		pingIconRadius = textureRadius / 16;
 	}
 	
 	@Override
@@ -25,14 +33,18 @@ public class RadarScreenInstance extends EntityScreenInstance {
 	}
 	
 	protected void drawPingAtPos(RadarData.RadarPing ping, int x, int y, boolean selected, boolean hover) {
-		// TODO 1.2 draw cool shapes for radar pings
 		// ABGR format for some reason
 		int color = 0xff00ff00;
 		if (selected) color = 0xff0000ff;
 		else if (hover) color = 0xff00ffff;
 		else if (ping.isFriendly) color = 0xffff0000;
 		else if (ping.isShared()) color = 0xffaacd66;
-		drawPlus(x, y, 4, color);
+		if (ping.terrainType.isGround()) drawCross(x, y, pingIconRadius, color);
+		else if (ping.terrainType.isAir()) drawPlus(x, y, pingIconRadius, color);
+		else {
+			drawCross(x, y, pingIconRadius, color);
+			drawPlus(x, y, pingIconRadius, color);
+		}
 	}
 	
 	@Override
@@ -42,26 +54,21 @@ public class RadarScreenInstance extends EntityScreenInstance {
 		List<RadarData.RadarPing> pings = vehicle.radarSystem.getClientRadarPings();
 		int selected = vehicle.radarSystem.getClientSelectedPingIndex();
 		int hover = ClientInputEvents.getHoverIndex();
-		int width = dynamicTexture.getPixels().getWidth();
-		int height = dynamicTexture.getPixels().getHeight();
-		int centerX = width/2, centerY = height/2;
-		int textureRadius = height/2;
 		// render all other pings first
 		for (int i = 0; i < pings.size(); ++i) {
 			if (i == selected || i == hover) continue;
 			RadarData.RadarPing ping = pings.get(i);
-			drawPing(ping, vehicle, false, false, centerX, centerY, textureRadius, width, height);
+			drawPing(ping, vehicle, false, false);
 		}
 		// render hover next
 		if (hover > -1 && hover < pings.size()) 
-			drawPing(pings.get(selected), vehicle, false, true, centerX, centerY, textureRadius, width, height);
+			drawPing(pings.get(selected), vehicle, false, true);
 		// render selected last
 		if (selected > -1 && selected < pings.size()) 
-			drawPing(pings.get(hover), vehicle, true, false, centerX, centerY, textureRadius, width, height);
+			drawPing(pings.get(hover), vehicle, true, false);
 	}
 	
-	protected void drawPing(RadarData.RadarPing ping, EntityVehicle vehicle, boolean selected, boolean hover,
-			int centerX, int centerY, int textureRadius, int width, int height) {
+	protected void drawPing(RadarData.RadarPing ping, EntityVehicle vehicle, boolean selected, boolean hover) {
 		Vec3 dp = ping.getPosForClient().subtract(vehicle.position());
 		double dist = dp.horizontalDistance();
 		double screen_dist = dist/ClientInputEvents.getRadarDisplayRange();

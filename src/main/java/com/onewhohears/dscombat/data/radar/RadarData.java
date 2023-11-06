@@ -418,26 +418,30 @@ public class RadarData extends JsonPreset {
 		GROUND((byte)0, 0),
 		AIR((byte)1, 200),
 		WATER((byte)2, 100);
-		
 		public final byte id;
 		public final int offset;
-		
 		private PingTerrainType(byte id, int offset) {
 			this.id = id;
 			this.offset = offset;
 		}
-		
 		public int getIconOffset() {
 			return offset;
 		}
-		
+		public boolean isGround() {
+			return this == GROUND;
+		}
+		public boolean isAir() {
+			return this == AIR;
+		}
+		public boolean isWater() {
+			return this == WATER;
+		}
 		public static PingTerrainType getById(byte id) {
 			for (int i = 0; i < values().length; ++i) 
 				if (values()[i].id == id) 
 					return values()[i];
 			return GROUND;
 		}
-		
 		public static PingTerrainType getByEntity(Entity e) {
 			if (e.isInWater()) return WATER;
 			if (UtilEntity.isOnGroundOrWater(e)) return GROUND;
@@ -450,19 +454,15 @@ public class RadarData extends JsonPreset {
 		HOSTILE_MOB((byte)1, 100),
 		FRIENDLY_MOB((byte)2, 200),
 		VEHICLE((byte)3, 300);
-		
 		public final byte id;
 		public final int offset;
-		
 		private PingEntityType(byte id, int offset) {
 			this.id = id;
 			this.offset = offset;
 		}
-		
 		public int getIconOffset() {
 			return offset;
 		}
-		
 		public static PingEntityType getById(byte id) {
 			for (int i = 0; i < values().length; ++i) 
 				if (values()[i].id == id) 
@@ -477,27 +477,22 @@ public class RadarData extends JsonPreset {
 		VEHICLES,
 		MOBS,
 		OFF;
-		
 		public RadarMode cycle() {
 			int i = this.ordinal();
 			++i;
 			if (i >= RadarMode.values().length) i = 0;
 			return RadarMode.values()[i];
 		}
-		
 		public boolean canScan(RadarMode mode) {
 			if (this == ALL) return true;
 			return this == mode;
 		}
-		
 		public boolean isPlayersOnly() {
 			return this == PLAYERS;
 		}
-		
 		public boolean isOff() {
 			return this == OFF;
 		}
-		
 		public static RadarMode byId(int id) {
 			if (id < 0 || id >= values().length) return ALL;
 			return values()[id];

@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
+import com.onewhohears.dscombat.client.renderer.EntityScreenRenderer;
 import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -75,6 +76,7 @@ public class ObjEntityModels implements ResourceManagerReloadListener {
 		readUnbakedModels(manager);
 		readModelOverrides(manager);
 		bakeModels();
+		EntityScreenRenderer.clearCache();
 	}
 	
 	public void readUnbakedModels(ResourceManager manager) {

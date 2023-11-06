@@ -4,12 +4,14 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.client.renderer.EntityScreenRenderer;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
@@ -107,6 +109,11 @@ public class ClientRenderEvents {
 	
 	public static Matrix4f getProjMatrix() {
 		return projMat;
+	}
+	
+	@SubscribeEvent
+	public static void clientLogout(ClientPlayerNetworkEvent.LoggingOut event) {
+		EntityScreenRenderer.clearCache();
 	}
 	
 }

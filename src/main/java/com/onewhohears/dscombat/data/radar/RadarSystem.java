@@ -46,6 +46,7 @@ public class RadarSystem {
 	private int selectedIndex = -1;
 	private List<RadarPing> clientTargets = new ArrayList<RadarPing>();
 	private int clientSelectedIndex = -1;
+	private boolean refreshedClientPings = false;
 	
 	private List<RWRWarning> rwrWarnings = new ArrayList<RWRWarning>();
 	private boolean rwrMissile, rwrRadar;
@@ -268,6 +269,15 @@ public class RadarSystem {
 				}
 		}
 		updateClientPingPos();
+		refreshedClientPings = true;
+	}
+	
+	public boolean checkClientPingsRefreshed() {
+		if (refreshedClientPings) {
+			refreshedClientPings = false;
+			return true;
+		}
+		return false;
 	}
 	
 	public boolean hasRadar() {

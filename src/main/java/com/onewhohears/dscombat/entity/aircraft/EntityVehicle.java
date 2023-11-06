@@ -189,13 +189,14 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	protected float throttle;
 	
 	protected RotableHitbox[] hitboxes = new RotableHitbox[0];
-	protected VehicleScreenData[] screens = new VehicleScreenData[0];
+	protected EntityScreenData[] screens = new EntityScreenData[0];
 	
 	// FIXME 1.1 fix aircraft texture/variant texture system
 	// TODO 5.4 aircraft breaks apart when damaged
 	// TODO 5.6 place and remove external parts from outside the vehicle
 	// TODO 2.5 add chaff
 	// TODO 2.7 cargo system
+	// TODO 8.4 speed of sound system (client doesn't hear sound until "sound wave" reaches the player)
 	
 	public EntityVehicle(EntityType<? extends EntityVehicle> entityType, Level level, ImmutableVehicleData vehicleData) {
 		super(entityType, level);
@@ -2425,7 +2426,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		return hitboxes;
 	}
 	
-	public VehicleScreenData[] getVehicleScreens() {
+	public EntityScreenData[] getVehicleScreens() {
 		return screens;
 	}
     

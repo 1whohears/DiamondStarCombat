@@ -40,6 +40,8 @@ public final class ClientInputEvents {
 	private static final long MOUNT_SHOOT_COOLDOWN = 500;
 	private static long mountTime;
 	
+	private static double radarDisplayRange = 1000;
+	
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void clientTickPilotControl(TickEvent.ClientTickEvent event) {
 		if (event.phase != Phase.END) return;
@@ -188,6 +190,14 @@ public final class ClientInputEvents {
 		if (Config.CLIENT.customDismount.get() && DSCKeys.dismount.isDown()) {
 			PacketHandler.INSTANCE.sendToServer(new ToServerDismount());
 		}
+		// RADAR DISPLAY RANGE
+		if (DSCKeys.radarDisplayRangeKey.consumeClick()) {
+			if (radarDisplayRange <= 250) radarDisplayRange = 1000;
+			else if (radarDisplayRange <= 1000) radarDisplayRange = 2000;
+			else if (radarDisplayRange <= 2000) radarDisplayRange = 5000;
+			else if (radarDisplayRange <= 5000) radarDisplayRange = 250;
+			else radarDisplayRange = 250;
+		}
 	}
 	
 	private static boolean playerCanShoot(Player player) {
@@ -235,6 +245,10 @@ public final class ClientInputEvents {
 		Entity mounted = event.getEntityBeingMounted();
 		if (!(mounted instanceof EntitySeat)) return;
 		mountTime = System.currentTimeMillis();
+	}
+	
+	public static double getRadarDisplayRange() {
+		return radarDisplayRange;
 	}
 	
 }

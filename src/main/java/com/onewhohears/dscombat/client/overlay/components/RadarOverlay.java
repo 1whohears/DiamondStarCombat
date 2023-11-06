@@ -62,7 +62,7 @@ public class RadarOverlay extends VehicleOverlayComponent {
         int searchRadius = RADAR_SIZE / 2;
         int centerX = RADAR_OFFSET + searchRadius;
         int centerY = screenHeight - RADAR_OFFSET - searchRadius - 5;
-        double displayRange = 1000;
+        double displayRange = ClientInputEvents.getRadarDisplayRange();
         
         // CARDINAL
         int card_color = 0x0000ff, searchRadius2 = searchRadius + 4;

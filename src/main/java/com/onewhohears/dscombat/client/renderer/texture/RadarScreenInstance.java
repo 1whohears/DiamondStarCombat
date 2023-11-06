@@ -14,8 +14,6 @@ import net.minecraft.world.phys.Vec3;
 
 public class RadarScreenInstance extends EntityScreenInstance {
 	
-	public static final double DISPLAY_RANGE = 1000;
-	
 	public RadarScreenInstance(int id) {
 		super("radar", id, RadarOverlay.RADAR);
 	}
@@ -47,7 +45,7 @@ public class RadarScreenInstance extends EntityScreenInstance {
 			RadarData.RadarPing ping = pings.get(i);
 			Vec3 dp = ping.getPosForClient().subtract(vehicle.position());
 			double dist = dp.horizontalDistance();
-			double screen_dist = dist/DISPLAY_RANGE;
+			double screen_dist = dist/ClientInputEvents.getRadarDisplayRange();
 			if (screen_dist > 1) screen_dist = 1;
 			float yaw = (UtilAngles.getYaw(dp)-vehicle.getYRot())*Mth.DEG_TO_RAD;
 			int x = Math.min(centerX + (int)(-Mth.sin(yaw)*screenRadius*screen_dist), width-1);

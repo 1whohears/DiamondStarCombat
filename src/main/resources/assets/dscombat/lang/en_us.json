@@ -362,6 +362,7 @@
 	"key.dscombat.special_2_key": "Special 2",
 	"key.dscombat.dismount_key": "Dismount",
 	"key.dscombat.ping_cycle_key": "Ping Cycle",
+	"key.dscombat.radar_display_range_key": "Cycle Radar Display Range",
 	
 	"sounds.dscombat.missile_warning": "Missile Warning",
 	"sounds.dscombat.getting_locked": "Getting Locked",
@@ -470,5 +471,9 @@
 	"gamerule.mobTurretVerticalRange": "DSC Mob Turret AI Vertical Range",
 	"gamerule.mobsTickRadar": "DSC Mob Passengers Tick Radar",
 	"gamerule.mobsRideVehicles": "DSC Can Mobs Ride Vehicles",
-	"gamerule.planeSpeedPercent": "DSC Plane Speed Percent"
+	"gamerule.planeSpeedPercent": "DSC Plane Speed Percent",
+	"gamerule.vehicleArmorStrengthPercent": "DSC Vehicle Armor Strength Percent",
+	"gamerule.bulletDamageVehiclePercent": "DSC Bullet Damage Vehicle Percent Multiplier",
+	"gamerule.explosionDamageVehiclePercent": "DSC Explosion Damage Vehicle Percent Multiplier",
+	"gamerule.bulletDamagePlanePercent": "DSC Bullet Damage Plane Percent Multiplier"
 }

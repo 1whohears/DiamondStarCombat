@@ -23,7 +23,7 @@ public final class DSCKeys {
 	public static KeyMapping mouseModeKey, resetMouseKey;
 	public static KeyMapping shootKey, landingGear;
 	public static KeyMapping planeMenuKey;
-	public static KeyMapping pingCycleKey, radarModeKey;
+	public static KeyMapping pingCycleKey, radarModeKey, radarDisplayRangeKey;
 	public static KeyMapping changeSeat, dismount;
 	public static KeyMapping specialKey, special2Key;
 	public static KeyMapping flipControlsKey;
@@ -43,7 +43,7 @@ public final class DSCKeys {
 		yawRightKey = registerKey("yaw_right_key", FLIGHT_CONTROL, InputConstants.KEY_D);
 		flareKey = registerKey("flare_key", FLIGHT_CONTROL, InputConstants.KEY_V);
 		dismount = registerKey("dismount_key", FLIGHT_CONTROL, InputConstants.KEY_H);
-		mouseModeKey = registerKey("mouse_mode_key", FLIGHT_CONTROL, InputConstants.KEY_LCONTROL);
+		mouseModeKey = registerKey("mouse_mode_key", FLIGHT_CONTROL, InputConstants.KEY_NUMPAD0);
 		resetMouseKey = registerKey("reset_mouse_key", FLIGHT_CONTROL, InputConstants.KEY_RALT);
 		specialKey = registerKey("special_key", FLIGHT_CONTROL, InputConstants.KEY_SPACE);
 		special2Key = registerKey("special_2_key", FLIGHT_CONTROL, InputConstants.KEY_LALT);
@@ -56,6 +56,7 @@ public final class DSCKeys {
 		landingGear = registerKey("landing_gear_key", FLIGHT_CONTROL, InputConstants.KEY_K);
 		radarModeKey = registerKey("radar_mode_key", FLIGHT_CONTROL, InputConstants.KEY_O);
 		pingCycleKey = registerKey("ping_cycle_key", FLIGHT_CONTROL, InputConstants.KEY_I);
+		radarDisplayRangeKey = registerKey("radar_display_range_key", FLIGHT_CONTROL, InputConstants.KEY_NUMPAD1);
 	}
 	
 	private static KeyMapping registerKey(String name, String category, int keycode) {

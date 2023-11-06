@@ -189,6 +189,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	protected float throttle;
 	
 	protected RotableHitbox[] hitboxes = new RotableHitbox[0];
+	protected VehicleScreenData[] screens = new VehicleScreenData[0];
 	
 	// FIXME 1.1 fix aircraft texture/variant texture system
 	// TODO 5.4 aircraft breaks apart when damaged
@@ -208,6 +209,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		}
 		this.item = vehicleData.defaultPreset.getItem();
 		this.blocksBuilding = true;
+		addVehicleScreens();
 		addHitboxes();
 		setId(ENTITY_COUNTER.getAndAdd(hitboxes.length+1)+1);
 	}
@@ -219,6 +221,9 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 	
 	public void addHitboxes() {
+	}
+	
+	public void addVehicleScreens() {
 	}
 	
 	@Override
@@ -2418,6 +2423,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	public RotableHitbox[] getHitboxes() {
 		return hitboxes;
+	}
+	
+	public VehicleScreenData[] getVehicleScreens() {
+		return screens;
 	}
     
 }

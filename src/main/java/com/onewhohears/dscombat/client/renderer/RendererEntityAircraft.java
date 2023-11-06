@@ -14,7 +14,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
-public class RendererEntityAircraft<T extends EntityVehicle> extends EntityRenderer<T> implements RotableHitboxRenderer, OverlayOnVehicleRenderer<T> {
+public class RendererEntityAircraft<T extends EntityVehicle> extends EntityRenderer<T> implements RotableHitboxRenderer, VehicleScreenRenderer<T> {
 	
 	protected final EntityControllableModel<T> model;
 	
@@ -43,7 +43,7 @@ public class RendererEntityAircraft<T extends EntityVehicle> extends EntityRende
         poseStack.popPose();
         
         if (shouldDrawRotableHitboxes(entity)) drawRotableHitboxeOutlines(entity, partialTicks, poseStack, bufferSource);
-        renderOverlayComponents(entity, poseStack, bufferSource, packedLight, partialTicks);
+        if (shouldRenderScreens(entity)) renderVehicleScreens(entity, poseStack, bufferSource, packedLight, partialTicks);
 		
         super.render(entity, entityYaw, partialTicks, poseStack, bufferSource, packedLight);
 	}

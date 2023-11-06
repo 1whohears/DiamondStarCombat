@@ -165,11 +165,10 @@ public class EntityTurret extends EntitySeat {
 		if (level.isClientSide) q = craft.getClientQ();
 		else q = craft.getQ();
 		double offset = getPassengersRidingOffset() + passenger.getMyRidingOffset() + passenger.getEyeHeight();
-		return UtilAngles.rotateVector(new Vec3(
-					passengerOffset.x*Mth.cos(getRelRotY()*Mth.DEG_TO_RAD)+passengerOffset.z*Mth.sin(getRelRotY()*Mth.DEG_TO_RAD), 
-					offset, 
-					passengerOffset.z*Mth.cos(getRelRotY()*Mth.DEG_TO_RAD)+passengerOffset.x*Mth.sin(getRelRotY()*Mth.DEG_TO_RAD)
-				), q).subtract(0, passenger.getEyeHeight(), 0);
+		float cos = Mth.cos(getRelRotY()*Mth.DEG_TO_RAD), sin = Mth.sin(getRelRotY()*Mth.DEG_TO_RAD);
+		return UtilAngles.rotateVector(new Vec3(passengerOffset.x*cos+passengerOffset.z*sin, 
+				offset, passengerOffset.z*cos+passengerOffset.x*sin), q)
+				.subtract(0, passenger.getEyeHeight(), 0);
 	}
 	
 	protected Goal shootGoal, targetGoal;

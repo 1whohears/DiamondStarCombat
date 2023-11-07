@@ -2,34 +2,38 @@ package com.onewhohears.dscombat.client.renderer.texture;
 
 import java.util.List;
 
+import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents;
-import com.onewhohears.dscombat.client.overlay.components.RadarOverlay;
 import com.onewhohears.dscombat.data.radar.RadarData;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 
 public class RadarScreenInstance extends EntityScreenInstance {
 	
+	public static final ResourceLocation RADAR_SCREEN_TEXTURE = new ResourceLocation(DSCombatMod.MODID,
+            "textures/ui/radar_high_res.png");
+	
 	protected final int width, height, centerX, centerY, textureRadius, pingIconRadius;
 	
 	public RadarScreenInstance(int id) {
-		super("radar", id, RadarOverlay.RADAR);
+		super("radar", id, RADAR_SCREEN_TEXTURE);
 		width = dynamicTexture.getPixels().getWidth();
 		height = dynamicTexture.getPixels().getHeight();
 		centerX = width/2; 
 		centerY = height/2;
 		textureRadius = height/2;
-		pingIconRadius = textureRadius / 16;
+		pingIconRadius = textureRadius/16;
 	}
 	
 	@Override
 	public boolean shouldUpdateTexture(Entity entity) {
 		EntityVehicle vehicle = (EntityVehicle)entity;
-		return vehicle.radarSystem.checkClientPingsRefreshed();
+		return vehicle.radarSystem.shouldUpdateRadarTexture();
 	}
 	
 	protected void drawPingAtPos(RadarData.RadarPing ping, int x, int y, boolean selected, boolean hover) {
@@ -39,17 +43,18 @@ public class RadarScreenInstance extends EntityScreenInstance {
 		else if (hover) color = 0xff00ffff;
 		else if (ping.isFriendly) color = 0xffff0000;
 		else if (ping.isShared()) color = 0xffaacd66;
-		if (ping.terrainType.isGround()) drawPlus(x, y, pingIconRadius, color);
-		else if (ping.terrainType.isAir()) drawCross(x, y, pingIconRadius, color);
+		if (ping.terrainType.isGround()) drawPlus(x, y, pingIconRadius, 5, color);
+		else if (ping.terrainType.isAir()) drawCross(x, y, pingIconRadius, 5, color);
 		else {
 			drawCross(x, y, pingIconRadius, color);
 			drawPlus(x, y, pingIconRadius, color);
 		}
+		if (ping.isFriendly) drawHollowCircle(x, y, pingIconRadius, 2, color);
 	}
 	
 	@Override
 	protected void updateTexture(Entity entity) {
-		clearPixels();
+		clearDynamicPixels();
 		EntityVehicle vehicle = (EntityVehicle)entity;
 		List<RadarData.RadarPing> pings = vehicle.radarSystem.getClientRadarPings();
 		int selected = vehicle.radarSystem.getClientSelectedPingIndex();

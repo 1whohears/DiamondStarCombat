@@ -46,7 +46,7 @@ public class RadarSystem {
 	private int selectedIndex = -1;
 	private List<RadarPing> clientTargets = new ArrayList<RadarPing>();
 	private int clientSelectedIndex = -1;
-	private boolean refreshedClientPings = false;
+	private int clientPingRefreshTime = 0, clientPrevTickCount = 0;
 	
 	private List<RWRWarning> rwrWarnings = new ArrayList<RWRWarning>();
 	private boolean rwrMissile, rwrRadar;
@@ -269,15 +269,15 @@ public class RadarSystem {
 				}
 		}
 		updateClientPingPos();
-		refreshedClientPings = true;
+		clientPingRefreshTime = parent.tickCount;
 	}
 	
-	public boolean checkClientPingsRefreshed() {
-		if (refreshedClientPings) {
-			refreshedClientPings = false;
-			return true;
-		}
-		return false;
+	public boolean shouldUpdateRadarTexture() {
+		boolean r = false;
+		if (parent.tickCount > clientPrevTickCount && (parent.tickCount-clientPingRefreshTime) < 60) 
+			r = true;
+		clientPrevTickCount = parent.tickCount;
+		return r;
 	}
 	
 	public boolean hasRadar() {

@@ -45,14 +45,15 @@ public abstract class EntityScreenInstance implements AutoCloseable {
 	
 	public abstract boolean shouldUpdateTexture(Entity entity);
 	protected abstract void updateTexture(Entity entity);
-	
-	protected void clearPixels() {
+	/**
+	 * sets all pixels to transparent in dynamic texture
+	 */
+	protected void clearDynamicPixels() {
 		int width = dynamicTexture.getPixels().getWidth();
 		int height = dynamicTexture.getPixels().getHeight();
 		for (int i = 0; i < width; ++i) for (int j = 0; j < height; ++j) 
 			dynamicTexture.getPixels().setPixelRGBA(i, j, 0);
 	}
-	
 	/**
 	 * @param color AGBR (alpha, green, blue, red) 0xAAGGBBRR
 	 */
@@ -64,41 +65,73 @@ public abstract class EntityScreenInstance implements AutoCloseable {
 		dynamicTexture.getPixels().setPixelRGBA(x, y, color);
 		//System.out.println("SET PIXEL "+x+" "+y+" "+color);
 	}
-	
 	/**
+	 * @param r radius
+	 * @param t thickness
+	 * @param color AGBR (alpha, green, blue, red) 0xAAGGBBRR
+	 */
+	protected void drawPlus(int x, int y, int r, int t, int color) {
+		double half = t*0.5d;
+		int kMin = -(int)Math.floor(half);
+		int kMax = (int)Math.ceil(half);
+		for (int i = x-r; i <= x+r; ++i) for (int k = kMin; k < kMax; ++k) setPixel(i, y+k, color);
+		for (int j = y-r; j <= y+r; ++j) for (int k = kMin; k < kMax; ++k) setPixel(x+k, j, color);
+	}
+	/**
+	 * @param r radius
 	 * @param color AGBR (alpha, green, blue, red) 0xAAGGBBRR
 	 */
 	protected void drawPlus(int x, int y, int r, int color) {
-		// TODO 1.2 thickness parameter
-		for (int i = x-r; i <= x+r; ++i) setPixel(i, y, color);
-		for (int j = y-r; j <= y+r; ++j) setPixel(x, j, color);
+		drawPlus(x, y, r, 1, color);
 	}
-	
 	/**
+	 * @param r radius
+	 * @param t thickness
+	 * @param color AGBR (alpha, green, blue, red) 0xAAGGBBRR
+	 */
+	protected void drawCross(int x, int y, int r, int t, int color) {
+		double half = t*0.5d;
+		int kMin = -(int)Math.floor(half);
+		int kMax = (int)Math.ceil(half);
+		for (int i = x-r, j = y-r; i <= x+r; ++i, ++j) for (int k = kMin; k < kMax; ++k) setPixel(i+k, j, color);
+		for (int i = x-r, j = y+r; i <= x+r; ++i, --j) for (int k = kMin; k < kMax; ++k) setPixel(i+k, j, color);
+	}
+	/**
+	 * @param r radius
 	 * @param color AGBR (alpha, green, blue, red) 0xAAGGBBRR
 	 */
 	protected void drawCross(int x, int y, int r, int color) {
-		for (int i = x-r, j = y-r; i <= x+r; ++i) setPixel(i, j++, color);
-		for (int i = x-r, j = y+r; i <= x+r; ++i) setPixel(i, j--, color);
+		drawCross(x, y, r, 1, color);
 	}
-	
 	/**
+	 * @param r radius
+	 * @param t thickness
+	 * @param color AGBR (alpha, green, blue, red) 0xAAGGBBRR
+	 */
+	protected void drawHollowCircle(int x, int y, int r, int t, int color) {
+		if (t > r) return;
+		float pi2 =  Mth.PI*2;
+		for (int rad = r; rad > r-t; --rad) {
+			float minAngle = (float)Math.atan(1f/(float)rad)*0.7f;
+			if (minAngle == 0) {
+				setPixel(x, y, color);
+				return;
+			}
+			float angle = 0;
+			while (angle < pi2) {
+				int xr = (int)(rad*Mth.cos(angle));
+				int yr = (int)(rad*Mth.sin(angle));
+				setPixel(x+xr, y+yr, color);
+				angle += minAngle;
+			}
+		}
+	}
+	/**
+	 * @param r radius
 	 * @param color AGBR (alpha, green, blue, red) 0xAAGGBBRR
 	 */
 	protected void drawHollowCircle(int x, int y, int r, int color) {
-		float minAngle = (float)Math.atan(1f/(float)r)*0.9f;
-		if (minAngle == 0) {
-			setPixel(x, y, color);
-			return;
-		}
-		float pi2 =  Mth.PI*2;
-		float angle = 0;
-		while (angle < pi2) {
-			int xr = (int)(r*Mth.cos(angle));
-			int yr = (int)(r*Mth.sin(angle));
-			setPixel(x+xr, y+yr, color);
-			angle += minAngle;
-		}
+		drawHollowCircle(x, y, r, 1, color);
 	}
 	
 	public void draw(Entity entity, PoseStack poseStack, MultiBufferSource buffer, float partialTicks, int packedLight) {

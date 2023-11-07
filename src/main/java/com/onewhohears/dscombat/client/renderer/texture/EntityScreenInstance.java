@@ -59,8 +59,7 @@ public abstract class EntityScreenInstance implements AutoCloseable {
 	protected void setPixel(int x, int y, int color) {
 		int width = dynamicTexture.getPixels().getWidth();
 		int height = dynamicTexture.getPixels().getHeight();
-		if (x >= width) return;
-		else if (y >= height) return;
+		if (x < 0 || y < 0 || x >= width || y >= height) return;
 		// setPixelRGBA function name lies. color integer must be in ABGR format.
 		dynamicTexture.getPixels().setPixelRGBA(x, y, color);
 		//System.out.println("SET PIXEL "+x+" "+y+" "+color);

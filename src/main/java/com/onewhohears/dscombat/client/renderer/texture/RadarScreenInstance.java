@@ -39,8 +39,8 @@ public class RadarScreenInstance extends EntityScreenInstance {
 		else if (hover) color = 0xff00ffff;
 		else if (ping.isFriendly) color = 0xffff0000;
 		else if (ping.isShared()) color = 0xffaacd66;
-		if (ping.terrainType.isGround()) drawCross(x, y, pingIconRadius, color);
-		else if (ping.terrainType.isAir()) drawPlus(x, y, pingIconRadius, color);
+		if (ping.terrainType.isGround()) drawPlus(x, y, pingIconRadius, color);
+		else if (ping.terrainType.isAir()) drawCross(x, y, pingIconRadius, color);
 		else {
 			drawCross(x, y, pingIconRadius, color);
 			drawPlus(x, y, pingIconRadius, color);
@@ -62,10 +62,10 @@ public class RadarScreenInstance extends EntityScreenInstance {
 		}
 		// render hover next
 		if (hover > -1 && hover < pings.size()) 
-			drawPing(pings.get(selected), vehicle, false, true);
+			drawPing(pings.get(hover), vehicle, false, true);
 		// render selected last
 		if (selected > -1 && selected < pings.size()) 
-			drawPing(pings.get(hover), vehicle, true, false);
+			drawPing(pings.get(selected), vehicle, true, false);
 	}
 	
 	protected void drawPing(RadarData.RadarPing ping, EntityVehicle vehicle, boolean selected, boolean hover) {

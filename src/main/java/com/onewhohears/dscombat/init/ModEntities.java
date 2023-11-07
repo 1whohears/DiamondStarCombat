@@ -51,8 +51,16 @@ public class ModEntities {
 	
 	public static final RegistryObject<EntityType<EntityPlane>> JAVI_PLANE = ENTITIES.register("javi_plane", 
 			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
-					ImmutableVehicleData.JAVI_PLANE_DATA), 
-					EntityDimensions.scalable(2.45f, 2.45f)));
+					ImmutableVehicleData.JAVI_PLANE_DATA) {
+						@Override
+						public void addVehicleScreens() {
+							screens = new EntityScreenData[1];
+							screens[0] = new EntityScreenData(EntityScreenTypes.RADAR_SCREEN, 
+									new Vec3(0.2, 0.05, 4.05), 
+									0.5f, 0.5f, 
+									0f, 0f, 0f);
+						}
+					}, EntityDimensions.scalable(2.45f, 2.45f)));
 	
 	public static final RegistryObject<EntityType<EntityPlane>> ALEXIS_PLANE = ENTITIES.register("alexis_plane", 
 			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
@@ -63,10 +71,9 @@ public class ModEntities {
 							screens[0] = new EntityScreenData(EntityScreenTypes.RADAR_SCREEN, 
 									new Vec3(0.25, 1.2, 7.22), 
 									0.4f, 0.4f, 
-									40.2f, 0f, 0f);
+									40f, 0f, 0f);
 						}
-					}, 
-					EntityDimensions.scalable(4.0f, 4.0f)));
+					}, EntityDimensions.scalable(4.0f, 4.0f)));
 	
 	public static final RegistryObject<EntityType<EntityPlane>> WOODEN_PLANE = ENTITIES.register("wooden_plane", 
 			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
@@ -75,15 +82,31 @@ public class ModEntities {
 	
 	public static final RegistryObject<EntityType<EntityPlane>> E3SENTRY_PLANE = ENTITIES.register("e3sentry_plane", 
 			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
-					ImmutableVehicleData.E3SENTRY_PLANE_DATA), 
-					EntityDimensions.scalable(4.0f, 4.0f)));
+					ImmutableVehicleData.E3SENTRY_PLANE_DATA) {
+						@Override
+						public void addVehicleScreens() {
+							screens = new EntityScreenData[1];
+							screens[0] = new EntityScreenData(EntityScreenTypes.RADAR_SCREEN, 
+									new Vec3(0, -0.85, 5.46), 
+									0.7f, 0.7f, 
+									0f, 0f, 0f);
+						}
+					}, EntityDimensions.scalable(4.0f, 4.0f)));
 	
 	// HELICOPTORS
 	
 	public static final RegistryObject<EntityType<EntityHelicopter>> NOAH_CHOPPER = ENTITIES.register("noah_chopper", 
 			() -> createEntityTypeFar((type, level) -> new EntityHelicopter(type, level, 
-					ImmutableVehicleData.NOAH_CHOPPER_DATA), 
-					EntityDimensions.scalable(2.8f, 2.8f)));
+					ImmutableVehicleData.NOAH_CHOPPER_DATA) {
+						@Override
+						public void addVehicleScreens() {
+							screens = new EntityScreenData[1];
+							screens[0] = new EntityScreenData(EntityScreenTypes.RADAR_SCREEN, 
+									new Vec3(0.35, 0.05, 1.83), 
+									0.6f, 0.6f, 
+									20f, 0f, 0f);
+						}
+					}, EntityDimensions.scalable(2.8f, 2.8f)));
 	
 	// TANKS
 	
@@ -106,8 +129,16 @@ public class ModEntities {
 	
 	public static final RegistryObject<EntityType<EntityGroundVehicle>> AXCEL_TRUCK = ENTITIES.register("axcel_truck", 
 			() -> createEntityTypeFar((type, level) -> new EntityGroundVehicle(type, level, 
-					ImmutableVehicleData.AXCEL_TRUCK_DATA), 
-					EntityDimensions.scalable(2.5f, 3.0f)));
+					ImmutableVehicleData.AXCEL_TRUCK_DATA) {
+						@Override
+							public void addVehicleScreens() {
+								screens = new EntityScreenData[1];
+								screens[0] = new EntityScreenData(EntityScreenTypes.RADAR_SCREEN, 
+										new Vec3(0, 1.35, 1.6), 
+										0.6f, 0.6f, 
+										0f, 0f, 0f);
+						}
+					}, EntityDimensions.scalable(2.5f, 3.0f)));
 	
 	// TODO 2.6 fuel truck
 	

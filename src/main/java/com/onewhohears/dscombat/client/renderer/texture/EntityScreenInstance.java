@@ -112,7 +112,7 @@ public abstract class EntityScreenInstance implements AutoCloseable {
 		if (t > r) return;
 		float pi2 =  Mth.PI*2;
 		for (int rad = r; rad > r-t; --rad) {
-			float minAngle = (float)Math.atan(1f/(float)rad)*0.7f;
+			float minAngle = (float)Math.atan(1f/(float)rad)*0.65f;
 			if (minAngle == 0) {
 				setPixel(x, y, color);
 				return;

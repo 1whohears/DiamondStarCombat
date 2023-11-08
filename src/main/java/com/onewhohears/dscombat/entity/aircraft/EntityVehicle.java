@@ -196,6 +196,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	// TODO 5.6 place and remove external parts from outside the vehicle
 	// TODO 2.5 add chaff
 	// TODO 2.7 cargo system
+	// TODO 6.1 improve particle system
 	// TODO 8.4 speed of sound system (client doesn't hear sound until "sound wave" reaches the player)
 	
 	public EntityVehicle(EntityType<? extends EntityVehicle> entityType, Level level, ImmutableVehicleData vehicleData) {
@@ -225,6 +226,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 	
 	public void addVehicleScreens() {
+		// TODO 1.6 move screen data to client presets
 	}
 	
 	@Override

@@ -152,7 +152,7 @@ public class TurretShootGoal extends Goal {
 		} else if (mob instanceof AbstractGolem) {
 			return NORMAL_SHOOT;
 		}
-		// TODO 6.1 more levels of mobs turret shooting at targets AI types
+		// TODO 7.1 make the shoot type by mob type configurable in common config
 		return CANT_SHOOT;
 	}
 	

@@ -13,7 +13,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 
-public class RadarScreenInstance extends EntityScreenInstance {
+public class RadarScreenInstance extends EntityDynamicScreenInstance {
 	
 	public static final ResourceLocation RADAR_SCREEN_TEXTURE = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/radar_high_res.png");
@@ -44,7 +44,7 @@ public class RadarScreenInstance extends EntityScreenInstance {
 		else if (ping.isFriendly) color = 0xffff0000;
 		else if (ping.isShared()) color = 0xffaacd66;
 		if (ping.terrainType.isGround()) drawPlus(x, y, pingIconRadius, 5, color);
-		else if (ping.terrainType.isAir()) drawCross(x, y, pingIconRadius, 5, color);
+		else if (ping.terrainType.isAir()) drawCross(x, y, pingIconRadius, 7, color);
 		else {
 			drawCross(x, y, pingIconRadius, color);
 			drawPlus(x, y, pingIconRadius, color);
@@ -78,7 +78,7 @@ public class RadarScreenInstance extends EntityScreenInstance {
 		double dist = dp.horizontalDistance();
 		double screen_dist = dist/ClientInputEvents.getRadarDisplayRange();
 		if (screen_dist > 1) screen_dist = 1;
-		float yaw = (UtilAngles.getYaw(dp)-vehicle.getYRot())*Mth.DEG_TO_RAD;
+		float yaw = (UtilAngles.getYaw(dp)-vehicle.getYRot()+180)*Mth.DEG_TO_RAD;
 		int x = Math.min(centerX + (int)(-Mth.sin(yaw)*textureRadius*screen_dist), width-1);
 		int y = Math.min(centerY + (int)(Mth.cos(yaw)*textureRadius*screen_dist), height-1);
 		drawPingAtPos(ping, x, y, selected, hover);

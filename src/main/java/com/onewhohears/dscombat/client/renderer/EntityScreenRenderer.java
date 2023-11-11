@@ -57,11 +57,12 @@ public interface EntityScreenRenderer<T extends Entity> {
 		poseStack.translate(pos.x, pos.y, pos.z);
 		poseStack.mulPose(Vector3f.XP.rotationDegrees(xRot));
 		poseStack.mulPose(Vector3f.YP.rotationDegrees(yRot));
-		poseStack.mulPose(Vector3f.ZP.rotationDegrees(zRot));
+		poseStack.mulPose(Vector3f.ZP.rotationDegrees(zRot+180));
 		poseStack.translate(-0.5*width, -0.5*height, 0);
 		poseStack.scale(width, height, 1);
 		
-		getOrCreateEntityScreenById(screenId, screenType).draw(entity, poseStack, buffer, partialTicks, packedLight);
+		getOrCreateEntityScreenById(screenId, screenType).draw(entity, poseStack, buffer, partialTicks, packedLight, 
+				width, height);
 		
 		poseStack.popPose();
 	}

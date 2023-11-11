@@ -67,10 +67,14 @@ public class ModEntities {
 					ImmutableVehicleData.ALEXIS_PLANE_DATA) {
 						@Override
 						public void addVehicleScreens() {
-							screens = new EntityScreenData[1];
+							screens = new EntityScreenData[2];
 							screens[0] = new EntityScreenData(EntityScreenTypes.RADAR_SCREEN, 
 									new Vec3(0.25, 1.2, 7.22), 
 									0.4f, 0.4f, 
+									40f, 0f, 0f);
+							screens[1] = new EntityScreenData(EntityScreenTypes.FUEL_SCREEN, 
+									new Vec3(-0.38, 1.28, 7.28), 
+									0.2f, 0.2f, 
 									40f, 0f, 0f);
 						}
 					}, EntityDimensions.scalable(4.0f, 4.0f)));

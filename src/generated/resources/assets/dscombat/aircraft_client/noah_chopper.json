@@ -123,26 +123,5 @@
       "slot_ui_y": 104
     }
   ],
-  "presetId": "noah_chopper",
-  "textures": {
-    "default_texture_path": "dscombat:textures/entity/noah_chopper/",
-    "overrides": {
-      "black": "dscombat:textures/entity/noah_chopper/noah_chopper_test",
-      "blue": "dscombat:textures/entity/noah_chopper/noah_chopper_test",
-      "brown": "dscombat:textures/entity/noah_chopper/noah_chopper_test",
-      "cyan": "dscombat:textures/entity/noah_chopper/noah_chopper_test",
-      "gray": "dscombat:textures/entity/noah_chopper/noah_chopper_test",
-      "green": "dscombat:textures/entity/noah_chopper/noah_chopper_test",
-      "light_blue": "dscombat:textures/entity/noah_chopper/noah_chopper_test",
-      "light_gray": "dscombat:textures/entity/noah_chopper/noah_chopper_test",
-      "lime": "dscombat:textures/entity/noah_chopper/noah_chopper_test",
-      "magenta": "dscombat:textures/entity/noah_chopper/noah_chopper_test",
-      "orange": "dscombat:textures/entity/noah_chopper/noah_chopper_test",
-      "pink": "dscombat:textures/entity/noah_chopper/noah_chopper_test",
-      "purple": "dscombat:textures/entity/noah_chopper/noah_chopper_test",
-      "red": "dscombat:textures/entity/noah_chopper/noah_chopper_test",
-      "white": "dscombat:textures/entity/noah_chopper/noah_chopper_test",
-      "yellow": "dscombat:textures/entity/noah_chopper/noah_chopper_test"
-    }
-  }
+  "presetId": "noah_chopper"
 }

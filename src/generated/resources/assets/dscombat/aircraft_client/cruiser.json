@@ -133,26 +133,5 @@
       "slot_ui_y": 69
     }
   ],
-  "presetId": "cruiser",
-  "textures": {
-    "default_texture_path": "dscombat:textures/entity/cruiser/",
-    "overrides": {
-      "black": "dscombat:textures/entity/boats/battleship",
-      "blue": "dscombat:textures/entity/boats/battleship",
-      "brown": "dscombat:textures/entity/boats/battleship",
-      "cyan": "dscombat:textures/entity/boats/battleship",
-      "gray": "dscombat:textures/entity/boats/battleship",
-      "green": "dscombat:textures/entity/boats/battleship",
-      "light_blue": "dscombat:textures/entity/boats/battleship",
-      "light_gray": "dscombat:textures/entity/boats/battleship",
-      "lime": "dscombat:textures/entity/boats/battleship",
-      "magenta": "dscombat:textures/entity/boats/battleship",
-      "orange": "dscombat:textures/entity/boats/battleship",
-      "pink": "dscombat:textures/entity/boats/battleship",
-      "purple": "dscombat:textures/entity/boats/battleship",
-      "red": "dscombat:textures/entity/boats/battleship",
-      "white": "dscombat:textures/entity/boats/battleship",
-      "yellow": "dscombat:textures/entity/boats/battleship"
-    }
-  }
+  "presetId": "cruiser"
 }

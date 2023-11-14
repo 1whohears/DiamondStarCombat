@@ -28,7 +28,7 @@ public class ObjEntityModel<T extends Entity> {
 	public void render(T entity, PoseStack poseStack, MultiBufferSource bufferSource, int lightmap, float partialTicks) {
 		handleGlobalOverrides(entity, partialTicks, poseStack);
 		rotate(entity, partialTicks, poseStack);
-		getModel().render(poseStack, bufferSource, getTextureRenderTypeLookup(), 
+		getModel().render(poseStack, bufferSource, getTextureRenderTypeLookup(entity), 
 				getLight(entity, lightmap), getOverlay(entity), partialTicks, 
 				getComponentTransforms(entity, partialTicks));
 	}
@@ -58,7 +58,7 @@ public class ObjEntityModel<T extends Entity> {
 		return Transforms.EMPTY;
 	}
 	
-	protected ITextureRenderTypeLookup getTextureRenderTypeLookup() {
+	protected ITextureRenderTypeLookup getTextureRenderTypeLookup(T entity) {
 		return (texture) -> { return RenderType.entityTranslucent(texture); };
 	}
 	

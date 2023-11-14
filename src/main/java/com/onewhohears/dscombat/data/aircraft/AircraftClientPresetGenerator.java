@@ -13,7 +13,6 @@ public class AircraftClientPresetGenerator extends JsonPresetGenerator<AircraftC
 		int alexis_middle_x = 120, alexis_wing_y = 57;
 		addPresetToGenerate(AircraftClientPreset.Builder.create(DSCombatMod.MODID, "alexis_plane")
 				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/alexis_plane.png")
-				.makeOneTexture("dscombat:textures/entity/alexis_plane/v3_temp")
 				.addUIPos("frame_1", alexis_middle_x, 2)
 				.addUIPos(PartSlot.PILOT_SLOT_NAME, alexis_middle_x, 21)
 				.addUIPos("internal_4", alexis_middle_x-9, 40)
@@ -30,7 +29,6 @@ public class AircraftClientPresetGenerator extends JsonPresetGenerator<AircraftC
 		int javi_middle_x = 124, javi_wing_y = 50;
 		addPresetToGenerate(AircraftClientPreset.Builder.create(DSCombatMod.MODID, "javi_plane")
 				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/javi_plane.png")
-				.makeOneTexture("dscombat:textures/entity/javi_plane/buh")
 				.addUIPos("frame_1", javi_middle_x+18, 0)
 				.addUIPos(PartSlot.PILOT_SLOT_NAME, javi_middle_x, 9)
 				.addUIPos("seat2", javi_middle_x, 27)
@@ -53,7 +51,6 @@ public class AircraftClientPresetGenerator extends JsonPresetGenerator<AircraftC
 		int noah_middle_x = 120, noah_seat1_y = 14;
 		addPresetToGenerate(AircraftClientPreset.Builder.create(DSCombatMod.MODID, "noah_chopper")
 				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/noah_chopper.png")
-				.makeOneTexture("dscombat:textures/entity/noah_chopper/noah_chopper_test")
 				.addUIPos(PartSlot.PILOT_SLOT_NAME, noah_middle_x-18, noah_seat1_y)
 				.addUIPos("seat2", noah_middle_x+18, noah_seat1_y)
 				.addUIPos("seat3", noah_middle_x-18, noah_seat1_y+18)
@@ -98,7 +95,6 @@ public class AircraftClientPresetGenerator extends JsonPresetGenerator<AircraftC
 				.addUIPos(PartSlot.PILOT_SLOT_NAME, roller_middle_x, 50)
 				.addUIPos("internal_1", roller_middle_x-9, 70)
 				.addUIPos("internal_2", roller_middle_x+9, 70)
-				.makeOneTexture("dscombat:textures/entity/small_roller/gray")
 				.build());
 		int nathan_middle_x = 120;
 		addPresetToGenerate(AircraftClientPreset.Builder.create(DSCombatMod.MODID, "nathan_boat")
@@ -149,7 +145,6 @@ public class AircraftClientPresetGenerator extends JsonPresetGenerator<AircraftC
 				.addUIPos("seat3", orange_middle_x+18, 70)
 				.addUIPos("internal_1", orange_middle_x, 25)
 				.addUIPos("internal_2", orange_middle_x, 45)
-				.makeOneTexture("dscombat:textures/entity/orange_tesla/orange")
 				.build());
 		int wood_middle_x = 118;
 		addPresetToGenerate(AircraftClientPreset.Builder.create(DSCombatMod.MODID, "wooden_plane")
@@ -160,7 +155,6 @@ public class AircraftClientPresetGenerator extends JsonPresetGenerator<AircraftC
 				.addUIPos("internal_1", wood_middle_x, 25)
 				.addUIPos("internal_2", wood_middle_x, 61)
 				.addUIPos("internal_3", wood_middle_x, 79)
-				.makeOneTexture("dscombat:textures/entity/wooden_plane/brown")
 				.build());
 		int e3sentry_middle_x = 120;
 		addPresetToGenerate(AircraftClientPreset.Builder.create(DSCombatMod.MODID, "e3sentry_plane")
@@ -194,7 +188,6 @@ public class AircraftClientPresetGenerator extends JsonPresetGenerator<AircraftC
 		int axcel_middle_x = 120;
 		addPresetToGenerate(AircraftClientPreset.Builder.create(DSCombatMod.MODID, "axcel_truck")
 				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/axcel_truck.png")
-				.makeOneTexture("dscombat:textures/entity/axcel_truck/brown")
 				.addUIPos(PartSlot.PILOT_SLOT_NAME, axcel_middle_x-9, 20)
 				.addUIPos("seat2", axcel_middle_x+9, 20)
 				.addUIPos("frame_1", axcel_middle_x, 40)
@@ -207,7 +200,6 @@ public class AircraftClientPresetGenerator extends JsonPresetGenerator<AircraftC
 		int gronk_middle_x = 120;
 		addPresetToGenerate(AircraftClientPreset.Builder.create(DSCombatMod.MODID, "gronk_battleship")
 				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/gronk_battleship.png")
-				.makeOneTexture("dscombat:textures/entity/boats/battleship")
 				.addUIPos(PartSlot.PILOT_SLOT_NAME, gronk_middle_x-9, 40)
 				.addUIPos("seat2", gronk_middle_x+9, 40)
 				.addUIPos("seat3", gronk_middle_x-9, 40+18*2)
@@ -237,7 +229,6 @@ public class AircraftClientPresetGenerator extends JsonPresetGenerator<AircraftC
 		int x_start = 48, y_start = 15;
 		addPresetToGenerate(AircraftClientPreset.Builder.create(DSCombatMod.MODID, "destroyer")
 				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/gronk_battleship.png")
-				.makeOneTexture("dscombat:textures/entity/boats/battleship")
 				.setAllUIPos(x_start, y_start, 8, 
 					PartSlot.PILOT_SLOT_NAME, "seat2", "seat3", "seat4", 
 					"seat5", "seat6", "seat7", "seat8", "seat9", "seat10", 
@@ -247,7 +238,6 @@ public class AircraftClientPresetGenerator extends JsonPresetGenerator<AircraftC
 				.build());
 		addPresetToGenerate(AircraftClientPreset.Builder.create(DSCombatMod.MODID, "cruiser")
 				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/gronk_battleship.png")
-				.makeOneTexture("dscombat:textures/entity/boats/battleship")
 				.setAllUIPos(x_start, y_start, 8, 
 					PartSlot.PILOT_SLOT_NAME, "seat2", "seat3", "seat4", 
 					"seat5", "seat6", "seat7", "seat8", "seat9", "seat10", 
@@ -257,7 +247,6 @@ public class AircraftClientPresetGenerator extends JsonPresetGenerator<AircraftC
 				.build());
 		addPresetToGenerate(AircraftClientPreset.Builder.create(DSCombatMod.MODID, "corvette")
 				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/gronk_battleship.png")
-				.makeOneTexture("dscombat:textures/entity/boats/battleship")
 				.setAllUIPos(x_start, y_start, 8, 
 					PartSlot.PILOT_SLOT_NAME, "seat2", "seat3", "seat4", 
 					"seat5", "seat6", "seat7", "seat8", "seat9", "seat10", 
@@ -267,7 +256,6 @@ public class AircraftClientPresetGenerator extends JsonPresetGenerator<AircraftC
 				.build());
 		addPresetToGenerate(AircraftClientPreset.Builder.create(DSCombatMod.MODID, "aircraft_carrier")
 				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/gronk_battleship.png")
-				.makeOneTexture("dscombat:textures/entity/boats/battleship")
 				.setAllUIPos(x_start, y_start, 8, 
 					PartSlot.PILOT_SLOT_NAME, "seat2", "seat3", "seat4", 
 					"seat5", "seat6", "seat7", "seat8", "seat9", "seat10", 

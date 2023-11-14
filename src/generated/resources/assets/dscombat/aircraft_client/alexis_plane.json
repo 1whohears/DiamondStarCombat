@@ -63,26 +63,5 @@
       "slot_ui_y": 57
     }
   ],
-  "presetId": "alexis_plane",
-  "textures": {
-    "default_texture_path": "dscombat:textures/entity/alexis_plane/",
-    "overrides": {
-      "black": "dscombat:textures/entity/alexis_plane/v3_temp",
-      "blue": "dscombat:textures/entity/alexis_plane/v3_temp",
-      "brown": "dscombat:textures/entity/alexis_plane/v3_temp",
-      "cyan": "dscombat:textures/entity/alexis_plane/v3_temp",
-      "gray": "dscombat:textures/entity/alexis_plane/v3_temp",
-      "green": "dscombat:textures/entity/alexis_plane/v3_temp",
-      "light_blue": "dscombat:textures/entity/alexis_plane/v3_temp",
-      "light_gray": "dscombat:textures/entity/alexis_plane/v3_temp",
-      "lime": "dscombat:textures/entity/alexis_plane/v3_temp",
-      "magenta": "dscombat:textures/entity/alexis_plane/v3_temp",
-      "orange": "dscombat:textures/entity/alexis_plane/v3_temp",
-      "pink": "dscombat:textures/entity/alexis_plane/v3_temp",
-      "purple": "dscombat:textures/entity/alexis_plane/v3_temp",
-      "red": "dscombat:textures/entity/alexis_plane/v3_temp",
-      "white": "dscombat:textures/entity/alexis_plane/v3_temp",
-      "yellow": "dscombat:textures/entity/alexis_plane/v3_temp"
-    }
-  }
+  "presetId": "alexis_plane"
 }

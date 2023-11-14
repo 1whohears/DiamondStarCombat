@@ -18,14 +18,13 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientAddForceMoment;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAircraftControl;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftCollide;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftMoveRot;
-import com.onewhohears.dscombat.data.aircraft.AircraftClientPreset;
-import com.onewhohears.dscombat.data.aircraft.AircraftClientPresets;
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
-import com.onewhohears.dscombat.data.aircraft.AircraftTextures;
+import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
 import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData;
 import com.onewhohears.dscombat.data.aircraft.VehicleInputManager;
 import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager;
+import com.onewhohears.dscombat.data.aircraft.VehicleTextureManager;
 import com.onewhohears.dscombat.data.damagesource.AircraftDamageSource;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartsManager;
@@ -57,7 +56,6 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
@@ -73,8 +71,6 @@ import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.NameTagItem;
@@ -118,7 +114,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public static final EntityDataAccessor<Float> IDLEHEAT = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> MASS = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Boolean> TEST_MODE = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<Integer> CURRRENT_DYE_ID = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Boolean> NO_CONSUME = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Integer> FLARE_NUM = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<String> RADIO_SONG = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.STRING);
@@ -128,10 +123,11 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	public final VehicleInputManager inputs = new VehicleInputManager();
 	public final VehicleSoundManager soundManager = new VehicleSoundManager(this);
+	public final VehicleTextureManager textureManager = new VehicleTextureManager(this);
 	public final PartsManager partsManager = new PartsManager(this);
 	public final WeaponSystem weaponSystem = new WeaponSystem(this);
 	public final RadarSystem radarSystem = new RadarSystem(this);
-	public final String defaultPreset;
+	public final String defaultPreset, clientPresetId;
 	public final ImmutableVehicleData vehicleData;
 	
 	public final double ACC_GRAVITY = Config.SERVER.accGravity.get();
@@ -150,14 +146,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 */
 	public String preset;
 	protected ItemStack item;
-	/**
-	 * CLIENT ONLY
-	 */
-	public AircraftTextures textures;
-	/**
-	 * CLIENT ONLY
-	 */
-	private ResourceLocation currentTexture;
 	
 	/**
 	 * SERVER ONLY
@@ -203,12 +191,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		super(entityType, level);
 		this.vehicleData = vehicleData;
 		this.defaultPreset = vehicleData.defaultPreset.getId();
+		this.clientPresetId = UtilEntity.getSplitEncodeId(this)[1];
 		this.preset = this.defaultPreset;
-		if (level.isClientSide) {
-			AircraftClientPreset acp = AircraftClientPresets.get().getPreset(this.defaultPreset);
-			this.textures = acp.getAircraftTextures();
-			this.currentTexture = textures.getTexture(vehicleData.defaultPreset.getDefaultPaintJob());
-		}
 		this.item = vehicleData.defaultPreset.getItem();
 		this.blocksBuilding = true;
 		addVehicleScreens();
@@ -248,7 +232,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		entityData.define(IDLEHEAT, 1f);
 		entityData.define(MASS, 1f);
 		entityData.define(TEST_MODE, false);
-		entityData.define(CURRRENT_DYE_ID, -1);
 		entityData.define(TURN_RADIUS, 0f);
 		entityData.define(NO_CONSUME, false);
 		entityData.define(FLARE_NUM, 0);
@@ -272,8 +255,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     		if (!isControlledByLocalInstance()) {
     			clientAV = entityData.get(AV);
     		} 
-    	} else if (CURRRENT_DYE_ID.equals(key)) {
-    		currentTexture = textures.getTexture(getCurrentColorId());
     	} else if (RADIO_SONG.equals(key)) {
     		soundManager.onRadioSongUpdate(getRadioSong());
     	}
@@ -289,9 +270,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		// ORDER MATTERS
 		setTestMode(nbt.getBoolean("test_mode"));
 		setNoConsume(nbt.getBoolean("no_consume"));
-		int color = -1;
-		if (nbt.contains("dyecolor")) color = nbt.getInt("dyecolor");
-		else if (nbt.contains("paintjob_color")) color = nbt.getInt("paintjob_color");
 		// check if preset was defined
 		preset = nbt.getString("preset");
 		// if not use the default preset
@@ -334,8 +312,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		setQ(q);
 		setPrevQ(q);
 		setClientQ(q);
-		if (color == -1) color = nbt.getInt("paintjob_color");
-		setCurrentColor(DyeColor.byId(color));
 		setRadarMode(RadarMode.values()[nbt.getInt("radar_mode")]);
 		setRadioSong(nbt.getString("radio_song"));
 	}
@@ -369,7 +345,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		nbt.putFloat("xRot", getXRot());
 		nbt.putFloat("yRot", getYRot());
 		nbt.putFloat("zRot", zRot);
-		nbt.putInt("paintjob_color", getCurrentColorId());
 		nbt.putInt("radar_mode", getRadarMode().ordinal());
 		nbt.putString("radio_song", getRadioSong());
 		Entity c = getControllingPassenger();
@@ -1420,13 +1395,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 					int o = weaponSystem.addAmmo(ammoId, stack.getCount(), true);
 					stack.setCount(o);
 					return InteractionResult.SUCCESS;
-				// CHANGE COLOR
-				} else if (item instanceof DyeItem dye) {
-					if (setCurrentColor(dye.getDyeColor())) {
-						stack.shrink(1);
-						return InteractionResult.CONSUME;
-					}
-					return InteractionResult.PASS;
 				// RADIO
 				} else if (item instanceof RecordItem disk) {
 					if (!hasRadio) return InteractionResult.PASS;
@@ -1971,13 +1939,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     }
     
     /**
-     * CLIENT ONLY
-     */
-    public ResourceLocation getTexture() {
-    	return currentTexture;
-    }
-    
-    /**
      * @return the item stack with all of this plane's data 
      */
     public ItemStack getItem() {
@@ -2282,17 +2243,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     @Override
     public void kill() {
     	super.kill();
-    }
-    
-    public int getCurrentColorId() {
-    	return entityData.get(CURRRENT_DYE_ID);
-    }
-    
-    public boolean setCurrentColor(DyeColor color) {
-    	int id = color.getId();
-    	if (id == getCurrentColorId()) return false;
-    	entityData.set(CURRRENT_DYE_ID, id);
-    	return true;
     }
     
     public final float getTurnRadius() {

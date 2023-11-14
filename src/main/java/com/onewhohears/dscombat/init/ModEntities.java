@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.renderer.texture.EntityScreenTypes;
+import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
 import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData;
 import com.onewhohears.dscombat.entity.EntityParachute;
 import com.onewhohears.dscombat.entity.aircraft.EntityBoat;
@@ -12,7 +13,8 @@ import com.onewhohears.dscombat.entity.aircraft.EntityHelicopter;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 import com.onewhohears.dscombat.entity.aircraft.EntitySubmarine;
 import com.onewhohears.dscombat.entity.aircraft.RotableHitbox;
-import com.onewhohears.dscombat.entity.aircraft.EntityScreenData;
+import com.onewhohears.dscombat.entity.aircraft.custom.AlexisPlane;
+import com.onewhohears.dscombat.entity.aircraft.custom.JaviPlane;
 import com.onewhohears.dscombat.entity.parts.EntityEngine;
 import com.onewhohears.dscombat.entity.parts.EntityRadar;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
@@ -50,34 +52,12 @@ public class ModEntities {
 	// PLANES
 	
 	public static final RegistryObject<EntityType<EntityPlane>> JAVI_PLANE = ENTITIES.register("javi_plane", 
-			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
-					ImmutableVehicleData.JAVI_PLANE_DATA) {
-						@Override
-						public void addVehicleScreens() {
-							screens = new EntityScreenData[1];
-							screens[0] = new EntityScreenData(EntityScreenTypes.RADAR_SCREEN, 
-									new Vec3(0.2, 0.05, 4.05), 
-									0.5f, 0.5f, 
-									0f, 0f, 0f);
-						}
-					}, EntityDimensions.scalable(2.45f, 2.45f)));
+			() -> createEntityTypeFar((type, level) -> new JaviPlane(type, level), 
+					EntityDimensions.scalable(2.45f, 2.45f)));
 	
 	public static final RegistryObject<EntityType<EntityPlane>> ALEXIS_PLANE = ENTITIES.register("alexis_plane", 
-			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
-					ImmutableVehicleData.ALEXIS_PLANE_DATA) {
-						@Override
-						public void addVehicleScreens() {
-							screens = new EntityScreenData[2];
-							screens[0] = new EntityScreenData(EntityScreenTypes.RADAR_SCREEN, 
-									new Vec3(0.25, 1.2, 7.22), 
-									0.4f, 0.4f, 
-									40f, 0f, 0f);
-							screens[1] = new EntityScreenData(EntityScreenTypes.FUEL_SCREEN, 
-									new Vec3(-0.38, 1.28, 7.28), 
-									0.2f, 0.2f, 
-									40f, 0f, 0f);
-						}
-					}, EntityDimensions.scalable(4.0f, 4.0f)));
+			() -> createEntityTypeFar((type, level) -> new AlexisPlane(type, level), 
+					EntityDimensions.scalable(4.0f, 4.0f)));
 	
 	public static final RegistryObject<EntityType<EntityPlane>> WOODEN_PLANE = ENTITIES.register("wooden_plane", 
 			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 

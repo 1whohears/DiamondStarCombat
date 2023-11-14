@@ -1,4 +1,4 @@
 # Made in Blockbench 4.8.3
 newmtl m_a57986b3-3b5f-8c08-3fae-a899b4ac80ac
-map_Kd dscombat:entity/boats/corvette 
+map_Kd dscombat:entity/vehicle/corvette/base0 
 newmtl none

@@ -168,4 +168,8 @@ public class UtilEntity {
 		mob.getLookControl().setLookAt(pos.x, pos.y, pos.z, headTurnRate, 360);
 	}
 	
+	public static String[] getSplitEncodeId(Entity entity) {
+		return entity.getEncodeId().split(":");
+	}
+	
 }

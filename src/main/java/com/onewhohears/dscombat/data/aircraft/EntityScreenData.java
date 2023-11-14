@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.entity.aircraft;
+package com.onewhohears.dscombat.data.aircraft;
 
 import com.onewhohears.dscombat.client.renderer.EntityScreenRenderer;
 

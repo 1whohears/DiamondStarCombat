@@ -1,10 +1,8 @@
 package com.onewhohears.dscombat.data.aircraft;
 
-import com.onewhohears.dscombat.data.aircraft.presets.AlexisPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.BoatPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.CarPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.HeliPresets;
-import com.onewhohears.dscombat.data.aircraft.presets.JaviPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.PlanePresets;
 import com.onewhohears.dscombat.data.aircraft.presets.SubPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.TankPresets;
@@ -15,32 +13,6 @@ import net.minecraft.util.Mth;
 import net.minecraftforge.registries.RegistryObject;
 
 public class ImmutableVehicleData {
-	
-	public static final ImmutableVehicleData JAVI_PLANE_DATA = Builder.create(JaviPresets.DEFAULT_JAVI_PLANE)
-			.setInteralEngineSound(ModSounds.JET_1)
-			.setExternalEngineSound(ModSounds.JET_1)
-			.setNegativeThrottle(false)
-			.setRotationalInertia(6, 10, 4)
-			.setCrashExplosionRadius(5)
-			.setCameraDistance(9)
-			.setSpinRate(0)
-			.setLiftKGraph(LiftKGraph.JAVI_PLANE_GRAPH)
-			.setFlapsAOABias(10f)
-			.setCanAimDown(true)
-			.build();
-	
-	public static final ImmutableVehicleData ALEXIS_PLANE_DATA = Builder.create(AlexisPresets.DEFAULT_ALEXIS_PLANE)
-			.setInteralEngineSound(ModSounds.JET_1)
-			.setExternalEngineSound(ModSounds.JET_1)
-			.setNegativeThrottle(false)
-			.setRotationalInertia(4, 8, 2)
-			.setCrashExplosionRadius(5)
-			.setCameraDistance(17)
-			.setSpinRate(0)
-			.setLiftKGraph(LiftKGraph.ALEXIS_PLANE_GRAPH)
-			.setFlapsAOABias(8f)
-			.setCanAimDown(false)
-			.build();
 	
 	public static final ImmutableVehicleData WOODEN_PLANE_DATA = Builder.create(PlanePresets.DEFAULT_WOODEN_PLANE)
 			.setInteralEngineSound(ModSounds.BIPLANE_1)
@@ -201,6 +173,8 @@ public class ImmutableVehicleData {
 	public final float Ix, Iy, Iz;
 	public final float crashExplosionRadius;
 	public final double cameraDistance;
+	public final int baseTextureVariants;
+	public final int textureLayers;
 	/**
 	 * VEHICLES WITH A SPINNY THING
 	 */
@@ -231,6 +205,7 @@ public class ImmutableVehicleData {
 	public final boolean isTank;
 	
 	public ImmutableVehicleData(AircraftPreset defaultPreset, 
+			int baseTextureVariants, int textureLayers, 
 			RegistryObject<SoundEvent> externalEngineSound,
 			RegistryObject<SoundEvent> internalEngineSound,
 			boolean negativeThrottle, float Ix, float Iy, float Iz,
@@ -239,6 +214,8 @@ public class ImmutableVehicleData {
 			boolean alwaysLandingGear, float heliLiftFactor, 
 			boolean isTank) {
 		this.defaultPreset = defaultPreset;
+		this.baseTextureVariants = baseTextureVariants;
+		this.textureLayers = textureLayers;
 		this.externalEngineSound = externalEngineSound;
 		this.internalEngineSound = internalEngineSound;
 		this.negativeThrottle = negativeThrottle;
@@ -259,6 +236,8 @@ public class ImmutableVehicleData {
 		private final AircraftPreset defaultPreset;
 		private RegistryObject<SoundEvent> externalEngineSound = ModSounds.BIPLANE_1;
 		private RegistryObject<SoundEvent> internalEngineSound = ModSounds.BIPLANE_1;
+		private int baseTextureVariants = 1;
+		private int textureLayers = 0;
 		private boolean negativeThrottle = false;
 		private float Ix = 4, Iy = 4, Iz = 4;
 		private float crashExplosionRadius = 3;
@@ -276,9 +255,16 @@ public class ImmutableVehicleData {
 		}
 		
 		public ImmutableVehicleData build() {
-			return new ImmutableVehicleData(defaultPreset, externalEngineSound, internalEngineSound,
-					negativeThrottle, Ix, Iy, Iz, crashExplosionRadius, cameraDistance, spinRate, 
+			return new ImmutableVehicleData(defaultPreset, baseTextureVariants, textureLayers, 
+					externalEngineSound, internalEngineSound, negativeThrottle, Ix, Iy, Iz, 
+					crashExplosionRadius, cameraDistance, spinRate, 
 					liftKGraph, flapsAOABias, canAimDown, alwaysLandingGear, heliLiftFactor, isTank);
+		}
+		
+		public Builder setTextureNum(int baseTextureVariants, int textureLayers) {
+			this.baseTextureVariants = baseTextureVariants;
+			this.textureLayers = textureLayers;
+			return this;
 		}
 		
 		public Builder setExternalEngineSound(RegistryObject<SoundEvent> sound) {

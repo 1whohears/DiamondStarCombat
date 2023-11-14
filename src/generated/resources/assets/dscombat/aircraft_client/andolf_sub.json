@@ -98,9 +98,5 @@
       "slot_ui_y": 98
     }
   ],
-  "presetId": "andolf_sub",
-  "textures": {
-    "default_texture_path": "dscombat:textures/entity/andolf_sub/",
-    "overrides": {}
-  }
+  "presetId": "andolf_sub"
 }

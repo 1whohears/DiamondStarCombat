@@ -18,26 +18,5 @@
       "slot_ui_y": 70
     }
   ],
-  "presetId": "small_roller",
-  "textures": {
-    "default_texture_path": "dscombat:textures/entity/small_roller/",
-    "overrides": {
-      "black": "dscombat:textures/entity/small_roller/gray",
-      "blue": "dscombat:textures/entity/small_roller/gray",
-      "brown": "dscombat:textures/entity/small_roller/gray",
-      "cyan": "dscombat:textures/entity/small_roller/gray",
-      "gray": "dscombat:textures/entity/small_roller/gray",
-      "green": "dscombat:textures/entity/small_roller/gray",
-      "light_blue": "dscombat:textures/entity/small_roller/gray",
-      "light_gray": "dscombat:textures/entity/small_roller/gray",
-      "lime": "dscombat:textures/entity/small_roller/gray",
-      "magenta": "dscombat:textures/entity/small_roller/gray",
-      "orange": "dscombat:textures/entity/small_roller/gray",
-      "pink": "dscombat:textures/entity/small_roller/gray",
-      "purple": "dscombat:textures/entity/small_roller/gray",
-      "red": "dscombat:textures/entity/small_roller/gray",
-      "white": "dscombat:textures/entity/small_roller/gray",
-      "yellow": "dscombat:textures/entity/small_roller/gray"
-    }
-  }
+  "presetId": "small_roller"
 }

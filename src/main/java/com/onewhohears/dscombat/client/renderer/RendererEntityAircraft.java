@@ -1,9 +1,12 @@
 package com.onewhohears.dscombat.client.renderer;
 
+import java.awt.Color;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.client.model.EntityControllableModel;
+import com.onewhohears.dscombat.data.aircraft.VehicleTextureManager.TextureLayer;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
@@ -40,6 +43,20 @@ public class RendererEntityAircraft<T extends EntityVehicle> extends EntityRende
 		model.renderToBuffer(entity, partialTicks, poseStack, vertexconsumer, packedLight, 
 				OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
 		
+		TextureLayer[] layers = entity.textureManager.getTextureLayers();
+		for (int i = 0; i < layers.length; ++i) {
+			if (!layers[i].canRender()) continue;
+			poseStack.pushPose();
+			float scale = 1.001f + 0.001f*i;
+			poseStack.scale(scale, scale, scale);
+			VertexConsumer layerconsumer = bufferSource.getBuffer(RenderType.entityTranslucent(layers[i].getTexture()));
+			Color color = new Color(layers[i].getColor());
+			model.renderToBuffer(entity, partialTicks, poseStack, layerconsumer, 
+					packedLight, OverlayTexture.NO_OVERLAY, 
+					color.getRed()/255f, color.getGreen()/255f, color.getBlue()/255f, 1.0F);
+			poseStack.popPose();
+		}
+		
         poseStack.popPose();
         
         if (shouldDrawRotableHitboxes(entity)) drawRotableHitboxeOutlines(entity, partialTicks, poseStack, bufferSource);
@@ -50,7 +67,7 @@ public class RendererEntityAircraft<T extends EntityVehicle> extends EntityRende
 	
 	@Override
 	public ResourceLocation getTextureLocation(T entity) {
-		return entity.getTexture();
+		return entity.textureManager.getBaseTexture();
 	}
 	
 }

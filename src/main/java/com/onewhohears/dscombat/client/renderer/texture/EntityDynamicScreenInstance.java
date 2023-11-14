@@ -34,7 +34,17 @@ public abstract class EntityDynamicScreenInstance extends EntityScreenInstance {
 		dynamicTexture = new DynamicTexture(image.getWidth(), image.getHeight(), true);
 		ResourceLocation dynamicLoc = Minecraft.getInstance().getTextureManager().register(path+"/"+id, dynamicTexture);
 		dynamicRenderType = RenderType.text(dynamicLoc);
-		//System.out.println("DYNAMIC LOC = "+dynamicLoc);
+	}
+	
+	public EntityDynamicScreenInstance(String path, int id, ResourceLocation baseTexture, int width, int height) {
+		super(id, baseTexture);
+		dynamicTexture = new DynamicTexture(width, height, true);
+		ResourceLocation dynamicLoc = Minecraft.getInstance().getTextureManager().register(path+"/"+id, dynamicTexture);
+		dynamicRenderType = RenderType.text(dynamicLoc);
+	}
+	
+	public EntityDynamicScreenInstance(String path, int id, int width, int height) {
+		this(path, id, null, width, height);
 	}
 	
 	public abstract boolean shouldUpdateTexture(Entity entity);

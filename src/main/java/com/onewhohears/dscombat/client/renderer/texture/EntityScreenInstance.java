@@ -1,5 +1,7 @@
 package com.onewhohears.dscombat.client.renderer.texture;
 
+import javax.annotation.Nullable;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
@@ -14,10 +16,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public abstract class EntityScreenInstance implements AutoCloseable{
 	
-	protected final RenderType baseRenderType;
+	@Nullable private final RenderType baseRenderType;
 	
-	public EntityScreenInstance(int id, ResourceLocation baseTexture) {
-		baseRenderType = RenderType.text(baseTexture);
+	public EntityScreenInstance(int id, @Nullable ResourceLocation baseTexture) {
+		if (baseTexture != null) baseRenderType = RenderType.text(baseTexture);
+		else baseRenderType = null;
 	}
 	
 	public void draw(Entity entity, PoseStack poseStack, MultiBufferSource buffer, float partialTicks, int packedLight,
@@ -28,7 +31,7 @@ public abstract class EntityScreenInstance implements AutoCloseable{
 	
 	public void draw(Entity entity, Matrix4f matrix4f, MultiBufferSource buffer, float partialTicks, int packedLight,
 			float worldWidth, float worldHeight) {
-		drawTexture(baseRenderType, matrix4f, buffer, packedLight, 0);
+		if (baseRenderType != null) drawTexture(baseRenderType, matrix4f, buffer, packedLight, 0);
 	}
 	
 	protected void drawTexture(RenderType type, Matrix4f matrix4f, MultiBufferSource buffer, int packedLight, float z) {

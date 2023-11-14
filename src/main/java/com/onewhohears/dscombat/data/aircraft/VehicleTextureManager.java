@@ -20,7 +20,7 @@ public class VehicleTextureManager {
 		String modId = encodeIds[0], entityId = encodeIds[1];
 		for (int i = 0; i < baseTextures.length; ++i) 
 			baseTextures[i] = new ResourceLocation(modId+":textures/entity/vehicle/"+entityId+"/base"+i+".png");
-		for (int i = 0; i < baseTextures.length; ++i) {
+		for (int i = 0; i < textureLayers.length; ++i) {
 			textureLayers[i] = new TextureLayer(modId+":textures/entity/vehicle/"+entityId+"/layer"+i+".png");
 		}
 		// TODO 1.2 vehicles get some base texture variants and 3-4 different layer textures that can be any color

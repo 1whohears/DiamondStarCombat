@@ -121,14 +121,14 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public static final EntityDataAccessor<Boolean> PLAY_IR_TONE = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Float> BASE_ARMOR = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
 	
-	public final VehicleInputManager inputs = new VehicleInputManager();
-	public final VehicleSoundManager soundManager = new VehicleSoundManager(this);
-	public final VehicleTextureManager textureManager = new VehicleTextureManager(this);
-	public final PartsManager partsManager = new PartsManager(this);
-	public final WeaponSystem weaponSystem = new WeaponSystem(this);
-	public final RadarSystem radarSystem = new RadarSystem(this);
 	public final String defaultPreset, clientPresetId;
 	public final ImmutableVehicleData vehicleData;
+	public final VehicleInputManager inputs;
+	public final VehicleSoundManager soundManager;
+	public final VehicleTextureManager textureManager;
+	public final PartsManager partsManager;
+	public final WeaponSystem weaponSystem;
+	public final RadarSystem radarSystem;
 	
 	public final double ACC_GRAVITY = Config.SERVER.accGravity.get();
 	public final double CO_DRAG = Config.SERVER.coDrag.get();
@@ -198,6 +198,12 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		addVehicleScreens();
 		addHitboxes();
 		setId(ENTITY_COUNTER.getAndAdd(hitboxes.length+1)+1);
+		inputs = new VehicleInputManager();
+		soundManager = new VehicleSoundManager(this);
+		textureManager = new VehicleTextureManager(this);
+		partsManager = new PartsManager(this);
+		weaponSystem = new WeaponSystem(this);
+		radarSystem = new RadarSystem(this);
 	}
 	
 	@Override

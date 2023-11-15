@@ -179,7 +179,7 @@ public class UtilEntity {
 	
 	public static int getRandomColor() {
 		float hue = random.nextFloat();
-		float saturation = (random.nextInt(2000) + 1000) / 10000f;
+		float saturation = (random.nextInt(3000) + 7000) / 10000f;
 		float luminance = 0.9f;
 		Color color = Color.getHSBColor(hue, saturation, luminance);
 		return color.getRGB();

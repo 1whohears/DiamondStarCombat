@@ -26,6 +26,8 @@ public class VehicleTextureManager {
 			textureLayers[i] = new TextureLayer(modId+":textures/entity/vehicle/"+entityId+"/layer"+i+".png");
 		}
 		// TODO 1.2 vehicles get some base texture variants and 3-4 different layer textures that can be any color
+		// TODO 1.3 save and load base texture index, which layers are enabled and their colors in parent nbt
+		// TODO 1.4 make a paint job item and gui allowing players to customize their vehicle layers and colors
 	}
 	
 	public ResourceLocation getBaseTexture() {

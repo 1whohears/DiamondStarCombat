@@ -97,6 +97,16 @@ dependencies {
     implementation fg.deobf("curse.maven:modernfix-790626:4792392")
     // https://github.com/1whohears/CustomMiniGames
     implementation fg.deobf("com.1whohears.minigames:minigames-1.19.2:0.0.2")
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+}
+
+mixin {
+	add sourceSets.main, 'mixins.dscombat.refmap.json'
+	config 'mixins.dscombat.json'
+	
+	debug = true
+	debug.verbose = true
+	debug.export = true
 }
 
 jar {

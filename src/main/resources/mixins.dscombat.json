@@ -1,0 +1,14 @@
+{
+	"required": true,
+	"minVersion": "0.8",
+	"package": "com.onewhohears.dscombat.mixin",
+	"compatibilityLevel": "JAVA_17",
+	"mixins": [],
+	"client": [
+		"CompositeRenderableMeshMixin"
+	],
+	"server": [],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

@@ -2,7 +2,6 @@ package com.onewhohears.dscombat.data.aircraft;
 
 import com.onewhohears.dscombat.data.aircraft.presets.BoatPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.CarPresets;
-import com.onewhohears.dscombat.data.aircraft.presets.HeliPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.PlanePresets;
 import com.onewhohears.dscombat.data.aircraft.presets.SubPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.TankPresets;
@@ -38,18 +37,6 @@ public class ImmutableVehicleData {
 			.setLiftKGraph(LiftKGraph.E3SENTRY_PLANE_GRAPH)
 			.setFlapsAOABias(10f)
 			.setCanAimDown(false)
-			.build();
-	
-	public static final ImmutableVehicleData NOAH_CHOPPER_DATA = Builder.create(HeliPresets.DEFAULT_NOAH_CHOPPER)
-			.setInteralEngineSound(ModSounds.HELI_1)
-			.setExternalEngineSound(ModSounds.HELI_1)
-			.setNegativeThrottle(false)
-			.setRotationalInertia(8, 6, 4)
-			.setCrashExplosionRadius(4)
-			.setCameraDistance(6)
-			.setSpinRate(3.141f)
-			.setAlwaysLandingGear(true)
-			.setHeliLiftFactor(2.75f)
 			.build();
 	
 	public static final ImmutableVehicleData MRBUDGER_TANK_DATA = Builder.create(TankPresets.DEFAULT_MRBUDGER_TANK)
@@ -103,16 +90,6 @@ public class ImmutableVehicleData {
 			.setRotationalInertia(6, 10, 4)
 			.setCrashExplosionRadius(2)
 			.setCameraDistance(4)
-			.setSpinRate(3.141f)
-			.build();
-	
-	public static final ImmutableVehicleData GRONK_BATTLESHIP_DATA = Builder.create(BoatPresets.DEFAULT_GRONK_BATTLESHIP)
-			.setInteralEngineSound(ModSounds.BOAT_1)
-			.setExternalEngineSound(ModSounds.BOAT_1)
-			.setNegativeThrottle(true)
-			.setRotationalInertia(6, 10, 4)
-			.setCrashExplosionRadius(8)
-			.setCameraDistance(30)
 			.setSpinRate(3.141f)
 			.build();
 	

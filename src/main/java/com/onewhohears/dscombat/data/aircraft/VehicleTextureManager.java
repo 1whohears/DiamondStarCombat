@@ -1,5 +1,7 @@
 package com.onewhohears.dscombat.data.aircraft;
 
+import java.awt.Color;
+
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.util.UtilEntity;
 
@@ -40,19 +42,26 @@ public class VehicleTextureManager {
 	
 	public static class TextureLayer {
 		private final ResourceLocation texture;
-		private int color = 0xffffff;
-		private boolean enabled = false;
+		private int colorInt = 0xffffff;
+		private Color color = new Color(colorInt);
+		private boolean enabled;
 		public TextureLayer(String texture) {
 			this.texture = new ResourceLocation(texture);
+			setColor(UtilEntity.getRandomColor());
+			showLayer();
 		}
 		public ResourceLocation getTexture() {
 			return texture;
 		}
-		public int getColor() {
+		public Color getColor() {
 			return color;
 		}
+		public int getColorInt() {
+			return colorInt;
+		}
 		public void setColor(int color) {
-			this.color = color;
+			this.colorInt = color;
+			this.color = new Color(colorInt);
 		}
 		public boolean canRender() {
 			return enabled;

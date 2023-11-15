@@ -1,5 +1,8 @@
 package com.onewhohears.dscombat.util;
 
+import java.awt.Color;
+import java.util.Random;
+
 import com.onewhohears.dscombat.data.weapon.RadarTargetTypes;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.util.math.UtilAngles;
@@ -18,6 +21,8 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 
 public class UtilEntity {
+	
+	public static final Random random = new Random();
 	
 	public static boolean canPosSeeEntity(Vec3 pos, Entity entity, int maxBlockCheckDepth, double throWater, double throBlock) {
 		Level level = entity.getLevel();
@@ -170,6 +175,14 @@ public class UtilEntity {
 	
 	public static String[] getSplitEncodeId(Entity entity) {
 		return entity.getEncodeId().split(":");
+	}
+	
+	public static int getRandomColor() {
+		float hue = random.nextFloat();
+		float saturation = (random.nextInt(2000) + 1000) / 10000f;
+		float luminance = 0.9f;
+		Color color = Color.getHSBColor(hue, saturation, luminance);
+		return color.getRGB();
 	}
 	
 }

@@ -14,7 +14,9 @@ import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 import com.onewhohears.dscombat.entity.aircraft.EntitySubmarine;
 import com.onewhohears.dscombat.entity.aircraft.RotableHitbox;
 import com.onewhohears.dscombat.entity.aircraft.custom.AlexisPlane;
+import com.onewhohears.dscombat.entity.aircraft.custom.GronkBattleship;
 import com.onewhohears.dscombat.entity.aircraft.custom.JaviPlane;
+import com.onewhohears.dscombat.entity.aircraft.custom.NoahChopper;
 import com.onewhohears.dscombat.entity.parts.EntityEngine;
 import com.onewhohears.dscombat.entity.parts.EntityRadar;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
@@ -80,17 +82,8 @@ public class ModEntities {
 	// HELICOPTORS
 	
 	public static final RegistryObject<EntityType<EntityHelicopter>> NOAH_CHOPPER = ENTITIES.register("noah_chopper", 
-			() -> createEntityTypeFar((type, level) -> new EntityHelicopter(type, level, 
-					ImmutableVehicleData.NOAH_CHOPPER_DATA) {
-						@Override
-						public void addVehicleScreens() {
-							screens = new EntityScreenData[1];
-							screens[0] = new EntityScreenData(EntityScreenTypes.RADAR_SCREEN, 
-									new Vec3(0.35, 0.05, 1.83), 
-									0.6f, 0.6f, 
-									20f, 0f, 0f);
-						}
-					}, EntityDimensions.scalable(2.8f, 2.8f)));
+			() -> createEntityTypeFar((type, level) -> new NoahChopper(type, level), 
+					EntityDimensions.scalable(2.8f, 2.8f)));
 	
 	// TANKS
 	
@@ -134,28 +127,8 @@ public class ModEntities {
 					EntityDimensions.scalable(3.0f,1.5f)));
 	
 	public static final RegistryObject<EntityType<EntityBoat>> GRONK_BATTLESHIP = ENTITIES.register("gronk_battleship", 
-			() -> createEntityTypeFar((type, level) -> new EntityBoat(type, level, 
-					ImmutableVehicleData.GRONK_BATTLESHIP_DATA) {
-						@Override
-						public void addHitboxes() {
-							hitboxes = new RotableHitbox[5];
-							hitboxes[0] = new RotableHitbox(this, "plat0", 
-									new Vector3f(14, 4.02f, 34), 
-									new Vec3(0, 2, -0.5));
-							hitboxes[1] = new RotableHitbox(this, "plat1", 
-									new Vector3f(9, 1.02f, 30), 
-									new Vec3(0, 4.5, -0.5));
-							hitboxes[2] = new RotableHitbox(this, "plat1", 
-									new Vector3f(6, 1.02f, 18), 
-									new Vec3(0, 5.5, -0.5));
-							hitboxes[3] = new RotableHitbox(this, "front", 
-									new Vector3f(8, 2.02f, 8), 
-									new Vec3(0, 3, 20.5));
-							hitboxes[4] = new RotableHitbox(this, "back", 
-									new Vector3f(8, 2.02f, 8), 
-									new Vec3(0, 3, -21.5));
-						}
-					}, EntityDimensions.scalable(14f,4f)));
+			() -> createEntityTypeFar((type, level) -> new GronkBattleship(type, level), 
+					EntityDimensions.scalable(14f,4f)));
 	
 	public static final RegistryObject<EntityType<EntityBoat>> DESTROYER = ENTITIES.register("destroyer", 
 			() -> createEntityTypeFar((type, level) -> new EntityBoat(type, level, 

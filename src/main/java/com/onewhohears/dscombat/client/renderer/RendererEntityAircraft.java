@@ -19,6 +19,14 @@ import net.minecraft.resources.ResourceLocation;
 
 public class RendererEntityAircraft<T extends EntityVehicle> extends EntityRenderer<T> implements RotableHitboxRenderer, VehicleScreenRenderer<T> {
 	
+	public static RenderType getBaseRenderType(ResourceLocation texture) {
+		return RenderType.entityTranslucent(texture);
+	}
+	
+	public static RenderType getLayerRenderType(ResourceLocation texture) {
+		return RenderType.entityTranslucent(texture);
+	}
+	
 	protected final EntityControllableModel<T> model;
 	
 	public RendererEntityAircraft(Context context, EntityControllableModel<T> model) {
@@ -39,25 +47,30 @@ public class RendererEntityAircraft<T extends EntityVehicle> extends EntityRende
 		poseStack.pushPose();
         poseStack.mulPose(q);
         
-        VertexConsumer vertexconsumer = bufferSource.getBuffer(RenderType.entityTranslucent(getTextureLocation(entity)));
+        VertexConsumer vertexconsumer = bufferSource.getBuffer(getBaseRenderType(getTextureLocation(entity)));
 		model.renderToBuffer(entity, partialTicks, poseStack, vertexconsumer, packedLight, 
 				OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
 		
-		TextureLayer[] layers = entity.textureManager.getTextureLayers();
-		for (int i = 0; i < layers.length; ++i) {
-			if (!layers[i].canRender()) continue;
-			poseStack.pushPose();
-			float scale = 1.001f + 0.001f*i;
-			poseStack.scale(scale, scale, scale);
-			VertexConsumer layerconsumer = bufferSource.getBuffer(RenderType.entityTranslucent(layers[i].getTexture()));
-			Color color = new Color(layers[i].getColor());
-			model.renderToBuffer(entity, partialTicks, poseStack, layerconsumer, 
-					packedLight, OverlayTexture.NO_OVERLAY, 
-					color.getRed()/255f, color.getGreen()/255f, color.getBlue()/255f, 1.0F);
-			poseStack.popPose();
-		}
+		poseStack.popPose();
 		
-        poseStack.popPose();
+		TextureLayer[] layers = entity.textureManager.getTextureLayers();
+		if (layers.length > 0) {
+			poseStack.pushPose();
+	        poseStack.mulPose(q);
+	        for (int i = 0; i < layers.length; ++i) {
+	        	if (!layers[i].canRender()) continue;
+	        	poseStack.pushPose();
+	        	float scale = 1.002f + 0.002f*i;
+	        	poseStack.scale(scale, scale, scale);
+	        	VertexConsumer layerconsumer = bufferSource.getBuffer(getLayerRenderType(layers[i].getTexture()));
+	        	Color color = layers[i].getColor();
+	        	model.renderToBuffer(entity, partialTicks, poseStack, layerconsumer, 
+	        			packedLight, OverlayTexture.NO_OVERLAY, 
+	        			(float)color.getRed()/255f, (float)color.getGreen()/255f, (float)color.getBlue()/255f, 1f);
+	        	poseStack.popPose();
+	        }
+	        poseStack.popPose();
+		}
         
         if (shouldDrawRotableHitboxes(entity)) drawRotableHitboxeOutlines(entity, partialTicks, poseStack, bufferSource);
         if (shouldRenderScreens(entity)) renderVehicleScreens(entity, poseStack, bufferSource, packedLight, partialTicks);

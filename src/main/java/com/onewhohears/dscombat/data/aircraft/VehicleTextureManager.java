@@ -28,6 +28,7 @@ public class VehicleTextureManager {
 		// TODO 1.2 vehicles get some base texture variants and 3-4 different layer textures that can be any color
 		// TODO 1.3 save and load base texture index, which layers are enabled and their colors in parent nbt
 		// TODO 1.4 make a paint job item and gui allowing players to customize their vehicle layers and colors
+		// TODO 1.5 sync all this data with clients
 	}
 	
 	public ResourceLocation getBaseTexture() {

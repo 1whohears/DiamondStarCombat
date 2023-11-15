@@ -216,7 +216,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 	
 	public void addVehicleScreens() {
-		// TODO 1.6 move screen data to client presets
+		// TODO 1.7 move screen data to client presets
 	}
 	
 	@Override

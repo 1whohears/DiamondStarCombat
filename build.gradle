@@ -104,9 +104,9 @@ mixin {
 	add sourceSets.main, 'mixins.dscombat.refmap.json'
 	config 'mixins.dscombat.json'
 	
-	debug = true
+	/*debug = true
 	debug.verbose = true
-	debug.export = true
+	debug.export = true*/
 }
 
 jar {

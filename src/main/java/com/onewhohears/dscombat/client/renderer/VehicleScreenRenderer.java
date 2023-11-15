@@ -23,7 +23,7 @@ public interface VehicleScreenRenderer<T extends EntityVehicle> extends EntitySc
 	public default void renderVehicleScreens(T vehicle, PoseStack poseStack, 
 			MultiBufferSource buffer, int packedLight, float partialTicks) {
 		poseStack.pushPose();
-		// TODO 1.5 render radar and other overlay components onto the vehicle's dash
+		// TODO 1.6 render radar and other overlay components onto the vehicle's dash
 		Quaternion q = UtilAngles.lerpQ(partialTicks, vehicle.getPrevQ(), vehicle.getClientQ());
         poseStack.mulPose(q);
         

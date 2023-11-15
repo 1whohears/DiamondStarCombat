@@ -22,7 +22,7 @@ public class GronkBattleship extends EntityBoat {
 			.setCrashExplosionRadius(8)
 			.setCameraDistance(30)
 			.setSpinRate(3.141f)
-			.setTextureNum(1, 1)
+			.setTextureNum(1, 2)
 			.build();
 	
 	public GronkBattleship(EntityType<? extends EntityBoat> entity, Level level) {

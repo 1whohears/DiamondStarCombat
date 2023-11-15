@@ -30,8 +30,7 @@ public class ObjAircraftModel<T extends EntityVehicle> extends ObjEntityModel<T>
 			poseStack.pushPose();
 			float scale = 1.002f + 0.002f*i;
 			poseStack.scale(scale, scale, scale);
-			Color color  = layers[i].getColor();
-			ObjModelColorHolder.setColor((float)color.getRed()/255f, (float)color.getGreen()/255f, (float)color.getBlue()/255f);
+			ObjModelColorHolder.setColor(layers[i].getColor());
 			getModel().render(poseStack, bufferSource, getLayerTextureRenderTypeLookup(layers[i]), 
 					getLight(entity, lightmap), OverlayTexture.NO_OVERLAY, partialTicks, context);
 			ObjModelColorHolder.resetColor();

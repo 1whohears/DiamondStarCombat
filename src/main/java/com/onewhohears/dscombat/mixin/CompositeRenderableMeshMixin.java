@@ -1,6 +1,5 @@
 package com.onewhohears.dscombat.mixin;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.spongepowered.asm.mixin.Final;
@@ -20,14 +19,9 @@ import net.minecraftforge.client.model.renderable.ITextureRenderTypeLookup;
 public class CompositeRenderableMeshMixin {
 	
 	@Final @Shadow(remap = false)
-	private final ResourceLocation texture;
+	private ResourceLocation texture;
 	@Final @Shadow(remap = false)
-	private final List<BakedQuad> quads = new ArrayList<>();
-	
-	private CompositeRenderableMeshMixin(ResourceLocation texture) {
-        this.texture = texture;
-    }
-	
+	private List<BakedQuad> quads;
 	/**
 	 * @reason I could not figure out how to get ModifyArg to work. I doubt this will conflict with anything. Famous last words I know. 
 	 * I am going to **redacted** whoever decided to not make the color in the mesh renderer changeable and set them all to 1. 

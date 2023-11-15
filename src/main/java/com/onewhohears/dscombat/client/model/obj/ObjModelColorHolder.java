@@ -1,5 +1,7 @@
 package com.onewhohears.dscombat.client.model.obj;
 
+import java.awt.Color;
+
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -14,6 +16,10 @@ public class ObjModelColorHolder {
 	
 	public static void setColor(float red, float green, float blue) {
 		RED = red; GREEN = green; BLUE = blue;
+	}
+	
+	public static void setColor(Color color) {
+		setColor((float)color.getRed()/255f, (float)color.getGreen()/255f, (float)color.getBlue()/255f);
 	}
 	
 }

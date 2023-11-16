@@ -6,8 +6,6 @@ import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
 
-import net.minecraft.world.item.DyeColor;
-
 public class HeliPresets {
 	
 	public static final AircraftPreset EMPTY_NOAH_CHOPPER = AircraftPreset.Builder
@@ -51,7 +49,6 @@ public class HeliPresets {
 			.addEmptySlot("internal_6", SlotType.ADVANCED_INTERNAL)
 			.addEmptySlot("internal_7", SlotType.ADVANCED_INTERNAL)
 			.addEmptySlot("internal_8", SlotType.ADVANCED_INTERNAL)
-			.setDefaultColor(DyeColor.BROWN)
 			.addIngredient(ModItems.FUSELAGE.getId())
 			.addIngredient(ModItems.LARGE_PROPELLER.getId(), 2)
 			.addIngredient(ModItems.PROPELLER.getId())

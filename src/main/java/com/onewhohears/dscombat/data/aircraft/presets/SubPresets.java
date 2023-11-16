@@ -6,8 +6,6 @@ import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
 
-import net.minecraft.world.item.DyeColor;
-
 public class SubPresets {
 	
 	public static final AircraftPreset EMPTY_ANDOLF_SUB = AircraftPreset.Builder
@@ -26,7 +24,6 @@ public class SubPresets {
 			.setMaxTurnRates(2f, 2f, 2f)
 			.setTurnTorques(1f, 1f, 1f)
 			.setThrottleRate(0.04f, 0.04f)
-			.setDefaultColor(DyeColor.BLUE)
 			.addIngredient(ModItems.LARGE_PROPELLER.getId(), 1)
 			.addIngredient(ModItems.LARGE_FUSELAGE.getId(), 2)
 			.addIngredient(ModItems.SEAT.getId(), 6)

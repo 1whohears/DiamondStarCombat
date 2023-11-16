@@ -6,8 +6,6 @@ import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
 
-import net.minecraft.world.item.DyeColor;
-
 public class AlexisPresets {
 	
 	public static final AircraftPreset EMPTY_ALEXIS_PLANE = AircraftPreset.Builder
@@ -27,13 +25,12 @@ public class AlexisPresets {
 			.setTurnTorques(1f, 2f, 4f)
 			.setThrottleRate(0.04f, 0.08f)
 			.setPlaneWingArea(14f)
-			.setDefaultColor(DyeColor.LIGHT_GRAY)
 			.addIngredient(ModItems.FUSELAGE.getId(), 1)
 			.addIngredient(ModItems.WING.getId(), 2)
 			.addIngredient(ModItems.ADVANCED_COCKPIT.getId())
 			.addIngredient(ModItems.WHEEL.getId(), 3)
 			.addIngredient("minecraft:light_gray_dye", 5)
-			.addIngredient("minecraft:gold_ingot", 10)
+			.addIngredient("minecraft:gold_ingot", 20)
 			.addPilotSeatSlot(0, 0.50, 6.35)
 			.addEmptySlot("left_wing_1", SlotType.WING, 2.3, 0.15, 0, 180)
 			.addEmptySlot("left_wing_2", SlotType.WING, 4.5, 0.15, 0, 180)

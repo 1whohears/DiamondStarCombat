@@ -263,6 +263,26 @@ public class AircraftClientPresetGenerator extends JsonPresetGenerator<AircraftC
 					"internal_1", "internal_2", "internal_3", "internal_4", "internal_5", 
 					"internal_6", "internal_7", "internal_8", "internal_9", "internal_10")
 				.build());
+		int bronco_middle_x = 120, bronco_wing_y = 57;
+		addPresetToGenerate(AircraftClientPreset.Builder.create(DSCombatMod.MODID, "bronco_plane")
+				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/alexis_plane.png")
+				.setAllUIPos(x_start, y_start, 8, 
+						PartSlot.PILOT_SLOT_NAME, "seat2", "nose_1",
+						"frame_1", "frame_2", "frame_3", "frame_4", 
+						"internal_1", "internal_2", "internal_3", "internal_4", "internal_5")
+				/*.addUIPos("frame_1", bronco_middle_x, 2)
+				.addUIPos(PartSlot.PILOT_SLOT_NAME, bronco_middle_x, 21)
+				.addUIPos("internal_4", bronco_middle_x-9, 40)
+				.addUIPos("internal_5", bronco_middle_x+9, 40)
+				.addUIPos("internal_6", bronco_middle_x, 58)
+				.addUIPos("internal_3", bronco_middle_x+9, 78)
+				.addUIPos("internal_2", bronco_middle_x-9, 78)
+				.addUIPos("internal_1", bronco_middle_x, 100)
+				.addUIPos("left_wing_1", bronco_middle_x-27, bronco_wing_y)
+				.addUIPos("left_wing_2", bronco_middle_x-45, bronco_wing_y)
+				.addUIPos("right_wing_1", bronco_middle_x+27, bronco_wing_y)
+				.addUIPos("right_wing_2", bronco_middle_x+45, bronco_wing_y)*/
+				.build());
 	}
 	
 	public AircraftClientPresetGenerator(DataGenerator output) {

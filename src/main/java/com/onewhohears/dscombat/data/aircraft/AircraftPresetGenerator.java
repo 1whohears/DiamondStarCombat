@@ -4,6 +4,7 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.JsonPresetGenerator;
 import com.onewhohears.dscombat.data.aircraft.presets.AlexisPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.BoatPresets;
+import com.onewhohears.dscombat.data.aircraft.presets.BroncoPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.CarPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.HeliPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.JaviPresets;
@@ -83,6 +84,10 @@ public class AircraftPresetGenerator extends JsonPresetGenerator<AircraftPreset>
 		addPresetToGenerate(BoatPresets.EMPTY_AIRCRAFT_CARRIER);
 		addPresetToGenerate(BoatPresets.UNARMED_AIRCRAFT_CARRIER);
 		addPresetToGenerate(BoatPresets.DEFAULT_AIRCRAFT_CARRIER);
+		
+		addPresetToGenerate(BroncoPresets.EMPTY_BRONCO_PLANE);
+		addPresetToGenerate(BroncoPresets.UNARMED_BRONCO_PLANE);
+		addPresetToGenerate(BroncoPresets.DEFAULT_BRONCO_PLANE);
 	}
     
     public AircraftPresetGenerator(DataGenerator output) {

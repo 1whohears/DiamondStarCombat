@@ -1,7 +1,5 @@
 package com.onewhohears.dscombat.client.model.obj;
 
-import java.awt.Color;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.client.renderer.RendererEntityAircraft;

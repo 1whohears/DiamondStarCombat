@@ -16,11 +16,7 @@
     },
     {
       "item": "dscombat:cockpit",
-      "num": 1
-    },
-    {
-      "item": "dscombat:seat",
-      "num": 1
+      "num": 2
     },
     {
       "item": "dscombat:wheel",
@@ -92,7 +88,6 @@
   "maxpitch": 2.1,
   "maxroll": 4.0,
   "maxyaw": 1.1,
-  "paintjob_color": 13,
   "pitchtorque": 2.5,
   "presetId": "javi_plane_bomber",
   "rolltorque": 1.5,

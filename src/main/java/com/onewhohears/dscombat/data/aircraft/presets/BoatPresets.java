@@ -6,8 +6,6 @@ import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
 
-import net.minecraft.world.item.DyeColor;
-
 public class BoatPresets {
 	
 	public static final AircraftPreset EMPTY_NATHAN_BOAT = AircraftPreset.Builder
@@ -26,7 +24,6 @@ public class BoatPresets {
 			.setMaxTurnRates(0f, 0f, 3.5f)
 			.setTurnTorques(0f, 0f, 2f)
 			.setThrottleRate(0.05f, 0.10f)
-			.setDefaultColor(DyeColor.WHITE)
 			.addIngredient("minecraft:iron_ingot", 10)
 			.addIngredient(ModItems.SEAT.getId(), 7)
 			.addIngredient(ModItems.PROPELLER.getId())
@@ -85,7 +82,6 @@ public class BoatPresets {
 			.setMaxTurnRates(0f, 0f, 1.0f)
 			.setTurnTorques(0f, 0f, 1f)
 			.setThrottleRate(0.05f, 0.10f)
-			.setDefaultColor(DyeColor.LIGHT_GRAY)
 			.addIngredient(ModItems.LARGE_FUSELAGE.getId(), 4)
 			.addIngredient("minecraft:oak_planks", 64)
 			.addIngredient(ModItems.SEAT.getId(), 4)
@@ -167,7 +163,6 @@ public class BoatPresets {
 			.setMaxTurnRates(0f, 0f, 1.5f)
 			.setTurnTorques(0f, 0f, 2f)
 			.setThrottleRate(0.05f, 0.10f)
-			.setDefaultColor(DyeColor.LIGHT_GRAY)
 			.addIngredient(ModItems.LARGE_FUSELAGE.getId(), 3)
 			.addIngredient("minecraft:oak_planks", 48)
 			.addIngredient("minecraft:light_gray_dye", 9)
@@ -243,7 +238,6 @@ public class BoatPresets {
 			.setMaxTurnRates(0f, 0f, 1.2f)
 			.setTurnTorques(0f, 0f, 2f)
 			.setThrottleRate(0.05f, 0.10f)
-			.setDefaultColor(DyeColor.LIGHT_GRAY)
 			.addIngredient(ModItems.LARGE_FUSELAGE.getId(), 3)
 			.addIngredient("minecraft:oak_planks", 64)
 			.addIngredient(ModItems.SEAT.getId(), 4)
@@ -324,7 +318,6 @@ public class BoatPresets {
 			.setMaxTurnRates(0f, 0f, 1.5f)
 			.setTurnTorques(0f, 0f, 2f)
 			.setThrottleRate(0.05f, 0.10f)
-			.setDefaultColor(DyeColor.LIGHT_GRAY)
 			.addIngredient(ModItems.LARGE_FUSELAGE.getId(), 2)
 			.addIngredient("minecraft:oak_planks", 32)
 			.addIngredient(ModItems.SEAT.getId(), 4)
@@ -387,7 +380,6 @@ public class BoatPresets {
 			.setMaxTurnRates(0f, 0f, 0.6f)
 			.setTurnTorques(0f, 0f, 2f)
 			.setThrottleRate(0.05f, 0.10f)
-			.setDefaultColor(DyeColor.LIGHT_GRAY)
 			.addIngredient(ModItems.LARGE_FUSELAGE.getId(), 6)
 			.addIngredient("minecraft:oak_planks", 64)
 			.addIngredient(ModItems.SEAT.getId(), 8)

@@ -6,8 +6,6 @@ import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
 
-import net.minecraft.world.item.DyeColor;
-
 public class JaviPresets {
 	
 	public static final AircraftPreset EMPTY_JAVI_PLANE = AircraftPreset.Builder
@@ -27,11 +25,9 @@ public class JaviPresets {
 			.setTurnTorques(1.5f, 2.5f, 4.5f)
 			.setThrottleRate(0.04f, 0.08f)
 			.setPlaneWingArea(18f)
-			.setDefaultColor(DyeColor.GREEN)
 			.addIngredient(ModItems.FUSELAGE.getId(), 1)
 			.addIngredient(ModItems.LARGE_WING.getId(), 2)
-			.addIngredient(ModItems.COCKPIT.getId())
-			.addIngredient(ModItems.SEAT.getId())
+			.addIngredient(ModItems.COCKPIT.getId(), 2)
 			.addIngredient(ModItems.WHEEL.getId(), 3)
 			.addIngredient("minecraft:light_gray_dye", 6)
 			.addIngredient("minecraft:gold_ingot", 10)

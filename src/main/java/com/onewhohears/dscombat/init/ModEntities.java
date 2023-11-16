@@ -14,6 +14,7 @@ import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 import com.onewhohears.dscombat.entity.aircraft.EntitySubmarine;
 import com.onewhohears.dscombat.entity.aircraft.RotableHitbox;
 import com.onewhohears.dscombat.entity.aircraft.custom.AlexisPlane;
+import com.onewhohears.dscombat.entity.aircraft.custom.BroncoPlane;
 import com.onewhohears.dscombat.entity.aircraft.custom.GronkBattleship;
 import com.onewhohears.dscombat.entity.aircraft.custom.JaviPlane;
 import com.onewhohears.dscombat.entity.aircraft.custom.NoahChopper;
@@ -78,6 +79,10 @@ public class ModEntities {
 									0f, 0f, 0f);
 						}
 					}, EntityDimensions.scalable(4.0f, 4.0f)));
+	
+	public static final RegistryObject<EntityType<EntityPlane>> BRONCO_PLANE = ENTITIES.register("bronco_plane", 
+			() -> createEntityTypeFar((type, level) -> new BroncoPlane(type, level), 
+					EntityDimensions.scalable(4.0f, 4.0f)));
 	
 	// HELICOPTORS
 	

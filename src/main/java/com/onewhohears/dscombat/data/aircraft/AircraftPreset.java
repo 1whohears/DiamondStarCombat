@@ -19,7 +19,6 @@ import com.onewhohears.dscombat.util.UtilParse;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -363,13 +362,6 @@ public class AircraftPreset extends JsonPreset{
 		 */
 		public Builder addSeatSlot(String name, SlotType type, double x, double y, double z) {
 			return addItemSlot(name, type, x, y, z, 0, ModItems.SEAT.getId(), null, false);
-		}
-		
-		/**
-		 * all vehicles
-		 */
-		public Builder setDefaultColor(DyeColor dyecolor) {
-			return setInt("paintjob_color", dyecolor.getId());
 		}
 		
 		/**

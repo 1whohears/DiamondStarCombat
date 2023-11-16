@@ -6,8 +6,6 @@ import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
 
-import net.minecraft.world.item.DyeColor;
-
 public class CarPresets {
 	
 	public static final AircraftPreset DEFAULT_ORANGE_TESLA = AircraftPreset.Builder
@@ -33,7 +31,6 @@ public class CarPresets {
 			.addSeatSlot("seat3", -0.5, 0.45, -0.85)
 			.addItemSlot("internal_1", SlotType.SPIN_ENGINE, ModItems.C6_ENGINE.getId())
 			.addItemSlot("internal_2", SlotType.INTERNAL, ModItems.LIGHT_FUEL_TANK.getId(), true)
-			.setDefaultColor(DyeColor.ORANGE)
 			.addIngredient(ModItems.SEAT.getId(), 4)
 			.addIngredient(ModItems.C6_ENGINE.getId())
 			.addIngredient(ModItems.LIGHT_FUEL_TANK.getId())
@@ -60,7 +57,6 @@ public class CarPresets {
 			.setThrottleRate(0.05f, 0.05f)
 			.addPilotSeatSlot(0.5, 0.9, 1)
 			.addSeatSlot("seat2", -0.5, 0.9, 1)
-			.setDefaultColor(DyeColor.YELLOW)
 			.addIngredient(ModItems.SEAT.getId(), 2)
 			.addIngredient(ModItems.WHEEL.getId(), 6)
 			.addIngredient("minecraft:yellow_dye", 6)

@@ -6,8 +6,6 @@ import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
 
-import net.minecraft.world.item.DyeColor;
-
 public class PlanePresets {
 	
 	public static final AircraftPreset EMPTY_WOODEN_PLANE = AircraftPreset.Builder
@@ -27,7 +25,6 @@ public class PlanePresets {
 			.setTurnTorques(1.5f, 2.5f, 4.5f)
 			.setThrottleRate(0.02f, 0.06f)
 			.setPlaneWingArea(6.5f)
-			.setDefaultColor(DyeColor.BROWN)
 			.addIngredient("minecraft:oak_planks", 30)
 			.addIngredient(ModItems.SEAT.getId())
 			.addIngredient(ModItems.PROPELLER.getId())
@@ -83,7 +80,6 @@ public class PlanePresets {
 			.setTurnTorques(2.0f, 2.0f, 2.0f)
 			.setThrottleRate(0.01f, 0.04f)
 			.setPlaneWingArea(36f)
-			.setDefaultColor(DyeColor.GRAY)
 			.addIngredient(ModItems.ADVANCED_COCKPIT.getId())
 			.addIngredient(ModItems.SEAT.getId(), 11)
 			.addIngredient(ModItems.LARGE_FUSELAGE.getId(), 2)

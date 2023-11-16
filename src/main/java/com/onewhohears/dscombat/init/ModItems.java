@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.init;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.aircraft.presets.AlexisPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.BoatPresets;
+import com.onewhohears.dscombat.data.aircraft.presets.BroncoPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.CarPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.HeliPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.JaviPresets;
@@ -352,6 +353,9 @@ public class ModItems {
 	public static final RegistryObject<Item> E3SENTRY_PLANE = ITEMS.register("e3sentry_plane", 
 			() -> new ItemAircraft(ModEntities.E3SENTRY_PLANE.get(), 
 					PlanePresets.DEFAULT_E3SENTRY_PLANE));
+	public static final RegistryObject<Item> BRONCO_PLANE = ITEMS.register("bronco_plane", 
+			() -> new ItemAircraft(ModEntities.BRONCO_PLANE.get(), 
+					BroncoPresets.DEFAULT_BRONCO_PLANE));
 	
 	// HELICOPTERS
 	public static final RegistryObject<Item> NOAH_CHOPPER = ITEMS.register("noah_chopper", 

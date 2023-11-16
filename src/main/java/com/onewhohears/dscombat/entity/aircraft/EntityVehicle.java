@@ -292,6 +292,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		// merge if this entity hasn't merged yet
 		if (!nbt.getBoolean("merged_preset")) nbt.merge(presetNbt);
 		partsManager.read(nbt, presetNbt);
+		textureManager.read(nbt);
 		setMaxSpeed(nbt.getFloat("max_speed"));
 		setMaxHealth(nbt.getFloat("max_health"));
 		setHealth(nbt.getFloat("health"));
@@ -329,6 +330,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		nbt.putBoolean("no_consume", isNoConsume());
 		nbt.putBoolean("merged_preset", true);
 		partsManager.write(nbt);
+		textureManager.write(nbt);
 		nbt.putFloat("max_speed", getMaxSpeed());
 		nbt.putFloat("max_health", getMaxHealth());
 		nbt.putFloat("health", getHealth());
@@ -371,6 +373,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		boolean freeLook = buffer.readBoolean();
 		float throttle = buffer.readFloat();
 		List<PartSlot> slots = PartsManager.readSlotsFromBuffer(buffer);
+		textureManager.read(buffer);
 		// ORDER MATTERS
 		weaponSystem.setSelected(weaponIndex);
 		partsManager.setPartSlots(slots);
@@ -395,6 +398,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		buffer.writeBoolean(onlyFreeLook());
 		buffer.writeFloat(getCurrentThrottle());
 		PartsManager.writeSlotsToBuffer(buffer, partsManager.getSlots());
+		textureManager.write(buffer);
 	}
 	
 	public static enum AircraftType {

@@ -179,7 +179,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	protected RotableHitbox[] hitboxes = new RotableHitbox[0];
 	protected EntityScreenData[] screens = new EntityScreenData[0];
 	
-	// FIXME 1.1 fix aircraft texture/variant texture system
 	// TODO 5.4 aircraft breaks apart when damaged
 	// TODO 5.6 place and remove external parts from outside the vehicle
 	// TODO 2.5 add chaff

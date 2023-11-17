@@ -9,6 +9,7 @@ import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.aircraft.RotableHitbox;
 import com.onewhohears.dscombat.util.math.UtilAngles;
+import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -35,7 +36,7 @@ public interface RotableHitboxRenderer {
 		poseStack.translate(trans.x, trans.y, trans.z);
 		Matrix4f m4 = poseStack.last().pose();
 		Matrix3f m3 = poseStack.last().normal();
-		Vector3f ext = hitbox.getHitbox().getExtents();
+		Vector3f ext = UtilGeometry.convertVector(hitbox.getHitbox().getExtents());
 		Vector3f c0 = ext.copy(); c0.transform(q);
 		Vector3f c1 = ext.copy(); c1.mul(-1,1,1); c1.transform(q);
 		Vector3f c2 = ext.copy(); c2.mul(1,-1,1); c2.transform(q);

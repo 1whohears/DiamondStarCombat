@@ -8,7 +8,6 @@ import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.util.math.RotableAABB;
 import com.onewhohears.dscombat.util.math.RotableAABB.CollisionData;
 import com.onewhohears.dscombat.util.math.UtilAngles;
-import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -16,10 +15,9 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.Pose;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.entity.PartEntity;
 
 public class RotableHitbox extends PartEntity<EntityVehicle> {
@@ -43,7 +41,7 @@ public class RotableHitbox extends PartEntity<EntityVehicle> {
 	@Override
 	public void tick() {
 		positionSelf();
-		positionEntities();
+		//positionEntities();
 		firstTick = false;
 	}
 	
@@ -52,27 +50,40 @@ public class RotableHitbox extends PartEntity<EntityVehicle> {
 		Quaternion q = getParent().getQBySide();
 		Vec3 pos = getParent().position().add(UtilAngles.rotateVector(getRelPos(), q));
 		setPos(pos);
-		hitbox.setCenter(UtilGeometry.convertVector(pos));
+		//hitbox.setCenter(UtilGeometry.convertVector(pos));
+		hitbox.updateCollider(pos, q);
 	}
 	
-	protected void positionEntities() {
+	public void handlePosibleCollision(List<VoxelShape> colliders, Entity entity, AABB aabb, Vec3 move) {
+		if (!couldCollide(entity)) return;
+		// FIXME 4.2 why can't player move while crouching?
+		//System.out.println("HANDLE COLLISION "+entity+" "+move);
+		CollisionData data = new CollisionData();
+		hitbox.addColliders(colliders, aabb, data);
+		/*if (data.dir.getAxis().isVertical()) {
+			entity.setOnGround(true);
+			entity.verticalCollision = true;
+			entity.verticalCollisionBelow = true;
+			entity.causeFallDamage(entity.fallDistance, 1, DamageSource.FALL);
+			entity.resetFallDistance();
+			entity_move.add(yMoveBefore*data.normal.x(), 0, yMoveBefore*data.normal.z()); // prevents slide
+		}
+		if (data.dir.getAxis().isHorizontal()) {
+			entity.horizontalCollision = true;
+			// horizontal collide damage
+		}*/
+		// change movement based on collision
+		//entity.setDeltaMovement(move.subtract(move.multiply(data.normal)));
+	}
+	
+	/*protected void positionEntities() {
 		Vec3 parent_move = getParent().getDeltaMovement();
 		Vec3 parent_rot_rate = getParent().getAngularVel();
 		Quaternion rot = getParent().getQBySide();
-		List<Entity> list = level.getEntities(this, getBoundingBox(), canMoveEntity());
+		List<Entity> list = level.getEntities(this, getBoundingBox(), getCouldCollideTest());
 		//System.out.println("collision list size = "+list.size());
 		//System.out.println("client side?"+level.isClientSide);
 		for (Entity entity : list) {
-			/**
-			 * FIXME 4.1 this custom collision code works somewhat but lots of issues still
-			 * when the chunks load, entities that were on the platform may start falling before platform loads
-			 * are there performance issues?
-			 * can't place anything on the platform
-			 * when the vehicle moves or rotates, the passengers experience chopy movement
-			 * collisions are only checked at the player's feet position for now
-			 * explosive projectiles only damage the vehicle if they hit the center where the parent hitbox is
-			 * most importantly this code is horrendous and ugly
-			 */
 			CollisionData data = new CollisionData();
 			Vec3 entity_pos = entity.position();
 			Vector3f entity_move = UtilGeometry.convertVector(entity.getDeltaMovement());
@@ -120,17 +131,19 @@ public class RotableHitbox extends PartEntity<EntityVehicle> {
 				vehicle.setQBySide(q);
 			}
 		}
+	}*/
+	
+	public boolean couldCollide(Entity entity) {
+		if (entity.noPhysics) return false;
+		if (entity.isRemoved()) return false;
+		if (!entity.canCollideWith(getParent())) return false;
+		if (entity.isPassenger()) return false;
+		if (entity.getRootVehicle().equals(getParent())) return false;
+		return true;
 	}
 	
-	public Predicate<? super Entity> canMoveEntity() {
-		return (entity) -> {
-			if (entity.noPhysics) return false;
-			if (entity.isRemoved()) return false;
-			if (!entity.canCollideWith(getParent())) return false;
-			if (entity.isPassenger()) return false;
-			if (entity.getRootVehicle().equals(getParent())) return false;
-			return true;
-		};
+	public Predicate<? super Entity> getCouldCollideTest() {
+		return (entity) -> couldCollide(entity);
 	}
 	
 	@Override

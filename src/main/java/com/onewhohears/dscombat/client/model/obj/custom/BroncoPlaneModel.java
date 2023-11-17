@@ -17,14 +17,25 @@ public class BroncoPlaneModel extends ObjAircraftModel<EntityPlane> {
 	
 	@Override
 	protected Transforms getComponentTransforms(EntityPlane entity, float partialTicks) {
-		float rot_rate = entity.vehicleData.spinRate;
-		float bladerot = UtilAngles.lerpAngle(partialTicks, entity.tickCount*rot_rate, (entity.tickCount+1)*rot_rate);
+		float bladerot = entity.getPropellerRotation(partialTicks);
+		float gearpos = entity.getLandingGearPos(partialTicks)*90;
 		Matrix4f blade0rot_mat = UtilAngles.pivotPixelsRotZ(44.5f, 31.5f, 11f, bladerot);
 		Matrix4f blade1rot_mat = UtilAngles.pivotPixelsRotZ(-44.5f, 31.5f, 11f, bladerot);
+		Matrix4f lg0_mat, lg1_mat, lg2_mat;
+		if (gearpos >= 1f) lg0_mat = lg1_mat = lg2_mat = INVISIBLE;
+		else {
+			float degrees = gearpos*90;
+			lg0_mat = UtilAngles.pivotPixelsRotX(-0.5f, 18f, 50.5f, degrees);
+			lg1_mat = UtilAngles.pivotPixelsRotX(41.5f, 24f, -24.5f, degrees);
+			lg2_mat = UtilAngles.pivotPixelsRotX(-42.5f, 24f, -24.5f, degrees);
+		}
 		ImmutableMap<String, Matrix4f> transforms = ImmutableMap.<String, Matrix4f>builder()
 			.put("rocket", INVISIBLE)
 			.put("blade0", blade0rot_mat)
 			.put("blade1", blade1rot_mat)
+			.put("lg0", lg0_mat)
+			.put("lg1", lg1_mat)
+			.put("lg2", lg2_mat)
 			.build();
 		return Transforms.of(transforms);
 	}

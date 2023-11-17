@@ -62,7 +62,7 @@
       },
       "name": "pilot_seat",
       "slot_posx": 0.0,
-      "slot_posy": -0.44,
+      "slot_posy": -0.74,
       "slot_posz": 2.5,
       "slot_type": "seat",
       "zRot": 0.0
@@ -73,7 +73,7 @@
       },
       "name": "seat2",
       "slot_posx": 0.0,
-      "slot_posy": -0.31,
+      "slot_posy": -0.61,
       "slot_posz": 1.125,
       "slot_type": "light_turret",
       "zRot": 0.0

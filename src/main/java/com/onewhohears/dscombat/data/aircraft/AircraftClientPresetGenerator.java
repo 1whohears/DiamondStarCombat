@@ -268,7 +268,7 @@ public class AircraftClientPresetGenerator extends JsonPresetGenerator<AircraftC
 				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/alexis_plane.png")
 				.setAllUIPos(x_start, y_start, 8, 
 						PartSlot.PILOT_SLOT_NAME, "seat2", "nose_1",
-						"frame_1", "frame_2", "frame_3", "frame_4", 
+						"frame_1", "frame_2", "frame_3", "frame_4", "left_wing_1", "right_wing_1",
 						"internal_1", "internal_2", "internal_3", "internal_4", "internal_5")
 				/*.addUIPos("frame_1", bronco_middle_x, 2)
 				.addUIPos(PartSlot.PILOT_SLOT_NAME, bronco_middle_x, 21)

@@ -38,28 +38,38 @@
       "slot_ui_y": 15
     },
     {
-      "slot_name": "internal_1",
+      "slot_name": "left_wing_1",
       "slot_ui_x": 174,
       "slot_ui_y": 15
     },
     {
-      "slot_name": "internal_2",
+      "slot_name": "right_wing_1",
       "slot_ui_x": 48,
       "slot_ui_y": 33
     },
     {
-      "slot_name": "internal_3",
+      "slot_name": "internal_1",
       "slot_ui_x": 66,
       "slot_ui_y": 33
     },
     {
-      "slot_name": "internal_4",
+      "slot_name": "internal_2",
       "slot_ui_x": 84,
       "slot_ui_y": 33
     },
     {
-      "slot_name": "internal_5",
+      "slot_name": "internal_3",
       "slot_ui_x": 102,
+      "slot_ui_y": 33
+    },
+    {
+      "slot_name": "internal_4",
+      "slot_ui_x": 120,
+      "slot_ui_y": 33
+    },
+    {
+      "slot_name": "internal_5",
+      "slot_ui_x": 138,
       "slot_ui_y": 33
     }
   ],

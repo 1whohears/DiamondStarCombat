@@ -26,14 +26,12 @@ public abstract class EntityMixin {
 	@ModifyVariable(method = "collide(Lnet/minecraft/world/phys/Vec3;)Lnet/minecraft/world/phys/Vec3;", at = @At("STORE"))
 	private List<VoxelShape> dscombat_EntityCollisionList(List<VoxelShape> list, Vec3 move) {
 		// Mojang decided to make this a ImmutableCollections so list.add throws an exception
-		// FIXME 4.3 projectiles still don't work
 		List<VoxelShape> colliders = new ArrayList<>(list); 
 		Entity entity = (Entity)(Object)this;
 		AABB aabb = entity.getBoundingBox().expandTowards(move).inflate(1.0E-7D);
 		for (PartEntity<?> part : entity.level.getPartEntities()) {
 			if (entity.equals(part)) continue;
 			if (part.getParent().equals(entity)) continue;
-			if (!part.getBoundingBox().intersects(aabb)) continue;
 			if (!(part instanceof RotableHitbox hitbox)) continue;
 			hitbox.handlePosibleCollision(colliders, entity, aabb, move);
 		}

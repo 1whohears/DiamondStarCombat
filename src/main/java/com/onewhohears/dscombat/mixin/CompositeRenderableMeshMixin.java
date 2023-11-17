@@ -16,7 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.model.renderable.ITextureRenderTypeLookup;
 
 @Mixin(targets = "net.minecraftforge.client.model.renderable.CompositeRenderable$Mesh")
-public class CompositeRenderableMeshMixin {
+public abstract class CompositeRenderableMeshMixin {
 	
 	@Final @Shadow(remap = false)
 	private ResourceLocation texture;

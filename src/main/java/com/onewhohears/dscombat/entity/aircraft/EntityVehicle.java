@@ -1676,6 +1676,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public static final double EXP_MOMENT_FACTOR = 100;
 	
 	public void customExplosionHandler(Explosion exp) {
+		// FIXME 4.3 explosions don't effect RotableHitbox
 		Vec3 s = exp.getPosition();
 		Vec3 b = UtilGeometry.getClosestPointOnAABB(s, getBoundingBox());
 		Vec3 r = b.subtract(position());

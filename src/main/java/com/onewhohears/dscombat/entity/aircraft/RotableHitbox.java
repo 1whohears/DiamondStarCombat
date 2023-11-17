@@ -6,7 +6,6 @@ import java.util.function.Predicate;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.util.math.RotableAABB;
-import com.onewhohears.dscombat.util.math.RotableAABB.CollisionData;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.nbt.CompoundTag;
@@ -31,7 +30,8 @@ public class RotableHitbox extends PartEntity<EntityVehicle> {
 		super(parent);
 		this.name = name;
 		this.hitbox = new RotableAABB(size.x(), size.y(), size.z());
-		this.size = hitbox.getMaxDimensions();
+		//this.size = hitbox.getMaxDimensions();
+		this.size = EntityDimensions.scalable(1f, 1f);
 		this.rel_pos = rel_pos;
 		this.noPhysics = true;
 		// this.blocksBuilding = true;
@@ -52,14 +52,15 @@ public class RotableHitbox extends PartEntity<EntityVehicle> {
 		setPos(pos);
 		//hitbox.setCenter(UtilGeometry.convertVector(pos));
 		hitbox.updateCollider(pos, q);
+		//System.out.println("AABB="+getBoundingBox().toString()+" "+this);
+		
 	}
 	
 	public void handlePosibleCollision(List<VoxelShape> colliders, Entity entity, AABB aabb, Vec3 move) {
-		if (!couldCollide(entity)) return;
-		// FIXME 4.2 why can't player move while crouching?
+		if (!couldCollide(entity) || !hitbox.isColliding(aabb)) return;
 		//System.out.println("HANDLE COLLISION "+entity+" "+move);
-		CollisionData data = new CollisionData();
-		hitbox.addColliders(colliders, aabb, data);
+		//CollisionData data = new CollisionData();
+		hitbox.addColliders(colliders, aabb);
 		/*if (data.dir.getAxis().isVertical()) {
 			entity.setOnGround(true);
 			entity.verticalCollision = true;
@@ -148,18 +149,22 @@ public class RotableHitbox extends PartEntity<EntityVehicle> {
 	
 	@Override
     public boolean hurt(DamageSource source, float amount) {
+		// FIXME 4.4 player can't punch RotbaleHitbox
+		System.out.print(source+" hurt "+amount+" "+this);
     	return getParent().hurt(source, amount);
     }
 	
 	@Override
     protected AABB makeBoundingBox() {
-    	EntityDimensions d = getDimensions(getPose());
+    	/*EntityDimensions d = getDimensions(getPose());
     	if (d == null) return super.makeBoundingBox();
     	double pX = getX(), pY = getY(), pZ = getZ();
     	double f = d.width / 2.0F;
         double f1 = d.height / 2.0F;
         return new AABB(pX-f, pY-f1, pZ-f, 
-        		pX+f, pY+f1, pZ+f);
+        		pX+f, pY+f1, pZ+f);*/
+		if (hitbox == null) return AABB.ofSize(position(), 1f, 1f, 1f);
+		return hitbox.getDisguisedAABB(position());
     }
 	
 	public String getHitboxName() {
@@ -176,7 +181,7 @@ public class RotableHitbox extends PartEntity<EntityVehicle> {
 	
 	@Override
 	public boolean isPickable() {
-		return false;
+		return true;
 	}
 	
 	@Override
@@ -191,12 +196,12 @@ public class RotableHitbox extends PartEntity<EntityVehicle> {
 
     @Override
     public boolean canBeCollidedWith() {
-        return false;
+        return true;
     }
     
     @Override
     public boolean canCollideWith(Entity entity) {
-    	return false;
+    	return couldCollide(entity);
     }
 	
     @Override

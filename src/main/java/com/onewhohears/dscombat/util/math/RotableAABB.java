@@ -2,11 +2,11 @@ package com.onewhohears.dscombat.util.math;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 
-import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.phys.AABB;
@@ -18,9 +18,9 @@ public class RotableAABB {
 	
 	public static final double SUBSIZE = 0.5;
 	public static final double SUBSIZEHALF = SUBSIZE*0.5;
-	private static int subUpdateCounter;
+	public static int subUpdateCounter;
 	private Vec3 center, extents;
-	private Quaternion rot = Quaternion.ONE.copy();
+	private Quaternion rot = Quaternion.ONE.copy(), roti = Quaternion.ONE.copy();
 	private final List<VoxelShape> subColliders = new ArrayList<>();
 	//private boolean updatedSubs = false;
 	
@@ -52,7 +52,7 @@ public class RotableAABB {
 		setRot(q);
 	}
 	
-	public void addColliders(List<VoxelShape> colliders, AABB aabb, CollisionData data) {
+	public void addColliders(List<VoxelShape> colliders, AABB aabb) {
 		//System.out.println("ADDING SUB COLLIDERS "+getSubColliders().size());
 		updateSubColliders(aabb);
 		colliders.addAll(getSubColliders());
@@ -132,7 +132,7 @@ public class RotableAABB {
 		Vec3 zStep = UtilAngles.getRollAxis(a.pitch, a.yaw).scale(zScale);
 		Vec3 close = UtilGeometry.getClosestPointOnAABB(center, aabb);
 		double max = 0.81;
-		// FIXME 4.1 only another optimization is reducing the number of loop iterations. 
+		// FIXME 4.1 another optimization is reducing the number of loop iterations. 
 		// big hit boxes have a lot of steps. so more smaller hit boxes might be the way.
 		for(int i = 0; i <= xSteps; ++i) for(int j = 0; j <= ySteps; ++j) {
 			Vec3 pos = start.add(xStep.scale(i)).add(yStep.scale(j));
@@ -162,7 +162,8 @@ public class RotableAABB {
 			subColliders.add(shape);
 		}*/
 		//updatedSubs = true;
-		if (subColliders.size() > 0) System.out.println("UPDATED SUB COLLIDERS "+(++subUpdateCounter)+" "+subColliders.size());
+		if (subColliders.size() > 0) ++subUpdateCounter; 
+		//System.out.println("UPDATED SUB COLLIDERS "+(++subUpdateCounter)+" "+subColliders.size());
 	}
 	
 	private void addShape(Vec3 pos) {
@@ -172,9 +173,52 @@ public class RotableAABB {
 		subColliders.add(shape);
 	}
 	
-	public static class CollisionData {
+	/*public static class CollisionData {
 		public Direction dir = Direction.NORTH;
 		public Vec3 normal = Vec3.ZERO;
+	}*/
+	
+	public boolean isColliding(AABB aabb) {
+		return contains(UtilGeometry.getClosestPointOnAABB(center, aabb));
+	}
+	
+	public boolean contains(Vec3 pos) {
+		return containsRelRot(toRelRotPos(pos));
+	}
+	
+	public boolean containsRelRot(Vec3 relRotPos) {
+		boolean insideX = relRotPos.x() < extents.x() && relRotPos.x() > -extents.x();
+		boolean insideY = relRotPos.y() < extents.y() && relRotPos.y() > -extents.y();
+		boolean insideZ = relRotPos.z() < extents.z() && relRotPos.z() > -extents.z();
+		return insideX && insideY && insideZ;
+	}
+	
+	public Vec3 toRelRotPos(Vec3 pos) {
+		return UtilAngles.rotateVector(pos.subtract(center), roti);
+	}
+	
+	public Optional<Vec3> clip(Vec3 from, Vec3 to) {
+		Vec3 fromRelRot = toRelRotPos(from);
+		if (containsRelRot(fromRelRot)) return Optional.of(fromRelRot);
+		Vec3 toRelRot = toRelRotPos(to);
+		Double clipX = clipAxis(fromRelRot.x, toRelRot.x, extents.x);
+		if (clipX == null) return Optional.empty();
+		Double clipY = clipAxis(fromRelRot.y, toRelRot.y, extents.y);
+		if (clipY == null) return Optional.empty();
+		Double clipZ = clipAxis(fromRelRot.z, toRelRot.z, extents.z);
+		if (clipZ == null) return Optional.empty();
+		Vec3 clipRelRot = new Vec3(clipX, clipY, clipZ);
+		Vec3 clip = UtilAngles.rotateVector(clipRelRot, rot).add(center);
+		//System.out.println("CLIP RotableAABB: "+clip);
+		// FIXME 4.2 this clip logic is wrong but works for projectiles
+		return Optional.of(clip);
+	}
+	
+	private Double clipAxis(double from, double to, double ext) {
+		double diff = to - from;
+		if (diff > 0 && from <= -ext && (from+diff) >= -ext) return -ext;
+		else if (diff < 0 && from >= ext && (from+diff) <= ext) return ext;
+		else return null;
 	}
 	
 	/*@Nullable
@@ -329,12 +373,18 @@ public class RotableAABB {
 	
 	public void setRot(Quaternion rot) {
 		this.rot = rot;
+		this.roti = rot.copy();
+		roti.conj();
 	}
 	
 	public EntityDimensions getMaxDimensions() {
 		float x = (float) extents.x(), y = (float) extents.y(), z = (float) extents.z();
 		float max = Mth.sqrt(x*x+y*y+z*z);
 		return EntityDimensions.scalable(max*2, max*2);
+	}
+	
+	public DisguisedAABB getDisguisedAABB(Vec3 pos) {
+		return new DisguisedAABB(this, pos, 0.5);
 	}
 	
 }

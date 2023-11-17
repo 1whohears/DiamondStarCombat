@@ -152,6 +152,7 @@ public class RotableAABB {
 			pos = start.add(xStep.scale(i)).add(zStep.scale(k)).add(yStep.scale(ySteps));
 			if (pos.distanceToSqr(close) <= max) addShape(pos);
 		}
+		// FIXME 4.2 players are frozen stuck when inside a vehicle
 		/*for(int i = 0; i <= xSteps; ++i) for(int j = 0; j <= ySteps; ++j) for(int k = 0; k <= zSteps; ++k) {
 			if (i!=0&&i!=xSteps && j!=0&&j!=ySteps && k!=0&&k!=zSteps) continue;
 			Vec3 pos = start.add(xStep.scale(i)).add(yStep.scale(j)).add(zStep.scale(k));
@@ -199,18 +200,29 @@ public class RotableAABB {
 	
 	public Optional<Vec3> clip(Vec3 from, Vec3 to) {
 		Vec3 fromRelRot = toRelRotPos(from);
-		if (containsRelRot(fromRelRot)) return Optional.of(fromRelRot);
+		if (containsRelRot(fromRelRot)) return Optional.of(UtilAngles.rotateVector(fromRelRot, rot).add(center));
 		Vec3 toRelRot = toRelRotPos(to);
-		Double clipX = clipAxis(fromRelRot.x, toRelRot.x, extents.x);
-		if (clipX == null) return Optional.empty();
+		Vec3 diff = toRelRot.subtract(fromRelRot);
+		double tMin = Double.MAX_VALUE;
 		Double clipY = clipAxis(fromRelRot.y, toRelRot.y, extents.y);
-		if (clipY == null) return Optional.empty();
+		// FIXME 4.5 clip logic is better but something is still wrong
+		if (clipY != null) {
+			double t = (clipY - fromRelRot.y) / diff.y + 0.05;
+			if (t < tMin && containsRelRot(fromRelRot.add(diff.scale(t)))) tMin = t;
+		}
+		Double clipX = clipAxis(fromRelRot.x, toRelRot.x, extents.x);
+		if (clipX != null) {
+			double t = (clipX - fromRelRot.x) / diff.x + 0.05;
+			if (t < tMin && containsRelRot(fromRelRot.add(diff.scale(t)))) tMin = t;
+		}
 		Double clipZ = clipAxis(fromRelRot.z, toRelRot.z, extents.z);
-		if (clipZ == null) return Optional.empty();
-		Vec3 clipRelRot = new Vec3(clipX, clipY, clipZ);
+		if (clipZ != null) {
+			double t = (clipZ - fromRelRot.z) / diff.z + 0.05;
+			if (t < tMin && containsRelRot(fromRelRot.add(diff.scale(t)))) tMin = t;
+		}
+		if (tMin == Double.MAX_VALUE) return Optional.empty();
+		Vec3 clipRelRot = fromRelRot.add(diff.scale(tMin));
 		Vec3 clip = UtilAngles.rotateVector(clipRelRot, rot).add(center);
-		//System.out.println("CLIP RotableAABB: "+clip);
-		// FIXME 4.2 this clip logic is wrong but works for projectiles
 		return Optional.of(clip);
 	}
 	

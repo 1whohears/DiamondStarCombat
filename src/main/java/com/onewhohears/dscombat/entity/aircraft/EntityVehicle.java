@@ -1606,6 +1606,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     public boolean hurt(DamageSource source, float amount) {
 		if (isInvulnerableTo(source)) return false;
 		if (source.isFire()) hurtByFireTime = tickCount;
+		System.out.print(source+" hurt "+amount+" "+this);
 		addHealth(-calcDamageBySource(source, amount));
 		soundManager.onHurt(source, amount);
 		if (!level.isClientSide && !isOperational()) {

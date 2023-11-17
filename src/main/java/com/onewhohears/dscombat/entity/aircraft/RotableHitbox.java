@@ -61,6 +61,7 @@ public class RotableHitbox extends PartEntity<EntityVehicle> {
 		//System.out.println("HANDLE COLLISION "+entity+" "+move);
 		//CollisionData data = new CollisionData();
 		hitbox.addColliders(colliders, aabb);
+		// FIXME 4.4 move and rotate players standing on the platform
 		/*if (data.dir.getAxis().isVertical()) {
 			entity.setOnGround(true);
 			entity.verticalCollision = true;
@@ -149,8 +150,6 @@ public class RotableHitbox extends PartEntity<EntityVehicle> {
 	
 	@Override
     public boolean hurt(DamageSource source, float amount) {
-		// FIXME 4.4 player can't punch RotbaleHitbox
-		System.out.print(source+" hurt "+amount+" "+this);
     	return getParent().hurt(source, amount);
     }
 	

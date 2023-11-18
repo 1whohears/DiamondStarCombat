@@ -120,7 +120,7 @@ public class RotableAABB {
 	public void updateSubColliders(AABB aabb) {
 		subColliders.clear();
 		Vec3 startNoRot = extents.subtract(SUBSIZEHALF, SUBSIZEHALF, SUBSIZEHALF);
-		Vec3 start = UtilAngles.rotateVector(startNoRot.scale(-1), rot).add(center);
+		Vec3 start = toWorldPos(startNoRot.scale(-1));
 		Vec3 steps =  startNoRot.scale(2/SUBSIZE);
 		int xSteps = (int)Math.ceil(steps.x), ySteps = (int)Math.ceil(steps.y), zSteps = (int)Math.ceil(steps.z);
 		double xScale = steps.x / (double)xSteps * SUBSIZE;
@@ -188,9 +188,9 @@ public class RotableAABB {
 	}
 	
 	public boolean containsRelRot(Vec3 relRotPos) {
-		boolean insideX = relRotPos.x() < extents.x() && relRotPos.x() > -extents.x();
-		boolean insideY = relRotPos.y() < extents.y() && relRotPos.y() > -extents.y();
-		boolean insideZ = relRotPos.z() < extents.z() && relRotPos.z() > -extents.z();
+		boolean insideX = relRotPos.x() <= extents.x() && relRotPos.x() >= -extents.x();
+		boolean insideY = relRotPos.y() <= extents.y() && relRotPos.y() >= -extents.y();
+		boolean insideZ = relRotPos.z() <= extents.z() && relRotPos.z() >= -extents.z();
 		return insideX && insideY && insideZ;
 	}
 	
@@ -198,31 +198,49 @@ public class RotableAABB {
 		return UtilAngles.rotateVector(pos.subtract(center), roti);
 	}
 	
+	public Vec3 toWorldPos(Vec3 relRotPos) {
+		return UtilAngles.rotateVector(relRotPos, rot).add(center);
+	}
+	
+	public Vec3 toWorldVel(Vec3 relRotVel) {
+		return UtilAngles.rotateVector(relRotVel, rot);
+	}
+	
 	public Optional<Vec3> clip(Vec3 from, Vec3 to) {
 		Vec3 fromRelRot = toRelRotPos(from);
-		if (containsRelRot(fromRelRot)) return Optional.of(UtilAngles.rotateVector(fromRelRot, rot).add(center));
+		if (containsRelRot(fromRelRot)) return Optional.of(toWorldPos(fromRelRot));
 		Vec3 toRelRot = toRelRotPos(to);
 		Vec3 diff = toRelRot.subtract(fromRelRot);
 		double tMin = Double.MAX_VALUE;
-		Double clipY = clipAxis(fromRelRot.y, toRelRot.y, extents.y);
+		Vec3 clipRelRot = Vec3.ZERO;
 		// FIXME 4.5 clip logic is better but something is still wrong
+		System.out.println("fromRelRot = "+fromRelRot);
+		System.out.println("diff = "+diff);
+		System.out.println("extents = "+extents);
+		Double clipY = clipAxis(fromRelRot.y, toRelRot.y, extents.y);
 		if (clipY != null) {
-			double t = (clipY - fromRelRot.y) / diff.y + 0.05;
-			if (t < tMin && containsRelRot(fromRelRot.add(diff.scale(t)))) tMin = t;
+			double t = (clipY - fromRelRot.y) / diff.y;
+			clipRelRot = fromRelRot.add(diff.scale(t));
+			clipRelRot = new Vec3(clipRelRot.x, clipY, clipRelRot.z);
+			if (t < tMin && containsRelRot(clipRelRot)) tMin = t;
+			System.out.println("clipRelRot = "+clipRelRot);
 		}
 		Double clipX = clipAxis(fromRelRot.x, toRelRot.x, extents.x);
 		if (clipX != null) {
-			double t = (clipX - fromRelRot.x) / diff.x + 0.05;
-			if (t < tMin && containsRelRot(fromRelRot.add(diff.scale(t)))) tMin = t;
+			double t = (clipX - fromRelRot.x) / diff.x;
+			clipRelRot = fromRelRot.add(diff.scale(t));
+			clipRelRot = new Vec3(clipX, clipRelRot.y, clipRelRot.z);
+			if (t < tMin && containsRelRot(clipRelRot)) tMin = t;
 		}
 		Double clipZ = clipAxis(fromRelRot.z, toRelRot.z, extents.z);
 		if (clipZ != null) {
-			double t = (clipZ - fromRelRot.z) / diff.z + 0.05;
-			if (t < tMin && containsRelRot(fromRelRot.add(diff.scale(t)))) tMin = t;
+			double t = (clipZ - fromRelRot.z) / diff.z;
+			clipRelRot = fromRelRot.add(diff.scale(t));
+			clipRelRot = new Vec3(clipRelRot.x, clipRelRot.y, clipZ);
+			if (t < tMin && containsRelRot(clipRelRot)) tMin = t;
 		}
 		if (tMin == Double.MAX_VALUE) return Optional.empty();
-		Vec3 clipRelRot = fromRelRot.add(diff.scale(tMin));
-		Vec3 clip = UtilAngles.rotateVector(clipRelRot, rot).add(center);
+		Vec3 clip = toWorldPos(clipRelRot);
 		return Optional.of(clip);
 	}
 	
@@ -381,6 +399,10 @@ public class RotableAABB {
 	
 	public Quaternion getRot() {
 		return rot.copy();
+	}
+	
+	public Quaternion getIRot() {
+		return roti.copy();
 	}
 	
 	public void setRot(Quaternion rot) {

@@ -10,6 +10,7 @@ import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
@@ -60,22 +61,25 @@ public class RotableHitbox extends PartEntity<EntityVehicle> {
 		if (!couldCollide(entity) || !hitbox.isColliding(aabb)) return;
 		//System.out.println("HANDLE COLLISION "+entity+" "+move);
 		//CollisionData data = new CollisionData();
-		hitbox.addColliders(colliders, aabb);
 		// FIXME 4.4 move and rotate players standing on the platform
-		/*if (data.dir.getAxis().isVertical()) {
-			entity.setOnGround(true);
-			entity.verticalCollision = true;
-			entity.verticalCollisionBelow = true;
-			entity.causeFallDamage(entity.fallDistance, 1, DamageSource.FALL);
-			entity.resetFallDistance();
-			entity_move.add(yMoveBefore*data.normal.x(), 0, yMoveBefore*data.normal.z()); // prevents slide
+		// FIXME 4.6 prevent entities from falling off when the chunks load
+		Vec3 parent_move = getParent().getDeltaMovement();
+		Vec3 parent_rot_rate = getParent().getAngularVel();
+		/*Vector3f rel_tan_vel = rot_rate.copy();
+		rel_tan_vel.mul(Mth.DEG_TO_RAD);
+		rel_tan_vel.mul(-1,-1,1);
+		rel_tan_vel.cross(rel_rot_collide);*/
+		Vec3 rel_pos = hitbox.toRelRotPos(entity.position());
+		Vec3 rel_tan_vel = parent_rot_rate.scale(Mth.DEG_TO_RAD).multiply(-1,-1,1).cross(rel_pos);
+		Vec3 tan_vel = hitbox.toWorldVel(rel_tan_vel);
+		entity.setPos(entity.position().add(parent_move).add(tan_vel));
+		entity.setYRot(entity.getYRot()-(float)parent_rot_rate.y);
+		if (entity instanceof EntityVehicle vehicle) {
+			Quaternion q = vehicle.getQBySide();
+			q.mul(Vector3f.YN.rotationDegrees((float)parent_rot_rate.y));
+			vehicle.setQBySide(q);
 		}
-		if (data.dir.getAxis().isHorizontal()) {
-			entity.horizontalCollision = true;
-			// horizontal collide damage
-		}*/
-		// change movement based on collision
-		//entity.setDeltaMovement(move.subtract(move.multiply(data.normal)));
+		hitbox.addColliders(colliders, aabb);
 	}
 	
 	/*protected void positionEntities() {

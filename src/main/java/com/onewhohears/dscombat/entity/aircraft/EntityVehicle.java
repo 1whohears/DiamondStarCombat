@@ -1492,7 +1492,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			Quaternion q = getQBySide();
  			Vec3 seatPos = UtilAngles.rotateVector(part.getRelativePos(), q);
 			passenger.setPos(position().add(seatPos));
-			this.debug("positioning "+passenger);
 			return;
 		}
 	}

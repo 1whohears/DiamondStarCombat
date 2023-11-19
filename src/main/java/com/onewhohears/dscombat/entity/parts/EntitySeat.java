@@ -103,9 +103,7 @@ public class EntitySeat extends EntityPart {
 	}
 	
 	protected Vec3 getPassengerRelPos(Entity passenger, EntityVehicle craft) {
-		Quaternion q;
-		if (level.isClientSide) q = craft.getClientQ();
-		else q = craft.getQ();
+		Quaternion q = craft.getQBySide();
 		double offset = getPassengersRidingOffset() + passenger.getMyRidingOffset() + passenger.getEyeHeight();
 		return UtilAngles.rotateVector(new Vec3(0, offset, 0), q)
 				.subtract(0, passenger.getEyeHeight(), 0);

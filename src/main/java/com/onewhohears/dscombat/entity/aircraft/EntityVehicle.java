@@ -1489,15 +1489,11 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	@Override
     public void positionRider(Entity passenger) {
 		if (passenger instanceof EntityPart part) {
-			Quaternion q;
-			if (level.isClientSide) q = getClientQ();
-			else q = getQ();
+			Quaternion q = getQBySide();
  			Vec3 seatPos = UtilAngles.rotateVector(part.getRelativePos(), q);
 			passenger.setPos(position().add(seatPos));
 			return;
-		} 
-		EntitySeat seat = getPassengerSeat(passenger);
-		if (seat != null) seat.positionRider(passenger);
+		}
 	}
 	
 	@Nullable

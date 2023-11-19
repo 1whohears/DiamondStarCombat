@@ -357,6 +357,14 @@ public class UtilAngles {
     	return new float[] {(float)ea.pitch, (float)ea.yaw};
     }
     
+    public static Matrix4f pivotRot(Vector3f pivot, Quaternion rot) {
+    	return pivotRot(pivot.x(), pivot.y(), pivot.z(), rot);
+    }
+    
+    public static Matrix4f pivotInvRot(Vector3f pivot, Quaternion rot) {
+    	return pivotRot(-pivot.x(), -pivot.y(), -pivot.z(), rot);
+    }
+    
     public static Matrix4f pivotRot(float x, float y, float z, Quaternion rot) {
 		Matrix4f mat = Matrix4f.createTranslateMatrix(x, y, z);
 		mat.multiply(rot);

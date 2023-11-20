@@ -43,4 +43,8 @@ public class WeaponTabComponent extends GuiComponent {
         blit(stack, 0, 0, 0, sign * FRAMES[frame], TAB_WIDTH, TAB_HEIGHT, TAB_WIDTH, FILE_HEIGHT);
         stack.popPose();
     }
+
+    public static int getMaxFrames() {
+        return FRAMES.length;
+    }
 }

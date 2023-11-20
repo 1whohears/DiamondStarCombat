@@ -69,21 +69,20 @@ public class HudOverlay extends VehicleOverlayComponent {
 
         // PoseStack manipulation is done here to render the crosshair components as the blit method only takes
         // ints for position; making it impossible to center them
-        // FIXME: shit is still off-centre. ugh.
         poseStack.pushPose();
-        poseStack.translate(((double) (screenWidth - 9) / 2), (double) (screenHeight - 6) / 2, 0);
+        poseStack.translate(((((double) screenWidth) - 9.0) / 2.0), (((double) screenHeight) - 6.0) / 2.0, 0);
         blit(poseStack, 0, 0, 150, 16, 9, 6);
         poseStack.popPose();
 
         poseStack.pushPose();
-        poseStack.translate(((double) (screenWidth - 22) / 2), (double) (screenHeight - 22) / 2, 0);
+        poseStack.translate(((((double) screenWidth) - 22.0) / 2.0), ((((double) screenHeight) - 22.0) / 2.0), 0);
         // TODO: method to check if plane has a lock on something
         // int vOffsetForCircle = plane.hasLock() ? 38 : 16;
         blit(poseStack, 0, 0, 128, 16, 22, 22);
         poseStack.popPose();
 
         poseStack.pushPose();
-        poseStack.translate(((double) (screenWidth - 25) / 2), (double) (screenHeight - 5) / 2, 0);
+        poseStack.translate(((((double) screenWidth) - 25.0) / 2.0), ((((double) screenHeight) - 5.0) / 2.0), 0);
         blit(poseStack, 0, 59, 128, 60, 25, 5);
         poseStack.popPose();
 
@@ -99,7 +98,7 @@ public class HudOverlay extends VehicleOverlayComponent {
      */
     private static void drawStrings(PoseStack poseStack, int screenWidth, int screenHeight, EntityPlane plane) {
         poseStack.pushPose();
-        poseStack.translate(((double) screenWidth / 2) + 30, ((double) (screenHeight + VERTICAL_BOUNDS_WIDTH) / 2) - 28, 0);
+        poseStack.translate((((double) screenWidth) / 2.0) + 30.0, ((((double) screenHeight) + ((double) VERTICAL_BOUNDS_WIDTH)) / 2.0) - 28.0, 0);
         poseStack.scale(0.7F, 0.7F, 1);
 
         drawString(poseStack, getFont(),
@@ -109,7 +108,7 @@ public class HudOverlay extends VehicleOverlayComponent {
 
         poseStack.popPose();
         poseStack.pushPose();
-        poseStack.translate(((double) screenWidth / 2) - 56, ((double) (screenHeight + VERTICAL_BOUNDS_WIDTH) / 2) - 28, 0);
+        poseStack.translate((((double) screenWidth) / 2.0) - 56.0, ((((double) screenHeight) + ((double) VERTICAL_BOUNDS_WIDTH)) / 2.0) - 28.0, 0);
         poseStack.scale(0.7F, 0.7F, 1);
 
         drawString(poseStack, getFont(),
@@ -136,14 +135,15 @@ public class HudOverlay extends VehicleOverlayComponent {
 
         RenderSystem.setShaderTexture(0, ATTITUDE_TEXTURE);
 
-        int xOrigin = ((screenWidth - HORIZONTAL_BOUNDS_U_WIDTH) / 2);
-        int yOrigin = ((screenHeight - HORIZONTAL_BOUNDS_V_HEIGHT) / 2) + 1;
+        double xOrigin = ((((double) screenWidth) - ((double) HORIZONTAL_BOUNDS_U_WIDTH)) / 2.0);
+        double yOrigin = ((((double) screenHeight) - ((double) HORIZONTAL_BOUNDS_V_HEIGHT)) / 2.0) + 1.0;
 
-        poseStack.translate(xOrigin + (double) (HORIZONTAL_BOUNDS_U_WIDTH - 1) / 2, yOrigin + (double) HORIZONTAL_BOUNDS_V_HEIGHT / 2, HORIZONTAL_BOUNDS_BLIT_OFFSET);
+        poseStack.translate(xOrigin + (((double) HORIZONTAL_BOUNDS_U_WIDTH) - 1.0) / 2.0, yOrigin + ((double) HORIZONTAL_BOUNDS_V_HEIGHT) / 2.0, HORIZONTAL_BOUNDS_BLIT_OFFSET);
         poseStack.mulPose(Vector3f.ZP.rotationDegrees(-plane.zRot));
 
         // TODO: make this look less jarring
         poseStack.translate(-(plane.getYawRate() * 5.6), 0, 0);
+        // poseStack.translate(-(Math.pow(plane.getYawRate(), 2) * 0.36), 0, 0);
 
         blit(poseStack,
                 -HORIZONTAL_BOUNDS_U_WIDTH / 2, -HORIZONTAL_BOUNDS_V_HEIGHT / 2,

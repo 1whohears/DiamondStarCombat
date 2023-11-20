@@ -78,7 +78,7 @@ public class EntityHelicopter extends EntityVehicle {
 		}
 		super.tickAir(q);
 		Vec3 motion = getDeltaMovement();
-		if (onlyFreeLook() && isOperational()) {
+		if (driverCanFreeLook() && isOperational()) {
 			motion = motion.multiply(0.95, 1, 0.95);
 			EulerAngles a = UtilAngles.toDegrees(q);
 			// pitch forward backward
@@ -108,7 +108,7 @@ public class EntityHelicopter extends EntityVehicle {
 		super.directionAir(q);
 		if (!isOperational()) return;
 		addMomentY(inputs.yaw * getYawTorque(), true);
-		if (!onlyFreeLook()) {
+		if (!driverCanFreeLook()) {
 			addMomentX(inputs.pitch * getPitchTorque(), true);
 			addMomentZ(inputs.roll * getRollTorque(), true);
 		} else flatten(q, getMaxDeltaPitch(), getMaxDeltaRoll(), false);

@@ -79,7 +79,7 @@ public class ClientRenderEvents {
 	@SubscribeEvent
 	public static void onRenderGui(RenderGuiOverlayEvent.Pre event) {
 		if (!(Minecraft.getInstance().player.getRootVehicle() instanceof EntityVehicle vehicle)) return;
-		if (vehicle.onlyFreeLook()) return;
+		if (vehicle.driverCanFreeLook()) return;
 
 		if (Objects.equals(event.getOverlay().id(), HOTBAR.id())) event.setCanceled(true);
 		if (Objects.equals(event.getOverlay().id(), CROSSHAIR.id())) event.setCanceled(true);
@@ -93,7 +93,7 @@ public class ClientRenderEvents {
 	@SubscribeEvent
 	public static void onRenderHand(RenderHandEvent event) {
 		if (!(Minecraft.getInstance().player.getRootVehicle() instanceof EntityVehicle vehicle)) return;
-		if (vehicle.onlyFreeLook()) return;
+		if (vehicle.driverCanFreeLook()) return;
 
 		event.setCanceled(true);
 	}

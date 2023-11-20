@@ -3,7 +3,6 @@ package com.onewhohears.dscombat.client.overlay.components;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
-import com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 import com.onewhohears.dscombat.util.UtilEntity;
@@ -49,7 +48,7 @@ public class HudOverlay extends VehicleOverlayComponent {
     @Override
     protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
         if (!(getPlayerRootVehicle() instanceof EntityPlane plane)) return;
-        if (plane.onlyFreeLook()) return;
+        if (plane.driverCanFreeLook()) return;
 
         drawStrings(poseStack, screenWidth, screenHeight, plane);
 

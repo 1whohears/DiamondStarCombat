@@ -23,7 +23,7 @@ public class PlaneDataOverlay extends VehicleOverlayComponent {
     @Override
     protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
         if (!(getPlayerRootVehicle() instanceof EntityPlane plane)) return;
-        if (plane.onlyFreeLook()) return;
+        if (plane.driverCanFreeLook()) return;
 
         drawString(poseStack, getFont(),
                 String.format("AOA: %3.1f", plane.getAOA()),

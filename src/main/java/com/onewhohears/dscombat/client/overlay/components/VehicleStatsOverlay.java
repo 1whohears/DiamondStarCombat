@@ -32,7 +32,7 @@ public class VehicleStatsOverlay extends VehicleOverlayComponent {
     @Override
     protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
         if (!(getPlayerRootVehicle() instanceof EntityVehicle vehicle)) return;
-        if (vehicle.onlyFreeLook()) return;
+        if (vehicle.driverCanFreeLook()) return;
 
         int xOrigin = screenWidth - STICK_BASE_SIZE - PADDING;
         int yOrigin = screenHeight - STICK_BASE_SIZE - PADDING * 3 - FUEL_GAUGE_HEIGHT - 10;

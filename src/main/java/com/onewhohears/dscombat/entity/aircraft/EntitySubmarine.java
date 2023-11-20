@@ -52,7 +52,7 @@ public class EntitySubmarine extends EntityBoat {
 	@Override
 	public void directionWater(Quaternion q) {
 		if (!isOperational()) return;
-		if (onlyFreeLook()) flatten(q, getMaxDeltaPitch(), getMaxDeltaRoll(), false);
+		if (driverCanFreeLook()) flatten(q, getMaxDeltaPitch(), getMaxDeltaRoll(), false);
 		else {
 			addMomentX(inputs.pitch * getPitchTorque(), true);
 			addMomentZ(inputs.roll * getRollTorque(), true);
@@ -89,7 +89,7 @@ public class EntitySubmarine extends EntityBoat {
 	public void tickWater(Quaternion q) {
 		super.tickWater(q);
 		Vec3 move = getDeltaMovement();
-		if (onlyFreeLook() && isOperational()) {
+		if (driverCanFreeLook() && isOperational()) {
 			move = move.add(0, inputs.pitch * 0.04, 0);
 			double max = 0.2;
 			if (Math.abs(move.y) > max) move.multiply(1, max/move.y, 1);

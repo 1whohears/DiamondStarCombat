@@ -160,7 +160,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	private float landingGearPos, landingGearPosOld;
 	
 	protected RadarMode radarMode = RadarMode.ALL;
-	protected boolean isLandingGear, onlyFreeLook = true;
+	protected boolean isLandingGear, driverCanFreeLook = true;
 	protected float throttle;
 	
 	protected RotableHitbox[] hitboxes = new RotableHitbox[0];
@@ -371,7 +371,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		// OTHER
 		setRadarMode(RadarMode.byId(radarMode));
 		setLandingGear(gear);
-		setOnlyFreeLook(freeLook);
+		setDriverCanFreeLook(freeLook);
 		setCurrentThrottle(throttle);
 	}
 	
@@ -381,7 +381,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		buffer.writeInt(weaponSystem.getSelectedIndex());
 		buffer.writeInt(getRadarMode().ordinal());
 		buffer.writeBoolean(isLandingGear());
-		buffer.writeBoolean(onlyFreeLook());
+		buffer.writeBoolean(driverCanFreeLook());
 		buffer.writeFloat(getCurrentThrottle());
 		PartsManager.writeSlotsToBuffer(buffer, partsManager.getSlots());
 		textureManager.write(buffer);
@@ -1287,16 +1287,16 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		this.throttleToZero();
 	}
 	
-	public final boolean onlyFreeLook() {
-    	return onlyFreeLook;
+	public final boolean driverCanFreeLook() {
+    	return this.driverCanFreeLook;
     }
     
-    public final void setOnlyFreeLook(boolean onlyFreeLook) {
-    	this.onlyFreeLook = onlyFreeLook;
+    public final void setDriverCanFreeLook(boolean driverCanFreeLook) {
+    	this.driverCanFreeLook = driverCanFreeLook;
     }
     
     public void toggleFreeLook() {
-    	setOnlyFreeLook(!onlyFreeLook());
+    	setDriverCanFreeLook(!driverCanFreeLook());
     }
     
     public RadarMode getRadarMode() {

@@ -43,30 +43,28 @@ public final class ClientInputEvents {
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void clientTickPilotControl(TickEvent.ClientTickEvent event) {
 		if (event.phase != Phase.END) return;
-		Minecraft m = Minecraft.getInstance();
-		final var player = m.player;
+
+		Minecraft mc = Minecraft.getInstance();
+		final var player = mc.player;
 		if (player == null) return;
+		if (!player.isPassenger() || !(player.getRootVehicle() instanceof EntityVehicle plane)) return;
+
 		int selectNextWeapon = 0;
 		if (DSCKeys.weaponSelect2Key.consumeClick()) selectNextWeapon = -1;
 		else if (DSCKeys.weaponSelectKey.consumeClick()) selectNextWeapon = 1;
 		boolean openMenu = DSCKeys.planeMenuKey.consumeClick();
 		boolean toggleGear = DSCKeys.landingGear.consumeClick();
 		boolean cycleRadarMode = DSCKeys.radarModeKey.consumeClick();
-		if (!player.isPassenger()) {
-			return;
-		}
-		if (!(player.getRootVehicle() instanceof EntityVehicle plane)) {
-			return;
-		}
+
 		if (DSCKeys.mouseModeKey.consumeClick()) {
 			plane.toggleFreeLook();
 		}
 		Entity controller = plane.getControllingPassenger();
 		if (controller == null || !controller.equals(player)) return;
 		if (DSCKeys.resetMouseKey.isDown()) centerMouse();
-		else if (m.screen != null) centerMouse();
-		double mouseX = m.mouseHandler.xpos() - mouseCenterX;
-		double mouseY = -(m.mouseHandler.ypos() - mouseCenterY);
+		else if (mc.screen != null) centerMouse();
+		double mouseX = mc.mouseHandler.xpos() - mouseCenterX;
+		double mouseY = -(mc.mouseHandler.ypos() - mouseCenterY);
 		boolean flare = DSCKeys.flareKey.isDown();
 		boolean shoot = DSCKeys.shootKey.isDown() && playerCanShoot(player);
 		boolean flip = DSCKeys.flipControlsKey.isDown();
@@ -120,8 +118,8 @@ public final class ClientInputEvents {
 			} else if (ya > deadZone) {
 				pitch = (float)((ya-deadZone)/md) * ys;
 			}
-			if (m.mouseHandler.getYVelocity() == 0) {
-				mouseCenterY = (int)Mth.approach((float)mouseCenterY, (float)m.mouseHandler.ypos(), 
+			if (mc.mouseHandler.getYVelocity() == 0) {
+				mouseCenterY = (int)Mth.approach((float)mouseCenterY, (float)mc.mouseHandler.ypos(),
 						Config.CLIENT.mouseYReturnRate.get().floatValue());
 			}
 			// control roll
@@ -131,8 +129,8 @@ public final class ClientInputEvents {
 			} else if (xa > deadZone) {
 				roll = (float)((xa-deadZone)/md) * xs;
 			}
-			if (m.mouseHandler.getXVelocity() == 0) {
-				mouseCenterX = (int)Mth.approach((float)mouseCenterX, (float)m.mouseHandler.xpos(), 
+			if (mc.mouseHandler.getXVelocity() == 0) {
+				mouseCenterX = (int)Mth.approach((float)mouseCenterX, (float)mc.mouseHandler.xpos(),
 						Config.CLIENT.mouseXReturnRate.get().floatValue());
 			}
 		}

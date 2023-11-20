@@ -30,8 +30,6 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 @Mod.EventBusSubscriber(modid = DSCombatMod.MODID, bus = Bus.FORGE, value = Dist.CLIENT)
 public final class ClientInputEvents {
-	public static boolean MOUSE_MODE = false;
-
 	private static double mouseCenterX = 0;
 	private static double mouseCenterY = 0;
 	
@@ -54,13 +52,13 @@ public final class ClientInputEvents {
 		boolean openMenu = DSCKeys.planeMenuKey.consumeClick();
 		boolean toggleGear = DSCKeys.landingGear.consumeClick();
 		boolean cycleRadarMode = DSCKeys.radarModeKey.consumeClick();
-		if (!player.isPassenger()) return;
+		if (!player.isPassenger()) {
+			return;
+		}
 		if (!(player.getRootVehicle() instanceof EntityVehicle plane)) {
-			MOUSE_MODE = false;
 			return;
 		}
 		if (DSCKeys.mouseModeKey.consumeClick()) {
-			MOUSE_MODE = !MOUSE_MODE;
 			plane.toggleFreeLook();
 		}
 		Entity controller = plane.getControllingPassenger();
@@ -151,7 +149,7 @@ public final class ClientInputEvents {
 				flare, shoot, openMenu, special, special2, 
 				rollLeft && rollRight, 
 				selectNextWeapon, cycleRadarMode, toggleGear);
-		if (MOUSE_MODE && !plane.onlyFreeLook()) centerMouse();
+		if (!plane.onlyFreeLook()) centerMouse();
 	}
 	
 	@SubscribeEvent(priority = EventPriority.HIGH)

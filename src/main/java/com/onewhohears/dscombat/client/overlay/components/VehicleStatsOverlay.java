@@ -8,7 +8,6 @@ import com.onewhohears.dscombat.util.UtilEntity;
 import java.awt.*;
 import java.util.Objects;
 
-import static com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents.MOUSE_MODE;
 import static com.onewhohears.dscombat.client.overlay.components.VehicleControlOverlay.PEDAL_HEIGHT;
 import static com.onewhohears.dscombat.client.overlay.components.VehicleControlOverlay.STICK_BASE_SIZE;
 import static com.onewhohears.dscombat.client.overlay.components.VehicleFuelOverlay.FUEL_GAUGE_HEIGHT;
@@ -33,7 +32,7 @@ public class VehicleStatsOverlay extends VehicleOverlayComponent {
     @Override
     protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
         if (!(getPlayerRootVehicle() instanceof EntityVehicle vehicle)) return;
-        if (MOUSE_MODE) return;
+        if (vehicle.onlyFreeLook()) return;
 
         int xOrigin = screenWidth - STICK_BASE_SIZE - PADDING;
         int yOrigin = screenHeight - STICK_BASE_SIZE - PADDING * 3 - FUEL_GAUGE_HEIGHT - 10;

@@ -11,12 +11,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
-import net.minecraftforge.client.event.RenderGuiOverlayEvent;
-import net.minecraftforge.client.event.RenderHandEvent;
-import net.minecraftforge.client.event.RenderLevelStageEvent;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.event.RenderLevelStageEvent.Stage;
-import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -24,7 +20,6 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 import java.util.Objects;
 
-import static com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents.MOUSE_MODE;
 import static net.minecraftforge.client.gui.overlay.VanillaGuiOverlay.*;
 
 @Mod.EventBusSubscriber(modid = DSCombatMod.MODID, bus = Bus.FORGE, value = Dist.CLIENT)
@@ -83,8 +78,8 @@ public class ClientRenderEvents {
 	// TODO: add some config to allow disabling other mods' overlays
 	@SubscribeEvent
 	public static void onRenderGui(RenderGuiOverlayEvent.Pre event) {
-		if (!MOUSE_MODE) return;
-		if (!(Minecraft.getInstance().player.getRootVehicle() instanceof EntityVehicle)) return;
+		if (!(Minecraft.getInstance().player.getRootVehicle() instanceof EntityVehicle vehicle)) return;
+		if (vehicle.onlyFreeLook()) return;
 
 		if (Objects.equals(event.getOverlay().id(), HOTBAR.id())) event.setCanceled(true);
 		if (Objects.equals(event.getOverlay().id(), CROSSHAIR.id())) event.setCanceled(true);
@@ -97,8 +92,8 @@ public class ClientRenderEvents {
 
 	@SubscribeEvent
 	public static void onRenderHand(RenderHandEvent event) {
-		if (!MOUSE_MODE) return;
-		if (!(Minecraft.getInstance().player.getRootVehicle() instanceof EntityVehicle)) return;
+		if (!(Minecraft.getInstance().player.getRootVehicle() instanceof EntityVehicle vehicle)) return;
+		if (vehicle.onlyFreeLook()) return;
 
 		event.setCanceled(true);
 	}

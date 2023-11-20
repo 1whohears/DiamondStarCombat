@@ -3,17 +3,16 @@ package com.onewhohears.dscombat.client.overlay.components;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
+import com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 import com.onewhohears.dscombat.util.UtilEntity;
-import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 
 import java.awt.*;
 import java.util.Objects;
 
 import static com.onewhohears.dscombat.DSCombatMod.MODID;
-import static com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents.MOUSE_MODE;
 
 public class HudOverlay extends VehicleOverlayComponent {
     public static final ResourceLocation HUD = new ResourceLocation(MODID,
@@ -47,13 +46,10 @@ public class HudOverlay extends VehicleOverlayComponent {
 
     private HudOverlay() {}
 
-    // FIXME: switching b/w planes while mouse mode is on causes it to break
-    // Suggested fix is to tick MOUSE_MODE = false whenever the player is not in a vehicle (or even when first hopping in).
-    // FIXME: mouse mode still glitches out when the current vehicle is destroyed and the player moves to a new one
     @Override
     protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
         if (!(getPlayerRootVehicle() instanceof EntityPlane plane)) return;
-        if (!MOUSE_MODE || plane.onlyFreeLook()) return;
+        if (plane.onlyFreeLook()) return;
 
         drawStrings(poseStack, screenWidth, screenHeight, plane);
 

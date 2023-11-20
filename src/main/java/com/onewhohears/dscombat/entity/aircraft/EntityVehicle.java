@@ -1,11 +1,5 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Predicate;
-
-import javax.annotation.Nullable;
-
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.Config;
@@ -18,13 +12,7 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientAddForceMoment;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAircraftControl;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftCollide;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftMoveRot;
-import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
-import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
-import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
-import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData;
-import com.onewhohears.dscombat.data.aircraft.VehicleInputManager;
-import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager;
-import com.onewhohears.dscombat.data.aircraft.VehicleTextureManager;
+import com.onewhohears.dscombat.data.aircraft.*;
 import com.onewhohears.dscombat.data.damagesource.AircraftDamageSource;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartsManager;
@@ -45,7 +33,6 @@ import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -63,12 +50,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityDimensions;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MoverType;
-import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -88,6 +70,11 @@ import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
+
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * the parent class for all vehicle entities in this mod

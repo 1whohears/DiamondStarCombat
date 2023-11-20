@@ -128,7 +128,6 @@ public class HudOverlay extends VehicleOverlayComponent {
         poseStack.popPose();
     }
 
-    // FIXME: different resolutions/screen sizes will cause these values to not line up properly (usually by one or two pixels)
     // FIXME: behaviour near +-90 degrees pitch
     private void drawAttitudeOverlay(PoseStack poseStack, int screenWidth, int screenHeight, EntityPlane plane) {
         poseStack.pushPose();

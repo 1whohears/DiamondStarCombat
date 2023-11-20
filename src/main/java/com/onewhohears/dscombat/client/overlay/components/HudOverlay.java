@@ -6,6 +6,7 @@ import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 import com.onewhohears.dscombat.util.UtilEntity;
+import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 
 import java.awt.*;
@@ -76,9 +77,9 @@ public class HudOverlay extends VehicleOverlayComponent {
 
         poseStack.pushPose();
         poseStack.translate(((((double) screenWidth) - 22.0) / 2.0), ((((double) screenHeight) - 22.0) / 2.0), 0);
-        // TODO: method to check if plane has a lock on something
-        // int vOffsetForCircle = plane.hasLock() ? 38 : 16;
-        blit(poseStack, 0, 0, 128, 16, 22, 22);
+        // FIXME: how does #hasTarget work? (switch vOffset depending on if a radar lock exists)
+        int vOffsetForCircle = plane.radarSystem.hasTarget(plane) ? 38 : 16;
+        blit(poseStack, 0, 0, 128, vOffsetForCircle, 22, 22);
         poseStack.popPose();
 
         poseStack.pushPose();
@@ -142,7 +143,6 @@ public class HudOverlay extends VehicleOverlayComponent {
 
         // TODO: make this look less jarring
         poseStack.translate(-(plane.getYawRate() * 5.6), 0, 0);
-        // poseStack.translate(-(Math.pow(plane.getYawRate(), 2) * 0.36), 0, 0);
 
         blit(poseStack,
                 -HORIZONTAL_BOUNDS_U_WIDTH / 2, -HORIZONTAL_BOUNDS_V_HEIGHT / 2,

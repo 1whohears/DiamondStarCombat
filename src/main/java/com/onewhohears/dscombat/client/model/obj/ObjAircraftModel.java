@@ -2,10 +2,12 @@ package com.onewhohears.dscombat.client.model.obj;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Quaternion;
+import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.renderer.RendererEntityAircraft;
 import com.onewhohears.dscombat.data.aircraft.VehicleTextureManager.TextureLayer;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.util.math.UtilAngles;
+import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -48,7 +50,9 @@ public class ObjAircraftModel<T extends EntityVehicle> extends ObjEntityModel<T>
 	@Override
 	protected void rotate(T entity, float partialTicks, PoseStack poseStack) {
 		Quaternion q = UtilAngles.lerpQ(partialTicks, entity.getPrevQ(), entity.getClientQ());
-        poseStack.mulPose(q);
+        Vector3f pivot = getGlobalPivot();
+		if (!UtilGeometry.isZero(pivot)) poseStack.mulPoseMatrix(UtilAngles.pivotInvRot(pivot, q));
+		else poseStack.mulPose(q);
 	}
 	
 	@Override

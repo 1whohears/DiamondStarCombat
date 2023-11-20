@@ -1,8 +1,8 @@
 package com.onewhohears.dscombat.client.model.obj.custom;
 
 import com.google.common.collect.ImmutableMap;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
+import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.model.obj.ObjPartModel;
 import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
 
@@ -22,10 +22,11 @@ public class VLSModel extends ObjPartModel<EntityWeaponRack> {
 		return Transforms.of(builder.build());
 	}
 	
+	private static final Vector3f PIVOT = new Vector3f(0, 1.2f, 0);
+	
 	@Override
-	protected void handleGlobalOverrides(EntityWeaponRack entity, float partialTicks, PoseStack poseStack) {
-		super.handleGlobalOverrides(entity, partialTicks, poseStack);
-		poseStack.translate(0, 1.2, 0);
+	protected Vector3f getGlobalPivot() {
+		return PIVOT;
 	}
 
 }

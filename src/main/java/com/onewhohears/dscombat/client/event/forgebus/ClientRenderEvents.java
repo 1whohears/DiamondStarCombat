@@ -45,7 +45,6 @@ public class ClientRenderEvents {
 		player.yHeadRotO = relangles[1];
 		player.setYBodyRot(relangles[1]);
 		player.yBodyRotO = relangles[1];
-		// FIXME 1.1 player and external parts aren't rendering correctly when bronco plane rolls
 		// HOW 1 set player head model part x rot to relangles[0]
 		// neither of these work
 		//event.getRenderer().getModel().head.xRot = (float) Math.toRadians(relangles[0]);

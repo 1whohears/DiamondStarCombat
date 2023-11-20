@@ -108,6 +108,10 @@ public class UtilGeometry {
 		return v.x == 0 && v.y == 0 && v.z == 0;
 	}
 	
+	public static boolean isZero(Vector3f v) {
+		return v.x() == 0 && v.y() == 0 && v.z() == 0;
+	}
+	
 	public static Vec3 getClosestPointOnAABB(Vec3 pos, AABB aabb) {
 		if (pos == null) return aabb.getCenter();
 		double rx = pos.x, ry = pos.y, rz = pos.z;

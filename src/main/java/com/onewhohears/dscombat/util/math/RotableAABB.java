@@ -213,17 +213,21 @@ public class RotableAABB {
 		Vec3 diff = toRelRot.subtract(fromRelRot);
 		double tMin = Double.MAX_VALUE;
 		Vec3 clipRelRot = Vec3.ZERO;
-		// FIXME 4.5 clip logic is better but something is still wrong
-		System.out.println("fromRelRot = "+fromRelRot);
-		System.out.println("diff = "+diff);
-		System.out.println("extents = "+extents);
+		/*
+		 * HOW 5 it seems this clip math is correct...
+		 * but the survival player can't punch the hitbox from top down sometimes when the creative player can???
+		 * oh well. why would you punch the boat from top down anyway. it works from the side consistently anyway.
+		 */
+		//System.out.println("fromRelRot = "+fromRelRot);
+		//System.out.println("diff = "+diff);
+		//System.out.println("extents = "+extents);
 		Double clipY = clipAxis(fromRelRot.y, toRelRot.y, extents.y);
 		if (clipY != null) {
 			double t = (clipY - fromRelRot.y) / diff.y;
 			clipRelRot = fromRelRot.add(diff.scale(t));
 			clipRelRot = new Vec3(clipRelRot.x, clipY, clipRelRot.z);
 			if (t < tMin && containsRelRot(clipRelRot)) tMin = t;
-			System.out.println("clipRelRot = "+clipRelRot);
+			//System.out.println("clipRelRot = "+clipRelRot);
 		}
 		Double clipX = clipAxis(fromRelRot.x, toRelRot.x, extents.x);
 		if (clipX != null) {

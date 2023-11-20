@@ -1,8 +1,8 @@
 package com.onewhohears.dscombat.client.model.obj.custom;
 
 import com.google.common.collect.ImmutableMap;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
+import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.model.obj.ObjAircraftModel;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 import com.onewhohears.dscombat.util.math.UtilAngles;
@@ -18,7 +18,7 @@ public class BroncoPlaneModel extends ObjAircraftModel<EntityPlane> {
 	@Override
 	protected Transforms getComponentTransforms(EntityPlane entity, float partialTicks) {
 		float bladerot = entity.getPropellerRotation(partialTicks);
-		float gearpos = entity.getLandingGearPos(partialTicks)*90;
+		float gearpos = entity.getLandingGearPos(partialTicks);
 		Matrix4f blade0rot_mat = UtilAngles.pivotPixelsRotZ(44.5f, 31.5f, 11f, bladerot);
 		Matrix4f blade1rot_mat = UtilAngles.pivotPixelsRotZ(-44.5f, 31.5f, 11f, bladerot);
 		Matrix4f lg0_mat, lg1_mat, lg2_mat;
@@ -40,10 +40,11 @@ public class BroncoPlaneModel extends ObjAircraftModel<EntityPlane> {
 		return Transforms.of(transforms);
 	}
 	
+	private static final Vector3f PIVOT = new Vector3f(0, -2f, 0);
+	
 	@Override
-	protected void handleGlobalOverrides(EntityPlane entity, float partialTicks, PoseStack poseStack) {
-		super.handleGlobalOverrides(entity, partialTicks, poseStack);
-		poseStack.translate(0, -2, 0);
+	protected Vector3f getGlobalPivot() {
+		return PIVOT;
 	}
 
 }

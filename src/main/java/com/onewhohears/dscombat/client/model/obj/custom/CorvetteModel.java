@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.client.model.obj.custom;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.model.obj.ObjAircraftModel;
 import com.onewhohears.dscombat.entity.aircraft.EntityBoat;
 
@@ -10,10 +10,11 @@ public class CorvetteModel extends ObjAircraftModel<EntityBoat> {
 		super("corvette");
 	}
 	
+	private static final Vector3f PIVOT = new Vector3f(0, 1.5f, 0);
+	
 	@Override
-	protected void handleGlobalOverrides(EntityBoat entity, float partialTicks, PoseStack poseStack) {
-		super.handleGlobalOverrides(entity, partialTicks, poseStack);
-		poseStack.translate(0, 1.5, 0);
+	protected Vector3f getGlobalPivot() {
+		return PIVOT;
 	}
 
 }

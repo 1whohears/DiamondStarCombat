@@ -2,8 +2,6 @@ package com.onewhohears.dscombat.util.math;
 
 import java.util.Optional;
 
-import com.onewhohears.minigames.util.UtilParse;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -18,7 +16,8 @@ public class DisguisedAABB extends AABB {
 	@Override
 	public Optional<Vec3> clip(Vec3 from, Vec3 to) {
 		Optional<Vec3> clip = hitbox.clip(from, to);
-		System.out.println("CLIP DisguisedAABB:"+clip.toString()+"FROM:"+UtilParse.prettyVec3(from)+"TO:"+UtilParse.prettyVec3(to));
+		/*if (clip.isPresent()) System.out.println("CLIP DisguisedAABB:"+UtilParse.prettyVec3(clip.get())
+								+"FROM:"+UtilParse.prettyVec3(from)+"TO:"+UtilParse.prettyVec3(to));*/
 		return clip;
 	}
 	@Override

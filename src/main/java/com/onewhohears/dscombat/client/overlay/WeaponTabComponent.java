@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.client.overlay;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.data.weapon.WeaponData;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.resources.ResourceLocation;
 
@@ -32,16 +33,22 @@ public class WeaponTabComponent extends GuiComponent {
     /**
      * To avoid redundant calls to <code>RenderSystem</code>, the client code must call
      * <code>WeaponTabComponent#prepareForRender</code> wherever in the code the tab is to be rendered.
-     * @param frame an <code>int</code> from 0 to 8 inclusive representing the frame of animation.
+     * @param frame an <code>int</code> representing the frame of animation. See the return of
+     *              <code>#getMaxFrames</code> and subtract one to get the highest allowed frame.
+     *              Value must be between 0 and the highest frame inclusive.
      */
     public static void drawTab(PoseStack stack, double x, double y, int blitOffset, int frame, boolean scrollsUpward) {
-        if (frame < 0 || frame > 8) throw new IllegalArgumentException("There are only 9 frames!");
+        if (frame < 0 || frame > getMaxFrames() - 1) throw new IllegalArgumentException("There are only " + getMaxFrames() + " frames!");
         float sign = scrollsUpward ? -1.0F : 1.0F;
 
         stack.pushPose();
         stack.translate(x, y, blitOffset);
         blit(stack, 0, 0, 0, sign * FRAMES[frame], TAB_WIDTH, TAB_HEIGHT, TAB_WIDTH, FILE_HEIGHT);
         stack.popPose();
+    }
+
+    public static void drawWeapon(PoseStack stack, WeaponData weapon, double x, double y, int blitOffset, int frame, boolean scrollsUpward) {
+
     }
 
     public static int getMaxFrames() {

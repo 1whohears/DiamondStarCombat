@@ -27,10 +27,10 @@ public class HudOverlay extends VehicleOverlayComponent {
     public static final float CHANGE_G = (float) GREEN_ME_SAY_ALONE_RAMP.getGreen() / (START - END);
     public static final float CHANGE_R = (float) RED.getRed() / (START - END);
 
-    public static final byte ATTITUDE_TEXTURE_WIDTH = 78;
+    public static final byte ATTITUDE_TEXTURE_WIDTH = 88;
     public static final short ATTITUDE_TEXTURE_HEIGHT = 294;
     public static final short VERTICAL_BOUNDS_WIDTH = 128;
-    public static final byte HORIZONTAL_BOUNDS_U_WIDTH = 67;
+    public static final byte HORIZONTAL_BOUNDS_U_WIDTH = 77;
     public static final short HORIZONTAL_BOUNDS_V_HEIGHT = 71;
     public static final short HORIZONTAL_BOUNDS_V_OFFSET_0 = 112;
     public static final byte NUMBERS_UV_WIDTH = 6;

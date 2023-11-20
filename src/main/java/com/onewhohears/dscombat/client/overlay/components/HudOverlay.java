@@ -47,7 +47,8 @@ public class HudOverlay extends VehicleOverlayComponent {
     private HudOverlay() {}
 
     // FIXME: switching b/w planes while mouse mode is on causes it to break
-    // Suggested fix is to tick MOUSE_MODE = false whenever the player is not in a vehicle.
+    // Suggested fix is to tick MOUSE_MODE = false whenever the player is not in a vehicle (or even when first hopping in).
+    // FIXME: mouse mode still glitches out when the current vehicle is destroyed and the player moves to a new one
     @Override
     protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
         if (!(getPlayerRootVehicle() instanceof EntityPlane plane)) return;
@@ -97,7 +98,7 @@ public class HudOverlay extends VehicleOverlayComponent {
      */
     private static void drawStrings(PoseStack poseStack, int screenWidth, int screenHeight, EntityPlane plane) {
         poseStack.pushPose();
-        poseStack.translate(((double) screenWidth / 2) + 23, ((double) (screenHeight + VERTICAL_BOUNDS_WIDTH) / 2) - 25, 0);
+        poseStack.translate(((double) screenWidth / 2) + 30, ((double) (screenHeight + VERTICAL_BOUNDS_WIDTH) / 2) - 28, 0);
         poseStack.scale(0.7F, 0.7F, 1);
 
         drawString(poseStack, getFont(),
@@ -107,7 +108,7 @@ public class HudOverlay extends VehicleOverlayComponent {
 
         poseStack.popPose();
         poseStack.pushPose();
-        poseStack.translate(((double) screenWidth / 2) -50, ((double) (screenHeight + VERTICAL_BOUNDS_WIDTH) / 2) - 25, 0);
+        poseStack.translate(((double) screenWidth / 2) - 56, ((double) (screenHeight + VERTICAL_BOUNDS_WIDTH) / 2) - 28, 0);
         poseStack.scale(0.7F, 0.7F, 1);
 
         drawString(poseStack, getFont(),

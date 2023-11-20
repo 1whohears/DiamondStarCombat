@@ -29,8 +29,7 @@ public class HudOverlay extends VehicleOverlayComponent {
 
     public static final byte ATTITUDE_TEXTURE_WIDTH = 78;
     public static final short ATTITUDE_TEXTURE_HEIGHT = 294;
-    public static final byte VERTICAL_BOUNDS_WIDTH = 125;
-    public static final byte VERTICAL_BOUNDS_HEIGHT = 124;
+    public static final short VERTICAL_BOUNDS_WIDTH = 128;
     public static final byte HORIZONTAL_BOUNDS_U_WIDTH = 67;
     public static final short HORIZONTAL_BOUNDS_V_HEIGHT = 71;
     public static final short HORIZONTAL_BOUNDS_V_OFFSET_0 = 112;
@@ -61,12 +60,32 @@ public class HudOverlay extends VehicleOverlayComponent {
         RenderSystem.enableBlend();
 
         // TODO: vertical bounds change colour w/ vehicle health
+        //noinspection SuspiciousNameCombination
         blit(poseStack,
-                ((screenWidth - VERTICAL_BOUNDS_WIDTH) / 2), (screenHeight - VERTICAL_BOUNDS_HEIGHT) / 2,
+                ((screenWidth - VERTICAL_BOUNDS_WIDTH) / 2), (screenHeight - VERTICAL_BOUNDS_WIDTH) / 2,
                 0, 0,
-                VERTICAL_BOUNDS_WIDTH, VERTICAL_BOUNDS_HEIGHT);
+                VERTICAL_BOUNDS_WIDTH, VERTICAL_BOUNDS_WIDTH);
 
-        drawAttitudeOverlay(poseStack, screenWidth, screenHeight, plane);
+        // PoseStack manipulation is done here to render the crosshair components as the blit method only takes
+        // ints for position; making it impossible to center them
+        poseStack.pushPose();
+        poseStack.translate(((double) (screenWidth - 9) / 2), (double) (screenHeight - 6) / 2, 0);
+        blit(poseStack, 0, 0, 150, 16, 9, 6);
+        poseStack.popPose();
+
+        poseStack.pushPose();
+        poseStack.translate(((double) (screenWidth - 22) / 2), (double) (screenHeight - 22) / 2, 0);
+        // TODO: method to check if plane has a lock on something
+        // int vOffsetForCircle = plane.hasLock() ? 38 : 16;
+        blit(poseStack, 0, 0, 128, 16, 22, 22);
+        poseStack.popPose();
+
+        poseStack.pushPose();
+        poseStack.translate(((double) (screenWidth - 25) / 2), (double) (screenHeight - 5) / 2, 0);
+        blit(poseStack, 0, 59, 128, 60, 25, 5);
+        poseStack.popPose();
+
+        this.drawAttitudeOverlay(poseStack, screenWidth, screenHeight, plane);
 
 
         RenderSystem.disableBlend();
@@ -78,7 +97,7 @@ public class HudOverlay extends VehicleOverlayComponent {
      */
     private static void drawStrings(PoseStack poseStack, int screenWidth, int screenHeight, EntityPlane plane) {
         poseStack.pushPose();
-        poseStack.translate(((double) screenWidth / 2) + 23, ((double) (screenHeight + VERTICAL_BOUNDS_HEIGHT) / 2) - 25, 0);
+        poseStack.translate(((double) screenWidth / 2) + 23, ((double) (screenHeight + VERTICAL_BOUNDS_WIDTH) / 2) - 25, 0);
         poseStack.scale(0.7F, 0.7F, 1);
 
         drawString(poseStack, getFont(),
@@ -88,7 +107,7 @@ public class HudOverlay extends VehicleOverlayComponent {
 
         poseStack.popPose();
         poseStack.pushPose();
-        poseStack.translate(((double) screenWidth / 2) -50, ((double) (screenHeight + VERTICAL_BOUNDS_HEIGHT) / 2) - 25, 0);
+        poseStack.translate(((double) screenWidth / 2) -50, ((double) (screenHeight + VERTICAL_BOUNDS_WIDTH) / 2) - 25, 0);
         poseStack.scale(0.7F, 0.7F, 1);
 
         drawString(poseStack, getFont(),

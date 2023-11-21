@@ -10,7 +10,6 @@ import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
@@ -60,24 +59,37 @@ public class RotableHitbox extends PartEntity<EntityVehicle> {
 	public void handlePosibleCollision(List<VoxelShape> colliders, Entity entity, AABB aabb, Vec3 move) {
 		if (!couldCollide(entity) || !hitbox.isColliding(aabb)) return;
 		//System.out.println("HANDLE COLLISION "+entity+" "+move);
-		//CollisionData data = new CollisionData();
+		// FIXME 4.1 entities just fall off when the parent rotates or moves
 		// FIXME 4.2 players are frozen stuck when inside a RotableHitbox
-		// FIXME 4.4 move and rotate players standing on the platform is inaccurate when close to center
 		// FIXME 4.6 prevent entities from falling off when the chunks load
+		Vec3 entityMoveByParent = moveEntityFromParent(entity);
+		hitbox.addColliders(colliders, aabb.move(entityMoveByParent));
+	}
+	
+	public Vec3 moveEntityFromParent(Entity entity) {
+		/*
+		 * FIXME 4.4 only one RotableHitbox needs to run this per tick otherwise its rotation speed is doubled. 
+		 * it's actually not a double/float precision issue. 
+		 */
+		Vec3 parent_pos = getParent().position();
 		Vec3 parent_move = getParent().getDeltaMovement();
 		Vec3 parent_rot_rate = getParent().getAngularVel();
-		Vec3 rel_pos = hitbox.toRelRotPos(entity.position());
-		Vec3 rel_tan_vel = parent_rot_rate.scale(Mth.DEG_TO_RAD).multiply(-1,-1,1).cross(rel_pos);
-		Vec3 tan_vel = hitbox.toWorldVel(rel_tan_vel);
-		Vec3 entityMoveByParent = parent_move.add(tan_vel);//.add(0, 0.000001, 0);
+		Quaternion q = getParent().getQBySide();
+		Quaternion qi = q.copy();
+		qi.conj();
+		Vec3 rel_pos = UtilAngles.rotateVector(entity.position().subtract(parent_pos), qi);
+		Vec3 rel_tan_vel = parent_rot_rate.scale(Math.toRadians(1d))
+				.multiply(-1d,-1d,1d).cross(rel_pos);
+		Vec3 tan_vel = UtilAngles.rotateVector(rel_tan_vel, q);
+		Vec3 entityMoveByParent = parent_move.add(tan_vel);
 		entity.setPos(entity.position().add(entityMoveByParent));
 		entity.setYRot(entity.getYRot()-(float)parent_rot_rate.y);
 		if (entity instanceof EntityVehicle vehicle) {
-			Quaternion q = vehicle.getQBySide();
-			q.mul(Vector3f.YN.rotationDegrees((float)parent_rot_rate.y));
-			vehicle.setQBySide(q);
+			Quaternion qv = vehicle.getQBySide();
+			qv.mul(Vector3f.YN.rotationDegrees((float)parent_rot_rate.y));
+			vehicle.setQBySide(qv);
 		}
-		hitbox.addColliders(colliders, aabb.move(entityMoveByParent));
+		return entityMoveByParent;
 	}
 	
 	/*protected void positionEntities() {

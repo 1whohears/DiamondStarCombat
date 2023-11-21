@@ -64,7 +64,7 @@ public class RotableAABB {
 	
 	private double shapePosComponent(double clipRelRot, double ext) {
 		double max = ext - SUBSIZEHALF;
-		return Math.signum(clipRelRot) * Math.signum(max) * Math.min(Math.abs(clipRelRot), Math.abs(max));
+		return Math.signum(clipRelRot) * Math.min(Math.abs(clipRelRot), max);
 	}
 	
 	public void updateSubColliders(AABB aabb) {

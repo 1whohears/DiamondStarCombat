@@ -8,6 +8,11 @@ import net.minecraft.resources.ResourceLocation;
 
 import static com.onewhohears.dscombat.DSCombatMod.MODID;
 
+/**
+ * Class permitting simple rendering of tabs for the weapon overlay. Intended to be referenced as a
+ * static utility class.
+ * @author kawaiicakes
+ */
 public class WeaponTabComponent extends GuiComponent {
     public static final ResourceLocation WEAPON_TABS = new ResourceLocation(MODID,
             "textures/ui/weapon_tab.png");
@@ -55,23 +60,34 @@ public class WeaponTabComponent extends GuiComponent {
      *              <code>#getMaxFrames</code> and subtract one to get the highest allowed frame.
      *              Value must be between 0 and the highest frame inclusive.
      */
-    public static void drawWeapon(PoseStack stack, WeaponData weapon, double x, double y, int blitOffset, int frame, boolean scrollsUpward, boolean scrollsToBlank) {
+    public static void drawWeapon(PoseStack stack, WeaponData weapon, double x, double y, int blitOffset, int frame, boolean scrollsUpward, boolean scrollsToBlank, boolean scrollsFromBlank) {
         if (frame < 0 || frame > getMaxFrames() - 1) throw new IllegalArgumentException("There are only " + getMaxFrames() + " frames!");
+        if (scrollsToBlank && scrollsFromBlank) throw new IllegalArgumentException("Tabs may not scroll to and from blank!");
         if (weapon == null) throw new NullPointerException("Passed weapon is null!");
+
         float frameValue = FRAMES[frame];
         int sign = scrollsUpward ? 1 : -1;
-        int blankMultiplier = scrollsToBlank ? 1 : 0;
+        int toBlankMultiplier = scrollsToBlank ? 1 : 0;
+        int fromBlankMultiplier = scrollsFromBlank ? 1 : 0;
         int upScrollMultiplier = scrollsUpward ? 0 : 1;
+        int upScrollMultiplierInverse = scrollsUpward ? 1 : 0;
+
+        float vOffset = scrollsFromBlank
+                ? -frameValue * upScrollMultiplierInverse
+                : frameValue * toBlankMultiplier * upScrollMultiplier;
+        int pHeight = scrollsFromBlank
+                ? (int) frameValue
+                : TAB_HEIGHT - (int) (toBlankMultiplier * frameValue);
 
         RenderSystem.setShaderTexture(0, weapon.getWeaponIcon());
 
         stack.pushPose();
-        stack.translate(x, y + (sign * frameValue), blitOffset);
+        stack.translate(x, y + (sign * frameValue) - (sign * frameValue * fromBlankMultiplier * upScrollMultiplierInverse), blitOffset);
 
         blit(stack,
                 0, 0,
-                0, frameValue * blankMultiplier * upScrollMultiplier,
-                TAB_WIDTH,   TAB_HEIGHT - (int) (blankMultiplier * frameValue),
+                0, vOffset,
+                TAB_WIDTH, pHeight,
                 TAB_WIDTH, TAB_HEIGHT);
 
         stack.popPose();

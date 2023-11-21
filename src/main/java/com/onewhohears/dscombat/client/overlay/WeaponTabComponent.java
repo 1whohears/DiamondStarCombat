@@ -2,13 +2,14 @@ package com.onewhohears.dscombat.client.overlay;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.resources.ResourceLocation;
 
+import static com.onewhohears.dscombat.DSCombatMod.MODID;
+
 public class WeaponTabComponent extends GuiComponent {
-    public static final ResourceLocation WEAPON_TABS = new ResourceLocation(DSCombatMod.MODID,
+    public static final ResourceLocation WEAPON_TABS = new ResourceLocation(MODID,
             "textures/ui/weapon_tab.png");
     public static final byte FILE_HEIGHT = 48;
     public static final byte TAB_WIDTH = 93;
@@ -47,8 +48,35 @@ public class WeaponTabComponent extends GuiComponent {
         stack.popPose();
     }
 
-    public static void drawWeapon(PoseStack stack, WeaponData weapon, double x, double y, int blitOffset, int frame, boolean scrollsUpward) {
+    /**
+     * To avoid redundant calls to <code>RenderSystem</code>, the client code must call
+     * <code>WeaponTabComponent#prepareForRender</code> wherever in the code the tab is to be rendered.
+     * @param frame an <code>int</code> representing the frame of animation. See the return of
+     *              <code>#getMaxFrames</code> and subtract one to get the highest allowed frame.
+     *              Value must be between 0 and the highest frame inclusive.
+     */
+    public static void drawWeapon(PoseStack stack, WeaponData weapon, double x, double y, int blitOffset, int frame, boolean scrollsUpward, boolean scrollsToBlank) {
+        if (frame < 0 || frame > getMaxFrames() - 1) throw new IllegalArgumentException("There are only " + getMaxFrames() + " frames!");
+        if (weapon == null) throw new NullPointerException("Passed weapon is null!");
+        float frameValue = FRAMES[frame];
+        int sign = scrollsUpward ? 1 : -1;
+        int blankMultiplier = scrollsToBlank ? 1 : 0;
+        int upScrollMultiplier = scrollsUpward ? 0 : 1;
 
+        RenderSystem.setShaderTexture(0, weapon.getWeaponIcon());
+
+        stack.pushPose();
+        stack.translate(x, y + (sign * frameValue), blitOffset);
+
+        blit(stack,
+                0, 0,
+                0, frameValue * blankMultiplier * upScrollMultiplier,
+                TAB_WIDTH,   TAB_HEIGHT - (int) (blankMultiplier * frameValue),
+                TAB_WIDTH, TAB_HEIGHT);
+
+        stack.popPose();
+
+        RenderSystem.setShaderTexture(0, WEAPON_TABS);
     }
 
     public static int getMaxFrames() {

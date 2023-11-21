@@ -69,29 +69,32 @@ public class WeaponTabComponent extends GuiComponent {
         if (weapon == null) throw new NullPointerException("Passed weapon is null!");
 
         float frameValue = FRAMES[frame];
-        int sign = scrollsUpward ? 1 : -1;
-        int toBlankMultiplier = scrollsToBlank ? 1 : 0;
-        int fromBlankMultiplier = scrollsFromBlank ? 1 : 0;
-        int upScrollMultiplier = scrollsUpward ? 0 : 1;
-        int upScrollMultiplierInverse = scrollsUpward ? 1 : 0;
-
-        float vOffset = scrollsFromBlank
-                ? -frameValue * upScrollMultiplierInverse
-                : frameValue * toBlankMultiplier * upScrollMultiplier;
-        int pHeight = scrollsFromBlank
-                ? (int) frameValue
-                : TAB_HEIGHT - (int) (toBlankMultiplier * frameValue);
 
         RenderSystem.setShaderTexture(0, weapon.getWeaponIcon());
 
         stack.pushPose();
-        stack.translate(x, y + (sign * frameValue) - (sign * frameValue * fromBlankMultiplier * upScrollMultiplierInverse), blitOffset);
+
+        int heightDifference = (int) (TAB_HEIGHT - frameValue);
+
+        if (scrollsUpward) {
+            stack.translate(x, y + frameValue, blitOffset);
+
+            if (scrollsToBlank) enableScissor(0, 0, TAB_WIDTH, heightDifference);
+            if (scrollsFromBlank) enableScissor(0, 0,  TAB_WIDTH, (int) frameValue);
+        } else {
+            stack.translate(x, y - frameValue, blitOffset);
+
+            if (scrollsToBlank) enableScissor(0, heightDifference, TAB_WIDTH, heightDifference);
+            if (scrollsFromBlank) enableScissor(0, heightDifference, TAB_WIDTH, (int) frameValue);
+        }
 
         blit(stack,
                 0, 0,
-                0, vOffset,
-                TAB_WIDTH, pHeight,
+                0, 0,
+                TAB_WIDTH, TAB_HEIGHT,
                 TAB_WIDTH, TAB_HEIGHT);
+
+        if (scrollsToBlank || scrollsFromBlank) disableScissor();
 
         stack.popPose();
 

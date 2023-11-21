@@ -119,6 +119,7 @@ public class RotableAABB {
 	
 	public void updateSubColliders(AABB aabb) {
 		subColliders.clear();
+		Vec3 close = UtilGeometry.getClosestPointOnAABB(center, aabb);
 		Vec3 startNoRot = extents.subtract(SUBSIZEHALF, SUBSIZEHALF, SUBSIZEHALF);
 		Vec3 start = toWorldPos(startNoRot.scale(-1));
 		Vec3 steps =  startNoRot.scale(2/SUBSIZE);
@@ -130,7 +131,6 @@ public class RotableAABB {
 		Vec3 xStep = UtilAngles.getPitchAxis(a.pitch, a.yaw, a.roll).scale(xScale);
 		Vec3 yStep = UtilAngles.getYawAxis(a.pitch, a.yaw, a.roll).scale(yScale);
 		Vec3 zStep = UtilAngles.getRollAxis(a.pitch, a.yaw).scale(zScale);
-		Vec3 close = UtilGeometry.getClosestPointOnAABB(center, aabb);
 		double max = 0.81;
 		// FIXME 4.1 another optimization is reducing the number of loop iterations. 
 		// big hit boxes have a lot of steps. so more smaller hit boxes might be the way.
@@ -208,7 +208,7 @@ public class RotableAABB {
 	
 	public Optional<Vec3> clip(Vec3 from, Vec3 to) {
 		Vec3 fromRelRot = toRelRotPos(from);
-		if (containsRelRot(fromRelRot)) return Optional.of(toWorldPos(fromRelRot));
+		//if (containsRelRot(fromRelRot)) return Optional.of(toWorldPos(fromRelRot));
 		Vec3 toRelRot = toRelRotPos(to);
 		Vec3 diff = toRelRot.subtract(fromRelRot);
 		double tMin = Double.MAX_VALUE;

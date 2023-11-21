@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.client.overlay.components;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
+import com.onewhohears.dscombat.client.overlay.WeaponTabComponent;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import net.minecraft.network.chat.Component;
@@ -11,9 +12,14 @@ import net.minecraft.network.chat.MutableComponent;
 import java.util.List;
 import java.util.Objects;
 
-// TODO: overhaul
 public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
+    public static final double[] SPACINGS = {0.0, 8.0, 14.0, 18.0, 20.0, 22.0, 23.0, 24.0};
+    private static final MutableComponent WEAPON_SELECT = Component.literal("->");
+
     private static VehicleWeaponsOverlay INSTANCE;
+
+    protected float frame;
+    protected int superFrame;
 
     public static void renderIfAllowed(PoseStack poseStack, int screenWidth, int screenHeight) {
         if (Objects.isNull(INSTANCE)) INSTANCE = new VehicleWeaponsOverlay();
@@ -25,13 +31,32 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
     @Override
     protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
         if (!(getPlayerRootVehicle() instanceof EntityVehicle vehicle)) return;
+        this.frame++;
+        if (this.frame >= WeaponTabComponent.getMaxFrames()) {
+            this.frame = 0;
+            this.superFrame++;
+        }
+
+        if (this.superFrame > 6) this.superFrame = 0;
+
+        List<WeaponData> weapons = vehicle.weaponSystem.getWeapons();
+        WeaponData selectedWeapon = vehicle.weaponSystem.getSelected();
+
+        WeaponTabComponent.prepareForRender();
+
+        WeaponTabComponent.drawWeapon(poseStack, selectedWeapon, 10, 130 - ((this.superFrame - 1) * 24), 2, (int) this.frame, false, this.superFrame == 6, this.superFrame == 0);
+
+        for (int i = 0; i < weapons.size(); i++) {
+            WeaponTabComponent.drawTab(poseStack, 10, i * 24 + 10, -i, (int) this.frame, false);
+        }
+
+        WeaponTabComponent.prepareForTakedown();
         
         int yPos=1, xPos, weaponSelectWidth=getFont().width(WEAPON_SELECT)+1, maxNameWidth=46, maxTypeWidth=10;
         int color1=0x7340bf, color2=0x00ff00, color;
         // WEAPONS
-        WeaponData selectedWeapon = vehicle.weaponSystem.getSelected();
+
         if (selectedWeapon != null) {
-            List<WeaponData> weapons = vehicle.weaponSystem.getWeapons();
             Component[] names = new MutableComponent[weapons.size()];
             for (int i = 0; i < weapons.size(); ++i) {
                 names[i] = weapons.get(i).getDisplayNameComponent();
@@ -66,6 +91,7 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
                         xPos, yPos, color);
                 yPos += 10;
             } }
+
         // CONTROLS
         String text;
         if (maxNameWidth < 50) maxNameWidth = 50;
@@ -176,6 +202,4 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
             yPos += 10;
         }
     }
-
-    private static final MutableComponent WEAPON_SELECT = Component.empty().append("->");
 }

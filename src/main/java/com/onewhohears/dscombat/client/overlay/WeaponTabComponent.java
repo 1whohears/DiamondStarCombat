@@ -16,7 +16,6 @@ import static com.onewhohears.dscombat.DSCombatMod.MODID;
 public class WeaponTabComponent extends GuiComponent {
     public static final ResourceLocation WEAPON_TABS = new ResourceLocation(MODID,
             "textures/ui/weapon_tab.png");
-    public static final byte FILE_HEIGHT = 48;
     public static final byte TAB_WIDTH = 93;
     public static final byte TAB_HEIGHT = 24;
     public static final float[] FRAMES = {0.0F, 5.0F, 10.0F, 13.0F, 16.0F, 18.0F, 20.0F, 22.0F, 23.0F};
@@ -49,7 +48,7 @@ public class WeaponTabComponent extends GuiComponent {
 
         stack.pushPose();
         stack.translate(x, y, blitOffset);
-        blit(stack, 0, 0, 0, sign * FRAMES[frame], TAB_WIDTH, TAB_HEIGHT, TAB_WIDTH, FILE_HEIGHT);
+        blit(stack, 0, 0, 0, sign * FRAMES[frame], TAB_WIDTH, TAB_HEIGHT, TAB_WIDTH, TAB_HEIGHT);
         stack.popPose();
     }
 

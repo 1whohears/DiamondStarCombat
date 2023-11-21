@@ -7,6 +7,7 @@ import java.util.NoSuchElementException;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
+import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponAmmo;
 import com.onewhohears.dscombat.crafting.DSCIngredient;
@@ -50,6 +51,7 @@ public abstract class WeaponData extends JsonPreset {
 	private final String rackTypeKey;
 	private final String compatibleWeaponPart;
 	private final String itemKey;
+	private final ResourceLocation icon;
 	
 	private EntityType<?> entityType;
 	private SoundEvent shootSound;
@@ -75,6 +77,7 @@ public abstract class WeaponData extends JsonPreset {
 		this.rackTypeKey = UtilParse.getStringSafe(json, "rackTypeKey", "");
 		this.compatibleWeaponPart = UtilParse.getStringSafe(json, "compatibleWeaponPart", "");
 		this.itemKey = UtilParse.getStringSafe(json, "itemKey", "");
+		this.icon = new ResourceLocation(UtilParse.getStringSafe(json, "icon", getDefaultIconLocation()));
 	}
 	
 	public void readNBT(CompoundTag tag) {
@@ -398,6 +401,14 @@ public abstract class WeaponData extends JsonPreset {
 	
 	public String getCompatibleWeaponPart() {
 		return compatibleWeaponPart;
+	}
+	
+	public ResourceLocation getWeaponIcon() {
+		return icon;
+	}
+	
+	public String getDefaultIconLocation() {
+		return DSCombatMod.MODID+":textures/ui/weapon_icons/default.png";
 	}
 	
 	public abstract String getWeaponTypeCode();

@@ -73,6 +73,10 @@ public class AbstractWeaponBuilders {
 			return setString("itemKey", itemKey.toString());
 		}
 		
+		public C setIcon(ResourceLocation weaponIcon) {
+			return setString("icon", weaponIcon.toString());
+		}
+		
 	}
 	
 	public abstract static class BulletBuilder<C extends BulletBuilder<C>> extends WeaponBuilder<C> {

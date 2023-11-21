@@ -17,6 +17,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.entity.PartEntity;
 
+/**
+ * no longer needed because of {@link com.onewhohears.dscombat.util.math.DisguisedAABB}
+ */
+@Deprecated
 @Mixin(Level.class)
 public abstract class LevelMixin {
 	
@@ -37,7 +41,7 @@ public abstract class LevelMixin {
 			if (!predicate.test(part)) continue;
 			if (!(part instanceof RotableHitbox hitbox)) continue;
 			if (hitbox.couldCollide(entity) && hitbox.getHitbox().isColliding(aabb)) {
-				entities.add(hitbox);
+				if (!entities.contains(hitbox)) entities.add(hitbox);
 				//System.out.println("ADDING HITBOX FOR "+entity);
 			}
 		}

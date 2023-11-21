@@ -61,21 +61,23 @@ public class RotableHitbox extends PartEntity<EntityVehicle> {
 		if (!couldCollide(entity) || !hitbox.isColliding(aabb)) return;
 		//System.out.println("HANDLE COLLISION "+entity+" "+move);
 		//CollisionData data = new CollisionData();
-		// FIXME 4.4 move and rotate players standing on the platform is inaccurate
+		// FIXME 4.2 players are frozen stuck when inside a RotableHitbox
+		// FIXME 4.4 move and rotate players standing on the platform is inaccurate when close to center
 		// FIXME 4.6 prevent entities from falling off when the chunks load
 		Vec3 parent_move = getParent().getDeltaMovement();
 		Vec3 parent_rot_rate = getParent().getAngularVel();
 		Vec3 rel_pos = hitbox.toRelRotPos(entity.position());
 		Vec3 rel_tan_vel = parent_rot_rate.scale(Mth.DEG_TO_RAD).multiply(-1,-1,1).cross(rel_pos);
 		Vec3 tan_vel = hitbox.toWorldVel(rel_tan_vel);
-		entity.setPos(entity.position().add(parent_move).add(tan_vel).add(0, 0.000001, 0));
+		Vec3 entityMoveByParent = parent_move.add(tan_vel);//.add(0, 0.000001, 0);
+		entity.setPos(entity.position().add(entityMoveByParent));
 		entity.setYRot(entity.getYRot()-(float)parent_rot_rate.y);
 		if (entity instanceof EntityVehicle vehicle) {
 			Quaternion q = vehicle.getQBySide();
 			q.mul(Vector3f.YN.rotationDegrees((float)parent_rot_rate.y));
 			vehicle.setQBySide(q);
 		}
-		hitbox.addColliders(colliders, aabb);
+		hitbox.addColliders(colliders, aabb.move(entityMoveByParent));
 	}
 	
 	/*protected void positionEntities() {

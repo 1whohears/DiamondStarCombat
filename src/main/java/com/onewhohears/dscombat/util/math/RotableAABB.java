@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityDimensions;
@@ -16,7 +15,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class RotableAABB {
 	
-	public static final double SUBSIZE = 0.5;
+	public static final double SUBSIZE = 2;
 	public static final double SUBSIZEHALF = SUBSIZE*0.5;
 	public static int subUpdateCounter;
 	private Vec3 center, extents;
@@ -56,71 +55,36 @@ public class RotableAABB {
 		//System.out.println("ADDING SUB COLLIDERS "+getSubColliders().size());
 		updateSubColliders(aabb);
 		colliders.addAll(getSubColliders());
-		//VoxelShape shape = getCollide(aabb, data);
-		//if (shape != null) colliders.add(shape);
 	}
-	
-	/*@Nullable
-	public VoxelShape getCollide(AABB aabb, CollisionData data) {
-		Vec3 close = UtilGeometry.getClosestPointOnAABB(center, aabb);
-		Vec3 diff = close.subtract(center);
-		Vec3 dir = diff.normalize();
-		Quaternion roti = rot.copy();
-		roti.conj();
-		Vec3 diffRot = UtilAngles.rotateVector(diff, roti);
-		System.out.println("diff = "+diff);
-		System.out.println("diffRot = "+diffRot);
-		boolean insideX = diffRot.x() < extents.x() && diffRot.x() > -extents.x();
-		boolean insideY = diffRot.y() < extents.y() && diffRot.y() > -extents.y();
-		boolean insideZ = diffRot.z() < extents.z() && diffRot.z() > -extents.z();
-		double dex = diffRot.x, dey = diffRot.y, dez = diffRot.z;
-		if (insideX && insideY) {
-			double sign = Math.signum(diffRot.z);
-			dez = extents.z*sign;
-			data.normal = Vec3.ZERO.add(0, 0, sign);
-		} else if (insideZ && insideY) {
-			double sign = Math.signum(diffRot.x);
-			dex = extents.x*sign;
-			data.normal = Vec3.ZERO.add(sign, 0, 0);
-		} else if (insideX && insideZ) {
-			double sign = Math.signum(diffRot.y);
-			dey = extents.y*sign;
-			data.normal = Vec3.ZERO.add(0, sign, 0);
-		
-		}
-		Vec3 diffEdgeRot = new Vec3(dex,dey,dez);
-		Vec3 diffEdge = UtilAngles.rotateVector(diffEdgeRot, rot);
-		System.out.println("diffEdge = "+diffEdge);
-		Vec3 edge = diffEdge.add(center);
-		//Vec3 dirRot = UtilAngles.rotateVector(dir, roti);
-		//Vec3 edgeRot = dirRot.multiply(extents);
-		//Vec3 edge = UtilAngles.rotateVector(edgeRot, rot).scale(1.01).add(center);
-		EulerAngles a = UtilAngles.toRadians(rot);
-		Vec3 xStep = UtilAngles.getPitchAxis(a.pitch, a.yaw, a.roll);
-		Vec3 yStep = UtilAngles.getYawAxis(a.pitch, a.yaw, a.roll);
-		Vec3 zStep = UtilAngles.getRollAxis(a.pitch, a.yaw);
-		Optional<Vec3> clip = aabb.clip(center, edge);
-		System.out.println("CLIP edge "+edge+" "+clip.isPresent());
-		Vec3 pos;
-		if (clip.isEmpty()) pos = edge.subtract(dir.scale(SUBSIZEHALF));
-		else pos = clip.get().subtract(dir.scale(SUBSIZEHALF));
-		data.normal = UtilAngles.rotateVector(data.normal, rot);
-		data.dir = Direction.getNearest(data.normal.x(), data.normal.y(), data.normal.z());
-		Vec3 pos = edge.subtract(dir.scale(SUBSIZEHALF));
-		return Shapes.create(
-			pos.x-SUBSIZEHALF, pos.y-SUBSIZEHALF, pos.z-SUBSIZEHALF, 
-			pos.x+SUBSIZEHALF, pos.y+SUBSIZEHALF, pos.z+SUBSIZEHALF);
-	}*/
 	
 	public List<VoxelShape> getSubColliders() {
 		//if (!updatedSubs) updateSubColliders();
 		return subColliders;
 	}
 	
+	private double shapePosComponent(double clipRelRot, double ext) {
+		double max = ext - SUBSIZEHALF;
+		return Math.signum(clipRelRot) * Math.signum(max) * Math.min(Math.abs(clipRelRot), Math.abs(max));
+	}
+	
 	public void updateSubColliders(AABB aabb) {
 		subColliders.clear();
 		Vec3 close = UtilGeometry.getClosestPointOnAABB(center, aabb);
-		Vec3 startNoRot = extents.subtract(SUBSIZEHALF, SUBSIZEHALF, SUBSIZEHALF);
+		//System.out.println("close = "+close);
+		Optional<Vec3> clipOpt = clip(close, center);
+		if (clipOpt.isEmpty()) return;
+		Vec3 clip = clipOpt.get();
+		//System.out.println("clip = "+clip);
+		Vec3 clipRelRot = toRelRotPos(clip);
+		Vec3 ext = extents.add(0.001, 0.001, 0.001);
+		Vec3 shapeRelRot = new Vec3(
+				shapePosComponent(clipRelRot.x, ext.x), 
+				shapePosComponent(clipRelRot.y, ext.y), 
+				shapePosComponent(clipRelRot.z, ext.z));
+		Vec3 shape = toWorldPos(shapeRelRot);
+		//System.out.println("shape = "+shape);
+		addShape(shape);
+		/*Vec3 startNoRot = extents.subtract(SUBSIZEHALF, SUBSIZEHALF, SUBSIZEHALF);
 		Vec3 start = toWorldPos(startNoRot.scale(-1));
 		Vec3 steps =  startNoRot.scale(2/SUBSIZE);
 		int xSteps = (int)Math.ceil(steps.x), ySteps = (int)Math.ceil(steps.y), zSteps = (int)Math.ceil(steps.z);
@@ -132,7 +96,6 @@ public class RotableAABB {
 		Vec3 yStep = UtilAngles.getYawAxis(a.pitch, a.yaw, a.roll).scale(yScale);
 		Vec3 zStep = UtilAngles.getRollAxis(a.pitch, a.yaw).scale(zScale);
 		double max = 0.81;
-		// FIXME 4.1 another optimization is reducing the number of loop iterations. 
 		// big hit boxes have a lot of steps. so more smaller hit boxes might be the way.
 		for(int i = 0; i <= xSteps; ++i) for(int j = 0; j <= ySteps; ++j) {
 			Vec3 pos = start.add(xStep.scale(i)).add(yStep.scale(j));
@@ -151,8 +114,7 @@ public class RotableAABB {
 			if (pos.distanceToSqr(close) <= max) addShape(pos);
 			pos = start.add(xStep.scale(i)).add(zStep.scale(k)).add(yStep.scale(ySteps));
 			if (pos.distanceToSqr(close) <= max) addShape(pos);
-		}
-		// FIXME 4.2 players are frozen stuck when inside a vehicle
+		}*/
 		/*for(int i = 0; i <= xSteps; ++i) for(int j = 0; j <= ySteps; ++j) for(int k = 0; k <= zSteps; ++k) {
 			if (i!=0&&i!=xSteps && j!=0&&j!=ySteps && k!=0&&k!=zSteps) continue;
 			Vec3 pos = start.add(xStep.scale(i)).add(yStep.scale(j)).add(zStep.scale(k));
@@ -168,6 +130,7 @@ public class RotableAABB {
 	}
 	
 	private void addShape(Vec3 pos) {
+		//System.out.println("shape pos = "+pos);
 		VoxelShape shape = Shapes.create(
 			pos.x-SUBSIZEHALF, pos.y-SUBSIZEHALF, pos.z-SUBSIZEHALF, 
 			pos.x+SUBSIZEHALF, pos.y+SUBSIZEHALF, pos.z+SUBSIZEHALF);
@@ -208,7 +171,7 @@ public class RotableAABB {
 	
 	public Optional<Vec3> clip(Vec3 from, Vec3 to) {
 		Vec3 fromRelRot = toRelRotPos(from);
-		//if (containsRelRot(fromRelRot)) return Optional.of(toWorldPos(fromRelRot));
+		if (containsRelRot(fromRelRot)) return Optional.of(toWorldPos(fromRelRot));
 		Vec3 toRelRot = toRelRotPos(to);
 		Vec3 diff = toRelRot.subtract(fromRelRot);
 		double tMin = Double.MAX_VALUE;

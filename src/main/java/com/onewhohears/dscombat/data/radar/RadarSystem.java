@@ -255,6 +255,10 @@ public class RadarSystem {
 		return clientTargets;
 	}
 	
+	public boolean isClientLocking() {
+		return getClientSelectedPingIndex() != -1;
+	}
+	
 	public void readClientPingsFromServer(List<RadarPing> pings) {
 		RadarPing oldSelect = null; 
 		if (clientSelectedIndex != -1) oldSelect = clientTargets.get(clientSelectedIndex);

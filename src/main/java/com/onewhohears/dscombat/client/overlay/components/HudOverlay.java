@@ -72,8 +72,7 @@ public class HudOverlay extends VehicleOverlayComponent {
 
         poseStack.pushPose();
         poseStack.translate(((((double) screenWidth) - 22.0) / 2.0), ((((double) screenHeight) - 22.0) / 2.0), 0);
-        // FIXME: how does #hasTarget work? (switch vOffset depending on if a radar lock exists)
-        int vOffsetForCircle = plane.radarSystem.hasTarget(plane) ? 38 : 16;
+        int vOffsetForCircle = plane.radarSystem.isClientLocking() ? 38 : 16; // assuming this was intended 
         blit(poseStack, 0, 0, 128, vOffsetForCircle, 22, 22);
         poseStack.popPose();
 

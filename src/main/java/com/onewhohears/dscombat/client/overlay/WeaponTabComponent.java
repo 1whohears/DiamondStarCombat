@@ -59,6 +59,10 @@ public class WeaponTabComponent extends GuiComponent {
      * @param frame an <code>int</code> representing the frame of animation. See the return of
      *              <code>#getMaxFrames</code> and subtract one to get the highest allowed frame.
      *              Value must be between 0 and the highest frame inclusive.
+     * @param scrollsFromBlank if <code>true</code>, the weapon icon visually "appears" out of thin air
+     *                         as one scrolls through the tabs. At present, the y position of a tab
+     *                         that scrolls from blank and a scroll that doesn't must be the same to
+     *                         maintain visual continuity.
      */
     public static void drawWeapon(PoseStack stack, WeaponData weapon, double x, double y, int blitOffset, int frame, boolean scrollsUpward, boolean scrollsToBlank, boolean scrollsFromBlank) {
         if (frame < 0 || frame > getMaxFrames() - 1) throw new IllegalArgumentException("There are only " + getMaxFrames() + " frames!");

@@ -44,10 +44,10 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
 
         WeaponTabComponent.prepareForRender();
 
-        WeaponTabComponent.drawWeapon(poseStack, selectedWeapon, 10, 130 - ((this.superFrame - 1) * 24), 2, (int) this.frame, false, this.superFrame == 6, this.superFrame == 0);
+        WeaponTabComponent.drawWeapon(poseStack, selectedWeapon, 10, (this.superFrame - 1) * 24 + 10, 2, (int) this.frame, true, this.superFrame == 6, this.superFrame == 0);
 
         for (int i = 0; i < weapons.size(); i++) {
-            WeaponTabComponent.drawTab(poseStack, 10, i * 24 + 10, -i, (int) this.frame, false);
+            WeaponTabComponent.drawTab(poseStack, 10, i * 24 + 10, -i, (int) this.frame, true);
         }
 
         WeaponTabComponent.prepareForTakedown();

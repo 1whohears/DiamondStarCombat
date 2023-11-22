@@ -1,5 +1,7 @@
 package com.onewhohears.dscombat.client.event.forgebus;
 
+import java.util.List;
+
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCKeys;
@@ -8,6 +10,7 @@ import com.onewhohears.dscombat.common.network.toserver.ToServerDismount;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSeatPos;
 import com.onewhohears.dscombat.common.network.toserver.ToServerShootTurret;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSwitchSeat;
+import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
@@ -173,8 +176,10 @@ public final class ClientInputEvents {
 		}
 		// SELECT RADAR PING
 		RadarSystem radar = plane.radarSystem;
-		if (isHovering() && m.mouseHandler.isLeftPressed()) 
-			radar.clientSelectTarget(radar.getClientRadarPings().get(getHoverIndex()));
+		if (isHovering() && m.mouseHandler.isLeftPressed()) {
+			List<RadarPing> pings = radar.getClientRadarPings();
+			if (getHoverIndex() < pings.size()) radar.clientSelectTarget(pings.get(getHoverIndex()));
+		}
 		// CYCLE PING
 		if (DSCKeys.pingCycleKey.consumeClick()) radar.clientSelectNextTarget();
 		// TURRET SHOOT

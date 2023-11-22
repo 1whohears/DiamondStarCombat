@@ -68,33 +68,25 @@ public class WeaponTabComponent extends GuiComponent {
         if (scrollsToBlank && scrollsFromBlank) throw new IllegalArgumentException("Tabs may not scroll to and from blank!");
         if (weapon == null) throw new NullPointerException("Passed weapon is null!");
 
-        float frameValue = FRAMES[frame];
+        int frameValue = (int) FRAMES[frame];
 
         RenderSystem.setShaderTexture(0, weapon.getWeaponIcon());
 
         stack.pushPose();
 
-        int heightDifference = (int) (TAB_HEIGHT - frameValue);
-
         if (scrollsUpward) {
             stack.translate(x, y + frameValue, blitOffset);
 
-            if (scrollsToBlank) enableScissor(0, 0, TAB_WIDTH, heightDifference);
-            if (scrollsFromBlank) enableScissor(0, 0,  TAB_WIDTH, (int) frameValue);
+            if (scrollsFromBlank) blitWithoutTop(stack, TAB_HEIGHT - frameValue);
+            if (scrollsToBlank) blitWithoutBottom(stack, frameValue);
         } else {
             stack.translate(x, y - frameValue, blitOffset);
 
-            if (scrollsToBlank) enableScissor(0, heightDifference, TAB_WIDTH, heightDifference);
-            if (scrollsFromBlank) enableScissor(0, heightDifference, TAB_WIDTH, (int) frameValue);
+            if (scrollsFromBlank) blitWithoutBottom(stack, TAB_HEIGHT - frameValue);
+            if (scrollsToBlank) blitWithoutTop(stack, frameValue);
         }
 
-        blit(stack,
-                0, 0,
-                0, 0,
-                TAB_WIDTH, TAB_HEIGHT,
-                TAB_WIDTH, TAB_HEIGHT);
-
-        if (scrollsToBlank || scrollsFromBlank) disableScissor();
+        if (!scrollsFromBlank && !scrollsToBlank) blitNormal(stack);
 
         stack.popPose();
 
@@ -103,5 +95,21 @@ public class WeaponTabComponent extends GuiComponent {
 
     public static int getMaxFrames() {
         return FRAMES.length;
+    }
+
+    /*
+        WEAPON RENDERING HELPER METHODS BELOW
+     */
+
+    private static void blitNormal(PoseStack stack) {
+        blit(stack, 0, 0, 0, 0, TAB_WIDTH, TAB_HEIGHT, TAB_WIDTH, TAB_HEIGHT);
+    }
+
+    private static void blitWithoutTop(PoseStack stack, int trimPixels) {
+        blit(stack, 0, trimPixels, 0, trimPixels, TAB_WIDTH, TAB_HEIGHT - trimPixels, TAB_WIDTH, TAB_HEIGHT);
+    }
+
+    private static void blitWithoutBottom(PoseStack stack, int trimPixels) {
+        blit(stack, 0, 0, 0, 0, TAB_WIDTH, TAB_HEIGHT - trimPixels, TAB_WIDTH, TAB_HEIGHT);
     }
 }

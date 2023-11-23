@@ -38,20 +38,4 @@ public abstract class EntityMixin {
 		return colliders;
 	}
 	
-	//net.minecraft.world.level.EntityGetter.getEntityCollisions(Entity, AABB)
-	//net.minecraft.world.entity.Entity
-	//net.minecraft.world.phys.AABB
-	/*final String METHOD = "Lnet/minecraft/world/level/EntityGetter;"
-			+ "getEntityCollisions(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/phys/AABB;)Ljava/util/List;";
-	
-	//com.google.common.collect.ImmutableList.Builder<VoxelShape>
-	//net.minecraft.world.phys.shapes.VoxelShape
-	final String TARGET = "Lcom/google/common/collect/ImmutableList$Builder;"
-			+ "add(Lnet/minecraft/world/phys/shapes/VoxelShape;)Lcom/google/common/collect/ImmutableList$Builder;";
-	
-	@Inject(method = METHOD, at = @At(value = "INVOKE", target = TARGET, shift = At.Shift.AFTER))
-	private void dscombat_RotableHitboxCollisionDetection(CallbackInfo ci) {
-		System.out.println("AFTER SHAPE BEING ADDED");
-	}*/
-	
 }

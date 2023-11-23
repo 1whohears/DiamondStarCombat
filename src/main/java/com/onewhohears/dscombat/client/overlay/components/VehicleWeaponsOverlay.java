@@ -47,12 +47,16 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
             WeaponTabComponent.drawWeaponName(poseStack, selectedWeapon.getDisplayNameComponent(), 13, yPlacement, blitPosition - 2);
             WeaponTabComponent.drawTab(poseStack, 13, yPlacement, blitPosition, 0, false);
             WeaponTabComponent.drawWeapon(poseStack, selectedWeapon, 13, yPlacement, blitPosition + 1, 0, false, false, false);
+
+            poseStack.pushPose();
+            poseStack.translate(0, 0, blitPosition + 2);
+            if (!selectedWeapon.isNoWeapon()) drawString(poseStack, getFont(), selectedWeapon.getCurrentAmmo() + "/" + selectedWeapon.getMaxAmmo(), 16, (int) (yPlacement + 14), 0xe6e600);
+            // renders weapon code - drawString(poseStack, getFont(), selectedWeapon.getWeaponTypeCode(), 16, (int) yPlacement + 4, 0xe6e600);
+            poseStack.popPose();
         }
 
-        // TODO: weapon display names
-        // TODO: weapon type codes
+        // TODO: icons indicating how the weapon works e.g. infrared, radar
         // TODO: selected weapon highlighting
-        // TODO: ammo count
 
         /* lmao
         int yPos=1, xPos, weaponSelectWidth=getFont().width(WEAPON_SELECT)+1, maxNameWidth=46, maxTypeWidth=10;

@@ -6,6 +6,7 @@
 	"ui.dscombat.shrink_plane_button": "Get Item",
 	"ui.dscombat.craft_button": "Assemble",
 	"ui.dscombat.ingredients": "Materials",
+	"ui.dscombat.no_weapon": "SAFETY",
 	
 	"error.dscombat.no_menu_in_air": "Can't open vehicle menu while flying!",
 	"error.dscombat.no_menu_moving": "Can't open vehicle menu while moving!",

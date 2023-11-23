@@ -5,6 +5,7 @@ import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.client.overlay.WeaponTabComponent;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import net.minecraft.network.chat.Component;
 
 import java.util.List;
 import java.util.Objects;
@@ -14,6 +15,7 @@ import static com.onewhohears.dscombat.client.overlay.WeaponTabComponent.TAB_HEI
 public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
     public static final int[] SPACINGS = {24, 21, 18, 12, 0};
     //private static final MutableComponent WEAPON_SELECT = Component.literal("->");
+    public static final Component SAFETY = Component.translatable("ui.dscombat.no_weapon");
 
     private static VehicleWeaponsOverlay INSTANCE;
 
@@ -74,7 +76,11 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
                 WeaponTabComponent.drawWeapon(poseStack, weaponAt, 13, newYPos, blitPosition + 1, 0, false, false, false);
                 poseStack.pushPose();
                 poseStack.translate(0, 0, blitPosition + 2);
-                if (!weaponAt.isNoWeapon()) drawString(poseStack, getFont(), weaponAt.getCurrentAmmo() + "/" + selectedWeapon.getMaxAmmo(), 16, newYPos + 14, 0xe6e600);
+                if (!weaponAt.isNoWeapon()) {
+                    drawString(poseStack, getFont(), weaponAt.getCurrentAmmo() + "/" + selectedWeapon.getMaxAmmo(), 16, newYPos + 14, 0xe6e600);
+                } else {
+                    drawString(poseStack, getFont(), SAFETY, 16, newYPos + 14, 0xF55);
+                }
                 drawString(poseStack, getFont(), weaponAt.getWeaponTypeCode(), 16, newYPos + 4, 0xe6e600);
                 poseStack.popPose();
             }

@@ -110,19 +110,36 @@ public class WeaponTabComponent extends GuiComponent {
         bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
         Matrix4f matrix4f = stack.last().pose();
 
-        int nameWidth = getFont().width(name) + 6;
+        int nameWidth = getFont().width(name);
+        int nameHeight = getFont().lineHeight;
+        int blitOffsetUnder = blitOffset - 1;
 
-        stack.translate(x, y - 11, blitOffset);
-        fillGradient(matrix4f, bufferbuilder, 2, 0, nameWidth, 14, -1, 0xf0100010, 0xf0100010);
-        fillGradient(matrix4f, bufferbuilder, 0, 0, 1, 14, -1, 0xf0100010, 0xf0100010);
-        fillGradient(matrix4f, bufferbuilder, nameWidth + 1, 0, nameWidth + 2, 14, -1, 0xf0100010, 0xf0100010);
-        fillGradient(matrix4f, bufferbuilder, 2, -2, nameWidth, -1, -1, 0xf0100010, 0xf0100010);
-        fillGradient(matrix4f, bufferbuilder, 2, 16, nameWidth, 17, -1, 0xf0100010, 0xf0100010);
+        int xPosInitial = (int) x + 1;
+        int xPosFinal = xPosInitial + nameWidth + 6;
+        int yPosInitial = (int) y - 12;
+        int yPosFinal = yPosInitial + nameHeight + 5;
 
-        fillGradient(matrix4f, bufferbuilder, 1, 0, 2, 14, -1, 0x505000FF, 0x5028007f);
-        fillGradient(matrix4f, bufferbuilder, nameWidth, 0, nameWidth + 1, 14, -1, 0x505000FF, 0x5028007f);
-        fillGradient(matrix4f, bufferbuilder, 2, -1, nameWidth, 0, -1, 0x505000FF, 0x5028007f);
-        fillGradient(matrix4f, bufferbuilder, 2, 15, nameWidth, 16, -1, 0x505000FF, 0x5028007f);
+        // leftmost vertical black
+        fillGradient(matrix4f, bufferbuilder, xPosInitial - 1, yPosInitial, xPosInitial, yPosFinal + 1, blitOffsetUnder, 0xf0100010, 0xf0100010);
+        // internal rectangle
+        fillGradient(matrix4f, bufferbuilder, xPosInitial, yPosInitial, xPosFinal, yPosFinal, blitOffsetUnder, 0xf0100010, 0xf0100010);
+        // topmost horizontal black
+        fillGradient(matrix4f, bufferbuilder, xPosInitial, yPosInitial - 1, xPosFinal, yPosInitial, blitOffsetUnder, 0xf0100010, 0xf0100010);
+        // bottommost horizontal black
+        fillGradient(matrix4f, bufferbuilder, xPosInitial, yPosFinal, xPosFinal, yPosFinal + 1, blitOffsetUnder, 0xf0100010, 0xf0100010);
+        // rightmost vertical black
+        fillGradient(matrix4f, bufferbuilder, xPosFinal, yPosInitial, xPosFinal + 1, yPosFinal, blitOffsetUnder, 0xf0100010, 0xf0100010);
+
+        // purple left column
+        fillGradient(matrix4f, bufferbuilder, xPosInitial, yPosInitial + 1, xPosInitial + 1, yPosFinal - 1, blitOffsetUnder, 0x505000ff, 0x5028007f);
+        // purple right column
+        fillGradient(matrix4f, bufferbuilder, xPosFinal - 1, yPosInitial + 1, xPosFinal, yPosFinal - 1, blitOffsetUnder, 0x505000ff, 0x5028007f);
+        // purple up row
+        fillGradient(matrix4f, bufferbuilder, xPosInitial, yPosInitial, xPosFinal, yPosInitial + 1, blitOffsetUnder, 0x505000ff, 0x505000ff);
+        // purple down row
+        // the bottom bits are rendered despite being hidden by the tab so that if the weapon name happens to be longer
+        // than about 90 pixels, it doesn't look completely ugly when it sticks out the other end
+        fillGradient(matrix4f, bufferbuilder, xPosInitial, yPosFinal - 1, xPosFinal, yPosFinal, blitOffsetUnder, 0x5028007f, 0x5028007f);
 
         RenderSystem.enableDepthTest();
         RenderSystem.disableTexture();
@@ -132,6 +149,7 @@ public class WeaponTabComponent extends GuiComponent {
         RenderSystem.disableBlend();
         RenderSystem.enableTexture();
         MultiBufferSource.BufferSource bufferSource = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
+        stack.translate(x, y - 11, blitOffset);
 
         getFont().drawInBatch(name, 4, 2, -1, true, matrix4f, bufferSource, false, 0, 15728880);
 

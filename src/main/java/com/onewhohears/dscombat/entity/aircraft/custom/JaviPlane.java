@@ -21,7 +21,7 @@ public class JaviPlane extends EntityPlane {
 			.setNegativeThrottle(false)
 			.setRotationalInertia(6, 10, 4)
 			.setCrashExplosionRadius(5)
-			.setCameraDistance(9)
+			.setCameraDistance(16)
 			.setSpinRate(0)
 			.setLiftKGraph(LiftKGraph.JAVI_PLANE_GRAPH)
 			.setFlapsAOABias(10f)

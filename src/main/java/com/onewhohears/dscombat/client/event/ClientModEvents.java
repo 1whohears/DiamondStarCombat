@@ -7,7 +7,6 @@ import com.onewhohears.dscombat.client.model.aircraft.EntityModelAlexisPlane;
 import com.onewhohears.dscombat.client.model.aircraft.EntityModelAndolfSub;
 import com.onewhohears.dscombat.client.model.aircraft.EntityModelAxcelTruck;
 import com.onewhohears.dscombat.client.model.aircraft.EntityModelE3Sentry;
-import com.onewhohears.dscombat.client.model.aircraft.EntityModelJaviPlane;
 import com.onewhohears.dscombat.client.model.aircraft.EntityModelMrBudgerTank;
 import com.onewhohears.dscombat.client.model.aircraft.EntityModelNathanBoat;
 import com.onewhohears.dscombat.client.model.aircraft.EntityModelNoahChopper;
@@ -26,6 +25,7 @@ import com.onewhohears.dscombat.client.model.obj.custom.BroncoPlaneModel;
 import com.onewhohears.dscombat.client.model.obj.custom.CIWSModel;
 import com.onewhohears.dscombat.client.model.obj.custom.CorvetteModel;
 import com.onewhohears.dscombat.client.model.obj.custom.HeavyMissileRackModel;
+import com.onewhohears.dscombat.client.model.obj.custom.JaviPlaneModel;
 import com.onewhohears.dscombat.client.model.obj.custom.LightMissileRackModel;
 import com.onewhohears.dscombat.client.model.obj.custom.MLSModel;
 import com.onewhohears.dscombat.client.model.obj.custom.Mark45GunModel;
@@ -83,7 +83,7 @@ public final class ClientModEvents {
 		//event.registerLayerDefinition(EntityModelF16.LAYER_LOCATION, EntityModelF16::createBodyLayer);
 		event.registerLayerDefinition(EntityModelNoahChopper.LAYER_LOCATION, EntityModelNoahChopper::createBodyLayer);
 		event.registerLayerDefinition(EntityModelAlexisPlane.LAYER_LOCATION, EntityModelAlexisPlane::createBodyLayer);
-		event.registerLayerDefinition(EntityModelJaviPlane.LAYER_LOCATION, EntityModelJaviPlane::createBodyLayer);
+		//event.registerLayerDefinition(EntityModelJaviPlane.LAYER_LOCATION, EntityModelJaviPlane::createBodyLayer);
 		//event.registerLayerDefinition(EntityModelLightMissileRack.LAYER_LOCATION, EntityModelLightMissileRack::createBodyLayer);
 		//event.registerLayerDefinition(EntityModelHeavyMissileRack.LAYER_LOCATION, EntityModelHeavyMissileRack::createBodyLayer);
 		//event.registerLayerDefinition(EntityModelXM12.LAYER_LOCATION, EntityModelXM12::createBodyLayer);
@@ -112,8 +112,8 @@ public final class ClientModEvents {
 		EntityModelSet models = Minecraft.getInstance().getEntityModels();
 		// PLANES
 		event.registerEntityRenderer(ModEntities.JAVI_PLANE.get(), 
-				(context) -> new RendererEntityAircraft<>(context,
-                        new EntityModelJaviPlane(models.bakeLayer(EntityModelJaviPlane.LAYER_LOCATION))));
+				(context) -> new RendererObjAircraft<>(context,
+                        new JaviPlaneModel()));
 		event.registerEntityRenderer(ModEntities.ALEXIS_PLANE.get(), 
 				(context) -> new RendererEntityAircraft<>(context,
                         new EntityModelAlexisPlane(models.bakeLayer(EntityModelAlexisPlane.LAYER_LOCATION))));

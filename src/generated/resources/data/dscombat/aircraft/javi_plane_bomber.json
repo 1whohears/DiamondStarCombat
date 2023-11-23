@@ -98,20 +98,9 @@
       },
       "name": "pilot_seat",
       "slot_posx": 0.0,
-      "slot_posy": -0.55,
-      "slot_posz": 3.35,
+      "slot_posy": 0.5,
+      "slot_posz": 5.34375,
       "slot_type": "seat",
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
-      "name": "seat2",
-      "slot_posx": 0.0,
-      "slot_posy": -0.55,
-      "slot_posz": 2.35,
-      "slot_type": "light_turret",
       "zRot": 0.0
     },
     {
@@ -121,8 +110,8 @@
         "param": "anm30"
       },
       "name": "left_wing_1",
-      "slot_posx": 1.5,
-      "slot_posy": -0.3,
+      "slot_posx": 1.96875,
+      "slot_posy": -0.28125,
       "slot_posz": 0.0,
       "slot_type": "wing",
       "zRot": 180.0
@@ -134,8 +123,8 @@
         "param": "agm84e"
       },
       "name": "left_wing_2",
-      "slot_posx": 3.0,
-      "slot_posy": -0.2,
+      "slot_posx": 4.25,
+      "slot_posy": -0.28125,
       "slot_posz": 0.0,
       "slot_type": "wing",
       "zRot": 180.0
@@ -147,8 +136,8 @@
         "param": "agm114k"
       },
       "name": "left_wing_3",
-      "slot_posx": 4.0,
-      "slot_posy": -0.07,
+      "slot_posx": 5.625,
+      "slot_posy": -0.28125,
       "slot_posz": 0.0,
       "slot_type": "wing",
       "zRot": 180.0
@@ -160,8 +149,8 @@
         "param": "aim9l"
       },
       "name": "left_wing_4",
-      "slot_posx": 5.0,
-      "slot_posy": -0.05,
+      "slot_posx": 6.96875,
+      "slot_posy": -0.28125,
       "slot_posz": 0.0,
       "slot_type": "wing",
       "zRot": 180.0
@@ -173,8 +162,8 @@
         "param": "anm64"
       },
       "name": "right_wing_1",
-      "slot_posx": -1.5,
-      "slot_posy": -0.3,
+      "slot_posx": -1.96875,
+      "slot_posy": -0.28125,
       "slot_posz": 0.0,
       "slot_type": "wing",
       "zRot": 180.0
@@ -186,8 +175,8 @@
         "param": "agm65g"
       },
       "name": "right_wing_2",
-      "slot_posx": -3.0,
-      "slot_posy": -0.2,
+      "slot_posx": -4.25,
+      "slot_posy": -0.28125,
       "slot_posz": 0.0,
       "slot_type": "wing",
       "zRot": 180.0
@@ -199,16 +188,16 @@
         "param": "agm65l"
       },
       "name": "right_wing_3",
-      "slot_posx": -4.0,
-      "slot_posy": -0.07,
+      "slot_posx": -5.625,
+      "slot_posy": -0.28125,
       "slot_posz": 0.0,
       "slot_type": "wing",
       "zRot": 180.0
     },
     {
       "name": "right_wing_4",
-      "slot_posx": -5.0,
-      "slot_posy": -0.05,
+      "slot_posx": -6.96875,
+      "slot_posy": -0.28125,
       "slot_posz": 0.0,
       "slot_type": "wing",
       "zRot": 180.0
@@ -221,8 +210,8 @@
       },
       "name": "frame_1",
       "slot_posx": 0.0,
-      "slot_posy": -0.7,
-      "slot_posz": 3.0,
+      "slot_posy": -0.34375,
+      "slot_posz": 7.65625,
       "slot_type": "frame",
       "zRot": 180.0
     },
@@ -234,8 +223,8 @@
       },
       "name": "frame_2",
       "slot_posx": 0.0,
-      "slot_posy": -0.7,
-      "slot_posz": 0.0,
+      "slot_posy": -0.71875,
+      "slot_posz": 0.03125,
       "slot_type": "frame",
       "zRot": 180.0
     },

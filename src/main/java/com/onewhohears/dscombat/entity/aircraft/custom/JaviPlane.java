@@ -26,6 +26,7 @@ public class JaviPlane extends EntityPlane {
 			.setLiftKGraph(LiftKGraph.JAVI_PLANE_GRAPH)
 			.setFlapsAOABias(10f)
 			.setCanAimDown(true)
+			.setTextureNum(1, 1)
 			.build();
 	
 	public JaviPlane(EntityType<? extends EntityPlane> entity, Level level) {

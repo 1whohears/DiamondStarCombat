@@ -56,7 +56,7 @@ public class ModEntities {
 	
 	public static final RegistryObject<EntityType<EntityPlane>> JAVI_PLANE = ENTITIES.register("javi_plane", 
 			() -> createEntityTypeFar((type, level) -> new JaviPlane(type, level), 
-					EntityDimensions.scalable(2.45f, 2.45f)));
+					EntityDimensions.scalable(4.0f, 4.0f)));
 	
 	public static final RegistryObject<EntityType<EntityPlane>> ALEXIS_PLANE = ENTITIES.register("alexis_plane", 
 			() -> createEntityTypeFar((type, level) -> new AlexisPlane(type, level), 

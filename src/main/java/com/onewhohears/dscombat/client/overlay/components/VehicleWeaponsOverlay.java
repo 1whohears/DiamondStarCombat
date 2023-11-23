@@ -79,7 +79,7 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
                 if (!weaponAt.isNoWeapon()) {
                     drawString(poseStack, getFont(), weaponAt.getCurrentAmmo() + "/" + selectedWeapon.getMaxAmmo(), 16, newYPos + 14, 0xe6e600);
                 } else {
-                    drawString(poseStack, getFont(), SAFETY, 16, newYPos + 14, 0xF55);
+                    drawString(poseStack, getFont(), SAFETY, 16, newYPos + 14, 0xff5555);
                 }
                 drawString(poseStack, getFont(), weaponAt.getWeaponTypeCode(), 16, newYPos + 4, 0xe6e600);
                 poseStack.popPose();

@@ -23,7 +23,7 @@ public class VehicleOverlay {
 		HudOverlay				.renderIfAllowed(poseStack, screenWidth, screenHeight);
 		PlaneAttitudeOverlay	.renderIfAllowed(poseStack, screenWidth, screenHeight);
 		PlaneDataOverlay		.renderIfAllowed(poseStack, screenWidth, screenHeight);
-		RadarOverlay			.renderIfAllowed(poseStack, screenWidth, screenHeight, partialTick);
+		// RadarOverlay			.renderIfAllowed(poseStack, screenWidth, screenHeight, partialTick);
 		TurnCoordinatorOverlay	.renderIfAllowed(poseStack, screenWidth, screenHeight);
 		TurretDataOverlay		.renderIfAllowed(poseStack, screenWidth, screenHeight);
 		VehicleCompassOverlay	.renderIfAllowed(poseStack, screenWidth, screenHeight);

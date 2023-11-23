@@ -1,22 +1,24 @@
 package com.onewhohears.dscombat.client.overlay.components;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.client.overlay.WeaponTabComponent;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 
 import java.util.List;
 import java.util.Objects;
 
+import static com.onewhohears.dscombat.client.overlay.WeaponTabComponent.TAB_HEIGHT;
+
 public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
     public static final double[] SPACINGS = {0.0, 8.0, 14.0, 18.0, 20.0, 22.0, 23.0, 24.0};
-    private static final MutableComponent WEAPON_SELECT = Component.literal("->");
+    //private static final MutableComponent WEAPON_SELECT = Component.literal("->");
 
     private static VehicleWeaponsOverlay INSTANCE;
+
+    protected boolean selectingWeaponState;
+    protected boolean weaponChangeQueued;
 
     protected float frame;
     protected int superFrame;
@@ -31,66 +33,30 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
     @Override
     protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
         if (!(getPlayerRootVehicle() instanceof EntityVehicle vehicle)) return;
-        this.frame++;
-        if (this.frame >= WeaponTabComponent.getMaxFrames()) {
-            this.frame = 0;
-            this.superFrame++;
-        }
-
-        if (this.superFrame > 6) this.superFrame = 0;
 
         List<WeaponData> weapons = vehicle.weaponSystem.getWeapons();
         WeaponData selectedWeapon = vehicle.weaponSystem.getSelected();
 
-        WeaponTabComponent.prepareForRender();
+        if (weapons == null || weapons.isEmpty()) return;
+        if (selectedWeapon == null) return;
 
-        WeaponTabComponent.drawWeapon(poseStack, selectedWeapon, 10, (this.superFrame - 1) * 24 + 10, 2, (int) this.frame, true, this.superFrame == 6, this.superFrame == 0);
+        double yPlacement = screenHeight - TAB_HEIGHT - 13;
+        int blitPosition = 1;
 
-        for (int i = 0; i < weapons.size(); i++) {
-            WeaponTabComponent.drawTab(poseStack, 10, i * 24 + 10, -i, (int) this.frame, true);
+        if (!weaponChangeQueued) {
+            WeaponTabComponent.drawWeaponName(poseStack, selectedWeapon.getDisplayNameComponent(), 13, yPlacement, blitPosition - 2);
+            WeaponTabComponent.drawTab(poseStack, 13, yPlacement, blitPosition, 0, false);
+            WeaponTabComponent.drawWeapon(poseStack, selectedWeapon, 13, yPlacement, blitPosition + 1, 0, false, false, false);
         }
 
-        WeaponTabComponent.prepareForTakedown();
-        
+        // TODO: weapon display names
+        // TODO: weapon type codes
+        // TODO: selected weapon highlighting
+        // TODO: ammo count
+
+        /* lmao
         int yPos=1, xPos, weaponSelectWidth=getFont().width(WEAPON_SELECT)+1, maxNameWidth=46, maxTypeWidth=10;
         int color1=0x7340bf, color2=0x00ff00, color;
-        // WEAPONS
-
-        if (selectedWeapon != null) {
-            Component[] names = new MutableComponent[weapons.size()];
-            for (int i = 0; i < weapons.size(); ++i) {
-                names[i] = weapons.get(i).getDisplayNameComponent();
-                int w = getFont().width(names[i]);
-                if (w > maxNameWidth) maxNameWidth = w;
-            }
-            maxNameWidth += 4;
-            Component[] types = new MutableComponent[weapons.size()];
-            for (int i = 0; i < weapons.size(); ++i) {
-                types[i] = Component.literal(weapons.get(i).getWeaponTypeCode());
-                int w = getFont().width(types[i]);
-                if (w > maxTypeWidth) maxTypeWidth = w;
-            }
-            maxTypeWidth += 4;
-            for (int i = 0; i < weapons.size(); ++i) {
-                xPos = 1; color = color1;
-                WeaponData data = weapons.get(i);
-                if (data.equals(selectedWeapon)) {
-                    color = color2;
-                    drawString(poseStack, getFont(),
-                            WEAPON_SELECT, xPos, yPos, color);
-                }
-                xPos += weaponSelectWidth;
-                drawString(poseStack, getFont(),
-                        names[i], xPos, yPos, color);
-                xPos += maxNameWidth;
-                drawString(poseStack, getFont(),
-                        types[i], xPos, yPos, color);
-                xPos += maxTypeWidth;
-                drawString(poseStack, getFont(),
-                        data.getCurrentAmmo()+"/"+data.getMaxAmmo(),
-                        xPos, yPos, color);
-                yPos += 10;
-            } }
 
         // CONTROLS
         String text;
@@ -201,5 +167,15 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
             // what is this
             yPos += 10;
         }
+
+         */
+    }
+
+    private static void renderSelectedWeapon(PoseStack stack) {
+
+    }
+
+    private static void renderSelectionBox(PoseStack stack) {
+
     }
 }

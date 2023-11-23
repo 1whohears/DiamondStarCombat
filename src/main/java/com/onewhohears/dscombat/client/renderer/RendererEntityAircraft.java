@@ -20,6 +20,7 @@ import net.minecraft.resources.ResourceLocation;
 public class RendererEntityAircraft<T extends EntityVehicle> extends EntityRenderer<T> implements RotableHitboxRenderer, VehicleScreenRenderer<T> {
 	
 	public static RenderType getBaseRenderType(ResourceLocation texture) {
+		// FIXME 1 why are entities sometimes not seen through transparent stuff?
 		return RenderType.entityTranslucent(texture);
 	}
 	

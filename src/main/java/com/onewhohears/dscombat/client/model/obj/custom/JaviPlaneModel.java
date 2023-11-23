@@ -21,10 +21,10 @@ public class JaviPlaneModel extends ObjAircraftModel<EntityPlane> {
 		Matrix4f lg0_mat, lg1_mat, lg2_mat;
 		if (gearpos >= 1f) lg0_mat = lg1_mat = lg2_mat = INVISIBLE;
 		else {
-			float degrees = gearpos*90;
+			float degrees = -gearpos*90;
 			lg0_mat = UtilAngles.pivotPixelsRotX(0, 25.5f, 85.5f, degrees);
-			lg1_mat = UtilAngles.pivotPixelsRotX(46.5f, 26f, -8.5f, -degrees);
-			lg2_mat = UtilAngles.pivotPixelsRotX(-47.5f, 26f, -8.5f, -degrees);
+			lg1_mat = UtilAngles.pivotPixelsRotX(46.5f, 26f, -8.5f, degrees);
+			lg2_mat = UtilAngles.pivotPixelsRotX(-47.5f, 26f, -8.5f, degrees);
 		}
 		ImmutableMap<String, Matrix4f> transforms = ImmutableMap.<String, Matrix4f>builder()
 			.put("gun", INVISIBLE)

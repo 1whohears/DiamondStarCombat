@@ -15,13 +15,11 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class RotableAABB {
 	
-	public static final double SUBSIZE = 2;
+	public static final double SUBSIZE = 0.5;
 	public static final double SUBSIZEHALF = SUBSIZE*0.5;
-	public static int subUpdateCounter;
 	private Vec3 center, extents;
 	private Quaternion rot = Quaternion.ONE.copy(), roti = Quaternion.ONE.copy();
 	private final List<VoxelShape> subColliders = new ArrayList<>();
-	//private boolean updatedSubs = false;
 	
 	public RotableAABB(AABB bb) {
 		this(bb.getCenter(), extentsFromBB(bb));
@@ -44,31 +42,25 @@ public class RotableAABB {
 		return new RotableAABB(getCenter(), getExtents());
 	}
 	
-	public void updateCollider(Vec3 center, Quaternion q) {
-		//if (!center.equals(this.center) || !q.equals(this.rot)) updatedSubs = false;
-		//subColliders.clear();
+	public void setCenterAndRot(Vec3 center, Quaternion q) {
 		setCenter(center);
 		setRot(q);
 	}
 	
-	public void addColliders(List<VoxelShape> colliders, AABB aabb) {
+	public void updateColliders(List<VoxelShape> colliders, AABB aabb, Vec3 entityMoveByParent) {
 		//System.out.println("ADDING SUB COLLIDERS "+getSubColliders().size());
-		updateSubColliders(aabb);
-		colliders.addAll(getSubColliders());
+		subColliders.clear();
+		addSubColliders(aabb);
+		addSubColliders(aabb.move(entityMoveByParent));
+		colliders.addAll(subColliders);
 	}
 	
-	public List<VoxelShape> getSubColliders() {
-		//if (!updatedSubs) updateSubColliders();
-		return subColliders;
-	}
-	
-	private double shapePosComponent(double clipRelRot, double ext) {
-		double max = ext - SUBSIZEHALF;
+	private double shapePosComponent(double clipRelRot, double ext, double radius) {
+		double max = ext - radius;
 		return Math.signum(clipRelRot) * Math.min(Math.abs(clipRelRot), max);
 	}
 	
-	public void updateSubColliders(AABB aabb) {
-		subColliders.clear();
+	public void addSubColliders(AABB aabb) {
 		Vec3 close = UtilGeometry.getClosestPointOnAABB(center, aabb);
 		//System.out.println("close = "+close);
 		Optional<Vec3> clipOpt = clip(close, center);
@@ -76,71 +68,25 @@ public class RotableAABB {
 		Vec3 clip = clipOpt.get();
 		//System.out.println("clip = "+clip);
 		Vec3 clipRelRot = toRelRotPos(clip);
-		Vec3 ext = extents.add(0.001, 0.001, 0.001);
-		Vec3 shapeRelRot = new Vec3(
-				shapePosComponent(clipRelRot.x, ext.x), 
-				shapePosComponent(clipRelRot.y, ext.y), 
-				shapePosComponent(clipRelRot.z, ext.z));
-		Vec3 shape = toWorldPos(shapeRelRot);
-		//System.out.println("shape = "+shape);
-		addShape(shape);
-		/*Vec3 startNoRot = extents.subtract(SUBSIZEHALF, SUBSIZEHALF, SUBSIZEHALF);
-		Vec3 start = toWorldPos(startNoRot.scale(-1));
-		Vec3 steps =  startNoRot.scale(2/SUBSIZE);
-		int xSteps = (int)Math.ceil(steps.x), ySteps = (int)Math.ceil(steps.y), zSteps = (int)Math.ceil(steps.z);
-		double xScale = steps.x / (double)xSteps * SUBSIZE;
-		double yScale = steps.y / (double)ySteps * SUBSIZE;
-		double zScale = steps.z / (double)zSteps * SUBSIZE;
-		EulerAngles a = UtilAngles.toRadians(rot);
-		Vec3 xStep = UtilAngles.getPitchAxis(a.pitch, a.yaw, a.roll).scale(xScale);
-		Vec3 yStep = UtilAngles.getYawAxis(a.pitch, a.yaw, a.roll).scale(yScale);
-		Vec3 zStep = UtilAngles.getRollAxis(a.pitch, a.yaw).scale(zScale);
-		double max = 0.81;
-		// big hit boxes have a lot of steps. so more smaller hit boxes might be the way.
-		for(int i = 0; i <= xSteps; ++i) for(int j = 0; j <= ySteps; ++j) {
-			Vec3 pos = start.add(xStep.scale(i)).add(yStep.scale(j));
-			if (pos.distanceToSqr(close) <= max) addShape(pos);
-			pos = start.add(xStep.scale(i)).add(yStep.scale(j)).add(zStep.scale(zSteps));
-			if (pos.distanceToSqr(close) <= max) addShape(pos);
+		for (int i = 1; i <= 4; ++i) {
+			double radius = SUBSIZEHALF * i;
+			Vec3 shapeRelRot = new Vec3(
+					shapePosComponent(clipRelRot.x, extents.x+0.001, radius), 
+					shapePosComponent(clipRelRot.y, extents.y+0.001, radius), 
+					shapePosComponent(clipRelRot.z, extents.z+0.001, radius));
+			Vec3 shape = toWorldPos(shapeRelRot);
+			//System.out.println("shape = "+shape);
+			addShape(shape, radius);
 		}
-		for(int j = 0; j <= ySteps; ++j) for(int k = 0; k <= zSteps; ++k) {
-			Vec3 pos = start.add(zStep.scale(k)).add(yStep.scale(j));
-			if (pos.distanceToSqr(close) <= max) addShape(pos);
-			pos = start.add(zStep.scale(k)).add(yStep.scale(j)).add(xStep.scale(xSteps));
-			if (pos.distanceToSqr(close) <= max) addShape(pos);
-		}
-		for(int i = 0; i <= xSteps; ++i) for(int k = 0; k <= zSteps; ++k) {
-			Vec3 pos = start.add(xStep.scale(i)).add(zStep.scale(k));
-			if (pos.distanceToSqr(close) <= max) addShape(pos);
-			pos = start.add(xStep.scale(i)).add(zStep.scale(k)).add(yStep.scale(ySteps));
-			if (pos.distanceToSqr(close) <= max) addShape(pos);
-		}*/
-		/*for(int i = 0; i <= xSteps; ++i) for(int j = 0; j <= ySteps; ++j) for(int k = 0; k <= zSteps; ++k) {
-			if (i!=0&&i!=xSteps && j!=0&&j!=ySteps && k!=0&&k!=zSteps) continue;
-			Vec3 pos = start.add(xStep.scale(i)).add(yStep.scale(j)).add(zStep.scale(k));
-			if (pos.distanceToSqr(close) > 0.25) continue;
-			VoxelShape shape = Shapes.create(
-				pos.x-SUBSIZEHALF, pos.y-SUBSIZEHALF, pos.z-SUBSIZEHALF, 
-				pos.x+SUBSIZEHALF, pos.y+SUBSIZEHALF, pos.z+SUBSIZEHALF);
-			subColliders.add(shape);
-		}*/
-		//updatedSubs = true;
-		if (subColliders.size() > 0) ++subUpdateCounter; 
-		//System.out.println("UPDATED SUB COLLIDERS "+(++subUpdateCounter)+" "+subColliders.size());
 	}
 	
-	private void addShape(Vec3 pos) {
+	private void addShape(Vec3 pos, double radius) {
 		//System.out.println("shape pos = "+pos);
 		VoxelShape shape = Shapes.create(
-			pos.x-SUBSIZEHALF, pos.y-SUBSIZEHALF, pos.z-SUBSIZEHALF, 
-			pos.x+SUBSIZEHALF, pos.y+SUBSIZEHALF, pos.z+SUBSIZEHALF);
+			pos.x-radius, pos.y-radius, pos.z-radius, 
+			pos.x+radius, pos.y+radius, pos.z+radius);
 		subColliders.add(shape);
 	}
-	
-	/*public static class CollisionData {
-		public Direction dir = Direction.NORTH;
-		public Vec3 normal = Vec3.ZERO;
-	}*/
 	
 	public boolean isColliding(AABB aabb) {
 		return contains(UtilGeometry.getClosestPointOnAABB(center, aabb));
@@ -157,6 +103,21 @@ public class RotableAABB {
 		return insideX && insideY && insideZ;
 	}
 	
+	public boolean isInside(AABB aabb) {
+		return isInside(UtilGeometry.getClosestPointOnAABB(center, aabb));
+	}
+	
+	public boolean isInside(Vec3 pos) {
+		return isInsideRelPos(toRelRotPos(pos));
+	}
+	
+	public boolean isInsideRelPos(Vec3 relRotPos) {
+		boolean insideX = relRotPos.x() < extents.x() && relRotPos.x() > -extents.x();
+		boolean insideY = relRotPos.y() < extents.y() && relRotPos.y() > -extents.y();
+		boolean insideZ = relRotPos.z() < extents.z() && relRotPos.z() > -extents.z();
+		return insideX && insideY && insideZ;
+	}
+	
 	public Vec3 toRelRotPos(Vec3 pos) {
 		return UtilAngles.rotateVector(pos.subtract(center), roti);
 	}
@@ -170,8 +131,12 @@ public class RotableAABB {
 	}
 	
 	public Optional<Vec3> clip(Vec3 from, Vec3 to) {
+		return clip(from, to, true);
+	}
+	
+	public Optional<Vec3> clip(Vec3 from, Vec3 to, boolean containCheck) {
 		Vec3 fromRelRot = toRelRotPos(from);
-		if (containsRelRot(fromRelRot)) return Optional.of(toWorldPos(fromRelRot));
+		if (containCheck && containsRelRot(fromRelRot)) return Optional.of(toWorldPos(fromRelRot));
 		Vec3 toRelRot = toRelRotPos(to);
 		Vec3 diff = toRelRot.subtract(fromRelRot);
 		double tMin = Double.MAX_VALUE;
@@ -218,135 +183,60 @@ public class RotableAABB {
 		else return null;
 	}
 	
-	/*@Nullable
-	public Vec3 getCollidePos(Vec3 entity_pos, Vector3f entity_move, Quaternion rot, CollisionData data) {
-		Vector3f collide = getCollidePos(UtilGeometry.convertVector(entity_pos), entity_move, rot, data);
-		if (collide == null) return null;
-		return UtilGeometry.convertVector(collide);
+	public Vec3 getPushOutPos(Vec3 pos, AABB aabb) {
+		Vec3 close = UtilGeometry.getClosestPointOnAABB(center, aabb);
+		Vec3 aabbDiff = pos.subtract(close);
+		//System.out.println("aabbDiff = "+aabbDiff);
+		Vec3 push = getPushOutPos(close).add(aabbDiff);
+		//System.out.println("push + aabbDiff = "+push);
+		return push;
 	}
 	
-	@Nullable
-	public Vector3f getCollidePos(Vector3f entity_pos, Vector3f entity_move, Quaternion rot, CollisionData data) {
-		Vector3f rel_rot_collide = getRelRotCollidePos(entity_pos, entity_move, rot, data);
-		if (rel_rot_collide == null) return null;
-		Vector3f collide = UtilAngles.rotateVector(rel_rot_collide, rot);
-		collide.add(getCenter());
-		return collide;
-	}
-	
-	@Nullable
-	public Vec3 getCollideMovePos(Vec3 entity_pos, Vector3f entity_move, Quaternion rot, Vec3 parent_move, Vec3 rot_rate, CollisionData data) {
-		Vector3f collide = getCollideMovePos(UtilGeometry.convertVector(entity_pos), entity_move,
-				rot, UtilGeometry.convertVector(parent_move), UtilGeometry.convertVector(rot_rate), data);
-		if (collide == null) return null;
-		return UtilGeometry.convertVector(collide);
-	}
-	
-	@Nullable
-	public Vector3f getCollideMovePos(Vector3f entity_pos, Vector3f entity_move, Quaternion rot, Vector3f parent_move, Vector3f rot_rate, CollisionData data) {
-		Vector3f rel_rot_collide = getRelRotCollidePos(entity_pos, entity_move, rot, data);
-		if (rel_rot_collide == null) return null;
-		Vector3f rel_tan_vel = rot_rate.copy();
-		rel_tan_vel.mul(Mth.DEG_TO_RAD);
-		rel_tan_vel.mul(-1,-1,1);
-		rel_tan_vel.cross(rel_rot_collide);
-		Vector3f tan_vel = UtilAngles.rotateVector(rel_tan_vel, rot);
-		Vector3f collide = UtilAngles.rotateVector(rel_rot_collide, rot);
-		//System.out.println("rel_rot_collide = "+rel_rot_collide);
-		//System.out.println("rel_collide     = "+collide);
-		collide.add(getCenter());
-		collide.add(tan_vel);
-		collide.add(parent_move);
-		//System.out.println("tan_vel     = "+tan_vel);
-		//System.out.println("parent_move = "+parent_move);
-		//System.out.println("collide = "+collide);
-		//Vector3f diff = collide.copy(); diff.sub(entity_pos);
-		//System.out.println("diff = "+diff);
-		return collide;
-	}
-	
-	@Nullable
-	private Vector3f getRelRotCollidePos(Vector3f entity_pos, Vector3f entity_move, Quaternion rot, CollisionData data) {
-		Vector3f dc = entity_pos.copy();
-		dc.sub(getCenter());
-		Quaternion roti = rot.copy(); roti.conj();
-		Vector3f rel_rot_pos = UtilAngles.rotateVector(dc, roti);
-		//Vector3f rot_move = UtilAngles.rotateVector(entity_move, roti);
-		//System.out.println("center = "+getCenter());
-		//System.out.println("rot = "+rot);
-		//System.out.println("entity_pos = "+entity_pos);
-		//System.out.println("dc     = "+dc);
-		//System.out.println("rot_dc = "+rot_dc);
-		//System.out.println("entity_move = "+entity_move);
-		//System.out.println("rot_move = "+rot_move);
-		entity_move.transform(roti);
-		Vector3f crrc = collideRelRotComponents(rel_rot_pos, entity_move, data);
-		if (crrc == null) return null;
-		entity_move.transform(rot);
-		data.normal.transform(rot);
-		data.dir = Direction.getNearest(data.normal.x(), data.normal.y(), data.normal.z());
-		return crrc;
-	}
-	
-	@Nullable
-	private Vector3f collideRelRotComponents(Vector3f rel_rot_pos, Vector3f rot_move, CollisionData data) {
-		Vector3f ext = getExtents();
-		boolean insideX = rel_rot_pos.x() < ext.x() && rel_rot_pos.x() > -ext.x();
-		boolean insideY = rel_rot_pos.y() < ext.y() && rel_rot_pos.y() > -ext.y();
-		boolean insideZ = rel_rot_pos.z() < ext.z() && rel_rot_pos.z() > -ext.z();
-		if (insideX && insideY && insideZ) {
-			float dx = Math.min(Mth.abs(ext.x()-rel_rot_pos.x()), Mth.abs(-ext.x()-rel_rot_pos.x()));
-			float dy = Math.min(Mth.abs(ext.y()-rel_rot_pos.y()), Mth.abs(-ext.y()-rel_rot_pos.y()))+0.1f;
-			float dz = Math.min(Mth.abs(ext.z()-rel_rot_pos.z()), Mth.abs(-ext.z()-rel_rot_pos.z()));
-			if (isAbsSmallest(dz, dy, dx)) return getZCollide(rel_rot_pos, rot_move, ext.z()*Math.signum(rel_rot_pos.z()), data);
-			else if (isAbsSmallest(dx, dy, dz)) return getXCollide(rel_rot_pos, rot_move, ext.x()*Math.signum(rel_rot_pos.x()), data);
-			else if (isAbsSmallest(dy, dz, dx)) return getYCollide(rel_rot_pos, rot_move, ext.y()*Math.signum(rel_rot_pos.y()), data);
-			else return getYCollide(rel_rot_pos, rot_move, dy*Math.signum(rel_rot_pos.y()), data);
+	public Vec3 getPushOutPos(Vec3 pos) {
+		Vec3 posRelRot = toRelRotPos(pos);
+		if (!isInsideRelPos(posRelRot)) return pos;
+		double distSqrMin = Double.MAX_VALUE;
+		Vec3 pushRelRot = Vec3.ZERO;
+		Double pushY = pushAxis(posRelRot.y, extents.y, 0.002);
+		if (pushY != null) {
+			Vec3 test = new Vec3(posRelRot.x, pushY, posRelRot.z);
+			double distSqr = posRelRot.distanceToSqr(test);
+			//System.out.println("distSqr pushY = "+distSqr);
+			if (distSqr < distSqrMin) {
+				distSqrMin = distSqr;
+				pushRelRot = test;
+			}
 		}
-		Float cz = collideComponent(rel_rot_pos.z(), rot_move.z(), ext.z());
-		if (cz != null && insideX && insideY) return getZCollide(rel_rot_pos, rot_move, cz, data);
-		Float cx = collideComponent(rel_rot_pos.x(), rot_move.x(), ext.x());
-		if (cx != null && insideY && insideZ) return getXCollide(rel_rot_pos, rot_move, cx, data);
-		Float cy = collideComponent(rel_rot_pos.y(), rot_move.y(), ext.y());
-		if (cy != null && insideX && insideZ) return getYCollide(rel_rot_pos, rot_move, cy, data);
-		return null;
+		Double pushX = pushAxis(posRelRot.x, extents.x, 0.002);
+		if (pushX != null) {
+			Vec3 test = new Vec3(pushX, posRelRot.y, posRelRot.z);
+			double distSqr = posRelRot.distanceToSqr(test);
+			//System.out.println("distSqr pushX = "+distSqr);
+			if (distSqr < distSqrMin) {
+				distSqrMin = distSqr;
+				pushRelRot = test;
+			}
+		}
+		Double pushZ = pushAxis(posRelRot.z, extents.z, 0.002);
+		if (pushZ != null) {
+			Vec3 test = new Vec3(posRelRot.x, posRelRot.y, pushZ);
+			double distSqr = posRelRot.distanceToSqr(test);
+			//System.out.println("distSqr pushZ = "+distSqr);
+			if (distSqr < distSqrMin) {
+				distSqrMin = distSqr;
+				pushRelRot = test;
+			}
+		}
+		if (distSqrMin == Double.MAX_VALUE) return pos;
+		Vec3 push = toWorldPos(pushRelRot);
+		//System.out.println("push = "+push);
+		return push;
 	}
 	
-	private Vector3f getZCollide(Vector3f rel_rot_pos, Vector3f rot_move, float cz, CollisionData data) {
-		data.normal.set(0, 0, Math.signum(cz));
-		rot_move.mul(1, 1, 0);
-		return new Vector3f(rel_rot_pos.x(), rel_rot_pos.y(), cz);
+	private Double pushAxis(double pos, double ext, double skin) {
+		if (pos < 0) return -ext - skin;
+		else return ext + skin;
 	}
-	
-	private Vector3f getXCollide(Vector3f rel_rot_pos, Vector3f rot_move, float cx, CollisionData data) {
-		data.normal.set(Math.signum(cx), 0, 0);
-		rot_move.mul(0, 1, 1);
-		return new Vector3f(cx, rel_rot_pos.y(), rel_rot_pos.z());
-	}
-	
-	private Vector3f getYCollide(Vector3f rel_rot_pos, Vector3f rot_move, float cy, CollisionData data) {
-		data.normal.set(0, Math.signum(cy), 0);
-		rot_move.mul(1, 0, 1);
-		return new Vector3f(rel_rot_pos.x(), cy, rel_rot_pos.z());
-	}
-	
-	private boolean isAbsSmallest(Float a, Float b, Float c) {
-		if (a == null || b == null || c == null) return false;
-		return Mth.abs(a) < Mth.abs(b) && Mth.abs(a) < Mth.abs(c);
-	}
-	
-	@Nullable
-	private Float collideComponent(float rel_rot_pos, float rot_move, float ext) {
-		if (rel_rot_pos >= ext) {
-			float de = ext-rel_rot_pos;
-			if (rot_move > de) return null;
-			return ext;
-		} else if (rel_rot_pos <= -ext) {
-			float de = -ext-rel_rot_pos;
-			if (rot_move < de) return null;
-			return -ext;
-		} else return null;
-	}*/
 	
 	public static Vec3 extentsFromBB(AABB bb) {
 		return new Vec3(bb.getXsize()/2, bb.getYsize()/2, bb.getZsize()/2);
@@ -386,6 +276,15 @@ public class RotableAABB {
 	
 	public DisguisedAABB getDisguisedAABB(Vec3 pos) {
 		return new DisguisedAABB(this, pos, 0.5);
+	}
+	
+	public AABB getMaxDimBox() {
+		EntityDimensions d = getMaxDimensions();
+    	double pX = center.x, pY = center.y, pZ = center.z;
+    	double f = d.width / 2.0F;
+        double f1 = d.height / 2.0F;
+        return new AABB(pX-f, pY-f1, pZ-f, 
+        		pX+f, pY+f1, pZ+f);
 	}
 	
 }

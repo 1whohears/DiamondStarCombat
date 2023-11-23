@@ -41,7 +41,7 @@ public class RotableHitbox extends PartEntity<EntityVehicle> {
 	@Override
 	public void tick() {
 		positionSelf();
-		//positionEntities();
+		pushEntitiesOut();
 		firstTick = false;
 	}
 	
@@ -50,8 +50,7 @@ public class RotableHitbox extends PartEntity<EntityVehicle> {
 		Quaternion q = getParent().getQBySide();
 		Vec3 pos = getParent().position().add(UtilAngles.rotateVector(getRelPos(), q));
 		setPos(pos);
-		//hitbox.setCenter(UtilGeometry.convertVector(pos));
-		hitbox.updateCollider(pos, q);
+		hitbox.setCenterAndRot(pos, q);
 		//System.out.println("AABB="+getBoundingBox().toString()+" "+this);
 		
 	}
@@ -59,18 +58,15 @@ public class RotableHitbox extends PartEntity<EntityVehicle> {
 	public void handlePosibleCollision(List<VoxelShape> colliders, Entity entity, AABB aabb, Vec3 move) {
 		if (!couldCollide(entity) || !hitbox.isColliding(aabb)) return;
 		//System.out.println("HANDLE COLLISION "+entity+" "+move);
-		// FIXME 4.1 entities just fall off when the parent rotates or moves
-		// FIXME 4.2 players are frozen stuck when inside a RotableHitbox
 		// FIXME 4.6 prevent entities from falling off when the chunks load
-		Vec3 entityMoveByParent = moveEntityFromParent(entity);
-		hitbox.addColliders(colliders, aabb.move(entityMoveByParent));
+		if (!getParent().didEntityAlreadyCollide(entity)) {
+			Vec3 entityMoveByParent = moveEntityFromParent(entity);
+			hitbox.updateColliders(colliders, aabb, entityMoveByParent);
+			getParent().addHitboxCollider(entity);
+		}
 	}
 	
 	public Vec3 moveEntityFromParent(Entity entity) {
-		/*
-		 * FIXME 4.4 only one RotableHitbox needs to run this per tick otherwise its rotation speed is doubled. 
-		 * it's actually not a double/float precision issue. 
-		 */
 		Vec3 parent_pos = getParent().position();
 		Vec3 parent_move = getParent().getDeltaMovement();
 		Vec3 parent_rot_rate = getParent().getAngularVel();
@@ -81,7 +77,7 @@ public class RotableHitbox extends PartEntity<EntityVehicle> {
 		Vec3 rel_tan_vel = parent_rot_rate.scale(Math.toRadians(1d))
 				.multiply(-1d,-1d,1d).cross(rel_pos);
 		Vec3 tan_vel = UtilAngles.rotateVector(rel_tan_vel, q);
-		Vec3 entityMoveByParent = parent_move.add(tan_vel);
+		Vec3 entityMoveByParent = parent_move.add(tan_vel);//.add(0, 0.001, 0);
 		entity.setPos(entity.position().add(entityMoveByParent));
 		entity.setYRot(entity.getYRot()-(float)parent_rot_rate.y);
 		if (entity instanceof EntityVehicle vehicle) {
@@ -92,62 +88,24 @@ public class RotableHitbox extends PartEntity<EntityVehicle> {
 		return entityMoveByParent;
 	}
 	
-	/*protected void positionEntities() {
-		Vec3 parent_move = getParent().getDeltaMovement();
-		Vec3 parent_rot_rate = getParent().getAngularVel();
-		Quaternion rot = getParent().getQBySide();
-		List<Entity> list = level.getEntities(this, getBoundingBox(), getCouldCollideTest());
-		//System.out.println("collision list size = "+list.size());
-		//System.out.println("client side?"+level.isClientSide);
+	protected void pushEntitiesOut() {
+		List<Entity> list = level.getEntities(this, 
+				hitbox.getMaxDimBox(), PUSH_OUT);
 		for (Entity entity : list) {
-			CollisionData data = new CollisionData();
-			Vec3 entity_pos = entity.position();
-			Vector3f entity_move = UtilGeometry.convertVector(entity.getDeltaMovement());
-			// projectile collide
-			if (entity instanceof Projectile pro) {
-				Vec3 collide = hitbox.getCollidePos(entity_pos, entity_move, rot, data);
-				if (collide == null) continue;
-				boolean canHit = pro.canHitEntity(getParent());
-				if (!canHit) continue;
-				pro.setPos(collide);
-				EntityHitResult hit = new EntityHitResult(this, collide);
-				pro.onHitEntity(hit);
-				continue;
-			}
-			// other entity collide
-			float yMoveBefore = entity_move.y();
-			AABB entity_bb = entity.getBoundingBox();
-			Vec3 entity_feet = UtilGeometry.getBBFeet(entity_bb);
-			Vec3 collide = hitbox.getCollideMovePos(entity_feet, 
-					entity_move, rot, parent_move, parent_rot_rate, data);
-			//System.out.println("collide "+(collide!=null)+" "+entity);
-			if (collide == null) continue;
-			//System.out.println("colliding "+entity);
-			double dy = entity_pos.y-entity_bb.minY;
-			entity.setPos(collide.add(0, dy, 0));
-			entity.setYRot(entity.getYRot()-(float)parent_rot_rate.y);
-			// set is colliding
-			if (data.dir.getAxis().isVertical()) {
-				entity.setOnGround(true);
-				entity.verticalCollision = true;
-				entity.verticalCollisionBelow = true;
-				entity.causeFallDamage(entity.fallDistance, 1, DamageSource.FALL);
-				entity.resetFallDistance();
-				entity_move.add(yMoveBefore*data.normal.x(), 0, yMoveBefore*data.normal.z()); // prevents slide
-			}
-			if (data.dir.getAxis().isHorizontal()) {
-				entity.horizontalCollision = true;
-				// horizontal collide damage
-			}
-			// change movement based on collision
-			entity.setDeltaMovement(UtilGeometry.convertVector(entity_move));
-			if (entity instanceof EntityVehicle vehicle) {
-				Quaternion q = vehicle.getQBySide();
-				q.mul(Vector3f.YN.rotationDegrees((float)parent_rot_rate.y));
-				vehicle.setQBySide(q);
-			}
+			//System.out.println("PUSHING OUT "+entity);
+			entity.setPos(hitbox.getPushOutPos(entity.position(), entity.getBoundingBox()));
 		}
-	}*/
+	}
+	
+	public final Predicate<? super Entity> PUSH_OUT = (entity) -> {
+		if (!couldCollide(entity)) return false;
+		if (!isInside(entity)) return false;
+		return true;
+	};
+	
+	public boolean isInside(Entity entity) {
+		return hitbox.isInside(entity.getBoundingBox());
+	}
 	
 	public boolean couldCollide(Entity entity) {
 		if (entity.noPhysics) return false;
@@ -158,10 +116,6 @@ public class RotableHitbox extends PartEntity<EntityVehicle> {
 		return true;
 	}
 	
-	public Predicate<? super Entity> getCouldCollideTest() {
-		return (entity) -> couldCollide(entity);
-	}
-	
 	@Override
     public boolean hurt(DamageSource source, float amount) {
     	return getParent().hurt(source, amount);
@@ -169,13 +123,6 @@ public class RotableHitbox extends PartEntity<EntityVehicle> {
 	
 	@Override
     protected AABB makeBoundingBox() {
-    	/*EntityDimensions d = getDimensions(getPose());
-    	if (d == null) return super.makeBoundingBox();
-    	double pX = getX(), pY = getY(), pZ = getZ();
-    	double f = d.width / 2.0F;
-        double f1 = d.height / 2.0F;
-        return new AABB(pX-f, pY-f1, pZ-f, 
-        		pX+f, pY+f1, pZ+f);*/
 		if (hitbox == null) return AABB.ofSize(position(), 1f, 1f, 1f);
 		return hitbox.getDisguisedAABB(position());
     }

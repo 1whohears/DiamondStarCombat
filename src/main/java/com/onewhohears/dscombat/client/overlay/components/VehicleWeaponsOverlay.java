@@ -12,13 +12,16 @@ import java.util.Objects;
 import static com.onewhohears.dscombat.client.overlay.WeaponTabComponent.TAB_HEIGHT;
 
 public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
-    public static final double[] SPACINGS = {0.0, 8.0, 14.0, 18.0, 20.0, 22.0, 23.0, 24.0};
+    public static final int[] SPACINGS = {24, 21, 18, 12, 0};
     //private static final MutableComponent WEAPON_SELECT = Component.literal("->");
 
     private static VehicleWeaponsOverlay INSTANCE;
 
     protected boolean selectingWeaponState;
     protected boolean weaponChangeQueued;
+    protected int weaponChangeCountdown;
+
+    protected WeaponData selectedWeapon;
 
     protected float frame;
     protected int superFrame;
@@ -34,6 +37,8 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
     protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
         if (!(getPlayerRootVehicle() instanceof EntityVehicle vehicle)) return;
 
+        queueWeaponChange();
+
         List<WeaponData> weapons = vehicle.weaponSystem.getWeapons();
         WeaponData selectedWeapon = vehicle.weaponSystem.getSelected();
 
@@ -44,6 +49,7 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
         int blitPosition = 1;
 
         if (!weaponChangeQueued) {
+            this.selectedWeapon = selectedWeapon;
             WeaponTabComponent.drawWeaponName(poseStack, selectedWeapon.getDisplayNameComponent(), 13, yPlacement, blitPosition - 2);
             WeaponTabComponent.drawTab(poseStack, 13, yPlacement, blitPosition, 0, false);
             WeaponTabComponent.drawWeapon(poseStack, selectedWeapon, 13, yPlacement, blitPosition + 1, 0, false, false, false);
@@ -53,6 +59,27 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
             if (!selectedWeapon.isNoWeapon()) drawString(poseStack, getFont(), selectedWeapon.getCurrentAmmo() + "/" + selectedWeapon.getMaxAmmo(), 16, (int) (yPlacement + 14), 0xe6e600);
             // renders weapon code - drawString(poseStack, getFont(), selectedWeapon.getWeaponTypeCode(), 16, (int) yPlacement + 4, 0xe6e600);
             poseStack.popPose();
+        } else {
+            int weaponTabsToRender = Math.min(weapons.size(), 5);
+            int indexOfSelectedWeapon = weapons.indexOf(selectedWeapon);
+
+            for (int i = 0; i < weaponTabsToRender; i++) {
+                int shiftedIndex = indexOfSelectedWeapon - i;
+                if (shiftedIndex < 0) shiftedIndex += weapons.size() - 1;
+                int newYPos = (int) (yPlacement - (24 * i));
+
+                WeaponData weaponAt = weapons.get(shiftedIndex);
+
+                WeaponTabComponent.drawTab(poseStack, 13, newYPos, blitPosition, 0, false);
+                WeaponTabComponent.drawWeapon(poseStack, weaponAt, 13, newYPos, blitPosition + 1, 0, false, false, false);
+                poseStack.pushPose();
+                poseStack.translate(0, 0, blitPosition + 2);
+                if (!weaponAt.isNoWeapon()) drawString(poseStack, getFont(), weaponAt.getCurrentAmmo() + "/" + selectedWeapon.getMaxAmmo(), 16, newYPos + 14, 0xe6e600);
+                drawString(poseStack, getFont(), weaponAt.getWeaponTypeCode(), 16, newYPos + 4, 0xe6e600);
+                poseStack.popPose();
+            }
+
+            WeaponTabComponent.drawWeaponName(poseStack, selectedWeapon.getDisplayNameComponent(), 13, yPlacement - (24 * (weaponTabsToRender - 1)), blitPosition - 2);
         }
 
         // TODO: icons indicating how the weapon works e.g. infrared, radar
@@ -173,6 +200,11 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
         }
 
          */
+    }
+
+    public static void queueWeaponChange() {
+        INSTANCE.weaponChangeCountdown = 4;
+        INSTANCE.weaponChangeQueued = true;
     }
 
     private static void renderSelectedWeapon(PoseStack stack) {

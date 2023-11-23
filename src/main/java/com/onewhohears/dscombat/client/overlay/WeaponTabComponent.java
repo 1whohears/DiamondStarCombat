@@ -1,9 +1,15 @@
 package com.onewhohears.dscombat.client.overlay;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.*;
+import com.mojang.math.Matrix4f;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 import static com.onewhohears.dscombat.DSCombatMod.MODID;
@@ -21,23 +27,7 @@ public class WeaponTabComponent extends GuiComponent {
     public static final float[] FRAMES = {0.0F, 5.0F, 10.0F, 13.0F, 16.0F, 18.0F, 20.0F, 22.0F, 23.0F};
 
     /**
-     * Call to allow the tab(s) to render correctly. This exists to avoid redundant calls to <code>RenderSystem</code>.
-     * Make sure to call <code>#prepareForTakedown</code> after finishing.
-     */
-    public static void prepareForRender() {
-        RenderSystem.setShaderTexture(0, WEAPON_TABS);
-        RenderSystem.enableBlend();
-        RenderSystem.enableDepthTest();
-    }
-
-    public static void prepareForTakedown() {
-        RenderSystem.disableBlend();
-        RenderSystem.disableDepthTest();
-    }
-
-    /**
-     * To avoid redundant calls to <code>RenderSystem</code>, the client code must call
-     * <code>WeaponTabComponent#prepareForRender</code> wherever in the code the tab is to be rendered.
+     * Renders a weapon tab. This method provides an easy way to animate the tab.
      * @param frame an <code>int</code> representing the frame of animation. See the return of
      *              <code>#getMaxFrames</code> and subtract one to get the highest allowed frame.
      *              Value must be between 0 and the highest frame inclusive.
@@ -48,13 +38,22 @@ public class WeaponTabComponent extends GuiComponent {
 
         stack.pushPose();
         stack.translate(x, y, blitOffset);
+
+        RenderSystem.setShaderTexture(0, WEAPON_TABS);
+        RenderSystem.enableBlend();
+        RenderSystem.enableDepthTest();
+
         blit(stack, 0, 0, 0, sign * FRAMES[frame], TAB_WIDTH, TAB_HEIGHT, TAB_WIDTH, TAB_HEIGHT);
+
+        RenderSystem.disableBlend();
+        RenderSystem.disableDepthTest();
+
         stack.popPose();
     }
 
     /**
-     * To avoid redundant calls to <code>RenderSystem</code>, the client code must call
-     * <code>WeaponTabComponent#prepareForRender</code> wherever in the code the tab is to be rendered.
+     * Renders an icon defined by the <code>ResourceLocation</code> from the return of <code>{@link WeaponData#getWeaponIcon()}</code>.
+     * This method provides an easy way to animate the icon.
      * @param frame an <code>int</code> representing the frame of animation. See the return of
      *              <code>#getMaxFrames</code> and subtract one to get the highest allowed frame.
      *              Value must be between 0 and the highest frame inclusive.
@@ -71,6 +70,8 @@ public class WeaponTabComponent extends GuiComponent {
         int frameValue = (int) FRAMES[frame];
 
         RenderSystem.setShaderTexture(0, weapon.getWeaponIcon());
+        RenderSystem.enableBlend();
+        RenderSystem.enableDepthTest();
 
         stack.pushPose();
 
@@ -90,11 +91,60 @@ public class WeaponTabComponent extends GuiComponent {
 
         stack.popPose();
 
-        RenderSystem.setShaderTexture(0, WEAPON_TABS);
+        RenderSystem.disableBlend();
+        RenderSystem.disableDepthTest();
+    }
+
+    /**
+     * 0x10 is the default value Minecraft uses for tooltip alpha. Pass the same coordinates as the tab this name
+     * is associated with. Offsets are already accounted for
+     */
+    public static void drawWeaponName(PoseStack stack, Component name, double x, double y, int blitOffset) {
+        // 0x505000FF, 0x5028007f (colours for border start and end, respectively) 0xf0100010 (bg)
+
+        stack.pushPose();
+
+        Tesselator tesselator = Tesselator.getInstance();
+        BufferBuilder bufferbuilder = tesselator.getBuilder();
+        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+        Matrix4f matrix4f = stack.last().pose();
+
+        int nameWidth = getFont().width(name) + 6;
+
+        stack.translate(x, y - 11, blitOffset);
+        fillGradient(matrix4f, bufferbuilder, 2, 0, nameWidth, 14, -1, 0xf0100010, 0xf0100010);
+        fillGradient(matrix4f, bufferbuilder, 0, 0, 1, 14, -1, 0xf0100010, 0xf0100010);
+        fillGradient(matrix4f, bufferbuilder, nameWidth + 1, 0, nameWidth + 2, 14, -1, 0xf0100010, 0xf0100010);
+        fillGradient(matrix4f, bufferbuilder, 2, -2, nameWidth, -1, -1, 0xf0100010, 0xf0100010);
+        fillGradient(matrix4f, bufferbuilder, 2, 16, nameWidth, 17, -1, 0xf0100010, 0xf0100010);
+
+        fillGradient(matrix4f, bufferbuilder, 1, 0, 2, 14, -1, 0x505000FF, 0x5028007f);
+        fillGradient(matrix4f, bufferbuilder, nameWidth, 0, nameWidth + 1, 14, -1, 0x505000FF, 0x5028007f);
+        fillGradient(matrix4f, bufferbuilder, 2, -1, nameWidth, 0, -1, 0x505000FF, 0x5028007f);
+        fillGradient(matrix4f, bufferbuilder, 2, 15, nameWidth, 16, -1, 0x505000FF, 0x5028007f);
+
+        RenderSystem.enableDepthTest();
+        RenderSystem.disableTexture();
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        BufferUploader.drawWithShader(bufferbuilder.end());
+        RenderSystem.disableBlend();
+        RenderSystem.enableTexture();
+        MultiBufferSource.BufferSource bufferSource = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
+
+        getFont().drawInBatch(name, 4, 2, -1, true, matrix4f, bufferSource, false, 0, 15728880);
+
+        bufferSource.endBatch();
+        stack.popPose();
     }
 
     public static int getMaxFrames() {
         return FRAMES.length;
+    }
+
+    private static Font getFont() {
+        return Minecraft.getInstance().font;
     }
 
     /*

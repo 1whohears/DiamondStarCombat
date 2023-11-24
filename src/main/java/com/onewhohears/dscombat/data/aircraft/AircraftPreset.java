@@ -115,11 +115,11 @@ public class AircraftPreset extends JsonPreset{
 		}
 		
 		public static Builder create(String namespace, String name) {
-			return new Builder(namespace, name, (key, json) -> new AircraftPreset(key, json));
+			return new Builder(namespace, name, AircraftPreset::new);
 		}
 		
 		public static Builder createFromCopy(String namespace, String name, AircraftPreset copy) {
-			return new Builder(namespace, name, (key, json) -> new AircraftPreset(key, json), copy);
+			return new Builder(namespace, name, AircraftPreset::new, copy);
 		}
 		
 		@Override

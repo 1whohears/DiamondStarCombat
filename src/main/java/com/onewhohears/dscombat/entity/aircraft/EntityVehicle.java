@@ -492,6 +492,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		controlSystem();
         tickParts();
 		soundManager.onTick();
+		textureManager.onTick();
 		if (level.isClientSide) clientTick();
 		else serverTick();
 	}

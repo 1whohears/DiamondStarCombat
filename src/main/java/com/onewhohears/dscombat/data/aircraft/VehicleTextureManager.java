@@ -2,6 +2,8 @@ package com.onewhohears.dscombat.data.aircraft;
 
 import java.awt.Color;
 
+import com.onewhohears.dscombat.common.network.PacketHandler;
+import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleTexture;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.util.UtilEntity;
 
@@ -30,7 +32,22 @@ public class VehicleTextureManager {
 			textureLayers[i] = new TextureLayer(modId+":textures/entity/vehicle/"+entityId+"/layer"+i+".png");
 		}
 		// TODO 1.4 make a paint job item and gui allowing players to customize their vehicle layers and colors
-		// TODO 1.5 sync all this data with clients
+	}
+	
+	public void onTick() {
+		if (parent.level.isClientSide) clientTick();
+		else serverTick();
+	}
+	
+	public void clientTick() {
+		if (parent.tickCount % 20 == 0 && isChanged()) {
+			PacketHandler.INSTANCE.sendToServer(new ToServerVehicleTexture(parent));
+			resetChanged();
+		}
+	}
+	
+	public void serverTick() {
+		
 	}
 	
 	public void read(CompoundTag entityNbt) {
@@ -95,6 +112,12 @@ public class VehicleTextureManager {
 		return false;
 	}
 	
+	public void resetChanged() {
+		changed = false;
+		for (int i = 0; i < textureLayers.length; ++i) 
+			textureLayers[i].resetChanged();
+	}
+	
 	public static class TextureLayer {
 		private final ResourceLocation texture;
 		private int colorInt;
@@ -120,6 +143,7 @@ public class VehicleTextureManager {
 		public void read(FriendlyByteBuf buffer) {
 			setColor(buffer.readInt());
 			enabled = buffer.readBoolean();
+			changed = false;
 		}
 		public void write(FriendlyByteBuf buffer) {
 			buffer.writeInt(colorInt);
@@ -152,6 +176,9 @@ public class VehicleTextureManager {
 		}
 		public boolean isChanged() {
 			return changed;
+		}
+		public void resetChanged() {
+			changed = false;
 		}
 	}
 	

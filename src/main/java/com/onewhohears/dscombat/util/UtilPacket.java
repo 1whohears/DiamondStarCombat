@@ -11,6 +11,7 @@ import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
@@ -89,9 +90,18 @@ public class UtilPacket {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityVehicle plane) {
-			System.out.println("adding from server "+force+" "+moment);
+			//System.out.println("adding from server "+force+" "+moment);
 			plane.addForceBetweenTicks = plane.addForceBetweenTicks.add(force);
 			plane.addMomentBetweenTicks = plane.addMomentBetweenTicks.add(moment);
+		}
+	}
+	
+	public static void vehicleTexturePacket(int ignore_player_id, int vehicle_id, FriendlyByteBuf buffer) {
+		Minecraft m = Minecraft.getInstance();
+		if (m.player.getId() == ignore_player_id) return;
+		Level world = m.level;
+		if (world.getEntity(vehicle_id) instanceof EntityVehicle plane) {
+			plane.textureManager.read(buffer);
 		}
 	}
 	

@@ -9,6 +9,7 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientDataPackSynch;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRWRWarning;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRadarPings;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRemovePart;
+import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleTexture;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponAmmo;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftCollide;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftControl;
@@ -21,6 +22,7 @@ import com.onewhohears.dscombat.common.network.toserver.ToServerPingSelect;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSeatPos;
 import com.onewhohears.dscombat.common.network.toserver.ToServerShootTurret;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSwitchSeat;
+import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleTexture;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkDirection;
@@ -144,6 +146,16 @@ public final class PacketHandler {
 			.encoder(ToServerAircraftMoveRot::encode)
 			.decoder(ToServerAircraftMoveRot::new)
 			.consumerMainThread(ToServerAircraftMoveRot::handle)
+			.add();
+		net.messageBuilder(ToServerVehicleTexture.class, index++, NetworkDirection.PLAY_TO_SERVER)
+			.encoder(ToServerVehicleTexture::encode)
+			.decoder(ToServerVehicleTexture::new)
+			.consumerMainThread(ToServerVehicleTexture::handle)
+			.add();
+		net.messageBuilder(ToClientVehicleTexture.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ToClientVehicleTexture::encode)
+			.decoder(ToClientVehicleTexture::new)
+			.consumerMainThread(ToClientVehicleTexture::handle)
 			.add();
 	}
 	

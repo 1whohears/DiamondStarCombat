@@ -21,9 +21,9 @@ import static com.onewhohears.dscombat.DSCombatMod.MODID;
  */
 public class WeaponTabComponent extends GuiComponent {
     public static final ResourceLocation WEAPON_TABS = new ResourceLocation(MODID,
-            "textures/ui/weapon_tab.png");
+            "textures/ui/weapon_icons/weapon_tab.png");
     public static final ResourceLocation SELECTOR = new ResourceLocation(MODID,
-            "textures/ui/selection_box.png");
+            "textures/ui/weapon_icons/selection_box.png");
 
     public static final byte TAB_WIDTH = 93;
     public static final byte TAB_HEIGHT = 24;

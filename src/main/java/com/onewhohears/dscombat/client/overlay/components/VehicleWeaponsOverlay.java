@@ -65,10 +65,9 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
             poseStack.popPose();
         } else {
             int weaponTabsToRender = Math.min(weapons.size(), 5);
-            int indexOfSelectedWeapon = weapons.indexOf(selectedWeapon);
 
             for (int i = 0; i < weaponTabsToRender; i++) {
-                int shiftedIndex = indexOfSelectedWeapon - i;
+                int shiftedIndex = selectedIndex - i;
                 if (shiftedIndex < 0) shiftedIndex += weapons.size() - 1;
                 int newYPos = (int) (yPlacement - (24 * i));
 
@@ -79,7 +78,7 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
                 poseStack.pushPose();
                 poseStack.translate(0, 0, blitPosition + 3);
                 if (!weaponAt.isNoWeapon()) {
-                    drawString(poseStack, getFont(), weaponAt.getCurrentAmmo() + "/" + selectedWeapon.getMaxAmmo(), 16, newYPos + 14, 0xe6e600);
+                    drawString(poseStack, getFont(), weaponAt.getCurrentAmmo() + "/" + weaponAt.getMaxAmmo(), 16, newYPos + 14, 0xe6e600);
                 } else {
                     drawString(poseStack, getFont(), SAFETY, 16, newYPos + 14, 0xff5555);
                 }
@@ -92,7 +91,6 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
         }
 
         // TODO: icons indicating how the weapon works e.g. infrared, radar
-        // TODO: selected weapon highlighting
 
         /* lmao
         int yPos=1, xPos, weaponSelectWidth=getFont().width(WEAPON_SELECT)+1, maxNameWidth=46, maxTypeWidth=10;

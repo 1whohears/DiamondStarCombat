@@ -40,7 +40,7 @@ public class NoahChopper extends EntityHelicopter {
 				new Vec3(0.35, 0.05, 1.83), 
 				0.6f, 0.6f, 
 				20f, 0f, 0f);
-		screens[1] = HudScreenInstance.DEFAULT_DATA;
+		screens[1] = HudScreenInstance.getDefaultData(0.4069, -0.65, 1.5);
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.onewhohears.dscombat.entity.aircraft.custom;
 
+import com.onewhohears.dscombat.client.renderer.texture.HudScreenInstance;
+import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
 import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData;
 import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData.Builder;
 import com.onewhohears.dscombat.data.aircraft.LiftKGraph;
@@ -29,4 +31,9 @@ public class BroncoPlane extends EntityPlane {
 		super(entity, level, BRONCO_PLANE_DATA);
 	}
 
+	@Override
+	public void addVehicleScreens() {
+		screens = new EntityScreenData[1];
+		screens[0] = HudScreenInstance.getDefaultData(0.008930, -0.74, 2.5);
+	}
 }

@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.entity.aircraft.custom;
 
 import com.onewhohears.dscombat.client.renderer.texture.EntityScreenTypes;
+import com.onewhohears.dscombat.client.renderer.texture.HudScreenInstance;
 import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
 import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData;
 import com.onewhohears.dscombat.data.aircraft.LiftKGraph;
@@ -35,11 +36,12 @@ public class JaviPlane extends EntityPlane {
 	
 	@Override
 	public void addVehicleScreens() {
-		screens = new EntityScreenData[1];
+		screens = new EntityScreenData[2];
 		screens[0] = new EntityScreenData(EntityScreenTypes.RADAR_SCREEN, 
 				new Vec3(0.327, 1.259, 6.19), 
 				0.173f, 0.173f, 
 				10f, 0f, 0f);
+		screens[1] = HudScreenInstance.getDefaultData(0.01855, 0.5, 5.34375);
 	}
 
 }

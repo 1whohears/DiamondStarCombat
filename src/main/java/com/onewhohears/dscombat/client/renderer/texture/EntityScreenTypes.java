@@ -10,8 +10,8 @@ public class EntityScreenTypes {
 	public static final int FUEL_SCREEN = 1;
 	
 	static {
-		screenTypes.put(RADAR_SCREEN, (id) -> new RadarScreenInstance(id));
-		screenTypes.put(FUEL_SCREEN, (id) -> new FuelScreenInstance(id));
+		screenTypes.put(RADAR_SCREEN, RadarScreenInstance::new);
+		screenTypes.put(FUEL_SCREEN, FuelScreenInstance::new);
 	}
 	
 	public interface EntityScreenFactory {

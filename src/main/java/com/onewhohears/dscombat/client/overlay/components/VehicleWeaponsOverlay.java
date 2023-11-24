@@ -83,7 +83,7 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
                 } else {
                     drawString(poseStack, getFont(), SAFETY, 16, newYPos + 14, 0xff5555);
                 }
-                drawString(poseStack, getFont(), weaponAt.getDisplayNameComponent(), 13, newYPos + 4, 0xffffff);
+                drawString(poseStack, getFont(), weaponAt.getDisplayNameComponent(), 16, newYPos + 4, 0xffffff);
                 poseStack.popPose();
             }
 

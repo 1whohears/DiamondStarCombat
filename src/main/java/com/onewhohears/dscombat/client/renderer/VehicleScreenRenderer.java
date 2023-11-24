@@ -30,7 +30,7 @@ public interface VehicleScreenRenderer<T extends EntityVehicle> extends EntitySc
         for (EntityScreenData screen : vehicle.getVehicleScreens()) {
         	renderScreen(vehicle, screen.instanceId, screen.type, 
         			poseStack, buffer, partialTicks, packedLight, 
-        			screen.pos, screen.width, screen.height, 
+        			screen.rel_pos, screen.width, screen.height, 
         			screen.xRot, screen.yRot, screen.zRot);
         }
 		

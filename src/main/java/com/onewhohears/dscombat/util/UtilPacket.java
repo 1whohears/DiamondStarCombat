@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.util;
 
 import java.util.List;
 
+import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
 import com.onewhohears.dscombat.data.aircraft.VehicleInputManager;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot;
@@ -103,6 +104,19 @@ public class UtilPacket {
 		if (world.getEntity(vehicle_id) instanceof EntityVehicle plane) {
 			plane.textureManager.read(buffer);
 		}
+	}
+	
+	public static void vehicleScreenDebug(int type, Vec3 rel_pos, float width, float height, float rel_x_rot, float rel_y_rot, float rel_z_rot) {
+		Minecraft m = Minecraft.getInstance();
+		if (!(m.player.getRootVehicle() instanceof EntityVehicle vehicle)) return;
+		EntityScreenData screenData = vehicle.getScreenByTypeId(type);
+		if (screenData == null) return;
+		screenData.rel_pos = rel_pos;
+		screenData.width = width;
+		screenData.height = height;
+		screenData.xRot = rel_x_rot;
+		screenData.yRot = rel_y_rot;
+		screenData.zRot = rel_z_rot;
 	}
 	
 }

@@ -221,6 +221,14 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		// TODO 1.7 move screen data to client presets
 	}
 	
+	@Nullable
+	public EntityScreenData getScreenByTypeId(int type) {
+		for (int i = 0; i < screens.length; ++i) 
+			if (screens[i].type == type) 
+				return screens[i];
+		return null;
+	}
+	
 	@Override
 	protected void defineSynchedData() {
 		entityData.define(MAX_HEALTH, 100f);

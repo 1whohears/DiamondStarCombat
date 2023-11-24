@@ -9,15 +9,15 @@ public class EntityScreenData {
 	private static int oldId = 0;
 	
 	public final int type, instanceId;
-	public final Vec3 pos;
-	public final float width, height;
-	public final float xRot, yRot, zRot;
+	public Vec3 rel_pos;
+	public float width, height;
+	public float xRot, yRot, zRot;
 	
 	public EntityScreenData(int type, Vec3 pos, float width, float height, float xRot, float yRot, float zRot) {
 		this.type = type;
 		this.instanceId = EntityScreenRenderer.getFreeScreenId(oldId);
 		oldId = instanceId;
-		this.pos = pos;
+		this.rel_pos = pos;
 		this.width = width;
 		this.height = height;
 		this.xRot = xRot;

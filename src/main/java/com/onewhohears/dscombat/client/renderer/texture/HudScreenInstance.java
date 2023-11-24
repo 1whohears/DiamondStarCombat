@@ -14,7 +14,8 @@ import static com.onewhohears.dscombat.client.renderer.texture.EntityScreenTypes
 public class HudScreenInstance extends EntityDynamicScreenInstance {
     public static final EntityScreenData DEFAULT_DATA = new EntityScreenData(
             HUD_SCREEN,
-            new Vec3(0.39895, 0.62, 1.63),
+            // FIXME: pX value is off significantly on my laptop vs. my PC... why? pY to lesser extent
+            new Vec3(0.3965, 0.62, 1.63),
             0.1f, 0.1f,
             0, 0, 0
     );

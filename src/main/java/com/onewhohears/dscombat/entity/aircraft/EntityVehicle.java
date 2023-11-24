@@ -90,6 +90,7 @@ import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * the parent class for all vehicle entities in this mod
@@ -1558,7 +1559,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 				return seat;
 		return null;
 	}
-	
+
+	// TODO: explore potential override of #getPassengers and just do this there (or even just rename this method)
 	public boolean isVehicleOf(Entity e) {
 		if (e == null) return false;
 		List<Entity> list = getPassengers();
@@ -1568,6 +1570,14 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 				List<Entity> list2 = seat.getPassengers();
 				if (list2.contains(e)) return true;
 			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean hasPassenger(@NotNull Predicate<Entity> pPredicate) {
+		for (EntitySeat seat : this.getSeats()) {
+			if (pPredicate.test(seat.getPassenger())) return true;
 		}
 		return false;
 	}

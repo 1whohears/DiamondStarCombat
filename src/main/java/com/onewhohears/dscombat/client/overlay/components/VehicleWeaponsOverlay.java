@@ -69,7 +69,7 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
 
             for (int i = 0; i < weaponTabsToRender; i++) {
                 int shiftedIndex = selectedIndex - i;
-                if (shiftedIndex < 0) shiftedIndex += weapons.size() - 1;
+                if (shiftedIndex < 0) shiftedIndex = ((shiftedIndex % weapons.size()) + weapons.size()) % weapons.size();
                 int newYPos = (int) (yPlacement - (24 * i));
 
                 WeaponData weaponAt = weapons.get(shiftedIndex);

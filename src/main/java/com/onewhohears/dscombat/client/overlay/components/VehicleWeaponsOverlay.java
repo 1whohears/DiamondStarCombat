@@ -19,11 +19,10 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
 
     private static VehicleWeaponsOverlay INSTANCE;
 
-    protected boolean selectingWeaponState;
+    protected boolean weaponChangeState;
     protected boolean weaponChangeQueued;
     protected int weaponChangeCountdown;
-
-    protected WeaponData selectedWeapon;
+    protected int selectedWeapon;
 
     protected float frame;
     protected int superFrame;
@@ -39,19 +38,22 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
     protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
         if (!(getPlayerRootVehicle() instanceof EntityVehicle vehicle)) return;
 
-        queueWeaponChange();
-
         List<WeaponData> weapons = vehicle.weaponSystem.getWeapons();
         WeaponData selectedWeapon = vehicle.weaponSystem.getSelected();
+        int selectedIndex = vehicle.weaponSystem.getSelectedIndex();
 
         if (weapons == null || weapons.isEmpty()) return;
         if (selectedWeapon == null) return;
 
+        if (selectedIndex != this.selectedWeapon) enableWeaponChangeState();
+        this.selectedWeapon = selectedIndex;
+
+        if (this.weaponChangeCountdown <= 0) this.weaponChangeState = false;
+
         double yPlacement = screenHeight - TAB_HEIGHT - 13;
         int blitPosition = 1;
 
-        if (!weaponChangeQueued) {
-            this.selectedWeapon = selectedWeapon;
+        if (!this.weaponChangeState) {
             WeaponTabComponent.drawWeaponName(poseStack, selectedWeapon.getDisplayNameComponent(), 13, yPlacement, blitPosition - 2);
             WeaponTabComponent.drawTab(poseStack, 13, yPlacement, blitPosition, 0, false);
             WeaponTabComponent.drawWeapon(poseStack, selectedWeapon, 13, yPlacement, blitPosition + 1, 0, false, false, false);
@@ -59,7 +61,7 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
             poseStack.pushPose();
             poseStack.translate(0, 0, blitPosition + 2);
             if (!selectedWeapon.isNoWeapon()) drawString(poseStack, getFont(), selectedWeapon.getCurrentAmmo() + "/" + selectedWeapon.getMaxAmmo(), 16, (int) (yPlacement + 14), 0xe6e600);
-            // renders weapon code - drawString(poseStack, getFont(), selectedWeapon.getWeaponTypeCode(), 16, (int) yPlacement + 4, 0xe6e600);
+            drawString(poseStack, getFont(), selectedWeapon.getWeaponTypeCode(), 16, (int) yPlacement + 4, 0xe6e600);
             poseStack.popPose();
         } else {
             int weaponTabsToRender = Math.min(weapons.size(), 5);
@@ -75,17 +77,18 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
                 WeaponTabComponent.drawTab(poseStack, 13, newYPos, blitPosition, 0, false);
                 WeaponTabComponent.drawWeapon(poseStack, weaponAt, 13, newYPos, blitPosition + 1, 0, false, false, false);
                 poseStack.pushPose();
-                poseStack.translate(0, 0, blitPosition + 2);
+                poseStack.translate(0, 0, blitPosition + 3);
                 if (!weaponAt.isNoWeapon()) {
                     drawString(poseStack, getFont(), weaponAt.getCurrentAmmo() + "/" + selectedWeapon.getMaxAmmo(), 16, newYPos + 14, 0xe6e600);
                 } else {
                     drawString(poseStack, getFont(), SAFETY, 16, newYPos + 14, 0xff5555);
                 }
-                drawString(poseStack, getFont(), weaponAt.getWeaponTypeCode(), 16, newYPos + 4, 0xe6e600);
+                drawString(poseStack, getFont(), weaponAt.getDisplayNameComponent(), 13, newYPos + 4, 0xffffff);
                 poseStack.popPose();
             }
 
-            WeaponTabComponent.drawWeaponName(poseStack, selectedWeapon.getDisplayNameComponent(), 13, yPlacement - (24 * (weaponTabsToRender - 1)), blitPosition - 2);
+            WeaponTabComponent.renderSelectionBox(poseStack, 13, yPlacement, blitPosition + 2);
+            this.weaponChangeCountdown--;
         }
 
         // TODO: icons indicating how the weapon works e.g. infrared, radar
@@ -209,8 +212,12 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
     }
 
     public static void queueWeaponChange() {
-        INSTANCE.weaponChangeCountdown = 4;
         INSTANCE.weaponChangeQueued = true;
+    }
+
+    public static void enableWeaponChangeState() {
+        INSTANCE.weaponChangeCountdown = 200;
+        INSTANCE.weaponChangeState = true;
     }
 
     private static void renderSelectedWeapon(PoseStack stack) {

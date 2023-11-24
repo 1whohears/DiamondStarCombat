@@ -38,8 +38,11 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import static com.onewhohears.dscombat.DSCombatMod.MODID;
+
 public abstract class WeaponData extends JsonPreset {
-	
+	protected static final ResourceLocation NONE_ICON = new ResourceLocation(MODID, "textures/ui/weapon_icons/none.png");
+
 	private final List<DSCIngredient> ingredients;
 	private final int craftNum;
 	private final int maxAge;
@@ -404,11 +407,11 @@ public abstract class WeaponData extends JsonPreset {
 	}
 	
 	public ResourceLocation getWeaponIcon() {
-		return icon;
+		return this.isNoWeapon() ? NONE_ICON : this.icon;
 	}
 	
 	public String getDefaultIconLocation() {
-		return DSCombatMod.MODID+":textures/ui/weapon_icons/default.png";
+		return MODID+":textures/ui/weapon_icons/default.png";
 	}
 	
 	public abstract String getWeaponTypeCode();

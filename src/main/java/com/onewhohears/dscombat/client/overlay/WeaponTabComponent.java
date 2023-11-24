@@ -21,7 +21,10 @@ import static com.onewhohears.dscombat.DSCombatMod.MODID;
  */
 public class WeaponTabComponent extends GuiComponent {
     public static final ResourceLocation WEAPON_TABS = new ResourceLocation(MODID,
-            "textures/ui/weapon_tab.png");
+            "textures/ui/weapon_icons/weapon_tab.png");
+    public static final ResourceLocation SELECTOR = new ResourceLocation(MODID,
+            "textures/ui/weapon_icons/selection_box.png");
+
     public static final byte TAB_WIDTH = 93;
     public static final byte TAB_HEIGHT = 24;
     public static final float[] FRAMES = {0.0F, 5.0F, 10.0F, 13.0F, 16.0F, 18.0F, 20.0F, 22.0F, 23.0F};
@@ -155,6 +158,22 @@ public class WeaponTabComponent extends GuiComponent {
 
         bufferSource.endBatch();
         stack.popPose();
+    }
+
+    public static void renderSelectionBox(PoseStack stack, double x, double y, int blitOffset) {
+        RenderSystem.setShaderTexture(0, SELECTOR);
+        RenderSystem.enableBlend();
+        RenderSystem.enableDepthTest();
+
+        stack.pushPose();
+        stack.translate(x, y, blitOffset);
+
+        blit(stack, 0, 0, 0, 0, TAB_WIDTH, TAB_HEIGHT, TAB_WIDTH, TAB_HEIGHT);
+
+        stack.popPose();
+
+        RenderSystem.disableDepthTest();
+        RenderSystem.disableBlend();
     }
 
     public static int getMaxFrames() {

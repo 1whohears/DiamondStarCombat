@@ -14,18 +14,18 @@ import net.minecraft.world.phys.Vec3;
 
 public interface EntityScreenRenderer<T extends Entity> {
 	
-	static Int2ObjectMap<EntityScreenInstance> screenInstances = new Int2ObjectOpenHashMap<>();
+	Int2ObjectMap<EntityScreenInstance> screenInstances = new Int2ObjectOpenHashMap<>();
 	/**
 	 * CLIENT ONLY
 	 */
-	public static void clearCache() {
+	static void clearCache() {
 		for(EntityScreenInstance screen : screenInstances.values()) screen.close();
 		screenInstances.clear();
 	}
 	/**
 	 * CLIENT ONLY
 	 */
-	public static EntityScreenInstance getOrCreateEntityScreenById(int screenId, int screenType) {
+	static EntityScreenInstance getOrCreateEntityScreenById(int screenId, int screenType) {
 		if (screenInstances.containsKey(screenId)) return screenInstances.get(screenId);
 		EntityScreenInstance screen = EntityScreenTypes.screenTypes.get(screenType).create(screenId);
 		screenInstances.put(screenId, screen);
@@ -34,13 +34,13 @@ public interface EntityScreenRenderer<T extends Entity> {
 	/**
 	 * CLIENT ONLY
 	 */
-	public static int getFreeScreenId(int min) {
+	static int getFreeScreenId(int min) {
 		int id = min;
 		IntSet keys = screenInstances.keySet();
 		while (true) if (!keys.contains(++id)) return id;
 	}
 	
-	public boolean shouldRenderScreens(T entity);
+	boolean shouldRenderScreens(T entity);
 	
 	/**
 	 * @param entity entity the texture is rendered onto
@@ -49,8 +49,8 @@ public interface EntityScreenRenderer<T extends Entity> {
 	 * @param topRight in world top right corner position of the texture
 	 * @param bottomLeft in world bottom left corner position of the texture
 	 */ 
-	public default void renderScreen(T entity, int screenId, int screenType, PoseStack poseStack, MultiBufferSource buffer,
-			float partialTicks, int packedLight, Vec3 pos, float width, float height, float xRot, float yRot, float zRot) {
+	default void renderScreen(T entity, int screenId, int screenType, PoseStack poseStack, MultiBufferSource buffer,
+                              float partialTicks, int packedLight, Vec3 pos, float width, float height, float xRot, float yRot, float zRot) {
 		if (screenId == -1) return;
 		poseStack.pushPose();
 		

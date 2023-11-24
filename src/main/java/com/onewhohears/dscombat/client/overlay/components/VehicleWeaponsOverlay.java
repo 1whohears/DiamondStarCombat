@@ -6,6 +6,7 @@ import com.onewhohears.dscombat.client.overlay.WeaponTabComponent;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
 
 import java.util.List;
 import java.util.Objects;
@@ -216,6 +217,9 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
     public static void enableWeaponChangeState() {
         INSTANCE.weaponChangeCountdown = 200;
         INSTANCE.weaponChangeState = true;
+
+        //noinspection DataFlowIssue (the context in which this is called necessarily has a LocalPlayer existing on client)
+        getPlayer().playSound(SoundEvents.UI_BUTTON_CLICK);
     }
 
     private static void renderSelectedWeapon(PoseStack stack) {

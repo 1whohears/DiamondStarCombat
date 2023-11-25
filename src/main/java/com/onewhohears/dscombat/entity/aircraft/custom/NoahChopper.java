@@ -1,5 +1,7 @@
 package com.onewhohears.dscombat.entity.aircraft.custom;
 
+import static com.onewhohears.dscombat.client.renderer.texture.EntityScreenTypes.RADAR_SCREEN;
+
 import com.onewhohears.dscombat.client.renderer.texture.HudScreenInstance;
 import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
 import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData;
@@ -7,12 +9,10 @@ import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData.Builder;
 import com.onewhohears.dscombat.data.aircraft.presets.HeliPresets;
 import com.onewhohears.dscombat.entity.aircraft.EntityHelicopter;
 import com.onewhohears.dscombat.init.ModSounds;
+
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-
-import static com.onewhohears.dscombat.client.renderer.texture.EntityScreenTypes.HUD_SCREEN;
-import static com.onewhohears.dscombat.client.renderer.texture.EntityScreenTypes.RADAR_SCREEN;
 
 public class NoahChopper extends EntityHelicopter {
 	

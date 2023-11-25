@@ -7,6 +7,7 @@ import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleTexture;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.util.UtilEntity;
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -31,7 +32,6 @@ public class VehicleTextureManager {
 		for (int i = 0; i < textureLayers.length; ++i) {
 			textureLayers[i] = new TextureLayer(modId+":textures/entity/vehicle/"+entityId+"/layer"+i+".png");
 		}
-		// TODO 1.4 make a paint job item and gui allowing players to customize their vehicle layers and colors
 	}
 	
 	public void onTick() {
@@ -40,7 +40,7 @@ public class VehicleTextureManager {
 	}
 	
 	public void clientTick() {
-		if (parent.tickCount % 20 == 0 && isChanged()) {
+		if (isChanged()) {
 			PacketHandler.INSTANCE.sendToServer(new ToServerVehicleTexture(parent));
 			resetChanged();
 		}
@@ -71,7 +71,7 @@ public class VehicleTextureManager {
 		entityNbt.put("textures", textures);
 	}
 	
-	public void read(FriendlyByteBuf buffer) {
+	public void read(ByteBuf buffer) {
 		setBaseTexture(buffer.readInt());
 		int layers = buffer.readInt();
 		for (int i = 0; i < layers && i < textureLayers.length; ++i) 
@@ -88,6 +88,14 @@ public class VehicleTextureManager {
 	
 	public ResourceLocation getBaseTexture() {
 		return baseTextures[baseTextureIndex];
+	}
+	
+	public int getBaseTextureNum() {
+		return baseTextures.length;
+	}
+	
+	public int getBaseTextureIndex() {
+		return baseTextureIndex;
 	}
 	
 	public void setBaseTexture(int index) {
@@ -126,7 +134,6 @@ public class VehicleTextureManager {
 		public TextureLayer(String texture) {
 			this.texture = new ResourceLocation(texture);
 			setColor(UtilEntity.getRandomColor());
-			showLayer();
 			changed = false;
 		}
 		public void read(CompoundTag tag) {
@@ -140,7 +147,7 @@ public class VehicleTextureManager {
 			tag.putBoolean("enabled", enabled);
 			return tag;
 		}
-		public void read(FriendlyByteBuf buffer) {
+		public void read(ByteBuf buffer) {
 			setColor(buffer.readInt());
 			enabled = buffer.readBoolean();
 			changed = false;
@@ -163,15 +170,15 @@ public class VehicleTextureManager {
 			this.color = new Color(colorInt);
 			changed = true;
 		}
+		public void setColor(String color) {
+			try { setColor(Color.decode("0x"+color).getRGB()); }
+			catch (NumberFormatException e) {}
+		}
 		public boolean canRender() {
 			return enabled;
 		}
-		public void showLayer() {
-			enabled = true;
-			changed = true;
-		}
-		public void hideLayer() {
-			enabled = false;
+		public void setCanRender(boolean render) {
+			enabled = render;
 			changed = true;
 		}
 		public boolean isChanged() {

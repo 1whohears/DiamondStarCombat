@@ -8,6 +8,8 @@ import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.Config;
@@ -42,7 +44,9 @@ import com.onewhohears.dscombat.item.ItemAmmo;
 import com.onewhohears.dscombat.item.ItemCreativeWand;
 import com.onewhohears.dscombat.item.ItemGasCan;
 import com.onewhohears.dscombat.item.ItemRepairTool;
+import com.onewhohears.dscombat.item.ItemSpraycan;
 import com.onewhohears.dscombat.util.UtilEntity;
+import com.onewhohears.dscombat.util.UtilPacket;
 import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
@@ -90,7 +94,6 @@ import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * the parent class for all vehicle entities in this mod
@@ -1444,12 +1447,18 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 				} else if (item instanceof ItemCreativeWand wand) {
 					if (wand.modifyAircraft(this)) return InteractionResult.SUCCESS;
 					return InteractionResult.PASS;
-				}
+				} else if (item instanceof ItemSpraycan can) return InteractionResult.SUCCESS;
 			}
 			return rideAvailableSeat(player) ? InteractionResult.CONSUME : InteractionResult.PASS;
 		} else if (level.isClientSide) {	
 			Minecraft m = Minecraft.getInstance();
 			if (m.player.equals(player)) ClientInputEvents.centerMouse();
+			ItemStack stack = player.getInventory().getSelected();
+			if (!stack.isEmpty()) {
+				Item item = stack.getItem();
+				if (item instanceof ItemSpraycan can) 
+					UtilPacket.openVehicleTextureScreen(textureManager);
+			}
 			return InteractionResult.SUCCESS;
 		}
 		return InteractionResult.SUCCESS;

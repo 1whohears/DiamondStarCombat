@@ -8,6 +8,7 @@ import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleTexture;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -18,7 +19,7 @@ public class ToServerVehicleTexture extends IPacket {
 	
 	public final int id;
 	private EntityVehicle vehicle;
-	private FriendlyByteBuf buffer;
+	private ByteBuf buffer;
 	
 	public ToServerVehicleTexture(EntityVehicle vehicle) {
 		this.id = vehicle.getId();
@@ -27,7 +28,7 @@ public class ToServerVehicleTexture extends IPacket {
 	
 	public ToServerVehicleTexture(FriendlyByteBuf buffer) {
 		this.id = buffer.readInt();
-		this.buffer = buffer;
+		this.buffer = buffer.copy().asReadOnly();
 	}
 	
 	@Override
@@ -43,10 +44,10 @@ public class ToServerVehicleTexture extends IPacket {
 			success.set(true);
 			ServerPlayer player = ctx.get().getSender();
 			ServerLevel level = player.getLevel();
-			if (level.getEntity(id) instanceof EntityVehicle plane) {
-				plane.textureManager.read(buffer);
-				PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> plane), 
-						new ToClientVehicleTexture(player, plane));
+			if (level.getEntity(id) instanceof EntityVehicle vehicle) {
+				vehicle.textureManager.read(buffer);
+				PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> vehicle), 
+						new ToClientVehicleTexture(player, vehicle));
 			}
 		});
 		ctx.get().setPacketHandled(true);

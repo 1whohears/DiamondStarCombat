@@ -2,8 +2,10 @@ package com.onewhohears.dscombat.util;
 
 import java.util.List;
 
+import com.onewhohears.dscombat.client.screen.VehiclePaintScreen;
 import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
 import com.onewhohears.dscombat.data.aircraft.VehicleInputManager;
+import com.onewhohears.dscombat.data.aircraft.VehicleTextureManager;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
@@ -11,8 +13,8 @@ import com.onewhohears.dscombat.data.radar.RadarSystem.RWRWarning;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
@@ -97,7 +99,7 @@ public class UtilPacket {
 		}
 	}
 	
-	public static void vehicleTexturePacket(int ignore_player_id, int vehicle_id, FriendlyByteBuf buffer) {
+	public static void vehicleTexturePacket(int ignore_player_id, int vehicle_id, ByteBuf buffer) {
 		Minecraft m = Minecraft.getInstance();
 		if (m.player.getId() == ignore_player_id) return;
 		Level world = m.level;
@@ -117,6 +119,11 @@ public class UtilPacket {
 		screenData.xRot = rel_x_rot;
 		screenData.yRot = rel_y_rot;
 		screenData.zRot = rel_z_rot;
+	}
+	
+	public static void openVehicleTextureScreen(VehicleTextureManager textures) {
+		Minecraft m = Minecraft.getInstance();
+		m.setScreen(new VehiclePaintScreen(textures));
 	}
 	
 }

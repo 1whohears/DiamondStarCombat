@@ -30,6 +30,7 @@ import com.onewhohears.dscombat.item.ItemRepairTool;
 import com.onewhohears.dscombat.item.ItemSeat;
 import com.onewhohears.dscombat.item.ItemTurret;
 import com.onewhohears.dscombat.item.ItemWeaponPart;
+import com.onewhohears.dscombat.item.ItemSpraycan;
 
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -128,6 +129,9 @@ public class ModItems {
 			() -> new ItemRepairTool(200, 5));
 	public static final RegistryObject<Item> PARACHUTE = ITEMS.register("parachute", 
 			() -> new ItemParachute());
+	// TODO 1.2 give spray can item a texture
+	public static final RegistryObject<Item> SPRAYCAN = ITEMS.register("spraycan", 
+			() -> new ItemSpraycan());
 	
 	// CREATIVE WANDS
 	public static final RegistryObject<Item> NO_CONSUME_WAND = ITEMS.register("no_consume_wand", 

@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.util;
 
+import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.InputStream;
@@ -272,6 +273,10 @@ public class UtilParse {
 	public static String getStringSafe(JsonObject json, String name, String alt) {
 		if (!json.has(name)) return alt;
 		return json.get(name).getAsString();
+	}
+	
+	public static String toColorString(Color color) {
+		return Integer.toHexString(0xFF000000 | color.getRGB()).substring(2);
 	}
 	
 }

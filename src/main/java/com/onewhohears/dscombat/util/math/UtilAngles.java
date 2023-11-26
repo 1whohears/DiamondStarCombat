@@ -185,13 +185,19 @@ public class UtilAngles {
         
         return new Quaternion(x, y, z, w);
     }
-
+    
     public static Quaternion lerpQ(float perc, Quaternion start, Quaternion end) {
+    	// HOW 6 normalizing causes compounding precision errors at yaw 90 and 270. everything seems to work without normalizing though?
+    	return lerpQ(perc, start, end, false);
+    }
+    
+    public static Quaternion lerpQ(float perc, Quaternion start, Quaternion end, boolean normalize) {
         // Only unit quaternions are valid rotations.
         // Normalize to avoid undefined behavior.
-        start = normalizeQuaternion(start);
-        end = normalizeQuaternion(end);
-
+        if (normalize) {
+        	start = normalizeQuaternion(start);
+        	end = normalizeQuaternion(end);
+        }
         // Compute the cosine of the angle between the two vectors.
         double dot = start.i() * end.i() + start.j() * end.j() + start.k() * end.k() + start.r() * end.r();
 
@@ -203,21 +209,19 @@ public class UtilAngles {
             end = new Quaternion(-end.i(), -end.j(), -end.k(), -end.r());
             dot = -dot;
         }
-
         double DOT_THRESHOLD = 0.9995;
         if (dot > DOT_THRESHOLD) {
             // If the inputs are too close for comfort, linearly interpolate
             // and normalize the result.
-
             Quaternion quaternion = new Quaternion(
                 start.i() * (1 - perc) + end.i() * perc,
                 start.j() * (1 - perc) + end.j() * perc,
                 start.k() * (1 - perc) + end.k() * perc,
                 start.r() * (1 - perc) + end.r() * perc
             );
-            return normalizeQuaternion(quaternion);
+            if (normalize) return normalizeQuaternion(quaternion);
+            else return quaternion;
         }
-
         // Since dot is in range [0, DOT_THRESHOLD], acos is safe
         double theta_0 = Math.acos(dot);        // theta_0 = angle between input vectors
         double theta = theta_0 * perc;          // theta = angle between v0 and result
@@ -233,7 +237,8 @@ public class UtilAngles {
             start.k() * (s0) + end.k() * s1,
             start.r() * (s0) + end.r() * s1
         );
-        return normalizeQuaternion(quaternion);
+        if (normalize) return normalizeQuaternion(quaternion);
+        else return quaternion;
     }
 
     public static class EulerAngles {

@@ -2340,11 +2340,11 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     	return hasFlares;
     }
     
-    protected void debug(String debug) {
+    public void debug(String debug) {
     	debug(debug, true);
     }
     
-    protected void debug(String debug, boolean passengerCheck) {
+    public void debug(String debug, boolean passengerCheck) {
     	if (!passengerCheck || (passengerCheck && hasControllingPassenger())) 
     		System.out.println(debug);
     }

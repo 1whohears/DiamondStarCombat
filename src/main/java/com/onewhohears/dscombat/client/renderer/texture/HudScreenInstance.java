@@ -28,8 +28,6 @@ public class HudScreenInstance extends EntityDynamicScreenInstance {
      *             by trial & error. For aircraft whose pilot seat lines up with the
      *             origin of the aircraft, this value will be close to 0.
      */
-    // FIXME: pX value is off significantly on my laptop vs. my PC... why? pY to lesser extent
-    // (visually the hud no longer lines up when in mouse mode and the rotation of the aircraft changes...)
     public static EntityScreenData getDefaultData(double xPos, double seatY, double seatZ) {
         return new EntityScreenData(
                 HUD_SCREEN,

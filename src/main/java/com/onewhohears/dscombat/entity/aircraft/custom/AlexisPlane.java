@@ -44,7 +44,7 @@ public class AlexisPlane extends EntityPlane {
 				new Vec3(-0.38, 1.28, 7.28), 
 				0.2f, 0.2f, 
 				40f, 0f, 0f);
-		screens[2] = HudScreenInstance.getDefaultData(0.0220, 0.50, 6.35);
+		screens[2] = HudScreenInstance.getDefaultData(0, 0.50, 6.35);
 	}
 
 }

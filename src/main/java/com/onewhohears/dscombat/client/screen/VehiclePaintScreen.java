@@ -20,37 +20,40 @@ public class VehiclePaintScreen extends Screen {
 	public static final ResourceLocation BG_TEXTURE = new ResourceLocation(DSCombatMod.MODID,
 			"textures/ui/paintjob_screen.png");
 	
+	private static final int imageWidth = 176, imageHeight = 136;
+	private static final int textureSize = 256;
+	
 	public final VehicleTextureManager textures;
 	protected int guiX, guiY;
 	
 	public VehiclePaintScreen(VehicleTextureManager textures) {
 		super(Component.literal("Vehicle Paint Job"));
 		this.textures = textures;
-		this.width = 176;
-		this.height = 136;
-		this.guiX = 40;
-		this.guiY = 10;
 	}
 	
 	@Override
 	protected void init() {
 		super.init();
+		guiX = width/2-imageWidth/2;
+		guiY = height/2-imageHeight/2;
+		int widgetX = guiX + 4, widgetY = guiY + 4;
 		addRenderableWidget(CycleButton.<Integer>builder((base) -> Component.literal(base+""))
 				.withValues(count(textures.getBaseTextureNum()))
 				.withInitialValue(textures.getBaseTextureIndex())
-				.create(guiX+6, guiY+4, 100, 20, 
+				.create(widgetX, widgetY, 120, 20, 
 					Component.literal("Base"), 
 					onBaseChange()));
-		int layerX = guiX+120, layerY = guiY+4;
+		int layerX = widgetX, layerY = widgetY + 20;
 		for (int i = 0; i < textures.getTextureLayers().length; ++i) {
 			addRenderableWidget(CycleButton.onOffBuilder(textures.getTextureLayers()[i].canRender())
-				.create(layerX, layerY, 60, 20, 
+				.create(layerX, layerY, 50, 20, 
 					Component.literal("Show"), 
 					onRenderLayerToggle(i)));
-			EditBox colorBox = new EditBox(minecraft.font, layerX+60, layerY, 
-					100, 20, Component.empty());
+			EditBox colorBox = new EditBox(minecraft.font, layerX+50, layerY, 
+					70, 20, Component.empty());
 			colorBox.setValue(UtilParse.toColorString(textures.getTextureLayers()[i].getColor()));
-			colorBox.setResponder(layerColorBoxResponder(i));
+			colorBox.setTextColor(textures.getTextureLayers()[i].getColorInt());
+			colorBox.setResponder(layerColorBoxResponder(colorBox, i));
 			addRenderableWidget(colorBox);
 			layerY += 20;
 		}
@@ -64,8 +67,11 @@ public class VehiclePaintScreen extends Screen {
 		return (button, render) -> textures.getTextureLayers()[layer].setCanRender(render);
 	}
 	
-	private Consumer<String> layerColorBoxResponder(int layer) {
-		return (color) -> textures.getTextureLayers()[layer].setColor(color);
+	private Consumer<String> layerColorBoxResponder(EditBox colorBox, int layer) {
+		return (color) -> {
+			textures.getTextureLayers()[layer].setColor(color);
+			colorBox.setTextColor(textures.getTextureLayers()[layer].getColorInt());
+		};
 	}
 	
 	private Integer[] count(int num) {
@@ -85,8 +91,7 @@ public class VehiclePaintScreen extends Screen {
 		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
 		RenderSystem.setShaderTexture(0, BG_TEXTURE);
 		blit(poseStack, guiX, guiY, 0, 0, 
-				width, height, width, height);
-				//width, height, 256, 256);
+			imageWidth, imageHeight, textureSize, textureSize);
 	}
 
 }

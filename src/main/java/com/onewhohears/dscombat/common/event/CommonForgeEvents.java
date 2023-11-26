@@ -65,13 +65,9 @@ public final class CommonForgeEvents {
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void onDatapackSync(OnDatapackSyncEvent event) {
-		System.out.println("DATAPACKSYNCH "+event.getPlayer());
 		PacketTarget target;
-		if (event.getPlayer() == null) {
-			target = PacketDistributor.ALL.noArg();
-		} else {
-			target = PacketDistributor.PLAYER.with(() -> event.getPlayer());
-		}
+		if (event.getPlayer() == null) target = PacketDistributor.ALL.noArg();
+		else target = PacketDistributor.PLAYER.with(() -> event.getPlayer());
 		PacketHandler.INSTANCE.send(target, new ToClientDataPackSynch());
 	}
 	

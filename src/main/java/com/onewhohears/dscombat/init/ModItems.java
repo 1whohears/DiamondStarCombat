@@ -50,24 +50,31 @@ public class ModItems {
 		ITEMS.register(eventBus);
 	}
 	
+	public static final CreativeModeTab DSC_ITEMS = new CreativeModeTab("items") {
+		@Override
+		public ItemStack makeIcon() {
+			return new ItemStack(ModItems.WRENCH.get());
+		}
+	};
+	
 	public static final CreativeModeTab PARTS = new CreativeModeTab("parts") {
 		@Override
 		public ItemStack makeIcon() {
-			return new ItemStack(ModItems.SEAT.get());
+			return new ItemStack(ModItems.CIWS.get());
 		}
 	};
 	
 	public static final CreativeModeTab WEAPONS = new CreativeModeTab("weapons") {
 		@Override
 		public ItemStack makeIcon() {
-			return new ItemStack(ModItems.XM12.get());
+			return new ItemStack(ModItems.AIM9X.get());
 		}
 	};
 	
 	public static final CreativeModeTab AIRCRAFT = new CreativeModeTab("aircraft") {
 		@Override
 		public ItemStack makeIcon() {
-			return new ItemStack(ModItems.NOAH_CHOPPER.get());
+			return new ItemStack(ModItems.JAVI_PLANE.get());
 		}
 	};
 	
@@ -84,33 +91,33 @@ public class ModItems {
 	
 	// PARTS
 	public static final RegistryObject<Item> TI83 = ITEMS.register("ti83", 
-			() -> new Item(ItemPart.partProps(64)));
+			() -> new Item(ItemPart.itemProps(64)));
 	public static final RegistryObject<Item> INTEL_PENTIUM = ITEMS.register("intel_pentium", 
-			() -> new Item(ItemPart.partProps(64)));
+			() -> new Item(ItemPart.itemProps(64)));
 	public static final RegistryObject<Item> INTEL_CORE_I9X = ITEMS.register("intel_core_i9x", 
-			() -> new Item(ItemPart.partProps(64)));
+			() -> new Item(ItemPart.itemProps(64)));
 	public static final RegistryObject<Item> WHEEL = ITEMS.register("wheel", 
-			() -> new Item(ItemPart.partProps(64)));
+			() -> new Item(ItemPart.itemProps(64)));
 	public static final RegistryObject<Item> LARGE_WHEEL = ITEMS.register("large_wheel", 
-			() -> new Item(ItemPart.partProps(64)));
+			() -> new Item(ItemPart.itemProps(64)));
 	public static final RegistryObject<Item> TANK_TRACK = ITEMS.register("tank_track", 
-			() -> new Item(ItemPart.partProps(64)));
+			() -> new Item(ItemPart.itemProps(64)));
 	public static final RegistryObject<Item> FUSELAGE = ITEMS.register("fuselage", 
-			() -> new Item(ItemPart.partProps(64)));
+			() -> new Item(ItemPart.itemProps(64)));
 	public static final RegistryObject<Item> LARGE_FUSELAGE = ITEMS.register("large_fuselage", 
-			() -> new Item(ItemPart.partProps(64)));
+			() -> new Item(ItemPart.itemProps(64)));
 	public static final RegistryObject<Item> WING = ITEMS.register("wing", 
-			() -> new Item(ItemPart.partProps(64)));
+			() -> new Item(ItemPart.itemProps(64)));
 	public static final RegistryObject<Item> LARGE_WING = ITEMS.register("large_wing", 
-			() -> new Item(ItemPart.partProps(64)));
+			() -> new Item(ItemPart.itemProps(64)));
 	public static final RegistryObject<Item> PROPELLER = ITEMS.register("propeller", 
-			() -> new Item(ItemPart.partProps(64)));
+			() -> new Item(ItemPart.itemProps(64)));
 	public static final RegistryObject<Item> LARGE_PROPELLER = ITEMS.register("large_propeller", 
-			() -> new Item(ItemPart.partProps(64)));
+			() -> new Item(ItemPart.itemProps(64)));
 	public static final RegistryObject<Item> COCKPIT = ITEMS.register("cockpit", 
-			() -> new Item(ItemPart.partProps(16)));
+			() -> new Item(ItemPart.itemProps(16)));
 	public static final RegistryObject<Item> ADVANCED_COCKPIT = ITEMS.register("advanced_cockpit", 
-			() -> new Item(ItemPart.partProps(16)));
+			() -> new Item(ItemPart.itemProps(16)));
 	
 	// BUFFS
 	public static final RegistryObject<Item> DATA_LINK = ITEMS.register("data_link", 

@@ -9,7 +9,7 @@ public class ItemRepairTool extends Item {
 	public final float repair;
 	
 	public ItemRepairTool(int durability, float repair) {
-		super(new Item.Properties().tab(ModItems.PARTS).stacksTo(1).durability(durability));
+		super(new Item.Properties().tab(ModItems.DSC_ITEMS).stacksTo(1).durability(durability));
 		this.repair = repair;
 	}
 

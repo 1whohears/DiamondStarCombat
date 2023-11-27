@@ -18,7 +18,7 @@ public class ItemCreativeWand extends Item {
 	public final String[] translatableTooltips;
 	
 	public ItemCreativeWand(@Nullable String[] translatableTooltips) {
-		super(new Item.Properties().tab(ModItems.PARTS).stacksTo(1));
+		super(new Item.Properties().tab(ModItems.DSC_ITEMS).stacksTo(1));
 		this.translatableTooltips = translatableTooltips;
 	}
 	

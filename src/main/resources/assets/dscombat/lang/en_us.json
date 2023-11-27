@@ -147,6 +147,7 @@
 	"container.dscombat.weapons_block_menu": "Weapons Workbench",
 	"container.dscombat.aircraft_block_menu": "Aircraft Workbench",
 	
+	"itemGroup.items": "DSCombat Items",
 	"itemGroup.parts": "DSCombat Parts",
 	"itemGroup.weapons": "DSCombat Weapons",
 	"itemGroup.aircraft": "DSCombat Aircraft",
@@ -173,6 +174,7 @@
 	
 	"item.dscombat.wrench": "Wrench",
 	"item.dscombat.thick_wrench": "Thiccc Wrench",
+	"item.dscombat.spraycan": "Spray Can",
 	
 	"item.dscombat.no_consume_wand": "No Consume Wand",
 	

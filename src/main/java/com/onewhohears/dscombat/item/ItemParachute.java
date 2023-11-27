@@ -18,7 +18,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 public class ItemParachute extends Item {
 
 	public ItemParachute() {
-		super(new Item.Properties().tab(ModItems.PARTS).stacksTo(1));
+		super(new Item.Properties().tab(ModItems.DSC_ITEMS).stacksTo(1));
 	}
 	
 	@Override

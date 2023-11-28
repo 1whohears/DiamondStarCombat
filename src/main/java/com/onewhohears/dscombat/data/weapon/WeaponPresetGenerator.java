@@ -666,7 +666,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 	protected void registerOtherMissiles() {
 		// max ammo cost: 24 iron, 8 tnt (40 gunpowder), 8 coal block, 2 pentium (20 redstone)
 		addPresetToGenerate(MissileData.Builder
-				.antiRadarMissileBuilder(DSCombatMod.MODID, "rifel1")
+				.antiRadarMissileBuilder(DSCombatMod.MODID, "agm88g")
 				.setFireRate(40)
 				.setInnacuracy(0f)
 				.setCanShootOnGround(false)
@@ -685,8 +685,8 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setFuseDistance(2f)
 				.setFieldOfView(30f)
 				.setScanRange(1200f)
-				.setItem(ModItems.RIFEL1.getId())
-				.setEntityType(ModEntities.ANTI_RADAR_MISSILE_1.getId())
+				.setItem(ModItems.AGM88G.getId())
+				.setEntityType(ModEntities.AGM88G.getId())
 				.setRackEntityType(ModEntities.HEAVY_MISSILE_RACK.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getId())
 				.setCompatibleWeaponPart(ModItems.HEAVY_MISSILE_RACK.getId())

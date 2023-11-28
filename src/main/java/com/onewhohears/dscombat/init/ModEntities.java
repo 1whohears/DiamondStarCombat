@@ -344,6 +344,8 @@ public class ModEntities {
 			() -> createEntityTypeFar(TrackEntityMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
 	public static final RegistryObject<EntityType<TorpedoMissile>> MK13 = ENTITIES.register("mk13", 
 			() -> createEntityTypeFar(TorpedoMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
+	public static final RegistryObject<EntityType<AntiRadarMissile>> AGM88G = ENTITIES.register("agm88g", 
+			() -> createEntityTypeFar(AntiRadarMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
 	
 	public static final RegistryObject<EntityType<EntityFlare>> FLARE = ENTITIES.register("flare", 
 			() -> createEntityType(EntityFlare::new, EntityDimensions.scalable(0f, 0f)));

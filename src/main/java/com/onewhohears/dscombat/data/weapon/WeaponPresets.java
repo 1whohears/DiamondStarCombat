@@ -37,13 +37,19 @@ public class WeaponPresets extends JsonPresetReloadListener<WeaponData> {
 	public WeaponData getPreset(String id) {
 		String updatedId = getUpdatedId(id);
 		if (updatedId == null) return null;
-		return presetMap.get(id).copy();
+		return presetMap.get(updatedId).copy();
 	}
 	
 	public String getUpdatedId(String id) {
-		if (has(id)) return id;
+		if (presetMap.containsKey(id)) return id;
 		if (id.equals("torpedo1")) return "mk13";
+		if (id.equals("rifel1")) return "agm88g";
 		return null;
+	}
+	
+	@Override
+	public boolean has(String id) {
+		return getUpdatedId(id) != null;
 	}
 	
 	@Override

@@ -346,11 +346,13 @@ public class ModItems {
 	public static final RegistryObject<Item> TORPEDO1 = ITEMS.register("torpedo1", 
 			() -> new ItemAmmo(4, "mk13")); 
 	public static final RegistryObject<Item> RIFEL1 = ITEMS.register("rifel1", 
-			() -> new ItemAmmo(4, "rifel1")); 
+			() -> new ItemAmmo(4, "agm88g")); 
 	public static final RegistryObject<Item> GRUETZ_BUNKER_BUSTER = ITEMS.register("gruetz_bunker_buster", 
 			() -> new ItemAmmo(1, "gruetz_bunker_buster")); 
 	public static final RegistryObject<Item> MK13 = ITEMS.register("mk13", 
 			() -> new ItemAmmo(4, "mk13")); 
+	public static final RegistryObject<Item> AGM88G = ITEMS.register("agm88g", 
+			() -> new ItemAmmo(4, "agm88g")); 
 	
 	// FIXME 5 vehicle items not showing in creative search
 	// PLANES

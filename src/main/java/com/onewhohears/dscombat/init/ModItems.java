@@ -313,7 +313,7 @@ public class ModItems {
 	public static final RegistryObject<Item> TORPEDO = ITEMS.register("torpedo", 
 			() -> new ItemAmmo(8, "mk13")); 
 	public static final RegistryObject<Item> ANTIRADAR_MISSILE = ITEMS.register("antiradar_missile", 
-			() -> new ItemAmmo(8, "rifel1")); 
+			() -> new ItemAmmo(8, "agm88g")); 
 	
 	public static final RegistryObject<Item> B_20MM = ITEMS.register("20mm", 
 			() -> new ItemAmmo(64, "20mm")); 

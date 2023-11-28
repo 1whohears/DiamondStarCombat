@@ -1,6 +1,6 @@
 {
 	"loader": "forge:obj",
-	"flip-v": true,
+	"flip_v": true,
 	"model": "dscombat:models/entity/javi_plane.obj",
 	"display": {
 		"thirdperson_righthand": {

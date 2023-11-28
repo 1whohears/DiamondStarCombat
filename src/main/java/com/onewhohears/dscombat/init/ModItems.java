@@ -311,7 +311,7 @@ public class ModItems {
 	public static final RegistryObject<Item> POS_MISSILE = ITEMS.register("pos_missile", 
 			() -> new ItemAmmo(8, "agm114k")); 
 	public static final RegistryObject<Item> TORPEDO = ITEMS.register("torpedo", 
-			() -> new ItemAmmo(8, "torpedo1")); 
+			() -> new ItemAmmo(8, "mk13")); 
 	public static final RegistryObject<Item> ANTIRADAR_MISSILE = ITEMS.register("antiradar_missile", 
 			() -> new ItemAmmo(8, "rifel1")); 
 	
@@ -344,11 +344,13 @@ public class ModItems {
 	public static final RegistryObject<Item> AIM120C = ITEMS.register("aim120c", 
 			() -> new ItemAmmo(4, "aim120c")); 
 	public static final RegistryObject<Item> TORPEDO1 = ITEMS.register("torpedo1", 
-			() -> new ItemAmmo(4, "torpedo1")); 
+			() -> new ItemAmmo(4, "mk13")); 
 	public static final RegistryObject<Item> RIFEL1 = ITEMS.register("rifel1", 
 			() -> new ItemAmmo(4, "rifel1")); 
 	public static final RegistryObject<Item> GRUETZ_BUNKER_BUSTER = ITEMS.register("gruetz_bunker_buster", 
 			() -> new ItemAmmo(1, "gruetz_bunker_buster")); 
+	public static final RegistryObject<Item> MK13 = ITEMS.register("mk13", 
+			() -> new ItemAmmo(4, "mk13")); 
 	
 	// FIXME 5 vehicle items not showing in creative search
 	// PLANES

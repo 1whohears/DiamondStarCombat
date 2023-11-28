@@ -119,6 +119,7 @@
 	"entity.dscombat.agm84e": "AGM-84E",
 	"entity.dscombat.agm65l": "AGM-65L",
 	"entity.dscombat.agm65g": "AGM-65G",
+	"entity.dscombat.mk13": "MK-13",
 	"entity.dscombat.mls": "MLS",
 	"entity.dscombat.torpedo_tubes": "Torpedo Tubes",
 	"entity.dscombat.adl": "ADL",
@@ -289,6 +290,7 @@
 	"preset.dscombat.bgm109": "BGM-109",
 	"preset.dscombat.rgm84": "RGM-84",
 	"preset.dscombat.meteor": "METEOR",
+	"preset.dscombat.mk13": "MK-13",
 	
 	"preset.dscombat.alexis_plane_empty": "Empty Alexis Plane",
 	"preset.dscombat.alexis_plane_unarmed": "Unarmed Alexis Plane",

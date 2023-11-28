@@ -698,7 +698,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.build());
 		// max ammo cost: 36 iron, 6 tnt (30 gunpowder), 12 coal block, 6 ti83 (12 redstone)
 		addPresetToGenerate(MissileData.Builder
-				.torpedoBuilder(DSCombatMod.MODID, "torpedo1")
+				.torpedoBuilder(DSCombatMod.MODID, "mk13")
 				.setActiveTrack()
 				.setFireRate(40)
 				.setInnacuracy(0f)
@@ -719,8 +719,8 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setFieldOfView(40f)
 				.setSeeThroWaterNum(10000)
 				.setTargetType(TargetType.WATER)
-				.setItem(ModItems.TORPEDO1.getId())
-				.setEntityType(ModEntities.TORPEDO_MISSILE_1.getId())
+				.setItem(ModItems.MK13.getId())
+				.setEntityType(ModEntities.MK13.getId())
 				.setRackEntityType(ModEntities.HEAVY_MISSILE_RACK.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getId())
 				.setCompatibleWeaponPart(ModItems.HEAVY_MISSILE_RACK.getId())

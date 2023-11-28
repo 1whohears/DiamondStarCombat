@@ -2,8 +2,10 @@ package com.onewhohears.dscombat.client.sounds;
 
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.phys.Vec3;
 
 public class VehicleEngineSoundInstance extends DopplerSoundInstance {
 	
@@ -25,9 +27,11 @@ public class VehicleEngineSoundInstance extends DopplerSoundInstance {
 		if (isPassengerSound && isPassenger) {
 			this.volume = initVolume;
 			this.pitch = initPitch;
-			this.x = player.getX();
-			this.y = player.getY();
-			this.z = player.getZ();
+			Minecraft m = Minecraft.getInstance();
+			Vec3 camPos = m.gameRenderer.getMainCamera().getPosition();
+			this.x = camPos.x;
+			this.y = camPos.y;
+			this.z = camPos.z;
 		} else if (!isPassengerSound && !isPassenger) {
 			super.tick();
 		} else {

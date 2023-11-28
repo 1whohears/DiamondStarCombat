@@ -15,7 +15,6 @@ import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -252,7 +251,7 @@ public abstract class EntityMissile extends EntityBullet {
 	}
 	
 	private void engineSound() {
-		UtilClientSafeSoundInstance.dopplerSound(Minecraft.getInstance(), this, 
+		UtilClientSafeSoundInstance.dopplerSound(this, 
 				ModSounds.MISSILE_ENGINE_1.get(), 
 				0.8F, 1.0F, 10F);
 	}

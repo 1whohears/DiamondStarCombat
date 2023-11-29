@@ -20,6 +20,7 @@ import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddForceMoment;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAircraftControl;
+import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleExplode;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftCollide;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftMoveRot;
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
@@ -48,13 +49,13 @@ import com.onewhohears.dscombat.item.ItemSpraycan;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.UtilPacket;
 import com.onewhohears.dscombat.util.UtilParse;
+import com.onewhohears.dscombat.util.UtilParticles;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -190,7 +191,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	// TODO 5.6 place and remove external parts from outside the vehicle
 	// TODO 2.5 add chaff
 	// TODO 2.7 cargo system
-	// TODO 6.1 improve particle system
 	// TODO 8.4 speed of sound system (client doesn't hear sound until "sound wave" reaches the player)
 	
 	public EntityVehicle(EntityType<? extends EntityVehicle> entityType, Level level, ImmutableVehicleData vehicleData) {
@@ -222,7 +222,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 	
 	public void addVehicleScreens() {
-		// TODO 1.7 move screen data to client presets
 	}
 	
 	@Nullable
@@ -553,10 +552,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public void tickCollisions() {
 		// TODO 9.1 break grass and leaves or just weak blocks when driving through them
 		if (!level.isClientSide) {
-			if (!hasControllingPassenger()) wallCollisions();
 			knockBack(level.getEntities(this, 
 					getBoundingBox(), 
 					getKnockbackPredicate()));
+			if (!hasControllingPassenger()) wallCollisions();
 		} else {
 			if (isControlledByLocalInstance()) wallCollisions();
 		}
@@ -599,11 +598,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 * @param isFall true if vertical collision, false if horizontal
 	 */
 	public void collideHurt(float amount, boolean isFall) {
-		if (!level.isClientSide) {
-			if (tickCount < 200) return;
+		if (!level.isClientSide && tickCount > 200) {
 			if (isFall) hurt(DamageSource.FALL, amount);
 			else hurt(DamageSource.FLY_INTO_WALL, amount);
-		} else {
+		} else if (level.isClientSide && isControlledByLocalInstance()) {
 			PacketHandler.INSTANCE.sendToServer(
 				new ToServerAircraftCollide(getId(), amount, isFall));
 		}
@@ -676,24 +674,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 * called on client side every tick.
 	 */
 	public void clientTick() {
-		tickHealthSmoke();
+		UtilParticles.vehicleParticles(this);
 		tickClientLandingGear();
-	}
-	
-	private void tickHealthSmoke() {
-		float r = getHealth() / getMaxHealth();
-		if (r < 0.5f) smoke();
-		if (r < 0.3f) for (int i = 0; i < 2; ++i) smoke();
-		if (r < 0.1f) for (int i = 0; i < 4; ++i) smoke();
-	}
-	
-	private void smoke() {
-		if (Math.random() > 0.4d) return;
-		level.addParticle(ParticleTypes.SMOKE, 
-				getX(), getY(), getZ(), 
-				random.nextGaussian() * 0.08D, 
-				0.1D, 
-				random.nextGaussian() * 0.08D);
 	}
 	
 	/**
@@ -1648,9 +1630,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		//System.out.println(source+" hurt "+amount+" "+this);
 		addHealth(-calcDamageBySource(source, amount));
 		soundManager.onHurt(source, amount);
-		if (!level.isClientSide && !isOperational()) {
-			checkExplodeWhenKilled(source);
-		}
+		if (!level.isClientSide && !isOperational()) checkExplodeWhenKilled(source);
 		return true;
 	}
 	
@@ -1690,16 +1670,13 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 	
 	public void explode(DamageSource source) {
-		if (!level.isClientSide) {
-			level.explode(this, source,
-				null, getX(), getY(), getZ(), 
-				vehicleData.crashExplosionRadius, true, 
-				Explosion.BlockInteraction.BREAK);
-		} else {
-			level.addParticle(ParticleTypes.LARGE_SMOKE, 
-				getX(), getY()+0.5D, getZ(), 
-				0.0D, 0.0D, 0.0D);
-		}
+		if (level.isClientSide) return;
+		level.explode(this, source,
+			null, getX(), getY(), getZ(), 
+			vehicleData.crashExplosionRadius, true, 
+			Explosion.BlockInteraction.BREAK);
+		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), 
+				new ToClientVehicleExplode(this));
 	}
 	
 	/**

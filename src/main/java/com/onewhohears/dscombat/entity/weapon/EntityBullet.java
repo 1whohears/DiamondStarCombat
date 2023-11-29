@@ -3,9 +3,9 @@ package com.onewhohears.dscombat.entity.weapon;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.data.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.data.weapon.BulletData;
+import com.onewhohears.dscombat.util.UtilParticles;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -90,12 +90,8 @@ public class EntityBullet extends EntityWeapon {
 					null, getX(), getY(), getZ(), 
 					getRadius(), getFire(), 
 					interact);
-				System.out.println("EXPLODE "+this+" "+tickCount);
-			} else {
-				level.addParticle(ParticleTypes.SMOKE, 
-					getX(), getY()+0.5D, getZ(), 
-					0.0D, 0.0D, 0.0D);
-			}
+				//System.out.println("EXPLODE "+this+" "+tickCount);
+			} else UtilParticles.weaponExplode(level, position(), getRadius(), getFire());
 		}
 	}
 	

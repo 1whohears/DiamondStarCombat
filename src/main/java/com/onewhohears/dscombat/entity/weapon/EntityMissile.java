@@ -12,10 +12,10 @@ import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.util.UtilClientSafeSoundInstance;
 import com.onewhohears.dscombat.util.UtilEntity;
+import com.onewhohears.dscombat.util.UtilParticles;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -120,17 +120,7 @@ public abstract class EntityMissile extends EntityBullet {
 	
 	@Override
 	public void tick() {
-		if (isTestMode()) {
-			if (level.isClientSide) {
-				Vec3 look = getLookAngle();
-				level.addParticle(ParticleTypes.SMOKE, 
-					getX(), getY(), getZ(), 
-					-look.x * 0.5D + random.nextGaussian() * 0.05D, 
-					-look.y * 0.5D + random.nextGaussian() * 0.05D, 
-					-look.z * 0.5D + random.nextGaussian() * 0.05D);
-			}
-			return;
-		}
+		if (isTestMode()) return;
 		xRotO = getXRot(); 
 		yRotO = getYRot();
 		if (!level.isClientSide && !isRemoved()) {
@@ -143,12 +133,7 @@ public abstract class EntityMissile extends EntityBullet {
 		}
 		if (level.isClientSide && !isRemoved()) {
 			tickClientGuide();
-			Vec3 move = getDeltaMovement();
-			level.addParticle(ParticleTypes.SMOKE, 
-					getX(), getY(), getZ(), 
-					-move.x * 0.5D + random.nextGaussian() * 0.05D, 
-					-move.y * 0.5D + random.nextGaussian() * 0.05D, 
-					-move.z * 0.5D + random.nextGaussian() * 0.05D);
+			UtilParticles.missileTrail(level, position(), getDeltaMovement(), getRadius(), isInWater());
 			if (firstTick) engineSound();
 		}
 		super.tick();

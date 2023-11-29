@@ -7,6 +7,7 @@ import com.onewhohears.dscombat.data.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.UtilParse;
+import com.onewhohears.dscombat.util.UtilParticles;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
@@ -186,6 +187,7 @@ public abstract class EntityWeapon extends Projectile {
 	public void onHitBlock(BlockHitResult result) {
 		super.onHitBlock(result);
 		//System.out.println("BULLET HIT "+result.getBlockPos());
+		UtilParticles.onWeaponHitBlock(this, result);
 		kill();
 	}
 	
@@ -193,6 +195,7 @@ public abstract class EntityWeapon extends Projectile {
 	public void onHitEntity(EntityHitResult result) {
 		super.onHitEntity(result);
 		System.out.println("BULLET HIT "+result.getEntity());
+		UtilParticles.onWeaponHitEntity(this, result);
 		kill();
 		result.getEntity().hurt(getImpactDamageSource(), getDamage());
 		if (!level.isClientSide) return;

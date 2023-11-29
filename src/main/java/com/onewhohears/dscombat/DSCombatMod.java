@@ -17,6 +17,7 @@ import com.onewhohears.dscombat.init.ModBlocks;
 import com.onewhohears.dscombat.init.ModContainers;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.init.ModItems;
+import com.onewhohears.dscombat.init.ModParticles;
 import com.onewhohears.dscombat.init.ModRecipeSerializers;
 import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.init.ModVillagers;
@@ -71,6 +72,7 @@ public class DSCombatMod {
         ModBlockEntities.register(eventBus);
     	DataSerializers.register(eventBus);
     	ModVillagers.register(eventBus);
+    	ModParticles.register(eventBus);
     	
     	minigamesLoaded = ModList.get().isLoaded("minigames");
     	

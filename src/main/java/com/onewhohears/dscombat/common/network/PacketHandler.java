@@ -9,6 +9,7 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientDataPackSynch;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRWRWarning;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRadarPings;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRemovePart;
+import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleExplode;
 import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleScreenDebug;
 import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleTexture;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponAmmo;
@@ -162,6 +163,11 @@ public final class PacketHandler {
 			.encoder(ToClientVehicleScreenDebug::encode)
 			.decoder(ToClientVehicleScreenDebug::new)
 			.consumerMainThread(ToClientVehicleScreenDebug::handle)
+			.add();
+		net.messageBuilder(ToClientVehicleExplode.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ToClientVehicleExplode::encode)
+			.decoder(ToClientVehicleExplode::new)
+			.consumerMainThread(ToClientVehicleExplode::handle)
 			.add();
 	}
 	

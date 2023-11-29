@@ -200,7 +200,7 @@ public abstract class EntityWeapon extends Projectile {
 		result.getEntity().hurt(getImpactDamageSource(), getDamage());
 		if (!level.isClientSide) return;
 		if (level.getGameRules().getBoolean(DSCGameRules.WEAPON_HIT_FEEDBACK)) {
-			// TODO 1.1 some kind of visual feedback when a weapon hits an entity target
+			// TODO 6.8 some kind of visual feedback when a weapon hits an entity target
 		}
 	}
 	

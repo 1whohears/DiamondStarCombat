@@ -5,9 +5,11 @@ import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.UtilPacket;
 
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent.Context;
@@ -15,18 +17,22 @@ import net.minecraftforge.network.NetworkEvent.Context;
 public class ToClientVehicleExplode extends IPacket {
 	
 	public final int id;
+	public final Vec3 pos;
 	
 	public ToClientVehicleExplode(EntityVehicle vehicle) {
 		this.id = vehicle.getId();
+		this.pos = vehicle.position();
 	}
 	
 	public ToClientVehicleExplode(FriendlyByteBuf buffer) {
 		id = buffer.readInt();
+		pos = DataSerializers.VEC3.read(buffer);
 	}
 	
 	@Override
 	public void encode(FriendlyByteBuf buffer) {
 		buffer.writeInt(id);
+		DataSerializers.VEC3.write(buffer, pos);
 	}
 
 	@Override
@@ -34,7 +40,7 @@ public class ToClientVehicleExplode extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilPacket.vehicleExplode(id);
+				UtilPacket.vehicleExplode(id, pos);
 				success.set(true);
 			});
 		});

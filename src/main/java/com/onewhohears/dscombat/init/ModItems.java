@@ -136,7 +136,7 @@ public class ModItems {
 			() -> new ItemRepairTool(200, 5));
 	public static final RegistryObject<Item> PARACHUTE = ITEMS.register("parachute", 
 			() -> new ItemParachute());
-	// TODO 1.2 give spray can item a texture
+	// FIXME 6 give spray can item a texture/model
 	public static final RegistryObject<Item> SPRAYCAN = ITEMS.register("spraycan", 
 			() -> new ItemSpraycan());
 	

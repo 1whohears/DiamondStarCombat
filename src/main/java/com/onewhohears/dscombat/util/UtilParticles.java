@@ -18,14 +18,14 @@ public class UtilParticles {
 	
 	// TODO 6.1 improve particle system
 	
-	public static void vehicleCrashExplosion(EntityVehicle vehicle) {
-		System.out.println("vehicleCrashExplosion");
+	public static void vehicleCrashExplosion(Level level, Vec3 pos, double expRadius) {
+		//System.out.println("vehicleCrashExplosion");
 		double speed = 0.5;
 		for (int j = 0; j < 90; j += 5) {
 			double sinj = Math.sin(j);
 			for (int i = 0; i < 360; i += 5) {
-				vehicle.level.addParticle(ModParticles.GIANT_EXPLOSION.get(), 
-					vehicle.getX(), vehicle.getY(), vehicle.getZ(), 
+				level.addParticle(ModParticles.GIANT_EXPLOSION.get(), 
+					pos.x, pos.y, pos.z, 
 					randomSpeed((Math.cos(i)-sinj)*speed, 0.02), 
 					randomSpeed(sinj*0.1, 0.02), 
 					randomSpeed((Math.sin(i)-sinj)*speed, 0.02));

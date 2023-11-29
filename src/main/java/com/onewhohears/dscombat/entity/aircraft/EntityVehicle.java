@@ -2170,7 +2170,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     @Override
     public AABB getBoundingBoxForCulling() {
     	// FIXME 3 big vehicles wont render at certain camera angles
-    	return getBoundingBox();
+    	return getBoundingBox().inflate(vehicleData.cameraDistance);
     }
     
     @Override

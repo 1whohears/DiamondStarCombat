@@ -28,25 +28,34 @@ public class GiantExplosionParticles extends TextureSheetParticle {
 	protected GiantExplosionParticles(ClientLevel level, double x, double y, double z, 
 			double xSpeed, double ySpeed, double zSpeed, SpriteSet sprites) {
 		super(level, x, y, z, xSpeed, ySpeed, zSpeed);
-		this.friction = 0.8f;
-		this.gravity = 0.5f;
+		this.friction = 0.8f + (float)(random.nextGaussian() * 0.02);
+		this.gravity = 0.5f + (float)(random.nextGaussian() * 0.02);
 		this.xd = xSpeed;
 		this.yd = ySpeed;
 		this.zd = zSpeed;
-		this.quadSize *= 8f;
-		this.lifetime = 300;
+		this.quadSize *= (8f + random.nextGaussian() * 0.05);
+		this.lifetime = 300 + (int)(random.nextGaussian() * 20);
 		this.setSpriteFromAge(sprites);
-		this.setColor(1, 1, 1);
 	}
 	
 	@Override
 	public void tick() {
 		super.tick();
-		fadeOut();
+		float life = (float)age / (float)lifetime;
+		fadeOut(life);
+		coolDown(life);
 	}
 	
-	protected void fadeOut() {
-		setAlpha(1f - (float)age / (float)lifetime);
+	protected void coolDown(float life) {
+		if (life < 0.2f) setColor(1, 0, 0);
+		else if (life >= 0.2f && life < 0.4) {
+			float c = (life - 0.2f) / 0.2f;
+			setColor(1, c, c);
+		} else setColor(1, 1, 1);
+	}
+	
+	protected void fadeOut(float life) {
+		setAlpha(1f - life);
 	}
 	
 	@Override

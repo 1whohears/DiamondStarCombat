@@ -126,10 +126,10 @@ public class UtilPacket {
 		m.setScreen(new VehiclePaintScreen(textures));
 	}
 	
-	public static void vehicleExplode(int id) {
+	public static void vehicleExplode(int id, Vec3 pos) {
 		Minecraft m = Minecraft.getInstance();
 		if (m.level.getEntity(id) instanceof EntityVehicle plane) {
-			UtilParticles.vehicleCrashExplosion(plane);
+			UtilParticles.vehicleCrashExplosion(plane.level, pos, plane.vehicleData.crashExplosionRadius);
 		}
 	}
 	

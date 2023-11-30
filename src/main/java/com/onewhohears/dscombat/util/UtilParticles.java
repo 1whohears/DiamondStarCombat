@@ -3,13 +3,11 @@ package com.onewhohears.dscombat.util;
 import java.util.Random;
 
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
-import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.init.ModParticles;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 public class UtilParticles {
@@ -19,7 +17,6 @@ public class UtilParticles {
 	// TODO 6.1 improve particle system
 	
 	public static void vehicleCrashExplosion(Level level, Vec3 pos, double expRadius) {
-		System.out.println("vehicleCrashExplosion "+pos);
 		expRadius *= 1.8;
 		// dark large smoke spread across the ground
 		for (double d = 1; d <= expRadius; d += 1) {
@@ -86,10 +83,6 @@ public class UtilParticles {
 				random.nextGaussian() * 0.08D);
 	}
 	
-	public static void weaponExplode(Level level, Vec3 pos, double radius, boolean fire) {
-		
-	}
-	
 	public static void missileTrail(Level level, Vec3 pos, Vec3 move, double size, boolean inWater) {
 		level.addParticle(ModParticles.CONTRAIL.get(), 
 				pos.x, pos.y, pos.z, 
@@ -99,12 +92,27 @@ public class UtilParticles {
 				-move.x*0.25, -move.y*0.25, -move.z*0.25);
 	}
 	
-	public static void onWeaponHitBlock(EntityWeapon weapon, BlockHitResult hit) {
+	public static void bulletImpact(Level level, HitResult result, double damage) {
 		
 	}
 	
-	public static void onWeaponHitEntity(EntityWeapon weapon, EntityHitResult hit) {
+	public static void bulletExplode(Level level, Vec3 pos, double radius, boolean fire) {
 		
+	}
+	
+	public static void bombExplode(Level level, Vec3 pos, double radius, boolean fire) {
+		
+	}
+	
+	public static void missileExplode(Level level, Vec3 pos, double radius, boolean fire) {
+		radius *= 1.3;
+		for (double d = 1; d <= radius; d += 1) {
+			for (int i = 0; i < 360; i += 20) for (int j = -90; j <= 90; j += 30) {
+				level.addAlwaysVisibleParticle(ModParticles.LARGE_SMOKE_CLOUD.get(), 
+					true, pos.x, pos.y+0.2, pos.z, 
+					Math.cos(i)*d, Math.sin(j)*d, Math.sin(i)*d);
+			}
+		}
 	}
 	
 }

@@ -14,6 +14,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 public class EntityBullet extends EntityWeapon {
@@ -91,12 +92,18 @@ public class EntityBullet extends EntityWeapon {
 					getRadius(), getFire(), 
 					interact);
 				//System.out.println("EXPLODE "+this+" "+tickCount);
-			} else UtilParticles.weaponExplode(level, position(), getRadius(), getFire());
+			}
 		}
 	}
 	
 	public int minExplodeAge() {
 		return 1;
+	}
+	
+	@Override
+	public void onHitParticles(HitResult result) {
+		if (getExplosive()) UtilParticles.bulletExplode(level, result.getLocation(), getRadius(), getFire());
+		else UtilParticles.bulletImpact(level, result, getDamage());
 	}
 	
 	@Override

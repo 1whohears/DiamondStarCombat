@@ -3,10 +3,12 @@ package com.onewhohears.dscombat.entity.weapon;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.data.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.data.weapon.BombData;
+import com.onewhohears.dscombat.util.UtilParticles;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.HitResult;
 
 public class EntityBomb extends EntityBullet {
 
@@ -19,8 +21,12 @@ public class EntityBomb extends EntityBullet {
 	}
 	
 	@Override
-	public void init() {
-		
+	public void init() {	
+	}
+	
+	@Override
+	public void onHitParticles(HitResult result) {
+		UtilParticles.bombExplode(level, result.getLocation(), getRadius(), getFire());
 	}
 	
 	@Override

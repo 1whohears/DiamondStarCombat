@@ -1,5 +1,8 @@
 package com.onewhohears.dscombat.client.overlay.components;
 
+import java.util.List;
+import java.util.Objects;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
@@ -14,14 +17,11 @@ import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
+
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
-
-import java.util.List;
-import java.util.Objects;
 
 public class RadarOverlay extends VehicleOverlayComponent {
     public static final ResourceLocation RADAR = new ResourceLocation(DSCombatMod.MODID,
@@ -97,8 +97,6 @@ public class RadarOverlay extends VehicleOverlayComponent {
         int roll = (int) vehicle.zRot;
         drawCenteredString(poseStack, getFont(),
                 "P: "+pitch+" Y: "+heading+" R: "+roll, centerX, screenHeight - RADAR_OFFSET - RADAR_SIZE -10, 0x8888ff);*/
-
-        // FIXME 6 make RWR visible through an entity screen
         /*for (RadarSystem.RWRWarning warn : radar.getClientRWRWarnings()) {
             Vec3 dp = warn.pos.subtract(vehicle.position());
             float yaw = (UtilAngles.getYaw(dp)-vehicle.getYRot())*Mth.DEG_TO_RAD;

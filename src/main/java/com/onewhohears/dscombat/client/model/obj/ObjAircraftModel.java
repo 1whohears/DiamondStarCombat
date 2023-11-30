@@ -23,6 +23,7 @@ public class ObjAircraftModel<T extends EntityVehicle> extends ObjEntityModel<T>
 	@Override
 	public void render(T entity, PoseStack poseStack, MultiBufferSource bufferSource, int lightmap, float partialTicks) {
 		super.render(entity, poseStack, bufferSource, lightmap, partialTicks);
+		// FIXME 7 possible render performance issue when rendering several vehicles?
 		Transforms context = getComponentTransforms(entity, partialTicks);
 		TextureLayer[] layers = entity.textureManager.getTextureLayers();
 		for (int i = 0; i < layers.length; ++i) {

@@ -489,5 +489,6 @@
 	"gamerule.vehicleArmorStrengthPercent": "DSC Vehicle Armor Strength Percent",
 	"gamerule.bulletDamageVehiclePercent": "DSC Bullet Damage Vehicle Percent Multiplier",
 	"gamerule.explosionDamageVehiclePercent": "DSC Explosion Damage Vehicle Percent Multiplier",
-	"gamerule.bulletDamagePlanePercent": "DSC Bullet Damage Plane Percent Multiplier"
+	"gamerule.bulletDamagePlanePercent": "DSC Bullet Damage Plane Percent Multiplier",
+	"gamerule.disable3rdPersonVehicle": "DSC Disable 3rd Person in Vehicles"
 }

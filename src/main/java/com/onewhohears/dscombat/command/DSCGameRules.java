@@ -26,6 +26,7 @@ public class DSCGameRules {
 	public static GameRules.Key<GameRules.IntegerValue> BULLET_DAMAGE_PLANE_PER;
 	// TODO 7.2 baby mode gamerule (arcade mode) for planes disabled by default
 	// TODO 7.3 ban 3rd person vehicles only gamerule
+	public static GameRules.Key<GameRules.BooleanValue> DISABLE_3RD_PERSON_VEHICLE;
 	// TODO 7.4 ban 3rd person always gamerule
 	
 	public static void registerAll() {
@@ -48,6 +49,7 @@ public class DSCGameRules {
 		BULLET_DAMAGE_VEHICLE_PER = registerInteger("bulletDamageVehiclePercent", 20, GameRules.Category.PLAYER);
 		EXPLO_DAMAGE_VEHICLE_PER = registerInteger("explosionDamageVehiclePercent", 1000, GameRules.Category.PLAYER);
 		BULLET_DAMAGE_PLANE_PER = registerInteger("bulletDamagePlanePercent", 50, GameRules.Category.PLAYER);
+		DISABLE_3RD_PERSON_VEHICLE = registerBoolean("disable3rdPersonVehicle", false, GameRules.Category.PLAYER);
 	}
 	
 	public static GameRules.Key<GameRules.BooleanValue> registerBoolean(String name, boolean defaultValue) {

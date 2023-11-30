@@ -7,10 +7,12 @@ import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
+import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.client.Camera;
+import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
@@ -33,6 +35,8 @@ public class ClientCameraEvents {
 		final var player = m.player;
 		if (player == null || !player.isPassenger()) return;
 		if (!(player.getRootVehicle() instanceof EntityVehicle plane)) return;
+		if (player.level.getGameRules().getBoolean(DSCGameRules.DISABLE_3RD_PERSON_VEHICLE))
+			m.options.setCameraType(CameraType.FIRST_PERSON);
 		float pt = (float)event.getPartialTick();
 		boolean isController = player.equals(plane.getControllingPassenger());
 		if (DSCClientInputs.isCameraLockedForward() && isController) {

@@ -296,8 +296,8 @@ public abstract class EntityMissile extends EntityBullet {
 	}
 	
 	@Override
-	public void onHitParticles(HitResult result) {
-		UtilParticles.missileExplode(level, result.getLocation(), getRadius(), getFire());
+	public void clientOnWeaponImpact(Vec3 pos) {
+		//UtilParticles.missileExplode(level, result.getLocation(), getRadius(), getFire());
 	}
 	
 	@Override

@@ -101,9 +101,9 @@ public class EntityBullet extends EntityWeapon {
 	}
 	
 	@Override
-	public void onHitParticles(HitResult result) {
-		if (getExplosive()) UtilParticles.bulletExplode(level, result.getLocation(), getRadius(), getFire());
-		else UtilParticles.bulletImpact(level, result, getDamage());
+	public void clientOnWeaponImpact(Vec3 pos) {
+		//if (getExplosive()) UtilParticles.bulletExplode(level, pos, getRadius(), getFire());
+		//else UtilParticles.bulletImpact(level, result, getDamage());
 	}
 	
 	@Override

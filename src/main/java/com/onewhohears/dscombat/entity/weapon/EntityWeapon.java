@@ -3,6 +3,8 @@ package com.onewhohears.dscombat.entity.weapon;
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.command.DSCGameRules;
+import com.onewhohears.dscombat.common.network.PacketHandler;
+import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponImpact;
 import com.onewhohears.dscombat.data.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.init.DataSerializers;
@@ -31,6 +33,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Team;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.network.PacketDistributor;
 
 public abstract class EntityWeapon extends Projectile {
 	
@@ -177,13 +180,14 @@ public abstract class EntityWeapon extends Projectile {
 	
 	@Override
 	public void onHit(HitResult result) {
-		if (level.isClientSide) onHitParticles(result);
 		if (isRemoved()) return;
 		setPos(result.getLocation());
+		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), 
+				new ToClientWeaponImpact(this, result));
 		super.onHit(result);
 	}
 	
-	public abstract void onHitParticles(HitResult result);
+	public abstract void clientOnWeaponImpact(Vec3 pos);
 	
 	@Override
 	public void onHitBlock(BlockHitResult result) {

@@ -133,5 +133,10 @@ public class UtilPacket {
 		else if (m.level.getEntity(id) instanceof EntityVehicle plane) 
 			UtilParticles.vehicleCrashExplosion(m.level, pos, plane.vehicleData.crashExplosionRadius);
 	}
+
+	public static void weaponImpact(int weaponId, int ownerId, int targetId, Vec3 pos) {
+		Minecraft m = Minecraft.getInstance();
+		// TODO 0.1 handle to client weapon impact packet to spawn particles
+	}
 	
 }

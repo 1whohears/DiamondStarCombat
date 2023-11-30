@@ -13,6 +13,7 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleExplode;
 import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleScreenDebug;
 import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleTexture;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponAmmo;
+import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponImpact;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftCollide;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftControl;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftMoveRot;
@@ -168,6 +169,11 @@ public final class PacketHandler {
 			.encoder(ToClientVehicleExplode::encode)
 			.decoder(ToClientVehicleExplode::new)
 			.consumerMainThread(ToClientVehicleExplode::handle)
+			.add();
+		net.messageBuilder(ToClientWeaponImpact.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ToClientWeaponImpact::encode)
+			.decoder(ToClientWeaponImpact::new)
+			.consumerMainThread(ToClientWeaponImpact::handle)
 			.add();
 	}
 	

@@ -23,8 +23,10 @@ public class AircraftClientPresetGenerator extends JsonPresetGenerator<AircraftC
 				.addUIPos("internal_1", alexis_middle_x, 100)
 				.addUIPos("left_wing_1", alexis_middle_x-27, alexis_wing_y)
 				.addUIPos("left_wing_2", alexis_middle_x-45, alexis_wing_y)
+				.addUIPos("left_wing_3", alexis_middle_x-63, alexis_wing_y)
 				.addUIPos("right_wing_1", alexis_middle_x+27, alexis_wing_y)
 				.addUIPos("right_wing_2", alexis_middle_x+45, alexis_wing_y)
+				.addUIPos("right_wing_3", alexis_middle_x+63, alexis_wing_y)
 				.build());
 		int javi_middle_x = 124, javi_wing_y = 50;
 		addPresetToGenerate(AircraftClientPreset.Builder.create(DSCombatMod.MODID, "javi_plane")

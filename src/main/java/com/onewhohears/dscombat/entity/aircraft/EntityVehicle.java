@@ -2111,6 +2111,14 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     	return parts;
     }
     
+    @Nullable
+    public EntityPart getPartBySlotId(String slotId) {
+    	for (Entity e : getPassengers())
+    		if (e instanceof EntityPart part && part.getSlotId().equals(slotId)) 
+    			return part;
+    	return null;
+    }
+    
     /**
      * entity tracking missile calls this server side when tracking this plane
      * @param pos the position of the missile

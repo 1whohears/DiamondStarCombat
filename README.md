@@ -29,4 +29,4 @@ __**.ceoofgoogle:**__ All the Big Epic Boat modles and new turret/external radar
 
 __**blackbirdantlion**__: **Improved Vehicle Workbench UI Texture**
 
-__**rainsky_0431**__: **Bronco Plane** and **New Javi Plane** Model and Texture
+__**rainsky_0431**__: **Bronco Plane**, **New Javi Plane**, **New Alexis Plane** Models and Textures

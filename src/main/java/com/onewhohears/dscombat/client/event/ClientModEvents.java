@@ -3,7 +3,6 @@ package com.onewhohears.dscombat.client.event;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.client.model.EntityModelParachute;
-import com.onewhohears.dscombat.client.model.aircraft.EntityModelAlexisPlane;
 import com.onewhohears.dscombat.client.model.aircraft.EntityModelAndolfSub;
 import com.onewhohears.dscombat.client.model.aircraft.EntityModelAxcelTruck;
 import com.onewhohears.dscombat.client.model.aircraft.EntityModelE3Sentry;
@@ -19,6 +18,7 @@ import com.onewhohears.dscombat.client.model.obj.ObjEntityModel;
 import com.onewhohears.dscombat.client.model.obj.ObjEntityModels;
 import com.onewhohears.dscombat.client.model.obj.ObjPartModel;
 import com.onewhohears.dscombat.client.model.obj.custom.AATurretModel;
+import com.onewhohears.dscombat.client.model.obj.custom.AlexisPlaneModel;
 import com.onewhohears.dscombat.client.model.obj.custom.BallRadarModel;
 import com.onewhohears.dscombat.client.model.obj.custom.BombRackModel;
 import com.onewhohears.dscombat.client.model.obj.custom.BroncoPlaneModel;
@@ -82,7 +82,7 @@ public final class ClientModEvents {
 		event.registerLayerDefinition(EntityModelMissile1.LAYER_LOCATION, EntityModelMissile1::createBodyLayer);
 		//event.registerLayerDefinition(EntityModelF16.LAYER_LOCATION, EntityModelF16::createBodyLayer);
 		event.registerLayerDefinition(EntityModelNoahChopper.LAYER_LOCATION, EntityModelNoahChopper::createBodyLayer);
-		event.registerLayerDefinition(EntityModelAlexisPlane.LAYER_LOCATION, EntityModelAlexisPlane::createBodyLayer);
+		//event.registerLayerDefinition(EntityModelAlexisPlane.LAYER_LOCATION, EntityModelAlexisPlane::createBodyLayer);
 		//event.registerLayerDefinition(EntityModelJaviPlane.LAYER_LOCATION, EntityModelJaviPlane::createBodyLayer);
 		//event.registerLayerDefinition(EntityModelLightMissileRack.LAYER_LOCATION, EntityModelLightMissileRack::createBodyLayer);
 		//event.registerLayerDefinition(EntityModelHeavyMissileRack.LAYER_LOCATION, EntityModelHeavyMissileRack::createBodyLayer);
@@ -115,8 +115,8 @@ public final class ClientModEvents {
 				(context) -> new RendererObjAircraft<>(context,
                         new JaviPlaneModel()));
 		event.registerEntityRenderer(ModEntities.ALEXIS_PLANE.get(), 
-				(context) -> new RendererEntityAircraft<>(context,
-                        new EntityModelAlexisPlane(models.bakeLayer(EntityModelAlexisPlane.LAYER_LOCATION))));
+				(context) -> new RendererObjAircraft<>(context,
+                        new AlexisPlaneModel()));
 		event.registerEntityRenderer(ModEntities.WOODEN_PLANE.get(), 
 				(context) -> new RendererEntityAircraft<>(context,
                         new EntityModelWoodenPlane(models.bakeLayer(EntityModelWoodenPlane.LAYER_LOCATION))));

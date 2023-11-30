@@ -53,6 +53,11 @@
       "slot_ui_y": 57
     },
     {
+      "slot_name": "left_wing_3",
+      "slot_ui_x": 57,
+      "slot_ui_y": 57
+    },
+    {
       "slot_name": "right_wing_1",
       "slot_ui_x": 147,
       "slot_ui_y": 57
@@ -60,6 +65,11 @@
     {
       "slot_name": "right_wing_2",
       "slot_ui_x": 165,
+      "slot_ui_y": 57
+    },
+    {
+      "slot_name": "right_wing_3",
+      "slot_ui_x": 183,
       "slot_ui_y": 57
     }
   ],

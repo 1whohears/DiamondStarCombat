@@ -6,6 +6,7 @@ import org.lwjgl.glfw.GLFWCursorPosCallbackI;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
@@ -34,7 +35,7 @@ public class ClientCameraEvents {
 		if (!(player.getRootVehicle() instanceof EntityVehicle plane)) return;
 		float pt = (float)event.getPartialTick();
 		boolean isController = player.equals(plane.getControllingPassenger());
-		if (!plane.driverCanFreeLook() && isController) {
+		if (DSCClientInputs.isCameraLockedForward() && isController) {
 			float xi = UtilAngles.lerpAngle(pt, plane.xRotO, plane.getXRot());
 			float yi = UtilAngles.lerpAngle180(pt, plane.yRotO, plane.getYRot());
 			player.setXRot(xi);
@@ -89,7 +90,7 @@ public class ClientCameraEvents {
 			if (window != m.getWindow().getWindow()) return;
 			if (m.player != null && m.screen == null 
 					&& m.player.getRootVehicle() instanceof EntityVehicle craft
-					&& craft.driverCanFreeLook()) {
+					&& DSCClientInputs.isCameraFree()) {
 				double r = Math.toRadians(craft.zRot);
 				double dx = x - m.mouseHandler.xpos();
 				double dy = y - m.mouseHandler.ypos();

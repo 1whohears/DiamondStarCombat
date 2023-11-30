@@ -180,7 +180,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	private float landingGearPos, landingGearPosOld;
 	
 	protected RadarMode radarMode = RadarMode.ALL;
-	protected boolean isLandingGear, driverCanFreeLook = true;
+	protected boolean isLandingGear, isDriverCameraLocked = false;
 	protected float throttle;
 	
 	protected Set<Integer> hitboxCollidedIds = new HashSet<>();
@@ -398,7 +398,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		// OTHER
 		setRadarMode(RadarMode.byId(radarMode));
 		setLandingGear(gear);
-		setDriverCanFreeLook(freeLook);
+		setDriverCameraLocked(freeLook);
 		setCurrentThrottle(throttle);
 	}
 	
@@ -408,7 +408,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		buffer.writeInt(weaponSystem.getSelectedIndex());
 		buffer.writeInt(getRadarMode().ordinal());
 		buffer.writeBoolean(isLandingGear());
-		buffer.writeBoolean(driverCanFreeLook());
+		buffer.writeBoolean(isDriverCameraLocked());
 		buffer.writeFloat(getCurrentThrottle());
 		PartsManager.writeSlotsToBuffer(buffer, partsManager.getSlots());
 		textureManager.write(buffer);
@@ -1307,16 +1307,12 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		this.throttleToZero();
 	}
 	
-	public final boolean driverCanFreeLook() {
-    	return this.driverCanFreeLook;
+	public final boolean isDriverCameraLocked() {
+    	return this.isDriverCameraLocked;
     }
     
-    public final void setDriverCanFreeLook(boolean driverCanFreeLook) {
-    	this.driverCanFreeLook = driverCanFreeLook;
-    }
-    
-    public void toggleFreeLook() {
-    	setDriverCanFreeLook(!driverCanFreeLook());
+    public final void setDriverCameraLocked(boolean driverCameraLocked) {
+    	this.isDriverCameraLocked = driverCameraLocked;
     }
     
     public RadarMode getRadarMode() {

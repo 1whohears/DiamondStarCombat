@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerDismount;
@@ -59,9 +60,7 @@ public final class ClientInputEvents {
 		boolean toggleGear = DSCKeys.landingGear.consumeClick();
 		boolean cycleRadarMode = DSCKeys.radarModeKey.consumeClick();
 
-		if (DSCKeys.mouseModeKey.consumeClick()) {
-			plane.toggleFreeLook();
-		}
+		if (DSCKeys.mouseModeKey.consumeClick()) DSCClientInputs.cycleMouseMode();
 		Entity controller = plane.getControllingPassenger();
 		if (controller == null || !controller.equals(player)) return;
 		if (DSCKeys.resetMouseKey.isDown()) centerMouse();
@@ -90,7 +89,7 @@ public final class ClientInputEvents {
 		}
 		// should pitch/throttle flip
 		boolean type_flip = plane.getAircraftType().flipPitchThrottle;
-		boolean mode = !plane.driverCanFreeLook();
+		boolean mode = DSCClientInputs.isCameraLockedForward();
 		if ((!type_flip && (flip ^ mode)) || (type_flip && !flip)) {
 			pitchUp = DSCKeys.throttleUpKey.isDown();
 			pitchDown = DSCKeys.throttleDownKey.isDown();
@@ -105,7 +104,7 @@ public final class ClientInputEvents {
 		// should invert
 		int invertY = Config.CLIENT.invertY.get() ? -1 : 1;
 		if (plane.getAircraftType().ignoreInvertY) invertY = -1;
-		if (!plane.driverCanFreeLook()) {
+		if (DSCClientInputs.isCameraLockedForward()) {
 			// FIXME 2.1 fix mouse control mode
 			double ya = Math.abs(mouseY);
 			double xa = Math.abs(mouseX);
@@ -149,8 +148,9 @@ public final class ClientInputEvents {
 				throttle, pitch, roll, yaw, 
 				flare, shoot, openMenu, special, special2, 
 				rollLeft && rollRight, 
-				selectNextWeapon, cycleRadarMode, toggleGear);
-		if (!plane.driverCanFreeLook()) centerMouse();
+				selectNextWeapon, cycleRadarMode, toggleGear,
+				DSCClientInputs.isCameraLockedForward());
+		if (DSCClientInputs.isCameraLockedForward()) centerMouse();
 	}
 	
 	@SubscribeEvent(priority = EventPriority.HIGH)

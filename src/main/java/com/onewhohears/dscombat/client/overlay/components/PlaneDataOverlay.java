@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.client.overlay.components;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 
@@ -23,7 +24,7 @@ public class PlaneDataOverlay extends VehicleOverlayComponent {
     @Override
     protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
         if (!(getPlayerRootVehicle() instanceof EntityPlane plane)) return;
-        if (plane.driverCanFreeLook()) return;
+        if (DSCClientInputs.isCameraLockedForward()) return;
 
         drawString(poseStack, getFont(),
                 String.format("AOA: %3.1f", plane.getAOA()),

@@ -25,6 +25,8 @@ public class DSCGameRules {
 	public static GameRules.Key<GameRules.IntegerValue> EXPLO_DAMAGE_VEHICLE_PER;
 	public static GameRules.Key<GameRules.IntegerValue> BULLET_DAMAGE_PLANE_PER;
 	// TODO 7.2 baby mode gamerule (arcade mode) for planes disabled by default
+	// TODO 7.3 ban 3rd person vehicles only gamerule
+	// TODO 7.4 ban 3rd person always gamerule
 	
 	public static void registerAll() {
 		CONSUME_FULE = registerBoolean("consumeFuel", true, GameRules.Category.PLAYER);

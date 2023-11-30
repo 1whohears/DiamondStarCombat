@@ -19,7 +19,7 @@ public class VehicleInputManager {
 	public boolean special, special2, bothRoll;
 	public float throttle, pitch, roll, yaw;
 	
-	protected boolean isLandingGear;
+	protected boolean isLandingGear, isDriverCameraLocked;
 	protected int weaponIndex, radarModeOrdinal;
 	protected float currentThrottle;
 	
@@ -35,7 +35,8 @@ public class VehicleInputManager {
 			float throttle, float pitch, float roll, float yaw,
 			boolean flare, boolean shoot, boolean openMenu, 
 			boolean special, boolean special2, boolean bothRoll,
-			int selectNextWeapon, boolean cycleRadarMode, boolean toggleGear) {
+			int selectNextWeapon, boolean cycleRadarMode, boolean toggleGear,
+			boolean isDriverCameraLocked) {
 		this.throttle = throttle;
 		this.pitch = pitch;
 		this.roll = roll;
@@ -46,6 +47,8 @@ public class VehicleInputManager {
 		this.special = special;
 		this.special2 = special2;
 		this.bothRoll = bothRoll;
+		this.isDriverCameraLocked = isDriverCameraLocked;
+		parent.setDriverCameraLocked(isDriverCameraLocked);
 		parent.weaponSystem.selectNextWeapon(selectNextWeapon);
 		weaponIndex = parent.weaponSystem.getSelectedIndex();
 		if (cycleRadarMode) parent.cycleRadarMode();
@@ -71,11 +74,13 @@ public class VehicleInputManager {
 		this.weaponIndex = other.weaponIndex;
 		this.radarModeOrdinal = other.radarModeOrdinal;
 		this.currentThrottle = other.currentThrottle;
+		this.isDriverCameraLocked = other.isDriverCameraLocked;
 		// special inputs
 		parent.setRadarMode(RadarMode.byId(radarModeOrdinal));
 		parent.setLandingGear(isLandingGear);
 		parent.setCurrentThrottle(currentThrottle);
 		parent.weaponSystem.setSelected(weaponIndex);
+		parent.setDriverCameraLocked(isDriverCameraLocked);
 		if (!parent.level.isClientSide && shoot) 
 			parent.weaponSystem.shootSelected(parent.getControllingPassenger());
 	}
@@ -91,6 +96,7 @@ public class VehicleInputManager {
 		this.special = false;
 		this.special2 = false;
 		this.bothRoll = false;
+		this.isDriverCameraLocked = false;
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
@@ -110,6 +116,7 @@ public class VehicleInputManager {
 		buffer.writeByte(radarModeOrdinal);
 		buffer.writeShort(weaponIndex);
 		buffer.writeFloat(currentThrottle);
+		buffer.writeBoolean(isDriverCameraLocked);
 	}
 	
 	public void read(FriendlyByteBuf buffer) {
@@ -129,6 +136,7 @@ public class VehicleInputManager {
 		radarModeOrdinal = buffer.readByte();
 		weaponIndex = buffer.readShort();
 		currentThrottle = buffer.readFloat();
+		isDriverCameraLocked = buffer.readBoolean();
 	}
 	
 }

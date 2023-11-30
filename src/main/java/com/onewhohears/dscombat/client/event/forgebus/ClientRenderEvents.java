@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.renderer.EntityScreenRenderer;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.util.math.UtilAngles;
@@ -79,7 +80,7 @@ public class ClientRenderEvents {
 	@SubscribeEvent
 	public static void onRenderGui(RenderGuiOverlayEvent.Pre event) {
 		if (!(Minecraft.getInstance().player.getRootVehicle() instanceof EntityVehicle vehicle)) return;
-		if (vehicle.driverCanFreeLook()) return;
+		if (DSCClientInputs.isCameraFree()) return;
 
 		if (Objects.equals(event.getOverlay().id(), HOTBAR.id())) event.setCanceled(true);
 		if (Objects.equals(event.getOverlay().id(), CROSSHAIR.id())) event.setCanceled(true);
@@ -93,7 +94,7 @@ public class ClientRenderEvents {
 	@SubscribeEvent
 	public static void onRenderHand(RenderHandEvent event) {
 		if (!(Minecraft.getInstance().player.getRootVehicle() instanceof EntityVehicle vehicle)) return;
-		if (vehicle.driverCanFreeLook()) return;
+		if (DSCClientInputs.isCameraFree()) return;
 
 		event.setCanceled(true);
 	}

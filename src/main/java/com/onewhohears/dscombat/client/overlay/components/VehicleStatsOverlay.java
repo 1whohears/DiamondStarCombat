@@ -34,6 +34,7 @@ public class VehicleStatsOverlay extends VehicleOverlayComponent {
     protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
         if (!(getPlayerRootVehicle() instanceof EntityVehicle vehicle)) return;
         if (DSCClientInputs.isCameraLockedForward()) return;
+        // TODO: display current camera mode somewhere
 
         int xOrigin = screenWidth - STICK_BASE_SIZE - PADDING;
         int yOrigin = screenHeight - STICK_BASE_SIZE - PADDING * 3 - FUEL_GAUGE_HEIGHT - 10;

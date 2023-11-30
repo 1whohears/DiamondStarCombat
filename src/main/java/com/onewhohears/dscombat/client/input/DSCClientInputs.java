@@ -122,13 +122,29 @@ public class DSCClientInputs {
 	public static boolean isCameraFree() {
 		return CURRENT_MOUSE_MODE.isFree();
 	}
+	/**
+	 * MOUSE INPUTS DONT CONTROL VEHICLE.
+	 * CAMERA CAN MOVE FREELY.
+	 * CAMERA WILL MOVE WITH PLANE.
+	 */
+	public static boolean isCameraFreeRelative() {
+		return CURRENT_MOUSE_MODE.isFreeRelative();
+	}
+	/**
+	 * MOUSE INPUTS DONT CONTROL VEHICLE.
+	 * CAMERA CAN MOVE FREELY.
+	 * NOT EFFECTED BY PLANE ROTATING.
+	 */
+	public static boolean isCameraFreeGlobal() {
+		return CURRENT_MOUSE_MODE.isFreeGlobal();
+	}
 	
 	public static enum MouseMode {
 		/**
 		 * Camera can move freely but turns when the vehicle turns.
 		 * Keeps the camera's angle the same relative angle to the vehicle. 
 		 */
-		FREE_RELATIVE, // FIXME 2.2 give MouseMode FREE_RELATIVE functionality
+		FREE_RELATIVE, 
 		/**
 		 * Camera moves freely. Is not effected by the vehicle's rotation.
 		 */
@@ -147,6 +163,12 @@ public class DSCClientInputs {
 		}
 		public boolean isFree() {
 			return this == FREE_RELATIVE || this == FREE_GLOBAL;
+		}
+		public boolean isFreeRelative() {
+			return this == FREE_RELATIVE;
+		}
+		public boolean isFreeGlobal() {
+			return this == FREE_GLOBAL;
 		}
 	}
 	

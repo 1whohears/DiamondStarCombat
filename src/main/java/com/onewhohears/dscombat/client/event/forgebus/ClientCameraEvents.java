@@ -14,6 +14,7 @@ import com.onewhohears.dscombat.util.math.UtilAngles;
 import net.minecraft.client.Camera;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.HitResult;
@@ -39,7 +40,7 @@ public class ClientCameraEvents {
 			m.options.setCameraType(CameraType.FIRST_PERSON);
 		float pt = (float)event.getPartialTick();
 		boolean isController = player.equals(plane.getControllingPassenger());
-		if (DSCClientInputs.isCameraLockedForward() && isController) {
+		if (isController && DSCClientInputs.isCameraLockedForward()) {
 			float xi = UtilAngles.lerpAngle(pt, plane.xRotO, plane.getXRot());
 			float yi = UtilAngles.lerpAngle180(pt, plane.yRotO, plane.getYRot());
 			player.setXRot(xi);
@@ -48,6 +49,18 @@ public class ClientCameraEvents {
 			player.yRotO = yi;
 			event.setPitch(xi);
 			event.setYaw(yi);
+		} else if (isController && DSCClientInputs.isCameraFreeRelative()) {
+			// FIXME 2.2 verify that this isCameraFreeRelative code works
+			float dxi = UtilAngles.lerpAngle(pt, 0, Mth.wrapDegrees(plane.getXRot()-plane.xRotO));
+			float dyi = UtilAngles.lerpAngle180(pt, 0, Mth.wrapDegrees(plane.getYRot()-plane.yRotO));
+			float x = player.getXRot() + dxi;
+			float y = player.getYRot() + dyi;
+			player.setXRot(x);
+			player.setYRot(y);
+			player.xRotO = x;
+			player.yRotO = y;
+			event.setPitch(x);
+			event.setYaw(y);
 		}
 		boolean detached = !m.options.getCameraType().isFirstPerson();
 		boolean mirrored = m.options.getCameraType().isMirrored();

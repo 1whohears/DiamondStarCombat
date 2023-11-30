@@ -25,7 +25,8 @@ public class RendererEntityAircraft<T extends EntityVehicle> extends EntityRende
 	}
 	
 	public static RenderType getLayerRenderType(ResourceLocation texture) {
-		return RenderType.entityTranslucent(texture);
+		//return RenderType.entityTranslucent(texture);
+		return RenderType.armorCutoutNoCull(texture); // is this faster?
 	}
 	
 	protected final EntityControllableModel<T> model;

@@ -24,6 +24,11 @@ public class ToClientVehicleExplode extends IPacket {
 		this.pos = vehicle.position();
 	}
 	
+	public ToClientVehicleExplode(Vec3 pos) {
+		this.id = -1;
+		this.pos = pos;
+	}
+	
 	public ToClientVehicleExplode(FriendlyByteBuf buffer) {
 		id = buffer.readInt();
 		pos = DataSerializers.VEC3.read(buffer);

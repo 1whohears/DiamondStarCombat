@@ -46,8 +46,8 @@ public class RadarScreenInstance extends EntityDynamicScreenInstance {
 		if (ping.terrainType.isGround()) drawPlus(x, y, pingIconRadius, 5, color);
 		else if (ping.terrainType.isAir()) drawCross(x, y, pingIconRadius, 7, color);
 		else {
-			drawCross(x, y, pingIconRadius, color);
-			drawPlus(x, y, pingIconRadius, color);
+			drawCross(x, y, pingIconRadius, 5, color);
+			drawPlus(x, y, pingIconRadius, 5, color);
 		}
 		if (ping.isFriendly) drawHollowCircle(x, y, pingIconRadius, 2, color);
 	}

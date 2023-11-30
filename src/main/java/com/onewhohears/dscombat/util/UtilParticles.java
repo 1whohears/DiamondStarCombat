@@ -19,22 +19,50 @@ public class UtilParticles {
 	// TODO 6.1 improve particle system
 	
 	public static void vehicleCrashExplosion(Level level, Vec3 pos, double expRadius) {
-		//System.out.println("vehicleCrashExplosion");
-		double speed = 0.5;
-		for (int j = 0; j < 90; j += 5) {
-			double sinj = Math.sin(j);
-			for (int i = 0; i < 360; i += 5) {
-				level.addParticle(ModParticles.GIANT_EXPLOSION.get(), 
-					pos.x, pos.y, pos.z, 
-					randomSpeed((Math.cos(i)-sinj)*speed, 0.02), 
-					randomSpeed(sinj*0.1, 0.02), 
-					randomSpeed((Math.sin(i)-sinj)*speed, 0.02));
+		System.out.println("vehicleCrashExplosion "+pos);
+		expRadius *= 1.8;
+		// dark large smoke spread across the ground
+		for (double d = 1; d <= expRadius; d += 1) {
+			for (int i = 0; i < 360; i += 15) {
+				level.addAlwaysVisibleParticle(ModParticles.LARGE_SMOKE_CLOUD.get(), 
+					true, pos.x, pos.y+0.2, pos.z, 
+					Math.cos(i)*d, 0.5, Math.sin(i)*d);
 			}
+		}
+		// dark large smoke shoot up in a pillar
+		for (double d = 1; d <= expRadius; d += 1) {
+			for (int i = 0; i < 360; i += 45) {
+				level.addAlwaysVisibleParticle(ModParticles.LARGE_SMOKE_CLOUD.get(), 
+					true, pos.x, pos.y+0.2, pos.z, 
+					Math.cos(i), d, Math.sin(i));
+			}
+		}
+		// black dirt stuff shooting everywhere biased up
+		for (double d = 1; d <= expRadius; d += 1) {
+			double h = (expRadius-d+1)*0.075;
+			for (int i = 0; i < 360; i += 10) {
+				level.addAlwaysVisibleParticle(ModParticles.SHRAPNEL.get(), 
+					true, pos.x, pos.y+0.2, pos.z, 
+					Math.cos(i)*h, d*0.15, Math.sin(i)*h);
+			}
+		}
+		// fire shooting up and everywhere
+		for (int i = 0; i < 25; ++i) {
+			level.addAlwaysVisibleParticle(ModParticles.BIG_FLAME.get(), 
+				true, pos.x, pos.y+0.2, pos.z, 
+				randomSpeed(0.3, 0.2), 
+				randomSpeed(0.6, 0.3), 
+				randomSpeed(0.3, 0.2));
 		}
 	}
 	
 	public static double randomSpeed(double speed, double range) {
-		return speed + random.nextGaussian() * range;
+		return speed * randPosNeg() + range * random.nextGaussian();
+	}
+	
+	public static int randPosNeg() {
+		if (random.nextBoolean()) return 1;
+		else return -1;
 	}
 	
 	public static void vehicleParticles(EntityVehicle vehicle) {

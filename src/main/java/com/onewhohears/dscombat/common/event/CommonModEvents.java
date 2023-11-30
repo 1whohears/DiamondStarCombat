@@ -1,7 +1,9 @@
 package com.onewhohears.dscombat.common.event;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.client.particle.GiantExplosionParticles;
+import com.onewhohears.dscombat.client.particle.BigFlameParticle;
+import com.onewhohears.dscombat.client.particle.LargeSmokeCloudParticle;
+import com.onewhohears.dscombat.client.particle.ShrapnelParticle;
 import com.onewhohears.dscombat.data.weapon.RadarTargetTypes;
 import com.onewhohears.dscombat.init.ModParticles;
 
@@ -27,7 +29,9 @@ public final class CommonModEvents {
 	
 	@SubscribeEvent
 	public static void registerParticleFactory(RegisterParticleProvidersEvent event) {
-		event.register(ModParticles.GIANT_EXPLOSION.get(), GiantExplosionParticles.Provider::new);
+		event.register(ModParticles.LARGE_SMOKE_CLOUD.get(), LargeSmokeCloudParticle.Provider::new);
+		event.register(ModParticles.SHRAPNEL.get(), ShrapnelParticle.Provider::new);
+		event.register(ModParticles.BIG_FLAME.get(), BigFlameParticle.Provider::new);
 	}
 	
 }

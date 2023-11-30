@@ -17,7 +17,13 @@ public class ModParticles {
 		PARTICLE_TYPES.register(eventBus);
 	}
 	
-	public static final RegistryObject<SimpleParticleType> GIANT_EXPLOSION = PARTICLE_TYPES.register("giant_explosion", 
+	public static final RegistryObject<SimpleParticleType> LARGE_SMOKE_CLOUD = PARTICLE_TYPES.register("large_smoke_cloud", 
+			() -> new SimpleParticleType(true));
+	
+	public static final RegistryObject<SimpleParticleType> SHRAPNEL = PARTICLE_TYPES.register("shrapnel", 
+			() -> new SimpleParticleType(true));
+	
+	public static final RegistryObject<SimpleParticleType> BIG_FLAME = PARTICLE_TYPES.register("big_flame", 
 			() -> new SimpleParticleType(true));
 	
 }

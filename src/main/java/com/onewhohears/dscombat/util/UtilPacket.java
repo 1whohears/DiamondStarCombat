@@ -128,9 +128,10 @@ public class UtilPacket {
 	
 	public static void vehicleExplode(int id, Vec3 pos) {
 		Minecraft m = Minecraft.getInstance();
-		if (m.level.getEntity(id) instanceof EntityVehicle plane) {
-			UtilParticles.vehicleCrashExplosion(plane.level, pos, plane.vehicleData.crashExplosionRadius);
-		}
+		if (id == -1) 
+			UtilParticles.vehicleCrashExplosion(m.level, pos, 5);
+		else if (m.level.getEntity(id) instanceof EntityVehicle plane) 
+			UtilParticles.vehicleCrashExplosion(m.level, pos, plane.vehicleData.crashExplosionRadius);
 	}
 	
 }

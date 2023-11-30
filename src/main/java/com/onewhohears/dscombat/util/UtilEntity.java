@@ -1,7 +1,11 @@
 package com.onewhohears.dscombat.util;
 
 import java.awt.Color;
+import java.util.Optional;
 import java.util.Random;
+import java.util.function.Predicate;
+
+import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.data.weapon.RadarTargetTypes;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
@@ -18,6 +22,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 
 public class UtilEntity {
@@ -183,6 +189,27 @@ public class UtilEntity {
 		float luminance = (random.nextInt(2000) + 8000) / 10000f;
 		Color color = Color.getHSBColor(hue, saturation, luminance);
 		return color.getRGB();
+	}
+	
+	@Nullable
+	public static EntityHitResult getEntityHitResultAtClip(Level level, Entity projectile, Vec3 start, Vec3 end, 
+			AABB aabb, Predicate<Entity> filter, float inflateAmount) {
+		double d0 = Double.MAX_VALUE;
+		Entity entity = null;
+		Vec3 pos = null;
+		for(Entity entity1 : level.getEntities(projectile, aabb, filter)) {
+			AABB aabb1 = entity1.getBoundingBox().inflate(inflateAmount);
+			Optional<Vec3> optional = aabb1.clip(start, end);
+			if (optional.isPresent()) {
+				double d1 = start.distanceToSqr(optional.get());
+				if (d1 < d0) {
+					entity = entity1;
+					d0 = d1;
+					pos = optional.get();
+				}
+			}
+		}
+		return entity == null ? null : new EntityHitResult(entity, pos);
 	}
 	
 }

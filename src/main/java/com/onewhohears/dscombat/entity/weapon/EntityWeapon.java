@@ -8,6 +8,7 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponImpact;
 import com.onewhohears.dscombat.data.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.init.DataSerializers;
+import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.client.Minecraft;
@@ -22,7 +23,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.ClipContext.Fluid;
 import net.minecraft.world.level.Level;
@@ -167,10 +167,9 @@ public abstract class EntityWeapon extends Projectile {
 	
 	@Nullable
 	protected EntityHitResult findHitEntity(Vec3 start, Vec3 end) {
-		return ProjectileUtil.getEntityHitResult(level, this, 
-				start, end, 
+		return UtilEntity.getEntityHitResultAtClip(level, this, start, end, 
 				getBoundingBox().expandTowards(getDeltaMovement()).inflate(1.0D), 
-				this::canHitEntity);
+				this::canHitEntity, 0.3f);
 	}
 	
 	@Override

@@ -115,11 +115,11 @@ public abstract class EntityMissile extends EntityBullet {
 	
 	@Override
 	public void init() {
-		
 	}
 	
 	@Override
 	public void tick() {
+		if (level.isClientSide) UtilParticles.missileTrail(level, position(), getLookAngle(), getRadius(), isInWater());
 		if (isTestMode()) return;
 		xRotO = getXRot(); 
 		yRotO = getYRot();
@@ -133,7 +133,6 @@ public abstract class EntityMissile extends EntityBullet {
 		}
 		if (level.isClientSide && !isRemoved()) {
 			tickClientGuide();
-			UtilParticles.missileTrail(level, position(), getDeltaMovement(), getRadius(), isInWater());
 			if (firstTick) engineSound();
 		}
 		super.tick();

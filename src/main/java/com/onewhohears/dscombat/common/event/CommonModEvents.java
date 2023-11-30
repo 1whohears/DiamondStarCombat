@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.common.event;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.particle.BigFlameParticle;
+import com.onewhohears.dscombat.client.particle.ContrailParticle;
 import com.onewhohears.dscombat.client.particle.LargeSmokeCloudParticle;
 import com.onewhohears.dscombat.client.particle.ShrapnelParticle;
 import com.onewhohears.dscombat.data.weapon.RadarTargetTypes;
@@ -32,6 +33,7 @@ public final class CommonModEvents {
 		event.register(ModParticles.LARGE_SMOKE_CLOUD.get(), LargeSmokeCloudParticle.Provider::new);
 		event.register(ModParticles.SHRAPNEL.get(), ShrapnelParticle.Provider::new);
 		event.register(ModParticles.BIG_FLAME.get(), BigFlameParticle.Provider::new);
+		event.register(ModParticles.CONTRAIL.get(), ContrailParticle.Provider::new);
 	}
 	
 }

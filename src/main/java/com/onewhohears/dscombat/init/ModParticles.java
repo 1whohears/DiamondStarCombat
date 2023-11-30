@@ -26,4 +26,7 @@ public class ModParticles {
 	public static final RegistryObject<SimpleParticleType> BIG_FLAME = PARTICLE_TYPES.register("big_flame", 
 			() -> new SimpleParticleType(true));
 	
+	public static final RegistryObject<SimpleParticleType> CONTRAIL = PARTICLE_TYPES.register("contrail", 
+			() -> new SimpleParticleType(true));
+	
 }

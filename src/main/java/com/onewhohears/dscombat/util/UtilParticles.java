@@ -91,11 +91,12 @@ public class UtilParticles {
 	}
 	
 	public static void missileTrail(Level level, Vec3 pos, Vec3 move, double size, boolean inWater) {
-		level.addParticle(ParticleTypes.SMOKE, 
+		level.addParticle(ModParticles.CONTRAIL.get(), 
 				pos.x, pos.y, pos.z, 
-				-move.x * 0.5D + random.nextGaussian() * 0.05D, 
-				-move.y * 0.5D + random.nextGaussian() * 0.05D, 
-				-move.z * 0.5D + random.nextGaussian() * 0.05D);
+				-move.x*0.5, -move.y*0.5, -move.z*0.5);
+		level.addParticle(ModParticles.CONTRAIL.get(), 
+				pos.x, pos.y, pos.z, 
+				-move.x*0.25, -move.y*0.25, -move.z*0.25);
 	}
 	
 	public static void onWeaponHitBlock(EntityWeapon weapon, BlockHitResult hit) {

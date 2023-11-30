@@ -71,8 +71,7 @@ public class LargeSmokeCloudParticle extends TextureSheetParticle {
 	
 	protected void fadeOut() {
 		float life = (float)age / (float)lifetime;
-		if (life < 0.9f) setAlpha(0.9f);
-		else setAlpha(1f - (life-0.9f)*10f);
+		if (life > 0.95f) quadSize *= 0.9;
 	}
 	
 	@Override

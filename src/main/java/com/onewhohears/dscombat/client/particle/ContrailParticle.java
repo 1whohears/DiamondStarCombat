@@ -39,6 +39,17 @@ public class ContrailParticle extends TextureSheetParticle {
 				  		 dy+random.nextGaussian()*0.01, 
 				  		 dz+random.nextGaussian()*0.01);
 	}
+	
+	@Override
+	public void tick() {
+		super.tick();
+		fadeOut();
+	}
+	
+	protected void fadeOut() {
+		float life = (float)age / (float)lifetime;
+		if (life > 0.95f) quadSize *= 0.9;
+	}
 
 	@Override
 	public ParticleRenderType getRenderType() {

@@ -48,9 +48,15 @@ public class BigFlameParticle extends TextureSheetParticle {
 	public void tick() {
 		super.tick();
 		if (removed) return;
+		fadeOut();
 		setSprite(sprites.get(age%12, 12));
 		if (random.nextFloat() < 0.05) level.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, 
 				x, y+0.2, z, xd, 0.07, zd);
+	}
+	
+	protected void fadeOut() {
+		float life = (float)age / (float)lifetime;
+		if (life > 0.95f) quadSize *= 0.9;
 	}
 
 	@Override

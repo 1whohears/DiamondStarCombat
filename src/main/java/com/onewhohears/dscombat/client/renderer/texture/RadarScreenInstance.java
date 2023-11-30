@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.client.renderer.texture;
 import java.util.List;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents;
+import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.data.radar.RadarData;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.util.math.UtilAngles;
@@ -58,7 +58,7 @@ public class RadarScreenInstance extends EntityDynamicScreenInstance {
 		EntityVehicle vehicle = (EntityVehicle)entity;
 		List<RadarData.RadarPing> pings = vehicle.radarSystem.getClientRadarPings();
 		int selected = vehicle.radarSystem.getClientSelectedPingIndex();
-		int hover = ClientInputEvents.getHoverIndex();
+		int hover = DSCClientInputs.getRadarHoverIndex();
 		// render all other pings first
 		for (int i = 0; i < pings.size(); ++i) {
 			if (i == selected || i == hover) continue;
@@ -76,7 +76,7 @@ public class RadarScreenInstance extends EntityDynamicScreenInstance {
 	protected void drawPing(RadarData.RadarPing ping, EntityVehicle vehicle, boolean selected, boolean hover) {
 		Vec3 dp = ping.getPosForClient().subtract(vehicle.position());
 		double dist = dp.horizontalDistance();
-		double screen_dist = dist/ClientInputEvents.getRadarDisplayRange();
+		double screen_dist = dist/DSCClientInputs.getRadarDisplayRange();
 		if (screen_dist > 1) screen_dist = 1;
 		float yaw = (UtilAngles.getYaw(dp)-vehicle.getYRot()+180)*Mth.DEG_TO_RAD;
 		int x = Math.min(centerX + (int)(-Mth.sin(yaw)*textureRadius*screen_dist), width-1);

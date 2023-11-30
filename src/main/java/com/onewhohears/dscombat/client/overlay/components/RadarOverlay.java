@@ -8,8 +8,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents;
 import com.onewhohears.dscombat.client.event.forgebus.ClientRenderEvents;
+import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.data.radar.RadarData;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
@@ -115,7 +115,7 @@ public class RadarOverlay extends VehicleOverlayComponent {
         List<RadarData.RadarPing> pings = radar.getClientRadarPings();
         if (pings.isEmpty()) return;
         int selected = radar.getClientSelectedPingIndex();
-        int hover = ClientInputEvents.getHoverIndex();
+        int hover = DSCClientInputs.getRadarHoverIndex();
         boolean isNatural = vehicle.level.dimensionType().natural();
         /*if (selected != -1 && selected < pings.size()) {
             RadarData.RadarPing ping = pings.get(selected);
@@ -207,11 +207,11 @@ public class RadarOverlay extends VehicleOverlayComponent {
             poseStack.popPose();
             if (!hovering && cursorX < x_win+adj && cursorX > x_win-adj
                     && cursorY < y_win+adj && cursorY > y_win-adj) {
-                ClientInputEvents.setHoverIndex(i);
+            	DSCClientInputs.setRadarHoverIndex(i);
                 hovering = true;
             }
         }
-        if (!hovering) ClientInputEvents.resetHoverIndex();
+        if (!hovering) DSCClientInputs.resetRadarHoverIndex();
         // LOOK AT PING DATA LAYER ORDER FIX
         if (hover != -1 && hover < pings.size()) {
             RadarData.RadarPing ping = pings.get(hover);

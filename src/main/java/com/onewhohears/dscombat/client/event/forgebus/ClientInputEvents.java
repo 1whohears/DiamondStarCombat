@@ -34,15 +34,6 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 @Mod.EventBusSubscriber(modid = DSCombatMod.MODID, bus = Bus.FORGE, value = Dist.CLIENT)
 public final class ClientInputEvents {
-	private static double mouseCenterX = 0;
-	private static double mouseCenterY = 0;
-	
-	private static int hoverIndex = -1;
-	
-	private static final long MOUNT_SHOOT_COOLDOWN = 500;
-	private static long mountTime;
-	
-	private static double radarDisplayRange = 1000;
 	
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void clientTickPilotControl(TickEvent.ClientTickEvent event) {
@@ -63,10 +54,10 @@ public final class ClientInputEvents {
 		if (DSCKeys.mouseModeKey.consumeClick()) DSCClientInputs.cycleMouseMode();
 		Entity controller = plane.getControllingPassenger();
 		if (controller == null || !controller.equals(player)) return;
-		if (DSCKeys.resetMouseKey.isDown()) centerMouse();
-		else if (mc.screen != null) centerMouse();
-		double mouseX = mc.mouseHandler.xpos() - mouseCenterX;
-		double mouseY = -(mc.mouseHandler.ypos() - mouseCenterY);
+		if (DSCKeys.resetMouseKey.isDown()) DSCClientInputs.centerMousePos();
+		else if (mc.screen != null) DSCClientInputs.centerMousePos();
+		double mouseX = mc.mouseHandler.xpos() - DSCClientInputs.getMouseCenterX();
+		double mouseY = -(mc.mouseHandler.ypos() - DSCClientInputs.getMouseCenterY());
 		boolean flare = DSCKeys.flareKey.isDown();
 		boolean shoot = DSCKeys.shootKey.isDown() && playerCanShoot(player);
 		boolean flip = DSCKeys.flipControlsKey.isDown();
@@ -116,24 +107,28 @@ public final class ClientInputEvents {
 			// control pitch
 			if (ya > max) {
 				pitch = ys;
-				mouseCenterY -= (ya - max) * ys;
+				DSCClientInputs.setMouseCenterY(DSCClientInputs.getMouseCenterY() - (ya - max) * ys);
 			} else if (ya > deadZone) {
 				pitch = (float)((ya-deadZone)/md) * ys;
 			}
 			if (mc.mouseHandler.getYVelocity() == 0) {
-				mouseCenterY = (int)Mth.approach((float)mouseCenterY, (float)mc.mouseHandler.ypos(),
-						Config.CLIENT.mouseYReturnRate.get().floatValue());
+				DSCClientInputs.setMouseCenterY((int)Mth.approach(
+						(float)DSCClientInputs.getMouseCenterY(), 
+						(float)mc.mouseHandler.ypos(),
+						Config.CLIENT.mouseYReturnRate.get().floatValue()));
 			}
 			// control roll
 			if (xa > max) {
 				roll = xs;
-				mouseCenterX += (xa - max) * xs;
+				DSCClientInputs.setMouseCenterX(DSCClientInputs.getMouseCenterX() + (xa - max) * xs);
 			} else if (xa > deadZone) {
 				roll = (float)((xa-deadZone)/md) * xs;
 			}
 			if (mc.mouseHandler.getXVelocity() == 0) {
-				mouseCenterX = (int)Mth.approach((float)mouseCenterX, (float)mc.mouseHandler.xpos(),
-						Config.CLIENT.mouseXReturnRate.get().floatValue());
+				DSCClientInputs.setMouseCenterX((int)Mth.approach(
+						(float)DSCClientInputs.getMouseCenterX(), 
+						(float)mc.mouseHandler.xpos(),
+						Config.CLIENT.mouseXReturnRate.get().floatValue()));
 			}
 		}
 		if (pitchUp && !pitchDown) pitch = -1 * invertY;
@@ -150,7 +145,7 @@ public final class ClientInputEvents {
 				rollLeft && rollRight, 
 				selectNextWeapon, cycleRadarMode, toggleGear,
 				DSCClientInputs.isCameraLockedForward());
-		if (DSCClientInputs.isCameraLockedForward()) centerMouse();
+		if (DSCClientInputs.isCameraLockedForward()) DSCClientInputs.centerMousePos();
 	}
 	
 	@SubscribeEvent(priority = EventPriority.HIGH)
@@ -176,9 +171,10 @@ public final class ClientInputEvents {
 		}
 		// SELECT RADAR PING
 		RadarSystem radar = plane.radarSystem;
-		if (isHovering() && m.mouseHandler.isLeftPressed()) {
+		if (DSCClientInputs.isRadarHovering() && m.mouseHandler.isLeftPressed()) {
 			List<RadarPing> pings = radar.getClientRadarPings();
-			if (getHoverIndex() < pings.size()) radar.clientSelectTarget(pings.get(getHoverIndex()));
+			if (DSCClientInputs.getRadarHoverIndex() < pings.size()) 
+				radar.clientSelectTarget(pings.get(DSCClientInputs.getRadarHoverIndex()));
 		}
 		// CYCLE PING
 		if (DSCKeys.pingCycleKey.consumeClick()) radar.clientSelectNextTarget();
@@ -193,16 +189,18 @@ public final class ClientInputEvents {
 		}
 		// RADAR DISPLAY RANGE
 		if (DSCKeys.radarDisplayRangeKey.consumeClick()) {
-			if (radarDisplayRange <= 250) radarDisplayRange = 1000;
-			else if (radarDisplayRange <= 1000) radarDisplayRange = 2000;
-			else if (radarDisplayRange <= 2000) radarDisplayRange = 5000;
-			else if (radarDisplayRange <= 5000) radarDisplayRange = 250;
-			else radarDisplayRange = 250;
+			double range = DSCClientInputs.getRadarDisplayRange();
+			if (range <= 250) range = 1000;
+			else if (range <= 1000) range = 2000;
+			else if (range <= 2000) range = 5000;
+			else if (range <= 5000) range = 250;
+			else range = 250;
+			DSCClientInputs.setRadarDisplayRange(range);
 		}
 	}
 	
 	private static boolean playerCanShoot(Player player) {
-		return (System.currentTimeMillis()-mountTime) > MOUNT_SHOOT_COOLDOWN 
+		return (System.currentTimeMillis()-DSCClientInputs.getClientMountTime()) > DSCClientInputs.MOUNT_SHOOT_COOLDOWN 
 				&& (!player.isUsingItem() || player.getItemInHand(player.getUsedItemHand()).is(Items.SHIELD));
 	}
 	
@@ -215,28 +213,6 @@ public final class ClientInputEvents {
 		}
 	}
 	
-	public static void centerMouse() {
-		Minecraft m = Minecraft.getInstance();
-		mouseCenterX = m.mouseHandler.xpos();
-		mouseCenterY = m.mouseHandler.ypos();
-	}
-	
-	public static int getHoverIndex() {
-		return hoverIndex;
-	}
-	
-	public static void setHoverIndex(int index) {
-		hoverIndex = index;
-	}
-	
-	public static void resetHoverIndex() {
-		hoverIndex = -1;
-	}
-	
-	public static boolean isHovering() {
-		return hoverIndex != -1;
-	}
-	
 	@SubscribeEvent(priority = EventPriority.HIGH)
 	public static void playerMountSeat(EntityMountEvent event) {
 		if (!event.isMounting()) return;
@@ -245,11 +221,7 @@ public final class ClientInputEvents {
 		if (!(mounting instanceof Player)) return;
 		Entity mounted = event.getEntityBeingMounted();
 		if (!(mounted instanceof EntitySeat)) return;
-		mountTime = System.currentTimeMillis();
-	}
-	
-	public static double getRadarDisplayRange() {
-		return radarDisplayRange;
+		DSCClientInputs.setClientMountTime(System.currentTimeMillis());
 	}
 	
 }

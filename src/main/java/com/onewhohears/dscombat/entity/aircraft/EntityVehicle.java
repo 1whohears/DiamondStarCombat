@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.Config;
-import com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents;
+import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.common.container.AircraftMenuContainer;
 import com.onewhohears.dscombat.common.network.IPacket;
@@ -1430,7 +1430,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			return rideAvailableSeat(player) ? InteractionResult.CONSUME : InteractionResult.PASS;
 		} else if (level.isClientSide) {	
 			Minecraft m = Minecraft.getInstance();
-			if (m.player.equals(player)) ClientInputEvents.centerMouse();
+			if (m.player.equals(player)) DSCClientInputs.centerMousePos();
 			ItemStack stack = player.getInventory().getSelected();
 			if (!stack.isEmpty()) {
 				Item item = stack.getItem();

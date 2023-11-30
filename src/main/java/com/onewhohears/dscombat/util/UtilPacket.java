@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.util;
 import java.util.List;
 
 import com.onewhohears.dscombat.client.screen.VehiclePaintScreen;
+import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
 import com.onewhohears.dscombat.data.aircraft.VehicleInputManager;
 import com.onewhohears.dscombat.data.aircraft.VehicleTextureManager;
@@ -139,6 +140,9 @@ public class UtilPacket {
 		Minecraft m = Minecraft.getInstance();
 		if (!(m.level.getEntity(weaponId) instanceof EntityWeapon weapon)) return;
 		weapon.clientOnWeaponImpact(pos);
+		if (m.level.getGameRules().getBoolean(DSCGameRules.WEAPON_HIT_FEEDBACK)) {
+			// TODO 6.4 visual feedback on owner client cross hair
+		}
 	}
 	
 }

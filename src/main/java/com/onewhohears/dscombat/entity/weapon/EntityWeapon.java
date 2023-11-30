@@ -201,10 +201,6 @@ public abstract class EntityWeapon extends Projectile {
 		System.out.println("BULLET HIT "+result.getEntity());
 		kill();
 		result.getEntity().hurt(getImpactDamageSource(), getDamage());
-		if (!level.isClientSide) return;
-		if (level.getGameRules().getBoolean(DSCGameRules.WEAPON_HIT_FEEDBACK)) {
-			// TODO 6.8 some kind of visual feedback when a weapon hits an entity target
-		}
 	}
 	
 	public float getDamage() {

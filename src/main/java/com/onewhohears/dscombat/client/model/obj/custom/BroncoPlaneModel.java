@@ -17,6 +17,7 @@ public class BroncoPlaneModel extends ObjAircraftModel<EntityPlane> {
 	
 	@Override
 	protected Transforms getComponentTransforms(EntityPlane entity, float partialTicks) {
+		// TODO 0.2 animate bronco plane model (flaps, landing gear)
 		float bladerot = entity.getPropellerRotation(partialTicks);
 		float gearpos = entity.getLandingGearPos(partialTicks);
 		Matrix4f blade0rot_mat = UtilAngles.pivotPixelsRotZ(44.5f, 31.5f, 11f, bladerot);

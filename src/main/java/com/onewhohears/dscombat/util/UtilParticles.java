@@ -96,19 +96,19 @@ public class UtilParticles {
 	}
 	
 	public static void bulletImpact(Level level, Vec3 pos, double damage) {
-		// TODO 0.1 bullet impact particles
+		// TODO 6.3 bullet impact particles
 	}
 	
 	public static void bulletExplode(Level level, Vec3 pos, double radius, boolean fire) {
-		// TODO 0.2 bullet explode particles
+		// TODO 6.5 bullet explode particles
 	}
 	
 	public static void bombExplode(Level level, Vec3 pos, double radius, boolean fire) {
-		// TODO 0.3 bomb explode particles
+		// TODO 6.6 bomb explode particles
 	}
 	
 	public static void missileExplode(Level level, Vec3 pos, double radius, boolean fire) {
-		// TODO 0.4 missile explode particles
+		// TODO 6.7 missile explode particles
 		radius *= 1.3;
 		for (double d = 1; d <= radius; d += 1) {
 			for (int i = 0; i < 360; i += 20) for (int j = -90; j <= 90; j += 30) {

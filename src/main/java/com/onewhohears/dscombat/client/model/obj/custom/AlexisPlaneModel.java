@@ -17,6 +17,7 @@ public class AlexisPlaneModel extends ObjAircraftModel<EntityPlane> {
 	
 	@Override
 	protected Transforms getComponentTransforms(EntityPlane entity, float partialTicks) {
+		// TODO 0.1 animate alexis plane model (flaps, landing gear)
 		float gearpos = entity.getLandingGearPos(partialTicks);
 		Matrix4f lg0_mat, lg1_mat, lg2_mat;
 		if (gearpos >= 1f) lg0_mat = lg1_mat = lg2_mat = INVISIBLE;

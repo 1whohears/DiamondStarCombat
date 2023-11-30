@@ -7,7 +7,6 @@ import com.onewhohears.dscombat.init.ModParticles;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 public class UtilParticles {
@@ -44,13 +43,17 @@ public class UtilParticles {
 			}
 		}
 		// fire shooting up and everywhere
-		for (int i = 0; i < 25; ++i) {
+		for (int i = 0; i < 32; ++i) {
 			level.addAlwaysVisibleParticle(ModParticles.BIG_FLAME.get(), 
 				true, pos.x, pos.y+0.2, pos.z, 
 				randomSpeed(0.3, 0.2), 
-				randomSpeed(0.6, 0.3), 
+				randomSpeedUp(0.6, 0.3), 
 				randomSpeed(0.3, 0.2));
 		}
+	}
+	
+	public static double randomSpeedUp(double speed, double range) {
+		return speed + range * random.nextGaussian();
 	}
 	
 	public static double randomSpeed(double speed, double range) {
@@ -92,19 +95,20 @@ public class UtilParticles {
 				-move.x*0.25, -move.y*0.25, -move.z*0.25);
 	}
 	
-	public static void bulletImpact(Level level, HitResult result, double damage) {
-		
+	public static void bulletImpact(Level level, Vec3 pos, double damage) {
+		// TODO 0.1 bullet impact particles
 	}
 	
 	public static void bulletExplode(Level level, Vec3 pos, double radius, boolean fire) {
-		
+		// TODO 0.2 bullet explode particles
 	}
 	
 	public static void bombExplode(Level level, Vec3 pos, double radius, boolean fire) {
-		
+		// TODO 0.3 bomb explode particles
 	}
 	
 	public static void missileExplode(Level level, Vec3 pos, double radius, boolean fire) {
+		// TODO 0.4 missile explode particles
 		radius *= 1.3;
 		for (double d = 1; d <= radius; d += 1) {
 			for (int i = 0; i < 360; i += 20) for (int j = -90; j <= 90; j += 30) {
@@ -112,6 +116,13 @@ public class UtilParticles {
 					true, pos.x, pos.y+0.2, pos.z, 
 					Math.cos(i)*d, Math.sin(j)*d, Math.sin(i)*d);
 			}
+		}
+		if (fire) for (int i = 0; i < 24; ++i) {
+			level.addAlwaysVisibleParticle(ModParticles.BIG_FLAME.get(), 
+				true, pos.x, pos.y+0.2, pos.z, 
+				randomSpeed(0.3, 0.2), 
+				randomSpeedUp(0.45, 0.3), 
+				randomSpeed(0.3, 0.2));
 		}
 	}
 	

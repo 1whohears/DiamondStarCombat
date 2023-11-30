@@ -12,6 +12,7 @@ import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
 import com.onewhohears.dscombat.data.radar.RadarSystem.RWRWarning;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
@@ -134,9 +135,10 @@ public class UtilPacket {
 			UtilParticles.vehicleCrashExplosion(m.level, pos, plane.vehicleData.crashExplosionRadius);
 	}
 
-	public static void weaponImpact(int weaponId, int ownerId, int targetId, Vec3 pos) {
+	public static void weaponImpact(int weaponId, Vec3 pos) {
 		Minecraft m = Minecraft.getInstance();
-		// TODO 0.1 handle to client weapon impact packet to spawn particles
+		if (!(m.level.getEntity(weaponId) instanceof EntityWeapon weapon)) return;
+		weapon.clientOnWeaponImpact(pos);
 	}
 	
 }

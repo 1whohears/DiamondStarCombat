@@ -14,7 +14,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 public class EntityBullet extends EntityWeapon {
@@ -102,8 +101,8 @@ public class EntityBullet extends EntityWeapon {
 	
 	@Override
 	public void clientOnWeaponImpact(Vec3 pos) {
-		//if (getExplosive()) UtilParticles.bulletExplode(level, pos, getRadius(), getFire());
-		//else UtilParticles.bulletImpact(level, result, getDamage());
+		if (getExplosive()) UtilParticles.bulletExplode(level, pos, getRadius(), getFire());
+		else UtilParticles.bulletImpact(level, pos, getDamage());
 	}
 	
 	@Override

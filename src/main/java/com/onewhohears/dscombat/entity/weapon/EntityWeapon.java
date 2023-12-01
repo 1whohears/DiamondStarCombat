@@ -2,7 +2,6 @@ package com.onewhohears.dscombat.entity.weapon;
 
 import javax.annotation.Nullable;
 
-import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponImpact;
 import com.onewhohears.dscombat.data.damagesource.WeaponDamageSource;
@@ -181,7 +180,8 @@ public abstract class EntityWeapon extends Projectile {
 	public void onHit(HitResult result) {
 		if (isRemoved()) return;
 		setPos(result.getLocation());
-		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), 
+		if (!level.isClientSide) PacketHandler.INSTANCE.send(
+				PacketDistributor.TRACKING_ENTITY.with(() -> this), 
 				new ToClientWeaponImpact(this, result));
 		super.onHit(result);
 	}

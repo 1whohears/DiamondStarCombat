@@ -30,6 +30,8 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 @Mod.EventBusSubscriber(modid = DSCombatMod.MODID, bus = Bus.FORGE, value = Dist.CLIENT)
 public class ClientCameraEvents {
 	
+	private static float ptOld;
+	
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public static void cameraSetup(ViewportEvent.ComputeCameraAngles event) {
 		Minecraft m = Minecraft.getInstance();
@@ -50,9 +52,9 @@ public class ClientCameraEvents {
 			event.setPitch(xi);
 			event.setYaw(yi);
 		} else if (isController && DSCClientInputs.isCameraFreeRelative()) {
-			// FIXME 2.2 verify that this isCameraFreeRelative code works
-			float dxi = UtilAngles.lerpAngle(pt, 0, Mth.wrapDegrees(plane.getXRot()-plane.xRotO));
-			float dyi = UtilAngles.lerpAngle180(pt, 0, Mth.wrapDegrees(plane.getYRot()-plane.yRotO));
+			float ptDiff = ptDiff(pt, ptOld);
+			float dxi = Mth.wrapDegrees(plane.getXRot()-plane.xRotO) * ptDiff;
+			float dyi = Mth.wrapDegrees(plane.getYRot()-plane.yRotO) * ptDiff;
 			float x = player.getXRot() + dxi;
 			float y = player.getYRot() + dyi;
 			player.setXRot(x);
@@ -76,6 +78,13 @@ public class ClientCameraEvents {
 			double vehicleCamDist = Math.min(0, 4-getMaxDist(event.getCamera(), player, camDist));
 			event.getCamera().move(vehicleCamDist, 0, 0);
 		}
+		ptOld = pt;
+	}
+	
+	private static float ptDiff(float pt, float ptOld) {
+		if (pt == ptOld) return 0;
+		else if (pt > ptOld) return pt - ptOld;
+		return pt+1f - ptOld;
 	}
 	
 	public static double getMaxDist(Camera cam, Player player, double dist) {

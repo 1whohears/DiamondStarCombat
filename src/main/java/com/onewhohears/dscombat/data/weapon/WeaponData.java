@@ -1,5 +1,7 @@
 package com.onewhohears.dscombat.data.weapon;
 
+import static com.onewhohears.dscombat.DSCombatMod.MODID;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -7,7 +9,6 @@ import java.util.NoSuchElementException;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
-import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponAmmo;
 import com.onewhohears.dscombat.crafting.DSCIngredient;
@@ -37,8 +38,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
-
-import static com.onewhohears.dscombat.DSCombatMod.MODID;
 
 public abstract class WeaponData extends JsonPreset {
 	protected static final ResourceLocation NONE_ICON = new ResourceLocation(MODID, "textures/ui/weapon_icons/none.png");
@@ -163,6 +162,7 @@ public abstract class WeaponData extends JsonPreset {
 				direction, vehicle, false, false));
 		if (w == null) return false;
 		level.addFreshEntity(w);
+		// FIXME 9 shoot sounds don't always play?
 		level.playSound(null, w.blockPosition(), 
 				getShootSound(), SoundSource.PLAYERS, 
 				1f, 1f);

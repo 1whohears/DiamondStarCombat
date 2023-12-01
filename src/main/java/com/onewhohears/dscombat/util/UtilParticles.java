@@ -67,6 +67,8 @@ public class UtilParticles {
 	
 	public static void vehicleParticles(EntityVehicle vehicle) {
 		// TODO 6.2 engine smoke
+		// TODO 6.8 fuel leak smoke
+		// TODO 6.9 engine fire particles
 		vehicleDamageSmoke(vehicle);
 	}
 	
@@ -97,14 +99,49 @@ public class UtilParticles {
 	
 	public static void bulletImpact(Level level, Vec3 pos, double damage) {
 		// TODO 6.3 bullet impact particles
+		for (int i = 0; i < 360; i += 30) for (int j = 0; j <= 90; j += 30) {
+			level.addAlwaysVisibleParticle(ParticleTypes.LARGE_SMOKE, 
+				true, pos.x, pos.y+0.2, pos.z, 
+				Math.cos(i)*0.05, Math.sin(j)*0.05, Math.sin(i)*0.05);
+		}
 	}
 	
 	public static void bulletExplode(Level level, Vec3 pos, double radius, boolean fire) {
 		// TODO 6.5 bullet explode particles
+		radius *= 1.3;
+		for (double d = 1; d <= radius; d += 1) {
+			for (int i = 0; i < 360; i += 20) for (int j = -90; j <= 90; j += 30) {
+				level.addAlwaysVisibleParticle(ModParticles.LARGE_SMOKE_CLOUD.get(), 
+					true, pos.x, pos.y+0.2, pos.z, 
+					Math.cos(i)*d, Math.sin(j)*d, Math.sin(i)*d);
+			}
+		}
+		if (fire) for (int i = 0; i < 24; ++i) {
+			level.addAlwaysVisibleParticle(ModParticles.BIG_FLAME.get(), 
+				true, pos.x, pos.y+0.2, pos.z, 
+				randomSpeed(0.3, 0.2), 
+				randomSpeedUp(0.45, 0.3), 
+				randomSpeed(0.3, 0.2));
+		}
 	}
 	
 	public static void bombExplode(Level level, Vec3 pos, double radius, boolean fire) {
 		// TODO 6.6 bomb explode particles
+		radius *= 1.3;
+		for (double d = 1; d <= radius; d += 1) {
+			for (int i = 0; i < 360; i += 20) for (int j = -90; j <= 90; j += 30) {
+				level.addAlwaysVisibleParticle(ModParticles.LARGE_SMOKE_CLOUD.get(), 
+					true, pos.x, pos.y+0.2, pos.z, 
+					Math.cos(i)*d, Math.sin(j)*d, Math.sin(i)*d);
+			}
+		}
+		if (fire) for (int i = 0; i < 24; ++i) {
+			level.addAlwaysVisibleParticle(ModParticles.BIG_FLAME.get(), 
+				true, pos.x, pos.y+0.2, pos.z, 
+				randomSpeed(0.3, 0.2), 
+				randomSpeedUp(0.45, 0.3), 
+				randomSpeed(0.3, 0.2));
+		}
 	}
 	
 	public static void missileExplode(Level level, Vec3 pos, double radius, boolean fire) {

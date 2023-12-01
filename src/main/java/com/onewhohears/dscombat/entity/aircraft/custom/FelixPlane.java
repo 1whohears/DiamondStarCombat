@@ -27,7 +27,7 @@ public class FelixPlane extends EntityPlane {
 			.setLiftKGraph(LiftKGraph.ALEXIS_PLANE_GRAPH)
 			.setFlapsAOABias(8f)
 			.setCanAimDown(false)
-			.setTextureNum(2, 0)
+			.setTextureNum(2, 2)
 			.build();
 	
 	public FelixPlane(EntityType<? extends EntityPlane> entity, Level level) {

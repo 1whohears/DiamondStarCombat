@@ -136,7 +136,8 @@ public class Config {
 	}
 	
 	public static class Server {
-		
+		// FIXME 8 change all physics constants/masses/forces to values that make more sense
+		// make constants static until good default values are found
 		public final ForgeConfigSpec.DoubleValue accGravity;
 		public final ForgeConfigSpec.DoubleValue coDrag;
 		public final ForgeConfigSpec.DoubleValue coStaticFriction;

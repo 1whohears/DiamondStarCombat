@@ -285,6 +285,13 @@ public class AircraftClientPresetGenerator extends JsonPresetGenerator<AircraftC
 				.addUIPos("right_wing_1", bronco_middle_x+27, bronco_wing_y)
 				.addUIPos("right_wing_2", bronco_middle_x+45, bronco_wing_y)*/
 				.build());
+		addPresetToGenerate(AircraftClientPreset.Builder.create(DSCombatMod.MODID, "felix_plane")
+				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/alexis_plane.png")
+				.setAllUIPos(x_start, y_start, 8, 
+						PartSlot.PILOT_SLOT_NAME, "seat2", "nose_1",
+						"frame_1", "left_wing_1", "right_wing_1", "left_wing_2", "right_wing_2",
+						"internal_1", "internal_2", "internal_3", "internal_4", "internal_5")
+				.build());
 	}
 	
 	public AircraftClientPresetGenerator(DataGenerator output) {

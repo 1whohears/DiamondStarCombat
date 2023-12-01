@@ -17,7 +17,7 @@ public class AlexisPlaneModel extends ObjAircraftModel<EntityPlane> {
 	
 	@Override
 	protected Transforms getComponentTransforms(EntityPlane entity, float partialTicks) {
-		// TODO 0.1 animate alexis plane model (flaps, landing gear)
+		// TODO 0.1 animate alexis plane model (flaps, landing gear, cockpit)
 		float gearpos = entity.getLandingGearPos(partialTicks);
 		Matrix4f lg0_mat, lg1_mat, lg2_mat;
 		if (gearpos >= 1f) lg0_mat = lg1_mat = lg2_mat = INVISIBLE;
@@ -35,6 +35,7 @@ public class AlexisPlaneModel extends ObjAircraftModel<EntityPlane> {
 		return Transforms.of(transforms);
 	}
 	
+	// TODO 0.5 move pivot to center of alexis plane
 	private static final Vector3f PIVOT = new Vector3f(0, -2f, 0);
 	
 	@Override

@@ -17,7 +17,7 @@ public class JaviPlaneModel extends ObjAircraftModel<EntityPlane> {
 	
 	@Override
 	protected Transforms getComponentTransforms(EntityPlane entity, float partialTicks) {
-		// TODO 0.2 animate javi plane model (flaps, landing gear)
+		// TODO 0.4 animate javi plane model (flaps, landing gear, cockpit)
 		float gearpos = entity.getLandingGearPos(partialTicks);
 		Matrix4f lg0_mat, lg1_mat, lg2_mat;
 		if (gearpos >= 1f) lg0_mat = lg1_mat = lg2_mat = INVISIBLE;

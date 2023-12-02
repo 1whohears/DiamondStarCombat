@@ -36,7 +36,7 @@ public class FelixPlaneModel extends ObjAircraftModel<EntityPlane> {
 		return Transforms.of(transforms);
 	}
 	
-	// TODO 0.5 move pivot to center of felix plane
+	// TODO 0.7 move pivot to center of felix plane
 	private static final Vector3f PIVOT = new Vector3f(0, -2f, 0);
 	
 	@Override

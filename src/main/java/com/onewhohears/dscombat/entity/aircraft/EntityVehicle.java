@@ -189,8 +189,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	// TODO 5.4 aircraft breaks apart when damaged
 	// TODO 5.6 place and remove external parts from outside the vehicle
+	// TODO 5.7 an additional vehicle gui to control certain auxiliary functions (landing gear, jettison tanks/weapons)
 	// TODO 2.5 add chaff
 	// TODO 2.7 cargo system
+	// TODO 2.8 external fuel tanks
 	// TODO 8.4 speed of sound system (client doesn't hear sound until "sound wave" reaches the player)
 	
 	public EntityVehicle(EntityType<? extends EntityVehicle> entityType, Level level, ImmutableVehicleData vehicleData) {

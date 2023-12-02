@@ -36,7 +36,7 @@ public class JaviPlaneModel extends ObjAircraftModel<EntityPlane> {
 		return Transforms.of(transforms);
 	}
 	
-	private static final Vector3f PIVOT = new Vector3f(0, -2f, 0);
+	private static final Vector3f PIVOT = new Vector3f(0, -2f, 1f);
 	
 	@Override
 	protected Vector3f getGlobalPivot() {

@@ -38,10 +38,10 @@ public class JaviPlane extends EntityPlane {
 	public void addVehicleScreens() {
 		screens = new EntityScreenData[2];
 		screens[0] = new EntityScreenData(EntityScreenTypes.RADAR_SCREEN, 
-				new Vec3(0.327, 1.259, 6.19), 
+				new Vec3(0.327, 1.259, 7.19), 
 				0.173f, 0.173f, 
 				10f, 0f, 0f);
-		screens[1] = HudScreenInstance.getDefaultData(0, 0.5, 5.34375);
+		screens[1] = HudScreenInstance.getDefaultData(0, 0.5, 6.34375);
 	}
 
 }

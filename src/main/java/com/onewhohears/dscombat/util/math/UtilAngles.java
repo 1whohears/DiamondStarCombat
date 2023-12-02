@@ -390,7 +390,7 @@ public class UtilAngles {
     }
     
     public static Matrix4f pivotPixelsRot(float x, float y, float z, Quaternion rot) {
-    	return pivotRot(x/16f, y/16f, z/16f, rot);
+    	return pivotRot(x*0.0625f, y*0.0625f, z*0.0625f, rot);
     }
     
     public static Matrix4f pivotPixelsRotX(float x, float y, float z, float degrees) {

@@ -63,7 +63,7 @@
       "name": "pilot_seat",
       "slot_posx": 0.0,
       "slot_posy": 0.5,
-      "slot_posz": 5.34375,
+      "slot_posz": 6.34375,
       "slot_type": "seat",
       "zRot": 0.0
     },
@@ -71,7 +71,7 @@
       "name": "left_wing_1",
       "slot_posx": 1.96875,
       "slot_posy": -0.28125,
-      "slot_posz": 0.0,
+      "slot_posz": 1.0,
       "slot_type": "wing",
       "zRot": 180.0
     },
@@ -79,7 +79,7 @@
       "name": "left_wing_2",
       "slot_posx": 4.25,
       "slot_posy": -0.28125,
-      "slot_posz": 0.0,
+      "slot_posz": 1.0,
       "slot_type": "wing",
       "zRot": 180.0
     },
@@ -87,7 +87,7 @@
       "name": "left_wing_3",
       "slot_posx": 5.625,
       "slot_posy": -0.28125,
-      "slot_posz": 0.0,
+      "slot_posz": 1.0,
       "slot_type": "wing",
       "zRot": 180.0
     },
@@ -95,7 +95,7 @@
       "name": "left_wing_4",
       "slot_posx": 6.96875,
       "slot_posy": -0.28125,
-      "slot_posz": 0.0,
+      "slot_posz": 1.0,
       "slot_type": "wing",
       "zRot": 180.0
     },
@@ -103,7 +103,7 @@
       "name": "right_wing_1",
       "slot_posx": -1.96875,
       "slot_posy": -0.28125,
-      "slot_posz": 0.0,
+      "slot_posz": 1.0,
       "slot_type": "wing",
       "zRot": 180.0
     },
@@ -111,7 +111,7 @@
       "name": "right_wing_2",
       "slot_posx": -4.25,
       "slot_posy": -0.28125,
-      "slot_posz": 0.0,
+      "slot_posz": 1.0,
       "slot_type": "wing",
       "zRot": 180.0
     },
@@ -119,7 +119,7 @@
       "name": "right_wing_3",
       "slot_posx": -5.625,
       "slot_posy": -0.28125,
-      "slot_posz": 0.0,
+      "slot_posz": 1.0,
       "slot_type": "wing",
       "zRot": 180.0
     },
@@ -127,7 +127,7 @@
       "name": "right_wing_4",
       "slot_posx": -6.96875,
       "slot_posy": -0.28125,
-      "slot_posz": 0.0,
+      "slot_posz": 1.0,
       "slot_type": "wing",
       "zRot": 180.0
     },
@@ -138,7 +138,7 @@
       "name": "frame_1",
       "slot_posx": 0.0,
       "slot_posy": -0.34375,
-      "slot_posz": 7.65625,
+      "slot_posz": 8.65625,
       "slot_type": "frame",
       "zRot": 180.0
     },
@@ -146,7 +146,7 @@
       "name": "frame_2",
       "slot_posx": 0.0,
       "slot_posy": -0.71875,
-      "slot_posz": 0.03125,
+      "slot_posz": 1.03125,
       "slot_type": "frame",
       "zRot": 180.0
     },

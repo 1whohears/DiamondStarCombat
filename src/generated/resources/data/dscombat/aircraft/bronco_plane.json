@@ -67,7 +67,7 @@
       "name": "pilot_seat",
       "slot_posx": 0.0,
       "slot_posy": -0.74,
-      "slot_posz": 2.5,
+      "slot_posz": 4.5,
       "slot_type": "seat",
       "zRot": 0.0
     },
@@ -78,7 +78,7 @@
       "name": "seat2",
       "slot_posx": 0.0,
       "slot_posy": -0.61,
-      "slot_posz": 1.125,
+      "slot_posz": 3.125,
       "slot_type": "light_turret",
       "zRot": 0.0
     },
@@ -86,7 +86,7 @@
       "name": "nose_1",
       "slot_posx": 0.0,
       "slot_posy": -0.9357,
-      "slot_posz": 4.0625,
+      "slot_posz": 6.0625,
       "slot_type": "frame",
       "zRot": 180.0
     },
@@ -94,7 +94,7 @@
       "name": "frame_1",
       "slot_posx": 0.5,
       "slot_posy": -1.25,
-      "slot_posz": -0.8125,
+      "slot_posz": 1.1875,
       "slot_type": "frame",
       "zRot": 180.0
     },
@@ -102,7 +102,7 @@
       "name": "frame_2",
       "slot_posx": 1.125,
       "slot_posy": -1.375,
-      "slot_posz": -0.8125,
+      "slot_posz": 1.1875,
       "slot_type": "frame",
       "zRot": 180.0
     },
@@ -110,7 +110,7 @@
       "name": "frame_3",
       "slot_posx": -0.5,
       "slot_posy": -1.25,
-      "slot_posz": -0.8125,
+      "slot_posz": 1.1875,
       "slot_type": "frame",
       "zRot": 180.0
     },
@@ -118,7 +118,7 @@
       "name": "frame_4",
       "slot_posx": -1.125,
       "slot_posy": -1.375,
-      "slot_posz": -0.8125,
+      "slot_posz": 1.1875,
       "slot_type": "frame",
       "zRot": 180.0
     },
@@ -131,7 +131,7 @@
       "name": "left_wing_1",
       "slot_posx": 4.875,
       "slot_posy": 0.125,
-      "slot_posz": -0.9375,
+      "slot_posz": 1.0625,
       "slot_type": "wing",
       "zRot": 180.0
     },
@@ -144,7 +144,7 @@
       "name": "right_wing_1",
       "slot_posx": -4.875,
       "slot_posy": 0.125,
-      "slot_posz": -0.9375,
+      "slot_posz": 1.0625,
       "slot_type": "wing",
       "zRot": 180.0
     },

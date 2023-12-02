@@ -41,8 +41,7 @@ public class BroncoPlaneModel extends ObjAircraftModel<EntityPlane> {
 		return Transforms.of(transforms);
 	}
 	
-	// TODO 0.6 move pivot to center of bronco plane
-	private static final Vector3f PIVOT = new Vector3f(0, -2f, 0);
+	private static final Vector3f PIVOT = new Vector3f(0, -2f, 2f);
 	
 	@Override
 	protected Vector3f getGlobalPivot() {

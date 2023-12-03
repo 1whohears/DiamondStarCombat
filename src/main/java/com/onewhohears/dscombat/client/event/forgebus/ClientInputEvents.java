@@ -6,6 +6,7 @@ import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.input.DSCKeys;
+import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerDismount;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSeatPos;
@@ -17,6 +18,7 @@ import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 
+import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -155,8 +157,13 @@ public final class ClientInputEvents {
 		final var player = m.player;
 		if (player == null || !player.isPassenger()) return;
 		if (!(player.getRootVehicle() instanceof EntityVehicle plane)) return;
-		// TELL SERVER WHERE THE SEAT IS INCASE LAG CAUSES VIOLENCE
+		//System.out.println("disable 3rd person = "+player.level.getGameRules().getBoolean(DSCGameRules.DISABLE_3RD_PERSON_VEHICLE));
+		// FIXME 3 game rules don't synch to client so must send a packet to client for disabling 3rd person
+		if (player.level.getGameRules().getBoolean(DSCGameRules.DISABLE_3RD_PERSON_VEHICLE)) {
+			m.options.setCameraType(CameraType.FIRST_PERSON);
+		}
 		/**
+		 * THIS TELLS SERVER WHERE THE SEAT IS INCASE LAG CAUSES VIOLENCE
 		 * HOW 4 the culprit of the seat desync issue is net.minecraft.server.level.ChunkMap.TrackedEntity.updatePlayer
 		 * sometimes when the server lags the seat position on the server side doesn't get updated with the plane and the player
 		 * so the server thinks the seat is outside the player render distance and sends a discard packet to the client

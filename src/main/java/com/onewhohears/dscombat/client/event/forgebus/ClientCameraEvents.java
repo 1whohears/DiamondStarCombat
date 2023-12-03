@@ -42,6 +42,8 @@ public class ClientCameraEvents {
 			m.options.setCameraType(CameraType.FIRST_PERSON);
 		float pt = (float)event.getPartialTick();
 		boolean isController = player.equals(plane.getControllingPassenger());
+		boolean detached = !m.options.getCameraType().isFirstPerson();
+		boolean mirrored = m.options.getCameraType().isMirrored();
 		if (isController && DSCClientInputs.isCameraLockedForward()) {
 			float xi = UtilAngles.lerpAngle(pt, plane.xRotO, plane.getXRot());
 			float yi = UtilAngles.lerpAngle180(pt, plane.yRotO, plane.getYRot());
@@ -53,19 +55,24 @@ public class ClientCameraEvents {
 			event.setYaw(yi);
 		} else if (isController && DSCClientInputs.isCameraFreeRelative()) {
 			float ptDiff = ptDiff(pt, ptOld);
-			float dxi = Mth.wrapDegrees(plane.getXRot()-plane.xRotO) * ptDiff;
-			float dyi = Mth.wrapDegrees(plane.getYRot()-plane.yRotO) * ptDiff;
-			float x = player.getXRot() + dxi;
-			float y = player.getYRot() + dyi;
-			player.setXRot(x);
-			player.setYRot(y);
-			player.xRotO = x;
-			player.yRotO = y;
-			event.setPitch(x);
-			event.setYaw(y);
+			float planeXRotDiff = plane.getXRot()-plane.xRotO;
+			if (planeXRotDiff != 0) {
+				float dxi = Mth.wrapDegrees(planeXRotDiff) * ptDiff;
+				float x = player.getXRot() + dxi;
+				player.setXRot(x);
+				player.xRotO = x;
+				event.setPitch(x);
+			}
+			float planeYRotDiff = plane.getYRot()-plane.yRotO;
+			if (planeYRotDiff != 0) {
+				float dyi = Mth.wrapDegrees(planeYRotDiff) * ptDiff;
+				float y = player.getYRot() + dyi;
+				if (mirrored) y += 180;
+				player.setYRot(y);
+				player.yRotO = y;
+				event.setYaw(y);
+			}
 		}
-		boolean detached = !m.options.getCameraType().isFirstPerson();
-		boolean mirrored = m.options.getCameraType().isMirrored();
 		float zi = UtilAngles.lerpAngle(pt, plane.zRotO, plane.zRot);
 		if (detached && mirrored) zi *= -1;
 		event.setRoll(zi);

@@ -1,8 +1,8 @@
 package com.onewhohears.dscombat.entity.weapon;
 
 import com.onewhohears.dscombat.Config;
-import com.onewhohears.dscombat.data.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.data.weapon.BulletData;
+import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.util.UtilParticles;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 

@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.data.damagesource;
+package com.onewhohears.dscombat.entity.damagesource;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

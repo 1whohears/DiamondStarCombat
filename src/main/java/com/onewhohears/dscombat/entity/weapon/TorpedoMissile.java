@@ -1,8 +1,8 @@
 package com.onewhohears.dscombat.entity.weapon;
 
 import com.onewhohears.dscombat.Config;
-import com.onewhohears.dscombat.data.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.data.weapon.TorpedoData;
+import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;

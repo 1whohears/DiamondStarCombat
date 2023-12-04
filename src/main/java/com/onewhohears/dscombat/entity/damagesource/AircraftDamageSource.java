@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.data.damagesource;
+package com.onewhohears.dscombat.entity.damagesource;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;

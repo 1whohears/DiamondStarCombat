@@ -12,10 +12,13 @@ import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 
 import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.event.entity.EntityLeaveLevelEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.level.ExplosionEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
@@ -90,6 +93,20 @@ public final class CommonForgeEvents {
 		event.addListener(AircraftPresets.get());
 		event.addListener(WeaponPresets.get());
 		event.addListener(RadarPresets.get());
+	}
+	
+	@SubscribeEvent(priority = EventPriority.NORMAL)
+	public static void entityJoinLevelEvent(EntityJoinLevelEvent event) {
+		Level level = event.getLevel();
+		if (level.isClientSide) return;
+		
+	}
+	
+	@SubscribeEvent(priority = EventPriority.NORMAL)
+	public static void entityLeaveLevelEvent(EntityLeaveLevelEvent event) {
+		Level level = event.getLevel();
+		if (level.isClientSide) return;
+		
 	}
 	
 	/*@SubscribeEvent(priority = EventPriority.NORMAL)

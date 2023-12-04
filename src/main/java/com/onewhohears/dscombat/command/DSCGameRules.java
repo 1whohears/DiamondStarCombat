@@ -1,7 +1,14 @@
 package com.onewhohears.dscombat.command;
 
+import java.util.function.BiConsumer;
+
+import com.onewhohears.dscombat.common.network.PacketHandler;
+import com.onewhohears.dscombat.common.network.toclient.ToClientSynchGameRules;
+
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.network.PacketDistributor;
 
 public class DSCGameRules {
 	
@@ -47,7 +54,10 @@ public class DSCGameRules {
 		BULLET_DAMAGE_VEHICLE_PER = registerInteger("bulletDamageVehiclePercent", 20, GameRules.Category.PLAYER);
 		EXPLO_DAMAGE_VEHICLE_PER = registerInteger("explosionDamageVehiclePercent", 1000, GameRules.Category.PLAYER);
 		BULLET_DAMAGE_PLANE_PER = registerInteger("bulletDamagePlanePercent", 50, GameRules.Category.PLAYER);
-		DISABLE_3RD_PERSON_VEHICLE = registerBoolean("disable3rdPersonVehicle", false, GameRules.Category.PLAYER);
+		DISABLE_3RD_PERSON_VEHICLE = registerBoolean("disable3rdPersonVehicle", false, GameRules.Category.PLAYER, 
+				(server, value) -> PacketHandler.INSTANCE.send(
+						PacketDistributor.ALL.noArg(), 
+						new ToClientSynchGameRules(value.get())));
 	}
 	
 	public static GameRules.Key<GameRules.BooleanValue> registerBoolean(String name, boolean defaultValue) {
@@ -56,6 +66,12 @@ public class DSCGameRules {
 	
 	public static GameRules.Key<GameRules.BooleanValue> registerBoolean(String name, boolean defaultValue, GameRules.Category category) {
 		return GameRules.register(name, category, GameRules.BooleanValue.create(defaultValue));
+	}
+	
+	public static GameRules.Key<GameRules.BooleanValue> registerBoolean(String name, boolean defaultValue, GameRules.Category category, 
+			BiConsumer<MinecraftServer, GameRules.BooleanValue> listener) {
+		return GameRules.register(name, category, 
+				GameRules.BooleanValue.create(defaultValue, listener));
 	}
 	
 	public static GameRules.Key<GameRules.IntegerValue> registerInteger(String name, int defaultValue, GameRules.Category category) {

@@ -4,6 +4,8 @@ import net.minecraft.client.Minecraft;
 
 public class DSCClientInputs {
 	
+	public static boolean disable3rdPersonVehicle = false;
+	
 	private static double mouseCenterX = 0;
 	private static double mouseCenterY = 0;
 	

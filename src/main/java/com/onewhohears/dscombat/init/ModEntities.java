@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.init;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.client.renderer.texture.EntityScreenTypes;
+import com.onewhohears.dscombat.client.entityscreen.EntityScreenTypes;
 import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
 import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData;
 import com.onewhohears.dscombat.entity.EntityParachute;

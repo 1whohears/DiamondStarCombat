@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.entity.aircraft.custom;
 
-import com.onewhohears.dscombat.client.renderer.texture.EntityScreenTypes;
-import com.onewhohears.dscombat.client.renderer.texture.HudScreenInstance;
+import com.onewhohears.dscombat.client.entityscreen.EntityScreenTypes;
+import com.onewhohears.dscombat.client.entityscreen.HudScreenInstance;
 import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
 import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData;
 import com.onewhohears.dscombat.data.aircraft.LiftKGraph;

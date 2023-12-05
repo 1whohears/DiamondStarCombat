@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.client.renderer.texture;
+package com.onewhohears.dscombat.client.entityscreen;
 
 import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
@@ -9,7 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
 import static com.onewhohears.dscombat.DSCombatMod.MODID;
-import static com.onewhohears.dscombat.client.renderer.texture.EntityScreenTypes.HUD_SCREEN;
+import static com.onewhohears.dscombat.client.entityscreen.EntityScreenTypes.HUD_SCREEN;
 
 public class HudScreenInstance extends EntityDynamicScreenInstance {
     protected int renderDelay;

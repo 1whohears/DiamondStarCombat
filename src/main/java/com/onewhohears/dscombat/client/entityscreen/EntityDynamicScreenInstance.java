@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.client.renderer.texture;
+package com.onewhohears.dscombat.client.entityscreen;
 
 import java.io.IOException;
 import java.io.InputStream;

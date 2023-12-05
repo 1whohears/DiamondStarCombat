@@ -1,8 +1,8 @@
 package com.onewhohears.dscombat.entity.aircraft.custom;
 
-import static com.onewhohears.dscombat.client.renderer.texture.EntityScreenTypes.RADAR_SCREEN;
+import static com.onewhohears.dscombat.client.entityscreen.EntityScreenTypes.RADAR_SCREEN;
 
-import com.onewhohears.dscombat.client.renderer.texture.HudScreenInstance;
+import com.onewhohears.dscombat.client.entityscreen.HudScreenInstance;
 import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
 import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData;
 import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData.Builder;

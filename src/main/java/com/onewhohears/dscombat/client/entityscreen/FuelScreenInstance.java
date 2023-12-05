@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.client.renderer.texture;
+package com.onewhohears.dscombat.client.entityscreen;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;

@@ -95,7 +95,7 @@ public final class CommonForgeEvents {
 		event.addListener(RadarPresets.get());
 	}
 	
-	@SubscribeEvent(priority = EventPriority.NORMAL)
+	/*@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void entityJoinLevelEvent(EntityJoinLevelEvent event) {
 		Level level = event.getLevel();
 		if (level.isClientSide) return;
@@ -106,8 +106,11 @@ public final class CommonForgeEvents {
 	public static void entityLeaveLevelEvent(EntityLeaveLevelEvent event) {
 		Level level = event.getLevel();
 		if (level.isClientSide) return;
+		if (!event.getEntity().getRemovalReason().shouldSave()) return;
+		if (!(event.getEntity() instanceof EntityVehicle vehicle)) return;
+		if (vehicle.getHitboxes().length == 0) return;
 		
-	}
+	}*/
 	
 	/*@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void chunkWatchEvent(ChunkWatchEvent.Watch event) {

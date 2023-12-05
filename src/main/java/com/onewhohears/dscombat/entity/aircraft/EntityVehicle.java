@@ -523,6 +523,18 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		return hitboxCollidedIds.contains(entity.getId());
 	}
 	
+	@Override
+	public void onRemovedFromWorld() {
+		super.onRemovedFromWorld();
+		
+	}
+	
+	@Override
+	public void onAddedToWorld() {
+		super.onAddedToWorld();
+		
+	}
+	
 	/**
 	 * called on server side every tick
 	 */

@@ -139,7 +139,13 @@ public abstract class EntityDynamicScreenInstance extends EntityScreenInstance {
 	}
 	
 	protected void drawDiamond(int x, int y, int r, int t, int color) {
-		
+		double half = t*0.5d;
+		int kMin = -(int)Math.floor(half);
+		int kMax = (int)Math.ceil(half);
+		for (int i = -r, j = 0; i <= 0; ++i, ++j) for (int k = kMin; k < kMax; ++k) setPixel(i+k, j, color);
+		for (int i = -r, j = 0; i <= 0; ++i, --j) for (int k = kMin; k < kMax; ++k) setPixel(i+k, j, color);
+		for (int i = r, j = 0; i >= 0; --i, ++j) for (int k = kMin; k < kMax; ++k) setPixel(i+k, j, color);
+		for (int i = r, j = 0; i >= 0; --i, --j) for (int k = kMin; k < kMax; ++k) setPixel(i+k, j, color);
 	}
 	
 	@Override

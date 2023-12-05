@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.client.entityscreen;
 
-import java.util.List;
+import java.util.Collection;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
@@ -38,8 +38,9 @@ public class RWRScreenInstance extends EntityDynamicScreenInstance {
 	protected void updateTexture(Entity entity) {
 		clearDynamicPixels();
 		EntityVehicle vehicle = (EntityVehicle)entity;
-		List<RadarSystem.RWRWarning> warnings = vehicle.radarSystem.getClientRWRWarnings();
-		for (int i = 0; i < warnings.size(); ++i) drawWarning(warnings.get(i), vehicle);
+		if (!vehicle.radarSystem.clientHasRWRWarnings()) return;
+		Collection<RadarSystem.RWRWarning> warnings = vehicle.radarSystem.getClientRWRWarnings();
+		for (RadarSystem.RWRWarning warn : warnings) drawWarning(warn, vehicle);
 	}
 	
 	protected void drawWarning(RadarSystem.RWRWarning warn, EntityVehicle vehicle) {
@@ -55,9 +56,16 @@ public class RWRScreenInstance extends EntityDynamicScreenInstance {
 	}
 	
 	protected void drawWarningAtPos(RadarSystem.RWRWarning warn, int x, int y) {
-		int color = 0xff00ff00;
-		if (warn.isMissile) color = 0xff0000ff;
-		drawDiamond(x, y, 32, 5, color); 
+		int r = 32, t = 5;
+		if (warn.isMissile) {
+			drawDiamond(x, y, r, t, 0xff0000ff); 
+			drawCross(x, y, r, t, 0xff0000ff);
+		} else if (warn.fromGround) {
+			drawDiamond(x, y, r, t, 0xff00ffff); 
+			drawPlus(x, y, r, t, 0xff00ffff);
+		} else {
+			drawDiamond(x, y, r, t, 0xff00ff00); 
+		}
 	}
 
 }

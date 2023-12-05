@@ -41,7 +41,7 @@ public class TrackEntityMissile extends EntityMissile {
 		if (!active && !level.isClientSide) notActiveCheckTarget();
 		guideToTarget();
 		if (!level.isClientSide && tickCount % 10 == 0 && target instanceof EntityVehicle plane) {
-			plane.trackedByMissile(position());
+			plane.trackedByMissile(this);
 		}
 	}
 	

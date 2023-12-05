@@ -177,7 +177,7 @@ public class RadarData extends JsonPreset {
 					PingEntityType.VEHICLE);
 			vehiclePings.add(p);
 			pings.add(p);
-			if (!radar.isAlliedTo(ea)) ea.lockedOnto(radar.position());
+			if (!radar.isAlliedTo(ea)) ea.lockedOnto(radar);
 		}
 		for (int j = 0; j < RadarTargetTypes.get().getRadarVehicleClasses().size(); ++j) {
 			Class<? extends Entity> clazz = RadarTargetTypes.get().getRadarVehicleClasses().get(j);

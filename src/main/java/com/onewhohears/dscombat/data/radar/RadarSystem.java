@@ -1,8 +1,11 @@
 package com.onewhohears.dscombat.data.radar;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -49,7 +52,7 @@ public class RadarSystem {
 	private int clientPingRefreshTime = 0, clientRwrRefreshTime = 0;
 	private int clientPrevTickCount1 = 0, clientPrevTickCount2 = 0;
 	
-	private List<RWRWarning> rwrWarnings = new ArrayList<RWRWarning>();
+	private Map<Integer, RWRWarning> rwrWarnings = new HashMap<>();
 	private boolean rwrMissile, rwrRadar;
 	
 	public boolean dataLink = false;
@@ -108,7 +111,7 @@ public class RadarSystem {
 			if (targets.get(i).id == old.id) {
 				selectedIndex = i;
 				if (getSelectedTarget() instanceof EntityVehicle plane) {
-					plane.lockedOnto(parent.position());
+					plane.lockedOnto(parent);
 				}
 				break;
 			}
@@ -279,14 +282,16 @@ public class RadarSystem {
 	
 	public boolean shouldUpdateRadarTexture() {
 		if (parent.tickCount == clientPrevTickCount1) return false;
-		if ((parent.tickCount-clientPingRefreshTime) > 60) return false;;
+		if (parent.tickCount % 5 != 0) return false;
+		if ((parent.tickCount-clientPingRefreshTime) > 40) return false;;
 		clientPrevTickCount1 = parent.tickCount;
 		return true;
 	}
 	
 	public boolean shouldUpdateRWRTexture() {
 		if (parent.tickCount == clientPrevTickCount2) return false;
-		if ((parent.tickCount-clientRwrRefreshTime) > 20) return false;
+		if (parent.tickCount % 5 != 0) return false;
+		if ((parent.tickCount-clientRwrRefreshTime) > 40) return false;
 		clientPrevTickCount2 = parent.tickCount;
 		return true;
 	}
@@ -338,14 +343,19 @@ public class RadarSystem {
 		return readData;
 	}
 	
-	public void addRWRWarning(Vec3 pos, boolean isMissile, boolean clientSide) {
-		if (parent == null || !hasRadar()) return;
-		RWRWarning warning = new RWRWarning(pos, isMissile);
-		if (clientSide) {
-			rwrWarnings.add(warning);
-			clientRwrRefreshTime = parent.tickCount;
-		} else PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
+	public void addRWRWarning(int fromId, Vec3 pos, boolean isMissile, boolean fromGround) {
+		if (parent == null || parent.level.isClientSide || !hasRadar()) return;
+		RWRWarning warning = new RWRWarning(fromId, pos, fromGround, isMissile);
+		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
 				new ToClientRWRWarning(parent.getId(), warning));
+	}
+	
+	public void readRWRWarningFromServer(RWRWarning warning) {
+		if (rwrWarnings.containsKey(warning.fromId)) 
+			rwrWarnings.get(warning.fromId).age = 0;
+		else 
+			rwrWarnings.put(warning.fromId, warning);
+		clientRwrRefreshTime = parent.tickCount;
 	}
 	
 	public boolean isTrackedByMissile() {
@@ -364,12 +374,12 @@ public class RadarSystem {
 		rwrMissile = false;
 		rwrRadar = false;
 		if (rwrWarnings.size() > 0) {
-			Iterator<RWRWarning> it = rwrWarnings.iterator();
+			Iterator<RWRWarning> it = rwrWarnings.values().iterator();
 			while (it.hasNext()) {
 				RWRWarning n = it.next();
 				if (n.isMissile) rwrMissile = true;
 				else rwrRadar = true;
-				if (++n.age > 10) it.remove();
+				if (++n.age > 10) rwrWarnings.remove(n.fromId);
 			}
 		}
 		updateClientPingPos();
@@ -379,28 +389,40 @@ public class RadarSystem {
 		for (RadarPing ping : clientTargets) ping.setClientPos(parent.level);
 	}
 	
-	public List<RWRWarning> getClientRWRWarnings() {
-		return rwrWarnings;
+	public boolean clientHasRWRWarnings() {
+		return !rwrWarnings.isEmpty();
+	}
+	
+	public Collection<RWRWarning> getClientRWRWarnings() {
+		return rwrWarnings.values();
 	}
 	
 	public static class RWRWarning {
 		
+		public final int fromId;
 		public final Vec3 pos;
+		public final boolean fromGround;
 		public final boolean isMissile;
 		public int age = 0;
 		
-		public RWRWarning(Vec3 pos, boolean isMissile) {
+		public RWRWarning(int fromId, Vec3 pos, boolean fromGround, boolean isMissile) {
+			this.fromId = fromId;
 			this.pos = pos;
+			this.fromGround = fromGround;
 			this.isMissile = isMissile;
 		}
 		
 		public RWRWarning(FriendlyByteBuf buffer) {
+			fromId = buffer.readInt();
 			pos = DataSerializers.VEC3.read(buffer);
+			fromGround = buffer.readBoolean();
 			isMissile = buffer.readBoolean();
 		}
 		
 		public void write(FriendlyByteBuf buffer) {
+			buffer.writeInt(fromId);
 			DataSerializers.VEC3.write(buffer, pos);
+			buffer.writeBoolean(fromGround);
 			buffer.writeBoolean(isMissile);
 		}
 		

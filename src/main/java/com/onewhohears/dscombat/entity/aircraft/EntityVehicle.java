@@ -2121,16 +2121,19 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
      * entity tracking missile calls this server side when tracking this plane
      * @param pos the position of the missile
      */
-    public void trackedByMissile(Vec3 pos) {
-    	if (hasControllingPassenger()) radarSystem.addRWRWarning(pos, true, level.isClientSide);
+    public void trackedByMissile(Entity missile) {
+    	if (hasControllingPassenger()) radarSystem.addRWRWarning(
+    			missile.getId(), missile.position(), true, false);
     }
     
     /**
      * another radar system calls this server side when tracking this craft
      * @param pos the position of the radar
      */
-    public void lockedOnto(Vec3 pos) {
-    	if (hasControllingPassenger()) radarSystem.addRWRWarning(pos, false, level.isClientSide);
+    public void lockedOnto(Entity radar) {
+    	if (hasControllingPassenger()) radarSystem.addRWRWarning(
+    			radar.getId(), radar.position(), false, 
+    			UtilEntity.isOnGroundOrWater(radar));
     }
     
     public void playIRTone() {

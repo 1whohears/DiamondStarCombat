@@ -87,7 +87,7 @@ public class UtilPacket {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityVehicle plane) {
-			plane.radarSystem.getClientRWRWarnings().add(warning);
+			plane.radarSystem.readRWRWarningFromServer(warning);
 		}
 	}
 	

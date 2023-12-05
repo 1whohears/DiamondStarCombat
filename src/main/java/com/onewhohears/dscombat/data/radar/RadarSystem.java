@@ -46,7 +46,8 @@ public class RadarSystem {
 	private int selectedIndex = -1;
 	private List<RadarPing> clientTargets = new ArrayList<RadarPing>();
 	private int clientSelectedIndex = -1;
-	private int clientPingRefreshTime = 0, clientPrevTickCount = 0;
+	private int clientPingRefreshTime = 0, clientRwrRefreshTime = 0;
+	private int clientPrevTickCount1 = 0, clientPrevTickCount2 = 0;
 	
 	private List<RWRWarning> rwrWarnings = new ArrayList<RWRWarning>();
 	private boolean rwrMissile, rwrRadar;
@@ -277,11 +278,17 @@ public class RadarSystem {
 	}
 	
 	public boolean shouldUpdateRadarTexture() {
-		boolean r = false;
-		if (parent.tickCount > clientPrevTickCount && (parent.tickCount-clientPingRefreshTime) < 60) 
-			r = true;
-		clientPrevTickCount = parent.tickCount;
-		return r;
+		if (parent.tickCount == clientPrevTickCount1) return false;
+		if ((parent.tickCount-clientPingRefreshTime) > 60) return false;;
+		clientPrevTickCount1 = parent.tickCount;
+		return true;
+	}
+	
+	public boolean shouldUpdateRWRTexture() {
+		if (parent.tickCount == clientPrevTickCount2) return false;
+		if ((parent.tickCount-clientRwrRefreshTime) > 20) return false;
+		clientPrevTickCount2 = parent.tickCount;
+		return true;
 	}
 	
 	public boolean hasRadar() {
@@ -334,8 +341,10 @@ public class RadarSystem {
 	public void addRWRWarning(Vec3 pos, boolean isMissile, boolean clientSide) {
 		if (parent == null || !hasRadar()) return;
 		RWRWarning warning = new RWRWarning(pos, isMissile);
-		if (clientSide) rwrWarnings.add(warning);
-		else PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
+		if (clientSide) {
+			rwrWarnings.add(warning);
+			clientRwrRefreshTime = parent.tickCount;
+		} else PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
 				new ToClientRWRWarning(parent.getId(), warning));
 	}
 	

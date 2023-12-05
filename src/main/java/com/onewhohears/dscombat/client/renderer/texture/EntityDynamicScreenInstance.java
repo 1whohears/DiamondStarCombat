@@ -138,6 +138,10 @@ public abstract class EntityDynamicScreenInstance extends EntityScreenInstance {
 		drawHollowCircle(x, y, r, 1, color);
 	}
 	
+	protected void drawDiamond(int x, int y, int r, int t, int color) {
+		
+	}
+	
 	@Override
 	public void draw(Entity entity, Matrix4f matrix4f, MultiBufferSource buffer, float partialTicks, int packedLight,
 			float worldWidth, float worldHeight) {

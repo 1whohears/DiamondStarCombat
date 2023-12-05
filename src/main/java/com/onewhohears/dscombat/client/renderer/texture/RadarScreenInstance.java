@@ -16,14 +16,14 @@ import net.minecraft.world.phys.Vec3;
 public class RadarScreenInstance extends EntityDynamicScreenInstance {
 	
 	public static final ResourceLocation RADAR_SCREEN_TEXTURE = new ResourceLocation(DSCombatMod.MODID,
-            "textures/ui/radar_high_res.png");
+            "textures/ui/radar_screen_bg.png");
 	
 	protected final int width, height, centerX, centerY, textureRadius, pingIconRadius;
 	
 	public RadarScreenInstance(int id) {
 		super("radar", id, RADAR_SCREEN_TEXTURE);
-		width = dynamicTexture.getPixels().getWidth();
-		height = dynamicTexture.getPixels().getHeight();
+		width = 512;
+		height = 512;
 		centerX = width/2; 
 		centerY = height/2;
 		textureRadius = height/2;
@@ -34,22 +34,6 @@ public class RadarScreenInstance extends EntityDynamicScreenInstance {
 	public boolean shouldUpdateTexture(Entity entity) {
 		EntityVehicle vehicle = (EntityVehicle)entity;
 		return vehicle.radarSystem.shouldUpdateRadarTexture();
-	}
-	
-	protected void drawPingAtPos(RadarData.RadarPing ping, int x, int y, boolean selected, boolean hover) {
-		// ABGR format for some reason
-		int color = 0xff00ff00;
-		if (selected) color = 0xff0000ff;
-		else if (hover) color = 0xff00ffff;
-		else if (ping.isFriendly) color = 0xffff0000;
-		else if (ping.isShared()) color = 0xffaacd66;
-		if (ping.terrainType.isGround()) drawPlus(x, y, pingIconRadius, 5, color);
-		else if (ping.terrainType.isAir()) drawCross(x, y, pingIconRadius, 7, color);
-		else {
-			drawCross(x, y, pingIconRadius, 5, color);
-			drawPlus(x, y, pingIconRadius, 5, color);
-		}
-		if (ping.isFriendly) drawHollowCircle(x, y, pingIconRadius, 2, color);
 	}
 	
 	@Override
@@ -82,6 +66,22 @@ public class RadarScreenInstance extends EntityDynamicScreenInstance {
 		int x = Math.min(centerX + (int)(-Mth.sin(yaw)*textureRadius*screen_dist), width-1);
 		int y = Math.min(centerY + (int)(Mth.cos(yaw)*textureRadius*screen_dist), height-1);
 		drawPingAtPos(ping, x, y, selected, hover);
+	}
+	
+	protected void drawPingAtPos(RadarData.RadarPing ping, int x, int y, boolean selected, boolean hover) {
+		// ABGR format for some reason
+		int color = 0xff00ff00;
+		if (selected) color = 0xff0000ff;
+		else if (hover) color = 0xff00ffff;
+		else if (ping.isFriendly) color = 0xffff0000;
+		else if (ping.isShared()) color = 0xffaacd66;
+		if (ping.terrainType.isGround()) drawPlus(x, y, pingIconRadius, 5, color);
+		else if (ping.terrainType.isAir()) drawCross(x, y, pingIconRadius, 7, color);
+		else {
+			drawCross(x, y, pingIconRadius, 5, color);
+			drawPlus(x, y, pingIconRadius, 5, color);
+		}
+		if (ping.isFriendly) drawHollowCircle(x, y, pingIconRadius, 2, color);
 	}
 
 }

@@ -41,7 +41,7 @@ public class ObjAircraftModel<T extends EntityVehicle> extends ObjEntityModel<T>
 	
 	@Override
 	protected ITextureRenderTypeLookup getTextureRenderTypeLookup(T entity) {
-		return (texture) -> RendererEntityAircraft.getBaseRenderType(entity.textureManager.getBaseTexture());
+		return (texture) -> RendererEntityAircraft.getCullBaseRenderType(entity.textureManager.getBaseTexture());
 	}
 	
 	protected ITextureRenderTypeLookup getLayerTextureRenderTypeLookup(TextureLayer layer) {

@@ -55,6 +55,13 @@ public abstract class JsonPresetReloadListener<T extends JsonPreset> extends Sim
 	
 	public abstract T[] getAllPresets();
 	
+	public String[] getPresetIds() {
+		String[] names = new String[getAllPresets().length];
+		for (int i = 0; i < names.length; ++i) 
+			names[i] = getAllPresets()[i].getId();
+		return names;
+	}
+	
 	protected abstract void resetCache();
 	
 	public int getPresetNum() {

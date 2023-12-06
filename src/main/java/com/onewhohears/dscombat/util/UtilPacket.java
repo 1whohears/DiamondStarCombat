@@ -137,6 +137,7 @@ public class UtilPacket {
 
 	public static void weaponImpact(WeaponData.WeaponClientImpactType impactType, Vec3 pos) {
 		Minecraft m = Minecraft.getInstance();
+		System.out.println("impact type = "+impactType.name()+" pos = "+pos);
 		impactType.onClientImpact(m.level, pos);
 		if (m.level.getGameRules().getBoolean(DSCGameRules.WEAPON_HIT_FEEDBACK)) {
 			// TODO 6.4 visual feedback on owner client cross hair

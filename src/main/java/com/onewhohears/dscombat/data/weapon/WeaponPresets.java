@@ -62,13 +62,6 @@ public class WeaponPresets extends JsonPresetReloadListener<WeaponData> {
 		return weaponList;
 	}
 	
-	public String[] getWeaponIds() {
-		String[] names = new String[getAllPresets().length];
-		for (int i = 0; i < names.length; ++i) 
-			names[i] = getAllPresets()[i].getId();
-		return names;
-	}
-	
 	public List<String> getCompatibleWeapons(ResourceLocation weaponPartItemId) {
 		List<String> list = compatibleMap.get(weaponPartItemId.toString());
 		if (list == null) return new ArrayList<>();

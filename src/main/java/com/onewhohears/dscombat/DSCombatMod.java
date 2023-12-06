@@ -12,6 +12,7 @@ import com.onewhohears.dscombat.data.radar.RadarPresetGenerator;
 import com.onewhohears.dscombat.data.weapon.WeaponPresetGenerator;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.init.DataSerializers;
+import com.onewhohears.dscombat.init.ModArgumentTypes;
 import com.onewhohears.dscombat.init.ModBlockEntities;
 import com.onewhohears.dscombat.init.ModBlocks;
 import com.onewhohears.dscombat.init.ModContainers;
@@ -73,6 +74,7 @@ public class DSCombatMod {
     	DataSerializers.register(eventBus);
     	ModVillagers.register(eventBus);
     	ModParticles.register(eventBus);
+    	ModArgumentTypes.register(eventBus);
     	
     	minigamesLoaded = ModList.get().isLoaded("minigames");
     	

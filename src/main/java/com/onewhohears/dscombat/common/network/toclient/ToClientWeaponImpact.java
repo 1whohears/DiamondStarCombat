@@ -10,7 +10,6 @@ import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.UtilPacket;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
@@ -21,9 +20,9 @@ public class ToClientWeaponImpact extends IPacket {
 	public final WeaponData.WeaponClientImpactType impactType;
 	public final Vec3 pos;
 	
-	public ToClientWeaponImpact(EntityWeapon weapon, HitResult result) {
+	public ToClientWeaponImpact(EntityWeapon weapon, Vec3 pos) {
 		this.impactType = weapon.getClientImpactType();
-		this.pos = result.getLocation();
+		this.pos = pos;
 	}
 	
 	public ToClientWeaponImpact(FriendlyByteBuf buffer) {

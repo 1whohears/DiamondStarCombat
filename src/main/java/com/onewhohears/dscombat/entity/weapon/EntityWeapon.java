@@ -180,9 +180,6 @@ public abstract class EntityWeapon extends Projectile {
 	public void onHit(HitResult result) {
 		if (isRemoved()) return;
 		setPos(result.getLocation());
-		if (!level.isClientSide) PacketHandler.INSTANCE.send(
-				PacketDistributor.TRACKING_ENTITY.with(() -> this), 
-				new ToClientWeaponImpact(this, result));
 		super.onHit(result);
 	}
 	
@@ -199,6 +196,14 @@ public abstract class EntityWeapon extends Projectile {
 		System.out.println("BULLET HIT "+result.getEntity());
 		kill();
 		result.getEntity().hurt(getImpactDamageSource(), getDamage());
+	}
+	
+	@Override
+	public void kill() {
+		if (!level.isClientSide) PacketHandler.INSTANCE.send(
+				PacketDistributor.TRACKING_ENTITY.with(() -> this), 
+				new ToClientWeaponImpact(this, position()));
+		super.kill();
 	}
 	
 	public float getDamage() {

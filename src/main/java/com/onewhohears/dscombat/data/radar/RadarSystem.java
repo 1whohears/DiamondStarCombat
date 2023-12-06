@@ -283,7 +283,7 @@ public class RadarSystem {
 	public boolean shouldUpdateRadarTexture() {
 		if (parent.tickCount == clientPrevTickCount1) return false;
 		if (parent.tickCount % 2 != 0) return false;
-		if ((parent.tickCount-clientPingRefreshTime) > 40) return false;;
+		if ((parent.tickCount-clientPingRefreshTime) > 100) return false;
 		clientPrevTickCount1 = parent.tickCount;
 		return true;
 	}
@@ -291,7 +291,7 @@ public class RadarSystem {
 	public boolean shouldUpdateRWRTexture() {
 		if (parent.tickCount == clientPrevTickCount2) return false;
 		if (parent.tickCount % 2 != 0) return false;
-		if ((parent.tickCount-clientRwrRefreshTime) > 40) return false;
+		if ((parent.tickCount-clientRwrRefreshTime) > 100) return false;
 		clientPrevTickCount2 = parent.tickCount;
 		return true;
 	}

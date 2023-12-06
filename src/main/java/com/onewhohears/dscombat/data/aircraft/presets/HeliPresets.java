@@ -78,7 +78,7 @@ public class HeliPresets {
 			.setSlotItem("right_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "agm65l", true)
 			.setSlotItem("right_wing_2", ModItems.HEAVY_MISSILE_RACK.getId(), "agm84e", true)
 			.setSlotItem("right_wing_3", ModItems.LIGHT_MISSILE_RACK.getId(), "aim9l", true)
-			.setSlotItem("frame_1", ModItems.HEAVY_MISSILE_RACK.getId(), "rifel1", true)
+			.setSlotItem("frame_1", ModItems.HEAVY_MISSILE_RACK.getId(), "agm88g", true)
 			.setSlotItem("internal_5", ModItems.AR500.getId())
 			.setSlotItem("internal_6", ModItems.GR400.getId())
 			.setSlotItem("internal_4", ModItems.BASIC_FLARE_DISPENSER.getId(), true)

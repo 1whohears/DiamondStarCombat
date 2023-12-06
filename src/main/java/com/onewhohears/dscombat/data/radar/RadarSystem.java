@@ -282,7 +282,7 @@ public class RadarSystem {
 	
 	public boolean shouldUpdateRadarTexture() {
 		if (parent.tickCount == clientPrevTickCount1) return false;
-		if (parent.tickCount % 5 != 0) return false;
+		if (parent.tickCount % 2 != 0) return false;
 		if ((parent.tickCount-clientPingRefreshTime) > 40) return false;;
 		clientPrevTickCount1 = parent.tickCount;
 		return true;
@@ -290,7 +290,7 @@ public class RadarSystem {
 	
 	public boolean shouldUpdateRWRTexture() {
 		if (parent.tickCount == clientPrevTickCount2) return false;
-		if (parent.tickCount % 5 != 0) return false;
+		if (parent.tickCount % 2 != 0) return false;
 		if ((parent.tickCount-clientRwrRefreshTime) > 40) return false;
 		clientPrevTickCount2 = parent.tickCount;
 		return true;
@@ -351,10 +351,13 @@ public class RadarSystem {
 	}
 	
 	public void readRWRWarningFromServer(RWRWarning warning) {
-		if (rwrWarnings.containsKey(warning.fromId)) 
-			rwrWarnings.get(warning.fromId).age = 0;
-		else 
-			rwrWarnings.put(warning.fromId, warning);
+		if (rwrWarnings.containsKey(warning.fromId)) {
+			RWRWarning w = rwrWarnings.get(warning.fromId);
+			w.age = 0;
+			w.pos = warning.pos;
+		} else rwrWarnings.put(warning.fromId, warning);
+		if (warning.isMissile) rwrMissile = true;
+		rwrRadar = true;
 		clientRwrRefreshTime = parent.tickCount;
 	}
 	
@@ -371,18 +374,25 @@ public class RadarSystem {
 	}
 	
 	public void clientTick() {
-		rwrMissile = false;
+		ageRWR();
+		updateClientPingPos();
+	}
+	
+	private void ageRWR() {
 		rwrRadar = false;
+		rwrMissile = false;
 		if (rwrWarnings.size() > 0) {
 			Iterator<RWRWarning> it = rwrWarnings.values().iterator();
 			while (it.hasNext()) {
 				RWRWarning n = it.next();
-				if (n.isMissile) rwrMissile = true;
-				else rwrRadar = true;
-				if (++n.age > 10) rwrWarnings.remove(n.fromId);
+				++n.age;
+				if (n.age <= 10) {
+					if (n.isMissile) rwrMissile = true;
+					rwrRadar = true;
+				}
+				if (n.age > 20) it.remove();
 			}
 		}
-		updateClientPingPos();
 	}
 	
 	private void updateClientPingPos() {
@@ -400,9 +410,9 @@ public class RadarSystem {
 	public static class RWRWarning {
 		
 		public final int fromId;
-		public final Vec3 pos;
 		public final boolean fromGround;
 		public final boolean isMissile;
+		public Vec3 pos;
 		public int age = 0;
 		
 		public RWRWarning(int fromId, Vec3 pos, boolean fromGround, boolean isMissile) {

@@ -23,7 +23,7 @@ public class RWRScreenInstance extends EntityDynamicScreenInstance {
 		super("rwr", id, RWR_SCREEN_TEXTURE);
 		width = 512;
 		height = 512;
-		textureRadius = 400;
+		textureRadius = 230;
 		centerX = width/2; 
 		centerY = height/2;
 	}
@@ -48,7 +48,7 @@ public class RWRScreenInstance extends EntityDynamicScreenInstance {
 		double dist = dp.horizontalDistance();
 		double screen_dist = dist*0.001;
 		if (screen_dist > 1) screen_dist = 1;
-		else if (screen_dist < 0.4) screen_dist = 0.4;
+		else if (screen_dist < 0.1) screen_dist = 0.1;
 		float yaw = (UtilAngles.getYaw(dp)-vehicle.getYRot()+180)*Mth.DEG_TO_RAD;
 		int x = Math.min(centerX + (int)(-Mth.sin(yaw)*textureRadius*screen_dist), width-1);
 		int y = Math.min(centerY + (int)(Mth.cos(yaw)*textureRadius*screen_dist), height-1);
@@ -59,7 +59,7 @@ public class RWRScreenInstance extends EntityDynamicScreenInstance {
 		int r = 32, t = 5;
 		if (warn.isMissile) {
 			drawDiamond(x, y, r, t, 0xff0000ff); 
-			drawCross(x, y, r, t, 0xff0000ff);
+			drawCross(x, y, r/2, t, 0xff0000ff);
 		} else if (warn.fromGround) {
 			drawDiamond(x, y, r, t, 0xff00ffff); 
 			drawPlus(x, y, r, t, 0xff00ffff);

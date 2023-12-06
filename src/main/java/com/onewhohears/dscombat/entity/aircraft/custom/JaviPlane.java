@@ -43,8 +43,8 @@ public class JaviPlane extends EntityPlane {
 				10f, 0f, 0f);
 		screens[1] = HudScreenInstance.getDefaultData(0, 0.5, 6.34375);
 		screens[2] = new EntityScreenData(EntityScreenTypes.RWR_SCREEN, 
-				new Vec3(-0.327, 1.259, 7.19), 
-				0.173f, 0.173f, 
+				new Vec3(0.145, 1.325, 7.2), 
+				0.1f, 0.1f, 
 				10f, 0f, 0f);
 	}
 

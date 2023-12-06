@@ -26,7 +26,7 @@ public class RadarScreenInstance extends EntityDynamicScreenInstance {
 		height = 512;
 		centerX = width/2; 
 		centerY = height/2;
-		textureRadius = height/2;
+		textureRadius = 240;
 		pingIconRadius = textureRadius/16;
 	}
 	

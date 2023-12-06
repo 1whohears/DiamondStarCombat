@@ -23,7 +23,7 @@ public class ToClientAircraftFuel extends IPacket {
 	}
 	
 	public ToClientAircraftFuel(FriendlyByteBuf buffer) {
-		super(buffer);
+		//super(buffer);
 		this.id = buffer.readInt();
 		int num = buffer.readInt();
 		fuels = new float[num];

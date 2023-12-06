@@ -26,7 +26,7 @@ public class ToClientWeaponAmmo extends IPacket {
 	}
 	
 	public ToClientWeaponAmmo(FriendlyByteBuf buffer) {
-		super(buffer);
+		//super(buffer);
 		id = buffer.readInt();
 		weaponId = buffer.readUtf();
 		slotId = buffer.readUtf();

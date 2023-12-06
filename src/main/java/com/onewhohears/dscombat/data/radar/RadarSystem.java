@@ -390,7 +390,8 @@ public class RadarSystem {
 					if (n.isMissile) rwrMissile = true;
 					rwrRadar = true;
 				}
-				if (n.age > 20) it.remove();
+				if (n.isMissile && n.age > 20) it.remove();
+				else if (n.age > 60) it.remove();
 			}
 		}
 	}

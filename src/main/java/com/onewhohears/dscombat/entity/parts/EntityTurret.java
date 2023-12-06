@@ -153,6 +153,13 @@ public class EntityTurret extends EntitySeat {
 			
 			setRelRotX(Mth.wrapDegrees(relx+dx));
 			setRelRotY(Mth.wrapDegrees(rely+dy));
+			
+			// FIXME 3 sometimes even in force loaded chunks the mob gunner stops ticking
+			/*if (gunner instanceof Mob gunMob) {
+				//gunMob.targetSelector.enableControlFlag(Goal.Flag.TARGET);
+				System.out.println(gunMob.tickCount+" "+gunMob+" "+gunMob.getVehicle());
+				//((ServerLevel)level).entityTickList;
+			}*/
 		}
 		float[] global = UtilAngles.relativeToGlobalDegrees(getRelRotX(), getRelRotY(), ra);
 		setXRot(global[0]);
@@ -313,7 +320,7 @@ public class EntityTurret extends EntitySeat {
 	
 	protected void specialShoot(Entity shooter, Vec3 pos, EntityVehicle parent, boolean consume) {
 		if (shootType == ShootType.NORMAL) return;
-		System.out.println("SPECIAL SHOOT "+shootType);
+		//System.out.println("SPECIAL SHOOT "+shootType);
 		if (shootType == ShootType.MARK7) {
 			float d = 1;
 			float yRad = getYRot() * Mth.DEG_TO_RAD;

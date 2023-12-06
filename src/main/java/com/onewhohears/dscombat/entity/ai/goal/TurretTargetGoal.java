@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.entity.ai.goal;
 import java.util.function.Predicate;
 
 import com.onewhohears.dscombat.Config;
+import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
@@ -64,6 +65,7 @@ public class TurretTargetGoal<T extends LivingEntity> extends NearestAttackableT
 	
 	@Override
 	protected void findTarget() {
+		//System.out.println("find target");
 		WeaponData wd = turret.getWeaponData();
 		EntityVehicle vehicle = turret.getParentVehicle();
 		if (wd == null || vehicle == null) return;
@@ -71,6 +73,7 @@ public class TurretTargetGoal<T extends LivingEntity> extends NearestAttackableT
 			if (targetType != Player.class && targetType != ServerPlayer.class) 
 				target = vehicle.radarSystem.getLivingTargetByWeapon(wd);
 			else target = vehicle.radarSystem.getPlayerTargetByWeapon(wd);
+			//System.out.println("target = "+target);
 			return;
 		}
 		if (targetType != Player.class && targetType != ServerPlayer.class) 
@@ -82,12 +85,22 @@ public class TurretTargetGoal<T extends LivingEntity> extends NearestAttackableT
 	}
 	
 	@Override
+	public boolean canUse() {
+		//System.out.println("canUse?");
+		if (!mob.level.getGameRules().getBoolean(DSCGameRules.MOBS_USE_TURRETS)) return false;
+		if (mob.getVehicle() == null || !mob.getVehicle().equals(turret)) return false;
+		return super.canUse();
+	}
+	
+	@Override
 	public boolean canContinueToUse() {
 		LivingEntity living = mob.getTarget();
 		if (living == null) living = target;
 		if (living == null) return false;
-		if (mob.tickCount%10==0 && !targetConditions.test(mob, living)) return false;
+		if (mob.isDeadOrDying()) return false;
+		if (!targetConditions.test(mob, living)) return false;
 		mob.setTarget(living);
+		//System.out.println("canContinueToUse "+living);
         return true;
 	}
 	
@@ -104,6 +117,7 @@ public class TurretTargetGoal<T extends LivingEntity> extends NearestAttackableT
 		this.turret = turret;
 		this.range = range;
 		this.targetConditions.ignoreLineOfSight(); // vanilla line of sight has a limit of 128 blocks
+		//this.setFlags(EnumSet.noneOf(Goal.Flag.class));
 	}
 	
 	@Override

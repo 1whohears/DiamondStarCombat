@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.entity.weapon;
 
 import com.onewhohears.dscombat.data.weapon.PosMissileData;
+import com.onewhohears.dscombat.data.weapon.WeaponData;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -19,6 +20,11 @@ public class PositionMissile extends EntityMissile {
 	@Override
 	public void tickGuide() {
 		guideToPosition();
+	}
+	
+	@Override
+	public WeaponData.WeaponType getWeaponType() {
+		return WeaponData.WeaponType.POS_MISSILE;
 	}
 
 }

@@ -4,6 +4,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.common.network.IPacket;
+import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.UtilPacket;
@@ -17,32 +18,22 @@ import net.minecraftforge.network.NetworkEvent.Context;
 
 public class ToClientWeaponImpact extends IPacket {
 	
-	public final int weaponId;
-	//public final int ownerId;
-	//public final int targetId;
+	public final WeaponData.WeaponClientImpactType impactType;
 	public final Vec3 pos;
 	
 	public ToClientWeaponImpact(EntityWeapon weapon, HitResult result) {
-		this.weaponId = weapon.getId();
-		/*if (weapon.getOwner() == null) ownerId = -1;
-		else ownerId = weapon.getOwner().getId();
-		if (result.getType() != Type.ENTITY) targetId = -1;
-		else targetId = ((EntityHitResult)result).getEntity().getId();*/
+		this.impactType = weapon.getClientImpactType();
 		this.pos = result.getLocation();
 	}
 	
 	public ToClientWeaponImpact(FriendlyByteBuf buffer) {
-		weaponId = buffer.readInt();
-		//ownerId = buffer.readInt();
-		//targetId = buffer.readInt();
+		impactType = WeaponData.WeaponClientImpactType.getByOrdinal(buffer.readInt());
 		pos = DataSerializers.VEC3.read(buffer);
 	}
 	
 	@Override
 	public void encode(FriendlyByteBuf buffer) {
-		buffer.writeInt(weaponId);
-		//buffer.writeInt(ownerId);
-		//buffer.writeInt(targetId);
+		buffer.writeInt(impactType.ordinal());
 		DataSerializers.VEC3.write(buffer, pos);
 	}
 
@@ -51,7 +42,7 @@ public class ToClientWeaponImpact extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilPacket.weaponImpact(weaponId, pos);
+				UtilPacket.weaponImpact(impactType, pos);
 				success.set(true);
 			});
 		});

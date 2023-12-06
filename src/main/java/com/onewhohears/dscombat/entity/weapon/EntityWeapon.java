@@ -186,8 +186,6 @@ public abstract class EntityWeapon extends Projectile {
 		super.onHit(result);
 	}
 	
-	public abstract void clientOnWeaponImpact(Vec3 pos);
-	
 	@Override
 	public void onHitBlock(BlockHitResult result) {
 		super.onHitBlock(result);
@@ -346,7 +344,8 @@ public abstract class EntityWeapon extends Projectile {
     }
     
     protected abstract WeaponDamageSource getImpactDamageSource();
-    
     protected abstract WeaponDamageSource getExplosionDamageSource();
+    public abstract WeaponData.WeaponType getWeaponType();
+    public abstract WeaponData.WeaponClientImpactType getClientImpactType();
 
 }

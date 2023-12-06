@@ -950,7 +950,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 * F=M*A -> A=F/M then A is added to current velocity
 	 */
 	public void calcAcc() {
-		if (!addForceBetweenTicks.equals(Vec3.ZERO)) System.out.println("add force "+addForceBetweenTicks+" "+this);
+		//if (!addForceBetweenTicks.equals(Vec3.ZERO)) System.out.println("add force "+addForceBetweenTicks+" "+this);
 		Vec3 f = getForces().add(addForceBetweenTicks);
 		double s = 1/getTotalMass();
 		setDeltaMovement(getDeltaMovement().add(f.scale(s)));

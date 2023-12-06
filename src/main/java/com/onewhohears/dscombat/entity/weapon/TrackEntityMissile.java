@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.entity.weapon;
 
 import com.onewhohears.dscombat.data.weapon.TrackMissileData;
+import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 
 import net.minecraft.nbt.CompoundTag;
@@ -60,6 +61,11 @@ public class TrackEntityMissile extends EntityMissile {
 			target = null;
 			return;
 		}
+	}
+	
+	@Override
+	public WeaponData.WeaponType getWeaponType() {
+		return WeaponData.WeaponType.TRACK_MISSILE;
 	}
 
 }

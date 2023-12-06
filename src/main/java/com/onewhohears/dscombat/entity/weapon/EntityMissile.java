@@ -7,6 +7,7 @@ import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.weapon.MissileData;
 import com.onewhohears.dscombat.data.weapon.NonTickingMissileManager;
+import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModSounds;
@@ -197,7 +198,7 @@ public abstract class EntityMissile extends EntityBullet {
 			}
 			//System.out.println("check can see");
 			if (!checkCanSee(target)) {
-				System.out.println("can't see target");
+				//System.out.println("can't see target");
 				target = null;
 				targetPos = null;
 				return;
@@ -292,11 +293,6 @@ public abstract class EntityMissile extends EntityBullet {
 		if (isAlliedTo(source.getEntity())) return false;
 		kill();
 		return true;
-	}
-	
-	@Override
-	public void clientOnWeaponImpact(Vec3 pos) {
-		UtilParticles.missileExplode(level, pos, getRadius(), getFire());
 	}
 	
 	@Override
@@ -461,6 +457,11 @@ public abstract class EntityMissile extends EntityBullet {
 				player.displayClientMessage(message, false);
 			}
 		}
+	}
+	
+	@Override
+	public WeaponData.WeaponClientImpactType getClientImpactType() {
+		return WeaponData.WeaponClientImpactType.MED_MISSILE_EXPLODE;
 	}
 
 }

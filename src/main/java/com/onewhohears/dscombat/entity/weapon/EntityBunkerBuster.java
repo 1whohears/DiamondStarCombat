@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.entity.weapon;
 import java.util.Iterator;
 
 import com.onewhohears.dscombat.data.weapon.BunkerBusterData;
+import com.onewhohears.dscombat.data.weapon.WeaponData;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -98,6 +99,11 @@ public class EntityBunkerBuster extends EntityBomb {
 	
 	public void reduceBlockStrength(int num) {
 		setBlockStrength(Math.max(getBlockStrength()-num, 0));
+	}
+	
+	@Override
+	public WeaponData.WeaponType getWeaponType() {
+		return WeaponData.WeaponType.BUNKER_BUSTER;
 	}
 
 }

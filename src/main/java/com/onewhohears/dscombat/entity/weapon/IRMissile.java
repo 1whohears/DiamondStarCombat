@@ -6,6 +6,7 @@ import java.util.List;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.data.weapon.IRMissileData;
 import com.onewhohears.dscombat.data.weapon.RadarTargetTypes;
+import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.util.UtilEntity;
@@ -157,6 +158,11 @@ public class IRMissile extends EntityMissile {
 	@Override
 	protected WeaponDamageSource getExplosionDamageSource() {
 		return WeaponDamageSource.WeaponDamageType.IR_MISSILE.getSource(getOwner(), this);
+	}
+	
+	@Override
+	public WeaponData.WeaponType getWeaponType() {
+		return WeaponData.WeaponType.IR_MISSILE;
 	}
 
 }

@@ -2,13 +2,12 @@ package com.onewhohears.dscombat.entity.weapon;
 
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.data.weapon.BombData;
+import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource;
-import com.onewhohears.dscombat.util.UtilParticles;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 
 public class EntityBomb extends EntityBullet {
 
@@ -22,11 +21,6 @@ public class EntityBomb extends EntityBullet {
 	
 	@Override
 	public void init() {	
-	}
-	
-	@Override
-	public void clientOnWeaponImpact(Vec3 pos) {
-		UtilParticles.bombExplode(level, pos, getRadius(), getFire());
 	}
 	
 	@Override
@@ -47,6 +41,16 @@ public class EntityBomb extends EntityBullet {
 	@Override
 	public boolean isPickable() {
 		return true;
+	}
+	
+	@Override
+	public WeaponData.WeaponType getWeaponType() {
+		return WeaponData.WeaponType.BOMB;
+	}
+	
+	@Override
+	public WeaponData.WeaponClientImpactType getClientImpactType() {
+		return WeaponData.WeaponClientImpactType.MED_BOMB_EXPLODE;
 	}
 
 }

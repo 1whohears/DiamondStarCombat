@@ -2,8 +2,8 @@ package com.onewhohears.dscombat.entity.weapon;
 
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.data.weapon.BulletData;
+import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource;
-import com.onewhohears.dscombat.util.UtilParticles;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.nbt.CompoundTag;
@@ -100,12 +100,6 @@ public class EntityBullet extends EntityWeapon {
 	}
 	
 	@Override
-	public void clientOnWeaponImpact(Vec3 pos) {
-		if (getExplosive()) UtilParticles.bulletExplode(level, pos, getRadius(), getFire());
-		else UtilParticles.bulletImpact(level, pos, getDamage());
-	}
-	
-	@Override
 	protected void tickSetMove() {
 		setDeltaMovement(getDeltaMovement().add(0, -Config.SERVER.accGravity.get()*BULLET_GRAVITY_SCALE, 0));
 	}
@@ -174,6 +168,17 @@ public class EntityBullet extends EntityWeapon {
 	@Override
 	protected WeaponDamageSource getExplosionDamageSource() {
 		return WeaponDamageSource.WeaponDamageType.BULLET_EXPLODE.getSource(getOwner(), this);
+	}
+
+	@Override
+	public WeaponData.WeaponType getWeaponType() {
+		return WeaponData.WeaponType.BULLET;
+	}
+
+	@Override
+	public WeaponData.WeaponClientImpactType getClientImpactType() {
+		if (getExplosive()) return WeaponData.WeaponClientImpactType.SMALL_BULLET_EXPLODE;
+		return WeaponData.WeaponClientImpactType.SMALL_BULLET_IMPACT;
 	}
 
 }

@@ -5,6 +5,7 @@ import static com.onewhohears.dscombat.DSCombatMod.MODID;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.BiConsumer;
 
 import javax.annotation.Nullable;
 
@@ -19,6 +20,7 @@ import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.util.UtilParse;
+import com.onewhohears.dscombat.util.UtilParticles;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.nbt.CompoundTag;
@@ -469,6 +471,11 @@ public abstract class WeaponData extends JsonPreset {
 					return values()[i];
 			return null;
 		}
+		@Nullable
+		public static WeaponType getByOrdinal(int ordinal) {
+			if (ordinal < 0 || ordinal >= values().length) return null;
+			return values()[ordinal];
+		}
 		private final String id;
 		private WeaponType() {
 			this.id = name().toLowerCase();
@@ -494,6 +501,25 @@ public abstract class WeaponData extends JsonPreset {
 		}
 		public boolean requiresRadar() {
 			return isTrackMissile();
+		}
+	}
+	
+	public static enum WeaponClientImpactType {
+		SMALL_BULLET_IMPACT((level, pos) -> UtilParticles.bulletImpact(level, pos, 5)),
+		SMALL_BULLET_EXPLODE((level, pos) -> UtilParticles.bulletExplode(level, pos, 2.5, true)),
+		MED_BOMB_EXPLODE((level, pos) -> UtilParticles.bombExplode(level, pos, 5, true)),
+		MED_MISSILE_EXPLODE((level, pos) -> UtilParticles.missileExplode(level, pos, 4, true));
+		@Nullable
+		public static WeaponClientImpactType getByOrdinal(int ordinal) {
+			if (ordinal < 0 || ordinal >= values().length) return null;
+			return values()[ordinal];
+		}
+		private final BiConsumer<Level, Vec3> clientImpactCallback;
+		private WeaponClientImpactType(BiConsumer<Level, Vec3> clientImpactCallback) {
+			this.clientImpactCallback = clientImpactCallback;
+		}
+		public void onClientImpact(Level level, Vec3 pos) {
+			clientImpactCallback.accept(level, pos);
 		}
 	}
 	

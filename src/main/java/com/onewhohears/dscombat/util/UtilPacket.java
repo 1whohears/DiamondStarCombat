@@ -13,7 +13,6 @@ import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
 import com.onewhohears.dscombat.data.radar.RadarSystem.RWRWarning;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
-import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
@@ -136,10 +135,9 @@ public class UtilPacket {
 			UtilParticles.vehicleCrashExplosion(m.level, pos, plane.vehicleData.crashExplosionRadius);
 	}
 
-	public static void weaponImpact(int weaponId, Vec3 pos) {
+	public static void weaponImpact(WeaponData.WeaponClientImpactType impactType, Vec3 pos) {
 		Minecraft m = Minecraft.getInstance();
-		if (!(m.level.getEntity(weaponId) instanceof EntityWeapon weapon)) return;
-		weapon.clientOnWeaponImpact(pos);
+		impactType.onClientImpact(m.level, pos);
 		if (m.level.getGameRules().getBoolean(DSCGameRules.WEAPON_HIT_FEEDBACK)) {
 			// TODO 6.4 visual feedback on owner client cross hair
 		}

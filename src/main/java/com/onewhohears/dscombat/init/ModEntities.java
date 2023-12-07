@@ -74,7 +74,7 @@ public class ModEntities {
 						@Override
 						public void addVehicleScreens() {
 							screens = new EntityScreenData[1];
-							screens[0] = new EntityScreenData(EntityScreenTypes.RADAR_SCREEN, 
+							screens[0] = new EntityScreenData(EntityScreenTypes.AIR_RADAR_SCREEN, 
 									new Vec3(0, -0.85, 5.46), 
 									0.7f, 0.7f, 
 									0f, 0f, 0f);
@@ -120,7 +120,7 @@ public class ModEntities {
 						@Override
 							public void addVehicleScreens() {
 								screens = new EntityScreenData[1];
-								screens[0] = new EntityScreenData(EntityScreenTypes.RADAR_SCREEN, 
+								screens[0] = new EntityScreenData(EntityScreenTypes.AIR_RADAR_SCREEN, 
 										new Vec3(0, 1.35, 1.6), 
 										0.6f, 0.6f, 
 										0f, 0f, 0f);

@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.entity.aircraft.custom;
 
-import static com.onewhohears.dscombat.client.entityscreen.EntityScreenTypes.RADAR_SCREEN;
+import static com.onewhohears.dscombat.client.entityscreen.EntityScreenTypes.AIR_RADAR_SCREEN;
 
 import com.onewhohears.dscombat.client.entityscreen.HudScreenInstance;
 import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
@@ -36,7 +36,7 @@ public class NoahChopper extends EntityHelicopter {
 	@Override
 	public void addVehicleScreens() {
 		screens = new EntityScreenData[2];
-		screens[0] = new EntityScreenData(RADAR_SCREEN,
+		screens[0] = new EntityScreenData(AIR_RADAR_SCREEN,
 				new Vec3(0.35, 0.05, 1.83), 
 				0.6f, 0.6f, 
 				20f, 0f, 0f);

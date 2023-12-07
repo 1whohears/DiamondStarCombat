@@ -14,13 +14,13 @@ import net.minecraft.world.phys.Vec3;
 
 public class RWRScreenInstance extends EntityDynamicScreenInstance {
 	
-	public static final ResourceLocation RWR_SCREEN_TEXTURE = new ResourceLocation(DSCombatMod.MODID,
-            "textures/ui/rwr_screen_bg.png");
+	public static final ResourceLocation TEXTURE = new ResourceLocation(DSCombatMod.MODID,
+            "textures/ui/entity_screen/rwr_screen_bg.png");
 	
 	protected final int width, height, centerX, centerY, textureRadius;
 	
 	public RWRScreenInstance(int id) {
-		super("rwr", id, RWR_SCREEN_TEXTURE);
+		super("rwr", id, TEXTURE);
 		width = 512;
 		height = 512;
 		textureRadius = 230;

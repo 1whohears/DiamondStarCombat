@@ -13,15 +13,15 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 
-public class RadarScreenInstance extends EntityDynamicScreenInstance {
+public class AirRadarScreenInstance extends EntityDynamicScreenInstance {
 	
-	public static final ResourceLocation RADAR_SCREEN_TEXTURE = new ResourceLocation(DSCombatMod.MODID,
-            "textures/ui/radar_screen_bg.png");
+	public static final ResourceLocation TEXTURE = new ResourceLocation(DSCombatMod.MODID,
+            "textures/ui/entity_screen/air_radar_screen_bg.png");
 	
 	protected final int width, height, centerX, centerY, textureRadius, pingIconRadius;
 	
-	public RadarScreenInstance(int id) {
-		super("radar", id, RADAR_SCREEN_TEXTURE);
+	public AirRadarScreenInstance(int id) {
+		super("air_radar", id, TEXTURE);
 		width = 512;
 		height = 512;
 		centerX = width/2; 

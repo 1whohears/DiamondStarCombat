@@ -37,7 +37,7 @@ public class FelixPlane extends EntityPlane {
 	@Override
 	public void addVehicleScreens() {
 		screens = new EntityScreenData[3];
-		screens[0] = new EntityScreenData(EntityScreenTypes.RADAR_SCREEN, 
+		screens[0] = new EntityScreenData(EntityScreenTypes.AIR_RADAR_SCREEN, 
 				new Vec3(0.29, 0.438, 5.42), 
 				0.185f, 0.185f, 
 				15f, 0f, 0f);

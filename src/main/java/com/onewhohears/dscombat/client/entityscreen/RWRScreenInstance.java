@@ -31,7 +31,10 @@ public class RWRScreenInstance extends EntityDynamicScreenInstance {
 	@Override
 	public boolean shouldUpdateTexture(Entity entity) {
 		EntityVehicle vehicle = (EntityVehicle)entity;
-		return vehicle.radarSystem.shouldUpdateRWRTexture();
+		if (entity.tickCount == prevUpdateTickCount) return false;
+		if (entity.tickCount % 2 != 0) return false;
+		if ((entity.tickCount-vehicle.radarSystem.clientRwrRefreshTime) > 100) return false;
+		return true;
 	}
 	
 	@Override

@@ -18,6 +18,7 @@ public abstract class EntityDynamicScreenInstance extends EntityScreenInstance {
 	
 	protected final DynamicTexture dynamicTexture;
 	protected final RenderType dynamicRenderType;
+	protected int prevUpdateTickCount;
 	
 	public EntityDynamicScreenInstance(String path, int id, ResourceLocation baseTexture) {
 		super(id, baseTexture);
@@ -155,6 +156,7 @@ public abstract class EntityDynamicScreenInstance extends EntityScreenInstance {
 		if (shouldUpdateTexture(entity)) {
 			updateTexture(entity);
 			dynamicTexture.upload();
+			prevUpdateTickCount = entity.tickCount;
 		}
         drawTexture(dynamicRenderType, matrix4f, buffer, packedLight, -0.01f);
 	}

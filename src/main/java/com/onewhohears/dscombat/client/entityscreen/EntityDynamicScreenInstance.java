@@ -18,6 +18,7 @@ public abstract class EntityDynamicScreenInstance extends EntityScreenInstance {
 	
 	protected final DynamicTexture dynamicTexture;
 	protected final RenderType dynamicRenderType;
+	protected final int pixelWidth, pixelHeight;
 	protected int prevUpdateTickCount;
 	
 	public EntityDynamicScreenInstance(String path, int id, ResourceLocation baseTexture) {
@@ -29,16 +30,21 @@ public abstract class EntityDynamicScreenInstance extends EntityScreenInstance {
 		} catch (IOException e) {
 			e.printStackTrace();
 			dynamicTexture = null;
+			pixelWidth = pixelHeight = 0;
 			dynamicRenderType = null;
 			return;
 		}
 		dynamicTexture = new DynamicTexture(image.getWidth(), image.getHeight(), true);
+		pixelWidth = dynamicTexture.getPixels().getWidth();
+		pixelHeight = dynamicTexture.getPixels().getHeight();
 		ResourceLocation dynamicLoc = Minecraft.getInstance().getTextureManager().register(path+"/"+id, dynamicTexture);
 		dynamicRenderType = RenderType.text(dynamicLoc);
 	}
 	
 	public EntityDynamicScreenInstance(String path, int id, ResourceLocation baseTexture, int width, int height) {
 		super(id, baseTexture);
+		this.pixelWidth = width;
+		this.pixelHeight = height;
 		dynamicTexture = new DynamicTexture(width, height, true);
 		ResourceLocation dynamicLoc = Minecraft.getInstance().getTextureManager().register(path+"/"+id, dynamicTexture);
 		dynamicRenderType = RenderType.text(dynamicLoc);
@@ -54,18 +60,14 @@ public abstract class EntityDynamicScreenInstance extends EntityScreenInstance {
 	 * sets all pixels to transparent in dynamic texture
 	 */
 	protected void clearDynamicPixels() {
-		int width = dynamicTexture.getPixels().getWidth();
-		int height = dynamicTexture.getPixels().getHeight();
-		for (int i = 0; i < width; ++i) for (int j = 0; j < height; ++j) 
+		for (int i = 0; i < pixelWidth; ++i) for (int j = 0; j < pixelHeight; ++j) 
 			dynamicTexture.getPixels().setPixelRGBA(i, j, 0);
 	}
 	/**
 	 * @param color AGBR (alpha, green, blue, red) 0xAAGGBBRR
 	 */
 	protected void setPixel(int x, int y, int color) {
-		int width = dynamicTexture.getPixels().getWidth();
-		int height = dynamicTexture.getPixels().getHeight();
-		if (x < 0 || y < 0 || x >= width || y >= height) return;
+		if (x < 0 || y < 0 || x >= pixelWidth || y >= pixelHeight) return;
 		// setPixelRGBA function name lies. color integer must be in ABGR format.
 		dynamicTexture.getPixels().setPixelRGBA(x, y, color);
 		//System.out.println("SET PIXEL "+x+" "+y+" "+color);

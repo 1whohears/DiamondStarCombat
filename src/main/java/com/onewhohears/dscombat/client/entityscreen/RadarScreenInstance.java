@@ -12,16 +12,14 @@ import net.minecraft.world.phys.Vec3;
 
 public abstract class RadarScreenInstance extends EntityDynamicScreenInstance {
 	
-	protected final int width, height, centerX, centerY, textureRadius, pingIconRadius;
+	protected final int centerX, centerY, textureRadius, pingIconRadius;
 	
 	protected RadarScreenInstance(String path, int id, ResourceLocation baseTexture, 
 			int width, int height, int centerX, int centerY, int textureRadius, int pingIconRadius) {
-		super(path, id, baseTexture);
-		this.width = width;
-		this.height = height;
+		super(path, id, baseTexture, width, height);
 		this.centerX = centerX;
 		this.centerY = centerY;
-		this.textureRadius= textureRadius;
+		this.textureRadius = textureRadius;
 		this.pingIconRadius = pingIconRadius;
 	}
 
@@ -40,8 +38,8 @@ public abstract class RadarScreenInstance extends EntityDynamicScreenInstance {
 		double screen_dist = getScreenDistRatio(dist);
 		if (screen_dist > 1) screen_dist = 1;
 		float yaw = (UtilAngles.getYaw(dp)-vehicle.getYRot()+180)*Mth.DEG_TO_RAD;
-		int x = Mth.clamp(centerX + (int)(-Mth.sin(yaw)*textureRadius*screen_dist), 10, width-10);
-		int y = Mth.clamp(centerY + (int)(Mth.cos(yaw)*textureRadius*screen_dist), 10, height-10);
+		int x = Mth.clamp(centerX + (int)(-Mth.sin(yaw)*textureRadius*screen_dist), 10, pixelWidth-10);
+		int y = Mth.clamp(centerY + (int)(Mth.cos(yaw)*textureRadius*screen_dist), 10, pixelHeight-10);
 		drawPingAtPos(ping, x, y, selected, hover);
 	}
 	

@@ -6,8 +6,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
@@ -32,6 +35,18 @@ public abstract class EntityScreenInstance implements AutoCloseable{
 	public void draw(Entity entity, Matrix4f matrix4f, MultiBufferSource buffer, float partialTicks, int packedLight,
 			float worldWidth, float worldHeight) {
 		if (baseRenderType != null) drawTextureCentered(baseRenderType, matrix4f, buffer, packedLight, 0);
+	}
+	
+	protected void drawText(Component text, float xPos, float yPos, float maxWidth, PoseStack poseStack, MultiBufferSource buffer, int color, int packedLight) {
+		Font font = Minecraft.getInstance().font;
+		float width = font.width(text);
+		float scale = maxWidth/width;
+		poseStack.pushPose();
+		poseStack.translate(xPos, yPos, -0.005f);
+		poseStack.scale(scale, scale, 1);
+		font.drawInBatch(text, 0, 0, color, false, poseStack.last().pose(), 
+				buffer, true, 0, packedLight);
+		poseStack.popPose();
 	}
 	
 	protected void drawTextureTopLeft(RenderType type, Matrix4f matrix4f, MultiBufferSource buffer, int packedLight, float z) {

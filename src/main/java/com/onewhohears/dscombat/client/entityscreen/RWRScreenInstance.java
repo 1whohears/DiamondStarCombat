@@ -2,11 +2,14 @@ package com.onewhohears.dscombat.client.entityscreen;
 
 import java.util.Collection;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -17,15 +20,21 @@ public class RWRScreenInstance extends EntityDynamicScreenInstance {
 	public static final ResourceLocation TEXTURE = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/entity_screen/rwr_screen_bg.png");
 	
-	protected final int width, height, centerX, centerY, textureRadius;
+	protected final int centerX, centerY, textureRadius;
 	
 	public RWRScreenInstance(int id) {
-		super("rwr", id, TEXTURE);
-		width = 512;
-		height = 512;
+		super("rwr", id, TEXTURE, 512, 512);
 		textureRadius = 230;
-		centerX = width/2; 
-		centerY = height/2;
+		centerX = pixelWidth/2; 
+		centerY = pixelHeight/2;
+	}
+	
+	@Override
+	public void draw(Entity entity, PoseStack poseStack, MultiBufferSource buffer, float partialTicks, int packedLight,
+			float worldWidth, float worldHeight) {
+		super.draw(entity, poseStack, buffer, partialTicks, packedLight, worldWidth, worldHeight);
+		// draw text test
+		drawText(Component.literal("obama?"), -0.5f, 0.5f, 1, poseStack, buffer, 0x0000ff, packedLight);
 	}
 	
 	@Override
@@ -53,8 +62,8 @@ public class RWRScreenInstance extends EntityDynamicScreenInstance {
 		if (screen_dist > 1) screen_dist = 1;
 		else if (screen_dist < 0.1) screen_dist = 0.1;
 		float yaw = (UtilAngles.getYaw(dp)-vehicle.getYRot()+180)*Mth.DEG_TO_RAD;
-		int x = Math.min(centerX + (int)(-Mth.sin(yaw)*textureRadius*screen_dist), width-1);
-		int y = Math.min(centerY + (int)(Mth.cos(yaw)*textureRadius*screen_dist), height-1);
+		int x = Math.min(centerX + (int)(-Mth.sin(yaw)*textureRadius*screen_dist), pixelWidth-1);
+		int y = Math.min(centerY + (int)(Mth.cos(yaw)*textureRadius*screen_dist), pixelHeight-1);
 		drawWarningAtPos(warn, x, y);
 	}
 	

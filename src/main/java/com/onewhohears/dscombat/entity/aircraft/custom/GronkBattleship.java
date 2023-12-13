@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.entity.aircraft.custom;
 
 import com.mojang.math.Vector3f;
+import com.onewhohears.dscombat.client.model.obj.ObjRadarModel.MastType;
 import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData;
 import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData.Builder;
 import com.onewhohears.dscombat.data.aircraft.presets.BoatPresets;
@@ -47,6 +48,11 @@ public class GronkBattleship extends EntityBoat {
 		hitboxes[4] = new RotableHitbox(this, "back", 
 				new Vector3f(8, 2.02f, 8), 
 				new Vec3(0, 3, -21.5));
+	}
+	
+	@Override
+	public MastType getMastType() {
+		return MastType.NORMAL;
 	}
 
 }

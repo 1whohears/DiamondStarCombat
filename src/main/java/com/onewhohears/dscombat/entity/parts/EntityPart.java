@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.entity.parts;
 
 import javax.annotation.Nullable;
 
+import com.onewhohears.dscombat.client.model.obj.ObjRadarModel.MastType;
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
@@ -204,6 +205,12 @@ public abstract class EntityPart extends Entity {
         double f1 = d.height;
         return new AABB(pX-f, pY-f1, pZ-f, 
         		pX+f, pY, pZ+f);
+    }
+    
+    public MastType getVehicleMastType() {
+    	EntityVehicle vehicle = getParentVehicle();
+    	if (vehicle == null) return MastType.NONE;
+    	return vehicle.getMastType();
     }
 
 }

@@ -14,6 +14,7 @@ import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
+import com.onewhohears.dscombat.client.model.obj.ObjRadarModel.MastType;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.common.container.AircraftMenuContainer;
 import com.onewhohears.dscombat.common.network.IPacket;
@@ -187,7 +188,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	protected RotableHitbox[] hitboxes = new RotableHitbox[0];
 	protected EntityScreenData[] screens = new EntityScreenData[0];
 	
-	// TODO 5.4 aircraft breaks apart when damaged
+	// TODO 5.2 below 50% health the probability of bullet damaging an engine/fuel leak/breaks internal radar increases
+	// TODO 5.4 aircraft visually breaks apart when damaged
 	// TODO 5.6 place and remove external parts from outside the vehicle
 	// TODO 5.7 an additional vehicle gui to control certain auxiliary functions (landing gear, jettison tanks/weapons)
 	// TODO 2.5 add chaff
@@ -2424,6 +2426,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	public EntityScreenData[] getVehicleScreens() {
 		return screens;
+	}
+	
+	public MastType getMastType() {
+		return MastType.NONE;
 	}
     
 }

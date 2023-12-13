@@ -158,7 +158,7 @@ public abstract class EntityDynamicScreenInstance extends EntityScreenInstance {
 			dynamicTexture.upload();
 			prevUpdateTickCount = entity.tickCount;
 		}
-        drawTexture(dynamicRenderType, matrix4f, buffer, packedLight, -0.01f);
+		drawTextureCentered(dynamicRenderType, matrix4f, buffer, packedLight, -0.001f);
 	}
 	
 	@Override

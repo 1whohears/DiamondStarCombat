@@ -13,16 +13,16 @@ import net.minecraft.world.entity.Entity;
 
 public class FuelScreenInstance extends EntityScreenInstance {
 	
-	public static final ResourceLocation FUEL_GAUGE = new ResourceLocation(DSCombatMod.MODID,
-            "textures/ui/fuel_guage.png");
-    public static final ResourceLocation FUEL_GAUGE_ARROW = new ResourceLocation(DSCombatMod.MODID,
-            "textures/ui/fuel_guage_arrow_fit.png");
+	public static final ResourceLocation FUEL_SCREEN = new ResourceLocation(DSCombatMod.MODID,
+            "textures/ui/entity_screen/fuel_screen.png");
+    public static final ResourceLocation FUEL_SCREEN_ARROW = new ResourceLocation(DSCombatMod.MODID,
+            "textures/ui/entity_screen/fuel_screen_arrow.png");
 	
     protected final RenderType arrowRenderType;
     
 	public FuelScreenInstance(int id) {
-		super(id, FUEL_GAUGE);
-		arrowRenderType = RenderType.text(FUEL_GAUGE_ARROW);
+		super(id, FUEL_SCREEN);
+		arrowRenderType = RenderType.text(FUEL_SCREEN_ARROW);
 	}
 	
 	public void draw(Entity entity, PoseStack poseStack, MultiBufferSource buffer, float partialTicks, int packedLight,
@@ -32,8 +32,7 @@ public class FuelScreenInstance extends EntityScreenInstance {
 		float max = vehicle.getMaxFuel(), fuelPercent = 0;
         if (max != 0) fuelPercent = vehicle.getCurrentFuel() / max;
 		poseStack.pushPose();
-		poseStack.translate(0.5, 0.6, 0);
-		poseStack.mulPose(Vector3f.ZP.rotationDegrees(160F * fuelPercent + 10F));
+		poseStack.mulPose(Vector3f.ZP.rotationDegrees(270F * fuelPercent + 45F));
 		Matrix4f matrix4f = poseStack.last().pose();
 		drawTextureCentered(arrowRenderType, matrix4f, buffer, packedLight, -0.001f);
 		poseStack.popPose();

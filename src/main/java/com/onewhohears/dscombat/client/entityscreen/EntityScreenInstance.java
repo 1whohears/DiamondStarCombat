@@ -31,10 +31,10 @@ public abstract class EntityScreenInstance implements AutoCloseable{
 	
 	public void draw(Entity entity, Matrix4f matrix4f, MultiBufferSource buffer, float partialTicks, int packedLight,
 			float worldWidth, float worldHeight) {
-		if (baseRenderType != null) drawTexture(baseRenderType, matrix4f, buffer, packedLight, 0);
+		if (baseRenderType != null) drawTextureCentered(baseRenderType, matrix4f, buffer, packedLight, 0);
 	}
 	
-	protected void drawTexture(RenderType type, Matrix4f matrix4f, MultiBufferSource buffer, int packedLight, float z) {
+	protected void drawTextureTopLeft(RenderType type, Matrix4f matrix4f, MultiBufferSource buffer, int packedLight, float z) {
 		VertexConsumer vertexconsumer = buffer.getBuffer(type);
         vertexconsumer.vertex(matrix4f, 0, 1, z)
         	.color(255, 255, 255, 255)

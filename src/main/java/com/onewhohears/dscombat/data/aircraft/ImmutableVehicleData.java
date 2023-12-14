@@ -93,46 +93,6 @@ public class ImmutableVehicleData {
 			.setSpinRate(3.141f)
 			.build();
 	
-	public static final ImmutableVehicleData DESTROYER_DATA = Builder.create(BoatPresets.DEFAULT_DESTROYER)
-			.setInteralEngineSound(ModSounds.BOAT_1)
-			.setExternalEngineSound(ModSounds.BOAT_1)
-			.setNegativeThrottle(true)
-			.setRotationalInertia(6, 10, 4)
-			.setCrashExplosionRadius(8)
-			.setCameraDistance(22)
-			.setSpinRate(3.141f)
-			.build();
-	
-	public static final ImmutableVehicleData CRUISER_DATA = Builder.create(BoatPresets.DEFAULT_NATHAN_BOAT)
-			.setInteralEngineSound(ModSounds.BOAT_1)
-			.setExternalEngineSound(ModSounds.BOAT_1)
-			.setNegativeThrottle(true)
-			.setRotationalInertia(6, 10, 4)
-			.setCrashExplosionRadius(8)
-			.setCameraDistance(26)
-			.setSpinRate(3.141f)
-			.build();
-	
-	public static final ImmutableVehicleData CORVETTE_DATA = Builder.create(BoatPresets.DEFAULT_CORVETTE)
-			.setInteralEngineSound(ModSounds.BOAT_1)
-			.setExternalEngineSound(ModSounds.BOAT_1)
-			.setNegativeThrottle(true)
-			.setRotationalInertia(6, 10, 4)
-			.setCrashExplosionRadius(8)
-			.setCameraDistance(13)
-			.setSpinRate(3.141f)
-			.build();
-	
-	public static final ImmutableVehicleData AIRCRAFT_CARRIER_DATA = Builder.create(BoatPresets.DEFAULT_AIRCRAFT_CARRIER)
-			.setInteralEngineSound(ModSounds.BOAT_1)
-			.setExternalEngineSound(ModSounds.BOAT_1)
-			.setNegativeThrottle(true)
-			.setRotationalInertia(8, 10, 8)
-			.setCrashExplosionRadius(10)
-			.setCameraDistance(34)
-			.setSpinRate(3.141f)
-			.build();
-	
 	public static final ImmutableVehicleData ANDOLF_SUB_DATA = Builder.create(SubPresets.DEFAULT_ANDOLF_SUB)
 			.setInteralEngineSound(ModSounds.SUB_1)
 			.setExternalEngineSound(ModSounds.SUB_1)

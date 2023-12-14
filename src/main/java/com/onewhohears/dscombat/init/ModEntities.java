@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.init;
 
 import com.google.common.collect.ImmutableSet;
-import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.entityscreen.EntityScreenTypes;
 import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
@@ -12,9 +11,12 @@ import com.onewhohears.dscombat.entity.aircraft.EntityGroundVehicle;
 import com.onewhohears.dscombat.entity.aircraft.EntityHelicopter;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 import com.onewhohears.dscombat.entity.aircraft.EntitySubmarine;
-import com.onewhohears.dscombat.entity.aircraft.RotableHitbox;
+import com.onewhohears.dscombat.entity.aircraft.custom.AircraftCarrier;
 import com.onewhohears.dscombat.entity.aircraft.custom.AlexisPlane;
 import com.onewhohears.dscombat.entity.aircraft.custom.BroncoPlane;
+import com.onewhohears.dscombat.entity.aircraft.custom.Corvette;
+import com.onewhohears.dscombat.entity.aircraft.custom.Cruiser;
+import com.onewhohears.dscombat.entity.aircraft.custom.Destroyer;
 import com.onewhohears.dscombat.entity.aircraft.custom.FelixPlane;
 import com.onewhohears.dscombat.entity.aircraft.custom.GronkBattleship;
 import com.onewhohears.dscombat.entity.aircraft.custom.JaviPlane;
@@ -141,58 +143,20 @@ public class ModEntities {
 					EntityDimensions.scalable(14f,4f)));
 	
 	public static final RegistryObject<EntityType<EntityBoat>> DESTROYER = ENTITIES.register("destroyer", 
-			() -> createEntityTypeFar((type, level) -> new EntityBoat(type, level, 
-					ImmutableVehicleData.DESTROYER_DATA) {
-						@Override
-						public void addHitboxes() {
-							hitboxes = new RotableHitbox[1];
-							hitboxes[0] = new RotableHitbox(this, "plat0", 
-								new Vector3f(10, 4.02f, 27.6f), 
-								new Vec3(0, 2, 0));
-						}
-					}, EntityDimensions.scalable(10f,4f)));
+			() -> createEntityTypeFar((type, level) -> new Destroyer(type, level),
+					EntityDimensions.scalable(10f,4f)));
 	
 	public static final RegistryObject<EntityType<EntityBoat>> CRUISER = ENTITIES.register("cruiser", 
-			() -> createEntityTypeFar((type, level) -> new EntityBoat(type, level, 
-					ImmutableVehicleData.CRUISER_DATA) {
-						@Override
-						public void addHitboxes() {
-							hitboxes = new RotableHitbox[2];
-							hitboxes[0] = new RotableHitbox(this, "plat0", 
-									new Vector3f(12, 4.02f, 35.6f), 
-									new Vec3(0, 2, -2));
-							hitboxes[1] = new RotableHitbox(this, "plat1", 
-									new Vector3f(7, 1.02f, 21), 
-									new Vec3(0, 4.5, 0.8));
-						}
-					}, EntityDimensions.scalable(12f,4f)));
+			() -> createEntityTypeFar((type, level) -> new Cruiser(type, level),
+					EntityDimensions.scalable(12f,4f)));
 	
 	public static final RegistryObject<EntityType<EntityBoat>> CORVETTE = ENTITIES.register("corvette", 
-			() -> createEntityTypeFar((type, level) -> new EntityBoat(type, level, 
-					ImmutableVehicleData.CORVETTE_DATA) {
-						@Override
-						public void addHitboxes() {
-							hitboxes = new RotableHitbox[1];
-							hitboxes[0] = new RotableHitbox(this, "plat0", 
-									new Vector3f(7, 3.02f, 16), 
-									new Vec3(0, 1.5, -2));
-						}
-					}, EntityDimensions.scalable(7f,3f)));
+			() -> createEntityTypeFar((type, level) -> new Corvette(type, level),
+					EntityDimensions.scalable(7f,3f)));
 	
 	public static final RegistryObject<EntityType<EntityBoat>> AIRCRAFT_CARRIER = ENTITIES.register("aircraft_carrier", 
-			() -> createEntityTypeFar((type, level) -> new EntityBoat(type, level, 
-					ImmutableVehicleData.AIRCRAFT_CARRIER_DATA) {
-						@Override
-						public void addHitboxes() {
-							hitboxes = new RotableHitbox[2];
-							hitboxes[0] = new RotableHitbox(this, "runway", 
-									new Vector3f(16, 6.02f, 50), 
-									new Vec3(0, 3, 0));
-							hitboxes[1] = new RotableHitbox(this, "side_plat", 
-									new Vector3f(25, 3.02f, 24), 
-									new Vec3(0, 4.5, 0));
-						}
-					}, EntityDimensions.scalable(25f,6f)));
+			() -> createEntityTypeFar((type, level) -> new AircraftCarrier(type, level), 
+					EntityDimensions.scalable(25f,6f)));
 	
 	// SUBMARINES
 	

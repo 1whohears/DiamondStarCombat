@@ -36,16 +36,24 @@ public class FelixPlane extends EntityPlane {
 	
 	@Override
 	public void addVehicleScreens() {
-		screens = new EntityScreenData[3];
+		screens = new EntityScreenData[5];
 		screens[0] = new EntityScreenData(EntityScreenTypes.AIR_RADAR_SCREEN, 
-				new Vec3(0.29, 0.438, 5.42), 
-				0.185f, 0.185f, 
-				15f, 0f, 0f);
+				new Vec3(0.294, 0.434, 5.425), 
+				0.195f, 0.195f, 
+				10f, 0f, 0f);
 		screens[1] = new EntityScreenData(EntityScreenTypes.FUEL_SCREEN, 
 				new Vec3(-0.39, 0.135, 5.155), 
 				0.1f, 0.1f, 
 				90f, 0f, 0f);
 		screens[2] = HudScreenInstance.getDefaultData(0, -0.3, 4.7);
+		screens[3] = new EntityScreenData(EntityScreenTypes.GROUND_RADAR_SCREEN, 
+				new Vec3(-0.31, 0.434, 5.425), 
+				0.195f, 0.195f, 
+				10f, 0f, 0f);
+		screens[4] = new EntityScreenData(EntityScreenTypes.RWR_SCREEN, 
+				new Vec3(0.0775, 0.505, 5.44), 
+				0.11f, 0.11f, 
+				10f, 0f, 0f);
 	}
 
 }

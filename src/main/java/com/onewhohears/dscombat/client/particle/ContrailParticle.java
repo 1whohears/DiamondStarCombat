@@ -31,7 +31,7 @@ public class ContrailParticle extends TextureSheetParticle {
 		friction = 0.95f;
 		gravity = 0.001f;
 		quadSize = 0.3f + (float)random.nextGaussian() * 0.08f;
-		lifetime = 600 + (int)(random.nextGaussian() * 100);
+		lifetime = 1000 + (int)(random.nextGaussian() * 200);
 		pickSprite(sprites);
 		setColor(1, 1, 1);
 		setAlpha(1f);

@@ -37,7 +37,7 @@ public class LargeSmokeCloudParticle extends TextureSheetParticle {
 		this.distanceY = dy + random.nextGaussian() * 0.2;
 		this.distanceZ = dz + random.nextGaussian() * 0.2;
 		this.quadSize *= (8f + random.nextGaussian() * 0.05);
-		this.lifetime = 250 + (int)(random.nextGaussian() * 100);
+		this.lifetime = 500 + (int)(random.nextGaussian() * 200);
 		this.spreadTime = 20 + (int)(random.nextGaussian() * 4);
 		this.pickSprite(sprites);
 		this.setColor(1, 1, 1);

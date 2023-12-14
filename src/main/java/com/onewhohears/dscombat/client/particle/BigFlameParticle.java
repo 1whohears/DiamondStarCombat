@@ -35,7 +35,7 @@ public class BigFlameParticle extends TextureSheetParticle {
 		friction = 0.95f;
 		gravity = 0.85f;
 		quadSize = 0.4f + (float)random.nextGaussian() * 0.6f;
-		lifetime = 200 + (int)(random.nextGaussian() * 100);
+		lifetime = 250 + (int)(random.nextGaussian() * 200);
 		setColor(1, 1, 1);
 		setAlpha(1f);
 		setParticleSpeed(dx+random.nextGaussian()*0.05,

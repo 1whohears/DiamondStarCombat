@@ -164,7 +164,7 @@ public abstract class WeaponData extends JsonPreset {
 				direction, vehicle, false, false));
 		if (w == null) return false;
 		level.addFreshEntity(w);
-		// FIXME 9 shoot sounds don't always play?
+		// FIXME 9 sometimes a lot of sounds just stop working (engines, weapon shoot, missiles, rwr) sometimes fixed by F3+T
 		level.playSound(null, w.blockPosition(), 
 				getShootSound(), SoundSource.PLAYERS, 
 				1f, 1f);

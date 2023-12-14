@@ -26,7 +26,7 @@ public class EntityScreenTypes {
 		// TODO 1.6 give every vehicle that needs it turn coordinator screen
 		// TODO 1.7 give every vehicle that needs it an attitude indicator
 		// TODO 1.8 give every vehicle that needs it flare count screen
-		
+		// TODO 1.9 give every vehicle that needs it altitude screen
 	}
 	
 	public interface EntityScreenFactory {

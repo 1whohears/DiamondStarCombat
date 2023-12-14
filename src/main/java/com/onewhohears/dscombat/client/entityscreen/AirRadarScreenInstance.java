@@ -2,11 +2,14 @@ package com.onewhohears.dscombat.client.entityscreen;
 
 import java.util.List;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.data.radar.RadarData;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 
@@ -18,6 +21,16 @@ public class AirRadarScreenInstance extends RadarScreenInstance {
 	public AirRadarScreenInstance(int id) {
 		super("air_radar", id, TEXTURE, 512, 512, 
 				256, 360, 320, 20);
+	}
+	
+	@Override
+	public void draw(Entity entity, PoseStack poseStack, MultiBufferSource buffer, 
+			float partialTicks, int packedLight, float worldWidth, float worldHeight) {
+		super.draw(entity, poseStack, buffer, partialTicks, packedLight, worldWidth, worldHeight);
+		int range = (int)DSCClientInputs.getRadarDisplayRange();
+		String format_range = String.format("DR: %4d", range);
+		drawText(Component.literal(format_range), -0.48f, -0.48f, 0.25f, 
+				poseStack, buffer, 0x00ff00, packedLight);
 	}
 	
 	@Override

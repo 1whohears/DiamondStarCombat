@@ -152,8 +152,8 @@ public abstract class EntityDynamicScreenInstance extends EntityScreenInstance {
 	}
 	
 	@Override
-	public void draw(Entity entity, Matrix4f matrix4f, MultiBufferSource buffer, float partialTicks, int packedLight,
-			float worldWidth, float worldHeight) {
+	public void draw(Entity entity, Matrix4f matrix4f, MultiBufferSource buffer, 
+			float partialTicks, int packedLight, float worldWidth, float worldHeight) {
 		super.draw(entity, matrix4f, buffer, partialTicks, packedLight, worldWidth, worldHeight);
 		if (shouldUpdateTexture(entity)) {
 			updateTexture(entity);

@@ -2,14 +2,11 @@ package com.onewhohears.dscombat.client.entityscreen;
 
 import java.util.Collection;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -27,14 +24,6 @@ public class RWRScreenInstance extends EntityDynamicScreenInstance {
 		textureRadius = 230;
 		centerX = pixelWidth/2; 
 		centerY = pixelHeight/2;
-	}
-	
-	@Override
-	public void draw(Entity entity, PoseStack poseStack, MultiBufferSource buffer, float partialTicks, int packedLight,
-			float worldWidth, float worldHeight) {
-		super.draw(entity, poseStack, buffer, partialTicks, packedLight, worldWidth, worldHeight);
-		// draw text test
-		drawText(Component.literal("obama?"), -0.5f, 0.5f, 1, poseStack, buffer, 0x0000ff, packedLight);
 	}
 	
 	@Override

@@ -25,8 +25,8 @@ public class FuelScreenInstance extends EntityScreenInstance {
 		arrowRenderType = RenderType.text(FUEL_SCREEN_ARROW);
 	}
 	
-	public void draw(Entity entity, PoseStack poseStack, MultiBufferSource buffer, float partialTicks, int packedLight,
-			float worldWidth, float worldHeight) {
+	public void draw(Entity entity, PoseStack poseStack, MultiBufferSource buffer, 
+			float partialTicks, int packedLight, float worldWidth, float worldHeight) {
 		super.draw(entity, poseStack, buffer, partialTicks, packedLight, worldWidth, worldHeight);
 		EntityVehicle vehicle = (EntityVehicle)entity;
 		float max = vehicle.getMaxFuel(), fuelPercent = 0;

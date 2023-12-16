@@ -1,0 +1,32 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"R": {
+			"item": "minecraft:red_dye"
+		},
+		"O": {
+			"item": "minecraft:orange_dye"
+		},
+		"Y": {
+			"item": "minecraft:yellow_dye"
+		},
+		"G": {
+			"item": "minecraft:green_dye"
+		},
+		"B": {
+			"item": "minecraft:blue_dye"
+		},
+		"I": {
+			"item": "minecraft:iron_ingot"
+		}
+	},
+	"pattern": [
+		"RIB",
+		"OIG",
+		" Y "
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:spraycan"
+	}
+}

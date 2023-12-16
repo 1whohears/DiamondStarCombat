@@ -117,7 +117,7 @@ public abstract class JsonPresetReloadListener<T extends JsonPreset> extends Sim
 			ResourceLocation key = new ResourceLocation(key_string);
 			JsonObject json = UtilParse.GSON.fromJson(json_string, JsonObject.class);
 			T data = getFromJson(key, json);
-			System.out.println("ADD: "+data.toString());
+			System.out.println("ADD: "+key.toString());
 			presetMap.put(data.getId(), data);
 		}
 		resetCache();

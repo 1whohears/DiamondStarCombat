@@ -187,6 +187,9 @@ public class ModItems {
 	public static final RegistryObject<Item> CM_MANLY_52 = ITEMS.register("cm_manly_52", 
 			() -> new ItemEngine(EngineType.PUSH, 0.8f, 0.12f, 2.0f, 
 					0.004f, false, SlotType.INTERNAL_ENGINE_RADIAL));
+	public static final RegistryObject<Item> ALLISON_V_1710 = ITEMS.register("allison_v_1710", 
+			() -> new ItemEngine(EngineType.PUSH, 1.7f, 0.27f, 2.5f, 
+					0.009f, false, SlotType.INTERNAL_ENGINE_RADIAL));
 	public static final RegistryObject<Item> COMPOUND_TURBINE = ITEMS.register("compound_turbine", 
 			() -> new ItemEngine(EngineType.PUSH, 6f, 0.68f, 8.0f, 
 					0.019f, false, SlotType.INTERNAL_ENGINE_RADIAL));

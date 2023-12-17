@@ -43,9 +43,9 @@ public class JasonPresets {
 	public static final AircraftPreset UNARMED_JASON_PLANE = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "jason_plane_unarmed", EMPTY_JASON_PLANE)
 			.setCraftable()
-			.setSlotItem("internal_1", ModItems.CM_MANLY_52.getId())
+			.setSlotItem("internal_1", ModItems.ALLISON_V_1710.getId())
 			.setSlotItem("internal_2", ModItems.LIGHT_FUEL_TANK.getId(), true)
-			.addIngredient(ModItems.CM_MANLY_52.getId())
+			.addIngredient(ModItems.ALLISON_V_1710.getId())
 			.addIngredient(ModItems.LIGHT_FUEL_TANK.getId())
 			.build();
 	

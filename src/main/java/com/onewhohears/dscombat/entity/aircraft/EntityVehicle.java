@@ -146,6 +146,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public final double collideSpeedWithGearThreshHold = Config.SERVER.collideSpeedWithGearThreshHold.get();
 	public final double collideDamageRate = Config.SERVER.collideDamageRate.get();
 	public final double maxFallSpeed = Config.SERVER.maxFallSpeed.get();
+	public final double maxClimbSpeed = 0.75;
 	
 	/**
 	 * this vehicle's original preset. 
@@ -706,9 +707,9 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		double velXZ = motionXZ.length();
 		if (velXZ > maxXZ) motionXZ = motionXZ.scale(maxXZ / velXZ);
 		
-		double maxY = maxFallSpeed;
 		double my = move.y;
-		if (Math.abs(my) > maxY) my = maxY * Math.signum(my);
+		if (my > maxClimbSpeed) my = maxClimbSpeed;
+		else if (my < -maxFallSpeed) my = -maxFallSpeed;
 		else if (Math.abs(my) < 0.001) my = 0;
 		
 		if (onGround && my < 0) my = -0.01; // THIS MUST BE BELOW ZERO

@@ -1,17 +1,20 @@
 package com.onewhohears.dscombat.client.overlay.components;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
-import com.onewhohears.dscombat.client.overlay.WeaponTabComponent;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
-import net.minecraft.network.chat.Component;
-import net.minecraft.sounds.SoundEvents;
+import static com.onewhohears.dscombat.client.overlay.WeaponTabComponent.TAB_HEIGHT;
 
 import java.util.List;
 import java.util.Objects;
 
-import static com.onewhohears.dscombat.client.overlay.WeaponTabComponent.TAB_HEIGHT;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.onewhohears.dscombat.client.input.DSCClientInputs;
+import com.onewhohears.dscombat.client.input.DSCKeys;
+import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
+import com.onewhohears.dscombat.client.overlay.WeaponTabComponent;
+import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+
+import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
 
 public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
     public static final int[] SPACINGS = {24, 21, 18, 12, 0};
@@ -93,8 +96,8 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
 
         // TODO: icons indicating how the weapon works e.g. infrared, radar
 
-        /* lmao
-        int yPos=1, xPos, weaponSelectWidth=getFont().width(WEAPON_SELECT)+1, maxNameWidth=46, maxTypeWidth=10;
+        // TODO 0.1 until a better way is made, these controls and other info need to be displayed somewhere
+        int yPos=2, xPos, leftSpace=2, maxNameWidth=46;
         int color1=0x7340bf, color2=0x00ff00, color;
 
         // CONTROLS
@@ -102,7 +105,7 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
         if (maxNameWidth < 50) maxNameWidth = 50;
         // FLARES
         if (vehicle.hasFlares()) {
-            xPos = 1+weaponSelectWidth;
+            xPos = 1+leftSpace;
             if (vehicle.inputs.flare) color = color2;
             else color = color1;
             drawString(poseStack, getFont(),
@@ -114,22 +117,18 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
                     xPos, yPos, color);
             yPos += 10;
         }
-        // FREE LOOK
-        xPos = 1+weaponSelectWidth;
+        // MOUSE MODE
+        xPos = 1+leftSpace;
         String key = DSCKeys.mouseModeKey.getKey().getDisplayName().getString();
-        if (vehicle.driverCanFreeLook()) {
-            text = "MouseMode("+key+")";
-            color = color1;
-        } else {
-            text = "FreeLook("+key+")";
-            color = color2;
-        }
+        text = DSCClientInputs.getMouseMode().name()+"("+key+")";
+        if (DSCClientInputs.getMouseMode().isLockedForward()) color = color1;
+        else color = color2;
         drawString(poseStack, getFont(),
                 text, xPos, yPos, color);
         yPos += 10;
         // LANDING GEAR
         if (vehicle.canToggleLandingGear()) {
-            xPos = 1+weaponSelectWidth;
+            xPos = 1+leftSpace;
             if (vehicle.isLandingGear()) {
                 text = "OUT";
                 color = color2;
@@ -147,7 +146,7 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
         }
         // BREAKS
         if (vehicle.canBrake()) {
-            xPos = 1+weaponSelectWidth;
+            xPos = 1+leftSpace;
             if (vehicle.getAircraftType() == EntityVehicle.AircraftType.PLANE)
                 text = DSCKeys.special2Key.getKey().getDisplayName().getString();
             else text = DSCKeys.specialKey.getKey().getDisplayName().getString();
@@ -160,7 +159,7 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
         }
         // FLAPS DOWN
         if (vehicle.canFlapsDown()) {
-            xPos = 1+weaponSelectWidth;
+            xPos = 1+leftSpace;
             text = DSCKeys.specialKey.getKey().getDisplayName().getString();
             if (vehicle.inputs.special) color = color2;
             else color = color1;
@@ -171,7 +170,7 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
         }
         // WEAPON ANGLED DOWN
         if (vehicle.canAngleWeaponDown()) {
-            xPos = 1+weaponSelectWidth;
+            xPos = 1+leftSpace;
             text = DSCKeys.special2Key.getKey().getDisplayName().getString();
             if (vehicle.inputs.special2) color = color2;
             else color = color1;
@@ -182,7 +181,7 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
         }
         // HOVER
         if (vehicle.canHover()) {
-            xPos = 1+weaponSelectWidth;
+            xPos = 1+leftSpace;
             text = DSCKeys.specialKey.getKey().getDisplayName().getString();
             if (vehicle.inputs.special) color = color2;
             else color = color1;
@@ -193,7 +192,7 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
         }
         // PLAYERS ONLY
         if (vehicle.radarSystem.hasRadar()) {
-            xPos = 1+weaponSelectWidth;
+            xPos = 1+leftSpace;
             if (vehicle.getRadarMode().isOff()) color = color2;
             else color = color1;
             drawString(poseStack, getFont(),
@@ -206,8 +205,6 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
             // what is this
             yPos += 10;
         }
-
-         */
     }
 
     public static void queueWeaponChange() {

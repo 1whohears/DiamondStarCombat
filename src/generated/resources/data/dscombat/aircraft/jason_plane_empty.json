@@ -1,48 +1,48 @@
 {
   "aircraft_type": 0,
   "base_armor": 0.0,
-  "cross_sec_area": 2.89,
-  "displayName": "preset.dscombat.wooden_plane",
-  "health": 40.0,
+  "cross_sec_area": 3.0,
+  "displayName": "preset.dscombat.jason_plane_empty",
+  "health": 60.0,
   "idleheat": 1.0,
   "ingredients": [
     {
-      "item": "minecraft:oak_planks",
-      "num": 30
+      "item": "dscombat:fuselage",
+      "num": 1
     },
     {
-      "item": "dscombat:seat",
+      "item": "dscombat:wing",
+      "num": 2
+    },
+    {
+      "item": "dscombat:cockpit",
       "num": 1
+    },
+    {
+      "item": "dscombat:wheel",
+      "num": 3
     },
     {
       "item": "dscombat:propeller",
       "num": 1
     },
     {
-      "item": "dscombat:wheel",
-      "num": 2
-    },
-    {
-      "item": "dscombat:cm_manly_52",
-      "num": 1
-    },
-    {
-      "item": "dscombat:light_fuel_tank",
-      "num": 1
+      "item": "minecraft:blue_dye",
+      "num": 4
     }
   ],
-  "is_craftable": true,
-  "item": "dscombat:wooden_plane",
+  "is_craftable": false,
+  "item": "dscombat:jason_plane",
   "landing_gear": true,
-  "mass": 6.0,
-  "max_health": 40.0,
-  "max_speed": 0.75,
+  "mass": 9.0,
+  "max_health": 60.0,
+  "max_speed": 0.85,
   "maxpitch": 3.0,
   "maxroll": 5.0,
   "maxyaw": 2.0,
-  "pitchtorque": 2.5,
-  "presetId": "wooden_plane",
-  "rolltorque": 1.5,
+  "pitchtorque": 2.0,
+  "presetId": "jason_plane_empty",
+  "rolltorque": 2.0,
   "slots": [
     {
       "data": {
@@ -50,31 +50,36 @@
       },
       "name": "pilot_seat",
       "slot_posx": 0.0,
-      "slot_posy": -0.4,
-      "slot_posz": 0.0,
+      "slot_posy": 0.3,
+      "slot_posz": -0.15,
       "slot_type": "seat",
       "zRot": 0.0
     },
     {
+      "name": "frame_1",
+      "slot_posx": 0.0,
+      "slot_posy": -0.45,
+      "slot_posz": 1.9,
+      "slot_type": "frame",
+      "zRot": 180.0
+    },
+    {
       "name": "left_wing_1",
-      "slot_posx": 1.5,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
+      "slot_posx": 3.4,
+      "slot_posy": -0.4,
+      "slot_posz": 1.1,
       "slot_type": "wing",
       "zRot": 180.0
     },
     {
       "name": "right_wing_1",
-      "slot_posx": -1.5,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
+      "slot_posx": -3.4,
+      "slot_posy": -0.4,
+      "slot_posz": 1.1,
       "slot_type": "wing",
       "zRot": 180.0
     },
     {
-      "data": {
-        "itemid": "dscombat:cm_manly_52"
-      },
       "name": "internal_1",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
@@ -83,10 +88,6 @@
       "zRot": 0.0
     },
     {
-      "data": {
-        "filled": true,
-        "itemid": "dscombat:light_fuel_tank"
-      },
       "name": "internal_2",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
@@ -103,11 +104,11 @@
       "zRot": 0.0
     }
   ],
-  "sort_factor": 0,
+  "sort_factor": 5,
   "stealth": 1.0,
-  "throttledown": 0.06,
-  "throttleup": 0.02,
-  "turn_radius": 16.0,
-  "wing_area": 6.5,
-  "yawtorque": 4.5
+  "throttledown": 0.07,
+  "throttleup": 0.04,
+  "turn_radius": 10.0,
+  "wing_area": 11.0,
+  "yawtorque": 3.0
 }

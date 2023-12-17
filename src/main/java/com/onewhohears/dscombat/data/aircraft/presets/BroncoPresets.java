@@ -15,7 +15,7 @@ public class BroncoPresets {
 			.setItem(ModItems.BRONCO_PLANE.getId())
 			.setMaxHealth(70f)
 			.setMass(15f)
-			.setMaxSpeed(0.95f)
+			.setMaxSpeed(0.9f)
 			.setStealth(1f)
 			.setCrossSecArea(5f)
 			.setIdleHeat(3f)

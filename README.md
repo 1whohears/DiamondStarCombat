@@ -25,8 +25,8 @@ __**gabyloko**__: Improved **Andolf Sub Model** and **Spanish Translations**
 
 __**d_water_loo**__: **Russian Translations**
 
-__**.ceoofgoogle:**__ All the Big Epic Boat models and new turret/external radar models.
+__**.ceoofgoogle:**__ All the Big Epic Boat models and new turret/external radar and masts models.
 
 __**blackbirdantlion**__: **Improved Vehicle Workbench UI Texture**
 
-__**rainsky_0431**__: **Bronco Plane**, **Felix Plane**, **New Javi Plane**, **New Alexis Plane** Models and Textures
+__**rainsky_0431**__: **Bronco Plane**, **Felix Plane**, **Jason Plane**, **New Javi Plane**, **New Alexis Plane** Models and Textures

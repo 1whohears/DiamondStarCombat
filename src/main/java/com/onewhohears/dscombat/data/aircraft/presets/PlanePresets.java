@@ -15,7 +15,7 @@ public class PlanePresets {
 			.setItem(ModItems.WOODEN_PLANE.getId())
 			.setMaxHealth(40f)
 			.setMass(6f)
-			.setMaxSpeed(0.9f)
+			.setMaxSpeed(0.75f)
 			.setStealth(1.0f)
 			.setCrossSecArea(2.89f)
 			.setIdleHeat(1f)

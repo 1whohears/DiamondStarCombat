@@ -7,6 +7,7 @@ import com.onewhohears.dscombat.data.aircraft.presets.BroncoPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.CarPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.FelixPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.HeliPresets;
+import com.onewhohears.dscombat.data.aircraft.presets.JasonPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.JaviPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.PlanePresets;
 import com.onewhohears.dscombat.data.aircraft.presets.SubPresets;
@@ -29,9 +30,9 @@ import com.onewhohears.dscombat.item.ItemPart;
 import com.onewhohears.dscombat.item.ItemRadarPart;
 import com.onewhohears.dscombat.item.ItemRepairTool;
 import com.onewhohears.dscombat.item.ItemSeat;
+import com.onewhohears.dscombat.item.ItemSpraycan;
 import com.onewhohears.dscombat.item.ItemTurret;
 import com.onewhohears.dscombat.item.ItemWeaponPart;
-import com.onewhohears.dscombat.item.ItemSpraycan;
 
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -374,6 +375,9 @@ public class ModItems {
 	public static final RegistryObject<Item> FELIX_PLANE = ITEMS.register("felix_plane", 
 			() -> new ItemAircraft(ModEntities.FELIX_PLANE.get(), 
 					FelixPresets.DEFAULT_FELIX_PLANE));
+	public static final RegistryObject<Item> JASON_PLANE = ITEMS.register("jason_plane", 
+			() -> new ItemAircraft(ModEntities.JASON_PLANE.get(), 
+					JasonPresets.DEFAULT_JASON_PLANE));
 	
 	// HELICOPTERS
 	public static final RegistryObject<Item> NOAH_CHOPPER = ITEMS.register("noah_chopper", 

@@ -20,6 +20,7 @@ import com.onewhohears.dscombat.entity.aircraft.custom.Destroyer;
 import com.onewhohears.dscombat.entity.aircraft.custom.E3SentryPlane;
 import com.onewhohears.dscombat.entity.aircraft.custom.FelixPlane;
 import com.onewhohears.dscombat.entity.aircraft.custom.GronkBattleship;
+import com.onewhohears.dscombat.entity.aircraft.custom.JasonPlane;
 import com.onewhohears.dscombat.entity.aircraft.custom.JaviPlane;
 import com.onewhohears.dscombat.entity.aircraft.custom.NoahChopper;
 import com.onewhohears.dscombat.entity.parts.EntityEngine;
@@ -81,6 +82,10 @@ public class ModEntities {
 	
 	public static final RegistryObject<EntityType<EntityPlane>> FELIX_PLANE = ENTITIES.register("felix_plane", 
 			() -> createEntityTypeFar((type, level) -> new FelixPlane(type, level), 
+					EntityDimensions.scalable(4.0f, 4.0f)));
+	
+	public static final RegistryObject<EntityType<EntityPlane>> JASON_PLANE = ENTITIES.register("jason_plane", 
+			() -> createEntityTypeFar((type, level) -> new JasonPlane(type, level), 
 					EntityDimensions.scalable(4.0f, 4.0f)));
 	
 	// HELICOPTORS

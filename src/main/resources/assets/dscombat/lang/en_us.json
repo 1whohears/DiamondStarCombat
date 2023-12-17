@@ -139,6 +139,7 @@
 	"entity.dscombat.aircraft_carrier": "Aircraft Carrier",
 	"entity.dscombat.bronco_plane": "Bronco Plane",
 	"entity.dscombat.felix_plane": "Felix Plane",
+	"entity.dscombat.jason_plane": "Jason Plane",
 	
 	"entity.minecraft.villager.dscombat.weapons_engineer": "Weapons Engineer",
 	"entity.minecraft.villager.dscombat.aircraft_engineer": "Aircraft Engineer",
@@ -256,6 +257,7 @@
 	"item.dscombat.aircraft_carrier": "Aircraft Carrier",
 	"item.dscombat.bronco_plane": "Bronco Plane",
 	"item.dscombat.felix_plane": "Felix Plane",
+	"item.dscombat.jason_plane": "Jason Plane",
 	
 	"item.dscombat.the_missile_knows_disc": "Music Disc",
 	"item.dscombat.the_missile_knows_disc.desc": "US Air Force - The Missile Knows Where It Is",
@@ -352,6 +354,9 @@
 	"preset.dscombat.felix_plane_empty": "Empty Felix Plane",
 	"preset.dscombat.felix_plane_unarmed": "Unarmed Felix Plane",
 	"preset.dscombat.felix_plane": "Default Felix Plane",
+	"preset.dscombat.jason_plane_empty": "Empty Jason Plane",
+	"preset.dscombat.jason_plane_unarmed": "Unarmed Jason Plane",
+	"preset.dscombat.jason_plane": "Default Jason Plane",
 	
 	"key.categories.vehicle_move_control": "Diamond Star Combat Vehicle Move Controls",
 	"key.categories.vehicle_control_util": "Diamond Star Combat Vehicle Control Utility",

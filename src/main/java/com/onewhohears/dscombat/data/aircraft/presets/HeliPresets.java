@@ -15,7 +15,7 @@ public class HeliPresets {
 			.setItem(ModItems.NOAH_CHOPPER.getId())
 			.setMaxHealth(300f)
 			.setMass(30f)
-			.setMaxSpeed(0.8f)
+			.setMaxSpeed(0.7f)
 			.setStealth(1.2f)
 			.setCrossSecArea(7.84f)
 			.setIdleHeat(8f)

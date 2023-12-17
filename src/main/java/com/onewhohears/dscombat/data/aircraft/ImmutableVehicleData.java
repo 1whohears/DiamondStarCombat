@@ -26,19 +26,6 @@ public class ImmutableVehicleData {
 			.setCanAimDown(false)
 			.build();
 	
-	public static final ImmutableVehicleData E3SENTRY_PLANE_DATA = Builder.create(PlanePresets.DEFAULT_E3SENTRY_PLANE)
-			.setInteralEngineSound(ModSounds.JET_1)
-			.setExternalEngineSound(ModSounds.JET_1)
-			.setNegativeThrottle(false)
-			.setRotationalInertia(10, 12, 8)
-			.setCrashExplosionRadius(8)
-			.setCameraDistance(12)
-			.setSpinRate(Mth.PI*0.01f)
-			.setLiftKGraph(LiftKGraph.E3SENTRY_PLANE_GRAPH)
-			.setFlapsAOABias(10f)
-			.setCanAimDown(false)
-			.build();
-	
 	public static final ImmutableVehicleData MRBUDGER_TANK_DATA = Builder.create(TankPresets.DEFAULT_MRBUDGER_TANK)
 			.setInteralEngineSound(ModSounds.TANK_1)
 			.setExternalEngineSound(ModSounds.TANK_1)

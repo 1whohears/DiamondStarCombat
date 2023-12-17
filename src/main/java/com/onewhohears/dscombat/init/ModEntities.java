@@ -17,6 +17,7 @@ import com.onewhohears.dscombat.entity.aircraft.custom.BroncoPlane;
 import com.onewhohears.dscombat.entity.aircraft.custom.Corvette;
 import com.onewhohears.dscombat.entity.aircraft.custom.Cruiser;
 import com.onewhohears.dscombat.entity.aircraft.custom.Destroyer;
+import com.onewhohears.dscombat.entity.aircraft.custom.E3SentryPlane;
 import com.onewhohears.dscombat.entity.aircraft.custom.FelixPlane;
 import com.onewhohears.dscombat.entity.aircraft.custom.GronkBattleship;
 import com.onewhohears.dscombat.entity.aircraft.custom.JaviPlane;
@@ -71,17 +72,8 @@ public class ModEntities {
 					EntityDimensions.scalable(1.7f, 1.7f)));
 	
 	public static final RegistryObject<EntityType<EntityPlane>> E3SENTRY_PLANE = ENTITIES.register("e3sentry_plane", 
-			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
-					ImmutableVehicleData.E3SENTRY_PLANE_DATA) {
-						@Override
-						public void addVehicleScreens() {
-							screens = new EntityScreenData[1];
-							screens[0] = new EntityScreenData(EntityScreenTypes.AIR_RADAR_SCREEN, 
-									new Vec3(0, -0.85, 5.46), 
-									0.7f, 0.7f, 
-									0f, 0f, 0f);
-						}
-					}, EntityDimensions.scalable(4.0f, 4.0f)));
+			() -> createEntityTypeFar((type, level) -> new E3SentryPlane(type, level), 
+					EntityDimensions.scalable(4.0f, 4.0f)));
 	
 	public static final RegistryObject<EntityType<EntityPlane>> BRONCO_PLANE = ENTITIES.register("bronco_plane", 
 			() -> createEntityTypeFar((type, level) -> new BroncoPlane(type, level), 

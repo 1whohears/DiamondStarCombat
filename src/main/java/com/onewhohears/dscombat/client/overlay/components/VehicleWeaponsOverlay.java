@@ -103,6 +103,15 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
         // CONTROLS
         String text;
         if (maxNameWidth < 50) maxNameWidth = 50;
+        // MOUSE MODE
+        xPos = 1+leftSpace;
+        String key = DSCKeys.mouseModeKey.getKey().getDisplayName().getString();
+        text = DSCClientInputs.getMouseMode().name()+"("+key+")";
+        if (DSCClientInputs.getMouseMode().isLockedForward()) color = color1;
+        else color = color2;
+        drawString(poseStack, getFont(),
+                text, xPos, yPos, color);
+        yPos += 10;
         // FLARES
         if (vehicle.hasFlares()) {
             xPos = 1+leftSpace;
@@ -117,15 +126,6 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
                     xPos, yPos, color);
             yPos += 10;
         }
-        // MOUSE MODE
-        xPos = 1+leftSpace;
-        String key = DSCKeys.mouseModeKey.getKey().getDisplayName().getString();
-        text = DSCClientInputs.getMouseMode().name()+"("+key+")";
-        if (DSCClientInputs.getMouseMode().isLockedForward()) color = color1;
-        else color = color2;
-        drawString(poseStack, getFont(),
-                text, xPos, yPos, color);
-        yPos += 10;
         // LANDING GEAR
         if (vehicle.canToggleLandingGear()) {
             xPos = 1+leftSpace;
@@ -190,7 +190,7 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
                     xPos, yPos, color);
             yPos += 10;
         }
-        // PLAYERS ONLY
+        // RADAR MODE
         if (vehicle.radarSystem.hasRadar()) {
             xPos = 1+leftSpace;
             if (vehicle.getRadarMode().isOff()) color = color2;

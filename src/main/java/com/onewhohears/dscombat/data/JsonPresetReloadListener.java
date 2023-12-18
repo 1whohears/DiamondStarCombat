@@ -55,6 +55,13 @@ public abstract class JsonPresetReloadListener<T extends JsonPreset> extends Sim
 	
 	public abstract T[] getAllPresets();
 	
+	public String[] getPresetIds() {
+		String[] names = new String[getAllPresets().length];
+		for (int i = 0; i < names.length; ++i) 
+			names[i] = getAllPresets()[i].getId();
+		return names;
+	}
+	
 	protected abstract void resetCache();
 	
 	public int getPresetNum() {
@@ -110,7 +117,7 @@ public abstract class JsonPresetReloadListener<T extends JsonPreset> extends Sim
 			ResourceLocation key = new ResourceLocation(key_string);
 			JsonObject json = UtilParse.GSON.fromJson(json_string, JsonObject.class);
 			T data = getFromJson(key, json);
-			System.out.println("ADD: "+data.toString());
+			System.out.println("ADD: "+key.toString());
 			presetMap.put(data.getId(), data);
 		}
 		resetCache();

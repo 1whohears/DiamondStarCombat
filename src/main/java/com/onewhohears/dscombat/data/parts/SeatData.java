@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.data.parts;
 
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.init.ModEntities;
 
@@ -30,7 +30,7 @@ public class SeatData extends PartData {
 	}
 
 	@Override
-	public void serverSetup(EntityAircraft craft, String slotId, Vec3 pos) {
+	public void serverSetup(EntityVehicle craft, String slotId, Vec3 pos) {
 		super.serverSetup(craft, slotId, pos);
 		if (isSetup(slotId, craft)) {
 			//System.out.println("ALREADY SEAT "+slotId);
@@ -46,7 +46,7 @@ public class SeatData extends PartData {
 	}
 	
 	@Override
-	public boolean isSetup(String slotId, EntityAircraft craft) {
+	public boolean isSetup(String slotId, EntityVehicle craft) {
 		return isEntitySetup(slotId, craft);
 	}
 	

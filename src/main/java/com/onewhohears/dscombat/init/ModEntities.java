@@ -2,21 +2,27 @@ package com.onewhohears.dscombat.init;
 
 import com.google.common.collect.ImmutableSet;
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.aircraft.LiftKGraph;
-import com.onewhohears.dscombat.data.aircraft.presets.AlexisPresets;
-import com.onewhohears.dscombat.data.aircraft.presets.BoatPresets;
-import com.onewhohears.dscombat.data.aircraft.presets.CarPresets;
-import com.onewhohears.dscombat.data.aircraft.presets.HeliPresets;
-import com.onewhohears.dscombat.data.aircraft.presets.JaviPresets;
-import com.onewhohears.dscombat.data.aircraft.presets.PlanePresets;
-import com.onewhohears.dscombat.data.aircraft.presets.SubPresets;
-import com.onewhohears.dscombat.data.aircraft.presets.TankPresets;
+import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
+import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
+import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData;
 import com.onewhohears.dscombat.entity.EntityParachute;
 import com.onewhohears.dscombat.entity.aircraft.EntityBoat;
 import com.onewhohears.dscombat.entity.aircraft.EntityGroundVehicle;
 import com.onewhohears.dscombat.entity.aircraft.EntityHelicopter;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 import com.onewhohears.dscombat.entity.aircraft.EntitySubmarine;
+import com.onewhohears.dscombat.entity.aircraft.custom.AircraftCarrier;
+import com.onewhohears.dscombat.entity.aircraft.custom.AlexisPlane;
+import com.onewhohears.dscombat.entity.aircraft.custom.BroncoPlane;
+import com.onewhohears.dscombat.entity.aircraft.custom.Corvette;
+import com.onewhohears.dscombat.entity.aircraft.custom.Cruiser;
+import com.onewhohears.dscombat.entity.aircraft.custom.Destroyer;
+import com.onewhohears.dscombat.entity.aircraft.custom.E3SentryPlane;
+import com.onewhohears.dscombat.entity.aircraft.custom.FelixPlane;
+import com.onewhohears.dscombat.entity.aircraft.custom.GronkBattleship;
+import com.onewhohears.dscombat.entity.aircraft.custom.JasonPlane;
+import com.onewhohears.dscombat.entity.aircraft.custom.JaviPlane;
+import com.onewhohears.dscombat.entity.aircraft.custom.NoahChopper;
 import com.onewhohears.dscombat.entity.parts.EntityEngine;
 import com.onewhohears.dscombat.entity.parts.EntityRadar;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
@@ -33,7 +39,6 @@ import com.onewhohears.dscombat.entity.weapon.PositionMissile;
 import com.onewhohears.dscombat.entity.weapon.TorpedoMissile;
 import com.onewhohears.dscombat.entity.weapon.TrackEntityMissile;
 
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
@@ -55,73 +60,71 @@ public class ModEntities {
 	// PLANES
 	
 	public static final RegistryObject<EntityType<EntityPlane>> JAVI_PLANE = ENTITIES.register("javi_plane", 
-			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
-					JaviPresets.DEFAULT_JAVI_PLANE,
-					ModSounds.JET_1,
-					6, 10, 4, 4, 
-					LiftKGraph.JAVI_PLANE_GRAPH, 10f, true, 0, 9), 
-					EntityDimensions.scalable(2.45f, 2.45f)));
+			() -> createEntityTypeFar((type, level) -> new JaviPlane(type, level), 
+					EntityDimensions.scalable(4.0f, 4.0f)));
 	
 	public static final RegistryObject<EntityType<EntityPlane>> ALEXIS_PLANE = ENTITIES.register("alexis_plane", 
-			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
-					AlexisPresets.DEFAULT_ALEXIS_PLANE,
-					ModSounds.JET_1,
-					4, 8, 2, 3, 
-					LiftKGraph.ALEXIS_PLANE_GRAPH, 8f, false, 0, 17), 
+			() -> createEntityTypeFar((type, level) -> new AlexisPlane(type, level), 
 					EntityDimensions.scalable(4.0f, 4.0f)));
 	
 	public static final RegistryObject<EntityType<EntityPlane>> WOODEN_PLANE = ENTITIES.register("wooden_plane", 
 			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
-					PlanePresets.DEFAULT_WOODEN_PLANE,
-					ModSounds.BIPLANE_1,
-					4, 7, 3, 3, 
-					LiftKGraph.WOODEN_PLANE_GRAPH, 8f, false, Mth.PI, 4), 
+					ImmutableVehicleData.WOODEN_PLANE_DATA), 
 					EntityDimensions.scalable(1.7f, 1.7f)));
 	
 	public static final RegistryObject<EntityType<EntityPlane>> E3SENTRY_PLANE = ENTITIES.register("e3sentry_plane", 
-			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
-					PlanePresets.DEFAULT_E3SENTRY_PLANE,
-					ModSounds.JET_1,
-					10, 12, 8, 7, 
-					LiftKGraph.E3SENTRY_PLANE_GRAPH, 10f, false, Mth.PI * 0.01f, 12), 
+			() -> createEntityTypeFar((type, level) -> new E3SentryPlane(type, level), 
+					EntityDimensions.scalable(4.0f, 4.0f)));
+	
+	public static final RegistryObject<EntityType<EntityPlane>> BRONCO_PLANE = ENTITIES.register("bronco_plane", 
+			() -> createEntityTypeFar((type, level) -> new BroncoPlane(type, level), 
+					EntityDimensions.scalable(4.0f, 4.0f)));
+	
+	public static final RegistryObject<EntityType<EntityPlane>> FELIX_PLANE = ENTITIES.register("felix_plane", 
+			() -> createEntityTypeFar((type, level) -> new FelixPlane(type, level), 
+					EntityDimensions.scalable(4.0f, 4.0f)));
+	
+	public static final RegistryObject<EntityType<EntityPlane>> JASON_PLANE = ENTITIES.register("jason_plane", 
+			() -> createEntityTypeFar((type, level) -> new JasonPlane(type, level), 
 					EntityDimensions.scalable(4.0f, 4.0f)));
 	
 	// HELICOPTORS
 	
 	public static final RegistryObject<EntityType<EntityHelicopter>> NOAH_CHOPPER = ENTITIES.register("noah_chopper", 
-			() -> createEntityTypeFar((type, level) -> new EntityHelicopter(type, level, 
-					HeliPresets.DEFAULT_NOAH_CHOPPER,
-					ModSounds.HELI_1, true, 
-					8, 6, 4, 4, 2.75f, 6), 
+			() -> createEntityTypeFar((type, level) -> new NoahChopper(type, level), 
 					EntityDimensions.scalable(2.8f, 2.8f)));
 	
 	// TANKS
 	
 	public static final RegistryObject<EntityType<EntityGroundVehicle>> MRBUDGER_TANK = ENTITIES.register("mrbudger_tank", 
 			() -> createEntityTypeFar((type, level) -> new EntityGroundVehicle(type, level, 
-					TankPresets.DEFAULT_MRBUDGER_TANK,
-					ModSounds.TANK_1, true, 3, 4), 
+					ImmutableVehicleData.MRBUDGER_TANK_DATA), 
 					EntityDimensions.scalable(3.0f, 2.5f)));
 	
 	public static final RegistryObject<EntityType<EntityGroundVehicle>> SMALL_ROLLER = ENTITIES.register("small_roller", 
 			() -> createEntityTypeFar((type, level) -> new EntityGroundVehicle(type, level, 
-					TankPresets.DEFAULT_SMALL_ROLLER,
-					ModSounds.TANK_1, true, 1, 4), 
+					ImmutableVehicleData.SMALL_ROLLER_DATA), 
 					EntityDimensions.scalable(1.5f, 0.8f)));
 	
 	// CARS
 	
 	public static final RegistryObject<EntityType<EntityGroundVehicle>> ORANGE_TESLA = ENTITIES.register("orange_tesla", 
 			() -> createEntityTypeFar((type, level) -> new EntityGroundVehicle(type, level, 
-					CarPresets.DEFAULT_ORANGE_TESLA,
-					ModSounds.ORANGE_TESLA, false, 2, 4), 
+					ImmutableVehicleData.ORANGE_TESLA_DATA), 
 					EntityDimensions.scalable(2.5f, 2.15f)));
 	
 	public static final RegistryObject<EntityType<EntityGroundVehicle>> AXCEL_TRUCK = ENTITIES.register("axcel_truck", 
 			() -> createEntityTypeFar((type, level) -> new EntityGroundVehicle(type, level, 
-					CarPresets.DEFAULT_AXCEL_TRUCK,
-					ModSounds.TANK_1, false, 3, 7), 
-					EntityDimensions.scalable(2.5f, 3.0f)));
+					ImmutableVehicleData.AXCEL_TRUCK_DATA) {
+						@Override
+							public void addVehicleScreens() {
+								screens = new EntityScreenData[1];
+								screens[0] = new EntityScreenData(EntityScreenIds.AIR_RADAR_SCREEN, 
+										new Vec3(0, 1.35, 1.6), 
+										0.6f, 0.6f, 
+										0f, 0f, 0f);
+						}
+					}, EntityDimensions.scalable(2.5f, 3.0f)));
 	
 	// TODO 2.6 fuel truck
 	
@@ -129,46 +132,34 @@ public class ModEntities {
 	
 	public static final RegistryObject<EntityType<EntityBoat>> NATHAN_BOAT = ENTITIES.register("nathan_boat", 
 			() -> createEntityTypeFar((type, level) -> new EntityBoat(type, level, 
-					BoatPresets.DEFAULT_NATHAN_BOAT,
-					ModSounds.BOAT_1, 2, 4), 
+					ImmutableVehicleData.NATHA_BOAT_DATA), 
 					EntityDimensions.scalable(3.0f,1.5f)));
 	
 	public static final RegistryObject<EntityType<EntityBoat>> GRONK_BATTLESHIP = ENTITIES.register("gronk_battleship", 
-			() -> createEntityTypeFar((type, level) -> new EntityBoat(type, level, 
-					BoatPresets.DEFAULT_GRONK_BATTLESHIP,
-					ModSounds.BOAT_1, 8, 30), 
-					EntityDimensions.scalable(14f,6f)));
+			() -> createEntityTypeFar((type, level) -> new GronkBattleship(type, level), 
+					EntityDimensions.scalable(14f,4f)));
 	
 	public static final RegistryObject<EntityType<EntityBoat>> DESTROYER = ENTITIES.register("destroyer", 
-			() -> createEntityTypeFar((type, level) -> new EntityBoat(type, level, 
-					BoatPresets.DEFAULT_DESTROYER,
-					ModSounds.BOAT_1, 8, 22), 
+			() -> createEntityTypeFar((type, level) -> new Destroyer(type, level),
 					EntityDimensions.scalable(10f,4f)));
 	
 	public static final RegistryObject<EntityType<EntityBoat>> CRUISER = ENTITIES.register("cruiser", 
-			() -> createEntityTypeFar((type, level) -> new EntityBoat(type, level, 
-					BoatPresets.DEFAULT_CRUISER,
-					ModSounds.BOAT_1, 8, 26), 
-					EntityDimensions.scalable(12f,5f)));
+			() -> createEntityTypeFar((type, level) -> new Cruiser(type, level),
+					EntityDimensions.scalable(12f,4f)));
 	
 	public static final RegistryObject<EntityType<EntityBoat>> CORVETTE = ENTITIES.register("corvette", 
-			() -> createEntityTypeFar((type, level) -> new EntityBoat(type, level, 
-					BoatPresets.DEFAULT_CORVETTE,
-					ModSounds.BOAT_1, 8, 13), 
+			() -> createEntityTypeFar((type, level) -> new Corvette(type, level),
 					EntityDimensions.scalable(7f,3f)));
 	
 	public static final RegistryObject<EntityType<EntityBoat>> AIRCRAFT_CARRIER = ENTITIES.register("aircraft_carrier", 
-			() -> createEntityTypeFar((type, level) -> new EntityBoat(type, level, 
-					BoatPresets.DEFAULT_AIRCRAFT_CARRIER,
-					ModSounds.BOAT_1, 8, 34), 
+			() -> createEntityTypeFar((type, level) -> new AircraftCarrier(type, level), 
 					EntityDimensions.scalable(25f,6f)));
 	
 	// SUBMARINES
 	
 	public static final RegistryObject<EntityType<EntitySubmarine>> ANDOLF_SUB = ENTITIES.register("andolf_sub", 
 			() -> createEntityTypeFar((type, level) -> new EntitySubmarine(type, level, 
-					SubPresets.DEFAULT_ANDOLF_SUB,
-					ModSounds.SUB_1, 4, 12), 
+					ImmutableVehicleData.ANDOLF_SUB_DATA), 
 					EntityDimensions.scalable(4.5f,4.0f)));
 	
 	/* 
@@ -191,10 +182,10 @@ public class ModEntities {
 	 * OTHER
 	 * Weather Balloon
 	 * 
-	 * IDEA 9.1 AI for planes/turrets or an auto pilot module
+	 * IDEA 9.1 AI for planes or an auto pilot module
 	 * AI turret controllers need time and resources invested to level up
 	 * it would be funny if they were villagers
-	 * IDEA 9.2 pillager outposts with air defence
+	 * IDEA 9.2 pillager outposts with air defense
 	 * 
 	 * IDEA 9.3 large physical hanger to craft vehicle/put weapons on them
 	 */
@@ -315,6 +306,12 @@ public class ModEntities {
 			() -> createEntityTypeFar(PositionMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
 	public static final RegistryObject<EntityType<TrackEntityMissile>> AGM65G = ENTITIES.register("agm65g", 
 			() -> createEntityTypeFar(TrackEntityMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
+	public static final RegistryObject<EntityType<TrackEntityMissile>> METEOR = ENTITIES.register("meteor", 
+			() -> createEntityTypeFar(TrackEntityMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
+	public static final RegistryObject<EntityType<TorpedoMissile>> MK13 = ENTITIES.register("mk13", 
+			() -> createEntityTypeFar(TorpedoMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
+	public static final RegistryObject<EntityType<AntiRadarMissile>> AGM88G = ENTITIES.register("agm88g", 
+			() -> createEntityTypeFar(AntiRadarMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
 	
 	public static final RegistryObject<EntityType<EntityFlare>> FLARE = ENTITIES.register("flare", 
 			() -> createEntityType(EntityFlare::new, EntityDimensions.scalable(0f, 0f)));

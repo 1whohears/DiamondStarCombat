@@ -1,29 +1,11 @@
 package com.onewhohears.dscombat.client.model.obj.custom;
 
-import javax.annotation.Nullable;
-
-import com.onewhohears.dscombat.client.model.obj.ObjEntityModels.ModelOverrides;
-import com.onewhohears.dscombat.client.model.obj.ObjEntityModels;
 import com.onewhohears.dscombat.client.model.obj.ObjRadarModel;
-
-import net.minecraftforge.client.model.renderable.CompositeRenderable;
 
 public class BallRadarModel extends ObjRadarModel {
 
 	public BallRadarModel() {
-		super("ball_radar");
-	}
-	
-	@Nullable
-	@Override
-	public CompositeRenderable getModel() {
-		return ObjEntityModels.get().getBakedModel(modelId); // maybe use ball_radar_triple
-	}
-	
-	@Nullable
-	@Override
-	public ModelOverrides getModelOverride() {
-		return ObjEntityModels.get().getModelOverride(modelId); // maybe use ball_radar_triple
+		super("ball_radar", "ball_radar_triple");
 	}
 
 }

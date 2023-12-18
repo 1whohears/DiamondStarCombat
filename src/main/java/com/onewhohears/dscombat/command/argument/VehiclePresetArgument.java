@@ -1,0 +1,48 @@
+package com.onewhohears.dscombat.command.argument;
+
+import java.util.concurrent.CompletableFuture;
+
+import com.mojang.brigadier.StringReader;
+import com.mojang.brigadier.arguments.ArgumentType;
+import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
+import com.mojang.brigadier.suggestion.Suggestions;
+import com.mojang.brigadier.suggestion.SuggestionsBuilder;
+import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
+import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
+
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.SharedSuggestionProvider;
+import net.minecraft.network.chat.Component;
+
+public class VehiclePresetArgument implements ArgumentType<String> {
+	
+	private static final DynamicCommandExceptionType ERROR_VEHICLE_NOT_FOUND = new DynamicCommandExceptionType((arg) -> {
+		return Component.translatable("error.vehicle.notFound", arg);
+	});
+	
+	public static VehiclePresetArgument vehiclePreset() {
+		return new VehiclePresetArgument();
+	}
+	
+	public static AircraftPreset getVehiclePreset(CommandContext<CommandSourceStack> context, String name) throws CommandSyntaxException {
+		String a = context.getArgument(name, String.class);
+		AircraftPreset data = AircraftPresets.get().getPreset(a);
+		if (data == null) throw ERROR_VEHICLE_NOT_FOUND.create(a);
+		return data;
+	}
+	
+	@Override
+	public String parse(StringReader reader) throws CommandSyntaxException {
+		return reader.readUnquotedString();
+	}
+	
+	@Override
+	public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
+		return context.getSource() instanceof SharedSuggestionProvider ? 
+				SharedSuggestionProvider.suggest(AircraftPresets.get().getPresetIds(), builder) : 
+				Suggestions.empty();
+	}
+
+}

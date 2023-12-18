@@ -1,11 +1,11 @@
 package com.onewhohears.dscombat.entity.weapon;
 
 import com.onewhohears.dscombat.Config;
-import com.onewhohears.dscombat.data.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.data.weapon.BulletData;
+import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -24,6 +24,7 @@ public class EntityBullet extends EntityWeapon {
 	public static final EntityDataAccessor<Boolean> FIRE = SynchedEntityData.defineId(EntityBullet.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Float> RADIUS = SynchedEntityData.defineId(EntityBullet.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> SPEED = SynchedEntityData.defineId(EntityBullet.class, EntityDataSerializers.FLOAT);
+	public static final double BULLET_GRAVITY_SCALE = 4;
 	
 	public EntityBullet(EntityType<? extends EntityBullet> type, Level level) {
 		super(type, level);
@@ -89,11 +90,7 @@ public class EntityBullet extends EntityWeapon {
 					null, getX(), getY(), getZ(), 
 					getRadius(), getFire(), 
 					interact);
-				System.out.println("EXPLODE "+this+" "+tickCount);
-			} else {
-				level.addParticle(ParticleTypes.SMOKE, 
-					getX(), getY()+0.5D, getZ(), 
-					0.0D, 0.0D, 0.0D);
+				//System.out.println("EXPLODE "+this+" "+tickCount);
 			}
 		}
 	}
@@ -104,7 +101,7 @@ public class EntityBullet extends EntityWeapon {
 	
 	@Override
 	protected void tickSetMove() {
-		setDeltaMovement(getDeltaMovement().add(0, -Config.SERVER.accGravity.get()*4, 0));
+		setDeltaMovement(getDeltaMovement().add(0, -Config.SERVER.accGravity.get()*BULLET_GRAVITY_SCALE, 0));
 	}
 	
 	@Override
@@ -171,6 +168,17 @@ public class EntityBullet extends EntityWeapon {
 	@Override
 	protected WeaponDamageSource getExplosionDamageSource() {
 		return WeaponDamageSource.WeaponDamageType.BULLET_EXPLODE.getSource(getOwner(), this);
+	}
+
+	@Override
+	public WeaponData.WeaponType getWeaponType() {
+		return WeaponData.WeaponType.BULLET;
+	}
+
+	@Override
+	public WeaponData.WeaponClientImpactType getClientImpactType() {
+		if (getExplosive()) return WeaponData.WeaponClientImpactType.SMALL_BULLET_EXPLODE;
+		return WeaponData.WeaponClientImpactType.SMALL_BULLET_IMPACT;
 	}
 
 }

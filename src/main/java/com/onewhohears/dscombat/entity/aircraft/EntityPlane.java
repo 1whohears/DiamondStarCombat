@@ -2,10 +2,10 @@ package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.Config;
-import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
+import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
-import com.onewhohears.dscombat.data.aircraft.LiftKGraph;
-import com.onewhohears.dscombat.data.damagesource.WeaponDamageSource.WeaponDamageType;
+import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData;
+import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource.WeaponDamageType;
 import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
@@ -14,40 +14,25 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.RegistryObject;
 
-public class EntityPlane extends EntityAircraft {
+public class EntityPlane extends EntityVehicle {
 	
 	public static final EntityDataAccessor<Float> WING_AREA = SynchedEntityData.defineId(EntityPlane.class, EntityDataSerializers.FLOAT);
 	
 	public static final double CO_LIFT = Config.SERVER.coLift.get();
-	
-	public final LiftKGraph liftKGraph;
-	public final float propellerRate, flapsAOABias;
-	public final boolean canAimDown;
 	
 	private float propellerRot = 0, propellerRotOld = 0, aoa = 0, liftK = 0, airFoilSpeedSqr = 0;
 	private float centripetalForce, centrifugalForce; 
 	private double liftMag;
 	private Vec3 liftDir = Vec3.ZERO, airFoilAxes = Vec3.ZERO;
 	
-	public EntityPlane(EntityType<? extends EntityPlane> entity, Level level, 
-			AircraftPreset defaultPreset, RegistryObject<SoundEvent> engineSound,
-			float Ix, float Iy, float Iz, float explodeSize,
-			LiftKGraph liftKGraph, float flapsAOABias, boolean canAimDown, 
-			float propellerRate, double camDist) {
-		super(entity, level, defaultPreset, engineSound,
-				false, Ix, Iy, Iz, explodeSize, camDist);
-		this.liftKGraph = liftKGraph;
-		this.flapsAOABias = flapsAOABias;
-		this.canAimDown = canAimDown;
-		this.propellerRate = propellerRate;
+	public EntityPlane(EntityType<? extends EntityPlane> entity, Level level, ImmutableVehicleData vehicleData) {
+		super(entity, level, vehicleData);
 	}
 	
 	@Override
@@ -79,7 +64,7 @@ public class EntityPlane extends EntityAircraft {
 		super.clientTick();
 		float th = getCurrentThrottle();
 		propellerRotOld = propellerRot;
-		propellerRot += th * propellerRate;
+		propellerRot += th * vehicleData.spinRate;
 	}
 	
 	@Override
@@ -126,7 +111,17 @@ public class EntityPlane extends EntityAircraft {
 	}
 	
 	@Override
-	public boolean isBreaking() {
+	public double getMaxSpeedForMotion() {
+		return super.getMaxSpeedForMotion() * getPlaneSpeedPercent();
+	}
+	
+	public double getPlaneSpeedPercent() {
+		return level.getGameRules().getInt(DSCGameRules.PLANE_SPEED_PERCENT) * 0.01;
+	}
+
+	// TODO: nerf brakes? or make their strength configurable?
+	@Override
+	public boolean isBraking() {
 		return inputs.special2 && isOnGround();
 	}
 	
@@ -153,7 +148,7 @@ public class EntityPlane extends EntityAircraft {
 		} else {
 			aoa = (float)UtilGeometry.angleBetweenVecPlaneDegrees(u, liftDir.scale(-1));
 		}
-		if (isFlapsDown()) aoa += flapsAOABias;
+		if (isFlapsDown()) aoa += vehicleData.flapsAOABias;
 		liftK = (float) getLiftK();
 		//System.out.println("liftK = "+liftK);
 	}
@@ -188,7 +183,7 @@ public class EntityPlane extends EntityAircraft {
 	}
 	
 	public double getLiftK() {
-		return liftKGraph.getLift(aoa);
+		return vehicleData.liftKGraph.getLift(aoa);
 	}
 	
 	@Override
@@ -234,16 +229,16 @@ public class EntityPlane extends EntityAircraft {
 	
 	@Override
 	public boolean isWeaponAngledDown() {
-		return canAimDown && !onGround && inputs.special2;
+		return vehicleData.canAimDown && !onGround && inputs.special2;
 	}
 	
 	@Override
 	public boolean canAngleWeaponDown() {
-    	return canAimDown;
+    	return vehicleData.canAimDown;
     }
 
 	@Override
-	public boolean canBreak() {
+	public boolean canBrake() {
 		return onGround;
 	}
 
@@ -266,21 +261,9 @@ public class EntityPlane extends EntityAircraft {
 	}
 	
 	@Override
-	public void sounds() {
-		super.sounds();
-    	if (level.isClientSide && isOperational()) {
-    		// TODO 8.2 bitchin betty
-    		// pull up
-    		// over g
-    		// aoa stall
-    		// gear still out
-    	}
-    } 
-	
-	@Override
 	public float calcProjDamageBySource(DamageSource source, float amount) {
 		WeaponDamageType wdt = WeaponDamageType.byId(source.getMsgId());
-		if (wdt != null && wdt.isContact()) return amount*Config.COMMON.planeBulletFactor.get().floatValue();
+		if (wdt != null && wdt.isContact()) return amount*DSCGameRules.getBulletDamagePlaneFactor(level);
 		return super.calcProjDamageBySource(source, amount);
 	}
 

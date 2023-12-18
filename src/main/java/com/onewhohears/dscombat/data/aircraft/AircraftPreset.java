@@ -12,14 +12,13 @@ import com.onewhohears.dscombat.data.JsonPreset;
 import com.onewhohears.dscombat.data.PresetBuilder;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft.AircraftType;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -116,11 +115,11 @@ public class AircraftPreset extends JsonPreset{
 		}
 		
 		public static Builder create(String namespace, String name) {
-			return new Builder(namespace, name, (key, json) -> new AircraftPreset(key, json));
+			return new Builder(namespace, name, AircraftPreset::new);
 		}
 		
 		public static Builder createFromCopy(String namespace, String name, AircraftPreset copy) {
-			return new Builder(namespace, name, (key, json) -> new AircraftPreset(key, json), copy);
+			return new Builder(namespace, name, AircraftPreset::new, copy);
 		}
 		
 		@Override
@@ -363,13 +362,6 @@ public class AircraftPreset extends JsonPreset{
 		 */
 		public Builder addSeatSlot(String name, SlotType type, double x, double y, double z) {
 			return addItemSlot(name, type, x, y, z, 0, ModItems.SEAT.getId(), null, false);
-		}
-		
-		/**
-		 * all vehicles
-		 */
-		public Builder setDefaultColor(DyeColor dyecolor) {
-			return setInt("paintjob_color", dyecolor.getId());
 		}
 		
 		/**

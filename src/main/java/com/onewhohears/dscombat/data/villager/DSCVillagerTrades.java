@@ -40,7 +40,7 @@ public class DSCVillagerTrades {
 		trades.get(4).add(new EmeraldForItem(ModItems.AIM9P5.get(), 1, 8, 10, 18));
 		trades.get(4).add(new EmeraldForItem(ModItems.AIM7F.get(), 1, 12, 10, 18));
 		// Master
-		trades.get(5).add(new EmeraldForItem(ModItems.RIFEL1.get(), 1, 18, 10, 24));
+		trades.get(5).add(new EmeraldForItem(ModItems.AGM88G.get(), 1, 18, 10, 24));
 		trades.get(5).add(new EmeraldForItem(ModItems.AIM9X.get(), 1, 12, 10, 24));
 		trades.get(5).add(new EmeraldForItem(ModItems.AIM120B.get(), 1, 16, 10, 24));
 	}

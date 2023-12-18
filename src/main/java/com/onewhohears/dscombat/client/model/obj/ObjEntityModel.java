@@ -4,8 +4,11 @@ import javax.annotation.Nullable;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
+import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.model.obj.ObjEntityModels.ModelOverrides;
+import com.onewhohears.dscombat.util.math.UtilAngles;
+import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -28,17 +31,27 @@ public class ObjEntityModel<T extends Entity> {
 	public void render(T entity, PoseStack poseStack, MultiBufferSource bufferSource, int lightmap, float partialTicks) {
 		handleGlobalOverrides(entity, partialTicks, poseStack);
 		rotate(entity, partialTicks, poseStack);
-		getModel().render(poseStack, bufferSource, getTextureRenderTypeLookup(), 
+		getModel().render(poseStack, bufferSource, getTextureRenderTypeLookup(entity), 
 				getLight(entity, lightmap), getOverlay(entity), partialTicks, 
 				getComponentTransforms(entity, partialTicks));
 	}
 	
 	protected void rotate(T entity, float partialTicks, PoseStack poseStack) {
-		poseStack.mulPose(Vector3f.YN.rotationDegrees(entity.getViewYRot(partialTicks)));
-		poseStack.mulPose(Vector3f.XP.rotationDegrees(entity.getViewXRot(partialTicks)));
+		Vector3f pivot = getGlobalPivot();
+		Quaternion yRot = Vector3f.YN.rotationDegrees(entity.getViewYRot(partialTicks));
+		Quaternion xRot = Vector3f.XP.rotationDegrees(entity.getViewXRot(partialTicks));
+		if (!UtilGeometry.isZero(pivot)) {
+			poseStack.mulPoseMatrix(UtilAngles.pivotInvRot(pivot, yRot));
+			poseStack.mulPoseMatrix(UtilAngles.pivotInvRot(pivot, xRot));
+		} else {
+			poseStack.mulPose(yRot);
+			poseStack.mulPose(xRot);
+		}
 	}
 	
 	protected void handleGlobalOverrides(T entity, float partialTicks, PoseStack poseStack) {
+		Vector3f pivot = getGlobalPivot();
+		if (!UtilGeometry.isZero(pivot)) poseStack.translate(pivot.x(), pivot.y(), pivot.z());
 		ModelOverrides o = getModelOverride();
 		if (o == null) return;
 		poseStack.scale(o.scale * o.scale3d[0], o.scale * o.scale3d[1], o.scale * o.scale3d[2]);
@@ -58,7 +71,7 @@ public class ObjEntityModel<T extends Entity> {
 		return Transforms.EMPTY;
 	}
 	
-	protected ITextureRenderTypeLookup getTextureRenderTypeLookup() {
+	protected ITextureRenderTypeLookup getTextureRenderTypeLookup(T entity) {
 		return (texture) -> { return RenderType.entityTranslucent(texture); };
 	}
 	
@@ -68,6 +81,10 @@ public class ObjEntityModel<T extends Entity> {
 	
 	protected int getOverlay(T entity) {
 		return OverlayTexture.NO_OVERLAY;
+	}
+	
+	protected Vector3f getGlobalPivot() {
+		return Vector3f.ZERO;
 	}
 	
 }

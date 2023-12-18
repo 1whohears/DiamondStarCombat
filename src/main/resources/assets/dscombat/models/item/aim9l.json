@@ -1,6 +1,39 @@
 {
-	"parent": "item/generated",
-	"textures": {
-		"layer0": "dscombat:item/aim9l"
+	"loader": "forge:obj",
+	"flip_v": true,
+	"model": "dscombat:models/entity/aim9l.obj",
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [270, 0, 0],
+			"translation": [3, 1, -2],
+			"scale": [0.6, 0.6, 0.6]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [270, 0, 0],
+			"translation": [-3, 1, -2],
+			"scale": [0.6, 0.6, 0.6]
+		},
+		"firstperson_righthand": {
+			"rotation": [180, 0, 0],
+			"scale": [0.6, 0.6, 0.6]
+		},
+		"firstperson_lefthand": {
+			"rotation": [180, 0, 0],
+			"scale": [0.6, 0.6, 0.6]
+		},
+		"ground": {
+			"translation": [2, 3.5, 0],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"gui": {
+			"rotation": [270, 0, 90],
+			"translation": [-2, 3, 0],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"fixed": {
+			"rotation": [270, 0, 0],
+			"translation": [2, 3, -3],
+			"scale": [0.5, 0.5, 0.5]
+		}
 	}
 }

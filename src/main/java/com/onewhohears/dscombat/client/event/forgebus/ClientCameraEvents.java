@@ -1,22 +1,18 @@
 package com.onewhohears.dscombat.client.event.forgebus;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
-import javax.annotation.Nullable;
-
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCursorPosCallbackI;
 
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.client.input.DSCClientInputs;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.MouseHandler;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.HitResult;
@@ -28,21 +24,23 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
-import net.minecraftforge.fml.util.ObfuscationReflectionHelper.UnableToFindMethodException;
 
 @Mod.EventBusSubscriber(modid = DSCombatMod.MODID, bus = Bus.FORGE, value = Dist.CLIENT)
 public class ClientCameraEvents {
 	
-	@SubscribeEvent(priority = EventPriority.NORMAL)
+	private static float ptOld;
+	
+	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public static void cameraSetup(ViewportEvent.ComputeCameraAngles event) {
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
 		if (player == null || !player.isPassenger()) return;
-		if (!(player.getRootVehicle() instanceof EntityAircraft plane)) return;
+		if (!(player.getRootVehicle() instanceof EntityVehicle plane)) return;
 		float pt = (float)event.getPartialTick();
 		boolean isController = player.equals(plane.getControllingPassenger());
-		if (!plane.isFreeLook() && isController) {
+		boolean detached = !m.options.getCameraType().isFirstPerson();
+		boolean mirrored = m.options.getCameraType().isMirrored();
+		if (isController && DSCClientInputs.isCameraLockedForward()) {
 			float xi = UtilAngles.lerpAngle(pt, plane.xRotO, plane.getXRot());
 			float yi = UtilAngles.lerpAngle180(pt, plane.yRotO, plane.getYRot());
 			player.setXRot(xi);
@@ -51,21 +49,45 @@ public class ClientCameraEvents {
 			player.yRotO = yi;
 			event.setPitch(xi);
 			event.setYaw(yi);
+		} else if (isController && DSCClientInputs.isCameraFreeRelative()) {
+			float ptDiff = ptDiff(pt, ptOld);
+			float planeXRotDiff = plane.getXRot()-plane.xRotO;
+			if (planeXRotDiff != 0) {
+				float dxi = Mth.wrapDegrees(planeXRotDiff) * ptDiff;
+				float x = player.getXRot() + dxi;
+				player.setXRot(x);
+				player.xRotO = x;
+				event.setPitch(x);
+			}
+			float planeYRotDiff = plane.getYRot()-plane.yRotO;
+			if (planeYRotDiff != 0) {
+				float dyi = Mth.wrapDegrees(planeYRotDiff) * ptDiff;
+				float y = player.getYRot() + dyi;
+				if (mirrored) y += 180;
+				player.setYRot(y);
+				player.yRotO = y;
+				event.setYaw(y);
+			}
 		}
-		boolean detached = !m.options.getCameraType().isFirstPerson();
-		boolean mirrored = m.options.getCameraType().isMirrored();
 		float zi = UtilAngles.lerpAngle(pt, plane.zRotO, plane.zRot);
 		if (detached && mirrored) zi *= -1;
 		event.setRoll(zi);
-		if (detached && isController && plane.camDist > 4 && getCameraMove() != null) {
+		double camDist = plane.vehicleData.cameraDistance;
+		if (detached && isController && camDist > 4) {
+			// TODO 4.2 making third person work in mouse mode (again, à la garry's mod WAC planes)
 			// TODO 4.1 option to change turret camera position. so camera could be under the aircraft
-			double vehicleCamDist = Math.min(0, 4-getMaxDist(event.getCamera(), player, plane.camDist));
-			try {
-				getCameraMove().invoke(event.getCamera(), vehicleCamDist, 0, 0);
-			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-				e.printStackTrace();
-			}
+			// To add onto this, a thermal camera option would be nice too; or in the future, an attack helicopter
+			// could have a movable turret
+			double vehicleCamDist = Math.min(0, 4-getMaxDist(event.getCamera(), player, camDist));
+			event.getCamera().move(vehicleCamDist, 0, 0);
 		}
+		ptOld = pt;
+	}
+	
+	private static float ptDiff(float pt, float ptOld) {
+		if (pt == ptOld) return 0;
+		else if (pt > ptOld) return pt - ptOld;
+		return pt+1f - ptOld;
 	}
 	
 	public static double getMaxDist(Camera cam, Player player, double dist) {
@@ -82,54 +104,12 @@ public class ClientCameraEvents {
 		return dist;
 	}
 	
-	public static Method cameraMove;
-	public static boolean tried1;
-	
-	@Nullable
-	public static Method getCameraMove() {
-		if (cameraMove != null) return cameraMove; 
-		if (tried1) return null;
-		tried1 = true;
-		cameraMove = tryGetCameraMove("m_90568_");
-		if (cameraMove == null) cameraMove = tryGetCameraMove("move");
-		return cameraMove;
-	}
-	
-	@Nullable
-	private static Method tryGetCameraMove(String methodName) {
-		try {
-			return ObfuscationReflectionHelper.findMethod(Camera.class, methodName, 
-					double.class, double.class, double.class);
-		} catch (UnableToFindMethodException e) {
-			System.out.println("ERROR: THE CAMERA MOVE METHOD IS NOT "+methodName);
-			return null;
-		}
-	}
-	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void clientTickSetMouseCallback(TickEvent.ClientTickEvent event) {
 		Minecraft m = Minecraft.getInstance();
 		if (m.player == null || m.player.tickCount != 1) return;
 		if (!Config.CLIENT.cameraTurnRelativeToVehicle.get()) return;
-		if (getVanillaOnMove() == null) return;
 		GLFW.glfwSetCursorPosCallback(m.getWindow().getWindow(), ClientCameraEvents.customMouseCallback);
-	}
-	
-	public static Method vanillaOnMove;
-	public static boolean tried = false;
-	
-	@Nullable
-	public static Method getVanillaOnMove() {
-		if (vanillaOnMove != null) return vanillaOnMove; 
-		if (tried) return null;
-		tried = true;
-		try {
-			vanillaOnMove = ObfuscationReflectionHelper.findMethod(MouseHandler.class, "m_91561_", 
-				long.class, double.class, double.class);
-		} catch (UnableToFindMethodException e) {
-			System.out.println("ERROR: VANILLA MOUSE POS CALLBACK IS NOT m_91561_");
-		}
-		return vanillaOnMove;
 	}
 	
 	public static final GLFWCursorPosCallbackI customMouseCallback = (window, x, y) -> {
@@ -138,8 +118,8 @@ public class ClientCameraEvents {
 			double xn = x, yn = y;
 			if (window != m.getWindow().getWindow()) return;
 			if (m.player != null && m.screen == null 
-					&& m.player.getRootVehicle() instanceof EntityAircraft craft
-					&& craft.isFreeLook()) {
+					&& m.player.getRootVehicle() instanceof EntityVehicle craft
+					&& DSCClientInputs.isCameraFree()) {
 				double r = Math.toRadians(craft.zRot);
 				double dx = x - m.mouseHandler.xpos();
 				double dy = y - m.mouseHandler.ypos();
@@ -147,10 +127,7 @@ public class ClientCameraEvents {
 				yn = dy*Math.cos(r) + dx*Math.sin(r) + m.mouseHandler.ypos();
 				GLFW.glfwSetCursorPos(window, xn, yn);
 			}
-			try { getVanillaOnMove().invoke(m.mouseHandler, window, xn, yn); } 
-			catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-				e.printStackTrace();
-			}
+			m.mouseHandler.onMove(window, xn, yn);
 		});
 	};
 	

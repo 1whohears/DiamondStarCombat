@@ -5,10 +5,10 @@ import java.util.List;
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.data.JsonPreset;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.entity.weapon.TrackEntityMissile;
 import com.onewhohears.dscombat.util.UtilEntity;
+import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -16,7 +16,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 
 public class TrackMissileData extends MissileData {
 	
@@ -27,10 +26,12 @@ public class TrackMissileData extends MissileData {
 	}
 	
 	private final TargetType targetType;
+	private final boolean active;
 
 	public TrackMissileData(ResourceLocation key, JsonObject json) {
 		super(key, json);
 		targetType = TargetType.valueOf(json.get("targetType").getAsString());
+		active = UtilParse.getBooleanSafe(json, "activeTrack", true);
 	}
 	
 	@Override
@@ -68,22 +69,36 @@ public class TrackMissileData extends MissileData {
 		return targetType;
 	}
 	
+	public boolean isActiveTrack() {
+		return active;
+	}
+	
+	@Override
+	public boolean couldRadarWeaponTargetEntity(Entity entity, Entity radar) {
+		if (!super.couldRadarWeaponTargetEntity(entity, radar)) return false;
+		boolean groundWater = UtilEntity.isOnGroundOrWater(entity);
+		if (targetType == TargetType.AIR && groundWater) return false;
+		else if (targetType == TargetType.GROUND && !groundWater) return false;
+		else if (targetType == TargetType.WATER && !entity.isInWater()) return false;
+		return true;
+	}
+	
 	@Override
 	public EntityWeapon getEntity(Level level, Entity owner) {
 		return new TrackEntityMissile(level, owner, this);
 	}
 	
 	@Override
-	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction, EntityAircraft vehicle, boolean ignoreRecoil) {
-		TrackEntityMissile missile = (TrackEntityMissile) super.getShootEntity(level, owner, pos, direction, vehicle, ignoreRecoil);
+	public EntityWeapon getShootEntity(WeaponShootParameters params) {
+		TrackEntityMissile missile = (TrackEntityMissile) super.getShootEntity(params);
 		if (missile == null) return null;
-		if (vehicle == null) return missile;
-		RadarSystem radar = vehicle.radarSystem;
+		if (params.vehicle == null) return missile;
+		RadarSystem radar = params.vehicle.radarSystem;
 		if (!radar.hasRadar()) {
 			setLaunchFail("error.dscombat.no_radar");
 			return null;
 		}
-		Entity target = radar.getSelectedTarget(level);
+		Entity target = radar.getSelectedTarget();
 		if (target == null) {
 			setLaunchFail("error.dscombat.no_target_selected");
 			return null;
@@ -118,6 +133,8 @@ public class TrackMissileData extends MissileData {
 			break;
 		}
 		list.add(3, new ComponentColor(Component.literal("SELF GUIDED"), 0xaaaa00));
+		if (active) list.add(4, new ComponentColor(Component.literal("ACTIVE TRACK"), 0xaaaa00));
+		else list.add(4, new ComponentColor(Component.literal("SEMI ACTIVE"), 0xaaaa00));
 		return list;
 	}
 	
@@ -136,6 +153,8 @@ public class TrackMissileData extends MissileData {
 			break;
 		}
 		code += "R";
+		if (active) code += "AT";
+		else code += "SA";
 		return code;
 	}
 

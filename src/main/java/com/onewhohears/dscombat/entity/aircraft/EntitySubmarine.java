@@ -1,21 +1,17 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
+import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.RegistryObject;
 
 public class EntitySubmarine extends EntityBoat {
 	
-	public EntitySubmarine(EntityType<? extends EntitySubmarine> entity, Level level, 
-			AircraftPreset defaultPreset, RegistryObject<SoundEvent> engineSound, 
-			float explodeSize, double camDist) {
-		super(entity, level, defaultPreset, engineSound, explodeSize, camDist);
+	public EntitySubmarine(EntityType<? extends EntitySubmarine> entity, Level level, ImmutableVehicleData vehicleData) {
+		super(entity, level, vehicleData);
 	}
 	
 	@Override
@@ -56,7 +52,7 @@ public class EntitySubmarine extends EntityBoat {
 	@Override
 	public void directionWater(Quaternion q) {
 		if (!isOperational()) return;
-		if (isFreeLook()) flatten(q, getMaxDeltaPitch(), getMaxDeltaRoll(), false);
+		if (!isDriverCameraLocked()) flatten(q, getMaxDeltaPitch(), getMaxDeltaRoll(), false);
 		else {
 			addMomentX(inputs.pitch * getPitchTorque(), true);
 			addMomentZ(inputs.roll * getRollTorque(), true);
@@ -93,7 +89,7 @@ public class EntitySubmarine extends EntityBoat {
 	public void tickWater(Quaternion q) {
 		super.tickWater(q);
 		Vec3 move = getDeltaMovement();
-		if (isFreeLook() && isOperational()) {
+		if (!isDriverCameraLocked() && isOperational()) {
 			move = move.add(0, inputs.pitch * 0.04, 0);
 			double max = 0.2;
 			if (Math.abs(move.y) > max) move.multiply(1, max/move.y, 1);
@@ -144,7 +140,7 @@ public class EntitySubmarine extends EntityBoat {
 	}
 	
 	@Override
-	public boolean canBreak() {
+	public boolean canBrake() {
 		return true;
 	}
 

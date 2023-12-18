@@ -1,16 +1,17 @@
 package com.onewhohears.dscombat.entity.parts;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
 import com.mojang.math.Quaternion;
+import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft.AircraftType;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -19,6 +20,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -32,29 +34,33 @@ public class EntitySeat extends EntityPart {
 		super(type, level);
 		this.passengerOffset = offset;
 	}
-
-	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-	}
-
-	@Override
-	protected void readAdditionalSaveData(CompoundTag compound) {
-		super.readAdditionalSaveData(compound);
-	}
-
-	@Override
-	protected void addAdditionalSaveData(CompoundTag compound) {
-		super.addAdditionalSaveData(compound);
-	}
 	
-	public void init() {
-		super.init();
-	}
-	
-	@Override
 	public void tick() {
 		super.tick();
+		if (!level.isClientSide && level.getGameRules().getBoolean(DSCGameRules.MOBS_RIDE_VEHICLES)) 
+			tickRideCollision();
+	}
+	
+	protected void tickRideCollision() {
+		if (isPilotSeat()) return;
+		if (getPassenger() != null) return;
+		if (!(getVehicle() instanceof EntityVehicle vehicle)) return;
+		if (vehicle.getXZSpeed() > 0.1) return;
+		List<Entity> entities = level.getEntities(this, 
+			getBoundingBox().inflate(0.1), 
+			getRidePredicate());
+		for (Entity entity : entities) 
+			if (entity.startRiding(this)) 
+				return;
+	}
+	
+	protected Predicate<? super Entity> getRidePredicate() {
+		return ((entity) -> {
+			if (this.equals(entity.getRootVehicle())) return false;
+			if (entity.isSpectator()) return false;
+			if (!(entity instanceof Mob)) return false;
+			return true;
+		});
 	}
 	
 	@Override
@@ -62,6 +68,7 @@ public class EntitySeat extends EntityPart {
 		if (player.isSecondaryUseActive()) {
 			return InteractionResult.PASS;
 		} else if (!level.isClientSide) {
+			if (player.isPassenger()) return InteractionResult.PASS;
 			if (player.startRiding(this)) return InteractionResult.CONSUME;
 			if (getVehicle() != null && player.startRiding(getVehicle())) return InteractionResult.CONSUME;
 			return InteractionResult.PASS;
@@ -76,7 +83,7 @@ public class EntitySeat extends EntityPart {
 	
 	@Override
     public void positionRider(Entity passenger) {
-		if (!(getVehicle() instanceof EntityAircraft craft)) {
+		if (!(getVehicle() instanceof EntityVehicle craft)) {
 			super.positionRider(passenger);
 			return;
 		}
@@ -95,10 +102,8 @@ public class EntitySeat extends EntityPart {
 		passenger.setPos(position().add(getPassengerRelPos(passenger, craft)));
 	}
 	
-	protected Vec3 getPassengerRelPos(Entity passenger, EntityAircraft craft) {
-		Quaternion q;
-		if (level.isClientSide) q = craft.getClientQ();
-		else q = craft.getQ();
+	protected Vec3 getPassengerRelPos(Entity passenger, EntityVehicle craft) {
+		Quaternion q = craft.getQBySide();
 		double offset = getPassengersRidingOffset() + passenger.getMyRidingOffset() + passenger.getEyeHeight();
 		return UtilAngles.rotateVector(new Vec3(0, offset, 0), q)
 				.subtract(0, passenger.getEyeHeight(), 0);
@@ -117,7 +122,7 @@ public class EntitySeat extends EntityPart {
 	
 	@Override
     protected boolean canRide(Entity entityIn) {
-		return entityIn instanceof EntityAircraft;
+		return entityIn instanceof EntityVehicle;
     }
 	
 	@Override

@@ -1,8 +1,11 @@
 package com.onewhohears.dscombat.data.weapon;
 
+import static com.onewhohears.dscombat.DSCombatMod.MODID;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.BiConsumer;
 
 import javax.annotation.Nullable;
 
@@ -11,12 +14,13 @@ import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponAmmo;
 import com.onewhohears.dscombat.crafting.DSCIngredient;
 import com.onewhohears.dscombat.data.JsonPreset;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.util.UtilParse;
+import com.onewhohears.dscombat.util.UtilParticles;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.nbt.CompoundTag;
@@ -38,7 +42,8 @@ import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public abstract class WeaponData extends JsonPreset {
-	
+	protected static final ResourceLocation NONE_ICON = new ResourceLocation(MODID, "textures/ui/weapon_icons/none.png");
+
 	private final List<DSCIngredient> ingredients;
 	private final int craftNum;
 	private final int maxAge;
@@ -50,6 +55,7 @@ public abstract class WeaponData extends JsonPreset {
 	private final String rackTypeKey;
 	private final String compatibleWeaponPart;
 	private final String itemKey;
+	private final ResourceLocation icon;
 	
 	private EntityType<?> entityType;
 	private SoundEvent shootSound;
@@ -75,6 +81,7 @@ public abstract class WeaponData extends JsonPreset {
 		this.rackTypeKey = UtilParse.getStringSafe(json, "rackTypeKey", "");
 		this.compatibleWeaponPart = UtilParse.getStringSafe(json, "compatibleWeaponPart", "");
 		this.itemKey = UtilParse.getStringSafe(json, "itemKey", "");
+		this.icon = new ResourceLocation(UtilParse.getStringSafe(json, "icon", getDefaultIconLocation()));
 	}
 	
 	public void readNBT(CompoundTag tag) {
@@ -117,25 +124,25 @@ public abstract class WeaponData extends JsonPreset {
 	public abstract WeaponType getType();
 	public abstract EntityWeapon getEntity(Level level, Entity owner);
 	
-	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction, @Nullable EntityAircraft vehicle, boolean ignoreRecoil) {
+	public EntityWeapon getShootEntity(WeaponShootParameters params) {
 		if (isNoWeapon()) {
 			setLaunchFail(null);
 			return null;
 		}
-		if (!ignoreRecoil && !checkRecoil()) {
+		if (!params.ignoreRecoil && !checkRecoil()) {
 			setLaunchFail(null);
 			return null;
 		}
-		if (!checkAmmo(1, owner)) {
+		if (!checkAmmo(1, params.owner)) {
 			setLaunchFail("error.dscombat.no_ammo");
 			return null;
 		}
-		EntityWeapon w = getEntity(level, owner);
+		EntityWeapon w = getEntity(params.level, params.owner);
 		if (w == null) return null;
-		w.setPos(pos);
-		setDirection(w, direction);
-		if (vehicle != null) {
-			if (!overrideGroundCheck && !canShootOnGround() && vehicle.isOnGround()) {
+		w.setPos(params.pos);
+		setDirection(w, params.direction);
+		if (params.vehicle != null) {
+			if (!overrideGroundCheck && !canShootOnGround() && params.vehicle.isOnGround()) {
 				setLaunchFail("error.dscombat.cant_shoot_on_ground");
 				return null;
 			}
@@ -150,13 +157,14 @@ public abstract class WeaponData extends JsonPreset {
 		weapon.setYRot(yaw);
 	}
 	
-	public boolean shootFromVehicle(Level level, Entity owner, Vec3 direction, EntityAircraft vehicle, boolean consume) {
+	public boolean shootFromVehicle(Level level, Entity owner, Vec3 direction, EntityVehicle vehicle, boolean consume) {
 		overrideGroundCheck = false;
-		EntityWeapon w = getShootEntity(level, owner, 
+		EntityWeapon w = getShootEntity(new WeaponShootParameters(level, owner, 
 				vehicle.position().add(UtilAngles.rotateVector(getLaunchPos(), vehicle.getQ())), 
-				direction, vehicle, false);
+				direction, vehicle, false, false));
 		if (w == null) return false;
 		level.addFreshEntity(w);
+		// FIXME 9 sometimes a lot of sounds just stop working (engines, weapon shoot, missiles, rwr) sometimes fixed by F3+T
 		level.playSound(null, w.blockPosition(), 
 				getShootSound(), SoundSource.PLAYERS, 
 				1f, 1f);
@@ -166,13 +174,14 @@ public abstract class WeaponData extends JsonPreset {
 		return true;
 	}
 	
-	public boolean shootFromTurret(Level level, Entity owner, Vec3 direction, Vec3 pos, @Nullable EntityAircraft vehicle, boolean consume) {
+	public boolean shootFromTurret(Level level, Entity owner, Vec3 direction, Vec3 pos, @Nullable EntityVehicle vehicle, boolean consume) {
 		return shootFromTurret(level, owner, direction, pos, vehicle, consume, false);
 	}
 	
-	public boolean shootFromTurret(Level level, Entity owner, Vec3 direction, Vec3 pos, @Nullable EntityAircraft vehicle, boolean consume, boolean ignoreRecoil) {
+	public boolean shootFromTurret(Level level, Entity owner, Vec3 direction, Vec3 pos, @Nullable EntityVehicle vehicle, boolean consume, boolean ignoreRecoil) {
 		overrideGroundCheck = true;
-		EntityWeapon w = getShootEntity(level, owner, pos, direction, vehicle, ignoreRecoil);
+		EntityWeapon w = getShootEntity(new WeaponShootParameters(level, owner, 
+				pos, direction, vehicle, ignoreRecoil, true));
 		if (w == null) return false;
 		level.addFreshEntity(w);
 		level.playSound(null, w.blockPosition(), 
@@ -183,14 +192,14 @@ public abstract class WeaponData extends JsonPreset {
 		return true;
 	}
 	
-	public void updateClientAmmo(EntityAircraft vehicle) {
+	public void updateClientAmmo(EntityVehicle vehicle) {
 		if (vehicle == null) return;
 		if (vehicle.level.isClientSide) return;
 		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> vehicle), 
 				new ToClientWeaponAmmo(vehicle.getId(), getId(), slotId, getCurrentAmmo()));
 	}
 	
-	public void tick(@Nullable EntityAircraft parent, boolean isSelected) {
+	public void tick(@Nullable EntityVehicle parent, boolean isSelected) {
 		if (recoilTime > 1) --recoilTime;
 	}
 	
@@ -211,7 +220,7 @@ public abstract class WeaponData extends JsonPreset {
 	}
 	
 	public boolean canAngleDown() {
-		return getType() == WeaponType.BULLET;
+		return getType().isBullet();
 	}
 	
 	public Vec3 getLaunchPos() {
@@ -269,6 +278,12 @@ public abstract class WeaponData extends JsonPreset {
 	public void setChangeLaunchPitch(float degrees) {
 		changeLaunchPitch = degrees;
 	}
+	
+	public abstract double getMobTurretRange();
+	
+	public boolean couldRadarWeaponTargetEntity(Entity entity, Entity radar) {
+		return entity.isAttackable() && !entity.isSpectator() && !entity.isRemoved() && radar.distanceTo(entity) <= getMobTurretRange();
+	}
 
 	public boolean isFailedLaunch() {
 		return failedLaunchReason != null;
@@ -305,7 +320,7 @@ public abstract class WeaponData extends JsonPreset {
 	
 	@Override
 	public String toString() {
-		return "["+getId()+":"+this.getType().toString()+"]";
+		return "["+getType().toString()+":"+getId()+"]";
 	}
 	
 	public String getSlotId() {
@@ -393,6 +408,14 @@ public abstract class WeaponData extends JsonPreset {
 		return compatibleWeaponPart;
 	}
 	
+	public ResourceLocation getWeaponIcon() {
+		return this.isNoWeapon() ? NONE_ICON : this.icon;
+	}
+	
+	public String getDefaultIconLocation() {
+		return MODID+":textures/ui/weapon_icons/default.png";
+	}
+	
 	public abstract String getWeaponTypeCode();
 	
 	public void addToolTips(List<Component> tips) {
@@ -424,7 +447,11 @@ public abstract class WeaponData extends JsonPreset {
 	}
 	
 	public boolean isNoWeapon() {
-		return getType() == WeaponType.NONE;
+		return getType().isNone();
+	}
+	
+	public boolean requiresRadar() {
+		return getType().requiresRadar();
 	}
 	
 	public static enum WeaponType {
@@ -437,29 +464,62 @@ public abstract class WeaponData extends JsonPreset {
 		TORPEDO,
 		BUNKER_BUSTER,
 		NONE;
-		
 		@Nullable
 		public static WeaponType getById(String id) {
-			for (int i = 0; i < values().length; ++i) {
+			for (int i = 0; i < values().length; ++i) 
 				if (values()[i].getId().equals(id)) 
 					return values()[i];
-			}
 			return null;
 		}
-		
+		@Nullable
+		public static WeaponType getByOrdinal(int ordinal) {
+			if (ordinal < 0 || ordinal >= values().length) return null;
+			return values()[ordinal];
+		}
 		private final String id;
-		
 		private WeaponType() {
 			this.id = name().toLowerCase();
 		}
-		
 		public String getId() {
 			return id;
 		}
-		
 		@Override
 		public String toString() {
 			return getId();
+		}
+		public boolean isNone() {
+			return this == NONE;
+		}
+		public boolean isBullet() {
+			return this == BULLET;
+		}
+		public boolean isTrackMissile() {
+			return this == TRACK_MISSILE || this == TORPEDO;
+		}
+		public boolean isIRMissile() {
+			return this == IR_MISSILE;
+		}
+		public boolean requiresRadar() {
+			return isTrackMissile();
+		}
+	}
+	
+	public static enum WeaponClientImpactType {
+		SMALL_BULLET_IMPACT((level, pos) -> UtilParticles.bulletImpact(level, pos, 5)),
+		SMALL_BULLET_EXPLODE((level, pos) -> UtilParticles.bulletExplode(level, pos, 2.5, true)),
+		MED_BOMB_EXPLODE((level, pos) -> UtilParticles.bombExplode(level, pos, 5, true)),
+		MED_MISSILE_EXPLODE((level, pos) -> UtilParticles.missileExplode(level, pos, 4, true));
+		@Nullable
+		public static WeaponClientImpactType getByOrdinal(int ordinal) {
+			if (ordinal < 0 || ordinal >= values().length) return null;
+			return values()[ordinal];
+		}
+		private final BiConsumer<Level, Vec3> clientImpactCallback;
+		private WeaponClientImpactType(BiConsumer<Level, Vec3> clientImpactCallback) {
+			this.clientImpactCallback = clientImpactCallback;
+		}
+		public void onClientImpact(Level level, Vec3 pos) {
+			clientImpactCallback.accept(level, pos);
 		}
 	}
 	

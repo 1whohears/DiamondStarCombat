@@ -3,7 +3,6 @@ package com.onewhohears.dscombat.data.weapon;
 import java.util.List;
 
 import com.google.gson.JsonObject;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.entity.weapon.TorpedoMissile;
 
@@ -12,7 +11,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 
 public class TorpedoData extends TrackMissileData {
 	
@@ -68,8 +66,8 @@ public class TorpedoData extends TrackMissileData {
 	}
 	
 	@Override
-	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction, EntityAircraft vehicle, boolean ignoreRecoil) {
-		TorpedoMissile missile = (TorpedoMissile) super.getShootEntity(level, owner, pos, direction, vehicle, ignoreRecoil);
+	public EntityWeapon getShootEntity(WeaponShootParameters params) {
+		TorpedoMissile missile = (TorpedoMissile) super.getShootEntity(params);
 		if (missile == null) return null;
 		return missile;
 	}

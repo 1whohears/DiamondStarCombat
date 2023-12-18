@@ -3,10 +3,8 @@ package com.onewhohears.dscombat.data.aircraft.presets;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft.AircraftType;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
-
-import net.minecraft.world.item.DyeColor;
 
 public class HeliPresets {
 	
@@ -17,7 +15,7 @@ public class HeliPresets {
 			.setItem(ModItems.NOAH_CHOPPER.getId())
 			.setMaxHealth(300f)
 			.setMass(30f)
-			.setMaxSpeed(0.8f)
+			.setMaxSpeed(0.7f)
 			.setStealth(1.2f)
 			.setCrossSecArea(7.84f)
 			.setIdleHeat(8f)
@@ -51,7 +49,6 @@ public class HeliPresets {
 			.addEmptySlot("internal_6", SlotType.ADVANCED_INTERNAL)
 			.addEmptySlot("internal_7", SlotType.ADVANCED_INTERNAL)
 			.addEmptySlot("internal_8", SlotType.ADVANCED_INTERNAL)
-			.setDefaultColor(DyeColor.BROWN)
 			.addIngredient(ModItems.FUSELAGE.getId())
 			.addIngredient(ModItems.LARGE_PROPELLER.getId(), 2)
 			.addIngredient(ModItems.PROPELLER.getId())
@@ -75,13 +72,13 @@ public class HeliPresets {
 	public static final AircraftPreset DEFAULT_NOAH_CHOPPER = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "noah_chopper", UNARMED_NOAH_CHOPPER)
 			.setSlotItem("seat2", ModItems.MINIGUN_TURRET.getId(), true)
-			.setSlotItem("left_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "aim120b", true)
+			.setSlotItem("left_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "aim7f", true)
 			.setSlotItem("left_wing_2", ModItems.HEAVY_MISSILE_RACK.getId(), "agm65g", true)
 			.setSlotItem("left_wing_3", ModItems.LIGHT_MISSILE_RACK.getId(), "agm114k", true)
 			.setSlotItem("right_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "agm65l", true)
 			.setSlotItem("right_wing_2", ModItems.HEAVY_MISSILE_RACK.getId(), "agm84e", true)
 			.setSlotItem("right_wing_3", ModItems.LIGHT_MISSILE_RACK.getId(), "aim9l", true)
-			.setSlotItem("frame_1", ModItems.HEAVY_MISSILE_RACK.getId(), "rifel1", true)
+			.setSlotItem("frame_1", ModItems.HEAVY_MISSILE_RACK.getId(), "agm88g", true)
 			.setSlotItem("internal_5", ModItems.AR500.getId())
 			.setSlotItem("internal_6", ModItems.GR400.getId())
 			.setSlotItem("internal_4", ModItems.BASIC_FLARE_DISPENSER.getId(), true)

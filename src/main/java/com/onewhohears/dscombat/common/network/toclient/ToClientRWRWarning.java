@@ -23,7 +23,7 @@ public class ToClientRWRWarning extends IPacket {
 	}
 	
 	public ToClientRWRWarning(FriendlyByteBuf buffer) {
-		super(buffer);
+		//super(buffer);
 		id = buffer.readInt();
 		warning = new RWRWarning(buffer);
 	}

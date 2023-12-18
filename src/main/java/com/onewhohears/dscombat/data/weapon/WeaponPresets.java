@@ -33,6 +33,27 @@ public class WeaponPresets extends JsonPresetReloadListener<WeaponData> {
 	}
 	
 	@Override
+	@Nullable
+	public WeaponData getPreset(String id) {
+		String updatedId = getUpdatedId(id);
+		if (updatedId == null) return null;
+		return presetMap.get(updatedId).copy();
+	}
+	
+	public String getUpdatedId(String id) {
+		if (id == null) return null;
+		if (presetMap.containsKey(id)) return id;
+		if (id.equals("torpedo1")) return "mk13";
+		if (id.equals("rifel1")) return "agm88g";
+		return null;
+	}
+	
+	@Override
+	public boolean has(String id) {
+		return getUpdatedId(id) != null;
+	}
+	
+	@Override
 	public WeaponData[] getAllPresets() {
 		if (weaponList == null) {
 			weaponList = presetMap.values().toArray(new WeaponData[presetMap.size()]);
@@ -89,6 +110,8 @@ public class WeaponPresets extends JsonPresetReloadListener<WeaponData> {
 			return new TorpedoData(key, json);
 		case BUNKER_BUSTER:
 			return new BunkerBusterData(key, json);
+		case NONE:
+			return null;
 		}
 		return null;
 	}

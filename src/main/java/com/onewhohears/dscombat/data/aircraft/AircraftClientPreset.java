@@ -10,7 +10,6 @@ import com.onewhohears.dscombat.data.JsonPreset;
 import com.onewhohears.dscombat.data.PresetBuilder;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.DyeColor;
 
 public class AircraftClientPreset extends JsonPreset {
 	
@@ -18,17 +17,9 @@ public class AircraftClientPreset extends JsonPreset {
 	
 	private ResourceLocation background;
 	private HashMap<String, UIPos> slotsPos;
-	private AircraftTextures textures;
 	
 	public AircraftClientPreset(ResourceLocation key, JsonObject json) {
 		super(key, json);
-	}
-	
-	public AircraftTextures getAircraftTextures() {
-		if (textures == null) {
-			textures = new AircraftTextures(getJsonData());
-		}
-		return textures;
 	}
 	
 	@Nullable
@@ -62,10 +53,6 @@ public class AircraftClientPreset extends JsonPreset {
 		@Override
 		protected void setupJsonData() {
 			super.setupJsonData();
-			JsonObject textures = new JsonObject();
-			textures.addProperty("default_texture_path", "dscombat:textures/entity/"+getPresetId()+"/");
-			textures.add("overrides", new JsonObject());
-			getData().add("textures", textures);
 		}
 		
 		public Builder setBackground(String background) {
@@ -94,14 +81,6 @@ public class AircraftClientPreset extends JsonPreset {
 				}
 				addUIPos(names[i], x, y);
 				x += 18;
-			}
-			return this;
-		}
-		
-		public Builder makeOneTexture(String path) {
-			JsonObject overrides = getData().getAsJsonObject("textures").getAsJsonObject("overrides");
-			for (int i = 0; i < DyeColor.values().length; ++i) {
-				overrides.addProperty(DyeColor.values()[i].getName(), path);
 			}
 			return this;
 		}

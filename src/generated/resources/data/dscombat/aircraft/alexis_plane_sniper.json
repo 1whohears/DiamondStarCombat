@@ -28,7 +28,7 @@
     },
     {
       "item": "minecraft:gold_ingot",
-      "num": 10
+      "num": 20
     },
     {
       "item": "dscombat:turbofan_f145",
@@ -80,7 +80,6 @@
   "maxpitch": 2.5,
   "maxroll": 6.0,
   "maxyaw": 1.5,
-  "paintjob_color": 8,
   "pitchtorque": 2.0,
   "presetId": "alexis_plane_sniper",
   "rolltorque": 1.0,
@@ -91,8 +90,8 @@
       },
       "name": "pilot_seat",
       "slot_posx": 0.0,
-      "slot_posy": 0.5,
-      "slot_posz": 6.35,
+      "slot_posy": 0.1,
+      "slot_posz": 6.5,
       "slot_type": "seat",
       "zRot": 0.0
     },
@@ -104,8 +103,8 @@
       },
       "name": "left_wing_1",
       "slot_posx": 2.3,
-      "slot_posy": 0.15,
-      "slot_posz": 0.0,
+      "slot_posy": -0.08,
+      "slot_posz": -0.1,
       "slot_type": "wing",
       "zRot": 180.0
     },
@@ -116,11 +115,27 @@
         "param": "aim120c"
       },
       "name": "left_wing_2",
-      "slot_posx": 4.5,
-      "slot_posy": 0.15,
-      "slot_posz": 0.0,
+      "slot_posx": 3.6,
+      "slot_posy": -0.08,
+      "slot_posz": -0.7,
       "slot_type": "wing",
       "zRot": 180.0
+    },
+    {
+      "name": "left_wing_3",
+      "slot_posx": 4.95,
+      "slot_posy": -0.08,
+      "slot_posz": -1.1,
+      "slot_type": "wing",
+      "zRot": 180.0
+    },
+    {
+      "name": "left_wing_4",
+      "slot_posx": 6.05,
+      "slot_posy": 0.4,
+      "slot_posz": -1.5,
+      "slot_type": "wing",
+      "zRot": -90.0
     },
     {
       "data": {
@@ -130,8 +145,8 @@
       },
       "name": "right_wing_1",
       "slot_posx": -2.3,
-      "slot_posy": 0.15,
-      "slot_posz": 0.0,
+      "slot_posy": -0.08,
+      "slot_posz": -0.1,
       "slot_type": "wing",
       "zRot": 180.0
     },
@@ -142,11 +157,27 @@
         "param": "aim120b"
       },
       "name": "right_wing_2",
-      "slot_posx": -4.5,
-      "slot_posy": 0.15,
-      "slot_posz": 0.0,
+      "slot_posx": -3.6,
+      "slot_posy": -0.08,
+      "slot_posz": -0.7,
       "slot_type": "wing",
       "zRot": 180.0
+    },
+    {
+      "name": "right_wing_3",
+      "slot_posx": -4.95,
+      "slot_posy": -0.08,
+      "slot_posz": -1.1,
+      "slot_type": "wing",
+      "zRot": 180.0
+    },
+    {
+      "name": "right_wing_4",
+      "slot_posx": -6.05,
+      "slot_posy": 0.4,
+      "slot_posz": -1.5,
+      "slot_type": "wing",
+      "zRot": 90.0
     },
     {
       "data": {
@@ -156,8 +187,8 @@
       },
       "name": "frame_1",
       "slot_posx": 0.0,
-      "slot_posy": -0.04,
-      "slot_posz": 8.5,
+      "slot_posy": -0.15,
+      "slot_posz": 8.0,
       "slot_type": "frame",
       "zRot": 180.0
     },

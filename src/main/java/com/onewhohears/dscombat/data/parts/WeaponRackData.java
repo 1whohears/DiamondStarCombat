@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.data.parts;
 
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
 
 import net.minecraft.nbt.CompoundTag;
@@ -46,7 +46,7 @@ public class WeaponRackData extends WeaponPartData {
 	}
 
 	@Override
-	public void serverSetup(EntityAircraft craft, String slotId, Vec3 pos) {
+	public void serverSetup(EntityVehicle craft, String slotId, Vec3 pos) {
 		super.serverSetup(craft, slotId, pos);
 		WeaponData data = craft.weaponSystem.get(weaponId, slotId);
 		if (data == null) return;

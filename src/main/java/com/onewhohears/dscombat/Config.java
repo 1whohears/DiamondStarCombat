@@ -64,16 +64,6 @@ public class Config {
 	public static class Common {
 		
 		public final ForgeConfigSpec.IntValue maxBlockCheckDepth;
-		public final ForgeConfigSpec.DoubleValue freshEntityToItemCooldown;
-		public final ForgeConfigSpec.DoubleValue usedWeaponToItemCooldown;
-		public final ForgeConfigSpec.BooleanValue autoDataLink;
-		public final ForgeConfigSpec.DoubleValue armorStrength;
-		public final ForgeConfigSpec.BooleanValue disableElytra;
-		public final ForgeConfigSpec.DoubleValue bulletDamageFactor;
-		public final ForgeConfigSpec.DoubleValue explodeDamageFactor;
-		public final ForgeConfigSpec.DoubleValue planeBulletFactor;
-		// TODO 7.1 plane speed multiplier
-		// TODO 7.2 baby mode for planes disabled by default
 		/**
 		 * classname
 		 */
@@ -99,30 +89,6 @@ public class Config {
 			maxBlockCheckDepth = builder
 					.comment("The number of blocks between 2 entities to check if they can see eachother.")
 					.defineInRange("maxBlockCheckDepth", 250, 10, 400);
-			autoDataLink = builder
-					.comment("All vehicles will behave as if they have datalink even if they don't have the module.")
-					.define("autoDataLink", false);
-			freshEntityToItemCooldown = builder
-					.comment("Seconds before a fresh vehicle entity can become an item.")
-					.defineInRange("freshEntityToItemCooldown", 0.0, 0, 600.0);
-			usedWeaponToItemCooldown = builder
-					.comment("Seconds before a vehicle entity that used a weapon can become an item.")
-					.defineInRange("usedWeaponToItemCooldown", 30.0, 0, 600.0);
-			armorStrength = builder
-					.comment("Percentage 1 point of vehicle armor reduces.")
-					.defineInRange("armorStrength", 4.0, 0, 100.0);
-			disableElytra = builder
-					.comment("Prevent all players from flying in an Elytra.")
-					.define("disableElytra", false);
-			bulletDamageFactor = builder
-					.comment("Multiplier for damage non explosive pojectiles (bullets) deal to vehicles.")
-					.defineInRange("bulletDamageFactor", 0.2, 0, 100.0);
-			explodeDamageFactor = builder
-					.comment("Multiplier for damage missile explosions deal to vehicles.")
-					.defineInRange("explodeDamageFactor", 10.0, 0, 100.0);
-			planeBulletFactor = builder
-					.comment("Multiplier for damage non explosive bullets from this mod deal to planes only.")
-					.defineInRange("planeBulletFactor", 0.5, 0, 100.0);
 			radarVehicles = builder
 					.defineList("radarVehicles", 
 					Arrays.asList(
@@ -170,7 +136,8 @@ public class Config {
 	}
 	
 	public static class Server {
-		
+		// FIXME 8 change all physics constants/masses/forces to values that make more sense
+		// make constants static until good default values are found
 		public final ForgeConfigSpec.DoubleValue accGravity;
 		public final ForgeConfigSpec.DoubleValue coDrag;
 		public final ForgeConfigSpec.DoubleValue coStaticFriction;

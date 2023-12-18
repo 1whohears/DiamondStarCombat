@@ -4,7 +4,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.common.network.IPacket;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.Level;
@@ -40,7 +40,7 @@ public class ToServerAircraftCollide extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			Level level = ctx.get().getSender().level;
-			if (level.getEntity(id) instanceof EntityAircraft plane) {
+			if (level.getEntity(id) instanceof EntityVehicle plane) {
 				plane.collideHurt(amount, isFall);
 			}
 			success.set(true);

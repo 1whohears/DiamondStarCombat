@@ -14,7 +14,7 @@ import net.minecraft.world.level.ChunkPos;
  * {@link EntityMissile} constructor adds itself to this manager on the server side. Every server tick this class 
  * checks of the missile is being loaded or "ticked". If not the missile entity is discarded but the entity Object is still saved
  * and it's position is updated until it reaches a loaded chunk. Then the missile is added to the world again. 
- * @author 1whoh
+ * @author 1whohears
  */
 public class NonTickingMissileManager {
 	

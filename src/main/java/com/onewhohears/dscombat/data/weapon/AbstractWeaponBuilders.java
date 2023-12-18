@@ -73,6 +73,10 @@ public class AbstractWeaponBuilders {
 			return setString("itemKey", itemKey.toString());
 		}
 		
+		public C setIcon(ResourceLocation weaponIcon) {
+			return setString("icon", weaponIcon.toString());
+		}
+		
 	}
 	
 	public abstract static class BulletBuilder<C extends BulletBuilder<C>> extends WeaponBuilder<C> {
@@ -181,6 +185,20 @@ public class AbstractWeaponBuilders {
 		 */
 		public C setTargetType(TargetType targetType) {
 			return setString("targetType", targetType.name());
+		}
+		
+		/**
+		 * Track Missile only
+		 */
+		public C setNotActiveTrack() {
+			return setBoolean("activeTrack", false);
+		}
+		
+		/**
+		 * Track Missile only
+		 */
+		public C setActiveTrack() {
+			return setBoolean("activeTrack", true);
 		}
 		
 		/**

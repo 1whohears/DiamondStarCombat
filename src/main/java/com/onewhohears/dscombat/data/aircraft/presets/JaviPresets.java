@@ -3,10 +3,8 @@ package com.onewhohears.dscombat.data.aircraft.presets;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft.AircraftType;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
-
-import net.minecraft.world.item.DyeColor;
 
 public class JaviPresets {
 	
@@ -27,26 +25,23 @@ public class JaviPresets {
 			.setTurnTorques(1.5f, 2.5f, 4.5f)
 			.setThrottleRate(0.04f, 0.08f)
 			.setPlaneWingArea(18f)
-			.setDefaultColor(DyeColor.GREEN)
 			.addIngredient(ModItems.FUSELAGE.getId(), 1)
 			.addIngredient(ModItems.LARGE_WING.getId(), 2)
-			.addIngredient(ModItems.COCKPIT.getId())
-			.addIngredient(ModItems.SEAT.getId())
+			.addIngredient(ModItems.COCKPIT.getId(), 2)
 			.addIngredient(ModItems.WHEEL.getId(), 3)
 			.addIngredient("minecraft:light_gray_dye", 6)
 			.addIngredient("minecraft:gold_ingot", 10)
-			.addPilotSeatSlot(0, -0.55, 3.35)
-			.addSeatSlot("seat2", SlotType.MED_TURRET, 0, -0.55, 2.35)
-			.addEmptySlot("left_wing_1", SlotType.WING, 1.5, -0.3, 0, 180)
-			.addEmptySlot("left_wing_2", SlotType.WING, 3.0, -0.2, 0, 180)
-			.addEmptySlot("left_wing_3", SlotType.WING, 4.0, -0.07, 0, 180) 
-			.addEmptySlot("left_wing_4", SlotType.WING, 5.0, -0.05, 0, 180) 
-			.addEmptySlot("right_wing_1", SlotType.WING, -1.5, -0.3, 0, 180)
-			.addEmptySlot("right_wing_2", SlotType.WING, -3.0, -0.2, 0, 180)
-			.addEmptySlot("right_wing_3", SlotType.WING, -4.0, -0.07, 0, 180) 
-			.addEmptySlot("right_wing_4", SlotType.WING, -5.0, -0.05, 0, 180) 
-			.addEmptySlot("frame_1", SlotType.FRAME, 0, -0.7, 3, 180)
-			.addEmptySlot("frame_2", SlotType.FRAME, 0, -0.7, 0, 180)
+			.addPilotSeatSlot(0, 0.5, 6.34375)
+			.addEmptySlot("left_wing_1", SlotType.WING, 1.96875, -0.28125, 1, 180)
+			.addEmptySlot("left_wing_2", SlotType.WING, 4.25, -0.28125, 1, 180)
+			.addEmptySlot("left_wing_3", SlotType.WING, 5.625, -0.28125, 1, 180) 
+			.addEmptySlot("left_wing_4", SlotType.WING, 6.96875, -0.28125, 1, 180) 
+			.addEmptySlot("right_wing_1", SlotType.WING, -1.96875, -0.28125, 1, 180)
+			.addEmptySlot("right_wing_2", SlotType.WING, -4.25, -0.28125, 1, 180)
+			.addEmptySlot("right_wing_3", SlotType.WING, -5.625, -0.28125, 1, 180) 
+			.addEmptySlot("right_wing_4", SlotType.WING, -6.96875, -0.28125, 1, 180) 
+			.addEmptySlot("frame_1", SlotType.FRAME, 0, -0.34375, 8.65625, 180)
+			.addEmptySlot("frame_2", SlotType.FRAME, 0, -0.71875, 1.03125, 180)
 			.addEmptySlot("internal_1", SlotType.PUSH_ENGINE)
 			.addEmptySlot("internal_2", SlotType.PUSH_ENGINE)
 			.addEmptySlot("internal_3", SlotType.INTERNAL)
@@ -71,7 +66,7 @@ public class JaviPresets {
 			.createFromCopy(DSCombatMod.MODID, "javi_plane", UNARMED_JAVI_PLANE)
 			.setSlotItem("left_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "agm84e", true)
 			.setSlotItem("left_wing_2", ModItems.LIGHT_MISSILE_RACK.getId(), "agm114k", true)
-			.setSlotItem("right_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "rifel1", true)
+			.setSlotItem("right_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "agm88g", true)
 			.setSlotItem("right_wing_2", ModItems.LIGHT_MISSILE_RACK.getId(), "aim9p5", true)
 			.setSlotItem("frame_1", ModItems.XM12.getId(), "50mmhe", true)
 			.setSlotItem("frame_2", ModItems.BOMB_RACK.getId(), "anm57", true)
@@ -98,7 +93,7 @@ public class JaviPresets {
 			.setSlotItem("right_wing_2", ModItems.HEAVY_MISSILE_RACK.getId(), "agm65g", true)
 			.setSlotItem("right_wing_3", ModItems.HEAVY_MISSILE_RACK.getId(), "agm65l", true)
 			.setSlotItem("frame_1", ModItems.XM12.getId(), "50mmhe", true)
-			.setSlotItem("frame_2", ModItems.HEAVY_MISSILE_RACK.getId(), "rifel1", true)
+			.setSlotItem("frame_2", ModItems.HEAVY_MISSILE_RACK.getId(), "agm88g", true)
 			.setSlotItem("internal_5", ModItems.GPR20.getId())
 			.setSlotItem("internal_4", ModItems.BASIC_FLARE_DISPENSER.getId(), true)
 			.addIngredient(ModItems.GPR20.getId())

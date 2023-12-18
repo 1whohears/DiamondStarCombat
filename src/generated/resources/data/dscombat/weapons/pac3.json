@@ -1,25 +1,26 @@
 {
   "type": "track_missile",
   "acceleration": 0.03,
+  "activeTrack": true,
   "bleed": 0.03,
   "canShootOnGround": false,
   "causesFire": true,
   "compatibleWeaponPart": "",
   "craftNum": 1,
-  "damage": 100.0,
+  "damage": 90.0,
   "destroyTerrain": true,
   "displayName": "preset.dscombat.pac3",
   "entityTypeKey": "dscombat:pac3",
-  "explosionRadius": 6.0,
+  "explosionRadius": 7.0,
   "explosive": true,
   "fireRate": 40,
-  "fov": 35.0,
-  "fuelTicks": 250,
+  "fov": 40.0,
+  "fuelTicks": 200,
   "fuseDist": 3.0,
   "ingredients": [
     {
       "item": "minecraft:iron_ingot",
-      "num": 10
+      "num": 14
     },
     {
       "item": "minecraft:tnt",
@@ -27,7 +28,7 @@
     },
     {
       "item": "minecraft:coal_block",
-      "num": 6
+      "num": 3
     },
     {
       "item": "minecraft:ender_eye",
@@ -45,7 +46,7 @@
   "presetId": "pac3",
   "rackTypeKey": "",
   "shootSoundKey": "dscombat:rocket_launch_1",
-  "speed": 4.1,
+  "speed": 4.0,
   "targetType": "AIR",
-  "turnRadius": 150.0
+  "turnRadius": 190.0
 }

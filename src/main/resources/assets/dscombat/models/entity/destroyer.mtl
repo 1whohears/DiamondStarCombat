@@ -1,4 +1,4 @@
 # Made in Blockbench 4.8.3
 newmtl m_19946fb8-ceea-9fb5-4c4e-c533deac9da7
-map_Kd dscombat:entity/boats/destroyer 
+map_Kd dscombat:entity/vehicle/destroyer/base0 
 newmtl none

@@ -4,7 +4,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.common.network.IPacket;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.UtilPacket;
 
@@ -20,7 +20,7 @@ public class ToClientAddForceMoment extends IPacket {
 	public final Vec3 force;
 	public final Vec3 moment;
 	
-	public ToClientAddForceMoment(EntityAircraft craft, Vec3 force, Vec3 moment) {
+	public ToClientAddForceMoment(EntityVehicle craft, Vec3 force, Vec3 moment) {
 		this.id = craft.getId();
 		this.force = force;
 		this.moment = moment;

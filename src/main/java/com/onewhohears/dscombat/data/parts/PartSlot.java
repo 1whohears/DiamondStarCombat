@@ -6,7 +6,7 @@ import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddPart;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRemovePart;
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.UtilParse;
 
@@ -87,14 +87,14 @@ public class PartSlot {
 		return data;
 	}
 	
-	public void serverSetup(EntityAircraft plane) {
+	public void serverSetup(EntityVehicle plane) {
 		if (filled()) {
 			data.setup(plane, slotId, pos);
 			data.serverSetup(plane, slotId, pos);
 		}
 	}
 	
-	public void clientSetup(EntityAircraft plane) {
+	public void clientSetup(EntityVehicle plane) {
 		if (filled()) {
 			data.setup(plane, slotId, pos);
 			data.clientSetup(plane, slotId, pos);
@@ -109,7 +109,7 @@ public class PartSlot {
 		if (filled()) data.clientTick(slotId);
 	}
 	
-	public boolean addPartData(PartData data, EntityAircraft plane) {
+	public boolean addPartData(PartData data, EntityVehicle plane) {
 		if (filled()) return false;
 		if (!isCompatible(data)) return false;
 		this.data = data;
@@ -124,7 +124,7 @@ public class PartSlot {
 		return true;
 	}
 	
-	public boolean removePartData(EntityAircraft plane) {
+	public boolean removePartData(EntityVehicle plane) {
 		if (!filled()) return false;
 		data.remove(slotId);
 		if (plane.level.isClientSide) data.clientRemove(slotId);

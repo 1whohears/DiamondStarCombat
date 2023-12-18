@@ -1,0 +1,146 @@
+{
+  "aircraft_type": 0,
+  "base_armor": 2.0,
+  "cross_sec_area": 5.0,
+  "displayName": "preset.dscombat.felix_plane_empty",
+  "health": 110.0,
+  "idleheat": 6.0,
+  "ingredients": [
+    {
+      "item": "dscombat:fuselage",
+      "num": 1
+    },
+    {
+      "item": "dscombat:wing",
+      "num": 2
+    },
+    {
+      "item": "dscombat:cockpit",
+      "num": 1
+    },
+    {
+      "item": "dscombat:wheel",
+      "num": 3
+    },
+    {
+      "item": "minecraft:light_gray_dye",
+      "num": 5
+    },
+    {
+      "item": "minecraft:gold_ingot",
+      "num": 5
+    }
+  ],
+  "is_craftable": false,
+  "item": "dscombat:felix_plane",
+  "landing_gear": true,
+  "mass": 18.0,
+  "max_health": 110.0,
+  "max_speed": 1.4,
+  "maxpitch": 2.15,
+  "maxroll": 5.0,
+  "maxyaw": 1.15,
+  "pitchtorque": 2.0,
+  "presetId": "felix_plane_empty",
+  "rolltorque": 1.0,
+  "slots": [
+    {
+      "data": {
+        "itemid": "dscombat:seat"
+      },
+      "name": "pilot_seat",
+      "slot_posx": 0.0,
+      "slot_posy": -0.3,
+      "slot_posz": 4.7,
+      "slot_type": "seat",
+      "zRot": 0.0
+    },
+    {
+      "name": "left_wing_1",
+      "slot_posx": 2.4,
+      "slot_posy": -0.64,
+      "slot_posz": -0.05,
+      "slot_type": "wing",
+      "zRot": 180.0
+    },
+    {
+      "name": "left_wing_2",
+      "slot_posx": 3.4,
+      "slot_posy": -0.64,
+      "slot_posz": -1.3,
+      "slot_type": "wing",
+      "zRot": 180.0
+    },
+    {
+      "name": "right_wing_1",
+      "slot_posx": -2.4,
+      "slot_posy": -0.64,
+      "slot_posz": -0.05,
+      "slot_type": "wing",
+      "zRot": 180.0
+    },
+    {
+      "name": "right_wing_2",
+      "slot_posx": -3.4,
+      "slot_posy": -0.64,
+      "slot_posz": -1.3,
+      "slot_type": "wing",
+      "zRot": 180.0
+    },
+    {
+      "name": "frame_1",
+      "slot_posx": 0.0,
+      "slot_posy": -1.07,
+      "slot_posz": 1.2,
+      "slot_type": "frame",
+      "zRot": 180.0
+    },
+    {
+      "name": "nose_1",
+      "slot_posx": 0.0,
+      "slot_posy": -0.8,
+      "slot_posz": 3.6,
+      "slot_type": "frame",
+      "zRot": 180.0
+    },
+    {
+      "name": "internal_1",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": "push_engine",
+      "zRot": 0.0
+    },
+    {
+      "name": "internal_2",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": "internal",
+      "zRot": 0.0
+    },
+    {
+      "name": "internal_3",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": "internal",
+      "zRot": 0.0
+    },
+    {
+      "name": "internal_4",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": "advanced_internal",
+      "zRot": 0.0
+    }
+  ],
+  "sort_factor": 10,
+  "stealth": 0.95,
+  "throttledown": 0.08,
+  "throttleup": 0.04,
+  "turn_radius": 12.0,
+  "wing_area": 15.0,
+  "yawtorque": 4.0
+}

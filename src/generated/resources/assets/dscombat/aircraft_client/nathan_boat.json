@@ -68,9 +68,5 @@
       "slot_ui_y": 42
     }
   ],
-  "presetId": "nathan_boat",
-  "textures": {
-    "default_texture_path": "dscombat:textures/entity/nathan_boat/",
-    "overrides": {}
-  }
+  "presetId": "nathan_boat"
 }

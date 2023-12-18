@@ -7,7 +7,7 @@ import com.onewhohears.dscombat.data.aircraft.AircraftClientPreset;
 import com.onewhohears.dscombat.data.aircraft.AircraftClientPreset.UIPos;
 import com.onewhohears.dscombat.data.aircraft.AircraftClientPresets;
 import com.onewhohears.dscombat.data.parts.PartSlot;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.init.ModContainers;
 
 import net.minecraft.world.Container;
@@ -28,11 +28,11 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
 		//System.out.println("AircraftMenuContainer client side "+playerInv.player.level.isClientSide);
 		this.playerInv = playerInv;
 		// display plane parts
-		if (playerInv.player.getRootVehicle() instanceof EntityAircraft plane) {
+		if (playerInv.player.getRootVehicle() instanceof EntityVehicle plane) {
 			this.planeInv = plane.partsManager.getInventory();
 			List<PartSlot> slots = plane.partsManager.getSlots();
 			//System.out.println("client preset = "+plane.clientPreset);
-			clientData = AircraftClientPresets.get().getPreset(plane.defaultPreset);
+			clientData = AircraftClientPresets.get().getPreset(plane.clientPresetId);
 			//System.out.println("acp not null = "+(acp != null));
 			// create plane menu container
 			for (int i = 0; i < planeInv.getContainerSize(); ++i) {

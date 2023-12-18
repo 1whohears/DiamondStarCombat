@@ -1,30 +1,38 @@
 package com.onewhohears.dscombat.util;
 
-import java.lang.reflect.Field;
+import java.awt.Color;
+import java.util.Optional;
+import java.util.Random;
+import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.data.weapon.RadarTargetTypes;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.entity.vehicle.Minecart;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 
 public class UtilEntity {
 	
+	public static final Random random = new Random();
+	
 	public static boolean canPosSeeEntity(Vec3 pos, Entity entity, int maxBlockCheckDepth, double throWater, double throBlock) {
 		Level level = entity.getLevel();
-		Vec3 diff = entity.getBoundingBox().getCenter().subtract(pos);
+		Vec3 diff = entity.getEyePosition().subtract(pos);
 		Vec3 look = diff.normalize();
 		double distance = diff.length();
 		double[] through = new double[] {throWater, throBlock};
@@ -45,7 +53,7 @@ public class UtilEntity {
 	}
 	
 	public static boolean canEntitySeeEntity(Entity e1, Entity e2, int maxBlockCheckDepth, double throWater, double throBlock) {
-		return canPosSeeEntity(e1.position(), e2, maxBlockCheckDepth, throWater, throBlock);
+		return canPosSeeEntity(e1.getEyePosition(), e2, maxBlockCheckDepth, throWater, throBlock);
 	}
 	
 	private static boolean checkBlocksByRange(Level level, Vec3 pos, Vec3 look, int dist, double[] through) {
@@ -74,7 +82,7 @@ public class UtilEntity {
 	}
 	
 	public static double getCrossSectionalArea(Entity entity) {
-		if (entity instanceof EntityAircraft plane) return plane.getCrossSectionArea();
+		if (entity instanceof EntityVehicle plane) return plane.getCrossSectionArea();
 		return RadarTargetTypes.get().getEntityCrossSectionalArea(
 				entity.getType().toString(), 
 				entity.getBbHeight()*entity.getBbWidth());
@@ -95,10 +103,14 @@ public class UtilEntity {
 	
 	public static int getDistFromSeaLevel(Entity e) {
 		DimensionType dt = e.level.dimensionType();
+		return getDistFromSeaLevel(e.position().y, dt.natural());
+	}
+	
+	public static int getDistFromSeaLevel(double yPos, boolean isNatural) {
 		int sea;
-		if (dt.natural()) sea = 64;
+		if (isNatural) sea = 64;
 		else sea = 0;
-		return (int)e.getY() - sea;
+		return (int)yPos - sea;
 	}
 	
 	public static Vec3 getLookingAtBlockPos(Entity e, int max) {
@@ -153,27 +165,51 @@ public class UtilEntity {
 		return entity.isInWater() && !entity.isUnderWater();
 	}
 	
-	private static Field explosion_radius_field = null;
-	private static boolean tried_to_get_explosion_radius_field = false;
+	public static void entityLookAtPos(Entity entity, Vec3 pos, float headTurnRate) {
+		Vec3 diff = pos.subtract(entity.getEyePosition());
+		float yRot = UtilAngles.getYaw(diff);
+		float xRot = UtilAngles.getPitch(diff);
+		float newYRot = UtilAngles.rotLerp(entity.getYRot(), yRot, headTurnRate);
+		float newXRot = UtilAngles.rotLerp(entity.getXRot(), xRot, headTurnRate);
+		entity.setYRot(newYRot);
+		entity.setXRot(newXRot);
+	}
+	
+	public static void mobLookAtPos(Mob mob, Vec3 pos, float headTurnRate) {
+		mob.getLookControl().setLookAt(pos.x, pos.y, pos.z, headTurnRate, 360);
+	}
+	
+	public static String[] getSplitEncodeId(Entity entity) {
+		return entity.getEncodeId().split(":");
+	}
+	
+	public static int getRandomColor() {
+		float hue = random.nextFloat();
+		float saturation = (random.nextInt(4000) + 6000) / 10000f;
+		float luminance = (random.nextInt(2000) + 8000) / 10000f;
+		Color color = Color.getHSBColor(hue, saturation, luminance);
+		return color.getRGB();
+	}
 	
 	@Nullable
-	public static Field getExplosionRadiusField() {
-		if (!tried_to_get_explosion_radius_field) {
-			try {
-				explosion_radius_field = Explosion.class.getDeclaredField("f_46017_");
-				explosion_radius_field.setAccessible(true);
-			} catch(Exception e) {
-				try {
-					explosion_radius_field = Explosion.class.getDeclaredField("radius");
-					explosion_radius_field.setAccessible(true);
-				} catch(Exception e2) {
-					e.printStackTrace();
-					e2.printStackTrace();
+	public static EntityHitResult getEntityHitResultAtClip(Level level, Entity projectile, Vec3 start, Vec3 end, 
+			AABB aabb, Predicate<Entity> filter, float inflateAmount) {
+		double d0 = Double.MAX_VALUE;
+		Entity entity = null;
+		Vec3 pos = null;
+		for(Entity entity1 : level.getEntities(projectile, aabb, filter)) {
+			AABB aabb1 = entity1.getBoundingBox().inflate(inflateAmount);
+			Optional<Vec3> optional = aabb1.clip(start, end);
+			if (optional.isPresent()) {
+				double d1 = start.distanceToSqr(optional.get());
+				if (d1 < d0) {
+					entity = entity1;
+					d0 = d1;
+					pos = optional.get();
 				}
 			}
-			tried_to_get_explosion_radius_field = true;
 		}
-		return explosion_radius_field;
+		return entity == null ? null : new EntityHitResult(entity, pos);
 	}
 	
 }

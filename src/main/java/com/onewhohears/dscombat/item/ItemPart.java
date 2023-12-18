@@ -39,11 +39,15 @@ public abstract class ItemPart extends Item {
 		return new Item.Properties().tab(ModItems.PARTS).stacksTo(stackSize);
 	}
 	
+	public static Properties itemProps(int stackSize) {
+		return new Item.Properties().tab(ModItems.DSC_ITEMS).stacksTo(stackSize);
+	}
+	
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
 		if (group.getId() == ModItems.PARTS.getId()) {
 			ItemStack test = new ItemStack(this);
-			test.setTag(getNbt());
+			test.setTag(getFilledNbt());
 			items.add(test);
 		}
 	}
@@ -56,6 +60,10 @@ public abstract class ItemPart extends Item {
 	
 	public CompoundTag getNbt() {
 		return getPartData().write();
+	}
+	
+	public CompoundTag getFilledNbt() {
+		return getFilledPartData("").write();
 	}
 	
 	public abstract PartData getPartData();

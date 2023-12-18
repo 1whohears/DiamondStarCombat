@@ -1,8 +1,9 @@
 package com.onewhohears.dscombat.entity.weapon;
 
 import com.onewhohears.dscombat.Config;
-import com.onewhohears.dscombat.data.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.data.weapon.TorpedoData;
+import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -46,6 +47,11 @@ public class TorpedoMissile extends TrackEntityMissile {
 	@Override
 	protected WeaponDamageSource getExplosionDamageSource() {
 		return WeaponDamageSource.WeaponDamageType.TORPEDO.getSource(getOwner(), this);
+	}
+	
+	@Override
+	public WeaponData.WeaponType getWeaponType() {
+		return WeaponData.WeaponType.TORPEDO;
 	}
 	
 }

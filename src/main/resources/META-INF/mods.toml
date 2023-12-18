@@ -29,3 +29,17 @@ showAsResourcePack=false
     versionRange="[1.19.2,1.20)"
     ordering="NONE"
     side="BOTH"
+   
+[[dependencies.dscombat]]
+    modId="modernfix"
+    mandatory=true
+    versionRange="[5.8.0,)"
+    ordering="NONE"
+    side="BOTH"
+    
+[[dependencies.dscombat]]
+    modId="minigames"
+    mandatory=false
+    versionRange="[0.0.2,)"
+    ordering="NONE"
+    side="BOTH"

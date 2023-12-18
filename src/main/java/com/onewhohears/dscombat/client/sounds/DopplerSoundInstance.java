@@ -40,14 +40,14 @@ public class DopplerSoundInstance extends AbstractTickableSoundInstance {
 
 	@Override
 	public void tick() {
-		if (player.isRemoved() || entity.isRemoved()) {
-			this.stop();
+		if (entity.isRemoved() || !entity.isAddedToWorld()) {
+			stop();
 			return;
 		}
 		// position
-		this.x = entity.getX();
-		this.y = entity.getY();
-		this.z = entity.getZ();
+		x = entity.getX();
+		y = entity.getY();
+		z = entity.getZ();
 		// volume
 		float d2 = (float)player.distanceToSqr(entity);
 		volume = initVolume - d2 * volDecreaseRate;

@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class ItemGasCan extends Item {
 	
 	public ItemGasCan(int maxFuel) {
-		super(new Item.Properties().tab(ModItems.PARTS).stacksTo(1).durability(maxFuel));
+		super(new Item.Properties().tab(ModItems.DSC_ITEMS).stacksTo(1).durability(maxFuel));
 	}
 	
 	@Override

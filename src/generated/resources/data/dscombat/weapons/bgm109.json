@@ -1,25 +1,26 @@
 {
   "type": "track_missile",
   "acceleration": 0.05,
+  "activeTrack": false,
   "bleed": 0.05,
   "canShootOnGround": true,
   "causesFire": true,
   "compatibleWeaponPart": "dscombat:vls",
   "craftNum": 1,
-  "damage": 70.0,
+  "damage": 45.0,
   "destroyTerrain": true,
   "displayName": "preset.dscombat.bgm109",
   "entityTypeKey": "dscombat:aim120c",
   "explosionRadius": 3.5,
   "explosive": true,
-  "fireRate": 20,
-  "fov": 80.0,
-  "fuelTicks": 180,
+  "fireRate": 25,
+  "fov": -1.0,
+  "fuelTicks": 150,
   "fuseDist": 2.0,
   "ingredients": [
     {
       "item": "minecraft:iron_ingot",
-      "num": 3
+      "num": 10
     },
     {
       "item": "minecraft:tnt",
@@ -30,18 +31,22 @@
       "num": 1
     },
     {
-      "item": "dscombat:intel_pentium",
+      "item": "minecraft:lightning_rod",
       "num": 1
+    },
+    {
+      "item": "dscombat:ti83",
+      "num": 2
     }
   ],
   "innacuracy": 0.0,
   "itemKey": "dscombat:track_air_missile",
-  "maxAge": 200,
+  "maxAge": 172,
   "maxAmmo": 16,
   "presetId": "bgm109",
   "rackTypeKey": "dscombat:vls",
   "shootSoundKey": "dscombat:rocket_launch_1",
-  "speed": 3.0,
+  "speed": 3.5,
   "targetType": "AIR",
-  "turnRadius": 100.0
+  "turnRadius": 170.0
 }

@@ -3,10 +3,14 @@ buildscript {
         maven { url = 'https://maven.minecraftforge.net' }
         maven { url = 'https://maven.parchmentmc.org' }
         mavenCentral()
+        maven { url = 'https://repo.spongepowered.org/maven' }
+        maven { url = 'https://maven.xillio.com/artifactory/libs-release' }
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
         classpath 'org.parchmentmc:librarian:1.+'
+        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
+        classpath group: 'com.diffplug.eclipse.apt', name: 'com.diffplug.eclipse.apt.gradle.plugin', version: '3.41.1'
     }
 }
 
@@ -15,16 +19,19 @@ apply plugin: 'org.parchmentmc.librarian.forgegradle'
 // DO NOT CHANGE ABOVE
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
+apply plugin: 'org.spongepowered.mixin'
+apply plugin: 'com.diffplug.eclipse.apt'
 
 group = 'com.onewhohears.dscombat'
 archivesBaseName = 'dscombat-1.19.2'
-version = '0.8.6'
+version = '0.9.0'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 minecraft {
     mappings channel: 'parchment', version: '2022.11.27-1.19.2'
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
     
     runs {
         client {
@@ -32,6 +39,8 @@ minecraft {
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             property 'forge.enabledGameTestNamespaces', 'dscombat'
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             mods {
                 dscombat {
                     source sourceSets.main
@@ -44,6 +53,8 @@ minecraft {
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             property 'forge.enabledGameTestNamespaces', 'dscombat'
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             mods {
                 dscombat {
                     source sourceSets.main
@@ -56,6 +67,8 @@ minecraft {
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             property 'forge.enabledGameTestNamespaces', 'dscombat'
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             mods {
                 dscombat {
                     source sourceSets.main
@@ -68,6 +81,8 @@ minecraft {
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             args '--mod', 'dscombat', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             mods {
                 dscombat {
                     source sourceSets.main
@@ -80,10 +95,26 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
+	maven { url "https://cursemaven.com" }
+	// temporarily using a free maven repo until I publish to curse forge
+	maven { url "https://repo.repsy.io/mvn/1whohears/minigames" }
 }
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.19.2-43.2.0'
+    implementation fg.deobf("curse.maven:modernfix-790626:4792392")
+    // https://github.com/1whohears/CustomMiniGames
+    implementation fg.deobf("com.1whohears.minigames:minigames-1.19.2:0.0.2")
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+}
+
+mixin {
+	add sourceSets.main, 'mixins.dscombat.refmap.json'
+	config 'mixins.dscombat.json'
+	
+	/*debug = true
+	debug.verbose = true
+	debug.export = true*/
 }
 
 jar {

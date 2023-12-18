@@ -8,7 +8,7 @@ import javax.annotation.Nullable;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAircraftFuel;
 import com.onewhohears.dscombat.data.parts.EngineData.EngineType;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.item.ItemSeat;
 import com.onewhohears.dscombat.util.UtilParse;
 
@@ -23,7 +23,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.PacketDistributor;
 
 /**
- * manages the parts/inventory system for {@link EntityAircraft}.
+ * manages the parts/inventory system for {@link EntityVehicle}.
  * reads the entity's nbt to load the saved parts.
  * communicates with {@link com.onewhohears.dscombat.data.radar.WeaponSystem} 
  * and {@link com.onewhohears.dscombat.data.radar.RadarSystem} to update a vehicle's 
@@ -39,12 +39,12 @@ public class PartsManager {
 	
 	public static final int SLOT_VERSION = 1;
 	
-	private final EntityAircraft parent;
+	private final EntityVehicle parent;
 	private List<PartSlot> slots = new ArrayList<PartSlot>();
 	private Container inventory = new SimpleContainer(0);
 	private boolean readData = false;
 	
-	public PartsManager(EntityAircraft parent) {
+	public PartsManager(EntityVehicle parent) {
 		this.parent = parent;
 	}
 	
@@ -201,7 +201,14 @@ public class PartsManager {
 	public boolean killPartInSlot(String slotId) {
 		PartSlot slot = getSlot(slotId);
 		if (slot == null) return false;
+		Entity pilot = null;
+		if (slot.isPilotSlot()) pilot = parent.getControllingPassenger();
 		slot.removePartData(parent);
+		if (pilot != null && pilot.getVehicle() == null) {
+			SeatData seatdata = ItemSeat.getDefaultSeat();
+			slot.addPartData(seatdata, parent);
+			parent.rideAvailableSeat(pilot);
+		}
 		return true;
 	}
 	

@@ -43,26 +43,5 @@
       "slot_ui_y": 100
     }
   ],
-  "presetId": "axcel_truck",
-  "textures": {
-    "default_texture_path": "dscombat:textures/entity/axcel_truck/",
-    "overrides": {
-      "black": "dscombat:textures/entity/axcel_truck/brown",
-      "blue": "dscombat:textures/entity/axcel_truck/brown",
-      "brown": "dscombat:textures/entity/axcel_truck/brown",
-      "cyan": "dscombat:textures/entity/axcel_truck/brown",
-      "gray": "dscombat:textures/entity/axcel_truck/brown",
-      "green": "dscombat:textures/entity/axcel_truck/brown",
-      "light_blue": "dscombat:textures/entity/axcel_truck/brown",
-      "light_gray": "dscombat:textures/entity/axcel_truck/brown",
-      "lime": "dscombat:textures/entity/axcel_truck/brown",
-      "magenta": "dscombat:textures/entity/axcel_truck/brown",
-      "orange": "dscombat:textures/entity/axcel_truck/brown",
-      "pink": "dscombat:textures/entity/axcel_truck/brown",
-      "purple": "dscombat:textures/entity/axcel_truck/brown",
-      "red": "dscombat:textures/entity/axcel_truck/brown",
-      "white": "dscombat:textures/entity/axcel_truck/brown",
-      "yellow": "dscombat:textures/entity/axcel_truck/brown"
-    }
-  }
+  "presetId": "axcel_truck"
 }

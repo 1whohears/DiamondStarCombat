@@ -37,7 +37,7 @@ public class ToServerSeatPos extends IPacket {
 			success.set(true);
 			ServerPlayer player = ctx.get().getSender();
 			if (player.isPassenger() && player.getVehicle() instanceof EntitySeat) {
-				player.getVehicle().setPos(seatPos);
+				player.getVehicle().setPosRaw(seatPos.x, seatPos.y, seatPos.z);
 			}
 			//System.out.println("ToServerSeatPos = "+seatPos);
 		});

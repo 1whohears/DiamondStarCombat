@@ -1,9 +1,15 @@
 package com.onewhohears.dscombat.util.math;
 
+import java.util.Random;
+
+import javax.annotation.Nullable;
+
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
@@ -102,6 +108,10 @@ public class UtilGeometry {
 		return v.x == 0 && v.y == 0 && v.z == 0;
 	}
 	
+	public static boolean isZero(Vector3f v) {
+		return v.x() == 0 && v.y() == 0 && v.z() == 0;
+	}
+	
 	public static Vec3 getClosestPointOnAABB(Vec3 pos, AABB aabb) {
 		if (pos == null) return aabb.getCenter();
 		double rx = pos.x, ry = pos.y, rz = pos.z;
@@ -118,20 +128,98 @@ public class UtilGeometry {
 		return Double.isNaN(v.x) || Double.isNaN(v.y) || Double.isNaN(v.z);
 	}
 	
-	public static int[] worldToScreenPos(Vec3 world_pos, Matrix4f view_mat, Matrix4f proj_mat, int width, int height) {
+	public static int[] worldToScreenPosInt(Vec3 world_pos, Matrix4f view_mat, Matrix4f proj_mat, int width, int height) {
+		float[] sp = worldToScreenPos(world_pos, view_mat, proj_mat, width, height);
+		return new int[] {(int)sp[0], (int)sp[1]};
+	}
+	
+	public static float[] worldToScreenPos(Vec3 world_pos, Matrix4f view_mat, Matrix4f proj_mat, int width, int height) {
 		Vector4f clipSpace = new Vector4f((float)world_pos.x, (float)world_pos.y, (float)world_pos.z, 1f);
 		clipSpace.transform(view_mat);
 		clipSpace.transform(proj_mat);
-		if (clipSpace.w() <= 0) return new int[] {-1,-1};
+		if (clipSpace.w() <= 0) return new float[] {-1,-1};
 		Vector3f ndcSpace = new Vector3f(clipSpace);
 		ndcSpace.mul(1/clipSpace.w());
-		int win_x = (int)((ndcSpace.x()+1f)/2f*width);
-		int win_y = (int)((ndcSpace.y()+1f)/2f*height);
-		return new int[] {win_x, win_y};
+		float win_x = (ndcSpace.x()+1f)/2f*width;
+		float win_y = (ndcSpace.y()+1f)/2f*height;
+		return new float[] {win_x, win_y};
 	}
 	
 	public static Vector3f convertVector(Vec3 v) {
 		return new Vector3f((float)v.x, (float)v.y, (float)v.z);
+	}
+	
+	public static Vec3 convertVector(Vector3f v) {
+		return new Vec3(v.x(), v.y(), v.z());
+	}
+	
+	public static Vec3 getBBFeet(AABB bb) {
+		return new Vec3(bb.getCenter().x, bb.minY, bb.getCenter().z);
+	}
+	
+	public static Vec3 toFloats(Vec3 v) {
+		return new Vec3((float)v.x, (float)v.y, (float)v.z);
+	}
+	
+	public static Vec3 toVec3(BlockPos pos) {
+		return new Vec3(pos.getX(), pos.getY(), pos.getZ());
+	}
+	
+	public static final Random RANDOM = new Random();
+	
+	public static Vec3 inaccurateTargetPos(Vec3 origin, Vec3 targetPos, float inaccuracy) {
+		double dist = origin.distanceTo(targetPos);
+		double i = dist*Math.tan(Mth.DEG_TO_RAD*inaccuracy);
+		return targetPos.add((RANDOM.nextDouble()-0.5)*i, (RANDOM.nextDouble()-0.5)*i, (RANDOM.nextDouble()-0.5)*i);
+	}
+	
+	/**
+	 * @return double array size 4 of roots. root 1 real, root 1 imaginary, root2 real, root2 imaginary
+	 */
+	public static double[] roots(double a, double b, double c) {
+		double[] roots = new double[4];
+		double d = b*b - 4*a*c;
+		if (d > 0) {
+			double sqrtD = Math.sqrt(d);
+			roots[0] = (-b + sqrtD) / (2*a);
+			roots[1] = 0;
+			roots[2] = (-b - sqrtD) / (2*a);
+			roots[3] = 0;
+		} else if (d == 0) {
+			double root = -b / (2*a);
+			roots[0] = root;
+			roots[1] = 0;
+			roots[2] = root;
+			roots[3] = 0;
+		} else {
+			double real = -b / (2*a);
+			double imaginary = Math.sqrt(-d) / (2 * a);
+			roots[0] = real;
+			roots[1] = imaginary;
+			roots[2] = real;
+			roots[3] = -imaginary;
+		}
+		return roots;
+	}
+	
+	/**
+	 * @return double array size 2 of roots. null if imaginary.
+	 */
+	@Nullable
+	public static double[] rootsNoI(double a, double b, double c) {
+		double d = b*b - 4*a*c;
+		if (d < 0) return null;
+		double[] roots = new double[2];
+		if (d == 0) {
+			double root = -b / (2*a);
+			roots[0] = root;
+			roots[1] = root;
+		} else {
+			double sqrtD = Math.sqrt(d);
+			roots[0] = (-b + sqrtD) / (2*a);
+			roots[1] = (-b - sqrtD) / (2*a);
+		}
+		return roots;
 	}
 	
 }

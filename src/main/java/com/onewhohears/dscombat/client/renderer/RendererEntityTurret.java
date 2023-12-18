@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.model.EntityControllableModel;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
@@ -35,7 +35,7 @@ public class RendererEntityTurret<T extends EntityTurret> extends EntityRenderer
 	public void render(T entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
 		if (!entity.shouldRender()) return;
 		poseStack.pushPose();
-		if (entity.getVehicle() instanceof EntityAircraft plane) {
+		if (entity.getVehicle() instanceof EntityVehicle plane) {
 			Quaternion qp = UtilAngles.lerpQ(partialTicks, plane.getPrevQ(), plane.getClientQ());
 			poseStack.mulPose(qp);
 		}

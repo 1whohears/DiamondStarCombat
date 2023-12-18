@@ -2,9 +2,10 @@ package com.onewhohears.dscombat.entity.parts;
 
 import javax.annotation.Nullable;
 
+import com.onewhohears.dscombat.client.model.obj.ObjRadarModel.MastType;
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.data.parts.PartSlot;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.UtilParse;
 
@@ -70,7 +71,7 @@ public abstract class EntityPart extends Entity {
 	}
 	
 	public void init() {
-		if (getVehicle() instanceof EntityAircraft plane) {
+		if (getVehicle() instanceof EntityVehicle plane) {
 			PartSlot ps = plane.partsManager.getSlot(getSlotId());
 			if (ps != null) {
 				z_rot = ps.getZRot();
@@ -83,7 +84,7 @@ public abstract class EntityPart extends Entity {
 	public void tick() {
 		if (firstTick) init();
 		super.tick();
-		if (!level.isClientSide && tickCount > 10 && getVehicle() == null) kill(); 
+		if (!level.isClientSide && tickCount > 10 && getVehicle() == null) discard();
 	}
 	
 	public Vec3 getRelativePos() {
@@ -112,7 +113,7 @@ public abstract class EntityPart extends Entity {
 	
 	public void onDeath() {
 		if (!canGetHurt()) return;
-		if (!(getVehicle() instanceof EntityAircraft plane)) return;
+		if (!(getVehicle() instanceof EntityVehicle plane)) return;
 		plane.partsManager.killPartInSlot(getSlotId());
 	}
 	
@@ -120,6 +121,12 @@ public abstract class EntityPart extends Entity {
 	public void kill() {
 		onDeath();
 		super.kill();
+	}
+	
+	@Nullable
+	public EntityVehicle getParentVehicle() {
+		if (getVehicle() instanceof EntityVehicle vehicle) return vehicle;
+		return null;
 	}
 	
 	public abstract boolean shouldRender();
@@ -198,6 +205,12 @@ public abstract class EntityPart extends Entity {
         double f1 = d.height;
         return new AABB(pX-f, pY-f1, pZ-f, 
         		pX+f, pY, pZ+f);
+    }
+    
+    public MastType getVehicleMastType() {
+    	EntityVehicle vehicle = getParentVehicle();
+    	if (vehicle == null) return MastType.NONE;
+    	return vehicle.getMastType();
     }
 
 }

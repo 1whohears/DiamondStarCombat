@@ -1,6 +1,7 @@
 {
   "type": "track_missile",
   "acceleration": 0.03,
+  "activeTrack": true,
   "bleed": 0.02,
   "canShootOnGround": false,
   "causesFire": true,
@@ -10,11 +11,11 @@
   "destroyTerrain": true,
   "displayName": "preset.dscombat.aim120b",
   "entityTypeKey": "dscombat:aim120b",
-  "explosionRadius": 5.0,
+  "explosionRadius": 4.5,
   "explosive": true,
-  "fireRate": 50,
-  "fov": 45.0,
-  "fuelTicks": 200,
+  "fireRate": 30,
+  "fov": 60.0,
+  "fuelTicks": 250,
   "fuseDist": 3.0,
   "ingredients": [
     {
@@ -27,7 +28,7 @@
     },
     {
       "item": "minecraft:coal_block",
-      "num": 5
+      "num": 3
     },
     {
       "item": "minecraft:ender_eye",
@@ -40,7 +41,7 @@
   ],
   "innacuracy": 0.0,
   "itemKey": "dscombat:aim120b",
-  "maxAge": 250,
+  "maxAge": 350,
   "maxAmmo": 3,
   "presetId": "aim120b",
   "rackTypeKey": "dscombat:heavy_missile_rack",

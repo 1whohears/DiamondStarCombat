@@ -3,13 +3,16 @@ package com.onewhohears.dscombat.entity.parts;
 import javax.annotation.Nullable;
 
 import com.mojang.math.Quaternion;
+import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.TurretData;
 import com.onewhohears.dscombat.data.parts.TurretData.RotBounds;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.ai.goal.TurretShootGoal;
+import com.onewhohears.dscombat.entity.ai.goal.TurretTargetGoal;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
@@ -24,6 +27,10 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.animal.AbstractGolem;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -53,7 +60,7 @@ public class EntityTurret extends EntitySeat {
 	/**
 	 * only used on server side
 	 */
-	private int newRiderCoolDown;
+	private int newRiderCoolDown, lastShootTime;
 	
 	public EntityTurret(EntityType<?> type, Level level, Vec3 offset, double weaponOffset) {
 		super(type, level, offset);
@@ -77,11 +84,6 @@ public class EntityTurret extends EntitySeat {
 		entityData.define(RELROTX, 0f);
 		entityData.define(RELROTY, 0f);
 	}
-	
-	@Override
-    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
-        super.onSyncedDataUpdated(key);
-    }
 	
 	@Override
 	protected void readAdditionalSaveData(CompoundTag tag) {
@@ -118,14 +120,13 @@ public class EntityTurret extends EntitySeat {
 		yRotRelO = getRelRotY();
 		LivingEntity gunner = getPassenger();
 		if (gunner == null) return;
-		// TODO 6.1 certain mobs aim and shoot in turrets. some are better at aiming than others
 		Quaternion ra = Quaternion.ONE;
 		if (!level.isClientSide) {
 			if (newRiderCoolDown > 0) --newRiderCoolDown;
 			float rely = yRotRelO, relx = xRotRelO;
 			float rotrate = getRotRate(), minrotx = getMinRotX(), maxrotx = getMaxRotX();
-			EntityAircraft ea = null;
-			if (getVehicle() instanceof EntityAircraft plane) {
+			EntityVehicle ea = null;
+			if (getVehicle() instanceof EntityVehicle plane) {
 				ra = plane.getQ();
 				ea = plane;
 			}  
@@ -152,6 +153,13 @@ public class EntityTurret extends EntitySeat {
 			
 			setRelRotX(Mth.wrapDegrees(relx+dx));
 			setRelRotY(Mth.wrapDegrees(rely+dy));
+			
+			// FIXME 3 sometimes even in force loaded chunks the mob gunner stops ticking
+			/*if (gunner instanceof Mob gunMob) {
+				//gunMob.targetSelector.enableControlFlag(Goal.Flag.TARGET);
+				System.out.println(gunMob.tickCount+" "+gunMob+" "+gunMob.getVehicle());
+				//((ServerLevel)level).entityTickList;
+			}*/
 		}
 		float[] global = UtilAngles.relativeToGlobalDegrees(getRelRotX(), getRelRotY(), ra);
 		setXRot(global[0]);
@@ -159,16 +167,82 @@ public class EntityTurret extends EntitySeat {
 	}
 	
 	@Override
-	protected Vec3 getPassengerRelPos(Entity passenger, EntityAircraft craft) {
+	protected Vec3 getPassengerRelPos(Entity passenger, EntityVehicle craft) {
 		Quaternion q;
 		if (level.isClientSide) q = craft.getClientQ();
 		else q = craft.getQ();
 		double offset = getPassengersRidingOffset() + passenger.getMyRidingOffset() + passenger.getEyeHeight();
-		return UtilAngles.rotateVector(new Vec3(
-					passengerOffset.x*Mth.cos(getRelRotY()*Mth.DEG_TO_RAD)+passengerOffset.z*Mth.sin(getRelRotY()*Mth.DEG_TO_RAD), 
-					offset, 
-					passengerOffset.z*Mth.cos(getRelRotY()*Mth.DEG_TO_RAD)+passengerOffset.x*Mth.sin(getRelRotY()*Mth.DEG_TO_RAD)
-				), q).subtract(0, passenger.getEyeHeight(), 0);
+		float cos = Mth.cos(getRelRotY()*Mth.DEG_TO_RAD), sin = Mth.sin(getRelRotY()*Mth.DEG_TO_RAD);
+		return UtilAngles.rotateVector(new Vec3(passengerOffset.x*cos+passengerOffset.z*sin, 
+				offset, passengerOffset.z*cos+passengerOffset.x*sin), q)
+				.subtract(0, passenger.getEyeHeight(), 0);
+	}
+	
+	protected Goal shootGoal, targetGoal;
+	
+	protected void addTurretAI(Mob mob) {
+		shootGoal = makeShootGoal(mob);
+		mob.goalSelector.addGoal(0, shootGoal);
+		if (mob instanceof Enemy) {
+			targetGoal = makeTargetPlayerGoal(mob);
+			mob.targetSelector.addGoal(0, targetGoal);
+		} else if (mob instanceof AbstractGolem) {
+			targetGoal = makeTargetEnemyGoal(mob);
+			mob.targetSelector.addGoal(0, targetGoal);
+		}
+	}
+	
+	protected void removeTurretAI(Mob mob) {
+		if (shootGoal != null) {
+			mob.goalSelector.removeGoal(shootGoal);
+			shootGoal = null;
+		}
+		if (targetGoal != null) {
+			mob.targetSelector.removeGoal(targetGoal);
+			targetGoal = null;
+		}
+	}
+	
+	protected Goal makeShootGoal(Mob mob) {
+		return new TurretShootGoal(mob, this);
+	}
+	
+	protected Goal makeTargetPlayerGoal(Mob mob) {
+		return TurretTargetGoal.targetPlayers(mob, this);
+	}
+	
+	protected Goal makeTargetEnemyGoal(Mob mob) {
+		return TurretTargetGoal.targetEnemy(mob, this);
+	}
+	
+	public boolean isAIUsingRadar() {
+		if (targetGoal == null) return false;
+		WeaponData wd = getWeaponData();
+		if (wd == null) return false;
+		return wd.requiresRadar();
+	}
+	
+	public double getAIHorizontalRange() {
+		WeaponData wd = getWeaponData();
+		if (wd == null) return 300;
+		return wd.getMobTurretRange();
+	}
+	
+	public double getAIVerticalRange() {
+		return level.getGameRules().getInt(DSCGameRules.MOB_TURRET_VERTICAL_RANGE);
+	}
+	
+	@Override
+    protected void addPassenger(Entity passenger) {
+        super.addPassenger(passenger);
+        newRiderCoolDown = 10;
+        if (passenger instanceof Mob m) addTurretAI(m);
+	}
+	
+	@Override
+	protected void removePassenger(Entity passenger) {
+		super.removePassenger(passenger);
+		if (passenger instanceof Mob m) removeTurretAI(m);
 	}
 	
 	@Override
@@ -186,7 +260,7 @@ public class EntityTurret extends EntitySeat {
 	}
 	
 	public void updateDataAmmo() {
-		if (getRootVehicle() instanceof EntityAircraft plane) {
+		if (getRootVehicle() instanceof EntityVehicle plane) {
 			PartSlot slot = plane.partsManager.getSlot(getSlotId());
 			if (slot != null && slot.filled() && slot.getPartData().getType() == PartType.TURRENT) { 
 				TurretData td = (TurretData) slot.getPartData();
@@ -217,8 +291,8 @@ public class EntityTurret extends EntitySeat {
 		if (level.isClientSide || data == null || newRiderCoolDown > 0) return;
 		boolean consume = true;
 		Vec3 pos = position();
-		EntityAircraft parent = null;
-		if (getVehicle() instanceof EntityAircraft craft) {
+		EntityVehicle parent = null;
+		if (getVehicle() instanceof EntityVehicle craft) {
 			if (!craft.isOperational()) return;
 			pos = pos.add(UtilAngles.rotateVector(new Vec3(0, weaponOffset, 0), craft.getQ()));
 			if (craft.isNoConsume()) consume = false;
@@ -229,22 +303,24 @@ public class EntityTurret extends EntitySeat {
 			if (player.isCreative()) consume = false;
 			p = player;
 		}
+		boolean consumeAmmo = parent.level.getGameRules().getBoolean(DSCGameRules.CONSUME_AMMO);
 		boolean couldShoot = data.checkRecoil();
-		data.shootFromTurret(level, shooter, getLookAngle(), pos, parent, consume);
-		if (couldShoot) specialShoot(shooter, pos, parent, consume);
+		data.shootFromTurret(level, shooter, getLookAngle(), pos, parent, consume && consumeAmmo);
+		if (couldShoot) specialShoot(shooter, pos, parent, consume && consumeAmmo);
 		if (data.isFailedLaunch()) {
 			if (p != null) p.displayClientMessage(
 					Component.translatable(data.getFailedLaunchReason()), 
 					true);
 		} else {
+			lastShootTime = tickCount;
 			setAmmo(data.getCurrentAmmo());
 			updateDataAmmo();
 		}
 	}
 	
-	protected void specialShoot(Entity shooter, Vec3 pos, EntityAircraft parent, boolean consume) {
+	protected void specialShoot(Entity shooter, Vec3 pos, EntityVehicle parent, boolean consume) {
 		if (shootType == ShootType.NORMAL) return;
-		System.out.println("SPECIAL SHOOT "+shootType);
+		//System.out.println("SPECIAL SHOOT "+shootType);
 		if (shootType == ShootType.MARK7) {
 			float d = 1;
 			float yRad = getYRot() * Mth.DEG_TO_RAD;
@@ -253,6 +329,10 @@ public class EntityTurret extends EntitySeat {
 			data.shootFromTurret(level, shooter, getLookAngle(), posL, parent, consume, true);
 			data.shootFromTurret(level, shooter, getLookAngle(), posR, parent, consume, true);
 		}
+	}
+	
+	public int getLastShootTime() {
+		return lastShootTime;
 	}
 	
 	@Override
@@ -308,12 +388,6 @@ public class EntityTurret extends EntitySeat {
 	
 	public void setRelRotY(float degrees) {
 		entityData.set(RELROTY, degrees);
-	}
-	
-	@Override
-    protected void addPassenger(Entity passenger) {
-        super.addPassenger(passenger);
-        newRiderCoolDown = 10;
 	}
 	
 	public static enum ShootType {

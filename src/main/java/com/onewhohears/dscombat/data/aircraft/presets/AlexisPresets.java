@@ -3,10 +3,8 @@ package com.onewhohears.dscombat.data.aircraft.presets;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft.AircraftType;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
-
-import net.minecraft.world.item.DyeColor;
 
 public class AlexisPresets {
 	
@@ -27,19 +25,22 @@ public class AlexisPresets {
 			.setTurnTorques(1f, 2f, 4f)
 			.setThrottleRate(0.04f, 0.08f)
 			.setPlaneWingArea(14f)
-			.setDefaultColor(DyeColor.LIGHT_GRAY)
 			.addIngredient(ModItems.FUSELAGE.getId(), 1)
 			.addIngredient(ModItems.WING.getId(), 2)
 			.addIngredient(ModItems.ADVANCED_COCKPIT.getId())
 			.addIngredient(ModItems.WHEEL.getId(), 3)
 			.addIngredient("minecraft:light_gray_dye", 5)
-			.addIngredient("minecraft:gold_ingot", 10)
-			.addPilotSeatSlot(0, 0.50, 6.35)
-			.addEmptySlot("left_wing_1", SlotType.WING, 2.3, 0.15, 0, 180)
-			.addEmptySlot("left_wing_2", SlotType.WING, 4.5, 0.15, 0, 180)
-			.addEmptySlot("right_wing_1", SlotType.WING, -2.3, 0.15, 0, 180)
-			.addEmptySlot("right_wing_2", SlotType.WING, -4.5, 0.15, 0, 180)
-			.addEmptySlot("frame_1", SlotType.FRAME, 0, -0.04, 8.5, 180)
+			.addIngredient("minecraft:gold_ingot", 20)
+			.addPilotSeatSlot(0, 0.1, 6.5)
+			.addEmptySlot("left_wing_1", SlotType.WING, 2.3, -0.08, -0.1, 180)
+			.addEmptySlot("left_wing_2", SlotType.WING, 3.6, -0.08, -0.7, 180)
+			.addEmptySlot("left_wing_3", SlotType.WING, 4.95, -0.08, -1.1, 180)
+			.addEmptySlot("left_wing_4", SlotType.WING, 6.05, 0.4, -1.5, -90)
+			.addEmptySlot("right_wing_1", SlotType.WING, -2.3, -0.08, -0.1, 180)
+			.addEmptySlot("right_wing_2", SlotType.WING, -3.6, -0.08, -0.7, 180)
+			.addEmptySlot("right_wing_3", SlotType.WING, -4.95, -0.08, -1.1, 180)
+			.addEmptySlot("right_wing_4", SlotType.WING, -6.05, 0.4, -1.5, 90)
+			.addEmptySlot("frame_1", SlotType.FRAME, 0, -0.15, 8, 180)
 			.addEmptySlot("internal_1", SlotType.PUSH_ENGINE)
 			.addEmptySlot("internal_2", SlotType.INTERNAL)
 			.addEmptySlot("internal_3", SlotType.INTERNAL)
@@ -82,7 +83,7 @@ public class AlexisPresets {
 			.createFromCopy(DSCombatMod.MODID, "alexis_plane_support", UNARMED_ALEXIS_PLANE)
 			.setSlotItem("left_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "agm84e", true)
 			.setSlotItem("left_wing_2", ModItems.HEAVY_MISSILE_RACK.getId(), "aim120b", true)
-			.setSlotItem("right_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "rifel1", true)
+			.setSlotItem("right_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "agm88g", true)
 			.setSlotItem("right_wing_2", ModItems.LIGHT_MISSILE_RACK.getId(), "agm114k", true)
 			.setSlotItem("frame_1", ModItems.XM12.getId(), "50mmhe", true)
 			.setSlotItem("internal_4", ModItems.AR2K.getId())

@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.data.parts;
 import java.util.NoSuchElementException;
 
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntityRadar;
 import com.onewhohears.dscombat.init.ModEntities;
 
@@ -47,7 +47,7 @@ public class ExternalRadarPartData extends RadarPartData {
 	}
 	
 	@Override
-	public void serverSetup(EntityAircraft craft, String slotId, Vec3 pos) {
+	public void serverSetup(EntityVehicle craft, String slotId, Vec3 pos) {
 		super.serverSetup(craft, slotId, pos);
 		if (!isEntitySetup(slotId, craft)) {
 			EntityRadar radar = new EntityRadar(getEntityType(), craft.level, slotId, pos);

@@ -9,11 +9,15 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientDataPackSynch;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRWRWarning;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRadarPings;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRemovePart;
+import com.onewhohears.dscombat.common.network.toclient.ToClientSynchGameRules;
+import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleExplode;
+import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleScreenDebug;
+import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleTexture;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponAmmo;
+import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponImpact;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftCollide;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftControl;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftMoveRot;
-import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftThrottle;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftToItem;
 import com.onewhohears.dscombat.common.network.toserver.ToServerCraftPlane;
 import com.onewhohears.dscombat.common.network.toserver.ToServerCraftWeapon;
@@ -22,6 +26,7 @@ import com.onewhohears.dscombat.common.network.toserver.ToServerPingSelect;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSeatPos;
 import com.onewhohears.dscombat.common.network.toserver.ToServerShootTurret;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSwitchSeat;
+import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleTexture;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkDirection;
@@ -35,7 +40,8 @@ public final class PacketHandler {
 	private static final String PROTOCOL_VERSION = "1.0";
 	
 	public static SimpleChannel INSTANCE;
-	
+
+	// FIXME: find cause of error spam thrown by L900 in ClientPacketListener
 	public static void register() {
 		SimpleChannel net = NetworkRegistry.ChannelBuilder
 				.named(new ResourceLocation(DSCombatMod.MODID, "messages"))
@@ -120,11 +126,6 @@ public final class PacketHandler {
 			.decoder(ToClientAddForceMoment::new)
 			.consumerMainThread(ToClientAddForceMoment::handle)
 			.add();
-		net.messageBuilder(ToServerAircraftThrottle.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ToServerAircraftThrottle::encode)
-			.decoder(ToServerAircraftThrottle::new)
-			.consumerMainThread(ToServerAircraftThrottle::handle)
-			.add();
 		net.messageBuilder(ToClientDataPackSynch.class, index++, NetworkDirection.PLAY_TO_CLIENT)
 			.encoder(ToClientDataPackSynch::encode)
 			.decoder(ToClientDataPackSynch::new)
@@ -149,6 +150,36 @@ public final class PacketHandler {
 			.encoder(ToServerAircraftMoveRot::encode)
 			.decoder(ToServerAircraftMoveRot::new)
 			.consumerMainThread(ToServerAircraftMoveRot::handle)
+			.add();
+		net.messageBuilder(ToServerVehicleTexture.class, index++, NetworkDirection.PLAY_TO_SERVER)
+			.encoder(ToServerVehicleTexture::encode)
+			.decoder(ToServerVehicleTexture::new)
+			.consumerMainThread(ToServerVehicleTexture::handle)
+			.add();
+		net.messageBuilder(ToClientVehicleTexture.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ToClientVehicleTexture::encode)
+			.decoder(ToClientVehicleTexture::new)
+			.consumerMainThread(ToClientVehicleTexture::handle)
+			.add();
+		net.messageBuilder(ToClientVehicleScreenDebug.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ToClientVehicleScreenDebug::encode)
+			.decoder(ToClientVehicleScreenDebug::new)
+			.consumerMainThread(ToClientVehicleScreenDebug::handle)
+			.add();
+		net.messageBuilder(ToClientVehicleExplode.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ToClientVehicleExplode::encode)
+			.decoder(ToClientVehicleExplode::new)
+			.consumerMainThread(ToClientVehicleExplode::handle)
+			.add();
+		net.messageBuilder(ToClientWeaponImpact.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ToClientWeaponImpact::encode)
+			.decoder(ToClientWeaponImpact::new)
+			.consumerMainThread(ToClientWeaponImpact::handle)
+			.add();
+		net.messageBuilder(ToClientSynchGameRules.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ToClientSynchGameRules::encode)
+			.decoder(ToClientSynchGameRules::new)
+			.consumerMainThread(ToClientSynchGameRules::handle)
 			.add();
 	}
 	

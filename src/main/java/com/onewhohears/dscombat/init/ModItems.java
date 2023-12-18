@@ -3,8 +3,11 @@ package com.onewhohears.dscombat.init;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.aircraft.presets.AlexisPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.BoatPresets;
+import com.onewhohears.dscombat.data.aircraft.presets.BroncoPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.CarPresets;
+import com.onewhohears.dscombat.data.aircraft.presets.FelixPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.HeliPresets;
+import com.onewhohears.dscombat.data.aircraft.presets.JasonPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.JaviPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.PlanePresets;
 import com.onewhohears.dscombat.data.aircraft.presets.SubPresets;
@@ -13,7 +16,7 @@ import com.onewhohears.dscombat.data.parts.BuffData.BuffType;
 import com.onewhohears.dscombat.data.parts.EngineData.EngineType;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.data.parts.TurretData.RotBounds;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.item.ItemAircraft;
 import com.onewhohears.dscombat.item.ItemAmmo;
 import com.onewhohears.dscombat.item.ItemBuffPart;
@@ -27,6 +30,7 @@ import com.onewhohears.dscombat.item.ItemPart;
 import com.onewhohears.dscombat.item.ItemRadarPart;
 import com.onewhohears.dscombat.item.ItemRepairTool;
 import com.onewhohears.dscombat.item.ItemSeat;
+import com.onewhohears.dscombat.item.ItemSpraycan;
 import com.onewhohears.dscombat.item.ItemTurret;
 import com.onewhohears.dscombat.item.ItemWeaponPart;
 
@@ -48,24 +52,31 @@ public class ModItems {
 		ITEMS.register(eventBus);
 	}
 	
+	public static final CreativeModeTab DSC_ITEMS = new CreativeModeTab("items") {
+		@Override
+		public ItemStack makeIcon() {
+			return new ItemStack(ModItems.WRENCH.get());
+		}
+	};
+	
 	public static final CreativeModeTab PARTS = new CreativeModeTab("parts") {
 		@Override
 		public ItemStack makeIcon() {
-			return new ItemStack(ModItems.SEAT.get());
+			return new ItemStack(ModItems.CIWS.get());
 		}
 	};
 	
 	public static final CreativeModeTab WEAPONS = new CreativeModeTab("weapons") {
 		@Override
 		public ItemStack makeIcon() {
-			return new ItemStack(ModItems.XM12.get());
+			return new ItemStack(ModItems.AIM9X.get());
 		}
 	};
 	
 	public static final CreativeModeTab AIRCRAFT = new CreativeModeTab("aircraft") {
 		@Override
 		public ItemStack makeIcon() {
-			return new ItemStack(ModItems.NOAH_CHOPPER.get());
+			return new ItemStack(ModItems.JAVI_PLANE.get());
 		}
 	};
 	
@@ -82,33 +93,33 @@ public class ModItems {
 	
 	// PARTS
 	public static final RegistryObject<Item> TI83 = ITEMS.register("ti83", 
-			() -> new Item(ItemPart.partProps(64)));
+			() -> new Item(ItemPart.itemProps(64)));
 	public static final RegistryObject<Item> INTEL_PENTIUM = ITEMS.register("intel_pentium", 
-			() -> new Item(ItemPart.partProps(64)));
+			() -> new Item(ItemPart.itemProps(64)));
 	public static final RegistryObject<Item> INTEL_CORE_I9X = ITEMS.register("intel_core_i9x", 
-			() -> new Item(ItemPart.partProps(64)));
+			() -> new Item(ItemPart.itemProps(64)));
 	public static final RegistryObject<Item> WHEEL = ITEMS.register("wheel", 
-			() -> new Item(ItemPart.partProps(64)));
+			() -> new Item(ItemPart.itemProps(64)));
 	public static final RegistryObject<Item> LARGE_WHEEL = ITEMS.register("large_wheel", 
-			() -> new Item(ItemPart.partProps(64)));
+			() -> new Item(ItemPart.itemProps(64)));
 	public static final RegistryObject<Item> TANK_TRACK = ITEMS.register("tank_track", 
-			() -> new Item(ItemPart.partProps(64)));
+			() -> new Item(ItemPart.itemProps(64)));
 	public static final RegistryObject<Item> FUSELAGE = ITEMS.register("fuselage", 
-			() -> new Item(ItemPart.partProps(64)));
+			() -> new Item(ItemPart.itemProps(64)));
 	public static final RegistryObject<Item> LARGE_FUSELAGE = ITEMS.register("large_fuselage", 
-			() -> new Item(ItemPart.partProps(64)));
+			() -> new Item(ItemPart.itemProps(64)));
 	public static final RegistryObject<Item> WING = ITEMS.register("wing", 
-			() -> new Item(ItemPart.partProps(64)));
+			() -> new Item(ItemPart.itemProps(64)));
 	public static final RegistryObject<Item> LARGE_WING = ITEMS.register("large_wing", 
-			() -> new Item(ItemPart.partProps(64)));
+			() -> new Item(ItemPart.itemProps(64)));
 	public static final RegistryObject<Item> PROPELLER = ITEMS.register("propeller", 
-			() -> new Item(ItemPart.partProps(64)));
+			() -> new Item(ItemPart.itemProps(64)));
 	public static final RegistryObject<Item> LARGE_PROPELLER = ITEMS.register("large_propeller", 
-			() -> new Item(ItemPart.partProps(64)));
+			() -> new Item(ItemPart.itemProps(64)));
 	public static final RegistryObject<Item> COCKPIT = ITEMS.register("cockpit", 
-			() -> new Item(ItemPart.partProps(16)));
+			() -> new Item(ItemPart.itemProps(16)));
 	public static final RegistryObject<Item> ADVANCED_COCKPIT = ITEMS.register("advanced_cockpit", 
-			() -> new Item(ItemPart.partProps(16)));
+			() -> new Item(ItemPart.itemProps(16)));
 	
 	// BUFFS
 	public static final RegistryObject<Item> DATA_LINK = ITEMS.register("data_link", 
@@ -127,12 +138,14 @@ public class ModItems {
 			() -> new ItemRepairTool(200, 5));
 	public static final RegistryObject<Item> PARACHUTE = ITEMS.register("parachute", 
 			() -> new ItemParachute());
+	public static final RegistryObject<Item> SPRAYCAN = ITEMS.register("spraycan", 
+			() -> new ItemSpraycan());
 	
 	// CREATIVE WANDS
 	public static final RegistryObject<Item> NO_CONSUME_WAND = ITEMS.register("no_consume_wand", 
 			() -> new ItemCreativeWand(new String[] {"info.dscombat.no_consume_wand_1"}) {
 				@Override
-				public boolean modifyAircraft(EntityAircraft plane) {
+				public boolean modifyAircraft(EntityVehicle plane) {
 					plane.setNoConsume(true);
 					return true;
 				}
@@ -174,6 +187,9 @@ public class ModItems {
 	public static final RegistryObject<Item> CM_MANLY_52 = ITEMS.register("cm_manly_52", 
 			() -> new ItemEngine(EngineType.PUSH, 0.8f, 0.12f, 2.0f, 
 					0.004f, false, SlotType.INTERNAL_ENGINE_RADIAL));
+	public static final RegistryObject<Item> ALLISON_V_1710 = ITEMS.register("allison_v_1710", 
+			() -> new ItemEngine(EngineType.PUSH, 1.7f, 0.27f, 2.5f, 
+					0.009f, false, SlotType.INTERNAL_ENGINE_RADIAL));
 	public static final RegistryObject<Item> COMPOUND_TURBINE = ITEMS.register("compound_turbine", 
 			() -> new ItemEngine(EngineType.PUSH, 6f, 0.68f, 8.0f, 
 					0.019f, false, SlotType.INTERNAL_ENGINE_RADIAL));
@@ -261,7 +277,6 @@ public class ModItems {
 					ModEntities.MLS.getId().toString(), "rgm84",
 					RotBounds.create(1.9f, 20f, 20f), 30));
 	
-	
 	// FLARE DISPENSERS
 	public static final RegistryObject<Item> BASIC_FLARE_DISPENSER = ITEMS.register("basic_flare_dispenser", 
 			() -> new ItemFlareDispenser(0.5f, 0, 20, 20.0f, 120, SlotType.INTERNAL_ALL));
@@ -300,9 +315,9 @@ public class ModItems {
 	public static final RegistryObject<Item> POS_MISSILE = ITEMS.register("pos_missile", 
 			() -> new ItemAmmo(8, "agm114k")); 
 	public static final RegistryObject<Item> TORPEDO = ITEMS.register("torpedo", 
-			() -> new ItemAmmo(8, "torpedo1")); 
+			() -> new ItemAmmo(8, "mk13")); 
 	public static final RegistryObject<Item> ANTIRADAR_MISSILE = ITEMS.register("antiradar_missile", 
-			() -> new ItemAmmo(8, "rifel1")); 
+			() -> new ItemAmmo(8, "agm88g")); 
 	
 	public static final RegistryObject<Item> B_20MM = ITEMS.register("20mm", 
 			() -> new ItemAmmo(64, "20mm")); 
@@ -333,12 +348,17 @@ public class ModItems {
 	public static final RegistryObject<Item> AIM120C = ITEMS.register("aim120c", 
 			() -> new ItemAmmo(4, "aim120c")); 
 	public static final RegistryObject<Item> TORPEDO1 = ITEMS.register("torpedo1", 
-			() -> new ItemAmmo(4, "torpedo1")); 
+			() -> new ItemAmmo(4, "mk13")); 
 	public static final RegistryObject<Item> RIFEL1 = ITEMS.register("rifel1", 
-			() -> new ItemAmmo(4, "rifel1")); 
+			() -> new ItemAmmo(4, "agm88g")); 
 	public static final RegistryObject<Item> GRUETZ_BUNKER_BUSTER = ITEMS.register("gruetz_bunker_buster", 
 			() -> new ItemAmmo(1, "gruetz_bunker_buster")); 
+	public static final RegistryObject<Item> MK13 = ITEMS.register("mk13", 
+			() -> new ItemAmmo(4, "mk13")); 
+	public static final RegistryObject<Item> AGM88G = ITEMS.register("agm88g", 
+			() -> new ItemAmmo(4, "agm88g")); 
 	
+	// FIXME 5 vehicle items not showing in creative search
 	// PLANES
 	public static final RegistryObject<Item> JAVI_PLANE = ITEMS.register("javi_plane", 
 			() -> new ItemAircraft(ModEntities.JAVI_PLANE.get(), 
@@ -352,6 +372,15 @@ public class ModItems {
 	public static final RegistryObject<Item> E3SENTRY_PLANE = ITEMS.register("e3sentry_plane", 
 			() -> new ItemAircraft(ModEntities.E3SENTRY_PLANE.get(), 
 					PlanePresets.DEFAULT_E3SENTRY_PLANE));
+	public static final RegistryObject<Item> BRONCO_PLANE = ITEMS.register("bronco_plane", 
+			() -> new ItemAircraft(ModEntities.BRONCO_PLANE.get(), 
+					BroncoPresets.DEFAULT_BRONCO_PLANE));
+	public static final RegistryObject<Item> FELIX_PLANE = ITEMS.register("felix_plane", 
+			() -> new ItemAircraft(ModEntities.FELIX_PLANE.get(), 
+					FelixPresets.DEFAULT_FELIX_PLANE));
+	public static final RegistryObject<Item> JASON_PLANE = ITEMS.register("jason_plane", 
+			() -> new ItemAircraft(ModEntities.JASON_PLANE.get(), 
+					JasonPresets.DEFAULT_JASON_PLANE));
 	
 	// HELICOPTERS
 	public static final RegistryObject<Item> NOAH_CHOPPER = ITEMS.register("noah_chopper", 

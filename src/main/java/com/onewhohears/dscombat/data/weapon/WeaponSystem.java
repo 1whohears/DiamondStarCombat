@@ -7,8 +7,9 @@ import javax.annotation.Nullable;
 
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
+import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.weapon.WeaponData.WeaponType;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.network.chat.Component;
@@ -18,7 +19,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * manages available weapons for {@link EntityAircraft}.
+ * manages available weapons for {@link EntityVehicle}.
  * available weapons are found in a list of {@link WeaponData}.
  * used to fire a vehicle's selected weapon.
  * will synch ammo numbers and other info with client.
@@ -27,12 +28,12 @@ import net.minecraft.world.phys.Vec3;
  */
 public class WeaponSystem {
 	
-	private final EntityAircraft parent;
+	private final EntityVehicle parent;
 	private boolean readData = false;
 	private List<WeaponData> weapons = new ArrayList<WeaponData>();
 	private int weaponIndex = 0;
 	
-	public WeaponSystem(EntityAircraft parent) {
+	public WeaponSystem(EntityVehicle parent) {
 		this.parent = parent;
 		weapons.add(NoWeaponData.get());
 	}
@@ -74,7 +75,8 @@ public class WeaponSystem {
 		boolean consume = true;
 		if (parent.isNoConsume()) consume = false;
 		else if (controller instanceof Player p && p.isCreative()) consume = false;
-		return shootSelected(controller, consume);
+		boolean consumeAmmo = parent.level.getGameRules().getBoolean(DSCGameRules.CONSUME_AMMO);
+		return shootSelected(controller, consume && consumeAmmo);
 	}
 	
 	public boolean shootSelected(Entity controller, boolean consume) {
@@ -84,7 +86,7 @@ public class WeaponSystem {
 		String reason = null;
 		data.shootFromVehicle(parent.level, controller, getShootDirection(data), parent, consume);
 		if (data.isFailedLaunch()) reason = data.getFailedLaunchReason();
-		for (WeaponData wd : weapons) if (wd.getType() == WeaponType.BULLET && wd.getId().equals(name) && !wd.getSlotId().equals(data.getSlotId())) {
+		for (WeaponData wd : weapons) if (wd.getType().isBullet() && wd.getId().equals(name) && !wd.getSlotId().equals(data.getSlotId())) {
 			wd.shootFromVehicle(parent.level, controller, getShootDirection(wd), parent, consume);
 			if (reason == null && wd.isFailedLaunch()) reason = wd.getFailedLaunchReason();
 		}
@@ -124,7 +126,7 @@ public class WeaponSystem {
 	/**
 	 * called by this weapon system's entity tick function server side
 	 */
-	public void tick() {
+	public void serverTick() {
 		for (int i = 0; i < weapons.size(); ++i) {
 			weapons.get(i).tick(parent, i == getSelectedIndex());
 		}

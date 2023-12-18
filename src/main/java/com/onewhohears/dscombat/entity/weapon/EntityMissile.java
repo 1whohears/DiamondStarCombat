@@ -1,23 +1,29 @@
 package com.onewhohears.dscombat.entity.weapon;
 
+import java.util.List;
+
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.Config;
-import com.onewhohears.dscombat.data.damagesource.WeaponDamageSource;
+import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.weapon.MissileData;
 import com.onewhohears.dscombat.data.weapon.NonTickingMissileManager;
+import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.util.UtilClientSafeSoundInstance;
 import com.onewhohears.dscombat.util.UtilEntity;
+import com.onewhohears.dscombat.util.UtilParticles;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -25,6 +31,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.ClipContext.Fluid;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 
 public abstract class EntityMissile extends EntityBullet {
@@ -109,22 +116,12 @@ public abstract class EntityMissile extends EntityBullet {
 	
 	@Override
 	public void init() {
-		
 	}
 	
 	@Override
 	public void tick() {
-		if (isTestMode()) {
-			if (level.isClientSide) {
-				Vec3 look = getLookAngle();
-				level.addParticle(ParticleTypes.SMOKE, 
-					getX(), getY(), getZ(), 
-					-look.x * 0.5D + random.nextGaussian() * 0.05D, 
-					-look.y * 0.5D + random.nextGaussian() * 0.05D, 
-					-look.z * 0.5D + random.nextGaussian() * 0.05D);
-			}
-			return;
-		}
+		if (level.isClientSide) UtilParticles.missileTrail(level, position(), getLookAngle(), getRadius(), isInWater());
+		if (isTestMode()) return;
 		xRotO = getXRot(); 
 		yRotO = getYRot();
 		if (!level.isClientSide && !isRemoved()) {
@@ -137,12 +134,6 @@ public abstract class EntityMissile extends EntityBullet {
 		}
 		if (level.isClientSide && !isRemoved()) {
 			tickClientGuide();
-			Vec3 move = getDeltaMovement();
-			level.addParticle(ParticleTypes.SMOKE, 
-					getX(), getY(), getZ(), 
-					-move.x * 0.5D + random.nextGaussian() * 0.05D, 
-					-move.y * 0.5D + random.nextGaussian() * 0.05D, 
-					-move.z * 0.5D + random.nextGaussian() * 0.05D);
 			if (firstTick) engineSound();
 		}
 		super.tick();
@@ -207,7 +198,7 @@ public abstract class EntityMissile extends EntityBullet {
 			}
 			//System.out.println("check can see");
 			if (!checkCanSee(target)) {
-				System.out.println("can't see target");
+				//System.out.println("can't see target");
 				target = null;
 				targetPos = null;
 				return;
@@ -245,7 +236,7 @@ public abstract class EntityMissile extends EntityBullet {
 	}
 	
 	private void engineSound() {
-		UtilClientSafeSoundInstance.dopplerSound(Minecraft.getInstance(), this, 
+		UtilClientSafeSoundInstance.dopplerSound(this, 
 				ModSounds.MISSILE_ENGINE_1.get(), 
 				0.8F, 1.0F, 10F);
 	}
@@ -299,6 +290,7 @@ public abstract class EntityMissile extends EntityBullet {
     public boolean hurt(DamageSource source, float amount) {
 		if (isRemoved()) return false;
 		if (equals(source.getDirectEntity())) return false;
+		if (isAlliedTo(source.getEntity())) return false;
 		kill();
 		return true;
 	}
@@ -435,6 +427,41 @@ public abstract class EntityMissile extends EntityBullet {
 	        setPos(d0, d1, d2);
 	        setRot(getYRot(), getXRot());
 		}
+	}
+	
+	@Override
+	public boolean isPickable() {
+		return true;
+	}
+	
+	@Override
+	public void onHitEntity(EntityHitResult result) {
+		super.onHitEntity(result);
+		if (level.isClientSide) return;
+		if (level.getGameRules().getBoolean(DSCGameRules.BROADCAST_MISSILE_HIT)) {
+			Entity entity = result.getEntity();
+			if (entity == null) return;
+			ServerPlayer targetPlayer = null;
+			if (entity instanceof ServerPlayer tsp) targetPlayer = tsp;
+			else if (entity.getControllingPassenger() instanceof ServerPlayer tsp) targetPlayer = tsp;
+			if (targetPlayer == null) return;
+			Entity owner = getOwner();
+			if (!(owner instanceof ServerPlayer ownerPlayer)) return;
+			MutableComponent message = Component.literal("Missile from ").append(ownerPlayer.getDisplayName())
+					.append(" impacted ").append(targetPlayer.getDisplayName());
+			boolean teamOnly = level.getGameRules().getBoolean(DSCGameRules.BROADCAST_MISSILE_HIT_TEAM_ONLY);
+			List<ServerPlayer> players = level.getServer().getPlayerList().getPlayers();
+			for (ServerPlayer player : players) {
+				if (teamOnly && (ownerPlayer.getTeam() == null || player.getTeam() == null || 
+						!ownerPlayer.getTeam().getName().equals(player.getTeam().getName()))) continue;
+				player.displayClientMessage(message, false);
+			}
+		}
+	}
+	
+	@Override
+	public WeaponData.WeaponClientImpactType getClientImpactType() {
+		return WeaponData.WeaponClientImpactType.MED_MISSILE_EXPLODE;
 	}
 
 }

@@ -3,11 +3,8 @@ package com.onewhohears.dscombat.data.weapon;
 import java.util.List;
 import java.util.Random;
 
-import javax.annotation.Nullable;
-
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.data.JsonPreset;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
 import com.onewhohears.dscombat.entity.weapon.EntityBullet;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.util.math.UtilAngles;
@@ -85,8 +82,8 @@ public class BulletData extends WeaponData {
 	}
 	
 	@Override
-	public EntityWeapon getShootEntity(Level level, Entity owner, Vec3 pos, Vec3 direction, @Nullable EntityAircraft vehicle, boolean ignoreRecoil) {
-		EntityBullet bullet = (EntityBullet) super.getShootEntity(level, owner, pos, direction, vehicle, ignoreRecoil);
+	public EntityWeapon getShootEntity(WeaponShootParameters params) {
+		EntityBullet bullet = (EntityBullet) super.getShootEntity(params);
 		if (bullet == null) return null;
 		bullet.setDeltaMovement(bullet.getLookAngle().scale(speed));
 		return bullet;
@@ -129,6 +126,11 @@ public class BulletData extends WeaponData {
 
 	public float getInnacuracy() {
 		return innacuracy;
+	}
+	
+	@Override
+	public double getMobTurretRange() {
+		return Math.max(300, getSpeed() * getMaxAge());
 	}
 
 	@Override

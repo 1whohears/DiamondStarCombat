@@ -2,9 +2,12 @@ package com.onewhohears.dscombat.entity.weapon;
 
 import javax.annotation.Nullable;
 
-import com.onewhohears.dscombat.data.damagesource.WeaponDamageSource;
+import com.onewhohears.dscombat.common.network.PacketHandler;
+import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponImpact;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.init.DataSerializers;
+import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.client.Minecraft;
@@ -19,7 +22,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.ClipContext.Fluid;
 import net.minecraft.world.level.Level;
@@ -28,7 +30,9 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Team;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.network.PacketDistributor;
 
 public abstract class EntityWeapon extends Projectile {
 	
@@ -136,16 +140,16 @@ public abstract class EntityWeapon extends Projectile {
 			if (entityhitresult != null) hitresult = entityhitresult;
 			if (owner != null && hitresult != null && hitresult.getType() == HitResult.Type.ENTITY) {
 				Entity hit = ((EntityHitResult)hitresult).getEntity();
-				System.out.println("BULLET "+this);
+				/*System.out.println("BULLET "+this);
 				System.out.println("HIT "+hit);
-				System.out.println("OWNER "+owner);
+				System.out.println("OWNER "+owner);*/
 				if (hit.isAlliedTo(owner)) {
 					hitresult = null;
 					entityhitresult = null;
 				}
 			}
 			if (hitresult != null && hitresult.getType() != HitResult.Type.MISS && !noPhysics 
-					&& !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, hitresult)) {
+					&& !ForgeEventFactory.onProjectileImpact(this, hitresult)) {
 				onHit(hitresult);
 				hasImpulse = true;
 				break;
@@ -162,14 +166,13 @@ public abstract class EntityWeapon extends Projectile {
 	
 	@Nullable
 	protected EntityHitResult findHitEntity(Vec3 start, Vec3 end) {
-		return ProjectileUtil.getEntityHitResult(level, this, 
-				start, end, 
+		return UtilEntity.getEntityHitResultAtClip(level, this, start, end, 
 				getBoundingBox().expandTowards(getDeltaMovement()).inflate(1.0D), 
-				this::canHitEntity);
+				this::canHitEntity, 0.3f);
 	}
 	
 	@Override
-	protected boolean canHitEntity(Entity entity) {
+	public boolean canHitEntity(Entity entity) {
 		return super.canHitEntity(entity) && !isAlliedTo(entity);
 	}
 	
@@ -193,6 +196,14 @@ public abstract class EntityWeapon extends Projectile {
 		System.out.println("BULLET HIT "+result.getEntity());
 		kill();
 		result.getEntity().hurt(getImpactDamageSource(), getDamage());
+	}
+	
+	@Override
+	public void kill() {
+		if (!level.isClientSide) PacketHandler.INSTANCE.send(
+				PacketDistributor.TRACKING_ENTITY.with(() -> this), 
+				new ToClientWeaponImpact(this, position()));
+		super.kill();
 	}
 	
 	public float getDamage() {
@@ -338,7 +349,8 @@ public abstract class EntityWeapon extends Projectile {
     }
     
     protected abstract WeaponDamageSource getImpactDamageSource();
-    
     protected abstract WeaponDamageSource getExplosionDamageSource();
+    public abstract WeaponData.WeaponType getWeaponType();
+    public abstract WeaponData.WeaponClientImpactType getClientImpactType();
 
 }

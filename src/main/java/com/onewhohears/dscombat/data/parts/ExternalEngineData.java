@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.data.parts;
 import java.util.NoSuchElementException;
 
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.entity.aircraft.EntityAircraft;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntityEngine;
 import com.onewhohears.dscombat.init.ModEntities;
 
@@ -62,7 +62,7 @@ public class ExternalEngineData extends EngineData {
 	}
 	
 	@Override
-	public void serverSetup(EntityAircraft craft, String slotId, Vec3 pos) {
+	public void serverSetup(EntityVehicle craft, String slotId, Vec3 pos) {
 		super.serverSetup(craft, slotId, pos);
 		if (!isEntitySetup(slotId, craft)) {
 			EntityEngine engine = new EntityEngine(getEntityType(), craft.level, slotId, pos);

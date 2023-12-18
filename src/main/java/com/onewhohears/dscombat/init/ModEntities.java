@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.init;
 
 import com.google.common.collect.ImmutableSet;
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.client.entityscreen.EntityScreenTypes;
+import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
 import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
 import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData;
 import com.onewhohears.dscombat.entity.EntityParachute;
@@ -119,7 +119,7 @@ public class ModEntities {
 						@Override
 							public void addVehicleScreens() {
 								screens = new EntityScreenData[1];
-								screens[0] = new EntityScreenData(EntityScreenTypes.AIR_RADAR_SCREEN, 
+								screens[0] = new EntityScreenData(EntityScreenIds.AIR_RADAR_SCREEN, 
 										new Vec3(0, 1.35, 1.6), 
 										0.6f, 0.6f, 
 										0f, 0f, 0f);

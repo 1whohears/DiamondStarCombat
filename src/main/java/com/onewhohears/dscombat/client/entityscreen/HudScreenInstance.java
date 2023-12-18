@@ -1,15 +1,13 @@
 package com.onewhohears.dscombat.client.entityscreen;
 
-import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
+import static com.onewhohears.dscombat.DSCombatMod.MODID;
+
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.phys.Vec3;
-
-import static com.onewhohears.dscombat.DSCombatMod.MODID;
-import static com.onewhohears.dscombat.client.entityscreen.EntityScreenTypes.HUD_SCREEN;
 
 public class HudScreenInstance extends EntityDynamicScreenInstance {
     protected int renderDelay;
@@ -20,21 +18,6 @@ public class HudScreenInstance extends EntityDynamicScreenInstance {
     public HudScreenInstance(int id) {
         super("hud", id, HUD_BASE);
         this.renderDelay = 0;
-    }
-
-    /**
-     * @param xPos a <code>double</code> corresponding to the x offset of the screen.
-     *             At present this number is largely arbitrary and needs to be found
-     *             by trial & error. For aircraft whose pilot seat lines up with the
-     *             origin of the aircraft, this value will be close to 0.
-     */
-    public static EntityScreenData getDefaultData(double xPos, double seatY, double seatZ) {
-        return new EntityScreenData(
-                HUD_SCREEN,
-                new Vec3(xPos, seatY + 1.27, seatZ + 0.13),
-                0.1f, 0.1f,
-                0, 0, 0
-        );
     }
 
     @Override

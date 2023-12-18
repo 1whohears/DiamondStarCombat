@@ -46,6 +46,10 @@ import com.onewhohears.dscombat.client.model.weapon.EntityModelMiniGunTurret;
 import com.onewhohears.dscombat.client.model.weapon.EntityModelMissile1;
 import com.onewhohears.dscombat.client.model.weapon.EntityModelSteveUpSmash;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlay;
+import com.onewhohears.dscombat.client.particle.BigFlameParticle;
+import com.onewhohears.dscombat.client.particle.ContrailParticle;
+import com.onewhohears.dscombat.client.particle.LargeSmokeCloudParticle;
+import com.onewhohears.dscombat.client.particle.ShrapnelParticle;
 import com.onewhohears.dscombat.client.renderer.RendererEntityAircraft;
 import com.onewhohears.dscombat.client.renderer.RendererEntityInvisible;
 import com.onewhohears.dscombat.client.renderer.RendererEntityParachute;
@@ -56,6 +60,7 @@ import com.onewhohears.dscombat.client.renderer.RendererObjEntity;
 import com.onewhohears.dscombat.data.aircraft.AircraftClientPresets;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.init.ModEntities;
+import com.onewhohears.dscombat.init.ModParticles;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
@@ -65,6 +70,7 @@ import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -343,5 +349,13 @@ public final class ClientModEvents {
 	public static void registerClientReloadListener(RegisterClientReloadListenersEvent event) {
 		event.registerReloadListener(AircraftClientPresets.get());
 		event.registerReloadListener(ObjEntityModels.get());
+	}
+	
+	@SubscribeEvent
+	public static void registerParticleFactory(RegisterParticleProvidersEvent event) {
+		event.register(ModParticles.LARGE_SMOKE_CLOUD.get(), LargeSmokeCloudParticle.Provider::new);
+		event.register(ModParticles.SHRAPNEL.get(), ShrapnelParticle.Provider::new);
+		event.register(ModParticles.BIG_FLAME.get(), BigFlameParticle.Provider::new);
+		event.register(ModParticles.CONTRAIL.get(), ContrailParticle.Provider::new);
 	}
 }

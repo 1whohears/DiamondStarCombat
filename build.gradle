@@ -24,7 +24,7 @@ apply plugin: 'com.diffplug.eclipse.apt'
 
 group = 'com.onewhohears.dscombat'
 archivesBaseName = 'dscombat-1.19.2'
-version = '0.9.0-alpha.8'
+version = '0.9.0-alpha.13'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
@@ -39,6 +39,8 @@ minecraft {
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             property 'forge.enabledGameTestNamespaces', 'dscombat'
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             mods {
                 dscombat {
                     source sourceSets.main
@@ -51,6 +53,8 @@ minecraft {
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             property 'forge.enabledGameTestNamespaces', 'dscombat'
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             mods {
                 dscombat {
                     source sourceSets.main
@@ -63,6 +67,8 @@ minecraft {
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             property 'forge.enabledGameTestNamespaces', 'dscombat'
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             mods {
                 dscombat {
                     source sourceSets.main
@@ -75,6 +81,8 @@ minecraft {
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             args '--mod', 'dscombat', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             mods {
                 dscombat {
                     source sourceSets.main

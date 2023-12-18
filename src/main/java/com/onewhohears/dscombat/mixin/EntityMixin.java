@@ -25,9 +25,6 @@ public abstract class EntityMixin {
 	 * adds RotableHitbox VoxelShapes to the list of entity colliders an entity can collide with.
 	 */
 	@ModifyVariable(method = "collide(Lnet/minecraft/world/phys/Vec3;)Lnet/minecraft/world/phys/Vec3;", at = @At("STORE"))
-	//@ModifyVariable(method = "m_193135_(Lnet/minecraft/world/phys/Vec3;)Lnet/minecraft/world/phys/Vec3;", at = @At("STORE"))
-	//@ModifyVariable(method = "m_20272_(Lnet/minecraft/world/phys/Vec3;)Lnet/minecraft/world/phys/Vec3;", at = @At("STORE"))
-	//@ModifyVariable(method = "m_83259_(Lnet/minecraft/world/phys/Vec3;)Lnet/minecraft/world/phys/Vec3;", at = @At("STORE"))
 	private List<VoxelShape> dscombat_EntityCollisionList(List<VoxelShape> list, Vec3 move) {
 		// Mojang decided to make this a ImmutableCollections so list.add throws an exception
 		List<VoxelShape> colliders = new ArrayList<>(list); 
@@ -36,6 +33,7 @@ public abstract class EntityMixin {
 		for (PartEntity<?> part : entity.level.getPartEntities()) {
 			if (entity.equals(part)) continue;
 			if (part.getParent().equals(entity)) continue;
+			if (part.distanceToSqr(entity) > 262144) continue;
 			if (!(part instanceof RotableHitbox hitbox)) continue;
 			hitbox.handlePosibleCollision(colliders, entity, aabb, move);
 		}

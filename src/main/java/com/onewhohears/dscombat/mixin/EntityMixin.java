@@ -18,7 +18,6 @@ import net.minecraftforge.entity.PartEntity;
 @Mixin(Entity.class)
 public abstract class EntityMixin {
 	
-	// FIXME 0 crashes on startup in server and client from build jar
 	//net.minecraft.world.entity.Entity.collide(Vec3)
 	//net.minecraft.world.phys.Vec3
 	/**

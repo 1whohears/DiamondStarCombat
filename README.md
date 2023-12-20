@@ -1,4 +1,4 @@
-![2022-12-17_02 14 55](https://user-images.githubusercontent.com/79810154/208233270-e5a64a83-4427-475c-98bf-ee6c61a3649d.png)
+![2023-12-19_13 36 25_3](https://github.com/1whohears/DiamondStarCombat/assets/79810154/1f97af2f-3614-45b7-bc09-81e1fc157843)
 
 # Diamond Star Combat
  
@@ -14,6 +14,9 @@ https://discord.gg/dWgQTRxCJm
 Check out my youtube where I'll post guides and other videos showing the mod! 
 
 https://youtu.be/P4Flz0XOtTk
+
+![2023-12-19_16 48 12_2](https://github.com/1whohears/DiamondStarCombat/assets/79810154/16d9039e-e412-4347-a70b-4b8cfd5d6fc2)
+![update](https://github.com/1whohears/DiamondStarCombat/assets/79810154/3cbd18a6-c6c3-47bf-b023-dacfe16070e0)
 
 ## Special Thanks
 

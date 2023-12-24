@@ -730,12 +730,12 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 * also resets the controls if there isn't a controlling passenger.
 	 */
 	public void tickThrottle() {
-		if (currentFuel <= 0) {
-			throttleToZero();
-			return;
-		}
 		if (getControllingPassenger() == null || !isOperational()) {
 			resetControls();
+			return;
+		}
+		if (currentFuel <= 0 || isEngineFire()) {
+			throttleToZero();
 			return;
 		}
 		if (inputs.throttle > 0) increaseThrottle();
@@ -1322,7 +1322,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 */
 	public void resetControls() {
 		inputs.reset();
-		this.throttleToZero();
+		throttleToZero();
 	}
 	
 	public final boolean isDriverCameraLocked() {
@@ -1399,15 +1399,24 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 					return InteractionResult.SUCCESS;
 				// REPAIR
 				} else if (item instanceof ItemRepairTool tool) {
-					if (isMaxHealth()) {
-						level.playSound(null, this, 
-								SoundEvents.ANVIL_USE, 
-								getSoundSource(), 0.5f, 0.9f);
+					if (isEngineFire()) {
+						setEngineFire(false);
+						playRepairSound();
+						stack.hurtAndBreak(5, player, 
+							(p) -> p.broadcastBreakEvent(hand));
+					} else if (isFuelLeak()) {
+						setFuelLeak(false);
+						playRepairSound();
+						stack.hurtAndBreak(10, player, 
+							(p) -> p.broadcastBreakEvent(hand));
+					} else if (!isMaxHealth()) {
+						addHealth(tool.repair);
+						stack.hurtAndBreak(1, player, 
+							(p) -> p.broadcastBreakEvent(hand));
+					} else {
+						playRepairSound();
 						return InteractionResult.PASS;
 					}
-					addHealth(tool.repair);
-					stack.hurtAndBreak(1, player, 
-						(p) -> { p.broadcastBreakEvent(hand); });
 					return InteractionResult.SUCCESS;
 				// RELOAD
 				} else if (item instanceof ItemAmmo ammo) {
@@ -1458,6 +1467,12 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			return InteractionResult.SUCCESS;
 		}
 		return InteractionResult.SUCCESS;
+	}
+	
+	public void playRepairSound() {
+		level.playSound(null, this, 
+				SoundEvents.ANVIL_USE, 
+				getSoundSource(), 0.5f, 0.9f);
 	}
 	
 	private boolean ridePilotSeat(Entity e, List<EntitySeat> seats) {
@@ -1641,11 +1656,21 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     public boolean hurt(DamageSource source, float amount) {
 		if (isInvulnerableTo(source)) return false;
 		if (source.isFire()) hurtByFireTime = tickCount;
-		//System.out.println(source+" hurt "+amount+" "+this);
 		addHealth(-calcDamageBySource(source, amount));
 		soundManager.onHurt(source, amount);
-		if (!level.isClientSide && !isOperational()) checkExplodeWhenKilled(source);
+		if (!level.isClientSide) {
+			damageSystem(source, amount);
+			if (!isOperational()) checkExplodeWhenKilled(source);
+		}
 		return true;
+	}
+	
+	public void damageSystem(DamageSource source, float amount) {
+		float healthPercent = getHealth() / getMaxHealth();
+		if (healthPercent > 0.5f) return;
+		float damagePercent = (1f-healthPercent*2f)*amount*0.1f;
+		if (random.nextFloat() < damagePercent*0.5f) setEngineFire(true);
+		if (random.nextFloat() < damagePercent) setFuelLeak(true);
 	}
 	
 	public float calcDamageBySource(DamageSource source, float amount) {

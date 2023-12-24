@@ -25,7 +25,7 @@ public class EntityEngine extends EntityPart {
 		EntityVehicle vehicle = getParentVehicle();
 		if (vehicle == null) return;
 		Vec3 dir = vehicle.getLookAngle().scale(-vehicle.getCurrentThrottle()*0.4);
-		UtilParticles.engineSmoke(vehicle, getBoundingBox().getCenter(), dir);
+		UtilParticles.afterBurner(vehicle, getBoundingBox().getCenter(), dir);
 	}
 	
 	@Override

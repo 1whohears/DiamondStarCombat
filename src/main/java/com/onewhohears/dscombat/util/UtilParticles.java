@@ -66,22 +66,22 @@ public class UtilParticles {
 	}
 	
 	public static void vehicleParticles(EntityVehicle vehicle) {
-		vehicleEngineSmoke(vehicle);
-		// TODO 6.8 fuel leak smoke
-		// TODO 6.9 engine fire particles
+		vehicleAfterBurner(vehicle);
+		fuelLeakSmoke(vehicle);
+		engineFireSmoke(vehicle);
 		vehicleDamageSmoke(vehicle);
 	}
 	
-	public static void vehicleEngineSmoke(EntityVehicle vehicle) {
+	public static void vehicleAfterBurner(EntityVehicle vehicle) {
 		Quaternion q = vehicle.getClientQ();
 		Vec3 dir = vehicle.getLookAngle().scale(-vehicle.getCurrentThrottle()*0.4);
 		for (Vec3 relPos : vehicle.getAfterBurnerSmokePos()) {
 			Vec3 pos = UtilAngles.rotateVector(relPos, q).add(vehicle.position());
-			engineSmoke(vehicle, pos, dir);
+			afterBurner(vehicle, pos, dir);
 		}
 	}
 	
-	public static void engineSmoke(EntityVehicle vehicle, Vec3 pos, Vec3 dir) {
+	public static void afterBurner(EntityVehicle vehicle, Vec3 pos, Vec3 dir) {
 		if (vehicle.showContrailParticles()) {
 			vehicle.level.addParticle(ModParticles.CONTRAIL.get(), 
 				pos.x, pos.y, pos.z, 
@@ -97,6 +97,27 @@ public class UtilParticles {
 					pos.x, pos.y, pos.z, 
 					dir.x, dir.y, dir.z);
 			}
+		}
+	}
+	
+	public static void fuelLeakSmoke(EntityVehicle vehicle) {
+		if (!vehicle.isFuelLeak()) return;
+		// TODO 6.8 fuel leak smoke
+		Vec3 pos = vehicle.position();
+		vehicle.level.addParticle(ParticleTypes.CLOUD, 
+			pos.x, pos.y, pos.z, 
+			0, 0, 0);
+	}
+	
+	public static void engineFireSmoke(EntityVehicle vehicle) {
+		if (!vehicle.isEngineFire()) return;
+		// TODO 6.9 engine fire particles
+		Quaternion q = vehicle.getClientQ();
+		for (Vec3 relPos : vehicle.getAfterBurnerSmokePos()) {
+			Vec3 pos = UtilAngles.rotateVector(relPos, q).add(vehicle.position());
+			vehicle.level.addParticle(ParticleTypes.FLAME, 
+				pos.x, pos.y, pos.z, 
+				0, 0.1, 0);
 		}
 	}
 	

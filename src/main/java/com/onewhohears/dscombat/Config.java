@@ -12,9 +12,9 @@ public class Config {
 	public static class Client {
 		
 		public final ForgeConfigSpec.DoubleValue mouseModeMaxRadius;
-		public final ForgeConfigSpec.DoubleValue mouseStickDeadzoneRadius;
-		public final ForgeConfigSpec.DoubleValue mouseYReturnRate;
-		public final ForgeConfigSpec.DoubleValue mouseXReturnRate;
+		//public final ForgeConfigSpec.DoubleValue mouseStickDeadzoneRadius;
+		//public final ForgeConfigSpec.DoubleValue mouseYReturnRate;
+		//public final ForgeConfigSpec.DoubleValue mouseXReturnRate;
 		public final ForgeConfigSpec.BooleanValue invertY;
 		public final ForgeConfigSpec.BooleanValue cameraTurnRelativeToVehicle;
 		public final ForgeConfigSpec.BooleanValue customDismount;
@@ -27,7 +27,7 @@ public class Config {
 			mouseModeMaxRadius = builder
 					.comment("Only for vehicles in Mouse Mode. How far your mouse must move from rest to get a maximum angle.")
 					.defineInRange("mouseModeMaxRadius", 400d, 0, 10000d);
-			mouseStickDeadzoneRadius = builder
+			/*mouseStickDeadzoneRadius = builder
 					.comment("Only for vehicles in Mouse Mode. How far your mouse must move from rest to register an input.")
 					.defineInRange("mouseStickDeadzoneRadius", 0d, 0, 1000d);
 			mouseYReturnRate = builder
@@ -35,7 +35,7 @@ public class Config {
 					.defineInRange("mouseYReturnRate", 20d, 0, 100d);
 			mouseXReturnRate = builder
 					.comment("Speed the control stick horizontally snaps back to rest when mouse isn't moving.")
-					.defineInRange("mouseXReturnRate", 40d, 0, 100d);
+					.defineInRange("mouseXReturnRate", 40d, 0, 100d);*/
 			invertY = builder
 					.comment("Invert vertical inputs.")
 					.define("invertY", false);

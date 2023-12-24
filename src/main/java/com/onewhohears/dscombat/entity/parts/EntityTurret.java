@@ -154,7 +154,7 @@ public class EntityTurret extends EntitySeat {
 			setRelRotX(Mth.wrapDegrees(relx+dx));
 			setRelRotY(Mth.wrapDegrees(rely+dy));
 			
-			// FIXME 3 sometimes even in force loaded chunks the mob gunner stops ticking
+			// HOW 7 sometimes even in force loaded chunks the mob gunner stops ticking
 			/*if (gunner instanceof Mob gunMob) {
 				//gunMob.targetSelector.enableControlFlag(Goal.Flag.TARGET);
 				System.out.println(gunMob.tickCount+" "+gunMob+" "+gunMob.getVehicle());

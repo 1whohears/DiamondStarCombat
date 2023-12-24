@@ -19,7 +19,6 @@ import com.onewhohears.dscombat.entity.parts.EntityTurret;
 
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
@@ -102,35 +101,37 @@ public final class ClientInputEvents {
 			double xa = Math.abs(mouseX);
 			float ys = (float) Math.signum(mouseY) * -invertY;
 			float xs = (float) Math.signum(mouseX);
-			double deadZone = Config.CLIENT.mouseStickDeadzoneRadius.get();
 			double max = Config.CLIENT.mouseModeMaxRadius.get();
-			double md = max-deadZone;
-			// control pitch
-			if (ya > max) {
+			float stickStepsY = 5;
+			float stickStepsX = 5;
+			if (ya >= max) {
 				pitch = ys;
-				DSCClientInputs.setMouseCenterY(DSCClientInputs.getMouseCenterY() - (ya - max) * ys);
-			} else if (ya > deadZone) {
-				pitch = (float)((ya-deadZone)/md) * ys;
+				//DSCClientInputs.setMouseCenterY(DSCClientInputs.getMouseCenterY() - (ya - max) * ys);
+			} else {
+				int step = (int)(ya/max*stickStepsY*ys);
+				pitch = ((float)step)/stickStepsY;
 			}
+			if (xa >= max) {
+				roll = xs;
+				//DSCClientInputs.setMouseCenterX(DSCClientInputs.getMouseCenterX() + (xa - max) * xs);
+			} else {
+				int step = (int)(xa/max*stickStepsX*xs);
+				roll = ((float)step)/stickStepsX;
+			}
+			/*double deadZone = Config.CLIENT.mouseStickDeadzoneRadius.get();
+			double md = max-deadZone;
 			if (mc.mouseHandler.getYVelocity() == 0) {
 				DSCClientInputs.setMouseCenterY((int)Mth.approach(
 						(float)DSCClientInputs.getMouseCenterY(), 
 						(float)mc.mouseHandler.ypos(),
 						Config.CLIENT.mouseYReturnRate.get().floatValue()));
 			}
-			// control roll
-			if (xa > max) {
-				roll = xs;
-				DSCClientInputs.setMouseCenterX(DSCClientInputs.getMouseCenterX() + (xa - max) * xs);
-			} else if (xa > deadZone) {
-				roll = (float)((xa-deadZone)/md) * xs;
-			}
 			if (mc.mouseHandler.getXVelocity() == 0) {
 				DSCClientInputs.setMouseCenterX((int)Mth.approach(
 						(float)DSCClientInputs.getMouseCenterX(), 
 						(float)mc.mouseHandler.xpos(),
 						Config.CLIENT.mouseXReturnRate.get().floatValue()));
-			}
+			}*/
 		}
 		if (pitchUp && !pitchDown) pitch = -1 * invertY;
 		if (pitchDown && !pitchUp) pitch = 1 * invertY;
@@ -146,7 +147,7 @@ public final class ClientInputEvents {
 				rollLeft && rollRight, 
 				selectNextWeapon, cycleRadarMode, toggleGear,
 				DSCClientInputs.isCameraLockedForward());
-		if (DSCClientInputs.isCameraLockedForward()) DSCClientInputs.centerMousePos();
+		if (!DSCClientInputs.isCameraLockedForward()) DSCClientInputs.centerMousePos();
 	}
 	
 	@SubscribeEvent(priority = EventPriority.HIGH)

@@ -40,7 +40,7 @@ public class DopplerSoundInstance extends AbstractTickableSoundInstance {
 
 	@Override
 	public void tick() {
-		if (entity.isRemoved() || !entity.isAddedToWorld()) {
+		if (entity.isRemoved()) {
 			stop();
 			return;
 		}

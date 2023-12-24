@@ -30,7 +30,7 @@
   "is_craftable": false,
   "item": "dscombat:gronk_battleship",
   "landing_gear": true,
-  "mass": 150.0,
+  "mass": 450000.0,
   "max_health": 600.0,
   "max_speed": 0.6,
   "maxpitch": 0.0,

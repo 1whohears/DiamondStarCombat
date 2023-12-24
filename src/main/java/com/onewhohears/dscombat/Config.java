@@ -136,9 +136,7 @@ public class Config {
 	}
 	
 	public static class Server {
-		// FIXME 8 change all physics constants/masses/forces to values that make more sense
-		// make constants static until good default values are found
-		public final ForgeConfigSpec.DoubleValue accGravity;
+		/*public final ForgeConfigSpec.DoubleValue accGravity;
 		public final ForgeConfigSpec.DoubleValue coDrag;
 		public final ForgeConfigSpec.DoubleValue coStaticFriction;
 		public final ForgeConfigSpec.DoubleValue coKineticFriction;
@@ -147,10 +145,10 @@ public class Config {
 		public final ForgeConfigSpec.DoubleValue collideSpeedThreshHold;
 		public final ForgeConfigSpec.DoubleValue collideSpeedWithGearThreshHold;
 		public final ForgeConfigSpec.DoubleValue collideDamageRate;
-		public final ForgeConfigSpec.DoubleValue maxFallSpeed;
+		public final ForgeConfigSpec.DoubleValue maxFallSpeed;*/
 		
 		public Server(ForgeConfigSpec.Builder builder) {
-			accGravity = builder
+			/*accGravity = builder
 					.defineInRange("accGravity", 0.025, 0, 1);
 			coDrag = builder
 					.defineInRange("coDrag", 0.015, 0, 100);
@@ -169,7 +167,7 @@ public class Config {
 			collideDamageRate = builder
 					.defineInRange("collideDamageRate", 300.0, 0, 1000);
 			maxFallSpeed = builder
-					.defineInRange("maxFallSpeed", 2.5, 0, 10);
+					.defineInRange("maxFallSpeed", 2.5, 0, 10);*/
 		}
 		
 	}

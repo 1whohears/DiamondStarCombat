@@ -38,7 +38,7 @@
   "is_craftable": true,
   "item": "dscombat:cruiser",
   "landing_gear": true,
-  "mass": 140.0,
+  "mass": 350000.0,
   "max_health": 500.0,
   "max_speed": 0.6,
   "maxpitch": 0.0,

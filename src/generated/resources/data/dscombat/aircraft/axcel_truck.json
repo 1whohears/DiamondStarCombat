@@ -46,7 +46,7 @@
   "is_craftable": false,
   "item": "dscombat:axcel_truck",
   "landing_gear": true,
-  "mass": 15.0,
+  "mass": 6500.0,
   "max_health": 80.0,
   "max_speed": 0.5,
   "maxpitch": 0.0,

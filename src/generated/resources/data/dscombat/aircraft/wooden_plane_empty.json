@@ -1,7 +1,7 @@
 {
   "aircraft_type": 0,
   "base_armor": 0.0,
-  "cross_sec_area": 2.89,
+  "cross_sec_area": 2.0,
   "displayName": "preset.dscombat.wooden_plane_empty",
   "health": 40.0,
   "idleheat": 1.0,
@@ -26,9 +26,9 @@
   "is_craftable": false,
   "item": "dscombat:wooden_plane",
   "landing_gear": true,
-  "mass": 6.0,
+  "mass": 500.0,
   "max_health": 40.0,
-  "max_speed": 0.75,
+  "max_speed": 0.7,
   "maxpitch": 3.0,
   "maxroll": 5.0,
   "maxyaw": 2.0,
@@ -93,6 +93,6 @@
   "throttledown": 0.06,
   "throttleup": 0.02,
   "turn_radius": 16.0,
-  "wing_area": 6.5,
+  "wing_area": 8.0,
   "yawtorque": 4.5
 }

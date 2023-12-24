@@ -12,7 +12,6 @@ import org.jetbrains.annotations.NotNull;
 
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
-import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.model.obj.ObjRadarModel.MastType;
 import com.onewhohears.dscombat.command.DSCGameRules;
@@ -26,6 +25,7 @@ import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftCollide;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftMoveRot;
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
+import com.onewhohears.dscombat.data.aircraft.DSCPhysicsConstants;
 import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
 import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData;
 import com.onewhohears.dscombat.data.aircraft.VehicleInputManager;
@@ -138,16 +138,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public final WeaponSystem weaponSystem;
 	public final RadarSystem radarSystem;
 	
-	public final double ACC_GRAVITY = Config.SERVER.accGravity.get();
-	public final double CO_DRAG = Config.SERVER.coDrag.get();
-	public final double CO_STATIC_FRICTION = Config.SERVER.coStaticFriction.get();
-	public final double CO_KINETIC_FRICTION = Config.SERVER.coKineticFriction.get();
-	public final double collideSpeedThreshHold = Config.SERVER.collideSpeedThreshHold.get();
-	public final double collideSpeedWithGearThreshHold = Config.SERVER.collideSpeedWithGearThreshHold.get();
-	public final double collideDamageRate = Config.SERVER.collideDamageRate.get();
-	public final double maxFallSpeed = Config.SERVER.maxFallSpeed.get();
-	public final double maxClimbSpeed = 0.75;
-	
 	/**
 	 * this vehicle's original preset. 
 	 * will be {@link defaultPreset} if it's not defined in its NBT.
@@ -189,10 +179,12 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	protected RotableHitbox[] hitboxes = new RotableHitbox[0];
 	protected EntityScreenData[] screens = new EntityScreenData[0];
 	
+	// TODO 5.1 aircraft starts getting damaged if altitude is too high
 	// TODO 5.2 below 50% health the probability of bullet damaging an engine/fuel leak/breaks internal radar increases
 	// TODO 5.4 aircraft visually breaks apart when damaged
 	// TODO 5.6 place and remove external parts from outside the vehicle
 	// TODO 5.7 an additional vehicle gui to control certain auxiliary functions (landing gear, jettison tanks/weapons)
+	// TODO 2.2 gimbal camera external part
 	// TODO 2.5 add chaff
 	// TODO 2.7 cargo system
 	// TODO 2.8 external fuel tanks
@@ -582,8 +574,9 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		if (verticalCollision) verticalCollision();
 		if (horizontalCollision && !minorHorizontalCollision) {
 			double speed = prevMotion.horizontalDistance();
-			if (speed > collideSpeedThreshHold) {
-				float amount = (float)((speed-collideSpeedThreshHold)*collideDamageRate);
+			double th = DSCPhysicsConstants.COLLIDE_SPEED;
+			if (speed > th) {
+				float amount = (float)((speed-th)*DSCPhysicsConstants.COLLIDE_DAMAGE_RATE);
 				collideHurt(amount, false);
 			}
 		}
@@ -591,14 +584,14 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	protected void verticalCollision() {
 		double my = Math.abs(prevMotion.y);
-		double th = collideSpeedThreshHold;
+		double th = DSCPhysicsConstants.COLLIDE_SPEED;
 		if (isOperational() && isLandingGear() 
 				&& Mth.abs(getXRot()) < 15f
 				&& Mth.abs(zRot) < 15f) {
-			th = collideSpeedWithGearThreshHold;
+			th = DSCPhysicsConstants.COLLIDE_SPEED_GEAR;
 		}
 		if (my > th) {
-			float amount = (float)((my-th)*collideDamageRate);
+			float amount = (float)((my-th)*DSCPhysicsConstants.COLLIDE_DAMAGE_RATE);
 			collideHurt(amount, true);
 		}
 	}
@@ -708,8 +701,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		if (velXZ > maxXZ) motionXZ = motionXZ.scale(maxXZ / velXZ);
 		
 		double my = move.y;
-		if (my > maxClimbSpeed) my = maxClimbSpeed;
-		else if (my < -maxFallSpeed) my = -maxFallSpeed;
+		if (my > DSCPhysicsConstants.MAX_CLIMB_SPEED) my = DSCPhysicsConstants.MAX_CLIMB_SPEED;
+		else if (my < -DSCPhysicsConstants.MAX_FALL_SPEED) my = -DSCPhysicsConstants.MAX_FALL_SPEED;
 		else if (Math.abs(my) < 0.001) my = 0;
 		
 		if (onGround && my < 0) my = -0.01; // THIS MUST BE BELOW ZERO
@@ -912,8 +905,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 */
 	protected void calcMoveStatsPre(Quaternion q) {
 		totalMass = getAircraftMass() + partsManager.getPartsWeight();
-		staticFric = totalMass * ACC_GRAVITY * CO_STATIC_FRICTION;
-		kineticFric = totalMass * ACC_GRAVITY * CO_KINETIC_FRICTION;
+		staticFric = totalMass * DSCPhysicsConstants.GRAVITY * DSCPhysicsConstants.STATIC_FRICTION;
+		kineticFric = totalMass * DSCPhysicsConstants.GRAVITY * DSCPhysicsConstants.KINETIC_FRICTION;
 		maxPushThrust = partsManager.getTotalPushThrust();
 		maxSpinThrust = partsManager.getTotalSpinThrust();
 		currentFuel = partsManager.getCurrentFuel();
@@ -1021,13 +1014,13 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		Vec3 n = UtilAngles.rotationToVector(getYRot(), 0);
 		if (isSliding() || willSlideFromTurn()) {
 			setDeltaMovement(getDeltaMovement().add(n.scale(
-				getDriveAcc() * slideAngleCos
-			)));
+				getDriveAcc() * slideAngleCos)));
 			addFrictionForce(kineticFric);
 			//debug("SLIDING");
 		} else {
 			setDeltaMovement(n.scale(xzSpeed*xzSpeedDir + getDriveAcc()));
-			if (getCurrentThrottle() == 0 && xzSpeed != 0) addFrictionForce(0.1);
+			if (getCurrentThrottle() == 0 && xzSpeed != 0) 
+				addFrictionForce(DSCPhysicsConstants.DRIVE_FRICTION);
 		}
 		if (isBraking() && isOperational()) applyBreaks();
 	}
@@ -1169,7 +1162,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public double getDragMag() {
 		// Drag = (drag coefficient) * (air pressure) * (speed)^2 * (wing surface area) / 2
 		double speedSqr = getDeltaMovement().lengthSqr();
-		return airPressure * speedSqr * getCrossSectionArea() * CO_DRAG;
+		return airPressure * speedSqr * getCrossSectionArea() * DSCPhysicsConstants.DRAG;
 	}
 	
 	/**
@@ -1187,7 +1180,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 * @return srly bro you dont know what this is?
 	 */
 	public Vec3 getWeightForce() {
-		return new Vec3(0, -getTotalMass() * ACC_GRAVITY, 0);
+		return new Vec3(0, -getTotalMass() * DSCPhysicsConstants.GRAVITY, 0);
 	}
 	
 	/**

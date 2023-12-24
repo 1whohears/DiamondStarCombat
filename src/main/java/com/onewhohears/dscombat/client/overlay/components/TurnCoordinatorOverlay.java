@@ -49,7 +49,7 @@ public class TurnCoordinatorOverlay extends VehicleOverlayComponent {
 
         RenderSystem.setShaderTexture(0, TURN_COORD_BALL);
         // FIXME: #getCentripetalForce can throw a NullPointerException?
-        int xTranslation = (int) ((plane.getCentripetalForce() - plane.getCentrifugalForce()) * 25);
+        int xTranslation = (int) ((plane.getCentripetalForce() - plane.getCentrifugalForce()) * 0.1);
         blit(poseStack,
                 xOrigin + xTranslation, yOrigin,
                 0, 0,

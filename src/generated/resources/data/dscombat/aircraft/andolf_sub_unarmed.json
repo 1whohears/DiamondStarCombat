@@ -38,7 +38,7 @@
   "is_craftable": true,
   "item": "dscombat:andolf_sub",
   "landing_gear": true,
-  "mass": 200.0,
+  "mass": 180000.0,
   "max_health": 800.0,
   "max_speed": 0.5,
   "maxpitch": 2.0,

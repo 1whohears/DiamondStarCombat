@@ -46,7 +46,7 @@
   "is_craftable": false,
   "item": "dscombat:mrbudger_tank",
   "landing_gear": true,
-  "mass": 50.0,
+  "mass": 15000.0,
   "max_health": 500.0,
   "max_speed": 0.3,
   "maxpitch": 0.0,

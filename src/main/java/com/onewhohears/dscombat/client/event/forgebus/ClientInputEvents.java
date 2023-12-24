@@ -103,34 +103,29 @@ public final class ClientInputEvents {
 			float ys = (float) Math.signum(mouseY) * -invertY;
 			float xs = (float) Math.signum(mouseX);
 			double max = Config.CLIENT.mouseModeMaxRadius.get();
-			float stickStepsY = 5;
-			float stickStepsX = 5;
-			if (ya >= max) {
-				pitch = ys;
-				//DSCClientInputs.setMouseCenterY(DSCClientInputs.getMouseCenterY() - (ya - max) * ys);
-			} else {
+			float stickStepsY = Config.CLIENT.mouseYSteps.get();
+			float stickStepsX = Config.CLIENT.mouseXSteps.get();
+			if (ya >= max) pitch = ys;
+			else {
 				int step = (int)(ya/max*stickStepsY*ys);
 				pitch = ((float)step)/stickStepsY;
 			}
-			if (xa >= max) {
-				roll = xs;
-				//DSCClientInputs.setMouseCenterX(DSCClientInputs.getMouseCenterX() + (xa - max) * xs);
-			} else {
+			if (xa >= max) roll = xs;
+			else {
 				int step = (int)(xa/max*stickStepsX*xs);
 				roll = ((float)step)/stickStepsX;
 			}
-			/*double deadZone = Config.CLIENT.mouseStickDeadzoneRadius.get();
-			double md = max-deadZone;
 			if (mc.mouseHandler.getYVelocity() == 0) {
 				DSCClientInputs.setMouseCenterY((int)Mth.approach(
-						(float)DSCClientInputs.getMouseCenterY(), 
-						(float)mc.mouseHandler.ypos(),
-						Config.CLIENT.mouseYReturnRate.get().floatValue()));
-			}*/
+					(float)DSCClientInputs.getMouseCenterY(), 
+					(float)mc.mouseHandler.ypos(),
+					Config.CLIENT.mouseYReturnRate.get().floatValue()));
+			}
 			if (mc.mouseHandler.getXVelocity() == 0) {
 				DSCClientInputs.setMouseCenterX((int)Mth.approach(
-						(float)DSCClientInputs.getMouseCenterX(), 
-						(float)mc.mouseHandler.xpos(), 20));
+					(float)DSCClientInputs.getMouseCenterX(), 
+					(float)mc.mouseHandler.xpos(), 
+					Config.CLIENT.mouseXReturnRate.get().floatValue()));
 			}
 		}
 		if (pitchUp && !pitchDown) pitch = -1 * invertY;

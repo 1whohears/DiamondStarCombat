@@ -19,6 +19,7 @@ import com.onewhohears.dscombat.entity.parts.EntityTurret;
 
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
@@ -125,13 +126,12 @@ public final class ClientInputEvents {
 						(float)DSCClientInputs.getMouseCenterY(), 
 						(float)mc.mouseHandler.ypos(),
 						Config.CLIENT.mouseYReturnRate.get().floatValue()));
-			}
+			}*/
 			if (mc.mouseHandler.getXVelocity() == 0) {
 				DSCClientInputs.setMouseCenterX((int)Mth.approach(
 						(float)DSCClientInputs.getMouseCenterX(), 
-						(float)mc.mouseHandler.xpos(),
-						Config.CLIENT.mouseXReturnRate.get().floatValue()));
-			}*/
+						(float)mc.mouseHandler.xpos(), 20));
+			}
 		}
 		if (pitchUp && !pitchDown) pitch = -1 * invertY;
 		if (pitchDown && !pitchUp) pitch = 1 * invertY;

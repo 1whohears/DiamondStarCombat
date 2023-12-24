@@ -52,8 +52,8 @@ public class JaviPlane extends EntityPlane {
 	}
 	
 	private static final Vec3[] ENGINE_SMOKE = new Vec3[]{
-			new Vec3(2,1.25,-4.5),
-			new Vec3(-2,1.25,-4.5)};
+			new Vec3(1.85,1.4,-4.4),
+			new Vec3(-1.85,1.4,-4.4)};
 	
 	@Override
 	public Vec3[] getAfterBurnerSmokePos() {

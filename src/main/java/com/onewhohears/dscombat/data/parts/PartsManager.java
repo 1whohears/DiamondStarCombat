@@ -293,7 +293,7 @@ public class PartsManager {
 	
 	public void tickFuel(boolean updateClient) {
 		float amount = -getTotalEngineFuelConsume() * Math.abs(parent.getCurrentThrottle());
-		if (parent.isFuelLeak()) amount -= 0.03f;
+		if (parent.isFuelLeak()) amount -= 0.06f;
 		addFuel(amount);
 		if (updateClient && parent.tickCount % 100 == 0) {
 			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 

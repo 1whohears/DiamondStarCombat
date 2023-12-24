@@ -1402,12 +1402,12 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 					if (isEngineFire()) {
 						setEngineFire(false);
 						playRepairSound();
-						stack.hurtAndBreak(5, player, 
+						stack.hurtAndBreak(40, player, 
 							(p) -> p.broadcastBreakEvent(hand));
 					} else if (isFuelLeak()) {
 						setFuelLeak(false);
 						playRepairSound();
-						stack.hurtAndBreak(10, player, 
+						stack.hurtAndBreak(15, player, 
 							(p) -> p.broadcastBreakEvent(hand));
 					} else if (!isMaxHealth()) {
 						addHealth(tool.repair);

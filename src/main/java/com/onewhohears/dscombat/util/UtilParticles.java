@@ -101,40 +101,65 @@ public class UtilParticles {
 	}
 	
 	public static void fuelLeakSmoke(EntityVehicle vehicle) {
-		if (!vehicle.isFuelLeak()) return;
-		// TODO 6.8 fuel leak smoke
+		if (!vehicle.isFuelLeak() || vehicle.getCurrentFuel() <= 0) return;
 		Vec3 pos = vehicle.position();
-		vehicle.level.addParticle(ParticleTypes.CLOUD, 
+		for (int i = 0; i < 4; ++i) vehicle.level.addParticle(
+			ParticleTypes.FALLING_NECTAR, 
 			pos.x, pos.y, pos.z, 
-			0, 0, 0);
+			random.nextGaussian()*0.02, 
+			-0.1, 
+			random.nextGaussian()*0.02);
 	}
 	
 	public static void engineFireSmoke(EntityVehicle vehicle) {
 		if (!vehicle.isEngineFire()) return;
-		// TODO 6.9 engine fire particles
 		Quaternion q = vehicle.getClientQ();
 		for (Vec3 relPos : vehicle.getAfterBurnerSmokePos()) {
 			Vec3 pos = UtilAngles.rotateVector(relPos, q).add(vehicle.position());
-			vehicle.level.addParticle(ParticleTypes.FLAME, 
-				pos.x, pos.y, pos.z, 
-				0, 0.1, 0);
+			for (int i = 0; i < 2; ++i) flame(vehicle.level, pos);
+			for (int i = 0; i < 10; ++i) smoke(vehicle.level, pos);
+			for (int i = 0; i < 2; ++i) bigSmoke(vehicle.level, pos);
 		}
 	}
 	
 	public static void vehicleDamageSmoke(EntityVehicle vehicle) {
 		float r = vehicle.getHealth() / vehicle.getMaxHealth();
 		if (r < 0.5f) smoke(vehicle.level, vehicle.position());
-		if (r < 0.3f) for (int i = 0; i < 2; ++i) smoke(vehicle.level, vehicle.position());
-		if (r < 0.1f) for (int i = 0; i < 4; ++i) smoke(vehicle.level, vehicle.position());
+		if (r < 0.3f) {
+			for (int i = 0; i < 2; ++i) smoke(vehicle.level, vehicle.position());
+			bigSmoke(vehicle.level, vehicle.position());
+		}
+		if (r < 0.1f) {
+			for (int i = 0; i < 4; ++i) smoke(vehicle.level, vehicle.position());
+			for (int i = 0; i < 3; ++i) bigSmoke(vehicle.level, vehicle.position());
+		}
 	}
 	
 	public static void smoke(Level level, Vec3 pos) {
-		if (Math.random() > 0.4d) return;
-		level.addParticle(ParticleTypes.SMOKE, 
+		if (Math.random() > 0.65d) return;
+		level.addParticle(ParticleTypes.LARGE_SMOKE, 
 				pos.x, pos.y, pos.z, 
-				random.nextGaussian() * 0.08D, 
+				random.nextGaussian() * 0.01, 
 				0.1D, 
-				random.nextGaussian() * 0.08D);
+				random.nextGaussian() * 0.01);
+	}
+	
+	public static void bigSmoke(Level level, Vec3 pos) {
+		if (Math.random() > 0.4d) return;
+		level.addParticle(ModParticles.LARGE_SMOKE_CLOUD.get(), 
+				pos.x, pos.y, pos.z, 
+				random.nextGaussian() * 0.5, 
+				random.nextGaussian() * 0.5, 
+				random.nextGaussian() * 0.5);
+	}
+	
+	public static void flame(Level level, Vec3 pos) {
+		if (Math.random() > 0.8d) return;
+		level.addParticle(ParticleTypes.FLAME, 
+				pos.x, pos.y, pos.z, 
+				random.nextGaussian()*0.005, 
+				0.1, 
+				random.nextGaussian()*0.005);
 	}
 	
 	public static void missileTrail(Level level, Vec3 pos, Vec3 move, double size, boolean inWater) {
@@ -147,7 +172,6 @@ public class UtilParticles {
 	}
 	
 	public static void bulletImpact(Level level, Vec3 pos, double damage) {
-		// TODO 6.3 bullet impact particles
 		for (int i = 0; i < 360; i += 30) for (int j = 0; j <= 90; j += 30) {
 			level.addAlwaysVisibleParticle(ParticleTypes.LARGE_SMOKE, 
 				true, pos.x, pos.y+0.2, pos.z, 
@@ -156,7 +180,6 @@ public class UtilParticles {
 	}
 	
 	public static void bulletExplode(Level level, Vec3 pos, double radius, boolean fire) {
-		// TODO 6.5 bullet explode particles
 		radius *= 1.3;
 		for (double d = 1; d <= radius; d += 1) {
 			for (int i = 0; i < 360; i += 20) for (int j = -90; j <= 90; j += 30) {
@@ -175,7 +198,6 @@ public class UtilParticles {
 	}
 	
 	public static void bombExplode(Level level, Vec3 pos, double radius, boolean fire) {
-		// TODO 6.6 bomb explode particles
 		radius *= 1.3;
 		for (double d = 1; d <= radius; d += 1) {
 			for (int i = 0; i < 360; i += 20) for (int j = -90; j <= 90; j += 30) {
@@ -194,7 +216,6 @@ public class UtilParticles {
 	}
 	
 	public static void missileExplode(Level level, Vec3 pos, double radius, boolean fire) {
-		// TODO 6.7 missile explode particles
 		radius *= 1.3;
 		for (double d = 1; d <= radius; d += 1) {
 			for (int i = 0; i < 360; i += 20) for (int j = -90; j <= 90; j += 30) {

@@ -2,8 +2,10 @@ package com.onewhohears.dscombat.util;
 
 import java.util.Random;
 
+import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.init.ModParticles;
+import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.level.Level;
@@ -11,9 +13,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class UtilParticles {
 	
-	private static Random random = new Random();
-	
-	// TODO 6.1 improve particle system
+	public static Random random = new Random();
 	
 	public static void vehicleCrashExplosion(Level level, Vec3 pos, double expRadius) {
 		expRadius *= 1.8;
@@ -66,10 +66,38 @@ public class UtilParticles {
 	}
 	
 	public static void vehicleParticles(EntityVehicle vehicle) {
-		// TODO 6.2 engine smoke
+		vehicleEngineSmoke(vehicle);
 		// TODO 6.8 fuel leak smoke
 		// TODO 6.9 engine fire particles
 		vehicleDamageSmoke(vehicle);
+	}
+	
+	public static void vehicleEngineSmoke(EntityVehicle vehicle) {
+		Quaternion q = vehicle.getClientQ();
+		Vec3 dir = vehicle.getLookAngle().scale(-vehicle.getCurrentThrottle()*0.4);
+		for (Vec3 relPos : vehicle.getAfterBurnerSmokePos()) {
+			Vec3 pos = UtilAngles.rotateVector(relPos, q).add(vehicle.position());
+			engineSmoke(vehicle, pos, dir);
+		}
+	}
+	
+	public static void engineSmoke(EntityVehicle vehicle, Vec3 pos, Vec3 dir) {
+		if (vehicle.showContrailParticles()) {
+			vehicle.level.addParticle(ModParticles.CONTRAIL.get(), 
+				pos.x, pos.y, pos.z, 
+				dir.x, dir.y, dir.z);
+		}
+		if (vehicle.showAfterBurnerParticles()) {
+			vehicle.level.addParticle(ModParticles.AFTER_BURNER.get(), 
+				pos.x, pos.y, pos.z, 
+				dir.x, dir.y, dir.z);
+			dir = dir.scale(0.5);
+			if (vehicle.showMoreAfterBurnerParticles()) {
+				vehicle.level.addParticle(ModParticles.AFTER_BURNER.get(), 
+					pos.x, pos.y, pos.z, 
+					dir.x, dir.y, dir.z);
+			}
+		}
 	}
 	
 	public static void vehicleDamageSmoke(EntityVehicle vehicle) {

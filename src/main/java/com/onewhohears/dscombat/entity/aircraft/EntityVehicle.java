@@ -128,6 +128,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public static final EntityDataAccessor<Float> CROSS_SEC_AREA = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Boolean> PLAY_IR_TONE = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Float> BASE_ARMOR = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Boolean> FUEL_LEAK = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Boolean> ENGINE_FIRE = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
 	
 	public final String defaultPreset, clientPresetId;
 	public final ImmutableVehicleData vehicleData;
@@ -255,6 +257,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		entityData.define(CROSS_SEC_AREA, 1f);
 		entityData.define(PLAY_IR_TONE, false);
 		entityData.define(BASE_ARMOR, 0f);
+		entityData.define(FUEL_LEAK, false);
+		entityData.define(ENGINE_FIRE, false);
 	}
 	
 	@Override
@@ -322,6 +326,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		setBaseArmor(UtilParse.fixFloatNbt(nbt, "base_armor", presetNbt, 0));
 		setLandingGear(nbt.getBoolean("landing_gear"));
 		setCurrentThrottle(nbt.getFloat("current_throttle"));
+		setFuelLeak(nbt.getBoolean("fuel_leak"));
+		setEngineFire(nbt.getBoolean("engine_fire"));
 		setXRot(nbt.getFloat("xRot"));
 		setYRot(nbt.getFloat("yRot"));
 		zRot = nbt.getFloat("zRot");
@@ -360,6 +366,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		nbt.putFloat("base_armor", getBaseArmor());
 		nbt.putBoolean("landing_gear", isLandingGear());
 		nbt.putFloat("current_throttle", getCurrentThrottle());
+		nbt.putBoolean("fuel_leak", isFuelLeak());
+		nbt.putBoolean("engine_fire", isEngineFire());
 		nbt.putFloat("xRot", getXRot());
 		nbt.putFloat("yRot", getYRot());
 		nbt.putFloat("zRot", zRot);
@@ -2425,5 +2433,44 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public MastType getMastType() {
 		return MastType.NONE;
 	}
+	
+	public boolean isFuelLeak() {
+    	return entityData.get(FUEL_LEAK);
+    }
+    
+    public void setFuelLeak(boolean bool) {
+    	entityData.set(FUEL_LEAK, bool);
+    }
+    
+    public boolean isEngineFire() {
+    	return entityData.get(ENGINE_FIRE);
+    }
+    
+    public void setEngineFire(boolean bool) {
+    	entityData.set(ENGINE_FIRE, bool);
+    }
+    
+    public boolean showAfterBurnerParticles() {
+    	return getCurrentThrottle() > 0.45;
+    }
+    
+    public boolean showMoreAfterBurnerParticles() {
+    	return getCurrentThrottle() > 0.85;
+    }
+    
+    public boolean showContrailParticles() {
+    	return showAfterBurnerParticles() && position().y > 128;
+    }
+    
+    private static final Vec3[] NONE = new Vec3[] {};
+    
+    /**
+     * override this in a custom vehicle entity.
+     * @return relative positions where smoke should appear
+     */
+    @Nullable
+    public Vec3[] getAfterBurnerSmokePos() {
+    	return NONE;
+    }
     
 }

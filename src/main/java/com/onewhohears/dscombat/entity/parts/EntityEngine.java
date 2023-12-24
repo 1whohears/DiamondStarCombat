@@ -1,6 +1,8 @@
 package com.onewhohears.dscombat.entity.parts;
 
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.util.UtilParticles;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -15,6 +17,15 @@ public class EntityEngine extends EntityPart {
 	public EntityEngine(EntityType<?> type, Level level, String slotId, Vec3 pos) {
 		super(type, level, slotId, pos);
 		setHealth(10);
+	}
+	
+	@Override
+	public void tick() {
+		super.tick();
+		EntityVehicle vehicle = getParentVehicle();
+		if (vehicle == null) return;
+		Vec3 dir = vehicle.getLookAngle().scale(-vehicle.getCurrentThrottle()*0.4);
+		UtilParticles.engineSmoke(vehicle, getBoundingBox().getCenter(), dir);
 	}
 	
 	@Override

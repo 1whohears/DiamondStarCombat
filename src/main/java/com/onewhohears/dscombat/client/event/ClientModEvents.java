@@ -46,6 +46,7 @@ import com.onewhohears.dscombat.client.model.weapon.EntityModelMiniGunTurret;
 import com.onewhohears.dscombat.client.model.weapon.EntityModelMissile1;
 import com.onewhohears.dscombat.client.model.weapon.EntityModelSteveUpSmash;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlay;
+import com.onewhohears.dscombat.client.particle.AfterBurnerParticle;
 import com.onewhohears.dscombat.client.particle.BigFlameParticle;
 import com.onewhohears.dscombat.client.particle.ContrailParticle;
 import com.onewhohears.dscombat.client.particle.LargeSmokeCloudParticle;
@@ -357,5 +358,6 @@ public final class ClientModEvents {
 		event.register(ModParticles.SHRAPNEL.get(), ShrapnelParticle.Provider::new);
 		event.register(ModParticles.BIG_FLAME.get(), BigFlameParticle.Provider::new);
 		event.register(ModParticles.CONTRAIL.get(), ContrailParticle.Provider::new);
+		event.register(ModParticles.AFTER_BURNER.get(), AfterBurnerParticle.Provider::new);
 	}
 }

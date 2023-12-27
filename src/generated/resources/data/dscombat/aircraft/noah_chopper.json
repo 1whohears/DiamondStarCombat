@@ -243,9 +243,7 @@
     },
     {
       "data": {
-        "filled": true,
-        "itemid": "dscombat:heavy_missile_rack",
-        "param": "agm88g"
+        "itemid": "dscombat:gimbal_camera"
       },
       "name": "frame_1",
       "slot_posx": 0.0,
@@ -255,6 +253,11 @@
       "zRot": 180.0
     },
     {
+      "data": {
+        "filled": true,
+        "itemid": "dscombat:heavy_missile_rack",
+        "param": "agm88g"
+      },
       "name": "frame_2",
       "slot_posx": 0.0,
       "slot_posy": -0.67,

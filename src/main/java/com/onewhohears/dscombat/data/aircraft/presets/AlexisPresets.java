@@ -83,6 +83,7 @@ public class AlexisPresets {
 			.createFromCopy(DSCombatMod.MODID, "alexis_plane_support", UNARMED_ALEXIS_PLANE)
 			.setSlotItem("left_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "agm84e", true)
 			.setSlotItem("left_wing_2", ModItems.HEAVY_MISSILE_RACK.getId(), "aim120b", true)
+			.setSlotItem("left_wing_3", ModItems.GIMBAL_CAMERA.getId())
 			.setSlotItem("right_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "agm88g", true)
 			.setSlotItem("right_wing_2", ModItems.LIGHT_MISSILE_RACK.getId(), "agm114k", true)
 			.setSlotItem("frame_1", ModItems.XM12.getId(), "50mmhe", true)

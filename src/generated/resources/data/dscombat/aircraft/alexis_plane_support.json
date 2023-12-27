@@ -130,6 +130,9 @@
       "zRot": 180.0
     },
     {
+      "data": {
+        "itemid": "dscombat:gimbal_camera"
+      },
       "name": "left_wing_3",
       "slot_posx": 4.95,
       "slot_posy": -0.08,

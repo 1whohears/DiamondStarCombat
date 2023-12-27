@@ -1,7 +1,7 @@
 {
 	"loader": "forge:obj",
 	"flip_v": true,
-	"model": "dscombat:models/entity/agm88g.obj",
+	"model": "dscombat:models/entity/agm84e.obj",
 	"display": {
 		"thirdperson_righthand": {
 			"rotation": [270, 0, 0],

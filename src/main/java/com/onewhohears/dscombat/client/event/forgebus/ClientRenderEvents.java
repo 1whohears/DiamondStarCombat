@@ -26,6 +26,8 @@ import static net.minecraftforge.client.gui.overlay.VanillaGuiOverlay.*;
 @Mod.EventBusSubscriber(modid = DSCombatMod.MODID, bus = Bus.FORGE, value = Dist.CLIENT)
 public class ClientRenderEvents {
 	
+	// TODO 4.3 thermal camera option
+	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void playerRenderPre(RenderPlayerEvent.Pre event) {
 		Player player = event.getEntity();

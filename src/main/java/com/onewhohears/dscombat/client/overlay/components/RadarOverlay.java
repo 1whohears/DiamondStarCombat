@@ -151,19 +151,19 @@ public class RadarOverlay extends VehicleOverlayComponent {
             float yaw = (UtilAngles.getYaw(dp)-vehicle.getYRot())*Mth.DEG_TO_RAD;
             int x = centerX + (int)(Mth.sin(yaw)*searchRadius*screen_dist);
             int y = centerY + (int)(-Mth.cos(yaw)*searchRadius*screen_dist);*/
-            int color = 0x00ff00;
+            //int color = 0x00ff00;
             //String symbol = "o";
             //if (ping.isFriendly) symbol = "F";
             int hud_ping_offset = 0;
             if (i == selected) {
-                color = 0xff0000;
+                //color = 0xff0000;
                 hud_ping_offset = 400;
             } else if (i == hover) {
-                color = 0xffff00;
+                //color = 0xffff00;
                 hud_ping_offset = HUD_PING_ANIM[(getPlayer().tickCount/6)%6];
             }
-            else if (ping.isFriendly) color = 0x0000ff;
-            else if (ping.isShared()) color = 0x66cdaa;
+            //else if (ping.isFriendly) color = 0x0000ff;
+            //else if (ping.isShared()) color = 0x66cdaa;
             /*drawCenteredString(poseStack, getFont(),
                     symbol, x, y, color);*/
             // HUD

@@ -8,11 +8,14 @@ import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.parts.EntityGimbal;
+import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.HitResult;
@@ -28,18 +31,42 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 @Mod.EventBusSubscriber(modid = DSCombatMod.MODID, bus = Bus.FORGE, value = Dist.CLIENT)
 public class ClientCameraEvents {
 	
+	private static Entity prevGimbal;
 	private static float ptOld;
 	
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public static void cameraSetup(ViewportEvent.ComputeCameraAngles event) {
 		Minecraft m = Minecraft.getInstance();
 		final var player = m.player;
-		if (player == null || !player.isPassenger()) return;
+		if (player == null) return;
+		if (!player.isPassenger()) {
+			if (m.getCameraEntity().equals(prevGimbal)) m.setCameraEntity(player);
+			prevGimbal = null;
+			return;
+		}
 		if (!(player.getRootVehicle() instanceof EntityVehicle plane)) return;
 		float pt = (float)event.getPartialTick();
 		boolean isController = player.equals(plane.getControllingPassenger());
 		boolean detached = !m.options.getCameraType().isFirstPerson();
 		boolean mirrored = m.options.getCameraType().isMirrored();
+		float camYOffset = 0;
+		if ((prevGimbal != null && prevGimbal.isRemoved())
+				|| (!DSCClientInputs.isGimbalMode() && !m.getCameraEntity().equals(player))) {
+			m.setCameraEntity(player);
+			prevGimbal = null;
+		}
+		if (DSCClientInputs.isGimbalMode()) {
+			if (isController && plane.getGimbalForPilotCamera() != null) {
+				EntityGimbal gimbal = plane.getGimbalForPilotCamera();
+				if (!m.getCameraEntity().equals(gimbal)) m.setCameraEntity(gimbal);
+				gimbal.setXRot(player.getViewXRot(pt));
+				gimbal.setYRot(player.getViewYRot(pt));
+				prevGimbal = gimbal;
+				camYOffset = -0.2f;
+			} else if (player.getVehicle() instanceof EntitySeat seat) {
+				camYOffset = seat.getYOffset();
+			}
+		} 
 		if (isController && DSCClientInputs.isCameraLockedForward()) {
 			float xi = UtilAngles.lerpAngle(pt, plane.xRotO, plane.getXRot());
 			float yi = UtilAngles.lerpAngle180(pt, plane.yRotO, plane.getYRot());
@@ -50,6 +77,7 @@ public class ClientCameraEvents {
 			event.setPitch(xi);
 			event.setYaw(yi);
 		} else if (isController && DSCClientInputs.isCameraFreeRelative()) {
+			// TODO 4.1 making third person work in mouse mode (again, àla garry's mod WAC planes)
 			float ptDiff = ptDiff(pt, ptOld);
 			float planeXRotDiff = plane.getXRot()-plane.xRotO;
 			if (planeXRotDiff != 0) {
@@ -74,13 +102,10 @@ public class ClientCameraEvents {
 		event.setRoll(zi);
 		double camDist = plane.vehicleData.cameraDistance;
 		if (detached && isController && camDist > 4) {
-			// TODO 4.2 making third person work in mouse mode (again, à la garry's mod WAC planes)
-			// TODO 4.1 option to change turret camera position. so camera could be under the aircraft
-			// To add onto this, a thermal camera option would be nice too; or in the future, an attack helicopter
-			// could have a movable turret
 			double vehicleCamDist = Math.min(0, 4-getMaxDist(event.getCamera(), player, camDist));
 			event.getCamera().move(vehicleCamDist, 0, 0);
 		}
+		event.getCamera().setPosition(event.getCamera().getPosition().add(0, camYOffset, 0));
 		ptOld = pt;
 	}
 	

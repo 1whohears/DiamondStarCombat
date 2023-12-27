@@ -38,6 +38,7 @@ import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponSystem;
 import com.onewhohears.dscombat.entity.damagesource.AircraftDamageSource;
+import com.onewhohears.dscombat.entity.parts.EntityGimbal;
 import com.onewhohears.dscombat.entity.parts.EntityPart;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
@@ -180,6 +181,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	protected Set<Integer> hitboxCollidedIds = new HashSet<>();
 	protected RotableHitbox[] hitboxes = new RotableHitbox[0];
 	protected EntityScreenData[] screens = new EntityScreenData[0];
+	
+	@Nullable protected EntityGimbal pilotGimbal;
 	
 	// TODO 5.1 aircraft starts getting damaged if altitude is too high
 	// TODO 5.2 below 50% health the probability of bullet damaging an engine/fuel leak/breaks internal radar increases
@@ -1275,6 +1278,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 * ticks the parts manager on client and server side
 	 */
 	public void tickParts() {
+		findGimbalForPilotCamera();
 		if (level.isClientSide) partsManager.clientTickParts();
 		else partsManager.tickParts();
 	}
@@ -2148,6 +2152,25 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     		if (e instanceof EntityPart part)
     			parts.add(part);
     	return parts;
+    }
+    
+    public List<EntityGimbal> getGimbals() {
+    	List<EntityGimbal> gimbals = new ArrayList<>();
+    	for (Entity e : getPassengers())
+    		if (e instanceof EntityGimbal gimbal)
+    			gimbals.add(gimbal);
+    	return gimbals;
+    }
+    
+    protected void findGimbalForPilotCamera() {
+    	List<EntityGimbal> gimbals = getGimbals();
+    	if (gimbals.size() == 0) pilotGimbal = null;
+    	else pilotGimbal = gimbals.get(0);
+    }
+    
+    @Nullable
+    public EntityGimbal getGimbalForPilotCamera() {
+    	return pilotGimbal;
     }
     
     @Nullable

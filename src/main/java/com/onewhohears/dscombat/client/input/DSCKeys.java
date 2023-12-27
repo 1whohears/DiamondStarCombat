@@ -23,7 +23,7 @@ public final class DSCKeys {
 	public static KeyMapping yawLeftKey, yawRightKey;
 	public static KeyMapping weaponSelectKey, weaponSelect2Key;
 	public static KeyMapping flareKey;
-	public static KeyMapping mouseModeKey, resetMouseKey;
+	public static KeyMapping mouseModeKey, resetMouseKey, gimbalKey;
 	public static KeyMapping shootKey, landingGear;
 	public static KeyMapping planeMenuKey;
 	public static KeyMapping pingCycleKey, radarModeKey, radarDisplayRangeKey;
@@ -54,6 +54,7 @@ public final class DSCKeys {
 		dismount = registerKey("dismount_key", VEHICLE_PASSENGER_CONTROL, InputConstants.KEY_H);
 		changeSeat = registerKey("change_seat_key", VEHICLE_PASSENGER_CONTROL, InputConstants.KEY_Y);
 		landingGear = registerKey("landing_gear_key", VEHICLE_PASSENGER_CONTROL, InputConstants.KEY_K);
+		gimbalKey = registerKey("gimbal_key", VEHICLE_PASSENGER_CONTROL, InputConstants.KEY_SEMICOLON);
 		specialKey = registerKey("special_key", VEHICLE_PASSENGER_CONTROL, InputConstants.KEY_SPACE);
 		special2Key = registerKey("special_2_key", VEHICLE_PASSENGER_CONTROL, InputConstants.KEY_LALT);
 		// COMBAT CONTROL

@@ -195,6 +195,10 @@ public final class ClientInputEvents {
 			else range = 250;
 			DSCClientInputs.setRadarDisplayRange(range);
 		}
+		// USE GIMBAL
+		if (DSCKeys.gimbalKey.consumeClick()) {
+			DSCClientInputs.toggleGimbalMode();
+		}
 	}
 	
 	private static boolean playerCanShoot(Player player) {

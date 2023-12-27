@@ -34,7 +34,8 @@ public abstract class PartData {
 		FLARE_DISPENSER,
 		EXTERNAL_ENGINE,
 		BUFF_DATA,
-		EXTERNAL_RADAR;
+		EXTERNAL_RADAR,
+		GIMBAL;
 		
 		public boolean isSeat() {
 			return this == SEAT || this == TURRENT;
@@ -100,6 +101,10 @@ public abstract class PartData {
 	
 	public boolean isSeat() {
 		return getType().isSeat();
+	}
+	
+	public boolean isGimbal() {
+		return getType() == PartType.GIMBAL;
 	}
 	
 	public boolean isRadio() {

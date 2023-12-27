@@ -25,6 +25,7 @@ import com.onewhohears.dscombat.client.model.obj.custom.BroncoPlaneModel;
 import com.onewhohears.dscombat.client.model.obj.custom.CIWSModel;
 import com.onewhohears.dscombat.client.model.obj.custom.CorvetteModel;
 import com.onewhohears.dscombat.client.model.obj.custom.FelixPlaneModel;
+import com.onewhohears.dscombat.client.model.obj.custom.GimbalCameraModel;
 import com.onewhohears.dscombat.client.model.obj.custom.HeavyMissileRackModel;
 import com.onewhohears.dscombat.client.model.obj.custom.JasonPlaneModel;
 import com.onewhohears.dscombat.client.model.obj.custom.JaviPlaneModel;
@@ -335,6 +336,9 @@ public final class ClientModEvents {
 		// OTHER
 		event.registerEntityRenderer(ModEntities.SEAT.get(), RendererEntityInvisible::new);
 		event.registerEntityRenderer(ModEntities.FLARE.get(), RendererEntityInvisible::new);
+		event.registerEntityRenderer(ModEntities.GIMBAL_CAMERA.get(), 
+				(context) -> new RendererObjEntity<>(context,
+                        new GimbalCameraModel()));
 		event.registerEntityRenderer(ModEntities.PARACHUTE.get(), 
 				(context) -> new RendererEntityParachute(context, 
 						new EntityModelParachute(models.bakeLayer(EntityModelParachute.LAYER_LOCATION)), 

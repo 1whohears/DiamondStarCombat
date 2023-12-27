@@ -24,6 +24,7 @@ import com.onewhohears.dscombat.entity.aircraft.custom.JasonPlane;
 import com.onewhohears.dscombat.entity.aircraft.custom.JaviPlane;
 import com.onewhohears.dscombat.entity.aircraft.custom.NoahChopper;
 import com.onewhohears.dscombat.entity.parts.EntityEngine;
+import com.onewhohears.dscombat.entity.parts.EntityGimbal;
 import com.onewhohears.dscombat.entity.parts.EntityRadar;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
@@ -238,6 +239,9 @@ public class ModEntities {
 					EntityDimensions.scalable(2.0f, 1.5f)));
 	
 	public static final EntityDimensions TINY = EntityDimensions.scalable(0.1f, 0.1f);
+	
+	public static final RegistryObject<EntityType<EntityGimbal>> GIMBAL_CAMERA = ENTITIES.register("gimbal_camera", 
+			() -> createEntityType(EntityGimbal::new, TINY));
 	
 	public static final RegistryObject<EntityType<EntityWeaponRack>> LIGHT_MISSILE_RACK = ENTITIES.register("light_missile_rack", 
 			() -> createEntityType(EntityWeaponRack::new, TINY));

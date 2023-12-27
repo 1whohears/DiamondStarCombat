@@ -370,8 +370,16 @@ public class PartsManager {
 	
 	public float getTotalExtraArmor() {
 		float armor = 0;
-		for (PartSlot p : slots) if (p.filled()) armor += p.getPartData().getAdditionalArmor();
+		for (PartSlot p : slots) if (p.filled()) 
+			armor += p.getPartData().getAdditionalArmor();
 		return armor;
+	}
+	
+	public boolean hasGimbal() {
+		for (PartSlot p : slots) 
+			if (p.filled() && p.getPartData().isGimbal()) 
+				return true;
+		return false;
 	}
 	
 }

@@ -190,5 +190,10 @@ public class EntitySeat extends EntityPart {
 	public boolean canGetHurt() {
 		return false;
 	}
+	
+	public float getYOffset() {
+		// TODO 4.2 option to change turret camera position. so camera could be under the aircraft
+		return 0;
+	}
 
 }

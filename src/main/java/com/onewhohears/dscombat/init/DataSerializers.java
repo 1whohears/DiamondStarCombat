@@ -8,6 +8,7 @@ import com.onewhohears.dscombat.data.parts.ExternalEngineData;
 import com.onewhohears.dscombat.data.parts.ExternalRadarPartData;
 import com.onewhohears.dscombat.data.parts.FlareDispenserData;
 import com.onewhohears.dscombat.data.parts.FuelTankData;
+import com.onewhohears.dscombat.data.parts.GimbalPartData;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.RadarPartData;
 import com.onewhohears.dscombat.data.parts.SeatData;
@@ -160,6 +161,8 @@ public class DataSerializers {
 				return new BuffData(buffer);
 			case EXTERNAL_RADAR:
 				return new ExternalRadarPartData(buffer);
+			case GIMBAL:
+				return new GimbalPartData(buffer);
 			}
 			return null;
 		}

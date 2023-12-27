@@ -101,6 +101,7 @@
 	"entity.dscombat.flare": "Flare",
 	"entity.dscombat.seat": "Seat",
 	"entity.dscombat.parachute": "Parachute",
+	"entity.dscombat.gimbal_camera": "Gimbal Camera",
 	"entity.dscombat.minigun_turret": "Minigun Turret",
 	"entity.dscombat.heavy_tank_turret": "Heavy Tank Turret",
 	"entity.dscombat.steve_up_smash": "Steve Up Smash",
@@ -215,6 +216,7 @@
 	"item.dscombat.survey_all_b": "Survey All B",
 	
 	"item.dscombat.seat": "Seat",
+	"item.dscombat.gimbal_camera": "Gimbal Camera",
 	"item.dscombat.parachute": "Parachute",
 	
 	"item.dscombat.minigun_turret": "Minigun Turret",

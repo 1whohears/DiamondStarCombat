@@ -1,5 +1,7 @@
 package com.onewhohears.dscombat.data.weapon;
 
+import static com.onewhohears.dscombat.DSCombatMod.MODID;
+
 import java.util.List;
 
 import com.google.gson.JsonObject;
@@ -81,6 +83,11 @@ public class AntiRadarMissileData extends MissileData {
 	@Override
 	public String getWeaponTypeCode() {
 		return "AGAR";
+	}
+	
+	@Override
+	public String getDefaultIconLocation() {
+		return MODID+":textures/ui/weapon_icons/anti_radar_missile.png";
 	}
 
 }

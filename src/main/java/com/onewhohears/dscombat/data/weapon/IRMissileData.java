@@ -1,5 +1,7 @@
 package com.onewhohears.dscombat.data.weapon;
 
+import static com.onewhohears.dscombat.DSCombatMod.MODID;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,6 +112,11 @@ public class IRMissileData extends MissileData {
 			if (targets.size() > 0) parent.playIRTone();
 			else parent.stopIRTone();
 		}
+	}
+	
+	@Override
+	public String getDefaultIconLocation() {
+		return MODID+":textures/ui/weapon_icons/ir_missile.png";
 	}
 
 }

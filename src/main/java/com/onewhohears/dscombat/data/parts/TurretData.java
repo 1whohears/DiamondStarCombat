@@ -28,7 +28,6 @@ public class TurretData extends SeatData {
 	private final float health;
 	private EntityType<? extends EntityTurret> turretType;
 	private int ammo = 0;
-	private int max = 0;
 	
 	public TurretData(float weight, ResourceLocation itemid, SlotType[] compatibleSlots, 
 			String turrentEntityKey, String weaponId, RotBounds rotBounds, boolean filled, float health) {
@@ -37,10 +36,9 @@ public class TurretData extends SeatData {
 		this.turretEntityKey = turrentEntityKey;
 		this.rotBounds = rotBounds;
 		this.health = health;
-		WeaponData data = WeaponPresets.get().getPreset(weaponId);
-		if (data != null) {
-			if (filled) this.ammo = data.getMaxAmmo();
-			this.max = data.getMaxAmmo();
+		if (filled) {
+			WeaponData data = WeaponPresets.get().getPreset(weaponId);
+			if (data != null) ammo = data.getMaxAmmo();
 		}
 	}
 
@@ -51,7 +49,6 @@ public class TurretData extends SeatData {
 		rotBounds = new RotBounds(tag);
 		health = tag.getFloat("health");
 		ammo = tag.getInt("ammo");
-		max = tag.getInt("max");
 	}
 	
 	public CompoundTag write() {
@@ -61,7 +58,6 @@ public class TurretData extends SeatData {
 		rotBounds.write(tag);
 		tag.putFloat("health", health);
 		tag.putInt("ammo", ammo);
-		tag.putInt("max", max);
 		return tag;
 	}
 
@@ -72,7 +68,6 @@ public class TurretData extends SeatData {
 		rotBounds = new RotBounds(buffer);
 		health = buffer.readFloat();
 		ammo = buffer.readInt();
-		max = buffer.readInt();
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
@@ -82,7 +77,6 @@ public class TurretData extends SeatData {
 		rotBounds.write(buffer);
 		buffer.writeFloat(health);
 		buffer.writeInt(ammo);
-		buffer.writeInt(max);
 	}
 	
 	@Override

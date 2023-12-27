@@ -31,6 +31,7 @@ public class DSCGameRules {
 	public static GameRules.Key<GameRules.IntegerValue> BULLET_DAMAGE_VEHICLE_PER;
 	public static GameRules.Key<GameRules.IntegerValue> EXPLO_DAMAGE_VEHICLE_PER;
 	public static GameRules.Key<GameRules.IntegerValue> BULLET_DAMAGE_PLANE_PER;
+	public static GameRules.Key<GameRules.IntegerValue> BULLET_DAMAGE_HELI_PER;
 	public static GameRules.Key<GameRules.BooleanValue> DISABLE_3RD_PERSON_VEHICLE;
 	// TODO 7.2 baby mode gamerule (arcade mode) for planes disabled by default
 	
@@ -54,6 +55,7 @@ public class DSCGameRules {
 		BULLET_DAMAGE_VEHICLE_PER = registerInteger("bulletDamageVehiclePercent", 20, GameRules.Category.PLAYER);
 		EXPLO_DAMAGE_VEHICLE_PER = registerInteger("explosionDamageVehiclePercent", 1000, GameRules.Category.PLAYER);
 		BULLET_DAMAGE_PLANE_PER = registerInteger("bulletDamagePlanePercent", 50, GameRules.Category.PLAYER);
+		BULLET_DAMAGE_HELI_PER = registerInteger("bulletDamageHeliPercent", 50, GameRules.Category.PLAYER);
 		DISABLE_3RD_PERSON_VEHICLE = registerBoolean("disable3rdPersonVehicle", false, GameRules.Category.PLAYER, 
 				(server, value) -> PacketHandler.INSTANCE.send(
 						PacketDistributor.ALL.noArg(), 
@@ -92,6 +94,10 @@ public class DSCGameRules {
 	
 	public static float getBulletDamagePlaneFactor(Level level) {
 		return level.getGameRules().getInt(BULLET_DAMAGE_PLANE_PER) * 0.01f;
+	}
+	
+	public static float getBulletDamageHeliFactor(Level level) {
+		return level.getGameRules().getInt(BULLET_DAMAGE_HELI_PER) * 0.01f;
 	}
 	
 }

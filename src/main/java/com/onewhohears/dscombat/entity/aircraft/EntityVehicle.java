@@ -185,11 +185,9 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	@Nullable protected EntityGimbal pilotGimbal;
 	
 	// TODO 5.1 aircraft starts getting damaged if altitude is too high
-	// TODO 5.2 below 50% health the probability of bullet damaging an engine/fuel leak/breaks internal radar increases
 	// TODO 5.4 aircraft visually breaks apart when damaged
 	// TODO 5.6 place and remove external parts from outside the vehicle
 	// TODO 5.7 an additional vehicle gui to control certain auxiliary functions (landing gear, jettison tanks/weapons)
-	// TODO 2.2 gimbal camera external part
 	// TODO 2.5 add chaff
 	// TODO 2.7 cargo system
 	// TODO 2.8 external fuel tanks

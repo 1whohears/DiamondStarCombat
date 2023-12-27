@@ -1,5 +1,7 @@
 package com.onewhohears.dscombat.data.weapon;
 
+import static com.onewhohears.dscombat.DSCombatMod.MODID;
+
 import java.util.List;
 
 import com.google.gson.JsonObject;
@@ -75,6 +77,11 @@ public class TorpedoData extends TrackMissileData {
 	@Override
 	public String getWeaponTypeCode() {
 		return "TR";
+	}
+	
+	@Override
+	public String getDefaultIconLocation() {
+		return MODID+":textures/ui/weapon_icons/torpedo.png";
 	}
 	
 }

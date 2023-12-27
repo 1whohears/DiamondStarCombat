@@ -1,5 +1,7 @@
 package com.onewhohears.dscombat.data.weapon;
 
+import static com.onewhohears.dscombat.DSCombatMod.MODID;
+
 import java.util.List;
 
 import com.google.gson.JsonObject;
@@ -102,6 +104,11 @@ public class BunkerBusterData extends BombData {
 		String code = "BB";
 		if (isCausesFire()) code += "I";
 		return code;
+	}
+	
+	@Override
+	public String getDefaultIconLocation() {
+		return MODID+":textures/ui/weapon_icons/bunker_buster.png";
 	}
 
 }

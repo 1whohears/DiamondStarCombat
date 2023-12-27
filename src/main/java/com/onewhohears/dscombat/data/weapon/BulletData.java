@@ -1,5 +1,7 @@
 package com.onewhohears.dscombat.data.weapon;
 
+import static com.onewhohears.dscombat.DSCombatMod.MODID;
+
 import java.util.List;
 import java.util.Random;
 
@@ -167,6 +169,12 @@ public class BulletData extends WeaponData {
 		if (isExplosive()) code += "E";
 		if (isCausesFire()) code += "I";
 		return code;
+	}
+	
+	@Override
+	public String getDefaultIconLocation() {
+		if (isExplosive()) return MODID+":textures/ui/weapon_icons/he_bullet.png";
+		return MODID+":textures/ui/weapon_icons/bullet.png";
 	}
 
 }

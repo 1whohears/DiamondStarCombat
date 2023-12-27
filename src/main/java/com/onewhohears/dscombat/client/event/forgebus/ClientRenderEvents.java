@@ -96,9 +96,9 @@ public class ClientRenderEvents {
 	@SubscribeEvent
 	public static void onRenderHand(RenderHandEvent event) {
 		if (!(Minecraft.getInstance().player.getRootVehicle() instanceof EntityVehicle vehicle)) return;
-		if (DSCClientInputs.isCameraFree()) return;
-
-		event.setCanceled(true);
+		if (DSCClientInputs.isCameraLockedForward() || DSCClientInputs.isGimbalMode()) {
+			event.setCanceled(true);
+		}
 	}
 	
 	public static Matrix4f getViewMatrix() {

@@ -16,6 +16,16 @@ public class DSCClientInputs {
 	private static long mountTime;
 	
 	private static MouseMode CURRENT_MOUSE_MODE = MouseMode.FREE_RELATIVE;
+	
+	private static boolean GIMBAL_MODE = false;
+	
+	public static boolean isGimbalMode() {
+		return GIMBAL_MODE;
+	}
+	
+	public static void toggleGimbalMode() {
+		GIMBAL_MODE = !GIMBAL_MODE;
+	}
 	/**
 	 * set mouseCenterX and mouseCenterY to the mouse's current position.
 	 * used to move the "joystick" back to the middle when in LOCKED_FORWARD MouseMode.

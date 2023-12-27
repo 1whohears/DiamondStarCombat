@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.Config;
+import com.onewhohears.dscombat.data.aircraft.DSCPhysicsConstants;
 import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
@@ -16,8 +16,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 public class EntityBoat extends EntityVehicle {
-	
-	public final double CO_FLOAT = Config.SERVER.coFloat.get();
 	
 	private float propellerRot = 0, propellerRotOld = 0;
 	
@@ -125,8 +123,8 @@ public class EntityBoat extends EntityVehicle {
 		Vec3 move = getDeltaMovement();
 		move = move.multiply(1, 0.900, 1);
 		setDeltaMovement(move);
-		if (canBrake() && isBraking()) addFrictionForce(2);
-		else addFrictionForce(0.2);
+		if (canBrake() && isBraking()) addFrictionForce(100);
+		else addFrictionForce(10);
 	}
 	
 	@Override
@@ -136,8 +134,8 @@ public class EntityBoat extends EntityVehicle {
 	
 	public boolean willFloat() {
 		if (!isOperational()) return false;
-		float w = getTotalMass() * (float)ACC_GRAVITY;
-		float fc = getBbWidth() * getBbWidth() * (float)CO_FLOAT;
+		float w = getTotalMass() * DSCPhysicsConstants.GRAVITY;
+		float fc = getBbWidth() * getBbWidth() * DSCPhysicsConstants.FLOAT;
 		return fc > w;
 	}
 	

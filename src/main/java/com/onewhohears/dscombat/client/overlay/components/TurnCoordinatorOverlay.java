@@ -23,6 +23,7 @@ public class TurnCoordinatorOverlay extends VehicleOverlayComponent {
             "textures/ui/turn_coord_needle.png");
 
     public static final int TURN_COORD_SIZE = 80;
+    public static final int MAX_BALL_MOVE = (int)(TURN_COORD_SIZE*0.25d);
 
     private static TurnCoordinatorOverlay INSTANCE;
 
@@ -48,8 +49,8 @@ public class TurnCoordinatorOverlay extends VehicleOverlayComponent {
                 TURN_COORD_SIZE, TURN_COORD_SIZE);
 
         RenderSystem.setShaderTexture(0, TURN_COORD_BALL);
-        // FIXME: #getCentripetalForce can throw a NullPointerException?
-        int xTranslation = (int) ((plane.getCentripetalForce() - plane.getCentrifugalForce()) * 25);
+        int xTranslation = (int) ((plane.getCentripetalForce() - plane.getCentrifugalForce()) * 0.1);
+        if (Math.abs(xTranslation) > MAX_BALL_MOVE) xTranslation = MAX_BALL_MOVE * (int)Math.signum(xTranslation);
         blit(poseStack,
                 xOrigin + xTranslation, yOrigin,
                 0, 0,

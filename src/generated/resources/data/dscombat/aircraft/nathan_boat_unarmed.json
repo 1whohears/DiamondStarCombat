@@ -34,7 +34,7 @@
   "is_craftable": true,
   "item": "dscombat:nathan_boat",
   "landing_gear": true,
-  "mass": 10.0,
+  "mass": 1000.0,
   "max_health": 100.0,
   "max_speed": 0.85,
   "maxpitch": 0.0,

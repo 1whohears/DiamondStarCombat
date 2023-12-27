@@ -3,9 +3,9 @@
   "accSide": 0.02,
   "aircraft_type": 1,
   "base_armor": 5.0,
-  "cross_sec_area": 7.84,
+  "cross_sec_area": 8.0,
   "displayName": "preset.dscombat.noah_chopper_empty",
-  "health": 300.0,
+  "health": 200.0,
   "idleheat": 8.0,
   "ingredients": [
     {
@@ -44,8 +44,8 @@
   "is_craftable": false,
   "item": "dscombat:noah_chopper",
   "landing_gear": true,
-  "mass": 30.0,
-  "max_health": 300.0,
+  "mass": 6000.0,
+  "max_health": 200.0,
   "max_speed": 0.7,
   "maxpitch": 2.0,
   "maxroll": 4.0,

@@ -101,6 +101,7 @@
 	"entity.dscombat.flare": "Flare",
 	"entity.dscombat.seat": "Seat",
 	"entity.dscombat.parachute": "Parachute",
+	"entity.dscombat.gimbal_camera": "Gimbal Camera",
 	"entity.dscombat.minigun_turret": "Minigun Turret",
 	"entity.dscombat.heavy_tank_turret": "Heavy Tank Turret",
 	"entity.dscombat.steve_up_smash": "Steve Up Smash",
@@ -215,6 +216,7 @@
 	"item.dscombat.survey_all_b": "Survey All B",
 	
 	"item.dscombat.seat": "Seat",
+	"item.dscombat.gimbal_camera": "Gimbal Camera",
 	"item.dscombat.parachute": "Parachute",
 	
 	"item.dscombat.minigun_turret": "Minigun Turret",
@@ -387,6 +389,7 @@
 	"key.dscombat.dismount_key": "Dismount",
 	"key.dscombat.ping_cycle_key": "Ping Cycle",
 	"key.dscombat.radar_display_range_key": "Cycle Radar Display Range",
+	"key.dscombat.gimbal_key": "Toggle Gimbal Mode",
 	
 	"sounds.dscombat.missile_warning": "Missile Warning",
 	"sounds.dscombat.getting_locked": "Getting Locked",
@@ -500,5 +503,6 @@
 	"gamerule.bulletDamageVehiclePercent": "DSC Bullet Damage Vehicle Percent Multiplier",
 	"gamerule.explosionDamageVehiclePercent": "DSC Explosion Damage Vehicle Percent Multiplier",
 	"gamerule.bulletDamagePlanePercent": "DSC Bullet Damage Plane Percent Multiplier",
+	"gamerule.bulletDamageHeliPercent": "DSC Bullet Damage Heli Percent Multiplier",
 	"gamerule.disable3rdPersonVehicle": "DSC Disable 3rd Person in Vehicles"
 }

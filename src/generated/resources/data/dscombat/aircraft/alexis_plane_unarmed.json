@@ -42,9 +42,9 @@
   "is_craftable": true,
   "item": "dscombat:alexis_plane",
   "landing_gear": true,
-  "mass": 20.0,
+  "mass": 8500.0,
   "max_health": 150.0,
-  "max_speed": 1.45,
+  "max_speed": 1.4,
   "maxpitch": 2.5,
   "maxroll": 6.0,
   "maxyaw": 1.5,
@@ -192,10 +192,10 @@
     }
   ],
   "sort_factor": 10,
-  "stealth": 0.8,
+  "stealth": 0.95,
   "throttledown": 0.08,
   "throttleup": 0.04,
   "turn_radius": 10.0,
-  "wing_area": 14.0,
+  "wing_area": 28.0,
   "yawtorque": 4.0
 }

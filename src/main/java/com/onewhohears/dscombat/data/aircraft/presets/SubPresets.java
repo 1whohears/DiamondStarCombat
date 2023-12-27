@@ -14,7 +14,7 @@ public class SubPresets {
 			.setAircraftType(AircraftType.SUBMARINE)
 			.setItem(ModItems.ANDOLF_SUB.getId())
 			.setMaxHealth(800f)
-			.setMass(200f)
+			.setMass(180000f)
 			.setMaxSpeed(0.5f)
 			.setStealth(0.05f)
 			.setCrossSecArea(18f)

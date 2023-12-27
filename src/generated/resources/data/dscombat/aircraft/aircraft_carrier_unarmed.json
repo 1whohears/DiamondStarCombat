@@ -38,7 +38,7 @@
   "is_craftable": true,
   "item": "dscombat:aircraft_carrier",
   "landing_gear": true,
-  "mass": 250.0,
+  "mass": 800000.0,
   "max_health": 900.0,
   "max_speed": 0.25,
   "maxpitch": 0.0,

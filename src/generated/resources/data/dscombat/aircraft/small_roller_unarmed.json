@@ -30,7 +30,7 @@
   "is_craftable": true,
   "item": "dscombat:small_roller",
   "landing_gear": true,
-  "mass": 5.0,
+  "mass": 600.0,
   "max_health": 30.0,
   "max_speed": 0.2,
   "maxpitch": 0.0,

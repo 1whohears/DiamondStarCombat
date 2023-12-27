@@ -1,9 +1,9 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
+import com.onewhohears.dscombat.data.aircraft.DSCPhysicsConstants;
 import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource.WeaponDamageType;
 import com.onewhohears.dscombat.util.UtilParse;
@@ -23,8 +23,6 @@ import net.minecraft.world.phys.Vec3;
 public class EntityPlane extends EntityVehicle {
 	
 	public static final EntityDataAccessor<Float> WING_AREA = SynchedEntityData.defineId(EntityPlane.class, EntityDataSerializers.FLOAT);
-	
-	public static final double CO_LIFT = Config.SERVER.coLift.get();
 	
 	private float propellerRot = 0, propellerRotOld = 0, aoa = 0, liftK = 0, airFoilSpeedSqr = 0;
 	private float centripetalForce, centrifugalForce; 
@@ -160,21 +158,23 @@ public class EntityPlane extends EntityVehicle {
 	protected void calculateLift(Quaternion q) {
 		// Lift = (angle of attack coefficient) * (air density) * (speed)^2 * (wing surface area) / 2
 		double wing = getWingSurfaceArea();
-		liftMag = liftK * airPressure * airFoilSpeedSqr * wing * CO_LIFT;
+		liftMag = liftK * airPressure * airFoilSpeedSqr * wing * DSCPhysicsConstants.LIFT;
 		Vec3 lift = getLiftForce(q);
 		Vec3 cenAxis = UtilAngles.getRollAxis(0, (getYRot()+90)*Mth.DEG_TO_RAD);
 		centripetalForce = (float) UtilGeometry.vecCompMagDirByNormAxis(lift, cenAxis);
-		// F = m * v * w
-		centrifugalForce = getTotalMass() * xzSpeed * getYawRate()*Mth.DEG_TO_RAD;
 		if (Mth.abs(centripetalForce) < 0.01) centripetalForce = 0;
 		if (Mth.abs(centrifugalForce) < 0.01) centrifugalForce = 0;
+		// F = m * v * w
+		centrifugalForce = getTotalMass() * xzSpeed * getYawRate()*Mth.DEG_TO_RAD;
 		//debug("#####");
 		//debug("centripetalForce = "+centripetalForce);
 		//debug("centrifugalForce = "+centrifugalForce);
 	}
 	
 	public Vec3 getLiftForce(Quaternion q) {
-		Vec3 liftForce = liftDir.scale(getLiftMag());
+		double cenScale = DSCPhysicsConstants.CENTRIPETAL_SCALE;
+		Vec3 liftForce = liftDir.scale(getLiftMag())
+			.multiply(cenScale, 1, cenScale);
 		return liftForce;
 	}
 	
@@ -197,7 +197,7 @@ public class EntityPlane extends EntityVehicle {
 	public double getCrossSectionArea() {
 		double a = super.getCrossSectionArea();
 		a += getWingSurfaceArea() * Math.sin(Math.toRadians(aoa));
-		if (isLandingGear()) a += 4.0 * Math.cos(Math.toRadians(aoa));
+		if (isLandingGear()) a += 10.0 * Math.cos(Math.toRadians(aoa));
 		if (isFlapsDown()) a += getWingSurfaceArea() / 4 * Math.cos(Math.toRadians(aoa));
 		return a;
 	}

@@ -38,7 +38,7 @@
   "is_craftable": true,
   "item": "dscombat:corvette",
   "landing_gear": true,
-  "mass": 70.0,
+  "mass": 50000.0,
   "max_health": 250.0,
   "max_speed": 0.95,
   "maxpitch": 0.0,

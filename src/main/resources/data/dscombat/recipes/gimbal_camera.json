@@ -1,0 +1,23 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"S": {
+			"item": "minecraft:spyglass"
+		},
+		"T": {
+			"item": "dscombat:ti83"
+		},
+		"I": {
+			"item": "minecraft:iron_ingot"
+		}
+	},
+	"pattern": [
+		"S",
+		"T",
+		"I"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:gimbal_camera"
+	}
+}

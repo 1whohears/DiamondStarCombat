@@ -202,7 +202,24 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
             text = vehicle.getRadarMode().name();
             drawString(poseStack, getFont(),
                     text, xPos, yPos, color);
-            // what is this
+            yPos += 10;
+        }
+        // GIMBAL MODE
+        if (vehicle.getGimbalForPilotCamera() != null) {
+            xPos = 1+leftSpace;
+            if (DSCClientInputs.isGimbalMode()) {
+            	color = color2;
+            	text = "ON";
+            } else {
+            	color = color1;
+            	text = "OFF";
+            }
+            drawString(poseStack, getFont(),
+                    "Gimbal("+DSCKeys.gimbalKey.getKey().getDisplayName().getString()+")",
+                    xPos, yPos, color);
+            xPos += maxNameWidth;
+            drawString(poseStack, getFont(),
+                    text, xPos, yPos, color);
             yPos += 10;
         }
     }

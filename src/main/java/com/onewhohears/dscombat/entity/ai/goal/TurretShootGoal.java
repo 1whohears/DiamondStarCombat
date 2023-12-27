@@ -5,13 +5,12 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.command.DSCGameRules;
+import com.onewhohears.dscombat.data.aircraft.DSCPhysicsConstants;
 import com.onewhohears.dscombat.data.weapon.BulletData;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
-import com.onewhohears.dscombat.entity.weapon.EntityBullet;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
@@ -100,7 +99,7 @@ public class TurretShootGoal extends Goal {
 			if (accountGravity && wd != null && wd.getType().isBullet()) {
 				double speed = ((BulletData)wd).getSpeed();
 				if (speed <= 0) speed = 0.01;
-				double g = -Config.SERVER.accGravity.get()*EntityBullet.BULLET_GRAVITY_SCALE;
+				double g = -DSCPhysicsConstants.GRAVITY;
 				Vec3 diff = targetPos.subtract(origin);
 				double r = diff.horizontalDistance();
 				double h = diff.y;

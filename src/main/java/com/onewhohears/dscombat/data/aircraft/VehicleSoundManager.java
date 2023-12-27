@@ -11,6 +11,7 @@ import net.minecraft.world.damagesource.DamageSource;
 public class VehicleSoundManager {
 	
 	public final EntityVehicle parent;
+	private float prevThrottle = 0;
 	
 	public VehicleSoundManager(EntityVehicle parent) {
 		this.parent = parent;
@@ -23,14 +24,21 @@ public class VehicleSoundManager {
 	
 	protected void onClientTick() {
 		if (parent.isOperational()) UtilClientSafeSoundInstance.tickPassengerSounds(parent);
+		tickEngineSound();
+	}
+	
+	private void tickEngineSound() {
+		if (prevThrottle == 0 && parent.getCurrentThrottle() != 0) {
+			UtilClientSafeSoundInstance.nonPassengerVehicleEngineSound(parent, getNonPassengerEngineSound());
+			UtilClientSafeSoundInstance.passengerVehicleEngineSound(parent, getPassengerEngineSound());
+		}
+		prevThrottle = parent.getCurrentThrottle();
 	}
 	
 	protected void onServerTick() {
 	}
 	
 	public void onClientInit() {
-		UtilClientSafeSoundInstance.nonPassengerVehicleEngineSound(parent, getNonPassengerEngineSound());
-		UtilClientSafeSoundInstance.passengerVehicleEngineSound(parent, getPassengerEngineSound());
 	}
 	
 	public SoundEvent getNonPassengerEngineSound() {

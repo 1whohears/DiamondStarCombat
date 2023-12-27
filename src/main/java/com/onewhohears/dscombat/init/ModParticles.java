@@ -29,4 +29,7 @@ public class ModParticles {
 	public static final RegistryObject<SimpleParticleType> CONTRAIL = PARTICLE_TYPES.register("contrail", 
 			() -> new SimpleParticleType(true));
 	
+	public static final RegistryObject<SimpleParticleType> AFTER_BURNER = PARTICLE_TYPES.register("after_burner", 
+			() -> new SimpleParticleType(true));
+	
 }

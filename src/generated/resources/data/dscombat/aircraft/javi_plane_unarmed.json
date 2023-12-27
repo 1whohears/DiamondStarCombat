@@ -1,7 +1,7 @@
 {
   "aircraft_type": 0,
   "base_armor": 9.0,
-  "cross_sec_area": 6.25,
+  "cross_sec_area": 7.0,
   "displayName": "preset.dscombat.javi_plane_unarmed",
   "health": 200.0,
   "idleheat": 5.0,
@@ -46,9 +46,9 @@
   "is_craftable": true,
   "item": "dscombat:javi_plane",
   "landing_gear": true,
-  "mass": 25.0,
+  "mass": 11300.0,
   "max_health": 200.0,
-  "max_speed": 1.2,
+  "max_speed": 1.05,
   "maxpitch": 2.1,
   "maxroll": 4.0,
   "maxyaw": 1.1,
@@ -210,10 +210,10 @@
     }
   ],
   "sort_factor": 9,
-  "stealth": 1.1,
+  "stealth": 1.0,
   "throttledown": 0.08,
   "throttleup": 0.04,
   "turn_radius": 12.0,
-  "wing_area": 18.0,
+  "wing_area": 47.0,
   "yawtorque": 4.5
 }

@@ -12,7 +12,6 @@ import org.jetbrains.annotations.NotNull;
 
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
-import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.model.obj.ObjRadarModel.MastType;
 import com.onewhohears.dscombat.command.DSCGameRules;
@@ -26,6 +25,7 @@ import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftCollide;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftMoveRot;
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
+import com.onewhohears.dscombat.data.aircraft.DSCPhysicsConstants;
 import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
 import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData;
 import com.onewhohears.dscombat.data.aircraft.VehicleInputManager;
@@ -38,6 +38,7 @@ import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponSystem;
 import com.onewhohears.dscombat.entity.damagesource.AircraftDamageSource;
+import com.onewhohears.dscombat.entity.parts.EntityGimbal;
 import com.onewhohears.dscombat.entity.parts.EntityPart;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
@@ -128,6 +129,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public static final EntityDataAccessor<Float> CROSS_SEC_AREA = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Boolean> PLAY_IR_TONE = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Float> BASE_ARMOR = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Boolean> FUEL_LEAK = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Boolean> ENGINE_FIRE = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
 	
 	public final String defaultPreset, clientPresetId;
 	public final ImmutableVehicleData vehicleData;
@@ -137,16 +140,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public final PartsManager partsManager;
 	public final WeaponSystem weaponSystem;
 	public final RadarSystem radarSystem;
-	
-	public final double ACC_GRAVITY = Config.SERVER.accGravity.get();
-	public final double CO_DRAG = Config.SERVER.coDrag.get();
-	public final double CO_STATIC_FRICTION = Config.SERVER.coStaticFriction.get();
-	public final double CO_KINETIC_FRICTION = Config.SERVER.coKineticFriction.get();
-	public final double collideSpeedThreshHold = Config.SERVER.collideSpeedThreshHold.get();
-	public final double collideSpeedWithGearThreshHold = Config.SERVER.collideSpeedWithGearThreshHold.get();
-	public final double collideDamageRate = Config.SERVER.collideDamageRate.get();
-	public final double maxFallSpeed = Config.SERVER.maxFallSpeed.get();
-	public final double maxClimbSpeed = 0.75;
 	
 	/**
 	 * this vehicle's original preset. 
@@ -189,7 +182,9 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	protected RotableHitbox[] hitboxes = new RotableHitbox[0];
 	protected EntityScreenData[] screens = new EntityScreenData[0];
 	
-	// TODO 5.2 below 50% health the probability of bullet damaging an engine/fuel leak/breaks internal radar increases
+	@Nullable protected EntityGimbal pilotGimbal;
+	
+	// TODO 5.1 aircraft starts getting damaged if altitude is too high
 	// TODO 5.4 aircraft visually breaks apart when damaged
 	// TODO 5.6 place and remove external parts from outside the vehicle
 	// TODO 5.7 an additional vehicle gui to control certain auxiliary functions (landing gear, jettison tanks/weapons)
@@ -263,6 +258,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		entityData.define(CROSS_SEC_AREA, 1f);
 		entityData.define(PLAY_IR_TONE, false);
 		entityData.define(BASE_ARMOR, 0f);
+		entityData.define(FUEL_LEAK, false);
+		entityData.define(ENGINE_FIRE, false);
 	}
 	
 	@Override
@@ -330,6 +327,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		setBaseArmor(UtilParse.fixFloatNbt(nbt, "base_armor", presetNbt, 0));
 		setLandingGear(nbt.getBoolean("landing_gear"));
 		setCurrentThrottle(nbt.getFloat("current_throttle"));
+		setFuelLeak(nbt.getBoolean("fuel_leak"));
+		setEngineFire(nbt.getBoolean("engine_fire"));
 		setXRot(nbt.getFloat("xRot"));
 		setYRot(nbt.getFloat("yRot"));
 		zRot = nbt.getFloat("zRot");
@@ -368,6 +367,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		nbt.putFloat("base_armor", getBaseArmor());
 		nbt.putBoolean("landing_gear", isLandingGear());
 		nbt.putFloat("current_throttle", getCurrentThrottle());
+		nbt.putBoolean("fuel_leak", isFuelLeak());
+		nbt.putBoolean("engine_fire", isEngineFire());
 		nbt.putFloat("xRot", getXRot());
 		nbt.putFloat("yRot", getYRot());
 		nbt.putFloat("zRot", zRot);
@@ -582,8 +583,9 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		if (verticalCollision) verticalCollision();
 		if (horizontalCollision && !minorHorizontalCollision) {
 			double speed = prevMotion.horizontalDistance();
-			if (speed > collideSpeedThreshHold) {
-				float amount = (float)((speed-collideSpeedThreshHold)*collideDamageRate);
+			double th = DSCPhysicsConstants.COLLIDE_SPEED;
+			if (speed > th) {
+				float amount = (float)((speed-th)*DSCPhysicsConstants.COLLIDE_DAMAGE_RATE);
 				collideHurt(amount, false);
 			}
 		}
@@ -591,14 +593,14 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	protected void verticalCollision() {
 		double my = Math.abs(prevMotion.y);
-		double th = collideSpeedThreshHold;
+		double th = DSCPhysicsConstants.COLLIDE_SPEED;
 		if (isOperational() && isLandingGear() 
 				&& Mth.abs(getXRot()) < 15f
 				&& Mth.abs(zRot) < 15f) {
-			th = collideSpeedWithGearThreshHold;
+			th = DSCPhysicsConstants.COLLIDE_SPEED_GEAR;
 		}
 		if (my > th) {
-			float amount = (float)((my-th)*collideDamageRate);
+			float amount = (float)((my-th)*DSCPhysicsConstants.COLLIDE_DAMAGE_RATE);
 			collideHurt(amount, true);
 		}
 	}
@@ -708,8 +710,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		if (velXZ > maxXZ) motionXZ = motionXZ.scale(maxXZ / velXZ);
 		
 		double my = move.y;
-		if (my > maxClimbSpeed) my = maxClimbSpeed;
-		else if (my < -maxFallSpeed) my = -maxFallSpeed;
+		if (my > DSCPhysicsConstants.MAX_CLIMB_SPEED) my = DSCPhysicsConstants.MAX_CLIMB_SPEED;
+		else if (my < -DSCPhysicsConstants.MAX_FALL_SPEED) my = -DSCPhysicsConstants.MAX_FALL_SPEED;
 		else if (Math.abs(my) < 0.001) my = 0;
 		
 		if (onGround && my < 0) my = -0.01; // THIS MUST BE BELOW ZERO
@@ -729,12 +731,12 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 * also resets the controls if there isn't a controlling passenger.
 	 */
 	public void tickThrottle() {
-		if (currentFuel <= 0) {
-			throttleToZero();
-			return;
-		}
 		if (getControllingPassenger() == null || !isOperational()) {
 			resetControls();
+			return;
+		}
+		if (currentFuel <= 0 || isEngineFire()) {
+			throttleToZero();
 			return;
 		}
 		if (inputs.throttle > 0) increaseThrottle();
@@ -912,8 +914,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 */
 	protected void calcMoveStatsPre(Quaternion q) {
 		totalMass = getAircraftMass() + partsManager.getPartsWeight();
-		staticFric = totalMass * ACC_GRAVITY * CO_STATIC_FRICTION;
-		kineticFric = totalMass * ACC_GRAVITY * CO_KINETIC_FRICTION;
+		staticFric = totalMass * DSCPhysicsConstants.GRAVITY * DSCPhysicsConstants.STATIC_FRICTION;
+		kineticFric = totalMass * DSCPhysicsConstants.GRAVITY * DSCPhysicsConstants.KINETIC_FRICTION;
 		maxPushThrust = partsManager.getTotalPushThrust();
 		maxSpinThrust = partsManager.getTotalSpinThrust();
 		currentFuel = partsManager.getCurrentFuel();
@@ -1021,13 +1023,13 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		Vec3 n = UtilAngles.rotationToVector(getYRot(), 0);
 		if (isSliding() || willSlideFromTurn()) {
 			setDeltaMovement(getDeltaMovement().add(n.scale(
-				getDriveAcc() * slideAngleCos
-			)));
+				getDriveAcc() * slideAngleCos)));
 			addFrictionForce(kineticFric);
 			//debug("SLIDING");
 		} else {
 			setDeltaMovement(n.scale(xzSpeed*xzSpeedDir + getDriveAcc()));
-			if (getCurrentThrottle() == 0 && xzSpeed != 0) addFrictionForce(0.1);
+			if (getCurrentThrottle() == 0 && xzSpeed != 0) 
+				addFrictionForce(DSCPhysicsConstants.DRIVE_FRICTION);
 		}
 		if (isBraking() && isOperational()) applyBreaks();
 	}
@@ -1169,7 +1171,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public double getDragMag() {
 		// Drag = (drag coefficient) * (air pressure) * (speed)^2 * (wing surface area) / 2
 		double speedSqr = getDeltaMovement().lengthSqr();
-		return airPressure * speedSqr * getCrossSectionArea() * CO_DRAG;
+		return airPressure * speedSqr * getCrossSectionArea() * DSCPhysicsConstants.DRAG;
 	}
 	
 	/**
@@ -1187,7 +1189,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 * @return srly bro you dont know what this is?
 	 */
 	public Vec3 getWeightForce() {
-		return new Vec3(0, -getTotalMass() * ACC_GRAVITY, 0);
+		return new Vec3(0, -getTotalMass() * DSCPhysicsConstants.GRAVITY, 0);
 	}
 	
 	/**
@@ -1274,6 +1276,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 * ticks the parts manager on client and server side
 	 */
 	public void tickParts() {
+		findGimbalForPilotCamera();
 		if (level.isClientSide) partsManager.clientTickParts();
 		else partsManager.tickParts();
 	}
@@ -1321,7 +1324,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 */
 	public void resetControls() {
 		inputs.reset();
-		this.throttleToZero();
+		throttleToZero();
 	}
 	
 	public final boolean isDriverCameraLocked() {
@@ -1398,15 +1401,24 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 					return InteractionResult.SUCCESS;
 				// REPAIR
 				} else if (item instanceof ItemRepairTool tool) {
-					if (isMaxHealth()) {
-						level.playSound(null, this, 
-								SoundEvents.ANVIL_USE, 
-								getSoundSource(), 0.5f, 0.9f);
+					if (isEngineFire()) {
+						setEngineFire(false);
+						playRepairSound();
+						stack.hurtAndBreak(40, player, 
+							(p) -> p.broadcastBreakEvent(hand));
+					} else if (isFuelLeak()) {
+						setFuelLeak(false);
+						playRepairSound();
+						stack.hurtAndBreak(15, player, 
+							(p) -> p.broadcastBreakEvent(hand));
+					} else if (!isMaxHealth()) {
+						addHealth(tool.repair);
+						stack.hurtAndBreak(1, player, 
+							(p) -> p.broadcastBreakEvent(hand));
+					} else {
+						playRepairSound();
 						return InteractionResult.PASS;
 					}
-					addHealth(tool.repair);
-					stack.hurtAndBreak(1, player, 
-						(p) -> { p.broadcastBreakEvent(hand); });
 					return InteractionResult.SUCCESS;
 				// RELOAD
 				} else if (item instanceof ItemAmmo ammo) {
@@ -1457,6 +1469,12 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			return InteractionResult.SUCCESS;
 		}
 		return InteractionResult.SUCCESS;
+	}
+	
+	public void playRepairSound() {
+		level.playSound(null, this, 
+				SoundEvents.ANVIL_USE, 
+				getSoundSource(), 0.5f, 0.9f);
 	}
 	
 	private boolean ridePilotSeat(Entity e, List<EntitySeat> seats) {
@@ -1640,11 +1658,21 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     public boolean hurt(DamageSource source, float amount) {
 		if (isInvulnerableTo(source)) return false;
 		if (source.isFire()) hurtByFireTime = tickCount;
-		//System.out.println(source+" hurt "+amount+" "+this);
 		addHealth(-calcDamageBySource(source, amount));
 		soundManager.onHurt(source, amount);
-		if (!level.isClientSide && !isOperational()) checkExplodeWhenKilled(source);
+		if (!level.isClientSide) {
+			damageSystem(source, amount);
+			if (!isOperational()) checkExplodeWhenKilled(source);
+		}
 		return true;
+	}
+	
+	public void damageSystem(DamageSource source, float amount) {
+		float healthPercent = getHealth() / getMaxHealth();
+		if (healthPercent > 0.5f) return;
+		float damagePercent = (1f-healthPercent*2f)*amount*0.1f;
+		if (random.nextFloat() < damagePercent*0.5f) setEngineFire(true);
+		if (random.nextFloat() < damagePercent) setFuelLeak(true);
 	}
 	
 	public float calcDamageBySource(DamageSource source, float amount) {
@@ -2124,6 +2152,25 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     	return parts;
     }
     
+    public List<EntityGimbal> getGimbals() {
+    	List<EntityGimbal> gimbals = new ArrayList<>();
+    	for (Entity e : getPassengers())
+    		if (e instanceof EntityGimbal gimbal)
+    			gimbals.add(gimbal);
+    	return gimbals;
+    }
+    
+    protected void findGimbalForPilotCamera() {
+    	List<EntityGimbal> gimbals = getGimbals();
+    	if (gimbals.size() == 0) pilotGimbal = null;
+    	else pilotGimbal = gimbals.get(0);
+    }
+    
+    @Nullable
+    public EntityGimbal getGimbalForPilotCamera() {
+    	return pilotGimbal;
+    }
+    
     @Nullable
     public EntityPart getPartBySlotId(String slotId) {
     	for (Entity e : getPassengers())
@@ -2432,5 +2479,44 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public MastType getMastType() {
 		return MastType.NONE;
 	}
+	
+	public boolean isFuelLeak() {
+    	return entityData.get(FUEL_LEAK);
+    }
+    
+    public void setFuelLeak(boolean bool) {
+    	entityData.set(FUEL_LEAK, bool);
+    }
+    
+    public boolean isEngineFire() {
+    	return entityData.get(ENGINE_FIRE);
+    }
+    
+    public void setEngineFire(boolean bool) {
+    	entityData.set(ENGINE_FIRE, bool);
+    }
+    
+    public boolean showAfterBurnerParticles() {
+    	return getCurrentThrottle() > 0.45;
+    }
+    
+    public boolean showMoreAfterBurnerParticles() {
+    	return getCurrentThrottle() > 0.85;
+    }
+    
+    public boolean showContrailParticles() {
+    	return showAfterBurnerParticles() && position().y > 128;
+    }
+    
+    private static final Vec3[] NONE = new Vec3[] {};
+    
+    /**
+     * override this in a custom vehicle entity.
+     * @return relative positions where smoke should appear
+     */
+    @Nullable
+    public Vec3[] getAfterBurnerSmokePos() {
+    	return NONE;
+    }
     
 }

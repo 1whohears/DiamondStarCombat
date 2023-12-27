@@ -120,7 +120,8 @@ public abstract class EntityMissile extends EntityBullet {
 	
 	@Override
 	public void tick() {
-		if (level.isClientSide) UtilParticles.missileTrail(level, position(), getLookAngle(), getRadius(), isInWater());
+		if (level.isClientSide) UtilParticles.missileTrail(level, position(), 
+				getLookAngle(), getRadius(), isInWater());
 		if (isTestMode()) return;
 		xRotO = getXRot(); 
 		yRotO = getYRot();

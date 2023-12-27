@@ -79,6 +79,7 @@ public class EntityFlare extends Entity {
 	}
 	
 	private void particle() {
+		// TODO 6.1 improve flare particles
 		Vec3 move = getDeltaMovement();
 		level.addParticle(ParticleTypes.LAVA, 
 				this.getX(), this.getY(), this.getZ(), 

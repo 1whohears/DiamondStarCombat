@@ -38,7 +38,7 @@
   "is_craftable": true,
   "item": "dscombat:destroyer",
   "landing_gear": true,
-  "mass": 100.0,
+  "mass": 300000.0,
   "max_health": 400.0,
   "max_speed": 0.8,
   "maxpitch": 0.0,

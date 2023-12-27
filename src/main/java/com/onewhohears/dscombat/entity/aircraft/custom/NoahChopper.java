@@ -23,7 +23,7 @@ public class NoahChopper extends EntityHelicopter {
 			.setCameraDistance(6)
 			.setSpinRate(3.141f)
 			.setAlwaysLandingGear(true)
-			.setHeliLiftFactor(2.75f)
+			.setHeliLiftFactor(10f)
 			.setTextureNum(1, 1)
 			.build();
 	

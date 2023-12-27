@@ -26,6 +26,8 @@ import static net.minecraftforge.client.gui.overlay.VanillaGuiOverlay.*;
 @Mod.EventBusSubscriber(modid = DSCombatMod.MODID, bus = Bus.FORGE, value = Dist.CLIENT)
 public class ClientRenderEvents {
 	
+	// TODO 4.3 thermal camera option
+	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void playerRenderPre(RenderPlayerEvent.Pre event) {
 		Player player = event.getEntity();
@@ -94,9 +96,9 @@ public class ClientRenderEvents {
 	@SubscribeEvent
 	public static void onRenderHand(RenderHandEvent event) {
 		if (!(Minecraft.getInstance().player.getRootVehicle() instanceof EntityVehicle vehicle)) return;
-		if (DSCClientInputs.isCameraFree()) return;
-
-		event.setCanceled(true);
+		if (DSCClientInputs.isCameraLockedForward() || DSCClientInputs.isGimbalMode()) {
+			event.setCanceled(true);
+		}
 	}
 	
 	public static Matrix4f getViewMatrix() {

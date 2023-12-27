@@ -84,10 +84,7 @@ public class UtilClientSafeSoundInstance {
 		}
 		// TODO 8.1 data link notification lines
 		// TODO 8.2 bitchin betty
-		// pull up
-		// over g
-		// aoa stall
-		// gear still out
+		// pull up, over g, aoa stall, gear still out, engine fire, fuel leak, hydraulics failure 
 		// TODO 8.3 jester
 	}
 	

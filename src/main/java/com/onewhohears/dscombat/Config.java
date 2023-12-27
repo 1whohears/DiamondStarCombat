@@ -12,9 +12,10 @@ public class Config {
 	public static class Client {
 		
 		public final ForgeConfigSpec.DoubleValue mouseModeMaxRadius;
-		public final ForgeConfigSpec.DoubleValue mouseStickDeadzoneRadius;
 		public final ForgeConfigSpec.DoubleValue mouseYReturnRate;
 		public final ForgeConfigSpec.DoubleValue mouseXReturnRate;
+		public final ForgeConfigSpec.IntValue mouseYSteps;
+		public final ForgeConfigSpec.IntValue mouseXSteps;
 		public final ForgeConfigSpec.BooleanValue invertY;
 		public final ForgeConfigSpec.BooleanValue cameraTurnRelativeToVehicle;
 		public final ForgeConfigSpec.BooleanValue customDismount;
@@ -27,15 +28,16 @@ public class Config {
 			mouseModeMaxRadius = builder
 					.comment("Only for vehicles in Mouse Mode. How far your mouse must move from rest to get a maximum angle.")
 					.defineInRange("mouseModeMaxRadius", 400d, 0, 10000d);
-			mouseStickDeadzoneRadius = builder
-					.comment("Only for vehicles in Mouse Mode. How far your mouse must move from rest to register an input.")
-					.defineInRange("mouseStickDeadzoneRadius", 0d, 0, 1000d);
 			mouseYReturnRate = builder
 					.comment("Speed the control stick vertically snaps back to rest when mouse isn't moving.")
-					.defineInRange("mouseYReturnRate", 20d, 0, 100d);
+					.defineInRange("stickPitchReturnRate", 0, 0, 100d);
 			mouseXReturnRate = builder
 					.comment("Speed the control stick horizontally snaps back to rest when mouse isn't moving.")
-					.defineInRange("mouseXReturnRate", 40d, 0, 100d);
+					.defineInRange("stickRollReturnRate", 40d, 0, 100d);
+			mouseYSteps = builder
+					.defineInRange("stickPitchSteps", 5, 1, 100);
+			mouseXSteps = builder
+					.defineInRange("stickRollSteps", 5, 1, 100);
 			invertY = builder
 					.comment("Invert vertical inputs.")
 					.define("invertY", false);
@@ -135,9 +137,7 @@ public class Config {
 		
 	}
 	
-	public static class Server {
-		// FIXME 8 change all physics constants/masses/forces to values that make more sense
-		// make constants static until good default values are found
+	/*public static class Server {
 		public final ForgeConfigSpec.DoubleValue accGravity;
 		public final ForgeConfigSpec.DoubleValue coDrag;
 		public final ForgeConfigSpec.DoubleValue coStaticFriction;
@@ -172,7 +172,7 @@ public class Config {
 					.defineInRange("maxFallSpeed", 2.5, 0, 10);
 		}
 		
-	}
+	}*/
 	
 	static final ForgeConfigSpec clientSpec;
 	public static final Config.Client CLIENT;
@@ -180,8 +180,8 @@ public class Config {
 	static final ForgeConfigSpec commonSpec;
 	public static final Config.Common COMMON;
 
-	static final ForgeConfigSpec serverSpec;
-	public static final Config.Server SERVER;
+	//static final ForgeConfigSpec serverSpec;
+	//public static final Config.Server SERVER;
 	
 	static {
         final Pair<Client, ForgeConfigSpec> clientSpecPair = new ForgeConfigSpec.Builder()
@@ -194,10 +194,10 @@ public class Config {
         commonSpec = commonSpecPair.getRight();
         COMMON = commonSpecPair.getLeft();
 
-        final Pair<Server, ForgeConfigSpec> serverSpecPair = new ForgeConfigSpec.Builder()
+        /*final Pair<Server, ForgeConfigSpec> serverSpecPair = new ForgeConfigSpec.Builder()
         		.configure(Server::new);
         serverSpec = serverSpecPair.getRight();
-        SERVER = serverSpecPair.getLeft();
+        SERVER = serverSpecPair.getLeft();*/
 	}
 	
 }

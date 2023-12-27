@@ -1,7 +1,9 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
+import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData;
+import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource.WeaponDamageType;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 
@@ -10,6 +12,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -171,5 +174,12 @@ public class EntityHelicopter extends EntityVehicle {
 	public boolean canHover() {
     	return true;
     }
+	
+	@Override
+	public float calcProjDamageBySource(DamageSource source, float amount) {
+		WeaponDamageType wdt = WeaponDamageType.byId(source.getMsgId());
+		if (wdt != null && wdt.isContact()) return amount*DSCGameRules.getBulletDamageHeliFactor(level);
+		return super.calcProjDamageBySource(source, amount);
+	}
 
 }

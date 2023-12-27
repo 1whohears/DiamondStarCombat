@@ -18,6 +18,7 @@ import com.onewhohears.dscombat.data.parts.ExternalEngineData;
 import com.onewhohears.dscombat.data.parts.ExternalRadarPartData;
 import com.onewhohears.dscombat.data.parts.FlareDispenserData;
 import com.onewhohears.dscombat.data.parts.FuelTankData;
+import com.onewhohears.dscombat.data.parts.GimbalPartData;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.data.parts.RadarPartData;
@@ -166,6 +167,8 @@ public class UtilParse {
 			return new BuffData(tag);
 		case EXTERNAL_RADAR:
 			return new ExternalRadarPartData(tag);
+		case GIMBAL:
+			return new GimbalPartData(tag);
 		}
 		return null;
 	}

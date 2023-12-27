@@ -54,5 +54,12 @@ public class AlexisPlane extends EntityPlane {
 				0.15f, 0.15f, 
 				0f, 0f, 0f);
 	}
+	
+	private static final Vec3[] ENGINE_SMOKE = new Vec3[]{new Vec3(0,0.3,-6.5)};
+	
+	@Override
+	public Vec3[] getAfterBurnerSmokePos() {
+		return ENGINE_SMOKE;
+	}
 
 }

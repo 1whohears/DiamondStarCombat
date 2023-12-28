@@ -89,11 +89,12 @@ public class RotableHitbox extends PartEntity<EntityVehicle> {
 	}
 	
 	protected void pushEntitiesOut() {
-		List<Entity> list = level.getEntities(this, 
-				hitbox.getMaxDimBox(), PUSH_OUT);
+		// FIXME 4.1 push out of rotable hitbox isn't working correctly
+		List<Entity> list = level.getEntities(this, hitbox.getMaxDimBox(), PUSH_OUT);
 		for (Entity entity : list) {
-			//System.out.println("PUSHING OUT "+entity);
+			System.out.println("PUSHING OUT "+entity);
 			entity.setPos(hitbox.getPushOutPos(entity.position(), entity.getBoundingBox()));
+			System.out.println("PUSHED OUT  "+entity);
 		}
 	}
 	

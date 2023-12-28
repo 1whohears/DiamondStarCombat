@@ -1022,12 +1022,13 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public void tickGround(Quaternion q) {
 		Vec3 n = UtilAngles.rotationToVector(getYRot(), 0);
 		if (isSliding() || willSlideFromTurn()) {
-			setDeltaMovement(getDeltaMovement().add(n.scale(
-				getDriveAcc() * slideAngleCos)));
+			setDeltaMovement(getDeltaMovement().add(
+					n.scale(getDriveAcc() * slideAngleCos)));
 			addFrictionForce(kineticFric);
 			//debug("SLIDING");
 		} else {
-			setDeltaMovement(n.scale(xzSpeed*xzSpeedDir + getDriveAcc()));
+			setDeltaMovement(getDeltaMovement().add(
+					n.scale(xzSpeed*xzSpeedDir + getDriveAcc())));
 			if (getCurrentThrottle() == 0 && xzSpeed != 0) 
 				addFrictionForce(DSCPhysicsConstants.DRIVE_FRICTION);
 		}
@@ -1106,7 +1107,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 * @param q the plane's current rotation
 	 */
 	public void tickWater(Quaternion q) {
-		tickAir(q);
+		setForces(getForces().add(getDragForce(q)));
 	}
 	
 	/**
@@ -1116,6 +1117,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 */
 	public void tickGroundWater(Quaternion q) {
 		tickGround(q);
+		tickWater(q);
 	}
 	
 	/**
@@ -1171,7 +1173,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public double getDragMag() {
 		// Drag = (drag coefficient) * (air pressure) * (speed)^2 * (wing surface area) / 2
 		double speedSqr = getDeltaMovement().lengthSqr();
-		return airPressure * speedSqr * getCrossSectionArea() * DSCPhysicsConstants.DRAG;
+		double d = airPressure * speedSqr * getCrossSectionArea();
+		if (isInWater()) d *= DSCPhysicsConstants.DRAG_WATER;
+		else d *= DSCPhysicsConstants.DRAG;
+		return d;
 	}
 	
 	/**
@@ -1197,11 +1202,11 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 */
 	public float getTotalMass() {
 		if (Float.isNaN(totalMass)) {
-			System.out.println("ERROR: NAN MASS? setting to 100 | "+this);
-			totalMass = 100;
+			System.out.println("ERROR: NAN MASS? setting to 10000 | "+this);
+			totalMass = 10000;
 		} else if (totalMass == 0) {
-			System.out.println("ERROR: 0 MASS? setting to 100 | "+this);
-			totalMass = 100;
+			System.out.println("ERROR: 0 MASS? setting to 10000 | "+this);
+			totalMass = 10000;
 		}
 		return totalMass;
 	}

@@ -105,7 +105,7 @@ public class EntitySubmarine extends EntityBoat {
 	}
 	
 	@Override
-	public boolean willFloat() {
+	public boolean couldFloat() {
 		if (!isOperational()) return false;
 		return inputs.special2;
 	}

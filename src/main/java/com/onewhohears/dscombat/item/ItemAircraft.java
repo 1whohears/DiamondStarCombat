@@ -103,7 +103,6 @@ public class ItemAircraft extends Item {
 		if (!tag.contains("EntityTag", 10)) {
 			CompoundTag et = new CompoundTag();
 			et.putString("preset", getPresetName(itemstack));
-			//System.out.println("item aircraft preset "+getPresetName(itemstack));
 			et.putBoolean("merged_preset", false);
 			tag.put("EntityTag", et);
 		}
@@ -174,7 +173,7 @@ public class ItemAircraft extends Item {
 		if (group.getId() != ModItems.AIRCRAFT.getId()) return;
 		AircraftPreset[] presets = AircraftPresets.get().getAllPresets();
 		for (int i = 0; i < presets.length; ++i) {
-			if (presets[i].getItem().getDescriptionId().equals(this.getDescriptionId())) {
+			if (presets[i].getItem().getDescriptionId().equals(getDescriptionId())) {
 				items.add(presets[i].getItem());
 			}
 		}

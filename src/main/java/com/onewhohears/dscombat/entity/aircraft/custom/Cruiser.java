@@ -15,7 +15,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class Cruiser extends EntityBoat {
 	
-	public static final ImmutableVehicleData CRUISER_DATA = Builder.create(BoatPresets.DEFAULT_NATHAN_BOAT)
+	public static final ImmutableVehicleData CRUISER_DATA = Builder.create(BoatPresets.DEFAULT_CRUISER)
 			.setInteralEngineSound(ModSounds.BOAT_1)
 			.setExternalEngineSound(ModSounds.BOAT_1)
 			.setNegativeThrottle(true)

@@ -51,9 +51,8 @@ public class BroncoPlaneModel extends ObjAircraftModel<EntityPlane> {
 		Matrix4f stick = UtilAngles.pivotPixelsRot(0, 26.1123f, 47f, stickRot);
 		Matrix4f left_pedal = Matrix4f.createTranslateMatrix(0, 0, entity.inputs.yaw*-0.0625f);
 		Matrix4f right_pedal = Matrix4f.createTranslateMatrix(0, 0, entity.inputs.yaw*0.0625f);
-		//Matrix4f throttle = Matrix4f.createTranslateMatrix(0, 0, entity.getCurrentThrottle()*0.125f);
+		Matrix4f throttle = Matrix4f.createTranslateMatrix(0, 0, entity.getCurrentThrottle()*0.125f);
 		ImmutableMap<String, Matrix4f> transforms = ImmutableMap.<String, Matrix4f>builder()
-			.put("rocket", INVISIBLE)
 			.put("blade0", blade0rot_mat)
 			.put("blade1", blade1rot_mat)
 			.put("lg0", lg0_mat)
@@ -67,7 +66,7 @@ public class BroncoPlaneModel extends ObjAircraftModel<EntityPlane> {
 			.put("stick", stick)
 			.put("pedal0", left_pedal)
 			.put("pedal1", right_pedal)
-			//.put("throttle", throttle)
+			.put("throttle", throttle)
 			.build();
 		return Transforms.of(transforms);
 	}

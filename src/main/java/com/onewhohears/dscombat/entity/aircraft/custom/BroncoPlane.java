@@ -23,7 +23,7 @@ public class BroncoPlane extends EntityPlane {
 			.setLiftKGraph(LiftKGraph.JAVI_PLANE_GRAPH)
 			.setFlapsAOABias(9f)
 			.setCanAimDown(false)
-			.setTextureNum(2, 1)
+			.setTextureNum(2, 2)
 			.build();
 	
 	public BroncoPlane(EntityType<? extends EntityPlane> entity, Level level) {

@@ -1022,13 +1022,11 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public void tickGround(Quaternion q) {
 		Vec3 n = UtilAngles.rotationToVector(getYRot(), 0);
 		if (isSliding() || willSlideFromTurn()) {
-			setDeltaMovement(getDeltaMovement().add(
-					n.scale(getDriveAcc() * slideAngleCos)));
+			setDeltaMovement(getDeltaMovement().add(n.scale(getDriveAcc() * slideAngleCos)));
 			addFrictionForce(kineticFric);
 			//debug("SLIDING");
 		} else {
-			setDeltaMovement(getDeltaMovement().add(
-					n.scale(xzSpeed*xzSpeedDir + getDriveAcc())));
+			setDeltaMovement(n.scale(xzSpeed*xzSpeedDir + getDriveAcc()));
 			if (getCurrentThrottle() == 0 && xzSpeed != 0) 
 				addFrictionForce(DSCPhysicsConstants.DRIVE_FRICTION);
 		}

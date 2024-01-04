@@ -222,4 +222,102 @@ public class UtilGeometry {
 		return roots;
 	}
 	
+	public static int numTrue(boolean[] bools) {
+		int num = 0;
+		for (int i = 0; i < bools.length; ++i) 
+			if (bools[i]) ++num;
+		return num;
+	}
+	
+	public static int getMaxYIndex(Vec3[] array) {
+		if (array.length == 0) return -1;
+		int maxIndex = 0;
+		double max = array[0].y;
+		for (int i = 1; i < array.length; ++i) {
+			if (array[i].y > max) {
+				maxIndex = i;
+				max = array[i].y;
+			}
+		}
+		return maxIndex;
+	}
+	
+	public static int getMinYIndex(Vec3[] array) {
+		if (array.length == 0) return -1;
+		int minIndex = 0;
+		double min = array[0].y;
+		for (int i = 1; i < array.length; ++i) {
+			if (array[i].y < min) {
+				minIndex = i;
+				min = array[i].y;
+			}
+		}
+		return minIndex;
+	}
+	
+	public static int getMaxXIndex(Vec3[] array) {
+		if (array.length == 0) return -1;
+		int maxIndex = 0;
+		double max = array[0].x;
+		for (int i = 1; i < array.length; ++i) {
+			if (array[i].x > max) {
+				maxIndex = i;
+				max = array[i].x;
+			}
+		}
+		return maxIndex;
+	}
+	
+	public static int getMinXIndex(Vec3[] array) {
+		if (array.length == 0) return -1;
+		int minIndex = 0;
+		double min = array[0].x;
+		for (int i = 1; i < array.length; ++i) {
+			if (array[i].x < min) {
+				minIndex = i;
+				min = array[i].x;
+			}
+		}
+		return minIndex;
+	}
+	
+	public static int getMaxZIndex(Vec3[] array) {
+		if (array.length == 0) return -1;
+		int maxIndex = 0;
+		double max = array[0].z;
+		for (int i = 1; i < array.length; ++i) {
+			if (array[i].z > max) {
+				maxIndex = i;
+				max = array[i].z;
+			}
+		}
+		return maxIndex;
+	}
+	
+	public static int getMinZIndex(Vec3[] array) {
+		if (array.length == 0) return -1;
+		int minIndex = 0;
+		double min = array[0].z;
+		for (int i = 1; i < array.length; ++i) {
+			if (array[i].z < min) {
+				minIndex = i;
+				min = array[i].z;
+			}
+		}
+		return minIndex;
+	}
+	
+	public static int getMinIndex(double[] array) {
+		if (array.length == 0) return -1;
+		int minIndex = 0;
+		double min = array[0];
+		for (int i = 1; i < array.length; ++i) {
+			if (array[i] < min) {
+				minIndex = i;
+				min = array[i];
+			}
+		}
+		return minIndex;
+	}
+	
 }

@@ -17,6 +17,9 @@ public class RotableAABB {
 	
 	public static final double SUBSIZE = 0.5;
 	public static final double SUBSIZEHALF = SUBSIZE*0.5;
+	public static final double SUB_COL_SKIN = 0.001;
+	public static final double PUSH_SKIN = 0.01;
+	
 	private Vec3 center, extents;
 	private Quaternion rot = Quaternion.ONE.copy(), roti = Quaternion.ONE.copy();
 	private final List<VoxelShape> subColliders = new ArrayList<>();
@@ -51,13 +54,9 @@ public class RotableAABB {
 		//System.out.println("ADDING SUB COLLIDERS "+getSubColliders().size());
 		subColliders.clear();
 		addSubColliders(aabb);
-		addSubColliders(aabb.move(entityMoveByParent));
+		if (!UtilGeometry.isZero(entityMoveByParent)) 
+			addSubColliders(aabb.move(entityMoveByParent));
 		colliders.addAll(subColliders);
-	}
-	
-	private double shapePosComponent(double clipRelRot, double ext, double radius) {
-		double max = ext - radius;
-		return Math.signum(clipRelRot) * Math.min(Math.abs(clipRelRot), max);
 	}
 	
 	public void addSubColliders(AABB aabb) {
@@ -71,13 +70,18 @@ public class RotableAABB {
 		for (int i = 1; i <= 4; ++i) {
 			double radius = SUBSIZEHALF * i;
 			Vec3 shapeRelRot = new Vec3(
-					shapePosComponent(clipRelRot.x, extents.x+0.001, radius), 
-					shapePosComponent(clipRelRot.y, extents.y+0.001, radius), 
-					shapePosComponent(clipRelRot.z, extents.z+0.001, radius));
+					shapePosComponent(clipRelRot.x, extents.x+SUB_COL_SKIN, radius), 
+					shapePosComponent(clipRelRot.y, extents.y+SUB_COL_SKIN, radius), 
+					shapePosComponent(clipRelRot.z, extents.z+SUB_COL_SKIN, radius));
 			Vec3 shape = toWorldPos(shapeRelRot);
 			//System.out.println("shape = "+shape);
 			addShape(shape, radius);
 		}
+	}
+	
+	private double shapePosComponent(double clipRelRot, double ext, double radius) {
+		double max = ext - radius;
+		return Math.signum(clipRelRot) * Math.min(Math.abs(clipRelRot), max);
 	}
 	
 	private void addShape(Vec3 pos, double radius) {
@@ -88,7 +92,7 @@ public class RotableAABB {
 		subColliders.add(shape);
 	}
 	
-	public boolean isColliding(AABB aabb) {
+	public boolean contains(AABB aabb) {
 		return contains(UtilGeometry.getClosestPointOnAABB(center, aabb));
 	}
 	
@@ -184,11 +188,69 @@ public class RotableAABB {
 	}
 	
 	public Vec3 getPushOutPos(Vec3 pos, AABB aabb) {
+		Vec3[] relRotCorners = new Vec3[8];
+		relRotCorners[0] = toRelRotPos(new Vec3(aabb.minX, aabb.minY, aabb.minZ));
+		Vec3 zaxis = UtilAngles.getRollAxis(roti);
+		Vec3 yaxis = UtilAngles.getYawAxis(roti);
+		Vec3 xaxis = UtilAngles.getPitchAxis(roti);
+		relRotCorners[1] = relRotCorners[0].add(zaxis.scale(aabb.getZsize()));
+		relRotCorners[2] = relRotCorners[0].add(yaxis.scale(aabb.getYsize()));
+		relRotCorners[3] = relRotCorners[0].add(zaxis.scale(aabb.getZsize())).add(yaxis.scale(aabb.getYsize()));
+		relRotCorners[4] = relRotCorners[0].add(xaxis.scale(aabb.getXsize()));
+		relRotCorners[5] = relRotCorners[0].add(zaxis.scale(aabb.getZsize())).add(xaxis.scale(aabb.getXsize()));
+		relRotCorners[6] = relRotCorners[0].add(yaxis.scale(aabb.getYsize())).add(xaxis.scale(aabb.getXsize()));
+		relRotCorners[7] = relRotCorners[0].add(zaxis.scale(aabb.getZsize())).add(yaxis.scale(aabb.getYsize())).add(xaxis.scale(aabb.getXsize()));
+		int[] absIndex = new int[6];
+		absIndex[0] = UtilGeometry.getMaxYIndex(relRotCorners);
+		absIndex[1] = UtilGeometry.getMinYIndex(relRotCorners);
+		absIndex[2] = UtilGeometry.getMaxXIndex(relRotCorners);
+		absIndex[3] = UtilGeometry.getMinXIndex(relRotCorners);
+		absIndex[4] = UtilGeometry.getMaxZIndex(relRotCorners);
+		absIndex[5] = UtilGeometry.getMinZIndex(relRotCorners);
+		double[] dists = new double[12];
+		dists[0] = Math.abs(extents.y - relRotCorners[absIndex[0]].y);
+		dists[1] = Math.abs(-extents.y - relRotCorners[absIndex[0]].y);
+		dists[2] = Math.abs(extents.y - relRotCorners[absIndex[1]].y);
+		dists[3] = Math.abs(-extents.y - relRotCorners[absIndex[1]].y);
+		dists[4] = Math.abs(extents.x - relRotCorners[absIndex[2]].x);
+		dists[5] = Math.abs(-extents.x - relRotCorners[absIndex[2]].x);
+		dists[6] = Math.abs(extents.x - relRotCorners[absIndex[3]].x);
+		dists[7] = Math.abs(-extents.x - relRotCorners[absIndex[3]].x);
+		dists[8] = Math.abs(extents.z - relRotCorners[absIndex[4]].z);
+		dists[9] = Math.abs(-extents.z - relRotCorners[absIndex[4]].z);
+		dists[10] = Math.abs(extents.z - relRotCorners[absIndex[5]].z);
+		dists[11] = Math.abs(-extents.z - relRotCorners[absIndex[5]].z);
+		int minIndex = UtilGeometry.getMinIndex(dists);
+		System.out.println("pushOutType: "+minIndex);
+		Vec3 relRotPos = toRelRotPos(pos);
+		Vec3 relRotPush = Vec3.ZERO;
+		int extDir = minIndex % 2 == 0 ? 1 : -1;
+		int absIndexIndex = minIndex / 2;
+		int extDiffDir = 1;
+		if (minIndex % 4 == 0) absIndexIndex += 1;
+		else if (minIndex % 4 == 3) absIndexIndex -= 1;
+		if (minIndex >= 0 && minIndex <= 3) {
+			double ext = (extents.y + PUSH_SKIN) * extDir;
+			if (minIndex % 4 == 3) extDiffDir = -1;
+			ext += (relRotCorners[absIndex[absIndexIndex]].y - relRotPos.y) * extDiffDir;
+			relRotPush = new Vec3(relRotPos.x, ext, relRotPos.z);
+		} else if (minIndex >= 4 && minIndex <= 7) {
+			double ext = (extents.x + PUSH_SKIN) * extDir;
+			ext -= (relRotCorners[absIndex[absIndexIndex]].x - relRotPos.x) * extDiffDir;
+			relRotPush = new Vec3(ext, relRotPos.y, relRotPos.z);
+		} else if (minIndex >= 8 && minIndex <= 11) {
+			double ext = (extents.z + PUSH_SKIN) * extDir;
+			ext -= (relRotCorners[absIndex[absIndexIndex]].z - relRotPos.z) * extDiffDir;
+			relRotPush = new Vec3(relRotPos.x, relRotPos.y, ext);
+		}
+		Vec3 push = toWorldPos(relRotPush);
+		return push;
+	}
+	
+	public Vec3 getPushOutPosOld(Vec3 pos, AABB aabb) {
 		Vec3 close = UtilGeometry.getClosestPointOnAABB(center, aabb);
 		Vec3 aabbDiff = pos.subtract(close);
-		//System.out.println("aabbDiff = "+aabbDiff);
 		Vec3 push = getPushOutPos(close).add(aabbDiff);
-		//System.out.println("push + aabbDiff = "+push);
 		return push;
 	}
 	

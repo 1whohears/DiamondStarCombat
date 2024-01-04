@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
 import java.util.List;
-import java.util.function.Predicate;
 
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
@@ -30,18 +29,15 @@ public class RotableHitbox extends PartEntity<EntityVehicle> {
 		super(parent);
 		this.name = name;
 		this.hitbox = new RotableAABB(size.x(), size.y(), size.z());
-		//this.size = hitbox.getMaxDimensions();
 		this.size = EntityDimensions.scalable(1f, 1f);
 		this.rel_pos = rel_pos;
 		this.noPhysics = true;
-		// this.blocksBuilding = true;
 		refreshDimensions();
 	}
 	
 	@Override
 	public void tick() {
 		positionSelf();
-		pushEntitiesOut();
 		firstTick = false;
 	}
 	
@@ -49,21 +45,29 @@ public class RotableHitbox extends PartEntity<EntityVehicle> {
 		setOldPosAndRot();
 		Quaternion q = getParent().getQBySide();
 		Vec3 pos = getParent().position().add(UtilAngles.rotateVector(getRelPos(), q));
-		setPos(pos);
 		hitbox.setCenterAndRot(pos, q);
-		//System.out.println("AABB="+getBoundingBox().toString()+" "+this);
-		
+		setPos(pos);
 	}
 	
 	public void handlePosibleCollision(List<VoxelShape> colliders, Entity entity, AABB aabb, Vec3 move) {
-		if (!couldCollide(entity) || !hitbox.isColliding(aabb)) return;
+		if (getParent().didEntityAlreadyCollide(entity) || !couldCollide(entity) || !hitbox.contains(aabb)) return;
 		//System.out.println("HANDLE COLLISION "+entity+" "+move);
+		// FIXME 4.1 player sometimes gets stuck when walking on hitbox
 		// FIXME 4.6 prevent entities from falling off when the chunks load
-		if (!getParent().didEntityAlreadyCollide(entity)) {
+		System.out.println("==========");
+		System.out.println("PRE COLLISION "+entity.level.isClientSide+" "+entity.tickCount+" "+entity.position()+" "+move+" "+getParent().position());
+		if (isInside(entity)) {
+			System.out.println("INSIDE");
+			Vec3 push = hitbox.getPushOutPos(entity.position(), entity.getBoundingBox());
+			entity.moveTo(push);
+			entity.setDeltaMovement(Vec3.ZERO);
+		} else {
+			System.out.println("OUTSIDE");
+			getParent().addHitboxCollider(entity);
 			Vec3 entityMoveByParent = moveEntityFromParent(entity);
 			hitbox.updateColliders(colliders, aabb, entityMoveByParent);
-			getParent().addHitboxCollider(entity);
 		}
+		System.out.println("POST COLLISION "+entity.level.isClientSide+" "+entity.tickCount+" "+entity.position());
 	}
 	
 	public Vec3 moveEntityFromParent(Entity entity) {
@@ -77,7 +81,8 @@ public class RotableHitbox extends PartEntity<EntityVehicle> {
 		Vec3 rel_tan_vel = parent_rot_rate.scale(Math.toRadians(1d))
 				.multiply(-1d,-1d,1d).cross(rel_pos);
 		Vec3 tan_vel = UtilAngles.rotateVector(rel_tan_vel, q);
-		Vec3 entityMoveByParent = parent_move.add(tan_vel);//.add(0, 0.001, 0);
+		Vec3 entityMoveByParent = parent_move.add(tan_vel);
+		//entity.moveTo(entity.position().add(entityMoveByParent));
 		entity.setPos(entity.position().add(entityMoveByParent));
 		entity.setYRot(entity.getYRot()-(float)parent_rot_rate.y);
 		if (entity instanceof EntityVehicle vehicle) {
@@ -87,22 +92,6 @@ public class RotableHitbox extends PartEntity<EntityVehicle> {
 		}
 		return entityMoveByParent;
 	}
-	
-	protected void pushEntitiesOut() {
-		// FIXME 4.1 push out of rotable hitbox isn't working correctly
-		List<Entity> list = level.getEntities(this, hitbox.getMaxDimBox(), PUSH_OUT);
-		for (Entity entity : list) {
-			System.out.println("PUSHING OUT "+entity);
-			entity.setPos(hitbox.getPushOutPos(entity.position(), entity.getBoundingBox()));
-			System.out.println("PUSHED OUT  "+entity);
-		}
-	}
-	
-	public final Predicate<? super Entity> PUSH_OUT = (entity) -> {
-		if (!couldCollide(entity)) return false;
-		if (!isInside(entity)) return false;
-		return true;
-	};
 	
 	public boolean isInside(Entity entity) {
 		return hitbox.isInside(entity.getBoundingBox());

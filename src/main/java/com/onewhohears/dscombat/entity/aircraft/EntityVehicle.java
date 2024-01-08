@@ -308,6 +308,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		if (!nbt.getBoolean("merged_preset")) nbt.merge(presetNbt);
 		partsManager.read(nbt, presetNbt);
 		textureManager.read(nbt);
+		setEmptyVehicleMass(presetNbt.getFloat("mass"));
 		setMaxSpeed(nbt.getFloat("max_speed"));
 		setMaxHealth(nbt.getFloat("max_health"));
 		setHealth(nbt.getFloat("health"));
@@ -323,7 +324,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		setThrottleIncreaseRate(nbt.getFloat("throttleup"));
 		setThrottleDecreaseRate(nbt.getFloat("throttledown"));
 		setIdleHeat(nbt.getFloat("idleheat"));
-		setAircraftMass(UtilParse.fixFloatNbt(nbt, "mass", presetNbt, 1));
 		setBaseArmor(UtilParse.fixFloatNbt(nbt, "base_armor", presetNbt, 0));
 		setLandingGear(nbt.getBoolean("landing_gear"));
 		setCurrentThrottle(nbt.getFloat("current_throttle"));
@@ -363,7 +363,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		nbt.putFloat("throttleup", getThrottleIncreaseRate());
 		nbt.putFloat("throttledown", getThrottleDecreaseRate());
 		nbt.putFloat("idleheat", getIdleHeat());
-		nbt.putFloat("mass", getAircraftMass());
+		nbt.putFloat("mass", getEmptyVehicleMass());
 		nbt.putFloat("base_armor", getBaseArmor());
 		nbt.putBoolean("landing_gear", isLandingGear());
 		nbt.putFloat("current_throttle", getCurrentThrottle());
@@ -913,7 +913,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 * @param q the current direction of the vehicle
 	 */
 	protected void calcMoveStatsPre(Quaternion q) {
-		totalMass = getAircraftMass() + partsManager.getPartsWeight();
+		totalMass = getEmptyVehicleMass() + partsManager.getPartsWeight();
 		staticFric = totalMass * DSCPhysicsConstants.GRAVITY * DSCPhysicsConstants.STATIC_FRICTION;
 		kineticFric = totalMass * DSCPhysicsConstants.GRAVITY * DSCPhysicsConstants.KINETIC_FRICTION;
 		maxPushThrust = partsManager.getTotalPushThrust();
@@ -1214,14 +1214,14 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 * see {@link EntityVehicle#getTotalMass()}
 	 * @return the mass of the vehicle. not including parts.
 	 */
-	public final float getAircraftMass() {
+	public final float getEmptyVehicleMass() {
 		return entityData.get(MASS);
 	}
 	
 	/**
 	 * @param mass the mass of the vehicle not including parts.
 	 */
-	public final void setAircraftMass(float mass) {
+	public final void setEmptyVehicleMass(float mass) {
 		if (mass < 0) mass = 0;
 		entityData.set(MASS, mass);
 	}

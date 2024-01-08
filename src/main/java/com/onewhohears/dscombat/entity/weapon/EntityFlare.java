@@ -1,8 +1,8 @@
 package com.onewhohears.dscombat.entity.weapon;
 
 import com.onewhohears.dscombat.init.ModEntities;
+import com.onewhohears.dscombat.init.ModParticles;
 
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.world.entity.Entity;
@@ -18,7 +18,6 @@ public class EntityFlare extends Entity {
 	private int age;
 	private float pow;
 	private float decay;
-	private Vec3 motion = new Vec3(0, -0.1, 0);
 	
 	public EntityFlare(EntityType<? extends EntityFlare> pEntityType, Level pLevel) {
 		super(pEntityType, pLevel);
@@ -68,24 +67,25 @@ public class EntityFlare extends Entity {
 	@Override
 	public void tick() {
 		super.tick();
-		this.setDeltaMovement(motion);
-		if (!this.level.isClientSide && tickCount > age) {
+		Vec3 move = getDeltaMovement().scale(0.999).add(0, -0.01, 0);
+		if (move.y < -0.2) move = new Vec3(move.x, -0.2, move.z);
+		setDeltaMovement(move);
+		if (!level.isClientSide && tickCount > age) {
 			discard();
 		}
-		if (this.level.isClientSide && tickCount % 2 == 0) {
-			for (int i = 0; i < 1; ++i) particle();
+		if (level.isClientSide && tickCount % 2 == 0) {
+			particle();
 		}
 		move(MoverType.SELF, getDeltaMovement());
 	}
 	
 	private void particle() {
-		// TODO 6.1 improve flare particles
 		Vec3 move = getDeltaMovement();
-		level.addParticle(ParticleTypes.LAVA, 
-				this.getX(), this.getY(), this.getZ(), 
-				move.x * 0.5D + random.nextGaussian() * 0.05D, 
-				move.y * 0.5D + random.nextGaussian() * 0.05D, 
-				move.z * 0.5D + random.nextGaussian() * 0.05D);
+		level.addParticle(ModParticles.FLARE.get(), 
+				getX(), getY(), getZ(), 
+				move.x + random.nextGaussian() * 0.0001D, 
+				move.y + random.nextGaussian() * 0.0001D, 
+				move.z + random.nextGaussian() * 0.0001D);
 	}
 
 }

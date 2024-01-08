@@ -32,4 +32,7 @@ public class ModParticles {
 	public static final RegistryObject<SimpleParticleType> AFTER_BURNER = PARTICLE_TYPES.register("after_burner", 
 			() -> new SimpleParticleType(true));
 	
+	public static final RegistryObject<SimpleParticleType> FLARE = PARTICLE_TYPES.register("flare", 
+			() -> new SimpleParticleType(true));
+	
 }

@@ -7,6 +7,7 @@ import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -33,14 +34,16 @@ public class LargeSmokeCloudParticle extends TextureSheetParticle {
 	protected LargeSmokeCloudParticle(ClientLevel level, double x, double y, double z, 
 			double dx, double dy, double dz, SpriteSet sprites) {
 		super(level, x, y, z, dx, dy, dz);
-		this.distanceX = dx + random.nextGaussian() * 0.2;
-		this.distanceY = dy + random.nextGaussian() * 0.2;
-		this.distanceZ = dz + random.nextGaussian() * 0.2;
-		this.quadSize *= (7f + random.nextGaussian() * 1.5);
-		this.lifetime = 500 + (int)(random.nextGaussian() * 200);
-		this.spreadTime = 20 + (int)(random.nextGaussian() * 4);
-		this.pickSprite(sprites);
-		this.setColor(1, 1, 1);
+		distanceX = dx + random.nextGaussian() * 0.2;
+		distanceY = dy + random.nextGaussian() * 0.2;
+		distanceZ = dz + random.nextGaussian() * 0.2;
+		quadSize *= (7f + random.nextGaussian() * 1.5);
+		lifetime = 500 + (int)(random.nextGaussian() * 200);
+		spreadTime = 20 + (int)(random.nextGaussian() * 4);
+		roll = random.nextFloat() * 2 * Mth.PI;
+		oRoll = roll;
+		pickSprite(sprites);
+		setColor(1, 1, 1);
 	}
 	
 	@Override

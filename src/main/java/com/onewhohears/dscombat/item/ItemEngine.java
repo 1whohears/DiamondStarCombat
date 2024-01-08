@@ -56,7 +56,7 @@ public class ItemEngine extends ItemPart {
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tips, TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tips, isAdvanced);
 		tips.add(Component.literal("Thrust: "+thrust).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
-		tips.add(Component.literal("Fuel Rate: "+fuelRate).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		tips.add(Component.literal("Fuel L/M: "+String.format("%.1f", fuelRate*1200)).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 	}
 
 }

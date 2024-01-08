@@ -170,7 +170,7 @@ public class RadarData extends JsonPreset {
 				EntityVehicle.class, getRadarBoundingBox(radar));
 		for (int i = 0; i < list.size(); ++i) {
 			EntityVehicle ea = list.get(i);
-			if (playersOnly && !ea.hasControllingPassenger()) continue;
+			if (playersOnly && !ea.isPlayerRiding()) continue;
 			if (!basicCheck(radar, ea, ea.getStealth())) continue;
 			RadarPing p = new RadarPing(ea, 
 					checkFriendly(controller, ea), 

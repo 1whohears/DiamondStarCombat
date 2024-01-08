@@ -13,7 +13,7 @@ https://discord.gg/dWgQTRxCJm
 
 Check out my youtube where I'll post guides and other videos showing the mod! 
 
-https://youtu.be/P4Flz0XOtTk
+https://youtu.be/4dUs40n5wzQ
 
 ![2023-12-19_16 48 12_2](https://github.com/1whohears/DiamondStarCombat/assets/79810154/16d9039e-e412-4347-a70b-4b8cfd5d6fc2)
 ![update](https://github.com/1whohears/DiamondStarCombat/assets/79810154/3cbd18a6-c6c3-47bf-b023-dacfe16070e0)

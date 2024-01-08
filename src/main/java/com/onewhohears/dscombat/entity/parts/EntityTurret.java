@@ -215,8 +215,13 @@ public class EntityTurret extends EntitySeat {
 		return TurretTargetGoal.targetEnemy(mob, this);
 	}
 	
-	public boolean isAIUsingRadar() {
-		if (targetGoal == null) return false;
+	@Override
+	public boolean hasAIUsingTurret() {
+		return targetGoal != null;
+	}
+	
+	public boolean isBotUsingRadar() {
+		if (!hasAIUsingTurret()) return false;
 		WeaponData wd = getWeaponData();
 		if (wd == null) return false;
 		return wd.requiresRadar();

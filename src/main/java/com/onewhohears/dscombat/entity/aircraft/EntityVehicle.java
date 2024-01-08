@@ -1559,9 +1559,16 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		return false;
 	}
 	
-	public boolean isAIUsingRadar() {
+	public boolean isBotUsingRadar() {
 		for (EntityTurret turret : getTurrets()) 
-			if (turret.isAIUsingRadar()) 
+			if (turret.isBotUsingRadar()) 
+				return true;
+		return false;
+	}
+	
+	public boolean isPlayerOrBotRiding() {
+		for (EntitySeat seat : getSeats()) 
+			if (seat.isPlayerOrBotRiding()) 
 				return true;
 		return false;
 	}

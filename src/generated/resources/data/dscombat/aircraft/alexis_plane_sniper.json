@@ -99,7 +99,7 @@
       "data": {
         "filled": true,
         "itemid": "dscombat:heavy_missile_rack",
-        "param": "aim7mh"
+        "param": "meteor"
       },
       "name": "left_wing_1",
       "slot_posx": 2.3,
@@ -122,6 +122,11 @@
       "zRot": 180.0
     },
     {
+      "data": {
+        "filled": true,
+        "itemid": "dscombat:heavy_missile_rack",
+        "param": "aim120b"
+      },
       "name": "left_wing_3",
       "slot_posx": 4.95,
       "slot_posy": -0.08,
@@ -141,7 +146,7 @@
       "data": {
         "filled": true,
         "itemid": "dscombat:heavy_missile_rack",
-        "param": "aim7f"
+        "param": "meteor"
       },
       "name": "right_wing_1",
       "slot_posx": -2.3,
@@ -154,7 +159,7 @@
       "data": {
         "filled": true,
         "itemid": "dscombat:heavy_missile_rack",
-        "param": "aim120b"
+        "param": "aim120c"
       },
       "name": "right_wing_2",
       "slot_posx": -3.6,
@@ -164,6 +169,11 @@
       "zRot": 180.0
     },
     {
+      "data": {
+        "filled": true,
+        "itemid": "dscombat:light_missile_rack",
+        "param": "aim9x"
+      },
       "name": "right_wing_3",
       "slot_posx": -4.95,
       "slot_posy": -0.08,
@@ -182,8 +192,8 @@
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:light_missile_rack",
-        "param": "aim9x"
+        "itemid": "dscombat:xm12",
+        "param": "20mm"
       },
       "name": "frame_1",
       "slot_posx": 0.0,
@@ -257,6 +267,9 @@
   ],
   "sort_factor": 10,
   "stealth": 0.95,
+  "textures": {
+    "baseTexture": 1
+  },
   "throttledown": 0.08,
   "throttleup": 0.04,
   "turn_radius": 10.0,

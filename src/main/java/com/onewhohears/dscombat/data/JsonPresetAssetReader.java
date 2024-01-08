@@ -6,6 +6,10 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
+import org.slf4j.Logger;
+
+import com.mojang.logging.LogUtils;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -22,6 +26,7 @@ import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
  */
 public abstract class JsonPresetAssetReader<T extends JsonPreset> implements ResourceManagerReloadListener {
 	
+	protected final Logger LOGGER = LogUtils.getLogger();
 	protected final Map<String, T> presetMap = new HashMap<>();
 	protected final String directory;
 	
@@ -31,20 +36,20 @@ public abstract class JsonPresetAssetReader<T extends JsonPreset> implements Res
 	
 	@Override
 	public void onResourceManagerReload(ResourceManager manager) {
-		System.out.println("RELOAD ASSET: "+directory);
+		LOGGER.info("RELOAD ASSET: "+directory);
 		presetMap.clear();
 		manager.listResources(directory, (key) -> {
             return key.getPath().endsWith(".json");
 		}).forEach((key, resource) -> {
-			System.out.println("key = "+key);
+			LOGGER.debug("key = "+key);
 			try {
 				T data = getPresetFromResource(key, resource);
 				if (!presetMap.containsKey(data.getId())) presetMap.put(data.getId(), data);
 				else {
-					System.out.println("ERROR: Can't have 2 presets with the same name! "+key.toString());
+					LOGGER.warn("ERROR: Can't have 2 presets with the same name! "+key.toString());
 				}
 			} catch (IOException e) {
-				System.out.println("ERROR: SKIPPING "+key.toString());
+				LOGGER.warn("ERROR: SKIPPING "+key.toString());
 				e.printStackTrace();
 			}
 		});

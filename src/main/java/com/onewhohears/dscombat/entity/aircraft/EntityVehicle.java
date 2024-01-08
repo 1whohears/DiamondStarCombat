@@ -9,7 +9,9 @@ import java.util.function.Predicate;
 import javax.annotation.Nullable;
 
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
 
+import com.mojang.logging.LogUtils;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
@@ -104,6 +106,8 @@ import net.minecraftforge.network.PacketDistributor;
  */
 // TODO: mouse mode handling has configurable sensitivity; higher by default. inputs have 'inertia'
 public abstract class EntityVehicle extends Entity implements IEntityAdditionalSpawnData {
+	
+	private static final Logger LOGGER = LogUtils.getLogger();
 	
 	public static final EntityDataAccessor<Float> MAX_HEALTH = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
     public static final EntityDataAccessor<Float> HEALTH = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
@@ -298,7 +302,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		// check if the preset exists
 		else if (!AircraftPresets.get().has(preset)) {
 			preset = defaultPreset;
-			System.out.println("ERROR: preset "+preset+" doesn't exist!");
+			LOGGER.warn("ERROR: preset "+preset+" doesn't exist!");
 		}
 		// get the preset data
 		AircraftPreset ap = AircraftPresets.get().getPreset(preset);
@@ -1200,10 +1204,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 */
 	public float getTotalMass() {
 		if (Float.isNaN(totalMass)) {
-			System.out.println("ERROR: NAN MASS? setting to 10000 | "+this);
+			LOGGER.warn("ERROR: NAN MASS? setting to 10000 | "+this);
 			totalMass = 10000;
 		} else if (totalMass == 0) {
-			System.out.println("ERROR: 0 MASS? setting to 10000 | "+this);
+			LOGGER.warn("ERROR: 0 MASS? setting to 10000 | "+this);
 			totalMass = 10000;
 		}
 		return totalMass;

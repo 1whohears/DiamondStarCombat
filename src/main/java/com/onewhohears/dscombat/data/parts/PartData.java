@@ -115,6 +115,10 @@ public abstract class PartData {
 		return 0;
 	}
 	
+	public int getFlares() {
+		return 0;
+	}
+	
 	public EntityVehicle getParent() {
 		return parent;
 	}

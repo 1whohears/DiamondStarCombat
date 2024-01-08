@@ -88,7 +88,7 @@ public class WeaponPresets extends JsonPresetReloadListener<WeaponData> {
 			}
 			list.add(getAllPresets()[i].getId());
 		}
-		System.out.println("WEAPON CAPATIBILITY: "+compatibleMap.toString());
+		LOGGER.debug("WEAPON CAPATIBILITY: "+compatibleMap.toString());
 	}
 	
 	@Nullable

@@ -193,7 +193,7 @@ public abstract class EntityWeapon extends Projectile {
 	@Override
 	public void onHitEntity(EntityHitResult result) {
 		super.onHitEntity(result);
-		System.out.println("BULLET HIT "+result.getEntity());
+		//System.out.println("BULLET HIT "+result.getEntity());
 		kill();
 		result.getEntity().hurt(getImpactDamageSource(), getDamage());
 	}

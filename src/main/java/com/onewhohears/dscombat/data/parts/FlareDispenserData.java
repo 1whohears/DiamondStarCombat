@@ -92,6 +92,7 @@ public class FlareDispenserData extends PartData {
 		this.flares = flares;
 	}
 	
+	@Override
 	public int getFlares() {
 		return flares;
 	}

@@ -7,7 +7,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 
+import org.slf4j.Logger;
+
 import com.google.common.collect.Sets;
+import com.mojang.logging.LogUtils;
 
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
@@ -31,6 +34,7 @@ import net.minecraft.resources.ResourceLocation;
  */
 public abstract class JsonPresetGenerator<T extends JsonPreset> implements DataProvider {
 	
+	protected final Logger LOGGER = LogUtils.getLogger();
 	protected final DataGenerator.PathProvider pathProvider;
     private final Map<ResourceLocation, T> gen_map = new HashMap<>();
     
@@ -58,7 +62,7 @@ public abstract class JsonPresetGenerator<T extends JsonPreset> implements DataP
 		registerPresets();
 		Set<ResourceLocation> set = Sets.newHashSet();
 		Consumer<T> consumer = (preset) -> {
-			System.out.println("ADD: "+preset.getKey().toString());
+			LOGGER.debug("GENERATING: "+preset.getKey().toString());
 			if (!set.add(preset.getKey())) {
 				throw new IllegalStateException("Duplicate Preset! " + preset.getKey());
 			} else {

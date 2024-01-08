@@ -106,6 +106,10 @@ dependencies {
     // https://github.com/1whohears/CustomMiniGames
     implementation fg.deobf("com.1whohears.minigames:minigames-1.19.2:0.0.2")
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    implementation(annotationProcessor("io.github.llamalad7:mixinextras-common:0.3.2"))
+    implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.3.2")) {
+        jarJar.ranged(it, "[0.3.2,)")
+    }
 }
 
 mixin {

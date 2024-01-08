@@ -49,25 +49,31 @@ public class RotableHitbox extends PartEntity<EntityVehicle> {
 		setPos(pos);
 	}
 	
-	public void handlePosibleCollision(List<VoxelShape> colliders, Entity entity, AABB aabb, Vec3 move) {
-		if (getParent().didEntityAlreadyCollide(entity) || !couldCollide(entity) || !hitbox.contains(aabb)) return;
+	public boolean handlePosibleCollision(List<VoxelShape> colliders, Entity entity, AABB aabb, Vec3 move) {
+		if (getParent().didEntityAlreadyCollide(entity) || !couldCollide(entity) || !hitbox.isInside(aabb, RotableAABB.SUB_COL_SKIN)) return false;
 		//System.out.println("HANDLE COLLISION "+entity+" "+move);
-		// FIXME 4.1 player sometimes gets stuck when walking on hitbox
+		// FIXME 4.1 walking on hitbox is sometimes doesn't allow sneaking
+		// FIXME 4.2 sometimes can't open vehicle inventories when the vehicle is on a boat hitbox
 		// FIXME 4.6 prevent entities from falling off when the chunks load
-		System.out.println("==========");
-		System.out.println("PRE COLLISION "+entity.level.isClientSide+" "+entity.tickCount+" "+entity.position()+" "+move+" "+getParent().position());
+		getParent().addHitboxCollider(entity);
+		//System.out.println("==========");
+		//System.out.println("PRE COLLISION "+entity.level.isClientSide+" "+entity.tickCount+" "+entity.position()+" "+move+" "+position());
+		boolean stuck = false;
 		if (isInside(entity)) {
-			System.out.println("INSIDE");
-			Vec3 push = hitbox.getPushOutPos(entity.position(), entity.getBoundingBox());
+			//System.out.println("INSIDE");
+			Vec3 push = hitbox.getPushOutPos(entity.position(), entity.getBoundingBox(), 0.1);
 			entity.moveTo(push);
-			entity.setDeltaMovement(Vec3.ZERO);
-		} else {
-			System.out.println("OUTSIDE");
-			getParent().addHitboxCollider(entity);
-			Vec3 entityMoveByParent = moveEntityFromParent(entity);
-			hitbox.updateColliders(colliders, aabb, entityMoveByParent);
+			//entity.setDeltaMovement(Vec3.ZERO);
+			stuck = true;
 		}
-		System.out.println("POST COLLISION "+entity.level.isClientSide+" "+entity.tickCount+" "+entity.position());
+		//System.out.println("OUTSIDE");
+		Vec3 entityMoveByParent = moveEntityFromParent(entity);
+		//System.out.println("entityMoveByParent = "+entityMoveByParent);
+		if (hitbox.updateColliders(colliders, entity.position(), entity.getBoundingBox(), entityMoveByParent)) {
+			stuck = true;
+		}
+		//System.out.println("POST COLLISION "+entity.level.isClientSide+" "+entity.tickCount+" "+entity.position());
+		return stuck;
 	}
 	
 	public Vec3 moveEntityFromParent(Entity entity) {
@@ -94,7 +100,7 @@ public class RotableHitbox extends PartEntity<EntityVehicle> {
 	}
 	
 	public boolean isInside(Entity entity) {
-		return hitbox.isInside(entity.getBoundingBox());
+		return hitbox.isInside(entity.getBoundingBox(), -0.1);
 	}
 	
 	public boolean couldCollide(Entity entity) {

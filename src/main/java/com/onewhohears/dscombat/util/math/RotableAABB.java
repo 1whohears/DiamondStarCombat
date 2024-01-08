@@ -17,8 +17,8 @@ public class RotableAABB {
 	
 	public static final double SUBSIZE = 0.5;
 	public static final double SUBSIZEHALF = SUBSIZE*0.5;
-	public static final double SUB_COL_SKIN = 0.001;
-	public static final double PUSH_SKIN = 0.01;
+	//public static final double SUB_COL_SKIN = 1E-7;
+	public static final double SUB_COL_SKIN = 0;
 	
 	private Vec3 center, extents;
 	private Quaternion rot = Quaternion.ONE.copy(), roti = Quaternion.ONE.copy();
@@ -50,22 +50,26 @@ public class RotableAABB {
 		setRot(q);
 	}
 	
-	public void updateColliders(List<VoxelShape> colliders, AABB aabb, Vec3 entityMoveByParent) {
+	public boolean updateColliders(List<VoxelShape> colliders, Vec3 pos, AABB aabb, Vec3 entityMoveByParent) {
 		//System.out.println("ADDING SUB COLLIDERS "+getSubColliders().size());
 		subColliders.clear();
-		addSubColliders(aabb);
-		if (!UtilGeometry.isZero(entityMoveByParent)) 
-			addSubColliders(aabb.move(entityMoveByParent));
+		boolean stuck = addSubColliders(pos, aabb);
+		//if (!UtilGeometry.isZero(entityMoveByParent)) 
+		//	stuck = addSubColliders(pos.add(entityMoveByParent), aabb.move(entityMoveByParent));
 		colliders.addAll(subColliders);
+		return stuck;
 	}
 	
-	public void addSubColliders(AABB aabb) {
-		Vec3 close = UtilGeometry.getClosestPointOnAABB(center, aabb);
-		//System.out.println("close = "+close);
-		Optional<Vec3> clipOpt = clip(close, center);
-		if (clipOpt.isEmpty()) return;
-		Vec3 clip = clipOpt.get();
-		//System.out.println("clip = "+clip);
+	public boolean addSubColliders(Vec3 pos, AABB aabb) {
+		boolean stuck = false;
+		Vec3 clip = getPushOutPos(pos, aabb, SUB_COL_SKIN);
+		Vec3 clipPosDiff = clip.subtract(pos);
+		//System.out.println("clip pos diff = "+clipPosDiff);
+		if (clipPosDiff.y < 1E-6 && clipPosDiff.y > 0) {
+			clip = clip.subtract(0, clipPosDiff.y, 0);
+			stuck = true;
+		}
+		//System.out.println("push clip = "+clip);
 		Vec3 clipRelRot = toRelRotPos(clip);
 		for (int i = 1; i <= 4; ++i) {
 			double radius = SUBSIZEHALF * i;
@@ -77,6 +81,7 @@ public class RotableAABB {
 			//System.out.println("shape = "+shape);
 			addShape(shape, radius);
 		}
+		return stuck;
 	}
 	
 	private double shapePosComponent(double clipRelRot, double ext, double radius) {
@@ -107,19 +112,31 @@ public class RotableAABB {
 		return insideX && insideY && insideZ;
 	}
 	
+	public boolean isInside(AABB aabb, double skin) {
+		return isInside(UtilGeometry.getClosestPointOnAABB(center, aabb), skin);
+	}
+	
 	public boolean isInside(AABB aabb) {
-		return isInside(UtilGeometry.getClosestPointOnAABB(center, aabb));
+		return isInside(aabb, 0);
+	}
+	
+	public boolean isInside(Vec3 pos, double skin) {
+		return isInsideRelPos(toRelRotPos(pos), skin);
 	}
 	
 	public boolean isInside(Vec3 pos) {
-		return isInsideRelPos(toRelRotPos(pos));
+		return isInside(pos, 0);
+	}
+	
+	public boolean isInsideRelPos(Vec3 relRotPos, double skin) {
+		boolean insideX = relRotPos.x() < extents.x()+skin && relRotPos.x() > -extents.x()-skin;
+		boolean insideY = relRotPos.y() < extents.y()+skin && relRotPos.y() > -extents.y()-skin;
+		boolean insideZ = relRotPos.z() < extents.z()+skin && relRotPos.z() > -extents.z()-skin;
+		return insideX && insideY && insideZ;
 	}
 	
 	public boolean isInsideRelPos(Vec3 relRotPos) {
-		boolean insideX = relRotPos.x() < extents.x() && relRotPos.x() > -extents.x();
-		boolean insideY = relRotPos.y() < extents.y() && relRotPos.y() > -extents.y();
-		boolean insideZ = relRotPos.z() < extents.z() && relRotPos.z() > -extents.z();
-		return insideX && insideY && insideZ;
+		return isInsideRelPos(relRotPos, 0);
 	}
 	
 	public Vec3 toRelRotPos(Vec3 pos) {
@@ -138,9 +155,12 @@ public class RotableAABB {
 		return clip(from, to, true);
 	}
 	
-	public Optional<Vec3> clip(Vec3 from, Vec3 to, boolean containCheck) {
+	public Optional<Vec3> clip(Vec3 from, Vec3 to, boolean push) {
 		Vec3 fromRelRot = toRelRotPos(from);
-		if (containCheck && containsRelRot(fromRelRot)) return Optional.of(toWorldPos(fromRelRot));
+		if (isInsideRelPos(fromRelRot)) {
+			if (push) return Optional.of(getPushOutPos(from, SUB_COL_SKIN));
+			else return Optional.of(from);
+		}
 		Vec3 toRelRot = toRelRotPos(to);
 		Vec3 diff = toRelRot.subtract(fromRelRot);
 		double tMin = Double.MAX_VALUE;
@@ -150,16 +170,12 @@ public class RotableAABB {
 		 * but the survival player can't punch the hitbox from top down sometimes when the creative player can???
 		 * oh well. why would you punch the boat from top down anyway. it works from the side consistently anyway.
 		 */
-		//System.out.println("fromRelRot = "+fromRelRot);
-		//System.out.println("diff = "+diff);
-		//System.out.println("extents = "+extents);
 		Double clipY = clipAxis(fromRelRot.y, toRelRot.y, extents.y);
 		if (clipY != null) {
 			double t = (clipY - fromRelRot.y) / diff.y;
 			clipRelRot = fromRelRot.add(diff.scale(t));
 			clipRelRot = new Vec3(clipRelRot.x, clipY, clipRelRot.z);
 			if (t < tMin && containsRelRot(clipRelRot)) tMin = t;
-			//System.out.println("clipRelRot = "+clipRelRot);
 		}
 		Double clipX = clipAxis(fromRelRot.x, toRelRot.x, extents.x);
 		if (clipX != null) {
@@ -187,7 +203,7 @@ public class RotableAABB {
 		else return null;
 	}
 	
-	public Vec3 getPushOutPos(Vec3 pos, AABB aabb) {
+	public Vec3 getPushOutPos(Vec3 pos, AABB aabb, double skin) {
 		Vec3[] relRotCorners = new Vec3[8];
 		relRotCorners[0] = toRelRotPos(new Vec3(aabb.minX, aabb.minY, aabb.minZ));
 		Vec3 zaxis = UtilAngles.getRollAxis(roti);
@@ -221,45 +237,44 @@ public class RotableAABB {
 		dists[10] = Math.abs(extents.z - relRotCorners[absIndex[5]].z);
 		dists[11] = Math.abs(-extents.z - relRotCorners[absIndex[5]].z);
 		int minIndex = UtilGeometry.getMinIndex(dists);
-		System.out.println("pushOutType: "+minIndex);
+		//System.out.println("pushOutType: "+minIndex);
 		Vec3 relRotPos = toRelRotPos(pos);
 		Vec3 relRotPush = Vec3.ZERO;
 		int extDir = minIndex % 2 == 0 ? 1 : -1;
 		int absIndexIndex = minIndex / 2;
-		int extDiffDir = 1;
 		if (minIndex % 4 == 0) absIndexIndex += 1;
 		else if (minIndex % 4 == 3) absIndexIndex -= 1;
+		Vec3 relRotCorner = relRotCorners[absIndex[absIndexIndex]];
 		if (minIndex >= 0 && minIndex <= 3) {
-			double ext = (extents.y + PUSH_SKIN) * extDir;
-			if (minIndex % 4 == 3) extDiffDir = -1;
-			ext += (relRotCorners[absIndex[absIndexIndex]].y - relRotPos.y) * extDiffDir;
+			double ext = (extents.y + skin) * extDir;
+			ext += relRotPos.y - relRotCorner.y;
 			relRotPush = new Vec3(relRotPos.x, ext, relRotPos.z);
 		} else if (minIndex >= 4 && minIndex <= 7) {
-			double ext = (extents.x + PUSH_SKIN) * extDir;
-			ext -= (relRotCorners[absIndex[absIndexIndex]].x - relRotPos.x) * extDiffDir;
+			double ext = (extents.x + skin) * extDir;
+			ext += relRotPos.x - relRotCorner.x;
 			relRotPush = new Vec3(ext, relRotPos.y, relRotPos.z);
 		} else if (minIndex >= 8 && minIndex <= 11) {
-			double ext = (extents.z + PUSH_SKIN) * extDir;
-			ext -= (relRotCorners[absIndex[absIndexIndex]].z - relRotPos.z) * extDiffDir;
+			double ext = (extents.z + skin) * extDir;
+			ext += relRotPos.z - relRotCorner.z;
 			relRotPush = new Vec3(relRotPos.x, relRotPos.y, ext);
 		}
 		Vec3 push = toWorldPos(relRotPush);
 		return push;
 	}
 	
-	public Vec3 getPushOutPosOld(Vec3 pos, AABB aabb) {
+	public Vec3 getPushOutPosOld(Vec3 pos, AABB aabb, double skin) {
 		Vec3 close = UtilGeometry.getClosestPointOnAABB(center, aabb);
 		Vec3 aabbDiff = pos.subtract(close);
-		Vec3 push = getPushOutPos(close).add(aabbDiff);
+		Vec3 push = getPushOutPos(close, skin).add(aabbDiff);
 		return push;
 	}
 	
-	public Vec3 getPushOutPos(Vec3 pos) {
+	public Vec3 getPushOutPos(Vec3 pos, double skin) {
 		Vec3 posRelRot = toRelRotPos(pos);
 		if (!isInsideRelPos(posRelRot)) return pos;
 		double distSqrMin = Double.MAX_VALUE;
 		Vec3 pushRelRot = Vec3.ZERO;
-		Double pushY = pushAxis(posRelRot.y, extents.y, 0.002);
+		Double pushY = pushAxis(posRelRot.y, extents.y, skin);
 		if (pushY != null) {
 			Vec3 test = new Vec3(posRelRot.x, pushY, posRelRot.z);
 			double distSqr = posRelRot.distanceToSqr(test);
@@ -269,7 +284,7 @@ public class RotableAABB {
 				pushRelRot = test;
 			}
 		}
-		Double pushX = pushAxis(posRelRot.x, extents.x, 0.002);
+		Double pushX = pushAxis(posRelRot.x, extents.x, skin);
 		if (pushX != null) {
 			Vec3 test = new Vec3(pushX, posRelRot.y, posRelRot.z);
 			double distSqr = posRelRot.distanceToSqr(test);
@@ -279,7 +294,7 @@ public class RotableAABB {
 				pushRelRot = test;
 			}
 		}
-		Double pushZ = pushAxis(posRelRot.z, extents.z, 0.002);
+		Double pushZ = pushAxis(posRelRot.z, extents.z, skin);
 		if (pushZ != null) {
 			Vec3 test = new Vec3(posRelRot.x, posRelRot.y, pushZ);
 			double distSqr = posRelRot.distanceToSqr(test);

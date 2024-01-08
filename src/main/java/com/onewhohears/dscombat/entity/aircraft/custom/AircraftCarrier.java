@@ -33,10 +33,10 @@ public class AircraftCarrier extends EntityBoat {
 	public void addHitboxes() {
 		hitboxes = new RotableHitbox[2];
 		hitboxes[0] = new RotableHitbox(this, "runway", 
-				new Vector3f(16, 6.02f, 50), 
+				new Vector3f(16, 6.06f, 50), 
 				new Vec3(0, 3, 0));
 		hitboxes[1] = new RotableHitbox(this, "side_plat", 
-				new Vector3f(25, 3.02f, 24), 
+				new Vector3f(25, 3.06f, 24), 
 				new Vec3(0, 4.5, 0));
 	}
 	

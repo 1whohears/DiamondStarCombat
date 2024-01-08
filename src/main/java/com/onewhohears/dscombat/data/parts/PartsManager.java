@@ -354,11 +354,10 @@ public class PartsManager {
 	
 	public boolean useFlares(boolean consume) {
 		if (parent.getFlareNum() < 1) return false;
-		boolean r = false;
 		for (PartSlot p : getFlares())
 			if (((FlareDispenserData)p.getPartData()).flare(consume))
-				r = true;
-		return r;
+				return true;
+		return false;
 	}
 	
 	public int getNumFlares() {

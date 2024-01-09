@@ -153,24 +153,26 @@ public class RadarData extends JsonPreset {
 		freshTargets = true;
 		Entity controller = radar.getControllingPassenger();
 		RadarMode mode = radar.getRadarMode();
-		if (scanAircraft && (mode.canScan(RadarMode.VEHICLES) || mode.isPlayersOnly())) {
-			scanAircraft(radar, controller, vehiclePings, mode.isPlayersOnly());
+		AABB radarArea = getRadarBoundingBox(radar);
+		if (scanAircraft && (mode.canScan(RadarMode.VEHICLES) || mode.isPlayersOrBots())) {
+			scanAircraft(radar, controller, vehiclePings, radarArea, mode.isPlayersOnly(), mode.isPlayersOrBots());
 		}
 		if (scanPlayers && mode.canScan(RadarMode.PLAYERS)) {
-			scanPlayers(radar, controller, vehiclePings);
+			scanPlayers(radar, controller, vehiclePings, radarArea);
 		}
 		if (scanMobs && mode.canScan(RadarMode.MOBS)) {
-			scanMobs(radar, controller, vehiclePings);
+			scanMobs(radar, controller, vehiclePings, radarArea);
 		}
 	}
 	
-	private void scanAircraft(EntityVehicle radar, Entity controller, List<RadarPing> vehiclePings, boolean playersOnly) {
+	private void scanAircraft(EntityVehicle radar, Entity controller, List<RadarPing> vehiclePings, AABB radarArea, 
+			boolean playersOnly, boolean isPlayersOrBots) {
 		//System.out.println("SCANNING VEHICLES");
-		List<EntityVehicle> list = radar.level.getEntitiesOfClass(
-				EntityVehicle.class, getRadarBoundingBox(radar));
+		List<EntityVehicle> list = radar.level.getEntitiesOfClass(EntityVehicle.class, radarArea);
 		for (int i = 0; i < list.size(); ++i) {
 			EntityVehicle ea = list.get(i);
-			if (playersOnly && !ea.hasControllingPassenger()) continue;
+			if (playersOnly && !ea.isPlayerRiding()) continue;
+			else if (isPlayersOrBots && !ea.isPlayerOrBotRiding()) continue;
 			if (!basicCheck(radar, ea, ea.getStealth())) continue;
 			RadarPing p = new RadarPing(ea, 
 					checkFriendly(controller, ea), 
@@ -181,11 +183,10 @@ public class RadarData extends JsonPreset {
 		}
 		for (int j = 0; j < RadarTargetTypes.get().getRadarVehicleClasses().size(); ++j) {
 			Class<? extends Entity> clazz = RadarTargetTypes.get().getRadarVehicleClasses().get(j);
-			List<? extends Entity> entities = radar.level.getEntitiesOfClass(
-					clazz, getRadarBoundingBox(radar));
+			List<? extends Entity> entities = radar.level.getEntitiesOfClass(clazz, radarArea);
 			for (int i = 0; i < entities.size(); ++i) {
 				Entity e = entities.get(i);
-				if (playersOnly && !(e.getControllingPassenger() instanceof Player)) continue;
+				if ((playersOnly || isPlayersOrBots) && !(e.getControllingPassenger() instanceof Player)) continue;
 				if (!basicCheck(radar, e, 1)) continue;
 				RadarPing p = new RadarPing(e, 
 						checkFriendly(controller, e), 
@@ -196,10 +197,9 @@ public class RadarData extends JsonPreset {
 		}
 	}
 	
-	private void scanPlayers(EntityVehicle radar, Entity controller, List<RadarPing> vehiclePings) {
+	private void scanPlayers(EntityVehicle radar, Entity controller, List<RadarPing> vehiclePings, AABB radarArea) {
 		//System.out.println("SCANNING PLAYERS");
-		List<Player> list = radar.level.getEntitiesOfClass(
-				Player.class, getRadarBoundingBox(radar));
+		List<Player> list = radar.level.getEntitiesOfClass(Player.class, radarArea);
 		for (int i = 0; i < list.size(); ++i) {
 			Player target = list.get(i);
 			if (target.isPassenger()) continue;
@@ -212,12 +212,11 @@ public class RadarData extends JsonPreset {
 		}
 	}
 	
-	private void scanMobs(EntityVehicle radar, Entity controller, List<RadarPing> vehiclePings) {
+	private void scanMobs(EntityVehicle radar, Entity controller, List<RadarPing> vehiclePings, AABB radarArea) {
 		//System.out.println("SCANNING MOBS");
 		for (int j = 0; j < RadarTargetTypes.get().getRadarMobClasses().size(); ++j) {
 			Class<? extends Entity> clazz = RadarTargetTypes.get().getRadarMobClasses().get(j);
-			List<? extends Entity> list = radar.level.getEntitiesOfClass(
-					clazz, getRadarBoundingBox(radar));
+			List<? extends Entity> list = radar.level.getEntitiesOfClass(clazz, radarArea);
 			for (int i = 0; i < list.size(); ++i) {
 				if (list.get(i).isPassenger()) continue;
 				if (!basicCheck(radar, list.get(i), 1)) continue;
@@ -474,6 +473,7 @@ public class RadarData extends JsonPreset {
 	public static enum RadarMode {
 		ALL,
 		PLAYERS,
+		BOTS,
 		VEHICLES,
 		MOBS,
 		OFF;
@@ -489,6 +489,9 @@ public class RadarData extends JsonPreset {
 		}
 		public boolean isPlayersOnly() {
 			return this == PLAYERS;
+		}
+		public boolean isPlayersOrBots() {
+			return isPlayersOnly() || this == BOTS;
 		}
 		public boolean isOff() {
 			return this == OFF;

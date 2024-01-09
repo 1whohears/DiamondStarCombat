@@ -107,6 +107,7 @@ public class JaviPresets {
 			.addIngredient("minecraft:iron_ingot", 64)
 			.addIngredient("minecraft:redstone", 64)
 			.addIngredient("minecraft:gunpowder", 64)
+			.setDefaultBaseTexture(1)
 			.build();
 	
 	public static final AircraftPreset TRUCK_JAVI_PLANE = AircraftPreset.Builder
@@ -131,6 +132,7 @@ public class JaviPresets {
 			.addIngredient("minecraft:iron_ingot", 64)
 			.addIngredient("minecraft:redstone", 64)
 			.addIngredient("minecraft:gunpowder", 64)
+			.setDefaultBaseTexture(1)
 			.build();
 	
 }

@@ -97,20 +97,43 @@ public class EntityBoat extends EntityVehicle {
 	
 	@Override
 	public void tickWater(Quaternion q) {
-		forces = forces.subtract(getWeightForce());
-		waterFriction();
+		super.tickWater(q);
+		if (!checkInWater()) return;
+		if (canBrake() && isBraking()) addFrictionForce(2000);
+		Vec3 weightF = getWeightForce();
+		float F = getBbWidth()*getBbWidth()*DSCPhysicsConstants.FLOAT;
+		float maxF = F*getBbHeight();
+		if (maxF < Math.abs(weightF.y)) {
+			forces = forces.add(0, maxF, 0);
+			return;
+		} else if (!couldFloat()) {
+			forces = forces.add(weightF.scale(-0.9));
+			return;
+		}
+		double bbMin = getBoundingBox().minY;
+		double actualF = F * (waterLevel - bbMin);
+		Vec3 floatF = new Vec3(0, actualF, 0);
+		forces = forces.add(floatF);
 		Vec3 move = getDeltaMovement();
-		if (checkInWater()) {
-			double v = getFloatSpeed();
-			if (willFloat()) {
-				double bbh = getBbHeight();
-				double goalY = waterLevel - bbh*0.2;
-				if (isCustomBoundingBox()) goalY += bbh*0.5;
-				double dy = goalY - getY();
-				if (Math.abs(move.y) < v && Math.abs(dy) < v) move = move.multiply(1, 0, 1);
-				else move = move.add(0, v * Math.signum(dy), 0);
-			} 
-			else move = move.add(0, -v, 0);
+		double stableDisplacement = Math.abs(weightF.y) / F;
+		double stableY = waterLevel - stableDisplacement;
+		double stableDiff = stableY - bbMin;
+		if (Math.abs(move.y) < 0.1 && Math.abs(stableDiff) < 0.1) {
+			double posBBDiff = getY() - bbMin;
+			setPos(position().x, stableY+posBBDiff, position().z);
+			move = move.multiply(1, 0, 1);
+			forces = forces.multiply(1, 0, 1);
+		} else if (stableDiff > 0 && move.y == 0) {
+			/*
+			 * HOW 8 for some reason Entity#move(...) cancels the vertical movement sometimes
+			 * so the boat never reaches a balanced state. if the pilot turns the boat 
+			 * in this state vertical movement will stop getting canceled and bounce like normal.
+			 * I have no idea why this happens but this is a temporary solution.
+			 * the vertical movement gets canceled by Block#updateEntityAfterFallOn(...) which is called within Entity#move(...). 
+			 */
+			setPos(position().add(0, forces.y / getTotalMass(), 0));
+		} else {
+			move = move.multiply(1, 0.9, 1);
 		}
 		setDeltaMovement(move);
 	}
@@ -119,24 +142,13 @@ public class EntityBoat extends EntityVehicle {
 		return 0.02;
 	}
 	
-	public void waterFriction() {
-		Vec3 move = getDeltaMovement();
-		move = move.multiply(1, 0.900, 1);
-		setDeltaMovement(move);
-		if (canBrake() && isBraking()) addFrictionForce(100);
-		else addFrictionForce(10);
-	}
-	
 	@Override
 	public boolean isBraking() {
 		return inputs.special;
 	}
 	
-	public boolean willFloat() {
-		if (!isOperational()) return false;
-		float w = getTotalMass() * DSCPhysicsConstants.GRAVITY;
-		float fc = getBbWidth() * getBbWidth() * DSCPhysicsConstants.FLOAT;
-		return fc > w;
+	public boolean couldFloat() {
+		return isOperational();
 	}
 	
 	@Override

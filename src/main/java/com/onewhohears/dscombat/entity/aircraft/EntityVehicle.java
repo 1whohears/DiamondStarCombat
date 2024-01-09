@@ -9,7 +9,9 @@ import java.util.function.Predicate;
 import javax.annotation.Nullable;
 
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
 
+import com.mojang.logging.LogUtils;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
@@ -104,6 +106,8 @@ import net.minecraftforge.network.PacketDistributor;
  */
 // TODO: mouse mode handling has configurable sensitivity; higher by default. inputs have 'inertia'
 public abstract class EntityVehicle extends Entity implements IEntityAdditionalSpawnData {
+	
+	private static final Logger LOGGER = LogUtils.getLogger();
 	
 	public static final EntityDataAccessor<Float> MAX_HEALTH = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
     public static final EntityDataAccessor<Float> HEALTH = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
@@ -298,7 +302,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		// check if the preset exists
 		else if (!AircraftPresets.get().has(preset)) {
 			preset = defaultPreset;
-			System.out.println("ERROR: preset "+preset+" doesn't exist!");
+			LOGGER.warn("ERROR: preset "+preset+" doesn't exist!");
 		}
 		// get the preset data
 		AircraftPreset ap = AircraftPresets.get().getPreset(preset);
@@ -308,6 +312,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		if (!nbt.getBoolean("merged_preset")) nbt.merge(presetNbt);
 		partsManager.read(nbt, presetNbt);
 		textureManager.read(nbt);
+		setEmptyVehicleMass(presetNbt.getFloat("mass"));
 		setMaxSpeed(nbt.getFloat("max_speed"));
 		setMaxHealth(nbt.getFloat("max_health"));
 		setHealth(nbt.getFloat("health"));
@@ -323,7 +328,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		setThrottleIncreaseRate(nbt.getFloat("throttleup"));
 		setThrottleDecreaseRate(nbt.getFloat("throttledown"));
 		setIdleHeat(nbt.getFloat("idleheat"));
-		setAircraftMass(UtilParse.fixFloatNbt(nbt, "mass", presetNbt, 1));
 		setBaseArmor(UtilParse.fixFloatNbt(nbt, "base_armor", presetNbt, 0));
 		setLandingGear(nbt.getBoolean("landing_gear"));
 		setCurrentThrottle(nbt.getFloat("current_throttle"));
@@ -363,7 +367,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		nbt.putFloat("throttleup", getThrottleIncreaseRate());
 		nbt.putFloat("throttledown", getThrottleDecreaseRate());
 		nbt.putFloat("idleheat", getIdleHeat());
-		nbt.putFloat("mass", getAircraftMass());
+		nbt.putFloat("mass", getEmptyVehicleMass());
 		nbt.putFloat("base_armor", getBaseArmor());
 		nbt.putBoolean("landing_gear", isLandingGear());
 		nbt.putFloat("current_throttle", getCurrentThrottle());
@@ -913,7 +917,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 * @param q the current direction of the vehicle
 	 */
 	protected void calcMoveStatsPre(Quaternion q) {
-		totalMass = getAircraftMass() + partsManager.getPartsWeight();
+		totalMass = getEmptyVehicleMass() + partsManager.getPartsWeight();
 		staticFric = totalMass * DSCPhysicsConstants.GRAVITY * DSCPhysicsConstants.STATIC_FRICTION;
 		kineticFric = totalMass * DSCPhysicsConstants.GRAVITY * DSCPhysicsConstants.KINETIC_FRICTION;
 		maxPushThrust = partsManager.getTotalPushThrust();
@@ -1022,8 +1026,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public void tickGround(Quaternion q) {
 		Vec3 n = UtilAngles.rotationToVector(getYRot(), 0);
 		if (isSliding() || willSlideFromTurn()) {
-			setDeltaMovement(getDeltaMovement().add(n.scale(
-				getDriveAcc() * slideAngleCos)));
+			setDeltaMovement(getDeltaMovement().add(n.scale(getDriveAcc() * slideAngleCos)));
 			addFrictionForce(kineticFric);
 			//debug("SLIDING");
 		} else {
@@ -1106,7 +1109,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 * @param q the plane's current rotation
 	 */
 	public void tickWater(Quaternion q) {
-		tickAir(q);
+		setForces(getForces().add(getDragForce(q)));
 	}
 	
 	/**
@@ -1116,6 +1119,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 */
 	public void tickGroundWater(Quaternion q) {
 		tickGround(q);
+		tickWater(q);
 	}
 	
 	/**
@@ -1171,7 +1175,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public double getDragMag() {
 		// Drag = (drag coefficient) * (air pressure) * (speed)^2 * (wing surface area) / 2
 		double speedSqr = getDeltaMovement().lengthSqr();
-		return airPressure * speedSqr * getCrossSectionArea() * DSCPhysicsConstants.DRAG;
+		double d = airPressure * speedSqr * getCrossSectionArea();
+		if (isInWater()) d *= DSCPhysicsConstants.DRAG_WATER;
+		else d *= DSCPhysicsConstants.DRAG;
+		return d;
 	}
 	
 	/**
@@ -1197,11 +1204,11 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 */
 	public float getTotalMass() {
 		if (Float.isNaN(totalMass)) {
-			System.out.println("ERROR: NAN MASS? setting to 100 | "+this);
-			totalMass = 100;
+			LOGGER.warn("ERROR: NAN MASS? setting to 10000 | "+this);
+			totalMass = 10000;
 		} else if (totalMass == 0) {
-			System.out.println("ERROR: 0 MASS? setting to 100 | "+this);
-			totalMass = 100;
+			LOGGER.warn("ERROR: 0 MASS? setting to 10000 | "+this);
+			totalMass = 10000;
 		}
 		return totalMass;
 	}
@@ -1211,14 +1218,14 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 * see {@link EntityVehicle#getTotalMass()}
 	 * @return the mass of the vehicle. not including parts.
 	 */
-	public final float getAircraftMass() {
+	public final float getEmptyVehicleMass() {
 		return entityData.get(MASS);
 	}
 	
 	/**
 	 * @param mass the mass of the vehicle not including parts.
 	 */
-	public final void setAircraftMass(float mass) {
+	public final void setEmptyVehicleMass(float mass) {
 		if (mass < 0) mass = 0;
 		entityData.set(MASS, mass);
 	}
@@ -1556,9 +1563,16 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		return false;
 	}
 	
-	public boolean isAIUsingRadar() {
+	public boolean isBotUsingRadar() {
 		for (EntityTurret turret : getTurrets()) 
-			if (turret.isAIUsingRadar()) 
+			if (turret.isBotUsingRadar()) 
+				return true;
+		return false;
+	}
+	
+	public boolean isPlayerOrBotRiding() {
+		for (EntitySeat seat : getSeats()) 
+			if (seat.isPlayerOrBotRiding()) 
 				return true;
 		return false;
 	}

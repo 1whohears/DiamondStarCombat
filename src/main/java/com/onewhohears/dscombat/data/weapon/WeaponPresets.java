@@ -37,7 +37,9 @@ public class WeaponPresets extends JsonPresetReloadListener<WeaponData> {
 	public WeaponData getPreset(String id) {
 		String updatedId = getUpdatedId(id);
 		if (updatedId == null) return null;
-		return presetMap.get(updatedId).copy();
+		WeaponData data = presetMap.get(updatedId);
+		if (data != null) return data.copy();
+		return null;
 	}
 	
 	public String getUpdatedId(String id) {
@@ -86,7 +88,7 @@ public class WeaponPresets extends JsonPresetReloadListener<WeaponData> {
 			}
 			list.add(getAllPresets()[i].getId());
 		}
-		System.out.println("WEAPON CAPATIBILITY: "+compatibleMap.toString());
+		LOGGER.debug("WEAPON CAPATIBILITY: "+compatibleMap.toString());
 	}
 	
 	@Nullable

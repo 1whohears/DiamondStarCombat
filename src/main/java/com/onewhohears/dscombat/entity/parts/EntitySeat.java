@@ -151,6 +151,16 @@ public class EntitySeat extends EntityPart {
 		if (p == null) return super.getControllingPassenger();
 		return p;
     }
+	
+	public boolean isPlayerOrBotRiding() {
+		if (getPlayer() != null) return true;
+		if (hasAIUsingTurret()) return true;
+		return false;
+	}
+	
+	public boolean hasAIUsingTurret() {
+		return false;
+	}
 
     @Override
     public boolean canBeRiddenUnderFluidType(FluidType type, Entity rider) {

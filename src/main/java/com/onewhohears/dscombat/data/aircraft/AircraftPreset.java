@@ -498,6 +498,13 @@ public class AircraftPreset extends JsonPreset{
 			return setFloat("accSide", accSide);
 		}
 		
+		public Builder setDefaultBaseTexture(int index) {
+			JsonObject textures = new JsonObject();
+			textures.addProperty("baseTexture", index);
+			getData().add("textures", textures);
+			return this;
+		}
+		
 		public Builder setBoolean(String key, boolean value) {
 			getData().addProperty(key, value);
 			return this;

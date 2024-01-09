@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+
+import com.mojang.logging.LogUtils;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.util.UtilParse;
 
@@ -14,6 +17,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class RadarTargetTypes {
 	
+	private static final Logger LOGGER = LogUtils.getLogger();
 	private static RadarTargetTypes instance;
 	
 	public static RadarTargetTypes get() {
@@ -41,7 +45,7 @@ public class RadarTargetTypes {
 	}
 	
 	public void readConfig() {
-		System.out.println("RadarTargetTypes READ CONFIG");
+		LOGGER.info("RadarTargetTypes READ CONFIG");
 		readIRMissiles();
 		readEntityHeats();
 		readRadarVehicles();
@@ -61,16 +65,16 @@ public class RadarTargetTypes {
 			String className = split[0];
 			Class<? extends Entity> c = UtilParse.getEntityClass(className);
 			if (c == null) {
-				System.out.println("ERROR: "+className+" does not exist! IR missiles will not look for it.");
+				LOGGER.warn("ERROR: "+className+" does not exist! IR missiles will not look for it.");
 				continue;
 			}
 			irEntityClasses.add(c);
-			System.out.println("ADDED IR ENTITY CLASS: "+c.getName());
+			LOGGER.debug("ADDED IR ENTITY CLASS: "+c.getName());
 			float heat = 0;
 			try {
 				heat = Float.parseFloat(split[1]);
 			} catch (NumberFormatException e) {
-				System.out.println("ERROR: "+split[1]+" is not a number!");
+				LOGGER.warn("ERROR: "+split[1]+" is not a number!");
 			}
 			irEntityHeats.add(heat);
 		}
@@ -86,15 +90,15 @@ public class RadarTargetTypes {
 			if (split.length != 2) continue;
 			String entityId = split[0];
 			if (!ForgeRegistries.ENTITY_TYPES.containsKey(new ResourceLocation(entityId))) {
-				System.out.println("ERROR: "+entityId+" does not exist! IR missiles will not read that heat value!");
+				LOGGER.warn("ERROR: "+entityId+" does not exist! IR missiles will not read that heat value!");
 				continue;
 			}
-			System.out.println("ADDED ENTITY HEAT OVERRIDE: "+a);
+			LOGGER.debug("ADDED ENTITY HEAT OVERRIDE: "+a);
 			float heat = 0;
 			try {
 				heat = Float.parseFloat(split[1]);
 			} catch (NumberFormatException e) {
-				System.out.println("ERROR: "+split[1]+" is not a number!");
+				LOGGER.warn("ERROR: "+split[1]+" is not a number!");
 			}
 			entityHeats.put(entityId, heat);
 		}
@@ -120,11 +124,11 @@ public class RadarTargetTypes {
 			String className = vehicleList.get(i);
 			Class<? extends Entity> c = UtilParse.getEntityClass(className);
 			if (c == null) {
-				System.out.println("ERROR: "+className+" does not exist! Vehicle Radar will not look for it.");
+				LOGGER.warn("ERROR: "+className+" does not exist! Vehicle Radar will not look for it.");
 				continue;
 			}
 			radarVehicleClasses.add(c);
-			System.out.println("ADDED VEHICLE ENTITY CLASS: "+c.getName());
+			LOGGER.debug("ADDED VEHICLE ENTITY CLASS: "+c.getName());
 		}
 	}
 	
@@ -139,11 +143,11 @@ public class RadarTargetTypes {
 			String className = mobList.get(i);
 			Class<? extends Entity> c = UtilParse.getEntityClass(className);
 			if (c == null) {
-				System.out.println("ERROR: "+className+" does not exist! Mob Radar will not look for it.");
+				LOGGER.warn("ERROR: "+className+" does not exist! Mob Radar will not look for it.");
 				continue;
 			}
 			radarMobClasses.add(c);
-			System.out.println("ADDED MOB ENTITY CLASS: "+c.getName());
+			LOGGER.debug("ADDED MOB ENTITY CLASS: "+c.getName());
 		}
 	}
 	
@@ -161,15 +165,15 @@ public class RadarTargetTypes {
 			if (split.length != 2) continue;
 			String entityId = split[0];
 			if (!ForgeRegistries.ENTITY_TYPES.containsKey(new ResourceLocation(entityId))) {
-				System.out.println("ERROR: "+entityId+" does not exist! Radars will not read that area value!");
+				LOGGER.warn("ERROR: "+entityId+" does not exist! Radars will not read that area value!");
 				continue;
 			}
-			System.out.println("ADDED ENTITY AREA OVERRIDE: "+a);
+			LOGGER.debug("ADDED ENTITY AREA OVERRIDE: "+a);
 			float area = 0;
 			try {
 				area = Float.parseFloat(split[1]);
 			} catch (NumberFormatException e) {
-				System.out.println("ERROR: "+split[1]+" is not a number!");
+				LOGGER.warn("ERROR: "+split[1]+" is not a number!");
 			}
 			entityAreas.put(entityId, area);
 		}

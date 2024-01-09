@@ -7,6 +7,7 @@ import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -32,6 +33,8 @@ public class ShrapnelParticle extends TextureSheetParticle {
 		gravity = 0.8f;
 		quadSize = 0.2f + (float)random.nextGaussian() * 0.3f;
 		lifetime = 200 + (int)(random.nextGaussian() * 50);
+		roll = random.nextFloat() * 2 * Mth.PI;
+		oRoll = roll;
 		pickSprite(sprites);
 		setColor(1, 1, 1);
 		setAlpha(1f);

@@ -10,8 +10,11 @@ import java.util.zip.GZIPInputStream;
 
 import javax.annotation.Nullable;
 
+import org.slf4j.Logger;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.mojang.logging.LogUtils;
 import com.onewhohears.dscombat.data.parts.BuffData;
 import com.onewhohears.dscombat.data.parts.EngineData;
 import com.onewhohears.dscombat.data.parts.ExternalEngineData;
@@ -44,6 +47,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class UtilParse {
 	
+	private static final Logger LOGGER = LogUtils.getLogger();
 	public static final Gson GSON = new Gson();
 	
 	public static CompoundTag getComoundFromResource(String path) {
@@ -53,9 +57,8 @@ public class UtilParse {
             dis = new DataInputStream(new GZIPInputStream(getResourceAsStream(path)));
             compound = NbtIo.read(dis);
             dis.close();
-        }
-        catch (Exception e) {
-        	System.out.println("ERROR: COULD NOT PARSE COMPOUNDTAG "+path);
+        } catch (Exception e) {
+        	LOGGER.error("ERROR: COULD NOT PARSE COMPOUNDTAG "+path);
             e.printStackTrace();
         	return new CompoundTag();
         }
@@ -77,7 +80,7 @@ public class UtilParse {
 			json = GSON.fromJson(br, JsonObject.class);
 			br.close();
 		} catch (Exception e) {
-			System.out.println("ERROR: COULD NOT PARSE JSON "+resource.sourcePackId());
+			LOGGER.error("ERROR: COULD NOT PARSE JSON "+resource.sourcePackId());
 			e.printStackTrace();
 			return new JsonObject();
 		}
@@ -92,7 +95,7 @@ public class UtilParse {
             json = GSON.fromJson(isr, JsonObject.class);
             isr.close();
         } catch (Exception e) {
-        	System.out.println("ERROR: COULD NOT PARSE JSON "+path);
+        	LOGGER.error("ERROR: COULD NOT PARSE JSON "+path);
             e.printStackTrace();
         	return new JsonObject();
         }

@@ -92,6 +92,7 @@ public class FlareDispenserData extends PartData {
 		this.flares = flares;
 	}
 	
+	@Override
 	public int getFlares() {
 		return flares;
 	}
@@ -111,6 +112,7 @@ public class FlareDispenserData extends PartData {
 		Level level = getParent().level;
 		EntityFlare flare = new EntityFlare(level, heat, age, 3);
 		flare.setPos(getParent().position().add(relPos));
+		flare.setDeltaMovement(getParent().getDeltaMovement());
 		level.addFreshEntity(flare);
 		if (consume) addFlares(-1);
 		return true;

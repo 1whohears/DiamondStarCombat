@@ -2,6 +2,9 @@ package com.onewhohears.dscombat.util;
 
 import java.util.NoSuchElementException;
 
+import org.slf4j.Logger;
+
+import com.mojang.logging.LogUtils;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.sounds.DopplerSoundInstance;
 import com.onewhohears.dscombat.client.sounds.PlaneMusicSoundInstance;
@@ -19,6 +22,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class UtilClientSafeSoundInstance {
+	
+	private static final Logger LOGGER = LogUtils.getLogger();
 	
 	public static void dopplerSound(Entity entity, SoundEvent sound, 
 			float initVolume, float initPitch, float velSound) {
@@ -58,7 +63,7 @@ public class UtilClientSafeSoundInstance {
 			SoundEvent se = ForgeRegistries.SOUND_EVENTS.getDelegate(new ResourceLocation(sound)).get().get();
 			aircraftRadio(plane, se);
 		} catch (NoSuchElementException e) {
-			System.out.println("ERROR: "+sound+" does not exist!");
+			LOGGER.error("ERROR: "+sound+" does not exist!");
 		}
 	}
 	

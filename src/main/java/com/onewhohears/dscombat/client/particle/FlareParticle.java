@@ -11,7 +11,7 @@ import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class ContrailParticle extends TextureSheetParticle {
+public class FlareParticle extends TextureSheetParticle {
 	
 	@OnlyIn(Dist.CLIENT)
 	public static class Provider implements ParticleProvider<SimpleParticleType> {
@@ -22,36 +22,39 @@ public class ContrailParticle extends TextureSheetParticle {
 		@Override
 		public Particle createParticle(SimpleParticleType type, ClientLevel level, 
 				double x, double y, double z, double dx, double dy, double dz) {
-			return new ContrailParticle(level, x, y, z, dx, dy, dz, sprites);
+			return new FlareParticle(level, x, y, z, dx, dy, dz, sprites);
 		}
 	}
 	
-	protected ContrailParticle(ClientLevel level, double x, double y, double z, 
+	private final SpriteSet sprites;
+	
+	protected FlareParticle(ClientLevel level, double x, double y, double z, 
 			double dx, double dy, double dz, SpriteSet sprites) {
 		super(level, x, y, z, dx, dy, dz);
-		friction = 0.95f;
-		gravity = 0.001f;
-		quadSize = 0.3f + (float)random.nextGaussian() * 0.08f;
-		lifetime = 1000 + (int)(random.nextGaussian() * 200);
+		this.sprites = sprites;
+		friction = 0.999f;
+		gravity = 0.01f;
+		quadSize = 0.35f + (float)random.nextGaussian() * 0.05f;
+		lifetime = 15;
 		roll = random.nextFloat() * 2 * Mth.PI;
 		oRoll = roll;
-		pickSprite(sprites);
 		setColor(1, 1, 1);
 		setAlpha(1f);
-		setParticleSpeed(dx+random.nextGaussian()*0.01,
-				  		 dy+random.nextGaussian()*0.01, 
-				  		 dz+random.nextGaussian()*0.01);
+		setSpriteFromAge(sprites);
 	}
 	
 	@Override
 	public void tick() {
 		super.tick();
+		if (removed) return;
 		fadeOut();
+		setSpriteFromAge(sprites);
+		setSprite(sprites.get(Math.min(age, 6), 6));
 	}
 	
 	protected void fadeOut() {
 		float life = (float)age / (float)lifetime;
-		if (life > 0.95f) quadSize *= 0.9;
+		if (life > 0.98f) quadSize *= 0.9;
 	}
 
 	@Override

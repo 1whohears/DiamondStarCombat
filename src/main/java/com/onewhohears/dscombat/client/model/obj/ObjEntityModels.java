@@ -6,7 +6,10 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
+import org.slf4j.Logger;
+
 import com.google.gson.JsonObject;
+import com.mojang.logging.LogUtils;
 import com.onewhohears.dscombat.client.renderer.EntityScreenRenderer;
 import com.onewhohears.dscombat.util.UtilParse;
 
@@ -20,6 +23,7 @@ import net.minecraftforge.client.model.renderable.CompositeRenderable;
 
 public class ObjEntityModels implements ResourceManagerReloadListener {
 	
+	private static final Logger LOGGER = LogUtils.getLogger();
 	private static ObjEntityModels instance;
 	
 	public static ObjEntityModels get() {
@@ -60,19 +64,19 @@ public class ObjEntityModels implements ResourceManagerReloadListener {
 	}
 	
 	public void bakeModels() {
-		System.out.println("BAKING OBJ MODELS");
+		LOGGER.info("BAKING OBJ MODELS");
 		models.clear();
 		unbakedModels.forEach((key, obj) -> {
 			StandaloneGeometryBakingContext ctx = StandaloneGeometryBakingContext.create(obj.modelLocation);
 			CompositeRenderable comp = obj.bakeRenderable(ctx);
 			models.put(key, comp);
-			System.out.println("BAKED "+key+" "+obj.getRootComponentNames().size()+" "+obj.getConfigurableComponentNames().size());
+			LOGGER.debug("BAKED "+key+" "+obj.getRootComponentNames().size()+" "+obj.getConfigurableComponentNames().size());
 		});
 	}
 	
 	@Override
 	public void onResourceManagerReload(ResourceManager manager) {
-		System.out.println("RELOAD ASSET: "+DIRECTORY);
+		LOGGER.info("RELOAD ASSET: "+DIRECTORY);
 		readUnbakedModels(manager);
 		readModelOverrides(manager);
 		bakeModels();
@@ -87,7 +91,7 @@ public class ObjEntityModels implements ResourceManagerReloadListener {
 			try {
 				String name = new File(key.getPath()).getName().replace(MODEL_FILE_TYPE, "");
 				if (unbakedModels.containsKey(name)) {
-					System.out.println("ERROR: Can't have 2 models with the same name! "+key);
+					LOGGER.warn("ERROR: Can't have 2 models with the same name! "+key);
 					return;
 				}
 				ObjTokenizer tokenizer = new ObjTokenizer(resource.open());
@@ -97,11 +101,9 @@ public class ObjEntityModels implements ResourceManagerReloadListener {
 							null));
 				tokenizer.close();
 				unbakedModels.putIfAbsent(name, model);
-				System.out.println("ADDING = "+key);
-				//model.getConfigurableComponentNames().forEach((n) -> {System.out.println(n);});
-				//System.out.println(" ");
+				LOGGER.debug("ADDING MODEL = "+key);
 			} catch (Exception e) {
-				System.out.println("ERROR: SKIPPING "+key);
+				LOGGER.warn("ERROR: SKIPPING "+key);
 				e.printStackTrace();
 			}
 		});
@@ -115,14 +117,14 @@ public class ObjEntityModels implements ResourceManagerReloadListener {
 			try {
 				String name = new File(key.getPath()).getName().replace(OVERRIDE_FILE_TYPE, "");
 				if (modelOverrides.containsKey(name)) {
-					System.out.println("ERROR: Can't have 2 model overrides with the same name! "+key);
+					LOGGER.warn("ERROR: Can't have 2 model overrides with the same name! "+key);
 					return;
 				}
 				JsonObject json = UtilParse.GSON.fromJson(resource.openAsReader(), JsonObject.class);
 				modelOverrides.put(name, new ModelOverrides(json));
-				System.out.println("ADDING OVERRIDE = "+key);
+				LOGGER.debug("ADDING OVERRIDE = "+key);
 			} catch (Exception e) {
-				System.out.println("ERROR: SKIPPING "+key.toString());
+				LOGGER.warn("ERROR: SKIPPING "+key.toString());
 				e.printStackTrace();
 			}
 		});

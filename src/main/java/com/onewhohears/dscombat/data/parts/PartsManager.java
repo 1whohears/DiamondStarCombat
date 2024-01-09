@@ -5,6 +5,9 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import org.slf4j.Logger;
+
+import com.mojang.logging.LogUtils;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAircraftFuel;
 import com.onewhohears.dscombat.data.parts.EngineData.EngineType;
@@ -37,6 +40,7 @@ import net.minecraftforge.network.PacketDistributor;
  */
 public class PartsManager {
 	
+	private static final Logger LOGGER = LogUtils.getLogger();
 	public static final int SLOT_VERSION = 1;
 	
 	private final EntityVehicle parent;
@@ -109,7 +113,7 @@ public class PartsManager {
 	
 	private void inventorySetItem(int i, ItemStack stack) {
 		if (i < 0 || i >= slots.size()) {
-			System.out.println("WARNING! INDEX "+i+" IS OUT OF BOUNDS IN PARTS MANAGER "+this);
+			LOGGER.warn("WARNING! INDEX "+i+" IS OUT OF BOUNDS IN PARTS MANAGER "+this);
 			return;
 		}
 		PartSlot slot = slots.get(i);
@@ -125,7 +129,7 @@ public class PartsManager {
 		} else {
 			PartData data = UtilParse.parsePartFromItem(stack);
 			if (data == null) {
-				System.out.println("ERROR! COULD NOT GET PART DATA FROM "+stack+" "+stack.getTag());
+				LOGGER.warn("ERROR! COULD NOT GET PART DATA FROM "+stack+" "+stack.getTag());
 				return;
 			}
 			if (slot.filled()) slot.removePartData(parent);
@@ -138,7 +142,7 @@ public class PartsManager {
 	
 	private void inventoryRemoveItem(int i, int count) {
 		if (i < 0 || i >= slots.size()) {
-			System.out.println("WARNING! INDEX "+i+" IS OUT OF BOUNDS IN PARTS MANAGER "+this);
+			LOGGER.warn("WARNING! INDEX "+i+" IS OUT OF BOUNDS IN PARTS MANAGER "+this);
 			return;
 		}
 		Entity pilot = null;
@@ -228,7 +232,7 @@ public class PartsManager {
 		for (PartSlot p : slots) if (p.filled()) {
 			float w = p.getPartData().getWeight();
 			if (Float.isNaN(w)) {
-				System.out.println("ERROR: PART WEIGHT IS NAN "+p.toString());
+				LOGGER.warn("ERROR: PART WEIGHT IS NAN "+p.toString());
 				continue;
 			}
 			total += w;
@@ -354,17 +358,16 @@ public class PartsManager {
 	
 	public boolean useFlares(boolean consume) {
 		if (parent.getFlareNum() < 1) return false;
-		boolean r = false;
 		for (PartSlot p : getFlares())
 			if (((FlareDispenserData)p.getPartData()).flare(consume))
-				r = true;
-		return r;
+				return true;
+		return false;
 	}
 	
 	public int getNumFlares() {
 		int num = 0;
-		for (PartSlot p : getFlares()) 
-			num += ((FlareDispenserData)p.getPartData()).getFlares();
+		for (PartSlot p : slots) if (p.filled()) 
+			num += p.getPartData().getFlares();
 		return num;
 	}
 	

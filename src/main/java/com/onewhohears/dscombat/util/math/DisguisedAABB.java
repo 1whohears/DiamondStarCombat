@@ -30,7 +30,7 @@ public class DisguisedAABB extends AABB {
 	}
 	@Override
 	public boolean intersects(AABB pOther) {
-		return hitbox.isColliding(pOther);
+		return hitbox.isInside(pOther);
 	}
 	@Override
 	public boolean intersects(double pX1, double pY1, double pZ1, double pX2, double pY2, double pZ2) {

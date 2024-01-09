@@ -48,6 +48,8 @@ public class JasonPlaneModel extends ObjAircraftModel<EntityPlane> {
 		stickRot.mul(Vector3f.ZP.rotationDegrees(entity.inputs.roll*25));
 		Matrix4f stick = UtilAngles.pivotPixelsRot(0, 33.8882f, 4.717f, stickRot);
 		Matrix4f throttle = Matrix4f.createTranslateMatrix(0, 0, entity.getCurrentThrottle()*0.125f);
+		Matrix4f left_pedal = Matrix4f.createTranslateMatrix(0, 0, entity.inputs.yaw*-0.0625f);
+		Matrix4f right_pedal = Matrix4f.createTranslateMatrix(0, 0, entity.inputs.yaw*0.0625f);
 		ImmutableMap<String, Matrix4f> transforms = ImmutableMap.<String, Matrix4f>builder()
 			.put("lg0", lg0_mat)
 			.put("lg1", lg1_mat)
@@ -60,6 +62,8 @@ public class JasonPlaneModel extends ObjAircraftModel<EntityPlane> {
 			.put("surface4", right_elevator)
 			.put("stick", stick)
 			.put("throttle", throttle)
+			.put("pedal0", left_pedal)
+			.put("pedal1", right_pedal)
 			.build();
 		return Transforms.of(transforms);
 	}

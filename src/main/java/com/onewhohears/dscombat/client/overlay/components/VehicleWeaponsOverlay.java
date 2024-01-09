@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Objects;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.onewhohears.dscombat.client.input.DSCClientInputs;
-import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.client.overlay.WeaponTabComponent;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
@@ -93,135 +91,6 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
             WeaponTabComponent.renderSelectionBox(poseStack, 13, yPlacement, blitPosition + 2);
             this.weaponChangeCountdown--;
         }
-
-        // TODO: icons indicating how the weapon works e.g. infrared, radar
-
-        // TODO 0.1 until a better way is made, these controls and other info need to be displayed somewhere
-        int yPos=2, xPos, leftSpace=2, maxNameWidth=46;
-        int color1=0x7340bf, color2=0x00ff00, color;
-
-        // CONTROLS
-        String text;
-        if (maxNameWidth < 50) maxNameWidth = 50;
-        // MOUSE MODE
-        xPos = 1+leftSpace;
-        String key = DSCKeys.mouseModeKey.getKey().getDisplayName().getString();
-        text = DSCClientInputs.getMouseMode().name()+"("+key+")";
-        if (DSCClientInputs.getMouseMode().isLockedForward()) color = color1;
-        else color = color2;
-        drawString(poseStack, getFont(),
-                text, xPos, yPos, color);
-        yPos += 10;
-        // FLARES
-        if (vehicle.hasFlares()) {
-            xPos = 1+leftSpace;
-            if (vehicle.inputs.flare) color = color2;
-            else color = color1;
-            drawString(poseStack, getFont(),
-                    "Flares("+ DSCKeys.flareKey.getKey().getDisplayName().getString()+")",
-                    xPos, yPos, color);
-            xPos += maxNameWidth;
-            drawString(poseStack, getFont(),
-                    vehicle.getFlareNum()+"",
-                    xPos, yPos, color);
-            yPos += 10;
-        }
-        // LANDING GEAR
-        if (vehicle.canToggleLandingGear()) {
-            xPos = 1+leftSpace;
-            if (vehicle.isLandingGear()) {
-                text = "OUT";
-                color = color2;
-            } else {
-                text = "IN";
-                color = color1;
-            }
-            drawString(poseStack, getFont(),
-                    "Gear("+DSCKeys.landingGear.getKey().getDisplayName().getString()+")",
-                    xPos, yPos, color);
-            xPos += maxNameWidth;
-            drawString(poseStack, getFont(),
-                    text, xPos, yPos, color);
-            yPos += 10;
-        }
-        // BREAKS
-        if (vehicle.canBrake()) {
-            xPos = 1+leftSpace;
-            if (vehicle.getAircraftType() == EntityVehicle.AircraftType.PLANE)
-                text = DSCKeys.special2Key.getKey().getDisplayName().getString();
-            else text = DSCKeys.specialKey.getKey().getDisplayName().getString();
-            if (vehicle.isBraking()) color = color2;
-            else color = color1;
-            drawString(poseStack, getFont(),
-                    "Break("+text+")",
-                    xPos, yPos, color);
-            yPos += 10;
-        }
-        // FLAPS DOWN
-        if (vehicle.canFlapsDown()) {
-            xPos = 1+leftSpace;
-            text = DSCKeys.specialKey.getKey().getDisplayName().getString();
-            if (vehicle.inputs.special) color = color2;
-            else color = color1;
-            drawString(poseStack, getFont(),
-                    "FlapsDown("+text+")",
-                    xPos, yPos, color);
-            yPos += 10;
-        }
-        // WEAPON ANGLED DOWN
-        if (vehicle.canAngleWeaponDown()) {
-            xPos = 1+leftSpace;
-            text = DSCKeys.special2Key.getKey().getDisplayName().getString();
-            if (vehicle.inputs.special2) color = color2;
-            else color = color1;
-            drawString(poseStack, getFont(),
-                    "AimDown("+text+")",
-                    xPos, yPos, color);
-            yPos += 10;
-        }
-        // HOVER
-        if (vehicle.canHover()) {
-            xPos = 1+leftSpace;
-            text = DSCKeys.specialKey.getKey().getDisplayName().getString();
-            if (vehicle.inputs.special) color = color2;
-            else color = color1;
-            drawString(poseStack, getFont(),
-                    "Hover("+text+")",
-                    xPos, yPos, color);
-            yPos += 10;
-        }
-        // RADAR MODE
-        if (vehicle.radarSystem.hasRadar()) {
-            xPos = 1+leftSpace;
-            if (vehicle.getRadarMode().isOff()) color = color2;
-            else color = color1;
-            drawString(poseStack, getFont(),
-                    "RMode("+DSCKeys.radarModeKey.getKey().getDisplayName().getString()+")",
-                    xPos, yPos, color);
-            xPos += maxNameWidth;
-            text = vehicle.getRadarMode().name();
-            drawString(poseStack, getFont(),
-                    text, xPos, yPos, color);
-            yPos += 10;
-        }
-        // GIMBAL MODE
-        if (vehicle.getGimbalForPilotCamera() != null) {
-            xPos = 1+leftSpace;
-            if (DSCClientInputs.isGimbalMode()) {
-            	color = color2;
-            	text = "ON";
-            } else {
-            	color = color1;
-            	text = "OFF";
-            }
-            drawString(poseStack, getFont(),
-                    "Gimbal("+DSCKeys.gimbalKey.getKey().getDisplayName().getString()+")",
-                    xPos, yPos, color);
-            xPos += maxNameWidth;
-            drawString(poseStack, getFont(),
-                    text, xPos, yPos, color);
-            yPos += 10;
-        }
     }
 
     public static void queueWeaponChange() {
@@ -232,15 +101,7 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
         INSTANCE.weaponChangeCountdown = 200;
         INSTANCE.weaponChangeState = true;
 
-        //noinspection DataFlowIssue (the context in which this is called necessarily has a LocalPlayer existing on client)
+        // no inspection DataFlowIssue (the context in which this is called necessarily has a LocalPlayer existing on client)
         getPlayer().playSound(SoundEvents.UI_BUTTON_CLICK);
-    }
-
-    private static void renderSelectedWeapon(PoseStack stack) {
-
-    }
-
-    private static void renderSelectionBox(PoseStack stack) {
-
     }
 }

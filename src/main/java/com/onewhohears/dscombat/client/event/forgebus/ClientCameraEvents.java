@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.client.event.forgebus;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCursorPosCallbackI;
 
+import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
@@ -58,13 +59,14 @@ public class ClientCameraEvents {
 		if (DSCClientInputs.isGimbalMode()) {
 			if (isController && plane.getGimbalForPilotCamera() != null) {
 				EntityGimbal gimbal = plane.getGimbalForPilotCamera();
+				// gimbal.getZRot()
 				if (!m.getCameraEntity().equals(gimbal)) m.setCameraEntity(gimbal);
 				gimbal.setXRot(player.getViewXRot(pt));
 				gimbal.setYRot(player.getViewYRot(pt));
 				prevGimbal = gimbal;
 				camYOffset = -0.2f;
 			} else if (player.getVehicle() instanceof EntitySeat seat) {
-				camYOffset = seat.getYOffset();
+				camYOffset = seat.getCameraYOffset();
 			}
 		} 
 		if (isController && DSCClientInputs.isCameraLockedForward()) {
@@ -105,7 +107,12 @@ public class ClientCameraEvents {
 			double vehicleCamDist = Math.min(0, 4-getMaxDist(event.getCamera(), player, camDist));
 			event.getCamera().move(vehicleCamDist, 0, 0);
 		}
-		event.getCamera().setPosition(event.getCamera().getPosition().add(0, camYOffset, 0));
+		// TODO 4.4 allow player to lean left or right in first person to see behind more easily
+		if (camYOffset != 0) {
+			Quaternion q = UtilAngles.lerpQ((float)event.getPartialTick(), plane.getPrevQ(), plane.getClientQ());
+			Vec3 yawAxis = UtilAngles.getYawAxis(q);
+			event.getCamera().setPosition(event.getCamera().getPosition().add(yawAxis.scale(camYOffset)));
+		}
 		ptOld = pt;
 	}
 	

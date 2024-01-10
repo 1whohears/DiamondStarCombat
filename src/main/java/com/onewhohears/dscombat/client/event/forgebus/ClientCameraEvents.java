@@ -108,7 +108,7 @@ public class ClientCameraEvents {
 		}
 		// TODO 4.4 allow player to lean left or right in first person to see behind more easily
 		if (camYOffset != 0) {
-			Quaternion q = UtilAngles.lerpQ((float)event.getPartialTick(), plane.getPrevQ(), plane.getClientQ());
+			Quaternion q = UtilAngles.lerpQ(pt, plane.getPrevQ(), plane.getClientQ());
 			Vec3 yawAxis = UtilAngles.getYawAxis(q);
 			event.getCamera().setPosition(event.getCamera().getPosition().add(yawAxis.scale(camYOffset)));
 		}
@@ -148,14 +148,15 @@ public class ClientCameraEvents {
 		m.execute(() -> {
 			double xn = x, yn = y;
 			if (window != m.getWindow().getWindow()) return;
-			if (m.player != null && m.screen == null 
-					&& m.player.getRootVehicle() instanceof EntityVehicle craft
-					&& DSCClientInputs.isCameraFree()) {
+			if (DSCClientInputs.isCameraFree()
+					&& m.player != null && m.screen == null 
+					&& m.player.getRootVehicle() instanceof EntityVehicle craft) {
 				double r = Math.toRadians(craft.zRot);
 				double dx = x - m.mouseHandler.xpos();
 				double dy = y - m.mouseHandler.ypos();
-				xn = dx*Math.cos(r) - dy*Math.sin(r) + m.mouseHandler.xpos();
-				yn = dy*Math.cos(r) + dx*Math.sin(r) + m.mouseHandler.ypos();
+				double cosR = Math.cos(r), sinR = Math.sin(r);
+				xn = dx*cosR - dy*sinR + m.mouseHandler.xpos();
+				yn = dy*cosR + dx*sinR + m.mouseHandler.ypos();
 				GLFW.glfwSetCursorPos(window, xn, yn);
 			}
 			m.mouseHandler.onMove(window, xn, yn);

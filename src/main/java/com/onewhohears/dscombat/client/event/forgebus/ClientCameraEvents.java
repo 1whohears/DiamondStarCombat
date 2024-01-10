@@ -59,7 +59,6 @@ public class ClientCameraEvents {
 		if (DSCClientInputs.isGimbalMode()) {
 			if (isController && plane.getGimbalForPilotCamera() != null) {
 				EntityGimbal gimbal = plane.getGimbalForPilotCamera();
-				// gimbal.getZRot()
 				if (!m.getCameraEntity().equals(gimbal)) m.setCameraEntity(gimbal);
 				gimbal.setXRot(player.getViewXRot(pt));
 				gimbal.setYRot(player.getViewYRot(pt));

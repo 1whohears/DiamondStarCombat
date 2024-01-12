@@ -20,15 +20,20 @@ public class LiftKGraph {
 	
 	private final int[] aoa;
 	private final float[] lift;
+	private final int criticalAOA, warnAOA;
 	
 	public LiftKGraph(int[] aoa, float[] lift) {
 		if (aoa.length != lift.length) {
 			this.aoa = new int[] {0};
 			this.lift = new float[] {0};
+			this.criticalAOA = 0;
+			this.warnAOA = 0;
 			return;
 		}
 		this.aoa = aoa;
 		this.lift = lift;
+		this.criticalAOA = findCriticalAOA();
+		this.warnAOA = (int)((float)criticalAOA*2f/3f);
 	}
 	
 	public float getLift(float aoaDegrees) {
@@ -53,6 +58,23 @@ public class LiftKGraph {
 			if (aoa[i] < deg) return i+1;
 		}
 		return 0;
+	}
+	
+	private int findCriticalAOA() {
+		for (int i = 1; i < aoa.length-1; ++i) {
+			if (aoa[i] < 0) continue;
+			if (lift[i-1] < lift[i] && lift[i+1] < lift[i])
+				return aoa[i];
+		}
+		return 0;
+	}
+	
+	public int getCriticalAOA() {
+		return criticalAOA;
+	}
+	
+	public int getWarnAOA() {
+		return warnAOA;
 	}
 	
 }

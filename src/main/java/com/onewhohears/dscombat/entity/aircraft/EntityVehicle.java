@@ -174,7 +174,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	protected float xzSpeed, totalMass, xzYaw, slideAngle, slideAngleCos, maxPushThrust, maxSpinThrust, currentFuel, maxFuel;
 	protected double staticFric, kineticFric, airPressure;
 	
-	private int lerpSteps, deadTicks;
+	private int lerpSteps, deadTicks, stallWarnTicks, stallTicks;
 	private double lerpX, lerpY, lerpZ;
 	private float landingGearPos, landingGearPosOld;
 	
@@ -512,6 +512,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
         // OTHER
 		controlSystem();
         tickParts();
+        tickWarnings();
 		soundManager.onTick();
 		textureManager.onTick();
 		if (level.isClientSide) clientTick();
@@ -2531,6 +2532,29 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     @Nullable
     public Vec3[] getAfterBurnerSmokePos() {
     	return NONE;
+    }
+    
+    public boolean isStalling() {
+		return false;
+    }
+    
+    public int getStallTicks() {
+    	return stallTicks;
+    }
+    
+    public boolean isAboutToStall() {
+    	return false;
+    }
+    
+    public int getAboutToStallTicks() {
+    	return stallWarnTicks;
+    }
+    
+    public void tickWarnings() {
+    	if (isStalling()) ++stallTicks;
+    	else stallTicks = 0;
+    	if (isAboutToStall()) ++stallWarnTicks;
+    	else stallWarnTicks = 0;
     }
     
 }

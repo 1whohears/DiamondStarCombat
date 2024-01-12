@@ -94,5 +94,17 @@
 		"sounds": [
 			"dscombat:missile_knows_where"
 		]
+	},
+	"stall_warn": {
+		"subtitle": "sounds.dscombat.stall_warn",
+		"sounds": [
+			"dscombat:stall_warn"
+		]
+	},
+	"stall_alert": {
+		"subtitle": "sounds.dscombat.stall_alert",
+		"sounds": [
+			"dscombat:stall_alert"
+		]
 	}
 }

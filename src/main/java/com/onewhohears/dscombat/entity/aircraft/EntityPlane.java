@@ -266,5 +266,15 @@ public class EntityPlane extends EntityVehicle {
 		if (wdt != null && wdt.isContact()) return amount*DSCGameRules.getBulletDamagePlaneFactor(level);
 		return super.calcProjDamageBySource(source, amount);
 	}
+	
+	@Override
+	public boolean isStalling() {
+		return Math.abs(getAOA()) >= vehicleData.liftKGraph.getCriticalAOA();
+	}
+	
+	@Override
+	public boolean isAboutToStall() {
+		return Math.abs(getAOA()) >= vehicleData.liftKGraph.getWarnAOA();
+	}
 
 }

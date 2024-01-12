@@ -87,6 +87,17 @@ public class UtilClientSafeSoundInstance {
 	    		ModSounds.FOX2_TONE_1.get(), SoundSource.PLAYERS, 
 	    		Config.CLIENT.irTargetToneVol.get().floatValue(), 1f, false);
 		}
+		if (vehicle.getAircraftType().isPlane()) {
+			if (vehicle.isStalling()) if (vehicle.getStallTicks() % 7 == 1) {
+				m.player.level.playLocalSound(camPos.x, camPos.y, camPos.z, 
+					ModSounds.STALL_ALERT.get(), SoundSource.PLAYERS, 
+					0.5f, 1f, false);
+			} else if (vehicle.isAboutToStall()) if (vehicle.getAboutToStallTicks() % 14 == 1) {
+				m.player.level.playLocalSound(camPos.x, camPos.y, camPos.z, 
+					ModSounds.STALL_ALERT.get(), SoundSource.PLAYERS, 
+					0.5f, 1f, false);
+			}
+		}
 		// TODO 8.1 data link notification lines
 		// TODO 8.2 bitchin betty
 		// pull up, over g, aoa stall, gear still out, engine fire, fuel leak, hydraulics failure 

@@ -29,6 +29,8 @@ public class ModSounds {
 	public static final RegistryObject<SoundEvent> SUB_1 = registerSoundEvent("sub_1");
 	public static final RegistryObject<SoundEvent> FOX2_TONE_1 = registerSoundEvent("fox2_tone_1");
 	public static final RegistryObject<SoundEvent> MISSILE_KNOWS_WHERE = registerSoundEvent("missile_knows_where");
+	public static final RegistryObject<SoundEvent> STALL_ALERT = registerSoundEvent("stall_alert");
+	public static final RegistryObject<SoundEvent> STALL_WARNING = registerSoundEvent("stall_warning");
 	// TODO 8.9 brrrr sound for javi plane
 	
 	public static void register(IEventBus eventBus) {

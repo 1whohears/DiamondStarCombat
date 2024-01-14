@@ -17,15 +17,13 @@ public class VehicleOverlay {
 
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-
-		// TODO: make method bodies in these subclasses consistent with style
+        
 		DebugOverlay			.renderIfAllowed(poseStack, screenWidth, screenHeight);
 		HudOverlay				.renderIfAllowed(poseStack, screenWidth, screenHeight);
 		PlaneAttitudeOverlay	.renderIfAllowed(poseStack, screenWidth, screenHeight);
 		PlaneDataOverlay		.renderIfAllowed(poseStack, screenWidth, screenHeight);
 		RadarOverlay			.renderIfAllowed(poseStack, screenWidth, screenHeight, partialTick);
 		TurnCoordinatorOverlay	.renderIfAllowed(poseStack, screenWidth, screenHeight);
-		TurretDataOverlay		.renderIfAllowed(poseStack, screenWidth, screenHeight);
 		VehicleCompassOverlay	.renderIfAllowed(poseStack, screenWidth, screenHeight);
 		VehicleControlOverlay	.renderIfAllowed(poseStack, screenWidth, screenHeight);
 		VehicleFuelOverlay		.renderIfAllowed(poseStack, screenWidth, screenHeight);

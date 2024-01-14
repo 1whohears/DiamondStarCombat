@@ -147,6 +147,14 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
                     text, xPos, yPos, color);
             yPos += 10;
         }
+        // CYCLE WEAPON
+        xPos = leftSpace;
+        color = color1;
+        if (DSCKeys.weaponSelectKey.isDown()) color = color2;
+    	drawString(poseStack, getFont(),
+        		"ChangeWeapon("+DSCKeys.weaponSelectKey.getKey().getDisplayName().getString()+")",
+        		xPos, yPos, color);
+        yPos += 10;
         // DISMOUNT
         if (Config.CLIENT.customDismount.get()) {
         	xPos = leftSpace;

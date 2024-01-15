@@ -157,7 +157,7 @@ public class RadarData extends JsonPreset {
 		if (scanAircraft && (mode.canScan(RadarMode.VEHICLES) || mode.isPlayersOrBots())) {
 			scanAircraft(radar, controller, vehiclePings, radarArea, mode.isPlayersOnly(), mode.isPlayersOrBots());
 		}
-		if (scanPlayers && mode.canScan(RadarMode.PLAYERS)) {
+		if (scanPlayers && (mode.canScan(RadarMode.PLAYERS) || mode.isPlayersOrBots())) {
 			scanPlayers(radar, controller, vehiclePings, radarArea);
 		}
 		if (scanMobs && mode.canScan(RadarMode.MOBS)) {

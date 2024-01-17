@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.client.overlay.components;
 
 import java.util.Objects;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
@@ -9,7 +10,16 @@ import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 
+import net.minecraft.client.KeyMapping;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.Entity;
+
 public class KeyBindsOverlay extends VehicleOverlayComponent {
+	
+	private static final int DEFAULT_KEY_COLOR = 0x00ff00;
+	private static final int USE_KEY_COLOR = 0xffff00;
+	private static final int MAPPING_NAME_WIDTH = 80;
+	private static final int KEY_NAME_WIDTH = 34;
 	
 	private static KeyBindsOverlay INSTANCE;
 	
@@ -17,167 +27,93 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
         if (Objects.isNull(INSTANCE)) INSTANCE = new KeyBindsOverlay();
         INSTANCE.render(poseStack, screenWidth, screenHeight);
     }
+	
+	public static Component fixKeyName(KeyMapping key) {
+    	switch(key.getKey().getValue()) {
+    	case InputConstants.KEY_RCONTROL : return Component.literal("RCTRL");
+    	case InputConstants.KEY_LCONTROL : return Component.literal("LCTRL");
+    	case InputConstants.KEY_LALT : return Component.literal("LALT");
+    	case InputConstants.KEY_RALT : return Component.literal("RALT");
+    	}
+    	return key.getKey().getDisplayName();
+    }
     
     private KeyBindsOverlay() {}
 	
 	@Override
 	protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
 		if (!(getPlayerRootVehicle() instanceof EntityVehicle vehicle)) return;
+		Entity controller = vehicle.getControllingPassenger();
+		boolean isPilot = controller != null && controller.equals(getPlayer());
 		// TODO 0.1 until a better way is made, these controls and other info need to be displayed somewhere
-        int yPos=2, xPos, leftSpace=3, maxNameWidth=46;
-        int color1=0x00ff00, color2=0xffff00, color;
-        String text;
-        if (maxNameWidth < 50) maxNameWidth = 50;
-        // MOUSE MODE
-        xPos = leftSpace;
-        String key = DSCKeys.mouseModeKey.getKey().getDisplayName().getString();
-        text = DSCClientInputs.getMouseMode().name()+"("+key+")";
-        if (DSCClientInputs.getMouseMode().isLockedForward()) color = color1;
-        else color = color2;
-        drawString(poseStack, getFont(),
-                text, xPos, yPos, color);
-        yPos += 10;
-        // FLARES
-        if (vehicle.hasFlares()) {
-            xPos = leftSpace;
-            if (vehicle.inputs.flare) color = color2;
-            else color = color1;
-            drawString(poseStack, getFont(),
-                    "Flares("+ DSCKeys.flareKey.getKey().getDisplayName().getString()+")",
-                    xPos, yPos, color);
-            xPos += maxNameWidth;
-            drawString(poseStack, getFont(),
-                    vehicle.getFlareNum()+"",
-                    xPos, yPos, color);
-            yPos += 10;
-        }
-        // LANDING GEAR
-        if (vehicle.canToggleLandingGear()) {
-            xPos = leftSpace;
-            if (vehicle.isLandingGear()) {
-                text = "OUT";
-                color = color2;
-            } else {
-                text = "IN";
-                color = color1;
-            }
-            drawString(poseStack, getFont(),
-                    "Gear("+DSCKeys.landingGear.getKey().getDisplayName().getString()+")",
-                    xPos, yPos, color);
-            xPos += maxNameWidth;
-            drawString(poseStack, getFont(),
-                    text, xPos, yPos, color);
-            yPos += 10;
-        }
-        // BREAKS
-        if (vehicle.canBrake()) {
-            xPos = leftSpace;
-            if (vehicle.getAircraftType() == EntityVehicle.AircraftType.PLANE)
-                text = DSCKeys.special2Key.getKey().getDisplayName().getString();
-            else text = DSCKeys.specialKey.getKey().getDisplayName().getString();
-            if (vehicle.isBraking()) color = color2;
-            else color = color1;
-            drawString(poseStack, getFont(),
-                    "Break("+text+")",
-                    xPos, yPos, color);
-            yPos += 10;
-        }
-        // FLAPS DOWN
-        if (vehicle.canFlapsDown()) {
-            xPos = leftSpace;
-            text = DSCKeys.specialKey.getKey().getDisplayName().getString();
-            if (vehicle.inputs.special) color = color2;
-            else color = color1;
-            drawString(poseStack, getFont(),
-                    "FlapsDown("+text+")",
-                    xPos, yPos, color);
-            yPos += 10;
-        }
-        // WEAPON ANGLED DOWN
-        if (vehicle.canAngleWeaponDown()) {
-            xPos = leftSpace;
-            text = DSCKeys.special2Key.getKey().getDisplayName().getString();
-            if (vehicle.inputs.special2) color = color2;
-            else color = color1;
-            drawString(poseStack, getFont(),
-                    "AimDown("+text+")",
-                    xPos, yPos, color);
-            yPos += 10;
-        }
-        // HOVER
-        if (vehicle.canHover()) {
-            xPos = leftSpace;
-            text = DSCKeys.specialKey.getKey().getDisplayName().getString();
-            if (vehicle.inputs.special) color = color2;
-            else color = color1;
-            drawString(poseStack, getFont(),
-                    "Hover("+text+")",
-                    xPos, yPos, color);
-            yPos += 10;
-        }
-        // RADAR MODE
-        if (vehicle.radarSystem.hasRadar()) {
-            xPos = leftSpace;
-            if (vehicle.getRadarMode().isOff()) color = color2;
-            else color = color1;
-            drawString(poseStack, getFont(),
-                    "RMode("+DSCKeys.radarModeKey.getKey().getDisplayName().getString()+")",
-                    xPos, yPos, color);
-            xPos += maxNameWidth;
-            text = vehicle.getRadarMode().name();
-            drawString(poseStack, getFont(),
-                    text, xPos, yPos, color);
-            yPos += 10;
-        }
-        // GIMBAL MODE
-        if (vehicle.getGimbalForPilotCamera() != null) {
-            xPos = leftSpace;
-            if (DSCClientInputs.isGimbalMode()) {
-            	color = color2;
-            	text = "ON";
-            } else {
-            	color = color1;
-            	text = "OFF";
-            }
-            drawString(poseStack, getFont(),
-                    "Gimbal("+DSCKeys.gimbalKey.getKey().getDisplayName().getString()+")",
-                    xPos, yPos, color);
-            xPos += maxNameWidth;
-            drawString(poseStack, getFont(),
-                    text, xPos, yPos, color);
-            yPos += 10;
-        }
-        // CYCLE WEAPON
-        xPos = leftSpace;
-        color = color1;
-        if (DSCKeys.weaponSelectKey.isDown()) color = color2;
-    	drawString(poseStack, getFont(),
-        		"ChangeWeapon("+DSCKeys.weaponSelectKey.getKey().getDisplayName().getString()+")",
-        		xPos, yPos, color);
-        yPos += 10;
-        // DISMOUNT
-        if (Config.CLIENT.customDismount.get()) {
-        	xPos = leftSpace;
-        	color = color1;
-        	drawString(poseStack, getFont(),
-        		"Dismount("+DSCKeys.dismount.getKey().getDisplayName().getString()+")",
-        		xPos, yPos, color);
-        	yPos += 10;
-        }
-        // CHANGE SEAT
-        xPos = leftSpace;
-        color = color1;
-    	drawString(poseStack, getFont(),
-        		"ChangeSeat("+DSCKeys.changeSeat.getKey().getDisplayName().getString()+")",
-        		xPos, yPos, color);
-        yPos += 10;
-        // OPEN PLANE MENU
-        xPos = leftSpace;
-        color = color1;
-    	drawString(poseStack, getFont(),
-        		"VehicleMenu("+DSCKeys.planeMenuKey.getKey().getDisplayName().getString()+")",
-        		xPos, yPos, color);
-        yPos += 10;
+		int index = 0;
+		// MOUSE MODE
+		if (isPilot) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.mouseModeKey,
+				!DSCClientInputs.getMouseMode().isLockedForward(), DSCClientInputs.getMouseMode().name());
+		// OPEN PLANE MENU
+		if (isPilot) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.planeMenuKey);
+		// DISMOUNT
+		if (Config.CLIENT.customDismount.get()) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.dismount);
+		// CHANGE SEAT
+		displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.changeSeat);
+		// LANDING GEAR
+		if (isPilot && vehicle.canToggleLandingGear()) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.landingGear, 
+				vehicle.isLandingGear(), vehicle.isLandingGear() ? "OUT"  : "IN");
+		// BREAKS
+		if (isPilot && vehicle.canBrake()) displayMapping(poseStack, screenWidth, screenHeight, index++, 
+				vehicle.getAircraftType().isPlane() ? DSCKeys.special2Key : DSCKeys.specialKey, 
+				Component.literal("Breaks (S)"), vehicle.isBraking());
+		// FLAPS DOWN
+		if (isPilot && vehicle.canFlapsDown()) displayMapping(poseStack, screenWidth, screenHeight, index++, 
+				DSCKeys.specialKey, Component.literal("Flaps Down (S1)"));
+		// WEAPON ANGLED DOWN
+		if (isPilot && vehicle.canAngleWeaponDown()) displayMapping(poseStack, screenWidth, screenHeight, index++, 
+				DSCKeys.special2Key, Component.literal("Nose Down (S2)"));
+		// HOVER
+		if (isPilot && vehicle.canHover()) displayMapping(poseStack, screenWidth, screenHeight, index++, 
+				DSCKeys.specialKey, Component.literal("Hover (S1)"));
+		// FLARES
+		if (isPilot && vehicle.hasFlares()) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.flareKey);
+		// CYCLE WEAPON
+		if (isPilot) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.weaponSelectKey);
+		// RADAR MODE
+		if (vehicle.radarSystem.hasRadar()) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.radarModeKey,
+				!vehicle.getRadarMode().isOff(), vehicle.getRadarMode().name());
+		// SELECT RADAR PING
+		if (vehicle.radarSystem.hasRadar()) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.pingCycleKey);
+		// GIMBAL MODE
+		if (vehicle.getGimbalForPilotCamera() != null) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.gimbalKey,
+				DSCClientInputs.isGimbalMode(), DSCClientInputs.isGimbalMode() ? "ON" : "OFF");
 	}
+	
+	protected void displayMapping(PoseStack poseStack, int screenWidth, int screenHeight, int index, KeyMapping key, 
+			Component mapName, boolean isUsed, String setting) {
+    	int pY = 2 + 10 * index;
+    	int pX = 3;
+    	int pColor = DEFAULT_KEY_COLOR;
+    	if (isUsed) pColor = USE_KEY_COLOR;
+    	drawString(poseStack, getFont(), mapName, pX, pY, pColor);
+    	pX += MAPPING_NAME_WIDTH;
+    	drawString(poseStack, getFont(), fixKeyName(key), pX, pY, pColor);
+    	if (setting == null || setting.isEmpty()) return;
+    	pX += KEY_NAME_WIDTH;
+    	drawString(poseStack, getFont(), setting, pX, pY, pColor);
+    }
+	
+	protected void displayMapping(PoseStack poseStack, int screenWidth, int screenHeight, int index, KeyMapping key, boolean isUsed, String setting) {
+		displayMapping(poseStack, screenWidth, screenHeight, index, key, Component.translatable(key.getName()), isUsed, setting);
+	}
+    
+    protected void displayMapping(PoseStack poseStack, int screenWidth, int screenHeight, int index, KeyMapping key) {
+    	displayMapping(poseStack, screenWidth, screenHeight, index, key, key.isDown(), null);
+    }
+    
+    protected void displayMapping(PoseStack poseStack, int screenWidth, int screenHeight, int index, KeyMapping key, Component mapName, boolean isUsed) {
+    	displayMapping(poseStack, screenWidth, screenHeight, index, key, mapName, isUsed, null);
+    }
+    
+    protected void displayMapping(PoseStack poseStack, int screenWidth, int screenHeight, int index, KeyMapping key, Component mapName) {
+    	displayMapping(poseStack, screenWidth, screenHeight, index, key, mapName, key.isDown(), null);
+    }
 
 }

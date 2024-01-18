@@ -11,7 +11,7 @@ import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModSounds;
-import com.onewhohears.dscombat.util.UtilClientSafeSoundInstance;
+import com.onewhohears.dscombat.util.UtilClientSafeSounds;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.UtilParticles;
 import com.onewhohears.dscombat.util.math.UtilAngles;
@@ -237,7 +237,7 @@ public abstract class EntityMissile extends EntityBullet {
 	}
 	
 	private void engineSound() {
-		UtilClientSafeSoundInstance.dopplerSound(this, 
+		UtilClientSafeSounds.dopplerSound(this, 
 				ModSounds.MISSILE_ENGINE_1.get(), 
 				0.8F, 1.0F, 10F);
 	}

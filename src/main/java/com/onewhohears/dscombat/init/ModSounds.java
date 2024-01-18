@@ -29,8 +29,15 @@ public class ModSounds {
 	public static final RegistryObject<SoundEvent> SUB_1 = registerSoundEvent("sub_1");
 	public static final RegistryObject<SoundEvent> FOX2_TONE_1 = registerSoundEvent("fox2_tone_1");
 	public static final RegistryObject<SoundEvent> MISSILE_KNOWS_WHERE = registerSoundEvent("missile_knows_where");
-	public static final RegistryObject<SoundEvent> STALL_ALERT = registerSoundEvent("stall_alert");
-	public static final RegistryObject<SoundEvent> STALL_WARNING = registerSoundEvent("stall_warning");
+	public static final RegistryObject<SoundEvent> STALL_ALERT_GM1 = registerSoundEvent("stall_alert_gm1");
+	public static final RegistryObject<SoundEvent> STALL_WARNING_GM1 = registerSoundEvent("stall_warning_gm1");
+	public static final RegistryObject<SoundEvent> ENGINE_FIRE_GM1 = registerSoundEvent("engine_fire_gm1");
+	public static final RegistryObject<SoundEvent> FUEL_LEAK_GM1 = registerSoundEvent("fuel_leak_gm1");
+	public static final RegistryObject<SoundEvent> BINGO_GM1 = registerSoundEvent("bingo_gm1");
+	public static final RegistryObject<SoundEvent> PULL_UP_GM1 = registerSoundEvent("pull_up_gm1");
+	public static final RegistryObject<SoundEvent> LOCK_GM1 = registerSoundEvent("lock_gm1");
+	public static final RegistryObject<SoundEvent> FLARE_GM1 = registerSoundEvent("flare_gm1");
+	public static final RegistryObject<SoundEvent> ALTITUDE_GM1 = registerSoundEvent("altitude_gm1");
 	// TODO 8.9 brrrr sound for javi plane
 	
 	public static void register(IEventBus eventBus) {

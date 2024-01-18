@@ -33,7 +33,7 @@ public class LiftKGraph {
 		this.aoa = aoa;
 		this.lift = lift;
 		this.criticalAOA = findCriticalAOA();
-		this.warnAOA = (int)((float)criticalAOA*2f/3f);
+		this.warnAOA = (int)((float)criticalAOA*0.5f);
 	}
 	
 	public float getLift(float aoaDegrees) {

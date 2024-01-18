@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.data.aircraft;
 
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.init.ModSounds;
-import com.onewhohears.dscombat.util.UtilClientSafeSoundInstance;
+import com.onewhohears.dscombat.util.UtilClientSafeSounds;
 
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -23,14 +23,14 @@ public class VehicleSoundManager {
 	}
 	
 	protected void onClientTick() {
-		if (parent.isOperational()) UtilClientSafeSoundInstance.tickPassengerSounds(parent);
+		if (parent.isOperational()) UtilClientSafeSounds.tickPassengerSounds(parent);
 		tickEngineSound();
 	}
 	
 	private void tickEngineSound() {
 		if (prevThrottle == 0 && parent.getCurrentThrottle() != 0) {
-			UtilClientSafeSoundInstance.nonPassengerVehicleEngineSound(parent, getNonPassengerEngineSound());
-			UtilClientSafeSoundInstance.passengerVehicleEngineSound(parent, getPassengerEngineSound());
+			UtilClientSafeSounds.nonPassengerVehicleEngineSound(parent, getNonPassengerEngineSound());
+			UtilClientSafeSounds.passengerVehicleEngineSound(parent, getPassengerEngineSound());
 		}
 		prevThrottle = parent.getCurrentThrottle();
 	}
@@ -61,7 +61,7 @@ public class VehicleSoundManager {
 	public void onRadioSongUpdate(String song) {
 		if (!parent.level.isClientSide) return;
 		if (song.isEmpty()) return;
-		UtilClientSafeSoundInstance.aircraftRadio(	parent, song);
+		UtilClientSafeSounds.aircraftRadio(	parent, song);
 	}
 	
 }

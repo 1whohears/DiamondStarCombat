@@ -174,7 +174,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	protected float xzSpeed, totalMass, xzYaw, slideAngle, slideAngleCos, maxPushThrust, maxSpinThrust, currentFuel, maxFuel;
 	protected double staticFric, kineticFric, airPressure;
 	
-	private int lerpSteps, deadTicks, stallWarnTicks, stallTicks;
+	private int lerpSteps, deadTicks, stallWarnTicks, stallTicks, engineFireTicks, fuelLeakTicks, bingoTicks;
 	private double lerpX, lerpY, lerpZ;
 	private float landingGearPos, landingGearPosOld;
 	
@@ -2534,6 +2534,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     	return NONE;
     }
     
+    public boolean liftLost() {
+    	return false;
+    }
+    
     public boolean isStalling() {
 		return false;
     }
@@ -2550,11 +2554,34 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     	return stallWarnTicks;
     }
     
+    public boolean isBingoFuelWarning() {
+    	if (getMaxFuel() <= 0) return true;
+    	return getCurrentFuel() / getMaxFuel() < 0.1;
+    }
+    
+    public int getEngineFireTicks() {
+    	return engineFireTicks;
+    }
+    
+    public int getFuelLeakTicks() {
+    	return fuelLeakTicks;
+    }
+    
+    public int getBingoTicks() {
+    	return bingoTicks;
+    }
+    
     public void tickWarnings() {
     	if (isStalling()) ++stallTicks;
     	else stallTicks = 0;
     	if (isAboutToStall()) ++stallWarnTicks;
     	else stallWarnTicks = 0;
+    	if (isEngineFire()) ++engineFireTicks;
+    	else engineFireTicks = 0;
+    	if (isFuelLeak()) ++fuelLeakTicks;
+    	else fuelLeakTicks = 0;
+    	if (isBingoFuelWarning()) ++bingoTicks;
+    	else bingoTicks = 0;
     }
     
 }

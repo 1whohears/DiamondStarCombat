@@ -409,6 +409,13 @@
 	"sounds.dscombat.missile_knows_where": "The Missile Knows Where It Is",
 	"sounds.dscombat.stall_warn": "Stall Warning",
 	"sounds.dscombat.stall_alert": "Stall Alert",
+	"sounds.dscombat.engine_fire": "Engine Fire",
+	"sounds.dscombat.fuel_leak": "Fuel Leak",
+	"sounds.dscombat.bingo": "Bingo",
+	"sounds.dscombat.pull_up": "Pull Up",
+	"sounds.dscombat.lock": "Lock",
+	"sounds.dscombat.flare": "Flare",
+	"sounds.dscombat.altitude": "Altitude",
 	
 	"death.attack.dscombat.salty1": "%1$s was too easy",
 	"death.attack.dscombat.salty1.player": "%1$s was too easy for %2$s (%3$sm)",

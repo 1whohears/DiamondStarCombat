@@ -9,19 +9,21 @@ import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.sounds.DopplerSoundInstance;
 import com.onewhohears.dscombat.client.sounds.PlaneMusicSoundInstance;
 import com.onewhohears.dscombat.client.sounds.VehicleEngineSoundInstance;
+import com.onewhohears.dscombat.data.aircraft.DSCPhysicsConstants;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.init.ModSounds;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class UtilClientSafeSoundInstance {
+public class UtilClientSafeSounds {
 	
 	private static final Logger LOGGER = LogUtils.getLogger();
 	
@@ -69,39 +71,59 @@ public class UtilClientSafeSoundInstance {
 	
 	public static void tickPassengerSounds(EntityVehicle vehicle) {
 		Minecraft m = Minecraft.getInstance();
-		Vec3 camPos = m.gameRenderer.getMainCamera().getPosition();
 		if (!vehicle.equals(m.player.getRootVehicle())) return;
  		// RWR WARNINGS
 		if (vehicle.tickCount%4==0 && vehicle.radarSystem.isTrackedByMissile()) {
-			m.player.level.playLocalSound(camPos.x, camPos.y, camPos.z, 
-				ModSounds.MISSILE_WARNING.get(), SoundSource.PLAYERS, 
-				Config.CLIENT.missileWarningVol.get().floatValue(), 1f, false);
+			playCockpitSound(ModSounds.MISSILE_WARNING.get(), 
+				Config.CLIENT.missileWarningVol.get().floatValue(), 1f);
 		} else if (vehicle.tickCount%8==0 && vehicle.radarSystem.isTrackedByRadar()) {
-			m.player.level.playLocalSound(camPos.x, camPos.y, camPos.z, 
-				ModSounds.GETTING_LOCKED.get(), SoundSource.PLAYERS, 
-				Config.CLIENT.rwrWarningVol.get().floatValue(), 1f, false);
+			playCockpitSound(ModSounds.GETTING_LOCKED.get(), 
+				Config.CLIENT.rwrWarningVol.get().floatValue(), 1f);
 		}
 		// IR LOCK TONE
 		if (vehicle.tickCount%10==0 && vehicle.shouldPlayIRTone())  {
-			m.player.level.playLocalSound(camPos.x, camPos.y, camPos.z, 
-	    		ModSounds.FOX2_TONE_1.get(), SoundSource.PLAYERS, 
-	    		Config.CLIENT.irTargetToneVol.get().floatValue(), 1f, false);
+			playCockpitSound(ModSounds.FOX2_TONE_1.get(), 
+	    		Config.CLIENT.irTargetToneVol.get().floatValue(), 1f);
 		}
 		if (vehicle.getAircraftType().isPlane()) {
-			if (vehicle.isStalling()) if (vehicle.getStallTicks() % 7 == 1) {
-				m.player.level.playLocalSound(camPos.x, camPos.y, camPos.z, 
-					ModSounds.STALL_ALERT.get(), SoundSource.PLAYERS, 
-					0.5f, 1f, false);
-			} else if (vehicle.isAboutToStall()) if (vehicle.getAboutToStallTicks() % 14 == 1) {
-				m.player.level.playLocalSound(camPos.x, camPos.y, camPos.z, 
-					ModSounds.STALL_ALERT.get(), SoundSource.PLAYERS, 
-					0.5f, 1f, false);
+			// STALL
+			if (vehicle.isStalling()) { if (vehicle.getStallTicks() % 24 == 1) {
+				playCockpitSound(ModSounds.STALL_ALERT_GM1.get(), 1f, 1f);
+			} }
+			else if (vehicle.isAboutToStall()) { if (vehicle.getAboutToStallTicks() % 40 == 1) {
+				playCockpitSound(ModSounds.STALL_WARNING_GM1.get(), 1f, 1f);
+			} }
+			// PULL UP
+			if (vehicle.getDeltaMovement().y <= -DSCPhysicsConstants.COLLIDE_SPEED 
+					&& vehicle.tickCount % 13 == 0
+					&& UtilEntity.getDistFromGround(vehicle) / -vehicle.getDeltaMovement().y <= 80) {
+				playCockpitSound(ModSounds.PULL_UP_GM1.get(), 1f, 1f);
 			}
 		}
+		if (vehicle.getAircraftType().isAircraft) {
+			// ENGINE FIRE
+			if (vehicle.getEngineFireTicks() % 70 == 1) 
+				playCockpitSound(ModSounds.ENGINE_FIRE_GM1.get(), 1f, 1f);
+			// FUEL LEAK
+			if (vehicle.getBingoTicks() % 150 <= 60 && vehicle.getFuelLeakTicks() % 30 == 1) 
+				playCockpitSound(ModSounds.FUEL_LEAK_GM1.get(), 1f, 1f);
+			// BINGO FUEL
+			if (vehicle.getBingoTicks() % 160 <= 60 && vehicle.getBingoTicks() % 20 == 1) 
+				playCockpitSound(ModSounds.BINGO_GM1.get(), 1f, 1f);
+		}
 		// TODO 8.1 data link notification lines
-		// TODO 8.2 bitchin betty
-		// pull up, over g, aoa stall, gear still out, engine fire, fuel leak, hydraulics failure 
-		// TODO 8.3 jester
+		// TODO 8.2 different bitchin betty voice actors
+	}
+	
+	public static void playCockpitSound(SoundEvent sound, float pitch, float volume) {
+		Minecraft m = Minecraft.getInstance();
+		m.getSoundManager().play(forCockpit(sound, pitch, volume));
+	}
+	
+	public static SimpleSoundInstance forCockpit(SoundEvent sound, float pitch, float volume) {
+		return new SimpleSoundInstance(sound.getLocation(), SoundSource.PLAYERS, volume, pitch, 
+				SoundInstance.createUnseededRandom(), false, 0, 
+				SoundInstance.Attenuation.NONE, 0.0D, 0.0D, 0.0D, true);
 	}
 	
 }

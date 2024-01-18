@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.client.sounds;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 
@@ -30,7 +31,11 @@ public class PlaneMusicSoundInstance extends DopplerSoundInstance {
 			this.x = player.getX();
 			this.y = player.getY();
 			this.z = player.getZ();
-		} else super.tick();
+			attenuation = SoundInstance.Attenuation.NONE;
+		} else {
+			attenuation = SoundInstance.Attenuation.LINEAR;
+			super.tick();
+		}
 	}
 
 }

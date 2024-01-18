@@ -269,12 +269,17 @@ public class EntityPlane extends EntityVehicle {
 	
 	@Override
 	public boolean isStalling() {
-		return Math.abs(getAOA()) >= vehicleData.liftKGraph.getCriticalAOA();
+		return Math.abs(getAOA()) >= vehicleData.liftKGraph.getCriticalAOA() || liftLost();
 	}
 	
 	@Override
 	public boolean isAboutToStall() {
 		return Math.abs(getAOA()) >= vehicleData.liftKGraph.getWarnAOA();
+	}
+	
+	@Override
+	public boolean liftLost() {
+		return !isOnGround() && getForces().y < -10 && getDeltaMovement().y < -0.1 && Math.abs(zRot) > 15;
 	}
 
 }

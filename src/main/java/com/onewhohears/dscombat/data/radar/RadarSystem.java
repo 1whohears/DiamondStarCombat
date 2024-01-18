@@ -20,6 +20,8 @@ import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.init.DataSerializers;
+import com.onewhohears.dscombat.init.ModSounds;
+import com.onewhohears.dscombat.util.UtilClientSafeSounds;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
@@ -48,7 +50,7 @@ public class RadarSystem {
 	private List<RadarPing> targets = new ArrayList<RadarPing>();
 	private int selectedIndex = -1;
 	private List<RadarPing> clientTargets = new ArrayList<RadarPing>();
-	private int clientSelectedIndex = -1;
+	private int clientSelectedIndex = -1, clientSelectedTime = -21;
 	public int clientPingRefreshTime = 0;
 	public int clientRwrRefreshTime = 0;
 	
@@ -231,12 +233,8 @@ public class RadarSystem {
 	public void clientSelectTarget(RadarPing ping) {
 		clientSelectedIndex = -1;
 		for (int i = 0; i < clientTargets.size(); ++i) 
-			if (clientTargets.get(i).id == ping.id) {
-				clientSelectedIndex = i;
-				PacketHandler.INSTANCE.sendToServer(
-					new ToServerPingSelect(parent.getId(), ping));
-				break;
-			}
+			if (clientTargets.get(i).id == ping.id) 
+				clientSelectTarget(i);
 	}
 	
 	public void clientSelectNextTarget() {
@@ -244,10 +242,17 @@ public class RadarSystem {
 		if (size == 0) return;
 		int s = clientSelectedIndex + 1;
 		if (s >= size) s = 0;
-		clientSelectedIndex = s;
-		PacketHandler.INSTANCE.sendToServer(
-			new ToServerPingSelect(parent.getId(), 
-				clientTargets.get(s)));
+		clientSelectTarget(s);
+	}
+	
+	public void clientSelectTarget(int pingIndex) {
+		if (pingIndex < 0 || pingIndex >= getClientRadarPings().size()) return;
+		if (parent.tickCount-clientSelectedTime < 2) return;
+		clientSelectedIndex = pingIndex;
+		UtilClientSafeSounds.playCockpitSound(ModSounds.LOCK_GM1.get(), 1f, 1f);
+		PacketHandler.INSTANCE.sendToServer(new ToServerPingSelect(
+				parent.getId(), clientTargets.get(pingIndex)));
+		clientSelectedTime = parent.tickCount;
 	}
 	
 	public int getClientSelectedPingIndex() {

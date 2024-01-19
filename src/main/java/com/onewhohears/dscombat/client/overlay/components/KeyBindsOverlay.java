@@ -73,7 +73,8 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
 		if (isPilot && vehicle.canHover()) displayMapping(poseStack, screenWidth, screenHeight, index++, 
 				DSCKeys.specialKey, Component.literal("Hover (S1)"));
 		// FLARES
-		if (isPilot && vehicle.hasFlares()) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.flareKey);
+		if (isPilot && vehicle.hasFlares()) displayMapping(poseStack, screenWidth, screenHeight, index++, 
+				DSCKeys.flareKey, vehicle.getFlareNum()+"");
 		// CYCLE WEAPON
 		if (isPilot) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.weaponSelectKey);
 		// RADAR MODE
@@ -106,6 +107,10 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
     
     protected void displayMapping(PoseStack poseStack, int screenWidth, int screenHeight, int index, KeyMapping key) {
     	displayMapping(poseStack, screenWidth, screenHeight, index, key, key.isDown(), null);
+    }
+    
+    protected void displayMapping(PoseStack poseStack, int screenWidth, int screenHeight, int index, KeyMapping key, String setting) {
+    	displayMapping(poseStack, screenWidth, screenHeight, index, key, key.isDown(), setting);
     }
     
     protected void displayMapping(PoseStack poseStack, int screenWidth, int screenHeight, int index, KeyMapping key, Component mapName, boolean isUsed) {

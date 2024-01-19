@@ -274,7 +274,7 @@ public class EntityPlane extends EntityVehicle {
 	
 	@Override
 	public boolean isAboutToStall() {
-		return Math.abs(getAOA()) >= vehicleData.liftKGraph.getWarnAOA();
+		return Math.abs(getAOA()) >= vehicleData.liftKGraph.getWarnAOA() && !isFlapsDown();
 	}
 	
 	@Override

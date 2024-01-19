@@ -49,7 +49,6 @@ public class NonTickingMissileManager {
 			//System.out.println("MISSILE OUT OF TICK RANGE");
 			if (!missile.isRemoved()) missile.discardButTick();
 			missile.tickOutRange();
-			++missile.tickCount;
 		}
 		//System.out.println("FINISHED TICK MISSILE\n");
 		return true;

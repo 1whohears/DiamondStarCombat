@@ -1,8 +1,8 @@
 {
   "type": "track_missile",
-  "acceleration": 0.02,
+  "acceleration": 0.07,
   "activeTrack": false,
-  "bleed": 0.03,
+  "bleed": 0.04,
   "canShootOnGround": false,
   "causesFire": true,
   "compatibleWeaponPart": "dscombat:heavy_missile_rack",
@@ -15,7 +15,7 @@
   "explosive": true,
   "fireRate": 40,
   "fov": -1.0,
-  "fuelTicks": 234,
+  "fuelTicks": 167,
   "fuseDist": 3.0,
   "ingredients": [
     {

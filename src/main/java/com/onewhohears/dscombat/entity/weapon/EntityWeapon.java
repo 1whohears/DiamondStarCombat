@@ -223,6 +223,7 @@ public abstract class EntityWeapon extends Projectile {
 	}
 	
 	public int getAge() {
+		if (!level.isClientSide) return tickCount;
 		return entityData.get(AGE);
 	}
 	

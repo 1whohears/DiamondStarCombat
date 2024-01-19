@@ -18,6 +18,7 @@ import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -33,8 +34,9 @@ import net.minecraft.world.level.ClipContext.Fluid;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 
-public abstract class EntityMissile extends EntityBullet {
+public abstract class EntityMissile extends EntityBullet implements IEntityAdditionalSpawnData {
 	
 	public static final EntityDataAccessor<Float> ACCELERATION = SynchedEntityData.defineId(EntityMissile.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> TURN_RADIUS = SynchedEntityData.defineId(EntityMissile.class, EntityDataSerializers.FLOAT);
@@ -115,6 +117,16 @@ public abstract class EntityMissile extends EntityBullet {
 	}
 	
 	@Override
+	public void writeSpawnData(FriendlyByteBuf buffer) {
+		DataSerializers.VEC3.write(buffer, getDeltaMovement());
+	}
+
+	@Override
+	public void readSpawnData(FriendlyByteBuf buffer) {
+		setDeltaMovement(DataSerializers.VEC3.read(buffer));
+	}
+	
+	@Override
 	public void init() {
 	}
 	
@@ -153,29 +165,6 @@ public abstract class EntityMissile extends EntityBullet {
 			else targetPos = tpos;
 		} else targetPos = tpos;
 		guideToPosition();
-	}
-	
-	public void guideToPosition() {
-		if (targetPos == null) return;
-		Vec3 goal_dir = targetPos.subtract(position());
-		Vec3 cur_dir = getLookAngle();
-		float deg_diff = (float)UtilGeometry.angleBetweenDegrees(goal_dir, cur_dir);
-		float rot = getTurnDegrees();
-		if (deg_diff <= rot) {
-			setXRot(UtilAngles.getPitch(goal_dir));
-			setYRot(UtilAngles.getYaw(goal_dir));
-		} else {
-			Vec3 P = cur_dir.cross(goal_dir).normalize();
-			Vec3 new_dir = UtilAngles.rotateVector(cur_dir, new Quaternion(
-					UtilGeometry.convertVector(P), 
-					rot, true));
-			setXRot(UtilAngles.getPitch(new_dir));
-			setYRot(UtilAngles.getYaw(new_dir));
-		}
-	}
-	
-	public float getTurnDegrees() {
-		return (float)getDeltaMovement().length() / getTurnRadius() * Mth.RAD_TO_DEG;
 	}
 	
 	public void guideToTarget() {
@@ -267,6 +256,7 @@ public abstract class EntityMissile extends EntityBullet {
 		tickSetMove();
 		//System.out.println("starting set pos");
 		setPos(position().add(getDeltaMovement()));
+		++tickCount;
 	}
 	
 	public boolean dieIfNoTargetOutsideTickRange() {
@@ -279,12 +269,35 @@ public abstract class EntityMissile extends EntityBullet {
 		double B = getBleed() * UtilEntity.getAirPressure(this);
 		double bleed = B * (Math.abs(getXRot()-xRotO)+Math.abs(getYRot()-yRotO));
 		double vel = cm.length() - bleed;
-		if (tickCount <= getFuelTicks()) vel += getAcceleration();
+		if (getAge() <= getFuelTicks()) vel += getAcceleration();
 		double max = getSpeed();
 		if (vel > max) vel = max;
-		else if (vel <= 0) vel = 0;
+		else if (vel < 0.1) vel = 0.1;
 		Vec3 nm = getLookAngle().scale(vel);
 		setDeltaMovement(nm);
+	}
+	
+	public void guideToPosition() {
+		if (targetPos == null) return;
+		Vec3 goal_dir = targetPos.subtract(position());
+		Vec3 cur_dir = getLookAngle();
+		float deg_diff = (float)UtilGeometry.angleBetweenDegrees(goal_dir, cur_dir);
+		float rot = getTurnDegrees();
+		if (deg_diff <= rot) {
+			setXRot(UtilAngles.getPitch(goal_dir));
+			setYRot(UtilAngles.getYaw(goal_dir));
+		} else {
+			Vec3 P = cur_dir.cross(goal_dir).normalize();
+			Vec3 new_dir = UtilAngles.rotateVector(cur_dir, new Quaternion(
+					UtilGeometry.convertVector(P), 
+					rot, true));
+			setXRot(UtilAngles.getPitch(new_dir));
+			setYRot(UtilAngles.getYaw(new_dir));
+		}
+	}
+	
+	public float getTurnDegrees() {
+		return (float)getDeltaMovement().length() / getTurnRadius() * Mth.RAD_TO_DEG;
 	}
 	
 	@Override

@@ -1,8 +1,8 @@
 {
   "type": "track_missile",
-  "acceleration": 0.05,
+  "acceleration": 0.08,
   "activeTrack": true,
-  "bleed": 0.1,
+  "bleed": 0.07,
   "canShootOnGround": false,
   "causesFire": true,
   "compatibleWeaponPart": "",

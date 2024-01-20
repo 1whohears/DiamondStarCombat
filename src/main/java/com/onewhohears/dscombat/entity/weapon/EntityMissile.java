@@ -266,11 +266,11 @@ public abstract class EntityMissile extends EntityBullet implements IEntityAddit
 	@Override
 	protected void tickSetMove() {
 		Vec3 cm = getDeltaMovement();
+		double max = getSpeed();
 		double B = getBleed() * UtilEntity.getAirPressure(this);
 		double bleed = B * (Math.abs(getXRot()-xRotO)+Math.abs(getYRot()-yRotO));
 		double vel = cm.length() - bleed;
 		if (getAge() <= getFuelTicks()) vel += getAcceleration();
-		double max = getSpeed();
 		if (vel > max) vel = max;
 		else if (vel < 0.1) vel = 0.1;
 		Vec3 nm = getLookAngle().scale(vel);

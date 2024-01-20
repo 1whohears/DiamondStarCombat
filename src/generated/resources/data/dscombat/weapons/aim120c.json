@@ -2,7 +2,7 @@
   "type": "track_missile",
   "acceleration": 0.05,
   "activeTrack": true,
-  "bleed": 0.05,
+  "bleed": 0.04,
   "canShootOnGround": false,
   "causesFire": true,
   "compatibleWeaponPart": "dscombat:heavy_missile_rack",

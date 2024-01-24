@@ -14,13 +14,15 @@ public class FlagDeathExitCondition extends PhaseExitCondition<VillageDefenseDat
 
 	@Override
 	public boolean shouldExit(MinecraftServer server, GamePhase<VillageDefenseData> currentPhase) {
-		// TODO 3.8.1 flag death exit condition
+		// TODO 3.8.1.1 flag death exit condition
 		return false;
 	}
 	
 	@Override
 	public void onExit(MinecraftServer server, GamePhase<VillageDefenseData> currentPhase) {
 		super.onExit(server, currentPhase);
+		// TODO 3.8.1.2 announce flag died and give attackers a point
+		//currentPhase.getGameData().getAttackers().getScore();
 	}
 
 }

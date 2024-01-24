@@ -14,8 +14,14 @@ public class ScoreWinExitCondition extends PhaseExitCondition<VillageDefenseData
 
 	@Override
 	public boolean shouldExit(MinecraftServer server, GamePhase<VillageDefenseData> currentPhase) {
-		// TODO Auto-generated method stub
+		// TOD 3.8.4.1 score win exit condition
 		return false;
+	}
+	
+	@Override
+	public void onExit(MinecraftServer server, GamePhase<VillageDefenseData> currentPhase) {
+		super.onExit(server, currentPhase);
+		// TODO 3.8.4.2 announce which team won
 	}
 
 }

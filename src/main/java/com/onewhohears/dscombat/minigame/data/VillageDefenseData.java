@@ -45,7 +45,7 @@ public class VillageDefenseData extends DeathMatchData {
 		return game;
 	}
 	
-	protected int buyTime = 200, attackTime = 6000, roundsToWin = 3;
+	protected int buyTime = 200, attackTime = 6000, roundsToWin = 3, buyPhaseMoney = 24;
 	protected boolean buyInAttackTime = false;
 	
 	private AttackTeamAgent attackers;
@@ -81,6 +81,16 @@ public class VillageDefenseData extends DeathMatchData {
 		}
 	}
 	
+	@Override
+	public boolean canFinishSetupPhase(MinecraftServer server) {
+		return super.canFinishSetupPhase(server) && isFlagPlaced(server);
+	}
+	
+	public boolean isFlagPlaced(MinecraftServer server) {
+		// TODO 3.9.1 is flag placed to finish setup phase
+		return false;
+	}
+	
 	@Nullable
 	public AttackTeamAgent getAttackers() {
 		return attackers;
@@ -105,6 +115,10 @@ public class VillageDefenseData extends DeathMatchData {
 	
 	public boolean canBuyInAttackTime() {
 		return buyInAttackTime;
+	}
+	
+	public int getBuyPhaseMoney() {
+		return buyPhaseMoney;
 	}
 	
 	@SuppressWarnings("unchecked")

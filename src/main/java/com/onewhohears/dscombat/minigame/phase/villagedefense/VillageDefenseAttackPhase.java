@@ -21,6 +21,7 @@ public class VillageDefenseAttackPhase extends DeathMatchPlayPhase<VillageDefens
 	@Override
 	public void tickPhase(MinecraftServer server) {
 		super.tickPhase(server);
+		// TODO 3.3.4 periodically say how much time is left in attack phase
 	}
 	
 	@Override
@@ -31,6 +32,7 @@ public class VillageDefenseAttackPhase extends DeathMatchPlayPhase<VillageDefens
 	@Override
 	public void onStart(MinecraftServer server) {
 		super.onStart(server);
+		// TODO 3.8.3.2 tell teams current game info (attack phase start/score/time left)
 	}
 	
 	@Override

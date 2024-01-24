@@ -20,6 +20,7 @@ public class TeamDeathExitCondition extends PhaseExitCondition<VillageDefenseDat
 	@Override
 	public void onExit(MinecraftServer server, GamePhase<VillageDefenseData> currentPhase) {
 		super.onExit(server, currentPhase);
+		// TODO 3.8.4.1 announce all defenders died
 	}
 
 }

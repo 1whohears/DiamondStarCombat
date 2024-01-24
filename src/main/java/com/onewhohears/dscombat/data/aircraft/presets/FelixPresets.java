@@ -69,4 +69,17 @@ public class FelixPresets {
 			.addIngredient(ModItems.BASIC_FLARE_DISPENSER.getId())
 			.build();
 	
+	public static final AircraftPreset AIR_SUPPORT_FELIX_PLANE = AircraftPreset.Builder
+			.createFromCopy(DSCombatMod.MODID, "felix_plane_support", UNARMED_FELIX_PLANE)
+			.setSlotItem("left_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "agm65l", true)
+			.setSlotItem("left_wing_2", ModItems.LIGHT_MISSILE_RACK.getId(), "aim9l", true)
+			.setSlotItem("right_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "agm65g", true)
+			.setSlotItem("right_wing_2", ModItems.LIGHT_MISSILE_RACK.getId(), "agm114k", true)
+			.setSlotItem("frame_1", ModItems.HEAVY_MISSILE_RACK.getId(), "agm65g", true)
+			.setSlotItem("nose_1", ModItems.XM12.getId(), "15mm", true)
+			.setSlotItem("internal_4", ModItems.GR200.getId())
+			.setSlotItem("internal_3", ModItems.BASIC_FLARE_DISPENSER.getId(), true)
+			.setDefaultBaseTexture(1)
+			.build();
+	
 }

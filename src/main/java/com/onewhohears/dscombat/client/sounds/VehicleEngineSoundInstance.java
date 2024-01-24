@@ -4,7 +4,6 @@ import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.phys.Vec3;
 
@@ -37,9 +36,9 @@ public class VehicleEngineSoundInstance extends DopplerSoundInstance {
 			this.x = camPos.x;
 			this.y = camPos.y;
 			this.z = camPos.z;
-			attenuation = SoundInstance.Attenuation.NONE;
+			this.relative = false;
 		} else if (!isPassengerSound && !isPassenger) {
-			attenuation = SoundInstance.Attenuation.LINEAR;
+			this.relative = true;
 			super.tick();
 		} else {
 			this.volume = 0;

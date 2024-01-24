@@ -1,0 +1,101 @@
+{
+  "id": "defender",
+  "products": [
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 8
+      },
+      "product": {
+        "item": "dscombat:small_roller",
+        "num": 1
+      }
+    },
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 11
+      },
+      "product": {
+        "item": "dscombat:mrbudger_tank",
+        "num": 1
+      }
+    },
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 15
+      },
+      "product": {
+        "item": "dscombat:axcel_truck",
+        "num": 1
+      }
+    },
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 7
+      },
+      "product": {
+        "item": "dscombat:jason_plane",
+        "num": 1
+      }
+    },
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 16
+      },
+      "product": {
+        "item": "dscombat:felix_plane",
+        "num": 1
+      }
+    },
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 18
+      },
+      "product": {
+        "item": "dscombat:noah_chopper",
+        "num": 1
+      }
+    },
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 29
+      },
+      "product": {
+        "item": "dscombat:javi_plane",
+        "nbt": {
+          "preset": "javi_plane_truck"
+        },
+        "num": 1
+      }
+    },
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 31
+      },
+      "product": {
+        "item": "dscombat:alexis_plane",
+        "num": 1
+      }
+    },
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 45
+      },
+      "product": {
+        "item": "dscombat:alexis_plane",
+        "nbt": {
+          "preset": "alexis_plane_sniper"
+        },
+        "num": 1
+      }
+    }
+  ]
+}

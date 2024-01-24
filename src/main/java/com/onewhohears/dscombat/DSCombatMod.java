@@ -104,6 +104,7 @@ public class DSCombatMod {
     		generator.addProvider(true, new AircraftPresetGenerator(generator));
     		generator.addProvider(true, new WeaponPresetGenerator(generator));
     		generator.addProvider(true, new RadarPresetGenerator(generator));
+    		DependencySafety.serverDataGen(generator);
     	}
     	if (event.includeClient()) {
     		generator.addProvider(true, new AircraftClientPresetGenerator(generator));

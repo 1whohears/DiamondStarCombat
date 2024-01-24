@@ -94,6 +94,7 @@ public class AircraftPresetGenerator extends JsonPresetGenerator<AircraftPreset>
 		addPresetToGenerate(FelixPresets.EMPTY_FELIX_PLANE);
 		addPresetToGenerate(FelixPresets.UNARMED_FELIX_PLANE);
 		addPresetToGenerate(FelixPresets.DEFAULT_FELIX_PLANE);
+		addPresetToGenerate(FelixPresets.AIR_SUPPORT_FELIX_PLANE);
 		
 		addPresetToGenerate(JasonPresets.EMPTY_JASON_PLANE);
 		addPresetToGenerate(JasonPresets.UNARMED_JASON_PLANE);

@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.minigame;
 
 import com.onewhohears.dscombat.minigame.data.DogFightData;
+import com.onewhohears.dscombat.minigame.data.VillageDefenseData;
 import com.onewhohears.minigames.minigame.MiniGameManager;
 
 public class DSCMiniGames {
@@ -17,6 +18,14 @@ public class DSCMiniGames {
 		 */
 		MiniGameManager.registerGame("simple_dog_fight", (instanceId, gameTypeId) -> 
 			DogFightData.createSimpleFFADogFight(instanceId, gameTypeId));
+		MiniGameManager.registerGame("village_defense_3", (instanceId, gameTypeId) -> 
+			VillageDefenseData.createVillageDefense(instanceId, gameTypeId, 3));
+		MiniGameManager.registerGame("village_defense_5", (instanceId, gameTypeId) -> 
+			VillageDefenseData.createVillageDefense(instanceId, gameTypeId, 5));
+		MiniGameManager.registerGame("village_defense_10", (instanceId, gameTypeId) -> 
+			VillageDefenseData.createVillageDefense(instanceId, gameTypeId, 10));
+		MiniGameManager.registerGame("village_defense_extended", (instanceId, gameTypeId) -> 
+			VillageDefenseData.createExtendedVillageDefense(instanceId, gameTypeId));
 	}
 	
 }

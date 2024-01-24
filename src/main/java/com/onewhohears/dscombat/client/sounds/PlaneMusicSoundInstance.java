@@ -31,9 +31,9 @@ public class PlaneMusicSoundInstance extends DopplerSoundInstance {
 			this.x = player.getX();
 			this.y = player.getY();
 			this.z = player.getZ();
-			attenuation = SoundInstance.Attenuation.NONE;
+			this.relative = false;
 		} else {
-			attenuation = SoundInstance.Attenuation.LINEAR;
+			this.relative = true;
 			super.tick();
 		}
 	}

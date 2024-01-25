@@ -45,7 +45,7 @@ public class VillageDefenseData extends DeathMatchData {
 		return game;
 	}
 	
-	protected int buyTime = 200, attackTime = 6000, roundsToWin = 3, buyPhaseMoney = 24;
+	protected int buyTime = 200, attackTime = 6000, roundsToWin = 3;
 	protected boolean buyInAttackTime = false;
 	
 	private AttackTeamAgent attackers;
@@ -53,6 +53,8 @@ public class VillageDefenseData extends DeathMatchData {
 	
 	protected VillageDefenseData(String instanceId, String gameTypeId) {
 		super(instanceId, gameTypeId);
+		this.addKits("scout", "soldier", "demoman", "heavy", "sniper");
+		this.moneyPerRound = 24;
 	}
 	
 	public void serverTick(MinecraftServer server) {
@@ -115,10 +117,6 @@ public class VillageDefenseData extends DeathMatchData {
 	
 	public boolean canBuyInAttackTime() {
 		return buyInAttackTime;
-	}
-	
-	public int getBuyPhaseMoney() {
-		return buyPhaseMoney;
 	}
 	
 	@SuppressWarnings("unchecked")

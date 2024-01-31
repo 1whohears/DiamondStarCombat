@@ -128,6 +128,7 @@ public class ImmutableVehicleData {
 	 */
 	public final boolean isTank;
 	
+	// FIXME 0.2 move all of this to preset data
 	public ImmutableVehicleData(AircraftPreset defaultPreset, 
 			int baseTextureVariants, int textureLayers, 
 			RegistryObject<SoundEvent> externalEngineSound,

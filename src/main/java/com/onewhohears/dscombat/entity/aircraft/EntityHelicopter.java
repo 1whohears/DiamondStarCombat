@@ -3,14 +3,13 @@ package com.onewhohears.dscombat.entity.aircraft;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData;
+import com.onewhohears.dscombat.data.aircraft.VehicleStats;
+import com.onewhohears.dscombat.data.aircraft.VehicleStats.HeliStats;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource.WeaponDamageType;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -19,13 +18,13 @@ import net.minecraft.world.phys.Vec3;
 
 public class EntityHelicopter extends EntityVehicle {
 	
-	public static final EntityDataAccessor<Float> ACC_FORWARD = SynchedEntityData.defineId(EntityHelicopter.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> ACC_SIDE = SynchedEntityData.defineId(EntityHelicopter.class, EntityDataSerializers.FLOAT);
+	protected HeliStats heliStats;
 	
 	private float propellerRot, propellerRotOld;
 	
 	public EntityHelicopter(EntityType<? extends EntityHelicopter> entity, Level level, ImmutableVehicleData vehicleData) {
 		super(entity, level, vehicleData);
+		heliStats = (HeliStats)heliStats;
 	}
 	
 	@Override
@@ -34,24 +33,13 @@ public class EntityHelicopter extends EntityVehicle {
 	}
 	
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		entityData.define(ACC_FORWARD, 0f);
-		entityData.define(ACC_SIDE, 0f);
-	}
-	
-	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
-		this.setAccForward(compound.getFloat("accForward"));
-		this.setAccSide(compound.getFloat("accSide"));
 	}
 
 	@Override
 	protected void addAdditionalSaveData(CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
-		compound.putFloat("accForward", getAccForward());
-		compound.putFloat("accSide", getAccSide());
 	}
 	
 	@Override
@@ -140,19 +128,11 @@ public class EntityHelicopter extends EntityVehicle {
     }
 	
 	public float getAccForward() {
-		return entityData.get(ACC_FORWARD);
-	}
-	
-	public void setAccForward(float acc) {
-		entityData.set(ACC_FORWARD, acc);
+		return heliStats.accForward;
 	}
 	
 	public float getAccSide() {
-		return entityData.get(ACC_SIDE);
-	}
-	
-	public void setAccSide(float acc) {
-		entityData.set(ACC_SIDE, acc);
+		return heliStats.accSide;
 	}
 	
 	@Override
@@ -180,6 +160,11 @@ public class EntityHelicopter extends EntityVehicle {
 		WeaponDamageType wdt = WeaponDamageType.byId(source.getMsgId());
 		if (wdt != null && wdt.isContact()) return amount*DSCGameRules.getBulletDamageHeliFactor(level);
 		return super.calcProjDamageBySource(source, amount);
+	}
+
+	@Override
+	protected VehicleStats createVehicleStats() {
+		return new HeliStats();
 	}
 
 }

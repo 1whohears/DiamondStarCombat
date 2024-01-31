@@ -2,6 +2,8 @@ package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData;
+import com.onewhohears.dscombat.data.aircraft.VehicleStats;
+import com.onewhohears.dscombat.data.aircraft.VehicleStats.SubStats;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
@@ -95,6 +97,7 @@ public class EntitySubmarine extends EntityBoat {
 			if (Math.abs(move.y) > max) move.multiply(1, max/move.y, 1);
 		}
 		setDeltaMovement(move);
+		// FIXME 8 subs don't move correctly
 	}
 	
 	@Override
@@ -142,6 +145,11 @@ public class EntitySubmarine extends EntityBoat {
 	@Override
 	public boolean canBrake() {
 		return true;
+	}
+	
+	@Override
+	protected VehicleStats createVehicleStats() {
+		return new SubStats();
 	}
 
 }

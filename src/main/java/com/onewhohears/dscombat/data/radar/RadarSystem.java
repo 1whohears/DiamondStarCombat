@@ -20,8 +20,6 @@ import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.init.DataSerializers;
-import com.onewhohears.dscombat.init.ModSounds;
-import com.onewhohears.dscombat.util.UtilClientSafeSounds;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
@@ -249,7 +247,7 @@ public class RadarSystem {
 		if (pingIndex < 0 || pingIndex >= getClientRadarPings().size()) return;
 		if (parent.tickCount-clientSelectedTime < 2) return;
 		clientSelectedIndex = pingIndex;
-		UtilClientSafeSounds.playCockpitSound(ModSounds.LOCK_GM1.get(), 1f, 1f);
+		parent.soundManager.playRadarLockSound();
 		PacketHandler.INSTANCE.sendToServer(new ToServerPingSelect(
 				parent.getId(), clientTargets.get(pingIndex)));
 		clientSelectedTime = parent.tickCount;

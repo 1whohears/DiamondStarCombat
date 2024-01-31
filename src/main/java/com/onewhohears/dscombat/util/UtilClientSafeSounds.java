@@ -10,8 +10,8 @@ import com.onewhohears.dscombat.client.sounds.DopplerSoundInstance;
 import com.onewhohears.dscombat.client.sounds.PlaneMusicSoundInstance;
 import com.onewhohears.dscombat.client.sounds.VehicleEngineSoundInstance;
 import com.onewhohears.dscombat.data.aircraft.DSCPhysicsConstants;
+import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
-import com.onewhohears.dscombat.init.ModSounds;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -19,6 +19,7 @@ import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -69,58 +70,60 @@ public class UtilClientSafeSounds {
 		}
 	}
 	
-	public static void tickPassengerSounds(EntityVehicle vehicle) {
+	public static void tickPassengerSounds(EntityVehicle vehicle, PassengerSoundPack passengerSoundPack) {
 		Minecraft m = Minecraft.getInstance();
 		if (!vehicle.equals(m.player.getRootVehicle())) return;
  		// RWR WARNINGS
 		if (vehicle.tickCount%4==0 && vehicle.radarSystem.isTrackedByMissile()) {
-			playCockpitSound(ModSounds.MISSILE_WARNING.get(), 
+			playCockpitSound(passengerSoundPack.missileAlert, 
 				Config.CLIENT.missileWarningVol.get().floatValue(), 1f);
 		} else if (vehicle.tickCount%8==0 && vehicle.radarSystem.isTrackedByRadar()) {
-			playCockpitSound(ModSounds.GETTING_LOCKED.get(), 
+			playCockpitSound(passengerSoundPack.rwrWarn, 
 				Config.CLIENT.rwrWarningVol.get().floatValue(), 1f);
 		}
 		// IR LOCK TONE
 		if (vehicle.tickCount%10==0 && vehicle.shouldPlayIRTone())  {
-			playCockpitSound(ModSounds.FOX2_TONE_1.get(), 
+			playCockpitSound(passengerSoundPack.irLockTone, 
 	    		Config.CLIENT.irTargetToneVol.get().floatValue(), 1f);
 		}
 		if (vehicle.getAircraftType().isPlane()) {
 			// STALL
 			if (vehicle.isStalling()) { if (vehicle.getStallTicks() % 24 == 1) {
-				playCockpitSound(ModSounds.STALL_ALERT_GM1.get(), 1f, 1f);
+				playCockpitSound(passengerSoundPack.stallAlert, 1f, 1f);
 			} }
 			else if (vehicle.isAboutToStall()) { if (vehicle.getAboutToStallTicks() % 40 == 1) {
-				playCockpitSound(ModSounds.STALL_WARNING_GM1.get(), 1f, 1f);
+				playCockpitSound(passengerSoundPack.stallWarn, 1f, 1f);
 			} }
 			// PULL UP
 			if (vehicle.getDeltaMovement().y <= -DSCPhysicsConstants.COLLIDE_SPEED 
 					&& vehicle.tickCount % 13 == 0
 					&& UtilEntity.getDistFromGround(vehicle) / -vehicle.getDeltaMovement().y <= 80) {
-				playCockpitSound(ModSounds.PULL_UP_GM1.get(), 1f, 1f);
+				playCockpitSound(passengerSoundPack.pullUp, 1f, 1f);
 			}
 		}
 		if (vehicle.getAircraftType().isAircraft) {
 			// ENGINE FIRE
 			if (vehicle.getEngineFireTicks() % 70 == 1) 
-				playCockpitSound(ModSounds.ENGINE_FIRE_GM1.get(), 1f, 1f);
+				playCockpitSound(passengerSoundPack.engineFire, 1f, 1f);
 			// FUEL LEAK
 			if (vehicle.getBingoTicks() % 150 <= 60 && vehicle.getFuelLeakTicks() % 30 == 1) 
-				playCockpitSound(ModSounds.FUEL_LEAK_GM1.get(), 1f, 1f);
+				playCockpitSound(passengerSoundPack.fuelLeak, 1f, 1f);
 			// BINGO FUEL
 			if (vehicle.getBingoTicks() % 160 <= 60 && vehicle.getBingoTicks() % 20 == 1) 
-				playCockpitSound(ModSounds.BINGO_GM1.get(), 1f, 1f);
+				playCockpitSound(passengerSoundPack.bingoFuel, 1f, 1f);
 		}
 		// TODO 8.1 data link notification lines
 		// TODO 8.2 different bitchin betty voice actors
 	}
 	
 	public static void playCockpitSound(SoundEvent sound, float pitch, float volume) {
+		if (sound == null) return;
 		Minecraft m = Minecraft.getInstance();
 		m.getSoundManager().play(forCockpit(sound, pitch, volume));
 	}
 	
 	public static SimpleSoundInstance forCockpit(SoundEvent sound, float pitch, float volume) {
+		if (sound == null) sound = SoundEvents.VILLAGER_YES;
 		return new SimpleSoundInstance(sound.getLocation(), SoundSource.PLAYERS, volume, pitch, 
 				SoundInstance.createUnseededRandom(), false, 0, 
 				SoundInstance.Attenuation.NONE, 0.0D, 0.0D, 0.0D, true);

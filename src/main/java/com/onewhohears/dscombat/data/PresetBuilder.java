@@ -32,7 +32,7 @@ public abstract class PresetBuilder<C extends PresetBuilder<C>> {
 		this.sup = sup;
 		setupJsonData();
 	}
-	
+	// FIXME 0.3 preset copy json files should only have overridden data and not be cluttered with parent data
 	public PresetBuilder(String namespace, String name, JsonPresetFactory<? extends JsonPreset> sup, JsonObject copy) {
 		this.name = name;
 		key = new ResourceLocation(namespace, name);

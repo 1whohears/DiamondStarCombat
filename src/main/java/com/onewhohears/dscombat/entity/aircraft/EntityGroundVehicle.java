@@ -2,6 +2,8 @@ package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData;
+import com.onewhohears.dscombat.data.aircraft.VehicleStats;
+import com.onewhohears.dscombat.data.aircraft.VehicleStats.CarStats;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
@@ -129,6 +131,11 @@ public class EntityGroundVehicle extends EntityVehicle {
 	@Override
 	public boolean canToggleLandingGear() {
 		return false;
+	}
+
+	@Override
+	protected VehicleStats createVehicleStats() {
+		return new CarStats();
 	}
 
 }

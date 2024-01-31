@@ -2,18 +2,14 @@ package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.command.DSCGameRules;
-import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
 import com.onewhohears.dscombat.data.aircraft.DSCPhysicsConstants;
 import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData;
+import com.onewhohears.dscombat.data.aircraft.VehicleStats;
+import com.onewhohears.dscombat.data.aircraft.VehicleStats.PlaneStats;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource.WeaponDamageType;
-import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -22,34 +18,17 @@ import net.minecraft.world.phys.Vec3;
 
 public class EntityPlane extends EntityVehicle {
 	
-	public static final EntityDataAccessor<Float> WING_AREA = SynchedEntityData.defineId(EntityPlane.class, EntityDataSerializers.FLOAT);
+	protected PlaneStats planeStats;
 	
-	private float propellerRot = 0, propellerRotOld = 0, aoa = 0, liftK = 0, airFoilSpeedSqr = 0;
+	private float propellerRot = 0, propellerRotOld = 0;
+	private float aoa = 0, liftK = 0, airFoilSpeedSqr = 0;
 	private float centripetalForce, centrifugalForce; 
 	private double liftMag;
 	private Vec3 liftDir = Vec3.ZERO, airFoilAxes = Vec3.ZERO;
 	
 	public EntityPlane(EntityType<? extends EntityPlane> entity, Level level, ImmutableVehicleData vehicleData) {
 		super(entity, level, vehicleData);
-	}
-	
-	@Override
-	public void defineSynchedData() {
-		super.defineSynchedData();
-		entityData.define(WING_AREA, 10f);
-	}
-	
-	@Override
-	public void readAdditionalSaveData(CompoundTag nbt) {
-		super.readAdditionalSaveData(nbt);
-		CompoundTag presetNbt = AircraftPresets.get().getPreset(preset).getDataAsNBT();
-		setWingSurfaceArea(UtilParse.fixFloatNbt(nbt, "wing_area", presetNbt, 1));
-	}
-
-	@Override
-	protected void addAdditionalSaveData(CompoundTag compound) {
-		super.addAdditionalSaveData(compound);
-		compound.putFloat("wing_area", getWingSurfaceArea());
+		planeStats = (PlaneStats)vehicleStats;
 	}
 	
 	@Override
@@ -219,12 +198,7 @@ public class EntityPlane extends EntityVehicle {
 	 * @return the surface area of the plane wings
 	 */
 	public final float getWingSurfaceArea() {
-		return entityData.get(WING_AREA);
-	}
-	
-	public final void setWingSurfaceArea(float area) {
-		if (area < 0) area = 0;
-		entityData.set(WING_AREA, area);
+		return planeStats.wing_area;
 	}
 	
 	@Override
@@ -280,6 +254,11 @@ public class EntityPlane extends EntityVehicle {
 	@Override
 	public boolean liftLost() {
 		return !isOnGround() && getForces().y < -10 && getDeltaMovement().y < -0.1 && Math.abs(zRot) > 15;
+	}
+
+	@Override
+	protected VehicleStats createVehicleStats() {
+		return new PlaneStats();
 	}
 
 }

@@ -32,6 +32,7 @@ import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
 import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData;
 import com.onewhohears.dscombat.data.aircraft.VehicleInputManager;
 import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager;
+import com.onewhohears.dscombat.data.aircraft.VehicleStats;
 import com.onewhohears.dscombat.data.aircraft.VehicleTextureManager;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartsManager;
@@ -52,7 +53,6 @@ import com.onewhohears.dscombat.item.ItemRepairTool;
 import com.onewhohears.dscombat.item.ItemSpraycan;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.UtilPacket;
-import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.UtilParticles;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
@@ -109,34 +109,19 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	private static final Logger LOGGER = LogUtils.getLogger();
 	
-	public static final EntityDataAccessor<Float> MAX_HEALTH = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
-    public static final EntityDataAccessor<Float> HEALTH = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> MAX_SPEED = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> THROTTLEUP = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> THROTTLEDOWN = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> HEALTH = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Quaternion> Q = SynchedEntityData.defineId(EntityVehicle.class, DataSerializers.QUATERNION);
 	public static final EntityDataAccessor<Vec3> AV = SynchedEntityData.defineId(EntityVehicle.class, DataSerializers.VEC3);
-	public static final EntityDataAccessor<Float> STEALTH = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> MAX_ROLL = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> MAX_PITCH = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> MAX_YAW = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> TURN_RADIUS = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> ROLL_TORQUE = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> PITCH_TORQUE = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> YAW_TORQUE = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> IDLEHEAT = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> MASS = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Boolean> TEST_MODE = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> NO_CONSUME = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Integer> FLARE_NUM = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<String> RADIO_SONG = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.STRING);
-	public static final EntityDataAccessor<Float> CROSS_SEC_AREA = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Boolean> PLAY_IR_TONE = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<Float> BASE_ARMOR = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Boolean> FUEL_LEAK = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> ENGINE_FIRE = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
 	
 	public final String defaultPreset, clientPresetId;
+	public final VehicleStats vehicleStats;
 	public final ImmutableVehicleData vehicleData;
 	public final VehicleInputManager inputs;
 	public final VehicleSoundManager soundManager;
@@ -205,16 +190,20 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		this.preset = this.defaultPreset;
 		this.item = vehicleData.defaultPreset.getItem();
 		this.blocksBuilding = true;
-		addVehicleScreens();
-		addHitboxes();
-		setId(ENTITY_COUNTER.getAndAdd(hitboxes.length+1)+1);
+		vehicleStats = createVehicleStats();
+		vehicleStats.readPresetData(vehicleData.defaultPreset);
 		inputs = new VehicleInputManager();
 		soundManager = new VehicleSoundManager(this);
 		textureManager = new VehicleTextureManager(this);
 		partsManager = new PartsManager(this);
 		weaponSystem = new WeaponSystem(this);
 		radarSystem = new RadarSystem(this);
+		addVehicleScreens();
+		addHitboxes();
+		setId(ENTITY_COUNTER.getAndAdd(hitboxes.length+1)+1);
 	}
+	
+	protected abstract VehicleStats createVehicleStats();
 	
 	@Override
 	public void setId(int id) {
@@ -238,30 +227,14 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	@Override
 	protected void defineSynchedData() {
-		entityData.define(MAX_HEALTH, 100f);
         entityData.define(HEALTH, 100f);
-		entityData.define(MAX_SPEED, 1.0f);
-		entityData.define(THROTTLEUP, 0.05f);
-		entityData.define(THROTTLEDOWN, 0.05f);
 		entityData.define(Q, Quaternion.ONE);
 		entityData.define(AV, Vec3.ZERO);
-		entityData.define(STEALTH, 1f);
-		entityData.define(MAX_ROLL, 1f);
-		entityData.define(MAX_PITCH, 1f);
-		entityData.define(MAX_YAW, 1f);
-		entityData.define(ROLL_TORQUE, 1f);
-		entityData.define(PITCH_TORQUE, 1f);
-		entityData.define(YAW_TORQUE, 1f);
-		entityData.define(IDLEHEAT, 1f);
-		entityData.define(MASS, 1f);
 		entityData.define(TEST_MODE, false);
-		entityData.define(TURN_RADIUS, 0f);
 		entityData.define(NO_CONSUME, false);
 		entityData.define(FLARE_NUM, 0);
 		entityData.define(RADIO_SONG, "");
-		entityData.define(CROSS_SEC_AREA, 1f);
 		entityData.define(PLAY_IR_TONE, false);
-		entityData.define(BASE_ARMOR, 0f);
 		entityData.define(FUEL_LEAK, false);
 		entityData.define(ENGINE_FIRE, false);
 	}
@@ -292,6 +265,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
  	 */
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
+		// FIXME 0.1 make all vehicle base stats not nbt based
 		// ORDER MATTERS
 		setTestMode(nbt.getBoolean("test_mode"));
 		setNoConsume(nbt.getBoolean("no_consume"));
@@ -307,28 +281,15 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		// get the preset data
 		AircraftPreset ap = AircraftPresets.get().getPreset(preset);
 		item = ap.getItem();
+		vehicleStats.readPresetData(ap);
+		soundManager.loadSounds(ap);
 		CompoundTag presetNbt = ap.getDataAsNBT();
 		// merge if this entity hasn't merged yet
 		if (!nbt.getBoolean("merged_preset")) nbt.merge(presetNbt);
 		partsManager.read(nbt, presetNbt);
 		textureManager.read(nbt);
-		setEmptyVehicleMass(presetNbt.getFloat("mass"));
-		setMaxSpeed(nbt.getFloat("max_speed"));
-		setMaxHealth(nbt.getFloat("max_health"));
+		soundManager.read(nbt);
 		setHealth(nbt.getFloat("health"));
-		setStealth(nbt.getFloat("stealth"));
-		setBaseCrossSecArea(UtilParse.fixFloatNbt(nbt, "cross_sec_area", presetNbt, 1));
-		setTurnRadius(nbt.getFloat("turn_radius"));
-		setMaxDeltaRoll(nbt.getFloat("maxroll"));
-		setMaxDeltaPitch(nbt.getFloat("maxpitch"));
-		setMaxDeltaYaw(nbt.getFloat("maxyaw"));
-		setRollTorque(UtilParse.fixFloatNbt(nbt, "rolltorque", presetNbt, 1));
-		setPitchTorque(UtilParse.fixFloatNbt(nbt, "pitchtorque", presetNbt, 1));
-		setYawTorque(UtilParse.fixFloatNbt(nbt, "yawtorque", presetNbt, 1));
-		setThrottleIncreaseRate(nbt.getFloat("throttleup"));
-		setThrottleDecreaseRate(nbt.getFloat("throttledown"));
-		setIdleHeat(nbt.getFloat("idleheat"));
-		setBaseArmor(UtilParse.fixFloatNbt(nbt, "base_armor", presetNbt, 0));
 		setLandingGear(nbt.getBoolean("landing_gear"));
 		setCurrentThrottle(nbt.getFloat("current_throttle"));
 		setFuelLeak(nbt.getBoolean("fuel_leak"));
@@ -352,23 +313,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		nbt.putBoolean("merged_preset", true);
 		partsManager.write(nbt);
 		textureManager.write(nbt);
-		nbt.putFloat("max_speed", getMaxSpeed());
-		nbt.putFloat("max_health", getMaxHealth());
-		nbt.putFloat("health", getHealth());
-		nbt.putFloat("stealth", getStealth());
-		nbt.putFloat("cross_sec_area", getBaseCrossSecArea());
-		nbt.putFloat("turn_radius", getTurnRadius());
-		nbt.putFloat("maxroll", getMaxDeltaRoll());
-		nbt.putFloat("maxpitch", getMaxDeltaPitch());
-		nbt.putFloat("maxyaw", getMaxDeltaYaw());
-		nbt.putFloat("rolltorque", getRollTorque());
-		nbt.putFloat("pitchtorque", getPitchTorque());
-		nbt.putFloat("yawtorque", getYawTorque());
-		nbt.putFloat("throttleup", getThrottleIncreaseRate());
-		nbt.putFloat("throttledown", getThrottleDecreaseRate());
-		nbt.putFloat("idleheat", getIdleHeat());
-		nbt.putFloat("mass", getEmptyVehicleMass());
-		nbt.putFloat("base_armor", getBaseArmor());
+		soundManager.write(nbt);
 		nbt.putBoolean("landing_gear", isLandingGear());
 		nbt.putFloat("current_throttle", getCurrentThrottle());
 		nbt.putBoolean("fuel_leak", isFuelLeak());
@@ -397,6 +342,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		float throttle = buffer.readFloat();
 		List<PartSlot> slots = PartsManager.readSlotsFromBuffer(buffer);
 		textureManager.read(buffer);
+		soundManager.write(buffer);
 		// ORDER MATTERS
 		weaponSystem.setSelected(weaponIndex);
 		partsManager.setPartSlots(slots);
@@ -404,6 +350,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		// PRESET STUFF
 		if (!AircraftPresets.get().has(preset)) return;
 		AircraftPreset ap = AircraftPresets.get().getPreset(preset);
+		vehicleStats.readPresetData(ap);
+		soundManager.loadSounds(ap);
 		item = ap.getItem();
 		// OTHER
 		setRadarMode(RadarMode.byId(radarMode));
@@ -422,6 +370,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		buffer.writeFloat(getCurrentThrottle());
 		PartsManager.writeSlotsToBuffer(buffer, partsManager.getSlots());
 		textureManager.write(buffer);
+		soundManager.write(buffer);
 	}
 	
 	public static enum AircraftType {
@@ -1220,15 +1169,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 * @return the mass of the vehicle. not including parts.
 	 */
 	public final float getEmptyVehicleMass() {
-		return entityData.get(MASS);
-	}
-	
-	/**
-	 * @param mass the mass of the vehicle not including parts.
-	 */
-	public final void setEmptyVehicleMass(float mass) {
-		if (mass < 0) mass = 0;
-		entityData.set(MASS, mass);
+		return vehicleStats.mass;
 	}
 	
 	/**
@@ -1794,14 +1735,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 * @return the max speed of the craft along the x and z axis
 	 */
     public final float getMaxSpeed() {
-    	return entityData.get(MAX_SPEED);
-    }
-    
-    /**
-     * @param maxSpeed the max speed of the craft along the x and z axis
-     */
-    public final void setMaxSpeed(float maxSpeed) {
-    	entityData.set(MAX_SPEED, maxSpeed);
+    	return vehicleStats.max_speed;
     }
     
     /**
@@ -1834,75 +1768,35 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     }
     
     public final float getThrottleIncreaseRate() {
-    	return entityData.get(THROTTLEUP);
-    }
-    
-    public final void setThrottleIncreaseRate(float value) {
-    	if (value < 0) value = 0;
-    	entityData.set(THROTTLEUP, value);
+    	return vehicleStats.throttleup;
     }
     
     public final float getThrottleDecreaseRate() {
-    	return entityData.get(THROTTLEDOWN);
-    }
-    
-    public final void setThrottleDecreaseRate(float value) {
-    	if (value < 0) value = 0;
-    	entityData.set(THROTTLEDOWN, value);
+    	return vehicleStats.throttledown;
     }
     
     public final float getMaxDeltaPitch() {
-    	return entityData.get(MAX_PITCH);
-    }
-    
-    public final void setMaxDeltaPitch(float degrees) {
-    	if (degrees < 0) degrees = 0;
-    	entityData.set(MAX_PITCH, degrees);
+    	return vehicleStats.maxpitch;
     }
     
     public final float getMaxDeltaYaw() {
-    	return entityData.get(MAX_YAW);
-    }
-    
-    public final void setMaxDeltaYaw(float degrees) {
-    	if (degrees < 0) degrees = 0;
-    	entityData.set(MAX_YAW, degrees);
+    	return vehicleStats.maxyaw;
     }
     
     public final float getMaxDeltaRoll() {
-    	return entityData.get(MAX_ROLL);
-    }
-    
-    public final void setMaxDeltaRoll(float degrees) {
-    	if (degrees < 0) degrees = 0;
-    	entityData.set(MAX_ROLL, degrees);
+    	return vehicleStats.maxroll;
     }
     
     public final float getPitchTorque() {
-    	return entityData.get(PITCH_TORQUE);
-    }
-    
-    public final void setPitchTorque(float degrees) {
-    	if (degrees < 0) degrees = 0;
-    	entityData.set(PITCH_TORQUE, degrees);
+    	return vehicleStats.pitchtorque;
     }
     
     public final float getYawTorque() {
-    	return entityData.get(YAW_TORQUE);
-    }
-    
-    public final void setYawTorque(float degrees) {
-    	if (degrees < 0) degrees = 0;
-    	entityData.set(YAW_TORQUE, degrees);
+    	return vehicleStats.yawtorque;
     }
     
     public final float getRollTorque() {
-    	return entityData.get(ROLL_TORQUE);
-    }
-    
-    public final void setRollTorque(float degrees) {
-    	if (degrees < 0) degrees = 0;
-    	entityData.set(ROLL_TORQUE, degrees);
+    	return vehicleStats.rolltorque;
     }
     
     public void increaseThrottle() {
@@ -1966,11 +1860,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     }
     
     public final float getBaseCrossSecArea() {
-    	return entityData.get(CROSS_SEC_AREA);
-    }
-    
-    public final void setBaseCrossSecArea(float area) {
-    	entityData.set(CROSS_SEC_AREA, area);
+    	return vehicleStats.cross_sec_area;
     }
     
     public final Vec3 getMoment() {
@@ -2005,17 +1895,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
      * @return value to be multiplied to the cross sectional area
      */
     public final float getStealth() {
-    	return entityData.get(STEALTH);
-    }
-    
-    /**
-     * 1 is no stealth
-     * 0 is invisible
-     * @param stealth value to be multiplied to the cross sectional area
-     */
-    public final void setStealth(float stealth) {
-    	if (stealth < 0) stealth = 0;
-    	entityData.set(STEALTH, stealth);
+    	return vehicleStats.stealth;
     }
     
     /**
@@ -2065,13 +1945,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		return dist < 65536;
 	}
     
-    public final void setMaxHealth(float h) {
-    	if (h < 0) h = 0;
-    	entityData.set(MAX_HEALTH, h);
-    }
-    
     public final float getMaxHealth() {
-    	return entityData.get(MAX_HEALTH);
+    	return vehicleStats.max_health;
     }
     
     public final void addHealth(float h) {
@@ -2105,14 +1980,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
      * @return the heat value this aircraft always emits 
      */
     public final float getIdleHeat() {
-    	return entityData.get(IDLEHEAT);
-    }
-    
-    /**
-     * @param heat the heat value this aircraft always emits 
-     */
-    public final void setIdleHeat(float heat) {
-    	entityData.set(IDLEHEAT, heat);
+    	return vehicleStats.idleheat;
     }
     
     /**
@@ -2123,11 +1991,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     }
     
     public final float getBaseArmor() {
-    	return entityData.get(BASE_ARMOR);
-    }
-    
-    public final void setBaseArmor(float armor) {
-    	entityData.set(BASE_ARMOR, armor);
+    	return vehicleStats.base_armor;
     }
     
     public float getTotalArmor() {
@@ -2355,11 +2219,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     }
     
     public final float getTurnRadius() {
-    	return entityData.get(TURN_RADIUS);
-    }
-    
-    public final void setTurnRadius(float turn) {
-    	entityData.set(TURN_RADIUS, turn);
+    	return vehicleStats.turn_radius;
     }
     
     @Override

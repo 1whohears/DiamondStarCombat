@@ -2,7 +2,6 @@ package com.onewhohears.dscombat.data;
 
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.data.JsonPreset.JsonPresetFactory;
-import com.onewhohears.dscombat.data.aircraft.AircraftPreset.Builder;
 
 import net.minecraft.resources.ResourceLocation;
 

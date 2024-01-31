@@ -30,7 +30,7 @@ public class JaviPlane extends EntityPlane {
 			.build();
 	
 	public JaviPlane(EntityType<? extends EntityPlane> entity, Level level) {
-		super(entity, level, JAVI_PLANE_DATA);
+		super(entity, level, JaviPresets.DEFAULT_JAVI_PLANE);
 	}
 	
 	@Override

@@ -15,6 +15,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
 public class EntityModelTestPlane<T extends EntityPlane> extends EntityControllableModel<T> {
 	
@@ -38,7 +39,7 @@ public class EntityModelTestPlane<T extends EntityPlane> extends EntityControlla
 	public void renderToBuffer(T entity, float partialTicks, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		poseStack.translate(0, 1.5, 0);
 		poseStack.scale(1.0F, -1.0F, 1.0F);
-		propeller.zRot = entity.getPropellerRotation(partialTicks);
+		propeller.zRot = entity.getMotorRotation(partialTicks, Mth.PI);
 		float gear = entity.getLandingGearPos(partialTicks);
 		float hpi = (float)Math.PI/2;
 		gearback.xRot = gear * -hpi;

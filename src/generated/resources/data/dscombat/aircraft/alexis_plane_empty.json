@@ -1,10 +1,7 @@
 {
   "aircraft_type": 0,
-  "base_armor": 2.0,
-  "cross_sec_area": 4.0,
   "displayName": "preset.dscombat.alexis_plane_empty",
   "health": 150.0,
-  "idleheat": 4.0,
   "ingredients": [
     {
       "item": "dscombat:fuselage",
@@ -34,15 +31,7 @@
   "is_craftable": false,
   "item": "dscombat:alexis_plane",
   "landing_gear": true,
-  "mass": 8500.0,
-  "max_health": 150.0,
-  "max_speed": 1.4,
-  "maxpitch": 2.5,
-  "maxroll": 6.0,
-  "maxyaw": 1.5,
-  "pitchtorque": 2.0,
   "presetId": "alexis_plane_empty",
-  "rolltorque": 1.0,
   "slots": [
     {
       "data": {
@@ -177,10 +166,25 @@
     }
   ],
   "sort_factor": 10,
-  "stealth": 0.95,
-  "throttledown": 0.08,
-  "throttleup": 0.04,
-  "turn_radius": 10.0,
-  "wing_area": 28.0,
-  "yawtorque": 4.0
+  "stats": {
+    "base_armor": 2.0,
+    "cross_sec_area": 4.0,
+    "idleheat": 4.0,
+    "mass": 8500.0,
+    "max_health": 150.0,
+    "max_speed": 1.4,
+    "maxpitch": 2.5,
+    "maxroll": 6.0,
+    "maxyaw": 1.5,
+    "pitchtorque": 2.0,
+    "plane": {
+      "wing_area": 28.0
+    },
+    "rolltorque": 1.0,
+    "stealth": 0.95,
+    "throttledown": 0.08,
+    "throttleup": 0.04,
+    "turn_radius": 10.0,
+    "yawtorque": 4.0
+  }
 }

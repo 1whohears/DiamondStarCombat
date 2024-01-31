@@ -1,10 +1,7 @@
 {
   "aircraft_type": 2,
-  "base_armor": 8.0,
-  "cross_sec_area": 7.5,
   "displayName": "preset.dscombat.axcel_truck_empty",
   "health": 80.0,
-  "idleheat": 6.0,
   "ingredients": [
     {
       "item": "dscombat:seat",
@@ -30,15 +27,7 @@
   "is_craftable": false,
   "item": "dscombat:axcel_truck",
   "landing_gear": true,
-  "mass": 6500.0,
-  "max_health": 80.0,
-  "max_speed": 0.5,
-  "maxpitch": 0.0,
-  "maxroll": 0.0,
-  "maxyaw": 4.0,
-  "pitchtorque": 0.0,
   "presetId": "axcel_truck_empty",
-  "rolltorque": 0.0,
   "slots": [
     {
       "data": {
@@ -112,9 +101,22 @@
     }
   ],
   "sort_factor": 5,
-  "stealth": 1.0,
-  "throttledown": 0.05,
-  "throttleup": 0.05,
-  "turn_radius": 11.0,
-  "yawtorque": 1.0
+  "stats": {
+    "base_armor": 8.0,
+    "cross_sec_area": 7.5,
+    "idleheat": 6.0,
+    "mass": 6500.0,
+    "max_health": 80.0,
+    "max_speed": 0.5,
+    "maxpitch": 0.0,
+    "maxroll": 0.0,
+    "maxyaw": 4.0,
+    "pitchtorque": 0.0,
+    "rolltorque": 0.0,
+    "stealth": 1.0,
+    "throttledown": 0.05,
+    "throttleup": 0.05,
+    "turn_radius": 11.0,
+    "yawtorque": 1.0
+  }
 }

@@ -28,7 +28,7 @@ public class NoahChopper extends EntityHelicopter {
 			.build();
 	
 	public NoahChopper(EntityType<? extends EntityHelicopter> entity, Level level) {
-		super(entity, level, NOAH_CHOPPER_DATA);
+		super(entity, level, HeliPresets.DEFAULT_NOAH_CHOPPER);
 	}
 	
 	@Override

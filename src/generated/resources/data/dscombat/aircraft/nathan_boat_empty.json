@@ -1,10 +1,7 @@
 {
   "aircraft_type": 3,
-  "base_armor": 1.0,
-  "cross_sec_area": 4.5,
   "displayName": "preset.dscombat.nathan_boat_empty",
   "health": 100.0,
-  "idleheat": 2.0,
   "ingredients": [
     {
       "item": "minecraft:iron_ingot",
@@ -26,15 +23,7 @@
   "is_craftable": false,
   "item": "dscombat:nathan_boat",
   "landing_gear": true,
-  "mass": 1000.0,
-  "max_health": 100.0,
-  "max_speed": 0.85,
-  "maxpitch": 0.0,
-  "maxroll": 0.0,
-  "maxyaw": 3.5,
-  "pitchtorque": 0.0,
   "presetId": "nathan_boat_empty",
-  "rolltorque": 0.0,
   "slots": [
     {
       "data": {
@@ -163,9 +152,22 @@
     }
   ],
   "sort_factor": 0,
-  "stealth": 1.0,
-  "throttledown": 0.1,
-  "throttleup": 0.05,
-  "turn_radius": 0.0,
-  "yawtorque": 2.0
+  "stats": {
+    "base_armor": 1.0,
+    "cross_sec_area": 4.5,
+    "idleheat": 2.0,
+    "mass": 1000.0,
+    "max_health": 100.0,
+    "max_speed": 0.85,
+    "maxpitch": 0.0,
+    "maxroll": 0.0,
+    "maxyaw": 3.5,
+    "pitchtorque": 0.0,
+    "rolltorque": 0.0,
+    "stealth": 1.0,
+    "throttledown": 0.1,
+    "throttleup": 0.05,
+    "turn_radius": 0.0,
+    "yawtorque": 2.0
+  }
 }

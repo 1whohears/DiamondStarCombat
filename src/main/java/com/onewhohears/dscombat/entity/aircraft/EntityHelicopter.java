@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.command.DSCGameRules;
-import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData;
+import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.VehicleStats;
 import com.onewhohears.dscombat.data.aircraft.VehicleStats.HeliStats;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource.WeaponDamageType;
@@ -10,7 +10,6 @@ import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -20,10 +19,8 @@ public class EntityHelicopter extends EntityVehicle {
 	
 	protected HeliStats heliStats;
 	
-	private float propellerRot, propellerRotOld;
-	
-	public EntityHelicopter(EntityType<? extends EntityHelicopter> entity, Level level, ImmutableVehicleData vehicleData) {
-		super(entity, level, vehicleData);
+	public EntityHelicopter(EntityType<? extends EntityHelicopter> entity, Level level, AircraftPreset defaultPreset) {
+		super(entity, level, defaultPreset);
 		heliStats = (HeliStats)heliStats;
 	}
 	
@@ -40,14 +37,6 @@ public class EntityHelicopter extends EntityVehicle {
 	@Override
 	protected void addAdditionalSaveData(CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
-	}
-	
-	@Override
-	public void clientTick() {
-		super.clientTick();
-		float th = getCurrentThrottle();
-		propellerRotOld = propellerRot;
-		propellerRot += th * vehicleData.spinRate;
 	}
 	
 	@Override
@@ -114,16 +103,12 @@ public class EntityHelicopter extends EntityVehicle {
 	
 	@Override
 	public float getMaxPushThrust() {
-		return getMaxSpinThrust() * (float)airPressure * vehicleData.heliLiftFactor;
-	}
-	
-	public float getPropellerRotation(float partialTicks) {
-		return Mth.lerp(partialTicks, propellerRotOld, propellerRot);
+		return getMaxSpinThrust() * (float)airPressure * heliStats.heliLiftFactor;
 	}
 	
 	@Override
 	public boolean isLandingGear() {
-		if (vehicleData.alwaysLandingGear) return true;
+		if (heliStats.alwaysLandingGear) return true;
     	return super.isLandingGear();
     }
 	
@@ -147,7 +132,7 @@ public class EntityHelicopter extends EntityVehicle {
 
 	@Override
 	public boolean canToggleLandingGear() {
-		return !vehicleData.alwaysLandingGear;
+		return !heliStats.alwaysLandingGear;
 	}
 	
 	@Override

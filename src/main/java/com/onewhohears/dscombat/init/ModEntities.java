@@ -4,7 +4,11 @@ import com.google.common.collect.ImmutableSet;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
 import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
-import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData;
+import com.onewhohears.dscombat.data.aircraft.presets.BoatPresets;
+import com.onewhohears.dscombat.data.aircraft.presets.CarPresets;
+import com.onewhohears.dscombat.data.aircraft.presets.PlanePresets;
+import com.onewhohears.dscombat.data.aircraft.presets.SubPresets;
+import com.onewhohears.dscombat.data.aircraft.presets.TankPresets;
 import com.onewhohears.dscombat.entity.EntityParachute;
 import com.onewhohears.dscombat.entity.aircraft.EntityBoat;
 import com.onewhohears.dscombat.entity.aircraft.EntityGroundVehicle;
@@ -70,7 +74,7 @@ public class ModEntities {
 	
 	public static final RegistryObject<EntityType<EntityPlane>> WOODEN_PLANE = ENTITIES.register("wooden_plane", 
 			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
-					ImmutableVehicleData.WOODEN_PLANE_DATA), 
+					PlanePresets.DEFAULT_WOODEN_PLANE), 
 					EntityDimensions.scalable(1.7f, 1.7f)));
 	
 	public static final RegistryObject<EntityType<EntityPlane>> E3SENTRY_PLANE = ENTITIES.register("e3sentry_plane", 
@@ -99,24 +103,24 @@ public class ModEntities {
 	
 	public static final RegistryObject<EntityType<EntityGroundVehicle>> MRBUDGER_TANK = ENTITIES.register("mrbudger_tank", 
 			() -> createEntityTypeFar((type, level) -> new EntityGroundVehicle(type, level, 
-					ImmutableVehicleData.MRBUDGER_TANK_DATA), 
+					TankPresets.DEFAULT_MRBUDGER_TANK), 
 					EntityDimensions.scalable(3.0f, 2.5f)));
 	
 	public static final RegistryObject<EntityType<EntityGroundVehicle>> SMALL_ROLLER = ENTITIES.register("small_roller", 
 			() -> createEntityTypeFar((type, level) -> new EntityGroundVehicle(type, level, 
-					ImmutableVehicleData.SMALL_ROLLER_DATA), 
+					TankPresets.DEFAULT_SMALL_ROLLER), 
 					EntityDimensions.scalable(1.5f, 0.8f)));
 	
 	// CARS
 	
 	public static final RegistryObject<EntityType<EntityGroundVehicle>> ORANGE_TESLA = ENTITIES.register("orange_tesla", 
 			() -> createEntityTypeFar((type, level) -> new EntityGroundVehicle(type, level, 
-					ImmutableVehicleData.ORANGE_TESLA_DATA), 
+					CarPresets.DEFAULT_ORANGE_TESLA), 
 					EntityDimensions.scalable(2.5f, 2.15f)));
 	
 	public static final RegistryObject<EntityType<EntityGroundVehicle>> AXCEL_TRUCK = ENTITIES.register("axcel_truck", 
 			() -> createEntityTypeFar((type, level) -> new EntityGroundVehicle(type, level, 
-					ImmutableVehicleData.AXCEL_TRUCK_DATA) {
+					CarPresets.DEFAULT_AXCEL_TRUCK) {
 						@Override
 							public void addVehicleScreens() {
 								screens = new EntityScreenData[1];
@@ -133,7 +137,7 @@ public class ModEntities {
 	
 	public static final RegistryObject<EntityType<EntityBoat>> NATHAN_BOAT = ENTITIES.register("nathan_boat", 
 			() -> createEntityTypeFar((type, level) -> new EntityBoat(type, level, 
-					ImmutableVehicleData.NATHA_BOAT_DATA), 
+					BoatPresets.DEFAULT_NATHAN_BOAT), 
 					EntityDimensions.scalable(3.0f,1.5f)));
 	
 	public static final RegistryObject<EntityType<EntityBoat>> GRONK_BATTLESHIP = ENTITIES.register("gronk_battleship", 
@@ -160,7 +164,7 @@ public class ModEntities {
 	
 	public static final RegistryObject<EntityType<EntitySubmarine>> ANDOLF_SUB = ENTITIES.register("andolf_sub", 
 			() -> createEntityTypeFar((type, level) -> new EntitySubmarine(type, level, 
-					ImmutableVehicleData.ANDOLF_SUB_DATA), 
+					SubPresets.DEFAULT_ANDOLF_SUB), 
 					EntityDimensions.scalable(4.5f,4.0f)));
 	
 	/* 

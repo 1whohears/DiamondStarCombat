@@ -27,7 +27,7 @@ public class GronkBattleship extends EntityBoat {
 			.build();
 	
 	public GronkBattleship(EntityType<? extends EntityBoat> entity, Level level) {
-		super(entity, level, GRONK_BATTLESHIP_DATA);
+		super(entity, level, BoatPresets.DEFAULT_GRONK_BATTLESHIP);
 	}
 	
 	@Override

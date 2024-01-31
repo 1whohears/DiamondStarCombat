@@ -1,10 +1,7 @@
 {
   "aircraft_type": 3,
-  "base_armor": 18.0,
-  "cross_sec_area": 10.5,
   "displayName": "preset.dscombat.aircraft_carrier",
   "health": 900.0,
-  "idleheat": 8.0,
   "ingredients": [
     {
       "item": "dscombat:large_fuselage",
@@ -58,15 +55,7 @@
   "is_craftable": false,
   "item": "dscombat:aircraft_carrier",
   "landing_gear": true,
-  "mass": 800000.0,
-  "max_health": 900.0,
-  "max_speed": 0.25,
-  "maxpitch": 0.0,
-  "maxroll": 0.0,
-  "maxyaw": 0.6,
-  "pitchtorque": 0.0,
   "presetId": "aircraft_carrier",
-  "rolltorque": 0.0,
   "slots": [
     {
       "data": {
@@ -324,9 +313,22 @@
     }
   ],
   "sort_factor": 5,
-  "stealth": 1.2,
-  "throttledown": 0.1,
-  "throttleup": 0.05,
-  "turn_radius": 0.0,
-  "yawtorque": 2.0
+  "stats": {
+    "base_armor": 18.0,
+    "cross_sec_area": 10.5,
+    "idleheat": 8.0,
+    "mass": 800000.0,
+    "max_health": 900.0,
+    "max_speed": 0.25,
+    "maxpitch": 0.0,
+    "maxroll": 0.0,
+    "maxyaw": 0.6,
+    "pitchtorque": 0.0,
+    "rolltorque": 0.0,
+    "stealth": 1.2,
+    "throttledown": 0.1,
+    "throttleup": 0.05,
+    "turn_radius": 0.0,
+    "yawtorque": 2.0
+  }
 }

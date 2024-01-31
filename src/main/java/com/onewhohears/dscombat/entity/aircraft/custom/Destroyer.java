@@ -26,7 +26,7 @@ public class Destroyer extends EntityBoat {
 			.build();
 	
 	public Destroyer(EntityType<? extends EntityBoat> entity, Level level) {
-		super(entity, level, DESTROYER_DATA);
+		super(entity, level, BoatPresets.DEFAULT_DESTROYER);
 	}
 	
 	@Override

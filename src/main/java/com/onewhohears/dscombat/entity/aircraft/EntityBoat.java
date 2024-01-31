@@ -1,8 +1,8 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
+import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.DSCPhysicsConstants;
-import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData;
 import com.onewhohears.dscombat.data.aircraft.VehicleStats;
 import com.onewhohears.dscombat.data.aircraft.VehicleStats.BoatStats;
 import com.onewhohears.dscombat.util.math.UtilAngles;
@@ -19,12 +19,10 @@ import net.minecraft.world.phys.Vec3;
 
 public class EntityBoat extends EntityVehicle {
 	
-	private float propellerRot = 0, propellerRotOld = 0;
-	
 	protected double waterLevel;
 	
-	public EntityBoat(EntityType<? extends EntityBoat> entity, Level level, ImmutableVehicleData vehicleData) {
-		super(entity, level, vehicleData);
+	public EntityBoat(EntityType<? extends EntityBoat> entity, Level level, AircraftPreset defaultPreset) {
+		super(entity, level, defaultPreset);
 	}
 	
 	@Override
@@ -219,18 +217,6 @@ public class EntityBoat extends EntityVehicle {
 	@Override
 	public void waterDamage() {
 		if (waterLevel > getBoundingBox().maxY) super.waterDamage();
-	}
-	
-	@Override
-	public void clientTick() {
-		super.clientTick();
-		float th = getCurrentThrottle();
-		propellerRotOld = propellerRot;
-		propellerRot += th * vehicleData.spinRate;
-	}
-	
-	public float getPropellerRotation(float partialTicks) {
-		return Mth.lerp(partialTicks, propellerRotOld, propellerRot);
 	}
 	
 	@Override

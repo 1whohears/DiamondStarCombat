@@ -1,10 +1,7 @@
 {
   "aircraft_type": 0,
-  "base_armor": 4.0,
-  "cross_sec_area": 16.0,
   "displayName": "preset.dscombat.e3sentry_plane",
   "health": 400.0,
-  "idleheat": 20.0,
   "ingredients": [
     {
       "item": "dscombat:advanced_cockpit",
@@ -54,15 +51,7 @@
   "is_craftable": true,
   "item": "dscombat:e3sentry_plane",
   "landing_gear": true,
-  "mass": 83900.0,
-  "max_health": 400.0,
-  "max_speed": 1.0,
-  "maxpitch": 2.0,
-  "maxroll": 3.0,
-  "maxyaw": 2.0,
-  "pitchtorque": 2.0,
   "presetId": "e3sentry_plane",
-  "rolltorque": 2.0,
   "slots": [
     {
       "data": {
@@ -322,10 +311,25 @@
     }
   ],
   "sort_factor": 15,
-  "stealth": 1.3,
-  "throttledown": 0.04,
-  "throttleup": 0.01,
-  "turn_radius": 30.0,
-  "wing_area": 283.0,
-  "yawtorque": 2.0
+  "stats": {
+    "base_armor": 4.0,
+    "cross_sec_area": 16.0,
+    "idleheat": 20.0,
+    "mass": 83900.0,
+    "max_health": 400.0,
+    "max_speed": 1.0,
+    "maxpitch": 2.0,
+    "maxroll": 3.0,
+    "maxyaw": 2.0,
+    "pitchtorque": 2.0,
+    "plane": {
+      "wing_area": 283.0
+    },
+    "rolltorque": 2.0,
+    "stealth": 1.3,
+    "throttledown": 0.04,
+    "throttleup": 0.01,
+    "turn_radius": 30.0,
+    "yawtorque": 2.0
+  }
 }

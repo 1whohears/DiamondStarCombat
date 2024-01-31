@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData;
+import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.VehicleStats;
 import com.onewhohears.dscombat.data.aircraft.VehicleStats.SubStats;
 
@@ -12,8 +12,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class EntitySubmarine extends EntityBoat {
 	
-	public EntitySubmarine(EntityType<? extends EntitySubmarine> entity, Level level, ImmutableVehicleData vehicleData) {
-		super(entity, level, vehicleData);
+	public EntitySubmarine(EntityType<? extends EntitySubmarine> entity, Level level, AircraftPreset defaultPreset) {
+		super(entity, level, defaultPreset);
 	}
 	
 	@Override

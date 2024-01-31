@@ -1,10 +1,7 @@
 {
   "aircraft_type": 2,
-  "base_armor": 1.0,
-  "cross_sec_area": 5.375,
   "displayName": "preset.dscombat.orange_tesla",
   "health": 40.0,
-  "idleheat": 4.0,
   "ingredients": [
     {
       "item": "dscombat:seat",
@@ -34,15 +31,7 @@
   "is_craftable": true,
   "item": "dscombat:orange_tesla",
   "landing_gear": true,
-  "mass": 3000.0,
-  "max_health": 40.0,
-  "max_speed": 0.6,
-  "maxpitch": 0.0,
-  "maxroll": 0.0,
-  "maxyaw": 4.0,
-  "pitchtorque": 0.0,
   "presetId": "orange_tesla",
-  "rolltorque": 0.0,
   "slots": [
     {
       "data": {
@@ -113,9 +102,22 @@
     }
   ],
   "sort_factor": 10,
-  "stealth": 1.0,
-  "throttledown": 0.07,
-  "throttleup": 0.07,
-  "turn_radius": 7.0,
-  "yawtorque": 1.0
+  "stats": {
+    "base_armor": 1.0,
+    "cross_sec_area": 5.375,
+    "idleheat": 4.0,
+    "mass": 3000.0,
+    "max_health": 40.0,
+    "max_speed": 0.6,
+    "maxpitch": 0.0,
+    "maxroll": 0.0,
+    "maxyaw": 4.0,
+    "pitchtorque": 0.0,
+    "rolltorque": 0.0,
+    "stealth": 1.0,
+    "throttledown": 0.07,
+    "throttleup": 0.07,
+    "turn_radius": 7.0,
+    "yawtorque": 1.0
+  }
 }

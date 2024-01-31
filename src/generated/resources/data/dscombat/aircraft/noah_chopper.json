@@ -1,12 +1,7 @@
 {
-  "accForward": 0.04,
-  "accSide": 0.02,
   "aircraft_type": 1,
-  "base_armor": 5.0,
-  "cross_sec_area": 8.0,
   "displayName": "preset.dscombat.noah_chopper",
   "health": 200.0,
-  "idleheat": 8.0,
   "ingredients": [
     {
       "item": "dscombat:fuselage",
@@ -92,15 +87,7 @@
   "is_craftable": false,
   "item": "dscombat:noah_chopper",
   "landing_gear": true,
-  "mass": 6000.0,
-  "max_health": 200.0,
-  "max_speed": 0.7,
-  "maxpitch": 2.0,
-  "maxroll": 4.0,
-  "maxyaw": 4.0,
-  "pitchtorque": 1.0,
   "presetId": "noah_chopper",
-  "rolltorque": 1.0,
   "slots": [
     {
       "data": {
@@ -367,9 +354,26 @@
     }
   ],
   "sort_factor": 4,
-  "stealth": 1.2,
-  "throttledown": 0.02,
-  "throttleup": 0.01,
-  "turn_radius": 0.0,
-  "yawtorque": 2.5
+  "stats": {
+    "base_armor": 5.0,
+    "cross_sec_area": 8.0,
+    "heli": {
+      "accForward": 0.04,
+      "accSide": 0.02
+    },
+    "idleheat": 8.0,
+    "mass": 6000.0,
+    "max_health": 200.0,
+    "max_speed": 0.7,
+    "maxpitch": 2.0,
+    "maxroll": 4.0,
+    "maxyaw": 4.0,
+    "pitchtorque": 1.0,
+    "rolltorque": 1.0,
+    "stealth": 1.2,
+    "throttledown": 0.02,
+    "throttleup": 0.01,
+    "turn_radius": 0.0,
+    "yawtorque": 2.5
+  }
 }

@@ -26,7 +26,7 @@ public class AircraftCarrier extends EntityBoat {
 			.build();
 	
 	public AircraftCarrier(EntityType<? extends EntityBoat> entity, Level level) {
-		super(entity, level, AIRCRAFT_CARRIER_DATA);
+		super(entity, level, BoatPresets.DEFAULT_AIRCRAFT_CARRIER);
 	}
 	
 	@Override

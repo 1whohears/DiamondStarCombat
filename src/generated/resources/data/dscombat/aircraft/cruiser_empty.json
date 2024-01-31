@@ -1,10 +1,7 @@
 {
   "aircraft_type": 3,
-  "base_armor": 12.0,
-  "cross_sec_area": 8.0,
   "displayName": "preset.dscombat.cruiser_empty",
   "health": 500.0,
-  "idleheat": 5.0,
   "ingredients": [
     {
       "item": "dscombat:large_fuselage",
@@ -30,15 +27,7 @@
   "is_craftable": false,
   "item": "dscombat:cruiser",
   "landing_gear": true,
-  "mass": 350000.0,
-  "max_health": 500.0,
-  "max_speed": 0.6,
-  "maxpitch": 0.0,
-  "maxroll": 0.0,
-  "maxyaw": 1.2,
-  "pitchtorque": 0.0,
   "presetId": "cruiser_empty",
-  "rolltorque": 0.0,
   "slots": [
     {
       "data": {
@@ -246,9 +235,22 @@
     }
   ],
   "sort_factor": 3,
-  "stealth": 0.9,
-  "throttledown": 0.1,
-  "throttleup": 0.05,
-  "turn_radius": 0.0,
-  "yawtorque": 2.0
+  "stats": {
+    "base_armor": 12.0,
+    "cross_sec_area": 8.0,
+    "idleheat": 5.0,
+    "mass": 350000.0,
+    "max_health": 500.0,
+    "max_speed": 0.6,
+    "maxpitch": 0.0,
+    "maxroll": 0.0,
+    "maxyaw": 1.2,
+    "pitchtorque": 0.0,
+    "rolltorque": 0.0,
+    "stealth": 0.9,
+    "throttledown": 0.1,
+    "throttleup": 0.05,
+    "turn_radius": 0.0,
+    "yawtorque": 2.0
+  }
 }

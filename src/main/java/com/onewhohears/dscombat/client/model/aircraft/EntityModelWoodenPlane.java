@@ -38,7 +38,7 @@ public class EntityModelWoodenPlane extends EntityControllableModel<EntityPlane>
 			int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		poseStack.translate(0, 1.5, 0);
 		poseStack.scale(1.0F, -1.0F, 1.0F);
-		propeller.zRot = entity.getPropellerRotation(partialTicks);
+		propeller.zRot = entity.getMotorRotation(partialTicks, 3*Mth.PI);
 		float gear = entity.getLandingGearPos(partialTicks);
 		float hpi = Mth.PI/2;
 		back_gear.xRot = gear * hpi;

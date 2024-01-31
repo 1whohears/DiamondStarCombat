@@ -1,10 +1,7 @@
 {
   "aircraft_type": 3,
-  "base_armor": 8.0,
-  "cross_sec_area": 4.5,
   "displayName": "preset.dscombat.corvette",
   "health": 250.0,
-  "idleheat": 2.0,
   "ingredients": [
     {
       "item": "dscombat:large_fuselage",
@@ -54,15 +51,7 @@
   "is_craftable": false,
   "item": "dscombat:corvette",
   "landing_gear": true,
-  "mass": 50000.0,
-  "max_health": 250.0,
-  "max_speed": 0.95,
-  "maxpitch": 0.0,
-  "maxroll": 0.0,
-  "maxyaw": 1.5,
-  "pitchtorque": 0.0,
   "presetId": "corvette",
-  "rolltorque": 0.0,
   "slots": [
     {
       "data": {
@@ -235,9 +224,22 @@
     }
   ],
   "sort_factor": 4,
-  "stealth": 0.8,
-  "throttledown": 0.1,
-  "throttleup": 0.05,
-  "turn_radius": 0.0,
-  "yawtorque": 2.0
+  "stats": {
+    "base_armor": 8.0,
+    "cross_sec_area": 4.5,
+    "idleheat": 2.0,
+    "mass": 50000.0,
+    "max_health": 250.0,
+    "max_speed": 0.95,
+    "maxpitch": 0.0,
+    "maxroll": 0.0,
+    "maxyaw": 1.5,
+    "pitchtorque": 0.0,
+    "rolltorque": 0.0,
+    "stealth": 0.8,
+    "throttledown": 0.1,
+    "throttleup": 0.05,
+    "turn_radius": 0.0,
+    "yawtorque": 2.0
+  }
 }

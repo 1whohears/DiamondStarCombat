@@ -1,10 +1,7 @@
 {
   "aircraft_type": 2,
-  "base_armor": 16.0,
-  "cross_sec_area": 7.5,
   "displayName": "preset.dscombat.mrbudger_tank",
   "health": 500.0,
-  "idleheat": 10.0,
   "ingredients": [
     {
       "item": "dscombat:seat",
@@ -46,15 +43,7 @@
   "is_craftable": false,
   "item": "dscombat:mrbudger_tank",
   "landing_gear": true,
-  "mass": 15000.0,
-  "max_health": 500.0,
-  "max_speed": 0.3,
-  "maxpitch": 0.0,
-  "maxroll": 0.0,
-  "maxyaw": 2.0,
-  "pitchtorque": 0.0,
   "presetId": "mrbudger_tank",
-  "rolltorque": 0.0,
   "slots": [
     {
       "data": {
@@ -153,9 +142,22 @@
     }
   ],
   "sort_factor": 4,
-  "stealth": 1.0,
-  "throttledown": 0.04,
-  "throttleup": 0.04,
-  "turn_radius": 0.0,
-  "yawtorque": 8.0
+  "stats": {
+    "base_armor": 16.0,
+    "cross_sec_area": 7.5,
+    "idleheat": 10.0,
+    "mass": 15000.0,
+    "max_health": 500.0,
+    "max_speed": 0.3,
+    "maxpitch": 0.0,
+    "maxroll": 0.0,
+    "maxyaw": 2.0,
+    "pitchtorque": 0.0,
+    "rolltorque": 0.0,
+    "stealth": 1.0,
+    "throttledown": 0.04,
+    "throttleup": 0.04,
+    "turn_radius": 0.0,
+    "yawtorque": 8.0
+  }
 }

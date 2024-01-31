@@ -29,7 +29,6 @@ import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
 import com.onewhohears.dscombat.data.aircraft.DSCPhysicsConstants;
 import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
-import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData;
 import com.onewhohears.dscombat.data.aircraft.VehicleInputManager;
 import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager;
 import com.onewhohears.dscombat.data.aircraft.VehicleStats;
@@ -122,7 +121,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	public final String defaultPreset, clientPresetId;
 	public final VehicleStats vehicleStats;
-	public final ImmutableVehicleData vehicleData;
 	public final VehicleInputManager inputs;
 	public final VehicleSoundManager soundManager;
 	public final VehicleTextureManager textureManager;
@@ -161,7 +159,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	private int lerpSteps, deadTicks, stallWarnTicks, stallTicks, engineFireTicks, fuelLeakTicks, bingoTicks;
 	private double lerpX, lerpY, lerpZ;
-	private float landingGearPos, landingGearPosOld;
+	private float landingGearPos, landingGearPosOld, motorRotO, wheelRotO;
 	
 	protected RadarMode radarMode = RadarMode.ALL;
 	protected boolean isLandingGear, isDriverCameraLocked = false;
@@ -182,16 +180,15 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	// TODO 2.8 external fuel tanks
 	// TODO 8.4 speed of sound system (client doesn't hear sound until "sound wave" reaches the player)
 	
-	public EntityVehicle(EntityType<? extends EntityVehicle> entityType, Level level, ImmutableVehicleData vehicleData) {
+	public EntityVehicle(EntityType<? extends EntityVehicle> entityType, Level level, AircraftPreset defaultPreset) {
 		super(entityType, level);
-		this.vehicleData = vehicleData;
-		this.defaultPreset = vehicleData.defaultPreset.getId();
+		this.defaultPreset = defaultPreset.getId();
 		this.clientPresetId = UtilEntity.getSplitEncodeId(this)[1];
 		this.preset = this.defaultPreset;
-		this.item = vehicleData.defaultPreset.getItem();
+		this.item = defaultPreset.getItem();
 		this.blocksBuilding = true;
 		vehicleStats = createVehicleStats();
-		vehicleStats.readPresetData(vehicleData.defaultPreset);
+		vehicleStats.readPresetData(defaultPreset);
 		inputs = new VehicleInputManager();
 		soundManager = new VehicleSoundManager(this);
 		textureManager = new VehicleTextureManager(this);
@@ -204,6 +201,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 	
 	protected abstract VehicleStats createVehicleStats();
+	
+	public VehicleStats getVehicleStats() {
+		return vehicleStats;
+	}
 	
 	@Override
 	public void setId(int id) {
@@ -710,7 +711,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		else directionAir(q);
 		Vec3 m = getMoment().add(addMomentBetweenTicks), av = getAngularVel();
 		if (!UtilGeometry.isZero(m)) {
-			av = av.add(m.x/vehicleData.Ix, m.y/vehicleData.Iy, m.z/vehicleData.Iz);
+			av = av.add(m.x/vehicleStats.Ix, m.y/vehicleStats.Iy, m.z/vehicleStats.Iz);
 			setAngularVel(av);
 		}
 		q.mul(Vector3f.XN.rotationDegrees((float)av.x));
@@ -730,9 +731,9 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			if (inputs.roll != 0) dz = 0;
 		}
 		setAngularVel(new Vec3(
-				getADComponent(av.x, dx, vehicleData.Ix),
-				getADComponent(av.y, dy, vehicleData.Iy),
-				getADComponent(av.z, dz, vehicleData.Iz)));
+				getADComponent(av.x, dx, vehicleStats.Ix),
+				getADComponent(av.y, dy, vehicleStats.Iy),
+				getADComponent(av.z, dz, vehicleStats.Iz)));
 	}
 	
 	private double getADComponent(double v, float d, float I) {
@@ -820,9 +821,9 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		double x = moment.x, y = moment.y, z = moment.z;
 		if (control) {
 			Vec3 av = getAngularVel();
-			if (moment.x != 0) x = getControlMomentComponent(m.x, moment.x, av.x, getControlMaxDeltaPitch(), vehicleData.Ix);
-			if (moment.y != 0) y = getControlMomentComponent(m.y, moment.y, av.y, getControlMaxDeltaYaw(), vehicleData.Iy);
-			if (moment.z != 0) z = getControlMomentComponent(m.z, moment.z, av.z, getControlMaxDeltaRoll(), vehicleData.Iz);
+			if (moment.x != 0) x = getControlMomentComponent(m.x, moment.x, av.x, getControlMaxDeltaPitch(), vehicleStats.Ix);
+			if (moment.y != 0) y = getControlMomentComponent(m.y, moment.y, av.y, getControlMaxDeltaYaw(), vehicleStats.Iy);
+			if (moment.z != 0) z = getControlMomentComponent(m.z, moment.z, av.z, getControlMaxDeltaRoll(), vehicleStats.Iz);
 		}
 		setMoment(m.add(x, y, z));
 	}
@@ -1670,7 +1671,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		if (level.isClientSide) return;
 		level.explode(this, source,
 			null, getX(), getY(), getZ(), 
-			vehicleData.crashExplosionRadius, true, 
+			vehicleStats.crashExplosionRadius, true, 
 			Explosion.BlockInteraction.BREAK);
 		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), 
 				new ToClientVehicleExplode(this));
@@ -1750,8 +1751,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
      */
     public final void setCurrentThrottle(float throttle) {
     	if (throttle > 1) throttle = 1;
-    	else if (vehicleData.negativeThrottle && throttle < -1) throttle = -1;
-    	else if (!vehicleData.negativeThrottle && throttle < 0) throttle = 0;
+    	else if (vehicleStats.negativeThrottle && throttle < -1) throttle = -1;
+    	else if (!vehicleStats.negativeThrottle && throttle < 0) throttle = 0;
     	this.throttle = throttle;
     }
     
@@ -1788,15 +1789,15 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     }
     
     public final float getPitchTorque() {
-    	return vehicleStats.pitchtorque;
+    	return vehicleStats.torquepitch;
     }
     
     public final float getYawTorque() {
-    	return vehicleStats.yawtorque;
+    	return vehicleStats.torqueyaw;
     }
     
     public final float getRollTorque() {
-    	return vehicleStats.rolltorque;
+    	return vehicleStats.torqueroll;
     }
     
     public void increaseThrottle() {
@@ -2119,7 +2120,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     
     @Override
     public AABB getBoundingBoxForCulling() {
-    	return getBoundingBox().inflate(vehicleData.cameraDistance);
+    	return getBoundingBox().inflate(vehicleStats.cameraDistance);
     }
     
     @Override
@@ -2381,6 +2382,14 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     
     public boolean showContrailParticles() {
     	return showAfterBurnerParticles() && position().y > 128;
+    }
+    
+    public float getMotorRotation(float partialTicks, float spinRate) {
+		return motorRotO + spinRate * getCurrentThrottle() * partialTicks;
+	}
+    
+    public float getWheelRotation(float partialTicks, float spinRate) {
+    	return wheelRotO + spinRate * xzSpeed * xzSpeedDir * partialTicks;
     }
     
     private static final Vec3[] NONE = new Vec3[] {};

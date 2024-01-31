@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.data.aircraft;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Mth;
 
 public abstract class VehicleStats {
 	
@@ -10,14 +9,15 @@ public abstract class VehicleStats {
 	// defense
 	public float stealth = 1, cross_sec_area = 10, idleheat = 10, base_armor = 0;
 	// turn
-	public float turn_radius = 100, maxroll, maxpitch, maxyaw;
-	public float rolltorque, pitchtorque, yawtorque;
+	public float turn_radius = 100;
+	public float maxroll, maxpitch, maxyaw;
+	public float torqueroll, torquepitch, torqueyaw;
 	public float Ix = 4, Iy = 4, Iz = 4;
 	// control
 	public float throttleup = 0.01f, throttledown = 0.01f;
 	public boolean negativeThrottle = false;
 	// other 
-	public float crashExplosionRadius, spinRate = Mth.PI;
+	public float crashExplosionRadius;
 	public double cameraDistance = 4;
 	public int baseTextureVariants = 1, textureLayers = 0;
 	
@@ -25,29 +25,33 @@ public abstract class VehicleStats {
 	}
 	
 	public void readPresetData(AircraftPreset acp) {
-		CompoundTag nbt = acp.getDataAsNBT();
-		max_health = nbt.getFloat("max_health");
-		max_speed = nbt.getFloat("max_speed");
-		mass = nbt.getFloat("mass");
-		stealth = nbt.getFloat("stealth");
-		cross_sec_area = nbt.getFloat("cross_sec_area");
-		idleheat = nbt.getFloat("idleheat");
-		base_armor = nbt.getFloat("base_armor");
-		turn_radius = nbt.getFloat("turn_radius");
-		maxroll = nbt.getFloat("maxroll");
-		maxpitch = nbt.getFloat("maxpitch");
-		maxyaw = nbt.getFloat("maxyaw");
-		rolltorque = nbt.getFloat("rolltorque");
-		pitchtorque = nbt.getFloat("pitchtorque");
-		yawtorque = nbt.getFloat("yawtorque");
-		throttleup = nbt.getFloat("throttleup");
-		throttledown = nbt.getFloat("throttledown");
-		
-		crashExplosionRadius = nbt.getFloat("crashExplosionRadius");
-		spinRate = nbt.getFloat("spinRate");
-		cameraDistance = nbt.getDouble("cameraDistance");
-		baseTextureVariants = nbt.getInt("baseTextureVariants");
-		textureLayers = nbt.getInt("textureLayers");
+		CompoundTag stats = acp.getDataAsNBT().getCompound("stats");
+		max_health = stats.getFloat("max_health");
+		max_speed = stats.getFloat("max_speed");
+		mass = stats.getFloat("mass");
+		stealth = stats.getFloat("stealth");
+		cross_sec_area = stats.getFloat("cross_sec_area");
+		idleheat = stats.getFloat("idleheat");
+		base_armor = stats.getFloat("base_armor");
+		throttleup = stats.getFloat("throttleup");
+		throttledown = stats.getFloat("throttledown");
+		turn_radius = stats.getFloat("turn_radius");
+		maxroll = stats.getFloat("maxroll");
+		maxpitch = stats.getFloat("maxpitch");
+		maxyaw = stats.getFloat("maxyaw");
+		torqueroll = stats.getFloat("torqueroll");
+		torquepitch = stats.getFloat("torquepitch");
+		torqueyaw = stats.getFloat("torqueyaw");
+		Iz = stats.getFloat("inertiaroll");
+		Ix = stats.getFloat("inertiapitch");
+		Iy = stats.getFloat("inertiayaw");
+		crashExplosionRadius = stats.getFloat("crashExplosionRadius");
+		cameraDistance = stats.getFloat("cameraDistance");
+		if (acp.getDataAsNBT().contains("textures")) {
+			CompoundTag textures = acp.getDataAsNBT().getCompound("textures");
+			if (textures.contains("baseTextureVariants")) baseTextureVariants = textures.getInt("baseTextureVariants");
+			if (textures.contains("textureLayers")) textureLayers = textures.getInt("textureLayers");
+		}
 	}
 	
 	public static class PlaneStats extends VehicleStats {
@@ -59,11 +63,11 @@ public abstract class VehicleStats {
 		}
 		public void readPresetData(AircraftPreset acp) {
 			super.readPresetData(acp);
-			CompoundTag nbt = acp.getDataAsNBT();
-			wing_area = nbt.getFloat("wing_area");
+			CompoundTag plane = acp.getDataAsNBT().getCompound("stats").getCompound("plane");
+			wing_area = plane.getFloat("wing_area");
 			
-			flapsAOABias = nbt.getFloat("flapsAOABias");
-			canAimDown = nbt.getBoolean("canAimDown");
+			flapsAOABias = plane.getFloat("flapsAOABias");
+			canAimDown = plane.getBoolean("canAimDown");
 			//liftKGraph = nbt.getString("liftKGraph");
 		}
 	}
@@ -76,12 +80,12 @@ public abstract class VehicleStats {
 		}
 		public void readPresetData(AircraftPreset acp) {
 			super.readPresetData(acp);
-			CompoundTag nbt = acp.getDataAsNBT();
-			accForward = nbt.getFloat("accForward");
-			accSide = nbt.getFloat("accSide");
+			CompoundTag heli = acp.getDataAsNBT().getCompound("stats").getCompound("heli");
+			accForward = heli.getFloat("accForward");
+			accSide = heli.getFloat("accSide");
 			
-			heliLiftFactor = nbt.getFloat("heliLiftFactor");
-			alwaysLandingGear = nbt.getBoolean("alwaysLandingGear");
+			heliLiftFactor = heli.getFloat("heliLiftFactor");
+			alwaysLandingGear = heli.getBoolean("alwaysLandingGear");
 		}
 	}
 	
@@ -91,9 +95,9 @@ public abstract class VehicleStats {
 		}
 		public void readPresetData(AircraftPreset acp) {
 			super.readPresetData(acp);
-			CompoundTag nbt = acp.getDataAsNBT();
+			CompoundTag car = acp.getDataAsNBT().getCompound("stats").getCompound("car");
 			
-			isTank = nbt.getBoolean("isTank");
+			isTank = car.getBoolean("isTank");
 		}
 	}
 	

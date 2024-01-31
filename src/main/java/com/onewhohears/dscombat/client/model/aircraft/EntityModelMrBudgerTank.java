@@ -44,8 +44,8 @@ public class EntityModelMrBudgerTank extends EntityControllableModel<EntityGroun
 			int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		poseStack.translate(0, 1.55, 0);
 		poseStack.scale(1.0F, -1.0F, 1.0F);
-		for (int i = 0; i < wheelsL.length; ++i) wheelsL[i].xRot = -entity.getWheelLeftRotation(partialTicks);
-		for (int i = 0; i < wheelsR.length; ++i) wheelsR[i].xRot = -entity.getWheelRightRotation(partialTicks);
+		for (int i = 0; i < wheelsL.length; ++i) wheelsL[i].xRot = -entity.getWheelRotation(partialTicks, 1.5f);
+		for (int i = 0; i < wheelsR.length; ++i) wheelsR[i].xRot = -entity.getWheelRotation(partialTicks, 1.5f);
 		main.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 	

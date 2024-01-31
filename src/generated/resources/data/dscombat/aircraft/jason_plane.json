@@ -1,10 +1,7 @@
 {
   "aircraft_type": 0,
-  "base_armor": 0.0,
-  "cross_sec_area": 3.0,
   "displayName": "preset.dscombat.jason_plane",
   "health": 60.0,
-  "idleheat": 1.5,
   "ingredients": [
     {
       "item": "dscombat:fuselage",
@@ -42,15 +39,7 @@
   "is_craftable": false,
   "item": "dscombat:jason_plane",
   "landing_gear": true,
-  "mass": 1100.0,
-  "max_health": 60.0,
-  "max_speed": 0.8,
-  "maxpitch": 3.0,
-  "maxroll": 5.0,
-  "maxyaw": 2.0,
-  "pitchtorque": 2.0,
   "presetId": "jason_plane",
-  "rolltorque": 2.0,
   "slots": [
     {
       "data": {
@@ -130,10 +119,25 @@
     }
   ],
   "sort_factor": 5,
-  "stealth": 1.0,
-  "throttledown": 0.07,
-  "throttleup": 0.04,
-  "turn_radius": 10.0,
-  "wing_area": 15.0,
-  "yawtorque": 3.0
+  "stats": {
+    "base_armor": 0.0,
+    "cross_sec_area": 3.0,
+    "idleheat": 1.5,
+    "mass": 1100.0,
+    "max_health": 60.0,
+    "max_speed": 0.8,
+    "maxpitch": 3.0,
+    "maxroll": 5.0,
+    "maxyaw": 2.0,
+    "pitchtorque": 2.0,
+    "plane": {
+      "wing_area": 15.0
+    },
+    "rolltorque": 2.0,
+    "stealth": 1.0,
+    "throttledown": 0.07,
+    "throttleup": 0.04,
+    "turn_radius": 10.0,
+    "yawtorque": 3.0
+  }
 }

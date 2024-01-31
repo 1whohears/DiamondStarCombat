@@ -30,7 +30,7 @@ public class AlexisPlane extends EntityPlane {
 			.build();
 	
 	public AlexisPlane(EntityType<? extends EntityPlane> entity, Level level) {
-		super(entity, level, ALEXIS_PLANE_DATA);
+		super(entity, level, AlexisPresets.DEFAULT_ALEXIS_PLANE);
 	}
 	
 	@Override

@@ -26,7 +26,7 @@ public class Corvette extends EntityBoat {
 			.build();
 	
 	public Corvette(EntityType<? extends EntityBoat> entity, Level level) {
-		super(entity, level, CORVETTE_DATA);
+		super(entity, level, BoatPresets.DEFAULT_CORVETTE);
 	}
 	
 	@Override

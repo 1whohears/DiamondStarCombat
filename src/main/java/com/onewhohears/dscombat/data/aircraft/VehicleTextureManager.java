@@ -23,8 +23,12 @@ public class VehicleTextureManager {
 	
 	public VehicleTextureManager(EntityVehicle parent) {
 		this.parent = parent;
-		this.baseTextures = new ResourceLocation[parent.vehicleData.baseTextureVariants];
-		this.textureLayers = new TextureLayer[parent.vehicleData.textureLayers];
+		this.baseTextures = new ResourceLocation[parent.getVehicleStats().baseTextureVariants];
+		this.textureLayers = new TextureLayer[parent.getVehicleStats().textureLayers];
+		setupTextureLocations();
+	}
+	
+	private void setupTextureLocations() {
 		String[] encodeIds = UtilEntity.getSplitEncodeId(parent);
 		String modId = encodeIds[0], entityId = encodeIds[1];
 		for (int i = 0; i < baseTextures.length; ++i) 
@@ -52,6 +56,7 @@ public class VehicleTextureManager {
 	
 	public void read(CompoundTag entityNbt) {
 		if (!entityNbt.contains("textures")) return;
+		setupTextureLocations();
 		CompoundTag textures = entityNbt.getCompound("textures");
 		setBaseTexture(textures.getInt("baseTexture"));
 		if (textures.contains("layers")) {
@@ -72,6 +77,7 @@ public class VehicleTextureManager {
 	}
 	
 	public void read(ByteBuf buffer) {
+		setupTextureLocations();
 		setBaseTexture(buffer.readInt());
 		int layers = buffer.readInt();
 		for (int i = 0; i < layers && i < textureLayers.length; ++i) 

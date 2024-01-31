@@ -11,6 +11,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraftforge.registries.RegistryObject;
 
+@Deprecated
 public class ImmutableVehicleData {
 	
 	public static final ImmutableVehicleData WOODEN_PLANE_DATA = Builder.create(PlanePresets.DEFAULT_WOODEN_PLANE)
@@ -90,71 +91,7 @@ public class ImmutableVehicleData {
 			.setSpinRate(3.141f)
 			.build();
 	
-	public final AircraftPreset defaultPreset;
-	public final RegistryObject<SoundEvent> externalEngineSound;
-	public final RegistryObject<SoundEvent> internalEngineSound;
-	public final boolean negativeThrottle;
-	public final float Ix, Iy, Iz;
-	public final float crashExplosionRadius;
-	public final double cameraDistance;
-	public final int baseTextureVariants;
-	public final int textureLayers;
-	/**
-	 * VEHICLES WITH A SPINNY THING
-	 */
-	public final float spinRate;
-	/**
-	 * PLANES ONLY
-	 */
-	public final LiftKGraph liftKGraph;
-	/**
-	 * PLANES ONLY
-	 */
-	public final float flapsAOABias;
-	/**
-	 * PLANES ONLY
-	 */
-	public final boolean canAimDown;
-	/**
-	 * HELI ONLY
-	 */
-	public final boolean alwaysLandingGear;
-	/**
-	 * HELI ONLY
-	 */
-	public final float heliLiftFactor;
-	/**
-	 * GROUND VEHICLE ONLY
-	 */
-	public final boolean isTank;
-	
 	// FIXME 0.2 move all of this to preset data
-	public ImmutableVehicleData(AircraftPreset defaultPreset, 
-			int baseTextureVariants, int textureLayers, 
-			RegistryObject<SoundEvent> externalEngineSound,
-			RegistryObject<SoundEvent> internalEngineSound,
-			boolean negativeThrottle, float Ix, float Iy, float Iz,
-			float crashExplosionRadius, double cameraDistance, float spinRate, 
-			LiftKGraph liftKGraph, float flapsAOABias, boolean canAimDown,
-			boolean alwaysLandingGear, float heliLiftFactor, 
-			boolean isTank) {
-		this.defaultPreset = defaultPreset;
-		this.baseTextureVariants = baseTextureVariants;
-		this.textureLayers = textureLayers;
-		this.externalEngineSound = externalEngineSound;
-		this.internalEngineSound = internalEngineSound;
-		this.negativeThrottle = negativeThrottle;
-		this.Ix = Ix; this.Iy = Iy; this.Iz = Iz;
-		this.crashExplosionRadius = crashExplosionRadius;
-		this.cameraDistance = cameraDistance;
-		this.spinRate = spinRate;
-		this.liftKGraph = liftKGraph;
-		this.flapsAOABias = flapsAOABias;
-		this.canAimDown = canAimDown;
-		this.alwaysLandingGear = alwaysLandingGear;
-		this.heliLiftFactor = heliLiftFactor;
-		this.isTank = isTank;
-	}
 	
 	public static class Builder {
 		
@@ -180,10 +117,7 @@ public class ImmutableVehicleData {
 		}
 		
 		public ImmutableVehicleData build() {
-			return new ImmutableVehicleData(defaultPreset, baseTextureVariants, textureLayers, 
-					externalEngineSound, internalEngineSound, negativeThrottle, Ix, Iy, Iz, 
-					crashExplosionRadius, cameraDistance, spinRate, 
-					liftKGraph, flapsAOABias, canAimDown, alwaysLandingGear, heliLiftFactor, isTank);
+			return null;
 		}
 		
 		public Builder setTextureNum(int baseTextureVariants, int textureLayers) {

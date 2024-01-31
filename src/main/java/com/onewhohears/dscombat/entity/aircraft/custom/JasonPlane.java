@@ -27,7 +27,7 @@ public class JasonPlane extends EntityPlane {
 			.build();
 	
 	public JasonPlane(EntityType<? extends EntityPlane> entity, Level level) {
-		super(entity, level, JASON_PLANE_DATA);
+		super(entity, level, JasonPresets.DEFAULT_JASON_PLANE);
 	}
 
 }

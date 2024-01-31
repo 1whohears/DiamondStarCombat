@@ -26,7 +26,7 @@ public class Cruiser extends EntityBoat {
 			.build();
 	
 	public Cruiser(EntityType<? extends EntityBoat> entity, Level level) {
-		super(entity, level, CRUISER_DATA);
+		super(entity, level, BoatPresets.DEFAULT_CRUISER);
 	}
 	
 	@Override

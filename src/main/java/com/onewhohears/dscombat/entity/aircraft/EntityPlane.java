@@ -2,8 +2,8 @@ package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.command.DSCGameRules;
+import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.DSCPhysicsConstants;
-import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData;
 import com.onewhohears.dscombat.data.aircraft.VehicleStats;
 import com.onewhohears.dscombat.data.aircraft.VehicleStats.PlaneStats;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource.WeaponDamageType;
@@ -20,28 +20,19 @@ public class EntityPlane extends EntityVehicle {
 	
 	protected PlaneStats planeStats;
 	
-	private float propellerRot = 0, propellerRotOld = 0;
 	private float aoa = 0, liftK = 0, airFoilSpeedSqr = 0;
 	private float centripetalForce, centrifugalForce; 
 	private double liftMag;
 	private Vec3 liftDir = Vec3.ZERO, airFoilAxes = Vec3.ZERO;
 	
-	public EntityPlane(EntityType<? extends EntityPlane> entity, Level level, ImmutableVehicleData vehicleData) {
-		super(entity, level, vehicleData);
+	public EntityPlane(EntityType<? extends EntityPlane> entity, Level level, AircraftPreset defaultPreset) {
+		super(entity, level, defaultPreset);
 		planeStats = (PlaneStats)vehicleStats;
 	}
 	
 	@Override
 	public AircraftType getAircraftType() {
 		return AircraftType.PLANE;
-	}
-	
-	@Override
-	public void clientTick() {
-		super.clientTick();
-		float th = getCurrentThrottle();
-		propellerRotOld = propellerRot;
-		propellerRot += th * vehicleData.spinRate;
 	}
 	
 	@Override
@@ -125,7 +116,7 @@ public class EntityPlane extends EntityVehicle {
 		} else {
 			aoa = (float)UtilGeometry.angleBetweenVecPlaneDegrees(u, liftDir.scale(-1));
 		}
-		if (isFlapsDown()) aoa += vehicleData.flapsAOABias;
+		if (isFlapsDown()) aoa += planeStats.flapsAOABias;
 		liftK = (float) getLiftK();
 		//System.out.println("liftK = "+liftK);
 	}
@@ -162,7 +153,7 @@ public class EntityPlane extends EntityVehicle {
 	}
 	
 	public double getLiftK() {
-		return vehicleData.liftKGraph.getLift(aoa);
+		return planeStats.liftKGraph.getLift(aoa);
 	}
 	
 	@Override
@@ -179,10 +170,6 @@ public class EntityPlane extends EntityVehicle {
 		if (isLandingGear()) a += 10.0 * Math.cos(Math.toRadians(aoa));
 		if (isFlapsDown()) a += getWingSurfaceArea() / 4 * Math.cos(Math.toRadians(aoa));
 		return a;
-	}
-	
-	public float getPropellerRotation(float partialTicks) {
-		return Mth.lerp(partialTicks, propellerRotOld, propellerRot);
 	}
 
 	public float getAOA() {
@@ -203,12 +190,12 @@ public class EntityPlane extends EntityVehicle {
 	
 	@Override
 	public boolean isWeaponAngledDown() {
-		return vehicleData.canAimDown && !onGround && inputs.special2;
+		return planeStats.canAimDown && !onGround && inputs.special2;
 	}
 	
 	@Override
 	public boolean canAngleWeaponDown() {
-    	return vehicleData.canAimDown;
+    	return planeStats.canAimDown;
     }
 
 	@Override
@@ -243,12 +230,12 @@ public class EntityPlane extends EntityVehicle {
 	
 	@Override
 	public boolean isStalling() {
-		return Math.abs(getAOA()) >= vehicleData.liftKGraph.getCriticalAOA() || liftLost();
+		return Math.abs(getAOA()) >= planeStats.liftKGraph.getCriticalAOA() || liftLost();
 	}
 	
 	@Override
 	public boolean isAboutToStall() {
-		return Math.abs(getAOA()) >= vehicleData.liftKGraph.getWarnAOA() && !isFlapsDown();
+		return Math.abs(getAOA()) >= planeStats.liftKGraph.getWarnAOA() && !isFlapsDown();
 	}
 	
 	@Override

@@ -30,7 +30,7 @@ public class FelixPlane extends EntityPlane {
 			.build();
 	
 	public FelixPlane(EntityType<? extends EntityPlane> entity, Level level) {
-		super(entity, level, FELIX_PLANE_DATA);
+		super(entity, level, FelixPresets.DEFAULT_FELIX_PLANE);
 	}
 	
 	@Override

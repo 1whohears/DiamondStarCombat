@@ -30,7 +30,7 @@ public class E3SentryPlane extends EntityPlane {
 			.build();
 	
 	public E3SentryPlane(EntityType<? extends EntityPlane> entity, Level level) {
-		super(entity, level, E3SENTRY_PLANE_DATA);
+		super(entity, level, PlanePresets.DEFAULT_E3SENTRY_PLANE);
 	}
 	
 	@Override

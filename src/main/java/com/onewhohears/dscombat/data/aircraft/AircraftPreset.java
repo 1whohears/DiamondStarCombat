@@ -132,7 +132,6 @@ public class AircraftPreset extends JsonPreset{
 		public Builder setAircraftType(AircraftType aircraft_type) {
 			return setInt("aircraft_type", aircraft_type.ordinal());
 		}
-		
 		/**
 		 * use to make preset appear in aircraft work bench.
 		 * Builder.create/Builder.createFromCopy make presets that
@@ -142,7 +141,6 @@ public class AircraftPreset extends JsonPreset{
 			is_craftable = true;
 			return this;
 		}
-		
 		/**
 		 * used by all vehicles to add a slot that has an item by default
 		 * @param name a translatable string 
@@ -173,7 +171,6 @@ public class AircraftPreset extends JsonPreset{
 			}
 			return this;
 		}
-		
 		/**
 		 * removes item data
 		 * @param name slot that already exists
@@ -183,7 +180,6 @@ public class AircraftPreset extends JsonPreset{
 			if (slot != null) slot.remove("data");
 			return this;
 		}
-		
 		/**
 		 * sets item data of slot
 		 * @param name slot that already exists
@@ -202,7 +198,6 @@ public class AircraftPreset extends JsonPreset{
 			slot.add("data", d);
 			return this;
 		}
-		
 		/**
 		 * sets item data of slot
 		 * @param name slot that already exists
@@ -211,7 +206,6 @@ public class AircraftPreset extends JsonPreset{
 		public Builder setSlotItem(String name, @Nullable ResourceLocation item) {
 			return setSlotItem(name, item, null, false);
 		}
-		
 		/**
 		 * sets item data of slot
 		 * @param name slot that already exists
@@ -254,7 +248,6 @@ public class AircraftPreset extends JsonPreset{
 			slots.add(slot);
 			return slot;
 		}
-		
 		/**
 		 * used by all vehicles to add a slot that has an item by default
 		 * @param name a translatable string 
@@ -269,7 +262,6 @@ public class AircraftPreset extends JsonPreset{
 				@Nullable ResourceLocation item) {
 			return addItemSlot(name, type, x, y, z, zRot, item, null, false);
 		}
-		
 		/**
 		 * used by all vehicles to add a slot that has an item by default.
 		 * meant for internal parts.
@@ -283,7 +275,6 @@ public class AircraftPreset extends JsonPreset{
 				@Nullable ResourceLocation item, @Nullable String param, boolean filled) {
 			return addItemSlot(name, type, 0, 0, 0, 0, item, param, filled);
 		}
-		
 		/**
 		 * used by all vehicles to add a slot that has an item by default.
 		 * meant for internal parts.
@@ -296,7 +287,6 @@ public class AircraftPreset extends JsonPreset{
 				@Nullable ResourceLocation item, boolean filled) {
 			return addItemSlot(name, type, 0, 0, 0, 0, item, null, filled);
 		}
-		
 		/**
 		 * used by all vehicles to add a slot that has an item by default.
 		 * meant for internal parts.
@@ -307,7 +297,6 @@ public class AircraftPreset extends JsonPreset{
 		public Builder addItemSlot(String name, SlotType type, @Nullable ResourceLocation item) {
 			return addItemSlot(name, type, 0, 0, 0, 0, item, null, false);
 		}
-		
 		/**
 		 * used by all vehicles to add a slot that is empty by default
 		 * @param name a translatable string
@@ -320,7 +309,6 @@ public class AircraftPreset extends JsonPreset{
 		public Builder addEmptySlot(String name, SlotType type, double x, double y, double z, float zRot) {
 			return addItemSlot(name, type, x, y, z, zRot, null, null, false);
 		}
-		
 		/**
 		 * used by all vehicles to add a slot that is empty by default.
 		 * meant for internal parts.
@@ -330,7 +318,6 @@ public class AircraftPreset extends JsonPreset{
 		public Builder addEmptySlot(String name, SlotType type) {
 			return addItemSlot(name, type, 0, 0, 0, 0, null, null, false);
 		}
-		
 		/**
 		 * used by all vehicles to add a slot that has a seat by default
 		 * @param name a translatable string 
@@ -341,7 +328,6 @@ public class AircraftPreset extends JsonPreset{
 		public Builder addSeatSlot(String name, double x, double y, double z) {
 			return addItemSlot(name, SlotType.SEAT, x, y, z, 0, ModItems.SEAT.getId(), null, false);
 		}
-		
 		/**
 		 * used by all vehicles to add a slot that has a seat by default
 		 * @param x the x position of the part relative to the vehicle at 0 rotation
@@ -351,7 +337,6 @@ public class AircraftPreset extends JsonPreset{
 		public Builder addPilotSeatSlot(double x, double y, double z) {
 			return addItemSlot(PartSlot.PILOT_SLOT_NAME, SlotType.SEAT, x, y, z, 0, ModItems.SEAT.getId(), null, false);
 		}
-		
 		/**
 		 * used by all vehicles to add a slot that has a seat by default
 		 * @param name a translatable string 
@@ -363,7 +348,6 @@ public class AircraftPreset extends JsonPreset{
 		public Builder addSeatSlot(String name, SlotType type, double x, double y, double z) {
 			return addItemSlot(name, type, x, y, z, 0, ModItems.SEAT.getId(), null, false);
 		}
-		
 		/**
 		 * all vehicles
 		 */
@@ -377,21 +361,18 @@ public class AircraftPreset extends JsonPreset{
 			getData().get("ingredients").getAsJsonArray().add(i);
 			return this;
 		}
-		
 		/**
 		 * all vehicles
 		 */
 		public Builder addIngredient(ResourceLocation item, int num) {
 			return addIngredient(item.toString(), num);
 		}
-		
 		/**
 		 * all vehicles
 		 */
 		public Builder addIngredient(ResourceLocation item) {
 			return addIngredient(item, 1);
 		}
-		
 		/**
 		 * all vehicles
 		 */
@@ -399,110 +380,164 @@ public class AircraftPreset extends JsonPreset{
 			return setString("item", item.toString());
 		}
 		
+		public JsonObject getStats() {
+			if (!getData().has("stats")) 
+				getData().add("stats", new JsonObject());
+			return getData().get("stats").getAsJsonObject();
+		}
+		
+		public JsonObject getStatsByType(String vehicleType) {
+			if (!getStats().has(vehicleType)) 
+				getStats().add(vehicleType, new JsonObject());
+			return getStats().get(vehicleType).getAsJsonObject();
+		}
+		
+		public Builder setStatFloat(String key, float value) {
+			getStats().addProperty(key, value);
+			return this;
+		}
+		
+		public Builder setStatInt(String key, int value) {
+			getStats().addProperty(key, value);
+			return this;
+		}
+		
+		public Builder setTypedStatFloat(String key, float value, String vehicleType) {
+			getStatsByType(vehicleType).addProperty(key, value);
+			return this;
+		}
 		/**
 		 * all vehicles
 		 * blocks per tick
 		 */
 		public Builder setMaxSpeed(float max_speed) {
-			return setFloat("max_speed", max_speed);
+			return setStatFloat("max_speed", max_speed);
 		}
-		
 		/**
 		 * all vehicles
 		 */
 		public Builder setMaxHealth(float max_health) {
 			setFloat("health", max_health);
-			return setFloat("max_health", max_health);
+			return setStatFloat("max_health", max_health);
 		}
-		
 		/**
 		 * all vehicles
 		 */
 		public Builder setMass(float mass) {
-			return setFloat("mass", mass);
+			return setStatFloat("mass", mass);
 		}
-		
 		/**
 		 * all vehicles
 		 */
 		public Builder setBaseArmor(float armor) {
-			return setFloat("base_armor", armor);
+			return setStatFloat("base_armor", armor);
 		}
-		
-		/**
-		 * used by planes
-		 */
-		public Builder setPlaneWingArea(float wing_area) {
-			return setFloat("wing_area", wing_area);
-		}
-		
 		/**
 		 * all vehicles
 		 */
 		public Builder setCrossSecArea(float area) {
-			return setFloat("cross_sec_area", area);
+			return setStatFloat("cross_sec_area", area);
 		}
-		
 		/**
 		 * all vehicles
 		 */
 		public Builder setStealth(float stealth) {
-			return setFloat("stealth", stealth);
+			return setStatFloat("stealth", stealth);
 		}
-		
 		/**
 		 * all vehicles
 		 */
 		public Builder setIdleHeat(float idleheat) {
-			return setFloat("idleheat", idleheat);
+			return setStatFloat("idleheat", idleheat);
 		}
-		
 		/**
 		 * all vehicles that can drive
 		 */
 		public Builder setTurnRadius(float turn_radius) {
-			return setFloat("turn_radius", turn_radius);
+			return setStatFloat("turn_radius", turn_radius);
 		}
-		
 		/**
 		 * all vehicles
 		 */
 		public Builder setMaxTurnRates(float maxroll, float maxpitch, float maxyaw) {
-			setFloat("maxroll", maxroll);
-			setFloat("maxpitch", maxpitch);
-			return setFloat("maxyaw", maxyaw);
+			setStatFloat("maxroll", maxroll);
+			setStatFloat("maxpitch", maxpitch);
+			return setStatFloat("maxyaw", maxyaw);
 		}
-		
 		/**
 		 * all vehicles
 		 */
-		public Builder setTurnTorques(float rolltorque, float pitchtorque, float yawtorque) {
-			setFloat("rolltorque", rolltorque);
-			setFloat("pitchtorque", pitchtorque);
-			return setFloat("yawtorque", yawtorque);
+		public Builder setTurnTorques(float torqueroll, float torquepitch, float torqueyaw) {
+			setStatFloat("torqueroll", torqueroll);
+			setStatFloat("torquepitch", torquepitch);
+			return setStatFloat("torqueyaw", torqueyaw);
 		}
-		
+		/**
+		 * all vehicles
+		 */
+		public Builder setRotationalInertia(float inertiaroll, float inertiapitch, float inertiayaw) {
+			setStatFloat("inertiaroll", inertiaroll);
+			setStatFloat("inertiapitch", inertiapitch);
+			return setStatFloat("inertiayaw", inertiayaw);
+		}
 		/**
 		 * all vehicles
 		 */
 		public Builder setThrottleRate(float throttleup, float throttledown) {
-			setFloat("throttledown", throttledown);
-			return setFloat("throttleup", throttleup);
+			setStatFloat("throttledown", throttledown);
+			return setStatFloat("throttleup", throttleup);
+		}
+		/**
+		 * all vehicles 
+		 */
+		public Builder setCrashExplosionRadius(float crashExplosionRadius) {
+			return setStatFloat("crashExplosionRadius", crashExplosionRadius);
+		}
+		/**
+		 * all vehicles 
+		 */
+		public Builder set3rdPersonCamDist(float cameraDistance) {
+			return setStatFloat("cameraDistance", cameraDistance);
 		}
 		
+		public JsonObject getTextures() {
+			if (!getData().has("textures")) 
+				getData().add("textures", new JsonObject());
+			return getData().get("textures").getAsJsonObject();
+		}
+		/**
+		 * all vehicles
+		 */
+		public Builder setDefaultBaseTexture(int index) {
+			getTextures().addProperty("baseTexture", index);
+			return this;
+		}
+		/**
+		 * all vehicles 
+		 */
+		public Builder setBaseTextureNum(int baseTextureVariants) {
+			getTextures().addProperty("baseTextureVariants", baseTextureVariants);
+			return this;
+		}
+		/**
+		 * all vehicles 
+		 */
+		public Builder setLayerTextureNum(int textureLayers) {
+			getTextures().addProperty("textureLayers", textureLayers);
+			return this;
+		}
+		/**
+		 * used by planes
+		 */
+		public Builder setPlaneWingArea(float wing_area) {
+			return setTypedStatFloat("wing_area", wing_area, "plane");
+		}
 		/**
 		 * helicopters only
 		 */
 		public Builder setHeliHoverMovement(float accForward, float accSide) {
-			setFloat("accForward", accForward);
-			return setFloat("accSide", accSide);
-		}
-		
-		public Builder setDefaultBaseTexture(int index) {
-			JsonObject textures = new JsonObject();
-			textures.addProperty("baseTexture", index);
-			getData().add("textures", textures);
-			return this;
+			setTypedStatFloat("accForward", accForward, "heli");
+			return setTypedStatFloat("accSide", accSide, "heli");
 		}
 		
 		public Builder setBoolean(String key, boolean value) {

@@ -1,10 +1,7 @@
 {
   "aircraft_type": 3,
-  "base_armor": 15.0,
-  "cross_sec_area": 7.5,
   "displayName": "preset.dscombat.gronk_battleship_unarmed",
   "health": 600.0,
-  "idleheat": 4.0,
   "ingredients": [
     {
       "item": "dscombat:large_fuselage",
@@ -38,15 +35,7 @@
   "is_craftable": true,
   "item": "dscombat:gronk_battleship",
   "landing_gear": true,
-  "mass": 450000.0,
-  "max_health": 600.0,
-  "max_speed": 0.6,
-  "maxpitch": 0.0,
-  "maxroll": 0.0,
-  "maxyaw": 1.0,
-  "pitchtorque": 0.0,
   "presetId": "gronk_battleship_unarmed",
-  "rolltorque": 0.0,
   "slots": [
     {
       "data": {
@@ -276,9 +265,22 @@
     }
   ],
   "sort_factor": 1,
-  "stealth": 0.9,
-  "throttledown": 0.1,
-  "throttleup": 0.05,
-  "turn_radius": 0.0,
-  "yawtorque": 1.0
+  "stats": {
+    "base_armor": 15.0,
+    "cross_sec_area": 7.5,
+    "idleheat": 4.0,
+    "mass": 450000.0,
+    "max_health": 600.0,
+    "max_speed": 0.6,
+    "maxpitch": 0.0,
+    "maxroll": 0.0,
+    "maxyaw": 1.0,
+    "pitchtorque": 0.0,
+    "rolltorque": 0.0,
+    "stealth": 0.9,
+    "throttledown": 0.1,
+    "throttleup": 0.05,
+    "turn_radius": 0.0,
+    "yawtorque": 1.0
+  }
 }

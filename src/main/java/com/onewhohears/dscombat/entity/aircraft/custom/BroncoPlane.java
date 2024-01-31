@@ -7,6 +7,7 @@ import com.onewhohears.dscombat.data.aircraft.presets.BroncoPresets;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 import com.onewhohears.dscombat.init.ModSounds;
 
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 
@@ -19,7 +20,7 @@ public class BroncoPlane extends EntityPlane {
 			.setRotationalInertia(6, 10, 5)
 			.setCrashExplosionRadius(4)
 			.setCameraDistance(14)
-			.setSpinRate(360)
+			.setSpinRate(8*Mth.PI)
 			.setLiftKGraph(LiftKGraph.JAVI_PLANE_GRAPH)
 			.setFlapsAOABias(9f)
 			.setCanAimDown(false)
@@ -27,7 +28,7 @@ public class BroncoPlane extends EntityPlane {
 			.build();
 	
 	public BroncoPlane(EntityType<? extends EntityPlane> entity, Level level) {
-		super(entity, level, BRONCO_PLANE_DATA);
+		super(entity, level, BroncoPresets.DEFAULT_BRONCO_PLANE);
 	}
 
 }

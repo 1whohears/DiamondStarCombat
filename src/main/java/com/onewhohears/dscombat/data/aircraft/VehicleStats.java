@@ -65,10 +65,9 @@ public abstract class VehicleStats {
 			super.readPresetData(acp);
 			CompoundTag plane = acp.getDataAsNBT().getCompound("stats").getCompound("plane");
 			wing_area = plane.getFloat("wing_area");
-			
 			flapsAOABias = plane.getFloat("flapsAOABias");
 			canAimDown = plane.getBoolean("canAimDown");
-			//liftKGraph = nbt.getString("liftKGraph");
+			liftKGraph = LiftKGraph.getGraphById(plane.getString("liftKGraph"));
 		}
 	}
 	
@@ -83,7 +82,6 @@ public abstract class VehicleStats {
 			CompoundTag heli = acp.getDataAsNBT().getCompound("stats").getCompound("heli");
 			accForward = heli.getFloat("accForward");
 			accSide = heli.getFloat("accSide");
-			
 			heliLiftFactor = heli.getFloat("heliLiftFactor");
 			alwaysLandingGear = heli.getBoolean("alwaysLandingGear");
 		}
@@ -96,7 +94,6 @@ public abstract class VehicleStats {
 		public void readPresetData(AircraftPreset acp) {
 			super.readPresetData(acp);
 			CompoundTag car = acp.getDataAsNBT().getCompound("stats").getCompound("car");
-			
 			isTank = car.getBoolean("isTank");
 		}
 	}

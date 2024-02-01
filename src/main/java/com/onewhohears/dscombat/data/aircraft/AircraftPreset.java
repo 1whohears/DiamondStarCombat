@@ -10,6 +10,7 @@ import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.crafting.DSCIngredient;
 import com.onewhohears.dscombat.data.JsonPreset;
 import com.onewhohears.dscombat.data.PresetBuilder;
+import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
@@ -19,8 +20,10 @@ import com.onewhohears.dscombat.util.UtilParse;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 public class AircraftPreset extends JsonPreset{
 
@@ -406,6 +409,16 @@ public class AircraftPreset extends JsonPreset{
 			getStatsByType(vehicleType).addProperty(key, value);
 			return this;
 		}
+		
+		public Builder setTypedStatString(String key, String value, String vehicleType) {
+			getStatsByType(vehicleType).addProperty(key, value);
+			return this;
+		}
+		
+		public Builder setTypedStatBoolean(String key, boolean value, String vehicleType) {
+			getStatsByType(vehicleType).addProperty(key, value);
+			return this;
+		}
 		/**
 		 * all vehicles
 		 * blocks per tick
@@ -526,6 +539,27 @@ public class AircraftPreset extends JsonPreset{
 			getTextures().addProperty("textureLayers", textureLayers);
 			return this;
 		}
+		
+		public JsonObject getSounds() {
+			if (!getData().has("sounds")) 
+				getData().add("sounds", new JsonObject());
+			return getData().get("sounds").getAsJsonObject();
+		}
+		/**
+		 * all vehicles 
+		 */
+		public Builder setEngineSounds(RegistryObject<SoundEvent> nonPassengerEngine, RegistryObject<SoundEvent> passengerEngine) {
+			getSounds().addProperty("nonPassengerEngine", nonPassengerEngine.getKey().toString());
+			getSounds().addProperty("passengerEngine", passengerEngine.getKey().toString());
+			return this;
+		}
+		/**
+		 * all vehicles 
+		 */
+		public Builder setDefultPassengerSoundPack(PassengerSoundPack passengerSoundPack) {
+			getSounds().addProperty("passengerSoundPack", passengerSoundPack.id);
+			return this;
+		}
 		/**
 		 * used by planes
 		 */
@@ -533,11 +567,47 @@ public class AircraftPreset extends JsonPreset{
 			return setTypedStatFloat("wing_area", wing_area, "plane");
 		}
 		/**
+		 * used by planes
+		 */
+		public Builder setPlaneFlapDownAOABias(float flapsAOABias) {
+			return setTypedStatFloat("flapsAOABias", flapsAOABias, "plane");
+		}
+		/**
+		 * used by planes
+		 */
+		public Builder setPlaneNoseCanAimDown(float canAimDown) {
+			return setTypedStatFloat("canAimDown", canAimDown, "plane");
+		}
+		/**
+		 * used by planes
+		 */
+		public Builder setPlaneLiftAOAGraph(LiftKGraph liftKGraph) {
+			return setTypedStatString("liftKGraph", liftKGraph.id, "plane");
+		}
+		/**
 		 * helicopters only
 		 */
 		public Builder setHeliHoverMovement(float accForward, float accSide) {
 			setTypedStatFloat("accForward", accForward, "heli");
 			return setTypedStatFloat("accSide", accSide, "heli");
+		}
+		/**
+		 * helicopters only
+		 */
+		public Builder setHeliLiftFactor(float heliLiftFactor) {
+			return setTypedStatFloat("heliLiftFactor", heliLiftFactor, "heli");
+		}
+		/**
+		 * helicopters only
+		 */
+		public Builder setHeliAlwaysLandingGear(boolean alwaysLandingGear) {
+			return setTypedStatBoolean("alwaysLandingGear", alwaysLandingGear, "heli");
+		}
+		/**
+		 * ground vehicles only
+		 */
+		public Builder setCarIsTank(boolean isTank) {
+			return setTypedStatBoolean("isTank", isTank, "car");
 		}
 		
 		public Builder setBoolean(String key, boolean value) {

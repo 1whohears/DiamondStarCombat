@@ -1,28 +1,49 @@
 package com.onewhohears.dscombat.data.aircraft;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class LiftKGraph {
 	
 	private static final int[] ALEXIS_PLANE_DEGRESS = {-36,  -34,   -32,   -30,   -28,  -26,   -24,   -22,   -20,   -18,   -16,   -14,   -12,   -10,    -8,    -6,    -4,   -2,0,   2,    4,    6,    8,   10,   12,   14,   16,   18,   20,   22,   24,  26,   28,   30,   32,  34,36};
 	private static final float[] ALEXIS_PLANE_LIFT  = {  0,-0.4f,-0.78f,-1.04f,-1.18f,-1.2f,-1.18f,-1.15f,-1.11f,-1.06f,-0.99f,-0.89f,-0.79f,-0.68f,-0.58f,-0.48f,-0.36f,-0.2f,0,0.2f,0.36f,0.48f,0.58f,0.68f,0.79f,0.89f,0.99f,1.06f,1.11f,1.15f,1.18f,1.2f,1.18f,1.04f,0.78f,0.4f,0};
-	public static final LiftKGraph ALEXIS_PLANE_GRAPH = new LiftKGraph(ALEXIS_PLANE_DEGRESS, ALEXIS_PLANE_LIFT);
+	public static final LiftKGraph ALEXIS_PLANE_GRAPH = new LiftKGraph("alexis_plane", ALEXIS_PLANE_DEGRESS, ALEXIS_PLANE_LIFT);
 	
 	private static final int[] JAVI_PLANE_DEGRESS = {-26,   -24,   -22,   -20,   -18,   -16,   -14,   -12,   -10,   -8,    -6,  -4,   -2,   0,   2,    4,    6,   8,   10,   12,  14,   16,  18,   20,   22,  24,26};
 	private static final float[] JAVI_PLANE_LIFT  = {  0,-0.18f,-0.36f,-0.47f,-0.55f,-0.58f,-0.53f,-0.43f,-0.32f,-0.2f,-0.05f,0.1f,0.25f,0.4f,0.5f,0.68f,0.79f,0.9f,1.01f,1.12f,1.2f,1.28f,1.3f,1.28f,1.15f,0.7f,0};
-	public static final LiftKGraph JAVI_PLANE_GRAPH = new LiftKGraph(JAVI_PLANE_DEGRESS, JAVI_PLANE_LIFT);
+	public static final LiftKGraph JAVI_PLANE_GRAPH = new LiftKGraph("javi_plane", JAVI_PLANE_DEGRESS, JAVI_PLANE_LIFT);
 	
 	private static final int[] WOODEN_PLANE_DEGRESS = {-20,   -18,   -17,   -16,   -15,   -14,   -13,   -12,   -10,    -8,   -6,    -4,    -2,0,    2,    4,    6,    8,   10,   12,   13,   14,   15,   16,   17,   18,20};
 	private static final float[] WOODEN_PLANE_LIFT  = {  0,-0.78f,-1.04f,-1.15f,-1.20f,-1.18f,-1.15f,-1.11f,-0.99f,-0.84f,0.69f,-0.48f,-0.25f,0,0.25f,0.48f,0.69f,0.84f,0.99f,1.11f,1.15f,1.18f,1.20f,1.15f,1.04f,0.78f, 0};
-	public static final LiftKGraph WOODEN_PLANE_GRAPH = new LiftKGraph(WOODEN_PLANE_DEGRESS, WOODEN_PLANE_LIFT);
+	public static final LiftKGraph WOODEN_PLANE_GRAPH = new LiftKGraph("wooden_plane", WOODEN_PLANE_DEGRESS, WOODEN_PLANE_LIFT);
 	
 	private static final int[] E3SENTRY_PLANE_DEGRESS = {-26,   -24,   -22,   -20,   -18,   -16,   -14,   -12,   -10,   -8,    -6,  -4,  -2,   0,    2,    4,    6,    8,   10,   12,   14,   16,  18,   20,   22,   24,26};
 	private static final float[] E3SENTRY_PLANE_LIFT  = {  0,-0.18f,-0.36f,-0.47f,-0.55f,-0.58f,-0.53f,-0.43f,-0.32f,-0.2f,-0.05f,0.1f,0.2f,0.3f,0.42f,0.54f,0.64f,0.75f,0.86f,0.96f,1.02f,1.08f,1.1f,1.06f,0.96f,0.65f,0};
-	public static final LiftKGraph E3SENTRY_PLANE_GRAPH = new LiftKGraph(E3SENTRY_PLANE_DEGRESS, E3SENTRY_PLANE_LIFT);
+	public static final LiftKGraph E3SENTRY_PLANE_GRAPH = new LiftKGraph("e3sentry_plane", E3SENTRY_PLANE_DEGRESS, E3SENTRY_PLANE_LIFT);
 	
+	static {
+		registerAOAGraph(ALEXIS_PLANE_GRAPH);
+		registerAOAGraph(JAVI_PLANE_GRAPH);
+		registerAOAGraph(WOODEN_PLANE_GRAPH);
+		registerAOAGraph(E3SENTRY_PLANE_GRAPH);
+	}
+	
+	private static final Map<String,LiftKGraph> aoaGraphs = new HashMap<>();
+	public static void registerAOAGraph(LiftKGraph graph) {
+		aoaGraphs.put(graph.id, graph);
+	}
+	public static LiftKGraph getGraphById(String id) {
+		if (!aoaGraphs.containsKey(id)) return WOODEN_PLANE_GRAPH;
+		return aoaGraphs.get(id);
+	}
+	
+	public final String id;
 	private final int[] aoa;
 	private final float[] lift;
 	private final int criticalAOA, warnAOA;
 	
-	public LiftKGraph(int[] aoa, float[] lift) {
+	public LiftKGraph(String id, int[] aoa, float[] lift) {
+		this.id = id;
 		if (aoa.length != lift.length) {
 			this.aoa = new int[] {0};
 			this.lift = new float[] {0};

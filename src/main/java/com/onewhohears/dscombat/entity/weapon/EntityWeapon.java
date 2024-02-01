@@ -34,27 +34,18 @@ import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
 
-public abstract class EntityWeapon extends Projectile {
+public abstract class EntityWeapon<W extends WeaponData> extends Projectile {
 	
 	public static final EntityDataAccessor<Integer> OWNER_ID = SynchedEntityData.defineId(EntityWeapon.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> AGE = SynchedEntityData.defineId(EntityWeapon.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Boolean> TEST_MODE = SynchedEntityData.defineId(EntityWeapon.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Vec3> SHOOT_POS = SynchedEntityData.defineId(EntityWeapon.class, DataSerializers.VEC3);
 	
-	/**
-	 * only set on server side
-	 */
-	protected int maxAge;
+	protected W weaponData;
 	
-	public EntityWeapon(EntityType<? extends EntityWeapon> type, Level level) {
+	public EntityWeapon(EntityType<? extends EntityWeapon<W>> type, Level level, W weaponData) {
 		super(type, level);
-	}
-	
-	@SuppressWarnings("unchecked")
-	public EntityWeapon(Level level, Entity owner, WeaponData data) {
-		this((EntityType<? extends EntityWeapon>) data.getEntityType(), level);
-		this.setOwner(owner);
-		maxAge = data.getMaxAge();
+		this.weaponData = weaponData;
 	}
 
 	@Override
@@ -76,11 +67,8 @@ public abstract class EntityWeapon extends Projectile {
 	
 	@Override
 	protected void readAdditionalSaveData(CompoundTag compound) {
-		//System.out.println("bullet reloaded");
-		//this.discard();
 		super.readAdditionalSaveData(compound);
 		tickCount = compound.getInt("tickCount");
-		maxAge = compound.getInt("maxAge");
 		if (getOwner() != null) setOwnerId(getOwner().getId());
 		else setOwnerId(-1);
 		setTestMode(compound.getBoolean("test_mode"));
@@ -89,12 +77,8 @@ public abstract class EntityWeapon extends Projectile {
 
 	@Override
 	protected void addAdditionalSaveData(CompoundTag compound) {
-		//super.addAdditionalSaveData(compound);
-		//System.out.println("weapon got additional save data");
-		//this.discard();
 		super.addAdditionalSaveData(compound);
 		compound.putInt("tickCount", tickCount);
-		compound.putInt("maxAge", maxAge);
 		compound.putBoolean("test_mode", isTestMode());
 		UtilParse.writeVec3(compound, getShootPos(), "shoot_pos");
 	}
@@ -120,7 +104,7 @@ public abstract class EntityWeapon extends Projectile {
 	protected void tickAge() {
 		if (!level.isClientSide) {
 			setAge(tickCount);
-			if (tickCount > maxAge) kill();
+			if (tickCount > weaponData.getMaxAge()) kill();
 		}
 	}
 	
@@ -330,7 +314,7 @@ public abstract class EntityWeapon extends Projectile {
 	}
 	
 	public int getMaxAge() {
-		return maxAge;
+		return weaponData.getMaxAge();
 	}
 	
 	public boolean isTestMode() {

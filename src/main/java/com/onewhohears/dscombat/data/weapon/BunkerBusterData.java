@@ -14,8 +14,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Level;
 
 public class BunkerBusterData extends BombData {
 	
@@ -47,11 +45,6 @@ public class BunkerBusterData extends BombData {
 		EntityBunkerBuster bomb = (EntityBunkerBuster) super.getShootEntity(params);
 		if (bomb == null) return null;
 		return bomb;
-	}
-	
-	@Override
-	public EntityWeapon getEntity(Level level, Entity owner) {
-		return new EntityBunkerBuster(level, owner, this);
 	}
 	
 	@Override

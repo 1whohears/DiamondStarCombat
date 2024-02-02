@@ -5,7 +5,6 @@ import com.onewhohears.dscombat.data.JsonPreset;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 
 public class NoWeaponData extends WeaponData {
@@ -32,7 +31,7 @@ public class NoWeaponData extends WeaponData {
 	}
 
 	@Override
-	public EntityWeapon getEntity(Level level, Entity owner) {
+	public EntityWeapon getEntity(Level level) {
 		return null;
 	}
 

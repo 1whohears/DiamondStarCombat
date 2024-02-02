@@ -18,19 +18,16 @@ import net.minecraft.world.phys.AABB;
 
 public class IRMissile extends EntityMissile {
 	
-	/**
-	 * only set on server side
-	 */
-	protected final float flareResistance;
+	protected IRMissileData irMissileData;
 	
-	public IRMissile(EntityType<? extends IRMissile> type, Level level) {
-		super(type, level);
-		flareResistance = 0;
+	public IRMissile(EntityType<? extends IRMissile> type, Level level, String defaultWeaponId) {
+		super(type, level, defaultWeaponId);
 	}
 	
-	public IRMissile(Level level, Entity owner, IRMissileData data) {
-		super(level, owner, data);
-		flareResistance = data.getFlareResistance();
+	@Override
+	protected void castWeaponData() {
+		super.castWeaponData();
+		irMissileData = (IRMissileData)weaponData;
 	}
 	
 	@Override
@@ -77,7 +74,7 @@ public class IRMissile extends EntityMissile {
 	}
 	
 	protected void findIrTarget() {
-		updateIRTargetsList(this, targets, flareResistance, fov);
+		updateIRTargetsList(this, targets, irMissileData.getFlareResistance(), irMissileData.getFov());
 		// pick target
 		if (targets.size() == 0) {
 			this.target = null;

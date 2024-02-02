@@ -273,53 +273,76 @@ public class ModEntities {
 			() -> createEntityType(EntityRadar::new, EntityDimensions.scalable(1.0f, 1.0f)));
 	
 	public static final RegistryObject<EntityType<EntityBullet>> BULLET = ENTITIES.register("bullet", 
-			() -> createEntityType(EntityBullet::new, EntityDimensions.scalable(0.15f, 0.15f)));
+			() -> createEntityType((type, level) -> new EntityBullet(type, level, "20mm"), 
+					EntityDimensions.scalable(0.15f, 0.15f)));
 	public static final RegistryObject<EntityType<EntityBomb>> BOMB = ENTITIES.register("bomb", 
-			() -> createEntityType(EntityBomb::new, EntityDimensions.scalable(0.6f, 0.6f)));
+			() -> createEntityType((type, level) -> new EntityBomb(type, level, "anm30"), 
+					EntityDimensions.scalable(0.6f, 0.6f)));
 	public static final RegistryObject<EntityType<EntityBunkerBuster>> GRUETZ_BUNKER_BUSTER = ENTITIES.register("gruetz_bunker_buster", 
-			() -> createEntityType(EntityBunkerBuster::new, EntityDimensions.scalable(1.5f, 2.5f)));
+			() -> createEntityType((type, level) -> new EntityBunkerBuster(type, level, "gruetz_bunker_buster"), 
+					EntityDimensions.scalable(1.5f, 2.5f)));
 	
 	public static final RegistryObject<EntityType<PositionMissile>> POS_MISSILE_1 = ENTITIES.register("pos_missile_1", 
-			() -> createEntityTypeFar(PositionMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
+			() -> createEntityTypeFar((type, level) -> new PositionMissile(type, level, "agm114k"), 
+					EntityDimensions.scalable(0.5f, 0.5f)));
 	public static final RegistryObject<EntityType<IRMissile>> IR_MISSILE_1 = ENTITIES.register("ir_missile_1", 
-			() -> createEntityTypeFar(IRMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
+			() -> createEntityTypeFar((type, level) -> new IRMissile(type, level, "aim9l"), 
+					EntityDimensions.scalable(0.5f, 0.5f)));
 	public static final RegistryObject<EntityType<TrackEntityMissile>> TRACK_MISSILE_1 = ENTITIES.register("track_missile_1", 
-			() -> createEntityTypeFar(TrackEntityMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
+			() -> createEntityTypeFar((type, level) -> new TrackEntityMissile(type, level, "aim120b"), 
+					EntityDimensions.scalable(0.5f, 0.5f)));
 	public static final RegistryObject<EntityType<AntiRadarMissile>> ANTI_RADAR_MISSILE_1 = ENTITIES.register("anti_radar_missile_1", 
-			() -> createEntityTypeFar(AntiRadarMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
+			() -> createEntityTypeFar((type, level) -> new AntiRadarMissile(type, level, "agm88g"), 
+					EntityDimensions.scalable(0.5f, 0.5f)));
 	public static final RegistryObject<EntityType<TorpedoMissile>> TORPEDO_MISSILE_1 = ENTITIES.register("torpedo_missile_1", 
-			() -> createEntityTypeFar(TorpedoMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
+			() -> createEntityTypeFar((type, level) -> new TorpedoMissile(type, level, "mk13"), 
+					EntityDimensions.scalable(0.5f, 0.5f)));
 	
 	public static final RegistryObject<EntityType<IRMissile>> AIM9L = ENTITIES.register("aim9l", 
-			() -> createEntityTypeFar(IRMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
+			() -> createEntityTypeFar((type, level) -> new IRMissile(type, level, "aim9l"), 
+					EntityDimensions.scalable(0.5f, 0.5f)));
 	public static final RegistryObject<EntityType<IRMissile>> AIM9P5 = ENTITIES.register("aim9p5", 
-			() -> createEntityTypeFar(IRMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
+			() -> createEntityTypeFar((type, level) -> new IRMissile(type, level, "aim9p5"), 
+					EntityDimensions.scalable(0.5f, 0.5f)));
 	public static final RegistryObject<EntityType<IRMissile>> AIM9X = ENTITIES.register("aim9x", 
-			() -> createEntityTypeFar(IRMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
+			() -> createEntityTypeFar((type, level) -> new IRMissile(type, level, "aim9x"), 
+					EntityDimensions.scalable(0.5f, 0.5f)));
 	public static final RegistryObject<EntityType<TrackEntityMissile>> AIM120B = ENTITIES.register("aim120b", 
-			() -> createEntityTypeFar(TrackEntityMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
+			() -> createEntityTypeFar((type, level) -> new TrackEntityMissile(type, level, "aim120b"), 
+					EntityDimensions.scalable(0.5f, 0.5f)));
 	public static final RegistryObject<EntityType<TrackEntityMissile>> AIM120C = ENTITIES.register("aim120c", 
-			() -> createEntityTypeFar(TrackEntityMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
+			() -> createEntityTypeFar((type, level) -> new TrackEntityMissile(type, level, "aim120c"), 
+					EntityDimensions.scalable(0.5f, 0.5f)));
 	public static final RegistryObject<EntityType<TrackEntityMissile>> PAC3 = ENTITIES.register("pac3", 
-			() -> createEntityTypeFar(TrackEntityMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
+			() -> createEntityTypeFar((type, level) -> new TrackEntityMissile(type, level, "pac3"), 
+					EntityDimensions.scalable(0.5f, 0.5f)));
 	public static final RegistryObject<EntityType<TrackEntityMissile>> AIM7F = ENTITIES.register("aim7f", 
-			() -> createEntityTypeFar(TrackEntityMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
+			() -> createEntityTypeFar((type, level) -> new TrackEntityMissile(type, level, "aim7f"), 
+					EntityDimensions.scalable(0.5f, 0.5f)));
 	public static final RegistryObject<EntityType<TrackEntityMissile>> AIM7MH = ENTITIES.register("aim7mh", 
-			() -> createEntityTypeFar(TrackEntityMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
+			() -> createEntityTypeFar((type, level) -> new TrackEntityMissile(type, level, "aim7mh"), 
+					EntityDimensions.scalable(0.5f, 0.5f)));
 	public static final RegistryObject<EntityType<PositionMissile>> AGM114K = ENTITIES.register("agm114k", 
-			() -> createEntityTypeFar(PositionMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
+			() -> createEntityTypeFar((type, level) -> new PositionMissile(type, level, "agm114k"), 
+					EntityDimensions.scalable(0.5f, 0.5f)));
 	public static final RegistryObject<EntityType<PositionMissile>> AGM84E = ENTITIES.register("agm84e", 
-			() -> createEntityTypeFar(PositionMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
+			() -> createEntityTypeFar((type, level) -> new PositionMissile(type, level, "agm84e"), 
+					EntityDimensions.scalable(0.5f, 0.5f)));
 	public static final RegistryObject<EntityType<PositionMissile>> AGM65L = ENTITIES.register("agm65l", 
-			() -> createEntityTypeFar(PositionMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
+			() -> createEntityTypeFar((type, level) -> new PositionMissile(type, level, "agm65l"), 
+					EntityDimensions.scalable(0.5f, 0.5f)));
 	public static final RegistryObject<EntityType<TrackEntityMissile>> AGM65G = ENTITIES.register("agm65g", 
-			() -> createEntityTypeFar(TrackEntityMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
+			() -> createEntityTypeFar((type, level) -> new TrackEntityMissile(type, level, "agm65g"), 
+					EntityDimensions.scalable(0.5f, 0.5f)));
 	public static final RegistryObject<EntityType<TrackEntityMissile>> METEOR = ENTITIES.register("meteor", 
-			() -> createEntityTypeFar(TrackEntityMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
+			() -> createEntityTypeFar((type, level) -> new TrackEntityMissile(type, level, "meteor"), 
+					EntityDimensions.scalable(0.5f, 0.5f)));
 	public static final RegistryObject<EntityType<TorpedoMissile>> MK13 = ENTITIES.register("mk13", 
-			() -> createEntityTypeFar(TorpedoMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
+			() -> createEntityTypeFar((type, level) -> new TorpedoMissile(type, level, "mk13"), 
+					EntityDimensions.scalable(0.5f, 0.5f)));
 	public static final RegistryObject<EntityType<AntiRadarMissile>> AGM88G = ENTITIES.register("agm88g", 
-			() -> createEntityTypeFar(AntiRadarMissile::new, EntityDimensions.scalable(0.5f, 0.5f)));
+			() -> createEntityTypeFar((type, level) -> new AntiRadarMissile(type, level, "agm88g"), 
+					EntityDimensions.scalable(0.5f, 0.5f)));
 	
 	public static final RegistryObject<EntityType<EntityFlare>> FLARE = ENTITIES.register("flare", 
 			() -> createEntityType(EntityFlare::new, EntityDimensions.scalable(0f, 0f)));

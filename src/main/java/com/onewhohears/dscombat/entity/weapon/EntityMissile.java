@@ -17,7 +17,6 @@ import com.onewhohears.dscombat.util.UtilParticles;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -34,25 +33,13 @@ import net.minecraft.world.level.ClipContext.Fluid;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 
-public abstract class EntityMissile extends EntityBullet implements IEntityAdditionalSpawnData {
+public abstract class EntityMissile extends EntityBullet {
 	
-	public static final EntityDataAccessor<Float> ACCELERATION = SynchedEntityData.defineId(EntityMissile.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> TURN_RADIUS = SynchedEntityData.defineId(EntityMissile.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> BLEED = SynchedEntityData.defineId(EntityMissile.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Integer> FUEL_TICKS = SynchedEntityData.defineId(EntityMissile.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> TARGET_ID = SynchedEntityData.defineId(EntityMissile.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Vec3> TARGET_POS = SynchedEntityData.defineId(EntityMissile.class, DataSerializers.VEC3);
 	
-	/**
-	 * only set on server side
-	 */
-	protected float fuseDist, fov;
-	/**
-	 * only set on server side
-	 */
-	protected int seeThroWater, seeThroBlock;
+	protected MissileData missileData;
 	
 	public Entity target;
 	public Vec3 targetPos;
@@ -61,68 +48,33 @@ public abstract class EntityMissile extends EntityBullet implements IEntityAddit
 	private int prevTickCount, tickCountRepeats, repeatCoolDown, lerpSteps;
 	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot;
 	
-	public EntityMissile(EntityType<? extends EntityMissile> type, Level level) {
-		super(type, level);
+	public EntityMissile(EntityType<? extends EntityMissile> type, Level level, String defaultWeaponId) {
+		super(type, level, defaultWeaponId);
 		if (!level.isClientSide) NonTickingMissileManager.addMissile(this);
 	}
 	
-	public EntityMissile(Level level, Entity owner, MissileData data) {
-		super(level, owner, data);
-		if (!level.isClientSide) NonTickingMissileManager.addMissile(this);
-		setAcceleration((float)data.getAcceleration());
-		setTurnRadius(data.getTurnRadius());
-		setBleed((float)data.getBleed());
-		fuseDist = (float) data.getFuseDist();
-		fov = data.getFov();
-		setFuelTicks(data.getFuelTicks());
-		seeThroWater = data.getSeeThroWater();
-		seeThroBlock = data.getSeeThroBlock();
+	@Override
+	protected void castWeaponData() {
+		super.castWeaponData();
+		missileData = (MissileData)weaponData;
 	}
 	
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		entityData.define(ACCELERATION, 0f);
-		entityData.define(TURN_RADIUS, 0f);
-		entityData.define(BLEED, 0f);
-		entityData.define(FUEL_TICKS, 0);
 		entityData.define(TARGET_ID, -1);
 		entityData.define(TARGET_POS, Vec3.ZERO.add(0, -1000, 0));
 	}
 	
 	@Override
-	protected void readAdditionalSaveData(CompoundTag compound) {
-		super.readAdditionalSaveData(compound);
-		setAcceleration(compound.getFloat("acc"));
-		setTurnRadius(compound.getFloat("turnRadius"));
-		setBleed(compound.getFloat("bleed"));
-		fuseDist = compound.getFloat("fuseDist");
-		fov = compound.getFloat("fov");
-		setFuelTicks(compound.getInt("fuelTicks"));
-		seeThroWater = compound.getInt("seeThroWater");
-		seeThroBlock = compound.getInt("seeThroBlock");
-	}
-
-	@Override
-	protected void addAdditionalSaveData(CompoundTag compound) {
-		super.addAdditionalSaveData(compound);
-		compound.putFloat("acc", getAcceleration());
-		compound.putFloat("turnRadius", getTurnRadius());
-		compound.putFloat("bleed", getBleed());
-		compound.putFloat("fuseDist", fuseDist);
-		compound.putFloat("fov", fov);
-		compound.putInt("fuelTicks", getFuelTicks());
-		compound.putInt("seeThroWater", seeThroWater);
-		compound.putInt("seeThroBlock", seeThroBlock);
-	}
-	
-	@Override
 	public void writeSpawnData(FriendlyByteBuf buffer) {
+		super.writeSpawnData(buffer);
 		DataSerializers.VEC3.write(buffer, getDeltaMovement());
 	}
 
 	@Override
 	public void readSpawnData(FriendlyByteBuf buffer) {
+		super.readSpawnData(buffer);
 		setDeltaMovement(DataSerializers.VEC3.read(buffer));
 	}
 	
@@ -132,6 +84,10 @@ public abstract class EntityMissile extends EntityBullet implements IEntityAddit
 	
 	@Override
 	public void tick() {
+		if (weaponData == null) {
+			kill();
+			return;
+		}
 		if (level.isClientSide) UtilParticles.missileTrail(level, position(), 
 				getLookAngle(), getRadius(), isInWater());
 		if (isTestMode()) return;
@@ -143,7 +99,7 @@ public abstract class EntityMissile extends EntityBullet implements IEntityAddit
 			else setTargetPos(Vec3.ZERO.add(0, -1000, 0));
 			if (target != null) setTargetId(target.getId());
 			else setTargetId(-1);
-			if (target != null && distanceTo(target) <= fuseDist) kill();
+			if (target != null && distanceTo(target) <= missileData.getFuseDist()) kill();
 		}
 		if (level.isClientSide && !isRemoved()) {
 			tickClientGuide();
@@ -216,13 +172,13 @@ public abstract class EntityMissile extends EntityBullet implements IEntityAddit
 	}
 	
 	protected boolean checkTargetRange(Entity target, double range) {
-		return checkTargetRange(this, target, fov, range);
+		return checkTargetRange(this, target, missileData.getFov(), range);
 	}
 	
 	protected boolean checkCanSee(Entity target) {
 		// throWaterRange+1 is needed for ground radar to see boats in water
 		return UtilEntity.canEntitySeeEntity(this, target, Config.COMMON.maxBlockCheckDepth.get(), 
-				seeThroWater+1, seeThroBlock);
+				missileData.getSeeThroWater()+1, missileData.getSeeThroBlock());
 	}
 	
 	private void engineSound() {
@@ -240,7 +196,7 @@ public abstract class EntityMissile extends EntityBullet implements IEntityAddit
 		xRotO = getXRot(); 
 		yRotO = getYRot();
 		// uses special kill override function. don't change to discard.
-		if (tickCount > maxAge) { 
+		if (tickCount > getMaxAge()) { 
 			//System.out.println("old");
 			kill();
 			return;
@@ -314,36 +270,20 @@ public abstract class EntityMissile extends EntityBullet implements IEntityAddit
 		return false;
 	}
 	
-	public float getAcceleration() {
-		return entityData.get(ACCELERATION);
+	public double getAcceleration() {
+		return missileData.getAcceleration();
 	}
 	
-	public void setAcceleration(float acceleration) {
-		entityData.set(ACCELERATION, acceleration);
-	}
-	
-	public float getBleed() {
-		return entityData.get(BLEED);
-	}
-	
-	public void setBleed(float bleed) {
-		entityData.set(BLEED, bleed);
+	public double getBleed() {
+		return missileData.getBleed();
 	}
 	
 	public int getFuelTicks() {
-		return entityData.get(FUEL_TICKS);
-	}
-	
-	public void setFuelTicks(int fuelTicks) {
-		entityData.set(FUEL_TICKS, fuelTicks);
+		return missileData.getFuelTicks();
 	}
 	
 	public float getTurnRadius() {
-		return entityData.get(TURN_RADIUS);
-	}
-	
-	public void setTurnRadius(float max_rot) {
-		entityData.set(TURN_RADIUS, max_rot);
+		return missileData.getTurnRadius();
 	}
 	
 	public int getTargetId() {

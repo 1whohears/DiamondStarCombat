@@ -21,13 +21,6 @@ public class LiftKGraph {
 	private static final float[] E3SENTRY_PLANE_LIFT  = {  0,-0.18f,-0.36f,-0.47f,-0.55f,-0.58f,-0.53f,-0.43f,-0.32f,-0.2f,-0.05f,0.1f,0.2f,0.3f,0.42f,0.54f,0.64f,0.75f,0.86f,0.96f,1.02f,1.08f,1.1f,1.06f,0.96f,0.65f,0};
 	public static final LiftKGraph E3SENTRY_PLANE_GRAPH = new LiftKGraph("e3sentry_plane", E3SENTRY_PLANE_DEGRESS, E3SENTRY_PLANE_LIFT);
 	
-	static {
-		registerAOAGraph(ALEXIS_PLANE_GRAPH);
-		registerAOAGraph(JAVI_PLANE_GRAPH);
-		registerAOAGraph(WOODEN_PLANE_GRAPH);
-		registerAOAGraph(E3SENTRY_PLANE_GRAPH);
-	}
-	
 	private static final Map<String,LiftKGraph> aoaGraphs = new HashMap<>();
 	public static void registerAOAGraph(LiftKGraph graph) {
 		aoaGraphs.put(graph.id, graph);
@@ -96,6 +89,13 @@ public class LiftKGraph {
 	
 	public int getWarnAOA() {
 		return warnAOA;
+	}
+	
+	static {
+		registerAOAGraph(ALEXIS_PLANE_GRAPH);
+		registerAOAGraph(JAVI_PLANE_GRAPH);
+		registerAOAGraph(WOODEN_PLANE_GRAPH);
+		registerAOAGraph(E3SENTRY_PLANE_GRAPH);
 	}
 	
 }

@@ -315,6 +315,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		partsManager.write(nbt);
 		textureManager.write(nbt);
 		soundManager.write(nbt);
+		nbt.putFloat("health", getHealth());
 		nbt.putBoolean("landing_gear", isLandingGear());
 		nbt.putFloat("current_throttle", getCurrentThrottle());
 		nbt.putBoolean("fuel_leak", isFuelLeak());

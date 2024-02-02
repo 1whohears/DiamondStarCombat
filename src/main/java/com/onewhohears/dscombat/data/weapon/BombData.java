@@ -13,8 +13,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Level;
 
 public class BombData extends BulletData {
 	
@@ -42,11 +40,6 @@ public class BombData extends BulletData {
 			bomb.setDeltaMovement(params.vehicle.getDeltaMovement());
 		}
 		return bomb;
-	}
-	
-	@Override
-	public EntityWeapon getEntity(Level level, Entity owner) {
-		return new EntityBomb(level, owner, this);
 	}
 	
 	@Override

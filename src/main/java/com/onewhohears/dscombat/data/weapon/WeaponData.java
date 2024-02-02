@@ -122,7 +122,17 @@ public abstract class WeaponData extends JsonPreset {
 	}
 	
 	public abstract WeaponType getType();
-	public abstract EntityWeapon getEntity(Level level, Entity owner);
+	
+	@Nullable 
+	public EntityWeapon getEntity(Level level) {
+		EntityType<?> type = getEntityType();
+		Entity entity = type.create(level);
+		if (entity instanceof EntityWeapon w) {
+			w.setWeaponData(this);
+			return w;
+		}
+		return null;
+	}
 	
 	public EntityWeapon getShootEntity(WeaponShootParameters params) {
 		if (isNoWeapon()) {
@@ -137,8 +147,9 @@ public abstract class WeaponData extends JsonPreset {
 			setLaunchFail("error.dscombat.no_ammo");
 			return null;
 		}
-		EntityWeapon w = getEntity(params.level, params.owner);
+		EntityWeapon w = getEntity(params.level);
 		if (w == null) return null;
+		w.setOwner(params.owner);
 		w.setPos(params.pos);
 		setDirection(w, params.direction);
 		if (params.vehicle != null) {

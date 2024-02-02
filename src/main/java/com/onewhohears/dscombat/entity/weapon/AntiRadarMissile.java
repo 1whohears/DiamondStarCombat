@@ -14,18 +14,16 @@ import net.minecraft.world.phys.AABB;
 
 public class AntiRadarMissile extends EntityMissile {
 	
-	/**
-	 * only set on server side
-	 */
-	protected double scan_range;
+	protected AntiRadarMissileData antiRadMisData;
 	
-	public AntiRadarMissile(EntityType<? extends AntiRadarMissile> type, Level level) {
-		super(type, level);
+	public AntiRadarMissile(EntityType<? extends AntiRadarMissile> type, Level level, String defaultWeaponId) {
+		super(type, level, defaultWeaponId);
 	}
 	
-	public AntiRadarMissile(Level level, Entity owner, AntiRadarMissileData data) {
-		super(level, owner, data);
-		scan_range = data.getScanRange();
+	@Override
+	protected void castWeaponData() {
+		super.castWeaponData();
+		antiRadMisData = (AntiRadarMissileData)weaponData;
 	}
 	
 	@Override
@@ -79,7 +77,7 @@ public class AntiRadarMissile extends EntityMissile {
 			//System.out.println("is allied");
 			return false;
 		}
-		if (!checkTargetRange(ping, scan_range)) {
+		if (!checkTargetRange(ping, antiRadMisData.getScanRange())) {
 			//System.out.println("not in cone");
 			return false;
 		}
@@ -95,7 +93,7 @@ public class AntiRadarMissile extends EntityMissile {
 		double x = getX();
 		double y = getY();
 		double z = getZ();
-		double w = scan_range;
+		double w = antiRadMisData.getScanRange();
 		return new AABB(x+w, y+w, z+w, x-w, y-w, z-w);
 	}
 	

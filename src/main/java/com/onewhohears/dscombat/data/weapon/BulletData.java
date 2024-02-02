@@ -16,8 +16,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class BulletData extends WeaponData {
@@ -77,10 +75,6 @@ public class BulletData extends WeaponData {
 	@Override
 	public WeaponType getType() {
 		return WeaponType.BULLET;
-	}
-	
-	public EntityWeapon getEntity(Level level, Entity owner) {
-		return new EntityBullet(level, owner, this);
 	}
 	
 	@Override

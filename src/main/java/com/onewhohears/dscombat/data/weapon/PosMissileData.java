@@ -15,7 +15,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Level;
 
 public class PosMissileData extends MissileData {
 
@@ -52,11 +51,6 @@ public class PosMissileData extends MissileData {
 	@Override
 	public <T extends JsonPreset> T copy() {
 		return (T) new PosMissileData(getKey(), getJsonData());
-	}
-	
-	@Override
-	public EntityWeapon getEntity(Level level, Entity owner) {
-		return new PositionMissile(level, owner, this);
 	}
 	
 	@Override

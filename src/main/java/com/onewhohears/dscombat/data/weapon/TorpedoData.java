@@ -11,8 +11,6 @@ import com.onewhohears.dscombat.entity.weapon.TorpedoMissile;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Level;
 
 public class TorpedoData extends TrackMissileData {
 	
@@ -60,11 +58,6 @@ public class TorpedoData extends TrackMissileData {
 	
 	public TargetType getTargetType() {
 		return TargetType.WATER;
-	}
-	
-	@Override
-	public EntityWeapon getEntity(Level level, Entity owner) {
-		return new TorpedoMissile(level, owner, this);
 	}
 	
 	@Override

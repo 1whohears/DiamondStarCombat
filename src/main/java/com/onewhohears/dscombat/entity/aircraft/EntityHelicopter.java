@@ -21,7 +21,7 @@ public class EntityHelicopter extends EntityVehicle {
 	
 	public EntityHelicopter(EntityType<? extends EntityHelicopter> entity, Level level, AircraftPreset defaultPreset) {
 		super(entity, level, defaultPreset);
-		heliStats = (HeliStats)heliStats;
+		heliStats = (HeliStats)vehicleStats;
 	}
 	
 	@Override

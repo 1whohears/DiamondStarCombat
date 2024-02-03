@@ -152,22 +152,32 @@
     }
   ],
   "sort_factor": 0,
+  "sounds": {
+    "nonPassengerEngine": "dscombat:boat_1",
+    "passengerEngine": "dscombat:boat_1"
+  },
   "stats": {
     "base_armor": 1.0,
+    "cameraDistance": 4.0,
+    "crashExplosionRadius": 2.0,
     "cross_sec_area": 4.5,
     "idleheat": 2.0,
+    "inertiapitch": 10.0,
+    "inertiaroll": 6.0,
+    "inertiayaw": 4.0,
     "mass": 1000.0,
     "max_health": 100.0,
     "max_speed": 0.85,
     "maxpitch": 0.0,
     "maxroll": 0.0,
     "maxyaw": 3.5,
-    "pitchtorque": 0.0,
-    "rolltorque": 0.0,
+    "negativeThrottle": true,
     "stealth": 1.0,
     "throttledown": 0.1,
     "throttleup": 0.05,
-    "turn_radius": 0.0,
-    "yawtorque": 2.0
+    "torquepitch": 0.0,
+    "torqueroll": 0.0,
+    "torqueyaw": 2.0,
+    "turn_radius": 0.0
   }
 }

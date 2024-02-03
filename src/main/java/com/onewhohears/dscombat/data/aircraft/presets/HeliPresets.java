@@ -5,6 +5,7 @@ import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
+import com.onewhohears.dscombat.init.ModSounds;
 
 public class HeliPresets {
 	
@@ -25,6 +26,13 @@ public class HeliPresets {
 			.setTurnTorques(1f, 1f, 2.5f)
 			.setThrottleRate(0.01f, 0.02f)
 			.setHeliHoverMovement(0.04f, 0.02f)
+			.setEngineSounds(ModSounds.HELI_1, ModSounds.HELI_1)
+			.setRotationalInertia(8, 6, 4)
+			.setCrashExplosionRadius(4)
+			.set3rdPersonCamDist(6)
+			.setHeliAlwaysLandingGear(true)
+			.setHeliLiftFactor(10)
+			.setLayerTextureNum(1)
 			.addPilotSeatSlot(0.4, -0.65, 1.5)
 			.addSeatSlot("seat2", SlotType.MED_TURRET, -0.4, -0.65, 1.5)
 			.addSeatSlot("seat3", SlotType.MED_TURRET, 0.4, -0.65, 0.3)

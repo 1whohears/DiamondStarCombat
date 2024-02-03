@@ -102,22 +102,32 @@
     }
   ],
   "sort_factor": 10,
+  "sounds": {
+    "nonPassengerEngine": "dscombat:orange_tesla",
+    "passengerEngine": "dscombat:orange_tesla"
+  },
   "stats": {
     "base_armor": 1.0,
+    "cameraDistance": 4.0,
+    "crashExplosionRadius": 2.0,
     "cross_sec_area": 5.375,
     "idleheat": 4.0,
+    "inertiapitch": 12.0,
+    "inertiaroll": 8.0,
+    "inertiayaw": 8.0,
     "mass": 3000.0,
     "max_health": 40.0,
     "max_speed": 0.6,
     "maxpitch": 0.0,
     "maxroll": 0.0,
     "maxyaw": 4.0,
-    "pitchtorque": 0.0,
-    "rolltorque": 0.0,
+    "negativeThrottle": true,
     "stealth": 1.0,
     "throttledown": 0.07,
     "throttleup": 0.07,
-    "turn_radius": 7.0,
-    "yawtorque": 1.0
+    "torquepitch": 0.0,
+    "torqueroll": 0.0,
+    "torqueyaw": 1.0,
+    "turn_radius": 7.0
   }
 }

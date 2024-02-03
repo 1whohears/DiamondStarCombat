@@ -2,9 +2,11 @@ package com.onewhohears.dscombat.data.aircraft.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
+import com.onewhohears.dscombat.data.aircraft.LiftKGraph;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
+import com.onewhohears.dscombat.init.ModSounds;
 
 public class FelixPresets {
 	
@@ -25,6 +27,15 @@ public class FelixPresets {
 			.setTurnTorques(1f, 2f, 4f)
 			.setThrottleRate(0.04f, 0.08f)
 			.setPlaneWingArea(23f)
+			.setEngineSounds(ModSounds.JET_1, ModSounds.JET_1)
+			.setRotationalInertia(4.5f, 9, 3)
+			.setCrashExplosionRadius(5)
+			.set3rdPersonCamDist(17)
+			.setPlaneLiftAOAGraph(LiftKGraph.ALEXIS_PLANE_GRAPH)
+			.setPlaneFlapDownAOABias(8)
+			.setPlaneNoseCanAimDown(false)
+			.setBaseTextureNum(2)
+			.setLayerTextureNum(2)
 			.addIngredient(ModItems.FUSELAGE.getId(), 1)
 			.addIngredient(ModItems.WING.getId(), 2)
 			.addIngredient(ModItems.COCKPIT.getId())

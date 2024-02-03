@@ -50,22 +50,35 @@
     }
   ],
   "sort_factor": 1,
+  "sounds": {
+    "nonPassengerEngine": "dscombat:tank_1",
+    "passengerEngine": "dscombat:tank_1"
+  },
   "stats": {
     "base_armor": 0.0,
+    "cameraDistance": 4.0,
+    "car": {
+      "isTank": true
+    },
+    "crashExplosionRadius": 1.0,
     "cross_sec_area": 1.2,
     "idleheat": 1.0,
+    "inertiapitch": 12.0,
+    "inertiaroll": 8.0,
+    "inertiayaw": 8.0,
     "mass": 600.0,
     "max_health": 30.0,
     "max_speed": 0.2,
     "maxpitch": 0.0,
     "maxroll": 0.0,
     "maxyaw": 3.0,
-    "pitchtorque": 0.0,
-    "rolltorque": 0.0,
+    "negativeThrottle": true,
     "stealth": 1.0,
     "throttledown": 0.08,
     "throttleup": 0.08,
-    "turn_radius": 0.0,
-    "yawtorque": 10.0
+    "torquepitch": 0.0,
+    "torqueroll": 0.0,
+    "torqueyaw": 10.0,
+    "turn_radius": 0.0
   }
 }

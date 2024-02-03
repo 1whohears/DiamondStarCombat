@@ -285,22 +285,32 @@
     }
   ],
   "sort_factor": 5,
+  "sounds": {
+    "nonPassengerEngine": "dscombat:sub_1",
+    "passengerEngine": "dscombat:sub_1"
+  },
   "stats": {
     "base_armor": 20.0,
+    "cameraDistance": 12.0,
+    "crashExplosionRadius": 6.0,
     "cross_sec_area": 18.0,
     "idleheat": 10.0,
+    "inertiapitch": 10.0,
+    "inertiaroll": 6.0,
+    "inertiayaw": 3.0,
     "mass": 180000.0,
     "max_health": 800.0,
     "max_speed": 0.5,
     "maxpitch": 2.0,
     "maxroll": 2.0,
     "maxyaw": 2.0,
-    "pitchtorque": 1.0,
-    "rolltorque": 1.0,
+    "negativeThrottle": true,
     "stealth": 0.05,
     "throttledown": 0.04,
     "throttleup": 0.04,
-    "turn_radius": 0.0,
-    "yawtorque": 1.0
+    "torquepitch": 1.0,
+    "torqueroll": 1.0,
+    "torqueyaw": 1.0,
+    "turn_radius": 0.0
   }
 }

@@ -2,28 +2,15 @@ package com.onewhohears.dscombat.entity.aircraft.custom;
 
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.model.obj.ObjRadarModel.MastType;
-import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData;
-import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData.Builder;
 import com.onewhohears.dscombat.data.aircraft.presets.BoatPresets;
 import com.onewhohears.dscombat.entity.aircraft.EntityBoat;
 import com.onewhohears.dscombat.entity.aircraft.RotableHitbox;
-import com.onewhohears.dscombat.init.ModSounds;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class AircraftCarrier extends EntityBoat {
-
-	public static final ImmutableVehicleData AIRCRAFT_CARRIER_DATA = Builder.create(BoatPresets.DEFAULT_AIRCRAFT_CARRIER)
-			.setInteralEngineSound(ModSounds.BOAT_1)
-			.setExternalEngineSound(ModSounds.BOAT_1)
-			.setNegativeThrottle(true)
-			.setRotationalInertia(8, 10, 8)
-			.setCrashExplosionRadius(10)
-			.setCameraDistance(34)
-			.setSpinRate(3.141f)
-			.build();
 	
 	public AircraftCarrier(EntityType<? extends EntityBoat> entity, Level level) {
 		super(entity, level, BoatPresets.DEFAULT_AIRCRAFT_CARRIER);

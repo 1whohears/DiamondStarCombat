@@ -2,32 +2,14 @@ package com.onewhohears.dscombat.entity.aircraft.custom;
 
 import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
 import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
-import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData;
-import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData.Builder;
-import com.onewhohears.dscombat.data.aircraft.LiftKGraph;
 import com.onewhohears.dscombat.data.aircraft.presets.PlanePresets;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
-import com.onewhohears.dscombat.init.ModSounds;
 
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class E3SentryPlane extends EntityPlane {
-	
-	public static final ImmutableVehicleData E3SENTRY_PLANE_DATA = Builder.create(PlanePresets.DEFAULT_E3SENTRY_PLANE)
-			.setInteralEngineSound(ModSounds.JET_1)
-			.setExternalEngineSound(ModSounds.JET_1)
-			.setNegativeThrottle(false)
-			.setRotationalInertia(10, 12, 8)
-			.setCrashExplosionRadius(8)
-			.setCameraDistance(12)
-			.setSpinRate(Mth.PI*0.01f)
-			.setLiftKGraph(LiftKGraph.E3SENTRY_PLANE_GRAPH)
-			.setFlapsAOABias(10f)
-			.setCanAimDown(false)
-			.build();
 	
 	public E3SentryPlane(EntityType<? extends EntityPlane> entity, Level level) {
 		super(entity, level, PlanePresets.DEFAULT_E3SENTRY_PLANE);

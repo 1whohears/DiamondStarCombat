@@ -405,6 +405,11 @@ public class AircraftPreset extends JsonPreset{
 			return this;
 		}
 		
+		public Builder setStatBoolean(String key, boolean value) {
+			getStats().addProperty(key, value);
+			return this;
+		}
+		
 		public Builder setTypedStatFloat(String key, float value, String vehicleType) {
 			getStatsByType(vehicleType).addProperty(key, value);
 			return this;
@@ -501,6 +506,12 @@ public class AircraftPreset extends JsonPreset{
 			return setStatFloat("throttleup", throttleup);
 		}
 		/**
+		 * all vehicles
+		 */
+		public Builder setCanNegativeThrottle(boolean negativeThrottle) {
+			return setStatBoolean("negativeThrottle", negativeThrottle);
+		}
+		/**
 		 * all vehicles 
 		 */
 		public Builder setCrashExplosionRadius(float crashExplosionRadius) {
@@ -549,8 +560,8 @@ public class AircraftPreset extends JsonPreset{
 		 * all vehicles 
 		 */
 		public Builder setEngineSounds(RegistryObject<SoundEvent> nonPassengerEngine, RegistryObject<SoundEvent> passengerEngine) {
-			getSounds().addProperty("nonPassengerEngine", nonPassengerEngine.getKey().toString());
-			getSounds().addProperty("passengerEngine", passengerEngine.getKey().toString());
+			getSounds().addProperty("nonPassengerEngine", nonPassengerEngine.getId().toString());
+			getSounds().addProperty("passengerEngine", passengerEngine.getId().toString());
 			return this;
 		}
 		/**
@@ -575,8 +586,8 @@ public class AircraftPreset extends JsonPreset{
 		/**
 		 * used by planes
 		 */
-		public Builder setPlaneNoseCanAimDown(float canAimDown) {
-			return setTypedStatFloat("canAimDown", canAimDown, "plane");
+		public Builder setPlaneNoseCanAimDown(boolean canAimDown) {
+			return setTypedStatBoolean("canAimDown", canAimDown, "plane");
 		}
 		/**
 		 * used by planes

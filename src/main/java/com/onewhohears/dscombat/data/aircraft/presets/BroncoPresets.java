@@ -2,9 +2,11 @@ package com.onewhohears.dscombat.data.aircraft.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
+import com.onewhohears.dscombat.data.aircraft.LiftKGraph;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
+import com.onewhohears.dscombat.init.ModSounds;
 
 public class BroncoPresets {
 	
@@ -25,6 +27,15 @@ public class BroncoPresets {
 			.setTurnTorques(1.5f, 2f, 3f)
 			.setThrottleRate(0.03f, 0.07f)
 			.setPlaneWingArea(27f)
+			.setEngineSounds(ModSounds.BIPLANE_1, ModSounds.BIPLANE_1)
+			.setRotationalInertia(6, 10, 5)
+			.setCrashExplosionRadius(4)
+			.set3rdPersonCamDist(14)
+			.setPlaneLiftAOAGraph(LiftKGraph.JAVI_PLANE_GRAPH)
+			.setPlaneFlapDownAOABias(9)
+			.setPlaneNoseCanAimDown(false)
+			.setBaseTextureNum(2)
+			.setLayerTextureNum(2)
 			.addIngredient(ModItems.FUSELAGE.getId(), 1)
 			.addIngredient(ModItems.WING.getId(), 3)
 			.addIngredient(ModItems.COCKPIT.getId(), 2)

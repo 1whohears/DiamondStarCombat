@@ -5,6 +5,7 @@ import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
+import com.onewhohears.dscombat.init.ModSounds;
 
 public class SubPresets {
 	
@@ -24,6 +25,11 @@ public class SubPresets {
 			.setMaxTurnRates(2f, 2f, 2f)
 			.setTurnTorques(1f, 1f, 1f)
 			.setThrottleRate(0.04f, 0.04f)
+			.setEngineSounds(ModSounds.SUB_1, ModSounds.SUB_1)
+			.setRotationalInertia(6, 10, 3)
+			.setCrashExplosionRadius(6)
+			.set3rdPersonCamDist(12)
+			.setCanNegativeThrottle(true)
 			.addIngredient(ModItems.LARGE_PROPELLER.getId(), 1)
 			.addIngredient(ModItems.LARGE_FUSELAGE.getId(), 2)
 			.addIngredient(ModItems.SEAT.getId(), 6)

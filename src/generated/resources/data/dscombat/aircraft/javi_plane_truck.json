@@ -285,28 +285,42 @@
     }
   ],
   "sort_factor": 9,
+  "sounds": {
+    "nonPassengerEngine": "dscombat:jet_1",
+    "passengerEngine": "dscombat:jet_1"
+  },
   "stats": {
     "base_armor": 9.0,
+    "cameraDistance": 16.0,
+    "crashExplosionRadius": 5.0,
     "cross_sec_area": 7.0,
     "idleheat": 5.0,
+    "inertiapitch": 10.0,
+    "inertiaroll": 6.0,
+    "inertiayaw": 4.0,
     "mass": 11300.0,
     "max_health": 200.0,
     "max_speed": 1.05,
     "maxpitch": 2.1,
     "maxroll": 4.0,
     "maxyaw": 1.1,
-    "pitchtorque": 2.5,
     "plane": {
+      "canAimDown": true,
+      "flapsAOABias": 10.0,
+      "liftKGraph": "javi_plane",
       "wing_area": 47.0
     },
-    "rolltorque": 1.5,
     "stealth": 1.0,
     "throttledown": 0.08,
     "throttleup": 0.04,
-    "turn_radius": 12.0,
-    "yawtorque": 4.5
+    "torquepitch": 2.5,
+    "torqueroll": 1.5,
+    "torqueyaw": 4.5,
+    "turn_radius": 12.0
   },
   "textures": {
-    "baseTexture": 1
+    "baseTexture": 1,
+    "baseTextureVariants": 2,
+    "textureLayers": 2
   }
 }

@@ -2,9 +2,11 @@ package com.onewhohears.dscombat.data.aircraft.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
+import com.onewhohears.dscombat.data.aircraft.LiftKGraph;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
+import com.onewhohears.dscombat.init.ModSounds;
 
 public class PlanePresets {
 	
@@ -25,6 +27,13 @@ public class PlanePresets {
 			.setTurnTorques(1.5f, 2.5f, 4.5f)
 			.setThrottleRate(0.02f, 0.06f)
 			.setPlaneWingArea(8f)
+			.setEngineSounds(ModSounds.BIPLANE_1, ModSounds.BIPLANE_1)
+			.setRotationalInertia(4, 7, 3)
+			.setCrashExplosionRadius(3)
+			.set3rdPersonCamDist(4)
+			.setPlaneLiftAOAGraph(LiftKGraph.WOODEN_PLANE_GRAPH)
+			.setPlaneFlapDownAOABias(8)
+			.setPlaneNoseCanAimDown(false)
 			.addIngredient("minecraft:oak_planks", 30)
 			.addIngredient(ModItems.SEAT.getId())
 			.addIngredient(ModItems.PROPELLER.getId())
@@ -80,6 +89,13 @@ public class PlanePresets {
 			.setTurnTorques(2.0f, 2.0f, 2.0f)
 			.setThrottleRate(0.01f, 0.04f)
 			.setPlaneWingArea(283f)
+			.setEngineSounds(ModSounds.JET_1, ModSounds.JET_1)
+			.setRotationalInertia(10, 12, 8)
+			.setCrashExplosionRadius(8)
+			.set3rdPersonCamDist(12)
+			.setPlaneLiftAOAGraph(LiftKGraph.E3SENTRY_PLANE_GRAPH)
+			.setPlaneFlapDownAOABias(10)
+			.setPlaneNoseCanAimDown(false)
 			.addIngredient(ModItems.ADVANCED_COCKPIT.getId())
 			.addIngredient(ModItems.SEAT.getId(), 11)
 			.addIngredient(ModItems.LARGE_FUSELAGE.getId(), 2)

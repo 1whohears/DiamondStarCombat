@@ -266,7 +266,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
  	 */
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
-		// FIXME 0.1 make all vehicle base stats not nbt based
 		// ORDER MATTERS
 		setTestMode(nbt.getBoolean("test_mode"));
 		setNoConsume(nbt.getBoolean("no_consume"));
@@ -835,7 +834,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		double a2 = m2 / I;
 		double v2 = v + a2;
 		double vd = Math.abs(v2) - max;
-		if (vd > 0) m = (max*Math.signum(v) - v)*I - cm;
+		if (vd > 0) m -= vd * Math.signum(v2) * I;
 		return m;
 	}
 	

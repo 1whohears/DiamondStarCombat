@@ -32,7 +32,7 @@ public class VehicleSoundManager {
 		String nonPassengerEngineId = sounds.getString("nonPassengerEngine");
 		nonPassengerEngine = getSoundById(nonPassengerEngineId, nonPassengerEngine);
 		String passengerEngineId = sounds.getString("passengerEngine");
-		nonPassengerEngine = getSoundById(passengerEngineId, nonPassengerEngine);
+		passengerEngine = getSoundById(passengerEngineId, passengerEngine);
 		if (sounds.contains("passengerSoundPack")) 
 			passengerSoundPack = PassengerSoundPack.getById(sounds.getString("passengerSoundPack"));
 	}

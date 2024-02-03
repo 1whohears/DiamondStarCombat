@@ -119,25 +119,41 @@
     }
   ],
   "sort_factor": 5,
+  "sounds": {
+    "nonPassengerEngine": "dscombat:biplane_1",
+    "passengerEngine": "dscombat:biplane_1"
+  },
   "stats": {
     "base_armor": 0.0,
+    "cameraDistance": 8.0,
+    "crashExplosionRadius": 3.0,
     "cross_sec_area": 3.0,
     "idleheat": 1.5,
+    "inertiapitch": 9.0,
+    "inertiaroll": 5.0,
+    "inertiayaw": 3.0,
     "mass": 1100.0,
     "max_health": 60.0,
     "max_speed": 0.8,
     "maxpitch": 3.0,
     "maxroll": 5.0,
     "maxyaw": 2.0,
-    "pitchtorque": 2.0,
     "plane": {
+      "canAimDown": false,
+      "flapsAOABias": 8.0,
+      "liftKGraph": "wooden_plane",
       "wing_area": 15.0
     },
-    "rolltorque": 2.0,
     "stealth": 1.0,
     "throttledown": 0.07,
     "throttleup": 0.04,
-    "turn_radius": 10.0,
-    "yawtorque": 3.0
+    "torquepitch": 2.0,
+    "torqueroll": 2.0,
+    "torqueyaw": 3.0,
+    "turn_radius": 10.0
+  },
+  "textures": {
+    "baseTextureVariants": 3,
+    "textureLayers": 3
   }
 }

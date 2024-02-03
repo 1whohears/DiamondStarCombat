@@ -354,26 +354,40 @@
     }
   ],
   "sort_factor": 4,
+  "sounds": {
+    "nonPassengerEngine": "dscombat:heli_1",
+    "passengerEngine": "dscombat:heli_1"
+  },
   "stats": {
     "base_armor": 5.0,
+    "cameraDistance": 6.0,
+    "crashExplosionRadius": 4.0,
     "cross_sec_area": 8.0,
     "heli": {
       "accForward": 0.04,
-      "accSide": 0.02
+      "accSide": 0.02,
+      "alwaysLandingGear": true,
+      "heliLiftFactor": 10.0
     },
     "idleheat": 8.0,
+    "inertiapitch": 6.0,
+    "inertiaroll": 8.0,
+    "inertiayaw": 4.0,
     "mass": 6000.0,
     "max_health": 200.0,
     "max_speed": 0.7,
     "maxpitch": 2.0,
     "maxroll": 4.0,
     "maxyaw": 4.0,
-    "pitchtorque": 1.0,
-    "rolltorque": 1.0,
     "stealth": 1.2,
     "throttledown": 0.02,
     "throttleup": 0.01,
-    "turn_radius": 0.0,
-    "yawtorque": 2.5
+    "torquepitch": 1.0,
+    "torqueroll": 1.0,
+    "torqueyaw": 2.5,
+    "turn_radius": 0.0
+  },
+  "textures": {
+    "textureLayers": 1
   }
 }

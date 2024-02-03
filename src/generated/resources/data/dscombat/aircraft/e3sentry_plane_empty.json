@@ -275,25 +275,37 @@
     }
   ],
   "sort_factor": 15,
+  "sounds": {
+    "nonPassengerEngine": "dscombat:jet_1",
+    "passengerEngine": "dscombat:jet_1"
+  },
   "stats": {
     "base_armor": 4.0,
+    "cameraDistance": 12.0,
+    "crashExplosionRadius": 8.0,
     "cross_sec_area": 16.0,
     "idleheat": 20.0,
+    "inertiapitch": 12.0,
+    "inertiaroll": 10.0,
+    "inertiayaw": 8.0,
     "mass": 83900.0,
     "max_health": 400.0,
     "max_speed": 1.0,
     "maxpitch": 2.0,
     "maxroll": 3.0,
     "maxyaw": 2.0,
-    "pitchtorque": 2.0,
     "plane": {
+      "canAimDown": false,
+      "flapsAOABias": 10.0,
+      "liftKGraph": "e3sentry_plane",
       "wing_area": 283.0
     },
-    "rolltorque": 2.0,
     "stealth": 1.3,
     "throttledown": 0.04,
     "throttleup": 0.01,
-    "turn_radius": 30.0,
-    "yawtorque": 2.0
+    "torquepitch": 2.0,
+    "torqueroll": 2.0,
+    "torqueyaw": 2.0,
+    "turn_radius": 30.0
   }
 }

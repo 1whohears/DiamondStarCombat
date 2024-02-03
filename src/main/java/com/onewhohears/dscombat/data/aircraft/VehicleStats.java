@@ -35,6 +35,7 @@ public abstract class VehicleStats {
 		base_armor = stats.getFloat("base_armor");
 		throttleup = stats.getFloat("throttleup");
 		throttledown = stats.getFloat("throttledown");
+		negativeThrottle = stats.getBoolean("negativeThrottle");
 		turn_radius = stats.getFloat("turn_radius");
 		maxroll = stats.getFloat("maxroll");
 		maxpitch = stats.getFloat("maxpitch");

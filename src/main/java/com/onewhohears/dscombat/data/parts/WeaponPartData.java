@@ -6,8 +6,6 @@ import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
@@ -37,11 +35,8 @@ public class WeaponPartData extends PartData {
 		}
 	}
 	
-	public WeaponPartData(CompoundTag tag) {
-		super(tag);
-		ListTag list = tag.getList("compatible", 8);
-		compatible = new String[list.size()];
-		for (int i = 0; i < list.size(); ++i) compatible[i] = list.getString(i);
+	public void read(CompoundTag tag) {
+		super.read(tag);
 		weaponId = tag.getString("weaponId");
 		if (!WeaponPresets.get().has(weaponId)) weaponId = "";
 		ammo = tag.getInt("ammo");
@@ -50,20 +45,14 @@ public class WeaponPartData extends PartData {
 	
 	public CompoundTag write() {
 		CompoundTag tag = super.write();
-		ListTag list = new ListTag();
-		for (int i = 0; i < compatible.length; ++i) list.add(StringTag.valueOf(compatible[i]));
-		tag.put("compatible", list);
 		tag.putString("weaponId", weaponId);
 		tag.putInt("ammo", ammo);
 		tag.putInt("max", max);
 		return tag;
 	}
 
-	public WeaponPartData(FriendlyByteBuf buffer) {
-		super(buffer);
-		int num = buffer.readInt();
-		compatible = new String[num];
-		for (int i = 0; i < num; ++i) compatible[i] = buffer.readUtf();
+	public void read(FriendlyByteBuf buffer) {
+		super.read(buffer);
 		weaponId = buffer.readUtf();
 		ammo = buffer.readInt();
 		max = buffer.readInt();
@@ -71,8 +60,6 @@ public class WeaponPartData extends PartData {
 	
 	public void write(FriendlyByteBuf buffer) {
 		super.write(buffer);
-		buffer.writeInt(compatible.length);
-		for (int i = 0; i < compatible.length; ++i) buffer.writeUtf(compatible[i]);
 		buffer.writeUtf(weaponId);
 		buffer.writeInt(ammo);
 		buffer.writeInt(max);

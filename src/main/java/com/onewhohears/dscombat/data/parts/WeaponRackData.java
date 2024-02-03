@@ -5,8 +5,6 @@ import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 
@@ -22,27 +20,6 @@ public class WeaponRackData extends WeaponPartData {
 	public WeaponRackData(float weight, String preset, String[] compatible, ResourceLocation itemid, SlotType[] compatibleSlots, float launchPitch) {
 		super(weight, preset, compatible, itemid, compatibleSlots);
 		this.changeLaunchPitch = launchPitch;
-	}
-	
-	public CompoundTag write() {
-		CompoundTag tag = super.write();
-		tag.putFloat("changeLaunchPitch", changeLaunchPitch);
-		return tag;
-	}
-	
-	public WeaponRackData(CompoundTag tag) {
-		super(tag);
-		changeLaunchPitch = tag.getFloat("changeLaunchPitch");
-	}
-	
-	public void write(FriendlyByteBuf buffer) {
-		super.write(buffer);
-		buffer.writeFloat(changeLaunchPitch);
-	}
-	
-	public WeaponRackData(FriendlyByteBuf buffer) {
-		super(buffer);
-		changeLaunchPitch = buffer.readFloat();
 	}
 
 	@Override

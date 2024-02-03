@@ -15,20 +15,7 @@ import org.slf4j.Logger;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.mojang.logging.LogUtils;
-import com.onewhohears.dscombat.data.parts.BuffData;
-import com.onewhohears.dscombat.data.parts.EngineData;
-import com.onewhohears.dscombat.data.parts.ExternalEngineData;
-import com.onewhohears.dscombat.data.parts.ExternalRadarPartData;
-import com.onewhohears.dscombat.data.parts.FlareDispenserData;
-import com.onewhohears.dscombat.data.parts.FuelTankData;
-import com.onewhohears.dscombat.data.parts.GimbalPartData;
 import com.onewhohears.dscombat.data.parts.PartData;
-import com.onewhohears.dscombat.data.parts.PartData.PartType;
-import com.onewhohears.dscombat.data.parts.RadarPartData;
-import com.onewhohears.dscombat.data.parts.SeatData;
-import com.onewhohears.dscombat.data.parts.TurretData;
-import com.onewhohears.dscombat.data.parts.WeaponPartData;
-import com.onewhohears.dscombat.data.parts.WeaponRackData;
 import com.onewhohears.dscombat.data.radar.RadarData;
 import com.onewhohears.dscombat.data.radar.RadarPresets;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
@@ -133,47 +120,20 @@ public class UtilParse {
 		//System.out.println("parsePartFromCompound tag = "+tag);
 		if (tag == null) return null;
 		if (tag.isEmpty()) return null;
-		if (!tag.contains("type")) {
-			if (!tag.contains("itemid")) return null;
-			String itemId = tag.getString("itemid");
-			Item item;
-			try {
-				item = ForgeRegistries.ITEMS.getDelegate(new ResourceLocation(itemId)).get().get();
-			} catch(NoSuchElementException e) {
-				return null;
-			}
-			if (!(item instanceof ItemPart part)) return null;
-			if (tag.getBoolean("filled")) return part.getFilledPartData(tag.getString("param"));
-			return part.getPartData();
+		if (!tag.contains("itemid")) return null;
+		String itemId = tag.getString("itemid");
+		Item item;
+		try {
+			item = ForgeRegistries.ITEMS.getDelegate(new ResourceLocation(itemId)).get().get();
+		} catch(NoSuchElementException e) {
+			return null;
 		}
-		PartType type = PartType.values()[tag.getInt("type")];
-		switch (type) {
-		case SEAT:
-			return new SeatData(tag);
-		case TURRENT:
-			return new TurretData(tag);
-		case WEAPON_RACK:
-			return new WeaponRackData(tag);
-		case INTERNAL_WEAPON:
-			return new WeaponPartData(tag);
-		case ENGINE:
-			return new EngineData(tag);
-		case FUEL_TANK:
-			return new FuelTankData(tag);
-		case INTERNAL_RADAR:
-			return new RadarPartData(tag);
-		case FLARE_DISPENSER:
-			return new FlareDispenserData(tag);
-		case EXTERNAL_ENGINE:
-			return new ExternalEngineData(tag);
-		case BUFF_DATA:
-			return new BuffData(tag);
-		case EXTERNAL_RADAR:
-			return new ExternalRadarPartData(tag);
-		case GIMBAL:
-			return new GimbalPartData(tag);
-		}
-		return null;
+		if (!(item instanceof ItemPart part)) return null;
+		if (tag.getBoolean("filled")) return part.getFilledPartData(tag.getString("param"));
+		PartData data = part.getPartData();
+		boolean old = tag.getInt("parse_version") < PartData.PARSE_VERSION;
+		if (old || tag.getBoolean("readnbt")) data.read(tag);
+		return data;
 	}
 	
 	@Nullable

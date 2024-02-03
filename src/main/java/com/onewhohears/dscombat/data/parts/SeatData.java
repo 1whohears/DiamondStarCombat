@@ -5,8 +5,6 @@ import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.init.ModEntities;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 
@@ -14,14 +12,6 @@ public class SeatData extends PartData {
 	
 	public SeatData(float weight, ResourceLocation itemid, SlotType[] compatibleSlots) {
 		super(weight, itemid, compatibleSlots);
-	}
-
-	public SeatData(CompoundTag tag) {
-		super(tag);
-	}
-
-	public SeatData(FriendlyByteBuf buffer) {
-		super(buffer);
 	}
 
 	@Override

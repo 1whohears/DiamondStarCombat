@@ -18,29 +18,25 @@ public class FuelTankData extends PartData {
 		this.max = max;
 	}
 	
-	public FuelTankData(CompoundTag tag) {
-		super(tag);
+	public void read(CompoundTag tag) {
+		super.read(tag);
 		fuel = tag.getFloat("fuel");
-		max = tag.getFloat("max");
 	}
 	
 	public CompoundTag write() {
 		CompoundTag tag = super.write();
 		tag.putFloat("fuel", fuel);
-		tag.putFloat("max", max);
 		return tag;
 	}
 	
-	public FuelTankData(FriendlyByteBuf buffer) {
-		super(buffer);
+	public void read(FriendlyByteBuf buffer) {
+		super.read(buffer);
 		fuel = buffer.readFloat();
-		max = buffer.readFloat();
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
 		super.write(buffer);
 		buffer.writeFloat(fuel);
-		buffer.writeFloat(max);
 	}
 	
 	@Override

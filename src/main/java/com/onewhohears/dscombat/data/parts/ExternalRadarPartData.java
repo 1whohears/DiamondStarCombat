@@ -7,8 +7,6 @@ import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntityRadar;
 import com.onewhohears.dscombat.init.ModEntities;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.phys.Vec3;
@@ -21,29 +19,6 @@ public class ExternalRadarPartData extends RadarPartData {
 	public ExternalRadarPartData(float weight, String preset, ResourceLocation itemid, SlotType[] compatibleSlots, String entityTypeKey) {
 		super(weight, preset, itemid, compatibleSlots);
 		this.entityTypeKey = entityTypeKey;
-	}
-	
-	@Override
-	public CompoundTag write() {
-		CompoundTag tag = super.write();
-		tag.putString("entityTypeKey", entityTypeKey);
-		return tag;
-	}
-	
-	public ExternalRadarPartData(CompoundTag tag) {
-		super(tag);
-		entityTypeKey = tag.getString("entityTypeKey");
-	}
-	
-	@Override
-	public void write(FriendlyByteBuf buffer) {
-		super.write(buffer);
-		buffer.writeUtf(entityTypeKey);
-	}
-	
-	public ExternalRadarPartData(FriendlyByteBuf buffer) {
-		super(buffer);
-		entityTypeKey = buffer.readUtf();
 	}
 	
 	@Override

@@ -27,7 +27,7 @@ public class ItemFlareDispenser extends ItemPart {
 	public Component getName(ItemStack stack) {
 		CompoundTag tag = stack.getOrCreateTag();
 		MutableComponent name = ((MutableComponent)super.getName(stack))
-			.append(" "+tag.getInt("flares")+"/"+tag.getInt("max"));
+			.append(" "+tag.getInt("flares")+"/"+max);
 		return name;	
 	}
 

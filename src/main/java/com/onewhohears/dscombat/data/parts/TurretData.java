@@ -42,40 +42,24 @@ public class TurretData extends SeatData {
 		}
 	}
 
-	public TurretData(CompoundTag tag) {
-		super(tag);
-		weaponId = tag.getString("weaponId");
-		turretEntityKey = tag.getString("turretEntity");
-		rotBounds = new RotBounds(tag);
-		health = tag.getFloat("health");
+	public void read(CompoundTag tag) {
+		super.read(tag);
 		ammo = tag.getInt("ammo");
 	}
 	
 	public CompoundTag write() {
 		CompoundTag tag = super.write();
-		tag.putString("weaponId", weaponId);
-		tag.putString("turretEntity", turretEntityKey);
-		rotBounds.write(tag);
-		tag.putFloat("health", health);
 		tag.putInt("ammo", ammo);
 		return tag;
 	}
 
-	public TurretData(FriendlyByteBuf buffer) {
-		super(buffer);
-		weaponId = buffer.readUtf();
-		turretEntityKey = buffer.readUtf();
-		rotBounds = new RotBounds(buffer);
-		health = buffer.readFloat();
+	public void read(FriendlyByteBuf buffer) {
+		super.read(buffer);
 		ammo = buffer.readInt();
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
 		super.write(buffer);
-		buffer.writeUtf(weaponId);
-		buffer.writeUtf(turretEntityKey);
-		rotBounds.write(buffer);
-		buffer.writeFloat(health);
 		buffer.writeInt(ammo);
 	}
 	

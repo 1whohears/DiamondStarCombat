@@ -30,7 +30,7 @@ public class ItemFuelTank extends ItemPart {
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tips, TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tips, isAdvanced);
 		CompoundTag tag = stack.getOrCreateTag();
-		tips.add(Component.literal("Fuel: "+tag.getInt("fuel")+"/"+tag.getInt("max")).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		tips.add(Component.literal("Fuel: "+tag.getInt("fuel")+"/"+max).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 	}
 
 	@Override

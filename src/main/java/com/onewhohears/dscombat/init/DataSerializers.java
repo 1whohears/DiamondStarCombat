@@ -1,27 +1,20 @@
 package com.onewhohears.dscombat.init;
 
+import java.util.NoSuchElementException;
+
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.parts.BuffData;
-import com.onewhohears.dscombat.data.parts.EngineData;
-import com.onewhohears.dscombat.data.parts.ExternalEngineData;
-import com.onewhohears.dscombat.data.parts.ExternalRadarPartData;
-import com.onewhohears.dscombat.data.parts.FlareDispenserData;
-import com.onewhohears.dscombat.data.parts.FuelTankData;
-import com.onewhohears.dscombat.data.parts.GimbalPartData;
 import com.onewhohears.dscombat.data.parts.PartData;
-import com.onewhohears.dscombat.data.parts.RadarPartData;
-import com.onewhohears.dscombat.data.parts.SeatData;
-import com.onewhohears.dscombat.data.parts.TurretData;
-import com.onewhohears.dscombat.data.parts.WeaponPartData;
-import com.onewhohears.dscombat.data.parts.WeaponRackData;
 import com.onewhohears.dscombat.data.radar.RadarData;
 import com.onewhohears.dscombat.data.radar.RadarPresets;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
+import com.onewhohears.dscombat.item.ItemPart;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataSerializer;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -134,37 +127,17 @@ public class DataSerializers {
 
 		@Override
 		public PartData read(FriendlyByteBuf buffer) {
-			//System.out.println("PART DATA BUFFER");
-			int index = buffer.readInt();
-			PartData.PartType type = PartData.PartType.values()[index];
-			//System.out.println("PART TYPE = "+type.name());
-			switch (type) {
-			case SEAT:
-				return new SeatData(buffer);
-			case TURRENT:
-				return new TurretData(buffer);
-			case WEAPON_RACK:
-				return new WeaponRackData(buffer);
-			case INTERNAL_WEAPON:
-				return new WeaponPartData(buffer);
-			case ENGINE:
-				return new EngineData(buffer);
-			case FUEL_TANK:
-				return new FuelTankData(buffer);
-			case INTERNAL_RADAR:
-				return new RadarPartData(buffer);
-			case FLARE_DISPENSER:
-				return new FlareDispenserData(buffer);
-			case EXTERNAL_ENGINE:
-				return new ExternalEngineData(buffer);
-			case BUFF_DATA:
-				return new BuffData(buffer);
-			case EXTERNAL_RADAR:
-				return new ExternalRadarPartData(buffer);
-			case GIMBAL:
-				return new GimbalPartData(buffer);
+			String itemId = buffer.readUtf();
+			Item item;
+			try {
+				item = ForgeRegistries.ITEMS.getDelegate(new ResourceLocation(itemId)).get().get();
+			} catch(NoSuchElementException e) {
+				return null;
 			}
-			return null;
+			if (!(item instanceof ItemPart part)) return null;
+			PartData data = part.getPartData();
+			data.read(buffer);
+			return data;
 		}
 
 		@Override

@@ -16,6 +16,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public abstract class PartData {
 	
+	public static final int PARSE_VERSION = 2;
+	
 	public Vec3 relPos = Vec3.ZERO;
 	
 	private final SlotType[] compatibleSlots;
@@ -48,41 +50,24 @@ public abstract class PartData {
 		this.compatibleSlots = compatibleSlots;
 	}
 	
-	public PartData(CompoundTag tag) {
-		weight = tag.getFloat("weight");
-		itemid = new ResourceLocation(tag.getString("itemid"));
-		int[] cs = tag.getIntArray("compatibleSlots");
-		compatibleSlots = new SlotType[cs.length];
-		for (int i = 0; i < cs.length; ++i) compatibleSlots[i] = SlotType.values()[cs[i]];
+	public void read(CompoundTag tag) {
+		
 	}
 	
 	public CompoundTag write() {
 		CompoundTag tag = new CompoundTag();
-		tag.putInt("type", this.getType().ordinal());
-		tag.putFloat("weight", weight);
 		tag.putString("itemid", itemid.toString());
-		int[] cs = new int[compatibleSlots.length];
-		for (int i = 0; i < compatibleSlots.length; ++i) cs[i] = compatibleSlots[i].ordinal();
-		tag.putIntArray("compatibleSlots", cs);
+		tag.putBoolean("readnbt", true);
+		tag.putInt("parse_version", PARSE_VERSION);
 		return tag;
 	}
 	
-	public PartData(FriendlyByteBuf buffer) {
-		// type int is read in DataSerializers
-		weight = buffer.readFloat();
-		itemid = new ResourceLocation(buffer.readUtf());
-		int[] cs = buffer.readVarIntArray();
-		compatibleSlots = new SlotType[cs.length];
-		for (int i = 0; i < cs.length; ++i) compatibleSlots[i] = SlotType.values()[cs[i]];
+	public void read(FriendlyByteBuf buffer) {
+		// item id is read in data serializer
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
-		buffer.writeInt(this.getType().ordinal());
-		buffer.writeFloat(weight);
 		buffer.writeUtf(itemid.toString());
-		int[] cs = new int[compatibleSlots.length];
-		for (int i = 0; i < compatibleSlots.length; ++i) cs[i] = compatibleSlots[i].ordinal();
-		buffer.writeVarIntArray(cs);
 	}
 	
 	public abstract PartType getType();

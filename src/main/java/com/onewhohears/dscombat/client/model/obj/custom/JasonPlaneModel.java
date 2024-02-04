@@ -8,7 +8,6 @@ import com.onewhohears.dscombat.client.model.obj.ObjAircraftModel;
 import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
-import net.minecraft.util.Mth;
 import net.minecraftforge.client.model.renderable.CompositeRenderable.Transforms;
 
 public class JasonPlaneModel extends ObjAircraftModel<EntityPlane> {
@@ -20,7 +19,7 @@ public class JasonPlaneModel extends ObjAircraftModel<EntityPlane> {
 	@Override
 	protected Transforms getComponentTransforms(EntityPlane entity, float partialTicks) {
 		// blade
-		float bladerot = entity.getMotorRotation(partialTicks, 4*Mth.PI);
+		float bladerot = entity.getMotorRotation(partialTicks, 10);
 		Matrix4f blade0_mat = UtilAngles.pivotPixelsRotZ(-0.0426f, 42.0581f, 82.8989f, bladerot);
 		// landing gear
 		float gearpos = entity.getLandingGearPos(partialTicks);

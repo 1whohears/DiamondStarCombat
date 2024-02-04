@@ -159,7 +159,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	private int lerpSteps, deadTicks, stallWarnTicks, stallTicks, engineFireTicks, fuelLeakTicks, bingoTicks;
 	private double lerpX, lerpY, lerpZ;
-	private float landingGearPos, landingGearPosOld, motorRotO, wheelRotO;
+	private float landingGearPos, landingGearPosOld, motorRot, wheelRot;
 	
 	protected RadarMode radarMode = RadarMode.ALL;
 	protected boolean isLandingGear, isDriverCameraLocked = false;
@@ -2386,11 +2386,13 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     }
     
     public float getMotorRotation(float partialTicks, float spinRate) {
-		return motorRotO + spinRate * getCurrentThrottle() * partialTicks;
+    	motorRot += spinRate * getCurrentThrottle() * partialTicks;
+		return motorRot;
 	}
     
     public float getWheelRotation(float partialTicks, float spinRate) {
-    	return wheelRotO + spinRate * xzSpeed * xzSpeedDir * partialTicks;
+    	wheelRot += spinRate * xzSpeed * xzSpeedDir * partialTicks * 0.05f;
+    	return wheelRot;
     }
     
     private static final Vec3[] NONE = new Vec3[] {};

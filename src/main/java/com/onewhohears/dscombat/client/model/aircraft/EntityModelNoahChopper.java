@@ -15,7 +15,6 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 
 public class EntityModelNoahChopper extends EntityControllableModel<EntityHelicopter> {
 	
@@ -35,8 +34,8 @@ public class EntityModelNoahChopper extends EntityControllableModel<EntityHelico
 			int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		poseStack.translate(0, 1.5, 0);
 		poseStack.scale(1.0F, -1.0F, 1.0F);
-		top_rotor.yRot = entity.getMotorRotation(partialTicks, 12*Mth.PI);
-		tail_rotor.xRot = entity.getMotorRotation(partialTicks, 9*Mth.PI);
+		top_rotor.yRot = entity.getMotorRotation(partialTicks, 7);
+		tail_rotor.xRot = entity.getMotorRotation(partialTicks, 3);
 		body.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 

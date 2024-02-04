@@ -93,7 +93,7 @@ public abstract class JsonPreset {
 	
 	public boolean mergeWithParent(JsonPreset parent) {
 		try {
-			UtilGsonMerge.extendJsonObject(data, ConflictStrategy.PREFER_FIRST_OBJ, parent.getJsonDataNotCopy());
+			UtilGsonMerge.extendJsonObject(data, ConflictStrategy.PREFER_FIRST_OBJ, parent.getJsonData());
 			hasBeenMerged = true;
 			return true;
 		} catch (JsonObjectExtensionConflictException e) {

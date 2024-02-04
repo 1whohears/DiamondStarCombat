@@ -106,7 +106,7 @@ import net.minecraftforge.network.PacketDistributor;
 // TODO: mouse mode handling has configurable sensitivity; higher by default. inputs have 'inertia'
 public abstract class EntityVehicle extends Entity implements IEntityAdditionalSpawnData {
 	
-	private static final Logger LOGGER = LogUtils.getLogger();
+	protected static final Logger LOGGER = LogUtils.getLogger();
 	
 	public static final EntityDataAccessor<Float> HEALTH = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Quaternion> Q = SynchedEntityData.defineId(EntityVehicle.class, DataSerializers.QUATERNION);
@@ -153,7 +153,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public boolean nightVisionHud = false, hasRadio = false;
 	
 	protected boolean hasFlares;
-	protected int xzSpeedDir, hurtByFireTime;
+	protected int xzSpeedDir, hurtByFireTime, flareTicks;
 	protected float xzSpeed, totalMass, xzYaw, slideAngle, slideAngleCos, maxPushThrust, maxSpinThrust, currentFuel, maxFuel;
 	protected double staticFric, kineticFric, airPressure;
 	
@@ -1192,7 +1192,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			boolean consumeFuel = level.getGameRules().getBoolean(DSCGameRules.CONSUME_FULE);
 			if (consume && consumeFuel) tickFuel();
 			setFlareNum(partsManager.getNumFlares());
-			if (inputs.flare && tickCount % 5 == 0) {
+			if (inputs.flare && tickCount - flareTicks >= 10) {
 				boolean consumeFlares = level.getGameRules().getBoolean(DSCGameRules.CONSUME_FLARES);
 				flare(controller, consume && consumeFlares);
 			}
@@ -1221,6 +1221,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	public void flare(Entity controller, boolean consume) {
 		partsManager.useFlares(consume);
+		flareTicks = tickCount;
 	}
 	
 	/**

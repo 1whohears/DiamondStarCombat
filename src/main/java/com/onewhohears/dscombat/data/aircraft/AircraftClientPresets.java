@@ -29,7 +29,7 @@ public class AircraftClientPresets extends JsonPresetAssetReader<AircraftClientP
 		JsonObject json = UtilParse.GSON.fromJson(resource.openAsReader(), JsonObject.class);
 		return new AircraftClientPreset(key, json);
 	}
-	// FIXME 0.4 create a default client preset if one doesn't exist
+	
 	public AircraftClientPresets() {
 		super("aircraft_client");
 	}

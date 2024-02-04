@@ -13,7 +13,7 @@ import net.minecraft.world.phys.Vec3;
 public class GronkBattleship extends EntityBoat {
 	
 	public GronkBattleship(EntityType<? extends EntityBoat> entity, Level level) {
-		super(entity, level, BoatPresets.DEFAULT_GRONK_BATTLESHIP);
+		super(entity, level, BoatPresets.DEFAULT_GRONK_BATTLESHIP.getId());
 	}
 	
 	@Override

@@ -12,7 +12,7 @@ import net.minecraft.world.phys.Vec3;
 public class E3SentryPlane extends EntityPlane {
 	
 	public E3SentryPlane(EntityType<? extends EntityPlane> entity, Level level) {
-		super(entity, level, PlanePresets.DEFAULT_E3SENTRY_PLANE);
+		super(entity, level, PlanePresets.DEFAULT_E3SENTRY_PLANE.getId());
 	}
 	
 	@Override

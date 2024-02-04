@@ -9,7 +9,7 @@ import net.minecraft.world.level.Level;
 public class BroncoPlane extends EntityPlane {
 	
 	public BroncoPlane(EntityType<? extends EntityPlane> entity, Level level) {
-		super(entity, level, BroncoPresets.DEFAULT_BRONCO_PLANE);
+		super(entity, level, BroncoPresets.DEFAULT_BRONCO_PLANE.getId());
 	}
 
 }

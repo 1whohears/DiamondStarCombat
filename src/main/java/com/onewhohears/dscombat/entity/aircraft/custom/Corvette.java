@@ -13,7 +13,7 @@ import net.minecraft.world.phys.Vec3;
 public class Corvette extends EntityBoat {
 	
 	public Corvette(EntityType<? extends EntityBoat> entity, Level level) {
-		super(entity, level, BoatPresets.DEFAULT_CORVETTE);
+		super(entity, level, BoatPresets.DEFAULT_CORVETTE.getId());
 	}
 	
 	@Override

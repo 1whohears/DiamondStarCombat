@@ -1,28 +1,8 @@
 {
   "aircraft_type": 2,
+  "copyId": "axcel_truck_empty",
   "displayName": "preset.dscombat.axcel_truck_unarmed",
-  "health": 80.0,
   "ingredients": [
-    {
-      "item": "dscombat:seat",
-      "num": 2
-    },
-    {
-      "item": "dscombat:wheel",
-      "num": 6
-    },
-    {
-      "item": "minecraft:yellow_dye",
-      "num": 6
-    },
-    {
-      "item": "minecraft:iron_ingot",
-      "num": 24
-    },
-    {
-      "item": "minecraft:gold_ingot",
-      "num": 3
-    },
     {
       "item": "dscombat:c12_engine",
       "num": 1
@@ -33,118 +13,21 @@
     }
   ],
   "is_craftable": true,
-  "item": "dscombat:axcel_truck",
   "landing_gear": true,
   "presetId": "axcel_truck_unarmed",
   "slots": [
     {
       "data": {
-        "itemid": "dscombat:seat"
-      },
-      "name": "pilot_seat",
-      "slot_posx": 0.5,
-      "slot_posy": 0.9,
-      "slot_posz": 1.0,
-      "slot_type": "seat",
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
-      "name": "seat2",
-      "slot_posx": -0.5,
-      "slot_posy": 0.9,
-      "slot_posz": 1.0,
-      "slot_type": "seat",
-      "zRot": 0.0
-    },
-    {
-      "name": "cargo_bed_1",
-      "slot_posx": 0.0,
-      "slot_posy": 1.0,
-      "slot_posz": -2.75,
-      "slot_type": "heavy_turret",
-      "zRot": 0.0
-    },
-    {
-      "name": "frame_1",
-      "slot_posx": 0.0,
-      "slot_posy": 2.95,
-      "slot_posz": 1.0,
-      "slot_type": "advanced_frame",
-      "zRot": 0.0
-    },
-    {
-      "data": {
         "itemid": "dscombat:c12_engine"
       },
-      "name": "internal_1",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "spin_engine",
-      "zRot": 0.0
+      "name": "internal_1"
     },
     {
       "data": {
         "filled": true,
         "itemid": "dscombat:heavy_fuel_tank"
       },
-      "name": "internal_2",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "internal",
-      "zRot": 0.0
-    },
-    {
-      "name": "internal_3",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "advanced_internal",
-      "zRot": 0.0
-    },
-    {
-      "name": "internal_4",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "advanced_internal",
-      "zRot": 0.0
+      "name": "internal_2"
     }
-  ],
-  "sort_factor": 5,
-  "sounds": {
-    "nonPassengerEngine": "dscombat:tank_1",
-    "passengerEngine": "dscombat:tank_1"
-  },
-  "stats": {
-    "base_armor": 8.0,
-    "cameraDistance": 7.0,
-    "car": {
-      "isTank": false
-    },
-    "crashExplosionRadius": 3.0,
-    "cross_sec_area": 7.5,
-    "idleheat": 6.0,
-    "inertiapitch": 12.0,
-    "inertiaroll": 8.0,
-    "inertiayaw": 8.0,
-    "mass": 6500.0,
-    "max_health": 80.0,
-    "max_speed": 0.5,
-    "maxpitch": 0.0,
-    "maxroll": 0.0,
-    "maxyaw": 4.0,
-    "negativeThrottle": true,
-    "stealth": 1.0,
-    "throttledown": 0.05,
-    "throttleup": 0.05,
-    "torquepitch": 0.0,
-    "torqueroll": 0.0,
-    "torqueyaw": 1.0,
-    "turn_radius": 11.0
-  }
+  ]
 }

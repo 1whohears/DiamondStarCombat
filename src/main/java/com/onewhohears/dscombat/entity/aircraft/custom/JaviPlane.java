@@ -12,7 +12,7 @@ import net.minecraft.world.phys.Vec3;
 public class JaviPlane extends EntityPlane {
 	
 	public JaviPlane(EntityType<? extends EntityPlane> entity, Level level) {
-		super(entity, level, JaviPresets.DEFAULT_JAVI_PLANE);
+		super(entity, level, JaviPresets.DEFAULT_JAVI_PLANE.getId());
 	}
 	
 	@Override

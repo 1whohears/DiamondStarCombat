@@ -1,36 +1,8 @@
 {
   "aircraft_type": 4,
+  "copyId": "andolf_sub_unarmed",
   "displayName": "preset.dscombat.andolf_sub",
-  "health": 800.0,
   "ingredients": [
-    {
-      "item": "dscombat:large_propeller",
-      "num": 1
-    },
-    {
-      "item": "dscombat:large_fuselage",
-      "num": 2
-    },
-    {
-      "item": "dscombat:seat",
-      "num": 6
-    },
-    {
-      "item": "minecraft:gold_ingot",
-      "num": 10
-    },
-    {
-      "item": "minecraft:glass",
-      "num": 4
-    },
-    {
-      "item": "dscombat:c12_engine",
-      "num": 2
-    },
-    {
-      "item": "dscombat:heavy_fuel_tank",
-      "num": 1
-    },
     {
       "item": "dscombat:wr1k",
       "num": 1
@@ -61,75 +33,14 @@
     }
   ],
   "is_craftable": false,
-  "item": "dscombat:andolf_sub",
   "landing_gear": true,
   "presetId": "andolf_sub",
   "slots": [
     {
       "data": {
-        "itemid": "dscombat:seat"
+        "itemid": "dscombat:wr1k"
       },
-      "name": "pilot_seat",
-      "slot_posx": 0.6,
-      "slot_posy": -1.5,
-      "slot_posz": 2.8,
-      "slot_type": "seat",
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
-      "name": "seat1",
-      "slot_posx": -0.6,
-      "slot_posy": -1.5,
-      "slot_posz": 2.8,
-      "slot_type": "seat",
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
-      "name": "seat2",
-      "slot_posx": 0.6,
-      "slot_posy": -1.5,
-      "slot_posz": 1.6,
-      "slot_type": "seat",
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
-      "name": "seat3",
-      "slot_posx": -0.6,
-      "slot_posy": -1.5,
-      "slot_posz": 1.6,
-      "slot_type": "seat",
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
-      "name": "seat4",
-      "slot_posx": 0.6,
-      "slot_posy": -1.5,
-      "slot_posz": 0.4,
-      "slot_type": "seat",
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
-      "name": "seat5",
-      "slot_posx": -0.6,
-      "slot_posy": -1.5,
-      "slot_posz": 0.4,
-      "slot_type": "seat",
-      "zRot": 0.0
+      "name": "internal_4"
     },
     {
       "data": {
@@ -137,12 +48,7 @@
         "itemid": "dscombat:xm12",
         "param": "20mm"
       },
-      "name": "nose_1",
-      "slot_posx": 0.0,
-      "slot_posy": -1.6,
-      "slot_posz": 3.5,
-      "slot_type": "frame",
-      "zRot": 180.0
+      "name": "nose_1"
     },
     {
       "data": {
@@ -150,12 +56,7 @@
         "itemid": "dscombat:heavy_missile_rack",
         "param": "torpedo1"
       },
-      "name": "frame_1",
-      "slot_posx": 2.0,
-      "slot_posy": 0.0,
-      "slot_posz": 1.0,
-      "slot_type": "frame",
-      "zRot": -90.0
+      "name": "frame_1"
     },
     {
       "data": {
@@ -163,12 +64,7 @@
         "itemid": "dscombat:heavy_missile_rack",
         "param": "torpedo1"
       },
-      "name": "frame_2",
-      "slot_posx": 2.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "frame",
-      "zRot": -90.0
+      "name": "frame_2"
     },
     {
       "data": {
@@ -176,12 +72,7 @@
         "itemid": "dscombat:heavy_missile_rack",
         "param": "torpedo1"
       },
-      "name": "frame_3",
-      "slot_posx": 2.0,
-      "slot_posy": 0.0,
-      "slot_posz": -1.0,
-      "slot_type": "frame",
-      "zRot": -90.0
+      "name": "frame_3"
     },
     {
       "data": {
@@ -189,12 +80,7 @@
         "itemid": "dscombat:heavy_missile_rack",
         "param": "torpedo1"
       },
-      "name": "frame_4",
-      "slot_posx": -2.0,
-      "slot_posy": 0.0,
-      "slot_posz": 1.0,
-      "slot_type": "frame",
-      "zRot": 90.0
+      "name": "frame_4"
     },
     {
       "data": {
@@ -202,12 +88,7 @@
         "itemid": "dscombat:heavy_missile_rack",
         "param": "torpedo1"
       },
-      "name": "frame_5",
-      "slot_posx": -2.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "frame",
-      "zRot": 90.0
+      "name": "frame_5"
     },
     {
       "data": {
@@ -215,102 +96,7 @@
         "itemid": "dscombat:heavy_missile_rack",
         "param": "torpedo1"
       },
-      "name": "frame_6",
-      "slot_posx": -2.0,
-      "slot_posy": 0.0,
-      "slot_posz": -1.0,
-      "slot_type": "frame",
-      "zRot": 90.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:c12_engine"
-      },
-      "name": "internal_1",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "spin_engine",
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:c12_engine"
-      },
-      "name": "internal_2",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "spin_engine",
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "filled": true,
-        "itemid": "dscombat:heavy_fuel_tank"
-      },
-      "name": "internal_3",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "internal",
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:wr1k"
-      },
-      "name": "internal_4",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "advanced_internal",
-      "zRot": 0.0
-    },
-    {
-      "name": "internal_5",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "advanced_internal",
-      "zRot": 0.0
-    },
-    {
-      "name": "internal_6",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "advanced_internal",
-      "zRot": 0.0
+      "name": "frame_6"
     }
-  ],
-  "sort_factor": 5,
-  "sounds": {
-    "nonPassengerEngine": "dscombat:sub_1",
-    "passengerEngine": "dscombat:sub_1"
-  },
-  "stats": {
-    "base_armor": 20.0,
-    "cameraDistance": 12.0,
-    "crashExplosionRadius": 6.0,
-    "cross_sec_area": 18.0,
-    "idleheat": 10.0,
-    "inertiapitch": 10.0,
-    "inertiaroll": 6.0,
-    "inertiayaw": 3.0,
-    "mass": 180000.0,
-    "max_health": 800.0,
-    "max_speed": 0.5,
-    "maxpitch": 2.0,
-    "maxroll": 2.0,
-    "maxyaw": 2.0,
-    "negativeThrottle": true,
-    "stealth": 0.05,
-    "throttledown": 0.04,
-    "throttleup": 0.04,
-    "torquepitch": 1.0,
-    "torqueroll": 1.0,
-    "torqueyaw": 1.0,
-    "turn_radius": 0.0
-  }
+  ]
 }

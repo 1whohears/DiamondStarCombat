@@ -74,7 +74,7 @@ public class ModEntities {
 	
 	public static final RegistryObject<EntityType<EntityPlane>> WOODEN_PLANE = ENTITIES.register("wooden_plane", 
 			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
-					PlanePresets.DEFAULT_WOODEN_PLANE), 
+					PlanePresets.DEFAULT_WOODEN_PLANE.getId()), 
 					EntityDimensions.scalable(1.7f, 1.7f)));
 	
 	public static final RegistryObject<EntityType<EntityPlane>> E3SENTRY_PLANE = ENTITIES.register("e3sentry_plane", 
@@ -103,24 +103,24 @@ public class ModEntities {
 	
 	public static final RegistryObject<EntityType<EntityGroundVehicle>> MRBUDGER_TANK = ENTITIES.register("mrbudger_tank", 
 			() -> createEntityTypeFar((type, level) -> new EntityGroundVehicle(type, level, 
-					TankPresets.DEFAULT_MRBUDGER_TANK), 
+					TankPresets.DEFAULT_MRBUDGER_TANK.getId()), 
 					EntityDimensions.scalable(3.0f, 2.5f)));
 	
 	public static final RegistryObject<EntityType<EntityGroundVehicle>> SMALL_ROLLER = ENTITIES.register("small_roller", 
 			() -> createEntityTypeFar((type, level) -> new EntityGroundVehicle(type, level, 
-					TankPresets.DEFAULT_SMALL_ROLLER), 
+					TankPresets.DEFAULT_SMALL_ROLLER.getId()), 
 					EntityDimensions.scalable(1.5f, 0.8f)));
 	
 	// CARS
 	
 	public static final RegistryObject<EntityType<EntityGroundVehicle>> ORANGE_TESLA = ENTITIES.register("orange_tesla", 
 			() -> createEntityTypeFar((type, level) -> new EntityGroundVehicle(type, level, 
-					CarPresets.DEFAULT_ORANGE_TESLA), 
+					CarPresets.DEFAULT_ORANGE_TESLA.getId()), 
 					EntityDimensions.scalable(2.5f, 2.15f)));
 	
 	public static final RegistryObject<EntityType<EntityGroundVehicle>> AXCEL_TRUCK = ENTITIES.register("axcel_truck", 
 			() -> createEntityTypeFar((type, level) -> new EntityGroundVehicle(type, level, 
-					CarPresets.DEFAULT_AXCEL_TRUCK) {
+					CarPresets.DEFAULT_AXCEL_TRUCK.getId()) {
 						@Override
 							public void addVehicleScreens() {
 								screens = new EntityScreenData[1];
@@ -137,7 +137,7 @@ public class ModEntities {
 	
 	public static final RegistryObject<EntityType<EntityBoat>> NATHAN_BOAT = ENTITIES.register("nathan_boat", 
 			() -> createEntityTypeFar((type, level) -> new EntityBoat(type, level, 
-					BoatPresets.DEFAULT_NATHAN_BOAT), 
+					BoatPresets.DEFAULT_NATHAN_BOAT.getId()), 
 					EntityDimensions.scalable(3.0f,1.5f)));
 	
 	public static final RegistryObject<EntityType<EntityBoat>> GRONK_BATTLESHIP = ENTITIES.register("gronk_battleship", 
@@ -164,7 +164,7 @@ public class ModEntities {
 	
 	public static final RegistryObject<EntityType<EntitySubmarine>> ANDOLF_SUB = ENTITIES.register("andolf_sub", 
 			() -> createEntityTypeFar((type, level) -> new EntitySubmarine(type, level, 
-					SubPresets.DEFAULT_ANDOLF_SUB), 
+					SubPresets.DEFAULT_ANDOLF_SUB.getId()), 
 					EntityDimensions.scalable(4.5f,4.0f)));
 	
 	/* 

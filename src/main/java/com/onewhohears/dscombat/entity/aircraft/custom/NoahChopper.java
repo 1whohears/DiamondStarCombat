@@ -12,7 +12,7 @@ import net.minecraft.world.phys.Vec3;
 public class NoahChopper extends EntityHelicopter {
 	
 	public NoahChopper(EntityType<? extends EntityHelicopter> entity, Level level) {
-		super(entity, level, HeliPresets.DEFAULT_NOAH_CHOPPER);
+		super(entity, level, HeliPresets.DEFAULT_NOAH_CHOPPER.getId());
 	}
 	
 	@Override

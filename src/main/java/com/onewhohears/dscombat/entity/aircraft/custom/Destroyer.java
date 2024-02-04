@@ -13,7 +13,7 @@ import net.minecraft.world.phys.Vec3;
 public class Destroyer extends EntityBoat {
 	
 	public Destroyer(EntityType<? extends EntityBoat> entity, Level level) {
-		super(entity, level, BoatPresets.DEFAULT_DESTROYER);
+		super(entity, level, BoatPresets.DEFAULT_DESTROYER.getId());
 	}
 	
 	@Override

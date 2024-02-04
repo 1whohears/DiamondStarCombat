@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.VehicleStats;
 import com.onewhohears.dscombat.data.aircraft.VehicleStats.CarStats;
 
@@ -14,7 +13,7 @@ public class EntityGroundVehicle extends EntityVehicle {
 	
 	protected CarStats carStats;
 	
-	public EntityGroundVehicle(EntityType<? extends EntityGroundVehicle> entity, Level level, AircraftPreset defaultPreset) {
+	public EntityGroundVehicle(EntityType<? extends EntityGroundVehicle> entity, Level level, String defaultPreset) {
 		super(entity, level, defaultPreset);
 		carStats = (CarStats)vehicleStats;
 	}

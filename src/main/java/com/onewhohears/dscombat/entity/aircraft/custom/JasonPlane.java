@@ -9,7 +9,7 @@ import net.minecraft.world.level.Level;
 public class JasonPlane extends EntityPlane {
 	
 	public JasonPlane(EntityType<? extends EntityPlane> entity, Level level) {
-		super(entity, level, JasonPresets.DEFAULT_JASON_PLANE);
+		super(entity, level, JasonPresets.DEFAULT_JASON_PLANE.getId());
 	}
 
 }

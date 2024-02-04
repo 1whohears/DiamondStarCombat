@@ -1,32 +1,8 @@
 {
   "aircraft_type": 0,
+  "copyId": "wooden_plane",
   "displayName": "preset.dscombat.wooden_plane_bomber",
-  "health": 40.0,
   "ingredients": [
-    {
-      "item": "minecraft:oak_planks",
-      "num": 30
-    },
-    {
-      "item": "dscombat:seat",
-      "num": 1
-    },
-    {
-      "item": "dscombat:propeller",
-      "num": 1
-    },
-    {
-      "item": "dscombat:wheel",
-      "num": 2
-    },
-    {
-      "item": "dscombat:cm_manly_52",
-      "num": 1
-    },
-    {
-      "item": "dscombat:light_fuel_tank",
-      "num": 1
-    },
     {
       "item": "minecraft:tnt",
       "num": 12
@@ -41,20 +17,16 @@
     }
   ],
   "is_craftable": false,
-  "item": "dscombat:wooden_plane",
   "landing_gear": true,
   "presetId": "wooden_plane_bomber",
   "slots": [
     {
       "data": {
-        "itemid": "dscombat:seat"
+        "filled": true,
+        "itemid": "dscombat:light_missile_rack",
+        "param": "agm114k"
       },
-      "name": "pilot_seat",
-      "slot_posx": 0.0,
-      "slot_posy": -0.4,
-      "slot_posz": 0.0,
-      "slot_type": "seat",
-      "zRot": 0.0
+      "name": "left_wing_1"
     },
     {
       "data": {
@@ -62,90 +34,7 @@
         "itemid": "dscombat:light_missile_rack",
         "param": "agm114k"
       },
-      "name": "left_wing_1",
-      "slot_posx": 1.5,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "wing",
-      "zRot": 180.0
-    },
-    {
-      "data": {
-        "filled": true,
-        "itemid": "dscombat:light_missile_rack",
-        "param": "agm114k"
-      },
-      "name": "right_wing_1",
-      "slot_posx": -1.5,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "wing",
-      "zRot": 180.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:cm_manly_52"
-      },
-      "name": "internal_1",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "radial_engine",
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "filled": true,
-        "itemid": "dscombat:light_fuel_tank"
-      },
-      "name": "internal_2",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "internal",
-      "zRot": 0.0
-    },
-    {
-      "name": "internal_3",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "internal",
-      "zRot": 0.0
+      "name": "right_wing_1"
     }
-  ],
-  "sort_factor": 0,
-  "sounds": {
-    "nonPassengerEngine": "dscombat:biplane_1",
-    "passengerEngine": "dscombat:biplane_1"
-  },
-  "stats": {
-    "base_armor": 0.0,
-    "cameraDistance": 4.0,
-    "crashExplosionRadius": 3.0,
-    "cross_sec_area": 2.0,
-    "idleheat": 1.0,
-    "inertiapitch": 7.0,
-    "inertiaroll": 4.0,
-    "inertiayaw": 3.0,
-    "mass": 500.0,
-    "max_health": 40.0,
-    "max_speed": 0.7,
-    "maxpitch": 3.0,
-    "maxroll": 5.0,
-    "maxyaw": 2.0,
-    "plane": {
-      "canAimDown": false,
-      "flapsAOABias": 8.0,
-      "liftKGraph": "wooden_plane",
-      "wing_area": 8.0
-    },
-    "stealth": 1.0,
-    "throttledown": 0.06,
-    "throttleup": 0.02,
-    "torquepitch": 2.5,
-    "torqueroll": 1.5,
-    "torqueyaw": 4.5,
-    "turn_radius": 16.0
-  }
+  ]
 }

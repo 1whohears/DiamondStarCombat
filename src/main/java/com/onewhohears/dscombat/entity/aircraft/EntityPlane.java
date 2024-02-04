@@ -2,7 +2,6 @@ package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.command.DSCGameRules;
-import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.DSCPhysicsConstants;
 import com.onewhohears.dscombat.data.aircraft.VehicleStats;
 import com.onewhohears.dscombat.data.aircraft.VehicleStats.PlaneStats;
@@ -25,7 +24,7 @@ public class EntityPlane extends EntityVehicle {
 	private double liftMag;
 	private Vec3 liftDir = Vec3.ZERO, airFoilAxes = Vec3.ZERO;
 	
-	public EntityPlane(EntityType<? extends EntityPlane> entity, Level level, AircraftPreset defaultPreset) {
+	public EntityPlane(EntityType<? extends EntityPlane> entity, Level level, String defaultPreset) {
 		super(entity, level, defaultPreset);
 		planeStats = (PlaneStats)vehicleStats;
 	}

@@ -53,6 +53,12 @@ public abstract class JsonPresetReloadListener<T extends JsonPreset> extends Sim
 		return presetMap.get(id).copy();
 	}
 	
+	@Nullable
+	protected T getPresetNonCopy(String id) {
+		if (!has(id)) return null;
+		return presetMap.get(id);
+	}
+	
 	public boolean has(String id) {
 		return presetMap.containsKey(id);
 	}
@@ -97,8 +103,30 @@ public abstract class JsonPresetReloadListener<T extends JsonPreset> extends Sim
 			LOGGER.warn("ERROR: SKIPPING "+key.toString());
 			e.printStackTrace();
 		}});
+		mergeCopyWithParentPresets();
 		resetCache();
 		setup = true;
+	}
+	
+	protected void mergeCopyWithParentPresets() {
+		LOGGER.info("MERGING COPYS WITH PARENT PRESETS "+getName());
+		presetMap.forEach((id, preset) -> mergeWithParent(id, preset));
+	}
+	
+	protected void mergeWithParent(String id, T preset) {
+		if (!preset.isCopy() || preset.hasBeenMerged()) return;
+		if (!has(preset.getCopyId())) {
+			LOGGER.warn("ERROR: Preset "+preset.getCopyId()+" does not exist so "+id+" can't be merged!");
+			return;
+		}
+		T copy = getPresetNonCopy(preset.getCopyId());
+		if (copy.isCopy() && !copy.hasBeenMerged()) 
+			mergeWithParent(copy.getId(), copy);
+		if (!preset.mergeWithParent(copy)) {
+			LOGGER.warn("MERGE FAIL: "+id+" with "+copy.getId());
+			return;
+		}
+		LOGGER.info("MERGED: "+id+" with "+copy.getId());
 	}
 	
 	public abstract T getFromJson(ResourceLocation key, JsonObject json);

@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.DSCPhysicsConstants;
 import com.onewhohears.dscombat.data.aircraft.VehicleStats;
 import com.onewhohears.dscombat.data.aircraft.VehicleStats.BoatStats;
@@ -21,7 +20,7 @@ public class EntityBoat extends EntityVehicle {
 	
 	protected double waterLevel;
 	
-	public EntityBoat(EntityType<? extends EntityBoat> entity, Level level, AircraftPreset defaultPreset) {
+	public EntityBoat(EntityType<? extends EntityBoat> entity, Level level, String defaultPreset) {
 		super(entity, level, defaultPreset);
 	}
 	

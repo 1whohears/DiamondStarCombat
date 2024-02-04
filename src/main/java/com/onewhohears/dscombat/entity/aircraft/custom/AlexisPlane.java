@@ -12,7 +12,7 @@ import net.minecraft.world.phys.Vec3;
 public class AlexisPlane extends EntityPlane {
 	
 	public AlexisPlane(EntityType<? extends EntityPlane> entity, Level level) {
-		super(entity, level, AlexisPresets.DEFAULT_ALEXIS_PLANE);
+		super(entity, level, AlexisPresets.DEFAULT_ALEXIS_PLANE.getId());
 	}
 	
 	@Override

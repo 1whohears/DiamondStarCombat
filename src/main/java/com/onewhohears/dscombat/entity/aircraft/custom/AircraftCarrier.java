@@ -13,7 +13,7 @@ import net.minecraft.world.phys.Vec3;
 public class AircraftCarrier extends EntityBoat {
 	
 	public AircraftCarrier(EntityType<? extends EntityBoat> entity, Level level) {
-		super(entity, level, BoatPresets.DEFAULT_AIRCRAFT_CARRIER);
+		super(entity, level, BoatPresets.DEFAULT_AIRCRAFT_CARRIER.getId());
 	}
 	
 	@Override

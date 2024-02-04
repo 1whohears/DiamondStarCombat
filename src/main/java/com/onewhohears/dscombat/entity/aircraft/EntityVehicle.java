@@ -180,15 +180,16 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	// TODO 2.8 external fuel tanks
 	// TODO 8.4 speed of sound system (client doesn't hear sound until "sound wave" reaches the player)
 	
-	public EntityVehicle(EntityType<? extends EntityVehicle> entityType, Level level, AircraftPreset defaultPreset) {
+	public EntityVehicle(EntityType<? extends EntityVehicle> entityType, Level level, String defaultPreset) {
 		super(entityType, level);
-		this.defaultPreset = defaultPreset.getId();
+		this.defaultPreset = defaultPreset;
 		this.clientPresetId = UtilEntity.getSplitEncodeId(this)[1];
-		this.preset = this.defaultPreset;
-		this.item = defaultPreset.getItem();
+		this.preset = defaultPreset;
+		AircraftPreset ap = AircraftPresets.get().getPreset(defaultPreset);
+		this.item = ap.getItem();
 		this.blocksBuilding = true;
 		vehicleStats = createVehicleStats();
-		vehicleStats.readPresetData(defaultPreset);
+		vehicleStats.readPresetData(ap);
 		inputs = new VehicleInputManager();
 		soundManager = new VehicleSoundManager(this);
 		textureManager = new VehicleTextureManager(this);

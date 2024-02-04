@@ -1,115 +1,23 @@
 {
   "aircraft_type": 0,
+  "copyId": "bronco_plane_unarmed",
   "displayName": "preset.dscombat.bronco_plane",
-  "health": 90.0,
   "ingredients": [
-    {
-      "item": "dscombat:fuselage",
-      "num": 1
-    },
-    {
-      "item": "dscombat:wing",
-      "num": 3
-    },
-    {
-      "item": "dscombat:cockpit",
-      "num": 2
-    },
-    {
-      "item": "dscombat:wheel",
-      "num": 3
-    },
-    {
-      "item": "dscombat:propeller",
-      "num": 2
-    },
-    {
-      "item": "minecraft:green_dye",
-      "num": 6
-    },
-    {
-      "item": "minecraft:gold_ingot",
-      "num": 4
-    },
-    {
-      "item": "dscombat:cm_manly_52",
-      "num": 2
-    },
-    {
-      "item": "dscombat:light_fuel_tank",
-      "num": 1
-    },
     {
       "item": "dscombat:basic_flare_dispenser",
       "num": 1
     }
   ],
   "is_craftable": false,
-  "item": "dscombat:bronco_plane",
   "landing_gear": true,
   "presetId": "bronco_plane",
   "slots": [
     {
       "data": {
-        "itemid": "dscombat:seat"
+        "filled": true,
+        "itemid": "dscombat:basic_flare_dispenser"
       },
-      "name": "pilot_seat",
-      "slot_posx": 0.0,
-      "slot_posy": -0.74,
-      "slot_posz": 4.5,
-      "slot_type": "seat",
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
-      "name": "seat2",
-      "slot_posx": 0.0,
-      "slot_posy": -0.61,
-      "slot_posz": 3.125,
-      "slot_type": "light_turret",
-      "zRot": 0.0
-    },
-    {
-      "name": "nose_1",
-      "slot_posx": 0.0,
-      "slot_posy": -0.9357,
-      "slot_posz": 6.0625,
-      "slot_type": "frame",
-      "zRot": 180.0
-    },
-    {
-      "name": "frame_1",
-      "slot_posx": 0.5,
-      "slot_posy": -1.25,
-      "slot_posz": 1.1875,
-      "slot_type": "frame",
-      "zRot": 180.0
-    },
-    {
-      "name": "frame_2",
-      "slot_posx": 1.125,
-      "slot_posy": -1.375,
-      "slot_posz": 1.1875,
-      "slot_type": "frame",
-      "zRot": 180.0
-    },
-    {
-      "name": "frame_3",
-      "slot_posx": -0.5,
-      "slot_posy": -1.25,
-      "slot_posz": 1.1875,
-      "slot_type": "frame",
-      "zRot": 180.0
-    },
-    {
-      "name": "frame_4",
-      "slot_posx": -1.125,
-      "slot_posy": -1.375,
-      "slot_posz": 1.1875,
-      "slot_type": "frame",
-      "zRot": 180.0
+      "name": "internal_4"
     },
     {
       "data": {
@@ -117,12 +25,7 @@
         "itemid": "dscombat:light_missile_rack",
         "param": "agm114k"
       },
-      "name": "left_wing_1",
-      "slot_posx": 4.875,
-      "slot_posy": 0.125,
-      "slot_posz": 1.0625,
-      "slot_type": "wing",
-      "zRot": 180.0
+      "name": "left_wing_1"
     },
     {
       "data": {
@@ -130,104 +33,7 @@
         "itemid": "dscombat:light_missile_rack",
         "param": "agm65l"
       },
-      "name": "right_wing_1",
-      "slot_posx": -4.875,
-      "slot_posy": 0.125,
-      "slot_posz": 1.0625,
-      "slot_type": "wing",
-      "zRot": 180.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:cm_manly_52"
-      },
-      "name": "internal_1",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "radial_engine",
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:cm_manly_52"
-      },
-      "name": "internal_2",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "radial_engine",
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "filled": true,
-        "itemid": "dscombat:light_fuel_tank"
-      },
-      "name": "internal_3",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "internal",
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "filled": true,
-        "itemid": "dscombat:basic_flare_dispenser"
-      },
-      "name": "internal_4",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "internal",
-      "zRot": 0.0
-    },
-    {
-      "name": "internal_5",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "advanced_internal",
-      "zRot": 0.0
+      "name": "right_wing_1"
     }
-  ],
-  "sort_factor": 5,
-  "sounds": {
-    "nonPassengerEngine": "dscombat:biplane_1",
-    "passengerEngine": "dscombat:biplane_1"
-  },
-  "stats": {
-    "base_armor": 1.0,
-    "cameraDistance": 14.0,
-    "crashExplosionRadius": 4.0,
-    "cross_sec_area": 5.0,
-    "idleheat": 3.0,
-    "inertiapitch": 10.0,
-    "inertiaroll": 6.0,
-    "inertiayaw": 5.0,
-    "mass": 3100.0,
-    "max_health": 90.0,
-    "max_speed": 0.85,
-    "maxpitch": 1.2,
-    "maxroll": 2.5,
-    "maxyaw": 0.9,
-    "plane": {
-      "canAimDown": false,
-      "flapsAOABias": 9.0,
-      "liftKGraph": "javi_plane",
-      "wing_area": 27.0
-    },
-    "stealth": 1.0,
-    "throttledown": 0.07,
-    "throttleup": 0.03,
-    "torquepitch": 2.0,
-    "torqueroll": 1.5,
-    "torqueyaw": 3.0,
-    "turn_radius": 8.0
-  },
-  "textures": {
-    "baseTextureVariants": 2,
-    "textureLayers": 2
-  }
+  ]
 }

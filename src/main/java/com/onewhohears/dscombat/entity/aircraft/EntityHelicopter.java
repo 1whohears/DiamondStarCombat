@@ -2,7 +2,6 @@ package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.command.DSCGameRules;
-import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.VehicleStats;
 import com.onewhohears.dscombat.data.aircraft.VehicleStats.HeliStats;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource.WeaponDamageType;
@@ -19,7 +18,7 @@ public class EntityHelicopter extends EntityVehicle {
 	
 	protected HeliStats heliStats;
 	
-	public EntityHelicopter(EntityType<? extends EntityHelicopter> entity, Level level, AircraftPreset defaultPreset) {
+	public EntityHelicopter(EntityType<? extends EntityHelicopter> entity, Level level, String defaultPreset) {
 		super(entity, level, defaultPreset);
 		heliStats = (HeliStats)vehicleStats;
 	}

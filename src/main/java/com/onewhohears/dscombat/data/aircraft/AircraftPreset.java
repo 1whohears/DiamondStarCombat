@@ -15,6 +15,8 @@ import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
+import com.onewhohears.dscombat.util.UtilGsonMerge;
+import com.onewhohears.dscombat.util.UtilGsonMerge.ConflictStrategy;
 import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
@@ -28,7 +30,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class AircraftPreset extends JsonPreset{
 
 	private final AircraftType aircraft_type;
-	private final CompoundTag dataNBT;
+	private CompoundTag dataNBT;
 	private List<DSCIngredient> ingredients;
 	private ItemStack item;
 	
@@ -98,6 +100,32 @@ public class AircraftPreset extends JsonPreset{
 	}
 	
 	@Override
+	public boolean mergeWithParent(JsonPreset parent) {
+		if (!super.mergeWithParent(parent)) return false;
+		mergeSlots();
+		dataNBT = UtilParse.getCompoundFromJson(getJsonData());
+		return true;
+	}
+	
+	protected void mergeSlots() {
+		if (!getJsonDataNotCopy().has("slots")) return;
+		JsonArray slots = getJsonDataNotCopy().get("slots").getAsJsonArray();
+		for (int i = 0; i < slots.size(); ++i) {
+			JsonObject slot = slots.get(i).getAsJsonObject();
+			String name = slot.get("name").getAsString();
+			for (int j = i+1; j < slots.size(); ++j) {
+				JsonObject slot2 = slots.get(j).getAsJsonObject();
+				String name2 = slot2.get("name").getAsString();
+				if (!name.equals(name2)) continue;
+				UtilGsonMerge.extendJsonObject(ConflictStrategy.PREFER_FIRST_OBJ, slot, slot2);
+				slots.remove(j);
+				--i;
+				break;
+			}
+		}
+	}
+	
+	@Override
 	public <T extends JsonPreset> int compare(T other) {
 		AircraftPreset ap = (AircraftPreset) other;
 		if (this.getAircraftType() != ap.getAircraftType()) 
@@ -123,6 +151,14 @@ public class AircraftPreset extends JsonPreset{
 		
 		public static Builder createFromCopy(String namespace, String name, AircraftPreset copy) {
 			return new Builder(namespace, name, AircraftPreset::new, copy);
+		}
+		
+		@Override
+		protected void setupJsonData() {
+			super.setupJsonData();
+			if (isCopy()) {
+				setInt("aircraft_type", getCopyData().get("aircraft_type").getAsInt());
+			}
 		}
 		
 		@Override
@@ -179,8 +215,8 @@ public class AircraftPreset extends JsonPreset{
 		 * @param name slot that already exists
 		 */
 		public Builder setSlotEmpty(String name) {
-			JsonObject slot = getSlot(name, false);
-			if (slot != null) slot.remove("data");
+			JsonObject slot = getSlot(name, true);
+			if (slot != null) slot.add("data", new JsonObject());
 			return this;
 		}
 		/**
@@ -192,7 +228,7 @@ public class AircraftPreset extends JsonPreset{
 		 */
 		public Builder setSlotItem(String name, @Nullable ResourceLocation item, @Nullable String param, boolean filled) {
 			if (item == null) return setSlotEmpty(name);
-			JsonObject slot = getSlot(name, false);
+			JsonObject slot = getSlot(name, true);
 			if (slot == null) return this;
 			JsonObject d = new JsonObject();
 			d.addProperty("itemid", item.toString());
@@ -235,21 +271,31 @@ public class AircraftPreset extends JsonPreset{
 		
 		@Nullable
 		protected JsonObject getSlot(String name, boolean createNew) {
-			if (!getData().has("slots")) {
-				getData().add("slots", new JsonArray());
-			}
 			JsonArray slots = getSlots();
 			for (int i = 0; i < slots.size(); ++i) {
 				JsonObject slot = slots.get(i).getAsJsonObject();
-				if (slot.get("name").getAsString().equals(name)) {
+				if (slot.get("name").getAsString().equals(name)) 
 					return slot;
-				}
 			}
-			if (!createNew) return null;
+			if (!createNew && getSlotFromCopy(name) == null) return null;
 			JsonObject slot = new JsonObject();
 			slot.addProperty("name", name);
 			slots.add(slot);
 			return slot;
+		}
+		
+		@Nullable
+		protected JsonObject getSlotFromCopy(String name) {
+			if (!isCopy()) return null;
+			JsonObject copy = getCopyData();
+			if (!copy.has("slots")) return null;
+			JsonArray slots = copy.get("slots").getAsJsonArray();
+			for (int i = 0; i < slots.size(); ++i) {
+				JsonObject slot = slots.get(i).getAsJsonObject();
+				if (slot.get("name").getAsString().equals(name)) 
+					return slot;
+			}
+			return null;
 		}
 		/**
 		 * used by all vehicles to add a slot that has an item by default

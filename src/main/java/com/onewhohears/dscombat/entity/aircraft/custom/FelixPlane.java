@@ -12,7 +12,7 @@ import net.minecraft.world.phys.Vec3;
 public class FelixPlane extends EntityPlane {
 	
 	public FelixPlane(EntityType<? extends EntityPlane> entity, Level level) {
-		super(entity, level, FelixPresets.DEFAULT_FELIX_PLANE);
+		super(entity, level, FelixPresets.DEFAULT_FELIX_PLANE.getId());
 	}
 	
 	@Override

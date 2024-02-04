@@ -13,7 +13,7 @@ import net.minecraft.world.phys.Vec3;
 public class Cruiser extends EntityBoat {
 	
 	public Cruiser(EntityType<? extends EntityBoat> entity, Level level) {
-		super(entity, level, BoatPresets.DEFAULT_CRUISER);
+		super(entity, level, BoatPresets.DEFAULT_CRUISER.getId());
 	}
 	
 	@Override

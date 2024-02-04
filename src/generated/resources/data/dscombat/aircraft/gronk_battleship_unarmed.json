@@ -1,28 +1,8 @@
 {
   "aircraft_type": 3,
+  "copyId": "gronk_battleship_empty",
   "displayName": "preset.dscombat.gronk_battleship_unarmed",
-  "health": 600.0,
   "ingredients": [
-    {
-      "item": "dscombat:large_fuselage",
-      "num": 4
-    },
-    {
-      "item": "minecraft:oak_planks",
-      "num": 64
-    },
-    {
-      "item": "dscombat:seat",
-      "num": 4
-    },
-    {
-      "item": "dscombat:propeller",
-      "num": 3
-    },
-    {
-      "item": "minecraft:light_gray_dye",
-      "num": 10
-    },
     {
       "item": "dscombat:compound_turbine",
       "num": 2
@@ -33,267 +13,34 @@
     }
   ],
   "is_craftable": true,
-  "item": "dscombat:gronk_battleship",
   "landing_gear": true,
   "presetId": "gronk_battleship_unarmed",
   "slots": [
     {
       "data": {
-        "itemid": "dscombat:seat"
+        "itemid": "dscombat:compound_turbine"
       },
-      "name": "pilot_seat",
-      "slot_posx": 0.8,
-      "slot_posy": 6.0,
-      "slot_posz": 4.5,
-      "slot_type": "seat",
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
-      "name": "seat2",
-      "slot_posx": -0.8,
-      "slot_posy": 6.0,
-      "slot_posz": 4.5,
-      "slot_type": "seat",
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
-      "name": "seat3",
-      "slot_posx": 0.8,
-      "slot_posy": 6.0,
-      "slot_posz": 2.2,
-      "slot_type": "seat",
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
-      "name": "seat4",
-      "slot_posx": -0.8,
-      "slot_posy": 6.0,
-      "slot_posz": 2.2,
-      "slot_type": "seat",
-      "zRot": 0.0
-    },
-    {
-      "name": "seat5",
-      "slot_posx": 0.0,
-      "slot_posy": 5.0,
-      "slot_posz": 11.5,
-      "slot_type": "heavy_turret",
-      "zRot": 0.0
-    },
-    {
-      "name": "seat6",
-      "slot_posx": 0.0,
-      "slot_posy": 5.0,
-      "slot_posz": -12.0,
-      "slot_type": "heavy_turret",
-      "zRot": 0.0
-    },
-    {
-      "name": "seat7",
-      "slot_posx": 0.0,
-      "slot_posy": 4.0,
-      "slot_posz": 18.0,
-      "slot_type": "heavy_turret",
-      "zRot": 0.0
-    },
-    {
-      "name": "seat8",
-      "slot_posx": 0.0,
-      "slot_posy": 4.0,
-      "slot_posz": -19.0,
-      "slot_type": "heavy_turret",
-      "zRot": 0.0
-    },
-    {
-      "name": "seat9",
-      "slot_posx": 0.0,
-      "slot_posy": 6.0,
-      "slot_posz": 7.0,
-      "slot_type": "med_turret",
-      "zRot": 0.0
-    },
-    {
-      "name": "seat10",
-      "slot_posx": 0.0,
-      "slot_posy": 6.0,
-      "slot_posz": -7.0,
-      "slot_type": "med_turret",
-      "zRot": 0.0
-    },
-    {
-      "name": "frame_1",
-      "slot_posx": 0.0,
-      "slot_posy": 9.0,
-      "slot_posz": 3.0,
-      "slot_type": "advanced_frame",
-      "zRot": 0.0
-    },
-    {
-      "name": "frame_2",
-      "slot_posx": 6.0,
-      "slot_posy": 4.0,
-      "slot_posz": 4.0,
-      "slot_type": "light_turret",
-      "zRot": 0.0
-    },
-    {
-      "name": "frame_3",
-      "slot_posx": -6.0,
-      "slot_posy": 4.0,
-      "slot_posz": 4.0,
-      "slot_type": "light_turret",
-      "zRot": 0.0
-    },
-    {
-      "name": "frame_4",
-      "slot_posx": 6.0,
-      "slot_posy": 4.0,
-      "slot_posz": -4.0,
-      "slot_type": "light_turret",
-      "zRot": 0.0
-    },
-    {
-      "name": "frame_5",
-      "slot_posx": -6.0,
-      "slot_posy": 4.0,
-      "slot_posz": -4.0,
-      "slot_type": "light_turret",
-      "zRot": 0.0
+      "name": "internal_1"
     },
     {
       "data": {
         "itemid": "dscombat:compound_turbine"
       },
-      "name": "internal_1",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "radial_engine",
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:compound_turbine"
-      },
-      "name": "internal_2",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "radial_engine",
-      "zRot": 0.0
+      "name": "internal_2"
     },
     {
       "data": {
         "filled": true,
         "itemid": "dscombat:heavy_fuel_tank"
       },
-      "name": "internal_3",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "internal",
-      "zRot": 0.0
+      "name": "internal_3"
     },
     {
       "data": {
         "filled": true,
         "itemid": "dscombat:heavy_fuel_tank"
       },
-      "name": "internal_4",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "internal",
-      "zRot": 0.0
-    },
-    {
-      "name": "internal_5",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "internal",
-      "zRot": 0.0
-    },
-    {
-      "name": "internal_6",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "internal",
-      "zRot": 0.0
-    },
-    {
-      "name": "internal_7",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "advanced_internal",
-      "zRot": 0.0
-    },
-    {
-      "name": "internal_8",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "advanced_internal",
-      "zRot": 0.0
-    },
-    {
-      "name": "internal_9",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "internal",
-      "zRot": 0.0
-    },
-    {
-      "name": "internal_10",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "internal",
-      "zRot": 0.0
+      "name": "internal_4"
     }
-  ],
-  "sort_factor": 1,
-  "sounds": {
-    "nonPassengerEngine": "dscombat:boat_1",
-    "passengerEngine": "dscombat:boat_1"
-  },
-  "stats": {
-    "base_armor": 15.0,
-    "cameraDistance": 30.0,
-    "crashExplosionRadius": 8.0,
-    "cross_sec_area": 7.5,
-    "idleheat": 4.0,
-    "inertiapitch": 10.0,
-    "inertiaroll": 6.0,
-    "inertiayaw": 4.0,
-    "mass": 450000.0,
-    "max_health": 600.0,
-    "max_speed": 0.6,
-    "maxpitch": 0.0,
-    "maxroll": 0.0,
-    "maxyaw": 1.0,
-    "negativeThrottle": true,
-    "stealth": 0.9,
-    "throttledown": 0.1,
-    "throttleup": 0.05,
-    "torquepitch": 0.0,
-    "torqueroll": 0.0,
-    "torqueyaw": 1.0,
-    "turn_radius": 0.0
-  },
-  "textures": {
-    "textureLayers": 2
-  }
+  ]
 }

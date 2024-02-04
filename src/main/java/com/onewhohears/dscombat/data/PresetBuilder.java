@@ -22,6 +22,9 @@ public abstract class PresetBuilder<C extends PresetBuilder<C>> {
 	private final JsonObject data;
 	protected final JsonPresetFactory<? extends JsonPreset> sup;
 	
+	private final String copyId;
+	private final JsonObject copyData;
+	
 	public PresetBuilder(String namespace, String name, JsonPresetFactory<? extends JsonPreset> sup) {
 		this.name = name;
 		key = new ResourceLocation(namespace, name);
@@ -29,16 +32,21 @@ public abstract class PresetBuilder<C extends PresetBuilder<C>> {
 		data.addProperty("presetId", name);
 		data.addProperty("displayName", "preset."+namespace+"."+name);
 		this.sup = sup;
+		copyId = "";
+		copyData = new JsonObject();
 		setupJsonData();
 	}
-	// FIXME 0.3 preset copy json files should only have overridden data and not be cluttered with parent data
+	
 	public PresetBuilder(String namespace, String name, JsonPresetFactory<? extends JsonPreset> sup, JsonObject copy) {
 		this.name = name;
 		key = new ResourceLocation(namespace, name);
-		data = copy;
+		data = new JsonObject();
 		data.addProperty("presetId", name);
 		data.addProperty("displayName", "preset."+namespace+"."+name);
 		this.sup = sup;
+		copyId = copy.get("presetId").getAsString();
+		copyData = copy;
+		data.addProperty("copyId", copyId);
 		setupJsonData();
 	}
 	
@@ -60,6 +68,18 @@ public abstract class PresetBuilder<C extends PresetBuilder<C>> {
 	
 	public JsonObject getData() {
 		return data;
+	}
+	
+	public boolean isCopy() {
+		return !copyId.isEmpty();
+	}
+	
+	public String getCopyId() {
+		return copyId;
+	}
+	
+	public JsonObject getCopyData() {
+		return copyData;
 	}
 	
 	public C setSortFactor(int sort_factor) {

@@ -48,8 +48,13 @@ public class AfterBurnerParticle extends TextureSheetParticle {
 	}
 	
 	@Override
+	public int getLightColor(float pPartialTick) {
+		return 15728880;
+	}
+	
+	@Override
 	public ParticleRenderType getRenderType() {
-		return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+		return ParticleRenderType.PARTICLE_SHEET_LIT;
 	}
 
 }

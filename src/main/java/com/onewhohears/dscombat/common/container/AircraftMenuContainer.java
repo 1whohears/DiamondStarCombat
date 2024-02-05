@@ -43,11 +43,11 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
 					x = uip.getX();
 					y = uip.getY();
 				} else {
-					if (i != 0 && i % 8 == 0) {
+					x += 18;
+					if (i != 0 && i % 9 == 0) {
 						y += 18;
 						x = x_start;
 					}
-					x += 18;
 				}
 				//System.out.println("partsInv i = "+i+" x = "+x+" y = "+y);
 				this.addSlot(new PartItemSlot(this, i, slots.get(i), x, y));

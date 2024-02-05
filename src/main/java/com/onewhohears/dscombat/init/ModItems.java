@@ -369,7 +369,6 @@ public class ModItems {
 	public static final RegistryObject<Item> AGM88G = ITEMS.register("agm88g", 
 			() -> new ItemAmmo(4, "agm88g")); 
 	
-	// FIXME 5 vehicle items not showing in creative search
 	// PLANES
 	public static final RegistryObject<Item> JAVI_PLANE = ITEMS.register("javi_plane", 
 			() -> new ItemAircraft(ModEntities.JAVI_PLANE.get(), 

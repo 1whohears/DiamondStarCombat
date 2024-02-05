@@ -29,7 +29,7 @@ public class ItemAmmo extends Item {
 	
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-		if (group.getId() != ModItems.WEAPONS.getId()) return;
+		if (group.getId() != ModItems.WEAPONS.getId() && group.getId() != CreativeModeTab.TAB_SEARCH.getId()) return;
 		String itemId = ForgeRegistries.ITEMS.getKey(this).toString();
 		for (int i = 0; i < WeaponPresets.get().getPresetNum(); ++i) {
 			WeaponData w = WeaponPresets.get().getAllPresets()[i];

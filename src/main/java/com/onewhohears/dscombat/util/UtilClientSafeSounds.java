@@ -76,15 +76,15 @@ public class UtilClientSafeSounds {
  		// RWR WARNINGS
 		if (vehicle.tickCount%4==0 && vehicle.radarSystem.isTrackedByMissile()) {
 			playCockpitSound(passengerSoundPack.missileAlert, 
-				Config.CLIENT.missileWarningVol.get().floatValue(), 1f);
+				1f, Config.CLIENT.missileWarningVol.get().floatValue());
 		} else if (vehicle.tickCount%8==0 && vehicle.radarSystem.isTrackedByRadar()) {
 			playCockpitSound(passengerSoundPack.rwrWarn, 
-				Config.CLIENT.rwrWarningVol.get().floatValue(), 1f);
+				1f, Config.CLIENT.rwrWarningVol.get().floatValue());
 		}
 		// IR LOCK TONE
 		if (vehicle.tickCount%10==0 && vehicle.shouldPlayIRTone())  {
 			playCockpitSound(passengerSoundPack.irLockTone, 
-	    		Config.CLIENT.irTargetToneVol.get().floatValue(), 1f);
+	    		1f, Config.CLIENT.irTargetToneVol.get().floatValue());
 		}
 		if (vehicle.getAircraftType().isPlane()) {
 			// STALL

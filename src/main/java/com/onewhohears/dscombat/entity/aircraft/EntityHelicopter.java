@@ -8,7 +8,6 @@ import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource.WeaponDam
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -26,16 +25,6 @@ public class EntityHelicopter extends EntityVehicle {
 	@Override
 	public AircraftType getAircraftType() {
 		return AircraftType.HELICOPTER;
-	}
-	
-	@Override
-	public void readAdditionalSaveData(CompoundTag compound) {
-		super.readAdditionalSaveData(compound);
-	}
-
-	@Override
-	protected void addAdditionalSaveData(CompoundTag compound) {
-		super.addAdditionalSaveData(compound);
 	}
 	
 	@Override
@@ -69,11 +58,6 @@ public class EntityHelicopter extends EntityVehicle {
 		}
 		setDeltaMovement(motion);
 		// IDEA 4 helicopter hover auto pilot mode with inputSpecial2
-	}
-	
-	@Override
-	public void controlDirection(Quaternion q) {
-		super.controlDirection(q);
 	}
 	
 	@Override

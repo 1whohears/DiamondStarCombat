@@ -7,7 +7,6 @@ import com.onewhohears.dscombat.data.aircraft.VehicleStats.BoatStats;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
@@ -30,26 +29,6 @@ public class EntityBoat extends EntityVehicle {
 	}
 	
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-	}
-	
-	@Override
-	public void readAdditionalSaveData(CompoundTag compound) {
-		super.readAdditionalSaveData(compound);
-	}
-
-	@Override
-	protected void addAdditionalSaveData(CompoundTag compound) {
-		super.addAdditionalSaveData(compound);
-	}
-	
-	@Override
-	public void controlDirection(Quaternion q) {
-		super.controlDirection(q);
-	}
-	
-	@Override
 	public void directionGround(Quaternion q) {
 		flatten(q, 4f, 4f, true);
 		if (!isOperational()) return;
@@ -57,20 +36,10 @@ public class EntityBoat extends EntityVehicle {
 	}
 	
 	@Override
-	public void directionAir(Quaternion q) {
-		super.directionAir(q);
-	}
-	
-	@Override
 	public void directionWater(Quaternion q) {
 		if (!isOperational()) return;
 		flatten(q, 2f, 2f, true);
 		addMomentY(inputs.yaw * getYawTorque(), true);
-	}
-	
-	@Override
-	public void tick() {
-		super.tick();
 	}
 	
 	@Override
@@ -90,15 +59,14 @@ public class EntityBoat extends EntityVehicle {
 	}
 	
 	@Override
-	public void tickAir(Quaternion q) {
-		super.tickAir(q);
-	}
-	
-	@Override
 	public void tickWater(Quaternion q) {
 		super.tickWater(q);
 		if (!checkInWater()) return;
 		if (canBrake() && isBraking()) addFrictionForce(2000);
+		tickFloat();
+	}
+	
+	protected void tickFloat() {
 		Vec3 weightF = getWeightForce();
 		float F = getBbWidth()*getBbWidth()*DSCPhysicsConstants.FLOAT;
 		float maxF = F*getBbHeight();

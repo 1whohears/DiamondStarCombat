@@ -4,7 +4,6 @@ import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.data.aircraft.VehicleStats;
 import com.onewhohears.dscombat.data.aircraft.VehicleStats.SubStats;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -21,36 +20,6 @@ public class EntitySubmarine extends EntityBoat {
 	}
 	
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-	}
-	
-	@Override
-	public void readAdditionalSaveData(CompoundTag compound) {
-		super.readAdditionalSaveData(compound);
-	}
-
-	@Override
-	protected void addAdditionalSaveData(CompoundTag compound) {
-		super.addAdditionalSaveData(compound);
-	}
-	
-	@Override
-	public void controlDirection(Quaternion q) {
-		super.controlDirection(q);
-	}
-	
-	@Override
-	public void directionGround(Quaternion q) {
-		super.directionGround(q);
-	}
-	
-	@Override
-	public void directionAir(Quaternion q) {
-		super.directionAir(q);
-	}
-	
-	@Override
 	public void directionWater(Quaternion q) {
 		if (!isOperational()) return;
 		if (!isDriverCameraLocked()) flatten(q, getMaxDeltaPitch(), getMaxDeltaRoll(), false);
@@ -62,28 +31,8 @@ public class EntitySubmarine extends EntityBoat {
 	}
 	
 	@Override
-	public void tick() {
-		super.tick();
-	}
-	
-	@Override
-	public void tickMovement(Quaternion q) {
-		super.tickMovement(q);
-	}
-	
-	@Override
-	public void tickGround(Quaternion q) {
-		super.tickGround(q);
-	}
-	
-	@Override
 	public double getDriveAcc() {
 		return 0;
-	}
-	
-	@Override
-	public void tickAir(Quaternion q) {
-		super.tickAir(q);
 	}
 	
 	@Override
@@ -96,30 +45,34 @@ public class EntitySubmarine extends EntityBoat {
 			if (Math.abs(move.y) > max) move.multiply(1, max/move.y, 1);
 		}
 		setDeltaMovement(move);
-		// FIXME 8 subs don't move correctly
+	}
+	
+	@Override
+	protected void tickFloat() {
+		if (inputFloat()) super.tickFloat();
+		else forces = forces.add(getWeightForce().scale(-1));
 	}
 	
 	@Override
 	public double getFloatSpeed() {
 		if (!isOperational()) return super.getFloatSpeed();
-		if (inputs.special2) return 0.04;
+		if (inputFloat()) return 0.04;
 		return 0;
 	}
 	
 	@Override
 	public boolean couldFloat() {
 		if (!isOperational()) return false;
-		return inputs.special2;
-	}
-	
-	@Override
-	public void tickGroundWater(Quaternion q) {
-		super.tickGroundWater(q);
+		return inputFloat();
 	}
 	
 	@Override
 	public float getMaxPushThrust() {
 		return getMaxSpinThrust();
+	}
+	
+	public boolean inputFloat() {
+		return inputs.special2;
 	}
 	
 	@Override

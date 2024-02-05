@@ -35,16 +35,6 @@ public class EntityPlane extends EntityVehicle {
 	}
 	
 	@Override
-	public void controlDirection(Quaternion q) {
-		super.controlDirection(q);
-	}
-	
-	@Override
-	public void directionGround(Quaternion q) {
-		super.directionGround(q);
-	}
-	
-	@Override
 	public void directionAir(Quaternion q) {
 		super.directionAir(q);
 		if (!isOperational()) return;
@@ -65,11 +55,6 @@ public class EntityPlane extends EntityVehicle {
 		super.calcMoveStatsPre(q);
 		calculateAOA(q);
 		calculateLift(q);
-	}
-	
-	@Override
-	public void tickGround(Quaternion q) {
-		super.tickGround(q);
 	}
 	
 	@Override

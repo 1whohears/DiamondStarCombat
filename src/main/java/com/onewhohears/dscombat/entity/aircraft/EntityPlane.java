@@ -104,8 +104,9 @@ public class EntityPlane extends EntityVehicle {
 	protected void calculateAOA(Quaternion q) {
 		Vec3 u = getDeltaMovement();
 		//System.out.println("u = "+u);
-		liftDir = UtilAngles.getYawAxis(q);
-		//System.out.println("liftDir = "+liftDir);
+		Vec3 pitchAxis = UtilAngles.getPitchAxis(q);
+		liftDir = u.cross(pitchAxis).normalize();
+		//debug("liftDir = "+liftDir);
 		airFoilAxes = UtilAngles.getRollAxis(q);
 		//System.out.println("airFoilAxes = "+airFoilAxes);
 		airFoilSpeedSqr = (float)UtilGeometry.vecCompByNormAxis(u, airFoilAxes).lengthSqr();
@@ -113,7 +114,8 @@ public class EntityPlane extends EntityVehicle {
 		if (isOnGround() || UtilGeometry.isZero(u)) {
 			aoa = 0;
 		} else {
-			aoa = (float)UtilGeometry.angleBetweenVecPlaneDegrees(u, liftDir.scale(-1));
+			Vec3 planeNormal = UtilAngles.getYawAxis(q).scale(-1);
+			aoa = (float)UtilGeometry.angleBetweenVecPlaneDegrees(u, planeNormal);
 		}
 		if (isFlapsDown()) aoa += planeStats.flapsAOABias;
 		liftK = (float) getLiftK();

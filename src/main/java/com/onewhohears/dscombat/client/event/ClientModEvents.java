@@ -24,6 +24,7 @@ import com.onewhohears.dscombat.client.model.obj.custom.BombRackModel;
 import com.onewhohears.dscombat.client.model.obj.custom.BroncoPlaneModel;
 import com.onewhohears.dscombat.client.model.obj.custom.CIWSModel;
 import com.onewhohears.dscombat.client.model.obj.custom.CorvetteModel;
+import com.onewhohears.dscombat.client.model.obj.custom.EdenPlaneModel;
 import com.onewhohears.dscombat.client.model.obj.custom.FelixPlaneModel;
 import com.onewhohears.dscombat.client.model.obj.custom.GimbalCameraModel;
 import com.onewhohears.dscombat.client.model.obj.custom.HeavyMissileRackModel;
@@ -143,6 +144,9 @@ public final class ClientModEvents {
 		event.registerEntityRenderer(ModEntities.JASON_PLANE.get(), 
 				(context) -> new RendererObjAircraft<>(context,
                         new JasonPlaneModel()));
+		event.registerEntityRenderer(ModEntities.EDEN_PLANE.get(), 
+				(context) -> new RendererObjAircraft<>(context,
+                        new EdenPlaneModel()));
 		// HELICOPTERS
 		event.registerEntityRenderer(ModEntities.NOAH_CHOPPER.get(), 
 				(context) -> new RendererEntityAircraft<>(context,

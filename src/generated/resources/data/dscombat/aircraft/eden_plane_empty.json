@@ -1,7 +1,7 @@
 {
   "aircraft_type": 0,
-  "displayName": "preset.dscombat.alexis_plane_empty",
-  "health": 140.0,
+  "displayName": "preset.dscombat.eden_plane_empty",
+  "health": 160.0,
   "ingredients": [
     {
       "item": "dscombat:fuselage",
@@ -9,10 +9,14 @@
     },
     {
       "item": "dscombat:wing",
-      "num": 3
+      "num": 4
     },
     {
       "item": "dscombat:advanced_cockpit",
+      "num": 1
+    },
+    {
+      "item": "dscombat:seat",
       "num": 1
     },
     {
@@ -21,17 +25,17 @@
     },
     {
       "item": "minecraft:light_gray_dye",
-      "num": 5
+      "num": 6
     },
     {
       "item": "minecraft:gold_ingot",
-      "num": 20
+      "num": 16
     }
   ],
   "is_craftable": false,
-  "item": "dscombat:alexis_plane",
+  "item": "dscombat:eden_plane",
   "landing_gear": true,
-  "presetId": "alexis_plane_empty",
+  "presetId": "eden_plane_empty",
   "slots": [
     {
       "data": {
@@ -39,80 +43,75 @@
       },
       "name": "pilot_seat",
       "slot_posx": 0.0,
-      "slot_posy": 0.1,
-      "slot_posz": 6.5,
+      "slot_posy": 0.3,
+      "slot_posz": 8.5,
+      "slot_type": "seat",
+      "zRot": 0.0
+    },
+    {
+      "data": {
+        "itemid": "dscombat:seat"
+      },
+      "name": "seat2",
+      "slot_posx": 0.0,
+      "slot_posy": 0.4,
+      "slot_posz": 6.8,
       "slot_type": "seat",
       "zRot": 0.0
     },
     {
       "name": "left_wing_1",
-      "slot_posx": 2.3,
-      "slot_posy": -0.08,
-      "slot_posz": -0.1,
+      "slot_posx": 3.0,
+      "slot_posy": 0.05,
+      "slot_posz": 0.4,
       "slot_type": "wing",
       "zRot": 180.0
     },
     {
       "name": "left_wing_2",
-      "slot_posx": 3.6,
-      "slot_posy": -0.08,
-      "slot_posz": -0.7,
+      "slot_posx": 4.0,
+      "slot_posy": 0.05,
+      "slot_posz": -0.4,
       "slot_type": "wing",
       "zRot": 180.0
     },
     {
       "name": "left_wing_3",
-      "slot_posx": 4.95,
-      "slot_posy": -0.08,
-      "slot_posz": -1.1,
+      "slot_posx": 5.0,
+      "slot_posy": 0.05,
+      "slot_posz": -1.2,
       "slot_type": "wing",
       "zRot": 180.0
     },
     {
-      "name": "left_wing_4",
-      "slot_posx": 6.05,
-      "slot_posy": 0.4,
-      "slot_posz": -1.5,
-      "slot_type": "wing",
-      "zRot": -90.0
-    },
-    {
       "name": "right_wing_1",
-      "slot_posx": -2.3,
-      "slot_posy": -0.08,
-      "slot_posz": -0.1,
+      "slot_posx": -3.0,
+      "slot_posy": 0.05,
+      "slot_posz": 0.4,
       "slot_type": "wing",
       "zRot": 180.0
     },
     {
       "name": "right_wing_2",
-      "slot_posx": -3.6,
-      "slot_posy": -0.08,
-      "slot_posz": -0.7,
+      "slot_posx": -4.0,
+      "slot_posy": 0.05,
+      "slot_posz": -0.4,
       "slot_type": "wing",
       "zRot": 180.0
     },
     {
       "name": "right_wing_3",
-      "slot_posx": -4.95,
-      "slot_posy": -0.08,
-      "slot_posz": -1.1,
+      "slot_posx": -5.0,
+      "slot_posy": 0.05,
+      "slot_posz": -1.2,
       "slot_type": "wing",
       "zRot": 180.0
     },
     {
-      "name": "right_wing_4",
-      "slot_posx": -6.05,
-      "slot_posy": 0.4,
-      "slot_posz": -1.5,
-      "slot_type": "wing",
-      "zRot": 90.0
-    },
-    {
       "name": "frame_1",
       "slot_posx": 0.0,
-      "slot_posy": -0.15,
-      "slot_posz": 8.0,
+      "slot_posy": -0.14,
+      "slot_posz": 9.6,
       "slot_type": "frame",
       "zRot": 180.0
     },
@@ -129,7 +128,7 @@
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": "internal",
+      "slot_type": "push_engine",
       "zRot": 0.0
     },
     {
@@ -145,7 +144,7 @@
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": "advanced_internal",
+      "slot_type": "internal",
       "zRot": 0.0
     },
     {
@@ -163,44 +162,52 @@
       "slot_posz": 0.0,
       "slot_type": "advanced_internal",
       "zRot": 0.0
+    },
+    {
+      "name": "internal_7",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": "advanced_internal",
+      "zRot": 0.0
     }
   ],
-  "sort_factor": 10,
+  "sort_factor": 9,
   "sounds": {
     "nonPassengerEngine": "dscombat:jet_1",
     "passengerEngine": "dscombat:jet_1"
   },
   "stats": {
-    "base_armor": 2.0,
-    "cameraDistance": 17.0,
-    "crashExplosionRadius": 5.0,
-    "cross_sec_area": 4.0,
-    "idleheat": 4.0,
-    "inertiapitch": 8.0,
-    "inertiaroll": 4.0,
-    "inertiayaw": 2.0,
-    "mass": 8500.0,
-    "max_health": 140.0,
-    "max_speed": 1.4,
-    "maxpitch": 2.5,
-    "maxroll": 6.0,
-    "maxyaw": 1.5,
+    "base_armor": 3.0,
+    "cameraDistance": 19.0,
+    "crashExplosionRadius": 5.5,
+    "cross_sec_area": 4.5,
+    "idleheat": 5.0,
+    "inertiapitch": 8.5,
+    "inertiaroll": 4.5,
+    "inertiayaw": 2.5,
+    "mass": 11000.0,
+    "max_health": 160.0,
+    "max_speed": 1.5,
+    "maxpitch": 2.25,
+    "maxroll": 5.5,
+    "maxyaw": 1.25,
     "plane": {
       "canAimDown": false,
-      "flapsAOABias": 8.0,
+      "flapsAOABias": 9.0,
       "liftKGraph": "alexis_plane",
-      "wing_area": 28.0
+      "wing_area": 38.0
     },
-    "stealth": 0.9,
+    "stealth": 0.95,
     "throttledown": 0.08,
     "throttleup": 0.04,
     "torquepitch": 2.0,
     "torqueroll": 1.5,
     "torqueyaw": 4.0,
-    "turn_radius": 10.0
+    "turn_radius": 11.0
   },
   "textures": {
-    "baseTextureVariants": 2,
-    "textureLayers": 2
+    "baseTextureVariants": 3,
+    "textureLayers": 3
   }
 }

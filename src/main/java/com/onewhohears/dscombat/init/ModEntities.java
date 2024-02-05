@@ -22,6 +22,7 @@ import com.onewhohears.dscombat.entity.aircraft.custom.Corvette;
 import com.onewhohears.dscombat.entity.aircraft.custom.Cruiser;
 import com.onewhohears.dscombat.entity.aircraft.custom.Destroyer;
 import com.onewhohears.dscombat.entity.aircraft.custom.E3SentryPlane;
+import com.onewhohears.dscombat.entity.aircraft.custom.EdenPlane;
 import com.onewhohears.dscombat.entity.aircraft.custom.FelixPlane;
 import com.onewhohears.dscombat.entity.aircraft.custom.GronkBattleship;
 import com.onewhohears.dscombat.entity.aircraft.custom.JasonPlane;
@@ -91,6 +92,10 @@ public class ModEntities {
 	
 	public static final RegistryObject<EntityType<EntityPlane>> JASON_PLANE = ENTITIES.register("jason_plane", 
 			() -> createEntityTypeFar((type, level) -> new JasonPlane(type, level), 
+					EntityDimensions.scalable(4.0f, 4.0f)));
+	
+	public static final RegistryObject<EntityType<EntityPlane>> EDEN_PLANE = ENTITIES.register("eden_plane", 
+			() -> createEntityTypeFar((type, level) -> new EdenPlane(type, level), 
 					EntityDimensions.scalable(4.0f, 4.0f)));
 	
 	// HELICOPTORS

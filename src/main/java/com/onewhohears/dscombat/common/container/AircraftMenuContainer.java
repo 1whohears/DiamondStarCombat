@@ -36,18 +36,18 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
 			//System.out.println("acp not null = "+(acp != null));
 			// create plane menu container
 			int x_start = 48, y_start = 15;
-			int x = x_start - 18, y = y_start;
+			int x = x_start, y = y_start;
 			for (int i = 0; i < planeInv.getContainerSize(); ++i) {
 				if (clientData != null) {
 					UIPos uip = clientData.getSlotPos(slots.get(i).getSlotId());
 					x = uip.getX();
 					y = uip.getY();
 				} else {
-					x += 18;
 					if (i != 0 && i % 9 == 0) {
 						y += 18;
 						x = x_start;
 					}
+					if (i != 0) x += 18;
 				}
 				//System.out.println("partsInv i = "+i+" x = "+x+" y = "+y);
 				this.addSlot(new PartItemSlot(this, i, slots.get(i), x, y));

@@ -130,7 +130,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	protected final RotableHitbox[] hitboxes;
 	protected final Set<Integer> hitboxCollidedIds = new HashSet<>();
-	protected EntityScreenData[] screens = new EntityScreenData[0];
+	protected final EntityScreenData[] screens;
 	
 	/**
 	 * this vehicle's original preset. 
@@ -197,7 +197,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		weaponSystem = new WeaponSystem(this);
 		radarSystem = new RadarSystem(this);
 		hitboxes = createRotableHitboxes(ap);
-		addVehicleScreens();
+		screens = createEntityScreens(ap);
 		setId(ENTITY_COUNTER.getAndAdd(hitboxes.length+1)+1);
 	}
 	
@@ -215,6 +215,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	public RotableHitbox[] createRotableHitboxes(AircraftPreset ap) {
 		return ap.getRotableHitboxes(this);
+	}
+	
+	public EntityScreenData[] createEntityScreens(AircraftPreset ap) {
+		return ap.getEntityScreens();
 	}
 	
 	public void addVehicleScreens() {

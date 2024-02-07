@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.data.aircraft.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.LiftKGraph;
 import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager.PassengerSoundPack;
@@ -60,6 +61,11 @@ public class AlexisPresets {
 			.addEmptySlot("internal_4", SlotType.ADVANCED_INTERNAL)
 			.addEmptySlot("internal_5", SlotType.ADVANCED_INTERNAL)
 			.addEmptySlot("internal_6", SlotType.ADVANCED_INTERNAL)
+			.addEntityScreen(EntityScreenIds.AIR_RADAR_SCREEN, 0.225, 0.798, 7.195, 0.15, 0.15)
+			.addEntityScreen(EntityScreenIds.FUEL_SCREEN, -0.265, 0.948, 7.195, 0.07, 0.07)
+			.addEntityScreen(EntityScreenIds.RWR_SCREEN, 0.19, 0.974, 7.195, 0.13, 0.13)
+			.addEntityScreen(EntityScreenIds.GROUND_RADAR_SCREEN, -0.225, 0.798, 7.195, 0.15, 0.15)
+			.addHUDScreen(0, 0.1, 6.5)
 			.build();
 	
 	public static final AircraftPreset UNARMED_ALEXIS_PLANE = AircraftPreset.Builder

@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
 import com.onewhohears.dscombat.crafting.DSCIngredient;
 import com.onewhohears.dscombat.data.JsonPreset;
 import com.onewhohears.dscombat.data.PresetBuilder;
@@ -97,6 +98,17 @@ public class AircraftPreset extends JsonPreset{
 			hitboxes[i] = RotableHitbox.getFromJson(json, parent);
 		}
 		return hitboxes;
+	}
+	
+	public EntityScreenData[] getEntityScreens() {
+		if (!getJsonData().has("screens")) return new EntityScreenData[0];
+		JsonArray s = getJsonData().get("screens").getAsJsonArray();
+		EntityScreenData[] screens = new EntityScreenData[s.size()];
+		for (int i = 0; i < screens.length; ++i) {
+			JsonObject json = s.get(i).getAsJsonObject();
+			screens[i] = EntityScreenData.getScreenFromJson(json);
+		}
+		return screens;
 	}
 	
 	@Override
@@ -460,6 +472,49 @@ public class AircraftPreset extends JsonPreset{
 			UtilParse.writeVec3(hitbox, "rel_pos", new Vec3(posX, posY, posZ));
 			getHitboxes().add(hitbox);
 			return this;
+		}
+		
+		protected JsonArray getScreens() {
+			if (!getData().has("screens")) {
+				getData().add("screens", new JsonArray());
+			}
+			return getData().get("screens").getAsJsonArray();
+		}
+		/**
+		 * all vehicles
+		 */
+		public Builder addEntityScreen(int id, double posX, double posY, double posZ,
+				double width, double height, double rotX, double rotY, double rotZ) {
+			JsonObject screen = new JsonObject();
+			screen.addProperty("id", id);
+			UtilParse.writeVec3(screen, "pos", new Vec3(posX, posY, posZ));
+			screen.addProperty("width", width);
+			screen.addProperty("height", height);
+			UtilParse.writeVec3(screen, "rot", new Vec3(rotX, rotY, rotZ));
+			getScreens().add(screen);
+			return this;
+		}
+		/**
+		 * all vehicles
+		 */
+		public Builder addEntityScreen(int id, double posX, double posY, double posZ, 
+				double width, double height) {
+			return addEntityScreen(id, posX, posY, posZ, width, height, 0, 0, 0);
+		}
+		/**
+		 * all vehicles
+		 */
+		public Builder addEntityScreen(int id, double posX, double posY, double posZ, 
+				double width, double height, double rotX) {
+			return addEntityScreen(id, posX, posY, posZ, width, height, rotX, 0, 0);
+		}
+		/**
+		 * all vehicles
+		 */
+		public Builder addHUDScreen(double seatX, double seatY, double seatZ) {
+			return addEntityScreen(EntityScreenIds.HUD_SCREEN, 
+					seatX, seatY + 1.27, seatZ + 0.13, 
+					0.1, 0.1, 0, 0, 0);
 		}
 		
 		public JsonObject getStats() {

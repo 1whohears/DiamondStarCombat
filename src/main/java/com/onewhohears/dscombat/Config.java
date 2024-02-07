@@ -20,9 +20,8 @@ public class Config {
 		public final ForgeConfigSpec.BooleanValue cameraTurnRelativeToVehicle;
 		public final ForgeConfigSpec.BooleanValue customDismount;
 		public final ForgeConfigSpec.BooleanValue debugMode;
-		public final ForgeConfigSpec.DoubleValue rwrWarningVol;
-		public final ForgeConfigSpec.DoubleValue missileWarningVol;
-		public final ForgeConfigSpec.DoubleValue irTargetToneVol;
+		public final ForgeConfigSpec.DoubleValue rwrWarningVol, missileWarningVol, irTargetToneVol;
+		public final ForgeConfigSpec.DoubleValue cockpitVoiceLineVol;
 		
 		public Client(ForgeConfigSpec.Builder builder) {
 			mouseModeMaxRadius = builder
@@ -52,13 +51,16 @@ public class Config {
 					.define("debugMode", false);
 			rwrWarningVol = builder
 					.comment("RWR Warning Sound Volume")
-					.defineInRange("rwrWarningVol", 1, 0, 10d);
+					.defineInRange("rwrWarningVol", 1, 0, 1d);
 			missileWarningVol = builder
 					.comment("Missile Warning Sound Volume")
-					.defineInRange("missileWarningVol", 1, 0, 10d);
+					.defineInRange("missileWarningVol", 1, 0, 1d);
 			irTargetToneVol = builder
 					.comment("IR Target Found Sound Volume")
-					.defineInRange("irTargetToneVol", 0.5d, 0, 10d);
+					.defineInRange("irTargetToneVol", 0.5d, 0, 1d);
+			cockpitVoiceLineVol = builder
+					.comment("Cockpit Voicelines Volume")
+					.defineInRange("cockpitVoiceLineVol", 1d, 0, 1d);
 		}
 		
 	}

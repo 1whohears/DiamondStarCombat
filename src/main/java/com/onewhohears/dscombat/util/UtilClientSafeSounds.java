@@ -89,28 +89,34 @@ public class UtilClientSafeSounds {
 		if (vehicle.getAircraftType().isPlane()) {
 			// STALL
 			if (vehicle.isStalling()) { if (vehicle.getStallTicks() % 24 == 1) {
-				playCockpitSound(passengerSoundPack.stallAlert, 1f, 1f);
+				playCockpitSound(passengerSoundPack.stallAlert, 1f, 
+					Config.CLIENT.cockpitVoiceLineVol.get().floatValue());
 			} }
 			else if (vehicle.isAboutToStall()) { if (vehicle.getAboutToStallTicks() % 40 == 1) {
-				playCockpitSound(passengerSoundPack.stallWarn, 1f, 1f);
+				playCockpitSound(passengerSoundPack.stallWarn, 1f, 
+					Config.CLIENT.cockpitVoiceLineVol.get().floatValue());
 			} }
 			// PULL UP
 			if (vehicle.getDeltaMovement().y <= -DSCPhysicsConstants.COLLIDE_SPEED 
 					&& vehicle.tickCount % 13 == 0
 					&& UtilEntity.getDistFromGround(vehicle) / -vehicle.getDeltaMovement().y <= 80) {
-				playCockpitSound(passengerSoundPack.pullUp, 1f, 1f);
+				playCockpitSound(passengerSoundPack.pullUp, 1f, 
+					Config.CLIENT.cockpitVoiceLineVol.get().floatValue());
 			}
 		}
 		if (vehicle.getAircraftType().isAircraft) {
 			// ENGINE FIRE
 			if (vehicle.getEngineFireTicks() % 70 == 1) 
-				playCockpitSound(passengerSoundPack.engineFire, 1f, 1f);
+				playCockpitSound(passengerSoundPack.engineFire, 1f, 
+					Config.CLIENT.cockpitVoiceLineVol.get().floatValue());
 			// FUEL LEAK
 			if (vehicle.getBingoTicks() % 150 <= 60 && vehicle.getFuelLeakTicks() % 30 == 1) 
-				playCockpitSound(passengerSoundPack.fuelLeak, 1f, 1f);
+				playCockpitSound(passengerSoundPack.fuelLeak, 1f, 
+					Config.CLIENT.cockpitVoiceLineVol.get().floatValue());
 			// BINGO FUEL
 			if (vehicle.getBingoTicks() % 160 <= 60 && vehicle.getBingoTicks() % 20 == 1) 
-				playCockpitSound(passengerSoundPack.bingoFuel, 1f, 1f);
+				playCockpitSound(passengerSoundPack.bingoFuel, 1f, 
+					Config.CLIENT.cockpitVoiceLineVol.get().floatValue());
 		}
 	}
 	

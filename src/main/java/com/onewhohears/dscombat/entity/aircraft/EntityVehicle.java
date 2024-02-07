@@ -128,6 +128,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public final WeaponSystem weaponSystem;
 	public final RadarSystem radarSystem;
 	
+	protected final RotableHitbox[] hitboxes;
+	protected final Set<Integer> hitboxCollidedIds = new HashSet<>();
+	protected EntityScreenData[] screens = new EntityScreenData[0];
+	
 	/**
 	 * this vehicle's original preset. 
 	 * will be {@link defaultPreset} if it's not defined in its NBT.
@@ -165,10 +169,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	protected boolean isLandingGear, isDriverCameraLocked = false;
 	protected float throttle;
 	
-	protected Set<Integer> hitboxCollidedIds = new HashSet<>();
-	protected RotableHitbox[] hitboxes = new RotableHitbox[0];
-	protected EntityScreenData[] screens = new EntityScreenData[0];
-	
 	@Nullable protected EntityGimbal pilotGimbal;
 	
 	// TODO 5.1 aircraft starts getting damaged if altitude is too high
@@ -196,8 +196,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		partsManager = new PartsManager(this);
 		weaponSystem = new WeaponSystem(this);
 		radarSystem = new RadarSystem(this);
+		hitboxes = createRotableHitboxes(ap);
 		addVehicleScreens();
-		addHitboxes();
 		setId(ENTITY_COUNTER.getAndAdd(hitboxes.length+1)+1);
 	}
 	
@@ -213,7 +213,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		for (int i = 0; i < hitboxes.length; i++) hitboxes[i].setId(id+i+1);
 	}
 	
-	public void addHitboxes() {
+	public RotableHitbox[] createRotableHitboxes(AircraftPreset ap) {
+		return ap.getRotableHitboxes(this);
 	}
 	
 	public void addVehicleScreens() {

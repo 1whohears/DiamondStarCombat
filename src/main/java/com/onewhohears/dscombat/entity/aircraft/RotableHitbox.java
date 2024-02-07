@@ -2,8 +2,10 @@ package com.onewhohears.dscombat.entity.aircraft;
 
 import java.util.List;
 
+import com.google.gson.JsonObject;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
+import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.math.RotableAABB;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
@@ -20,12 +22,19 @@ import net.minecraftforge.entity.PartEntity;
 
 public class RotableHitbox extends PartEntity<EntityVehicle> {
 	
+	public static RotableHitbox getFromJson(JsonObject json, EntityVehicle parent) {
+		String name = json.get("name").getAsString();
+		Vec3 size = UtilParse.readVec3(json, "size");
+		Vec3 rel_pos = UtilParse.readVec3(json, "rel_pos");
+		return new RotableHitbox(parent, name, size, rel_pos);
+	}
+	
 	private final String name;
 	private final RotableAABB hitbox;
 	private final EntityDimensions size;
 	private final Vec3 rel_pos;
 	
-	public RotableHitbox(EntityVehicle parent, String name, Vector3f size, Vec3 rel_pos) {
+	public RotableHitbox(EntityVehicle parent, String name, Vec3 size, Vec3 rel_pos) {
 		super(parent);
 		this.name = name;
 		this.hitbox = new RotableAABB(size.x(), size.y(), size.z());

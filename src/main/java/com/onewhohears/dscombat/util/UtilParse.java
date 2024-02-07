@@ -245,4 +245,22 @@ public class UtilParse {
 		return Integer.toHexString(0xFF000000 | color.getRGB()).substring(2);
 	}
 	
+	public static Vec3 readVec3(JsonObject json, String name) {
+		if (!json.has(name)) return Vec3.ZERO;
+		JsonObject vec = json.get(name).getAsJsonObject();
+		double x = 0, y = 0, z = 0;
+		if (vec.has("x")) x = vec.get("x").getAsDouble();
+		if (vec.has("y")) y = vec.get("y").getAsDouble();
+		if (vec.has("z")) z = vec.get("z").getAsDouble();
+		return new Vec3(x, y, z);
+	}
+	
+	public static void writeVec3(JsonObject json, String name, Vec3 vec) {
+		JsonObject v = new JsonObject();
+		v.addProperty("x", vec.x);
+		v.addProperty("y", vec.y);
+		v.addProperty("z", vec.z);
+		json.add(name, v);
+	}
+	
 }

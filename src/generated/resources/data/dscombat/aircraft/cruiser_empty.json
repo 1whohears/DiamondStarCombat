@@ -2,6 +2,34 @@
   "aircraft_type": 3,
   "displayName": "preset.dscombat.cruiser_empty",
   "health": 500.0,
+  "hitboxes": [
+    {
+      "name": "plat0",
+      "rel_pos": {
+        "x": 0.0,
+        "y": 2.0,
+        "z": -2.0
+      },
+      "size": {
+        "x": 12.0,
+        "y": 4.02,
+        "z": 35.599998474121094
+      }
+    },
+    {
+      "name": "plat1",
+      "rel_pos": {
+        "x": 0.0,
+        "y": 4.5,
+        "z": 0.8
+      },
+      "size": {
+        "x": 7.0,
+        "y": 1.02,
+        "z": 21.0
+      }
+    }
+  ],
   "ingredients": [
     {
       "item": "dscombat:large_fuselage",

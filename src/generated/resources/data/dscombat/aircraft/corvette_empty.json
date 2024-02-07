@@ -2,6 +2,21 @@
   "aircraft_type": 3,
   "displayName": "preset.dscombat.corvette_empty",
   "health": 250.0,
+  "hitboxes": [
+    {
+      "name": "plat0",
+      "rel_pos": {
+        "x": 0.0,
+        "y": 1.5,
+        "z": -2.0
+      },
+      "size": {
+        "x": 7.0,
+        "y": 3.02,
+        "z": 16.0
+      }
+    }
+  ],
   "ingredients": [
     {
       "item": "dscombat:large_fuselage",

@@ -124,6 +124,11 @@ public class BoatPresets {
 			.addEmptySlot("internal_8", SlotType.ADVANCED_INTERNAL)
 			.addEmptySlot("internal_9", SlotType.INTERNAL)
 			.addEmptySlot("internal_10", SlotType.INTERNAL)
+			.addRotableHitbox("plat0", 14, 4.02, 34, 0, 2, -0.5)
+			.addRotableHitbox("plat1", 9, 1.02, 30, 0, 4.5, -0.5)
+			.addRotableHitbox("plat2", 6, 1.02, 18, 0, 5.5, -0.5)
+			.addRotableHitbox("front", 8, 2.02, 8, 0, 3, 20.5)
+			.addRotableHitbox("back", 8, 2.02, 8, 0, 3, -21.5)
 			.build();
 	
 	public static final AircraftPreset UNARMED_GRONK_BATTLESHIP = AircraftPreset.Builder
@@ -207,6 +212,7 @@ public class BoatPresets {
 			.addEmptySlot("internal_8", SlotType.ADVANCED_INTERNAL)
 			.addEmptySlot("internal_9", SlotType.INTERNAL)
 			.addEmptySlot("internal_10", SlotType.INTERNAL)
+			.addRotableHitbox("plat0", 10, 4.02, 27.6, 0, 2, 0)
 			.build();
 	
 	public static final AircraftPreset UNARMED_DESTROYER = AircraftPreset.Builder
@@ -289,6 +295,8 @@ public class BoatPresets {
 			.addEmptySlot("internal_8", SlotType.ADVANCED_INTERNAL)
 			.addEmptySlot("internal_9", SlotType.ADVANCED_INTERNAL)
 			.addEmptySlot("internal_10", SlotType.ADVANCED_INTERNAL)
+			.addRotableHitbox("plat0", 12, 4.02, 35.6f, 0, 2, -2)
+			.addRotableHitbox("plat1", 7, 1.02, 21, 0, 4.5, 0.8)
 			.build();
 	
 	public static final AircraftPreset UNARMED_CRUISER = AircraftPreset.Builder
@@ -366,6 +374,7 @@ public class BoatPresets {
 			.addEmptySlot("internal_7", SlotType.ADVANCED_INTERNAL)
 			.addEmptySlot("internal_8", SlotType.ADVANCED_INTERNAL)
 			.addEmptySlot("internal_9", SlotType.ADVANCED_INTERNAL)
+			.addRotableHitbox("plat0", 7, 3.02, 16, 0, 1.5, -2)
 			.build();
 	
 	public static final AircraftPreset UNARMED_CORVETTE = AircraftPreset.Builder
@@ -441,6 +450,8 @@ public class BoatPresets {
 			.addEmptySlot("internal_8", SlotType.ADVANCED_INTERNAL)
 			.addEmptySlot("internal_9", SlotType.ADVANCED_INTERNAL)
 			.addEmptySlot("internal_10", SlotType.ADVANCED_INTERNAL)
+			.addRotableHitbox("runway", 16, 6.06, 50, 0, 3, 0)
+			.addRotableHitbox("side_plat", 25, 3.06, 24, 0, 4.5, 0)
 			.build();
 	
 	public static final AircraftPreset UNARMED_AIRCRAFT_CARRIER = AircraftPreset.Builder

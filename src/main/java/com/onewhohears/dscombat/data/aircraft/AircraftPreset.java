@@ -13,7 +13,9 @@ import com.onewhohears.dscombat.data.PresetBuilder;
 import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
+import com.onewhohears.dscombat.entity.aircraft.RotableHitbox;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.util.UtilGsonMerge;
 import com.onewhohears.dscombat.util.UtilGsonMerge.ConflictStrategy;
@@ -24,6 +26,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -83,6 +86,17 @@ public class AircraftPreset extends JsonPreset{
 	
 	public int getDefaultPaintJob() {
 		return getJsonData().get("paintjob_color").getAsInt();
+	}
+	
+	public RotableHitbox[] getRotableHitboxes(EntityVehicle parent) {
+		if (!getJsonData().has("hitboxes")) return new RotableHitbox[0];
+		JsonArray hba = getJsonData().get("hitboxes").getAsJsonArray();
+		RotableHitbox[] hitboxes = new RotableHitbox[hba.size()];
+		for (int i = 0; i < hitboxes.length; ++i) {
+			JsonObject json = hba.get(i).getAsJsonObject();
+			hitboxes[i] = RotableHitbox.getFromJson(json, parent);
+		}
+		return hitboxes;
 	}
 	
 	@Override
@@ -427,6 +441,25 @@ public class AircraftPreset extends JsonPreset{
 		 */
 		public Builder setItem(ResourceLocation item) {
 			return setString("item", item.toString());
+		}
+		
+		protected JsonArray getHitboxes() {
+			if (!getData().has("hitboxes")) {
+				getData().add("hitboxes", new JsonArray());
+			}
+			return getData().get("hitboxes").getAsJsonArray();
+		}
+		/**
+		 * all vehicles
+		 */
+		public Builder addRotableHitbox(String name, double sizeX, double sizeY, double sizeZ, 
+				double posX, double posY, double posZ) {
+			JsonObject hitbox = new JsonObject();
+			hitbox.addProperty("name", name);
+			UtilParse.writeVec3(hitbox, "size", new Vec3(sizeX, sizeY, sizeZ));
+			UtilParse.writeVec3(hitbox, "rel_pos", new Vec3(posX, posY, posZ));
+			getHitboxes().add(hitbox);
+			return this;
 		}
 		
 		public JsonObject getStats() {

@@ -159,7 +159,8 @@
   "sort_factor": 5,
   "sounds": {
     "nonPassengerEngine": "dscombat:biplane_1",
-    "passengerEngine": "dscombat:biplane_1"
+    "passengerEngine": "dscombat:biplane_1",
+    "passengerSoundPack": "eng_non_binary_jet_1"
   },
   "stats": {
     "base_armor": 1.0,

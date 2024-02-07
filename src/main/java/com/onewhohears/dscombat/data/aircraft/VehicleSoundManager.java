@@ -21,7 +21,7 @@ public class VehicleSoundManager {
 	
 	private SoundEvent nonPassengerEngine = ModSounds.BIPLANE_1.get(), passengerEngine = ModSounds.BIPLANE_1.get();
 	
-	private PassengerSoundPack passengerSoundPack = PassengerSoundPack.ENG_MALE_FIGHT_JET_1;
+	private PassengerSoundPack passengerSoundPack = PassengerSoundPack.NONE;
 	
 	public VehicleSoundManager(EntityVehicle parent) {
 		this.parent = parent;
@@ -122,7 +122,12 @@ public class VehicleSoundManager {
 				ModSounds.MISSILE_WARNING.get(), ModSounds.GETTING_LOCKED.get(), 
 				ModSounds.FOX2_TONE_1.get(), ModSounds.LOCK_GM1.get(),
 				ModSounds.ENGINE_FIRE_GM1.get(), ModSounds.FUEL_LEAK_GM1.get(), ModSounds.BINGO_GM1.get(), 
-				ModSounds.STALL_ALERT_GM1.get(), ModSounds.STALL_WARNING_GM1.get(), ModSounds.PULL_UP_GM1.get());
+				ModSounds.STALL_ALERT_GM1.get(), ModSounds.STALL_WARNING_GM1.get(), ModSounds.PULL_UP_GM1.get()),
+		ENG_NON_BINARY_GOOBER("eng_non_binary_jet_1", 
+				ModSounds.MISSILE_WARNING.get(), ModSounds.GETTING_LOCKED.get(), 
+				ModSounds.FOX2_TONE_1.get(), ModSounds.LOCK_NBG.get(),
+				ModSounds.ENGINE_FIRE_NBG.get(), ModSounds.FUEL_LEAK_NBG.get(), ModSounds.BINGO_NBG.get(), 
+				ModSounds.STALL_ALERT_NBG.get(), ModSounds.STALL_WARNING_NBG.get(), ModSounds.PULL_UP_NBG.get());
 		public final String id;
 		public final SoundEvent missileAlert, rwrWarn, irLockTone, radarLock;
 		public final SoundEvent engineFire, fuelLeak, bingoFuel;

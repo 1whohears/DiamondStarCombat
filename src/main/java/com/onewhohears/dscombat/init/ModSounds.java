@@ -38,6 +38,15 @@ public class ModSounds {
 	public static final RegistryObject<SoundEvent> LOCK_GM1 = registerSoundEvent("lock_gm1");
 	public static final RegistryObject<SoundEvent> FLARE_GM1 = registerSoundEvent("flare_gm1");
 	public static final RegistryObject<SoundEvent> ALTITUDE_GM1 = registerSoundEvent("altitude_gm1");
+	public static final RegistryObject<SoundEvent> STALL_ALERT_NBG = registerSoundEvent("stall_alert_nbg");
+	public static final RegistryObject<SoundEvent> STALL_WARNING_NBG = registerSoundEvent("stall_warning_nbg");
+	public static final RegistryObject<SoundEvent> ENGINE_FIRE_NBG = registerSoundEvent("engine_fire_nbg");
+	public static final RegistryObject<SoundEvent> FUEL_LEAK_NBG = registerSoundEvent("fuel_leak_nbg");
+	public static final RegistryObject<SoundEvent> BINGO_NBG = registerSoundEvent("bingo_nbg");
+	public static final RegistryObject<SoundEvent> PULL_UP_NBG = registerSoundEvent("pull_up_nbg");
+	public static final RegistryObject<SoundEvent> LOCK_NBG = registerSoundEvent("lock_nbg");
+	public static final RegistryObject<SoundEvent> FLARE_NBG = registerSoundEvent("flare_nbg");
+	public static final RegistryObject<SoundEvent> ALTITUDE_NBG = registerSoundEvent("altitude_nbg");
 	// TODO 8.9 brrrr sound for javi plane
 	
 	public static void register(IEventBus eventBus) {

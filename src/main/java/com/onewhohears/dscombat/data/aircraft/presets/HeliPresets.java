@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.data.aircraft.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
+import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
@@ -33,6 +34,7 @@ public class HeliPresets {
 			.setHeliAlwaysLandingGear(true)
 			.setHeliLiftFactor(10)
 			.setLayerTextureNum(1)
+			.setDefultPassengerSoundPack(PassengerSoundPack.ENG_NON_BINARY_GOOBER)
 			.addPilotSeatSlot(0.4, -0.65, 1.5)
 			.addSeatSlot("seat2", SlotType.MED_TURRET, -0.4, -0.65, 1.5)
 			.addSeatSlot("seat3", SlotType.MED_TURRET, 0.4, -0.65, 0.3)

@@ -112,8 +112,6 @@ public class UtilClientSafeSounds {
 			if (vehicle.getBingoTicks() % 160 <= 60 && vehicle.getBingoTicks() % 20 == 1) 
 				playCockpitSound(passengerSoundPack.bingoFuel, 1f, 1f);
 		}
-		// TODO 8.1 data link notification lines
-		// TODO 8.2 different bitchin betty voice actors
 	}
 	
 	public static void playCockpitSound(SoundEvent sound, float pitch, float volume) {

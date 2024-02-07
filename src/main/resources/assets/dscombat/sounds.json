@@ -148,5 +148,59 @@
 		"sounds": [
 			"dscombat:cockpit/warnings/generic_male_1/altitude"
 		]
+	},
+	"stall_warning_nbg": {
+		"subtitle": "sounds.dscombat.stall_warn",
+		"sounds": [
+			"dscombat:cockpit/warnings/non_binary_goober/stall_warn"
+		]
+	},
+	"stall_alert_nbg": {
+		"subtitle": "sounds.dscombat.stall_alert",
+		"sounds": [
+			"dscombat:cockpit/warnings/non_binary_goober/stall_alert"
+		]
+	},
+	"engine_fire_nbg": {
+		"subtitle": "sounds.dscombat.engine_fire",
+		"sounds": [
+			"dscombat:cockpit/warnings/non_binary_goober/engine_fire"
+		]
+	},
+	"fuel_leak_nbg": {
+		"subtitle": "sounds.dscombat.fuel_leak",
+		"sounds": [
+			"dscombat:cockpit/warnings/non_binary_goober/fuel_leak"
+		]
+	},
+	"bingo_nbg": {
+		"subtitle": "sounds.dscombat.bingo",
+		"sounds": [
+			"dscombat:cockpit/warnings/non_binary_goober/bingo"
+		]
+	},
+	"pull_up_nbg": {
+		"subtitle": "sounds.dscombat.pull_up",
+		"sounds": [
+			"dscombat:cockpit/warnings/non_binary_goober/pull_up"
+		]
+	},
+	"lock_nbg": {
+		"subtitle": "sounds.dscombat.lock",
+		"sounds": [
+			"dscombat:cockpit/warnings/non_binary_goober/lock"
+		]
+	},
+	"flare_nbg": {
+		"subtitle": "sounds.dscombat.flare",
+		"sounds": [
+			"dscombat:cockpit/warnings/non_binary_goober/flare"
+		]
+	},
+	"altitude_nbg": {
+		"subtitle": "sounds.dscombat.altitude",
+		"sounds": [
+			"dscombat:cockpit/warnings/non_binary_goober/altitude"
+		]
 	}
 }

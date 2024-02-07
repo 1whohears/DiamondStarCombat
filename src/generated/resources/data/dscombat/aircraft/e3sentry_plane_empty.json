@@ -277,7 +277,8 @@
   "sort_factor": 15,
   "sounds": {
     "nonPassengerEngine": "dscombat:jet_1",
-    "passengerEngine": "dscombat:jet_1"
+    "passengerEngine": "dscombat:jet_1",
+    "passengerSoundPack": "eng_non_binary_jet_1"
   },
   "stats": {
     "base_armor": 4.0,

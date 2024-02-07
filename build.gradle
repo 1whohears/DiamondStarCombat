@@ -65,6 +65,23 @@ minecraft {
                 }
             }
         }
+        
+        client3 {
+        	parent runs.client
+        	taskName 'runClient3'
+        	workingDirectory project.file('run')
+        	property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            property 'forge.enabledGameTestNamespaces', 'dscombat'
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+            arg '--username=LunaticDonkey'
+            mods {
+                dscombat {
+                    source sourceSets.main
+                }
+            }
+        }
 
         server {
             workingDirectory project.file('run')

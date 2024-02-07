@@ -145,10 +145,14 @@ public final class ClientInputEvents {
 		if (!DSCClientInputs.isCameraLockedForward()) DSCClientInputs.centerMousePos();
 	}
 	
+	private static int leftTicks = 0;
+	
 	@SubscribeEvent(priority = EventPriority.HIGH)
 	public static void clientTickPassengerControl(TickEvent.ClientTickEvent event) {
 		if (event.phase != Phase.END) return;
 		Minecraft m = Minecraft.getInstance();
+		if (m.mouseHandler.isLeftPressed()) ++leftTicks;
+		else leftTicks = 0;
 		final var player = m.player;
 		if (player == null || !player.isPassenger()) return;
 		if (!(player.getRootVehicle() instanceof EntityVehicle plane)) return;
@@ -169,7 +173,7 @@ public final class ClientInputEvents {
 		}
 		// SELECT RADAR PING
 		RadarSystem radar = plane.radarSystem;
-		if (DSCClientInputs.isRadarHovering() && m.mouseHandler.isLeftPressed()) {
+		if (DSCClientInputs.isRadarHovering() && leftTicks == 1) {
 			List<RadarPing> pings = radar.getClientRadarPings();
 			if (DSCClientInputs.getRadarHoverIndex() < pings.size()) 
 				radar.clientSelectTarget(pings.get(DSCClientInputs.getRadarHoverIndex()));

@@ -299,7 +299,6 @@ public class RadarData extends JsonPreset {
 		return range;
 	}
 
-
 	public double getFov() {
 		return fov;
 	}

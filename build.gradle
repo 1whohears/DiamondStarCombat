@@ -35,12 +35,30 @@ minecraft {
     
     runs {
         client {
+        	taskName 'runClient'
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             property 'forge.enabledGameTestNamespaces', 'dscombat'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+            mods {
+                dscombat {
+                    source sourceSets.main
+                }
+            }
+        }
+        
+        client2 {
+        	parent runs.client
+        	taskName 'runClient2'
+        	workingDirectory project.file('run')
+        	property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            property 'forge.enabledGameTestNamespaces', 'dscombat'
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+            arg '--username=StupidIdiot'
             mods {
                 dscombat {
                     source sourceSets.main

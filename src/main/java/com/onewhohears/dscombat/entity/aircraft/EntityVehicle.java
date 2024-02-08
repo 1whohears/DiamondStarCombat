@@ -2401,15 +2401,12 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     	return wheelRot;
     }
     
-    private static final Vec3[] NONE = new Vec3[] {};
-    
     /**
      * override this in a custom vehicle entity.
      * @return relative positions where smoke should appear
      */
-    @Nullable
     public Vec3[] getAfterBurnerSmokePos() {
-    	return NONE;
+    	return vehicleStats.afterBurnerSmokePos;
     }
     
     public boolean liftLost() {

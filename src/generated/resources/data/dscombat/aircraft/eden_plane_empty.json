@@ -1,4 +1,20 @@
 {
+  "after_burner_smoke": [
+    {
+      "pos": {
+        "x": -1.0,
+        "y": 0.1,
+        "z": -5.0
+      }
+    },
+    {
+      "pos": {
+        "x": 1.0,
+        "y": 0.1,
+        "z": -5.0
+      }
+    }
+  ],
   "aircraft_type": 0,
   "displayName": "preset.dscombat.eden_plane_empty",
   "health": 160.0,

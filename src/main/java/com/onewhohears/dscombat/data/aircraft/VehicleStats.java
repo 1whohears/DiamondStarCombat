@@ -1,6 +1,11 @@
 package com.onewhohears.dscombat.data.aircraft;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.onewhohears.dscombat.util.UtilParse;
+
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.phys.Vec3;
 
 public abstract class VehicleStats {
 	
@@ -20,6 +25,7 @@ public abstract class VehicleStats {
 	public float crashExplosionRadius;
 	public double cameraDistance = 4;
 	public int baseTextureVariants = 1, textureLayers = 0;
+	public Vec3[] afterBurnerSmokePos = new Vec3[0];
 	
 	protected VehicleStats() {
 	}
@@ -52,6 +58,14 @@ public abstract class VehicleStats {
 			CompoundTag textures = acp.getDataAsNBT().getCompound("textures");
 			if (textures.contains("baseTextureVariants")) baseTextureVariants = textures.getInt("baseTextureVariants");
 			if (textures.contains("textureLayers")) textureLayers = textures.getInt("textureLayers");
+		}
+		if (acp.getJsonData().has("after_burner_smoke")) {
+			JsonArray ja = acp.getJsonData().get("after_burner_smoke").getAsJsonArray();
+			afterBurnerSmokePos = new Vec3[ja.size()];
+			for (int i = 0; i < afterBurnerSmokePos.length; ++i) {
+				JsonObject jo = ja.get(i).getAsJsonObject();
+				afterBurnerSmokePos[i] = UtilParse.readVec3(jo, "pos");
+			}
 		}
 	}
 	

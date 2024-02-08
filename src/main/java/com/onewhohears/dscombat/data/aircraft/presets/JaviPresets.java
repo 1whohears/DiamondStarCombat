@@ -66,6 +66,8 @@ public class JaviPresets {
 			.addEntityScreen(EntityScreenIds.RWR_SCREEN, 0.145, 1.325, 7.2, 0.1, 0.1, 10)
 			.addEntityScreen(EntityScreenIds.GROUND_RADAR_SCREEN,-0.349,1.259,7.19,0.173,0.173,10)
 			.addHUDScreen(0, 0.5, 6.34375)
+			.addAfterBurnerSmokePos(1.85,1.4,-4.4)
+			.addAfterBurnerSmokePos(-1.85,1.4,-4.4)
 			.build();
 	
 	public static final AircraftPreset UNARMED_JAVI_PLANE = AircraftPreset.Builder

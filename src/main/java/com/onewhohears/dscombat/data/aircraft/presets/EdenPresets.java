@@ -61,6 +61,8 @@ public class EdenPresets {
 			.addEmptySlot("internal_5", SlotType.ADVANCED_INTERNAL)
 			.addEmptySlot("internal_6", SlotType.ADVANCED_INTERNAL)
 			.addEmptySlot("internal_7", SlotType.ADVANCED_INTERNAL)
+			.addAfterBurnerSmokePos(-1,0.1,-5)
+			.addAfterBurnerSmokePos(1,0.1,-5)
 			.build();
 	
 	public static final AircraftPreset UNARMED_EDEN_PLANE = AircraftPreset.Builder

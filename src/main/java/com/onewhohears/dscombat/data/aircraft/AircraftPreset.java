@@ -517,6 +517,22 @@ public class AircraftPreset extends JsonPreset{
 					0.1, 0.1, 0, 0, 0);
 		}
 		
+		protected JsonArray getAfterBurnerSmokes() {
+			if (!getData().has("after_burner_smoke")) {
+				getData().add("after_burner_smoke", new JsonArray());
+			}
+			return getData().get("after_burner_smoke").getAsJsonArray();
+		}
+		/**
+		 * all vehicles
+		 */
+		public Builder addAfterBurnerSmokePos(double posX, double posY, double posZ) {
+			JsonObject smoke = new JsonObject();
+			UtilParse.writeVec3(smoke, "pos", new Vec3(posX, posY, posZ));
+			getAfterBurnerSmokes().add(smoke);
+			return this;
+		}
+		
 		public JsonObject getStats() {
 			if (!getData().has("stats")) 
 				getData().add("stats", new JsonObject());

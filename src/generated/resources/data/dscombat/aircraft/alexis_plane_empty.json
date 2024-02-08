@@ -1,4 +1,13 @@
 {
+  "after_burner_smoke": [
+    {
+      "pos": {
+        "x": 0.0,
+        "y": 0.3,
+        "z": -6.5
+      }
+    }
+  ],
   "aircraft_type": 0,
   "displayName": "preset.dscombat.alexis_plane_empty",
   "health": 140.0,

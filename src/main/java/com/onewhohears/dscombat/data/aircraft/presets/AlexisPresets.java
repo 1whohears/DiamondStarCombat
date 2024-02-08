@@ -66,6 +66,7 @@ public class AlexisPresets {
 			.addEntityScreen(EntityScreenIds.RWR_SCREEN, 0.19, 0.974, 7.195, 0.13, 0.13)
 			.addEntityScreen(EntityScreenIds.GROUND_RADAR_SCREEN, -0.225, 0.798, 7.195, 0.15, 0.15)
 			.addHUDScreen(0, 0.1, 6.5)
+			.addAfterBurnerSmokePos(0,0.3,-6.5)
 			.build();
 	
 	public static final AircraftPreset UNARMED_ALEXIS_PLANE = AircraftPreset.Builder

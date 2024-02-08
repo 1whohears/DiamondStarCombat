@@ -61,6 +61,7 @@ public class FelixPresets {
 			.addEntityScreen(EntityScreenIds.GROUND_RADAR_SCREEN,-0.31,0.434,5.425,0.195,0.195,10)
 			.addEntityScreen(EntityScreenIds.RWR_SCREEN,0.0775,0.505,5.44,0.11,0.11,10)
 			.addHUDScreen(0, -0.3, 4.7)
+			.addAfterBurnerSmokePos(0,-0.1,-6)
 			.build();
 	
 	public static final AircraftPreset UNARMED_FELIX_PLANE = AircraftPreset.Builder

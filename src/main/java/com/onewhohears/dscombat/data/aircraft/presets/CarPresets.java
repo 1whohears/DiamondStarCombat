@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.data.aircraft.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
@@ -80,6 +81,7 @@ public class CarPresets {
 			.addEmptySlot("internal_2", SlotType.INTERNAL)
 			.addEmptySlot("internal_3", SlotType.ADVANCED_INTERNAL)
 			.addEmptySlot("internal_4", SlotType.ADVANCED_INTERNAL)
+			.addEntityScreen(EntityScreenIds.AIR_RADAR_SCREEN, 0, 1.35, 1.6, 0.6, 0.6)
 			.build();
 	
 	public static final AircraftPreset UNARMED_AXCEL_TRUCK = AircraftPreset.Builder

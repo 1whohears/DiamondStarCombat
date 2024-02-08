@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.data.aircraft.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.LiftKGraph;
 import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager.PassengerSoundPack;
@@ -55,6 +56,11 @@ public class FelixPresets {
 			.addEmptySlot("internal_2", SlotType.INTERNAL)
 			.addEmptySlot("internal_3", SlotType.INTERNAL)
 			.addEmptySlot("internal_4", SlotType.ADVANCED_INTERNAL)
+			.addEntityScreen(EntityScreenIds.AIR_RADAR_SCREEN,0.294,0.434,5.425,0.195,0.195,10)
+			.addEntityScreen(EntityScreenIds.FUEL_SCREEN,-0.39,0.135,5.155,0.1,0.1,10)
+			.addEntityScreen(EntityScreenIds.GROUND_RADAR_SCREEN,-0.31,0.434,5.425,0.195,0.195,10)
+			.addEntityScreen(EntityScreenIds.RWR_SCREEN,0.0775,0.505,5.44,0.11,0.11,10)
+			.addHUDScreen(0, -0.3, 4.7)
 			.build();
 	
 	public static final AircraftPreset UNARMED_FELIX_PLANE = AircraftPreset.Builder

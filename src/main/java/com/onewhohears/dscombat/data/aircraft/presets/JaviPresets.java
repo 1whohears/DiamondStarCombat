@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.data.aircraft.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.LiftKGraph;
 import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager.PassengerSoundPack;
@@ -61,6 +62,10 @@ public class JaviPresets {
 			.addEmptySlot("internal_4", SlotType.ADVANCED_INTERNAL)
 			.addEmptySlot("internal_5", SlotType.ADVANCED_INTERNAL)
 			.addEmptySlot("internal_6", SlotType.ADVANCED_INTERNAL)
+			.addEntityScreen(EntityScreenIds.AIR_RADAR_SCREEN, 0.327, 1.259, 7.19, 0.173, 0.173, 10)
+			.addEntityScreen(EntityScreenIds.RWR_SCREEN, 0.145, 1.325, 7.2, 0.1, 0.1, 10)
+			.addEntityScreen(EntityScreenIds.GROUND_RADAR_SCREEN,-0.349,1.259,7.19,0.173,0.173,10)
+			.addHUDScreen(0, 0.5, 6.34375)
 			.build();
 	
 	public static final AircraftPreset UNARMED_JAVI_PLANE = AircraftPreset.Builder

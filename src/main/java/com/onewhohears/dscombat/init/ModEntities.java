@@ -2,8 +2,6 @@ package com.onewhohears.dscombat.init;
 
 import com.google.common.collect.ImmutableSet;
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
-import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
 import com.onewhohears.dscombat.data.aircraft.presets.BoatPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.CarPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.PlanePresets;
@@ -125,16 +123,8 @@ public class ModEntities {
 	
 	public static final RegistryObject<EntityType<EntityGroundVehicle>> AXCEL_TRUCK = ENTITIES.register("axcel_truck", 
 			() -> createEntityTypeFar((type, level) -> new EntityGroundVehicle(type, level, 
-					CarPresets.DEFAULT_AXCEL_TRUCK.getId()) {
-						@Override
-							public void addVehicleScreens() {
-								screens = new EntityScreenData[1];
-								screens[0] = new EntityScreenData(EntityScreenIds.AIR_RADAR_SCREEN, 
-										new Vec3(0, 1.35, 1.6), 
-										0.6f, 0.6f, 
-										0f, 0f, 0f);
-						}
-					}, EntityDimensions.scalable(2.5f, 3.0f)));
+					CarPresets.DEFAULT_AXCEL_TRUCK.getId()), 
+					EntityDimensions.scalable(2.5f, 3.0f)));
 	
 	// TODO 2.6 fuel truck
 	

@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.data.aircraft.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
@@ -67,6 +68,11 @@ public class HeliPresets {
 			.addIngredient("minecraft:green_dye", 4)
 			.addIngredient("minecraft:gold_ingot", 15)
 			.addIngredient("iron_ingot", 4)
+			.addEntityScreen(EntityScreenIds.AIR_RADAR_SCREEN,0.19,0.18,1.934,0.3,0.3,20)
+			.addEntityScreen(EntityScreenIds.FUEL_SCREEN,0.19,-0.12,1.825,0.3,0.3,20)
+			.addEntityScreen(EntityScreenIds.RWR_SCREEN,0.5,-0.12,1.825,0.3,0.3,20)
+			.addEntityScreen(EntityScreenIds.GROUND_RADAR_SCREEN,0.5,0.18,1.934,0.3,0.3,20)
+			.addHUDScreen(0.4, -0.65, 1.5)
 			.build();
 	
 	public static final AircraftPreset UNARMED_NOAH_CHOPPER = AircraftPreset.Builder

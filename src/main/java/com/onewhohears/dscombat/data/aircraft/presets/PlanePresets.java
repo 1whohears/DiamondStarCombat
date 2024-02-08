@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.data.aircraft.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.LiftKGraph;
 import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager.PassengerSoundPack;
@@ -130,6 +131,9 @@ public class PlanePresets {
 			.addEmptySlot("internal_6", SlotType.ADVANCED_INTERNAL)
 			.addEmptySlot("internal_7", SlotType.ADVANCED_INTERNAL)
 			.addEmptySlot("internal_8", SlotType.ADVANCED_INTERNAL)
+			.addEntityScreen(EntityScreenIds.AIR_RADAR_SCREEN, 0, -0.85, 5.49, 0.7, 0.7)
+			.addEntityScreen(EntityScreenIds.FUEL_SCREEN, 0.59, -0.59, 5.49, 0.15, 0.15)
+			.addEntityScreen(EntityScreenIds.RWR_SCREEN, 0.83, -0.66, 5.49, 0.3, 0.3)
 			.build();
 	
 	public static final AircraftPreset DEFAULT_E3SENTRY_PLANE = AircraftPreset.Builder

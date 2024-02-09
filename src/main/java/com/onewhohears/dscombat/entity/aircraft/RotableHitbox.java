@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.google.gson.JsonObject;
 import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.math.RotableAABB;
 import com.onewhohears.dscombat.util.math.UtilAngles;
@@ -97,14 +96,8 @@ public class RotableHitbox extends PartEntity<EntityVehicle> {
 				.multiply(-1d,-1d,1d).cross(rel_pos);
 		Vec3 tan_vel = UtilAngles.rotateVector(rel_tan_vel, q);
 		Vec3 entityMoveByParent = parent_move.add(tan_vel);
-		//entity.moveTo(entity.position().add(entityMoveByParent));
 		entity.setPos(entity.position().add(entityMoveByParent));
-		entity.setYRot(entity.getYRot()-(float)parent_rot_rate.y);
-		if (entity instanceof EntityVehicle vehicle) {
-			Quaternion qv = vehicle.getQBySide();
-			qv.mul(Vector3f.YN.rotationDegrees((float)parent_rot_rate.y));
-			vehicle.setQBySide(qv);
-		}
+		entity.setYRot(entity.getYRot()+(float)parent_rot_rate.y);
 		return entityMoveByParent;
 	}
 	

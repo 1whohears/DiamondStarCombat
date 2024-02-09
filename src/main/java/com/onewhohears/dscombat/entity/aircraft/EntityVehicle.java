@@ -300,8 +300,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		setCurrentThrottle(nbt.getFloat("current_throttle"));
 		setFuelLeak(nbt.getBoolean("fuel_leak"));
 		setEngineFire(nbt.getBoolean("engine_fire"));
-		setXRot(nbt.getFloat("xRot"));
-		setYRot(nbt.getFloat("yRot"));
+		setXRotNoQ(nbt.getFloat("xRot"));
+		setYRotNoQ(nbt.getFloat("yRot"));
 		zRot = nbt.getFloat("zRot");
 		Quaternion q = UtilAngles.toQuaternion(getYRot(), getXRot(), zRot);
 		setQ(q);
@@ -448,8 +448,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		//q.normalize(); // this was causing horrendous precision errors in the hitbox colliders
 		setQBySide(q);
 		EulerAngles angles = UtilAngles.toDegrees(q);
-		setXRot((float)angles.pitch);
-		setYRot((float)angles.yaw);
+		setXRotNoQ((float)angles.pitch);
+		setYRotNoQ((float)angles.yaw);
 		zRot = (float)angles.roll;
 		// MOVEMENT
 		tickThrottle();
@@ -2459,4 +2459,25 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     	else bingoTicks = 0;
     }
     
+    @Override
+    public void setYRot(float yRot) {
+        super.setYRot(yRot);
+        Quaternion q = UtilAngles.toQuaternion(getYRot(), getXRot(), zRot);
+        setQBySide(q);
+    }
+    
+    @Override
+    public void setXRot(float yRot) {
+        super.setXRot(yRot);
+        Quaternion q = UtilAngles.toQuaternion(getYRot(), getXRot(), zRot);
+        setQBySide(q);
+    }
+    
+    public void setYRotNoQ(float yRot) {
+        super.setYRot(yRot);
+    }
+    
+    public void setXRotNoQ(float yRot) {
+        super.setXRot(yRot);
+    }
 }

@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.data.aircraft;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.onewhohears.dscombat.client.model.obj.ObjRadarModel.MastType;
 import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
@@ -26,6 +27,7 @@ public abstract class VehicleStats {
 	public double cameraDistance = 4;
 	public int baseTextureVariants = 1, textureLayers = 0;
 	public Vec3[] afterBurnerSmokePos = new Vec3[0];
+	public MastType mastType = MastType.NONE;
 	
 	protected VehicleStats() {
 	}
@@ -54,6 +56,7 @@ public abstract class VehicleStats {
 		Iy = stats.getFloat("inertiayaw");
 		crashExplosionRadius = stats.getFloat("crashExplosionRadius");
 		cameraDistance = stats.getFloat("cameraDistance");
+		if (stats.contains("mastType")) mastType = MastType.valueOf(stats.getString("mastType"));
 		if (acp.getDataAsNBT().contains("textures")) {
 			CompoundTag textures = acp.getDataAsNBT().getCompound("textures");
 			if (textures.contains("baseTextureVariants")) baseTextureVariants = textures.getInt("baseTextureVariants");

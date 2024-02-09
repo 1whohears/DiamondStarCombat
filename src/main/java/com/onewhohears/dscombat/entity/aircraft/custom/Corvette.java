@@ -1,6 +1,5 @@
 package com.onewhohears.dscombat.entity.aircraft.custom;
 
-import com.onewhohears.dscombat.client.model.obj.ObjRadarModel.MastType;
 import com.onewhohears.dscombat.data.aircraft.presets.BoatPresets;
 import com.onewhohears.dscombat.entity.aircraft.EntityBoat;
 
@@ -11,11 +10,6 @@ public class Corvette extends EntityBoat {
 	
 	public Corvette(EntityType<? extends EntityBoat> entity, Level level) {
 		super(entity, level, BoatPresets.DEFAULT_CORVETTE.getId());
-	}
-	
-	@Override
-	public MastType getMastType() {
-		return MastType.THIN;
 	}
 	
 }

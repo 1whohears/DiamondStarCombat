@@ -248,6 +248,7 @@
     "inertiaroll": 6.0,
     "inertiayaw": 4.0,
     "mass": 300000.0,
+    "mastType": "NORMAL",
     "max_health": 400.0,
     "max_speed": 0.8,
     "maxpitch": 0.0,

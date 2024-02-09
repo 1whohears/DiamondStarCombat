@@ -200,6 +200,7 @@
     "inertiaroll": 6.0,
     "inertiayaw": 4.0,
     "mass": 50000.0,
+    "mastType": "THIN",
     "max_health": 250.0,
     "max_speed": 0.95,
     "maxpitch": 0.0,

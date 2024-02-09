@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
+import com.onewhohears.dscombat.client.model.obj.ObjRadarModel.MastType;
 import com.onewhohears.dscombat.crafting.DSCIngredient;
 import com.onewhohears.dscombat.data.JsonPreset;
 import com.onewhohears.dscombat.data.PresetBuilder;
@@ -560,6 +561,11 @@ public class AircraftPreset extends JsonPreset{
 			return this;
 		}
 		
+		public Builder setStatString(String key, String value) {
+			getStats().addProperty(key, value);
+			return this;
+		}
+		
 		public Builder setTypedStatFloat(String key, float value, String vehicleType) {
 			getStatsByType(vehicleType).addProperty(key, value);
 			return this;
@@ -672,6 +678,12 @@ public class AircraftPreset extends JsonPreset{
 		 */
 		public Builder set3rdPersonCamDist(float cameraDistance) {
 			return setStatFloat("cameraDistance", cameraDistance);
+		}
+		/**
+		 * all vehicles
+		 */
+		public Builder setMastType(MastType mastType) {
+			return setStatString("mastType", mastType.toString());
 		}
 		
 		public JsonObject getTextures() {

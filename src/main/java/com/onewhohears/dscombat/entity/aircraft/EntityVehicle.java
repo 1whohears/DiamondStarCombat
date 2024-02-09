@@ -2360,7 +2360,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 	
 	public MastType getMastType() {
-		return MastType.NONE;
+		return vehicleStats.mastType;
 	}
 	
 	public boolean isFuelLeak() {

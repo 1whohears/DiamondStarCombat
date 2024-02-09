@@ -40,9 +40,10 @@ public class EntitySubmarine extends EntityBoat {
 		super.tickWater(q);
 		Vec3 move = getDeltaMovement();
 		if (!isDriverCameraLocked() && isOperational()) {
-			move = move.add(0, inputs.pitch * 0.04, 0);
+			if (inputs.pitch == 0) move = move.multiply(1, 0.9, 1);
+			else move = move.add(0, inputs.pitch * 0.02, 0);
 			double max = 0.2;
-			if (Math.abs(move.y) > max) move.multiply(1, max/move.y, 1);
+			if (Math.abs(move.y) > max) move = new Vec3(move.x, max*Math.signum(move.y), move.z);
 		}
 		setDeltaMovement(move);
 	}

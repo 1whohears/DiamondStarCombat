@@ -2380,7 +2380,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     }
     
     public boolean showAfterBurnerParticles() {
-    	return getCurrentThrottle() > 0.45;
+    	return getCurrentThrottle() > 0.5;
     }
     
     public boolean showMoreAfterBurnerParticles() {

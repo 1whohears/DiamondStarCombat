@@ -21,7 +21,7 @@ public class EntityPlane extends EntityVehicle {
 	
 	private float aoa = 0, liftK = 0, airFoilSpeedSqr = 0;
 	private float centripetalForce, centrifugalForce; 
-	private double liftMag;
+	private double liftMag, prevMaxSpeedMod;
 	private Vec3 liftDir = Vec3.ZERO, airFoilAxes = Vec3.ZERO;
 	
 	public EntityPlane(EntityType<? extends EntityPlane> entity, Level level, String defaultPreset) {
@@ -64,14 +64,26 @@ public class EntityPlane extends EntityVehicle {
 	
 	@Override
 	public double getMaxSpeedForMotion() {
-		return super.getMaxSpeedForMotion() * getPlaneSpeedPercent();
+		return super.getMaxSpeedForMotion() * getPlaneSpeedPercent() * getMaxSpeedFromThrottleMod();
 	}
 	
 	public double getPlaneSpeedPercent() {
 		return level.getGameRules().getInt(DSCGameRules.PLANE_SPEED_PERCENT) * 0.01;
 	}
-
-	// TODO: nerf brakes? or make their strength configurable?
+	
+	public double getMaxSpeedFromThrottleMod() {
+		if (isOnGround()) {
+			prevMaxSpeedMod = 1;
+			return prevMaxSpeedMod;
+		}
+		float th = getCurrentThrottle();
+		double goal;
+		if (th < 0.5) goal = 0.7;
+		else goal = 0.7 + 0.6 * (th - 0.5);
+		prevMaxSpeedMod = Mth.lerp(0.015, prevMaxSpeedMod, goal);
+		return prevMaxSpeedMod;
+	}
+	
 	@Override
 	public boolean isBraking() {
 		return inputs.special2 && isOnGround();

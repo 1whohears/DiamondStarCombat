@@ -44,6 +44,6 @@
   "seeThroWater": 100,
   "shootSoundKey": "dscombat:rocket_launch_1",
   "speed": 2.5,
-  "targetType": "WATER",
+  "targetType": "GROUND",
   "turnRadius": 80.0
 }

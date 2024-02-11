@@ -752,7 +752,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setFuseDistance(2f)
 				.setFieldOfView(60f)
 				.setSeeThroWaterNum(100)
-				.setTargetType(TargetType.WATER)
+				.setTargetType(TargetType.GROUND)
 				.setItem(ModItems.TORPEDO1.getId())
 				.setEntityType(ModEntities.AIM120C.getId())
 				.setRackEntityType(ModEntities.ADL.getId())

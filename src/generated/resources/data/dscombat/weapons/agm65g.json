@@ -11,6 +11,7 @@
   "destroyTerrain": true,
   "displayName": "preset.dscombat.agm65g",
   "entityTypeKey": "dscombat:agm65g",
+  "explodeNum": 2,
   "explosionRadius": 5.5,
   "explosive": true,
   "fireRate": 40,
@@ -24,7 +25,7 @@
     },
     {
       "item": "minecraft:tnt",
-      "num": 3
+      "num": 8
     },
     {
       "item": "minecraft:coal_block",

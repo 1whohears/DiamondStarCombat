@@ -8,6 +8,7 @@
   "destroyTerrain": true,
   "displayName": "preset.dscombat.anm64",
   "entityTypeKey": "dscombat:bomb",
+  "explodeNum": 2,
   "explosionRadius": 8.5,
   "explosive": true,
   "fireRate": 11,
@@ -18,7 +19,7 @@
     },
     {
       "item": "minecraft:tnt",
-      "num": 4
+      "num": 8
     }
   ],
   "innacuracy": 0.0,

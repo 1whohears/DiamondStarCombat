@@ -583,6 +583,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setBleed(0.02f)
 				.setFuseDistance(1.5f)
 				.setFieldOfView(-1f)
+				.setExplodeNum(2)
 				.setItem(ModItems.AGM65L.getId())
 				.setEntityType(ModEntities.AGM65L.getId())
 				.setRackEntityType(ModEntities.HEAVY_MISSILE_RACK.getId())
@@ -590,7 +591,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setCompatibleWeaponPart(ModItems.HEAVY_MISSILE_RACK.getId())
 				.setCraftNum(1)
 				.addIngredient("minecraft:iron_ingot", 5)
-				.addIngredient("minecraft:tnt", 3)
+				.addIngredient("minecraft:tnt", 8)
 				.addIngredient("minecraft:coal_block", 2)
 				.addIngredient("dscombat:ti83")
 				.build());
@@ -616,6 +617,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setBleed(0.02f)
 				.setFuseDistance(1.5f)
 				.setFieldOfView(-1f)
+				.setExplodeNum(2)
 				.setItem(ModItems.AGM65G.getId())
 				.setEntityType(ModEntities.AGM65G.getId())
 				.setRackEntityType(ModEntities.HEAVY_MISSILE_RACK.getId())
@@ -623,7 +625,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setCompatibleWeaponPart(ModItems.HEAVY_MISSILE_RACK.getId())
 				.setCraftNum(1)
 				.addIngredient("minecraft:iron_ingot", 5)
-				.addIngredient("minecraft:tnt", 3)
+				.addIngredient("minecraft:tnt", 8)
 				.addIngredient("minecraft:coal_block", 2)
 				.addIngredient("dscombat:ti83")
 				.build());
@@ -649,7 +651,8 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setBleed(0.02f)
 				.setFuseDistance(2f)
 				.setFieldOfView(-1f)
-				.setSeeThroBlockNum(4)
+				.setSeeThroBlockNum(8)
+				.setExplodeNum(2)
 				.setItem(ModItems.AGM84E.getId())
 				.setEntityType(ModEntities.AGM84E.getId())
 				.setRackEntityType(ModEntities.HEAVY_MISSILE_RACK.getId())
@@ -657,7 +660,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setCompatibleWeaponPart(ModItems.HEAVY_MISSILE_RACK.getId())
 				.setCraftNum(1)
 				.addIngredient("minecraft:iron_ingot", 6)
-				.addIngredient("minecraft:tnt", 3)
+				.addIngredient("minecraft:tnt", 6)
 				.addIngredient("minecraft:coal_block", 3)
 				.addIngredient("dscombat:ti83", 2)
 				.build());
@@ -752,6 +755,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setFuseDistance(2f)
 				.setFieldOfView(60f)
 				.setSeeThroWaterNum(100)
+				.setExplodeNum(2)
 				.setTargetType(TargetType.GROUND)
 				.setItem(ModItems.TORPEDO1.getId())
 				.setEntityType(ModEntities.AIM120C.getId())
@@ -760,7 +764,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setCompatibleWeaponPart(ModItems.ADL.getId())
 				.setCraftNum(1)
 				.addIngredient("minecraft:iron_ingot", 12)
-				.addIngredient("minecraft:tnt", 2)
+				.addIngredient("minecraft:tnt", 5)
 				.addIngredient("minecraft:coal_block", 4)
 				.addIngredient("dscombat:ti83", 2)
 				.build());
@@ -804,6 +808,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setCausesFire(false)
 				.setMaxAmmo(20)
 				.setMaxAge(200)
+				.setExplodeNum(2)
 				.setItem(ModItems.BOMB.getId())
 				.setEntityType(ModEntities.BOMB.getId())
 				.setRackEntityType(ModEntities.BOMB_RACK.getId())
@@ -811,7 +816,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setCompatibleWeaponPart(ModItems.BOMB_RACK.getId())
 				.setCraftNum(1)
 				.addIngredient("minecraft:iron_ingot", 2)
-				.addIngredient("minecraft:tnt", 2)
+				.addIngredient("minecraft:tnt", 4)
 				.build());
 		// max ammo cost: 24 iron, 12 tnt (60 gunpowder)
 		addPresetToGenerate(BombData.Builder
@@ -827,6 +832,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setCausesFire(false)
 				.setMaxAmmo(10)
 				.setMaxAge(200)
+				.setExplodeNum(2)
 				.setItem(ModItems.BOMB.getId())
 				.setEntityType(ModEntities.BOMB.getId())
 				.setRackEntityType(ModEntities.BOMB_RACK.getId())
@@ -834,7 +840,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setCompatibleWeaponPart(ModItems.BOMB_RACK.getId())
 				.setCraftNum(1)
 				.addIngredient("minecraft:iron_ingot", 4)
-				.addIngredient("minecraft:tnt", 4)
+				.addIngredient("minecraft:tnt", 8)
 				.build());
 		addPresetToGenerate(BombData.Builder
 				.bombBuilder(DSCombatMod.MODID, "napalm")

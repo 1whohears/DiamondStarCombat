@@ -11,6 +11,7 @@
   "destroyTerrain": true,
   "displayName": "preset.dscombat.agm84e",
   "entityTypeKey": "dscombat:agm84e",
+  "explodeNum": 2,
   "explosionRadius": 4.5,
   "explosive": true,
   "fireRate": 50,
@@ -24,7 +25,7 @@
     },
     {
       "item": "minecraft:tnt",
-      "num": 3
+      "num": 6
     },
     {
       "item": "minecraft:coal_block",
@@ -41,7 +42,7 @@
   "maxAmmo": 3,
   "presetId": "agm84e",
   "rackTypeKey": "dscombat:heavy_missile_rack",
-  "seeThroBlock": 4,
+  "seeThroBlock": 8,
   "shootSoundKey": "dscombat:rocket_launch_1",
   "speed": 2.5,
   "targetType": "GROUND",

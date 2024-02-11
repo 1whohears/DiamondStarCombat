@@ -9,6 +9,7 @@ import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.data.JsonPreset;
 import com.onewhohears.dscombat.entity.weapon.EntityBullet;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
+import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.nbt.CompoundTag;
@@ -39,6 +40,7 @@ public class BulletData extends WeaponData {
 	private final boolean causesFire;
 	private final float explosionRadius;
 	private final float innacuracy;
+	private final int explodeNum;
 	
 	public BulletData(ResourceLocation key, JsonObject json) {
 		super(key, json);
@@ -49,6 +51,7 @@ public class BulletData extends WeaponData {
 		this.causesFire = json.get("causesFire").getAsBoolean();
 		this.explosionRadius = json.get("explosionRadius").getAsFloat();
 		this.innacuracy = json.get("innacuracy").getAsFloat();
+		this.explodeNum = UtilParse.getIntSafe(json, "explodeNum", 1);
 	}
 	
 	@Override
@@ -124,6 +127,10 @@ public class BulletData extends WeaponData {
 		return innacuracy;
 	}
 	
+	public int getExplodeNum() {
+		return explodeNum;
+	}
+	
 	@Override
 	public double getMobTurretRange() {
 		return Math.max(300, getSpeed() * getMaxAge());
@@ -139,8 +146,12 @@ public class BulletData extends WeaponData {
 		super.addToolTips(tips);
 		tips.add(Component.literal("Damage: ").append(getDamage()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 		tips.add(Component.literal("Max Speed: ").append(getSpeed()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
-		if (isExplosive()) tips.add(Component.literal("Explosion Radius: ")
+		if (isExplosive()) {
+			tips.add(Component.literal("Explosion Radius: ")
 				.append(getExplosionRadius()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+			tips.add(Component.literal("Explosions: ")
+				.append(getExplodeNum()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		}
 	}
 	
 	@Override
@@ -152,6 +163,7 @@ public class BulletData extends WeaponData {
 		if (isExplosive()) {
 			list.add(new ComponentColor(Component.literal("EXPLOSIVE"), 0xaa0000));
 			list.add(new ComponentColor(Component.literal("Radius: ").append(getExplosionRadius()+""), 0x040404));
+			list.add(new ComponentColor(Component.literal("Explosions: ").append(getExplodeNum()+""), 0x040404));
 		}
 		if (isCausesFire()) list.add(new ComponentColor(Component.literal("INCENDIARY"), 0xaa0000));
 		return list;

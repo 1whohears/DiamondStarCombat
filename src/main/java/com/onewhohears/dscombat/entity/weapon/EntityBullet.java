@@ -38,10 +38,11 @@ public class EntityBullet extends EntityWeapon {
 			if (!level.isClientSide) {
 				Explosion.BlockInteraction interact = Explosion.BlockInteraction.NONE;
 				if (getTerrain()) interact = Explosion.BlockInteraction.BREAK;
-				level.explode(this, getExplosionDamageSource(),
-					null, getX(), getY(), getZ(), 
-					getRadius(), getFire(), 
-					interact);
+				for (int i = 0; i < getExplodeNum(); ++i) {
+					level.explode(this, getExplosionDamageSource(),
+						null, getX(), getY(), getZ(), 
+						getRadius(), getFire(), interact);
+				}
 				//System.out.println("EXPLODE "+this+" "+tickCount);
 			}
 		}
@@ -79,6 +80,10 @@ public class EntityBullet extends EntityWeapon {
 	
 	public double getSpeed() {
 		return bulletData.getSpeed();
+	}
+	
+	public int getExplodeNum() {
+		return bulletData.getExplodeNum();
 	}
 	
 	@Override

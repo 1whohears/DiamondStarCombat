@@ -113,6 +113,10 @@ public class AbstractWeaponBuilders {
 			return setFloat("innacuracy", innacuracy);
 		}
 		
+		public C setExplodeNum(int explodeNum) {
+			return setInt("explodeNum", explodeNum);
+		}
+		
 	}
 	
 	public abstract static class BombBuilder<C extends BombBuilder<C>> extends BulletBuilder<C> {

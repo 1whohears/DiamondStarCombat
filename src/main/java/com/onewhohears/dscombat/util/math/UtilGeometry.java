@@ -142,7 +142,7 @@ public class UtilGeometry {
 		ndcSpace.mul(1/clipSpace.w());
 		float win_x = (ndcSpace.x()+1f)/2f*width;
 		float win_y = (ndcSpace.y()+1f)/2f*height;
-		return new float[] {win_x, win_y};
+		return new float[] {win_x, height - win_y};
 	}
 	
 	public static Vector3f convertVector(Vec3 v) {

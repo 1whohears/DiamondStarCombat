@@ -170,7 +170,7 @@ public class RadarOverlay extends VehicleOverlayComponent {
             float[] screen_pos = UtilGeometry.worldToScreenPos(ping.getPosForClient(),
                     view_mat, proj_mat, screenWidth, screenHeight);
             if (screen_pos[0] < 0 || screen_pos[1] < 0) continue;
-            float x_win = screen_pos[0], y_win = screenHeight - screen_pos[1];
+            float x_win = screen_pos[0], y_win = screen_pos[1];
             int size = 100;
             float min = 0.2f, max = 0.45f, max_dist = 1000f;
             float scale = (float) Math.max(min, max-(dist/max_dist*(max-min)));

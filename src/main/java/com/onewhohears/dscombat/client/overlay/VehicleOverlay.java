@@ -23,6 +23,7 @@ public class VehicleOverlay {
 		PlaneAttitudeOverlay	.renderIfAllowed(poseStack, screenWidth, screenHeight);
 		PlaneDataOverlay		.renderIfAllowed(poseStack, screenWidth, screenHeight);
 		RadarOverlay			.renderIfAllowed(poseStack, screenWidth, screenHeight, partialTick);
+		AimAssistOverlay		.renderIfAllowed(poseStack, screenWidth, screenHeight, partialTick);
 		TurnCoordinatorOverlay	.renderIfAllowed(poseStack, screenWidth, screenHeight);
 		VehicleCompassOverlay	.renderIfAllowed(poseStack, screenWidth, screenHeight);
 		VehicleControlOverlay	.renderIfAllowed(poseStack, screenWidth, screenHeight);

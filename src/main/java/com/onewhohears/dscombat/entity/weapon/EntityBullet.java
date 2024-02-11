@@ -31,6 +31,11 @@ public class EntityBullet extends EntityWeapon {
 		setDeltaMovement(dir.scale(getSpeed()));
 	}
 	
+	@Override
+	protected void tickSetMove() {
+		setDeltaMovement(getDeltaMovement().add(0, -DSCPhysicsConstants.GRAVITY, 0));
+	}
+	
 	protected void checkExplode() {
 		if (getAge() < minExplodeAge()) return;
 		if (!level.hasChunk(chunkPosition().x, chunkPosition().z)) return;
@@ -50,11 +55,6 @@ public class EntityBullet extends EntityWeapon {
 	
 	public int minExplodeAge() {
 		return 1;
-	}
-	
-	@Override
-	protected void tickSetMove() {
-		setDeltaMovement(getDeltaMovement().add(0, -DSCPhysicsConstants.GRAVITY, 0));
 	}
 	
 	@Override

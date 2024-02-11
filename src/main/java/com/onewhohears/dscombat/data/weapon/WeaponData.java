@@ -512,6 +512,12 @@ public abstract class WeaponData extends JsonPreset {
 		public boolean requiresRadar() {
 			return isTrackMissile();
 		}
+		public boolean isBomb() {
+			return this == BOMB;
+		}
+		public boolean isAimAssist() {
+			return this == BULLET || this == BOMB;
+		}
 	}
 	
 	public static enum WeaponClientImpactType {

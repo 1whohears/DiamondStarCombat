@@ -1,7 +1,7 @@
 {
   "aircraft_type": 4,
-  "copyId": "andolf_sub_unarmed",
-  "displayName": "preset.dscombat.andolf_sub",
+  "copyId": "google_sub_unarmed",
+  "displayName": "preset.dscombat.google_sub",
   "ingredients": [
     {
       "item": "dscombat:wr1k",
@@ -25,30 +25,22 @@
     },
     {
       "item": "dscombat:heavy_missile_rack",
-      "num": 6
+      "num": 4
     },
     {
-      "item": "dscombat:xm12",
-      "num": 1
+      "item": "dscombat:vls",
+      "num": 3
     }
   ],
   "is_craftable": false,
   "landing_gear": true,
-  "presetId": "andolf_sub",
+  "presetId": "google_sub",
   "slots": [
     {
       "data": {
         "itemid": "dscombat:wr1k"
       },
       "name": "internal_4"
-    },
-    {
-      "data": {
-        "filled": true,
-        "itemid": "dscombat:xm12",
-        "param": "20mm"
-      },
-      "name": "nose_1"
     },
     {
       "data": {
@@ -85,18 +77,26 @@
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_missile_rack",
-        "param": "mk13"
+        "itemid": "dscombat:vls",
+        "param": "bgm109"
       },
       "name": "frame_5"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_missile_rack",
-        "param": "mk13"
+        "itemid": "dscombat:vls",
+        "param": "bgm109"
       },
       "name": "frame_6"
+    },
+    {
+      "data": {
+        "filled": true,
+        "itemid": "dscombat:vls",
+        "param": "bgm109"
+      },
+      "name": "frame_7"
     }
   ]
 }

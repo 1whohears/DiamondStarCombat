@@ -104,6 +104,10 @@ public class AircraftPresetGenerator extends JsonPresetGenerator<AircraftPreset>
 		addPresetToGenerate(EdenPresets.EMPTY_EDEN_PLANE);
 		addPresetToGenerate(EdenPresets.UNARMED_EDEN_PLANE);
 		addPresetToGenerate(EdenPresets.DEFAULT_EDEN_PLANE);
+		
+		addPresetToGenerate(SubPresets.EMPTY_GOOGLE_SUB);
+		addPresetToGenerate(SubPresets.UNARMED_GOOGLE_SUB);
+		addPresetToGenerate(SubPresets.DEFAULT_GOOGLE_SUB);
 	}
     
     public AircraftPresetGenerator(DataGenerator output) {

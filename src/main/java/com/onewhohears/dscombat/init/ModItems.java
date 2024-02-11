@@ -440,5 +440,8 @@ public class ModItems {
 	public static final RegistryObject<Item> ANDOLF_SUB = ITEMS.register("andolf_sub", 
 			() -> new ItemAircraft(ModEntities.ANDOLF_SUB.get(), 
 					SubPresets.DEFAULT_ANDOLF_SUB.getId()));
+	public static final RegistryObject<Item> GOOGLE_SUB = ITEMS.register("google_sub", 
+			() -> new ItemAircraft(ModEntities.GOOGLE_SUB.get(), 
+					SubPresets.DEFAULT_GOOGLE_SUB.getId()));
 		
 }

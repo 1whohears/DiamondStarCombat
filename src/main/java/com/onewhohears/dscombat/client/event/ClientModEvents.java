@@ -27,6 +27,7 @@ import com.onewhohears.dscombat.client.model.obj.custom.CorvetteModel;
 import com.onewhohears.dscombat.client.model.obj.custom.EdenPlaneModel;
 import com.onewhohears.dscombat.client.model.obj.custom.FelixPlaneModel;
 import com.onewhohears.dscombat.client.model.obj.custom.GimbalCameraModel;
+import com.onewhohears.dscombat.client.model.obj.custom.GoogleSubModel;
 import com.onewhohears.dscombat.client.model.obj.custom.HeavyMissileRackModel;
 import com.onewhohears.dscombat.client.model.obj.custom.JasonPlaneModel;
 import com.onewhohears.dscombat.client.model.obj.custom.JaviPlaneModel;
@@ -187,6 +188,9 @@ public final class ClientModEvents {
 		event.registerEntityRenderer(ModEntities.ANDOLF_SUB.get(), 
 				(context) -> new RendererEntityAircraft<>(context,
                         new EntityModelAndolfSub(models.bakeLayer(EntityModelAndolfSub.LAYER_LOCATION))));
+		event.registerEntityRenderer(ModEntities.GOOGLE_SUB.get(), 
+				(context) -> new RendererObjAircraft<>(context,
+                        new GoogleSubModel()));
 		// BULLETS
 		event.registerEntityRenderer(ModEntities.BULLET.get(), 
 				(context) -> new RendererEntityWeapon<>(context,

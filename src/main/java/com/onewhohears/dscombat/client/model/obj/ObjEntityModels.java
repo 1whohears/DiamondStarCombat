@@ -135,11 +135,9 @@ public class ObjEntityModels implements ResourceManagerReloadListener {
 		public float[] scale3d = {1f, 1f, 1f};
 		public ModelOverrides(JsonObject json) {
 			if (json.has("scale")) scale = json.get("scale").getAsFloat();
-			if (json.has("scalex") && json.has("scaley") && json.has("scalez")) {
-				scale3d[0] = json.get("scalex").getAsFloat();
-				scale3d[1] = json.get("scaley").getAsFloat(); 
-				scale3d[2] = json.get("scalez").getAsFloat();
-			}
+			if (json.has("scalex")) scale3d[0] = json.get("scalex").getAsFloat();
+			if (json.has("scaley")) scale3d[1] = json.get("scaley").getAsFloat(); 
+			if (json.has("scalez")) scale3d[2] = json.get("scalez").getAsFloat();
 		}
 	}
 

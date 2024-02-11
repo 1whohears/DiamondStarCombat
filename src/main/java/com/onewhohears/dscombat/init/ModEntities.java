@@ -162,6 +162,11 @@ public class ModEntities {
 					SubPresets.DEFAULT_ANDOLF_SUB.getId()), 
 					EntityDimensions.scalable(4.5f,4.0f)));
 	
+	public static final RegistryObject<EntityType<EntitySubmarine>> GOOGLE_SUB = ENTITIES.register("google_sub", 
+			() -> createEntityTypeFar((type, level) -> new EntitySubmarine(type, level, 
+					SubPresets.DEFAULT_GOOGLE_SUB.getId()), 
+					EntityDimensions.scalable(8f,8f)));
+	
 	/* 
 	 * IDEA 5 more vehicles
 	 * 

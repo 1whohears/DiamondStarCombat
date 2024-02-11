@@ -142,6 +142,7 @@
 	"entity.dscombat.felix_plane": "Felix Plane",
 	"entity.dscombat.jason_plane": "Jason Plane",
 	"entity.dscombat.eden_plane": "Eden Plane",
+	"entity.dscombat.google_sub": "Google Sub",
 	
 	"entity.minecraft.villager.dscombat.weapons_engineer": "Weapons Engineer",
 	"entity.minecraft.villager.dscombat.aircraft_engineer": "Aircraft Engineer",
@@ -199,6 +200,7 @@
 	"item.dscombat.cfm56": "CFM 56",
 	"item.dscombat.cm_manly_52": "CM Manly 52",
 	"item.dscombat.compound_turbine": "Compound Turbine",
+	"item.dscombat.klimov_rd33": "Klimov RD33",
 	
 	"item.dscombat.ar500": "AR-500",
 	"item.dscombat.ar1k": "AR-1k",
@@ -262,6 +264,7 @@
 	"item.dscombat.felix_plane": "Felix Plane",
 	"item.dscombat.jason_plane": "Jason Plane",
 	"item.dscombat.eden_plane": "Eden Plane",
+	"item.dscombat.Google Sub": "Google Sub",
 	
 	"item.dscombat.the_missile_knows_disc": "Music Disc",
 	"item.dscombat.the_missile_knows_disc.desc": "US Air Force - The Missile Knows Where It Is",
@@ -365,6 +368,9 @@
 	"preset.dscombat.eden_plane_empty": "Empty Eden Plane",
 	"preset.dscombat.eden_plane_unarmed": "Unarmed Eden Plane",
 	"preset.dscombat.eden_plane": "Default Eden Plane",
+	"preset.dscombat.google_sub_empty": "Empty Google Sub",
+	"preset.dscombat.google_sub_unarmed": "Unarmed Google Sub",
+	"preset.dscombat.google_sub": "Default Google Sub",
 	
 	"key.categories.vehicle_move_control": "Diamond Star Combat Vehicle Move Controls",
 	"key.categories.vehicle_control_util": "Diamond Star Combat Vehicle Control Utility",

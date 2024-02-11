@@ -44,6 +44,12 @@
     },
     {
       "data": {
+        "itemid": "dscombat:ar1k"
+      },
+      "name": "internal_5"
+    },
+    {
+      "data": {
         "filled": true,
         "itemid": "dscombat:heavy_missile_rack",
         "param": "mk13"

@@ -150,6 +150,7 @@ public class SubPresets {
 			.createFromCopy(DSCombatMod.MODID, "google_sub", UNARMED_GOOGLE_SUB)
 			.addIngredient(ModItems.WR1K.getId())
 			.setSlotItem("internal_4", ModItems.WR1K.getId())
+			.setSlotItem("internal_5", ModItems.AR1K.getId())
 			.setSlotItem("frame_1", ModItems.HEAVY_MISSILE_RACK.getId(), "mk13", true)
 			.setSlotItem("frame_2", ModItems.HEAVY_MISSILE_RACK.getId(), "mk13", true)
 			.setSlotItem("frame_3", ModItems.HEAVY_MISSILE_RACK.getId(), "mk13", true)

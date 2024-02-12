@@ -14,6 +14,7 @@ import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponAmmo;
 import com.onewhohears.dscombat.crafting.DSCIngredient;
 import com.onewhohears.dscombat.data.JsonPreset;
+import com.onewhohears.dscombat.data.aircraft.DSCPhysicsConstants;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.init.DataSerializers;
@@ -23,6 +24,7 @@ import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.UtilParticles;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -36,7 +38,9 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -518,6 +522,9 @@ public abstract class WeaponData extends JsonPreset {
 		public boolean isAimAssist() {
 			return this == BULLET || this == BOMB;
 		}
+		public boolean isPosGuided() {
+			return this == POS_MISSILE;
+		}
 	}
 	
 	public static enum WeaponClientImpactType {
@@ -537,6 +544,39 @@ public abstract class WeaponData extends JsonPreset {
 		public void onClientImpact(Level level, Vec3 pos) {
 			clientImpactCallback.accept(level, pos);
 		}
+	}
+	
+	@Nullable
+	public Vec3 estimateImpactPosition(EntityVehicle vehicle) {
+		if (!getType().isAimAssist()) return null;
+		// FIXME 3.3 aim assist against air targets on radar
+		Vec3 startPos = vehicle.position().add(UtilAngles.rotateVector(getLaunchPos(), vehicle.getQBySide()));
+		Vec3 startMove = getStartMove(vehicle);
+		Vec3 acc = getAcc(vehicle);
+		double distSqr = 0;
+		Vec3 pos = startPos;
+		Vec3 move = startMove;
+		while (distSqr <= 40000) {
+			distSqr += move.lengthSqr();
+			pos = pos.add(move);
+			move = move.add(acc);
+			BlockPos bp = new BlockPos(pos);
+			ChunkPos cp = new ChunkPos(bp);
+			if (!vehicle.level.hasChunk(cp.x, cp.z)) return pos;
+			BlockState block = vehicle.level.getBlockState(bp);
+			if (block == null || block.isAir()) continue;
+			if (!block.getMaterial().blocksMotion() && !block.getMaterial().isLiquid()) continue;
+			return pos;
+		}
+		return pos;
+	}
+	
+	protected Vec3 getStartMove(EntityVehicle vehicle) {
+		return vehicle.getDeltaMovement();
+	}
+	
+	protected Vec3 getAcc(EntityVehicle vehicle) {
+		return new Vec3(0, -DSCPhysicsConstants.GRAVITY, 0);
 	}
 	
 }

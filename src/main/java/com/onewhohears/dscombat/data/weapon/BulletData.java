@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Random;
 
 import com.google.gson.JsonObject;
+import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.data.JsonPreset;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.weapon.EntityBullet;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.util.UtilParse;
@@ -181,6 +183,14 @@ public class BulletData extends WeaponData {
 	public String getDefaultIconLocation() {
 		if (isExplosive()) return MODID+":textures/ui/weapon_icons/he_bullet.png";
 		return MODID+":textures/ui/weapon_icons/bullet.png";
+	}
+	
+	@Override
+	protected Vec3 getStartMove(EntityVehicle vehicle) {
+		Vec3 move = vehicle.getLookAngle().scale(getSpeed());
+		if (vehicle.isWeaponAngledDown() && canAngleDown())
+			move = UtilAngles.rotateVector(move, Vector3f.XP.rotationDegrees(25f));
+		return move;
 	}
 
 }

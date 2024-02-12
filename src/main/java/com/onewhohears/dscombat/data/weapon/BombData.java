@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.data.JsonPreset;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.weapon.EntityBomb;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 
@@ -13,6 +14,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.phys.Vec3;
 
 public class BombData extends BulletData {
 	
@@ -101,4 +103,10 @@ public class BombData extends BulletData {
 	public String getDefaultIconLocation() {
 		return MODID+":textures/ui/weapon_icons/bomb.png";
 	}
+	
+	@Override
+	protected Vec3 getStartMove(EntityVehicle vehicle) {
+		return vehicle.getDeltaMovement();
+	}
+	
 }

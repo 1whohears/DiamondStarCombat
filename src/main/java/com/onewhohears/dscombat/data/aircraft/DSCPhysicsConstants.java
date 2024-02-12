@@ -4,8 +4,8 @@ public class DSCPhysicsConstants {
 	
 	public static final float GRAVITY = 0.08f;
 	
-	public static final float DRAG = 2f;
-	public static final float DRAG_WATER = 20f;
+	public static final float DRAG = 10f;
+	public static final float DRAG_WATER = 25f;
 	public static final float LIFT = 70f;
 	public static final float CENTRIPETAL_SCALE = 0.4f;
 	public static final float FLOAT = 150f;

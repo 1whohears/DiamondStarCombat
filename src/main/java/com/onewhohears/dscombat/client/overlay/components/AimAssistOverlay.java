@@ -2,6 +2,8 @@ package com.onewhohears.dscombat.client.overlay.components;
 
 import java.util.Objects;
 
+import javax.annotation.Nullable;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
@@ -40,6 +42,9 @@ public class AimAssistOverlay extends VehicleOverlayComponent {
     }
 
     private AimAssistOverlay() {}
+    
+    private Vec3 targetWorldPos = null;
+    private int prevTick = 0;
 	
 	@Override
 	protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
@@ -48,26 +53,9 @@ public class AimAssistOverlay extends VehicleOverlayComponent {
 		if (!radar.hasRadar()) return;
 		WeaponData data = vehicle.weaponSystem.getSelected();
 		if (data == null || !data.getType().isAimAssist()) return;
-		Vec3 targetWorldPos = null;
-		Vec3 startPos = vehicle.position().add(UtilAngles.rotateVector(data.getLaunchPos(), vehicle.getQ()));
-		Vec3 startMove = vehicle.getDeltaMovement();
-		Vec3 gravity = new Vec3(0, -DSCPhysicsConstants.GRAVITY, 0);
-		// FIXME 2.1 bullet/bomb air to ground aim assist only works well on flat terrain
-		// FIXME 2.2 should only recalculate the math once per tick/2 ticks
-		// FIXME 2.3 aim assist against air targets on radar
-		double dist = UtilEntity.getDistFromGround(vehicle);
-		if (data.getType().isBomb()) {
-			double[] tickRoots = UtilGeometry.rootsNoI(0.5*gravity.y, startMove.y, dist);
-			if (tickRoots == null) return;
-			double ticks = Math.max(tickRoots[0], tickRoots[1]);
-			targetWorldPos = startPos.add(startMove.scale(ticks)).add(gravity.scale(0.5*ticks*ticks));
-		} else if (data.getType().isBullet()) {
-			startMove = vehicle.getLookAngle().scale(((BulletData)data).getSpeed());
-			double[] tickRoots = UtilGeometry.rootsNoI(0.5*gravity.y, startMove.y, dist);
-			if (tickRoots == null) return;
-			double ticks = Math.max(tickRoots[0], tickRoots[1]);
-			targetWorldPos = startPos.add(startMove.scale(ticks)).add(gravity.scale(0.5*ticks*ticks));
-		}
+		if (vehicle.tickCount != prevTick && vehicle.tickCount % 2 == 0) 
+			targetWorldPos = calcTargetWorldPos(vehicle, data);
+		prevTick = vehicle.tickCount;
 		if (targetWorldPos == null) return;
 		Camera cam = Minecraft.getInstance().gameRenderer.getMainCamera();
         Vec3 view = cam.getPosition();
@@ -93,6 +81,30 @@ public class AimAssistOverlay extends VehicleOverlayComponent {
                 AIM_SIZE, AIM_SIZE,
                 AIM_SIZE, AIM_SIZE);
         poseStack.popPose();
+	}
+	
+	@Nullable
+	protected Vec3 calcTargetWorldPos(EntityVehicle vehicle, WeaponData data) {
+		Vec3 startPos = vehicle.position().add(UtilAngles.rotateVector(data.getLaunchPos(), vehicle.getQ()));
+		Vec3 startMove = vehicle.getDeltaMovement();
+		Vec3 gravity = new Vec3(0, -DSCPhysicsConstants.GRAVITY, 0);
+		// FIXME 2.1 bullet/bomb air to ground aim assist only works well on flat terrain
+		// FIXME 2.2 should only recalculate the math once per tick/2 ticks
+		// FIXME 2.3 aim assist against air targets on radar
+		double dist = UtilEntity.getDistFromGround(vehicle);
+		if (data.getType().isBomb()) {
+			double[] tickRoots = UtilGeometry.rootsNoI(0.5*gravity.y, startMove.y, dist);
+			if (tickRoots == null) return null;
+			double ticks = Math.max(tickRoots[0], tickRoots[1]);
+			return startPos.add(startMove.scale(ticks)).add(gravity.scale(0.5*ticks*ticks));
+		} else if (data.getType().isBullet()) {
+			startMove = vehicle.getLookAngle().scale(((BulletData)data).getSpeed());
+			double[] tickRoots = UtilGeometry.rootsNoI(0.5*gravity.y, startMove.y, dist);
+			if (tickRoots == null) return null;
+			double ticks = Math.max(tickRoots[0], tickRoots[1]);
+			return startPos.add(startMove.scale(ticks)).add(gravity.scale(0.5*ticks*ticks));
+		}
+		return null;
 	}
 
 }

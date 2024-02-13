@@ -60,7 +60,7 @@ public final class DSCKeys {
 		// COMBAT CONTROL
 		shootKey = registerMouse("shoot_key", VEHICLE_COMBAT_CONTROL, InputConstants.MOUSE_BUTTON_RIGHT);
 		weaponSelectKey = registerKey("weapon_select_key", VEHICLE_COMBAT_CONTROL, InputConstants.KEY_G);
-		weaponSelect2Key = registerKey("weapon_select_up_key", VEHICLE_COMBAT_CONTROL, InputConstants.KEY_G+InputConstants.KEY_LSHIFT);
+		weaponSelect2Key = registerKey("weapon_select_up_key", VEHICLE_COMBAT_CONTROL, InputConstants.UNKNOWN.getValue());
 		flareKey = registerKey("flare_key", VEHICLE_COMBAT_CONTROL, InputConstants.KEY_V);
 		radarModeKey = registerKey("radar_mode_key", VEHICLE_COMBAT_CONTROL, InputConstants.KEY_O);
 		pingCycleKey = registerKey("ping_cycle_key", VEHICLE_COMBAT_CONTROL, InputConstants.KEY_I);

@@ -51,7 +51,7 @@ public class AimAssistOverlay extends VehicleOverlayComponent {
 		WeaponData data = vehicle.weaponSystem.getSelected();
 		if (data == null) return;
 		if (!data.getType().isAimAssist()) return;
-		if (vehicle.tickCount != prevTick && vehicle.tickCount % 2 == 0) 
+		if (vehicle.tickCount != prevTick /*&& vehicle.tickCount % 2 == 0*/) 
 			targetWorldPos = calcTargetWorldPos(vehicle, data);
 		prevTick = vehicle.tickCount;
 		if (targetWorldPos == null) return;

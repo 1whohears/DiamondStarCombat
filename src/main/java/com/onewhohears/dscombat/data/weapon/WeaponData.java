@@ -559,6 +559,7 @@ public abstract class WeaponData extends JsonPreset {
 		while (distSqr <= 40000) {
 			distSqr += move.lengthSqr();
 			pos = pos.add(move);
+			if (pos.y < -64) pos = new Vec3(pos.x, -64, pos.z);
 			move = move.add(acc);
 			BlockPos bp = new BlockPos(pos);
 			ChunkPos cp = new ChunkPos(bp);

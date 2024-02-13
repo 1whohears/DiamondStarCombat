@@ -200,4 +200,12 @@ public abstract class PartData {
 				part.discard();
 	}
 	
+	public void setUpPartEntity(EntityPart part, EntityVehicle craft, String slotId, Vec3 pos, float health) {
+		part.setSlotId(slotId);
+		part.setRelativePos(pos);
+		part.setPos(craft.position());
+		part.setHealth(health);
+		part.startRiding(craft);
+	}
+	
 }

@@ -24,17 +24,15 @@ public class TurretData extends SeatData {
 	
 	private final String weaponId;
 	private final String turretEntityKey;
-	private final RotBounds rotBounds;
 	private final float health;
 	private EntityType<? extends EntityTurret> turretType;
 	private int ammo = 0;
 	
 	public TurretData(float weight, ResourceLocation itemid, SlotType[] compatibleSlots, 
-			String turrentEntityKey, String weaponId, RotBounds rotBounds, boolean filled, float health) {
+			String turrentEntityKey, String weaponId, boolean filled, float health) {
 		super(weight, itemid, compatibleSlots);
 		this.weaponId = weaponId;
 		this.turretEntityKey = turrentEntityKey;
-		this.rotBounds = rotBounds;
 		this.health = health;
 		if (filled) {
 			WeaponData data = WeaponPresets.get().getPreset(weaponId);
@@ -84,13 +82,8 @@ public class TurretData extends SeatData {
 			if (part.getSlotId().equals(slotId) && part.getType().equals(getTurretType())) 
 				return (EntityTurret) part;
 		EntityTurret t = getTurretType().create(craft.level);
-		t.setSlotId(slotId);
-		t.setRelativePos(getRelPos());
-		t.setHealth(health);
-		t.setPos(craft.position());
-		t.startRiding(craft);
+		setUpPartEntity(t, craft, slotId, getRelPos(), health);
 		t.setWeaponId(weaponId);
-		t.setRotBounds(rotBounds);
 		craft.level.addFreshEntity(t);
 		return t;
 	}
@@ -108,10 +101,6 @@ public class TurretData extends SeatData {
 	
 	public void setAmmo(int ammo) {
 		this.ammo = ammo;
-	}
-	
-	public RotBounds getRotBounds() {
-		return rotBounds;
 	}
 	
 	public static class RotBounds {

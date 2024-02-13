@@ -25,9 +25,8 @@ public class ExternalRadarPartData extends RadarPartData {
 	public void serverSetup(EntityVehicle craft, String slotId, Vec3 pos) {
 		super.serverSetup(craft, slotId, pos);
 		if (!isEntitySetup(slotId, craft)) {
-			EntityRadar radar = new EntityRadar(getEntityType(), craft.level, slotId, pos);
-			radar.setPos(craft.position());
-			radar.startRiding(craft);
+			EntityRadar radar = (EntityRadar) getEntityType().create(craft.level);
+			setUpPartEntity(radar, craft, slotId, pos, 10);
 			craft.level.addFreshEntity(radar);
 		}
 	}

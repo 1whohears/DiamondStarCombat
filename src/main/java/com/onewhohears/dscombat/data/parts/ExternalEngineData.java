@@ -40,9 +40,8 @@ public class ExternalEngineData extends EngineData {
 	public void serverSetup(EntityVehicle craft, String slotId, Vec3 pos) {
 		super.serverSetup(craft, slotId, pos);
 		if (!isEntitySetup(slotId, craft)) {
-			EntityEngine engine = new EntityEngine(getEntityType(), craft.level, slotId, pos);
-			engine.setPos(craft.position());
-			engine.startRiding(craft);
+			EntityEngine engine = (EntityEngine) getEntityType().create(craft.level);
+			setUpPartEntity(engine, craft, slotId, pos, 15);
 			craft.level.addFreshEntity(engine);
 		}
 	}

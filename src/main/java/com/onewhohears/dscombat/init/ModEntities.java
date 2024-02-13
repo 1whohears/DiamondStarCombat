@@ -7,6 +7,7 @@ import com.onewhohears.dscombat.data.aircraft.presets.CarPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.PlanePresets;
 import com.onewhohears.dscombat.data.aircraft.presets.SubPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.TankPresets;
+import com.onewhohears.dscombat.data.parts.TurretData.RotBounds;
 import com.onewhohears.dscombat.entity.EntityParachute;
 import com.onewhohears.dscombat.entity.aircraft.EntityBoat;
 import com.onewhohears.dscombat.entity.aircraft.EntityGroundVehicle;
@@ -203,43 +204,53 @@ public class ModEntities {
 	
 	public static final RegistryObject<EntityType<EntityTurret>> MINIGUN_TURRET = ENTITIES.register("minigun_turret", 
 			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 
-					Vec3.ZERO, 0.8), 
+					Vec3.ZERO, 0.8,
+					RotBounds.create(2.5f,50f, 50f)), 
 					EntityDimensions.scalable(1.0f, 1.5f)));
 	public static final RegistryObject<EntityType<EntityTurret>> HEAVY_TANK_TURRET = ENTITIES.register("heavy_tank_turret", 
 			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 
-					Vec3.ZERO, 0.5), 
+					Vec3.ZERO, 0.5,
+					RotBounds.create(1.0f, 30f, 30f)), 
 					EntityDimensions.scalable(2.0f, 1.0f)));
 	public static final RegistryObject<EntityType<EntityTurret>> STEVE_UP_SMASH = ENTITIES.register("steve_up_smash", 
 			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 
-					Vec3.ZERO, 3.2), 
+					Vec3.ZERO, 3.2,
+					RotBounds.create(1.8f, 25f, 25f)), 
 					EntityDimensions.scalable(1.0f, 3.5f)));
 	public static final RegistryObject<EntityType<EntityTurret>> SAM_LAUNCHER = ENTITIES.register("sam_launcher", 
 			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 
-					new Vec3(1.2, 0.4, 0), 2.7), 
+					new Vec3(1.2, 0.4, 0), 2.7,
+					RotBounds.create(1.3f, 25f, 25f)), 
 					EntityDimensions.scalable(2.0f, 3.0f)));
 	public static final RegistryObject<EntityType<EntityTurret>> MLS = ENTITIES.register("mls", 
 			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 
-					new Vec3(1.2, 0, 0), 1), 
+					new Vec3(1.2, 0, 0), 1,
+					RotBounds.create(1.9f, 20f, 20f)), 
 					EntityDimensions.scalable(2.0f, 2.5f)));
 	public static final RegistryObject<EntityType<EntityTurret>> TORPEDO_TUBES = ENTITIES.register("torpedo_tubes", 
 			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 
-					new Vec3(0, 1.8, 0), 1), 
+					new Vec3(0, 1.8, 0), 1,
+					RotBounds.create(1.6f, 5f, 5f)), 
 					EntityDimensions.scalable(2.5f, 2.0f)));
 	public static final RegistryObject<EntityType<EntityTurret>> AA_TURRET = ENTITIES.register("aa_turret", 
 			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 
-					new Vec3(0, 0.5, 0), 1.03125), 
+					new Vec3(0, 0.5, 0), 1.03125, 
+					RotBounds.create(3.0f, 30f, 30f)), 
 					EntityDimensions.scalable(1.0f, 1.25f)));
 	public static final RegistryObject<EntityType<EntityTurret>> CIWS = ENTITIES.register("ciws", 
 			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 
-					new Vec3(1, 0.5, 0), 0.6875), 
+					new Vec3(1, 0.5, 0), 0.6875,
+					RotBounds.create(2.0f, 75f, 30f)), 
 					EntityDimensions.scalable(1.5f, 2.5f)));
 	public static final RegistryObject<EntityType<EntityTurret>> MARK7_CANNON = ENTITIES.register("mark7_cannon", 
 			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 
-					new Vec3(0, 1.5, 0), 1.625, ShootType.MARK7), 
+					new Vec3(0, 1.5, 0), 1.625,
+					RotBounds.create(0.9f, 30f, 15f), ShootType.MARK7), 
 					EntityDimensions.scalable(4.0f, 1.7f)));
 	public static final RegistryObject<EntityType<EntityTurret>> MARK45_CANNON = ENTITIES.register("mark45_cannon", 
 			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 
-					new Vec3(0, 1.5, 0), 1.5625), 
+					new Vec3(0, 1.5, 0), 1.5625,
+					RotBounds.create(1.1f, 30f, 15f)), 
 					EntityDimensions.scalable(2.0f, 1.5f)));
 	
 	public static final EntityDimensions TINY = EntityDimensions.scalable(0.1f, 0.1f);

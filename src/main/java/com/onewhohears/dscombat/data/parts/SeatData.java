@@ -27,10 +27,7 @@ public class SeatData extends PartData {
 			return;
 		}
 		EntitySeat seat = ModEntities.SEAT.get().create(craft.level);
-		seat.setSlotId(slotId);
-		seat.setRelativePos(getRelPos());
-		seat.setPos(craft.position());
-		seat.startRiding(craft);
+		setUpPartEntity(seat, craft, slotId, pos, 100000);
 		craft.level.addFreshEntity(seat);
 		//System.out.println("ADDED SEAT "+seat);
 	}

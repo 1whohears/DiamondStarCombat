@@ -34,9 +34,8 @@ public class GimbalPartData extends PartData {
 	public void serverSetup(EntityVehicle craft, String slotId, Vec3 pos) {
 		super.serverSetup(craft, slotId, pos);
 		if (!isEntitySetup(slotId, craft)) {
-			EntityGimbal gimbal = new EntityGimbal(getEntityType(), craft.level, slotId, pos);
-			gimbal.setPos(craft.position());
-			gimbal.startRiding(craft);
+			EntityGimbal gimbal = (EntityGimbal) getEntityType().create(craft.level);
+			setUpPartEntity(gimbal, craft, slotId, pos, 5);
 			craft.level.addFreshEntity(gimbal);
 		}
 	}

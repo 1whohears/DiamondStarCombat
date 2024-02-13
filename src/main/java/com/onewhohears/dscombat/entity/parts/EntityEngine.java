@@ -14,11 +14,6 @@ public class EntityEngine extends EntityPart {
 		super(type, level);
 	}
 	
-	public EntityEngine(EntityType<?> type, Level level, String slotId, Vec3 pos) {
-		super(type, level, slotId, pos);
-		setHealth(10);
-	}
-	
 	@Override
 	public void tick() {
 		super.tick();

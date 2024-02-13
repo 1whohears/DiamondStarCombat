@@ -16,7 +16,6 @@ import com.onewhohears.dscombat.data.aircraft.presets.TankPresets;
 import com.onewhohears.dscombat.data.parts.BuffData.BuffType;
 import com.onewhohears.dscombat.data.parts.EngineData.EngineType;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.data.parts.TurretData.RotBounds;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.item.ItemAircraft;
 import com.onewhohears.dscombat.item.ItemAmmo;
@@ -249,44 +248,34 @@ public class ModItems {
 	// TURRENTS
 	public static final RegistryObject<Item> AA_TURRET = ITEMS.register("aa_turret", 
 			() -> new ItemTurret(1000f, SlotType.TURRET_LIGHT, 
-					ModEntities.AA_TURRET.getId().toString(), "15mm",
-					RotBounds.create(3.0f, 30f, 30f), 20));
+					ModEntities.AA_TURRET.getId().toString(), "15mm", 20));
 	public static final RegistryObject<Item> MINIGUN_TURRET = ITEMS.register("minigun_turret", 
 			() -> new ItemTurret(1500f, SlotType.TURRET_LIGHT, 
-					ModEntities.MINIGUN_TURRET.getId().toString(), "10mm",
-					RotBounds.create(2.5f,50f, 50f), 20));
+					ModEntities.MINIGUN_TURRET.getId().toString(), "10mm", 20));
 	public static final RegistryObject<Item> CIWS = ITEMS.register("ciws", 
 			() -> new ItemTurret(2500f, SlotType.TURRET_LIGHT, 
-					ModEntities.CIWS.getId().toString(), "20mm",
-					RotBounds.create(2.0f, 75f, 30f), 40));
+					ModEntities.CIWS.getId().toString(), "20mm", 40));
 	public static final RegistryObject<Item> MARK45_CANNON = ITEMS.register("mark45_cannon", 
 			() -> new ItemTurret(3000f, SlotType.TURRET_MED, 
-					ModEntities.MARK45_CANNON.getId().toString(), "127mm",
-					RotBounds.create(1.1f, 30f, 15f), 60));
+					ModEntities.MARK45_CANNON.getId().toString(), "127mm", 60));
 	public static final RegistryObject<Item> HEAVY_TANK_TURRET = ITEMS.register("heavy_tank_turret", 
 			() -> new ItemTurret(4000f, SlotType.TURRET_MED, 
-					ModEntities.HEAVY_TANK_TURRET.getId().toString(), "120mmhe",
-					RotBounds.create(1.0f, 30f, 30f), 60));
+					ModEntities.HEAVY_TANK_TURRET.getId().toString(), "120mmhe", 60));
 	public static final RegistryObject<Item> MARK7_CANNON = ITEMS.register("mark7_cannon", 
 			() -> new ItemTurret(4500f, SlotType.TURRET_HEAVY, 
-					ModEntities.MARK7_CANNON.getId().toString(), "406mmhe",
-					RotBounds.create(0.9f, 30f, 15f), 100));
+					ModEntities.MARK7_CANNON.getId().toString(), "406mmhe", 100));
 	public static final RegistryObject<Item> STEVE_UP_SMASH = ITEMS.register("steve_up_smash", 
 			() -> new ItemTurret(5000f, SlotType.TURRET_MED, 
-					ModEntities.STEVE_UP_SMASH.getId().toString(), "aim9p5",
-					RotBounds.create(1.8f, 25f, 25f), 20));
+					ModEntities.STEVE_UP_SMASH.getId().toString(), "aim9p5", 20));
 	public static final RegistryObject<Item> SAM_LAUNCHER = ITEMS.register("sam_launcher", 
 			() -> new ItemTurret(6000f, SlotType.TURRET_HEAVY, 
-					ModEntities.SAM_LAUNCHER.getId().toString(), "pac3",
-					RotBounds.create(1.3f, 25f, 25f), 30));
+					ModEntities.SAM_LAUNCHER.getId().toString(), "pac3", 30));
 	public static final RegistryObject<Item> TORPEDO_TUBES = ITEMS.register("torpedo_tubes", 
 			() -> new ItemTurret(5500f, SlotType.TURRET_MED, 
-					ModEntities.TORPEDO_TUBES.getId().toString(), "torpedo1",
-					RotBounds.create(1.6f, 5f, 5f), 30));
+					ModEntities.TORPEDO_TUBES.getId().toString(), "torpedo1", 30));
 	public static final RegistryObject<Item> MLS = ITEMS.register("mls", 
 			() -> new ItemTurret(6000f, SlotType.TURRET_HEAVY, 
-					ModEntities.MLS.getId().toString(), "rgm84",
-					RotBounds.create(1.9f, 20f, 20f), 30));
+					ModEntities.MLS.getId().toString(), "rgm84", 30));
 	
 	// FLARE DISPENSERS
 	public static final RegistryObject<Item> BASIC_FLARE_DISPENSER = ITEMS.register("basic_flare_dispenser", 

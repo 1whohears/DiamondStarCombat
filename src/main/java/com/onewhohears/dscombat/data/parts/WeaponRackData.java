@@ -29,9 +29,8 @@ public class WeaponRackData extends WeaponPartData {
 		if (data == null) return;
 		data.setChangeLaunchPitch(changeLaunchPitch);
 		if (!isEntitySetup(slotId, craft)) {
-			EntityWeaponRack rack = new EntityWeaponRack(data.getRackEntityType(), craft.level, slotId, pos);
-			rack.setPos(craft.position());
-			rack.startRiding(craft);
+			EntityWeaponRack rack = (EntityWeaponRack) data.getRackEntityType().create(craft.level);
+			setUpPartEntity(rack, craft, slotId, pos, 5);
 			craft.level.addFreshEntity(rack);
 		}
 	}

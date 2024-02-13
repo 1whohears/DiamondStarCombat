@@ -12,9 +12,13 @@ public class PlaneMusicSoundInstance extends DopplerSoundInstance {
 	public final String song;
 	
 	public PlaneMusicSoundInstance(SoundEvent sound, LocalPlayer player, EntityVehicle entity, float velSound) {
-		super(sound, player, entity, SoundSource.RECORDS, 1f, 1f, velSound, 0.000000f);
+		super(sound, player, entity, SoundSource.RECORDS, 1f, 1f, velSound, 0.0001f);
 		song = sound.getLocation().toString();
-		//System.out.println("NEW SOUND INSTANCE: "+song);
+		x = 0;
+		y = 0;
+		z = 0;
+		attenuation = SoundInstance.Attenuation.NONE;
+		relative = true;
 	}
 	
 	@Override
@@ -22,7 +26,6 @@ public class PlaneMusicSoundInstance extends DopplerSoundInstance {
 		EntityVehicle craft = (EntityVehicle)entity;
 		if (!craft.getRadioSong().equals(song)) {
 			stop();
-			//System.out.println("SOUND INSTANCE STOP: old = "+song+" new = "+craft.getRadioSong()+" "+craft.hasRadio);
 			return;
 		}
 		if (craft.isVehicleOf(player)) {

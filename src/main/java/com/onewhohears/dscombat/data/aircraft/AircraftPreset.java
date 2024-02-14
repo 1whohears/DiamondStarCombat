@@ -30,7 +30,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 
 public class AircraftPreset extends JsonPreset{
 
@@ -744,6 +743,14 @@ public class AircraftPreset extends JsonPreset{
 		 */
 		public Builder setBasicEngineSounds(SoundEvent nonPassengerEngine, SoundEvent passengerEngine) {
 			return setBasicEngineSounds(nonPassengerEngine.getLocation(), passengerEngine.getLocation());
+		}
+		/**
+		 * all vehicles 
+		 */
+		public Builder setFighterJetSounds() {
+			getSounds().addProperty("loopSoundType", "fighter_jet");
+			
+			return this;
 		}
 		/**
 		 * all vehicles 

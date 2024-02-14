@@ -71,10 +71,15 @@ public abstract class VehicleLoopingSounds {
 	}
 	
 	public static class FighterJetLooper extends VehicleLoopingSounds {
-		protected SoundEvent externalAfterBurnerClose, externalAfterBurnerFar, externalRPM;
-		protected SoundEvent externalWindClose, externalWindFar;
-		protected SoundEvent cockpitRPM, cockpitAfterBurner;
-		protected SoundEvent cockpitWindSlow, cockpitWindFast;
+		protected SoundEvent externalAfterBurnerClose = ModSounds.ALEXIS_EXT_AFTERBURNER_CLOSE;
+		protected SoundEvent externalAfterBurnerFar = ModSounds.ALEXIS_EXT_AFTERBURNER_FAR;
+		protected SoundEvent externalRPM = ModSounds.ALEXIS_EXT_RPM;
+		protected SoundEvent externalWindClose = ModSounds.ALEXIS_EXT_WIND_CLOSE;
+		protected SoundEvent externalWindFar = ModSounds.ALEXIS_EXT_WIND_FAR;
+		protected SoundEvent cockpitRPM = ModSounds.ALEXIS_CP_RPM;
+		protected SoundEvent cockpitAfterBurner = ModSounds.ALEXIS_CP_AFTERBURNER;
+		protected SoundEvent cockpitWindSlow = ModSounds.ALEXIS_CP_WIND_SLOW;
+		protected SoundEvent cockpitWindFast = ModSounds.ALEXIS_CP_WIND_FAST;
 		protected FighterJetLooper(EntityVehicle parent) {
 			super(parent);
 		}
@@ -88,7 +93,12 @@ public abstract class VehicleLoopingSounds {
 		}
 		@Override
 		protected void onThrottleReset() {
+			UtilClientSafeSounds.nonPassengerVehicleEngineSound(parent, externalRPM, 90);
+			UtilClientSafeSounds.nonPassengerAfterBurnerSound(parent, externalAfterBurnerClose, 90, 0);
+			UtilClientSafeSounds.nonPassengerAfterBurnerSound(parent, externalAfterBurnerFar, 250, 80);
 			
+			UtilClientSafeSounds.passengerVehicleEngineSound(parent, cockpitRPM);
+			UtilClientSafeSounds.passengerAfterBurnerSound(parent, cockpitAfterBurner);
 		}
 		@Override
 		protected void onVelReset() {

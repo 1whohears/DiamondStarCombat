@@ -16,15 +16,24 @@ public class DopplerSoundInstance extends AbstractTickableSoundInstance {
 	protected final Entity entity;
 	protected final float velocitySound;
 	protected final float volDecreaseRate;
+	protected final float minDistSqr;
 	protected float initVolume;
 	protected float initPitch;
 	
 	public DopplerSoundInstance(SoundEvent sound, LocalPlayer player, Entity entity, float initVolume, float initPitch, float velSound) {
-		this(sound, player, entity, SoundSource.PLAYERS, initVolume, initPitch, velSound, 0.000025f);
+		this(sound, player, entity, SoundSource.PLAYERS, initVolume, initPitch, velSound, 128, 0);
+	}
+	
+	public DopplerSoundInstance(SoundEvent sound, LocalPlayer player, Entity entity, float initVolume, float initPitch, float velSound, double range) {
+		this(sound, player, entity, SoundSource.PLAYERS, initVolume, initPitch, velSound, range, 0);
+	}
+	
+	public DopplerSoundInstance(SoundEvent sound, LocalPlayer player, Entity entity, float initVolume, float initPitch, float velSound, double range, float minDist) {
+		this(sound, player, entity, SoundSource.PLAYERS, initVolume, initPitch, velSound, range, minDist);
 	}
 	
 	public DopplerSoundInstance(SoundEvent sound, LocalPlayer player, Entity entity, SoundSource soundSource, 
-			float initVolume, float initPitch, float velSound, float volDecreaseRate) {
+			float initVolume, float initPitch, float velSound, double range, float minDist) {
 		super(sound, soundSource, SoundInstance.createUnseededRandom());
 		this.player = player;
 		this.entity = entity;
@@ -35,7 +44,8 @@ public class DopplerSoundInstance extends AbstractTickableSoundInstance {
 		this.pitch = initPitch;
 		this.initPitch = initPitch;
 		this.velocitySound = velSound;
-		this.volDecreaseRate = volDecreaseRate;
+		this.volDecreaseRate = (float) (1/(range*range));
+		this.minDistSqr = minDist*minDist;
 	}
 
 	@Override
@@ -50,7 +60,10 @@ public class DopplerSoundInstance extends AbstractTickableSoundInstance {
 		z = entity.getZ();
 		// volume
 		float d2 = (float)player.distanceToSqr(entity);
-		volume = initVolume - d2 * volDecreaseRate;
+		if (d2 < minDistSqr) {
+			volume = 0f;
+			return;
+		} else volume = initVolume - d2 * volDecreaseRate;
 		// pitch
 		Vec3 v = entity.position().subtract(player.position());
 		float vp = (float)UtilGeometry.vecCompMagDirByAxis(player.getDeltaMovement(), v);

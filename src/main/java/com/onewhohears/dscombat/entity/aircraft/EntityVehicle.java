@@ -692,13 +692,15 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 * also resets the controls if there isn't a controlling passenger.
 	 */
 	public void tickThrottle() {
-		if (getControllingPassenger() == null || !isOperational()) {
-			resetControls();
-			return;
-		}
-		if (currentFuel <= 0 || isEngineFire()) {
-			throttleToZero();
-			return;
+		if (!isTestMode()) {
+			if (getControllingPassenger() == null || !isOperational()) {
+				resetControls();
+				return;
+			}
+			if (currentFuel <= 0 || isEngineFire()) {
+				throttleToZero();
+				return;
+			}
 		}
 		if (inputs.throttle > 0) increaseThrottle();
 		else if (inputs.throttle < 0) decreaseThrottle();

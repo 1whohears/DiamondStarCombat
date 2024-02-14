@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
 import com.onewhohears.dscombat.Config;
+import com.onewhohears.dscombat.client.sounds.AfterBurnerSoundInstance;
 import com.onewhohears.dscombat.client.sounds.DopplerSoundInstance;
 import com.onewhohears.dscombat.client.sounds.PlaneMusicSoundInstance;
 import com.onewhohears.dscombat.client.sounds.VehicleEngineSoundInstance;
@@ -36,6 +37,14 @@ public class UtilClientSafeSounds {
 				p, entity, initVolume, initPitch, velSound));
 	}
 	
+	public static void nonPassengerVehicleEngineSound(EntityVehicle plane, SoundEvent sound, double range) {
+		Minecraft m = Minecraft.getInstance();
+		LocalPlayer p = m.player;
+		if (p == null) return;
+		m.getSoundManager().play(new VehicleEngineSoundInstance(sound, 
+				p, plane, 10F, false, range, 0));
+	}
+	
 	public static void nonPassengerVehicleEngineSound(EntityVehicle plane, SoundEvent sound) {
 		Minecraft m = Minecraft.getInstance();
 		LocalPlayer p = m.player;
@@ -49,6 +58,22 @@ public class UtilClientSafeSounds {
 		LocalPlayer p = m.player;
 		if (p == null) return;
 		m.getSoundManager().play(new VehicleEngineSoundInstance(sound, 
+				p, plane, 10F, true));
+	}
+	
+	public static void nonPassengerAfterBurnerSound(EntityVehicle plane, SoundEvent sound, double range, float minDist) {
+		Minecraft m = Minecraft.getInstance();
+		LocalPlayer p = m.player;
+		if (p == null) return;
+		m.getSoundManager().play(new AfterBurnerSoundInstance(sound, 
+				p, plane, 10F, false, range, minDist));
+	}
+	
+	public static void passengerAfterBurnerSound(EntityVehicle plane, SoundEvent sound) {
+		Minecraft m = Minecraft.getInstance();
+		LocalPlayer p = m.player;
+		if (p == null) return;
+		m.getSoundManager().play(new AfterBurnerSoundInstance(sound, 
 				p, plane, 10F, true));
 	}
 	

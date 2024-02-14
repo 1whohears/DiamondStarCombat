@@ -12,7 +12,7 @@ public class PlaneMusicSoundInstance extends DopplerSoundInstance {
 	public final String song;
 	
 	public PlaneMusicSoundInstance(SoundEvent sound, LocalPlayer player, EntityVehicle entity, float velSound) {
-		super(sound, player, entity, SoundSource.RECORDS, 1f, 1f, velSound, 0.0001f);
+		super(sound, player, entity, SoundSource.RECORDS, 1f, 1f, velSound, 64, 0);
 		song = sound.getLocation().toString();
 		x = 0;
 		y = 0;

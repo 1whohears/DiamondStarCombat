@@ -29,7 +29,7 @@ public class FelixPresets {
 			.setTurnTorques(1f, 2f, 4f)
 			.setThrottleRate(0.04f, 0.08f)
 			.setPlaneWingArea(23f)
-			.setEngineSounds(ModSounds.JET_1, ModSounds.JET_1)
+			.setBasicEngineSounds(ModSounds.JET_1, ModSounds.JET_1)
 			.setRotationalInertia(4.5f, 9, 3)
 			.setCrashExplosionRadius(5)
 			.set3rdPersonCamDist(17)

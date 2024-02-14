@@ -1,7 +1,5 @@
 package com.onewhohears.dscombat.data.aircraft;
 
-import java.util.NoSuchElementException;
-
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.init.ModSounds;
@@ -9,20 +7,16 @@ import com.onewhohears.dscombat.util.UtilClientSafeSounds;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class VehicleSoundManager {
 	
 	public final EntityVehicle parent;
-	private float prevThrottle = 0;
 	
-	private SoundEvent nonPassengerEngine = ModSounds.BIPLANE_1.get(), passengerEngine = ModSounds.BIPLANE_1.get();
-	
+	private VehicleLoopingSounds loopManager;
 	private PassengerSoundPack passengerSoundPack = PassengerSoundPack.NO_VOICE;
 	
 	public VehicleSoundManager(EntityVehicle parent) {
@@ -31,10 +25,9 @@ public class VehicleSoundManager {
 	
 	public void loadSounds(AircraftPreset acp) {
 		CompoundTag sounds = acp.getDataAsNBT().getCompound("sounds");
-		String nonPassengerEngineId = sounds.getString("nonPassengerEngine");
-		nonPassengerEngine = getSoundById(nonPassengerEngineId, nonPassengerEngine);
-		String passengerEngineId = sounds.getString("passengerEngine");
-		passengerEngine = getSoundById(passengerEngineId, passengerEngine);
+		String loopSoundType = sounds.getString("loopSoundType");
+		loopManager = VehicleLoopingSounds.getByType(loopSoundType, parent);
+		loopManager.load(sounds);
 		if (sounds.contains("passengerSoundPack")) 
 			passengerSoundPack = PassengerSoundPack.getById(sounds.getString("passengerSoundPack"));
 	}
@@ -69,15 +62,11 @@ public class VehicleSoundManager {
 		PassengerSoundPack selectedPack = Config.CLIENT.passengerSoundPack.get();
 		if (selectedPack.isSameAsVehicle()) selectedPack = passengerSoundPack;
 		UtilClientSafeSounds.tickPassengerSounds(parent, selectedPack);
-		tickEngineSound();
+		tickLoopingSounds();
 	}
 	
-	private void tickEngineSound() {
-		if (prevThrottle == 0 && parent.getCurrentThrottle() != 0) {
-			UtilClientSafeSounds.nonPassengerVehicleEngineSound(parent, getNonPassengerEngineSound());
-			UtilClientSafeSounds.passengerVehicleEngineSound(parent, getPassengerEngineSound());
-		}
-		prevThrottle = parent.getCurrentThrottle();
+	protected void tickLoopingSounds() {
+		if (loopManager != null) loopManager.baseTick();
 	}
 	
 	protected void onServerTick() {
@@ -86,26 +75,18 @@ public class VehicleSoundManager {
 	public void onClientInit() {
 	}
 	
-	public SoundEvent getNonPassengerEngineSound() {
-		return nonPassengerEngine;
-	}
-	
-	public SoundEvent getPassengerEngineSound() {
-		return passengerEngine;
-	}
-	
 	public PassengerSoundPack getPassengerSoundPack() {
 		return passengerSoundPack;
 	}
 	
 	public void playRadarLockSound() {
-		UtilClientSafeSounds.playCockpitSound(passengerSoundPack.radarLock.get(), 1f, 1f);
+		UtilClientSafeSounds.playCockpitSound(passengerSoundPack.radarLock, 1f, 1f);
 	}
 	
 	public void onHurt(DamageSource source, float amount) {
 		if (!parent.level.isClientSide && parent.isOperational()) {
 			parent.level.playSound(null, parent.blockPosition(), 
-					ModSounds.VEHICLE_HIT_1.get(), 
+					ModSounds.VEHICLE_HIT_1, 
 					SoundSource.PLAYERS, 
 					0.5f, 1.0f);
 		}
@@ -165,14 +146,6 @@ public class VehicleSoundManager {
 			for (PassengerSoundPack pack : values()) 
 				if (pack.id.equals(id)) return pack;
 			return NO_VOICE;
-		}
-	}
-	
-	public static SoundEvent getSoundById(String id, SoundEvent alt) {
-		try {
-			return ForgeRegistries.SOUND_EVENTS.getDelegate(new ResourceLocation(id)).get().get();
-		} catch(NoSuchElementException e) {
-			return alt;
 		}
 	}
 	

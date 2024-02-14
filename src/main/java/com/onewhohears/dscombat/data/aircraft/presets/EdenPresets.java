@@ -28,7 +28,7 @@ public class EdenPresets {
 			.setTurnTorques(1.5f, 2f, 4f)
 			.setThrottleRate(0.04f, 0.08f)
 			.setPlaneWingArea(38f)
-			.setEngineSounds(ModSounds.JET_1, ModSounds.JET_1)
+			.setBasicEngineSounds(ModSounds.JET_1, ModSounds.JET_1)
 			.setRotationalInertia(4.5f, 8.5f, 2.5f)
 			.setCrashExplosionRadius(5.5f)
 			.set3rdPersonCamDist(19)

@@ -721,10 +721,29 @@ public class AircraftPreset extends JsonPreset{
 		/**
 		 * all vehicles 
 		 */
-		public Builder setEngineSounds(RegistryObject<SoundEvent> nonPassengerEngine, RegistryObject<SoundEvent> passengerEngine) {
-			getSounds().addProperty("nonPassengerEngine", nonPassengerEngine.getId().toString());
-			getSounds().addProperty("passengerEngine", passengerEngine.getId().toString());
+		public Builder setBasicEngineSounds(ResourceLocation nonPassengerEngine, ResourceLocation passengerEngine) {
+			getSounds().addProperty("loopSoundType", "basic");
+			getSounds().addProperty("nonPassengerEngine", nonPassengerEngine.toString());
+			getSounds().addProperty("passengerEngine", passengerEngine.toString());
 			return this;
+		}
+		/**
+		 * all vehicles 
+		 */
+		public Builder setBasicEngineSounds(ResourceLocation engine) {
+			return setBasicEngineSounds(engine, engine);
+		}
+		/**
+		 * all vehicles 
+		 */
+		public Builder setBasicEngineSounds(RegistryObject<SoundEvent> engine) {
+			return setBasicEngineSounds(engine.getId());
+		}
+		/**
+		 * all vehicles 
+		 */
+		public Builder setBasicEngineSounds(RegistryObject<SoundEvent> nonPassengerEngine, RegistryObject<SoundEvent> passengerEngine) {
+			return setBasicEngineSounds(nonPassengerEngine.getId(), passengerEngine.getId());
 		}
 		/**
 		 * all vehicles 

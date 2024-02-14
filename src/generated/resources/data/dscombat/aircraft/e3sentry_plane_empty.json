@@ -323,6 +323,7 @@
   ],
   "sort_factor": 15,
   "sounds": {
+    "loopSoundType": "basic",
     "nonPassengerEngine": "dscombat:jet_1",
     "passengerEngine": "dscombat:jet_1",
     "passengerSoundPack": "eng_male_1"

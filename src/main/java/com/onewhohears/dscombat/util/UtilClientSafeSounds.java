@@ -17,12 +17,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class UtilClientSafeSounds {
@@ -59,12 +57,12 @@ public class UtilClientSafeSounds {
 		LocalPlayer p = m.player;
 		if (p == null) return;
 		m.getSoundManager().play(new PlaneMusicSoundInstance(sound, 
-				p, plane, 40F));
+				p, plane, 10F));
 	}
 	
 	public static void aircraftRadio(EntityVehicle plane, String sound) {
 		try {
-			SoundEvent se = ForgeRegistries.SOUND_EVENTS.getDelegate(new ResourceLocation(sound)).get().get();
+			SoundEvent se = UtilSound.getSoundById(sound, SoundEvents.MUSIC_DISC_BLOCKS);
 			aircraftRadio(plane, se);
 		} catch (NoSuchElementException e) {
 			LOGGER.error("ERROR: "+sound+" does not exist!");

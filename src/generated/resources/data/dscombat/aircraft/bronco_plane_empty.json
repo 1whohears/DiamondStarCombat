@@ -158,6 +158,7 @@
   ],
   "sort_factor": 5,
   "sounds": {
+    "loopSoundType": "basic",
     "nonPassengerEngine": "dscombat:biplane_1",
     "passengerEngine": "dscombat:biplane_1",
     "passengerSoundPack": "eng_non_binary_goober"

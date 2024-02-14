@@ -325,6 +325,7 @@
   ],
   "sort_factor": 4,
   "sounds": {
+    "loopSoundType": "basic",
     "nonPassengerEngine": "dscombat:heli_1",
     "passengerEngine": "dscombat:heli_1",
     "passengerSoundPack": "eng_non_binary_goober"

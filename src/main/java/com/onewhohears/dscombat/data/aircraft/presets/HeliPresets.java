@@ -28,7 +28,7 @@ public class HeliPresets {
 			.setTurnTorques(1f, 1f, 2.5f)
 			.setThrottleRate(0.01f, 0.02f)
 			.setHeliHoverMovement(0.04f, 0.02f)
-			.setEngineSounds(ModSounds.HELI_1, ModSounds.HELI_1)
+			.setBasicEngineSounds(ModSounds.HELI_1, ModSounds.HELI_1)
 			.setRotationalInertia(8, 6, 4)
 			.setCrashExplosionRadius(4)
 			.set3rdPersonCamDist(6)

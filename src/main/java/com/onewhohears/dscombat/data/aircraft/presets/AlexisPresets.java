@@ -29,7 +29,7 @@ public class AlexisPresets {
 			.setTurnTorques(1.5f, 2f, 4f)
 			.setThrottleRate(0.04f, 0.08f)
 			.setPlaneWingArea(28f)
-			.setEngineSounds(ModSounds.JET_1, ModSounds.JET_1)
+			.setBasicEngineSounds(ModSounds.JET_1, ModSounds.JET_1)
 			.setRotationalInertia(4, 8, 2)
 			.setCrashExplosionRadius(5)
 			.set3rdPersonCamDist(17)

@@ -311,6 +311,7 @@
   ],
   "sort_factor": 1,
   "sounds": {
+    "loopSoundType": "basic",
     "nonPassengerEngine": "dscombat:boat_1",
     "passengerEngine": "dscombat:boat_1"
   },

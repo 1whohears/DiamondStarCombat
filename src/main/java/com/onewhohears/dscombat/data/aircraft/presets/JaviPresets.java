@@ -29,7 +29,7 @@ public class JaviPresets {
 			.setTurnTorques(1.5f, 2.5f, 4.5f)
 			.setThrottleRate(0.04f, 0.08f)
 			.setPlaneWingArea(47f)
-			.setEngineSounds(ModSounds.JET_1, ModSounds.JET_1)
+			.setBasicEngineSounds(ModSounds.JET_1, ModSounds.JET_1)
 			.setRotationalInertia(6, 10, 4)
 			.setCrashExplosionRadius(5)
 			.set3rdPersonCamDist(16)

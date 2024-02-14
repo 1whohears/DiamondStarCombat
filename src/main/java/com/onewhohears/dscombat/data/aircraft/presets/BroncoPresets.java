@@ -28,7 +28,7 @@ public class BroncoPresets {
 			.setTurnTorques(1.5f, 2f, 3f)
 			.setThrottleRate(0.03f, 0.07f)
 			.setPlaneWingArea(27f)
-			.setEngineSounds(ModSounds.BIPLANE_1, ModSounds.BIPLANE_1)
+			.setBasicEngineSounds(ModSounds.BIPLANE_1, ModSounds.BIPLANE_1)
 			.setRotationalInertia(6, 10, 5)
 			.setCrashExplosionRadius(4)
 			.set3rdPersonCamDist(14)

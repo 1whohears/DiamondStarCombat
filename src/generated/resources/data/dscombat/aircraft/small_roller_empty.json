@@ -51,6 +51,7 @@
   ],
   "sort_factor": 1,
   "sounds": {
+    "loopSoundType": "basic",
     "nonPassengerEngine": "dscombat:tank_1",
     "passengerEngine": "dscombat:tank_1"
   },

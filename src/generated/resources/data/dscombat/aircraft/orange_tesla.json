@@ -103,6 +103,7 @@
   ],
   "sort_factor": 10,
   "sounds": {
+    "loopSoundType": "basic",
     "nonPassengerEngine": "dscombat:orange_tesla",
     "passengerEngine": "dscombat:orange_tesla"
   },

@@ -22,6 +22,7 @@ import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.UtilParticles;
+import com.onewhohears.dscombat.util.UtilSound;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.core.BlockPos;
@@ -370,9 +371,7 @@ public abstract class WeaponData extends JsonPreset {
 	
 	public SoundEvent getShootSound() {
 		if (shootSound == null) {
-			try { shootSound = ForgeRegistries.SOUND_EVENTS
-					.getDelegate(new ResourceLocation(shootSoundKey)).get().get(); }
-			catch(NoSuchElementException e) { shootSound = ModSounds.BULLET_SHOOT_1.get(); }
+			shootSound = UtilSound.getSoundById(shootSoundKey, ModSounds.BULLET_SHOOT_1.get());
 		}
 		return shootSound;
 	}
@@ -549,7 +548,7 @@ public abstract class WeaponData extends JsonPreset {
 	@Nullable
 	public Vec3 estimateImpactPosition(EntityVehicle vehicle) {
 		if (!getType().isAimAssist()) return null;
-		// FIXME 3.3 aim assist against air targets on radar
+		// TODO 5.8 aim assist against air targets on radar
 		Vec3 startPos = vehicle.position().add(UtilAngles.rotateVector(getLaunchPos(), vehicle.getQBySide()));
 		Vec3 startMove = getStartMove(vehicle);
 		Vec3 acc = getAcc(vehicle);

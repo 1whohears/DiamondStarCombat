@@ -236,6 +236,7 @@
   ],
   "sort_factor": 6,
   "sounds": {
+    "loopSoundType": "basic",
     "nonPassengerEngine": "dscombat:sub_1",
     "passengerEngine": "dscombat:sub_1"
   },

@@ -1,4 +1,58 @@
 {
+  "alexis_cp_afterburner": {
+    "sounds": [
+      "dscombat:vehicle/loop/fighter_jet/alexis_plane/cockpit_afterburner"
+    ],
+    "subtitle": "sounds.dscombat.afterburner"
+  },
+  "alexis_cp_rpm": {
+    "sounds": [
+      "dscombat:vehicle/loop/fighter_jet/alexis_plane/cockpit_rpm"
+    ],
+    "subtitle": "sounds.dscombat.jet_rpm"
+  },
+  "alexis_cp_wind_fast": {
+    "sounds": [
+      "dscombat:vehicle/loop/fighter_jet/alexis_plane/cockpit_wind_fast"
+    ],
+    "subtitle": "sounds.dscombat.jet_wind"
+  },
+  "alexis_cp_wind_slow": {
+    "sounds": [
+      "dscombat:vehicle/loop/fighter_jet/alexis_plane/cockpit_wind_slow"
+    ],
+    "subtitle": "sounds.dscombat.jet_wind"
+  },
+  "alexis_ext_afterburner_close": {
+    "sounds": [
+      "dscombat:vehicle/loop/fighter_jet/alexis_plane/external_afterburner_close"
+    ],
+    "subtitle": "sounds.dscombat.afterburner"
+  },
+  "alexis_ext_afterburner_far": {
+    "sounds": [
+      "dscombat:vehicle/loop/fighter_jet/alexis_plane/external_afterburner_far"
+    ],
+    "subtitle": "sounds.dscombat.afterburner"
+  },
+  "alexis_ext_rpm": {
+    "sounds": [
+      "dscombat:vehicle/loop/fighter_jet/alexis_plane/external_rpm"
+    ],
+    "subtitle": "sounds.dscombat.jet_rpm"
+  },
+  "alexis_ext_wind_close": {
+    "sounds": [
+      "dscombat:vehicle/loop/fighter_jet/alexis_plane/external_wind_close"
+    ],
+    "subtitle": "sounds.dscombat.jet_wind"
+  },
+  "alexis_ext_wind_far": {
+    "sounds": [
+      "dscombat:vehicle/loop/fighter_jet/alexis_plane/external_wind_far"
+    ],
+    "subtitle": "sounds.dscombat.jet_wind"
+  },
   "altitude_gm1": {
     "sounds": [
       "dscombat:cockpit/warnings/generic_male_1/altitude"

@@ -1,0 +1,212 @@
+{
+  "altitude_gm1": {
+    "sounds": [
+      "dscombat:cockpit/warnings/generic_male_1/altitude"
+    ],
+    "subtitle": "sounds.dscombat.altitude"
+  },
+  "altitude_nbg": {
+    "sounds": [
+      "dscombat:cockpit/warnings/non_binary_goober/altitude"
+    ],
+    "subtitle": "sounds.dscombat.altitude"
+  },
+  "bingo_gm1": {
+    "sounds": [
+      "dscombat:cockpit/warnings/generic_male_1/bingo"
+    ],
+    "subtitle": "sounds.dscombat.bingo"
+  },
+  "bingo_nbg": {
+    "sounds": [
+      "dscombat:cockpit/warnings/non_binary_goober/bingo"
+    ],
+    "subtitle": "sounds.dscombat.bingo"
+  },
+  "biplane_1": {
+    "sounds": [
+      "dscombat:vehicle/engine/biplane_1"
+    ],
+    "subtitle": "sounds.dscombat.biplane_1"
+  },
+  "boat_1": {
+    "sounds": [
+      "dscombat:vehicle/engine/boat_1"
+    ],
+    "subtitle": "sounds.dscombat.boat_1"
+  },
+  "bomb_shoot_1": {
+    "sounds": [
+      "dscombat:weapon/bomb_shoot_1"
+    ],
+    "subtitle": "sounds.dscombat.bomb_shoot_1"
+  },
+  "bullet_shoot_1": {
+    "sounds": [
+      "dscombat:weapon/bullet_shoot_1"
+    ],
+    "subtitle": "sounds.dscombat.bullet_shoot_1"
+  },
+  "engine_fire_gm1": {
+    "sounds": [
+      "dscombat:cockpit/warnings/generic_male_1/engine_fire"
+    ],
+    "subtitle": "sounds.dscombat.engine_fire"
+  },
+  "engine_fire_nbg": {
+    "sounds": [
+      "dscombat:cockpit/warnings/non_binary_goober/engine_fire"
+    ],
+    "subtitle": "sounds.dscombat.engine_fire"
+  },
+  "flare_gm1": {
+    "sounds": [
+      "dscombat:cockpit/warnings/generic_male_1/flare"
+    ],
+    "subtitle": "sounds.dscombat.flare"
+  },
+  "flare_nbg": {
+    "sounds": [
+      "dscombat:cockpit/warnings/non_binary_goober/flare"
+    ],
+    "subtitle": "sounds.dscombat.flare"
+  },
+  "fox2_tone_1": {
+    "sounds": [
+      "dscombat:cockpit/radar/fox2_tone_1"
+    ],
+    "subtitle": "sounds.dscombat.fox2_tone_1"
+  },
+  "fuel_leak_gm1": {
+    "sounds": [
+      "dscombat:cockpit/warnings/generic_male_1/fuel_leak"
+    ],
+    "subtitle": "sounds.dscombat.fuel_leak"
+  },
+  "fuel_leak_nbg": {
+    "sounds": [
+      "dscombat:cockpit/warnings/non_binary_goober/fuel_leak"
+    ],
+    "subtitle": "sounds.dscombat.fuel_leak"
+  },
+  "getting_locked": {
+    "sounds": [
+      "dscombat:cockpit/radar/getting_locked"
+    ],
+    "subtitle": "sounds.dscombat.rocket_launch_1"
+  },
+  "heli_1": {
+    "sounds": [
+      "dscombat:vehicle/engine/heli_1"
+    ],
+    "subtitle": "sounds.dscombat.heli_1"
+  },
+  "jet_1": {
+    "sounds": [
+      "dscombat:vehicle/engine/jet_1"
+    ],
+    "subtitle": "sounds.dscombat.jet_1"
+  },
+  "lock_gm1": {
+    "sounds": [
+      "dscombat:cockpit/warnings/generic_male_1/lock"
+    ],
+    "subtitle": "sounds.dscombat.lock"
+  },
+  "lock_nbg": {
+    "sounds": [
+      "dscombat:cockpit/warnings/non_binary_goober/lock"
+    ],
+    "subtitle": "sounds.dscombat.lock"
+  },
+  "missile_knows_where": {
+    "sounds": [
+      {
+        "name": "dscombat:music/missile_knows_where",
+        "stream": true
+      }
+    ],
+    "subtitle": "sounds.dscombat.missile_knows_where"
+  },
+  "missile_warning": {
+    "sounds": [
+      "dscombat:cockpit/radar/missile_warning"
+    ],
+    "subtitle": "sounds.dscombat.missile_warning"
+  },
+  "orange_tesla": {
+    "sounds": [
+      {
+        "name": "dscombat:music/orange_tesla",
+        "stream": true
+      }
+    ],
+    "subtitle": "sounds.dscombat.orange_tesla"
+  },
+  "pull_up_gm1": {
+    "sounds": [
+      "dscombat:cockpit/warnings/generic_male_1/pull_up"
+    ],
+    "subtitle": "sounds.dscombat.pull_up"
+  },
+  "pull_up_nbg": {
+    "sounds": [
+      "dscombat:cockpit/warnings/non_binary_goober/pull_up"
+    ],
+    "subtitle": "sounds.dscombat.pull_up"
+  },
+  "rocket_engine_1": {
+    "sounds": [
+      "dscombat:weapon/rocket_engine_1"
+    ],
+    "subtitle": "sounds.dscombat.rocket_engine_1"
+  },
+  "rocket_launch_1": {
+    "sounds": [
+      "dscombat:weapon/rocket_launch_1"
+    ],
+    "subtitle": "sounds.dscombat.rocket_launch_1"
+  },
+  "stall_alert_gm1": {
+    "sounds": [
+      "dscombat:cockpit/warnings/generic_male_1/stall_alert"
+    ],
+    "subtitle": "sounds.dscombat.stall_alert"
+  },
+  "stall_alert_nbg": {
+    "sounds": [
+      "dscombat:cockpit/warnings/non_binary_goober/stall_alert"
+    ],
+    "subtitle": "sounds.dscombat.stall_alert"
+  },
+  "stall_warning_gm1": {
+    "sounds": [
+      "dscombat:cockpit/warnings/generic_male_1/stall_warn"
+    ],
+    "subtitle": "sounds.dscombat.stall_warn"
+  },
+  "stall_warning_nbg": {
+    "sounds": [
+      "dscombat:cockpit/warnings/non_binary_goober/stall_warn"
+    ],
+    "subtitle": "sounds.dscombat.stall_warn"
+  },
+  "sub_1": {
+    "sounds": [
+      "dscombat:vehicle/engine/sub_1"
+    ],
+    "subtitle": "sounds.dscombat.sub_1"
+  },
+  "tank_1": {
+    "sounds": [
+      "dscombat:vehicle/engine/tank_1"
+    ],
+    "subtitle": "sounds.dscombat.tank_1"
+  },
+  "vehicle_hit": {
+    "sounds": [
+      "dscombat:vehicle/vehicle_hit"
+    ],
+    "subtitle": "sounds.dscombat.vehicle_hit"
+  }
+}

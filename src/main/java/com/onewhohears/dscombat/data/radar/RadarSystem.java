@@ -262,6 +262,12 @@ public class RadarSystem {
 		return clientTargets;
 	}
 	
+	@Nullable
+	public RadarPing getClientSelectedPing() {
+		if (clientSelectedIndex < 0 || clientSelectedIndex >= getClientRadarPings().size()) return null;
+		return getClientRadarPings().get(clientSelectedIndex);
+	}
+	
 	public boolean isClientLocking() {
 		return getClientSelectedPingIndex() != -1;
 	}

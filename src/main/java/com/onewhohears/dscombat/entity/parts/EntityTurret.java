@@ -398,5 +398,10 @@ public class EntityTurret extends EntitySeat {
 		if (getHealth() <= 0) kill();
 		return true;
 	}
+	
+	@Override
+	public boolean isTurret() {
+		return true;
+	}
 
 }

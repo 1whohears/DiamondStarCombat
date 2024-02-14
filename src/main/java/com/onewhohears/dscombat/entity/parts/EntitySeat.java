@@ -205,5 +205,10 @@ public class EntitySeat extends EntityPart {
 		// TODO 4.2 option to change turret camera position. so camera could be under the aircraft
 		return 0;
 	}
+	
+	@Override
+	public boolean isSeat() {
+		return true;
+	}
 
 }

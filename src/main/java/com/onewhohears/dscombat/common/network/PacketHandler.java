@@ -24,7 +24,7 @@ import com.onewhohears.dscombat.common.network.toserver.ToServerCraftWeapon;
 import com.onewhohears.dscombat.common.network.toserver.ToServerDismount;
 import com.onewhohears.dscombat.common.network.toserver.ToServerPingSelect;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSeatPos;
-import com.onewhohears.dscombat.common.network.toserver.ToServerShootTurret;
+import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleShoot;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSwitchSeat;
 import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleTexture;
 
@@ -111,10 +111,10 @@ public final class PacketHandler {
 			.decoder(ToServerCraftPlane::new)
 			.consumerMainThread(ToServerCraftPlane::handle)
 			.add();
-		net.messageBuilder(ToServerShootTurret.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ToServerShootTurret::encode)
-			.decoder(ToServerShootTurret::new)
-			.consumerMainThread(ToServerShootTurret::handle)
+		net.messageBuilder(ToServerVehicleShoot.class, index++, NetworkDirection.PLAY_TO_SERVER)
+			.encoder(ToServerVehicleShoot::encode)
+			.decoder(ToServerVehicleShoot::new)
+			.consumerMainThread(ToServerVehicleShoot::handle)
 			.add();
 		net.messageBuilder(ToClientRWRWarning.class, index++, NetworkDirection.PLAY_TO_CLIENT)
 			.encoder(ToClientRWRWarning::encode)

@@ -9,13 +9,12 @@ import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerDismount;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSeatPos;
-import com.onewhohears.dscombat.common.network.toserver.ToServerShootTurret;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSwitchSeat;
+import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleShoot;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
-import com.onewhohears.dscombat.entity.parts.EntityTurret;
 
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
@@ -44,23 +43,18 @@ public final class ClientInputEvents {
 		final var player = mc.player;
 		if (player == null) return;
 		if (!player.isPassenger() || !(player.getRootVehicle() instanceof EntityVehicle plane)) return;
-
-		int selectNextWeapon = 0;
-		if (DSCKeys.weaponSelect2Key.consumeClick()) selectNextWeapon = -1;
-		else if (DSCKeys.weaponSelectKey.consumeClick()) selectNextWeapon = 1;
+		Entity controller = plane.getControllingPassenger();
+		if (controller == null || !controller.equals(player)) return;
+		
 		boolean openMenu = DSCKeys.planeMenuKey.consumeClick();
 		boolean toggleGear = DSCKeys.landingGear.consumeClick();
 		boolean cycleRadarMode = DSCKeys.radarModeKey.consumeClick();
-
 		if (DSCKeys.mouseModeKey.consumeClick()) DSCClientInputs.cycleMouseMode();
-		Entity controller = plane.getControllingPassenger();
-		if (controller == null || !controller.equals(player)) return;
 		if (DSCKeys.resetMouseKey.isDown()) DSCClientInputs.centerMousePos();
 		else if (mc.screen != null) DSCClientInputs.centerMousePos();
 		double mouseX = mc.mouseHandler.xpos() - DSCClientInputs.getMouseCenterX();
 		double mouseY = -(mc.mouseHandler.ypos() - DSCClientInputs.getMouseCenterY());
 		boolean flare = DSCKeys.flareKey.isDown();
-		boolean shoot = DSCKeys.shootKey.isDown() && playerCanShoot(player);
 		boolean flip = DSCKeys.flipControlsKey.isDown();
 		boolean special = DSCKeys.specialKey.isDown();
 		boolean special2 = DSCKeys.special2Key.isDown();
@@ -138,9 +132,9 @@ public final class ClientInputEvents {
 		if (throttleDown) throttle -= 1;
 		plane.inputs.clientUpdateServerControls(plane, 
 				throttle, pitch, roll, yaw, 
-				flare, shoot, openMenu, special, special2, 
+				flare, openMenu, special, special2, 
 				rollLeft && rollRight, 
-				selectNextWeapon, cycleRadarMode, toggleGear,
+				cycleRadarMode, toggleGear,
 				DSCClientInputs.isCameraLockedForward());
 		if (!DSCClientInputs.isCameraLockedForward()) DSCClientInputs.centerMousePos();
 	}
@@ -171,6 +165,11 @@ public final class ClientInputEvents {
 		if (DSCKeys.changeSeat.consumeClick()) {
 			PacketHandler.INSTANCE.sendToServer(new ToServerSwitchSeat(plane.getId()));
 		}
+		// CYCLE WEAPON
+		int selectNextWeapon = 0;
+		if (DSCKeys.weaponSelect2Key.consumeClick()) selectNextWeapon = -1;
+		else if (DSCKeys.weaponSelectKey.consumeClick()) selectNextWeapon = 1;
+		plane.weaponSystem.selectNextWeapon(selectNextWeapon);
 		// SELECT RADAR PING
 		RadarSystem radar = plane.radarSystem;
 		if (DSCClientInputs.isRadarHovering() && leftTicks == 1) {
@@ -180,10 +179,11 @@ public final class ClientInputEvents {
 		}
 		// CYCLE PING
 		if (DSCKeys.pingCycleKey.consumeClick()) radar.clientSelectNextTarget();
-		// TURRET SHOOT
-		boolean shoot = DSCKeys.shootKey.isDown() && playerCanShoot(player);
-		if (shoot && player.getVehicle() instanceof EntityTurret turret) {
-			PacketHandler.INSTANCE.sendToServer(new ToServerShootTurret(turret));
+		// SHOOT PILOT WEAPON OR TURRET
+		if (DSCKeys.shootKey.isDown() && playerCanShoot(player)) {
+			PacketHandler.INSTANCE.sendToServer(new ToServerVehicleShoot(
+				plane.weaponSystem.getSelectedIndex(), 
+				radar.getClientSelectedPing()));
 		}
 		// DISMOUNT 
 		if (Config.CLIENT.customDismount.get() && DSCKeys.dismount.isDown()) {

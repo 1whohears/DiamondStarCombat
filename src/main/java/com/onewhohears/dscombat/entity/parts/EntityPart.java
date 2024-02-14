@@ -149,6 +149,22 @@ public abstract class EntityPart extends Entity {
 		return PartSlot.isPilotSeat(getSlotId());
 	}
 	
+	public boolean isCoPilotSeat() {
+		return PartSlot.isCoPilotSeat(getSlotId());
+	}
+	
+	public boolean isSeat() {
+		return false;
+	}
+	
+	public boolean isTurret() {
+		return false;
+	}
+	
+	public boolean canPassengerShootParentWeapon() {
+		return isPilotSeat() || isCoPilotSeat();
+	}
+	
 	@Override
     public boolean isAlliedTo(Entity entity) {
     	if (entity == null) return false;

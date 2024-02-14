@@ -98,7 +98,7 @@ public class PlanePresets {
 			.setPlaneLiftAOAGraph(LiftKGraph.E3SENTRY_PLANE_GRAPH)
 			.setPlaneFlapDownAOABias(10)
 			.setPlaneNoseCanAimDown(false)
-			.setDefultPassengerSoundPack(PassengerSoundPack.ENG_NON_BINARY_GOOBER)
+			.setDefultPassengerSoundPack(PassengerSoundPack.ENG_MALE_1)
 			.addIngredient(ModItems.ADVANCED_COCKPIT.getId())
 			.addIngredient(ModItems.SEAT.getId(), 11)
 			.addIngredient(ModItems.LARGE_FUSELAGE.getId(), 2)

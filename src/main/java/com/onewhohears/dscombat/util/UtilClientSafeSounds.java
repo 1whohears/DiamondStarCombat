@@ -23,6 +23,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 public class UtilClientSafeSounds {
 	
@@ -71,6 +72,7 @@ public class UtilClientSafeSounds {
 	}
 	
 	public static void tickPassengerSounds(EntityVehicle vehicle, PassengerSoundPack passengerSoundPack) {
+		if (!vehicle.isOperational()) return;
 		Minecraft m = Minecraft.getInstance();
 		if (!vehicle.equals(m.player.getRootVehicle())) return;
  		// RWR WARNINGS
@@ -118,6 +120,11 @@ public class UtilClientSafeSounds {
 				playCockpitSound(passengerSoundPack.bingoFuel, 1f, 
 					Config.CLIENT.cockpitVoiceLineVol.get().floatValue());
 		}
+	}
+	
+	public static void playCockpitSound(RegistryObject<SoundEvent> sound, float pitch, float volume) {
+		if (sound == null) return;
+		playCockpitSound(sound.get(), pitch, volume);
 	}
 	
 	public static void playCockpitSound(SoundEvent sound, float pitch, float volume) {

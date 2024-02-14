@@ -327,7 +327,7 @@
   "sounds": {
     "nonPassengerEngine": "dscombat:heli_1",
     "passengerEngine": "dscombat:heli_1",
-    "passengerSoundPack": "eng_non_binary_jet_1"
+    "passengerSoundPack": "eng_non_binary_goober"
   },
   "stats": {
     "base_armor": 5.0,

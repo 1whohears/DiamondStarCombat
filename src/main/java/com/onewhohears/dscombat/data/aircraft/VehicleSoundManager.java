@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.data.aircraft;
 
 import java.util.NoSuchElementException;
 
+import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.util.UtilClientSafeSounds;
@@ -13,6 +14,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 public class VehicleSoundManager {
 	
@@ -21,7 +23,7 @@ public class VehicleSoundManager {
 	
 	private SoundEvent nonPassengerEngine = ModSounds.BIPLANE_1.get(), passengerEngine = ModSounds.BIPLANE_1.get();
 	
-	private PassengerSoundPack passengerSoundPack = PassengerSoundPack.NONE;
+	private PassengerSoundPack passengerSoundPack = PassengerSoundPack.NO_VOICE;
 	
 	public VehicleSoundManager(EntityVehicle parent) {
 		this.parent = parent;
@@ -64,7 +66,9 @@ public class VehicleSoundManager {
 	}
 	
 	protected void onClientTick() {
-		if (parent.isOperational()) UtilClientSafeSounds.tickPassengerSounds(parent, passengerSoundPack);
+		PassengerSoundPack selectedPack = Config.CLIENT.passengerSoundPack.get();
+		if (selectedPack.isSameAsVehicle()) selectedPack = passengerSoundPack;
+		UtilClientSafeSounds.tickPassengerSounds(parent, selectedPack);
 		tickEngineSound();
 	}
 	
@@ -95,7 +99,7 @@ public class VehicleSoundManager {
 	}
 	
 	public void playRadarLockSound() {
-		UtilClientSafeSounds.playCockpitSound(passengerSoundPack.radarLock, 1f, 1f);
+		UtilClientSafeSounds.playCockpitSound(passengerSoundPack.radarLock.get(), 1f, 1f);
 	}
 	
 	public void onHurt(DamageSource source, float amount) {
@@ -114,28 +118,34 @@ public class VehicleSoundManager {
 	}
 	
 	public static enum PassengerSoundPack {
-		NONE("none", 
+		SAME_AS_VEHICLE("same_as_vehicle", 
 				null, null, null, null,
 				null, null, null, 
 				null, null, null),
-		ENG_MALE_FIGHT_JET_1("eng_male_fight_jet_1", 
-				ModSounds.MISSILE_WARNING.get(), ModSounds.GETTING_LOCKED.get(), 
-				ModSounds.FOX2_TONE_1.get(), ModSounds.LOCK_GM1.get(),
-				ModSounds.ENGINE_FIRE_GM1.get(), ModSounds.FUEL_LEAK_GM1.get(), ModSounds.BINGO_GM1.get(), 
-				ModSounds.STALL_ALERT_GM1.get(), ModSounds.STALL_WARNING_GM1.get(), ModSounds.PULL_UP_GM1.get()),
-		ENG_NON_BINARY_GOOBER("eng_non_binary_jet_1", 
-				ModSounds.MISSILE_WARNING.get(), ModSounds.GETTING_LOCKED.get(), 
-				ModSounds.FOX2_TONE_1.get(), ModSounds.LOCK_NBG.get(),
-				ModSounds.ENGINE_FIRE_NBG.get(), ModSounds.FUEL_LEAK_NBG.get(), ModSounds.BINGO_NBG.get(), 
-				ModSounds.STALL_ALERT_NBG.get(), ModSounds.STALL_WARNING_NBG.get(), ModSounds.PULL_UP_NBG.get());
+		NO_VOICE("no_voice", 
+				ModSounds.MISSILE_WARNING, ModSounds.GETTING_LOCKED, 
+				ModSounds.FOX2_TONE_1, null,
+				null, null, null, 
+				null, null, null),
+		ENG_NON_BINARY_GOOBER("eng_non_binary_goober", 
+				ModSounds.MISSILE_WARNING, ModSounds.GETTING_LOCKED, 
+				ModSounds.FOX2_TONE_1, ModSounds.LOCK_NBG,
+				ModSounds.ENGINE_FIRE_NBG, ModSounds.FUEL_LEAK_NBG, ModSounds.BINGO_NBG, 
+				ModSounds.STALL_ALERT_NBG, ModSounds.STALL_WARNING_NBG, ModSounds.PULL_UP_NBG),
+		ENG_MALE_1("eng_male_1", 
+				ModSounds.MISSILE_WARNING, ModSounds.GETTING_LOCKED, 
+				ModSounds.FOX2_TONE_1, ModSounds.LOCK_GM1,
+				ModSounds.ENGINE_FIRE_GM1, ModSounds.FUEL_LEAK_GM1, ModSounds.BINGO_GM1, 
+				ModSounds.STALL_ALERT_GM1, ModSounds.STALL_WARNING_GM1, ModSounds.PULL_UP_GM1);
 		public final String id;
-		public final SoundEvent missileAlert, rwrWarn, irLockTone, radarLock;
-		public final SoundEvent engineFire, fuelLeak, bingoFuel;
-		public final SoundEvent stallAlert, stallWarn, pullUp;
+		public final RegistryObject<SoundEvent> missileAlert, rwrWarn, irLockTone, radarLock;
+		public final RegistryObject<SoundEvent> engineFire, fuelLeak, bingoFuel;
+		public final RegistryObject<SoundEvent> stallAlert, stallWarn, pullUp;
 		private PassengerSoundPack(String id, 
-				SoundEvent missileAlert, SoundEvent rwrWarn, SoundEvent irLockTone, SoundEvent radarLock,
-				SoundEvent engineFire, SoundEvent fuelLeak, SoundEvent bingoFuel,
-				SoundEvent stallAlert, SoundEvent stallWarn, SoundEvent pullUp) {
+				RegistryObject<SoundEvent> missileAlert, RegistryObject<SoundEvent> rwrWarn, 
+				RegistryObject<SoundEvent> irLockTone, RegistryObject<SoundEvent> radarLock,
+				RegistryObject<SoundEvent> engineFire, RegistryObject<SoundEvent> fuelLeak, RegistryObject<SoundEvent> bingoFuel,
+				RegistryObject<SoundEvent> stallAlert, RegistryObject<SoundEvent> stallWarn, RegistryObject<SoundEvent> pullUp) {
 			this.id = id;
 			this.missileAlert = missileAlert;
 			this.rwrWarn = rwrWarn;
@@ -148,10 +158,13 @@ public class VehicleSoundManager {
 			this.stallWarn = stallWarn;
 			this.pullUp = pullUp;
 		}
+		public boolean isSameAsVehicle() {
+			return this == SAME_AS_VEHICLE;
+		}
 		public static PassengerSoundPack getById(String id) {
 			for (PassengerSoundPack pack : values()) 
 				if (pack.id.equals(id)) return pack;
-			return NONE;
+			return NO_VOICE;
 		}
 	}
 	

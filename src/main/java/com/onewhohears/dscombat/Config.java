@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager.PassengerSoundPack;
+
 import net.minecraftforge.common.ForgeConfigSpec;
 
 public class Config {
@@ -22,8 +24,10 @@ public class Config {
 		public final ForgeConfigSpec.BooleanValue debugMode;
 		public final ForgeConfigSpec.DoubleValue rwrWarningVol, missileWarningVol, irTargetToneVol;
 		public final ForgeConfigSpec.DoubleValue cockpitVoiceLineVol;
+		public final ForgeConfigSpec.EnumValue<PassengerSoundPack> passengerSoundPack;
 		
 		public Client(ForgeConfigSpec.Builder builder) {
+			builder.push("mouse-joystick-settings");
 			mouseModeMaxRadius = builder
 					.comment("Only for vehicles in Mouse Mode. How far your mouse must move from rest to get a maximum angle.")
 					.defineInRange("mouseModeMaxRadius", 400d, 0, 10000d);
@@ -37,6 +41,8 @@ public class Config {
 					.defineInRange("stickPitchSteps", 5, 1, 100);
 			mouseXSteps = builder
 					.defineInRange("stickRollSteps", 5, 1, 100);
+			builder.pop();
+			builder.push("other");
 			invertY = builder
 					.comment("Invert vertical inputs.")
 					.define("invertY", false);
@@ -49,6 +55,8 @@ public class Config {
 			debugMode = builder
 					.comment("Stats for nerds.")
 					.define("debugMode", false);
+			builder.pop();
+			builder.push("sounds");
 			rwrWarningVol = builder
 					.comment("RWR Warning Sound Volume")
 					.defineInRange("rwrWarningVol", 1, 0, 1d);
@@ -61,6 +69,9 @@ public class Config {
 			cockpitVoiceLineVol = builder
 					.comment("Cockpit Voicelines Volume")
 					.defineInRange("cockpitVoiceLineVol", 1d, 0, 1d);
+			passengerSoundPack = builder
+					.defineEnum("passengerSoundPackOverride", PassengerSoundPack.SAME_AS_VEHICLE);
+			builder.pop();
 		}
 		
 	}
@@ -139,51 +150,11 @@ public class Config {
 		
 	}
 	
-	/*public static class Server {
-		public final ForgeConfigSpec.DoubleValue accGravity;
-		public final ForgeConfigSpec.DoubleValue coDrag;
-		public final ForgeConfigSpec.DoubleValue coStaticFriction;
-		public final ForgeConfigSpec.DoubleValue coKineticFriction;
-		public final ForgeConfigSpec.DoubleValue coLift;
-		public final ForgeConfigSpec.DoubleValue coFloat;
-		public final ForgeConfigSpec.DoubleValue collideSpeedThreshHold;
-		public final ForgeConfigSpec.DoubleValue collideSpeedWithGearThreshHold;
-		public final ForgeConfigSpec.DoubleValue collideDamageRate;
-		public final ForgeConfigSpec.DoubleValue maxFallSpeed;
-		
-		public Server(ForgeConfigSpec.Builder builder) {
-			accGravity = builder
-					.defineInRange("accGravity", 0.025, 0, 1);
-			coDrag = builder
-					.defineInRange("coDrag", 0.015, 0, 100);
-			coStaticFriction = builder
-					.defineInRange("coStaticFriction", 4.10, 0, 100);
-			coKineticFriction = builder
-					.defineInRange("coKineticFriction", 1.50, 0, 100);
-			coLift = builder
-					.defineInRange("lift_constant", 0.0925, 0, 100);
-			coFloat = builder
-					.defineInRange("coFloat", 0.10, 0, 100);
-			collideSpeedThreshHold = builder
-					.defineInRange("collideSpeedThreshHold", 0.5, 0, 10);
-			collideSpeedWithGearThreshHold = builder
-					.defineInRange("collideSpeedWithGearThreshHold", 1.5, 0, 10);
-			collideDamageRate = builder
-					.defineInRange("collideDamageRate", 300.0, 0, 1000);
-			maxFallSpeed = builder
-					.defineInRange("maxFallSpeed", 2.5, 0, 10);
-		}
-		
-	}*/
-	
 	static final ForgeConfigSpec clientSpec;
 	public static final Config.Client CLIENT;
 	
 	static final ForgeConfigSpec commonSpec;
 	public static final Config.Common COMMON;
-
-	//static final ForgeConfigSpec serverSpec;
-	//public static final Config.Server SERVER;
 	
 	static {
         final Pair<Client, ForgeConfigSpec> clientSpecPair = new ForgeConfigSpec.Builder()
@@ -195,11 +166,6 @@ public class Config {
         		.configure(Common::new);
         commonSpec = commonSpecPair.getRight();
         COMMON = commonSpecPair.getLeft();
-
-        /*final Pair<Server, ForgeConfigSpec> serverSpecPair = new ForgeConfigSpec.Builder()
-        		.configure(Server::new);
-        serverSpec = serverSpecPair.getRight();
-        SERVER = serverSpecPair.getLeft();*/
 	}
 	
 }

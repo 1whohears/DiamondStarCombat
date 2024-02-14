@@ -35,7 +35,7 @@ public abstract class VehicleLoopingSounds {
 		prevThrottle = parent.getCurrentThrottle();
 		prevVelSqr = parent.getDeltaMovement().lengthSqr();
 	}
-	public abstract void load(CompoundTag sounds);
+	public abstract void loadPreset(CompoundTag sounds);
 	protected abstract void tick();
 	protected abstract void onThrottleReset();
 	protected abstract void onVelReset();
@@ -51,7 +51,7 @@ public abstract class VehicleLoopingSounds {
 			super(parent);
 		}
 		@Override
-		public void load(CompoundTag sounds) {
+		public void loadPreset(CompoundTag sounds) {
 			String nonPassengerEngineId = sounds.getString("nonPassengerEngine");
 			nonPassengerEngine = UtilSound.getSoundById(nonPassengerEngineId, nonPassengerEngine);
 			String passengerEngineId = sounds.getString("passengerEngine");
@@ -71,16 +71,15 @@ public abstract class VehicleLoopingSounds {
 	}
 	
 	public static class FighterJetLooper extends VehicleLoopingSounds {
-		protected SoundEvent externalAfterBurnerNear, externalAfterBurnerFar;
-		protected SoundEvent externalWindNear, externalWindFar;
-		protected SoundEvent externalGroundedLowRPM;
+		protected SoundEvent externalAfterBurnerClose, externalAfterBurnerFar, externalRPM;
+		protected SoundEvent externalWindClose, externalWindFar;
 		protected SoundEvent cockpitRPM, cockpitAfterBurner;
 		protected SoundEvent cockpitWindSlow, cockpitWindFast;
 		protected FighterJetLooper(EntityVehicle parent) {
 			super(parent);
 		}
 		@Override
-		public void load(CompoundTag sounds) {
+		public void loadPreset(CompoundTag sounds) {
 			
 		}
 		@Override

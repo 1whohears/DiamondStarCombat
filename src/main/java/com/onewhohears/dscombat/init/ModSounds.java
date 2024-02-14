@@ -33,6 +33,16 @@ public class ModSounds {
 	public static final SoundEvent BOAT_1 = registerSoundEvent("boat_1", "vehicle/engine/boat_1", "sounds.dscombat.boat_1");
 	public static final SoundEvent SUB_1 = registerSoundEvent("sub_1", "vehicle/engine/sub_1", "sounds.dscombat.sub_1");
 	
+	public static final SoundEvent ALEXIS_CP_AFTERBURNER = registerSoundEvent("alexis_cp_afterburner", "vehicle/loop/fighter_jet/alexis_plane/cockpit_afterburner", "sounds.dscombat.afterburner");
+	public static final SoundEvent ALEXIS_CP_RPM = registerSoundEvent("alexis_cp_rpm", "vehicle/loop/fighter_jet/alexis_plane/cockpit_rpm", "sounds.dscombat.jet_rpm");
+	public static final SoundEvent ALEXIS_CP_WIND_FAST = registerSoundEvent("alexis_cp_wind_fast", "vehicle/loop/fighter_jet/alexis_plane/cockpit_wind_fast", "sounds.dscombat.jet_wind");
+	public static final SoundEvent ALEXIS_CP_WIND_SLOW = registerSoundEvent("alexis_cp_wind_slow", "vehicle/loop/fighter_jet/alexis_plane/cockpit_wind_slow", "sounds.dscombat.jet_wind");
+	public static final SoundEvent ALEXIS_EXT_AFTERBURNER_CLOSE = registerSoundEvent("alexis_ext_afterburner_close", "vehicle/loop/fighter_jet/alexis_plane/external_afterburner_close", "sounds.dscombat.afterburner");
+	public static final SoundEvent ALEXIS_EXT_AFTERBURNER_FAR = registerSoundEvent("alexis_ext_afterburner_far", "vehicle/loop/fighter_jet/alexis_plane/external_afterburner_far", "sounds.dscombat.afterburner");
+	public static final SoundEvent ALEXIS_EXT_RPM = registerSoundEvent("alexis_ext_rpm", "vehicle/loop/fighter_jet/alexis_plane/external_rpm", "sounds.dscombat.jet_rpm");
+	public static final SoundEvent ALEXIS_EXT_WIND_CLOSE = registerSoundEvent("alexis_ext_wind_close", "vehicle/loop/fighter_jet/alexis_plane/external_wind_close", "sounds.dscombat.jet_wind");
+	public static final SoundEvent ALEXIS_EXT_WIND_FAR = registerSoundEvent("alexis_ext_wind_far", "vehicle/loop/fighter_jet/alexis_plane/external_wind_far", "sounds.dscombat.jet_wind");
+	
 	public static final SoundEvent STALL_ALERT_GM1 = registerSoundEvent("stall_alert_gm1", "cockpit/warnings/generic_male_1/stall_alert", "sounds.dscombat.stall_alert");
 	public static final SoundEvent STALL_WARNING_GM1 = registerSoundEvent("stall_warning_gm1", "cockpit/warnings/generic_male_1/stall_warn", "sounds.dscombat.stall_warn");
 	public static final SoundEvent ENGINE_FIRE_GM1 = registerSoundEvent("engine_fire_gm1", "cockpit/warnings/generic_male_1/engine_fire", "sounds.dscombat.engine_fire");
@@ -70,6 +80,10 @@ public class ModSounds {
 	
 	public static SoundEvent registerSoundEvent(String name, String path, String subtitle) {
 		return registerSoundEvent(name, path, subtitle, false);
+	}
+	
+	public static SoundEvent registerSoundEvent(String name, String path) {
+		return registerSoundEvent(name, path, "sounds."+DSCombatMod.MODID+"."+name, false);
 	}
 	
 	public static SoundEvent registerSoundEvent(String name) {

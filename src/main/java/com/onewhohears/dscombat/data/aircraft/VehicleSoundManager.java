@@ -26,7 +26,7 @@ public class VehicleSoundManager {
 		CompoundTag sounds = acp.getDataAsNBT().getCompound("sounds");
 		String loopSoundType = sounds.getString("loopSoundType");
 		loopManager = VehicleLoopingSounds.getByType(loopSoundType, parent);
-		loopManager.load(sounds);
+		loopManager.loadPreset(sounds);
 		if (sounds.contains("passengerSoundPack")) 
 			passengerSoundPack = PassengerSoundPack.getById(sounds.getString("passengerSoundPack"));
 	}

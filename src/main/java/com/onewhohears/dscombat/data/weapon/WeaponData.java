@@ -371,7 +371,7 @@ public abstract class WeaponData extends JsonPreset {
 	
 	public SoundEvent getShootSound() {
 		if (shootSound == null) {
-			shootSound = UtilSound.getSoundById(shootSoundKey, ModSounds.BULLET_SHOOT_1.get());
+			shootSound = UtilSound.getSoundById(shootSoundKey, ModSounds.BULLET_SHOOT_1);
 		}
 		return shootSound;
 	}

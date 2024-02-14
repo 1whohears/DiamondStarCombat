@@ -183,7 +183,7 @@ public abstract class EntityMissile extends EntityBullet {
 	
 	private void engineSound() {
 		UtilClientSafeSounds.dopplerSound(this, 
-				ModSounds.MISSILE_ENGINE_1.get(), 
+				ModSounds.MISSILE_ENGINE_1, 
 				0.8F, 1.0F, 10F);
 	}
 	

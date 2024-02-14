@@ -45,8 +45,8 @@ public abstract class VehicleLoopingSounds {
 	}
 	
 	public static class BasicLooper extends VehicleLoopingSounds {
-		protected SoundEvent nonPassengerEngine = ModSounds.BIPLANE_1.get();
-		protected SoundEvent passengerEngine = ModSounds.BIPLANE_1.get();
+		protected SoundEvent nonPassengerEngine = ModSounds.BIPLANE_1;
+		protected SoundEvent passengerEngine = ModSounds.BIPLANE_1;
 		protected BasicLooper(EntityVehicle parent) {
 			super(parent);
 		}

@@ -10,7 +10,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraftforge.registries.RegistryObject;
 
 public class VehicleSoundManager {
 	
@@ -119,14 +118,14 @@ public class VehicleSoundManager {
 				ModSounds.ENGINE_FIRE_GM1, ModSounds.FUEL_LEAK_GM1, ModSounds.BINGO_GM1, 
 				ModSounds.STALL_ALERT_GM1, ModSounds.STALL_WARNING_GM1, ModSounds.PULL_UP_GM1);
 		public final String id;
-		public final RegistryObject<SoundEvent> missileAlert, rwrWarn, irLockTone, radarLock;
-		public final RegistryObject<SoundEvent> engineFire, fuelLeak, bingoFuel;
-		public final RegistryObject<SoundEvent> stallAlert, stallWarn, pullUp;
+		public final SoundEvent missileAlert, rwrWarn, irLockTone, radarLock;
+		public final SoundEvent engineFire, fuelLeak, bingoFuel;
+		public final SoundEvent stallAlert, stallWarn, pullUp;
 		private PassengerSoundPack(String id, 
-				RegistryObject<SoundEvent> missileAlert, RegistryObject<SoundEvent> rwrWarn, 
-				RegistryObject<SoundEvent> irLockTone, RegistryObject<SoundEvent> radarLock,
-				RegistryObject<SoundEvent> engineFire, RegistryObject<SoundEvent> fuelLeak, RegistryObject<SoundEvent> bingoFuel,
-				RegistryObject<SoundEvent> stallAlert, RegistryObject<SoundEvent> stallWarn, RegistryObject<SoundEvent> pullUp) {
+				SoundEvent missileAlert, SoundEvent rwrWarn, 
+				SoundEvent irLockTone, SoundEvent radarLock,
+				SoundEvent engineFire, SoundEvent fuelLeak, SoundEvent bingoFuel,
+				SoundEvent stallAlert, SoundEvent stallWarn, SoundEvent pullUp) {
 			this.id = id;
 			this.missileAlert = missileAlert;
 			this.rwrWarn = rwrWarn;

@@ -736,14 +736,14 @@ public class AircraftPreset extends JsonPreset{
 		/**
 		 * all vehicles 
 		 */
-		public Builder setBasicEngineSounds(RegistryObject<SoundEvent> engine) {
-			return setBasicEngineSounds(engine.getId());
+		public Builder setBasicEngineSounds(SoundEvent engine) {
+			return setBasicEngineSounds(engine.getLocation());
 		}
 		/**
 		 * all vehicles 
 		 */
-		public Builder setBasicEngineSounds(RegistryObject<SoundEvent> nonPassengerEngine, RegistryObject<SoundEvent> passengerEngine) {
-			return setBasicEngineSounds(nonPassengerEngine.getId(), passengerEngine.getId());
+		public Builder setBasicEngineSounds(SoundEvent nonPassengerEngine, SoundEvent passengerEngine) {
+			return setBasicEngineSounds(nonPassengerEngine.getLocation(), passengerEngine.getLocation());
 		}
 		/**
 		 * all vehicles 

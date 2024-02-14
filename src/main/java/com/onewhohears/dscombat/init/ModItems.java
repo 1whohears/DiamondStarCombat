@@ -86,10 +86,10 @@ public class ModItems {
 	// IDEA 8.1 Jupiter Missiles and Anadyr from blowback ost
 	// IDEA 8.2 disk 911?
 	public static final RegistryObject<Item> MISSILE_KNOWS_WHERE_DISC = ITEMS.register("the_missile_knows_disc", 
-		() -> new RecordItem(15, () -> ModSounds.MISSILE_KNOWS_WHERE.get(), 
+		() -> new RecordItem(15, () -> ModSounds.MISSILE_KNOWS_WHERE, 
 			(new Item.Properties()).stacksTo(1).tab(CreativeModeTab.TAB_MISC).rarity(Rarity.RARE), 1980));
 	public static final RegistryObject<Item> ORANGE_TESLA_DISC = ITEMS.register("orange_tesla_disc", 
-		() -> new RecordItem(14, () -> ModSounds.ORANGE_TESLA.get(), 
+		() -> new RecordItem(14, () -> ModSounds.ORANGE_TESLA, 
 			(new Item.Properties()).stacksTo(1).tab(CreativeModeTab.TAB_MISC).rarity(Rarity.RARE), 1080));
 	
 	// PARTS

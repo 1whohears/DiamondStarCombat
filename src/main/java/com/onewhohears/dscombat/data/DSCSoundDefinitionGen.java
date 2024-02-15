@@ -25,14 +25,14 @@ public class DSCSoundDefinitionGen extends SoundDefinitionsProvider {
 		soundsFromRegistry.forEach((soundEvent, definition) -> add(soundEvent, definition));
 	}
 	
-	public static void registerSound(SoundEvent soundEvent, String path, String subtitle) {
+	public static void registerSound(SoundEvent soundEvent, String path, String subtitle, float volume) {
 		soundsFromRegistry.put(soundEvent.getLocation().getPath(), definition().subtitle(subtitle).with(
-				sound(new ResourceLocation(DSCombatMod.MODID, path))));
+				sound(new ResourceLocation(DSCombatMod.MODID, path)).volume(volume)));
 	}
 	
-	public static void registerStreamSound(SoundEvent soundEvent, String path, String subtitle) {
+	public static void registerStreamSound(SoundEvent soundEvent, String path, String subtitle, float volume) {
 		soundsFromRegistry.put(soundEvent.getLocation().getPath(), definition().subtitle(subtitle).with(
-				sound(new ResourceLocation(DSCombatMod.MODID, path)).stream()));
+				sound(new ResourceLocation(DSCombatMod.MODID, path)).stream().volume(volume)));
 	}
 
 }

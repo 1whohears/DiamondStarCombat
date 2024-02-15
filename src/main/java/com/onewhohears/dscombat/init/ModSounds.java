@@ -13,8 +13,8 @@ public class ModSounds {
 	
 	public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, DSCombatMod.MODID);
 	
-	public static final SoundEvent ORANGE_TESLA = registerSoundEvent("orange_tesla", "music/orange_tesla", "sounds.dscombat.orange_tesla", true);
-	public static final SoundEvent MISSILE_KNOWS_WHERE = registerSoundEvent("missile_knows_where", "music/missile_knows_where", "sounds.dscombat.missile_knows_where", true);
+	public static final SoundEvent ORANGE_TESLA = registerSoundEvent("orange_tesla", "music/orange_tesla", "sounds.dscombat.orange_tesla", true, 1);
+	public static final SoundEvent MISSILE_KNOWS_WHERE = registerSoundEvent("missile_knows_where", "music/missile_knows_where", "sounds.dscombat.missile_knows_where", true, 1);
 	
 	public static final SoundEvent MISSILE_WARNING = registerSoundEvent("missile_warning", "cockpit/radar/missile_warning", "sounds.dscombat.missile_warning");
 	public static final SoundEvent GETTING_LOCKED = registerSoundEvent("getting_locked", "cockpit/radar/getting_locked", "sounds.dscombat.rocket_launch_1");
@@ -33,10 +33,10 @@ public class ModSounds {
 	public static final SoundEvent BOAT_1 = registerSoundEvent("boat_1", "vehicle/engine/boat_1", "sounds.dscombat.boat_1");
 	public static final SoundEvent SUB_1 = registerSoundEvent("sub_1", "vehicle/engine/sub_1", "sounds.dscombat.sub_1");
 	
-	public static final SoundEvent ALEXIS_CP_AFTERBURNER = registerSoundEvent("alexis_cp_afterburner", "vehicle/loop/fighter_jet/alexis_plane/cockpit_afterburner", "sounds.dscombat.afterburner");
-	public static final SoundEvent ALEXIS_CP_RPM = registerSoundEvent("alexis_cp_rpm", "vehicle/loop/fighter_jet/alexis_plane/cockpit_rpm", "sounds.dscombat.jet_rpm");
-	public static final SoundEvent ALEXIS_CP_WIND_FAST = registerSoundEvent("alexis_cp_wind_fast", "vehicle/loop/fighter_jet/alexis_plane/cockpit_wind_fast", "sounds.dscombat.jet_wind");
-	public static final SoundEvent ALEXIS_CP_WIND_SLOW = registerSoundEvent("alexis_cp_wind_slow", "vehicle/loop/fighter_jet/alexis_plane/cockpit_wind_slow", "sounds.dscombat.jet_wind");
+	public static final SoundEvent ALEXIS_CP_AFTERBURNER = registerSoundEvent("alexis_cp_afterburner", "vehicle/loop/fighter_jet/alexis_plane/cockpit_afterburner", "sounds.dscombat.afterburner", 0.2f);
+	public static final SoundEvent ALEXIS_CP_RPM = registerSoundEvent("alexis_cp_rpm", "vehicle/loop/fighter_jet/alexis_plane/cockpit_rpm", "sounds.dscombat.jet_rpm", 0.05f);
+	public static final SoundEvent ALEXIS_CP_WIND_FAST = registerSoundEvent("alexis_cp_wind_fast", "vehicle/loop/fighter_jet/alexis_plane/cockpit_wind_fast", "sounds.dscombat.jet_wind", 0.14f);
+	public static final SoundEvent ALEXIS_CP_WIND_SLOW = registerSoundEvent("alexis_cp_wind_slow", "vehicle/loop/fighter_jet/alexis_plane/cockpit_wind_slow", "sounds.dscombat.jet_wind", 0.04f);
 	public static final SoundEvent ALEXIS_EXT_AFTERBURNER_CLOSE = registerSoundEvent("alexis_ext_afterburner_close", "vehicle/loop/fighter_jet/alexis_plane/external_afterburner_close", "sounds.dscombat.afterburner");
 	public static final SoundEvent ALEXIS_EXT_AFTERBURNER_FAR = registerSoundEvent("alexis_ext_afterburner_far", "vehicle/loop/fighter_jet/alexis_plane/external_afterburner_far", "sounds.dscombat.afterburner");
 	public static final SoundEvent ALEXIS_EXT_RPM = registerSoundEvent("alexis_ext_rpm", "vehicle/loop/fighter_jet/alexis_plane/external_rpm", "sounds.dscombat.jet_rpm");
@@ -67,23 +67,27 @@ public class ModSounds {
 		SOUND_EVENTS.register(eventBus);
 	}
 	
-	public static SoundEvent registerSoundEvent(String name, String path, String subtitle, boolean stream) {
+	public static SoundEvent registerSoundEvent(String name, String path, String subtitle, boolean stream, float volume) {
 		SoundEvent soundEvent = new SoundEvent(new ResourceLocation(DSCombatMod.MODID, name));
 		SOUND_EVENTS.register(name, () -> soundEvent);
 		if (path != null) {
 			if (subtitle == null) subtitle = "";
-			if (stream) DSCSoundDefinitionGen.registerStreamSound(soundEvent, path, subtitle);
-			else DSCSoundDefinitionGen.registerSound(soundEvent, path, subtitle);
+			if (stream) DSCSoundDefinitionGen.registerStreamSound(soundEvent, path, subtitle, volume);
+			else DSCSoundDefinitionGen.registerSound(soundEvent, path, subtitle, volume);
 		}
 		return soundEvent;
 	}
 	
 	public static SoundEvent registerSoundEvent(String name, String path, String subtitle) {
-		return registerSoundEvent(name, path, subtitle, false);
+		return registerSoundEvent(name, path, subtitle, false, 1);
+	}
+	
+	public static SoundEvent registerSoundEvent(String name, String path, String subtitle, float volume) {
+		return registerSoundEvent(name, path, subtitle, false, volume);
 	}
 	
 	public static SoundEvent registerSoundEvent(String name, String path) {
-		return registerSoundEvent(name, path, "sounds."+DSCombatMod.MODID+"."+name, false);
+		return registerSoundEvent(name, path, "sounds."+DSCombatMod.MODID+"."+name, false, 1);
 	}
 	
 	public static SoundEvent registerSoundEvent(String name) {

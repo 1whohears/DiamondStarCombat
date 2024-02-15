@@ -47,28 +47,30 @@ public class ClientCameraEvents {
 		}
 		if (!(player.getRootVehicle() instanceof EntityVehicle plane)) return;
 		float pt = (float)event.getPartialTick();
-		boolean isController = player.equals(plane.getControllingPassenger());
 		boolean detached = !m.options.getCameraType().isFirstPerson();
 		boolean mirrored = m.options.getCameraType().isMirrored();
 		float camYOffset = 0;
+		boolean isPilot = false, isCopilot = false;
+		if (player.getVehicle() instanceof EntitySeat seat) {
+			isPilot = seat.isPilotSeat();
+			isCopilot = seat.isCoPilotSeat();
+			if (DSCClientInputs.isGimbalMode()) camYOffset = seat.getCameraYOffset();
+		}
 		if ((prevGimbal != null && prevGimbal.isRemoved())
 				|| (!DSCClientInputs.isGimbalMode() && !m.getCameraEntity().equals(player))) {
 			m.setCameraEntity(player);
 			prevGimbal = null;
 		}
-		if (DSCClientInputs.isGimbalMode()) {
-			if (isController && plane.getGimbalForPilotCamera() != null) {
-				EntityGimbal gimbal = plane.getGimbalForPilotCamera();
-				if (!m.getCameraEntity().equals(gimbal)) m.setCameraEntity(gimbal);
-				gimbal.setXRot(player.getViewXRot(pt));
-				gimbal.setYRot(player.getViewYRot(pt));
-				prevGimbal = gimbal;
-				camYOffset = -0.2f;
-			} else if (player.getVehicle() instanceof EntitySeat seat) {
-				camYOffset = seat.getCameraYOffset();
-			}
+		if (DSCClientInputs.isGimbalMode() && (isPilot || isCopilot || camYOffset == 0) 
+				&& plane.getGimbalForPilotCamera() != null) {
+			EntityGimbal gimbal = plane.getGimbalForPilotCamera();
+			if (!m.getCameraEntity().equals(gimbal)) m.setCameraEntity(gimbal);
+			gimbal.setXRot(player.getViewXRot(pt));
+			gimbal.setYRot(player.getViewYRot(pt));
+			prevGimbal = gimbal;
+			camYOffset = -0.2f;
 		} 
-		if (isController && DSCClientInputs.isCameraLockedForward()) {
+		if (isPilot && DSCClientInputs.isCameraLockedForward()) {
 			float xi = UtilAngles.lerpAngle(pt, plane.xRotO, plane.getXRot());
 			float yi = UtilAngles.lerpAngle180(pt, plane.yRotO, plane.getYRot());
 			player.setXRot(xi);
@@ -77,7 +79,7 @@ public class ClientCameraEvents {
 			player.yRotO = yi;
 			event.setPitch(xi);
 			event.setYaw(yi);
-		} else if (isController && DSCClientInputs.isCameraFreeRelative()) {
+		} else if (isPilot && DSCClientInputs.isCameraFreeRelative()) {
 			// TODO 4.1 making third person work in mouse mode (again, àla garry's mod WAC planes)
 			float ptDiff = ptDiff(pt, ptOld);
 			float planeXRotDiff = plane.getXRot()-plane.xRotO;
@@ -102,7 +104,7 @@ public class ClientCameraEvents {
 		if (detached && mirrored) zi *= -1;
 		event.setRoll(zi);
 		double camDist = plane.getVehicleStats().cameraDistance;
-		if (detached && isController && camDist > 4) {
+		if (detached && isPilot && camDist > 4) {
 			double vehicleCamDist = Math.min(0, 4-getMaxDist(event.getCamera(), player, camDist));
 			event.getCamera().move(vehicleCamDist, 0, 0);
 		}

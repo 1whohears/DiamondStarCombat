@@ -4,6 +4,7 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.LiftKGraph;
 import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager.PassengerSoundPack;
+import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
@@ -46,7 +47,7 @@ public class EdenPresets {
 			.addIngredient("minecraft:light_gray_dye", 6)
 			.addIngredient("minecraft:gold_ingot", 16)
 			.addPilotSeatSlot(0, 0.3, 8.5)
-			.addSeatSlot("seat2", 0, 0.4, 6.8)
+			.addSeatSlot(PartSlot.COPILOT_SLOT_NAME, 0, 0.4, 6.8)
 			.addEmptySlot("left_wing_1", SlotType.WING, 3, 0.05, 0.4, 180)
 			.addEmptySlot("left_wing_2", SlotType.WING, 4, 0.05, -0.4, 180)
 			.addEmptySlot("left_wing_3", SlotType.WING, 5, 0.05, -1.2, 180)

@@ -10,6 +10,7 @@ import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.client.overlay.WeaponTabComponent;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 
 import net.minecraft.network.chat.Component;
@@ -39,13 +40,16 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
 
     @Override
     protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
-    	double yPlacement = screenHeight - TAB_HEIGHT - 13;
+        if (!(getPlayerVehicle() instanceof EntitySeat seat)) return;
+        double yPlacement = screenHeight - TAB_HEIGHT - 13;
         int blitPosition = 1;
-    	if (getPlayerVehicle() instanceof EntityTurret turret && turret.getWeaponData() != null) {
-    		drawWeapon(poseStack, turret.getWeaponData(), yPlacement, blitPosition);
-    		return;
-    	}
-        if (!(getPlayerRootVehicle() instanceof EntityVehicle vehicle)) return;
+        if (seat.isTurret()) {
+        	drawWeapon(poseStack, ((EntityTurret)seat).getWeaponData(), yPlacement, blitPosition);
+        	return;
+        }
+        if (!seat.canPassengerShootParentWeapon()) return;
+    	EntityVehicle vehicle = seat.getParentVehicle();
+    	if (vehicle == null) return;
 
         List<WeaponData> weapons = vehicle.weaponSystem.getWeapons();
         WeaponData selectedWeapon = vehicle.weaponSystem.getSelected();
@@ -102,6 +106,7 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
     }
     
     private static void drawWeapon(PoseStack poseStack, WeaponData selectedWeapon, double yPlacement, int blitPosition) {
+    	if (selectedWeapon == null) return;
     	WeaponTabComponent.drawWeaponName(poseStack, selectedWeapon.getDisplayNameComponent(), 13, yPlacement, blitPosition - 2);
         WeaponTabComponent.drawTab(poseStack, 13, yPlacement, blitPosition, 0, false);
         WeaponTabComponent.drawWeapon(poseStack, selectedWeapon, 13, yPlacement, blitPosition + 1, 0, false, false, false);

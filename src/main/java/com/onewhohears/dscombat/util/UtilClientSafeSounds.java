@@ -10,6 +10,7 @@ import com.onewhohears.dscombat.client.sounds.AfterBurnerSoundInstance;
 import com.onewhohears.dscombat.client.sounds.DopplerSoundInstance;
 import com.onewhohears.dscombat.client.sounds.PlaneMusicSoundInstance;
 import com.onewhohears.dscombat.client.sounds.VehicleEngineSoundInstance;
+import com.onewhohears.dscombat.client.sounds.VehicleWindSoundInstance;
 import com.onewhohears.dscombat.data.aircraft.DSCPhysicsConstants;
 import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
@@ -75,6 +76,22 @@ public class UtilClientSafeSounds {
 		if (p == null) return;
 		m.getSoundManager().play(new AfterBurnerSoundInstance(sound, 
 				p, plane, 10F, true));
+	}
+	
+	public static void nonPassengerWindSound(EntityVehicle plane, SoundEvent sound, double range, float minDist) {
+		Minecraft m = Minecraft.getInstance();
+		LocalPlayer p = m.player;
+		if (p == null) return;
+		m.getSoundManager().play(new VehicleWindSoundInstance(sound, 
+				p, plane, 10F, false, range, minDist, 0));
+	}
+	
+	public static void passengerWindSound(EntityVehicle plane, SoundEvent sound, double minSpeed) {
+		Minecraft m = Minecraft.getInstance();
+		LocalPlayer p = m.player;
+		if (p == null) return;
+		m.getSoundManager().play(new VehicleWindSoundInstance(sound, 
+				p, plane, 10F, true, minSpeed));
 	}
 	
 	public static void aircraftRadio(EntityVehicle plane, SoundEvent sound) {

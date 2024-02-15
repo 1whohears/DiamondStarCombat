@@ -59,10 +59,13 @@ public class DopplerSoundInstance extends AbstractTickableSoundInstance {
 		y = entity.getY();
 		z = entity.getZ();
 		// volume
+		float minLess = minDistSqr - 400;
 		float d2 = (float)player.distanceToSqr(entity);
-		if (d2 < minDistSqr) {
+		if (d2 <= minLess) {
 			volume = 0f;
 			return;
+		} else if (d2 > minLess && d2 < minDistSqr) {
+			volume = initVolume * (d2 - minLess) *  0.01f;
 		} else volume = initVolume - d2 * volDecreaseRate;
 		// pitch
 		Vec3 v = entity.position().subtract(player.position());

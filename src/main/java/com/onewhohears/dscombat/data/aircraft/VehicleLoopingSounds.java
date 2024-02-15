@@ -30,7 +30,7 @@ public abstract class VehicleLoopingSounds {
 	}
 	public void baseTick() {
 		if (prevThrottle == 0 && parent.getCurrentThrottle() != 0) onThrottleReset();
-		if (prevVelSqr == 0 && parent.getDeltaMovement().lengthSqr() > 0) onVelReset();
+		if (prevVelSqr <= 0.01 && parent.getDeltaMovement().lengthSqr() > 0.01) onVelReset();
 		tick();
 		prevThrottle = parent.getCurrentThrottle();
 		prevVelSqr = parent.getDeltaMovement().lengthSqr();
@@ -99,10 +99,15 @@ public abstract class VehicleLoopingSounds {
 			
 			UtilClientSafeSounds.passengerVehicleEngineSound(parent, cockpitRPM);
 			UtilClientSafeSounds.passengerAfterBurnerSound(parent, cockpitAfterBurner);
+			
 		}
 		@Override
 		protected void onVelReset() {
+			UtilClientSafeSounds.nonPassengerWindSound(parent, externalWindClose, 90, 0);
+			UtilClientSafeSounds.nonPassengerWindSound(parent, externalWindFar, 250, 80);
 			
+			UtilClientSafeSounds.passengerWindSound(parent, cockpitWindSlow, 0);
+			UtilClientSafeSounds.passengerWindSound(parent, cockpitWindFast, 1);
 		}
 	}
 	

@@ -48,11 +48,6 @@ public class FuelTankData extends PartData {
 	public boolean isSetup(String slotId, EntityVehicle craft) {
 		return false;
 	}
-
-	/*@Override
-	public ItemStack getItemStack() {
-		return null;
-	}*/
 	
 	/**
 	 * @param fuel

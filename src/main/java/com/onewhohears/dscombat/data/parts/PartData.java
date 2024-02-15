@@ -37,7 +37,8 @@ public abstract class PartData {
 		EXTERNAL_ENGINE,
 		BUFF_DATA,
 		EXTERNAL_RADAR,
-		GIMBAL;
+		GIMBAL,
+		STORAGE_BOX;
 		
 		public boolean isSeat() {
 			return this == SEAT || this == TURRENT;

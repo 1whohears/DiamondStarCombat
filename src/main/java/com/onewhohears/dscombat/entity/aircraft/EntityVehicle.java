@@ -27,7 +27,7 @@ import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftCollide;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftMoveRot;
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
-import com.onewhohears.dscombat.data.aircraft.DSCPhysicsConstants;
+import com.onewhohears.dscombat.data.aircraft.DSCPhyCons;
 import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
 import com.onewhohears.dscombat.data.aircraft.VehicleInputManager;
 import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager;
@@ -544,9 +544,9 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		if (verticalCollision) verticalCollision();
 		if (horizontalCollision && !minorHorizontalCollision) {
 			double speed = prevMotion.horizontalDistance();
-			double th = DSCPhysicsConstants.COLLIDE_SPEED;
+			double th = DSCPhyCons.COLLIDE_SPEED;
 			if (speed > th) {
-				float amount = (float)((speed-th)*DSCPhysicsConstants.COLLIDE_DAMAGE_RATE);
+				float amount = (float)((speed-th)*DSCPhyCons.COLLIDE_DAMAGE_RATE);
 				collideHurt(amount, false);
 			}
 		}
@@ -554,14 +554,14 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	protected void verticalCollision() {
 		double my = Math.abs(prevMotion.y);
-		double th = DSCPhysicsConstants.COLLIDE_SPEED;
+		double th = DSCPhyCons.COLLIDE_SPEED;
 		if (isOperational() && isLandingGear() 
 				&& Mth.abs(getXRot()) < 15f
 				&& Mth.abs(zRot) < 15f) {
-			th = DSCPhysicsConstants.COLLIDE_SPEED_GEAR;
+			th = DSCPhyCons.COLLIDE_SPEED_GEAR;
 		}
 		if (my > th) {
-			float amount = (float)((my-th)*DSCPhysicsConstants.COLLIDE_DAMAGE_RATE);
+			float amount = (float)((my-th)*DSCPhyCons.COLLIDE_DAMAGE_RATE);
 			collideHurt(amount, true);
 		}
 	}
@@ -671,8 +671,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		if (velXZ > maxXZ) motionXZ = motionXZ.scale(maxXZ / velXZ);
 		
 		double my = move.y;
-		if (my > DSCPhysicsConstants.MAX_CLIMB_SPEED) my = DSCPhysicsConstants.MAX_CLIMB_SPEED;
-		else if (my < -DSCPhysicsConstants.MAX_FALL_SPEED) my = -DSCPhysicsConstants.MAX_FALL_SPEED;
+		if (my > DSCPhyCons.MAX_CLIMB_SPEED) my = DSCPhyCons.MAX_CLIMB_SPEED;
+		else if (my < -DSCPhyCons.MAX_FALL_SPEED) my = -DSCPhyCons.MAX_FALL_SPEED;
 		else if (Math.abs(my) < 0.001) my = 0;
 		
 		if (onGround && my < 0) my = -0.01; // THIS MUST BE BELOW ZERO
@@ -877,8 +877,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 */
 	protected void calcMoveStatsPre(Quaternion q) {
 		totalMass = getEmptyVehicleMass() + partsManager.getPartsWeight();
-		staticFric = totalMass * DSCPhysicsConstants.GRAVITY * DSCPhysicsConstants.STATIC_FRICTION;
-		kineticFric = totalMass * DSCPhysicsConstants.GRAVITY * DSCPhysicsConstants.KINETIC_FRICTION;
+		staticFric = totalMass * DSCPhyCons.GRAVITY * DSCPhyCons.STATIC_FRICTION;
+		kineticFric = totalMass * DSCPhyCons.GRAVITY * DSCPhyCons.KINETIC_FRICTION;
 		maxPushThrust = partsManager.getTotalPushThrust();
 		maxSpinThrust = partsManager.getTotalSpinThrust();
 		currentFuel = partsManager.getCurrentFuel();
@@ -991,7 +991,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		} else {
 			setDeltaMovement(n.scale(xzSpeed*xzSpeedDir + getDriveAcc()));
 			if (getCurrentThrottle() == 0 && xzSpeed != 0) 
-				addFrictionForce(DSCPhysicsConstants.DRIVE_FRICTION);
+				addFrictionForce(DSCPhyCons.DRIVE_FRICTION);
 		}
 		if (isBraking() && isOperational()) applyBreaks();
 	}
@@ -1135,8 +1135,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		// Drag = (drag coefficient) * (air pressure) * (speed)^2 * (wing surface area) / 2
 		double speedSqr = getDeltaMovement().lengthSqr();
 		double d = airPressure * speedSqr * getCrossSectionArea();
-		if (isInWater()) d *= DSCPhysicsConstants.DRAG_WATER;
-		else d *= DSCPhysicsConstants.DRAG;
+		if (isInWater()) d *= DSCPhyCons.DRAG_WATER;
+		else d *= DSCPhyCons.DRAG;
 		return d;
 	}
 	
@@ -1155,7 +1155,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 * @return srly bro you dont know what this is?
 	 */
 	public Vec3 getWeightForce() {
-		return new Vec3(0, -getTotalMass() * DSCPhysicsConstants.GRAVITY, 0);
+		return new Vec3(0, -getTotalMass() * DSCPhyCons.GRAVITY, 0);
 	}
 	
 	/**

@@ -6,7 +6,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.command.DSCGameRules;
-import com.onewhohears.dscombat.data.aircraft.DSCPhysicsConstants;
+import com.onewhohears.dscombat.data.aircraft.DSCPhyCons;
 import com.onewhohears.dscombat.data.weapon.BulletData;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
@@ -99,7 +99,7 @@ public class TurretShootGoal extends Goal {
 			if (accountGravity && wd != null && wd.getType().isBullet()) {
 				double speed = ((BulletData)wd).getSpeed();
 				if (speed <= 0) speed = 0.01;
-				double g = -DSCPhysicsConstants.GRAVITY;
+				double g = -DSCPhyCons.GRAVITY;
 				Vec3 diff = targetPos.subtract(origin);
 				double r = diff.horizontalDistance();
 				double h = diff.y;

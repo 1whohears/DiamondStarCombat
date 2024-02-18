@@ -5,6 +5,7 @@ import java.util.List;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.command.DSCGameRules;
+import com.onewhohears.dscombat.data.aircraft.DSCPhyCons;
 import com.onewhohears.dscombat.data.weapon.MissileData;
 import com.onewhohears.dscombat.data.weapon.NonTickingMissileManager;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
@@ -183,8 +184,8 @@ public abstract class EntityMissile extends EntityBullet {
 	
 	private void engineSound() {
 		UtilClientSafeSounds.dopplerSound(this, 
-				ModSounds.MISSILE_ENGINE_1, 
-				0.8F, 1.0F, 10F);
+				ModSounds.MISSILE_ENGINE_1, 0.8F, 1.0F, 
+				DSCPhyCons.VEL_SOUND, true);
 	}
 	
 	@Override

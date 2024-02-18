@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.data.aircraft;
 
-public class DSCPhysicsConstants {
+public class DSCPhyCons {
 	
 	public static final float GRAVITY = 0.08f;
 	
@@ -20,5 +20,7 @@ public class DSCPhysicsConstants {
 	
 	public static final float MAX_FALL_SPEED = 2.5f;
 	public static final float MAX_CLIMB_SPEED = 1.5f;
+	
+	public static final float VEL_SOUND = 10f;
 	
 }

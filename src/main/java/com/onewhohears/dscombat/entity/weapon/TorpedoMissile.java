@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.entity.weapon;
 
-import com.onewhohears.dscombat.data.aircraft.DSCPhysicsConstants;
+import com.onewhohears.dscombat.data.aircraft.DSCPhyCons;
 import com.onewhohears.dscombat.data.weapon.TorpedoData;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource;
@@ -30,7 +30,7 @@ public class TorpedoMissile extends TrackEntityMissile {
 		if (isInWater()) super.tickSetMove();
 		else {
 			Vec3 cm = getDeltaMovement();
-			cm = cm.add(0, -DSCPhysicsConstants.GRAVITY, 0);
+			cm = cm.add(0, -DSCPhyCons.GRAVITY, 0);
 			setDeltaMovement(cm);
 		}
 	}

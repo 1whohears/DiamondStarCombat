@@ -4,11 +4,11 @@ import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.util.UtilClientSafeSounds;
+import com.onewhohears.dscombat.util.UtilSound;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 
 public class VehicleSoundManager {
@@ -84,10 +84,8 @@ public class VehicleSoundManager {
 	
 	public void onHurt(DamageSource source, float amount) {
 		if (!parent.level.isClientSide && parent.isOperational()) {
-			parent.level.playSound(null, parent.blockPosition(), 
-					ModSounds.VEHICLE_HIT_1, 
-					SoundSource.PLAYERS, 
-					0.5f, 1.0f);
+			UtilSound.sendDelayedSound(ModSounds.VEHICLE_HIT_1, parent.position(), 
+					160, parent.level.dimension(), 0.5f, 1f);
 		}
 	}
 	

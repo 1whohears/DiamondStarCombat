@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.entity.weapon;
 
-import com.onewhohears.dscombat.data.aircraft.DSCPhysicsConstants;
+import com.onewhohears.dscombat.data.aircraft.DSCPhyCons;
 import com.onewhohears.dscombat.data.weapon.BombData;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource;
@@ -28,7 +28,7 @@ public class EntityBomb extends EntityBullet {
 	
 	@Override
 	protected void tickSetMove() {
-		setDeltaMovement(getDeltaMovement().add(0, -DSCPhysicsConstants.GRAVITY, 0));
+		setDeltaMovement(getDeltaMovement().add(0, -DSCPhyCons.GRAVITY, 0));
 	}
 	
 	@Override

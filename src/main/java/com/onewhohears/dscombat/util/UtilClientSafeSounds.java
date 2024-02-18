@@ -11,7 +11,7 @@ import com.onewhohears.dscombat.client.sounds.DopplerSoundInstance;
 import com.onewhohears.dscombat.client.sounds.PlaneMusicSoundInstance;
 import com.onewhohears.dscombat.client.sounds.VehicleEngineSoundInstance;
 import com.onewhohears.dscombat.client.sounds.VehicleWindSoundInstance;
-import com.onewhohears.dscombat.data.aircraft.DSCPhysicsConstants;
+import com.onewhohears.dscombat.data.aircraft.DSCPhyCons;
 import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 
@@ -30,12 +30,14 @@ public class UtilClientSafeSounds {
 	private static final Logger LOGGER = LogUtils.getLogger();
 	
 	public static void dopplerSound(Entity entity, SoundEvent sound, 
-			float initVolume, float initPitch, float velSound) {
+			float initVolume, float initPitch, float velSound, boolean delayed) {
 		Minecraft m = Minecraft.getInstance();
 		LocalPlayer p = m.player;
 		if (p == null) return;
-		m.getSoundManager().play(new DopplerSoundInstance(sound, 
-				p, entity, initVolume, initPitch, velSound));
+		int delay = 0;
+		if (delayed) delay = (int)(p.distanceTo(entity) / DSCPhyCons.VEL_SOUND);
+		m.getSoundManager().playDelayed(new DopplerSoundInstance(sound, 
+				p, entity, initVolume, initPitch, velSound), delay);
 	}
 	
 	public static void nonPassengerVehicleEngineSound(EntityVehicle plane, SoundEvent sound, double range) {
@@ -43,7 +45,7 @@ public class UtilClientSafeSounds {
 		LocalPlayer p = m.player;
 		if (p == null) return;
 		m.getSoundManager().play(new VehicleEngineSoundInstance(sound, 
-				p, plane, 10F, false, range, 0));
+				p, plane, DSCPhyCons.VEL_SOUND, false, range, 0));
 	}
 	
 	public static void nonPassengerVehicleEngineSound(EntityVehicle plane, SoundEvent sound) {
@@ -51,7 +53,7 @@ public class UtilClientSafeSounds {
 		LocalPlayer p = m.player;
 		if (p == null) return;
 		m.getSoundManager().play(new VehicleEngineSoundInstance(sound, 
-				p, plane, 10F, false));
+				p, plane, DSCPhyCons.VEL_SOUND, false));
 	}
 	
 	public static void passengerVehicleEngineSound(EntityVehicle plane, SoundEvent sound) {
@@ -59,7 +61,7 @@ public class UtilClientSafeSounds {
 		LocalPlayer p = m.player;
 		if (p == null) return;
 		m.getSoundManager().play(new VehicleEngineSoundInstance(sound, 
-				p, plane, 10F, true));
+				p, plane, DSCPhyCons.VEL_SOUND, true));
 	}
 	
 	public static void nonPassengerAfterBurnerSound(EntityVehicle plane, SoundEvent sound, double range, float minDist) {
@@ -67,7 +69,7 @@ public class UtilClientSafeSounds {
 		LocalPlayer p = m.player;
 		if (p == null) return;
 		m.getSoundManager().play(new AfterBurnerSoundInstance(sound, 
-				p, plane, 10F, false, range, minDist));
+				p, plane, DSCPhyCons.VEL_SOUND, false, range, minDist));
 	}
 	
 	public static void passengerAfterBurnerSound(EntityVehicle plane, SoundEvent sound) {
@@ -75,7 +77,7 @@ public class UtilClientSafeSounds {
 		LocalPlayer p = m.player;
 		if (p == null) return;
 		m.getSoundManager().play(new AfterBurnerSoundInstance(sound, 
-				p, plane, 10F, true));
+				p, plane, DSCPhyCons.VEL_SOUND, true));
 	}
 	
 	public static void nonPassengerWindSound(EntityVehicle plane, SoundEvent sound, double range, float minDist) {
@@ -83,7 +85,7 @@ public class UtilClientSafeSounds {
 		LocalPlayer p = m.player;
 		if (p == null) return;
 		m.getSoundManager().play(new VehicleWindSoundInstance(sound, 
-				p, plane, 10F, false, range, minDist, 0));
+				p, plane, DSCPhyCons.VEL_SOUND, false, range, minDist, 0));
 	}
 	
 	public static void passengerWindSound(EntityVehicle plane, SoundEvent sound, double minSpeed) {
@@ -91,7 +93,7 @@ public class UtilClientSafeSounds {
 		LocalPlayer p = m.player;
 		if (p == null) return;
 		m.getSoundManager().play(new VehicleWindSoundInstance(sound, 
-				p, plane, 10F, true, minSpeed));
+				p, plane, DSCPhyCons.VEL_SOUND, true, minSpeed));
 	}
 	
 	public static void aircraftRadio(EntityVehicle plane, SoundEvent sound) {
@@ -99,7 +101,7 @@ public class UtilClientSafeSounds {
 		LocalPlayer p = m.player;
 		if (p == null) return;
 		m.getSoundManager().play(new PlaneMusicSoundInstance(sound, 
-				p, plane, 10F));
+				p, plane, DSCPhyCons.VEL_SOUND));
 	}
 	
 	public static void aircraftRadio(EntityVehicle plane, String sound) {
@@ -139,7 +141,7 @@ public class UtilClientSafeSounds {
 					Config.CLIENT.cockpitVoiceLineVol.get().floatValue());
 			} }
 			// PULL UP
-			if (vehicle.getDeltaMovement().y <= -DSCPhysicsConstants.COLLIDE_SPEED 
+			if (vehicle.getDeltaMovement().y <= -DSCPhyCons.COLLIDE_SPEED 
 					&& vehicle.tickCount % 13 == 0
 					&& UtilEntity.getDistFromGround(vehicle) / -vehicle.getDeltaMovement().y <= 80) {
 				playCockpitSound(passengerSoundPack.pullUp, 1f, 

@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.command.DSCGameRules;
-import com.onewhohears.dscombat.data.aircraft.DSCPhysicsConstants;
+import com.onewhohears.dscombat.data.aircraft.DSCPhyCons;
 import com.onewhohears.dscombat.data.aircraft.VehicleStats;
 import com.onewhohears.dscombat.data.aircraft.VehicleStats.PlaneStats;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource.WeaponDamageType;
@@ -126,7 +126,7 @@ public class EntityPlane extends EntityVehicle {
 	protected void calculateLift(Quaternion q) {
 		// Lift = (angle of attack coefficient) * (air density) * (speed)^2 * (wing surface area) / 2
 		double wing = getWingSurfaceArea();
-		liftMag = liftK * airPressure * airFoilSpeedSqr * wing * DSCPhysicsConstants.LIFT;
+		liftMag = liftK * airPressure * airFoilSpeedSqr * wing * DSCPhyCons.LIFT;
 		Vec3 lift = getLiftForce(q);
 		Vec3 cenAxis = UtilAngles.getRollAxis(0, (getYRot()+90)*Mth.DEG_TO_RAD);
 		centripetalForce = (float) UtilGeometry.vecCompMagDirByNormAxis(lift, cenAxis);
@@ -140,7 +140,7 @@ public class EntityPlane extends EntityVehicle {
 	}
 	
 	public Vec3 getLiftForce(Quaternion q) {
-		double cenScale = DSCPhysicsConstants.CENTRIPETAL_SCALE;
+		double cenScale = DSCPhyCons.CENTRIPETAL_SCALE;
 		Vec3 liftForce = liftDir.scale(getLiftMag())
 			.multiply(cenScale, 1, cenScale);
 		return liftForce;

@@ -6,6 +6,7 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientAddPart;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAircraftControl;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAircraftFuel;
 import com.onewhohears.dscombat.common.network.toclient.ToClientDataPackSynch;
+import com.onewhohears.dscombat.common.network.toclient.ToClientDelayedSound;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRWRWarning;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRadarPings;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRemovePart;
@@ -24,8 +25,8 @@ import com.onewhohears.dscombat.common.network.toserver.ToServerCraftWeapon;
 import com.onewhohears.dscombat.common.network.toserver.ToServerDismount;
 import com.onewhohears.dscombat.common.network.toserver.ToServerPingSelect;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSeatPos;
-import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleShoot;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSwitchSeat;
+import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleShoot;
 import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleTexture;
 
 import net.minecraft.resources.ResourceLocation;
@@ -180,6 +181,11 @@ public final class PacketHandler {
 			.encoder(ToClientSynchGameRules::encode)
 			.decoder(ToClientSynchGameRules::new)
 			.consumerMainThread(ToClientSynchGameRules::handle)
+			.add();
+		net.messageBuilder(ToClientDelayedSound.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ToClientDelayedSound::encode)
+			.decoder(ToClientDelayedSound::new)
+			.consumerMainThread(ToClientDelayedSound::handle)
 			.add();
 	}
 	

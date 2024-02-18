@@ -14,7 +14,7 @@ import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponAmmo;
 import com.onewhohears.dscombat.crafting.DSCIngredient;
 import com.onewhohears.dscombat.data.JsonPreset;
-import com.onewhohears.dscombat.data.aircraft.DSCPhysicsConstants;
+import com.onewhohears.dscombat.data.aircraft.DSCPhyCons;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.init.DataSerializers;
@@ -33,7 +33,6 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
@@ -180,9 +179,7 @@ public abstract class WeaponData extends JsonPreset {
 				direction, vehicle, false, false));
 		if (w == null) return false;
 		level.addFreshEntity(w);
-		level.playSound(null, w.blockPosition(), 
-				getShootSound(), SoundSource.PLAYERS, 
-				1f, 1f);
+		playShootSound(level, w.position());
 		setLaunchSuccess(1, owner, consume);
 		updateClientAmmo(vehicle);
 		vehicle.lastShootTime = vehicle.tickCount;
@@ -199,12 +196,14 @@ public abstract class WeaponData extends JsonPreset {
 				pos, direction, vehicle, ignoreRecoil, true));
 		if (w == null) return false;
 		level.addFreshEntity(w);
-		level.playSound(null, w.blockPosition(), 
-				getShootSound(), SoundSource.PLAYERS, 
-				1f, 1f);
+		playShootSound(level, w.position());
 		setLaunchSuccess(1, owner, consume);
 		if (vehicle != null) vehicle.lastShootTime = vehicle.tickCount;
 		return true;
+	}
+	
+	public void playShootSound(Level level, Vec3 pos) {
+		UtilSound.sendDelayedSound(getShootSound(), pos, 160, level.dimension(), 1, 1);
 	}
 	
 	public void updateClientAmmo(EntityVehicle vehicle) {
@@ -576,7 +575,7 @@ public abstract class WeaponData extends JsonPreset {
 	}
 	
 	protected Vec3 getAcc(EntityVehicle vehicle) {
-		return new Vec3(0, -DSCPhysicsConstants.GRAVITY, 0);
+		return new Vec3(0, -DSCPhyCons.GRAVITY, 0);
 	}
 	
 }

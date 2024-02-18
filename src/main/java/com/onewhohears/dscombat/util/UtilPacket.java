@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.util;
 import java.util.List;
 
 import com.onewhohears.dscombat.client.screen.VehiclePaintScreen;
+import com.onewhohears.dscombat.data.aircraft.DSCPhyCons;
 import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
 import com.onewhohears.dscombat.data.aircraft.VehicleInputManager;
 import com.onewhohears.dscombat.data.aircraft.VehicleTextureManager;
@@ -15,6 +16,10 @@ import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
@@ -137,6 +142,20 @@ public class UtilPacket {
 	public static void weaponImpact(WeaponData.WeaponClientImpactType impactType, Vec3 pos) {
 		Minecraft m = Minecraft.getInstance();
 		impactType.onClientImpact(m.level, pos);
+	}
+	
+	public static void delayedSound(String soundId, Vec3 pos, float range, float volume, float pitch) {
+		SoundEvent sound = UtilSound.getSoundById(soundId, null);
+		if (sound == null) return;
+		Minecraft m = Minecraft.getInstance();
+		float dist = (float) m.getCameraEntity().position().distanceTo(pos);
+		float vmod = 1 - dist / range;
+		if (vmod < 0) vmod = 0;
+		SimpleSoundInstance ssi = new SimpleSoundInstance(sound, SoundSource.PLAYERS, 
+				volume*vmod, pitch, RandomSource.create(UtilParticles.random.nextLong()), 
+				pos.x, pos.y, pos.z);
+		int delay = (int)(dist  / DSCPhyCons.VEL_SOUND);
+		m.getSoundManager().playDelayed(ssi, delay);
 	}
 	
 }

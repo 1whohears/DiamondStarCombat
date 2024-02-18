@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.data.aircraft.DSCPhysicsConstants;
+import com.onewhohears.dscombat.data.aircraft.DSCPhyCons;
 import com.onewhohears.dscombat.data.aircraft.VehicleStats;
 import com.onewhohears.dscombat.data.aircraft.VehicleStats.BoatStats;
 import com.onewhohears.dscombat.util.math.UtilAngles;
@@ -68,7 +68,7 @@ public class EntityBoat extends EntityVehicle {
 	
 	protected void tickFloat() {
 		Vec3 weightF = getWeightForce();
-		float F = getBbWidth()*getBbWidth()*DSCPhysicsConstants.FLOAT;
+		float F = getBbWidth()*getBbWidth()*DSCPhyCons.FLOAT;
 		float maxF = F*getBbHeight();
 		if (maxF < Math.abs(weightF.y)) {
 			forces = forces.add(0, maxF, 0);

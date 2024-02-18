@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.entity.weapon;
 
-import com.onewhohears.dscombat.data.aircraft.DSCPhysicsConstants;
+import com.onewhohears.dscombat.data.aircraft.DSCPhyCons;
 import com.onewhohears.dscombat.data.weapon.BulletData;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource;
@@ -33,22 +33,19 @@ public class EntityBullet extends EntityWeapon {
 	
 	@Override
 	protected void tickSetMove() {
-		setDeltaMovement(getDeltaMovement().add(0, -DSCPhysicsConstants.GRAVITY, 0));
+		setDeltaMovement(getDeltaMovement().add(0, -DSCPhyCons.GRAVITY, 0));
 	}
 	
 	protected void checkExplode() {
 		if (getAge() < minExplodeAge()) return;
 		if (!level.hasChunk(chunkPosition().x, chunkPosition().z)) return;
-		if (getExplosive()) {
-			if (!level.isClientSide) {
-				Explosion.BlockInteraction interact = Explosion.BlockInteraction.NONE;
-				if (getTerrain()) interact = Explosion.BlockInteraction.BREAK;
-				for (int i = 0; i < getExplodeNum(); ++i) {
-					level.explode(this, getExplosionDamageSource(),
-						null, getX(), getY(), getZ(), 
-						getRadius(), getFire(), interact);
-				}
-				//System.out.println("EXPLODE "+this+" "+tickCount);
+		if (!level.isClientSide && getExplosive()) {
+			Explosion.BlockInteraction interact = Explosion.BlockInteraction.NONE;
+			if (getTerrain()) interact = Explosion.BlockInteraction.BREAK;
+			for (int i = 0; i < getExplodeNum(); ++i) {
+				level.explode(this, getExplosionDamageSource(),
+					null, getX(), getY(), getZ(), 
+					getRadius(), getFire(), interact);
 			}
 		}
 	}

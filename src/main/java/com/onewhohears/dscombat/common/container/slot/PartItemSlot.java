@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.common.container.slot;
 
-import com.onewhohears.dscombat.common.container.AircraftMenuContainer;
+import com.onewhohears.dscombat.common.container.menu.VehicleContainerMenu;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.util.UtilParse;
@@ -11,10 +11,10 @@ import net.minecraft.world.item.ItemStack;
 
 public class PartItemSlot extends Slot {
 	
-	public final AircraftMenuContainer menu;
+	public final VehicleContainerMenu menu;
 	public final PartSlot data;
 	
-	public PartItemSlot(AircraftMenuContainer menu, int slot, PartSlot data, int x, int y) {
+	public PartItemSlot(VehicleContainerMenu menu, int slot, PartSlot data, int x, int y) {
 		super(menu.getPlaneInventory(), slot, x, y);
 		this.menu = menu;
 		this.data = data;

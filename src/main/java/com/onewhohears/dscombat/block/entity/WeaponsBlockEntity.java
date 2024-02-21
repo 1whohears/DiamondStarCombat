@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.block.entity;
 
-import com.onewhohears.dscombat.common.container.WeaponsBlockMenuContainer;
+import com.onewhohears.dscombat.common.container.menu.WeaponsBlockContainerMenu;
 import com.onewhohears.dscombat.init.ModBlockEntities;
 
 import net.minecraft.core.BlockPos;
@@ -25,7 +25,7 @@ public class WeaponsBlockEntity extends SyncedBlockEntity implements MenuProvide
 
 	@Override
 	public AbstractContainerMenu createMenu(int containerId, Inventory playerInventory, Player player) {
-		return new WeaponsBlockMenuContainer(containerId, playerInventory, this);
+		return new WeaponsBlockContainerMenu(containerId, playerInventory, this);
 	}
 	
 	public NonNullList<ItemStack> getInventory() {

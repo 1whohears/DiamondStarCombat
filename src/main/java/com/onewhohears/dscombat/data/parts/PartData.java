@@ -93,6 +93,10 @@ public abstract class PartData {
 		return getType() == PartType.GIMBAL;
 	}
 	
+	public boolean isStorageBox() {
+		return getType() == PartType.STORAGE_BOX;
+	}
+	
 	public boolean isRadio() {
 		return false;
 	}

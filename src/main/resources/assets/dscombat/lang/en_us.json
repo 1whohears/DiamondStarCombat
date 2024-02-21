@@ -21,6 +21,7 @@
 	"error.dscombat.water_target_only": "This Weapon only tracks Targets in Water",
 	"error.dscombat.unknown_preset": "Unknown Preset!",
 	"error.dscombat.cant_item_yet": "Can't become an item yet! Wait for cooldown.",
+	"error.dscombat.no_storage_boxes": "This Vehicle has No Storage Boxes",
 	
 	"slottype.dscombat.frame": "Frame",
 	"slottype.dscombat.internal": "Internal",
@@ -150,7 +151,8 @@
 	"block.dscombat.weapons_block": "Weapons Workbench",
 	"block.dscombat.aircraft_block": "Aircraft Workbench",
 	
-	"container.dscombat.plane_menu": "Aircraft Menu",
+	"container.dscombat.plane_menu": "Vehicle Menu",
+	"container.dscombat.vehicle_storage": "Vehicle Storage",
 	"container.dscombat.weapons_block_menu": "Weapons Workbench",
 	"container.dscombat.aircraft_block_menu": "Aircraft Workbench",
 	
@@ -188,6 +190,10 @@
 	"item.dscombat.gas_can": "Gas Can",
 	"item.dscombat.big_gas_can": "Big Gas Can",
 	"item.dscombat.big_ass_can": "Big Ass Can",
+	
+	"item.dscombat.small_storage_box": "Small Storage Box",
+	"item.dscombat.medium_storage_box": "Medium Storage Box",
+	"item.dscombat.large_storage_box": "Large Storage Box",
 	
 	"item.dscombat.light_fuel_tank": "Light Fuel Tank",
 	"item.dscombat.heavy_fuel_tank": "Heavy Fuel Tank",
@@ -402,6 +408,7 @@
 	"key.dscombat.ping_cycle_key": "Lock Target",
 	"key.dscombat.radar_display_range_key": "Cycle Radar Display Range",
 	"key.dscombat.gimbal_key": "Gimbal Mode",
+	"key.dscombat.vehicle_storage_key": "Vehicle Storage",
 	
 	"sounds.dscombat.missile_warning": "Missile Warning",
 	"sounds.dscombat.getting_locked": "Getting Locked",

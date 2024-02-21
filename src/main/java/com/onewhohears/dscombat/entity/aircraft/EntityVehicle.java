@@ -17,7 +17,7 @@ import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.model.obj.ObjRadarModel.MastType;
 import com.onewhohears.dscombat.command.DSCGameRules;
-import com.onewhohears.dscombat.common.container.AircraftMenuContainer;
+import com.onewhohears.dscombat.common.container.menu.VehicleContainerMenu;
 import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddForceMoment;
@@ -35,6 +35,7 @@ import com.onewhohears.dscombat.data.aircraft.VehicleStats;
 import com.onewhohears.dscombat.data.aircraft.VehicleTextureManager;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartsManager;
+import com.onewhohears.dscombat.data.parts.StorageBoxData;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarMode;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
@@ -178,7 +179,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	// TODO 2.5 add chaff
 	// TODO 2.7 cargo system
 	// TODO 2.8 external fuel tanks
-	// TODO 8.4 speed of sound system (client doesn't hear sound until "sound wave" reaches the player)
 	
 	public EntityVehicle(EntityType<? extends EntityVehicle> entityType, Level level, String defaultPreset) {
 		super(entityType, level);
@@ -1207,14 +1207,30 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 	
 	public void openMenu(ServerPlayer player) {
-		if (canOpenMenu()) {
-			NetworkHooks.openScreen(player, 
-				new SimpleMenuProvider((windowId, playerInv, p) -> 
-						new AircraftMenuContainer(windowId, playerInv), 
-				Component.translatable("container.dscombat.plane_menu")));
-		} else player.displayClientMessage(
-				Component.translatable(getOpenMenuError()), 
-				true);
+		if (!canOpenMenu()) {
+			player.displayClientMessage(Component.translatable(getOpenMenuError()), true);
+			return;
+		}
+		NetworkHooks.openScreen(player, 
+			new SimpleMenuProvider((windowId, playerInv, p) -> 
+				new VehicleContainerMenu(windowId, playerInv), 
+			Component.translatable("container.dscombat.plane_menu")));
+	}
+	
+	public void openStorage(ServerPlayer player) {
+		if (!canOpenMenu()) {
+			player.displayClientMessage(Component.translatable(getOpenMenuError()), true);
+			return;
+		}
+		StorageBoxData box = partsManager.cycleStorageData();
+		if (box == null) {
+			player.displayClientMessage(Component.translatable("error.dscombat.no_storage_boxes"), true);
+			return;
+		}
+		NetworkHooks.openScreen(player, 
+			new SimpleMenuProvider((windowId, playerInventory, p) -> 
+				box.createMenu(windowId, playerInventory), 
+			Component.translatable("container.dscombat.vehicle_storage")));
 	}
 	
 	public boolean canOpenMenu() {

@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.common.container;
+package com.onewhohears.dscombat.common.container.menu;
 
 import java.util.List;
 
@@ -17,13 +17,13 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
-public class AircraftMenuContainer extends AbstractContainerMenu {
+public class VehicleContainerMenu extends AbstractContainerMenu {
 	
 	private Container playerInv;
 	private Container planeInv;
 	private AircraftClientPreset clientData;
 	
-	public AircraftMenuContainer(int id, Inventory playerInv) {
+	public VehicleContainerMenu(int id, Inventory playerInv) {
 		super(ModContainers.PLANE_MENU.get(), id);
 		//System.out.println("AircraftMenuContainer client side "+playerInv.player.level.isClientSide);
 		this.playerInv = playerInv;
@@ -67,7 +67,7 @@ public class AircraftMenuContainer extends AbstractContainerMenu {
 
 	@Override
 	public boolean stillValid(Player player) {
-		return true;
+		return player.getRootVehicle() instanceof EntityVehicle;
 	}
 	
 	@Override

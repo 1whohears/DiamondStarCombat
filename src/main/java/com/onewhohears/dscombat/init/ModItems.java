@@ -32,6 +32,7 @@ import com.onewhohears.dscombat.item.ItemRadarPart;
 import com.onewhohears.dscombat.item.ItemRepairTool;
 import com.onewhohears.dscombat.item.ItemSeat;
 import com.onewhohears.dscombat.item.ItemSpraycan;
+import com.onewhohears.dscombat.item.ItemStorageBox;
 import com.onewhohears.dscombat.item.ItemTurret;
 import com.onewhohears.dscombat.item.ItemWeaponPart;
 
@@ -164,6 +165,14 @@ public class ModItems {
 	public static final RegistryObject<Item> GIMBAL_CAMERA = ITEMS.register("gimbal_camera", 
 			() -> new ItemGimbal(15f, SlotType.EXTERNAL_ALL,
 					ModEntities.GIMBAL_CAMERA.getId().toString()));
+	
+	// STORAGE BOXES
+	public static final RegistryObject<Item> SMALL_STORAGE_BOX = ITEMS.register("small_storage_box", 
+			() -> new ItemStorageBox(1000f, SlotType.INTERNAL_ALL, 9));
+	public static final RegistryObject<Item> MED_STORAGE_BOX = ITEMS.register("medium_storage_box", 
+			() -> new ItemStorageBox(2000f, SlotType.INTERNAL_ALL, 18));
+	public static final RegistryObject<Item> LARGE_STORAGE_BOX = ITEMS.register("large_storage_box", 
+			() -> new ItemStorageBox(3000f, SlotType.INTERNAL_ALL, 27));
 	
 	// FUEL TANKS
 	public static final RegistryObject<Item> LIGHT_FUEL_TANK = ITEMS.register("light_fuel_tank", 

@@ -23,6 +23,7 @@ import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftToItem;
 import com.onewhohears.dscombat.common.network.toserver.ToServerCraftPlane;
 import com.onewhohears.dscombat.common.network.toserver.ToServerCraftWeapon;
 import com.onewhohears.dscombat.common.network.toserver.ToServerDismount;
+import com.onewhohears.dscombat.common.network.toserver.ToServerOpenStorage;
 import com.onewhohears.dscombat.common.network.toserver.ToServerPingSelect;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSeatPos;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSwitchSeat;
@@ -186,6 +187,11 @@ public final class PacketHandler {
 			.encoder(ToClientDelayedSound::encode)
 			.decoder(ToClientDelayedSound::new)
 			.consumerMainThread(ToClientDelayedSound::handle)
+			.add();
+		net.messageBuilder(ToServerOpenStorage.class, index++, NetworkDirection.PLAY_TO_SERVER)
+			.encoder(ToServerOpenStorage::encode)
+			.decoder(ToServerOpenStorage::new)
+			.consumerMainThread(ToServerOpenStorage::handle)
 			.add();
 	}
 	

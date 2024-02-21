@@ -8,6 +8,7 @@ import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerDismount;
+import com.onewhohears.dscombat.common.network.toserver.ToServerOpenStorage;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSeatPos;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSwitchSeat;
 import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleShoot;
@@ -46,7 +47,7 @@ public final class ClientInputEvents {
 		Entity controller = plane.getControllingPassenger();
 		if (controller == null || !controller.equals(player)) return;
 		
-		boolean openMenu = DSCKeys.planeMenuKey.consumeClick();
+		boolean openMenu = DSCKeys.vehicleMenuKey.consumeClick();
 		boolean toggleGear = DSCKeys.landingGear.consumeClick();
 		boolean cycleRadarMode = DSCKeys.radarModeKey.consumeClick();
 		if (DSCKeys.mouseModeKey.consumeClick()) DSCClientInputs.cycleMouseMode();
@@ -202,6 +203,10 @@ public final class ClientInputEvents {
 		// USE GIMBAL
 		if (DSCKeys.gimbalKey.consumeClick()) {
 			DSCClientInputs.toggleGimbalMode();
+		}
+		// OPEN STORAGE
+		if (DSCKeys.vehicleStorageKey.consumeClick()) {
+			PacketHandler.INSTANCE.sendToServer(new ToServerOpenStorage());
 		}
 	}
 	

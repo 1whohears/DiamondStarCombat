@@ -5,7 +5,7 @@ import java.util.List;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.common.container.WeaponsBlockMenuContainer;
+import com.onewhohears.dscombat.common.container.menu.WeaponsBlockContainerMenu;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerCraftWeapon;
 import com.onewhohears.dscombat.crafting.DSCIngredient;
@@ -24,7 +24,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockMenuContainer> {
+public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockContainerMenu> {
 	
 	private static final ResourceLocation BG_TEXTURE = new ResourceLocation(DSCombatMod.MODID,
 			"textures/ui/aircraft_screen.png");
@@ -35,7 +35,7 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockMenu
 	private int tabIndex = 0;
 	private int weaponIndex = 0;
 	
-	public WeaponsBlockScreen(WeaponsBlockMenuContainer menu, Inventory playerInv, Component title) {
+	public WeaponsBlockScreen(WeaponsBlockContainerMenu menu, Inventory playerInv, Component title) {
 		super(menu, playerInv, title);
 		this.leftPos = 0;
 		this.topPos = 0;

@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.data.aircraft;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import javax.annotation.Nullable;
 
@@ -21,6 +20,7 @@ import com.onewhohears.dscombat.entity.aircraft.RotableHitbox;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.util.UtilGsonMerge;
 import com.onewhohears.dscombat.util.UtilGsonMerge.ConflictStrategy;
+import com.onewhohears.dscombat.util.UtilItem;
 import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
@@ -29,7 +29,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class AircraftPreset extends JsonPreset{
 
@@ -74,12 +73,7 @@ public class AircraftPreset extends JsonPreset{
 	
 	public ItemStack getItem() {
 		if (item == null) {
-			try {
-				item = new ItemStack(ForgeRegistries.ITEMS.getDelegate(
-						new ResourceLocation(getJsonData().get("item").getAsString())).get().get());
-			} catch(NoSuchElementException e) {
-				item = ItemStack.EMPTY;
-			}
+			item = new ItemStack(UtilItem.getItem(getJsonData().get("item").getAsString()));
 			item.getOrCreateTag().putString("preset", getId());
 		}
 		return item.copy();

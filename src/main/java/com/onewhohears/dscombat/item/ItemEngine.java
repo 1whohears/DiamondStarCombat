@@ -9,13 +9,13 @@ import com.onewhohears.dscombat.data.parts.EngineData.EngineType;
 import com.onewhohears.dscombat.data.parts.ExternalEngineData;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
+import com.onewhohears.dscombat.util.UtilItem;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class ItemEngine extends ItemPart {
 	
@@ -48,8 +48,8 @@ public class ItemEngine extends ItemPart {
 	@Override
 	public PartData getPartData() {
 		if (external) return new ExternalEngineData(engineType, weight, thrust, heat, fuelRate, 
-				ForgeRegistries.ITEMS.getKey(this), compatibleSlots, externalEntityKey);
-		return new EngineData(engineType, weight, thrust, heat, fuelRate, ForgeRegistries.ITEMS.getKey(this), compatibleSlots);
+				UtilItem.getItemKey(this), compatibleSlots, externalEntityKey);
+		return new EngineData(engineType, weight, thrust, heat, fuelRate, UtilItem.getItemKey(this), compatibleSlots);
 	}
 	
 	@Override

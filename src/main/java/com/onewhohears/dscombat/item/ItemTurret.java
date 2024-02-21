@@ -5,12 +5,12 @@ import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.data.parts.TurretData;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
+import com.onewhohears.dscombat.util.UtilItem;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class ItemTurret extends ItemPart {
 	
@@ -43,13 +43,13 @@ public class ItemTurret extends ItemPart {
 	
 	@Override
 	public PartData getFilledPartData(String param) {
-		return new TurretData(weight, ForgeRegistries.ITEMS.getKey(this), 
+		return new TurretData(weight, UtilItem.getItemKey(this), 
 				compatibleSlots, turrentEntityKey, weaponId, true, health);
 	}
 	
 	@Override
 	public PartData getPartData() {
-		return new TurretData(weight, ForgeRegistries.ITEMS.getKey(this), 
+		return new TurretData(weight, UtilItem.getItemKey(this), 
 				compatibleSlots, turrentEntityKey, weaponId, false, health);
 	}
 

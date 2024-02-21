@@ -1,7 +1,5 @@
 package com.onewhohears.dscombat.init;
 
-import java.util.NoSuchElementException;
-
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.PartData;
@@ -10,10 +8,10 @@ import com.onewhohears.dscombat.data.radar.RadarPresets;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.item.ItemPart;
+import com.onewhohears.dscombat.util.UtilItem;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataSerializer;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -128,12 +126,7 @@ public class DataSerializers {
 		@Override
 		public PartData read(FriendlyByteBuf buffer) {
 			String itemId = buffer.readUtf();
-			Item item;
-			try {
-				item = ForgeRegistries.ITEMS.getDelegate(new ResourceLocation(itemId)).get().get();
-			} catch(NoSuchElementException e) {
-				return null;
-			}
+			Item item = UtilItem.getItem(itemId, null);
 			if (!(item instanceof ItemPart part)) return null;
 			PartData data = part.getPartData();
 			data.read(buffer);

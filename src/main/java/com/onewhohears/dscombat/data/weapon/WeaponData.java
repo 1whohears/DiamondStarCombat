@@ -4,7 +4,6 @@ import static com.onewhohears.dscombat.DSCombatMod.MODID;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.function.BiConsumer;
 
 import javax.annotation.Nullable;
@@ -21,6 +20,7 @@ import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.util.UtilEntity;
+import com.onewhohears.dscombat.util.UtilItem;
 import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.UtilParticles;
 import com.onewhohears.dscombat.util.UtilSound;
@@ -38,13 +38,11 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public abstract class WeaponData extends JsonPreset {
 	protected static final ResourceLocation NONE_ICON = new ResourceLocation(MODID, "textures/ui/weapon_icons/none.png");
@@ -386,10 +384,7 @@ public abstract class WeaponData extends JsonPreset {
 	
 	private Item getItem() {
 		if (item == null) {
-			try {
-				item = ForgeRegistries.ITEMS.getDelegate(
-					new ResourceLocation(itemKey)).get().get();
-			} catch(NoSuchElementException e) { item = Items.AIR; }
+			item = UtilItem.getItem(itemKey);
 		}
 		return item;
 	}

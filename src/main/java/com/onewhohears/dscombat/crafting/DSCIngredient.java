@@ -2,18 +2,16 @@ package com.onewhohears.dscombat.crafting;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.onewhohears.dscombat.util.UtilItem;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class DSCIngredient {
 	
@@ -62,13 +60,7 @@ public class DSCIngredient {
 	
 	public ItemStack getDisplayItem() {
 		if (stack == null) {
-			try {
-				stack = new ItemStack(ForgeRegistries.ITEMS.getDelegate(
-						new ResourceLocation(displayItemId)).get().get());
-				stack.setCount(cost);
-			} catch(NoSuchElementException e) {
-				stack = ItemStack.EMPTY;
-			}
+			stack = new ItemStack(UtilItem.getItem(displayItemId));
 		}
 		return stack;
 	}

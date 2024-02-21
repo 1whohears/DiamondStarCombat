@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.init.ModItems;
+import com.onewhohears.dscombat.util.UtilItem;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -16,7 +17,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class ItemAmmo extends Item {
 	
@@ -30,7 +30,7 @@ public class ItemAmmo extends Item {
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
 		if (group.getId() != ModItems.WEAPONS.getId() && group.getId() != CreativeModeTab.TAB_SEARCH.getId()) return;
-		String itemId = ForgeRegistries.ITEMS.getKey(this).toString();
+		String itemId = UtilItem.getItemKeyString(this);
 		for (int i = 0; i < WeaponPresets.get().getPresetNum(); ++i) {
 			WeaponData w = WeaponPresets.get().getAllPresets()[i];
 			if (!w.getItemKey().equals(itemId)) continue;

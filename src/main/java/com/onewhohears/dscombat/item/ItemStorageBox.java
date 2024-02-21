@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.data.parts.StorageBoxData;
+import com.onewhohears.dscombat.util.UtilItem;
 
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
@@ -14,7 +15,6 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class ItemStorageBox extends ItemPart {
 	
@@ -27,7 +27,7 @@ public class ItemStorageBox extends ItemPart {
 
 	@Override
 	public PartData getPartData() {
-		return new StorageBoxData(weight, ForgeRegistries.ITEMS.getKey(this), compatibleSlots, size);
+		return new StorageBoxData(weight, UtilItem.getItemKey(this), compatibleSlots, size);
 	}
 	
 	@Override

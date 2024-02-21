@@ -5,7 +5,6 @@ import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.NoSuchElementException;
 import java.util.zip.GZIPInputStream;
 
 import javax.annotation.Nullable;
@@ -24,13 +23,10 @@ import com.onewhohears.dscombat.item.ItemPart;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtIo;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class UtilParse {
 	
@@ -122,12 +118,7 @@ public class UtilParse {
 		if (tag.isEmpty()) return null;
 		if (!tag.contains("itemid")) return null;
 		String itemId = tag.getString("itemid");
-		Item item;
-		try {
-			item = ForgeRegistries.ITEMS.getDelegate(new ResourceLocation(itemId)).get().get();
-		} catch(NoSuchElementException e) {
-			return null;
-		}
+		Item item = UtilItem.getItem(itemId, null);
 		if (!(item instanceof ItemPart part)) return null;
 		if (tag.getBoolean("filled")) return part.getFilledPartData(tag.getString("param"));
 		PartData data = part.getPartData();
@@ -210,15 +201,6 @@ public class UtilParse {
 				for (int j = 0; j < arrays[i].length; ++j) 
 					if (k++ == r) return arrays[i][j];
 		return "";
-	}
-	
-	@Nullable
-	public static Class<? extends Entity> getEntityClass(String className) {
-		try {
-			return Class.forName(className, false, UtilParse.class.getClassLoader()).asSubclass(Entity.class);
-		} catch (ClassNotFoundException e) {
-			return null;
-		}
 	}
 	
 	public static boolean getBooleanSafe(JsonObject json, String name, boolean alt) {

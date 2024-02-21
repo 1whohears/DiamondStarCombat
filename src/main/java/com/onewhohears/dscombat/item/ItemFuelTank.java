@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import com.onewhohears.dscombat.data.parts.FuelTankData;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
+import com.onewhohears.dscombat.util.UtilItem;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -14,7 +15,6 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class ItemFuelTank extends ItemPart {
 	
@@ -35,12 +35,12 @@ public class ItemFuelTank extends ItemPart {
 
 	@Override
 	public PartData getPartData() {
-		return new FuelTankData(weight, fuel, max, ForgeRegistries.ITEMS.getKey(this), compatibleSlots);
+		return new FuelTankData(weight, fuel, max, UtilItem.getItemKey(this), compatibleSlots);
 	}
 	
 	@Override
 	public PartData getFilledPartData(String param) {
-		return new FuelTankData(weight, max, max, ForgeRegistries.ITEMS.getKey(this), compatibleSlots);
+		return new FuelTankData(weight, max, max, UtilItem.getItemKey(this), compatibleSlots);
 	}
 
 }

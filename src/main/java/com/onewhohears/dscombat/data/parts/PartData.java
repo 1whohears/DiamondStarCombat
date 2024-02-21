@@ -8,6 +8,7 @@ import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntityPart;
 import com.onewhohears.dscombat.util.UtilEntity;
+import com.onewhohears.dscombat.util.UtilItem;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -16,7 +17,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public abstract class PartData {
 	
@@ -192,7 +192,7 @@ public abstract class PartData {
 		//System.out.println("GETTING ITEM STACK "+itemid);
 		if (stack == null) {
 			try {
-				Item i = ForgeRegistries.ITEMS.getDelegate(itemid).get().get();
+				Item i = UtilItem.getItem(itemid.toString());
 				stack = new ItemStack(i);
 			} catch(NoSuchElementException e) {
 				stack = ItemStack.EMPTY;

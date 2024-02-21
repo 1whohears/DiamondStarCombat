@@ -3,8 +3,7 @@ package com.onewhohears.dscombat.item;
 import com.onewhohears.dscombat.data.parts.GimbalPartData;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-
-import net.minecraftforge.registries.ForgeRegistries;
+import com.onewhohears.dscombat.util.UtilItem;
 
 public class ItemGimbal extends ItemPart {
 	
@@ -17,7 +16,7 @@ public class ItemGimbal extends ItemPart {
 	
 	@Override
 	public PartData getPartData() {
-		return new GimbalPartData(weight, ForgeRegistries.ITEMS.getKey(this), compatibleSlots, entityTypeKey);
+		return new GimbalPartData(weight, UtilItem.getItemKey(this), compatibleSlots, entityTypeKey);
 	}
 
 }

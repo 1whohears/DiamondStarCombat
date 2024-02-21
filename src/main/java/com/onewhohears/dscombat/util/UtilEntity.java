@@ -225,4 +225,17 @@ public class UtilEntity {
 		}
 	}
 	
+	public static boolean doesEntityTypeExist(String entityTypeKey) {
+		return ForgeRegistries.ENTITY_TYPES.containsKey(new ResourceLocation(entityTypeKey));
+	}
+	
+	@Nullable
+	public static Class<? extends Entity> getEntityClass(String className) {
+		try {
+			return Class.forName(className, false, UtilParse.class.getClassLoader()).asSubclass(Entity.class);
+		} catch (ClassNotFoundException e) {
+			return null;
+		}
+	}
+	
 }

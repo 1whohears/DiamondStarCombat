@@ -20,6 +20,7 @@ import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.init.ModSounds;
+import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.UtilParticles;
 import com.onewhohears.dscombat.util.UtilSound;
@@ -361,9 +362,7 @@ public abstract class WeaponData extends JsonPreset {
 	
 	public EntityType<?> getEntityType() {
 		if (entityType == null) {
-			try { entityType = ForgeRegistries.ENTITY_TYPES
-					.getDelegate(new ResourceLocation(entityTypeKey)).get().get(); }
-			catch(NoSuchElementException e) { entityType = ModEntities.BULLET.get(); }
+			entityType = UtilEntity.getEntityType(entityTypeKey, ModEntities.BULLET.get());
 		}
 		return entityType;
 	}
@@ -377,9 +376,7 @@ public abstract class WeaponData extends JsonPreset {
 	
 	public EntityType<?> getRackEntityType() {
 		if (rackType == null) {
-			try { rackType = ForgeRegistries.ENTITY_TYPES
-					.getDelegate(new ResourceLocation(rackTypeKey)).get().get(); }
-			catch(NoSuchElementException e) { rackType = ModEntities.XM12.get(); }
+			rackType = UtilEntity.getEntityType(rackTypeKey, ModEntities.XM12.get());
 		}
 		return rackType;
 	}

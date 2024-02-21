@@ -1,7 +1,5 @@
 package com.onewhohears.dscombat.data.parts;
 
-import java.util.NoSuchElementException;
-
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
@@ -18,21 +16,18 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class TurretData extends SeatData {
 	
 	private final String weaponId;
-	private final String turretEntityKey;
 	private final float health;
-	private EntityType<? extends EntityTurret> turretType;
 	private int ammo = 0;
 	
 	public TurretData(float weight, ResourceLocation itemid, SlotType[] compatibleSlots, 
 			String turrentEntityKey, String weaponId, boolean filled, float health) {
 		super(weight, itemid, compatibleSlots);
 		this.weaponId = weaponId;
-		this.turretEntityKey = turrentEntityKey;
+		this.entityTypeKey = turrentEntityKey;
 		this.health = health;
 		if (filled) {
 			WeaponData data = WeaponPresets.get().getPreset(weaponId);
@@ -68,10 +63,10 @@ public class TurretData extends SeatData {
 	
 	@Override
 	public void serverSetup(EntityVehicle craft, String slotId, Vec3 pos) {
-		setParent(craft);
-		setRelPos(pos);
-		EntityTurret t = getTurret(slotId);
-		t.setAmmo(ammo);
+		super.serverSetup(craft, slotId, pos);
+		EntityTurret turret = getTurret(slotId);
+		if (turret == null) return;
+		turret.setAmmo(ammo);
 	}
 	
 	@Nullable
@@ -79,24 +74,27 @@ public class TurretData extends SeatData {
 		EntityVehicle craft = getParent();
 		if (craft == null) return null;
 		for (EntityPart part : craft.getPartEntities()) 
-			if (part.getSlotId().equals(slotId) && part.getType().equals(getTurretType())) 
-				return (EntityTurret) part;
-		EntityTurret t = getTurretType().create(craft.level);
-		setUpPartEntity(t, craft, slotId, getRelPos(), health);
-		t.setWeaponId(weaponId);
-		craft.level.addFreshEntity(t);
-		return t;
+			if (part.getPartType() == getType() && part.getSlotId().equals(slotId)
+					&& part instanceof EntityTurret turret)
+				return turret;
+		return null;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public EntityType<? extends EntityTurret> getTurretType() {
-		if (turretType == null) {
-			try { turretType = (EntityType<? extends EntityTurret>) ForgeRegistries.ENTITY_TYPES
-					.getDelegate(new ResourceLocation(turretEntityKey)).get().get(); }
-			catch(NoSuchElementException e) { turretType = ModEntities.MINIGUN_TURRET.get(); }
-			catch(ClassCastException e) { turretType = ModEntities.MINIGUN_TURRET.get(); }
-		}
-		return turretType;
+	@Override
+	public void setUpPartEntity(EntityPart part, EntityVehicle craft, String slotId, Vec3 pos, float health) {
+		super.setUpPartEntity(part, craft, slotId, pos, health);
+		if (!(part instanceof EntityTurret turret)) return;
+		turret.setWeaponId(weaponId);
+	}
+	
+	@Override
+	public EntityType<?> getDefaultExternalEntity() {
+		return ModEntities.AA_TURRET.get();
+	}
+	
+	@Override
+	public float getExternalEntityDefaultHealth() {
+		return health;
 	}
 	
 	public void setAmmo(int ammo) {

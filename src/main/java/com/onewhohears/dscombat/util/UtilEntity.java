@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.util;
 
 import java.awt.Color;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Random;
 import java.util.function.Predicate;
@@ -12,7 +13,9 @@ import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.Boat;
@@ -25,6 +28,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class UtilEntity {
 	
@@ -210,6 +214,15 @@ public class UtilEntity {
 			}
 		}
 		return entity == null ? null : new EntityHitResult(entity, pos);
+	}
+	
+	public static EntityType<?> getEntityType(String entityTypeKey, EntityType<?> alt) {
+		try {
+			return ForgeRegistries.ENTITY_TYPES.getDelegate(
+				new ResourceLocation(entityTypeKey)).get().get();
+		} catch(NoSuchElementException e) { 
+			return alt; 
+		}
 	}
 	
 }

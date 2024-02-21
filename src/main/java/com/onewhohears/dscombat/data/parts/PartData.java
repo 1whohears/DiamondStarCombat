@@ -2,13 +2,17 @@ package com.onewhohears.dscombat.data.parts;
 
 import java.util.NoSuchElementException;
 
+import javax.annotation.Nullable;
+
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntityPart;
+import com.onewhohears.dscombat.util.UtilEntity;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
@@ -24,6 +28,8 @@ public abstract class PartData {
 	private final ResourceLocation itemid;
 	private final float weight;
 	private EntityVehicle parent;
+	
+	protected String entityTypeKey;
 	
 	public static enum PartType {
 		SEAT,
@@ -126,7 +132,11 @@ public abstract class PartData {
 	}
 	
 	public void serverSetup(EntityVehicle craft, String slotId, Vec3 pos) {
-		
+		if (hasExternalEntity() && !isEntitySetup(slotId, craft)) {
+			EntityPart part = (EntityPart) getExernalEntityType().create(craft.level);
+			setUpPartEntity(part, craft, slotId, pos, getExternalEntityDefaultHealth());
+			craft.level.addFreshEntity(part);
+		}
 	}
 	
 	public void clientSetup(EntityVehicle craft, String slotId, Vec3 pos) {
@@ -142,7 +152,9 @@ public abstract class PartData {
 	public abstract boolean isSetup(String slotId, EntityVehicle craft);
 	
 	public void serverRemove(String slotId) {
-		
+		if (hasExternalEntity()) {
+			removeEntity(slotId);
+		}
 	}
 	
 	public void clientRemove(String slotId) {
@@ -211,6 +223,25 @@ public abstract class PartData {
 		part.setPos(craft.position());
 		part.setHealth(health);
 		part.startRiding(craft);
+	}
+	
+	public boolean hasExternalEntity() {
+		return entityTypeKey != null;
+	}
+	
+	@Nullable
+	public EntityType<?> getExernalEntityType() {
+		if (!hasExternalEntity()) return null;
+		return UtilEntity.getEntityType(entityTypeKey, getDefaultExternalEntity());
+	}
+	
+	@Nullable
+	public EntityType<?> getDefaultExternalEntity() {
+		return null;
+	}
+	
+	public float getExternalEntityDefaultHealth() {
+		return 100000;
 	}
 	
 }

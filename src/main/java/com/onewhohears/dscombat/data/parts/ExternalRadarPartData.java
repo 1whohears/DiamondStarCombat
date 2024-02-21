@@ -1,16 +1,10 @@
 package com.onewhohears.dscombat.data.parts;
 
-import java.util.NoSuchElementException;
-
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
-import com.onewhohears.dscombat.entity.parts.EntityRadar;
 import com.onewhohears.dscombat.init.ModEntities;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class ExternalRadarPartData extends RadarPartData {
 	
@@ -22,33 +16,18 @@ public class ExternalRadarPartData extends RadarPartData {
 	}
 	
 	@Override
-	public void serverSetup(EntityVehicle craft, String slotId, Vec3 pos) {
-		super.serverSetup(craft, slotId, pos);
-		if (!isEntitySetup(slotId, craft)) {
-			EntityRadar radar = (EntityRadar) getEntityType().create(craft.level);
-			setUpPartEntity(radar, craft, slotId, pos, 10);
-			craft.level.addFreshEntity(radar);
-		}
+	public EntityType<?> getDefaultExternalEntity() {
+		return ModEntities.SURVEY_ALL_A.get();
 	}
 	
 	@Override
-	public void serverRemove(String slotId) {
-		super.serverRemove(slotId);
-		removeEntity(slotId);
+	public float getExternalEntityDefaultHealth() {
+		return 15;
 	}
 	
 	@Override
 	public PartType getType() {
 		return PartType.EXTERNAL_RADAR;
-	}
-	
-	protected EntityType<?> getEntityType() {
-		try {
-			return ForgeRegistries.ENTITY_TYPES.getDelegate(
-					new ResourceLocation(entityTypeKey)).get().get();
-		} catch(NoSuchElementException e) { 
-			return ModEntities.CFM56.get(); 
-		}
 	}
 
 }

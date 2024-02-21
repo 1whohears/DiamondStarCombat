@@ -89,8 +89,7 @@ public abstract class EntityMissile extends EntityBullet {
 			kill();
 			return;
 		}
-		if (level.isClientSide) UtilParticles.missileTrail(level, position(), 
-				getLookAngle(), getRadius(), isInWater());
+		if (level.isClientSide) clientTickParticles();
 		if (isTestMode()) return;
 		xRotO = getXRot(); 
 		yRotO = getYRot();
@@ -108,6 +107,11 @@ public abstract class EntityMissile extends EntityBullet {
 		}
 		super.tick();
 		tickLerp();
+	}
+	
+	protected void clientTickParticles() {
+		if (getAge() <= getFuelTicks()) UtilParticles.missileAfterBurner(level, position(), getLookAngle().scale(-1));
+		UtilParticles.missileTrail(level, position(), getLookAngle(), getRadius(), isInWater());
 	}
 	
 	public abstract void tickGuide();

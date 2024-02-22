@@ -86,7 +86,8 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
 		// SELECT RADAR PING
 		if (vehicle.radarSystem.hasRadar()) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.pingCycleKey);
 		// GIMBAL MODE
-		if (vehicle.getGimbalForPilotCamera() != null) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.gimbalKey,
+		if (vehicle.getGimbalForPilotCamera() != null || seat.getCameraYOffset() != 0) displayMapping(poseStack, 
+				screenWidth, screenHeight, index++, DSCKeys.gimbalKey,
 				DSCClientInputs.isGimbalMode(), DSCClientInputs.isGimbalMode() ? "ON" : "OFF");
 	}
 	

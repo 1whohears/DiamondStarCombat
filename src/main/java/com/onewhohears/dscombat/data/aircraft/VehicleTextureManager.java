@@ -2,6 +2,9 @@ package com.onewhohears.dscombat.data.aircraft;
 
 import java.awt.Color;
 
+import javax.annotation.Nullable;
+
+import com.onewhohears.dscombat.client.texture.VehicleDynamicTextures;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleTexture;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
@@ -20,12 +23,14 @@ public class VehicleTextureManager {
 	private final TextureLayer[] textureLayers;
 	private int baseTextureIndex = 0;
 	private boolean changed;
+	private ResourceLocation dynamicTexture;
 	
 	public VehicleTextureManager(EntityVehicle parent) {
 		this.parent = parent;
 		this.baseTextures = new ResourceLocation[parent.getVehicleStats().baseTextureVariants];
 		this.textureLayers = new TextureLayer[parent.getVehicleStats().textureLayers];
 		setupTextureLocations();
+		dynamicTexture = getBaseTexture();
 	}
 	
 	private void setupTextureLocations() {
@@ -37,6 +42,20 @@ public class VehicleTextureManager {
 			textureLayers[i] = new TextureLayer(modId+":textures/entity/vehicle/"+entityId+"/layer"+i+".png");
 		}
 	}
+	/**
+	 * CLIENT ONLY
+	 */
+	private void setupDynamicTexture() {
+		if (!parent.level.isClientSide) return;
+		dynamicTexture = VehicleDynamicTextures.createVehicleDynamicTexture(parent);
+	}
+	/**
+	 * CLIENT ONLY
+	 */
+	@Nullable
+	public ResourceLocation getDynamicTexture() {
+		return dynamicTexture;
+	}
 	
 	public void onTick() {
 		if (parent.level.isClientSide) clientTick();
@@ -46,6 +65,7 @@ public class VehicleTextureManager {
 	public void clientTick() {
 		if (isChanged()) {
 			PacketHandler.INSTANCE.sendToServer(new ToServerVehicleTexture(parent));
+			setupDynamicTexture();
 			resetChanged();
 		}
 	}
@@ -82,6 +102,7 @@ public class VehicleTextureManager {
 		int layers = buffer.readInt();
 		for (int i = 0; i < layers && i < textureLayers.length; ++i) 
 			textureLayers[i].read(buffer);
+		setupDynamicTexture();
 		changed = false;
 	}
 	
@@ -117,6 +138,13 @@ public class VehicleTextureManager {
 	public TextureLayer[] getTextureLayers() {
 		return textureLayers;
 	}
+	
+	public boolean isAllLayersDisabled() {
+		for (int i = 0; i < getTextureLayers().length; ++i) 
+			if (getTextureLayers()[i].canRender())
+				return false;
+		return true;
+ 	}
 	
 	public boolean isChanged() {
 		if (changed) return true;

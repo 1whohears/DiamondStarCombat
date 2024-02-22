@@ -9,10 +9,10 @@ import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.parts.EntitySeat;
 
 import net.minecraft.client.KeyMapping;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.Entity;
 
 public class KeyBindsOverlay extends VehicleOverlayComponent {
 	
@@ -42,9 +42,10 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
 	
 	@Override
 	protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
-		if (!(getPlayerRootVehicle() instanceof EntityVehicle vehicle)) return;
-		Entity controller = vehicle.getControllingPassenger();
-		boolean isPilot = controller != null && controller.equals(getPlayer());
+		if (!(getPlayerVehicle() instanceof EntitySeat seat)) return;
+		EntityVehicle vehicle = seat.getParentVehicle();
+		if (vehicle == null) return;
+		boolean isPilot = seat.isPilotSeat(), isCoPilot = seat.isCoPilotSeat();
 		// TODO 0.1 until a better way is made, these controls and other info need to be displayed somewhere
 		int index = 0;
 		// MOUSE MODE
@@ -52,6 +53,8 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
 				!DSCClientInputs.getMouseMode().isLockedForward(), DSCClientInputs.getMouseMode().name());
 		// OPEN PLANE MENU
 		if (isPilot) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.vehicleMenuKey);
+		// OPEN PLANE STORAGE
+		if (vehicle.partsManager.hasStorageBoxes()) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.vehicleStorageKey);
 		// DISMOUNT
 		if (Config.CLIENT.customDismount.get()) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.dismount);
 		// CHANGE SEAT
@@ -76,7 +79,7 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
 		if (isPilot && vehicle.hasFlares()) displayMapping(poseStack, screenWidth, screenHeight, index++, 
 				DSCKeys.flareKey, vehicle.getFlareNum()+"");
 		// CYCLE WEAPON
-		if (isPilot) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.weaponSelectKey);
+		if (isPilot || isCoPilot) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.weaponSelectKey);
 		// RADAR MODE
 		if (vehicle.radarSystem.hasRadar()) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.radarModeKey,
 				!vehicle.getRadarMode().isOff(), vehicle.getRadarMode().name());

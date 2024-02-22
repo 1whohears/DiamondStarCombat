@@ -386,6 +386,10 @@ public class PartsManager {
 		return false;
 	}
 	
+	public boolean hasStorageBoxes() {
+		return getStorageBoxes().size() > 0;
+	}
+	
 	public List<StorageBoxData> getStorageBoxes() {
 		List<StorageBoxData> list = new ArrayList<>();
 		for (PartSlot p : slots) 

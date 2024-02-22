@@ -8,6 +8,7 @@ import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager.PassengerSound
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
+import com.onewhohears.dscombat.init.ModSounds;
 
 public class AlexisPresets {
 	
@@ -28,7 +29,10 @@ public class AlexisPresets {
 			.setTurnTorques(1.5f, 2f, 4f)
 			.setThrottleRate(0.04f, 0.08f)
 			.setPlaneWingArea(28f)
-			.setFighterJetSounds()
+			.setFighterJetSounds(ModSounds.ALEXIS_EXT_AFTERBURNER_CLOSE, ModSounds.ALEXIS_EXT_AFTERBURNER_FAR,
+					ModSounds.ALEXIS_EXT_RPM, ModSounds.ALEXIS_EXT_WIND_CLOSE, ModSounds.ALEXIS_EXT_WIND_FAR,
+					ModSounds.ALEXIS_CP_RPM, ModSounds.ALEXIS_CP_AFTERBURNER, ModSounds.ALEXIS_CP_WIND_SLOW, 
+					ModSounds.ALEXIS_CP_WIND_FAST)
 			.setRotationalInertia(4, 8, 2)
 			.setCrashExplosionRadius(5)
 			.set3rdPersonCamDist(17)

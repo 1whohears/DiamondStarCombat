@@ -741,9 +741,19 @@ public class AircraftPreset extends JsonPreset{
 		/**
 		 * all vehicles 
 		 */
-		public Builder setFighterJetSounds() {
+		public Builder setFighterJetSounds(SoundEvent externalAfterBurnerClose, SoundEvent externalAfterBurnerFar, SoundEvent externalRPM,
+				SoundEvent externalWindClose, SoundEvent externalWindFar, SoundEvent cockpitRPM, SoundEvent cockpitAfterBurner,
+				SoundEvent cockpitWindSlow, SoundEvent cockpitWindFast) {
 			getSounds().addProperty("loopSoundType", "fighter_jet");
-			
+			getSounds().addProperty("externalAfterBurnerClose", externalAfterBurnerClose.getLocation().toString());
+			getSounds().addProperty("externalAfterBurnerFar", externalAfterBurnerFar.getLocation().toString());
+			getSounds().addProperty("externalRPM", externalRPM.getLocation().toString());
+			getSounds().addProperty("externalWindClose", externalWindClose.getLocation().toString());
+			getSounds().addProperty("externalWindFar", externalWindFar.getLocation().toString());
+			getSounds().addProperty("cockpitRPM", cockpitRPM.getLocation().toString());
+			getSounds().addProperty("cockpitAfterBurner", cockpitAfterBurner.getLocation().toString());
+			getSounds().addProperty("cockpitWindSlow", cockpitWindSlow.getLocation().toString());
+			getSounds().addProperty("cockpitWindFast", cockpitWindFast.getLocation().toString());
 			return this;
 		}
 		/**

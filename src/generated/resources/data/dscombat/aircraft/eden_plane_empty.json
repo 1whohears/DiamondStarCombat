@@ -68,7 +68,7 @@
       "data": {
         "itemid": "dscombat:seat"
       },
-      "name": "seat2",
+      "name": "copilot_seat",
       "slot_posx": 0.0,
       "slot_posy": 0.4,
       "slot_posz": 6.8,

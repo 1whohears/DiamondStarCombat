@@ -162,6 +162,7 @@ public class VehicleTextureManager {
 	
 	public static class TextureLayer {
 		private final ResourceLocation texture;
+		private BlendMode blendMode = BlendMode.ON_WHITE;
 		private int colorInt;
 		private Color color;
 		private boolean enabled, changed;
@@ -173,22 +174,26 @@ public class VehicleTextureManager {
 		public void read(CompoundTag tag) {
 			if (tag.contains("color")) setColor(tag.getInt("color"));
 			enabled = tag.getBoolean("enabled");
+			if (tag.contains("blendMode")) blendMode = BlendMode.getByName(tag.getString("blendMode"));
 			changed = false;
 		}
 		public CompoundTag write() {
 			CompoundTag tag = new CompoundTag();
 			tag.putInt("color", colorInt);
 			tag.putBoolean("enabled", enabled);
+			tag.putString("blendMode", blendMode.name());
 			return tag;
 		}
 		public void read(ByteBuf buffer) {
 			setColor(buffer.readInt());
 			enabled = buffer.readBoolean();
+			blendMode = BlendMode.values()[buffer.readInt()];
 			changed = false;
 		}
 		public void write(FriendlyByteBuf buffer) {
 			buffer.writeInt(colorInt);
 			buffer.writeBoolean(enabled);
+			buffer.writeInt(blendMode.ordinal());
 		}
 		public ResourceLocation getTexture() {
 			return texture;
@@ -220,6 +225,27 @@ public class VehicleTextureManager {
 		}
 		public void resetChanged() {
 			changed = false;
+		}
+		public BlendMode getBlendMode() {
+			return blendMode;
+		}
+		public void setBlendMode(BlendMode mode) {
+			blendMode = mode;
+			changed = true;
+		}
+	}
+	
+	public static enum BlendMode {
+		NONE,
+		ON_WHITE,
+		ON_ALL,
+		SCALED,
+		EVEN;
+		public static BlendMode getByName(String name) {
+			for (BlendMode mode : BlendMode.values()) 
+				if (mode.name().equals(name)) 
+					return mode;
+			return NONE;
 		}
 	}
 	

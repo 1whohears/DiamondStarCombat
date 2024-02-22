@@ -6,6 +6,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.aircraft.VehicleTextureManager;
+import com.onewhohears.dscombat.data.aircraft.VehicleTextureManager.BlendMode;
 import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.client.gui.components.CycleButton;
@@ -40,17 +41,23 @@ public class VehiclePaintScreen extends Screen {
 		addRenderableWidget(CycleButton.<Integer>builder((base) -> Component.literal(base+""))
 				.withValues(count(textures.getBaseTextureNum()))
 				.withInitialValue(textures.getBaseTextureIndex())
-				.create(widgetX, widgetY, 120, 20, 
+				.create(widgetX, widgetY, 168, 20, 
 					Component.literal("Base"), 
 					onBaseChange()));
 		int layerX = widgetX, layerY = widgetY + 20;
 		for (int i = 0; i < textures.getTextureLayers().length; ++i) {
 			addRenderableWidget(CycleButton.onOffBuilder(textures.getTextureLayers()[i].canRender())
-				.create(layerX, layerY, 50, 20, 
-					Component.literal("Show"), 
+				.create(layerX, layerY, 44, 20, 
+					Component.literal("See"), 
 					onRenderLayerToggle(i)));
-			EditBox colorBox = new EditBox(minecraft.font, layerX+50, layerY, 
-					70, 20, Component.empty());
+			addRenderableWidget(CycleButton.<BlendMode>builder((mode) -> Component.literal(mode.name()))
+				.withValues(BlendMode.values())
+				.withInitialValue(textures.getTextureLayers()[i].getBlendMode())
+				.create(layerX+44, layerY, 74, 20, 
+					Component.literal("Mix"), 
+					onBlendModeChange(i)));
+			EditBox colorBox = new EditBox(minecraft.font, layerX+118, layerY, 
+					50, 20, Component.empty());
 			colorBox.setValue(UtilParse.toColorString(textures.getTextureLayers()[i].getColor()));
 			colorBox.setTextColor(textures.getTextureLayers()[i].getColorInt());
 			colorBox.setResponder(layerColorBoxResponder(colorBox, i));
@@ -65,6 +72,10 @@ public class VehiclePaintScreen extends Screen {
 	
 	private OnValueChange<Boolean> onRenderLayerToggle(int layer) {
 		return (button, render) -> textures.getTextureLayers()[layer].setCanRender(render);
+	}
+	
+	private OnValueChange<BlendMode> onBlendModeChange(int layer) {
+		return (button, mode) -> textures.getTextureLayers()[layer].setBlendMode(mode);
 	}
 	
 	private Consumer<String> layerColorBoxResponder(EditBox colorBox, int layer) {

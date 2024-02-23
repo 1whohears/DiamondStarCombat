@@ -6,8 +6,8 @@ import com.onewhohears.dscombat.data.parts.TurretData;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.util.UtilItem;
+import com.onewhohears.dscombat.util.UtilParse;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
@@ -27,7 +27,7 @@ public class ItemTurret extends ItemPart {
 	
 	@Override
 	public Component getName(ItemStack stack) {
-		CompoundTag tag = stack.getOrCreateTag();
+		TurretData data = (TurretData) UtilParse.parsePartFromItem(stack);
 		MutableComponent name = ((MutableComponent)super.getName(stack)).append(" ");
 		WeaponData wd = WeaponPresets.get().getPreset(weaponId);
 		if (wd != null) {
@@ -35,8 +35,8 @@ public class ItemTurret extends ItemPart {
 				.append(Component.literal(wd.getWeaponTypeCode()));
 		}
 		else name.append(weaponId+"?");
-		int ammo = tag.getInt("ammo");
-		int max = tag.getInt("max");
+		int ammo = (int)data.getCurrentAmmo();
+		int max = (int)data.getMaxAmmo();
 		if (max != 0) name.append(" "+ammo+"/"+max);
 		return name;	
 	}

@@ -17,11 +17,11 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.phys.Vec3;
 
-public class TurretData extends SeatData {
+public class TurretData extends SeatData implements LoadableRecipePartData {
 	
 	private final String weaponId;
 	private final float health;
-	private int ammo = 0;
+	private int ammo = 0, maxAmmo = 0;
 	
 	public TurretData(float weight, ResourceLocation itemid, SlotType[] compatibleSlots, 
 			String turrentEntityKey, String weaponId, boolean filled, float health) {
@@ -29,9 +29,10 @@ public class TurretData extends SeatData {
 		this.weaponId = weaponId;
 		this.entityTypeKey = turrentEntityKey;
 		this.health = health;
-		if (filled) {
-			WeaponData data = WeaponPresets.get().getPreset(weaponId);
-			if (data != null) ammo = data.getMaxAmmo();
+		WeaponData data = WeaponPresets.get().getPreset(weaponId);
+		if (data != null) {
+			maxAmmo = data.getMaxAmmo();
+			if (filled) ammo = maxAmmo;
 		}
 	}
 
@@ -132,6 +133,44 @@ public class TurretData extends SeatData {
 			buffer.writeFloat(maxRotX);
 			buffer.writeFloat(rotRate);
 		}
+	}
+
+	@Override
+	public float getCurrentAmmo() {
+		return ammo;
+	}
+
+	@Override
+	public float getMaxAmmo() {
+		return maxAmmo;
+	}
+
+	@Override
+	public void setCurrentAmmo(float ammo) {
+		this.ammo = (int)ammo;
+	}
+
+	@Override
+	public void setMaxAmmo(float max) {
+	}
+
+	@Override
+	public boolean isCompatibleWithAmmoContinuity(String continuity) {
+		return weaponId.equals(continuity);
+	}
+
+	@Override
+	public boolean updateContinuityIfEmpty() {
+		return false;
+	}
+
+	@Override
+	public void setContinuity(String continuity) {
+	}
+
+	@Override
+	public String getContinuity() {
+		return weaponId;
 	}
 	
 }

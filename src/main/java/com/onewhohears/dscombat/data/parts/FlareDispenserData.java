@@ -9,7 +9,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 
-public class FlareDispenserData extends PartData {
+public class FlareDispenserData extends PartData implements LoadableRecipePartData {
 	
 	private final int max;
 	private final float heat;
@@ -104,6 +104,44 @@ public class FlareDispenserData extends PartData {
 		level.addFreshEntity(flare);
 		if (consume) addFlares(-1);
 		return true;
+	}
+
+	@Override
+	public float getCurrentAmmo() {
+		return getFlares();
+	}
+
+	@Override
+	public float getMaxAmmo() {
+		return getMaxFlares();
+	}
+
+	@Override
+	public void setCurrentAmmo(float ammo) {
+		setFlares((int)ammo);
+	}
+
+	@Override
+	public void setMaxAmmo(float max) {
+	}
+
+	@Override
+	public boolean isCompatibleWithAmmoContinuity(String continuity) {
+		return true;
+	}
+
+	@Override
+	public boolean updateContinuityIfEmpty() {
+		return false;
+	}
+
+	@Override
+	public void setContinuity(String continuity) {
+	}
+
+	@Override
+	public String getContinuity() {
+		return "";
 	}
 
 }

@@ -7,7 +7,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 
-public class FuelTankData extends PartData {
+public class FuelTankData extends PartData implements LoadableRecipePartData {
 	
 	private final float max;
 	private float fuel;
@@ -86,6 +86,44 @@ public class FuelTankData extends PartData {
 	public float getWeight() {
 		float w = super.getWeight();
 		return w * fuel / max;
+	}
+
+	@Override
+	public float getCurrentAmmo() {
+		return getFuel();
+	}
+
+	@Override
+	public float getMaxAmmo() {
+		return getMaxFuel();
+	}
+
+	@Override
+	public void setCurrentAmmo(float ammo) {
+		setFuel(ammo);
+	}
+
+	@Override
+	public void setMaxAmmo(float max) {
+	}
+
+	@Override
+	public boolean isCompatibleWithAmmoContinuity(String continuity) {
+		return true;
+	}
+
+	@Override
+	public boolean updateContinuityIfEmpty() {
+		return false;
+	}
+
+	@Override
+	public void setContinuity(String continuity) {
+	}
+
+	@Override
+	public String getContinuity() {
+		return "";
 	}
 
 }

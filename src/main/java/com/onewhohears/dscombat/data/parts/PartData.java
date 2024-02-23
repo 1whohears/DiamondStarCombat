@@ -1,7 +1,5 @@
 package com.onewhohears.dscombat.data.parts;
 
-import java.util.NoSuchElementException;
-
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
@@ -191,12 +189,8 @@ public abstract class PartData {
 	public ItemStack getNewItemStack() {
 		//System.out.println("GETTING ITEM STACK "+itemid);
 		if (stack == null) {
-			try {
-				Item i = UtilItem.getItem(itemid.toString());
-				stack = new ItemStack(i);
-			} catch(NoSuchElementException e) {
-				stack = ItemStack.EMPTY;
-			}
+			Item i = UtilItem.getItem(itemid.toString());
+			stack = new ItemStack(i);
 		}
 		ItemStack s = stack.copy();
 		s.setTag(write());

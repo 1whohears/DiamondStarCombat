@@ -10,7 +10,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 
-public class WeaponPartData extends PartData {
+public class WeaponPartData extends PartData implements LoadableRecipePartData {
 	
 	private final String[] compatible;
 	protected String weaponId;
@@ -81,7 +81,6 @@ public class WeaponPartData extends PartData {
 			craft.weaponSystem.addWeapon(data);
 		}
 		data.setCurrentAmmo(ammo);
-		//data.setMaxAmmo(max);
 		data.setLaunchPos(pos);
 		if (!craft.level.isClientSide) data.updateClientAmmo(craft);
 	}
@@ -126,10 +125,50 @@ public class WeaponPartData extends PartData {
 	
 	public boolean isWeaponCompatible(String preset) {
 		if (preset == null) return false;
-		for (int i = 0; i < compatible.length; ++i) {
-			if (compatible[i].equals(preset)) return true;
-		}
+		for (int i = 0; i < compatible.length; ++i) 
+			if (compatible[i].equals(preset)) 
+				return true;
 		return false;
+	}
+
+	@Override
+	public float getCurrentAmmo() {
+		return ammo;
+	}
+
+	@Override
+	public float getMaxAmmo() {
+		return max;
+	}
+
+	@Override
+	public void setCurrentAmmo(float ammo) {
+		this.ammo = (int)ammo;
+	}
+
+	@Override
+	public void setMaxAmmo(float max) {
+		this.max = (int)max;
+	}
+
+	@Override
+	public boolean isCompatibleWithAmmoContinuity(String continuity) {
+		return isWeaponCompatible(continuity);
+	}
+
+	@Override
+	public boolean updateContinuityIfEmpty() {
+		return true;
+	}
+
+	@Override
+	public void setContinuity(String continuity) {
+		this.weaponId = continuity;
+	}
+
+	@Override
+	public String getContinuity() {
+		return weaponId;
 	}
 
 }

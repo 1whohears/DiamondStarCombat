@@ -85,6 +85,30 @@ public class UtilEntity {
 		return true;
 	}
 	
+	@Nullable
+	public static Vec3 raycastBlock(Level level, Vec3 start, Vec3 end) {
+		Vec3 diff = end.subtract(start);
+		Vec3 dir = diff.normalize();
+		double dist = diff.length();
+		Vec3 pos = start;
+		if (posBlocksMotion(level, pos)) return pos;
+		int k = 1;
+		while (k++ < dist) {
+			pos = pos.add(dir);
+			if (posBlocksMotion(level, pos)) return pos;
+		}
+		return null;
+	}
+	
+	public static boolean posBlocksMotion(Level level, Vec3 pos) {
+		BlockPos bp = new BlockPos(pos);
+		ChunkPos cp = new ChunkPos(bp);
+		if (!level.hasChunk(cp.x, cp.z)) return false;
+		BlockState block = level.getBlockState(bp);
+		if (block == null || block.isAir()) return false;
+		return block.getMaterial().blocksMotion();
+	}
+	
 	public static double getCrossSectionalArea(Entity entity) {
 		if (entity instanceof EntityVehicle plane) return plane.getCrossSectionArea();
 		return RadarTargetTypes.get().getEntityCrossSectionalArea(

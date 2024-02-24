@@ -26,7 +26,6 @@ import com.onewhohears.dscombat.util.UtilParticles;
 import com.onewhohears.dscombat.util.UtilSound;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -38,9 +37,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
 
@@ -548,16 +545,13 @@ public abstract class WeaponData extends JsonPreset {
 		Vec3 move = startMove;
 		while (distSqr <= 40000) {
 			distSqr += move.lengthSqr();
+			Vec3 prevPos = pos;
 			pos = pos.add(move);
 			if (pos.y < -64) pos = new Vec3(pos.x, -64, pos.z);
 			move = move.add(acc);
-			BlockPos bp = new BlockPos(pos);
-			ChunkPos cp = new ChunkPos(bp);
-			if (!vehicle.level.hasChunk(cp.x, cp.z)) return pos;
-			BlockState block = vehicle.level.getBlockState(bp);
-			if (block == null || block.isAir()) continue;
-			if (!block.getMaterial().blocksMotion() && !block.getMaterial().isLiquid()) continue;
-			return pos;
+			Vec3 raycast = UtilEntity.raycastBlock(vehicle.level, prevPos, pos);
+			if (raycast == null) continue;
+			return raycast;
 		}
 		return pos;
 	}

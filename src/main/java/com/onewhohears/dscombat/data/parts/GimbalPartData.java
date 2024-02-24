@@ -9,8 +9,6 @@ import net.minecraft.world.entity.EntityType;
 
 public class GimbalPartData extends PartData {
 	
-	public final String entityTypeKey;
-	
 	public GimbalPartData(float weight, ResourceLocation itemid, SlotType[] compatibleSlots, String entityTypeKey) {
 		super(weight, itemid, compatibleSlots);
 		this.entityTypeKey = entityTypeKey;

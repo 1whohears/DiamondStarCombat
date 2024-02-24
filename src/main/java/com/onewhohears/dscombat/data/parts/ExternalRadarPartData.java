@@ -8,8 +8,6 @@ import net.minecraft.world.entity.EntityType;
 
 public class ExternalRadarPartData extends RadarPartData {
 	
-	public final String entityTypeKey;
-	
 	public ExternalRadarPartData(float weight, String preset, ResourceLocation itemid, SlotType[] compatibleSlots, String entityTypeKey) {
 		super(weight, preset, itemid, compatibleSlots);
 		this.entityTypeKey = entityTypeKey;

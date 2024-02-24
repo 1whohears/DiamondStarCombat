@@ -48,20 +48,5 @@ public class RadarPartData extends PartData {
 		if (getParent() == null) return;
 		getParent().radarSystem.removeRadar(radarId, slotId);
 	}
-	
-	@Override
-	public void tick(String slotId) {
-		super.tick(slotId);
-		/*RadarData data = this.getParent().radarSystem.get(radarId, slotId);
-		if (data != null) {
-			
-		}*/
-	}
-	
-	@Override
-	public void clientTick(String slotId) {
-		super.clientTick(slotId);
-		//this.tick(slotId);
-	}
 
 }

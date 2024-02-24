@@ -24,7 +24,7 @@ apply plugin: 'com.diffplug.eclipse.apt'
 
 group = 'com.onewhohears.dscombat'
 archivesBaseName = 'dscombat-1.19.2'
-version = '0.9.3-test.3'
+version = '0.9.3-test.4'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 

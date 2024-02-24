@@ -189,7 +189,7 @@ public class BulletData extends WeaponData {
 	protected Vec3 getStartMove(EntityVehicle vehicle) {
 		Vec3 move = vehicle.getLookAngle().scale(getSpeed());
 		if (vehicle.isWeaponAngledDown() && canAngleDown())
-			move = UtilAngles.rotateVector(move, Vector3f.XP.rotationDegrees(25f));
+			move = UtilAngles.rotateVector(move, Vector3f.XN.rotationDegrees(25f));
 		return move;
 	}
 

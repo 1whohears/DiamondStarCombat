@@ -26,7 +26,7 @@ public class FuelTankLoadRecipe extends PartItemLoadRecipe<FuelTankData> {
 	}
 
 	@Override
-	public boolean isLoadablePartItemMatchRecipe(ItemStack stack) {
+	public boolean isLoadablePartItem(ItemStack stack) {
 		return stack.getItem() instanceof ItemFuelTank;
 	}
 

@@ -22,7 +22,7 @@ public class TurretLoadRecipe extends PartItemLoadRecipe<TurretData> {
 	}
 
 	@Override
-	public boolean isLoadablePartItemMatchRecipe(ItemStack stack) {
+	public boolean isLoadablePartItem(ItemStack stack) {
 		return stack.getItem() instanceof ItemTurret;
 	}
 

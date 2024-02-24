@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.crafting;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.annotation.Nullable;
 
@@ -25,6 +26,7 @@ public abstract class PartItemLoadRecipe<I extends LoadableRecipePartData> exten
 
 	@Override
 	public boolean matches(CraftingContainer container, Level level) {
+		if (hasOutlier(container)) return false;
 		ItemStack part = getPartItem(container);
 		List<ItemStack> ammo = getAmmoItems(container);
 		I lpd = getLoadablePartDataFromItem(part);
@@ -121,20 +123,38 @@ public abstract class PartItemLoadRecipe<I extends LoadableRecipePartData> exten
 		return true;
 	}
 	
-	public abstract boolean isLoadablePartItemMatchRecipe(ItemStack stack);
-	
-	@Nullable
-	public ItemStack getPartItem(CraftingContainer container) {
-		ItemStack part = null;
+	public boolean hasOutlier(CraftingContainer container) {
 		for (int i = 0; i < container.getContainerSize(); ++i) {
 			ItemStack stack  = container.getItem(i);
 			if (stack.isEmpty()) continue;
-			if (isLoadablePartItemMatchRecipe(stack)) {
+			if (isOutlier(stack)) return true;
+		}
+		return false;
+	}
+	
+	public boolean isOutlier(ItemStack stack) {
+		return !isLoadablePartItem(stack) && !isItemAmmo(stack);
+	}
+	
+	@Nullable
+	public ItemStack getPartItem(CraftingContainer container, AtomicInteger index) {
+		ItemStack part = null;
+		index.set(-1);
+		for (int i = 0; i < container.getContainerSize(); ++i) {
+			ItemStack stack  = container.getItem(i);
+			if (stack.isEmpty()) continue;
+			if (isLoadablePartItem(stack)) {
 				if (part != null) return null;
 				part = stack;
+				index.set(i);
 			}
 		}
 		return part;
+	}
+	
+	@Nullable
+	public ItemStack getPartItem(CraftingContainer container) {
+		return getPartItem(container, new AtomicInteger());
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -164,6 +184,7 @@ public abstract class PartItemLoadRecipe<I extends LoadableRecipePartData> exten
 		return ammo;
 	}
 	
+	public abstract boolean isLoadablePartItem(ItemStack stack);
 	public abstract boolean isItemAmmo(ItemStack stack);
 	public abstract boolean checkAmmoContinuity();
 	public abstract String getItemAmmoContinuity(ItemStack stack);

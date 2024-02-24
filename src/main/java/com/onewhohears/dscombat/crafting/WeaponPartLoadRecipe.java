@@ -22,7 +22,7 @@ public class WeaponPartLoadRecipe extends PartItemLoadRecipe<WeaponPartData> {
 	}
 
 	@Override
-	public boolean isLoadablePartItemMatchRecipe(ItemStack stack) {
+	public boolean isLoadablePartItem(ItemStack stack) {
 		return stack.getItem() instanceof ItemWeaponPart;
 	}
 

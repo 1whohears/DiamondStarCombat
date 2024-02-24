@@ -21,7 +21,7 @@ public class FlareDispenserLoadRecipe extends PartItemLoadRecipe<FlareDispenserD
 	}
 
 	@Override
-	public boolean isLoadablePartItemMatchRecipe(ItemStack stack) {
+	public boolean isLoadablePartItem(ItemStack stack) {
 		return stack.getItem() instanceof ItemFlareDispenser;
 	}
 

@@ -170,5 +170,10 @@ public class WeaponPartData extends PartData implements LoadableRecipePartData {
 	public String getContinuity() {
 		return weaponId;
 	}
+	
+	@Override
+	public boolean isContinuityEmpty() {
+		return getContinuity() == null || getContinuity().isEmpty() || getCurrentAmmo() == 0;
+	}
 
 }

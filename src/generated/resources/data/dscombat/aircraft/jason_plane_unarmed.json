@@ -1,35 +1,8 @@
 {
   "aircraft_type": 0,
-  "base_armor": 0.0,
-  "cross_sec_area": 3.0,
+  "copyId": "jason_plane_empty",
   "displayName": "preset.dscombat.jason_plane_unarmed",
-  "health": 60.0,
-  "idleheat": 1.5,
   "ingredients": [
-    {
-      "item": "dscombat:fuselage",
-      "num": 1
-    },
-    {
-      "item": "dscombat:wing",
-      "num": 2
-    },
-    {
-      "item": "dscombat:cockpit",
-      "num": 1
-    },
-    {
-      "item": "dscombat:wheel",
-      "num": 3
-    },
-    {
-      "item": "dscombat:propeller",
-      "num": 1
-    },
-    {
-      "item": "minecraft:blue_dye",
-      "num": 4
-    },
     {
       "item": "dscombat:allison_v_1710",
       "num": 1
@@ -40,90 +13,21 @@
     }
   ],
   "is_craftable": true,
-  "item": "dscombat:jason_plane",
   "landing_gear": true,
-  "mass": 1100.0,
-  "max_health": 60.0,
-  "max_speed": 0.8,
-  "maxpitch": 3.0,
-  "maxroll": 5.0,
-  "maxyaw": 2.0,
-  "pitchtorque": 2.0,
   "presetId": "jason_plane_unarmed",
-  "rolltorque": 2.0,
   "slots": [
-    {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
-      "name": "pilot_seat",
-      "slot_posx": 0.0,
-      "slot_posy": 0.3,
-      "slot_posz": -0.15,
-      "slot_type": "seat",
-      "zRot": 0.0
-    },
-    {
-      "name": "frame_1",
-      "slot_posx": 0.0,
-      "slot_posy": -0.45,
-      "slot_posz": 1.9,
-      "slot_type": "frame",
-      "zRot": 180.0
-    },
-    {
-      "name": "left_wing_1",
-      "slot_posx": 3.4,
-      "slot_posy": -0.4,
-      "slot_posz": 1.1,
-      "slot_type": "wing",
-      "zRot": 180.0
-    },
-    {
-      "name": "right_wing_1",
-      "slot_posx": -3.4,
-      "slot_posy": -0.4,
-      "slot_posz": 1.1,
-      "slot_type": "wing",
-      "zRot": 180.0
-    },
     {
       "data": {
         "itemid": "dscombat:allison_v_1710"
       },
-      "name": "internal_1",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "radial_engine",
-      "zRot": 0.0
+      "name": "internal_1"
     },
     {
       "data": {
         "filled": true,
         "itemid": "dscombat:light_fuel_tank"
       },
-      "name": "internal_2",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "internal",
-      "zRot": 0.0
-    },
-    {
-      "name": "internal_3",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "internal",
-      "zRot": 0.0
+      "name": "internal_2"
     }
-  ],
-  "sort_factor": 5,
-  "stealth": 1.0,
-  "throttledown": 0.07,
-  "throttleup": 0.04,
-  "turn_radius": 10.0,
-  "wing_area": 15.0,
-  "yawtorque": 3.0
+  ]
 }

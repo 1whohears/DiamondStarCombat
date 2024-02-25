@@ -1,10 +1,35 @@
 {
   "aircraft_type": 3,
-  "base_armor": 12.0,
-  "cross_sec_area": 8.0,
   "displayName": "preset.dscombat.cruiser_empty",
   "health": 500.0,
-  "idleheat": 5.0,
+  "hitboxes": [
+    {
+      "name": "plat0",
+      "rel_pos": {
+        "x": 0.0,
+        "y": 2.0,
+        "z": -2.0
+      },
+      "size": {
+        "x": 12.0,
+        "y": 4.02,
+        "z": 35.599998474121094
+      }
+    },
+    {
+      "name": "plat1",
+      "rel_pos": {
+        "x": 0.0,
+        "y": 4.5,
+        "z": 0.8
+      },
+      "size": {
+        "x": 7.0,
+        "y": 1.02,
+        "z": 21.0
+      }
+    }
+  ],
   "ingredients": [
     {
       "item": "dscombat:large_fuselage",
@@ -30,15 +55,7 @@
   "is_craftable": false,
   "item": "dscombat:cruiser",
   "landing_gear": true,
-  "mass": 350000.0,
-  "max_health": 500.0,
-  "max_speed": 0.6,
-  "maxpitch": 0.0,
-  "maxroll": 0.0,
-  "maxyaw": 1.2,
-  "pitchtorque": 0.0,
   "presetId": "cruiser_empty",
-  "rolltorque": 0.0,
   "slots": [
     {
       "data": {
@@ -246,9 +263,34 @@
     }
   ],
   "sort_factor": 3,
-  "stealth": 0.9,
-  "throttledown": 0.1,
-  "throttleup": 0.05,
-  "turn_radius": 0.0,
-  "yawtorque": 2.0
+  "sounds": {
+    "loopSoundType": "basic",
+    "nonPassengerEngine": "dscombat:boat_1",
+    "passengerEngine": "dscombat:boat_1"
+  },
+  "stats": {
+    "base_armor": 12.0,
+    "cameraDistance": 26.0,
+    "crashExplosionRadius": 8.0,
+    "cross_sec_area": 8.0,
+    "idleheat": 5.0,
+    "inertiapitch": 10.0,
+    "inertiaroll": 6.0,
+    "inertiayaw": 4.0,
+    "mass": 350000.0,
+    "mastType": "LARGE",
+    "max_health": 500.0,
+    "max_speed": 0.6,
+    "maxpitch": 0.0,
+    "maxroll": 0.0,
+    "maxyaw": 1.2,
+    "negativeThrottle": true,
+    "stealth": 0.9,
+    "throttledown": 0.1,
+    "throttleup": 0.05,
+    "torquepitch": 0.0,
+    "torqueroll": 0.0,
+    "torqueyaw": 2.0,
+    "turn_radius": 0.0
+  }
 }

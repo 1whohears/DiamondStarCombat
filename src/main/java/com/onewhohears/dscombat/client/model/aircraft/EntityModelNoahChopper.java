@@ -34,8 +34,8 @@ public class EntityModelNoahChopper extends EntityControllableModel<EntityHelico
 			int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		poseStack.translate(0, 1.5, 0);
 		poseStack.scale(1.0F, -1.0F, 1.0F);
-		top_rotor.yRot = entity.getPropellerRotation(partialTicks);
-		tail_rotor.xRot = entity.getPropellerRotation(partialTicks);
+		top_rotor.yRot = entity.getMotorRotation(partialTicks, 7);
+		tail_rotor.xRot = entity.getMotorRotation(partialTicks, 3);
 		body.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 

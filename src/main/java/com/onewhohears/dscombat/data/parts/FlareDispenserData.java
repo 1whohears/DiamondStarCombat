@@ -9,7 +9,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 
-public class FlareDispenserData extends PartData {
+public class FlareDispenserData extends PartData implements LoadableRecipePartData {
 	
 	private final int max;
 	private final float heat;
@@ -24,37 +24,25 @@ public class FlareDispenserData extends PartData {
 		this.max = max;
 	}
 	
-	public FlareDispenserData(CompoundTag tag) {
-		super(tag);
+	public void read(CompoundTag tag) {
+		super.read(tag);
 		flares = tag.getInt("flares");
-		heat = tag.getFloat("heat");
-		age = tag.getInt("age");
-		max = tag.getInt("max");
 	}
 	
 	public CompoundTag write() {
 		CompoundTag tag = super.write();
 		tag.putInt("flares", flares);
-		tag.putFloat("heat", heat);
-		tag.putInt("age", age);
-		tag.putInt("max", max);
 		return tag;
 	}
 	
-	public FlareDispenserData(FriendlyByteBuf buffer) {
-		super(buffer);
+	public void read(FriendlyByteBuf buffer) {
+		super.read(buffer);
 		flares = buffer.readInt();
-		heat = buffer.readFloat();
-		age = buffer.readInt();
-		max = buffer.readInt();
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
 		super.write(buffer);
 		buffer.writeInt(flares);
-		buffer.writeFloat(heat);
-		buffer.writeInt(age);
-		buffer.writeInt(max);
 	}
 	
 	@Override
@@ -116,6 +104,44 @@ public class FlareDispenserData extends PartData {
 		level.addFreshEntity(flare);
 		if (consume) addFlares(-1);
 		return true;
+	}
+
+	@Override
+	public float getCurrentAmmo() {
+		return getFlares();
+	}
+
+	@Override
+	public float getMaxAmmo() {
+		return getMaxFlares();
+	}
+
+	@Override
+	public void setCurrentAmmo(float ammo) {
+		setFlares((int)ammo);
+	}
+
+	@Override
+	public void setMaxAmmo(float max) {
+	}
+
+	@Override
+	public boolean isCompatibleWithAmmoContinuity(String continuity) {
+		return true;
+	}
+
+	@Override
+	public boolean updateContinuityIfEmpty() {
+		return false;
+	}
+
+	@Override
+	public void setContinuity(String continuity) {
+	}
+
+	@Override
+	public String getContinuity() {
+		return "";
 	}
 
 }

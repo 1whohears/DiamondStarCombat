@@ -1,10 +1,16 @@
 {
+  "after_burner_smoke": [
+    {
+      "pos": {
+        "x": 0.0,
+        "y": -0.1,
+        "z": -6.0
+      }
+    }
+  ],
   "aircraft_type": 0,
-  "base_armor": 2.0,
-  "cross_sec_area": 4.0,
   "displayName": "preset.dscombat.felix_plane_empty",
   "health": 120.0,
-  "idleheat": 6.0,
   "ingredients": [
     {
       "item": "dscombat:fuselage",
@@ -34,15 +40,84 @@
   "is_craftable": false,
   "item": "dscombat:felix_plane",
   "landing_gear": true,
-  "mass": 5200.0,
-  "max_health": 120.0,
-  "max_speed": 1.25,
-  "maxpitch": 2.15,
-  "maxroll": 5.0,
-  "maxyaw": 1.15,
-  "pitchtorque": 2.0,
   "presetId": "felix_plane_empty",
-  "rolltorque": 1.0,
+  "screens": [
+    {
+      "height": 0.195,
+      "id": 0,
+      "pos": {
+        "x": 0.294,
+        "y": 0.434,
+        "z": 5.425
+      },
+      "rot": {
+        "x": 10.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "width": 0.195
+    },
+    {
+      "height": 0.1,
+      "id": 1,
+      "pos": {
+        "x": -0.39,
+        "y": 0.135,
+        "z": 5.155
+      },
+      "rot": {
+        "x": 10.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "width": 0.1
+    },
+    {
+      "height": 0.195,
+      "id": 4,
+      "pos": {
+        "x": -0.31,
+        "y": 0.434,
+        "z": 5.425
+      },
+      "rot": {
+        "x": 10.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "width": 0.195
+    },
+    {
+      "height": 0.11,
+      "id": 3,
+      "pos": {
+        "x": 0.0775,
+        "y": 0.505,
+        "z": 5.44
+      },
+      "rot": {
+        "x": 10.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "width": 0.11
+    },
+    {
+      "height": 0.1,
+      "id": 2,
+      "pos": {
+        "x": 0.0,
+        "y": 0.97,
+        "z": 4.83
+      },
+      "rot": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "width": 0.1
+    }
+  ],
   "slots": [
     {
       "data": {
@@ -137,10 +212,43 @@
     }
   ],
   "sort_factor": 10,
-  "stealth": 0.95,
-  "throttledown": 0.08,
-  "throttleup": 0.04,
-  "turn_radius": 12.0,
-  "wing_area": 23.0,
-  "yawtorque": 4.0
+  "sounds": {
+    "loopSoundType": "basic",
+    "nonPassengerEngine": "dscombat:jet_1",
+    "passengerEngine": "dscombat:jet_1",
+    "passengerSoundPack": "eng_non_binary_goober"
+  },
+  "stats": {
+    "base_armor": 2.0,
+    "cameraDistance": 17.0,
+    "crashExplosionRadius": 5.0,
+    "cross_sec_area": 4.0,
+    "idleheat": 6.0,
+    "inertiapitch": 9.0,
+    "inertiaroll": 4.5,
+    "inertiayaw": 3.0,
+    "mass": 5200.0,
+    "max_health": 120.0,
+    "max_speed": 1.25,
+    "maxpitch": 2.15,
+    "maxroll": 5.0,
+    "maxyaw": 1.15,
+    "plane": {
+      "canAimDown": false,
+      "flapsAOABias": 8.0,
+      "liftKGraph": "alexis_plane",
+      "wing_area": 23.0
+    },
+    "stealth": 0.95,
+    "throttledown": 0.08,
+    "throttleup": 0.04,
+    "torquepitch": 2.0,
+    "torqueroll": 1.0,
+    "torqueyaw": 4.0,
+    "turn_radius": 12.0
+  },
+  "textures": {
+    "baseTextureVariants": 2,
+    "textureLayers": 2
+  }
 }

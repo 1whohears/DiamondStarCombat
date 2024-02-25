@@ -1,7 +1,5 @@
 package com.onewhohears.dscombat.data.parts;
 
-import java.util.NoSuchElementException;
-
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
@@ -18,64 +16,44 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.ForgeRegistries;
 
-public class TurretData extends SeatData {
+public class TurretData extends SeatData implements LoadableRecipePartData {
 	
 	private final String weaponId;
-	private final String turretEntityKey;
-	private final RotBounds rotBounds;
 	private final float health;
-	private EntityType<? extends EntityTurret> turretType;
-	private int ammo = 0;
+	private int ammo = 0, maxAmmo = 0;
 	
 	public TurretData(float weight, ResourceLocation itemid, SlotType[] compatibleSlots, 
-			String turrentEntityKey, String weaponId, RotBounds rotBounds, boolean filled, float health) {
+			String turrentEntityKey, String weaponId, boolean filled, float health) {
 		super(weight, itemid, compatibleSlots);
 		this.weaponId = weaponId;
-		this.turretEntityKey = turrentEntityKey;
-		this.rotBounds = rotBounds;
+		this.entityTypeKey = turrentEntityKey;
 		this.health = health;
-		if (filled) {
-			WeaponData data = WeaponPresets.get().getPreset(weaponId);
-			if (data != null) ammo = data.getMaxAmmo();
+		WeaponData data = WeaponPresets.get().getPreset(weaponId);
+		if (data != null) {
+			maxAmmo = data.getMaxAmmo();
+			if (filled) ammo = maxAmmo;
 		}
 	}
 
-	public TurretData(CompoundTag tag) {
-		super(tag);
-		weaponId = tag.getString("weaponId");
-		turretEntityKey = tag.getString("turretEntity");
-		rotBounds = new RotBounds(tag);
-		health = tag.getFloat("health");
+	public void read(CompoundTag tag) {
+		super.read(tag);
 		ammo = tag.getInt("ammo");
 	}
 	
 	public CompoundTag write() {
 		CompoundTag tag = super.write();
-		tag.putString("weaponId", weaponId);
-		tag.putString("turretEntity", turretEntityKey);
-		rotBounds.write(tag);
-		tag.putFloat("health", health);
 		tag.putInt("ammo", ammo);
 		return tag;
 	}
 
-	public TurretData(FriendlyByteBuf buffer) {
-		super(buffer);
-		weaponId = buffer.readUtf();
-		turretEntityKey = buffer.readUtf();
-		rotBounds = new RotBounds(buffer);
-		health = buffer.readFloat();
+	public void read(FriendlyByteBuf buffer) {
+		super.read(buffer);
 		ammo = buffer.readInt();
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
 		super.write(buffer);
-		buffer.writeUtf(weaponId);
-		buffer.writeUtf(turretEntityKey);
-		rotBounds.write(buffer);
-		buffer.writeFloat(health);
 		buffer.writeInt(ammo);
 	}
 	
@@ -86,10 +64,10 @@ public class TurretData extends SeatData {
 	
 	@Override
 	public void serverSetup(EntityVehicle craft, String slotId, Vec3 pos) {
-		setParent(craft);
-		setRelPos(pos);
-		EntityTurret t = getTurret(slotId);
-		t.setAmmo(ammo);
+		super.serverSetup(craft, slotId, pos);
+		EntityTurret turret = getTurret(slotId);
+		if (turret == null) return;
+		turret.setAmmo(ammo);
 	}
 	
 	@Nullable
@@ -97,37 +75,31 @@ public class TurretData extends SeatData {
 		EntityVehicle craft = getParent();
 		if (craft == null) return null;
 		for (EntityPart part : craft.getPartEntities()) 
-			if (part.getSlotId().equals(slotId) && part.getType().equals(getTurretType())) 
-				return (EntityTurret) part;
-		EntityTurret t = getTurretType().create(craft.level);
-		t.setSlotId(slotId);
-		t.setRelativePos(getRelPos());
-		t.setHealth(health);
-		t.setPos(craft.position());
-		t.startRiding(craft);
-		t.setWeaponId(weaponId);
-		t.setRotBounds(rotBounds);
-		craft.level.addFreshEntity(t);
-		return t;
+			if (part.getPartType() == getType() && part.getSlotId().equals(slotId)
+					&& part instanceof EntityTurret turret)
+				return turret;
+		return null;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public EntityType<? extends EntityTurret> getTurretType() {
-		if (turretType == null) {
-			try { turretType = (EntityType<? extends EntityTurret>) ForgeRegistries.ENTITY_TYPES
-					.getDelegate(new ResourceLocation(turretEntityKey)).get().get(); }
-			catch(NoSuchElementException e) { turretType = ModEntities.MINIGUN_TURRET.get(); }
-			catch(ClassCastException e) { turretType = ModEntities.MINIGUN_TURRET.get(); }
-		}
-		return turretType;
+	@Override
+	public void setUpPartEntity(EntityPart part, EntityVehicle craft, String slotId, Vec3 pos, float health) {
+		super.setUpPartEntity(part, craft, slotId, pos, health);
+		if (!(part instanceof EntityTurret turret)) return;
+		turret.setWeaponId(weaponId);
+	}
+	
+	@Override
+	public EntityType<?> getDefaultExternalEntity() {
+		return ModEntities.AA_TURRET.get();
+	}
+	
+	@Override
+	public float getExternalEntityDefaultHealth() {
+		return health;
 	}
 	
 	public void setAmmo(int ammo) {
 		this.ammo = ammo;
-	}
-	
-	public RotBounds getRotBounds() {
-		return rotBounds;
 	}
 	
 	public static class RotBounds {
@@ -161,6 +133,44 @@ public class TurretData extends SeatData {
 			buffer.writeFloat(maxRotX);
 			buffer.writeFloat(rotRate);
 		}
+	}
+
+	@Override
+	public float getCurrentAmmo() {
+		return ammo;
+	}
+
+	@Override
+	public float getMaxAmmo() {
+		return maxAmmo;
+	}
+
+	@Override
+	public void setCurrentAmmo(float ammo) {
+		this.ammo = (int)ammo;
+	}
+
+	@Override
+	public void setMaxAmmo(float max) {
+	}
+
+	@Override
+	public boolean isCompatibleWithAmmoContinuity(String continuity) {
+		return weaponId.equals(continuity);
+	}
+
+	@Override
+	public boolean updateContinuityIfEmpty() {
+		return false;
+	}
+
+	@Override
+	public void setContinuity(String continuity) {
+	}
+
+	@Override
+	public String getContinuity() {
+		return weaponId;
 	}
 	
 }

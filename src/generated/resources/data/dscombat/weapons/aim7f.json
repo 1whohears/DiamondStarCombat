@@ -1,6 +1,6 @@
 {
   "type": "track_missile",
-  "acceleration": 0.02,
+  "acceleration": 0.07,
   "activeTrack": false,
   "bleed": 0.03,
   "canShootOnGround": false,

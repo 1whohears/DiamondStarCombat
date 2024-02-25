@@ -1,10 +1,14 @@
 package com.onewhohears.dscombat.data.aircraft.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
+import com.onewhohears.dscombat.data.aircraft.LiftKGraph;
+import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
+import com.onewhohears.dscombat.init.ModSounds;
 
 public class AlexisPresets {
 	
@@ -13,20 +17,33 @@ public class AlexisPresets {
 			.setSortFactor(10)
 			.setAircraftType(AircraftType.PLANE)
 			.setItem(ModItems.ALEXIS_PLANE.getId())
-			.setMaxHealth(150f)
+			.setMaxHealth(140f)
 			.setMass(8500f)
 			.setMaxSpeed(1.4f)
-			.setStealth(0.95f)
+			.setStealth(0.9f)
 			.setCrossSecArea(4f)
 			.setIdleHeat(4f)
 			.setBaseArmor(2f)
 			.setTurnRadius(10f)
 			.setMaxTurnRates(6f, 2.5f, 1.5f)
-			.setTurnTorques(1f, 2f, 4f)
+			.setTurnTorques(1.5f, 2f, 4f)
 			.setThrottleRate(0.04f, 0.08f)
 			.setPlaneWingArea(28f)
+			.setFighterJetSounds(ModSounds.ALEXIS_EXT_AFTERBURNER_CLOSE, ModSounds.ALEXIS_EXT_AFTERBURNER_FAR,
+					ModSounds.ALEXIS_EXT_RPM, ModSounds.ALEXIS_EXT_WIND_CLOSE, ModSounds.ALEXIS_EXT_WIND_FAR,
+					ModSounds.ALEXIS_CP_RPM, ModSounds.ALEXIS_CP_AFTERBURNER, ModSounds.ALEXIS_CP_WIND_SLOW, 
+					ModSounds.ALEXIS_CP_WIND_FAST)
+			.setRotationalInertia(4, 8, 2)
+			.setCrashExplosionRadius(5)
+			.set3rdPersonCamDist(17)
+			.setPlaneLiftAOAGraph(LiftKGraph.ALEXIS_PLANE_GRAPH)
+			.setPlaneFlapDownAOABias(8)
+			.setPlaneNoseCanAimDown(false)
+			.setBaseTextureNum(2)
+			.setLayerTextureNum(2)
+			.setDefultPassengerSoundPack(PassengerSoundPack.ENG_NON_BINARY_GOOBER)
 			.addIngredient(ModItems.FUSELAGE.getId(), 1)
-			.addIngredient(ModItems.WING.getId(), 2)
+			.addIngredient(ModItems.WING.getId(), 3)
 			.addIngredient(ModItems.ADVANCED_COCKPIT.getId())
 			.addIngredient(ModItems.WHEEL.getId(), 3)
 			.addIngredient("minecraft:light_gray_dye", 5)
@@ -47,6 +64,12 @@ public class AlexisPresets {
 			.addEmptySlot("internal_4", SlotType.ADVANCED_INTERNAL)
 			.addEmptySlot("internal_5", SlotType.ADVANCED_INTERNAL)
 			.addEmptySlot("internal_6", SlotType.ADVANCED_INTERNAL)
+			.addEntityScreen(EntityScreenIds.AIR_RADAR_SCREEN, 0.225, 0.798, 7.195, 0.15, 0.15)
+			.addEntityScreen(EntityScreenIds.FUEL_SCREEN, -0.265, 0.948, 7.195, 0.07, 0.07)
+			.addEntityScreen(EntityScreenIds.RWR_SCREEN, 0.19, 0.974, 7.195, 0.13, 0.13)
+			.addEntityScreen(EntityScreenIds.GROUND_RADAR_SCREEN, -0.225, 0.798, 7.195, 0.15, 0.15)
+			.addHUDScreen(0, 0.1, 6.5)
+			.addAfterBurnerSmokePos(0,0.3,-6.5)
 			.build();
 	
 	public static final AircraftPreset UNARMED_ALEXIS_PLANE = AircraftPreset.Builder

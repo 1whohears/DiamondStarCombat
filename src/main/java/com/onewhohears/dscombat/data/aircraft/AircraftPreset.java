@@ -1,31 +1,39 @@
 package com.onewhohears.dscombat.data.aircraft;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
+import com.onewhohears.dscombat.client.model.obj.ObjRadarModel.MastType;
 import com.onewhohears.dscombat.crafting.DSCIngredient;
 import com.onewhohears.dscombat.data.JsonPreset;
 import com.onewhohears.dscombat.data.PresetBuilder;
+import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
+import com.onewhohears.dscombat.entity.aircraft.RotableHitbox;
 import com.onewhohears.dscombat.init.ModItems;
+import com.onewhohears.dscombat.util.UtilGsonMerge;
+import com.onewhohears.dscombat.util.UtilGsonMerge.ConflictStrategy;
+import com.onewhohears.dscombat.util.UtilItem;
 import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraft.world.phys.Vec3;
 
 public class AircraftPreset extends JsonPreset{
 
 	private final AircraftType aircraft_type;
-	private final CompoundTag dataNBT;
+	private CompoundTag dataNBT;
 	private List<DSCIngredient> ingredients;
 	private ItemStack item;
 	
@@ -65,12 +73,7 @@ public class AircraftPreset extends JsonPreset{
 	
 	public ItemStack getItem() {
 		if (item == null) {
-			try {
-				item = new ItemStack(ForgeRegistries.ITEMS.getDelegate(
-						new ResourceLocation(getJsonData().get("item").getAsString())).get().get());
-			} catch(NoSuchElementException e) {
-				item = ItemStack.EMPTY;
-			}
+			item = new ItemStack(UtilItem.getItem(getJsonData().get("item").getAsString()));
 			item.getOrCreateTag().putString("preset", getId());
 		}
 		return item.copy();
@@ -78,6 +81,28 @@ public class AircraftPreset extends JsonPreset{
 	
 	public int getDefaultPaintJob() {
 		return getJsonData().get("paintjob_color").getAsInt();
+	}
+	
+	public RotableHitbox[] getRotableHitboxes(EntityVehicle parent) {
+		if (!getJsonData().has("hitboxes")) return new RotableHitbox[0];
+		JsonArray hba = getJsonData().get("hitboxes").getAsJsonArray();
+		RotableHitbox[] hitboxes = new RotableHitbox[hba.size()];
+		for (int i = 0; i < hitboxes.length; ++i) {
+			JsonObject json = hba.get(i).getAsJsonObject();
+			hitboxes[i] = RotableHitbox.getFromJson(json, parent);
+		}
+		return hitboxes;
+	}
+	
+	public EntityScreenData[] getEntityScreens() {
+		if (!getJsonData().has("screens")) return new EntityScreenData[0];
+		JsonArray s = getJsonData().get("screens").getAsJsonArray();
+		EntityScreenData[] screens = new EntityScreenData[s.size()];
+		for (int i = 0; i < screens.length; ++i) {
+			JsonObject json = s.get(i).getAsJsonObject();
+			screens[i] = EntityScreenData.getScreenFromJson(json);
+		}
+		return screens;
 	}
 	
 	@Override
@@ -92,6 +117,32 @@ public class AircraftPreset extends JsonPreset{
 	
 	public AircraftType getAircraftType() {
 		return aircraft_type;
+	}
+	
+	@Override
+	public boolean mergeWithParent(JsonPreset parent) {
+		if (!super.mergeWithParent(parent)) return false;
+		mergeSlots();
+		dataNBT = UtilParse.getCompoundFromJson(getJsonData());
+		return true;
+	}
+	
+	protected void mergeSlots() {
+		if (!getJsonDataNotCopy().has("slots")) return;
+		JsonArray slots = getJsonDataNotCopy().get("slots").getAsJsonArray();
+		for (int i = 0; i < slots.size(); ++i) {
+			JsonObject slot = slots.get(i).getAsJsonObject();
+			String name = slot.get("name").getAsString();
+			for (int j = i+1; j < slots.size(); ++j) {
+				JsonObject slot2 = slots.get(j).getAsJsonObject();
+				String name2 = slot2.get("name").getAsString();
+				if (!name.equals(name2)) continue;
+				UtilGsonMerge.extendJsonObject(ConflictStrategy.PREFER_FIRST_OBJ, slot, slot2);
+				slots.remove(j);
+				--i;
+				break;
+			}
+		}
 	}
 	
 	@Override
@@ -123,6 +174,14 @@ public class AircraftPreset extends JsonPreset{
 		}
 		
 		@Override
+		protected void setupJsonData() {
+			super.setupJsonData();
+			if (isCopy()) {
+				setInt("aircraft_type", getCopyData().get("aircraft_type").getAsInt());
+			}
+		}
+		
+		@Override
 		public <T extends JsonPreset> T build() {
 			setBoolean("landing_gear", true);
 			setBoolean("is_craftable", is_craftable);
@@ -132,7 +191,6 @@ public class AircraftPreset extends JsonPreset{
 		public Builder setAircraftType(AircraftType aircraft_type) {
 			return setInt("aircraft_type", aircraft_type.ordinal());
 		}
-		
 		/**
 		 * use to make preset appear in aircraft work bench.
 		 * Builder.create/Builder.createFromCopy make presets that
@@ -142,7 +200,6 @@ public class AircraftPreset extends JsonPreset{
 			is_craftable = true;
 			return this;
 		}
-		
 		/**
 		 * used by all vehicles to add a slot that has an item by default
 		 * @param name a translatable string 
@@ -173,17 +230,15 @@ public class AircraftPreset extends JsonPreset{
 			}
 			return this;
 		}
-		
 		/**
 		 * removes item data
 		 * @param name slot that already exists
 		 */
 		public Builder setSlotEmpty(String name) {
-			JsonObject slot = getSlot(name, false);
-			if (slot != null) slot.remove("data");
+			JsonObject slot = getSlot(name, true);
+			if (slot != null) slot.add("data", new JsonObject());
 			return this;
 		}
-		
 		/**
 		 * sets item data of slot
 		 * @param name slot that already exists
@@ -193,7 +248,7 @@ public class AircraftPreset extends JsonPreset{
 		 */
 		public Builder setSlotItem(String name, @Nullable ResourceLocation item, @Nullable String param, boolean filled) {
 			if (item == null) return setSlotEmpty(name);
-			JsonObject slot = getSlot(name, false);
+			JsonObject slot = getSlot(name, true);
 			if (slot == null) return this;
 			JsonObject d = new JsonObject();
 			d.addProperty("itemid", item.toString());
@@ -202,7 +257,6 @@ public class AircraftPreset extends JsonPreset{
 			slot.add("data", d);
 			return this;
 		}
-		
 		/**
 		 * sets item data of slot
 		 * @param name slot that already exists
@@ -211,7 +265,6 @@ public class AircraftPreset extends JsonPreset{
 		public Builder setSlotItem(String name, @Nullable ResourceLocation item) {
 			return setSlotItem(name, item, null, false);
 		}
-		
 		/**
 		 * sets item data of slot
 		 * @param name slot that already exists
@@ -238,23 +291,32 @@ public class AircraftPreset extends JsonPreset{
 		
 		@Nullable
 		protected JsonObject getSlot(String name, boolean createNew) {
-			if (!getData().has("slots")) {
-				getData().add("slots", new JsonArray());
-			}
 			JsonArray slots = getSlots();
 			for (int i = 0; i < slots.size(); ++i) {
 				JsonObject slot = slots.get(i).getAsJsonObject();
-				if (slot.get("name").getAsString().equals(name)) {
+				if (slot.get("name").getAsString().equals(name)) 
 					return slot;
-				}
 			}
-			if (!createNew) return null;
+			if (!createNew && getSlotFromCopy(name) == null) return null;
 			JsonObject slot = new JsonObject();
 			slot.addProperty("name", name);
 			slots.add(slot);
 			return slot;
 		}
 		
+		@Nullable
+		protected JsonObject getSlotFromCopy(String name) {
+			if (!isCopy()) return null;
+			JsonObject copy = getCopyData();
+			if (!copy.has("slots")) return null;
+			JsonArray slots = copy.get("slots").getAsJsonArray();
+			for (int i = 0; i < slots.size(); ++i) {
+				JsonObject slot = slots.get(i).getAsJsonObject();
+				if (slot.get("name").getAsString().equals(name)) 
+					return slot;
+			}
+			return null;
+		}
 		/**
 		 * used by all vehicles to add a slot that has an item by default
 		 * @param name a translatable string 
@@ -269,7 +331,6 @@ public class AircraftPreset extends JsonPreset{
 				@Nullable ResourceLocation item) {
 			return addItemSlot(name, type, x, y, z, zRot, item, null, false);
 		}
-		
 		/**
 		 * used by all vehicles to add a slot that has an item by default.
 		 * meant for internal parts.
@@ -283,7 +344,6 @@ public class AircraftPreset extends JsonPreset{
 				@Nullable ResourceLocation item, @Nullable String param, boolean filled) {
 			return addItemSlot(name, type, 0, 0, 0, 0, item, param, filled);
 		}
-		
 		/**
 		 * used by all vehicles to add a slot that has an item by default.
 		 * meant for internal parts.
@@ -296,7 +356,6 @@ public class AircraftPreset extends JsonPreset{
 				@Nullable ResourceLocation item, boolean filled) {
 			return addItemSlot(name, type, 0, 0, 0, 0, item, null, filled);
 		}
-		
 		/**
 		 * used by all vehicles to add a slot that has an item by default.
 		 * meant for internal parts.
@@ -307,7 +366,6 @@ public class AircraftPreset extends JsonPreset{
 		public Builder addItemSlot(String name, SlotType type, @Nullable ResourceLocation item) {
 			return addItemSlot(name, type, 0, 0, 0, 0, item, null, false);
 		}
-		
 		/**
 		 * used by all vehicles to add a slot that is empty by default
 		 * @param name a translatable string
@@ -320,7 +378,6 @@ public class AircraftPreset extends JsonPreset{
 		public Builder addEmptySlot(String name, SlotType type, double x, double y, double z, float zRot) {
 			return addItemSlot(name, type, x, y, z, zRot, null, null, false);
 		}
-		
 		/**
 		 * used by all vehicles to add a slot that is empty by default.
 		 * meant for internal parts.
@@ -330,7 +387,6 @@ public class AircraftPreset extends JsonPreset{
 		public Builder addEmptySlot(String name, SlotType type) {
 			return addItemSlot(name, type, 0, 0, 0, 0, null, null, false);
 		}
-		
 		/**
 		 * used by all vehicles to add a slot that has a seat by default
 		 * @param name a translatable string 
@@ -341,7 +397,6 @@ public class AircraftPreset extends JsonPreset{
 		public Builder addSeatSlot(String name, double x, double y, double z) {
 			return addItemSlot(name, SlotType.SEAT, x, y, z, 0, ModItems.SEAT.getId(), null, false);
 		}
-		
 		/**
 		 * used by all vehicles to add a slot that has a seat by default
 		 * @param x the x position of the part relative to the vehicle at 0 rotation
@@ -351,7 +406,6 @@ public class AircraftPreset extends JsonPreset{
 		public Builder addPilotSeatSlot(double x, double y, double z) {
 			return addItemSlot(PartSlot.PILOT_SLOT_NAME, SlotType.SEAT, x, y, z, 0, ModItems.SEAT.getId(), null, false);
 		}
-		
 		/**
 		 * used by all vehicles to add a slot that has a seat by default
 		 * @param name a translatable string 
@@ -363,7 +417,6 @@ public class AircraftPreset extends JsonPreset{
 		public Builder addSeatSlot(String name, SlotType type, double x, double y, double z) {
 			return addItemSlot(name, type, x, y, z, 0, ModItems.SEAT.getId(), null, false);
 		}
-		
 		/**
 		 * all vehicles
 		 */
@@ -377,21 +430,18 @@ public class AircraftPreset extends JsonPreset{
 			getData().get("ingredients").getAsJsonArray().add(i);
 			return this;
 		}
-		
 		/**
 		 * all vehicles
 		 */
 		public Builder addIngredient(ResourceLocation item, int num) {
 			return addIngredient(item.toString(), num);
 		}
-		
 		/**
 		 * all vehicles
 		 */
 		public Builder addIngredient(ResourceLocation item) {
 			return addIngredient(item, 1);
 		}
-		
 		/**
 		 * all vehicles
 		 */
@@ -399,110 +449,368 @@ public class AircraftPreset extends JsonPreset{
 			return setString("item", item.toString());
 		}
 		
+		protected JsonArray getHitboxes() {
+			if (!getData().has("hitboxes")) {
+				getData().add("hitboxes", new JsonArray());
+			}
+			return getData().get("hitboxes").getAsJsonArray();
+		}
+		/**
+		 * all vehicles
+		 */
+		public Builder addRotableHitbox(String name, double sizeX, double sizeY, double sizeZ, 
+				double posX, double posY, double posZ) {
+			JsonObject hitbox = new JsonObject();
+			hitbox.addProperty("name", name);
+			UtilParse.writeVec3(hitbox, "size", new Vec3(sizeX, sizeY, sizeZ));
+			UtilParse.writeVec3(hitbox, "rel_pos", new Vec3(posX, posY, posZ));
+			getHitboxes().add(hitbox);
+			return this;
+		}
+		
+		protected JsonArray getScreens() {
+			if (!getData().has("screens")) {
+				getData().add("screens", new JsonArray());
+			}
+			return getData().get("screens").getAsJsonArray();
+		}
+		/**
+		 * all vehicles
+		 */
+		public Builder addEntityScreen(int id, double posX, double posY, double posZ,
+				double width, double height, double rotX, double rotY, double rotZ) {
+			JsonObject screen = new JsonObject();
+			screen.addProperty("id", id);
+			UtilParse.writeVec3(screen, "pos", new Vec3(posX, posY, posZ));
+			screen.addProperty("width", width);
+			screen.addProperty("height", height);
+			UtilParse.writeVec3(screen, "rot", new Vec3(rotX, rotY, rotZ));
+			getScreens().add(screen);
+			return this;
+		}
+		/**
+		 * all vehicles
+		 */
+		public Builder addEntityScreen(int id, double posX, double posY, double posZ, 
+				double width, double height) {
+			return addEntityScreen(id, posX, posY, posZ, width, height, 0, 0, 0);
+		}
+		/**
+		 * all vehicles
+		 */
+		public Builder addEntityScreen(int id, double posX, double posY, double posZ, 
+				double width, double height, double rotX) {
+			return addEntityScreen(id, posX, posY, posZ, width, height, rotX, 0, 0);
+		}
+		/**
+		 * all vehicles
+		 */
+		public Builder addHUDScreen(double seatX, double seatY, double seatZ) {
+			return addEntityScreen(EntityScreenIds.HUD_SCREEN, 
+					seatX, seatY + 1.27, seatZ + 0.13, 
+					0.1, 0.1, 0, 0, 0);
+		}
+		
+		protected JsonArray getAfterBurnerSmokes() {
+			if (!getData().has("after_burner_smoke")) {
+				getData().add("after_burner_smoke", new JsonArray());
+			}
+			return getData().get("after_burner_smoke").getAsJsonArray();
+		}
+		/**
+		 * all vehicles
+		 */
+		public Builder addAfterBurnerSmokePos(double posX, double posY, double posZ) {
+			JsonObject smoke = new JsonObject();
+			UtilParse.writeVec3(smoke, "pos", new Vec3(posX, posY, posZ));
+			getAfterBurnerSmokes().add(smoke);
+			return this;
+		}
+		
+		public JsonObject getStats() {
+			if (!getData().has("stats")) 
+				getData().add("stats", new JsonObject());
+			return getData().get("stats").getAsJsonObject();
+		}
+		
+		public JsonObject getStatsByType(String vehicleType) {
+			if (!getStats().has(vehicleType)) 
+				getStats().add(vehicleType, new JsonObject());
+			return getStats().get(vehicleType).getAsJsonObject();
+		}
+		
+		public Builder setStatFloat(String key, float value) {
+			getStats().addProperty(key, value);
+			return this;
+		}
+		
+		public Builder setStatInt(String key, int value) {
+			getStats().addProperty(key, value);
+			return this;
+		}
+		
+		public Builder setStatBoolean(String key, boolean value) {
+			getStats().addProperty(key, value);
+			return this;
+		}
+		
+		public Builder setStatString(String key, String value) {
+			getStats().addProperty(key, value);
+			return this;
+		}
+		
+		public Builder setTypedStatFloat(String key, float value, String vehicleType) {
+			getStatsByType(vehicleType).addProperty(key, value);
+			return this;
+		}
+		
+		public Builder setTypedStatString(String key, String value, String vehicleType) {
+			getStatsByType(vehicleType).addProperty(key, value);
+			return this;
+		}
+		
+		public Builder setTypedStatBoolean(String key, boolean value, String vehicleType) {
+			getStatsByType(vehicleType).addProperty(key, value);
+			return this;
+		}
 		/**
 		 * all vehicles
 		 * blocks per tick
 		 */
 		public Builder setMaxSpeed(float max_speed) {
-			return setFloat("max_speed", max_speed);
+			return setStatFloat("max_speed", max_speed);
 		}
-		
 		/**
 		 * all vehicles
 		 */
 		public Builder setMaxHealth(float max_health) {
 			setFloat("health", max_health);
-			return setFloat("max_health", max_health);
+			return setStatFloat("max_health", max_health);
 		}
-		
 		/**
 		 * all vehicles
 		 */
 		public Builder setMass(float mass) {
-			return setFloat("mass", mass);
+			return setStatFloat("mass", mass);
 		}
-		
 		/**
 		 * all vehicles
 		 */
 		public Builder setBaseArmor(float armor) {
-			return setFloat("base_armor", armor);
+			return setStatFloat("base_armor", armor);
 		}
-		
-		/**
-		 * used by planes
-		 */
-		public Builder setPlaneWingArea(float wing_area) {
-			return setFloat("wing_area", wing_area);
-		}
-		
 		/**
 		 * all vehicles
 		 */
 		public Builder setCrossSecArea(float area) {
-			return setFloat("cross_sec_area", area);
+			return setStatFloat("cross_sec_area", area);
 		}
-		
 		/**
 		 * all vehicles
 		 */
 		public Builder setStealth(float stealth) {
-			return setFloat("stealth", stealth);
+			return setStatFloat("stealth", stealth);
 		}
-		
 		/**
 		 * all vehicles
 		 */
 		public Builder setIdleHeat(float idleheat) {
-			return setFloat("idleheat", idleheat);
+			return setStatFloat("idleheat", idleheat);
 		}
-		
 		/**
 		 * all vehicles that can drive
 		 */
 		public Builder setTurnRadius(float turn_radius) {
-			return setFloat("turn_radius", turn_radius);
+			return setStatFloat("turn_radius", turn_radius);
 		}
-		
 		/**
 		 * all vehicles
 		 */
 		public Builder setMaxTurnRates(float maxroll, float maxpitch, float maxyaw) {
-			setFloat("maxroll", maxroll);
-			setFloat("maxpitch", maxpitch);
-			return setFloat("maxyaw", maxyaw);
+			setStatFloat("maxroll", maxroll);
+			setStatFloat("maxpitch", maxpitch);
+			return setStatFloat("maxyaw", maxyaw);
 		}
-		
 		/**
 		 * all vehicles
 		 */
-		public Builder setTurnTorques(float rolltorque, float pitchtorque, float yawtorque) {
-			setFloat("rolltorque", rolltorque);
-			setFloat("pitchtorque", pitchtorque);
-			return setFloat("yawtorque", yawtorque);
+		public Builder setTurnTorques(float torqueroll, float torquepitch, float torqueyaw) {
+			setStatFloat("torqueroll", torqueroll);
+			setStatFloat("torquepitch", torquepitch);
+			return setStatFloat("torqueyaw", torqueyaw);
 		}
-		
+		/**
+		 * all vehicles
+		 */
+		public Builder setRotationalInertia(float inertiaroll, float inertiapitch, float inertiayaw) {
+			setStatFloat("inertiaroll", inertiaroll);
+			setStatFloat("inertiapitch", inertiapitch);
+			return setStatFloat("inertiayaw", inertiayaw);
+		}
 		/**
 		 * all vehicles
 		 */
 		public Builder setThrottleRate(float throttleup, float throttledown) {
-			setFloat("throttledown", throttledown);
-			return setFloat("throttleup", throttleup);
+			setStatFloat("throttledown", throttledown);
+			return setStatFloat("throttleup", throttleup);
+		}
+		/**
+		 * all vehicles
+		 */
+		public Builder setCanNegativeThrottle(boolean negativeThrottle) {
+			return setStatBoolean("negativeThrottle", negativeThrottle);
+		}
+		/**
+		 * all vehicles 
+		 */
+		public Builder setCrashExplosionRadius(float crashExplosionRadius) {
+			return setStatFloat("crashExplosionRadius", crashExplosionRadius);
+		}
+		/**
+		 * all vehicles 
+		 */
+		public Builder set3rdPersonCamDist(float cameraDistance) {
+			return setStatFloat("cameraDistance", cameraDistance);
+		}
+		/**
+		 * all vehicles
+		 */
+		public Builder setMastType(MastType mastType) {
+			return setStatString("mastType", mastType.toString());
 		}
 		
+		public JsonObject getTextures() {
+			if (!getData().has("textures")) 
+				getData().add("textures", new JsonObject());
+			return getData().get("textures").getAsJsonObject();
+		}
+		/**
+		 * all vehicles
+		 */
+		public Builder setDefaultBaseTexture(int index) {
+			getTextures().addProperty("baseTexture", index);
+			return this;
+		}
+		/**
+		 * all vehicles 
+		 */
+		public Builder setBaseTextureNum(int baseTextureVariants) {
+			getTextures().addProperty("baseTextureVariants", baseTextureVariants);
+			return this;
+		}
+		/**
+		 * all vehicles 
+		 */
+		public Builder setLayerTextureNum(int textureLayers) {
+			getTextures().addProperty("textureLayers", textureLayers);
+			return this;
+		}
+		
+		public JsonObject getSounds() {
+			if (!getData().has("sounds")) 
+				getData().add("sounds", new JsonObject());
+			return getData().get("sounds").getAsJsonObject();
+		}
+		/**
+		 * all vehicles 
+		 */
+		public Builder setBasicEngineSounds(ResourceLocation nonPassengerEngine, ResourceLocation passengerEngine) {
+			getSounds().addProperty("loopSoundType", "basic");
+			getSounds().addProperty("nonPassengerEngine", nonPassengerEngine.toString());
+			getSounds().addProperty("passengerEngine", passengerEngine.toString());
+			return this;
+		}
+		/**
+		 * all vehicles 
+		 */
+		public Builder setBasicEngineSounds(ResourceLocation engine) {
+			return setBasicEngineSounds(engine, engine);
+		}
+		/**
+		 * all vehicles 
+		 */
+		public Builder setBasicEngineSounds(SoundEvent engine) {
+			return setBasicEngineSounds(engine.getLocation());
+		}
+		/**
+		 * all vehicles 
+		 */
+		public Builder setBasicEngineSounds(SoundEvent nonPassengerEngine, SoundEvent passengerEngine) {
+			return setBasicEngineSounds(nonPassengerEngine.getLocation(), passengerEngine.getLocation());
+		}
+		/**
+		 * all vehicles 
+		 */
+		public Builder setFighterJetSounds(SoundEvent externalAfterBurnerClose, SoundEvent externalAfterBurnerFar, SoundEvent externalRPM,
+				SoundEvent externalWindClose, SoundEvent externalWindFar, SoundEvent cockpitRPM, SoundEvent cockpitAfterBurner,
+				SoundEvent cockpitWindSlow, SoundEvent cockpitWindFast) {
+			getSounds().addProperty("loopSoundType", "fighter_jet");
+			getSounds().addProperty("externalAfterBurnerClose", externalAfterBurnerClose.getLocation().toString());
+			getSounds().addProperty("externalAfterBurnerFar", externalAfterBurnerFar.getLocation().toString());
+			getSounds().addProperty("externalRPM", externalRPM.getLocation().toString());
+			getSounds().addProperty("externalWindClose", externalWindClose.getLocation().toString());
+			getSounds().addProperty("externalWindFar", externalWindFar.getLocation().toString());
+			getSounds().addProperty("cockpitRPM", cockpitRPM.getLocation().toString());
+			getSounds().addProperty("cockpitAfterBurner", cockpitAfterBurner.getLocation().toString());
+			getSounds().addProperty("cockpitWindSlow", cockpitWindSlow.getLocation().toString());
+			getSounds().addProperty("cockpitWindFast", cockpitWindFast.getLocation().toString());
+			return this;
+		}
+		/**
+		 * all vehicles 
+		 */
+		public Builder setDefultPassengerSoundPack(PassengerSoundPack passengerSoundPack) {
+			getSounds().addProperty("passengerSoundPack", passengerSoundPack.id);
+			return this;
+		}
+		/**
+		 * used by planes
+		 */
+		public Builder setPlaneWingArea(float wing_area) {
+			return setTypedStatFloat("wing_area", wing_area, "plane");
+		}
+		/**
+		 * used by planes
+		 */
+		public Builder setPlaneFlapDownAOABias(float flapsAOABias) {
+			return setTypedStatFloat("flapsAOABias", flapsAOABias, "plane");
+		}
+		/**
+		 * used by planes
+		 */
+		public Builder setPlaneNoseCanAimDown(boolean canAimDown) {
+			return setTypedStatBoolean("canAimDown", canAimDown, "plane");
+		}
+		/**
+		 * used by planes
+		 */
+		public Builder setPlaneLiftAOAGraph(LiftKGraph liftKGraph) {
+			return setTypedStatString("liftKGraph", liftKGraph.id, "plane");
+		}
 		/**
 		 * helicopters only
 		 */
 		public Builder setHeliHoverMovement(float accForward, float accSide) {
-			setFloat("accForward", accForward);
-			return setFloat("accSide", accSide);
+			setTypedStatFloat("accForward", accForward, "heli");
+			return setTypedStatFloat("accSide", accSide, "heli");
 		}
-		
-		public Builder setDefaultBaseTexture(int index) {
-			JsonObject textures = new JsonObject();
-			textures.addProperty("baseTexture", index);
-			getData().add("textures", textures);
-			return this;
+		/**
+		 * helicopters only
+		 */
+		public Builder setHeliLiftFactor(float heliLiftFactor) {
+			return setTypedStatFloat("heliLiftFactor", heliLiftFactor, "heli");
+		}
+		/**
+		 * helicopters only
+		 */
+		public Builder setHeliAlwaysLandingGear(boolean alwaysLandingGear) {
+			return setTypedStatBoolean("alwaysLandingGear", alwaysLandingGear, "heli");
+		}
+		/**
+		 * ground vehicles only
+		 */
+		public Builder setCarIsTank(boolean isTank) {
+			return setTypedStatBoolean("isTank", isTank, "car");
 		}
 		
 		public Builder setBoolean(String key, boolean value) {

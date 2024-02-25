@@ -1,27 +1,8 @@
 {
   "aircraft_type": 0,
-  "base_armor": 0.0,
-  "cross_sec_area": 2.0,
+  "copyId": "wooden_plane_empty",
   "displayName": "preset.dscombat.wooden_plane",
-  "health": 40.0,
-  "idleheat": 1.0,
   "ingredients": [
-    {
-      "item": "minecraft:oak_planks",
-      "num": 30
-    },
-    {
-      "item": "dscombat:seat",
-      "num": 1
-    },
-    {
-      "item": "dscombat:propeller",
-      "num": 1
-    },
-    {
-      "item": "dscombat:wheel",
-      "num": 2
-    },
     {
       "item": "dscombat:cm_manly_52",
       "num": 1
@@ -32,82 +13,21 @@
     }
   ],
   "is_craftable": true,
-  "item": "dscombat:wooden_plane",
   "landing_gear": true,
-  "mass": 500.0,
-  "max_health": 40.0,
-  "max_speed": 0.7,
-  "maxpitch": 3.0,
-  "maxroll": 5.0,
-  "maxyaw": 2.0,
-  "pitchtorque": 2.5,
   "presetId": "wooden_plane",
-  "rolltorque": 1.5,
   "slots": [
-    {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
-      "name": "pilot_seat",
-      "slot_posx": 0.0,
-      "slot_posy": -0.4,
-      "slot_posz": 0.0,
-      "slot_type": "seat",
-      "zRot": 0.0
-    },
-    {
-      "name": "left_wing_1",
-      "slot_posx": 1.5,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "wing",
-      "zRot": 180.0
-    },
-    {
-      "name": "right_wing_1",
-      "slot_posx": -1.5,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "wing",
-      "zRot": 180.0
-    },
     {
       "data": {
         "itemid": "dscombat:cm_manly_52"
       },
-      "name": "internal_1",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "radial_engine",
-      "zRot": 0.0
+      "name": "internal_1"
     },
     {
       "data": {
         "filled": true,
         "itemid": "dscombat:light_fuel_tank"
       },
-      "name": "internal_2",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "internal",
-      "zRot": 0.0
-    },
-    {
-      "name": "internal_3",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "internal",
-      "zRot": 0.0
+      "name": "internal_2"
     }
-  ],
-  "sort_factor": 0,
-  "stealth": 1.0,
-  "throttledown": 0.06,
-  "throttleup": 0.02,
-  "turn_radius": 16.0,
-  "wing_area": 8.0,
-  "yawtorque": 4.5
+  ]
 }

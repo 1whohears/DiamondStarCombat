@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.block.entity;
 
-import com.onewhohears.dscombat.common.container.AircraftBlockMenuContainer;
+import com.onewhohears.dscombat.common.container.menu.AircraftBlockContainerMenu;
 import com.onewhohears.dscombat.init.ModBlockEntities;
 
 import net.minecraft.core.BlockPos;
@@ -25,7 +25,7 @@ public class AircraftBlockEntity extends SyncedBlockEntity implements MenuProvid
 
 	@Override
 	public AbstractContainerMenu createMenu(int containerId, Inventory playerInventory, Player player) {
-		return new AircraftBlockMenuContainer(containerId, playerInventory, this);
+		return new AircraftBlockContainerMenu(containerId, playerInventory, this);
 	}
 	
 	public NonNullList<ItemStack> getInventory() {

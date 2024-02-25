@@ -96,7 +96,8 @@ public class JsonToNBTUtil {
 	private static Tag readArray(JsonArray array) {
 		int n = array.size();
 		if (n < 1)
-			throw new JsonSyntaxException("Empty NBT array must specify its type");
+			//throw new JsonSyntaxException("Empty NBT array must specify its type");
+			return new ListTag();
 		JsonElement first = array.get(0);
 		final String differentTypes = "All elements in array must be of the same type";
 		if (first.isJsonPrimitive()) {

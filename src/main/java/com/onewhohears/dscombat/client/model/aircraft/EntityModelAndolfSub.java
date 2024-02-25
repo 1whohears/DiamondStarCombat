@@ -32,7 +32,7 @@ public class EntityModelAndolfSub extends EntityControllableModel<EntitySubmarin
 			int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		poseStack.translate(0, 1.55, 0);
 		poseStack.scale(-1.0F, -1.0F, 1.0F);
-		this.propellor.zRot = entity.getPropellerRotation(partialTicks);
+		propellor.zRot = entity.getMotorRotation(partialTicks, 2);
 		main.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 	

@@ -1,8 +1,8 @@
 {
   "type": "track_missile",
-  "acceleration": 0.03,
+  "acceleration": 0.08,
   "activeTrack": true,
-  "bleed": 0.03,
+  "bleed": 0.07,
   "canShootOnGround": false,
   "causesFire": true,
   "compatibleWeaponPart": "",
@@ -15,7 +15,7 @@
   "explosive": true,
   "fireRate": 40,
   "fov": 40.0,
-  "fuelTicks": 200,
+  "fuelTicks": 150,
   "fuseDist": 3.0,
   "ingredients": [
     {

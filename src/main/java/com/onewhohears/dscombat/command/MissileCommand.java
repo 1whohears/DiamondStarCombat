@@ -45,7 +45,8 @@ public class MissileCommand {
 		int i = 0;
 		for (Entity e : targets) {
 			Vec3 dp = e.position().subtract(pos).normalize();
-			EntityWeapon ew = weapon.getEntity(e.level, owner);
+			EntityWeapon ew = weapon.getEntity(e.level);
+			ew.setOwner(owner);
 			ew.setPos(pos);
 			weapon.setDirection(ew, dp);
 			if (ew instanceof EntityMissile missile) {

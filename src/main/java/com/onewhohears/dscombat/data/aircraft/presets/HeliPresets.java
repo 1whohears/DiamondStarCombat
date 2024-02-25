@@ -1,10 +1,13 @@
 package com.onewhohears.dscombat.data.aircraft.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
+import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
+import com.onewhohears.dscombat.init.ModSounds;
 
 public class HeliPresets {
 	
@@ -25,6 +28,14 @@ public class HeliPresets {
 			.setTurnTorques(1f, 1f, 2.5f)
 			.setThrottleRate(0.01f, 0.02f)
 			.setHeliHoverMovement(0.04f, 0.02f)
+			.setBasicEngineSounds(ModSounds.HELI_1, ModSounds.HELI_1)
+			.setRotationalInertia(8, 6, 4)
+			.setCrashExplosionRadius(4)
+			.set3rdPersonCamDist(6)
+			.setHeliAlwaysLandingGear(true)
+			.setHeliLiftFactor(10)
+			.setLayerTextureNum(1)
+			.setDefultPassengerSoundPack(PassengerSoundPack.ENG_NON_BINARY_GOOBER)
 			.addPilotSeatSlot(0.4, -0.65, 1.5)
 			.addSeatSlot("seat2", SlotType.MED_TURRET, -0.4, -0.65, 1.5)
 			.addSeatSlot("seat3", SlotType.MED_TURRET, 0.4, -0.65, 0.3)
@@ -57,6 +68,11 @@ public class HeliPresets {
 			.addIngredient("minecraft:green_dye", 4)
 			.addIngredient("minecraft:gold_ingot", 15)
 			.addIngredient("iron_ingot", 4)
+			.addEntityScreen(EntityScreenIds.AIR_RADAR_SCREEN,0.19,0.18,1.934,0.3,0.3,20)
+			.addEntityScreen(EntityScreenIds.FUEL_SCREEN,0.19,-0.12,1.825,0.3,0.3,20)
+			.addEntityScreen(EntityScreenIds.RWR_SCREEN,0.5,-0.12,1.825,0.3,0.3,20)
+			.addEntityScreen(EntityScreenIds.GROUND_RADAR_SCREEN,0.5,0.18,1.934,0.3,0.3,20)
+			.addHUDScreen(0.4, -0.65, 1.5)
 			.build();
 	
 	public static final AircraftPreset UNARMED_NOAH_CHOPPER = AircraftPreset.Builder

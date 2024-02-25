@@ -2,18 +2,13 @@ package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.command.DSCGameRules;
-import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
-import com.onewhohears.dscombat.data.aircraft.DSCPhysicsConstants;
-import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData;
+import com.onewhohears.dscombat.data.aircraft.DSCPhyCons;
+import com.onewhohears.dscombat.data.aircraft.VehicleStats;
+import com.onewhohears.dscombat.data.aircraft.VehicleStats.PlaneStats;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource.WeaponDamageType;
-import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -22,57 +17,21 @@ import net.minecraft.world.phys.Vec3;
 
 public class EntityPlane extends EntityVehicle {
 	
-	public static final EntityDataAccessor<Float> WING_AREA = SynchedEntityData.defineId(EntityPlane.class, EntityDataSerializers.FLOAT);
+	protected PlaneStats planeStats;
 	
-	private float propellerRot = 0, propellerRotOld = 0, aoa = 0, liftK = 0, airFoilSpeedSqr = 0;
+	private float aoa = 0, liftK = 0, airFoilSpeedSqr = 0;
 	private float centripetalForce, centrifugalForce; 
-	private double liftMag;
+	private double liftMag, prevMaxSpeedMod;
 	private Vec3 liftDir = Vec3.ZERO, airFoilAxes = Vec3.ZERO;
 	
-	public EntityPlane(EntityType<? extends EntityPlane> entity, Level level, ImmutableVehicleData vehicleData) {
-		super(entity, level, vehicleData);
-	}
-	
-	@Override
-	public void defineSynchedData() {
-		super.defineSynchedData();
-		entityData.define(WING_AREA, 10f);
-	}
-	
-	@Override
-	public void readAdditionalSaveData(CompoundTag nbt) {
-		super.readAdditionalSaveData(nbt);
-		CompoundTag presetNbt = AircraftPresets.get().getPreset(preset).getDataAsNBT();
-		setWingSurfaceArea(UtilParse.fixFloatNbt(nbt, "wing_area", presetNbt, 1));
-	}
-
-	@Override
-	protected void addAdditionalSaveData(CompoundTag compound) {
-		super.addAdditionalSaveData(compound);
-		compound.putFloat("wing_area", getWingSurfaceArea());
+	public EntityPlane(EntityType<? extends EntityPlane> entity, Level level, String defaultPreset) {
+		super(entity, level, defaultPreset);
+		planeStats = (PlaneStats)vehicleStats;
 	}
 	
 	@Override
 	public AircraftType getAircraftType() {
 		return AircraftType.PLANE;
-	}
-	
-	@Override
-	public void clientTick() {
-		super.clientTick();
-		float th = getCurrentThrottle();
-		propellerRotOld = propellerRot;
-		propellerRot += th * vehicleData.spinRate;
-	}
-	
-	@Override
-	public void controlDirection(Quaternion q) {
-		super.controlDirection(q);
-	}
-	
-	@Override
-	public void directionGround(Quaternion q) {
-		super.directionGround(q);
 	}
 	
 	@Override
@@ -99,25 +58,32 @@ public class EntityPlane extends EntityVehicle {
 	}
 	
 	@Override
-	public void tickGround(Quaternion q) {
-		super.tickGround(q);
-	}
-	
-	@Override
 	public double getDriveAcc() {
 		return 0;
 	}
 	
 	@Override
 	public double getMaxSpeedForMotion() {
-		return super.getMaxSpeedForMotion() * getPlaneSpeedPercent();
+		return super.getMaxSpeedForMotion() * getPlaneSpeedPercent() * getMaxSpeedFromThrottleMod();
 	}
 	
 	public double getPlaneSpeedPercent() {
 		return level.getGameRules().getInt(DSCGameRules.PLANE_SPEED_PERCENT) * 0.01;
 	}
-
-	// TODO: nerf brakes? or make their strength configurable?
+	
+	public double getMaxSpeedFromThrottleMod() {
+		if (isOnGround()) {
+			prevMaxSpeedMod = 1;
+			return prevMaxSpeedMod;
+		}
+		float th = getCurrentThrottle();
+		double goal;
+		if (th < 0.5) goal = 0.7;
+		else goal = 0.7 + 0.6 * (th - 0.5);
+		prevMaxSpeedMod = Mth.lerp(0.015, prevMaxSpeedMod, goal);
+		return prevMaxSpeedMod;
+	}
+	
 	@Override
 	public boolean isBraking() {
 		return inputs.special2 && isOnGround();
@@ -135,8 +101,9 @@ public class EntityPlane extends EntityVehicle {
 	protected void calculateAOA(Quaternion q) {
 		Vec3 u = getDeltaMovement();
 		//System.out.println("u = "+u);
-		liftDir = UtilAngles.getYawAxis(q);
-		//System.out.println("liftDir = "+liftDir);
+		Vec3 pitchAxis = UtilAngles.getPitchAxis(q);
+		liftDir = u.cross(pitchAxis).normalize();
+		//debug("liftDir = "+liftDir);
 		airFoilAxes = UtilAngles.getRollAxis(q);
 		//System.out.println("airFoilAxes = "+airFoilAxes);
 		airFoilSpeedSqr = (float)UtilGeometry.vecCompByNormAxis(u, airFoilAxes).lengthSqr();
@@ -144,9 +111,10 @@ public class EntityPlane extends EntityVehicle {
 		if (isOnGround() || UtilGeometry.isZero(u)) {
 			aoa = 0;
 		} else {
-			aoa = (float)UtilGeometry.angleBetweenVecPlaneDegrees(u, liftDir.scale(-1));
+			Vec3 planeNormal = UtilAngles.getYawAxis(q).scale(-1);
+			aoa = (float)UtilGeometry.angleBetweenVecPlaneDegrees(u, planeNormal);
 		}
-		if (isFlapsDown()) aoa += vehicleData.flapsAOABias;
+		if (isFlapsDown()) aoa += planeStats.flapsAOABias;
 		liftK = (float) getLiftK();
 		//System.out.println("liftK = "+liftK);
 	}
@@ -158,7 +126,7 @@ public class EntityPlane extends EntityVehicle {
 	protected void calculateLift(Quaternion q) {
 		// Lift = (angle of attack coefficient) * (air density) * (speed)^2 * (wing surface area) / 2
 		double wing = getWingSurfaceArea();
-		liftMag = liftK * airPressure * airFoilSpeedSqr * wing * DSCPhysicsConstants.LIFT;
+		liftMag = liftK * airPressure * airFoilSpeedSqr * wing * DSCPhyCons.LIFT;
 		Vec3 lift = getLiftForce(q);
 		Vec3 cenAxis = UtilAngles.getRollAxis(0, (getYRot()+90)*Mth.DEG_TO_RAD);
 		centripetalForce = (float) UtilGeometry.vecCompMagDirByNormAxis(lift, cenAxis);
@@ -172,7 +140,7 @@ public class EntityPlane extends EntityVehicle {
 	}
 	
 	public Vec3 getLiftForce(Quaternion q) {
-		double cenScale = DSCPhysicsConstants.CENTRIPETAL_SCALE;
+		double cenScale = DSCPhyCons.CENTRIPETAL_SCALE;
 		Vec3 liftForce = liftDir.scale(getLiftMag())
 			.multiply(cenScale, 1, cenScale);
 		return liftForce;
@@ -183,7 +151,7 @@ public class EntityPlane extends EntityVehicle {
 	}
 	
 	public double getLiftK() {
-		return vehicleData.liftKGraph.getLift(aoa);
+		return planeStats.liftKGraph.getLift(aoa);
 	}
 	
 	@Override
@@ -201,10 +169,6 @@ public class EntityPlane extends EntityVehicle {
 		if (isFlapsDown()) a += getWingSurfaceArea() / 4 * Math.cos(Math.toRadians(aoa));
 		return a;
 	}
-	
-	public float getPropellerRotation(float partialTicks) {
-		return Mth.lerp(partialTicks, propellerRotOld, propellerRot);
-	}
 
 	public float getAOA() {
 		return aoa;
@@ -219,22 +183,17 @@ public class EntityPlane extends EntityVehicle {
 	 * @return the surface area of the plane wings
 	 */
 	public final float getWingSurfaceArea() {
-		return entityData.get(WING_AREA);
-	}
-	
-	public final void setWingSurfaceArea(float area) {
-		if (area < 0) area = 0;
-		entityData.set(WING_AREA, area);
+		return planeStats.wing_area;
 	}
 	
 	@Override
 	public boolean isWeaponAngledDown() {
-		return vehicleData.canAimDown && !onGround && inputs.special2;
+		return planeStats.canAimDown && !onGround && inputs.special2;
 	}
 	
 	@Override
 	public boolean canAngleWeaponDown() {
-    	return vehicleData.canAimDown;
+    	return planeStats.canAimDown;
     }
 
 	@Override
@@ -265,6 +224,26 @@ public class EntityPlane extends EntityVehicle {
 		WeaponDamageType wdt = WeaponDamageType.byId(source.getMsgId());
 		if (wdt != null && wdt.isContact()) return amount*DSCGameRules.getBulletDamagePlaneFactor(level);
 		return super.calcProjDamageBySource(source, amount);
+	}
+	
+	@Override
+	public boolean isStalling() {
+		return Math.abs(getAOA()) >= planeStats.liftKGraph.getCriticalAOA() || liftLost();
+	}
+	
+	@Override
+	public boolean isAboutToStall() {
+		return Math.abs(getAOA()) >= planeStats.liftKGraph.getWarnAOA() && !isFlapsDown();
+	}
+	
+	@Override
+	public boolean liftLost() {
+		return !isOnGround() && getForces().y < -10 && getDeltaMovement().y < -0.1 && Math.abs(zRot) > 15;
+	}
+
+	@Override
+	protected VehicleStats createVehicleStats() {
+		return new PlaneStats();
 	}
 
 }

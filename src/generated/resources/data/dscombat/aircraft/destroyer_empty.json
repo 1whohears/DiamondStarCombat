@@ -1,10 +1,22 @@
 {
   "aircraft_type": 3,
-  "base_armor": 17.0,
-  "cross_sec_area": 6.5,
   "displayName": "preset.dscombat.destroyer_empty",
   "health": 400.0,
-  "idleheat": 4.0,
+  "hitboxes": [
+    {
+      "name": "plat0",
+      "rel_pos": {
+        "x": 0.0,
+        "y": 2.0,
+        "z": 0.0
+      },
+      "size": {
+        "x": 10.0,
+        "y": 4.02,
+        "z": 27.6
+      }
+    }
+  ],
   "ingredients": [
     {
       "item": "dscombat:large_fuselage",
@@ -30,15 +42,7 @@
   "is_craftable": false,
   "item": "dscombat:destroyer",
   "landing_gear": true,
-  "mass": 300000.0,
-  "max_health": 400.0,
-  "max_speed": 0.8,
-  "maxpitch": 0.0,
-  "maxroll": 0.0,
-  "maxyaw": 1.5,
-  "pitchtorque": 0.0,
   "presetId": "destroyer_empty",
-  "rolltorque": 0.0,
   "slots": [
     {
       "data": {
@@ -230,9 +234,34 @@
     }
   ],
   "sort_factor": 2,
-  "stealth": 1.0,
-  "throttledown": 0.1,
-  "throttleup": 0.05,
-  "turn_radius": 0.0,
-  "yawtorque": 2.0
+  "sounds": {
+    "loopSoundType": "basic",
+    "nonPassengerEngine": "dscombat:boat_1",
+    "passengerEngine": "dscombat:boat_1"
+  },
+  "stats": {
+    "base_armor": 17.0,
+    "cameraDistance": 22.0,
+    "crashExplosionRadius": 8.0,
+    "cross_sec_area": 6.5,
+    "idleheat": 4.0,
+    "inertiapitch": 10.0,
+    "inertiaroll": 6.0,
+    "inertiayaw": 4.0,
+    "mass": 300000.0,
+    "mastType": "NORMAL",
+    "max_health": 400.0,
+    "max_speed": 0.8,
+    "maxpitch": 0.0,
+    "maxroll": 0.0,
+    "maxyaw": 1.5,
+    "negativeThrottle": true,
+    "stealth": 1.0,
+    "throttledown": 0.1,
+    "throttleup": 0.05,
+    "torquepitch": 0.0,
+    "torqueroll": 0.0,
+    "torqueyaw": 2.0,
+    "turn_radius": 0.0
+  }
 }

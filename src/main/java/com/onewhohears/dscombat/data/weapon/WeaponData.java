@@ -4,7 +4,6 @@ import static com.onewhohears.dscombat.DSCombatMod.MODID;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.function.BiConsumer;
 
 import javax.annotation.Nullable;
@@ -14,13 +13,17 @@ import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponAmmo;
 import com.onewhohears.dscombat.crafting.DSCIngredient;
 import com.onewhohears.dscombat.data.JsonPreset;
+import com.onewhohears.dscombat.data.aircraft.DSCPhyCons;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.init.ModSounds;
+import com.onewhohears.dscombat.util.UtilEntity;
+import com.onewhohears.dscombat.util.UtilItem;
 import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.UtilParticles;
+import com.onewhohears.dscombat.util.UtilSound;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.nbt.CompoundTag;
@@ -30,16 +33,13 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public abstract class WeaponData extends JsonPreset {
 	protected static final ResourceLocation NONE_ICON = new ResourceLocation(MODID, "textures/ui/weapon_icons/none.png");
@@ -122,7 +122,17 @@ public abstract class WeaponData extends JsonPreset {
 	}
 	
 	public abstract WeaponType getType();
-	public abstract EntityWeapon getEntity(Level level, Entity owner);
+	
+	@Nullable 
+	public EntityWeapon getEntity(Level level) {
+		EntityType<?> type = getEntityType();
+		Entity entity = type.create(level);
+		if (entity instanceof EntityWeapon w) {
+			w.setWeaponData(this);
+			return w;
+		}
+		return null;
+	}
 	
 	public EntityWeapon getShootEntity(WeaponShootParameters params) {
 		if (isNoWeapon()) {
@@ -137,8 +147,9 @@ public abstract class WeaponData extends JsonPreset {
 			setLaunchFail("error.dscombat.no_ammo");
 			return null;
 		}
-		EntityWeapon w = getEntity(params.level, params.owner);
+		EntityWeapon w = getEntity(params.level);
 		if (w == null) return null;
+		w.setOwner(params.owner);
 		w.setPos(params.pos);
 		setDirection(w, params.direction);
 		if (params.vehicle != null) {
@@ -164,9 +175,7 @@ public abstract class WeaponData extends JsonPreset {
 				direction, vehicle, false, false));
 		if (w == null) return false;
 		level.addFreshEntity(w);
-		level.playSound(null, w.blockPosition(), 
-				getShootSound(), SoundSource.PLAYERS, 
-				1f, 1f);
+		playShootSound(level, w.position());
 		setLaunchSuccess(1, owner, consume);
 		updateClientAmmo(vehicle);
 		vehicle.lastShootTime = vehicle.tickCount;
@@ -183,12 +192,14 @@ public abstract class WeaponData extends JsonPreset {
 				pos, direction, vehicle, ignoreRecoil, true));
 		if (w == null) return false;
 		level.addFreshEntity(w);
-		level.playSound(null, w.blockPosition(), 
-				getShootSound(), SoundSource.PLAYERS, 
-				1f, 1f);
+		playShootSound(level, w.position());
 		setLaunchSuccess(1, owner, consume);
 		if (vehicle != null) vehicle.lastShootTime = vehicle.tickCount;
 		return true;
+	}
+	
+	public void playShootSound(Level level, Vec3 pos) {
+		UtilSound.sendDelayedSound(getShootSound(), pos, 160, level.dimension(), 1, 1);
 	}
 	
 	public void updateClientAmmo(EntityVehicle vehicle) {
@@ -346,27 +357,21 @@ public abstract class WeaponData extends JsonPreset {
 	
 	public EntityType<?> getEntityType() {
 		if (entityType == null) {
-			try { entityType = ForgeRegistries.ENTITY_TYPES
-					.getDelegate(new ResourceLocation(entityTypeKey)).get().get(); }
-			catch(NoSuchElementException e) { entityType = ModEntities.BULLET.get(); }
+			entityType = UtilEntity.getEntityType(entityTypeKey, ModEntities.BULLET.get());
 		}
 		return entityType;
 	}
 	
 	public SoundEvent getShootSound() {
 		if (shootSound == null) {
-			try { shootSound = ForgeRegistries.SOUND_EVENTS
-					.getDelegate(new ResourceLocation(shootSoundKey)).get().get(); }
-			catch(NoSuchElementException e) { shootSound = ModSounds.BULLET_SHOOT_1.get(); }
+			shootSound = UtilSound.getSoundById(shootSoundKey, ModSounds.BULLET_SHOOT_1);
 		}
 		return shootSound;
 	}
 	
 	public EntityType<?> getRackEntityType() {
 		if (rackType == null) {
-			try { rackType = ForgeRegistries.ENTITY_TYPES
-					.getDelegate(new ResourceLocation(rackTypeKey)).get().get(); }
-			catch(NoSuchElementException e) { rackType = ModEntities.XM12.get(); }
+			rackType = UtilEntity.getEntityType(rackTypeKey, ModEntities.XM12.get());
 		}
 		return rackType;
 	}
@@ -376,10 +381,7 @@ public abstract class WeaponData extends JsonPreset {
 	
 	private Item getItem() {
 		if (item == null) {
-			try {
-				item = ForgeRegistries.ITEMS.getDelegate(
-					new ResourceLocation(itemKey)).get().get();
-			} catch(NoSuchElementException e) { item = Items.AIR; }
+			item = UtilItem.getItem(itemKey);
 		}
 		return item;
 	}
@@ -501,6 +503,15 @@ public abstract class WeaponData extends JsonPreset {
 		public boolean requiresRadar() {
 			return isTrackMissile();
 		}
+		public boolean isBomb() {
+			return this == BOMB;
+		}
+		public boolean isAimAssist() {
+			return this == BULLET || this == BOMB;
+		}
+		public boolean isPosGuided() {
+			return this == POS_MISSILE;
+		}
 	}
 	
 	public static enum WeaponClientImpactType {
@@ -520,6 +531,37 @@ public abstract class WeaponData extends JsonPreset {
 		public void onClientImpact(Level level, Vec3 pos) {
 			clientImpactCallback.accept(level, pos);
 		}
+	}
+	
+	@Nullable
+	public Vec3 estimateImpactPosition(EntityVehicle vehicle) {
+		if (!getType().isAimAssist()) return null;
+		// TODO 5.8 aim assist against air targets on radar
+		Vec3 startPos = vehicle.position().add(UtilAngles.rotateVector(getLaunchPos(), vehicle.getQBySide()));
+		Vec3 startMove = getStartMove(vehicle);
+		Vec3 acc = getAcc(vehicle);
+		double distSqr = 0;
+		Vec3 pos = startPos;
+		Vec3 move = startMove;
+		while (distSqr <= 40000) {
+			distSqr += move.lengthSqr();
+			Vec3 prevPos = pos;
+			pos = pos.add(move);
+			if (pos.y < -64) pos = new Vec3(pos.x, -64, pos.z);
+			move = move.add(acc);
+			Vec3 raycast = UtilEntity.raycastBlock(vehicle.level, prevPos, pos);
+			if (raycast == null) continue;
+			return raycast;
+		}
+		return pos;
+	}
+	
+	protected Vec3 getStartMove(EntityVehicle vehicle) {
+		return vehicle.getDeltaMovement();
+	}
+	
+	protected Vec3 getAcc(EntityVehicle vehicle) {
+		return new Vec3(0, -DSCPhyCons.GRAVITY, 0);
 	}
 	
 }

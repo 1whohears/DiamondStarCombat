@@ -5,7 +5,6 @@ import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.NoSuchElementException;
 import java.util.zip.GZIPInputStream;
 
 import javax.annotation.Nullable;
@@ -15,20 +14,7 @@ import org.slf4j.Logger;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.mojang.logging.LogUtils;
-import com.onewhohears.dscombat.data.parts.BuffData;
-import com.onewhohears.dscombat.data.parts.EngineData;
-import com.onewhohears.dscombat.data.parts.ExternalEngineData;
-import com.onewhohears.dscombat.data.parts.ExternalRadarPartData;
-import com.onewhohears.dscombat.data.parts.FlareDispenserData;
-import com.onewhohears.dscombat.data.parts.FuelTankData;
-import com.onewhohears.dscombat.data.parts.GimbalPartData;
 import com.onewhohears.dscombat.data.parts.PartData;
-import com.onewhohears.dscombat.data.parts.PartData.PartType;
-import com.onewhohears.dscombat.data.parts.RadarPartData;
-import com.onewhohears.dscombat.data.parts.SeatData;
-import com.onewhohears.dscombat.data.parts.TurretData;
-import com.onewhohears.dscombat.data.parts.WeaponPartData;
-import com.onewhohears.dscombat.data.parts.WeaponRackData;
 import com.onewhohears.dscombat.data.radar.RadarData;
 import com.onewhohears.dscombat.data.radar.RadarPresets;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
@@ -37,13 +23,10 @@ import com.onewhohears.dscombat.item.ItemPart;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtIo;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class UtilParse {
 	
@@ -133,47 +116,15 @@ public class UtilParse {
 		//System.out.println("parsePartFromCompound tag = "+tag);
 		if (tag == null) return null;
 		if (tag.isEmpty()) return null;
-		if (!tag.contains("type")) {
-			if (!tag.contains("itemid")) return null;
-			String itemId = tag.getString("itemid");
-			Item item;
-			try {
-				item = ForgeRegistries.ITEMS.getDelegate(new ResourceLocation(itemId)).get().get();
-			} catch(NoSuchElementException e) {
-				return null;
-			}
-			if (!(item instanceof ItemPart part)) return null;
-			if (tag.getBoolean("filled")) return part.getFilledPartData(tag.getString("param"));
-			return part.getPartData();
-		}
-		PartType type = PartType.values()[tag.getInt("type")];
-		switch (type) {
-		case SEAT:
-			return new SeatData(tag);
-		case TURRENT:
-			return new TurretData(tag);
-		case WEAPON_RACK:
-			return new WeaponRackData(tag);
-		case INTERNAL_WEAPON:
-			return new WeaponPartData(tag);
-		case ENGINE:
-			return new EngineData(tag);
-		case FUEL_TANK:
-			return new FuelTankData(tag);
-		case INTERNAL_RADAR:
-			return new RadarPartData(tag);
-		case FLARE_DISPENSER:
-			return new FlareDispenserData(tag);
-		case EXTERNAL_ENGINE:
-			return new ExternalEngineData(tag);
-		case BUFF_DATA:
-			return new BuffData(tag);
-		case EXTERNAL_RADAR:
-			return new ExternalRadarPartData(tag);
-		case GIMBAL:
-			return new GimbalPartData(tag);
-		}
-		return null;
+		if (!tag.contains("itemid")) return null;
+		String itemId = tag.getString("itemid");
+		Item item = UtilItem.getItem(itemId, null);
+		if (!(item instanceof ItemPart part)) return null;
+		if (tag.getBoolean("filled")) return part.getFilledPartData(tag.getString("param"));
+		PartData data = part.getPartData();
+		boolean old = tag.getInt("parse_version") < PartData.PARSE_VERSION;
+		if (old || tag.getBoolean("readnbt")) data.read(tag);
+		return data;
 	}
 	
 	@Nullable
@@ -252,15 +203,6 @@ public class UtilParse {
 		return "";
 	}
 	
-	@Nullable
-	public static Class<? extends Entity> getEntityClass(String className) {
-		try {
-			return Class.forName(className, false, UtilParse.class.getClassLoader()).asSubclass(Entity.class);
-		} catch (ClassNotFoundException e) {
-			return null;
-		}
-	}
-	
 	public static boolean getBooleanSafe(JsonObject json, String name, boolean alt) {
 		if (!json.has(name)) return alt;
 		return json.get(name).getAsBoolean();
@@ -283,6 +225,24 @@ public class UtilParse {
 	
 	public static String toColorString(Color color) {
 		return Integer.toHexString(0xFF000000 | color.getRGB()).substring(2);
+	}
+	
+	public static Vec3 readVec3(JsonObject json, String name) {
+		if (!json.has(name)) return Vec3.ZERO;
+		JsonObject vec = json.get(name).getAsJsonObject();
+		double x = 0, y = 0, z = 0;
+		if (vec.has("x")) x = vec.get("x").getAsDouble();
+		if (vec.has("y")) y = vec.get("y").getAsDouble();
+		if (vec.has("z")) z = vec.get("z").getAsDouble();
+		return new Vec3(x, y, z);
+	}
+	
+	public static void writeVec3(JsonObject json, String name, Vec3 vec) {
+		JsonObject v = new JsonObject();
+		v.addProperty("x", vec.x);
+		v.addProperty("y", vec.y);
+		v.addProperty("z", vec.z);
+		json.add(name, v);
 	}
 	
 }

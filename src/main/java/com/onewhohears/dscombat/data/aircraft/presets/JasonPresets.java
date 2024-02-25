@@ -2,9 +2,11 @@ package com.onewhohears.dscombat.data.aircraft.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
+import com.onewhohears.dscombat.data.aircraft.LiftKGraph;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
+import com.onewhohears.dscombat.init.ModSounds;
 
 public class JasonPresets {
 	
@@ -25,6 +27,15 @@ public class JasonPresets {
 			.setTurnTorques(2f, 2f, 3f)
 			.setThrottleRate(0.04f, 0.07f)
 			.setPlaneWingArea(15f)
+			.setBasicEngineSounds(ModSounds.BIPLANE_1, ModSounds.BIPLANE_1)
+			.setRotationalInertia(5, 9, 3)
+			.setCrashExplosionRadius(3)
+			.set3rdPersonCamDist(8)
+			.setPlaneLiftAOAGraph(LiftKGraph.WOODEN_PLANE_GRAPH)
+			.setPlaneFlapDownAOABias(8)
+			.setPlaneNoseCanAimDown(false)
+			.setBaseTextureNum(3)
+			.setLayerTextureNum(3)
 			.addIngredient(ModItems.FUSELAGE.getId(), 1)
 			.addIngredient(ModItems.WING.getId(), 2)
 			.addIngredient(ModItems.COCKPIT.getId(), 1)

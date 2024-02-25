@@ -36,13 +36,6 @@ public abstract class EntityPart extends Entity {
 	protected EntityPart(EntityType<?> entityType, Level level) {
 		super(entityType, level);
 	}
-	
-	protected EntityPart(EntityType<?> entityType, Level level, String slotId, Vec3 pos) {
-		this(entityType, level);
-		this.setRelativePos(pos);
-		this.setSlotId(slotId);
-		if (!canGetHurt()) setHealth(1000);
-	}
 
 	@Override
 	protected void defineSynchedData() {
@@ -154,6 +147,22 @@ public abstract class EntityPart extends Entity {
 	
 	public boolean isPilotSeat() {
 		return PartSlot.isPilotSeat(getSlotId());
+	}
+	
+	public boolean isCoPilotSeat() {
+		return PartSlot.isCoPilotSeat(getSlotId());
+	}
+	
+	public boolean isSeat() {
+		return false;
+	}
+	
+	public boolean isTurret() {
+		return false;
+	}
+	
+	public boolean canPassengerShootParentWeapon() {
+		return isPilotSeat() || isCoPilotSeat();
 	}
 	
 	@Override

@@ -1,10 +1,16 @@
 {
+  "after_burner_smoke": [
+    {
+      "pos": {
+        "x": 0.0,
+        "y": 0.3,
+        "z": -6.5
+      }
+    }
+  ],
   "aircraft_type": 0,
-  "base_armor": 2.0,
-  "cross_sec_area": 4.0,
   "displayName": "preset.dscombat.alexis_plane_empty",
-  "health": 150.0,
-  "idleheat": 4.0,
+  "health": 140.0,
   "ingredients": [
     {
       "item": "dscombat:fuselage",
@@ -12,7 +18,7 @@
     },
     {
       "item": "dscombat:wing",
-      "num": 2
+      "num": 3
     },
     {
       "item": "dscombat:advanced_cockpit",
@@ -34,15 +40,84 @@
   "is_craftable": false,
   "item": "dscombat:alexis_plane",
   "landing_gear": true,
-  "mass": 8500.0,
-  "max_health": 150.0,
-  "max_speed": 1.4,
-  "maxpitch": 2.5,
-  "maxroll": 6.0,
-  "maxyaw": 1.5,
-  "pitchtorque": 2.0,
   "presetId": "alexis_plane_empty",
-  "rolltorque": 1.0,
+  "screens": [
+    {
+      "height": 0.15,
+      "id": 0,
+      "pos": {
+        "x": 0.225,
+        "y": 0.798,
+        "z": 7.195
+      },
+      "rot": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "width": 0.15
+    },
+    {
+      "height": 0.07,
+      "id": 1,
+      "pos": {
+        "x": -0.265,
+        "y": 0.948,
+        "z": 7.195
+      },
+      "rot": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "width": 0.07
+    },
+    {
+      "height": 0.13,
+      "id": 3,
+      "pos": {
+        "x": 0.19,
+        "y": 0.974,
+        "z": 7.195
+      },
+      "rot": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "width": 0.13
+    },
+    {
+      "height": 0.15,
+      "id": 4,
+      "pos": {
+        "x": -0.225,
+        "y": 0.798,
+        "z": 7.195
+      },
+      "rot": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "width": 0.15
+    },
+    {
+      "height": 0.1,
+      "id": 2,
+      "pos": {
+        "x": 0.0,
+        "y": 1.37,
+        "z": 6.63
+      },
+      "rot": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "width": 0.1
+    }
+  ],
   "slots": [
     {
       "data": {
@@ -177,10 +252,50 @@
     }
   ],
   "sort_factor": 10,
-  "stealth": 0.95,
-  "throttledown": 0.08,
-  "throttleup": 0.04,
-  "turn_radius": 10.0,
-  "wing_area": 28.0,
-  "yawtorque": 4.0
+  "sounds": {
+    "cockpitAfterBurner": "dscombat:alexis_cp_afterburner",
+    "cockpitRPM": "dscombat:alexis_cp_rpm",
+    "cockpitWindFast": "dscombat:alexis_cp_wind_fast",
+    "cockpitWindSlow": "dscombat:alexis_cp_wind_slow",
+    "externalAfterBurnerClose": "dscombat:alexis_ext_afterburner_close",
+    "externalAfterBurnerFar": "dscombat:alexis_ext_afterburner_far",
+    "externalRPM": "dscombat:alexis_ext_rpm",
+    "externalWindClose": "dscombat:alexis_ext_wind_close",
+    "externalWindFar": "dscombat:alexis_ext_wind_far",
+    "loopSoundType": "fighter_jet",
+    "passengerSoundPack": "eng_non_binary_goober"
+  },
+  "stats": {
+    "base_armor": 2.0,
+    "cameraDistance": 17.0,
+    "crashExplosionRadius": 5.0,
+    "cross_sec_area": 4.0,
+    "idleheat": 4.0,
+    "inertiapitch": 8.0,
+    "inertiaroll": 4.0,
+    "inertiayaw": 2.0,
+    "mass": 8500.0,
+    "max_health": 140.0,
+    "max_speed": 1.4,
+    "maxpitch": 2.5,
+    "maxroll": 6.0,
+    "maxyaw": 1.5,
+    "plane": {
+      "canAimDown": false,
+      "flapsAOABias": 8.0,
+      "liftKGraph": "alexis_plane",
+      "wing_area": 28.0
+    },
+    "stealth": 0.9,
+    "throttledown": 0.08,
+    "throttleup": 0.04,
+    "torquepitch": 2.0,
+    "torqueroll": 1.5,
+    "torqueyaw": 4.0,
+    "turn_radius": 10.0
+  },
+  "textures": {
+    "baseTextureVariants": 2,
+    "textureLayers": 2
+  }
 }

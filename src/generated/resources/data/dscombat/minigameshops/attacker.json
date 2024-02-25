@@ -1,0 +1,94 @@
+{
+  "id": "attacker",
+  "products": [
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 8
+      },
+      "product": {
+        "item": "dscombat:bronco_plane",
+        "num": 1
+      }
+    },
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 13
+      },
+      "product": {
+        "item": "dscombat:noah_chopper",
+        "num": 1
+      }
+    },
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 10
+      },
+      "product": {
+        "item": "dscombat:felix_plane",
+        "num": 1
+      }
+    },
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 15
+      },
+      "product": {
+        "item": "dscombat:felix_plane",
+        "nbt": {
+          "preset": "felix_plane_support"
+        },
+        "num": 1
+      }
+    },
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 20
+      },
+      "product": {
+        "item": "dscombat:javi_plane",
+        "num": 1
+      }
+    },
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 31
+      },
+      "product": {
+        "item": "dscombat:javi_plane",
+        "nbt": {
+          "preset": "javi_plane_bomber"
+        },
+        "num": 1
+      }
+    },
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 16
+      },
+      "product": {
+        "item": "dscombat:alexis_plane",
+        "num": 1
+      }
+    },
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 34
+      },
+      "product": {
+        "item": "dscombat:alexis_plane",
+        "nbt": {
+          "preset": "alexis_plane_support"
+        },
+        "num": 1
+      }
+    }
+  ]
+}

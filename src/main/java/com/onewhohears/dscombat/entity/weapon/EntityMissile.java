@@ -5,19 +5,20 @@ import java.util.List;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.command.DSCGameRules;
+import com.onewhohears.dscombat.data.aircraft.DSCPhyCons;
 import com.onewhohears.dscombat.data.weapon.MissileData;
 import com.onewhohears.dscombat.data.weapon.NonTickingMissileManager;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModSounds;
-import com.onewhohears.dscombat.util.UtilClientSafeSoundInstance;
+import com.onewhohears.dscombat.util.UtilClientSafeSounds;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.UtilParticles;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -36,21 +37,10 @@ import net.minecraft.world.phys.Vec3;
 
 public abstract class EntityMissile extends EntityBullet {
 	
-	public static final EntityDataAccessor<Float> ACCELERATION = SynchedEntityData.defineId(EntityMissile.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> TURN_RADIUS = SynchedEntityData.defineId(EntityMissile.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> BLEED = SynchedEntityData.defineId(EntityMissile.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Integer> FUEL_TICKS = SynchedEntityData.defineId(EntityMissile.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> TARGET_ID = SynchedEntityData.defineId(EntityMissile.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Vec3> TARGET_POS = SynchedEntityData.defineId(EntityMissile.class, DataSerializers.VEC3);
 	
-	/**
-	 * only set on server side
-	 */
-	protected float fuseDist, fov;
-	/**
-	 * only set on server side
-	 */
-	protected int seeThroWater, seeThroBlock;
+	protected MissileData missileData;
 	
 	public Entity target;
 	public Vec3 targetPos;
@@ -59,59 +49,34 @@ public abstract class EntityMissile extends EntityBullet {
 	private int prevTickCount, tickCountRepeats, repeatCoolDown, lerpSteps;
 	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot;
 	
-	public EntityMissile(EntityType<? extends EntityMissile> type, Level level) {
-		super(type, level);
+	public EntityMissile(EntityType<? extends EntityMissile> type, Level level, String defaultWeaponId) {
+		super(type, level, defaultWeaponId);
 		if (!level.isClientSide) NonTickingMissileManager.addMissile(this);
 	}
 	
-	public EntityMissile(Level level, Entity owner, MissileData data) {
-		super(level, owner, data);
-		if (!level.isClientSide) NonTickingMissileManager.addMissile(this);
-		setAcceleration((float)data.getAcceleration());
-		setTurnRadius(data.getTurnRadius());
-		setBleed((float)data.getBleed());
-		fuseDist = (float) data.getFuseDist();
-		fov = data.getFov();
-		setFuelTicks(data.getFuelTicks());
-		seeThroWater = data.getSeeThroWater();
-		seeThroBlock = data.getSeeThroBlock();
+	@Override
+	protected void castWeaponData() {
+		super.castWeaponData();
+		missileData = (MissileData)weaponData;
 	}
 	
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		entityData.define(ACCELERATION, 0f);
-		entityData.define(TURN_RADIUS, 0f);
-		entityData.define(BLEED, 0f);
-		entityData.define(FUEL_TICKS, 0);
 		entityData.define(TARGET_ID, -1);
 		entityData.define(TARGET_POS, Vec3.ZERO.add(0, -1000, 0));
 	}
 	
 	@Override
-	protected void readAdditionalSaveData(CompoundTag compound) {
-		super.readAdditionalSaveData(compound);
-		setAcceleration(compound.getFloat("acc"));
-		setTurnRadius(compound.getFloat("turnRadius"));
-		setBleed(compound.getFloat("bleed"));
-		fuseDist = compound.getFloat("fuseDist");
-		fov = compound.getFloat("fov");
-		setFuelTicks(compound.getInt("fuelTicks"));
-		seeThroWater = compound.getInt("seeThroWater");
-		seeThroBlock = compound.getInt("seeThroBlock");
+	public void writeSpawnData(FriendlyByteBuf buffer) {
+		super.writeSpawnData(buffer);
+		DataSerializers.VEC3.write(buffer, getDeltaMovement());
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag compound) {
-		super.addAdditionalSaveData(compound);
-		compound.putFloat("acc", getAcceleration());
-		compound.putFloat("turnRadius", getTurnRadius());
-		compound.putFloat("bleed", getBleed());
-		compound.putFloat("fuseDist", fuseDist);
-		compound.putFloat("fov", fov);
-		compound.putInt("fuelTicks", getFuelTicks());
-		compound.putInt("seeThroWater", seeThroWater);
-		compound.putInt("seeThroBlock", seeThroBlock);
+	public void readSpawnData(FriendlyByteBuf buffer) {
+		super.readSpawnData(buffer);
+		setDeltaMovement(DataSerializers.VEC3.read(buffer));
 	}
 	
 	@Override
@@ -120,8 +85,11 @@ public abstract class EntityMissile extends EntityBullet {
 	
 	@Override
 	public void tick() {
-		if (level.isClientSide) UtilParticles.missileTrail(level, position(), 
-				getLookAngle(), getRadius(), isInWater());
+		if (weaponData == null) {
+			kill();
+			return;
+		}
+		if (level.isClientSide) clientTickParticles();
 		if (isTestMode()) return;
 		xRotO = getXRot(); 
 		yRotO = getYRot();
@@ -131,7 +99,7 @@ public abstract class EntityMissile extends EntityBullet {
 			else setTargetPos(Vec3.ZERO.add(0, -1000, 0));
 			if (target != null) setTargetId(target.getId());
 			else setTargetId(-1);
-			if (target != null && distanceTo(target) <= fuseDist) kill();
+			if (target != null && distanceTo(target) <= missileData.getFuseDist()) kill();
 		}
 		if (level.isClientSide && !isRemoved()) {
 			tickClientGuide();
@@ -139,6 +107,11 @@ public abstract class EntityMissile extends EntityBullet {
 		}
 		super.tick();
 		tickLerp();
+	}
+	
+	protected void clientTickParticles() {
+		if (getAge() <= getFuelTicks()) UtilParticles.missileAfterBurner(level, position(), getLookAngle().scale(-1));
+		UtilParticles.missileTrail(level, position(), getLookAngle(), getRadius(), isInWater());
 	}
 	
 	public abstract void tickGuide();
@@ -153,29 +126,6 @@ public abstract class EntityMissile extends EntityBullet {
 			else targetPos = tpos;
 		} else targetPos = tpos;
 		guideToPosition();
-	}
-	
-	public void guideToPosition() {
-		if (targetPos == null) return;
-		Vec3 goal_dir = targetPos.subtract(position());
-		Vec3 cur_dir = getLookAngle();
-		float deg_diff = (float)UtilGeometry.angleBetweenDegrees(goal_dir, cur_dir);
-		float rot = getTurnDegrees();
-		if (deg_diff <= rot) {
-			setXRot(UtilAngles.getPitch(goal_dir));
-			setYRot(UtilAngles.getYaw(goal_dir));
-		} else {
-			Vec3 P = cur_dir.cross(goal_dir).normalize();
-			Vec3 new_dir = UtilAngles.rotateVector(cur_dir, new Quaternion(
-					UtilGeometry.convertVector(P), 
-					rot, true));
-			setXRot(UtilAngles.getPitch(new_dir));
-			setYRot(UtilAngles.getYaw(new_dir));
-		}
-	}
-	
-	public float getTurnDegrees() {
-		return (float)getDeltaMovement().length() / getTurnRadius() * Mth.RAD_TO_DEG;
 	}
 	
 	public void guideToTarget() {
@@ -227,19 +177,19 @@ public abstract class EntityMissile extends EntityBullet {
 	}
 	
 	protected boolean checkTargetRange(Entity target, double range) {
-		return checkTargetRange(this, target, fov, range);
+		return checkTargetRange(this, target, missileData.getFov(), range);
 	}
 	
 	protected boolean checkCanSee(Entity target) {
 		// throWaterRange+1 is needed for ground radar to see boats in water
 		return UtilEntity.canEntitySeeEntity(this, target, Config.COMMON.maxBlockCheckDepth.get(), 
-				seeThroWater+1, seeThroBlock);
+				missileData.getSeeThroWater()+1, missileData.getSeeThroBlock());
 	}
 	
 	private void engineSound() {
-		UtilClientSafeSoundInstance.dopplerSound(this, 
-				ModSounds.MISSILE_ENGINE_1.get(), 
-				0.8F, 1.0F, 10F);
+		UtilClientSafeSounds.dopplerSound(this, 
+				ModSounds.MISSILE_ENGINE_1, 0.8F, 1.0F, 
+				DSCPhyCons.VEL_SOUND, true);
 	}
 	
 	@Override
@@ -251,7 +201,7 @@ public abstract class EntityMissile extends EntityBullet {
 		xRotO = getXRot(); 
 		yRotO = getYRot();
 		// uses special kill override function. don't change to discard.
-		if (tickCount > maxAge) { 
+		if (tickCount > getMaxAge()) { 
 			//System.out.println("old");
 			kill();
 			return;
@@ -267,6 +217,7 @@ public abstract class EntityMissile extends EntityBullet {
 		tickSetMove();
 		//System.out.println("starting set pos");
 		setPos(position().add(getDeltaMovement()));
+		++tickCount;
 	}
 	
 	public boolean dieIfNoTargetOutsideTickRange() {
@@ -276,15 +227,38 @@ public abstract class EntityMissile extends EntityBullet {
 	@Override
 	protected void tickSetMove() {
 		Vec3 cm = getDeltaMovement();
+		double max = getSpeed();
 		double B = getBleed() * UtilEntity.getAirPressure(this);
 		double bleed = B * (Math.abs(getXRot()-xRotO)+Math.abs(getYRot()-yRotO));
 		double vel = cm.length() - bleed;
-		if (tickCount <= getFuelTicks()) vel += getAcceleration();
-		double max = getSpeed();
+		if (getAge() <= getFuelTicks()) vel += getAcceleration();
 		if (vel > max) vel = max;
-		else if (vel <= 0) vel = 0;
+		else if (vel < 0.1) vel = 0.1;
 		Vec3 nm = getLookAngle().scale(vel);
 		setDeltaMovement(nm);
+	}
+	
+	public void guideToPosition() {
+		if (targetPos == null) return;
+		Vec3 goal_dir = targetPos.subtract(position());
+		Vec3 cur_dir = getLookAngle();
+		float deg_diff = (float)UtilGeometry.angleBetweenDegrees(goal_dir, cur_dir);
+		float rot = getTurnDegrees();
+		if (deg_diff <= rot) {
+			setXRot(UtilAngles.getPitch(goal_dir));
+			setYRot(UtilAngles.getYaw(goal_dir));
+		} else {
+			Vec3 P = cur_dir.cross(goal_dir).normalize();
+			Vec3 new_dir = UtilAngles.rotateVector(cur_dir, new Quaternion(
+					UtilGeometry.convertVector(P), 
+					rot, true));
+			setXRot(UtilAngles.getPitch(new_dir));
+			setYRot(UtilAngles.getYaw(new_dir));
+		}
+	}
+	
+	public float getTurnDegrees() {
+		return (float)getDeltaMovement().length() / getTurnRadius() * Mth.RAD_TO_DEG;
 	}
 	
 	@Override
@@ -301,36 +275,20 @@ public abstract class EntityMissile extends EntityBullet {
 		return false;
 	}
 	
-	public float getAcceleration() {
-		return entityData.get(ACCELERATION);
+	public double getAcceleration() {
+		return missileData.getAcceleration();
 	}
 	
-	public void setAcceleration(float acceleration) {
-		entityData.set(ACCELERATION, acceleration);
-	}
-	
-	public float getBleed() {
-		return entityData.get(BLEED);
-	}
-	
-	public void setBleed(float bleed) {
-		entityData.set(BLEED, bleed);
+	public double getBleed() {
+		return missileData.getBleed();
 	}
 	
 	public int getFuelTicks() {
-		return entityData.get(FUEL_TICKS);
-	}
-	
-	public void setFuelTicks(int fuelTicks) {
-		entityData.set(FUEL_TICKS, fuelTicks);
+		return missileData.getFuelTicks();
 	}
 	
 	public float getTurnRadius() {
-		return entityData.get(TURN_RADIUS);
-	}
-	
-	public void setTurnRadius(float max_rot) {
-		entityData.set(TURN_RADIUS, max_rot);
+		return missileData.getTurnRadius();
 	}
 	
 	public int getTargetId() {

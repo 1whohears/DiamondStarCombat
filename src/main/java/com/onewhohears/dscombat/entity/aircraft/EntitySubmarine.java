@@ -1,52 +1,22 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData;
+import com.onewhohears.dscombat.data.aircraft.VehicleStats;
+import com.onewhohears.dscombat.data.aircraft.VehicleStats.SubStats;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class EntitySubmarine extends EntityBoat {
 	
-	public EntitySubmarine(EntityType<? extends EntitySubmarine> entity, Level level, ImmutableVehicleData vehicleData) {
-		super(entity, level, vehicleData);
+	public EntitySubmarine(EntityType<? extends EntitySubmarine> entity, Level level, String defaultPreset) {
+		super(entity, level, defaultPreset);
 	}
 	
 	@Override
 	public AircraftType getAircraftType() {
 		return AircraftType.SUBMARINE;
-	}
-	
-	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-	}
-	
-	@Override
-	public void readAdditionalSaveData(CompoundTag compound) {
-		super.readAdditionalSaveData(compound);
-	}
-
-	@Override
-	protected void addAdditionalSaveData(CompoundTag compound) {
-		super.addAdditionalSaveData(compound);
-	}
-	
-	@Override
-	public void controlDirection(Quaternion q) {
-		super.controlDirection(q);
-	}
-	
-	@Override
-	public void directionGround(Quaternion q) {
-		super.directionGround(q);
-	}
-	
-	@Override
-	public void directionAir(Quaternion q) {
-		super.directionAir(q);
 	}
 	
 	@Override
@@ -61,28 +31,8 @@ public class EntitySubmarine extends EntityBoat {
 	}
 	
 	@Override
-	public void tick() {
-		super.tick();
-	}
-	
-	@Override
-	public void tickMovement(Quaternion q) {
-		super.tickMovement(q);
-	}
-	
-	@Override
-	public void tickGround(Quaternion q) {
-		super.tickGround(q);
-	}
-	
-	@Override
 	public double getDriveAcc() {
 		return 0;
-	}
-	
-	@Override
-	public void tickAir(Quaternion q) {
-		super.tickAir(q);
 	}
 	
 	@Override
@@ -90,34 +40,40 @@ public class EntitySubmarine extends EntityBoat {
 		super.tickWater(q);
 		Vec3 move = getDeltaMovement();
 		if (!isDriverCameraLocked() && isOperational()) {
-			move = move.add(0, inputs.pitch * 0.04, 0);
+			if (inputs.pitch == 0) move = move.multiply(1, 0.9, 1);
+			else move = move.add(0, inputs.pitch * 0.02, 0);
 			double max = 0.2;
-			if (Math.abs(move.y) > max) move.multiply(1, max/move.y, 1);
+			if (Math.abs(move.y) > max) move = new Vec3(move.x, max*Math.signum(move.y), move.z);
 		}
 		setDeltaMovement(move);
 	}
 	
 	@Override
+	protected void tickFloat() {
+		if (inputFloat()) super.tickFloat();
+		else forces = forces.add(getWeightForce().scale(-1));
+	}
+	
+	@Override
 	public double getFloatSpeed() {
 		if (!isOperational()) return super.getFloatSpeed();
-		if (inputs.special2) return 0.04;
+		if (inputFloat()) return 0.04;
 		return 0;
 	}
 	
 	@Override
 	public boolean couldFloat() {
 		if (!isOperational()) return false;
-		return inputs.special2;
-	}
-	
-	@Override
-	public void tickGroundWater(Quaternion q) {
-		super.tickGroundWater(q);
+		return inputFloat();
 	}
 	
 	@Override
 	public float getMaxPushThrust() {
 		return getMaxSpinThrust();
+	}
+	
+	public boolean inputFloat() {
+		return inputs.special2;
 	}
 	
 	@Override
@@ -142,6 +98,11 @@ public class EntitySubmarine extends EntityBoat {
 	@Override
 	public boolean canBrake() {
 		return true;
+	}
+	
+	@Override
+	protected VehicleStats createVehicleStats() {
+		return new SubStats();
 	}
 
 }

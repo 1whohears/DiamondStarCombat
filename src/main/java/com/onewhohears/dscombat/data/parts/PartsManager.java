@@ -47,6 +47,7 @@ public class PartsManager {
 	private List<PartSlot> slots = new ArrayList<PartSlot>();
 	private Container inventory = new SimpleContainer(0);
 	private boolean readData = false;
+	private int storageIndex = -1;
 	
 	public PartsManager(EntityVehicle parent) {
 		this.parent = parent;
@@ -383,6 +384,31 @@ public class PartsManager {
 			if (p.filled() && p.getPartData().isGimbal()) 
 				return true;
 		return false;
+	}
+	
+	public boolean hasStorageBoxes() {
+		return getStorageBoxes().size() > 0;
+	}
+	
+	public List<StorageBoxData> getStorageBoxes() {
+		List<StorageBoxData> list = new ArrayList<>();
+		for (PartSlot p : slots) 
+			if (p.filled() && p.getPartData().isStorageBox()) 
+				list.add((StorageBoxData) p.getPartData());
+		return list;
+	}
+	
+	@Nullable
+	public StorageBoxData cycleStorageData() {
+		List<StorageBoxData> boxes = getStorageBoxes();
+		if (boxes.size() == 0) {
+			storageIndex = -1;
+			return null;
+		} else if (storageIndex == -1 || storageIndex >= boxes.size()-1) {
+			storageIndex = 0;
+			return boxes.get(storageIndex);
+		} 
+		return boxes.get(++storageIndex);
 	}
 	
 }

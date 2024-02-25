@@ -1,10 +1,14 @@
 package com.onewhohears.dscombat.data.aircraft.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
+import com.onewhohears.dscombat.data.aircraft.LiftKGraph;
+import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
+import com.onewhohears.dscombat.init.ModSounds;
 
 public class PlanePresets {
 	
@@ -25,6 +29,13 @@ public class PlanePresets {
 			.setTurnTorques(1.5f, 2.5f, 4.5f)
 			.setThrottleRate(0.02f, 0.06f)
 			.setPlaneWingArea(8f)
+			.setBasicEngineSounds(ModSounds.BIPLANE_1, ModSounds.BIPLANE_1)
+			.setRotationalInertia(4, 7, 3)
+			.setCrashExplosionRadius(3)
+			.set3rdPersonCamDist(4)
+			.setPlaneLiftAOAGraph(LiftKGraph.WOODEN_PLANE_GRAPH)
+			.setPlaneFlapDownAOABias(8)
+			.setPlaneNoseCanAimDown(false)
 			.addIngredient("minecraft:oak_planks", 30)
 			.addIngredient(ModItems.SEAT.getId())
 			.addIngredient(ModItems.PROPELLER.getId())
@@ -80,6 +91,14 @@ public class PlanePresets {
 			.setTurnTorques(2.0f, 2.0f, 2.0f)
 			.setThrottleRate(0.01f, 0.04f)
 			.setPlaneWingArea(283f)
+			.setBasicEngineSounds(ModSounds.JET_1, ModSounds.JET_1)
+			.setRotationalInertia(10, 12, 8)
+			.setCrashExplosionRadius(8)
+			.set3rdPersonCamDist(12)
+			.setPlaneLiftAOAGraph(LiftKGraph.E3SENTRY_PLANE_GRAPH)
+			.setPlaneFlapDownAOABias(10)
+			.setPlaneNoseCanAimDown(false)
+			.setDefultPassengerSoundPack(PassengerSoundPack.ENG_MALE_1)
 			.addIngredient(ModItems.ADVANCED_COCKPIT.getId())
 			.addIngredient(ModItems.SEAT.getId(), 11)
 			.addIngredient(ModItems.LARGE_FUSELAGE.getId(), 2)
@@ -112,6 +131,9 @@ public class PlanePresets {
 			.addEmptySlot("internal_6", SlotType.ADVANCED_INTERNAL)
 			.addEmptySlot("internal_7", SlotType.ADVANCED_INTERNAL)
 			.addEmptySlot("internal_8", SlotType.ADVANCED_INTERNAL)
+			.addEntityScreen(EntityScreenIds.AIR_RADAR_SCREEN, 0, -0.85, 5.49, 0.7, 0.7)
+			.addEntityScreen(EntityScreenIds.FUEL_SCREEN, 0.59, -0.59, 5.49, 0.15, 0.15)
+			.addEntityScreen(EntityScreenIds.RWR_SCREEN, 0.83, -0.66, 5.49, 0.3, 0.3)
 			.build();
 	
 	public static final AircraftPreset DEFAULT_E3SENTRY_PLANE = AircraftPreset.Builder

@@ -9,11 +9,9 @@ import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
 import com.onewhohears.dscombat.Config;
-import com.onewhohears.dscombat.util.UtilParse;
+import com.onewhohears.dscombat.util.UtilEntity;
 
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class RadarTargetTypes {
 	
@@ -63,7 +61,7 @@ public class RadarTargetTypes {
 			String[] split = a.split("/");
 			if (split.length != 2) continue;
 			String className = split[0];
-			Class<? extends Entity> c = UtilParse.getEntityClass(className);
+			Class<? extends Entity> c = UtilEntity.getEntityClass(className);
 			if (c == null) {
 				LOGGER.warn("ERROR: "+className+" does not exist! IR missiles will not look for it.");
 				continue;
@@ -89,7 +87,7 @@ public class RadarTargetTypes {
 			String[] split = a.split("/");
 			if (split.length != 2) continue;
 			String entityId = split[0];
-			if (!ForgeRegistries.ENTITY_TYPES.containsKey(new ResourceLocation(entityId))) {
+			if (!UtilEntity.doesEntityTypeExist(entityId)) {
 				LOGGER.warn("ERROR: "+entityId+" does not exist! IR missiles will not read that heat value!");
 				continue;
 			}
@@ -122,7 +120,7 @@ public class RadarTargetTypes {
 		List<? extends String> vehicleList =  Config.COMMON.radarVehicles.get();
 		for (int i = 0; i < vehicleList.size(); ++i) {
 			String className = vehicleList.get(i);
-			Class<? extends Entity> c = UtilParse.getEntityClass(className);
+			Class<? extends Entity> c = UtilEntity.getEntityClass(className);
 			if (c == null) {
 				LOGGER.warn("ERROR: "+className+" does not exist! Vehicle Radar will not look for it.");
 				continue;
@@ -141,7 +139,7 @@ public class RadarTargetTypes {
 		List<? extends String> mobList =  Config.COMMON.radarMobs.get();
 		for (int i = 0; i < mobList.size(); ++i) {
 			String className = mobList.get(i);
-			Class<? extends Entity> c = UtilParse.getEntityClass(className);
+			Class<? extends Entity> c = UtilEntity.getEntityClass(className);
 			if (c == null) {
 				LOGGER.warn("ERROR: "+className+" does not exist! Mob Radar will not look for it.");
 				continue;
@@ -164,7 +162,7 @@ public class RadarTargetTypes {
 			String[] split = a.split("/");
 			if (split.length != 2) continue;
 			String entityId = split[0];
-			if (!ForgeRegistries.ENTITY_TYPES.containsKey(new ResourceLocation(entityId))) {
+			if (!UtilEntity.doesEntityTypeExist(entityId)) {
 				LOGGER.warn("ERROR: "+entityId+" does not exist! Radars will not read that area value!");
 				continue;
 			}

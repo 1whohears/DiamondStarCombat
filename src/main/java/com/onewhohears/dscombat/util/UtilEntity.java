@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.util;
 
 import java.awt.Color;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Random;
 import java.util.function.Predicate;
@@ -12,7 +13,9 @@ import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.Boat;
@@ -25,6 +28,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class UtilEntity {
 	
@@ -79,6 +83,30 @@ public class UtilEntity {
 			} else return false;
 		}
 		return true;
+	}
+	
+	@Nullable
+	public static Vec3 raycastBlock(Level level, Vec3 start, Vec3 end) {
+		Vec3 diff = end.subtract(start);
+		Vec3 dir = diff.normalize();
+		double dist = diff.length();
+		Vec3 pos = start;
+		if (posBlocksMotion(level, pos)) return pos;
+		int k = 1;
+		while (k++ < dist) {
+			pos = pos.add(dir);
+			if (posBlocksMotion(level, pos)) return pos;
+		}
+		return null;
+	}
+	
+	public static boolean posBlocksMotion(Level level, Vec3 pos) {
+		BlockPos bp = new BlockPos(pos);
+		ChunkPos cp = new ChunkPos(bp);
+		if (!level.hasChunk(cp.x, cp.z)) return false;
+		BlockState block = level.getBlockState(bp);
+		if (block == null || block.isAir()) return false;
+		return block.getMaterial().blocksMotion();
 	}
 	
 	public static double getCrossSectionalArea(Entity entity) {
@@ -210,6 +238,28 @@ public class UtilEntity {
 			}
 		}
 		return entity == null ? null : new EntityHitResult(entity, pos);
+	}
+	
+	public static EntityType<?> getEntityType(String entityTypeKey, EntityType<?> alt) {
+		try {
+			return ForgeRegistries.ENTITY_TYPES.getDelegate(
+				new ResourceLocation(entityTypeKey)).get().get();
+		} catch(NoSuchElementException e) { 
+			return alt; 
+		}
+	}
+	
+	public static boolean doesEntityTypeExist(String entityTypeKey) {
+		return ForgeRegistries.ENTITY_TYPES.containsKey(new ResourceLocation(entityTypeKey));
+	}
+	
+	@Nullable
+	public static Class<? extends Entity> getEntityClass(String className) {
+		try {
+			return Class.forName(className, false, UtilParse.class.getClassLoader()).asSubclass(Entity.class);
+		} catch (ClassNotFoundException e) {
+			return null;
+		}
 	}
 	
 }

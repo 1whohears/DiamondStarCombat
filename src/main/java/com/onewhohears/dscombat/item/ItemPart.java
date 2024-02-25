@@ -13,7 +13,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -50,12 +49,6 @@ public abstract class ItemPart extends Item {
 			test.setTag(getFilledNbt());
 			items.add(test);
 		}
-	}
-	
-	@Override
-	public void onCraftedBy(ItemStack stack, Level level, Player player) {
-		if (stack.getOrCreateTag().contains("type")) return;
-		stack.setTag(getNbt());
 	}
 	
 	public CompoundTag getNbt() {

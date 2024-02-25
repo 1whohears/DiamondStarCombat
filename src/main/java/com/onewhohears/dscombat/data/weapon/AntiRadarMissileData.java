@@ -13,8 +13,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Level;
 
 public class AntiRadarMissileData extends MissileData {
 	
@@ -62,11 +60,6 @@ public class AntiRadarMissileData extends MissileData {
 	@Override
 	public <T extends JsonPreset> T copy() {
 		return (T) new AntiRadarMissileData(getKey(), getJsonData());
-	}
-	
-	@Override
-	public EntityWeapon getEntity(Level level, Entity owner) {
-		return new AntiRadarMissile(level, owner, this);
 	}
 	
 	@Override

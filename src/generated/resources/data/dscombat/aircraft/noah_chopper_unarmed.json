@@ -1,45 +1,8 @@
 {
-  "accForward": 0.04,
-  "accSide": 0.02,
   "aircraft_type": 1,
-  "base_armor": 5.0,
-  "cross_sec_area": 8.0,
+  "copyId": "noah_chopper_empty",
   "displayName": "preset.dscombat.noah_chopper_unarmed",
-  "health": 200.0,
-  "idleheat": 8.0,
   "ingredients": [
-    {
-      "item": "dscombat:fuselage",
-      "num": 1
-    },
-    {
-      "item": "dscombat:large_propeller",
-      "num": 2
-    },
-    {
-      "item": "dscombat:propeller",
-      "num": 1
-    },
-    {
-      "item": "dscombat:cockpit",
-      "num": 1
-    },
-    {
-      "item": "dscombat:seat",
-      "num": 3
-    },
-    {
-      "item": "minecraft:green_dye",
-      "num": 4
-    },
-    {
-      "item": "minecraft:gold_ingot",
-      "num": 15
-    },
-    {
-      "item": "iron_ingot",
-      "num": 4
-    },
     {
       "item": "dscombat:c12_engine",
       "num": 2
@@ -50,237 +13,27 @@
     }
   ],
   "is_craftable": true,
-  "item": "dscombat:noah_chopper",
   "landing_gear": true,
-  "mass": 6000.0,
-  "max_health": 200.0,
-  "max_speed": 0.7,
-  "maxpitch": 2.0,
-  "maxroll": 4.0,
-  "maxyaw": 4.0,
-  "pitchtorque": 1.0,
   "presetId": "noah_chopper_unarmed",
-  "rolltorque": 1.0,
   "slots": [
     {
       "data": {
-        "itemid": "dscombat:seat"
+        "itemid": "dscombat:c12_engine"
       },
-      "name": "pilot_seat",
-      "slot_posx": 0.4,
-      "slot_posy": -0.65,
-      "slot_posz": 1.5,
-      "slot_type": "seat",
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
-      "name": "seat2",
-      "slot_posx": -0.4,
-      "slot_posy": -0.65,
-      "slot_posz": 1.5,
-      "slot_type": "med_turret",
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
-      "name": "seat3",
-      "slot_posx": 0.4,
-      "slot_posy": -0.65,
-      "slot_posz": 0.3,
-      "slot_type": "med_turret",
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
-      "name": "seat4",
-      "slot_posx": -0.4,
-      "slot_posy": -0.65,
-      "slot_posz": 0.3,
-      "slot_type": "med_turret",
-      "zRot": 0.0
-    },
-    {
-      "name": "left_wing_1",
-      "slot_posx": 0.75,
-      "slot_posy": -0.5,
-      "slot_posz": 1.8,
-      "slot_type": "wing",
-      "zRot": -90.0
-    },
-    {
-      "name": "left_wing_2",
-      "slot_posx": 0.75,
-      "slot_posy": -0.5,
-      "slot_posz": 0.9,
-      "slot_type": "wing",
-      "zRot": -90.0
-    },
-    {
-      "name": "left_wing_3",
-      "slot_posx": 0.75,
-      "slot_posy": -0.5,
-      "slot_posz": 0.0,
-      "slot_type": "wing",
-      "zRot": -90.0
-    },
-    {
-      "name": "left_wing_4",
-      "slot_posx": 0.65,
-      "slot_posy": 0.5,
-      "slot_posz": 0.0,
-      "slot_type": "wing",
-      "zRot": -90.0
-    },
-    {
-      "name": "right_wing_1",
-      "slot_posx": -0.75,
-      "slot_posy": -0.5,
-      "slot_posz": 1.8,
-      "slot_type": "wing",
-      "zRot": 90.0
-    },
-    {
-      "name": "right_wing_2",
-      "slot_posx": -0.75,
-      "slot_posy": -0.5,
-      "slot_posz": 0.9,
-      "slot_type": "wing",
-      "zRot": 90.0
-    },
-    {
-      "name": "right_wing_3",
-      "slot_posx": -0.75,
-      "slot_posy": -0.5,
-      "slot_posz": 0.0,
-      "slot_type": "wing",
-      "zRot": 90.0
-    },
-    {
-      "name": "right_wing_4",
-      "slot_posx": -0.65,
-      "slot_posy": 0.5,
-      "slot_posz": 0.0,
-      "slot_type": "wing",
-      "zRot": 90.0
-    },
-    {
-      "name": "frame_1",
-      "slot_posx": 0.0,
-      "slot_posy": -0.67,
-      "slot_posz": 1.9,
-      "slot_type": "frame",
-      "zRot": 180.0
-    },
-    {
-      "name": "frame_2",
-      "slot_posx": 0.0,
-      "slot_posy": -0.67,
-      "slot_posz": 1.1,
-      "slot_type": "frame",
-      "zRot": 180.0
-    },
-    {
-      "name": "frame_3",
-      "slot_posx": 0.0,
-      "slot_posy": -0.67,
-      "slot_posz": 0.3,
-      "slot_type": "frame",
-      "zRot": 180.0
-    },
-    {
-      "name": "frame_4",
-      "slot_posx": 0.0,
-      "slot_posy": -0.67,
-      "slot_posz": -0.5,
-      "slot_type": "frame",
-      "zRot": 180.0
+      "name": "internal_1"
     },
     {
       "data": {
         "itemid": "dscombat:c12_engine"
       },
-      "name": "internal_1",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "spin_engine",
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:c12_engine"
-      },
-      "name": "internal_2",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "spin_engine",
-      "zRot": 0.0
+      "name": "internal_2"
     },
     {
       "data": {
         "filled": true,
         "itemid": "dscombat:heavy_fuel_tank"
       },
-      "name": "internal_3",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "internal",
-      "zRot": 0.0
-    },
-    {
-      "name": "internal_4",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "internal",
-      "zRot": 0.0
-    },
-    {
-      "name": "internal_5",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "advanced_internal",
-      "zRot": 0.0
-    },
-    {
-      "name": "internal_6",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "advanced_internal",
-      "zRot": 0.0
-    },
-    {
-      "name": "internal_7",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "advanced_internal",
-      "zRot": 0.0
-    },
-    {
-      "name": "internal_8",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "advanced_internal",
-      "zRot": 0.0
+      "name": "internal_3"
     }
-  ],
-  "sort_factor": 4,
-  "stealth": 1.2,
-  "throttledown": 0.02,
-  "throttleup": 0.01,
-  "turn_radius": 0.0,
-  "yawtorque": 2.5
+  ]
 }

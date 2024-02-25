@@ -2,18 +2,31 @@ package com.onewhohears.dscombat.client.sounds;
 
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.phys.Vec3;
 
 public class VehicleEngineSoundInstance extends DopplerSoundInstance {
 	
 	public final boolean isPassengerSound;
 	
-	public VehicleEngineSoundInstance(SoundEvent sound, LocalPlayer player, EntityVehicle entity, float velSound, boolean isPassengerSound) {
-		super(sound, player, entity, 1.0f, 1.0f, velSound);
+	public VehicleEngineSoundInstance(SoundEvent sound, LocalPlayer player, EntityVehicle entity, float velSound, boolean isPassengerSound, double range, float minDist) {
+		super(sound, player, entity, 1.0f, 1.0f, velSound, range, minDist);
 		this.isPassengerSound = isPassengerSound;
+		if (this.isPassengerSound) {
+			this.x = 0;
+			this.y = 0;
+			this.z = 0;
+			this.attenuation = SoundInstance.Attenuation.NONE;
+			this.relative = true;
+		} else {
+			this.attenuation = SoundInstance.Attenuation.LINEAR;
+			this.relative = false;
+		}
+	}
+	
+	public VehicleEngineSoundInstance(SoundEvent sound, LocalPlayer player, EntityVehicle entity, float velSound, boolean isPassengerSound) {
+		this(sound, player, entity, velSound, isPassengerSound, 128, 0);	
 	}
 	
 	@Override
@@ -23,24 +36,23 @@ public class VehicleEngineSoundInstance extends DopplerSoundInstance {
 			stop();
 			return;
 		}
-		float th = Math.abs(craft.getCurrentThrottle());
-		if (th == 0) initVolume = th;
-		else initVolume = 0.4f + 0.6f*th;;
-		initPitch = 0.5f + 0.5f*th;
+		calcVolPitch(craft);
 		boolean isPassenger = craft.isVehicleOf(player);
 		if (isPassengerSound && isPassenger) {
 			this.volume = initVolume;
 			this.pitch = initPitch;
-			Minecraft m = Minecraft.getInstance();
-			Vec3 camPos = m.gameRenderer.getMainCamera().getPosition();
-			this.x = camPos.x;
-			this.y = camPos.y;
-			this.z = camPos.z;
 		} else if (!isPassengerSound && !isPassenger) {
 			super.tick();
 		} else {
 			this.volume = 0;
 		}
+	}
+	
+	protected void calcVolPitch(EntityVehicle craft) {
+		float th = Math.abs(craft.getCurrentThrottle());
+		if (th == 0) initVolume = 0;
+		else initVolume = 0.2f + 0.8f*th;;
+		initPitch = 0.6f + 0.4f*th;
 	}
 
 }

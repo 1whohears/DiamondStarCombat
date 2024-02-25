@@ -43,8 +43,8 @@ public class EntityModelOrangeTesla extends EntityControllableModel<EntityGround
 		stearing.zRot = entity.inputs.yaw * yf;
 		wheels[0].yRot = entity.inputs.yaw * yf;
 		wheels[2].yRot = entity.inputs.yaw * yf;
-		for (int i = 0; i < 2; ++i) wheels[i].xRot = -entity.getWheelLeftRotation(partialTicks);
-		for (int i = 2; i < 4; ++i) wheels[i].xRot = -entity.getWheelRightRotation(partialTicks);
+		for (int i = 0; i < 2; ++i) wheels[i].xRot = -entity.getWheelRotation(partialTicks, 1.6f);
+		for (int i = 2; i < 4; ++i) wheels[i].xRot = -entity.getWheelRotation(partialTicks, 1.6f);
 		main.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 	

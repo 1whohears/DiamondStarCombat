@@ -3,8 +3,6 @@ package com.onewhohears.dscombat.data.parts;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 
@@ -22,29 +20,6 @@ public class BuffData extends PartData {
 	public BuffData(BuffType type, ResourceLocation itemid, SlotType[] compatibleSlots, float weight) {
 		super(weight, itemid, compatibleSlots);
 		this.type = type;
-	}
-	
-	public BuffData(CompoundTag tag) {
-		super(tag);
-		type = BuffType.values()[tag.getInt("bufftype")];
-	}
-	
-	@Override
-	public CompoundTag write() {
-		CompoundTag tag = super.write();
-		tag.putInt("bufftype", type.ordinal());
-		return tag;
-	}
-	
-	public BuffData(FriendlyByteBuf buffer) {
-		super(buffer);
-		type = BuffType.values()[buffer.readInt()];
-	}
-	
-	@Override
-	public void write(FriendlyByteBuf buffer) {
-		super.write(buffer);
-		buffer.writeInt(type.ordinal());
 	}
 
 	@Override

@@ -10,7 +10,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -23,28 +22,17 @@ public class EntityBunkerBuster extends EntityBomb {
 	
 	public static final EntityDataAccessor<Integer> BLOCK_STRENGTH = SynchedEntityData.defineId(EntityBullet.class, EntityDataSerializers.INT);
 	
-	public EntityBunkerBuster(EntityType<? extends EntityBunkerBuster> type, Level level) {
-		super(type, level);
-	}
+	protected BunkerBusterData bunkerData;
 	
-	public EntityBunkerBuster(Level level, Entity owner, BunkerBusterData data) {
-		super(level, owner, data);
-		this.setBlockStrength(data.getBlockStrength());
-	}
-	
-	@Override
-	public void tick() {
-		super.tick();
+	public EntityBunkerBuster(EntityType<? extends EntityBunkerBuster> type, Level level, String defaultWeaponId) {
+		super(type, level, defaultWeaponId);
+		if (bunkerData != null) setBlockStrength(bunkerData.getBlockStrength());
 	}
 	
 	@Override
-	protected void tickCheckCollide() {
-		super.tickCheckCollide();
-	}
-	
-	@Override
-	protected void tickSetMove() {
-		super.tickSetMove();
+	protected void castWeaponData() {
+		super.castWeaponData();
+		bunkerData = (BunkerBusterData)weaponData;
 	}
 	
 	@Override
@@ -80,13 +68,13 @@ public class EntityBunkerBuster extends EntityBomb {
 	@Override
 	protected void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
-		this.setBlockStrength(compound.getInt("blockStrength"));
+		setBlockStrength(compound.getInt("blockStrength"));
 	}
 
 	@Override
 	protected void addAdditionalSaveData(CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
-		compound.putInt("blockStrength", this.getBlockStrength());
+		compound.putInt("blockStrength", getBlockStrength());
 	}
 	
 	public int getBlockStrength() {

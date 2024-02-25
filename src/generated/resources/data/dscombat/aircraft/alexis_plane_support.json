@@ -1,43 +1,8 @@
 {
   "aircraft_type": 0,
-  "base_armor": 2.0,
-  "cross_sec_area": 4.0,
+  "copyId": "alexis_plane_unarmed",
   "displayName": "preset.dscombat.alexis_plane_support",
-  "health": 150.0,
-  "idleheat": 4.0,
   "ingredients": [
-    {
-      "item": "dscombat:fuselage",
-      "num": 1
-    },
-    {
-      "item": "dscombat:wing",
-      "num": 2
-    },
-    {
-      "item": "dscombat:advanced_cockpit",
-      "num": 1
-    },
-    {
-      "item": "dscombat:wheel",
-      "num": 3
-    },
-    {
-      "item": "minecraft:light_gray_dye",
-      "num": 5
-    },
-    {
-      "item": "minecraft:gold_ingot",
-      "num": 20
-    },
-    {
-      "item": "dscombat:turbofan_f145",
-      "num": 1
-    },
-    {
-      "item": "dscombat:heavy_fuel_tank",
-      "num": 1
-    },
     {
       "item": "dscombat:ar2k",
       "num": 1
@@ -80,41 +45,16 @@
     }
   ],
   "is_craftable": false,
-  "item": "dscombat:alexis_plane",
   "landing_gear": true,
-  "mass": 8500.0,
-  "max_health": 150.0,
-  "max_speed": 1.4,
-  "maxpitch": 2.5,
-  "maxroll": 6.0,
-  "maxyaw": 1.5,
-  "pitchtorque": 2.0,
   "presetId": "alexis_plane_support",
-  "rolltorque": 1.0,
   "slots": [
-    {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
-      "name": "pilot_seat",
-      "slot_posx": 0.0,
-      "slot_posy": 0.1,
-      "slot_posz": 6.5,
-      "slot_type": "seat",
-      "zRot": 0.0
-    },
     {
       "data": {
         "filled": true,
         "itemid": "dscombat:heavy_missile_rack",
         "param": "agm84e"
       },
-      "name": "left_wing_1",
-      "slot_posx": 2.3,
-      "slot_posy": -0.08,
-      "slot_posz": -0.1,
-      "slot_type": "wing",
-      "zRot": 180.0
+      "name": "left_wing_1"
     },
     {
       "data": {
@@ -122,23 +62,13 @@
         "itemid": "dscombat:heavy_missile_rack",
         "param": "agm65l"
       },
-      "name": "left_wing_2",
-      "slot_posx": 3.6,
-      "slot_posy": -0.08,
-      "slot_posz": -0.7,
-      "slot_type": "wing",
-      "zRot": 180.0
+      "name": "left_wing_2"
     },
     {
       "data": {
         "itemid": "dscombat:gimbal_camera"
       },
-      "name": "left_wing_3",
-      "slot_posx": 4.95,
-      "slot_posy": -0.08,
-      "slot_posz": -1.1,
-      "slot_type": "wing",
-      "zRot": 180.0
+      "name": "left_wing_3"
     },
     {
       "data": {
@@ -146,12 +76,7 @@
         "itemid": "dscombat:light_missile_rack",
         "param": "agm114k"
       },
-      "name": "left_wing_4",
-      "slot_posx": 6.05,
-      "slot_posy": 0.4,
-      "slot_posz": -1.5,
-      "slot_type": "wing",
-      "zRot": -90.0
+      "name": "left_wing_4"
     },
     {
       "data": {
@@ -159,12 +84,7 @@
         "itemid": "dscombat:heavy_missile_rack",
         "param": "agm88g"
       },
-      "name": "right_wing_1",
-      "slot_posx": -2.3,
-      "slot_posy": -0.08,
-      "slot_posz": -0.1,
-      "slot_type": "wing",
-      "zRot": 180.0
+      "name": "right_wing_1"
     },
     {
       "data": {
@@ -172,12 +92,7 @@
         "itemid": "dscombat:heavy_missile_rack",
         "param": "agm65g"
       },
-      "name": "right_wing_2",
-      "slot_posx": -3.6,
-      "slot_posy": -0.08,
-      "slot_posz": -0.7,
-      "slot_type": "wing",
-      "zRot": 180.0
+      "name": "right_wing_2"
     },
     {
       "data": {
@@ -185,12 +100,7 @@
         "itemid": "dscombat:heavy_missile_rack",
         "param": "aim120b"
       },
-      "name": "right_wing_3",
-      "slot_posx": -4.95,
-      "slot_posy": -0.08,
-      "slot_posz": -1.1,
-      "slot_type": "wing",
-      "zRot": 180.0
+      "name": "right_wing_3"
     },
     {
       "data": {
@@ -198,12 +108,7 @@
         "itemid": "dscombat:light_missile_rack",
         "param": "aim9x"
       },
-      "name": "right_wing_4",
-      "slot_posx": -6.05,
-      "slot_posy": 0.4,
-      "slot_posz": -1.5,
-      "slot_type": "wing",
-      "zRot": 90.0
+      "name": "right_wing_4"
     },
     {
       "data": {
@@ -211,87 +116,29 @@
         "itemid": "dscombat:xm12",
         "param": "20mmhe"
       },
-      "name": "frame_1",
-      "slot_posx": 0.0,
-      "slot_posy": -0.15,
-      "slot_posz": 8.0,
-      "slot_type": "frame",
-      "zRot": 180.0
+      "name": "frame_1"
     },
     {
       "data": {
-        "itemid": "dscombat:turbofan_f145"
+        "itemid": "dscombat:ar2k"
       },
-      "name": "internal_1",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "push_engine",
-      "zRot": 0.0
+      "name": "internal_4"
     },
     {
       "data": {
-        "filled": true,
-        "itemid": "dscombat:heavy_fuel_tank"
+        "itemid": "dscombat:gr400"
       },
-      "name": "internal_2",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "internal",
-      "zRot": 0.0
+      "name": "internal_5"
     },
     {
       "data": {
         "filled": true,
         "itemid": "dscombat:basic_flare_dispenser"
       },
-      "name": "internal_3",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "internal",
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:ar2k"
-      },
-      "name": "internal_4",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "advanced_internal",
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:gr400"
-      },
-      "name": "internal_5",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "advanced_internal",
-      "zRot": 0.0
-    },
-    {
-      "name": "internal_6",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "advanced_internal",
-      "zRot": 0.0
+      "name": "internal_3"
     }
   ],
-  "sort_factor": 10,
-  "stealth": 0.95,
   "textures": {
     "baseTexture": 1
-  },
-  "throttledown": 0.08,
-  "throttleup": 0.04,
-  "turn_radius": 10.0,
-  "wing_area": 28.0,
-  "yawtorque": 4.0
+  }
 }

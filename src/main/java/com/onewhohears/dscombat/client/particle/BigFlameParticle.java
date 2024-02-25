@@ -58,10 +58,15 @@ public class BigFlameParticle extends TextureSheetParticle {
 		float life = (float)age / (float)lifetime;
 		if (life > 0.95f) quadSize *= 0.9;
 	}
+	
+	@Override
+	public int getLightColor(float pPartialTick) {
+		return 15728880;
+	}
 
 	@Override
 	public ParticleRenderType getRenderType() {
-		return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+		return ParticleRenderType.PARTICLE_SHEET_LIT;
 	}
 
 }

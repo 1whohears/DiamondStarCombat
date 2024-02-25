@@ -6,9 +6,12 @@ import java.util.List;
 import java.util.Random;
 
 import com.google.gson.JsonObject;
+import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.data.JsonPreset;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.weapon.EntityBullet;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
+import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.nbt.CompoundTag;
@@ -16,8 +19,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class BulletData extends WeaponData {
@@ -41,6 +42,7 @@ public class BulletData extends WeaponData {
 	private final boolean causesFire;
 	private final float explosionRadius;
 	private final float innacuracy;
+	private final int explodeNum;
 	
 	public BulletData(ResourceLocation key, JsonObject json) {
 		super(key, json);
@@ -51,6 +53,7 @@ public class BulletData extends WeaponData {
 		this.causesFire = json.get("causesFire").getAsBoolean();
 		this.explosionRadius = json.get("explosionRadius").getAsFloat();
 		this.innacuracy = json.get("innacuracy").getAsFloat();
+		this.explodeNum = UtilParse.getIntSafe(json, "explodeNum", 1);
 	}
 	
 	@Override
@@ -77,10 +80,6 @@ public class BulletData extends WeaponData {
 	@Override
 	public WeaponType getType() {
 		return WeaponType.BULLET;
-	}
-	
-	public EntityWeapon getEntity(Level level, Entity owner) {
-		return new EntityBullet(level, owner, this);
 	}
 	
 	@Override
@@ -130,6 +129,10 @@ public class BulletData extends WeaponData {
 		return innacuracy;
 	}
 	
+	public int getExplodeNum() {
+		return explodeNum;
+	}
+	
 	@Override
 	public double getMobTurretRange() {
 		return Math.max(300, getSpeed() * getMaxAge());
@@ -145,8 +148,12 @@ public class BulletData extends WeaponData {
 		super.addToolTips(tips);
 		tips.add(Component.literal("Damage: ").append(getDamage()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 		tips.add(Component.literal("Max Speed: ").append(getSpeed()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
-		if (isExplosive()) tips.add(Component.literal("Explosion Radius: ")
+		if (isExplosive()) {
+			tips.add(Component.literal("Explosion Radius: ")
 				.append(getExplosionRadius()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+			tips.add(Component.literal("Explosions: ")
+				.append(getExplodeNum()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		}
 	}
 	
 	@Override
@@ -158,6 +165,7 @@ public class BulletData extends WeaponData {
 		if (isExplosive()) {
 			list.add(new ComponentColor(Component.literal("EXPLOSIVE"), 0xaa0000));
 			list.add(new ComponentColor(Component.literal("Radius: ").append(getExplosionRadius()+""), 0x040404));
+			list.add(new ComponentColor(Component.literal("Explosions: ").append(getExplodeNum()+""), 0x040404));
 		}
 		if (isCausesFire()) list.add(new ComponentColor(Component.literal("INCENDIARY"), 0xaa0000));
 		return list;
@@ -175,6 +183,14 @@ public class BulletData extends WeaponData {
 	public String getDefaultIconLocation() {
 		if (isExplosive()) return MODID+":textures/ui/weapon_icons/he_bullet.png";
 		return MODID+":textures/ui/weapon_icons/bullet.png";
+	}
+	
+	@Override
+	protected Vec3 getStartMove(EntityVehicle vehicle) {
+		Vec3 move = vehicle.getLookAngle().scale(getSpeed());
+		if (vehicle.isWeaponAngledDown() && canAngleDown())
+			move = UtilAngles.rotateVector(move, Vector3f.XN.rotationDegrees(25f));
+		return move;
 	}
 
 }

@@ -17,7 +17,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Level;
 
 public class TrackMissileData extends MissileData {
 	
@@ -83,11 +82,6 @@ public class TrackMissileData extends MissileData {
 		else if (targetType == TargetType.GROUND && !groundWater) return false;
 		else if (targetType == TargetType.WATER && !entity.isInWater()) return false;
 		return true;
-	}
-	
-	@Override
-	public EntityWeapon getEntity(Level level, Entity owner) {
-		return new TrackEntityMissile(level, owner, this);
 	}
 	
 	@Override

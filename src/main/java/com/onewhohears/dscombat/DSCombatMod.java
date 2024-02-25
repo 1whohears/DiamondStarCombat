@@ -6,6 +6,7 @@ import com.onewhohears.dscombat.client.screen.AircraftScreen;
 import com.onewhohears.dscombat.client.screen.WeaponsBlockScreen;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.common.network.PacketHandler;
+import com.onewhohears.dscombat.data.DSCSoundDefinitionGen;
 import com.onewhohears.dscombat.data.aircraft.AircraftClientPresetGenerator;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresetGenerator;
 import com.onewhohears.dscombat.data.radar.RadarPresetGenerator;
@@ -61,7 +62,7 @@ public class DSCombatMod {
     public DSCombatMod() {
     	ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.clientSpec);
     	ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.commonSpec);
-    	//ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.serverSpec);
+    	
     	IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
     	
         ModBlocks.register(eventBus);
@@ -104,8 +105,10 @@ public class DSCombatMod {
     		generator.addProvider(true, new AircraftPresetGenerator(generator));
     		generator.addProvider(true, new WeaponPresetGenerator(generator));
     		generator.addProvider(true, new RadarPresetGenerator(generator));
+    		DependencySafety.serverDataGen(generator);
     	}
     	if (event.includeClient()) {
+    		generator.addProvider(true, new DSCSoundDefinitionGen(generator, event.getExistingFileHelper()));
     		generator.addProvider(true, new AircraftClientPresetGenerator(generator));
     	}
     }

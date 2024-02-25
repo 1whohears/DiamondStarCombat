@@ -7,7 +7,7 @@ import javax.annotation.Nullable;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.common.container.AircraftBlockMenuContainer;
+import com.onewhohears.dscombat.common.container.menu.AircraftBlockContainerMenu;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerCraftPlane;
 import com.onewhohears.dscombat.crafting.DSCIngredient;
@@ -27,7 +27,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMenuContainer> {
+public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockContainerMenu> {
 	
 	private static final ResourceLocation BG_TEXTURE = new ResourceLocation(DSCombatMod.MODID,
 			"textures/ui/vehicle_forge_ui.png");
@@ -35,7 +35,7 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockMe
 	
 	private AircraftTab tab = AircraftTab.TANKS;
 	
-	public AircraftBlockScreen(AircraftBlockMenuContainer menu, Inventory playerInv, Component title) {
+	public AircraftBlockScreen(AircraftBlockContainerMenu menu, Inventory playerInv, Component title) {
 		super(menu, playerInv, title);
 		this.imageWidth = 352;
 		this.imageHeight = 260;

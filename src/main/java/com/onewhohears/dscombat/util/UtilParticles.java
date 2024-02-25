@@ -171,6 +171,12 @@ public class UtilParticles {
 				-move.x*0.25, -move.y*0.25, -move.z*0.25);
 	}
 	
+	public static void missileAfterBurner(Level level, Vec3 pos, Vec3 dir) {
+		level.addParticle(ModParticles.AFTER_BURNER.get(), 
+			pos.x, pos.y, pos.z, 
+			dir.x, dir.y, dir.z);
+	}
+	
 	public static void bulletImpact(Level level, Vec3 pos, double damage) {
 		for (int i = 0; i < 360; i += 30) for (int j = 0; j <= 90; j += 30) {
 			level.addAlwaysVisibleParticle(ParticleTypes.LARGE_SMOKE, 

@@ -1,27 +1,8 @@
 {
   "aircraft_type": 3,
-  "base_armor": 1.0,
-  "cross_sec_area": 4.5,
+  "copyId": "nathan_boat_empty",
   "displayName": "preset.dscombat.nathan_boat_unarmed",
-  "health": 100.0,
-  "idleheat": 2.0,
   "ingredients": [
-    {
-      "item": "minecraft:iron_ingot",
-      "num": 10
-    },
-    {
-      "item": "dscombat:seat",
-      "num": 7
-    },
-    {
-      "item": "dscombat:propeller",
-      "num": 1
-    },
-    {
-      "item": "minecraft:light_gray_dye",
-      "num": 3
-    },
     {
       "item": "dscombat:cm_manly_52",
       "num": 1
@@ -32,158 +13,27 @@
     }
   ],
   "is_craftable": true,
-  "item": "dscombat:nathan_boat",
   "landing_gear": true,
-  "mass": 1000.0,
-  "max_health": 100.0,
-  "max_speed": 0.85,
-  "maxpitch": 0.0,
-  "maxroll": 0.0,
-  "maxyaw": 3.5,
-  "pitchtorque": 0.0,
   "presetId": "nathan_boat_unarmed",
-  "rolltorque": 0.0,
   "slots": [
-    {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
-      "name": "pilot_seat",
-      "slot_posx": 0.8,
-      "slot_posy": 1.2,
-      "slot_posz": -1.13,
-      "slot_type": "seat",
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
-      "name": "seat1",
-      "slot_posx": 0.65,
-      "slot_posy": 1.2,
-      "slot_posz": 2.44,
-      "slot_type": "light_turret",
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
-      "name": "seat2",
-      "slot_posx": -0.65,
-      "slot_posy": 1.2,
-      "slot_posz": 2.44,
-      "slot_type": "light_turret",
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
-      "name": "seat3",
-      "slot_posx": 0.65,
-      "slot_posy": 1.2,
-      "slot_posz": 1.25,
-      "slot_type": "light_turret",
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
-      "name": "seat4",
-      "slot_posx": -0.65,
-      "slot_posy": 1.2,
-      "slot_posz": 1.25,
-      "slot_type": "light_turret",
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
-      "name": "seat5",
-      "slot_posx": 0.65,
-      "slot_posy": 1.2,
-      "slot_posz": -0.06,
-      "slot_type": "light_turret",
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
-      "name": "seat6",
-      "slot_posx": -0.65,
-      "slot_posy": 1.2,
-      "slot_posz": -0.06,
-      "slot_type": "light_turret",
-      "zRot": 0.0
-    },
-    {
-      "name": "frame_1",
-      "slot_posx": 1.5,
-      "slot_posy": 1.0,
-      "slot_posz": 0.0,
-      "slot_type": "frame",
-      "zRot": -90.0
-    },
-    {
-      "name": "frame_2",
-      "slot_posx": -1.5,
-      "slot_posy": 1.0,
-      "slot_posz": 0.0,
-      "slot_type": "frame",
-      "zRot": 90.0
-    },
     {
       "data": {
         "itemid": "dscombat:cm_manly_52"
       },
-      "name": "internal_1",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "radial_engine",
-      "zRot": 0.0
+      "name": "internal_1"
     },
     {
       "data": {
         "filled": true,
         "itemid": "dscombat:heavy_fuel_tank"
       },
-      "name": "internal_2",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "internal",
-      "zRot": 0.0
-    },
-    {
-      "name": "internal_3",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "internal",
-      "zRot": 0.0
+      "name": "internal_2"
     },
     {
       "data": {
         "itemid": "dscombat:wr400"
       },
-      "name": "internal_4",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "advanced_internal",
-      "zRot": 0.0
+      "name": "internal_4"
     }
-  ],
-  "sort_factor": 0,
-  "stealth": 1.0,
-  "throttledown": 0.1,
-  "throttleup": 0.05,
-  "turn_radius": 0.0,
-  "yawtorque": 2.0
+  ]
 }

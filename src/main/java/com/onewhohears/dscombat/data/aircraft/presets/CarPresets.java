@@ -1,10 +1,12 @@
 package com.onewhohears.dscombat.data.aircraft.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
+import com.onewhohears.dscombat.init.ModSounds;
 
 public class CarPresets {
 	
@@ -25,6 +27,11 @@ public class CarPresets {
 			.setMaxTurnRates(0f, 0f, 4f)
 			.setTurnTorques(0f, 0f, 1f)
 			.setThrottleRate(0.07f, 0.07f)
+			.setBasicEngineSounds(ModSounds.ORANGE_TESLA, ModSounds.ORANGE_TESLA)
+			.setRotationalInertia(8, 12, 8)
+			.setCrashExplosionRadius(2)
+			.set3rdPersonCamDist(4)
+			.setCanNegativeThrottle(true)
 			.addPilotSeatSlot(0.5, 0.45, 0.3)
 			.addSeatSlot("seat1", -0.5, 0.45, 0.3)
 			.addSeatSlot("seat2", 0.5, 0.45, -0.85)
@@ -55,6 +62,12 @@ public class CarPresets {
 			.setMaxTurnRates(0f, 0f, 4f)
 			.setTurnTorques(0f, 0f, 1f)
 			.setThrottleRate(0.05f, 0.05f)
+			.setBasicEngineSounds(ModSounds.TANK_1, ModSounds.TANK_1)
+			.setRotationalInertia(8, 12, 8)
+			.setCrashExplosionRadius(3)
+			.set3rdPersonCamDist(7)
+			.setCarIsTank(false)
+			.setCanNegativeThrottle(true)
 			.addPilotSeatSlot(0.5, 0.9, 1)
 			.addSeatSlot("seat2", -0.5, 0.9, 1)
 			.addIngredient(ModItems.SEAT.getId(), 2)
@@ -68,6 +81,7 @@ public class CarPresets {
 			.addEmptySlot("internal_2", SlotType.INTERNAL)
 			.addEmptySlot("internal_3", SlotType.ADVANCED_INTERNAL)
 			.addEmptySlot("internal_4", SlotType.ADVANCED_INTERNAL)
+			.addEntityScreen(EntityScreenIds.AIR_RADAR_SCREEN, 0, 1.35, 1.6, 0.6, 0.6)
 			.build();
 	
 	public static final AircraftPreset UNARMED_AXCEL_TRUCK = AircraftPreset.Builder

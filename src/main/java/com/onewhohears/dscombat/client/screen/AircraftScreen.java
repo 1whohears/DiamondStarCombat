@@ -7,7 +7,7 @@ import java.util.Optional;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.common.container.AircraftMenuContainer;
+import com.onewhohears.dscombat.common.container.menu.VehicleContainerMenu;
 import com.onewhohears.dscombat.common.container.slot.PartItemSlot;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftToItem;
@@ -24,12 +24,12 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 
-public class AircraftScreen extends AbstractContainerScreen<AircraftMenuContainer> {
+public class AircraftScreen extends AbstractContainerScreen<VehicleContainerMenu> {
 	
 	private static final ResourceLocation BG_TEXTURE = new ResourceLocation(DSCombatMod.MODID,
 			"textures/ui/aircraft_screen.png");
 	
-	public AircraftScreen(AircraftMenuContainer pMenu, Inventory pPlayerInventory, Component title) {
+	public AircraftScreen(VehicleContainerMenu pMenu, Inventory pPlayerInventory, Component title) {
 		super(pMenu, pPlayerInventory, title);
 		this.leftPos = 0;
 		this.topPos = 0;

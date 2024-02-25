@@ -25,11 +25,15 @@ public class PlaneDataOverlay extends VehicleOverlayComponent {
     protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
         if (!(getPlayerRootVehicle() instanceof EntityPlane plane)) return;
         if (DSCClientInputs.isCameraLockedForward()) return;
-
+        
+        int color = 0x00ff00;
+        if (plane.isStalling()) color = 0xff0000;
+        else if (plane.isAboutToStall()) color = 0xffff00;
+        
         drawString(poseStack, getFont(),
                 String.format("AOA: %3.1f", plane.getAOA()),
                 screenWidth - STICK_BASE_SIZE - PADDING,
                 screenHeight - STICK_BASE_SIZE - PEDAL_HEIGHT - FUEL_GAUGE_HEIGHT - PADDING *3-40,
-                0x00ff00);
+                color);
     }
 }

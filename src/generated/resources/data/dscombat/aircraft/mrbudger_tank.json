@@ -1,161 +1,23 @@
 {
   "aircraft_type": 2,
-  "base_armor": 16.0,
-  "cross_sec_area": 7.5,
+  "copyId": "mrbudger_tank_unarmed",
   "displayName": "preset.dscombat.mrbudger_tank",
-  "health": 500.0,
-  "idleheat": 10.0,
   "ingredients": [
-    {
-      "item": "dscombat:seat",
-      "num": 4
-    },
-    {
-      "item": "dscombat:tank_track",
-      "num": 4
-    },
-    {
-      "item": "minecraft:iron_ingot",
-      "num": 30
-    },
-    {
-      "item": "minecraft:gold_ingot",
-      "num": 5
-    },
-    {
-      "item": "minecraft:yellow_dye",
-      "num": 4
-    },
-    {
-      "item": "dscombat:heavy_tank_turret",
-      "num": 1
-    },
-    {
-      "item": "dscombat:c12_engine",
-      "num": 1
-    },
-    {
-      "item": "dscombat:heavy_fuel_tank",
-      "num": 1
-    },
     {
       "item": "dscombat:120mmhe",
       "num": 16
     }
   ],
   "is_craftable": false,
-  "item": "dscombat:mrbudger_tank",
   "landing_gear": true,
-  "mass": 15000.0,
-  "max_health": 500.0,
-  "max_speed": 0.3,
-  "maxpitch": 0.0,
-  "maxroll": 0.0,
-  "maxyaw": 2.0,
-  "pitchtorque": 0.0,
   "presetId": "mrbudger_tank",
-  "rolltorque": 0.0,
   "slots": [
     {
       "data": {
         "filled": true,
         "itemid": "dscombat:heavy_tank_turret"
       },
-      "name": "pilot_seat",
-      "slot_posx": 0.0,
-      "slot_posy": 1.4,
-      "slot_posz": 0.0,
-      "slot_type": "heavy_turret",
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
-      "name": "seat1",
-      "slot_posx": 1.0,
-      "slot_posy": 1.4,
-      "slot_posz": 2.0,
-      "slot_type": "med_turret",
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
-      "name": "seat2",
-      "slot_posx": -1.0,
-      "slot_posy": 1.4,
-      "slot_posz": 2.0,
-      "slot_type": "med_turret",
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
-      "name": "seat3",
-      "slot_posx": 1.0,
-      "slot_posy": 1.4,
-      "slot_posz": -2.0,
-      "slot_type": "med_turret",
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
-      "name": "seat4",
-      "slot_posx": -1.0,
-      "slot_posy": 1.4,
-      "slot_posz": -2.0,
-      "slot_type": "med_turret",
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:c12_engine"
-      },
-      "name": "internal_1",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "spin_engine",
-      "zRot": 0.0
-    },
-    {
-      "name": "internal_2",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "spin_engine",
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "filled": true,
-        "itemid": "dscombat:heavy_fuel_tank"
-      },
-      "name": "internal_3",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "internal",
-      "zRot": 0.0
-    },
-    {
-      "name": "internal_4",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "internal",
-      "zRot": 0.0
+      "name": "pilot_seat"
     }
-  ],
-  "sort_factor": 4,
-  "stealth": 1.0,
-  "throttledown": 0.04,
-  "throttleup": 0.04,
-  "turn_radius": 0.0,
-  "yawtorque": 8.0
+  ]
 }

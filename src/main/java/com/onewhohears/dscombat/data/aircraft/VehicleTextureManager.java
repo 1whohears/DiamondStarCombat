@@ -2,6 +2,9 @@ package com.onewhohears.dscombat.data.aircraft;
 
 import java.awt.Color;
 
+import javax.annotation.Nullable;
+
+import com.onewhohears.dscombat.client.texture.VehicleDynamicTextures;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleTexture;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
@@ -20,11 +23,17 @@ public class VehicleTextureManager {
 	private final TextureLayer[] textureLayers;
 	private int baseTextureIndex = 0;
 	private boolean changed;
+	private ResourceLocation dynamicTexture;
 	
 	public VehicleTextureManager(EntityVehicle parent) {
 		this.parent = parent;
-		this.baseTextures = new ResourceLocation[parent.vehicleData.baseTextureVariants];
-		this.textureLayers = new TextureLayer[parent.vehicleData.textureLayers];
+		this.baseTextures = new ResourceLocation[parent.getVehicleStats().baseTextureVariants];
+		this.textureLayers = new TextureLayer[parent.getVehicleStats().textureLayers];
+		setupTextureLocations();
+		dynamicTexture = getBaseTexture();
+	}
+	
+	private void setupTextureLocations() {
 		String[] encodeIds = UtilEntity.getSplitEncodeId(parent);
 		String modId = encodeIds[0], entityId = encodeIds[1];
 		for (int i = 0; i < baseTextures.length; ++i) 
@@ -32,6 +41,20 @@ public class VehicleTextureManager {
 		for (int i = 0; i < textureLayers.length; ++i) {
 			textureLayers[i] = new TextureLayer(modId+":textures/entity/vehicle/"+entityId+"/layer"+i+".png");
 		}
+	}
+	/**
+	 * CLIENT ONLY
+	 */
+	private void setupDynamicTexture() {
+		if (!parent.level.isClientSide) return;
+		dynamicTexture = VehicleDynamicTextures.createVehicleDynamicTexture(parent);
+	}
+	/**
+	 * CLIENT ONLY
+	 */
+	@Nullable
+	public ResourceLocation getDynamicTexture() {
+		return dynamicTexture;
 	}
 	
 	public void onTick() {
@@ -42,6 +65,7 @@ public class VehicleTextureManager {
 	public void clientTick() {
 		if (isChanged()) {
 			PacketHandler.INSTANCE.sendToServer(new ToServerVehicleTexture(parent));
+			setupDynamicTexture();
 			resetChanged();
 		}
 	}
@@ -52,6 +76,7 @@ public class VehicleTextureManager {
 	
 	public void read(CompoundTag entityNbt) {
 		if (!entityNbt.contains("textures")) return;
+		setupTextureLocations();
 		CompoundTag textures = entityNbt.getCompound("textures");
 		setBaseTexture(textures.getInt("baseTexture"));
 		if (textures.contains("layers")) {
@@ -72,10 +97,12 @@ public class VehicleTextureManager {
 	}
 	
 	public void read(ByteBuf buffer) {
+		setupTextureLocations();
 		setBaseTexture(buffer.readInt());
 		int layers = buffer.readInt();
 		for (int i = 0; i < layers && i < textureLayers.length; ++i) 
 			textureLayers[i].read(buffer);
+		setupDynamicTexture();
 		changed = false;
 	}
 	
@@ -112,6 +139,13 @@ public class VehicleTextureManager {
 		return textureLayers;
 	}
 	
+	public boolean isAllLayersDisabled() {
+		for (int i = 0; i < getTextureLayers().length; ++i) 
+			if (getTextureLayers()[i].canRender())
+				return false;
+		return true;
+ 	}
+	
 	public boolean isChanged() {
 		if (changed) return true;
 		for (int i = 0; i < textureLayers.length; ++i) 
@@ -128,6 +162,7 @@ public class VehicleTextureManager {
 	
 	public static class TextureLayer {
 		private final ResourceLocation texture;
+		private BlendMode blendMode = BlendMode.ON_WHITE;
 		private int colorInt;
 		private Color color;
 		private boolean enabled, changed;
@@ -139,22 +174,26 @@ public class VehicleTextureManager {
 		public void read(CompoundTag tag) {
 			if (tag.contains("color")) setColor(tag.getInt("color"));
 			enabled = tag.getBoolean("enabled");
+			if (tag.contains("blendMode")) blendMode = BlendMode.getByName(tag.getString("blendMode"));
 			changed = false;
 		}
 		public CompoundTag write() {
 			CompoundTag tag = new CompoundTag();
 			tag.putInt("color", colorInt);
 			tag.putBoolean("enabled", enabled);
+			tag.putString("blendMode", blendMode.name());
 			return tag;
 		}
 		public void read(ByteBuf buffer) {
 			setColor(buffer.readInt());
 			enabled = buffer.readBoolean();
+			blendMode = BlendMode.values()[buffer.readInt()];
 			changed = false;
 		}
 		public void write(FriendlyByteBuf buffer) {
 			buffer.writeInt(colorInt);
 			buffer.writeBoolean(enabled);
+			buffer.writeInt(blendMode.ordinal());
 		}
 		public ResourceLocation getTexture() {
 			return texture;
@@ -186,6 +225,27 @@ public class VehicleTextureManager {
 		}
 		public void resetChanged() {
 			changed = false;
+		}
+		public BlendMode getBlendMode() {
+			return blendMode;
+		}
+		public void setBlendMode(BlendMode mode) {
+			blendMode = mode;
+			changed = true;
+		}
+	}
+	
+	public static enum BlendMode {
+		NONE,
+		ON_WHITE,
+		ON_ALL,
+		SCALED,
+		EVEN;
+		public static BlendMode getByName(String name) {
+			for (BlendMode mode : BlendMode.values()) 
+				if (mode.name().equals(name)) 
+					return mode;
+			return NONE;
 		}
 	}
 	

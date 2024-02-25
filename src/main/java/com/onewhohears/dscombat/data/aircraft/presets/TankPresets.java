@@ -6,6 +6,7 @@ import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
+import com.onewhohears.dscombat.init.ModSounds;
 
 public class TankPresets {
 	
@@ -25,6 +26,12 @@ public class TankPresets {
 			.setMaxTurnRates(0f, 0f, 2f)
 			.setTurnTorques(0f, 0f, 8f)
 			.setThrottleRate(0.04f, 0.04f)
+			.setBasicEngineSounds(ModSounds.TANK_1, ModSounds.TANK_1)
+			.setRotationalInertia(8, 12, 8)
+			.setCrashExplosionRadius(3)
+			.set3rdPersonCamDist(4)
+			.setCarIsTank(true)
+			.setCanNegativeThrottle(true)
 			.addIngredient(ModItems.SEAT.getId(), 4)
 			.addIngredient(ModItems.TANK_TRACK.getId(), 4)
 			.addIngredient("minecraft:iron_ingot", 30)
@@ -74,6 +81,12 @@ public class TankPresets {
 			.setMaxTurnRates(0f, 0f, 3f)
 			.setTurnTorques(0f, 0f, 10f)
 			.setThrottleRate(0.08f, 0.08f)
+			.setBasicEngineSounds(ModSounds.TANK_1, ModSounds.TANK_1)
+			.setRotationalInertia(8, 12, 8)
+			.setCrashExplosionRadius(1)
+			.set3rdPersonCamDist(4)
+			.setCarIsTank(true)
+			.setCanNegativeThrottle(true)
 			.addIngredient(ModItems.SEAT.getId(), 1)
 			.addIngredient("minecraft:iron_ingot", 5)
 			.addIngredient(ModItems.TANK_TRACK.getId(), 2)

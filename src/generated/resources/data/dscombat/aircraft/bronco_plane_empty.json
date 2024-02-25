@@ -1,10 +1,7 @@
 {
   "aircraft_type": 0,
-  "base_armor": 1.0,
-  "cross_sec_area": 5.0,
   "displayName": "preset.dscombat.bronco_plane_empty",
   "health": 90.0,
-  "idleheat": 3.0,
   "ingredients": [
     {
       "item": "dscombat:fuselage",
@@ -38,15 +35,7 @@
   "is_craftable": false,
   "item": "dscombat:bronco_plane",
   "landing_gear": true,
-  "mass": 3100.0,
-  "max_health": 90.0,
-  "max_speed": 0.85,
-  "maxpitch": 1.2,
-  "maxroll": 2.5,
-  "maxyaw": 0.9,
-  "pitchtorque": 2.0,
   "presetId": "bronco_plane_empty",
-  "rolltorque": 1.5,
   "slots": [
     {
       "data": {
@@ -168,10 +157,43 @@
     }
   ],
   "sort_factor": 5,
-  "stealth": 1.0,
-  "throttledown": 0.07,
-  "throttleup": 0.03,
-  "turn_radius": 8.0,
-  "wing_area": 27.0,
-  "yawtorque": 3.0
+  "sounds": {
+    "loopSoundType": "basic",
+    "nonPassengerEngine": "dscombat:biplane_1",
+    "passengerEngine": "dscombat:biplane_1",
+    "passengerSoundPack": "eng_non_binary_goober"
+  },
+  "stats": {
+    "base_armor": 1.0,
+    "cameraDistance": 14.0,
+    "crashExplosionRadius": 4.0,
+    "cross_sec_area": 5.0,
+    "idleheat": 3.0,
+    "inertiapitch": 10.0,
+    "inertiaroll": 6.0,
+    "inertiayaw": 5.0,
+    "mass": 3100.0,
+    "max_health": 90.0,
+    "max_speed": 0.85,
+    "maxpitch": 1.2,
+    "maxroll": 2.5,
+    "maxyaw": 0.9,
+    "plane": {
+      "canAimDown": false,
+      "flapsAOABias": 9.0,
+      "liftKGraph": "javi_plane",
+      "wing_area": 27.0
+    },
+    "stealth": 1.0,
+    "throttledown": 0.07,
+    "throttleup": 0.03,
+    "torquepitch": 2.0,
+    "torqueroll": 1.5,
+    "torqueyaw": 3.0,
+    "turn_radius": 8.0
+  },
+  "textures": {
+    "baseTextureVariants": 2,
+    "textureLayers": 2
+  }
 }

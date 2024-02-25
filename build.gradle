@@ -24,7 +24,7 @@ apply plugin: 'com.diffplug.eclipse.apt'
 
 group = 'com.onewhohears.dscombat'
 archivesBaseName = 'dscombat-1.19.2'
-version = '0.9.2'
+version = '0.9.4'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
@@ -35,12 +35,47 @@ minecraft {
     
     runs {
         client {
+        	taskName 'runClient'
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             property 'forge.enabledGameTestNamespaces', 'dscombat'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+            mods {
+                dscombat {
+                    source sourceSets.main
+                }
+            }
+        }
+        
+        client2 {
+        	parent runs.client
+        	taskName 'runClient2'
+        	workingDirectory project.file('run')
+        	property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            property 'forge.enabledGameTestNamespaces', 'dscombat'
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+            arg '--username=StupidIdiot'
+            mods {
+                dscombat {
+                    source sourceSets.main
+                }
+            }
+        }
+        
+        client3 {
+        	parent runs.client
+        	taskName 'runClient3'
+        	workingDirectory project.file('run')
+        	property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            property 'forge.enabledGameTestNamespaces', 'dscombat'
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+            arg '--username=LunaticDonkey'
             mods {
                 dscombat {
                     source sourceSets.main
@@ -104,7 +139,7 @@ dependencies {
     minecraft 'net.minecraftforge:forge:1.19.2-43.2.0'
     implementation fg.deobf("curse.maven:modernfix-790626:4792392")
     // https://github.com/1whohears/CustomMiniGames
-    implementation fg.deobf("com.1whohears.minigames:minigames-1.19.2:0.0.2")
+    implementation fg.deobf("com.1whohears.minigames:minigames-1.19.2:0.0.6")
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     implementation(annotationProcessor("io.github.llamalad7:mixinextras-common:0.3.2"))
     implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.3.2")) {
@@ -115,10 +150,6 @@ dependencies {
 mixin {
 	add sourceSets.main, 'mixins.dscombat.refmap.json'
 	config 'mixins.dscombat.json'
-	
-	/*debug = true
-	debug.verbose = true
-	debug.export = true*/
 }
 
 jar {

@@ -1,12 +1,7 @@
 {
-  "accForward": 0.04,
-  "accSide": 0.02,
   "aircraft_type": 1,
-  "base_armor": 5.0,
-  "cross_sec_area": 8.0,
   "displayName": "preset.dscombat.noah_chopper_empty",
   "health": 200.0,
-  "idleheat": 8.0,
   "ingredients": [
     {
       "item": "dscombat:fuselage",
@@ -44,15 +39,84 @@
   "is_craftable": false,
   "item": "dscombat:noah_chopper",
   "landing_gear": true,
-  "mass": 6000.0,
-  "max_health": 200.0,
-  "max_speed": 0.7,
-  "maxpitch": 2.0,
-  "maxroll": 4.0,
-  "maxyaw": 4.0,
-  "pitchtorque": 1.0,
   "presetId": "noah_chopper_empty",
-  "rolltorque": 1.0,
+  "screens": [
+    {
+      "height": 0.3,
+      "id": 0,
+      "pos": {
+        "x": 0.19,
+        "y": 0.18,
+        "z": 1.934
+      },
+      "rot": {
+        "x": 20.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "width": 0.3
+    },
+    {
+      "height": 0.3,
+      "id": 1,
+      "pos": {
+        "x": 0.19,
+        "y": -0.12,
+        "z": 1.825
+      },
+      "rot": {
+        "x": 20.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "width": 0.3
+    },
+    {
+      "height": 0.3,
+      "id": 3,
+      "pos": {
+        "x": 0.5,
+        "y": -0.12,
+        "z": 1.825
+      },
+      "rot": {
+        "x": 20.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "width": 0.3
+    },
+    {
+      "height": 0.3,
+      "id": 4,
+      "pos": {
+        "x": 0.5,
+        "y": 0.18,
+        "z": 1.934
+      },
+      "rot": {
+        "x": 20.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "width": 0.3
+    },
+    {
+      "height": 0.1,
+      "id": 2,
+      "pos": {
+        "x": 0.4,
+        "y": 0.62,
+        "z": 1.63
+      },
+      "rot": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "width": 0.1
+    }
+  ],
   "slots": [
     {
       "data": {
@@ -260,9 +324,42 @@
     }
   ],
   "sort_factor": 4,
-  "stealth": 1.2,
-  "throttledown": 0.02,
-  "throttleup": 0.01,
-  "turn_radius": 0.0,
-  "yawtorque": 2.5
+  "sounds": {
+    "loopSoundType": "basic",
+    "nonPassengerEngine": "dscombat:heli_1",
+    "passengerEngine": "dscombat:heli_1",
+    "passengerSoundPack": "eng_non_binary_goober"
+  },
+  "stats": {
+    "base_armor": 5.0,
+    "cameraDistance": 6.0,
+    "crashExplosionRadius": 4.0,
+    "cross_sec_area": 8.0,
+    "heli": {
+      "accForward": 0.04,
+      "accSide": 0.02,
+      "alwaysLandingGear": true,
+      "heliLiftFactor": 10.0
+    },
+    "idleheat": 8.0,
+    "inertiapitch": 6.0,
+    "inertiaroll": 8.0,
+    "inertiayaw": 4.0,
+    "mass": 6000.0,
+    "max_health": 200.0,
+    "max_speed": 0.7,
+    "maxpitch": 2.0,
+    "maxroll": 4.0,
+    "maxyaw": 4.0,
+    "stealth": 1.2,
+    "throttledown": 0.02,
+    "throttleup": 0.01,
+    "torquepitch": 1.0,
+    "torqueroll": 1.0,
+    "torqueyaw": 2.5,
+    "turn_radius": 0.0
+  },
+  "textures": {
+    "textureLayers": 1
+  }
 }

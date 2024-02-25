@@ -6,6 +6,7 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientAddPart;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAircraftControl;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAircraftFuel;
 import com.onewhohears.dscombat.common.network.toclient.ToClientDataPackSynch;
+import com.onewhohears.dscombat.common.network.toclient.ToClientDelayedSound;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRWRWarning;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRadarPings;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRemovePart;
@@ -22,10 +23,11 @@ import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftToItem;
 import com.onewhohears.dscombat.common.network.toserver.ToServerCraftPlane;
 import com.onewhohears.dscombat.common.network.toserver.ToServerCraftWeapon;
 import com.onewhohears.dscombat.common.network.toserver.ToServerDismount;
+import com.onewhohears.dscombat.common.network.toserver.ToServerOpenStorage;
 import com.onewhohears.dscombat.common.network.toserver.ToServerPingSelect;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSeatPos;
-import com.onewhohears.dscombat.common.network.toserver.ToServerShootTurret;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSwitchSeat;
+import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleShoot;
 import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleTexture;
 
 import net.minecraft.resources.ResourceLocation;
@@ -111,10 +113,10 @@ public final class PacketHandler {
 			.decoder(ToServerCraftPlane::new)
 			.consumerMainThread(ToServerCraftPlane::handle)
 			.add();
-		net.messageBuilder(ToServerShootTurret.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ToServerShootTurret::encode)
-			.decoder(ToServerShootTurret::new)
-			.consumerMainThread(ToServerShootTurret::handle)
+		net.messageBuilder(ToServerVehicleShoot.class, index++, NetworkDirection.PLAY_TO_SERVER)
+			.encoder(ToServerVehicleShoot::encode)
+			.decoder(ToServerVehicleShoot::new)
+			.consumerMainThread(ToServerVehicleShoot::handle)
 			.add();
 		net.messageBuilder(ToClientRWRWarning.class, index++, NetworkDirection.PLAY_TO_CLIENT)
 			.encoder(ToClientRWRWarning::encode)
@@ -180,6 +182,16 @@ public final class PacketHandler {
 			.encoder(ToClientSynchGameRules::encode)
 			.decoder(ToClientSynchGameRules::new)
 			.consumerMainThread(ToClientSynchGameRules::handle)
+			.add();
+		net.messageBuilder(ToClientDelayedSound.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ToClientDelayedSound::encode)
+			.decoder(ToClientDelayedSound::new)
+			.consumerMainThread(ToClientDelayedSound::handle)
+			.add();
+		net.messageBuilder(ToServerOpenStorage.class, index++, NetworkDirection.PLAY_TO_SERVER)
+			.encoder(ToServerOpenStorage::encode)
+			.decoder(ToServerOpenStorage::new)
+			.consumerMainThread(ToServerOpenStorage::handle)
 			.add();
 	}
 	

@@ -37,60 +37,63 @@ import net.minecraft.world.phys.Vec3;
 
 public class EntityTurret extends EntitySeat {
 	
+	public static final EntityDataAccessor<String> WEAPON_ID = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.STRING);
 	public static final EntityDataAccessor<Integer> AMMO = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.INT);
-	public static final EntityDataAccessor<Float> MINROTX = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> MAXROTX = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> ROTRATE = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> RELROTX = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> RELROTY = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.FLOAT);
 	
 	public final double weaponOffset;
 	public final ShootType shootType;
+	public final RotBounds rotBounds;
+	
+	private WeaponData data;
 	
 	public float xRotRelO, yRotRelO;
-	
-	/**
-	 * only used on server side
-	 */
-	private String weaponId;
-	/**
-	 * only used on server side
-	 */
-	private WeaponData data;
 	/**
 	 * only used on server side
 	 */
 	private int newRiderCoolDown, lastShootTime;
 	
-	public EntityTurret(EntityType<?> type, Level level, Vec3 offset, double weaponOffset) {
-		super(type, level, offset);
-		this.weaponOffset = weaponOffset;
-		this.shootType = ShootType.NORMAL;
+	public EntityTurret(EntityType<?> type, Level level, Vec3 offset, 
+			double weaponOffset, RotBounds rotBounds) {
+		this(type, level, offset, weaponOffset, rotBounds, ShootType.NORMAL);
 	}
 	
-	public EntityTurret(EntityType<?> type, Level level, Vec3 offset, double weaponOffset, ShootType shootType) {
+	public EntityTurret(EntityType<?> type, Level level, Vec3 offset, 
+			double weaponOffset, RotBounds rotBounds, ShootType shootType) {
 		super(type, level, offset);
 		this.weaponOffset = weaponOffset;
 		this.shootType = shootType;
+		this.rotBounds = rotBounds;
 	}
-
+	
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
+		entityData.define(WEAPON_ID, "10mm");
 		entityData.define(AMMO, 0);
-		entityData.define(MINROTX, 0f);
-		entityData.define(MAXROTX, 0f);
-		entityData.define(ROTRATE, 0f);
 		entityData.define(RELROTX, 0f);
 		entityData.define(RELROTY, 0f);
 	}
 	
 	@Override
+	public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
+		super.onSyncedDataUpdated(key);
+		if (!level.isClientSide) return;
+		if (key.equals(WEAPON_ID)) {
+			data = WeaponPresets.get().getPreset(getWeaponId());
+		} else if (key.equals(AMMO)) {
+			if (data != null) data.setCurrentAmmo(getAmmo());
+		}
+	}
+	
+	@Override
 	protected void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
+		String wid = tag.getString("weaponId");
 		data = UtilParse.parseWeaponFromCompound(tag.getCompound("weapondata"));
-		if (data == null) data = WeaponPresets.get().getPreset(weaponId);
-		setRotBounds(new RotBounds(tag));
+		if (wid.isEmpty() && data != null) wid = data.getId();
+		setWeaponId(wid);
 		setXRot(tag.getFloat("xRot"));
 		setYRot(tag.getFloat("yRot"));
 		setRelRotX(tag.getFloat("relrotx"));
@@ -100,8 +103,8 @@ public class EntityTurret extends EntitySeat {
 	@Override
 	protected void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
+		tag.putString("weaponId", getWeaponId());
 		if (data != null) tag.put("weapondata", data.writeNbt());
-		getRotBounds().write(tag);
 		tag.putFloat("xRot", getXRot());
 		tag.putFloat("yRot", getYRot());
 		tag.putFloat("relrotx", getRelRotX());
@@ -110,7 +113,10 @@ public class EntityTurret extends EntitySeat {
 	
 	public void init() {
 		super.init();
-		if (data != null) data.setCurrentAmmo(getAmmo());
+		if (!level.isClientSide) {
+			if (data == null) data = WeaponPresets.get().getPreset(getWeaponId());
+			if (data != null) data.setCurrentAmmo(getAmmo());
+		}
 	}
 	
 	@Override
@@ -278,13 +284,12 @@ public class EntityTurret extends EntitySeat {
 		return entityData.get(AMMO);
 	}
 	
-	public void setWeaponId(String wid) {
-		weaponId = wid;
-		data = WeaponPresets.get().getPreset(weaponId);
+	public String getWeaponId() {
+		return entityData.get(WEAPON_ID);
 	}
 	
-	public String getWeaponId() {
-		return weaponId;
+	public void setWeaponId(String weapon) {
+		entityData.set(WEAPON_ID, weapon);
 	}
 	
 	@Nullable
@@ -345,38 +350,20 @@ public class EntityTurret extends EntitySeat {
 		return PartType.TURRENT;
 	}
 	
-	public void setRotBounds(RotBounds rb) {
-		setMinRotX(rb.minRotX);
-		setMaxRotX(rb.maxRotX);
-		setRotRate(rb.rotRate);
-	}
-	
 	public RotBounds getRotBounds() {
-		return RotBounds.create(getRotRate(), getMinRotX(), getMaxRotX());
-	}
-	
-	public void setMinRotX(float rot) {
-		entityData.set(MINROTX, rot);
-	}
-	
-	public void setMaxRotX(float rot) {
-		entityData.set(MAXROTX, rot);
-	}
-	
-	public void setRotRate(float rot) {
-		entityData.set(ROTRATE, rot);
+		return rotBounds;
 	}
 	
 	public float getMinRotX() {
-		return entityData.get(MINROTX);
+		return getRotBounds().minRotX;
 	}
 	
 	public float getMaxRotX() {
-		return entityData.get(MAXROTX);
+		return getRotBounds().maxRotX;
 	}
 	
 	public float getRotRate() {
-		return entityData.get(ROTRATE);
+		return getRotBounds().rotRate;
 	}
 	
 	public float getRelRotX() {
@@ -409,6 +396,11 @@ public class EntityTurret extends EntitySeat {
     public boolean hurt(DamageSource source, float amount) {
 		addHealth(-amount);
 		if (getHealth() <= 0) kill();
+		return true;
+	}
+	
+	@Override
+	public boolean isTurret() {
 		return true;
 	}
 

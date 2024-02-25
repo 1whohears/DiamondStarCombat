@@ -34,10 +34,10 @@ public class AfterBurnerParticle extends TextureSheetParticle {
 		setSpriteFromAge(sprites);
 		this.quadSize *= (3f + random.nextGaussian()*0.1);
 		this.lifetime = 8 + (int)(random.nextGaussian()*2);
-		this.xd += random.nextGaussian()*0.00001;
-		this.yd += random.nextGaussian()*0.00001;
-		this.zd += random.nextGaussian()*0.00001;
-		this.gravity = 0;
+		this.xd += (random.nextGaussian()*2-1)*0.00001;
+		this.yd += (random.nextGaussian()*2-1)*0.00001;
+		this.zd += (random.nextGaussian()*2-1)*0.00001;
+		this.gravity = 0.1f;
 	}
 	
 	@Override
@@ -48,8 +48,13 @@ public class AfterBurnerParticle extends TextureSheetParticle {
 	}
 	
 	@Override
+	public int getLightColor(float pPartialTick) {
+		return 15728880;
+	}
+	
+	@Override
 	public ParticleRenderType getRenderType() {
-		return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+		return ParticleRenderType.PARTICLE_SHEET_LIT;
 	}
 
 }

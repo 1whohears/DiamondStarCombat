@@ -14,18 +14,14 @@ public class EntityEngine extends EntityPart {
 		super(type, level);
 	}
 	
-	public EntityEngine(EntityType<?> type, Level level, String slotId, Vec3 pos) {
-		super(type, level, slotId, pos);
-		setHealth(10);
-	}
-	
 	@Override
 	public void tick() {
 		super.tick();
 		EntityVehicle vehicle = getParentVehicle();
-		if (vehicle == null) return;
-		Vec3 dir = vehicle.getLookAngle().scale(-vehicle.getCurrentThrottle()*0.4);
-		UtilParticles.afterBurner(vehicle, getBoundingBox().getCenter(), dir);
+		if (level.isClientSide && vehicle != null) {
+			Vec3 dir = vehicle.getLookAngle().scale(-vehicle.getCurrentThrottle()*0.4);
+			UtilParticles.afterBurner(vehicle, getBoundingBox().getCenter(), dir);
+		}
 	}
 	
 	@Override

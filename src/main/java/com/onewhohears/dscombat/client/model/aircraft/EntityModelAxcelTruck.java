@@ -52,8 +52,8 @@ public class EntityModelAxcelTruck extends EntityControllableModel<EntityGroundV
 		stearing.zRot = entity.inputs.yaw * yf;
 		wheels[0].yRot = entity.inputs.yaw * yf;
 		wheels[3].yRot = entity.inputs.yaw * yf;
-		for (int i = 0; i < 3; ++i) wheels[i].xRot = -entity.getWheelLeftRotation(partialTicks);
-		for (int i = 3; i < 6; ++i) wheels[i].xRot = -entity.getWheelRightRotation(partialTicks);
+		for (int i = 0; i < 3; ++i) wheels[i].xRot = -entity.getWheelRotation(partialTicks, 1.5f);
+		for (int i = 3; i < 6; ++i) wheels[i].xRot = -entity.getWheelRotation(partialTicks, 1.5f);
 		body.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 	

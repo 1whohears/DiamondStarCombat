@@ -1,10 +1,14 @@
 package com.onewhohears.dscombat.data.aircraft.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
+import com.onewhohears.dscombat.data.aircraft.LiftKGraph;
+import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
+import com.onewhohears.dscombat.init.ModSounds;
 
 public class JaviPresets {
 	
@@ -25,6 +29,16 @@ public class JaviPresets {
 			.setTurnTorques(1.5f, 2.5f, 4.5f)
 			.setThrottleRate(0.04f, 0.08f)
 			.setPlaneWingArea(47f)
+			.setBasicEngineSounds(ModSounds.JET_1, ModSounds.JET_1)
+			.setRotationalInertia(6, 10, 4)
+			.setCrashExplosionRadius(5)
+			.set3rdPersonCamDist(16)
+			.setPlaneLiftAOAGraph(LiftKGraph.JAVI_PLANE_GRAPH)
+			.setPlaneFlapDownAOABias(10)
+			.setPlaneNoseCanAimDown(true)
+			.setBaseTextureNum(2)
+			.setLayerTextureNum(2)
+			.setDefultPassengerSoundPack(PassengerSoundPack.ENG_NON_BINARY_GOOBER)
 			.addIngredient(ModItems.FUSELAGE.getId(), 1)
 			.addIngredient(ModItems.LARGE_WING.getId(), 2)
 			.addIngredient(ModItems.COCKPIT.getId(), 2)
@@ -48,6 +62,12 @@ public class JaviPresets {
 			.addEmptySlot("internal_4", SlotType.ADVANCED_INTERNAL)
 			.addEmptySlot("internal_5", SlotType.ADVANCED_INTERNAL)
 			.addEmptySlot("internal_6", SlotType.ADVANCED_INTERNAL)
+			.addEntityScreen(EntityScreenIds.AIR_RADAR_SCREEN, 0.327, 1.259, 7.19, 0.173, 0.173, 10)
+			.addEntityScreen(EntityScreenIds.RWR_SCREEN, 0.145, 1.325, 7.2, 0.1, 0.1, 10)
+			.addEntityScreen(EntityScreenIds.GROUND_RADAR_SCREEN,-0.349,1.259,7.19,0.173,0.173,10)
+			.addHUDScreen(0, 0.5, 6.34375)
+			.addAfterBurnerSmokePos(1.85,1.4,-4.4)
+			.addAfterBurnerSmokePos(-1.85,1.4,-4.4)
 			.build();
 	
 	public static final AircraftPreset UNARMED_JAVI_PLANE = AircraftPreset.Builder

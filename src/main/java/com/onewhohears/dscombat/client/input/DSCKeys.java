@@ -25,7 +25,7 @@ public final class DSCKeys {
 	public static KeyMapping flareKey;
 	public static KeyMapping mouseModeKey, resetMouseKey, gimbalKey;
 	public static KeyMapping shootKey, landingGear;
-	public static KeyMapping planeMenuKey;
+	public static KeyMapping vehicleMenuKey, vehicleStorageKey;
 	public static KeyMapping pingCycleKey, radarModeKey, radarDisplayRangeKey;
 	public static KeyMapping changeSeat, dismount;
 	public static KeyMapping specialKey, special2Key;
@@ -50,7 +50,8 @@ public final class DSCKeys {
 		flipControlsKey = registerKey("flip_controls_key", VEHICLE_CONTROL_UTIL, InputConstants.KEY_LSHIFT);
 		resetMouseKey = registerKey("reset_mouse_key", VEHICLE_CONTROL_UTIL, InputConstants.KEY_RALT);
 		// PASSENGER CONTROL
-		planeMenuKey = registerKey("plane_menu_key", VEHICLE_PASSENGER_CONTROL, InputConstants.KEY_U);
+		vehicleMenuKey = registerKey("plane_menu_key", VEHICLE_PASSENGER_CONTROL, InputConstants.KEY_U);
+		vehicleStorageKey = registerKey("vehicle_storage_key", VEHICLE_PASSENGER_CONTROL, InputConstants.KEY_EQUALS);
 		dismount = registerKey("dismount_key", VEHICLE_PASSENGER_CONTROL, InputConstants.KEY_H);
 		changeSeat = registerKey("change_seat_key", VEHICLE_PASSENGER_CONTROL, InputConstants.KEY_Y);
 		landingGear = registerKey("landing_gear_key", VEHICLE_PASSENGER_CONTROL, InputConstants.KEY_K);

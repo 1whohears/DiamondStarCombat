@@ -19,6 +19,7 @@ import net.minecraftforge.network.PacketDistributor;
 public class PartSlot {
 	
 	public static final String PILOT_SLOT_NAME = "pilot_seat";
+	public static final String COPILOT_SLOT_NAME = "copilot_seat";
 	
 	private final String slotId;
 	private final SlotType type;
@@ -274,8 +275,16 @@ public class PartSlot {
 		return isPilotSeat(getSlotId());
 	}
 	
+	public boolean isCoPilotSlot() {
+		return isCoPilotSeat(getSlotId());
+	}
+	
 	public static boolean isPilotSeat(String slotId) {
 		return slotId.equals(PILOT_SLOT_NAME) || slotId.equals("dscombat.pilot_seat") || slotId.equals("slotname.dscombat.pilot_seat");
+	}
+	
+	public static boolean isCoPilotSeat(String slotId) {
+		return slotId.equals(COPILOT_SLOT_NAME);
 	}
 	
 }

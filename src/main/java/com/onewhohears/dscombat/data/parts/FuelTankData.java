@@ -7,7 +7,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 
-public class FuelTankData extends PartData {
+public class FuelTankData extends PartData implements LoadableRecipePartData {
 	
 	private final float max;
 	private float fuel;
@@ -18,29 +18,25 @@ public class FuelTankData extends PartData {
 		this.max = max;
 	}
 	
-	public FuelTankData(CompoundTag tag) {
-		super(tag);
+	public void read(CompoundTag tag) {
+		super.read(tag);
 		fuel = tag.getFloat("fuel");
-		max = tag.getFloat("max");
 	}
 	
 	public CompoundTag write() {
 		CompoundTag tag = super.write();
 		tag.putFloat("fuel", fuel);
-		tag.putFloat("max", max);
 		return tag;
 	}
 	
-	public FuelTankData(FriendlyByteBuf buffer) {
-		super(buffer);
+	public void read(FriendlyByteBuf buffer) {
+		super.read(buffer);
 		fuel = buffer.readFloat();
-		max = buffer.readFloat();
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
 		super.write(buffer);
 		buffer.writeFloat(fuel);
-		buffer.writeFloat(max);
 	}
 	
 	@Override
@@ -52,11 +48,6 @@ public class FuelTankData extends PartData {
 	public boolean isSetup(String slotId, EntityVehicle craft) {
 		return false;
 	}
-
-	/*@Override
-	public ItemStack getItemStack() {
-		return null;
-	}*/
 	
 	/**
 	 * @param fuel
@@ -95,6 +86,44 @@ public class FuelTankData extends PartData {
 	public float getWeight() {
 		float w = super.getWeight();
 		return w * fuel / max;
+	}
+
+	@Override
+	public float getCurrentAmmo() {
+		return getFuel();
+	}
+
+	@Override
+	public float getMaxAmmo() {
+		return getMaxFuel();
+	}
+
+	@Override
+	public void setCurrentAmmo(float ammo) {
+		setFuel(ammo);
+	}
+
+	@Override
+	public void setMaxAmmo(float max) {
+	}
+
+	@Override
+	public boolean isCompatibleWithAmmoContinuity(String continuity) {
+		return true;
+	}
+
+	@Override
+	public boolean updateContinuityIfEmpty() {
+		return false;
+	}
+
+	@Override
+	public void setContinuity(String continuity) {
+	}
+
+	@Override
+	public String getContinuity() {
+		return "";
 	}
 
 }

@@ -1,12 +1,12 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.data.aircraft.DSCPhysicsConstants;
-import com.onewhohears.dscombat.data.aircraft.ImmutableVehicleData;
+import com.onewhohears.dscombat.data.aircraft.DSCPhyCons;
+import com.onewhohears.dscombat.data.aircraft.VehicleStats;
+import com.onewhohears.dscombat.data.aircraft.VehicleStats.BoatStats;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
@@ -17,37 +17,15 @@ import net.minecraft.world.phys.Vec3;
 
 public class EntityBoat extends EntityVehicle {
 	
-	private float propellerRot = 0, propellerRotOld = 0;
-	
 	protected double waterLevel;
 	
-	public EntityBoat(EntityType<? extends EntityBoat> entity, Level level, ImmutableVehicleData vehicleData) {
-		super(entity, level, vehicleData);
+	public EntityBoat(EntityType<? extends EntityBoat> entity, Level level, String defaultPreset) {
+		super(entity, level, defaultPreset);
 	}
 	
 	@Override
 	public AircraftType getAircraftType() {
 		return AircraftType.BOAT;
-	}
-	
-	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-	}
-	
-	@Override
-	public void readAdditionalSaveData(CompoundTag compound) {
-		super.readAdditionalSaveData(compound);
-	}
-
-	@Override
-	protected void addAdditionalSaveData(CompoundTag compound) {
-		super.addAdditionalSaveData(compound);
-	}
-	
-	@Override
-	public void controlDirection(Quaternion q) {
-		super.controlDirection(q);
 	}
 	
 	@Override
@@ -58,20 +36,10 @@ public class EntityBoat extends EntityVehicle {
 	}
 	
 	@Override
-	public void directionAir(Quaternion q) {
-		super.directionAir(q);
-	}
-	
-	@Override
 	public void directionWater(Quaternion q) {
 		if (!isOperational()) return;
 		flatten(q, 2f, 2f, true);
 		addMomentY(inputs.yaw * getYawTorque(), true);
-	}
-	
-	@Override
-	public void tick() {
-		super.tick();
 	}
 	
 	@Override
@@ -91,17 +59,16 @@ public class EntityBoat extends EntityVehicle {
 	}
 	
 	@Override
-	public void tickAir(Quaternion q) {
-		super.tickAir(q);
-	}
-	
-	@Override
 	public void tickWater(Quaternion q) {
 		super.tickWater(q);
 		if (!checkInWater()) return;
 		if (canBrake() && isBraking()) addFrictionForce(2000);
+		tickFloat();
+	}
+	
+	protected void tickFloat() {
 		Vec3 weightF = getWeightForce();
-		float F = getBbWidth()*getBbWidth()*DSCPhysicsConstants.FLOAT;
+		float F = getBbWidth()*getBbWidth()*DSCPhyCons.FLOAT;
 		float maxF = F*getBbHeight();
 		if (maxF < Math.abs(weightF.y)) {
 			forces = forces.add(0, maxF, 0);
@@ -220,18 +187,6 @@ public class EntityBoat extends EntityVehicle {
 	}
 	
 	@Override
-	public void clientTick() {
-		super.clientTick();
-		float th = getCurrentThrottle();
-		propellerRotOld = propellerRot;
-		propellerRot += th * vehicleData.spinRate;
-	}
-	
-	public float getPropellerRotation(float partialTicks) {
-		return Mth.lerp(partialTicks, propellerRotOld, propellerRot);
-	}
-	
-	@Override
 	public boolean canOpenMenu() {
 		return xzSpeed < 0.1 || isTestMode();
 	}
@@ -249,6 +204,11 @@ public class EntityBoat extends EntityVehicle {
 	@Override
 	public boolean canToggleLandingGear() {
 		return false;
+	}
+
+	@Override
+	protected VehicleStats createVehicleStats() {
+		return new BoatStats();
 	}
 
 }

@@ -15,7 +15,7 @@ import net.minecraft.network.FriendlyByteBuf;
  */
 public class VehicleInputManager {
 	
-	public boolean flare, shoot, openMenu;
+	public boolean flare, openMenu;
 	public boolean special, special2, bothRoll;
 	public float throttle, pitch, roll, yaw;
 	
@@ -33,23 +33,21 @@ public class VehicleInputManager {
 	
 	public void clientUpdateServerControls(EntityVehicle parent, 
 			float throttle, float pitch, float roll, float yaw,
-			boolean flare, boolean shoot, boolean openMenu, 
+			boolean flare, boolean openMenu, 
 			boolean special, boolean special2, boolean bothRoll,
-			int selectNextWeapon, boolean cycleRadarMode, boolean toggleGear,
+			boolean cycleRadarMode, boolean toggleGear,
 			boolean isDriverCameraLocked) {
 		this.throttle = throttle;
 		this.pitch = pitch;
 		this.roll = roll;
 		this.yaw = yaw;
 		this.flare = flare;
-		this.shoot = shoot;
 		this.openMenu = openMenu;
 		this.special = special;
 		this.special2 = special2;
 		this.bothRoll = bothRoll;
 		this.isDriverCameraLocked = isDriverCameraLocked;
 		parent.setDriverCameraLocked(isDriverCameraLocked);
-		parent.weaponSystem.selectNextWeapon(selectNextWeapon);
 		weaponIndex = parent.weaponSystem.getSelectedIndex();
 		if (cycleRadarMode) parent.cycleRadarMode();
 		radarModeOrdinal = parent.getRadarMode().ordinal();
@@ -62,7 +60,6 @@ public class VehicleInputManager {
 	public void updateInputsFromPacket(VehicleInputManager other, EntityVehicle parent) {
 		// raw inputs
 		this.flare = other.flare;
-		this.shoot = other.shoot;
 		this.openMenu = other.openMenu;
 		this.special = other.special;
 		this.special2 = other.special2;
@@ -81,8 +78,6 @@ public class VehicleInputManager {
 		parent.setCurrentThrottle(currentThrottle);
 		parent.weaponSystem.setSelected(weaponIndex);
 		parent.setDriverCameraLocked(isDriverCameraLocked);
-		if (!parent.level.isClientSide && shoot) 
-			parent.weaponSystem.shootSelected(parent.getControllingPassenger());
 	}
 	
 	public void reset() {
@@ -91,7 +86,6 @@ public class VehicleInputManager {
 		this.roll = 0;
 		this.yaw = 0;
 		this.flare = false;
-		this.shoot = false;
 		this.openMenu = false;
 		this.special = false;
 		this.special2 = false;
@@ -106,7 +100,6 @@ public class VehicleInputManager {
 		buffer.writeFloat(roll);
 		buffer.writeFloat(yaw);
 		buffer.writeBoolean(flare);
-		buffer.writeBoolean(shoot);
 		buffer.writeBoolean(openMenu);
 		buffer.writeBoolean(special);
 		buffer.writeBoolean(special2);
@@ -126,7 +119,6 @@ public class VehicleInputManager {
 		roll = buffer.readFloat();
 		yaw = buffer.readFloat();
 		flare = buffer.readBoolean();
-		shoot = buffer.readBoolean();
 		openMenu = buffer.readBoolean();
 		special = buffer.readBoolean();
 		special2 = buffer.readBoolean();

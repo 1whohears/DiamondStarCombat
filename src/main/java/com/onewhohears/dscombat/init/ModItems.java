@@ -5,6 +5,7 @@ import com.onewhohears.dscombat.data.aircraft.presets.AlexisPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.BoatPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.BroncoPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.CarPresets;
+import com.onewhohears.dscombat.data.aircraft.presets.EdenPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.FelixPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.HeliPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.JasonPresets;
@@ -15,7 +16,6 @@ import com.onewhohears.dscombat.data.aircraft.presets.TankPresets;
 import com.onewhohears.dscombat.data.parts.BuffData.BuffType;
 import com.onewhohears.dscombat.data.parts.EngineData.EngineType;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.data.parts.TurretData.RotBounds;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.item.ItemAircraft;
 import com.onewhohears.dscombat.item.ItemAmmo;
@@ -32,6 +32,7 @@ import com.onewhohears.dscombat.item.ItemRadarPart;
 import com.onewhohears.dscombat.item.ItemRepairTool;
 import com.onewhohears.dscombat.item.ItemSeat;
 import com.onewhohears.dscombat.item.ItemSpraycan;
+import com.onewhohears.dscombat.item.ItemStorageBox;
 import com.onewhohears.dscombat.item.ItemTurret;
 import com.onewhohears.dscombat.item.ItemWeaponPart;
 
@@ -86,10 +87,10 @@ public class ModItems {
 	// IDEA 8.1 Jupiter Missiles and Anadyr from blowback ost
 	// IDEA 8.2 disk 911?
 	public static final RegistryObject<Item> MISSILE_KNOWS_WHERE_DISC = ITEMS.register("the_missile_knows_disc", 
-		() -> new RecordItem(15, () -> ModSounds.MISSILE_KNOWS_WHERE.get(), 
+		() -> new RecordItem(15, () -> ModSounds.MISSILE_KNOWS_WHERE, 
 			(new Item.Properties()).stacksTo(1).tab(CreativeModeTab.TAB_MISC).rarity(Rarity.RARE), 1980));
 	public static final RegistryObject<Item> ORANGE_TESLA_DISC = ITEMS.register("orange_tesla_disc", 
-		() -> new RecordItem(14, () -> ModSounds.ORANGE_TESLA.get(), 
+		() -> new RecordItem(14, () -> ModSounds.ORANGE_TESLA, 
 			(new Item.Properties()).stacksTo(1).tab(CreativeModeTab.TAB_MISC).rarity(Rarity.RARE), 1080));
 	
 	// PARTS
@@ -165,6 +166,14 @@ public class ModItems {
 			() -> new ItemGimbal(15f, SlotType.EXTERNAL_ALL,
 					ModEntities.GIMBAL_CAMERA.getId().toString()));
 	
+	// STORAGE BOXES
+	public static final RegistryObject<Item> SMALL_STORAGE_BOX = ITEMS.register("small_storage_box", 
+			() -> new ItemStorageBox(1000f, SlotType.INTERNAL_ALL, 9));
+	public static final RegistryObject<Item> MED_STORAGE_BOX = ITEMS.register("medium_storage_box", 
+			() -> new ItemStorageBox(2000f, SlotType.INTERNAL_ALL, 18));
+	public static final RegistryObject<Item> LARGE_STORAGE_BOX = ITEMS.register("large_storage_box", 
+			() -> new ItemStorageBox(3000f, SlotType.INTERNAL_ALL, 27));
+	
 	// FUEL TANKS
 	public static final RegistryObject<Item> LIGHT_FUEL_TANK = ITEMS.register("light_fuel_tank", 
 			() -> new ItemFuelTank(500f, 0f, 50f, SlotType.INTERNAL_ALL));
@@ -187,6 +196,9 @@ public class ModItems {
 	public static final RegistryObject<Item> TURBOFAN_F39 = ITEMS.register("turbofan_f39", 
 			() -> new ItemEngine(EngineType.PUSH, 800f, 340f, 5.0f, 
 					0.007f, false, SlotType.INTERNAL_ENGINE_PUSH));
+	public static final RegistryObject<Item> KLIMOV_RD33 = ITEMS.register("klimov_rd33", 
+			() -> new ItemEngine(EngineType.PUSH, 600f, 225f, 6.5f, 
+					0.006f, false, SlotType.INTERNAL_ENGINE_PUSH));
 	public static final RegistryObject<Item> CFM56 = ITEMS.register("cfm56", 
 			() -> new ItemEngine(EngineType.PUSH, 2000f, 650f, 9.0f, 
 					0.017f, true, SlotType.EXTERNAL_ALL, 
@@ -245,44 +257,34 @@ public class ModItems {
 	// TURRENTS
 	public static final RegistryObject<Item> AA_TURRET = ITEMS.register("aa_turret", 
 			() -> new ItemTurret(1000f, SlotType.TURRET_LIGHT, 
-					ModEntities.AA_TURRET.getId().toString(), "15mm",
-					RotBounds.create(3.0f, 30f, 30f), 20));
+					ModEntities.AA_TURRET.getId().toString(), "15mm", 20));
 	public static final RegistryObject<Item> MINIGUN_TURRET = ITEMS.register("minigun_turret", 
 			() -> new ItemTurret(1500f, SlotType.TURRET_LIGHT, 
-					ModEntities.MINIGUN_TURRET.getId().toString(), "10mm",
-					RotBounds.create(2.5f,50f, 50f), 20));
+					ModEntities.MINIGUN_TURRET.getId().toString(), "10mm", 20));
 	public static final RegistryObject<Item> CIWS = ITEMS.register("ciws", 
 			() -> new ItemTurret(2500f, SlotType.TURRET_LIGHT, 
-					ModEntities.CIWS.getId().toString(), "20mm",
-					RotBounds.create(2.0f, 75f, 30f), 40));
+					ModEntities.CIWS.getId().toString(), "20mm", 40));
 	public static final RegistryObject<Item> MARK45_CANNON = ITEMS.register("mark45_cannon", 
 			() -> new ItemTurret(3000f, SlotType.TURRET_MED, 
-					ModEntities.MARK45_CANNON.getId().toString(), "127mm",
-					RotBounds.create(1.1f, 30f, 15f), 60));
+					ModEntities.MARK45_CANNON.getId().toString(), "127mm", 60));
 	public static final RegistryObject<Item> HEAVY_TANK_TURRET = ITEMS.register("heavy_tank_turret", 
 			() -> new ItemTurret(4000f, SlotType.TURRET_MED, 
-					ModEntities.HEAVY_TANK_TURRET.getId().toString(), "120mmhe",
-					RotBounds.create(1.0f, 30f, 30f), 60));
+					ModEntities.HEAVY_TANK_TURRET.getId().toString(), "120mmhe", 60));
 	public static final RegistryObject<Item> MARK7_CANNON = ITEMS.register("mark7_cannon", 
 			() -> new ItemTurret(4500f, SlotType.TURRET_HEAVY, 
-					ModEntities.MARK7_CANNON.getId().toString(), "406mmhe",
-					RotBounds.create(0.9f, 30f, 15f), 100));
+					ModEntities.MARK7_CANNON.getId().toString(), "406mmhe", 100));
 	public static final RegistryObject<Item> STEVE_UP_SMASH = ITEMS.register("steve_up_smash", 
 			() -> new ItemTurret(5000f, SlotType.TURRET_MED, 
-					ModEntities.STEVE_UP_SMASH.getId().toString(), "aim9p5",
-					RotBounds.create(1.8f, 25f, 25f), 20));
+					ModEntities.STEVE_UP_SMASH.getId().toString(), "aim9p5", 20));
 	public static final RegistryObject<Item> SAM_LAUNCHER = ITEMS.register("sam_launcher", 
 			() -> new ItemTurret(6000f, SlotType.TURRET_HEAVY, 
-					ModEntities.SAM_LAUNCHER.getId().toString(), "pac3",
-					RotBounds.create(1.3f, 25f, 25f), 30));
+					ModEntities.SAM_LAUNCHER.getId().toString(), "pac3", 30));
 	public static final RegistryObject<Item> TORPEDO_TUBES = ITEMS.register("torpedo_tubes", 
 			() -> new ItemTurret(5500f, SlotType.TURRET_MED, 
-					ModEntities.TORPEDO_TUBES.getId().toString(), "torpedo1",
-					RotBounds.create(1.6f, 5f, 5f), 30));
+					ModEntities.TORPEDO_TUBES.getId().toString(), "torpedo1", 30));
 	public static final RegistryObject<Item> MLS = ITEMS.register("mls", 
 			() -> new ItemTurret(6000f, SlotType.TURRET_HEAVY, 
-					ModEntities.MLS.getId().toString(), "rgm84",
-					RotBounds.create(1.9f, 20f, 20f), 30));
+					ModEntities.MLS.getId().toString(), "rgm84", 30));
 	
 	// FLARE DISPENSERS
 	public static final RegistryObject<Item> BASIC_FLARE_DISPENSER = ITEMS.register("basic_flare_dispenser", 
@@ -365,74 +367,79 @@ public class ModItems {
 	public static final RegistryObject<Item> AGM88G = ITEMS.register("agm88g", 
 			() -> new ItemAmmo(4, "agm88g")); 
 	
-	// FIXME 5 vehicle items not showing in creative search
 	// PLANES
 	public static final RegistryObject<Item> JAVI_PLANE = ITEMS.register("javi_plane", 
 			() -> new ItemAircraft(ModEntities.JAVI_PLANE.get(), 
-					JaviPresets.DEFAULT_JAVI_PLANE));
+					JaviPresets.DEFAULT_JAVI_PLANE.getId()));
 	public static final RegistryObject<Item> ALEXIS_PLANE = ITEMS.register("alexis_plane", 
 			() -> new ItemAircraft(ModEntities.ALEXIS_PLANE.get(), 
-					AlexisPresets.DEFAULT_ALEXIS_PLANE));
+					AlexisPresets.DEFAULT_ALEXIS_PLANE.getId()));
 	public static final RegistryObject<Item> WOODEN_PLANE = ITEMS.register("wooden_plane", 
 			() -> new ItemAircraft(ModEntities.WOODEN_PLANE.get(), 
-					PlanePresets.DEFAULT_WOODEN_PLANE));
+					PlanePresets.DEFAULT_WOODEN_PLANE.getId()));
 	public static final RegistryObject<Item> E3SENTRY_PLANE = ITEMS.register("e3sentry_plane", 
 			() -> new ItemAircraft(ModEntities.E3SENTRY_PLANE.get(), 
-					PlanePresets.DEFAULT_E3SENTRY_PLANE));
+					PlanePresets.DEFAULT_E3SENTRY_PLANE.getId()));
 	public static final RegistryObject<Item> BRONCO_PLANE = ITEMS.register("bronco_plane", 
 			() -> new ItemAircraft(ModEntities.BRONCO_PLANE.get(), 
-					BroncoPresets.DEFAULT_BRONCO_PLANE));
+					BroncoPresets.DEFAULT_BRONCO_PLANE.getId()));
 	public static final RegistryObject<Item> FELIX_PLANE = ITEMS.register("felix_plane", 
 			() -> new ItemAircraft(ModEntities.FELIX_PLANE.get(), 
-					FelixPresets.DEFAULT_FELIX_PLANE));
+					FelixPresets.DEFAULT_FELIX_PLANE.getId()));
 	public static final RegistryObject<Item> JASON_PLANE = ITEMS.register("jason_plane", 
 			() -> new ItemAircraft(ModEntities.JASON_PLANE.get(), 
-					JasonPresets.DEFAULT_JASON_PLANE));
+					JasonPresets.DEFAULT_JASON_PLANE.getId()));
+	public static final RegistryObject<Item> EDEN_PLANE = ITEMS.register("eden_plane", 
+			() -> new ItemAircraft(ModEntities.EDEN_PLANE.get(), 
+					EdenPresets.DEFAULT_EDEN_PLANE.getId()));
 	
 	// HELICOPTERS
 	public static final RegistryObject<Item> NOAH_CHOPPER = ITEMS.register("noah_chopper", 
 			() -> new ItemAircraft(ModEntities.NOAH_CHOPPER.get(), 
-					HeliPresets.DEFAULT_NOAH_CHOPPER));
+					HeliPresets.DEFAULT_NOAH_CHOPPER.getId()));
 	
 	// CARS
 	public static final RegistryObject<Item> ORANGE_TESLA = ITEMS.register("orange_tesla", 
 			() -> new ItemAircraft(ModEntities.ORANGE_TESLA.get(), 
-					CarPresets.DEFAULT_ORANGE_TESLA));
+					CarPresets.DEFAULT_ORANGE_TESLA.getId()));
 	public static final RegistryObject<Item> AXCEL_TRUCK = ITEMS.register("axcel_truck", 
 			() -> new ItemAircraft(ModEntities.AXCEL_TRUCK.get(), 
-					CarPresets.DEFAULT_AXCEL_TRUCK));
+					CarPresets.DEFAULT_AXCEL_TRUCK.getId()));
 	
 	// TANKS
 	public static final RegistryObject<Item> MRBUDGER_TANK = ITEMS.register("mrbudger_tank", 
 			() -> new ItemAircraft(ModEntities.MRBUDGER_TANK.get(), 
-					TankPresets.DEFAULT_MRBUDGER_TANK));
+					TankPresets.DEFAULT_MRBUDGER_TANK.getId()));
 	public static final RegistryObject<Item> SMALL_ROLLER = ITEMS.register("small_roller", 
 			() -> new ItemAircraft(ModEntities.SMALL_ROLLER.get(), 
-					TankPresets.DEFAULT_SMALL_ROLLER));
+					TankPresets.DEFAULT_SMALL_ROLLER.getId()));
 	
 	// BOATS
 	public static final RegistryObject<Item> NATHAN_BOAT = ITEMS.register("nathan_boat", 
 			() -> new ItemAircraft(ModEntities.NATHAN_BOAT.get(), 
-					BoatPresets.DEFAULT_NATHAN_BOAT));
+					BoatPresets.DEFAULT_NATHAN_BOAT.getId()));
 	public static final RegistryObject<Item> GRONK_BATTLESHIP = ITEMS.register("gronk_battleship", 
 			() -> new ItemAircraft(ModEntities.GRONK_BATTLESHIP.get(), 
-					BoatPresets.DEFAULT_GRONK_BATTLESHIP));
+					BoatPresets.DEFAULT_GRONK_BATTLESHIP.getId()));
 	public static final RegistryObject<Item> DESTROYER = ITEMS.register("destroyer", 
 			() -> new ItemAircraft(ModEntities.DESTROYER.get(), 
-					BoatPresets.DEFAULT_DESTROYER));
+					BoatPresets.DEFAULT_DESTROYER.getId()));
 	public static final RegistryObject<Item> CRUISER = ITEMS.register("cruiser", 
 			() -> new ItemAircraft(ModEntities.CRUISER.get(), 
-					BoatPresets.DEFAULT_CRUISER));
+					BoatPresets.DEFAULT_CRUISER.getId()));
 	public static final RegistryObject<Item> CORVETTE = ITEMS.register("corvette", 
 			() -> new ItemAircraft(ModEntities.CORVETTE.get(), 
-					BoatPresets.DEFAULT_CORVETTE));
+					BoatPresets.DEFAULT_CORVETTE.getId()));
 	public static final RegistryObject<Item> AIRCRAFT_CARRIER = ITEMS.register("aircraft_carrier", 
 			() -> new ItemAircraft(ModEntities.AIRCRAFT_CARRIER.get(), 
-					BoatPresets.DEFAULT_AIRCRAFT_CARRIER));
+					BoatPresets.DEFAULT_AIRCRAFT_CARRIER.getId()));
 	
 	// SUBMARINES
 	public static final RegistryObject<Item> ANDOLF_SUB = ITEMS.register("andolf_sub", 
 			() -> new ItemAircraft(ModEntities.ANDOLF_SUB.get(), 
-					SubPresets.DEFAULT_ANDOLF_SUB));
+					SubPresets.DEFAULT_ANDOLF_SUB.getId()));
+	public static final RegistryObject<Item> GOOGLE_SUB = ITEMS.register("google_sub", 
+			() -> new ItemAircraft(ModEntities.GOOGLE_SUB.get(), 
+					SubPresets.DEFAULT_GOOGLE_SUB.getId()));
 		
 }

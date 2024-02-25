@@ -1,10 +1,12 @@
 package com.onewhohears.dscombat.data.aircraft.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.client.model.obj.ObjRadarModel.MastType;
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
+import com.onewhohears.dscombat.init.ModSounds;
 
 public class BoatPresets {
 	
@@ -24,6 +26,11 @@ public class BoatPresets {
 			.setMaxTurnRates(0f, 0f, 3.5f)
 			.setTurnTorques(0f, 0f, 2f)
 			.setThrottleRate(0.05f, 0.10f)
+			.setBasicEngineSounds(ModSounds.BOAT_1, ModSounds.BOAT_1)
+			.setRotationalInertia(6, 10, 4)
+			.setCrashExplosionRadius(2)
+			.set3rdPersonCamDist(4)
+			.setCanNegativeThrottle(true)
 			.addIngredient("minecraft:iron_ingot", 10)
 			.addIngredient(ModItems.SEAT.getId(), 7)
 			.addIngredient(ModItems.PROPELLER.getId())
@@ -82,6 +89,12 @@ public class BoatPresets {
 			.setMaxTurnRates(0f, 0f, 1.0f)
 			.setTurnTorques(0f, 0f, 1f)
 			.setThrottleRate(0.05f, 0.10f)
+			.setBasicEngineSounds(ModSounds.BOAT_1, ModSounds.BOAT_1)
+			.setRotationalInertia(6, 10, 4)
+			.setCrashExplosionRadius(8)
+			.set3rdPersonCamDist(30)
+			.setCanNegativeThrottle(true)
+			.setLayerTextureNum(2)
 			.addIngredient(ModItems.LARGE_FUSELAGE.getId(), 4)
 			.addIngredient("minecraft:oak_planks", 64)
 			.addIngredient(ModItems.SEAT.getId(), 4)
@@ -112,6 +125,12 @@ public class BoatPresets {
 			.addEmptySlot("internal_8", SlotType.ADVANCED_INTERNAL)
 			.addEmptySlot("internal_9", SlotType.INTERNAL)
 			.addEmptySlot("internal_10", SlotType.INTERNAL)
+			.addRotableHitbox("plat0", 14, 4.02, 34, 0, 2, -0.5)
+			.addRotableHitbox("plat1", 9, 1.02, 30, 0, 4.5, -0.5)
+			.addRotableHitbox("plat2", 6, 1.02, 18, 0, 5.5, -0.5)
+			.addRotableHitbox("front", 8, 2.02, 8, 0, 3, 20.5)
+			.addRotableHitbox("back", 8, 2.02, 8, 0, 3, -21.5)
+			.setMastType(MastType.NORMAL)
 			.build();
 	
 	public static final AircraftPreset UNARMED_GRONK_BATTLESHIP = AircraftPreset.Builder
@@ -163,6 +182,11 @@ public class BoatPresets {
 			.setMaxTurnRates(0f, 0f, 1.5f)
 			.setTurnTorques(0f, 0f, 2f)
 			.setThrottleRate(0.05f, 0.10f)
+			.setBasicEngineSounds(ModSounds.BOAT_1, ModSounds.BOAT_1)
+			.setRotationalInertia(6, 10, 4)
+			.setCrashExplosionRadius(8)
+			.set3rdPersonCamDist(22)
+			.setCanNegativeThrottle(true)
 			.addIngredient(ModItems.LARGE_FUSELAGE.getId(), 3)
 			.addIngredient("minecraft:oak_planks", 48)
 			.addIngredient("minecraft:light_gray_dye", 9)
@@ -190,6 +214,8 @@ public class BoatPresets {
 			.addEmptySlot("internal_8", SlotType.ADVANCED_INTERNAL)
 			.addEmptySlot("internal_9", SlotType.INTERNAL)
 			.addEmptySlot("internal_10", SlotType.INTERNAL)
+			.addRotableHitbox("plat0", 10, 4.02, 27.6, 0, 2, 0)
+			.setMastType(MastType.NORMAL)
 			.build();
 	
 	public static final AircraftPreset UNARMED_DESTROYER = AircraftPreset.Builder
@@ -238,6 +264,11 @@ public class BoatPresets {
 			.setMaxTurnRates(0f, 0f, 1.2f)
 			.setTurnTorques(0f, 0f, 2f)
 			.setThrottleRate(0.05f, 0.10f)
+			.setBasicEngineSounds(ModSounds.BOAT_1, ModSounds.BOAT_1)
+			.setRotationalInertia(6, 10, 4)
+			.setCrashExplosionRadius(8)
+			.set3rdPersonCamDist(26)
+			.setCanNegativeThrottle(true)
 			.addIngredient(ModItems.LARGE_FUSELAGE.getId(), 3)
 			.addIngredient("minecraft:oak_planks", 64)
 			.addIngredient(ModItems.SEAT.getId(), 4)
@@ -267,6 +298,9 @@ public class BoatPresets {
 			.addEmptySlot("internal_8", SlotType.ADVANCED_INTERNAL)
 			.addEmptySlot("internal_9", SlotType.ADVANCED_INTERNAL)
 			.addEmptySlot("internal_10", SlotType.ADVANCED_INTERNAL)
+			.addRotableHitbox("plat0", 12, 4.02, 35.6f, 0, 2, -2)
+			.addRotableHitbox("plat1", 7, 1.02, 21, 0, 4.5, 0.8)
+			.setMastType(MastType.LARGE)
 			.build();
 	
 	public static final AircraftPreset UNARMED_CRUISER = AircraftPreset.Builder
@@ -318,6 +352,11 @@ public class BoatPresets {
 			.setMaxTurnRates(0f, 0f, 1.5f)
 			.setTurnTorques(0f, 0f, 2f)
 			.setThrottleRate(0.05f, 0.10f)
+			.setBasicEngineSounds(ModSounds.BOAT_1, ModSounds.BOAT_1)
+			.setRotationalInertia(6, 10, 4)
+			.setCrashExplosionRadius(7)
+			.set3rdPersonCamDist(13)
+			.setCanNegativeThrottle(true)
 			.addIngredient(ModItems.LARGE_FUSELAGE.getId(), 2)
 			.addIngredient("minecraft:oak_planks", 32)
 			.addIngredient(ModItems.SEAT.getId(), 4)
@@ -339,6 +378,8 @@ public class BoatPresets {
 			.addEmptySlot("internal_7", SlotType.ADVANCED_INTERNAL)
 			.addEmptySlot("internal_8", SlotType.ADVANCED_INTERNAL)
 			.addEmptySlot("internal_9", SlotType.ADVANCED_INTERNAL)
+			.addRotableHitbox("plat0", 7, 3.02, 16, 0, 1.5, -2)
+			.setMastType(MastType.THIN)
 			.build();
 	
 	public static final AircraftPreset UNARMED_CORVETTE = AircraftPreset.Builder
@@ -380,6 +421,11 @@ public class BoatPresets {
 			.setMaxTurnRates(0f, 0f, 0.6f)
 			.setTurnTorques(0f, 0f, 2f)
 			.setThrottleRate(0.05f, 0.10f)
+			.setBasicEngineSounds(ModSounds.BOAT_1, ModSounds.BOAT_1)
+			.setRotationalInertia(6, 10, 4)
+			.setCrashExplosionRadius(10)
+			.set3rdPersonCamDist(34)
+			.setCanNegativeThrottle(true)
 			.addIngredient(ModItems.LARGE_FUSELAGE.getId(), 6)
 			.addIngredient("minecraft:oak_planks", 64)
 			.addIngredient(ModItems.SEAT.getId(), 8)
@@ -409,6 +455,9 @@ public class BoatPresets {
 			.addEmptySlot("internal_8", SlotType.ADVANCED_INTERNAL)
 			.addEmptySlot("internal_9", SlotType.ADVANCED_INTERNAL)
 			.addEmptySlot("internal_10", SlotType.ADVANCED_INTERNAL)
+			.addRotableHitbox("runway", 16, 6.06, 50, 0, 3, 0)
+			.addRotableHitbox("side_plat", 25, 3.06, 24, 0, 4.5, 0)
+			.setMastType(MastType.LARGE)
 			.build();
 	
 	public static final AircraftPreset UNARMED_AIRCRAFT_CARRIER = AircraftPreset.Builder

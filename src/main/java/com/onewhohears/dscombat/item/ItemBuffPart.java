@@ -4,8 +4,7 @@ import com.onewhohears.dscombat.data.parts.BuffData;
 import com.onewhohears.dscombat.data.parts.BuffData.BuffType;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-
-import net.minecraftforge.registries.ForgeRegistries;
+import com.onewhohears.dscombat.util.UtilItem;
 
 public class ItemBuffPart extends ItemPart {
 
@@ -18,7 +17,7 @@ public class ItemBuffPart extends ItemPart {
 
 	@Override
 	public PartData getPartData() {
-		return new BuffData(type, ForgeRegistries.ITEMS.getKey(this), compatibleSlots, weight);
+		return new BuffData(type, UtilItem.getItemKey(this), compatibleSlots, weight);
 	}
 
 }

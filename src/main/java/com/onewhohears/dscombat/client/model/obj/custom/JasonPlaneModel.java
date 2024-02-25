@@ -19,7 +19,7 @@ public class JasonPlaneModel extends ObjAircraftModel<EntityPlane> {
 	@Override
 	protected Transforms getComponentTransforms(EntityPlane entity, float partialTicks) {
 		// blade
-		float bladerot = entity.getPropellerRotation(partialTicks);
+		float bladerot = entity.getMotorRotation(partialTicks, 10);
 		Matrix4f blade0_mat = UtilAngles.pivotPixelsRotZ(-0.0426f, 42.0581f, 82.8989f, bladerot);
 		// landing gear
 		float gearpos = entity.getLandingGearPos(partialTicks);

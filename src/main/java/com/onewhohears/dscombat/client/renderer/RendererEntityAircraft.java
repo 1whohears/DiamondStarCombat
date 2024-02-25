@@ -1,12 +1,9 @@
 package com.onewhohears.dscombat.client.renderer;
 
-import java.awt.Color;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.client.model.EntityControllableModel;
-import com.onewhohears.dscombat.data.aircraft.VehicleTextureManager.TextureLayer;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
@@ -59,25 +56,6 @@ public class RendererEntityAircraft<T extends EntityVehicle> extends EntityRende
 				OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
 		
 		poseStack.popPose();
-		
-		TextureLayer[] layers = entity.textureManager.getTextureLayers();
-		if (layers.length > 0) {
-			poseStack.pushPose();
-	        poseStack.mulPose(q);
-	        for (int i = 0; i < layers.length; ++i) {
-	        	if (!layers[i].canRender()) continue;
-	        	poseStack.pushPose();
-	        	float scale = 1.002f + 0.002f*i;
-	        	poseStack.scale(scale, scale, scale);
-	        	VertexConsumer layerconsumer = bufferSource.getBuffer(getLayerRenderType(layers[i].getTexture()));
-	        	Color color = layers[i].getColor();
-	        	model.renderToBuffer(entity, partialTicks, poseStack, layerconsumer, 
-	        			packedLight, OverlayTexture.NO_OVERLAY, 
-	        			(float)color.getRed()/255f, (float)color.getGreen()/255f, (float)color.getBlue()/255f, 1f);
-	        	poseStack.popPose();
-	        }
-	        poseStack.popPose();
-		}
         
         if (shouldDrawRotableHitboxes(entity)) drawRotableHitboxeOutlines(entity, partialTicks, poseStack, bufferSource);
         if (shouldRenderScreens(entity)) renderVehicleScreens(entity, poseStack, bufferSource, packedLight, partialTicks);
@@ -87,7 +65,7 @@ public class RendererEntityAircraft<T extends EntityVehicle> extends EntityRende
 	
 	@Override
 	public ResourceLocation getTextureLocation(T entity) {
-		return entity.textureManager.getBaseTexture();
+		return entity.textureManager.getDynamicTexture();
 	}
 	
 }

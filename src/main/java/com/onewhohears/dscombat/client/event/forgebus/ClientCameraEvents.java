@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.client.event.forgebus;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCursorPosCallbackI;
 
+import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
@@ -46,28 +47,30 @@ public class ClientCameraEvents {
 		}
 		if (!(player.getRootVehicle() instanceof EntityVehicle plane)) return;
 		float pt = (float)event.getPartialTick();
-		boolean isController = player.equals(plane.getControllingPassenger());
 		boolean detached = !m.options.getCameraType().isFirstPerson();
 		boolean mirrored = m.options.getCameraType().isMirrored();
 		float camYOffset = 0;
+		boolean isPilot = false, isCopilot = false;
+		if (player.getVehicle() instanceof EntitySeat seat) {
+			isPilot = seat.isPilotSeat();
+			isCopilot = seat.isCoPilotSeat();
+			if (DSCClientInputs.isGimbalMode()) camYOffset = seat.getCameraYOffset();
+		}
 		if ((prevGimbal != null && prevGimbal.isRemoved())
 				|| (!DSCClientInputs.isGimbalMode() && !m.getCameraEntity().equals(player))) {
 			m.setCameraEntity(player);
 			prevGimbal = null;
 		}
-		if (DSCClientInputs.isGimbalMode()) {
-			if (isController && plane.getGimbalForPilotCamera() != null) {
-				EntityGimbal gimbal = plane.getGimbalForPilotCamera();
-				if (!m.getCameraEntity().equals(gimbal)) m.setCameraEntity(gimbal);
-				gimbal.setXRot(player.getViewXRot(pt));
-				gimbal.setYRot(player.getViewYRot(pt));
-				prevGimbal = gimbal;
-				camYOffset = -0.2f;
-			} else if (player.getVehicle() instanceof EntitySeat seat) {
-				camYOffset = seat.getYOffset();
-			}
+		if (DSCClientInputs.isGimbalMode() && (isPilot || isCopilot || camYOffset == 0) 
+				&& plane.getGimbalForPilotCamera() != null) {
+			EntityGimbal gimbal = plane.getGimbalForPilotCamera();
+			if (!m.getCameraEntity().equals(gimbal)) m.setCameraEntity(gimbal);
+			gimbal.setXRot(player.getViewXRot(pt));
+			gimbal.setYRot(player.getViewYRot(pt));
+			prevGimbal = gimbal;
+			camYOffset = -0.2f;
 		} 
-		if (isController && DSCClientInputs.isCameraLockedForward()) {
+		if (isPilot && DSCClientInputs.isCameraLockedForward()) {
 			float xi = UtilAngles.lerpAngle(pt, plane.xRotO, plane.getXRot());
 			float yi = UtilAngles.lerpAngle180(pt, plane.yRotO, plane.getYRot());
 			player.setXRot(xi);
@@ -76,7 +79,7 @@ public class ClientCameraEvents {
 			player.yRotO = yi;
 			event.setPitch(xi);
 			event.setYaw(yi);
-		} else if (isController && DSCClientInputs.isCameraFreeRelative()) {
+		} else if (isPilot && DSCClientInputs.isCameraFreeRelative()) {
 			// TODO 4.1 making third person work in mouse mode (again, àla garry's mod WAC planes)
 			float ptDiff = ptDiff(pt, ptOld);
 			float planeXRotDiff = plane.getXRot()-plane.xRotO;
@@ -100,12 +103,17 @@ public class ClientCameraEvents {
 		float zi = UtilAngles.lerpAngle(pt, plane.zRotO, plane.zRot);
 		if (detached && mirrored) zi *= -1;
 		event.setRoll(zi);
-		double camDist = plane.vehicleData.cameraDistance;
-		if (detached && isController && camDist > 4) {
+		double camDist = plane.getVehicleStats().cameraDistance;
+		if (detached && isPilot && camDist > 4) {
 			double vehicleCamDist = Math.min(0, 4-getMaxDist(event.getCamera(), player, camDist));
 			event.getCamera().move(vehicleCamDist, 0, 0);
 		}
-		event.getCamera().setPosition(event.getCamera().getPosition().add(0, camYOffset, 0));
+		// TODO 4.4 allow player to lean left or right in first person to see behind more easily
+		if (camYOffset != 0) {
+			Quaternion q = UtilAngles.lerpQ(pt, plane.getPrevQ(), plane.getClientQ());
+			Vec3 yawAxis = UtilAngles.getYawAxis(q);
+			event.getCamera().setPosition(event.getCamera().getPosition().add(yawAxis.scale(camYOffset)));
+		}
 		ptOld = pt;
 	}
 	
@@ -142,14 +150,15 @@ public class ClientCameraEvents {
 		m.execute(() -> {
 			double xn = x, yn = y;
 			if (window != m.getWindow().getWindow()) return;
-			if (m.player != null && m.screen == null 
-					&& m.player.getRootVehicle() instanceof EntityVehicle craft
-					&& DSCClientInputs.isCameraFree()) {
+			if (DSCClientInputs.isCameraFree()
+					&& m.player != null && m.screen == null 
+					&& m.player.getRootVehicle() instanceof EntityVehicle craft) {
 				double r = Math.toRadians(craft.zRot);
 				double dx = x - m.mouseHandler.xpos();
 				double dy = y - m.mouseHandler.ypos();
-				xn = dx*Math.cos(r) - dy*Math.sin(r) + m.mouseHandler.xpos();
-				yn = dy*Math.cos(r) + dx*Math.sin(r) + m.mouseHandler.ypos();
+				double cosR = Math.cos(r), sinR = Math.sin(r);
+				xn = dx*cosR - dy*sinR + m.mouseHandler.xpos();
+				yn = dy*cosR + dx*sinR + m.mouseHandler.ypos();
 				GLFW.glfwSetCursorPos(window, xn, yn);
 			}
 			m.mouseHandler.onMove(window, xn, yn);

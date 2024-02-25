@@ -1,0 +1,39 @@
+{
+  "aircraft_type": 4,
+  "copyId": "google_sub_empty",
+  "displayName": "preset.dscombat.google_sub_unarmed",
+  "ingredients": [
+    {
+      "item": "dscombat:c12_engine",
+      "num": 2
+    },
+    {
+      "item": "dscombat:heavy_fuel_tank",
+      "num": 1
+    }
+  ],
+  "is_craftable": true,
+  "landing_gear": true,
+  "presetId": "google_sub_unarmed",
+  "slots": [
+    {
+      "data": {
+        "itemid": "dscombat:c12_engine"
+      },
+      "name": "internal_1"
+    },
+    {
+      "data": {
+        "itemid": "dscombat:c12_engine"
+      },
+      "name": "internal_2"
+    },
+    {
+      "data": {
+        "filled": true,
+        "itemid": "dscombat:heavy_fuel_tank"
+      },
+      "name": "internal_3"
+    }
+  ]
+}

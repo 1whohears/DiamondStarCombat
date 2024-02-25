@@ -1,6 +1,12 @@
 package com.onewhohears.dscombat.data;
 
+import org.slf4j.Logger;
+
 import com.google.gson.JsonObject;
+import com.mojang.logging.LogUtils;
+import com.onewhohears.dscombat.util.UtilGsonMerge;
+import com.onewhohears.dscombat.util.UtilGsonMerge.ConflictStrategy;
+import com.onewhohears.dscombat.util.UtilGsonMerge.JsonObjectExtensionConflictException;
 import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.network.chat.Component;
@@ -20,11 +26,15 @@ import net.minecraft.resources.ResourceLocation;
  */
 public abstract class JsonPreset {
 	
+	protected final Logger LOGGER = LogUtils.getLogger();
+	
 	private final ResourceLocation key;
 	private final JsonObject data;
 	private final String id;
 	private final String displayName;
 	private final int sort_factor;
+	private final String copyId;
+	private boolean hasBeenMerged = false;
 	
 	public JsonPreset(ResourceLocation key, JsonObject json) {
 		this.key = key;
@@ -32,6 +42,7 @@ public abstract class JsonPreset {
 		this.id = UtilParse.getStringSafe(json, "presetId", "");
 		this.displayName = UtilParse.getStringSafe(json, "displayName", "preset.dscombat."+id);
 		this.sort_factor = UtilParse.getIntSafe(json, "sort_factor", 0);
+		this.copyId = UtilParse.getStringSafe(json, "copyId", "");
 	}
 	
 	public ResourceLocation getKey() {
@@ -40,6 +51,10 @@ public abstract class JsonPreset {
 	
 	public JsonObject getJsonData() {
 		return data.deepCopy();
+	}
+	
+	protected JsonObject getJsonDataNotCopy() {
+		return data;
 	}
 	
 	public String getId() {
@@ -62,6 +77,29 @@ public abstract class JsonPreset {
 	
 	public int getSortFactor() {
 		return sort_factor;
+	}
+	
+	public boolean isCopy() {
+		return !copyId.isEmpty();
+	}
+	
+	public String getCopyId() {
+		return copyId;
+	}
+	
+	public boolean hasBeenMerged() {
+		return hasBeenMerged;
+	}
+	
+	public boolean mergeWithParent(JsonPreset parent) {
+		try {
+			UtilGsonMerge.extendJsonObject(data, ConflictStrategy.PREFER_FIRST_OBJ, parent.getJsonData());
+			hasBeenMerged = true;
+			return true;
+		} catch (JsonObjectExtensionConflictException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 	
 	public abstract <T extends JsonPreset> T copy();

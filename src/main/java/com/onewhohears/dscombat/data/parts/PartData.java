@@ -1,20 +1,24 @@
 package com.onewhohears.dscombat.data.parts;
 
-import java.util.NoSuchElementException;
+import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntityPart;
+import com.onewhohears.dscombat.util.UtilEntity;
+import com.onewhohears.dscombat.util.UtilItem;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public abstract class PartData {
+	
+	public static final int PARSE_VERSION = 2;
 	
 	public Vec3 relPos = Vec3.ZERO;
 	
@@ -22,6 +26,8 @@ public abstract class PartData {
 	private final ResourceLocation itemid;
 	private final float weight;
 	private EntityVehicle parent;
+	
+	protected String entityTypeKey;
 	
 	public static enum PartType {
 		SEAT,
@@ -35,7 +41,8 @@ public abstract class PartData {
 		EXTERNAL_ENGINE,
 		BUFF_DATA,
 		EXTERNAL_RADAR,
-		GIMBAL;
+		GIMBAL,
+		STORAGE_BOX;
 		
 		public boolean isSeat() {
 			return this == SEAT || this == TURRENT;
@@ -48,41 +55,24 @@ public abstract class PartData {
 		this.compatibleSlots = compatibleSlots;
 	}
 	
-	public PartData(CompoundTag tag) {
-		weight = tag.getFloat("weight");
-		itemid = new ResourceLocation(tag.getString("itemid"));
-		int[] cs = tag.getIntArray("compatibleSlots");
-		compatibleSlots = new SlotType[cs.length];
-		for (int i = 0; i < cs.length; ++i) compatibleSlots[i] = SlotType.values()[cs[i]];
+	public void read(CompoundTag tag) {
+		
 	}
 	
 	public CompoundTag write() {
 		CompoundTag tag = new CompoundTag();
-		tag.putInt("type", this.getType().ordinal());
-		tag.putFloat("weight", weight);
 		tag.putString("itemid", itemid.toString());
-		int[] cs = new int[compatibleSlots.length];
-		for (int i = 0; i < compatibleSlots.length; ++i) cs[i] = compatibleSlots[i].ordinal();
-		tag.putIntArray("compatibleSlots", cs);
+		tag.putBoolean("readnbt", true);
+		tag.putInt("parse_version", PARSE_VERSION);
 		return tag;
 	}
 	
-	public PartData(FriendlyByteBuf buffer) {
-		// type int is read in DataSerializers
-		weight = buffer.readFloat();
-		itemid = new ResourceLocation(buffer.readUtf());
-		int[] cs = buffer.readVarIntArray();
-		compatibleSlots = new SlotType[cs.length];
-		for (int i = 0; i < cs.length; ++i) compatibleSlots[i] = SlotType.values()[cs[i]];
+	public void read(FriendlyByteBuf buffer) {
+		// item id is read in data serializer
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
-		buffer.writeInt(this.getType().ordinal());
-		buffer.writeFloat(weight);
 		buffer.writeUtf(itemid.toString());
-		int[] cs = new int[compatibleSlots.length];
-		for (int i = 0; i < compatibleSlots.length; ++i) cs[i] = compatibleSlots[i].ordinal();
-		buffer.writeVarIntArray(cs);
 	}
 	
 	public abstract PartType getType();
@@ -105,6 +95,10 @@ public abstract class PartData {
 	
 	public boolean isGimbal() {
 		return getType() == PartType.GIMBAL;
+	}
+	
+	public boolean isStorageBox() {
+		return getType() == PartType.STORAGE_BOX;
 	}
 	
 	public boolean isRadio() {
@@ -136,7 +130,11 @@ public abstract class PartData {
 	}
 	
 	public void serverSetup(EntityVehicle craft, String slotId, Vec3 pos) {
-		
+		if (hasExternalEntity() && !isEntitySetup(slotId, craft)) {
+			EntityPart part = (EntityPart) getExernalEntityType().create(craft.level);
+			setUpPartEntity(part, craft, slotId, pos, getExternalEntityDefaultHealth());
+			craft.level.addFreshEntity(part);
+		}
 	}
 	
 	public void clientSetup(EntityVehicle craft, String slotId, Vec3 pos) {
@@ -152,7 +150,9 @@ public abstract class PartData {
 	public abstract boolean isSetup(String slotId, EntityVehicle craft);
 	
 	public void serverRemove(String slotId) {
-		
+		if (hasExternalEntity()) {
+			removeEntity(slotId);
+		}
 	}
 	
 	public void clientRemove(String slotId) {
@@ -189,12 +189,8 @@ public abstract class PartData {
 	public ItemStack getNewItemStack() {
 		//System.out.println("GETTING ITEM STACK "+itemid);
 		if (stack == null) {
-			try {
-				Item i = ForgeRegistries.ITEMS.getDelegate(itemid).get().get();
-				stack = new ItemStack(i);
-			} catch(NoSuchElementException e) {
-				stack = ItemStack.EMPTY;
-			}
+			Item i = UtilItem.getItem(itemid.toString());
+			stack = new ItemStack(i);
 		}
 		ItemStack s = stack.copy();
 		s.setTag(write());
@@ -213,6 +209,33 @@ public abstract class PartData {
 		for (EntityPart part : getParent().getPartEntities()) 
 			if (part.getSlotId().equals(slotId)) 
 				part.discard();
+	}
+	
+	public void setUpPartEntity(EntityPart part, EntityVehicle craft, String slotId, Vec3 pos, float health) {
+		part.setSlotId(slotId);
+		part.setRelativePos(pos);
+		part.setPos(craft.position());
+		part.setHealth(health);
+		part.startRiding(craft);
+	}
+	
+	public boolean hasExternalEntity() {
+		return entityTypeKey != null;
+	}
+	
+	@Nullable
+	public EntityType<?> getExernalEntityType() {
+		if (!hasExternalEntity()) return null;
+		return UtilEntity.getEntityType(entityTypeKey, getDefaultExternalEntity());
+	}
+	
+	@Nullable
+	public EntityType<?> getDefaultExternalEntity() {
+		return null;
+	}
+	
+	public float getExternalEntityDefaultHealth() {
+		return 100000;
 	}
 	
 }

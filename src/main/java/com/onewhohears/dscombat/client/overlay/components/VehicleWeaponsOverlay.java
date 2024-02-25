@@ -10,6 +10,8 @@ import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.client.overlay.WeaponTabComponent;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.parts.EntitySeat;
+import com.onewhohears.dscombat.entity.parts.EntityTurret;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -38,7 +40,16 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
 
     @Override
     protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
-        if (!(getPlayerRootVehicle() instanceof EntityVehicle vehicle)) return;
+        if (!(getPlayerVehicle() instanceof EntitySeat seat)) return;
+        double yPlacement = screenHeight - TAB_HEIGHT - 13;
+        int blitPosition = 1;
+        if (seat.isTurret()) {
+        	drawWeapon(poseStack, ((EntityTurret)seat).getWeaponData(), yPlacement, blitPosition);
+        	return;
+        }
+        if (!seat.canPassengerShootParentWeapon()) return;
+    	EntityVehicle vehicle = seat.getParentVehicle();
+    	if (vehicle == null) return;
 
         List<WeaponData> weapons = vehicle.weaponSystem.getWeapons();
         WeaponData selectedWeapon = vehicle.weaponSystem.getSelected();
@@ -52,19 +63,8 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
 
         if (this.weaponChangeCountdown <= 0) this.weaponChangeState = false;
 
-        double yPlacement = screenHeight - TAB_HEIGHT - 13;
-        int blitPosition = 1;
-
         if (!this.weaponChangeState) {
-            WeaponTabComponent.drawWeaponName(poseStack, selectedWeapon.getDisplayNameComponent(), 13, yPlacement, blitPosition - 2);
-            WeaponTabComponent.drawTab(poseStack, 13, yPlacement, blitPosition, 0, false);
-            WeaponTabComponent.drawWeapon(poseStack, selectedWeapon, 13, yPlacement, blitPosition + 1, 0, false, false, false);
-
-            poseStack.pushPose();
-            poseStack.translate(0, 0, blitPosition + 2);
-            if (!selectedWeapon.isNoWeapon()) drawString(poseStack, getFont(), selectedWeapon.getCurrentAmmo() + "/" + selectedWeapon.getMaxAmmo(), 16, (int) (yPlacement + 14), 0xe6e600);
-            drawString(poseStack, getFont(), selectedWeapon.getWeaponTypeCode(), 16, (int) yPlacement + 4, 0xe6e600);
-            poseStack.popPose();
+        	drawWeapon(poseStack, selectedWeapon, yPlacement, blitPosition);
         } else {
             int weaponTabsToRender = Math.min(weapons.size(), 5);
 
@@ -103,5 +103,18 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
 
         // no inspection DataFlowIssue (the context in which this is called necessarily has a LocalPlayer existing on client)
         getPlayer().playSound(SoundEvents.UI_BUTTON_CLICK);
+    }
+    
+    private static void drawWeapon(PoseStack poseStack, WeaponData selectedWeapon, double yPlacement, int blitPosition) {
+    	if (selectedWeapon == null) return;
+    	WeaponTabComponent.drawWeaponName(poseStack, selectedWeapon.getDisplayNameComponent(), 13, yPlacement, blitPosition - 2);
+        WeaponTabComponent.drawTab(poseStack, 13, yPlacement, blitPosition, 0, false);
+        WeaponTabComponent.drawWeapon(poseStack, selectedWeapon, 13, yPlacement, blitPosition + 1, 0, false, false, false);
+
+        poseStack.pushPose();
+        poseStack.translate(0, 0, blitPosition + 2);
+        if (!selectedWeapon.isNoWeapon()) drawString(poseStack, getFont(), selectedWeapon.getCurrentAmmo() + "/" + selectedWeapon.getMaxAmmo(), 16, (int) (yPlacement + 14), 0xe6e600);
+        drawString(poseStack, getFont(), selectedWeapon.getWeaponTypeCode(), 16, (int) yPlacement + 4, 0xe6e600);
+        poseStack.popPose();
     }
 }

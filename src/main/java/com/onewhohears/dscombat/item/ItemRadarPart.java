@@ -4,8 +4,7 @@ import com.onewhohears.dscombat.data.parts.ExternalRadarPartData;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.data.parts.RadarPartData;
-
-import net.minecraftforge.registries.ForgeRegistries;
+import com.onewhohears.dscombat.util.UtilItem;
 
 public class ItemRadarPart extends ItemPart {
 	
@@ -29,8 +28,8 @@ public class ItemRadarPart extends ItemPart {
 
 	@Override
 	public PartData getPartData() {
-		if (external) return new ExternalRadarPartData(weight, preset, ForgeRegistries.ITEMS.getKey(this), compatibleSlots, entityTypeKey);
-		return new RadarPartData(weight, preset, ForgeRegistries.ITEMS.getKey(this), compatibleSlots);
+		if (external) return new ExternalRadarPartData(weight, preset, UtilItem.getItemKey(this), compatibleSlots, entityTypeKey);
+		return new RadarPartData(weight, preset, UtilItem.getItemKey(this), compatibleSlots);
 	}
 
 }

@@ -14,18 +14,16 @@ import net.minecraft.world.phys.AABB;
 
 public class AntiRadarMissile extends EntityMissile {
 	
-	/**
-	 * only set on server side
-	 */
-	protected double scan_range;
+	protected AntiRadarMissileData antiRadMisData;
 	
-	public AntiRadarMissile(EntityType<? extends AntiRadarMissile> type, Level level) {
-		super(type, level);
+	public AntiRadarMissile(EntityType<? extends AntiRadarMissile> type, Level level, String defaultWeaponId) {
+		super(type, level, defaultWeaponId);
 	}
 	
-	public AntiRadarMissile(Level level, Entity owner, AntiRadarMissileData data) {
-		super(level, owner, data);
-		scan_range = data.getScanRange();
+	@Override
+	protected void castWeaponData() {
+		super.castWeaponData();
+		antiRadMisData = (AntiRadarMissileData)weaponData;
 	}
 	
 	@Override
@@ -45,15 +43,17 @@ public class AntiRadarMissile extends EntityMissile {
 		// IDEA 7 make anti radar missile target entity type configurable so entities other mod entities can be targeted
 		targets.clear();
 		// planes
-		List<EntityVehicle> planes = level.getEntitiesOfClass(
+		List<EntityVehicle> vehicles = level.getEntitiesOfClass(
 				EntityVehicle.class, getARBoundingBox());
-		for (int i = 0; i < planes.size(); ++i) {
-			if (!planes.get(i).radarSystem.hasRadar()) continue;
-			if (!planes.get(i).radarSystem.canServerTick()) continue;
-			if (!basicCheck(planes.get(i))) continue;
-			float distSqr = (float)distanceToSqr(planes.get(i));
-			targets.add(new ARTarget(planes.get(i), 
-				(float)planes.get(i).radarSystem.getMaxAirRange() / distSqr));
+		for (int i = 0; i < vehicles.size(); ++i) {
+			EntityVehicle vehicle = vehicles.get(i);
+			if (!vehicle.radarSystem.hasRadar()) continue;
+			if (vehicle.getRadarMode().isOff()) continue;
+			if (!vehicle.radarSystem.canServerTick()) continue;
+			if (!basicCheck(vehicle)) continue;
+			float distSqr = (float)distanceToSqr(vehicle);
+			targets.add(new ARTarget(vehicle, 
+				(float)vehicle.radarSystem.getMaxAirRange() / distSqr));
 		}
 		// pick target
 		if (targets.size() == 0) {
@@ -79,7 +79,7 @@ public class AntiRadarMissile extends EntityMissile {
 			//System.out.println("is allied");
 			return false;
 		}
-		if (!checkTargetRange(ping, scan_range)) {
+		if (!checkTargetRange(ping, antiRadMisData.getScanRange())) {
 			//System.out.println("not in cone");
 			return false;
 		}
@@ -95,7 +95,7 @@ public class AntiRadarMissile extends EntityMissile {
 		double x = getX();
 		double y = getY();
 		double z = getZ();
-		double w = scan_range;
+		double w = antiRadMisData.getScanRange();
 		return new AABB(x+w, y+w, z+w, x-w, y-w, z-w);
 	}
 	

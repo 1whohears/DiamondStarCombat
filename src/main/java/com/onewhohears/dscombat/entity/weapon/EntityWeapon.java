@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponImpact;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.UtilEntity;
@@ -12,6 +13,7 @@ import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -30,31 +32,26 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Team;
+import net.minecraftforge.entity.IEntityAdditionalSpawnData;
+import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
 
-public abstract class EntityWeapon extends Projectile {
+public abstract class EntityWeapon extends Projectile implements IEntityAdditionalSpawnData{
 	
 	public static final EntityDataAccessor<Integer> OWNER_ID = SynchedEntityData.defineId(EntityWeapon.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> AGE = SynchedEntityData.defineId(EntityWeapon.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Boolean> TEST_MODE = SynchedEntityData.defineId(EntityWeapon.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Vec3> SHOOT_POS = SynchedEntityData.defineId(EntityWeapon.class, DataSerializers.VEC3);
 	
-	/**
-	 * only set on server side
-	 */
-	protected int maxAge;
+	public String weaponId;
+	protected WeaponData weaponData;
 	
-	public EntityWeapon(EntityType<? extends EntityWeapon> type, Level level) {
+	public EntityWeapon(EntityType<? extends EntityWeapon> type, Level level, String defaultWeaponId) {
 		super(type, level);
-	}
-	
-	@SuppressWarnings("unchecked")
-	public EntityWeapon(Level level, Entity owner, WeaponData data) {
-		this((EntityType<? extends EntityWeapon>) data.getEntityType(), level);
-		this.setOwner(owner);
-		maxAge = data.getMaxAge();
+		this.weaponId = defaultWeaponId;
+		updateWeaponData();
 	}
 
 	@Override
@@ -76,11 +73,11 @@ public abstract class EntityWeapon extends Projectile {
 	
 	@Override
 	protected void readAdditionalSaveData(CompoundTag compound) {
-		//System.out.println("bullet reloaded");
-		//this.discard();
 		super.readAdditionalSaveData(compound);
+		String temp = compound.getString("weapon");
+		if (!temp.isEmpty()) weaponId = temp;
+		if (didWeaponIdChange()) updateWeaponData();
 		tickCount = compound.getInt("tickCount");
-		maxAge = compound.getInt("maxAge");
 		if (getOwner() != null) setOwnerId(getOwner().getId());
 		else setOwnerId(-1);
 		setTestMode(compound.getBoolean("test_mode"));
@@ -89,23 +86,51 @@ public abstract class EntityWeapon extends Projectile {
 
 	@Override
 	protected void addAdditionalSaveData(CompoundTag compound) {
-		//super.addAdditionalSaveData(compound);
-		//System.out.println("weapon got additional save data");
-		//this.discard();
 		super.addAdditionalSaveData(compound);
+		compound.putString("weapon", weaponId);
 		compound.putInt("tickCount", tickCount);
-		compound.putInt("maxAge", maxAge);
 		compound.putBoolean("test_mode", isTestMode());
 		UtilParse.writeVec3(compound, getShootPos(), "shoot_pos");
 	}
 	
+	@Override
+	public void writeSpawnData(FriendlyByteBuf buffer) {
+		buffer.writeUtf(weaponId);
+	}
+
+	@Override
+	public void readSpawnData(FriendlyByteBuf buffer) {
+		weaponId = buffer.readUtf();
+		if (didWeaponIdChange()) updateWeaponData();
+	}
+	
+	public void setWeaponData(WeaponData data) {
+		weaponId = data.getId();
+		weaponData = data;
+		castWeaponData();
+	}
+	
+	protected boolean didWeaponIdChange() {
+		return weaponData != null && !weaponData.getId().equals(weaponId);
+	}
+	
+	protected abstract void castWeaponData();
+	
+	protected void updateWeaponData() {
+		weaponData = WeaponPresets.get().getPreset(weaponId);
+		castWeaponData();
+	}
+	
 	public void init() {
-		
 	}
 	
 	@Override
 	public void tick() {
 		//System.out.println(this+" "+tickCount);
+		if (weaponData == null) {
+			discard();
+			return;
+		}
 		if (isTestMode()) return;
 		if (firstTick) init();
 		if (!level.isClientSide && firstTick) setShootPos(position());
@@ -120,7 +145,7 @@ public abstract class EntityWeapon extends Projectile {
 	protected void tickAge() {
 		if (!level.isClientSide) {
 			setAge(tickCount);
-			if (tickCount > maxAge) kill();
+			if (tickCount > getMaxAge()) kill();
 		}
 	}
 	
@@ -223,6 +248,7 @@ public abstract class EntityWeapon extends Projectile {
 	}
 	
 	public int getAge() {
+		if (!level.isClientSide) return tickCount;
 		return entityData.get(AGE);
 	}
 	
@@ -282,6 +308,9 @@ public abstract class EntityWeapon extends Projectile {
 		if (entity == null) return false;
     	Entity o = getOwner();
     	if (entity.equals(o)) return true;
+    	if (entity instanceof PartEntity<?> p) {
+    		return isAlliedTo(p.getParent());
+    	}
     	if (entity instanceof Projectile p) {
     		Entity po = p.getOwner();
     		if (po != null && po.equals(o)) return true;
@@ -329,7 +358,7 @@ public abstract class EntityWeapon extends Projectile {
 	}
 	
 	public int getMaxAge() {
-		return maxAge;
+		return weaponData.getMaxAge();
 	}
 	
 	public boolean isTestMode() {

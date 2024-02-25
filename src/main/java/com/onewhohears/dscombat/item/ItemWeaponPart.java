@@ -10,6 +10,7 @@ import com.onewhohears.dscombat.data.parts.WeaponRackData;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.init.ModItems;
+import com.onewhohears.dscombat.util.UtilItem;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -21,7 +22,6 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class ItemWeaponPart extends ItemPart {
 	
@@ -65,7 +65,7 @@ public class ItemWeaponPart extends ItemPart {
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
 		if (group.getId() == ModItems.WEAPONS.getId()) {
-			ResourceLocation itemid = ForgeRegistries.ITEMS.getKey(this);
+			ResourceLocation itemid = UtilItem.getItemKey(this);
 			List<String> list = WeaponPresets.get().getCompatibleWeapons(itemid);
 			for (int i = 0; i < list.size(); ++i) addWeaponRack(list.get(i), items);
 		}
@@ -84,7 +84,7 @@ public class ItemWeaponPart extends ItemPart {
 	
 	@Override
 	public PartData getFilledPartData(String param) {
-		ResourceLocation itemid = ForgeRegistries.ITEMS.getKey(this);
+		ResourceLocation itemid = UtilItem.getItemKey(this);
 		List<String> list = WeaponPresets.get().getCompatibleWeapons(itemid);
 		String[] compatible = list.toArray(new String[list.size()]);
 		return new WeaponRackData(weight, param, compatible, itemid, compatibleSlots, launchPitch);

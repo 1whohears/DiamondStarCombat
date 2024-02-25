@@ -1,11 +1,10 @@
 package com.onewhohears.dscombat.entity.weapon;
 
-import com.onewhohears.dscombat.data.aircraft.DSCPhysicsConstants;
+import com.onewhohears.dscombat.data.aircraft.DSCPhyCons;
 import com.onewhohears.dscombat.data.weapon.TorpedoData;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource;
 
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.ClipContext.Fluid;
@@ -14,12 +13,16 @@ import net.minecraft.world.phys.Vec3;
 
 public class TorpedoMissile extends TrackEntityMissile {
 	
-	public TorpedoMissile(EntityType<? extends TorpedoMissile> type, Level level) {
-		super(type, level);
+	protected TorpedoData torpedoData;
+	
+	public TorpedoMissile(EntityType<? extends TorpedoMissile> type, Level level, String defaultWeaponId) {
+		super(type, level, defaultWeaponId);
 	}
 	
-	public TorpedoMissile(Level level, Entity owner, TorpedoData data) {
-		super(level, owner, data);
+	@Override
+	protected void castWeaponData() {
+		super.castWeaponData();
+		torpedoData = (TorpedoData)weaponData;
 	}
 	
 	@Override
@@ -27,7 +30,7 @@ public class TorpedoMissile extends TrackEntityMissile {
 		if (isInWater()) super.tickSetMove();
 		else {
 			Vec3 cm = getDeltaMovement();
-			cm = cm.add(0, -DSCPhysicsConstants.GRAVITY, 0);
+			cm = cm.add(0, -DSCPhyCons.GRAVITY, 0);
 			setDeltaMovement(cm);
 		}
 	}

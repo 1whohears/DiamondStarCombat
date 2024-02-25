@@ -6,6 +6,7 @@ import com.onewhohears.dscombat.data.aircraft.presets.AlexisPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.BoatPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.BroncoPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.CarPresets;
+import com.onewhohears.dscombat.data.aircraft.presets.EdenPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.FelixPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.HeliPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.JasonPresets;
@@ -94,10 +95,19 @@ public class AircraftPresetGenerator extends JsonPresetGenerator<AircraftPreset>
 		addPresetToGenerate(FelixPresets.EMPTY_FELIX_PLANE);
 		addPresetToGenerate(FelixPresets.UNARMED_FELIX_PLANE);
 		addPresetToGenerate(FelixPresets.DEFAULT_FELIX_PLANE);
+		addPresetToGenerate(FelixPresets.AIR_SUPPORT_FELIX_PLANE);
 		
 		addPresetToGenerate(JasonPresets.EMPTY_JASON_PLANE);
 		addPresetToGenerate(JasonPresets.UNARMED_JASON_PLANE);
 		addPresetToGenerate(JasonPresets.DEFAULT_JASON_PLANE);
+		
+		addPresetToGenerate(EdenPresets.EMPTY_EDEN_PLANE);
+		addPresetToGenerate(EdenPresets.UNARMED_EDEN_PLANE);
+		addPresetToGenerate(EdenPresets.DEFAULT_EDEN_PLANE);
+		
+		addPresetToGenerate(SubPresets.EMPTY_GOOGLE_SUB);
+		addPresetToGenerate(SubPresets.UNARMED_GOOGLE_SUB);
+		addPresetToGenerate(SubPresets.DEFAULT_GOOGLE_SUB);
 	}
     
     public AircraftPresetGenerator(DataGenerator output) {

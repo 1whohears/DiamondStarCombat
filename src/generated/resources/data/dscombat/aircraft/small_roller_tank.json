@@ -1,31 +1,8 @@
 {
   "aircraft_type": 2,
-  "base_armor": 0.0,
-  "cross_sec_area": 1.2,
+  "copyId": "small_roller_unarmed",
   "displayName": "preset.dscombat.small_roller_tank",
-  "health": 30.0,
-  "idleheat": 1.0,
   "ingredients": [
-    {
-      "item": "dscombat:seat",
-      "num": 1
-    },
-    {
-      "item": "minecraft:iron_ingot",
-      "num": 5
-    },
-    {
-      "item": "dscombat:tank_track",
-      "num": 2
-    },
-    {
-      "item": "dscombat:c6_engine",
-      "num": 1
-    },
-    {
-      "item": "dscombat:light_fuel_tank",
-      "num": 1
-    },
     {
       "item": "dscombat:heavy_tank_turret",
       "num": 1
@@ -36,58 +13,15 @@
     }
   ],
   "is_craftable": false,
-  "item": "dscombat:small_roller",
   "landing_gear": true,
-  "mass": 600.0,
-  "max_health": 30.0,
-  "max_speed": 0.2,
-  "maxpitch": 0.0,
-  "maxroll": 0.0,
-  "maxyaw": 3.0,
-  "pitchtorque": 0.0,
   "presetId": "small_roller_tank",
-  "rolltorque": 0.0,
   "slots": [
     {
       "data": {
         "filled": true,
         "itemid": "dscombat:heavy_tank_turret"
       },
-      "name": "pilot_seat",
-      "slot_posx": 0.0,
-      "slot_posy": 0.6,
-      "slot_posz": 0.0,
-      "slot_type": "med_turret",
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:c6_engine"
-      },
-      "name": "internal_1",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "spin_engine",
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "filled": true,
-        "itemid": "dscombat:light_fuel_tank"
-      },
-      "name": "internal_2",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "internal",
-      "zRot": 0.0
+      "name": "pilot_seat"
     }
-  ],
-  "sort_factor": 1,
-  "stealth": 1.0,
-  "throttledown": 0.08,
-  "throttleup": 0.08,
-  "turn_radius": 0.0,
-  "yawtorque": 10.0
+  ]
 }

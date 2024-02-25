@@ -58,8 +58,11 @@ public class PosMissileData extends MissileData {
 		PositionMissile missile = (PositionMissile) super.getShootEntity(params);
 		if (missile == null) return null;
 		Entity looker = params.owner;
-		if (params.vehicle != null && params.vehicle.getGimbalForPilotCamera() != null) 
+		if (params.vehicle != null && params.vehicle.getGimbalForPilotCamera() != null) {
 			looker = params.vehicle.getGimbalForPilotCamera();
+			looker.setXRot(params.owner.getXRot());
+			looker.setYRot(params.owner.getYRot());
+		}
 		missile.targetPos = UtilEntity.getLookingAtBlockPos(looker, 300);
 		return missile;
 	}

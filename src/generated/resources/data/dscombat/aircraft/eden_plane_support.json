@@ -1,19 +1,23 @@
 {
   "aircraft_type": 0,
   "copyId": "eden_plane_unarmed",
-  "displayName": "preset.dscombat.eden_plane",
+  "displayName": "preset.dscombat.eden_plane_support",
   "ingredients": [
     {
-      "item": "dscombat:ar2k",
+      "item": "dscombat:ar1k",
+      "num": 1
+    },
+    {
+      "item": "dscombat:gr400",
       "num": 1
     },
     {
       "item": "dscombat:heavy_missile_rack",
-      "num": 2
+      "num": 4
     },
     {
       "item": "dscombat:light_missile_rack",
-      "num": 2
+      "num": 1
     },
     {
       "item": "dscombat:xm12",
@@ -25,7 +29,7 @@
     },
     {
       "item": "minecraft:copper_ingot",
-      "num": 63
+      "num": 64
     },
     {
       "item": "minecraft:iron_ingot",
@@ -42,53 +46,73 @@
   ],
   "is_craftable": false,
   "landing_gear": true,
-  "presetId": "eden_plane",
+  "presetId": "eden_plane_support",
   "slots": [
     {
       "data": {
         "filled": true,
         "itemid": "dscombat:heavy_missile_rack",
-        "param": "aim120b"
+        "param": "agm84e"
       },
       "name": "left_wing_1"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:light_missile_rack",
-        "param": "aim9x"
+        "itemid": "dscombat:heavy_missile_rack",
+        "param": "agm65l"
       },
       "name": "left_wing_2"
     },
     {
       "data": {
+        "itemid": "dscombat:gimbal_camera"
+      },
+      "name": "left_wing_3"
+    },
+    {
+      "data": {
         "filled": true,
         "itemid": "dscombat:heavy_missile_rack",
-        "param": "aim120c"
+        "param": "agm88g"
       },
       "name": "right_wing_1"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:light_missile_rack",
-        "param": "aim9x"
+        "itemid": "dscombat:heavy_missile_rack",
+        "param": "agm65g"
       },
       "name": "right_wing_2"
     },
     {
       "data": {
         "filled": true,
+        "itemid": "dscombat:heavy_missile_rack",
+        "param": "aim9x"
+      },
+      "name": "right_wing_3"
+    },
+    {
+      "data": {
+        "filled": true,
         "itemid": "dscombat:xm12",
-        "param": "20mm"
+        "param": "20mmhe"
       },
       "name": "frame_1"
     },
     {
       "data": {
-        "itemid": "dscombat:ar2k"
+        "itemid": "dscombat:ar1k"
       },
       "name": "internal_5"
+    },
+    {
+      "data": {
+        "itemid": "dscombat:gr400"
+      },
+      "name": "internal_6"
     },
     {
       "data": {
@@ -99,6 +123,6 @@
     }
   ],
   "textures": {
-    "baseTexture": 1
+    "baseTexture": 2
   }
 }

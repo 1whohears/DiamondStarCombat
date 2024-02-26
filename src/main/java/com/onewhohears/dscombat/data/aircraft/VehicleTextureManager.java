@@ -24,6 +24,7 @@ public class VehicleTextureManager {
 	private int baseTextureIndex = 0;
 	private boolean changed;
 	private ResourceLocation dynamicTexture;
+	private ResourceLocation screenMap;
 	
 	public VehicleTextureManager(EntityVehicle parent) {
 		this.parent = parent;
@@ -41,6 +42,7 @@ public class VehicleTextureManager {
 		for (int i = 0; i < textureLayers.length; ++i) {
 			textureLayers[i] = new TextureLayer(modId+":textures/entity/vehicle/"+entityId+"/layer"+i+".png");
 		}
+		screenMap = new ResourceLocation(modId+":textures/entity/vehicle/"+entityId+"/screens.png");
 	}
 	/**
 	 * CLIENT ONLY
@@ -55,6 +57,10 @@ public class VehicleTextureManager {
 	@Nullable
 	public ResourceLocation getDynamicTexture() {
 		return dynamicTexture;
+	}
+	
+	public ResourceLocation getScreenMap() {
+		return screenMap;
 	}
 	
 	public void onTick() {

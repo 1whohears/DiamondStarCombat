@@ -136,12 +136,16 @@ public class ObjEntityModels implements ResourceManagerReloadListener {
 	public static class ModelOverrides {
 		public float scale = 1;
 		public float[] scale3d = {1f, 1f, 1f};
+		public double[] translate = {0, 0, 0};
 		private boolean none = false;
 		public ModelOverrides(JsonObject json) {
 			if (json.has("scale")) scale = json.get("scale").getAsFloat();
 			if (json.has("scalex")) scale3d[0] = json.get("scalex").getAsFloat();
 			if (json.has("scaley")) scale3d[1] = json.get("scaley").getAsFloat(); 
 			if (json.has("scalez")) scale3d[2] = json.get("scalez").getAsFloat();
+			if (json.has("translatex")) translate[0] = json.get("translatex").getAsDouble();
+			if (json.has("translatey")) translate[1] = json.get("translatey").getAsDouble(); 
+			if (json.has("translatez")) translate[2] = json.get("translatez").getAsDouble();
 		}
 		private ModelOverrides() {
 			none = true;
@@ -151,6 +155,7 @@ public class ObjEntityModels implements ResourceManagerReloadListener {
 		}
 		public void apply(PoseStack poseStack) {
 			if (isNone()) return;
+			poseStack.translate(translate[0], translate[1], translate[2]);
 			poseStack.scale(scale * scale3d[0], scale * scale3d[1], scale * scale3d[2]);
 		}
 	}

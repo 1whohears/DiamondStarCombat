@@ -23,20 +23,23 @@ public class ObjWeaponRackModel<T extends EntityWeaponRack> extends ObjPartModel
 	@Override
 	public void render(T entity, PoseStack poseStack, MultiBufferSource bufferSource, int lightmap, float partialTicks) {
 		super.render(entity, poseStack, bufferSource, lightmap, partialTicks);
-		String weaponModelId = entity.getWeaponModelId();
-		getWeaponModelOverride(weaponModelId).apply(poseStack);
-		CompositeRenderable model = getWeaponModel(weaponModelId);
 		int ammo = entity.getAmmoNum();
+		String weaponModelId = entity.getWeaponModelId();
+		CompositeRenderable model = getWeaponModel(weaponModelId);
+		poseStack.pushPose();
+		getWeaponModelOverride(weaponModelId).apply(poseStack);
 		// FIXME 9 missile models are not centered so all the missiles are positioned wacko
 		for (int i = 0; i < ammo && i < maxAmmoNum; ++i) {
-			float x = i % 2 == 0 ? -dX : dY;
+			float x = i % 2 == 0 ? dX : -dY;
 			float y = (i/2 + 1) * dY;
+			if (i+1 == maxAmmoNum && maxAmmoNum%2 == 1) x = 0;
 			renderWeapon(entity, poseStack, bufferSource, lightmap, partialTicks, model, x, y, 0);
 		}
+		poseStack.popPose();
 	}
 	
 	protected void renderWeapon(T entity, PoseStack poseStack, MultiBufferSource bufferSource, int lightmap, float partialTicks,
-			CompositeRenderable model, float x, float y, float z) {
+			CompositeRenderable model, double x, double y, double z) {
 		poseStack.pushPose();
 		poseStack.translate(x, y, z);
 		model.render(poseStack, bufferSource, getTextureRenderTypeLookup(entity), 

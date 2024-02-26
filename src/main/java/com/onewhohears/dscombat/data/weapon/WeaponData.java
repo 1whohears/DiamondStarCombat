@@ -55,6 +55,7 @@ public abstract class WeaponData extends JsonPreset {
 	private final String rackTypeKey;
 	private final String compatibleWeaponPart;
 	private final String itemKey;
+	private final String modelId;
 	private final ResourceLocation icon;
 	
 	private EntityType<?> entityType;
@@ -81,6 +82,7 @@ public abstract class WeaponData extends JsonPreset {
 		this.rackTypeKey = UtilParse.getStringSafe(json, "rackTypeKey", "");
 		this.compatibleWeaponPart = UtilParse.getStringSafe(json, "compatibleWeaponPart", "");
 		this.itemKey = UtilParse.getStringSafe(json, "itemKey", "");
+		this.modelId = UtilParse.getStringSafe(json, "modelId", getId());
 		this.icon = new ResourceLocation(UtilParse.getStringSafe(json, "icon", getDefaultIconLocation()));
 	}
 	
@@ -409,8 +411,12 @@ public abstract class WeaponData extends JsonPreset {
 		return compatibleWeaponPart;
 	}
 	
+	public String getModelId() {
+		return modelId;
+	}
+	
 	public ResourceLocation getWeaponIcon() {
-		return this.isNoWeapon() ? NONE_ICON : this.icon;
+		return isNoWeapon() ? NONE_ICON : this.icon;
 	}
 	
 	public String getDefaultIconLocation() {

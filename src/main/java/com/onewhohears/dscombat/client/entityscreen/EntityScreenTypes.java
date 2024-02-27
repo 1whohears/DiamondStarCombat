@@ -1,5 +1,12 @@
 package com.onewhohears.dscombat.client.entityscreen;
 
+import com.onewhohears.dscombat.client.entityscreen.instance.AirRadarScreenInstance;
+import com.onewhohears.dscombat.client.entityscreen.instance.EntityScreenInstance;
+import com.onewhohears.dscombat.client.entityscreen.instance.FuelScreenInstance;
+import com.onewhohears.dscombat.client.entityscreen.instance.GroundRadarScreenInstance;
+import com.onewhohears.dscombat.client.entityscreen.instance.HudScreenInstance;
+import com.onewhohears.dscombat.client.entityscreen.instance.RWRScreenInstance;
+
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 

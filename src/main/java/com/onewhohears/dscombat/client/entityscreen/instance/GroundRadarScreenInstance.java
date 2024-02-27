@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.client.entityscreen;
+package com.onewhohears.dscombat.client.entityscreen.instance;
 
 import java.util.List;
 
@@ -13,22 +13,21 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 
-public class AirRadarScreenInstance extends RadarScreenInstance {
+public class GroundRadarScreenInstance extends RadarScreenInstance {
 	
 	public static final ResourceLocation TEXTURE = new ResourceLocation(DSCombatMod.MODID,
-            "textures/ui/entity_screen/air_radar_screen_bg.png");
+            "textures/ui/entity_screen/ground_radar_screen_bg.png");
 	
-	public AirRadarScreenInstance(int id) {
-		super("air_radar", id, TEXTURE, 512, 512, 
-				256, 360, 320, 20);
+	public GroundRadarScreenInstance(int id) {
+		super("ground_radar", id, TEXTURE, 512, 512,
+				256, 256, 240, 20);
 	}
 	
 	@Override
 	public void draw(Entity entity, PoseStack poseStack, MultiBufferSource buffer, 
 			float partialTicks, int packedLight, float worldWidth, float worldHeight) {
 		super.draw(entity, poseStack, buffer, partialTicks, packedLight, worldWidth, worldHeight);
-		int range = (int)DSCClientInputs.getRadarDisplayRange();
-		String format_range = String.format("DR: %4d", range);
+		String format_range = String.format("DR: %4d", 500);
 		drawText(Component.literal(format_range), -0.48f, -0.48f, 0.25f, 
 				poseStack, buffer, 0x00ff00, packedLight);
 	}
@@ -44,15 +43,20 @@ public class AirRadarScreenInstance extends RadarScreenInstance {
 		for (int i = 0; i < pings.size(); ++i) {
 			if (i == selected || i == hover) continue;
 			RadarData.RadarPing ping = pings.get(i);
-			if (!ping.terrainType.isAir()) continue;
- 			drawPing(ping, vehicle, false, false);
+			if (ping.terrainType.isAir()) continue;
+			drawPing(ping, vehicle, false, false);
 		}
 		// render hover next
-		if (hover > -1 && hover < pings.size() && pings.get(hover).terrainType.isAir()) 
+		if (hover > -1 && hover < pings.size() && !pings.get(hover).terrainType.isAir()) 
 			drawPing(pings.get(hover), vehicle, false, true);
 		// render selected last
-		if (selected > -1 && selected < pings.size() && pings.get(selected).terrainType.isAir()) 
+		if (selected > -1 && selected < pings.size() && !pings.get(selected).terrainType.isAir()) 
 			drawPing(pings.get(selected), vehicle, true, false);
+	}
+	
+	@Override
+	protected double getScreenDistRatio(double distance) {
+		return distance * 0.002;
 	}
 
 }

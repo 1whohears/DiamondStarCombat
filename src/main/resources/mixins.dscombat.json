@@ -7,9 +7,6 @@
 	"mixins": [
 		"EntityMixin"
 	],
-	"client": [
-		"CompositeRenderableMeshMixin"
-	],
 	"server": [],
 	"injectors": {
 		"defaultRequire": 1

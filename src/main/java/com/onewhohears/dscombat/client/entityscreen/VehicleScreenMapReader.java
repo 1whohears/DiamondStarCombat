@@ -3,16 +3,20 @@ package com.onewhohears.dscombat.client.entityscreen;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.slf4j.Logger;
 
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.logging.LogUtils;
+import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.model.obj.ObjEntityModels;
 import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.model.obj.ObjModel;
 import net.minecraftforge.client.model.renderable.CompositeRenderable;
@@ -20,6 +24,13 @@ import net.minecraftforge.client.model.renderable.CompositeRenderable;
 public class VehicleScreenMapReader {
 	
 	private static final Logger LOGGER = LogUtils.getLogger();
+	/**
+	 * CLIENT ONLY
+	 */
+	public static void testScreenUVs(EntityVehicle entity, String modelId) {
+		List<VehicleScreenUV> vehicleScreenUVs = readVehicleScreenUVs(entity.textureManager.getScreenMap());
+		getVehicleScreenPos(modelId, vehicleScreenUVs);
+	}
 	/**
 	 * CLIENT ONLY
 	 */
@@ -66,28 +77,63 @@ public class VehicleScreenMapReader {
 	 */
 	public static List<EntityScreenData> getVehicleScreenPos(String modelId, List<VehicleScreenUV> vehicleScreenUVs) {
 		List<EntityScreenData> list = new ArrayList<>();
+		if (!ObjEntityModels.get().hasModel(modelId)) {
+			LOGGER.warn("Obj Model "+modelId+" does not exist! No screens created.");
+			return list;
+		}
 		ObjModel unbakedModel = ObjEntityModels.get().getUnbakedModel(modelId);
 		CompositeRenderable model = ObjEntityModels.get().getBakedModel(modelId);
-		for (VehicleScreenUV screenUV : vehicleScreenUVs) {
-			float u = (screenUV.u0 + screenUV.u1) / 2f;
-			float v = (screenUV.v0 + screenUV.v1) / 2f;
-			// plan is to search all the meshes in the model to find the quad with this uv cord.
-			// then use the quad vertex positions to find the in game position and direction of the screen.
-			// going to need to add a lot of access transforms
-			//int num = model.components.size();
-		}
+		// plan is to search all the meshes in the model to find the quad with this uv cord.
+		// then use the quad vertex positions to find the in game position and direction of the screen.
+		// going to need to add a lot of access transforms
+		for (VehicleScreenUV screenUV : vehicleScreenUVs) 
+			for (CompositeRenderable.Component component : model.components) 
+				searchComponent(component, list, screenUV, unbakedModel);
 		return list;
+	}
+	// FIXME 0 why are the access transforms for CompositeRenderable.Component and CompositeRenderable.Mesh not working at runtime?
+	private static void searchComponent(CompositeRenderable.Component component, List<EntityScreenData> list, VehicleScreenUV screenUV, ObjModel unbakedModel) {
+		for (CompositeRenderable.Mesh mesh : component.meshes) 
+			searchMesh(mesh, list, screenUV, unbakedModel);
+		for (CompositeRenderable.Component childComponent : component.children) 
+			searchComponent(childComponent, list, screenUV, unbakedModel);
+	}
+	
+	private static void searchMesh(CompositeRenderable.Mesh mesh, List<EntityScreenData> list, VehicleScreenUV screenUV, ObjModel unbakedModel) {
+		for (BakedQuad quad : mesh.quads) searchQuad(quad, list, screenUV, unbakedModel);
+	}
+	
+	private static void searchQuad(BakedQuad quad, List<EntityScreenData> list, VehicleScreenUV screenUV, ObjModel unbakedModel) {
+		if (!hasUV(quad, screenUV.um, screenUV.vm)) return;
+		LOGGER.debug("Found screen pos in model! Adding screen type "+screenUV.screenType);
+		System.out.println("Quad vertexes "+Arrays.toString(quad.getVertices()));
+		Vector3f[] pos = getQuadPositions(quad, unbakedModel);
+		System.out.println("Quad pos: "+Arrays.toString(pos));
+	}
+	
+	private static Vector3f[] getQuadPositions(BakedQuad quad, ObjModel unbakedModel) {
+		Vector3f[] pos = new Vector3f[quad.getVertices().length];
+		for (int i = 0; i < quad.getVertices().length; ++i) 
+			pos[i] = unbakedModel.positions.get(quad.getVertices()[i]);
+		return pos;
+	}
+	
+	private static boolean hasUV(BakedQuad quad, float u, float v) {
+		return quad.getSprite().getU0() <= u && quad.getSprite().getU1() >= u 
+			&& quad.getSprite().getV0() <= v && quad.getSprite().getV1() >= v; 
 	}
 	
 	public static class VehicleScreenUV {
 		public final int screenType;
-		public final float u0, u1, v0, v1;
+		public final float u0, u1, um, v0, v1, vm;
 		public VehicleScreenUV(int screenType, float u0, float u1, float v0, float v1) {
 			this.screenType = screenType;
 			this.u0 = u0;
 			this.u1 = u1;
+			this.um = (u0 + u1) / 2f;
 			this.v0 = v0;
 			this.v1 = v1;
+			this.vm = (v0 + v1) / 2f;
 		}
 		@Override
 		public String toString() {

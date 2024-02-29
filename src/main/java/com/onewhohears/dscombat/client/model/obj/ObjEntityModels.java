@@ -62,6 +62,10 @@ public class ObjEntityModels implements ResourceManagerReloadListener {
 		return models.get(name);
 	}
 	
+	public boolean hasModel(String id) {
+		return models.containsKey(id);
+	}
+	
 	public void bakeModels() {
 		LOGGER.info("BAKING OBJ MODELS");
 		models.clear();

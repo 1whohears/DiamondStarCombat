@@ -3,17 +3,29 @@ package com.onewhohears.dscombat.client.model.obj;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
+import com.onewhohears.dscombat.client.entityscreen.VehicleScreenMapReader;
 import com.onewhohears.dscombat.client.renderer.RendererEntityAircraft;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraftforge.client.model.renderable.ITextureRenderTypeLookup;
 
 public class ObjAircraftModel<T extends EntityVehicle> extends ObjEntityModel<T> {
 	
+	private boolean scannedForScreens = false;
+	
 	public ObjAircraftModel(String modelId) {
 		super(modelId);
+	}
+	
+	@Override
+	public void render(T entity, PoseStack poseStack, MultiBufferSource bufferSource, int lightmap, float partialTicks) {
+		super.render(entity, poseStack, bufferSource, lightmap, partialTicks);
+		if (!scannedForScreens) {
+			VehicleScreenMapReader.testScreenUVs(entity, modelId);
+		}
 	}
 	
 	@Override

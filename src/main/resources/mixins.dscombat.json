@@ -7,6 +7,12 @@
 	"mixins": [
 		"EntityMixin"
 	],
+	"client": [
+		"ObjModelAccess",
+		"CompositeRenderableMeshAccess",
+		"CompositeRenderableComponentAccess",
+		"CompositeRenderableAccess"
+	],
 	"server": [],
 	"injectors": {
 		"defaultRequire": 1

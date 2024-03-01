@@ -14,6 +14,10 @@ import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.model.obj.ObjEntityModels;
 import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.mixin.CompositeRenderableAccess;
+import com.onewhohears.dscombat.mixin.CompositeRenderableComponentAccess;
+import com.onewhohears.dscombat.mixin.CompositeRenderableMeshAccess;
+import com.onewhohears.dscombat.mixin.ObjModelAccess;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -47,8 +51,9 @@ public class VehicleScreenMapReader {
 		}
 		for (int y = 0; y < image.getHeight(); ++y) for (int x = 0; x < image.getWidth(); ++x) {
 			int color = image.getPixelRGBA(x, y);
+			if (NativeImage.getA(color) == 0) continue;
 			int screenType = EntityScreenTypes.getScreenTypeIdByColor(color);
-			if (color == -1) continue;
+			if (screenType == -1) continue;
 			if (x != 0 && image.getPixelRGBA(x-1, y) == color) continue;
 			if (y != 0 && image.getPixelRGBA(x, y-1) == color) continue;
  			int u0 = x, u1 = x, v0 = y, v1 = y;
@@ -87,34 +92,36 @@ public class VehicleScreenMapReader {
 		// then use the quad vertex positions to find the in game position and direction of the screen.
 		// going to need to add a lot of access transforms
 		for (VehicleScreenUV screenUV : vehicleScreenUVs) 
-			for (CompositeRenderable.Component component : model.components) 
+			for (CompositeRenderableComponentAccess component : ((CompositeRenderableAccess)model).getComponents()) 
 				searchComponent(component, list, screenUV, unbakedModel);
 		return list;
 	}
-	// FIXME 0 why are the access transforms for CompositeRenderable.Component and CompositeRenderable.Mesh not working at runtime?
-	private static void searchComponent(CompositeRenderable.Component component, List<EntityScreenData> list, VehicleScreenUV screenUV, ObjModel unbakedModel) {
-		for (CompositeRenderable.Mesh mesh : component.meshes) 
+	
+	private static void searchComponent(CompositeRenderableComponentAccess component, List<EntityScreenData> list, VehicleScreenUV screenUV, ObjModel unbakedModel) {
+		for (CompositeRenderableMeshAccess mesh : ((CompositeRenderableComponentAccess)component).getMeshes()) 
 			searchMesh(mesh, list, screenUV, unbakedModel);
-		for (CompositeRenderable.Component childComponent : component.children) 
+		for (CompositeRenderableComponentAccess childComponent : ((CompositeRenderableComponentAccess)component).getChildren()) 
 			searchComponent(childComponent, list, screenUV, unbakedModel);
 	}
 	
-	private static void searchMesh(CompositeRenderable.Mesh mesh, List<EntityScreenData> list, VehicleScreenUV screenUV, ObjModel unbakedModel) {
-		for (BakedQuad quad : mesh.quads) searchQuad(quad, list, screenUV, unbakedModel);
+	private static void searchMesh(CompositeRenderableMeshAccess mesh, List<EntityScreenData> list, VehicleScreenUV screenUV, ObjModel unbakedModel) {
+		for (BakedQuad quad : ((CompositeRenderableMeshAccess)mesh).getQuads()) searchQuad(quad, list, screenUV, unbakedModel);
 	}
 	
 	private static void searchQuad(BakedQuad quad, List<EntityScreenData> list, VehicleScreenUV screenUV, ObjModel unbakedModel) {
 		if (!hasUV(quad, screenUV.um, screenUV.vm)) return;
 		LOGGER.debug("Found screen pos in model! Adding screen type "+screenUV.screenType);
 		System.out.println("Quad vertexes "+Arrays.toString(quad.getVertices()));
-		Vector3f[] pos = getQuadPositions(quad, unbakedModel);
-		System.out.println("Quad pos: "+Arrays.toString(pos));
+		System.out.println("Quad Sprite "+quad.getSprite().toString());
+		//Vector3f[] pos = getQuadPositions(quad, unbakedModel);
+		//System.out.println("Quad pos: "+Arrays.toString(pos));
 	}
 	
 	private static Vector3f[] getQuadPositions(BakedQuad quad, ObjModel unbakedModel) {
 		Vector3f[] pos = new Vector3f[quad.getVertices().length];
+		List<Vector3f> positions = ((ObjModelAccess)unbakedModel).getPositions();
 		for (int i = 0; i < quad.getVertices().length; ++i) 
-			pos[i] = unbakedModel.positions.get(quad.getVertices()[i]);
+			pos[i] = positions.get(quad.getVertices()[i]);
 		return pos;
 	}
 	

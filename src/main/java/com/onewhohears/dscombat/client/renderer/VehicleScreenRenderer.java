@@ -17,7 +17,7 @@ public interface VehicleScreenRenderer<T extends EntityVehicle> extends EntitySc
 		Minecraft m = Minecraft.getInstance();
 		Player player = m.player;
 		if (player == null) return false;
-		return player.distanceToSqr(vehicle) < 256;
+		return player.distanceToSqr(vehicle) < 64;
 	}
 	
 	public default void renderVehicleScreens(T vehicle, PoseStack poseStack, 

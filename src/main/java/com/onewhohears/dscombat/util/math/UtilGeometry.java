@@ -11,6 +11,7 @@ import com.mojang.math.Vector4f;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
 public class UtilGeometry {
@@ -318,6 +319,39 @@ public class UtilGeometry {
 			}
 		}
 		return minIndex;
+	}
+	
+	public static float crossProduct(Vec2 v1, Vec2 v2) {
+		return v1.x * v2.y - v1.y * v2.x;
+	}
+	
+	/*public static boolean isIn2DTriangle(Vec2 p, Vec2[] t) {
+		float d1 = sign(p, t[0], t[1]);
+		float d2 = sign(p, t[1], t[2]);
+		float d3 = sign(p, t[2], t[0]);
+		boolean has_neg = (d1 < 0) || (d2 < 0) || (d3 < 0);
+		boolean has_pos = (d1 > 0) || (d2 > 0) || (d3 > 0);
+	    return !(has_neg && has_pos);
+	}
+	
+	private static float sign(Vec2 p1, Vec2 p2, Vec2 p3) {
+		return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
+	}*/
+	
+	/*public static boolean isIn2DTriangle(Vec2 p, Vec2[] t) {
+		return sameSide(p, t[0], t[1], t[2]) && sameSide(p, t[1], t[0], t[2]) && sameSide(p, t[2], t[0], t[1]);
+	}
+	
+	private static boolean sameSide(Vec2 p1, Vec2 p2, Vec2 a, Vec2 b) {
+		return crossProduct(b.add(a.negated()), p1.add(a.negated())) * crossProduct(b.add(a.negated()), p2.add(a.negated())) >= 0;
+	}*/
+	
+	public static boolean isIn2DTriangle(Vec2 p, Vec2[] t) {
+		float area = 0.5f * (-t[1].y*t[2].x + t[0].y*(-t[1].x+t[2].x) + t[0].x*(t[1].y-t[2].y) + t[1].x*t[2].y);
+		float a = 1/(2*area);
+		float s0 = a * (t[0].y*t[2].x - t[0].x*t[2].y + (t[2].y-t[0].y)*p.x + (t[0].x-t[2].x)*p.y);
+		float t0 = a * (t[0].x*t[1].y - t[0].y*t[1].x + (t[0].y-t[1].y)*p.x + (t[1].x-t[0].x)*p.y);
+		return s0 >= 0 && t0 >= 0 && 1-s0-t0 >= 0;
 	}
 	
 }

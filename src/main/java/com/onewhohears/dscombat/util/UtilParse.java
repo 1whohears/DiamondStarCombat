@@ -26,6 +26,7 @@ import net.minecraft.nbt.NbtIo;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
 public class UtilParse {
@@ -243,6 +244,12 @@ public class UtilParse {
 		v.addProperty("y", vec.y);
 		v.addProperty("z", vec.z);
 		json.add(name, v);
+	}
+	
+	public static String vec2ToString(Vec2... v) {
+		String r = "";
+		for (int i = 0; i < v.length; ++i) r += "["+v[i].x+","+v[i].y+"]";
+		return r;
 	}
 	
 }

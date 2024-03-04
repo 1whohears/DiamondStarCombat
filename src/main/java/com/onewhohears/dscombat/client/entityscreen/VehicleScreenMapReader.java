@@ -95,17 +95,17 @@ public class VehicleScreenMapReader {
 	
 	private static void findScreenPos(VehicleScreenUV screenUV, CompositeRenderable model, List<EntityScreenData> list, Vec3 offset) {
 		List<BakedQuad> middleQuads = findQuadsWithUV(model, screenUV.um, screenUV.vm);
-		for (BakedQuad quad : middleQuads) addScreenFromQuad(quad, list, screenUV, offset);
+		for (BakedQuad quad : middleQuads) addScreenFromQuad(quad, list, screenUV, model, offset);
 	}
 	
-	private static void addScreenFromQuad(BakedQuad quad, List<EntityScreenData> list, VehicleScreenUV screenUV, Vec3 offset) {
+	private static void addScreenFromQuad(BakedQuad quad, List<EntityScreenData> list, VehicleScreenUV screenUV, CompositeRenderable model, Vec3 offset) {
 		LOGGER.debug("Found screen pos in model! Adding screen type "+screenUV.screenType);
 		Vec2[] uvs = getUVs(quad);
 		Vec3[] corners = getQuadPositions(quad);
 		Vec3 pos = getWorldPos(screenUV.um, screenUV.vm, uvs, corners);
 		float width = 0.05f, height = 0.05f;
 		float[] wh = getWidthHeight(uvs, corners, pos, screenUV);
-		if (wh == null) getWidthHeightOtherQuad(pos, screenUV);
+		if (wh == null) getWidthHeightOtherQuad(pos, screenUV, model);
 		if (wh != null) {
 			width = wh[0]; 
 			height = wh[1];
@@ -115,8 +115,20 @@ public class VehicleScreenMapReader {
 				width, height, UtilAngles.getPitch(normal), UtilAngles.getYaw(normal), 0));
 	}
 	
-	private static float[] getWidthHeightOtherQuad(Vec3 pos, VehicleScreenUV screenUV) {
+	private static float[] getWidthHeightOtherQuad(Vec3 pos, VehicleScreenUV screenUV, CompositeRenderable model) {
 		// FIXME 5 getWidthHeightOtherQuad
+		List<BakedQuad> cornerQuads = findQuadsWithUV(model, screenUV.u0, screenUV.v0);
+		System.out.println("pos = "+pos);
+		for (BakedQuad quad : cornerQuads) {
+			Vec2[] uvs = getUVs(quad);
+			Vec3[] corners = getQuadPositions(quad);
+			Vec3 cornerPos = getWorldPos(screenUV.u0, screenUV.v0, uvs, corners);
+			System.out.println("cornerPos = "+cornerPos);
+			if (cornerPos.distanceTo(pos) > 1) continue;
+			Vec2 uvm = new Vec2(screenUV.um, screenUV.vm);
+			Vec2 uvc = new Vec2(screenUV.u0, screenUV.v0);
+			return getWidthHeight(uvs, corners, pos, uvm, uvc);
+		}
 		return null;
 	}
 	
@@ -132,9 +144,9 @@ public class VehicleScreenMapReader {
 	
 	private static float[] getWidthHeight(Vec2[] uvs, Vec3[] corners, Vec3 pos, Vec2 uvm, Vec2 uvc) {
 		if (!hasUV(uvs, uvc.x, uvc.y)) return null;
-		Vec3 screenCornerPos0 = getWorldPos(uvc.x, uvc.y, uvs, corners);
-		Vec3 posDiff = pos.subtract(screenCornerPos0);
-		Vec2 uvDiff = new Vec2(uvm.x, uvm.y).add(new Vec2(uvc.x, uvc.y).negated());
+		Vec3 cornerPos = getWorldPos(uvc.x, uvc.y, uvs, corners);
+		Vec3 posDiff = pos.subtract(cornerPos);
+		Vec2 uvDiff = uvm.add(uvc.negated());
 		float posLength = (float) posDiff.length();
 		float uvLength = uvDiff.length();
 		float scale = posLength / uvLength;

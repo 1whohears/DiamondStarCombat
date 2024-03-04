@@ -25,7 +25,7 @@ public class VLSModel extends ObjPartModel<EntityWeaponRack> {
 	private static final Vector3f PIVOT = new Vector3f(0, 1.2f, 0);
 	
 	@Override
-	protected Vector3f getGlobalPivot() {
+	public Vector3f getGlobalPivot() {
 		return PIVOT;
 	}
 

@@ -325,33 +325,38 @@ public class UtilGeometry {
 		return v1.x * v2.y - v1.y * v2.x;
 	}
 	
-	/*public static boolean isIn2DTriangle(Vec2 p, Vec2[] t) {
-		float d1 = sign(p, t[0], t[1]);
-		float d2 = sign(p, t[1], t[2]);
-		float d3 = sign(p, t[2], t[0]);
-		boolean has_neg = (d1 < 0) || (d2 < 0) || (d3 < 0);
-		boolean has_pos = (d1 > 0) || (d2 > 0) || (d3 > 0);
-	    return !(has_neg && has_pos);
-	}
-	
-	private static float sign(Vec2 p1, Vec2 p2, Vec2 p3) {
-		return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
-	}*/
-	
-	/*public static boolean isIn2DTriangle(Vec2 p, Vec2[] t) {
-		return sameSide(p, t[0], t[1], t[2]) && sameSide(p, t[1], t[0], t[2]) && sameSide(p, t[2], t[0], t[1]);
-	}
-	
-	private static boolean sameSide(Vec2 p1, Vec2 p2, Vec2 a, Vec2 b) {
-		return crossProduct(b.add(a.negated()), p1.add(a.negated())) * crossProduct(b.add(a.negated()), p2.add(a.negated())) >= 0;
-	}*/
-	
-	public static boolean isIn2DTriangle(Vec2 p, Vec2[] t) {
-		float area = 0.5f * (-t[1].y*t[2].x + t[0].y*(-t[1].x+t[2].x) + t[0].x*(t[1].y-t[2].y) + t[1].x*t[2].y);
+	public static boolean isIn2DTriangle(Vec2 p, Vec2[] v) {
+		if (v.length < 3) return false;
+		float area = 0.5f * (-v[1].y*v[2].x + v[0].y*(-v[1].x+v[2].x) + v[0].x*(v[1].y-v[2].y) + v[1].x*v[2].y);
 		float a = 1/(2*area);
-		float s0 = a * (t[0].y*t[2].x - t[0].x*t[2].y + (t[2].y-t[0].y)*p.x + (t[0].x-t[2].x)*p.y);
-		float t0 = a * (t[0].x*t[1].y - t[0].y*t[1].x + (t[0].y-t[1].y)*p.x + (t[1].x-t[0].x)*p.y);
+		float s0 = a * (v[0].y*v[2].x - v[0].x*v[2].y + (v[2].y-v[0].y)*p.x + (v[0].x-v[2].x)*p.y);
+		float t0 = a * (v[0].x*v[1].y - v[0].y*v[1].x + (v[0].y-v[1].y)*p.x + (v[1].x-v[0].x)*p.y);
 		return s0 >= 0 && t0 >= 0 && 1-s0-t0 >= 0;
+	}
+	
+	public static boolean isIn2DQuad(Vec2 p, Vec2[] v) {
+		if (v.length < 4) return false;
+		Vec2[] t1 = new Vec2[] {v[0], v[1], v[2]};
+		Vec2[] t2 = new Vec2[] {v[0], v[2], v[3]};
+		return isIn2DTriangle(p, t1) || isIn2DTriangle(p, t2); 
+	}
+	
+	public static int add(int n, int a, int max) {
+		n += a;
+		double r = (double)n / (double)max;
+		n -= (int)r * max;
+		return n;
+	}
+	
+	@Nullable
+	public static Vec2 intersect(Vec2 as, Vec2 ae, Vec2 bs, Vec2 be) {
+		Vec2 ad = ae.add(as.negated());
+		Vec2 bd = be.add(bs.negated());
+		float det = crossProduct(bd, ad);
+		if (det == 0) return null;
+		Vec2 D = bs.add(as.negated());
+		float u = (D.y * bd.x - D.x * bd.y) / det;
+		return as.add(ad.scale(u));
 	}
 	
 }

@@ -13,7 +13,7 @@ public class CorvetteModel extends ObjAircraftModel<EntityBoat> {
 	private static final Vector3f PIVOT = new Vector3f(0, 1.5f, 0);
 	
 	@Override
-	protected Vector3f getGlobalPivot() {
+	public Vector3f getGlobalPivot() {
 		return PIVOT;
 	}
 

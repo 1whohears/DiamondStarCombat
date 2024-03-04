@@ -69,7 +69,7 @@ public class EdenPlaneModel extends ObjAircraftModel<EntityPlane> {
 	private static final Vector3f PIVOT = new Vector3f(0, -2f, 3.5f);
 	
 	@Override
-	protected Vector3f getGlobalPivot() {
+	public Vector3f getGlobalPivot() {
 		return PIVOT;
 	}
 

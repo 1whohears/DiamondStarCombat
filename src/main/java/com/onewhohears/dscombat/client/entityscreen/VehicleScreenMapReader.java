@@ -16,11 +16,13 @@ import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.mixin.CompositeRenderableAccess;
 import com.onewhohears.dscombat.mixin.CompositeRenderableComponentAccess;
 import com.onewhohears.dscombat.mixin.CompositeRenderableMeshAccess;
+import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.model.renderable.CompositeRenderable;
@@ -32,9 +34,9 @@ public class VehicleScreenMapReader {
 	 * CLIENT ONLY!
 	 * ONLY WORKS FOR OBJ MODELS!
 	 */
-	public static List<EntityScreenData> generateScreens(EntityVehicle entity, String modelId) {
+	public static List<EntityScreenData> generateScreens(EntityVehicle entity, String modelId, Vec3 modelOffset) {
 		List<VehicleScreenUV> vehicleScreenUVs = readVehicleScreenUVs(entity.textureManager.getScreenMap());
-		return getVehicleScreenPos(modelId, vehicleScreenUVs);
+		return getVehicleScreenPos(modelId, vehicleScreenUVs, modelOffset);
 	}
 	
 	private static List<VehicleScreenUV> readVehicleScreenUVs(ResourceLocation screenMap) {
@@ -69,55 +71,76 @@ public class VehicleScreenMapReader {
 				if (c != color) break;
 				v1 = v;
 			}
+			++u1; ++v1;
 			VehicleScreenUV vsuv = new VehicleScreenUV(screenType, 
 					(float)u0 / (float)image.getWidth(), (float)u1 / (float)image.getWidth(), 
 					(float)v0 / (float)image.getHeight(), (float)v1 / (float)image.getHeight());
 			list.add(vsuv);
-			x = u1 + 1;
+			x = u1;
 			LOGGER.debug("Found screen "+vsuv.toString()+" in "+screenMap.toString());
 		}
 		return list;
 	}
 	
-	private static List<EntityScreenData> getVehicleScreenPos(String modelId, List<VehicleScreenUV> vehicleScreenUVs) {
+	private static List<EntityScreenData> getVehicleScreenPos(String modelId, List<VehicleScreenUV> vehicleScreenUVs, Vec3 offset) {
 		List<EntityScreenData> list = new ArrayList<>();
 		if (!ObjEntityModels.get().hasModel(modelId)) {
 			LOGGER.warn("Obj Model "+modelId+" does not exist! No screens created.");
 			return list;
 		}
 		CompositeRenderable model = ObjEntityModels.get().getBakedModel(modelId);
-		// plan is to search all the meshes in the model to find the quad with this uv cord.
-		// then use the quad vertex positions to find the in game position and direction of the screen.
-		// going to need to add a lot of access transforms
-		for (VehicleScreenUV screenUV : vehicleScreenUVs) 
-			findScreenPos(screenUV, model, list);
-			/*for (CompositeRenderableComponentAccess component : ((CompositeRenderableAccess)model).getComponents()) 
-				searchComponent(component, list, screenUV);*/
+		for (VehicleScreenUV screenUV : vehicleScreenUVs) findScreenPos(screenUV, model, list, offset);
 		return list;
 	}
 	
-	private static void findScreenPos(VehicleScreenUV screenUV, CompositeRenderable model, List<EntityScreenData> list) {
+	private static void findScreenPos(VehicleScreenUV screenUV, CompositeRenderable model, List<EntityScreenData> list, Vec3 offset) {
 		List<BakedQuad> middleQuads = findQuadsWithUV(model, screenUV.um, screenUV.vm);
-		List<BakedQuad> topLeftQuads = findQuadsWithUV(model, screenUV.u0, screenUV.v0);
-		List<BakedQuad> topRightQuads = findQuadsWithUV(model, screenUV.u1, screenUV.v0);
-		List<BakedQuad> bottomLeftQuads = findQuadsWithUV(model, screenUV.u0, screenUV.v1);
-		List<BakedQuad> bottomRightQuads = findQuadsWithUV(model, screenUV.u1, screenUV.v1);
-		addScreenFromQuads(middleQuads, list, screenUV, screenUV.um, screenUV.vm, 0.05f);
-		addScreenFromQuads(topLeftQuads, list, screenUV, screenUV.u0, screenUV.v0, 0.02f);
-		addScreenFromQuads(topRightQuads, list, screenUV, screenUV.u1, screenUV.v0, 0.02f);
-		addScreenFromQuads(bottomLeftQuads, list, screenUV, screenUV.u0, screenUV.v1, 0.02f);
-		addScreenFromQuads(bottomRightQuads, list, screenUV, screenUV.u1, screenUV.v1, 0.02f);
+		for (BakedQuad quad : middleQuads) addScreenFromQuad(quad, list, screenUV, offset);
 	}
 	
-	private static void addScreenFromQuads(List<BakedQuad> quads, List<EntityScreenData> list, VehicleScreenUV screenUV, float u, float v, float size) {
-		for (BakedQuad quad : quads) {
-			Vec2[] uvs = getUVs(quad);
-			Vec3[] corners = getQuadPositions(quad);
-			Vec3 pos = getWorldPos(u, v, uvs, corners);
-			list.add(new EntityScreenData(screenUV.screenType, 
-					pos.add(0, -2, 1.999), 
-					size, size, 0, 0, 0));
+	private static void addScreenFromQuad(BakedQuad quad, List<EntityScreenData> list, VehicleScreenUV screenUV, Vec3 offset) {
+		LOGGER.debug("Found screen pos in model! Adding screen type "+screenUV.screenType);
+		Vec2[] uvs = getUVs(quad);
+		Vec3[] corners = getQuadPositions(quad);
+		Vec3 pos = getWorldPos(screenUV.um, screenUV.vm, uvs, corners);
+		float width = 0.05f, height = 0.05f;
+		float[] wh = getWidthHeight(uvs, corners, pos, screenUV);
+		if (wh == null) getWidthHeightOtherQuad(pos, screenUV);
+		if (wh != null) {
+			width = wh[0]; 
+			height = wh[1];
 		}
+		Vec3 normal = corners[2].subtract(corners[0]).cross(corners[1].subtract(corners[0])).normalize();
+		list.add(new EntityScreenData(screenUV.screenType, pos.add(offset).subtract(normal.scale(0.001)), 
+				width, height, UtilAngles.getPitch(normal), UtilAngles.getYaw(normal), 0));
+	}
+	
+	private static float[] getWidthHeightOtherQuad(Vec3 pos, VehicleScreenUV screenUV) {
+		// FIXME 5 getWidthHeightOtherQuad
+		return null;
+	}
+	
+	private static float[] getWidthHeight(Vec2[] uvs, Vec3[] corners, Vec3 pos, VehicleScreenUV screenUV) {
+		float[] wh = null;
+		Vec2 uvm = new Vec2(screenUV.um, screenUV.vm);
+		wh = getWidthHeight(uvs, corners, pos, uvm, new Vec2(screenUV.u0, screenUV.v0));
+		if (wh == null) getWidthHeight(uvs, corners, pos, uvm, new Vec2(screenUV.u1, screenUV.v0));
+		if (wh == null) getWidthHeight(uvs, corners, pos, uvm, new Vec2(screenUV.u0, screenUV.v1));
+		if (wh == null) getWidthHeight(uvs, corners, pos, uvm, new Vec2(screenUV.u1, screenUV.v1));
+		return wh;
+	}
+	
+	private static float[] getWidthHeight(Vec2[] uvs, Vec3[] corners, Vec3 pos, Vec2 uvm, Vec2 uvc) {
+		if (!hasUV(uvs, uvc.x, uvc.y)) return null;
+		Vec3 screenCornerPos0 = getWorldPos(uvc.x, uvc.y, uvs, corners);
+		Vec3 posDiff = pos.subtract(screenCornerPos0);
+		Vec2 uvDiff = new Vec2(uvm.x, uvm.y).add(new Vec2(uvc.x, uvc.y).negated());
+		float posLength = (float) posDiff.length();
+		float uvLength = uvDiff.length();
+		float scale = posLength / uvLength;
+		float width = Mth.abs(uvDiff.x) * 2 * scale;
+		float height = Mth.abs(uvDiff.y) * 2 * scale;
+		return new float[] {width, height};
 	}
 	
 	private static List<BakedQuad> findQuadsWithUV(CompositeRenderable model, float u, float v) {
@@ -142,61 +165,31 @@ public class VehicleScreenMapReader {
 		if (hasUV(getUVs(quad), u, v)) quads.add(quad);
 	}
 	
-	/*private static void searchComponent(CompositeRenderableComponentAccess component, List<EntityScreenData> list, VehicleScreenUV screenUV) {
-		for (CompositeRenderableMeshAccess mesh : ((CompositeRenderableComponentAccess)component).getMeshes()) 
-			searchMesh(mesh, list, screenUV);
-		for (CompositeRenderableComponentAccess childComponent : ((CompositeRenderableComponentAccess)component).getChildren()) 
-			searchComponent(childComponent, list, screenUV);
-	}
-	
-	private static void searchMesh(CompositeRenderableMeshAccess mesh, List<EntityScreenData> list, VehicleScreenUV screenUV) {
-		for (BakedQuad quad : ((CompositeRenderableMeshAccess)mesh).getQuads()) searchQuad(quad, list, screenUV);
-	}
-	
-	private static void searchQuad(BakedQuad quad, List<EntityScreenData> list, VehicleScreenUV screenUV) {
-		Vec2[] uvs = getUVs(quad);
-		if (!hasUV(uvs, screenUV.um, screenUV.vm)) return;
-		LOGGER.debug("Found screen pos in model! Adding screen type "+screenUV.screenType);
-		//System.out.println("Quad vertexes "+Arrays.toString(quad.getVertices()));
-		System.out.println("screenUV.um = "+screenUV.um+" screenUV.vm = "+screenUV.vm);
-		System.out.println("Quad uvs: "+UtilParse.vec2ToString(uvs));
-		Vec3[] pos = getQuadPositions(quad);
-		System.out.println("Quad pos: "+Arrays.toString(pos));
-		Vec3 middlePos = getWorldPos(screenUV.um, screenUV.vm, uvs, pos);
-		System.out.println("Screen pos = "+middlePos);
-		//Vec3 topLeftPos = getWorldPos(screenUV.u0, screenUV.v0, uvs, pos);
-		//Vec3 topRightPos = getWorldPos(screenUV.u1, screenUV.v0, uvs, pos);
-		//Vec3 bottomLeftPos = getWorldPos(screenUV.u0, screenUV.v1, uvs, pos);
-		//float width = (float)topRightPos.subtract(topLeftPos).length();
-		//float height = (float)bottomLeftPos.subtract(topLeftPos).length(); 
-		//System.out.println("width = "+width+" height = "+height);
-		float width = 0.05f, height = 0.05f;
-		list.add(new EntityScreenData(screenUV.screenType, 
-				middlePos.add(0, -2, 1.999), 
-				width, height, 0, 0, 0));
-		for (int i = 0; i < pos.length; ++i) list.add(new EntityScreenData(screenUV.screenType, 
-				pos[i].add(0, -2, 1.999), 
-				0.02f, 0.02f, 0, 0, 0));
-	}*/
-	
 	private static Vec3 getWorldPos(float u, float v, Vec2[] uvs, Vec3[] corners) {
 		Vec2 uvg = new Vec2(u, v);
-		// T2-T1, T3-T1, P-T1
-		Vec2 uv1Duv0 = uvs[1].add(uvs[0].negated());
-		Vec2 uv2Duv0 = uvs[2].add(uvs[0].negated());
-		Vec2 uvgDuv0 = uvg.add(uvs[0].negated());
-		// parametric coordinates [s,t]
-	    // s = (P-T1)x(T2-T1) / (T3-T1)x(T2-T1)
-	    // t = (P-T1)x(T3-T1) / (T2-T1)x(T3-T1)
-		float s = UtilGeometry.crossProduct(uvgDuv0, uv1Duv0) / UtilGeometry.crossProduct(uv2Duv0, uv1Duv0);
-		float t = UtilGeometry.crossProduct(uvgDuv0, uv2Duv0) / UtilGeometry.crossProduct(uv1Duv0, uv2Duv0);
-		// XYZ = V1 + s(V2-V1) + t(V3-V1)
-		return corners[0].add(corners[1].subtract(corners[0]).scale(s)).add(corners[2].subtract(corners[0]).scale(t));
+		if (isUVsTri(uvs)) return getWorldPosFromTri(uvg, uvs, corners);
+		Vec2[] uvt1 = new Vec2[] {uvs[0], uvs[1], uvs[2]};
+		if (UtilGeometry.isIn2DTriangle(uvg, uvt1)) return getWorldPosFromTri(uvg, uvt1, 
+				new Vec3[] {corners[0], corners[1], corners[2]});
+		Vec2[] uvt2 = new Vec2[] {uvs[0], uvs[2], uvs[3]};
+		return getWorldPosFromTri(uvg, uvt2, 
+				new Vec3[] {corners[0], corners[2], corners[3]});
+	}
+	
+	private static Vec3 getWorldPosFromTri(Vec2 uvg, Vec2[] uvs, Vec3[] corners) {
+		// http://mr-pc.org/t/cisc3620/readings/03b-color.html
+		Vec2 Q = uvg, A = uvs[0], B = uvs[1], C = uvs[2];
+		Vec2 P = UtilGeometry.intersect(C, Q, B, A);
+		Vec2 v = B.add(A.negated());
+		float t = P.add(A.negated()).x / v.x;
+		Vec2 u = P.add(C.negated());
+		float s = Q.add(C.negated()).x / u.x;
+		return corners[0].scale((1-t)*s).add(corners[1].scale(t*s)).add(corners[2].scale(1-s));
 	}
 	
 	private static Vec3[] getQuadPositions(BakedQuad quad) {
-		Vec3[] pos = new Vec3[3];
-		for (int i = 0; i < 3; ++i) 
+		Vec3[] pos = new Vec3[4];
+		for (int i = 0; i < 4; ++i) 
 			pos[i] = new Vec3((double)Float.intBitsToFloat(quad.getVertices()[i*8]), 
 					(double)Float.intBitsToFloat(quad.getVertices()[i*8+1]), 
 					(double)Float.intBitsToFloat(quad.getVertices()[i*8+2]));
@@ -204,8 +197,8 @@ public class VehicleScreenMapReader {
 	}
 	
 	private static Vec2[] getUVs(BakedQuad quad) {
-		Vec2[] uvs = new Vec2[3];
-		for (int i = 0; i < 3; ++i) 
+		Vec2[] uvs = new Vec2[4];
+		for (int i = 0; i < 4; ++i) 
 			uvs[i] = new Vec2(Float.intBitsToFloat(quad.getVertices()[i*8+4]), 
 					Float.intBitsToFloat(quad.getVertices()[i*8+5]));
 		return uvs;
@@ -213,7 +206,19 @@ public class VehicleScreenMapReader {
 	
 	private static boolean hasUV(Vec2[] uvs, float u, float v) {
 		Vec2 uv = new Vec2(u, v);
-		return UtilGeometry.isIn2DTriangle(uv, uvs);
+		if (isUVsTri(uvs)) UtilGeometry.isIn2DTriangle(uv, uvs);
+		return UtilGeometry.isIn2DQuad(uv, uvs);
+	}
+	
+	private static boolean isUVsTri(Vec2[] uvs) {
+		for (int i = 0; i < uvs.length; ++i) {
+			for (int j = 0; j < uvs.length; ++j) {
+				if (j == i) continue;
+				if (uvs[i].x == uvs[j].x && uvs[i].y == uvs[j].y) 
+					return true;
+			}
+		}
+		return false;
 	}
 	
 	public static class VehicleScreenUV {

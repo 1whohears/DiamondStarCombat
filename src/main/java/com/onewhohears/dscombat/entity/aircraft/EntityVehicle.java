@@ -2032,6 +2032,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     	return players;
     }
     
+    public EntityPart getPilotSeat() {
+    	return getPartBySlotId(PartSlot.PILOT_SLOT_NAME);
+    }
+    
     public List<EntitySeat> getSeats() {
     	List<EntitySeat> seats = new ArrayList<>();
     	for (Entity e : getPassengers())

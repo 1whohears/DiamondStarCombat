@@ -9,6 +9,7 @@ import com.onewhohears.dscombat.client.model.obj.ObjAircraftModel;
 import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.util.math.UtilAngles;
+import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
@@ -47,7 +48,8 @@ public class RendererObjAircraft<T extends EntityVehicle> extends RendererObjEnt
 	}
 	
 	protected List<EntityScreenData> getScreens(T vehicle) {
-		if (screens == null) screens = VehicleScreenMapReader.generateScreens(vehicle, model.modelId);
+		if (screens == null) screens = VehicleScreenMapReader.generateScreens(vehicle, model.modelId, 
+				UtilGeometry.convertVector(model.getGlobalPivot()));
 		return screens;
 	}
 

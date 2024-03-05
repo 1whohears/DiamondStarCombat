@@ -38,6 +38,7 @@ public class ObjEntityModels implements ResourceManagerReloadListener {
 	public static final String DIRECTORY = "models/entity";
 	public static final String MODEL_FILE_TYPE = ".obj";
 	public static final String OVERRIDE_FILE_TYPE = ".json";
+	public static final String NULL_MODEL_NAME = "simple_test";
 	
 	private Map<String, ModelOverrides> modelOverrides = new HashMap<>();
 	private Map<String, ObjModel> unbakedModels = new HashMap<>();
@@ -46,8 +47,8 @@ public class ObjEntityModels implements ResourceManagerReloadListener {
 	private ObjEntityModels() {
 	}
 	
-	@Nullable
 	public ObjModel getUnbakedModel(String name) {
+		if (!unbakedModels.containsKey(name)) return unbakedModels.get(NULL_MODEL_NAME);
 		return unbakedModels.get(name);
 	}
 	
@@ -56,11 +57,13 @@ public class ObjEntityModels implements ResourceManagerReloadListener {
 		return modelOverrides.get(name);
 	}
 	
-	public static final String NULL_MODEL_NAME = "simple_test";
-	
 	public CompositeRenderable getBakedModel(String name) {
 		if (!models.containsKey(name)) return models.get(NULL_MODEL_NAME);
 		return models.get(name);
+	}
+	
+	public boolean hasModel(String id) {
+		return models.containsKey(id);
 	}
 	
 	public void bakeModels() {

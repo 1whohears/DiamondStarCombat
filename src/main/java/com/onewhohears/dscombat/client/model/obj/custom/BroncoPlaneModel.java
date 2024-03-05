@@ -74,7 +74,7 @@ public class BroncoPlaneModel extends ObjAircraftModel<EntityPlane> {
 	private static final Vector3f PIVOT = new Vector3f(0, -2f, 2f);
 	
 	@Override
-	protected Vector3f getGlobalPivot() {
+	public Vector3f getGlobalPivot() {
 		return PIVOT;
 	}
 

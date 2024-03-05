@@ -8,7 +8,10 @@
 		"EntityMixin"
 	],
 	"client": [
-		"CompositeRenderableMeshMixin"
+		"ObjModelAccess",
+		"CompositeRenderableMeshAccess",
+		"CompositeRenderableComponentAccess",
+		"CompositeRenderableAccess"
 	],
 	"server": [],
 	"injectors": {

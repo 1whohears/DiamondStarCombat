@@ -8,16 +8,17 @@ import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.Entity;
 
 public interface VehicleScreenRenderer<T extends EntityVehicle> extends EntityScreenRenderer<T> {
 	
 	public default boolean shouldRenderScreens(T vehicle) {
-		if (vehicle.getVehicleScreens().length == 0) return false;
 		Minecraft m = Minecraft.getInstance();
-		Player player = m.player;
-		if (player == null) return false;
-		return player.distanceToSqr(vehicle) < 256;
+		if (m.player == null) return false;
+		if (vehicle.getVehicleScreens().length == 0) return false;
+		Entity seat = vehicle.getPilotSeat();
+		if (seat == null) return false;
+		return m.player.distanceToSqr(seat) < 64;
 	}
 	
 	public default void renderVehicleScreens(T vehicle, PoseStack poseStack, 

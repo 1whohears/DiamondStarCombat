@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.client.entityscreen;
+package com.onewhohears.dscombat.client.entityscreen.instance;
 
 import static com.onewhohears.dscombat.DSCombatMod.MODID;
 

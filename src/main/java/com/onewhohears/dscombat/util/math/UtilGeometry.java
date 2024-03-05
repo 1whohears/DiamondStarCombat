@@ -11,6 +11,7 @@ import com.mojang.math.Vector4f;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
 public class UtilGeometry {
@@ -318,6 +319,44 @@ public class UtilGeometry {
 			}
 		}
 		return minIndex;
+	}
+	
+	public static float crossProduct(Vec2 v1, Vec2 v2) {
+		return v1.x * v2.y - v1.y * v2.x;
+	}
+	
+	public static boolean isIn2DTriangle(Vec2 p, Vec2[] v) {
+		if (v.length < 3) return false;
+		float area = 0.5f * (-v[1].y*v[2].x + v[0].y*(-v[1].x+v[2].x) + v[0].x*(v[1].y-v[2].y) + v[1].x*v[2].y);
+		float a = 1/(2*area);
+		float s0 = a * (v[0].y*v[2].x - v[0].x*v[2].y + (v[2].y-v[0].y)*p.x + (v[0].x-v[2].x)*p.y);
+		float t0 = a * (v[0].x*v[1].y - v[0].y*v[1].x + (v[0].y-v[1].y)*p.x + (v[1].x-v[0].x)*p.y);
+		return s0 >= 0 && t0 >= 0 && 1-s0-t0 >= 0;
+	}
+	
+	public static boolean isIn2DQuad(Vec2 p, Vec2[] v) {
+		if (v.length < 4) return false;
+		Vec2[] t1 = new Vec2[] {v[0], v[1], v[2]};
+		Vec2[] t2 = new Vec2[] {v[0], v[2], v[3]};
+		return isIn2DTriangle(p, t1) || isIn2DTriangle(p, t2); 
+	}
+	
+	public static int add(int n, int a, int max) {
+		n += a;
+		double r = (double)n / (double)max;
+		n -= (int)r * max;
+		return n;
+	}
+	
+	@Nullable
+	public static Vec2 intersect(Vec2 as, Vec2 ae, Vec2 bs, Vec2 be) {
+		Vec2 ad = ae.add(as.negated());
+		Vec2 bd = be.add(bs.negated());
+		float det = crossProduct(bd, ad);
+		if (det == 0) return null;
+		Vec2 D = bs.add(as.negated());
+		float u = (D.y * bd.x - D.x * bd.y) / det;
+		return as.add(ad.scale(u));
 	}
 	
 }

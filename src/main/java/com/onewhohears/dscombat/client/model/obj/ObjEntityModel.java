@@ -83,7 +83,7 @@ public class ObjEntityModel<T extends Entity> {
 		return OverlayTexture.NO_OVERLAY;
 	}
 	
-	protected Vector3f getGlobalPivot() {
+	public Vector3f getGlobalPivot() {
 		return Vector3f.ZERO;
 	}
 	

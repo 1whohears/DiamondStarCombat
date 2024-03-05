@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.client.entityscreen;
+package com.onewhohears.dscombat.client.entityscreen.instance;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;

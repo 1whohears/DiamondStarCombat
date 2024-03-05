@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.client.entityscreen;
+package com.onewhohears.dscombat.client.entityscreen.instance;
 
 import javax.annotation.Nullable;
 

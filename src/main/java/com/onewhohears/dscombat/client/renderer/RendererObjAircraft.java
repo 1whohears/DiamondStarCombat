@@ -11,8 +11,10 @@ import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
+import net.minecraft.world.entity.Entity;
 
 public class RendererObjAircraft<T extends EntityVehicle> extends RendererObjEntity<T> implements RotableHitboxRenderer, VehicleScreenRenderer<T> {
 	
@@ -45,6 +47,16 @@ public class RendererObjAircraft<T extends EntityVehicle> extends RendererObjEnt
         }
 		
 		poseStack.popPose();
+	}
+	
+	@Override
+	public boolean shouldRenderScreens(T vehicle) {
+		if (getScreens(vehicle).size() == 0) return false;
+		Minecraft m = Minecraft.getInstance();
+		if (m.player == null) return false;
+		Entity seat = vehicle.getPilotSeat();
+		if (seat == null) return false;
+		return m.player.distanceToSqr(seat) < 64;
 	}
 	
 	protected List<EntityScreenData> getScreens(T vehicle) {

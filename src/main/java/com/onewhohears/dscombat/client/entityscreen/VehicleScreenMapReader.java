@@ -31,8 +31,7 @@ public class VehicleScreenMapReader {
 	
 	private static final Logger LOGGER = LogUtils.getLogger();
 	/**
-	 * CLIENT ONLY!
-	 * ONLY WORKS FOR OBJ MODELS!
+	 * CLIENT ONLY! ONLY WORKS FOR OBJ MODELS!
 	 */
 	public static List<EntityScreenData> generateScreens(EntityVehicle entity, String modelId, Vec3 modelOffset) {
 		List<VehicleScreenUV> vehicleScreenUVs = readVehicleScreenUVs(entity.textureManager.getScreenMap());
@@ -99,35 +98,33 @@ public class VehicleScreenMapReader {
 	}
 	
 	private static void addScreenFromQuad(BakedQuad quad, List<EntityScreenData> list, VehicleScreenUV screenUV, CompositeRenderable model, Vec3 offset) {
-		LOGGER.debug("Found screen pos in model! Adding screen type "+screenUV.screenType);
 		Vec2[] uvs = getUVs(quad);
 		Vec3[] corners = getQuadPositions(quad);
 		Vec3 pos = getWorldPos(screenUV.um, screenUV.vm, uvs, corners);
 		float width = 0.05f, height = 0.05f;
 		float[] wh = getWidthHeight(uvs, corners, pos, screenUV);
-		if (wh == null) getWidthHeightOtherQuad(pos, screenUV, model);
+		if (wh == null) wh = getWidthHeightOtherQuad(pos, screenUV, model);
 		if (wh != null) {
 			width = wh[0]; 
 			height = wh[1];
 		}
 		Vec3 normal = corners[2].subtract(corners[0]).cross(corners[1].subtract(corners[0])).normalize();
-		list.add(new EntityScreenData(screenUV.screenType, pos.add(offset).subtract(normal.scale(0.001)), 
-				width, height, UtilAngles.getPitch(normal), UtilAngles.getYaw(normal), 0));
+		pos = pos.add(offset).subtract(normal.scale(0.001));
+		LOGGER.debug("Found screen pos in model! Adding screen type "+screenUV.screenType+" at "+pos);
+		list.add(new EntityScreenData(screenUV.screenType, pos, width, height, 
+				UtilAngles.getPitch(normal), UtilAngles.getYaw(normal), 0));
 	}
 	
 	private static float[] getWidthHeightOtherQuad(Vec3 pos, VehicleScreenUV screenUV, CompositeRenderable model) {
-		// FIXME 5 getWidthHeightOtherQuad
 		List<BakedQuad> cornerQuads = findQuadsWithUV(model, screenUV.u0, screenUV.v0);
-		System.out.println("pos = "+pos);
 		for (BakedQuad quad : cornerQuads) {
 			Vec2[] uvs = getUVs(quad);
 			Vec3[] corners = getQuadPositions(quad);
 			Vec3 cornerPos = getWorldPos(screenUV.u0, screenUV.v0, uvs, corners);
-			System.out.println("cornerPos = "+cornerPos);
 			if (cornerPos.distanceTo(pos) > 1) continue;
 			Vec2 uvm = new Vec2(screenUV.um, screenUV.vm);
 			Vec2 uvc = new Vec2(screenUV.u0, screenUV.v0);
-			return getWidthHeight(uvs, corners, pos, uvm, uvc);
+			return getWidthHeight(pos, cornerPos, uvm, uvc);
 		}
 		return null;
 	}
@@ -136,16 +133,20 @@ public class VehicleScreenMapReader {
 		float[] wh = null;
 		Vec2 uvm = new Vec2(screenUV.um, screenUV.vm);
 		wh = getWidthHeight(uvs, corners, pos, uvm, new Vec2(screenUV.u0, screenUV.v0));
-		if (wh == null) getWidthHeight(uvs, corners, pos, uvm, new Vec2(screenUV.u1, screenUV.v0));
-		if (wh == null) getWidthHeight(uvs, corners, pos, uvm, new Vec2(screenUV.u0, screenUV.v1));
-		if (wh == null) getWidthHeight(uvs, corners, pos, uvm, new Vec2(screenUV.u1, screenUV.v1));
+		if (wh == null) wh = getWidthHeight(uvs, corners, pos, uvm, new Vec2(screenUV.u1, screenUV.v0));
+		if (wh == null) wh = getWidthHeight(uvs, corners, pos, uvm, new Vec2(screenUV.u0, screenUV.v1));
+		if (wh == null) wh = getWidthHeight(uvs, corners, pos, uvm, new Vec2(screenUV.u1, screenUV.v1));
 		return wh;
 	}
 	
 	private static float[] getWidthHeight(Vec2[] uvs, Vec3[] corners, Vec3 pos, Vec2 uvm, Vec2 uvc) {
 		if (!hasUV(uvs, uvc.x, uvc.y)) return null;
 		Vec3 cornerPos = getWorldPos(uvc.x, uvc.y, uvs, corners);
-		Vec3 posDiff = pos.subtract(cornerPos);
+		return getWidthHeight(pos, cornerPos, uvm, uvc);
+	}
+	
+	private static float[] getWidthHeight(Vec3 middlePos, Vec3 cornerPos, Vec2 uvm, Vec2 uvc) {
+		Vec3 posDiff = middlePos.subtract(cornerPos);
 		Vec2 uvDiff = uvm.add(uvc.negated());
 		float posLength = (float) posDiff.length();
 		float uvLength = uvDiff.length();
@@ -193,9 +194,12 @@ public class VehicleScreenMapReader {
 		Vec2 Q = uvg, A = uvs[0], B = uvs[1], C = uvs[2];
 		Vec2 P = UtilGeometry.intersect(C, Q, B, A);
 		Vec2 v = B.add(A.negated());
-		float t = P.add(A.negated()).x / v.x;
+		float t = 0, s = 0;
+		if (v.x != 0) t = P.add(A.negated()).x / v.x;
+		else if (v.y != 0) t = P.add(A.negated()).y / v.y;
 		Vec2 u = P.add(C.negated());
-		float s = Q.add(C.negated()).x / u.x;
+		if (u.x != 0) s = Q.add(C.negated()).x / u.x;
+		else if (u.y != 0) s = Q.add(C.negated()).y / u.y;
 		return corners[0].scale((1-t)*s).add(corners[1].scale(t*s)).add(corners[2].scale(1-s));
 	}
 	

@@ -1,4 +1,4 @@
-# Made in Blockbench 4.8.3
-newmtl m_b8f3f257-d6e9-714a-b338-e695f3f06349
-map_Kd dscombat:entities/heavy_missile_rack 
+# Made in Blockbench 4.9.4
+newmtl m_822c6d93-39cc-a10b-ecae-2975d2df959c
+map_Kd dscombat:entity/part/heavy_missile_rack
 newmtl none

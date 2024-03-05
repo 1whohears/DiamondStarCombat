@@ -29,7 +29,7 @@ public class ObjWeaponRackModel<T extends EntityWeaponRack> extends ObjPartModel
 		ModelOverrides mo = getWeaponModelOverride(weaponModelId);
 		for (int i = 0; i < ammo && i < maxAmmoNum; ++i) {
 			float x = i % 2 == 0 ? dX : -dX;
-			float y = (i/2 + 1) * dY;
+			float y = (i/2 + 1) * dY - dY*0.5f;
 			if (i+1 == maxAmmoNum && maxAmmoNum%2 == 1) x = 0;
 			renderWeapon(entity, poseStack, bufferSource, lightmap, partialTicks, model, mo, x, y, 0);
 		}

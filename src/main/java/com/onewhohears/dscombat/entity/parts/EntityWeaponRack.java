@@ -1,11 +1,8 @@
 package com.onewhohears.dscombat.entity.parts;
 
-import javax.annotation.Nullable;
-
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
-import com.onewhohears.dscombat.init.ModEntities;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -13,7 +10,6 @@ import net.minecraft.world.level.Level;
 public class EntityWeaponRack extends EntityPart {
 	
 	private String weaponModelId;
-	private EntityType<?> weaponEntityType;
 	
 	public EntityWeaponRack(EntityType<?> type, Level level) {
 		super(type, level);
@@ -35,17 +31,6 @@ public class EntityWeaponRack extends EntityPart {
 			weaponModelId = wd.getModelId();
 		}
 		return weaponModelId;
-	}
-	
-	public EntityType<?> getWeaponEntityType() {
-		if (weaponEntityType == null) {
-			weaponEntityType = ModEntities.BULLET.get();
-			if (!(getVehicle() instanceof EntityVehicle plane)) return weaponEntityType;
-			WeaponData wd = plane.weaponSystem.get(getSlotId());
-			if (wd == null) return weaponEntityType;
-			weaponEntityType = wd.getEntityType();
-		}
-		return weaponEntityType;
 	}
 
 	@Override

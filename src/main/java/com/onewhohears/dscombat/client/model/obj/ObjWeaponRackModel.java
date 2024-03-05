@@ -24,29 +24,22 @@ public class ObjWeaponRackModel<T extends EntityWeaponRack> extends ObjPartModel
 	public void render(T entity, PoseStack poseStack, MultiBufferSource bufferSource, int lightmap, float partialTicks) {
 		super.render(entity, poseStack, bufferSource, lightmap, partialTicks);
 		int ammo = entity.getAmmoNum();
-		
-		//EntityType<?> weaponType = entity.getWeaponEntityType();
-		//Minecraft m = Minecraft.getInstance();
-		//EntityRenderer<?> weaponRenderer = m.getEntityRenderDispatcher().renderers.get(weaponType);
-		
 		String weaponModelId = entity.getWeaponModelId();
 		CompositeRenderable model = getWeaponModel(weaponModelId);
-		poseStack.pushPose();
-		getWeaponModelOverride(weaponModelId).apply(poseStack);
-		// FIXME 9 missile models are not centered so all the missiles are positioned wacko
+		ModelOverrides mo = getWeaponModelOverride(weaponModelId);
 		for (int i = 0; i < ammo && i < maxAmmoNum; ++i) {
-			float x = i % 2 == 0 ? dX : -dY;
+			float x = i % 2 == 0 ? dX : -dX;
 			float y = (i/2 + 1) * dY;
 			if (i+1 == maxAmmoNum && maxAmmoNum%2 == 1) x = 0;
-			renderWeapon(entity, poseStack, bufferSource, lightmap, partialTicks, model, x, y, 0);
+			renderWeapon(entity, poseStack, bufferSource, lightmap, partialTicks, model, mo, x, y, 0);
 		}
-		poseStack.popPose();
 	}
 	
 	protected void renderWeapon(T entity, PoseStack poseStack, MultiBufferSource bufferSource, int lightmap, float partialTicks,
-			CompositeRenderable model, double x, double y, double z) {
+			CompositeRenderable model, ModelOverrides mo, double x, double y, double z) {
 		poseStack.pushPose();
 		poseStack.translate(x, y, z);
+		mo.apply(poseStack);
 		model.render(poseStack, bufferSource, getTextureRenderTypeLookup(entity), 
 			getLight(entity, lightmap), getOverlay(entity), partialTicks, Transforms.EMPTY);
 		poseStack.popPose();

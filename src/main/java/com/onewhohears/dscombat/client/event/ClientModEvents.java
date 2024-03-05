@@ -242,16 +242,16 @@ public final class ClientModEvents {
 						new ObjEntityModel<>("agm65l")));
 		event.registerEntityRenderer(ModEntities.AGM65G.get(), 
 				(context) -> new RendererObjEntity<EntityMissile>(context, 
-						new ObjEntityModel<>("agm65l")));
+						new ObjEntityModel<>("agm65g")));
 		event.registerEntityRenderer(ModEntities.METEOR.get(), 
 				(context) -> new RendererObjEntity<EntityMissile>(context, 
-						new ObjEntityModel<>("pac3")));
+						new ObjEntityModel<>("meteor")));
 		event.registerEntityRenderer(ModEntities.MK13.get(), 
 				(context) -> new RendererObjEntity<EntityMissile>(context, 
 						new ObjEntityModel<>("mk13")));
 		event.registerEntityRenderer(ModEntities.AGM88G.get(), 
 				(context) -> new RendererObjEntity<EntityMissile>(context, 
-						new ObjEntityModel<>("agm84e")));
+						new ObjEntityModel<>("agm88g")));
 		event.registerEntityRenderer(ModEntities.POS_MISSILE_1.get(), 
 				(context) -> new RendererEntityWeapon<>(context,
                         new EntityModelMissile1(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)),

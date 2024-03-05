@@ -13,6 +13,8 @@ import net.minecraftforge.client.model.renderable.CompositeRenderable.Transforms
 public class ObjRadarModel extends ObjPartModel<EntityRadar> {
 	
 	@Nullable protected final String largeModelId;
+	@Nullable private CompositeRenderable largeModel;
+	@Nullable private ModelOverrides largeOverride;
 	protected MastType currentMastType = MastType.NONE;
 	
 	public ObjRadarModel(String modelId) {
@@ -42,20 +44,22 @@ public class ObjRadarModel extends ObjPartModel<EntityRadar> {
 		}
 	}
 	
-	@Nullable
 	@Override
 	public CompositeRenderable getModel() {
-		if (currentMastType.isLarge() && largeModelId != null) 
-			return ObjEntityModels.get().getBakedModel(largeModelId); 
-		return ObjEntityModels.get().getBakedModel(modelId);
+		if (currentMastType.isLarge() && largeModelId != null) {
+			if (largeModel == null) largeModel = ObjEntityModels.get().getBakedModel(largeModelId); 
+			return largeModel;
+		}
+		return super.getModel();
 	}
 	
-	@Nullable
 	@Override
 	public ModelOverrides getModelOverride() {
-		if (currentMastType.isLarge() && largeModelId != null) 
-			return ObjEntityModels.get().getModelOverride(largeModelId); 
-		return ObjEntityModels.get().getModelOverride(modelId);
+		if (currentMastType.isLarge() && largeModelId != null) {
+			if (largeOverride == null) largeOverride = ObjEntityModels.get().getModelOverride(largeModelId); 
+			return largeOverride;
+		}
+		return super.getModelOverride();
 	}
 	
 	public static enum MastType {

@@ -24,6 +24,11 @@ public class ObjWeaponRackModel<T extends EntityWeaponRack> extends ObjPartModel
 	public void render(T entity, PoseStack poseStack, MultiBufferSource bufferSource, int lightmap, float partialTicks) {
 		super.render(entity, poseStack, bufferSource, lightmap, partialTicks);
 		int ammo = entity.getAmmoNum();
+		
+		//EntityType<?> weaponType = entity.getWeaponEntityType();
+		//Minecraft m = Minecraft.getInstance();
+		//EntityRenderer<?> weaponRenderer = m.getEntityRenderDispatcher().renderers.get(weaponType);
+		
 		String weaponModelId = entity.getWeaponModelId();
 		CompositeRenderable model = getWeaponModel(weaponModelId);
 		poseStack.pushPose();

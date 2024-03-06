@@ -44,8 +44,7 @@ public abstract class EntityScreenInstance implements AutoCloseable{
 		poseStack.pushPose();
 		poseStack.translate(xPos, yPos, -0.005f);
 		poseStack.scale(scale, scale, 1);
-		font.drawInBatch(text, 0, 0, color, false, poseStack.last().pose(), 
-				buffer, true, 0, packedLight);
+		font.draw(poseStack, text, 0, 0, color);
 		poseStack.popPose();
 	}
 	

@@ -253,9 +253,16 @@
   ],
   "sort_factor": 9,
   "sounds": {
-    "loopSoundType": "basic",
-    "nonPassengerEngine": "dscombat:jet_1",
-    "passengerEngine": "dscombat:jet_1",
+    "cockpitAfterBurner": "dscombat:alexis_cp_afterburner",
+    "cockpitRPM": "dscombat:alexis_cp_rpm",
+    "cockpitWindFast": "dscombat:alexis_cp_wind_fast",
+    "cockpitWindSlow": "dscombat:alexis_cp_wind_slow",
+    "externalAfterBurnerClose": "dscombat:alexis_ext_afterburner_close",
+    "externalAfterBurnerFar": "dscombat:alexis_ext_afterburner_far",
+    "externalRPM": "dscombat:alexis_ext_rpm",
+    "externalWindClose": "dscombat:alexis_ext_wind_close",
+    "externalWindFar": "dscombat:alexis_ext_wind_far",
+    "loopSoundType": "fighter_jet",
     "passengerSoundPack": "eng_non_binary_goober"
   },
   "stats": {

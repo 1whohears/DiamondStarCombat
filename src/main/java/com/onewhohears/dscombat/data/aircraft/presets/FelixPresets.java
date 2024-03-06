@@ -29,7 +29,10 @@ public class FelixPresets {
 			.setTurnTorques(1f, 2f, 4f)
 			.setThrottleRate(0.04f, 0.08f)
 			.setPlaneWingArea(23f)
-			.setBasicEngineSounds(ModSounds.JET_1, ModSounds.JET_1)
+			.setFighterJetSounds(ModSounds.ALEXIS_EXT_AFTERBURNER_CLOSE, ModSounds.ALEXIS_EXT_AFTERBURNER_FAR,
+					ModSounds.ALEXIS_EXT_RPM, ModSounds.ALEXIS_EXT_WIND_CLOSE, ModSounds.ALEXIS_EXT_WIND_FAR,
+					ModSounds.ALEXIS_CP_RPM, ModSounds.ALEXIS_CP_AFTERBURNER, ModSounds.ALEXIS_CP_WIND_SLOW, 
+					ModSounds.ALEXIS_CP_WIND_FAST)
 			.setRotationalInertia(4.5f, 9, 3)
 			.setCrashExplosionRadius(5)
 			.set3rdPersonCamDist(17)

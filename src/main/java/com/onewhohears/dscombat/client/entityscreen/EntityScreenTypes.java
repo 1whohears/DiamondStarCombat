@@ -40,8 +40,9 @@ public class EntityScreenTypes {
 		// TODO 1.3 give every vehicle that needs it an rwr screen
 		addScreenType(EntityScreenIds.RWR_SCREEN, RWRScreenInstance::new, "0xFF00DC");
 		// TODO 1.4 give every vehicle that needs it heading screen
-		// TODO 1.5 give every vehicle that needs it turn coordinator screen
-		// TODO 1.6 give every vehicle that needs it an attitude indicator
+		// TODO 1.6.1 give every vehicle that needs it turn coordinator screen
+		// TODO 1.6.2 give every vehicle that needs it attitude indicator
+		// TODO 1.6.3 give every vehicle that needs it aoa meter
 		// TODO 1.7 give every vehicle that needs it altitude screen
 		// TODO 1.8 give every vehicle that needs it air speed screen
 		// TODO 1.9 give every vehicle that needs it vertical speed screen

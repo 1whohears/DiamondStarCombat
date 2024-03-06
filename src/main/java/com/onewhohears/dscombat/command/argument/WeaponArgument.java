@@ -11,15 +11,15 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
+import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.SharedSuggestionProvider;
-import net.minecraft.network.chat.Component;
 
 public class WeaponArgument implements ArgumentType<String> {
 	
 	private static final DynamicCommandExceptionType ERROR_WEAPON_NOT_FOUND = new DynamicCommandExceptionType((arg) -> {
-		return Component.translatable("error.weapon.notFound", arg);
+		return UtilMCText.translatable("error.weapon.notFound", arg);
 	});
 	
 	public static WeaponArgument weapon() {

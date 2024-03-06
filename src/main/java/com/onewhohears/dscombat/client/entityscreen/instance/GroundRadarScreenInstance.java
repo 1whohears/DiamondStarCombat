@@ -7,9 +7,9 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.data.radar.RadarData;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 
@@ -28,7 +28,7 @@ public class GroundRadarScreenInstance extends RadarScreenInstance {
 			float partialTicks, int packedLight, float worldWidth, float worldHeight) {
 		super.draw(entity, poseStack, buffer, partialTicks, packedLight, worldWidth, worldHeight);
 		String format_range = String.format("DR: %4d", 500);
-		drawText(Component.literal(format_range), -0.48f, -0.48f, 0.25f, 
+		drawText(UtilMCText.literal(format_range), -0.48f, -0.48f, 0.25f, 
 				poseStack, buffer, 0x00ff00, packedLight);
 	}
 	

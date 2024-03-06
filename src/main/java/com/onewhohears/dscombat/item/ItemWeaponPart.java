@@ -11,6 +11,7 @@ import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.util.UtilItem;
+import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -43,7 +44,7 @@ public class ItemWeaponPart extends ItemPart {
 			WeaponData wd = WeaponPresets.get().getPreset(weapon);
 			if (wd != null) {
 				name.append(wd.getDisplayNameComponent()).append(" ")
-					.append(Component.literal(wd.getWeaponTypeCode()));
+					.append(UtilMCText.literal(wd.getWeaponTypeCode()));
 			}
 			else name.append(weapon+"?");
 		}
@@ -57,7 +58,7 @@ public class ItemWeaponPart extends ItemPart {
 		CompoundTag tag = stack.getOrCreateTag();
 		String id = tag.getString("weaponId");
 		if (id.isEmpty()) return;
-		tips.add(Component.literal("Ammo: "+tag.getInt("ammo")+"/"+tag.getInt("max")).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		tips.add(UtilMCText.literal("Ammo: "+tag.getInt("ammo")+"/"+tag.getInt("max")).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 		WeaponData wd = WeaponPresets.get().getPreset(id);
 		wd.addToolTips(tips);
 	}

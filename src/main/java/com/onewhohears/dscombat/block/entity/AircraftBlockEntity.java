@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.block.entity;
 
 import com.onewhohears.dscombat.common.container.menu.AircraftBlockContainerMenu;
 import com.onewhohears.dscombat.init.ModBlockEntities;
+import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -34,7 +35,7 @@ public class AircraftBlockEntity extends SyncedBlockEntity implements MenuProvid
 
 	@Override
 	public Component getDisplayName() {
-		return Component.translatable("container.dscombat.aircraft_block_menu");
+		return UtilMCText.translatable("container.dscombat.aircraft_block_menu");
 	}
 
 	@Override

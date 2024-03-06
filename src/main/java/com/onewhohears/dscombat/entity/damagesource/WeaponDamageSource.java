@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
+import com.onewhohears.dscombat.util.UtilMCText;
 import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.network.chat.Component;
@@ -138,10 +139,10 @@ public class WeaponDamageSource extends EntityDamageSource {
 	public Component getLocalizedDeathMessage(LivingEntity livingEntity) {
 		LivingEntity killer = livingEntity.getKillCredit();
 		String s = "death.attack."+DSCombatMod.MODID+"."+deathMsgId;
-		if (killer == null) return Component.translatable(s, livingEntity.getDisplayName());
+		if (killer == null) return UtilMCText.translatable(s, livingEntity.getDisplayName());
 		int dist = (int)livingEntity.position().distanceTo(weapon.getShootPos());
 		s += ".player";
-		return Component.translatable(s, livingEntity.getDisplayName(), killer.getDisplayName(), dist+"");
+		return UtilMCText.translatable(s, livingEntity.getDisplayName(), killer.getDisplayName(), dist+"");
 	}
 
 }

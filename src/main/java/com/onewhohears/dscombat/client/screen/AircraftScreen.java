@@ -12,6 +12,7 @@ import com.onewhohears.dscombat.common.container.slot.PartItemSlot;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftToItem;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
@@ -69,9 +70,9 @@ public class AircraftScreen extends AbstractContainerScreen<VehicleContainerMenu
 	public List<Component> getSlotTooltip() {
 		List<Component> c = new ArrayList<Component>();
 		if (this.hoveredSlot instanceof PartItemSlot slot) {
-			c.add(Component.translatable(slot.data.getTranslatableName()).setStyle(Style.EMPTY.withColor(0xFF55FF)));
-			c.add(Component.translatable(slot.data.getSlotType().getTranslatableName()).setStyle(Style.EMPTY.withColor(0xFFAA00)));
-			if (slot.data.isLocked()) c.add(Component.translatable("info.dscombat.locked").setStyle(Style.EMPTY.withColor(0xAA0000)));
+			c.add(UtilMCText.translatable(slot.data.getTranslatableName()).setStyle(Style.EMPTY.withColor(0xFF55FF)));
+			c.add(UtilMCText.translatable(slot.data.getSlotType().getTranslatableName()).setStyle(Style.EMPTY.withColor(0xFFAA00)));
+			if (slot.data.isLocked()) c.add(UtilMCText.translatable("info.dscombat.locked").setStyle(Style.EMPTY.withColor(0xAA0000)));
 		}
 		return c;
 	}
@@ -105,7 +106,7 @@ public class AircraftScreen extends AbstractContainerScreen<VehicleContainerMenu
 	protected void init() {
 		super.init();
 		Button getItemButton = new Button(0, 0, 60, 20, 
-				Component.translatable("ui.dscombat.shrink_plane_button"), 
+				UtilMCText.translatable("ui.dscombat.shrink_plane_button"), 
 				onPress -> { onPlaneItemButton(); });
 		getItemButton.x = this.getGuiLeft() + titleLabelX+144;
 		getItemButton.y = this.getGuiTop() + titleLabelY+110;

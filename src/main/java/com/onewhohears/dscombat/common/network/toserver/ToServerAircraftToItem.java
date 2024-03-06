@@ -5,9 +5,9 @@ import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -40,7 +40,7 @@ public class ToServerAircraftToItem extends IPacket {
 			if (!(level.getEntity(id) instanceof EntityVehicle plane)) return;
 			if (!plane.canBecomeItem()) {
 		    	player.displayClientMessage(
-		    		Component.translatable("error.dscombat.cant_item_yet"), 
+		    			UtilMCText.translatable("error.dscombat.cant_item_yet"), 
 		    		true);
 		    	return;
 		    }

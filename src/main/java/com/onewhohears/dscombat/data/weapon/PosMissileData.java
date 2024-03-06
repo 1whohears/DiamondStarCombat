@@ -9,10 +9,10 @@ import com.onewhohears.dscombat.data.JsonPreset;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.entity.weapon.PositionMissile;
 import com.onewhohears.dscombat.util.UtilEntity;
+import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 
@@ -70,7 +70,7 @@ public class PosMissileData extends MissileData {
 	@Override
 	public List<ComponentColor> getInfoComponents() {
 		List<ComponentColor> list = super.getInfoComponents();
-		list.add(2, new ComponentColor(Component.literal("TARGETS POSITION"), 0xaaaa00));
+		list.add(2, new ComponentColor(UtilMCText.literal("TARGETS POSITION"), 0xaaaa00));
 		return list;
 	}
 	

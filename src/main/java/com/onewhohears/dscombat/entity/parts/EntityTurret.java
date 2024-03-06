@@ -13,11 +13,11 @@ import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.entity.ai.goal.TurretShootGoal;
 import com.onewhohears.dscombat.entity.ai.goal.TurretTargetGoal;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.util.UtilMCText;
 import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -319,7 +319,7 @@ public class EntityTurret extends EntitySeat {
 		if (couldShoot) specialShoot(shooter, pos, parent, consume && consumeAmmo);
 		if (data.isFailedLaunch()) {
 			if (p != null) p.displayClientMessage(
-					Component.translatable(data.getFailedLaunchReason()), 
+					UtilMCText.translatable(data.getFailedLaunchReason()), 
 					true);
 		} else {
 			lastShootTime = tickCount;

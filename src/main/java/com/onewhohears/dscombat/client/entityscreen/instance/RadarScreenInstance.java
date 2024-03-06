@@ -4,10 +4,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.data.radar.RadarData;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.util.UtilMCText;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -32,7 +32,7 @@ public abstract class RadarScreenInstance extends EntityDynamicScreenInstance {
 		super.draw(entity, poseStack, buffer, partialTicks, packedLight, worldWidth, worldHeight);
 		EntityVehicle vehicle = (EntityVehicle)entity;
 		String radarMode = vehicle.getRadarMode().name();
-		drawText(Component.literal(radarMode), 0.28f, -0.48f, 0.2f, 
+		drawText(UtilMCText.literal(radarMode), 0.28f, -0.48f, 0.2f, 
 				poseStack, buffer, 0x00ff00, packedLight);
 	}
 

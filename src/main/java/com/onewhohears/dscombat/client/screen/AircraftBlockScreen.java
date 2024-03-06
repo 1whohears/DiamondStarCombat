@@ -13,6 +13,7 @@ import com.onewhohears.dscombat.common.network.toserver.ToServerCraftPlane;
 import com.onewhohears.dscombat.crafting.DSCIngredient;
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
+import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
@@ -122,25 +123,25 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockCo
 		int startX = (int)(293f * invScale);
 		int startY = (int)(34f * invScale);
 		int pColor = 0x4CFF00;
-		font.draw(stack, Component.literal("Health: "+data.getDouble("max_health")), startX, startY, pColor);
+		font.draw(stack, UtilMCText.literal("Health: "+data.getDouble("max_health")), startX, startY, pColor);
 		startY += font.lineHeight;
-		font.draw(stack, Component.literal("Speed: "+(int)(data.getDouble("max_speed")*20)+" m/s"), startX, startY, pColor);
+		font.draw(stack, UtilMCText.literal("Speed: "+(int)(data.getDouble("max_speed")*20)+" m/s"), startX, startY, pColor);
 		startY += font.lineHeight;
-		font.draw(stack, Component.literal("Mass: "+data.getDouble("mass")), startX, startY, pColor);
+		font.draw(stack, UtilMCText.literal("Mass: "+data.getDouble("mass")), startX, startY, pColor);
 		startY += font.lineHeight;
-		font.draw(stack, Component.literal("Area: "+data.getDouble("cross_sec_area")), startX, startY, pColor);
+		font.draw(stack, UtilMCText.literal("Area: "+data.getDouble("cross_sec_area")), startX, startY, pColor);
 		startY += font.lineHeight;
-		font.draw(stack, Component.literal("Stealth: "+data.getDouble("stealth")), startX, startY, pColor);
+		font.draw(stack, UtilMCText.literal("Stealth: "+data.getDouble("stealth")), startX, startY, pColor);
 		startY += font.lineHeight;
-		font.draw(stack, Component.literal("Heat: "+data.getDouble("idleheat")), startX, startY, pColor);
+		font.draw(stack, UtilMCText.literal("Heat: "+data.getDouble("idleheat")), startX, startY, pColor);
 		startY += font.lineHeight;
-		font.draw(stack, Component.literal("Armor: "+data.getFloat("base_armor")), startX, startY, pColor);
+		font.draw(stack, UtilMCText.literal("Armor: "+data.getFloat("base_armor")), startX, startY, pColor);
 		startY += font.lineHeight;
-		font.draw(stack, Component.literal("Yaw: "+(int)(data.getDouble("maxyaw")*20)+" d/s"), startX, startY, pColor);
+		font.draw(stack, UtilMCText.literal("Yaw: "+(int)(data.getDouble("maxyaw")*20)+" d/s"), startX, startY, pColor);
 		startY += font.lineHeight;
-		font.draw(stack, Component.literal("Pitch: "+(int)(data.getDouble("maxpitch")*20)+" d/s"), startX, startY, pColor);
+		font.draw(stack, UtilMCText.literal("Pitch: "+(int)(data.getDouble("maxpitch")*20)+" d/s"), startX, startY, pColor);
 		startY += font.lineHeight;
-		font.draw(stack, Component.literal("Roll: "+(int)(data.getDouble("maxroll")*20)+" d/s"), startX, startY, pColor);
+		font.draw(stack, UtilMCText.literal("Roll: "+(int)(data.getDouble("maxroll")*20)+" d/s"), startX, startY, pColor);
 		stack.scale(1/scale, 1/scale, 1/scale);
 	}
 	
@@ -194,7 +195,7 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockCo
 		addRenderableWidget(nextButton);
 		// craft
 		Button craftButton = new Button(0, 0, 80, 20, 
-				Component.translatable("ui.dscombat.craft_button"), 
+				UtilMCText.translatable("ui.dscombat.craft_button"), 
 				onPress -> { craftButton(); });
 		craftButton.x = leftPos+140;
 		craftButton.y = topPos+86;
@@ -222,7 +223,7 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockCo
 		if (DSCIngredient.hasIngredients(ap.getIngredients(), player.getInventory())) {
 			PacketHandler.INSTANCE.sendToServer(new ToServerCraftPlane(ap.getId(), menu.getPos()));
 		} else {
-			player.displayClientMessage(Component.translatable("error.dscombat.cant_craft"), true);
+			player.displayClientMessage(UtilMCText.translatable("error.dscombat.cant_craft"), true);
 			minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.VILLAGER_NO, 1.0F));
 		}
 	}

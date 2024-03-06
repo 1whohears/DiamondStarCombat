@@ -12,6 +12,7 @@ import com.onewhohears.dscombat.crafting.DSCIngredient;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponData.ComponentColor;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
+import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
@@ -100,7 +101,7 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockCont
 	protected void renderLabels(PoseStack stack, int mouseX, int mouseY) {
 		font.draw(stack, title, titleLabelX+38, titleLabelY, 0x404040);
 		font.draw(stack, playerInventoryTitle, inventoryLabelX+38, inventoryLabelY+56, 0x404040);
-		font.draw(stack, Component.translatable("ui.dscombat.ingredients"), titleLabelX+122, titleLabelY+34, 0x00aa00);
+		font.draw(stack, UtilMCText.translatable("ui.dscombat.ingredients"), titleLabelX+122, titleLabelY+34, 0x00aa00);
 		// weapon stats
 		if (WeaponPresets.get().getPresetNum() == 0) return;
 		WeaponData data = WeaponPresets.get().getAllPresets()[weaponIndex];
@@ -132,7 +133,7 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockCont
 		int wy = startY + 10;
 		// prev
 		Button prevButton = new Button(0, 0, 10, 20, 
-				Component.literal("<"), 
+				UtilMCText.literal("<"), 
 				onPress -> { prevButton(); });
 		prevButton.x = wx;
 		prevButton.y = wy;
@@ -142,7 +143,7 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockCont
 		for (int b = 0; b < buttonNum; ++b) {
 			final int c = b;
 			Button acb = new Button(0, 0, 20, 20,
-					Component.empty(),
+					UtilMCText.empty(),
 					onPress -> { weaponButton(c); });
 			acb.x = wx;
 			acb.y = wy;
@@ -151,14 +152,14 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockCont
 		}
 		// next
 		Button nextButton = new Button(0, 0, 10, 20, 
-				Component.literal(">"), 
+				UtilMCText.literal(">"), 
 				onPress -> { nextButton(); });
 		nextButton.x = wx;
 		nextButton.y = wy;
 		addRenderableWidget(nextButton);
 		// craft
 		Button craftButton = new Button(0, 0, 80, 20, 
-				Component.translatable("ui.dscombat.craft_button"), 
+				UtilMCText.translatable("ui.dscombat.craft_button"), 
 				onPress -> { craftButton(); });
 		craftButton.x = startX+122;
 		craftButton.y = startY+110;
@@ -210,7 +211,7 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockCont
 		if (DSCIngredient.hasIngredients(data.getIngredients(), player.getInventory())) {
 			PacketHandler.INSTANCE.sendToServer(new ToServerCraftWeapon(data.getId(), menu.getPos()));
 		} else {
-			player.displayClientMessage(Component.translatable("error.dscombat.cant_craft"), true);
+			player.displayClientMessage(UtilMCText.translatable("error.dscombat.cant_craft"), true);
 			minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.VILLAGER_NO, 1.0F));
 		}
 	}

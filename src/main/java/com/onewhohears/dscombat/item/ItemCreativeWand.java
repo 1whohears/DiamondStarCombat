@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.init.ModItems;
+import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
@@ -36,7 +37,7 @@ public class ItemCreativeWand extends Item {
 	public void appendHoverText(ItemStack stack, Level level, List<Component> tooltips, TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tooltips, isAdvanced);
 		if (translatableTooltips != null) for (int i = 0; i < translatableTooltips.length; ++i) {
-			tooltips.add(Component.translatable(translatableTooltips[i]));
+			tooltips.add(UtilMCText.translatable(translatableTooltips[i]));
 		}
 	}
 	

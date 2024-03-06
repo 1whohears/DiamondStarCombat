@@ -8,6 +8,7 @@ import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.data.parts.StorageBoxData;
 import com.onewhohears.dscombat.util.UtilItem;
+import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
@@ -38,11 +39,11 @@ public class ItemStorageBox extends ItemPart {
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tips, TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tips, isAdvanced);
-		tips.add(Component.literal("Total Slots: "+size).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		tips.add(UtilMCText.literal("Total Slots: "+size).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 		int items = 0;
 		if (stack.getTag() != null && stack.getTag().contains("items")) 
 			items = countItemsInNBT(stack.getTag().getList("items", 10));
-		tips.add(Component.literal(items+" Items").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		tips.add(UtilMCText.literal(items+" Items").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 	}
 	
 	public static int countItemsInNBT(ListTag nbt) {

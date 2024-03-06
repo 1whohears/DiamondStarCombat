@@ -8,12 +8,12 @@ import com.onewhohears.dscombat.minigame.phase.villagedefense.VillageDefenseAtta
 import com.onewhohears.dscombat.minigame.phase.villagedefense.VillageDefenseBuyPhase;
 import com.onewhohears.dscombat.minigame.phase.villagedefense.VillageDefenseEndPhase;
 import com.onewhohears.dscombat.minigame.phase.villagedefense.VillageDefenseSetupPhase;
+import com.onewhohears.dscombat.util.UtilMCText;
 import com.onewhohears.minigames.minigame.agent.TeamAgent;
 import com.onewhohears.minigames.minigame.data.DeathMatchData;
 import com.onewhohears.minigames.minigame.data.MiniGameData;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.scores.PlayerTeam;
 
@@ -75,10 +75,10 @@ public class VillageDefenseData extends DeathMatchData {
 		team.setAllowFriendlyFire(false);
 		team.setSeeFriendlyInvisibles(true);
 		if (attack) {
-			team.setDisplayName(Component.literal("ATTACKERS"));
+			team.setDisplayName(UtilMCText.literal("ATTACKERS"));
 			team.setColor(ChatFormatting.RED);
 		} else {
-			team.setDisplayName(Component.literal("DEFENDERS"));
+			team.setDisplayName(UtilMCText.literal("DEFENDERS"));
 			team.setColor(ChatFormatting.BLUE);
 		}
 	}

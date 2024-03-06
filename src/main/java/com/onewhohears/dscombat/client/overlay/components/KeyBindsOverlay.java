@@ -10,6 +10,7 @@ import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
+import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.client.KeyMapping;
 import net.minecraft.network.chat.Component;
@@ -30,10 +31,10 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
 	
 	public static Component fixKeyName(KeyMapping key) {
     	switch(key.getKey().getValue()) {
-    	case InputConstants.KEY_RCONTROL : return Component.literal("RCTRL");
-    	case InputConstants.KEY_LCONTROL : return Component.literal("LCTRL");
-    	case InputConstants.KEY_LALT : return Component.literal("LALT");
-    	case InputConstants.KEY_RALT : return Component.literal("RALT");
+    	case InputConstants.KEY_RCONTROL : return UtilMCText.literal("RCTRL");
+    	case InputConstants.KEY_LCONTROL : return UtilMCText.literal("LCTRL");
+    	case InputConstants.KEY_LALT : return UtilMCText.literal("LALT");
+    	case InputConstants.KEY_RALT : return UtilMCText.literal("RALT");
     	}
     	return key.getKey().getDisplayName();
     }
@@ -65,16 +66,16 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
 		// BREAKS
 		if (isPilot && vehicle.canBrake()) displayMapping(poseStack, screenWidth, screenHeight, index++, 
 				vehicle.getAircraftType().isPlane() ? DSCKeys.special2Key : DSCKeys.specialKey, 
-				Component.literal("Breaks (S)"), vehicle.isBraking());
+						UtilMCText.literal("Breaks (S)"), vehicle.isBraking());
 		// FLAPS DOWN
 		if (isPilot && vehicle.canFlapsDown()) displayMapping(poseStack, screenWidth, screenHeight, index++, 
-				DSCKeys.specialKey, Component.literal("Flaps Down (S1)"));
+				DSCKeys.specialKey, UtilMCText.literal("Flaps Down (S1)"));
 		// WEAPON ANGLED DOWN
 		if (isPilot && vehicle.canAngleWeaponDown()) displayMapping(poseStack, screenWidth, screenHeight, index++, 
-				DSCKeys.special2Key, Component.literal("Nose Down (S2)"));
+				DSCKeys.special2Key, UtilMCText.literal("Nose Down (S2)"));
 		// HOVER
 		if (isPilot && vehicle.canHover()) displayMapping(poseStack, screenWidth, screenHeight, index++, 
-				DSCKeys.specialKey, Component.literal("Hover (S1)"));
+				DSCKeys.specialKey, UtilMCText.literal("Hover (S1)"));
 		// FLARES
 		if (isPilot && vehicle.hasFlares()) displayMapping(poseStack, screenWidth, screenHeight, index++, 
 				DSCKeys.flareKey, vehicle.getFlareNum()+"");
@@ -106,7 +107,7 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
     }
 	
 	protected void displayMapping(PoseStack poseStack, int screenWidth, int screenHeight, int index, KeyMapping key, boolean isUsed, String setting) {
-		displayMapping(poseStack, screenWidth, screenHeight, index, key, Component.translatable(key.getName()), isUsed, setting);
+		displayMapping(poseStack, screenWidth, screenHeight, index, key, UtilMCText.translatable(key.getName()), isUsed, setting);
 	}
     
     protected void displayMapping(PoseStack poseStack, int screenWidth, int screenHeight, int index, KeyMapping key) {

@@ -7,6 +7,7 @@ import com.onewhohears.dscombat.client.model.obj.ObjEntityModels.ModelOverrides;
 import com.onewhohears.dscombat.entity.parts.EntityRadar;
 
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraftforge.client.model.renderable.CompositeRenderable;
 import net.minecraftforge.client.model.renderable.CompositeRenderable.Transforms;
 
@@ -37,7 +38,7 @@ public class ObjRadarModel extends ObjPartModel<EntityRadar> {
 			if (mastModel != null) {
 				poseStack.pushPose();
 				poseStack.translate(0, -currentMastType.radarTopPos, 0);
-				mastModel.render(poseStack, bufferSource, getTextureRenderTypeLookup(entity), 
+				mastModel.render(poseStack, bufferSource, (texture) -> RenderType.entitySolid(texture), 
 					getLight(entity, lightmap), getOverlay(entity), partialTicks, Transforms.EMPTY);
 				poseStack.popPose();
 			}

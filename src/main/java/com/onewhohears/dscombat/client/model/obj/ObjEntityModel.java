@@ -71,7 +71,7 @@ public class ObjEntityModel<T extends Entity> {
 	}
 	
 	protected ITextureRenderTypeLookup getTextureRenderTypeLookup(T entity) {
-		return (texture) -> { return RenderType.entityTranslucent(texture); };
+		return (texture) -> RenderType.entityTranslucent(texture);
 	}
 	
 	protected int getLight(T entity, int lightmap) {

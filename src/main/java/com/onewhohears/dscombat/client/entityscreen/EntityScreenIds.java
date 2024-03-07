@@ -16,6 +16,7 @@ public class EntityScreenIds {
 	public static final int RWR_SCREEN = 3;
 	public static final int GROUND_RADAR_SCREEN = 4;
 	public static final int HEADING_SCREEN = 5;
+	public static final int AIR_SPEED_SCREEN = 6;
 	
 	// THIS HAS TO BE HERE OTHERWISE CLIENT SIDE ONLY CLASS GETS CALLED CRASHING SERVER
 	/**

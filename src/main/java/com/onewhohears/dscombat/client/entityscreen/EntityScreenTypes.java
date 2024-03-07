@@ -10,6 +10,7 @@ import com.onewhohears.dscombat.client.entityscreen.instance.GroundRadarScreenIn
 import com.onewhohears.dscombat.client.entityscreen.instance.HeadingScreenInstance;
 import com.onewhohears.dscombat.client.entityscreen.instance.HudScreenInstance;
 import com.onewhohears.dscombat.client.entityscreen.instance.RWRScreenInstance;
+import com.onewhohears.dscombat.client.entityscreen.instance.SpeedScreenInstance;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -47,6 +48,7 @@ public class EntityScreenTypes {
 		// TODO 1.6.3 give every vehicle that needs it aoa meter
 		// TODO 1.7 give every vehicle that needs it altitude screen
 		// TODO 1.8 give every vehicle that needs it air speed screen
+		addScreenType(EntityScreenIds.AIR_SPEED_SCREEN, SpeedScreenInstance::new, "FFD800");
 		// TODO 1.9 give every vehicle that needs it vertical speed screen
 	}
 	

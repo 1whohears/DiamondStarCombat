@@ -7,6 +7,7 @@ import com.onewhohears.dscombat.client.entityscreen.instance.AirRadarScreenInsta
 import com.onewhohears.dscombat.client.entityscreen.instance.EntityScreenInstance;
 import com.onewhohears.dscombat.client.entityscreen.instance.FuelScreenInstance;
 import com.onewhohears.dscombat.client.entityscreen.instance.GroundRadarScreenInstance;
+import com.onewhohears.dscombat.client.entityscreen.instance.HeadingScreenInstance;
 import com.onewhohears.dscombat.client.entityscreen.instance.HudScreenInstance;
 import com.onewhohears.dscombat.client.entityscreen.instance.RWRScreenInstance;
 
@@ -31,15 +32,16 @@ public class EntityScreenTypes {
 	
 	static {
 		// TODO 1.0 give every vehicle that needs it a radar screen (show radar mode)
-		addScreenType(EntityScreenIds.AIR_RADAR_SCREEN, AirRadarScreenInstance::new, "0x00FFFF");
-		addScreenType(EntityScreenIds.GROUND_RADAR_SCREEN, GroundRadarScreenInstance::new, "0x4CFF00");
+		addScreenType(EntityScreenIds.AIR_RADAR_SCREEN, AirRadarScreenInstance::new, "00FFFF");
+		addScreenType(EntityScreenIds.GROUND_RADAR_SCREEN, GroundRadarScreenInstance::new, "4CFF00");
 		// TODO 1.1 give every vehicle fuel screen
-		addScreenType(EntityScreenIds.FUEL_SCREEN, FuelScreenInstance::new, "0x7F0000");
+		addScreenType(EntityScreenIds.FUEL_SCREEN, FuelScreenInstance::new, "7F0000");
 		// TODO 1.2 give every vehicle that needs it a hud screen
 		addScreenType(EntityScreenIds.HUD_SCREEN, HudScreenInstance::new, "");
 		// TODO 1.3 give every vehicle that needs it an rwr screen
-		addScreenType(EntityScreenIds.RWR_SCREEN, RWRScreenInstance::new, "0xFF00DC");
+		addScreenType(EntityScreenIds.RWR_SCREEN, RWRScreenInstance::new, "FF00DC");
 		// TODO 1.4 give every vehicle that needs it heading screen
+		addScreenType(EntityScreenIds.HEADING_SCREEN, HeadingScreenInstance::new, "0026FF");
 		// TODO 1.6.1 give every vehicle that needs it turn coordinator screen
 		// TODO 1.6.2 give every vehicle that needs it attitude indicator
 		// TODO 1.6.3 give every vehicle that needs it aoa meter
@@ -53,6 +55,7 @@ public class EntityScreenTypes {
 	}
 	
 	public static int stringRGBToIntABGR(String rgb) {
+		if (!rgb.startsWith("0x")) rgb = "0x" + rgb;
 		int rgba = rgb.substring(2).length() < 8 ? 
 		           Long.decode(rgb + "FF").intValue() : 
 		           Long.decode(rgb       ).intValue();

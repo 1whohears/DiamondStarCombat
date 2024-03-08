@@ -32,24 +32,20 @@ public class EntityScreenTypes {
 	}
 	
 	static {
-		// TODO 1.0 give every vehicle that needs it a radar screen (show radar mode)
+		// TODO 1.0 make a big radar screen for boats, ground vehicles (axcel truck), and stationary radars
 		addScreenType(EntityScreenIds.AIR_RADAR_SCREEN, AirRadarScreenInstance::new, "00FFFF");
 		addScreenType(EntityScreenIds.GROUND_RADAR_SCREEN, GroundRadarScreenInstance::new, "4CFF00");
-		// TODO 1.1 give every vehicle fuel screen
 		addScreenType(EntityScreenIds.FUEL_SCREEN, FuelScreenInstance::new, "7F0000");
-		// TODO 1.2 give every vehicle that needs it a hud screen
+		// TODO 1.2 what to do with hud screen?
 		addScreenType(EntityScreenIds.HUD_SCREEN, HudScreenInstance::new, "");
-		// TODO 1.3 give every vehicle that needs it an rwr screen
 		addScreenType(EntityScreenIds.RWR_SCREEN, RWRScreenInstance::new, "FF00DC");
-		// TODO 1.4 give every vehicle that needs it heading screen
 		addScreenType(EntityScreenIds.HEADING_SCREEN, HeadingScreenInstance::new, "0026FF");
-		// TODO 1.6.1 give every vehicle that needs it turn coordinator screen
-		// TODO 1.6.2 give every vehicle that needs it attitude indicator
-		// TODO 1.6.3 give every vehicle that needs it aoa meter
-		// TODO 1.7 give every vehicle that needs it altitude screen
-		// TODO 1.8 give every vehicle that needs it air speed screen
+		// TODO 1.6.1 create turn coordinator screen
+		// TODO 1.6.2 create attitude indicator screen
+		// TODO 1.6.3 create aoa meter screen
+		// TODO 1.7 create altitude screen
 		addScreenType(EntityScreenIds.AIR_SPEED_SCREEN, SpeedScreenInstance::new, "FFD800");
-		// TODO 1.9 give every vehicle that needs it vertical speed screen
+		// TODO 1.9 create vertical speed screen
 	}
 	
 	public interface EntityScreenFactory {

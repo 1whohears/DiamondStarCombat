@@ -23,13 +23,13 @@ public class HeadingScreenInstance extends SpinMeterScreenInstance {
 	public void draw(Entity entity, PoseStack poseStack, MultiBufferSource buffer, 
 			float partialTicks, int packedLight, float worldWidth, float worldHeight) {
 		super.draw(entity, poseStack, buffer, partialTicks, packedLight, worldWidth, worldHeight);
-		drawText(UtilMCText.literal(""+(int)entity.getYRot()), 0, 0, 0.2f, 
-				poseStack, buffer, 0x00ff00, packedLight);
+		drawText(UtilMCText.literal(String.format("%04.0f", entity.getYRot())), 
+				-0.25f, -0.1f, 0.5f, poseStack, buffer, 0x00ff00, packedLight);
 	}
 
 	@Override
 	protected float getAngleDegrees(Entity entity) {
-		return -entity.getYRot();
+		return 180 - entity.getYRot();
 	}
 
 }

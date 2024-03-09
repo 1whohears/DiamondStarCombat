@@ -12,6 +12,9 @@ import net.minecraftforge.client.model.renderable.CompositeRenderable.Transforms
 
 public class ObjWeaponRackModel<T extends EntityWeaponRack> extends ObjPartModel<T> {
 	
+	public static final int maxRenderedRackWeaponNum = 40;
+	public static int renderedRackWeaponNum = 0;
+	
 	protected final int maxAmmoNum;
 	protected final float dX, dY;
 	private String prevWeaponModelId = "";
@@ -28,8 +31,9 @@ public class ObjWeaponRackModel<T extends EntityWeaponRack> extends ObjPartModel
 	@Override
 	public void render(T entity, PoseStack poseStack, MultiBufferSource bufferSource, int lightmap, float partialTicks) {
 		super.render(entity, poseStack, bufferSource, lightmap, partialTicks);
+		if (renderedRackWeaponNum > maxRenderedRackWeaponNum) return;
+		// FIXME 0 rendering many missile rack models has performance issues
 		int ammo = entity.getAmmoNum();
-		// FIXME 0 rendering many missile rack models has performance issues. limit the number of missiles to render?
 		String weaponModelId = entity.getWeaponModelId();
 		CompositeRenderable model;
 		ModelOverrides mo;
@@ -59,6 +63,7 @@ public class ObjWeaponRackModel<T extends EntityWeaponRack> extends ObjPartModel
 		model.render(poseStack, bufferSource, (texture) -> RenderType.entitySolid(texture), 
 				lightmap, OverlayTexture.NO_OVERLAY, partialTicks, Transforms.EMPTY);
 		poseStack.popPose();
+		++renderedRackWeaponNum;
 	}
 	
 	protected CompositeRenderable getWeaponModel(String modelId) {

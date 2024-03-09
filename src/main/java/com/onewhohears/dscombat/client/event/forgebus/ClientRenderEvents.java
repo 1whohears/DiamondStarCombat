@@ -5,6 +5,7 @@ import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
+import com.onewhohears.dscombat.client.model.obj.ObjWeaponRackModel;
 import com.onewhohears.dscombat.client.renderer.EntityScreenRenderer;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.util.math.UtilAngles;
@@ -75,6 +76,7 @@ public class ClientRenderEvents {
 		viewMat = poseStack.last().pose();
 		projMat = event.getProjectionMatrix();
 		poseStack.popPose();
+		ObjWeaponRackModel.renderedRackWeaponNum = 0;
 	}
 
 	// TODO: register our overlays under more IDs in case modders/us in the future need to selectively disable overlays

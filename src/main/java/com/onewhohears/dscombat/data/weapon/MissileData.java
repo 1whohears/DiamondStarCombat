@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
+import com.onewhohears.dscombat.util.UtilMCText;
 import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
@@ -141,16 +142,16 @@ public abstract class MissileData extends BulletData {
 	@Override
 	public void addToolTips(List<Component> tips) {
 		super.addToolTips(tips);
-		if (getFov() != -1) tips.add(Component.literal("FOV: ").append(getFov()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
-		tips.add(Component.literal("Turn Radius: ").append(getTurnRadius()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		if (getFov() != -1) tips.add(UtilMCText.literal("FOV: ").append(getFov()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		tips.add(UtilMCText.literal("Turn Radius: ").append(getTurnRadius()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 	}
 	
 	@Override
 	public List<ComponentColor> getInfoComponents() {
 		List<ComponentColor> list = super.getInfoComponents();
-		if (getFov() != -1) list.add(new ComponentColor(Component.literal("FOV: ").append(getFov()+""), 0x040404));
-		list.add(new ComponentColor(Component.literal("Turn Radius: ").append(getTurnRadius()+""), 0x040404));
-		list.add(new ComponentColor(Component.literal("Acceleration: ").append(getAcceleration()+""), 0x040404));
+		if (getFov() != -1) list.add(new ComponentColor(UtilMCText.literal("FOV: ").append(getFov()+""), 0x040404));
+		list.add(new ComponentColor(UtilMCText.literal("Turn Radius: ").append(getTurnRadius()+""), 0x040404));
+		list.add(new ComponentColor(UtilMCText.literal("Acceleration: ").append(getAcceleration()+""), 0x040404));
 		return list;
 	}
 

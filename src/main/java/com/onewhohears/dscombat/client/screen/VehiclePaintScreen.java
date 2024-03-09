@@ -7,13 +7,13 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.aircraft.VehicleTextureManager;
 import com.onewhohears.dscombat.data.aircraft.VehicleTextureManager.BlendMode;
+import com.onewhohears.dscombat.util.UtilMCText;
 import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.CycleButton.OnValueChange;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 public class VehiclePaintScreen extends Screen {
@@ -28,7 +28,7 @@ public class VehiclePaintScreen extends Screen {
 	protected int guiX, guiY;
 	
 	public VehiclePaintScreen(VehicleTextureManager textures) {
-		super(Component.literal("Vehicle Paint Job"));
+		super(UtilMCText.literal("Vehicle Paint Job"));
 		this.textures = textures;
 	}
 	
@@ -38,26 +38,26 @@ public class VehiclePaintScreen extends Screen {
 		guiX = width/2-imageWidth/2;
 		guiY = height/2-imageHeight/2;
 		int widgetX = guiX + 4, widgetY = guiY + 4;
-		addRenderableWidget(CycleButton.<Integer>builder((base) -> Component.literal(base+""))
+		addRenderableWidget(CycleButton.<Integer>builder((base) -> UtilMCText.literal(base+""))
 				.withValues(count(textures.getBaseTextureNum()))
 				.withInitialValue(textures.getBaseTextureIndex())
 				.create(widgetX, widgetY, 168, 20, 
-					Component.literal("Base"), 
+						UtilMCText.literal("Base"), 
 					onBaseChange()));
 		int layerX = widgetX, layerY = widgetY + 20;
 		for (int i = 0; i < textures.getTextureLayers().length; ++i) {
 			addRenderableWidget(CycleButton.onOffBuilder(textures.getTextureLayers()[i].canRender())
 				.create(layerX, layerY, 44, 20, 
-					Component.literal("See"), 
+						UtilMCText.literal("See"), 
 					onRenderLayerToggle(i)));
-			addRenderableWidget(CycleButton.<BlendMode>builder((mode) -> Component.literal(mode.name()))
+			addRenderableWidget(CycleButton.<BlendMode>builder((mode) -> UtilMCText.literal(mode.name()))
 				.withValues(BlendMode.values())
 				.withInitialValue(textures.getTextureLayers()[i].getBlendMode())
 				.create(layerX+44, layerY, 74, 20, 
-					Component.literal("Mix"), 
+						UtilMCText.literal("Mix"), 
 					onBlendModeChange(i)));
 			EditBox colorBox = new EditBox(minecraft.font, layerX+118, layerY, 
-					50, 20, Component.empty());
+					50, 20, UtilMCText.empty());
 			colorBox.setValue(UtilParse.toColorString(textures.getTextureLayers()[i].getColor()));
 			colorBox.setTextColor(textures.getTextureLayers()[i].getColorInt());
 			colorBox.setResponder(layerColorBoxResponder(colorBox, i));

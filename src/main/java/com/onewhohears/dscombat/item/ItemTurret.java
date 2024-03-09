@@ -6,6 +6,7 @@ import com.onewhohears.dscombat.data.parts.TurretData;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.util.UtilItem;
+import com.onewhohears.dscombat.util.UtilMCText;
 import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.network.chat.Component;
@@ -32,7 +33,7 @@ public class ItemTurret extends ItemPart {
 		WeaponData wd = WeaponPresets.get().getPreset(weaponId);
 		if (wd != null) {
 			name.append(wd.getDisplayNameComponent()).append(" ")
-				.append(Component.literal(wd.getWeaponTypeCode()));
+				.append(UtilMCText.literal(wd.getWeaponTypeCode()));
 		}
 		else name.append(weaponId+"?");
 		int ammo = (int)data.getCurrentAmmo();

@@ -7,9 +7,9 @@ import com.mojang.logging.LogUtils;
 import com.onewhohears.dscombat.util.UtilGsonMerge;
 import com.onewhohears.dscombat.util.UtilGsonMerge.ConflictStrategy;
 import com.onewhohears.dscombat.util.UtilGsonMerge.JsonObjectExtensionConflictException;
+import com.onewhohears.dscombat.util.UtilMCText;
 import com.onewhohears.dscombat.util.UtilParse;
 
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 
@@ -71,8 +71,8 @@ public abstract class JsonPreset {
 	
 	public MutableComponent getDisplayNameComponent() {
 		String dn = getDisplayName();
-		if (dn.startsWith("preset.")) return Component.translatable(dn);
-		return Component.literal(dn);
+		if (dn.startsWith("preset.")) return UtilMCText.translatable(dn);
+		return UtilMCText.literal(dn);
 	}
 	
 	public int getSortFactor() {

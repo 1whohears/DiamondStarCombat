@@ -8,6 +8,7 @@ import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.util.UtilItem;
+import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -56,11 +57,11 @@ public class ItemAmmo extends Item {
 	public Component getName(ItemStack stack) {
 		String id = getWeaponId(stack);
 		WeaponData wd = WeaponPresets.get().getPreset(id);
-		if (wd == null) return Component.translatable(getDescriptionId()).append(" ")
-				.append(Component.translatable("error.dscombat.unknown_preset"));
+		if (wd == null) return UtilMCText.translatable(getDescriptionId()).append(" ")
+				.append(UtilMCText.translatable("error.dscombat.unknown_preset"));
 		return wd.getDisplayNameComponent().append(" ")
-				.append(Component.literal(wd.getWeaponTypeCode())).append(" ")
-				.append(Component.translatable("info.dscombat.ammo"));
+				.append(UtilMCText.literal(wd.getWeaponTypeCode())).append(" ")
+				.append(UtilMCText.translatable("info.dscombat.ammo"));
 	}
 	
 	public static String getWeaponId(ItemStack stack) {

@@ -1,7 +1,5 @@
 package com.onewhohears.dscombat.client.model.obj;
 
-import javax.annotation.Nullable;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;
@@ -24,13 +22,16 @@ public class ObjEntityModel<T extends Entity> {
 	
 	public final String modelId;
 	
+	private CompositeRenderable model;
+	private ModelOverrides modelOverride;
+	
 	public ObjEntityModel(String modelId) {
 		this.modelId = modelId;
 	}
 	
 	public void render(T entity, PoseStack poseStack, MultiBufferSource bufferSource, int lightmap, float partialTicks) {
-		handleGlobalOverrides(entity, partialTicks, poseStack);
 		rotate(entity, partialTicks, poseStack);
+		handleGlobalOverrides(entity, partialTicks, poseStack);
 		getModel().render(poseStack, bufferSource, getTextureRenderTypeLookup(entity), 
 				getLight(entity, lightmap), getOverlay(entity), partialTicks, 
 				getComponentTransforms(entity, partialTicks));
@@ -52,19 +53,17 @@ public class ObjEntityModel<T extends Entity> {
 	protected void handleGlobalOverrides(T entity, float partialTicks, PoseStack poseStack) {
 		Vector3f pivot = getGlobalPivot();
 		if (!UtilGeometry.isZero(pivot)) poseStack.translate(pivot.x(), pivot.y(), pivot.z());
-		ModelOverrides o = getModelOverride();
-		if (o == null) return;
-		poseStack.scale(o.scale * o.scale3d[0], o.scale * o.scale3d[1], o.scale * o.scale3d[2]);
+		getModelOverride().apply(poseStack);
 	}
 	
-	@Nullable
 	public CompositeRenderable getModel() {
-		return ObjEntityModels.get().getBakedModel(modelId);
+		if (model == null) model = ObjEntityModels.get().getBakedModel(modelId);
+		return model;
 	}
 	
-	@Nullable
 	public ModelOverrides getModelOverride() {
-		return ObjEntityModels.get().getModelOverride(modelId);
+		if (modelOverride == null) modelOverride = ObjEntityModels.get().getModelOverride(modelId);
+		return modelOverride;
 	}
 	
 	protected Transforms getComponentTransforms(T entity, float partialTicks) {
@@ -72,7 +71,7 @@ public class ObjEntityModel<T extends Entity> {
 	}
 	
 	protected ITextureRenderTypeLookup getTextureRenderTypeLookup(T entity) {
-		return (texture) -> { return RenderType.entityTranslucent(texture); };
+		return (texture) -> RenderType.entityTranslucent(texture);
 	}
 	
 	protected int getLight(T entity, int lightmap) {
@@ -83,7 +82,7 @@ public class ObjEntityModel<T extends Entity> {
 		return OverlayTexture.NO_OVERLAY;
 	}
 	
-	protected Vector3f getGlobalPivot() {
+	public Vector3f getGlobalPivot() {
 		return Vector3f.ZERO;
 	}
 	

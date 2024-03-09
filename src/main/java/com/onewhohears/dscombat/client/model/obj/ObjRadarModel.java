@@ -7,12 +7,15 @@ import com.onewhohears.dscombat.client.model.obj.ObjEntityModels.ModelOverrides;
 import com.onewhohears.dscombat.entity.parts.EntityRadar;
 
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraftforge.client.model.renderable.CompositeRenderable;
 import net.minecraftforge.client.model.renderable.CompositeRenderable.Transforms;
 
 public class ObjRadarModel extends ObjPartModel<EntityRadar> {
 	
 	@Nullable protected final String largeModelId;
+	@Nullable private CompositeRenderable largeModel;
+	@Nullable private ModelOverrides largeOverride;
 	protected MastType currentMastType = MastType.NONE;
 	
 	public ObjRadarModel(String modelId) {
@@ -35,27 +38,29 @@ public class ObjRadarModel extends ObjPartModel<EntityRadar> {
 			if (mastModel != null) {
 				poseStack.pushPose();
 				poseStack.translate(0, -currentMastType.radarTopPos, 0);
-				mastModel.render(poseStack, bufferSource, getTextureRenderTypeLookup(entity), 
+				mastModel.render(poseStack, bufferSource, (texture) -> RenderType.entitySolid(texture), 
 					getLight(entity, lightmap), getOverlay(entity), partialTicks, Transforms.EMPTY);
 				poseStack.popPose();
 			}
 		}
 	}
 	
-	@Nullable
 	@Override
 	public CompositeRenderable getModel() {
-		if (currentMastType.isLarge() && largeModelId != null) 
-			return ObjEntityModels.get().getBakedModel(largeModelId); 
-		return ObjEntityModels.get().getBakedModel(modelId);
+		if (currentMastType.isLarge() && largeModelId != null) {
+			if (largeModel == null) largeModel = ObjEntityModels.get().getBakedModel(largeModelId); 
+			return largeModel;
+		}
+		return super.getModel();
 	}
 	
-	@Nullable
 	@Override
 	public ModelOverrides getModelOverride() {
-		if (currentMastType.isLarge() && largeModelId != null) 
-			return ObjEntityModels.get().getModelOverride(largeModelId); 
-		return ObjEntityModels.get().getModelOverride(modelId);
+		if (currentMastType.isLarge() && largeModelId != null) {
+			if (largeOverride == null) largeOverride = ObjEntityModels.get().getModelOverride(largeModelId); 
+			return largeOverride;
+		}
+		return super.getModelOverride();
 	}
 	
 	public static enum MastType {

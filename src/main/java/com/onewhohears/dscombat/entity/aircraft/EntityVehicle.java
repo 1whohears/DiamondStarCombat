@@ -52,6 +52,7 @@ import com.onewhohears.dscombat.item.ItemGasCan;
 import com.onewhohears.dscombat.item.ItemRepairTool;
 import com.onewhohears.dscombat.item.ItemSpraycan;
 import com.onewhohears.dscombat.util.UtilEntity;
+import com.onewhohears.dscombat.util.UtilMCText;
 import com.onewhohears.dscombat.util.UtilPacket;
 import com.onewhohears.dscombat.util.UtilParticles;
 import com.onewhohears.dscombat.util.math.UtilAngles;
@@ -1207,29 +1208,29 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	public void openMenu(ServerPlayer player) {
 		if (!canOpenMenu()) {
-			player.displayClientMessage(Component.translatable(getOpenMenuError()), true);
+			player.displayClientMessage(UtilMCText.translatable(getOpenMenuError()), true);
 			return;
 		}
 		NetworkHooks.openScreen(player, 
 			new SimpleMenuProvider((windowId, playerInv, p) -> 
 				new VehicleContainerMenu(windowId, playerInv), 
-			Component.translatable("container.dscombat.plane_menu")));
+				UtilMCText.translatable("container.dscombat.plane_menu")));
 	}
 	
 	public void openStorage(ServerPlayer player) {
 		if (!canOpenMenu()) {
-			player.displayClientMessage(Component.translatable(getOpenMenuError()), true);
+			player.displayClientMessage(UtilMCText.translatable(getOpenMenuError()), true);
 			return;
 		}
 		StorageBoxData box = partsManager.cycleStorageData();
 		if (box == null) {
-			player.displayClientMessage(Component.translatable("error.dscombat.no_storage_boxes"), true);
+			player.displayClientMessage(UtilMCText.translatable("error.dscombat.no_storage_boxes"), true);
 			return;
 		}
 		NetworkHooks.openScreen(player, 
 			new SimpleMenuProvider((windowId, playerInventory, p) -> 
 				box.createMenu(windowId, playerInventory), 
-			Component.translatable("container.dscombat.vehicle_storage")));
+				UtilMCText.translatable("container.dscombat.vehicle_storage")));
 	}
 	
 	public boolean canOpenMenu() {
@@ -2030,6 +2031,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			if (p != null) players.add(p); 
     	}
     	return players;
+    }
+    
+    public EntityPart getPilotSeat() {
+    	return getPartBySlotId(PartSlot.PILOT_SLOT_NAME);
     }
     
     public List<EntitySeat> getSeats() {

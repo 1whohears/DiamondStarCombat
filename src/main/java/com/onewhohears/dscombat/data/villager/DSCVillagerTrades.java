@@ -24,25 +24,25 @@ public class DSCVillagerTrades {
 		// Novice
 		trades.get(1).add(new ItemForEmerald(Items.COPPER_INGOT, 5, 1, 16, 2));
 		trades.get(1).add(new ItemForEmerald(Items.GUNPOWDER, 4, 1, 16, 2));
-		trades.get(1).add(new EmeraldForItem(ModItems.B_20MM.get(), 16, 2, 30, 4));
-		trades.get(1).add(new EmeraldForItem(ModItems.B_50MMHE.get(), 8, 3, 30, 4));
+		trades.get(1).add(new EmeraldForItem(ModItems.B_20MM.get(), 8, 2, 30, 4));
+		trades.get(1).add(new EmeraldForItem(ModItems.B_50MMHE.get(), 4, 3, 30, 4));
 		// Apprentice
-		trades.get(2).add(new EmeraldForItem(ModItems.B_120MMHE.get(), 3, 2, 30, 6));
-		trades.get(2).add(new EmeraldForAmmo(ModItems.BOMB.get(), "anm30", 4, 3, 20, 8));
-		trades.get(2).add(new EmeraldForAmmo(ModItems.BOMB.get(), "anm57", 2, 3, 20, 8));
-		trades.get(2).add(new EmeraldForAmmo(ModItems.BOMB.get(), "anm64", 1, 3, 20, 8));
+		trades.get(2).add(new EmeraldForItem(ModItems.B_120MMHE.get(), 1, 2, 30, 6));
+		trades.get(2).add(new EmeraldForAmmo(ModItems.BOMB.get(), "anm30", 4, 7, 20, 8));
+		trades.get(2).add(new EmeraldForAmmo(ModItems.BOMB.get(), "anm57", 2, 7, 20, 8));
+		trades.get(2).add(new EmeraldForAmmo(ModItems.BOMB.get(), "anm64", 1, 7, 20, 8));
 		// Journeyman
-		trades.get(3).add(new EmeraldForItem(ModItems.AGM114K.get(), 1, 3, 10, 11));
-		trades.get(3).add(new EmeraldForItem(ModItems.AGM65L.get(), 1, 4, 10, 11));
-		trades.get(3).add(new EmeraldForItem(ModItems.AIM9L.get(), 1, 6, 10, 14));
+		trades.get(3).add(new EmeraldForItem(ModItems.AGM114K.get(), 1, 10, 10, 11));
+		trades.get(3).add(new EmeraldForItem(ModItems.AGM65L.get(), 1, 15, 10, 11));
+		trades.get(3).add(new EmeraldForItem(ModItems.AIM9L.get(), 1, 15, 10, 14));
 		// Expert
-		trades.get(4).add(new EmeraldForItem(ModItems.AGM84E.get(), 1, 10, 10, 18));
-		trades.get(4).add(new EmeraldForItem(ModItems.AIM9P5.get(), 1, 8, 10, 18));
-		trades.get(4).add(new EmeraldForItem(ModItems.AIM7F.get(), 1, 12, 10, 18));
+		trades.get(4).add(new EmeraldForItem(ModItems.AGM84E.get(), 1, 20, 10, 18));
+		trades.get(4).add(new EmeraldForItem(ModItems.AIM9P5.get(), 1, 22, 10, 18));
+		trades.get(4).add(new EmeraldForItem(ModItems.AIM7F.get(), 1, 27, 10, 18));
 		// Master
-		trades.get(5).add(new EmeraldForItem(ModItems.AGM88G.get(), 1, 18, 10, 24));
-		trades.get(5).add(new EmeraldForItem(ModItems.AIM9X.get(), 1, 12, 10, 24));
-		trades.get(5).add(new EmeraldForItem(ModItems.AIM120B.get(), 1, 16, 10, 24));
+		trades.get(5).add(new EmeraldForItem(ModItems.AGM88G.get(), 1, 36, 10, 24));
+		trades.get(5).add(new EmeraldForItem(ModItems.AIM9X.get(), 1, 31, 10, 24));
+		trades.get(5).add(new EmeraldForItem(ModItems.AIM120B.get(), 1, 38, 10, 24));
 	}
 	
 	public static void putAircraftEngineerTrades(Int2ObjectMap<List<ItemListing>> trades) {
@@ -59,14 +59,14 @@ public class DSCVillagerTrades {
 		// Journeyman
 		trades.get(3).add(new EmeraldRangeForItem(ModItems.ADVANCED_COCKPIT.get(), 6, 8, 4, 7));
 		trades.get(3).add(new EmeraldRangeForItem(ModItems.TURBOFAN_F145.get(), 13, 17, 4, 8));
-		trades.get(3).add(new EmeraldRangeForItem(ModItems.MRBUDGER_TANK.get(), 26, 30, 2, 11));
+		trades.get(3).add(new EmeraldRangeForItem(ModItems.MRBUDGER_TANK.get(), 32, 36, 2, 11));
 		trades.get(3).add(new EmeraldRangeForItem(ModItems.STEVE_UP_SMASH.get(), 21, 25, 2, 10));
 		// Expert
-		trades.get(4).add(new EmeraldForAircraft(ModItems.JAVI_PLANE.get(), "javi_plane_unarmed", 31, 34, 2, 15));
-		trades.get(4).add(new EmeraldForAircraft(ModItems.NOAH_CHOPPER.get(), "noah_chopper_unarmed", 31, 34, 2, 15));
+		trades.get(4).add(new EmeraldForAircraft(ModItems.JAVI_PLANE.get(), "javi_plane_unarmed", 48, 52, 2, 15));
+		trades.get(4).add(new EmeraldForAircraft(ModItems.NOAH_CHOPPER.get(), "noah_chopper_unarmed", 40, 44, 2, 15));
 		// Master
-		trades.get(5).add(new EmeraldForAircraft(ModItems.ALEXIS_PLANE.get(), "alexis_plane_unarmed", 36, 40, 2, 20));
-		trades.get(5).add(new EmeraldForAircraft(ModItems.AXCEL_TRUCK.get(), "axcel_truck", 29, 33, 2, 20));
+		trades.get(5).add(new EmeraldForAircraft(ModItems.ALEXIS_PLANE.get(), "alexis_plane_unarmed", 60, 64, 2, 20));
+		trades.get(5).add(new EmeraldForAircraft(ModItems.EDEN_PLANE.get(), "eden_plane_unarmed", 56, 60, 2, 20));
 	}
 	
 	public static class ItemForEmerald implements VillagerTrades.ItemListing {

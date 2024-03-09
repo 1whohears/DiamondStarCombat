@@ -11,6 +11,7 @@ import com.onewhohears.dscombat.data.JsonPreset;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.weapon.EntityBullet;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
+import com.onewhohears.dscombat.util.UtilMCText;
 import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
@@ -146,12 +147,12 @@ public class BulletData extends WeaponData {
 	@Override
 	public void addToolTips(List<Component> tips) {
 		super.addToolTips(tips);
-		tips.add(Component.literal("Damage: ").append(getDamage()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
-		tips.add(Component.literal("Max Speed: ").append(getSpeed()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		tips.add(UtilMCText.literal("Damage: ").append(getDamage()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		tips.add(UtilMCText.literal("Max Speed: ").append(getSpeed()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 		if (isExplosive()) {
-			tips.add(Component.literal("Explosion Radius: ")
+			tips.add(UtilMCText.literal("Explosion Radius: ")
 				.append(getExplosionRadius()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
-			tips.add(Component.literal("Explosions: ")
+			tips.add(UtilMCText.literal("Explosions: ")
 				.append(getExplodeNum()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 		}
 	}
@@ -159,15 +160,15 @@ public class BulletData extends WeaponData {
 	@Override
 	public List<ComponentColor> getInfoComponents() {
 		List<ComponentColor> list = super.getInfoComponents();
-		list.add(new ComponentColor(Component.literal("Damage: ").append(getDamage()+""), 0x040404));
-		list.add(new ComponentColor(Component.literal("Max Speed: ").append(getSpeed()+""), 0x040404));
-		list.add(new ComponentColor(Component.literal("Innacuracy: ").append(getInnacuracy()+""), 0x040404));
+		list.add(new ComponentColor(UtilMCText.literal("Damage: ").append(getDamage()+""), 0x040404));
+		list.add(new ComponentColor(UtilMCText.literal("Max Speed: ").append(getSpeed()+""), 0x040404));
+		list.add(new ComponentColor(UtilMCText.literal("Innacuracy: ").append(getInnacuracy()+""), 0x040404));
 		if (isExplosive()) {
-			list.add(new ComponentColor(Component.literal("EXPLOSIVE"), 0xaa0000));
-			list.add(new ComponentColor(Component.literal("Radius: ").append(getExplosionRadius()+""), 0x040404));
-			list.add(new ComponentColor(Component.literal("Explosions: ").append(getExplodeNum()+""), 0x040404));
+			list.add(new ComponentColor(UtilMCText.literal("EXPLOSIVE"), 0xaa0000));
+			list.add(new ComponentColor(UtilMCText.literal("Radius: ").append(getExplosionRadius()+""), 0x040404));
+			list.add(new ComponentColor(UtilMCText.literal("Explosions: ").append(getExplodeNum()+""), 0x040404));
 		}
-		if (isCausesFire()) list.add(new ComponentColor(Component.literal("INCENDIARY"), 0xaa0000));
+		if (isCausesFire()) list.add(new ComponentColor(UtilMCText.literal("INCENDIARY"), 0xaa0000));
 		return list;
 	}
 

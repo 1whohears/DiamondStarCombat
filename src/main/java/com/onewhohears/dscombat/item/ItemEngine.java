@@ -10,6 +10,7 @@ import com.onewhohears.dscombat.data.parts.ExternalEngineData;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.util.UtilItem;
+import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
@@ -55,8 +56,8 @@ public class ItemEngine extends ItemPart {
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tips, TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tips, isAdvanced);
-		tips.add(Component.literal("Thrust: "+thrust).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
-		tips.add(Component.literal("Fuel L/M: "+String.format("%.1f", fuelRate*1200)).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		tips.add(UtilMCText.literal("Thrust: "+thrust).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		tips.add(UtilMCText.literal("Fuel L/M: "+String.format("%.1f", fuelRate*1200)).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 	}
 
 }

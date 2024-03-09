@@ -8,6 +8,7 @@ import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.data.JsonPreset;
 import com.onewhohears.dscombat.entity.weapon.EntityBunkerBuster;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
+import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -82,13 +83,13 @@ public class BunkerBusterData extends BombData {
 	@Override
 	public void addToolTips(List<Component> tips) {
 		super.addToolTips(tips);
-		tips.add(Component.literal("Block Strength: ").append(getBlockStrength()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		tips.add(UtilMCText.literal("Block Strength: ").append(getBlockStrength()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 	}
 	
 	@Override
 	public List<ComponentColor> getInfoComponents() {
 		List<ComponentColor> list = super.getInfoComponents();
-		list.add(new ComponentColor(Component.literal("Block Strength: ").append(getBlockStrength()+""), 0x040404));
+		list.add(new ComponentColor(UtilMCText.literal("Block Strength: ").append(getBlockStrength()+""), 0x040404));
 		return list;
 	}
 	

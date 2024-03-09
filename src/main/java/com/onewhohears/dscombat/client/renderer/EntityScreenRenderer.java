@@ -2,8 +2,8 @@ package com.onewhohears.dscombat.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
-import com.onewhohears.dscombat.client.entityscreen.EntityScreenInstance;
 import com.onewhohears.dscombat.client.entityscreen.EntityScreenTypes;
+import com.onewhohears.dscombat.client.entityscreen.instance.EntityScreenInstance;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;

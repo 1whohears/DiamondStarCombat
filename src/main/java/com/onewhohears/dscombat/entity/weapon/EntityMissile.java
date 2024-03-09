@@ -14,12 +14,12 @@ import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.util.UtilClientSafeSounds;
 import com.onewhohears.dscombat.util.UtilEntity;
+import com.onewhohears.dscombat.util.UtilMCText;
 import com.onewhohears.dscombat.util.UtilParticles;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -406,7 +406,7 @@ public abstract class EntityMissile extends EntityBullet {
 			if (targetPlayer == null) return;
 			Entity owner = getOwner();
 			if (!(owner instanceof ServerPlayer ownerPlayer)) return;
-			MutableComponent message = Component.literal("Missile from ").append(ownerPlayer.getDisplayName())
+			MutableComponent message = UtilMCText.literal("Missile from ").append(ownerPlayer.getDisplayName())
 					.append(" impacted ").append(targetPlayer.getDisplayName());
 			boolean teamOnly = level.getGameRules().getBoolean(DSCGameRules.BROADCAST_MISSILE_HIT_TEAM_ONLY);
 			List<ServerPlayer> players = level.getServer().getPlayerList().getPlayers();

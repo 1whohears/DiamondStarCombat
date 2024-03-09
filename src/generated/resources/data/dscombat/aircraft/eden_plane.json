@@ -88,17 +88,17 @@
       "data": {
         "itemid": "dscombat:ar2k"
       },
-      "name": "internal_6"
+      "name": "internal_5"
     },
     {
       "data": {
         "filled": true,
         "itemid": "dscombat:basic_flare_dispenser"
       },
-      "name": "internal_5"
+      "name": "internal_4"
     }
   ],
   "textures": {
-    "baseTexture": 2
+    "baseTexture": 1
   }
 }

@@ -8,6 +8,7 @@ import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraftforge.client.model.renderable.ITextureRenderTypeLookup;
 
 public class ObjAircraftModel<T extends EntityVehicle> extends ObjEntityModel<T> {
@@ -19,6 +20,16 @@ public class ObjAircraftModel<T extends EntityVehicle> extends ObjEntityModel<T>
 	@Override
 	protected ITextureRenderTypeLookup getTextureRenderTypeLookup(T entity) {
 		return (texture) -> RendererEntityAircraft.getCullBaseRenderType(entity.textureManager.getDynamicTexture());
+	}
+	
+	@Override
+	public void render(T entity, PoseStack poseStack, MultiBufferSource bufferSource, int lightmap, float partialTicks) {
+		// apparently this slightly different render order is needed or else the plane's render position gets messed up
+		handleGlobalOverrides(entity, partialTicks, poseStack);
+		rotate(entity, partialTicks, poseStack);
+		getModel().render(poseStack, bufferSource, getTextureRenderTypeLookup(entity), 
+				getLight(entity, lightmap), getOverlay(entity), partialTicks, 
+				getComponentTransforms(entity, partialTicks));
 	}
 	
 	@Override

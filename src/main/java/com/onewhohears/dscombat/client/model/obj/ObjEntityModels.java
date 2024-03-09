@@ -4,12 +4,12 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.annotation.Nullable;
-
 import org.slf4j.Logger;
 
 import com.google.gson.JsonObject;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.logging.LogUtils;
+import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.renderer.EntityScreenRenderer;
 import com.onewhohears.dscombat.util.UtilParse;
 
@@ -38,6 +38,7 @@ public class ObjEntityModels implements ResourceManagerReloadListener {
 	public static final String DIRECTORY = "models/entity";
 	public static final String MODEL_FILE_TYPE = ".obj";
 	public static final String OVERRIDE_FILE_TYPE = ".json";
+	public static final String NULL_MODEL_NAME = "simple_test";
 	
 	private Map<String, ModelOverrides> modelOverrides = new HashMap<>();
 	private Map<String, ObjModel> unbakedModels = new HashMap<>();
@@ -46,21 +47,25 @@ public class ObjEntityModels implements ResourceManagerReloadListener {
 	private ObjEntityModels() {
 	}
 	
-	@Nullable
 	public ObjModel getUnbakedModel(String name) {
+		if (!unbakedModels.containsKey(name)) return unbakedModels.get(NULL_MODEL_NAME);
 		return unbakedModels.get(name);
 	}
 	
-	@Nullable
+	public static ModelOverrides NO_OVERRIDES = new ModelOverrides();
+	
 	public ModelOverrides getModelOverride(String name) {
+		if (!modelOverrides.containsKey(name)) return NO_OVERRIDES;
 		return modelOverrides.get(name);
 	}
-	
-	public static final String NULL_MODEL_NAME = "simple_test";
 	
 	public CompositeRenderable getBakedModel(String name) {
 		if (!models.containsKey(name)) return models.get(NULL_MODEL_NAME);
 		return models.get(name);
+	}
+	
+	public boolean hasModel(String id) {
+		return models.containsKey(id);
 	}
 	
 	public void bakeModels() {
@@ -132,12 +137,35 @@ public class ObjEntityModels implements ResourceManagerReloadListener {
 	
 	public static class ModelOverrides {
 		public float scale = 1;
-		public float[] scale3d = {1f, 1f, 1f};
+		public float[] scale3d = {1, 1, 1};
+		public double[] translate = {0, 0, 0};
+		public float[] rotation = {0, 0, 0};
+		private boolean none = false;
 		public ModelOverrides(JsonObject json) {
 			if (json.has("scale")) scale = json.get("scale").getAsFloat();
 			if (json.has("scalex")) scale3d[0] = json.get("scalex").getAsFloat();
 			if (json.has("scaley")) scale3d[1] = json.get("scaley").getAsFloat(); 
 			if (json.has("scalez")) scale3d[2] = json.get("scalez").getAsFloat();
+			if (json.has("translatex")) translate[0] = json.get("translatex").getAsDouble();
+			if (json.has("translatey")) translate[1] = json.get("translatey").getAsDouble(); 
+			if (json.has("translatez")) translate[2] = json.get("translatez").getAsDouble();
+			if (json.has("rotationx")) rotation[0] = json.get("rotationx").getAsFloat();
+			if (json.has("rotationy")) rotation[1] = json.get("rotationy").getAsFloat(); 
+			if (json.has("rotationz")) rotation[2] = json.get("rotationz").getAsFloat();
+		}
+		private ModelOverrides() {
+			none = true;
+		}
+		public boolean isNone() {
+			return none;
+		}
+		public void apply(PoseStack poseStack) {
+			if (isNone()) return;
+			if (rotation[0] != 0) poseStack.mulPose(Vector3f.XP.rotationDegrees(rotation[0]));
+			if (rotation[1] != 0) poseStack.mulPose(Vector3f.YN.rotationDegrees(rotation[1]));
+			if (rotation[2] != 0) poseStack.mulPose(Vector3f.ZP.rotationDegrees(rotation[2]));
+			poseStack.translate(translate[0], translate[1], translate[2]);
+			poseStack.scale(scale * scale3d[0], scale * scale3d[1], scale * scale3d[2]);
 		}
 	}
 

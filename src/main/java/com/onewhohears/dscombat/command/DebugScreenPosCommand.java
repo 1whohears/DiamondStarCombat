@@ -7,12 +7,12 @@ import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleScreenDebug;
 import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.AngleArgument;
 import net.minecraft.commands.arguments.coordinates.Vec3Argument;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
@@ -38,12 +38,12 @@ public class DebugScreenPosCommand {
 				float rel_z_rot = AngleArgument.getAngle(context, "rel_z_rot");
 				ServerPlayer player = context.getSource().getPlayer();
 				if (!(player.getRootVehicle() instanceof EntityVehicle vehicle)) {
-					context.getSource().sendFailure(Component.literal("You must ride a vehicle to use this command!"));
+					context.getSource().sendFailure(UtilMCText.literal("You must ride a vehicle to use this command!"));
 					return 0;
 				}
 				EntityScreenData screenData = vehicle.getScreenByTypeId(type);
 				if (screenData == null) {
-					context.getSource().sendFailure(Component.literal("This vehicle doesn't have this screen type!"));
+					context.getSource().sendFailure(UtilMCText.literal("This vehicle doesn't have this screen type!"));
 					return 0;
 				}
 				screenData.rel_pos = rel_pos;
@@ -54,7 +54,7 @@ public class DebugScreenPosCommand {
 				screenData.zRot = rel_z_rot;
 				PacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), 
 						new ToClientVehicleScreenDebug(screenData));
-				context.getSource().sendSuccess(Component.literal("Changed screen position! (NOT permanent!)"), false);
+				context.getSource().sendSuccess(UtilMCText.literal("Changed screen position! (NOT permanent!)"), false);
 				return 1;
 			})
 		))))))));

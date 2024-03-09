@@ -19,7 +19,7 @@ public class BroncoPlaneModel extends ObjAircraftModel<EntityPlane> {
 	@Override
 	protected Transforms getComponentTransforms(EntityPlane entity, float partialTicks) {
 		// landing gear and blades
-		float bladerot = entity.getMotorRotation(partialTicks, 12);
+		float bladerot = entity.getMotorRotation(partialTicks, 30);
 		float gearpos = entity.getLandingGearPos(partialTicks);
 		Matrix4f blade0rot_mat = UtilAngles.pivotPixelsRotZ(44.8001f, 32.256f, 11.0114f, bladerot);
 		Matrix4f blade1rot_mat = UtilAngles.pivotPixelsRotZ(-44.8001f, 32.256f, 11.0114f, bladerot);
@@ -74,7 +74,7 @@ public class BroncoPlaneModel extends ObjAircraftModel<EntityPlane> {
 	private static final Vector3f PIVOT = new Vector3f(0, -2f, 2f);
 	
 	@Override
-	protected Vector3f getGlobalPivot() {
+	public Vector3f getGlobalPivot() {
 		return PIVOT;
 	}
 

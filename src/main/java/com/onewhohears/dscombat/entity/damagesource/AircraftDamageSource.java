@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.entity.damagesource;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.util.UtilMCText;
 import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.network.chat.Component;
@@ -52,11 +53,11 @@ public class AircraftDamageSource extends DamageSource {
 		Entity killer = aircraft.getControllingPassenger();
 		String s = "death.attack."+DSCombatMod.MODID+"."+msgId;
 		if (killer == null) {
-			return Component.translatable(s, killed.getDisplayName());
+			return UtilMCText.translatable(s, killed.getDisplayName());
 		} else if (killed.equals(killer)) {
-			return Component.translatable(s+".self", killed.getDisplayName());
+			return UtilMCText.translatable(s+".self", killed.getDisplayName());
 		} else {
-			return Component.translatable(s+".player", killed.getDisplayName(), killer.getDisplayName());
+			return UtilMCText.translatable(s+".player", killed.getDisplayName(), killer.getDisplayName());
 		}
 	}
 

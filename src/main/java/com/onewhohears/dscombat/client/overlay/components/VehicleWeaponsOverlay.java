@@ -12,14 +12,14 @@ import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
+import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 
 public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
     public static final int[] SPACINGS = {24, 21, 18, 12, 0};
-    //private static final MutableComponent WEAPON_SELECT = Component.literal("->");
-    public static final Component SAFETY = Component.translatable("ui.dscombat.no_weapon");
+    public static final Component SAFETY = UtilMCText.translatable("ui.dscombat.no_weapon");
 
     private static VehicleWeaponsOverlay INSTANCE;
 

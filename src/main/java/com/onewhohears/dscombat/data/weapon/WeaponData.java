@@ -21,6 +21,7 @@ import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.UtilItem;
+import com.onewhohears.dscombat.util.UtilMCText;
 import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.UtilParticles;
 import com.onewhohears.dscombat.util.UtilSound;
@@ -55,6 +56,7 @@ public abstract class WeaponData extends JsonPreset {
 	private final String rackTypeKey;
 	private final String compatibleWeaponPart;
 	private final String itemKey;
+	private final String modelId;
 	private final ResourceLocation icon;
 	
 	private EntityType<?> entityType;
@@ -81,6 +83,7 @@ public abstract class WeaponData extends JsonPreset {
 		this.rackTypeKey = UtilParse.getStringSafe(json, "rackTypeKey", "");
 		this.compatibleWeaponPart = UtilParse.getStringSafe(json, "compatibleWeaponPart", "");
 		this.itemKey = UtilParse.getStringSafe(json, "itemKey", "");
+		this.modelId = UtilParse.getStringSafe(json, "modelId", getId());
 		this.icon = new ResourceLocation(UtilParse.getStringSafe(json, "icon", getDefaultIconLocation()));
 	}
 	
@@ -409,8 +412,12 @@ public abstract class WeaponData extends JsonPreset {
 		return compatibleWeaponPart;
 	}
 	
+	public String getModelId() {
+		return modelId;
+	}
+	
 	public ResourceLocation getWeaponIcon() {
-		return this.isNoWeapon() ? NONE_ICON : this.icon;
+		return isNoWeapon() ? NONE_ICON : this.icon;
 	}
 	
 	public String getDefaultIconLocation() {
@@ -420,21 +427,21 @@ public abstract class WeaponData extends JsonPreset {
 	public abstract String getWeaponTypeCode();
 	
 	public void addToolTips(List<Component> tips) {
-		if (!compatibleWeaponPart.isEmpty()) tips.add(Component.literal("Compatible: ")
-			.append(Component.translatable(compatibleWeaponPart))
+		if (!compatibleWeaponPart.isEmpty()) tips.add(UtilMCText.literal("Compatible: ")
+			.append(UtilMCText.translatable(compatibleWeaponPart))
 			.setStyle(Style.EMPTY.withColor(0xAAAAAA)));
-		tips.add(Component.literal("Fire Rate: ").append(getFireRate()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
-		tips.add(Component.literal("Max Age: ").append(getMaxAge()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
-		if (!canShootOnGround) tips.add(Component.literal("Must Fly").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		tips.add(UtilMCText.literal("Fire Rate: ").append(getFireRate()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		tips.add(UtilMCText.literal("Max Age: ").append(getMaxAge()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		if (!canShootOnGround) tips.add(UtilMCText.literal("Must Fly").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 	}
 	
 	public List<ComponentColor> getInfoComponents() {
 		List<ComponentColor> list = new ArrayList<>();
 		list.add(new ComponentColor(getDisplayNameComponent(), 0x000000));
-		list.add(new ComponentColor(Component.literal(getType().toString()), 0x0000aa));
-		list.add(new ComponentColor(Component.literal("Max Ammo: ").append(getMaxAmmo()+""), 0x040404));
-		list.add(new ComponentColor(Component.literal("Fire Rate: ").append(getFireRate()+""), 0x040404));
-		list.add(new ComponentColor(Component.literal("Max Age: ").append(getMaxAge()+""), 0x040404));
+		list.add(new ComponentColor(UtilMCText.literal(getType().toString()), 0x0000aa));
+		list.add(new ComponentColor(UtilMCText.literal("Max Ammo: ").append(getMaxAmmo()+""), 0x040404));
+		list.add(new ComponentColor(UtilMCText.literal("Fire Rate: ").append(getFireRate()+""), 0x040404));
+		list.add(new ComponentColor(UtilMCText.literal("Max Age: ").append(getMaxAge()+""), 0x040404));
 		return list;
 	}
 	

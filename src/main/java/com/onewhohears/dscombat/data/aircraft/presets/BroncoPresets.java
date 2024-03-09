@@ -4,6 +4,7 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.LiftKGraph;
 import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager.PassengerSoundPack;
+import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
@@ -46,7 +47,7 @@ public class BroncoPresets {
 			.addIngredient("minecraft:green_dye", 6)
 			.addIngredient("minecraft:gold_ingot", 4)
 			.addPilotSeatSlot(0, -0.74, 4.5)
-			.addSeatSlot("seat2", SlotType.LIGHT_TURRET, 0, -0.61, 3.125)
+			.addSeatSlot(PartSlot.COPILOT_SLOT_NAME, SlotType.LIGHT_TURRET, 0, -0.61, 3.125)
 			.addEmptySlot("nose_1", SlotType.FRAME, 0, -0.9357, 6.0625, 180)
 			.addEmptySlot("frame_1", SlotType.FRAME, 0.5, -1.25, 1.1875, 180)
 			.addEmptySlot("frame_2", SlotType.FRAME, 1.125, -1.375, 1.1875, 180)

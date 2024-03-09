@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.init.ModItems;
+import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -74,19 +75,19 @@ public abstract class ItemPart extends Item {
 	
 	@Override
 	public Component getName(ItemStack stack) {
-		return Component.translatable(getDescriptionId()).setStyle(Style.EMPTY.withColor(0x55FF55));
+		return UtilMCText.translatable(getDescriptionId()).setStyle(Style.EMPTY.withColor(0x55FF55));
 	}
 	
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tips, TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tips, isAdvanced);
-		MutableComponent c = Component.literal("Compatible: ").setStyle(Style.EMPTY.withColor(0xFFFF55));
+		MutableComponent c = UtilMCText.literal("Compatible: ").setStyle(Style.EMPTY.withColor(0xFFFF55));
 		for (int i = 0; i < compatibleSlots.length; ++i) {
 			if (i != 0) c.append(",");
-			c.append(Component.translatable(compatibleSlots[i].getTranslatableName()));
+			c.append(UtilMCText.translatable(compatibleSlots[i].getTranslatableName()));
 		}
 		tips.add(c);
-		tips.add(Component.literal("Mass: "+weight).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		tips.add(UtilMCText.literal("Mass: "+weight).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 	}
 
 }

@@ -10,11 +10,11 @@ import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.entity.weapon.TrackEntityMissile;
 import com.onewhohears.dscombat.util.UtilEntity;
+import com.onewhohears.dscombat.util.UtilMCText;
 import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 
@@ -119,18 +119,18 @@ public class TrackMissileData extends MissileData {
 		List<ComponentColor> list = super.getInfoComponents();
 		switch(getTargetType()) {
 		case AIR:
-			list.add(2, new ComponentColor(Component.literal("TARGETS FLYING"), 0xaaaa00));
+			list.add(2, new ComponentColor(UtilMCText.literal("TARGETS FLYING"), 0xaaaa00));
 			break;
 		case GROUND:
-			list.add(2, new ComponentColor(Component.literal("TARGETS GROUNDED"), 0xaaaa00));
+			list.add(2, new ComponentColor(UtilMCText.literal("TARGETS GROUNDED"), 0xaaaa00));
 			break;
 		case WATER:
-			list.add(2, new ComponentColor(Component.literal("TARGETS IN WATER"), 0xaaaa00));
+			list.add(2, new ComponentColor(UtilMCText.literal("TARGETS IN WATER"), 0xaaaa00));
 			break;
 		}
-		list.add(3, new ComponentColor(Component.literal("SELF GUIDED"), 0xaaaa00));
-		if (active) list.add(4, new ComponentColor(Component.literal("ACTIVE TRACK"), 0xaaaa00));
-		else list.add(4, new ComponentColor(Component.literal("SEMI ACTIVE"), 0xaaaa00));
+		list.add(3, new ComponentColor(UtilMCText.literal("SELF GUIDED"), 0xaaaa00));
+		if (active) list.add(4, new ComponentColor(UtilMCText.literal("ACTIVE TRACK"), 0xaaaa00));
+		else list.add(4, new ComponentColor(UtilMCText.literal("SEMI ACTIVE"), 0xaaaa00));
 		return list;
 	}
 	

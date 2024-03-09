@@ -13,10 +13,10 @@ import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.entity.weapon.IRMissile;
 import com.onewhohears.dscombat.entity.weapon.IRMissile.IrTarget;
+import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 public class IRMissileData extends MissileData {
@@ -79,9 +79,9 @@ public class IRMissileData extends MissileData {
 	@Override
 	public List<ComponentColor> getInfoComponents() {
 		List<ComponentColor> list = super.getInfoComponents();
-		list.add(2, new ComponentColor(Component.literal("TARGETS FLYING"), 0xaaaa00));
-		list.add(3, new ComponentColor(Component.literal("IR GUIDED"), 0xaaaa00));
-		if (getFlareResistance() != 0) if (getFov() != -1) list.add(new ComponentColor(Component.literal("Flare Resistance: ").append(getFlareResistance()+""), 0x040404));
+		list.add(2, new ComponentColor(UtilMCText.literal("TARGETS FLYING"), 0xaaaa00));
+		list.add(3, new ComponentColor(UtilMCText.literal("IR GUIDED"), 0xaaaa00));
+		if (getFlareResistance() != 0) if (getFov() != -1) list.add(new ComponentColor(UtilMCText.literal("Flare Resistance: ").append(getFlareResistance()+""), 0x040404));
 		return list;
 	}
 	

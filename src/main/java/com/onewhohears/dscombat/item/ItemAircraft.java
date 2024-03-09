@@ -9,6 +9,7 @@ import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.init.ModItems;
+import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -133,11 +134,11 @@ public class ItemAircraft extends Item {
 		CompoundTag tag = stack.getTag();
 		if (tag == null || !tag.contains("EntityTag")) return;
 		CompoundTag et = tag.getCompound("EntityTag");
-		if (et.contains("health")) tips.add(Component.literal("Health: ")
+		if (et.contains("health")) tips.add(UtilMCText.literal("Health: ")
 				.append((int)et.getFloat("health")+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
-		if (et.contains("fuel")) tips.add(Component.literal("Fuel: ")
+		if (et.contains("fuel")) tips.add(UtilMCText.literal("Fuel: ")
 				.append((int)et.getFloat("fuel")+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
-		if (et.contains("flares")) tips.add(Component.literal("Flares: ")
+		if (et.contains("flares")) tips.add(UtilMCText.literal("Flares: ")
 				.append((int)et.getFloat("flares")+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 	}
 	
@@ -147,7 +148,7 @@ public class ItemAircraft extends Item {
 		if (tag == null || !tag.contains("EntityTag")) {
 			String name = getPresetName(stack);
 			AircraftPreset ap = AircraftPresets.get().getPreset(name);
-			if (ap == null) return Component.translatable(getDescriptionId()).append(" unknown preset!");
+			if (ap == null) return UtilMCText.translatable(getDescriptionId()).append(" unknown preset!");
 			return ap.getDisplayNameComponent().setStyle(Style.EMPTY.withColor(0x55FFFF));
 		}
 		CompoundTag etag = tag.getCompound("EntityTag");
@@ -158,7 +159,7 @@ public class ItemAircraft extends Item {
 		}
 		String owner = etag.getString("owner");
 		if (owner.isEmpty()) owner = "Someone";
-		return Component.literal(owner+"'s ").append(super.getName(stack))
+		return UtilMCText.literal(owner+"'s ").append(super.getName(stack))
 				.setStyle(Style.EMPTY.withColor(0xFFAA00).withBold(true));
 	}
 	

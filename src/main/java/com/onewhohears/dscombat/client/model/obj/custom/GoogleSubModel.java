@@ -13,7 +13,7 @@ public class GoogleSubModel extends ObjAircraftModel<EntitySubmarine> {
 	private static final Vector3f PIVOT = new Vector3f(0, -4f, 1f);
 	
 	@Override
-	protected Vector3f getGlobalPivot() {
+	public Vector3f getGlobalPivot() {
 		return PIVOT;
 	}
 

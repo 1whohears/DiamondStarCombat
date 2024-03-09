@@ -11,15 +11,15 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
+import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.SharedSuggestionProvider;
-import net.minecraft.network.chat.Component;
 
 public class VehiclePresetArgument implements ArgumentType<String> {
 	
 	private static final DynamicCommandExceptionType ERROR_VEHICLE_NOT_FOUND = new DynamicCommandExceptionType((arg) -> {
-		return Component.translatable("error.vehicle.notFound", arg);
+		return UtilMCText.translatable("error.vehicle.notFound", arg);
 	});
 	
 	public static VehiclePresetArgument vehiclePreset() {

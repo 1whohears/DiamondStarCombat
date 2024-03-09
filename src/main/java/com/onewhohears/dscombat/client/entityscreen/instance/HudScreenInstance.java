@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.client.entityscreen;
+package com.onewhohears.dscombat.client.entityscreen.instance;
 
 import static com.onewhohears.dscombat.DSCombatMod.MODID;
 
@@ -9,6 +9,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 
+/**
+ * TODO: I'm not sure about this implementation of a HUD. - 1whohears
+ * it's just kinda wack to have it floating in your face. I think we should just assume every pilot 
+ * has a helmet mounted display and show additional HUD stuff when the camera is in locked forward mode. 
+ * this will probably get removed soon. 
+ */
 public class HudScreenInstance extends EntityDynamicScreenInstance {
     protected int renderDelay;
 

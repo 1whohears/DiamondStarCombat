@@ -24,6 +24,7 @@ public class ObjAircraftModel<T extends EntityVehicle> extends ObjEntityModel<T>
 	
 	@Override
 	public void render(T entity, PoseStack poseStack, MultiBufferSource bufferSource, int lightmap, float partialTicks) {
+		// apparently this slightly different render order is needed or else the plane's render position gets messed up
 		handleGlobalOverrides(entity, partialTicks, poseStack);
 		rotate(entity, partialTicks, poseStack);
 		getModel().render(poseStack, bufferSource, getTextureRenderTypeLookup(entity), 

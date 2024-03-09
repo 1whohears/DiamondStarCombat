@@ -63,6 +63,7 @@ import com.onewhohears.dscombat.client.renderer.RendererEntityWeapon;
 import com.onewhohears.dscombat.client.renderer.RendererObjAircraft;
 import com.onewhohears.dscombat.client.renderer.RendererObjEntity;
 import com.onewhohears.dscombat.data.aircraft.AircraftClientPresets;
+import com.onewhohears.dscombat.entity.weapon.EntityBomb;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.init.ModParticles;
@@ -198,9 +199,8 @@ public final class ClientModEvents {
                         new ResourceLocation(DSCombatMod.MODID, "textures/entities/bullet1.png")));
 		// BOMBS
 		event.registerEntityRenderer(ModEntities.BOMB.get(), 
-				(context) -> new RendererEntityWeapon<>(context,
-                        new EntityModelBomb1(models.bakeLayer(EntityModelBomb1.LAYER_LOCATION)),
-                        new ResourceLocation(DSCombatMod.MODID, "textures/entities/bomb1.png")));
+				(context) -> new RendererObjEntity<EntityBomb>(context, 
+						new ObjEntityModel<>("mk82_light")));
 		// BUNKER BUSTERS
 		event.registerEntityRenderer(ModEntities.GRUETZ_BUNKER_BUSTER.get(), 
 				(context) -> new RendererEntityWeapon<>(context,

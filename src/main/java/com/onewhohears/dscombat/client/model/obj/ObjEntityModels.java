@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.logging.LogUtils;
+import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.renderer.EntityScreenRenderer;
 import com.onewhohears.dscombat.util.UtilParse;
 
@@ -136,8 +137,9 @@ public class ObjEntityModels implements ResourceManagerReloadListener {
 	
 	public static class ModelOverrides {
 		public float scale = 1;
-		public float[] scale3d = {1f, 1f, 1f};
+		public float[] scale3d = {1, 1, 1};
 		public double[] translate = {0, 0, 0};
+		public float[] rotation = {0, 0, 0};
 		private boolean none = false;
 		public ModelOverrides(JsonObject json) {
 			if (json.has("scale")) scale = json.get("scale").getAsFloat();
@@ -147,6 +149,9 @@ public class ObjEntityModels implements ResourceManagerReloadListener {
 			if (json.has("translatex")) translate[0] = json.get("translatex").getAsDouble();
 			if (json.has("translatey")) translate[1] = json.get("translatey").getAsDouble(); 
 			if (json.has("translatez")) translate[2] = json.get("translatez").getAsDouble();
+			if (json.has("rotationx")) rotation[0] = json.get("rotationx").getAsFloat();
+			if (json.has("rotationy")) rotation[1] = json.get("rotationy").getAsFloat(); 
+			if (json.has("rotationz")) rotation[2] = json.get("rotationz").getAsFloat();
 		}
 		private ModelOverrides() {
 			none = true;
@@ -156,6 +161,9 @@ public class ObjEntityModels implements ResourceManagerReloadListener {
 		}
 		public void apply(PoseStack poseStack) {
 			if (isNone()) return;
+			if (rotation[0] != 0) poseStack.mulPose(Vector3f.XP.rotationDegrees(rotation[0]));
+			if (rotation[1] != 0) poseStack.mulPose(Vector3f.YN.rotationDegrees(rotation[1]));
+			if (rotation[2] != 0) poseStack.mulPose(Vector3f.ZP.rotationDegrees(rotation[2]));
 			poseStack.translate(translate[0], translate[1], translate[2]);
 			poseStack.scale(scale * scale3d[0], scale * scale3d[1], scale * scale3d[2]);
 		}

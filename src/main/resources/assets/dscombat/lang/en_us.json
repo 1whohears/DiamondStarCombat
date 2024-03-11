@@ -150,6 +150,7 @@
 	
 	"block.dscombat.weapons_block": "Weapons Workbench",
 	"block.dscombat.aircraft_block": "Aircraft Workbench",
+	"block.dscombat.aluminum_block": "Aluminum Block",
 	
 	"container.dscombat.plane_menu": "Vehicle Menu",
 	"container.dscombat.vehicle_storage": "Vehicle Storage",
@@ -160,6 +161,9 @@
 	"itemGroup.parts": "DSCombat Parts",
 	"itemGroup.weapons": "DSCombat Weapons",
 	"itemGroup.aircraft": "DSCombat Aircraft",
+	
+	"item.dscombat.raw_aluminum": "Raw Aluminum",
+	"item.dscombat.aluminum_ingot": "Aluminum Ingot",
 	
 	"item.dscombat.ti83": "TI83",
 	"item.dscombat.intel_pentium": "Intel Pentium",

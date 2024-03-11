@@ -1,0 +1,18 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "minecraft:copper_ingot"
+        },
+        {
+            "item": "minecraft:iron_nugget"
+        },
+        {
+            "item": "minecraft:diorite"
+        }
+    ],
+    "result": {
+        "item": "dscombat:raw_aluminum",
+        "count": 1
+    }
+}

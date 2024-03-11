@@ -10,6 +10,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -40,6 +41,10 @@ public class ModBlocks {
 	public static final RegistryObject<Block> AIRCRAFT_BLOCK = registerBlock("aircraft_block", 
 			() -> new AircraftBlock(Block.Properties.of(Material.METAL)
                     .strength(1.5f).noOcclusion().explosionResistance(6f)), ModItems.AIRCRAFT);
+	
+	public static final RegistryObject<Block> ALUMINUM_BLOCK = registerBlock("aluminum_block", 
+			() -> new Block(Block.Properties.of(Material.METAL)
+                    .strength(1f).explosionResistance(2f).sound(SoundType.COPPER)), ModItems.DSC_ITEMS);
 	
 	// TODO 2.3 block to put stationary turrets on
 	

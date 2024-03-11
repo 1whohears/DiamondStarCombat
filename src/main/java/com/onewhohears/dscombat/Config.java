@@ -25,6 +25,7 @@ public class Config {
 		public final ForgeConfigSpec.DoubleValue rwrWarningVol, missileWarningVol, irTargetToneVol;
 		public final ForgeConfigSpec.DoubleValue cockpitVoiceLineVol;
 		public final ForgeConfigSpec.EnumValue<PassengerSoundPack> passengerSoundPack;
+		public final ForgeConfigSpec.IntValue maxRenderRackMissileNum;
 		
 		public Client(ForgeConfigSpec.Builder builder) {
 			builder.push("mouse-joystick-settings");
@@ -42,7 +43,7 @@ public class Config {
 			mouseXSteps = builder
 					.defineInRange("stickRollSteps", 5, 1, 100);
 			builder.pop();
-			builder.push("other");
+			builder.push("control");
 			invertY = builder
 					.comment("Invert vertical inputs.")
 					.define("invertY", false);
@@ -52,9 +53,6 @@ public class Config {
 			customDismount = builder
 					.comment("If enabled, your sneak key binding becomes Special2, and Special2 binding becomes dismount.")
 					.define("customDismount", true);
-			debugMode = builder
-					.comment("Stats for nerds.")
-					.define("debugMode", false);
 			builder.pop();
 			builder.push("sounds");
 			rwrWarningVol = builder
@@ -71,6 +69,13 @@ public class Config {
 					.defineInRange("cockpitVoiceLineVol", 1d, 0, 1d);
 			passengerSoundPack = builder
 					.defineEnum("passengerSoundPackOverride", PassengerSoundPack.SAME_AS_VEHICLE);
+			builder.pop();
+			builder.push("performance");
+			maxRenderRackMissileNum = builder
+					.defineInRange("maxRenderRackMissileNum", 30, 0, 300);
+			debugMode = builder
+					.comment("Stats for nerds.")
+					.define("debugMode", false);
 			builder.pop();
 		}
 		

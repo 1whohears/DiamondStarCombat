@@ -61,6 +61,7 @@ public class DSCIngredient {
 	public ItemStack getDisplayItem() {
 		if (stack == null) {
 			stack = new ItemStack(UtilItem.getItem(displayItemId));
+			stack.setCount(cost);
 		}
 		return stack;
 	}

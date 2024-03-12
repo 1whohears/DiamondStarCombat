@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.crafting;
 
 import com.onewhohears.dscombat.data.parts.WeaponPartData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
-import com.onewhohears.dscombat.init.ModRecipeSerializers;
+import com.onewhohears.dscombat.init.ModRecipes;
 import com.onewhohears.dscombat.item.ItemAmmo;
 import com.onewhohears.dscombat.item.ItemWeaponPart;
 
@@ -18,7 +18,7 @@ public class WeaponPartUnloadRecipe extends PartItemUnloadRecipe<WeaponPartData>
 
 	@Override
 	public RecipeSerializer<?> getSerializer() {
-		return ModRecipeSerializers.WEAPON_PART_UNLOAD.get();
+		return ModRecipes.WEAPON_PART_UNLOAD.get();
 	}
 
 	@Override

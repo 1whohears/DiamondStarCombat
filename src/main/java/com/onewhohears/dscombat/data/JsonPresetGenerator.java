@@ -36,7 +36,7 @@ public abstract class JsonPresetGenerator<T extends JsonPreset> implements DataP
 	
 	protected final Logger LOGGER = LogUtils.getLogger();
 	protected final DataGenerator.PathProvider pathProvider;
-    private final Map<ResourceLocation, T> gen_map = new HashMap<>();
+    public final Map<ResourceLocation, T> GEN_MAP = new HashMap<>();
     
     /**
      * for data pack data generation
@@ -58,7 +58,7 @@ public abstract class JsonPresetGenerator<T extends JsonPreset> implements DataP
 	
 	@Override
 	public void run(CachedOutput cache) throws IOException {
-		gen_map.clear();
+		GEN_MAP.clear();
 		registerPresets();
 		Set<ResourceLocation> set = Sets.newHashSet();
 		Consumer<T> consumer = (preset) -> {
@@ -78,11 +78,11 @@ public abstract class JsonPresetGenerator<T extends JsonPreset> implements DataP
 	}
 	
 	protected void generatePresets(Consumer<T> consumer) {
-		gen_map.forEach((key, preset) -> consumer.accept(preset));
+		GEN_MAP.forEach((key, preset) -> consumer.accept(preset));
 	}
 	
 	public void addPresetToGenerate(T preset) {
-		gen_map.put(preset.getKey(), preset);
+		GEN_MAP.put(preset.getKey(), preset);
 	}
 
 }

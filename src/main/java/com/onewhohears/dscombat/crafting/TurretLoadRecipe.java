@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.crafting;
 
 import com.onewhohears.dscombat.data.parts.TurretData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
-import com.onewhohears.dscombat.init.ModRecipeSerializers;
+import com.onewhohears.dscombat.init.ModRecipes;
 import com.onewhohears.dscombat.item.ItemAmmo;
 import com.onewhohears.dscombat.item.ItemTurret;
 
@@ -18,7 +18,7 @@ public class TurretLoadRecipe extends PartItemLoadRecipe<TurretData> {
 
 	@Override
 	public RecipeSerializer<?> getSerializer() {
-		return ModRecipeSerializers.TURRET_LOAD.get();
+		return ModRecipes.TURRET_LOAD.get();
 	}
 
 	@Override

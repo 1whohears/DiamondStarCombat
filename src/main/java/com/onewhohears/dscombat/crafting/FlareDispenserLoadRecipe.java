@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.crafting;
 
 import com.onewhohears.dscombat.data.parts.FlareDispenserData;
-import com.onewhohears.dscombat.init.ModRecipeSerializers;
+import com.onewhohears.dscombat.init.ModRecipes;
 import com.onewhohears.dscombat.item.ItemFlareDispenser;
 
 import net.minecraft.resources.ResourceLocation;
@@ -17,7 +17,7 @@ public class FlareDispenserLoadRecipe extends PartItemLoadRecipe<FlareDispenserD
 
 	@Override
 	public RecipeSerializer<?> getSerializer() {
-		return ModRecipeSerializers.FLARE_LOAD.get();
+		return ModRecipes.FLARE_LOAD.get();
 	}
 
 	@Override

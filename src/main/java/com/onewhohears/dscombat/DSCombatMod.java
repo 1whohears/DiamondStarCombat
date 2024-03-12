@@ -6,6 +6,7 @@ import com.onewhohears.dscombat.client.screen.AircraftScreen;
 import com.onewhohears.dscombat.client.screen.WeaponsBlockScreen;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.common.network.PacketHandler;
+import com.onewhohears.dscombat.data.DSCRecipeGenerator;
 import com.onewhohears.dscombat.data.DSCSoundDefinitionGen;
 import com.onewhohears.dscombat.data.aircraft.AircraftClientPresetGenerator;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresetGenerator;
@@ -20,7 +21,7 @@ import com.onewhohears.dscombat.init.ModContainers;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModParticles;
-import com.onewhohears.dscombat.init.ModRecipeSerializers;
+import com.onewhohears.dscombat.init.ModRecipes;
 import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.init.ModVillagers;
 
@@ -69,7 +70,7 @@ public class DSCombatMod {
         ModContainers.register(eventBus);
         ModEntities.register(eventBus);
         ModItems.register(eventBus);
-        ModRecipeSerializers.register(eventBus);
+        ModRecipes.register(eventBus);
         ModSounds.register(eventBus);
         ModBlockEntities.register(eventBus);
     	DataSerializers.register(eventBus);
@@ -106,6 +107,7 @@ public class DSCombatMod {
     		generator.addProvider(true, new WeaponPresetGenerator(generator));
     		generator.addProvider(true, new RadarPresetGenerator(generator));
     		DependencySafety.serverDataGen(generator);
+    		generator.addProvider(true, new DSCRecipeGenerator(generator));
     	}
     	if (event.includeClient()) {
     		generator.addProvider(true, new DSCSoundDefinitionGen(generator, event.getExistingFileHelper()));

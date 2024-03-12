@@ -123,6 +123,7 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockCo
 		int startX = (int)(293f * invScale);
 		int startY = (int)(34f * invScale);
 		int pColor = 0x4CFF00;
+		// FIXME 8 stats in aircraft workbench don't work
 		font.draw(stack, UtilMCText.literal("Health: "+data.getDouble("max_health")), startX, startY, pColor);
 		startY += font.lineHeight;
 		font.draw(stack, UtilMCText.literal("Speed: "+(int)(data.getDouble("max_speed")*20)+" m/s"), startX, startY, pColor);

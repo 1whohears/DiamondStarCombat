@@ -18,7 +18,9 @@ import com.onewhohears.dscombat.data.aircraft.presets.TankPresets;
 import net.minecraft.data.DataGenerator;
 
 public class AircraftPresetGenerator extends JsonPresetGenerator<AircraftPreset> {
-    
+	
+	public static AircraftPresetGenerator INSTANCE;
+	
     @Override
 	protected void registerPresets() {
     	addPresetToGenerate(AlexisPresets.EMPTY_ALEXIS_PLANE);
@@ -113,6 +115,7 @@ public class AircraftPresetGenerator extends JsonPresetGenerator<AircraftPreset>
     
     public AircraftPresetGenerator(DataGenerator output) {
 		super(output, "aircraft");
+		INSTANCE = this;
 	}
     
     @Override

@@ -11,6 +11,8 @@ import net.minecraft.data.DataGenerator;
 
 public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 	
+	public static WeaponPresetGenerator INSTANCE;
+	
 	protected void registerBullets() {
 		// max ammo cost: 63 copper
 		addPresetToGenerate(BulletData.Builder
@@ -907,6 +909,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 	
 	public WeaponPresetGenerator(DataGenerator output) {
 		super(output, "weapons");
+		INSTANCE = this;
 	}
 
 	@Override

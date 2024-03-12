@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.crafting;
 
 import com.onewhohears.dscombat.data.parts.FuelTankData;
-import com.onewhohears.dscombat.init.ModRecipeSerializers;
+import com.onewhohears.dscombat.init.ModRecipes;
 import com.onewhohears.dscombat.item.ItemFuelTank;
 import com.onewhohears.dscombat.item.ItemGasCan;
 
@@ -17,7 +17,7 @@ public class FuelTankLoadRecipe extends PartItemLoadRecipe<FuelTankData> {
 
 	@Override
 	public RecipeSerializer<?> getSerializer() {
-		return ModRecipeSerializers.FUEL_TANK_LOAD.get();
+		return ModRecipes.FUEL_TANK_LOAD.get();
 	}
 	
 	@Override

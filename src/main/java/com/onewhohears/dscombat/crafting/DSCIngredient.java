@@ -92,6 +92,8 @@ public class DSCIngredient {
 		}
 	}
 	
+	public static final List<DSCIngredient> NONE = new ArrayList<>();
+	
 	public static List<DSCIngredient> getIngredients(JsonObject json) {
 		List<DSCIngredient> ingredients = new ArrayList<DSCIngredient>();
 		if (!json.has("ingredients")) return ingredients;

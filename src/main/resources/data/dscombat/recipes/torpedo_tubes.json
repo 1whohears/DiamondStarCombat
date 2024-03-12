@@ -8,7 +8,7 @@
 			"item": "dscombat:heavy_missile_rack"
 		},
 		"I": {
-			"item": "minecraft:iron_ingot"
+			"item": "dscombat:aluminum_ingot"
 		}
 	},
 	"pattern": [

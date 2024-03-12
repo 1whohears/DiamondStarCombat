@@ -8,7 +8,7 @@
 			"item": "minecraft:dispenser"
 		},
 		"I": {
-			"item": "minecraft:iron_ingot"
+			"item": "dscombat:aluminum_ingot"
 		}
 	},
 	"pattern": [

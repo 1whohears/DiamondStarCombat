@@ -2,7 +2,7 @@
 	"type": "minecraft:crafting_shaped",
 	"key": {
 		"I": {
-			"item": "minecraft:iron_ingot"
+			"item": "dscombat:aluminum_ingot"
 		},
 		"K": {
 			"item": "minecraft:dried_kelp"

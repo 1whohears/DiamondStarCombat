@@ -5,10 +5,10 @@
 			"item": "dscombat:seat"
 		},
 		"I": {
-			"item": "minecraft:iron_block"
+			"item": "dscombat:aluminum_block"
 		},
 		"C": {
-			"item": "minecraft:iron_ingot"
+			"item": "dscombat:aluminum_ingot"
 		},
 		"D": {
 			"item": "minecraft:dispenser"

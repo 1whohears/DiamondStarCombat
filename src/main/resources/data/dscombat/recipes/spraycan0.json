@@ -17,7 +17,7 @@
 			"item": "minecraft:blue_dye"
 		},
 		"I": {
-			"item": "minecraft:iron_ingot"
+			"item": "dscombat:aluminum_ingot"
 		}
 	},
 	"pattern": [

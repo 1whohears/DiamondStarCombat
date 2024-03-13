@@ -31,7 +31,8 @@ public class AircraftRecipeCategory implements IRecipeCategory<AircraftRecipe> {
 	private final IDrawable icon;
 	
 	public AircraftRecipeCategory(IGuiHelper helper) {
-		background = helper.createDrawable(TEXTURE, 0, 0, 352, 260);
+		background = helper.drawableBuilder(TEXTURE, 64, 27, 224, 129)
+				.setTextureSize(512, 512).build();
 		icon = helper.createDrawableItemStack(ModBlocks.AIRCRAFT_BLOCK.get().asItem().getDefaultInstance());
 	}
 	
@@ -58,20 +59,19 @@ public class AircraftRecipeCategory implements IRecipeCategory<AircraftRecipe> {
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, AircraftRecipe recipe, IFocusGroup focuses) {
 		List<DSCIngredient> ingredients = recipe.getDSCIngredients();
-		int leftPos = 0, topPos = 0;
-		int startX = leftPos+97, startY = topPos+122;
+		int startX = 33, startY = 95;
 		int ix = startX, iy = startY;
 		int space = 18;
 		for (int i = 0; i < ingredients.size(); ++i) {
 			if (i == 9) {
 				ix = startX;
-				iy += 18;
+				iy += space;
 			}
 			ItemStack stack = ingredients.get(i).getDisplayItem();
 			builder.addSlot(RecipeIngredientRole.INPUT, ix, iy).addItemStack(stack);
 			ix += space;
 		}
-		builder.addSlot(RecipeIngredientRole.OUTPUT, leftPos+170, topPos+50).addItemStack(recipe.getResultItem());
+		builder.addSlot(RecipeIngredientRole.OUTPUT, 105, 61).addItemStack(recipe.getResultItem());
 	}
 
 }

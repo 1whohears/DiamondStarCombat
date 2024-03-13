@@ -25,13 +25,14 @@ public class WeaponRecipeCategory implements IRecipeCategory<WeaponRecipe> {
 	public static final RecipeType<WeaponRecipe> TYPE = RecipeType.create(UID.getNamespace(), UID.getPath(), WeaponRecipe.class);
 	
 	private static final ResourceLocation TEXTURE = new ResourceLocation(DSCombatMod.MODID,
-			"textures/ui/aircraft_screen.png");
+			"textures/ui/vehicle_forge_ui.png");
 	
 	private final IDrawable background;
 	private final IDrawable icon;
 	
 	public WeaponRecipeCategory(IGuiHelper helper) {
-		background = helper.createDrawable(TEXTURE, 0, 0, 256, 256);
+		background = helper.drawableBuilder(TEXTURE, 64, 27, 224, 129)
+				.setTextureSize(512, 512).build();
 		icon = helper.createDrawableItemStack(ModBlocks.WEAPONS_BLOCK.get().asItem().getDefaultInstance());
 	}
 	
@@ -58,20 +59,19 @@ public class WeaponRecipeCategory implements IRecipeCategory<WeaponRecipe> {
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, WeaponRecipe recipe, IFocusGroup focuses) {
 		List<DSCIngredient> ingredients = recipe.getDSCIngredients();
-		int startX = 0, startY = 0;
-		int iix = startX + 122;
-		int ix = iix;
-		int iy = startY + 44;
+		int startX = 33, startY = 95;
+		int ix = startX, iy = startY;
+		int space = 18;
 		for (int i = 0; i < ingredients.size(); ++i) {
-			if (i != 0 && i % 4 == 0) {
-				ix = iix;
-				iy += 20;
+			if (i == 9) {
+				ix = startX;
+				iy += space;
 			}
 			ItemStack stack = ingredients.get(i).getDisplayItem();
 			builder.addSlot(RecipeIngredientRole.INPUT, ix, iy).addItemStack(stack);
-			ix += 20;
+			ix += space;
 		}
-		builder.addSlot(RecipeIngredientRole.OUTPUT, startX, startY).addItemStack(recipe.getResultItem());
+		builder.addSlot(RecipeIngredientRole.OUTPUT, 105, 61).addItemStack(recipe.getResultItem());
 	}
 
 }

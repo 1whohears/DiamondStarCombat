@@ -23,7 +23,7 @@ apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'com.diffplug.eclipse.apt'
 
 group = 'com.onewhohears.dscombat'
-archivesBaseName = 'dscombat-${mc_version}'
+archivesBaseName = 'dscombat-1.19.2'
 version = '0.9.5'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)

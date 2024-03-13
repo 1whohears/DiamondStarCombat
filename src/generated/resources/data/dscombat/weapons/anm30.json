@@ -7,7 +7,7 @@
   "damage": 20.0,
   "destroyTerrain": true,
   "displayName": "preset.dscombat.anm30",
-  "entityTypeKey": "dscombat:bomb",
+  "entityTypeKey": "dscombat:anm30",
   "explosionRadius": 3.5,
   "explosive": true,
   "fireRate": 4,

@@ -289,6 +289,9 @@ public class ModEntities {
 	public static final RegistryObject<EntityType<EntityBomb>> BOMB = ENTITIES.register("bomb", 
 			() -> createEntityType((type, level) -> new EntityBomb(type, level, "anm30"), 
 					EntityDimensions.scalable(0.6f, 0.6f)));
+	public static final RegistryObject<EntityType<EntityBomb>> ANM30 = ENTITIES.register("anm30", 
+			() -> createEntityType((type, level) -> new EntityBomb(type, level, "anm30"), 
+					EntityDimensions.scalable(0.6f, 0.6f)));
 	public static final RegistryObject<EntityType<EntityBunkerBuster>> GRUETZ_BUNKER_BUSTER = ENTITIES.register("gruetz_bunker_buster", 
 			() -> createEntityType((type, level) -> new EntityBunkerBuster(type, level, "gruetz_bunker_buster"), 
 					EntityDimensions.scalable(1.5f, 2.5f)));

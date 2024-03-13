@@ -336,11 +336,11 @@ public class ModEntities {
 	public static final RegistryObject<EntityType<PositionMissile>> AGM114K = ENTITIES.register("agm114k", 
 			() -> createEntityTypeFar((type, level) -> new PositionMissile(type, level, "agm114k"), 
 					EntityDimensions.scalable(0.5f, 0.5f)));
-	public static final RegistryObject<EntityType<PositionMissile>> AGM84E = ENTITIES.register("agm84e", 
-			() -> createEntityTypeFar((type, level) -> new PositionMissile(type, level, "agm84e"), 
-					EntityDimensions.scalable(0.5f, 0.5f)));
 	public static final RegistryObject<EntityType<PositionMissile>> AGM65L = ENTITIES.register("agm65l", 
 			() -> createEntityTypeFar((type, level) -> new PositionMissile(type, level, "agm65l"), 
+					EntityDimensions.scalable(0.5f, 0.5f)));
+	public static final RegistryObject<EntityType<TrackEntityMissile>> AGM84E = ENTITIES.register("agm84e", 
+			() -> createEntityTypeFar((type, level) -> new TrackEntityMissile(type, level, "agm84e"), 
 					EntityDimensions.scalable(0.5f, 0.5f)));
 	public static final RegistryObject<EntityType<TrackEntityMissile>> AGM65G = ENTITIES.register("agm65g", 
 			() -> createEntityTypeFar((type, level) -> new TrackEntityMissile(type, level, "agm65g"), 

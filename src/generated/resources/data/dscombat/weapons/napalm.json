@@ -7,7 +7,7 @@
   "damage": 20.0,
   "destroyTerrain": true,
   "displayName": "preset.dscombat.napalm",
-  "entityTypeKey": "dscombat:bomb",
+  "entityTypeKey": "dscombat:mark77",
   "explosionRadius": 2.0,
   "explosive": true,
   "fireRate": 3,

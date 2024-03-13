@@ -858,7 +858,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponData>{
 				.setMaxAmmo(50)
 				.setMaxAge(200)
 				.setItem(ModItems.BOMB.getId())
-				.setEntityType(ModEntities.BOMB.getId())
+				.setEntityType(ModEntities.MARK77.getId())
 				.setRackEntityType(ModEntities.BOMB_RACK.getId())
 				.setShootSound(ModSounds.BOMB_SHOOT_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.BOMB_RACK.getId())

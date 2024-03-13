@@ -204,6 +204,9 @@ public final class ClientModEvents {
 		event.registerEntityRenderer(ModEntities.ANM30.get(), 
 				(context) -> new RendererObjEntity<EntityBomb>(context, 
 						new ObjEntityModel<>("anm30")));
+		event.registerEntityRenderer(ModEntities.MARK77.get(), 
+				(context) -> new RendererObjEntity<EntityBomb>(context, 
+						new ObjEntityModel<>("mark77")));
 		// BUNKER BUSTERS
 		event.registerEntityRenderer(ModEntities.GRUETZ_BUNKER_BUSTER.get(), 
 				(context) -> new RendererEntityWeapon<>(context,

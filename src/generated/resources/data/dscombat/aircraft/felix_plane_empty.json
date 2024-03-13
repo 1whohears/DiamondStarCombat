@@ -256,6 +256,6 @@
   },
   "textures": {
     "baseTextureVariants": 2,
-    "textureLayers": 2
+    "textureLayers": 3
   }
 }

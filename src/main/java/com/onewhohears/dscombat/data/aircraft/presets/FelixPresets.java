@@ -40,7 +40,7 @@ public class FelixPresets {
 			.setPlaneFlapDownAOABias(8)
 			.setPlaneNoseCanAimDown(false)
 			.setBaseTextureNum(2)
-			.setLayerTextureNum(2)
+			.setLayerTextureNum(3)
 			.setDefultPassengerSoundPack(PassengerSoundPack.ENG_NON_BINARY_GOOBER)
 			.addIngredient(ModItems.FUSELAGE.getId(), 1)
 			.addIngredient(ModItems.WING.getId(), 2)

@@ -186,9 +186,9 @@ public class UtilParticles {
 	}
 	
 	public static void bulletExplode(Level level, Vec3 pos, double radius, boolean fire) {
-		radius *= 1.3;
+		radius *= 0.5;
 		for (double d = 1; d <= radius; d += 1) {
-			for (int i = 0; i < 360; i += 20) for (int j = -90; j <= 90; j += 30) {
+			for (int i = 0; i < 360; i += 30) for (int j = -90; j <= 90; j += 30) {
 				level.addAlwaysVisibleParticle(ModParticles.LARGE_SMOKE_CLOUD.get(), 
 					true, pos.x, pos.y+0.2, pos.z, 
 					Math.cos(i)*d, Math.sin(j)*d, Math.sin(i)*d);
@@ -204,7 +204,7 @@ public class UtilParticles {
 	}
 	
 	public static void bombExplode(Level level, Vec3 pos, double radius, boolean fire) {
-		radius *= 1.3;
+		radius *= 0.9;
 		for (double d = 1; d <= radius; d += 1) {
 			for (int i = 0; i < 360; i += 20) for (int j = -90; j <= 90; j += 30) {
 				level.addAlwaysVisibleParticle(ModParticles.LARGE_SMOKE_CLOUD.get(), 
@@ -222,7 +222,7 @@ public class UtilParticles {
 	}
 	
 	public static void missileExplode(Level level, Vec3 pos, double radius, boolean fire) {
-		radius *= 1.3;
+		radius *= 0.8;
 		for (double d = 1; d <= radius; d += 1) {
 			for (int i = 0; i < 360; i += 20) for (int j = -90; j <= 90; j += 30) {
 				level.addAlwaysVisibleParticle(ModParticles.LARGE_SMOKE_CLOUD.get(), 

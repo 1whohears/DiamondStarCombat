@@ -31,7 +31,7 @@ public class BoatPresets {
 			.setCrashExplosionRadius(2)
 			.set3rdPersonCamDist(4)
 			.setCanNegativeThrottle(true)
-			.addIngredient("minecraft:iron_ingot", 10)
+			.addIngredient("dscombat:aluminum_ingot", 10)
 			.addIngredient(ModItems.SEAT.getId(), 7)
 			.addIngredient(ModItems.PROPELLER.getId())
 			.addIngredient("minecraft:light_gray_dye", 3)
@@ -67,7 +67,7 @@ public class BoatPresets {
 			.setSlotItem("seat1", ModItems.MINIGUN_TURRET.getId(), true)
 			.setSlotItem("frame_1", ModItems.HEAVY_MISSILE_RACK.getId(), "torpedo1", true)
 			.setSlotItem("frame_2", ModItems.HEAVY_MISSILE_RACK.getId(), "torpedo1", true)
-			.addIngredient("minecraft:iron_ingot", 64)
+			.addIngredient("dscombat:aluminum_ingot", 64)
 			.addIngredient("minecraft:redstone", 24)
 			.addIngredient("minecraft:gunpowder", 60)
 			.addIngredient(ModItems.HEAVY_MISSILE_RACK.getId(), 2)
@@ -162,7 +162,7 @@ public class BoatPresets {
 			.addIngredient(ModItems.AA_TURRET.getId(), 4)
 			.addIngredient(ModItems.MARK45_CANNON.getId(), 2)
 			.addIngredient("minecraft:copper_ingot", 64)
-			.addIngredient("minecraft:iron_ingot", 64)
+			.addIngredient("dscombat:aluminum_ingot", 64)
 			.addIngredient("minecraft:gunpowder", 64)
 			.build();
 	

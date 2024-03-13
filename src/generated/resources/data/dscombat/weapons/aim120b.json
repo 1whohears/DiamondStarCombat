@@ -19,7 +19,7 @@
   "fuseDist": 3.0,
   "ingredients": [
     {
-      "item": "minecraft:iron_ingot",
+      "item": "dscombat:aluminum_ingot",
       "num": 8
     },
     {

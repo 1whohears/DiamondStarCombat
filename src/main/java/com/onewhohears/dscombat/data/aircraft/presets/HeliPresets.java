@@ -106,7 +106,7 @@ public class HeliPresets {
 			.addIngredient(ModItems.LIGHT_MISSILE_RACK.getId(), 2)
 			.addIngredient(ModItems.BASIC_FLARE_DISPENSER.getId())
 			.addIngredient("minecraft:copper_ingot", 64)
-			.addIngredient("minecraft:iron_ingot", 64)
+			.addIngredient("dscombat:aluminum_ingot", 64)
 			.addIngredient("minecraft:redstone", 64)
 			.addIngredient("minecraft:gunpowder", 64)
 			.build();

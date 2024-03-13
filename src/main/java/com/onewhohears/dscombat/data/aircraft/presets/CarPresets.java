@@ -42,7 +42,7 @@ public class CarPresets {
 			.addIngredient(ModItems.C6_ENGINE.getId())
 			.addIngredient(ModItems.LIGHT_FUEL_TANK.getId())
 			.addIngredient(ModItems.WHEEL.getId(), 4)
-			.addIngredient("minecraft:iron_ingot", 10)
+			.addIngredient("dscombat:aluminum_ingot", 10)
 			.addIngredient("minecraft:orange_dye", 4)
 			.build();
 	
@@ -73,7 +73,7 @@ public class CarPresets {
 			.addIngredient(ModItems.SEAT.getId(), 2)
 			.addIngredient(ModItems.WHEEL.getId(), 6)
 			.addIngredient("minecraft:yellow_dye", 6)
-			.addIngredient("minecraft:iron_ingot", 24)
+			.addIngredient("dscombat:aluminum_ingot", 24)
 			.addIngredient("minecraft:gold_ingot", 3)
 			.addEmptySlot("cargo_bed_1", SlotType.HEAVY_TURRET, 0, 1, -2.75, 0)
 			.addEmptySlot("frame_1", SlotType.ADVANCED_FRAME, 0, 2.95, 1, 0)

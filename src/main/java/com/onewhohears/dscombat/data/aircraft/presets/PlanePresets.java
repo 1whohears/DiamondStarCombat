@@ -62,7 +62,7 @@ public class PlanePresets {
 			.setSlotItem("left_wing_1", ModItems.LIGHT_MISSILE_RACK.getId(), "agm114k", true)
 			.setSlotItem("right_wing_1", ModItems.LIGHT_MISSILE_RACK.getId(), "agm114k", true)
 			.addIngredient("minecraft:tnt", 12)
-			.addIngredient("minecraft:iron_ingot", 36)
+			.addIngredient("dscombat:aluminum_ingot", 36)
 			.addIngredient(ModItems.LIGHT_MISSILE_RACK.getId(), 2)
 			.build();
 	

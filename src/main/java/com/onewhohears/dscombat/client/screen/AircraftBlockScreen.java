@@ -116,14 +116,13 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockCo
 		AircraftPreset ap = tab.getSelectedPreset();
 		if (ap == null) return;
 		font.draw(stack, ap.getDisplayNameComponent(), titleLabelX, titleLabelY, 0x000000);
-		CompoundTag data = ap.getDataAsNBT();
+		CompoundTag data = ap.getDataAsNBT().getCompound("stats");
 		float scale = 1f;
 		stack.scale(scale, scale, scale);
 		float invScale = 1f / scale;
 		int startX = (int)(293f * invScale);
 		int startY = (int)(34f * invScale);
 		int pColor = 0x4CFF00;
-		// FIXME 8 stats in aircraft workbench don't work
 		font.draw(stack, UtilMCText.literal("Health: "+data.getDouble("max_health")), startX, startY, pColor);
 		startY += font.lineHeight;
 		font.draw(stack, UtilMCText.literal("Speed: "+(int)(data.getDouble("max_speed")*20)+" m/s"), startX, startY, pColor);

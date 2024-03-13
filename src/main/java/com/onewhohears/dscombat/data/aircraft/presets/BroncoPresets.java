@@ -14,7 +14,7 @@ public class BroncoPresets {
 	
 	public static final AircraftPreset EMPTY_BRONCO_PLANE = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "bronco_plane_empty")
-			.setSortFactor(5)
+			.setSortFactor(4)
 			.setAircraftType(AircraftType.PLANE)
 			.setItem(ModItems.BRONCO_PLANE.getId())
 			.setMaxHealth(90f)

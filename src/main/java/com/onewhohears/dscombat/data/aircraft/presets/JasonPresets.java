@@ -12,7 +12,7 @@ public class JasonPresets {
 	
 	public static final AircraftPreset EMPTY_JASON_PLANE = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "jason_plane_empty")
-			.setSortFactor(5)
+			.setSortFactor(2)
 			.setAircraftType(AircraftType.PLANE)
 			.setItem(ModItems.JASON_PLANE.getId())
 			.setMaxHealth(60f)

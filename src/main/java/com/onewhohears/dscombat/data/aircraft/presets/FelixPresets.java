@@ -14,7 +14,7 @@ public class FelixPresets {
 	
 	public static final AircraftPreset EMPTY_FELIX_PLANE = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "felix_plane_empty")
-			.setSortFactor(10)
+			.setSortFactor(7)
 			.setAircraftType(AircraftType.PLANE)
 			.setItem(ModItems.FELIX_PLANE.getId())
 			.setMaxHealth(120f)

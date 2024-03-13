@@ -211,7 +211,7 @@
       "zRot": 0.0
     }
   ],
-  "sort_factor": 10,
+  "sort_factor": 7,
   "sounds": {
     "cockpitAfterBurner": "dscombat:alexis_cp_afterburner",
     "cockpitRPM": "dscombat:alexis_cp_rpm",

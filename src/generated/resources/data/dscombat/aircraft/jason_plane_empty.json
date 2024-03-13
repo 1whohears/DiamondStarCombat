@@ -93,7 +93,7 @@
       "zRot": 0.0
     }
   ],
-  "sort_factor": 5,
+  "sort_factor": 2,
   "sounds": {
     "loopSoundType": "basic",
     "nonPassengerEngine": "dscombat:biplane_1",

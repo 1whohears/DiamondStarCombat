@@ -9,12 +9,15 @@ import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 
-public class ItemCreativeWand extends Item {
+public class ItemCreativeWand extends Item implements VehicleInteractItem {
 	
 	public final String[] translatableTooltips;
 	
@@ -39,6 +42,12 @@ public class ItemCreativeWand extends Item {
 		if (translatableTooltips != null) for (int i = 0; i < translatableTooltips.length; ++i) {
 			tooltips.add(UtilMCText.translatable(translatableTooltips[i]));
 		}
+	}
+
+	@Override
+	public InteractionResult onServerInteract(EntityVehicle vehicle, ItemStack stack, Player player, InteractionHand hand) {
+		if (modifyAircraft(vehicle)) return InteractionResult.SUCCESS;
+		return InteractionResult.PASS;
 	}
 	
 	

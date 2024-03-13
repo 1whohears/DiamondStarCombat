@@ -6,6 +6,8 @@ import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.util.UtilItem;
 import com.onewhohears.dscombat.util.UtilMCText;
@@ -13,13 +15,16 @@ import com.onewhohears.dscombat.util.UtilMCText;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 
-public class ItemAmmo extends Item {
+public class ItemAmmo extends Item implements VehicleInteractItem {
 	
 	private final String defaultWeaponId;
 	
@@ -74,6 +79,24 @@ public class ItemAmmo extends Item {
 	
 	public static Properties weaponProps(int stackSize) {
 		return new Item.Properties().tab(ModItems.WEAPONS).stacksTo(stackSize);
+	}
+
+	@Override
+	public InteractionResult onServerInteract(EntityVehicle vehicle, ItemStack stack, Player player, InteractionHand hand) {
+		String ammoId = ItemAmmo.getWeaponId(stack);
+		for (EntityTurret t : vehicle.getTurrets()) {
+			WeaponData wd = t.getWeaponData();
+			if (wd == null) continue;
+			if (!wd.getId().equals(ammoId)) continue;
+			int o = wd.addAmmo(stack.getCount());
+			t.setAmmo(wd.getCurrentAmmo());
+			t.updateDataAmmo();
+			stack.setCount(o);
+			if (stack.getCount() == 0) return InteractionResult.SUCCESS;
+		}
+		int o = vehicle.weaponSystem.addAmmo(ammoId, stack.getCount(), true);
+		stack.setCount(o);
+		return InteractionResult.SUCCESS;
 	}
 
 }

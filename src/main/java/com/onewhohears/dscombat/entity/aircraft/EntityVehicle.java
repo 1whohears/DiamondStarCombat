@@ -38,7 +38,6 @@ import com.onewhohears.dscombat.data.parts.PartsManager;
 import com.onewhohears.dscombat.data.parts.StorageBoxData;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarMode;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponSystem;
 import com.onewhohears.dscombat.entity.damagesource.AircraftDamageSource;
 import com.onewhohears.dscombat.entity.parts.EntityGimbal;
@@ -46,11 +45,8 @@ import com.onewhohears.dscombat.entity.parts.EntityPart;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.init.DataSerializers;
-import com.onewhohears.dscombat.item.ItemAmmo;
-import com.onewhohears.dscombat.item.ItemCreativeWand;
-import com.onewhohears.dscombat.item.ItemGasCan;
-import com.onewhohears.dscombat.item.ItemRepairTool;
 import com.onewhohears.dscombat.item.ItemSpraycan;
+import com.onewhohears.dscombat.item.VehicleInteractItem;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.UtilMCText;
 import com.onewhohears.dscombat.util.UtilPacket;
@@ -1367,52 +1363,9 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			ItemStack stack = player.getInventory().getSelected();
 			if (!stack.isEmpty()) {
 				Item item = stack.getItem();
-				// REFUEL
-				if (item instanceof ItemGasCan) {
-					int md = stack.getMaxDamage();
-					int d = stack.getDamageValue();
-					int r = (int)addFuel(md-d);
-					stack.setDamageValue(md-r);
-					return InteractionResult.SUCCESS;
-				// REPAIR
-				} else if (item instanceof ItemRepairTool tool) {
-					if (isEngineFire()) {
-						setEngineFire(false);
-						playRepairSound();
-						stack.hurtAndBreak(40, player, 
-							(p) -> p.broadcastBreakEvent(hand));
-					} else if (isFuelLeak()) {
-						setFuelLeak(false);
-						playRepairSound();
-						stack.hurtAndBreak(15, player, 
-							(p) -> p.broadcastBreakEvent(hand));
-					} else if (!isMaxHealth()) {
-						addHealth(tool.repair);
-						stack.hurtAndBreak(1, player, 
-							(p) -> p.broadcastBreakEvent(hand));
-					} else {
-						playRepairSound();
-						return InteractionResult.PASS;
-					}
-					return InteractionResult.SUCCESS;
-				// RELOAD
-				} else if (item instanceof ItemAmmo ammo) {
-					String ammoId = ItemAmmo.getWeaponId(stack);
-					for (EntityTurret t : getTurrets()) {
-						WeaponData wd = t.getWeaponData();
-						if (wd == null) continue;
-						if (!wd.getId().equals(ammoId)) continue;
-						int o = wd.addAmmo(stack.getCount());
-						t.setAmmo(wd.getCurrentAmmo());
-						t.updateDataAmmo();
-						stack.setCount(o);
-						if (stack.getCount() == 0) return InteractionResult.SUCCESS;
-					}
-					int o = weaponSystem.addAmmo(ammoId, stack.getCount(), true);
-					stack.setCount(o);
-					return InteractionResult.SUCCESS;
+				if (item instanceof VehicleInteractItem vii) return vii.onServerInteract(this, stack, player, hand);
 				// RADIO
-				} else if (item instanceof RecordItem disk) {
+				else if (item instanceof RecordItem disk) {
 					if (!hasRadio) return InteractionResult.PASS;
 					setRadioSong(disk.getSound().getLocation().toString());
 					return InteractionResult.SUCCESS;
@@ -1425,11 +1378,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 						return InteractionResult.CONSUME;
 					}
 					return InteractionResult.PASS;
-				// CREATIVE WAND
-				} else if (item instanceof ItemCreativeWand wand) {
-					if (wand.modifyAircraft(this)) return InteractionResult.SUCCESS;
-					return InteractionResult.PASS;
-				} else if (item instanceof ItemSpraycan can) return InteractionResult.SUCCESS;
+				}
 			}
 			return rideAvailableSeat(player) ? InteractionResult.CONSUME : InteractionResult.PASS;
 		} else if (level.isClientSide) {	

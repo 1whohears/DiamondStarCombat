@@ -376,36 +376,16 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		soundManager.write(buffer);
 	}
 	
-	public static enum AircraftType {
-		PLANE(true, false, false),
-		HELICOPTER(true, false, true),
-		CAR(false, true, true),
-		BOAT(false, true, true),
-		SUBMARINE(false, true, true);
+	@Override
+	public void onRemovedFromWorld() {
+		super.onRemovedFromWorld();
 		
-		public final boolean isAircraft, flipPitchThrottle, ignoreInvertY;
+	}
+	
+	@Override
+	public void onAddedToWorld() {
+		super.onAddedToWorld();
 		
-		private AircraftType(boolean isAircraft, boolean flipPitchThrottle, boolean ignoreInvertY) {
-			this.isAircraft = isAircraft;
-			this.flipPitchThrottle = flipPitchThrottle;
-			this.ignoreInvertY = ignoreInvertY;
-		}
-		
-		public boolean isTank() {
-			return this == CAR;
-		}
-		
-		public boolean isHeli() {
-			return this == HELICOPTER;
-		}
-		
-		public boolean isPlane() {
-			return this == PLANE;
-		}
-		
-		public boolean isBoat() {
-			return this == BOAT || this == SUBMARINE;
-		}
 	}
 	
 	public abstract AircraftType getAircraftType();
@@ -482,18 +462,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	public boolean didEntityAlreadyCollide(Entity entity) {
 		return hitboxCollidedIds.contains(entity.getId());
-	}
-	
-	@Override
-	public void onRemovedFromWorld() {
-		super.onRemovedFromWorld();
-		
-	}
-	
-	@Override
-	public void onAddedToWorld() {
-		super.onAddedToWorld();
-		
 	}
 	
 	/**
@@ -1286,7 +1254,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 	
 	private void synchMoveRot() {
-		if (!level.isClientSide || tickCount % 20 != 0) return;
+		if (!level.isClientSide || tickCount % 20 != 0 || firstTick) return;
 		PacketHandler.INSTANCE.sendToServer(new ToServerAircraftMoveRot(this));
 	}
 	
@@ -2451,4 +2419,37 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     public void setXRotNoQ(float yRot) {
         super.setXRot(yRot);
     }
+    
+    public static enum AircraftType {
+		PLANE(true, false, false),
+		HELICOPTER(true, false, true),
+		CAR(false, true, true),
+		BOAT(false, true, true),
+		SUBMARINE(false, true, true);
+		
+		public final boolean isAircraft, flipPitchThrottle, ignoreInvertY;
+		
+		private AircraftType(boolean isAircraft, boolean flipPitchThrottle, boolean ignoreInvertY) {
+			this.isAircraft = isAircraft;
+			this.flipPitchThrottle = flipPitchThrottle;
+			this.ignoreInvertY = ignoreInvertY;
+		}
+		
+		public boolean isTank() {
+			return this == CAR;
+		}
+		
+		public boolean isHeli() {
+			return this == HELICOPTER;
+		}
+		
+		public boolean isPlane() {
+			return this == PLANE;
+		}
+		
+		public boolean isBoat() {
+			return this == BOAT || this == SUBMARINE;
+		}
+	}
+    
 }

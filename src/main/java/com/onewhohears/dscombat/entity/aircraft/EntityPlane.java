@@ -21,7 +21,7 @@ public class EntityPlane extends EntityVehicle {
 	
 	private float aoa = 0, liftK = 0, airFoilSpeedSqr = 0;
 	private float centripetalForce, centrifugalForce; 
-	private double liftMag, prevMaxSpeedMod;
+	private double liftMag, prevMaxSpeedMod = 1;
 	private Vec3 liftDir = Vec3.ZERO, airFoilAxes = Vec3.ZERO;
 	
 	public EntityPlane(EntityType<? extends EntityPlane> entity, Level level, String defaultPreset) {

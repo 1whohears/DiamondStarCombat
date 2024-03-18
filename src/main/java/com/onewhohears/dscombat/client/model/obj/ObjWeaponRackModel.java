@@ -34,8 +34,8 @@ public class ObjWeaponRackModel<T extends EntityWeaponRack> extends ObjPartModel
 		super.render(entity, poseStack, bufferSource, lightmap, partialTicks);
 		if (renderedRackWeaponNum > Config.CLIENT.maxRenderRackMissileNum.get()) return;
 		// FIXME 0 rendering many missile rack models has performance issues
-		int ammo = entity.getAmmoNum();
 		String weaponModelId = entity.getWeaponModelId();
+		if (weaponModelId == null || weaponModelId.isEmpty()) return;
 		CompositeRenderable model;
 		ModelOverrides mo;
 		if (weaponModelId.equals(prevWeaponModelId)) {
@@ -45,6 +45,7 @@ public class ObjWeaponRackModel<T extends EntityWeaponRack> extends ObjPartModel
 			model = getWeaponModel(weaponModelId);
 			mo = getWeaponModelOverride(weaponModelId);
 		}
+		int ammo = entity.getAmmoNum();
 		for (int i = 0; i < ammo && i < maxAmmoNum; ++i) {
 			float x = i % 2 == 0 ? dX : -dX;
 			float y = (i/2 + 1) * dY - dY*0.5f;
@@ -60,7 +61,7 @@ public class ObjWeaponRackModel<T extends EntityWeaponRack> extends ObjPartModel
 			CompositeRenderable model, ModelOverrides mo, double x, double y, double z) {
 		poseStack.pushPose();
 		poseStack.translate(x, y, z);
-		if (mo != null) mo.apply(poseStack);
+		mo.apply(poseStack);
 		model.render(poseStack, bufferSource, (texture) -> RenderType.entitySolid(texture), 
 				lightmap, OverlayTexture.NO_OVERLAY, partialTicks, Transforms.EMPTY);
 		poseStack.popPose();

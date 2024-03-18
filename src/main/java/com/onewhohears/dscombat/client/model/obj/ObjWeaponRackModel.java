@@ -60,7 +60,7 @@ public class ObjWeaponRackModel<T extends EntityWeaponRack> extends ObjPartModel
 			CompositeRenderable model, ModelOverrides mo, double x, double y, double z) {
 		poseStack.pushPose();
 		poseStack.translate(x, y, z);
-		mo.apply(poseStack);
+		if (mo != null) mo.apply(poseStack);
 		model.render(poseStack, bufferSource, (texture) -> RenderType.entitySolid(texture), 
 				lightmap, OverlayTexture.NO_OVERLAY, partialTicks, Transforms.EMPTY);
 		poseStack.popPose();

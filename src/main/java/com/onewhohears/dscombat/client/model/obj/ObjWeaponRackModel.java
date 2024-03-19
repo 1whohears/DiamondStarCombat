@@ -62,7 +62,8 @@ public class ObjWeaponRackModel<T extends EntityWeaponRack> extends ObjPartModel
 		poseStack.pushPose();
 		poseStack.translate(x, y, z);
 		mo.apply(poseStack);
-		model.render(poseStack, bufferSource, (texture) -> RenderType.entitySolid(texture), 
+		// it has been tested that RenderType#entitySolid is faster than RenderType#entityTranslucentCull (+10fps on my machine)
+		model.render(poseStack, bufferSource, (texture) -> RenderType.entitySolid(texture),
 				lightmap, OverlayTexture.NO_OVERLAY, partialTicks, Transforms.EMPTY);
 		poseStack.popPose();
 		++renderedRackWeaponNum;

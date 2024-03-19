@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "cgm:grenade",
+      "required": false
+    },
+    {
+      "id": "cgm:throwable_grenade",
+      "required": false
+    },
+    {
+      "id": "cgm:throwable_stun_grenade",
+      "required": false
+    }
+  ]
+}

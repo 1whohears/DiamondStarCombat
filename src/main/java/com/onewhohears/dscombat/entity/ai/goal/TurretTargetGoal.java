@@ -117,7 +117,6 @@ public class TurretTargetGoal<T extends LivingEntity> extends NearestAttackableT
 		this.turret = turret;
 		this.range = range;
 		this.targetConditions.ignoreLineOfSight(); // vanilla line of sight has a limit of 128 blocks
-		//this.setFlags(EnumSet.noneOf(Goal.Flag.class));
 	}
 	
 	@Override

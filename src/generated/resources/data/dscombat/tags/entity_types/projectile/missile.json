@@ -1,0 +1,8 @@
+{
+  "values": [
+    {
+      "id": "cgm:missile",
+      "required": false
+    }
+  ]
+}

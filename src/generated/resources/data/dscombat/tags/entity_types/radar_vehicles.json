@@ -1,0 +1,24 @@
+{
+  "values": [
+    "#dscombat:vehicle",
+    "minecraft:boat",
+    "minecraft:minecart",
+    "dscombat:parachute",
+    {
+      "id": "simpleplanes:plane",
+      "required": false
+    },
+    {
+      "id": "simpleplanes:large_plane",
+      "required": false
+    },
+    {
+      "id": "simpleplanes:helicopter",
+      "required": false
+    },
+    {
+      "id": "simpleplanes:parachute",
+      "required": false
+    }
+  ]
+}

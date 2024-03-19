@@ -1,0 +1,9 @@
+{
+  "values": [
+    "#dscombat:projectile/bullet",
+    "#dscombat:projectile/bomb",
+    "#dscombat:projectile/missile",
+    "#dscombat:projectile/weak_projectile",
+    "#dscombat:projectile/piercing_projectile"
+  ]
+}

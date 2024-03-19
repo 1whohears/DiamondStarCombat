@@ -6,8 +6,11 @@ import com.onewhohears.dscombat.client.screen.AircraftScreen;
 import com.onewhohears.dscombat.client.screen.WeaponsBlockScreen;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.common.network.PacketHandler;
+import com.onewhohears.dscombat.data.BlockTagGen;
 import com.onewhohears.dscombat.data.DSCRecipeGenerator;
 import com.onewhohears.dscombat.data.DSCSoundDefinitionGen;
+import com.onewhohears.dscombat.data.EntityTypeTagGen;
+import com.onewhohears.dscombat.data.ItemTagGen;
 import com.onewhohears.dscombat.data.aircraft.AircraftClientPresetGenerator;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresetGenerator;
 import com.onewhohears.dscombat.data.radar.RadarPresetGenerator;
@@ -23,6 +26,7 @@ import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModParticles;
 import com.onewhohears.dscombat.init.ModRecipes;
 import com.onewhohears.dscombat.init.ModSounds;
+import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.dscombat.init.ModVillagers;
 
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -77,6 +81,7 @@ public class DSCombatMod {
     	ModVillagers.register(eventBus);
     	ModParticles.register(eventBus);
     	ModArgumentTypes.register(eventBus);
+    	ModTags.init();
     	
     	minigamesLoaded = ModList.get().isLoaded("minigames");
     	
@@ -108,6 +113,10 @@ public class DSCombatMod {
     		generator.addProvider(true, new RadarPresetGenerator(generator));
     		DependencySafety.serverDataGen(generator);
     		generator.addProvider(true, new DSCRecipeGenerator(generator));
+    		generator.addProvider(true, new EntityTypeTagGen(generator, event.getExistingFileHelper()));
+    		BlockTagGen blockGen = new BlockTagGen(generator, event.getExistingFileHelper());
+    		generator.addProvider(true, blockGen);
+    		generator.addProvider(true, new ItemTagGen(generator, blockGen, event.getExistingFileHelper()));
     	}
     	if (event.includeClient()) {
     		generator.addProvider(true, new DSCSoundDefinitionGen(generator, event.getExistingFileHelper()));

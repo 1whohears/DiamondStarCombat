@@ -1,0 +1,10 @@
+{
+  "values": [
+    "#dscombat:vehicle/plane",
+    "#dscombat:vehicle/heli",
+    "#dscombat:vehicle/car",
+    "#dscombat:vehicle/tank",
+    "#dscombat:vehicle/boat",
+    "#dscombat:vehicle/submarine"
+  ]
+}

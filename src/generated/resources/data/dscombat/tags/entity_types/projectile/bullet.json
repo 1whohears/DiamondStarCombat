@@ -1,0 +1,20 @@
+{
+  "values": [
+    {
+      "id": "cgm:projectile",
+      "required": false
+    },
+    {
+      "id": "moguns:taki",
+      "required": false
+    },
+    {
+      "id": "moguns:magma_cream",
+      "required": false
+    },
+    {
+      "id": "moguns:flare",
+      "required": false
+    }
+  ]
+}

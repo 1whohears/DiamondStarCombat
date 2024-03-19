@@ -125,7 +125,7 @@ public class Config {
 					.comment("smaller values means its harder for a radar to see."
 							+ " most radars have a sensitivity of at least 0.5m^2."
 							+ " [entity_id]/[cross sectional area override (float)]")
-					.defineList("specificEntityHeat", 
+					.defineList("radarCrossSecAreas", 
 						Arrays.asList(
 								"minecraft:boat/1.0f",
 								"minecraft:minecart/1.0f",

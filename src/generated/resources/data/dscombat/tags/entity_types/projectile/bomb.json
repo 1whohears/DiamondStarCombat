@@ -1,5 +1,9 @@
 {
   "values": [
+    "dscombat:bomb",
+    "dscombat:anm30",
+    "dscombat:mark77",
+    "dscombat:gruetz_bunker_buster",
     {
       "id": "cgm:grenade",
       "required": false

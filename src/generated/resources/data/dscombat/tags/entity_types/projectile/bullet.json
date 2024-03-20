@@ -1,5 +1,6 @@
 {
   "values": [
+    "dscombat:bullet",
     {
       "id": "cgm:projectile",
       "required": false

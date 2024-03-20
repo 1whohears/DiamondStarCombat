@@ -1,9 +1,9 @@
 {
   "values": [
+    "#minecraft:impact_projectiles",
     "#dscombat:projectile/bullet",
     "#dscombat:projectile/bomb",
     "#dscombat:projectile/missile",
-    "#dscombat:projectile/weak_projectile",
-    "#dscombat:projectile/piercing_projectile"
+    "#dscombat:projectile/anti_tank_shell"
   ]
 }

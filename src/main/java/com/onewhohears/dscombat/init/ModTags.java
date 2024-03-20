@@ -33,8 +33,7 @@ public class ModTags {
 		public static final TagKey<EntityType<?>> BULLET = tag("projectile/bullet");
 		public static final TagKey<EntityType<?>> BOMB = tag("projectile/bomb");
 		public static final TagKey<EntityType<?>> MISSILE = tag("projectile/missile");
-		public static final TagKey<EntityType<?>> WEAK_PROJECTILE = tag("projectile/weak_projectile");
-		public static final TagKey<EntityType<?>> PIERCING_PROJECTILE = tag("projectile/piercing_projectile");
+		public static final TagKey<EntityType<?>> ANTI_TANK_SHELL = tag("projectile/anti_tank_shell");
 		public static final TagKey<EntityType<?>> VEHICLE = tag("vehicle");
 		public static final TagKey<EntityType<?>> PLANE = tag("vehicle/plane");
 		public static final TagKey<EntityType<?>> HELI = tag("vehicle/heli");
@@ -44,6 +43,7 @@ public class ModTags {
 		public static final TagKey<EntityType<?>> SUBMARINE = tag("vehicle/submarine");
 		public static final TagKey<EntityType<?>> RADAR_MOBS = tag("radar_mobs");
 		public static final TagKey<EntityType<?>> RADAR_VEHICLES = tag("radar_vehicles");
+		public static final TagKey<EntityType<?>> CAN_RIDE_VEHICLE = tag("can_ride_vehicle");
 		public static final TagKey<EntityType<?>> TURRET_SHOOT = tag("turret_shoot");
 		public static final TagKey<EntityType<?>> TURRET_SHOOT_RANDOM = tag("turret_shoot/random");
 		public static final TagKey<EntityType<?>> TURRET_SHOOT_DUMBASS = tag("turret_shoot/dumbass");

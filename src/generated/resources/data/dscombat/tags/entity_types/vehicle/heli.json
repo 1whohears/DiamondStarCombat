@@ -1,3 +1,9 @@
 {
-  "values": []
+  "values": [
+    "dscombat:noah_chopper",
+    {
+      "id": "simpleplanes:helicopter",
+      "required": false
+    }
+  ]
 }

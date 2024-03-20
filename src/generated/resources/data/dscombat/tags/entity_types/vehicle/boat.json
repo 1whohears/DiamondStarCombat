@@ -1,3 +1,10 @@
 {
-  "values": []
+  "values": [
+    "dscombat:nathan_boat",
+    "dscombat:gronk_battleship",
+    "dscombat:destroyer",
+    "dscombat:cruiser",
+    "dscombat:corvette",
+    "dscombat:aircraft_carrier"
+  ]
 }

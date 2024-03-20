@@ -21,28 +21,35 @@ public class EntityTypeTagGen extends EntityTypeTagsProvider {
 	
 	@Override
 	protected void addTags() {
+		// WEAPONS
 		tag(ModTags.EntityTypes.PROJECTILE)
+			.addTag(EntityTypeTags.IMPACT_PROJECTILES)
 			.addTag(ModTags.EntityTypes.BULLET)
 			.addTag(ModTags.EntityTypes.BOMB)
 			.addTag(ModTags.EntityTypes.MISSILE)
-			.addTag(ModTags.EntityTypes.WEAK_PROJECTILE)
-			.addTag(ModTags.EntityTypes.PIERCING_PROJECTILE);
-		tag(ModTags.EntityTypes.WEAK_PROJECTILE)
-			.addTag(EntityTypeTags.ARROWS);
-		tag(ModTags.EntityTypes.PIERCING_PROJECTILE)
-			.addTag(EntityTypeTags.IMPACT_PROJECTILES)
-			.add(EntityType.TRIDENT);
+			.addTag(ModTags.EntityTypes.ANTI_TANK_SHELL);
+		tag(ModTags.EntityTypes.ANTI_TANK_SHELL)
+			.add(EntityType.TRIDENT)
+			.addTag(ModTags.EntityTypes.MISSILE);
 		tag(ModTags.EntityTypes.BULLET)
+			.add(ModEntities.BULLET.get())
 			.addOptional(new ResourceLocation("cgm:projectile"))
 			.addOptional(new ResourceLocation("moguns:taki"))
 			.addOptional(new ResourceLocation("moguns:magma_cream"))
 			.addOptional(new ResourceLocation("moguns:flare"));
 		tag(ModTags.EntityTypes.BOMB)
+			.add(ModEntities.BOMB.get(), ModEntities.ANM30.get(), ModEntities.MARK77.get(), ModEntities.GRUETZ_BUNKER_BUSTER.get())
 			.addOptional(new ResourceLocation("cgm:grenade"))
 			.addOptional(new ResourceLocation("cgm:throwable_grenade"))
 			.addOptional(new ResourceLocation("cgm:throwable_stun_grenade"));
 		tag(ModTags.EntityTypes.MISSILE)
+			.add(ModEntities.POS_MISSILE_1.get(), ModEntities.IR_MISSILE_1.get(), ModEntities.TRACK_MISSILE_1.get(), ModEntities.ANTI_RADAR_MISSILE_1.get())
+			.add(ModEntities.TORPEDO_MISSILE_1.get(), ModEntities.AIM9L.get(), ModEntities.AIM9P5.get(), ModEntities.AIM9X.get())
+			.add(ModEntities.AIM120B.get(), ModEntities.AIM120C.get(), ModEntities.PAC3.get(), ModEntities.AIM7F.get())
+			.add(ModEntities.AIM7MH.get(), ModEntities.AGM114K.get(), ModEntities.AGM65L.get(), ModEntities.AGM84E.get())
+			.add(ModEntities.AGM65G.get(), ModEntities.METEOR.get(), ModEntities.MK13.get(), ModEntities.AGM88G.get())
 			.addOptional(new ResourceLocation("cgm:missile"));
+		// VEHICLES
 		tag(ModTags.EntityTypes.VEHICLE)
 			.addTag(ModTags.EntityTypes.PLANE)
 			.addTag(ModTags.EntityTypes.HELI)
@@ -50,20 +57,31 @@ public class EntityTypeTagGen extends EntityTypeTagsProvider {
 			.addTag(ModTags.EntityTypes.TANK)
 			.addTag(ModTags.EntityTypes.BOAT)
 			.addTag(ModTags.EntityTypes.SUBMARINE);
-		tag(ModTags.EntityTypes.PLANE);
-		tag(ModTags.EntityTypes.HELI);
-		tag(ModTags.EntityTypes.CAR);
-		tag(ModTags.EntityTypes.TANK);
-		tag(ModTags.EntityTypes.BOAT);
-		tag(ModTags.EntityTypes.SUBMARINE);
+		tag(ModTags.EntityTypes.PLANE)
+			.add(ModEntities.JAVI_PLANE.get(), ModEntities.ALEXIS_PLANE.get(), ModEntities.WOODEN_PLANE.get(), ModEntities.E3SENTRY_PLANE.get())
+			.add(ModEntities.BRONCO_PLANE.get(), ModEntities.FELIX_PLANE.get(), ModEntities.JASON_PLANE.get(), ModEntities.EDEN_PLANE.get())
+			.addOptional(new ResourceLocation("simpleplanes:plane"))
+			.addOptional(new ResourceLocation("simpleplanes:large_plane"));
+		tag(ModTags.EntityTypes.HELI)
+			.add(ModEntities.NOAH_CHOPPER.get())
+			.addOptional(new ResourceLocation("simpleplanes:helicopter"));
+		tag(ModTags.EntityTypes.CAR)
+			.add(ModEntities.ORANGE_TESLA.get(), ModEntities.AXCEL_TRUCK.get());
+		tag(ModTags.EntityTypes.TANK)
+			.add(ModEntities.MRBUDGER_TANK.get(), ModEntities.SMALL_ROLLER.get());
+		tag(ModTags.EntityTypes.BOAT)
+			.add(ModEntities.NATHAN_BOAT.get(), ModEntities.GRONK_BATTLESHIP.get(), ModEntities.DESTROYER.get(), ModEntities.CRUISER.get())
+			.add(ModEntities.CORVETTE.get(), ModEntities.AIRCRAFT_CARRIER.get());
+		tag(ModTags.EntityTypes.SUBMARINE)
+			.add(ModEntities.ANDOLF_SUB.get(), ModEntities.GOOGLE_SUB.get());
+		// RADAR ENTITIES
 		tag(ModTags.EntityTypes.RADAR_MOBS);
 		tag(ModTags.EntityTypes.RADAR_VEHICLES)
 			.addTag(ModTags.EntityTypes.VEHICLE)
 			.add(EntityType.BOAT, EntityType.MINECART, ModEntities.PARACHUTE.get())
-			.addOptional(new ResourceLocation("simpleplanes:plane"))
-			.addOptional(new ResourceLocation("simpleplanes:large_plane"))
-			.addOptional(new ResourceLocation("simpleplanes:helicopter"))
 			.addOptional(new ResourceLocation("simpleplanes:parachute"));
+		tag(ModTags.EntityTypes.OVERRIDE_RADAR_VISABILITY);
+		// TURRET
 		tag(ModTags.EntityTypes.TURRET_SHOOT)
 			.addTag(ModTags.EntityTypes.TURRET_SHOOT_RANDOM)
 			.addTag(ModTags.EntityTypes.TURRET_SHOOT_DUMBASS)
@@ -77,8 +95,10 @@ public class EntityTypeTagGen extends EntityTypeTagsProvider {
 		tag(ModTags.EntityTypes.TURRET_SHOOT_SMART);
 		tag(ModTags.EntityTypes.TURRET_TARGET_MONSTERS);
 		tag(ModTags.EntityTypes.TURRET_TARGET_PLAYERS);
-		tag(ModTags.EntityTypes.OVERRIDE_RADAR_VISABILITY);
+		// IR EMMITERS
 		tag(ModTags.EntityTypes.IR_EMITTER)
+			.add(ModEntities.FLARE.get())
+			.addTag(ModTags.EntityTypes.VEHICLE)
 			.addTag(ModTags.EntityTypes.IR_EMITTER_LOW)
 			.addTag(ModTags.EntityTypes.IR_EMITTER_MED)
 			.addTag(ModTags.EntityTypes.IR_EMITTER_HIGH)

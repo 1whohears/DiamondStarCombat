@@ -23,7 +23,8 @@ public class EntityBunkerBuster extends EntityBomb {
 	public static final EntityDataAccessor<Integer> BLOCK_STRENGTH = SynchedEntityData.defineId(EntityBullet.class, EntityDataSerializers.INT);
 	
 	protected BunkerBusterData bunkerData;
-	
+	// FIXME 8 bunker buster block breaking not compatible with FTB
+	// is it better to not break blocks at all?
 	public EntityBunkerBuster(EntityType<? extends EntityBunkerBuster> type, Level level, String defaultWeaponId) {
 		super(type, level, defaultWeaponId);
 		if (bunkerData != null) setBlockStrength(bunkerData.getBlockStrength());

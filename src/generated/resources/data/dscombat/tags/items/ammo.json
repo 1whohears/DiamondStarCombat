@@ -1,0 +1,31 @@
+{
+  "values": [
+    "dscombat:bullet",
+    "dscombat:bomb",
+    "dscombat:track_air_missile",
+    "dscombat:track_ground_missile",
+    "dscombat:ir_missile",
+    "dscombat:pos_missile",
+    "dscombat:torpedo",
+    "dscombat:antiradar_missile",
+    "dscombat:20mm",
+    "dscombat:50mmhe",
+    "dscombat:120mmhe",
+    "dscombat:agm65g",
+    "dscombat:agm65l",
+    "dscombat:agm84e",
+    "dscombat:agm114k",
+    "dscombat:aim7f",
+    "dscombat:aim7mh",
+    "dscombat:aim9l",
+    "dscombat:aim9p5",
+    "dscombat:aim9x",
+    "dscombat:aim120b",
+    "dscombat:aim120c",
+    "dscombat:torpedo1",
+    "dscombat:rifel1",
+    "dscombat:gruetz_bunker_buster",
+    "dscombat:mk13",
+    "dscombat:agm88g"
+  ]
+}

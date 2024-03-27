@@ -67,6 +67,7 @@ public class ModTags {
 	public static class Items {
 		public static final TagKey<Item> VEHICLE_PART = tag("vehicle_part");
 		public static final TagKey<Item> VEHICLE_PART_WEAPON = tag("vehicle_part_weapon");
+		public static final TagKey<Item> VEHICLE_TURRET = tag("vehicle_turret");
 		public static final TagKey<Item> VEHICLE = tag("vehicle");
 		public static final TagKey<Item> AMMO = tag("ammo");
 		public static final TagKey<Item> GAS_CAN = tag("gas_can");

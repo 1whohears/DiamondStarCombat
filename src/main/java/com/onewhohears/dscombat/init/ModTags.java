@@ -42,7 +42,6 @@ public class ModTags {
 		public static final TagKey<EntityType<?>> BOAT = tag("vehicle/boat");
 		public static final TagKey<EntityType<?>> SUBMARINE = tag("vehicle/submarine");
 		public static final TagKey<EntityType<?>> RADAR_MOBS = tag("radar_mobs");
-		public static final TagKey<EntityType<?>> RADAR_VEHICLES = tag("radar_vehicles");
 		public static final TagKey<EntityType<?>> CAN_RIDE_VEHICLE = tag("can_ride_vehicle");
 		public static final TagKey<EntityType<?>> TURRET_SHOOT = tag("turret_shoot");
 		public static final TagKey<EntityType<?>> TURRET_SHOOT_RANDOM = tag("turret_shoot/random");

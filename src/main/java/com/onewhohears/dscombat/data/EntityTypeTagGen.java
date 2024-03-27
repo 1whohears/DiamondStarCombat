@@ -56,7 +56,9 @@ public class EntityTypeTagGen extends EntityTypeTagsProvider {
 			.addTag(ModTags.EntityTypes.CAR)
 			.addTag(ModTags.EntityTypes.TANK)
 			.addTag(ModTags.EntityTypes.BOAT)
-			.addTag(ModTags.EntityTypes.SUBMARINE);
+			.addTag(ModTags.EntityTypes.SUBMARINE)
+			.add(EntityType.BOAT, EntityType.MINECART, ModEntities.PARACHUTE.get())
+			.addOptional(new ResourceLocation("simpleplanes:parachute"));
 		tag(ModTags.EntityTypes.PLANE)
 			.add(ModEntities.JAVI_PLANE.get(), ModEntities.ALEXIS_PLANE.get(), ModEntities.WOODEN_PLANE.get(), ModEntities.E3SENTRY_PLANE.get())
 			.add(ModEntities.BRONCO_PLANE.get(), ModEntities.FELIX_PLANE.get(), ModEntities.JASON_PLANE.get(), ModEntities.EDEN_PLANE.get())
@@ -75,11 +77,8 @@ public class EntityTypeTagGen extends EntityTypeTagsProvider {
 		tag(ModTags.EntityTypes.SUBMARINE)
 			.add(ModEntities.ANDOLF_SUB.get(), ModEntities.GOOGLE_SUB.get());
 		// RADAR ENTITIES
-		tag(ModTags.EntityTypes.RADAR_MOBS);
-		tag(ModTags.EntityTypes.RADAR_VEHICLES)
-			.addTag(ModTags.EntityTypes.VEHICLE)
-			.add(EntityType.BOAT, EntityType.MINECART, ModEntities.PARACHUTE.get())
-			.addOptional(new ResourceLocation("simpleplanes:parachute"));
+		tag(ModTags.EntityTypes.RADAR_MOBS)
+			;
 		tag(ModTags.EntityTypes.OVERRIDE_RADAR_VISABILITY);
 		// TURRET
 		tag(ModTags.EntityTypes.TURRET_SHOOT)

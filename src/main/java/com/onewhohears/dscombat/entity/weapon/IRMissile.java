@@ -54,8 +54,8 @@ public class IRMissile extends EntityMissile {
 		for (int i = 0; i < flares.size(); ++i) {
 			if (!basicCheck(weapon, flares.get(i), false, fov)) continue;
 			float distSqr = (float)weapon.distanceToSqr(flares.get(i));
-			targets.add(new IrTarget(flares.get(i), 
-					flares.get(i).getHeat() / distSqr * flareResistance));
+			//targets.add(new IrTarget(flares.get(i), 
+					//flares.get(i).getHeat() / distSqr * flareResistance));
 		}
 		// other
 		for (int j = 0; j < RadarTargetTypes.get().getIrEntityClasses().size(); ++j) {

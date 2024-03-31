@@ -29,10 +29,6 @@ public class RadarTargetTypes {
 		instance = null;
 	}
 	
-	private List<Class<? extends Entity>> irEntityClasses = new ArrayList<>();
-	private List<Float> irEntityHeats = new ArrayList<>();
-	private Map<String, Float> entityHeats = new HashMap<>();
-	
 	private List<Class<? extends Entity>> radarVehicleClasses = new ArrayList<>();
 	
 	private List<Class<? extends Entity>> radarMobClasses = new ArrayList<>();
@@ -44,75 +40,9 @@ public class RadarTargetTypes {
 	
 	public void readConfig() {
 		LOGGER.info("RadarTargetTypes READ CONFIG");
-		readIRMissiles();
-		readEntityHeats();
 		readRadarVehicles();
 		readRadarMobs();
 		readEntityAreas();
-	}
-	
-	private void readIRMissiles() {
-		irEntityClasses.clear();
-		irEntityHeats.clear();
-		List<? extends String> irList =  Config.COMMON.irEntities.get();
-		for (int i = 0; i < irList.size(); ++i) {
-			String a = irList.get(i);
-			if (!a.contains("/")) continue;
-			String[] split = a.split("/");
-			if (split.length != 2) continue;
-			String className = split[0];
-			Class<? extends Entity> c = UtilEntity.getEntityClass(className);
-			if (c == null) {
-				LOGGER.warn("ERROR: "+className+" does not exist! IR missiles will not look for it.");
-				continue;
-			}
-			irEntityClasses.add(c);
-			LOGGER.debug("ADDED IR ENTITY CLASS: "+c.getName());
-			float heat = 0;
-			try {
-				heat = Float.parseFloat(split[1]);
-			} catch (NumberFormatException e) {
-				LOGGER.warn("ERROR: "+split[1]+" is not a number!");
-			}
-			irEntityHeats.add(heat);
-		}
-	}
-	
-	private void readEntityHeats() {
-		entityHeats.clear();
-		List<? extends String> irList =  Config.COMMON.specificEntityHeat.get();
-		for (int i = 0; i < irList.size(); ++i) {
-			String a = irList.get(i);
-			if (!a.contains("/")) continue;
-			String[] split = a.split("/");
-			if (split.length != 2) continue;
-			String entityId = split[0];
-			if (!UtilEntity.doesEntityTypeExist(entityId)) {
-				LOGGER.warn("ERROR: "+entityId+" does not exist! IR missiles will not read that heat value!");
-				continue;
-			}
-			LOGGER.debug("ADDED ENTITY HEAT OVERRIDE: "+a);
-			float heat = 0;
-			try {
-				heat = Float.parseFloat(split[1]);
-			} catch (NumberFormatException e) {
-				LOGGER.warn("ERROR: "+split[1]+" is not a number!");
-			}
-			entityHeats.put(entityId, heat);
-		}
-	}
-	
-	public List<Class<? extends Entity>> getIrEntityClasses() {
-		return irEntityClasses;
-	}
-	
-	public List<Float> getIrEntityHeats() {
-		return irEntityHeats;
-	}
-	
-	public float getEntityHeat(String id, float instead) {
-		if (!entityHeats.containsKey(id)) return instead;
-		return entityHeats.get(id);
 	}
 	
 	private void readRadarVehicles() {

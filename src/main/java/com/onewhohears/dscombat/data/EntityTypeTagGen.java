@@ -96,12 +96,14 @@ public class EntityTypeTagGen extends EntityTypeTagsProvider {
 		tag(ModTags.EntityTypes.TURRET_TARGET_PLAYERS);
 		// IR EMMITERS
 		tag(ModTags.EntityTypes.IR_EMITTER)
-			.add(ModEntities.FLARE.get())
+			.addTag(ModTags.EntityTypes.FLARE)
 			.addTag(ModTags.EntityTypes.VEHICLE)
 			.addTag(ModTags.EntityTypes.IR_EMITTER_LOW)
 			.addTag(ModTags.EntityTypes.IR_EMITTER_MED)
 			.addTag(ModTags.EntityTypes.IR_EMITTER_HIGH)
 			.addTag(ModTags.EntityTypes.IR_EMITTER_EXTREME);
+		tag(ModTags.EntityTypes.FLARE)
+			.add(ModEntities.FLARE.get());
 		tag(ModTags.EntityTypes.IR_EMITTER_LOW)
 			.add(EntityType.PLAYER, EntityType.ALLAY, EntityType.PHANTOM, EntityType.SHULKER_BULLET, EntityType.VEX);
 		tag(ModTags.EntityTypes.IR_EMITTER_MED)

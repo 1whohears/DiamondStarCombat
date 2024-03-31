@@ -39,6 +39,7 @@ import com.onewhohears.dscombat.data.parts.StorageBoxData;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarMode;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.weapon.WeaponSystem;
+import com.onewhohears.dscombat.entity.IREmitter;
 import com.onewhohears.dscombat.entity.damagesource.AircraftDamageSource;
 import com.onewhohears.dscombat.entity.parts.EntityGimbal;
 import com.onewhohears.dscombat.entity.parts.EntityPart;
@@ -102,7 +103,7 @@ import net.minecraftforge.network.PacketDistributor;
  * @author 1whohears
  */
 // TODO: mouse mode handling has configurable sensitivity; higher by default. inputs have 'inertia'
-public abstract class EntityVehicle extends Entity implements IEntityAdditionalSpawnData {
+public abstract class EntityVehicle extends Entity implements IEntityAdditionalSpawnData, IREmitter {
 	
 	protected static final Logger LOGGER = LogUtils.getLogger();
 	
@@ -1915,7 +1916,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
      * divide this by distance squared when ir missile compares this heat value with others
      * @return the total heat value
      */
-    public float getHeat() {
+    public float getIRHeat() {
     	return getIdleHeat() + Math.abs(getCurrentThrottle()) * getEngineHeat();
     }
     

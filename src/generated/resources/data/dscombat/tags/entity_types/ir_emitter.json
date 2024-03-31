@@ -1,6 +1,6 @@
 {
   "values": [
-    "dscombat:flare",
+    "#dscombat:ir_emitter/flare",
     "#dscombat:vehicle",
     "#dscombat:ir_emitter/low",
     "#dscombat:ir_emitter/med",

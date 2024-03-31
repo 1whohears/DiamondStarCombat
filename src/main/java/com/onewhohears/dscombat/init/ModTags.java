@@ -53,6 +53,7 @@ public class ModTags {
 		public static final TagKey<EntityType<?>> TURRET_TARGET_PLAYERS = tag("turret_target_players");
 		public static final TagKey<EntityType<?>> OVERRIDE_RADAR_VISABILITY = tag("override_radar_visability");
 		public static final TagKey<EntityType<?>> IR_EMITTER = tag("ir_emitter");
+		public static final TagKey<EntityType<?>> FLARE = tag("ir_emitter/flare");
 		public static final TagKey<EntityType<?>> IR_EMITTER_LOW = tag("ir_emitter/low");
 		public static final TagKey<EntityType<?>> IR_EMITTER_MED = tag("ir_emitter/med");
 		public static final TagKey<EntityType<?>> IR_EMITTER_HIGH = tag("ir_emitter/high");

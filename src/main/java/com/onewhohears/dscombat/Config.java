@@ -96,14 +96,6 @@ public class Config {
 		 * entity_id/area
 		 */
 		public final ForgeConfigSpec.ConfigValue<List<? extends String>> radarCrossSecAreas;
-		/**
-		 * classname/heat
-		 */
-		public final ForgeConfigSpec.ConfigValue<List<? extends String>> irEntities;
-		/**
-		 * entity_id/heat
-		 */
-		public final ForgeConfigSpec.ConfigValue<List<? extends String>> specificEntityHeat;
 		
 		public Common(ForgeConfigSpec.Builder builder) {
 			maxBlockCheckDepth = builder
@@ -131,26 +123,6 @@ public class Config {
 								"minecraft:minecart/1.0f",
 								"dscombat:parachute/1.0f"), 
 						entry -> true);
-			irEntities = builder
-				.comment("entities that ir missiles will target [path to entity class]/[default heat value (float)]")
-				.defineList("irEntities", 
-					Arrays.asList(
-							"net.minecraft.world.entity.player.Player/0.5f",
-							"net.minecraft.world.entity.Mob/0.4f",
-							"net.minecraft.world.entity.projectile.FireworkRocketEntity/5f",
-							"com.onewhohears.dscombat.entity.weapon.EntityMissile/7.0f",
-							"com.mrcrayfish.guns.entity.MissileEntity/7.0f",
-							"xyz.przemyk.simpleplanes.entities.PlaneEntity/8.0f"),
-					entry -> true);
-			specificEntityHeat = builder
-				.comment("entities with a specific heat value [entity_id]/[heat value override (float)]")
-				.defineList("specificEntityHeat", 
-					Arrays.asList(
-							"minecraft:blaze/20f",
-							"minecraft:magma_cube/12f",
-							"minecraft:wither/200f",
-							"minecraft:ender_dragon/100f"), 
-					entry -> true);
 		}
 		
 	}

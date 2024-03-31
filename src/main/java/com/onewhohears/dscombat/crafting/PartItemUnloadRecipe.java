@@ -2,6 +2,8 @@ package com.onewhohears.dscombat.crafting;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.annotation.Nonnull;
+
 import com.onewhohears.dscombat.data.parts.LoadableRecipePartData;
 
 import net.minecraft.core.NonNullList;
@@ -31,6 +33,7 @@ public abstract class PartItemUnloadRecipe<I extends LoadableRecipePartData> ext
 		if (checkAmmoContinuity() && !lpd.isContinuityEmpty() && !isContinuityValid(continuity)) 
 			return ItemStack.EMPTY;
 		ItemStack ammo = getNewAmmoItem(continuity);
+		if (ammo.isEmpty()) return ammo;
 		ammo.setCount((int)lpd.getCurrentAmmo());
 		return ammo;
 	}
@@ -60,6 +63,6 @@ public abstract class PartItemUnloadRecipe<I extends LoadableRecipePartData> ext
 		return !isLoadablePartItem(stack);
 	}
 	
-	public abstract ItemStack getNewAmmoItem(String continuity);
+	@Nonnull public abstract ItemStack getNewAmmoItem(String continuity);
 	
 }

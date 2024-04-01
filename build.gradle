@@ -4,7 +4,7 @@ buildscript {
         maven { url = 'https://maven.parchmentmc.org' }
         mavenCentral()
         maven { url = 'https://repo.spongepowered.org/maven' }
-        maven { url = 'https://maven.xillio.com/artifactory/libs-release' }
+        //maven { url = 'https://maven.xillio.com/artifactory/libs-release' }
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
@@ -24,7 +24,7 @@ apply plugin: 'com.diffplug.eclipse.apt'
 
 group = 'com.onewhohears.dscombat'
 archivesBaseName = 'dscombat-1.19.2'
-version = '0.9.6'
+version = '0.0.0.1-L-BOZO'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 

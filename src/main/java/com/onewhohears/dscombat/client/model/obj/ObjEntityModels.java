@@ -12,6 +12,7 @@ import com.mojang.logging.LogUtils;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.renderer.EntityScreenRenderer;
 import com.onewhohears.dscombat.util.UtilParse;
+import com.onewhohears.dscombat.util.UtilParticles;
 
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
@@ -66,6 +67,17 @@ public class ObjEntityModels implements ResourceManagerReloadListener {
 	
 	public boolean hasModel(String id) {
 		return models.containsKey(id);
+	}
+	
+	public String getRandomModelId() {
+		int size = models.keySet().size();
+		int item = UtilParticles.random.nextInt(size);
+		int i = 0;
+		for(String id : models.keySet()) {
+			if (i == item) return id;
+			i++;
+		}
+		return NULL_MODEL_NAME;
 	}
 	
 	public void bakeModels() {

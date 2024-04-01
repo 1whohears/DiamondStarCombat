@@ -48,12 +48,12 @@ public class DSCGameRules {
 		MOB_TURRET_VERTICAL_RANGE = registerInteger("mobTurretVerticalRange", 300, GameRules.Category.MOBS);
 		MOBS_TICK_RADAR = registerBoolean("mobsTickRadar", true, GameRules.Category.MOBS);
 		MOBS_RIDE_VEHICLES = registerBoolean("mobsRideVehicles", true, GameRules.Category.MOBS);
-		PLANE_SPEED_PERCENT = registerInteger("planeSpeedPercent", 100, GameRules.Category.PLAYER);
+		PLANE_SPEED_PERCENT = registerInteger("planeSpeedPercent", 200, GameRules.Category.PLAYER);
 		VEHICLE_ARMOR_PERCENT = registerInteger("vehicleArmorStrengthPercent", 4, GameRules.Category.PLAYER);
-		BULLET_DAMAGE_VEHICLE_PER = registerInteger("bulletDamageVehiclePercent", 20, GameRules.Category.PLAYER);
-		EXPLO_DAMAGE_VEHICLE_PER = registerInteger("explosionDamageVehiclePercent", 1000, GameRules.Category.PLAYER);
-		BULLET_DAMAGE_PLANE_PER = registerInteger("bulletDamagePlanePercent", 50, GameRules.Category.PLAYER);
-		BULLET_DAMAGE_HELI_PER = registerInteger("bulletDamageHeliPercent", 50, GameRules.Category.PLAYER);
+		BULLET_DAMAGE_VEHICLE_PER = registerInteger("bulletDamageVehiclePercent", 500, GameRules.Category.PLAYER);
+		EXPLO_DAMAGE_VEHICLE_PER = registerInteger("explosionDamageVehiclePercent", 2000, GameRules.Category.PLAYER);
+		BULLET_DAMAGE_PLANE_PER = registerInteger("bulletDamagePlanePercent", 500, GameRules.Category.PLAYER);
+		BULLET_DAMAGE_HELI_PER = registerInteger("bulletDamageHeliPercent", 500, GameRules.Category.PLAYER);
 		DISABLE_3RD_PERSON_VEHICLE = registerBoolean("disable3rdPersonVehicle", false, GameRules.Category.PLAYER, 
 				(server, value) -> PacketHandler.INSTANCE.send(
 						PacketDistributor.ALL.noArg(), 

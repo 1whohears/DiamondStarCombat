@@ -562,7 +562,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 	
 	protected void knockBack(List<Entity> entities) {
-		double push_factor = 10 * xzSpeed;
+		double push_factor = 100 * xzSpeed;
 		if (push_factor < 2) push_factor = 2;
 		double d0 = getBoundingBox().getCenter().x;
 		double d1 = getBoundingBox().getCenter().z;

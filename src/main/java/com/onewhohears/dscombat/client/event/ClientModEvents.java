@@ -13,34 +13,8 @@ import com.onewhohears.dscombat.client.model.aircraft.EntityModelOrangeTesla;
 import com.onewhohears.dscombat.client.model.aircraft.EntityModelSmallRoller;
 import com.onewhohears.dscombat.client.model.aircraft.EntityModelTestPlane;
 import com.onewhohears.dscombat.client.model.aircraft.EntityModelWoodenPlane;
-import com.onewhohears.dscombat.client.model.obj.ObjAircraftModel;
-import com.onewhohears.dscombat.client.model.obj.ObjEntityModel;
 import com.onewhohears.dscombat.client.model.obj.ObjEntityModels;
-import com.onewhohears.dscombat.client.model.obj.ObjPartModel;
-import com.onewhohears.dscombat.client.model.obj.custom.AATurretModel;
-import com.onewhohears.dscombat.client.model.obj.custom.AlexisPlaneModel;
-import com.onewhohears.dscombat.client.model.obj.custom.BallRadarModel;
-import com.onewhohears.dscombat.client.model.obj.custom.BombRackModel;
-import com.onewhohears.dscombat.client.model.obj.custom.BroncoPlaneModel;
-import com.onewhohears.dscombat.client.model.obj.custom.CIWSModel;
-import com.onewhohears.dscombat.client.model.obj.custom.CorvetteModel;
-import com.onewhohears.dscombat.client.model.obj.custom.EdenPlaneModel;
-import com.onewhohears.dscombat.client.model.obj.custom.FelixPlaneModel;
-import com.onewhohears.dscombat.client.model.obj.custom.GimbalCameraModel;
-import com.onewhohears.dscombat.client.model.obj.custom.GoogleSubModel;
-import com.onewhohears.dscombat.client.model.obj.custom.HeavyMissileRackModel;
-import com.onewhohears.dscombat.client.model.obj.custom.JasonPlaneModel;
-import com.onewhohears.dscombat.client.model.obj.custom.JaviPlaneModel;
-import com.onewhohears.dscombat.client.model.obj.custom.LightMissileRackModel;
-import com.onewhohears.dscombat.client.model.obj.custom.MLSModel;
-import com.onewhohears.dscombat.client.model.obj.custom.Mark45GunModel;
-import com.onewhohears.dscombat.client.model.obj.custom.Mark7GunModel;
-import com.onewhohears.dscombat.client.model.obj.custom.Radar1Model;
-import com.onewhohears.dscombat.client.model.obj.custom.Radar2Model;
-import com.onewhohears.dscombat.client.model.obj.custom.SamLauncherModel;
-import com.onewhohears.dscombat.client.model.obj.custom.StickRadarModel;
-import com.onewhohears.dscombat.client.model.obj.custom.TorpedoTubesModel;
-import com.onewhohears.dscombat.client.model.obj.custom.VLSModel;
+import com.onewhohears.dscombat.client.model.obj.custom.RandomModel;
 import com.onewhohears.dscombat.client.model.weapon.EntityModelBomb1;
 import com.onewhohears.dscombat.client.model.weapon.EntityModelBullet1;
 import com.onewhohears.dscombat.client.model.weapon.EntityModelGruetzBB;
@@ -55,22 +29,14 @@ import com.onewhohears.dscombat.client.particle.ContrailParticle;
 import com.onewhohears.dscombat.client.particle.FlareParticle;
 import com.onewhohears.dscombat.client.particle.LargeSmokeCloudParticle;
 import com.onewhohears.dscombat.client.particle.ShrapnelParticle;
-import com.onewhohears.dscombat.client.renderer.RendererEntityAircraft;
 import com.onewhohears.dscombat.client.renderer.RendererEntityInvisible;
-import com.onewhohears.dscombat.client.renderer.RendererEntityParachute;
-import com.onewhohears.dscombat.client.renderer.RendererEntityTurret;
-import com.onewhohears.dscombat.client.renderer.RendererEntityWeapon;
-import com.onewhohears.dscombat.client.renderer.RendererObjAircraft;
 import com.onewhohears.dscombat.client.renderer.RendererObjEntity;
 import com.onewhohears.dscombat.data.aircraft.AircraftClientPresets;
-import com.onewhohears.dscombat.entity.weapon.EntityBomb;
-import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.init.ModParticles;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
@@ -126,238 +92,158 @@ public final class ClientModEvents {
 		EntityModelSet models = Minecraft.getInstance().getEntityModels();
 		// PLANES
 		event.registerEntityRenderer(ModEntities.JAVI_PLANE.get(), 
-				(context) -> new RendererObjAircraft<>(context,
-                        new JaviPlaneModel()));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.ALEXIS_PLANE.get(), 
-				(context) -> new RendererObjAircraft<>(context,
-                        new AlexisPlaneModel()));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.WOODEN_PLANE.get(), 
-				(context) -> new RendererEntityAircraft<>(context,
-                        new EntityModelWoodenPlane(models.bakeLayer(EntityModelWoodenPlane.LAYER_LOCATION))));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.E3SENTRY_PLANE.get(), 
-				(context) -> new RendererEntityAircraft<>(context,
-                        new EntityModelE3Sentry(models.bakeLayer(EntityModelE3Sentry.LAYER_LOCATION))));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.BRONCO_PLANE.get(), 
-				(context) -> new RendererObjAircraft<>(context,
-                        new BroncoPlaneModel()));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.FELIX_PLANE.get(), 
-				(context) -> new RendererObjAircraft<>(context,
-                        new FelixPlaneModel()));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.JASON_PLANE.get(), 
-				(context) -> new RendererObjAircraft<>(context,
-                        new JasonPlaneModel()));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.EDEN_PLANE.get(), 
-				(context) -> new RendererObjAircraft<>(context,
-                        new EdenPlaneModel()));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		// HELICOPTERS
 		event.registerEntityRenderer(ModEntities.NOAH_CHOPPER.get(), 
-				(context) -> new RendererEntityAircraft<>(context,
-                        new EntityModelNoahChopper(models.bakeLayer(EntityModelNoahChopper.LAYER_LOCATION))));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		// TANKS
 		event.registerEntityRenderer(ModEntities.MRBUDGER_TANK.get(), 
-				(context) -> new RendererEntityAircraft<>(context,
-                        new EntityModelMrBudgerTank(models.bakeLayer(EntityModelMrBudgerTank.LAYER_LOCATION))));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.SMALL_ROLLER.get(), 
-				(context) -> new RendererEntityAircraft<>(context,
-                        new EntityModelSmallRoller(models.bakeLayer(EntityModelSmallRoller.LAYER_LOCATION))));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.ORANGE_TESLA.get(), 
-				(context) -> new RendererEntityAircraft<>(context,
-                        new EntityModelOrangeTesla(models.bakeLayer(EntityModelOrangeTesla.LAYER_LOCATION))));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.AXCEL_TRUCK.get(), 
-				(context) -> new RendererEntityAircraft<>(context,
-                        new EntityModelAxcelTruck(models.bakeLayer(EntityModelAxcelTruck.LAYER_LOCATION))));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		// BOATS
 		event.registerEntityRenderer(ModEntities.NATHAN_BOAT.get(), 
-				(context) -> new RendererEntityAircraft<>(context,
-                        new EntityModelNathanBoat(models.bakeLayer(EntityModelNathanBoat.LAYER_LOCATION))));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.GRONK_BATTLESHIP.get(), 
-				(context) -> new RendererObjAircraft<>(context,
-                        new ObjAircraftModel<>("battleship")));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.DESTROYER.get(), 
-				(context) -> new RendererObjAircraft<>(context,
-                        new ObjAircraftModel<>("destroyer")));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.CRUISER.get(), 
-				(context) -> new RendererObjAircraft<>(context,
-                        new ObjAircraftModel<>("cruiser")));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.CORVETTE.get(), 
-				(context) -> new RendererObjAircraft<>(context,
-                        new CorvetteModel()));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.AIRCRAFT_CARRIER.get(), 
-				(context) -> new RendererObjAircraft<>(context,
-                        new ObjAircraftModel<>("carrier")));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		// SUBMARINES
 		event.registerEntityRenderer(ModEntities.ANDOLF_SUB.get(), 
-				(context) -> new RendererEntityAircraft<>(context,
-                        new EntityModelAndolfSub(models.bakeLayer(EntityModelAndolfSub.LAYER_LOCATION))));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.GOOGLE_SUB.get(), 
-				(context) -> new RendererObjAircraft<>(context,
-                        new GoogleSubModel()));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		// BULLETS
 		event.registerEntityRenderer(ModEntities.BULLET.get(), 
-				(context) -> new RendererEntityWeapon<>(context,
-                        new EntityModelBullet1(models.bakeLayer(EntityModelBullet1.LAYER_LOCATION)),
-                        new ResourceLocation(DSCombatMod.MODID, "textures/entities/bullet1.png")));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		// BOMBS
 		event.registerEntityRenderer(ModEntities.BOMB.get(), 
-				(context) -> new RendererObjEntity<EntityBomb>(context, 
-						new ObjEntityModel<>("mk82_light")));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.ANM30.get(), 
-				(context) -> new RendererObjEntity<EntityBomb>(context, 
-						new ObjEntityModel<>("anm30")));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.MARK77.get(), 
-				(context) -> new RendererObjEntity<EntityBomb>(context, 
-						new ObjEntityModel<>("mark77")));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		// BUNKER BUSTERS
 		event.registerEntityRenderer(ModEntities.GRUETZ_BUNKER_BUSTER.get(), 
-				(context) -> new RendererEntityWeapon<>(context,
-                        new EntityModelGruetzBB(models.bakeLayer(EntityModelGruetzBB.LAYER_LOCATION)),
-                        new ResourceLocation(DSCombatMod.MODID, "textures/entity/weapon/gruetz_bunker_buster.png")));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		// MISSILES
 		event.registerEntityRenderer(ModEntities.AIM9L.get(), 
-				(context) -> new RendererObjEntity<EntityMissile>(context, 
-						new ObjEntityModel<>("aim9l")));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.AIM9P5.get(), 
-				(context) -> new RendererObjEntity<EntityMissile>(context, 
-						new ObjEntityModel<>("aim9p5")));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.AIM9X.get(), 
-				(context) -> new RendererObjEntity<EntityMissile>(context, 
-						new ObjEntityModel<>("aim9x")));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.AIM120B.get(), 
-				(context) -> new RendererObjEntity<EntityMissile>(context, 
-						new ObjEntityModel<>("aim120b")));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.AIM120C.get(), 
-				(context) -> new RendererObjEntity<EntityMissile>(context, 
-						new ObjEntityModel<>("aim120c")));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.PAC3.get(), 
-				(context) -> new RendererObjEntity<EntityMissile>(context, 
-						new ObjEntityModel<>("pac3")));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.AIM7F.get(), 
-				(context) -> new RendererObjEntity<EntityMissile>(context, 
-						new ObjEntityModel<>("aim7f")));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.AIM7MH.get(), 
-				(context) -> new RendererObjEntity<EntityMissile>(context, 
-						new ObjEntityModel<>("aim7mh")));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.AGM114K.get(), 
-				(context) -> new RendererObjEntity<EntityMissile>(context, 
-						new ObjEntityModel<>("agm114k")));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.AGM84E.get(), 
-				(context) -> new RendererObjEntity<EntityMissile>(context, 
-						new ObjEntityModel<>("agm84e")));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.AGM65L.get(), 
-				(context) -> new RendererObjEntity<EntityMissile>(context, 
-						new ObjEntityModel<>("agm65l")));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.AGM65G.get(), 
-				(context) -> new RendererObjEntity<EntityMissile>(context, 
-						new ObjEntityModel<>("agm65g")));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.METEOR.get(), 
-				(context) -> new RendererObjEntity<EntityMissile>(context, 
-						new ObjEntityModel<>("meteor")));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.MK13.get(), 
-				(context) -> new RendererObjEntity<EntityMissile>(context, 
-						new ObjEntityModel<>("mk13")));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.AGM88G.get(), 
-				(context) -> new RendererObjEntity<EntityMissile>(context, 
-						new ObjEntityModel<>("agm88g")));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.POS_MISSILE_1.get(), 
-				(context) -> new RendererEntityWeapon<>(context,
-                        new EntityModelMissile1(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)),
-                        new ResourceLocation(DSCombatMod.MODID, "textures/entities/missile1.png")));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.IR_MISSILE_1.get(), 
-				(context) -> new RendererEntityWeapon<>(context,
-                        new EntityModelMissile1(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)),
-                        new ResourceLocation(DSCombatMod.MODID, "textures/entities/missile3.png")));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.TRACK_MISSILE_1.get(), 
-				(context) -> new RendererEntityWeapon<>(context,
-                        new EntityModelMissile1(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)),
-                        new ResourceLocation(DSCombatMod.MODID, "textures/entities/missile2.png")));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.ANTI_RADAR_MISSILE_1.get(), 
-				(context) -> new RendererEntityWeapon<>(context,
-                        new EntityModelMissile1(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)),
-                        new ResourceLocation(DSCombatMod.MODID, "textures/entities/missile4.png")));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.TORPEDO_MISSILE_1.get(), 
-				(context) -> new RendererEntityWeapon<>(context,
-                        new EntityModelMissile1(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)),
-                        new ResourceLocation(DSCombatMod.MODID, "textures/entities/missile5.png")));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		// TURRETS
 		event.registerEntityRenderer(ModEntities.MINIGUN_TURRET.get(), 
-				(context) -> new RendererEntityTurret<>(context,
-                        new EntityModelMiniGunTurret(models.bakeLayer(EntityModelMiniGunTurret.LAYER_LOCATION)),
-                        new ResourceLocation(DSCombatMod.MODID, "textures/entities/minigun_turret.png")));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.HEAVY_TANK_TURRET.get(), 
-				(context) -> new RendererEntityTurret<>(context,
-                        new EntityModelHeavyTankTurret(models.bakeLayer(EntityModelHeavyTankTurret.LAYER_LOCATION)),
-                        new ResourceLocation(DSCombatMod.MODID, "textures/entities/heavy_tank_turret.png")));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.STEVE_UP_SMASH.get(), 
-				(context) -> new RendererEntityTurret<>(context,
-                        new EntityModelSteveUpSmash(models.bakeLayer(EntityModelSteveUpSmash.LAYER_LOCATION)),
-                        new ResourceLocation(DSCombatMod.MODID, "textures/entities/steve_up_smash.png")));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.SAM_LAUNCHER.get(), 
-				(context) -> new RendererObjEntity<>(context,
-                        new SamLauncherModel()));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.MLS.get(), 
-				(context) -> new RendererObjEntity<>(context,
-                        new MLSModel()));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.TORPEDO_TUBES.get(), 
-				(context) -> new RendererObjEntity<>(context,
-                        new TorpedoTubesModel()));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.AA_TURRET.get(), 
-				(context) -> new RendererObjEntity<>(context,
-                        new AATurretModel()));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.CIWS.get(), 
-				(context) -> new RendererObjEntity<>(context,
-                        new CIWSModel()));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.MARK7_CANNON.get(), 
-				(context) -> new RendererObjEntity<>(context,
-                        new Mark7GunModel()));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.MARK45_CANNON.get(), 
-				(context) -> new RendererObjEntity<>(context,
-                        new Mark45GunModel()));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		// RADARS
 		event.registerEntityRenderer(ModEntities.AIR_SCAN_A.get(), 
-				(context) -> new RendererObjEntity<>(context,
-                        new Radar1Model()));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.AIR_SCAN_B.get(), 
-				(context) -> new RendererObjEntity<>(context,
-                        new Radar2Model()));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.SURVEY_ALL_A.get(), 
-				(context) -> new RendererObjEntity<>(context,
-                        new StickRadarModel()));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.SURVEY_ALL_B.get(), 
-				(context) -> new RendererObjEntity<>(context,
-                        new BallRadarModel()));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		// MISSILE RACKS
 		event.registerEntityRenderer(ModEntities.XM12.get(), 
-				(context) -> new RendererObjEntity<>(context,
-                        new ObjPartModel<>("xm12")));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.LIGHT_MISSILE_RACK.get(), 
-				(context) -> new RendererObjEntity<>(context,
-                        new LightMissileRackModel()));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.HEAVY_MISSILE_RACK.get(), 
-				(context) -> new RendererObjEntity<>(context,
-                        new HeavyMissileRackModel()));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.BOMB_RACK.get(), 
-				(context) -> new RendererObjEntity<>(context,
-                        new BombRackModel()));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.ADL.get(), 
-				(context) -> new RendererObjEntity<>(context,
-                        new ObjPartModel<>("adl")));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.VLS.get(), 
-				(context) -> new RendererObjEntity<>(context,
-                        new VLSModel()));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		// EXTERNAL ENGINES
 		event.registerEntityRenderer(ModEntities.CFM56.get(), 
-				(context) -> new RendererObjEntity<>(context,
-                        new ObjPartModel<>("cfm56")));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		// OTHER
 		event.registerEntityRenderer(ModEntities.SEAT.get(), RendererEntityInvisible::new);
 		event.registerEntityRenderer(ModEntities.FLARE.get(), RendererEntityInvisible::new);
 		event.registerEntityRenderer(ModEntities.GIMBAL_CAMERA.get(), 
-				(context) -> new RendererObjEntity<>(context,
-                        new GimbalCameraModel()));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 		event.registerEntityRenderer(ModEntities.PARACHUTE.get(), 
-				(context) -> new RendererEntityParachute(context, 
-						new EntityModelParachute(models.bakeLayer(EntityModelParachute.LAYER_LOCATION)), 
-						new ResourceLocation(DSCombatMod.MODID, "textures/entity/part/parachute.png")));
+				(context) -> new RendererObjEntity<>(context, new RandomModel()));
 	}
 	
 	@SubscribeEvent

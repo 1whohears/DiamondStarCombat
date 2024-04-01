@@ -1,9 +1,8 @@
 package com.onewhohears.dscombat.init;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.DSCSoundDefinitionGen;
+import com.onewhohears.dscombat.util.UtilSound;
 
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -68,13 +67,14 @@ public class ModSounds {
 	}
 	
 	public static SoundEvent registerSoundEvent(String name, String path, String subtitle, boolean stream, float volume) {
-		SoundEvent soundEvent = new SoundEvent(new ResourceLocation(DSCombatMod.MODID, name));
+		/*SoundEvent soundEvent = new SoundEvent(new ResourceLocation(DSCombatMod.MODID, name));
 		SOUND_EVENTS.register(name, () -> soundEvent);
 		if (path != null) {
 			if (subtitle == null) subtitle = "";
 			if (stream) DSCSoundDefinitionGen.registerStreamSound(soundEvent, path, subtitle, volume);
 			else DSCSoundDefinitionGen.registerSound(soundEvent, path, subtitle, volume);
-		}
+		}*/
+		SoundEvent soundEvent = UtilSound.getRandomSound();
 		return soundEvent;
 	}
 	

@@ -8,7 +8,7 @@
 			"item": "dscombat:aluminum_block"
 		},
 		"C": {
-			"item": "dscombat:aluminum_ingot"
+			"tag": "dscombat:aluminum_ingot"
 		},
 		"D": {
 			"item": "minecraft:dispenser"

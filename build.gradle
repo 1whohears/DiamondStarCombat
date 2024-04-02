@@ -4,7 +4,6 @@ buildscript {
         maven { url = 'https://maven.parchmentmc.org' }
         mavenCentral()
         maven { url = 'https://repo.spongepowered.org/maven' }
-        maven { url = 'https://maven.xillio.com/artifactory/libs-release' }
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true

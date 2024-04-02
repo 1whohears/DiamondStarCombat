@@ -9,6 +9,7 @@ import com.onewhohears.dscombat.init.ModTags;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class ItemTagGen extends ItemTagsProvider {
@@ -19,6 +20,9 @@ public class ItemTagGen extends ItemTagsProvider {
 
 	@Override
 	protected void addTags() {
+		tag(ModTags.Items.ALUMINUM_INGOT)
+			.add(ModItems.ALUMINUM_INGOT.get())
+			.addOptional(new ResourceLocation("createindustry:aluminum_ingot"));
 		tag(ModTags.Items.GAS_CAN)
 			.add(ModItems.GAS_CAN.get(), ModItems.BIG_GAS_CAN.get(), ModItems.BIG_ASS_CAN.get());
 		tag(ModTags.Items.AMMO)

@@ -8,7 +8,7 @@
 			"item": "minecraft:firework_rocket"
 		},
 		"I": {
-			"item": "dscombat:aluminum_ingot"
+			"tag": "dscombat:aluminum_ingot"
 		},
 		"G": {
 			"item": "minecraft:gold_ingot"

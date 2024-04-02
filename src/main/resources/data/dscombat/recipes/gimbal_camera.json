@@ -8,7 +8,7 @@
 			"item": "dscombat:ti83"
 		},
 		"I": {
-			"item": "dscombat:aluminum_ingot"
+			"tag": "dscombat:aluminum_ingot"
 		}
 	},
 	"pattern": [

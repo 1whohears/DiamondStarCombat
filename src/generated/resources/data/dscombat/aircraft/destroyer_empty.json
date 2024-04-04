@@ -23,8 +23,8 @@
       "num": 3
     },
     {
-      "item": "minecraft:oak_planks",
-      "num": 48
+      "num": 48,
+      "tag": "minecraft:planks"
     },
     {
       "item": "minecraft:light_gray_dye",

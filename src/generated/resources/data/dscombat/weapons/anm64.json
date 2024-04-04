@@ -14,8 +14,8 @@
   "fireRate": 11,
   "ingredients": [
     {
-      "item": "dscombat:aluminum_ingot",
-      "num": 4
+      "num": 4,
+      "tag": "dscombat:aluminum_ingot"
     },
     {
       "item": "minecraft:tnt",

@@ -24,8 +24,8 @@
       "num": 64
     },
     {
-      "item": "dscombat:aluminum_ingot",
-      "num": 64
+      "num": 64,
+      "tag": "dscombat:aluminum_ingot"
     },
     {
       "item": "minecraft:gunpowder",

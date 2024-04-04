@@ -102,7 +102,7 @@ public class JaviPresets {
 			.addIngredient(ModItems.BOMB_RACK.getId())
 			.addIngredient(ModItems.BASIC_FLARE_DISPENSER.getId())
 			.addIngredient("minecraft:copper_ingot", 64)
-			.addIngredient("dscombat:aluminum_ingot", 64)
+			.addIngredientTag("dscombat:aluminum_ingot", 64)
 			.addIngredient("minecraft:redstone", 64)
 			.addIngredient("minecraft:gunpowder", 64)
 			.build();

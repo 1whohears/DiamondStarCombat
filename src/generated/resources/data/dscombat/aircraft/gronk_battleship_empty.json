@@ -75,8 +75,8 @@
       "num": 4
     },
     {
-      "item": "minecraft:oak_planks",
-      "num": 64
+      "num": 64,
+      "tag": "minecraft:planks"
     },
     {
       "item": "dscombat:seat",

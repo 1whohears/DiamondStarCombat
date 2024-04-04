@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.data.weapon;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,9 +9,11 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
+import com.onewhohears.dscombat.crafting.WeaponRecipe;
 import com.onewhohears.dscombat.data.JsonPresetReloadListener;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.RecipeManager;
 
 public class WeaponPresets extends JsonPresetReloadListener<WeaponData> {
 	
@@ -27,6 +30,7 @@ public class WeaponPresets extends JsonPresetReloadListener<WeaponData> {
 	
 	private Map<String, List<String>> compatibleMap = new HashMap<>();
 	private WeaponData[] weaponList;
+	private WeaponRecipe[] weaponRecipes;
 	
 	public WeaponPresets() {
 		super("weapons");
@@ -64,6 +68,26 @@ public class WeaponPresets extends JsonPresetReloadListener<WeaponData> {
 		return weaponList;
 	}
 	
+	public WeaponRecipe[] getWeaponRecipes(RecipeManager recipeManager) {
+		if (weaponRecipes == null) {
+			List<WeaponRecipe> list = new ArrayList<>();
+			List<WeaponRecipe> wRecipes = recipeManager.getAllRecipesFor(WeaponRecipe.Type.INSTANCE);
+			for (WeaponRecipe recipe : wRecipes) list.add(recipe);
+			weaponRecipes = list.toArray(new WeaponRecipe[list.size()]);
+			sort(weaponRecipes);
+		}
+		return weaponRecipes;
+	}
+	
+	public void sort(WeaponRecipe[] recipes) {
+		Arrays.sort(recipes, (a, b) -> a.compare(b));
+	}
+	
+	public int getWeaponRecipeNum() {
+		if (weaponRecipes == null) return 0;
+		return weaponRecipes.length;
+	}
+	
 	public List<String> getCompatibleWeapons(ResourceLocation weaponPartItemId) {
 		List<String> list = compatibleMap.get(weaponPartItemId.toString());
 		if (list == null) return new ArrayList<>();
@@ -73,6 +97,7 @@ public class WeaponPresets extends JsonPresetReloadListener<WeaponData> {
 	@Override
 	protected void resetCache() {
 		weaponList = null;
+		weaponRecipes = null;
 		refreshCompatibility();
 	}
 	

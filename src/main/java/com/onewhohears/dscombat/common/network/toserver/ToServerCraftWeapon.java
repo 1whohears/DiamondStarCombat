@@ -1,32 +1,32 @@
 package com.onewhohears.dscombat.common.network.toserver;
 
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
+import com.mojang.datafixers.util.Pair;
 import com.onewhohears.dscombat.common.network.IPacket;
-import com.onewhohears.dscombat.crafting.DSCIngredient;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
-import com.onewhohears.dscombat.data.weapon.WeaponPresets;
+import com.onewhohears.dscombat.crafting.WeaponRecipe;
+import com.onewhohears.dscombat.util.UtilItem;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.Containers;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent.Context;
 
 public class ToServerCraftWeapon extends IPacket {
 	
-	public final String weaponId;
+	public final String recipeId;
 	public final BlockPos pos;
 	
-	public ToServerCraftWeapon(String weaponId, BlockPos pos) {
-		this.weaponId = weaponId;
+	public ToServerCraftWeapon(ResourceLocation recipeId, BlockPos pos) {
+		this.recipeId = recipeId.toString();
 		this.pos = pos;
 	}
 	
 	public ToServerCraftWeapon(FriendlyByteBuf buffer) {
-		weaponId = buffer.readUtf();
+		recipeId = buffer.readUtf();
 		double x = buffer.readDouble();
 		double y = buffer.readDouble();
 		double z = buffer.readDouble();
@@ -35,7 +35,7 @@ public class ToServerCraftWeapon extends IPacket {
 	
 	@Override
 	public void encode(FriendlyByteBuf buffer) {
-		buffer.writeUtf(weaponId);
+		buffer.writeUtf(recipeId);
 		buffer.writeDouble(pos.getX());
 		buffer.writeDouble(pos.getY());
 		buffer.writeDouble(pos.getZ());
@@ -45,16 +45,14 @@ public class ToServerCraftWeapon extends IPacket {
 	public boolean handle(Supplier<Context> ctx) {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
-			ServerPlayer player = ctx.get().getSender();
-			WeaponData data = WeaponPresets.get().getPreset(weaponId);
-			if (data != null && DSCIngredient.hasIngredients(data.getIngredients(), player.getInventory())) {
-				DSCIngredient.consumeIngredients(data.getIngredients(), player.getInventory());
-				ItemStack stack = data.getNewItem();
-				stack.setCount(data.getCraftNum());
-				Containers.dropItemStack(player.level, pos.getX()+0.5, 
-						pos.getY()+1.125, pos.getZ()+0.5, stack);
-			}
 			success.set(true);
+			ServerPlayer player = ctx.get().getSender();
+			Optional<Pair<ResourceLocation, WeaponRecipe>> option = player.level.getRecipeManager().getRecipeFor(
+					WeaponRecipe.Type.INSTANCE, player.getInventory(), player.level, 
+					new ResourceLocation(recipeId));
+			if (option.isEmpty()) return;
+			WeaponRecipe recipe = option.get().getSecond();
+			UtilItem.handleInventoryRecipe(player, recipe, pos);
 		});
 		ctx.get().setPacketHandled(true);
 		return success.get();

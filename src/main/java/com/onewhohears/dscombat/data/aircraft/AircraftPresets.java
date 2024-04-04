@@ -1,12 +1,15 @@
 package com.onewhohears.dscombat.data.aircraft;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.google.gson.JsonObject;
+import com.onewhohears.dscombat.crafting.AircraftRecipe;
 import com.onewhohears.dscombat.data.JsonPresetReloadListener;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.RecipeManager;
 
 public class AircraftPresets extends JsonPresetReloadListener<AircraftPreset> {
 	
@@ -21,8 +24,8 @@ public class AircraftPresets extends JsonPresetReloadListener<AircraftPreset> {
 		instance = null;
 	}
 	
-	private AircraftPreset[] allPresets, allCraftablePresets;
-	private AircraftPreset[] tanks, helis, planes, boats;
+	private AircraftPreset[] allPresets;
+	private AircraftRecipe[] tanks, helis, planes, boats;
 	
 	public AircraftPresets() {
 		super("aircraft");
@@ -35,68 +38,52 @@ public class AircraftPresets extends JsonPresetReloadListener<AircraftPreset> {
 		return allPresets;
 	}
 	
-	public AircraftPreset[] getCraftablePresets() {
-		if (allCraftablePresets == null) {
-			List<AircraftPreset> list = new ArrayList<>();
-			presetMap.forEach((name, preset) -> {
-				if (preset.isCraftable()) list.add(preset);
-			});
-			allCraftablePresets = list.toArray(new AircraftPreset[list.size()]);
-			sort(allCraftablePresets);
-		}
-		return allCraftablePresets;
-	}
-	
-	public int getCraftablePresetNum() {
-		return getCraftablePresets().length;
-	}
-	
-	public AircraftPreset[] getCraftableTanks() {
+	public AircraftRecipe[] getTankRecipes(RecipeManager recipeManager) {
 		if (tanks == null) {
-			List<AircraftPreset> list = new ArrayList<>();
-			presetMap.forEach((name, preset) -> {
-				if (preset.isCraftable() && preset.getAircraftType().isTank()) list.add(preset);
-			});
-			tanks = list.toArray(new AircraftPreset[list.size()]);
+			List<AircraftRecipe> list = new ArrayList<>();
+			List<AircraftRecipe> aircraftRecipes = recipeManager.getAllRecipesFor(AircraftRecipe.Type.INSTANCE);
+			for (AircraftRecipe recipe : aircraftRecipes) if (recipe.getAircraftType().isTank()) list.add(recipe);
+			tanks = list.toArray(new AircraftRecipe[list.size()]);
 			sort(tanks);
 		}
 		return tanks;
 	}
 	
-	public AircraftPreset[] getCraftableHelis() {
+	public AircraftRecipe[] getHeliRecipes(RecipeManager recipeManager) {
 		if (helis == null) {
-			List<AircraftPreset> list = new ArrayList<>();
-			presetMap.forEach((name, preset) -> {
-				if (preset.isCraftable() && preset.getAircraftType().isHeli()) list.add(preset);
-			});
-			helis = list.toArray(new AircraftPreset[list.size()]);
+			List<AircraftRecipe> list = new ArrayList<>();
+			List<AircraftRecipe> aircraftRecipes = recipeManager.getAllRecipesFor(AircraftRecipe.Type.INSTANCE);
+			for (AircraftRecipe recipe : aircraftRecipes) if (recipe.getAircraftType().isHeli()) list.add(recipe);
+			helis = list.toArray(new AircraftRecipe[list.size()]);
 			sort(helis);
 		}
 		return helis;
 	}
 	
-	public AircraftPreset[] getCraftablePlanes() {
+	public AircraftRecipe[] getPlaneRecipes(RecipeManager recipeManager) {
 		if (planes == null) {
-			List<AircraftPreset> list = new ArrayList<>();
-			presetMap.forEach((name, preset) -> {
-				if (preset.isCraftable() && preset.getAircraftType().isPlane()) list.add(preset);
-			});
-			planes = list.toArray(new AircraftPreset[list.size()]);
+			List<AircraftRecipe> list = new ArrayList<>();
+			List<AircraftRecipe> aircraftRecipes = recipeManager.getAllRecipesFor(AircraftRecipe.Type.INSTANCE);
+			for (AircraftRecipe recipe : aircraftRecipes) if (recipe.getAircraftType().isPlane()) list.add(recipe);
+			planes = list.toArray(new AircraftRecipe[list.size()]);
 			sort(planes);
 		}
 		return planes;
 	}
 
-	public AircraftPreset[] getCraftableBoats() {
+	public AircraftRecipe[] getBoatRecipes(RecipeManager recipeManager) {
 		if (boats == null) {
-			List<AircraftPreset> list = new ArrayList<>();
-			presetMap.forEach((name, preset) -> {
-				if (preset.isCraftable() && preset.getAircraftType().isBoat()) list.add(preset);
-			});
-			boats = list.toArray(new AircraftPreset[list.size()]);
+			List<AircraftRecipe> list = new ArrayList<>();
+			List<AircraftRecipe> aircraftRecipes = recipeManager.getAllRecipesFor(AircraftRecipe.Type.INSTANCE);
+			for (AircraftRecipe recipe : aircraftRecipes) if (recipe.getAircraftType().isBoat()) list.add(recipe);
+			boats = list.toArray(new AircraftRecipe[list.size()]);
 			sort(boats);
 		}
 		return boats;
+	}
+	
+	public void sort(AircraftRecipe[] recipes) {
+		Arrays.sort(recipes, (a, b) -> a.compare(b));
 	}
 
 	@Override
@@ -107,7 +94,10 @@ public class AircraftPresets extends JsonPresetReloadListener<AircraftPreset> {
 	@Override
 	protected void resetCache() {
 		allPresets = null;
-		allCraftablePresets = null;
+		tanks = null;
+		helis = null;
+		planes = null;
+		boats = null;
 	}
 	
 }

@@ -78,7 +78,7 @@ public class SubPresets {
 			.setSlotItem("frame_5", ModItems.HEAVY_MISSILE_RACK.getId(), "mk13", true)
 			.setSlotItem("frame_6", ModItems.HEAVY_MISSILE_RACK.getId(), "mk13", true)
 			.addIngredient("minecraft:copper_ingot", 63)
-			.addIngredient("dscombat:aluminum_ingot", 64)
+			.addIngredientTag("dscombat:aluminum_ingot", 64)
 			.addIngredient("minecraft:redstone", 64)
 			.addIngredient("minecraft:gunpowder", 64)
 			.addIngredient(ModItems.HEAVY_MISSILE_RACK.getId(), 6)

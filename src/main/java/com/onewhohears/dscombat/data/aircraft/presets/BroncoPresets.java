@@ -45,7 +45,7 @@ public class BroncoPresets {
 			.addIngredient(ModItems.WHEEL.getId(), 3)
 			.addIngredient(ModItems.PROPELLER.getId(), 2)
 			.addIngredient("minecraft:green_dye", 6)
-			.addIngredient("minecraft:gold_ingot", 4)
+			.addIngredientTag("dscombat:aluminum_ingot", 4)
 			.addPilotSeatSlot(0, -0.74, 4.5)
 			.addSeatSlot(PartSlot.COPILOT_SLOT_NAME, SlotType.LIGHT_TURRET, 0, -0.61, 3.125)
 			.addEmptySlot("nose_1", SlotType.FRAME, 0, -0.9357, 6.0625, 180)

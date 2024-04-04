@@ -54,7 +54,7 @@ public abstract class JsonPresetReloadListener<T extends JsonPreset> extends Sim
 	}
 	
 	@Nullable
-	protected T getPresetNonCopy(String id) {
+	public T getPresetNonCopy(String id) {
 		if (!has(id)) return null;
 		return presetMap.get(id);
 	}

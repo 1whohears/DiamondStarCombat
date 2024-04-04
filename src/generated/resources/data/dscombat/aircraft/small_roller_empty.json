@@ -8,8 +8,8 @@
       "num": 1
     },
     {
-      "item": "dscombat:aluminum_ingot",
-      "num": 5
+      "num": 5,
+      "tag": "dscombat:aluminum_ingot"
     },
     {
       "item": "dscombat:tank_track",

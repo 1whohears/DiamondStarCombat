@@ -28,8 +28,8 @@
       "num": 6
     },
     {
-      "item": "minecraft:gold_ingot",
-      "num": 4
+      "num": 4,
+      "tag": "dscombat:aluminum_ingot"
     }
   ],
   "is_craftable": false,

@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.client.screen;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -8,22 +9,26 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.container.menu.WeaponsBlockContainerMenu;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerCraftWeapon;
-import com.onewhohears.dscombat.crafting.DSCIngredient;
+import com.onewhohears.dscombat.crafting.WeaponRecipe;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponData.ComponentColor;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
+import com.onewhohears.dscombat.util.UtilItem;
 import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 
 public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockContainerMenu> {
 	
@@ -31,6 +36,7 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockCont
 			"textures/ui/aircraft_screen.png");
 	
 	private static final int buttonNum = 7;
+	private List<Integer> fails = new ArrayList<>();
 	
 	private final int maxTab;
 	private int tabIndex = 0;
@@ -42,7 +48,7 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockCont
 		this.topPos = 0;
 		this.imageWidth = 256;
 		this.imageHeight = 256;
-		maxTab = (int)((float)WeaponPresets.get().getPresetNum() / (float)buttonNum);
+		maxTab = (int)((float)WeaponPresets.get().getWeaponRecipes(Minecraft.getInstance().level.getRecipeManager()).length / (float)buttonNum);
 	}
 	
 	@Override
@@ -52,7 +58,7 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockCont
         this.renderTooltip(poseStack, mouseX, mouseY);
         Minecraft m = Minecraft.getInstance();
         RenderSystem.enableBlend();
-        if (WeaponPresets.get().getPresetNum() == 0) return;
+        if (WeaponPresets.get().getWeaponRecipeNum() == 0) return;
         // render weapon item options
         int startX = getGuiLeft() + titleLabelX;
 		int startY = getGuiTop() + titleLabelY;
@@ -60,8 +66,8 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockCont
 		int wy = startY + 12;
 		for (int i = 0; i < buttonNum; ++i) {
 			int index = tabIndex * buttonNum + i;
-			if (index >= WeaponPresets.get().getPresetNum()) break;
-			ItemStack stack = WeaponPresets.get().getAllPresets()[index].getDisplayStack();
+			if (index >= WeaponPresets.get().getWeaponRecipeNum()) break;
+			ItemStack stack = WeaponPresets.get().getWeaponRecipes(m.level.getRecipeManager())[index].getResultItem();
 			m.getItemRenderer().renderAndDecorateItem(
 					stack, wx, wy);
 			m.getItemRenderer().renderGuiItemDecorations(font,
@@ -69,25 +75,21 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockCont
 			wx += 20;
 		}
 		// render ingredients
-		WeaponData data = WeaponPresets.get().getAllPresets()[weaponIndex];
-		int iix = startX + 122;
-		int ix = iix;
-		int iy = startY + 44;
-		for (int i = 0; i < data.getIngredients().size(); ++i) {
-			if (i != 0 && i % 4 == 0) {
-				ix = iix;
-				iy += 20;
-			}
-			ItemStack stack = data.getIngredients().get(i).getDisplayItem();
-			m.getItemRenderer().renderAndDecorateItem(stack, ix, iy);
-			m.getItemRenderer().renderGuiItemDecorations(font, stack, ix, iy);
-			if (mouseX >= ix && mouseX < (ix+20) && mouseY >= iy && mouseY < (iy+20)) renderTooltip(
-					poseStack, 
-					getTooltipFromItem(stack), 
-					stack.getTooltipImage(), 
-					mouseX, mouseY);
-			ix += 20;
-		}
+		WeaponRecipe recipe = WeaponPresets.get().getWeaponRecipes(m.level.getRecipeManager())[weaponIndex];
+		NonNullList<Ingredient> ingredients = recipe.getIngredients();
+        for (int i = 0; i < getMenu().recipeSlots.getContainerSize(); ++i) {
+        	if (i < ingredients.size()) {
+        		ItemStack[] items = ingredients.get(i).getItems();
+    			ItemStack stack = items[(m.player.tickCount/20)%items.length];
+        		getMenu().recipeSlots.setItem(i, stack);
+        		if (fails.contains(i)) {
+        			Slot slot = getMenu().getSlot(i);
+        			int left = leftPos + slot.x;
+        			int top = topPos + slot.y;
+        			fill(poseStack, left, top, left+17, top+17, 0x77ff0000);
+        		}
+        	} else getMenu().recipeSlots.setItem(i, ItemStack.EMPTY);
+        }
 	}
 
 	@Override
@@ -101,10 +103,12 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockCont
 	protected void renderLabels(PoseStack stack, int mouseX, int mouseY) {
 		font.draw(stack, title, titleLabelX+38, titleLabelY, 0x404040);
 		font.draw(stack, playerInventoryTitle, inventoryLabelX+38, inventoryLabelY+56, 0x404040);
-		font.draw(stack, UtilMCText.translatable("ui.dscombat.ingredients"), titleLabelX+122, titleLabelY+34, 0x00aa00);
+		font.draw(stack, UtilMCText.translatable("ui.dscombat.ingredients"), titleLabelX+114, titleLabelY+32, 0x00aa00);
 		// weapon stats
-		if (WeaponPresets.get().getPresetNum() == 0) return;
-		WeaponData data = WeaponPresets.get().getAllPresets()[weaponIndex];
+		if (WeaponPresets.get().getWeaponRecipeNum() == 0) return;
+		WeaponRecipe wr = WeaponPresets.get().getWeaponRecipes(Minecraft.getInstance().level.getRecipeManager())[weaponIndex];
+		WeaponData data = wr.getWeaponData();
+		if (data == null) return;
 		List<ComponentColor> list = data.getInfoComponents();
 		font.draw(stack, list.get(0).component, 
 				titleLabelX+38, titleLabelY+34, list.get(0).color);
@@ -197,7 +201,8 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockCont
 	}
 	
 	private void weaponButton(int num) {
-		int max = WeaponPresets.get().getPresetNum();
+		resetFails();
+		int max = WeaponPresets.get().getWeaponRecipeNum();
 		int a = tabIndex * buttonNum + num;
 		if (a >= max) weaponIndex = max-1;
 		else weaponIndex = a;
@@ -207,13 +212,23 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockCont
 		Minecraft m = Minecraft.getInstance();
 		Player player = m.player;
 		if (player == null) return;
-		WeaponData data = WeaponPresets.get().getAllPresets()[weaponIndex];
-		if (DSCIngredient.hasIngredients(data.getIngredients(), player.getInventory())) {
-			PacketHandler.INSTANCE.sendToServer(new ToServerCraftWeapon(data.getId(), menu.getPos()));
+		WeaponRecipe recipe = WeaponPresets.get().getWeaponRecipes(m.level.getRecipeManager())[weaponIndex];
+		if (recipe.matches(player.getInventory(), m.level)) {
+			PacketHandler.INSTANCE.sendToServer(new ToServerCraftWeapon(recipe.getId(), menu.getPos()));
 		} else {
 			player.displayClientMessage(UtilMCText.translatable("error.dscombat.cant_craft"), true);
 			minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.VILLAGER_NO, 1.0F));
+			setFails(UtilItem.testRecipeFails(recipe.getIngredients(), player.getInventory()));
 		}
+	}
+	
+	public void setFails(List<Integer> fails) {
+		if (fails == null) return;
+		this.fails = fails;
+	}
+	
+	public void resetFails() {
+		fails.clear();
 	}
 
 }

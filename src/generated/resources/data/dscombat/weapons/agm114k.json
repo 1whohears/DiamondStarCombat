@@ -18,8 +18,8 @@
   "fuseDist": 2.0,
   "ingredients": [
     {
-      "item": "dscombat:aluminum_ingot",
-      "num": 3
+      "num": 3,
+      "tag": "dscombat:aluminum_ingot"
     },
     {
       "item": "minecraft:tnt",

@@ -36,7 +36,7 @@ public class PlanePresets {
 			.setPlaneLiftAOAGraph(LiftKGraph.WOODEN_PLANE_GRAPH)
 			.setPlaneFlapDownAOABias(8)
 			.setPlaneNoseCanAimDown(false)
-			.addIngredient("minecraft:oak_planks", 30)
+			.addIngredientTag("minecraft:planks", 30)
 			.addIngredient(ModItems.SEAT.getId())
 			.addIngredient(ModItems.PROPELLER.getId())
 			.addIngredient(ModItems.WHEEL.getId(), 2)

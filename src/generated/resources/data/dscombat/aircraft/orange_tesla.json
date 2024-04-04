@@ -20,8 +20,8 @@
       "num": 4
     },
     {
-      "item": "dscombat:aluminum_ingot",
-      "num": 10
+      "num": 10,
+      "tag": "dscombat:aluminum_ingot"
     },
     {
       "item": "minecraft:orange_dye",

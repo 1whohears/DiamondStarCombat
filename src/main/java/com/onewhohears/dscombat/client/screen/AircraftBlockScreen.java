@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.client.screen;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -10,9 +11,10 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.container.menu.AircraftBlockContainerMenu;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerCraftPlane;
-import com.onewhohears.dscombat.crafting.DSCIngredient;
+import com.onewhohears.dscombat.crafting.AircraftRecipe;
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
+import com.onewhohears.dscombat.util.UtilItem;
 import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.client.Minecraft;
@@ -20,13 +22,16 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 
 public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockContainerMenu> {
 	
@@ -35,6 +40,7 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockCo
 	private final int bg_tex_size;
 	
 	private AircraftTab tab = AircraftTab.TANKS;
+	private List<Integer> fails = new ArrayList<>();
 	
 	public AircraftBlockScreen(AircraftBlockContainerMenu menu, Inventory playerInv, Component title) {
 		super(menu, playerInv, title);
@@ -75,45 +81,41 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockCo
 	}
 	
 	protected void renderVehicle(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
-		AircraftPreset ap = tab.getSelectedPreset();
+		AircraftRecipe ap = tab.getSelectedRecipe();
         if (ap == null) return;
 		Minecraft m = Minecraft.getInstance();
-        ItemStack stack = ap.getItem();
+        ItemStack stack = ap.getResultItem();
         m.getItemRenderer().renderAndDecorateItem(stack, leftPos+170, topPos+50);
         // HOW 2 render 3d vehicle and make it spin
 	}
 	
 	protected void renderIngredients(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
-		AircraftPreset ap = tab.getSelectedPreset();
+		AircraftRecipe ap = tab.getSelectedRecipe();
         if (ap == null) return;
-		Minecraft m = Minecraft.getInstance();
-        RenderSystem.enableBlend();
-		List<DSCIngredient> ingredients = ap.getIngredients();
-		int startX = leftPos+97, startY = topPos+122;
-		int ix = startX, iy = startY;
-		int space = 18;
-		for (int i = 0; i < ingredients.size(); ++i) {
-			if (i == 9) {
-				ix = startX;
-				iy += 18;
-			}
-			ItemStack stack = ingredients.get(i).getDisplayItem();
-			m.getItemRenderer().renderAndDecorateItem(stack, ix, iy);
-			m.getItemRenderer().renderGuiItemDecorations(font, stack, ix, iy);
-			if (mouseX >= ix && mouseX < (ix+space) && mouseY >= iy && mouseY < (iy+space)) renderTooltip(
-					poseStack, 
-					getTooltipFromItem(stack), 
-					stack.getTooltipImage(), 
-					mouseX, mouseY);
-			ix += space;
-		}
+        Minecraft m = Minecraft.getInstance();
+        NonNullList<Ingredient> ingredients = ap.getIngredients();
+        for (int i = 0; i < getMenu().recipeSlots.getContainerSize(); ++i) {
+        	if (i < ingredients.size()) {
+        		ItemStack[] items = ingredients.get(i).getItems();
+    			ItemStack stack = items[(m.player.tickCount/20)%items.length];
+        		getMenu().recipeSlots.setItem(i, stack);
+        		if (fails.contains(i)) {
+        			Slot slot = getMenu().getSlot(i);
+        			int left = leftPos + slot.x;
+        			int top = topPos + slot.y;
+        			fill(poseStack, left, top, left+17, top+17, 0x77ff0000);
+        		}
+        	} else getMenu().recipeSlots.setItem(i, ItemStack.EMPTY);
+        }
 	}
 	
 	@Override
 	protected void renderLabels(PoseStack stack, int mouseX, int mouseY) {
 		font.draw(stack, playerInventoryTitle, inventoryLabelX, inventoryLabelY, 0x404040);
 		// plane stats
-		AircraftPreset ap = tab.getSelectedPreset();
+		AircraftRecipe ar = tab.getSelectedRecipe();
+		if (ar == null) return;
+		AircraftPreset ap = ar.getVehiclePreset();
 		if (ap == null) return;
 		font.draw(stack, ap.getDisplayNameComponent(), titleLabelX, titleLabelY, 0x000000);
 		CompoundTag data = ap.getDataAsNBT().getCompound("stats");
@@ -204,35 +206,49 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockCo
 	
 	private void tabButton(AircraftTab tab) {
 		this.tab = tab;
+		resetFails();
 	}
 	
 	private void prevButton() {
 		tab.cycleIndexLeft();
+		resetFails();
 	}
 	
 	private void nextButton() {
 		tab.cycleIndexRight();
+		resetFails();
 	}
 	
 	private void craftButton() {
+		resetFails();
 		Minecraft m = Minecraft.getInstance();
 		Player player = m.player;
 		if (player == null) return;
-		AircraftPreset ap = tab.getSelectedPreset();
+		AircraftRecipe ap = tab.getSelectedRecipe();
 		if (ap == null) return;
-		if (DSCIngredient.hasIngredients(ap.getIngredients(), player.getInventory())) {
+		if (ap.matches(player.getInventory(), m.level)) {
 			PacketHandler.INSTANCE.sendToServer(new ToServerCraftPlane(ap.getId(), menu.getPos()));
 		} else {
 			player.displayClientMessage(UtilMCText.translatable("error.dscombat.cant_craft"), true);
 			minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.VILLAGER_NO, 1.0F));
+			setFails(UtilItem.testRecipeFails(ap.getIngredients(), player.getInventory()));
 		}
 	}
 	
+	public void setFails(List<Integer> fails) {
+		if (fails == null) return;
+		this.fails = fails;
+	}
+	
+	public void resetFails() {
+		fails.clear();
+	}
+	
 	public static enum AircraftTab {
-		TANKS(() -> AircraftPresets.get().getCraftableTanks(), 86),
-		HELIS(() -> AircraftPresets.get().getCraftableHelis(), 133),
-		PLANES(() -> AircraftPresets.get().getCraftablePlanes(), 180),
-		BOATS(() -> AircraftPresets.get().getCraftableBoats(), 227);
+		TANKS(() -> AircraftPresets.get().getTankRecipes(Minecraft.getInstance().level.getRecipeManager()), 86),
+		HELIS(() -> AircraftPresets.get().getHeliRecipes(Minecraft.getInstance().level.getRecipeManager()), 133),
+		PLANES(() -> AircraftPresets.get().getPlaneRecipes(Minecraft.getInstance().level.getRecipeManager()), 180),
+		BOATS(() -> AircraftPresets.get().getBoatRecipes(Minecraft.getInstance().level.getRecipeManager()), 227);
 		
 		private AircraftPresetList presetFactory;
 		private int index = 0;
@@ -243,7 +259,7 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockCo
 			this.bookmarkX = bookmarkX;
 		}
 		
-		public AircraftPreset[] getPresets() {
+		public AircraftRecipe[] getRecipes() {
 			return presetFactory.get();
 		}
 		
@@ -252,27 +268,27 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockCo
 		}
 		
 		private int checkIndex() {
-			if (getPresets().length == 0) index = -1;
-			else if (index >= getPresets().length) index = getPresets().length-1;
+			if (getRecipes().length == 0) index = -1;
+			else if (index >= getRecipes().length) index = getRecipes().length-1;
 			else if (index < 0) index = 0;
 			return index;
 		}
 		
 		@Nullable
-		public AircraftPreset getSelectedPreset() {
+		public AircraftRecipe getSelectedRecipe() {
 			if (checkIndex() == -1) return null;
-			return getPresets()[getIndex()];
+			return getRecipes()[getIndex()];
 		}
 		
 		public int cycleIndexRight() {
 			++index;
-			if (index >= getPresets().length) index = 0;
+			if (index >= getRecipes().length) index = 0;
 			return index;
 		}
 		
 		public int cycleIndexLeft() {
 			--index;
-			if (index < 0) index = getPresets().length-1;
+			if (index < 0) index = getRecipes().length-1;
 			return index;
 		}
 		
@@ -283,7 +299,7 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockCo
 	}
 	
 	public static interface AircraftPresetList {
-		AircraftPreset[] get();
+		AircraftRecipe[] get();
 	}
 
 }

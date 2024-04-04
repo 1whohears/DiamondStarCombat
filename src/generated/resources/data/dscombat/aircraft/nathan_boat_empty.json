@@ -4,8 +4,8 @@
   "health": 100.0,
   "ingredients": [
     {
-      "item": "dscombat:aluminum_ingot",
-      "num": 10
+      "num": 10,
+      "tag": "dscombat:aluminum_ingot"
     },
     {
       "item": "dscombat:seat",

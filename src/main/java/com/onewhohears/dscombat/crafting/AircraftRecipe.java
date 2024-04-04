@@ -1,18 +1,21 @@
 package com.onewhohears.dscombat.crafting;
 
-import java.util.List;
-
 import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
+import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
+import com.onewhohears.dscombat.init.ModBlocks;
+import com.onewhohears.dscombat.util.UtilItem;
 
+import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -29,13 +32,18 @@ public class AircraftRecipe implements Recipe<Inventory> {
     }
 	
 	@Override
-	public boolean matches(Inventory container, Level level) {
-		return DSCIngredient.hasIngredients(getDSCIngredients(), container);
+	public boolean matches(Inventory inventory, Level level) {
+		return UtilItem.testRecipe(getIngredients(), inventory);
 	}
 
 	@Override
 	public ItemStack assemble(Inventory container) {
 		return getOutput();
+	}
+	
+	@Override
+	public NonNullList<ItemStack> getRemainingItems(Inventory inventory) {
+		return UtilItem.getRemainingItemsStackIngredients(inventory, getIngredients());
 	}
 
 	@Override
@@ -46,6 +54,11 @@ public class AircraftRecipe implements Recipe<Inventory> {
 	@Override
 	public ItemStack getResultItem() {
 		return getOutput().copy();
+	}
+	
+	@Override
+	public ItemStack getToastSymbol() {
+		return new ItemStack(ModBlocks.AIRCRAFT_BLOCK.get());
 	}
 
 	@Override
@@ -63,14 +76,40 @@ public class AircraftRecipe implements Recipe<Inventory> {
 		return Type.INSTANCE;
 	}
 	
-	public List<DSCIngredient> getDSCIngredients() {
-		AircraftPreset preset = AircraftPresets.get().getPreset(presetId);
-		if (preset == null) return DSCIngredient.NONE;
+	public String getVehiclePresetId() {
+		return presetId;
+	}
+	
+	public AircraftPreset getVehiclePreset() {
+		return AircraftPresets.get().getPresetNonCopy(getVehiclePresetId());
+	}
+	
+	public int getSortFactor() {
+		AircraftPreset preset = getVehiclePreset();
+		if (preset == null) return 0;
+		return preset.getSortFactor();
+	}
+	
+	public AircraftType getAircraftType() {
+		AircraftPreset preset = getVehiclePreset();
+		if (preset == null) return AircraftType.CAR;
+		return preset.getAircraftType();
+	}
+	
+	public int compare(AircraftRecipe other) {
+		if (this.getSortFactor() != other.getSortFactor()) 
+			return this.getSortFactor() - other.getSortFactor();
+		return this.presetId.compareToIgnoreCase(presetId);
+	}
+	
+	public NonNullList<Ingredient> getIngredients() {
+		AircraftPreset preset = getVehiclePreset();
+		if (preset == null) return NonNullList.create();
 		return preset.getIngredients();
 	}
 	
 	public ItemStack getOutput() {
-		AircraftPreset preset = AircraftPresets.get().getPreset(presetId);
+		AircraftPreset preset = getVehiclePreset();
 		if (preset == null) return ItemStack.EMPTY;
 		return preset.getItem();
 	}

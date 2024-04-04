@@ -23,8 +23,8 @@
       "num": 2
     },
     {
-      "item": "minecraft:oak_planks",
-      "num": 32
+      "num": 32,
+      "tag": "minecraft:planks"
     },
     {
       "item": "dscombat:seat",

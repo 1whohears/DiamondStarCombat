@@ -1,33 +1,32 @@
 package com.onewhohears.dscombat.common.network.toserver;
 
-import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
+import com.mojang.datafixers.util.Pair;
 import com.onewhohears.dscombat.common.network.IPacket;
-import com.onewhohears.dscombat.crafting.DSCIngredient;
-import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
-import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
+import com.onewhohears.dscombat.crafting.AircraftRecipe;
+import com.onewhohears.dscombat.util.UtilItem;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.Containers;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent.Context;
 
 public class ToServerCraftPlane extends IPacket {
 	
-	public final String preset;
+	public final String recipeId;
 	public final BlockPos pos;
 	
-	public ToServerCraftPlane(String preset, BlockPos pos) {
-		this.preset = preset;
+	public ToServerCraftPlane(ResourceLocation recipeId, BlockPos pos) {
+		this.recipeId = recipeId.toString();
 		this.pos = pos;
 	}
 	
 	public ToServerCraftPlane(FriendlyByteBuf buffer) {
-		preset = buffer.readUtf();
+		recipeId = buffer.readUtf();
 		double x = buffer.readDouble();
 		double y = buffer.readDouble();
 		double z = buffer.readDouble();
@@ -36,7 +35,7 @@ public class ToServerCraftPlane extends IPacket {
 	
 	@Override
 	public void encode(FriendlyByteBuf buffer) {
-		buffer.writeUtf(preset);
+		buffer.writeUtf(recipeId);
 		buffer.writeDouble(pos.getX());
 		buffer.writeDouble(pos.getY());
 		buffer.writeDouble(pos.getZ());
@@ -46,18 +45,14 @@ public class ToServerCraftPlane extends IPacket {
 	public boolean handle(Supplier<Context> ctx) {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
-			ServerPlayer player = ctx.get().getSender();
-			AircraftPreset ap = AircraftPresets.get().getPreset(preset);
-			if (ap != null) {
-				List<DSCIngredient> ingredients = ap.getIngredients();
-				if (DSCIngredient.hasIngredients(ingredients, player.getInventory())) {
-					DSCIngredient.consumeIngredients(ingredients, player.getInventory());
-					ItemStack stack = ap.getItem();
-					Containers.dropItemStack(player.level, pos.getX()+0.5, 
-						pos.getY()+1.125, pos.getZ()+0.5, stack);
-				}
-			}
 			success.set(true);
+			ServerPlayer player = ctx.get().getSender();
+			Optional<Pair<ResourceLocation, AircraftRecipe>> option = player.level.getRecipeManager().getRecipeFor(
+					AircraftRecipe.Type.INSTANCE, player.getInventory(), player.level, 
+					new ResourceLocation(recipeId));
+			if (option.isEmpty()) return;
+			AircraftRecipe recipe = option.get().getSecond();
+			UtilItem.handleInventoryRecipe(player, recipe, pos);
 		});
 		ctx.get().setPacketHandled(true);
 		return success.get();

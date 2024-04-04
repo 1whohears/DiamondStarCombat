@@ -4,8 +4,8 @@
   "health": 40.0,
   "ingredients": [
     {
-      "item": "minecraft:oak_planks",
-      "num": 30
+      "num": 30,
+      "tag": "minecraft:planks"
     },
     {
       "item": "dscombat:seat",

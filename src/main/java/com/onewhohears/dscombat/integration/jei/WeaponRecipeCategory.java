@@ -1,9 +1,6 @@
 package com.onewhohears.dscombat.integration.jei;
 
-import java.util.List;
-
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.crafting.DSCIngredient;
 import com.onewhohears.dscombat.crafting.WeaponRecipe;
 import com.onewhohears.dscombat.init.ModBlocks;
 import com.onewhohears.dscombat.util.UtilMCText;
@@ -15,9 +12,10 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 
 public class WeaponRecipeCategory implements IRecipeCategory<WeaponRecipe> {
 	
@@ -58,7 +56,7 @@ public class WeaponRecipeCategory implements IRecipeCategory<WeaponRecipe> {
 
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, WeaponRecipe recipe, IFocusGroup focuses) {
-		List<DSCIngredient> ingredients = recipe.getDSCIngredients();
+		NonNullList<Ingredient> ingredients = recipe.getIngredients();
 		int startX = 33, startY = 95;
 		int ix = startX, iy = startY;
 		int space = 18;
@@ -67,8 +65,7 @@ public class WeaponRecipeCategory implements IRecipeCategory<WeaponRecipe> {
 				ix = startX;
 				iy += space;
 			}
-			ItemStack stack = ingredients.get(i).getDisplayItem();
-			builder.addSlot(RecipeIngredientRole.INPUT, ix, iy).addItemStack(stack);
+			builder.addSlot(RecipeIngredientRole.INPUT, ix, iy).addIngredients(ingredients.get(i));
 			ix += space;
 		}
 		builder.addSlot(RecipeIngredientRole.OUTPUT, 105, 61).addItemStack(recipe.getResultItem());

@@ -11,7 +11,7 @@ import javax.annotation.Nullable;
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponAmmo;
-import com.onewhohears.dscombat.crafting.DSCIngredient;
+import com.onewhohears.dscombat.data.DSCIngredientBuilder;
 import com.onewhohears.dscombat.data.JsonPreset;
 import com.onewhohears.dscombat.data.aircraft.DSCPhyCons;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
@@ -27,6 +27,7 @@ import com.onewhohears.dscombat.util.UtilParticles;
 import com.onewhohears.dscombat.util.UtilSound;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -38,6 +39,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
@@ -45,7 +47,6 @@ import net.minecraftforge.network.PacketDistributor;
 public abstract class WeaponData extends JsonPreset {
 	protected static final ResourceLocation NONE_ICON = new ResourceLocation(MODID, "textures/ui/weapon_icons/none.png");
 
-	private final List<DSCIngredient> ingredients;
 	private final int craftNum;
 	private final int maxAge;
 	private final int maxAmmo;
@@ -59,6 +60,7 @@ public abstract class WeaponData extends JsonPreset {
 	private final String modelId;
 	private final ResourceLocation icon;
 	
+	private NonNullList<Ingredient> ingredients;
 	private EntityType<?> entityType;
 	private SoundEvent shootSound;
 	private EntityType<?> rackType;
@@ -72,7 +74,6 @@ public abstract class WeaponData extends JsonPreset {
 	
 	public WeaponData(ResourceLocation key, JsonObject json) {
 		super(key, json);
-		this.ingredients = DSCIngredient.getIngredients(json);
 		this.craftNum = UtilParse.getIntSafe(json, "craftNum", 0);
 		this.maxAge = UtilParse.getIntSafe(json, "maxAge", 0);
 		this.maxAmmo = UtilParse.getIntSafe(json, "maxAmmo", 0);
@@ -116,7 +117,10 @@ public abstract class WeaponData extends JsonPreset {
 		DataSerializers.VEC3.write(buffer, pos);
 	}
 	
-	public List<DSCIngredient> getIngredients() {
+	public NonNullList<Ingredient> getIngredients() {
+		if (ingredients == null) {
+			ingredients = DSCIngredientBuilder.getIngredients(getJsonDataNotCopy());
+		}
 		return ingredients;
 	}
 	

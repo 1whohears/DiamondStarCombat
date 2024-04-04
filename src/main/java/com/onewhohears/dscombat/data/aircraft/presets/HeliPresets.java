@@ -67,7 +67,6 @@ public class HeliPresets {
 			.addIngredient(ModItems.SEAT.getId(), 3)
 			.addIngredient("minecraft:green_dye", 4)
 			.addIngredient("minecraft:gold_ingot", 15)
-			.addIngredient("iron_ingot", 4)
 			.addEntityScreen(EntityScreenIds.AIR_RADAR_SCREEN,0.19,0.18,1.934,0.3,0.3,20)
 			.addEntityScreen(EntityScreenIds.FUEL_SCREEN,0.19,-0.12,1.825,0.3,0.3,20)
 			.addEntityScreen(EntityScreenIds.RWR_SCREEN,0.5,-0.12,1.825,0.3,0.3,20)

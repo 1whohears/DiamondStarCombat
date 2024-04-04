@@ -1,16 +1,13 @@
 package com.onewhohears.dscombat.data.aircraft;
 
-import java.util.List;
-
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
 import com.onewhohears.dscombat.client.model.obj.ObjRadarModel.MastType;
-import com.onewhohears.dscombat.crafting.DSCIngredient;
+import com.onewhohears.dscombat.data.DSCIngredientBuilder;
 import com.onewhohears.dscombat.data.JsonPreset;
-import com.onewhohears.dscombat.data.PresetBuilder;
 import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
@@ -23,18 +20,20 @@ import com.onewhohears.dscombat.util.UtilGsonMerge.ConflictStrategy;
 import com.onewhohears.dscombat.util.UtilItem;
 import com.onewhohears.dscombat.util.UtilParse;
 
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.phys.Vec3;
 
 public class AircraftPreset extends JsonPreset{
 
 	private final AircraftType aircraft_type;
 	private CompoundTag dataNBT;
-	private List<DSCIngredient> ingredients;
+	private NonNullList<Ingredient> ingredients;
 	private ItemStack item;
 	
 	public AircraftPreset(ResourceLocation key, JsonObject json) {
@@ -64,9 +63,9 @@ public class AircraftPreset extends JsonPreset{
 		return getJsonData().get("is_craftable").getAsBoolean();
 	}
 	
-	public List<DSCIngredient> getIngredients() {
+	public NonNullList<Ingredient> getIngredients() {
 		if (ingredients == null) {
-			ingredients = DSCIngredient.getIngredients(dataNBT);
+			ingredients = DSCIngredientBuilder.getIngredients(getJsonDataNotCopy());
 		}
 		return ingredients;
 	}
@@ -153,7 +152,7 @@ public class AircraftPreset extends JsonPreset{
 		return super.compare(other);
 	}
 	
-	public static class Builder extends PresetBuilder<Builder> {
+	public static class Builder extends DSCIngredientBuilder<Builder> {
 		
 		private boolean is_craftable = false;
 		
@@ -416,31 +415,6 @@ public class AircraftPreset extends JsonPreset{
 		 */
 		public Builder addSeatSlot(String name, SlotType type, double x, double y, double z) {
 			return addItemSlot(name, type, x, y, z, 0, ModItems.SEAT.getId(), null, false);
-		}
-		/**
-		 * all vehicles
-		 */
-		public Builder addIngredient(String itemId, int num) {
-			if (!getData().has("ingredients")) {
-				getData().add("ingredients", new JsonArray());
-			}
-			JsonObject i = new JsonObject();
-			i.addProperty("item", itemId);
-			i.addProperty("num", num);
-			getData().get("ingredients").getAsJsonArray().add(i);
-			return this;
-		}
-		/**
-		 * all vehicles
-		 */
-		public Builder addIngredient(ResourceLocation item, int num) {
-			return addIngredient(item.toString(), num);
-		}
-		/**
-		 * all vehicles
-		 */
-		public Builder addIngredient(ResourceLocation item) {
-			return addIngredient(item, 1);
 		}
 		/**
 		 * all vehicles

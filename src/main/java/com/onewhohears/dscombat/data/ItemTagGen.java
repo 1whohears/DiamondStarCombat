@@ -25,6 +25,8 @@ public class ItemTagGen extends ItemTagsProvider {
 			.addOptional(new ResourceLocation("createindustry:aluminum_ingot"));
 		tag(ModTags.Items.GAS_CAN)
 			.add(ModItems.GAS_CAN.get(), ModItems.BIG_GAS_CAN.get(), ModItems.BIG_ASS_CAN.get());
+		tag(ModTags.Items.SPRAY_CAN)
+			.add(ModItems.SPRAYCAN.get());
 		tag(ModTags.Items.AMMO)
 			.add(ModItems.BULLET.get(), ModItems.BOMB.get(), ModItems.TRACK_AIR_MISSILE.get(), ModItems.TRACK_GROUND_MISSILE.get())
 			.add(ModItems.IR_MISSILE.get(), ModItems.POS_MISSILE.get(), ModItems.TORPEDO.get(), ModItems.ANTIRADAR_MISSILE.get())

@@ -46,7 +46,7 @@ import com.onewhohears.dscombat.entity.parts.EntityPart;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.init.DataSerializers;
-import com.onewhohears.dscombat.item.ItemSpraycan;
+import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.dscombat.item.VehicleInteractItem;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.UtilMCText;
@@ -1328,46 +1328,66 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		if (player.isSecondaryUseActive()) return InteractionResult.PASS;
 		if (!isOperational()) return InteractionResult.PASS;
 		if (player.getRootVehicle() != null && player.getRootVehicle().equals(this)) return InteractionResult.PASS;
-		if (!level.isClientSide) {
-			ItemStack stack = player.getInventory().getSelected();
-			if (!stack.isEmpty()) {
-				Item item = stack.getItem();
-				if (item instanceof VehicleInteractItem vii) return vii.onServerInteract(this, stack, player, hand);
-				// RADIO
-				else if (item instanceof RecordItem disk) {
-					if (!hasRadio) return InteractionResult.PASS;
-					setRadioSong(disk.getSound().getLocation().toString());
-					return InteractionResult.SUCCESS;
-				// CUSTOM NAME
-				} else if (item instanceof NameTagItem name) {
-					if (stack.hasCustomHoverName()) {
-						setCustomName(stack.getHoverName());
-						setCustomNameVisible(true);
-						stack.shrink(1);
-						return InteractionResult.CONSUME;
-					}
-					return InteractionResult.PASS;
-				}
-			}
-			return rideAvailableSeat(player) ? InteractionResult.CONSUME : InteractionResult.PASS;
-		} else if (level.isClientSide) {	
+		ItemStack stack = player.getInventory().getSelected();
+		if (!stack.isEmpty()) {
+			InteractionResult result = onItemInteract(player, hand, stack);
+			if (result != InteractionResult.FAIL) return result;
+		}
+		if (!level.isClientSide) return rideAvailableSeat(player) ? InteractionResult.CONSUME : InteractionResult.PASS;
+		else {
 			Minecraft m = Minecraft.getInstance();
 			if (m.player.equals(player)) DSCClientInputs.centerMousePos();
-			ItemStack stack = player.getInventory().getSelected();
-			if (!stack.isEmpty()) {
-				Item item = stack.getItem();
-				if (item instanceof ItemSpraycan can) 
-					UtilPacket.openVehicleTextureScreen(textureManager);
-			}
-			return InteractionResult.SUCCESS;
 		}
 		return InteractionResult.SUCCESS;
 	}
 	
+	public InteractionResult onItemInteract(Player player, InteractionHand hand, ItemStack stack) {
+		Item item = stack.getItem();
+		if (!level.isClientSide) {
+			// GAS CAN
+			if (stack.is(ModTags.Items.GAS_CAN)) 
+				return onGasCanInteract(player, hand, stack);
+			// INTERACT ITEMS
+			else if (item instanceof VehicleInteractItem vii) 
+				return vii.onServerInteract(this, stack, player, hand);
+			// RADIO
+			else if (item instanceof RecordItem disk) {
+				if (!hasRadio) return InteractionResult.PASS;
+				setRadioSong(disk.getSound().getLocation().toString());
+				return InteractionResult.SUCCESS;
+			// CUSTOM NAME
+			} else if (item instanceof NameTagItem name) {
+				if (stack.hasCustomHoverName()) {
+					setCustomName(stack.getHoverName());
+					setCustomNameVisible(true);
+					stack.shrink(1);
+					return InteractionResult.CONSUME;
+				}
+				return InteractionResult.PASS;
+			}
+		} else {
+			if (stack.is(ModTags.Items.SPRAY_CAN)) 
+				return onSprayCanInteract(player, hand, stack);
+		}
+		return InteractionResult.FAIL;
+	}
+	
+	public InteractionResult onGasCanInteract(Player player, InteractionHand hand, ItemStack stack) {
+		int md = stack.getMaxDamage();
+		int d = stack.getDamageValue();
+		int r = (int)addFuel(md-d);
+		stack.setDamageValue(md-r);
+		return InteractionResult.SUCCESS;
+	}
+	
+	public InteractionResult onSprayCanInteract(Player player, InteractionHand hand, ItemStack stack) {
+		UtilPacket.openVehicleTextureScreen(textureManager);
+		return InteractionResult.SUCCESS;
+	}
+	
 	public void playRepairSound() {
-		level.playSound(null, this, 
-				SoundEvents.ANVIL_USE, 
-				getSoundSource(), 0.5f, 0.9f);
+		level.playSound(null, this, SoundEvents.ANVIL_USE, 
+				getSoundSource(), 0.5f, 0.8f);
 	}
 	
 	private boolean ridePilotSeat(Entity e, List<EntitySeat> seats) {

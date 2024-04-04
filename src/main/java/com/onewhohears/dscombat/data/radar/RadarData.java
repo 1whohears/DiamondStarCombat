@@ -10,6 +10,7 @@ import com.onewhohears.dscombat.data.PresetBuilder;
 import com.onewhohears.dscombat.data.weapon.RadarTargetTypes;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.init.DataSerializers;
+import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
@@ -168,32 +169,27 @@ public class RadarData extends JsonPreset {
 	private void scanAircraft(EntityVehicle radar, Entity controller, List<RadarPing> vehiclePings, AABB radarArea, 
 			boolean playersOnly, boolean isPlayersOrBots) {
 		//System.out.println("SCANNING VEHICLES");
-		List<EntityVehicle> list = radar.level.getEntitiesOfClass(EntityVehicle.class, radarArea);
+		List<Entity> list = radar.level.getEntities(radar, radarArea, 
+				(entity) -> entity.getType().is(ModTags.EntityTypes.VEHICLE));
 		for (int i = 0; i < list.size(); ++i) {
-			EntityVehicle ea = list.get(i);
-			if (playersOnly && !ea.isPlayerRiding()) continue;
-			else if (isPlayersOrBots && !ea.isPlayerOrBotRiding()) continue;
-			if (!basicCheck(radar, ea, ea.getStealth())) continue;
-			RadarPing p = new RadarPing(ea, 
-					checkFriendly(controller, ea), 
+			Entity e = list.get(i);
+			EntityVehicle ev = null;
+			if (e instanceof EntityVehicle vehicle) ev = vehicle;
+			if (ev == null && (playersOnly || isPlayersOrBots) && !(e.getControllingPassenger() instanceof Player)) 
+				continue;
+			else if (ev != null && playersOnly && ev.isPlayerRiding()) 
+				continue;
+			else if (ev != null && isPlayersOrBots && !ev.isPlayerOrBotRiding()) 
+				continue;
+			double stealth = 1;
+			if (ev != null) stealth = ev.getStealth();
+			if (!basicCheck(radar, e, stealth)) continue;
+			RadarPing p = new RadarPing(e, 
+					checkFriendly(controller, e), 
 					PingEntityType.VEHICLE);
 			vehiclePings.add(p);
 			pings.add(p);
-			if (!radar.isAlliedTo(ea)) ea.lockedOnto(radar);
-		}
-		for (int j = 0; j < RadarTargetTypes.get().getRadarVehicleClasses().size(); ++j) {
-			Class<? extends Entity> clazz = RadarTargetTypes.get().getRadarVehicleClasses().get(j);
-			List<? extends Entity> entities = radar.level.getEntitiesOfClass(clazz, radarArea);
-			for (int i = 0; i < entities.size(); ++i) {
-				Entity e = entities.get(i);
-				if ((playersOnly || isPlayersOrBots) && !(e.getControllingPassenger() instanceof Player)) continue;
-				if (!basicCheck(radar, e, 1)) continue;
-				RadarPing p = new RadarPing(e, 
-						checkFriendly(controller, e), 
-						PingEntityType.VEHICLE);
-				vehiclePings.add(p);
-				pings.add(p);
-			}
+			if (ev != null && !radar.isAlliedTo(ev)) ev.lockedOnto(radar);
 		}
 	}
 	
@@ -274,8 +270,7 @@ public class RadarData extends JsonPreset {
 			//System.out.println("not in cone");
 			return false;
 		}
-		double area = stealth;
-		area *= UtilEntity.getCrossSectionalArea(target);
+		double area = UtilEntity.getCrossSectionalArea(target) * stealth;
 		double areaMin = (1-Math.pow(range,-2)*Math.pow(dist-range,2))*sensitivity;
 		//System.out.println("area = "+area+" min = "+areaMin);
 		return area >= areaMin;

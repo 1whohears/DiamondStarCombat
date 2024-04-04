@@ -8,8 +8,8 @@ import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
-import com.onewhohears.dscombat.data.weapon.RadarTargetTypes;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.core.BlockPos;
@@ -111,9 +111,9 @@ public class UtilEntity {
 	
 	public static double getCrossSectionalArea(Entity entity) {
 		if (entity instanceof EntityVehicle plane) return plane.getCrossSectionArea();
-		return RadarTargetTypes.get().getEntityCrossSectionalArea(
-				entity.getType().toString(), 
-				entity.getBbHeight()*entity.getBbWidth());
+		double area = entity.getBbHeight()*entity.getBbWidth();
+		if (entity.getType().is(ModTags.EntityTypes.VEHICLE)) return Math.max(area, 1);
+		return area;
 	}
 	
 	public static int getDistFromGround(Entity e) {

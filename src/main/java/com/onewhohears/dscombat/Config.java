@@ -88,15 +88,7 @@ public class Config {
 		/**
 		 * classname
 		 */
-		public final ForgeConfigSpec.ConfigValue<List<? extends String>> radarVehicles;
-		/**
-		 * classname
-		 */
 		public final ForgeConfigSpec.ConfigValue<List<? extends String>> radarMobs;
-		/**
-		 * entity_id/area
-		 */
-		public final ForgeConfigSpec.ConfigValue<List<? extends String>> radarCrossSecAreas;
 		
 		public Common(ForgeConfigSpec.Builder builder) {
 			maxBlockCheckDepth = builder
@@ -104,29 +96,11 @@ public class Config {
 					.defineInRange("maxBlockCheckDepth", 250, 10, 400);
 			gasCanXpRepairRate = builder
 					.comment("The average durability repaired by mending per xp point.")
-					.defineInRange("gasCanXpRepairRate", 0.4, 0, 100);
-			radarVehicles = builder
-					.defineList("radarVehicles", 
-					Arrays.asList(
-							"net.minecraft.world.entity.vehicle.Boat",
-							"net.minecraft.world.entity.vehicle.AbstractMinecart",
-							"com.onewhohears.dscombat.entity.EntityParachute",
-							"xyz.przemyk.simpleplanes.entities.PlaneEntity"), 
-					entry -> true);
+					.defineInRange("gasCanXpRepairRate", 0.25, 0, 100);
 			radarMobs = builder.defineList("radarMobs", 
 					Arrays.asList(
 							"net.minecraft.world.entity.Mob"), 
 					entry -> true);
-			radarCrossSecAreas = builder
-					.comment("smaller values means its harder for a radar to see."
-							+ " most radars have a sensitivity of at least 0.5m^2."
-							+ " [entity_id]/[cross sectional area override (float)]")
-					.defineList("radarCrossSecAreas", 
-						Arrays.asList(
-								"minecraft:boat/1.0f",
-								"minecraft:minecart/1.0f",
-								"dscombat:parachute/1.0f"), 
-						entry -> true);
 		}
 		
 	}

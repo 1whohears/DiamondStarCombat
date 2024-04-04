@@ -103,7 +103,7 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockCont
 	protected void renderLabels(PoseStack stack, int mouseX, int mouseY) {
 		font.draw(stack, title, titleLabelX+38, titleLabelY, 0x404040);
 		font.draw(stack, playerInventoryTitle, inventoryLabelX+38, inventoryLabelY+56, 0x404040);
-		font.draw(stack, UtilMCText.translatable("ui.dscombat.ingredients"), titleLabelX+114, titleLabelY+32, 0x00aa00);
+		font.draw(stack, UtilMCText.translatable("ui.dscombat.ingredients"), titleLabelX+123, titleLabelY+32, 0x00aa00);
 		// weapon stats
 		if (WeaponPresets.get().getWeaponRecipeNum() == 0) return;
 		WeaponRecipe wr = WeaponPresets.get().getWeaponRecipes(Minecraft.getInstance().level.getRecipeManager())[weaponIndex];

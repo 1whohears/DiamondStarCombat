@@ -23,7 +23,7 @@ public class WeaponsBlockContainerMenu extends AbstractContainerMenu {
 		super(ModContainers.WEAPONS_BLOCK_MENU.get(), windowId);
 		this.weaponsBlock = weaponsBlock;
 		this.pos = weaponsBlock.getBlockPos();
-		int startX = 122, startY = 46;
+		int startX = 130, startY = 46;
 		for (int i = 0; i < 4; ++i) for(int j = 0; j < 4; j++) 
 			addSlot(new DisplaySlot(recipeSlots, j + i * 4, startX + j * 18, startY + i * 18));
 		// display player inventory

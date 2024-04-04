@@ -5,11 +5,13 @@ import com.onewhohears.dscombat.DSCombatMod;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.material.Fluid;
 
 public class ModTags {
 	
@@ -74,6 +76,13 @@ public class ModTags {
 		public static TagKey<Item> tag(String name) {
         	return ItemTags.create(new ResourceLocation(DSCombatMod.MODID, name));
         }
+	}
+	
+	public static class Fluids {
+		public static final TagKey<Fluid> OIL = tag("oil");
+		public static TagKey<Fluid> tag(String name) {
+			return FluidTags.create(new ResourceLocation(DSCombatMod.MODID, name));
+		}
 	}
 	
 }

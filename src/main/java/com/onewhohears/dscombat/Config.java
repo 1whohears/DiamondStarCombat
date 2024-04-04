@@ -84,6 +84,7 @@ public class Config {
 	public static class Common {
 		
 		public final ForgeConfigSpec.IntValue maxBlockCheckDepth;
+		public final ForgeConfigSpec.DoubleValue gasCanXpRepairRate;
 		/**
 		 * classname
 		 */
@@ -101,6 +102,9 @@ public class Config {
 			maxBlockCheckDepth = builder
 					.comment("The number of blocks between 2 entities to check if they can see eachother.")
 					.defineInRange("maxBlockCheckDepth", 250, 10, 400);
+			gasCanXpRepairRate = builder
+					.comment("The average durability repaired by mending per xp point.")
+					.defineInRange("gasCanXpRepairRate", 0.4, 0, 100);
 			radarVehicles = builder
 					.defineList("radarVehicles", 
 					Arrays.asList(

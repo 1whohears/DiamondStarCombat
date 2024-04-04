@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.item;
 
+import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModTags;
 
@@ -66,7 +67,7 @@ public class ItemGasCan extends Item {
 	
 	@Override
 	public float getXpRepairRatio(ItemStack stack) {
-		return 0.5f;
+		return Config.COMMON.gasCanXpRepairRate.get().floatValue();
 	}
 
 }

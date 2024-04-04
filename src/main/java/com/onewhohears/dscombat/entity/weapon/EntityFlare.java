@@ -22,6 +22,10 @@ public class EntityFlare extends Entity implements IREmitter {
 	
 	public EntityFlare(EntityType<? extends EntityFlare> pEntityType, Level pLevel) {
 		super(pEntityType, pLevel);
+		this.heat = 20;
+		this.age = 120;
+		this.pow = 3;
+		calcDecay();
 	}
 	
 	public EntityFlare(Level level, float initHeat, int maxAge, float order) {

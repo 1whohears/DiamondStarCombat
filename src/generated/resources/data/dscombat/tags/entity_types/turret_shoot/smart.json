@@ -1,3 +1,12 @@
 {
-  "values": []
+  "values": [
+    "minecraft:skeleton",
+    "minecraft:piglin",
+    "minecraft:pillager",
+    "minecraft:evoker",
+    "minecraft:vindicator",
+    "minecraft:witch",
+    "minecraft:blaze",
+    "minecraft:snow_golem"
+  ]
 }

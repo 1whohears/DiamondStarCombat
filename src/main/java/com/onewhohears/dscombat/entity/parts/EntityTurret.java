@@ -13,6 +13,7 @@ import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.entity.ai.goal.TurretShootGoal;
 import com.onewhohears.dscombat.entity.ai.goal.TurretTargetGoal;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.dscombat.util.UtilMCText;
 import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.math.UtilAngles;
@@ -29,8 +30,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.animal.AbstractGolem;
-import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -189,10 +188,10 @@ public class EntityTurret extends EntitySeat {
 	protected void addTurretAI(Mob mob) {
 		shootGoal = makeShootGoal(mob);
 		mob.goalSelector.addGoal(0, shootGoal);
-		if (mob instanceof Enemy) {
+		if (mob.getType().is(ModTags.EntityTypes.TURRET_TARGET_PLAYERS)) {
 			targetGoal = makeTargetPlayerGoal(mob);
 			mob.targetSelector.addGoal(0, targetGoal);
-		} else if (mob instanceof AbstractGolem) {
+		} else if (mob.getType().is(ModTags.EntityTypes.TURRET_TARGET_MONSTERS)) {
 			targetGoal = makeTargetEnemyGoal(mob);
 			mob.targetSelector.addGoal(0, targetGoal);
 		}

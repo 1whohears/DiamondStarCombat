@@ -41,8 +41,6 @@ public class ModTags {
 		public static final TagKey<EntityType<?>> TANK = tag("vehicle/tank");
 		public static final TagKey<EntityType<?>> BOAT = tag("vehicle/boat");
 		public static final TagKey<EntityType<?>> SUBMARINE = tag("vehicle/submarine");
-		public static final TagKey<EntityType<?>> RADAR_MOBS = tag("radar_mobs");
-		public static final TagKey<EntityType<?>> CAN_RIDE_VEHICLE = tag("can_ride_vehicle");
 		public static final TagKey<EntityType<?>> TURRET_SHOOT = tag("turret_shoot");
 		public static final TagKey<EntityType<?>> TURRET_SHOOT_RANDOM = tag("turret_shoot/random");
 		public static final TagKey<EntityType<?>> TURRET_SHOOT_DUMBASS = tag("turret_shoot/dumbass");
@@ -51,7 +49,6 @@ public class ModTags {
 		public static final TagKey<EntityType<?>> TURRET_SHOOT_SMART = tag("turret_shoot/smart");
 		public static final TagKey<EntityType<?>> TURRET_TARGET_MONSTERS = tag("turret_target_monsters");
 		public static final TagKey<EntityType<?>> TURRET_TARGET_PLAYERS = tag("turret_target_players");
-		public static final TagKey<EntityType<?>> OVERRIDE_RADAR_VISABILITY = tag("override_radar_visability");
 		public static final TagKey<EntityType<?>> IR_EMITTER = tag("ir_emitter");
 		public static final TagKey<EntityType<?>> FLARE = tag("ir_emitter/flare");
 		public static final TagKey<EntityType<?>> IR_EMITTER_LOW = tag("ir_emitter/low");

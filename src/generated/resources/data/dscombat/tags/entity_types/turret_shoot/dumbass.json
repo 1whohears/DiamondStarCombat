@@ -1,3 +1,7 @@
 {
-  "values": []
+  "values": [
+    "minecraft:spider",
+    "minecraft:cave_spider",
+    "minecraft:zombified_piglin"
+  ]
 }

@@ -76,10 +76,6 @@ public class EntityTypeTagGen extends EntityTypeTagsProvider {
 			.add(ModEntities.CORVETTE.get(), ModEntities.AIRCRAFT_CARRIER.get());
 		tag(ModTags.EntityTypes.SUBMARINE)
 			.add(ModEntities.ANDOLF_SUB.get(), ModEntities.GOOGLE_SUB.get());
-		// RADAR ENTITIES
-		tag(ModTags.EntityTypes.RADAR_MOBS)
-			;
-		tag(ModTags.EntityTypes.OVERRIDE_RADAR_VISABILITY);
 		// TURRET
 		tag(ModTags.EntityTypes.TURRET_SHOOT)
 			.addTag(ModTags.EntityTypes.TURRET_SHOOT_RANDOM)
@@ -87,13 +83,25 @@ public class EntityTypeTagGen extends EntityTypeTagsProvider {
 			.addTag(ModTags.EntityTypes.TURRET_SHOOT_STUPID)
 			.addTag(ModTags.EntityTypes.TURRET_SHOOT_NORMAL)
 			.addTag(ModTags.EntityTypes.TURRET_SHOOT_SMART);
-		tag(ModTags.EntityTypes.TURRET_SHOOT_RANDOM);
-		tag(ModTags.EntityTypes.TURRET_SHOOT_DUMBASS);
-		tag(ModTags.EntityTypes.TURRET_SHOOT_STUPID);
-		tag(ModTags.EntityTypes.TURRET_SHOOT_NORMAL);
-		tag(ModTags.EntityTypes.TURRET_SHOOT_SMART);
-		tag(ModTags.EntityTypes.TURRET_TARGET_MONSTERS);
-		tag(ModTags.EntityTypes.TURRET_TARGET_PLAYERS);
+		tag(ModTags.EntityTypes.TURRET_SHOOT_RANDOM)
+			.add(EntityType.FROG, EntityType.CREEPER, EntityType.WARDEN);
+		tag(ModTags.EntityTypes.TURRET_SHOOT_DUMBASS)
+			.add(EntityType.SPIDER, EntityType.CAVE_SPIDER, EntityType.ZOMBIFIED_PIGLIN);
+		tag(ModTags.EntityTypes.TURRET_SHOOT_STUPID)
+			.add(EntityType.ZOMBIE, EntityType.ALLAY, EntityType.DROWNED, EntityType.HUSK, EntityType.PIGLIN_BRUTE)
+			.add(EntityType.ZOMBIE_VILLAGER, EntityType.STRAY);
+		tag(ModTags.EntityTypes.TURRET_SHOOT_NORMAL)
+			.add(EntityType.IRON_GOLEM, EntityType.ENDERMAN, EntityType.WITHER_SKELETON);
+		tag(ModTags.EntityTypes.TURRET_SHOOT_SMART)
+			.add(EntityType.SKELETON, EntityType.PIGLIN, EntityType.PILLAGER, EntityType.EVOKER)
+			.add(EntityType.VINDICATOR, EntityType.WITCH, EntityType.BLAZE, EntityType.SNOW_GOLEM);
+		tag(ModTags.EntityTypes.TURRET_TARGET_MONSTERS)
+			.add(EntityType.IRON_GOLEM, EntityType.SNOW_GOLEM, EntityType.FROG, EntityType.ALLAY);
+		tag(ModTags.EntityTypes.TURRET_TARGET_PLAYERS)
+			.add(EntityType.ZOMBIE, EntityType.CAVE_SPIDER, EntityType.SPIDER, EntityType.CREEPER, EntityType.DROWNED)
+			.add(EntityType.ENDERMAN, EntityType.PIGLIN, EntityType.ZOMBIFIED_PIGLIN, EntityType.BLAZE, EntityType.EVOKER)
+			.add(EntityType.HUSK, EntityType.PIGLIN_BRUTE, EntityType.PILLAGER, EntityType.SKELETON, EntityType.STRAY)
+			.add(EntityType.VINDICATOR, EntityType.WARDEN, EntityType.WITCH, EntityType.WITHER_SKELETON, EntityType.ZOMBIE_VILLAGER);
 		// IR EMMITERS
 		tag(ModTags.EntityTypes.IR_EMITTER)
 			.addTag(ModTags.EntityTypes.FLARE)

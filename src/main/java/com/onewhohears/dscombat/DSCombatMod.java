@@ -22,6 +22,7 @@ import com.onewhohears.dscombat.init.ModBlockEntities;
 import com.onewhohears.dscombat.init.ModBlocks;
 import com.onewhohears.dscombat.init.ModContainers;
 import com.onewhohears.dscombat.init.ModEntities;
+import com.onewhohears.dscombat.init.ModFluids;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModParticles;
 import com.onewhohears.dscombat.init.ModRecipes;
@@ -30,6 +31,8 @@ import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.dscombat.init.ModVillagers;
 
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -71,6 +74,7 @@ public class DSCombatMod {
     	IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
     	
         ModBlocks.register(eventBus);
+        ModFluids.register(eventBus);
         ModContainers.register(eventBus);
         ModEntities.register(eventBus);
         ModItems.register(eventBus);
@@ -103,6 +107,8 @@ public class DSCombatMod {
     	MenuScreens.register(ModContainers.PLANE_MENU.get(), AircraftScreen::new);
     	MenuScreens.register(ModContainers.WEAPONS_BLOCK_MENU.get(), WeaponsBlockScreen::new);
     	MenuScreens.register(ModContainers.AIRCRAFT_BLOCK_MENU.get(), AircraftBlockScreen::new);
+    	ItemBlockRenderTypes.setRenderLayer(ModFluids.OIL_FLUID_SOURCE.get(), RenderType.translucent());
+    	ItemBlockRenderTypes.setRenderLayer(ModFluids.OIL_FLUID_FLOWING.get(), RenderType.translucent());
     }
     
     private void onGatherData(GatherDataEvent event) {

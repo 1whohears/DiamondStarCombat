@@ -10,7 +10,10 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -45,6 +48,9 @@ public class ModBlocks {
 	public static final RegistryObject<Block> ALUMINUM_BLOCK = registerBlock("aluminum_block", 
 			() -> new Block(Block.Properties.of(Material.METAL)
                     .strength(1f).explosionResistance(2f).sound(SoundType.COPPER)), ModItems.DSC_ITEMS);
+	
+	public static final RegistryObject<LiquidBlock> OIL_LIQUID_BLOCK = BLOCKS.register("oil_block", 
+			() -> new LiquidBlock(ModFluids.OIL_FLUID_SOURCE, BlockBehaviour.Properties.copy(Blocks.WATER)));
 	
 	// TODO 2.3 block to put stationary turrets on
 	

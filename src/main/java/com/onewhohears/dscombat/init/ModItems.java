@@ -35,9 +35,11 @@ import com.onewhohears.dscombat.item.ItemStorageBox;
 import com.onewhohears.dscombat.item.ItemTurret;
 import com.onewhohears.dscombat.item.ItemWeaponPart;
 
+import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.RecordItem;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -96,6 +98,9 @@ public class ModItems {
 			() -> new Item(ItemPart.itemProps(64)));
 	public static final RegistryObject<Item> ALUMINUM_INGOT = ITEMS.register("aluminum_ingot", 
 			() -> new Item(ItemPart.itemProps(64)));
+	public static final RegistryObject<Item> OIL_BUCKET = ITEMS.register("oil_bucket", 
+			() -> new BucketItem(ModFluids.OIL_FLUID_SOURCE, 
+					ItemPart.itemProps(1).craftRemainder(Items.BUCKET)));
 	
 	// PARTS
 	public static final RegistryObject<Item> TI83 = ITEMS.register("ti83", 

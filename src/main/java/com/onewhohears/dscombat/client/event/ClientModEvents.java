@@ -380,4 +380,5 @@ public final class ClientModEvents {
 		event.register(ModParticles.AFTER_BURNER.get(), AfterBurnerParticle.Provider::new);
 		event.register(ModParticles.FLARE.get(), FlareParticle.Provider::new);
 	}
+	
 }

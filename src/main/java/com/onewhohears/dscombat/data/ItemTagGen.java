@@ -21,8 +21,12 @@ public class ItemTagGen extends ItemTagsProvider {
 	@Override
 	protected void addTags() {
 		tag(ModTags.Items.ALUMINUM_INGOT)
+			.addTag(ModTags.Items.FORGE_ALUMINUM_INGOT);
+		tag(ModTags.Items.FORGE_ALUMINUM_INGOT)
+			.replace(false)
 			.add(ModItems.ALUMINUM_INGOT.get())
-			.addOptional(new ResourceLocation("createindustry:aluminum_ingot"));
+			.addOptional(new ResourceLocation("createindustry:aluminum_ingot"))
+			.addTag(ModTags.Items.ALUMINUM_INGOT);
 		tag(ModTags.Items.GAS_CAN)
 			.add(ModItems.GAS_CAN.get(), ModItems.BIG_GAS_CAN.get(), ModItems.BIG_ASS_CAN.get());
 		tag(ModTags.Items.SPRAY_CAN)

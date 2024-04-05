@@ -72,9 +72,13 @@ public class ModTags {
 		public static final TagKey<Item> GAS_CAN = tag("gas_can");
 		public static final TagKey<Item> SPRAY_CAN = tag("spray_can");
 		public static final TagKey<Item> ALUMINUM_INGOT = tag("aluminum_ingot");
+		public static final TagKey<Item> FORGE_ALUMINUM_INGOT = forgeTag("ingots/aluminum");
 		private static void init() {}
 		public static TagKey<Item> tag(String name) {
         	return ItemTags.create(new ResourceLocation(DSCombatMod.MODID, name));
+        }
+		public static TagKey<Item> forgeTag(String name) {
+        	return ItemTags.create(new ResourceLocation("forge", name));
         }
 	}
 	

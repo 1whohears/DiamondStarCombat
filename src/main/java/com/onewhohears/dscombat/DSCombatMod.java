@@ -10,6 +10,7 @@ import com.onewhohears.dscombat.data.BlockTagGen;
 import com.onewhohears.dscombat.data.DSCRecipeGenerator;
 import com.onewhohears.dscombat.data.DSCSoundDefinitionGen;
 import com.onewhohears.dscombat.data.EntityTypeTagGen;
+import com.onewhohears.dscombat.data.FluidTagGen;
 import com.onewhohears.dscombat.data.ItemTagGen;
 import com.onewhohears.dscombat.data.aircraft.AircraftClientPresetGenerator;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresetGenerator;
@@ -123,6 +124,7 @@ public class DSCombatMod {
     		BlockTagGen blockGen = new BlockTagGen(generator, event.getExistingFileHelper());
     		generator.addProvider(true, blockGen);
     		generator.addProvider(true, new ItemTagGen(generator, blockGen, event.getExistingFileHelper()));
+    		generator.addProvider(true, new FluidTagGen(generator, event.getExistingFileHelper()));
     	}
     	if (event.includeClient()) {
     		generator.addProvider(true, new DSCSoundDefinitionGen(generator, event.getExistingFileHelper()));

@@ -9,6 +9,7 @@ import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -46,7 +47,10 @@ public class ItemCreativeWand extends Item implements VehicleInteractItem {
 
 	@Override
 	public InteractionResult onServerInteract(EntityVehicle vehicle, ItemStack stack, Player player, InteractionHand hand) {
-		if (modifyAircraft(vehicle)) return InteractionResult.SUCCESS;
+		if (modifyAircraft(vehicle)) {
+			player.awardStat(Stats.ITEM_USED.get(this));
+			return InteractionResult.SUCCESS;
+		}
 		return InteractionResult.PASS;
 	}
 	

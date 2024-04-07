@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.item;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.init.ModItems;
 
+import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -38,6 +39,7 @@ public class ItemRepairTool extends Item implements VehicleInteractItem {
 			vehicle.playRepairSound();
 			return InteractionResult.PASS;
 		}
+		player.awardStat(Stats.ITEM_USED.get(this));
 		return InteractionResult.SUCCESS;
 	}
 

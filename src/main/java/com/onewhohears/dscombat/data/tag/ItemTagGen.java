@@ -27,6 +27,8 @@ public class ItemTagGen extends ItemTagsProvider {
 			.add(ModItems.ALUMINUM_INGOT.get())
 			.addOptional(new ResourceLocation("createindustry:aluminum_ingot"))
 			.addTag(ModTags.Items.ALUMINUM_INGOT);
+		tag(ModTags.Items.FORGE_OIL_BUCKET)
+			.add(ModItems.OIL_BUCKET.get());
 		tag(ModTags.Items.GAS_CAN)
 			.add(ModItems.GAS_CAN.get(), ModItems.BIG_GAS_CAN.get(), ModItems.BIG_ASS_CAN.get());
 		tag(ModTags.Items.SPRAY_CAN)

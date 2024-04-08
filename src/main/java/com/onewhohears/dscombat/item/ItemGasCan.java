@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.item;
 
 import com.onewhohears.dscombat.Config;
+import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModTags;
 
@@ -54,7 +55,7 @@ public class ItemGasCan extends Item {
 					player.playSound(sound, 1.0F, 1.0F);
 				});
 				level.gameEvent(player, GameEvent.FLUID_PICKUP, blockpos);
-				fillGasCan(stack, 50);
+				fillGasCan(stack, DSCGameRules.getFuelPerOilBlock(level));
 				return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
 			}
 		}

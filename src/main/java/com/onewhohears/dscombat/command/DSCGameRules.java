@@ -15,6 +15,7 @@ public class DSCGameRules {
 	public static GameRules.Key<GameRules.BooleanValue> CONSUME_FULE;
 	public static GameRules.Key<GameRules.BooleanValue> CONSUME_AMMO;
 	public static GameRules.Key<GameRules.BooleanValue> CONSUME_FLARES;
+	public static GameRules.Key<GameRules.IntegerValue> FUEL_PER_OIL_BLOCK;
 	public static GameRules.Key<GameRules.BooleanValue> DATA_LINK_ALWAYS_ON;
 	public static GameRules.Key<GameRules.BooleanValue> DISABLE_ELYTRA_FLYING;
 	public static GameRules.Key<GameRules.IntegerValue> ITEM_COOLDOWN_VEHICLE_FRESH;
@@ -38,6 +39,7 @@ public class DSCGameRules {
 		CONSUME_FULE = registerBoolean("consumeFuel", true, GameRules.Category.PLAYER);
 		CONSUME_AMMO = registerBoolean("consumeAmmo", true, GameRules.Category.PLAYER);
 		CONSUME_FLARES = registerBoolean("consumeFlares", true, GameRules.Category.PLAYER);
+		FUEL_PER_OIL_BLOCK = registerInteger("fuelPerOilBlock", 50, GameRules.Category.PLAYER);
 		DATA_LINK_ALWAYS_ON = registerBoolean("dataLinkAlwaysOn", false, GameRules.Category.PLAYER);
 		DISABLE_ELYTRA_FLYING = registerBoolean("disableElytraFlying", false, GameRules.Category.PLAYER);
 		ITEM_COOLDOWN_VEHICLE_FRESH = registerInteger("itemCooldownVehicleFresh", 0, GameRules.Category.PLAYER);
@@ -96,6 +98,10 @@ public class DSCGameRules {
 	
 	public static float getBulletDamageHeliFactor(Level level) {
 		return level.getGameRules().getInt(BULLET_DAMAGE_HELI_PER) * 0.01f;
+	}
+	
+	public static int getFuelPerOilBlock(Level level) {
+		return level.getGameRules().getInt(FUEL_PER_OIL_BLOCK);
 	}
 	
 }

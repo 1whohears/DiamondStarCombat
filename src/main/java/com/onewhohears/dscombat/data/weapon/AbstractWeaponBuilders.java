@@ -1,8 +1,8 @@
 package com.onewhohears.dscombat.data.weapon;
 
-import com.onewhohears.dscombat.data.DSCIngredientBuilder;
-import com.onewhohears.dscombat.data.JsonPreset;
-import com.onewhohears.dscombat.data.JsonPreset.JsonPresetFactory;
+import com.onewhohears.dscombat.data.jsonpreset.JsonPreset;
+import com.onewhohears.dscombat.data.jsonpreset.JsonPreset.JsonPresetFactory;
+import com.onewhohears.dscombat.data.recipe.DSCIngredientBuilder;
 import com.onewhohears.dscombat.data.weapon.TrackMissileData.TargetType;
 import com.onewhohears.dscombat.data.weapon.WeaponData.WeaponType;
 

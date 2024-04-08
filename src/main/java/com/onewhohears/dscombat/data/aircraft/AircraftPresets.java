@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.crafting.AircraftRecipe;
-import com.onewhohears.dscombat.data.JsonPresetReloadListener;
+import com.onewhohears.dscombat.data.jsonpreset.JsonPresetReloadListener;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeManager;

@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.data;
+package com.onewhohears.dscombat.data.jsonpreset;
 
 import java.util.Arrays;
 import java.util.Collections;

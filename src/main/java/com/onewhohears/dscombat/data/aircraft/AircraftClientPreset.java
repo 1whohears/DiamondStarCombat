@@ -6,8 +6,8 @@ import javax.annotation.Nullable;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.onewhohears.dscombat.data.JsonPreset;
-import com.onewhohears.dscombat.data.PresetBuilder;
+import com.onewhohears.dscombat.data.jsonpreset.JsonPreset;
+import com.onewhohears.dscombat.data.jsonpreset.PresetBuilder;
 
 import net.minecraft.resources.ResourceLocation;
 

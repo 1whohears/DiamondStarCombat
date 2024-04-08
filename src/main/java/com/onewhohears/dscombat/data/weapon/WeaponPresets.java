@@ -10,7 +10,7 @@ import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.crafting.WeaponRecipe;
-import com.onewhohears.dscombat.data.JsonPresetReloadListener;
+import com.onewhohears.dscombat.data.jsonpreset.JsonPresetReloadListener;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeManager;

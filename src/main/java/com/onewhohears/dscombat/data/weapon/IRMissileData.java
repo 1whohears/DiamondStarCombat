@@ -8,7 +8,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
-import com.onewhohears.dscombat.data.JsonPreset;
+import com.onewhohears.dscombat.data.jsonpreset.JsonPreset;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.entity.weapon.IRMissile;

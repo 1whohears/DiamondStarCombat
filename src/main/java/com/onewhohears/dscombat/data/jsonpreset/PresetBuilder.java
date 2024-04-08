@@ -1,7 +1,7 @@
-package com.onewhohears.dscombat.data;
+package com.onewhohears.dscombat.data.jsonpreset;
 
 import com.google.gson.JsonObject;
-import com.onewhohears.dscombat.data.JsonPreset.JsonPresetFactory;
+import com.onewhohears.dscombat.data.jsonpreset.JsonPreset.JsonPresetFactory;
 
 import net.minecraft.resources.ResourceLocation;
 

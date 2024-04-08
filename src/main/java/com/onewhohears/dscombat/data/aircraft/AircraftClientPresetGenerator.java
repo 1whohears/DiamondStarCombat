@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.data.aircraft;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.JsonPresetGenerator;
+import com.onewhohears.dscombat.data.jsonpreset.JsonPresetGenerator;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 
 import net.minecraft.data.DataGenerator;

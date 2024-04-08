@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.data.weapon;
 
 import com.google.gson.JsonObject;
-import com.onewhohears.dscombat.data.JsonPreset;
+import com.onewhohears.dscombat.data.jsonpreset.JsonPreset;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 
 import net.minecraft.resources.ResourceLocation;

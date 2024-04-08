@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.data.aircraft;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.JsonPresetGenerator;
 import com.onewhohears.dscombat.data.aircraft.presets.AlexisPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.BoatPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.BroncoPresets;
@@ -14,6 +13,7 @@ import com.onewhohears.dscombat.data.aircraft.presets.JaviPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.PlanePresets;
 import com.onewhohears.dscombat.data.aircraft.presets.SubPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.TankPresets;
+import com.onewhohears.dscombat.data.jsonpreset.JsonPresetGenerator;
 
 import net.minecraft.data.DataGenerator;
 

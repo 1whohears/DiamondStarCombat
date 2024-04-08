@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.data.radar;
 
 import com.google.gson.JsonObject;
-import com.onewhohears.dscombat.data.JsonPresetReloadListener;
+import com.onewhohears.dscombat.data.jsonpreset.JsonPresetReloadListener;
 
 import net.minecraft.resources.ResourceLocation;
 

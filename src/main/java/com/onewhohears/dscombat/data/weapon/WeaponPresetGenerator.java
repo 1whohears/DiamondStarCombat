@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.data.weapon;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.JsonPresetGenerator;
+import com.onewhohears.dscombat.data.jsonpreset.JsonPresetGenerator;
 import com.onewhohears.dscombat.data.weapon.TrackMissileData.TargetType;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.init.ModItems;

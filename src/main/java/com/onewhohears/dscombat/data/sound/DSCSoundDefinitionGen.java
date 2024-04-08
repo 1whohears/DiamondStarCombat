@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.data;
+package com.onewhohears.dscombat.data.sound;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

@@ -5,7 +5,7 @@ import static com.onewhohears.dscombat.DSCombatMod.MODID;
 import java.util.List;
 
 import com.google.gson.JsonObject;
-import com.onewhohears.dscombat.data.JsonPreset;
+import com.onewhohears.dscombat.data.jsonpreset.JsonPreset;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.entity.weapon.PositionMissile;
 import com.onewhohears.dscombat.util.UtilEntity;

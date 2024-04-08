@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.init;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.DSCSoundDefinitionGen;
+import com.onewhohears.dscombat.data.sound.DSCSoundDefinitionGen;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;

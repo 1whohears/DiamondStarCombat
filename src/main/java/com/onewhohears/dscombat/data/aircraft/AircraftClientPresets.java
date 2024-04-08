@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.data.aircraft;
 import java.io.IOException;
 
 import com.google.gson.JsonObject;
-import com.onewhohears.dscombat.data.JsonPresetAssetReader;
+import com.onewhohears.dscombat.data.jsonpreset.JsonPresetAssetReader;
 import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.resources.ResourceLocation;

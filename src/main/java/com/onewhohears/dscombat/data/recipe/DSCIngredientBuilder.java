@@ -1,11 +1,13 @@
-package com.onewhohears.dscombat.data;
+package com.onewhohears.dscombat.data.recipe;
 
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.crafting.IngredientStack;
-import com.onewhohears.dscombat.data.JsonPreset.JsonPresetFactory;
+import com.onewhohears.dscombat.data.jsonpreset.JsonPreset;
+import com.onewhohears.dscombat.data.jsonpreset.PresetBuilder;
+import com.onewhohears.dscombat.data.jsonpreset.JsonPreset.JsonPresetFactory;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;

@@ -48,11 +48,9 @@ public class ItemTagGen extends ItemTagsProvider {
 			.add(ModItems.GOOGLE_SUB.get());
 		tag(ModTags.Items.VEHICLE_PART)
 			.addTag(ModTags.Items.VEHICLE_PART_WEAPON)
+			.addTag(ModTags.Items.VEHICLE_PART_ENGINE)
 			.add(ModItems.DATA_LINK.get(), ModItems.NIGHT_VISION_HUD.get(), ModItems.RADIO.get(), ModItems.ARMOR_PIECE.get())
 			.add(ModItems.GIMBAL_CAMERA.get(), ModItems.SMALL_STORAGE_BOX.get(), ModItems.MED_STORAGE_BOX.get(), ModItems.LARGE_STORAGE_BOX.get())
-			.add(ModItems.LIGHT_FUEL_TANK.get(), ModItems.HEAVY_FUEL_TANK.get(), ModItems.C6_ENGINE.get(), ModItems.C12_ENGINE.get())
-			.add(ModItems.TURBOFAN_F25.get(), ModItems.TURBOFAN_F145.get(), ModItems.TURBOFAN_F39.get(), ModItems.KLIMOV_RD33.get())
-			.add(ModItems.CFM56.get(), ModItems.CM_MANLY_52.get(), ModItems.ALLISON_V_1710.get(), ModItems.COMPOUND_TURBINE.get())
 			.add(ModItems.AR500.get(), ModItems.AR1K.get(), ModItems.AR2K.get(), ModItems.GR200.get())
 			.add(ModItems.GR400.get(), ModItems.WR400.get(), ModItems.WR1K.get(), ModItems.GPR20.get())
 			.add(ModItems.GPR100.get(), ModItems.AR20K.get(), ModItems.AXCEL_TRUCK_RADAR.get(), ModItems.AIR_SCAN_A.get())
@@ -65,6 +63,21 @@ public class ItemTagGen extends ItemTagsProvider {
 			.add(ModItems.AA_TURRET.get(), ModItems.MINIGUN_TURRET.get(), ModItems.CIWS.get(), ModItems.MARK45_CANNON.get())
 			.add(ModItems.HEAVY_TANK_TURRET.get(), ModItems.MARK7_CANNON.get(), ModItems.STEVE_UP_SMASH.get(), ModItems.SAM_LAUNCHER.get())
 			.add(ModItems.TORPEDO_TUBES.get(), ModItems.MLS.get(), ModItems.CIWS.get(), ModItems.MARK45_CANNON.get());
+		tag(ModTags.Items.VEHICLE_PART_ENGINE)
+			.addTag(ModTags.Items.VEHICLE_ENGINE_EXTERNAL_PUSH)
+			.addTag(ModTags.Items.VEHICLE_ENGINE_INTERNAL_PUSH)
+			.addTag(ModTags.Items.VEHICLE_ENGINE_INTERNAL_RADIAL)
+			.addTag(ModTags.Items.VEHICLE_ENGINE_INTERNAL_SPIN);
+		tag(ModTags.Items.VEHICLE_ENGINE_EXTERNAL_PUSH)
+			.add(ModItems.CFM56.get());
+		tag(ModTags.Items.VEHICLE_ENGINE_INTERNAL_PUSH)
+			.add(ModItems.TURBOFAN_F25.get(), ModItems.TURBOFAN_F145.get(), ModItems.TURBOFAN_F39.get(), ModItems.KLIMOV_RD33.get());
+		tag(ModTags.Items.VEHICLE_ENGINE_INTERNAL_RADIAL)
+			.add(ModItems.CM_MANLY_52.get(), ModItems.ALLISON_V_1710.get(), ModItems.COMPOUND_TURBINE.get());
+		tag(ModTags.Items.VEHICLE_ENGINE_INTERNAL_SPIN)
+			.add(ModItems.C6_ENGINE.get(), ModItems.C12_ENGINE.get());
+		tag(ModTags.Items.VEHICLE_PART_FUEL_TANK)
+			.add(ModItems.LIGHT_FUEL_TANK.get(), ModItems.HEAVY_FUEL_TANK.get());
 	}
 	
 }

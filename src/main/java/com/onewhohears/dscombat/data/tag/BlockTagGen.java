@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.data;
+package com.onewhohears.dscombat.data.tag;
 
 import org.jetbrains.annotations.Nullable;
 

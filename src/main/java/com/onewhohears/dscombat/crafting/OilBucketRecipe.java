@@ -2,6 +2,8 @@ package com.onewhohears.dscombat.crafting;
 
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModRecipes;
+import com.onewhohears.dscombat.init.ModTags;
+import com.onewhohears.dscombat.util.UtilItem;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
@@ -15,32 +17,24 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeHooks;
 
 public class OilBucketRecipe extends CustomRecipe {
-
+	
+	private final NonNullList<Ingredient> ingredients = NonNullList.create();
+	
 	public OilBucketRecipe(ResourceLocation pId) {
 		super(pId);
+		ingredients.add(Ingredient.of(Items.BUCKET));
+		ingredients.add(Ingredient.of(ModTags.Items.FOSSIL_OIL_CONVERTER));
+		ingredients.add(Ingredient.of(ModItems.COMPRESSED_FOSSIL.get()));
 	}
 
 	@Override
 	public boolean matches(CraftingContainer container, Level level) {
-		for (Ingredient ing : getIngredients()) {
-			boolean found = false;
-			for (int i = 0; i < container.getContainerSize(); ++i) 
-				if (ing.test(container.getItem(i))) {
-					found = true;
-					break;
-				}
-			if (!found) return false;
-		}
-		return true;
+		return UtilItem.testRecipe(getIngredients(), container);
 	}
 	
 	@Override
 	public NonNullList<Ingredient> getIngredients() {
-		NonNullList<Ingredient> ings = NonNullList.create();
-		ings.add(Ingredient.of(Items.BUCKET));
-		ings.add(Ingredient.of(Items.FLINT_AND_STEEL));
-		ings.add(Ingredient.of(ModItems.COMPRESSED_FOSSIL.get()));
-		return ings;
+		return ingredients;
 	}
 	
 	@Override
@@ -48,7 +42,7 @@ public class OilBucketRecipe extends CustomRecipe {
 		NonNullList<ItemStack> nonnulllist = NonNullList.withSize(container.getContainerSize(), ItemStack.EMPTY);
 		for(int i = 0; i < nonnulllist.size(); ++i) {
 			ItemStack item = container.getItem(i);
-			if (item.is(Items.FLINT_AND_STEEL)) {
+			if (item.is(ModTags.Items.FOSSIL_OIL_CONVERTER)) {
 				ItemStack item2 = item.copy();
 				item2.setDamageValue(item.getDamageValue()+1);
 				nonnulllist.set(i, item2);
@@ -77,6 +71,11 @@ public class OilBucketRecipe extends CustomRecipe {
 	@Override
 	public RecipeSerializer<?> getSerializer() {
 		return ModRecipes.OIL_BUCKET.get();
+	}
+	
+	@Override
+	public ItemStack getResultItem() {
+		return ModItems.OIL_BUCKET.get().getDefaultInstance();
 	}
 
 }

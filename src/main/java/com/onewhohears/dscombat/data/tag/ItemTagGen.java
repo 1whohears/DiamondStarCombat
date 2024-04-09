@@ -10,6 +10,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class ItemTagGen extends ItemTagsProvider {
@@ -27,6 +28,8 @@ public class ItemTagGen extends ItemTagsProvider {
 			.addOptional(new ResourceLocation("createindustry:aluminum_ingot"));
 		tag(ModTags.Items.FORGE_OIL_BUCKET)
 			.add(ModItems.OIL_BUCKET.get());
+		tag(ModTags.Items.FOSSIL_OIL_CONVERTER)
+			.add(Items.FLINT_AND_STEEL);
 		tag(ModTags.Items.GAS_CAN)
 			.add(ModItems.GAS_CAN.get(), ModItems.BIG_GAS_CAN.get(), ModItems.BIG_ASS_CAN.get());
 		tag(ModTags.Items.SPRAY_CAN)

@@ -80,6 +80,7 @@ public class ModTags {
 		public static final TagKey<Item> ALUMINUM_INGOT = tag("aluminum_ingot");
 		public static final TagKey<Item> FORGE_ALUMINUM_INGOT = forgeTag("ingots/aluminum");
 		public static final TagKey<Item> FORGE_OIL_BUCKET = forgeTag("buckets/oil");
+		public static final TagKey<Item> FOSSIL_OIL_CONVERTER = tag("fossil_oil_converter");
 		private static void init() {}
 		public static TagKey<Item> tag(String name) {
         	return ItemTags.create(new ResourceLocation(DSCombatMod.MODID, name));
@@ -90,9 +91,12 @@ public class ModTags {
 	}
 	
 	public static class Fluids {
-		public static final TagKey<Fluid> OIL = tag("oil");
+		public static final TagKey<Fluid> OIL = forgeTag("oil");
 		public static TagKey<Fluid> tag(String name) {
 			return FluidTags.create(new ResourceLocation(DSCombatMod.MODID, name));
+		}
+		public static TagKey<Fluid> forgeTag(String name) {
+			return FluidTags.create(new ResourceLocation("forge", name));
 		}
 	}
 	

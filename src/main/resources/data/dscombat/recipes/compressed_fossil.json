@@ -5,9 +5,12 @@
             "tag": "minecraft:coals"
         },
         {
-            "item": "minecraft:bone_block"
+            "tag": "minecraft:coals"
         },
         {
+            "tag": "minecraft:coals"
+        },
+		{
             "tag": "minecraft:coals"
         },
         {
@@ -17,13 +20,10 @@
             "tag": "minecraft:coals"
         },
         {
-            "item": "minecraft:bone_block"
-        },
-        {
             "tag": "minecraft:coals"
         },
         {
-            "item": "minecraft:bone_block"
+            "tag": "minecraft:coals"
         },
         {
             "tag": "minecraft:coals"

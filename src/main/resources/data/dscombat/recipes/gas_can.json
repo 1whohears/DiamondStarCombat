@@ -2,10 +2,10 @@
 	"type": "minecraft:crafting_shaped",
 	"key": {
 		"I": {
-			"item": "minecraft:iron_ingot"
+			"tag": "forge:ingots/aluminum"
 		},
 		"C": {
-			"item": "minecraft:coal_block"
+			"tag": "forge:buckets/oil"
 		}
 	},
 	"pattern": [

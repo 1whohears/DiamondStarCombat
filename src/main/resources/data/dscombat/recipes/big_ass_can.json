@@ -1,17 +1,13 @@
 {
 	"type": "minecraft:crafting_shaped",
 	"key": {
-		"I": {
-			"item": "minecraft:cauldron"
-		},
 		"C": {
-			"item": "minecraft:coal_block"
+			"item": "dscombat:big_gas_can"
 		}
 	},
 	"pattern": [
-		"CCC",
-		"CCC",
-		"I I"
+		"CC",
+		"CC"
 	],
 	"result": {
 		"count": 1,

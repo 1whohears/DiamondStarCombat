@@ -4,7 +4,6 @@
     {
       "id": "createindustry:aluminum_ingot",
       "required": false
-    },
-    "#dscombat:aluminum_ingot"
+    }
   ]
 }

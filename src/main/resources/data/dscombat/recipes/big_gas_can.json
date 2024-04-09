@@ -1,17 +1,12 @@
 {
 	"type": "minecraft:crafting_shaped",
 	"key": {
-		"I": {
-			"item": "minecraft:iron_ingot"
-		},
 		"C": {
-			"item": "minecraft:coal_block"
+			"item": "dscombat:gas_can"
 		}
 	},
 	"pattern": [
-		"ICI",
-		"ICI",
-		" I "
+		"CCC"
 	],
 	"result": {
 		"count": 1,

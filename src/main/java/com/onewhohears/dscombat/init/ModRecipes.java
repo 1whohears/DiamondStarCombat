@@ -4,6 +4,7 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.crafting.AircraftRecipe;
 import com.onewhohears.dscombat.crafting.FlareDispenserLoadRecipe;
 import com.onewhohears.dscombat.crafting.FuelTankLoadRecipe;
+import com.onewhohears.dscombat.crafting.OilBucketRecipe;
 import com.onewhohears.dscombat.crafting.TurretLoadRecipe;
 import com.onewhohears.dscombat.crafting.WeaponPartLoadRecipe;
 import com.onewhohears.dscombat.crafting.WeaponPartUnloadRecipe;
@@ -34,6 +35,8 @@ public class ModRecipes {
 			() -> new SimpleRecipeSerializer<>(FlareDispenserLoadRecipe::new));
 	public static final RegistryObject<SimpleRecipeSerializer<TurretLoadRecipe>> TURRET_LOAD = RECIPES.register("turret_load_recipe", 
 			() -> new SimpleRecipeSerializer<>(TurretLoadRecipe::new));
+	public static final RegistryObject<SimpleRecipeSerializer<OilBucketRecipe>> OIL_BUCKET = RECIPES.register("oil_bucket_recipe", 
+			() -> new SimpleRecipeSerializer<>(OilBucketRecipe::new));
 	
 	public static final RegistryObject<RecipeSerializer<AircraftRecipe>> AIRCRAFT_RECIPE_SERIALIZER = 
 			RECIPES.register(AircraftRecipe.Serializer.ID.getPath(), () -> AircraftRecipe.Serializer.INSTANCE);

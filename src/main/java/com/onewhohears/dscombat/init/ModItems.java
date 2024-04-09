@@ -98,6 +98,8 @@ public class ModItems {
 			() -> new Item(ItemPart.itemProps(64)));
 	public static final RegistryObject<Item> ALUMINUM_INGOT = ITEMS.register("aluminum_ingot", 
 			() -> new Item(ItemPart.itemProps(64)));
+	public static final RegistryObject<Item> COMPRESSED_FOSSIL = ITEMS.register("compressed_fossil", 
+			() -> new Item(ItemPart.itemProps(64)));
 	public static final RegistryObject<Item> OIL_BUCKET = ITEMS.register("oil_bucket", 
 			() -> new BucketItem(ModFluids.OIL_FLUID_SOURCE, 
 					ItemPart.itemProps(1).craftRemainder(Items.BUCKET)));

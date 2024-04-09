@@ -1349,7 +1349,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			if (stack.is(ModTags.Items.GAS_CAN)) 
 				return onGasCanInteract(player, hand, stack);
 			// OIL BUCKET
-			if (stack.is(ModTags.Items.FORGE_OIL_BUCKET)) 
+			else if (stack.is(ModTags.Items.FORGE_OIL_BUCKET)) 
 				return onOilBucketInteract(player, hand, stack);
 			// INTERACT ITEMS
 			else if (item instanceof VehicleInteractItem vii) 
@@ -1388,7 +1388,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		float fuelPerBucket = (float)DSCGameRules.getFuelPerOilBlock(level);
 		if (addFuel(fuelPerBucket) == fuelPerBucket) return InteractionResult.PASS;
 		ItemStack remain = stack.getCraftingRemainingItem();
-		
+		player.getInventory().setItem(player.getInventory().selected, remain);
 		return InteractionResult.sidedSuccess(level.isClientSide);
 	}
 	

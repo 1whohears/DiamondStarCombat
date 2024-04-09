@@ -1,6 +1,6 @@
-package com.onewhohears.dscombat.minigame.agent;
+package com.onewhohears.dscombat.integration.minigame.agent;
 
-import com.onewhohears.dscombat.minigame.data.VillageDefenseData;
+import com.onewhohears.dscombat.integration.minigame.data.VillageDefenseData;
 import com.onewhohears.minigames.minigame.agent.TeamAgent;
 
 public class DefendTeamAgent extends TeamAgent<VillageDefenseData> {

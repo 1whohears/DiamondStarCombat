@@ -1,7 +1,7 @@
-package com.onewhohears.dscombat.minigame;
+package com.onewhohears.dscombat.integration.minigame;
 
-import com.onewhohears.dscombat.minigame.data.DogFightData;
-import com.onewhohears.dscombat.minigame.data.VillageDefenseData;
+import com.onewhohears.dscombat.integration.minigame.data.DogFightData;
+import com.onewhohears.dscombat.integration.minigame.data.VillageDefenseData;
 import com.onewhohears.minigames.minigame.MiniGameManager;
 
 public class DSCMiniGames {

@@ -1,6 +1,6 @@
-package com.onewhohears.dscombat.minigame.phase.villagedefense;
+package com.onewhohears.dscombat.integration.minigame.phase.villagedefense;
 
-import com.onewhohears.dscombat.minigame.data.VillageDefenseData;
+import com.onewhohears.dscombat.integration.minigame.data.VillageDefenseData;
 import com.onewhohears.minigames.minigame.phase.deathmatch.DeathMatchEndPhase;
 
 import net.minecraft.server.MinecraftServer;

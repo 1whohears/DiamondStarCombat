@@ -1,7 +1,7 @@
-package com.onewhohears.dscombat.minigame.phase.villagedefense;
+package com.onewhohears.dscombat.integration.minigame.phase.villagedefense;
 
-import com.onewhohears.dscombat.minigame.condition.ScoreWinExitCondition;
-import com.onewhohears.dscombat.minigame.data.VillageDefenseData;
+import com.onewhohears.dscombat.integration.minigame.condition.ScoreWinExitCondition;
+import com.onewhohears.dscombat.integration.minigame.data.VillageDefenseData;
 import com.onewhohears.minigames.minigame.agent.PlayerAgent;
 import com.onewhohears.minigames.minigame.condition.TimeoutPhaseExitCondition;
 import com.onewhohears.minigames.minigame.phase.deathmatch.DeathMatchPlayPhase;

@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.minigame.gen;
+package com.onewhohears.dscombat.integration.minigame.gen;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.minigames.data.kits.GameKit;

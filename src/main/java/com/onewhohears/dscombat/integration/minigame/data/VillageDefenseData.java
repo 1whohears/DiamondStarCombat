@@ -1,13 +1,13 @@
-package com.onewhohears.dscombat.minigame.data;
+package com.onewhohears.dscombat.integration.minigame.data;
 
 import javax.annotation.Nullable;
 
-import com.onewhohears.dscombat.minigame.agent.AttackTeamAgent;
-import com.onewhohears.dscombat.minigame.agent.DefendTeamAgent;
-import com.onewhohears.dscombat.minigame.phase.villagedefense.VillageDefenseAttackPhase;
-import com.onewhohears.dscombat.minigame.phase.villagedefense.VillageDefenseBuyPhase;
-import com.onewhohears.dscombat.minigame.phase.villagedefense.VillageDefenseEndPhase;
-import com.onewhohears.dscombat.minigame.phase.villagedefense.VillageDefenseSetupPhase;
+import com.onewhohears.dscombat.integration.minigame.agent.AttackTeamAgent;
+import com.onewhohears.dscombat.integration.minigame.agent.DefendTeamAgent;
+import com.onewhohears.dscombat.integration.minigame.phase.villagedefense.VillageDefenseAttackPhase;
+import com.onewhohears.dscombat.integration.minigame.phase.villagedefense.VillageDefenseBuyPhase;
+import com.onewhohears.dscombat.integration.minigame.phase.villagedefense.VillageDefenseEndPhase;
+import com.onewhohears.dscombat.integration.minigame.phase.villagedefense.VillageDefenseSetupPhase;
 import com.onewhohears.dscombat.util.UtilMCText;
 import com.onewhohears.minigames.minigame.agent.TeamAgent;
 import com.onewhohears.minigames.minigame.data.DeathMatchData;

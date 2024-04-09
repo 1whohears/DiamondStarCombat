@@ -1,8 +1,8 @@
 package com.onewhohears.dscombat;
 
-import com.onewhohears.dscombat.minigame.DSCMiniGames;
-import com.onewhohears.dscombat.minigame.gen.DSCKitGenerator;
-import com.onewhohears.dscombat.minigame.gen.DSCShopGenerator;
+import com.onewhohears.dscombat.integration.minigame.DSCMiniGames;
+import com.onewhohears.dscombat.integration.minigame.gen.DSCKitGenerator;
+import com.onewhohears.dscombat.integration.minigame.gen.DSCShopGenerator;
 
 import net.minecraft.data.DataGenerator;
 

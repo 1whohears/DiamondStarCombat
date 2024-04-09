@@ -1,6 +1,6 @@
-package com.onewhohears.dscombat.minigame.condition;
+package com.onewhohears.dscombat.integration.minigame.condition;
 
-import com.onewhohears.dscombat.minigame.data.VillageDefenseData;
+import com.onewhohears.dscombat.integration.minigame.data.VillageDefenseData;
 import com.onewhohears.minigames.minigame.condition.PhaseExitCondition;
 import com.onewhohears.minigames.minigame.phase.GamePhase;
 

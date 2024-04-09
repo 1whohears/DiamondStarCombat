@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.minigame.data;
+package com.onewhohears.dscombat.integration.minigame.data;
 
 import com.onewhohears.minigames.minigame.data.DeathMatchData;
 import com.onewhohears.minigames.minigame.phase.deathmatch.DeathMatchEndPhase;

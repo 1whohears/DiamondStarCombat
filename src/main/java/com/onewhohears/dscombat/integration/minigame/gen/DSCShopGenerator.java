@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.minigame.gen;
+package com.onewhohears.dscombat.integration.minigame.gen;
 
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.DSCombatMod;

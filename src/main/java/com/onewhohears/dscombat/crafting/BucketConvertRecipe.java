@@ -16,7 +16,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeHooks;
 
@@ -47,6 +46,10 @@ public class BucketConvertRecipe extends CustomRecipe {
 		return allIngredients;
 	}
 	
+	public NonNullList<Ingredient> getFluidIngredients() {
+		return ingredients;
+	}
+	
 	@Override
 	public NonNullList<ItemStack> getRemainingItems(CraftingContainer container) {
 		NonNullList<ItemStack> nonnulllist = NonNullList.withSize(container.getContainerSize(), ItemStack.EMPTY);
@@ -75,17 +78,12 @@ public class BucketConvertRecipe extends CustomRecipe {
 	
 	@Override
 	public boolean isSpecial() {
-		return true;
+		return false; // must be false to be visible in jei
 	}
 
 	@Override
 	public RecipeSerializer<?> getSerializer() {
 		return Serializer.INSTANCE;
-	}
-
-	@Override
-	public RecipeType<?> getType() {
-		return Type.INSTANCE;
 	}
 	
 	@Override
@@ -97,15 +95,9 @@ public class BucketConvertRecipe extends CustomRecipe {
 		return output.copy();
 	}
 	
-	public static class Type implements RecipeType<BucketConvertRecipe> {
-        private Type() { }
-        public static final Type INSTANCE = new Type();
-        public static final String ID = "bucket_convert";
-        @Override
-        public String toString() {
-        	return ID;
-        }
-    }
+	public Ingredient getConverter() {
+		return converter;
+	}
 	
 	public static class Serializer implements RecipeSerializer<BucketConvertRecipe> {
 		public static final Serializer INSTANCE = new Serializer();
@@ -123,14 +115,17 @@ public class BucketConvertRecipe extends CustomRecipe {
 		}
 		@Override
 		public @Nullable BucketConvertRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
-			
-			return new BucketConvertRecipe(recipeId, null, null, null);
+			Ingredient converter = Ingredient.fromNetwork(buffer);
+			NonNullList<Ingredient> ingredients = buffer.readCollection(size -> NonNullList.create(), 
+					buff -> Ingredient.fromNetwork(buff));
+			ItemStack output = buffer.readItem();
+			return new BucketConvertRecipe(recipeId, converter, ingredients, output);
 		}
 		@Override
 		public void toNetwork(FriendlyByteBuf buffer, BucketConvertRecipe recipe) {
-			recipe.converter.toNetwork(buffer);
-			
-			buffer.writeUtf(recipe.output.toString());
+			recipe.getConverter().toNetwork(buffer);
+			buffer.writeCollection(recipe.getFluidIngredients(), (buff, ing) -> ing.toNetwork(buff));
+			buffer.writeItem(recipe.getOutput());
 		}
 	}
 

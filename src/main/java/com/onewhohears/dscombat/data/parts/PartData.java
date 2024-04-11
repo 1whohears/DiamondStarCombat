@@ -42,8 +42,8 @@ public abstract class PartData {
 		BUFF_DATA,
 		EXTERNAL_RADAR,
 		GIMBAL,
-		STORAGE_BOX;
-		
+		STORAGE_BOX,
+		CHAIN_HOOK;
 		public boolean isSeat() {
 			return this == SEAT || this == TURRENT;
 		}
@@ -99,6 +99,10 @@ public abstract class PartData {
 	
 	public boolean isStorageBox() {
 		return getType() == PartType.STORAGE_BOX;
+	}
+	
+	public boolean isChainHook() {
+		return getType() == PartType.CHAIN_HOOK;
 	}
 	
 	public boolean isRadio() {

@@ -41,6 +41,7 @@ import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.weapon.WeaponSystem;
 import com.onewhohears.dscombat.entity.IREmitter;
 import com.onewhohears.dscombat.entity.damagesource.AircraftDamageSource;
+import com.onewhohears.dscombat.entity.parts.EntityChainHook;
 import com.onewhohears.dscombat.entity.parts.EntityGimbal;
 import com.onewhohears.dscombat.entity.parts.EntityPart;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
@@ -169,6 +170,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	protected float throttle;
 	
 	@Nullable protected EntityGimbal pilotGimbal;
+	@Nullable protected Player chainHolderPlayer;
+	@Nullable protected EntityChainHook chainHolderHook;
 	
 	// TODO 5.1 aircraft starts getting damaged if altitude is too high
 	// TODO 5.4 aircraft visually breaks apart when damaged
@@ -1351,6 +1354,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			// OIL BUCKET
 			else if (stack.is(ModTags.Items.FORGE_OIL_BUCKET)) 
 				return onOilBucketInteract(player, hand, stack);
+			if (stack.is(ModTags.Items.VEHICLE_CHAIN)) 
+				return onChainInteract(player, hand, stack);
 			// INTERACT ITEMS
 			else if (item instanceof VehicleInteractItem vii) 
 				return vii.onServerInteract(this, stack, player, hand);
@@ -1395,6 +1400,41 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public InteractionResult onSprayCanInteract(Player player, InteractionHand hand, ItemStack stack) {
 		UtilPacket.openVehicleTextureScreen(textureManager);
 		return InteractionResult.SUCCESS;
+	}
+	
+	public InteractionResult onChainInteract(Player player, InteractionHand hand, ItemStack stack) {
+		
+		return InteractionResult.sidedSuccess(level.isClientSide);
+	}
+	
+	@Nullable
+	public Player getChainHolderPlayer() {
+		return chainHolderPlayer;
+	}
+	
+	@Nullable
+	public EntityChainHook getChainHolderHook() {
+		return chainHolderHook;
+	}
+	
+	public boolean chainToHook(EntityChainHook hook) {
+		chainHolderPlayer = null;
+		chainHolderHook = hook;
+		// send packet
+		return true;
+	}
+	
+	public boolean chainToPlayer(Player player) {
+		chainHolderPlayer = player;
+		chainHolderHook = null;
+		// send packet
+		return true;
+	}
+	
+	public void disconnectChain() {
+		chainHolderPlayer = null;
+		chainHolderHook = null;
+		// send packet
 	}
 	
 	public void playRepairSound() {

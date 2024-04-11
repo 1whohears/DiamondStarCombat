@@ -77,6 +77,7 @@ public class ModTags {
 		public static final TagKey<Item> AMMO = tag("ammo");
 		public static final TagKey<Item> GAS_CAN = tag("gas_can");
 		public static final TagKey<Item> SPRAY_CAN = tag("spray_can");
+		public static final TagKey<Item> VEHICLE_CHAIN = tag("vehicle_chain");
 		public static final TagKey<Item> ALUMINUM_INGOT = tag("aluminum_ingot");
 		public static final TagKey<Item> FORGE_ALUMINUM_INGOT = forgeTag("ingots/aluminum");
 		public static final TagKey<Item> FORGE_OIL_BUCKET = forgeTag("buckets/oil");

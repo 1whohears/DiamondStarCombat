@@ -15,6 +15,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 public class EntityChainHook extends EntityPart {
 	
@@ -51,9 +52,14 @@ public class EntityChainHook extends EntityPart {
 	
 	protected void handleChainInteract(Player player, ItemStack item) {
 		if (level.isClientSide) return;
-		// if already has this player connected to it do nothing
-		// else if another vehicle was connected to this player within 8 blocks
-		// else attach this player to the chains
+		if (isPlayerConnected(player)) return;
+		List<EntityVehicle> vehicles = level.getEntitiesOfClass(EntityVehicle.class, 
+			getBoundingBox().inflate(CHAIN_LENGTH), vehicle -> vehicle.isChainConnectedToPlayer(player));
+		if (vehicles.size() == 0) {
+			addPlayerConnection(player);
+			return;
+		}
+		for (EntityVehicle vehicle : vehicles) addVehicleConnection(null, vehicle);
 	}
 	
 	public void addPlayerConnection(Player player) {
@@ -61,11 +67,15 @@ public class EntityChainHook extends EntityPart {
 		// send packet
 	}
 	
-	public boolean addVehicleConnection(Player player, EntityVehicle vehicle) {
+	public void addVehicleConnection(@Nullable Player player, EntityVehicle vehicle) {
+		if (player == null) {
+			chains.add(new ChainConnection(null, vehicle));
+			// send packet
+			return;
+		}
 		for (ChainConnection chain : chains) 
 			if (chain.attachVehicle(this, player, vehicle)) 
-				return true;
-		return false;
+				return;
 	}
 	
 	public boolean hasChain() {
@@ -83,6 +93,13 @@ public class EntityChainHook extends EntityPart {
 		// send disconnect packet
 	}
 	
+	public boolean isPlayerConnected(Player player) {
+		for (ChainConnection chain : chains) 
+			if (chain.isPlayerConnected(player))
+				return true;
+		return false;
+	}
+	
 	public static class ChainConnection {
 		private Player player;
 		private EntityVehicle vehicle;
@@ -94,7 +111,29 @@ public class EntityChainHook extends EntityPart {
 			if (vehicle == null) return;
 			EntityVehicle parent = hook.getParentVehicle();
 			if (parent == null) return;
+			Vec3 vehicleHookDiff = hook.position().subtract(vehicle.position());
+			double distance = vehicleHookDiff.length();
+			if (distance <= CHAIN_LENGTH) return;
+			Vec3 chainDir = vehicleHookDiff.normalize();
+			// FHY = L - Mh*g - T = Mh*a -> T = L - Mh*g - Mh*a -> a = (L - Mh*g - T) / Mh
+			// FTY = N - Mt*g + T = Mt*a -> T = Mt*g + Mt*a - N  -> a = (T - Mt*g) / Mt (N = 0 when Tank is in air)
+			// L - Mh*g - Mh*a = Mt*g + Mt*a -> L - (Mh + Mt)*g = (Mh + Mt)*a
+			// a = (L - (Mh + Mt)*g) / (Mh + Mt)
+			// (L - Mh*g - T) / Mh = (T - Mt*g) / Mt
 			
+			parent.addForceMomentToClient(vehicle.getWeightForce(), Vec3.ZERO);
+			/*Vec3 chainEnd = chainDir.scale(-CHAIN_LENGTH).add(hook.position());
+			Vec3 vechicleChainDiff = chainEnd.subtract(vehicle.position());
+			Vec3 vehicleMove = vehicle.getDeltaMovement();
+			double catchUpSpeedY = vehicleMove.y;
+			if (Math.abs(vehicleHookDiff.y) > CHAIN_LENGTH) 
+				catchUpSpeedY = catchupSpeed(vechicleChainDiff.y, vehicleMove.y);
+			vehicle.setDeltaMovement(catchupSpeed(vechicleChainDiff.x, vehicleMove.x),  
+					catchUpSpeedY, catchupSpeed(vechicleChainDiff.z, vehicleMove.z));*/
+		}
+		private double catchupSpeed(double vechicleChainDiff, double vehicleMove) {
+			if (Math.abs(vechicleChainDiff) <= Math.abs(vehicleMove)) return vehicleMove;
+			return vechicleChainDiff;
 		}
 		public void tick(EntityChainHook hook) {
 			if (isPlayerConnection()) {

@@ -1437,6 +1437,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		// send packet
 	}
 	
+	public boolean isChainConnectedToPlayer(Player player) {
+		return getChainHolderPlayer() != null && getChainHolderPlayer().equals(player);
+	}
+	
 	public void playRepairSound() {
 		level.playSound(null, this, SoundEvents.ANVIL_USE, 
 				getSoundSource(), 0.5f, 0.8f);
@@ -1678,6 +1682,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	public void addForceMomentToClient(Vec3 force, Vec3 moment) {
 		if (level.isClientSide) return;
+		addForceBetweenTicks = addForceBetweenTicks.add(force);
+		addMomentBetweenTicks = addMomentBetweenTicks.add(moment);
 		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), 
 				new ToClientAddForceMoment(this, force, moment));
 	}
@@ -1735,14 +1741,12 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
         hurt(exp.getDamageSource(), amount*DSCGameRules.getExplodeDamagerVehicleFactor(level));
         
         Vec3 force = new Vec3(dx*exp_factor, dy*exp_factor, dz*exp_factor).scale(EXP_FORCE_FACTOR);
-        addForceBetweenTicks = addForceBetweenTicks.add(force);
         
 		Vec3 f;
 		if (s.equals(b) && exp_entity != null) 
 			f = exp_entity.getDeltaMovement().normalize().scale(exp_factor*EXP_MOMENT_FACTOR);
 		else f = s.subtract(b).normalize().scale(exp_factor*EXP_MOMENT_FACTOR);
 		Vec3 moment = r.cross(f);
-		addMomentBetweenTicks = addMomentBetweenTicks.add(moment);
 		
 		addForceMomentToClient(force, moment);
 	}

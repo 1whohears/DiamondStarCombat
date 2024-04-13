@@ -150,17 +150,17 @@ public class UtilClientSafeSounds {
 		}
 		if (vehicle.getAircraftType().isAircraft) {
 			// ENGINE FIRE
-			if (vehicle.getEngineFireTicks() % 70 == 1) 
-				playCockpitSound(passengerSoundPack.engineFire, 1f, 
-					Config.CLIENT.cockpitVoiceLineVol.get().floatValue());
+			if (vehicle.getEngineFireTicks() % 160 == 1) 
+				queueCockpitSound(passengerSoundPack.engineFire, 1f, 
+					Config.CLIENT.cockpitVoiceLineVol.get().floatValue(), 30);
 			// FUEL LEAK
-			if (vehicle.getBingoTicks() % 150 <= 60 && vehicle.getFuelLeakTicks() % 30 == 1) 
-				playCockpitSound(passengerSoundPack.fuelLeak, 1f, 
-					Config.CLIENT.cockpitVoiceLineVol.get().floatValue());
+			if (vehicle.getFuelLeakTicks() % 200 <= 60 && vehicle.getFuelLeakTicks() % 30 == 1) 
+				queueCockpitSound(passengerSoundPack.fuelLeak, 1f, 
+					Config.CLIENT.cockpitVoiceLineVol.get().floatValue(), 29);
 			// BINGO FUEL
-			if (vehicle.getBingoTicks() % 160 <= 60 && vehicle.getBingoTicks() % 20 == 1) 
-				playCockpitSound(passengerSoundPack.bingoFuel, 1f, 
-					Config.CLIENT.cockpitVoiceLineVol.get().floatValue());
+			if (vehicle.getBingoTicks() % 240 <= 60 && vehicle.getBingoTicks() % 20 == 1) 
+				queueCockpitSound(passengerSoundPack.bingoFuel, 1f, 
+					Config.CLIENT.cockpitVoiceLineVol.get().floatValue(), 19);
 		}
 	}
 	
@@ -173,6 +173,21 @@ public class UtilClientSafeSounds {
 		if (sound == null) return;
 		Minecraft m = Minecraft.getInstance();
 		m.getSoundManager().play(forCockpit(sound, pitch, volume));
+	}
+	
+	private static long prevQueueTime = 0;
+	private static int waitTime = 0;
+	
+	public static void queueCockpitSound(SoundEvent sound, float pitch, float volume, int length) {
+		if (sound == null) return;
+		Minecraft m = Minecraft.getInstance();
+		long currentTime = m.level.getGameTime();
+		long timeDiff = currentTime - prevQueueTime;
+		waitTime -= timeDiff;
+		if (waitTime < 0) waitTime = 0;
+		m.getSoundManager().playDelayed(forCockpit(sound, pitch, volume), waitTime);
+		waitTime += length;
+		prevQueueTime = currentTime;
 	}
 	
 	public static SimpleSoundInstance forCockpit(SoundEvent sound, float pitch, float volume) {

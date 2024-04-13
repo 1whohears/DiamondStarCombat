@@ -6,7 +6,6 @@ import com.onewhohears.dscombat.data.aircraft.VehicleStats;
 import com.onewhohears.dscombat.data.aircraft.VehicleStats.HeliStats;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource.WeaponDamageType;
 import com.onewhohears.dscombat.util.math.UtilAngles;
-import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -40,23 +39,11 @@ public class EntityHelicopter extends EntityVehicle {
 	@Override
 	public void tickAir(Quaternion q) {
 		if (inputs.special && isOperational()) {
-			float max_th = getMaxPushThrust();
-			if (max_th != 0) setCurrentThrottle((float)-getWeightForce().y / max_th);
-			setDeltaMovement(getDeltaMovement().multiply(1, 0.95, 1));
+			float max_th = (float)UtilAngles.getYawAxis(q).y * getMaxPushThrust();
+			if (max_th != 0) throttleTowards((float)-getWeightForce().y / max_th);
+			setDeltaMovement(getDeltaMovement().multiply(0.95, 0.95, 0.95));
 		}
 		super.tickAir(q);
-		Vec3 motion = getDeltaMovement();
-		if (!isDriverCameraLocked() && isOperational()) {
-			motion = motion.multiply(0.95, 1, 0.95);
-			EulerAngles a = UtilAngles.toDegrees(q);
-			// pitch forward backward
-			Vec3 fDir = UtilAngles.rotationToVector(a.yaw, 0);
-			motion = motion.add(fDir.scale(inputs.pitch).scale(getAccForward()));
-			// roll left right
-			Vec3 sDir = UtilAngles.rotationToVector(a.yaw+90, 0);
-			motion = motion.add(sDir.scale(inputs.roll).scale(getAccSide()));
-		}
-		setDeltaMovement(motion);
 		// IDEA 4 helicopter hover auto pilot mode with inputSpecial2
 	}
 	
@@ -71,10 +58,11 @@ public class EntityHelicopter extends EntityVehicle {
 		super.directionAir(q);
 		if (!isOperational()) return;
 		addMomentY(inputs.yaw * getYawTorque(), true);
-		if (isDriverCameraLocked()) {
+		if (inputs.special) flatten(q, getMaxDeltaPitch(), getMaxDeltaRoll(), false);
+		else {
 			addMomentX(inputs.pitch * getPitchTorque(), true);
 			addMomentZ(inputs.roll * getRollTorque(), true);
-		} else flatten(q, getMaxDeltaPitch(), getMaxDeltaRoll(), false);
+		}
 	}
 
 	@Override
@@ -122,6 +110,11 @@ public class EntityHelicopter extends EntityVehicle {
 	public boolean canHover() {
     	return true;
     }
+	
+	@Override
+	public boolean cutThrottleOnNoPilot() {
+		return false;
+	}
 	
 	@Override
 	public float calcProjDamageBySource(DamageSource source, float amount) {

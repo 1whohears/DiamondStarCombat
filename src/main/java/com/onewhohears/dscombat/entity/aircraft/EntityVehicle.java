@@ -662,7 +662,9 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 */
 	public void tickThrottle() {
 		if (!isTestMode()) {
-			if (getControllingPassenger() == null || !isOperational()) {
+			if (!isOperational()
+					|| (cutThrottleOnNoPilot() && !hasControllingPassenger())
+					|| (cutThrottleOnNoPassengers() && !isPlayerOrBotRiding())) {
 				resetControls();
 				return;
 			}
@@ -673,6 +675,14 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		}
 		if (inputs.throttle > 0) increaseThrottle();
 		else if (inputs.throttle < 0) decreaseThrottle();
+	}
+	
+	public boolean cutThrottleOnNoPilot() {
+		return true;
+	}
+	
+	public boolean cutThrottleOnNoPassengers() {
+		return true;
 	}
 	
 	/**
@@ -1787,6 +1797,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     	setCurrentThrottle(th);
     }
     
+    public void throttleTowards(float throttle) {
+    	setCurrentThrottle(Mth.approach(getCurrentThrottle(), throttle, getThrottleIncreaseRate()));
+    }
+    
     public final float getThrottleIncreaseRate() {
     	return vehicleStats.throttleup;
     }
@@ -2499,7 +2513,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     
     public static enum AircraftType {
 		PLANE(true, false, false),
-		HELICOPTER(true, false, true),
+		HELICOPTER(true, false, false),
 		CAR(false, true, true),
 		BOAT(false, true, true),
 		SUBMARINE(false, true, true);

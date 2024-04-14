@@ -77,7 +77,11 @@ public abstract class EntityPart extends Entity {
 	public void tick() {
 		if (firstTick) init();
 		super.tick();
-		if (!level.isClientSide && tickCount > 10 && getVehicle() == null) discard();
+		if (!level.isClientSide && tickCount > 10 && getVehicle() == null) onNoParent();
+	}
+	
+	protected void onNoParent() {
+		discard();
 	}
 	
 	public Vec3 getRelativePos() {

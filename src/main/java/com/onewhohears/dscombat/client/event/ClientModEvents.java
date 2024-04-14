@@ -23,6 +23,7 @@ import com.onewhohears.dscombat.client.model.obj.custom.BallRadarModel;
 import com.onewhohears.dscombat.client.model.obj.custom.BombRackModel;
 import com.onewhohears.dscombat.client.model.obj.custom.BroncoPlaneModel;
 import com.onewhohears.dscombat.client.model.obj.custom.CIWSModel;
+import com.onewhohears.dscombat.client.model.obj.custom.ChainHookModel;
 import com.onewhohears.dscombat.client.model.obj.custom.CorvetteModel;
 import com.onewhohears.dscombat.client.model.obj.custom.EdenPlaneModel;
 import com.onewhohears.dscombat.client.model.obj.custom.FelixPlaneModel;
@@ -351,6 +352,9 @@ public final class ClientModEvents {
 		// OTHER
 		event.registerEntityRenderer(ModEntities.SEAT.get(), RendererEntityInvisible::new);
 		event.registerEntityRenderer(ModEntities.FLARE.get(), RendererEntityInvisible::new);
+		event.registerEntityRenderer(ModEntities.CHAIN_HOOK.get(), 
+				(context) -> new RendererObjEntity<>(context,
+                        new ChainHookModel("chain_hook")));
 		event.registerEntityRenderer(ModEntities.GIMBAL_CAMERA.get(), 
 				(context) -> new RendererObjEntity<>(context,
                         new GimbalCameraModel()));

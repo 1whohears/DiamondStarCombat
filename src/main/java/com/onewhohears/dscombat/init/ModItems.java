@@ -177,6 +177,11 @@ public class ModItems {
 			() -> new ItemGimbal(15f, SlotType.EXTERNAL_ALL,
 					ModEntities.GIMBAL_CAMERA.getId().toString()));
 	
+	// CHAIN HOOK
+	public static final RegistryObject<Item> CHAIN_HOOK = ITEMS.register("chain_hook", 
+			() -> new ItemGimbal(500f, SlotType.EXTERNAL_ALL,
+					ModEntities.CHAIN_HOOK.getId().toString()));
+	
 	// STORAGE BOXES
 	public static final RegistryObject<Item> SMALL_STORAGE_BOX = ITEMS.register("small_storage_box", 
 			() -> new ItemStorageBox(1000f, SlotType.INTERNAL_ALL, 9));

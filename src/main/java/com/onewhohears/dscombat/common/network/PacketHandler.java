@@ -11,6 +11,7 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientRWRWarning;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRadarPings;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRemovePart;
 import com.onewhohears.dscombat.common.network.toclient.ToClientSynchGameRules;
+import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleChainUpdate;
 import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleExplode;
 import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleScreenDebug;
 import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleTexture;
@@ -192,6 +193,11 @@ public final class PacketHandler {
 			.encoder(ToServerOpenStorage::encode)
 			.decoder(ToServerOpenStorage::new)
 			.consumerMainThread(ToServerOpenStorage::handle)
+			.add();
+		net.messageBuilder(ToClientVehicleChainUpdate.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ToClientVehicleChainUpdate::encode)
+			.decoder(ToClientVehicleChainUpdate::new)
+			.consumerMainThread(ToClientVehicleChainUpdate::handle)
 			.add();
 	}
 	

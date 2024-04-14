@@ -27,6 +27,7 @@ import com.onewhohears.dscombat.entity.aircraft.custom.GronkBattleship;
 import com.onewhohears.dscombat.entity.aircraft.custom.JasonPlane;
 import com.onewhohears.dscombat.entity.aircraft.custom.JaviPlane;
 import com.onewhohears.dscombat.entity.aircraft.custom.NoahChopper;
+import com.onewhohears.dscombat.entity.parts.EntityChainHook;
 import com.onewhohears.dscombat.entity.parts.EntityEngine;
 import com.onewhohears.dscombat.entity.parts.EntityGimbal;
 import com.onewhohears.dscombat.entity.parts.EntityRadar;
@@ -252,6 +253,9 @@ public class ModEntities {
 					new Vec3(0, 1.5, 0), 1.5625,
 					RotBounds.create(1.1f, 30f, 15f)), 
 					EntityDimensions.scalable(2.0f, 1.5f)));
+	
+	public static final RegistryObject<EntityType<EntityChainHook>> CHAIN_HOOK = ENTITIES.register("chain_hook", 
+			() -> createEntityType(EntityChainHook::new, EntityDimensions.scalable(1.0f, 1.0f)));
 	
 	public static final EntityDimensions TINY = EntityDimensions.scalable(0.1f, 0.1f);
 	

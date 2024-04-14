@@ -1413,7 +1413,16 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 	
 	public InteractionResult onChainInteract(Player player, InteractionHand hand, ItemStack stack) {
-		
+		List<EntityChainHook> hooks = level.getEntitiesOfClass(EntityChainHook.class, 
+				getBoundingBox().inflate(EntityChainHook.CHAIN_LENGTH), hook -> hook.isPlayerConnected(player));
+		if (hooks.size() == 0) {
+			chainToPlayer(player);
+			return InteractionResult.sidedSuccess(level.isClientSide);
+		}
+		for (EntityChainHook hook : hooks) {
+			hook.addVehicleConnection(player, this);
+			chainToHook(hook);
+		}
 		return InteractionResult.sidedSuccess(level.isClientSide);
 	}
 	
@@ -1426,25 +1435,26 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public EntityChainHook getChainHolderHook() {
 		return chainHolderHook;
 	}
-	
-	public boolean chainToHook(EntityChainHook hook) {
+	/**
+	 * packets are handled by hook
+	 */
+	public void chainToHook(EntityChainHook hook) {
 		chainHolderPlayer = null;
 		chainHolderHook = hook;
-		// send packet
-		return true;
 	}
 	
 	public boolean chainToPlayer(Player player) {
 		chainHolderPlayer = player;
 		chainHolderHook = null;
-		// send packet
+		if (!level.isClientSide) UtilPacket.sendVehicleAddPlayer(this, player);
 		return true;
 	}
-	
+	/**
+	 * packets are handled by hook
+	 */
 	public void disconnectChain() {
 		chainHolderPlayer = null;
 		chainHolderHook = null;
-		// send packet
 	}
 	
 	public boolean isChainConnectedToPlayer(Player player) {

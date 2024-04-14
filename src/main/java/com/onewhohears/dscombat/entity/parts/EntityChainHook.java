@@ -8,10 +8,13 @@ import javax.annotation.Nullable;
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.init.ModTags;
+import com.onewhohears.dscombat.util.UtilPacket;
 
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -32,7 +35,7 @@ public class EntityChainHook extends EntityPart {
 		super.tick();
 		for (int i = 0; i < chains.size(); ++i) {
 			chains.get(i).tick(this);
-			if (chains.get(i).isDisconnected()) disconnectChain(i--);
+			if (!level.isClientSide && chains.get(i).isDisconnected(this)) disconnectChain(i--);
 		}
 	}
 	
@@ -64,18 +67,27 @@ public class EntityChainHook extends EntityPart {
 	
 	public void addPlayerConnection(Player player) {
 		chains.add(new ChainConnection(player, null));
-		// send packet
+		if (!level.isClientSide) UtilPacket.sendChainAddPlayer(this, player);
 	}
 	
 	public void addVehicleConnection(@Nullable Player player, EntityVehicle vehicle) {
-		if (player == null) {
-			chains.add(new ChainConnection(null, vehicle));
-			// send packet
-			return;
-		}
-		for (ChainConnection chain : chains) 
-			if (chain.attachVehicle(this, player, vehicle)) 
-				return;
+		if (player == null) chains.add(new ChainConnection(null, vehicle));
+		else for (ChainConnection chain : chains) 
+				if (chain.attachVehicle(this, player, vehicle)) 
+					break;
+		if (!level.isClientSide) UtilPacket.sendChainAddVehicle(vehicle, this, player);
+	}
+	
+	public void disconnectVehicle(EntityVehicle vehicle) {
+		for (int i = 0; i < chains.size(); ++i) 
+			if (chains.get(i).isVehicleConnection() && chains.get(i).getVehicle().equals(vehicle)) 
+				disconnectChain(i--);
+	}
+	
+	public void disconnectPlayer(Player player) {
+		for (int i = 0; i < chains.size(); ++i) 
+			if (chains.get(i).isPlayerConnected(player)) 
+				disconnectChain(i--);
 	}
 	
 	public boolean hasChain() {
@@ -87,10 +99,8 @@ public class EntityChainHook extends EntityPart {
 	}
 	
 	public void disconnectChain(int index) {
-		if (level.isClientSide) return;
-		chains.get(index).onDisconnect();
+		chains.get(index).onDisconnect(this);
 		chains.remove(index);
-		// send disconnect packet
 	}
 	
 	public boolean isPlayerConnected(Player player) {
@@ -100,6 +110,10 @@ public class EntityChainHook extends EntityPart {
 		return false;
 	}
 	
+	public List<ChainConnection> getConnections() {
+		return chains;
+	}
+	
 	public static class ChainConnection {
 		private Player player;
 		private EntityVehicle vehicle;
@@ -107,59 +121,44 @@ public class EntityChainHook extends EntityPart {
 			this.player = player;
 			this.vehicle = vehicle;
 		}
-		private void tickPhysics(EntityChainHook hook) {
+		protected void tickPhysics(EntityChainHook hook) {
 			if (vehicle == null) return;
 			EntityVehicle parent = hook.getParentVehicle();
 			if (parent == null) return;
 			Vec3 vehicleHookDiff = hook.position().subtract(vehicle.position());
 			double distance = vehicleHookDiff.length();
 			if (distance <= CHAIN_LENGTH) return;
-			Vec3 chainDir = vehicleHookDiff.normalize();
-			// FHY = L - Mh*g - T = Mh*a -> T = L - Mh*g - Mh*a -> a = (L - Mh*g - T) / Mh
-			// FTY = N - Mt*g + T = Mt*a -> T = Mt*g + Mt*a - N  -> a = (T - Mt*g) / Mt (N = 0 when Tank is in air)
-			// L - Mh*g - Mh*a = Mt*g + Mt*a -> L - (Mh + Mt)*g = (Mh + Mt)*a
-			// a = (L - (Mh + Mt)*g) / (Mh + Mt)
-			// (L - Mh*g - T) / Mh = (T - Mt*g) / Mt
-			
 			parent.addForceMomentToClient(vehicle.getWeightForce(), Vec3.ZERO);
-			/*Vec3 chainEnd = chainDir.scale(-CHAIN_LENGTH).add(hook.position());
-			Vec3 vechicleChainDiff = chainEnd.subtract(vehicle.position());
-			Vec3 vehicleMove = vehicle.getDeltaMovement();
-			double catchUpSpeedY = vehicleMove.y;
-			if (Math.abs(vehicleHookDiff.y) > CHAIN_LENGTH) 
-				catchUpSpeedY = catchupSpeed(vechicleChainDiff.y, vehicleMove.y);
-			vehicle.setDeltaMovement(catchupSpeed(vechicleChainDiff.x, vehicleMove.x),  
-					catchUpSpeedY, catchupSpeed(vechicleChainDiff.z, vehicleMove.z));*/
+			//vehicle.addForceMomentToClient(parent.getForces(), Vec3.ZERO);
+			double fraction = (distance - CHAIN_LENGTH) / distance;
+			Vec3 move = new Vec3(vehicleHookDiff.x*fraction, vehicleHookDiff.y*fraction, vehicleHookDiff.z*fraction);
+			vehicle.setDeltaMovement(move);
+			vehicle.move(MoverType.SELF, move);
 		}
-		private double catchupSpeed(double vechicleChainDiff, double vehicleMove) {
-			if (Math.abs(vechicleChainDiff) <= Math.abs(vehicleMove)) return vehicleMove;
-			return vechicleChainDiff;
+		protected double moveComponent(double diff, double fraction) {
+			return diff * fraction;
 		}
 		public void tick(EntityChainHook hook) {
-			if (isPlayerConnection()) {
-				if (hook.distanceTo(player) > CHAIN_LENGTH) onDisconnect();
-				return;
-			} else if (isVehicleConnection()) {
+			if (isVehicleConnection()) {
 				tickPhysics(hook);
 				return;
 			}
 		}
-		private void onDisconnect() {
+		private void onDisconnect(EntityChainHook hook) {
 			if (vehicle != null) {
 				vehicle.disconnectChain();
-				vehicle = null;
+				if (!hook.level.isClientSide) UtilPacket.sendChainDisconnectVehicle(vehicle, hook);
+			} else if (player != null) {
+				if (!hook.level.isClientSide) UtilPacket.sendChainDisconnectPlayer(hook, player);
 			}
-			if (player != null) {
-				
-				player = null;
-			}
+			vehicle = null;
+			player = null;
 		}
 		public boolean attachVehicle(EntityChainHook hook, Player player, EntityVehicle vehicle) {
 			if (!canAttachVehicle(player, vehicle)) return false;
 			this.player = null;
 			this.vehicle = vehicle;
 			this.vehicle.chainToHook(hook);
-			// send packet
 			return true;
 		}
 		public boolean canAttachVehicle(Player player, EntityVehicle vehicle) {
@@ -176,8 +175,12 @@ public class EntityChainHook extends EntityPart {
 		public EntityVehicle getVehicle() {
 			return vehicle;
 		}
-		public boolean isDisconnected() {
-			return vehicle == null && player == null;
+		@Nullable
+		public Entity getEntity() {
+			return (vehicle != null) ? vehicle : player;
+		}
+		public boolean isDisconnected(EntityChainHook hook) {
+			return (vehicle == null && player == null) || isVehicleDead() || isVehicleDisconnected() || isPlayerTooFar(hook);
 		}
 		public boolean isPlayerConnection() {
 			return player != null;
@@ -185,6 +188,23 @@ public class EntityChainHook extends EntityPart {
 		public boolean isVehicleConnection() {
 			return vehicle != null;
 		}
+		public boolean isVehicleDead() {
+			return isVehicleConnection() && getVehicle().isRemoved();
+		}
+		public boolean isVehicleDisconnected() {
+			return isVehicleConnection() && getVehicle().getChainHolderHook() == null;
+		}
+		public boolean isPlayerTooFar(EntityChainHook hook) {
+			return isPlayerConnection() && hook.distanceTo(player) > CHAIN_LENGTH;
+		}
+	}
+	
+	public static enum ChainUpdateType {
+		CHAIN_ADD_VEHICLE,
+		CHAIN_ADD_PLAYER,
+		CHAIN_DISCONNECT_PLAYER,
+		CHAIN_DISCONNECT_VEHICLE,
+		VEHICLE_ADD_PLAYER
 	}
 
 	@Override
@@ -200,6 +220,18 @@ public class EntityChainHook extends EntityPart {
 	@Override
 	public boolean canGetHurt() {
 		return true;
+	}
+	
+	@Override
+	public void kill() {
+		disconnectAllChains();
+		super.kill();
+	}
+	
+	@Override
+	protected void onNoParent() {
+		disconnectAllChains();
+		super.onNoParent();
 	}
 
 }

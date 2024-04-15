@@ -29,7 +29,8 @@ public class ItemTagGen extends ItemTagsProvider {
 		tag(ModTags.Items.VEHICLE_CHAIN)
 			.add(Items.CHAIN);
 		tag(ModTags.Items.FORGE_OIL_BUCKET)
-			.add(ModItems.OIL_BUCKET.get());
+			.add(ModItems.OIL_BUCKET.get())
+			.addOptional(new ResourceLocation("createindustry:crude_oil_fluid_bucket"));;
 		tag(ModTags.Items.FOSSIL_OIL_CONVERTER)
 			.add(Items.FLINT_AND_STEEL);
 		tag(ModTags.Items.GAS_CAN)

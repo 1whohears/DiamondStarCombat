@@ -1,0 +1,19 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"S": {
+			"item": "minecraft:iron_ingot"
+		},
+		"C": {
+			"item": "minecraft:iron_block"
+		}
+	},
+	"pattern": [
+		"S ",
+		"CC"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:chain_hook"
+	}
+}

@@ -1415,13 +1415,16 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public InteractionResult onChainInteract(Player player, InteractionHand hand, ItemStack stack) {
 		List<EntityChainHook> hooks = level.getEntitiesOfClass(EntityChainHook.class, 
 				getBoundingBox().inflate(EntityChainHook.CHAIN_LENGTH), hook -> hook.isPlayerConnected(player));
-		if (hooks.size() == 0) {
+		/*if (hooks.size() == 0) {
 			chainToPlayer(player);
 			return InteractionResult.sidedSuccess(level.isClientSide);
-		}
+		}*/
 		for (EntityChainHook hook : hooks) {
-			hook.addVehicleConnection(player, this);
-			chainToHook(hook);
+			if (hook.addVehicleConnection(player, this)) {
+				chainToHook(hook);
+				stack.shrink(1);
+				break;
+			}
 		}
 		return InteractionResult.sidedSuccess(level.isClientSide);
 	}
@@ -1442,7 +1445,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		chainHolderPlayer = null;
 		chainHolderHook = hook;
 	}
-	
+	// FIXME 7 chainToPlayer(Player player) does nothing right now
 	public boolean chainToPlayer(Player player) {
 		chainHolderPlayer = player;
 		chainHolderHook = null;

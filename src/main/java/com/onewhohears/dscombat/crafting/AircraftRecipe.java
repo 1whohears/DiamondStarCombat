@@ -114,6 +114,11 @@ public class AircraftRecipe implements Recipe<Inventory> {
 		return preset.getItem();
 	}
 	
+	@Override
+	public boolean isSpecial() {
+		return true;
+	}
+	
 	public static class Type implements RecipeType<AircraftRecipe> {
         private Type() { }
         public static final Type INSTANCE = new Type();

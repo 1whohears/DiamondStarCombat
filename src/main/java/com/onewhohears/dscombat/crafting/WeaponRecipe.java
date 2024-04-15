@@ -105,6 +105,11 @@ public class WeaponRecipe implements Recipe<Inventory> {
 		return preset.getNewItem();
 	}
 	
+	@Override
+	public boolean isSpecial() {
+		return true;
+	}
+	
 	public static class Type implements RecipeType<WeaponRecipe> {
         private Type() { }
         public static final Type INSTANCE = new Type();

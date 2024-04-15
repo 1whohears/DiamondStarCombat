@@ -2,11 +2,7 @@ package com.onewhohears.dscombat.util;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import com.onewhohears.dscombat.client.screen.VehiclePaintScreen;
-import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleChainUpdate;
 import com.onewhohears.dscombat.data.aircraft.DSCPhyCons;
 import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
 import com.onewhohears.dscombat.data.aircraft.VehicleInputManager;
@@ -26,13 +22,11 @@ import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.PacketDistributor;
 
-public class UtilPacket {
+public class UtilClientPacket {
 	
 	public static void aircraftInputsPacket(int id, VehicleInputManager inputs) {
 		Minecraft m = Minecraft.getInstance();
@@ -192,33 +186,6 @@ public class UtilPacket {
 			vehicle.chainToPlayer(player);
 			return;		
 		}
-	}
-	
-	public static void sendChainAddPlayer(EntityChainHook hook, Player player) {
-		sendChainUpdateToClient(null, hook, player, ChainUpdateType.CHAIN_ADD_PLAYER);
-	}
-	
-	public static void sendChainAddVehicle(EntityVehicle vehicle, EntityChainHook hook, @Nullable Player player) {
-		sendChainUpdateToClient(vehicle, hook, player, ChainUpdateType.CHAIN_ADD_VEHICLE);
-	}
-	
-	public static void sendChainDisconnectPlayer(EntityChainHook hook, Player player) {
-		sendChainUpdateToClient(null, hook, player, ChainUpdateType.CHAIN_DISCONNECT_PLAYER);
-	}
-	
-	public static void sendChainDisconnectVehicle(EntityVehicle vehicle, EntityChainHook hook) {
-		sendChainUpdateToClient(vehicle, hook, null, ChainUpdateType.CHAIN_DISCONNECT_VEHICLE);
-	}
-	
-	public static void sendVehicleAddPlayer(EntityVehicle vehicle, Player player) {
-		sendChainUpdateToClient(vehicle, null, player, ChainUpdateType.VEHICLE_ADD_PLAYER);
-	}
-	
-	private static void sendChainUpdateToClient(EntityVehicle vehicle, EntityChainHook hook, Player player, ChainUpdateType type) {
-		Entity entity = (vehicle != null) ? vehicle : (hook != null) ? hook : (player != null) ? player : null;
-		if (entity == null) return;
-		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), 
-				new ToClientVehicleChainUpdate(vehicle, hook, player, type));
 	}
 	
 }

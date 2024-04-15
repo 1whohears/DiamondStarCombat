@@ -6,7 +6,7 @@ import java.util.function.Supplier;
 import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.init.DataSerializers;
-import com.onewhohears.dscombat.util.UtilPacket;
+import com.onewhohears.dscombat.util.UtilClientPacket;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.phys.Vec3;
@@ -44,7 +44,7 @@ public class ToClientAddForceMoment extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilPacket.addMomentPacket(id, force, moment);
+				UtilClientPacket.addMomentPacket(id, force, moment);
 				success.set(true);
 			});
 		});

@@ -9,7 +9,7 @@ import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntityChainHook;
 import com.onewhohears.dscombat.entity.parts.EntityChainHook.ChainUpdateType;
-import com.onewhohears.dscombat.util.UtilPacket;
+import com.onewhohears.dscombat.util.UtilClientPacket;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
@@ -52,7 +52,7 @@ public class ToClientVehicleChainUpdate extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilPacket.updateVehicleChain(vehicleId, hookId, playerId, type);
+				UtilClientPacket.updateVehicleChain(vehicleId, hookId, playerId, type);
 			});
 		});
 		ctx.get().setPacketHandled(true);

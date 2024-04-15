@@ -6,7 +6,7 @@ import java.util.function.Supplier;
 import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
 import com.onewhohears.dscombat.init.DataSerializers;
-import com.onewhohears.dscombat.util.UtilPacket;
+import com.onewhohears.dscombat.util.UtilClientPacket;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.phys.Vec3;
@@ -57,7 +57,7 @@ public class ToClientVehicleScreenDebug extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilPacket.vehicleScreenDebug(type, rel_pos, width, height, rel_x_rot, rel_y_rot, rel_z_rot);
+				UtilClientPacket.vehicleScreenDebug(type, rel_pos, width, height, rel_x_rot, rel_y_rot, rel_z_rot);
 				success.set(true);
 			});
 		});

@@ -49,10 +49,11 @@ import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.dscombat.item.VehicleInteractItem;
+import com.onewhohears.dscombat.util.UtilClientPacket;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.UtilMCText;
-import com.onewhohears.dscombat.util.UtilPacket;
 import com.onewhohears.dscombat.util.UtilParticles;
+import com.onewhohears.dscombat.util.UtilServerPacket;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
@@ -1408,7 +1409,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 	
 	public InteractionResult onSprayCanInteract(Player player, InteractionHand hand, ItemStack stack) {
-		UtilPacket.openVehicleTextureScreen(textureManager);
+		UtilClientPacket.openVehicleTextureScreen(textureManager);
 		return InteractionResult.SUCCESS;
 	}
 	
@@ -1449,7 +1450,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public boolean chainToPlayer(Player player) {
 		chainHolderPlayer = player;
 		chainHolderHook = null;
-		if (!level.isClientSide) UtilPacket.sendVehicleAddPlayer(this, player);
+		if (!level.isClientSide) UtilServerPacket.sendVehicleAddPlayer(this, player);
 		return true;
 	}
 	/**

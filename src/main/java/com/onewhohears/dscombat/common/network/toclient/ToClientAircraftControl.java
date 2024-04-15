@@ -6,7 +6,7 @@ import java.util.function.Supplier;
 import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.data.aircraft.VehicleInputManager;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
-import com.onewhohears.dscombat.util.UtilPacket;
+import com.onewhohears.dscombat.util.UtilClientPacket;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.api.distmarker.Dist;
@@ -38,7 +38,7 @@ public class ToClientAircraftControl extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilPacket.aircraftInputsPacket(id, inputs);
+				UtilClientPacket.aircraftInputsPacket(id, inputs);
 				success.set(true);
 			});
 		});

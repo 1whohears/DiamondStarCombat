@@ -7,7 +7,7 @@ import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.init.DataSerializers;
-import com.onewhohears.dscombat.util.UtilPacket;
+import com.onewhohears.dscombat.util.UtilClientPacket;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.phys.Vec3;
@@ -41,7 +41,7 @@ public class ToClientWeaponImpact extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilPacket.weaponImpact(impactType, pos);
+				UtilClientPacket.weaponImpact(impactType, pos);
 				success.set(true);
 			});
 		});

@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
-import com.onewhohears.dscombat.util.UtilPacket;
+import com.onewhohears.dscombat.util.UtilClientPacket;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.FriendlyByteBuf;
@@ -45,7 +45,7 @@ public class ToClientVehicleTexture extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilPacket.vehicleTexturePacket(ignore_player_id, vehicle_id, buffer);
+				UtilClientPacket.vehicleTexturePacket(ignore_player_id, vehicle_id, buffer);
 				success.set(true);
 			});
 		});

@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.init.DataSerializers;
-import com.onewhohears.dscombat.util.UtilPacket;
+import com.onewhohears.dscombat.util.UtilClientPacket;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.sounds.SoundEvent;
@@ -50,7 +50,7 @@ public class ToClientDelayedSound extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilPacket.delayedSound(soundId, pos, range, volume, pitch);
+				UtilClientPacket.delayedSound(soundId, pos, range, volume, pitch);
 				success.set(true);
 			});
 		});

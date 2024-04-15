@@ -9,7 +9,7 @@ import javax.annotation.Nullable;
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.init.ModTags;
-import com.onewhohears.dscombat.util.UtilPacket;
+import com.onewhohears.dscombat.util.UtilServerPacket;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.nbt.CompoundTag;
@@ -98,7 +98,7 @@ public class EntityChainHook extends EntityPart {
 	public void addPlayerConnection(Player player) {
 		chains.add(new ChainConnection(this, player, null));
 		if (!level.isClientSide) {
-			UtilPacket.sendChainAddPlayer(this, player);
+			UtilServerPacket.sendChainAddPlayer(this, player);
 			playChainConnectSound();
 		}
 	}
@@ -116,7 +116,7 @@ public class EntityChainHook extends EntityPart {
 			}
 		}
 		if (!level.isClientSide) {
-			UtilPacket.sendChainAddVehicle(vehicle, this, player);
+			UtilServerPacket.sendChainAddVehicle(vehicle, this, player);
 			playChainConnectSound();
 		}
 		return foundConnection;
@@ -228,7 +228,7 @@ public class EntityChainHook extends EntityPart {
 			sentToClient = true;
 			if (!isVehicleConnection()) return;
 			vehicle.chainToHook(hook);
-			UtilPacket.sendChainAddVehicle(getVehicle(), hook, null);
+			UtilServerPacket.sendChainAddVehicle(getVehicle(), hook, null);
 		}
 		public boolean isSentToClient() {
 			return sentToClient;
@@ -236,9 +236,9 @@ public class EntityChainHook extends EntityPart {
 		private void onDisconnect() {
 			if (getVehicle() != null) {
 				getVehicle().disconnectChain();
-				if (!hook.level.isClientSide) UtilPacket.sendChainDisconnectVehicle(getVehicle(), hook);
+				if (!hook.level.isClientSide) UtilServerPacket.sendChainDisconnectVehicle(getVehicle(), hook);
 			} else if (player != null) {
-				if (!hook.level.isClientSide) UtilPacket.sendChainDisconnectPlayer(hook, player);
+				if (!hook.level.isClientSide) UtilServerPacket.sendChainDisconnectPlayer(hook, player);
 			}
 			if (!hook.level.isClientSide) hook.playChainDisconnectSound();
 			resetVehicle();

@@ -57,8 +57,13 @@ public class EntityTypeTagGen extends EntityTypeTagsProvider {
 			.addTag(ModTags.EntityTypes.TANK)
 			.addTag(ModTags.EntityTypes.BOAT)
 			.addTag(ModTags.EntityTypes.SUBMARINE)
+			.addTag(ModTags.EntityTypes.MISC_VEHICLE);
+		tag(ModTags.EntityTypes.MISC_VEHICLE)
 			.add(EntityType.BOAT, EntityType.MINECART, ModEntities.PARACHUTE.get())
-			.addOptional(new ResourceLocation("simpleplanes:parachute"));
+			.addOptional(new ResourceLocation("simpleplanes:parachute"))
+			.addOptional(new ResourceLocation("iceandfire:fire_dragon"))
+			.addOptional(new ResourceLocation("iceandfire:ice_dragon"))
+			.addOptional(new ResourceLocation("iceandfire:lightning_dragon"));
 		tag(ModTags.EntityTypes.PLANE)
 			.add(ModEntities.JAVI_PLANE.get(), ModEntities.ALEXIS_PLANE.get(), ModEntities.WOODEN_PLANE.get(), ModEntities.E3SENTRY_PLANE.get())
 			.add(ModEntities.BRONCO_PLANE.get(), ModEntities.FELIX_PLANE.get(), ModEntities.JASON_PLANE.get(), ModEntities.EDEN_PLANE.get())
@@ -113,7 +118,8 @@ public class EntityTypeTagGen extends EntityTypeTagsProvider {
 		tag(ModTags.EntityTypes.FLARE)
 			.add(ModEntities.FLARE.get());
 		tag(ModTags.EntityTypes.IR_EMITTER_LOW)
-			.add(EntityType.PLAYER, EntityType.ALLAY, EntityType.PHANTOM, EntityType.SHULKER_BULLET, EntityType.VEX);
+			.add(EntityType.PLAYER, EntityType.ALLAY, EntityType.PHANTOM, EntityType.SHULKER_BULLET, EntityType.VEX)
+			.addOptional(new ResourceLocation("iceandfire:ice_dragon"));
 		tag(ModTags.EntityTypes.IR_EMITTER_MED)
 			.add(EntityType.WITHER_SKULL, EntityType.BEE, EntityType.FIREWORK_ROCKET, EntityType.SMALL_FIREBALL, EntityType.GHAST)
 			.addTag(ModTags.EntityTypes.MISSILE)
@@ -123,7 +129,9 @@ public class EntityTypeTagGen extends EntityTypeTagsProvider {
 		tag(ModTags.EntityTypes.IR_EMITTER_HIGH)
 			.add(EntityType.FIREBALL, EntityType.DRAGON_FIREBALL, EntityType.BLAZE, EntityType.MAGMA_CUBE);
 		tag(ModTags.EntityTypes.IR_EMITTER_EXTREME)
-			.add(EntityType.WITHER, EntityType.ENDER_DRAGON);
+			.add(EntityType.WITHER, EntityType.ENDER_DRAGON)
+			.addOptional(new ResourceLocation("iceandfire:fire_dragon"))
+			.addOptional(new ResourceLocation("iceandfire:lightning_dragon"));
 	}
 	
 }

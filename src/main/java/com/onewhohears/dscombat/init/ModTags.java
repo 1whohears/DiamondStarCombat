@@ -37,6 +37,7 @@ public class ModTags {
 		public static final TagKey<EntityType<?>> MISSILE = tag("projectile/missile");
 		public static final TagKey<EntityType<?>> ANTI_TANK_SHELL = tag("projectile/anti_tank_shell");
 		public static final TagKey<EntityType<?>> VEHICLE = tag("vehicle");
+		public static final TagKey<EntityType<?>> MISC_VEHICLE = tag("vehicle/misc");
 		public static final TagKey<EntityType<?>> PLANE = tag("vehicle/plane");
 		public static final TagKey<EntityType<?>> HELI = tag("vehicle/heli");
 		public static final TagKey<EntityType<?>> CAR = tag("vehicle/car");

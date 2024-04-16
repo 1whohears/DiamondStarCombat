@@ -8,6 +8,7 @@ import com.onewhohears.dscombat.init.ModTags;
 
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.FluidTagsProvider;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class FluidTagGen extends FluidTagsProvider {
@@ -18,7 +19,9 @@ public class FluidTagGen extends FluidTagsProvider {
 	
 	@Override
 	protected void addTags() {
-		tag(ModTags.Fluids.OIL).add(ModFluids.OIL_FLUID_FLOWING.get(), ModFluids.OIL_FLUID_SOURCE.get());
+		tag(ModTags.Fluids.OIL)
+			.add(ModFluids.OIL_FLUID_FLOWING.get(), ModFluids.OIL_FLUID_SOURCE.get())
+			.addOptional(new ResourceLocation("createindustry:crude_oil_fluid"));
 	}
 
 }

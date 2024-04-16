@@ -1,6 +1,10 @@
 {
   "values": [
     "dscombat:oil_fluid_flowing",
-    "dscombat:oil_fluid_source"
+    "dscombat:oil_fluid_source",
+    {
+      "id": "createindustry:crude_oil_fluid",
+      "required": false
+    }
   ]
 }

@@ -1,0 +1,23 @@
+{
+  "values": [
+    "minecraft:boat",
+    "minecraft:minecart",
+    "dscombat:parachute",
+    {
+      "id": "simpleplanes:parachute",
+      "required": false
+    },
+    {
+      "id": "iceandfire:fire_dragon",
+      "required": false
+    },
+    {
+      "id": "iceandfire:ice_dragon",
+      "required": false
+    },
+    {
+      "id": "iceandfire:lightning_dragon",
+      "required": false
+    }
+  ]
+}

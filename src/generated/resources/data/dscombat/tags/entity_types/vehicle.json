@@ -6,12 +6,6 @@
     "#dscombat:vehicle/tank",
     "#dscombat:vehicle/boat",
     "#dscombat:vehicle/submarine",
-    "minecraft:boat",
-    "minecraft:minecart",
-    "dscombat:parachute",
-    {
-      "id": "simpleplanes:parachute",
-      "required": false
-    }
+    "#dscombat:vehicle/misc"
   ]
 }

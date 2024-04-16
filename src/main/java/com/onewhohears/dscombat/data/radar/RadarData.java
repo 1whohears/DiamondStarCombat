@@ -198,7 +198,7 @@ public class RadarData extends JsonPreset {
 		List<Player> list = radar.level.getEntitiesOfClass(Player.class, radarArea);
 		for (int i = 0; i < list.size(); ++i) {
 			Player target = list.get(i);
-			if (target.isPassenger()) continue;
+			if (target.isPassenger() && target.getRootVehicle().getType().is(ModTags.EntityTypes.VEHICLE)) continue;
 			if (!basicCheck(radar, target, 1)) continue;
 			RadarPing p = new RadarPing(target, 
 					checkFriendly(controller, target),

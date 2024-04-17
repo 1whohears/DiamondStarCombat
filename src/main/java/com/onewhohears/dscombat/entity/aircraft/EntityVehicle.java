@@ -180,7 +180,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	// TODO 5.7 an additional vehicle gui to control certain auxiliary functions (landing gear, jettison tanks/weapons)
 	// TODO 2.5 add chaff
 	// TODO 2.8 external fuel tanks
-	// TODO 2.0 chains to pull/carry vehicles (air drop tank, pull plane)
 	
 	public EntityVehicle(EntityType<? extends EntityVehicle> entityType, Level level, String defaultPreset) {
 		super(entityType, level);
@@ -641,12 +640,20 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		if (velXZ > maxXZ) motionXZ = motionXZ.scale(maxXZ / velXZ);
 		
 		double my = move.y;
-		if (my > DSCPhyCons.MAX_CLIMB_SPEED) my = DSCPhyCons.MAX_CLIMB_SPEED;
-		else if (my < -DSCPhyCons.MAX_FALL_SPEED) my = -DSCPhyCons.MAX_FALL_SPEED;
+		if (my > getMaxClimbSpeed()) my = getMaxClimbSpeed();
+		else if (my < -getMaxFallSpeed()) my = -getMaxFallSpeed();
 		else if (Math.abs(my) < 0.001) my = 0;
 		
 		if (onGround && my < 0) my = -0.01; // THIS MUST BE BELOW ZERO
 		setDeltaMovement(motionXZ.x, my, motionXZ.z);
+	}
+	
+	public double getMaxClimbSpeed() {
+		return DSCPhyCons.MAX_CLIMB_SPEED;
+	}
+	
+	public double getMaxFallSpeed() {
+		return DSCPhyCons.MAX_FALL_SPEED;
 	}
 	
 	/**

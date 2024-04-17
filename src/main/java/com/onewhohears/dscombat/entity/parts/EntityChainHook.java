@@ -205,15 +205,26 @@ public class EntityChainHook extends EntityPart {
 			if (parent == null) return;
 			Vec3 vehicleHookDiff = hook.position().subtract(getVehicle().position());
 			double distance = vehicleHookDiff.length();
+			if (distance > (CHAIN_LENGTH - 0.5) || (!parent.isOnGround() && !getVehicle().isOnGround())) {
+				parent.addForceMomentToClient(getVehicle().getWeightForce(), Vec3.ZERO);
+			}
 			if (distance <= CHAIN_LENGTH) return;
-			parent.addForceMomentToClient(getVehicle().getWeightForce(), Vec3.ZERO);
 			double fraction = (distance - CHAIN_LENGTH) / distance;
-			Vec3 move = new Vec3(vehicleHookDiff.x*fraction, vehicleHookDiff.y*fraction, vehicleHookDiff.z*fraction);
-			getVehicle().setDeltaMovement(move);
+			double yMove = vehicleHookDiff.y*fraction;
+			if (parent.isOnGround() && getVehicle().isOnGround()) yMove = 0;
+			Vec3 move = new Vec3(vehicleHookDiff.x*fraction, yMove, vehicleHookDiff.z*fraction);
+			if (getVehicle().isOnGround()) {
+				double speed = getVehicle().getXZSpeed() * getVehicle().getXZSpeedDir() + move.horizontalDistance();
+				getVehicle().setDeltaMovement(move.normalize().scale(speed));
+			} else {
+				getVehicle().setDeltaMovement(getVehicle().getDeltaMovement().add(move));
+			}
 			getVehicle().move(MoverType.SELF, move);
-			float turn = Mth.approachDegrees(getVehicle().getYRot(), 
+			if (move.horizontalDistanceSqr() > 0.01) {
+				float turn = Mth.approachDegrees(getVehicle().getYRot(), 
 					UtilAngles.getYaw(move), getVehicle().getMaxDeltaYaw());
-			getVehicle().setYRot(turn);
+				getVehicle().setYRot(turn);
+			}
 		}
 		protected double moveComponent(double diff, double fraction) {
 			return diff * fraction;

@@ -892,6 +892,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		return xzSpeed;
 	}
 	
+	public int getXZSpeedDir() {
+		return xzSpeedDir;
+	}
+	
 	/**
 	 * called every tick on server and client side.
 	 * after forces are calculated. see {@link EntityVehicle#tickMovement(Quaternion)}.

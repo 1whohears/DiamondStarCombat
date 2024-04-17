@@ -40,7 +40,7 @@ public class EntityHelicopter extends EntityVehicle {
 	public void tickAir(Quaternion q) {
 		if (inputs.special && isOperational()) {
 			float max_th = (float)UtilAngles.getYawAxis(q).y * getMaxPushThrust();
-			float yForceNoLift = (float)-getWeightForce().y;
+			float yForceNoLift = (float)-(getWeightForce().y + addForceBetweenTicks.y);
 			if (max_th != 0) throttleTowards(yForceNoLift / max_th);
 			setDeltaMovement(getDeltaMovement().multiply(0.95, 0.95, 0.95));
 		}

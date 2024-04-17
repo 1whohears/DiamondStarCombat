@@ -104,6 +104,7 @@ public class EntityChainHook extends EntityPart {
 	}
 	
 	public boolean addVehicleConnection(@Nullable Player player, EntityVehicle vehicle) {
+		if (vehicle.equals(getParentVehicle())) return false;
 		boolean foundConnection = false;
 		if (player == null) {
 			chains.add(new ChainConnection(this, null, vehicle));

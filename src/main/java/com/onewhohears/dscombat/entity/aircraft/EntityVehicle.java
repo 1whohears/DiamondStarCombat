@@ -1907,6 +1907,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
         prevQ = q.copy();
     }
     
+    public Quaternion getClientQ(float partialTicks) {
+    	return UtilAngles.lerpQ(partialTicks, getPrevQ(), getClientQ());
+    }
+    
     public final float getBaseCrossSecArea() {
     	return vehicleStats.cross_sec_area;
     }

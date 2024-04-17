@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.client.model.obj.custom;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
+import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.model.obj.ObjPartModel;
 import com.onewhohears.dscombat.entity.parts.EntityChainHook;
@@ -25,24 +26,31 @@ public class ChainHookModel extends ObjPartModel<EntityChainHook> {
 	@Override
 	public void render(EntityChainHook entity, PoseStack poseStack, MultiBufferSource bufferSource, int lightmap, float partialTicks) {
 		if (entity.getConnections().size() != 0) {
-		Matrix4f matrix4f = poseStack.last().pose();
-		VertexConsumer vertexconsumer = bufferSource.getBuffer(RenderType.text(TEXTURE));
-		Vec3 hookPos = entity.getPosition(partialTicks);
-		for (EntityChainHook.ChainConnection chain : entity.getConnections()) {
-			Entity connector = chain.getEntity();
-			if (connector == null) continue;
-			Vec3 connPos = connector.getPosition(partialTicks);
-			Vec3 chainDiff = connPos.add(0, 1, 0).subtract(hookPos);
-			Vec3 chainDiffNorm = chainDiff.normalize();
-			Vec3 pitchAxis = UtilAngles.rotateVector(chainDiffNorm, Vector3f.YP.rotationDegrees(90));
-			Vec3 yawAxis = UtilAngles.rotateVector(chainDiffNorm, Vector3f.XN.rotationDegrees(90));
-			float t = 0.1f;
-			float l = (float) (chainDiff.length() / EntityChainHook.CHAIN_LENGTH);
-			drawChainSide(vertexconsumer, matrix4f, chainDiff, pitchAxis, t, l, lightmap);
-			drawChainSide(vertexconsumer, matrix4f, chainDiff, pitchAxis.scale(-1), t, l, lightmap);
-			drawChainSide(vertexconsumer, matrix4f, chainDiff, yawAxis, t, l, lightmap);
-			drawChainSide(vertexconsumer, matrix4f, chainDiff, yawAxis.scale(-1), t, l, lightmap);
-		} }
+			poseStack.pushPose();
+			VertexConsumer vertexconsumer = bufferSource.getBuffer(RenderType.text(TEXTURE));
+			Quaternion hookPosRot = Vector3f.ZP.rotationDegrees(entity.getZRot());
+			Vec3 chainOffset = UtilAngles.rotateVector(new Vec3(0, 0.45, 0), hookPosRot);
+			if (entity.getParentVehicle() != null) chainOffset = UtilAngles.rotateVector(chainOffset, entity.getParentVehicle().getClientQ(partialTicks));
+			Vec3 hookPos = entity.getPosition(partialTicks).add(chainOffset);
+			poseStack.translate(chainOffset.x, chainOffset.y, chainOffset.z);
+			Matrix4f matrix4f = poseStack.last().pose();
+			for (EntityChainHook.ChainConnection chain : entity.getConnections()) {
+				Entity connector = chain.getEntity();
+				if (connector == null) continue;
+				Vec3 connPos = connector.getPosition(partialTicks);
+				Vec3 chainDiff = connPos.add(0, 1, 0).subtract(hookPos);
+				Vec3 chainDiffNorm = chainDiff.normalize();
+				Vec3 pitchAxis = UtilAngles.rotateVector(chainDiffNorm, Vector3f.YP.rotationDegrees(90));
+				Vec3 yawAxis = UtilAngles.rotateVector(chainDiffNorm, Vector3f.XN.rotationDegrees(90));
+				float t = 0.1f;
+				float l = (float) (chainDiff.length() / EntityChainHook.CHAIN_LENGTH);
+				drawChainSide(vertexconsumer, matrix4f, chainDiff, pitchAxis, t, l, lightmap);
+				drawChainSide(vertexconsumer, matrix4f, chainDiff, pitchAxis.scale(-1), t, l, lightmap);
+				drawChainSide(vertexconsumer, matrix4f, chainDiff, yawAxis, t, l, lightmap);
+				drawChainSide(vertexconsumer, matrix4f, chainDiff, yawAxis.scale(-1), t, l, lightmap);
+			} 
+			poseStack.popPose();
+		}
 		super.render(entity, poseStack, bufferSource, lightmap, partialTicks);
 	}
 	

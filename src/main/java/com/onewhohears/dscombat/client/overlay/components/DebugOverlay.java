@@ -23,17 +23,21 @@ public class DebugOverlay extends VehicleOverlayComponent {
         if ((!(getPlayerRootVehicle() instanceof EntityVehicle vehicle)) || !(Config.CLIENT.debugMode.get())) return;
 
         int color = 0x00ff00;
+        int space = 120;
         drawString(poseStack, getFont(),
                 "V"+ UtilParse.prettyVec3(vehicle.getDeltaMovement(), 2),
-                screenWidth - 100, 0, color);
+                screenWidth - space, 0, color);
         drawString(poseStack, getFont(),
                 "F"+UtilParse.prettyVec3(vehicle.forces, 2),
-                screenWidth - 100, 10, color);
+                screenWidth - space, 10, color);
         drawString(poseStack, getFont(),
                 "A"+UtilParse.prettyVec3(vehicle.getAngularVel(), 2),
-                screenWidth - 100, 20, color);
+                screenWidth - space, 20, color);
         drawString(poseStack, getFont(),
                 "M"+UtilParse.prettyVec3(vehicle.getMoment(), 2),
-                screenWidth - 100, 30, color);
+                screenWidth - space, 30, color);
+        drawString(poseStack, getFont(),
+                "Q"+UtilParse.prettyQ(vehicle.getClientQ(), 2),
+                screenWidth - space, 40, color);
     }
 }

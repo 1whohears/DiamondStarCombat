@@ -52,6 +52,7 @@ import com.onewhohears.dscombat.item.VehicleInteractItem;
 import com.onewhohears.dscombat.util.UtilClientPacket;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.UtilMCText;
+import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.UtilParticles;
 import com.onewhohears.dscombat.util.UtilServerPacket;
 import com.onewhohears.dscombat.util.math.UtilAngles;
@@ -175,7 +176,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	@Nullable protected Player chainHolderPlayer;
 	@Nullable protected EntityChainHook chainHolderHook;
 	
-	// TODO 5.1 aircraft starts getting damaged if altitude is too high
 	// TODO 5.4 aircraft visually breaks apart when damaged
 	// TODO 5.6 place and remove external parts from outside the vehicle
 	// TODO 5.7 an additional vehicle gui to control certain auxiliary functions (landing gear, jettison tanks/weapons)
@@ -481,13 +481,13 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	/**
 	 * SERVER SIDE ONLY
-	 * called externally to synch a vehicle's inputs with client's that aren't controlling this vehicle.
+	 * called externally to sync a vehicle's inputs with client's that aren't controlling this vehicle.
 	 * normally used by {@link com.onewhohears.dscombat.common.network.toserver.ToServerAircraftControl}
 	 * which is called by {@link com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents}
-	 * to the controlling player can synch their inputs with every other client.
-	 * could also be used by a server side AI to synch a vehicle's inputs with all client's.
+	 * to the controlling player can sync their inputs with every other client.
+	 * could also be used by a server side AI to sync a vehicle's inputs with all client's.
 	 */
-	public void synchControlsToClient() {
+	public void syncControlsToClient() {
 		if (level.isClientSide) return;
 		PacketHandler.INSTANCE.send(
 			PacketDistributor.TRACKING_ENTITY.with(() -> this),
@@ -1269,7 +1269,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	private void tickLerp() {
 		if (isControlledByLocalInstance()) {
 			syncPacketPositionCodec(getX(), getY(), getZ());
-			synchMoveRot();
+			syncMoveRot();
 			lerpSteps = 0;
 			return;
 		}
@@ -1280,9 +1280,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	        --lerpSteps;
 	        setPos(d0, d1, d2);
 		}
+		if (!level.isClientSide) debug("server tick "+UtilParse.prettyQ(getQ(), 2)+" "+tickCount);
 	}
 	
-	private void synchMoveRot() {
+	private void syncMoveRot() {
 		if (!level.isClientSide || tickCount % 20 != 0 || firstTick) return;
 		PacketHandler.INSTANCE.sendToServer(new ToServerAircraftMoveRot(this));
 	}
@@ -1892,6 +1893,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
      * @param q set server side quaternion
      */
     public final void setQ(Quaternion q) {
+    	debug("set Q "+UtilParse.prettyQ(q, 2)+" "+tickCount);
         entityData.set(Q, q.copy());
     }
     
@@ -2324,7 +2326,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     
     /**
      * outside mods shouldn't use this. does not change the actual number of flares.
-     * @param flares a number of flares to synch with the client
+     * @param flares a number of flares to sync with the client
      */
     public void setFlareNum(int flares) {
     	entityData.set(FLARE_NUM, flares);

@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.mojang.logging.LogUtils;
+import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.radar.RadarData;
 import com.onewhohears.dscombat.data.radar.RadarPresets;
@@ -175,6 +176,11 @@ public class UtilParse {
 	public static String prettyVec3(Vec3 v, int decimals) {
 		String f = "%3."+decimals+"f";
 		return String.format("["+f+","+f+","+f+"]", v.x, v.y, v.z);
+	}
+	
+	public static String prettyQ(Quaternion q, int decimals) {
+		String f = "%1."+decimals+"f";
+		return String.format("["+f+","+f+"i,"+f+"j,"+f+"k]", q.r(), q.i(), q.j(), q.k());
 	}
 	
 	public static String getRandomString(String[]... arrays) {

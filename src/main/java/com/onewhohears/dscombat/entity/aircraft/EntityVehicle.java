@@ -1262,7 +1262,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	@Override
 	public void lerpTo(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
 		lerpX = x; lerpY = y; lerpZ = z;
-		lerpSteps = posRotationIncrements;
+		if (teleport) lerpSteps = posRotationIncrements;
+		else lerpSteps = 1;
     }
 	
 	private void tickLerp() {

@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.container.menu.AircraftBlockContainerMenu;
 import com.onewhohears.dscombat.common.network.PacketHandler;
@@ -27,6 +28,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
@@ -58,9 +60,9 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockCo
 		this.renderBackground(poseStack);
 		super.render(poseStack, mouseX, mouseY, partialTicks);
         this.renderTooltip(poseStack, mouseX, mouseY);
+        this.renderBookmark(poseStack, mouseX, mouseY, partialTicks);
         this.renderIngredients(poseStack, mouseX, mouseY, partialTicks);
         this.renderVehicle(poseStack, mouseX, mouseY, partialTicks);
-        this.renderBookmark(poseStack, mouseX, mouseY, partialTicks);
 	}
 	
 	@Override
@@ -82,11 +84,22 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockCo
 	
 	protected void renderVehicle(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
 		AircraftRecipe ap = tab.getSelectedRecipe();
-        if (ap == null) return;
-		Minecraft m = Minecraft.getInstance();
-        ItemStack stack = ap.getResultItem();
-        m.getItemRenderer().renderAndDecorateItem(stack, leftPos+170, topPos+50);
-        // HOW 2 render 3d vehicle and make it spin
+		if (ap == null) return;
+		ItemStack stack = ap.getResultItem();
+		int posX = leftPos+170, posY = topPos+52;
+		PoseStack modelViewStack = RenderSystem.getModelViewStack();
+		modelViewStack.pushPose();
+		float scale = 2f, scaleInv = 1f / scale;
+		modelViewStack.scale(scale, scale, scale);
+		float blitOffset = 100 + minecraft.getItemRenderer().blitOffset + 50;
+		modelViewStack.translate((posX+8)*scaleInv, 0, blitOffset);
+		long time = minecraft.level.getGameTime();
+		float spinRate = 3f;
+		modelViewStack.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(partialTicks, (time-1)*spinRate, time*spinRate)));
+		modelViewStack.translate(-(posX+8)*scaleInv, 0, -blitOffset);
+		modelViewStack.translate((posX+8f)*(scaleInv-1f), (posY+8f)*(scaleInv-1f), 0);
+		minecraft.getItemRenderer().renderAndDecorateItem(stack, posX, posY);
+		modelViewStack.popPose();
 	}
 	
 	protected void renderIngredients(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
@@ -117,7 +130,9 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockCo
 		if (ar == null) return;
 		AircraftPreset ap = ar.getVehiclePreset();
 		if (ap == null) return;
-		font.draw(stack, ap.getDisplayNameComponent(), titleLabelX, titleLabelY, 0x000000);
+		Component name = ap.getDisplayNameComponent();
+		int nameWidth = font.width(name);
+		font.draw(stack, name, leftPos+(imageWidth-nameWidth)/2-36, titleLabelY, 0x000000);
 		CompoundTag data = ap.getDataAsNBT().getCompound("stats");
 		float scale = 1f;
 		stack.scale(scale, scale, scale);

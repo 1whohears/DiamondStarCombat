@@ -2,7 +2,11 @@
 	"type": "minecraft:crafting_shaped",
 	"key": {
 		"C": {
-			"item": "dscombat:gas_can"
+			"type": "forge:partial_nbt",
+			"item": "dscombat:gas_can",
+			"nbt": {
+				"Damage": 0
+			}
 		}
 	},
 	"pattern": [

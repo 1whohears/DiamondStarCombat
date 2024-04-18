@@ -53,6 +53,11 @@ public class VehicleWindSoundInstance extends DopplerSoundInstance {
 	}
 	
 	protected void calcVolPitch(EntityVehicle craft) {
+		if (craft.isOnGround()) {
+			initVolume = 0;
+			initPitch = 1;
+			return;
+		}
 		double speedSqr = craft.getDeltaMovement().lengthSqr() - minSpeedSqr;
 		if (speedSqr <= 0) {
 			initVolume = 0;

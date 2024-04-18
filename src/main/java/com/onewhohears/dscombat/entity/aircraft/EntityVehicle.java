@@ -68,6 +68,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -1477,8 +1478,11 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 	
 	public void playRepairSound() {
-		level.playSound(null, this, SoundEvents.ANVIL_USE, 
-				getSoundSource(), 0.5f, 0.8f);
+		SoundEvent sound;
+		if (isMaxHealth()) sound = SoundEvents.ANVIL_USE;
+		else sound = SoundEvents.ANVIL_PLACE;
+		level.playSound(null, this, sound, 
+				getSoundSource(), 0.5f, 1.0f);
 	}
 	
 	private boolean ridePilotSeat(Entity e, List<EntitySeat> seats) {

@@ -69,7 +69,6 @@ public class ItemGasCan extends Item {
 	@Override
 	public float getXpRepairRatio(ItemStack stack) {
 		return Config.COMMON.gasCanXpRepairRate.get().floatValue();
-		//return 2f; // FIXME 6 any value less than 2 either crashes the game or auto fills the entire can
 	}
 
 }

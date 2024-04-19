@@ -96,7 +96,7 @@ public class Config {
 					.defineInRange("maxBlockCheckDepth", 250, 10, 400);
 			gasCanXpRepairRate = builder
 					.comment("The average durability repaired by mending per xp point.")
-					.defineInRange("gasCanXpRepairRate", 0.25, 0, 100);
+					.defineInRange("gasCanXpRepairRate", 2.0, 2.0, 1000.0);
 			radarMobs = builder.defineList("radarMobs", 
 					Arrays.asList(
 							"net.minecraft.world.entity.Mob"), 

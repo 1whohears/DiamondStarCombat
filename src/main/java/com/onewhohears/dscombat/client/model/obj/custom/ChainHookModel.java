@@ -36,7 +36,7 @@ public class ChainHookModel extends ObjPartModel<EntityChainHook> {
 			Matrix4f matrix4f = poseStack.last().pose();
 			for (EntityChainHook.ChainConnection chain : entity.getConnections()) {
 				Entity connector = chain.getEntity();
-				if (connector == null) continue;
+				if (connector == null || connector.isRemoved()) continue;
 				Vec3 connPos = connector.getPosition(partialTicks);
 				Vec3 chainDiff = connPos.add(0, 1, 0).subtract(hookPos);
 				Vec3 chainDiffNorm = chainDiff.normalize();

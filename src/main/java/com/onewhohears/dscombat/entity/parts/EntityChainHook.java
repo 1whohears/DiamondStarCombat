@@ -18,6 +18,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -25,6 +26,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
@@ -248,7 +250,11 @@ public class EntityChainHook extends EntityPart {
 		private void onDisconnect() {
 			if (getVehicle() != null) {
 				getVehicle().disconnectChain();
-				if (!hook.level.isClientSide) UtilServerPacket.sendChainDisconnectVehicle(getVehicle(), hook);
+				if (!hook.level.isClientSide) {
+					Containers.dropItemStack(hook.level, hook.getX(), hook.getY(), hook.getZ(), 
+							Items.CHAIN.getDefaultInstance());
+					UtilServerPacket.sendChainDisconnectVehicle(getVehicle(), hook);
+				}
 			} else if (player != null) {
 				if (!hook.level.isClientSide) UtilServerPacket.sendChainDisconnectPlayer(hook, player);
 			}

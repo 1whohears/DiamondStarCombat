@@ -56,6 +56,7 @@ public abstract class WeaponData extends JsonPreset {
 	private final String shootSoundKey;
 	private final String rackTypeKey;
 	private final String compatibleWeaponPart;
+	private final String compatibleTurret;
 	private final String itemKey;
 	private final String modelId;
 	private final ResourceLocation icon;
@@ -83,6 +84,7 @@ public abstract class WeaponData extends JsonPreset {
 		this.shootSoundKey = UtilParse.getStringSafe(json, "shootSoundKey", "");
 		this.rackTypeKey = UtilParse.getStringSafe(json, "rackTypeKey", "");
 		this.compatibleWeaponPart = UtilParse.getStringSafe(json, "compatibleWeaponPart", "");
+		this.compatibleTurret = UtilParse.getStringSafe(json, "compatibleTurret", "");
 		this.itemKey = UtilParse.getStringSafe(json, "itemKey", "");
 		this.modelId = UtilParse.getStringSafe(json, "modelId", getId());
 		this.icon = new ResourceLocation(UtilParse.getStringSafe(json, "icon", getDefaultIconLocation()));
@@ -416,6 +418,10 @@ public abstract class WeaponData extends JsonPreset {
 		return compatibleWeaponPart;
 	}
 	
+	public String getCompatibleTurret() {
+		return compatibleTurret;
+	}
+	
 	public String getModelId() {
 		return modelId;
 	}
@@ -431,14 +437,21 @@ public abstract class WeaponData extends JsonPreset {
 	public abstract String getWeaponTypeCode();
 	
 	public void addToolTips(List<Component> tips) {
-		if (!compatibleWeaponPart.isEmpty()) tips.add(UtilMCText.literal("Compatible: ")
-			.append(UtilMCText.translatable(compatibleWeaponPart))
-			.setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		if (!compatibleWeaponPart.isEmpty()) {
+			tips.add(UtilMCText.literal("Compatible Weapon: ")
+				.append(UtilMCText.getItemName(compatibleWeaponPart))
+				.setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		}
+		if (!compatibleTurret.isEmpty()) {
+			tips.add(UtilMCText.literal("Compatible Turret: ")
+				.append(UtilMCText.getItemName(compatibleTurret))
+				.setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		}
 		tips.add(UtilMCText.literal("Fire Rate: ").append(getFireRate()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 		tips.add(UtilMCText.literal("Max Age: ").append(getMaxAge()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 		if (!canShootOnGround) tips.add(UtilMCText.literal("Must Fly").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 	}
-	
+	// FIXME 6 making the addToolTips and getInfoComponents functions separate is ridiculous
 	public List<ComponentColor> getInfoComponents() {
 		List<ComponentColor> list = new ArrayList<>();
 		list.add(new ComponentColor(getDisplayNameComponent(), 0x000000));

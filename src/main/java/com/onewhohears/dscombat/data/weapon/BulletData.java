@@ -145,14 +145,14 @@ public class BulletData extends WeaponData {
 	}
 	
 	@Override
-	public void addToolTips(List<Component> tips) {
-		super.addToolTips(tips);
+	public void addToolTips(List<Component> tips, boolean advanced) {
+		super.addToolTips(tips, advanced);
 		tips.add(UtilMCText.literal("Damage: ").append(getDamage()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
-		tips.add(UtilMCText.literal("Max Speed: ").append(getSpeed()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		if (advanced) tips.add(UtilMCText.literal("Max Speed: ").append(getSpeed()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 		if (isExplosive()) {
 			tips.add(UtilMCText.literal("Explosion Radius: ")
 				.append(getExplosionRadius()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
-			tips.add(UtilMCText.literal("Explosions: ")
+			if (advanced) tips.add(UtilMCText.literal("Explosions: ")
 				.append(getExplodeNum()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 		}
 	}

@@ -51,11 +51,10 @@ public class ItemAmmo extends Item implements VehicleInteractItem {
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tips, TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tips, isAdvanced);
-		if (!isAdvanced.isAdvanced()) return;
 		String id = getWeaponId(stack);
 		WeaponData wd = WeaponPresets.get().getPreset(id);
 		if (wd == null) return;
-		wd.addToolTips(tips);
+		wd.addToolTips(tips, isAdvanced.isAdvanced());
 	}
 	
 	@Override

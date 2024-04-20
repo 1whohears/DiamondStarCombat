@@ -436,20 +436,20 @@ public abstract class WeaponData extends JsonPreset {
 	
 	public abstract String getWeaponTypeCode();
 	
-	public void addToolTips(List<Component> tips) {
+	public void addToolTips(List<Component> tips, boolean advanced) {
 		if (!compatibleWeaponPart.isEmpty()) {
-			tips.add(UtilMCText.literal("Compatible Weapon: ")
+			tips.add(UtilMCText.literal("Weapon Part: ")
 				.append(UtilMCText.getItemName(compatibleWeaponPart))
 				.setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 		}
 		if (!compatibleTurret.isEmpty()) {
-			tips.add(UtilMCText.literal("Compatible Turret: ")
+			tips.add(UtilMCText.literal("Turret: ")
 				.append(UtilMCText.getItemName(compatibleTurret))
 				.setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 		}
 		tips.add(UtilMCText.literal("Fire Rate: ").append(getFireRate()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
-		tips.add(UtilMCText.literal("Max Age: ").append(getMaxAge()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
-		if (!canShootOnGround) tips.add(UtilMCText.literal("Must Fly").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		if (advanced) tips.add(UtilMCText.literal("Max Age: ").append(getMaxAge()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		if (advanced && !canShootOnGround) tips.add(UtilMCText.literal("Must Fly").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 	}
 	// FIXME 6 making the addToolTips and getInfoComponents functions separate is ridiculous
 	public List<ComponentColor> getInfoComponents() {

@@ -81,8 +81,8 @@ public class BombData extends BulletData {
 	}
 	
 	@Override
-	public void addToolTips(List<Component> tips) {
-		super.addToolTips(tips);
+	public void addToolTips(List<Component> tips, boolean advanced) {
+		super.addToolTips(tips, advanced);
 	}
 	
 	@Override

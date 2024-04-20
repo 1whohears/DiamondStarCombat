@@ -130,7 +130,6 @@ public class ItemAircraft extends Item {
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tips, TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tips, isAdvanced);
-		if (!isAdvanced.isAdvanced()) return;
 		CompoundTag tag = stack.getTag();
 		if (tag == null || !tag.contains("EntityTag")) return;
 		CompoundTag et = tag.getCompound("EntityTag");

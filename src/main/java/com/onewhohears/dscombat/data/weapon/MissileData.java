@@ -140,10 +140,10 @@ public abstract class MissileData extends BulletData {
 	}
 	
 	@Override
-	public void addToolTips(List<Component> tips) {
-		super.addToolTips(tips);
-		if (getFov() != -1) tips.add(UtilMCText.literal("FOV: ").append(getFov()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
-		tips.add(UtilMCText.literal("Turn Radius: ").append(getTurnRadius()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+	public void addToolTips(List<Component> tips, boolean advanced) {
+		super.addToolTips(tips, advanced);
+		if (advanced && getFov() != -1) tips.add(UtilMCText.literal("FOV: ").append(getFov()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		if (advanced) tips.add(UtilMCText.literal("Turn Radius: ").append(getTurnRadius()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 	}
 	
 	@Override

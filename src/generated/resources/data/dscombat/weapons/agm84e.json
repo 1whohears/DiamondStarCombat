@@ -5,6 +5,7 @@
   "bleed": 0.02,
   "canShootOnGround": false,
   "causesFire": true,
+  "compatibleTurret": "dscombat:mls",
   "compatibleWeaponPart": "dscombat:heavy_missile_rack",
   "craftNum": 1,
   "damage": 60.0,

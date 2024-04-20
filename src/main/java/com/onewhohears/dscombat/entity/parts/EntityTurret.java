@@ -287,7 +287,8 @@ public class EntityTurret extends EntitySeat {
 		return entityData.get(WEAPON_ID);
 	}
 	
-	public void setWeaponId(String weapon) {
+	public void setWeaponId(@Nullable String weapon) {
+		if (weapon == null) weapon = "";
 		entityData.set(WEAPON_ID, weapon);
 	}
 	

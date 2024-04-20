@@ -28,7 +28,8 @@ public class WeaponPresets extends JsonPresetReloadListener<WeaponData> {
 		instance = null;
 	}
 	
-	private Map<String, List<String>> compatibleMap = new HashMap<>();
+	private Map<String, List<String>> compatiblePartMap = new HashMap<>();
+	private Map<String, List<String>> compatibleTurretMap = new HashMap<>();
 	private WeaponData[] weaponList;
 	private WeaponRecipe[] weaponRecipes;
 	
@@ -89,7 +90,13 @@ public class WeaponPresets extends JsonPresetReloadListener<WeaponData> {
 	}
 	
 	public List<String> getCompatibleWeapons(ResourceLocation weaponPartItemId) {
-		List<String> list = compatibleMap.get(weaponPartItemId.toString());
+		List<String> list = compatiblePartMap.get(weaponPartItemId.toString());
+		if (list == null) return new ArrayList<>();
+		return list;
+	}
+	
+	public List<String> getTurretWeapons(ResourceLocation turretItemId) {
+		List<String> list = compatibleTurretMap.get(turretItemId.toString());
 		if (list == null) return new ArrayList<>();
 		return list;
 	}
@@ -102,18 +109,30 @@ public class WeaponPresets extends JsonPresetReloadListener<WeaponData> {
 	}
 	
 	protected void refreshCompatibility() {
-		compatibleMap.clear();
+		compatiblePartMap.clear();
 		for (int i = 0; i < getAllPresets().length; ++i) {
 			String partId = getAllPresets()[i].getCompatibleWeaponPart();
 			if (partId.isEmpty()) continue;
-			List<String> list = compatibleMap.get(partId);
+			List<String> list = compatiblePartMap.get(partId);
 			if (list == null) {
 				list = new ArrayList<String>();
-				compatibleMap.put(partId, list);
+				compatiblePartMap.put(partId, list);
 			}
 			list.add(getAllPresets()[i].getId());
 		}
-		LOGGER.debug("WEAPON CAPATIBILITY: "+compatibleMap.toString());
+		LOGGER.debug("WEAPON CAPATIBILITY: "+compatiblePartMap.toString());
+		compatibleTurretMap.clear();
+		for (int i = 0; i < getAllPresets().length; ++i) {
+			String turretId = getAllPresets()[i].getCompatibleTurret();
+			if (turretId.isEmpty()) continue;
+			List<String> list = compatibleTurretMap.get(turretId);
+			if (list == null) {
+				list = new ArrayList<String>();
+				compatibleTurretMap.put(turretId, list);
+			}
+			list.add(getAllPresets()[i].getId());
+		}
+		LOGGER.debug("TURRET CAPATIBILITY: "+compatibleTurretMap.toString());
 	}
 	
 	@Nullable

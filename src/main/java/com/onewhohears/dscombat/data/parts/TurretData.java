@@ -19,14 +19,17 @@ import net.minecraft.world.phys.Vec3;
 
 public class TurretData extends SeatData implements LoadableRecipePartData {
 	
-	private final String weaponId;
+	private final String[] compatible;
+	private String weaponId;
 	private final float health;
 	private int ammo = 0, maxAmmo = 0;
 	
 	public TurretData(float weight, ResourceLocation itemid, SlotType[] compatibleSlots, 
-			String turrentEntityKey, String weaponId, boolean filled, float health) {
+			String turrentEntityKey, String weaponId, String[] compatible, boolean filled, float health) {
 		super(weight, itemid, compatibleSlots);
+		this.compatible = compatible;
 		this.weaponId = weaponId;
+		if (!WeaponPresets.get().has(weaponId)) this.weaponId = "";
 		this.entityTypeKey = turrentEntityKey;
 		this.health = health;
 		WeaponData data = WeaponPresets.get().getPreset(weaponId);
@@ -39,22 +42,26 @@ public class TurretData extends SeatData implements LoadableRecipePartData {
 	public void read(CompoundTag tag) {
 		super.read(tag);
 		ammo = tag.getInt("ammo");
+		if (tag.contains("weaponId")) weaponId = tag.getString("weaponId");
 	}
 	
 	public CompoundTag write() {
 		CompoundTag tag = super.write();
 		tag.putInt("ammo", ammo);
+		tag.putString("weaponId", weaponId);
 		return tag;
 	}
 
 	public void read(FriendlyByteBuf buffer) {
 		super.read(buffer);
 		ammo = buffer.readInt();
+		weaponId = buffer.readUtf();
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
 		super.write(buffer);
 		buffer.writeInt(ammo);
+		buffer.writeUtf(weaponId);
 	}
 	
 	@Override
@@ -134,6 +141,14 @@ public class TurretData extends SeatData implements LoadableRecipePartData {
 			buffer.writeFloat(rotRate);
 		}
 	}
+	
+	public boolean isWeaponCompatible(String preset) {
+		if (preset == null) return false;
+		for (int i = 0; i < compatible.length; ++i) 
+			if (compatible[i].equals(preset)) 
+				return true;
+		return false;
+	}
 
 	@Override
 	public float getCurrentAmmo() {
@@ -152,24 +167,35 @@ public class TurretData extends SeatData implements LoadableRecipePartData {
 
 	@Override
 	public void setMaxAmmo(float max) {
+		this.maxAmmo = (int)max;
 	}
 
 	@Override
 	public boolean isCompatibleWithAmmoContinuity(String continuity) {
-		return weaponId.equals(continuity);
+		return isWeaponCompatible(continuity);
 	}
 
 	@Override
 	public boolean updateContinuityIfEmpty() {
-		return false;
+		return true;
 	}
 
 	@Override
 	public void setContinuity(String continuity) {
+		this.weaponId = continuity;
 	}
 
 	@Override
 	public String getContinuity() {
+		return getWeaponId();
+	}
+	
+	@Override
+	public boolean isContinuityEmpty() {
+		return getContinuity() == null || getContinuity().isEmpty() || getCurrentAmmo() == 0;
+	}
+	
+	public String getWeaponId() {
 		return weaponId;
 	}
 	

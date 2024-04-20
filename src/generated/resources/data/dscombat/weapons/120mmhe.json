@@ -2,6 +2,7 @@
   "type": "bullet",
   "canShootOnGround": true,
   "causesFire": false,
+  "compatibleTurret": "dscombat:heavy_tank_turret",
   "compatibleWeaponPart": "",
   "craftNum": 1,
   "damage": 40.0,

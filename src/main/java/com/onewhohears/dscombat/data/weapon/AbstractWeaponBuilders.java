@@ -65,6 +65,10 @@ public class AbstractWeaponBuilders {
 			return setString("compatibleWeaponPart", compatibleWeaponPart.toString());
 		}
 		
+		public C setCompatibleTurret(ResourceLocation compatibleTurret) {
+			return setString("compatibleTurret", compatibleTurret.toString());
+		}
+		
 		public C setNoCompatible() {
 			return setString("compatibleWeaponPart", "");
 		}

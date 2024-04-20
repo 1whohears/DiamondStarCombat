@@ -2,6 +2,7 @@
   "type": "bullet",
   "canShootOnGround": true,
   "causesFire": false,
+  "compatibleTurret": "dscombat:minigun_turret",
   "compatibleWeaponPart": "dscombat:xm12",
   "craftNum": 64,
   "damage": 6.0,

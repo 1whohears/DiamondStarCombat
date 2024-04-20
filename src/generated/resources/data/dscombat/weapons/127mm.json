@@ -2,6 +2,7 @@
   "type": "bullet",
   "canShootOnGround": true,
   "causesFire": false,
+  "compatibleTurret": "dscombat:mark45_cannon",
   "compatibleWeaponPart": "",
   "craftNum": 1,
   "damage": 50.0,

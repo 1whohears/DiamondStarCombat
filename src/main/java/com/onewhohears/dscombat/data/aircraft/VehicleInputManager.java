@@ -67,6 +67,7 @@ public class VehicleInputManager {
 		this.pitch = other.pitch;
 		this.roll = other.roll;
 		this.yaw = other.yaw;
+		this.bothRoll = other.bothRoll;
 		this.isLandingGear = other.isLandingGear;
 		this.weaponIndex = other.weaponIndex;
 		this.radarModeOrdinal = other.radarModeOrdinal;

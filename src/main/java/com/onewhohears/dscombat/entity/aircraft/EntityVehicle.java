@@ -52,7 +52,6 @@ import com.onewhohears.dscombat.item.VehicleInteractItem;
 import com.onewhohears.dscombat.util.UtilClientPacket;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.UtilMCText;
-import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.UtilParticles;
 import com.onewhohears.dscombat.util.UtilServerPacket;
 import com.onewhohears.dscombat.util.math.UtilAngles;
@@ -1280,11 +1279,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	        --lerpSteps;
 	        setPos(d0, d1, d2);
 		}
-		if (!level.isClientSide) debug("server tick "+UtilParse.prettyQ(getQ(), 2)+" "+tickCount);
 	}
 	
 	private void syncMoveRot() {
-		if (!level.isClientSide || tickCount % 20 != 0 || firstTick) return;
+		if (!level.isClientSide || tickCount % 10 != 0 || firstTick) return;
 		PacketHandler.INSTANCE.sendToServer(new ToServerAircraftMoveRot(this));
 	}
 	
@@ -1893,7 +1891,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
      * @param q set server side quaternion
      */
     public final void setQ(Quaternion q) {
-    	debug("set Q "+UtilParse.prettyQ(q, 2)+" "+tickCount);
         entityData.set(Q, q.copy());
     }
     
@@ -2539,7 +2536,13 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
         setQBySide(q);
     }
     
-    public void setYRotNoQ(float yRot) {
+    @Override
+	public void absMoveTo(double pX, double pY, double pZ, float pYRot, float pXRot) {
+    	absMoveTo(pX, pY, pZ);
+    	// setting rotation here messes up rotation syncing
+	}
+
+	public void setYRotNoQ(float yRot) {
         super.setYRot(yRot);
     }
     

@@ -7,7 +7,6 @@ import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.init.DataSerializers;
-import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
@@ -15,6 +14,12 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkEvent.Context;
 
+/**
+ * this packet synchronizes the vehicle's speed and rotation from the pilot client's perspective with the server.
+ * this is done to the client side doesn't have to worry about server lag-backs causing sudden 
+ * drastic changes in the vehicle's position, speed and/or rotation.
+ * @author 1whohears
+ */
 public class ToServerAircraftMoveRot extends IPacket {
 	
 	public final int id;
@@ -27,7 +32,6 @@ public class ToServerAircraftMoveRot extends IPacket {
 		this.motion = e.getDeltaMovement();
 		this.q = e.getClientQ();
 		this.av = e.clientAV;
-		System.out.println("send q "+UtilParse.prettyQ(q, 2));
 	}
 	
 	public ToServerAircraftMoveRot(FriendlyByteBuf buffer) {
@@ -57,7 +61,6 @@ public class ToServerAircraftMoveRot extends IPacket {
 				plane.setPrevQ(plane.getQ());
 				plane.setQ(q);
 				plane.setAngularVel(av);
-				System.out.println("recieve q "+UtilParse.prettyQ(q, 2));
 			}
 		});
 		ctx.get().setPacketHandled(true);

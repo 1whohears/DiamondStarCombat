@@ -154,17 +154,17 @@ public abstract class WeaponData extends JsonPreset {
 			setLaunchFail("error.dscombat.no_ammo");
 			return null;
 		}
-		EntityWeapon w = getEntity(params.level);
-		if (w == null) return null;
-		w.setOwner(params.owner);
-		w.setPos(params.pos);
-		setDirection(w, params.direction);
 		if (params.vehicle != null) {
 			if (!overrideGroundCheck && !canShootOnGround() && params.vehicle.isOnGround()) {
 				setLaunchFail("error.dscombat.cant_shoot_on_ground");
 				return null;
 			}
 		}
+		EntityWeapon w = getEntity(params.level);
+		if (w == null) return null;
+		w.setOwner(params.owner);
+		w.setPos(params.pos);
+		setDirection(w, params.direction);
 		return w;
 	}
 	

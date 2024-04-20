@@ -38,7 +38,7 @@ public final class ClientInputEvents {
 	
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void clientTickPilotControl(TickEvent.ClientTickEvent event) {
-		if (event.phase != Phase.END) return;
+		if (event.phase != Phase.START) return;
 
 		Minecraft mc = Minecraft.getInstance();
 		final var player = mc.player;
@@ -144,7 +144,7 @@ public final class ClientInputEvents {
 	
 	@SubscribeEvent(priority = EventPriority.HIGH)
 	public static void clientTickPassengerControl(TickEvent.ClientTickEvent event) {
-		if (event.phase != Phase.END) return;
+		if (event.phase != Phase.START) return;
 		Minecraft m = Minecraft.getInstance();
 		if (m.mouseHandler.isLeftPressed()) ++leftTicks;
 		else leftTicks = 0;

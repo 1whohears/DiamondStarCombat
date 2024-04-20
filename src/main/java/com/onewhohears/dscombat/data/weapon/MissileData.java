@@ -126,10 +126,10 @@ public abstract class MissileData extends BulletData {
 		if (params.vehicle != null) {
 			missile.setPos(missile.position().add(params.vehicle.getDeltaMovement()));
 			Vec3 move = params.vehicle.getDeltaMovement();
-			if (params.isTurret) move = move.add(params.direction.scale(1.0));
+			if (params.isTurret) move = move.add(params.direction.scale(0.5));
 			missile.setDeltaMovement(move);
 		} else {
-			missile.setDeltaMovement(params.direction.scale(1.0));
+			missile.setDeltaMovement(params.direction.scale(0.5));
 		}
 		return missile;
 	}

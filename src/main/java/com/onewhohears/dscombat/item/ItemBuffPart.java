@@ -11,7 +11,7 @@ public class ItemBuffPart extends ItemPart {
 	public final BuffType type;
 	
 	public ItemBuffPart(BuffType type, SlotType[] compatibleSlots, float weight) {
-		super(1, weight, compatibleSlots);
+		super(16, weight, compatibleSlots);
 		this.type = type;
 	}
 

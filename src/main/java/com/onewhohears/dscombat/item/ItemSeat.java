@@ -16,7 +16,7 @@ public class ItemSeat extends ItemPart {
 	}
 	
 	public ItemSeat(float weight, SlotType[] compatibleSlots) {
-		super(16, weight, compatibleSlots);
+		super(64, weight, compatibleSlots);
 	}
 
 	@Override

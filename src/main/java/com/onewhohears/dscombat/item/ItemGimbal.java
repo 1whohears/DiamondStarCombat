@@ -10,7 +10,7 @@ public class ItemGimbal extends ItemPart {
 	public final String entityTypeKey;
 	
 	public ItemGimbal(float weight, SlotType[] compatibleSlots, String entityTypeKey) {
-		super(1, weight, compatibleSlots);
+		super(16, weight, compatibleSlots);
 		this.entityTypeKey = entityTypeKey;
 	}
 	

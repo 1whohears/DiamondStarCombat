@@ -20,6 +20,7 @@ import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.item.ItemAircraft;
 import com.onewhohears.dscombat.item.ItemAmmo;
 import com.onewhohears.dscombat.item.ItemBuffPart;
+import com.onewhohears.dscombat.item.ItemChainHook;
 import com.onewhohears.dscombat.item.ItemCreativeWand;
 import com.onewhohears.dscombat.item.ItemEngine;
 import com.onewhohears.dscombat.item.ItemFlareDispenser;
@@ -179,7 +180,7 @@ public class ModItems {
 	
 	// CHAIN HOOK
 	public static final RegistryObject<Item> CHAIN_HOOK = ITEMS.register("chain_hook", 
-			() -> new ItemGimbal(500f, SlotType.EXTERNAL_ALL,
+			() -> new ItemChainHook(500f, SlotType.EXTERNAL_ALL,
 					ModEntities.CHAIN_HOOK.getId().toString()));
 	
 	// STORAGE BOXES
@@ -332,17 +333,17 @@ public class ModItems {
 	public static final RegistryObject<Item> BOMB = ITEMS.register("bomb", 
 			() -> new ItemAmmo(64, "anm57")); 
 	public static final RegistryObject<Item> TRACK_AIR_MISSILE = ITEMS.register("track_air_missile", 
-			() -> new ItemAmmo(8, "aim120b")); 
+			() -> new ItemAmmo(16, "aim120b")); 
 	public static final RegistryObject<Item> TRACK_GROUND_MISSILE = ITEMS.register("track_ground_missile", 
-			() -> new ItemAmmo(8, "agm84e")); 
+			() -> new ItemAmmo(16, "agm84e")); 
 	public static final RegistryObject<Item> IR_MISSILE = ITEMS.register("ir_missile", 
-			() -> new ItemAmmo(8, "aim9p5")); 
+			() -> new ItemAmmo(16, "aim9p5")); 
 	public static final RegistryObject<Item> POS_MISSILE = ITEMS.register("pos_missile", 
-			() -> new ItemAmmo(8, "agm114k")); 
+			() -> new ItemAmmo(16, "agm114k")); 
 	public static final RegistryObject<Item> TORPEDO = ITEMS.register("torpedo", 
-			() -> new ItemAmmo(8, "mk13")); 
+			() -> new ItemAmmo(16, "mk13")); 
 	public static final RegistryObject<Item> ANTIRADAR_MISSILE = ITEMS.register("antiradar_missile", 
-			() -> new ItemAmmo(8, "agm88g")); 
+			() -> new ItemAmmo(16, "agm88g")); 
 	
 	public static final RegistryObject<Item> B_20MM = ITEMS.register("20mm", 
 			() -> new ItemAmmo(64, "20mm")); 
@@ -351,37 +352,37 @@ public class ModItems {
 	public static final RegistryObject<Item> B_120MMHE = ITEMS.register("120mmhe", 
 			() -> new ItemAmmo(16, "120mmhe")); 
 	public static final RegistryObject<Item> AGM65G = ITEMS.register("agm65g", 
-			() -> new ItemAmmo(8, "agm65g")); 
+			() -> new ItemAmmo(16, "agm65g")); 
 	public static final RegistryObject<Item> AGM65L = ITEMS.register("agm65l", 
-			() -> new ItemAmmo(8, "agm65l")); 
+			() -> new ItemAmmo(16, "agm65l")); 
 	public static final RegistryObject<Item> AGM84E = ITEMS.register("agm84e", 
-			() -> new ItemAmmo(8, "agm84e")); 
+			() -> new ItemAmmo(16, "agm84e")); 
 	public static final RegistryObject<Item> AGM114K = ITEMS.register("agm114k", 
 			() -> new ItemAmmo(16, "agm114k")); 
 	public static final RegistryObject<Item> AIM7F = ITEMS.register("aim7f", 
-			() -> new ItemAmmo(4, "aim7f")); 
+			() -> new ItemAmmo(16, "aim7f")); 
 	public static final RegistryObject<Item> AIM7MH = ITEMS.register("aim7mh", 
-			() -> new ItemAmmo(4, "aim7mh")); 
+			() -> new ItemAmmo(16, "aim7mh")); 
 	public static final RegistryObject<Item> AIM9L = ITEMS.register("aim9l", 
-			() -> new ItemAmmo(8, "aim9l")); 
+			() -> new ItemAmmo(16, "aim9l")); 
 	public static final RegistryObject<Item> AIM9P5 = ITEMS.register("aim9p5", 
-			() -> new ItemAmmo(8, "aim9p5")); 
+			() -> new ItemAmmo(16, "aim9p5")); 
 	public static final RegistryObject<Item> AIM9X = ITEMS.register("aim9x", 
-			() -> new ItemAmmo(8, "aim9x")); 
+			() -> new ItemAmmo(16, "aim9x")); 
 	public static final RegistryObject<Item> AIM120B = ITEMS.register("aim120b", 
-			() -> new ItemAmmo(4, "aim120b")); 
+			() -> new ItemAmmo(16, "aim120b")); 
 	public static final RegistryObject<Item> AIM120C = ITEMS.register("aim120c", 
-			() -> new ItemAmmo(4, "aim120c")); 
+			() -> new ItemAmmo(16, "aim120c")); 
 	public static final RegistryObject<Item> TORPEDO1 = ITEMS.register("torpedo1", 
-			() -> new ItemAmmo(4, "mk13")); 
+			() -> new ItemAmmo(16, "mk13")); 
 	public static final RegistryObject<Item> RIFEL1 = ITEMS.register("rifel1", 
-			() -> new ItemAmmo(4, "agm88g")); 
+			() -> new ItemAmmo(16, "agm88g")); 
 	public static final RegistryObject<Item> GRUETZ_BUNKER_BUSTER = ITEMS.register("gruetz_bunker_buster", 
-			() -> new ItemAmmo(1, "gruetz_bunker_buster")); 
+			() -> new ItemAmmo(16, "gruetz_bunker_buster")); 
 	public static final RegistryObject<Item> MK13 = ITEMS.register("mk13", 
-			() -> new ItemAmmo(4, "mk13")); 
+			() -> new ItemAmmo(16, "mk13")); 
 	public static final RegistryObject<Item> AGM88G = ITEMS.register("agm88g", 
-			() -> new ItemAmmo(4, "agm88g")); 
+			() -> new ItemAmmo(16, "agm88g")); 
 	
 	// PLANES
 	public static final RegistryObject<Item> JAVI_PLANE = ITEMS.register("javi_plane", 

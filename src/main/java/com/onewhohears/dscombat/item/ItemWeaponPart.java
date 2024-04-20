@@ -29,7 +29,7 @@ public class ItemWeaponPart extends ItemPart {
 	public final float launchPitch;
 	
 	public ItemWeaponPart(float weight, SlotType[] compatibleSlots, float launchPitch) {
-		super(ItemAmmo.weaponProps(8), weight, compatibleSlots);
+		super(ItemAmmo.weaponProps(16), weight, compatibleSlots);
 		this.launchPitch = launchPitch;
 	}
 	

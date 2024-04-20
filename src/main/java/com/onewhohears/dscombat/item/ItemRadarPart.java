@@ -13,14 +13,14 @@ public class ItemRadarPart extends ItemPart {
 	public final boolean external;
 	
 	public ItemRadarPart(float weight, String preset, SlotType[] compatibleSlots) {
-		super(8, weight, compatibleSlots);
+		super(16, weight, compatibleSlots);
 		this.preset = preset;
 		this.external = false;
 		this.entityTypeKey = "";
 	}
 	
 	public ItemRadarPart(float weight, String preset, SlotType[] compatibleSlots, String externalEntityTypeKey) {
-		super(4, weight, compatibleSlots);
+		super(16, weight, compatibleSlots);
 		this.preset = preset;
 		this.external = true;
 		this.entityTypeKey = externalEntityTypeKey;

@@ -16,7 +16,7 @@ public class ItemFlareDispenser extends ItemPart {
 	public final float heat;
 	
 	public ItemFlareDispenser(float weight, int flares, int max, float heat, int age, SlotType[] compatibleSlots) {
-		super(1, weight, compatibleSlots);
+		super(16, weight, compatibleSlots);
 		this.flares = flares;
 		this.max = max;
 		this.heat = heat;

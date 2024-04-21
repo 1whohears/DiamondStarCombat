@@ -14,10 +14,6 @@
     {
       "item": "dscombat:propeller",
       "num": 1
-    },
-    {
-      "item": "minecraft:light_gray_dye",
-      "num": 3
     }
   ],
   "is_craftable": false,

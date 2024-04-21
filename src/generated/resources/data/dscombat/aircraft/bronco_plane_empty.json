@@ -4,8 +4,12 @@
   "health": 90.0,
   "ingredients": [
     {
-      "item": "dscombat:fuselage",
-      "num": 1
+      "num": 40,
+      "tag": "minecraft:planks"
+    },
+    {
+      "num": 6,
+      "tag": "dscombat:aluminum_ingot"
     },
     {
       "item": "dscombat:wing",
@@ -13,7 +17,11 @@
     },
     {
       "item": "dscombat:cockpit",
-      "num": 2
+      "num": 1
+    },
+    {
+      "item": "dscombat:seat",
+      "num": 1
     },
     {
       "item": "dscombat:wheel",
@@ -22,14 +30,6 @@
     {
       "item": "dscombat:propeller",
       "num": 2
-    },
-    {
-      "item": "minecraft:green_dye",
-      "num": 6
-    },
-    {
-      "num": 4,
-      "tag": "dscombat:aluminum_ingot"
     }
   ],
   "is_craftable": false,

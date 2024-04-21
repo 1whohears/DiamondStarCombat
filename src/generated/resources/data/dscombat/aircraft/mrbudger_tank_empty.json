@@ -18,10 +18,6 @@
     {
       "item": "minecraft:gold_ingot",
       "num": 5
-    },
-    {
-      "item": "minecraft:yellow_dye",
-      "num": 4
     }
   ],
   "is_craftable": false,

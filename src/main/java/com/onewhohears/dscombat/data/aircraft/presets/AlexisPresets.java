@@ -46,7 +46,6 @@ public class AlexisPresets {
 			.addIngredient(ModItems.WING.getId(), 3)
 			.addIngredient(ModItems.ADVANCED_COCKPIT.getId())
 			.addIngredient(ModItems.WHEEL.getId(), 3)
-			.addIngredient("minecraft:light_gray_dye", 5)
 			.addIngredient("minecraft:gold_ingot", 20)
 			.addPilotSeatSlot(0, 0.1, 6.5)
 			.addEmptySlot("left_wing_1", SlotType.WING, 2.3, -0.08, -0.1, 180)

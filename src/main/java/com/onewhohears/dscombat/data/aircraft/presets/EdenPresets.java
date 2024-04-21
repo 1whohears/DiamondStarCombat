@@ -48,7 +48,6 @@ public class EdenPresets {
 			.addIngredient(ModItems.ADVANCED_COCKPIT.getId())
 			.addIngredient(ModItems.SEAT.getId())
 			.addIngredient(ModItems.WHEEL.getId(), 3)
-			.addIngredient("minecraft:light_gray_dye", 6)
 			.addIngredient("minecraft:gold_ingot", 16)
 			.addPilotSeatSlot(0, 0.3, 8.5)
 			.addSeatSlot(PartSlot.COPILOT_SLOT_NAME, 0, 0.4, 6.8)

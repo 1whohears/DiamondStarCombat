@@ -36,7 +36,6 @@ public class TankPresets {
 			.addIngredient(ModItems.TANK_TRACK.getId(), 4)
 			.addIngredientTag("dscombat:aluminum_ingot", 30)
 			.addIngredient("minecraft:gold_ingot", 5)
-			.addIngredient("minecraft:yellow_dye", 4)
 			.addSeatSlot(PartSlot.PILOT_SLOT_NAME, SlotType.HEAVY_TURRET, 0, 1.4, 0)
 			.addSeatSlot("seat1", SlotType.MED_TURRET, 1, 1.4, 2)
 			.addSeatSlot("seat2", SlotType.MED_TURRET, -1, 1.4, 2)

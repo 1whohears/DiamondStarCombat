@@ -46,7 +46,6 @@ public class FelixPresets {
 			.addIngredient(ModItems.WING.getId(), 2)
 			.addIngredient(ModItems.COCKPIT.getId())
 			.addIngredient(ModItems.WHEEL.getId(), 3)
-			.addIngredient("minecraft:light_gray_dye", 5)
 			.addIngredient("minecraft:gold_ingot", 5)
 			.addPilotSeatSlot(0, -0.3, 4.7)
 			.addEmptySlot("left_wing_1", SlotType.WING, 2.4, -0.64, -0.05, 180)

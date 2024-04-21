@@ -27,10 +27,6 @@
       "tag": "minecraft:planks"
     },
     {
-      "item": "minecraft:light_gray_dye",
-      "num": 9
-    },
-    {
       "item": "dscombat:seat",
       "num": 4
     },

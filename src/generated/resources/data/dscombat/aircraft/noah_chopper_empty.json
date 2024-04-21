@@ -24,12 +24,8 @@
       "num": 3
     },
     {
-      "item": "minecraft:green_dye",
-      "num": 4
-    },
-    {
       "item": "minecraft:gold_ingot",
-      "num": 15
+      "num": 8
     }
   ],
   "is_craftable": false,

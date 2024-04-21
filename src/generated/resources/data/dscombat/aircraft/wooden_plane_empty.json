@@ -4,7 +4,7 @@
   "health": 40.0,
   "ingredients": [
     {
-      "num": 30,
+      "num": 20,
       "tag": "minecraft:planks"
     },
     {

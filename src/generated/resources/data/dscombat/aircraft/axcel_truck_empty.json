@@ -12,16 +12,8 @@
       "num": 6
     },
     {
-      "item": "minecraft:yellow_dye",
-      "num": 6
-    },
-    {
       "num": 24,
       "tag": "dscombat:aluminum_ingot"
-    },
-    {
-      "item": "minecraft:gold_ingot",
-      "num": 3
     }
   ],
   "is_craftable": false,

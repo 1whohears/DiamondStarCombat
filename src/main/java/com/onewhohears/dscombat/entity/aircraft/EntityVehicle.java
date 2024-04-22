@@ -1390,15 +1390,17 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 	
 	public InteractionResult onItemInteract(Player player, InteractionHand hand, ItemStack stack) {
-		Item item = stack.getItem();
+		if (stack.is(ModTags.Items.SPRAY_CAN)) return onSprayCanInteract(player, hand, stack);
 		if (!level.isClientSide) {
+			Item item = stack.getItem();
 			// GAS CAN
 			if (stack.is(ModTags.Items.GAS_CAN)) 
 				return onGasCanInteract(player, hand, stack);
 			// OIL BUCKET
 			else if (stack.is(ModTags.Items.FORGE_OIL_BUCKET)) 
 				return onOilBucketInteract(player, hand, stack);
-			if (stack.is(ModTags.Items.VEHICLE_CHAIN)) 
+			// VEHICLE CHAIN
+			else if (stack.is(ModTags.Items.VEHICLE_CHAIN)) 
 				return onChainInteract(player, hand, stack);
 			// INTERACT ITEMS
 			else if (item instanceof VehicleInteractItem vii) 
@@ -1418,10 +1420,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 				}
 				return InteractionResult.PASS;
 			}
-		} else {
-			if (stack.is(ModTags.Items.SPRAY_CAN)) 
-				return onSprayCanInteract(player, hand, stack);
-		}
+		} 
 		return InteractionResult.FAIL;
 	}
 	
@@ -1442,8 +1441,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 	
 	public InteractionResult onSprayCanInteract(Player player, InteractionHand hand, ItemStack stack) {
-		UtilClientPacket.openVehicleTextureScreen(textureManager);
-		return InteractionResult.SUCCESS;
+		if (level.isClientSide) UtilClientPacket.openVehicleTextureScreen(textureManager);
+		return InteractionResult.sidedSuccess(level.isClientSide);
 	}
 	
 	public InteractionResult onChainInteract(Player player, InteractionHand hand, ItemStack stack) {

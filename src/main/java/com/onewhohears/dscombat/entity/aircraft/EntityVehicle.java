@@ -1999,6 +1999,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
      * SERVER SIDE ONLY
      */
     public void becomeItem() {
+    	if (level.isClientSide) return;
     	becomeItem(position());
     }
     
@@ -2009,7 +2010,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     
     @Override
 	public boolean shouldRenderAtSqrDistance(double dist) {
-		return dist < 65536;
+		return dist < 102400;
 	}
     
     public final float getMaxHealth() {

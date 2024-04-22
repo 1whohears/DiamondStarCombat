@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.entity.parts;
 
 import javax.annotation.Nullable;
 
+import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.model.obj.ObjRadarModel.MastType;
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.data.parts.PartSlot;
@@ -32,9 +33,14 @@ public abstract class EntityPart extends Entity {
 	public static final EntityDataAccessor<Float> HEALTH = SynchedEntityData.defineId(EntityPart.class, EntityDataSerializers.FLOAT);
 	
 	private float z_rot;
+	protected double renderSqrDistance = 0;
 	
 	protected EntityPart(EntityType<?> entityType, Level level) {
 		super(entityType, level);
+		if (level.isClientSide && shouldRender()) {
+			double dist = getClientRenderDistance();
+			renderSqrDistance = dist * dist;
+		}
 	}
 
 	@Override
@@ -127,6 +133,15 @@ public abstract class EntityPart extends Entity {
 	}
 	
 	public abstract boolean shouldRender();
+	
+	protected double getClientRenderDistance() {
+		return Config.CLIENT.renderOtherExternalPartDistance.get();
+	}
+	
+	@Override
+	public boolean shouldRenderAtSqrDistance(double dist) {
+		return shouldRender() && dist <= renderSqrDistance;
+	}
 	
 	public float getZRot() {
 		return z_rot;

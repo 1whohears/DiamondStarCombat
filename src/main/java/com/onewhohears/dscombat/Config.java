@@ -26,6 +26,11 @@ public class Config {
 		public final ForgeConfigSpec.DoubleValue cockpitVoiceLineVol;
 		public final ForgeConfigSpec.EnumValue<PassengerSoundPack> passengerSoundPack;
 		public final ForgeConfigSpec.IntValue maxRenderRackMissileNum;
+		public final ForgeConfigSpec.DoubleValue renderWeaponRackDistance;
+		public final ForgeConfigSpec.DoubleValue renderTurretDistance;
+		public final ForgeConfigSpec.DoubleValue renderEngineDistance;
+		public final ForgeConfigSpec.DoubleValue renderRadarDistance;
+		public final ForgeConfigSpec.DoubleValue renderOtherExternalPartDistance;
 		
 		public Client(ForgeConfigSpec.Builder builder) {
 			builder.push("mouse-joystick-settings");
@@ -76,6 +81,18 @@ public class Config {
 			debugMode = builder
 					.comment("Stats for nerds.")
 					.define("debugMode", false);
+			builder.push("entity-render-distance");
+			renderWeaponRackDistance = builder
+					.defineInRange("renderWeaponRackDistance", 256.0, 0, 1000);
+			renderTurretDistance = builder
+					.defineInRange("renderTurretDistance", 256.0, 0, 1000);
+			renderEngineDistance = builder
+					.defineInRange("renderEngineDistance", 256.0, 0, 1000);
+			renderRadarDistance = builder
+					.defineInRange("renderRadarDistance", 256.0, 0, 1000);
+			renderOtherExternalPartDistance = builder
+					.defineInRange("renderOtherExternalPartDistance", 192.0, 0, 1000);
+			builder.pop();
 			builder.pop();
 		}
 		

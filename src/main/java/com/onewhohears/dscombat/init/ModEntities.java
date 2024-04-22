@@ -377,7 +377,7 @@ public class ModEntities {
 	
 	private static <T extends Entity> EntityType<T> createEntityTypeFar(EntityType.EntityFactory<T> factory, EntityDimensions size) {
         return new EntityType<>(factory, MobCategory.MISC, true, true, false, 
-        		true, ImmutableSet.of(), size, 15, 3);
+        		true, ImmutableSet.of(), size, 16, 3);
     }
 	
 }

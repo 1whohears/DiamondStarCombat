@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.entity.parts;
 import javax.annotation.Nullable;
 
 import com.mojang.math.Quaternion;
+import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.data.parts.PartSlot;
@@ -261,8 +262,8 @@ public class EntityTurret extends EntitySeat {
 	}
 	
 	@Override
-	public boolean shouldRenderAtSqrDistance(double dist) {
-		return dist < 65536;
+	protected double getClientRenderDistance() {
+		return Config.CLIENT.renderTurretDistance.get();
 	}
 	
 	public void setAmmo(int ammo) {

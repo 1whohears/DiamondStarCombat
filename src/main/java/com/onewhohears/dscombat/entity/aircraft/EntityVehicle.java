@@ -533,6 +533,9 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			float amount = (float)((my-th)*DSCPhyCons.COLLIDE_DAMAGE_RATE);
 			collideHurt(amount, true);
 		}
+		if (isOperational() && isOnGround() && !isLandingGear() && getXZSpeed() > DSCPhyCons.COLLIDE_SPEED) {
+			collideHurt(1, false);
+		}
 	}
 	
 	@Override

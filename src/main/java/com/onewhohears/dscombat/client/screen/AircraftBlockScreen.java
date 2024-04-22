@@ -18,6 +18,7 @@ import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
 import com.onewhohears.dscombat.util.UtilItem;
 import com.onewhohears.dscombat.util.UtilMCText;
 
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ImageButton;
@@ -28,7 +29,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
@@ -93,9 +93,9 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockCo
 		modelViewStack.scale(scale, scale, scale);
 		float blitOffset = 100 + minecraft.getItemRenderer().blitOffset + 50;
 		modelViewStack.translate((posX+8)*scaleInv, 0, blitOffset);
-		long time = minecraft.level.getGameTime();
-		float spinRate = 3f;
-		modelViewStack.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(partialTicks, (time-1)*spinRate, time*spinRate)));
+		long time = Util.getMillis();
+		float spinRate = 0.1f;
+		modelViewStack.mulPose(Vector3f.YP.rotationDegrees(time * spinRate));
 		modelViewStack.translate(-(posX+8)*scaleInv, 0, -blitOffset);
 		modelViewStack.translate((posX+8f)*(scaleInv-1f), (posY+8f)*(scaleInv-1f), 0);
 		minecraft.getItemRenderer().renderAndDecorateItem(stack, posX, posY);
@@ -132,7 +132,7 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockCo
 		if (ap == null) return;
 		Component name = ap.getDisplayNameComponent();
 		int nameWidth = font.width(name);
-		font.draw(stack, name, leftPos+(imageWidth-nameWidth)/2-36, titleLabelY, 0x000000);
+		font.draw(stack, name, titleLabelX-nameWidth/2+54, titleLabelY, 0x000000);
 		CompoundTag data = ap.getDataAsNBT().getCompound("stats");
 		float scale = 1f;
 		stack.scale(scale, scale, scale);

@@ -23,4 +23,6 @@ public class DSCPhyCons {
 	
 	public static final float VEL_SOUND = 10f;
 	
+	public static final int EJECT_SAFETY_COOLDOWN = 100;
+	
 }

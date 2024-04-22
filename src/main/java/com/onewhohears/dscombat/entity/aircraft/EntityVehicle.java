@@ -1,8 +1,10 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 
@@ -133,6 +135,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	protected final RotableHitbox[] hitboxes;
 	protected final Set<Integer> hitboxCollidedIds = new HashSet<>();
 	protected final EntityScreenData[] screens;
+	
+	private final Map<Integer, Integer> formerPassengersServer = new HashMap<>();
 	
 	/**
 	 * this vehicle's original preset. 
@@ -503,6 +507,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			knockBack(level.getEntities(this, 
 					getBoundingBox(), 
 					getKnockbackPredicate()));
+			tickDismountSafety();
 			if (!hasControllingPassenger()) wallCollisions();
 		} else {
 			if (isControlledByLocalInstance()) wallCollisions();
@@ -565,8 +570,21 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			if (entity.isSpectator()) return false;
 			if (!(entity instanceof LivingEntity)) return false;
 			if (entity instanceof Player p && p.isCreative()) return false;
-			return true;
+			if (isFormerPassenger(entity)) return false;
+ 			return true;
 		});
+	}
+	
+	private void tickDismountSafety() {
+		formerPassengersServer.forEach((id, time) -> { if (time > 0) --time; });
+	}
+	
+	public boolean isFormerPassenger(Entity passenger) {
+		return formerPassengersServer.containsKey(passenger.getId()) && formerPassengersServer.get(passenger.getId()) > 0;
+	}
+	
+	public void onSeatDismount(Entity entity) {
+		if (!level.isClientSide) formerPassengersServer.put(entity.getId(), DSCPhyCons.EJECT_SAFETY_COOLDOWN);
 	}
 	
 	protected void knockBack(List<Entity> entities) {

@@ -13,8 +13,8 @@ public class LiftKGraph {
 	private static final float[] JAVI_PLANE_LIFT  = {  0,-0.18f,-0.36f,-0.47f,-0.55f,-0.58f,-0.53f,-0.43f,-0.32f,-0.2f,-0.05f,0.1f,0.25f,0.4f,0.5f,0.68f,0.79f,0.9f,1.01f,1.12f,1.2f,1.28f,1.3f,1.28f,1.15f,0.7f,0};
 	public static final LiftKGraph JAVI_PLANE_GRAPH = new LiftKGraph("javi_plane", JAVI_PLANE_DEGRESS, JAVI_PLANE_LIFT);
 	
-	private static final int[] WOODEN_PLANE_DEGRESS = {-20,   -18,   -17,   -16,   -15,   -14,   -13,   -12,   -10,    -8,   -6,    -4,    -2,0,    2,    4,    6,    8,   10,   12,   13,   14,   15,   16,   17,   18,20};
-	private static final float[] WOODEN_PLANE_LIFT  = {  0,-0.78f,-1.04f,-1.15f,-1.20f,-1.18f,-1.15f,-1.11f,-0.99f,-0.84f,0.69f,-0.48f,-0.25f,0,0.25f,0.48f,0.69f,0.84f,0.99f,1.11f,1.15f,1.18f,1.20f,1.15f,1.04f,0.78f, 0};
+	private static final int[] WOODEN_PLANE_DEGRESS = {-20,   -18,   -17,   -16,   -15,   -14,   -13,   -12,   -10,    -8,    -6,    -4,    -2,0,    2,    4,    6,    8,   10,   12,   13,   14,   15,   16,   17,   18,20};
+	private static final float[] WOODEN_PLANE_LIFT  = {  0,-0.78f,-1.04f,-1.15f,-1.20f,-1.18f,-1.15f,-1.11f,-0.99f,-0.84f,-0.69f,-0.48f,-0.25f,0,0.25f,0.48f,0.69f,0.84f,0.99f,1.11f,1.15f,1.18f,1.20f,1.15f,1.04f,0.78f, 0};
 	public static final LiftKGraph WOODEN_PLANE_GRAPH = new LiftKGraph("wooden_plane", WOODEN_PLANE_DEGRESS, WOODEN_PLANE_LIFT);
 	
 	private static final int[] E3SENTRY_PLANE_DEGRESS = {-26,   -24,   -22,   -20,   -18,   -16,   -14,   -12,   -10,   -8,    -6,  -4,  -2,   0,    2,    4,    6,    8,   10,   12,   14,   16,  18,   20,   22,   24,26};

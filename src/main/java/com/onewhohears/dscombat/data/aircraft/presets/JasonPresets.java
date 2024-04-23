@@ -26,7 +26,7 @@ public class JasonPresets {
 			.setMaxTurnRates(5f, 3f, 2f)
 			.setTurnTorques(2f, 2f, 3f)
 			.setThrottleRate(0.04f, 0.07f)
-			.setPlaneWingArea(15f)
+			.setPlaneWingArea(12f)
 			.setBasicEngineSounds(ModSounds.BIPLANE_1, ModSounds.BIPLANE_1)
 			.setRotationalInertia(5, 9, 3)
 			.setCrashExplosionRadius(3)

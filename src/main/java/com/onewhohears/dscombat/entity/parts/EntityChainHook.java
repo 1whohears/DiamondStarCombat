@@ -6,6 +6,8 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
+import com.onewhohears.dscombat.common.network.PacketHandler;
+import com.onewhohears.dscombat.common.network.toserver.ToServerGetHookChains;
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.init.ModTags;
@@ -15,6 +17,7 @@ import com.onewhohears.dscombat.util.math.UtilAngles;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -65,10 +68,27 @@ public class EntityChainHook extends EntityPart {
 	
 	@Override
 	public void tick() {
+		if (firstTick && level.isClientSide) requestChainsFromServer();
 		super.tick();
 		for (int i = 0; i < chains.size(); ++i) {
-			chains.get(i).tick();
-			if (!level.isClientSide && chains.get(i).isDisconnected()) disconnectChain(i--);
+			ChainConnection chain = chains.get(i);
+			chain.tick();
+			if (!level.isClientSide && chain.isDisconnected()) 
+				disconnectChain(i--);
+		}
+	}
+	
+	private void requestChainsFromServer() {
+		if (!level.isClientSide) return;
+		PacketHandler.INSTANCE.sendToServer(new ToServerGetHookChains(this));
+	}
+	
+	public void sendAllVehicleChainsToClient(ServerPlayer reciever) {
+		if (level.isClientSide) return;
+		for (ChainConnection chain : chains) {
+			if (chain.isVehicleConnection()) {
+				UtilServerPacket.sendChainAddVehicleTo(chain.getVehicle(), this, reciever);
+			}
 		}
 	}
 	
@@ -109,7 +129,14 @@ public class EntityChainHook extends EntityPart {
 		if (vehicle.equals(getParentVehicle())) return false;
 		boolean foundConnection = false;
 		if (player == null) {
-			chains.add(new ChainConnection(this, null, vehicle));
+			boolean alreadyConnected = false;
+			for (ChainConnection chain : chains) {
+				if (chain.isVehicleConnection() && chain.getVehicle().equals(vehicle)) {
+					alreadyConnected = true;
+					break;
+				}
+			}
+			if (!alreadyConnected) chains.add(new ChainConnection(this, null, vehicle));
 		} else {
 			for (ChainConnection chain : chains) {
 				if (chain.attachVehicle(player, vehicle)) {
@@ -181,18 +208,23 @@ public class EntityChainHook extends EntityPart {
 		private Player player;
 		private EntityVehicle vehicle;
 		private UUID vehicleUUID;
-		private boolean sentToClient = false;
+		private int vehicleId = -1;
 		private ChainConnection(EntityChainHook hook, @Nullable Player player, @Nullable EntityVehicle vehicle) {
 			this.hook = hook;
 			this.player = player;
 			this.vehicle = vehicle;
-			if (vehicle != null) vehicleUUID = vehicle.getUUID();
-			sentToClient = true;
+			if (vehicle != null) {
+				vehicleUUID = vehicle.getUUID();
+				vehicleId = vehicle.getId();
+			}
 		}
 		private ChainConnection(EntityChainHook hook, UUID vehicleUUID) {
 			this.hook = hook;
 			this.vehicleUUID = vehicleUUID;
-			sentToClient = false;
+		}
+		private ChainConnection(EntityChainHook hook, int vehicleId) {
+			this.hook = hook;
+			this.vehicleId = vehicleId;
 		}
 		@Nullable
 		private CompoundTag toNBT() {
@@ -232,20 +264,10 @@ public class EntityChainHook extends EntityPart {
 			return diff * fraction;
 		}
 		public void tick() {
-			if (!isSentToClient() && !hook.level.isClientSide) sendToClient();
 			if (isVehicleConnection()) {
 				tickPhysics();
 				return;
 			}
-		}
-		private void sendToClient() {
-			sentToClient = true;
-			if (!isVehicleConnection()) return;
-			vehicle.chainToHook(hook);
-			UtilServerPacket.sendChainAddVehicle(getVehicle(), hook, null);
-		}
-		public boolean isSentToClient() {
-			return sentToClient;
 		}
 		private void onDisconnect() {
 			if (getVehicle() != null) {
@@ -265,6 +287,7 @@ public class EntityChainHook extends EntityPart {
 		public boolean attachVehicle(Player player, EntityVehicle vehicle) {
 			if (!canAttachVehicle(player, vehicle)) return false;
 			this.player = null;
+			this.vehicleId = vehicle.getId();
 			this.vehicleUUID = vehicle.getUUID();
 			this.vehicle = vehicle;
 			this.vehicle.chainToHook(hook);
@@ -273,6 +296,7 @@ public class EntityChainHook extends EntityPart {
 		public void resetVehicle() {
 			vehicle = null;
 			vehicleUUID = null;
+			vehicleId = -1;
 		}
 		public boolean canAttachVehicle(Player player, EntityVehicle vehicle) {
 			return isPlayerConnected(player) && vehicle.getChainHolderHook() == null;
@@ -286,13 +310,25 @@ public class EntityChainHook extends EntityPart {
 		}
 		@Nullable
 		public EntityVehicle getVehicle() {
-			if (vehicle == null && vehicleUUID != null && !hook.level.isClientSide) {
-				Entity entity = ((ServerLevel)hook.level).getEntity(vehicleUUID);
-				if (!(entity instanceof EntityVehicle v)) {
-					resetVehicle();
-					return null;
+			if (vehicle == null) {
+				if (vehicleUUID != null && !hook.level.isClientSide) {
+					Entity entity = ((ServerLevel)hook.level).getEntity(vehicleUUID);
+					if (!(entity instanceof EntityVehicle v)) {
+						resetVehicle();
+						return null;
+					}
+					vehicle = v;
+					vehicleId = vehicle.getId();
+					vehicle.chainToHook(hook);
+				} else if (vehicleId != -1 && hook.level.isClientSide) {
+					Entity entity = hook.level.getEntity(vehicleId);
+					if (!(entity instanceof EntityVehicle v)) {
+						resetVehicle();
+						return null;
+					}
+					vehicle = v;
+					vehicle.chainToHook(hook);
 				}
-				vehicle = v;
 			}
 			return vehicle;
 		}
@@ -317,6 +353,10 @@ public class EntityChainHook extends EntityPart {
 		}
 		public boolean isPlayerTooFar() {
 			return isPlayerConnection() && hook.distanceTo(player) > CHAIN_LENGTH;
+		}
+		@Nullable
+		public UUID getVehicleUUID() {
+			return vehicleUUID;
 		}
 	}
 	

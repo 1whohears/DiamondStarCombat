@@ -8,6 +8,7 @@ import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntityChainHook;
 import com.onewhohears.dscombat.entity.parts.EntityChainHook.ChainUpdateType;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.PacketDistributor;
@@ -39,6 +40,12 @@ public class UtilServerPacket {
 		if (entity == null) return;
 		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), 
 				new ToClientVehicleChainUpdate(vehicle, hook, player, type));
+	}
+	
+	public static void sendChainAddVehicleTo(EntityVehicle vehicle, EntityChainHook hook, ServerPlayer reciever) {
+		if (vehicle == null || hook == null || reciever == null) return;
+		PacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> reciever), 
+				new ToClientVehicleChainUpdate(vehicle, hook, null, ChainUpdateType.CHAIN_ADD_VEHICLE));
 	}
 	
 }

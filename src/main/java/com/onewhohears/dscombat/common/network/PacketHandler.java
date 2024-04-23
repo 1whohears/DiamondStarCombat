@@ -24,6 +24,7 @@ import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftToItem;
 import com.onewhohears.dscombat.common.network.toserver.ToServerCraftPlane;
 import com.onewhohears.dscombat.common.network.toserver.ToServerCraftWeapon;
 import com.onewhohears.dscombat.common.network.toserver.ToServerDismount;
+import com.onewhohears.dscombat.common.network.toserver.ToServerGetHookChains;
 import com.onewhohears.dscombat.common.network.toserver.ToServerOpenStorage;
 import com.onewhohears.dscombat.common.network.toserver.ToServerPingSelect;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSeatPos;
@@ -198,6 +199,11 @@ public final class PacketHandler {
 			.encoder(ToClientVehicleChainUpdate::encode)
 			.decoder(ToClientVehicleChainUpdate::new)
 			.consumerMainThread(ToClientVehicleChainUpdate::handle)
+			.add();
+		net.messageBuilder(ToServerGetHookChains.class, index++, NetworkDirection.PLAY_TO_SERVER)
+			.encoder(ToServerGetHookChains::encode)
+			.decoder(ToServerGetHookChains::new)
+			.consumerMainThread(ToServerGetHookChains::handle)
 			.add();
 	}
 	

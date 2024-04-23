@@ -25,62 +25,6 @@ import net.minecraft.world.phys.Vec3;
 
 public class RadarData extends JsonPreset {
 	
-	public static class Builder extends PresetBuilder<Builder> {
-
-		public Builder(String namespace, String name, JsonPresetFactory<? extends RadarData> sup) {
-			super(namespace, name, sup);
-		}
-		
-		public static Builder create(String namespace, String name) {
-			return new Builder(namespace, name, (key, json) -> new RadarData(key, json));
-		}
-		
-		public Builder setRange(float range) {
-			return setFloat("range", range);
-		}
-		
-		public Builder setSensitivity(float sensitivity) {
-			return setFloat("sensitivity", sensitivity);
-		}
-		
-		public Builder setFieldOfView(float fov) {
-			return setFloat("fov", fov);
-		}
-		
-		public Builder setScanRate(int scanRate) {
-			return setInt("scanRate", scanRate);
-		}
-		
-		public Builder setScanAircraft(boolean scanAircraft) {
-			return setBoolean("scanAircraft", scanAircraft);
-		}
-		
-		public Builder setScanPlayers(boolean scanPlayers) {
-			return setBoolean("scanPlayers", scanPlayers);
-		}
-		
-		public Builder setScanMobs(boolean scanMobs) {
-			return setBoolean("scanMobs", scanMobs);
-		}
-		
-		public Builder setScanGround(boolean scanGround) {
-			return setBoolean("scanGround", scanGround);
-		}
-		
-		public Builder setScanAir(boolean scanAir) {
-			return setBoolean("scanAir", scanAir);
-		}
-		
-		public Builder setThroWaterRange(float throWaterRange) {
-			return setFloat("throWaterRange", throWaterRange);
-		}
-		
-		public Builder setThroGroundRange(float throGroundRange) {
-			return setFloat("throGroundRange", throGroundRange);
-		}
-		
-	}
-	
 	private final double range;
 	private final double sensitivity;
 	private final double fov;
@@ -177,7 +121,7 @@ public class RadarData extends JsonPreset {
 			if (e instanceof EntityVehicle vehicle) ev = vehicle;
 			if (ev == null && (playersOnly || isPlayersOrBots) && !(e.getControllingPassenger() instanceof Player)) 
 				continue;
-			else if (ev != null && playersOnly && ev.isPlayerRiding()) 
+			else if (ev != null && playersOnly && !ev.isPlayerRiding()) 
 				continue;
 			else if (ev != null && isPlayersOrBots && !ev.isPlayerOrBotRiding()) 
 				continue;
@@ -327,7 +271,6 @@ public class RadarData extends JsonPreset {
 	}
 
 	public static class RadarPing {
-		
 		public final int id;
 		public final Vec3 pos;
 		public final boolean isFriendly;
@@ -335,7 +278,6 @@ public class RadarData extends JsonPreset {
 		public final PingEntityType entityType;
 		private boolean isShared;
 		private Vec3 clientPos;
-		
 		public RadarPing(Entity ping, boolean isFriendly, PingEntityType entityType) {
 			id = ping.getId();
 			pos = ping.getBoundingBox().getCenter();
@@ -344,7 +286,6 @@ public class RadarData extends JsonPreset {
 			this.terrainType = PingTerrainType.getByEntity(ping);
 			this.entityType = entityType;
 		}
-		
 		private RadarPing(int id, Vec3 pos, boolean isFriendly, boolean isShared, PingTerrainType terrainType, PingEntityType entityType) {
 			this.id = id;
 			this.pos = pos;
@@ -353,7 +294,6 @@ public class RadarData extends JsonPreset {
 			this.terrainType = terrainType;
 			this.entityType = entityType;
 		}
-		
 		public RadarPing(FriendlyByteBuf buffer) {
 			id = buffer.readInt();
 			pos = DataSerializers.VEC3.read(buffer);
@@ -362,7 +302,6 @@ public class RadarData extends JsonPreset {
 			terrainType = PingTerrainType.getById(buffer.readByte());
 			entityType = PingEntityType.getById(buffer.readByte());
 		}
-		
 		public void write(FriendlyByteBuf buffer) {
 			buffer.writeInt(id);
 			DataSerializers.VEC3.write(buffer, pos);
@@ -371,20 +310,16 @@ public class RadarData extends JsonPreset {
 			buffer.writeByte(terrainType.id);
 			buffer.writeByte(entityType.id);
 		}
-		
 		public boolean isShared() {
 			return this.isShared;
 		}
-		
 		public RadarPing getCopy(boolean isShared) {
 			return new RadarPing(id, pos, isFriendly, isShared, terrainType, entityType);
 		}
-		
 		public Vec3 getPosForClient() {
 			if (clientPos != null) return clientPos;
 			return pos;
 		}
-		
 		public void setClientPos(Level level) {
 			Entity e = level.getEntity(id);
 			if (e == null) {
@@ -393,18 +328,15 @@ public class RadarData extends JsonPreset {
 			}
 			clientPos = e.getBoundingBox().getCenter();
 		}
-		
 		@Override
 		public String toString() {
 			return "PING["+(int)pos.x+","+(int)pos.y+","+(int)pos.z+"]";
 		}
-		
 		@Override
 		public boolean equals(Object o) {
 			if (o instanceof RadarPing ping && ping.id == this.id) return true;
 			return false;
 		}
-		
 	}
 	
 	public static enum PingTerrainType {
@@ -529,6 +461,48 @@ public class RadarData extends JsonPreset {
 		if (slotId == null) return false;
 		if (id == null) return false;
 		return getId().equals(id) && slotId.equals(slotId);
+	}
+	
+	public static class Builder extends PresetBuilder<Builder> {
+		public Builder(String namespace, String name, JsonPresetFactory<? extends RadarData> sup) {
+			super(namespace, name, sup);
+		}
+		public static Builder create(String namespace, String name) {
+			return new Builder(namespace, name, (key, json) -> new RadarData(key, json));
+		}
+		public Builder setRange(float range) {
+			return setFloat("range", range);
+		}
+		public Builder setSensitivity(float sensitivity) {
+			return setFloat("sensitivity", sensitivity);
+		}
+		public Builder setFieldOfView(float fov) {
+			return setFloat("fov", fov);
+		}
+		public Builder setScanRate(int scanRate) {
+			return setInt("scanRate", scanRate);
+		}
+		public Builder setScanAircraft(boolean scanAircraft) {
+			return setBoolean("scanAircraft", scanAircraft);
+		}
+		public Builder setScanPlayers(boolean scanPlayers) {
+			return setBoolean("scanPlayers", scanPlayers);
+		}
+		public Builder setScanMobs(boolean scanMobs) {
+			return setBoolean("scanMobs", scanMobs);
+		}
+		public Builder setScanGround(boolean scanGround) {
+			return setBoolean("scanGround", scanGround);
+		}
+		public Builder setScanAir(boolean scanAir) {
+			return setBoolean("scanAir", scanAir);
+		}
+		public Builder setThroWaterRange(float throWaterRange) {
+			return setFloat("throWaterRange", throWaterRange);
+		}
+		public Builder setThroGroundRange(float throGroundRange) {
+			return setFloat("throGroundRange", throGroundRange);
+		}
 	}
 	
 }

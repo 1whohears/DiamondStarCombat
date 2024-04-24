@@ -301,7 +301,7 @@ public abstract class WeaponData extends JsonPreset {
 	public abstract double getMobTurretRange();
 	
 	public boolean couldRadarWeaponTargetEntity(Entity entity, Entity radar) {
-		return entity.isAttackable() && !entity.isSpectator() && !entity.isRemoved() && radar.isAlliedTo(entity) 
+		return entity.isAttackable() && !entity.isSpectator() && !entity.isRemoved() && !radar.isAlliedTo(entity) 
 				&& radar.distanceTo(entity) <= getMobTurretRange();
 	}
 

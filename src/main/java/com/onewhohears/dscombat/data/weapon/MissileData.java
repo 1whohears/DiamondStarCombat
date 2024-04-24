@@ -136,7 +136,7 @@ public abstract class MissileData extends BulletData {
 	
 	@Override
 	public double getMobTurretRange() {
-		return Math.max(1500, getSpeed() * getMaxAge());
+		return Math.min(2000, getSpeed() * getMaxAge() * 0.9);
 	}
 	
 	@Override

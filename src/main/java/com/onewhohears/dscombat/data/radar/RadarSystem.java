@@ -85,27 +85,7 @@ public class RadarSystem {
 		// PLANE RADARS
 		for (RadarData r : radars) r.tickUpdateTargets(parent, targets);
 		// DATA LINK
-		if (parent.tickCount % 20 == 0) {
-			clearDataLink();
-			if (hasDataLink()) {
-				Entity controller = parent.getControllingPassenger();
-				if (!(controller instanceof Player player)) return;
-				List<? extends Player> players = parent.level.players();
-				for (Player p : players) {
-					if (player.equals(p)) continue;
-					if (!player.isAlliedTo(p)) continue;
-					if (!(p.getRootVehicle() instanceof EntityVehicle plane)) continue;
-					if (!plane.radarSystem.hasDataLink()) continue;
-					if (plane.equals(parent)) continue;
-					for (RadarPing rp : plane.radarSystem.targets) {
-						if (rp.id == parent.getId()) continue;
-						if (rp.isShared()) continue;
-						if (hasTarget(rp.id)) continue;
-						targets.add(rp.getCopy(true));
-					}
-				} 
-			}
-		}
+		if (parent.tickCount % 20 == 0) updateDataLink();
 		// PICK PREVIOUS TARGET
 		if (old != null) for (int i = 0; i < targets.size(); ++i) 
 			if (targets.get(i).id == old.id) {
@@ -120,6 +100,27 @@ public class RadarSystem {
 		// PACKET
 		if (parent.tickCount % 20 == 0) parent.toClientPassengers(
 				new ToClientRadarPings(parent.getId(), targets));
+	}
+	
+	protected void updateDataLink() {
+		clearDataLink();
+		if (!hasDataLink()) return;
+		Entity controller = parent.getControllingPlayerOrBot();
+		if (controller == null) return;
+		List<? extends Player> players = parent.level.players();
+		for (Player p : players) {
+			if (controller.equals(p)) continue;
+			if (!controller.isAlliedTo(p)) continue;
+			if (!(p.getRootVehicle() instanceof EntityVehicle plane)) continue;
+			if (!plane.radarSystem.hasDataLink()) continue;
+			if (plane.equals(parent)) continue;
+			for (RadarPing rp : plane.radarSystem.targets) {
+				if (rp.id == parent.getId()) continue;
+				if (rp.isShared()) continue;
+				if (hasTarget(rp.id)) continue;
+				targets.add(rp.getCopy(true));
+			}
+		} 
 	}
 	
 	public int getClientPingIndexByEntityId(int id) {

@@ -136,7 +136,7 @@ public class BulletData extends WeaponData {
 	
 	@Override
 	public double getMobTurretRange() {
-		return Math.max(300, getSpeed() * getMaxAge());
+		return Math.min(300, getSpeed() * getMaxAge());
 	}
 
 	@Override

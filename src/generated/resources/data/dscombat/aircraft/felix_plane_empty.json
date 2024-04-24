@@ -21,16 +21,12 @@
       "num": 2
     },
     {
-      "item": "dscombat:cockpit",
+      "item": "dscombat:advanced_cockpit",
       "num": 1
     },
     {
       "item": "dscombat:wheel",
       "num": 3
-    },
-    {
-      "item": "minecraft:gold_ingot",
-      "num": 5
     }
   ],
   "is_craftable": false,

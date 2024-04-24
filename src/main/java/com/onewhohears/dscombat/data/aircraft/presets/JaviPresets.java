@@ -44,7 +44,7 @@ public class JaviPresets {
 			.setDefultPassengerSoundPack(PassengerSoundPack.ENG_NON_BINARY_GOOBER)
 			.addIngredient(ModItems.FUSELAGE.getId(), 1)
 			.addIngredient(ModItems.LARGE_WING.getId(), 2)
-			.addIngredient(ModItems.COCKPIT.getId(), 1)
+			.addIngredient(ModItems.ADVANCED_COCKPIT.getId(), 1)
 			.addIngredient(ModItems.WHEEL.getId(), 3)
 			.addIngredient("minecraft:gold_ingot", 10)
 			.addPilotSeatSlot(0, 0.5, 6.34375)

@@ -52,6 +52,8 @@ public class RadarSystem {
 	public int clientPingRefreshTime = 0;
 	public int clientRwrRefreshTime = 0;
 	
+	private List<RadarPing> dataLinkBuffer = new ArrayList<RadarPing>();
+	
 	private Map<Integer, RWRWarning> rwrWarnings = new HashMap<>();
 	private boolean rwrMissile, rwrRadar;
 	
@@ -95,31 +97,31 @@ public class RadarSystem {
 				}
 				break;
 			}
-		// ROCKETS
-		updateRockets();
+		// SEMI ACTIVE TRACK ROCKETS
+		updateSemiActiveTrackMissiles();
 		// PACKET
 		if (parent.tickCount % 20 == 0) parent.toClientPassengers(
 				new ToClientRadarPings(parent.getId(), targets));
 	}
 	
 	protected void updateDataLink() {
-		clearDataLink();
+		refreshDataLink();
 		if (!hasDataLink()) return;
-		// FIXME 6 allow mob ai controlled radars to datalink radar info to players on the same team
-		Entity controller = parent.getControllingPassenger();
+		Entity controller = parent.getControllingPlayerOrBot();
 		if (controller == null) return;
 		List<? extends Player> players = parent.level.players();
 		for (Player p : players) {
 			if (controller.equals(p)) continue;
 			if (!controller.isAlliedTo(p)) continue;
+			if (!controller.level.dimension().equals(p.level.dimension())) continue;
 			if (!(p.getRootVehicle() instanceof EntityVehicle plane)) continue;
 			if (!plane.radarSystem.hasDataLink()) continue;
 			if (plane.equals(parent)) continue;
-			for (RadarPing rp : plane.radarSystem.targets) {
-				if (rp.id == parent.getId()) continue;
+			for (RadarPing rp : targets) {
+				if (rp.id == plane.getId()) continue;
 				if (rp.isShared()) continue;
-				if (hasTarget(rp.id)) continue;
-				targets.add(rp.getCopy(true));
+				if (plane.radarSystem.hasDataLinkBuffer(rp.id)) continue;
+				plane.radarSystem.dataLinkBuffer.add(rp.getCopy(true));
 			}
 		} 
 	}
@@ -143,13 +145,20 @@ public class RadarSystem {
 		return false;
 	}
 	
-	private void clearDataLink() {
+	private boolean hasDataLinkBuffer(int id) {
+		for (RadarPing rp : dataLinkBuffer) if (rp.id == id) return true;
+		return false;
+	}
+	
+	private void refreshDataLink() {
 		for (int i = 0; i < targets.size(); ++i) 
 			if (targets.get(i).isShared()) 
 				targets.remove(i--);
+		targets.addAll(dataLinkBuffer);
+		dataLinkBuffer.clear();
 	}
 	
-	private void updateRockets() {
+	private void updateSemiActiveTrackMissiles() {
 		for (int i = 0; i < rockets.size(); ++i) {
 			EntityMissile r = rockets.get(i);
 			if (r.isRemoved()) {

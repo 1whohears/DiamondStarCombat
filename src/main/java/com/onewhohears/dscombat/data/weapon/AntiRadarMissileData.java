@@ -12,6 +12,8 @@ import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 
 public class AntiRadarMissileData extends MissileData {
@@ -50,11 +52,9 @@ public class AntiRadarMissileData extends MissileData {
 	}
 	
 	@Override
-	public List<ComponentColor> getInfoComponents() {
-		List<ComponentColor> list = super.getInfoComponents();
-		list.add(2, new ComponentColor(UtilMCText.literal("TARGETS GROUNDED"), 0xaaaa00));
-		list.add(3, new ComponentColor(UtilMCText.literal("ANTI-RADAR GUIDED"), 0xaaaa00));
-		return list;
+	public void addToolTips(List<Component> tips, boolean advanced) {
+		super.addToolTips(tips, advanced);
+		tips.add(UtilMCText.literal("TARGETS GROUNDED").setStyle(Style.EMPTY.withColor(SPECIAL_COLOR)));
 	}
 	
 	@Override

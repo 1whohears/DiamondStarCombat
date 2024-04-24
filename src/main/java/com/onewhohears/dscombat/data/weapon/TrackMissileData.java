@@ -15,6 +15,8 @@ import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 
@@ -115,23 +117,23 @@ public class TrackMissileData extends MissileData {
 	}
 	
 	@Override
-	public List<ComponentColor> getInfoComponents() {
-		List<ComponentColor> list = super.getInfoComponents();
+	public void addToolTips(List<Component> tips, boolean advanced) {
+		super.addToolTips(tips, advanced);
 		switch(getTargetType()) {
 		case AIR:
-			list.add(2, new ComponentColor(UtilMCText.literal("TARGETS FLYING"), 0xaaaa00));
+			tips.add(UtilMCText.literal("TARGETS FLYING").setStyle(Style.EMPTY.withColor(SPECIAL_COLOR)));
 			break;
 		case GROUND:
-			list.add(2, new ComponentColor(UtilMCText.literal("TARGETS GROUNDED"), 0xaaaa00));
+			tips.add(UtilMCText.literal("TARGETS GROUNDED").setStyle(Style.EMPTY.withColor(SPECIAL_COLOR)));
 			break;
 		case WATER:
-			list.add(2, new ComponentColor(UtilMCText.literal("TARGETS IN WATER"), 0xaaaa00));
+			tips.add(UtilMCText.literal("TARGETS IN WATER").setStyle(Style.EMPTY.withColor(SPECIAL_COLOR)));
 			break;
 		}
-		list.add(3, new ComponentColor(UtilMCText.literal("SELF GUIDED"), 0xaaaa00));
-		if (active) list.add(4, new ComponentColor(UtilMCText.literal("ACTIVE TRACK"), 0xaaaa00));
-		else list.add(4, new ComponentColor(UtilMCText.literal("SEMI ACTIVE"), 0xaaaa00));
-		return list;
+		if (advanced) {
+			if (active) tips.add(UtilMCText.literal("ACTIVE TRACK").setStyle(Style.EMPTY.withColor(SPECIAL_COLOR)));
+			else tips.add(UtilMCText.literal("SEMI ACTIVE").setStyle(Style.EMPTY.withColor(SPECIAL_COLOR)));
+		}
 	}
 	
 	@Override

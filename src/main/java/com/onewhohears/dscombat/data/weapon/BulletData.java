@@ -147,29 +147,16 @@ public class BulletData extends WeaponData {
 	@Override
 	public void addToolTips(List<Component> tips, boolean advanced) {
 		super.addToolTips(tips, advanced);
-		tips.add(UtilMCText.literal("Damage: ").append(getDamage()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
-		if (advanced) tips.add(UtilMCText.literal("Max Speed: ").append(getSpeed()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		tips.add(UtilMCText.literal("Damage: ").append(getDamage()+"").setStyle(Style.EMPTY.withColor(INFO_COLOR)));
+		if (advanced) tips.add(UtilMCText.literal("Max Speed: ").append(getSpeed()+"").setStyle(Style.EMPTY.withColor(INFO_COLOR)));
 		if (isExplosive()) {
 			tips.add(UtilMCText.literal("Explosion Radius: ")
-				.append(getExplosionRadius()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+				.append(getExplosionRadius()+"").setStyle(Style.EMPTY.withColor(0xAA0000)));
 			if (advanced) tips.add(UtilMCText.literal("Explosions: ")
-				.append(getExplodeNum()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+				.append(getExplodeNum()+"").setStyle(Style.EMPTY.withColor(0xAA0000)));
 		}
-	}
-	
-	@Override
-	public List<ComponentColor> getInfoComponents() {
-		List<ComponentColor> list = super.getInfoComponents();
-		list.add(new ComponentColor(UtilMCText.literal("Damage: ").append(getDamage()+""), 0x040404));
-		list.add(new ComponentColor(UtilMCText.literal("Max Speed: ").append(getSpeed()+""), 0x040404));
-		list.add(new ComponentColor(UtilMCText.literal("Innacuracy: ").append(getInnacuracy()+""), 0x040404));
-		if (isExplosive()) {
-			list.add(new ComponentColor(UtilMCText.literal("EXPLOSIVE"), 0xaa0000));
-			list.add(new ComponentColor(UtilMCText.literal("Radius: ").append(getExplosionRadius()+""), 0x040404));
-			list.add(new ComponentColor(UtilMCText.literal("Explosions: ").append(getExplodeNum()+""), 0x040404));
-		}
-		if (isCausesFire()) list.add(new ComponentColor(UtilMCText.literal("INCENDIARY"), 0xaa0000));
-		return list;
+		if (advanced) tips.add(UtilMCText.literal("Innacuracy: ").append(getInnacuracy()+"").setStyle(Style.EMPTY.withColor(INFO_COLOR)));
+		if (isCausesFire()) tips.add(UtilMCText.literal("INCENDIARY").setStyle(Style.EMPTY.withColor(0xAA0000)));
 	}
 
 	@Override

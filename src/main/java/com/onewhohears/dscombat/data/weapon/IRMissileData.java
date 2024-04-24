@@ -17,6 +17,8 @@ import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 
 public class IRMissileData extends MissileData {
@@ -77,12 +79,11 @@ public class IRMissileData extends MissileData {
 	}
 	
 	@Override
-	public List<ComponentColor> getInfoComponents() {
-		List<ComponentColor> list = super.getInfoComponents();
-		list.add(2, new ComponentColor(UtilMCText.literal("TARGETS FLYING"), 0xaaaa00));
-		list.add(3, new ComponentColor(UtilMCText.literal("IR GUIDED"), 0xaaaa00));
-		if (getFlareResistance() != 0) if (getFov() != -1) list.add(new ComponentColor(UtilMCText.literal("Flare Resistance: ").append(getFlareResistance()+""), 0x040404));
-		return list;
+	public void addToolTips(List<Component> tips, boolean advanced) {
+		super.addToolTips(tips, advanced);
+		tips.add(UtilMCText.literal("TARGETS FLYING").setStyle(Style.EMPTY.withColor(SPECIAL_COLOR)));
+		if (advanced && getFlareResistance() != 0) tips.add(UtilMCText.literal("Flare Resistance: ")
+				.append(getFlareResistance()+"").setStyle(Style.EMPTY.withColor(INFO_COLOR)));
 	}
 	
 	@Override

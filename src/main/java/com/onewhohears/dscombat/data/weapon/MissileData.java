@@ -142,17 +142,11 @@ public abstract class MissileData extends BulletData {
 	@Override
 	public void addToolTips(List<Component> tips, boolean advanced) {
 		super.addToolTips(tips, advanced);
-		if (advanced && getFov() != -1) tips.add(UtilMCText.literal("FOV: ").append(getFov()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
-		if (advanced) tips.add(UtilMCText.literal("Turn Radius: ").append(getTurnRadius()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
-	}
-	
-	@Override
-	public List<ComponentColor> getInfoComponents() {
-		List<ComponentColor> list = super.getInfoComponents();
-		if (getFov() != -1) list.add(new ComponentColor(UtilMCText.literal("FOV: ").append(getFov()+""), 0x040404));
-		list.add(new ComponentColor(UtilMCText.literal("Turn Radius: ").append(getTurnRadius()+""), 0x040404));
-		list.add(new ComponentColor(UtilMCText.literal("Acceleration: ").append(getAcceleration()+""), 0x040404));
-		return list;
+		if (advanced) {
+			if (getFov() != -1) tips.add(UtilMCText.literal("FOV: ").append(getFov()+"").setStyle(Style.EMPTY.withColor(INFO_COLOR)));
+			tips.add(UtilMCText.literal("Turn Radius: ").append(getTurnRadius()+"").setStyle(Style.EMPTY.withColor(INFO_COLOR)));
+			tips.add(UtilMCText.literal("Acceleration: ").append(getAcceleration()+"").setStyle(Style.EMPTY.withColor(INFO_COLOR)));
+		}
 	}
 
 }

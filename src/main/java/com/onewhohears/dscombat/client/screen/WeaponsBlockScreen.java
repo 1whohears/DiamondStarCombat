@@ -11,7 +11,6 @@ import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerCraftWeapon;
 import com.onewhohears.dscombat.crafting.WeaponRecipe;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
-import com.onewhohears.dscombat.data.weapon.WeaponData.ComponentColor;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.util.UtilItem;
 import com.onewhohears.dscombat.util.UtilMCText;
@@ -109,19 +108,18 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockCont
 		WeaponRecipe wr = WeaponPresets.get().getWeaponRecipes(Minecraft.getInstance().level.getRecipeManager())[weaponIndex];
 		WeaponData data = wr.getWeaponData();
 		if (data == null) return;
-		List<ComponentColor> list = data.getInfoComponents();
-		font.draw(stack, list.get(0).component, 
-				titleLabelX+38, titleLabelY+34, list.get(0).color);
+		List<Component> list = new ArrayList<>();
+		list.add(data.getDisplayNameComponent());
+		data.addToolTips(list, true);
+		font.draw(stack, list.get(0), titleLabelX+38, titleLabelY+34, 0x040404);
 		float scale = 0.5f;
 		stack.scale(scale, scale, scale);
 		float invScale = 1f / scale;
 		int startX = (int)((float)(titleLabelX+38) * invScale);
 		int startY = (int)((float)(titleLabelY+43) * invScale);
-		//int inc = (int)((float)font.lineHeight * scale);
 		for (int i = 1; i < list.size(); ++i) {
-			font.draw(stack, list.get(i).component, 
-					startX, startY, list.get(i).color);
-			//startY += inc;
+			font.draw(stack, list.get(i), startX, startY, 
+					list.get(i).getStyle().getColor().getValue());
 			startY += font.lineHeight;
 		}
 		stack.scale(1/scale, 1/scale, 1/scale);

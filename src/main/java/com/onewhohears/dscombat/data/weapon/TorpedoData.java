@@ -2,9 +2,8 @@ package com.onewhohears.dscombat.data.weapon;
 
 import static com.onewhohears.dscombat.DSCombatMod.MODID;
 
-import java.util.List;
-
 import com.google.gson.JsonObject;
+import com.onewhohears.dscombat.data.jsonpreset.JsonPreset;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.entity.weapon.TorpedoMissile;
 
@@ -45,15 +44,8 @@ public class TorpedoData extends TrackMissileData {
 	}
 	
 	@Override
-	public WeaponData copy() {
-		return new TorpedoData(getKey(), getJsonData());
-	}
-	
-	@Override
-	public List<ComponentColor> getInfoComponents() {
-		List<ComponentColor> list = super.getInfoComponents();
-		
-		return list;
+	public <T extends JsonPreset> T copy() {
+		return (T) new TorpedoData(getKey(), getJsonData());
 	}
 	
 	public TargetType getTargetType() {

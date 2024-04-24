@@ -83,14 +83,7 @@ public class BunkerBusterData extends BombData {
 	@Override
 	public void addToolTips(List<Component> tips, boolean advanced) {
 		super.addToolTips(tips, advanced);
-		if (advanced) tips.add(UtilMCText.literal("Block Strength: ").append(getBlockStrength()+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
-	}
-	
-	@Override
-	public List<ComponentColor> getInfoComponents() {
-		List<ComponentColor> list = super.getInfoComponents();
-		list.add(new ComponentColor(UtilMCText.literal("Block Strength: ").append(getBlockStrength()+""), 0x040404));
-		return list;
+		if (advanced) tips.add(UtilMCText.literal("Block Strength: ").append(getBlockStrength()+"").setStyle(Style.EMPTY.withColor(INFO_COLOR)));
 	}
 	
 	@Override

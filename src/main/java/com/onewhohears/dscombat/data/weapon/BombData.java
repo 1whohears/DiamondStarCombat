@@ -2,8 +2,6 @@ package com.onewhohears.dscombat.data.weapon;
 
 import static com.onewhohears.dscombat.DSCombatMod.MODID;
 
-import java.util.List;
-
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPreset;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
@@ -12,7 +10,6 @@ import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 
@@ -78,18 +75,6 @@ public class BombData extends BulletData {
 	@Override
 	public <T extends JsonPreset> T copy() {
 		return (T) new BombData(getKey(), getJsonData());
-	}
-	
-	@Override
-	public void addToolTips(List<Component> tips, boolean advanced) {
-		super.addToolTips(tips, advanced);
-	}
-	
-	@Override
-	public List<ComponentColor> getInfoComponents() {
-		List<ComponentColor> list = super.getInfoComponents();
-		
-		return list;
 	}
 	
 	@Override

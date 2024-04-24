@@ -40,6 +40,7 @@ import com.onewhohears.dscombat.data.parts.PartsManager;
 import com.onewhohears.dscombat.data.parts.StorageBoxData;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarMode;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
+import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponSystem;
 import com.onewhohears.dscombat.entity.IREmitter;
 import com.onewhohears.dscombat.entity.damagesource.AircraftDamageSource;
@@ -2056,6 +2057,14 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     	return getHealth() >= getMaxHealth();
     }
     
+    public void repairAll() {
+    	if (level.isClientSide) return;
+    	setEngineFire(false);
+		setFuelLeak(false);
+		addHealth(100000);
+		playRepairSound();
+    }
+    
     /**
      * divide this by distance squared when ir missile compares this heat value with others
      * @return the total heat value
@@ -2246,6 +2255,35 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
      */
     public float addFuel(float fuel) {
     	return partsManager.addFuel(fuel);
+    }
+    
+    public void refillAll() {
+    	if (level.isClientSide) return;
+    	refillFuel();
+		refillAllWeapons();
+    }
+    
+    public void refillFlares() {
+    	if (level.isClientSide) return;
+    	partsManager.addFlares(100000);
+    }
+    
+    public void refillFuel() {
+    	if (level.isClientSide) return;
+    	addFuel(100000);
+    }
+    
+    public void refillAllWeapons() {
+    	if (level.isClientSide) return;
+    	refillFlares();
+    	weaponSystem.refillAll();
+		for (EntityTurret t : getTurrets()) {
+			WeaponData wd = t.getWeaponData();
+			if (wd == null) continue;
+			wd.addAmmo(100000);
+			t.setAmmo(wd.getCurrentAmmo());
+			t.updateDataAmmo();
+		}
     }
     
     public abstract boolean canToggleLandingGear();

@@ -155,4 +155,12 @@ public class WeaponSystem {
 		return ammo;
 	}
 	
+	public void refillAll() {
+		if (parent.level.isClientSide) return;
+		for (WeaponData w : weapons) {
+			w.addAmmo(100000);
+			w.updateClientAmmo(parent);
+		}
+	}
+	
 }

@@ -16,7 +16,6 @@ import com.onewhohears.dscombat.data.aircraft.presets.TankPresets;
 import com.onewhohears.dscombat.data.parts.BuffData.BuffType;
 import com.onewhohears.dscombat.data.parts.EngineData.EngineType;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.item.ItemAircraft;
 import com.onewhohears.dscombat.item.ItemAmmo;
 import com.onewhohears.dscombat.item.ItemBuffPart;
@@ -147,13 +146,20 @@ public class ModItems {
 	
 	// CREATIVE WANDS
 	public static final RegistryObject<Item> NO_CONSUME_WAND = ITEMS.register("no_consume_wand", 
-			() -> new ItemCreativeWand(new String[] {"info.dscombat.no_consume_wand_1"}) {
-				@Override
-				public boolean modifyAircraft(EntityVehicle plane) {
-					plane.setNoConsume(true);
-					return true;
-				}
-			});
+			() -> new ItemCreativeWand(vehicle -> vehicle.setNoConsume(true), 
+					"info.dscombat.no_consume_wand_1"));
+	public static final RegistryObject<Item> INSTANT_REPAIR_WAND = ITEMS.register("instant_repair_wand", 
+			() -> new ItemCreativeWand(vehicle -> vehicle.repairAll(), 
+					"info.dscombat.instant_repair_wand_1"));
+	public static final RegistryObject<Item> REFILL_WEAPONS_WAND = ITEMS.register("refill_weapons_wand", 
+			() -> new ItemCreativeWand(vehicle -> vehicle.refillAllWeapons(), 
+					"info.dscombat.refill_weapons_wand_1"));
+	public static final RegistryObject<Item> REFILL_FUEL_WAND = ITEMS.register("refill_fuel_wand", 
+			() -> new ItemCreativeWand(vehicle -> vehicle.refillFuel(), 
+					"info.dscombat.refill_fuel_wand_1"));
+	public static final RegistryObject<Item> REFILL_ALL_WAND = ITEMS.register("refill_all_wand", 
+			() -> new ItemCreativeWand(vehicle -> vehicle.refillAll(), 
+					"info.dscombat.refill_all_wand_1"));
 	
 	// GAS CANS
 	public static final RegistryObject<Item> GAS_CAN = ITEMS.register("gas_can", 

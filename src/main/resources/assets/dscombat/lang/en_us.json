@@ -1,6 +1,5 @@
 {
 	"info.dscombat.ammo": "Ammo",
-	"info.dscombat.no_consume_wand_1": "This Aircraft Won't Consume Fuel/Ammo/Flares",
 	"info.dscombat.locked": "Locked",
 	
 	"ui.dscombat.shrink_plane_button": "Get Item",
@@ -193,6 +192,15 @@
 	"item.dscombat.spraycan": "Spray Can",
 	
 	"item.dscombat.no_consume_wand": "No Consume Wand",
+	"info.dscombat.no_consume_wand_1": "Vehicle Won't Consume Fuel/Ammo/Flares",
+	"item.dscombat.instant_repair_wand": "Instant Repair Wand",
+	"info.dscombat.instant_repair_wand_1": "Instantly Brings Vehicle to Full Health",
+	"item.dscombat.refill_all_wand": "Refill All Wand",
+	"info.dscombat.refill_all_wand_1": "Refills all Fuel Tanks, Weapons, and Flares",
+	"item.dscombat.refill_weapons_wand": "Refill Weapons Wand",
+	"info.dscombat.refill_weapons_wand_1": "Refills all Vehicle Weapons/Turrets/Flares",
+	"item.dscombat.refill_fuel_wand": "Refill Fuel Wand",
+	"info.dscombat.refill_fuel_wand_1": "Refills all Vehicle Fuel Tanks",
 	
 	"item.dscombat.gas_can": "Gas Can",
 	"item.dscombat.big_gas_can": "Big Gas Can",

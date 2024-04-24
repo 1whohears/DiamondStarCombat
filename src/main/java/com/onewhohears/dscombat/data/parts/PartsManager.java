@@ -372,6 +372,15 @@ public class PartsManager {
 		return num;
 	}
 	
+	public int addFlares(int num) {
+		for (PartSlot p : getFlares()) {
+			FlareDispenserData fd = (FlareDispenserData)p.getPartData();
+			num = fd.addFlares(num);
+			if (num == 0) return 0;
+		}
+		return num;
+	}
+	
 	public float getTotalExtraArmor() {
 		float armor = 0;
 		for (PartSlot p : slots) if (p.filled()) 

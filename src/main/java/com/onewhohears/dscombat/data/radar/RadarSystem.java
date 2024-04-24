@@ -105,7 +105,8 @@ public class RadarSystem {
 	protected void updateDataLink() {
 		clearDataLink();
 		if (!hasDataLink()) return;
-		Entity controller = parent.getControllingPlayerOrBot();
+		// FIXME 6 allow mob ai controlled radars to datalink radar info to players on the same team
+		Entity controller = parent.getControllingPassenger();
 		if (controller == null) return;
 		List<? extends Player> players = parent.level.players();
 		for (Player p : players) {

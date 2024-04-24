@@ -96,7 +96,7 @@ public class RadarData extends JsonPreset {
 		maxCheckDist = Config.COMMON.maxBlockCheckDepth.get();
 		resetPings(vehiclePings);
 		freshTargets = true;
-		Entity controller = radar.getControllingPassenger();
+		Entity controller = radar.getControllingPlayerOrBot();
 		RadarMode mode = radar.getRadarMode();
 		AABB radarArea = getRadarBoundingBox(radar);
 		if (scanAircraft && (mode.canScan(RadarMode.VEHICLES) || mode.isPlayersOrBots())) {

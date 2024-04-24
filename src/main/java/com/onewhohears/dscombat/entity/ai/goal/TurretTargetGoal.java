@@ -20,16 +20,18 @@ import net.minecraft.world.phys.AABB;
 public class TurretTargetGoal<T extends LivingEntity> extends NearestAttackableTargetGoal<T> {
 	
 	public static TurretTargetGoal<Player> targetPlayers(Mob mob, EntityTurret turret) {
-		return new TurretTargetGoal<>(mob, turret, Player.class, turret.getAIHorizontalRange(), 
-				checkCanTarget(mob, turret, false));
+		double range = turret.getAIHorizontalRange();
+		return new TurretTargetGoal<>(mob, turret, Player.class, range, 
+				checkCanTarget(mob, turret, false, range));
 	}
 	
 	public static TurretTargetGoal<LivingEntity> targetEnemy(Mob mob, EntityTurret turret) {
-		return new TurretTargetGoal<>(mob, turret, LivingEntity.class, turret.getAIHorizontalRange(), 
-				checkCanTarget(mob, turret, true));
+		double range = turret.getAIHorizontalRange();
+		return new TurretTargetGoal<>(mob, turret, LivingEntity.class, range, 
+				checkCanTarget(mob, turret, true, range));
 	}
 	
-	public static Predicate<LivingEntity> checkCanTarget(Mob mob, EntityTurret turret, boolean enemyCheck) {
+	public static Predicate<LivingEntity> checkCanTarget(Mob mob, EntityTurret turret, boolean enemyCheck, double range) {
 		return (entity) -> {
 			WeaponData wd = turret.getWeaponData();
 			if (wd == null) return false;
@@ -38,7 +40,9 @@ public class TurretTargetGoal<T extends LivingEntity> extends NearestAttackableT
 			if (entity.isDeadOrDying()) return false;
 			if (!entity.isAttackable()) return false;
 			if (entity.isSpectator()) return false;
-			if (mob.isAlliedTo(entity)) return false;
+			if (entity.position().subtract(turret.position()).horizontalDistance() > range) return false;
+			if (entity.isAlliedTo(mob)) return false;
+			if (mob.isPassengerOfSameVehicle(entity)) return false;
 			boolean isPlayer = false;
 			if (entity instanceof Player player) {
 				isPlayer = true;
@@ -131,6 +135,11 @@ public class TurretTargetGoal<T extends LivingEntity> extends NearestAttackableT
 	@Override
 	protected double getFollowDistance() {
 		return range;
+	}
+	
+	@Override
+	public void start() {
+		super.start();
 	}
 
 }

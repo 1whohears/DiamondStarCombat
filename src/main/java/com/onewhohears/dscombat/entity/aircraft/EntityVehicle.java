@@ -73,6 +73,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -1578,6 +1579,27 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
         return null;
     }
 	
+	@Nullable
+	public Entity getControllingPlayerOrBot() {
+		Player playerAlt = null;
+		Entity alt = null;
+		for (EntitySeat seat : getSeats()) {
+			if (seat.isPilotSeat()) {
+				Player player = seat.getPlayer();
+				if (player != null) return player;
+			}
+			if (playerAlt == null) {
+				Player player = seat.getPlayer();
+				if (player != null) playerAlt = player;
+			}
+			if (alt == null && seat.hasAIUsingTurret()) {
+				Entity mob = seat.getPassenger();
+				if (mob != null) alt = mob;
+			}
+		}
+		return playerAlt != null ? playerAlt : alt;
+	}
+	
 	public boolean isPlayerRiding() {
 		for (EntitySeat seat : getSeats()) 
 			if (seat.getPlayer() != null) 
@@ -2271,6 +2293,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     public void refillFuel() {
     	if (level.isClientSide) return;
     	addFuel(100000);
+    	level.playSound(null, this, SoundEvents.BREWING_STAND_BREW, 
+    			SoundSource.PLAYERS, 1f, 1f);
     }
     
     public void refillAllWeapons() {
@@ -2284,6 +2308,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			t.setAmmo(wd.getCurrentAmmo());
 			t.updateDataAmmo();
 		}
+		level.playSound(null, this, SoundEvents.VILLAGER_WORK_TOOLSMITH, 
+    			SoundSource.PLAYERS, 1f, 1f);
     }
     
     public abstract boolean canToggleLandingGear();
@@ -2458,7 +2484,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     @Override
     public boolean isAlliedTo(Team team) {
     	if (team == null) return false;
-    	Entity c = getControllingPassenger();
+    	Entity c = getControllingPlayerOrBot();
 		if (c != null) return team.isAlliedTo(c.getTeam());
     	return super.isAlliedTo(team);
     }

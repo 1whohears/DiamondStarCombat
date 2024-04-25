@@ -124,6 +124,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public static final EntityDataAccessor<Boolean> PLAY_IR_TONE = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> FUEL_LEAK = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> ENGINE_FIRE = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<RadarMode> RADAR_MODE = SynchedEntityData.defineId(EntityVehicle.class, DataSerializers.RADAR_MODE);
 	
 	public final String defaultPreset, clientPresetId;
 	public final VehicleStats vehicleStats;
@@ -173,7 +174,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	private double lerpX, lerpY, lerpZ;
 	private float landingGearPos, landingGearPosOld, motorRot, wheelRot;
 	
-	protected RadarMode radarMode = RadarMode.ALL;
 	protected boolean isLandingGear, isDriverCameraLocked = false;
 	protected float throttle;
 	
@@ -251,6 +251,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		entityData.define(PLAY_IR_TONE, false);
 		entityData.define(FUEL_LEAK, false);
 		entityData.define(ENGINE_FIRE, false);
+		entityData.define(RADAR_MODE, RadarMode.ALL);
 	}
 	
 	@Override
@@ -350,7 +351,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public void readSpawnData(FriendlyByteBuf buffer) {
 		preset = buffer.readUtf();
 		int weaponIndex = buffer.readInt();
-		int radarMode = buffer.readInt();
 		boolean gear = buffer.readBoolean();
 		boolean freeLook = buffer.readBoolean();
 		float throttle = buffer.readFloat();
@@ -368,7 +368,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		soundManager.loadSounds(ap);
 		item = ap.getItem();
 		// OTHER
-		setRadarMode(RadarMode.byId(radarMode));
 		setLandingGear(gear);
 		setDriverCameraLocked(freeLook);
 		setCurrentThrottle(throttle);
@@ -378,7 +377,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public void writeSpawnData(FriendlyByteBuf buffer) {
 		buffer.writeUtf(preset);
 		buffer.writeInt(weaponSystem.getSelectedIndex());
-		buffer.writeInt(getRadarMode().ordinal());
 		buffer.writeBoolean(isLandingGear());
 		buffer.writeBoolean(isDriverCameraLocked());
 		buffer.writeFloat(getCurrentThrottle());
@@ -1326,15 +1324,15 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     }
     
     public RadarMode getRadarMode() {
-    	return radarMode;
+    	return entityData.get(RADAR_MODE);
     }
     
     public void setRadarMode(RadarMode mode) {
-    	this.radarMode = mode;
+    	entityData.set(RADAR_MODE, mode);
     }
     
     public void cycleRadarMode() {
-    	this.radarMode = this.radarMode.cycle();
+    	setRadarMode(getRadarMode().cycle());
     }
     
     public final String getRadioSong() {
@@ -2641,27 +2639,21 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		CAR(false, true, true),
 		BOAT(false, true, true),
 		SUBMARINE(false, true, true);
-		
 		public final boolean isAircraft, flipPitchThrottle, ignoreInvertY;
-		
 		private AircraftType(boolean isAircraft, boolean flipPitchThrottle, boolean ignoreInvertY) {
 			this.isAircraft = isAircraft;
 			this.flipPitchThrottle = flipPitchThrottle;
 			this.ignoreInvertY = ignoreInvertY;
 		}
-		
 		public boolean isTank() {
 			return this == CAR;
 		}
-		
 		public boolean isHeli() {
 			return this == HELICOPTER;
 		}
-		
 		public boolean isPlane() {
 			return this == PLANE;
 		}
-		
 		public boolean isBoat() {
 			return this == BOAT || this == SUBMARINE;
 		}

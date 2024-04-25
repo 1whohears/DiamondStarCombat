@@ -119,18 +119,24 @@ public class RadarData extends JsonPreset {
 			Entity e = list.get(i);
 			EntityVehicle ev = null;
 			if (e instanceof EntityVehicle vehicle) ev = vehicle;
-			if (ev == null && (playersOnly || isPlayersOrBots) && !(e.getControllingPassenger() instanceof Player)) 
-				continue;
-			else if (ev != null && playersOnly && !ev.isPlayerRiding()) 
-				continue;
-			else if (ev != null && isPlayersOrBots && !ev.isPlayerOrBotRiding()) 
-				continue;
+			boolean isPlayer = false, isPlayerOrBot = false;
+			if (ev == null) { 
+				isPlayer = e.getControllingPassenger() instanceof Player;
+				if (!isPlayer && (playersOnly || isPlayersOrBots)) continue;
+			} else if (ev != null) {
+				isPlayer = ev.isPlayerRiding();
+				if (!isPlayer && playersOnly) continue;
+				isPlayerOrBot = ev.isPlayerOrBotRiding();
+				if (!isPlayerOrBot && isPlayersOrBots) continue;
+			}
 			double stealth = 1;
 			if (ev != null) stealth = ev.getStealth();
 			if (!basicCheck(radar, e, stealth)) continue;
-			RadarPing p = new RadarPing(e, 
-					checkFriendly(controller, e), 
-					PingEntityType.VEHICLE);
+			PingEntityType pingEntityType;
+			if (isPlayer) pingEntityType = PingEntityType.VEHICLE_PLAYER;
+			else if (isPlayerOrBot) pingEntityType = PingEntityType.VEHICLE_BOT;
+			else pingEntityType = PingEntityType.VEHICLE;
+			RadarPing p = new RadarPing(e, checkFriendly(controller, e), pingEntityType);
 			vehiclePings.add(p);
 			pings.add(p);
 			if (ev != null && !radar.isAlliedTo(ev)) ev.lockedOnto(radar);
@@ -337,6 +343,15 @@ public class RadarData extends JsonPreset {
 			if (o instanceof RadarPing ping && ping.id == this.id) return true;
 			return false;
 		}
+		public boolean dontDisplayByMode(RadarMode mode) {
+			if (mode.isOff()) return true;
+			if (mode.isAll()) return false;
+			if (mode.isMobsOnly()) return !entityType.isMob();
+			if (mode.isPlayersOnly()) return !entityType.isPlayer();
+			if (mode.isPlayersOrBots()) return !entityType.isBot();
+			if (mode.isVehiclesOnly()) return !entityType.isVehicle();
+			return false;
+		}
 	}
 	
 	public static enum PingTerrainType {
@@ -378,7 +393,9 @@ public class RadarData extends JsonPreset {
 		PLAYER((byte)0, 0),
 		HOSTILE_MOB((byte)1, 100),
 		FRIENDLY_MOB((byte)2, 200),
-		VEHICLE((byte)3, 300);
+		VEHICLE((byte)3, 300),
+		VEHICLE_PLAYER((byte)4, 300),
+		VEHICLE_BOT((byte)5, 300);
 		public final byte id;
 		public final int offset;
 		private PingEntityType(byte id, int offset) {
@@ -387,6 +404,18 @@ public class RadarData extends JsonPreset {
 		}
 		public int getIconOffset() {
 			return offset;
+		}
+		public boolean isMob() {
+			return this == HOSTILE_MOB || this == FRIENDLY_MOB;
+		}
+		public boolean isVehicle() {
+			return this == VEHICLE || this == VEHICLE_PLAYER || this == VEHICLE_BOT;
+		}
+		public boolean isPlayer() {
+			return this == PLAYER || this == VEHICLE_PLAYER;
+		}
+		public boolean isBot() {
+			return this == PLAYER || this == VEHICLE_PLAYER || this == VEHICLE_BOT;
 		}
 		public static PingEntityType getById(byte id) {
 			for (int i = 0; i < values().length; ++i) 
@@ -419,8 +448,17 @@ public class RadarData extends JsonPreset {
 		public boolean isPlayersOrBots() {
 			return isPlayersOnly() || this == BOTS;
 		}
+		public boolean isMobsOnly() {
+			return this == MOBS;
+		}
+		public boolean isVehiclesOnly() {
+			return this == VEHICLES;
+		}
 		public boolean isOff() {
 			return this == OFF;
+		}
+		public boolean isAll() {
+			return this == ALL;
 		}
 		public static RadarMode byId(int id) {
 			if (id < 0 || id >= values().length) return ALL;

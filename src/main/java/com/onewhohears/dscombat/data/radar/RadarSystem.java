@@ -10,11 +10,13 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRWRWarning;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRadarPings;
 import com.onewhohears.dscombat.common.network.toserver.ToServerPingSelect;
+import com.onewhohears.dscombat.data.radar.RadarData.RadarMode;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
@@ -154,7 +156,9 @@ public class RadarSystem {
 		for (int i = 0; i < targets.size(); ++i) 
 			if (targets.get(i).isShared()) 
 				targets.remove(i--);
-		targets.addAll(dataLinkBuffer);
+		for (int i = 0; i < dataLinkBuffer.size(); ++i) 
+			if (!hasTarget(dataLinkBuffer.get(i).id)) 
+				targets.add(dataLinkBuffer.get(i));
 		dataLinkBuffer.clear();
 	}
 	
@@ -284,6 +288,7 @@ public class RadarSystem {
 	}
 	
 	public void readClientPingsFromServer(List<RadarPing> pings) {
+		removeUnwantedPings(pings);
 		RadarPing oldSelect = null; 
 		if (clientSelectedIndex != -1) oldSelect = clientTargets.get(clientSelectedIndex);
 		clientTargets = pings;
@@ -298,6 +303,13 @@ public class RadarSystem {
 		}
 		updateClientPingPos();
 		clientPingRefreshTime = parent.tickCount;
+	}
+	
+	private void removeUnwantedPings(List<RadarPing> pings) {
+		RadarMode mode = DSCClientInputs.getPreferredRadarMode();
+		for (int i = 0; i < pings.size(); ++i) 
+			if (pings.get(i).dontDisplayByMode(mode)) 
+				pings.remove(i--);
 	}
 	
 	public boolean hasRadar() {
@@ -385,18 +397,17 @@ public class RadarSystem {
 	private void ageRWR() {
 		rwrRadar = false;
 		rwrMissile = false;
-		if (rwrWarnings.size() > 0) {
-			Iterator<RWRWarning> it = rwrWarnings.values().iterator();
-			while (it.hasNext()) {
-				RWRWarning n = it.next();
-				++n.age;
-				if (n.age <= 10) {
-					if (n.isMissile) rwrMissile = true;
-					rwrRadar = true;
-				}
-				if (n.isMissile && n.age > 20) it.remove();
-				else if (n.age > 60) it.remove();
+		if (rwrWarnings.size() == 0) return;
+		Iterator<RWRWarning> it = rwrWarnings.values().iterator();
+		while (it.hasNext()) {
+			RWRWarning n = it.next();
+			++n.age;
+			if (n.age <= 10) {
+				if (n.isMissile) rwrMissile = true;
+				rwrRadar = true;
 			}
+			if (n.isMissile && n.age > 20) it.remove();
+			else if (n.age > 60) it.remove();
 		}
 	}
 	
@@ -413,39 +424,33 @@ public class RadarSystem {
 	}
 	
 	public static class RWRWarning {
-		
 		public final int fromId;
 		public final boolean fromGround;
 		public final boolean isMissile;
 		public Vec3 pos;
 		public int age = 0;
-		
 		public RWRWarning(int fromId, Vec3 pos, boolean fromGround, boolean isMissile) {
 			this.fromId = fromId;
 			this.pos = pos;
 			this.fromGround = fromGround;
 			this.isMissile = isMissile;
 		}
-		
 		public RWRWarning(FriendlyByteBuf buffer) {
 			fromId = buffer.readInt();
 			pos = DataSerializers.VEC3.read(buffer);
 			fromGround = buffer.readBoolean();
 			isMissile = buffer.readBoolean();
 		}
-		
 		public void write(FriendlyByteBuf buffer) {
 			buffer.writeInt(fromId);
 			DataSerializers.VEC3.write(buffer, pos);
 			buffer.writeBoolean(fromGround);
 			buffer.writeBoolean(isMissile);
 		}
-		
 		@Override
 		public String toString() {
 			return "RWR["+(int)pos.x+","+(int)pos.y+","+(int)pos.z+"]";
 		}
-		
 	}
 	
 }

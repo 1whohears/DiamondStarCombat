@@ -1,5 +1,7 @@
 package com.onewhohears.dscombat.client.input;
 
+import com.onewhohears.dscombat.data.radar.RadarData.RadarMode;
+
 import net.minecraft.client.Minecraft;
 
 public class DSCClientInputs {
@@ -16,8 +18,22 @@ public class DSCClientInputs {
 	private static long mountTime;
 	
 	private static MouseMode CURRENT_MOUSE_MODE = MouseMode.FREE_RELATIVE;
+	private static RadarMode PREFERRED_RADAR_MODE = RadarMode.ALL;
 	
 	private static boolean GIMBAL_MODE = false;
+	
+	public static RadarMode getPreferredRadarMode() {
+		return PREFERRED_RADAR_MODE;
+	}
+	
+	public static RadarMode cyclePreferredRadarMode() {
+		PREFERRED_RADAR_MODE = PREFERRED_RADAR_MODE.cycle();
+		return PREFERRED_RADAR_MODE;
+	}
+	
+	public static void setPreferredRadarMode(RadarMode mode) {
+		PREFERRED_RADAR_MODE = mode;
+	}
 	
 	public static boolean isGimbalMode() {
 		return GIMBAL_MODE;

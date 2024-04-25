@@ -82,8 +82,11 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
 		// CYCLE WEAPON
 		if (isPilot || isCoPilot) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.weaponSelectKey);
 		// RADAR MODE
-		if (vehicle.radarSystem.hasRadar()) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.radarModeKey,
-				!vehicle.getRadarMode().isOff(), vehicle.getRadarMode().name());
+		if (vehicle.radarSystem.hasRadar()) {
+			boolean warning = DSCClientInputs.getPreferredRadarMode() != vehicle.getRadarMode();
+			displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.radarModeKey,
+					warning, DSCClientInputs.getPreferredRadarMode().name());
+		}
 		// SELECT RADAR PING
 		if (vehicle.radarSystem.hasRadar()) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.pingCycleKey);
 		// GIMBAL MODE

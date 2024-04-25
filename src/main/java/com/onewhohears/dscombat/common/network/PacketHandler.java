@@ -28,6 +28,7 @@ import com.onewhohears.dscombat.common.network.toserver.ToServerGetHookChains;
 import com.onewhohears.dscombat.common.network.toserver.ToServerOpenStorage;
 import com.onewhohears.dscombat.common.network.toserver.ToServerPingSelect;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSeatPos;
+import com.onewhohears.dscombat.common.network.toserver.ToServerSetRadarMode;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSwitchSeat;
 import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleShoot;
 import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleTexture;
@@ -204,6 +205,11 @@ public final class PacketHandler {
 			.encoder(ToServerGetHookChains::encode)
 			.decoder(ToServerGetHookChains::new)
 			.consumerMainThread(ToServerGetHookChains::handle)
+			.add();
+		net.messageBuilder(ToServerSetRadarMode.class, index++, NetworkDirection.PLAY_TO_SERVER)
+			.encoder(ToServerSetRadarMode::encode)
+			.decoder(ToServerSetRadarMode::new)
+			.consumerMainThread(ToServerSetRadarMode::handle)
 			.add();
 	}
 	

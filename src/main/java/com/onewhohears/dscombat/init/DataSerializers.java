@@ -4,6 +4,7 @@ import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.radar.RadarData;
+import com.onewhohears.dscombat.data.radar.RadarData.RadarMode;
 import com.onewhohears.dscombat.data.radar.RadarPresets;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
@@ -28,7 +29,6 @@ public class DataSerializers {
     }
 
     public static final EntityDataSerializer<Quaternion> QUATERNION = new EntityDataSerializer<>() {
-
 		@Override
 		public void write(FriendlyByteBuf buffer, Quaternion q) {
 			buffer.writeFloat(q.i());
@@ -36,47 +36,38 @@ public class DataSerializers {
 			buffer.writeFloat(q.k());
 			buffer.writeFloat(q.r());
 		}
-
 		@Override
 		public Quaternion read(FriendlyByteBuf buffer) {
 			return new Quaternion(buffer.readFloat(), buffer.readFloat(), buffer.readFloat(), buffer.readFloat());
 		}
-
 		@Override
 		public Quaternion copy(Quaternion q) {
 			return new Quaternion(q);
 		}
-    	
     };
     
     public static final EntityDataSerializer<Vec3> VEC3 = new EntityDataSerializer<>() {
-
 		@Override
 		public void write(FriendlyByteBuf buffer, Vec3 v) {
 			buffer.writeFloat((float)v.x);
 			buffer.writeFloat((float)v.y);
 			buffer.writeFloat((float)v.z);
 		}
-
 		@Override
 		public Vec3 read(FriendlyByteBuf buffer) {
 			return new Vec3(buffer.readFloat(), buffer.readFloat(), buffer.readFloat());
 		}
-
 		@Override
 		public Vec3 copy(Vec3 v) {
 			return new Vec3(v.x, v.y, v.z);
 		}
-    	
     };
     
     public static final EntityDataSerializer<RadarData> RADAR_DATA = new EntityDataSerializer<>() {
-
 		@Override
 		public void write(FriendlyByteBuf buffer, RadarData r) {
 			r.writeBuffer(buffer);
 		}
-
 		@Override
 		public RadarData read(FriendlyByteBuf buffer) {
 			String id = buffer.readUtf();
@@ -85,21 +76,17 @@ public class DataSerializers {
 			data.readBuffer(buffer);
 			return data;
 		}
-
 		@Override
 		public RadarData copy(RadarData r) {
 			return r;
 		}
-    	
     };
     
     public static final EntityDataSerializer<WeaponData> WEAPON_DATA = new EntityDataSerializer<>() {
-
 		@Override
 		public void write(FriendlyByteBuf buffer, WeaponData w) {
 			w.writeBuffer(buffer);
 		}
-
 		@Override
 		public WeaponData read(FriendlyByteBuf buffer) {
 			String weaponId = buffer.readUtf();
@@ -108,21 +95,17 @@ public class DataSerializers {
 			data.readBuffer(buffer);
 			return data;
 		}
-
 		@Override
 		public WeaponData copy(WeaponData w) {
 			return w;
 		}
-    	
     };
     
     public static final EntityDataSerializer<PartData> PART_DATA = new EntityDataSerializer<>() {
-
 		@Override
 		public void write(FriendlyByteBuf buffer, PartData p) {
 			p.write(buffer);
 		}
-
 		@Override
 		public PartData read(FriendlyByteBuf buffer) {
 			String itemId = buffer.readUtf();
@@ -132,26 +115,41 @@ public class DataSerializers {
 			data.read(buffer);
 			return data;
 		}
-
 		@Override
 		public PartData copy(PartData p) {
 			return p;
 		}
-    	
     };
+    
+    public static final EntityDataSerializer<RadarMode> RADAR_MODE = getEnumSerializer(RadarMode.class);
+    
+    private static <E extends Enum<E>> EntityDataSerializer<E> getEnumSerializer(Class<E> enumClass) {
+    	return new EntityDataSerializer<>() {
+    		@Override
+    		public void write(FriendlyByteBuf buffer, E e) {
+    			buffer.writeEnum(e);
+    		}
+    		@Override
+    		public E read(FriendlyByteBuf buffer) {
+    			return buffer.<E>readEnum(enumClass);
+    		}
+    		@Override
+    		public E copy(E e) {
+    			return e;
+    		}
+    	};
+    }
 
     public static final RegistryObject<EntityDataSerializer<?>> SERIALIZER_ENTRY_QUATERNION = DATA_SERIALIZERS
     		.register("quaternion", () -> QUATERNION);
-    
     public static final RegistryObject<EntityDataSerializer<?>> SERIALIZER_ENTRY_VEC3 = DATA_SERIALIZERS
     		.register("vec3", () -> VEC3);
-    
     public static final RegistryObject<EntityDataSerializer<?>> SERIALIZER_ENTRY_RADARDATA = DATA_SERIALIZERS
     		.register("radardata", () -> RADAR_DATA);
-    
     public static final RegistryObject<EntityDataSerializer<?>> SERIALIZER_ENTRY_WEAPONDATA = DATA_SERIALIZERS
     		.register("weapondata", () -> WEAPON_DATA);
-    
     public static final RegistryObject<EntityDataSerializer<?>> SERIALIZER_ENTRY_PARTDATA = DATA_SERIALIZERS
     		.register("partdata", () -> PART_DATA);
+    public static final RegistryObject<EntityDataSerializer<?>> SERIALIZER_ENTRY_RADARMODE = DATA_SERIALIZERS
+    		.register("radarmode", () -> RADAR_MODE);
 }

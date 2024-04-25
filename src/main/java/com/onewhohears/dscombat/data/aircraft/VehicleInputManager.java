@@ -2,13 +2,12 @@ package com.onewhohears.dscombat.data.aircraft;
 
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftControl;
-import com.onewhohears.dscombat.data.radar.RadarData.RadarMode;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 
 import net.minecraft.network.FriendlyByteBuf;
 
 /**
- * used to centrally organise some vehicle's inputs.
+ * used to centrally organize some vehicle's inputs.
  * see {@link com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents} 
  * to see how these inputs are sent to server.
  * @author 1whohears
@@ -20,7 +19,7 @@ public class VehicleInputManager {
 	public float throttle, pitch, roll, yaw;
 	
 	protected boolean isLandingGear, isDriverCameraLocked;
-	protected int weaponIndex, radarModeOrdinal;
+	protected int weaponIndex;
 	protected float currentThrottle;
 	
 	public VehicleInputManager() {
@@ -31,12 +30,11 @@ public class VehicleInputManager {
 		read(buffer);
 	}
 	
-	public void clientUpdateServerControls(EntityVehicle parent, 
+	public void clientPilotControlsToServer(EntityVehicle parent, 
 			float throttle, float pitch, float roll, float yaw,
 			boolean flare, boolean openMenu, 
 			boolean special, boolean special2, boolean bothRoll,
-			boolean cycleRadarMode, boolean toggleGear,
-			boolean isDriverCameraLocked) {
+			boolean toggleGear, boolean isDriverCameraLocked) {
 		this.throttle = throttle;
 		this.pitch = pitch;
 		this.roll = roll;
@@ -49,8 +47,6 @@ public class VehicleInputManager {
 		this.isDriverCameraLocked = isDriverCameraLocked;
 		parent.setDriverCameraLocked(isDriverCameraLocked);
 		weaponIndex = parent.weaponSystem.getSelectedIndex();
-		if (cycleRadarMode) parent.cycleRadarMode();
-		radarModeOrdinal = parent.getRadarMode().ordinal();
 		if (toggleGear) parent.toggleLandingGear();
 		isLandingGear = parent.isLandingGear();
 		currentThrottle = parent.getCurrentThrottle();
@@ -70,11 +66,9 @@ public class VehicleInputManager {
 		this.bothRoll = other.bothRoll;
 		this.isLandingGear = other.isLandingGear;
 		this.weaponIndex = other.weaponIndex;
-		this.radarModeOrdinal = other.radarModeOrdinal;
 		this.currentThrottle = other.currentThrottle;
 		this.isDriverCameraLocked = other.isDriverCameraLocked;
 		// special inputs
-		parent.setRadarMode(RadarMode.byId(radarModeOrdinal));
 		parent.setLandingGear(isLandingGear);
 		parent.setCurrentThrottle(currentThrottle);
 		parent.weaponSystem.setSelected(weaponIndex);
@@ -107,7 +101,6 @@ public class VehicleInputManager {
 		buffer.writeBoolean(bothRoll);
 		// special vehicle system inputs
 		buffer.writeBoolean(isLandingGear);
-		buffer.writeByte(radarModeOrdinal);
 		buffer.writeShort(weaponIndex);
 		buffer.writeFloat(currentThrottle);
 		buffer.writeBoolean(isDriverCameraLocked);
@@ -126,7 +119,6 @@ public class VehicleInputManager {
 		bothRoll = buffer.readBoolean();
 		// special vehicle system inputs
 		isLandingGear = buffer.readBoolean();
-		radarModeOrdinal = buffer.readByte();
 		weaponIndex = buffer.readShort();
 		currentThrottle = buffer.readFloat();
 		isDriverCameraLocked = buffer.readBoolean();

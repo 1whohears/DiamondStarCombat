@@ -14,6 +14,7 @@ public class Config {
 	
 	public static class Client {
 		
+		public final ForgeConfigSpec.IntValue radarPingOverlaySize;
 		public final ForgeConfigSpec.DoubleValue mouseModeMaxRadius;
 		public final ForgeConfigSpec.DoubleValue mouseYReturnRate;
 		public final ForgeConfigSpec.DoubleValue mouseXReturnRate;
@@ -35,6 +36,10 @@ public class Config {
 		public final ForgeConfigSpec.DoubleValue renderOtherExternalPartDistance;
 		
 		public Client(ForgeConfigSpec.Builder builder) {
+			builder.push("display");
+			radarPingOverlaySize = builder
+					.defineInRange("radarPingOverlaySize", 100, 10, 1000);
+			builder.pop();
 			builder.push("mouse-joystick-settings");
 			mouseModeMaxRadius = builder
 					.comment("Only for vehicles in Mouse Mode. How far your mouse must move from rest to get a maximum angle.")

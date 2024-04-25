@@ -356,16 +356,16 @@ public class RadarData extends JsonPreset {
 	
 	public static enum PingTerrainType {
 		GROUND((byte)0, 0),
-		AIR((byte)1, 200),
-		WATER((byte)2, 100);
+		AIR((byte)1, 2),
+		WATER((byte)2, 1);
 		public final byte id;
 		public final int offset;
 		private PingTerrainType(byte id, int offset) {
 			this.id = id;
 			this.offset = offset;
 		}
-		public int getIconOffset() {
-			return offset;
+		public int getIconOffset(int size) {
+			return offset * size;
 		}
 		public boolean isGround() {
 			return this == GROUND;
@@ -391,19 +391,19 @@ public class RadarData extends JsonPreset {
 	
 	public static enum PingEntityType {
 		PLAYER((byte)0, 0),
-		HOSTILE_MOB((byte)1, 100),
-		FRIENDLY_MOB((byte)2, 200),
-		VEHICLE((byte)3, 300),
-		VEHICLE_PLAYER((byte)4, 300),
-		VEHICLE_BOT((byte)5, 300);
+		HOSTILE_MOB((byte)1, 1),
+		FRIENDLY_MOB((byte)2, 2),
+		VEHICLE((byte)3, 3),
+		VEHICLE_PLAYER((byte)4, 3),
+		VEHICLE_BOT((byte)5, 3);
 		public final byte id;
 		public final int offset;
 		private PingEntityType(byte id, int offset) {
 			this.id = id;
 			this.offset = offset;
 		}
-		public int getIconOffset() {
-			return offset;
+		public int getIconOffset(int size) {
+			return offset * size;
 		}
 		public boolean isMob() {
 			return this == HOSTILE_MOB || this == FRIENDLY_MOB;

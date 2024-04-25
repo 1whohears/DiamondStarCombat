@@ -7,6 +7,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
+import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.event.forgebus.ClientRenderEvents;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
@@ -33,7 +34,7 @@ public class RadarOverlay extends VehicleOverlayComponent {
     
     public static final int RADAR_SIZE = 120, RADAR_OFFSET = 8;
 
-    protected static final int[] HUD_PING_ANIM = new int[] {0,100,200,300,200,100};
+    protected static final int[] HUD_PING_ANIM = new int[] {0,1,2,3,2,1};
 
     protected static float PARTIAL_TICK;
     private static RadarOverlay INSTANCE;
@@ -141,6 +142,7 @@ public class RadarOverlay extends VehicleOverlayComponent {
         Matrix4f proj_mat = ClientRenderEvents.getProjMatrix();
         float cursorX = screenWidth / 2F, cursorY = screenHeight / 2F;
         boolean hovering = false;
+        int size = Config.CLIENT.radarPingOverlaySize.get();
         for (int i = 0; i < pings.size(); ++i) {
             RadarData.RadarPing ping = pings.get(i);
             // SCREEN
@@ -157,10 +159,10 @@ public class RadarOverlay extends VehicleOverlayComponent {
             int hud_ping_offset = 0;
             if (i == selected) {
                 //color = 0xff0000;
-                hud_ping_offset = 400;
+                hud_ping_offset = size * 4;
             } else if (i == hover) {
                 //color = 0xffff00;
-                hud_ping_offset = HUD_PING_ANIM[(getPlayer().tickCount/6)%6];
+                hud_ping_offset = HUD_PING_ANIM[(getPlayer().tickCount/6)%6] * size;
             }
             //else if (ping.isFriendly) color = 0x0000ff;
             //else if (ping.isShared()) color = 0x66cdaa;
@@ -171,7 +173,6 @@ public class RadarOverlay extends VehicleOverlayComponent {
                     view_mat, proj_mat, screenWidth, screenHeight);
             if (screen_pos[0] < 0 || screen_pos[1] < 0) continue;
             float x_win = screen_pos[0], y_win = screen_pos[1];
-            int size = 100;
             float min = 0.2f, max = 0.45f, max_dist = 1000f;
             float scale = (float) Math.max(min, max-(dist/max_dist*(max-min)));
             float adj = size*scale/2f, x_pos = x_win-adj, y_pos = y_win-adj;
@@ -181,28 +182,28 @@ public class RadarOverlay extends VehicleOverlayComponent {
             RenderSystem.setShaderTexture(0, PING_HUD);
             blit(poseStack,
                     0, 0, 0, hud_ping_offset,
-                    100, 100,
-                    100, 500);
+                    size, size,
+                    size, size*5);
             RenderSystem.setShaderTexture(0, PING_DATA);
             blit(poseStack,
-                    0, 0, ping.entityType.getIconOffset(), 0,
-                    100, 100,
-                    500, 200);
+                    0, 0, ping.entityType.getIconOffset(size), 0,
+                    size, size,
+                    size*5, size*2);
             blit(poseStack,
-                    0, 0, ping.terrainType.getIconOffset(), 100,
-                    100, 100,
-                    500, 200);
+                    0, 0, ping.terrainType.getIconOffset(size), 100,
+                    size, size,
+                    size*5, size*2);
             if (ping.isFriendly) {
                 blit(poseStack,
-                        0, 0, 400, 0,
-                        100, 100,
-                        500, 200);
+                        0, 0, size*4, 0,
+                        size, size,
+                        size*5, size*2);
             }
             if (ping.isShared()) {
                 blit(poseStack,
-                        0, 0, 400, 100,
-                        100, 100,
-                        500, 200);
+                        0, 0, size*4, size,
+                        size, size,
+                        size*5, size*2);
             }
             poseStack.popPose();
             if (!hovering && cursorX < x_win+adj && cursorX > x_win-adj

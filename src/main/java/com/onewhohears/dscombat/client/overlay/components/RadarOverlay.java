@@ -58,7 +58,6 @@ public class RadarOverlay extends VehicleOverlayComponent {
         if (pings.isEmpty()) return;
         int selected = radar.getClientSelectedPingIndex();
         int hover = DSCClientInputs.getRadarHoverIndex();
-        boolean isNatural = vehicle.level.dimensionType().natural();
         // PINGS ON SCREEN AND HUD
         Camera cam = Minecraft.getInstance().gameRenderer.getMainCamera();
         Vec3 view = cam.getPosition();
@@ -136,7 +135,7 @@ public class RadarOverlay extends VehicleOverlayComponent {
         if (hover != -1 && hover < pings.size()) {
             RadarData.RadarPing ping = pings.get(hover);
             int dist = (int) ping.getPosForClient().distanceTo(vehicle.position());
-            int alt = UtilEntity.getDistFromSeaLevel(ping.getPosForClient().y, isNatural);
+            int alt = UtilEntity.getDistFromSeaLevel(ping.getPosForClient().y, vehicle.level);
             WeaponData weapon = vehicle.weaponSystem.getSelected();
             String text = dist + " | " + alt;
             int color = 0xffff00;

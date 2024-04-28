@@ -16,6 +16,8 @@ import com.onewhohears.dscombat.data.radar.RadarData;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.parts.EntitySeat;
+import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
@@ -50,7 +52,9 @@ public class RadarOverlay extends VehicleOverlayComponent {
 
     @Override
     protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
-        if (!(getPlayerRootVehicle() instanceof EntityVehicle vehicle)) return;
+        if (!(getPlayerVehicle() instanceof EntitySeat seat)) return;
+        EntityVehicle vehicle = seat.getParentVehicle();
+        if (vehicle == null) return;
         RadarSystem radar = vehicle.radarSystem;
         if (!radar.hasRadar()) return;
         // LOOK AT PING DATA
@@ -136,9 +140,11 @@ public class RadarOverlay extends VehicleOverlayComponent {
             RadarData.RadarPing ping = pings.get(hover);
             int dist = (int) ping.getPosForClient().distanceTo(vehicle.position());
             int alt = UtilEntity.getDistFromSeaLevel(ping.getPosForClient().y, vehicle.level);
-            WeaponData weapon = vehicle.weaponSystem.getSelected();
             String text = dist + " | " + alt;
             int color = 0xffff00;
+            WeaponData weapon = null;
+            if (seat.isTurret()) weapon = ((EntityTurret)seat).getWeaponData(); 
+            else if (seat.canPassengerShootParentWeapon()) weapon = vehicle.weaponSystem.getSelected();
             if (weapon != null && weapon.requiresRadar()) {
             	if (dist <= weapon.getMobTurretRange()) {
             		color = 0x00ff00;

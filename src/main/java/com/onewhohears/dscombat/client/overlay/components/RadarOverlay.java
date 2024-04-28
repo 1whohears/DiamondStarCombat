@@ -14,6 +14,7 @@ import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.data.radar.RadarData;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
+import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.math.UtilAngles;
@@ -52,82 +53,12 @@ public class RadarOverlay extends VehicleOverlayComponent {
         if (!(getPlayerRootVehicle() instanceof EntityVehicle vehicle)) return;
         RadarSystem radar = vehicle.radarSystem;
         if (!radar.hasRadar()) return;
-        
-        // RADAR BACKDROP
-        /*RenderSystem.setShaderTexture(0, RADAR);
-        blit(poseStack,
-                RADAR_OFFSET, screenHeight - RADAR_OFFSET - RADAR_SIZE,
-                0, 0, RADAR_SIZE, RADAR_SIZE,
-                RADAR_SIZE, RADAR_SIZE);
-        
-        int searchRadius = RADAR_SIZE / 2;
-        int centerX = RADAR_OFFSET + searchRadius;
-        int centerY = screenHeight - RADAR_OFFSET - searchRadius - 5;
-        double displayRange = ClientInputEvents.getRadarDisplayRange();*/
-        
-        // CARDINAL
-        /*int card_color = 0x0000ff, searchRadius2 = searchRadius + 4;
-        float card_yaw = -vehicle.getYRot() * Mth.DEG_TO_RAD;
-        drawCenteredString(poseStack, getFont(), "S",
-                centerX + (int) (Mth.sin(card_yaw) * searchRadius2),
-                centerY - (int) (Mth.cos(card_yaw) * searchRadius2),
-                card_color);
-        
-        card_yaw = (180 - vehicle.getYRot()) * Mth.DEG_TO_RAD;
-        drawCenteredString(poseStack, getFont(), "N",
-                centerX + (int) (Mth.sin(card_yaw) * searchRadius2),
-                centerY- (int) (Mth.cos(card_yaw) * searchRadius2),
-                card_color);
-        
-        card_yaw = (270 - vehicle.getYRot()) * Mth.DEG_TO_RAD;
-        drawCenteredString(poseStack, getFont(), "E",
-                centerX + (int) (Mth.sin(card_yaw) * searchRadius2),
-                centerY - (int) (Mth.cos(card_yaw) * searchRadius2),
-                card_color);
-        
-        card_yaw = (90 - vehicle.getYRot()) * Mth.DEG_TO_RAD;
-        drawCenteredString(poseStack, getFont(), "W",
-                centerX + (int) (Mth.sin(card_yaw) * searchRadius2),
-                centerY - (int) (Mth.cos(card_yaw) * searchRadius2),
-                card_color);*/
-        
-        // ROLL PITCH YAW
-        /*int heading = (int) vehicle.getYRot();
-        if (heading < 0) heading += 360;
-        int pitch = (int) -vehicle.getXRot();
-        int roll = (int) vehicle.zRot;
-        drawCenteredString(poseStack, getFont(),
-                "P: "+pitch+" Y: "+heading+" R: "+roll, centerX, screenHeight - RADAR_OFFSET - RADAR_SIZE -10, 0x8888ff);*/
-        /*for (RadarSystem.RWRWarning warn : radar.getClientRWRWarnings()) {
-            Vec3 dp = warn.pos.subtract(vehicle.position());
-            float yaw = (UtilAngles.getYaw(dp)-vehicle.getYRot())*Mth.DEG_TO_RAD;
-            int x = centerX + (int)(Mth.sin(yaw)*searchRadius);
-            int y = centerY - (int)(Mth.cos(yaw)*searchRadius);
-            int color = 0xffff00;
-            String symbol = "W";
-            if (warn.isMissile) {
-                color = 0xff0000;
-                symbol = "M";
-            }
-            drawCenteredString(poseStack, getFont(),
-                    symbol, x, y, color);
-        }*/
         // LOOK AT PING DATA
         List<RadarData.RadarPing> pings = radar.getClientRadarPings();
         if (pings.isEmpty()) return;
         int selected = radar.getClientSelectedPingIndex();
         int hover = DSCClientInputs.getRadarHoverIndex();
         boolean isNatural = vehicle.level.dimensionType().natural();
-        /*if (selected != -1 && selected < pings.size()) {
-            RadarData.RadarPing ping = pings.get(selected);
-            int dist = (int) ping.getPosForClient().distanceTo(vehicle.position());
-            int alt = UtilEntity.getDistFromSeaLevel(ping.getPosForClient().y, isNatural);
-            String text = "(" + dist + " | " + alt + ")";
-            int color = 0xff0000;
-            if (ping.isFriendly) color = 0x0000ff;
-            drawCenteredString(poseStack, getFont(),
-                    text, centerX, screenHeight - RADAR_OFFSET - RADAR_SIZE - 20, color);
-        }*/
         // PINGS ON SCREEN AND HUD
         Camera cam = Minecraft.getInstance().gameRenderer.getMainCamera();
         Vec3 view = cam.getPosition();
@@ -148,14 +79,6 @@ public class RadarOverlay extends VehicleOverlayComponent {
             // SCREEN
             Vec3 dp = ping.getPosForClient().subtract(vehicle.position());
             double dist = dp.multiply(1, 0, 1).length();
-            /*double screen_dist = dist/displayRange;
-            if (screen_dist > 1) screen_dist = 1;
-            float yaw = (UtilAngles.getYaw(dp)-vehicle.getYRot())*Mth.DEG_TO_RAD;
-            int x = centerX + (int)(Mth.sin(yaw)*searchRadius*screen_dist);
-            int y = centerY + (int)(-Mth.cos(yaw)*searchRadius*screen_dist);*/
-            //int color = 0x00ff00;
-            //String symbol = "o";
-            //if (ping.isFriendly) symbol = "F";
             int hud_ping_offset = 0;
             if (i == selected) {
                 //color = 0xff0000;
@@ -164,10 +87,6 @@ public class RadarOverlay extends VehicleOverlayComponent {
                 //color = 0xffff00;
                 hud_ping_offset = HUD_PING_ANIM[(getPlayer().tickCount/6)%6] * size;
             }
-            //else if (ping.isFriendly) color = 0x0000ff;
-            //else if (ping.isShared()) color = 0x66cdaa;
-            /*drawCenteredString(poseStack, getFont(),
-                    symbol, x, y, color);*/
             // HUD
             float[] screen_pos = UtilGeometry.worldToScreenPos(ping.getPosForClient(),
                     view_mat, proj_mat, screenWidth, screenHeight);
@@ -218,9 +137,20 @@ public class RadarOverlay extends VehicleOverlayComponent {
             RadarData.RadarPing ping = pings.get(hover);
             int dist = (int) ping.getPosForClient().distanceTo(vehicle.position());
             int alt = UtilEntity.getDistFromSeaLevel(ping.getPosForClient().y, isNatural);
-            String text = "(" + dist + " | " + alt + ")";
-            drawCenteredString(poseStack, getFont(),
-                    text, screenWidth / 2, screenHeight / 2 - 20, 0xffff00);
+            WeaponData weapon = vehicle.weaponSystem.getSelected();
+            String text = dist + " | " + alt;
+            int color = 0xffff00;
+            if (weapon != null && weapon.requiresRadar()) {
+            	if (dist <= weapon.getMobTurretRange()) {
+            		color = 0x00ff00;
+            		text += " | O";
+            	} else {
+            		color = 0xff0000;
+            		text += " | X";
+            	}
+            }
+            drawCenteredString(poseStack, getFont(), text, 
+                    screenWidth / 2, screenHeight / 2 - 20, color);
         }
     }
 }

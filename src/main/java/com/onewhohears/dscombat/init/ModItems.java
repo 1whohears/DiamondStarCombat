@@ -280,34 +280,34 @@ public class ModItems {
 	// TURRENTS
 	public static final RegistryObject<Item> AA_TURRET = ITEMS.register("aa_turret", 
 			() -> new ItemTurret(1000f, SlotType.TURRET_LIGHT, 
-					ModEntities.AA_TURRET.getId().toString(), "15mm", 20));
+					ModEntities.AA_TURRET.getId().toString(), "15mm", 40));
 	public static final RegistryObject<Item> MINIGUN_TURRET = ITEMS.register("minigun_turret", 
 			() -> new ItemTurret(1500f, SlotType.TURRET_LIGHT, 
-					ModEntities.MINIGUN_TURRET.getId().toString(), "10mm", 20));
+					ModEntities.MINIGUN_TURRET.getId().toString(), "10mm", 40));
 	public static final RegistryObject<Item> CIWS = ITEMS.register("ciws", 
 			() -> new ItemTurret(2500f, SlotType.TURRET_LIGHT, 
-					ModEntities.CIWS.getId().toString(), "20mm", 40));
+					ModEntities.CIWS.getId().toString(), "20mm", 80));
 	public static final RegistryObject<Item> MARK45_CANNON = ITEMS.register("mark45_cannon", 
 			() -> new ItemTurret(3000f, SlotType.TURRET_MED, 
-					ModEntities.MARK45_CANNON.getId().toString(), "127mm", 60));
+					ModEntities.MARK45_CANNON.getId().toString(), "127mm", 120));
 	public static final RegistryObject<Item> HEAVY_TANK_TURRET = ITEMS.register("heavy_tank_turret", 
 			() -> new ItemTurret(4000f, SlotType.TURRET_MED, 
-					ModEntities.HEAVY_TANK_TURRET.getId().toString(), "120mmhe", 60));
+					ModEntities.HEAVY_TANK_TURRET.getId().toString(), "120mmhe", 120));
 	public static final RegistryObject<Item> MARK7_CANNON = ITEMS.register("mark7_cannon", 
 			() -> new ItemTurret(4500f, SlotType.TURRET_HEAVY, 
-					ModEntities.MARK7_CANNON.getId().toString(), "406mmhe", 100));
+					ModEntities.MARK7_CANNON.getId().toString(), "406mmhe", 200));
 	public static final RegistryObject<Item> STEVE_UP_SMASH = ITEMS.register("steve_up_smash", 
 			() -> new ItemTurret(5000f, SlotType.TURRET_MED, 
-					ModEntities.STEVE_UP_SMASH.getId().toString(), "aim9p5", 20));
+					ModEntities.STEVE_UP_SMASH.getId().toString(), "aim9p5", 40));
 	public static final RegistryObject<Item> SAM_LAUNCHER = ITEMS.register("sam_launcher", 
 			() -> new ItemTurret(6000f, SlotType.TURRET_HEAVY, 
-					ModEntities.SAM_LAUNCHER.getId().toString(), "pac3", 30));
+					ModEntities.SAM_LAUNCHER.getId().toString(), "pac3", 60));
 	public static final RegistryObject<Item> TORPEDO_TUBES = ITEMS.register("torpedo_tubes", 
 			() -> new ItemTurret(5500f, SlotType.TURRET_MED, 
-					ModEntities.TORPEDO_TUBES.getId().toString(), "torpedo1", 30));
+					ModEntities.TORPEDO_TUBES.getId().toString(), "torpedo1", 60));
 	public static final RegistryObject<Item> MLS = ITEMS.register("mls", 
 			() -> new ItemTurret(6000f, SlotType.TURRET_HEAVY, 
-					ModEntities.MLS.getId().toString(), "rgm84", 30));
+					ModEntities.MLS.getId().toString(), "rgm84", 60));
 	
 	// FLARE DISPENSERS
 	public static final RegistryObject<Item> BASIC_FLARE_DISPENSER = ITEMS.register("basic_flare_dispenser", 

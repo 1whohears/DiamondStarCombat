@@ -18,8 +18,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.Boat;
-import net.minecraft.world.entity.vehicle.Minecart;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -178,14 +176,13 @@ public class UtilEntity {
 	}
 	
 	public static boolean isOnGroundOrWater(Entity entity) {
+		if (entity.getType().is(ModTags.EntityTypes.ALWAYS_GROUNDED)) return true;
 		if (entity.isPassenger()) {
 			Entity rv = entity.getRootVehicle();
-			if (rv instanceof Boat) return true;
-			if (rv instanceof Minecart) return true;
+			if (rv.getType().is(ModTags.EntityTypes.ALWAYS_GROUNDED)) return true;
 			if (rv.isOnGround() || isHeadAboveWater(rv)) return true;
 		}
 		if (entity instanceof Player p && p.isFallFlying()) return false;
-		if (entity instanceof Minecart) return true;
 		if (!entity.isInWater() && entity.isSprinting() && entity.fallDistance < 1.15) return true;
 		if (entity.isOnGround() || isHeadAboveWater(entity)) return true;
 		return false;

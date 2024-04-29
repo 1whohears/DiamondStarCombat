@@ -35,8 +35,7 @@ public class VehicleTextureManager {
 	}
 	
 	private void setupTextureLocations() {
-		String[] encodeIds = UtilEntity.getSplitEncodeId(parent);
-		String modId = encodeIds[0], entityId = encodeIds[1];
+		String modId = UtilEntity.getEntityModId(parent), entityId = UtilEntity.getEntityIdName(parent);;
 		for (int i = 0; i < baseTextures.length; ++i) 
 			baseTextures[i] = new ResourceLocation(modId+":textures/entity/vehicle/"+entityId+"/base"+i+".png");
 		for (int i = 0; i < textureLayers.length; ++i) {

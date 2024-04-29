@@ -206,8 +206,12 @@ public class UtilEntity {
 		mob.getLookControl().setLookAt(pos.x, pos.y, pos.z, headTurnRate, 360);
 	}
 	
-	public static String[] getSplitEncodeId(Entity entity) {
-		return entity.getEncodeId().split(":");
+	public static String getEntityIdName(Entity entity) {
+		return EntityType.getKey(entity.getType()).getPath();
+	}
+	
+	public static String getEntityModId(Entity entity) {
+		return EntityType.getKey(entity.getType()).getNamespace();
 	}
 	
 	public static int getRandomColor() {

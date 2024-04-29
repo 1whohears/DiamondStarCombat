@@ -190,7 +190,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public EntityVehicle(EntityType<? extends EntityVehicle> entityType, Level level, String defaultPreset) {
 		super(entityType, level);
 		this.defaultPreset = defaultPreset;
-		this.clientPresetId = UtilEntity.getSplitEncodeId(this)[1];
+		this.clientPresetId = UtilEntity.getEntityIdName(this);
 		this.preset = defaultPreset;
 		AircraftPreset ap = AircraftPresets.get().getPreset(defaultPreset);
 		this.item = ap.getItem();

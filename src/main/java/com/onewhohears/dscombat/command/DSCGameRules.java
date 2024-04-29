@@ -47,7 +47,7 @@ public class DSCGameRules {
 		BROADCAST_MISSILE_HIT = registerBoolean("broadcastMissileHit", true, GameRules.Category.CHAT);
 		BROADCAST_MISSILE_HIT_TEAM_ONLY = registerBoolean("broadcastMissileHitTeamOnly", false, GameRules.Category.CHAT);
 		MOBS_USE_TURRETS = registerBoolean("mobsUseTurrets", true, GameRules.Category.MOBS);
-		MOB_TURRET_VERTICAL_RANGE = registerInteger("mobTurretVerticalRange", 300, GameRules.Category.MOBS);
+		MOB_TURRET_VERTICAL_RANGE = registerInteger("mobTurretVerticalRange", 500, GameRules.Category.MOBS);
 		MOBS_TICK_RADAR = registerBoolean("mobsTickRadar", true, GameRules.Category.MOBS);
 		MOBS_RIDE_VEHICLES = registerBoolean("mobsRideVehicles", true, GameRules.Category.MOBS);
 		PLANE_SPEED_PERCENT = registerInteger("planeSpeedPercent", 100, GameRules.Category.PLAYER);
@@ -56,10 +56,13 @@ public class DSCGameRules {
 		EXPLO_DAMAGE_VEHICLE_PER = registerInteger("explosionDamageVehiclePercent", 1000, GameRules.Category.PLAYER);
 		BULLET_DAMAGE_PLANE_PER = registerInteger("bulletDamagePlanePercent", 50, GameRules.Category.PLAYER);
 		BULLET_DAMAGE_HELI_PER = registerInteger("bulletDamageHeliPercent", 50, GameRules.Category.PLAYER);
-		DISABLE_3RD_PERSON_VEHICLE = registerBoolean("disable3rdPersonVehicle", false, GameRules.Category.PLAYER, 
-				(server, value) -> PacketHandler.INSTANCE.send(
-						PacketDistributor.ALL.noArg(), 
-						new ToClientSynchGameRules(value.get())));
+		DISABLE_3RD_PERSON_VEHICLE = registerBoolean("disable3rdPersonVehicle", false, GameRules.Category.PLAYER, clientSyncListener());
+	}
+	
+	private static BiConsumer<MinecraftServer, GameRules.BooleanValue> clientSyncListener() {
+		return (server, value) -> PacketHandler.INSTANCE.send(
+				PacketDistributor.ALL.noArg(), 
+				new ToClientSynchGameRules(server));
 	}
 	
 	public static GameRules.Key<GameRules.BooleanValue> registerBoolean(String name, boolean defaultValue) {

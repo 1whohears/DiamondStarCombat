@@ -11,7 +11,6 @@ import com.onewhohears.dscombat.data.weapon.NonTickingMissileManager;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 
-import net.minecraft.world.level.GameRules;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.TickEvent;
@@ -71,9 +70,7 @@ public final class CommonForgeEvents {
 		if (event.getPlayer() == null) target = PacketDistributor.ALL.noArg();
 		else {
 			target = PacketDistributor.PLAYER.with(() -> event.getPlayer());
-			GameRules gr = event.getPlayer().level.getGameRules();
-			PacketHandler.INSTANCE.send(target, 
-				new ToClientSynchGameRules(gr.getBoolean(DSCGameRules.DISABLE_3RD_PERSON_VEHICLE)));
+			PacketHandler.INSTANCE.send(target, new ToClientSynchGameRules(event.getPlayer().getServer()));
 		}
 		PacketHandler.INSTANCE.send(target, new ToClientDataPackSynch());
 	}

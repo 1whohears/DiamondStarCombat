@@ -144,7 +144,7 @@ public class Config {
         CLIENT = clientSpecPair.getLeft();
         
         final Pair<Common, ForgeConfigSpec> commonSpecPair = new ForgeConfigSpec.Builder()
-        		.configure(Common::new);
+        		.configure(Config.Common::new);
         commonSpec = commonSpecPair.getRight();
         COMMON = commonSpecPair.getLeft();
 	}

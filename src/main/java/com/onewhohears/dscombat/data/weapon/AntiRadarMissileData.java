@@ -55,6 +55,7 @@ public class AntiRadarMissileData extends MissileData {
 	public void addToolTips(List<Component> tips, boolean advanced) {
 		super.addToolTips(tips, advanced);
 		tips.add(UtilMCText.literal("TARGETS GROUNDED").setStyle(Style.EMPTY.withColor(SPECIAL_COLOR)));
+		tips.add(UtilMCText.literal("Scan Range: ").append(getScanRange()+"").setStyle(Style.EMPTY.withColor(INFO_COLOR)));
 	}
 	
 	@Override

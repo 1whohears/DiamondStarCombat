@@ -3,8 +3,8 @@ package com.onewhohears.dscombat.crafting;
 import javax.annotation.Nonnull;
 
 import com.onewhohears.dscombat.data.parts.WeaponPartData;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
+import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.init.ModRecipes;
 import com.onewhohears.dscombat.item.ItemAmmo;
 import com.onewhohears.dscombat.item.ItemWeaponPart;
@@ -26,7 +26,7 @@ public class WeaponPartUnloadRecipe extends PartItemUnloadRecipe<WeaponPartData>
 
 	@Override @Nonnull
 	public ItemStack getNewAmmoItem(String continuity) {
-		WeaponData wd = WeaponPresets.get().getPreset(continuity);
+		WeaponStats wd = WeaponPresets.get().get(continuity);
 		if (wd == null) return ItemStack.EMPTY;
 		return wd.getNewItem();
 	}
@@ -59,7 +59,7 @@ public class WeaponPartUnloadRecipe extends PartItemUnloadRecipe<WeaponPartData>
 	@Override
 	public int getContinuityMaxAmmo(String continuity) {
 		if (!isContinuityValid(continuity)) return 0;
-		return WeaponPresets.get().getPreset(continuity).getMaxAmmo();
+		return WeaponPresets.get().get(continuity).getMaxAmmo();
 	}
 
 }

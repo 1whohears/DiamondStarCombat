@@ -18,7 +18,7 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientRadarPings;
 import com.onewhohears.dscombat.common.network.toserver.ToServerPingSelect;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarMode;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.init.DataSerializers;
@@ -44,17 +44,17 @@ public class RadarSystem {
 	private final EntityVehicle parent;
 	private boolean readData = false;
 	
-	private List<RadarData> radars = new ArrayList<RadarData>();
-	private List<EntityMissile> rockets = new ArrayList<EntityMissile>();
+	private List<RadarData> radars = new ArrayList<>();
+	private List<EntityMissile<?>> rockets = new ArrayList<>();
 	
-	private List<RadarPing> targets = new ArrayList<RadarPing>();
+	private List<RadarPing> targets = new ArrayList<>();
 	private int selectedIndex = -1;
-	private List<RadarPing> clientTargets = new ArrayList<RadarPing>();
+	private List<RadarPing> clientTargets = new ArrayList<>();
 	private int clientSelectedIndex = -1, clientSelectedTime = -21;
 	public int clientPingRefreshTime = 0;
 	public int clientRwrRefreshTime = 0;
 	
-	private List<RadarPing> dataLinkBuffer = new ArrayList<RadarPing>();
+	private List<RadarPing> dataLinkBuffer = new ArrayList<>();
 	
 	private Map<Integer, RWRWarning> rwrWarnings = new HashMap<>();
 	private boolean rwrMissile, rwrRadar;
@@ -164,7 +164,7 @@ public class RadarSystem {
 	
 	private void updateSemiActiveTrackMissiles() {
 		for (int i = 0; i < rockets.size(); ++i) {
-			EntityMissile r = rockets.get(i);
+			EntityMissile<?> r = rockets.get(i);
 			if (r.isRemoved()) {
 				rockets.remove(i--);
 				continue;
@@ -181,7 +181,7 @@ public class RadarSystem {
 		}
 	}
 	
-	public void addRocket(EntityMissile r) {
+	public void addRocket(EntityMissile<?> r) {
 		if (!rockets.contains(r)) rockets.add(r);
 	}
 	
@@ -214,7 +214,7 @@ public class RadarSystem {
 	}
 	
 	@Nullable
-	public LivingEntity getLivingTargetByWeapon(WeaponData wd) {
+	public LivingEntity getLivingTargetByWeapon(WeaponInstance<?> wd) {
 		for (RadarPing ping : targets) {
 			if (ping.isFriendly) continue;
 			Entity entity = parent.level.getEntity(ping.id);
@@ -226,7 +226,7 @@ public class RadarSystem {
 	}
 	
 	@Nullable
-	public Player getPlayerTargetByWeapon(WeaponData wd) {
+	public Player getPlayerTargetByWeapon(WeaponInstance<?> wd) {
 		for (RadarPing ping : targets) {
 			if (ping.isFriendly) continue;
 			Entity entity = parent.level.getEntity(ping.id);

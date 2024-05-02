@@ -12,7 +12,7 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.event.forgebus.ClientRenderEvents;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
@@ -48,9 +48,9 @@ public class AimAssistOverlay extends VehicleOverlayComponent {
 		if (!(getPlayerRootVehicle() instanceof EntityVehicle vehicle)) return;
 		RadarSystem radar = vehicle.radarSystem;
 		if (!radar.hasRadar()) return;
-		WeaponData data = vehicle.weaponSystem.getSelected();
+		WeaponInstance<?> data = vehicle.weaponSystem.getSelected();
 		if (data == null) return;
-		if (!data.getType().isAimAssist()) return;
+		if (!data.getStats().isAimAssist()) return;
 		if (vehicle.tickCount != prevTick /*&& vehicle.tickCount % 2 == 0*/) 
 			targetWorldPos = calcTargetWorldPos(vehicle, data);
 		prevTick = vehicle.tickCount;
@@ -86,7 +86,7 @@ public class AimAssistOverlay extends VehicleOverlayComponent {
 	}
 	
 	@Nullable
-	protected Vec3 calcTargetWorldPos(EntityVehicle vehicle, WeaponData data) {
+	protected Vec3 calcTargetWorldPos(EntityVehicle vehicle, WeaponInstance<?> data) {
 		return data.estimateImpactPosition(vehicle);
 	}
 

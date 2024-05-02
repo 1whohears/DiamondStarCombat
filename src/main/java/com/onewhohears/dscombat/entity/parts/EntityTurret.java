@@ -9,8 +9,8 @@ import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.TurretData;
 import com.onewhohears.dscombat.data.parts.TurretData.RotBounds;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
+import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.entity.ai.goal.TurretShootGoal;
 import com.onewhohears.dscombat.entity.ai.goal.TurretTargetGoal;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
@@ -46,7 +46,7 @@ public class EntityTurret extends EntitySeat {
 	public final ShootType shootType;
 	public final RotBounds rotBounds;
 	
-	private WeaponData data;
+	private WeaponInstance<?> data;
 	
 	public float xRotRelO, yRotRelO;
 	/**
@@ -80,8 +80,8 @@ public class EntityTurret extends EntitySeat {
 	public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
 		super.onSyncedDataUpdated(key);
 		if (!level.isClientSide) return;
-		if (key.equals(WEAPON_ID)) {
-			data = WeaponPresets.get().getPreset(getWeaponId());
+		if (key.equals(WEAPON_ID) && WeaponPresets.get().has(getWeaponId())) {
+			data = WeaponPresets.get().get(getWeaponId()).createWeaponInstance();
 		} else if (key.equals(AMMO)) {
 			if (data != null) data.setCurrentAmmo(getAmmo());
 		}
@@ -92,7 +92,7 @@ public class EntityTurret extends EntitySeat {
 		super.readAdditionalSaveData(tag);
 		String wid = tag.getString("weaponId");
 		data = UtilParse.parseWeaponFromCompound(tag.getCompound("weapondata"));
-		if (wid.isEmpty() && data != null) wid = data.getId();
+		if (wid.isEmpty() && data != null) wid = data.getStatsId();
 		setWeaponId(wid);
 		setXRot(tag.getFloat("xRot"));
 		setYRot(tag.getFloat("yRot"));
@@ -114,7 +114,8 @@ public class EntityTurret extends EntitySeat {
 	public void init() {
 		super.init();
 		if (!level.isClientSide) {
-			if (data == null) data = WeaponPresets.get().getPreset(getWeaponId());
+			if (data == null && WeaponPresets.get().has(getWeaponId())) 
+				data = WeaponPresets.get().get(getWeaponId()).createWeaponInstance();
 			if (data != null) data.setCurrentAmmo(getAmmo());
 		}
 	}
@@ -228,15 +229,15 @@ public class EntityTurret extends EntitySeat {
 	
 	public boolean isBotUsingRadar() {
 		if (!hasAIUsingTurret()) return false;
-		WeaponData wd = getWeaponData();
+		WeaponInstance<?> wd = getWeaponData();
 		if (wd == null) return false;
-		return wd.requiresRadar();
+		return wd.getStats().requiresRadar();
 	}
 	
 	public double getAIHorizontalRange() {
-		WeaponData wd = getWeaponData();
+		WeaponInstance<?> wd = getWeaponData();
 		if (wd == null) return 300;
-		return wd.getMobTurretRange();
+		return wd.getStats().getMobTurretRange();
 	}
 	
 	public double getAIVerticalRange() {
@@ -294,7 +295,7 @@ public class EntityTurret extends EntitySeat {
 	}
 	
 	@Nullable
-	public WeaponData getWeaponData() {
+	public WeaponInstance<?> getWeaponData() {
 		return data;
 	}
 	

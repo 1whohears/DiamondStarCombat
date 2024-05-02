@@ -7,7 +7,8 @@ import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
 import com.onewhohears.dscombat.client.model.obj.ObjRadarModel.MastType;
 import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager.PassengerSoundPack;
-import com.onewhohears.dscombat.data.jsonpreset.JsonPreset;
+import com.onewhohears.dscombat.data.jsonpreset.JsonPresetStats;
+import com.onewhohears.dscombat.data.jsonpreset.JsonPresetType;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.data.recipe.DSCIngredientBuilder;
@@ -29,7 +30,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.phys.Vec3;
 
-public class AircraftPreset extends JsonPreset{
+public class AircraftPreset extends JsonPresetStats{
 
 	private final AircraftType aircraft_type;
 	private CompoundTag dataNBT;
@@ -110,7 +111,7 @@ public class AircraftPreset extends JsonPreset{
 	}
 	
 	@Override
-	public <T extends JsonPreset> T copy() {
+	public <T extends JsonPresetStats> T copy() {
 		return (T) new AircraftPreset(getKey(), getJsonData());
 	}
 	
@@ -119,7 +120,7 @@ public class AircraftPreset extends JsonPreset{
 	}
 	
 	@Override
-	public boolean mergeWithParent(JsonPreset parent) {
+	public boolean mergeWithParent(JsonPresetStats parent) {
 		if (!super.mergeWithParent(parent)) return false;
 		mergeSlots();
 		dataNBT = UtilParse.getCompoundFromJson(getJsonData());
@@ -145,7 +146,7 @@ public class AircraftPreset extends JsonPreset{
 	}
 	
 	@Override
-	public <T extends JsonPreset> int compare(T other) {
+	public <T extends JsonPresetStats> int compare(T other) {
 		AircraftPreset ap = (AircraftPreset) other;
 		if (this.getAircraftType() != ap.getAircraftType()) 
 			return this.getAircraftType().ordinal() - ap.getAircraftType().ordinal();
@@ -156,11 +157,11 @@ public class AircraftPreset extends JsonPreset{
 		
 		private boolean is_craftable = false;
 		
-		protected Builder(String namespace, String name, JsonPresetFactory<? extends JsonPreset> sup) {
+		protected Builder(String namespace, String name, JsonPresetType.JsonPresetStatsFactory<? extends JsonPresetStats> sup) {
 			super(namespace, name, sup);
 		}
 		
-		protected Builder(String namespace, String name, JsonPresetFactory<? extends JsonPreset> sup, AircraftPreset copy) {
+		protected Builder(String namespace, String name, JsonPresetType.JsonPresetStatsFactory<? extends JsonPresetStats> sup, AircraftPreset copy) {
 			super(namespace, name, sup, copy.getJsonData().deepCopy());
 		}
 		
@@ -181,7 +182,7 @@ public class AircraftPreset extends JsonPreset{
 		}
 		
 		@Override
-		public <T extends JsonPreset> T build() {
+		public <T extends JsonPresetStats> T build() {
 			setBoolean("landing_gear", true);
 			setBoolean("is_craftable", is_craftable);
 			return super.build();

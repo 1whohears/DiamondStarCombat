@@ -81,7 +81,7 @@ public class AircraftRecipe implements Recipe<Inventory> {
 	}
 	
 	public AircraftPreset getVehiclePreset() {
-		return AircraftPresets.get().getPresetNonCopy(getVehiclePresetId());
+		return AircraftPresets.get().get(getVehiclePresetId());
 	}
 	
 	public int getSortFactor() {

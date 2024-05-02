@@ -18,8 +18,8 @@ import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.radar.RadarData;
 import com.onewhohears.dscombat.data.radar.RadarPresets;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
+import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.item.ItemPart;
 
 import net.minecraft.nbt.CompoundTag;
@@ -130,25 +130,13 @@ public class UtilParse {
 	}
 	
 	@Nullable
-	public static WeaponData parseWeaponFromCompound(CompoundTag tag) {
-		if (tag == null) return null;
-		if (!tag.contains("weaponId")) return null;
-		String weaponId = tag.getString("weaponId");
-		WeaponData data = WeaponPresets.get().getPreset(weaponId);
-		if (data == null) return null;
-		data.readNBT(tag);
-		return data;
+	public static WeaponInstance<?> parseWeaponFromCompound(CompoundTag tag) {
+		return (WeaponInstance<?>) WeaponPresets.get().createInstanceFromNbt(tag);
 	}
 	
 	@Nullable
 	public static RadarData parseRadarFromCompound(CompoundTag tag) {
-		if (tag == null) return null;
-		if (!tag.contains("id")) return null;
-		String id = tag.getString("id");
-		RadarData data = RadarPresets.get().getPreset(id);
-		if (data == null) return null;
-		data.readNBT(tag);
-		return data;
+		return RadarPresets.get().getFromNbt(tag);
 	}
 
 	public static float fixFloatNbt(CompoundTag nbt, String tag, CompoundTag presetNbt, float min) {

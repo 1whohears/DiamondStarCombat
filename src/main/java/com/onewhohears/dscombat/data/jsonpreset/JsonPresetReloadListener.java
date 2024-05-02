@@ -15,6 +15,7 @@ import com.google.gson.JsonObject;
 import com.mojang.logging.LogUtils;
 import com.onewhohears.dscombat.util.UtilParse;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -33,48 +34,58 @@ import net.minecraft.util.profiling.ProfilerFiller;
  * @author 1whohears
  * @param <T> the type of preset this reader builds from json files
  */
-public abstract class JsonPresetReloadListener<T extends JsonPreset> extends SimpleJsonResourceReloadListener {
+public abstract class JsonPresetReloadListener<T extends JsonPresetStats> extends SimpleJsonResourceReloadListener {
 	
 	protected final Logger LOGGER = LogUtils.getLogger();
 	protected final Map<String, T> presetMap = new HashMap<>();
+	protected final Map<String, JsonPresetType> typeMap = new HashMap<>();
 	protected boolean setup = false;
 	
 	public JsonPresetReloadListener(String directory) {
 		super(UtilParse.GSON, directory);
 	}
-	
 	/**
 	 * @param id same as name in the builder
-	 * @return a new instance of preset. null if none have id.
+	 * @return an immutable preset stats object. null if it doesn't exist. 
 	 */
 	@Nullable
-	public T getPreset(String id) {
-		if (!has(id)) return null;
-		return presetMap.get(id).copy();
-	}
-	
-	@Nullable
-	public T getPresetNonCopy(String id) {
+	public T get(String id) {
+		if (id == null) return null;
 		if (!has(id)) return null;
 		return presetMap.get(id);
 	}
+	
+	@Nullable
+	public T getFromNbt(CompoundTag nbt) {
+		if (nbt == null) return null;
+		if (!nbt.contains("presetId")) return null;
+		String presetId = nbt.getString("presetId");
+		return get(presetId);
+	}
+	
+	@Nullable
+	public JsonPresetInstance<?> createInstanceFromNbt(CompoundTag nbt) {
+		T stats = getFromNbt(nbt);
+		if (stats == null) return null;
+		return stats.createPresetInstance(nbt);
+ 	}
 	
 	public boolean has(String id) {
 		return presetMap.containsKey(id);
 	}
 	
-	public abstract T[] getAllPresets();
+	public abstract T[] getAll();
 	
-	public String[] getPresetIds() {
-		String[] names = new String[getAllPresets().length];
+	public String[] getAllIds() {
+		String[] names = new String[getAll().length];
 		for (int i = 0; i < names.length; ++i) 
-			names[i] = getAllPresets()[i].getId();
+			names[i] = getAll()[i].getId();
 		return names;
 	}
 	
 	protected abstract void resetCache();
 	
-	public int getPresetNum() {
+	public int getNum() {
 		return presetMap.size();
 	}
 	
@@ -87,6 +98,8 @@ public abstract class JsonPresetReloadListener<T extends JsonPreset> extends Sim
 		LOGGER.info("APPLYING PRESETS TO COMMON CACHE "+getName());
 		setup = false;
 		presetMap.clear();
+		typeMap.clear();
+		registerPresetTypes();
 		map.forEach((key, je) -> { try {
 			LOGGER.info("ADD: "+key.toString()/*+" "+je.toString()*/);
 			JsonObject json = UtilParse.GSON.fromJson(je, JsonObject.class);
@@ -119,7 +132,7 @@ public abstract class JsonPresetReloadListener<T extends JsonPreset> extends Sim
 			LOGGER.warn("ERROR: Preset "+preset.getCopyId()+" does not exist so "+id+" can't be merged!");
 			return;
 		}
-		T copy = getPresetNonCopy(preset.getCopyId());
+		T copy = get(preset.getCopyId());
 		if (copy.isCopy() && !copy.hasBeenMerged()) 
 			mergeWithParent(copy.getId(), copy);
 		if (!preset.mergeWithParent(copy)) {
@@ -129,10 +142,29 @@ public abstract class JsonPresetReloadListener<T extends JsonPreset> extends Sim
 		LOGGER.info("MERGED: "+id+" with "+copy.getId());
 	}
 	
-	public abstract T getFromJson(ResourceLocation key, JsonObject json);
+	@Nullable
+	public T getFromJson(ResourceLocation key, JsonObject json) {
+		if (!json.has("presetType")) return null;
+		String presetType = json.get("presetType").getAsString();
+		JsonPresetType type = typeMap.get(presetType);
+		if (type == null) {
+			LOGGER.warn("ERROR: Preset Type "+presetType+" has not been registered!");
+			return null;
+		}
+		return type.createStats(key, json);
+	}
+	/**
+	 * to add a custom preset type, call this during a reload event
+	 * @param type
+	 */
+	public void addPresetType(JsonPresetType type) {
+		typeMap.put(type.getId(), type);
+	}
+	
+	protected abstract void registerPresetTypes();
 	
 	public void writeToBuffer(FriendlyByteBuf buffer) {
-		buffer.writeInt(getPresetNum());
+		buffer.writeInt(getNum());
 		presetMap.forEach((id, preset) -> {
 			buffer.writeUtf(preset.getKey().toString());
 			buffer.writeUtf(preset.getJsonData().toString());

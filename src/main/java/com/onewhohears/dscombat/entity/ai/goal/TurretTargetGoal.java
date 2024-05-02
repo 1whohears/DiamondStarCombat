@@ -4,7 +4,7 @@ import java.util.function.Predicate;
 
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.command.DSCGameRules;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.util.UtilEntity;
@@ -33,7 +33,7 @@ public class TurretTargetGoal<T extends LivingEntity> extends NearestAttackableT
 	
 	public static Predicate<LivingEntity> checkCanTarget(Mob mob, EntityTurret turret, boolean enemyCheck, double range) {
 		return (entity) -> {
-			WeaponData wd = turret.getWeaponData();
+			WeaponInstance<?> wd = turret.getWeaponData();
 			if (wd == null) return false;
 			if (entity == null) return false;
 			if (entity.isRemoved()) return false;
@@ -52,9 +52,9 @@ public class TurretTargetGoal<T extends LivingEntity> extends NearestAttackableT
 				if (mob.getTeam() == null && isPlayer) return false;
 				if (!(entity instanceof Enemy)) return false;
 			}
-			if (wd.getType().isIRMissile()) {
+			if (wd.getStats().isIRMissile()) {
 				if (UtilEntity.isOnGroundOrWater(entity)) return false;
-			} else if (wd.requiresRadar()) {
+			} else if (wd.getStats().requiresRadar()) {
 				EntityVehicle vehicle = turret.getParentVehicle();
 				if (vehicle == null) return false;
 				if (!vehicle.radarSystem.hasTarget(entity)) return false;
@@ -70,10 +70,10 @@ public class TurretTargetGoal<T extends LivingEntity> extends NearestAttackableT
 	@Override
 	protected void findTarget() {
 		//System.out.println("find target");
-		WeaponData wd = turret.getWeaponData();
+		WeaponInstance<?> wd = turret.getWeaponData();
 		EntityVehicle vehicle = turret.getParentVehicle();
 		if (wd == null || vehicle == null) return;
-		if (wd.requiresRadar()) {
+		if (wd.getStats().requiresRadar()) {
 			if (targetType != Player.class && targetType != ServerPlayer.class) 
 				target = vehicle.radarSystem.getLivingTargetByWeapon(wd);
 			else target = vehicle.radarSystem.getPlayerTargetByWeapon(wd);

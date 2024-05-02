@@ -6,7 +6,7 @@ import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.crafting.AircraftRecipe;
 import com.onewhohears.dscombat.crafting.WeaponRecipe;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresetGenerator;
-import com.onewhohears.dscombat.data.jsonpreset.JsonPreset;
+import com.onewhohears.dscombat.data.jsonpreset.JsonPresetStats;
 import com.onewhohears.dscombat.data.weapon.WeaponPresetGenerator;
 
 import net.minecraft.data.DataGenerator;
@@ -46,7 +46,7 @@ public class DSCRecipeGenerator extends RecipeProvider {
 		private final ResourceLocation id;
 		private final String presetId;
 		private final RecipeSerializer<?> type;
-		public FinishedPresetRecipe(JsonPreset preset, String prefix, RecipeSerializer<?> type) {
+		public FinishedPresetRecipe(JsonPresetStats preset, String prefix, RecipeSerializer<?> type) {
 			this.id = new ResourceLocation(preset.getNameSpace(), prefix+preset.getId());
 			this.presetId = preset.getId();
 			this.type = type;

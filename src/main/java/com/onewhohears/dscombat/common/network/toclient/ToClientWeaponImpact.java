@@ -4,7 +4,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.common.network.IPacket;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.UtilClientPacket;
@@ -17,16 +17,16 @@ import net.minecraftforge.network.NetworkEvent.Context;
 
 public class ToClientWeaponImpact extends IPacket {
 	
-	public final WeaponData.WeaponClientImpactType impactType;
+	public final WeaponStats.WeaponClientImpactType impactType;
 	public final Vec3 pos;
 	
-	public ToClientWeaponImpact(EntityWeapon weapon, Vec3 pos) {
+	public ToClientWeaponImpact(EntityWeapon<?> weapon, Vec3 pos) {
 		this.impactType = weapon.getClientImpactType();
 		this.pos = pos;
 	}
 	
 	public ToClientWeaponImpact(FriendlyByteBuf buffer) {
-		impactType = WeaponData.WeaponClientImpactType.getByOrdinal(buffer.readInt());
+		impactType = WeaponStats.WeaponClientImpactType.getByOrdinal(buffer.readInt());
 		pos = DataSerializers.VEC3.read(buffer);
 	}
 	

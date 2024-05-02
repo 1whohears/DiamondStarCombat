@@ -3,7 +3,9 @@ package com.onewhohears.dscombat.client.overlay;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
+import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
@@ -55,7 +57,7 @@ public class WeaponTabComponent extends GuiComponent {
     }
 
     /**
-     * Renders an icon defined by the <code>ResourceLocation</code> from the return of <code>{@link WeaponData#getWeaponIcon()}</code>.
+     * Renders an icon defined by the <code>ResourceLocation</code> from the return of <code>{@link WeaponStats#getWeaponIcon()}</code>.
      * This method provides an easy way to animate the icon.
      * @param frame an <code>int</code> representing the frame of animation. See the return of
      *              <code>#getMaxFrames</code> and subtract one to get the highest allowed frame.
@@ -65,14 +67,14 @@ public class WeaponTabComponent extends GuiComponent {
      *                         that scrolls from blank and a scroll that doesn't must be the same to
      *                         maintain visual continuity.
      */
-    public static void drawWeapon(PoseStack stack, WeaponData weapon, double x, double y, int blitOffset, int frame, boolean scrollsUpward, boolean scrollsToBlank, boolean scrollsFromBlank) {
+    public static void drawWeapon(PoseStack stack, WeaponInstance<?> weapon, double x, double y, int blitOffset, int frame, boolean scrollsUpward, boolean scrollsToBlank, boolean scrollsFromBlank) {
         if (frame < 0 || frame > getMaxFrames() - 1) throw new IllegalArgumentException("There are only " + getMaxFrames() + " frames!");
         if (scrollsToBlank && scrollsFromBlank) throw new IllegalArgumentException("Tabs may not scroll to and from blank!");
         if (weapon == null) throw new NullPointerException("Passed weapon is null!");
 
         int frameValue = (int) FRAMES[frame];
 
-        RenderSystem.setShaderTexture(0, weapon.getWeaponIcon());
+        RenderSystem.setShaderTexture(0, weapon.getStats().getWeaponIcon());
         RenderSystem.enableBlend();
         RenderSystem.enableDepthTest();
 

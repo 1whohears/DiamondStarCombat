@@ -10,8 +10,8 @@ import com.onewhohears.dscombat.common.container.menu.WeaponsBlockContainerMenu;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerCraftWeapon;
 import com.onewhohears.dscombat.crafting.WeaponRecipe;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
+import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.util.UtilItem;
 import com.onewhohears.dscombat.util.UtilMCText;
 
@@ -106,7 +106,7 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockCont
 		// weapon stats
 		if (WeaponPresets.get().getWeaponRecipeNum() == 0) return;
 		WeaponRecipe wr = WeaponPresets.get().getWeaponRecipes(Minecraft.getInstance().level.getRecipeManager())[weaponIndex];
-		WeaponData data = wr.getWeaponData();
+		WeaponStats data = wr.getWeaponData();
 		if (data == null) return;
 		List<Component> list = new ArrayList<>();
 		list.add(data.getDisplayNameComponent());

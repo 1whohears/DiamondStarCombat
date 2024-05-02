@@ -28,7 +28,7 @@ public class VehiclePresetArgument implements ArgumentType<String> {
 	
 	public static AircraftPreset getVehiclePreset(CommandContext<CommandSourceStack> context, String name) throws CommandSyntaxException {
 		String a = context.getArgument(name, String.class);
-		AircraftPreset data = AircraftPresets.get().getPreset(a);
+		AircraftPreset data = AircraftPresets.get().get(a);
 		if (data == null) throw ERROR_VEHICLE_NOT_FOUND.create(a);
 		return data;
 	}
@@ -41,7 +41,7 @@ public class VehiclePresetArgument implements ArgumentType<String> {
 	@Override
 	public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
 		return context.getSource() instanceof SharedSuggestionProvider ? 
-				SharedSuggestionProvider.suggest(AircraftPresets.get().getPresetIds(), builder) : 
+				SharedSuggestionProvider.suggest(AircraftPresets.get().getAllIds(), builder) : 
 				Suggestions.empty();
 	}
 

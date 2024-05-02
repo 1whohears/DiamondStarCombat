@@ -17,10 +17,10 @@ import net.minecraft.world.phys.Vec3;
 public class WeaponDamageSource extends EntityDamageSource {
 	
 	protected final WeaponDamageType type;
-	protected final EntityWeapon weapon;
+	protected final EntityWeapon<?> weapon;
 	protected final String deathMsgId;
 	
-	public WeaponDamageSource(WeaponDamageType type, @Nullable Entity shooter, @Nonnull EntityWeapon weapon) {
+	public WeaponDamageSource(WeaponDamageType type, @Nullable Entity shooter, @Nonnull EntityWeapon<?> weapon) {
 		super(type.damageTypeId, shooter);
 		this.type = type;
 		this.weapon = weapon;
@@ -52,7 +52,7 @@ public class WeaponDamageSource extends EntityDamageSource {
 			this.explosion = explosion;
 			this.bypassArmor = bypassArmor;
 		}
-		public WeaponDamageSource getSource(@Nullable Entity shooter, @Nonnull EntityWeapon weapon) {
+		public WeaponDamageSource getSource(@Nullable Entity shooter, @Nonnull EntityWeapon<?> weapon) {
 			return new WeaponDamageSource(this, shooter, weapon);
 		}
 		public boolean isContact() {

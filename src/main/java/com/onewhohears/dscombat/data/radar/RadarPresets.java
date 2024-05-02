@@ -1,9 +1,8 @@
 package com.onewhohears.dscombat.data.radar;
 
-import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPresetReloadListener;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.nbt.CompoundTag;
 
 public class RadarPresets extends JsonPresetReloadListener<RadarData> {
 	
@@ -23,18 +22,29 @@ public class RadarPresets extends JsonPresetReloadListener<RadarData> {
 	public RadarPresets() {
 		super("radars");
 	}
+	
+	@Override
+	protected void registerPresetTypes() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public RadarData getFromNbt(CompoundTag nbt) {
+		if (nbt == null) return null;
+		RadarData w = super.getFromNbt(nbt);
+		if (w != null) return w;
+		if (!nbt.contains("id")) return null;
+		String presetId = nbt.getString("id");
+		return get(presetId);
+	}
 
 	@Override
-	public RadarData[] getAllPresets() {
+	public RadarData[] getAll() {
 		if (radarList == null) {
 			radarList = presetMap.values().toArray(new RadarData[presetMap.size()]);
 		}
 		return radarList;
-	}
-
-	@Override
-	public RadarData getFromJson(ResourceLocation key, JsonObject json) {
-		return new RadarData(key, json);
 	}
 
 	@Override

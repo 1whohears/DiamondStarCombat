@@ -5,7 +5,8 @@ import java.util.List;
 
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.Config;
-import com.onewhohears.dscombat.data.jsonpreset.JsonPreset;
+import com.onewhohears.dscombat.data.jsonpreset.JsonPresetStats;
+import com.onewhohears.dscombat.data.jsonpreset.JsonPresetType;
 import com.onewhohears.dscombat.data.jsonpreset.PresetBuilder;
 import com.onewhohears.dscombat.data.weapon.RadarTargetTypes;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
@@ -23,7 +24,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-public class RadarData extends JsonPreset {
+public class RadarData extends JsonPresetStats {
 	
 	private final double range;
 	private final double sensitivity;
@@ -461,7 +462,7 @@ public class RadarData extends JsonPreset {
 		return "["+getId()+":"+fov+":"+range+"]";
 	}
 	
-	public <T extends JsonPreset> T copy() {
+	public <T extends JsonPresetStats> T copy() {
 		return (T) new RadarData(getKey(), getJsonData());
 	}
 	
@@ -492,7 +493,7 @@ public class RadarData extends JsonPreset {
 	}
 	
 	public static class Builder extends PresetBuilder<Builder> {
-		public Builder(String namespace, String name, JsonPresetFactory<? extends RadarData> sup) {
+		public Builder(String namespace, String name, JsonPresetType.JsonPresetStatsFactory<? extends RadarData> sup) {
 			super(namespace, name, sup);
 		}
 		public static Builder create(String namespace, String name) {

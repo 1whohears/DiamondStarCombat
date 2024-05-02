@@ -3,8 +3,7 @@ package com.onewhohears.dscombat.entity.weapon;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.onewhohears.dscombat.data.weapon.AntiRadarMissileData;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.data.weapon.stats.AntiRadarMissileStats;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 
 import net.minecraft.world.entity.Entity;
@@ -12,18 +11,10 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 
-public class AntiRadarMissile extends EntityMissile {
+public class AntiRadarMissile<T extends AntiRadarMissileStats> extends EntityMissile<T> {
 	
-	protected AntiRadarMissileData antiRadMisData;
-	
-	public AntiRadarMissile(EntityType<? extends AntiRadarMissile> type, Level level, String defaultWeaponId) {
+	public AntiRadarMissile(EntityType<? extends AntiRadarMissile<?>> type, Level level, String defaultWeaponId) {
 		super(type, level, defaultWeaponId);
-	}
-	
-	@Override
-	protected void castWeaponData() {
-		super.castWeaponData();
-		antiRadMisData = (AntiRadarMissileData)weaponData;
 	}
 	
 	@Override
@@ -79,7 +70,7 @@ public class AntiRadarMissile extends EntityMissile {
 			//System.out.println("is allied");
 			return false;
 		}
-		if (!checkTargetRange(ping, antiRadMisData.getScanRange())) {
+		if (!checkTargetRange(ping, getWeaponStats().getScanRange())) {
 			//System.out.println("not in cone");
 			return false;
 		}
@@ -95,7 +86,7 @@ public class AntiRadarMissile extends EntityMissile {
 		double x = getX();
 		double y = getY();
 		double z = getZ();
-		double w = antiRadMisData.getScanRange();
+		double w = getWeaponStats().getScanRange();
 		return new AABB(x+w, y+w, z+w, x-w, y-w, z-w);
 	}
 	
@@ -109,11 +100,6 @@ public class AntiRadarMissile extends EntityMissile {
 			this.radiation = radiation;
 		}
 		
-	}
-	
-	@Override
-	public WeaponData.WeaponType getWeaponType() {
-		return WeaponData.WeaponType.ANTIRADAR_MISSILE;
 	}
 
 }

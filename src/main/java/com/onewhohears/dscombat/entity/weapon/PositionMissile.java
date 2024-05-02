@@ -1,33 +1,19 @@
 package com.onewhohears.dscombat.entity.weapon;
 
-import com.onewhohears.dscombat.data.weapon.PosMissileData;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.data.weapon.stats.PosMissileStats;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 
-public class PositionMissile extends EntityMissile {
+public class PositionMissile<T extends PosMissileStats> extends EntityMissile<T> {
 	
-	protected PosMissileData posMissileData;
-	
-	public PositionMissile(EntityType<? extends PositionMissile> type, Level level, String defaultWeaponId) {
+	public PositionMissile(EntityType<? extends PositionMissile<?>> type, Level level, String defaultWeaponId) {
 		super(type, level, defaultWeaponId);
-	}
-	
-	@Override
-	protected void castWeaponData() {
-		super.castWeaponData();
-		posMissileData = (PosMissileData)weaponData;
 	}
 	
 	@Override
 	public void tickGuide() {
 		guideToPosition();
-	}
-	
-	@Override
-	public WeaponData.WeaponType getWeaponType() {
-		return WeaponData.WeaponType.POS_MISSILE;
 	}
 
 }

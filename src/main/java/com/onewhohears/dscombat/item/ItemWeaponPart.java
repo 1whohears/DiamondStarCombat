@@ -7,8 +7,8 @@ import javax.annotation.Nullable;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.data.parts.WeaponRackData;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
+import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.util.UtilItem;
 import com.onewhohears.dscombat.util.UtilMCText;
@@ -41,7 +41,7 @@ public class ItemWeaponPart extends ItemPart {
 		if (weapon.isEmpty()) {
 			name.append("EMPTY");
 		} else {
-			WeaponData wd = WeaponPresets.get().getPreset(weapon);
+			WeaponStats wd = WeaponPresets.get().get(weapon);
 			if (wd != null) {
 				name.append(wd.getDisplayNameComponent()).append(" ")
 					.append(UtilMCText.literal(wd.getWeaponTypeCode()));
@@ -58,7 +58,7 @@ public class ItemWeaponPart extends ItemPart {
 		String id = tag.getString("weaponId");
 		if (id.isEmpty()) return;
 		tips.add(UtilMCText.literal("Ammo: "+tag.getInt("ammo")+"/"+tag.getInt("max")).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
-		WeaponData wd = WeaponPresets.get().getPreset(id);
+		WeaponStats wd = WeaponPresets.get().get(id);
 		wd.addToolTips(tips, isAdvanced.isAdvanced());
 	}
 	

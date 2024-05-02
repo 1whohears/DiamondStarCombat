@@ -1,25 +1,17 @@
 package com.onewhohears.dscombat.entity.weapon;
 
 import com.onewhohears.dscombat.data.aircraft.DSCPhyCons;
-import com.onewhohears.dscombat.data.weapon.BombData;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.data.weapon.stats.BombStats;
+import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 
-public class EntityBomb extends EntityBullet {
+public class EntityBomb<T extends BombStats> extends EntityBullet<T> {
 	
-	protected BombData bombData;
-	
-	public EntityBomb(EntityType<? extends EntityBomb> type, Level level, String defaultWeaponId) {
+	public EntityBomb(EntityType<? extends EntityBomb<?>> type, Level level, String defaultWeaponId) {
 		super(type, level, defaultWeaponId);
-	}
-	
-	@Override
-	protected void castWeaponData() {
-		super.castWeaponData();
-		bombData = (BombData)weaponData;
 	}
 	
 	@Override
@@ -47,13 +39,8 @@ public class EntityBomb extends EntityBullet {
 	}
 	
 	@Override
-	public WeaponData.WeaponType getWeaponType() {
-		return WeaponData.WeaponType.BOMB;
-	}
-	
-	@Override
-	public WeaponData.WeaponClientImpactType getClientImpactType() {
-		return WeaponData.WeaponClientImpactType.MED_BOMB_EXPLODE;
+	public WeaponStats.WeaponClientImpactType getClientImpactType() {
+		return WeaponStats.WeaponClientImpactType.MED_BOMB_EXPLODE;
 	}
 
 }

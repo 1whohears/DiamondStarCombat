@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.data.jsonpreset;
 
 import com.google.gson.JsonObject;
-import com.onewhohears.dscombat.data.jsonpreset.JsonPreset.JsonPresetFactory;
 
 import net.minecraft.resources.ResourceLocation;
 
@@ -20,38 +19,40 @@ public abstract class PresetBuilder<C extends PresetBuilder<C>> {
 	private final String name;
 	private final ResourceLocation key;
 	private final JsonObject data;
-	protected final JsonPresetFactory<? extends JsonPreset> sup;
+	protected final JsonPresetType type;
 	
 	private final String copyId;
 	private final JsonObject copyData;
 	
-	public PresetBuilder(String namespace, String name, JsonPresetFactory<? extends JsonPreset> sup) {
+	public PresetBuilder(String namespace, String name, JsonPresetType type) {
 		this.name = name;
 		key = new ResourceLocation(namespace, name);
 		data = new JsonObject();
+		data.addProperty("presetType", type.getId());
 		data.addProperty("presetId", name);
 		data.addProperty("displayName", "preset."+namespace+"."+name);
-		this.sup = sup;
+		this.type = type;
 		copyId = "";
 		copyData = new JsonObject();
 		setupJsonData();
 	}
 	
-	public PresetBuilder(String namespace, String name, JsonPresetFactory<? extends JsonPreset> sup, JsonObject copy) {
+	public PresetBuilder(String namespace, String name, JsonPresetType type, JsonObject copy) {
 		this.name = name;
 		key = new ResourceLocation(namespace, name);
 		data = new JsonObject();
+		data.addProperty("presetType", type.getId());
 		data.addProperty("presetId", name);
 		data.addProperty("displayName", "preset."+namespace+"."+name);
-		this.sup = sup;
+		this.type = type;
 		copyId = copy.get("presetId").getAsString();
 		copyData = copy;
 		data.addProperty("copyId", copyId);
 		setupJsonData();
 	}
 	
-	public <T extends JsonPreset> T build() {
-		return (T) sup.create(getKey(), getData());
+	public <T extends JsonPresetStats> T build() {
+		return type.<T>createStats(key, getData());
 	}
 	
 	protected void setupJsonData() {

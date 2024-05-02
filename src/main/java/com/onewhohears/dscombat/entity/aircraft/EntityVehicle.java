@@ -40,8 +40,8 @@ import com.onewhohears.dscombat.data.parts.PartsManager;
 import com.onewhohears.dscombat.data.parts.StorageBoxData;
 import com.onewhohears.dscombat.data.radar.RadarData.RadarMode;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponSystem;
+import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.entity.IREmitter;
 import com.onewhohears.dscombat.entity.damagesource.AircraftDamageSource;
 import com.onewhohears.dscombat.entity.parts.EntityChainHook;
@@ -192,7 +192,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		this.defaultPreset = defaultPreset;
 		this.clientPresetId = UtilEntity.getEntityIdName(this);
 		this.preset = defaultPreset;
-		AircraftPreset ap = AircraftPresets.get().getPreset(defaultPreset);
+		AircraftPreset ap = AircraftPresets.get().get(defaultPreset);
 		this.item = ap.getItem();
 		this.blocksBuilding = true;
 		vehicleStats = createVehicleStats();
@@ -293,7 +293,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			LOGGER.warn("ERROR: preset "+preset+" doesn't exist!");
 		}
 		// get the preset data
-		AircraftPreset ap = AircraftPresets.get().getPreset(preset);
+		AircraftPreset ap = AircraftPresets.get().get(preset);
 		item = ap.getItem();
 		vehicleStats.readPresetData(ap);
 		soundManager.loadSounds(ap);
@@ -363,7 +363,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		partsManager.clientPartsSetup();
 		// PRESET STUFF
 		if (!AircraftPresets.get().has(preset)) return;
-		AircraftPreset ap = AircraftPresets.get().getPreset(preset);
+		AircraftPreset ap = AircraftPresets.get().get(preset);
 		vehicleStats.readPresetData(ap);
 		soundManager.loadSounds(ap);
 		item = ap.getItem();
@@ -2300,7 +2300,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     	refillFlares();
     	weaponSystem.refillAll();
 		for (EntityTurret t : getTurrets()) {
-			WeaponData wd = t.getWeaponData();
+			WeaponInstance<?> wd = t.getWeaponData();
 			if (wd == null) continue;
 			wd.addAmmo(100000);
 			t.setAmmo(wd.getCurrentAmmo());

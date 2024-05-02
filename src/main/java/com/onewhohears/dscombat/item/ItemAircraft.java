@@ -146,7 +146,7 @@ public class ItemAircraft extends Item {
 		CompoundTag tag = stack.getTag();
 		if (tag == null || !tag.contains("EntityTag")) {
 			String name = getPresetName(stack);
-			AircraftPreset ap = AircraftPresets.get().getPreset(name);
+			AircraftPreset ap = AircraftPresets.get().get(name);
 			if (ap == null) return UtilMCText.translatable(getDescriptionId()).append(" unknown preset!");
 			return ap.getDisplayNameComponent().setStyle(Style.EMPTY.withColor(0x55FFFF));
 		}

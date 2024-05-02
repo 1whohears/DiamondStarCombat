@@ -1,61 +1,46 @@
-package com.onewhohears.dscombat.data.weapon;
+package com.onewhohears.dscombat.data.weapon.stats;
 
 import static com.onewhohears.dscombat.DSCombatMod.MODID;
 
 import java.util.List;
 
 import com.google.gson.JsonObject;
-import com.onewhohears.dscombat.data.jsonpreset.JsonPreset;
-import com.onewhohears.dscombat.entity.weapon.EntityBunkerBuster;
-import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
+import com.onewhohears.dscombat.data.jsonpreset.JsonPresetInstance;
+import com.onewhohears.dscombat.data.weapon.AbstractWeaponBuilders;
+import com.onewhohears.dscombat.data.weapon.WeaponType;
+import com.onewhohears.dscombat.data.weapon.instance.BunkerBusterInstance;
 import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 
-public class BunkerBusterData extends BombData {
+public class BunkerBusterStats extends BombStats {
 	
 	public static class Builder extends AbstractWeaponBuilders.BunkerBusterBuilder<Builder> {
-		
-		protected Builder(String namespace, String name, JsonPresetFactory<? extends BunkerBusterData> sup) {
-			super(namespace, name, sup, WeaponType.BUNKER_BUSTER);
+		protected Builder(String namespace, String name) {
+			super(namespace, name, WeaponType.BUNKER_BUSTER);
 		}
-		
 		public static Builder bunkerBusterBuilder(String namespace, String name) {
-			return new Builder(namespace, name, (key, json) -> new BunkerBusterData(key, json));
+			return new Builder(namespace, name);
 		}
-		
 	}
 	
 	private final int blockStrength;
 	
-	public BunkerBusterData(ResourceLocation key, JsonObject json) {
-		super(key, json);
+	public BunkerBusterStats(ResourceLocation key, JsonObject json, WeaponType type) {
+		super(key, json, type);
 		blockStrength = json.get("blockStrength").getAsInt();
+	}
+	
+	@Override
+	public JsonPresetInstance<?> createPresetInstance() {
+		return new BunkerBusterInstance<>(this);
 	}
 	
 	public int getBlockStrength() {
 		return blockStrength;
 	}
-	
-	@Override
-	public EntityWeapon getShootEntity(WeaponShootParameters params) {
-		EntityBunkerBuster bomb = (EntityBunkerBuster) super.getShootEntity(params);
-		if (bomb == null) return null;
-		return bomb;
-	}
-	
-	@Override
-	public WeaponType getType() {
-		return WeaponType.BUNKER_BUSTER;
-	}
-	
-	@Override
-	public <T extends JsonPreset> T copy() {
-		return (T) new BunkerBusterData(getKey(), getJsonData());
-	}
-	
 	
 	@Override
 	public void addToolTips(List<Component> tips, boolean advanced) {
@@ -73,6 +58,14 @@ public class BunkerBusterData extends BombData {
 	@Override
 	public String getDefaultIconLocation() {
 		return MODID+":textures/ui/weapon_icons/bunker_buster.png";
+	}
+	
+	public boolean isBullet() {
+		return false;
+	}
+	
+	public boolean isAimAssist() {
+		return false;
 	}
 
 }

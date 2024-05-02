@@ -1,46 +1,38 @@
-package com.onewhohears.dscombat.data.weapon;
+package com.onewhohears.dscombat.data.weapon.stats;
 
 import java.util.List;
 
 import com.google.gson.JsonObject;
-import com.onewhohears.dscombat.entity.weapon.EntityMissile;
-import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
+import com.onewhohears.dscombat.data.weapon.AbstractWeaponBuilders;
+import com.onewhohears.dscombat.data.weapon.WeaponType;
 import com.onewhohears.dscombat.util.UtilMCText;
 import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.phys.Vec3;
 
-public abstract class MissileData extends BulletData {
+public abstract class MissileStats extends BulletStats {
 	
 	public static class Builder extends AbstractWeaponBuilders.MissileBuilder<Builder> {
-
-		protected Builder(String namespace, String name, JsonPresetFactory<? extends MissileData> sup, WeaponType type) {
-			super(namespace, name, sup, type);
+		protected Builder(String namespace, String name, WeaponType type) {
+			super(namespace, name, type);
 		}
-		
 		public static Builder posMissileBuilder(String namespace, String name) {
-			return new Builder(namespace, name, (key, json) -> new PosMissileData(key, json), WeaponType.POS_MISSILE);
+			return new Builder(namespace, name, WeaponType.POS_MISSILE);
 		}
-		
 		public static Builder irMissileBuilder(String namespace, String name) {
-			return new Builder(namespace, name, (key, json) -> new IRMissileData(key, json), WeaponType.IR_MISSILE);
+			return new Builder(namespace, name, WeaponType.IR_MISSILE);
 		}
-		
 		public static Builder trackMissileBuilder(String namespace, String name) {
-			return new Builder(namespace, name, (key, json) -> new TrackMissileData(key, json), WeaponType.TRACK_MISSILE);
+			return new Builder(namespace, name, WeaponType.TRACK_MISSILE);
 		}
-		
 		public static Builder torpedoBuilder(String namespace, String name) {
-			return new Builder(namespace, name, (key, json) -> new TorpedoData(key, json), WeaponType.TORPEDO);
+			return new Builder(namespace, name, WeaponType.TORPEDO);
 		}
-		
 		public static Builder antiRadarMissileBuilder(String namespace, String name) {
-			return new Builder(namespace, name, (key, json) -> new AntiRadarMissileData(key, json), WeaponType.ANTIRADAR_MISSILE);
+			return new Builder(namespace, name, WeaponType.ANTI_RADAR_MISSILE);
 		}
-		
 	}
 	
 	private final float turnRadius;
@@ -52,8 +44,8 @@ public abstract class MissileData extends BulletData {
 	private final int seeThroWater;
 	private final int seeThroBlock;
 	
-	public MissileData(ResourceLocation key, JsonObject json) {
-		super(key, json);
+	public MissileStats(ResourceLocation key, JsonObject json, WeaponType type) {
+		super(key, json, type);
 		turnRadius = json.get("turnRadius").getAsFloat();
 		acceleration = json.get("acceleration").getAsDouble();
 		fuseDist = json.get("fuseDist").getAsDouble();
@@ -94,21 +86,6 @@ public abstract class MissileData extends BulletData {
 	
 	public int getSeeThroBlock() {
 		return seeThroBlock;
-	}
-	
-	@Override
-	public EntityWeapon getShootEntity(WeaponShootParameters params) {
-		EntityMissile missile = (EntityMissile) super.getShootEntity(params);
-		if (missile == null) return null;
-		if (params.vehicle != null) {
-			missile.setPos(missile.position().add(params.vehicle.getDeltaMovement()));
-			Vec3 move = params.vehicle.getDeltaMovement();
-			if (params.isTurret) move = move.add(params.direction.scale(0.5));
-			missile.setDeltaMovement(move);
-		} else {
-			missile.setDeltaMovement(params.direction.scale(0.5));
-		}
-		return missile;
 	}
 	
 	@Override

@@ -14,7 +14,7 @@ import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.data.radar.RadarData;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
@@ -142,11 +142,11 @@ public class RadarOverlay extends VehicleOverlayComponent {
             int alt = UtilEntity.getDistFromSeaLevel(ping.getPosForClient().y, vehicle.level);
             String text = dist + " | " + alt;
             int color = 0xffff00;
-            WeaponData weapon = null;
+            WeaponInstance<?> weapon = null;
             if (seat.isTurret()) weapon = ((EntityTurret)seat).getWeaponData(); 
             else if (seat.canPassengerShootParentWeapon()) weapon = vehicle.weaponSystem.getSelected();
-            if (weapon != null && weapon.requiresRadar()) {
-            	if (dist <= weapon.getMobTurretRange()) {
+            if (weapon != null && weapon.getStats().requiresRadar()) {
+            	if (dist <= weapon.getStats().getMobTurretRange()) {
             		color = 0x00ff00;
             		text += " | O";
             	} else {

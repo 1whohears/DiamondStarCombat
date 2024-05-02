@@ -5,9 +5,8 @@ import javax.annotation.Nullable;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.crafting.IngredientStack;
-import com.onewhohears.dscombat.data.jsonpreset.JsonPreset;
+import com.onewhohears.dscombat.data.jsonpreset.JsonPresetType;
 import com.onewhohears.dscombat.data.jsonpreset.PresetBuilder;
-import com.onewhohears.dscombat.data.jsonpreset.JsonPreset.JsonPresetFactory;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
@@ -28,12 +27,12 @@ public abstract class DSCIngredientBuilder<C extends DSCIngredientBuilder<C>> ex
 		return ingredients;
 	}
 	
-	protected DSCIngredientBuilder(String namespace, String name, JsonPresetFactory<? extends JsonPreset> sup) {
-		super(namespace, name, sup);
+	protected DSCIngredientBuilder(String namespace, String name, JsonPresetType type) {
+		super(namespace, name, type);
 	}
 	
-	protected DSCIngredientBuilder(String namespace, String name, JsonPresetFactory<? extends JsonPreset> sup, JsonObject copy) {
-		super(namespace, name, sup, copy);
+	protected DSCIngredientBuilder(String namespace, String name, JsonPresetType type, JsonObject copy) {
+		super(namespace, name, type, copy);
 	}
 	
 	protected C addIngredient(@Nullable String itemId, @Nullable String tagId, int num) {

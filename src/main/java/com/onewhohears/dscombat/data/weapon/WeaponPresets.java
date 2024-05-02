@@ -8,14 +8,15 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.crafting.WeaponRecipe;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPresetReloadListener;
+import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeManager;
 
-public class WeaponPresets extends JsonPresetReloadListener<WeaponData> {
+public class WeaponPresets extends JsonPresetReloadListener<WeaponStats> {
 	
 	private static WeaponPresets instance;
 	
@@ -30,7 +31,7 @@ public class WeaponPresets extends JsonPresetReloadListener<WeaponData> {
 	
 	private Map<String, List<String>> compatiblePartMap = new HashMap<>();
 	private Map<String, List<String>> compatibleTurretMap = new HashMap<>();
-	private WeaponData[] weaponList;
+	private WeaponStats[] weaponList;
 	private WeaponRecipe[] weaponRecipes;
 	
 	public WeaponPresets() {
@@ -38,12 +39,25 @@ public class WeaponPresets extends JsonPresetReloadListener<WeaponData> {
 	}
 	
 	@Override
+	protected void registerPresetTypes() {
+		addPresetType(WeaponType.NONE);
+		addPresetType(WeaponType.BOMB);
+		addPresetType(WeaponType.BUNKER_BUSTER);
+		addPresetType(WeaponType.BULLET);
+		addPresetType(WeaponType.POS_MISSILE);
+		addPresetType(WeaponType.TRACK_MISSILE);
+		addPresetType(WeaponType.TORPEDO);
+		addPresetType(WeaponType.IR_MISSILE);
+		addPresetType(WeaponType.ANTI_RADAR_MISSILE);
+	}
+	
+	@Override
 	@Nullable
-	public WeaponData getPreset(String id) {
+	public WeaponStats get(String id) {
 		String updatedId = getUpdatedId(id);
 		if (updatedId == null) return null;
-		WeaponData data = presetMap.get(updatedId);
-		if (data != null) return data.copy();
+		WeaponStats data = presetMap.get(updatedId);
+		if (data != null) return data;
 		return null;
 	}
 	
@@ -56,14 +70,24 @@ public class WeaponPresets extends JsonPresetReloadListener<WeaponData> {
 	}
 	
 	@Override
+	public WeaponStats getFromNbt(CompoundTag nbt) {
+		if (nbt == null) return null;
+		WeaponStats w = super.getFromNbt(nbt);
+		if (w != null) return w;
+		if (!nbt.contains("weaponId")) return null;
+		String presetId = nbt.getString("weaponId");
+		return get(presetId);
+	}
+	
+	@Override
 	public boolean has(String id) {
 		return getUpdatedId(id) != null;
 	}
 	
 	@Override
-	public WeaponData[] getAllPresets() {
+	public WeaponStats[] getAll() {
 		if (weaponList == null) {
-			weaponList = presetMap.values().toArray(new WeaponData[presetMap.size()]);
+			weaponList = presetMap.values().toArray(new WeaponStats[presetMap.size()]);
 			sort(weaponList);
 		}
 		return weaponList;
@@ -110,56 +134,29 @@ public class WeaponPresets extends JsonPresetReloadListener<WeaponData> {
 	
 	protected void refreshCompatibility() {
 		compatiblePartMap.clear();
-		for (int i = 0; i < getAllPresets().length; ++i) {
-			String partId = getAllPresets()[i].getCompatibleWeaponPart();
+		for (int i = 0; i < getAll().length; ++i) {
+			String partId = getAll()[i].getCompatibleWeaponPart();
 			if (partId.isEmpty()) continue;
 			List<String> list = compatiblePartMap.get(partId);
 			if (list == null) {
 				list = new ArrayList<String>();
 				compatiblePartMap.put(partId, list);
 			}
-			list.add(getAllPresets()[i].getId());
+			list.add(getAll()[i].getId());
 		}
 		LOGGER.debug("WEAPON CAPATIBILITY: "+compatiblePartMap.toString());
 		compatibleTurretMap.clear();
-		for (int i = 0; i < getAllPresets().length; ++i) {
-			String turretId = getAllPresets()[i].getCompatibleTurret();
+		for (int i = 0; i < getAll().length; ++i) {
+			String turretId = getAll()[i].getCompatibleTurret();
 			if (turretId.isEmpty()) continue;
 			List<String> list = compatibleTurretMap.get(turretId);
 			if (list == null) {
 				list = new ArrayList<String>();
 				compatibleTurretMap.put(turretId, list);
 			}
-			list.add(getAllPresets()[i].getId());
+			list.add(getAll()[i].getId());
 		}
 		LOGGER.debug("TURRET CAPATIBILITY: "+compatibleTurretMap.toString());
-	}
-	
-	@Nullable
-	public WeaponData getFromJson(ResourceLocation key, JsonObject json) {
-		String id = json.get("type").getAsString();
-		WeaponData.WeaponType type = WeaponData.WeaponType.getById(id);
-		switch (type) {
-		case BOMB:
-			return new BombData(key, json);
-		case BULLET:
-			return new BulletData(key, json);
-		case IR_MISSILE:
-			return new IRMissileData(key, json);
-		case POS_MISSILE:
-			return new PosMissileData(key, json);
-		case TRACK_MISSILE:
-			return new TrackMissileData(key, json);
-		case ANTIRADAR_MISSILE:
-			return new AntiRadarMissileData(key, json);
-		case TORPEDO:
-			return new TorpedoData(key, json);
-		case BUNKER_BUSTER:
-			return new BunkerBusterData(key, json);
-		case NONE:
-			return null;
-		}
-		return null;
 	}
 	
 }

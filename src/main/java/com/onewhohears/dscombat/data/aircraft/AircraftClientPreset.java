@@ -6,12 +6,13 @@ import javax.annotation.Nullable;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.onewhohears.dscombat.data.jsonpreset.JsonPreset;
+import com.onewhohears.dscombat.data.jsonpreset.JsonPresetStats;
+import com.onewhohears.dscombat.data.jsonpreset.JsonPresetType;
 import com.onewhohears.dscombat.data.jsonpreset.PresetBuilder;
 
 import net.minecraft.resources.ResourceLocation;
 
-public class AircraftClientPreset extends JsonPreset {
+public class AircraftClientPreset extends JsonPresetStats {
 	
 	private static final UIPos defaultPos = new UIPos(0, 0);
 	
@@ -85,11 +86,11 @@ public class AircraftClientPreset extends JsonPreset {
 			return this;
 		}
 		
-		protected Builder(String namespace, String name, JsonPresetFactory<? extends JsonPreset> sup) {
+		protected Builder(String namespace, String name, JsonPresetType.JsonPresetStatsFactory<? extends JsonPresetStats> sup) {
 			super(namespace, name, sup);
 		}
 		
-		protected Builder(String namespace, String name, JsonPresetFactory<? extends JsonPreset> sup, AircraftClientPreset copy) {
+		protected Builder(String namespace, String name, JsonPresetType.JsonPresetStatsFactory<? extends JsonPresetStats> sup, AircraftClientPreset copy) {
 			super(namespace, name, sup, copy.getJsonData().deepCopy());
 		}
 		
@@ -104,7 +105,7 @@ public class AircraftClientPreset extends JsonPreset {
 	}
 
 	@Override
-	public <T extends JsonPreset> T copy() {
+	public <T extends JsonPresetStats> T copy() {
 		return (T) new AircraftClientPreset(getKey(), getJsonData());
 	}
 	

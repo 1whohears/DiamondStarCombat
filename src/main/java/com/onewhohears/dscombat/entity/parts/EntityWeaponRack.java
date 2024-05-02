@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.entity.parts;
 
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 
 import net.minecraft.world.entity.EntityType;
@@ -18,7 +18,7 @@ public class EntityWeaponRack extends EntityPart {
 	
 	public int getAmmoNum() {
 		if (!(getVehicle() instanceof EntityVehicle plane)) return 0;
-		WeaponData wd = plane.weaponSystem.get(getSlotId());
+		WeaponInstance<?> wd = plane.weaponSystem.get(getSlotId());
 		if (wd == null) return 0;
 		return wd.getCurrentAmmo();
 	}
@@ -27,9 +27,9 @@ public class EntityWeaponRack extends EntityPart {
 		if (weaponModelId == null) {
 			weaponModelId = "";
 			if (!(getVehicle() instanceof EntityVehicle plane)) return weaponModelId;
-			WeaponData wd = plane.weaponSystem.get(getSlotId());
+			WeaponInstance<?> wd = plane.weaponSystem.get(getSlotId());
 			if (wd == null) return weaponModelId;
-			weaponModelId = wd.getModelId();
+			weaponModelId = wd.getStats().getModelId();
 		}
 		return weaponModelId;
 	}

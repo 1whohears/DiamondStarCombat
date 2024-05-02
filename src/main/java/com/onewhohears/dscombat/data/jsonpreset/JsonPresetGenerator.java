@@ -19,7 +19,7 @@ import net.minecraft.resources.ResourceLocation;
 
 /**
  * use this to generate json preset files. 
- * call {@link JsonPresetGenerator#addPresetToGenerate(JsonPreset)} inside a
+ * call {@link JsonPresetGenerator#addPresetToGenerate(JsonPresetStats)} inside a
  * {@link JsonPresetGenerator#registerPresets()} override.
  * use a {@link PresetBuilder} to make the presets to register.
  * 
@@ -32,7 +32,7 @@ import net.minecraft.resources.ResourceLocation;
  * @author 1whohears
  * @param <T> the type of preset this reader builds from json files
  */
-public abstract class JsonPresetGenerator<T extends JsonPreset> implements DataProvider {
+public abstract class JsonPresetGenerator<T extends JsonPresetStats> implements DataProvider {
 	
 	protected final Logger LOGGER = LogUtils.getLogger();
 	protected final DataGenerator.PathProvider pathProvider;

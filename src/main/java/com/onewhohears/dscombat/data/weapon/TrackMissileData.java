@@ -13,8 +13,6 @@ import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.UtilMCText;
 import com.onewhohears.dscombat.util.UtilParse;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
@@ -35,27 +33,6 @@ public class TrackMissileData extends MissileData {
 		super(key, json);
 		targetType = TargetType.valueOf(json.get("targetType").getAsString());
 		active = UtilParse.getBooleanSafe(json, "activeTrack", true);
-	}
-	
-	@Override
-	public void readNBT(CompoundTag tag) {
-		super.readNBT(tag);
-	}
-	
-	@Override
-	public CompoundTag writeNbt() {
-		CompoundTag tag = super.writeNbt();
-		return tag;
-	}
-	
-	@Override
-	public void readBuffer(FriendlyByteBuf buffer) {
-		super.readBuffer(buffer);
-	}
-	
-	@Override
-	public void writeBuffer(FriendlyByteBuf buffer) {
-		super.writeBuffer(buffer);
 	}
 	
 	@Override

@@ -15,8 +15,6 @@ import com.onewhohears.dscombat.util.UtilMCText;
 import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
@@ -55,27 +53,6 @@ public class BulletData extends WeaponData {
 		this.explosionRadius = json.get("explosionRadius").getAsFloat();
 		this.innacuracy = json.get("innacuracy").getAsFloat();
 		this.explodeNum = UtilParse.getIntSafe(json, "explodeNum", 1);
-	}
-	
-	@Override
-	public void readNBT(CompoundTag tag) {
-		super.readNBT(tag);
-	}
-	
-	@Override
-	public CompoundTag writeNbt() {
-		CompoundTag tag = super.writeNbt();
-		return tag;
-	}
-	
-	@Override
-	public void readBuffer(FriendlyByteBuf buffer) {
-		super.readBuffer(buffer);
-	}
-	
-	@Override
-	public void writeBuffer(FriendlyByteBuf buffer) {
-		super.writeBuffer(buffer);
 	}
 	
 	@Override

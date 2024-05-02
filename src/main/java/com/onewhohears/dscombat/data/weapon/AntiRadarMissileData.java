@@ -11,7 +11,6 @@ import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
@@ -34,16 +33,6 @@ public class AntiRadarMissileData extends MissileData {
 	public CompoundTag writeNbt() {
 		CompoundTag tag = super.writeNbt();
 		return tag;
-	}
-	
-	@Override
-	public void readBuffer(FriendlyByteBuf buffer) {
-		super.readBuffer(buffer);
-	}
-	
-	@Override
-	public void writeBuffer(FriendlyByteBuf buffer) {
-		super.writeBuffer(buffer);
 	}
 	
 	@Override

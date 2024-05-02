@@ -69,16 +69,6 @@ public class RadarData extends JsonPreset {
 		return tag;
 	}
 	
-	public void readBuffer(FriendlyByteBuf buffer) {
-		// id String is read in DataSerializers
-		slotId = buffer.readUtf();
-	}
-	
-	public void writeBuffer(FriendlyByteBuf buffer) {
-		buffer.writeUtf(getId());
-		buffer.writeUtf(slotId);
-	}
-	
 	private int maxCheckDist = 150;
 	
 	public void resetPings(List<RadarPing> vehiclePings) {

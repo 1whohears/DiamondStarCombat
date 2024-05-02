@@ -15,8 +15,6 @@ import com.onewhohears.dscombat.entity.weapon.IRMissile;
 import com.onewhohears.dscombat.entity.weapon.IRMissile.IrTarget;
 import com.onewhohears.dscombat.util.UtilMCText;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
@@ -28,27 +26,6 @@ public class IRMissileData extends MissileData {
 	public IRMissileData(ResourceLocation key, JsonObject json) {
 		super(key, json);
 		flareResistance = json.get("flareResistance").getAsFloat();
-	}
-	
-	@Override
-	public void readNBT(CompoundTag tag) {
-		super.readNBT(tag);
-	}
-	
-	@Override
-	public CompoundTag writeNbt() {
-		CompoundTag tag = super.writeNbt();
-		return tag;
-	}
-	
-	@Override
-	public void readBuffer(FriendlyByteBuf buffer) {
-		super.readBuffer(buffer);
-	}
-	
-	@Override
-	public void writeBuffer(FriendlyByteBuf buffer) {
-		super.writeBuffer(buffer);
 	}
 	
 	@Override

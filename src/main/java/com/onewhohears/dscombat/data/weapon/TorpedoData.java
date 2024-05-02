@@ -7,35 +7,12 @@ import com.onewhohears.dscombat.data.jsonpreset.JsonPreset;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.entity.weapon.TorpedoMissile;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 
 public class TorpedoData extends TrackMissileData {
 	
 	public TorpedoData(ResourceLocation key, JsonObject json) {
 		super(key, json);
-	}
-	
-	@Override
-	public void readNBT(CompoundTag tag) {
-		super.readNBT(tag);
-	}
-	
-	@Override
-	public CompoundTag writeNbt() {
-		CompoundTag tag = super.writeNbt();
-		return tag;
-	}
-	
-	@Override
-	public void readBuffer(FriendlyByteBuf buffer) {
-		super.readBuffer(buffer);
-	}
-	
-	@Override
-	public void writeBuffer(FriendlyByteBuf buffer) {
-		super.writeBuffer(buffer);
 	}
 	
 	@Override

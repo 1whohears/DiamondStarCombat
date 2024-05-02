@@ -15,7 +15,6 @@ import com.onewhohears.dscombat.data.jsonpreset.JsonPreset;
 import com.onewhohears.dscombat.data.recipe.DSCIngredientBuilder;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
-import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.util.UtilEntity;
@@ -28,7 +27,6 @@ import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
@@ -103,20 +101,6 @@ public abstract class WeaponData extends JsonPreset {
 		UtilParse.writeVec3(tag, pos, "pos");
 		tag.putString("slotId", slotId);
 		return tag;
-	}
-	
-	public void readBuffer(FriendlyByteBuf buffer) {
-		// weaponId String is read in DataSerializers
-		currentAmmo = buffer.readInt();
-		slotId = buffer.readUtf();
-		pos = DataSerializers.VEC3.read(buffer);
-	}
-	
-	public void writeBuffer(FriendlyByteBuf buffer) {
-		buffer.writeUtf(getId());
-		buffer.writeInt(getCurrentAmmo());
-		buffer.writeUtf(slotId);
-		DataSerializers.VEC3.write(buffer, pos);
 	}
 	
 	public NonNullList<Ingredient> getIngredients() {

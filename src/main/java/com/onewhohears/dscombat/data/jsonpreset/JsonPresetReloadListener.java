@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
+import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
 import org.slf4j.Logger;
 
 import com.google.gson.JsonElement;
@@ -24,7 +25,7 @@ import net.minecraft.util.profiling.ProfilerFiller;
 /**
  * a json file from datapacks reader for this mod's preset system.
  * comes with ways to sort the presets and synch the preset info with the client.
- * see {@link com.onewhohears.dscombat.data.aircraft.AircraftPresets},
+ * see {@link VehiclePresets},
  * {@link com.onewhohears.dscombat.data.weapon.WeaponPresets},
  * and {@link com.onewhohears.dscombat.data.radar.RadarPresets} for examples.
  * 

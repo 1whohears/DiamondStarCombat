@@ -6,7 +6,7 @@ import java.util.function.Supplier;
 
 import com.mojang.datafixers.util.Pair;
 import com.onewhohears.dscombat.common.network.IPacket;
-import com.onewhohears.dscombat.crafting.AircraftRecipe;
+import com.onewhohears.dscombat.crafting.VehicleRecipe;
 import com.onewhohears.dscombat.util.UtilItem;
 
 import net.minecraft.core.BlockPos;
@@ -47,11 +47,11 @@ public class ToServerCraftPlane extends IPacket {
 		ctx.get().enqueueWork(() -> {
 			success.set(true);
 			ServerPlayer player = ctx.get().getSender();
-			Optional<Pair<ResourceLocation, AircraftRecipe>> option = player.level.getRecipeManager().getRecipeFor(
-					AircraftRecipe.Type.INSTANCE, player.getInventory(), player.level, 
+			Optional<Pair<ResourceLocation, VehicleRecipe>> option = player.level.getRecipeManager().getRecipeFor(
+					VehicleRecipe.Type.INSTANCE, player.getInventory(), player.level,
 					new ResourceLocation(recipeId));
 			if (option.isEmpty()) return;
-			AircraftRecipe recipe = option.get().getSecond();
+			VehicleRecipe recipe = option.get().getSecond();
 			UtilItem.handleInventoryRecipe(player, recipe, pos);
 		});
 		ctx.get().setPacketHandled(true);

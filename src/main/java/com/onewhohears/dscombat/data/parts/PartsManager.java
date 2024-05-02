@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
 import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.common.network.toclient.ToClientAircraftFuel;
+import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleFuel;
 import com.onewhohears.dscombat.data.parts.EngineData.EngineType;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.item.ItemSeat;
@@ -302,7 +302,7 @@ public class PartsManager {
 		addFuel(amount);
 		if (updateClient && parent.tickCount % 100 == 0) {
 			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
-					new ToClientAircraftFuel(parent));
+					new ToClientVehicleFuel(parent));
 		}
 	}
 	

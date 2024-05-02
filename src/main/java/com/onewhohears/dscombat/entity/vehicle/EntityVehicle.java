@@ -10,6 +10,7 @@ import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
+import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleControl;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
@@ -23,18 +24,18 @@ import com.onewhohears.dscombat.common.container.menu.VehicleContainerMenu;
 import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddForceMoment;
-import com.onewhohears.dscombat.common.network.toclient.ToClientAircraftControl;
+import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleControl;
 import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleExplode;
-import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftCollide;
-import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftMoveRot;
-import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
-import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
-import com.onewhohears.dscombat.data.aircraft.DSCPhyCons;
-import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
-import com.onewhohears.dscombat.data.aircraft.VehicleInputManager;
-import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager;
-import com.onewhohears.dscombat.data.aircraft.VehicleStats;
-import com.onewhohears.dscombat.data.aircraft.VehicleTextureManager;
+import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleCollide;
+import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleMoveRot;
+import com.onewhohears.dscombat.data.vehicle.VehiclePreset;
+import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
+import com.onewhohears.dscombat.data.vehicle.DSCPhyCons;
+import com.onewhohears.dscombat.data.vehicle.EntityScreenData;
+import com.onewhohears.dscombat.data.vehicle.VehicleInputManager;
+import com.onewhohears.dscombat.data.vehicle.VehicleSoundManager;
+import com.onewhohears.dscombat.data.vehicle.VehicleStats;
+import com.onewhohears.dscombat.data.vehicle.VehicleTextureManager;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartsManager;
 import com.onewhohears.dscombat.data.parts.StorageBoxData;
@@ -43,7 +44,7 @@ import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponSystem;
 import com.onewhohears.dscombat.entity.IREmitter;
-import com.onewhohears.dscombat.entity.damagesource.AircraftDamageSource;
+import com.onewhohears.dscombat.entity.damagesource.VehicleDamageSource;
 import com.onewhohears.dscombat.entity.parts.EntityChainHook;
 import com.onewhohears.dscombat.entity.parts.EntityGimbal;
 import com.onewhohears.dscombat.entity.parts.EntityPart;
@@ -192,7 +193,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		this.defaultPreset = defaultPreset;
 		this.clientPresetId = UtilEntity.getEntityIdName(this);
 		this.preset = defaultPreset;
-		AircraftPreset ap = AircraftPresets.get().getPreset(defaultPreset);
+		VehiclePreset ap = VehiclePresets.get().getPreset(defaultPreset);
 		this.item = ap.getItem();
 		this.blocksBuilding = true;
 		vehicleStats = createVehicleStats();
@@ -220,11 +221,11 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		for (int i = 0; i < hitboxes.length; i++) hitboxes[i].setId(id+i+1);
 	}
 	
-	public RotableHitbox[] createRotableHitboxes(AircraftPreset ap) {
+	public RotableHitbox[] createRotableHitboxes(VehiclePreset ap) {
 		return ap.getRotableHitboxes(this);
 	}
 	
-	public EntityScreenData[] createEntityScreens(AircraftPreset ap) {
+	public EntityScreenData[] createEntityScreens(VehiclePreset ap) {
 		return ap.getEntityScreens();
 	}
 	
@@ -275,7 +276,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	/**
 	 * if this is a brand new entity and has no nbt custom data then the fresh entity nbt will
-	 * merge with this vehicle's preset nbt. see {@link AircraftPresets}.
+	 * merge with this vehicle's preset nbt. see {@link VehiclePresets}.
 	 * you could summon a vehicle with nbt {preset:"some preset name"} to override the {@link EntityVehicle#defaultPreset}
  	 */
 	@Override
@@ -288,12 +289,12 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		// if not use the default preset
 		if (preset.isEmpty()) preset = defaultPreset;
 		// check if the preset exists
-		else if (!AircraftPresets.get().has(preset)) {
+		else if (!VehiclePresets.get().has(preset)) {
 			preset = defaultPreset;
 			LOGGER.warn("ERROR: preset "+preset+" doesn't exist!");
 		}
 		// get the preset data
-		AircraftPreset ap = AircraftPresets.get().getPreset(preset);
+		VehiclePreset ap = VehiclePresets.get().getPreset(preset);
 		item = ap.getItem();
 		vehicleStats.readPresetData(ap);
 		soundManager.loadSounds(ap);
@@ -362,8 +363,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		partsManager.setPartSlots(slots);
 		partsManager.clientPartsSetup();
 		// PRESET STUFF
-		if (!AircraftPresets.get().has(preset)) return;
-		AircraftPreset ap = AircraftPresets.get().getPreset(preset);
+		if (!VehiclePresets.get().has(preset)) return;
+		VehiclePreset ap = VehiclePresets.get().getPreset(preset);
 		vehicleStats.readPresetData(ap);
 		soundManager.loadSounds(ap);
 		item = ap.getItem();
@@ -485,7 +486,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	/**
 	 * SERVER SIDE ONLY
 	 * called externally to sync a vehicle's inputs with client's that aren't controlling this vehicle.
-	 * normally used by {@link com.onewhohears.dscombat.common.network.toserver.ToServerAircraftControl}
+	 * normally used by {@link ToServerVehicleControl}
 	 * which is called by {@link com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents}
 	 * to the controlling player can sync their inputs with every other client.
 	 * could also be used by a server side AI to sync a vehicle's inputs with all client's.
@@ -494,7 +495,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		if (level.isClientSide) return;
 		PacketHandler.INSTANCE.send(
 			PacketDistributor.TRACKING_ENTITY.with(() -> this),
-			new ToClientAircraftControl(this));
+			new ToClientVehicleControl(this));
 	}
 	
 	/**
@@ -560,7 +561,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			else hurt(DamageSource.FLY_INTO_WALL, amount);
 		} else if (level.isClientSide && isControlledByLocalInstance()) {
 			PacketHandler.INSTANCE.sendToServer(
-				new ToServerAircraftCollide(getId(), amount, isFall));
+				new ToServerVehicleCollide(getId(), amount, isFall));
 		}
 	}
 	
@@ -598,7 +599,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			double d4 = Math.max(d2 * d2 + d3 * d3, 0.1);
 			entity.push(d2/d4*push_factor, 0.2, d3/d4*push_factor);
 			if (push_factor > 2) {
-				entity.hurt(AircraftDamageSource.roadKill(this), (float)push_factor*2f);
+				entity.hurt(VehicleDamageSource.roadKill(this), (float)push_factor*2f);
 			}
 		}
 	}
@@ -1304,7 +1305,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	private void syncMoveRot() {
 		if (!level.isClientSide || tickCount % 10 != 0 || firstTick) return;
-		PacketHandler.INSTANCE.sendToServer(new ToServerAircraftMoveRot(this));
+		PacketHandler.INSTANCE.sendToServer(new ToServerVehicleMoveRot(this));
 	}
 	
 	/**
@@ -1745,10 +1746,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	protected boolean checkExplodeWhenKilled(DamageSource source) {
 		if (source.getMsgId().equals(DamageSource.FALL.getMsgId())) {
-			explode(AircraftDamageSource.fall(this));
+			explode(VehicleDamageSource.fall(this));
 			return true;
 		} else if (source.getMsgId().equals(DamageSource.FLY_INTO_WALL.getMsgId())) {
-			explode(AircraftDamageSource.collide(this));
+			explode(VehicleDamageSource.collide(this));
 			return true;
 		}
 		return false;

@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.client.entityscreen;
 
-import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
+import com.onewhohears.dscombat.data.vehicle.EntityScreenData;
 
 import net.minecraft.world.phys.Vec3;
 

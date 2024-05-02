@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.init;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.block.entity.AircraftBlockEntity;
+import com.onewhohears.dscombat.block.entity.VehicleBlock;
 import com.onewhohears.dscombat.block.entity.WeaponsBlockEntity;
 
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -20,7 +20,7 @@ public class ModBlockEntities {
 	
 	public static final RegistryObject<BlockEntityType<WeaponsBlockEntity>> WEAPONS_BLOCK_ENTITY = BLOCK_ENTITIES.register("weapons_block_entity", 
 			() -> BlockEntityType.Builder.of(WeaponsBlockEntity::new, ModBlocks.WEAPONS_BLOCK.get()).build(null));
-	public static final RegistryObject<BlockEntityType<AircraftBlockEntity>> AIRCRAFT_BLOCK_ENTITY = BLOCK_ENTITIES.register("aircraft_block_entity", 
-			() -> BlockEntityType.Builder.of(AircraftBlockEntity::new, ModBlocks.AIRCRAFT_BLOCK.get()).build(null));
+	public static final RegistryObject<BlockEntityType<VehicleBlock>> AIRCRAFT_BLOCK_ENTITY = BLOCK_ENTITIES.register("aircraft_block_entity",
+			() -> BlockEntityType.Builder.of(VehicleBlock::new, ModBlocks.AIRCRAFT_BLOCK.get()).build(null));
 	
 }

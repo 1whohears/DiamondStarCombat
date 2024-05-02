@@ -5,7 +5,7 @@ import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientDataPackSynch;
 import com.onewhohears.dscombat.common.network.toclient.ToClientSynchGameRules;
-import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
+import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
 import com.onewhohears.dscombat.data.radar.RadarPresets;
 import com.onewhohears.dscombat.data.weapon.NonTickingMissileManager;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
@@ -77,14 +77,14 @@ public final class CommonForgeEvents {
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void serverStoppingEvent(ServerStoppingEvent event) {
-		AircraftPresets.close();
+		VehiclePresets.close();
 		WeaponPresets.close();
 		RadarPresets.close();
 	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void addReloadListener(AddReloadListenerEvent event) {
-		event.addListener(AircraftPresets.get());
+		event.addListener(VehiclePresets.get());
 		event.addListener(WeaponPresets.get());
 		event.addListener(RadarPresets.get());
 	}

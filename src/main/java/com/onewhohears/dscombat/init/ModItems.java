@@ -1,22 +1,22 @@
 package com.onewhohears.dscombat.init;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.aircraft.presets.AlexisPresets;
-import com.onewhohears.dscombat.data.aircraft.presets.BoatPresets;
-import com.onewhohears.dscombat.data.aircraft.presets.BroncoPresets;
-import com.onewhohears.dscombat.data.aircraft.presets.CarPresets;
-import com.onewhohears.dscombat.data.aircraft.presets.EdenPresets;
-import com.onewhohears.dscombat.data.aircraft.presets.FelixPresets;
-import com.onewhohears.dscombat.data.aircraft.presets.HeliPresets;
-import com.onewhohears.dscombat.data.aircraft.presets.JasonPresets;
-import com.onewhohears.dscombat.data.aircraft.presets.JaviPresets;
-import com.onewhohears.dscombat.data.aircraft.presets.PlanePresets;
-import com.onewhohears.dscombat.data.aircraft.presets.SubPresets;
-import com.onewhohears.dscombat.data.aircraft.presets.TankPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.AlexisPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.BoatPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.BroncoPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.CarPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.EdenPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.FelixPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.HeliPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.JasonPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.JaviPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.PlanePresets;
+import com.onewhohears.dscombat.data.vehicle.presets.SubPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.TankPresets;
 import com.onewhohears.dscombat.data.parts.BuffData.BuffType;
 import com.onewhohears.dscombat.data.parts.EngineData.EngineType;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.item.ItemAircraft;
+import com.onewhohears.dscombat.item.ItemVehicle;
 import com.onewhohears.dscombat.item.ItemAmmo;
 import com.onewhohears.dscombat.item.ItemBuffPart;
 import com.onewhohears.dscombat.item.ItemChainHook;
@@ -392,77 +392,77 @@ public class ModItems {
 	
 	// PLANES
 	public static final RegistryObject<Item> JAVI_PLANE = ITEMS.register("javi_plane", 
-			() -> new ItemAircraft(ModEntities.JAVI_PLANE.get(), 
+			() -> new ItemVehicle(ModEntities.JAVI_PLANE.get(),
 					JaviPresets.DEFAULT_JAVI_PLANE.getId()));
 	public static final RegistryObject<Item> ALEXIS_PLANE = ITEMS.register("alexis_plane", 
-			() -> new ItemAircraft(ModEntities.ALEXIS_PLANE.get(), 
+			() -> new ItemVehicle(ModEntities.ALEXIS_PLANE.get(),
 					AlexisPresets.DEFAULT_ALEXIS_PLANE.getId()));
 	public static final RegistryObject<Item> WOODEN_PLANE = ITEMS.register("wooden_plane", 
-			() -> new ItemAircraft(ModEntities.WOODEN_PLANE.get(), 
+			() -> new ItemVehicle(ModEntities.WOODEN_PLANE.get(),
 					PlanePresets.DEFAULT_WOODEN_PLANE.getId()));
 	public static final RegistryObject<Item> E3SENTRY_PLANE = ITEMS.register("e3sentry_plane", 
-			() -> new ItemAircraft(ModEntities.E3SENTRY_PLANE.get(), 
+			() -> new ItemVehicle(ModEntities.E3SENTRY_PLANE.get(),
 					PlanePresets.DEFAULT_E3SENTRY_PLANE.getId()));
 	public static final RegistryObject<Item> BRONCO_PLANE = ITEMS.register("bronco_plane", 
-			() -> new ItemAircraft(ModEntities.BRONCO_PLANE.get(), 
+			() -> new ItemVehicle(ModEntities.BRONCO_PLANE.get(),
 					BroncoPresets.DEFAULT_BRONCO_PLANE.getId()));
 	public static final RegistryObject<Item> FELIX_PLANE = ITEMS.register("felix_plane", 
-			() -> new ItemAircraft(ModEntities.FELIX_PLANE.get(), 
+			() -> new ItemVehicle(ModEntities.FELIX_PLANE.get(),
 					FelixPresets.DEFAULT_FELIX_PLANE.getId()));
 	public static final RegistryObject<Item> JASON_PLANE = ITEMS.register("jason_plane", 
-			() -> new ItemAircraft(ModEntities.JASON_PLANE.get(), 
+			() -> new ItemVehicle(ModEntities.JASON_PLANE.get(),
 					JasonPresets.DEFAULT_JASON_PLANE.getId()));
 	public static final RegistryObject<Item> EDEN_PLANE = ITEMS.register("eden_plane", 
-			() -> new ItemAircraft(ModEntities.EDEN_PLANE.get(), 
+			() -> new ItemVehicle(ModEntities.EDEN_PLANE.get(),
 					EdenPresets.DEFAULT_EDEN_PLANE.getId()));
 	
 	// HELICOPTERS
 	public static final RegistryObject<Item> NOAH_CHOPPER = ITEMS.register("noah_chopper", 
-			() -> new ItemAircraft(ModEntities.NOAH_CHOPPER.get(), 
+			() -> new ItemVehicle(ModEntities.NOAH_CHOPPER.get(),
 					HeliPresets.DEFAULT_NOAH_CHOPPER.getId()));
 	
 	// CARS
 	public static final RegistryObject<Item> ORANGE_TESLA = ITEMS.register("orange_tesla", 
-			() -> new ItemAircraft(ModEntities.ORANGE_TESLA.get(), 
+			() -> new ItemVehicle(ModEntities.ORANGE_TESLA.get(),
 					CarPresets.DEFAULT_ORANGE_TESLA.getId()));
 	public static final RegistryObject<Item> AXCEL_TRUCK = ITEMS.register("axcel_truck", 
-			() -> new ItemAircraft(ModEntities.AXCEL_TRUCK.get(), 
+			() -> new ItemVehicle(ModEntities.AXCEL_TRUCK.get(),
 					CarPresets.DEFAULT_AXCEL_TRUCK.getId()));
 	
 	// TANKS
 	public static final RegistryObject<Item> MRBUDGER_TANK = ITEMS.register("mrbudger_tank", 
-			() -> new ItemAircraft(ModEntities.MRBUDGER_TANK.get(), 
+			() -> new ItemVehicle(ModEntities.MRBUDGER_TANK.get(),
 					TankPresets.DEFAULT_MRBUDGER_TANK.getId()));
 	public static final RegistryObject<Item> SMALL_ROLLER = ITEMS.register("small_roller", 
-			() -> new ItemAircraft(ModEntities.SMALL_ROLLER.get(), 
+			() -> new ItemVehicle(ModEntities.SMALL_ROLLER.get(),
 					TankPresets.DEFAULT_SMALL_ROLLER.getId()));
 	
 	// BOATS
 	public static final RegistryObject<Item> NATHAN_BOAT = ITEMS.register("nathan_boat", 
-			() -> new ItemAircraft(ModEntities.NATHAN_BOAT.get(), 
+			() -> new ItemVehicle(ModEntities.NATHAN_BOAT.get(),
 					BoatPresets.DEFAULT_NATHAN_BOAT.getId()));
 	public static final RegistryObject<Item> GRONK_BATTLESHIP = ITEMS.register("gronk_battleship", 
-			() -> new ItemAircraft(ModEntities.GRONK_BATTLESHIP.get(), 
+			() -> new ItemVehicle(ModEntities.GRONK_BATTLESHIP.get(),
 					BoatPresets.DEFAULT_GRONK_BATTLESHIP.getId()));
 	public static final RegistryObject<Item> DESTROYER = ITEMS.register("destroyer", 
-			() -> new ItemAircraft(ModEntities.DESTROYER.get(), 
+			() -> new ItemVehicle(ModEntities.DESTROYER.get(),
 					BoatPresets.DEFAULT_DESTROYER.getId()));
 	public static final RegistryObject<Item> CRUISER = ITEMS.register("cruiser", 
-			() -> new ItemAircraft(ModEntities.CRUISER.get(), 
+			() -> new ItemVehicle(ModEntities.CRUISER.get(),
 					BoatPresets.DEFAULT_CRUISER.getId()));
 	public static final RegistryObject<Item> CORVETTE = ITEMS.register("corvette", 
-			() -> new ItemAircraft(ModEntities.CORVETTE.get(), 
+			() -> new ItemVehicle(ModEntities.CORVETTE.get(),
 					BoatPresets.DEFAULT_CORVETTE.getId()));
 	public static final RegistryObject<Item> AIRCRAFT_CARRIER = ITEMS.register("aircraft_carrier", 
-			() -> new ItemAircraft(ModEntities.AIRCRAFT_CARRIER.get(), 
+			() -> new ItemVehicle(ModEntities.AIRCRAFT_CARRIER.get(),
 					BoatPresets.DEFAULT_AIRCRAFT_CARRIER.getId()));
 	
 	// SUBMARINES
 	public static final RegistryObject<Item> ANDOLF_SUB = ITEMS.register("andolf_sub", 
-			() -> new ItemAircraft(ModEntities.ANDOLF_SUB.get(), 
+			() -> new ItemVehicle(ModEntities.ANDOLF_SUB.get(),
 					SubPresets.DEFAULT_ANDOLF_SUB.getId()));
 	public static final RegistryObject<Item> GOOGLE_SUB = ITEMS.register("google_sub", 
-			() -> new ItemAircraft(ModEntities.GOOGLE_SUB.get(), 
+			() -> new ItemVehicle(ModEntities.GOOGLE_SUB.get(),
 					SubPresets.DEFAULT_GOOGLE_SUB.getId()));
 		
 }

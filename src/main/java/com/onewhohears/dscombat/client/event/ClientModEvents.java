@@ -3,17 +3,17 @@ package com.onewhohears.dscombat.client.event;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.client.model.EntityModelParachute;
-import com.onewhohears.dscombat.client.model.aircraft.EntityModelAndolfSub;
-import com.onewhohears.dscombat.client.model.aircraft.EntityModelAxcelTruck;
-import com.onewhohears.dscombat.client.model.aircraft.EntityModelE3Sentry;
-import com.onewhohears.dscombat.client.model.aircraft.EntityModelMrBudgerTank;
-import com.onewhohears.dscombat.client.model.aircraft.EntityModelNathanBoat;
-import com.onewhohears.dscombat.client.model.aircraft.EntityModelNoahChopper;
-import com.onewhohears.dscombat.client.model.aircraft.EntityModelOrangeTesla;
-import com.onewhohears.dscombat.client.model.aircraft.EntityModelSmallRoller;
-import com.onewhohears.dscombat.client.model.aircraft.EntityModelTestPlane;
-import com.onewhohears.dscombat.client.model.aircraft.EntityModelWoodenPlane;
-import com.onewhohears.dscombat.client.model.obj.ObjAircraftModel;
+import com.onewhohears.dscombat.client.model.vehicle.EntityModelAndolfSub;
+import com.onewhohears.dscombat.client.model.vehicle.EntityModelAxcelTruck;
+import com.onewhohears.dscombat.client.model.vehicle.EntityModelE3Sentry;
+import com.onewhohears.dscombat.client.model.vehicle.EntityModelMrBudgerTank;
+import com.onewhohears.dscombat.client.model.vehicle.EntityModelNathanBoat;
+import com.onewhohears.dscombat.client.model.vehicle.EntityModelNoahChopper;
+import com.onewhohears.dscombat.client.model.vehicle.EntityModelOrangeTesla;
+import com.onewhohears.dscombat.client.model.vehicle.EntityModelSmallRoller;
+import com.onewhohears.dscombat.client.model.vehicle.EntityModelTestPlane;
+import com.onewhohears.dscombat.client.model.vehicle.EntityModelWoodenPlane;
+import com.onewhohears.dscombat.client.model.obj.ObjVehicleModel;
 import com.onewhohears.dscombat.client.model.obj.ObjEntityModel;
 import com.onewhohears.dscombat.client.model.obj.ObjEntityModels;
 import com.onewhohears.dscombat.client.model.obj.ObjPartModel;
@@ -56,14 +56,14 @@ import com.onewhohears.dscombat.client.particle.ContrailParticle;
 import com.onewhohears.dscombat.client.particle.FlareParticle;
 import com.onewhohears.dscombat.client.particle.LargeSmokeCloudParticle;
 import com.onewhohears.dscombat.client.particle.ShrapnelParticle;
-import com.onewhohears.dscombat.client.renderer.RendererEntityAircraft;
+import com.onewhohears.dscombat.client.renderer.RendererEntityVehicle;
 import com.onewhohears.dscombat.client.renderer.RendererEntityInvisible;
 import com.onewhohears.dscombat.client.renderer.RendererEntityParachute;
 import com.onewhohears.dscombat.client.renderer.RendererEntityTurret;
 import com.onewhohears.dscombat.client.renderer.RendererEntityWeapon;
-import com.onewhohears.dscombat.client.renderer.RendererObjAircraft;
+import com.onewhohears.dscombat.client.renderer.RendererObjVehicle;
 import com.onewhohears.dscombat.client.renderer.RendererObjEntity;
-import com.onewhohears.dscombat.data.aircraft.AircraftClientPresets;
+import com.onewhohears.dscombat.data.vehicle.VehicleClientPresets;
 import com.onewhohears.dscombat.entity.weapon.EntityBomb;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.init.ModEntities;
@@ -127,71 +127,71 @@ public final class ClientModEvents {
 		EntityModelSet models = Minecraft.getInstance().getEntityModels();
 		// PLANES
 		event.registerEntityRenderer(ModEntities.JAVI_PLANE.get(), 
-				(context) -> new RendererObjAircraft<>(context,
+				(context) -> new RendererObjVehicle<>(context,
                         new JaviPlaneModel()));
 		event.registerEntityRenderer(ModEntities.ALEXIS_PLANE.get(), 
-				(context) -> new RendererObjAircraft<>(context,
+				(context) -> new RendererObjVehicle<>(context,
                         new AlexisPlaneModel()));
 		event.registerEntityRenderer(ModEntities.WOODEN_PLANE.get(), 
-				(context) -> new RendererEntityAircraft<>(context,
+				(context) -> new RendererEntityVehicle<>(context,
                         new EntityModelWoodenPlane(models.bakeLayer(EntityModelWoodenPlane.LAYER_LOCATION))));
 		event.registerEntityRenderer(ModEntities.E3SENTRY_PLANE.get(), 
-				(context) -> new RendererEntityAircraft<>(context,
+				(context) -> new RendererEntityVehicle<>(context,
                         new EntityModelE3Sentry(models.bakeLayer(EntityModelE3Sentry.LAYER_LOCATION))));
 		event.registerEntityRenderer(ModEntities.BRONCO_PLANE.get(), 
-				(context) -> new RendererObjAircraft<>(context,
+				(context) -> new RendererObjVehicle<>(context,
                         new BroncoPlaneModel()));
 		event.registerEntityRenderer(ModEntities.FELIX_PLANE.get(), 
-				(context) -> new RendererObjAircraft<>(context,
+				(context) -> new RendererObjVehicle<>(context,
                         new FelixPlaneModel()));
 		event.registerEntityRenderer(ModEntities.JASON_PLANE.get(), 
-				(context) -> new RendererObjAircraft<>(context,
+				(context) -> new RendererObjVehicle<>(context,
                         new JasonPlaneModel()));
 		event.registerEntityRenderer(ModEntities.EDEN_PLANE.get(), 
-				(context) -> new RendererObjAircraft<>(context,
+				(context) -> new RendererObjVehicle<>(context,
                         new EdenPlaneModel()));
 		// HELICOPTERS
 		event.registerEntityRenderer(ModEntities.NOAH_CHOPPER.get(), 
-				(context) -> new RendererEntityAircraft<>(context,
+				(context) -> new RendererEntityVehicle<>(context,
                         new EntityModelNoahChopper(models.bakeLayer(EntityModelNoahChopper.LAYER_LOCATION))));
 		// TANKS
 		event.registerEntityRenderer(ModEntities.MRBUDGER_TANK.get(), 
-				(context) -> new RendererEntityAircraft<>(context,
+				(context) -> new RendererEntityVehicle<>(context,
                         new EntityModelMrBudgerTank(models.bakeLayer(EntityModelMrBudgerTank.LAYER_LOCATION))));
 		event.registerEntityRenderer(ModEntities.SMALL_ROLLER.get(), 
-				(context) -> new RendererEntityAircraft<>(context,
+				(context) -> new RendererEntityVehicle<>(context,
                         new EntityModelSmallRoller(models.bakeLayer(EntityModelSmallRoller.LAYER_LOCATION))));
 		event.registerEntityRenderer(ModEntities.ORANGE_TESLA.get(), 
-				(context) -> new RendererEntityAircraft<>(context,
+				(context) -> new RendererEntityVehicle<>(context,
                         new EntityModelOrangeTesla(models.bakeLayer(EntityModelOrangeTesla.LAYER_LOCATION))));
 		event.registerEntityRenderer(ModEntities.AXCEL_TRUCK.get(), 
-				(context) -> new RendererEntityAircraft<>(context,
+				(context) -> new RendererEntityVehicle<>(context,
                         new EntityModelAxcelTruck(models.bakeLayer(EntityModelAxcelTruck.LAYER_LOCATION))));
 		// BOATS
 		event.registerEntityRenderer(ModEntities.NATHAN_BOAT.get(), 
-				(context) -> new RendererEntityAircraft<>(context,
+				(context) -> new RendererEntityVehicle<>(context,
                         new EntityModelNathanBoat(models.bakeLayer(EntityModelNathanBoat.LAYER_LOCATION))));
 		event.registerEntityRenderer(ModEntities.GRONK_BATTLESHIP.get(), 
-				(context) -> new RendererObjAircraft<>(context,
-                        new ObjAircraftModel<>("battleship")));
+				(context) -> new RendererObjVehicle<>(context,
+                        new ObjVehicleModel<>("battleship")));
 		event.registerEntityRenderer(ModEntities.DESTROYER.get(), 
-				(context) -> new RendererObjAircraft<>(context,
-                        new ObjAircraftModel<>("destroyer")));
+				(context) -> new RendererObjVehicle<>(context,
+                        new ObjVehicleModel<>("destroyer")));
 		event.registerEntityRenderer(ModEntities.CRUISER.get(), 
-				(context) -> new RendererObjAircraft<>(context,
-                        new ObjAircraftModel<>("cruiser")));
+				(context) -> new RendererObjVehicle<>(context,
+                        new ObjVehicleModel<>("cruiser")));
 		event.registerEntityRenderer(ModEntities.CORVETTE.get(), 
-				(context) -> new RendererObjAircraft<>(context,
+				(context) -> new RendererObjVehicle<>(context,
                         new CorvetteModel()));
 		event.registerEntityRenderer(ModEntities.AIRCRAFT_CARRIER.get(), 
-				(context) -> new RendererObjAircraft<>(context,
-                        new ObjAircraftModel<>("carrier")));
+				(context) -> new RendererObjVehicle<>(context,
+                        new ObjVehicleModel<>("carrier")));
 		// SUBMARINES
 		event.registerEntityRenderer(ModEntities.ANDOLF_SUB.get(), 
-				(context) -> new RendererEntityAircraft<>(context,
+				(context) -> new RendererEntityVehicle<>(context,
                         new EntityModelAndolfSub(models.bakeLayer(EntityModelAndolfSub.LAYER_LOCATION))));
 		event.registerEntityRenderer(ModEntities.GOOGLE_SUB.get(), 
-				(context) -> new RendererObjAircraft<>(context,
+				(context) -> new RendererObjVehicle<>(context,
                         new GoogleSubModel()));
 		// BULLETS
 		event.registerEntityRenderer(ModEntities.BULLET.get(), 
@@ -371,7 +371,7 @@ public final class ClientModEvents {
 	
 	@SubscribeEvent
 	public static void registerClientReloadListener(RegisterClientReloadListenersEvent event) {
-		event.registerReloadListener(AircraftClientPresets.get());
+		event.registerReloadListener(VehicleClientPresets.get());
 		event.registerReloadListener(ObjEntityModels.get());
 	}
 	

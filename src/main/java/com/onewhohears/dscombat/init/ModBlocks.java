@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.init;
 import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.block.custom.AircraftBlock;
+import com.onewhohears.dscombat.block.custom.VehicleBlock;
 import com.onewhohears.dscombat.block.custom.WeaponsBlock;
 
 import net.minecraft.world.item.BlockItem;
@@ -42,7 +42,7 @@ public class ModBlocks {
 			() -> new WeaponsBlock(Block.Properties.of(Material.METAL)
                     .strength(1.5f).noOcclusion().explosionResistance(6f)), ModItems.WEAPONS);
 	public static final RegistryObject<Block> AIRCRAFT_BLOCK = registerBlock("aircraft_block", 
-			() -> new AircraftBlock(Block.Properties.of(Material.METAL)
+			() -> new VehicleBlock(Block.Properties.of(Material.METAL)
                     .strength(1.5f).noOcclusion().explosionResistance(6f)), ModItems.AIRCRAFT);
 	
 	public static final RegistryObject<Block> ALUMINUM_BLOCK = registerBlock("aluminum_block", 

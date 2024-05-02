@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.init;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.crafting.AircraftRecipe;
+import com.onewhohears.dscombat.crafting.VehicleRecipe;
 import com.onewhohears.dscombat.crafting.BucketConvertRecipe;
 import com.onewhohears.dscombat.crafting.FlareDispenserLoadRecipe;
 import com.onewhohears.dscombat.crafting.FuelTankLoadRecipe;
@@ -39,8 +39,8 @@ public class ModRecipes {
 	public static final RegistryObject<SimpleRecipeSerializer<TurretUnloadRecipe>> TURRET_UNLOAD = RECIPES.register("turret_unload_recipe", 
 			() -> new SimpleRecipeSerializer<>(TurretUnloadRecipe::new));
 	
-	public static final RegistryObject<RecipeSerializer<AircraftRecipe>> AIRCRAFT_RECIPE_SERIALIZER = 
-			RECIPES.register(AircraftRecipe.Serializer.ID.getPath(), () -> AircraftRecipe.Serializer.INSTANCE);
+	public static final RegistryObject<RecipeSerializer<VehicleRecipe>> AIRCRAFT_RECIPE_SERIALIZER =
+			RECIPES.register(VehicleRecipe.Serializer.ID.getPath(), () -> VehicleRecipe.Serializer.INSTANCE);
 	public static final RegistryObject<RecipeSerializer<WeaponRecipe>> WEAPON_RECIPE_SERIALIZER = 
 			RECIPES.register(WeaponRecipe.Serializer.ID.getPath(), () -> WeaponRecipe.Serializer.INSTANCE);
 	public static final RegistryObject<RecipeSerializer<BucketConvertRecipe>> BUCKET_CONVERT_RECIPE_SERIALIZER = 

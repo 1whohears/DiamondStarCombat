@@ -147,21 +147,21 @@
 	"entity.dscombat.google_sub": "Neptune Sub",
 	
 	"entity.minecraft.villager.dscombat.weapons_engineer": "Weapons Engineer",
-	"entity.minecraft.villager.dscombat.aircraft_engineer": "Aircraft Engineer",
+	"entity.minecraft.villager.dscombat.aircraft_engineer": "Vehicle Engineer",
 	
 	"block.dscombat.weapons_block": "Weapons Workbench",
-	"block.dscombat.aircraft_block": "Aircraft Workbench",
+	"block.dscombat.aircraft_block": "Vehicle Workbench",
 	"block.dscombat.aluminum_block": "Aluminum Block",
 	
 	"container.dscombat.plane_menu": "Vehicle Menu",
 	"container.dscombat.vehicle_storage": "Vehicle Storage",
 	"container.dscombat.weapons_block_menu": "Weapons Workbench",
-	"container.dscombat.aircraft_block_menu": "Aircraft Workbench",
+	"container.dscombat.aircraft_block_menu": "Vehicle Workbench",
 	
 	"itemGroup.items": "DSCombat Items",
 	"itemGroup.parts": "DSCombat Parts",
 	"itemGroup.weapons": "DSCombat Weapons",
-	"itemGroup.aircraft": "DSCombat Aircraft",
+	"itemGroup.vehicle": "DSCombat Vehicles",
 	
 	"item.dscombat.raw_aluminum": "Raw Aluminum",
 	"item.dscombat.aluminum_ingot": "Aluminum Ingot",

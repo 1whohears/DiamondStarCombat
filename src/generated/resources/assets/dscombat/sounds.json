@@ -271,7 +271,8 @@
   },
   "vehicle_hit": {
     "sounds": [
-      "dscombat:vehicle/vehicle_hit"
+      "dscombat:vehicle/vehicle_hit_01",
+      "dscombat:vehicle/vehicle_hit_02"
     ],
     "subtitle": "sounds.dscombat.vehicle_hit"
   }

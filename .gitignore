@@ -39,6 +39,7 @@ aoa_graphs/~$aoa_graphs.xlsx
 /.idea/runConfigurations/runData.xml
 /.idea/runConfigurations/runGameTestServer.xml
 /.idea/runConfigurations/runServer.xml
+.idea
 .factorypath
 /.apt_generated/
 /.apt_generated_tests/

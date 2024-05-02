@@ -7,7 +7,7 @@ import javax.annotation.Nullable;
 import com.onewhohears.dscombat.client.texture.VehicleDynamicTextures;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleTexture;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.util.UtilEntity;
 
 import io.netty.buffer.ByteBuf;

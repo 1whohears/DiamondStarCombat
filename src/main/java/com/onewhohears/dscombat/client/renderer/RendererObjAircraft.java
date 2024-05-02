@@ -7,7 +7,7 @@ import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.client.entityscreen.VehicleScreenMapReader;
 import com.onewhohears.dscombat.client.model.obj.ObjAircraftModel;
 import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 

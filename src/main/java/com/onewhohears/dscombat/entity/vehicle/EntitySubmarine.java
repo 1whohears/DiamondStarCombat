@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.entity.aircraft;
+package com.onewhohears.dscombat.entity.vehicle;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.data.aircraft.VehicleStats;

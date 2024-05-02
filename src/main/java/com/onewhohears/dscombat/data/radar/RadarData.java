@@ -8,7 +8,7 @@ import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPreset;
 import com.onewhohears.dscombat.data.jsonpreset.PresetBuilder;
 import com.onewhohears.dscombat.data.weapon.RadarTargetTypes;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.dscombat.util.UtilEntity;

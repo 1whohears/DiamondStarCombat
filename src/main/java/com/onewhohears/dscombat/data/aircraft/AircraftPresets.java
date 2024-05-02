@@ -28,7 +28,7 @@ public class AircraftPresets extends JsonPresetReloadListener<AircraftPreset> {
 	private AircraftRecipe[] tanks, helis, planes, boats;
 	
 	public AircraftPresets() {
-		super("aircraft");
+		super("vehicle");
 	}
 	
 	public AircraftPreset[] getAllPresets() {

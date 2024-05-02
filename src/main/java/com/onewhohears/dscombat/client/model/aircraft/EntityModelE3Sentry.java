@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.model.EntityControllableModel;
-import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
+import com.onewhohears.dscombat.entity.vehicle.EntityPlane;
 
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;

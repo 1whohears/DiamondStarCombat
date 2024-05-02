@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.common.network.IPacket;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.DataSerializers;
 
 import net.minecraft.network.FriendlyByteBuf;

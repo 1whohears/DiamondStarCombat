@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.entity.damagesource;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.util.UtilMCText;
 import com.onewhohears.dscombat.util.UtilParse;
 

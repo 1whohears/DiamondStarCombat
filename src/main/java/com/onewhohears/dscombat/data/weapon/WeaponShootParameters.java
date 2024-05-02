@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.data.weapon;
 
 import javax.annotation.Nullable;
 
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;

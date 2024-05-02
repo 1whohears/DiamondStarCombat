@@ -12,7 +12,7 @@ import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.logging.LogUtils;
 import com.onewhohears.dscombat.client.model.obj.ObjEntityModels;
 import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.mixin.CompositeRenderableAccess;
 import com.onewhohears.dscombat.mixin.CompositeRenderableComponentAccess;
 import com.onewhohears.dscombat.mixin.CompositeRenderableMeshAccess;

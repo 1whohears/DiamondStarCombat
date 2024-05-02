@@ -11,9 +11,9 @@ import com.onewhohears.dscombat.data.jsonpreset.JsonPreset;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.data.recipe.DSCIngredientBuilder;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
-import com.onewhohears.dscombat.entity.aircraft.RotableHitbox;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle.AircraftType;
+import com.onewhohears.dscombat.entity.vehicle.RotableHitbox;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.util.UtilGsonMerge;
 import com.onewhohears.dscombat.util.UtilGsonMerge.ConflictStrategy;
@@ -191,7 +191,7 @@ public class AircraftPreset extends JsonPreset{
 			return setInt("aircraft_type", aircraft_type.ordinal());
 		}
 		/**
-		 * use to make preset appear in aircraft work bench.
+		 * use to make preset appear in vehicle work bench.
 		 * Builder.create/Builder.createFromCopy make presets that
 		 * aren't craftable by default. 
 		 */

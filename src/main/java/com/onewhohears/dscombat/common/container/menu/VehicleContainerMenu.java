@@ -7,7 +7,7 @@ import com.onewhohears.dscombat.data.aircraft.AircraftClientPreset;
 import com.onewhohears.dscombat.data.aircraft.AircraftClientPreset.UIPos;
 import com.onewhohears.dscombat.data.aircraft.AircraftClientPresets;
 import com.onewhohears.dscombat.data.parts.PartSlot;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModContainers;
 
 import net.minecraft.world.Container;

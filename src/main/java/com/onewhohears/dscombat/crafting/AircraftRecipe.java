@@ -6,7 +6,7 @@ import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModBlocks;
 import com.onewhohears.dscombat.util.UtilItem;
 

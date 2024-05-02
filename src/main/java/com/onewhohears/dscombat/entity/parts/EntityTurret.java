@@ -13,7 +13,7 @@ import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.entity.ai.goal.TurretShootGoal;
 import com.onewhohears.dscombat.entity.ai.goal.TurretTargetGoal;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.dscombat.util.UtilMCText;
 import com.onewhohears.dscombat.util.UtilParse;

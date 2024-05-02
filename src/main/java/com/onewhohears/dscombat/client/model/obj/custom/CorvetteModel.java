@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.client.model.obj.custom;
 
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.model.obj.ObjAircraftModel;
-import com.onewhohears.dscombat.entity.aircraft.EntityBoat;
+import com.onewhohears.dscombat.entity.vehicle.EntityBoat;
 
 public class CorvetteModel extends ObjAircraftModel<EntityBoat> {
 

@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.util;
 import java.util.Random;
 
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModParticles;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 

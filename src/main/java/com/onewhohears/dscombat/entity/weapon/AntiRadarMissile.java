@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.onewhohears.dscombat.data.weapon.AntiRadarMissileData;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;

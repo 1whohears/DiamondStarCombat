@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
-import com.onewhohears.dscombat.entity.aircraft.RotableHitbox;
+import com.onewhohears.dscombat.entity.vehicle.RotableHitbox;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;

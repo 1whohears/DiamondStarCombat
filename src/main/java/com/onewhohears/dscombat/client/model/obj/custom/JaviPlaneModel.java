@@ -5,7 +5,7 @@ import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.model.obj.ObjAircraftModel;
-import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
+import com.onewhohears.dscombat.entity.vehicle.EntityPlane;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraftforge.client.model.renderable.CompositeRenderable.Transforms;

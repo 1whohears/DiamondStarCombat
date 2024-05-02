@@ -11,7 +11,7 @@ import com.mojang.logging.LogUtils;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAircraftFuel;
 import com.onewhohears.dscombat.data.parts.EngineData.EngineType;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.item.ItemSeat;
 import com.onewhohears.dscombat.util.UtilParse;
 

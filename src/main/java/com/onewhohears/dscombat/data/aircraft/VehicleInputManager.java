@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.data.aircraft;
 
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftControl;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 
 import net.minecraft.network.FriendlyByteBuf;
 

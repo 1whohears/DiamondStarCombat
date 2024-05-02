@@ -114,7 +114,7 @@ public class AircraftPresetGenerator extends JsonPresetGenerator<AircraftPreset>
 	}
     
     public AircraftPresetGenerator(DataGenerator output) {
-		super(output, "aircraft");
+		super(output, "vehicle");
 		INSTANCE = this;
 	}
     

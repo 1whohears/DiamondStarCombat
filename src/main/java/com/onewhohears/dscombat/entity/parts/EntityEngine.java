@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.entity.parts;
 
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.util.UtilParticles;
 
 import net.minecraft.world.entity.EntityType;

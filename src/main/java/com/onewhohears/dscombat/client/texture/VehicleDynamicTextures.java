@@ -11,7 +11,7 @@ import com.mojang.logging.LogUtils;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.aircraft.VehicleTextureManager.BlendMode;
 import com.onewhohears.dscombat.data.aircraft.VehicleTextureManager.TextureLayer;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.DynamicTexture;

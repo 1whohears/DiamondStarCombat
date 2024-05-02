@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.client.overlay.components;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.util.UtilParse;
 
 import java.util.Objects;

@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.item;
 import java.util.List;
 import java.util.function.Consumer;
 
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.util.UtilMCText;
 
@@ -22,13 +22,13 @@ public class ItemCreativeWand extends Item implements VehicleInteractItem {
 	public final String[] translatableTooltips;
 	public final Consumer<EntityVehicle> onServerInteract;
 	/**
-	 * @param onServerInteract runs on server side only when right click aircraft with this wand
+	 * @param onServerInteract runs on server side only when right click vehicle with this wand
 	 */
 	public ItemCreativeWand(Consumer<EntityVehicle> onServerInteract) {
 		this(onServerInteract, "");
 	}
 	/**
-	 * @param onServerInteract runs on server side only when right click aircraft with this wand
+	 * @param onServerInteract runs on server side only when right click vehicle with this wand
 	 * @param translatableTooltips translatable strings for info about this wand
 	 */
 	public ItemCreativeWand(Consumer<EntityVehicle> onServerInteract, String... translatableTooltips) {

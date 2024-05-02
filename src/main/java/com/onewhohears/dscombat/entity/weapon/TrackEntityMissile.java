@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.entity.weapon;
 
 import com.onewhohears.dscombat.data.weapon.TrackMissileData;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;

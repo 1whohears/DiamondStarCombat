@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.entity.aircraft;
+package com.onewhohears.dscombat.entity.vehicle;
 
 import java.util.List;
 

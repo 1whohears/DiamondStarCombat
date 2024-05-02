@@ -8,8 +8,8 @@ import javax.annotation.Nullable;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.world.InteractionHand;
@@ -211,7 +211,7 @@ public class EntitySeat extends EntityPart {
 	}
 	
 	public float getCameraYOffset() {
-		// TODO 4.2 option to change turret camera position. so camera could be under the aircraft
+		// TODO 4.2 option to change turret camera position. so camera could be under the vehicle
 		return 0;
 	}
 	

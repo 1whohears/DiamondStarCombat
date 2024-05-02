@@ -13,7 +13,7 @@ public class DSCMiniGames {
 	public static void registerGames() {
 		/*
 		 * TODO 3.2 create and register the following DSC mini game modes
-		 * easy/fair dog fight resets (both players tp to runway when an aircraft is destroyed)
+		 * easy/fair dog fight resets (both players tp to runway when an vehicle is destroyed)
 		 * bomb the flag/s
 		 */
 		MiniGameManager.registerGame("simple_dog_fight", (instanceId, gameTypeId) -> 

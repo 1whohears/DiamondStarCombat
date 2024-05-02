@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.data.aircraft;
 
 import com.onewhohears.dscombat.Config;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.util.UtilClientSafeSounds;
 import com.onewhohears.dscombat.util.UtilSound;

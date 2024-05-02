@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.entity.parts;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;

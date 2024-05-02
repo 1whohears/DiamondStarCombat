@@ -1,7 +1,7 @@
-package com.onewhohears.dscombat.entity.aircraft.custom;
+package com.onewhohears.dscombat.entity.vehicle.custom;
 
 import com.onewhohears.dscombat.data.aircraft.presets.HeliPresets;
-import com.onewhohears.dscombat.entity.aircraft.EntityHelicopter;
+import com.onewhohears.dscombat.entity.vehicle.EntityHelicopter;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;

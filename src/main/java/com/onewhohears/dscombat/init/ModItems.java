@@ -76,7 +76,7 @@ public class ModItems {
 		}
 	};
 	
-	public static final CreativeModeTab AIRCRAFT = new CreativeModeTab("aircraft") {
+	public static final CreativeModeTab AIRCRAFT = new CreativeModeTab("vehicle") {
 		@Override
 		public ItemStack makeIcon() {
 			return new ItemStack(ModItems.JAVI_PLANE.get());

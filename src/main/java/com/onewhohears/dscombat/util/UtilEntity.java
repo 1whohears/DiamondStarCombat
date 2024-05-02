@@ -8,7 +8,7 @@ import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 

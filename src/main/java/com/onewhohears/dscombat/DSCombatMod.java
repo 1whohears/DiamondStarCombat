@@ -16,7 +16,7 @@ import com.onewhohears.dscombat.data.tag.EntityTypeTagGen;
 import com.onewhohears.dscombat.data.tag.FluidTagGen;
 import com.onewhohears.dscombat.data.tag.ItemTagGen;
 import com.onewhohears.dscombat.data.weapon.WeaponPresetGenerator;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModArgumentTypes;
 import com.onewhohears.dscombat.init.ModBlockEntities;

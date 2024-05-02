@@ -13,7 +13,7 @@ import com.onewhohears.dscombat.client.sounds.VehicleEngineSoundInstance;
 import com.onewhohears.dscombat.client.sounds.VehicleWindSoundInstance;
 import com.onewhohears.dscombat.data.aircraft.DSCPhyCons;
 import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager.PassengerSoundPack;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;

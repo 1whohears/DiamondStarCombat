@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.entity.aircraft;
+package com.onewhohears.dscombat.entity.vehicle;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -181,7 +181,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	@Nullable protected Player chainHolderPlayer;
 	@Nullable protected EntityChainHook chainHolderHook;
 	
-	// TODO 5.4 aircraft visually breaks apart when damaged
+	// TODO 5.4 vehicle visually breaks apart when damaged
 	// TODO 5.6 place and remove external parts from outside the vehicle
 	// TODO 5.7 an additional vehicle gui to control certain auxiliary functions (landing gear, jettison tanks/weapons)
 	// TODO 2.5 add chaff
@@ -1171,7 +1171,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 	
 	/**
-	 * @return this mass of the aircraft plus the mass of the parts
+	 * @return this mass of the vehicle plus the mass of the parts
 	 */
 	public float getTotalMass() {
 		if (Float.isNaN(totalMass)) {
@@ -2094,7 +2094,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     }
     
     /**
-     * @return the heat value this aircraft always emits 
+     * @return the heat value this vehicle always emits
      */
     public final float getIdleHeat() {
     	return vehicleStats.idleheat;
@@ -2249,7 +2249,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     }
     
     /**
-     * @return the total fuel this aircraft can hold
+     * @return the total fuel this vehicle can hold
      */
     public float getMaxFuel() {
     	return maxFuel;

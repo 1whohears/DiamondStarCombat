@@ -11,7 +11,7 @@ import com.onewhohears.dscombat.common.container.menu.VehicleContainerMenu;
 import com.onewhohears.dscombat.common.container.slot.PartItemSlot;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftToItem;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.client.Minecraft;

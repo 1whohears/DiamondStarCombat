@@ -28,7 +28,8 @@ public class ModSounds {
 	public static final SoundEvent BIPLANE_1 = registerSoundEvent("biplane_1", "vehicle/engine/biplane_1", "sounds.dscombat.biplane_1");
 	public static final SoundEvent HELI_1 = registerSoundEvent("heli_1", "vehicle/engine/heli_1", "sounds.dscombat.heli_1");
 	public static final SoundEvent JET_1 = registerSoundEvent("jet_1", "vehicle/engine/jet_1", "sounds.dscombat.jet_1");
-	public static final SoundEvent VEHICLE_HIT_1 = registerSoundEvent("vehicle_hit", "vehicle/vehicle_hit", "sounds.dscombat.vehicle_hit");
+	public static final SoundEvent VEHICLE_HURT_COLLISION_METAL = registerSoundEvent("vehicle_hurt_collision_metal", "vehicle/hurt/collision", "sounds.dscombat.vehicle_hit");
+	public static final SoundEvent VEHICLE_HURT_PROJECTILE_METAL = registerSoundEvent("vehicle_hurt_projectile_metal", "vehicle/hurt/projectile", "sounds.dscombat.vehicle.hurt.projectile_metal");
 	public static final SoundEvent TANK_1 = registerSoundEvent("tank_1", "vehicle/engine/tank_1", "sounds.dscombat.tank_1");
 	public static final SoundEvent BOAT_1 = registerSoundEvent("boat_1", "vehicle/engine/boat_1", "sounds.dscombat.boat_1");
 	public static final SoundEvent SUB_1 = registerSoundEvent("sub_1", "vehicle/engine/sub_1", "sounds.dscombat.sub_1");

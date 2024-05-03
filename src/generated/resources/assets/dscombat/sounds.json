@@ -269,11 +269,16 @@
     ],
     "subtitle": "sounds.dscombat.tank_1"
   },
-  "vehicle_hit": {
+  "vehicle_hurt_collision_metal": {
     "sounds": [
-      "dscombat:vehicle/vehicle_hit_01",
-      "dscombat:vehicle/vehicle_hit_02"
+      "dscombat:vehicle/hurt/collision/metal_01"
     ],
     "subtitle": "sounds.dscombat.vehicle_hit"
+  },
+  "vehicle_hurt_projectile_metal": {
+    "sounds": [
+      "dscombat:vehicle/hurt/projectile/metal_01"
+    ],
+    "subtitle": "sounds.dscombat.vehicle.hurt.projectile_metal"
   }
 }

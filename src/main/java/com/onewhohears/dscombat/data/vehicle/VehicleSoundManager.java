@@ -9,9 +9,12 @@ import com.onewhohears.dscombat.util.UtilSound;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 
 public class VehicleSoundManager {
+	private static final RandomSource RANDOM_SRC = RandomSource.create();
 	
 	public final EntityVehicle parent;
 	
@@ -83,10 +86,18 @@ public class VehicleSoundManager {
 	}
 	
 	public void onHurt(DamageSource source, float amount) {
-		if (!parent.level.isClientSide && parent.isOperational()) {
-			UtilSound.sendDelayedSound(ModSounds.VEHICLE_HIT_1, parent.position(), 
-					160, parent.level.dimension(), 0.5f, 1f);
-		}
+		if (this.parent.level.isClientSide || !this.parent.isOperational()) return;
+
+		float volume = Mth.clamp(amount * 0.5F, 0.12F,1.88F);
+		// keep this clamped close to 1.0F since audio duration noticeably changes for larger values
+		float pitch = Mth.clamp(1.0F + ((RANDOM_SRC.nextFloat() - 0.5F) / 2.94F), 0.83F, 1.17F);
+
+		final SoundEvent forBroadcast = soundForHurt(source);
+
+		UtilSound.sendDelayedSound(
+				forBroadcast,
+				parent.position(), 160, parent.level.dimension(), volume, pitch
+		);
 	}
 	
 	public void onRadioSongUpdate(String song) {
@@ -94,8 +105,35 @@ public class VehicleSoundManager {
 		if (song.isEmpty()) return;
 		UtilClientSafeSounds.aircraftRadio(parent, song);
 	}
+
+	/*
+		HELPER METHODS BEGIN HERE
+	 */
+
+	/**
+	 * made this since we want compatibility... conceivably we're going to run into inappropriate SFX being played
+	 * for some arbitrary <code>DamageSource</code> in the future. Since some mods don't actually implement
+	 * <code>DamageSource</code> properly (e.g. CGM bullets return false for #isProjectile), this manual
+	 * handling is necessary...
+	 * @author kawaiicakes
+	 * @param source the <code>DamageSource</code> hurting the vehicle.
+	 * @return the appropriate-sounding <code>SoundEvent</code>.
+	 */
+	// TODO: make vehicles have a "material" associated similarly to blocks for the purpose of sound interactions
+	public static SoundEvent soundForHurt(DamageSource source) {
+		final SoundEvent toReturn;
+
+		if (source.isProjectile() || source.msgId.equals("bullet")) {
+			toReturn = ModSounds.VEHICLE_HURT_PROJECTILE_METAL;
+		} else {
+			// TODO: continue this and also create more SoundEvents (for fire, explosions, etc)
+			toReturn = ModSounds.VEHICLE_HURT_COLLISION_METAL;
+		}
+
+		return toReturn;
+	}
 	
-	public static enum PassengerSoundPack {
+	public enum PassengerSoundPack {
 		SAME_AS_VEHICLE("same_as_vehicle", 
 				null, null, null, null,
 				null, null, null, 
@@ -119,11 +157,11 @@ public class VehicleSoundManager {
 		public final SoundEvent missileAlert, rwrWarn, irLockTone, radarLock;
 		public final SoundEvent engineFire, fuelLeak, bingoFuel;
 		public final SoundEvent stallAlert, stallWarn, pullUp;
-		private PassengerSoundPack(String id, 
-				SoundEvent missileAlert, SoundEvent rwrWarn, 
-				SoundEvent irLockTone, SoundEvent radarLock,
-				SoundEvent engineFire, SoundEvent fuelLeak, SoundEvent bingoFuel,
-				SoundEvent stallAlert, SoundEvent stallWarn, SoundEvent pullUp) {
+		PassengerSoundPack(String id,
+                           SoundEvent missileAlert, SoundEvent rwrWarn,
+                           SoundEvent irLockTone, SoundEvent radarLock,
+                           SoundEvent engineFire, SoundEvent fuelLeak, SoundEvent bingoFuel,
+                           SoundEvent stallAlert, SoundEvent stallWarn, SoundEvent pullUp) {
 			this.id = id;
 			this.missileAlert = missileAlert;
 			this.rwrWarn = rwrWarn;

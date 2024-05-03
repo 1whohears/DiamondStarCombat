@@ -151,7 +151,7 @@ public class UtilClientPacket {
 
 	/**
 	 * The modelling of sound attenuation here is dependent on range and distance; not volume.
-	 * Attenuation is closer to 1.0 where the ratio of distance to range is 0.
+	 * Attenuation coefficient is closer to 1.0 where the ratio of distance to range is 0.
 	 * <br><br>
 	 * -kawaiicakes
 	 */

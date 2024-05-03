@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.util;
 
 import java.util.List;
+import java.util.Objects;
 
 import com.onewhohears.dscombat.client.screen.VehiclePaintScreen;
 import com.onewhohears.dscombat.data.vehicle.DSCPhyCons;
@@ -21,6 +22,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -146,18 +148,27 @@ public class UtilClientPacket {
 		Minecraft m = Minecraft.getInstance();
 		impactType.onClientImpact(m.level, pos);
 	}
-	
+
+	/**
+	 * The modelling of sound attenuation here is dependent on range and distance; not volume.
+	 * Attenuation is closer to 1.0 where the ratio of distance to range is 0.
+	 * <br><br>
+	 * -kawaiicakes
+	 */
 	public static void delayedSound(String soundId, Vec3 pos, float range, float volume, float pitch) {
 		SoundEvent sound = UtilSound.getSoundById(soundId, null);
 		if (sound == null) return;
+
 		Minecraft m = Minecraft.getInstance();
-		float dist = (float) m.getCameraEntity().position().distanceTo(pos);
-		float vmod = 1 - dist / range;
-		if (vmod < 0) vmod = 0;
+
+		float dist = (float) Objects.requireNonNull(m.getCameraEntity()).position().distanceTo(pos);
+		float attenuationCoefficient = (float) Mth.clamp((1 / Math.pow(((dist + (range / 5)) / (range * 2)), 2)) / 100, 0.0, 1.0);
+
 		SimpleSoundInstance ssi = new SimpleSoundInstance(sound, SoundSource.PLAYERS, 
-				volume*vmod, pitch, RandomSource.create(UtilParticles.random.nextLong()), 
+				volume * attenuationCoefficient, pitch, RandomSource.create(UtilParticles.random.nextLong()),
 				pos.x, pos.y, pos.z);
 		int delay = (int)(dist  / DSCPhyCons.VEL_SOUND);
+
 		m.getSoundManager().playDelayed(ssi, delay);
 	}
 	

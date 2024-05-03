@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.init;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.PartData;
-import com.onewhohears.dscombat.data.radar.RadarData.RadarMode;
+import com.onewhohears.dscombat.data.radar.RadarStats.RadarMode;
 import com.onewhohears.dscombat.item.ItemPart;
 import com.onewhohears.dscombat.util.UtilItem;
 

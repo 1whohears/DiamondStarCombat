@@ -59,11 +59,11 @@ public abstract class JsonPresetType {
 	}
 	
 	public <T extends JsonPresetStats> T createStats(ResourceLocation key, JsonObject data) {
-		return (T) statsFactory.create(key, data, this);
+		return (T) statsFactory.create(key, data);
 	}
 
 	public interface JsonPresetStatsFactory<T extends JsonPresetStats> {
-		T create(ResourceLocation key, JsonObject data, JsonPresetType type);
+		T create(ResourceLocation key, JsonObject data);
 	}
 	
 }

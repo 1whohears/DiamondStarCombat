@@ -38,7 +38,7 @@ import com.onewhohears.dscombat.data.aircraft.VehicleTextureManager;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartsManager;
 import com.onewhohears.dscombat.data.parts.StorageBoxData;
-import com.onewhohears.dscombat.data.radar.RadarData.RadarMode;
+import com.onewhohears.dscombat.data.radar.RadarStats.RadarMode;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.weapon.WeaponSystem;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;

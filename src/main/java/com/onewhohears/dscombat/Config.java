@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager.PassengerSoundPack;
-import com.onewhohears.dscombat.data.radar.RadarData.RadarMode;
+import com.onewhohears.dscombat.data.radar.RadarStats.RadarMode;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 

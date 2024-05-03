@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceLocation;
  * 
  * see {@link com.onewhohears.dscombat.data.aircraft.AircraftPreset},
  * {@link com.onewhohears.dscombat.data.weapon.AbstractWeaponBuilders},
- * and {@link com.onewhohears.dscombat.data.radar.RadarData} for example builders.
+ * and {@link com.onewhohears.dscombat.data.radar.RadarStats} for example builders.
  * 
  * @author 1whohears
  * @param <C>

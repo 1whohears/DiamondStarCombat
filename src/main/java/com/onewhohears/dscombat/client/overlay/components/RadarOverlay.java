@@ -12,7 +12,7 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.event.forgebus.ClientRenderEvents;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
-import com.onewhohears.dscombat.data.radar.RadarData;
+import com.onewhohears.dscombat.data.radar.RadarStats;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
@@ -58,7 +58,7 @@ public class RadarOverlay extends VehicleOverlayComponent {
         RadarSystem radar = vehicle.radarSystem;
         if (!radar.hasRadar()) return;
         // LOOK AT PING DATA
-        List<RadarData.RadarPing> pings = radar.getClientRadarPings();
+        List<RadarStats.RadarPing> pings = radar.getClientRadarPings();
         if (pings.isEmpty()) return;
         int selected = radar.getClientSelectedPingIndex();
         int hover = DSCClientInputs.getRadarHoverIndex();
@@ -78,7 +78,7 @@ public class RadarOverlay extends VehicleOverlayComponent {
         boolean hovering = false;
         int size = Config.CLIENT.radarPingOverlaySize.get();
         for (int i = 0; i < pings.size(); ++i) {
-            RadarData.RadarPing ping = pings.get(i);
+            RadarStats.RadarPing ping = pings.get(i);
             // SCREEN
             Vec3 dp = ping.getPosForClient().subtract(vehicle.position());
             double dist = dp.multiply(1, 0, 1).length();
@@ -137,7 +137,7 @@ public class RadarOverlay extends VehicleOverlayComponent {
         if (!hovering) DSCClientInputs.resetRadarHoverIndex();
         // LOOK AT PING DATA LAYER ORDER FIX
         if (hover != -1 && hover < pings.size()) {
-            RadarData.RadarPing ping = pings.get(hover);
+            RadarStats.RadarPing ping = pings.get(hover);
             int dist = (int) ping.getPosForClient().distanceTo(vehicle.position());
             int alt = UtilEntity.getDistFromSeaLevel(ping.getPosForClient().y, vehicle.level);
             String text = dist + " | " + alt;

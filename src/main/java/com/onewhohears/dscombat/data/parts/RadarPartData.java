@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.data.parts;
 
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.data.radar.RadarData;
+import com.onewhohears.dscombat.data.radar.RadarInstance;
 import com.onewhohears.dscombat.data.radar.RadarPresets;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 
@@ -25,9 +25,9 @@ public class RadarPartData extends PartData {
 	@Override
 	public void setup(EntityVehicle craft, String slotId, Vec3 pos) {
 		super.setup(craft, slotId, pos);
-		RadarData data = craft.radarSystem.get(radarId, slotId);
+		RadarInstance<?> data = craft.radarSystem.get(radarId, slotId);
 		if (data == null) {
-			data = RadarPresets.get().get(radarId);
+			data = RadarPresets.get().get(radarId).createRadarInstance();
 			if (data == null) return;
 			data.setSlot(slotId);
 			data.setPos(pos);
@@ -37,7 +37,7 @@ public class RadarPartData extends PartData {
 	
 	@Override
 	public boolean isSetup(String slotId, EntityVehicle craft) {
-		RadarData data = craft.radarSystem.get(radarId, slotId);
+		RadarInstance<?> data = craft.radarSystem.get(radarId, slotId);
 		if (data == null) return false;
 		return true;
 	}

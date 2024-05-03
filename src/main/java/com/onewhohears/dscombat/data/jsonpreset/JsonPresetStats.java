@@ -24,7 +24,7 @@ import net.minecraft.resources.ResourceLocation;
  * 
  * see {@link com.onewhohears.dscombat.data.aircraft.AircraftPreset},
  * {@link com.onewhohears.dscombat.data.weapon.stats.WeaponStats},
- * and {@link com.onewhohears.dscombat.data.radar.RadarData} for examples.
+ * and {@link com.onewhohears.dscombat.data.radar.RadarStats} for examples.
  * @author 1whohears
  */
 public abstract class JsonPresetStats {

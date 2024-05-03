@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.client.entityscreen.instance;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
-import com.onewhohears.dscombat.data.radar.RadarData;
+import com.onewhohears.dscombat.data.radar.RadarStats;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.util.UtilMCText;
 import com.onewhohears.dscombat.util.math.UtilAngles;
@@ -45,7 +45,7 @@ public abstract class RadarScreenInstance extends EntityDynamicScreenInstance {
 		return true;
 	}
 	
-	protected void drawPing(RadarData.RadarPing ping, EntityVehicle vehicle, boolean selected, boolean hover) {
+	protected void drawPing(RadarStats.RadarPing ping, EntityVehicle vehicle, boolean selected, boolean hover) {
 		Vec3 dp = ping.getPosForClient().subtract(vehicle.position());
 		double dist = dp.horizontalDistance();
 		double screen_dist = getScreenDistRatio(dist);
@@ -60,7 +60,7 @@ public abstract class RadarScreenInstance extends EntityDynamicScreenInstance {
 		return distance / DSCClientInputs.getRadarDisplayRange();
 	}
 	
-	protected void drawPingAtPos(RadarData.RadarPing ping, int x, int y, boolean selected, boolean hover) {
+	protected void drawPingAtPos(RadarStats.RadarPing ping, int x, int y, boolean selected, boolean hover) {
 		// ABGR format for some reason
 		int color = 0xff00ff00;
 		if (selected) color = 0xff0000ff;

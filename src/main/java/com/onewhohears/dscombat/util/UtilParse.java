@@ -16,7 +16,7 @@ import com.google.gson.JsonObject;
 import com.mojang.logging.LogUtils;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.data.parts.PartData;
-import com.onewhohears.dscombat.data.radar.RadarData;
+import com.onewhohears.dscombat.data.radar.RadarStats;
 import com.onewhohears.dscombat.data.radar.RadarPresets;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
@@ -135,7 +135,7 @@ public class UtilParse {
 	}
 	
 	@Nullable
-	public static RadarData parseRadarFromCompound(CompoundTag tag) {
+	public static RadarStats parseRadarFromCompound(CompoundTag tag) {
 		return RadarPresets.get().getFromNbt(tag);
 	}
 

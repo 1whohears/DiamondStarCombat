@@ -39,6 +39,7 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 	
 	@Override
 	public void readNBT(CompoundTag tag) {
+		super.readNBT(tag);
 		currentAmmo = tag.getInt("currentAmmo");
 		slotId = tag.getString("slotId");
 		pos = UtilParse.readVec3(tag, "pos");

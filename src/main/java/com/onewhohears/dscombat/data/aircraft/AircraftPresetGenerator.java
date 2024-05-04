@@ -13,11 +13,12 @@ import com.onewhohears.dscombat.data.aircraft.presets.JaviPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.PlanePresets;
 import com.onewhohears.dscombat.data.aircraft.presets.SubPresets;
 import com.onewhohears.dscombat.data.aircraft.presets.TankPresets;
+import com.onewhohears.dscombat.data.aircraft.stats.VehicleStats;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPresetGenerator;
 
 import net.minecraft.data.DataGenerator;
 
-public class AircraftPresetGenerator extends JsonPresetGenerator<AircraftPreset> {
+public class AircraftPresetGenerator extends JsonPresetGenerator<VehicleStats> {
 	
 	public static AircraftPresetGenerator INSTANCE;
 	

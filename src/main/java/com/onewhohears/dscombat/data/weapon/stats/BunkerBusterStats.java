@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPresetInstance;
+import com.onewhohears.dscombat.data.jsonpreset.JsonPresetType;
 import com.onewhohears.dscombat.data.weapon.AbstractWeaponBuilders;
 import com.onewhohears.dscombat.data.weapon.WeaponType;
 import com.onewhohears.dscombat.data.weapon.instance.BunkerBusterInstance;
@@ -28,8 +29,8 @@ public class BunkerBusterStats extends BombStats {
 	
 	private final int blockStrength;
 	
-	public BunkerBusterStats(ResourceLocation key, JsonObject json, WeaponType type) {
-		super(key, json, type);
+	public BunkerBusterStats(ResourceLocation key, JsonObject json) {
+		super(key, json);
 		blockStrength = json.get("blockStrength").getAsInt();
 	}
 	
@@ -66,6 +67,11 @@ public class BunkerBusterStats extends BombStats {
 	
 	public boolean isAimAssist() {
 		return false;
+	}
+	
+	@Override
+	public JsonPresetType getType() {
+		return WeaponType.BUNKER_BUSTER;
 	}
 
 }

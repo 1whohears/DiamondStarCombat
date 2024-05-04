@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.data.weapon.stats;
 
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPresetInstance;
+import com.onewhohears.dscombat.data.jsonpreset.JsonPresetType;
 import com.onewhohears.dscombat.data.weapon.WeaponType;
 import com.onewhohears.dscombat.data.weapon.instance.NoWeaponInstance;
 
@@ -22,7 +23,7 @@ public class NoWeaponStats extends WeaponStats {
 	}
 	
 	private NoWeaponStats() {
-		super(new ResourceLocation("dscombat:no_weapon"), getNewJson(), WeaponType.NONE);
+		super(new ResourceLocation("dscombat:no_weapon"), getNewJson());
 	}
 
 	@Override
@@ -42,6 +43,11 @@ public class NoWeaponStats extends WeaponStats {
 	
 	public boolean isNoWeapon() {
 		return true;
+	}
+	
+	@Override
+	public JsonPresetType getType() {
+		return WeaponType.NONE;
 	}
 
 }

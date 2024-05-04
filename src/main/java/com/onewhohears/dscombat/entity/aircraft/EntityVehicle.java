@@ -27,14 +27,14 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientAircraftControl;
 import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleExplode;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftCollide;
 import com.onewhohears.dscombat.common.network.toserver.ToServerAircraftMoveRot;
-import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
 import com.onewhohears.dscombat.data.aircraft.DSCPhyCons;
 import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
 import com.onewhohears.dscombat.data.aircraft.VehicleInputManager;
 import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager;
-import com.onewhohears.dscombat.data.aircraft.VehicleStats;
+import com.onewhohears.dscombat.data.aircraft.VehicleStatsOld;
 import com.onewhohears.dscombat.data.aircraft.VehicleTextureManager;
+import com.onewhohears.dscombat.data.aircraft.stats.VehicleStats;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartsManager;
 import com.onewhohears.dscombat.data.parts.StorageBoxData;
@@ -127,7 +127,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public static final EntityDataAccessor<RadarMode> RADAR_MODE = SynchedEntityData.defineId(EntityVehicle.class, DataSerializers.RADAR_MODE);
 	
 	public final String defaultPreset, clientPresetId;
-	public final VehicleStats vehicleStats;
+	public final VehicleStatsOld vehicleStats;
 	public final VehicleInputManager inputs;
 	public final VehicleSoundManager soundManager;
 	public final VehicleTextureManager textureManager;
@@ -192,7 +192,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		this.defaultPreset = defaultPreset;
 		this.clientPresetId = UtilEntity.getEntityIdName(this);
 		this.preset = defaultPreset;
-		AircraftPreset ap = AircraftPresets.get().get(defaultPreset);
+		VehicleStats ap = AircraftPresets.get().get(defaultPreset);
 		this.item = ap.getItem();
 		this.blocksBuilding = true;
 		vehicleStats = createVehicleStats();
@@ -208,9 +208,9 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		setId(ENTITY_COUNTER.getAndAdd(hitboxes.length+1)+1);
 	}
 	
-	protected abstract VehicleStats createVehicleStats();
+	protected abstract VehicleStatsOld createVehicleStats();
 	
-	public VehicleStats getVehicleStats() {
+	public VehicleStatsOld getVehicleStats() {
 		return vehicleStats;
 	}
 	
@@ -220,11 +220,11 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		for (int i = 0; i < hitboxes.length; i++) hitboxes[i].setId(id+i+1);
 	}
 	
-	public RotableHitbox[] createRotableHitboxes(AircraftPreset ap) {
+	public RotableHitbox[] createRotableHitboxes(VehicleStats ap) {
 		return ap.getRotableHitboxes(this);
 	}
 	
-	public EntityScreenData[] createEntityScreens(AircraftPreset ap) {
+	public EntityScreenData[] createEntityScreens(VehicleStats ap) {
 		return ap.getEntityScreens();
 	}
 	
@@ -293,7 +293,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			LOGGER.warn("ERROR: preset "+preset+" doesn't exist!");
 		}
 		// get the preset data
-		AircraftPreset ap = AircraftPresets.get().get(preset);
+		VehicleStats ap = AircraftPresets.get().get(preset);
 		item = ap.getItem();
 		vehicleStats.readPresetData(ap);
 		soundManager.loadSounds(ap);
@@ -363,7 +363,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		partsManager.clientPartsSetup();
 		// PRESET STUFF
 		if (!AircraftPresets.get().has(preset)) return;
-		AircraftPreset ap = AircraftPresets.get().get(preset);
+		VehicleStats ap = AircraftPresets.get().get(preset);
 		vehicleStats.readPresetData(ap);
 		soundManager.loadSounds(ap);
 		item = ap.getItem();

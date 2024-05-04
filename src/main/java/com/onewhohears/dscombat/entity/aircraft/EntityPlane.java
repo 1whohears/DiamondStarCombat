@@ -3,8 +3,8 @@ package com.onewhohears.dscombat.entity.aircraft;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.aircraft.DSCPhyCons;
-import com.onewhohears.dscombat.data.aircraft.VehicleStats;
-import com.onewhohears.dscombat.data.aircraft.VehicleStats.PlaneStats;
+import com.onewhohears.dscombat.data.aircraft.VehicleStatsOld;
+import com.onewhohears.dscombat.data.aircraft.VehicleStatsOld.PlaneStats;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource.WeaponDamageType;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
@@ -242,7 +242,7 @@ public class EntityPlane extends EntityVehicle {
 	}
 
 	@Override
-	protected VehicleStats createVehicleStats() {
+	protected VehicleStatsOld createVehicleStats() {
 		return new PlaneStats();
 	}
 

@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPresetInstance;
+import com.onewhohears.dscombat.data.jsonpreset.JsonPresetType;
 import com.onewhohears.dscombat.data.weapon.WeaponType;
 import com.onewhohears.dscombat.data.weapon.instance.TrackMissileInstance;
 import com.onewhohears.dscombat.util.UtilMCText;
@@ -26,10 +27,15 @@ public class TrackMissileStats extends MissileStats {
 	private final TargetType targetType;
 	private final boolean active;
 
-	public TrackMissileStats(ResourceLocation key, JsonObject json, WeaponType type) {
-		super(key, json, type);
+	public TrackMissileStats(ResourceLocation key, JsonObject json) {
+		super(key, json);
 		targetType = TargetType.valueOf(json.get("targetType").getAsString());
 		active = UtilParse.getBooleanSafe(json, "activeTrack", true);
+	}
+	
+	@Override
+	public JsonPresetType getType() {
+		return WeaponType.TRACK_MISSILE;
 	}
 	
 	@Override

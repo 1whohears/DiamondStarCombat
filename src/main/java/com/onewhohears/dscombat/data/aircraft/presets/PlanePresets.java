@@ -2,9 +2,9 @@ package com.onewhohears.dscombat.data.aircraft.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
-import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.LiftKGraph;
 import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager.PassengerSoundPack;
+import com.onewhohears.dscombat.data.aircraft.stats.VehicleStats;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
@@ -12,7 +12,7 @@ import com.onewhohears.dscombat.init.ModSounds;
 
 public class PlanePresets {
 	
-	public static final AircraftPreset EMPTY_WOODEN_PLANE = AircraftPreset.Builder
+	public static final VehicleStats EMPTY_WOODEN_PLANE = VehicleStats.Builder
 			.create(DSCombatMod.MODID, "wooden_plane_empty")
 			.setSortFactor(0)
 			.setAircraftType(AircraftType.PLANE)
@@ -48,7 +48,7 @@ public class PlanePresets {
 			.addEmptySlot("internal_3", SlotType.INTERNAL)
 			.build();
 	
-	public static final AircraftPreset DEFAULT_WOODEN_PLANE = AircraftPreset.Builder
+	public static final VehicleStats DEFAULT_WOODEN_PLANE = VehicleStats.Builder
 			.createFromCopy(DSCombatMod.MODID, "wooden_plane", EMPTY_WOODEN_PLANE)
 			.setCraftable()
 			.addIngredient(ModItems.CM_MANLY_52.getId())
@@ -57,7 +57,7 @@ public class PlanePresets {
 			.setSlotItem("internal_2", ModItems.LIGHT_FUEL_TANK.getId(), true)
 			.build();
 	
-	public static final AircraftPreset BOMBER_WOODEN_PLANE = AircraftPreset.Builder
+	public static final VehicleStats BOMBER_WOODEN_PLANE = VehicleStats.Builder
 			.createFromCopy(DSCombatMod.MODID, "wooden_plane_bomber", DEFAULT_WOODEN_PLANE)
 			.setSlotItem("left_wing_1", ModItems.LIGHT_MISSILE_RACK.getId(), "agm114k", true)
 			.setSlotItem("right_wing_1", ModItems.LIGHT_MISSILE_RACK.getId(), "agm114k", true)
@@ -66,7 +66,7 @@ public class PlanePresets {
 			.addIngredient(ModItems.LIGHT_MISSILE_RACK.getId(), 2)
 			.build();
 	
-	public static final AircraftPreset FIGHTER_WOODEN_PLANE = AircraftPreset.Builder
+	public static final VehicleStats FIGHTER_WOODEN_PLANE = VehicleStats.Builder
 			.createFromCopy(DSCombatMod.MODID, "wooden_plane_fighter", DEFAULT_WOODEN_PLANE)
 			.setSlotItem("left_wing_1", ModItems.XM12.getId(), "20mm", true)
 			.setSlotItem("right_wing_1", ModItems.XM12.getId(), "20mm", true)
@@ -74,7 +74,7 @@ public class PlanePresets {
 			.addIngredient(ModItems.XM12.getId(), 2)
 			.build();
 	
-	public static final AircraftPreset EMPTY_E3SENTRY_PLANE = AircraftPreset.Builder
+	public static final VehicleStats EMPTY_E3SENTRY_PLANE = VehicleStats.Builder
 			.create(DSCombatMod.MODID, "e3sentry_plane_empty")
 			.setSortFactor(15)
 			.setAircraftType(AircraftType.PLANE)
@@ -136,7 +136,7 @@ public class PlanePresets {
 			.addEntityScreen(EntityScreenIds.RWR_SCREEN, 0.83, -0.66, 5.49, 0.3, 0.3)
 			.build();
 	
-	public static final AircraftPreset DEFAULT_E3SENTRY_PLANE = AircraftPreset.Builder
+	public static final VehicleStats DEFAULT_E3SENTRY_PLANE = VehicleStats.Builder
 			.createFromCopy(DSCombatMod.MODID, "e3sentry_plane", EMPTY_E3SENTRY_PLANE)
 			.setCraftable()
 			.addIngredient(ModItems.CFM56.getId(), 2)

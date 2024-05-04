@@ -39,7 +39,7 @@ import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
 
-public abstract class EntityWeapon<T extends WeaponStats> extends Projectile implements IEntityAdditionalSpawnData{
+public abstract class EntityWeapon<T extends WeaponStats> extends Projectile implements IEntityAdditionalSpawnData { 
 	
 	public static final EntityDataAccessor<Integer> OWNER_ID = SynchedEntityData.defineId(EntityWeapon.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> AGE = SynchedEntityData.defineId(EntityWeapon.class, EntityDataSerializers.INT);

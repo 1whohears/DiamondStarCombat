@@ -6,12 +6,14 @@ import java.util.List;
 
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.crafting.AircraftRecipe;
+import com.onewhohears.dscombat.data.aircraft.stats.VehicleStats;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPresetReloadListener;
+import com.onewhohears.dscombat.data.weapon.WeaponType;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeManager;
 
-public class AircraftPresets extends JsonPresetReloadListener<AircraftPreset> {
+public class AircraftPresets extends JsonPresetReloadListener<VehicleStats> {
 	
 	private static AircraftPresets instance;
 	
@@ -24,16 +26,25 @@ public class AircraftPresets extends JsonPresetReloadListener<AircraftPreset> {
 		instance = null;
 	}
 	
-	private AircraftPreset[] allPresets;
+	private VehicleStats[] allPresets;
 	private AircraftRecipe[] tanks, helis, planes, boats;
 	
 	public AircraftPresets() {
 		super("aircraft");
 	}
 	
-	public AircraftPreset[] getAllPresets() {
+	@Override
+	protected void registerPresetTypes() {
+		addPresetType(VehicleType.PLANE);
+		addPresetType(VehicleType.HELICOPTER);
+		addPresetType(VehicleType.CAR);
+		addPresetType(VehicleType.BOAT);
+		addPresetType(VehicleType.SUBMARINE);
+	}
+	
+	public VehicleStats[] getAllPresets() {
 		if (allPresets == null) {
-			allPresets = presetMap.values().toArray(new AircraftPreset[presetMap.size()]);
+			allPresets = presetMap.values().toArray(new VehicleStats[presetMap.size()]);
 		}
 		return allPresets;
 	}
@@ -84,11 +95,6 @@ public class AircraftPresets extends JsonPresetReloadListener<AircraftPreset> {
 	
 	public void sort(AircraftRecipe[] recipes) {
 		Arrays.sort(recipes, (a, b) -> a.compare(b));
-	}
-
-	@Override
-	public AircraftPreset getFromJson(ResourceLocation key, JsonObject json) {
-		return new AircraftPreset(key, json);
 	}
 
 	@Override

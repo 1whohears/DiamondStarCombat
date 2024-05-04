@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.data.aircraft;
+package com.onewhohears.dscombat.data.aircraft.stats;
 
 import javax.annotation.Nullable;
 
@@ -6,14 +6,16 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
 import com.onewhohears.dscombat.client.model.obj.ObjRadarModel.MastType;
+import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
+import com.onewhohears.dscombat.data.aircraft.LiftKGraph;
 import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager.PassengerSoundPack;
+import com.onewhohears.dscombat.data.aircraft.VehicleType;
+import com.onewhohears.dscombat.data.jsonpreset.JsonPresetInstance;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPresetStats;
-import com.onewhohears.dscombat.data.jsonpreset.JsonPresetType;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.data.recipe.DSCIngredientBuilder;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.entity.aircraft.RotableHitbox;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.util.UtilGsonMerge;
@@ -23,37 +25,88 @@ import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.phys.Vec3;
 
-public class AircraftPreset extends JsonPresetStats{
-
-	private final AircraftType aircraft_type;
+public abstract class VehicleStats extends JsonPresetStats {
+	
+	// basic
+	public final float max_health, max_speed, mass;
+	// defense
+	public final float stealth, cross_sec_area, idleheat, base_armor;
+	// turn
+	public final float turn_radius;
+	public final float maxroll, maxpitch, maxyaw;
+	public final float torqueroll, torquepitch, torqueyaw;
+	public final float Ix, Iy, Iz;
+	// control
+	public final float throttleup, throttledown;
+	public final boolean negativeThrottle;
+	// other 
+	public final float crashExplosionRadius;
+	public final double cameraDistance;
+	public final int baseTextureVariants, textureLayers;
+	public final Vec3[] afterBurnerSmokePos;
+	public final MastType mastType;
+	
+	private final boolean isCraftable;
+	private final int defaultPaintJob;
+	
 	private CompoundTag dataNBT;
 	private NonNullList<Ingredient> ingredients;
 	private ItemStack item;
+	private RotableHitbox[] hitboxes;
+	private EntityScreenData[] screens;
 	
-	public AircraftPreset(ResourceLocation key, JsonObject json) {
+	public VehicleStats(ResourceLocation key, JsonObject json) {
 		super(key, json);
-		this.aircraft_type = AircraftType.values()[json.get("aircraft_type").getAsInt()];
 		this.dataNBT = UtilParse.getCompoundFromJson(json);
-	}
-	
-	public void writeBuffer(FriendlyByteBuf buffer) {
-		buffer.writeUtf(getKey().toString());
-		buffer.writeUtf(getJsonData().toString());
-	}
-	
-	public static AircraftPreset readBuffer(FriendlyByteBuf buffer) {
-		String key_string = buffer.readUtf();
-		String json_string = buffer.readUtf();
-		ResourceLocation key = new ResourceLocation(key_string);
-		JsonObject data = UtilParse.GSON.fromJson(json_string, JsonObject.class);
-		return new AircraftPreset(key, data);
+		JsonObject stats = json.getAsJsonObject("stats");
+		max_health = UtilParse.getFloatSafe(stats, "max_health", 10);
+		max_speed = UtilParse.getFloatSafe(stats, "max_speed", 0.1f);
+		mass = UtilParse.getFloatSafe(stats, "mass", 1000);
+		stealth = UtilParse.getFloatSafe(stats, "stealth", 1);
+		cross_sec_area = UtilParse.getFloatSafe(stats, "cross_sec_area", 10);
+		idleheat = UtilParse.getFloatSafe(stats, "idleheat", 10);
+		base_armor = UtilParse.getFloatSafe(stats, "base_armor", 0);
+		throttleup = UtilParse.getFloatSafe(stats, "throttleup", 0.01f);
+		throttledown = UtilParse.getFloatSafe(stats, "throttledown", 0.01f);
+		negativeThrottle = UtilParse.getBooleanSafe(stats, "negativeThrottle", false);
+		turn_radius = UtilParse.getFloatSafe(stats, "turn_radius", 100);
+		maxroll = UtilParse.getFloatSafe(stats, "maxroll", 0);
+		maxpitch = UtilParse.getFloatSafe(stats, "maxpitch", 0);
+		maxyaw = UtilParse.getFloatSafe(stats, "maxyaw", 0);
+		torqueroll = UtilParse.getFloatSafe(stats, "torqueroll", 0);
+		torquepitch = UtilParse.getFloatSafe(stats, "torquepitch", 0);
+		torqueyaw = UtilParse.getFloatSafe(stats, "torqueyaw", 0);
+		Iz = UtilParse.getFloatSafe(stats, "inertiaroll", 4);
+		Ix = UtilParse.getFloatSafe(stats, "inertiapitch", 4);
+		Iy = UtilParse.getFloatSafe(stats, "inertiayaw", 4);
+		crashExplosionRadius = UtilParse.getFloatSafe(stats, "crashExplosionRadius", 0);
+		cameraDistance = UtilParse.getFloatSafe(stats, "cameraDistance", 4);
+		if (stats.has("mastType")) mastType = MastType.valueOf(stats.get("mastType").getAsString());
+		else mastType = MastType.NONE;
+		if (json.has("textures")) {
+			JsonObject textures = json.get("textures").getAsJsonObject();
+			baseTextureVariants = UtilParse.getIntSafe(textures, "baseTextureVariants", 1);
+			textureLayers = UtilParse.getIntSafe(textures, "textureLayers", 0);
+		} else {
+			baseTextureVariants = 1;
+			textureLayers = 0;
+		}
+		if (json.has("after_burner_smoke")) {
+			JsonArray ja = json.get("after_burner_smoke").getAsJsonArray();
+			afterBurnerSmokePos = new Vec3[ja.size()];
+			for (int i = 0; i < afterBurnerSmokePos.length; ++i) {
+				JsonObject jo = ja.get(i).getAsJsonObject();
+				afterBurnerSmokePos[i] = UtilParse.readVec3(jo, "pos");
+			}
+		} else afterBurnerSmokePos = new Vec3[0];
+		isCraftable = UtilParse.getBooleanSafe(json, "is_craftable", false);
+		defaultPaintJob = UtilParse.getIntSafe(json, "paintjob_color", 0);
 	}
 	
 	public CompoundTag getDataAsNBT() {
@@ -61,12 +114,12 @@ public class AircraftPreset extends JsonPresetStats{
 	}
 	
 	public boolean isCraftable() {
-		return getJsonData().get("is_craftable").getAsBoolean();
+		return isCraftable;
 	}
 	
 	public NonNullList<Ingredient> getIngredients() {
 		if (ingredients == null) {
-			ingredients = DSCIngredientBuilder.getIngredients(getJsonDataNotCopy());
+			ingredients = DSCIngredientBuilder.getIngredients(getJsonData());
 		}
 		return ingredients;
 	}
@@ -80,27 +133,35 @@ public class AircraftPreset extends JsonPresetStats{
 	}
 	
 	public int getDefaultPaintJob() {
-		return getJsonData().get("paintjob_color").getAsInt();
+		return defaultPaintJob;
 	}
 	
 	public RotableHitbox[] getRotableHitboxes(EntityVehicle parent) {
-		if (!getJsonData().has("hitboxes")) return new RotableHitbox[0];
-		JsonArray hba = getJsonData().get("hitboxes").getAsJsonArray();
-		RotableHitbox[] hitboxes = new RotableHitbox[hba.size()];
-		for (int i = 0; i < hitboxes.length; ++i) {
-			JsonObject json = hba.get(i).getAsJsonObject();
-			hitboxes[i] = RotableHitbox.getFromJson(json, parent);
+		if (hitboxes == null) {
+			if (!getJsonData().has("hitboxes")) hitboxes = new RotableHitbox[0];
+			else {
+				JsonArray hba = getJsonData().get("hitboxes").getAsJsonArray();
+				hitboxes = new RotableHitbox[hba.size()];
+				for (int i = 0; i < hitboxes.length; ++i) {
+					JsonObject json = hba.get(i).getAsJsonObject();
+					hitboxes[i] = RotableHitbox.getFromJson(json, parent);
+				}
+			}
 		}
 		return hitboxes;
 	}
 	
 	public EntityScreenData[] getEntityScreens() {
-		if (!getJsonData().has("screens")) return new EntityScreenData[0];
-		JsonArray s = getJsonData().get("screens").getAsJsonArray();
-		EntityScreenData[] screens = new EntityScreenData[s.size()];
-		for (int i = 0; i < screens.length; ++i) {
-			JsonObject json = s.get(i).getAsJsonObject();
-			screens[i] = EntityScreenData.getScreenFromJson(json);
+		if (screens == null) {
+			if (!getJsonData().has("screens")) screens = new EntityScreenData[0];
+			else {
+				JsonArray s = getJsonData().get("screens").getAsJsonArray();
+				screens = new EntityScreenData[s.size()];
+				for (int i = 0; i < screens.length; ++i) {
+					JsonObject json = s.get(i).getAsJsonObject();
+					screens[i] = EntityScreenData.getScreenFromJson(json);
+				}
+			}
 		}
 		return screens;
 	}
@@ -108,15 +169,6 @@ public class AircraftPreset extends JsonPresetStats{
 	@Override
 	public String toString() {
 		return getKey().toString()+" "+getJsonData().toString();
-	}
-	
-	@Override
-	public <T extends JsonPresetStats> T copy() {
-		return (T) new AircraftPreset(getKey(), getJsonData());
-	}
-	
-	public AircraftType getAircraftType() {
-		return aircraft_type;
 	}
 	
 	@Override
@@ -128,8 +180,8 @@ public class AircraftPreset extends JsonPresetStats{
 	}
 	
 	protected void mergeSlots() {
-		if (!getJsonDataNotCopy().has("slots")) return;
-		JsonArray slots = getJsonDataNotCopy().get("slots").getAsJsonArray();
+		if (!getJsonData().has("slots")) return;
+		JsonArray slots = getJsonData().get("slots").getAsJsonArray();
 		for (int i = 0; i < slots.size(); ++i) {
 			JsonObject slot = slots.get(i).getAsJsonObject();
 			String name = slot.get("name").getAsString();
@@ -146,50 +198,41 @@ public class AircraftPreset extends JsonPresetStats{
 	}
 	
 	@Override
-	public <T extends JsonPresetStats> int compare(T other) {
-		AircraftPreset ap = (AircraftPreset) other;
-		if (this.getAircraftType() != ap.getAircraftType()) 
-			return this.getAircraftType().ordinal() - ap.getAircraftType().ordinal();
-		return super.compare(other);
+	public JsonPresetInstance<?> createPresetInstance() {
+		return null;
 	}
 	
 	public static class Builder extends DSCIngredientBuilder<Builder> {
-		
 		private boolean is_craftable = false;
-		
-		protected Builder(String namespace, String name, JsonPresetType.JsonPresetStatsFactory<? extends JsonPresetStats> sup) {
-			super(namespace, name, sup);
+		protected Builder(String namespace, String name, VehicleType type) {
+			super(namespace, name, type);
 		}
-		
-		protected Builder(String namespace, String name, JsonPresetType.JsonPresetStatsFactory<? extends JsonPresetStats> sup, AircraftPreset copy) {
-			super(namespace, name, sup, copy.getJsonData().deepCopy());
+		protected Builder(String namespace, String name, VehicleType type, VehicleStats copy) {
+			super(namespace, name, type, copy.getJsonData().deepCopy());
 		}
-		
-		public static Builder create(String namespace, String name) {
-			return new Builder(namespace, name, AircraftPreset::new);
+		public static Builder createPlane(String namespace, String name) {
+			return new Builder(namespace, name, VehicleType.PLANE);
 		}
-		
-		public static Builder createFromCopy(String namespace, String name, AircraftPreset copy) {
-			return new Builder(namespace, name, AircraftPreset::new, copy);
+		public static Builder createHelicopter(String namespace, String name) {
+			return new Builder(namespace, name, VehicleType.HELICOPTER);
 		}
-		
-		@Override
-		protected void setupJsonData() {
-			super.setupJsonData();
-			if (isCopy()) {
-				setInt("aircraft_type", getCopyData().get("aircraft_type").getAsInt());
-			}
+		public static Builder createCar(String namespace, String name) {
+			return new Builder(namespace, name, VehicleType.CAR);
 		}
-		
+		public static Builder createBoat(String namespace, String name) {
+			return new Builder(namespace, name, VehicleType.BOAT);
+		}
+		public static Builder createSubmarine(String namespace, String name) {
+			return new Builder(namespace, name, VehicleType.SUBMARINE);
+		}
+		public static Builder createFromCopy(String namespace, String name, VehicleStats copy) {
+			return new Builder(namespace, name, (VehicleType) copy.getType(), copy);
+		}
 		@Override
 		public <T extends JsonPresetStats> T build() {
 			setBoolean("landing_gear", true);
 			setBoolean("is_craftable", is_craftable);
 			return super.build();
-		}
-		
-		public Builder setAircraftType(AircraftType aircraft_type) {
-			return setInt("aircraft_type", aircraft_type.ordinal());
 		}
 		/**
 		 * use to make preset appear in aircraft work bench.
@@ -274,21 +317,18 @@ public class AircraftPreset extends JsonPresetStats{
 		public Builder setSlotItem(String name, @Nullable ResourceLocation item, boolean filled) {
 			return setSlotItem(name, item, null, filled);
 		}
-		
 		public Builder lockSlot(String name) {
 			JsonObject slot = getSlot(name, false);
 			if (slot == null) return this;
 			slot.addProperty("locked", true);
 			return this;
 		}
-		
 		protected JsonArray getSlots() {
 			if (!getData().has("slots")) {
 				getData().add("slots", new JsonArray());
 			}
 			return getData().get("slots").getAsJsonArray();
 		}
-		
 		@Nullable
 		protected JsonObject getSlot(String name, boolean createNew) {
 			JsonArray slots = getSlots();
@@ -303,7 +343,6 @@ public class AircraftPreset extends JsonPresetStats{
 			slots.add(slot);
 			return slot;
 		}
-		
 		@Nullable
 		protected JsonObject getSlotFromCopy(String name) {
 			if (!isCopy()) return null;
@@ -501,49 +540,40 @@ public class AircraftPreset extends JsonPresetStats{
 			getAfterBurnerSmokes().add(smoke);
 			return this;
 		}
-		
 		public JsonObject getStats() {
 			if (!getData().has("stats")) 
 				getData().add("stats", new JsonObject());
 			return getData().get("stats").getAsJsonObject();
 		}
-		
 		public JsonObject getStatsByType(String vehicleType) {
 			if (!getStats().has(vehicleType)) 
 				getStats().add(vehicleType, new JsonObject());
 			return getStats().get(vehicleType).getAsJsonObject();
 		}
-		
 		public Builder setStatFloat(String key, float value) {
 			getStats().addProperty(key, value);
 			return this;
 		}
-		
 		public Builder setStatInt(String key, int value) {
 			getStats().addProperty(key, value);
 			return this;
 		}
-		
 		public Builder setStatBoolean(String key, boolean value) {
 			getStats().addProperty(key, value);
 			return this;
 		}
-		
 		public Builder setStatString(String key, String value) {
 			getStats().addProperty(key, value);
 			return this;
 		}
-		
 		public Builder setTypedStatFloat(String key, float value, String vehicleType) {
 			getStatsByType(vehicleType).addProperty(key, value);
 			return this;
 		}
-		
 		public Builder setTypedStatString(String key, String value, String vehicleType) {
 			getStatsByType(vehicleType).addProperty(key, value);
 			return this;
 		}
-		
 		public Builder setTypedStatBoolean(String key, boolean value, String vehicleType) {
 			getStatsByType(vehicleType).addProperty(key, value);
 			return this;
@@ -807,7 +837,6 @@ public class AircraftPreset extends JsonPresetStats{
 			getData().addProperty(key, value);
 			return this;
 		}
-		
 	}
 	
 }

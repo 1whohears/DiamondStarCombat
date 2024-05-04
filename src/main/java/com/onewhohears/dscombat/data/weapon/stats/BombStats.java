@@ -4,6 +4,7 @@ import static com.onewhohears.dscombat.DSCombatMod.MODID;
 
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPresetInstance;
+import com.onewhohears.dscombat.data.jsonpreset.JsonPresetType;
 import com.onewhohears.dscombat.data.weapon.AbstractWeaponBuilders;
 import com.onewhohears.dscombat.data.weapon.WeaponType;
 import com.onewhohears.dscombat.data.weapon.instance.BombInstance;
@@ -22,8 +23,8 @@ public class BombStats extends BulletStats {
 		
 	}
 	
-	public BombStats(ResourceLocation key, JsonObject json, WeaponType type) {
-		super(key, json, type);
+	public BombStats(ResourceLocation key, JsonObject json) {
+		super(key, json);
 	}
 	
 	@Override
@@ -54,6 +55,11 @@ public class BombStats extends BulletStats {
 	
 	public boolean isAimAssist() {
 		return true;
+	}
+	
+	@Override
+	public JsonPresetType getType() {
+		return WeaponType.BOMB;
 	}
 	
 }

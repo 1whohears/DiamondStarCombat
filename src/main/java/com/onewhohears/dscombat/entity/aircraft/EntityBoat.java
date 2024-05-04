@@ -2,8 +2,8 @@ package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.data.aircraft.DSCPhyCons;
-import com.onewhohears.dscombat.data.aircraft.VehicleStats;
-import com.onewhohears.dscombat.data.aircraft.VehicleStats.BoatStats;
+import com.onewhohears.dscombat.data.aircraft.VehicleStatsOld;
+import com.onewhohears.dscombat.data.aircraft.VehicleStatsOld.BoatStats;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.core.BlockPos;
@@ -207,7 +207,7 @@ public class EntityBoat extends EntityVehicle {
 	}
 
 	@Override
-	protected VehicleStats createVehicleStats() {
+	protected VehicleStatsOld createVehicleStats() {
 		return new BoatStats();
 	}
 

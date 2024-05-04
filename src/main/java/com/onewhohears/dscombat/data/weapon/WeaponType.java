@@ -26,7 +26,7 @@ public abstract class WeaponType extends JsonPresetType {
 		public static final String ID = "bullet";
 		public static final Bullet INSTANCE = new Bullet();
 		public Bullet() {
-			super(ID, (key, data) -> new BulletStats(key, data, INSTANCE));
+			super(ID, (key, data) -> new BulletStats(key, data));
 		}
 	}
 	public static final Bomb BOMB = Bomb.INSTANCE;
@@ -34,7 +34,7 @@ public abstract class WeaponType extends JsonPresetType {
 		public static final String ID = "bomb";
 		public static final Bomb INSTANCE = new Bomb();
 		public Bomb() {
-			super(ID, (key, data) -> new BombStats(key, data, INSTANCE));
+			super(ID, (key, data) -> new BombStats(key, data));
 		}
 	}
 	public static final BunkerBuster BUNKER_BUSTER = BunkerBuster.INSTANCE;
@@ -42,7 +42,7 @@ public abstract class WeaponType extends JsonPresetType {
 		public static final String ID = "bunker_buster";
 		public static final BunkerBuster INSTANCE = new BunkerBuster();
 		public BunkerBuster() {
-			super(ID, (key, data) -> new BunkerBusterStats(key, data, INSTANCE));
+			super(ID, (key, data) -> new BunkerBusterStats(key, data));
 		}
 	}
 	public static final PosMissile POS_MISSILE = PosMissile.INSTANCE;
@@ -50,7 +50,7 @@ public abstract class WeaponType extends JsonPresetType {
 		public static final String ID = "pos_missile";
 		public static final PosMissile INSTANCE = new PosMissile();
 		public PosMissile() {
-			super(ID, (key, data) -> new PosMissileStats(key, data, INSTANCE));
+			super(ID, (key, data) -> new PosMissileStats(key, data));
 		}
 	}
 	public static final TrackMissile TRACK_MISSILE = TrackMissile.INSTANCE;
@@ -58,7 +58,7 @@ public abstract class WeaponType extends JsonPresetType {
 		public static final String ID = "track_missile";
 		public static final TrackMissile INSTANCE = new TrackMissile();
 		public TrackMissile() {
-			super(ID, (key, data) -> new TrackMissileStats(key, data, INSTANCE));
+			super(ID, (key, data) -> new TrackMissileStats(key, data));
 		}
 	}
 	public static final Torpedo TORPEDO = Torpedo.INSTANCE;
@@ -66,7 +66,7 @@ public abstract class WeaponType extends JsonPresetType {
 		public static final String ID = "torpedo";
 		public static final Torpedo INSTANCE = new Torpedo();
 		public Torpedo() {
-			super(ID, (key, data) -> new TorpedoStats(key, data, INSTANCE));
+			super(ID, (key, data) -> new TorpedoStats(key, data));
 		}
 	}
 	public static final IrMissile IR_MISSILE = IrMissile.INSTANCE;
@@ -74,7 +74,7 @@ public abstract class WeaponType extends JsonPresetType {
 		public static final String ID = "ir_missile";
 		public static final IrMissile INSTANCE = new IrMissile();
 		public IrMissile() {
-			super(ID, (key, data) -> new IRMissileStats(key, data, INSTANCE));
+			super(ID, (key, data) -> new IRMissileStats(key, data));
 		}
 	}
 	public static final AntiRadarMissile ANTI_RADAR_MISSILE = AntiRadarMissile.INSTANCE;
@@ -82,7 +82,7 @@ public abstract class WeaponType extends JsonPresetType {
 		public static final String ID = "anti_radar_missile";
 		public static final AntiRadarMissile INSTANCE = new AntiRadarMissile();
 		public AntiRadarMissile() {
-			super(ID, (key, data) -> new AntiRadarMissileStats(key, data, INSTANCE));
+			super(ID, (key, data) -> new AntiRadarMissileStats(key, data));
 		}
 	}
 	public WeaponType(String id, JsonPresetStatsFactory<? extends JsonPresetStats> statsFactory) {

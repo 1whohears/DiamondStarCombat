@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.data.radar;
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPresetInstance;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPresetStats;
+import com.onewhohears.dscombat.data.jsonpreset.JsonPresetType;
 import com.onewhohears.dscombat.data.jsonpreset.PresetBuilder;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.UtilEntity;
@@ -27,8 +28,8 @@ public class RadarStats extends JsonPresetStats {
 	private final double throWaterRange;
 	private final double throGroundRange;
 	
-	public RadarStats(ResourceLocation key, JsonObject json, RadarType type) {
-		super(key, json, type);
+	public RadarStats(ResourceLocation key, JsonObject json) {
+		super(key, json);
 		range = json.get("range").getAsDouble();
 		sensitivity = json.get("sensitivity").getAsDouble();
 		fov = json.get("fov").getAsDouble();
@@ -49,6 +50,11 @@ public class RadarStats extends JsonPresetStats {
 	
 	public RadarInstance<?> createRadarInstance() {
 		return (RadarInstance<?>) createPresetInstance();
+	}
+	
+	@Override
+	public JsonPresetType getType() {
+		return RadarType.STANDARD;
 	}
 	
 	public double getRange() {

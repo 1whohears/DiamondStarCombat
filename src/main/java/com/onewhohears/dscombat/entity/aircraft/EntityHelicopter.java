@@ -2,8 +2,8 @@ package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.command.DSCGameRules;
-import com.onewhohears.dscombat.data.aircraft.VehicleStats;
-import com.onewhohears.dscombat.data.aircraft.VehicleStats.HeliStats;
+import com.onewhohears.dscombat.data.aircraft.VehicleStatsOld;
+import com.onewhohears.dscombat.data.aircraft.VehicleStatsOld.HeliStats;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource.WeaponDamageType;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
@@ -125,7 +125,7 @@ public class EntityHelicopter extends EntityVehicle {
 	}
 
 	@Override
-	protected VehicleStats createVehicleStats() {
+	protected VehicleStatsOld createVehicleStats() {
 		return new HeliStats();
 	}
 

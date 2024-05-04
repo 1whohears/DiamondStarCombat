@@ -1,8 +1,8 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.data.aircraft.VehicleStats;
-import com.onewhohears.dscombat.data.aircraft.VehicleStats.CarStats;
+import com.onewhohears.dscombat.data.aircraft.VehicleStatsOld;
+import com.onewhohears.dscombat.data.aircraft.VehicleStatsOld.CarStats;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -72,7 +72,7 @@ public class EntityGroundVehicle extends EntityVehicle {
 	}
 
 	@Override
-	protected VehicleStats createVehicleStats() {
+	protected VehicleStatsOld createVehicleStats() {
 		return new CarStats();
 	}
 

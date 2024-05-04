@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPresetInstance;
+import com.onewhohears.dscombat.data.jsonpreset.JsonPresetType;
 import com.onewhohears.dscombat.data.weapon.WeaponType;
 import com.onewhohears.dscombat.data.weapon.instance.IRMissileInstance;
 import com.onewhohears.dscombat.util.UtilMCText;
@@ -18,9 +19,14 @@ public class IRMissileStats extends MissileStats {
 	
 	private final float flareResistance;
 	
-	public IRMissileStats(ResourceLocation key, JsonObject json, WeaponType type) {
-		super(key, json, type);
+	public IRMissileStats(ResourceLocation key, JsonObject json) {
+		super(key, json);
 		flareResistance = json.get("flareResistance").getAsFloat();
+	}
+	
+	@Override
+	public JsonPresetType getType() {
+		return WeaponType.IR_MISSILE;
 	}
 	
 	@Override

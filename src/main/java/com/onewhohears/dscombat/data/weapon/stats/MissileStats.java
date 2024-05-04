@@ -44,8 +44,8 @@ public abstract class MissileStats extends BulletStats {
 	private final int seeThroWater;
 	private final int seeThroBlock;
 	
-	public MissileStats(ResourceLocation key, JsonObject json, WeaponType type) {
-		super(key, json, type);
+	public MissileStats(ResourceLocation key, JsonObject json) {
+		super(key, json);
 		turnRadius = json.get("turnRadius").getAsFloat();
 		acceleration = json.get("acceleration").getAsDouble();
 		fuseDist = json.get("fuseDist").getAsDouble();

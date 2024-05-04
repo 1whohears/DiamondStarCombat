@@ -10,7 +10,6 @@ import javax.annotation.Nullable;
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPresetStats;
 import com.onewhohears.dscombat.data.recipe.DSCIngredientBuilder;
-import com.onewhohears.dscombat.data.weapon.WeaponType;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.init.ModSounds;
@@ -57,8 +56,8 @@ public abstract class WeaponStats extends JsonPresetStats {
 	private SoundEvent shootSound;
 	private EntityType<?> rackType;
 	
-	public WeaponStats(ResourceLocation key, JsonObject json, WeaponType type) {
-		super(key, json, type);
+	public WeaponStats(ResourceLocation key, JsonObject json) {
+		super(key, json);
 		this.craftNum = UtilParse.getIntSafe(json, "craftNum", 0);
 		this.maxAge = UtilParse.getIntSafe(json, "maxAge", 0);
 		this.maxAmmo = UtilParse.getIntSafe(json, "maxAmmo", 0);

@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPresetInstance;
+import com.onewhohears.dscombat.data.jsonpreset.JsonPresetType;
 import com.onewhohears.dscombat.data.weapon.WeaponType;
 import com.onewhohears.dscombat.data.weapon.instance.AntiRadarMissileInstance;
 import com.onewhohears.dscombat.util.UtilMCText;
@@ -18,9 +19,14 @@ public class AntiRadarMissileStats extends MissileStats {
 	
 	private final double scan_range;
 	
-	public AntiRadarMissileStats(ResourceLocation key, JsonObject json, WeaponType type) {
-		super(key, json, type);
+	public AntiRadarMissileStats(ResourceLocation key, JsonObject json) {
+		super(key, json);
 		scan_range = json.get("scan_range").getAsDouble();
+	}
+	
+	@Override
+	public JsonPresetType getType() {
+		return WeaponType.ANTI_RADAR_MISSILE;
 	}
 	
 	@Override

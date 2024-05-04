@@ -7,7 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 /**
  * the parent class for json preset builders. usually called within a {@link JsonPresetGenerator}.
  * 
- * see {@link com.onewhohears.dscombat.data.aircraft.AircraftPreset},
+ * see {@link com.onewhohears.dscombat.data.aircraft.stats.VehicleStats},
  * {@link com.onewhohears.dscombat.data.weapon.AbstractWeaponBuilders},
  * and {@link com.onewhohears.dscombat.data.radar.RadarStats} for example builders.
  * 

@@ -9,7 +9,7 @@ public abstract class RadarType extends JsonPresetType {
 		public static final String ID = "standard";
 		public static final Standard INSTANCE = new Standard();
 		public Standard() {
-			super(ID, (key, data) -> new RadarStats(key, data, INSTANCE));
+			super(ID, (key, data) -> new RadarStats(key, data));
 		}
 	}
 	public RadarType(String id, JsonPresetStatsFactory<? extends JsonPresetStats> statsFactory) {

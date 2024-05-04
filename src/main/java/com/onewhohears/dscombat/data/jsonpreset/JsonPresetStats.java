@@ -22,7 +22,7 @@ import net.minecraft.resources.ResourceLocation;
  * see {@link JsonPresetGenerator} for how presets are built by minecraft data generators.
  * see {@link PresetBuilder} for an abstract preset builder for the generator to use.
  * 
- * see {@link com.onewhohears.dscombat.data.aircraft.AircraftPreset},
+ * see {@link com.onewhohears.dscombat.data.aircraft.stats.VehicleStats},
  * {@link com.onewhohears.dscombat.data.weapon.stats.WeaponStats},
  * and {@link com.onewhohears.dscombat.data.radar.RadarStats} for examples.
  * @author 1whohears
@@ -31,7 +31,6 @@ public abstract class JsonPresetStats {
 	
 	protected static final Logger LOGGER = LogUtils.getLogger();
 	
-	private final JsonPresetType type;
 	private final ResourceLocation key;
 	private final JsonObject data;
 	private final String id;
@@ -40,8 +39,7 @@ public abstract class JsonPresetStats {
 	private final String copyId;
 	private boolean hasBeenMerged = false;
 	
-	public JsonPresetStats(ResourceLocation key, JsonObject json, JsonPresetType type) {
-		this.type = type;
+	public JsonPresetStats(ResourceLocation key, JsonObject json) {
 		this.key = key;
 		this.data = json;
 		this.id = UtilParse.getStringSafe(json, "presetId", "");
@@ -50,9 +48,7 @@ public abstract class JsonPresetStats {
 		this.copyId = UtilParse.getStringSafe(json, "copyId", "");
 	}
 	
-	public JsonPresetType getType() {
-		return type;
-	}
+	public abstract JsonPresetType getType();
 	
 	public ResourceLocation getKey() {
 		return key;

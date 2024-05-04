@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPresetInstance;
+import com.onewhohears.dscombat.data.jsonpreset.JsonPresetType;
 import com.onewhohears.dscombat.data.weapon.AbstractWeaponBuilders;
 import com.onewhohears.dscombat.data.weapon.WeaponType;
 import com.onewhohears.dscombat.data.weapon.instance.BulletInstance;
@@ -36,8 +37,8 @@ public class BulletStats extends WeaponStats {
 	private final float innacuracy;
 	private final int explodeNum;
 	
-	public BulletStats(ResourceLocation key, JsonObject json, WeaponType type) {
-		super(key, json, type);
+	public BulletStats(ResourceLocation key, JsonObject json) {
+		super(key, json);
 		this.damage = json.get("damage").getAsFloat();
 		this.speed = json.get("speed").getAsDouble();
 		this.explosive = json.get("explosive").getAsBoolean();
@@ -125,6 +126,11 @@ public class BulletStats extends WeaponStats {
 	
 	public boolean isAimAssist() {
 		return true;
+	}
+
+	@Override
+	public JsonPresetType getType() {
+		return WeaponType.BULLET;
 	}
 
 }

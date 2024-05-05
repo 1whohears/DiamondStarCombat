@@ -1,6 +1,5 @@
 package com.onewhohears.dscombat;
 
-import com.onewhohears.dscombat.client.overlay.VehicleOverlay;
 import com.onewhohears.dscombat.client.screen.VehicleBlockScreen;
 import com.onewhohears.dscombat.client.screen.VehicleScreen;
 import com.onewhohears.dscombat.client.screen.WeaponsBlockScreen;
@@ -55,7 +54,6 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
  * {@link com.onewhohears.dscombat.client.event.forgebus.ClientRenderEvents}
  * {@link com.onewhohears.dscombat.client.event.forgebus.ClientRenderRadarEvents}
  * {@link com.onewhohears.dscombat.client.event.ClientModEvents}
- * {@link VehicleOverlay}
  * {@link com.onewhohears.dscombat.common.event.CommonForgeEvents}
  * {@link EntityVehicle}
  * 

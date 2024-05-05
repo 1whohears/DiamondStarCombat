@@ -14,12 +14,17 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraftforge.client.gui.overlay.ForgeGui;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Objects;
 
 import static com.onewhohears.dscombat.DSCombatMod.MODID;
 
+// TODO: finish this lol
+/**
+ * @author kawaiicakes
+ */
 public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
     public static final ResourceLocation WEAPON_TABS = new ResourceLocation(MODID,
             "textures/ui/weapon_icons/weapon_tab.png");
@@ -31,8 +36,6 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
     public static final int[] SPACINGS = {24, 21, 18, 12, 0};
     public static final Component SAFETY = UtilMCText.translatable("ui.dscombat.no_weapon");
 
-    protected static VehicleWeaponsOverlay INSTANCE;
-
     protected boolean weaponChangeState;
     protected boolean weaponChangeQueued;
     protected int weaponChangeCountdown;
@@ -41,25 +44,26 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
     protected float frame;
     protected int superFrame;
 
-    public static void renderIfAllowed(PoseStack poseStack, int screenWidth, int screenHeight) {
-        if (Objects.isNull(INSTANCE)) INSTANCE = new VehicleWeaponsOverlay();
-        INSTANCE.render(poseStack, screenWidth, screenHeight);
+    @Override
+    protected boolean shouldRender(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+        if (defaultRenderConditions()) return false;
+        return getPlayerVehicle() instanceof EntitySeat;
     }
-    
-    protected VehicleWeaponsOverlay() {}
 
     @Override
-    protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
-        if (!(getPlayerVehicle() instanceof EntitySeat seat)) return;
+    protected void render(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+        EntitySeat seat = (EntitySeat) getPlayerVehicle();
+        assert seat != null;
+
         double yPlacement = screenHeight - TAB_HEIGHT - 13;
         int blitPosition = 1;
         if (seat.isTurret()) {
-        	drawFinishedTab(poseStack, ((EntityTurret)seat).getWeaponData(), yPlacement, blitPosition);
-        	return;
+            drawFinishedTab(poseStack, ((EntityTurret)seat).getWeaponData(), yPlacement, blitPosition);
+            return;
         }
         if (!seat.canPassengerShootParentWeapon()) return;
-    	EntityVehicle vehicle = seat.getParentVehicle();
-    	if (vehicle == null) return;
+        EntityVehicle vehicle = seat.getParentVehicle();
+        if (vehicle == null) return;
 
         List<WeaponData> weapons = vehicle.weaponSystem.getWeapons();
         WeaponData selectedWeapon = vehicle.weaponSystem.getSelected();
@@ -74,7 +78,7 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
         if (this.weaponChangeCountdown <= 0) this.weaponChangeState = false;
 
         if (!this.weaponChangeState) {
-        	drawFinishedTab(poseStack, selectedWeapon, yPlacement, blitPosition);
+            drawFinishedTab(poseStack, selectedWeapon, yPlacement, blitPosition);
         } else {
             int weaponTabsToRender = Math.min(weapons.size(), 5);
 
@@ -90,11 +94,11 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
                 poseStack.pushPose();
                 poseStack.translate(0, 0, blitPosition + 3);
                 if (!weaponAt.isNoWeapon()) {
-                    drawString(poseStack, getFont(), weaponAt.getCurrentAmmo() + "/" + weaponAt.getMaxAmmo(), 16, newYPos + 14, 0xe6e600);
+                    drawString(poseStack, FONT, weaponAt.getCurrentAmmo() + "/" + weaponAt.getMaxAmmo(), 16, newYPos + 14, 0xe6e600);
                 } else {
-                    drawString(poseStack, getFont(), SAFETY, 16, newYPos + 14, 0xff5555);
+                    drawString(poseStack, FONT, SAFETY, 16, newYPos + 14, 0xff5555);
                 }
-                drawString(poseStack, getFont(), weaponAt.getDisplayNameComponent(), 16, newYPos + 4, 0xffffff);
+                drawString(poseStack, FONT, weaponAt.getDisplayNameComponent(), 16, newYPos + 4, 0xffffff);
                 poseStack.popPose();
             }
 
@@ -103,13 +107,18 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
         }
     }
 
-    public static void queueWeaponChange() {
-        INSTANCE.weaponChangeQueued = true;
+    @Override
+    protected @NotNull String componentId() {
+        return "dscombat_weapons";
     }
 
-    public static void enableWeaponChangeState() {
-        INSTANCE.weaponChangeCountdown = 200;
-        INSTANCE.weaponChangeState = true;
+    public void queueWeaponChange() {
+        this.weaponChangeQueued = true;
+    }
+
+    public void enableWeaponChangeState() {
+        this.weaponChangeCountdown = 200;
+        this.weaponChangeState = true;
 
         // (the context in which this is called necessarily has a LocalPlayer existing on client)
         //noinspection DataFlowIssue
@@ -124,8 +133,8 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
 
         poseStack.pushPose();
         poseStack.translate(0, 0, blitPosition + 2);
-        if (!selectedWeapon.isNoWeapon()) drawString(poseStack, getFont(), selectedWeapon.getCurrentAmmo() + "/" + selectedWeapon.getMaxAmmo(), 16, (int) (yPlacement + 14), 0xe6e600);
-        drawString(poseStack, getFont(), selectedWeapon.getWeaponTypeCode(), 16, (int) yPlacement + 4, 0xe6e600);
+        if (!selectedWeapon.isNoWeapon()) drawString(poseStack, FONT, selectedWeapon.getCurrentAmmo() + "/" + selectedWeapon.getMaxAmmo(), 16, (int) (yPlacement + 14), 0xe6e600);
+        drawString(poseStack, FONT, selectedWeapon.getWeaponTypeCode(), 16, (int) yPlacement + 4, 0xe6e600);
         poseStack.popPose();
     }
 
@@ -214,8 +223,8 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
         bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
         Matrix4f matrix4f = stack.last().pose();
 
-        int nameWidth = getFont().width(name);
-        int nameHeight = getFont().lineHeight;
+        int nameWidth = FONT.width(name);
+        int nameHeight = FONT.lineHeight;
         int blitOffsetUnder = blitOffset - 1;
 
         int xPosInitial = (int) x + 1;
@@ -255,7 +264,7 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
         MultiBufferSource.BufferSource bufferSource = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
         stack.translate(x, y - 11, blitOffset);
 
-        getFont().drawInBatch(name, 4, 2, -1, true, matrix4f, bufferSource, false, 0, 15728880);
+        FONT.drawInBatch(name, 4, 2, -1, true, matrix4f, bufferSource, false, 0, 15728880);
 
         bufferSource.endBatch();
         stack.popPose();

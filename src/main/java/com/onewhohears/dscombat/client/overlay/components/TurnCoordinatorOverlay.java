@@ -7,8 +7,8 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.entity.vehicle.EntityPlane;
 import net.minecraft.resources.ResourceLocation;
-
-import java.util.Objects;
+import net.minecraftforge.client.gui.overlay.ForgeGui;
+import org.jetbrains.annotations.NotNull;
 
 import static com.onewhohears.dscombat.client.overlay.components.VehicleControlOverlay.STICK_BASE_SIZE;
 import static com.onewhohears.dscombat.client.overlay.components.VehicleControlOverlay.STICK_KNOB_SIZE;
@@ -25,18 +25,16 @@ public class TurnCoordinatorOverlay extends VehicleOverlayComponent {
     public static final int TURN_COORD_SIZE = 80;
     public static final int MAX_BALL_MOVE = (int)(TURN_COORD_SIZE*0.25d);
 
-    private static TurnCoordinatorOverlay INSTANCE;
-
-    public static void renderIfAllowed(PoseStack poseStack, int screenWidth, int screenHeight) {
-        if (Objects.isNull(INSTANCE)) INSTANCE = new TurnCoordinatorOverlay();
-        INSTANCE.render(poseStack, screenWidth, screenHeight);
+    @Override
+    protected boolean shouldRender(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+        if (defaultRenderConditions()) return false;
+        return getPlayerRootVehicle() instanceof EntityPlane;
     }
 
-    private TurnCoordinatorOverlay() {}
-
     @Override
-    protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
-        if (!(getPlayerRootVehicle() instanceof EntityPlane plane)) return;
+    protected void render(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+        EntityPlane plane = (EntityPlane) getPlayerRootVehicle();
+        assert plane != null;
 
         final int xOrigin = screenWidth - TURN_COORD_SIZE - PADDING * 3 - STICK_BASE_SIZE - STICK_KNOB_SIZE;
         final int yOrigin = screenHeight - PADDING - TURN_COORD_SIZE;
@@ -68,5 +66,10 @@ public class TurnCoordinatorOverlay extends VehicleOverlayComponent {
                 TURN_COORD_SIZE, TURN_COORD_SIZE,
                 TURN_COORD_SIZE, TURN_COORD_SIZE);
         poseStack.popPose();
+    }
+
+    @Override
+    protected @NotNull String componentId() {
+        return "dscombat_turn_coordinator";
     }
 }

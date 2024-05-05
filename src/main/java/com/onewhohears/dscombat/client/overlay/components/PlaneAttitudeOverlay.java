@@ -5,11 +5,13 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
+import com.onewhohears.dscombat.entity.vehicle.EntityHelicopter;
 import com.onewhohears.dscombat.entity.vehicle.EntityPlane;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-
-import java.util.Objects;
+import net.minecraftforge.client.gui.overlay.ForgeGui;
+import org.jetbrains.annotations.NotNull;
 
 import static com.onewhohears.dscombat.client.overlay.components.TurnCoordinatorOverlay.TURN_COORD_SIZE;
 import static com.onewhohears.dscombat.client.overlay.components.VehicleControlOverlay.STICK_BASE_SIZE;
@@ -28,19 +30,17 @@ public class PlaneAttitudeOverlay extends VehicleOverlayComponent {
 
     private static final int ATTITUDE_SIZE = 80;
 
-    private static PlaneAttitudeOverlay INSTANCE;
-
-    public static void renderIfAllowed(PoseStack poseStack, int screenWidth, int screenHeight) {
-        if (Objects.isNull(INSTANCE)) INSTANCE = new PlaneAttitudeOverlay();
-        INSTANCE.render(poseStack, screenWidth, screenHeight);
+    @Override
+    protected boolean shouldRender(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+        if (defaultRenderConditions()) return false;
+        return getPlayerRootVehicle() instanceof EntityPlane || getPlayerRootVehicle() instanceof EntityHelicopter;
     }
 
-    private PlaneAttitudeOverlay() {}
-
     @Override
-    protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
-        if (!(getPlayerRootVehicle() instanceof EntityPlane plane)) return;
-        
+    protected void render(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+        EntityVehicle vehicle = (EntityVehicle) getPlayerRootVehicle();
+        assert vehicle != null;
+
         int attX = screenWidth - ATTITUDE_SIZE - PADDING *3- STICK_BASE_SIZE - THROTTLE_WIDTH;
         int attY = screenHeight - PADDING *2- TURN_COORD_SIZE- ATTITUDE_SIZE;
         RenderSystem.setShaderTexture(0, ATTITUDE_BASE);
@@ -52,8 +52,8 @@ public class PlaneAttitudeOverlay extends VehicleOverlayComponent {
         RenderSystem.setShaderTexture(0, ATTITUDE_MID);
         poseStack.pushPose();
         poseStack.translate(attX+ (double) ATTITUDE_SIZE /2, attY+ (double) ATTITUDE_SIZE /2, 0);
-        poseStack.mulPose(Vector3f.ZP.rotationDegrees(-plane.zRot));
-        int pitchPointY = (int)(Mth.clamp(-plane.getXRot(), -30, 30) * ATTITUDE_SIZE * 0.0055);
+        poseStack.mulPose(Vector3f.ZP.rotationDegrees(-vehicle.zRot));
+        int pitchPointY = (int)(Mth.clamp(-vehicle.getXRot(), -30, 30) * ATTITUDE_SIZE * 0.0055);
         poseStack.translate(0, pitchPointY, 0);
         blit(poseStack,
                 -ATTITUDE_SIZE /2, -ATTITUDE_SIZE /2,
@@ -73,5 +73,10 @@ public class PlaneAttitudeOverlay extends VehicleOverlayComponent {
                 0, 0,
                 ATTITUDE_SIZE, ATTITUDE_SIZE,
                 ATTITUDE_SIZE, ATTITUDE_SIZE);
+    }
+
+    @Override
+    protected @NotNull String componentId() {
+        return "dscombat_attitude";
     }
 }

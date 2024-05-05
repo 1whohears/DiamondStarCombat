@@ -1,8 +1,5 @@
 package com.onewhohears.dscombat.client.overlay.components;
 
-import java.util.List;
-import java.util.Objects;
-
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
@@ -15,51 +12,54 @@ import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.data.radar.RadarData;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.weapon.WeaponData;
-import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
-
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.client.gui.overlay.ForgeGui;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public class RadarOverlay extends VehicleOverlayComponent {
-    public static final ResourceLocation RADAR = new ResourceLocation(DSCombatMod.MODID,
-            "textures/ui/radar.png");
     public static final ResourceLocation PING_HUD = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/ping_hud.png");
     public static final ResourceLocation PING_DATA = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/ping_data.png");
-    
-    public static final int RADAR_SIZE = 120, RADAR_OFFSET = 8;
-
     protected static final int[] HUD_PING_ANIM = new int[] {0,1,2,3,2,1};
-
     protected static float PARTIAL_TICK;
-    private static RadarOverlay INSTANCE;
-
-    public static void renderIfAllowed(PoseStack poseStack, int screenWidth, int screenHeight, float partialTick) {
-        if (Objects.isNull(INSTANCE)) INSTANCE = new RadarOverlay();
-        PARTIAL_TICK = partialTick;
-        INSTANCE.render(poseStack, screenWidth, screenHeight);
-    }
-
-    private RadarOverlay() {}
 
     @Override
-    protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
-        if (!(getPlayerVehicle() instanceof EntitySeat seat)) return;
+    protected boolean shouldRender(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+        if (defaultRenderConditions()) return false;
+        if (!(getPlayerVehicle() instanceof EntitySeat seat)) return false;
         EntityVehicle vehicle = seat.getParentVehicle();
-        if (vehicle == null) return;
+        if (vehicle == null) return false;
         RadarSystem radar = vehicle.radarSystem;
-        if (!radar.hasRadar()) return;
+        if (!radar.hasRadar()) return false;
+        PARTIAL_TICK = partialTick;
         // LOOK AT PING DATA
         List<RadarData.RadarPing> pings = radar.getClientRadarPings();
-        if (pings.isEmpty()) return;
+        return !pings.isEmpty();
+    }
+
+    @Override
+    protected void render(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+        EntitySeat seat = (EntitySeat) getPlayerVehicle();
+        assert seat != null;
+
+        EntityVehicle vehicle = seat.getParentVehicle();
+        assert vehicle != null;
+
+        RadarSystem radar = vehicle.radarSystem;
+        List<RadarData.RadarPing> pings = radar.getClientRadarPings();
+
         int selected = radar.getClientSelectedPingIndex();
         int hover = DSCClientInputs.getRadarHoverIndex();
         // PINGS ON SCREEN AND HUD
@@ -88,6 +88,7 @@ public class RadarOverlay extends VehicleOverlayComponent {
                 hud_ping_offset = size * 4;
             } else if (i == hover) {
                 //color = 0xffff00;
+                assert getPlayer() != null;
                 hud_ping_offset = HUD_PING_ANIM[(getPlayer().tickCount/6)%6] * size;
             }
             // HUD
@@ -130,7 +131,7 @@ public class RadarOverlay extends VehicleOverlayComponent {
             poseStack.popPose();
             if (!hovering && cursorX < x_win+adj && cursorX > x_win-adj
                     && cursorY < y_win+adj && cursorY > y_win-adj) {
-            	DSCClientInputs.setRadarHoverIndex(i);
+                DSCClientInputs.setRadarHoverIndex(i);
                 hovering = true;
             }
         }
@@ -143,19 +144,24 @@ public class RadarOverlay extends VehicleOverlayComponent {
             String text = dist + " | " + alt;
             int color = 0xffff00;
             WeaponData weapon = null;
-            if (seat.isTurret()) weapon = ((EntityTurret)seat).getWeaponData(); 
+            if (seat.isTurret()) weapon = ((EntityTurret)seat).getWeaponData();
             else if (seat.canPassengerShootParentWeapon()) weapon = vehicle.weaponSystem.getSelected();
             if (weapon != null && weapon.requiresRadar()) {
-            	if (dist <= weapon.getMobTurretRange()) {
-            		color = 0x00ff00;
-            		text += " | O";
-            	} else {
-            		color = 0xff0000;
-            		text += " | X";
-            	}
+                if (dist <= weapon.getMobTurretRange()) {
+                    color = 0x00ff00;
+                    text += " | O";
+                } else {
+                    color = 0xff0000;
+                    text += " | X";
+                }
             }
-            drawCenteredString(poseStack, getFont(), text, 
+            drawCenteredString(poseStack, FONT, text,
                     screenWidth / 2, screenHeight / 2 - 20, color);
         }
+    }
+
+    @Override
+    protected @NotNull String componentId() {
+        return "dscombat_radar";
     }
 }

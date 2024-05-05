@@ -8,12 +8,20 @@ import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.entity.vehicle.EntityPlane;
 import com.onewhohears.dscombat.util.UtilEntity;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.client.gui.overlay.ForgeGui;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-import java.util.Objects;
 
 import static com.onewhohears.dscombat.DSCombatMod.MODID;
 
+/*
+    TODO: A new idea is that the HUD overlay comes up when mouse mode is locked forward. At present, the HUD other
+     critical info is rendered using EntityScreens in the world. Perhaps it can be hidden and the HUD overlay
+     (visually identical) comes up but with additional vital information. Bear in mind that the vehicle stats
+     disappear when mouse mode becomes locked forward. This should be changed when vehicle-defined overlays are
+     introduced since it makes little sense for a ground vehicle to have a pilot's HUD. (yet stats are still needed!)
+ */
 public class HudOverlay extends VehicleOverlayComponent {
     public static final ResourceLocation HUD = new ResourceLocation(MODID,
             "textures/ui/hud_overlay.png");
@@ -37,58 +45,6 @@ public class HudOverlay extends VehicleOverlayComponent {
     public static final byte NUMBERS_UV_HEIGHT = 8;
     public static final byte HORIZONTAL_BOUNDS_BLIT_OFFSET = -2;
 
-    private static HudOverlay INSTANCE;
-
-    public static void renderIfAllowed(PoseStack poseStack, int screenWidth, int screenHeight) {
-        if (Objects.isNull(INSTANCE)) INSTANCE = new HudOverlay();
-        INSTANCE.render(poseStack, screenWidth, screenHeight);
-    }
-
-    private HudOverlay() {}
-
-    @Override
-    protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
-        if (!(getPlayerRootVehicle() instanceof EntityPlane plane)) return;
-        if (DSCClientInputs.isCameraFree()) return;
-
-        drawStrings(poseStack, screenWidth, screenHeight, plane);
-
-        RenderSystem.setShaderTexture(0, HUD);
-        RenderSystem.enableDepthTest();
-        RenderSystem.enableBlend();
-
-        // TODO: vertical bounds change colour w/ vehicle health
-        //noinspection SuspiciousNameCombination
-        blit(poseStack,
-                ((screenWidth - VERTICAL_BOUNDS_WIDTH) / 2), (screenHeight - VERTICAL_BOUNDS_WIDTH) / 2,
-                0, 0,
-                VERTICAL_BOUNDS_WIDTH, VERTICAL_BOUNDS_WIDTH);
-
-        // PoseStack manipulation is done here to render the crosshair components as the blit method only takes
-        // ints for position; making it impossible to center them
-        poseStack.pushPose();
-        poseStack.translate(((((double) screenWidth) - 9.0) / 2.0), (((double) screenHeight) - 6.0) / 2.0, 0);
-        blit(poseStack, 0, 0, 150, 16, 9, 6);
-        poseStack.popPose();
-
-        poseStack.pushPose();
-        poseStack.translate(((((double) screenWidth) - 22.0) / 2.0), ((((double) screenHeight) - 22.0) / 2.0), 0);
-        int vOffsetForCircle = plane.radarSystem.isClientLocking() ? 38 : 16; // assuming this was intended 
-        blit(poseStack, 0, 0, 128, vOffsetForCircle, 22, 22);
-        poseStack.popPose();
-
-        poseStack.pushPose();
-        poseStack.translate(((((double) screenWidth) - 25.0) / 2.0), ((((double) screenHeight) - 5.0) / 2.0), 0);
-        blit(poseStack, 0, 59, 128, 60, 25, 5);
-        poseStack.popPose();
-
-        this.drawAttitudeOverlay(poseStack, screenWidth, screenHeight, plane);
-
-
-        RenderSystem.disableBlend();
-        RenderSystem.disableDepthTest();
-    }
-
     /**
      * It's important to call this first as weird visual fuckshit happens otherwise
      */
@@ -97,7 +53,7 @@ public class HudOverlay extends VehicleOverlayComponent {
         poseStack.translate((((double) screenWidth) / 2.0) + 30.0, ((((double) screenHeight) + ((double) VERTICAL_BOUNDS_WIDTH)) / 2.0) - 28.0, 0);
         poseStack.scale(0.7F, 0.7F, 1);
 
-        drawString(poseStack, getFont(),
+        drawString(poseStack, FONT,
                 String.format("AOA: %3.1f", plane.getAOA()),
                 0, 0,
                 0x00ff00);
@@ -107,17 +63,17 @@ public class HudOverlay extends VehicleOverlayComponent {
         poseStack.translate((((double) screenWidth) / 2.0) - 56.0, ((((double) screenHeight) + ((double) VERTICAL_BOUNDS_WIDTH)) / 2.0) - 28.0, 0);
         poseStack.scale(0.7F, 0.7F, 1);
 
-        drawString(poseStack, getFont(),
+        drawString(poseStack, FONT,
                 "m/s: " + String.format("%3.1f", plane.getDeltaMovement().length() * 20),
                 0, 0,
                 0x00ff00);
 
-        drawString(poseStack, getFont(),
+        drawString(poseStack, FONT,
                 "A: " + UtilEntity.getDistFromSeaLevel(plane),
                 0, 10,
                 0x00ff00);
 
-        drawString(poseStack, getFont(),
+        drawString(poseStack, FONT,
                 "[" + plane.getBlockX() + "," + plane.getBlockY() + "," + plane.getBlockZ() + "]",
                 0, 20, 0x00ff00);
 
@@ -169,5 +125,62 @@ public class HudOverlay extends VehicleOverlayComponent {
                     0).getRGB();
         }
         return RED.getRGB();
+    }
+
+    @Override
+    protected boolean shouldRender(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+        if (defaultRenderConditions()) return false;
+        if (!(getPlayerRootVehicle() instanceof EntityPlane)) return false;
+        return !DSCClientInputs.isCameraFree();
+    }
+
+    @Override
+    protected void render(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+        EntityPlane plane = (EntityPlane) getPlayerRootVehicle();
+        assert plane != null;
+
+        drawStrings(poseStack, screenWidth, screenHeight, plane);
+
+        RenderSystem.setShaderTexture(0, HUD);
+        RenderSystem.enableDepthTest();
+        RenderSystem.enableBlend();
+
+        // TODO: vertical bounds change colour w/ vehicle health
+        //noinspection SuspiciousNameCombination
+        blit(poseStack,
+                ((screenWidth - VERTICAL_BOUNDS_WIDTH) / 2), (screenHeight - VERTICAL_BOUNDS_WIDTH) / 2,
+                0, 0,
+                VERTICAL_BOUNDS_WIDTH, VERTICAL_BOUNDS_WIDTH);
+
+        /*
+        PoseStack manipulation is done here to render the crosshair components as the blit method only takes
+        ints for position; making it impossible to center them
+         */
+        poseStack.pushPose();
+        poseStack.translate(((((double) screenWidth) - 9.0) / 2.0), (((double) screenHeight) - 6.0) / 2.0, 0);
+        blit(poseStack, 0, 0, 150, 16, 9, 6);
+        poseStack.popPose();
+
+        poseStack.pushPose();
+        poseStack.translate(((((double) screenWidth) - 22.0) / 2.0), ((((double) screenHeight) - 22.0) / 2.0), 0);
+        int vOffsetForCircle = plane.radarSystem.isClientLocking() ? 38 : 16; // assuming this was intended
+        blit(poseStack, 0, 0, 128, vOffsetForCircle, 22, 22);
+        poseStack.popPose();
+
+        poseStack.pushPose();
+        poseStack.translate(((((double) screenWidth) - 25.0) / 2.0), ((((double) screenHeight) - 5.0) / 2.0), 0);
+        blit(poseStack, 0, 59, 128, 60, 25, 5);
+        poseStack.popPose();
+
+        this.drawAttitudeOverlay(poseStack, screenWidth, screenHeight, plane);
+
+
+        RenderSystem.disableBlend();
+        RenderSystem.disableDepthTest();
+    }
+
+    @Override
+    protected @NotNull String componentId() {
+        return "dscombat_hud";
     }
 }

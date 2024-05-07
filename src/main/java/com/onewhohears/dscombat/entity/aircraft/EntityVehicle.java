@@ -286,11 +286,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			LOGGER.warn("ERROR: preset "+preset+" doesn't exist!");
 		}
 		// get the preset data
-		VehicleStats ap = AircraftPresets.get().get(preset);
-		item = ap.getItem();
-		vehicleStats = ap;
-		soundManager.loadSounds(ap);
-		CompoundTag presetNbt = ap.getDataAsNBT();
+		vehicleStats = AircraftPresets.get().get(preset);
+		item = vehicleStats.getItem();
+		soundManager.loadSounds(vehicleStats);
+		CompoundTag presetNbt = vehicleStats.getDataAsNBT();
 		// merge if this entity hasn't merged yet
 		if (!nbt.getBoolean("merged_preset")) nbt.merge(presetNbt);
 		partsManager.read(nbt, presetNbt);
@@ -356,10 +355,9 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		partsManager.clientPartsSetup();
 		// PRESET STUFF
 		if (!AircraftPresets.get().has(preset)) return;
-		VehicleStats ap = AircraftPresets.get().get(preset);
-		vehicleStats = ap;
-		soundManager.loadSounds(ap);
-		item = ap.getItem();
+		vehicleStats = AircraftPresets.get().get(preset);
+		soundManager.loadSounds(vehicleStats);
+		item = vehicleStats.getItem();
 		// OTHER
 		setLandingGear(gear);
 		setDriverCameraLocked(freeLook);

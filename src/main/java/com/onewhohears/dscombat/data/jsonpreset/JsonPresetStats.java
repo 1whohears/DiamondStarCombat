@@ -58,6 +58,10 @@ public abstract class JsonPresetStats {
 		return data;
 	}
 	
+	public JsonObject copyJsonData() {
+		return data.deepCopy();
+	}
+	
 	public String getId() {
 		return id;
 	}

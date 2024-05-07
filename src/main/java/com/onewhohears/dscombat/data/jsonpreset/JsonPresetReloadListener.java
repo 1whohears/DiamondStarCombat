@@ -123,6 +123,10 @@ public abstract class JsonPresetReloadListener<T extends JsonPresetStats> extend
 	protected void mergeCopyWithParentPresets() {
 		LOGGER.info("MERGING COPYS WITH PARENT PRESETS "+getName());
 		presetMap.forEach((id, preset) -> mergeWithParent(id, preset));
+		presetMap.forEach((id, preset) -> { 
+			if (preset.isCopy()) presetMap.put(id, 
+				preset.getType().createStats(preset.getKey(), preset.copyJsonData()));
+		});
 	}
 	
 	protected void mergeWithParent(String id, T preset) {

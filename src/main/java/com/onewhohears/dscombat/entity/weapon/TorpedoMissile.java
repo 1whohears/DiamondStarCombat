@@ -1,8 +1,8 @@
 package com.onewhohears.dscombat.entity.weapon;
 
 import com.onewhohears.dscombat.data.aircraft.DSCPhyCons;
-import com.onewhohears.dscombat.data.weapon.TorpedoData;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.data.weapon.WeaponType;
+import com.onewhohears.dscombat.data.weapon.stats.TorpedoStats;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource;
 
 import net.minecraft.world.entity.EntityType;
@@ -11,18 +11,15 @@ import net.minecraft.world.level.ClipContext.Fluid;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class TorpedoMissile extends TrackEntityMissile {
+public class TorpedoMissile<T extends TorpedoStats> extends TrackEntityMissile<T> {
 	
-	protected TorpedoData torpedoData;
-	
-	public TorpedoMissile(EntityType<? extends TorpedoMissile> type, Level level, String defaultWeaponId) {
+	public TorpedoMissile(EntityType<? extends TorpedoMissile<?>> type, Level level, String defaultWeaponId) {
 		super(type, level, defaultWeaponId);
 	}
 	
 	@Override
-	protected void castWeaponData() {
-		super.castWeaponData();
-		torpedoData = (TorpedoData)weaponData;
+	public WeaponType getWeaponType() {
+		return WeaponType.TORPEDO;
 	}
 	
 	@Override
@@ -48,11 +45,6 @@ public class TorpedoMissile extends TrackEntityMissile {
 	@Override
 	protected WeaponDamageSource getExplosionDamageSource() {
 		return WeaponDamageSource.WeaponDamageType.TORPEDO.getSource(getOwner(), this);
-	}
-	
-	@Override
-	public WeaponData.WeaponType getWeaponType() {
-		return WeaponData.WeaponType.TORPEDO;
 	}
 	
 }

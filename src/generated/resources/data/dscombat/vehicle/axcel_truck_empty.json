@@ -1,5 +1,4 @@
 {
-  "aircraft_type": 2,
   "displayName": "preset.dscombat.axcel_truck_empty",
   "health": 80.0,
   "ingredients": [
@@ -20,6 +19,7 @@
   "item": "dscombat:axcel_truck",
   "landing_gear": true,
   "presetId": "axcel_truck_empty",
+  "presetType": "car",
   "screens": [
     {
       "height": 0.6,

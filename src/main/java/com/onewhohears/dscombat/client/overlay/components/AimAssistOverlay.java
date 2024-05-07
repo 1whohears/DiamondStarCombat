@@ -1,5 +1,9 @@
 package com.onewhohears.dscombat.client.overlay.components;
 
+import javax.annotation.Nullable;
+
+import org.jetbrains.annotations.NotNull;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
@@ -8,18 +12,16 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.event.forgebus.ClientRenderEvents;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
+
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
-import org.jetbrains.annotations.NotNull;
-
-import javax.annotation.Nullable;
 
 public class AimAssistOverlay extends VehicleOverlayComponent {
 	public static final ResourceLocation AIM_HUD = new ResourceLocation(DSCombatMod.MODID,
@@ -38,17 +40,17 @@ public class AimAssistOverlay extends VehicleOverlayComponent {
         RadarSystem radar = vehicle.radarSystem;
         if (!radar.hasRadar()) return false;
 
-        WeaponData data = vehicle.weaponSystem.getSelected();
+        WeaponInstance<?> data = vehicle.weaponSystem.getSelected();
         if (data == null) return false;
 
-        return (!data.getType().isAimAssist());
+        return (!data.getStats().isAimAssist());
     }
 
     @Override
     protected void render(ForgeGui gui, PoseStack stack, float partialTick, int screenWidth, int screenHeight) {
         if (!(getPlayerRootVehicle() instanceof EntityVehicle vehicle)) return;
 
-        WeaponData data = vehicle.weaponSystem.getSelected();
+        WeaponInstance<?> data = vehicle.weaponSystem.getSelected();
 
         if (vehicle.tickCount != prevTick /*&& vehicle.tickCount % 2 == 0*/) {
             assert data != null;
@@ -92,7 +94,7 @@ public class AimAssistOverlay extends VehicleOverlayComponent {
 	}
 	
 	@Nullable
-	protected Vec3 calcTargetWorldPos(EntityVehicle vehicle, WeaponData data) {
+	protected Vec3 calcTargetWorldPos(EntityVehicle vehicle, WeaponInstance<?> data) {
 		return data.estimateImpactPosition(vehicle);
 	}
 

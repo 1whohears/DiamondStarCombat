@@ -5,8 +5,8 @@ import java.util.List;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.data.parts.TurretData;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
+import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.util.UtilItem;
 import com.onewhohears.dscombat.util.UtilMCText;
 import com.onewhohears.dscombat.util.UtilParse;
@@ -33,7 +33,7 @@ public class ItemTurret extends ItemPart {
 	public Component getName(ItemStack stack) {
 		TurretData data = (TurretData) UtilParse.parsePartFromItem(stack);
 		MutableComponent name = ((MutableComponent)super.getName(stack)).append(" ");
-		WeaponData wd = WeaponPresets.get().getPreset(data.getWeaponId());
+		WeaponStats wd = WeaponPresets.get().get(data.getWeaponId());
 		if (wd != null) {
 			name.append(wd.getDisplayNameComponent()).append(" ")
 				.append(UtilMCText.literal(wd.getWeaponTypeCode()));

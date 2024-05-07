@@ -3,11 +3,11 @@ package com.onewhohears.dscombat.data.parts;
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
-import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.entity.parts.EntityPart;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModEntities;
 
 import net.minecraft.nbt.CompoundTag;
@@ -32,7 +32,7 @@ public class TurretData extends SeatData implements LoadableRecipePartData {
 		if (!WeaponPresets.get().has(weaponId)) this.weaponId = "";
 		this.entityTypeKey = turrentEntityKey;
 		this.health = health;
-		WeaponData data = WeaponPresets.get().getPreset(weaponId);
+		WeaponStats data = WeaponPresets.get().get(weaponId);
 		if (data != null) {
 			maxAmmo = data.getMaxAmmo();
 			if (filled) ammo = maxAmmo;

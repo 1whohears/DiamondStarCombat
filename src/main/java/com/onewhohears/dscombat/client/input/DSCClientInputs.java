@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.client.input;
 
-import com.onewhohears.dscombat.data.radar.RadarData.RadarMode;
+import com.onewhohears.dscombat.data.radar.RadarStats.RadarMode;
 
 import net.minecraft.client.Minecraft;
 

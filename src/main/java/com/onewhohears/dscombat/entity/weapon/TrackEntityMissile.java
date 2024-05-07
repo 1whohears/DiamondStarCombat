@@ -1,30 +1,27 @@
 package com.onewhohears.dscombat.entity.weapon;
 
-import com.onewhohears.dscombat.data.weapon.TrackMissileData;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.data.weapon.WeaponType;
+import com.onewhohears.dscombat.data.weapon.stats.TrackMissileStats;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 
-public class TrackEntityMissile extends EntityMissile {
+public class TrackEntityMissile<T extends TrackMissileStats> extends EntityMissile<T> {
 	
-	protected TrackMissileData trackMissileData;
-	
-	public TrackEntityMissile(EntityType<? extends TrackEntityMissile> type, Level level, String defaultWeaponId) {
+	public TrackEntityMissile(EntityType<? extends TrackEntityMissile<?>> type, Level level, String defaultWeaponId) {
 		super(type, level, defaultWeaponId);
 	}
 	
 	@Override
-	protected void castWeaponData() {
-		super.castWeaponData();
-		trackMissileData = (TrackMissileData)weaponData;
+	public WeaponType getWeaponType() {
+		return WeaponType.TRACK_MISSILE;
 	}
 
 	@Override
 	public void tickGuide() {
-		if (!trackMissileData.isActiveTrack() && !level.isClientSide) notActiveCheckTarget();
+		if (!getWeaponStats().isActiveTrack() && !level.isClientSide) notActiveCheckTarget();
 		guideToTarget();
 		if (!level.isClientSide && tickCount % 10 == 0 && target instanceof EntityVehicle plane) {
 			plane.trackedByMissile(this);
@@ -46,11 +43,6 @@ public class TrackEntityMissile extends EntityMissile {
 			target = null;
 			return;
 		}
-	}
-	
-	@Override
-	public WeaponData.WeaponType getWeaponType() {
-		return WeaponData.WeaponType.TRACK_MISSILE;
 	}
 
 }

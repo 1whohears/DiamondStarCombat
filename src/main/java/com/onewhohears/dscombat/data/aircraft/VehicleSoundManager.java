@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.data.aircraft;
 
 import com.onewhohears.dscombat.Config;
+import com.onewhohears.dscombat.data.aircraft.stats.VehicleStats;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.util.UtilClientSafeSounds;
@@ -25,7 +26,7 @@ public class VehicleSoundManager {
 		this.parent = parent;
 	}
 	
-	public void loadSounds(AircraftPreset acp) {
+	public void loadSounds(VehicleStats acp) {
 		CompoundTag sounds = acp.getDataAsNBT().getCompound("sounds");
 		String loopSoundType = sounds.getString("loopSoundType");
 		loopManager = VehicleLoopingSounds.getByType(loopSoundType, parent);

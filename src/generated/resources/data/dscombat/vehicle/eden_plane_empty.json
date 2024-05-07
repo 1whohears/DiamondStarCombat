@@ -15,7 +15,6 @@
       }
     }
   ],
-  "aircraft_type": 0,
   "displayName": "preset.dscombat.eden_plane_empty",
   "health": 160.0,
   "ingredients": [
@@ -48,6 +47,7 @@
   "item": "dscombat:eden_plane",
   "landing_gear": true,
   "presetId": "eden_plane_empty",
+  "presetType": "plane",
   "screens": [
     {
       "height": 0.28,

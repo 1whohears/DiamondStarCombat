@@ -1,19 +1,17 @@
 package com.onewhohears.dscombat.data.aircraft.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
+import com.onewhohears.dscombat.data.aircraft.stats.VehicleStats;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.entity.vehicle.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModSounds;
 
 public class TankPresets {
 	
-	public static final AircraftPreset EMPTY_MRBUDGER_TANK = AircraftPreset.Builder
-			.create(DSCombatMod.MODID, "mrbudger_tank_empty")
+	public static final VehicleStats EMPTY_MRBUDGER_TANK = VehicleStats.Builder
+			.createCar(DSCombatMod.MODID, "mrbudger_tank_empty")
 			.setSortFactor(4)
-			.setAircraftType(AircraftType.CAR)
 			.setItem(ModItems.MRBUDGER_TANK.getId())
 			.setMaxHealth(500f)
 			.setMass(15000f)
@@ -47,7 +45,7 @@ public class TankPresets {
 			.addEmptySlot("internal_4", SlotType.INTERNAL)
 			.build();
 	
-	public static final AircraftPreset UNARMED_MRBUDGER_TANK = AircraftPreset.Builder
+	public static final VehicleStats UNARMED_MRBUDGER_TANK = VehicleStats.Builder
 			.createFromCopy(DSCombatMod.MODID, "mrbudger_tank_unarmed", EMPTY_MRBUDGER_TANK)
 			.setCraftable()
 			.setSlotItem("internal_1", ModItems.C12_ENGINE.getId())
@@ -58,16 +56,15 @@ public class TankPresets {
 			.addIngredient(ModItems.HEAVY_FUEL_TANK.getId())
 			.build();
 	
-	public static final AircraftPreset DEFAULT_MRBUDGER_TANK = AircraftPreset.Builder
+	public static final VehicleStats DEFAULT_MRBUDGER_TANK = VehicleStats.Builder
 			.createFromCopy(DSCombatMod.MODID, "mrbudger_tank", UNARMED_MRBUDGER_TANK)
 			.setSlotItem(PartSlot.PILOT_SLOT_NAME, ModItems.HEAVY_TANK_TURRET.getId(), true)
 			.addIngredient(ModItems.B_120MMHE.getId(), 16)
 			.build();
 	
-	public static final AircraftPreset EMPTY_SMALL_ROLLER = AircraftPreset.Builder
-			.create(DSCombatMod.MODID, "small_roller_empty")
+	public static final VehicleStats EMPTY_SMALL_ROLLER = VehicleStats.Builder
+			.createCar(DSCombatMod.MODID, "small_roller_empty")
 			.setSortFactor(1)
-			.setAircraftType(AircraftType.CAR)
 			.setItem(ModItems.SMALL_ROLLER.getId())
 			.setMaxHealth(30f)
 			.setMass(600f)
@@ -94,7 +91,7 @@ public class TankPresets {
 			.addEmptySlot("internal_2", SlotType.INTERNAL)
 			.build();
 	
-	public static final AircraftPreset UNARMED_SMALL_ROLLER = AircraftPreset.Builder
+	public static final VehicleStats UNARMED_SMALL_ROLLER = VehicleStats.Builder
 			.createFromCopy(DSCombatMod.MODID, "small_roller_unarmed", EMPTY_SMALL_ROLLER)
 			.setCraftable()
 			.addIngredient(ModItems.C6_ENGINE.getId())
@@ -103,14 +100,14 @@ public class TankPresets {
 			.setSlotItem("internal_2", ModItems.LIGHT_FUEL_TANK.getId(), true)
 			.build();
 	
-	public static final AircraftPreset DEFAULT_SMALL_ROLLER = AircraftPreset.Builder
+	public static final VehicleStats DEFAULT_SMALL_ROLLER = VehicleStats.Builder
 			.createFromCopy(DSCombatMod.MODID, "small_roller", UNARMED_SMALL_ROLLER)
 			.setSlotItem(PartSlot.PILOT_SLOT_NAME, ModItems.STEVE_UP_SMASH.getId(), true)
 			.addIngredient(ModItems.STEVE_UP_SMASH.getId())
 			.addIngredient(ModItems.AIM9P5.getId(), 4)
 			.build();
 	
-	public static final AircraftPreset TANK_SMALL_ROLLER = AircraftPreset.Builder
+	public static final VehicleStats TANK_SMALL_ROLLER = VehicleStats.Builder
 			.createFromCopy(DSCombatMod.MODID, "small_roller_tank", UNARMED_SMALL_ROLLER)
 			.setSlotItem(PartSlot.PILOT_SLOT_NAME, ModItems.HEAVY_TANK_TURRET.getId(), true)
 			.addIngredient(ModItems.HEAVY_TANK_TURRET.getId())

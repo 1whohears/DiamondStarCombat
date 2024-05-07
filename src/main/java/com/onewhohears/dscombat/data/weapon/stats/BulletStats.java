@@ -1,39 +1,31 @@
-package com.onewhohears.dscombat.data.weapon;
+package com.onewhohears.dscombat.data.weapon.stats;
 
 import static com.onewhohears.dscombat.DSCombatMod.MODID;
 
 import java.util.List;
-import java.util.Random;
 
 import com.google.gson.JsonObject;
-import com.mojang.math.Vector3f;
-import com.onewhohears.dscombat.data.jsonpreset.JsonPreset;
-import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.dscombat.entity.weapon.EntityBullet;
-import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
+import com.onewhohears.dscombat.data.jsonpreset.JsonPresetInstance;
+import com.onewhohears.dscombat.data.jsonpreset.JsonPresetType;
+import com.onewhohears.dscombat.data.weapon.AbstractWeaponBuilders;
+import com.onewhohears.dscombat.data.weapon.WeaponType;
+import com.onewhohears.dscombat.data.weapon.instance.BulletInstance;
 import com.onewhohears.dscombat.util.UtilMCText;
 import com.onewhohears.dscombat.util.UtilParse;
-import com.onewhohears.dscombat.util.math.UtilAngles;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.phys.Vec3;
 
-public class BulletData extends WeaponData {
+public class BulletStats extends WeaponStats {
 	
 	public static class Builder extends AbstractWeaponBuilders.BulletBuilder<Builder> {
-
-		protected Builder(String namespace, String name, JsonPresetFactory<? extends BulletData> sup) {
-			super(namespace, name, sup, WeaponType.BULLET);
+		protected Builder(String namespace, String name) {
+			super(namespace, name, WeaponType.BULLET);
 		}
-		
 		public static Builder bulletBuilder(String namespace, String name) {
-			return new Builder(namespace, name, (key, json) -> new BulletData(key, json));
+			return new Builder(namespace, name);
 		}
-		
 	}
 	
 	private final float damage;
@@ -45,7 +37,7 @@ public class BulletData extends WeaponData {
 	private final float innacuracy;
 	private final int explodeNum;
 	
-	public BulletData(ResourceLocation key, JsonObject json) {
+	public BulletStats(ResourceLocation key, JsonObject json) {
 		super(key, json);
 		this.damage = json.get("damage").getAsFloat();
 		this.speed = json.get("speed").getAsDouble();
@@ -55,51 +47,6 @@ public class BulletData extends WeaponData {
 		this.explosionRadius = json.get("explosionRadius").getAsFloat();
 		this.innacuracy = json.get("innacuracy").getAsFloat();
 		this.explodeNum = UtilParse.getIntSafe(json, "explodeNum", 1);
-	}
-	
-	@Override
-	public void readNBT(CompoundTag tag) {
-		super.readNBT(tag);
-	}
-	
-	@Override
-	public CompoundTag writeNbt() {
-		CompoundTag tag = super.writeNbt();
-		return tag;
-	}
-	
-	@Override
-	public void readBuffer(FriendlyByteBuf buffer) {
-		super.readBuffer(buffer);
-	}
-	
-	@Override
-	public void writeBuffer(FriendlyByteBuf buffer) {
-		super.writeBuffer(buffer);
-	}
-	
-	@Override
-	public WeaponType getType() {
-		return WeaponType.BULLET;
-	}
-	
-	@Override
-	public EntityWeapon getShootEntity(WeaponShootParameters params) {
-		EntityBullet bullet = (EntityBullet) super.getShootEntity(params);
-		if (bullet == null) return null;
-		bullet.setDeltaMovement(bullet.getLookAngle().scale(speed));
-		return bullet;
-	}
-	
-	@Override
-	public void setDirection(EntityWeapon weapon, Vec3 direction) {
-		float pitch = UtilAngles.getPitch(direction);
-		float yaw = UtilAngles.getYaw(direction);
-		Random r = new Random();
-		pitch = pitch + (r.nextFloat()-0.5f) * 2f * innacuracy;
-		yaw = yaw + (r.nextFloat()-0.5f) * 2f * innacuracy;
-		weapon.setXRot(pitch-changeLaunchPitch);
-		weapon.setYRot(yaw);
 	}
 	
 	public float getDamage() {
@@ -138,11 +85,6 @@ public class BulletData extends WeaponData {
 	public double getMobTurretRange() {
 		return Math.min(300, getSpeed() * getMaxAge());
 	}
-
-	@Override
-	public <T extends JsonPreset> T copy() {
-		return (T) new BulletData(getKey(), getJsonData());
-	}
 	
 	@Override
 	public void addToolTips(List<Component> tips, boolean advanced) {
@@ -172,13 +114,25 @@ public class BulletData extends WeaponData {
 		if (isExplosive()) return MODID+":textures/ui/weapon_icons/he_bullet.png";
 		return MODID+":textures/ui/weapon_icons/bullet.png";
 	}
+
+	@Override
+	public JsonPresetInstance<?> createPresetInstance() {
+		return new BulletInstance<>(this);
+	}
 	
 	@Override
-	protected Vec3 getStartMove(EntityVehicle vehicle) {
-		Vec3 move = vehicle.getLookAngle().scale(getSpeed());
-		if (vehicle.isWeaponAngledDown() && canAngleDown())
-			move = UtilAngles.rotateVector(move, Vector3f.XN.rotationDegrees(25f));
-		return move;
+	public boolean isBullet() {
+		return true;
+	}
+	
+	@Override
+	public boolean isAimAssist() {
+		return true;
+	}
+
+	@Override
+	public JsonPresetType getType() {
+		return WeaponType.BULLET;
 	}
 
 }

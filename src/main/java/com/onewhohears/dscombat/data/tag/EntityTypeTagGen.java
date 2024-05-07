@@ -38,16 +38,13 @@ public class EntityTypeTagGen extends EntityTypeTagsProvider {
 			.addOptional(new ResourceLocation("moguns:magma_cream"))
 			.addOptional(new ResourceLocation("moguns:flare"));
 		tag(ModTags.EntityTypes.BOMB)
-			.add(ModEntities.BOMB.get(), ModEntities.ANM30.get(), ModEntities.MARK77.get(), ModEntities.GRUETZ_BUNKER_BUSTER.get())
+			.add(ModEntities.BOMB.get(), ModEntities.BUNKER_BUSTER.get())
 			.addOptional(new ResourceLocation("cgm:grenade"))
 			.addOptional(new ResourceLocation("cgm:throwable_grenade"))
 			.addOptional(new ResourceLocation("cgm:throwable_stun_grenade"));
 		tag(ModTags.EntityTypes.MISSILE)
-			.add(ModEntities.POS_MISSILE_1.get(), ModEntities.IR_MISSILE_1.get(), ModEntities.TRACK_MISSILE_1.get(), ModEntities.ANTI_RADAR_MISSILE_1.get())
-			.add(ModEntities.TORPEDO_MISSILE_1.get(), ModEntities.AIM9L.get(), ModEntities.AIM9P5.get(), ModEntities.AIM9X.get())
-			.add(ModEntities.AIM120B.get(), ModEntities.AIM120C.get(), ModEntities.PAC3.get(), ModEntities.AIM7F.get())
-			.add(ModEntities.AIM7MH.get(), ModEntities.AGM114K.get(), ModEntities.AGM65L.get(), ModEntities.AGM84E.get())
-			.add(ModEntities.AGM65G.get(), ModEntities.METEOR.get(), ModEntities.MK13.get(), ModEntities.AGM88G.get())
+			.add(ModEntities.POS_MISSILE.get(), ModEntities.IR_MISSILE.get(), ModEntities.TRACK_MISSILE.get(), ModEntities.ANTI_RADAR_MISSILE.get())
+			.add(ModEntities.TORPEDO_MISSILE.get())
 			.addOptional(new ResourceLocation("cgm:missile"));
 		// VEHICLES
 		tag(ModTags.EntityTypes.VEHICLE)

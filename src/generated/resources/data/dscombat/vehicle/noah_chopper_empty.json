@@ -1,5 +1,4 @@
 {
-  "aircraft_type": 1,
   "displayName": "preset.dscombat.noah_chopper_empty",
   "health": 200.0,
   "ingredients": [
@@ -32,6 +31,7 @@
   "item": "dscombat:noah_chopper",
   "landing_gear": true,
   "presetId": "noah_chopper_empty",
+  "presetType": "helicopter",
   "screens": [
     {
       "height": 0.3,

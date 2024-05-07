@@ -2,19 +2,17 @@ package com.onewhohears.dscombat.data.aircraft.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
-import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager.PassengerSoundPack;
+import com.onewhohears.dscombat.data.aircraft.stats.VehicleStats;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.entity.vehicle.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModSounds;
 
 public class HeliPresets {
 	
-	public static final AircraftPreset EMPTY_NOAH_CHOPPER = AircraftPreset.Builder
-			.create(DSCombatMod.MODID, "noah_chopper_empty")
+	public static final VehicleStats EMPTY_NOAH_CHOPPER = VehicleStats.Builder
+			.createHelicopter(DSCombatMod.MODID, "noah_chopper_empty")
 			.setSortFactor(4)
-			.setAircraftType(AircraftType.HELICOPTER)
 			.setItem(ModItems.NOAH_CHOPPER.getId())
 			.setMaxHealth(200f)
 			.setMass(6000f)
@@ -73,7 +71,7 @@ public class HeliPresets {
 			.addHUDScreen(0.4, -0.65, 1.5)
 			.build();
 	
-	public static final AircraftPreset UNARMED_NOAH_CHOPPER = AircraftPreset.Builder
+	public static final VehicleStats UNARMED_NOAH_CHOPPER = VehicleStats.Builder
 			.createFromCopy(DSCombatMod.MODID, "noah_chopper_unarmed", EMPTY_NOAH_CHOPPER)
 			.setCraftable()
 			.setSlotItem("internal_1", ModItems.C12_ENGINE.getId())
@@ -83,7 +81,7 @@ public class HeliPresets {
 			.addIngredient(ModItems.HEAVY_FUEL_TANK.getId())
 			.build();
 	
-	public static final AircraftPreset DEFAULT_NOAH_CHOPPER = AircraftPreset.Builder
+	public static final VehicleStats DEFAULT_NOAH_CHOPPER = VehicleStats.Builder
 			.createFromCopy(DSCombatMod.MODID, "noah_chopper", UNARMED_NOAH_CHOPPER)
 			.setSlotItem("seat2", ModItems.MINIGUN_TURRET.getId(), true)
 			.setSlotItem("left_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "aim7f", true)

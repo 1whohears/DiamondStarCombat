@@ -11,8 +11,8 @@ import org.slf4j.Logger;
 
 import com.google.common.collect.Sets;
 import com.mojang.logging.LogUtils;
-import com.onewhohears.dscombat.data.aircraft.AircraftClientPresetGenerator;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresetGenerator;
+import com.onewhohears.dscombat.data.aircraft.client.AircraftClientPresetGenerator;
 
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
@@ -21,7 +21,7 @@ import net.minecraft.resources.ResourceLocation;
 
 /**
  * use this to generate json preset files. 
- * call {@link JsonPresetGenerator#addPresetToGenerate(JsonPreset)} inside a
+ * call {@link JsonPresetGenerator#addPresetToGenerate(JsonPresetStats)} inside a
  * {@link JsonPresetGenerator#registerPresets()} override.
  * use a {@link PresetBuilder} to make the presets to register.
  * 
@@ -34,7 +34,7 @@ import net.minecraft.resources.ResourceLocation;
  * @author 1whohears
  * @param <T> the type of preset this reader builds from json files
  */
-public abstract class JsonPresetGenerator<T extends JsonPreset> implements DataProvider {
+public abstract class JsonPresetGenerator<T extends JsonPresetStats> implements DataProvider {
 	
 	protected final Logger LOGGER = LogUtils.getLogger();
 	protected final DataGenerator.PathProvider pathProvider;

@@ -6,8 +6,9 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.onewhohears.dscombat.command.argument.WeaponArgument;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
+import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
+import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.util.UtilMCText;
@@ -39,17 +40,22 @@ public class MissileCommand {
 			)))));
 	}
 	
-	private int testMissile(CommandContext<CommandSourceStack> context, Collection<? extends Entity> targets, Vec3 pos, WeaponData weapon, Entity owner) throws CommandSyntaxException {
+	private int testMissile(CommandContext<CommandSourceStack> context, Collection<? extends Entity> targets, Vec3 pos, WeaponStats weaponStats, Entity owner) throws CommandSyntaxException {
 		String defaultId = "aim120b";
-		if (weapon == null) weapon = WeaponPresets.get().getPreset(defaultId);
+		if (weaponStats == null) weaponStats = WeaponPresets.get().get(defaultId);
+		if (weaponStats == null) {
+			context.getSource().sendFailure(UtilMCText.literal("Default Weapon Preset "+defaultId+" does not exist?!"));
+			return 0;
+		}
+		WeaponInstance<?> weapon = weaponStats.createWeaponInstance();
 		int i = 0;
 		for (Entity e : targets) {
 			Vec3 dp = e.position().subtract(pos).normalize();
-			EntityWeapon ew = weapon.getEntity(e.level);
+			EntityWeapon<?> ew = weapon.getEntity(e.level);
 			ew.setOwner(owner);
 			ew.setPos(pos);
 			weapon.setDirection(ew, dp);
-			if (ew instanceof EntityMissile missile) {
+			if (ew instanceof EntityMissile<?> missile) {
 				Entity v = e.getRootVehicle();
 				if (v != null) e = v;
 				missile.target = e;

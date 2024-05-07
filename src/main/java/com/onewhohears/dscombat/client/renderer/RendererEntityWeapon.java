@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
-public class RendererEntityWeapon<T extends EntityWeapon> extends EntityRenderer<T> {
+public class RendererEntityWeapon<T extends EntityWeapon<?>> extends EntityRenderer<T> {
 	
 	protected final EntityModel<?> model;
 	protected final ResourceLocation texture;

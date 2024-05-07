@@ -1,5 +1,4 @@
 {
-  "aircraft_type": 3,
   "displayName": "preset.dscombat.corvette_empty",
   "health": 250.0,
   "hitboxes": [
@@ -39,6 +38,7 @@
   "item": "dscombat:corvette",
   "landing_gear": true,
   "presetId": "corvette_empty",
+  "presetType": "boat",
   "slots": [
     {
       "data": {

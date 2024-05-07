@@ -13,8 +13,8 @@ import com.onewhohears.dscombat.common.container.menu.VehicleBlockContainerMenu;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerCraftPlane;
 import com.onewhohears.dscombat.crafting.AircraftRecipe;
-import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
+import com.onewhohears.dscombat.data.aircraft.stats.VehicleStats;
 import com.onewhohears.dscombat.util.UtilItem;
 import com.onewhohears.dscombat.util.UtilMCText;
 
@@ -128,7 +128,7 @@ public class VehicleBlockScreen extends AbstractContainerScreen<VehicleBlockCont
 		// plane stats
 		AircraftRecipe ar = tab.getSelectedRecipe();
 		if (ar == null) return;
-		AircraftPreset ap = ar.getVehiclePreset();
+		VehicleStats ap = ar.getVehicleStats();
 		if (ap == null) return;
 		Component name = ap.getDisplayNameComponent();
 		int nameWidth = font.width(name);

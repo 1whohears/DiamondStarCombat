@@ -1,25 +1,32 @@
 package com.onewhohears.dscombat.client.overlay.components;
 
+import static com.onewhohears.dscombat.DSCombatMod.MODID;
+
+import java.util.List;
+
+import org.jetbrains.annotations.NotNull;
+
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.BufferUploader;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Matrix4f;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.util.UtilMCText;
+
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
-
-import static com.onewhohears.dscombat.DSCombatMod.MODID;
 
 // TODO: finish this lol
 /**
@@ -65,8 +72,8 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
         EntityVehicle vehicle = seat.getParentVehicle();
         if (vehicle == null) return;
 
-        List<WeaponData> weapons = vehicle.weaponSystem.getWeapons();
-        WeaponData selectedWeapon = vehicle.weaponSystem.getSelected();
+        List<WeaponInstance<?>> weapons = vehicle.weaponSystem.getWeapons();
+        WeaponInstance<?> selectedWeapon = vehicle.weaponSystem.getSelected();
         int selectedIndex = vehicle.weaponSystem.getSelectedIndex();
 
         if (weapons == null || weapons.isEmpty()) return;
@@ -87,18 +94,18 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
                 if (shiftedIndex < 0) shiftedIndex = ((shiftedIndex % weapons.size()) + weapons.size()) % weapons.size();
                 int newYPos = (int) (yPlacement - (24 * i));
 
-                WeaponData weaponAt = weapons.get(shiftedIndex);
+                WeaponInstance<?> weaponAt = weapons.get(shiftedIndex);
 
                 drawTab(poseStack, 13, newYPos, blitPosition, 0, false);
                 drawWeapon(poseStack, weaponAt, 13, newYPos, blitPosition + 1, 0, false, false, false);
                 poseStack.pushPose();
                 poseStack.translate(0, 0, blitPosition + 3);
-                if (!weaponAt.isNoWeapon()) {
-                    drawString(poseStack, FONT, weaponAt.getCurrentAmmo() + "/" + weaponAt.getMaxAmmo(), 16, newYPos + 14, 0xe6e600);
+                if (!weaponAt.getStats().isNoWeapon()) {
+                    drawString(poseStack, FONT, weaponAt.getCurrentAmmo() + "/" + weaponAt.getStats().getMaxAmmo(), 16, newYPos + 14, 0xe6e600);
                 } else {
                     drawString(poseStack, FONT, SAFETY, 16, newYPos + 14, 0xff5555);
                 }
-                drawString(poseStack, FONT, weaponAt.getDisplayNameComponent(), 16, newYPos + 4, 0xffffff);
+                drawString(poseStack, FONT, weaponAt.getStats().getDisplayNameComponent(), 16, newYPos + 4, 0xffffff);
                 poseStack.popPose();
             }
 
@@ -125,16 +132,16 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
         getPlayer().playSound(SoundEvents.UI_BUTTON_CLICK);
     }
     
-    protected static void drawFinishedTab(PoseStack poseStack, WeaponData selectedWeapon, double yPlacement, int blitPosition) {
+    protected static void drawFinishedTab(PoseStack poseStack, WeaponInstance<?> selectedWeapon, double yPlacement, int blitPosition) {
     	if (selectedWeapon == null) return;
-    	drawWeaponName(poseStack, selectedWeapon.getDisplayNameComponent(), 13, yPlacement, blitPosition - 2);
+    	drawWeaponName(poseStack, selectedWeapon.getStats().getDisplayNameComponent(), 13, yPlacement, blitPosition - 2);
         drawTab(poseStack, 13, yPlacement, blitPosition, 0, false);
         drawWeapon(poseStack, selectedWeapon, 13, yPlacement, blitPosition + 1, 0, false, false, false);
 
         poseStack.pushPose();
         poseStack.translate(0, 0, blitPosition + 2);
-        if (!selectedWeapon.isNoWeapon()) drawString(poseStack, FONT, selectedWeapon.getCurrentAmmo() + "/" + selectedWeapon.getMaxAmmo(), 16, (int) (yPlacement + 14), 0xe6e600);
-        drawString(poseStack, FONT, selectedWeapon.getWeaponTypeCode(), 16, (int) yPlacement + 4, 0xe6e600);
+        if (!selectedWeapon.getStats().isNoWeapon()) drawString(poseStack, FONT, selectedWeapon.getCurrentAmmo() + "/" + selectedWeapon.getStats().getMaxAmmo(), 16, (int) (yPlacement + 14), 0xe6e600);
+        drawString(poseStack, FONT, selectedWeapon.getStats().getWeaponTypeCode(), 16, (int) yPlacement + 4, 0xe6e600);
         poseStack.popPose();
     }
 
@@ -175,14 +182,14 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
      *                         that scrolls from blank and a scroll that doesn't must be the same to
      *                         maintain visual continuity.
      */
-    protected static void drawWeapon(PoseStack stack, WeaponData weapon, double x, double y, int blitOffset, int frame, boolean scrollsUpward, boolean scrollsToBlank, boolean scrollsFromBlank) {
+    protected static void drawWeapon(PoseStack stack, WeaponInstance<?> weapon, double x, double y, int blitOffset, int frame, boolean scrollsUpward, boolean scrollsToBlank, boolean scrollsFromBlank) {
         if (frame < 0 || frame > getMaxFrames() - 1) throw new IllegalArgumentException("There are only " + getMaxFrames() + " frames!");
         if (scrollsToBlank && scrollsFromBlank) throw new IllegalArgumentException("Tabs may not scroll to and from blank!");
         if (weapon == null) throw new NullPointerException("Passed weapon is null!");
 
         int frameValue = (int) FRAMES[frame];
 
-        RenderSystem.setShaderTexture(0, weapon.getWeaponIcon());
+        RenderSystem.setShaderTexture(0, weapon.getStats().getWeaponIcon());
         RenderSystem.enableBlend();
         RenderSystem.enableDepthTest();
 

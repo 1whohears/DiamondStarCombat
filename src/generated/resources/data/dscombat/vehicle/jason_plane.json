@@ -1,10 +1,10 @@
 {
-  "aircraft_type": 0,
   "copyId": "jason_plane_unarmed",
   "displayName": "preset.dscombat.jason_plane",
   "is_craftable": false,
   "landing_gear": true,
   "presetId": "jason_plane",
+  "presetType": "plane",
   "slots": [
     {
       "data": {

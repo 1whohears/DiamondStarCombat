@@ -3,9 +3,9 @@ package com.onewhohears.dscombat.common.container.menu;
 import java.util.List;
 
 import com.onewhohears.dscombat.common.container.slot.PartItemSlot;
-import com.onewhohears.dscombat.data.aircraft.AircraftClientPreset;
-import com.onewhohears.dscombat.data.aircraft.AircraftClientPresets;
-import com.onewhohears.dscombat.data.aircraft.AircraftClientPreset.UIPos;
+import com.onewhohears.dscombat.data.aircraft.client.AircraftClientPresets;
+import com.onewhohears.dscombat.data.aircraft.client.VehicleClientStats;
+import com.onewhohears.dscombat.data.aircraft.client.VehicleClientStats.UIPos;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModContainers;
@@ -21,7 +21,7 @@ public class VehicleContainerMenu extends AbstractContainerMenu {
 	
 	private Container playerInv;
 	private Container planeInv;
-	private AircraftClientPreset clientData;
+	private VehicleClientStats clientData;
 	
 	public VehicleContainerMenu(int id, Inventory playerInv) {
 		super(ModContainers.PLANE_MENU.get(), id);
@@ -32,7 +32,7 @@ public class VehicleContainerMenu extends AbstractContainerMenu {
 			this.planeInv = plane.partsManager.getInventory();
 			List<PartSlot> slots = plane.partsManager.getSlots();
 			//System.out.println("client preset = "+plane.clientPreset);
-			clientData = AircraftClientPresets.get().getPreset(plane.clientPresetId);
+			clientData = AircraftClientPresets.get().get(plane.clientPresetId);
 			//System.out.println("acp not null = "+(acp != null));
 			// create plane menu container
 			int x_start = 48, y_start = 15;
@@ -103,7 +103,7 @@ public class VehicleContainerMenu extends AbstractContainerMenu {
 		return this.planeInv;
 	}
 	
-	public AircraftClientPreset getClientData() {
+	public VehicleClientStats getClientData() {
 		return clientData;
 	}
 

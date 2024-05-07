@@ -1,5 +1,9 @@
 package com.onewhohears.dscombat.client.overlay.components;
 
+import java.util.List;
+
+import org.jetbrains.annotations.NotNull;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
@@ -9,23 +13,21 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.event.forgebus.ClientRenderEvents;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
-import com.onewhohears.dscombat.data.radar.RadarData;
+import com.onewhohears.dscombat.data.radar.RadarStats;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
+
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 public class RadarOverlay extends VehicleOverlayComponent {
     public static final ResourceLocation PING_HUD = new ResourceLocation(DSCombatMod.MODID,
@@ -45,7 +47,7 @@ public class RadarOverlay extends VehicleOverlayComponent {
         if (!radar.hasRadar()) return false;
         PARTIAL_TICK = partialTick;
         // LOOK AT PING DATA
-        List<RadarData.RadarPing> pings = radar.getClientRadarPings();
+        List<RadarStats.RadarPing> pings = radar.getClientRadarPings();
         return !pings.isEmpty();
     }
 
@@ -58,7 +60,7 @@ public class RadarOverlay extends VehicleOverlayComponent {
         assert vehicle != null;
 
         RadarSystem radar = vehicle.radarSystem;
-        List<RadarData.RadarPing> pings = radar.getClientRadarPings();
+        List<RadarStats.RadarPing> pings = radar.getClientRadarPings();
 
         int selected = radar.getClientSelectedPingIndex();
         int hover = DSCClientInputs.getRadarHoverIndex();
@@ -78,7 +80,7 @@ public class RadarOverlay extends VehicleOverlayComponent {
         boolean hovering = false;
         int size = Config.CLIENT.radarPingOverlaySize.get();
         for (int i = 0; i < pings.size(); ++i) {
-            RadarData.RadarPing ping = pings.get(i);
+            RadarStats.RadarPing ping = pings.get(i);
             // SCREEN
             Vec3 dp = ping.getPosForClient().subtract(vehicle.position());
             double dist = dp.multiply(1, 0, 1).length();
@@ -138,22 +140,22 @@ public class RadarOverlay extends VehicleOverlayComponent {
         if (!hovering) DSCClientInputs.resetRadarHoverIndex();
         // LOOK AT PING DATA LAYER ORDER FIX
         if (hover != -1 && hover < pings.size()) {
-            RadarData.RadarPing ping = pings.get(hover);
+            RadarStats.RadarPing ping = pings.get(hover);
             int dist = (int) ping.getPosForClient().distanceTo(vehicle.position());
             int alt = UtilEntity.getDistFromSeaLevel(ping.getPosForClient().y, vehicle.level);
             String text = dist + " | " + alt;
             int color = 0xffff00;
-            WeaponData weapon = null;
-            if (seat.isTurret()) weapon = ((EntityTurret)seat).getWeaponData();
+            WeaponInstance<?> weapon = null;
+            if (seat.isTurret()) weapon = ((EntityTurret)seat).getWeaponData(); 
             else if (seat.canPassengerShootParentWeapon()) weapon = vehicle.weaponSystem.getSelected();
-            if (weapon != null && weapon.requiresRadar()) {
-                if (dist <= weapon.getMobTurretRange()) {
-                    color = 0x00ff00;
-                    text += " | O";
-                } else {
-                    color = 0xff0000;
-                    text += " | X";
-                }
+            if (weapon != null && weapon.getStats().requiresRadar()) {
+            	if (dist <= weapon.getStats().getMobTurretRange()) {
+            		color = 0x00ff00;
+            		text += " | O";
+            	} else {
+            		color = 0xff0000;
+            		text += " | X";
+            	}
             }
             drawCenteredString(poseStack, FONT, text,
                     screenWidth / 2, screenHeight / 2 - 20, color);

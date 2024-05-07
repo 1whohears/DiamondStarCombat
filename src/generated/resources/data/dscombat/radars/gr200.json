@@ -2,6 +2,7 @@
   "displayName": "preset.dscombat.gr200",
   "fov": -1.0,
   "presetId": "gr200",
+  "presetType": "standard",
   "range": 200.0,
   "scanAir": false,
   "scanAircraft": true,

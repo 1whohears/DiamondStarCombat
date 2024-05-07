@@ -1,8 +1,7 @@
 package com.onewhohears.dscombat.entity.vehicle;
 
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.data.aircraft.VehicleStats;
-import com.onewhohears.dscombat.data.aircraft.VehicleStats.CarStats;
+import com.onewhohears.dscombat.data.aircraft.VehicleType;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -10,21 +9,18 @@ import net.minecraft.world.phys.Vec3;
 
 public class EntityGroundVehicle extends EntityVehicle {
 	
-	protected CarStats carStats;
-	
 	public EntityGroundVehicle(EntityType<? extends EntityGroundVehicle> entity, Level level, String defaultPreset) {
 		super(entity, level, defaultPreset);
-		carStats = (CarStats)vehicleStats;
 	}
 	
 	@Override
-	public AircraftType getAircraftType() {
-		return AircraftType.CAR;
+	public VehicleType getVehicleType() {
+		return VehicleType.CAR;
 	}
 	
 	@Override
 	public void directionGround(Quaternion q) {
-		if (carStats.isTank && isOperational()) {
+		if (getStats().asCar().isTank && isOperational()) {
 			flatten(q, 4f, 4f, true);
 			addMomentY(inputs.yaw * getYawTorque(), true);
 		} else super.directionGround(q);
@@ -69,11 +65,6 @@ public class EntityGroundVehicle extends EntityVehicle {
 	@Override
 	public boolean canToggleLandingGear() {
 		return false;
-	}
-
-	@Override
-	protected VehicleStats createVehicleStats() {
-		return new CarStats();
 	}
 
 }

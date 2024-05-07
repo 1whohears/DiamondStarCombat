@@ -1,5 +1,4 @@
 {
-  "type": "bomb",
   "canShootOnGround": false,
   "causesFire": false,
   "compatibleWeaponPart": "dscombat:bomb_rack",
@@ -7,7 +6,7 @@
   "damage": 20.0,
   "destroyTerrain": true,
   "displayName": "preset.dscombat.anm30",
-  "entityTypeKey": "dscombat:anm30",
+  "entityTypeKey": "dscombat:bomb",
   "explosionRadius": 3.5,
   "explosive": true,
   "fireRate": 4,
@@ -26,6 +25,7 @@
   "maxAge": 200,
   "maxAmmo": 40,
   "presetId": "anm30",
+  "presetType": "bomb",
   "rackTypeKey": "dscombat:bomb_rack",
   "shootSoundKey": "dscombat:bomb_shoot_1",
   "speed": 0.0

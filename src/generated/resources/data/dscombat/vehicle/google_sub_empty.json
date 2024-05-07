@@ -1,5 +1,4 @@
 {
-  "aircraft_type": 4,
   "displayName": "preset.dscombat.google_sub_empty",
   "health": 1000.0,
   "ingredients": [
@@ -24,6 +23,7 @@
   "item": "dscombat:google_sub",
   "landing_gear": true,
   "presetId": "google_sub_empty",
+  "presetType": "submarine",
   "slots": [
     {
       "data": {

@@ -4,8 +4,8 @@ import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
+import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.init.ModBlocks;
 import com.onewhohears.dscombat.util.UtilItem;
 
@@ -79,12 +79,12 @@ public class WeaponRecipe implements Recipe<Inventory> {
 		return presetId;
 	}
 	
-	public WeaponData getWeaponData() {
-		return WeaponPresets.get().getPresetNonCopy(getWeaponPresetId());
+	public WeaponStats getWeaponData() {
+		return WeaponPresets.get().get(getWeaponPresetId());
 	}
 	
 	public int getSortFactor() {
-		return getWeaponData().getType().ordinal();
+		return getWeaponData().getType().getSortFactor();
 	}
 	
 	public int compare(WeaponRecipe other) {
@@ -94,13 +94,13 @@ public class WeaponRecipe implements Recipe<Inventory> {
 	}
 	
 	public NonNullList<Ingredient> getIngredients() {
-		WeaponData preset = getWeaponData();
+		WeaponStats preset = getWeaponData();
 		if (preset == null) return NonNullList.create();
 		return preset.getIngredients();
 	}
 	
 	public ItemStack getOutput() {
-		WeaponData preset = getWeaponData();
+		WeaponStats preset = getWeaponData();
 		if (preset == null) return ItemStack.EMPTY;
 		return preset.getNewItem();
 	}

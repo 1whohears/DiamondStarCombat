@@ -1,5 +1,4 @@
 {
-  "aircraft_type": 0,
   "copyId": "wooden_plane_empty",
   "displayName": "preset.dscombat.wooden_plane",
   "ingredients": [
@@ -15,6 +14,7 @@
   "is_craftable": true,
   "landing_gear": true,
   "presetId": "wooden_plane",
+  "presetType": "plane",
   "slots": [
     {
       "data": {

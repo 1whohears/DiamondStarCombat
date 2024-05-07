@@ -1,5 +1,4 @@
 {
-  "aircraft_type": 3,
   "copyId": "nathan_boat_unarmed",
   "displayName": "preset.dscombat.nathan_boat",
   "ingredients": [
@@ -31,6 +30,7 @@
   "is_craftable": false,
   "landing_gear": true,
   "presetId": "nathan_boat",
+  "presetType": "boat",
   "slots": [
     {
       "data": {

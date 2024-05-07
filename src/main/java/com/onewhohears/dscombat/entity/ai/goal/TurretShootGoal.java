@@ -7,10 +7,10 @@ import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.aircraft.DSCPhyCons;
-import com.onewhohears.dscombat.data.weapon.BulletData;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
-import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
+import com.onewhohears.dscombat.data.weapon.stats.BulletStats;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
@@ -84,9 +84,9 @@ public class TurretShootGoal extends Goal {
 		if (prevTargetPos == null || mob.tickCount % updateRate == 0) {
 			Vec3 origin = turret.getEyePosition();
 			Vec3 targetPos = target.getEyePosition();
-			WeaponData wd = turret.getWeaponData();
-			if (accountGravity && wd != null && wd.getType().isBullet()) {
-				double speed = ((BulletData)wd).getSpeed();
+			WeaponInstance<?> wd = turret.getWeaponData();
+			if (accountGravity && wd != null && wd.getStats().isBullet()) {
+				double speed = ((BulletStats)wd.getStats()).getSpeed();
 				if (speed <= 0) speed = 0.01;
 				double g = -DSCPhyCons.GRAVITY;
 				Vec3 diff = targetPos.subtract(origin);
@@ -107,15 +107,15 @@ public class TurretShootGoal extends Goal {
 	
 	public static boolean shouldShootTurret(Mob mob, EntityTurret turret, LivingEntity target, 
 			Vec3 targetPos, float aimError, boolean useIRMis, boolean useTrackMis) {
-		WeaponData wd = turret.getWeaponData();
+		WeaponInstance<?> wd = turret.getWeaponData();
 		if (wd == null) return false;
 		if (!wd.checkRecoil() || wd.getCurrentAmmo() <= 0) return false;
-		if (useIRMis && wd.getType().isIRMissile()) {
-			if (turret.tickCount-turret.getLastShootTime() < wd.getMaxAge()*0.5) return false;
+		if (useIRMis && wd.getStats().isIRMissile()) {
+			if (turret.tickCount-turret.getLastShootTime() < wd.getStats().getMaxAge()*0.5) return false;
 			if (UtilEntity.isOnGroundOrWater(target)) return false;
 			aimError += 6;
-		} else if (useTrackMis && wd.requiresRadar()) {
-			if (turret.tickCount-turret.getLastShootTime() < wd.getMaxAge()*0.5) return false;
+		} else if (useTrackMis && wd.getStats().requiresRadar()) {
+			if (turret.tickCount-turret.getLastShootTime() < wd.getStats().getMaxAge()*0.5) return false;
 			EntityVehicle vehicle = turret.getParentVehicle();
 			if (vehicle == null) return false;
 			if (!vehicle.radarSystem.hasRadar()) return false;

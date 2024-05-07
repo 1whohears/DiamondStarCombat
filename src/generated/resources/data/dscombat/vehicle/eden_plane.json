@@ -1,5 +1,4 @@
 {
-  "aircraft_type": 0,
   "copyId": "eden_plane_unarmed",
   "displayName": "preset.dscombat.eden_plane",
   "ingredients": [
@@ -43,6 +42,7 @@
   "is_craftable": false,
   "landing_gear": true,
   "presetId": "eden_plane",
+  "presetType": "plane",
   "slots": [
     {
       "data": {

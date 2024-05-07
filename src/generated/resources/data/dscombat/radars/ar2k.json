@@ -2,6 +2,7 @@
   "displayName": "preset.dscombat.ar2k",
   "fov": 60.0,
   "presetId": "ar2k",
+  "presetType": "standard",
   "range": 2000.0,
   "scanAir": true,
   "scanAircraft": true,

@@ -1,5 +1,4 @@
 {
-  "aircraft_type": 2,
   "displayName": "preset.dscombat.small_roller_empty",
   "health": 30.0,
   "ingredients": [
@@ -20,6 +19,7 @@
   "item": "dscombat:small_roller",
   "landing_gear": true,
   "presetId": "small_roller_empty",
+  "presetType": "car",
   "slots": [
     {
       "data": {

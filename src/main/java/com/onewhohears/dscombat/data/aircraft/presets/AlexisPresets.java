@@ -3,19 +3,17 @@ package com.onewhohears.dscombat.data.aircraft.presets;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
 import com.onewhohears.dscombat.data.aircraft.LiftKGraph;
-import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager.PassengerSoundPack;
+import com.onewhohears.dscombat.data.aircraft.stats.VehicleStats;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.entity.vehicle.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModSounds;
 
 public class AlexisPresets {
 	
-	public static final AircraftPreset EMPTY_ALEXIS_PLANE = AircraftPreset.Builder
-			.create(DSCombatMod.MODID, "alexis_plane_empty")
+	public static final VehicleStats EMPTY_ALEXIS_PLANE = VehicleStats.Builder
+			.createPlane(DSCombatMod.MODID, "alexis_plane_empty")
 			.setSortFactor(10)
-			.setAircraftType(AircraftType.PLANE)
 			.setItem(ModItems.ALEXIS_PLANE.getId())
 			.setMaxHealth(140f)
 			.setMass(8500f)
@@ -71,7 +69,7 @@ public class AlexisPresets {
 			.addAfterBurnerSmokePos(0,0.3,-6.5)
 			.build();
 	
-	public static final AircraftPreset UNARMED_ALEXIS_PLANE = AircraftPreset.Builder
+	public static final VehicleStats UNARMED_ALEXIS_PLANE = VehicleStats.Builder
 			.createFromCopy(DSCombatMod.MODID, "alexis_plane_unarmed", EMPTY_ALEXIS_PLANE)
 			.setCraftable()
 			.setSlotItem("internal_1", ModItems.TURBOFAN_F145.getId())
@@ -80,7 +78,7 @@ public class AlexisPresets {
 			.addIngredient(ModItems.HEAVY_FUEL_TANK.getId())
 			.build();
 	
-	public static final AircraftPreset DEFAULT_ALEXIS_PLANE = AircraftPreset.Builder
+	public static final VehicleStats DEFAULT_ALEXIS_PLANE = VehicleStats.Builder
 			.createFromCopy(DSCombatMod.MODID, "alexis_plane", UNARMED_ALEXIS_PLANE)
 			// actual weapon costs: 63 copper, 88 iron, 130 gunpowder, 140 redstone
 			.setSlotItem("left_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "aim120b", true)
@@ -101,7 +99,7 @@ public class AlexisPresets {
 			.addIngredient("minecraft:gunpowder", 64)
 			.build();
 	
-	public static final AircraftPreset SUPPORT_ALEXIS_PLANE = AircraftPreset.Builder
+	public static final VehicleStats SUPPORT_ALEXIS_PLANE = VehicleStats.Builder
 			.createFromCopy(DSCombatMod.MODID, "alexis_plane_support", UNARMED_ALEXIS_PLANE)
 			.setSlotItem("left_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "agm84e", true)
 			.setSlotItem("left_wing_2", ModItems.HEAVY_MISSILE_RACK.getId(), "agm65l", true)
@@ -128,7 +126,7 @@ public class AlexisPresets {
 			.setDefaultBaseTexture(1)
 			.build();
 	
-	public static final AircraftPreset SNIPER_ALEXIS_PLANE = AircraftPreset.Builder
+	public static final VehicleStats SNIPER_ALEXIS_PLANE = VehicleStats.Builder
 			.createFromCopy(DSCombatMod.MODID, "alexis_plane_sniper", UNARMED_ALEXIS_PLANE)
 			.setSlotItem("left_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "meteor", true)
 			.setSlotItem("left_wing_2", ModItems.HEAVY_MISSILE_RACK.getId(), "aim120c", true)

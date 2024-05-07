@@ -28,8 +28,8 @@ public class VehicleTextureManager {
 	
 	public VehicleTextureManager(EntityVehicle parent) {
 		this.parent = parent;
-		this.baseTextures = new ResourceLocation[parent.getVehicleStats().baseTextureVariants];
-		this.textureLayers = new TextureLayer[parent.getVehicleStats().textureLayers];
+		this.baseTextures = new ResourceLocation[parent.getStats().baseTextureVariants];
+		this.textureLayers = new TextureLayer[parent.getStats().textureLayers];
 		setupTextureLocations();
 		dynamicTexture = getBaseTexture();
 	}

@@ -1,5 +1,4 @@
 {
-  "type": "pos_missile",
   "acceleration": 0.05,
   "bleed": 0.02,
   "canShootOnGround": false,
@@ -9,7 +8,7 @@
   "damage": 40.0,
   "destroyTerrain": true,
   "displayName": "preset.dscombat.agm114k",
-  "entityTypeKey": "dscombat:agm114k",
+  "entityTypeKey": "dscombat:pos_missile",
   "explosionRadius": 3.5,
   "explosive": true,
   "fireRate": 20,
@@ -39,6 +38,7 @@
   "maxAge": 200,
   "maxAmmo": 6,
   "presetId": "agm114k",
+  "presetType": "pos_missile",
   "rackTypeKey": "dscombat:light_missile_rack",
   "shootSoundKey": "dscombat:rocket_launch_1",
   "speed": 3.0,

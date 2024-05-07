@@ -1,5 +1,4 @@
 {
-  "type": "track_missile",
   "acceleration": 0.035,
   "activeTrack": true,
   "bleed": 0.02,
@@ -11,7 +10,7 @@
   "damage": 60.0,
   "destroyTerrain": true,
   "displayName": "preset.dscombat.agm84e",
-  "entityTypeKey": "dscombat:agm84e",
+  "entityTypeKey": "dscombat:track_missile",
   "explodeNum": 2,
   "explosionRadius": 4.5,
   "explosive": true,
@@ -42,6 +41,7 @@
   "maxAge": 300,
   "maxAmmo": 3,
   "presetId": "agm84e",
+  "presetType": "track_missile",
   "rackTypeKey": "dscombat:heavy_missile_rack",
   "seeThroBlock": 8,
   "shootSoundKey": "dscombat:rocket_launch_1",

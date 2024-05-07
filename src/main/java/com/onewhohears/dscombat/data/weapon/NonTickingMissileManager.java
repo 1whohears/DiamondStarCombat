@@ -18,7 +18,7 @@ import net.minecraft.world.level.ChunkPos;
  */
 public class NonTickingMissileManager {
 	
-	private static final List<EntityMissile> missiles = new ArrayList<>();
+	private static final List<EntityMissile<?>> missiles = new ArrayList<>();
 	
 	public static void serverTick(MinecraftServer server) {
 		for (int i = 0; i < missiles.size(); ++i) 
@@ -26,7 +26,7 @@ public class NonTickingMissileManager {
 				missiles.remove(i--);
 	}
 	
-	private static boolean tickMissile(EntityMissile missile) {
+	private static boolean tickMissile(EntityMissile<?> missile) {
 		//System.out.println("SERVER TICK MISSILE "+missile+" "+missile.tickCount);
 		if (isKilled(missile)) {
 			//System.out.println("REMOVING MISSILE FROM MANAGER");
@@ -54,7 +54,7 @@ public class NonTickingMissileManager {
 		return true;
 	}
 	
-	private static boolean isKilled(EntityMissile missile) {
+	private static boolean isKilled(EntityMissile<?> missile) {
 		if (missile.isDiscardedButTicking()) return false;
 		RemovalReason rr = missile.getRemovalReason();
 		if (rr == null) return false;
@@ -64,7 +64,7 @@ public class NonTickingMissileManager {
 		return false;
 	}
 	
-	private static boolean isUnloaded(EntityMissile missile) {
+	private static boolean isUnloaded(EntityMissile<?> missile) {
 		if (missile.isDiscardedButTicking()) return true;
 		RemovalReason rr = missile.getRemovalReason();
 		if (rr == null) return false;
@@ -76,7 +76,7 @@ public class NonTickingMissileManager {
 		return false;
 	}
 	
-	public static void addMissile(EntityMissile missile) {
+	public static void addMissile(EntityMissile<?> missile) {
 		//System.out.println("ADDING MISSILE TO MANAGER "+missile);
 		missiles.add(missile);
 	}

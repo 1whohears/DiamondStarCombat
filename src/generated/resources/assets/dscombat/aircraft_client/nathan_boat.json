@@ -68,5 +68,6 @@
       "slot_ui_y": 42
     }
   ],
-  "presetId": "nathan_boat"
+  "presetId": "nathan_boat",
+  "presetType": "standard"
 }

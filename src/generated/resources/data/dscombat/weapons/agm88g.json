@@ -1,5 +1,4 @@
 {
-  "type": "antiradar_missile",
   "acceleration": 0.04,
   "bleed": 0.02,
   "canShootOnGround": false,
@@ -10,7 +9,7 @@
   "damage": 60.0,
   "destroyTerrain": true,
   "displayName": "preset.dscombat.agm88g",
-  "entityTypeKey": "dscombat:agm88g",
+  "entityTypeKey": "dscombat:anti_radar_missile",
   "explosionRadius": 8.0,
   "explosive": true,
   "fireRate": 40,
@@ -40,6 +39,7 @@
   "maxAge": 600,
   "maxAmmo": 2,
   "presetId": "agm88g",
+  "presetType": "anti_radar_missile",
   "rackTypeKey": "dscombat:heavy_missile_rack",
   "scan_range": 1200.0,
   "shootSoundKey": "dscombat:rocket_launch_1",

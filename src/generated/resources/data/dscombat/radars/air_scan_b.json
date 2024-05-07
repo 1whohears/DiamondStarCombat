@@ -2,6 +2,7 @@
   "displayName": "preset.dscombat.air_scan_b",
   "fov": -1.0,
   "presetId": "air_scan_b",
+  "presetType": "standard",
   "range": 1800.0,
   "scanAir": true,
   "scanAircraft": true,

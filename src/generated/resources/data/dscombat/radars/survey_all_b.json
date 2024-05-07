@@ -2,6 +2,7 @@
   "displayName": "preset.dscombat.survey_all_b",
   "fov": -1.0,
   "presetId": "survey_all_b",
+  "presetType": "standard",
   "range": 1200.0,
   "scanAir": true,
   "scanAircraft": true,

@@ -130,7 +130,7 @@ public class UtilClientSafeSounds {
 			playCockpitSound(passengerSoundPack.irLockTone, 
 	    		1f, Config.CLIENT.irTargetToneVol.get().floatValue());
 		}
-		if (vehicle.getAircraftType().isPlane()) {
+		if (vehicle.getStats().isPlane()) {
 			// STALL
 			if (vehicle.isStalling()) { if (vehicle.getStallTicks() % 24 == 1) {
 				playCockpitSound(passengerSoundPack.stallAlert, 1f, 
@@ -148,7 +148,7 @@ public class UtilClientSafeSounds {
 					Config.CLIENT.cockpitVoiceLineVol.get().floatValue());
 			}
 		}
-		if (vehicle.getAircraftType().isAircraft) {
+		if (vehicle.getStats().isAircraft()) {
 			// ENGINE FIRE
 			if (vehicle.getEngineFireTicks() % 160 == 1) 
 				queueCockpitSound(passengerSoundPack.engineFire, 1f, 

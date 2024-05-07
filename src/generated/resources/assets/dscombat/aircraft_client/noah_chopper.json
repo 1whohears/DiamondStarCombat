@@ -123,5 +123,6 @@
       "slot_ui_y": 104
     }
   ],
-  "presetId": "noah_chopper"
+  "presetId": "noah_chopper",
+  "presetType": "standard"
 }

@@ -15,7 +15,6 @@
       }
     }
   ],
-  "aircraft_type": 0,
   "displayName": "preset.dscombat.javi_plane_empty",
   "health": 200.0,
   "ingredients": [
@@ -44,6 +43,7 @@
   "item": "dscombat:javi_plane",
   "landing_gear": true,
   "presetId": "javi_plane_empty",
+  "presetType": "plane",
   "screens": [
     {
       "height": 0.173,

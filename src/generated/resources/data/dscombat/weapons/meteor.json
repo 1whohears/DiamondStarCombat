@@ -1,5 +1,4 @@
 {
-  "type": "track_missile",
   "acceleration": 0.05,
   "activeTrack": true,
   "bleed": 0.04,
@@ -11,7 +10,7 @@
   "damage": 65.0,
   "destroyTerrain": true,
   "displayName": "preset.dscombat.meteor",
-  "entityTypeKey": "dscombat:meteor",
+  "entityTypeKey": "dscombat:track_missile",
   "explosionRadius": 5.0,
   "explosive": true,
   "fireRate": 50,
@@ -49,6 +48,7 @@
   "maxAge": 500,
   "maxAmmo": 2,
   "presetId": "meteor",
+  "presetType": "track_missile",
   "rackTypeKey": "dscombat:heavy_missile_rack",
   "shootSoundKey": "dscombat:rocket_launch_1",
   "speed": 6.0,

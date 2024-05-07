@@ -1,5 +1,4 @@
 {
-  "aircraft_type": 0,
   "copyId": "javi_plane_unarmed",
   "displayName": "preset.dscombat.javi_plane_truck",
   "ingredients": [
@@ -39,6 +38,7 @@
   "is_craftable": false,
   "landing_gear": true,
   "presetId": "javi_plane_truck",
+  "presetType": "plane",
   "slots": [
     {
       "data": {

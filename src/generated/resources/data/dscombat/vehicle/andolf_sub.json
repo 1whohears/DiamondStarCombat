@@ -1,5 +1,4 @@
 {
-  "aircraft_type": 4,
   "copyId": "andolf_sub_unarmed",
   "displayName": "preset.dscombat.andolf_sub",
   "ingredients": [
@@ -35,6 +34,7 @@
   "is_craftable": false,
   "landing_gear": true,
   "presetId": "andolf_sub",
+  "presetType": "submarine",
   "slots": [
     {
       "data": {

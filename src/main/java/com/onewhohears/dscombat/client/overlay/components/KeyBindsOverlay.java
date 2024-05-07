@@ -101,7 +101,7 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
 				vehicle.isLandingGear(), vehicle.isLandingGear() ? "OUT"  : "IN");
 		// BREAKS
 		if (isPilot && vehicle.canBrake()) displayMapping(poseStack, screenWidth, screenHeight, index++,
-				vehicle.getAircraftType().isPlane() ? DSCKeys.special2Key : DSCKeys.specialKey,
+				vehicle.getStats().isPlane() ? DSCKeys.special2Key : DSCKeys.specialKey,
 				UtilMCText.literal("Breaks (S)"), vehicle.isBraking());
 		// FLAPS DOWN
 		if (isPilot && vehicle.canFlapsDown()) displayMapping(poseStack, screenWidth, screenHeight, index++,

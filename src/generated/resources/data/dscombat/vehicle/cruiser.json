@@ -1,5 +1,4 @@
 {
-  "aircraft_type": 3,
   "copyId": "cruiser_unarmed",
   "displayName": "preset.dscombat.cruiser",
   "ingredients": [
@@ -35,6 +34,7 @@
   "is_craftable": false,
   "landing_gear": true,
   "presetId": "cruiser",
+  "presetType": "boat",
   "slots": [
     {
       "data": {

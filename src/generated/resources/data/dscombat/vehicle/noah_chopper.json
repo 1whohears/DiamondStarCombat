@@ -1,5 +1,4 @@
 {
-  "aircraft_type": 1,
   "copyId": "noah_chopper_unarmed",
   "displayName": "preset.dscombat.noah_chopper",
   "ingredients": [
@@ -47,6 +46,7 @@
   "is_craftable": false,
   "landing_gear": true,
   "presetId": "noah_chopper",
+  "presetType": "helicopter",
   "slots": [
     {
       "data": {

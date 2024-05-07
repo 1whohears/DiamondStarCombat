@@ -3,20 +3,18 @@ package com.onewhohears.dscombat.data.aircraft.presets;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
 import com.onewhohears.dscombat.data.aircraft.LiftKGraph;
-import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager.PassengerSoundPack;
+import com.onewhohears.dscombat.data.aircraft.stats.VehicleStats;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.entity.vehicle.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModSounds;
 
 public class EdenPresets {
 	
-	public static final AircraftPreset EMPTY_EDEN_PLANE = AircraftPreset.Builder
-			.create(DSCombatMod.MODID, "eden_plane_empty")
+	public static final VehicleStats EMPTY_EDEN_PLANE = VehicleStats.Builder
+			.createPlane(DSCombatMod.MODID, "eden_plane_empty")
 			.setSortFactor(9)
-			.setAircraftType(AircraftType.PLANE)
 			.setItem(ModItems.EDEN_PLANE.getId())
 			.setMaxHealth(160f)
 			.setMass(11000)
@@ -77,7 +75,7 @@ public class EdenPresets {
 			.addEntityScreen(EntityScreenIds.FUEL_SCREEN, -0.505, 0.985, 7.205, 0.11, 0.11, 90)
 			.build();
 	
-	public static final AircraftPreset UNARMED_EDEN_PLANE = AircraftPreset.Builder
+	public static final VehicleStats UNARMED_EDEN_PLANE = VehicleStats.Builder
 			.createFromCopy(DSCombatMod.MODID, "eden_plane_unarmed", EMPTY_EDEN_PLANE)
 			.setCraftable()
 			.setSlotItem("internal_1", ModItems.KLIMOV_RD33.getId())
@@ -87,7 +85,7 @@ public class EdenPresets {
 			.addIngredient(ModItems.HEAVY_FUEL_TANK.getId())
 			.build();
 	
-	public static final AircraftPreset DEFAULT_EDEN_PLANE = AircraftPreset.Builder
+	public static final VehicleStats DEFAULT_EDEN_PLANE = VehicleStats.Builder
 			.createFromCopy(DSCombatMod.MODID, "eden_plane", UNARMED_EDEN_PLANE)
 			.setSlotItem("left_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "aim120b", true)
 			.setSlotItem("left_wing_2", ModItems.LIGHT_MISSILE_RACK.getId(), "aim9x", true)
@@ -108,7 +106,7 @@ public class EdenPresets {
 			.setDefaultBaseTexture(1)
 			.build();
 	
-	public static final AircraftPreset SUPPORT_EDEN_PLANE = AircraftPreset.Builder
+	public static final VehicleStats SUPPORT_EDEN_PLANE = VehicleStats.Builder
 			.createFromCopy(DSCombatMod.MODID, "eden_plane_support", UNARMED_EDEN_PLANE)
 			.setSlotItem("left_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "agm84e", true)
 			.setSlotItem("left_wing_2", ModItems.HEAVY_MISSILE_RACK.getId(), "agm65l", true)

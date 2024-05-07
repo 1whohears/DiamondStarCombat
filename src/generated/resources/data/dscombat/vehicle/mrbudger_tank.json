@@ -1,5 +1,4 @@
 {
-  "aircraft_type": 2,
   "copyId": "mrbudger_tank_unarmed",
   "displayName": "preset.dscombat.mrbudger_tank",
   "ingredients": [
@@ -11,6 +10,7 @@
   "is_craftable": false,
   "landing_gear": true,
   "presetId": "mrbudger_tank",
+  "presetType": "car",
   "slots": [
     {
       "data": {

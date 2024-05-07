@@ -1,5 +1,4 @@
 {
-  "type": "bunker_buster",
   "blockStrength": 1500.0,
   "canShootOnGround": true,
   "causesFire": false,
@@ -8,7 +7,7 @@
   "damage": 50.0,
   "destroyTerrain": true,
   "displayName": "preset.dscombat.gruetz_bunker_buster",
-  "entityTypeKey": "dscombat:gruetz_bunker_buster",
+  "entityTypeKey": "dscombat:bunker_buster",
   "explosionRadius": 12.0,
   "explosive": true,
   "fireRate": 60,
@@ -35,6 +34,7 @@
   "maxAge": 300,
   "maxAmmo": 1,
   "presetId": "gruetz_bunker_buster",
+  "presetType": "bunker_buster",
   "rackTypeKey": "dscombat:bomb_rack",
   "shootSoundKey": "dscombat:bomb_shoot_1",
   "speed": 0.0

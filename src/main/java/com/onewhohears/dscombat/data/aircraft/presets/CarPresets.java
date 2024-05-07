@@ -2,18 +2,16 @@ package com.onewhohears.dscombat.data.aircraft.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
-import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
+import com.onewhohears.dscombat.data.aircraft.stats.VehicleStats;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.entity.vehicle.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModSounds;
 
 public class CarPresets {
 	
-	public static final AircraftPreset DEFAULT_ORANGE_TESLA = AircraftPreset.Builder
-			.create(DSCombatMod.MODID, "orange_tesla")
+	public static final VehicleStats DEFAULT_ORANGE_TESLA = VehicleStats.Builder
+			.createCar(DSCombatMod.MODID, "orange_tesla")
 			.setSortFactor(10)
-			.setAircraftType(AircraftType.CAR)
 			.setItem(ModItems.ORANGE_TESLA.getId())
 			.setCraftable()
 			.setMaxHealth(40f)
@@ -46,10 +44,9 @@ public class CarPresets {
 			.addIngredient("minecraft:orange_dye", 4)
 			.build();
 	
-	public static final AircraftPreset EMPTY_AXCEL_TRUCK = AircraftPreset.Builder
-			.create(DSCombatMod.MODID, "axcel_truck_empty")
+	public static final VehicleStats EMPTY_AXCEL_TRUCK = VehicleStats.Builder
+			.createCar(DSCombatMod.MODID, "axcel_truck_empty")
 			.setSortFactor(5)
-			.setAircraftType(AircraftType.CAR)
 			.setItem(ModItems.AXCEL_TRUCK.getId())
 			.setMaxHealth(80f)
 			.setMass(6500f)
@@ -82,7 +79,7 @@ public class CarPresets {
 			.addEntityScreen(EntityScreenIds.AIR_RADAR_SCREEN, 0, 1.35, 1.6, 0.6, 0.6)
 			.build();
 	
-	public static final AircraftPreset UNARMED_AXCEL_TRUCK = AircraftPreset.Builder
+	public static final VehicleStats UNARMED_AXCEL_TRUCK = VehicleStats.Builder
 			.createFromCopy(DSCombatMod.MODID, "axcel_truck_unarmed", EMPTY_AXCEL_TRUCK)
 			.setCraftable()
 			.addIngredient(ModItems.C12_ENGINE.getId())
@@ -91,7 +88,7 @@ public class CarPresets {
 			.setSlotItem("internal_2", ModItems.HEAVY_FUEL_TANK.getId(), true)
 			.build();
 	
-	public static final AircraftPreset DEFAULT_AXCEL_TRUCK = AircraftPreset.Builder
+	public static final VehicleStats DEFAULT_AXCEL_TRUCK = VehicleStats.Builder
 			.createFromCopy(DSCombatMod.MODID, "axcel_truck", UNARMED_AXCEL_TRUCK)
 			.addIngredient(ModItems.SAM_LAUNCHER.getId())
 			.addIngredient(ModItems.AIR_SCAN_A.getId())

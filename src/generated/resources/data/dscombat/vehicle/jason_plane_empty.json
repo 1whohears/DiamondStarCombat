@@ -1,5 +1,4 @@
 {
-  "aircraft_type": 0,
   "displayName": "preset.dscombat.jason_plane_empty",
   "health": 60.0,
   "ingredients": [
@@ -32,6 +31,7 @@
   "item": "dscombat:jason_plane",
   "landing_gear": true,
   "presetId": "jason_plane_empty",
+  "presetType": "plane",
   "slots": [
     {
       "data": {

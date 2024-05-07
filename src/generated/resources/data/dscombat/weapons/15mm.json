@@ -1,5 +1,4 @@
 {
-  "type": "bullet",
   "canShootOnGround": true,
   "causesFire": false,
   "compatibleTurret": "dscombat:aa_turret",
@@ -23,6 +22,7 @@
   "maxAge": 40,
   "maxAmmo": 750,
   "presetId": "15mm",
+  "presetType": "bullet",
   "rackTypeKey": "dscombat:xm12",
   "shootSoundKey": "dscombat:bullet_shoot_1",
   "speed": 11.0

@@ -4,10 +4,11 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
-import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
+import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.util.UtilItem;
 import com.onewhohears.dscombat.util.UtilMCText;
@@ -37,8 +38,8 @@ public class ItemAmmo extends Item implements VehicleInteractItem {
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
 		if (group.getId() != ModItems.WEAPONS.getId() && group.getId() != CreativeModeTab.TAB_SEARCH.getId()) return;
 		String itemId = UtilItem.getItemKeyString(this);
-		for (int i = 0; i < WeaponPresets.get().getPresetNum(); ++i) {
-			WeaponData w = WeaponPresets.get().getAllPresets()[i];
+		for (int i = 0; i < WeaponPresets.get().getNum(); ++i) {
+			WeaponStats w = WeaponPresets.get().getAll()[i];
 			if (!w.getItemKey().equals(itemId)) continue;
 			ItemStack test = new ItemStack(this);
 			CompoundTag tag = new CompoundTag();
@@ -52,7 +53,7 @@ public class ItemAmmo extends Item implements VehicleInteractItem {
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tips, TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tips, isAdvanced);
 		String id = getWeaponId(stack);
-		WeaponData wd = WeaponPresets.get().getPreset(id);
+		WeaponStats wd = WeaponPresets.get().get(id);
 		if (wd == null) return;
 		wd.addToolTips(tips, isAdvanced.isAdvanced());
 	}
@@ -60,7 +61,7 @@ public class ItemAmmo extends Item implements VehicleInteractItem {
 	@Override
 	public Component getName(ItemStack stack) {
 		String id = getWeaponId(stack);
-		WeaponData wd = WeaponPresets.get().getPreset(id);
+		WeaponStats wd = WeaponPresets.get().get(id);
 		if (wd == null) return UtilMCText.translatable(getDescriptionId()).append(" ")
 				.append(UtilMCText.translatable("error.dscombat.unknown_preset"));
 		return wd.getDisplayNameComponent().append(" ")
@@ -84,9 +85,9 @@ public class ItemAmmo extends Item implements VehicleInteractItem {
 	public InteractionResult onServerInteract(EntityVehicle vehicle, ItemStack stack, Player player, InteractionHand hand) {
 		String ammoId = ItemAmmo.getWeaponId(stack);
 		for (EntityTurret t : vehicle.getTurrets()) {
-			WeaponData wd = t.getWeaponData();
+			WeaponInstance<?> wd = t.getWeaponData();
 			if (wd == null) continue;
-			if (!wd.getId().equals(ammoId)) continue;
+			if (!wd.getStatsId().equals(ammoId)) continue;
 			int o = wd.addAmmo(stack.getCount());
 			t.setAmmo(wd.getCurrentAmmo());
 			t.updateDataAmmo();

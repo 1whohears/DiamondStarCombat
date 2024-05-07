@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.onewhohears.dscombat.Config;
-import com.onewhohears.dscombat.data.weapon.IRMissileData;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.data.weapon.WeaponType;
+import com.onewhohears.dscombat.data.weapon.stats.IRMissileStats;
 import com.onewhohears.dscombat.entity.IREmitter;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.init.ModTags;
@@ -16,18 +16,15 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 
-public class IRMissile extends EntityMissile {
+public class IRMissile<T extends IRMissileStats> extends EntityMissile<T> {
 	
-	protected IRMissileData irMissileData;
-	
-	public IRMissile(EntityType<? extends IRMissile> type, Level level, String defaultWeaponId) {
+	public IRMissile(EntityType<? extends IRMissile<?>> type, Level level, String defaultWeaponId) {
 		super(type, level, defaultWeaponId);
 	}
 	
 	@Override
-	protected void castWeaponData() {
-		super.castWeaponData();
-		irMissileData = (IRMissileData)weaponData;
+	public WeaponType getWeaponType() {
+		return WeaponType.IR_MISSILE;
 	}
 	
 	@Override
@@ -64,7 +61,7 @@ public class IRMissile extends EntityMissile {
 	}
 	
 	protected void findIrTarget() {
-		updateIRTargetsList(this, targets, irMissileData.getFlareResistance(), irMissileData.getFov());
+		updateIRTargetsList(this, targets, getWeaponStats().getFlareResistance(), getWeaponStats().getFov());
 		// pick target
 		if (targets.size() == 0) {
 			this.target = null;
@@ -141,11 +138,6 @@ public class IRMissile extends EntityMissile {
 	@Override
 	protected WeaponDamageSource getExplosionDamageSource() {
 		return WeaponDamageSource.WeaponDamageType.IR_MISSILE.getSource(getOwner(), this);
-	}
-	
-	@Override
-	public WeaponData.WeaponType getWeaponType() {
-		return WeaponData.WeaponType.IR_MISSILE;
 	}
 
 }

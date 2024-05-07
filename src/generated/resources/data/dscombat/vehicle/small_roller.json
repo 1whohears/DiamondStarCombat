@@ -1,5 +1,4 @@
 {
-  "aircraft_type": 2,
   "copyId": "small_roller_unarmed",
   "displayName": "preset.dscombat.small_roller",
   "ingredients": [
@@ -15,6 +14,7 @@
   "is_craftable": false,
   "landing_gear": true,
   "presetId": "small_roller",
+  "presetType": "car",
   "slots": [
     {
       "data": {

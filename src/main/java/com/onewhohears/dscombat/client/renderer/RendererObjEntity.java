@@ -23,9 +23,13 @@ public class RendererObjEntity<T extends Entity> extends EntityRenderer<T> {
 	@Override
 	public void render(T entity, float yaw, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int lightmap) {
 		poseStack.pushPose();
-		model.render(entity, poseStack, bufferSource, lightmap, partialTicks);
+		getModel().render(entity, poseStack, bufferSource, lightmap, partialTicks);
 		poseStack.popPose();
 		super.render(entity, yaw, partialTicks, poseStack, bufferSource, lightmap);
+	}
+	
+	protected ObjEntityModel<T> getModel() {
+		return model;
 	}
 	
 	@Nullable

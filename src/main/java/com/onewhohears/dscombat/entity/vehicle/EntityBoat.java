@@ -2,8 +2,7 @@ package com.onewhohears.dscombat.entity.vehicle;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.data.aircraft.DSCPhyCons;
-import com.onewhohears.dscombat.data.aircraft.VehicleStats;
-import com.onewhohears.dscombat.data.aircraft.VehicleStats.BoatStats;
+import com.onewhohears.dscombat.data.aircraft.VehicleType;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.core.BlockPos;
@@ -24,8 +23,8 @@ public class EntityBoat extends EntityVehicle {
 	}
 	
 	@Override
-	public AircraftType getAircraftType() {
-		return AircraftType.BOAT;
+	public VehicleType getVehicleType() {
+		return VehicleType.BOAT;
 	}
 	
 	@Override
@@ -204,11 +203,6 @@ public class EntityBoat extends EntityVehicle {
 	@Override
 	public boolean canToggleLandingGear() {
 		return false;
-	}
-
-	@Override
-	protected VehicleStats createVehicleStats() {
-		return new BoatStats();
 	}
 
 }

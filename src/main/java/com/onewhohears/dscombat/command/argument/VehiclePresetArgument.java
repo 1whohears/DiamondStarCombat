@@ -9,8 +9,8 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
+import com.onewhohears.dscombat.data.aircraft.stats.VehicleStats;
 import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.commands.CommandSourceStack;
@@ -26,9 +26,9 @@ public class VehiclePresetArgument implements ArgumentType<String> {
 		return new VehiclePresetArgument();
 	}
 	
-	public static AircraftPreset getVehiclePreset(CommandContext<CommandSourceStack> context, String name) throws CommandSyntaxException {
+	public static VehicleStats getVehiclePreset(CommandContext<CommandSourceStack> context, String name) throws CommandSyntaxException {
 		String a = context.getArgument(name, String.class);
-		AircraftPreset data = AircraftPresets.get().getPreset(a);
+		VehicleStats data = AircraftPresets.get().get(a);
 		if (data == null) throw ERROR_VEHICLE_NOT_FOUND.create(a);
 		return data;
 	}
@@ -41,7 +41,7 @@ public class VehiclePresetArgument implements ArgumentType<String> {
 	@Override
 	public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
 		return context.getSource() instanceof SharedSuggestionProvider ? 
-				SharedSuggestionProvider.suggest(AircraftPresets.get().getPresetIds(), builder) :
+				SharedSuggestionProvider.suggest(AircraftPresets.get().getAllIds(), builder) : 
 				Suggestions.empty();
 	}
 

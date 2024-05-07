@@ -1,5 +1,4 @@
 {
-  "aircraft_type": 3,
   "copyId": "destroyer_unarmed",
   "displayName": "preset.dscombat.destroyer",
   "ingredients": [
@@ -31,6 +30,7 @@
   "is_craftable": false,
   "landing_gear": true,
   "presetId": "destroyer",
+  "presetType": "boat",
   "slots": [
     {
       "data": {

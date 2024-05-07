@@ -1,18 +1,16 @@
 package com.onewhohears.dscombat.data.aircraft.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
+import com.onewhohears.dscombat.data.aircraft.stats.VehicleStats;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.entity.vehicle.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModSounds;
 
 public class SubPresets {
 	
-	public static final AircraftPreset EMPTY_ANDOLF_SUB = AircraftPreset.Builder
-			.create(DSCombatMod.MODID, "andolf_sub_empty")
+	public static final VehicleStats EMPTY_ANDOLF_SUB = VehicleStats.Builder
+			.createSubmarine(DSCombatMod.MODID, "andolf_sub_empty")
 			.setSortFactor(5)
-			.setAircraftType(AircraftType.SUBMARINE)
 			.setItem(ModItems.ANDOLF_SUB.getId())
 			.setMaxHealth(600f)
 			.setMass(90000f)
@@ -56,7 +54,7 @@ public class SubPresets {
 			.addEmptySlot("internal_6", SlotType.ADVANCED_INTERNAL)
 			.build();
 			
-	public static final AircraftPreset UNARMED_ANDOLF_SUB = AircraftPreset.Builder
+	public static final VehicleStats UNARMED_ANDOLF_SUB = VehicleStats.Builder
 			.createFromCopy(DSCombatMod.MODID, "andolf_sub_unarmed", EMPTY_ANDOLF_SUB)
 			.setCraftable()
 			.addIngredient(ModItems.C12_ENGINE.getId(), 2)
@@ -66,7 +64,7 @@ public class SubPresets {
 			.setSlotItem("internal_3", ModItems.HEAVY_FUEL_TANK.getId(), true)
 			.build();
 	
-	public static final AircraftPreset DEFAULT_ANDOLF_SUB = AircraftPreset.Builder
+	public static final VehicleStats DEFAULT_ANDOLF_SUB = VehicleStats.Builder
 			.createFromCopy(DSCombatMod.MODID, "andolf_sub", UNARMED_ANDOLF_SUB)
 			.addIngredient(ModItems.WR1K.getId())
 			.setSlotItem("internal_4", ModItems.WR1K.getId())
@@ -85,10 +83,9 @@ public class SubPresets {
 			.addIngredient(ModItems.XM12.getId(), 1)
 			.build();
 	
-	public static final AircraftPreset EMPTY_GOOGLE_SUB = AircraftPreset.Builder
-			.create(DSCombatMod.MODID, "google_sub_empty")
+	public static final VehicleStats EMPTY_GOOGLE_SUB = VehicleStats.Builder
+			.createSubmarine(DSCombatMod.MODID, "google_sub_empty")
 			.setSortFactor(6)
-			.setAircraftType(AircraftType.SUBMARINE)
 			.setItem(ModItems.GOOGLE_SUB.getId())
 			.setMaxHealth(1000f)
 			.setMass(180000f)
@@ -136,7 +133,7 @@ public class SubPresets {
 			.setBaseTextureNum(2)
 			.build();
 			
-	public static final AircraftPreset UNARMED_GOOGLE_SUB = AircraftPreset.Builder
+	public static final VehicleStats UNARMED_GOOGLE_SUB = VehicleStats.Builder
 			.createFromCopy(DSCombatMod.MODID, "google_sub_unarmed", EMPTY_GOOGLE_SUB)
 			.setCraftable()
 			.addIngredient(ModItems.C12_ENGINE.getId(), 2)
@@ -146,7 +143,7 @@ public class SubPresets {
 			.setSlotItem("internal_3", ModItems.HEAVY_FUEL_TANK.getId(), true)
 			.build();
 	
-	public static final AircraftPreset DEFAULT_GOOGLE_SUB = AircraftPreset.Builder
+	public static final VehicleStats DEFAULT_GOOGLE_SUB = VehicleStats.Builder
 			.createFromCopy(DSCombatMod.MODID, "google_sub", UNARMED_GOOGLE_SUB)
 			.addIngredient(ModItems.WR1K.getId())
 			.setSlotItem("internal_4", ModItems.WR1K.getId())

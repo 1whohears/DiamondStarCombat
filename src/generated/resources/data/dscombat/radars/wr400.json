@@ -2,6 +2,7 @@
   "displayName": "preset.dscombat.wr400",
   "fov": -1.0,
   "presetId": "wr400",
+  "presetType": "standard",
   "range": 400.0,
   "scanAir": false,
   "scanAircraft": true,

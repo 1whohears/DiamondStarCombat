@@ -10,12 +10,13 @@ import com.onewhohears.dscombat.data.aircraft.VehicleInputManager;
 import com.onewhohears.dscombat.data.aircraft.VehicleTextureManager;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot;
-import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
+import com.onewhohears.dscombat.data.radar.RadarStats.RadarPing;
 import com.onewhohears.dscombat.data.radar.RadarSystem.RWRWarning;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
-import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
+import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.entity.parts.EntityChainHook;
 import com.onewhohears.dscombat.entity.parts.EntityChainHook.ChainUpdateType;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
@@ -52,7 +53,7 @@ public class UtilClientPacket {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityVehicle plane) {
-			WeaponData w = plane.weaponSystem.get(weaponId, slotId);
+			WeaponInstance<?> w = plane.weaponSystem.get(weaponId, slotId);
 			if (w != null) w.setCurrentAmmo(ammo);
 		}
 	}
@@ -141,10 +142,10 @@ public class UtilClientPacket {
 		if (id == -1) 
 			UtilParticles.vehicleCrashExplosion(m.level, pos, 5);
 		else if (m.level.getEntity(id) instanceof EntityVehicle plane) 
-			UtilParticles.vehicleCrashExplosion(m.level, pos, plane.getVehicleStats().crashExplosionRadius);
+			UtilParticles.vehicleCrashExplosion(m.level, pos, plane.getStats().crashExplosionRadius);
 	}
 
-	public static void weaponImpact(WeaponData.WeaponClientImpactType impactType, Vec3 pos) {
+	public static void weaponImpact(WeaponStats.WeaponClientImpactType impactType, Vec3 pos) {
 		Minecraft m = Minecraft.getInstance();
 		impactType.onClientImpact(m.level, pos);
 	}

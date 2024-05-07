@@ -1,5 +1,4 @@
 {
-  "aircraft_type": 0,
   "copyId": "alexis_plane_unarmed",
   "displayName": "preset.dscombat.alexis_plane_sniper",
   "ingredients": [
@@ -39,6 +38,7 @@
   "is_craftable": false,
   "landing_gear": true,
   "presetId": "alexis_plane_sniper",
+  "presetType": "plane",
   "slots": [
     {
       "data": {

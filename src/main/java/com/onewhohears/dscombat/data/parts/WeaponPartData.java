@@ -1,8 +1,9 @@
 package com.onewhohears.dscombat.data.parts;
 
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
+import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
+import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 
 import net.minecraft.nbt.CompoundTag;
@@ -28,7 +29,7 @@ public class WeaponPartData extends PartData implements LoadableRecipePartData {
 	
 	public WeaponPartData(float weight, String preset, String[] compatible, ResourceLocation itemid, SlotType[] compatibleSlots) {
 		this(weight, 0, 0, preset, compatible, itemid, compatibleSlots);
-		WeaponData data = WeaponPresets.get().getPreset(weaponId);
+		WeaponStats data = WeaponPresets.get().get(weaponId);
 		if (data != null) {
 			this.ammo = data.getMaxAmmo();
 			this.max = data.getMaxAmmo();
@@ -73,10 +74,10 @@ public class WeaponPartData extends PartData implements LoadableRecipePartData {
 	@Override
 	public void setup(EntityVehicle craft, String slotId, Vec3 pos) {
 		super.setup(craft, slotId, pos);
-		WeaponData data = craft.weaponSystem.get(weaponId, slotId);
+		WeaponInstance<?> data = craft.weaponSystem.get(weaponId, slotId);
 		if (data == null) {
-			data = WeaponPresets.get().getPreset(weaponId);
-			if (data == null) return;
+			if (!WeaponPresets.get().has(weaponId)) return;
+			data = WeaponPresets.get().get(weaponId).createWeaponInstance();
 			data.setSlot(slotId);
 			craft.weaponSystem.addWeapon(data);
 		}
@@ -87,9 +88,9 @@ public class WeaponPartData extends PartData implements LoadableRecipePartData {
 	
 	@Override
 	public boolean isSetup(String slotId, EntityVehicle craft) {
-		WeaponData data = craft.weaponSystem.get(weaponId, slotId);
+		WeaponInstance<?> data = craft.weaponSystem.get(weaponId, slotId);
 		if (data == null) return false;
-		return data.getCurrentAmmo() == ammo && data.getMaxAmmo() == max;
+		return data.getCurrentAmmo() == ammo && data.getStats().getMaxAmmo() == max;
 	}
 	
 	@Override
@@ -103,10 +104,10 @@ public class WeaponPartData extends PartData implements LoadableRecipePartData {
 	public void tick(String slotId) {
 		super.tick(slotId);
 		if (getParent() == null) return;
-		WeaponData data = getParent().weaponSystem.get(weaponId, slotId);
+		WeaponInstance<?> data = getParent().weaponSystem.get(weaponId, slotId);
 		if (data != null) {
 			ammo = data.getCurrentAmmo();
-			max = data.getMaxAmmo();
+			max = data.getStats().getMaxAmmo();
 		}
 	}
 	

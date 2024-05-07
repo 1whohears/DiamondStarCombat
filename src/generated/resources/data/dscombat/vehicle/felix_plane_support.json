@@ -1,10 +1,10 @@
 {
-  "aircraft_type": 0,
   "copyId": "felix_plane_unarmed",
   "displayName": "preset.dscombat.felix_plane_support",
   "is_craftable": false,
   "landing_gear": true,
   "presetId": "felix_plane_support",
+  "presetType": "plane",
   "slots": [
     {
       "data": {

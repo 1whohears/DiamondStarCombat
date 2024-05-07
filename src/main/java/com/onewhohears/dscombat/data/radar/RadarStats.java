@@ -1,29 +1,20 @@
 package com.onewhohears.dscombat.data.radar;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.gson.JsonObject;
-import com.onewhohears.dscombat.Config;
-import com.onewhohears.dscombat.data.jsonpreset.JsonPreset;
+import com.onewhohears.dscombat.data.jsonpreset.JsonPresetInstance;
+import com.onewhohears.dscombat.data.jsonpreset.JsonPresetStats;
+import com.onewhohears.dscombat.data.jsonpreset.JsonPresetType;
 import com.onewhohears.dscombat.data.jsonpreset.PresetBuilder;
-import com.onewhohears.dscombat.data.weapon.RadarTargetTypes;
-import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.DataSerializers;
-import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.dscombat.util.UtilEntity;
-import com.onewhohears.dscombat.util.math.UtilGeometry;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-public class RadarData extends JsonPreset {
+public class RadarStats extends JsonPresetStats {
 	
 	private final double range;
 	private final double sensitivity;
@@ -37,13 +28,7 @@ public class RadarData extends JsonPreset {
 	private final double throWaterRange;
 	private final double throGroundRange;
 	
-	private String slotId = "";
-	private Vec3 pos = Vec3.ZERO;
-	private boolean freshTargets;
-	private int scanTicks;
-	private List<RadarPing> pings = new ArrayList<RadarPing>();
-	
-	public RadarData(ResourceLocation key, JsonObject json) {
+	public RadarStats(ResourceLocation key, JsonObject json) {
 		super(key, json);
 		range = json.get("range").getAsDouble();
 		sensitivity = json.get("sensitivity").getAsDouble();
@@ -58,186 +43,18 @@ public class RadarData extends JsonPreset {
 		throGroundRange = json.get("throGroundRange").getAsDouble();
 	}
 	
-	public void readNBT(CompoundTag tag) {
-		setSlot(tag.getString("slotId"));
+	@Override
+	public JsonPresetInstance<?> createPresetInstance() {
+		return new RadarInstance<>(this);
 	}
 	
-	public CompoundTag writeNbt() {
-		CompoundTag tag = new CompoundTag();
-		tag.putString("id", getId());
-		tag.putString("slotId", slotId);
-		return tag;
+	public RadarInstance<?> createRadarInstance() {
+		return (RadarInstance<?>) createPresetInstance();
 	}
 	
-	public void readBuffer(FriendlyByteBuf buffer) {
-		// id String is read in DataSerializers
-		slotId = buffer.readUtf();
-	}
-	
-	public void writeBuffer(FriendlyByteBuf buffer) {
-		buffer.writeUtf(getId());
-		buffer.writeUtf(slotId);
-	}
-	
-	private int maxCheckDist = 150;
-	
-	public void resetPings(List<RadarPing> vehiclePings) {
-		for (int i = 0; i < pings.size(); ++i) vehiclePings.remove(pings.get(i));
-		pings.clear();
-	}
-	
-	public void tickUpdateTargets(EntityVehicle radar, List<RadarPing> vehiclePings) {
-		if (scanTicks > scanRate) scanTicks = 0;
-		else {
-			++scanTicks;
-			freshTargets = false;
-			return;
-		}
-		maxCheckDist = Config.COMMON.maxBlockCheckDepth.get();
-		resetPings(vehiclePings);
-		freshTargets = true;
-		Entity controller = radar.getControllingPlayerOrBot();
-		RadarMode mode = radar.getRadarMode();
-		AABB radarArea = getRadarBoundingBox(radar);
-		if (scanAircraft && (mode.canScan(RadarMode.VEHICLES) || mode.isPlayersOrBots())) {
-			scanAircraft(radar, controller, vehiclePings, radarArea, mode.isPlayersOnly(), mode.isPlayersOrBots());
-		}
-		if (scanPlayers && (mode.canScan(RadarMode.PLAYERS) || mode.isPlayersOrBots())) {
-			scanPlayers(radar, controller, vehiclePings, radarArea);
-		}
-		if (scanMobs && mode.canScan(RadarMode.MOBS)) {
-			scanMobs(radar, controller, vehiclePings, radarArea);
-		}
-	}
-	
-	private void scanAircraft(EntityVehicle radar, Entity controller, List<RadarPing> vehiclePings, AABB radarArea, 
-			boolean playersOnly, boolean isPlayersOrBots) {
-		//System.out.println("SCANNING VEHICLES");
-		List<Entity> list = radar.level.getEntities(radar, radarArea, 
-				(entity) -> entity.getType().is(ModTags.EntityTypes.VEHICLE));
-		for (int i = 0; i < list.size(); ++i) {
-			Entity e = list.get(i);
-			EntityVehicle ev = null;
-			if (e instanceof EntityVehicle vehicle) ev = vehicle;
-			boolean isPlayer = false, isPlayerOrBot = false;
-			if (ev == null) { 
-				isPlayer = e.getControllingPassenger() instanceof Player;
-				if (!isPlayer && (playersOnly || isPlayersOrBots)) continue;
-			} else if (ev != null) {
-				isPlayer = ev.isPlayerRiding();
-				if (!isPlayer && playersOnly) continue;
-				isPlayerOrBot = ev.isPlayerOrBotRiding();
-				if (!isPlayerOrBot && isPlayersOrBots) continue;
-			}
-			double stealth = 1;
-			if (ev != null) stealth = ev.getStealth();
-			if (!basicCheck(radar, e, stealth)) continue;
-			PingEntityType pingEntityType;
-			if (isPlayer) pingEntityType = PingEntityType.VEHICLE_PLAYER;
-			else if (isPlayerOrBot) pingEntityType = PingEntityType.VEHICLE_BOT;
-			else pingEntityType = PingEntityType.VEHICLE;
-			RadarPing p = new RadarPing(e, checkFriendly(controller, e), pingEntityType);
-			vehiclePings.add(p);
-			pings.add(p);
-			if (ev != null && !radar.isAlliedTo(ev)) ev.lockedOnto(radar);
-		}
-	}
-	
-	private void scanPlayers(EntityVehicle radar, Entity controller, List<RadarPing> vehiclePings, AABB radarArea) {
-		//System.out.println("SCANNING PLAYERS");
-		List<Player> list = radar.level.getEntitiesOfClass(Player.class, radarArea);
-		for (int i = 0; i < list.size(); ++i) {
-			Player target = list.get(i);
-			if (target.isPassenger() && target.getRootVehicle().getType().is(ModTags.EntityTypes.VEHICLE)) continue;
-			if (!basicCheck(radar, target, 1)) continue;
-			RadarPing p = new RadarPing(target, 
-					checkFriendly(controller, target),
-					PingEntityType.PLAYER);
-			vehiclePings.add(p);
-			pings.add(p);
-		}
-	}
-	
-	private void scanMobs(EntityVehicle radar, Entity controller, List<RadarPing> vehiclePings, AABB radarArea) {
-		//System.out.println("SCANNING MOBS");
-		for (int j = 0; j < RadarTargetTypes.get().getRadarMobClasses().size(); ++j) {
-			Class<? extends Entity> clazz = RadarTargetTypes.get().getRadarMobClasses().get(j);
-			List<? extends Entity> list = radar.level.getEntitiesOfClass(clazz, radarArea);
-			for (int i = 0; i < list.size(); ++i) {
-				if (list.get(i).isPassenger()) continue;
-				if (!basicCheck(radar, list.get(i), 1)) continue;
-				RadarPing p = new RadarPing(list.get(i), 
-						checkFriendly(controller, list.get(i)), 
-						PingEntityType.FRIENDLY_MOB);
-				vehiclePings.add(p);
-				pings.add(p);
-			}
-		}
-	}
-	
-	private boolean checkFriendly(Entity controller, Entity target) {
-		if (target == null) return false;
-		if (controller == null) return false;
-		return target.isAlliedTo(controller);
-	}
-	
-	private boolean basicCheck(EntityVehicle radar, Entity ping, double stealth) {
-		//System.out.println("RADAR CHECK "+ping);
-		if (radar.equals(ping)) return false;
-		//System.out.println("not equal");
-		if (!groundCheck(ping)) return false;
-		//System.out.println("passed ground check");
-		if (radar.isVehicleOf(ping)) return false;
-		//System.out.println("not a vehicle of ping");
-		if (!checkTargetRange(radar, ping, stealth)) return false;
-		//System.out.println("passed target range check");
-		if (!checkCanSee(radar, ping)) return false;
-		//System.out.println("passed can see check");
-		return true;
-	}
-	
-	private boolean groundCheck(Entity ping) {
-		if (throWaterRange > 0 && ping.isInWater()) return true;
-		boolean groundWater = UtilEntity.isOnGroundOrWater(ping);
-		if (scanGround && groundWater) return true;
-		if (scanAir && !groundWater) return true;
-		return false;
-	}
-	
-	private boolean checkTargetRange(Entity radar, Entity target, double stealth) {
-		float dist = radar.distanceTo(target);
-		//System.out.println("dist = "+dist+" range = "+range);
-		if (fov == -1) {
-			if (dist > range) {
-				//System.out.println("out of range");
-				return false;
-			} 
-		} else if (!UtilGeometry.isPointInsideCone(
-				target.position(), 
-				radar.position().add(pos),
-				radar.getLookAngle(), 
-				fov, range)) {
-			//System.out.println("not in cone");
-			return false;
-		}
-		double area = UtilEntity.getCrossSectionalArea(target) * stealth;
-		double areaMin = (1-Math.pow(range,-2)*Math.pow(dist-range,2))*sensitivity;
-		//System.out.println("area = "+area+" min = "+areaMin);
-		return area >= areaMin;
-	}
-	
-	private boolean checkCanSee(Entity radar, Entity target) {
-		// throWaterRange+0.5 is needed for ground radar to see boats in water
-		return UtilEntity.canPosSeeEntity(radar.position().add(pos), target, maxCheckDist, 
-				throWaterRange+1, throGroundRange);
-	}
-	
-	private AABB getRadarBoundingBox(Entity radar) {
-		double x = radar.getX()+pos.x;
-		double y = radar.getY()+pos.y;
-		double z = radar.getZ()+pos.z;
-		double w = range;
-		return new AABB(x+w, y+w, z+w, x-w, y-w, z-w);
+	@Override
+	public JsonPresetType getType() {
+		return RadarType.STANDARD;
 	}
 	
 	public double getRange() {
@@ -250,10 +67,6 @@ public class RadarData extends JsonPreset {
 
 	public int getScanRate() {
 		return scanRate;
-	}
-	
-	public boolean isFreshTargets() {
-		return freshTargets;
 	}
 
 	public boolean isScanAircraft() {
@@ -274,6 +87,18 @@ public class RadarData extends JsonPreset {
 
 	public boolean isScanAir() {
 		return scanAir;
+	}
+	
+	public double getSensitivity() {
+		return sensitivity;
+	}
+
+	public double getThroWaterRange() {
+		return throWaterRange;
+	}
+
+	public double getThroGroundRange() {
+		return throGroundRange;
 	}
 
 	public static class RadarPing {
@@ -470,43 +295,13 @@ public class RadarData extends JsonPreset {
 	public String toString() {
 		return "["+getId()+":"+fov+":"+range+"]";
 	}
-	
-	public <T extends JsonPreset> T copy() {
-		return (T) new RadarData(getKey(), getJsonData());
-	}
-	
-	public String getSlotId() {
-		return slotId;
-	}
-	
-	public boolean isInternal() {
-		return slotId == "";
-	}
-	
-	public void setSlot(String slotId) {
-		this.slotId = slotId;
-	}
-	
-	public void setInternal() {
-		this.slotId = "";
-	}
-	
-	public void setPos(Vec3 pos) {
-		this.pos = pos;
-	}
-	
-	public boolean idMatch(String id, String slotId) {
-		if (slotId == null) return false;
-		if (id == null) return false;
-		return getId().equals(id) && slotId.equals(slotId);
-	}
-	
+
 	public static class Builder extends PresetBuilder<Builder> {
-		public Builder(String namespace, String name, JsonPresetFactory<? extends RadarData> sup) {
-			super(namespace, name, sup);
+		public Builder(String namespace, String name, RadarType type) {
+			super(namespace, name, type);
 		}
 		public static Builder create(String namespace, String name) {
-			return new Builder(namespace, name, (key, json) -> new RadarData(key, json));
+			return new Builder(namespace, name, RadarType.STANDARD);
 		}
 		public Builder setRange(float range) {
 			return setFloat("range", range);

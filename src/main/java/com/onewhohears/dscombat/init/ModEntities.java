@@ -287,82 +287,29 @@ public class ModEntities {
 	public static final RegistryObject<EntityType<EntityRadar>> SURVEY_ALL_B = ENTITIES.register("survey_all_b", 
 			() -> createEntityType(EntityRadar::new, EntityDimensions.scalable(1.0f, 1.0f)));
 	
-	public static final RegistryObject<EntityType<EntityBullet>> BULLET = ENTITIES.register("bullet", 
-			() -> createEntityType((type, level) -> new EntityBullet(type, level, "20mm"), 
+	public static final RegistryObject<EntityType<EntityBullet<?>>> BULLET = ENTITIES.register("bullet", 
+			() -> createEntityType((type, level) -> new EntityBullet<>(type, level, "20mm"), 
 					EntityDimensions.scalable(0.15f, 0.15f)));
-	public static final RegistryObject<EntityType<EntityBomb>> BOMB = ENTITIES.register("bomb", 
-			() -> createEntityType((type, level) -> new EntityBomb(type, level, "anm30"), 
+	public static final RegistryObject<EntityType<EntityBomb<?>>> BOMB = ENTITIES.register("bomb", 
+			() -> createEntityType((type, level) -> new EntityBomb<>(type, level, "anm30"), 
 					EntityDimensions.scalable(0.6f, 0.6f)));
-	public static final RegistryObject<EntityType<EntityBomb>> ANM30 = ENTITIES.register("anm30", 
-			() -> createEntityType((type, level) -> new EntityBomb(type, level, "anm30"), 
-					EntityDimensions.scalable(0.6f, 0.6f)));
-	public static final RegistryObject<EntityType<EntityBomb>> MARK77 = ENTITIES.register("mark77", 
-			() -> createEntityType((type, level) -> new EntityBomb(type, level, "napalm"), 
-					EntityDimensions.scalable(0.6f, 0.6f)));
-	public static final RegistryObject<EntityType<EntityBunkerBuster>> GRUETZ_BUNKER_BUSTER = ENTITIES.register("gruetz_bunker_buster", 
-			() -> createEntityType((type, level) -> new EntityBunkerBuster(type, level, "gruetz_bunker_buster"), 
-					EntityDimensions.scalable(1.5f, 2.5f)));
-	
-	public static final RegistryObject<EntityType<PositionMissile>> POS_MISSILE_1 = ENTITIES.register("pos_missile_1", 
-			() -> createEntityTypeFar((type, level) -> new PositionMissile(type, level, "agm114k"), 
+	public static final RegistryObject<EntityType<EntityBunkerBuster<?>>> BUNKER_BUSTER = ENTITIES.register("bunker_buster", 
+			() -> createEntityType((type, level) -> new EntityBunkerBuster<>(type, level, "gruetz_bunker_buster"), 
+					EntityDimensions.scalable(0.8f, 0.8f)));
+	public static final RegistryObject<EntityType<PositionMissile<?>>> POS_MISSILE = ENTITIES.register("pos_missile", 
+			() -> createEntityTypeFar((type, level) -> new PositionMissile<>(type, level, "agm114k"), 
 					EntityDimensions.scalable(0.5f, 0.5f)));
-	public static final RegistryObject<EntityType<IRMissile>> IR_MISSILE_1 = ENTITIES.register("ir_missile_1", 
-			() -> createEntityTypeFar((type, level) -> new IRMissile(type, level, "aim9l"), 
+	public static final RegistryObject<EntityType<IRMissile<?>>> IR_MISSILE = ENTITIES.register("ir_missile", 
+			() -> createEntityTypeFar((type, level) -> new IRMissile<>(type, level, "aim9l"), 
 					EntityDimensions.scalable(0.5f, 0.5f)));
-	public static final RegistryObject<EntityType<TrackEntityMissile>> TRACK_MISSILE_1 = ENTITIES.register("track_missile_1", 
-			() -> createEntityTypeFar((type, level) -> new TrackEntityMissile(type, level, "aim120b"), 
+	public static final RegistryObject<EntityType<TrackEntityMissile<?>>> TRACK_MISSILE = ENTITIES.register("track_missile", 
+			() -> createEntityTypeFar((type, level) -> new TrackEntityMissile<>(type, level, "aim120b"), 
 					EntityDimensions.scalable(0.5f, 0.5f)));
-	public static final RegistryObject<EntityType<AntiRadarMissile>> ANTI_RADAR_MISSILE_1 = ENTITIES.register("anti_radar_missile_1", 
-			() -> createEntityTypeFar((type, level) -> new AntiRadarMissile(type, level, "agm88g"), 
+	public static final RegistryObject<EntityType<AntiRadarMissile<?>>> ANTI_RADAR_MISSILE = ENTITIES.register("anti_radar_missile", 
+			() -> createEntityTypeFar((type, level) -> new AntiRadarMissile<>(type, level, "agm88g"), 
 					EntityDimensions.scalable(0.5f, 0.5f)));
-	public static final RegistryObject<EntityType<TorpedoMissile>> TORPEDO_MISSILE_1 = ENTITIES.register("torpedo_missile_1", 
-			() -> createEntityTypeFar((type, level) -> new TorpedoMissile(type, level, "mk13"), 
-					EntityDimensions.scalable(0.5f, 0.5f)));
-	
-	public static final RegistryObject<EntityType<IRMissile>> AIM9L = ENTITIES.register("aim9l", 
-			() -> createEntityTypeFar((type, level) -> new IRMissile(type, level, "aim9l"), 
-					EntityDimensions.scalable(0.5f, 0.5f)));
-	public static final RegistryObject<EntityType<IRMissile>> AIM9P5 = ENTITIES.register("aim9p5", 
-			() -> createEntityTypeFar((type, level) -> new IRMissile(type, level, "aim9p5"), 
-					EntityDimensions.scalable(0.5f, 0.5f)));
-	public static final RegistryObject<EntityType<IRMissile>> AIM9X = ENTITIES.register("aim9x", 
-			() -> createEntityTypeFar((type, level) -> new IRMissile(type, level, "aim9x"), 
-					EntityDimensions.scalable(0.5f, 0.5f)));
-	public static final RegistryObject<EntityType<TrackEntityMissile>> AIM120B = ENTITIES.register("aim120b", 
-			() -> createEntityTypeFar((type, level) -> new TrackEntityMissile(type, level, "aim120b"), 
-					EntityDimensions.scalable(0.5f, 0.5f)));
-	public static final RegistryObject<EntityType<TrackEntityMissile>> AIM120C = ENTITIES.register("aim120c", 
-			() -> createEntityTypeFar((type, level) -> new TrackEntityMissile(type, level, "aim120c"), 
-					EntityDimensions.scalable(0.5f, 0.5f)));
-	public static final RegistryObject<EntityType<TrackEntityMissile>> PAC3 = ENTITIES.register("pac3", 
-			() -> createEntityTypeFar((type, level) -> new TrackEntityMissile(type, level, "pac3"), 
-					EntityDimensions.scalable(0.5f, 0.5f)));
-	public static final RegistryObject<EntityType<TrackEntityMissile>> AIM7F = ENTITIES.register("aim7f", 
-			() -> createEntityTypeFar((type, level) -> new TrackEntityMissile(type, level, "aim7f"), 
-					EntityDimensions.scalable(0.5f, 0.5f)));
-	public static final RegistryObject<EntityType<TrackEntityMissile>> AIM7MH = ENTITIES.register("aim7mh", 
-			() -> createEntityTypeFar((type, level) -> new TrackEntityMissile(type, level, "aim7mh"), 
-					EntityDimensions.scalable(0.5f, 0.5f)));
-	public static final RegistryObject<EntityType<PositionMissile>> AGM114K = ENTITIES.register("agm114k", 
-			() -> createEntityTypeFar((type, level) -> new PositionMissile(type, level, "agm114k"), 
-					EntityDimensions.scalable(0.5f, 0.5f)));
-	public static final RegistryObject<EntityType<PositionMissile>> AGM65L = ENTITIES.register("agm65l", 
-			() -> createEntityTypeFar((type, level) -> new PositionMissile(type, level, "agm65l"), 
-					EntityDimensions.scalable(0.5f, 0.5f)));
-	public static final RegistryObject<EntityType<TrackEntityMissile>> AGM84E = ENTITIES.register("agm84e", 
-			() -> createEntityTypeFar((type, level) -> new TrackEntityMissile(type, level, "agm84e"), 
-					EntityDimensions.scalable(0.5f, 0.5f)));
-	public static final RegistryObject<EntityType<TrackEntityMissile>> AGM65G = ENTITIES.register("agm65g", 
-			() -> createEntityTypeFar((type, level) -> new TrackEntityMissile(type, level, "agm65g"), 
-					EntityDimensions.scalable(0.5f, 0.5f)));
-	public static final RegistryObject<EntityType<TrackEntityMissile>> METEOR = ENTITIES.register("meteor", 
-			() -> createEntityTypeFar((type, level) -> new TrackEntityMissile(type, level, "meteor"), 
-					EntityDimensions.scalable(0.5f, 0.5f)));
-	public static final RegistryObject<EntityType<TorpedoMissile>> MK13 = ENTITIES.register("mk13", 
-			() -> createEntityTypeFar((type, level) -> new TorpedoMissile(type, level, "mk13"), 
-					EntityDimensions.scalable(0.5f, 0.5f)));
-	public static final RegistryObject<EntityType<AntiRadarMissile>> AGM88G = ENTITIES.register("agm88g", 
-			() -> createEntityTypeFar((type, level) -> new AntiRadarMissile(type, level, "agm88g"), 
+	public static final RegistryObject<EntityType<TorpedoMissile<?>>> TORPEDO_MISSILE = ENTITIES.register("torpedo_missile", 
+			() -> createEntityTypeFar((type, level) -> new TorpedoMissile<>(type, level, "mk13"), 
 					EntityDimensions.scalable(0.5f, 0.5f)));
 	
 	public static final RegistryObject<EntityType<EntityFlare>> FLARE = ENTITIES.register("flare", 

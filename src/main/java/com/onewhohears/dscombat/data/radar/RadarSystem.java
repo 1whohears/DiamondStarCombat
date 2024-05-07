@@ -16,9 +16,9 @@ import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRWRWarning;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRadarPings;
 import com.onewhohears.dscombat.common.network.toserver.ToServerPingSelect;
-import com.onewhohears.dscombat.data.radar.RadarData.RadarMode;
-import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.data.radar.RadarStats.RadarMode;
+import com.onewhohears.dscombat.data.radar.RadarStats.RadarPing;
+import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.init.DataSerializers;
@@ -32,7 +32,7 @@ import net.minecraftforge.network.PacketDistributor;
 
 /**
  * manages the radar/targeting/rwr system for {@link EntityVehicle}.
- * individual radars are abstracted into {@link RadarData}.
+ * individual radars are abstracted into {@link RadarStats}.
  * individual radars update the radar system's link of {@link RadarPing} on the server side.
  * the updated link of pings are then sent to the client. 
  * the client then tells the server which ping is selected.
@@ -44,17 +44,17 @@ public class RadarSystem {
 	private final EntityVehicle parent;
 	private boolean readData = false;
 	
-	private List<RadarData> radars = new ArrayList<RadarData>();
-	private List<EntityMissile> rockets = new ArrayList<EntityMissile>();
+	private List<RadarInstance<?>> radars = new ArrayList<>();
+	private List<EntityMissile<?>> rockets = new ArrayList<>();
 	
-	private List<RadarPing> targets = new ArrayList<RadarPing>();
+	private List<RadarPing> targets = new ArrayList<>();
 	private int selectedIndex = -1;
-	private List<RadarPing> clientTargets = new ArrayList<RadarPing>();
+	private List<RadarPing> clientTargets = new ArrayList<>();
 	private int clientSelectedIndex = -1, clientSelectedTime = -21;
 	public int clientPingRefreshTime = 0;
 	public int clientRwrRefreshTime = 0;
 	
-	private List<RadarPing> dataLinkBuffer = new ArrayList<RadarPing>();
+	private List<RadarPing> dataLinkBuffer = new ArrayList<>();
 	
 	private Map<Integer, RWRWarning> rwrWarnings = new HashMap<>();
 	private boolean rwrMissile, rwrRadar;
@@ -65,7 +65,7 @@ public class RadarSystem {
 		this.parent = parent;
 	}
 	
-	public List<RadarData> getRadars() {
+	public List<RadarInstance<?>> getRadars() {
 		return radars;
 	}
 	
@@ -87,7 +87,7 @@ public class RadarSystem {
 		if (selectedIndex != -1 && selectedIndex < targets.size()) old = targets.get(selectedIndex);
 		selectedIndex = -1;
 		// PLANE RADARS
-		for (RadarData r : radars) r.tickUpdateTargets(parent, targets);
+		for (RadarInstance<?> r : radars) r.tickUpdateTargets(parent, targets);
 		// DATA LINK
 		if (parent.tickCount % 20 == 0) updateDataLink();
 		// PICK PREVIOUS TARGET
@@ -164,7 +164,7 @@ public class RadarSystem {
 	
 	private void updateSemiActiveTrackMissiles() {
 		for (int i = 0; i < rockets.size(); ++i) {
-			EntityMissile r = rockets.get(i);
+			EntityMissile<?> r = rockets.get(i);
 			if (r.isRemoved()) {
 				rockets.remove(i--);
 				continue;
@@ -181,7 +181,7 @@ public class RadarSystem {
 		}
 	}
 	
-	public void addRocket(EntityMissile r) {
+	public void addRocket(EntityMissile<?> r) {
 		if (!rockets.contains(r)) rockets.add(r);
 	}
 	
@@ -214,7 +214,7 @@ public class RadarSystem {
 	}
 	
 	@Nullable
-	public LivingEntity getLivingTargetByWeapon(WeaponData wd) {
+	public LivingEntity getLivingTargetByWeapon(WeaponInstance<?> wd) {
 		for (RadarPing ping : targets) {
 			if (ping.isFriendly) continue;
 			Entity entity = parent.level.getEntity(ping.id);
@@ -226,7 +226,7 @@ public class RadarSystem {
 	}
 	
 	@Nullable
-	public Player getPlayerTargetByWeapon(WeaponData wd) {
+	public Player getPlayerTargetByWeapon(WeaponInstance<?> wd) {
 		for (RadarPing ping : targets) {
 			if (ping.isFriendly) continue;
 			Entity entity = parent.level.getEntity(ping.id);
@@ -317,24 +317,24 @@ public class RadarSystem {
 	}
 	
 	public boolean hasRadar(String id) {
-		for (RadarData r : radars) if (r.getId().equals(id)) return true;
+		for (RadarInstance<?> r : radars) if (r.getStatsId().equals(id)) return true;
 		return false;
 	}
 	
 	@Nullable
-	public RadarData get(String id, String slotId) {
-		for (RadarData r : radars) if (r.idMatch(id, slotId)) return r;
+	public RadarInstance<?> get(String id, String slotId) {
+		for (RadarInstance<?> r : radars) if (r.idMatch(id, slotId)) return r;
 		return null;
 	}
 	
-	public boolean addRadar(RadarData r) {
-		if (get(r.getId(), r.getSlotId()) != null) return false;
+	public boolean addRadar(RadarInstance<?> r) {
+		if (get(r.getStatsId(), r.getSlotId()) != null) return false;
 		radars.add(r);
 		return true;
 	}
 	
 	public boolean removeRadar(String id, String slotId) {
-		RadarData radar = get(id, slotId);
+		RadarInstance<?> radar = get(id, slotId);
 		if (radar == null) return false;
 		radar.resetPings(targets);
 		return radars.remove(radar);
@@ -342,9 +342,9 @@ public class RadarSystem {
 	
 	public double getMaxAirRange() {
 		double max = 0;
-		for (RadarData r : radars) 
-			if (r.isScanAir() && r.getRange() > max) 
-				max = r.getRange();
+		for (RadarInstance<?> r : radars) 
+			if (r.getStats().isScanAir() && r.getStats().getRange() > max) 
+				max = r.getStats().getRange();
 		return max;
 	}
 	

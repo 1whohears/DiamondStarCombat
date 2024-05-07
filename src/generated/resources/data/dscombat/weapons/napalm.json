@@ -1,5 +1,4 @@
 {
-  "type": "bomb",
   "canShootOnGround": false,
   "causesFire": true,
   "compatibleWeaponPart": "dscombat:bomb_rack",
@@ -7,7 +6,7 @@
   "damage": 20.0,
   "destroyTerrain": true,
   "displayName": "preset.dscombat.napalm",
-  "entityTypeKey": "dscombat:mark77",
+  "entityTypeKey": "dscombat:bomb",
   "explosionRadius": 2.0,
   "explosive": true,
   "fireRate": 3,
@@ -30,6 +29,7 @@
   "maxAge": 200,
   "maxAmmo": 50,
   "presetId": "napalm",
+  "presetType": "bomb",
   "rackTypeKey": "dscombat:bomb_rack",
   "shootSoundKey": "dscombat:bomb_shoot_1",
   "speed": 0.0

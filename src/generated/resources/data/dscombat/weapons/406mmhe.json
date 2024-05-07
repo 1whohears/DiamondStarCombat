@@ -1,5 +1,4 @@
 {
-  "type": "bullet",
   "canShootOnGround": true,
   "causesFire": true,
   "compatibleTurret": "dscombat:mark7_cannon",
@@ -27,6 +26,7 @@
   "maxAge": 40,
   "maxAmmo": 36,
   "presetId": "406mmhe",
+  "presetType": "bullet",
   "rackTypeKey": "",
   "shootSoundKey": "dscombat:bullet_shoot_1",
   "speed": 5.0

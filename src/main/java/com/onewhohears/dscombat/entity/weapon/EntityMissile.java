@@ -6,9 +6,9 @@ import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.aircraft.DSCPhyCons;
-import com.onewhohears.dscombat.data.weapon.MissileData;
 import com.onewhohears.dscombat.data.weapon.NonTickingMissileManager;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.data.weapon.stats.MissileStats;
+import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModSounds;
@@ -35,12 +35,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 
-public abstract class EntityMissile extends EntityBullet {
+public abstract class EntityMissile<T extends MissileStats> extends EntityBullet<T> {
 	
 	public static final EntityDataAccessor<Integer> TARGET_ID = SynchedEntityData.defineId(EntityMissile.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Vec3> TARGET_POS = SynchedEntityData.defineId(EntityMissile.class, DataSerializers.VEC3);
-	
-	protected MissileData missileData;
 	
 	public Entity target;
 	public Vec3 targetPos;
@@ -49,15 +47,9 @@ public abstract class EntityMissile extends EntityBullet {
 	private int prevTickCount, tickCountRepeats, repeatCoolDown, lerpSteps;
 	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot;
 	
-	public EntityMissile(EntityType<? extends EntityMissile> type, Level level, String defaultWeaponId) {
+	public EntityMissile(EntityType<? extends EntityMissile<?>> type, Level level, String defaultWeaponId) {
 		super(type, level, defaultWeaponId);
 		if (!level.isClientSide) NonTickingMissileManager.addMissile(this);
-	}
-	
-	@Override
-	protected void castWeaponData() {
-		super.castWeaponData();
-		missileData = (MissileData)weaponData;
 	}
 	
 	@Override
@@ -85,7 +77,7 @@ public abstract class EntityMissile extends EntityBullet {
 	
 	@Override
 	public void tick() {
-		if (weaponData == null) {
+		if (weaponStats == null) {
 			kill();
 			return;
 		}
@@ -99,7 +91,7 @@ public abstract class EntityMissile extends EntityBullet {
 			else setTargetPos(Vec3.ZERO.add(0, -1000, 0));
 			if (target != null) setTargetId(target.getId());
 			else setTargetId(-1);
-			if (target != null && distanceTo(target) <= missileData.getFuseDist()) kill();
+			if (target != null && distanceTo(target) <= getWeaponStats().getFuseDist()) kill();
 		}
 		if (level.isClientSide && !isRemoved()) {
 			tickClientGuide();
@@ -177,13 +169,13 @@ public abstract class EntityMissile extends EntityBullet {
 	}
 	
 	protected boolean checkTargetRange(Entity target, double range) {
-		return checkTargetRange(this, target, missileData.getFov(), range);
+		return checkTargetRange(this, target, getWeaponStats().getFov(), range);
 	}
 	
 	protected boolean checkCanSee(Entity target) {
 		// throWaterRange+1 is needed for ground radar to see boats in water
 		return UtilEntity.canEntitySeeEntity(this, target, Config.COMMON.maxBlockCheckDepth.get(), 
-				missileData.getSeeThroWater()+1, missileData.getSeeThroBlock());
+				getWeaponStats().getSeeThroWater()+1, getWeaponStats().getSeeThroBlock());
 	}
 	
 	private void engineSound() {
@@ -276,19 +268,19 @@ public abstract class EntityMissile extends EntityBullet {
 	}
 	
 	public double getAcceleration() {
-		return missileData.getAcceleration();
+		return getWeaponStats().getAcceleration();
 	}
 	
 	public double getBleed() {
-		return missileData.getBleed();
+		return getWeaponStats().getBleed();
 	}
 	
 	public int getFuelTicks() {
-		return missileData.getFuelTicks();
+		return getWeaponStats().getFuelTicks();
 	}
 	
 	public float getTurnRadius() {
-		return missileData.getTurnRadius();
+		return getWeaponStats().getTurnRadius();
 	}
 	
 	public int getTargetId() {
@@ -419,8 +411,8 @@ public abstract class EntityMissile extends EntityBullet {
 	}
 	
 	@Override
-	public WeaponData.WeaponClientImpactType getClientImpactType() {
-		return WeaponData.WeaponClientImpactType.MED_MISSILE_EXPLODE;
+	public WeaponStats.WeaponClientImpactType getClientImpactType() {
+		return WeaponStats.WeaponClientImpactType.MED_MISSILE_EXPLODE;
 	}
 
 }

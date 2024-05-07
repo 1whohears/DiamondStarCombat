@@ -1,5 +1,4 @@
 {
-  "aircraft_type": 3,
   "copyId": "corvette_unarmed",
   "displayName": "preset.dscombat.corvette",
   "ingredients": [
@@ -23,6 +22,7 @@
   "is_craftable": false,
   "landing_gear": true,
   "presetId": "corvette",
+  "presetType": "boat",
   "slots": [
     {
       "data": {

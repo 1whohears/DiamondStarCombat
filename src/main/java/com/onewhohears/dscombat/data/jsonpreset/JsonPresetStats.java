@@ -1,16 +1,18 @@
 package com.onewhohears.dscombat.data.jsonpreset;
 
+import javax.annotation.Nullable;
+
 import org.slf4j.Logger;
 
 import com.google.gson.JsonObject;
 import com.mojang.logging.LogUtils;
-import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.util.UtilGsonMerge;
 import com.onewhohears.dscombat.util.UtilGsonMerge.ConflictStrategy;
 import com.onewhohears.dscombat.util.UtilGsonMerge.JsonObjectExtensionConflictException;
 import com.onewhohears.dscombat.util.UtilMCText;
 import com.onewhohears.dscombat.util.UtilParse;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 
@@ -19,15 +21,14 @@ import net.minecraft.resources.ResourceLocation;
  * see {@link JsonPresetReloadListener} for how the presets are read from datapacks.
  * see {@link JsonPresetGenerator} for how presets are built by minecraft data generators.
  * see {@link PresetBuilder} for an abstract preset builder for the generator to use.
- * 
  * see {@link AircraftPreset},
  * {@link com.onewhohears.dscombat.data.weapon.WeaponData},
  * and {@link com.onewhohears.dscombat.data.radar.RadarData} for examples.
  * @author 1whohears
  */
-public abstract class JsonPreset {
+public abstract class JsonPresetStats {
 	
-	protected final Logger LOGGER = LogUtils.getLogger();
+	protected static final Logger LOGGER = LogUtils.getLogger();
 	
 	private final ResourceLocation key;
 	private final JsonObject data;
@@ -37,7 +38,7 @@ public abstract class JsonPreset {
 	private final String copyId;
 	private boolean hasBeenMerged = false;
 	
-	public JsonPreset(ResourceLocation key, JsonObject json) {
+	public JsonPresetStats(ResourceLocation key, JsonObject json) {
 		this.key = key;
 		this.data = json;
 		this.id = UtilParse.getStringSafe(json, "presetId", "");
@@ -46,16 +47,18 @@ public abstract class JsonPreset {
 		this.copyId = UtilParse.getStringSafe(json, "copyId", "");
 	}
 	
+	public abstract JsonPresetType getType();
+	
 	public ResourceLocation getKey() {
 		return key;
 	}
 	
-	public JsonObject getJsonData() {
-		return data.deepCopy();
+	protected JsonObject getJsonData() {
+		return data;
 	}
 	
-	protected JsonObject getJsonDataNotCopy() {
-		return data;
+	public JsonObject copyJsonData() {
+		return data.deepCopy();
 	}
 	
 	public String getId() {
@@ -92,9 +95,9 @@ public abstract class JsonPreset {
 		return hasBeenMerged;
 	}
 	
-	public boolean mergeWithParent(JsonPreset parent) {
+	public boolean mergeWithParent(JsonPresetStats parent) {
 		try {
-			UtilGsonMerge.extendJsonObject(data, ConflictStrategy.PREFER_FIRST_OBJ, parent.getJsonData());
+			UtilGsonMerge.extendJsonObject(data, ConflictStrategy.PREFER_FIRST_OBJ, parent.data.deepCopy());
 			hasBeenMerged = true;
 			return true;
 		} catch (JsonObjectExtensionConflictException e) {
@@ -103,15 +106,9 @@ public abstract class JsonPreset {
 		return false;
 	}
 	
-	public abstract <T extends JsonPreset> T copy();
-	
-	public interface JsonPresetFactory<T extends JsonPreset> {
-		T create(ResourceLocation key, JsonObject data);
-	}
-	
 	@Override
 	public boolean equals(Object o) {
-		if (o instanceof JsonPreset j) return j.getId().equals(getId());
+		if (o instanceof JsonPresetStats j) return j.getId().equals(getId());
 		return false;
 	}
 	
@@ -120,10 +117,22 @@ public abstract class JsonPreset {
 		return getKey().toString()+" "+getJsonData().toString();
 	}
 	
-	public <T extends JsonPreset> int compare(T other) {
+	public <T extends JsonPresetStats> int compare(T other) {
+		if (this.getType() != other.getType()) 
+			return this.getType().getSortFactor() - other.getType().getSortFactor();
 		if (this.getSortFactor() != other.getSortFactor()) 
 			return this.getSortFactor() - other.getSortFactor();
 		return this.getId().compareToIgnoreCase(other.getId());
 	}
+	
+	@Nullable 
+	public JsonPresetInstance<?> createPresetInstance(@Nullable CompoundTag nbt) {
+		JsonPresetInstance<?> instance = createPresetInstance();
+		if (instance == null) return null;
+		if (nbt != null) instance.readNBT(nbt);
+		return instance;
+	}
+	
+	@Nullable public abstract JsonPresetInstance<?> createPresetInstance();
 	
 }

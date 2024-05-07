@@ -1,5 +1,4 @@
 {
-  "type": "track_missile",
   "acceleration": 0.08,
   "activeTrack": true,
   "bleed": 0.07,
@@ -11,7 +10,7 @@
   "damage": 90.0,
   "destroyTerrain": true,
   "displayName": "preset.dscombat.pac3",
-  "entityTypeKey": "dscombat:pac3",
+  "entityTypeKey": "dscombat:track_missile",
   "explosionRadius": 7.0,
   "explosive": true,
   "fireRate": 40,
@@ -45,6 +44,7 @@
   "maxAge": 300,
   "maxAmmo": 4,
   "presetId": "pac3",
+  "presetType": "track_missile",
   "rackTypeKey": "",
   "shootSoundKey": "dscombat:rocket_launch_1",
   "speed": 4.0,

@@ -218,6 +218,11 @@ public class UtilParse {
 		return json.get(name).getAsString();
 	}
 	
+	public static JsonObject getJsonSafe(JsonObject json, String name) {
+		if (!json.has(name)) return new JsonObject();
+		return json.getAsJsonObject(name);
+	}
+	
 	public static String toColorString(Color color) {
 		return Integer.toHexString(0xFF000000 | color.getRGB()).substring(2);
 	}

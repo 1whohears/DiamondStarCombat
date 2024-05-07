@@ -1,5 +1,4 @@
 {
-  "type": "bullet",
   "canShootOnGround": true,
   "causesFire": false,
   "compatibleTurret": "dscombat:heavy_tank_turret",
@@ -27,6 +26,7 @@
   "maxAge": 40,
   "maxAmmo": 16,
   "presetId": "120mmhe",
+  "presetType": "bullet",
   "rackTypeKey": "",
   "shootSoundKey": "dscombat:bullet_shoot_1",
   "speed": 8.0

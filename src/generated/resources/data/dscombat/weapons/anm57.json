@@ -1,5 +1,4 @@
 {
-  "type": "bomb",
   "canShootOnGround": false,
   "causesFire": false,
   "compatibleWeaponPart": "dscombat:bomb_rack",
@@ -27,6 +26,7 @@
   "maxAge": 200,
   "maxAmmo": 20,
   "presetId": "anm57",
+  "presetType": "bomb",
   "rackTypeKey": "dscombat:bomb_rack",
   "shootSoundKey": "dscombat:bomb_shoot_1",
   "speed": 0.0

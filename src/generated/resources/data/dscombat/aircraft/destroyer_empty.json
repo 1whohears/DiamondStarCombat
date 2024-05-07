@@ -1,5 +1,4 @@
 {
-  "aircraft_type": 3,
   "displayName": "preset.dscombat.destroyer_empty",
   "health": 400.0,
   "hitboxes": [
@@ -39,6 +38,7 @@
   "item": "dscombat:destroyer",
   "landing_gear": true,
   "presetId": "destroyer_empty",
+  "presetType": "boat",
   "slots": [
     {
       "data": {

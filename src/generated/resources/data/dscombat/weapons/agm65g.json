@@ -1,5 +1,4 @@
 {
-  "type": "track_missile",
   "acceleration": 0.025,
   "activeTrack": true,
   "bleed": 0.02,
@@ -11,7 +10,7 @@
   "damage": 60.0,
   "destroyTerrain": true,
   "displayName": "preset.dscombat.agm65g",
-  "entityTypeKey": "dscombat:agm65g",
+  "entityTypeKey": "dscombat:track_missile",
   "explodeNum": 2,
   "explosionRadius": 5.5,
   "explosive": true,
@@ -42,6 +41,7 @@
   "maxAge": 300,
   "maxAmmo": 4,
   "presetId": "agm65g",
+  "presetType": "track_missile",
   "rackTypeKey": "dscombat:heavy_missile_rack",
   "shootSoundKey": "dscombat:rocket_launch_1",
   "speed": 2.0,

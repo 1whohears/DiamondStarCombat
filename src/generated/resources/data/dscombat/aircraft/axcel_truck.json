@@ -1,5 +1,4 @@
 {
-  "aircraft_type": 2,
   "copyId": "axcel_truck_unarmed",
   "displayName": "preset.dscombat.axcel_truck",
   "ingredients": [
@@ -15,6 +14,7 @@
   "is_craftable": false,
   "landing_gear": true,
   "presetId": "axcel_truck",
+  "presetType": "car",
   "slots": [
     {
       "data": {

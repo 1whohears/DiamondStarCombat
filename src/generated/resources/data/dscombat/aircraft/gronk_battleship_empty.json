@@ -1,5 +1,4 @@
 {
-  "aircraft_type": 3,
   "displayName": "preset.dscombat.gronk_battleship_empty",
   "health": 600.0,
   "hitboxes": [
@@ -91,6 +90,7 @@
   "item": "dscombat:gronk_battleship",
   "landing_gear": true,
   "presetId": "gronk_battleship_empty",
+  "presetType": "boat",
   "slots": [
     {
       "data": {

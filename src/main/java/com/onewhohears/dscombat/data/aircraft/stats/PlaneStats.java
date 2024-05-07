@@ -16,7 +16,7 @@ public class PlaneStats extends VehicleStats {
 	
 	public PlaneStats(ResourceLocation key, JsonObject json) {
 		super(key, json);
-		JsonObject plane = json.getAsJsonObject("stats").getAsJsonObject("plane");
+		JsonObject plane = UtilParse.getJsonSafe(UtilParse.getJsonSafe(json,"stats"), "plane");
 		wing_area = UtilParse.getFloatSafe(plane, "wing_area", 10);
 		flapsAOABias = UtilParse.getFloatSafe(plane, "flapsAOABias", 8);
 		canAimDown = UtilParse.getBooleanSafe(plane, "canAimDown", false);

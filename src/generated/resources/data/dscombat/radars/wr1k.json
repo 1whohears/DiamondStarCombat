@@ -2,6 +2,7 @@
   "displayName": "preset.dscombat.wr1k",
   "fov": -1.0,
   "presetId": "wr1k",
+  "presetType": "standard",
   "range": 1000.0,
   "scanAir": false,
   "scanAircraft": true,

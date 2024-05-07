@@ -1,5 +1,4 @@
 {
-  "type": "track_missile",
   "acceleration": 0.07,
   "activeTrack": false,
   "bleed": 0.03,
@@ -11,7 +10,7 @@
   "damage": 80.0,
   "destroyTerrain": true,
   "displayName": "preset.dscombat.aim7f",
-  "entityTypeKey": "dscombat:aim7f",
+  "entityTypeKey": "dscombat:track_missile",
   "explosionRadius": 6.0,
   "explosive": true,
   "fireRate": 40,
@@ -45,6 +44,7 @@
   "maxAge": 200,
   "maxAmmo": 3,
   "presetId": "aim7f",
+  "presetType": "track_missile",
   "rackTypeKey": "dscombat:heavy_missile_rack",
   "shootSoundKey": "dscombat:rocket_launch_1",
   "speed": 3.0,

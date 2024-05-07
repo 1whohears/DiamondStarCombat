@@ -33,5 +33,6 @@
       "slot_ui_y": 79
     }
   ],
-  "presetId": "wooden_plane"
+  "presetId": "wooden_plane",
+  "presetType": "standard"
 }

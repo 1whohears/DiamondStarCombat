@@ -1,5 +1,4 @@
 {
-  "aircraft_type": 4,
   "displayName": "preset.dscombat.andolf_sub_empty",
   "health": 600.0,
   "ingredients": [
@@ -28,6 +27,7 @@
   "item": "dscombat:andolf_sub",
   "landing_gear": true,
   "presetId": "andolf_sub_empty",
+  "presetType": "submarine",
   "slots": [
     {
       "data": {

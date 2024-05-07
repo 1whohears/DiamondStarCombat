@@ -1,5 +1,4 @@
 {
-  "aircraft_type": 3,
   "displayName": "preset.dscombat.cruiser_empty",
   "health": 500.0,
   "hitboxes": [
@@ -52,6 +51,7 @@
   "item": "dscombat:cruiser",
   "landing_gear": true,
   "presetId": "cruiser_empty",
+  "presetType": "boat",
   "slots": [
     {
       "data": {

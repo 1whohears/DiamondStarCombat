@@ -1,5 +1,4 @@
 {
-  "type": "bullet",
   "canShootOnGround": true,
   "causesFire": false,
   "compatibleWeaponPart": "dscombat:xm12",
@@ -26,6 +25,7 @@
   "maxAge": 40,
   "maxAmmo": 250,
   "presetId": "50mmhe",
+  "presetType": "bullet",
   "rackTypeKey": "dscombat:xm12",
   "shootSoundKey": "dscombat:bullet_shoot_1",
   "speed": 9.0

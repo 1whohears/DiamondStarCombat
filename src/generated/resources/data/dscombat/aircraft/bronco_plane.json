@@ -1,5 +1,4 @@
 {
-  "aircraft_type": 0,
   "copyId": "bronco_plane_unarmed",
   "displayName": "preset.dscombat.bronco_plane",
   "ingredients": [
@@ -11,6 +10,7 @@
   "is_craftable": false,
   "landing_gear": true,
   "presetId": "bronco_plane",
+  "presetType": "plane",
   "slots": [
     {
       "data": {

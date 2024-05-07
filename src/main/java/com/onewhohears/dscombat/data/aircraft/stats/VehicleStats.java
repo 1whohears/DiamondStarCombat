@@ -64,7 +64,7 @@ public abstract class VehicleStats extends JsonPresetStats {
 	public VehicleStats(ResourceLocation key, JsonObject json) {
 		super(key, json);
 		this.dataNBT = UtilParse.getCompoundFromJson(json);
-		JsonObject stats = json.getAsJsonObject("stats");
+		JsonObject stats = UtilParse.getJsonSafe(json, "stats");
 		max_health = UtilParse.getFloatSafe(stats, "max_health", 10);
 		max_speed = UtilParse.getFloatSafe(stats, "max_speed", 0.1f);
 		mass = UtilParse.getFloatSafe(stats, "mass", 1000);

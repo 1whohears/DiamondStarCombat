@@ -1,5 +1,4 @@
 {
-  "aircraft_type": 4,
   "copyId": "google_sub_unarmed",
   "displayName": "preset.dscombat.google_sub",
   "ingredients": [
@@ -35,6 +34,7 @@
   "is_craftable": false,
   "landing_gear": true,
   "presetId": "google_sub",
+  "presetType": "submarine",
   "slots": [
     {
       "data": {

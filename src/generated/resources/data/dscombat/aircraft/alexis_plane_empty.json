@@ -8,7 +8,6 @@
       }
     }
   ],
-  "aircraft_type": 0,
   "displayName": "preset.dscombat.alexis_plane_empty",
   "health": 140.0,
   "ingredients": [
@@ -37,6 +36,7 @@
   "item": "dscombat:alexis_plane",
   "landing_gear": true,
   "presetId": "alexis_plane_empty",
+  "presetType": "plane",
   "screens": [
     {
       "height": 0.15,

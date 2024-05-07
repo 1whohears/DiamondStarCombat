@@ -1,5 +1,4 @@
 {
-  "type": "torpedo",
   "acceleration": 0.04,
   "activeTrack": true,
   "bleed": 0.05,
@@ -11,7 +10,7 @@
   "damage": 50.0,
   "destroyTerrain": true,
   "displayName": "preset.dscombat.mk13",
-  "entityTypeKey": "dscombat:mk13",
+  "entityTypeKey": "dscombat:torpedo_missile",
   "explosionRadius": 4.0,
   "explosive": true,
   "fireRate": 40,
@@ -41,6 +40,7 @@
   "maxAge": 600,
   "maxAmmo": 3,
   "presetId": "mk13",
+  "presetType": "torpedo",
   "rackTypeKey": "dscombat:heavy_missile_rack",
   "seeThroWater": 10000,
   "shootSoundKey": "dscombat:rocket_launch_1",

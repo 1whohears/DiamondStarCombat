@@ -128,5 +128,6 @@
       "slot_ui_y": 95
     }
   ],
-  "presetId": "e3sentry_plane"
+  "presetId": "e3sentry_plane",
+  "presetType": "standard"
 }

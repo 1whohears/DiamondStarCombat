@@ -98,5 +98,6 @@
       "slot_ui_y": 98
     }
   ],
-  "presetId": "andolf_sub"
+  "presetId": "andolf_sub",
+  "presetType": "standard"
 }

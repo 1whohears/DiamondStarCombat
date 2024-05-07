@@ -1,5 +1,4 @@
 {
-  "aircraft_type": 0,
   "copyId": "e3sentry_plane_empty",
   "displayName": "preset.dscombat.e3sentry_plane",
   "ingredients": [
@@ -23,6 +22,7 @@
   "is_craftable": true,
   "landing_gear": true,
   "presetId": "e3sentry_plane",
+  "presetType": "plane",
   "slots": [
     {
       "data": {

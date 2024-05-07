@@ -2,6 +2,7 @@
   "displayName": "preset.dscombat.gpr100",
   "fov": -1.0,
   "presetId": "gpr100",
+  "presetType": "standard",
   "range": 500.0,
   "scanAir": false,
   "scanAircraft": true,

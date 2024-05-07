@@ -1,5 +1,4 @@
 {
-  "aircraft_type": 0,
   "displayName": "preset.dscombat.e3sentry_plane_empty",
   "health": 400.0,
   "ingredients": [
@@ -36,6 +35,7 @@
   "item": "dscombat:e3sentry_plane",
   "landing_gear": true,
   "presetId": "e3sentry_plane_empty",
+  "presetType": "plane",
   "screens": [
     {
       "height": 0.7,

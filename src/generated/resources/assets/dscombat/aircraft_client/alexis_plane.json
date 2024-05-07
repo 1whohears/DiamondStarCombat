@@ -83,5 +83,6 @@
       "slot_ui_y": 57
     }
   ],
-  "presetId": "alexis_plane"
+  "presetId": "alexis_plane",
+  "presetType": "standard"
 }

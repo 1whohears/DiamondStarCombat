@@ -2,6 +2,7 @@
   "displayName": "preset.dscombat.ar1k",
   "fov": 60.0,
   "presetId": "ar1k",
+  "presetType": "standard",
   "range": 1000.0,
   "scanAir": true,
   "scanAircraft": true,

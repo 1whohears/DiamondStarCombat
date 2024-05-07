@@ -18,5 +18,6 @@
       "slot_ui_y": 70
     }
   ],
-  "presetId": "small_roller"
+  "presetId": "small_roller",
+  "presetType": "standard"
 }

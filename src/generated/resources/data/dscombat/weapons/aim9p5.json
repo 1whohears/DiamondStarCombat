@@ -1,5 +1,4 @@
 {
-  "type": "ir_missile",
   "acceleration": 0.04,
   "bleed": 0.02,
   "canShootOnGround": false,
@@ -10,7 +9,7 @@
   "damage": 40.0,
   "destroyTerrain": true,
   "displayName": "preset.dscombat.aim9p5",
-  "entityTypeKey": "dscombat:aim9p5",
+  "entityTypeKey": "dscombat:ir_missile",
   "explosionRadius": 3.5,
   "explosive": true,
   "fireRate": 20,
@@ -45,6 +44,7 @@
   "maxAge": 100,
   "maxAmmo": 4,
   "presetId": "aim9p5",
+  "presetType": "ir_missile",
   "rackTypeKey": "dscombat:light_missile_rack",
   "shootSoundKey": "dscombat:rocket_launch_1",
   "speed": 2.5,

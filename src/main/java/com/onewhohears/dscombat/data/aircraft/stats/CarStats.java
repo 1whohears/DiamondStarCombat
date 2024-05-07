@@ -13,7 +13,7 @@ public class CarStats extends VehicleStats {
 	
 	public CarStats(ResourceLocation key, JsonObject json) {
 		super(key, json);
-		JsonObject car = json.getAsJsonObject("stats").getAsJsonObject("car");
+		JsonObject car = UtilParse.getJsonSafe(UtilParse.getJsonSafe(json,"stats"), "car");
 		isTank = UtilParse.getBooleanSafe(car, "isTank", false);
 	}
 	

@@ -1,5 +1,4 @@
 {
-  "type": "track_missile",
   "acceleration": 0.05,
   "activeTrack": true,
   "bleed": 0.04,
@@ -11,7 +10,7 @@
   "damage": 60.0,
   "destroyTerrain": true,
   "displayName": "preset.dscombat.aim120b",
-  "entityTypeKey": "dscombat:aim120b",
+  "entityTypeKey": "dscombat:track_missile",
   "explosionRadius": 4.5,
   "explosive": true,
   "fireRate": 30,
@@ -45,6 +44,7 @@
   "maxAge": 350,
   "maxAmmo": 3,
   "presetId": "aim120b",
+  "presetType": "track_missile",
   "rackTypeKey": "dscombat:heavy_missile_rack",
   "shootSoundKey": "dscombat:rocket_launch_1",
   "speed": 4.0,

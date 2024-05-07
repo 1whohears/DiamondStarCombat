@@ -1,5 +1,4 @@
 {
-  "aircraft_type": 3,
   "copyId": "aircraft_carrier_unarmed",
   "displayName": "preset.dscombat.aircraft_carrier",
   "ingredients": [
@@ -27,6 +26,7 @@
   "is_craftable": false,
   "landing_gear": true,
   "presetId": "aircraft_carrier",
+  "presetType": "boat",
   "slots": [
     {
       "data": {

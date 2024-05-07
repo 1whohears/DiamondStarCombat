@@ -1,5 +1,4 @@
 {
-  "aircraft_type": 0,
   "displayName": "preset.dscombat.bronco_plane_empty",
   "health": 90.0,
   "ingredients": [
@@ -36,6 +35,7 @@
   "item": "dscombat:bronco_plane",
   "landing_gear": true,
   "presetId": "bronco_plane_empty",
+  "presetType": "plane",
   "slots": [
     {
       "data": {

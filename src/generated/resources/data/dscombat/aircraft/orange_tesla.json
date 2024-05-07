@@ -1,5 +1,4 @@
 {
-  "aircraft_type": 2,
   "displayName": "preset.dscombat.orange_tesla",
   "health": 40.0,
   "ingredients": [
@@ -32,6 +31,7 @@
   "item": "dscombat:orange_tesla",
   "landing_gear": true,
   "presetId": "orange_tesla",
+  "presetType": "car",
   "slots": [
     {
       "data": {

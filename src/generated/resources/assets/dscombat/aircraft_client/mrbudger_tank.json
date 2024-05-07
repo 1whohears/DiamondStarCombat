@@ -48,5 +48,6 @@
       "slot_ui_y": 70
     }
   ],
-  "presetId": "mrbudger_tank"
+  "presetId": "mrbudger_tank",
+  "presetType": "standard"
 }

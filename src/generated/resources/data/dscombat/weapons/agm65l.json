@@ -1,5 +1,4 @@
 {
-  "type": "pos_missile",
   "acceleration": 0.025,
   "bleed": 0.02,
   "canShootOnGround": false,
@@ -10,7 +9,7 @@
   "damage": 60.0,
   "destroyTerrain": true,
   "displayName": "preset.dscombat.agm65l",
-  "entityTypeKey": "dscombat:agm65l",
+  "entityTypeKey": "dscombat:pos_missile",
   "explodeNum": 2,
   "explosionRadius": 5.5,
   "explosive": true,
@@ -41,6 +40,7 @@
   "maxAge": 300,
   "maxAmmo": 4,
   "presetId": "agm65l",
+  "presetType": "pos_missile",
   "rackTypeKey": "dscombat:heavy_missile_rack",
   "shootSoundKey": "dscombat:rocket_launch_1",
   "speed": 2.0,

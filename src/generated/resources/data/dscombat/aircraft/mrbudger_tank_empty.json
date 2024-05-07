@@ -1,5 +1,4 @@
 {
-  "aircraft_type": 2,
   "displayName": "preset.dscombat.mrbudger_tank_empty",
   "health": 500.0,
   "ingredients": [
@@ -24,6 +23,7 @@
   "item": "dscombat:mrbudger_tank",
   "landing_gear": true,
   "presetId": "mrbudger_tank_empty",
+  "presetType": "car",
   "slots": [
     {
       "data": {

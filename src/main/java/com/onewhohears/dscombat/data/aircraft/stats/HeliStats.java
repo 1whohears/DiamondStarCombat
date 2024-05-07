@@ -14,7 +14,7 @@ public class HeliStats extends VehicleStats {
 	
 	public HeliStats(ResourceLocation key, JsonObject json) {
 		super(key, json);
-		JsonObject heli = json.getAsJsonObject("stats").getAsJsonObject("heli");
+		JsonObject heli = UtilParse.getJsonSafe(UtilParse.getJsonSafe(json,"stats"), "heli");
 		accForward = UtilParse.getFloatSafe(heli, "accForward", 0.1f);
 		accSide = UtilParse.getFloatSafe(heli, "accSide", 0.1f);
 		heliLiftFactor = UtilParse.getFloatSafe(heli, "heliLiftFactor", 1);

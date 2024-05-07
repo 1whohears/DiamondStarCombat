@@ -128,5 +128,6 @@
       "slot_ui_y": 58
     }
   ],
-  "presetId": "gronk_battleship"
+  "presetId": "gronk_battleship",
+  "presetType": "standard"
 }

@@ -93,5 +93,6 @@
       "slot_ui_y": 50
     }
   ],
-  "presetId": "javi_plane"
+  "presetId": "javi_plane",
+  "presetType": "standard"
 }

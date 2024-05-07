@@ -1,5 +1,4 @@
 {
-  "type": "track_missile",
   "acceleration": 0.04,
   "activeTrack": true,
   "bleed": 0.05,
@@ -11,7 +10,7 @@
   "damage": 50.0,
   "destroyTerrain": true,
   "displayName": "preset.dscombat.rgm84",
-  "entityTypeKey": "dscombat:aim120c",
+  "entityTypeKey": "dscombat:track_missile",
   "explodeNum": 2,
   "explosionRadius": 4.0,
   "explosive": true,
@@ -42,6 +41,7 @@
   "maxAge": 600,
   "maxAmmo": 4,
   "presetId": "rgm84",
+  "presetType": "track_missile",
   "rackTypeKey": "dscombat:adl",
   "seeThroWater": 100,
   "shootSoundKey": "dscombat:rocket_launch_1",

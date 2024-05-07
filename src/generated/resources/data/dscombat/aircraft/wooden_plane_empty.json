@@ -1,5 +1,4 @@
 {
-  "aircraft_type": 0,
   "displayName": "preset.dscombat.wooden_plane_empty",
   "health": 40.0,
   "ingredients": [
@@ -24,6 +23,7 @@
   "item": "dscombat:wooden_plane",
   "landing_gear": true,
   "presetId": "wooden_plane_empty",
+  "presetType": "plane",
   "slots": [
     {
       "data": {

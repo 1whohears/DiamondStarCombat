@@ -1,5 +1,4 @@
 {
-  "aircraft_type": 3,
   "copyId": "gronk_battleship_unarmed",
   "displayName": "preset.dscombat.gronk_battleship",
   "ingredients": [
@@ -35,6 +34,7 @@
   "is_craftable": false,
   "landing_gear": true,
   "presetId": "gronk_battleship",
+  "presetType": "boat",
   "slots": [
     {
       "data": {

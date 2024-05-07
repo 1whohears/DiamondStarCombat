@@ -1,10 +1,10 @@
 package com.onewhohears.dscombat.data.jsonpreset;
 
-import com.onewhohears.dscombat.data.vehicle.VehiclePreset;
 import org.slf4j.Logger;
 
 import com.google.gson.JsonObject;
 import com.mojang.logging.LogUtils;
+import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.util.UtilGsonMerge;
 import com.onewhohears.dscombat.util.UtilGsonMerge.ConflictStrategy;
 import com.onewhohears.dscombat.util.UtilGsonMerge.JsonObjectExtensionConflictException;
@@ -20,7 +20,7 @@ import net.minecraft.resources.ResourceLocation;
  * see {@link JsonPresetGenerator} for how presets are built by minecraft data generators.
  * see {@link PresetBuilder} for an abstract preset builder for the generator to use.
  * 
- * see {@link VehiclePreset},
+ * see {@link AircraftPreset},
  * {@link com.onewhohears.dscombat.data.weapon.WeaponData},
  * and {@link com.onewhohears.dscombat.data.radar.RadarData} for examples.
  * @author 1whohears

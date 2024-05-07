@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.data.vehicle;
+package com.onewhohears.dscombat.data.aircraft;
 
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleControl;

@@ -2,11 +2,11 @@ package com.onewhohears.dscombat.init;
 
 import com.google.common.collect.ImmutableSet;
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.vehicle.presets.BoatPresets;
-import com.onewhohears.dscombat.data.vehicle.presets.CarPresets;
-import com.onewhohears.dscombat.data.vehicle.presets.PlanePresets;
-import com.onewhohears.dscombat.data.vehicle.presets.SubPresets;
-import com.onewhohears.dscombat.data.vehicle.presets.TankPresets;
+import com.onewhohears.dscombat.data.aircraft.presets.BoatPresets;
+import com.onewhohears.dscombat.data.aircraft.presets.CarPresets;
+import com.onewhohears.dscombat.data.aircraft.presets.PlanePresets;
+import com.onewhohears.dscombat.data.aircraft.presets.SubPresets;
+import com.onewhohears.dscombat.data.aircraft.presets.TankPresets;
 import com.onewhohears.dscombat.data.parts.TurretData.RotBounds;
 import com.onewhohears.dscombat.entity.EntityParachute;
 import com.onewhohears.dscombat.entity.vehicle.EntityBoat;

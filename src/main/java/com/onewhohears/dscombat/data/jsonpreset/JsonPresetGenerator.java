@@ -7,12 +7,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import com.onewhohears.dscombat.data.vehicle.VehicleClientPresetGenerator;
-import com.onewhohears.dscombat.data.vehicle.VehiclePresetGenerator;
 import org.slf4j.Logger;
 
 import com.google.common.collect.Sets;
 import com.mojang.logging.LogUtils;
+import com.onewhohears.dscombat.data.aircraft.AircraftClientPresetGenerator;
+import com.onewhohears.dscombat.data.aircraft.AircraftPresetGenerator;
 
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
@@ -27,8 +27,8 @@ import net.minecraft.resources.ResourceLocation;
  * 
  * see {@link com.onewhohears.dscombat.data.weapon.WeaponPresetGenerator},
  * {@link com.onewhohears.dscombat.data.radar.RadarPresetGenerator},
- * {@link VehiclePresetGenerator},
- * and {@link VehicleClientPresetGenerator} for examples.
+ * {@link AircraftPresetGenerator},
+ * and {@link AircraftClientPresetGenerator} for examples.
  * see {@link JsonPresetReloadListener} for a way to read these json presets.
  * 
  * @author 1whohears

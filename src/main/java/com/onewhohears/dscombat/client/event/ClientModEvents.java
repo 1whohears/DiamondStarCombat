@@ -13,7 +13,7 @@ import com.onewhohears.dscombat.client.model.weapon.*;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.client.particle.*;
 import com.onewhohears.dscombat.client.renderer.*;
-import com.onewhohears.dscombat.data.vehicle.VehicleClientPresets;
+import com.onewhohears.dscombat.data.aircraft.AircraftClientPresets;
 import com.onewhohears.dscombat.entity.weapon.EntityBomb;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.init.ModEntities;
@@ -316,7 +316,7 @@ public final class ClientModEvents {
 	
 	@SubscribeEvent
 	public static void registerClientReloadListener(RegisterClientReloadListenersEvent event) {
-		event.registerReloadListener(VehicleClientPresets.get());
+		event.registerReloadListener(AircraftClientPresets.get());
 		event.registerReloadListener(ObjEntityModels.get());
 	}
 	

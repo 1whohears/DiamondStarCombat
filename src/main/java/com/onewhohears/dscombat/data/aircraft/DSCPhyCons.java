@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.data.vehicle;
+package com.onewhohears.dscombat.data.aircraft;
 
 public class DSCPhyCons {
 	

@@ -5,7 +5,7 @@ import java.util.List;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.command.DSCGameRules;
-import com.onewhohears.dscombat.data.vehicle.DSCPhyCons;
+import com.onewhohears.dscombat.data.aircraft.DSCPhyCons;
 import com.onewhohears.dscombat.data.weapon.MissileData;
 import com.onewhohears.dscombat.data.weapon.NonTickingMissileManager;
 import com.onewhohears.dscombat.data.weapon.WeaponData;

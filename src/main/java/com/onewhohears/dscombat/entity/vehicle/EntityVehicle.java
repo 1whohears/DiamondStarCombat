@@ -28,14 +28,14 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleControl;
 import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleExplode;
 import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleCollide;
 import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleMoveRot;
-import com.onewhohears.dscombat.data.vehicle.VehiclePreset;
-import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
-import com.onewhohears.dscombat.data.vehicle.DSCPhyCons;
-import com.onewhohears.dscombat.data.vehicle.EntityScreenData;
-import com.onewhohears.dscombat.data.vehicle.VehicleInputManager;
-import com.onewhohears.dscombat.data.vehicle.VehicleSoundManager;
-import com.onewhohears.dscombat.data.vehicle.VehicleStats;
-import com.onewhohears.dscombat.data.vehicle.VehicleTextureManager;
+import com.onewhohears.dscombat.data.aircraft.DSCPhyCons;
+import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
+import com.onewhohears.dscombat.data.aircraft.VehicleInputManager;
+import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
+import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
+import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager;
+import com.onewhohears.dscombat.data.aircraft.VehicleStats;
+import com.onewhohears.dscombat.data.aircraft.VehicleTextureManager;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartsManager;
 import com.onewhohears.dscombat.data.parts.StorageBoxData;
@@ -193,7 +193,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		this.defaultPreset = defaultPreset;
 		this.clientPresetId = UtilEntity.getEntityIdName(this);
 		this.preset = defaultPreset;
-		VehiclePreset ap = VehiclePresets.get().getPreset(defaultPreset);
+		AircraftPreset ap = AircraftPresets.get().getPreset(defaultPreset);
 		this.item = ap.getItem();
 		this.blocksBuilding = true;
 		vehicleStats = createVehicleStats();
@@ -221,11 +221,11 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		for (int i = 0; i < hitboxes.length; i++) hitboxes[i].setId(id+i+1);
 	}
 	
-	public RotableHitbox[] createRotableHitboxes(VehiclePreset ap) {
+	public RotableHitbox[] createRotableHitboxes(AircraftPreset ap) {
 		return ap.getRotableHitboxes(this);
 	}
 	
-	public EntityScreenData[] createEntityScreens(VehiclePreset ap) {
+	public EntityScreenData[] createEntityScreens(AircraftPreset ap) {
 		return ap.getEntityScreens();
 	}
 	
@@ -276,7 +276,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	/**
 	 * if this is a brand new entity and has no nbt custom data then the fresh entity nbt will
-	 * merge with this vehicle's preset nbt. see {@link VehiclePresets}.
+	 * merge with this vehicle's preset nbt. see {@link AircraftPresets}.
 	 * you could summon a vehicle with nbt {preset:"some preset name"} to override the {@link EntityVehicle#defaultPreset}
  	 */
 	@Override
@@ -289,12 +289,12 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		// if not use the default preset
 		if (preset.isEmpty()) preset = defaultPreset;
 		// check if the preset exists
-		else if (!VehiclePresets.get().has(preset)) {
+		else if (!AircraftPresets.get().has(preset)) {
 			preset = defaultPreset;
 			LOGGER.warn("ERROR: preset "+preset+" doesn't exist!");
 		}
 		// get the preset data
-		VehiclePreset ap = VehiclePresets.get().getPreset(preset);
+		AircraftPreset ap = AircraftPresets.get().getPreset(preset);
 		item = ap.getItem();
 		vehicleStats.readPresetData(ap);
 		soundManager.loadSounds(ap);
@@ -363,8 +363,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		partsManager.setPartSlots(slots);
 		partsManager.clientPartsSetup();
 		// PRESET STUFF
-		if (!VehiclePresets.get().has(preset)) return;
-		VehiclePreset ap = VehiclePresets.get().getPreset(preset);
+		if (!AircraftPresets.get().has(preset)) return;
+		AircraftPreset ap = AircraftPresets.get().getPreset(preset);
 		vehicleStats.readPresetData(ap);
 		soundManager.loadSounds(ap);
 		item = ap.getItem();

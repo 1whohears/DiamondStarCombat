@@ -12,9 +12,9 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.container.menu.VehicleBlockContainerMenu;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerCraftPlane;
-import com.onewhohears.dscombat.crafting.VehicleRecipe;
-import com.onewhohears.dscombat.data.vehicle.VehiclePreset;
-import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
+import com.onewhohears.dscombat.crafting.AircraftRecipe;
+import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
+import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
 import com.onewhohears.dscombat.util.UtilItem;
 import com.onewhohears.dscombat.util.UtilMCText;
 
@@ -83,7 +83,7 @@ public class VehicleBlockScreen extends AbstractContainerScreen<VehicleBlockCont
 	}
 	
 	protected void renderVehicle(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
-		VehicleRecipe ap = tab.getSelectedRecipe();
+		AircraftRecipe ap = tab.getSelectedRecipe();
 		if (ap == null) return;
 		ItemStack stack = ap.getResultItem();
 		int posX = leftPos+170, posY = topPos+52;
@@ -103,7 +103,7 @@ public class VehicleBlockScreen extends AbstractContainerScreen<VehicleBlockCont
 	}
 	
 	protected void renderIngredients(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
-		VehicleRecipe ap = tab.getSelectedRecipe();
+		AircraftRecipe ap = tab.getSelectedRecipe();
         if (ap == null) return;
         Minecraft m = Minecraft.getInstance();
         NonNullList<Ingredient> ingredients = ap.getIngredients();
@@ -126,9 +126,9 @@ public class VehicleBlockScreen extends AbstractContainerScreen<VehicleBlockCont
 	protected void renderLabels(PoseStack stack, int mouseX, int mouseY) {
 		font.draw(stack, playerInventoryTitle, inventoryLabelX, inventoryLabelY, 0x404040);
 		// plane stats
-		VehicleRecipe ar = tab.getSelectedRecipe();
+		AircraftRecipe ar = tab.getSelectedRecipe();
 		if (ar == null) return;
-		VehiclePreset ap = ar.getVehiclePreset();
+		AircraftPreset ap = ar.getVehiclePreset();
 		if (ap == null) return;
 		Component name = ap.getDisplayNameComponent();
 		int nameWidth = font.width(name);
@@ -239,7 +239,7 @@ public class VehicleBlockScreen extends AbstractContainerScreen<VehicleBlockCont
 		Minecraft m = Minecraft.getInstance();
 		Player player = m.player;
 		if (player == null) return;
-		VehicleRecipe ap = tab.getSelectedRecipe();
+		AircraftRecipe ap = tab.getSelectedRecipe();
 		if (ap == null) return;
 		if (ap.matches(player.getInventory(), m.level)) {
 			PacketHandler.INSTANCE.sendToServer(new ToServerCraftPlane(ap.getId(), menu.getPos()));
@@ -260,10 +260,10 @@ public class VehicleBlockScreen extends AbstractContainerScreen<VehicleBlockCont
 	}
 	
 	public static enum AircraftTab {
-		TANKS(() -> VehiclePresets.get().getTankRecipes(Minecraft.getInstance().level.getRecipeManager()), 86),
-		HELIS(() -> VehiclePresets.get().getHeliRecipes(Minecraft.getInstance().level.getRecipeManager()), 133),
-		PLANES(() -> VehiclePresets.get().getPlaneRecipes(Minecraft.getInstance().level.getRecipeManager()), 180),
-		BOATS(() -> VehiclePresets.get().getBoatRecipes(Minecraft.getInstance().level.getRecipeManager()), 227);
+		TANKS(() -> AircraftPresets.get().getTankRecipes(Minecraft.getInstance().level.getRecipeManager()), 86),
+		HELIS(() -> AircraftPresets.get().getHeliRecipes(Minecraft.getInstance().level.getRecipeManager()), 133),
+		PLANES(() -> AircraftPresets.get().getPlaneRecipes(Minecraft.getInstance().level.getRecipeManager()), 180),
+		BOATS(() -> AircraftPresets.get().getBoatRecipes(Minecraft.getInstance().level.getRecipeManager()), 227);
 		
 		private AircraftPresetList presetFactory;
 		private int index = 0;
@@ -274,7 +274,7 @@ public class VehicleBlockScreen extends AbstractContainerScreen<VehicleBlockCont
 			this.bookmarkX = bookmarkX;
 		}
 		
-		public VehicleRecipe[] getRecipes() {
+		public AircraftRecipe[] getRecipes() {
 			return presetFactory.get();
 		}
 		
@@ -290,7 +290,7 @@ public class VehicleBlockScreen extends AbstractContainerScreen<VehicleBlockCont
 		}
 		
 		@Nullable
-		public VehicleRecipe getSelectedRecipe() {
+		public AircraftRecipe getSelectedRecipe() {
 			if (checkIndex() == -1) return null;
 			return getRecipes()[getIndex()];
 		}
@@ -314,7 +314,7 @@ public class VehicleBlockScreen extends AbstractContainerScreen<VehicleBlockCont
 	}
 	
 	public static interface AircraftPresetList {
-		VehicleRecipe[] get();
+		AircraftRecipe[] get();
 	}
 
 }

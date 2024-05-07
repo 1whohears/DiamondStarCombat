@@ -3,9 +3,9 @@ package com.onewhohears.dscombat.data.recipe;
 import java.util.function.Consumer;
 
 import com.google.gson.JsonObject;
-import com.onewhohears.dscombat.crafting.VehicleRecipe;
+import com.onewhohears.dscombat.crafting.AircraftRecipe;
 import com.onewhohears.dscombat.crafting.WeaponRecipe;
-import com.onewhohears.dscombat.data.vehicle.VehiclePresetGenerator;
+import com.onewhohears.dscombat.data.aircraft.AircraftPresetGenerator;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPreset;
 import com.onewhohears.dscombat.data.weapon.WeaponPresetGenerator;
 
@@ -28,10 +28,10 @@ public class DSCRecipeGenerator extends RecipeProvider {
 	}
 
 	protected void genAircraftRecipes(Consumer<FinishedRecipe> finishedRecipeConsumer) {
-		VehiclePresetGenerator.INSTANCE.GEN_MAP.forEach((key, preset) -> {
+		AircraftPresetGenerator.INSTANCE.GEN_MAP.forEach((key, preset) -> {
 			if (!preset.isCraftable()) return;
 			finishedRecipeConsumer.accept(new FinishedPresetRecipe(preset, 
-					"workbench_vehicle_", VehicleRecipe.Serializer.INSTANCE));
+					"workbench_vehicle_", AircraftRecipe.Serializer.INSTANCE));
 		});
 	}
 	

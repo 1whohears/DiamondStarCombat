@@ -1,8 +1,8 @@
-package com.onewhohears.dscombat.data.vehicle.presets;
+package com.onewhohears.dscombat.data.aircraft.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.vehicle.VehiclePreset;
-import com.onewhohears.dscombat.data.vehicle.LiftKGraph;
+import com.onewhohears.dscombat.data.aircraft.LiftKGraph;
+import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
@@ -10,7 +10,7 @@ import com.onewhohears.dscombat.init.ModSounds;
 
 public class JasonPresets {
 	
-	public static final VehiclePreset EMPTY_JASON_PLANE = VehiclePreset.Builder
+	public static final AircraftPreset EMPTY_JASON_PLANE = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "jason_plane_empty")
 			.setSortFactor(2)
 			.setAircraftType(AircraftType.PLANE)
@@ -51,7 +51,7 @@ public class JasonPresets {
 			.addEmptySlot("internal_3", SlotType.INTERNAL)
 			.build();
 	
-	public static final VehiclePreset UNARMED_JASON_PLANE = VehiclePreset.Builder
+	public static final AircraftPreset UNARMED_JASON_PLANE = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "jason_plane_unarmed", EMPTY_JASON_PLANE)
 			.setCraftable()
 			.setSlotItem("internal_1", ModItems.ALLISON_V_1710.getId())
@@ -60,7 +60,7 @@ public class JasonPresets {
 			.addIngredient(ModItems.LIGHT_FUEL_TANK.getId())
 			.build();
 	
-	public static final VehiclePreset DEFAULT_JASON_PLANE = VehiclePreset.Builder
+	public static final AircraftPreset DEFAULT_JASON_PLANE = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "jason_plane", UNARMED_JASON_PLANE)
 			.setSlotItem("left_wing_1", ModItems.XM12.getId(), "10mm", true)
 			.setSlotItem("right_wing_1", ModItems.XM12.getId(), "10mm", true)

@@ -5,8 +5,8 @@ import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
-import com.onewhohears.dscombat.data.vehicle.VehiclePreset;
-import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
+import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
+import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.util.UtilMCText;
@@ -146,7 +146,7 @@ public class ItemVehicle extends Item {
 		CompoundTag tag = stack.getTag();
 		if (tag == null || !tag.contains("EntityTag")) {
 			String name = getPresetName(stack);
-			VehiclePreset ap = VehiclePresets.get().getPreset(name);
+			AircraftPreset ap = AircraftPresets.get().getPreset(name);
 			if (ap == null) return UtilMCText.translatable(getDescriptionId()).append(" unknown preset!");
 			return ap.getDisplayNameComponent().setStyle(Style.EMPTY.withColor(0x55FFFF));
 		}
@@ -171,7 +171,7 @@ public class ItemVehicle extends Item {
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
 		if (group.getId() != ModItems.AIRCRAFT.getId() && group.getId() != CreativeModeTab.TAB_SEARCH.getId()) return;
-		VehiclePreset[] presets = VehiclePresets.get().getAllPresets();
+		AircraftPreset[] presets = AircraftPresets.get().getAllPresets();
 		for (int i = 0; i < presets.length; ++i) {
 			if (presets[i].getItem().getDescriptionId().equals(getDescriptionId())) {
 				items.add(presets[i].getItem());

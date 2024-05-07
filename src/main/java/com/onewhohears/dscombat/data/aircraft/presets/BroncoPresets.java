@@ -1,9 +1,9 @@
-package com.onewhohears.dscombat.data.vehicle.presets;
+package com.onewhohears.dscombat.data.aircraft.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.vehicle.VehiclePreset;
-import com.onewhohears.dscombat.data.vehicle.LiftKGraph;
-import com.onewhohears.dscombat.data.vehicle.VehicleSoundManager.PassengerSoundPack;
+import com.onewhohears.dscombat.data.aircraft.LiftKGraph;
+import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
+import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle.AircraftType;
@@ -12,7 +12,7 @@ import com.onewhohears.dscombat.init.ModSounds;
 
 public class BroncoPresets {
 	
-	public static final VehiclePreset EMPTY_BRONCO_PLANE = VehiclePreset.Builder
+	public static final AircraftPreset EMPTY_BRONCO_PLANE = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "bronco_plane_empty")
 			.setSortFactor(4)
 			.setAircraftType(AircraftType.PLANE)
@@ -62,7 +62,7 @@ public class BroncoPresets {
 			.addEmptySlot("internal_5", SlotType.ADVANCED_INTERNAL)
 			.build();
 	
-	public static final VehiclePreset UNARMED_BRONCO_PLANE = VehiclePreset.Builder
+	public static final AircraftPreset UNARMED_BRONCO_PLANE = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "bronco_plane_unarmed", EMPTY_BRONCO_PLANE)
 			.setCraftable()
 			.setSlotItem("internal_1", ModItems.CM_MANLY_52.getId())
@@ -72,7 +72,7 @@ public class BroncoPresets {
 			.addIngredient(ModItems.LIGHT_FUEL_TANK.getId())
 			.build();
 	
-	public static final VehiclePreset DEFAULT_BRONCO_PLANE = VehiclePreset.Builder
+	public static final AircraftPreset DEFAULT_BRONCO_PLANE = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "bronco_plane", UNARMED_BRONCO_PLANE)
 			.setSlotItem("internal_4", ModItems.BASIC_FLARE_DISPENSER.getId(), true)
 			.setSlotItem("left_wing_1", ModItems.LIGHT_MISSILE_RACK.getId(), "agm114k", true)

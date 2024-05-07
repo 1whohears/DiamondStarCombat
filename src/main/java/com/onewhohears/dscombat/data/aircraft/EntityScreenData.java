@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.data.vehicle;
+package com.onewhohears.dscombat.data.aircraft;
 
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.client.renderer.EntityScreenRenderer;

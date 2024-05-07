@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.entity.vehicle.custom;
 
-import com.onewhohears.dscombat.data.vehicle.presets.HeliPresets;
+import com.onewhohears.dscombat.data.aircraft.presets.HeliPresets;
 import com.onewhohears.dscombat.entity.vehicle.EntityHelicopter;
 
 import net.minecraft.world.entity.EntityType;

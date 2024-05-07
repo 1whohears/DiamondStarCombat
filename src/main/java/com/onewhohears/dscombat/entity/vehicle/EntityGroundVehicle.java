@@ -1,8 +1,8 @@
 package com.onewhohears.dscombat.entity.vehicle;
 
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.data.vehicle.VehicleStats;
-import com.onewhohears.dscombat.data.vehicle.VehicleStats.CarStats;
+import com.onewhohears.dscombat.data.aircraft.VehicleStats;
+import com.onewhohears.dscombat.data.aircraft.VehicleStats.CarStats;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;

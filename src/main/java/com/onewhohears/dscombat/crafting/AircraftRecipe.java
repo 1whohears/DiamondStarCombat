@@ -4,8 +4,8 @@ import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.vehicle.VehiclePreset;
-import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
+import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
+import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModBlocks;
 import com.onewhohears.dscombat.util.UtilItem;
@@ -21,12 +21,12 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
-public class VehicleRecipe implements Recipe<Inventory> {
+public class AircraftRecipe implements Recipe<Inventory> {
 	
 	private final ResourceLocation id;
     private final String presetId;
 
-    public VehicleRecipe(ResourceLocation id, String presetId) {
+    public AircraftRecipe(ResourceLocation id, String presetId) {
         this.id = id;
         this.presetId = presetId;
     }
@@ -80,36 +80,36 @@ public class VehicleRecipe implements Recipe<Inventory> {
 		return presetId;
 	}
 	
-	public VehiclePreset getVehiclePreset() {
-		return VehiclePresets.get().getPresetNonCopy(getVehiclePresetId());
+	public AircraftPreset getVehiclePreset() {
+		return AircraftPresets.get().getPresetNonCopy(getVehiclePresetId());
 	}
 	
 	public int getSortFactor() {
-		VehiclePreset preset = getVehiclePreset();
+		AircraftPreset preset = getVehiclePreset();
 		if (preset == null) return 0;
 		return preset.getSortFactor();
 	}
 	
 	public AircraftType getAircraftType() {
-		VehiclePreset preset = getVehiclePreset();
+		AircraftPreset preset = getVehiclePreset();
 		if (preset == null) return AircraftType.CAR;
 		return preset.getAircraftType();
 	}
 	
-	public int compare(VehicleRecipe other) {
+	public int compare(AircraftRecipe other) {
 		if (this.getSortFactor() != other.getSortFactor()) 
 			return this.getSortFactor() - other.getSortFactor();
 		return this.presetId.compareToIgnoreCase(presetId);
 	}
 	
 	public NonNullList<Ingredient> getIngredients() {
-		VehiclePreset preset = getVehiclePreset();
+		AircraftPreset preset = getVehiclePreset();
 		if (preset == null) return NonNullList.create();
 		return preset.getIngredients();
 	}
 	
 	public ItemStack getOutput() {
-		VehiclePreset preset = getVehiclePreset();
+		AircraftPreset preset = getVehiclePreset();
 		if (preset == null) return ItemStack.EMPTY;
 		return preset.getItem();
 	}
@@ -119,7 +119,7 @@ public class VehicleRecipe implements Recipe<Inventory> {
 		return true;
 	}
 	
-	public static class Type implements RecipeType<VehicleRecipe> {
+	public static class Type implements RecipeType<AircraftRecipe> {
         private Type() { }
         public static final Type INSTANCE = new Type();
         public static final String ID = "aircraft_workbench";
@@ -129,21 +129,21 @@ public class VehicleRecipe implements Recipe<Inventory> {
         }
     }
 	
-	public static class Serializer implements RecipeSerializer<VehicleRecipe> {
+	public static class Serializer implements RecipeSerializer<AircraftRecipe> {
 		public static final Serializer INSTANCE = new Serializer();
         public static final ResourceLocation ID = new ResourceLocation(DSCombatMod.MODID, "aircraft_workbench");
 		@Override
-		public VehicleRecipe fromJson(ResourceLocation recipeId, JsonObject serializedRecipe) {
+		public AircraftRecipe fromJson(ResourceLocation recipeId, JsonObject serializedRecipe) {
 			String presetId = serializedRecipe.get("presetId").getAsString();
-			return new VehicleRecipe(recipeId, presetId);
+			return new AircraftRecipe(recipeId, presetId);
 		}
 		@Override
-		public @Nullable VehicleRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
+		public @Nullable AircraftRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
 			String presetId = buffer.readUtf();
-			return new VehicleRecipe(recipeId, presetId);
+			return new AircraftRecipe(recipeId, presetId);
 		}
 		@Override
-		public void toNetwork(FriendlyByteBuf buffer, VehicleRecipe recipe) {
+		public void toNetwork(FriendlyByteBuf buffer, AircraftRecipe recipe) {
 			buffer.writeUtf(recipe.presetId);
 		}
 	}

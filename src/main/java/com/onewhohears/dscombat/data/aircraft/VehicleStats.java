@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.data.vehicle;
+package com.onewhohears.dscombat.data.aircraft;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -32,7 +32,7 @@ public abstract class VehicleStats {
 	protected VehicleStats() {
 	}
 	
-	public void readPresetData(VehiclePreset acp) {
+	public void readPresetData(AircraftPreset acp) {
 		CompoundTag stats = acp.getDataAsNBT().getCompound("stats");
 		max_health = stats.getFloat("max_health");
 		max_speed = stats.getFloat("max_speed");
@@ -79,7 +79,7 @@ public abstract class VehicleStats {
 		public boolean canAimDown = false;
 		public PlaneStats() {
 		}
-		public void readPresetData(VehiclePreset acp) {
+		public void readPresetData(AircraftPreset acp) {
 			super.readPresetData(acp);
 			CompoundTag plane = acp.getDataAsNBT().getCompound("stats").getCompound("plane");
 			wing_area = plane.getFloat("wing_area");
@@ -95,7 +95,7 @@ public abstract class VehicleStats {
 		public boolean alwaysLandingGear = false;
 		public HeliStats() {
 		}
-		public void readPresetData(VehiclePreset acp) {
+		public void readPresetData(AircraftPreset acp) {
 			super.readPresetData(acp);
 			CompoundTag heli = acp.getDataAsNBT().getCompound("stats").getCompound("heli");
 			accForward = heli.getFloat("accForward");
@@ -109,7 +109,7 @@ public abstract class VehicleStats {
 		public boolean isTank = false;
 		public CarStats() {
 		}
-		public void readPresetData(VehiclePreset acp) {
+		public void readPresetData(AircraftPreset acp) {
 			super.readPresetData(acp);
 			CompoundTag car = acp.getDataAsNBT().getCompound("stats").getCompound("car");
 			isTank = car.getBoolean("isTank");
@@ -119,7 +119,7 @@ public abstract class VehicleStats {
 	public static class BoatStats extends VehicleStats {
 		public BoatStats() {
 		}
-		public void readPresetData(VehiclePreset acp) {
+		public void readPresetData(AircraftPreset acp) {
 			super.readPresetData(acp);
 		}
 	}
@@ -127,7 +127,7 @@ public abstract class VehicleStats {
 	public static class SubStats extends VehicleStats {
 		public SubStats() {
 		}
-		public void readPresetData(VehiclePreset acp) {
+		public void readPresetData(AircraftPreset acp) {
 			super.readPresetData(acp);
 		}
 	}

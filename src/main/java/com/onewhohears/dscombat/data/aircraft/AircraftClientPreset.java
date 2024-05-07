@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.data.vehicle;
+package com.onewhohears.dscombat.data.aircraft;
 
 import java.util.HashMap;
 
@@ -11,14 +11,14 @@ import com.onewhohears.dscombat.data.jsonpreset.PresetBuilder;
 
 import net.minecraft.resources.ResourceLocation;
 
-public class VehicleClientPreset extends JsonPreset {
+public class AircraftClientPreset extends JsonPreset {
 	
 	private static final UIPos defaultPos = new UIPos(0, 0);
 	
 	private ResourceLocation background;
 	private HashMap<String, UIPos> slotsPos;
 	
-	public VehicleClientPreset(ResourceLocation key, JsonObject json) {
+	public AircraftClientPreset(ResourceLocation key, JsonObject json) {
 		super(key, json);
 	}
 	
@@ -89,23 +89,23 @@ public class VehicleClientPreset extends JsonPreset {
 			super(namespace, name, sup);
 		}
 		
-		protected Builder(String namespace, String name, JsonPresetFactory<? extends JsonPreset> sup, VehicleClientPreset copy) {
+		protected Builder(String namespace, String name, JsonPresetFactory<? extends JsonPreset> sup, AircraftClientPreset copy) {
 			super(namespace, name, sup, copy.getJsonData().deepCopy());
 		}
 		
 		public static Builder create(String namespace, String name) {
-			return new Builder(namespace, name, (key, json) -> new VehicleClientPreset(key, json));
+			return new Builder(namespace, name, (key, json) -> new AircraftClientPreset(key, json));
 		}
 		
-		public static Builder createFromCopy(String namespace, String name, VehicleClientPreset copy) {
-			return new Builder(namespace, name, (key, json) -> new VehicleClientPreset(key, json), copy);
+		public static Builder createFromCopy(String namespace, String name, AircraftClientPreset copy) {
+			return new Builder(namespace, name, (key, json) -> new AircraftClientPreset(key, json), copy);
 		}
 		
 	}
 
 	@Override
 	public <T extends JsonPreset> T copy() {
-		return (T) new VehicleClientPreset(getKey(), getJsonData());
+		return (T) new AircraftClientPreset(getKey(), getJsonData());
 	}
 	
 	public static class UIPos {

@@ -1,8 +1,8 @@
-package com.onewhohears.dscombat.data.vehicle.presets;
+package com.onewhohears.dscombat.data.aircraft.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.model.obj.ObjRadarModel.MastType;
-import com.onewhohears.dscombat.data.vehicle.VehiclePreset;
+import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
@@ -10,7 +10,7 @@ import com.onewhohears.dscombat.init.ModSounds;
 
 public class BoatPresets {
 	
-	public static final VehiclePreset EMPTY_NATHAN_BOAT = VehiclePreset.Builder
+	public static final AircraftPreset EMPTY_NATHAN_BOAT = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "nathan_boat_empty")
 			.setSortFactor(0)
 			.setAircraftType(AircraftType.BOAT)
@@ -49,7 +49,7 @@ public class BoatPresets {
 			.addEmptySlot("internal_4", SlotType.ADVANCED_INTERNAL)
 			.build();
 	
-	public static final VehiclePreset UNARMED_NATHAN_BOAT = VehiclePreset.Builder
+	public static final AircraftPreset UNARMED_NATHAN_BOAT = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "nathan_boat_unarmed", EMPTY_NATHAN_BOAT)
 			.setCraftable()
 			.addIngredient(ModItems.CM_MANLY_52.getId())
@@ -59,7 +59,7 @@ public class BoatPresets {
 			.setSlotItem("internal_4", ModItems.WR400.getId())
 			.build();
 	
-	public static final VehiclePreset DEFAULT_NATHAN_BOAT = VehiclePreset.Builder
+	public static final AircraftPreset DEFAULT_NATHAN_BOAT = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "nathan_boat", UNARMED_NATHAN_BOAT)
 			.addIngredient(ModItems.MINIGUN_TURRET.getId())
 			.addIngredient(ModItems.WR400.getId())
@@ -72,7 +72,7 @@ public class BoatPresets {
 			.addIngredient(ModItems.HEAVY_MISSILE_RACK.getId(), 2)
 			.build();
 	
-	public static final VehiclePreset EMPTY_GRONK_BATTLESHIP = VehiclePreset.Builder
+	public static final AircraftPreset EMPTY_GRONK_BATTLESHIP = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "gronk_battleship_empty")
 			.setSortFactor(1)
 			.setAircraftType(AircraftType.BOAT)
@@ -131,7 +131,7 @@ public class BoatPresets {
 			.setMastType(MastType.NORMAL)
 			.build();
 	
-	public static final VehiclePreset UNARMED_GRONK_BATTLESHIP = VehiclePreset.Builder
+	public static final AircraftPreset UNARMED_GRONK_BATTLESHIP = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "gronk_battleship_unarmed", EMPTY_GRONK_BATTLESHIP)
 			.setCraftable()
 			.addIngredient(ModItems.COMPOUND_TURBINE.getId(), 2)
@@ -142,7 +142,7 @@ public class BoatPresets {
 			.setSlotItem("internal_4", ModItems.HEAVY_FUEL_TANK.getId(), true)
 			.build();
 	
-	public static final VehiclePreset DEFAULT_GRONK_BATTLESHIP = VehiclePreset.Builder
+	public static final AircraftPreset DEFAULT_GRONK_BATTLESHIP = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "gronk_battleship", UNARMED_GRONK_BATTLESHIP)
 			.setSlotItem("seat5", ModItems.MARK7_CANNON.getId(), true)
 			.setSlotItem("seat6", ModItems.MARK7_CANNON.getId(), true)
@@ -164,7 +164,7 @@ public class BoatPresets {
 			.addIngredient("minecraft:gunpowder", 64)
 			.build();
 	
-	public static final VehiclePreset EMPTY_DESTROYER = VehiclePreset.Builder
+	public static final AircraftPreset EMPTY_DESTROYER = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "destroyer_empty")
 			.setSortFactor(2)
 			.setAircraftType(AircraftType.BOAT)
@@ -215,7 +215,7 @@ public class BoatPresets {
 			.setMastType(MastType.NORMAL)
 			.build();
 	
-	public static final VehiclePreset UNARMED_DESTROYER = VehiclePreset.Builder
+	public static final AircraftPreset UNARMED_DESTROYER = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "destroyer_unarmed", EMPTY_DESTROYER)
 			.setCraftable()
 			.addIngredient(ModItems.COMPOUND_TURBINE.getId(), 2)
@@ -226,7 +226,7 @@ public class BoatPresets {
 			.setSlotItem("internal_4", ModItems.HEAVY_FUEL_TANK.getId(), true)
 			.build();
 	
-	public static final VehiclePreset DEFAULT_DESTROYER = VehiclePreset.Builder
+	public static final AircraftPreset DEFAULT_DESTROYER = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "destroyer", UNARMED_DESTROYER)
 			.setSlotItem("seat5", ModItems.ADL.getId(), "rgm84", true)
 			.setSlotItem("seat6", ModItems.MLS.getId(), true)
@@ -245,7 +245,7 @@ public class BoatPresets {
 			.addIngredient(ModItems.WR1K.getId())
 			.build();
 	
-	public static final VehiclePreset EMPTY_CRUISER = VehiclePreset.Builder
+	public static final AircraftPreset EMPTY_CRUISER = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "cruiser_empty")
 			.setSortFactor(3)
 			.setAircraftType(AircraftType.BOAT)
@@ -299,7 +299,7 @@ public class BoatPresets {
 			.setMastType(MastType.LARGE)
 			.build();
 	
-	public static final VehiclePreset UNARMED_CRUISER = VehiclePreset.Builder
+	public static final AircraftPreset UNARMED_CRUISER = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "cruiser_unarmed", EMPTY_CRUISER)
 			.setCraftable()
 			.addIngredient(ModItems.COMPOUND_TURBINE.getId(), 2)
@@ -310,7 +310,7 @@ public class BoatPresets {
 			.setSlotItem("internal_4", ModItems.HEAVY_FUEL_TANK.getId(), true)
 			.build();
 	
-	public static final VehiclePreset DEFAULT_CRUISER = VehiclePreset.Builder
+	public static final AircraftPreset DEFAULT_CRUISER = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "cruiser", UNARMED_CRUISER)
 			.setSlotItem("seat5", ModItems.VLS.getId(), "bgm109", true)
 			.setSlotItem("seat6", ModItems.MLS.getId(), true)
@@ -332,7 +332,7 @@ public class BoatPresets {
 			.addIngredient(ModItems.WR1K.getId())
 			.build();
 	
-	public static final VehiclePreset EMPTY_CORVETTE = VehiclePreset.Builder
+	public static final AircraftPreset EMPTY_CORVETTE = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "corvette_empty")
 			.setSortFactor(4)
 			.setAircraftType(AircraftType.BOAT)
@@ -377,7 +377,7 @@ public class BoatPresets {
 			.setMastType(MastType.THIN)
 			.build();
 	
-	public static final VehiclePreset UNARMED_CORVETTE = VehiclePreset.Builder
+	public static final AircraftPreset UNARMED_CORVETTE = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "corvette_unarmed", EMPTY_CORVETTE)
 			.setCraftable()
 			.addIngredient(ModItems.COMPOUND_TURBINE.getId(), 2)
@@ -388,7 +388,7 @@ public class BoatPresets {
 			.setSlotItem("internal_4", ModItems.HEAVY_FUEL_TANK.getId(), true)
 			.build();
 	
-	public static final VehiclePreset DEFAULT_CORVETTE = VehiclePreset.Builder
+	public static final AircraftPreset DEFAULT_CORVETTE = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "corvette", UNARMED_CORVETTE)
 			.setSlotItem("seat5", ModItems.MARK45_CANNON.getId(), true)
 			.setSlotItem("seat6", ModItems.TORPEDO_TUBES.getId(), true)
@@ -400,7 +400,7 @@ public class BoatPresets {
 			.addIngredient(ModItems.SURVEY_ALL_A.getId())
 			.build();
 	
-	public static final VehiclePreset EMPTY_AIRCRAFT_CARRIER = VehiclePreset.Builder
+	public static final AircraftPreset EMPTY_AIRCRAFT_CARRIER = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "aircraft_carrier_empty")
 			.setSortFactor(5)
 			.setAircraftType(AircraftType.BOAT)
@@ -454,7 +454,7 @@ public class BoatPresets {
 			.setMastType(MastType.LARGE)
 			.build();
 	
-	public static final VehiclePreset UNARMED_AIRCRAFT_CARRIER = VehiclePreset.Builder
+	public static final AircraftPreset UNARMED_AIRCRAFT_CARRIER = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "aircraft_carrier_unarmed", EMPTY_AIRCRAFT_CARRIER)
 			.setCraftable()
 			.addIngredient(ModItems.COMPOUND_TURBINE.getId(), 2)
@@ -465,7 +465,7 @@ public class BoatPresets {
 			.setSlotItem("internal_4", ModItems.HEAVY_FUEL_TANK.getId(), true)
 			.build();
 	
-	public static final VehiclePreset DEFAULT_AIRCRAFT_CARRIER = VehiclePreset.Builder
+	public static final AircraftPreset DEFAULT_AIRCRAFT_CARRIER = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "aircraft_carrier", UNARMED_AIRCRAFT_CARRIER)
 			.setSlotItem("seat9", ModItems.MLS.getId(), true)
 			.setSlotItem("seat10", ModItems.VLS.getId(), "bgm109", true)

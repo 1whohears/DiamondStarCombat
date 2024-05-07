@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.data.vehicle;
+package com.onewhohears.dscombat.data.aircraft;
 
 import javax.annotation.Nullable;
 
@@ -6,7 +6,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
 import com.onewhohears.dscombat.client.model.obj.ObjRadarModel.MastType;
-import com.onewhohears.dscombat.data.vehicle.VehicleSoundManager.PassengerSoundPack;
+import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPreset;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
@@ -29,14 +29,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.phys.Vec3;
 
-public class VehiclePreset extends JsonPreset{
+public class AircraftPreset extends JsonPreset{
 
 	private final AircraftType aircraft_type;
 	private CompoundTag dataNBT;
 	private NonNullList<Ingredient> ingredients;
 	private ItemStack item;
 	
-	public VehiclePreset(ResourceLocation key, JsonObject json) {
+	public AircraftPreset(ResourceLocation key, JsonObject json) {
 		super(key, json);
 		this.aircraft_type = AircraftType.values()[json.get("aircraft_type").getAsInt()];
 		this.dataNBT = UtilParse.getCompoundFromJson(json);
@@ -47,12 +47,12 @@ public class VehiclePreset extends JsonPreset{
 		buffer.writeUtf(getJsonData().toString());
 	}
 	
-	public static VehiclePreset readBuffer(FriendlyByteBuf buffer) {
+	public static AircraftPreset readBuffer(FriendlyByteBuf buffer) {
 		String key_string = buffer.readUtf();
 		String json_string = buffer.readUtf();
 		ResourceLocation key = new ResourceLocation(key_string);
 		JsonObject data = UtilParse.GSON.fromJson(json_string, JsonObject.class);
-		return new VehiclePreset(key, data);
+		return new AircraftPreset(key, data);
 	}
 	
 	public CompoundTag getDataAsNBT() {
@@ -111,7 +111,7 @@ public class VehiclePreset extends JsonPreset{
 	
 	@Override
 	public <T extends JsonPreset> T copy() {
-		return (T) new VehiclePreset(getKey(), getJsonData());
+		return (T) new AircraftPreset(getKey(), getJsonData());
 	}
 	
 	public AircraftType getAircraftType() {
@@ -146,7 +146,7 @@ public class VehiclePreset extends JsonPreset{
 	
 	@Override
 	public <T extends JsonPreset> int compare(T other) {
-		VehiclePreset ap = (VehiclePreset) other;
+		AircraftPreset ap = (AircraftPreset) other;
 		if (this.getAircraftType() != ap.getAircraftType()) 
 			return this.getAircraftType().ordinal() - ap.getAircraftType().ordinal();
 		return super.compare(other);
@@ -160,16 +160,16 @@ public class VehiclePreset extends JsonPreset{
 			super(namespace, name, sup);
 		}
 		
-		protected Builder(String namespace, String name, JsonPresetFactory<? extends JsonPreset> sup, VehiclePreset copy) {
+		protected Builder(String namespace, String name, JsonPresetFactory<? extends JsonPreset> sup, AircraftPreset copy) {
 			super(namespace, name, sup, copy.getJsonData().deepCopy());
 		}
 		
 		public static Builder create(String namespace, String name) {
-			return new Builder(namespace, name, VehiclePreset::new);
+			return new Builder(namespace, name, AircraftPreset::new);
 		}
 		
-		public static Builder createFromCopy(String namespace, String name, VehiclePreset copy) {
-			return new Builder(namespace, name, VehiclePreset::new, copy);
+		public static Builder createFromCopy(String namespace, String name, AircraftPreset copy) {
+			return new Builder(namespace, name, AircraftPreset::new, copy);
 		}
 		
 		@Override

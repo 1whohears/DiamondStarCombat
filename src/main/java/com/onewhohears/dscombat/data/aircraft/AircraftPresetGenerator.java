@@ -1,25 +1,25 @@
-package com.onewhohears.dscombat.data.vehicle;
+package com.onewhohears.dscombat.data.aircraft;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.vehicle.presets.AlexisPresets;
-import com.onewhohears.dscombat.data.vehicle.presets.BoatPresets;
-import com.onewhohears.dscombat.data.vehicle.presets.BroncoPresets;
-import com.onewhohears.dscombat.data.vehicle.presets.CarPresets;
-import com.onewhohears.dscombat.data.vehicle.presets.EdenPresets;
-import com.onewhohears.dscombat.data.vehicle.presets.FelixPresets;
-import com.onewhohears.dscombat.data.vehicle.presets.HeliPresets;
-import com.onewhohears.dscombat.data.vehicle.presets.JasonPresets;
-import com.onewhohears.dscombat.data.vehicle.presets.JaviPresets;
-import com.onewhohears.dscombat.data.vehicle.presets.PlanePresets;
-import com.onewhohears.dscombat.data.vehicle.presets.SubPresets;
-import com.onewhohears.dscombat.data.vehicle.presets.TankPresets;
+import com.onewhohears.dscombat.data.aircraft.presets.AlexisPresets;
+import com.onewhohears.dscombat.data.aircraft.presets.BoatPresets;
+import com.onewhohears.dscombat.data.aircraft.presets.BroncoPresets;
+import com.onewhohears.dscombat.data.aircraft.presets.CarPresets;
+import com.onewhohears.dscombat.data.aircraft.presets.EdenPresets;
+import com.onewhohears.dscombat.data.aircraft.presets.FelixPresets;
+import com.onewhohears.dscombat.data.aircraft.presets.HeliPresets;
+import com.onewhohears.dscombat.data.aircraft.presets.JasonPresets;
+import com.onewhohears.dscombat.data.aircraft.presets.JaviPresets;
+import com.onewhohears.dscombat.data.aircraft.presets.PlanePresets;
+import com.onewhohears.dscombat.data.aircraft.presets.SubPresets;
+import com.onewhohears.dscombat.data.aircraft.presets.TankPresets;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPresetGenerator;
 
 import net.minecraft.data.DataGenerator;
 
-public class VehiclePresetGenerator extends JsonPresetGenerator<VehiclePreset> {
+public class AircraftPresetGenerator extends JsonPresetGenerator<AircraftPreset> {
 	
-	public static VehiclePresetGenerator INSTANCE;
+	public static AircraftPresetGenerator INSTANCE;
 	
     @Override
 	protected void registerPresets() {
@@ -113,7 +113,7 @@ public class VehiclePresetGenerator extends JsonPresetGenerator<VehiclePreset> {
 		addPresetToGenerate(SubPresets.DEFAULT_GOOGLE_SUB);
 	}
     
-    public VehiclePresetGenerator(DataGenerator output) {
+    public AircraftPresetGenerator(DataGenerator output) {
 		super(output, "vehicle");
 		INSTANCE = this;
 	}

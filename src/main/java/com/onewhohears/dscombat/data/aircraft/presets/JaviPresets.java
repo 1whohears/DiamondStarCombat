@@ -1,10 +1,10 @@
-package com.onewhohears.dscombat.data.vehicle.presets;
+package com.onewhohears.dscombat.data.aircraft.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
-import com.onewhohears.dscombat.data.vehicle.VehiclePreset;
-import com.onewhohears.dscombat.data.vehicle.LiftKGraph;
-import com.onewhohears.dscombat.data.vehicle.VehicleSoundManager.PassengerSoundPack;
+import com.onewhohears.dscombat.data.aircraft.LiftKGraph;
+import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
+import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
@@ -12,7 +12,7 @@ import com.onewhohears.dscombat.init.ModSounds;
 
 public class JaviPresets {
 	
-	public static final VehiclePreset EMPTY_JAVI_PLANE = VehiclePreset.Builder
+	public static final AircraftPreset EMPTY_JAVI_PLANE = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "javi_plane_empty")
 			.setSortFactor(8)
 			.setAircraftType(AircraftType.PLANE)
@@ -72,7 +72,7 @@ public class JaviPresets {
 			.addAfterBurnerSmokePos(-1.85,1.4,-4.4)
 			.build();
 	
-	public static final VehiclePreset UNARMED_JAVI_PLANE = VehiclePreset.Builder
+	public static final AircraftPreset UNARMED_JAVI_PLANE = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "javi_plane_unarmed", EMPTY_JAVI_PLANE)
 			.setCraftable()
 			.setSlotItem("internal_1", ModItems.TURBOFAN_F25.getId())
@@ -84,7 +84,7 @@ public class JaviPresets {
 			.addIngredient(ModItems.HEAVY_FUEL_TANK.getId())
 			.build();
 	
-	public static final VehiclePreset DEFAULT_JAVI_PLANE = VehiclePreset.Builder
+	public static final AircraftPreset DEFAULT_JAVI_PLANE = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "javi_plane", UNARMED_JAVI_PLANE)
 			.setSlotItem("left_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "agm84e", true)
 			.setSlotItem("left_wing_2", ModItems.LIGHT_MISSILE_RACK.getId(), "agm114k", true)
@@ -106,7 +106,7 @@ public class JaviPresets {
 			.addIngredient("minecraft:gunpowder", 64)
 			.build();
 	
-	public static final VehiclePreset BOMBER_JAVI_PLANE = VehiclePreset.Builder
+	public static final AircraftPreset BOMBER_JAVI_PLANE = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "javi_plane_bomber", UNARMED_JAVI_PLANE)
 			.setSlotItem("left_wing_1", ModItems.BOMB_RACK.getId(), "anm30", true)
 			.setSlotItem("left_wing_2", ModItems.HEAVY_MISSILE_RACK.getId(), "agm84e", true)
@@ -132,7 +132,7 @@ public class JaviPresets {
 			.setDefaultBaseTexture(1)
 			.build();
 	
-	public static final VehiclePreset TRUCK_JAVI_PLANE = VehiclePreset.Builder
+	public static final AircraftPreset TRUCK_JAVI_PLANE = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "javi_plane_truck", UNARMED_JAVI_PLANE)
 			.setSlotItem("left_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "aim7mh", true)
 			.setSlotItem("left_wing_2", ModItems.HEAVY_MISSILE_RACK.getId(), "aim7f", true)

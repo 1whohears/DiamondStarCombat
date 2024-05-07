@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.entity.vehicle.custom;
 
-import com.onewhohears.dscombat.data.vehicle.presets.BroncoPresets;
+import com.onewhohears.dscombat.data.aircraft.presets.BroncoPresets;
 import com.onewhohears.dscombat.entity.vehicle.EntityPlane;
 
 import net.minecraft.world.entity.EntityType;

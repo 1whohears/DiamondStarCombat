@@ -1,10 +1,10 @@
-package com.onewhohears.dscombat.data.vehicle.presets;
+package com.onewhohears.dscombat.data.aircraft.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
-import com.onewhohears.dscombat.data.vehicle.VehiclePreset;
-import com.onewhohears.dscombat.data.vehicle.LiftKGraph;
-import com.onewhohears.dscombat.data.vehicle.VehicleSoundManager.PassengerSoundPack;
+import com.onewhohears.dscombat.data.aircraft.LiftKGraph;
+import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
+import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
@@ -12,7 +12,7 @@ import com.onewhohears.dscombat.init.ModSounds;
 
 public class FelixPresets {
 	
-	public static final VehiclePreset EMPTY_FELIX_PLANE = VehiclePreset.Builder
+	public static final AircraftPreset EMPTY_FELIX_PLANE = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "felix_plane_empty")
 			.setSortFactor(7)
 			.setAircraftType(AircraftType.PLANE)
@@ -65,7 +65,7 @@ public class FelixPresets {
 			.addAfterBurnerSmokePos(0,-0.1,-6)
 			.build();
 	
-	public static final VehiclePreset UNARMED_FELIX_PLANE = VehiclePreset.Builder
+	public static final AircraftPreset UNARMED_FELIX_PLANE = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "felix_plane_unarmed", EMPTY_FELIX_PLANE)
 			.setCraftable()
 			.setSlotItem("internal_1", ModItems.TURBOFAN_F145.getId())
@@ -74,7 +74,7 @@ public class FelixPresets {
 			.addIngredient(ModItems.LIGHT_FUEL_TANK.getId())
 			.build();
 	
-	public static final VehiclePreset DEFAULT_FELIX_PLANE = VehiclePreset.Builder
+	public static final AircraftPreset DEFAULT_FELIX_PLANE = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "felix_plane", UNARMED_FELIX_PLANE)
 			.setSlotItem("left_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "aim7f", true)
 			.setSlotItem("left_wing_2", ModItems.LIGHT_MISSILE_RACK.getId(), "aim9l", true)
@@ -90,7 +90,7 @@ public class FelixPresets {
 			.addIngredient(ModItems.BASIC_FLARE_DISPENSER.getId())
 			.build();
 	
-	public static final VehiclePreset AIR_SUPPORT_FELIX_PLANE = VehiclePreset.Builder
+	public static final AircraftPreset AIR_SUPPORT_FELIX_PLANE = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "felix_plane_support", UNARMED_FELIX_PLANE)
 			.setSlotItem("left_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "agm65l", true)
 			.setSlotItem("left_wing_2", ModItems.LIGHT_MISSILE_RACK.getId(), "aim9l", true)

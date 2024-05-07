@@ -1,8 +1,8 @@
-package com.onewhohears.dscombat.data.vehicle.presets;
+package com.onewhohears.dscombat.data.aircraft.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
-import com.onewhohears.dscombat.data.vehicle.VehiclePreset;
+import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
@@ -10,7 +10,7 @@ import com.onewhohears.dscombat.init.ModSounds;
 
 public class CarPresets {
 	
-	public static final VehiclePreset DEFAULT_ORANGE_TESLA = VehiclePreset.Builder
+	public static final AircraftPreset DEFAULT_ORANGE_TESLA = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "orange_tesla")
 			.setSortFactor(10)
 			.setAircraftType(AircraftType.CAR)
@@ -46,7 +46,7 @@ public class CarPresets {
 			.addIngredient("minecraft:orange_dye", 4)
 			.build();
 	
-	public static final VehiclePreset EMPTY_AXCEL_TRUCK = VehiclePreset.Builder
+	public static final AircraftPreset EMPTY_AXCEL_TRUCK = AircraftPreset.Builder
 			.create(DSCombatMod.MODID, "axcel_truck_empty")
 			.setSortFactor(5)
 			.setAircraftType(AircraftType.CAR)
@@ -82,7 +82,7 @@ public class CarPresets {
 			.addEntityScreen(EntityScreenIds.AIR_RADAR_SCREEN, 0, 1.35, 1.6, 0.6, 0.6)
 			.build();
 	
-	public static final VehiclePreset UNARMED_AXCEL_TRUCK = VehiclePreset.Builder
+	public static final AircraftPreset UNARMED_AXCEL_TRUCK = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "axcel_truck_unarmed", EMPTY_AXCEL_TRUCK)
 			.setCraftable()
 			.addIngredient(ModItems.C12_ENGINE.getId())
@@ -91,7 +91,7 @@ public class CarPresets {
 			.setSlotItem("internal_2", ModItems.HEAVY_FUEL_TANK.getId(), true)
 			.build();
 	
-	public static final VehiclePreset DEFAULT_AXCEL_TRUCK = VehiclePreset.Builder
+	public static final AircraftPreset DEFAULT_AXCEL_TRUCK = AircraftPreset.Builder
 			.createFromCopy(DSCombatMod.MODID, "axcel_truck", UNARMED_AXCEL_TRUCK)
 			.addIngredient(ModItems.SAM_LAUNCHER.getId())
 			.addIngredient(ModItems.AIR_SCAN_A.getId())

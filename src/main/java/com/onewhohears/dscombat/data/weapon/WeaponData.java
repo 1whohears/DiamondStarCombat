@@ -10,7 +10,7 @@ import javax.annotation.Nullable;
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponAmmo;
-import com.onewhohears.dscombat.data.vehicle.DSCPhyCons;
+import com.onewhohears.dscombat.data.aircraft.DSCPhyCons;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPreset;
 import com.onewhohears.dscombat.data.recipe.DSCIngredientBuilder;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;

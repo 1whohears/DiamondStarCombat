@@ -6,10 +6,10 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import com.onewhohears.dscombat.data.vehicle.VehicleClientPresets;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
+import com.onewhohears.dscombat.data.aircraft.AircraftClientPresets;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
@@ -18,7 +18,7 @@ import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 
 /**
  * a json file from asset pack reader for this mod's asset system.
- * see {@link VehicleClientPresets} for examples.
+ * see {@link AircraftClientPresets} for examples.
  * 
  * see {@link JsonPresetGenerator} for a way to generate json assets.
  * 

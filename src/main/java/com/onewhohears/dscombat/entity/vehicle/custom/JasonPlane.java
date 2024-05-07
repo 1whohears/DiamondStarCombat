@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.entity.vehicle.custom;
 
-import com.onewhohears.dscombat.data.vehicle.presets.JasonPresets;
+import com.onewhohears.dscombat.data.aircraft.presets.JasonPresets;
 import com.onewhohears.dscombat.entity.vehicle.EntityPlane;
 
 import net.minecraft.world.entity.EntityType;

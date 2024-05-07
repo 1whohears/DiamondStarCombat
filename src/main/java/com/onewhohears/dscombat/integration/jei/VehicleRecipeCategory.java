@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.integration.jei;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.crafting.AircraftRecipe;
+import com.onewhohears.dscombat.crafting.VehicleRecipe;
 import com.onewhohears.dscombat.init.ModBlocks;
 import com.onewhohears.dscombat.util.UtilMCText;
 
@@ -17,10 +17,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;
 
-public class VehicleRecipeCategory implements IRecipeCategory<AircraftRecipe> {
+public class VehicleRecipeCategory implements IRecipeCategory<VehicleRecipe> {
 	
 	public static final ResourceLocation UID = new ResourceLocation(DSCombatMod.MODID, "aircraft_workbench");
-	public static final RecipeType<AircraftRecipe> TYPE = RecipeType.create(UID.getNamespace(), UID.getPath(), AircraftRecipe.class);
+	public static final RecipeType<VehicleRecipe> TYPE = RecipeType.create(UID.getNamespace(), UID.getPath(), VehicleRecipe.class);
 	
 	private static final ResourceLocation TEXTURE = new ResourceLocation(DSCombatMod.MODID,
 			"textures/ui/vehicle_forge_ui.png");
@@ -35,7 +35,7 @@ public class VehicleRecipeCategory implements IRecipeCategory<AircraftRecipe> {
 	}
 	
 	@Override
-	public RecipeType<AircraftRecipe> getRecipeType() {
+	public RecipeType<VehicleRecipe> getRecipeType() {
 		return TYPE;
 	}
 
@@ -55,7 +55,7 @@ public class VehicleRecipeCategory implements IRecipeCategory<AircraftRecipe> {
 	}
 
 	@Override
-	public void setRecipe(IRecipeLayoutBuilder builder, AircraftRecipe recipe, IFocusGroup focuses) {
+	public void setRecipe(IRecipeLayoutBuilder builder, VehicleRecipe recipe, IFocusGroup focuses) {
 		NonNullList<Ingredient> ingredients = recipe.getIngredients();
 		int startX = 33, startY = 95;
 		int ix = startX, iy = startY;

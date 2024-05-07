@@ -4,14 +4,14 @@ import java.util.List;
 import java.util.Objects;
 
 import com.onewhohears.dscombat.client.screen.VehiclePaintScreen;
-import com.onewhohears.dscombat.data.aircraft.DSCPhyCons;
-import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
-import com.onewhohears.dscombat.data.aircraft.VehicleInputManager;
-import com.onewhohears.dscombat.data.aircraft.VehicleTextureManager;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.radar.RadarStats.RadarPing;
 import com.onewhohears.dscombat.data.radar.RadarSystem.RWRWarning;
+import com.onewhohears.dscombat.data.vehicle.DSCPhyCons;
+import com.onewhohears.dscombat.data.vehicle.EntityScreenData;
+import com.onewhohears.dscombat.data.vehicle.VehicleInputManager;
+import com.onewhohears.dscombat.data.vehicle.VehicleTextureManager;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.entity.parts.EntityChainHook;

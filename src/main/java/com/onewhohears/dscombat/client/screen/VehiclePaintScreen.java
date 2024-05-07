@@ -5,8 +5,8 @@ import java.util.function.Consumer;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.aircraft.VehicleTextureManager;
-import com.onewhohears.dscombat.data.aircraft.VehicleTextureManager.BlendMode;
+import com.onewhohears.dscombat.data.vehicle.VehicleTextureManager;
+import com.onewhohears.dscombat.data.vehicle.VehicleTextureManager.BlendMode;
 import com.onewhohears.dscombat.util.UtilMCText;
 import com.onewhohears.dscombat.util.UtilParse;
 

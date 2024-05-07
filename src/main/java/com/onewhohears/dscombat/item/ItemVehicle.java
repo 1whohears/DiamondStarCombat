@@ -5,8 +5,8 @@ import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
-import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
-import com.onewhohears.dscombat.data.aircraft.stats.VehicleStats;
+import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
+import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.util.UtilMCText;
@@ -45,7 +45,7 @@ public class ItemVehicle extends Item {
 	private final String defaultPreset;
 	
 	public ItemVehicle(EntityType<? extends EntityVehicle> entityType, String defaultPreset) {
-		super(new Item.Properties().tab(ModItems.AIRCRAFT).stacksTo(1));
+		super(new Item.Properties().tab(ModItems.VEHICLES).stacksTo(1));
 		this.entityType = entityType;
 		this.defaultPreset = defaultPreset;
 	}
@@ -146,7 +146,7 @@ public class ItemVehicle extends Item {
 		CompoundTag tag = stack.getTag();
 		if (tag == null || !tag.contains("EntityTag")) {
 			String name = getPresetName(stack);
-			VehicleStats ap = AircraftPresets.get().get(name);
+			VehicleStats ap = VehiclePresets.get().get(name);
 			if (ap == null) return UtilMCText.translatable(getDescriptionId()).append(" unknown preset!");
 			return ap.getDisplayNameComponent().setStyle(Style.EMPTY.withColor(0x55FFFF));
 		}
@@ -170,8 +170,8 @@ public class ItemVehicle extends Item {
 	
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-		if (group.getId() != ModItems.AIRCRAFT.getId() && group.getId() != CreativeModeTab.TAB_SEARCH.getId()) return;
-		VehicleStats[] presets = AircraftPresets.get().getAll();
+		if (group.getId() != ModItems.VEHICLES.getId() && group.getId() != CreativeModeTab.TAB_SEARCH.getId()) return;
+		VehicleStats[] presets = VehiclePresets.get().getAll();
 		for (int i = 0; i < presets.length; ++i) {
 			if (presets[i].getItem().getDescriptionId().equals(getDescriptionId())) {
 				items.add(presets[i].getItem());

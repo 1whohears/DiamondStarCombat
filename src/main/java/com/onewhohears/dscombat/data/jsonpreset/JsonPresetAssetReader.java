@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 
 import com.google.gson.JsonObject;
 import com.mojang.logging.LogUtils;
-import com.onewhohears.dscombat.data.aircraft.client.AircraftClientPresets;
+import com.onewhohears.dscombat.data.vehicle.client.AircraftClientPresets;
 import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.resources.ResourceLocation;

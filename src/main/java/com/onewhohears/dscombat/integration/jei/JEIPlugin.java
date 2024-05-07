@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.integration.jei;
 import java.util.List;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.crafting.AircraftRecipe;
+import com.onewhohears.dscombat.crafting.VehicleRecipe;
 import com.onewhohears.dscombat.crafting.WeaponRecipe;
 
 import mezz.jei.api.IModPlugin;
@@ -33,7 +33,7 @@ public class JEIPlugin implements IModPlugin {
 	@Override
 	public void registerRecipes(IRecipeRegistration registration) {
 		RecipeManager rm = Minecraft.getInstance().level.getRecipeManager();
-		List<AircraftRecipe> vehicleRecipes = rm.getAllRecipesFor(AircraftRecipe.Type.INSTANCE);
+		List<VehicleRecipe> vehicleRecipes = rm.getAllRecipesFor(VehicleRecipe.Type.INSTANCE);
         registration.addRecipes(VehicleRecipeCategory.TYPE, vehicleRecipes);
         List<WeaponRecipe> weaponRecipes = rm.getAllRecipesFor(WeaponRecipe.Type.INSTANCE);
         registration.addRecipes(WeaponRecipeCategory.TYPE, weaponRecipes);

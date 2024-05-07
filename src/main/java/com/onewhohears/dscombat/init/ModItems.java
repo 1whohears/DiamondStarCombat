@@ -1,21 +1,21 @@
 package com.onewhohears.dscombat.init;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.aircraft.presets.AlexisPresets;
-import com.onewhohears.dscombat.data.aircraft.presets.BoatPresets;
-import com.onewhohears.dscombat.data.aircraft.presets.BroncoPresets;
-import com.onewhohears.dscombat.data.aircraft.presets.CarPresets;
-import com.onewhohears.dscombat.data.aircraft.presets.EdenPresets;
-import com.onewhohears.dscombat.data.aircraft.presets.FelixPresets;
-import com.onewhohears.dscombat.data.aircraft.presets.HeliPresets;
-import com.onewhohears.dscombat.data.aircraft.presets.JasonPresets;
-import com.onewhohears.dscombat.data.aircraft.presets.JaviPresets;
-import com.onewhohears.dscombat.data.aircraft.presets.PlanePresets;
-import com.onewhohears.dscombat.data.aircraft.presets.SubPresets;
-import com.onewhohears.dscombat.data.aircraft.presets.TankPresets;
 import com.onewhohears.dscombat.data.parts.BuffData.BuffType;
 import com.onewhohears.dscombat.data.parts.EngineData.EngineType;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
+import com.onewhohears.dscombat.data.vehicle.presets.AlexisPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.BoatPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.BroncoPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.CarPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.EdenPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.FelixPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.HeliPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.JasonPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.JaviPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.PlanePresets;
+import com.onewhohears.dscombat.data.vehicle.presets.SubPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.TankPresets;
 import com.onewhohears.dscombat.item.ItemVehicle;
 import com.onewhohears.dscombat.item.ItemAmmo;
 import com.onewhohears.dscombat.item.ItemBuffPart;
@@ -76,7 +76,7 @@ public class ModItems {
 		}
 	};
 	
-	public static final CreativeModeTab AIRCRAFT = new CreativeModeTab("vehicle") {
+	public static final CreativeModeTab VEHICLES = new CreativeModeTab("vehicle") {
 		@Override
 		public ItemStack makeIcon() {
 			return new ItemStack(ModItems.JAVI_PLANE.get());

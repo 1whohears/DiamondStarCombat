@@ -28,18 +28,18 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleExplode;
 import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleCollide;
 import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleControl;
 import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleMoveRot;
-import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
-import com.onewhohears.dscombat.data.aircraft.DSCPhyCons;
-import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
-import com.onewhohears.dscombat.data.aircraft.VehicleInputManager;
-import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager;
-import com.onewhohears.dscombat.data.aircraft.VehicleTextureManager;
-import com.onewhohears.dscombat.data.aircraft.VehicleType;
-import com.onewhohears.dscombat.data.aircraft.stats.VehicleStats;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartsManager;
 import com.onewhohears.dscombat.data.parts.StorageBoxData;
 import com.onewhohears.dscombat.data.radar.RadarStats.RadarMode;
+import com.onewhohears.dscombat.data.vehicle.DSCPhyCons;
+import com.onewhohears.dscombat.data.vehicle.EntityScreenData;
+import com.onewhohears.dscombat.data.vehicle.VehicleInputManager;
+import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
+import com.onewhohears.dscombat.data.vehicle.VehicleSoundManager;
+import com.onewhohears.dscombat.data.vehicle.VehicleTextureManager;
+import com.onewhohears.dscombat.data.vehicle.VehicleType;
+import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.weapon.WeaponSystem;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
@@ -194,7 +194,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		this.defaultPreset = defaultPreset;
 		this.clientPresetId = UtilEntity.getEntityIdName(this);
 		this.preset = defaultPreset;
-		this.vehicleStats = AircraftPresets.get().get(defaultPreset);
+		this.vehicleStats = VehiclePresets.get().get(defaultPreset);
 		this.item = vehicleStats.getItem();
 		this.blocksBuilding = true;
 		inputs = new VehicleInputManager();
@@ -269,7 +269,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	/**
 	 * if this is a brand new entity and has no nbt custom data then the fresh entity nbt will
-	 * merge with this vehicle's preset nbt. see {@link AircraftPresets}.
+	 * merge with this vehicle's preset nbt. see {@link VehiclePresets}.
 	 * you could summon a vehicle with nbt {preset:"some preset name"} to override the {@link EntityVehicle#defaultPreset}
  	 */
 	@Override
@@ -282,12 +282,12 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		// if not use the default preset
 		if (preset.isEmpty()) preset = defaultPreset;
 		// check if the preset exists
-		else if (!AircraftPresets.get().has(preset)) {
+		else if (!VehiclePresets.get().has(preset)) {
 			preset = defaultPreset;
 			LOGGER.warn("ERROR: preset "+preset+" doesn't exist!");
 		}
 		// get the preset data
-		vehicleStats = AircraftPresets.get().get(preset);
+		vehicleStats = VehiclePresets.get().get(preset);
 		item = vehicleStats.getItem();
 		soundManager.loadSounds(vehicleStats);
 		CompoundTag presetNbt = vehicleStats.getDataAsNBT();
@@ -355,8 +355,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		partsManager.setPartSlots(slots);
 		partsManager.clientPartsSetup();
 		// PRESET STUFF
-		if (!AircraftPresets.get().has(preset)) return;
-		vehicleStats = AircraftPresets.get().get(preset);
+		if (!VehiclePresets.get().has(preset)) return;
+		vehicleStats = VehiclePresets.get().get(preset);
 		soundManager.loadSounds(vehicleStats);
 		item = vehicleStats.getItem();
 		// OTHER

@@ -11,8 +11,8 @@ import org.slf4j.Logger;
 
 import com.google.common.collect.Sets;
 import com.mojang.logging.LogUtils;
-import com.onewhohears.dscombat.data.aircraft.AircraftPresetGenerator;
-import com.onewhohears.dscombat.data.aircraft.client.AircraftClientPresetGenerator;
+import com.onewhohears.dscombat.data.vehicle.VehiclePresetGenerator;
+import com.onewhohears.dscombat.data.vehicle.client.AircraftClientPresetGenerator;
 
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
@@ -27,7 +27,7 @@ import net.minecraft.resources.ResourceLocation;
  * 
  * see {@link com.onewhohears.dscombat.data.weapon.WeaponPresetGenerator},
  * {@link com.onewhohears.dscombat.data.radar.RadarPresetGenerator},
- * {@link AircraftPresetGenerator},
+ * {@link VehiclePresetGenerator},
  * and {@link AircraftClientPresetGenerator} for examples.
  * see {@link JsonPresetReloadListener} for a way to read these json presets.
  * 

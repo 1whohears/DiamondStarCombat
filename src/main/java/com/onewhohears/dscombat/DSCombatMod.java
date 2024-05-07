@@ -5,8 +5,6 @@ import com.onewhohears.dscombat.client.screen.VehicleScreen;
 import com.onewhohears.dscombat.client.screen.WeaponsBlockScreen;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.data.aircraft.AircraftPresetGenerator;
-import com.onewhohears.dscombat.data.aircraft.client.AircraftClientPresetGenerator;
 import com.onewhohears.dscombat.data.radar.RadarPresetGenerator;
 import com.onewhohears.dscombat.data.recipe.DSCRecipeGenerator;
 import com.onewhohears.dscombat.data.sound.DSCSoundDefinitionGen;
@@ -14,6 +12,8 @@ import com.onewhohears.dscombat.data.tag.BlockTagGen;
 import com.onewhohears.dscombat.data.tag.EntityTypeTagGen;
 import com.onewhohears.dscombat.data.tag.FluidTagGen;
 import com.onewhohears.dscombat.data.tag.ItemTagGen;
+import com.onewhohears.dscombat.data.vehicle.VehiclePresetGenerator;
+import com.onewhohears.dscombat.data.vehicle.client.AircraftClientPresetGenerator;
 import com.onewhohears.dscombat.data.weapon.WeaponPresetGenerator;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.DataSerializers;
@@ -113,7 +113,7 @@ public class DSCombatMod {
     private void onGatherData(GatherDataEvent event) {
     	DataGenerator generator = event.getGenerator();
     	if (event.includeServer()) {
-    		generator.addProvider(true, new AircraftPresetGenerator(generator));
+    		generator.addProvider(true, new VehiclePresetGenerator(generator));
     		generator.addProvider(true, new WeaponPresetGenerator(generator));
     		generator.addProvider(true, new RadarPresetGenerator(generator));
     		DependencySafety.serverDataGen(generator);

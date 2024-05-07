@@ -9,8 +9,8 @@ import org.slf4j.Logger;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.logging.LogUtils;
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.aircraft.VehicleTextureManager.BlendMode;
-import com.onewhohears.dscombat.data.aircraft.VehicleTextureManager.TextureLayer;
+import com.onewhohears.dscombat.data.vehicle.VehicleTextureManager.BlendMode;
+import com.onewhohears.dscombat.data.vehicle.VehicleTextureManager.TextureLayer;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 
 import net.minecraft.client.Minecraft;

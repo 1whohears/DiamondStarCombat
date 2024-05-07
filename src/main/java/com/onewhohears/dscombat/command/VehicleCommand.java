@@ -5,7 +5,7 @@ import java.util.Collection;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.onewhohears.dscombat.command.argument.VehiclePresetArgument;
-import com.onewhohears.dscombat.data.aircraft.stats.VehicleStats;
+import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.commands.CommandSourceStack;

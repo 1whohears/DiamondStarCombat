@@ -63,7 +63,7 @@ import com.onewhohears.dscombat.client.renderer.RendererEntityWeapon;
 import com.onewhohears.dscombat.client.renderer.RendererObjEntity;
 import com.onewhohears.dscombat.client.renderer.RendererObjVehicle;
 import com.onewhohears.dscombat.client.renderer.RendererObjWeapon;
-import com.onewhohears.dscombat.data.aircraft.client.AircraftClientPresets;
+import com.onewhohears.dscombat.data.vehicle.client.AircraftClientPresets;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.init.ModParticles;
 

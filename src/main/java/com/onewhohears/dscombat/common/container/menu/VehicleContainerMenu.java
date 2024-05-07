@@ -3,10 +3,10 @@ package com.onewhohears.dscombat.common.container.menu;
 import java.util.List;
 
 import com.onewhohears.dscombat.common.container.slot.PartItemSlot;
-import com.onewhohears.dscombat.data.aircraft.client.AircraftClientPresets;
-import com.onewhohears.dscombat.data.aircraft.client.VehicleClientStats;
-import com.onewhohears.dscombat.data.aircraft.client.VehicleClientStats.UIPos;
 import com.onewhohears.dscombat.data.parts.PartSlot;
+import com.onewhohears.dscombat.data.vehicle.client.AircraftClientPresets;
+import com.onewhohears.dscombat.data.vehicle.client.VehicleClientStats;
+import com.onewhohears.dscombat.data.vehicle.client.VehicleClientStats.UIPos;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModContainers;
 

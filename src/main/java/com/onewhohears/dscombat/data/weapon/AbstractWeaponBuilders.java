@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.data.weapon;
 
 import com.onewhohears.dscombat.data.recipe.DSCIngredientBuilder;
 import com.onewhohears.dscombat.data.weapon.stats.TrackMissileStats.TargetType;
+import com.onewhohears.dscombat.init.ModEntities;
 
 import net.minecraft.resources.ResourceLocation;
 
@@ -69,12 +70,22 @@ public class AbstractWeaponBuilders {
 			return setString("icon", weaponIcon.toString());
 		}
 		
+		public C setModelId(String modelId) {
+			return setString("modelId", modelId);
+		}
+		
 	}
 	
 	public abstract static class BulletBuilder<C extends BulletBuilder<C>> extends WeaponBuilder<C> {
 		
 		protected BulletBuilder(String namespace, String name, WeaponType type) {
 			super(namespace, name, type);
+		}
+		
+		@Override
+		protected void setupJsonData() {
+			super.setupJsonData();
+			setEntityType(ModEntities.BULLET.getId());
 		}
 		
 		public C setDamage(float damage) {
@@ -117,6 +128,12 @@ public class AbstractWeaponBuilders {
 			super(namespace, name, type);
 		}
 		
+		@Override
+		protected void setupJsonData() {
+			super.setupJsonData();
+			setEntityType(ModEntities.BOMB.getId());
+		}
+		
 	}
 	
 	public abstract static class BunkerBusterBuilder<C extends BunkerBusterBuilder<C>> extends BombBuilder<C> {
@@ -127,6 +144,12 @@ public class AbstractWeaponBuilders {
 		
 		public C setBlockStrength(float blockStrength) {
 			return setFloat("blockStrength", blockStrength);
+		}
+		
+		@Override
+		protected void setupJsonData() {
+			super.setupJsonData();
+			setEntityType(ModEntities.BUNKER_BUSTER.getId());
 		}
 		
 	}

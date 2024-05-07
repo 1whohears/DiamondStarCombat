@@ -378,6 +378,10 @@ public abstract class EntityWeapon<T extends WeaponStats> extends Projectile imp
     	entityData.set(SHOOT_POS, pos);
     }
     
+    public String getModelId() {
+    	return getWeaponStats().getModelId();
+    }
+    
     public abstract WeaponType getWeaponType();
     protected abstract WeaponDamageSource getImpactDamageSource();
     protected abstract WeaponDamageSource getExplosionDamageSource();

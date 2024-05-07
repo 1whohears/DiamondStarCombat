@@ -14,7 +14,6 @@ import com.onewhohears.dscombat.client.model.aircraft.EntityModelSmallRoller;
 import com.onewhohears.dscombat.client.model.aircraft.EntityModelTestPlane;
 import com.onewhohears.dscombat.client.model.aircraft.EntityModelWoodenPlane;
 import com.onewhohears.dscombat.client.model.obj.ObjAircraftModel;
-import com.onewhohears.dscombat.client.model.obj.ObjEntityModel;
 import com.onewhohears.dscombat.client.model.obj.ObjEntityModels;
 import com.onewhohears.dscombat.client.model.obj.ObjPartModel;
 import com.onewhohears.dscombat.client.model.obj.custom.AATurretModel;
@@ -63,9 +62,8 @@ import com.onewhohears.dscombat.client.renderer.RendererEntityTurret;
 import com.onewhohears.dscombat.client.renderer.RendererEntityWeapon;
 import com.onewhohears.dscombat.client.renderer.RendererObjAircraft;
 import com.onewhohears.dscombat.client.renderer.RendererObjEntity;
+import com.onewhohears.dscombat.client.renderer.RendererObjWeapon;
 import com.onewhohears.dscombat.data.aircraft.client.AircraftClientPresets;
-import com.onewhohears.dscombat.entity.weapon.EntityBomb;
-import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.init.ModParticles;
 
@@ -200,85 +198,23 @@ public final class ClientModEvents {
                         new ResourceLocation(DSCombatMod.MODID, "textures/entities/bullet1.png")));
 		// BOMBS
 		event.registerEntityRenderer(ModEntities.BOMB.get(), 
-				(context) -> new RendererObjEntity<EntityBomb>(context, 
-						new ObjEntityModel<>("mk82_light")));
-		event.registerEntityRenderer(ModEntities.ANM30.get(), 
-				(context) -> new RendererObjEntity<EntityBomb>(context, 
-						new ObjEntityModel<>("anm30")));
-		event.registerEntityRenderer(ModEntities.MARK77.get(), 
-				(context) -> new RendererObjEntity<EntityBomb>(context, 
-						new ObjEntityModel<>("mark77")));
+				(context) -> new RendererObjWeapon<>(context));
 		// BUNKER BUSTERS
-		event.registerEntityRenderer(ModEntities.GRUETZ_BUNKER_BUSTER.get(), 
+		event.registerEntityRenderer(ModEntities.BUNKER_BUSTER.get(), 
 				(context) -> new RendererEntityWeapon<>(context,
                         new EntityModelGruetzBB(models.bakeLayer(EntityModelGruetzBB.LAYER_LOCATION)),
                         new ResourceLocation(DSCombatMod.MODID, "textures/entity/weapon/gruetz_bunker_buster.png")));
 		// MISSILES
-		event.registerEntityRenderer(ModEntities.AIM9L.get(), 
-				(context) -> new RendererObjEntity<EntityMissile>(context, 
-						new ObjEntityModel<>("aim9l")));
-		event.registerEntityRenderer(ModEntities.AIM9P5.get(), 
-				(context) -> new RendererObjEntity<EntityMissile>(context, 
-						new ObjEntityModel<>("aim9p5")));
-		event.registerEntityRenderer(ModEntities.AIM9X.get(), 
-				(context) -> new RendererObjEntity<EntityMissile>(context, 
-						new ObjEntityModel<>("aim9x")));
-		event.registerEntityRenderer(ModEntities.AIM120B.get(), 
-				(context) -> new RendererObjEntity<EntityMissile>(context, 
-						new ObjEntityModel<>("aim120b")));
-		event.registerEntityRenderer(ModEntities.AIM120C.get(), 
-				(context) -> new RendererObjEntity<EntityMissile>(context, 
-						new ObjEntityModel<>("aim120c")));
-		event.registerEntityRenderer(ModEntities.PAC3.get(), 
-				(context) -> new RendererObjEntity<EntityMissile>(context, 
-						new ObjEntityModel<>("pac3")));
-		event.registerEntityRenderer(ModEntities.AIM7F.get(), 
-				(context) -> new RendererObjEntity<EntityMissile>(context, 
-						new ObjEntityModel<>("aim7f")));
-		event.registerEntityRenderer(ModEntities.AIM7MH.get(), 
-				(context) -> new RendererObjEntity<EntityMissile>(context, 
-						new ObjEntityModel<>("aim7mh")));
-		event.registerEntityRenderer(ModEntities.AGM114K.get(), 
-				(context) -> new RendererObjEntity<EntityMissile>(context, 
-						new ObjEntityModel<>("agm114k")));
-		event.registerEntityRenderer(ModEntities.AGM84E.get(), 
-				(context) -> new RendererObjEntity<EntityMissile>(context, 
-						new ObjEntityModel<>("agm84e")));
-		event.registerEntityRenderer(ModEntities.AGM65L.get(), 
-				(context) -> new RendererObjEntity<EntityMissile>(context, 
-						new ObjEntityModel<>("agm65l")));
-		event.registerEntityRenderer(ModEntities.AGM65G.get(), 
-				(context) -> new RendererObjEntity<EntityMissile>(context, 
-						new ObjEntityModel<>("agm65g")));
-		event.registerEntityRenderer(ModEntities.METEOR.get(), 
-				(context) -> new RendererObjEntity<EntityMissile>(context, 
-						new ObjEntityModel<>("meteor")));
-		event.registerEntityRenderer(ModEntities.MK13.get(), 
-				(context) -> new RendererObjEntity<EntityMissile>(context, 
-						new ObjEntityModel<>("mk13")));
-		event.registerEntityRenderer(ModEntities.AGM88G.get(), 
-				(context) -> new RendererObjEntity<EntityMissile>(context, 
-						new ObjEntityModel<>("agm88g")));
-		event.registerEntityRenderer(ModEntities.POS_MISSILE_1.get(), 
-				(context) -> new RendererEntityWeapon<>(context,
-                        new EntityModelMissile1(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)),
-                        new ResourceLocation(DSCombatMod.MODID, "textures/entities/missile1.png")));
-		event.registerEntityRenderer(ModEntities.IR_MISSILE_1.get(), 
-				(context) -> new RendererEntityWeapon<>(context,
-                        new EntityModelMissile1(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)),
-                        new ResourceLocation(DSCombatMod.MODID, "textures/entities/missile3.png")));
-		event.registerEntityRenderer(ModEntities.TRACK_MISSILE_1.get(), 
-				(context) -> new RendererEntityWeapon<>(context,
-                        new EntityModelMissile1(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)),
-                        new ResourceLocation(DSCombatMod.MODID, "textures/entities/missile2.png")));
-		event.registerEntityRenderer(ModEntities.ANTI_RADAR_MISSILE_1.get(), 
-				(context) -> new RendererEntityWeapon<>(context,
-                        new EntityModelMissile1(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)),
-                        new ResourceLocation(DSCombatMod.MODID, "textures/entities/missile4.png")));
-		event.registerEntityRenderer(ModEntities.TORPEDO_MISSILE_1.get(), 
-				(context) -> new RendererEntityWeapon<>(context,
-                        new EntityModelMissile1(models.bakeLayer(EntityModelMissile1.LAYER_LOCATION)),
-                        new ResourceLocation(DSCombatMod.MODID, "textures/entities/missile5.png")));
+		event.registerEntityRenderer(ModEntities.POS_MISSILE.get(), 
+				(context) -> new RendererObjWeapon<>(context));
+		event.registerEntityRenderer(ModEntities.IR_MISSILE.get(), 
+				(context) -> new RendererObjWeapon<>(context));
+		event.registerEntityRenderer(ModEntities.TRACK_MISSILE.get(), 
+				(context) -> new RendererObjWeapon<>(context));
+		event.registerEntityRenderer(ModEntities.ANTI_RADAR_MISSILE.get(), 
+				(context) -> new RendererObjWeapon<>(context));
+		event.registerEntityRenderer(ModEntities.TORPEDO_MISSILE.get(), 
+				(context) -> new RendererObjWeapon<>(context));
 		// TURRETS
 		event.registerEntityRenderer(ModEntities.MINIGUN_TURRET.get(), 
 				(context) -> new RendererEntityTurret<>(context,

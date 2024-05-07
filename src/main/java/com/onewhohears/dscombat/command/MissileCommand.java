@@ -55,7 +55,7 @@ public class MissileCommand {
 			ew.setOwner(owner);
 			ew.setPos(pos);
 			weapon.setDirection(ew, dp);
-			if (ew instanceof EntityMissile missile) {
+			if (ew instanceof EntityMissile<?> missile) {
 				Entity v = e.getRootVehicle();
 				if (v != null) e = v;
 				missile.target = e;

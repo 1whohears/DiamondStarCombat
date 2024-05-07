@@ -3,16 +3,14 @@ package com.onewhohears.dscombat.data.aircraft.presets;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.aircraft.stats.VehicleStats;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModSounds;
 
 public class SubPresets {
 	
 	public static final VehicleStats EMPTY_ANDOLF_SUB = VehicleStats.Builder
-			.create(DSCombatMod.MODID, "andolf_sub_empty")
+			.createSubmarine(DSCombatMod.MODID, "andolf_sub_empty")
 			.setSortFactor(5)
-			.setAircraftType(AircraftType.SUBMARINE)
 			.setItem(ModItems.ANDOLF_SUB.getId())
 			.setMaxHealth(600f)
 			.setMass(90000f)
@@ -86,9 +84,8 @@ public class SubPresets {
 			.build();
 	
 	public static final VehicleStats EMPTY_GOOGLE_SUB = VehicleStats.Builder
-			.create(DSCombatMod.MODID, "google_sub_empty")
+			.createSubmarine(DSCombatMod.MODID, "google_sub_empty")
 			.setSortFactor(6)
-			.setAircraftType(AircraftType.SUBMARINE)
 			.setItem(ModItems.GOOGLE_SUB.getId())
 			.setMaxHealth(1000f)
 			.setMass(180000f)

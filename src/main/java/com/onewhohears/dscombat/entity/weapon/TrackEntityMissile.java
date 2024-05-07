@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.entity.weapon;
 
+import com.onewhohears.dscombat.data.weapon.WeaponType;
 import com.onewhohears.dscombat.data.weapon.stats.TrackMissileStats;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 
@@ -11,6 +12,11 @@ public class TrackEntityMissile<T extends TrackMissileStats> extends EntityMissi
 	
 	public TrackEntityMissile(EntityType<? extends TrackEntityMissile<?>> type, Level level, String defaultWeaponId) {
 		super(type, level, defaultWeaponId);
+	}
+	
+	@Override
+	public WeaponType getWeaponType() {
+		return WeaponType.TRACK_MISSILE;
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.entity.weapon;
 
 import com.onewhohears.dscombat.data.aircraft.DSCPhyCons;
+import com.onewhohears.dscombat.data.weapon.WeaponType;
 import com.onewhohears.dscombat.data.weapon.stats.BulletStats;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource;
@@ -15,6 +16,11 @@ public class EntityBullet<T extends BulletStats> extends EntityWeapon<T> {
 	
 	public EntityBullet(EntityType<? extends EntityBullet<?>> type, Level level, String defaultWeaponId) {
 		super(type, level, defaultWeaponId);
+	}
+	
+	@Override
+	public WeaponType getWeaponType() {
+		return WeaponType.BULLET;
 	}
 	
 	@Override

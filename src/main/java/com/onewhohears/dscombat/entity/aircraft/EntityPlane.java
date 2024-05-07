@@ -3,8 +3,7 @@ package com.onewhohears.dscombat.entity.aircraft;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.aircraft.DSCPhyCons;
-import com.onewhohears.dscombat.data.aircraft.VehicleStatsOld;
-import com.onewhohears.dscombat.data.aircraft.VehicleStatsOld.PlaneStats;
+import com.onewhohears.dscombat.data.aircraft.VehicleType;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource.WeaponDamageType;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
@@ -17,8 +16,6 @@ import net.minecraft.world.phys.Vec3;
 
 public class EntityPlane extends EntityVehicle {
 	
-	protected PlaneStats planeStats;
-	
 	private float aoa = 0, liftK = 0, airFoilSpeedSqr = 0;
 	private float centripetalForce, centrifugalForce; 
 	private double liftMag, prevMaxSpeedMod = 1;
@@ -26,12 +23,11 @@ public class EntityPlane extends EntityVehicle {
 	
 	public EntityPlane(EntityType<? extends EntityPlane> entity, Level level, String defaultPreset) {
 		super(entity, level, defaultPreset);
-		planeStats = (PlaneStats)vehicleStats;
 	}
 	
 	@Override
-	public AircraftType getAircraftType() {
-		return AircraftType.PLANE;
+	public VehicleType getVehicleType() {
+		return VehicleType.PLANE;
 	}
 	
 	@Override
@@ -114,7 +110,7 @@ public class EntityPlane extends EntityVehicle {
 			Vec3 planeNormal = UtilAngles.getYawAxis(q).scale(-1);
 			aoa = (float)UtilGeometry.angleBetweenVecPlaneDegrees(u, planeNormal);
 		}
-		if (isFlapsDown()) aoa += planeStats.flapsAOABias;
+		if (isFlapsDown()) aoa += getStats().asPlane().flapsAOABias;
 		liftK = (float) getLiftK();
 		//System.out.println("liftK = "+liftK);
 	}
@@ -151,7 +147,7 @@ public class EntityPlane extends EntityVehicle {
 	}
 	
 	public double getLiftK() {
-		return planeStats.liftKGraph.getLift(aoa);
+		return getStats().asPlane().liftKGraph.getLift(aoa);
 	}
 	
 	@Override
@@ -183,17 +179,17 @@ public class EntityPlane extends EntityVehicle {
 	 * @return the surface area of the plane wings
 	 */
 	public final float getWingSurfaceArea() {
-		return planeStats.wing_area;
+		return getStats().asPlane().wing_area;
 	}
 	
 	@Override
 	public boolean isWeaponAngledDown() {
-		return planeStats.canAimDown && !onGround && inputs.special2;
+		return getStats().asPlane().canAimDown && !onGround && inputs.special2;
 	}
 	
 	@Override
 	public boolean canAngleWeaponDown() {
-    	return planeStats.canAimDown;
+    	return getStats().asPlane().canAimDown;
     }
 
 	@Override
@@ -228,22 +224,17 @@ public class EntityPlane extends EntityVehicle {
 	
 	@Override
 	public boolean isStalling() {
-		return Math.abs(getAOA()) >= planeStats.liftKGraph.getCriticalAOA() || liftLost();
+		return Math.abs(getAOA()) >= getStats().asPlane().liftKGraph.getCriticalAOA() || liftLost();
 	}
 	
 	@Override
 	public boolean isAboutToStall() {
-		return Math.abs(getAOA()) >= planeStats.liftKGraph.getWarnAOA() && !isFlapsDown();
+		return Math.abs(getAOA()) >= getStats().asPlane().liftKGraph.getWarnAOA() && !isFlapsDown();
 	}
 	
 	@Override
 	public boolean liftLost() {
 		return !isOnGround() && getForces().y < -10 && getDeltaMovement().y < -0.1 && Math.abs(zRot) > 15;
-	}
-
-	@Override
-	protected VehicleStatsOld createVehicleStats() {
-		return new PlaneStats();
 	}
 
 }

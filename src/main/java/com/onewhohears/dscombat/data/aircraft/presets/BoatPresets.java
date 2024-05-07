@@ -4,16 +4,14 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.model.obj.ObjRadarModel.MastType;
 import com.onewhohears.dscombat.data.aircraft.stats.VehicleStats;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModSounds;
 
 public class BoatPresets {
 	
 	public static final VehicleStats EMPTY_NATHAN_BOAT = VehicleStats.Builder
-			.create(DSCombatMod.MODID, "nathan_boat_empty")
+			.createBoat(DSCombatMod.MODID, "nathan_boat_empty")
 			.setSortFactor(0)
-			.setAircraftType(AircraftType.BOAT)
 			.setItem(ModItems.NATHAN_BOAT.getId())
 			.setMaxHealth(100f)
 			.setMass(1000f)
@@ -73,9 +71,8 @@ public class BoatPresets {
 			.build();
 	
 	public static final VehicleStats EMPTY_GRONK_BATTLESHIP = VehicleStats.Builder
-			.create(DSCombatMod.MODID, "gronk_battleship_empty")
+			.createBoat(DSCombatMod.MODID, "gronk_battleship_empty")
 			.setSortFactor(1)
-			.setAircraftType(AircraftType.BOAT)
 			.setItem(ModItems.GRONK_BATTLESHIP.getId())
 			.setMaxHealth(600f)
 			.setMass(450000f)
@@ -165,9 +162,8 @@ public class BoatPresets {
 			.build();
 	
 	public static final VehicleStats EMPTY_DESTROYER = VehicleStats.Builder
-			.create(DSCombatMod.MODID, "destroyer_empty")
+			.createBoat(DSCombatMod.MODID, "destroyer_empty")
 			.setSortFactor(2)
-			.setAircraftType(AircraftType.BOAT)
 			.setItem(ModItems.DESTROYER.getId())
 			.setMaxHealth(400f)
 			.setMass(300000f)
@@ -246,9 +242,8 @@ public class BoatPresets {
 			.build();
 	
 	public static final VehicleStats EMPTY_CRUISER = VehicleStats.Builder
-			.create(DSCombatMod.MODID, "cruiser_empty")
+			.createBoat(DSCombatMod.MODID, "cruiser_empty")
 			.setSortFactor(3)
-			.setAircraftType(AircraftType.BOAT)
 			.setItem(ModItems.CRUISER.getId())
 			.setMaxHealth(500f)
 			.setMass(350000f)
@@ -333,9 +328,8 @@ public class BoatPresets {
 			.build();
 	
 	public static final VehicleStats EMPTY_CORVETTE = VehicleStats.Builder
-			.create(DSCombatMod.MODID, "corvette_empty")
+			.createBoat(DSCombatMod.MODID, "corvette_empty")
 			.setSortFactor(4)
-			.setAircraftType(AircraftType.BOAT)
 			.setItem(ModItems.CORVETTE.getId())
 			.setMaxHealth(250f)
 			.setMass(50000f)
@@ -401,9 +395,8 @@ public class BoatPresets {
 			.build();
 	
 	public static final VehicleStats EMPTY_AIRCRAFT_CARRIER = VehicleStats.Builder
-			.create(DSCombatMod.MODID, "aircraft_carrier_empty")
+			.createBoat(DSCombatMod.MODID, "aircraft_carrier_empty")
 			.setSortFactor(5)
-			.setAircraftType(AircraftType.BOAT)
 			.setItem(ModItems.AIRCRAFT_CARRIER.getId())
 			.setMaxHealth(900f)
 			.setMass(800000f)

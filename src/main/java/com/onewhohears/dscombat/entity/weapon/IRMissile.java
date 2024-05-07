@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.onewhohears.dscombat.Config;
+import com.onewhohears.dscombat.data.weapon.WeaponType;
 import com.onewhohears.dscombat.data.weapon.stats.IRMissileStats;
 import com.onewhohears.dscombat.entity.IREmitter;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource;
@@ -19,6 +20,11 @@ public class IRMissile<T extends IRMissileStats> extends EntityMissile<T> {
 	
 	public IRMissile(EntityType<? extends IRMissile<?>> type, Level level, String defaultWeaponId) {
 		super(type, level, defaultWeaponId);
+	}
+	
+	@Override
+	public WeaponType getWeaponType() {
+		return WeaponType.IR_MISSILE;
 	}
 	
 	@Override

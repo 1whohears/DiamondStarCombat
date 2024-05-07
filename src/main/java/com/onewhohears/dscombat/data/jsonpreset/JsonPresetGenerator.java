@@ -26,7 +26,7 @@ import net.minecraft.resources.ResourceLocation;
  * see {@link com.onewhohears.dscombat.data.weapon.WeaponPresetGenerator},
  * {@link com.onewhohears.dscombat.data.radar.RadarPresetGenerator},
  * {@link com.onewhohears.dscombat.data.aircraft.AircraftPresetGenerator},
- * and {@link com.onewhohears.dscombat.data.aircraft.AircraftClientPresetGenerator} for examples.
+ * and {@link com.onewhohears.dscombat.data.aircraft.client.AircraftClientPresetGenerator} for examples.
  * see {@link JsonPresetReloadListener} for a way to read these json presets.
  * 
  * @author 1whohears

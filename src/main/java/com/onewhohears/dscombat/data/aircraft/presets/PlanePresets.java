@@ -6,16 +6,14 @@ import com.onewhohears.dscombat.data.aircraft.LiftKGraph;
 import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.data.aircraft.stats.VehicleStats;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModSounds;
 
 public class PlanePresets {
 	
 	public static final VehicleStats EMPTY_WOODEN_PLANE = VehicleStats.Builder
-			.create(DSCombatMod.MODID, "wooden_plane_empty")
+			.createPlane(DSCombatMod.MODID, "wooden_plane_empty")
 			.setSortFactor(0)
-			.setAircraftType(AircraftType.PLANE)
 			.setItem(ModItems.WOODEN_PLANE.getId())
 			.setMaxHealth(40f)
 			.setMass(500f)
@@ -75,9 +73,8 @@ public class PlanePresets {
 			.build();
 	
 	public static final VehicleStats EMPTY_E3SENTRY_PLANE = VehicleStats.Builder
-			.create(DSCombatMod.MODID, "e3sentry_plane_empty")
+			.createPlane(DSCombatMod.MODID, "e3sentry_plane_empty")
 			.setSortFactor(15)
-			.setAircraftType(AircraftType.PLANE)
 			.setItem(ModItems.E3SENTRY_PLANE.getId())
 			.setMaxHealth(400f)
 			.setMass(83900f)

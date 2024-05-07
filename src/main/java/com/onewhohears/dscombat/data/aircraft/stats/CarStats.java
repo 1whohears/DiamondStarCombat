@@ -21,5 +21,15 @@ public class CarStats extends VehicleStats {
 	public JsonPresetType getType() {
 		return VehicleType.CAR;
 	}
+	
+	@Override 
+	public CarStats asCar() { 
+		return this; 
+	}
+	
+	@Override
+	public boolean isTank() {
+		return true;
+	}
 
 }

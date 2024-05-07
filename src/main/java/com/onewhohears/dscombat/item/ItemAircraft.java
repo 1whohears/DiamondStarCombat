@@ -171,7 +171,7 @@ public class ItemAircraft extends Item {
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
 		if (group.getId() != ModItems.AIRCRAFT.getId() && group.getId() != CreativeModeTab.TAB_SEARCH.getId()) return;
-		VehicleStats[] presets = AircraftPresets.get().getAllPresets();
+		VehicleStats[] presets = AircraftPresets.get().getAll();
 		for (int i = 0; i < presets.length; ++i) {
 			if (presets[i].getItem().getDescriptionId().equals(getDescriptionId())) {
 				items.add(presets[i].getItem());

@@ -16,5 +16,15 @@ public class BoatStats extends VehicleStats {
 	public JsonPresetType getType() {
 		return VehicleType.BOAT;
 	}
+	
+	@Override 
+	public BoatStats asBoat() { 
+		return this; 
+	}
+	
+	@Override
+	public boolean isBoat() {
+		return true;
+	}
 
 }

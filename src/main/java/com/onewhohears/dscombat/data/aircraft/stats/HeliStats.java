@@ -25,5 +25,30 @@ public class HeliStats extends VehicleStats {
 	public JsonPresetType getType() {
 		return VehicleType.HELICOPTER;
 	}
+	
+	@Override 
+	public HeliStats asHeli() { 
+		return this; 
+	}
+	
+	@Override
+	public boolean isAircraft() {
+		return true;
+	}
+    
+	@Override
+    public boolean flipPitchThrottle() {
+    	return false;
+    }
+    
+	@Override
+    public boolean ignoreInvertY() {
+    	return false;
+    }
+	
+	@Override
+	public boolean isHeli() {
+		return true;
+	}
 
 }

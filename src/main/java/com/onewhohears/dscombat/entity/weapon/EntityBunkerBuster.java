@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.entity.weapon;
 
 import java.util.Iterator;
 
+import com.onewhohears.dscombat.data.weapon.WeaponType;
 import com.onewhohears.dscombat.data.weapon.stats.BunkerBusterStats;
 
 import net.minecraft.core.BlockPos;
@@ -26,6 +27,11 @@ public class EntityBunkerBuster<T extends BunkerBusterStats> extends EntityBomb<
 	public EntityBunkerBuster(EntityType<? extends EntityBunkerBuster<?>> type, Level level, String defaultWeaponId) {
 		super(type, level, defaultWeaponId);
 		if (getWeaponStats() != null) setBlockStrength(getWeaponStats().getBlockStrength());
+	}
+	
+	@Override
+	public WeaponType getWeaponType() {
+		return WeaponType.BUNKER_BUSTER;
 	}
 	
 	@Override

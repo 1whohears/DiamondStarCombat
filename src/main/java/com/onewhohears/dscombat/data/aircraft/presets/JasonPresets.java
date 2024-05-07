@@ -4,16 +4,14 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.aircraft.LiftKGraph;
 import com.onewhohears.dscombat.data.aircraft.stats.VehicleStats;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModSounds;
 
 public class JasonPresets {
 	
 	public static final VehicleStats EMPTY_JASON_PLANE = VehicleStats.Builder
-			.create(DSCombatMod.MODID, "jason_plane_empty")
+			.createPlane(DSCombatMod.MODID, "jason_plane_empty")
 			.setSortFactor(2)
-			.setAircraftType(AircraftType.PLANE)
 			.setItem(ModItems.JASON_PLANE.getId())
 			.setMaxHealth(60f)
 			.setMass(1100f)

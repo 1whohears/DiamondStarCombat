@@ -3,9 +3,9 @@ package com.onewhohears.dscombat.common.container.menu;
 import java.util.List;
 
 import com.onewhohears.dscombat.common.container.slot.PartItemSlot;
-import com.onewhohears.dscombat.data.aircraft.AircraftClientPreset;
-import com.onewhohears.dscombat.data.aircraft.AircraftClientPreset.UIPos;
-import com.onewhohears.dscombat.data.aircraft.AircraftClientPresets;
+import com.onewhohears.dscombat.data.aircraft.client.AircraftClientPresets;
+import com.onewhohears.dscombat.data.aircraft.client.VehicleClientStats;
+import com.onewhohears.dscombat.data.aircraft.client.VehicleClientStats.UIPos;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 import com.onewhohears.dscombat.init.ModContainers;
@@ -21,7 +21,7 @@ public class VehicleContainerMenu extends AbstractContainerMenu {
 	
 	private Container playerInv;
 	private Container planeInv;
-	private AircraftClientPreset clientData;
+	private VehicleClientStats clientData;
 	
 	public VehicleContainerMenu(int id, Inventory playerInv) {
 		super(ModContainers.PLANE_MENU.get(), id);
@@ -103,7 +103,7 @@ public class VehicleContainerMenu extends AbstractContainerMenu {
 		return this.planeInv;
 	}
 	
-	public AircraftClientPreset getClientData() {
+	public VehicleClientStats getClientData() {
 		return clientData;
 	}
 

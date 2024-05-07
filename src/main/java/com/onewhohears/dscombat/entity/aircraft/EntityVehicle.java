@@ -32,8 +32,8 @@ import com.onewhohears.dscombat.data.aircraft.DSCPhyCons;
 import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
 import com.onewhohears.dscombat.data.aircraft.VehicleInputManager;
 import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager;
-import com.onewhohears.dscombat.data.aircraft.VehicleStatsOld;
 import com.onewhohears.dscombat.data.aircraft.VehicleTextureManager;
+import com.onewhohears.dscombat.data.aircraft.VehicleType;
 import com.onewhohears.dscombat.data.aircraft.stats.VehicleStats;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartsManager;
@@ -127,7 +127,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public static final EntityDataAccessor<RadarMode> RADAR_MODE = SynchedEntityData.defineId(EntityVehicle.class, DataSerializers.RADAR_MODE);
 	
 	public final String defaultPreset, clientPresetId;
-	public final VehicleStatsOld vehicleStats;
 	public final VehicleInputManager inputs;
 	public final VehicleSoundManager soundManager;
 	public final VehicleTextureManager textureManager;
@@ -140,6 +139,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	protected final EntityScreenData[] screens;
 	
 	private final Map<Integer, Integer> formerPassengersServer = new HashMap<>();
+	
+	private VehicleStats vehicleStats;
 	
 	/**
 	 * this vehicle's original preset. 
@@ -192,26 +193,18 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		this.defaultPreset = defaultPreset;
 		this.clientPresetId = UtilEntity.getEntityIdName(this);
 		this.preset = defaultPreset;
-		VehicleStats ap = AircraftPresets.get().get(defaultPreset);
-		this.item = ap.getItem();
+		this.vehicleStats = AircraftPresets.get().get(defaultPreset);
+		this.item = vehicleStats.getItem();
 		this.blocksBuilding = true;
-		vehicleStats = createVehicleStats();
-		vehicleStats.readPresetData(ap);
 		inputs = new VehicleInputManager();
 		soundManager = new VehicleSoundManager(this);
 		textureManager = new VehicleTextureManager(this);
 		partsManager = new PartsManager(this);
 		weaponSystem = new WeaponSystem(this);
 		radarSystem = new RadarSystem(this);
-		hitboxes = createRotableHitboxes(ap);
-		screens = createEntityScreens(ap);
+		hitboxes = createRotableHitboxes(vehicleStats);
+		screens = createEntityScreens(vehicleStats);
 		setId(ENTITY_COUNTER.getAndAdd(hitboxes.length+1)+1);
-	}
-	
-	protected abstract VehicleStatsOld createVehicleStats();
-	
-	public VehicleStatsOld getVehicleStats() {
-		return vehicleStats;
 	}
 	
 	@Override
@@ -295,7 +288,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		// get the preset data
 		VehicleStats ap = AircraftPresets.get().get(preset);
 		item = ap.getItem();
-		vehicleStats.readPresetData(ap);
+		vehicleStats = ap;
 		soundManager.loadSounds(ap);
 		CompoundTag presetNbt = ap.getDataAsNBT();
 		// merge if this entity hasn't merged yet
@@ -364,7 +357,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		// PRESET STUFF
 		if (!AircraftPresets.get().has(preset)) return;
 		VehicleStats ap = AircraftPresets.get().get(preset);
-		vehicleStats.readPresetData(ap);
+		vehicleStats = ap;
 		soundManager.loadSounds(ap);
 		item = ap.getItem();
 		// OTHER
@@ -397,11 +390,11 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		
 	}
 	
-	public abstract AircraftType getAircraftType();
-	
-	public boolean isAircraft() {
-		return getAircraftType().isAircraft;
+	public VehicleStats getStats() {
+		return vehicleStats;
 	}
+	
+	public abstract VehicleType getVehicleType();
 	
 	/**
 	 * called on this entities first tick on client and server side
@@ -2633,30 +2626,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
         super.setXRot(yRot);
     }
     
-    public static enum AircraftType {
-		PLANE(true, false, false),
-		HELICOPTER(true, false, false),
-		CAR(false, true, true),
-		BOAT(false, true, true),
-		SUBMARINE(false, true, true);
-		public final boolean isAircraft, flipPitchThrottle, ignoreInvertY;
-		private AircraftType(boolean isAircraft, boolean flipPitchThrottle, boolean ignoreInvertY) {
-			this.isAircraft = isAircraft;
-			this.flipPitchThrottle = flipPitchThrottle;
-			this.ignoreInvertY = ignoreInvertY;
-		}
-		public boolean isTank() {
-			return this == CAR;
-		}
-		public boolean isHeli() {
-			return this == HELICOPTER;
-		}
-		public boolean isPlane() {
-			return this == PLANE;
-		}
-		public boolean isBoat() {
-			return this == BOAT || this == SUBMARINE;
-		}
-	}
+    public boolean isAircraft() {
+    	return getStats().isAircraft();
+    }
     
 }

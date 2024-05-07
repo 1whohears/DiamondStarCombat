@@ -16,5 +16,20 @@ public class SubmarineStats extends BoatStats {
 	public JsonPresetType getType() {
 		return VehicleType.SUBMARINE;
 	}
+	
+	@Override 
+	public SubmarineStats asSubmarine() { 
+		return this; 
+	}
+	
+	@Override
+	public boolean isBoat() {
+		return true;
+	}
+	
+	@Override
+	public boolean isSub() {
+		return true;
+	}
 
 }

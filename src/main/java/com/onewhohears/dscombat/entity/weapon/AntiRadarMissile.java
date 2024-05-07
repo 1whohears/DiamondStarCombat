@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.entity.weapon;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.onewhohears.dscombat.data.weapon.WeaponType;
 import com.onewhohears.dscombat.data.weapon.stats.AntiRadarMissileStats;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
 
@@ -15,6 +16,11 @@ public class AntiRadarMissile<T extends AntiRadarMissileStats> extends EntityMis
 	
 	public AntiRadarMissile(EntityType<? extends AntiRadarMissile<?>> type, Level level, String defaultWeaponId) {
 		super(type, level, defaultWeaponId);
+	}
+	
+	@Override
+	public WeaponType getWeaponType() {
+		return WeaponType.ANTI_RADAR_MISSILE;
 	}
 	
 	@Override

@@ -140,7 +140,7 @@ public class UtilClientPacket {
 		if (id == -1) 
 			UtilParticles.vehicleCrashExplosion(m.level, pos, 5);
 		else if (m.level.getEntity(id) instanceof EntityVehicle plane) 
-			UtilParticles.vehicleCrashExplosion(m.level, pos, plane.getVehicleStats().crashExplosionRadius);
+			UtilParticles.vehicleCrashExplosion(m.level, pos, plane.getStats().crashExplosionRadius);
 	}
 
 	public static void weaponImpact(WeaponStats.WeaponClientImpactType impactType, Vec3 pos) {

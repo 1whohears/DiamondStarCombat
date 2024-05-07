@@ -78,7 +78,7 @@ public final class ClientInputEvents {
 			rollRight = DSCKeys.rollRightKey.isDown();
 		}
 		// should pitch/throttle flip
-		boolean type_flip = plane.getAircraftType().flipPitchThrottle;
+		boolean type_flip = plane.getStats().flipPitchThrottle();
 		boolean mode = DSCClientInputs.isCameraLockedForward();
 		if ((!type_flip && (flip ^ mode)) || (type_flip && !flip)) {
 			pitchUp = DSCKeys.throttleUpKey.isDown();
@@ -93,7 +93,7 @@ public final class ClientInputEvents {
 		}
 		// should invert
 		int invertY = Config.CLIENT.invertY.get() ? -1 : 1;
-		if (plane.getAircraftType().ignoreInvertY) invertY = -1;
+		if (plane.getStats().ignoreInvertY()) invertY = -1;
 		if (DSCClientInputs.isCameraLockedForward()) {
 			// FIXME 2.1 fix mouse control mode
 			double ya = Math.abs(mouseY);

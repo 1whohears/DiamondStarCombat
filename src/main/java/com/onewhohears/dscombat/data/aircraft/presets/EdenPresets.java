@@ -7,16 +7,14 @@ import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager.PassengerSound
 import com.onewhohears.dscombat.data.aircraft.stats.VehicleStats;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModSounds;
 
 public class EdenPresets {
 	
 	public static final VehicleStats EMPTY_EDEN_PLANE = VehicleStats.Builder
-			.create(DSCombatMod.MODID, "eden_plane_empty")
+			.createPlane(DSCombatMod.MODID, "eden_plane_empty")
 			.setSortFactor(9)
-			.setAircraftType(AircraftType.PLANE)
 			.setItem(ModItems.EDEN_PLANE.getId())
 			.setMaxHealth(160f)
 			.setMass(11000)

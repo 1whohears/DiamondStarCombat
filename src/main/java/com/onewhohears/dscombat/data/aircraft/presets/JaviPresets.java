@@ -6,16 +6,14 @@ import com.onewhohears.dscombat.data.aircraft.LiftKGraph;
 import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.data.aircraft.stats.VehicleStats;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModSounds;
 
 public class JaviPresets {
 	
 	public static final VehicleStats EMPTY_JAVI_PLANE = VehicleStats.Builder
-			.create(DSCombatMod.MODID, "javi_plane_empty")
+			.createPlane(DSCombatMod.MODID, "javi_plane_empty")
 			.setSortFactor(8)
-			.setAircraftType(AircraftType.PLANE)
 			.setItem(ModItems.JAVI_PLANE.getId())
 			.setMaxHealth(200f)
 			.setMass(11300f)

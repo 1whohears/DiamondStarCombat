@@ -5,16 +5,14 @@ import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
 import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.data.aircraft.stats.VehicleStats;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModSounds;
 
 public class HeliPresets {
 	
 	public static final VehicleStats EMPTY_NOAH_CHOPPER = VehicleStats.Builder
-			.create(DSCombatMod.MODID, "noah_chopper_empty")
+			.createHelicopter(DSCombatMod.MODID, "noah_chopper_empty")
 			.setSortFactor(4)
-			.setAircraftType(AircraftType.HELICOPTER)
 			.setItem(ModItems.NOAH_CHOPPER.getId())
 			.setMaxHealth(200f)
 			.setMass(6000f)

@@ -378,10 +378,7 @@ public abstract class EntityWeapon<T extends WeaponStats> extends Projectile imp
     	entityData.set(SHOOT_POS, pos);
     }
     
-    public WeaponType getWeaponType() {
-    	return weaponStats != null ? (WeaponType) weaponStats.getType() : WeaponType.NONE;
-    }
-    
+    public abstract WeaponType getWeaponType();
     protected abstract WeaponDamageSource getImpactDamageSource();
     protected abstract WeaponDamageSource getExplosionDamageSource();
     public abstract WeaponStats.WeaponClientImpactType getClientImpactType();

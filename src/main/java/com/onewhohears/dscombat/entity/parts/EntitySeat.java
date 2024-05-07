@@ -9,7 +9,6 @@ import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.world.InteractionHand;
@@ -92,7 +91,7 @@ public class EntitySeat extends EntityPart {
 				player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 
 						80, 0, false, false));
 			}	
-			if (craft.getAircraftType() == AircraftType.SUBMARINE) {
+			if (craft.getStats().isSub()) {
 				player.addEffect(new MobEffectInstance(MobEffects.WATER_BREATHING, 
 						80, 0, false, false));
 				player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 

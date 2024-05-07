@@ -1,8 +1,7 @@
 package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.data.aircraft.VehicleStatsOld;
-import com.onewhohears.dscombat.data.aircraft.VehicleStatsOld.SubStats;
+import com.onewhohears.dscombat.data.aircraft.VehicleType;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -15,8 +14,8 @@ public class EntitySubmarine extends EntityBoat {
 	}
 	
 	@Override
-	public AircraftType getAircraftType() {
-		return AircraftType.SUBMARINE;
+	public VehicleType getVehicleType() {
+		return VehicleType.SUBMARINE;
 	}
 	
 	@Override
@@ -98,11 +97,6 @@ public class EntitySubmarine extends EntityBoat {
 	@Override
 	public boolean canBrake() {
 		return true;
-	}
-	
-	@Override
-	protected VehicleStatsOld createVehicleStats() {
-		return new SubStats();
 	}
 
 }

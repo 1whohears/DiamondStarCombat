@@ -104,7 +104,7 @@ public class ClientCameraEvents {
 		float zi = UtilAngles.lerpAngle(pt, plane.zRotO, plane.zRot);
 		if (detached && mirrored) zi *= -1;
 		event.setRoll(zi);
-		double camDist = plane.getVehicleStats().cameraDistance;
+		double camDist = plane.getStats().cameraDistance;
 		if (detached && isPilot && camDist > 4) {
 			double vehicleCamDist = Math.min(0, 4-getMaxDist(event.getCamera(), player, camDist));
 			event.getCamera().move(vehicleCamDist, 0, 0);

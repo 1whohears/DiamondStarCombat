@@ -4,16 +4,14 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
 import com.onewhohears.dscombat.data.aircraft.stats.VehicleStats;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModSounds;
 
 public class CarPresets {
 	
 	public static final VehicleStats DEFAULT_ORANGE_TESLA = VehicleStats.Builder
-			.create(DSCombatMod.MODID, "orange_tesla")
+			.createCar(DSCombatMod.MODID, "orange_tesla")
 			.setSortFactor(10)
-			.setAircraftType(AircraftType.CAR)
 			.setItem(ModItems.ORANGE_TESLA.getId())
 			.setCraftable()
 			.setMaxHealth(40f)
@@ -47,9 +45,8 @@ public class CarPresets {
 			.build();
 	
 	public static final VehicleStats EMPTY_AXCEL_TRUCK = VehicleStats.Builder
-			.create(DSCombatMod.MODID, "axcel_truck_empty")
+			.createCar(DSCombatMod.MODID, "axcel_truck_empty")
 			.setSortFactor(5)
-			.setAircraftType(AircraftType.CAR)
 			.setItem(ModItems.AXCEL_TRUCK.getId())
 			.setMaxHealth(80f)
 			.setMass(6500f)

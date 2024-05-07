@@ -18,7 +18,7 @@ import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 
 /**
  * a json file from asset pack reader for this mod's asset system.
- * see {@link com.onewhohears.dscombat.data.aircraft.AircraftClientPresets} for examples.
+ * see {@link com.onewhohears.dscombat.data.aircraft.client.AircraftClientPresets} for examples.
  * 
  * see {@link JsonPresetGenerator} for a way to generate json assets.
  * 

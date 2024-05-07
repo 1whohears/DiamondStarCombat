@@ -4,16 +4,14 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.aircraft.stats.VehicleStats;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModSounds;
 
 public class TankPresets {
 	
 	public static final VehicleStats EMPTY_MRBUDGER_TANK = VehicleStats.Builder
-			.create(DSCombatMod.MODID, "mrbudger_tank_empty")
+			.createCar(DSCombatMod.MODID, "mrbudger_tank_empty")
 			.setSortFactor(4)
-			.setAircraftType(AircraftType.CAR)
 			.setItem(ModItems.MRBUDGER_TANK.getId())
 			.setMaxHealth(500f)
 			.setMass(15000f)
@@ -65,9 +63,8 @@ public class TankPresets {
 			.build();
 	
 	public static final VehicleStats EMPTY_SMALL_ROLLER = VehicleStats.Builder
-			.create(DSCombatMod.MODID, "small_roller_empty")
+			.createCar(DSCombatMod.MODID, "small_roller_empty")
 			.setSortFactor(1)
-			.setAircraftType(AircraftType.CAR)
 			.setItem(ModItems.SMALL_ROLLER.getId())
 			.setMaxHealth(30f)
 			.setMass(600f)

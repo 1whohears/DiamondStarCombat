@@ -2,8 +2,7 @@ package com.onewhohears.dscombat.entity.aircraft;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.command.DSCGameRules;
-import com.onewhohears.dscombat.data.aircraft.VehicleStatsOld;
-import com.onewhohears.dscombat.data.aircraft.VehicleStatsOld.HeliStats;
+import com.onewhohears.dscombat.data.aircraft.VehicleType;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource.WeaponDamageType;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
@@ -14,16 +13,13 @@ import net.minecraft.world.phys.Vec3;
 
 public class EntityHelicopter extends EntityVehicle {
 	
-	protected HeliStats heliStats;
-	
 	public EntityHelicopter(EntityType<? extends EntityHelicopter> entity, Level level, String defaultPreset) {
 		super(entity, level, defaultPreset);
-		heliStats = (HeliStats)vehicleStats;
 	}
 	
 	@Override
-	public AircraftType getAircraftType() {
-		return AircraftType.HELICOPTER;
+	public VehicleType getVehicleType() {
+		return VehicleType.HELICOPTER;
 	}
 	
 	@Override
@@ -75,21 +71,21 @@ public class EntityHelicopter extends EntityVehicle {
 	
 	@Override
 	public float getMaxPushThrust() {
-		return getMaxSpinThrust() * (float)airPressure * heliStats.heliLiftFactor;
+		return getMaxSpinThrust() * (float)airPressure * getStats().asHeli().heliLiftFactor;
 	}
 	
 	@Override
 	public boolean isLandingGear() {
-		if (heliStats.alwaysLandingGear) return true;
+		if (getStats().asHeli().alwaysLandingGear) return true;
     	return super.isLandingGear();
     }
 	
 	public float getAccForward() {
-		return heliStats.accForward;
+		return getStats().asHeli().accForward;
 	}
 	
 	public float getAccSide() {
-		return heliStats.accSide;
+		return getStats().asHeli().accSide;
 	}
 	
 	@Override
@@ -104,7 +100,7 @@ public class EntityHelicopter extends EntityVehicle {
 
 	@Override
 	public boolean canToggleLandingGear() {
-		return !heliStats.alwaysLandingGear;
+		return !getStats().asHeli().alwaysLandingGear;
 	}
 	
 	@Override
@@ -122,11 +118,6 @@ public class EntityHelicopter extends EntityVehicle {
 		WeaponDamageType wdt = WeaponDamageType.byId(source.getMsgId());
 		if (wdt != null && wdt.isContact()) return amount*DSCGameRules.getBulletDamageHeliFactor(level);
 		return super.calcProjDamageBySource(source, amount);
-	}
-
-	@Override
-	protected VehicleStatsOld createVehicleStats() {
-		return new HeliStats();
 	}
 
 }

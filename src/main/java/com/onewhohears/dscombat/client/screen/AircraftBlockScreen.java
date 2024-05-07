@@ -128,7 +128,7 @@ public class AircraftBlockScreen extends AbstractContainerScreen<AircraftBlockCo
 		// plane stats
 		AircraftRecipe ar = tab.getSelectedRecipe();
 		if (ar == null) return;
-		VehicleStats ap = ar.getVehiclePreset();
+		VehicleStats ap = ar.getVehicleStats();
 		if (ap == null) return;
 		Component name = ap.getDisplayNameComponent();
 		int nameWidth = font.width(name);

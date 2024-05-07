@@ -27,5 +27,30 @@ public class PlaneStats extends VehicleStats {
 	public JsonPresetType getType() {
 		return VehicleType.PLANE;
 	}
+	
+	@Override 
+	public PlaneStats asPlane() { 
+		return this; 
+	}
+	
+	@Override
+	public boolean isAircraft() {
+		return true;
+	}
+    
+	@Override
+    public boolean flipPitchThrottle() {
+    	return false;
+    }
+    
+	@Override
+    public boolean ignoreInvertY() {
+    	return false;
+    }
+	
+	@Override
+	public boolean isPlane() {
+		return true;
+	}
 
 }

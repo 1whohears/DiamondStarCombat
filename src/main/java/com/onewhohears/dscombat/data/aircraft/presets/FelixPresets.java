@@ -6,16 +6,14 @@ import com.onewhohears.dscombat.data.aircraft.LiftKGraph;
 import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.data.aircraft.stats.VehicleStats;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModSounds;
 
 public class FelixPresets {
 	
 	public static final VehicleStats EMPTY_FELIX_PLANE = VehicleStats.Builder
-			.create(DSCombatMod.MODID, "felix_plane_empty")
+			.createPlane(DSCombatMod.MODID, "felix_plane_empty")
 			.setSortFactor(7)
-			.setAircraftType(AircraftType.PLANE)
 			.setItem(ModItems.FELIX_PLANE.getId())
 			.setMaxHealth(120f)
 			.setMass(5200f)

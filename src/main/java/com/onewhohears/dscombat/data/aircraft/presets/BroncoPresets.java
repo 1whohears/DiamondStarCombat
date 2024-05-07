@@ -6,16 +6,14 @@ import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager.PassengerSound
 import com.onewhohears.dscombat.data.aircraft.stats.VehicleStats;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModSounds;
 
 public class BroncoPresets {
 	
 	public static final VehicleStats EMPTY_BRONCO_PLANE = VehicleStats.Builder
-			.create(DSCombatMod.MODID, "bronco_plane_empty")
+			.createPlane(DSCombatMod.MODID, "bronco_plane_empty")
 			.setSortFactor(4)
-			.setAircraftType(AircraftType.PLANE)
 			.setItem(ModItems.BRONCO_PLANE.getId())
 			.setMaxHealth(90f)
 			.setMass(3100f)

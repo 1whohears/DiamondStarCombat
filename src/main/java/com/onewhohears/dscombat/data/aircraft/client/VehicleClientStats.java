@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.data.aircraft;
+package com.onewhohears.dscombat.data.aircraft.client;
 
 import java.util.HashMap;
 
@@ -6,20 +6,21 @@ import javax.annotation.Nullable;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.onewhohears.dscombat.data.jsonpreset.JsonPresetInstance;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPresetStats;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPresetType;
 import com.onewhohears.dscombat.data.jsonpreset.PresetBuilder;
 
 import net.minecraft.resources.ResourceLocation;
 
-public class AircraftClientPreset extends JsonPresetStats {
+public class VehicleClientStats extends JsonPresetStats {
 	
 	private static final UIPos defaultPos = new UIPos(0, 0);
 	
 	private ResourceLocation background;
 	private HashMap<String, UIPos> slotsPos;
 	
-	public AircraftClientPreset(ResourceLocation key, JsonObject json) {
+	public VehicleClientStats(ResourceLocation key, JsonObject json) {
 		super(key, json);
 	}
 	
@@ -50,16 +51,9 @@ public class AircraftClientPreset extends JsonPresetStats {
 	}
 	
 	public static class Builder extends PresetBuilder<Builder> {
-		
-		@Override
-		protected void setupJsonData() {
-			super.setupJsonData();
-		}
-		
 		public Builder setBackground(String background) {
 			return setString("inventory_background", background);
 		}
-		
 		public Builder addUIPos(String name, int x, int y) {
 			if (!getData().has("inventory_slots_pos")) {
 				getData().add("inventory_slots_pos", new JsonArray());
@@ -72,7 +66,6 @@ public class AircraftClientPreset extends JsonPresetStats {
 			isp.add(sp);
 			return this;
 		}
-		
 		public Builder setAllUIPos(int x_start, int y_start, int cols, String... names) {
 			int x = x_start, y = y_start;
 			for (int i = 0; i < names.length; ++i) {
@@ -85,28 +78,18 @@ public class AircraftClientPreset extends JsonPresetStats {
 			}
 			return this;
 		}
-		
-		protected Builder(String namespace, String name, JsonPresetType.JsonPresetStatsFactory<? extends JsonPresetStats> sup) {
-			super(namespace, name, sup);
+		protected Builder(String namespace, String name, VehicleClientType type) {
+			super(namespace, name, type);
 		}
-		
-		protected Builder(String namespace, String name, JsonPresetType.JsonPresetStatsFactory<? extends JsonPresetStats> sup, AircraftClientPreset copy) {
-			super(namespace, name, sup, copy.getJsonData().deepCopy());
+		protected Builder(String namespace, String name, VehicleClientType type, VehicleClientStats copy) {
+			super(namespace, name, type, copy.getJsonData().deepCopy());
 		}
-		
 		public static Builder create(String namespace, String name) {
-			return new Builder(namespace, name, (key, json) -> new AircraftClientPreset(key, json));
+			return new Builder(namespace, name, VehicleClientType.STANDARD);
 		}
-		
-		public static Builder createFromCopy(String namespace, String name, AircraftClientPreset copy) {
-			return new Builder(namespace, name, (key, json) -> new AircraftClientPreset(key, json), copy);
+		public static Builder createFromCopy(String namespace, String name, VehicleClientStats copy) {
+			return new Builder(namespace, name, VehicleClientType.STANDARD, copy);
 		}
-		
-	}
-
-	@Override
-	public <T extends JsonPresetStats> T copy() {
-		return (T) new AircraftClientPreset(getKey(), getJsonData());
 	}
 	
 	public static class UIPos {
@@ -125,6 +108,16 @@ public class AircraftClientPreset extends JsonPresetStats {
 		public int getY() {
 			return y;
 		}
+	}
+
+	@Override
+	public JsonPresetType getType() {
+		return VehicleClientType.STANDARD;
+	}
+
+	@Override
+	public JsonPresetInstance<?> createPresetInstance() {
+		return null;
 	}
 
 }

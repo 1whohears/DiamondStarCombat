@@ -25,8 +25,7 @@ public class RadarPresets extends JsonPresetReloadListener<RadarStats> {
 	
 	@Override
 	protected void registerPresetTypes() {
-		// TODO Auto-generated method stub
-		
+		addPresetType(RadarType.STANDARD);
 	}
 	
 	@Override

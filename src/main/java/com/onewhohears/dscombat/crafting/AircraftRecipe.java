@@ -6,7 +6,6 @@ import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
 import com.onewhohears.dscombat.data.aircraft.stats.VehicleStats;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
 import com.onewhohears.dscombat.init.ModBlocks;
 import com.onewhohears.dscombat.util.UtilItem;
 
@@ -80,20 +79,14 @@ public class AircraftRecipe implements Recipe<Inventory> {
 		return presetId;
 	}
 	
-	public VehicleStats getVehiclePreset() {
+	public VehicleStats getVehicleStats() {
 		return AircraftPresets.get().get(getVehiclePresetId());
 	}
 	
 	public int getSortFactor() {
-		VehicleStats preset = getVehiclePreset();
+		VehicleStats preset = getVehicleStats();
 		if (preset == null) return 0;
 		return preset.getSortFactor();
-	}
-	
-	public AircraftType getAircraftType() {
-		VehicleStats preset = getVehiclePreset();
-		if (preset == null) return AircraftType.CAR;
-		return preset.getAircraftType();
 	}
 	
 	public int compare(AircraftRecipe other) {
@@ -103,13 +96,13 @@ public class AircraftRecipe implements Recipe<Inventory> {
 	}
 	
 	public NonNullList<Ingredient> getIngredients() {
-		VehicleStats preset = getVehiclePreset();
+		VehicleStats preset = getVehicleStats();
 		if (preset == null) return NonNullList.create();
 		return preset.getIngredients();
 	}
 	
 	public ItemStack getOutput() {
-		VehicleStats preset = getVehiclePreset();
+		VehicleStats preset = getVehicleStats();
 		if (preset == null) return ItemStack.EMPTY;
 		return preset.getItem();
 	}

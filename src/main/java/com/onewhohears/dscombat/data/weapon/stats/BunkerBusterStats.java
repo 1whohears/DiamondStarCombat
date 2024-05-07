@@ -61,10 +61,12 @@ public class BunkerBusterStats extends BombStats {
 		return MODID+":textures/ui/weapon_icons/bunker_buster.png";
 	}
 	
+	@Override
 	public boolean isBullet() {
 		return false;
 	}
 	
+	@Override
 	public boolean isAimAssist() {
 		return false;
 	}

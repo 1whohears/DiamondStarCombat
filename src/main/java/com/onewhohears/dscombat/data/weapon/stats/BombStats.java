@@ -49,10 +49,12 @@ public class BombStats extends BulletStats {
 		return MODID+":textures/ui/weapon_icons/bomb.png";
 	}
 	
+	@Override
 	public boolean isBullet() {
 		return false;
 	}
 	
+	@Override
 	public boolean isAimAssist() {
 		return true;
 	}

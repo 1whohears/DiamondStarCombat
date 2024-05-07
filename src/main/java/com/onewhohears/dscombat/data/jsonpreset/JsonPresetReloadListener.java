@@ -98,7 +98,6 @@ public abstract class JsonPresetReloadListener<T extends JsonPresetStats> extend
 		LOGGER.info("APPLYING PRESETS TO COMMON CACHE "+getName());
 		setup = false;
 		presetMap.clear();
-		typeMap.clear();
 		registerPresetTypes();
 		map.forEach((key, je) -> { try {
 			LOGGER.info("ADD: "+key.toString()/*+" "+je.toString()*/);

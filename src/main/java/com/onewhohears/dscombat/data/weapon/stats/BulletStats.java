@@ -120,10 +120,12 @@ public class BulletStats extends WeaponStats {
 		return new BulletInstance<>(this);
 	}
 	
+	@Override
 	public boolean isBullet() {
 		return true;
 	}
 	
+	@Override
 	public boolean isAimAssist() {
 		return true;
 	}

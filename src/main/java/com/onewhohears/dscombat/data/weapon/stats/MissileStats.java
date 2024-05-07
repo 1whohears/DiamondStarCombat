@@ -89,6 +89,16 @@ public abstract class MissileStats extends BulletStats {
 	}
 	
 	@Override
+	public boolean isBullet() {
+		return false;
+	}
+	
+	@Override
+	public boolean isAimAssist() {
+		return false;
+	}
+	
+	@Override
 	public double getMobTurretRange() {
 		return Math.min(2000, getSpeed() * getMaxAge() * 0.9);
 	}

@@ -40,6 +40,7 @@ public abstract class JsonPresetAssetReader<T extends JsonPresetStats> implement
 	public void onResourceManagerReload(ResourceManager manager) {
 		LOGGER.info("RELOAD ASSET: "+directory);
 		presetMap.clear();
+		registerPresetTypes();
 		manager.listResources(directory, (key) -> {
             return key.getPath().endsWith(".json");
 		}).forEach((key, resource) -> {
@@ -47,6 +48,10 @@ public abstract class JsonPresetAssetReader<T extends JsonPresetStats> implement
 			try {
 				JsonObject json = UtilParse.GSON.fromJson(resource.openAsReader(), JsonObject.class);
 				T data = getFromJson(key, json);
+				if (data == null) {
+					LOGGER.warn("ERROR: failed to parse preset "+key.toString());
+					return;
+				}
 				if (!presetMap.containsKey(data.getId())) presetMap.put(data.getId(), data);
 				else {
 					LOGGER.warn("ERROR: Can't have 2 presets with the same name! "+key.toString());

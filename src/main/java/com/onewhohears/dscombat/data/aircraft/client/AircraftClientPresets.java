@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.data.aircraft.client;
 
 import com.onewhohears.dscombat.data.jsonpreset.JsonPresetAssetReader;
-import com.onewhohears.dscombat.data.radar.RadarType;
 
 public class AircraftClientPresets extends JsonPresetAssetReader<VehicleClientStats> {
 	
@@ -24,7 +23,7 @@ public class AircraftClientPresets extends JsonPresetAssetReader<VehicleClientSt
 	
 	@Override
 	protected void registerPresetTypes() {
-		addPresetType(RadarType.STANDARD);
+		addPresetType(VehicleClientType.STANDARD);
 	}
 
 	@Override

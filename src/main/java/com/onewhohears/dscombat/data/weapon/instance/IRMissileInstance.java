@@ -7,7 +7,7 @@ import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.data.weapon.WeaponShootParameters;
 import com.onewhohears.dscombat.data.weapon.stats.IRMissileStats;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.entity.weapon.IRMissile;
 import com.onewhohears.dscombat.entity.weapon.IRMissile.IrTarget;

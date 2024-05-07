@@ -6,7 +6,7 @@ import com.onewhohears.dscombat.data.parts.PartSlot;
 
 import net.minecraft.data.DataGenerator;
 
-public class AircraftClientPresetGenerator extends JsonPresetGenerator<VehicleClientStats> {
+public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleClientStats> {
 	
 	@Override
 	protected void registerPresets() {
@@ -232,7 +232,7 @@ public class AircraftClientPresetGenerator extends JsonPresetGenerator<VehicleCl
 				.build());
 	}
 	
-	public AircraftClientPresetGenerator(DataGenerator output) {
+	public VehicleClientPresetGenerator(DataGenerator output) {
 		super(output, "aircraft_client", DataGenerator.Target.RESOURCE_PACK);
 	}
 

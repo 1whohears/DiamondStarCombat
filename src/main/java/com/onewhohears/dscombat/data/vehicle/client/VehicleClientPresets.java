@@ -2,12 +2,12 @@ package com.onewhohears.dscombat.data.vehicle.client;
 
 import com.onewhohears.dscombat.data.jsonpreset.JsonPresetAssetReader;
 
-public class AircraftClientPresets extends JsonPresetAssetReader<VehicleClientStats> {
+public class VehicleClientPresets extends JsonPresetAssetReader<VehicleClientStats> {
 	
-	private static AircraftClientPresets instance;
+	private static VehicleClientPresets instance;
 	
-	public static AircraftClientPresets get() {
-		if (instance == null) instance = new AircraftClientPresets();
+	public static VehicleClientPresets get() {
+		if (instance == null) instance = new VehicleClientPresets();
 		return instance;
 	}
 	
@@ -17,7 +17,7 @@ public class AircraftClientPresets extends JsonPresetAssetReader<VehicleClientSt
 	
 	private VehicleClientStats[] presets;
 	
-	public AircraftClientPresets() {
+	public VehicleClientPresets() {
 		super("aircraft_client");
 	}
 	

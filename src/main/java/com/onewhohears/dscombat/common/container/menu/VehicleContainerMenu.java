@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.onewhohears.dscombat.common.container.slot.PartItemSlot;
 import com.onewhohears.dscombat.data.parts.PartSlot;
-import com.onewhohears.dscombat.data.vehicle.client.AircraftClientPresets;
+import com.onewhohears.dscombat.data.vehicle.client.VehicleClientPresets;
 import com.onewhohears.dscombat.data.vehicle.client.VehicleClientStats;
 import com.onewhohears.dscombat.data.vehicle.client.VehicleClientStats.UIPos;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
@@ -32,7 +32,7 @@ public class VehicleContainerMenu extends AbstractContainerMenu {
 			this.planeInv = plane.partsManager.getInventory();
 			List<PartSlot> slots = plane.partsManager.getSlots();
 			//System.out.println("client preset = "+plane.clientPreset);
-			clientData = AircraftClientPresets.get().get(plane.clientPresetId);
+			clientData = VehicleClientPresets.get().get(plane.clientPresetId);
 			//System.out.println("acp not null = "+(acp != null));
 			// create plane menu container
 			int x_start = 48, y_start = 15;

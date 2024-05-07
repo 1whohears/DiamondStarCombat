@@ -13,7 +13,7 @@ import com.onewhohears.dscombat.data.tag.EntityTypeTagGen;
 import com.onewhohears.dscombat.data.tag.FluidTagGen;
 import com.onewhohears.dscombat.data.tag.ItemTagGen;
 import com.onewhohears.dscombat.data.vehicle.VehiclePresetGenerator;
-import com.onewhohears.dscombat.data.vehicle.client.AircraftClientPresetGenerator;
+import com.onewhohears.dscombat.data.vehicle.client.VehicleClientPresetGenerator;
 import com.onewhohears.dscombat.data.weapon.WeaponPresetGenerator;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.DataSerializers;
@@ -126,7 +126,7 @@ public class DSCombatMod {
     	}
     	if (event.includeClient()) {
     		generator.addProvider(true, new DSCSoundDefinitionGen(generator, event.getExistingFileHelper()));
-    		generator.addProvider(true, new AircraftClientPresetGenerator(generator));
+    		generator.addProvider(true, new VehicleClientPresetGenerator(generator));
     	}
     }
     

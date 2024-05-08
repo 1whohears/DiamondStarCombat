@@ -1,32 +1,16 @@
-package com.onewhohears.dscombat.data.parts;
+package com.onewhohears.dscombat.data.parts.instance;
 
-import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
+import com.onewhohears.dscombat.data.parts.stats.BuffStats;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 
-public class BuffData extends PartData {
-	
-	public static enum BuffType {
-		DATA_LINK,
-		NIGHT_VISION_HUD,
-		RADIO,
-		ARMOR
-	}
-	
-	private final BuffType type;
-	
-	public BuffData(BuffType type, ResourceLocation itemid, SlotType[] compatibleSlots, float weight) {
-		super(weight, itemid, compatibleSlots);
-		this.type = type;
-	}
+public class BuffInstance<T extends BuffStats> extends PartInstance<T> {
 
-	@Override
-	public PartType getType() {
-		return PartType.BUFF_DATA;
+	public BuffInstance(T stats) {
+		super(stats);
 	}
-
+	
 	@Override
 	public boolean isSetup(String slotId, EntityVehicle craft) {
 		return false;
@@ -35,7 +19,7 @@ public class BuffData extends PartData {
 	@Override
 	public void serverSetup(EntityVehicle craft, String slotId, Vec3 pos) {
 		super.serverSetup(craft, slotId, pos);
-		switch (type) {
+		switch (getStats().getBuffType()) {
 		case DATA_LINK:
 			getParent().radarSystem.dataLink = true;
 			break;
@@ -54,7 +38,7 @@ public class BuffData extends PartData {
 	public void serverRemove(String slotId) {
 		super.serverRemove(slotId);
 		if (getParent() == null) return;
-		switch (type) {
+		switch (getStats().getBuffType()) {
 		case DATA_LINK:
 			getParent().radarSystem.dataLink = false;
 			break;
@@ -67,17 +51,6 @@ public class BuffData extends PartData {
 		case ARMOR:
 			break;
 		}
-	}
-	
-	@Override
-	public boolean isRadio() {
-		return type == BuffType.RADIO;
-	}
-	
-	@Override
-	public float getAdditionalArmor() {
-		if (type == BuffType.ARMOR) return 4f;
-		return 0f;
 	}
 
 }

@@ -1,55 +1,47 @@
-package com.onewhohears.dscombat.data.parts;
+package com.onewhohears.dscombat.data.parts.instance;
 
-import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
+import com.onewhohears.dscombat.data.parts.LoadableRecipePartInstance;
+import com.onewhohears.dscombat.data.parts.stats.FlareDispenserStats;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.weapon.EntityFlare;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 
-public class FlareDispenserData extends PartData implements LoadableRecipePartData {
+public class FlareDispenserInstance<T extends FlareDispenserStats> extends PartInstance<T> implements LoadableRecipePartInstance {
 	
-	private final int max;
-	private final float heat;
-	private final int age;
-	private int flares;
+	private int flares = 0;
 	
-	public FlareDispenserData(float weight, int flares, int max, float heat, int age, ResourceLocation itemid, SlotType[] compatibleSlots) {
-		super(weight, itemid, compatibleSlots);
-		this.flares = flares;
-		this.heat = heat;
-		this.age = age;
-		this.max = max;
+	public FlareDispenserInstance(T stats) {
+		super(stats);
 	}
 	
-	public void read(CompoundTag tag) {
-		super.read(tag);
+	@Override
+	public void readNBT(CompoundTag tag) {
+		super.readNBT(tag);
 		flares = tag.getInt("flares");
 	}
 	
-	public CompoundTag write() {
-		CompoundTag tag = super.write();
+	@Override
+	public CompoundTag writeNBT() {
+		CompoundTag tag = super.writeNBT();
 		tag.putInt("flares", flares);
 		return tag;
 	}
 	
-	public void read(FriendlyByteBuf buffer) {
-		super.read(buffer);
+	@Override
+	public void readBuffer(FriendlyByteBuf buffer) {
+		super.readBuffer(buffer);
 		flares = buffer.readInt();
 	}
 	
-	public void write(FriendlyByteBuf buffer) {
-		super.write(buffer);
+	@Override
+	public void writeBuffer(FriendlyByteBuf buffer) {
+		super.writeBuffer(buffer);
 		buffer.writeInt(flares);
 	}
 	
-	@Override
-	public PartType getType() {
-		return PartType.FLARE_DISPENSER;
-	}
-
 	@Override
 	public boolean isSetup(String slotId, EntityVehicle craft) {
 		return false;
@@ -60,6 +52,7 @@ public class FlareDispenserData extends PartData implements LoadableRecipePartDa
 	 * @return remainder
 	 */
 	public int addFlares(int flares) {
+		int max = getStats().getMaxFlares();
 		this.flares += flares;
 		if (this.flares < 0) {
 			int r = this.flares;
@@ -67,7 +60,7 @@ public class FlareDispenserData extends PartData implements LoadableRecipePartDa
 			return r;
 		}
 		else if (this.flares > max) {
-			int r = this.flares - this.max;
+			int r = this.flares - max;
 			this.flares = max;
 			return r;
 		}
@@ -75,6 +68,7 @@ public class FlareDispenserData extends PartData implements LoadableRecipePartDa
 	}
 	
 	public void setFlares(int flares) {
+		int max = getStats().getMaxFlares();
 		if (flares > max) flares = max;
 		else if (flares < 0) flares = 0;
 		this.flares = flares;
@@ -85,21 +79,12 @@ public class FlareDispenserData extends PartData implements LoadableRecipePartDa
 		return flares;
 	}
 	
-	public int getMaxFlares() {
-		return max;
-	}
-	
-	@Override
-	public float getWeight() {
-		return super.getWeight();
-	}
-	
 	public boolean flare(boolean consume) {
 		if (getParent() == null) return false;
 		if (getFlares() <= 0) return false;
 		Level level = getParent().level;
-		EntityFlare flare = new EntityFlare(level, heat, age, 3);
-		flare.setPos(getParent().position().add(relPos));
+		EntityFlare flare = new EntityFlare(level, getStats().getInitHeat(), getStats().getMaxAge(), 3);
+		flare.setPos(getParent().position().add(getRelPos()));
 		flare.setDeltaMovement(getParent().getDeltaMovement());
 		level.addFreshEntity(flare);
 		if (consume) addFlares(-1);
@@ -113,7 +98,7 @@ public class FlareDispenserData extends PartData implements LoadableRecipePartDa
 
 	@Override
 	public float getMaxAmmo() {
-		return getMaxFlares();
+		return getStats().getMaxFlares();
 	}
 
 	@Override

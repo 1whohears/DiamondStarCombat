@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.init;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.parts.PartData;
+import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 import com.onewhohears.dscombat.data.radar.RadarStats.RadarMode;
 import com.onewhohears.dscombat.item.ItemPart;
 import com.onewhohears.dscombat.util.UtilItem;
@@ -59,22 +59,22 @@ public class DataSerializers {
 		}
     };
     
-    public static final EntityDataSerializer<PartData> PART_DATA = new EntityDataSerializer<>() {
+    public static final EntityDataSerializer<PartInstance<?>> PART_DATA = new EntityDataSerializer<>() {
 		@Override
-		public void write(FriendlyByteBuf buffer, PartData p) {
-			p.write(buffer);
+		public void write(FriendlyByteBuf buffer, PartInstance<?> p) {
+			p.writeBuffer(buffer);
 		}
 		@Override
-		public PartData read(FriendlyByteBuf buffer) {
+		public PartInstance<?> read(FriendlyByteBuf buffer) {
 			String itemId = buffer.readUtf();
 			Item item = UtilItem.getItem(itemId, null);
 			if (!(item instanceof ItemPart part)) return null;
-			PartData data = part.getPartData();
-			data.read(buffer);
+			PartInstance<?> data = part.getPartData();
+			data.readBuffer(buffer);
 			return data;
 		}
 		@Override
-		public PartData copy(PartData p) {
+		public PartInstance<?> copy(PartInstance<?> p) {
 			return p;
 		}
     };

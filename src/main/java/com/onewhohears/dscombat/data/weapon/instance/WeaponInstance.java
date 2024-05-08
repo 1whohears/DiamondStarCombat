@@ -46,8 +46,8 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 	}
 	
 	@Override
-	public CompoundTag writeNbt() {
-		CompoundTag tag = super.writeNbt();
+	public CompoundTag writeNBT() {
+		CompoundTag tag = super.writeNBT();
 		tag.putString("weaponId", getStatsId());
 		tag.putInt("currentAmmo", getCurrentAmmo());
 		UtilParse.writeVec3(tag, pos, "pos");

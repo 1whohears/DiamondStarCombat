@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.data.parts;
 
 import net.minecraft.world.item.ItemStack;
 
-public interface LoadableRecipePartData {
+public interface LoadableRecipePartInstance {
 	
 	float getCurrentAmmo();
 	float getMaxAmmo();

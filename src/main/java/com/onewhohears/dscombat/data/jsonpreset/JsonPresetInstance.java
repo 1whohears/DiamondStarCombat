@@ -26,7 +26,7 @@ public abstract class JsonPresetInstance<T extends JsonPresetStats> {
 		
 	}
 	
-	public CompoundTag writeNbt() {
+	public CompoundTag writeNBT() {
 		CompoundTag tag = new CompoundTag();
 		tag.putString("presetId", getStatsId());
 		return tag;

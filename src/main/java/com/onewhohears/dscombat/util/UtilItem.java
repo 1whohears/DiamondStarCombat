@@ -13,6 +13,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -109,6 +110,16 @@ public class UtilItem {
 			Containers.dropItemStack(player.level, pos.getX()+0.5, 
 				pos.getY()+1.125, pos.getZ()+0.5, stack);
 		}
+	}
+	
+	public static MenuType<?> getChestMenuTypeByRows(int rows) {
+		if (rows == 1) return MenuType.GENERIC_9x1;
+		else if (rows == 2) return MenuType.GENERIC_9x2;
+		else if (rows == 3) return MenuType.GENERIC_9x3;
+		else if (rows == 4) return MenuType.GENERIC_9x4;
+		else if (rows == 5) return MenuType.GENERIC_9x5;
+		else if (rows == 6) return MenuType.GENERIC_9x6;
+		return MenuType.GENERIC_9x6;
 	}
 	
 }

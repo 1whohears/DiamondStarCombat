@@ -244,6 +244,7 @@ public class UtilEntity {
 	}
 	
 	public static EntityType<?> getEntityType(String entityTypeKey, EntityType<?> alt) {
+		if (entityTypeKey == null || entityTypeKey.isEmpty()) return alt;
 		try {
 			return ForgeRegistries.ENTITY_TYPES.getDelegate(
 				new ResourceLocation(entityTypeKey)).get().get();

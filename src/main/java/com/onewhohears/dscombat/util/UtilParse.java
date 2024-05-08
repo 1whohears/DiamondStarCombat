@@ -16,8 +16,10 @@ import com.google.gson.JsonObject;
 import com.mojang.logging.LogUtils;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.data.parts.PartData;
-import com.onewhohears.dscombat.data.radar.RadarStats;
+import com.onewhohears.dscombat.data.parts.instance.PartInstance;
+import com.onewhohears.dscombat.data.parts.stats.PartStats;
 import com.onewhohears.dscombat.data.radar.RadarPresets;
+import com.onewhohears.dscombat.data.radar.RadarStats;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.item.ItemPart;
@@ -106,7 +108,7 @@ public class UtilParse {
 	}
 	
 	@Nullable
-	public static PartData parsePartFromItem(ItemStack stack) {
+	public static PartInstance<?> parsePartFromItem(ItemStack stack) {
 		//System.out.println("parsePartFromItem = "+stack+" "+stack.getTag());
 		if (!(stack.getItem() instanceof ItemPart part)) return null;
 		if (stack.hasTag()) return parsePartFromCompound(stack.getTag());
@@ -114,7 +116,7 @@ public class UtilParse {
 	}
 	
 	@Nullable
-	public static PartData parsePartFromCompound(CompoundTag tag) {
+	public static PartInstance<?> parsePartFromCompound(CompoundTag tag) {
 		//System.out.println("parsePartFromCompound tag = "+tag);
 		if (tag == null) return null;
 		if (tag.isEmpty()) return null;
@@ -123,9 +125,9 @@ public class UtilParse {
 		Item item = UtilItem.getItem(itemId, null);
 		if (!(item instanceof ItemPart part)) return null;
 		if (tag.getBoolean("filled")) return part.getFilledPartData(tag.getString("param"));
-		PartData data = part.getPartData();
-		boolean old = tag.getInt("parse_version") < PartData.PARSE_VERSION;
-		if (old || tag.getBoolean("readnbt")) data.read(tag);
+		PartInstance<?> data = part.getPartData();
+		boolean old = tag.getInt("parse_version") < PartInstance.PARSE_VERSION;
+		if (old || tag.getBoolean("readnbt")) data.readNBT(tag);
 		return data;
 	}
 	
@@ -221,6 +223,17 @@ public class UtilParse {
 	public static JsonObject getJsonSafe(JsonObject json, String name) {
 		if (!json.has(name)) return new JsonObject();
 		return json.getAsJsonObject(name);
+	}
+	
+	public static <E extends Enum<E>> E getEnumSafe(JsonObject json, String name, Class<E> enumClass) {
+		E[] enums = enumClass.getEnumConstants();
+		if (enums.length == 0) return null;
+		if (!json.has(name)) return enums[0];
+		String enumName = json.get(name).getAsString();
+		for (int i = 0; i < enums.length; ++i) 
+			if (enums[i].name().equals(enumName)) 
+				return enums[i];
+		return enums[0];
 	}
 	
 	public static String toColorString(Color color) {

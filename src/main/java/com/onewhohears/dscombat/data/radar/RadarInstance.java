@@ -38,8 +38,8 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 	}
 	
 	@Override
-	public CompoundTag writeNbt() {
-		CompoundTag tag = super.writeNbt();
+	public CompoundTag writeNBT() {
+		CompoundTag tag = super.writeNBT();
 		tag.putString("slotId", slotId);
 		return tag;
 	}

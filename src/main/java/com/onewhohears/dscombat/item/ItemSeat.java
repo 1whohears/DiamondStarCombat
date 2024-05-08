@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.item;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
 import com.onewhohears.dscombat.data.parts.SeatData;
+import com.onewhohears.dscombat.data.parts.instance.SeatInstance;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.util.UtilItem;
 
@@ -10,7 +11,7 @@ public class ItemSeat extends ItemPart {
 	
 	private static SeatData defaultSeat;
 	
-	public static SeatData getDefaultSeat() {
+	public static SeatInstance<?> getDefaultSeat() {
 		if (defaultSeat == null) defaultSeat = (SeatData)((ItemSeat)ModItems.SEAT.get()).getPartData();
 		return defaultSeat;
 	}

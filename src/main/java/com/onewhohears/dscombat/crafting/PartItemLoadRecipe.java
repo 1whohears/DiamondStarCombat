@@ -6,7 +6,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.annotation.Nullable;
 
-import com.onewhohears.dscombat.data.parts.LoadableRecipePartData;
+import com.onewhohears.dscombat.data.parts.LoadableRecipePartInstance;
 import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.util.UtilParse;
 
@@ -18,7 +18,7 @@ import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeHooks;
 
-public abstract class PartItemLoadRecipe<I extends LoadableRecipePartData> extends CustomRecipe {
+public abstract class PartItemLoadRecipe<I extends LoadableRecipePartInstance> extends CustomRecipe {
 
 	protected PartItemLoadRecipe(ResourceLocation id) {
 		super(id);

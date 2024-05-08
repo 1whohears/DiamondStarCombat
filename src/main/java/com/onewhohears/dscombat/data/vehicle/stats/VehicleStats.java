@@ -202,16 +202,6 @@ public abstract class VehicleStats extends JsonPresetStats {
 		return null;
 	}
 	
-	/**
-	 * override this in your custom vehicle stats class if you want to skip the cast
-	 * @return null if not the same type
-	 */
-	@Nullable 
-	public <T extends VehicleStats> T as(VehicleType type) {
-		if (getType().is(type)) return (T) this;
-		return null;
-	}
-	
 	@Nullable public PlaneStats asPlane() { return as(VehicleType.PLANE); }
 	@Nullable public HeliStats asHeli() { return as(VehicleType.HELICOPTER); }
 	@Nullable public CarStats asCar() { return as(VehicleType.CAR); }

@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Objects;
 
 import com.onewhohears.dscombat.client.screen.VehiclePaintScreen;
-import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot;
+import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 import com.onewhohears.dscombat.data.radar.RadarStats.RadarPing;
 import com.onewhohears.dscombat.data.radar.RadarSystem.RWRWarning;
 import com.onewhohears.dscombat.data.vehicle.DSCPhyCons;
@@ -66,7 +66,7 @@ public class UtilClientPacket {
 		}
 	}
 	
-	public static void addPartPacket(int id, String slotId, PartData data) {
+	public static void addPartPacket(int id, String slotId, PartInstance<?> data) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityVehicle plane) {

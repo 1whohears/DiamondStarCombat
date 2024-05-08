@@ -104,7 +104,7 @@ public class EntityTurret extends EntitySeat {
 	protected void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
 		tag.putString("weaponId", getWeaponId());
-		if (data != null) tag.put("weapondata", data.writeNbt());
+		if (data != null) tag.put("weapondata", data.writeNBT());
 		tag.putFloat("xRot", getXRot());
 		tag.putFloat("yRot", getYRot());
 		tag.putFloat("relrotx", getRelRotX());

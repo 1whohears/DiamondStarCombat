@@ -118,7 +118,7 @@ public abstract class JsonPresetStats {
 	}
 	
 	public <T extends JsonPresetStats> int compare(T other) {
-		if (this.getType() != other.getType()) 
+		if (!this.getType().is(other.getType())) 
 			return this.getType().getSortFactor() - other.getType().getSortFactor();
 		if (this.getSortFactor() != other.getSortFactor()) 
 			return this.getSortFactor() - other.getSortFactor();
@@ -134,5 +134,15 @@ public abstract class JsonPresetStats {
 	}
 	
 	@Nullable public abstract JsonPresetInstance<?> createPresetInstance();
+	
+	/**
+	 * override this in your custom vehicle stats class if you want to skip the cast
+	 * @return null if not the same type
+	 */
+	@Nullable 
+	public <T extends JsonPresetStats> T as(JsonPresetType type) {
+		if (getType().is(type)) return (T) this;
+		return null;
+	}
 	
 }

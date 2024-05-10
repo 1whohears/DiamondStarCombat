@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.data.vehicle.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.PartSlot;
-import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
+import com.onewhohears.dscombat.data.parts.SlotType;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModSounds;
@@ -34,11 +34,11 @@ public class TankPresets {
 			.addIngredient(ModItems.TANK_TRACK.getId(), 4)
 			.addIngredientTag("dscombat:aluminum_ingot", 30)
 			.addIngredient("minecraft:gold_ingot", 5)
-			.addSeatSlot(PartSlot.PILOT_SLOT_NAME, SlotType.HEAVY_TURRET, 0, 1.4, 0)
-			.addSeatSlot("seat1", SlotType.MED_TURRET, 1, 1.4, 2)
-			.addSeatSlot("seat2", SlotType.MED_TURRET, -1, 1.4, 2)
-			.addSeatSlot("seat3", SlotType.MED_TURRET, 1, 1.4, -2)
-			.addSeatSlot("seat4", SlotType.MED_TURRET, -1, 1.4, -2)
+			.addSeatSlot(PartSlot.PILOT_SLOT_NAME, SlotType.MOUNT_HEAVY, 0, 1.4, 0)
+			.addSeatSlot("seat1", SlotType.MOUNT_MED, 1, 1.4, 2)
+			.addSeatSlot("seat2", SlotType.MOUNT_MED, -1, 1.4, 2)
+			.addSeatSlot("seat3", SlotType.MOUNT_MED, 1, 1.4, -2)
+			.addSeatSlot("seat4", SlotType.MOUNT_MED, -1, 1.4, -2)
 			.addEmptySlot("internal_1", SlotType.SPIN_ENGINE)
 			.addEmptySlot("internal_2", SlotType.SPIN_ENGINE)
 			.addEmptySlot("internal_3", SlotType.INTERNAL)
@@ -86,7 +86,7 @@ public class TankPresets {
 			.addIngredient(ModItems.SEAT.getId(), 1)
 			.addIngredientTag("dscombat:aluminum_ingot", 5)
 			.addIngredient(ModItems.TANK_TRACK.getId(), 2)
-			.addSeatSlot(PartSlot.PILOT_SLOT_NAME, SlotType.MED_TURRET, 0, 0.6, 0)
+			.addSeatSlot(PartSlot.PILOT_SLOT_NAME, SlotType.MOUNT_MED, 0, 0.6, 0)
 			.addEmptySlot("internal_1", SlotType.SPIN_ENGINE)
 			.addEmptySlot("internal_2", SlotType.INTERNAL)
 			.build();

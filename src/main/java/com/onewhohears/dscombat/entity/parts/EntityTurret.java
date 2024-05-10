@@ -5,10 +5,10 @@ import javax.annotation.Nullable;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.command.DSCGameRules;
-import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.data.parts.PartSlot;
-import com.onewhohears.dscombat.data.parts.TurretData;
-import com.onewhohears.dscombat.data.parts.TurretData.RotBounds;
+import com.onewhohears.dscombat.data.parts.PartType;
+import com.onewhohears.dscombat.data.parts.instance.TurretInstance;
+import com.onewhohears.dscombat.data.parts.stats.TurretStats.RotBounds;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.entity.ai.goal.TurretShootGoal;
@@ -274,8 +274,8 @@ public class EntityTurret extends EntitySeat {
 	public void updateDataAmmo() {
 		if (getRootVehicle() instanceof EntityVehicle plane) {
 			PartSlot slot = plane.partsManager.getSlot(getSlotId());
-			if (slot != null && slot.filled() && slot.getPartData().getType() == PartType.TURRENT) { 
-				TurretData td = (TurretData) slot.getPartData();
+			if (slot != null && slot.filled() && slot.getPartData().getStats().getType().is(PartType.TURRENT)) { 
+				TurretInstance<?> td = (TurretInstance<?>) slot.getPartData();
 				td.setAmmo(getAmmo());
 			}
 		}

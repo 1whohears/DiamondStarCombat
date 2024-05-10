@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.data.vehicle.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
-import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
+import com.onewhohears.dscombat.data.parts.SlotType;
 import com.onewhohears.dscombat.data.vehicle.LiftKGraph;
 import com.onewhohears.dscombat.data.vehicle.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
@@ -46,22 +46,22 @@ public class JaviPresets {
 			.addIngredient(ModItems.WHEEL.getId(), 3)
 			.addIngredient("minecraft:gold_ingot", 10)
 			.addPilotSeatSlot(0, 0.5, 6.34375)
-			.addEmptySlot("left_wing_1", SlotType.WING, 1.96875, -0.28125, 1, 180)
-			.addEmptySlot("left_wing_2", SlotType.WING, 4.25, -0.28125, 1, 180)
-			.addEmptySlot("left_wing_3", SlotType.WING, 5.625, -0.28125, 1, 180) 
-			.addEmptySlot("left_wing_4", SlotType.WING, 6.96875, -0.28125, 1, 180) 
-			.addEmptySlot("right_wing_1", SlotType.WING, -1.96875, -0.28125, 1, 180)
-			.addEmptySlot("right_wing_2", SlotType.WING, -4.25, -0.28125, 1, 180)
-			.addEmptySlot("right_wing_3", SlotType.WING, -5.625, -0.28125, 1, 180) 
-			.addEmptySlot("right_wing_4", SlotType.WING, -6.96875, -0.28125, 1, 180) 
-			.addEmptySlot("frame_1", SlotType.FRAME, 0, -0.34375, 8.65625, 180)
-			.addEmptySlot("frame_2", SlotType.FRAME, 0, -0.71875, 1.03125, 180)
+			.addEmptySlot("left_wing_1", SlotType.PYLON_HEAVY, 1.96875, -0.28125, 1, 180)
+			.addEmptySlot("left_wing_2", SlotType.PYLON_MED, 4.25, -0.28125, 1, 180)
+			.addEmptySlot("left_wing_3", SlotType.PYLON_MED, 5.625, -0.28125, 1, 180) 
+			.addEmptySlot("left_wing_4", SlotType.PYLON_MED, 6.96875, -0.28125, 1, 180) 
+			.addEmptySlot("right_wing_1", SlotType.PYLON_HEAVY, -1.96875, -0.28125, 1, 180)
+			.addEmptySlot("right_wing_2", SlotType.PYLON_MED, -4.25, -0.28125, 1, 180)
+			.addEmptySlot("right_wing_3", SlotType.PYLON_MED, -5.625, -0.28125, 1, 180) 
+			.addEmptySlot("right_wing_4", SlotType.PYLON_MED, -6.96875, -0.28125, 1, 180) 
+			.addEmptySlot("frame_1", SlotType.PYLON_LIGHT, 0, -0.34375, 8.65625, 180)
+			.addEmptySlot("frame_2", SlotType.PYLON_HEAVY, 0, -0.71875, 1.03125, 180)
 			.addEmptySlot("internal_1", SlotType.PUSH_ENGINE)
 			.addEmptySlot("internal_2", SlotType.PUSH_ENGINE)
 			.addEmptySlot("internal_3", SlotType.INTERNAL)
-			.addEmptySlot("internal_4", SlotType.ADVANCED_INTERNAL)
-			.addEmptySlot("internal_5", SlotType.ADVANCED_INTERNAL)
-			.addEmptySlot("internal_6", SlotType.ADVANCED_INTERNAL)
+			.addEmptySlot("internal_4", SlotType.TECH_INTERNAL)
+			.addEmptySlot("internal_5", SlotType.TECH_INTERNAL)
+			.addEmptySlot("internal_6", SlotType.TECH_INTERNAL)
 			.addEntityScreen(EntityScreenIds.AIR_RADAR_SCREEN, 0.327, 1.259, 7.19, 0.173, 0.173, 10)
 			.addEntityScreen(EntityScreenIds.RWR_SCREEN, 0.145, 1.325, 7.2, 0.1, 0.1, 10)
 			.addEntityScreen(EntityScreenIds.GROUND_RADAR_SCREEN,-0.349,1.259,7.19,0.173,0.173,10)

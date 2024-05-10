@@ -5,7 +5,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.data.parts.PartData;
-import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
+import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.util.UtilMCText;
 
@@ -22,17 +22,15 @@ import net.minecraft.world.level.Level;
 
 public abstract class ItemPart extends Item {
 	
-	public final float weight;
-	public final SlotType[] compatibleSlots;
+	public final String defaultPartId;
 	
-	protected ItemPart(int stackSize, float weight, SlotType[] compatibleSlots) {
-		this(partProps(stackSize), weight, compatibleSlots);
+	protected ItemPart(int stackSize, String defaultPartId) {
+		this(partProps(stackSize), defaultPartId);
 	}
 	
-	protected ItemPart(Properties props, float weight, SlotType[] compatibleSlots) {
+	protected ItemPart(Properties props, String defaultPartId) {
 		super(props);
-		this.weight = weight;
-		this.compatibleSlots = compatibleSlots;
+		this.defaultPartId = defaultPartId;
 	}
 	
 	public static Properties partProps(int stackSize) {
@@ -53,17 +51,19 @@ public abstract class ItemPart extends Item {
 	}
 	
 	public CompoundTag getNbt() {
-		return getPartData().write();
+		return getPartData().writeNBT();
 	}
 	
 	public CompoundTag getFilledNbt() {
-		return getFilledPartData("").write();
+		return getFilledPartData("").writeNBT();
 	}
 	
-	public abstract PartData getPartData();
+	public PartInstance<?> getPartData() {
+		
+	}
 	
-	public PartData getFilledPartData(String param) {
-		return getPartData();
+	public PartInstance<?> getFilledPartData(String param) {
+		
 	}
 	
 	@Override

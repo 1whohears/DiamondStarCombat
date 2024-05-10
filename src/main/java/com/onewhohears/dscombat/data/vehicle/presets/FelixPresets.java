@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.data.vehicle.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
-import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
+import com.onewhohears.dscombat.data.parts.SlotType;
 import com.onewhohears.dscombat.data.vehicle.LiftKGraph;
 import com.onewhohears.dscombat.data.vehicle.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
@@ -45,16 +45,16 @@ public class FelixPresets {
 			.addIngredient(ModItems.ADVANCED_COCKPIT.getId())
 			.addIngredient(ModItems.WHEEL.getId(), 3)
 			.addPilotSeatSlot(0, -0.3, 4.7)
-			.addEmptySlot("left_wing_1", SlotType.WING, 2.4, -0.64, -0.05, 180)
-			.addEmptySlot("left_wing_2", SlotType.WING, 3.4, -0.64, -1.3, 180)
-			.addEmptySlot("right_wing_1", SlotType.WING, -2.4, -0.64, -0.05, 180)
-			.addEmptySlot("right_wing_2", SlotType.WING, -3.4, -0.64, -1.3, 180)
-			.addEmptySlot("frame_1", SlotType.FRAME, 0, -1.07, 1.2, 180)
-			.addEmptySlot("nose_1", SlotType.FRAME, 0, -0.8, 3.6, 180)
+			.addEmptySlot("left_wing_1", SlotType.PYLON_LIGHT, 2.4, -0.64, -0.05, 180)
+			.addEmptySlot("left_wing_2", SlotType.PYLON_LIGHT, 3.4, -0.64, -1.3, 180)
+			.addEmptySlot("right_wing_1", SlotType.PYLON_LIGHT, -2.4, -0.64, -0.05, 180)
+			.addEmptySlot("right_wing_2", SlotType.PYLON_LIGHT, -3.4, -0.64, -1.3, 180)
+			.addEmptySlot("frame_1", SlotType.PYLON_MED, 0, -1.07, 1.2, 180)
+			.addEmptySlot("nose_1", SlotType.PYLON_LIGHT, 0, -0.8, 3.6, 180)
 			.addEmptySlot("internal_1", SlotType.PUSH_ENGINE)
 			.addEmptySlot("internal_2", SlotType.INTERNAL)
 			.addEmptySlot("internal_3", SlotType.INTERNAL)
-			.addEmptySlot("internal_4", SlotType.ADVANCED_INTERNAL)
+			.addEmptySlot("internal_4", SlotType.TECH_INTERNAL)
 			.addEntityScreen(EntityScreenIds.AIR_RADAR_SCREEN,0.294,0.434,5.425,0.195,0.195,10)
 			.addEntityScreen(EntityScreenIds.FUEL_SCREEN,-0.39,0.135,5.155,0.1,0.1,10)
 			.addEntityScreen(EntityScreenIds.GROUND_RADAR_SCREEN,-0.31,0.434,5.425,0.195,0.195,10)

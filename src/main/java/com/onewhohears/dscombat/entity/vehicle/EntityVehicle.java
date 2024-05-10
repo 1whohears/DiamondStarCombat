@@ -30,8 +30,9 @@ import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleControl;
 import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleMoveRot;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartsManager;
-import com.onewhohears.dscombat.data.parts.StorageBoxData;
+import com.onewhohears.dscombat.data.parts.instance.StorageInstance;
 import com.onewhohears.dscombat.data.radar.RadarStats.RadarMode;
+import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.vehicle.DSCPhyCons;
 import com.onewhohears.dscombat.data.vehicle.EntityScreenData;
 import com.onewhohears.dscombat.data.vehicle.VehicleInputManager;
@@ -40,7 +41,6 @@ import com.onewhohears.dscombat.data.vehicle.VehicleSoundManager;
 import com.onewhohears.dscombat.data.vehicle.VehicleTextureManager;
 import com.onewhohears.dscombat.data.vehicle.VehicleType;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
-import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.weapon.WeaponSystem;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.entity.IREmitter;
@@ -1226,7 +1226,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			player.displayClientMessage(UtilMCText.translatable(getOpenMenuError()), true);
 			return;
 		}
-		StorageBoxData box = partsManager.cycleStorageData();
+		StorageInstance<?> box = partsManager.cycleStorageData();
 		if (box == null) {
 			player.displayClientMessage(UtilMCText.translatable("error.dscombat.no_storage_boxes"), true);
 			return;

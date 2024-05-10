@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.data.parts.instance;
 
 import com.onewhohears.dscombat.data.jsonpreset.JsonPresetInstance;
+import com.onewhohears.dscombat.data.parts.SlotType;
 import com.onewhohears.dscombat.data.parts.stats.PartStats;
 import com.onewhohears.dscombat.entity.parts.EntityPart;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
@@ -19,6 +20,9 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 	
 	public PartInstance(T stats) {
 		super(stats);
+	}
+	
+	public void setFilled(String param) {
 	}
 	
 	@Override
@@ -133,6 +137,10 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 		part.setPos(craft.position());
 		part.setHealth(health);
 		part.startRiding(craft);
+	}
+	
+	public boolean isCompatible(SlotType type) {
+		return getStats().isCompatible(type);
 	}
 
 }

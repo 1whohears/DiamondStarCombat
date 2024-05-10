@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.data.parts.LoadableRecipePartInstance;
-import com.onewhohears.dscombat.data.parts.PartData;
+import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.core.NonNullList;
@@ -161,7 +161,7 @@ public abstract class PartItemLoadRecipe<I extends LoadableRecipePartInstance> e
 	@Nullable
 	protected I getLoadablePartDataFromItem(ItemStack part) {
 		if (part == null) return null;
-		PartData pd = UtilParse.parsePartFromItem(part);
+		PartInstance<?> pd = UtilParse.parsePartFromItem(part);
 		if (pd == null) return null;
 		return (I) pd;
 	}

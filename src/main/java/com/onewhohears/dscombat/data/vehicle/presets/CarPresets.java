@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.data.vehicle.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
-import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
+import com.onewhohears.dscombat.data.parts.SlotType;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModSounds;
@@ -70,12 +70,12 @@ public class CarPresets {
 			.addIngredient(ModItems.SEAT.getId(), 2)
 			.addIngredient(ModItems.WHEEL.getId(), 6)
 			.addIngredientTag("dscombat:aluminum_ingot", 24)
-			.addEmptySlot("cargo_bed_1", SlotType.HEAVY_TURRET, 0, 1, -2.75, 0)
-			.addEmptySlot("frame_1", SlotType.ADVANCED_FRAME, 0, 2.95, 1, 0)
+			.addEmptySlot("cargo_bed_1", SlotType.MOUNT_HEAVY, 0, 1, -2.75, 0)
+			.addEmptySlot("frame_1", SlotType.MOUNT_TECH, 0, 2.95, 1, 0)
 			.addEmptySlot("internal_1", SlotType.SPIN_ENGINE)
 			.addEmptySlot("internal_2", SlotType.INTERNAL)
-			.addEmptySlot("internal_3", SlotType.ADVANCED_INTERNAL)
-			.addEmptySlot("internal_4", SlotType.ADVANCED_INTERNAL)
+			.addEmptySlot("internal_3", SlotType.TECH_INTERNAL)
+			.addEmptySlot("internal_4", SlotType.TECH_INTERNAL)
 			.addEntityScreen(EntityScreenIds.AIR_RADAR_SCREEN, 0, 1.35, 1.6, 0.6, 0.6)
 			.build();
 	

@@ -158,13 +158,20 @@ public abstract class JsonPresetReloadListener<T extends JsonPresetStats> extend
 		return type.createStats(key, json);
 	}
 	/**
-	 * to add a custom preset type, call this during a reload event
+	 * to add a custom preset type, call this in the {@link net.minecraftforge.event.AddReloadListenerEvent} event.
+	 * that event gets called on every reload, so you can register the preset type, 
+	 * and then this reload listener reads all the json files.
+	 * so for example if you want to register a custom vehicle type then call VehiclePresets.get().addPresetType(...);
 	 * @param type
 	 */
 	public void addPresetType(JsonPresetType type) {
 		typeMap.put(type.getId(), type);
 	}
 	
+	/**
+	 * used to add a bunch of default preset types. 
+	 * see {@link #addPresetType(JsonPresetType)} for adding custom preset types. 
+	 */
 	protected abstract void registerPresetTypes();
 	
 	public void writeToBuffer(FriendlyByteBuf buffer) {

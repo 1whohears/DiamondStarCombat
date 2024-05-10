@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.crafting;
 
 import javax.annotation.Nonnull;
 
-import com.onewhohears.dscombat.data.parts.TurretData;
+import com.onewhohears.dscombat.data.parts.instance.TurretInstance;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.init.ModRecipes;
@@ -13,7 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 
-public class TurretUnloadRecipe extends PartItemUnloadRecipe<TurretData> {
+public class TurretUnloadRecipe extends PartItemUnloadRecipe<TurretInstance<?>> {
 
 	public TurretUnloadRecipe(ResourceLocation id) {
 		super(id);

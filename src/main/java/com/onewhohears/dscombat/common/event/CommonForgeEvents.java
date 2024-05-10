@@ -5,6 +5,7 @@ import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientDataPackSynch;
 import com.onewhohears.dscombat.common.network.toclient.ToClientSynchGameRules;
+import com.onewhohears.dscombat.data.parts.PartPresets;
 import com.onewhohears.dscombat.data.radar.RadarPresets;
 import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
 import com.onewhohears.dscombat.data.weapon.NonTickingMissileManager;
@@ -80,6 +81,7 @@ public final class CommonForgeEvents {
 		VehiclePresets.close();
 		WeaponPresets.close();
 		RadarPresets.close();
+		PartPresets.close();
 	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
@@ -87,6 +89,7 @@ public final class CommonForgeEvents {
 		event.addListener(VehiclePresets.get());
 		event.addListener(WeaponPresets.get());
 		event.addListener(RadarPresets.get());
+		event.addListener(PartPresets.get());
 	}
 	
 	/*@SubscribeEvent(priority = EventPriority.NORMAL)

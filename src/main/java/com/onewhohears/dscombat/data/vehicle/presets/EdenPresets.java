@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.data.vehicle.presets;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
 import com.onewhohears.dscombat.data.parts.PartSlot;
-import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
+import com.onewhohears.dscombat.data.parts.SlotType;
 import com.onewhohears.dscombat.data.vehicle.LiftKGraph;
 import com.onewhohears.dscombat.data.vehicle.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
@@ -49,20 +49,20 @@ public class EdenPresets {
 			.addIngredient("minecraft:gold_ingot", 20)
 			.addPilotSeatSlot(0, 0.3, 8.5)
 			.addSeatSlot(PartSlot.COPILOT_SLOT_NAME, 0, 0.4, 6.8)
-			.addEmptySlot("left_wing_1", SlotType.WING, 3, 0.05, 0.4, 180)
-			.addEmptySlot("left_wing_2", SlotType.WING, 4, 0.05, -0.4, 180)
-			.addEmptySlot("left_wing_3", SlotType.WING, 5, 0.05, -1.2, 180)
-			.addEmptySlot("right_wing_1", SlotType.WING, -3, 0.05, 0.4, 180)
-			.addEmptySlot("right_wing_2", SlotType.WING, -4, 0.05, -0.4, 180)
-			.addEmptySlot("right_wing_3", SlotType.WING, -5, 0.05, -1.2, 180)
-			.addEmptySlot("frame_1", SlotType.FRAME, 0, -0.14, 9.6, 180)
+			.addEmptySlot("left_wing_1", SlotType.PYLON_MED, 3, 0.05, 0.4, 180)
+			.addEmptySlot("left_wing_2", SlotType.PYLON_LIGHT, 4, 0.05, -0.4, 180)
+			.addEmptySlot("left_wing_3", SlotType.PYLON_LIGHT, 5, 0.05, -1.2, 180)
+			.addEmptySlot("right_wing_1", SlotType.PYLON_LIGHT, -3, 0.05, 0.4, 180)
+			.addEmptySlot("right_wing_2", SlotType.PYLON_LIGHT, -4, 0.05, -0.4, 180)
+			.addEmptySlot("right_wing_3", SlotType.PYLON_LIGHT, -5, 0.05, -1.2, 180)
+			.addEmptySlot("frame_1", SlotType.PYLON_LIGHT, 0, -0.14, 9.6, 180)
 			.addEmptySlot("internal_1", SlotType.PUSH_ENGINE)
 			.addEmptySlot("internal_2", SlotType.PUSH_ENGINE)
 			.addEmptySlot("internal_3", SlotType.INTERNAL)
 			.addEmptySlot("internal_4", SlotType.INTERNAL)
-			.addEmptySlot("internal_5", SlotType.ADVANCED_INTERNAL)
-			.addEmptySlot("internal_6", SlotType.ADVANCED_INTERNAL)
-			.addEmptySlot("internal_7", SlotType.ADVANCED_INTERNAL)
+			.addEmptySlot("internal_5", SlotType.TECH_INTERNAL)
+			.addEmptySlot("internal_6", SlotType.TECH_INTERNAL)
+			.addEmptySlot("internal_7", SlotType.TECH_INTERNAL)
 			.addAfterBurnerSmokePos(-1,0.1,-5)
 			.addAfterBurnerSmokePos(1,0.1,-5)
 			.addEntityScreen(EntityScreenIds.AIR_RADAR_SCREEN, 0.3, 0.9, 9.242, 0.22, 0.28, 5)

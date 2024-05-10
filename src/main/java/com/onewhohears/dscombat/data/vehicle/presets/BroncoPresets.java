@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.data.vehicle.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.PartSlot;
-import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
+import com.onewhohears.dscombat.data.parts.SlotType;
 import com.onewhohears.dscombat.data.vehicle.LiftKGraph;
 import com.onewhohears.dscombat.data.vehicle.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
@@ -45,19 +45,19 @@ public class BroncoPresets {
 			.addIngredient(ModItems.WHEEL.getId(), 3)
 			.addIngredient(ModItems.PROPELLER.getId(), 2)
 			.addPilotSeatSlot(0, -0.74, 4.5)
-			.addSeatSlot(PartSlot.COPILOT_SLOT_NAME, SlotType.LIGHT_TURRET, 0, -0.61, 3.125)
-			.addEmptySlot("nose_1", SlotType.FRAME, 0, -0.9357, 6.0625, 180)
-			.addEmptySlot("frame_1", SlotType.FRAME, 0.5, -1.25, 1.1875, 180)
-			.addEmptySlot("frame_2", SlotType.FRAME, 1.125, -1.375, 1.1875, 180)
-			.addEmptySlot("frame_3", SlotType.FRAME, -0.5, -1.25, 1.1875, 180)
-			.addEmptySlot("frame_4", SlotType.FRAME, -1.125, -1.375, 1.1875, 180)
-			.addEmptySlot("left_wing_1", SlotType.WING, 4.875, 0.125, 1.0625, 180)
-			.addEmptySlot("right_wing_1", SlotType.WING, -4.875, 0.125, 1.0625, 180)
+			.addSeatSlot(PartSlot.COPILOT_SLOT_NAME, SlotType.MOUNT_LIGHT, 0, -0.61, 3.125)
+			.addEmptySlot("nose_1", SlotType.PYLON_LIGHT, 0, -0.9357, 6.0625, 180)
+			.addEmptySlot("frame_1", SlotType.PYLON_LIGHT, 0.5, -1.25, 1.1875, 180)
+			.addEmptySlot("frame_2", SlotType.PYLON_LIGHT, 1.125, -1.375, 1.1875, 180)
+			.addEmptySlot("frame_3", SlotType.PYLON_LIGHT, -0.5, -1.25, 1.1875, 180)
+			.addEmptySlot("frame_4", SlotType.PYLON_LIGHT, -1.125, -1.375, 1.1875, 180)
+			.addEmptySlot("left_wing_1", SlotType.PYLON_LIGHT, 4.875, 0.125, 1.0625, 180)
+			.addEmptySlot("right_wing_1", SlotType.PYLON_LIGHT, -4.875, 0.125, 1.0625, 180)
 			.addEmptySlot("internal_1", SlotType.RADIAL_ENGINE)
 			.addEmptySlot("internal_2", SlotType.RADIAL_ENGINE)
 			.addEmptySlot("internal_3", SlotType.INTERNAL)
 			.addEmptySlot("internal_4", SlotType.INTERNAL)
-			.addEmptySlot("internal_5", SlotType.ADVANCED_INTERNAL)
+			.addEmptySlot("internal_5", SlotType.MOUNT_TECH)
 			.build();
 	
 	public static final VehicleStats UNARMED_BRONCO_PLANE = VehicleStats.Builder

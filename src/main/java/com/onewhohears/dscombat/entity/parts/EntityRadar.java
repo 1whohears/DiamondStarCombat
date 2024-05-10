@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.entity.parts;
 
 import com.onewhohears.dscombat.Config;
-import com.onewhohears.dscombat.data.parts.PartData.PartType;
+import com.onewhohears.dscombat.data.parts.PartType;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;

@@ -1,8 +1,8 @@
 package com.onewhohears.dscombat.common.container.slot;
 
 import com.onewhohears.dscombat.common.container.menu.VehicleContainerMenu;
-import com.onewhohears.dscombat.data.parts.PartData;
 import com.onewhohears.dscombat.data.parts.PartSlot;
+import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.world.entity.player.Player;
@@ -39,7 +39,7 @@ public class PartItemSlot extends Slot {
 	@Override
 	public boolean mayPlace(ItemStack stack) {
 		//System.out.println("is "+stack+" compatible with tag "+stack.getOrCreateTag());
-		PartData part = UtilParse.parsePartFromItem(stack);
+		PartInstance<?> part = UtilParse.parsePartFromItem(stack);
 		if (part == null) return false;
 		if (data.isCompatible(part)) return true;
 		return false;

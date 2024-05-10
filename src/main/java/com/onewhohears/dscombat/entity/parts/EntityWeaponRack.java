@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.entity.parts;
 
 import com.onewhohears.dscombat.Config;
-import com.onewhohears.dscombat.data.parts.PartData.PartType;
+import com.onewhohears.dscombat.data.parts.PartType;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 
@@ -46,7 +46,7 @@ public class EntityWeaponRack extends EntityPart {
 	
 	@Override
 	public PartType getPartType() {
-		return PartType.WEAPON_RACK;
+		return PartType.EXTERNAL_WEAPON;
 	}
 	
 	@Override

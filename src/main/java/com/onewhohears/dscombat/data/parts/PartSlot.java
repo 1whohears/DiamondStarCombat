@@ -149,9 +149,7 @@ public class PartSlot {
 		//System.out.println("is "+data+" compatible with "+this);
 		if (data == null) return false;
 		// HOW 3 check for duplicates
-		SlotType[] types = data.getStats().getCompatibleSlots();
-		for (int i = 0; i < types.length; ++i) if (types[i].is(getSlotType())) return true;
-		return false;
+		return data.isCompatible(getSlotType());
 	}
 	
 	public static String getSlotId(String slotId) {

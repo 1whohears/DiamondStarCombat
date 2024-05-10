@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.crafting;
 
-import com.onewhohears.dscombat.data.parts.FlareDispenserData;
+import com.onewhohears.dscombat.data.parts.instance.FlareDispenserInstance;
 import com.onewhohears.dscombat.init.ModRecipes;
 import com.onewhohears.dscombat.item.ItemFlareDispenser;
 
@@ -9,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 
-public class FlareDispenserLoadRecipe extends PartItemLoadRecipe<FlareDispenserData> {
+public class FlareDispenserLoadRecipe extends PartItemLoadRecipe<FlareDispenserInstance<?>> {
 
 	public FlareDispenserLoadRecipe(ResourceLocation pId) {
 		super(pId);

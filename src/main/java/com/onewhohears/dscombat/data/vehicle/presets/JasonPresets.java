@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.data.vehicle.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
+import com.onewhohears.dscombat.data.parts.SlotType;
 import com.onewhohears.dscombat.data.vehicle.LiftKGraph;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.init.ModItems;
@@ -41,9 +41,9 @@ public class JasonPresets {
 			.addIngredient(ModItems.WHEEL.getId(), 3)
 			.addIngredient(ModItems.PROPELLER.getId(), 1)
 			.addPilotSeatSlot(0, 0.3, -0.15)
-			.addEmptySlot("frame_1", SlotType.FRAME, 0, -0.45, 1.9, 180)
-			.addEmptySlot("left_wing_1", SlotType.WING, 3.4, -0.4, 1.1, 180)
-			.addEmptySlot("right_wing_1", SlotType.WING, -3.4, -0.4, 1.1, 180)
+			.addEmptySlot("frame_1", SlotType.PYLON_LIGHT, 0, -0.45, 1.9, 180)
+			.addEmptySlot("left_wing_1", SlotType.PYLON_LIGHT, 3.4, -0.4, 1.1, 180)
+			.addEmptySlot("right_wing_1", SlotType.PYLON_LIGHT, -3.4, -0.4, 1.1, 180)
 			.addEmptySlot("internal_1", SlotType.RADIAL_ENGINE)
 			.addEmptySlot("internal_2", SlotType.INTERNAL)
 			.addEmptySlot("internal_3", SlotType.INTERNAL)

@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.data.vehicle.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
+import com.onewhohears.dscombat.data.parts.SlotType;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModSounds;
@@ -39,19 +39,19 @@ public class SubPresets {
 			.addSeatSlot("seat3", -0.6, -1.5, 1.6)
 			.addSeatSlot("seat4", 0.6, -1.5, 0.4)
 			.addSeatSlot("seat5", -0.6, -1.5, 0.4)
-			.addEmptySlot("nose_1", SlotType.FRAME, 0, -1.6, 3.5, 180)
-			.addEmptySlot("frame_1", SlotType.FRAME, 2, 0, 1, -90)
-			.addEmptySlot("frame_2", SlotType.FRAME, 2, 0, 0, -90)
-			.addEmptySlot("frame_3", SlotType.FRAME, 2, 0, -1, -90)
-			.addEmptySlot("frame_4", SlotType.FRAME, -2, 0, 1, 90)
-			.addEmptySlot("frame_5", SlotType.FRAME, -2, 0, 0, 90)
-			.addEmptySlot("frame_6", SlotType.FRAME, -2, 0, -1, 90)
+			.addEmptySlot("nose_1", SlotType.PYLON_MED, 0, -1.6, 3.5, 180)
+			.addEmptySlot("frame_1", SlotType.PYLON_MED, 2, 0, 1, -90)
+			.addEmptySlot("frame_2", SlotType.PYLON_MED, 2, 0, 0, -90)
+			.addEmptySlot("frame_3", SlotType.PYLON_MED, 2, 0, -1, -90)
+			.addEmptySlot("frame_4", SlotType.PYLON_MED, -2, 0, 1, 90)
+			.addEmptySlot("frame_5", SlotType.PYLON_MED, -2, 0, 0, 90)
+			.addEmptySlot("frame_6", SlotType.PYLON_MED, -2, 0, -1, 90)
 			.addEmptySlot("internal_1", SlotType.SPIN_ENGINE)
 			.addEmptySlot("internal_2", SlotType.SPIN_ENGINE)
 			.addEmptySlot("internal_3", SlotType.INTERNAL)
-			.addEmptySlot("internal_4", SlotType.ADVANCED_INTERNAL)
-			.addEmptySlot("internal_5", SlotType.ADVANCED_INTERNAL)
-			.addEmptySlot("internal_6", SlotType.ADVANCED_INTERNAL)
+			.addEmptySlot("internal_4", SlotType.TECH_INTERNAL)
+			.addEmptySlot("internal_5", SlotType.TECH_INTERNAL)
+			.addEmptySlot("internal_6", SlotType.TECH_INTERNAL)
 			.build();
 			
 	public static final VehicleStats UNARMED_ANDOLF_SUB = VehicleStats.Builder
@@ -115,21 +115,21 @@ public class SubPresets {
 			.addSeatSlot("seat6", -0.6, -3.5, 8)
 			.addSeatSlot("seat7", 0.6, -3.5, 7)
 			.addSeatSlot("seat8", -0.6, -3.5, 7)
-			.addEmptySlot("frame_1", SlotType.FRAME, 0, 2.5, 15, 0)
-			.addEmptySlot("frame_2", SlotType.FRAME, -2.5, 0, 15, 90)
-			.addEmptySlot("frame_3", SlotType.FRAME, 0, -2.5, 15, 180)
-			.addEmptySlot("frame_4", SlotType.FRAME, 2.5, 0, 15, 270)
-			.addEmptySlot("frame_5", SlotType.HEAVY_FRAME, 0, 4, 10.5, 0)
-			.addEmptySlot("frame_6", SlotType.HEAVY_FRAME, 0, 4, -2, 0)
-			.addEmptySlot("frame_7", SlotType.HEAVY_FRAME, 0, 4, -7, 0)
+			.addEmptySlot("frame_1", SlotType.PYLON_MED, 0, 2.5, 15, 0)
+			.addEmptySlot("frame_2", SlotType.PYLON_MED, -2.5, 0, 15, 90)
+			.addEmptySlot("frame_3", SlotType.PYLON_MED, 0, -2.5, 15, 180)
+			.addEmptySlot("frame_4", SlotType.PYLON_MED, 2.5, 0, 15, 270)
+			.addEmptySlot("frame_5", SlotType.MOUNT_HEAVY, 0, 4, 10.5, 0)
+			.addEmptySlot("frame_6", SlotType.MOUNT_HEAVY, 0, 4, -2, 0)
+			.addEmptySlot("frame_7", SlotType.MOUNT_HEAVY, 0, 4, -7, 0)
 			.addEmptySlot("internal_1", SlotType.SPIN_ENGINE)
 			.addEmptySlot("internal_2", SlotType.SPIN_ENGINE)
 			.addEmptySlot("internal_3", SlotType.INTERNAL)
 			.addEmptySlot("internal_4", SlotType.INTERNAL)
-			.addEmptySlot("internal_5", SlotType.ADVANCED_INTERNAL)
-			.addEmptySlot("internal_6", SlotType.ADVANCED_INTERNAL)
-			.addEmptySlot("internal_7", SlotType.ADVANCED_INTERNAL)
-			.addEmptySlot("internal_8", SlotType.ADVANCED_INTERNAL)
+			.addEmptySlot("internal_5", SlotType.TECH_INTERNAL)
+			.addEmptySlot("internal_6", SlotType.TECH_INTERNAL)
+			.addEmptySlot("internal_7", SlotType.TECH_INTERNAL)
+			.addEmptySlot("internal_8", SlotType.TECH_INTERNAL)
 			.setBaseTextureNum(2)
 			.build();
 			

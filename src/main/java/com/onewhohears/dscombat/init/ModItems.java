@@ -1,9 +1,9 @@
 package com.onewhohears.dscombat.init;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.parts.BuffData.BuffType;
-import com.onewhohears.dscombat.data.parts.EngineData.EngineType;
-import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
+import com.onewhohears.dscombat.data.parts.SlotType;
+import com.onewhohears.dscombat.data.parts.stats.BuffStats.BuffType;
+import com.onewhohears.dscombat.data.parts.stats.EngineStats.EngineType;
 import com.onewhohears.dscombat.data.vehicle.presets.AlexisPresets;
 import com.onewhohears.dscombat.data.vehicle.presets.BoatPresets;
 import com.onewhohears.dscombat.data.vehicle.presets.BroncoPresets;
@@ -16,7 +16,6 @@ import com.onewhohears.dscombat.data.vehicle.presets.JaviPresets;
 import com.onewhohears.dscombat.data.vehicle.presets.PlanePresets;
 import com.onewhohears.dscombat.data.vehicle.presets.SubPresets;
 import com.onewhohears.dscombat.data.vehicle.presets.TankPresets;
-import com.onewhohears.dscombat.item.ItemVehicle;
 import com.onewhohears.dscombat.item.ItemAmmo;
 import com.onewhohears.dscombat.item.ItemBuffPart;
 import com.onewhohears.dscombat.item.ItemChainHook;
@@ -33,6 +32,7 @@ import com.onewhohears.dscombat.item.ItemRepairTool;
 import com.onewhohears.dscombat.item.ItemSeat;
 import com.onewhohears.dscombat.item.ItemStorageBox;
 import com.onewhohears.dscombat.item.ItemTurret;
+import com.onewhohears.dscombat.item.ItemVehicle;
 import com.onewhohears.dscombat.item.ItemWeaponPart;
 
 import net.minecraft.world.item.BucketItem;

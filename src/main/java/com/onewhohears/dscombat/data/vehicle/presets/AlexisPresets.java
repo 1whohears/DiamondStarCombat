@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.data.vehicle.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
-import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
+import com.onewhohears.dscombat.data.parts.SlotType;
 import com.onewhohears.dscombat.data.vehicle.LiftKGraph;
 import com.onewhohears.dscombat.data.vehicle.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
@@ -46,21 +46,21 @@ public class AlexisPresets {
 			.addIngredient(ModItems.WHEEL.getId(), 3)
 			.addIngredient("minecraft:gold_ingot", 24)
 			.addPilotSeatSlot(0, 0.1, 6.5)
-			.addEmptySlot("left_wing_1", SlotType.WING, 2.3, -0.08, -0.1, 180)
-			.addEmptySlot("left_wing_2", SlotType.WING, 3.6, -0.08, -0.7, 180)
-			.addEmptySlot("left_wing_3", SlotType.WING, 4.95, -0.08, -1.1, 180)
-			.addEmptySlot("left_wing_4", SlotType.WING, 6.05, 0.4, -1.5, -90)
-			.addEmptySlot("right_wing_1", SlotType.WING, -2.3, -0.08, -0.1, 180)
-			.addEmptySlot("right_wing_2", SlotType.WING, -3.6, -0.08, -0.7, 180)
-			.addEmptySlot("right_wing_3", SlotType.WING, -4.95, -0.08, -1.1, 180)
-			.addEmptySlot("right_wing_4", SlotType.WING, -6.05, 0.4, -1.5, 90)
-			.addEmptySlot("frame_1", SlotType.FRAME, 0, -0.15, 8, 180)
+			.addEmptySlot("left_wing_1", SlotType.PYLON_MED, 2.3, -0.08, -0.1, 180)
+			.addEmptySlot("left_wing_2", SlotType.PYLON_MED, 3.6, -0.08, -0.7, 180)
+			.addEmptySlot("left_wing_3", SlotType.PYLON_LIGHT, 4.95, -0.08, -1.1, 180)
+			.addEmptySlot("left_wing_4", SlotType.PYLON_LIGHT, 6.05, 0.4, -1.5, -90)
+			.addEmptySlot("right_wing_1", SlotType.PYLON_MED, -2.3, -0.08, -0.1, 180)
+			.addEmptySlot("right_wing_2", SlotType.PYLON_MED, -3.6, -0.08, -0.7, 180)
+			.addEmptySlot("right_wing_3", SlotType.PYLON_LIGHT, -4.95, -0.08, -1.1, 180)
+			.addEmptySlot("right_wing_4", SlotType.PYLON_LIGHT, -6.05, 0.4, -1.5, 90)
+			.addEmptySlot("frame_1", SlotType.PYLON_LIGHT, 0, -0.15, 8, 180)
 			.addEmptySlot("internal_1", SlotType.PUSH_ENGINE)
 			.addEmptySlot("internal_2", SlotType.INTERNAL)
 			.addEmptySlot("internal_3", SlotType.INTERNAL)
-			.addEmptySlot("internal_4", SlotType.ADVANCED_INTERNAL)
-			.addEmptySlot("internal_5", SlotType.ADVANCED_INTERNAL)
-			.addEmptySlot("internal_6", SlotType.ADVANCED_INTERNAL)
+			.addEmptySlot("internal_4", SlotType.HIGH_TECH_INTERNAL)
+			.addEmptySlot("internal_5", SlotType.TECH_INTERNAL)
+			.addEmptySlot("internal_6", SlotType.TECH_INTERNAL)
 			.addEntityScreen(EntityScreenIds.AIR_RADAR_SCREEN, 0.225, 0.798, 7.195, 0.15, 0.15)
 			.addEntityScreen(EntityScreenIds.FUEL_SCREEN, -0.265, 0.948, 7.195, 0.07, 0.07)
 			.addEntityScreen(EntityScreenIds.RWR_SCREEN, 0.19, 0.974, 7.195, 0.13, 0.13)

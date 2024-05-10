@@ -1,23 +1,148 @@
 package com.onewhohears.dscombat.data.parts;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Nullable;
+
+import org.slf4j.Logger;
+
+import com.mojang.logging.LogUtils;
+
 import net.minecraft.resources.ResourceLocation;
 
 public class SlotType {
 	
+	protected static final Logger LOGGER = LogUtils.getLogger();
+	
+	public static SlotType EXTERNAL = registerSlotType("external");
+	public static SlotType EXTERNAL_TOUGH = registerSlotType("external_tough", EXTERNAL);
+	
+	public static SlotType SEAT = registerSlotType("seat", EXTERNAL);
+	
+	public static SlotType MOUNT_LIGHT = registerSlotType("mount_light", SEAT);
+	public static SlotType MOUNT_MED = registerSlotType("mount_med", MOUNT_LIGHT, EXTERNAL_TOUGH);
+	public static SlotType MOUNT_HEAVY = registerSlotType("mount_heavy", MOUNT_MED);
+	
+	public static SlotType MOUNT_TECH = registerSlotType("mount_tech", MOUNT_LIGHT);
+	
+	public static SlotType PYLON_LIGHT = registerSlotType("pylon_light", EXTERNAL);
+	public static SlotType PYLON_MED = registerSlotType("pylon_med", PYLON_LIGHT);
+	public static SlotType PYLON_HEAVY = registerSlotType("pylon_heavy", PYLON_MED, EXTERNAL_TOUGH);
+	
+	public static SlotType INTERNAL = registerSlotType("internal");
+	public static SlotType TECH_INTERNAL = registerSlotType("tech_internal", INTERNAL);
+	public static SlotType HIGH_TECH_INTERNAL = registerSlotType("high_tech_internal", TECH_INTERNAL);
+	
+	public static SlotType SPIN_ENGINE = registerSlotType("spin_engine", INTERNAL);
+	public static SlotType PUSH_ENGINE = registerSlotType("push_engine", INTERNAL);
+	public static SlotType RADIAL_ENGINE = registerSlotType("radial_engine", INTERNAL);
+	
+	private static final Map<String, SlotType> slotTypes = new HashMap<>();
+	
+	public static SlotType registerSlotType(SlotType type) {
+		slotTypes.put(type.slotTypeName, type);
+		return type;
+	}
+	
+	public static SlotType registerSlotType(String name, SlotType... parents) {
+		return registerSlotType(new SlotType(name, parents));
+	}
+	
+	public static SlotType registerSlotType(String name) {
+		return registerSlotType(new SlotType(name));
+	}
+	
+	@Nullable
 	public static SlotType getByName(String name) {
-		
+		if (!slotTypes.containsKey(name)) return checkOldNames(name);
+		return slotTypes.get(name);
+	}
+	
+	@Nullable
+	public static SlotType checkOldNames(String name) {
+		switch (name) {
+		case "wing" : return PYLON_LIGHT;
+		case "advanced_internal" : return TECH_INTERNAL;
+		case "frame" : return MOUNT_LIGHT;
+		case "heavy_frame" : return MOUNT_HEAVY;
+		case "advanced_frame" : return MOUNT_TECH;
+		case "light_turret" : return MOUNT_LIGHT;
+		case "med_turret" : return MOUNT_MED;
+		case "heavy_turret" : return MOUNT_HEAVY;
+		}
+		return null;
+	}
+	
+	@Nullable
+	public static SlotType getByOldOrdinal(int o) {
+		switch (o) {
+		case 0: return SEAT;
+		case 1: return PYLON_HEAVY;
+		case 2: return MOUNT_LIGHT;
+		case 3: return INTERNAL;
+		case 4: return HIGH_TECH_INTERNAL;
+		case 5: return MOUNT_MED;
+		case 6: return MOUNT_HEAVY;
+		case 7: return SPIN_ENGINE;
+		case 8: return PUSH_ENGINE;
+		case 9: return MOUNT_HEAVY;
+		case 10: return RADIAL_ENGINE;
+		}
+		return null;
+	}
+	
+	public static void updateSlotTypeChildren() {
+		LOGGER.debug("UPDATE SLOT TYPE CHILDREN");
+		slotTypes.forEach((name, type) -> {
+			List<String> children = new ArrayList<>();
+			fillChildren(type, children);
+			type.children = children.toArray(new String[children.size()]);
+			LOGGER.debug(name+" : "+Arrays.toString(type.children));
+		});
+	}
+	
+	private static void fillChildren(SlotType parent, List<String> children) {
+		slotTypes.forEach((name, type) -> {
+			if (!type.hasParent(parent)) return;
+			children.add(name);
+			fillChildren(type, children);
+		});
 	}
 	
 	private final String slotTypeName;
+	private final SlotType[] parents;
 	private final ResourceLocation bg_texture;
+	private String[] children = new String[0];
+	
+	public SlotType(String slotTypeName, SlotType... parents) {
+		this.slotTypeName = slotTypeName;
+		this.parents = parents;
+		this.bg_texture = new ResourceLocation("dscombat:textures/ui/slots/"+slotTypeName+".png");
+	}
 	
 	public SlotType(String slotTypeName) {
 		this.slotTypeName = slotTypeName;
+		this.parents = new SlotType[0];
 		this.bg_texture = new ResourceLocation("dscombat:textures/ui/slots/"+slotTypeName+".png");
 	}
 	
 	public String getSlotTypeName() {
 		return slotTypeName;
+	}
+	
+	public boolean isChild() {
+		return parents.length > 0;
+	}
+	
+	private boolean hasParent(SlotType parent) {
+		for (int i = 0; i < parents.length; ++i) 
+			if (parents[i].is(parent)) 
+				return true;
+		return false;
 	}
 	
 	@Override
@@ -37,87 +162,19 @@ public class SlotType {
 		return this.getSlotTypeName().equals(type.getSlotTypeName());
 	}
 	
+	public boolean isCompatible(SlotType type) {
+		if (type == null) return false;
+		if (is(type)) return true;
+		for (int i = 0; i < children.length; ++i) 
+			if (children[i].equals(type.getSlotTypeName())) 
+				return true;
+		return false;
+	}
+	
 	@Override
 	public boolean equals(Object o) {
 		if (o instanceof SlotType type) return this.is(type);
 		return false;
 	}
-	
-	/*public static enum SlotType {
-		SEAT("seat"),
-		LIGHT_TURRET("light_turret"),
-		MED_TURRET("med_turret"),
-		HEAVY_TURRET("heavy_turret"),
-		
-		WING("wing"),
-		FRAME("frame"),
-		HEAVY_FRAME("heavy_frame"),
-		ADVANCED_FRAME("advanced_frame"),
-		
-		INTERNAL("internal"),
-		ADVANCED_INTERNAL("advanced_internal"),
-		
-		SPIN_ENGINE("spin_engine"),
-		PUSH_ENGINE("push_engine"),
-		RADIAL_ENGINE("radial_engine");
-		
-		public static final SlotType[] SEAT_ALL = {SEAT, LIGHT_TURRET, MED_TURRET, HEAVY_TURRET};
-		public static final SlotType[] TURRET_LIGHT = {LIGHT_TURRET, MED_TURRET, HEAVY_TURRET};
-		public static final SlotType[] TURRET_MED = {MED_TURRET, HEAVY_TURRET};
-		public static final SlotType[] TURRET_HEAVY = {HEAVY_TURRET};
-		
-		public static final SlotType[] INTERNAL_ALL = {INTERNAL, ADVANCED_INTERNAL, PUSH_ENGINE, SPIN_ENGINE};
-		public static final SlotType[] INTERNAL_ADVANCED = {ADVANCED_INTERNAL};
-		public static final SlotType[] INTERNAL_ENGINE_SPIN = {SPIN_ENGINE};
-		public static final SlotType[] INTERNAL_ENGINE_PUSH = {PUSH_ENGINE};
-		public static final SlotType[] INTERNAL_ENGINE_RADIAL = {RADIAL_ENGINE};
-		
-		public static final SlotType[] EXTERNAL_ALL = {WING, FRAME, HEAVY_FRAME, ADVANCED_FRAME, MED_TURRET, HEAVY_TURRET};
-		public static final SlotType[] EXTERNAL_HEAVY = {HEAVY_FRAME, HEAVY_TURRET};
-		public static final SlotType[] EXTERNAL_ADVANCED = {ADVANCED_FRAME};
-		@Nullable
-		public static SlotType getByName(String name) {
-			for (int i = 0; i < values().length; ++i)
-				if (values()[i].getSlotTypeName().equals(name)) 
-					return values()[i];
-			return null;
-		}
-		@Nullable
-		public static SlotType getByOldOrdinal(int o) {
-			switch (o) {
-			case 0: return SEAT;
-			case 1: return WING;
-			case 2: return FRAME;
-			case 3: return INTERNAL;
-			case 4: return ADVANCED_INTERNAL;
-			case 5: return MED_TURRET;
-			case 6: return HEAVY_TURRET;
-			case 7: return SPIN_ENGINE;
-			case 8: return PUSH_ENGINE;
-			case 9: return HEAVY_FRAME;
-			case 10: return RADIAL_ENGINE;
-			}
-			return null;
-		}
-		private final String slotTypeName;
-		private final ResourceLocation bg_texture;
-		private SlotType(String slotTypeName) {
-			this.slotTypeName = slotTypeName;
-			this.bg_texture = new ResourceLocation("dscombat:textures/ui/slots/"+slotTypeName+".png");
-		}
-		public String getSlotTypeName() {
-			return slotTypeName;
-		}
-		@Override
-		public String toString() {
-			return getSlotTypeName();
-		}
-		public ResourceLocation getBgTexture() {
-			return bg_texture;
-		}
-		public String getTranslatableName() {
-			return "slottype.dscombat."+slotTypeName;
-		}
-	}*/
 	
 }

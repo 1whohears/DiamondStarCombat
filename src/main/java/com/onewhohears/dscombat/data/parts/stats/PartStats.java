@@ -19,6 +19,7 @@ public abstract class PartStats extends JsonPresetStats {
 	
 	private final float weight;
 	private final String itemId, externalEntityId;
+	private final SlotType compatibleSlotType;
 	
 	private Item item;
 	private EntityType<?> externalEntityType;
@@ -28,14 +29,22 @@ public abstract class PartStats extends JsonPresetStats {
 		this.weight = UtilParse.getFloatSafe(json, "weight", 0);
 		this.itemId = UtilParse.getStringSafe(json, "item", "");
 		this.externalEntityId = getExternalEntityId(json);
+		this.compatibleSlotType = SlotType.getByName(UtilParse.getStringSafe(json, "slotType", ""));
 	}
 	
-	public SlotType[] getCompatibleSlots() {
-		
+	public boolean isCompatible(SlotType type) {
+		if (type == null) return false;
+		return compatibleSlotType.isCompatible(type);
 	}
 	
 	public PartInstance<?> createPartInstance() {
 		return (PartInstance<?>) createPresetInstance();
+	}
+	
+	public PartInstance<?> createFilledPartInstance(String param) {
+		PartInstance<?> filled = (PartInstance<?>) createPresetInstance();
+		filled.setFilled(param);
+		return filled;
 	}
 	
 	public float getWeight() {

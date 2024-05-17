@@ -23,6 +23,7 @@ import com.onewhohears.dscombat.util.UtilSound;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -44,8 +45,8 @@ public abstract class WeaponStats extends JsonPresetStats {
 	private final String entityTypeKey;
 	private final String shootSoundKey;
 	private final String rackTypeKey;
-	private final String compatibleWeaponPart;
-	private final String compatibleTurret;
+	private final String[] compatibleWeaponPart;
+	private final String[] compatibleTurret;
 	private final String itemKey;
 	private final String modelId;
 	private final ResourceLocation icon;
@@ -64,8 +65,8 @@ public abstract class WeaponStats extends JsonPresetStats {
 		this.entityTypeKey = UtilParse.getStringSafe(json, "entityTypeKey", "");
 		this.shootSoundKey = UtilParse.getStringSafe(json, "shootSoundKey", "");
 		this.rackTypeKey = UtilParse.getStringSafe(json, "rackTypeKey", "");
-		this.compatibleWeaponPart = UtilParse.getStringSafe(json, "compatibleWeaponPart", "");
-		this.compatibleTurret = UtilParse.getStringSafe(json, "compatibleTurret", "");
+		this.compatibleWeaponPart = UtilParse.getStringArraySafe(json, "compatibleWeaponPart");
+		this.compatibleTurret = UtilParse.getStringArraySafe(json, "compatibleTurret");
 		this.itemKey = UtilParse.getStringSafe(json, "itemKey", "");
 		this.modelId = UtilParse.getStringSafe(json, "modelId", getId());
 		this.icon = new ResourceLocation(UtilParse.getStringSafe(json, "icon", getDefaultIconLocation()));
@@ -159,11 +160,11 @@ public abstract class WeaponStats extends JsonPresetStats {
 		return itemKey;
 	}
 	
-	public String getCompatibleWeaponPart() {
+	public String[] getCompatibleWeaponParts() {
 		return compatibleWeaponPart;
 	}
 	
-	public String getCompatibleTurret() {
+	public String[] getCompatibleTurrets() {
 		return compatibleTurret;
 	}
 	
@@ -183,15 +184,21 @@ public abstract class WeaponStats extends JsonPresetStats {
 	
 	public void addToolTips(List<Component> tips, boolean advanced) {
 		tips.add(getType().getDisplayNameComponent().setStyle(Style.EMPTY.withColor(TYPE_COLOR)));
-		if (!compatibleWeaponPart.isEmpty()) {
-			tips.add(UtilMCText.literal("Weapon Part: ")
-				.append(UtilMCText.getItemName(compatibleWeaponPart))
-				.setStyle(Style.EMPTY.withColor(COMPAT_COLOR)));
+		if (compatibleWeaponPart.length > 0) {
+			MutableComponent weapons = UtilMCText.literal("Weapon Part: ").setStyle(Style.EMPTY.withColor(COMPAT_COLOR));
+			for (int i = 0; i < compatibleWeaponPart.length; ++i) {
+				if (i != 0) weapons.append(UtilMCText.literal(", "));
+				weapons.append(UtilMCText.getItemName(compatibleWeaponPart[i]));
+			}
+			tips.add(weapons);
 		}
-		if (!compatibleTurret.isEmpty()) {
-			tips.add(UtilMCText.literal("Turret: ")
-				.append(UtilMCText.getItemName(compatibleTurret))
-				.setStyle(Style.EMPTY.withColor(COMPAT_COLOR)));
+		if (compatibleTurret.length > 0) {
+			MutableComponent turrets = UtilMCText.literal("Turret: ").setStyle(Style.EMPTY.withColor(COMPAT_COLOR));
+			for (int i = 0; i < compatibleTurret.length; ++i) {
+				if (i != 0) turrets.append(UtilMCText.literal(", "));
+				turrets.append(UtilMCText.getItemName(compatibleTurret[i]));
+			}
+			tips.add(turrets);
 		}
 		tips.add(UtilMCText.literal("Fire Rate: ").append(getFireRate()+"").setStyle(Style.EMPTY.withColor(INFO_COLOR)));
 		if (advanced) {

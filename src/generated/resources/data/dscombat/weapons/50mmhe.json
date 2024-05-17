@@ -1,7 +1,9 @@
 {
   "canShootOnGround": true,
   "causesFire": false,
-  "compatibleWeaponPart": "dscombat:xm12",
+  "compatibleWeaponPart": [
+    "dscombat:xm12"
+  ],
   "craftNum": 16,
   "damage": 20.0,
   "destroyTerrain": true,

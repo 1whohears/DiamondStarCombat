@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.data.weapon;
 import com.onewhohears.dscombat.data.recipe.DSCIngredientBuilder;
 import com.onewhohears.dscombat.data.weapon.stats.TrackMissileStats.TargetType;
 import com.onewhohears.dscombat.init.ModEntities;
+import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.resources.ResourceLocation;
 
@@ -46,16 +47,14 @@ public class AbstractWeaponBuilders {
 			return setString("rackTypeKey", "");
 		}
 		
-		public C setCompatibleWeaponPart(ResourceLocation compatibleWeaponPart) {
-			return setString("compatibleWeaponPart", compatibleWeaponPart.toString());
+		public C setCompatibleWeaponPart(ResourceLocation... compatibleWeaponPart) {
+			getData().add("compatibleWeaponPart", UtilParse.resLocArrayToJsonArray(compatibleWeaponPart));
+			return (C) this;
 		}
 		
-		public C setCompatibleTurret(ResourceLocation compatibleTurret) {
-			return setString("compatibleTurret", compatibleTurret.toString());
-		}
-		
-		public C setNoCompatible() {
-			return setString("compatibleWeaponPart", "");
+		public C setCompatibleTurret(ResourceLocation... compatibleTurret) {
+			getData().add("compatibleTurret", UtilParse.resLocArrayToJsonArray(compatibleTurret));
+			return (C) this;
 		}
 		
 		public C setItem(ResourceLocation itemKey) {

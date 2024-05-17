@@ -1,7 +1,9 @@
 {
   "canShootOnGround": false,
   "causesFire": false,
-  "compatibleWeaponPart": "dscombat:bomb_rack",
+  "compatibleWeaponPart": [
+    "dscombat:bomb_rack"
+  ],
   "craftNum": 1,
   "damage": 20.0,
   "destroyTerrain": true,

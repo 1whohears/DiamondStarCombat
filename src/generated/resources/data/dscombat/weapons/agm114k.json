@@ -3,7 +3,9 @@
   "bleed": 0.02,
   "canShootOnGround": false,
   "causesFire": true,
-  "compatibleWeaponPart": "dscombat:light_missile_rack",
+  "compatibleWeaponPart": [
+    "dscombat:light_missile_rack"
+  ],
   "craftNum": 1,
   "damage": 40.0,
   "destroyTerrain": true,

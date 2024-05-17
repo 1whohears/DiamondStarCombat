@@ -12,6 +12,7 @@ import javax.annotation.Nullable;
 import org.slf4j.Logger;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.mojang.logging.LogUtils;
 import com.mojang.math.Quaternion;
@@ -24,6 +25,7 @@ import com.onewhohears.dscombat.item.ItemPart;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtIo;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -232,6 +234,26 @@ public class UtilParse {
 			if (enums[i].name().equals(enumName)) 
 				return enums[i];
 		return enums[0];
+	}
+	
+	public static String[] getStringArraySafe(JsonObject json, String name) {
+		if (!json.has(name)) return new String[0];
+		JsonArray ja = json.get(name).getAsJsonArray();
+		String[] sa = new String[ja.size()];
+		for (int i = 0; i < ja.size(); ++i) sa[i] = ja.get(i).getAsString();
+		return sa;
+ 	}
+	
+	public static JsonArray stringArrayToJsonArray(String... strings) {
+		JsonArray ja = new JsonArray();
+		for (int i = 0; i < strings.length; ++i) ja.add(strings[i]);
+		return ja;
+	}
+	
+	public static JsonArray resLocArrayToJsonArray(ResourceLocation... locs) {
+		JsonArray ja = new JsonArray();
+		for (int i = 0; i < locs.length; ++i) ja.add(locs[i].toString());
+		return ja;
 	}
 	
 	public static String toColorString(Color color) {

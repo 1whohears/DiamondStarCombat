@@ -4,8 +4,12 @@
   "bleed": 0.04,
   "canShootOnGround": false,
   "causesFire": true,
-  "compatibleTurret": "dscombat:sam_launcher",
-  "compatibleWeaponPart": "dscombat:heavy_missile_rack",
+  "compatibleTurret": [
+    "dscombat:sam_launcher"
+  ],
+  "compatibleWeaponPart": [
+    "dscombat:heavy_missile_rack"
+  ],
   "craftNum": 1,
   "damage": 65.0,
   "destroyTerrain": true,

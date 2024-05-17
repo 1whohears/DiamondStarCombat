@@ -1,8 +1,9 @@
 {
   "canShootOnGround": true,
   "causesFire": true,
-  "compatibleTurret": "dscombat:mark7_cannon",
-  "compatibleWeaponPart": "",
+  "compatibleTurret": [
+    "dscombat:mark7_cannon"
+  ],
   "craftNum": 1,
   "damage": 70.0,
   "destroyTerrain": true,

@@ -4,7 +4,9 @@
   "bleed": 0.03,
   "canShootOnGround": true,
   "causesFire": true,
-  "compatibleWeaponPart": "dscombat:vls",
+  "compatibleWeaponPart": [
+    "dscombat:vls"
+  ],
   "craftNum": 1,
   "damage": 45.0,
   "destroyTerrain": true,

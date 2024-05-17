@@ -1,8 +1,12 @@
 {
   "canShootOnGround": true,
   "causesFire": false,
-  "compatibleTurret": "dscombat:ciws",
-  "compatibleWeaponPart": "dscombat:xm12",
+  "compatibleTurret": [
+    "dscombat:ciws"
+  ],
+  "compatibleWeaponPart": [
+    "dscombat:xm12"
+  ],
   "craftNum": 32,
   "damage": 12.0,
   "destroyTerrain": true,

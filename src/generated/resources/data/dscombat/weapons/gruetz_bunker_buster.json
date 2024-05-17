@@ -2,7 +2,9 @@
   "blockStrength": 1500.0,
   "canShootOnGround": true,
   "causesFire": false,
-  "compatibleWeaponPart": "dscombat:bomb_rack",
+  "compatibleWeaponPart": [
+    "dscombat:bomb_rack"
+  ],
   "craftNum": 1,
   "damage": 50.0,
   "destroyTerrain": true,

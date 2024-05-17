@@ -135,26 +135,30 @@ public class WeaponPresets extends JsonPresetReloadListener<WeaponStats> {
 	protected void refreshCompatibility() {
 		compatiblePartMap.clear();
 		for (int i = 0; i < getAll().length; ++i) {
-			String partId = getAll()[i].getCompatibleWeaponPart();
-			if (partId.isEmpty()) continue;
-			List<String> list = compatiblePartMap.get(partId);
-			if (list == null) {
-				list = new ArrayList<String>();
-				compatiblePartMap.put(partId, list);
+			String[] partIds = getAll()[i].getCompatibleWeaponParts();
+			if (partIds.length == 0) continue;
+			for (int j = 0; j < partIds.length; ++j) {
+				List<String> list = compatiblePartMap.get(partIds[j]);
+				if (list == null) {
+					list = new ArrayList<String>();
+					compatiblePartMap.put(partIds[j], list);
+				}
+				list.add(getAll()[i].getId());
 			}
-			list.add(getAll()[i].getId());
 		}
 		LOGGER.debug("WEAPON CAPATIBILITY: "+compatiblePartMap.toString());
 		compatibleTurretMap.clear();
 		for (int i = 0; i < getAll().length; ++i) {
-			String turretId = getAll()[i].getCompatibleTurret();
-			if (turretId.isEmpty()) continue;
-			List<String> list = compatibleTurretMap.get(turretId);
-			if (list == null) {
-				list = new ArrayList<String>();
-				compatibleTurretMap.put(turretId, list);
+			String[] turretIds = getAll()[i].getCompatibleTurrets();
+			if (turretIds.length == 0) continue;
+			for (int j = 0; j < turretIds.length; ++j) {
+				List<String> list = compatibleTurretMap.get(turretIds[j]);
+				if (list == null) {
+					list = new ArrayList<String>();
+					compatibleTurretMap.put(turretIds[j], list);
+				}
+				list.add(getAll()[i].getId());
 			}
-			list.add(getAll()[i].getId());
 		}
 		LOGGER.debug("TURRET CAPATIBILITY: "+compatibleTurretMap.toString());
 	}

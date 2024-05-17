@@ -1,0 +1,9 @@
+{
+  "displayName": "preset.dscombat.chain_hook",
+  "externalEntity": "dscombat:chain_hook",
+  "item": "dscombat:chain_hook",
+  "presetId": "chain_hook",
+  "presetType": "gimbal",
+  "slotType": "external_tough",
+  "weight": 500.0
+}

@@ -111,4 +111,9 @@ public abstract class PresetBuilder<C extends PresetBuilder<C>> {
 		return (C) this;
 	}
 	
+	public C setEnum(String key, Enum<?> value) {
+		data.addProperty(key, value.name());
+		return (C) this;
+	}
+	
 }

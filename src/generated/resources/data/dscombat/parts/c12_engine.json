@@ -1,0 +1,12 @@
+{
+  "displayName": "preset.dscombat.c12_engine",
+  "engineType": "SPIN",
+  "fuelRate": 0.011,
+  "heat": 8.0,
+  "item": "dscombat:c12_engine",
+  "presetId": "c12_engine",
+  "presetType": "internal_engine",
+  "slotType": "spin_engine",
+  "thrust": 130.0,
+  "weight": 700.0
+}

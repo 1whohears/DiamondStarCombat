@@ -1,0 +1,9 @@
+{
+  "displayName": "preset.dscombat.gpr100",
+  "item": "dscombat:gpr100",
+  "presetId": "gpr100",
+  "presetType": "internal_radar",
+  "radar": "gpr100",
+  "slotType": "tech_internal",
+  "weight": 800.0
+}

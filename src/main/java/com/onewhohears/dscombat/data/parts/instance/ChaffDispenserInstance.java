@@ -13,5 +13,10 @@ public class ChaffDispenserInstance<T extends ChaffDispenserStats> extends PartI
 	public boolean isSetup(String slotId, EntityVehicle craft) {
 		return false;
 	}
+	
+	@Override
+	public void setFilled(String param) {
+		super.setFilled(param);
+	}
 
 }

@@ -1,0 +1,9 @@
+{
+  "displayName": "preset.dscombat.wr400",
+  "item": "dscombat:wr400",
+  "presetId": "wr400",
+  "presetType": "internal_radar",
+  "radar": "wr400",
+  "slotType": "tech_internal",
+  "weight": 200.0
+}

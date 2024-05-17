@@ -1,0 +1,10 @@
+{
+  "changeLaunchPitch": 90.0,
+  "displayName": "preset.dscombat.vls",
+  "item": "dscombat:vls",
+  "max": 16,
+  "presetId": "vls",
+  "presetType": "external_weapon",
+  "slotType": "pylon_light",
+  "weight": 6000.0
+}

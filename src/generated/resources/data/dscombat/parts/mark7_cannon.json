@@ -1,0 +1,11 @@
+{
+  "displayName": "preset.dscombat.mark7_cannon",
+  "externalEntity": "dscombat:mark7_cannon",
+  "item": "dscombat:mark7_cannon",
+  "maxAmmo": 36,
+  "maxHealth": 200.0,
+  "presetId": "mark7_cannon",
+  "presetType": "turret",
+  "slotType": "mount_heavy",
+  "weight": 4500.0
+}

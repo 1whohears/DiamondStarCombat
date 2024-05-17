@@ -5,6 +5,7 @@ import com.onewhohears.dscombat.client.screen.VehicleScreen;
 import com.onewhohears.dscombat.client.screen.WeaponsBlockScreen;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.common.network.PacketHandler;
+import com.onewhohears.dscombat.data.parts.PartPresetGenerator;
 import com.onewhohears.dscombat.data.radar.RadarPresetGenerator;
 import com.onewhohears.dscombat.data.recipe.DSCRecipeGenerator;
 import com.onewhohears.dscombat.data.sound.DSCSoundDefinitionGen;
@@ -116,6 +117,7 @@ public class DSCombatMod {
     		generator.addProvider(true, new VehiclePresetGenerator(generator));
     		generator.addProvider(true, new WeaponPresetGenerator(generator));
     		generator.addProvider(true, new RadarPresetGenerator(generator));
+    		generator.addProvider(true, new PartPresetGenerator(generator));
     		DependencySafety.serverDataGen(generator);
     		generator.addProvider(true, new DSCRecipeGenerator(generator));
     		generator.addProvider(true, new EntityTypeTagGen(generator, event.getExistingFileHelper()));

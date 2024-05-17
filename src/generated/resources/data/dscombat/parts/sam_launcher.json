@@ -1,0 +1,11 @@
+{
+  "displayName": "preset.dscombat.sam_launcher",
+  "externalEntity": "dscombat:sam_launcher",
+  "item": "dscombat:sam_launcher",
+  "maxAmmo": 4,
+  "maxHealth": 60.0,
+  "presetId": "sam_launcher",
+  "presetType": "turret",
+  "slotType": "mount_heavy",
+  "weight": 6000.0
+}

@@ -23,6 +23,13 @@ public class TurretInstance<T extends TurretStats> extends SeatInstance<T> imple
 	}
 	
 	@Override
+	public void setFilled(String param) {
+		super.setFilled(param);
+		weapon = param;
+		ammo = getStats().getMaxAmmo();
+	}
+	
+	@Override
 	public void readNBT(CompoundTag tag) {
 		super.readNBT(tag);
 		if (tag.contains("weapon")) weapon = tag.getString("weapon");

@@ -1,0 +1,11 @@
+{
+  "displayName": "preset.dscombat.heavy_tank_turret",
+  "externalEntity": "dscombat:heavy_tank_turret",
+  "item": "dscombat:heavy_tank_turret",
+  "maxAmmo": 16,
+  "maxHealth": 120.0,
+  "presetId": "heavy_tank_turret",
+  "presetType": "turret",
+  "slotType": "mount_med",
+  "weight": 4000.0
+}

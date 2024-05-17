@@ -4,9 +4,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.onewhohears.dscombat.data.parts.PartData;
-import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.data.parts.WeaponRackData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.init.ModItems;
@@ -26,11 +23,8 @@ import net.minecraft.world.level.Level;
 
 public class ItemWeaponPart extends ItemPart {
 	
-	public final float launchPitch;
-	
-	public ItemWeaponPart(float weight, SlotType[] compatibleSlots, float launchPitch) {
-		super(ItemAmmo.weaponProps(16), weight, compatibleSlots);
-		this.launchPitch = launchPitch;
+	public ItemWeaponPart(int stackSize) {
+		super(stackSize);
 	}
 	
 	@Override
@@ -73,21 +67,8 @@ public class ItemWeaponPart extends ItemPart {
 	
 	private void addWeaponRack(String preset, NonNullList<ItemStack> items) {
 		ItemStack rack = new ItemStack(this);
-		rack.setTag(getFilledPartData(preset).write());
+		rack.setTag(getFilledPartData(preset).writeNBT());
 		items.add(rack);
-	}
-
-	@Override
-	public PartData getPartData() {
-		return getFilledPartData("");
-	}
-	
-	@Override
-	public PartData getFilledPartData(String param) {
-		ResourceLocation itemid = UtilItem.getItemKey(this);
-		List<String> list = WeaponPresets.get().getCompatibleWeapons(itemid);
-		String[] compatible = list.toArray(new String[list.size()]);
-		return new WeaponRackData(weight, param, compatible, itemid, compatibleSlots, launchPitch);
 	}
 
 }

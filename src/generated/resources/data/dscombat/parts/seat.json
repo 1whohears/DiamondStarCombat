@@ -1,0 +1,9 @@
+{
+  "displayName": "preset.dscombat.seat",
+  "externalEntity": "dscombat:seat",
+  "item": "dscombat:seat",
+  "presetId": "seat",
+  "presetType": "seat",
+  "slotType": "mount_tech",
+  "weight": 30.0
+}

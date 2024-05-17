@@ -1,0 +1,11 @@
+{
+  "displayName": "preset.dscombat.mark45_cannon",
+  "externalEntity": "dscombat:mark45_cannon",
+  "item": "dscombat:mark45_cannon",
+  "maxAmmo": 50,
+  "maxHealth": 120.0,
+  "presetId": "mark45_cannon",
+  "presetType": "turret",
+  "slotType": "mount_light",
+  "weight": 3000.0
+}

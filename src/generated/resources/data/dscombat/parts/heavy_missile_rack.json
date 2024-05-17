@@ -1,0 +1,10 @@
+{
+  "changeLaunchPitch": 0.0,
+  "displayName": "preset.dscombat.heavy_missile_rack",
+  "item": "dscombat:heavy_missile_rack",
+  "max": 2,
+  "presetId": "heavy_missile_rack",
+  "presetType": "external_weapon",
+  "slotType": "pylon_light",
+  "weight": 1500.0
+}

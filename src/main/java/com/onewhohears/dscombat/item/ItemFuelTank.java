@@ -4,10 +4,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.onewhohears.dscombat.data.parts.FuelTankData;
-import com.onewhohears.dscombat.data.parts.PartData;
-import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.util.UtilItem;
+import com.onewhohears.dscombat.data.parts.stats.FuelTankStats;
 import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.nbt.CompoundTag;
@@ -19,29 +16,16 @@ import net.minecraft.world.level.Level;
 
 public class ItemFuelTank extends ItemPart {
 	
-	public final float fuel, max;
-	
-	public ItemFuelTank(float weight, float fuel, float max, SlotType[] compatibleSlots) {
-		super(16, weight, compatibleSlots);
-		this.fuel = fuel;
-		this.max = max;
+	public ItemFuelTank(int stackSize) {
+		super(stackSize);
 	}
 	
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tips, TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tips, isAdvanced);
+		FuelTankStats stats = (FuelTankStats)getPartStats();
 		CompoundTag tag = stack.getOrCreateTag();
-		tips.add(UtilMCText.literal("Fuel: "+tag.getInt("fuel")+"/"+max).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
-	}
-
-	@Override
-	public PartData getPartData() {
-		return new FuelTankData(weight, fuel, max, UtilItem.getItemKey(this), compatibleSlots);
-	}
-	
-	@Override
-	public PartData getFilledPartData(String param) {
-		return new FuelTankData(weight, max, max, UtilItem.getItemKey(this), compatibleSlots);
+		tips.add(UtilMCText.literal("Fuel: "+tag.getInt("fuel")+"/"+stats.getMaxFuel()).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 	}
 
 }

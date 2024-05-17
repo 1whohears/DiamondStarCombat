@@ -41,7 +41,7 @@
       "slot_posx": 1.5,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": "wing",
+      "slot_type": "pylon_light",
       "zRot": 180.0
     },
     {
@@ -49,7 +49,7 @@
       "slot_posx": -1.5,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": "wing",
+      "slot_type": "pylon_light",
       "zRot": 180.0
     },
     {

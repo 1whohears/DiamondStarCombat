@@ -1,13 +1,19 @@
 package com.onewhohears.dscombat.data.parts.stats;
 
+import java.util.List;
+
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPresetInstance;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPresetType;
 import com.onewhohears.dscombat.data.parts.PartType;
 import com.onewhohears.dscombat.data.parts.instance.EngineInstance;
+import com.onewhohears.dscombat.util.UtilMCText;
 import com.onewhohears.dscombat.util.UtilParse;
 
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.TooltipFlag;
 
 public class EngineStats extends PartStats {
 	
@@ -58,6 +64,13 @@ public class EngineStats extends PartStats {
 	@Override
 	public boolean isEngine() {
 		return true;
+	}
+
+	@Override
+	public void addToolTips(List<Component> tips, TooltipFlag isAdvanced) {
+		super.addToolTips(tips, isAdvanced);
+		tips.add(UtilMCText.literal("Thrust: "+thrust).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		tips.add(UtilMCText.literal("Fuel L/M: "+String.format("%.1f", fuelRate*1200)).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 	}
 
 }

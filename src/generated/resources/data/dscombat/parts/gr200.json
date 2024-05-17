@@ -1,0 +1,9 @@
+{
+  "displayName": "preset.dscombat.gr200",
+  "item": "dscombat:gr200",
+  "presetId": "gr200",
+  "presetType": "internal_radar",
+  "radar": "gr200",
+  "slotType": "tech_internal",
+  "weight": 200.0
+}

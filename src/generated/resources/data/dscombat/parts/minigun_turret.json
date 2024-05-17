@@ -1,0 +1,11 @@
+{
+  "displayName": "preset.dscombat.minigun_turret",
+  "externalEntity": "dscombat:minigun_turret",
+  "item": "dscombat:minigun_turret",
+  "maxAmmo": 1000,
+  "maxHealth": 40.0,
+  "presetId": "minigun_turret",
+  "presetType": "turret",
+  "slotType": "mount_light",
+  "weight": 1500.0
+}

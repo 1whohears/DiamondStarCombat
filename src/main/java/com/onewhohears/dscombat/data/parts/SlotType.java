@@ -18,6 +18,8 @@ public class SlotType {
 	
 	protected static final Logger LOGGER = LogUtils.getLogger();
 	
+	private static final Map<String, SlotType> slotTypes = new HashMap<>();
+	
 	public static SlotType EXTERNAL = registerSlotType("external");
 	public static SlotType EXTERNAL_TOUGH = registerSlotType("external_tough", EXTERNAL);
 	
@@ -40,8 +42,6 @@ public class SlotType {
 	public static SlotType SPIN_ENGINE = registerSlotType("spin_engine", INTERNAL);
 	public static SlotType PUSH_ENGINE = registerSlotType("push_engine", INTERNAL);
 	public static SlotType RADIAL_ENGINE = registerSlotType("radial_engine", INTERNAL);
-	
-	private static final Map<String, SlotType> slotTypes = new HashMap<>();
 	
 	public static SlotType registerSlotType(SlotType type) {
 		slotTypes.put(type.slotTypeName, type);

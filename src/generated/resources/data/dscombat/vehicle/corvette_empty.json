@@ -89,7 +89,7 @@
       "slot_posx": 0.0,
       "slot_posy": 3.0,
       "slot_posz": 5.0,
-      "slot_type": "med_turret",
+      "slot_type": "mount_med",
       "zRot": 0.0
     },
     {
@@ -97,7 +97,7 @@
       "slot_posx": 0.0,
       "slot_posy": 3.0,
       "slot_posz": -7.0,
-      "slot_type": "heavy_turret",
+      "slot_type": "mount_heavy",
       "zRot": 0.0
     },
     {
@@ -105,7 +105,7 @@
       "slot_posx": 0.0,
       "slot_posy": 5.5,
       "slot_posz": -3.5,
-      "slot_type": "advanced_frame",
+      "slot_type": "mount_tech",
       "zRot": 0.0
     },
     {
@@ -113,7 +113,7 @@
       "slot_posx": 0.0,
       "slot_posy": 6.0,
       "slot_posz": 0.5,
-      "slot_type": "light_turret",
+      "slot_type": "mount_light",
       "zRot": 0.0
     },
     {
@@ -161,7 +161,7 @@
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": "advanced_internal",
+      "slot_type": "tech_internal",
       "zRot": 0.0
     },
     {
@@ -169,7 +169,7 @@
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": "advanced_internal",
+      "slot_type": "tech_internal",
       "zRot": 0.0
     },
     {
@@ -177,7 +177,7 @@
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": "advanced_internal",
+      "slot_type": "tech_internal",
       "zRot": 0.0
     }
   ],

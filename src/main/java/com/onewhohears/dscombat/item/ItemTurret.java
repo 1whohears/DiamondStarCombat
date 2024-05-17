@@ -2,9 +2,7 @@ package com.onewhohears.dscombat.item;
 
 import java.util.List;
 
-import com.onewhohears.dscombat.data.parts.PartData;
-import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.data.parts.TurretData;
+import com.onewhohears.dscombat.data.parts.instance.TurretInstance;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.util.UtilItem;
@@ -18,20 +16,13 @@ import net.minecraft.world.item.ItemStack;
 
 public class ItemTurret extends ItemPart {
 	
-	public final String weaponId;
-	public final String turrentEntityKey;
-	public final float health;
-	
-	public ItemTurret(float weight, SlotType[] compatibleSlots, String turrentEntityKey, String weaponId, float health) {
-		super(1, weight, compatibleSlots);
-		this.weaponId = weaponId;
-		this.turrentEntityKey = turrentEntityKey;
-		this.health = health;
+	public ItemTurret(int stackSize) {
+		super(stackSize);
 	}
 	
 	@Override
 	public Component getName(ItemStack stack) {
-		TurretData data = (TurretData) UtilParse.parsePartFromItem(stack);
+		TurretInstance<?> data = (TurretInstance<?>) UtilParse.parsePartFromItem(stack);
 		MutableComponent name = ((MutableComponent)super.getName(stack)).append(" ");
 		WeaponStats wd = WeaponPresets.get().get(data.getWeaponId());
 		if (wd != null) {
@@ -43,18 +34,6 @@ public class ItemTurret extends ItemPart {
 		int max = (int)data.getMaxAmmo();
 		if (max != 0) name.append(" "+ammo+"/"+max);
 		return name;	
-	}
-	
-	@Override
-	public PartData getFilledPartData(String param) {
-		return new TurretData(weight, UtilItem.getItemKey(this), compatibleSlots, 
-				turrentEntityKey, weaponId, getCompatibleWeapons(), true, health);
-	}
-	
-	@Override
-	public PartData getPartData() {
-		return new TurretData(weight, UtilItem.getItemKey(this), compatibleSlots, 
-				turrentEntityKey, weaponId, getCompatibleWeapons(), false, health);
 	}
 	
 	public String[] getCompatibleWeapons() {

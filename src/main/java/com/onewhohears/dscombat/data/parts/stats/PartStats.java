@@ -1,5 +1,7 @@
 package com.onewhohears.dscombat.data.parts.stats;
 
+import java.util.List;
+
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
@@ -9,11 +11,15 @@ import com.onewhohears.dscombat.data.parts.SlotType;
 import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.UtilItem;
+import com.onewhohears.dscombat.util.UtilMCText;
 import com.onewhohears.minigames.util.UtilParse;
 
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.TooltipFlag;
 
 public abstract class PartStats extends JsonPresetStats {
 	
@@ -51,6 +57,10 @@ public abstract class PartStats extends JsonPresetStats {
 		return weight;
 	}
 	
+	public String getItemId() {
+		return itemId;
+	}
+	
 	public Item getItem() {
 		if (item == null) {
 			item = UtilItem.getItem(itemId);
@@ -77,7 +87,13 @@ public abstract class PartStats extends JsonPresetStats {
 	}
 	
 	protected String getExternalEntityId(JsonObject json) {
-		return UtilParse.getStringSafe(json, "external_entity", "");
+		return UtilParse.getStringSafe(json, "externalEntity", "");
+	}
+	
+	public void addToolTips(List<Component> tips, TooltipFlag isAdvanced) {
+		tips.add(UtilMCText.literal("Compatible: ").setStyle(Style.EMPTY.withColor(0xFFFF55))
+				.append(UtilMCText.translatable(compatibleSlotType.getTranslatableName())));
+		tips.add(UtilMCText.literal("Mass: "+weight).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 	}
 	
 	public float getExternalEntityDefaultHealth() {

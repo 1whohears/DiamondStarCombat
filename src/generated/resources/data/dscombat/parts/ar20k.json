@@ -1,0 +1,9 @@
+{
+  "displayName": "preset.dscombat.ar20k",
+  "item": "dscombat:ar20k",
+  "presetId": "ar20k",
+  "presetType": "external_radar",
+  "radar": "ar20k",
+  "slotType": "mount_heavy",
+  "weight": 4000.0
+}

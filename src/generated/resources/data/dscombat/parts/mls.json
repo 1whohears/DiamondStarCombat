@@ -1,0 +1,11 @@
+{
+  "age": 120,
+  "displayName": "preset.dscombat.mls",
+  "heat": 20.0,
+  "item": "dscombat:mls",
+  "max": 20,
+  "presetId": "mls",
+  "presetType": "turret",
+  "slotType": "mount_heavy",
+  "weight": 100.0
+}

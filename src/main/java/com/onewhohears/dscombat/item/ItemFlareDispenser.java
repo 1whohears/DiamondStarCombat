@@ -1,9 +1,6 @@
 package com.onewhohears.dscombat.item;
 
-import com.onewhohears.dscombat.data.parts.FlareDispenserData;
-import com.onewhohears.dscombat.data.parts.PartData;
-import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.util.UtilItem;
+import com.onewhohears.dscombat.data.parts.stats.FlareDispenserStats;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -12,33 +9,17 @@ import net.minecraft.world.item.ItemStack;
 
 public class ItemFlareDispenser extends ItemPart {
 	
-	public final int flares, max, age;
-	public final float heat;
-	
-	public ItemFlareDispenser(float weight, int flares, int max, float heat, int age, SlotType[] compatibleSlots) {
-		super(16, weight, compatibleSlots);
-		this.flares = flares;
-		this.max = max;
-		this.heat = heat;
-		this.age = age;
+	public ItemFlareDispenser(int stackSize) {
+		super(stackSize);
 	}
 	
 	@Override
 	public Component getName(ItemStack stack) {
 		CompoundTag tag = stack.getOrCreateTag();
+		FlareDispenserStats stats = (FlareDispenserStats)getPartStats();
 		MutableComponent name = ((MutableComponent)super.getName(stack))
-			.append(" "+tag.getInt("flares")+"/"+max);
+			.append(" "+tag.getInt("flares")+"/"+stats.getMaxFlares());
 		return name;	
-	}
-
-	@Override
-	public PartData getPartData() {
-		return new FlareDispenserData(weight, flares, max, heat, age, UtilItem.getItemKey(this), compatibleSlots);
-	}
-	
-	@Override
-	public PartData getFilledPartData(String param) {
-		return new FlareDispenserData(weight, max, max, heat, age, UtilItem.getItemKey(this), compatibleSlots);
 	}
 
 }

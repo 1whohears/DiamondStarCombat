@@ -34,6 +34,7 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 		CompoundTag tag = super.writeNBT();
 		tag.putBoolean("readnbt", true);
 		tag.putInt("parse_version", PARSE_VERSION);
+		tag.putString("itemid", getStats().getItemId());
 		return tag;
 	}
 	

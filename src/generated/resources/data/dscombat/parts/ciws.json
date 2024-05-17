@@ -1,0 +1,11 @@
+{
+  "displayName": "preset.dscombat.ciws",
+  "externalEntity": "dscombat:ciws",
+  "item": "dscombat:ciws",
+  "maxAmmo": 500,
+  "maxHealth": 80.0,
+  "presetId": "ciws",
+  "presetType": "turret",
+  "slotType": "mount_light",
+  "weight": 2500.0
+}

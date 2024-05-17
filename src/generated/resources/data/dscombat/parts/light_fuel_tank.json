@@ -1,0 +1,9 @@
+{
+  "displayName": "preset.dscombat.light_fuel_tank",
+  "item": "dscombat:light_fuel_tank",
+  "max": 50.0,
+  "presetId": "light_fuel_tank",
+  "presetType": "fuel_tank",
+  "slotType": "internal",
+  "weight": 500.0
+}

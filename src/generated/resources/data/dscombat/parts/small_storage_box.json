@@ -1,0 +1,9 @@
+{
+  "displayName": "preset.dscombat.small_storage_box",
+  "item": "dscombat:small_storage_box",
+  "presetId": "small_storage_box",
+  "presetType": "internal_storage",
+  "size": 9,
+  "slotType": "internal",
+  "weight": 1000.0
+}

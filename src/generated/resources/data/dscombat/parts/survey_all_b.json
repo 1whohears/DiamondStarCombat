@@ -1,0 +1,10 @@
+{
+  "displayName": "preset.dscombat.survey_all_b",
+  "externalEntity": "dscombat:survey_all_b",
+  "item": "dscombat:survey_all_b",
+  "presetId": "survey_all_b",
+  "presetType": "external_radar",
+  "radar": "survey_all_b",
+  "slotType": "mount_tech",
+  "weight": 1500.0
+}

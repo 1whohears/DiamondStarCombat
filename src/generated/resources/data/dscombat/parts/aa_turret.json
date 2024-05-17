@@ -1,0 +1,11 @@
+{
+  "displayName": "preset.dscombat.aa_turret",
+  "externalEntity": "dscombat:aa_turret",
+  "item": "dscombat:aa_turret",
+  "maxAmmo": 750,
+  "maxHealth": 40.0,
+  "presetId": "aa_turret",
+  "presetType": "turret",
+  "slotType": "mount_light",
+  "weight": 1000.0
+}

@@ -56,7 +56,7 @@
       "slot_posx": 0.0,
       "slot_posy": -0.61,
       "slot_posz": 3.125,
-      "slot_type": "light_turret",
+      "slot_type": "mount_light",
       "zRot": 0.0
     },
     {
@@ -64,7 +64,7 @@
       "slot_posx": 0.0,
       "slot_posy": -0.9357,
       "slot_posz": 6.0625,
-      "slot_type": "frame",
+      "slot_type": "pylon_light",
       "zRot": 180.0
     },
     {
@@ -72,7 +72,7 @@
       "slot_posx": 0.5,
       "slot_posy": -1.25,
       "slot_posz": 1.1875,
-      "slot_type": "frame",
+      "slot_type": "pylon_light",
       "zRot": 180.0
     },
     {
@@ -80,7 +80,7 @@
       "slot_posx": 1.125,
       "slot_posy": -1.375,
       "slot_posz": 1.1875,
-      "slot_type": "frame",
+      "slot_type": "pylon_light",
       "zRot": 180.0
     },
     {
@@ -88,7 +88,7 @@
       "slot_posx": -0.5,
       "slot_posy": -1.25,
       "slot_posz": 1.1875,
-      "slot_type": "frame",
+      "slot_type": "pylon_light",
       "zRot": 180.0
     },
     {
@@ -96,7 +96,7 @@
       "slot_posx": -1.125,
       "slot_posy": -1.375,
       "slot_posz": 1.1875,
-      "slot_type": "frame",
+      "slot_type": "pylon_light",
       "zRot": 180.0
     },
     {
@@ -104,7 +104,7 @@
       "slot_posx": 4.875,
       "slot_posy": 0.125,
       "slot_posz": 1.0625,
-      "slot_type": "wing",
+      "slot_type": "pylon_light",
       "zRot": 180.0
     },
     {
@@ -112,7 +112,7 @@
       "slot_posx": -4.875,
       "slot_posy": 0.125,
       "slot_posz": 1.0625,
-      "slot_type": "wing",
+      "slot_type": "pylon_light",
       "zRot": 180.0
     },
     {
@@ -152,7 +152,7 @@
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": "advanced_internal",
+      "slot_type": "mount_tech",
       "zRot": 0.0
     }
   ],

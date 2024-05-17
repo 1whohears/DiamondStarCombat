@@ -1,0 +1,9 @@
+{
+  "displayName": "preset.dscombat.heavy_fuel_tank",
+  "item": "dscombat:heavy_fuel_tank",
+  "max": 150.0,
+  "presetId": "heavy_fuel_tank",
+  "presetType": "fuel_tank",
+  "slotType": "internal",
+  "weight": 1500.0
+}

@@ -1,0 +1,9 @@
+{
+  "displayName": "preset.dscombat.gr400",
+  "item": "dscombat:gr400",
+  "presetId": "gr400",
+  "presetType": "internal_radar",
+  "radar": "gr400",
+  "slotType": "tech_internal",
+  "weight": 300.0
+}

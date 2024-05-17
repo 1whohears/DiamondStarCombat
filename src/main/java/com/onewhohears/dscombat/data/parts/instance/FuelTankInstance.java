@@ -14,6 +14,12 @@ public class FuelTankInstance<T extends FuelTankStats> extends PartInstance<T> i
 	public FuelTankInstance(T stats) {
 		super(stats);
 	}
+	
+	@Override
+	public void setFilled(String param) {
+		super.setFilled(param);
+		fuel = getStats().getMaxFuel();
+	}
 
 	@Override
 	public boolean isSetup(String slotId, EntityVehicle craft) {

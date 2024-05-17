@@ -1,0 +1,9 @@
+{
+  "displayName": "preset.dscombat.gimbal_camera",
+  "externalEntity": "dscombat:gimbal_camera",
+  "item": "dscombat:gimbal_camera",
+  "presetId": "gimbal_camera",
+  "presetType": "gimbal",
+  "slotType": "pylon_light",
+  "weight": 100.0
+}

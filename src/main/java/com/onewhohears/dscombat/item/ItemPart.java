@@ -4,15 +4,16 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.onewhohears.dscombat.data.parts.PartData;
+import com.onewhohears.dscombat.data.parts.PartPresets;
 import com.onewhohears.dscombat.data.parts.instance.PartInstance;
+import com.onewhohears.dscombat.data.parts.stats.PartStats;
 import com.onewhohears.dscombat.init.ModItems;
+import com.onewhohears.dscombat.util.UtilItem;
 import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -20,17 +21,17 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 
-public abstract class ItemPart extends Item {
+public class ItemPart extends Item {
 	
 	public final String defaultPartId;
 	
-	protected ItemPart(int stackSize, String defaultPartId) {
-		this(partProps(stackSize), defaultPartId);
+	public ItemPart(int stackSize) {
+		this(partProps(stackSize));
 	}
 	
-	protected ItemPart(Properties props, String defaultPartId) {
+	public ItemPart(Properties props) {
 		super(props);
-		this.defaultPartId = defaultPartId;
+		this.defaultPartId = UtilItem.getItemKey(this).getPath();
 	}
 	
 	public static Properties partProps(int stackSize) {
@@ -59,11 +60,17 @@ public abstract class ItemPart extends Item {
 	}
 	
 	public PartInstance<?> getPartData() {
-		
+		return getPartStats().createPartInstance();
 	}
 	
 	public PartInstance<?> getFilledPartData(String param) {
-		
+		PartInstance<?> part = getPartData();
+		part.setFilled(param);
+		return part;
+	}
+	
+	public PartStats getPartStats() {
+		return PartPresets.get().get(defaultPartId);
 	}
 	
 	@Override
@@ -81,13 +88,7 @@ public abstract class ItemPart extends Item {
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tips, TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tips, isAdvanced);
-		MutableComponent c = UtilMCText.literal("Compatible: ").setStyle(Style.EMPTY.withColor(0xFFFF55));
-		for (int i = 0; i < compatibleSlots.length; ++i) {
-			if (i != 0) c.append(",");
-			c.append(UtilMCText.translatable(compatibleSlots[i].getTranslatableName()));
-		}
-		tips.add(c);
-		tips.add(UtilMCText.literal("Mass: "+weight).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		getPartStats().addToolTips(tips, isAdvanced);
 	}
 
 }

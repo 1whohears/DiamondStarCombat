@@ -18,6 +18,12 @@ public class FlareDispenserInstance<T extends FlareDispenserStats> extends PartI
 	}
 	
 	@Override
+	public void setFilled(String param) {
+		super.setFilled(param);
+		flares = getStats().getMaxFlares();
+	}
+	
+	@Override
 	public void readNBT(CompoundTag tag) {
 		super.readNBT(tag);
 		flares = tag.getInt("flares");

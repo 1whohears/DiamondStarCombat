@@ -1,0 +1,12 @@
+{
+  "displayName": "preset.dscombat.turbofan_f25",
+  "engineType": "PUSH",
+  "fuelRate": 0.005,
+  "heat": 4.0,
+  "item": "dscombat:turbofan_f25",
+  "presetId": "turbofan_f25",
+  "presetType": "internal_engine",
+  "slotType": "push_engine",
+  "thrust": 180.0,
+  "weight": 500.0
+}

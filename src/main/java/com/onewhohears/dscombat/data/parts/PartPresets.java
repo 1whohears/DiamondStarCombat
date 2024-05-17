@@ -34,6 +34,7 @@ public class PartPresets extends JsonPresetReloadListener<PartStats> {
 		addPresetType(PartType.FUEL_TANK);
 		addPresetType(PartType.GIMBAL);
 		addPresetType(PartType.INTERNAL_ENGINE);
+		addPresetType(PartType.INTERNAL_RADAR);
 		addPresetType(PartType.INTERNAL_STORAGE);
 		addPresetType(PartType.INTERNAL_WEAPON);
 		addPresetType(PartType.SEAT);

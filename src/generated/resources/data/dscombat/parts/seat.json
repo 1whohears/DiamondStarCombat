@@ -4,6 +4,6 @@
   "item": "dscombat:seat",
   "presetId": "seat",
   "presetType": "seat",
-  "slotType": "mount_tech",
+  "slotType": "seat",
   "weight": 30.0
 }

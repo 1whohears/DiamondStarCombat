@@ -1,0 +1,11 @@
+{
+  "age": 120,
+  "displayName": "preset.dscombat.basic_flare_dispenser",
+  "heat": 20.0,
+  "item": "dscombat:basic_flare_dispenser",
+  "max": 20,
+  "presetId": "basic_flare_dispenser",
+  "presetType": "flare_dispenser",
+  "slotType": "internal",
+  "weight": 100.0
+}

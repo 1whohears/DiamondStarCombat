@@ -209,7 +209,7 @@ public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
 				.build());
 		// SEAT
 		addPresetToGenerate(PartBuilder.create(ModItems.SEAT.getId(), PartType.SEAT)
-				.setCompatibleSlotType(SlotType.MOUNT_TECH)
+				.setCompatibleSlotType(SlotType.SEAT)
 				.setWeight(30)
 				.setExternalEntityType(ModEntities.SEAT.getId())
 				.build());
@@ -275,8 +275,8 @@ public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
 				.setTurretStats(4, 60)
 				.build());
 		// DISPENSERS
-		addPresetToGenerate(PartBuilder.create(ModItems.MLS.getId(), PartType.TURRENT)
-				.setCompatibleSlotType(SlotType.MOUNT_HEAVY)
+		addPresetToGenerate(PartBuilder.create(ModItems.BASIC_FLARE_DISPENSER.getId(), PartType.FLARE_DISPENSER)
+				.setCompatibleSlotType(SlotType.INTERNAL)
 				.setWeight(100)
 				.setFlareDispenserStats(20, 120, 20)
 				.build());

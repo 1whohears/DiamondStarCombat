@@ -30,7 +30,7 @@ public class ItemWeaponPart extends ItemPart {
 	@Override
 	public Component getName(ItemStack stack) {
 		CompoundTag tag = stack.getOrCreateTag();
-		String weapon = tag.getString("weaponId");
+		String weapon = tag.getString("weapon");
 		MutableComponent name = ((MutableComponent)super.getName(stack)).append(" ");
 		if (weapon.isEmpty()) {
 			name.append("EMPTY");
@@ -49,7 +49,7 @@ public class ItemWeaponPart extends ItemPart {
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tips, TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tips, isAdvanced);
 		CompoundTag tag = stack.getOrCreateTag();
-		String id = tag.getString("weaponId");
+		String id = tag.getString("weapon");
 		if (id.isEmpty()) return;
 		tips.add(UtilMCText.literal("Ammo: "+tag.getInt("ammo")+"/"+tag.getInt("max")).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 		WeaponStats wd = WeaponPresets.get().get(id);

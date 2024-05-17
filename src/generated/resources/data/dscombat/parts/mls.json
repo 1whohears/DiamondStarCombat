@@ -1,11 +1,11 @@
 {
-  "age": 120,
   "displayName": "preset.dscombat.mls",
-  "heat": 20.0,
+  "externalEntity": "dscombat:mls",
   "item": "dscombat:mls",
-  "max": 20,
+  "maxAmmo": 4,
+  "maxHealth": 60.0,
   "presetId": "mls",
   "presetType": "turret",
   "slotType": "mount_heavy",
-  "weight": 100.0
+  "weight": 6000.0
 }

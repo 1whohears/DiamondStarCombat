@@ -8,7 +8,6 @@ import com.onewhohears.dscombat.data.parts.PartPresets;
 import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 import com.onewhohears.dscombat.data.parts.stats.PartStats;
 import com.onewhohears.dscombat.init.ModItems;
-import com.onewhohears.dscombat.util.UtilItem;
 import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.core.NonNullList;
@@ -23,15 +22,12 @@ import net.minecraft.world.level.Level;
 
 public class ItemPart extends Item {
 	
-	public final String defaultPartId;
-	
 	public ItemPart(int stackSize) {
 		this(partProps(stackSize));
 	}
 	
 	public ItemPart(Properties props) {
 		super(props);
-		this.defaultPartId = UtilItem.getItemKey(this).getPath();
 	}
 	
 	public static Properties partProps(int stackSize) {
@@ -70,7 +66,11 @@ public class ItemPart extends Item {
 	}
 	
 	public PartStats getPartStats() {
-		return PartPresets.get().get(defaultPartId);
+		return PartPresets.get().get(getPartPresetId());
+	}
+	
+	public String getPartPresetId() {
+		return toString();
 	}
 	
 	@Override

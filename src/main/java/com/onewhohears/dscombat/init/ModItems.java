@@ -265,13 +265,13 @@ public class ModItems {
 	public static final RegistryObject<ItemPart> MARK7_CANNON = ITEMS.register("mark7_cannon", 
 			() -> new ItemTurret(16));
 	public static final RegistryObject<ItemPart> STEVE_UP_SMASH = ITEMS.register("steve_up_smash", 
-			() -> new ItemTurret(16));
+			() -> new ItemTurret(16, "aim9p5"));
 	public static final RegistryObject<ItemPart> SAM_LAUNCHER = ITEMS.register("sam_launcher", 
-			() -> new ItemTurret(16));
+			() -> new ItemTurret(16, "pac3"));
 	public static final RegistryObject<ItemPart> TORPEDO_TUBES = ITEMS.register("torpedo_tubes", 
 			() -> new ItemTurret(16));
 	public static final RegistryObject<ItemPart> MLS = ITEMS.register("mls", 
-			() -> new ItemTurret(16));
+			() -> new ItemTurret(16, "rgm84"));
 	
 	// FLARE DISPENSERS
 	public static final RegistryObject<ItemPart> BASIC_FLARE_DISPENSER = ITEMS.register("basic_flare_dispenser", 

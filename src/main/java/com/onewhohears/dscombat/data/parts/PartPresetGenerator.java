@@ -292,22 +292,22 @@ public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
 				.setExternalWeaponStats(4, 0)
 				.build());
 		addPresetToGenerate(PartBuilder.create(ModItems.HEAVY_MISSILE_RACK.getId(), PartType.EXTERNAL_WEAPON)
-				.setCompatibleSlotType(SlotType.PYLON_LIGHT)
+				.setCompatibleSlotType(SlotType.PYLON_MED)
 				.setWeight(1500)
 				.setExternalWeaponStats(2, 0)
 				.build());
 		addPresetToGenerate(PartBuilder.create(ModItems.BOMB_RACK.getId(), PartType.EXTERNAL_WEAPON)
-				.setCompatibleSlotType(SlotType.PYLON_LIGHT)
+				.setCompatibleSlotType(SlotType.PYLON_HEAVY)
 				.setWeight(2000)
 				.setExternalWeaponStats(16, 0)
 				.build());
 		addPresetToGenerate(PartBuilder.create(ModItems.ADL.getId(), PartType.EXTERNAL_WEAPON)
-				.setCompatibleSlotType(SlotType.PYLON_LIGHT)
+				.setCompatibleSlotType(SlotType.MOUNT_HEAVY)
 				.setWeight(6000)
 				.setExternalWeaponStats(3, 20)
 				.build());
 		addPresetToGenerate(PartBuilder.create(ModItems.VLS.getId(), PartType.EXTERNAL_WEAPON)
-				.setCompatibleSlotType(SlotType.PYLON_LIGHT)
+				.setCompatibleSlotType(SlotType.MOUNT_HEAVY)
 				.setWeight(6000)
 				.setExternalWeaponStats(16, 90)
 				.build());

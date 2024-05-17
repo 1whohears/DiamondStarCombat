@@ -5,6 +5,6 @@
   "max": 16,
   "presetId": "bomb_rack",
   "presetType": "external_weapon",
-  "slotType": "pylon_light",
+  "slotType": "pylon_heavy",
   "weight": 2000.0
 }

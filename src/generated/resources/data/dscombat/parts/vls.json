@@ -5,6 +5,6 @@
   "max": 16,
   "presetId": "vls",
   "presetType": "external_weapon",
-  "slotType": "pylon_light",
+  "slotType": "mount_heavy",
   "weight": 6000.0
 }

@@ -5,6 +5,6 @@
   "max": 3,
   "presetId": "adl",
   "presetType": "external_weapon",
-  "slotType": "pylon_light",
+  "slotType": "mount_heavy",
   "weight": 6000.0
 }

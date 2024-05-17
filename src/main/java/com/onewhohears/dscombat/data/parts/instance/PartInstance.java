@@ -43,7 +43,7 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 	}
 	
 	public void writeBuffer(FriendlyByteBuf buffer) {
-		buffer.writeUtf(getStats().getId());
+		buffer.writeUtf(getStats().getItemId());
 	}
 	
 	public int getFlares() {

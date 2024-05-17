@@ -51,7 +51,7 @@ public class PartsManager {
 	public static final int SLOT_VERSION = 1;
 	
 	private final EntityVehicle parent;
-	private List<PartSlot> slots = new ArrayList<PartSlot>();
+	private List<PartSlot> slots = new ArrayList<>();
 	private Container inventory = new SimpleContainer(0);
 	private boolean readData = false;
 	private int storageIndex = -1;
@@ -75,7 +75,8 @@ public class PartsManager {
 		for (int i = 0; i < entityNbtList.size(); ++i) {
 			CompoundTag entitySlot = entityNbtList.getCompound(i);
 			CompoundTag presetSlot = findPresetSlot(entitySlot, presetNbtList);
-			slots.add(new PartSlot(entitySlot, presetSlot));
+			PartSlot slot = new PartSlot(entitySlot, presetSlot);
+			slots.add(slot);
 		}
 		readData = true;
 	}

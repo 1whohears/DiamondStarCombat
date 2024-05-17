@@ -25,15 +25,14 @@ public class VehicleContainerMenu extends AbstractContainerMenu {
 	
 	public VehicleContainerMenu(int id, Inventory playerInv) {
 		super(ModContainers.PLANE_MENU.get(), id);
-		//System.out.println("AircraftMenuContainer client side "+playerInv.player.level.isClientSide);
+		//System.out.println("VehicleContainerMenu client side "+playerInv.player.level.isClientSide);
 		this.playerInv = playerInv;
 		// display plane parts
 		if (playerInv.player.getRootVehicle() instanceof EntityVehicle plane) {
 			this.planeInv = plane.partsManager.getInventory();
 			List<PartSlot> slots = plane.partsManager.getSlots();
-			//System.out.println("client preset = "+plane.clientPreset);
 			clientData = VehicleClientPresets.get().get(plane.clientPresetId);
-			//System.out.println("acp not null = "+(acp != null));
+			//System.out.println("client preset = "+clientData);
 			// create plane menu container
 			int x_start = 48, y_start = 15;
 			int x = x_start, y = y_start;
@@ -49,6 +48,7 @@ public class VehicleContainerMenu extends AbstractContainerMenu {
 					} else if (i != 0) x += 18;
 				}
 				//System.out.println("partsInv i = "+i+" x = "+x+" y = "+y);
+				//System.out.println("slot "+i+" "+slots.get(i));
 				this.addSlot(new PartItemSlot(this, i, slots.get(i), x, y));
 			}
 		}

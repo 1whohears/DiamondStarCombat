@@ -32,4 +32,9 @@ public abstract class JsonPresetInstance<T extends JsonPresetStats> {
 		return tag;
 	}
 	
+	@Override
+	public String toString() {
+		return "("+getTypeId()+":"+getStatsId()+")";
+	}
+	
 }

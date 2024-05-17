@@ -174,7 +174,7 @@ public class PartSlot {
 	
 	@Override
 	public String toString() {
-		return "["+slotId+":"+getSlotType().toString()+":"+data.toString()+"]";
+		return "["+slotId+":"+getSlotType().toString()+":"+data+"]";
 	}
 	
 	public float getZRot() {

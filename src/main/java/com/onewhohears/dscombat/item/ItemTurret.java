@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.item;
 
 import java.util.List;
 
+import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 import com.onewhohears.dscombat.data.parts.instance.TurretInstance;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
@@ -49,11 +50,7 @@ public class ItemTurret extends ItemPart {
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
 		if (group.getId() == ModItems.PARTS.getId()) {
-			if (defaultWeaponId.isEmpty()) {
-				ResourceLocation itemid = UtilItem.getItemKey(this);
-				List<String> list = WeaponPresets.get().getTurretWeapons(itemid);
-				if (list.size() > 0) addTurret(list.get(0), items);
-			} else addTurret(defaultWeaponId, items);
+			addTurret(getDefaultWeaponId(), items);
 		}
 	}
 	
@@ -61,6 +58,23 @@ public class ItemTurret extends ItemPart {
 		ItemStack turret = new ItemStack(this);
 		turret.setTag(getFilledPartData(preset).writeNBT());
 		items.add(turret);
+	}
+	
+	@Override
+	public PartInstance<?> getFilledPartData(String param) {
+		PartInstance<?> part = getPartData();
+		if (param.isEmpty()) param = getDefaultWeaponId();
+		part.setFilled(param);
+		return part;
+	}
+	
+	public String getDefaultWeaponId() {
+		if (defaultWeaponId.isEmpty()) {
+			ResourceLocation itemid = UtilItem.getItemKey(this);
+			List<String> list = WeaponPresets.get().getTurretWeapons(itemid);
+			if (list.size() > 0) return list.get(0);
+		}
+		return defaultWeaponId;
 	}
 
 }

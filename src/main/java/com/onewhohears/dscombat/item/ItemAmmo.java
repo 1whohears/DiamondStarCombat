@@ -98,5 +98,12 @@ public class ItemAmmo extends Item implements VehicleInteractItem {
 		stack.setCount(o);
 		return InteractionResult.SUCCESS;
 	}
+	
+	@Override
+	public ItemStack getDefaultInstance() {
+		ItemStack stack = super.getDefaultInstance();
+		stack.getOrCreateTag().putString("weapon", defaultWeaponId);
+		return stack;
+	}
 
 }

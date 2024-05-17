@@ -37,7 +37,6 @@
   "innacuracy": 0.0,
   "itemKey": "dscombat:agm88g",
   "maxAge": 600,
-  "maxAmmo": 2,
   "presetId": "agm88g",
   "presetType": "anti_radar_missile",
   "rackTypeKey": "dscombat:heavy_missile_rack",

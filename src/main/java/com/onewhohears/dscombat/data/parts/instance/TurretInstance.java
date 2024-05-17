@@ -69,6 +69,7 @@ public class TurretInstance<T extends TurretStats> extends SeatInstance<T> imple
 		super.serverSetup(craft, slotId, pos);
 		EntityTurret turret = getTurret(slotId);
 		if (turret == null) return;
+		turret.setMaxAmmo(getStats().getMaxAmmo());
 		turret.setAmmo(ammo);
 	}
 	

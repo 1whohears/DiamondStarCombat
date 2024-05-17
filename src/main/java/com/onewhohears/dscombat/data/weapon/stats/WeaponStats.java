@@ -39,7 +39,6 @@ public abstract class WeaponStats extends JsonPresetStats {
 
 	private final int craftNum;
 	private final int maxAge;
-	private final int maxAmmo;
 	private final int fireRate;
 	private final boolean canShootOnGround;
 	private final String entityTypeKey;
@@ -60,7 +59,6 @@ public abstract class WeaponStats extends JsonPresetStats {
 		super(key, json);
 		this.craftNum = UtilParse.getIntSafe(json, "craftNum", 0);
 		this.maxAge = UtilParse.getIntSafe(json, "maxAge", 0);
-		this.maxAmmo = UtilParse.getIntSafe(json, "maxAmmo", 0);
 		this.fireRate = UtilParse.getIntSafe(json, "fireRate", 0);
 		this.canShootOnGround = UtilParse.getBooleanSafe(json, "canShootOnGround", false);
 		this.entityTypeKey = UtilParse.getStringSafe(json, "entityTypeKey", "");
@@ -94,10 +92,6 @@ public abstract class WeaponStats extends JsonPresetStats {
 
 	public int getMaxAge() {
 		return maxAge;
-	}
-	
-	public int getMaxAmmo() {
-		return maxAmmo;
 	}
 
 	public int getFireRate() {
@@ -201,7 +195,6 @@ public abstract class WeaponStats extends JsonPresetStats {
 		}
 		tips.add(UtilMCText.literal("Fire Rate: ").append(getFireRate()+"").setStyle(Style.EMPTY.withColor(INFO_COLOR)));
 		if (advanced) {
-			tips.add(UtilMCText.literal("Max Ammo: ").append(getMaxAmmo()+"").setStyle(Style.EMPTY.withColor(INFO_COLOR)));
 			tips.add(UtilMCText.literal("Max Age: ").append(getMaxAge()+"").setStyle(Style.EMPTY.withColor(INFO_COLOR)));
 			if (!canShootOnGround) tips.add(UtilMCText.literal("Must Fly").setStyle(Style.EMPTY.withColor(SPECIAL_COLOR)));
 		}

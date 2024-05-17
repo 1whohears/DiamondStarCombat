@@ -36,7 +36,6 @@
   "innacuracy": 0.0,
   "itemKey": "dscombat:agm114k",
   "maxAge": 200,
-  "maxAmmo": 6,
   "presetId": "agm114k",
   "presetType": "pos_missile",
   "rackTypeKey": "dscombat:light_missile_rack",

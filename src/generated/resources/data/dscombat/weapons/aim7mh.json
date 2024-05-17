@@ -42,7 +42,6 @@
   "innacuracy": 0.0,
   "itemKey": "dscombat:aim7mh",
   "maxAge": 334,
-  "maxAmmo": 3,
   "presetId": "aim7mh",
   "presetType": "track_missile",
   "rackTypeKey": "dscombat:heavy_missile_rack",

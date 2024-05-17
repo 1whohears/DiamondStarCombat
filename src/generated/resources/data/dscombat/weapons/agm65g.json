@@ -39,7 +39,6 @@
   "innacuracy": 0.0,
   "itemKey": "dscombat:agm65g",
   "maxAge": 300,
-  "maxAmmo": 4,
   "presetId": "agm65g",
   "presetType": "track_missile",
   "rackTypeKey": "dscombat:heavy_missile_rack",

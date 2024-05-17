@@ -38,7 +38,6 @@
   "innacuracy": 0.0,
   "itemKey": "dscombat:agm65l",
   "maxAge": 300,
-  "maxAmmo": 4,
   "presetId": "agm65l",
   "presetType": "pos_missile",
   "rackTypeKey": "dscombat:heavy_missile_rack",

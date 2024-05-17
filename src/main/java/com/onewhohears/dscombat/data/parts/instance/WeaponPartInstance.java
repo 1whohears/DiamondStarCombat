@@ -67,6 +67,7 @@ public class WeaponPartInstance<T extends WeaponPartStats> extends PartInstance<
 			data.setSlot(slotId);
 			craft.weaponSystem.addWeapon(data);
 		}
+		data.setMaxAmmo(getStats().getMaxAmmo());
 		data.setCurrentAmmo(ammo);
 		data.setLaunchPos(pos);
 		if (!craft.level.isClientSide) data.updateClientAmmo(craft);
@@ -146,12 +147,16 @@ public class WeaponPartInstance<T extends WeaponPartStats> extends PartInstance<
 
 	@Override
 	public String getContinuity() {
-		return weapon;
+		return getWeaponId();
 	}
 	
 	@Override
 	public boolean isContinuityEmpty() {
 		return getContinuity() == null || getContinuity().isEmpty() || getCurrentAmmo() == 0;
+	}
+	
+	public String getWeaponId() {
+		return weapon;
 	}
 
 }

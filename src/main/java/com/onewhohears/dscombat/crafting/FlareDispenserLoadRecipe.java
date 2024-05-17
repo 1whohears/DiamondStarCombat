@@ -46,7 +46,7 @@ public class FlareDispenserLoadRecipe extends PartItemLoadRecipe<FlareDispenserI
 	}
 
 	@Override
-	public int getContinuityMaxAmmo(String continuity) {
+	public int getContinuityMaxAmmo(FlareDispenserInstance<?> lpd, String continuity) {
 		return 0;
 	}
 

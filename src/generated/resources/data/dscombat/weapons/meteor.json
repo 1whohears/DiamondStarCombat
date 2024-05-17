@@ -46,7 +46,6 @@
   "innacuracy": 0.0,
   "itemKey": "dscombat:track_air_missile",
   "maxAge": 500,
-  "maxAmmo": 2,
   "presetId": "meteor",
   "presetType": "track_missile",
   "rackTypeKey": "dscombat:heavy_missile_rack",

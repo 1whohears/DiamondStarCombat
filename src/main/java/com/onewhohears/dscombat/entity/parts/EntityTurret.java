@@ -39,6 +39,7 @@ public class EntityTurret extends EntitySeat {
 	
 	public static final EntityDataAccessor<String> WEAPON_ID = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.STRING);
 	public static final EntityDataAccessor<Integer> AMMO = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> MAX_AMMO = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Float> RELROTX = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> RELROTY = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.FLOAT);
 	
@@ -72,6 +73,7 @@ public class EntityTurret extends EntitySeat {
 		super.defineSynchedData();
 		entityData.define(WEAPON_ID, "10mm");
 		entityData.define(AMMO, 0);
+		entityData.define(MAX_AMMO, 0);
 		entityData.define(RELROTX, 0f);
 		entityData.define(RELROTY, 0f);
 	}
@@ -82,8 +84,10 @@ public class EntityTurret extends EntitySeat {
 		if (!level.isClientSide) return;
 		if (key.equals(WEAPON_ID) && WeaponPresets.get().has(getWeaponId())) {
 			data = WeaponPresets.get().get(getWeaponId()).createWeaponInstance();
+		} else if (key.equals(MAX_AMMO)) {
+			if (data != null) data.setMaxAmmo(getMaxAmmo());
 		} else if (key.equals(AMMO)) {
-			if (data != null) data.setCurrentAmmo(getAmmo());
+			if (data != null) data.forceSetCurrentAmmo(getAmmo());
 		}
 	}
 	
@@ -116,7 +120,10 @@ public class EntityTurret extends EntitySeat {
 		if (!level.isClientSide) {
 			if (data == null && WeaponPresets.get().has(getWeaponId())) 
 				data = WeaponPresets.get().get(getWeaponId()).createWeaponInstance();
-			if (data != null) data.setCurrentAmmo(getAmmo());
+			if (data != null) {
+				data.setMaxAmmo(getMaxAmmo());
+				data.setCurrentAmmo(getAmmo());
+			}
 		}
 	}
 	
@@ -271,6 +278,10 @@ public class EntityTurret extends EntitySeat {
 		entityData.set(AMMO, ammo);
 	}
 	
+	public void setMaxAmmo(int max) {
+		entityData.set(MAX_AMMO, max);
+	}
+	
 	public void updateDataAmmo() {
 		if (getRootVehicle() instanceof EntityVehicle plane) {
 			PartSlot slot = plane.partsManager.getSlot(getSlotId());
@@ -283,6 +294,10 @@ public class EntityTurret extends EntitySeat {
 	
 	public int getAmmo() {
 		return entityData.get(AMMO);
+	}
+	
+	public int getMaxAmmo() {
+		return entityData.get(MAX_AMMO);
 	}
 	
 	public String getWeaponId() {

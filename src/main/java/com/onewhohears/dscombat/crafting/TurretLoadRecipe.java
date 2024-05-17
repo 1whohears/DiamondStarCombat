@@ -47,8 +47,8 @@ public class TurretLoadRecipe extends PartItemLoadRecipe<TurretInstance<?>> {
 	}
 
 	@Override
-	public int getContinuityMaxAmmo(String continuity) {
-		return WeaponPresets.get().get(continuity).getMaxAmmo();
+	public int getContinuityMaxAmmo(TurretInstance<?> lpd, String continuity) {
+		return lpd.getStats().getMaxAmmo();
 	}
 
 }

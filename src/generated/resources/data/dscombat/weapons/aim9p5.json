@@ -42,7 +42,6 @@
   "innacuracy": 0.0,
   "itemKey": "dscombat:aim9p5",
   "maxAge": 100,
-  "maxAmmo": 4,
   "presetId": "aim9p5",
   "presetType": "ir_missile",
   "rackTypeKey": "dscombat:light_missile_rack",

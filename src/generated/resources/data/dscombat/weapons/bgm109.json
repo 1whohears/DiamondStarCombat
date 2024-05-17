@@ -41,7 +41,6 @@
   "innacuracy": 0.0,
   "itemKey": "dscombat:track_air_missile",
   "maxAge": 172,
-  "maxAmmo": 16,
   "presetId": "bgm109",
   "presetType": "track_missile",
   "rackTypeKey": "dscombat:vls",

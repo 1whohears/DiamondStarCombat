@@ -27,6 +27,7 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 	
 	private int currentAmmo;
 	private int recoilTime;
+	private int maxAmmo;
 	private Vec3 pos = Vec3.ZERO;
 	private String failedLaunchReason;
 	private String slotId = "";
@@ -41,6 +42,7 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 	public void readNBT(CompoundTag tag) {
 		super.readNBT(tag);
 		currentAmmo = tag.getInt("currentAmmo");
+		maxAmmo = tag.getInt("maxAmmo");
 		slotId = tag.getString("slotId");
 		pos = UtilParse.readVec3(tag, "pos");
 	}
@@ -50,6 +52,7 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 		CompoundTag tag = super.writeNBT();
 		tag.putString("weaponId", getStatsId());
 		tag.putInt("currentAmmo", getCurrentAmmo());
+		tag.putInt("maxAmmo", getMaxAmmo());
 		UtilParse.writeVec3(tag, pos, "pos");
 		tag.putString("slotId", slotId);
 		return tag;
@@ -169,13 +172,25 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 		this.pos = pos;
 	}
 	
+	public int getMaxAmmo() {
+		return maxAmmo;
+	}
+	
+	public void setMaxAmmo(int max) {
+		maxAmmo = max;
+	}
+	
 	public int getCurrentAmmo() {
 		return currentAmmo;
+	}
+	
+	public void forceSetCurrentAmmo(int currentAmmo) {
+		this.currentAmmo = currentAmmo;
 	}
 
 	public void setCurrentAmmo(int currentAmmo) {
 		if (currentAmmo < 0) currentAmmo = 0;
-		if (currentAmmo > getStats().getMaxAmmo()) currentAmmo = getStats().getMaxAmmo();
+		if (currentAmmo > getMaxAmmo()) currentAmmo = getMaxAmmo();
 		this.currentAmmo = currentAmmo;
 	}
 	
@@ -186,9 +201,9 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 	public int addAmmo(int num) {
 		int total = getCurrentAmmo()+num;
 		int r = 0;
-		if (total > getStats().getMaxAmmo()) {
-			r = total - getStats().getMaxAmmo();
-			total = getStats().getMaxAmmo();
+		if (total > getMaxAmmo()) {
+			r = total - getMaxAmmo();
+			total = getMaxAmmo();
 		} else if (total < 0) {
 			r = total;
 			total = 0;

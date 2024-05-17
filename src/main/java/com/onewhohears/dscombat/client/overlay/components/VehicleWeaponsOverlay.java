@@ -101,7 +101,7 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
                 poseStack.pushPose();
                 poseStack.translate(0, 0, blitPosition + 3);
                 if (!weaponAt.getStats().isNoWeapon()) {
-                    drawString(poseStack, FONT, weaponAt.getCurrentAmmo() + "/" + weaponAt.getStats().getMaxAmmo(), 16, newYPos + 14, 0xe6e600);
+                    drawString(poseStack, FONT, weaponAt.getCurrentAmmo() + "/" + weaponAt.getMaxAmmo(), 16, newYPos + 14, 0xe6e600);
                 } else {
                     drawString(poseStack, FONT, SAFETY, 16, newYPos + 14, 0xff5555);
                 }
@@ -140,7 +140,7 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
 
         poseStack.pushPose();
         poseStack.translate(0, 0, blitPosition + 2);
-        if (!selectedWeapon.getStats().isNoWeapon()) drawString(poseStack, FONT, selectedWeapon.getCurrentAmmo() + "/" + selectedWeapon.getStats().getMaxAmmo(), 16, (int) (yPlacement + 14), 0xe6e600);
+        if (!selectedWeapon.getStats().isNoWeapon()) drawString(poseStack, FONT, selectedWeapon.getCurrentAmmo() + "/" + selectedWeapon.getMaxAmmo(), 16, (int) (yPlacement + 14), 0xe6e600);
         drawString(poseStack, FONT, selectedWeapon.getStats().getWeaponTypeCode(), 16, (int) yPlacement + 4, 0xe6e600);
         poseStack.popPose();
     }

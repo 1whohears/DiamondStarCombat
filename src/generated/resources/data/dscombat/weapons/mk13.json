@@ -38,7 +38,6 @@
   "innacuracy": 0.0,
   "itemKey": "dscombat:mk13",
   "maxAge": 600,
-  "maxAmmo": 3,
   "presetId": "mk13",
   "presetType": "torpedo",
   "rackTypeKey": "dscombat:heavy_missile_rack",

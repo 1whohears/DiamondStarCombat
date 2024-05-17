@@ -47,8 +47,8 @@ public class WeaponPartLoadRecipe extends PartItemLoadRecipe<WeaponPartInstance<
 	}
 
 	@Override
-	public int getContinuityMaxAmmo(String continuity) {
-		return WeaponPresets.get().get(continuity).getMaxAmmo();
+	public int getContinuityMaxAmmo(WeaponPartInstance<?> lpd, String continuity) {
+		return lpd.getStats().getMaxAmmo();
 	}
 
 }

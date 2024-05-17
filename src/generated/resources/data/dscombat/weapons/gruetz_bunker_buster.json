@@ -32,7 +32,6 @@
   "innacuracy": 0.0,
   "itemKey": "dscombat:gruetz_bunker_buster",
   "maxAge": 300,
-  "maxAmmo": 1,
   "presetId": "gruetz_bunker_buster",
   "presetType": "bunker_buster",
   "rackTypeKey": "dscombat:bomb_rack",

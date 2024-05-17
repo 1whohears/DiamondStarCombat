@@ -24,7 +24,6 @@
   "innacuracy": 0.4,
   "itemKey": "dscombat:120mmhe",
   "maxAge": 40,
-  "maxAmmo": 16,
   "presetId": "120mmhe",
   "presetType": "bullet",
   "rackTypeKey": "",

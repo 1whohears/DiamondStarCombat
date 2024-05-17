@@ -4,11 +4,13 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.onewhohears.dscombat.data.parts.instance.WeaponPartInstance;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.util.UtilItem;
 import com.onewhohears.dscombat.util.UtilMCText;
+import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -48,10 +50,10 @@ public class ItemWeaponPart extends ItemPart {
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tips, TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tips, isAdvanced);
-		CompoundTag tag = stack.getOrCreateTag();
-		String id = tag.getString("weapon");
+		WeaponPartInstance<?> data = (WeaponPartInstance<?>) UtilParse.parsePartFromItem(stack);
+		String id = data.getWeaponId();
 		if (id.isEmpty()) return;
-		tips.add(UtilMCText.literal("Ammo: "+tag.getInt("ammo")+"/"+tag.getInt("max")).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		tips.add(UtilMCText.literal("Ammo: "+(int)data.getCurrentAmmo()+"/"+data.getStats().getMaxAmmo()).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 		WeaponStats wd = WeaponPresets.get().get(id);
 		wd.addToolTips(tips, isAdvanced.isAdvanced());
 	}

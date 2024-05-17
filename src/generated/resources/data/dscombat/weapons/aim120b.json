@@ -42,7 +42,6 @@
   "innacuracy": 0.0,
   "itemKey": "dscombat:aim120b",
   "maxAge": 350,
-  "maxAmmo": 3,
   "presetId": "aim120b",
   "presetType": "track_missile",
   "rackTypeKey": "dscombat:heavy_missile_rack",

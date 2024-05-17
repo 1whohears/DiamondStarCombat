@@ -20,7 +20,6 @@
   "innacuracy": 0.3,
   "itemKey": "dscombat:bullet",
   "maxAge": 40,
-  "maxAmmo": 50,
   "presetId": "127mm",
   "presetType": "bullet",
   "rackTypeKey": "",

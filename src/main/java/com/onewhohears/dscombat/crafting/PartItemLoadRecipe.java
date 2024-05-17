@@ -109,7 +109,7 @@ public abstract class PartItemLoadRecipe<I extends LoadableRecipePartInstance> e
 		if (lpd.updateContinuityIfEmpty() && lpd.isContinuityEmpty()) {
 			lpd.setContinuity(ammoCont);
 			lpd.setCurrentAmmo(0);
-			lpd.setMaxAmmo(getContinuityMaxAmmo(ammoCont));
+			lpd.setMaxAmmo(getContinuityMaxAmmo(lpd, ammoCont));
 		}
 	}
 
@@ -189,7 +189,7 @@ public abstract class PartItemLoadRecipe<I extends LoadableRecipePartInstance> e
 	public abstract boolean checkAmmoContinuity();
 	public abstract String getItemAmmoContinuity(ItemStack stack);
 	public abstract boolean isContinuityValid(String continuity);
-	public abstract int getContinuityMaxAmmo(String continuity);
+	public abstract int getContinuityMaxAmmo(I lpd, String continuity);
 	
 	public boolean canItemsCombine(I lpd, List<ItemStack> ammo) {
 		if (lpd == null || ammo == null || ammo.size() < 1) return false;

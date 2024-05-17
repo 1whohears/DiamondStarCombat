@@ -291,11 +291,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		item = vehicleStats.getItem();
 		soundManager.loadSounds(vehicleStats);
 		CompoundTag presetNbt = vehicleStats.getDataAsNBT();
-		System.out.println("entity nbt = "+nbt.toString());
-		System.out.println("preset nbt = "+presetNbt.toString());
 		// merge if this entity hasn't merged yet
 		if (!nbt.getBoolean("merged_preset")) nbt.merge(presetNbt);
-		System.out.println("merged nbt = "+nbt.toString());
 		partsManager.read(nbt, presetNbt);
 		textureManager.read(nbt);
 		soundManager.read(nbt);

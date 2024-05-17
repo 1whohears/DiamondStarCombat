@@ -51,7 +51,7 @@ public class FuelTankLoadRecipe extends PartItemLoadRecipe<FuelTankInstance<?>> 
 	}
 
 	@Override
-	public int getContinuityMaxAmmo(String continuity) {
+	public int getContinuityMaxAmmo(FuelTankInstance<?> lpd, String continuity) {
 		return 0;
 	}
 

@@ -39,7 +39,6 @@
   "innacuracy": 0.0,
   "itemKey": "dscombat:torpedo1",
   "maxAge": 600,
-  "maxAmmo": 4,
   "presetId": "rgm84",
   "presetType": "track_missile",
   "rackTypeKey": "dscombat:adl",

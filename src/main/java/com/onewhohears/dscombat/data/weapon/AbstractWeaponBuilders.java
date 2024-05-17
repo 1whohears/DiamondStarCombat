@@ -22,10 +22,6 @@ public class AbstractWeaponBuilders {
 			return setInt("maxAge", maxAge);
 		}
 		
-		public C setMaxAmmo(int maxAmmo) {
-			return setInt("maxAmmo", maxAmmo);
-		}
-		
 		public C setFireRate(int fireRate) {
 			return setInt("fireRate", fireRate);
 		}

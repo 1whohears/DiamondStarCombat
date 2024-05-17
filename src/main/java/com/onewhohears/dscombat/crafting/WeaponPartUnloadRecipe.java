@@ -57,9 +57,9 @@ public class WeaponPartUnloadRecipe extends PartItemUnloadRecipe<WeaponPartInsta
 	}
 
 	@Override
-	public int getContinuityMaxAmmo(String continuity) {
+	public int getContinuityMaxAmmo(WeaponPartInstance<?> lpd, String continuity) {
 		if (!isContinuityValid(continuity)) return 0;
-		return WeaponPresets.get().get(continuity).getMaxAmmo();
+		return lpd.getStats().getMaxAmmo();
 	}
 
 }

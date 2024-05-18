@@ -4,6 +4,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.common.network.IPacket;
+import com.onewhohears.dscombat.data.parts.PartPresets;
 import com.onewhohears.dscombat.data.radar.RadarPresets;
 import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
@@ -21,6 +22,7 @@ public class ToClientDataPackSynch extends IPacket {
 	
 	public ToClientDataPackSynch(FriendlyByteBuf buffer) {
 		super(buffer);
+		PartPresets.get().readBuffer(buffer);
 		WeaponPresets.get().readBuffer(buffer);
 		RadarPresets.get().readBuffer(buffer);
 		VehiclePresets.get().readBuffer(buffer);
@@ -28,6 +30,7 @@ public class ToClientDataPackSynch extends IPacket {
 	
 	@Override
 	public void encode(FriendlyByteBuf buffer) {
+		PartPresets.get().writeToBuffer(buffer);
 		WeaponPresets.get().writeToBuffer(buffer);
 		RadarPresets.get().writeToBuffer(buffer);
 		VehiclePresets.get().writeToBuffer(buffer);

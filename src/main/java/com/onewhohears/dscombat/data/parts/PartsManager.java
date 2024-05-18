@@ -19,7 +19,6 @@ import com.onewhohears.dscombat.data.parts.stats.EngineStats;
 import com.onewhohears.dscombat.data.parts.stats.EngineStats.EngineType;
 import com.onewhohears.dscombat.data.parts.stats.FuelTankStats;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
@@ -165,7 +164,7 @@ public class PartsManager {
 	}
 	
 	public SeatInstance<?> getDefaultSeat() {
-		return (SeatInstance<?>) ModItems.SEAT.get().getPartData();
+		return (SeatInstance<?>) PartPresets.get().get("seat").createPartInstance();
 	}
 	
 	public void write(CompoundTag compound) {

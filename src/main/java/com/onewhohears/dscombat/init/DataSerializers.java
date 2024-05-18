@@ -2,14 +2,13 @@ package com.onewhohears.dscombat.init;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.data.parts.PartPresets;
 import com.onewhohears.dscombat.data.parts.instance.PartInstance;
+import com.onewhohears.dscombat.data.parts.stats.PartStats;
 import com.onewhohears.dscombat.data.radar.RadarStats.RadarMode;
-import com.onewhohears.dscombat.item.ItemPart;
-import com.onewhohears.dscombat.util.UtilItem;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataSerializer;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -66,10 +65,9 @@ public class DataSerializers {
 		}
 		@Override
 		public PartInstance<?> read(FriendlyByteBuf buffer) {
-			String itemId = buffer.readUtf();
-			Item item = UtilItem.getItem(itemId, null);
-			if (!(item instanceof ItemPart part)) return null;
-			PartInstance<?> data = part.getPartData();
+			String presetId = buffer.readUtf();
+			PartStats stats = PartPresets.get().get(presetId);
+			PartInstance<?> data = stats.createPartInstance();
 			data.readBuffer(buffer);
 			return data;
 		}

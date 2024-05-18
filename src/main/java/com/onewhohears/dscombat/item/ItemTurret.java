@@ -2,7 +2,6 @@ package com.onewhohears.dscombat.item;
 
 import java.util.List;
 
-import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 import com.onewhohears.dscombat.data.parts.instance.TurretInstance;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
@@ -55,17 +54,10 @@ public class ItemTurret extends ItemPart {
 	}
 	
 	private void addTurret(String preset, NonNullList<ItemStack> items) {
+		if (preset.isEmpty()) preset = getDefaultWeaponId();
 		ItemStack turret = new ItemStack(this);
-		turret.setTag(getFilledPartData(preset).writeNBT());
+		turret.setTag(getDefaultPartStats().createFilledPartInstance(preset).writeNBT());
 		items.add(turret);
-	}
-	
-	@Override
-	public PartInstance<?> getFilledPartData(String param) {
-		PartInstance<?> part = getPartData();
-		if (param.isEmpty()) param = getDefaultWeaponId();
-		part.setFilled(param);
-		return part;
 	}
 	
 	public String getDefaultWeaponId() {

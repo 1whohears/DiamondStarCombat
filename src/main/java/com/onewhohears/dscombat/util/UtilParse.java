@@ -16,7 +16,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.mojang.logging.LogUtils;
 import com.mojang.math.Quaternion;
+import com.onewhohears.dscombat.data.parts.PartPresets;
 import com.onewhohears.dscombat.data.parts.instance.PartInstance;
+import com.onewhohears.dscombat.data.parts.stats.PartStats;
 import com.onewhohears.dscombat.data.radar.RadarPresets;
 import com.onewhohears.dscombat.data.radar.RadarStats;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
@@ -27,7 +29,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
@@ -110,9 +111,12 @@ public class UtilParse {
 	@Nullable
 	public static PartInstance<?> parsePartFromItem(ItemStack stack) {
 		//System.out.println("parsePartFromItem = "+stack+" "+stack.getTag());
-		if (!(stack.getItem() instanceof ItemPart part)) return null;
 		if (stack.hasTag()) return parsePartFromCompound(stack.getTag());
-		return part.getPartData();
+		if (!(stack.getItem() instanceof ItemPart part)) return null;
+		String presetId = part.getDefaultPartPresetId();
+		PartStats stats = PartPresets.get().get(presetId);
+		if (stats == null) return null;
+		return stats.createPartInstance();
 	}
 	
 	@Nullable
@@ -120,13 +124,15 @@ public class UtilParse {
 		//System.out.println("parsePartFromCompound tag = "+tag);
 		if (tag == null) return null;
 		if (tag.isEmpty()) return null;
-		if (!tag.contains("itemid")) return null;
-		String itemId = tag.getString("itemid");
-		Item item = UtilItem.getItem(itemId, null);
-		if (!(item instanceof ItemPart part)) return null;
-		if (tag.getBoolean("filled")) return part.getFilledPartData(tag.getString("param"));
-		PartInstance<?> data = part.getPartData();
-		boolean old = tag.getInt("parse_version") < PartInstance.PARSE_VERSION;
+		String presetId = "";
+		if (tag.contains("presetId")) presetId = tag.getString("presetId");
+		else if (tag.contains("itemid")) presetId = tag.getString("itemid");
+		if (presetId.isEmpty()) return null;
+		PartStats stats = PartPresets.get().get(presetId);
+		if (stats == null) return null;
+		if (tag.getBoolean("filled")) return stats.createFilledPartInstance(tag.getString("param"));
+		PartInstance<?> data = stats.createPartInstance();
+		boolean old = tag.getInt("parse_version") < 2;
 		if (old || tag.getBoolean("readnbt")) data.readNBT(tag);
 		return data;
 	}

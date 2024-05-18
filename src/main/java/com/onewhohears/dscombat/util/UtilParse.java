@@ -126,7 +126,10 @@ public class UtilParse {
 		if (tag.isEmpty()) return null;
 		String presetId = "";
 		if (tag.contains("presetId")) presetId = tag.getString("presetId");
-		else if (tag.contains("itemid")) presetId = tag.getString("itemid");
+		else if (tag.contains("itemid")) {
+			presetId = tag.getString("itemid");
+			presetId = presetId.split(":")[1];
+		}
 		if (presetId.isEmpty()) return null;
 		PartStats stats = PartPresets.get().get(presetId);
 		if (stats == null) return null;

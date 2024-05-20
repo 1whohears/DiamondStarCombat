@@ -280,6 +280,8 @@ public class ModItems {
 	// WEAPON PARTS
 	public static final RegistryObject<ItemPart> XM12 = ITEMS.register("xm12", 
 			() -> new ItemWeaponPart(16)); 
+	public static final RegistryObject<ItemPart> INTERNAL_GUN = ITEMS.register("internal_gun", 
+			() -> new ItemWeaponPart(16)); 
 	public static final RegistryObject<ItemPart> LIGHT_MISSILE_RACK = ITEMS.register("light_missile_rack", 
 			() -> new ItemWeaponPart(16)); 
 	public static final RegistryObject<ItemPart> HEAVY_MISSILE_RACK = ITEMS.register("heavy_missile_rack", 

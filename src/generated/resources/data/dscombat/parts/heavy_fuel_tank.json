@@ -1,5 +1,5 @@
 {
-  "displayName": "preset.dscombat.heavy_fuel_tank",
+  "displayName": "item.dscombat.heavy_fuel_tank",
   "item": "dscombat:heavy_fuel_tank",
   "max": 150.0,
   "presetId": "heavy_fuel_tank",

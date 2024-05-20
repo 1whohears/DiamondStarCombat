@@ -1,5 +1,5 @@
 {
-  "displayName": "preset.dscombat.gimbal_camera",
+  "displayName": "item.dscombat.gimbal_camera",
   "externalEntity": "dscombat:gimbal_camera",
   "item": "dscombat:gimbal_camera",
   "presetId": "gimbal_camera",

@@ -1,6 +1,6 @@
 {
   "buffType": "NIGHT_VISION_HUD",
-  "displayName": "preset.dscombat.night_vision_hud",
+  "displayName": "item.dscombat.night_vision_hud",
   "item": "dscombat:night_vision_hud",
   "presetId": "night_vision_hud",
   "presetType": "buff",

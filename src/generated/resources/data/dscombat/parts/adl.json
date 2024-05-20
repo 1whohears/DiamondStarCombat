@@ -1,6 +1,6 @@
 {
   "changeLaunchPitch": 20.0,
-  "displayName": "preset.dscombat.adl",
+  "displayName": "item.dscombat.adl",
   "item": "dscombat:adl",
   "max": 3,
   "presetId": "adl",

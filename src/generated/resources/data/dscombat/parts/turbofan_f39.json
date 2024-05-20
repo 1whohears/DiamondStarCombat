@@ -1,5 +1,5 @@
 {
-  "displayName": "preset.dscombat.turbofan_f39",
+  "displayName": "item.dscombat.turbofan_f39",
   "engineType": "PUSH",
   "fuelRate": 0.007,
   "heat": 5.0,

@@ -109,10 +109,10 @@
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:xm12",
-        "param": "50mmhe"
+        "itemid": "dscombat:internal_gun",
+        "param": "30mmhe"
       },
-      "name": "frame_1"
+      "name": "internal_gun"
     },
     {
       "data": {
@@ -120,7 +120,7 @@
         "itemid": "dscombat:heavy_missile_rack",
         "param": "agm88g"
       },
-      "name": "frame_2"
+      "name": "frame_1"
     },
     {
       "data": {

@@ -1,5 +1,5 @@
 {
-  "displayName": "preset.dscombat.heavy_tank_turret",
+  "displayName": "item.dscombat.heavy_tank_turret",
   "externalEntity": "dscombat:heavy_tank_turret",
   "item": "dscombat:heavy_tank_turret",
   "maxAmmo": 16,

@@ -1,5 +1,5 @@
 {
-  "displayName": "preset.dscombat.light_fuel_tank",
+  "displayName": "item.dscombat.light_fuel_tank",
   "item": "dscombat:light_fuel_tank",
   "max": 50.0,
   "presetId": "light_fuel_tank",

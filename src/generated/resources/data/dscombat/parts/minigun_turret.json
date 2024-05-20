@@ -1,5 +1,5 @@
 {
-  "displayName": "preset.dscombat.minigun_turret",
+  "displayName": "item.dscombat.minigun_turret",
   "externalEntity": "dscombat:minigun_turret",
   "item": "dscombat:minigun_turret",
   "maxAmmo": 1000,

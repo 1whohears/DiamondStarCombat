@@ -1,6 +1,6 @@
 {
   "age": 120,
-  "displayName": "preset.dscombat.basic_flare_dispenser",
+  "displayName": "item.dscombat.basic_flare_dispenser",
   "heat": 20.0,
   "item": "dscombat:basic_flare_dispenser",
   "max": 20,

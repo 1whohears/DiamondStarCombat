@@ -1,0 +1,9 @@
+{
+  "displayName": "preset.dscombat.m61a1_vulcan",
+  "item": "dscombat:internal_gun",
+  "max": 500,
+  "presetId": "m61a1_vulcan",
+  "presetType": "internal_weapon",
+  "slotType": "internal_gun",
+  "weight": 900.0
+}

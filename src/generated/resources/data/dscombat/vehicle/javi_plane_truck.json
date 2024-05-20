@@ -107,10 +107,10 @@
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:xm12",
-        "param": "20mm"
+        "itemid": "dscombat:internal_gun",
+        "param": "30mmhe"
       },
-      "name": "frame_1"
+      "name": "internal_gun"
     },
     {
       "data": {
@@ -118,7 +118,7 @@
         "itemid": "dscombat:light_missile_rack",
         "param": "aim9p5"
       },
-      "name": "frame_2"
+      "name": "frame_1"
     },
     {
       "data": {

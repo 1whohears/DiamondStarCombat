@@ -1,5 +1,5 @@
 {
-  "displayName": "preset.dscombat.air_scan_a",
+  "displayName": "item.dscombat.air_scan_a",
   "externalEntity": "dscombat:air_scan_a",
   "item": "dscombat:air_scan_a",
   "presetId": "air_scan_a",

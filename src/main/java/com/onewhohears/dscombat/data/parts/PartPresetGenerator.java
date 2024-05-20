@@ -280,7 +280,7 @@ public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
 				.setWeight(100)
 				.setFlareDispenserStats(20, 120, 20)
 				.build());
-		// WEAPONS
+		// EXTERNAL WEAPONS
 		addPresetToGenerate(PartBuilder.create(ModItems.XM12.getId(), PartType.EXTERNAL_WEAPON)
 				.setCompatibleSlotType(SlotType.PYLON_LIGHT)
 				.setWeight(500)
@@ -310,6 +310,22 @@ public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
 				.setCompatibleSlotType(SlotType.MOUNT_HEAVY)
 				.setWeight(6000)
 				.setExternalWeaponStats(16, 90)
+				.build());
+		// INTERNAL WEAPONS
+		addPresetToGenerate(PartBuilder.create(DSCombatMod.MODID,"gau_avenger", ModItems.INTERNAL_GUN.getId(), PartType.INTERNAL_WEAPON)
+				.setCompatibleSlotType(SlotType.INTERNAL_GUN)
+				.setWeight(1250)
+				.setWeaponStats(1000)
+				.build());
+		addPresetToGenerate(PartBuilder.create(DSCombatMod.MODID,"m61a1_vulcan", ModItems.INTERNAL_GUN.getId(), PartType.INTERNAL_WEAPON)
+				.setCompatibleSlotType(SlotType.INTERNAL_GUN)
+				.setWeight(900)
+				.setWeaponStats(500)
+				.build());
+		addPresetToGenerate(PartBuilder.create(DSCombatMod.MODID,"gsh_30_1", ModItems.INTERNAL_GUN.getId(), PartType.INTERNAL_WEAPON)
+				.setCompatibleSlotType(SlotType.INTERNAL_GUN)
+				.setWeight(200)
+				.setWeaponStats(200)
 				.build());
 	}
 	

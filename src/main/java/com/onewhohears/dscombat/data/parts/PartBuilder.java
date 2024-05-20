@@ -9,7 +9,13 @@ import net.minecraft.resources.ResourceLocation;
 public class PartBuilder extends PresetBuilder<PartBuilder> {
 	
 	public static PartBuilder create(ResourceLocation item, PartType type) {
-		PartBuilder builder = new PartBuilder(item.getNamespace(), item.getPath(), type);
+		PartBuilder builder = create(item.getNamespace(), item.getPath(), item, type);
+		builder.setDisplayName("item."+item.getNamespace()+"."+item.getPath());
+		return builder;
+	}
+	
+	public static PartBuilder create(String namespace, String name, ResourceLocation item, PartType type) {
+		PartBuilder builder = new PartBuilder(namespace, name, type);
 		builder.setItem(item);
 		return builder;
 	}

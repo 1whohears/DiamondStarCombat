@@ -3,7 +3,7 @@
   "displayName": "preset.dscombat.javi_plane_unarmed",
   "ingredients": [
     {
-      "item": "dscombat:xm12",
+      "item": "dscombat:internal_gun",
       "num": 1
     },
     {
@@ -41,9 +41,11 @@
     },
     {
       "data": {
-        "itemid": "dscombat:xm12"
+        "itemid": "dscombat:internal_gun",
+        "param": "30mmhe"
       },
-      "name": "frame_1"
+      "locked": true,
+      "name": "internal_gun"
     }
   ]
 }

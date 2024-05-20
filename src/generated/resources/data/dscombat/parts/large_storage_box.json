@@ -1,5 +1,5 @@
 {
-  "displayName": "preset.dscombat.large_storage_box",
+  "displayName": "item.dscombat.large_storage_box",
   "item": "dscombat:large_storage_box",
   "presetId": "large_storage_box",
   "presetType": "internal_storage",

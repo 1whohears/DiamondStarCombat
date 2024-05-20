@@ -1,5 +1,5 @@
 {
-  "displayName": "preset.dscombat.medium_storage_box",
+  "displayName": "item.dscombat.medium_storage_box",
   "item": "dscombat:medium_storage_box",
   "presetId": "medium_storage_box",
   "presetType": "internal_storage",

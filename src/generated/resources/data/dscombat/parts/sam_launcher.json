@@ -1,5 +1,5 @@
 {
-  "displayName": "preset.dscombat.sam_launcher",
+  "displayName": "item.dscombat.sam_launcher",
   "externalEntity": "dscombat:sam_launcher",
   "item": "dscombat:sam_launcher",
   "maxAmmo": 4,

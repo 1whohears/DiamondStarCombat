@@ -1,5 +1,5 @@
 {
-  "displayName": "preset.dscombat.steve_up_smash",
+  "displayName": "item.dscombat.steve_up_smash",
   "externalEntity": "dscombat:steve_up_smash",
   "item": "dscombat:steve_up_smash",
   "maxAmmo": 4,

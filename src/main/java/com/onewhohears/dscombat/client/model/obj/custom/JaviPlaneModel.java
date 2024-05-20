@@ -48,7 +48,6 @@ public class JaviPlaneModel extends ObjVehicleModel<EntityPlane> {
 		Matrix4f right_pedal = Matrix4f.createTranslateMatrix(0, 0, entity.inputs.yaw*0.0625f);
 		Matrix4f throttle = Matrix4f.createTranslateMatrix(0, 0, entity.getCurrentThrottle()*0.125f);
 		ImmutableMap<String, Matrix4f> transforms = ImmutableMap.<String, Matrix4f>builder()
-			.put("gun", INVISIBLE)
 			.put("lg0", lg0_mat)
 			.put("lg1", lg1_mat)
 			.put("lg2", lg2_mat)

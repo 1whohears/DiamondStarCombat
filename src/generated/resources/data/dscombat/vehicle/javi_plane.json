@@ -85,10 +85,10 @@
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:xm12",
-        "param": "50mmhe"
+        "itemid": "dscombat:internal_gun",
+        "param": "30mmhe"
       },
-      "name": "frame_1"
+      "name": "internal_gun"
     },
     {
       "data": {
@@ -96,7 +96,7 @@
         "itemid": "dscombat:bomb_rack",
         "param": "anm57"
       },
-      "name": "frame_2"
+      "name": "frame_1"
     },
     {
       "data": {

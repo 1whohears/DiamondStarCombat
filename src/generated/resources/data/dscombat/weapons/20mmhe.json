@@ -12,7 +12,7 @@
   "destroyTerrain": true,
   "displayName": "preset.dscombat.20mmhe",
   "entityTypeKey": "dscombat:bullet",
-  "explosionRadius": 1.5,
+  "explosionRadius": 0.5,
   "explosive": true,
   "fireRate": 1,
   "ingredients": [
@@ -22,7 +22,7 @@
     },
     {
       "item": "minecraft:gunpowder",
-      "num": 8
+      "num": 6
     }
   ],
   "innacuracy": 1.2,

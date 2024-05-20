@@ -1,5 +1,5 @@
 {
-  "displayName": "preset.dscombat.mark45_cannon",
+  "displayName": "item.dscombat.mark45_cannon",
   "externalEntity": "dscombat:mark45_cannon",
   "item": "dscombat:mark45_cannon",
   "maxAmmo": 50,

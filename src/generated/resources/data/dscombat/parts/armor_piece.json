@@ -1,6 +1,6 @@
 {
   "buffType": "ARMOR",
-  "displayName": "preset.dscombat.armor_piece",
+  "displayName": "item.dscombat.armor_piece",
   "item": "dscombat:armor_piece",
   "presetId": "armor_piece",
   "presetType": "buff",

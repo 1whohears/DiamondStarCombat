@@ -1,6 +1,6 @@
 {
   "buffType": "RADIO",
-  "displayName": "preset.dscombat.radio",
+  "displayName": "item.dscombat.radio",
   "item": "dscombat:radio",
   "presetId": "radio",
   "presetType": "buff",

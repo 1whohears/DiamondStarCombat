@@ -75,7 +75,7 @@ public abstract class JsonPresetStats {
 	
 	public MutableComponent getDisplayNameComponent() {
 		String dn = getDisplayName();
-		if (dn.startsWith("preset.")) return UtilMCText.translatable(dn);
+		if (dn.startsWith("preset.") || dn.startsWith("item.")) return UtilMCText.translatable(dn);
 		return UtilMCText.literal(dn);
 	}
 	

@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.data.vehicle.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
 import com.onewhohears.dscombat.data.parts.SlotType;
 import com.onewhohears.dscombat.data.vehicle.LiftKGraph;
 import com.onewhohears.dscombat.data.vehicle.VehicleSoundManager.PassengerSoundPack;
@@ -54,18 +53,14 @@ public class JaviPresets {
 			.addEmptySlot("right_wing_2", SlotType.PYLON_MED, -4.25, -0.28125, 1, 180)
 			.addEmptySlot("right_wing_3", SlotType.PYLON_MED, -5.625, -0.28125, 1, 180) 
 			.addEmptySlot("right_wing_4", SlotType.PYLON_MED, -6.96875, -0.28125, 1, 180) 
-			.addEmptySlot("frame_1", SlotType.PYLON_LIGHT, 0, -0.34375, 8.65625, 180)
-			.addEmptySlot("frame_2", SlotType.PYLON_HEAVY, 0, -0.71875, 1.03125, 180)
+			.addEmptySlot("internal_gun", SlotType.INTERNAL_GUN, 0, -0.34375, 8.65625, 180)
+			.addEmptySlot("frame_1", SlotType.PYLON_HEAVY, 0, -0.71875, 1.03125, 180)
 			.addEmptySlot("internal_1", SlotType.PUSH_ENGINE)
 			.addEmptySlot("internal_2", SlotType.PUSH_ENGINE)
 			.addEmptySlot("internal_3", SlotType.INTERNAL)
 			.addEmptySlot("internal_4", SlotType.TECH_INTERNAL)
 			.addEmptySlot("internal_5", SlotType.TECH_INTERNAL)
 			.addEmptySlot("internal_6", SlotType.TECH_INTERNAL)
-			.addEntityScreen(EntityScreenIds.AIR_RADAR_SCREEN, 0.327, 1.259, 7.19, 0.173, 0.173, 10)
-			.addEntityScreen(EntityScreenIds.RWR_SCREEN, 0.145, 1.325, 7.2, 0.1, 0.1, 10)
-			.addEntityScreen(EntityScreenIds.GROUND_RADAR_SCREEN,-0.349,1.259,7.19,0.173,0.173,10)
-			.addHUDScreen(0, 0.5, 6.34375)
 			.addAfterBurnerSmokePos(1.85,1.4,-4.4)
 			.addAfterBurnerSmokePos(-1.85,1.4,-4.4)
 			.build();
@@ -76,8 +71,9 @@ public class JaviPresets {
 			.setSlotItem("internal_1", ModItems.TURBOFAN_F25.getId())
 			.setSlotItem("internal_2", ModItems.TURBOFAN_F25.getId())
 			.setSlotItem("internal_3", ModItems.HEAVY_FUEL_TANK.getId(), true)
-			.setSlotItem("frame_1", ModItems.XM12.getId(), false)
-			.addIngredient(ModItems.XM12.getId())
+			.setSlotItem("internal_gun", ModItems.INTERNAL_GUN.getId(), "30mmhe", false)
+			.lockSlot("internal_gun")
+			.addIngredient(ModItems.INTERNAL_GUN.getId())
 			.addIngredient(ModItems.TURBOFAN_F25.getId(), 2)
 			.addIngredient(ModItems.HEAVY_FUEL_TANK.getId())
 			.build();
@@ -89,8 +85,8 @@ public class JaviPresets {
 			.setSlotItem("left_wing_3", ModItems.GIMBAL_CAMERA.getId())
 			.setSlotItem("right_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "agm88g", true)
 			.setSlotItem("right_wing_2", ModItems.LIGHT_MISSILE_RACK.getId(), "aim9p5", true)
-			.setSlotItem("frame_1", ModItems.XM12.getId(), "50mmhe", true)
-			.setSlotItem("frame_2", ModItems.BOMB_RACK.getId(), "anm57", true)
+			.setSlotItem("internal_gun", ModItems.INTERNAL_GUN.getId(), "30mmhe", true)
+			.setSlotItem("frame_1", ModItems.BOMB_RACK.getId(), "anm57", true)
 			.setSlotItem("internal_5", ModItems.GR400.getId())
 			.setSlotItem("internal_4", ModItems.BASIC_FLARE_DISPENSER.getId(), true)
 			.addIngredient(ModItems.GR400.getId())
@@ -114,8 +110,8 @@ public class JaviPresets {
 			.setSlotItem("right_wing_2", ModItems.HEAVY_MISSILE_RACK.getId(), "agm65g", true)
 			.setSlotItem("right_wing_3", ModItems.HEAVY_MISSILE_RACK.getId(), "agm65l", true)
 			.setSlotItem("right_wing_4", ModItems.GIMBAL_CAMERA.getId())
-			.setSlotItem("frame_1", ModItems.XM12.getId(), "50mmhe", true)
-			.setSlotItem("frame_2", ModItems.HEAVY_MISSILE_RACK.getId(), "agm88g", true)
+			.setSlotItem("internal_gun", ModItems.INTERNAL_GUN.getId(), "30mmhe", true)
+			.setSlotItem("frame_1", ModItems.HEAVY_MISSILE_RACK.getId(), "agm88g", true)
 			.setSlotItem("internal_5", ModItems.GPR20.getId())
 			.setSlotItem("internal_4", ModItems.BASIC_FLARE_DISPENSER.getId(), true)
 			.addIngredient(ModItems.GPR20.getId())
@@ -140,8 +136,8 @@ public class JaviPresets {
 			.setSlotItem("right_wing_2", ModItems.HEAVY_MISSILE_RACK.getId(), "aim7f", true)
 			.setSlotItem("right_wing_3", ModItems.HEAVY_MISSILE_RACK.getId(), "aim120c", true)
 			.setSlotItem("right_wing_4", ModItems.HEAVY_MISSILE_RACK.getId(), "aim120b", true)
-			.setSlotItem("frame_1", ModItems.XM12.getId(), "20mm", true)
-			.setSlotItem("frame_2", ModItems.LIGHT_MISSILE_RACK.getId(), "aim9p5", true)
+			.setSlotItem("internal_gun", ModItems.INTERNAL_GUN.getId(), "30mmhe", true)
+			.setSlotItem("frame_1", ModItems.LIGHT_MISSILE_RACK.getId(), "aim9p5", true)
 			.setSlotItem("internal_5", ModItems.AR2K.getId())
 			.setSlotItem("internal_4", ModItems.BASIC_FLARE_DISPENSER.getId(), true)
 			.addIngredient(ModItems.AR2K.getId())

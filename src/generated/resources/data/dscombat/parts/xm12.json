@@ -1,6 +1,6 @@
 {
   "changeLaunchPitch": 0.0,
-  "displayName": "preset.dscombat.xm12",
+  "displayName": "item.dscombat.xm12",
   "item": "dscombat:xm12",
   "max": 300,
   "presetId": "xm12",

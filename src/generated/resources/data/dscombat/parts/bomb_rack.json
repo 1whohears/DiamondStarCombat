@@ -1,6 +1,6 @@
 {
   "changeLaunchPitch": 0.0,
-  "displayName": "preset.dscombat.bomb_rack",
+  "displayName": "item.dscombat.bomb_rack",
   "item": "dscombat:bomb_rack",
   "max": 16,
   "presetId": "bomb_rack",

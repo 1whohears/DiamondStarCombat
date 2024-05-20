@@ -1,5 +1,5 @@
 {
-  "displayName": "preset.dscombat.ciws",
+  "displayName": "item.dscombat.ciws",
   "externalEntity": "dscombat:ciws",
   "item": "dscombat:ciws",
   "maxAmmo": 500,

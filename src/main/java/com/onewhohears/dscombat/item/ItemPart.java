@@ -5,9 +5,11 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.data.parts.PartPresets;
+import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 import com.onewhohears.dscombat.data.parts.stats.PartStats;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.util.UtilMCText;
+import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
@@ -62,6 +64,8 @@ public class ItemPart extends Item {
 	
 	@Override
 	public Component getName(ItemStack stack) {
+		PartInstance<?> data = UtilParse.parsePartFromItem(stack);
+		if (data != null) return data.getStats().getDisplayNameComponent().setStyle(Style.EMPTY.withColor(0x55FF55));
 		return UtilMCText.translatable(getDescriptionId()).setStyle(Style.EMPTY.withColor(0x55FF55));
 	}
 	

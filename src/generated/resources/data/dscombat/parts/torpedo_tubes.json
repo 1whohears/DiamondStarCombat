@@ -1,5 +1,5 @@
 {
-  "displayName": "preset.dscombat.torpedo_tubes",
+  "displayName": "item.dscombat.torpedo_tubes",
   "externalEntity": "dscombat:torpedo_tubes",
   "item": "dscombat:torpedo_tubes",
   "maxAmmo": 3,

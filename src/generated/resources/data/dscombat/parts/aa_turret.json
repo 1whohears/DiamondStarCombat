@@ -1,5 +1,5 @@
 {
-  "displayName": "preset.dscombat.aa_turret",
+  "displayName": "item.dscombat.aa_turret",
   "externalEntity": "dscombat:aa_turret",
   "item": "dscombat:aa_turret",
   "maxAmmo": 750,

@@ -1,6 +1,6 @@
 {
   "changeLaunchPitch": 0.0,
-  "displayName": "preset.dscombat.heavy_missile_rack",
+  "displayName": "item.dscombat.heavy_missile_rack",
   "item": "dscombat:heavy_missile_rack",
   "max": 2,
   "presetId": "heavy_missile_rack",

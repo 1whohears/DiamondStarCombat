@@ -1,5 +1,5 @@
 {
-  "displayName": "preset.dscombat.compound_turbine",
+  "displayName": "item.dscombat.compound_turbine",
   "engineType": "PUSH",
   "fuelRate": 0.019,
   "heat": 8.0,

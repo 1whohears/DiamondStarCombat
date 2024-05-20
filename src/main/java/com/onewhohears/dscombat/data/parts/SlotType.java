@@ -38,6 +38,7 @@ public class SlotType {
 	public static SlotType INTERNAL = registerSlotType("internal");
 	public static SlotType TECH_INTERNAL = registerSlotType("tech_internal", INTERNAL);
 	public static SlotType HIGH_TECH_INTERNAL = registerSlotType("high_tech_internal", TECH_INTERNAL);
+	public static SlotType INTERNAL_GUN = registerSlotType("internal_gun", INTERNAL);
 	
 	public static SlotType SPIN_ENGINE = registerSlotType("spin_engine", INTERNAL);
 	public static SlotType PUSH_ENGINE = registerSlotType("push_engine", INTERNAL);

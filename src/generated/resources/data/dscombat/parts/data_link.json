@@ -1,6 +1,6 @@
 {
   "buffType": "DATA_LINK",
-  "displayName": "preset.dscombat.data_link",
+  "displayName": "item.dscombat.data_link",
   "item": "dscombat:data_link",
   "presetId": "data_link",
   "presetType": "buff",

@@ -1,5 +1,5 @@
 {
-  "displayName": "preset.dscombat.seat",
+  "displayName": "item.dscombat.seat",
   "externalEntity": "dscombat:seat",
   "item": "dscombat:seat",
   "presetId": "seat",

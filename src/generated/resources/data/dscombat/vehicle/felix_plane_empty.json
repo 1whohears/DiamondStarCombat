@@ -9,8 +9,6 @@
     }
   ],
   "displayName": "preset.dscombat.felix_plane_empty",
-  "entity_size_xz": 4.0,
-  "entity_size_y": 4.0,
   "health": 120.0,
   "ingredients": [
     {
@@ -224,6 +222,8 @@
     "cameraDistance": 17.0,
     "crashExplosionRadius": 5.0,
     "cross_sec_area": 4.0,
+    "entity_size_xz": 4.0,
+    "entity_size_y": 4.0,
     "idleheat": 6.0,
     "inertiapitch": 9.0,
     "inertiaroll": 4.5,

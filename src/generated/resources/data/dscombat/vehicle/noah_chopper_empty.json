@@ -1,7 +1,5 @@
 {
   "displayName": "preset.dscombat.noah_chopper_empty",
-  "entity_size_xz": 2.8,
-  "entity_size_y": 2.8,
   "health": 200.0,
   "ingredients": [
     {
@@ -329,6 +327,8 @@
     "cameraDistance": 6.0,
     "crashExplosionRadius": 4.0,
     "cross_sec_area": 8.0,
+    "entity_size_xz": 2.8,
+    "entity_size_y": 2.8,
     "heli": {
       "accForward": 0.04,
       "accSide": 0.02,

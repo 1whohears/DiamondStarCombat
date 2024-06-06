@@ -5,9 +5,9 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.stats.TurretStats.RotBounds;
 import com.onewhohears.dscombat.data.vehicle.presets.BoatPresets;
 import com.onewhohears.dscombat.data.vehicle.presets.CarPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.HeliPresets;
 import com.onewhohears.dscombat.data.vehicle.presets.PlanePresets;
 import com.onewhohears.dscombat.data.vehicle.presets.SubPresets;
-import com.onewhohears.dscombat.data.vehicle.presets.TankPresets;
 import com.onewhohears.dscombat.entity.EntityParachute;
 import com.onewhohears.dscombat.entity.parts.EntityChainHook;
 import com.onewhohears.dscombat.entity.parts.EntityEngine;
@@ -22,19 +22,6 @@ import com.onewhohears.dscombat.entity.vehicle.EntityGroundVehicle;
 import com.onewhohears.dscombat.entity.vehicle.EntityHelicopter;
 import com.onewhohears.dscombat.entity.vehicle.EntityPlane;
 import com.onewhohears.dscombat.entity.vehicle.EntitySubmarine;
-import com.onewhohears.dscombat.entity.vehicle.custom.AircraftCarrier;
-import com.onewhohears.dscombat.entity.vehicle.custom.AlexisPlane;
-import com.onewhohears.dscombat.entity.vehicle.custom.BroncoPlane;
-import com.onewhohears.dscombat.entity.vehicle.custom.Corvette;
-import com.onewhohears.dscombat.entity.vehicle.custom.Cruiser;
-import com.onewhohears.dscombat.entity.vehicle.custom.Destroyer;
-import com.onewhohears.dscombat.entity.vehicle.custom.E3SentryPlane;
-import com.onewhohears.dscombat.entity.vehicle.custom.EdenPlane;
-import com.onewhohears.dscombat.entity.vehicle.custom.FelixPlane;
-import com.onewhohears.dscombat.entity.vehicle.custom.GronkBattleship;
-import com.onewhohears.dscombat.entity.vehicle.custom.JasonPlane;
-import com.onewhohears.dscombat.entity.vehicle.custom.JaviPlane;
-import com.onewhohears.dscombat.entity.vehicle.custom.NoahChopper;
 import com.onewhohears.dscombat.entity.weapon.AntiRadarMissile;
 import com.onewhohears.dscombat.entity.weapon.EntityBomb;
 import com.onewhohears.dscombat.entity.weapon.EntityBullet;
@@ -63,111 +50,23 @@ public class ModEntities {
 		ENTITIES.register(eventBus);
 	}
 	
-	// PLANES
+	// VEHICLES
 	
-	public static final RegistryObject<EntityType<EntityPlane>> JAVI_PLANE = ENTITIES.register("javi_plane", 
-			() -> createEntityTypeFar((type, level) -> new JaviPlane(type, level), 
-					EntityDimensions.scalable(4.0f, 4.0f)));
-	
-	public static final RegistryObject<EntityType<EntityPlane>> ALEXIS_PLANE = ENTITIES.register("alexis_plane", 
-			() -> createEntityTypeFar((type, level) -> new AlexisPlane(type, level), 
-					EntityDimensions.scalable(4.0f, 4.0f)));
-	
-	public static final RegistryObject<EntityType<EntityPlane>> WOODEN_PLANE = ENTITIES.register("wooden_plane", 
-			() -> createEntityTypeFar((type, level) -> new EntityPlane(type, level, 
-					PlanePresets.DEFAULT_WOODEN_PLANE.getId()), 
-					EntityDimensions.scalable(1.7f, 1.7f)));
-	
-	public static final RegistryObject<EntityType<EntityPlane>> E3SENTRY_PLANE = ENTITIES.register("e3sentry_plane", 
-			() -> createEntityTypeFar((type, level) -> new E3SentryPlane(type, level), 
-					EntityDimensions.scalable(4.0f, 4.0f)));
-	
-	public static final RegistryObject<EntityType<EntityPlane>> BRONCO_PLANE = ENTITIES.register("bronco_plane", 
-			() -> createEntityTypeFar((type, level) -> new BroncoPlane(type, level), 
-					EntityDimensions.scalable(4.0f, 4.0f)));
-	
-	public static final RegistryObject<EntityType<EntityPlane>> FELIX_PLANE = ENTITIES.register("felix_plane", 
-			() -> createEntityTypeFar((type, level) -> new FelixPlane(type, level), 
-					EntityDimensions.scalable(4.0f, 4.0f)));
-	
-	public static final RegistryObject<EntityType<EntityPlane>> JASON_PLANE = ENTITIES.register("jason_plane", 
-			() -> createEntityTypeFar((type, level) -> new JasonPlane(type, level), 
-					EntityDimensions.scalable(4.0f, 4.0f)));
-	
-	public static final RegistryObject<EntityType<EntityPlane>> EDEN_PLANE = ENTITIES.register("eden_plane", 
-			() -> createEntityTypeFar((type, level) -> new EdenPlane(type, level), 
-					EntityDimensions.scalable(4.0f, 4.0f)));
-	
-	// HELICOPTORS
-	
-	public static final RegistryObject<EntityType<EntityHelicopter>> NOAH_CHOPPER = ENTITIES.register("noah_chopper", 
-			() -> createEntityTypeFar((type, level) -> new NoahChopper(type, level), 
-					EntityDimensions.scalable(2.8f, 2.8f)));
-	
-	// TANKS
-	
-	public static final RegistryObject<EntityType<EntityGroundVehicle>> MRBUDGER_TANK = ENTITIES.register("mrbudger_tank", 
-			() -> createEntityTypeFar((type, level) -> new EntityGroundVehicle(type, level, 
-					TankPresets.DEFAULT_MRBUDGER_TANK.getId()), 
-					EntityDimensions.scalable(3.0f, 2.5f)));
-	
-	public static final RegistryObject<EntityType<EntityGroundVehicle>> SMALL_ROLLER = ENTITIES.register("small_roller", 
-			() -> createEntityTypeFar((type, level) -> new EntityGroundVehicle(type, level, 
-					TankPresets.DEFAULT_SMALL_ROLLER.getId()), 
-					EntityDimensions.scalable(1.5f, 0.8f)));
-	
-	// CARS
-	
-	public static final RegistryObject<EntityType<EntityGroundVehicle>> ORANGE_TESLA = ENTITIES.register("orange_tesla", 
-			() -> createEntityTypeFar((type, level) -> new EntityGroundVehicle(type, level, 
-					CarPresets.DEFAULT_ORANGE_TESLA.getId()), 
-					EntityDimensions.scalable(2.5f, 2.15f)));
-	
-	public static final RegistryObject<EntityType<EntityGroundVehicle>> AXCEL_TRUCK = ENTITIES.register("axcel_truck", 
-			() -> createEntityTypeFar((type, level) -> new EntityGroundVehicle(type, level, 
-					CarPresets.DEFAULT_AXCEL_TRUCK.getId()), 
-					EntityDimensions.scalable(2.5f, 3.0f)));
-	
-	// TODO 2.6 fuel truck
-	
-	// BOATS
-	
-	public static final RegistryObject<EntityType<EntityBoat>> NATHAN_BOAT = ENTITIES.register("nathan_boat", 
-			() -> createEntityTypeFar((type, level) -> new EntityBoat(type, level, 
-					BoatPresets.DEFAULT_NATHAN_BOAT.getId()), 
-					EntityDimensions.scalable(3.0f,1.5f)));
-	
-	public static final RegistryObject<EntityType<EntityBoat>> GRONK_BATTLESHIP = ENTITIES.register("gronk_battleship", 
-			() -> createEntityTypeFar((type, level) -> new GronkBattleship(type, level), 
-					EntityDimensions.scalable(14f,4f)));
-	
-	public static final RegistryObject<EntityType<EntityBoat>> DESTROYER = ENTITIES.register("destroyer", 
-			() -> createEntityTypeFar((type, level) -> new Destroyer(type, level),
-					EntityDimensions.scalable(10f,4f)));
-	
-	public static final RegistryObject<EntityType<EntityBoat>> CRUISER = ENTITIES.register("cruiser", 
-			() -> createEntityTypeFar((type, level) -> new Cruiser(type, level),
-					EntityDimensions.scalable(12f,4f)));
-	
-	public static final RegistryObject<EntityType<EntityBoat>> CORVETTE = ENTITIES.register("corvette", 
-			() -> createEntityTypeFar((type, level) -> new Corvette(type, level),
-					EntityDimensions.scalable(7f,3f)));
-	
-	public static final RegistryObject<EntityType<EntityBoat>> AIRCRAFT_CARRIER = ENTITIES.register("aircraft_carrier", 
-			() -> createEntityTypeFar((type, level) -> new AircraftCarrier(type, level), 
-					EntityDimensions.scalable(25f,6f)));
-	
-	// SUBMARINES
-	
-	public static final RegistryObject<EntityType<EntitySubmarine>> ANDOLF_SUB = ENTITIES.register("andolf_sub", 
-			() -> createEntityTypeFar((type, level) -> new EntitySubmarine(type, level, 
-					SubPresets.DEFAULT_ANDOLF_SUB.getId()), 
-					EntityDimensions.scalable(4.5f,4.0f)));
-	
-	public static final RegistryObject<EntityType<EntitySubmarine>> GOOGLE_SUB = ENTITIES.register("google_sub", 
-			() -> createEntityTypeFar((type, level) -> new EntitySubmarine(type, level, 
-					SubPresets.DEFAULT_GOOGLE_SUB.getId()), 
-					EntityDimensions.scalable(8f,8f)));
+	public static final RegistryObject<EntityType<EntityPlane>> PLANE = ENTITIES.register("plane", 
+			() -> createVehicleType((type, level) -> new EntityPlane(type, level, 
+					PlanePresets.DEFAULT_WOODEN_PLANE.getId())));
+	public static final RegistryObject<EntityType<EntityHelicopter>> HELICOPTER = ENTITIES.register("helicopter", 
+			() -> createVehicleType((type, level) -> new EntityHelicopter(type, level, 
+					HeliPresets.DEFAULT_NOAH_CHOPPER.getId())));
+	public static final RegistryObject<EntityType<EntityGroundVehicle>> CAR = ENTITIES.register("car", 
+			() -> createVehicleType((type, level) -> new EntityGroundVehicle(type, level, 
+					CarPresets.DEFAULT_AXCEL_TRUCK.getId())));
+	public static final RegistryObject<EntityType<EntityBoat>> BOAT = ENTITIES.register("boat", 
+			() -> createVehicleType((type, level) -> new EntityBoat(type, level, 
+					BoatPresets.DEFAULT_NATHAN_BOAT.getId())));
+	public static final RegistryObject<EntityType<EntitySubmarine>> SUBMARINE = ENTITIES.register("submarine", 
+			() -> createVehicleType((type, level) -> new EntitySubmarine(type, level, 
+					SubPresets.DEFAULT_ANDOLF_SUB.getId())));
 	
 	/* 
 	 * IDEA 5 more vehicles
@@ -326,5 +225,9 @@ public class ModEntities {
         return new EntityType<>(factory, MobCategory.MISC, true, true, false, 
         		true, ImmutableSet.of(), size, 16, 3);
     }
+	
+	private static <T extends Entity> EntityType<T> createVehicleType(EntityType.EntityFactory<T> factory) {
+		return createEntityTypeFar(factory, EntityDimensions.fixed(4, 4));
+	}
 	
 }

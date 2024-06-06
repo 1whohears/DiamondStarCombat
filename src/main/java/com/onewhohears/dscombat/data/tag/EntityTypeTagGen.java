@@ -62,22 +62,20 @@ public class EntityTypeTagGen extends EntityTypeTagsProvider {
 			.addOptional(new ResourceLocation("iceandfire:ice_dragon"))
 			.addOptional(new ResourceLocation("iceandfire:lightning_dragon"));
 		tag(ModTags.EntityTypes.PLANE)
-			.add(ModEntities.JAVI_PLANE.get(), ModEntities.ALEXIS_PLANE.get(), ModEntities.WOODEN_PLANE.get(), ModEntities.E3SENTRY_PLANE.get())
-			.add(ModEntities.BRONCO_PLANE.get(), ModEntities.FELIX_PLANE.get(), ModEntities.JASON_PLANE.get(), ModEntities.EDEN_PLANE.get())
+			.add(ModEntities.PLANE.get())
 			.addOptional(new ResourceLocation("simpleplanes:plane"))
 			.addOptional(new ResourceLocation("simpleplanes:large_plane"));
 		tag(ModTags.EntityTypes.HELI)
-			.add(ModEntities.NOAH_CHOPPER.get())
+			.add(ModEntities.HELICOPTER.get())
 			.addOptional(new ResourceLocation("simpleplanes:helicopter"));
 		tag(ModTags.EntityTypes.CAR)
-			.add(ModEntities.ORANGE_TESLA.get(), ModEntities.AXCEL_TRUCK.get());
+			.add(ModEntities.CAR.get());
 		tag(ModTags.EntityTypes.TANK)
-			.add(ModEntities.MRBUDGER_TANK.get(), ModEntities.SMALL_ROLLER.get());
+			.add(ModEntities.CAR.get());
 		tag(ModTags.EntityTypes.BOAT)
-			.add(ModEntities.NATHAN_BOAT.get(), ModEntities.GRONK_BATTLESHIP.get(), ModEntities.DESTROYER.get(), ModEntities.CRUISER.get())
-			.add(ModEntities.CORVETTE.get(), ModEntities.AIRCRAFT_CARRIER.get());
+			.add(ModEntities.BOAT.get());
 		tag(ModTags.EntityTypes.SUBMARINE)
-			.add(ModEntities.ANDOLF_SUB.get(), ModEntities.GOOGLE_SUB.get());
+			.add(ModEntities.SUBMARINE.get());
 		// TURRET
 		tag(ModTags.EntityTypes.TURRET_SHOOT)
 			.addTag(ModTags.EntityTypes.TURRET_SHOOT_RANDOM)

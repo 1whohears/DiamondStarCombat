@@ -2211,7 +2211,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     @Override
     protected AABB makeBoundingBox() {
     	if (isCustomBoundingBox()) return makeCustomBoundingBox();
-     	return super.makeBoundingBox();
+     	return getDimensions(getPose()).makeBoundingBox(position());
     }
     
     protected AABB makeCustomBoundingBox() {

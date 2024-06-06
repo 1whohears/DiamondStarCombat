@@ -1,7 +1,5 @@
 {
   "displayName": "preset.dscombat.aircraft_carrier_empty",
-  "entity_size_xz": 25.0,
-  "entity_size_y": 6.0,
   "health": 900.0,
   "hitboxes": [
     {
@@ -283,6 +281,8 @@
     "cameraDistance": 34.0,
     "crashExplosionRadius": 10.0,
     "cross_sec_area": 10.5,
+    "entity_size_xz": 25.0,
+    "entity_size_y": 6.0,
     "idleheat": 8.0,
     "inertiapitch": 10.0,
     "inertiaroll": 6.0,

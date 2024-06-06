@@ -1,13 +1,6 @@
 {
   "values": [
-    "dscombat:javi_plane",
-    "dscombat:alexis_plane",
-    "dscombat:wooden_plane",
-    "dscombat:e3sentry_plane",
-    "dscombat:bronco_plane",
-    "dscombat:felix_plane",
-    "dscombat:jason_plane",
-    "dscombat:eden_plane",
+    "dscombat:plane",
     {
       "id": "simpleplanes:plane",
       "required": false

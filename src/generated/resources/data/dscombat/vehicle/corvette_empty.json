@@ -1,7 +1,5 @@
 {
   "displayName": "preset.dscombat.corvette_empty",
-  "entity_size_xz": 7.0,
-  "entity_size_y": 3.0,
   "health": 250.0,
   "hitboxes": [
     {
@@ -194,6 +192,8 @@
     "cameraDistance": 13.0,
     "crashExplosionRadius": 7.0,
     "cross_sec_area": 4.5,
+    "entity_size_xz": 7.0,
+    "entity_size_y": 3.0,
     "idleheat": 2.0,
     "inertiapitch": 10.0,
     "inertiaroll": 6.0,

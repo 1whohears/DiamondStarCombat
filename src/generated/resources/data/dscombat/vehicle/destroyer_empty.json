@@ -1,7 +1,5 @@
 {
   "displayName": "preset.dscombat.destroyer_empty",
-  "entity_size_xz": 10.0,
-  "entity_size_y": 4.0,
   "health": 400.0,
   "hitboxes": [
     {
@@ -242,6 +240,8 @@
     "cameraDistance": 22.0,
     "crashExplosionRadius": 8.0,
     "cross_sec_area": 6.5,
+    "entity_size_xz": 10.0,
+    "entity_size_y": 4.0,
     "idleheat": 4.0,
     "inertiapitch": 10.0,
     "inertiaroll": 6.0,

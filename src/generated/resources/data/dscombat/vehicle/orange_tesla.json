@@ -1,7 +1,5 @@
 {
   "displayName": "preset.dscombat.orange_tesla",
-  "entity_size_xz": 2.5,
-  "entity_size_y": 2.15,
   "health": 40.0,
   "ingredients": [
     {
@@ -114,6 +112,8 @@
     "cameraDistance": 4.0,
     "crashExplosionRadius": 2.0,
     "cross_sec_area": 5.375,
+    "entity_size_xz": 2.5,
+    "entity_size_y": 2.15,
     "idleheat": 4.0,
     "inertiapitch": 12.0,
     "inertiaroll": 8.0,

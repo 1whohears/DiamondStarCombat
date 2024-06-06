@@ -16,8 +16,6 @@
     }
   ],
   "displayName": "preset.dscombat.javi_plane_empty",
-  "entity_size_xz": 4.0,
-  "entity_size_y": 4.0,
   "health": 200.0,
   "ingredients": [
     {
@@ -206,6 +204,8 @@
     "cameraDistance": 16.0,
     "crashExplosionRadius": 5.0,
     "cross_sec_area": 7.0,
+    "entity_size_xz": 4.0,
+    "entity_size_y": 4.0,
     "idleheat": 5.0,
     "inertiapitch": 10.0,
     "inertiaroll": 6.0,

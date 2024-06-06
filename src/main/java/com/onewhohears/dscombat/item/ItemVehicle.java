@@ -41,12 +41,10 @@ public class ItemVehicle extends Item {
 	private static final Predicate<Entity> ENTITY_PREDICATE = EntitySelector.NO_SPECTATORS
 			.and(Entity::isPickable);
 	
-	private final EntityType<? extends EntityVehicle> entityType;
 	private final String defaultPreset;
 	
-	public ItemVehicle(EntityType<? extends EntityVehicle> entityType, String defaultPreset) {
+	public ItemVehicle(String defaultPreset) {
 		super(new Item.Properties().tab(ModItems.VEHICLES).stacksTo(1));
-		this.entityType = entityType;
 		this.defaultPreset = defaultPreset;
 	}
 	
@@ -71,6 +69,10 @@ public class ItemVehicle extends Item {
 				}
 			}
 			if (hitresult.getType() == HitResult.Type.BLOCK) {
+				String presetName = getPresetName(itemstack);
+				VehicleStats vs = VehiclePresets.get().get(presetName);
+				if (vs == null) vs = VehiclePresets.get().get(defaultPreset);
+				EntityType<? extends EntityVehicle> entityType = vs.getEntityType();
 				ItemStack spawn_data_stack = spawnData(itemstack, player);
 				EntityVehicle e = entityType.create(level);
 				Vec3 pos = hitresult.getLocation();

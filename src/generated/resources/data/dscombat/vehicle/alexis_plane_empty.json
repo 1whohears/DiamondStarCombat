@@ -9,8 +9,6 @@
     }
   ],
   "displayName": "preset.dscombat.alexis_plane_empty",
-  "entity_size_xz": 4.0,
-  "entity_size_y": 4.0,
   "health": 140.0,
   "ingredients": [
     {
@@ -268,6 +266,8 @@
     "cameraDistance": 17.0,
     "crashExplosionRadius": 5.0,
     "cross_sec_area": 4.0,
+    "entity_size_xz": 4.0,
+    "entity_size_y": 4.0,
     "idleheat": 4.0,
     "inertiapitch": 8.0,
     "inertiaroll": 4.0,

@@ -7,6 +7,10 @@ import com.onewhohears.dscombat.data.vehicle.stats.CarStats;
 import com.onewhohears.dscombat.data.vehicle.stats.HeliStats;
 import com.onewhohears.dscombat.data.vehicle.stats.PlaneStats;
 import com.onewhohears.dscombat.data.vehicle.stats.SubmarineStats;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.dscombat.init.ModEntities;
+
+import net.minecraft.world.entity.EntityType;
 
 public abstract class VehicleType extends JsonPresetType {
 	public static final Plane PLANE = Plane.INSTANCE;
@@ -16,6 +20,10 @@ public abstract class VehicleType extends JsonPresetType {
 		public Plane() {
 			super(ID, (key, data) -> new PlaneStats(key, data));
 		}
+		@Override
+		public EntityType<? extends EntityVehicle> getEntityType() {
+			return ModEntities.PLANE.get();
+		}
 	}
 	public static final Helicopter HELICOPTER = Helicopter.INSTANCE;
 	public static class Helicopter extends VehicleType {
@@ -23,6 +31,10 @@ public abstract class VehicleType extends JsonPresetType {
 		public static final Helicopter INSTANCE = new Helicopter();
 		public Helicopter() {
 			super(ID, (key, data) -> new HeliStats(key, data));
+		}
+		@Override
+		public EntityType<? extends EntityVehicle> getEntityType() {
+			return ModEntities.HELICOPTER.get();
 		}
 	}
 	public static final Car CAR = Car.INSTANCE;
@@ -32,6 +44,10 @@ public abstract class VehicleType extends JsonPresetType {
 		public Car() {
 			super(ID, (key, data) -> new CarStats(key, data));
 		}
+		@Override
+		public EntityType<? extends EntityVehicle> getEntityType() {
+			return ModEntities.CAR.get();
+		}
 	}
 	public static final Boat BOAT = Boat.INSTANCE;
 	public static class Boat extends VehicleType {
@@ -39,6 +55,10 @@ public abstract class VehicleType extends JsonPresetType {
 		public static final Boat INSTANCE = new Boat();
 		public Boat() {
 			super(ID, (key, data) -> new BoatStats(key, data));
+		}
+		@Override
+		public EntityType<? extends EntityVehicle> getEntityType() {
+			return ModEntities.BOAT.get();
 		}
 	}
 	public static final Submarine SUBMARINE = Submarine.INSTANCE;
@@ -48,8 +68,13 @@ public abstract class VehicleType extends JsonPresetType {
 		public Submarine() {
 			super(ID, (key, data) -> new SubmarineStats(key, data));
 		}
+		@Override
+		public EntityType<? extends EntityVehicle> getEntityType() {
+			return ModEntities.SUBMARINE.get();
+		}
 	}
 	public VehicleType(String id, JsonPresetStatsFactory<? extends JsonPresetStats> statsFactory) {
 		super(id, statsFactory);
 	}
+	public abstract EntityType<? extends EntityVehicle> getEntityType();
 }

@@ -1,7 +1,5 @@
 {
   "displayName": "preset.dscombat.e3sentry_plane_empty",
-  "entity_size_xz": 4.0,
-  "entity_size_y": 4.0,
   "health": 400.0,
   "ingredients": [
     {
@@ -335,6 +333,8 @@
     "cameraDistance": 12.0,
     "crashExplosionRadius": 8.0,
     "cross_sec_area": 16.0,
+    "entity_size_xz": 4.0,
+    "entity_size_y": 4.0,
     "idleheat": 20.0,
     "inertiapitch": 12.0,
     "inertiaroll": 10.0,

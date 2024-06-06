@@ -28,6 +28,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.phys.Vec3;
@@ -91,8 +92,8 @@ public abstract class VehicleStats extends JsonPresetStats {
 		cameraDistance = UtilParse.getFloatSafe(stats, "cameraDistance", 4);
 		if (stats.has("mastType")) mastType = MastType.valueOf(stats.get("mastType").getAsString());
 		else mastType = MastType.NONE;
-		float entity_size_xz = UtilParse.getFloatSafe(json, "entity_size_xz", 4);
-		float entity_size_y = UtilParse.getFloatSafe(json, "entity_size_y", 4);
+		float entity_size_xz = UtilParse.getFloatSafe(stats, "entity_size_xz", 4);
+		float entity_size_y = UtilParse.getFloatSafe(stats, "entity_size_y", 4);
 		dimensions = EntityDimensions.fixed(entity_size_xz, entity_size_y);
 		if (json.has("textures")) {
 			JsonObject textures = json.get("textures").getAsJsonObject();
@@ -112,7 +113,6 @@ public abstract class VehicleStats extends JsonPresetStats {
 		} else afterBurnerSmokePos = new Vec3[0];
 		isCraftable = UtilParse.getBooleanSafe(json, "is_craftable", false);
 		defaultPaintJob = UtilParse.getIntSafe(json, "paintjob_color", 0);
-		
 	}
 	
 	public CompoundTag getDataAsNBT() {
@@ -121,6 +121,14 @@ public abstract class VehicleStats extends JsonPresetStats {
 	
 	public boolean isCraftable() {
 		return isCraftable;
+	}
+	
+	public EntityType<? extends EntityVehicle> getEntityType() {
+		return getVehicleType().getEntityType();
+	}
+	
+	public VehicleType getVehicleType() {
+		return (VehicleType)getType();
 	}
 	
 	public NonNullList<Ingredient> getIngredients() {
@@ -820,8 +828,8 @@ public abstract class VehicleStats extends JsonPresetStats {
 		 * all vehicles 
 		 */
 		public Builder setEntityMainHitboxSize(float width, float height) {
-			setFloat("entity_size_xz", width);
-			setFloat("entity_size_y", height);
+			setStatFloat("entity_size_xz", width);
+			setStatFloat("entity_size_y", height);
 			return this;
 		}
 		/**

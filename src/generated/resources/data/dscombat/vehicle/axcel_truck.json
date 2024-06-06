@@ -18,14 +18,14 @@
   "slots": [
     {
       "data": {
-        "itemid": "dscombat:axcel_truck_radar"
+        "part": "axcel_truck_radar"
       },
       "name": "frame_1"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:sam_launcher"
+        "part": "sam_launcher"
       },
       "name": "cargo_bed_1"
     }

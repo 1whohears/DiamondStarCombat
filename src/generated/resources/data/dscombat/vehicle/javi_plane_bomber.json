@@ -47,91 +47,91 @@
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:bomb_rack",
-        "param": "anm30"
+        "param": "anm30",
+        "part": "bomb_rack"
       },
       "name": "left_wing_1"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_missile_rack",
-        "param": "agm84e"
+        "param": "agm84e",
+        "part": "heavy_missile_rack"
       },
       "name": "left_wing_2"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:light_missile_rack",
-        "param": "agm114k"
+        "param": "agm114k",
+        "part": "light_missile_rack"
       },
       "name": "left_wing_3"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:light_missile_rack",
-        "param": "aim9l"
+        "param": "aim9l",
+        "part": "light_missile_rack"
       },
       "name": "left_wing_4"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:bomb_rack",
-        "param": "anm64"
+        "param": "anm64",
+        "part": "bomb_rack"
       },
       "name": "right_wing_1"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_missile_rack",
-        "param": "agm65g"
+        "param": "agm65g",
+        "part": "heavy_missile_rack"
       },
       "name": "right_wing_2"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_missile_rack",
-        "param": "agm65l"
+        "param": "agm65l",
+        "part": "heavy_missile_rack"
       },
       "name": "right_wing_3"
     },
     {
       "data": {
-        "itemid": "dscombat:gimbal_camera"
+        "part": "gimbal_camera"
       },
       "name": "right_wing_4"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:internal_gun",
-        "param": "30mmhe"
+        "param": "30mmhe",
+        "part": "gau_avenger"
       },
       "name": "internal_gun"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_missile_rack",
-        "param": "agm88g"
+        "param": "agm88g",
+        "part": "heavy_missile_rack"
       },
       "name": "frame_1"
     },
     {
       "data": {
-        "itemid": "dscombat:gpr20"
+        "part": "gpr20"
       },
       "name": "internal_5"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:basic_flare_dispenser"
+        "part": "basic_flare_dispenser"
       },
       "name": "internal_4"
     }

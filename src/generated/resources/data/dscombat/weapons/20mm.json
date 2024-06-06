@@ -5,7 +5,8 @@
     "dscombat:ciws"
   ],
   "compatibleWeaponPart": [
-    "dscombat:xm12"
+    "dscombat:xm12",
+    "dscombat:internal_gun"
   ],
   "craftNum": 32,
   "damage": 12.0,

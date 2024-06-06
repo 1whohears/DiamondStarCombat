@@ -26,39 +26,39 @@
   "slots": [
     {
       "data": {
-        "itemid": "dscombat:cfm56"
+        "part": "cfm56"
       },
       "name": "left_wing_1"
     },
     {
       "data": {
-        "itemid": "dscombat:cfm56"
+        "part": "cfm56"
       },
       "name": "right_wing_1"
     },
     {
       "data": {
-        "itemid": "dscombat:ar20k"
+        "part": "ar20k"
       },
       "name": "frame_1"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_fuel_tank"
+        "part": "heavy_fuel_tank"
       },
       "name": "internal_1"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_fuel_tank"
+        "part": "heavy_fuel_tank"
       },
       "name": "internal_2"
     },
     {
       "data": {
-        "itemid": "dscombat:data_link"
+        "part": "data_link"
       },
       "name": "internal_5"
     }

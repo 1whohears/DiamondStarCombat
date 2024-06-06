@@ -43,69 +43,69 @@
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_missile_rack",
-        "param": "meteor"
+        "param": "meteor",
+        "part": "heavy_missile_rack"
       },
       "name": "left_wing_1"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_missile_rack",
-        "param": "aim120c"
+        "param": "aim120c",
+        "part": "heavy_missile_rack"
       },
       "name": "left_wing_2"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_missile_rack",
-        "param": "aim120b"
+        "param": "aim120b",
+        "part": "heavy_missile_rack"
       },
       "name": "left_wing_3"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_missile_rack",
-        "param": "meteor"
+        "param": "meteor",
+        "part": "heavy_missile_rack"
       },
       "name": "right_wing_1"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_missile_rack",
-        "param": "aim120c"
+        "param": "aim120c",
+        "part": "heavy_missile_rack"
       },
       "name": "right_wing_2"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:light_missile_rack",
-        "param": "aim9x"
+        "param": "aim9x",
+        "part": "light_missile_rack"
       },
       "name": "right_wing_3"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:xm12",
-        "param": "20mm"
+        "param": "20mm",
+        "part": "m61a1_vulcan"
       },
-      "name": "frame_1"
+      "name": "internal_gun"
     },
     {
       "data": {
-        "itemid": "dscombat:ar2k"
+        "part": "ar2k"
       },
       "name": "internal_4"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:basic_flare_dispenser"
+        "part": "basic_flare_dispenser"
       },
       "name": "internal_3"
     }

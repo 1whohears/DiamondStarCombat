@@ -27,27 +27,27 @@
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:mark45_cannon"
+        "part": "mark45_cannon"
       },
       "name": "seat5"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:torpedo_tubes"
+        "part": "torpedo_tubes"
       },
       "name": "seat6"
     },
     {
       "data": {
-        "itemid": "dscombat:survey_all_a"
+        "part": "survey_all_a"
       },
       "name": "frame_1"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:aa_turret"
+        "part": "aa_turret"
       },
       "name": "frame_2"
     }

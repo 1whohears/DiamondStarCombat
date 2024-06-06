@@ -15,7 +15,7 @@
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_tank_turret"
+        "part": "heavy_tank_turret"
       },
       "name": "pilot_seat"
     }

@@ -19,7 +19,7 @@
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:steve_up_smash"
+        "part": "steve_up_smash"
       },
       "name": "pilot_seat"
     }

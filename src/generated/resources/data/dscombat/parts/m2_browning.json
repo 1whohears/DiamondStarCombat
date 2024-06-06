@@ -1,0 +1,9 @@
+{
+  "displayName": "preset.dscombat.m2_browning",
+  "item": "dscombat:internal_gun",
+  "max": 300,
+  "presetId": "m2_browning",
+  "presetType": "internal_weapon",
+  "slotType": "internal_gun",
+  "weight": 300.0
+}

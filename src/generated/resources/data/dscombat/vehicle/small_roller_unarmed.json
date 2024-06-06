@@ -18,14 +18,14 @@
   "slots": [
     {
       "data": {
-        "itemid": "dscombat:c6_engine"
+        "part": "c6_engine"
       },
       "name": "internal_1"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:light_fuel_tank"
+        "part": "light_fuel_tank"
       },
       "name": "internal_2"
     }

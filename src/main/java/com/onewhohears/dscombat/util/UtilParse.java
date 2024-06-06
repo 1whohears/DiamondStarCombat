@@ -125,7 +125,7 @@ public class UtilParse {
 		if (tag == null) return null;
 		if (tag.isEmpty()) return null;
 		String presetId = "";
-		if (tag.contains("presetId")) presetId = tag.getString("presetId");
+		if (tag.contains("part")) presetId = tag.getString("part");
 		else if (tag.contains("itemid")) {
 			presetId = tag.getString("itemid");
 			presetId = presetId.split(":")[1];
@@ -137,6 +137,7 @@ public class UtilParse {
 		PartInstance<?> data = stats.createPartInstance();
 		boolean old = tag.getInt("parse_version") < 2;
 		if (old || tag.getBoolean("readnbt")) data.readNBT(tag);
+		if (tag.contains("param")) data.setParamNotFilled(tag.getString("param"));
 		return data;
 	}
 	

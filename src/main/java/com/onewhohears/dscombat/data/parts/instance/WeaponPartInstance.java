@@ -27,6 +27,12 @@ public class WeaponPartInstance<T extends WeaponPartStats> extends PartInstance<
 	}
 	
 	@Override
+	public void setParamNotFilled(String param) {
+		super.setParamNotFilled(param);
+		weapon = param;
+	}
+	
+	@Override
 	public void readNBT(CompoundTag tag) {
 		super.readNBT(tag);
 		if (tag.contains("weapon")) weapon = tag.getString("weapon");

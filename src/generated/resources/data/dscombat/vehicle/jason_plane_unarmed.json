@@ -3,6 +3,10 @@
   "displayName": "preset.dscombat.jason_plane_unarmed",
   "ingredients": [
     {
+      "item": "dscombat:internal_gun",
+      "num": 2
+    },
+    {
       "item": "dscombat:allison_v_1710",
       "num": 1
     },
@@ -18,16 +22,32 @@
   "slots": [
     {
       "data": {
-        "itemid": "dscombat:allison_v_1710"
+        "part": "allison_v_1710"
       },
       "name": "internal_1"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:light_fuel_tank"
+        "part": "light_fuel_tank"
       },
       "name": "internal_2"
+    },
+    {
+      "data": {
+        "param": "10mm",
+        "part": "m2_browning"
+      },
+      "locked": true,
+      "name": "left_wing_gun"
+    },
+    {
+      "data": {
+        "param": "10mm",
+        "part": "m2_browning"
+      },
+      "locked": true,
+      "name": "right_wing_gun"
     }
   ]
 }

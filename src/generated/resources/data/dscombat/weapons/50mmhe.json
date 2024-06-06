@@ -9,9 +9,9 @@
   "destroyTerrain": true,
   "displayName": "preset.dscombat.50mmhe",
   "entityTypeKey": "dscombat:bullet",
-  "explosionRadius": 2.5,
+  "explosionRadius": 3.0,
   "explosive": true,
-  "fireRate": 4,
+  "fireRate": 5,
   "ingredients": [
     {
       "item": "minecraft:copper_ingot",

@@ -39,76 +39,76 @@
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:mark7_cannon"
+        "part": "mark7_cannon"
       },
       "name": "seat5"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:mark7_cannon"
+        "part": "mark7_cannon"
       },
       "name": "seat6"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:mark7_cannon"
+        "part": "mark7_cannon"
       },
       "name": "seat7"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:mark7_cannon"
+        "part": "mark7_cannon"
       },
       "name": "seat8"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:mark45_cannon"
+        "part": "mark45_cannon"
       },
       "name": "seat9"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:mark45_cannon"
+        "part": "mark45_cannon"
       },
       "name": "seat10"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:aa_turret"
+        "part": "aa_turret"
       },
       "name": "frame_2"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:aa_turret"
+        "part": "aa_turret"
       },
       "name": "frame_3"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:aa_turret"
+        "part": "aa_turret"
       },
       "name": "frame_4"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:aa_turret"
+        "part": "aa_turret"
       },
       "name": "frame_5"
     },
     {
       "data": {
-        "itemid": "dscombat:survey_all_a"
+        "part": "survey_all_a"
       },
       "name": "frame_1"
     }

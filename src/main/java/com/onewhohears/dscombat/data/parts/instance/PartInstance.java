@@ -25,6 +25,9 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 	public void setFilled(String param) {
 	}
 	
+	public void setParamNotFilled(String param) {
+	}
+	
 	@Override
 	public void readNBT(CompoundTag tag) {
 		super.readNBT(tag);
@@ -34,6 +37,7 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 		CompoundTag tag = super.writeNBT();
 		tag.putBoolean("readnbt", true);
 		tag.putInt("parse_version", PARSE_VERSION);
+		tag.putString("part", getStatsId());
 		return tag;
 	}
 	

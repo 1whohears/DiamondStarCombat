@@ -51,88 +51,88 @@
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:minigun_turret"
+        "part": "minigun_turret"
       },
       "name": "seat2"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_missile_rack",
-        "param": "aim7f"
+        "param": "aim7f",
+        "part": "heavy_missile_rack"
       },
       "name": "left_wing_1"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_missile_rack",
-        "param": "agm65g"
+        "param": "agm65g",
+        "part": "heavy_missile_rack"
       },
       "name": "left_wing_2"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:light_missile_rack",
-        "param": "agm114k"
+        "param": "agm114k",
+        "part": "light_missile_rack"
       },
       "name": "left_wing_3"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_missile_rack",
-        "param": "agm65l"
+        "param": "agm65l",
+        "part": "heavy_missile_rack"
       },
       "name": "right_wing_1"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_missile_rack",
-        "param": "agm84e"
+        "param": "agm84e",
+        "part": "heavy_missile_rack"
       },
       "name": "right_wing_2"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:light_missile_rack",
-        "param": "aim9l"
+        "param": "aim9l",
+        "part": "light_missile_rack"
       },
       "name": "right_wing_3"
     },
     {
       "data": {
-        "itemid": "dscombat:gimbal_camera"
+        "part": "gimbal_camera"
       },
       "name": "frame_1"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_missile_rack",
-        "param": "agm88g"
+        "param": "agm88g",
+        "part": "heavy_missile_rack"
       },
       "name": "frame_2"
     },
     {
       "data": {
-        "itemid": "dscombat:ar500"
+        "part": "ar500"
       },
       "name": "internal_5"
     },
     {
       "data": {
-        "itemid": "dscombat:gr400"
+        "part": "gr400"
       },
       "name": "internal_6"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:basic_flare_dispenser"
+        "part": "basic_flare_dispenser"
       },
       "name": "internal_4"
     }

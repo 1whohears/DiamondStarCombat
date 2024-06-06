@@ -19,16 +19,16 @@
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:xm12",
-        "param": "20mm"
+        "param": "20mm",
+        "part": "xm12"
       },
       "name": "left_wing_1"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:xm12",
-        "param": "20mm"
+        "param": "20mm",
+        "part": "xm12"
       },
       "name": "right_wing_1"
     }

@@ -23,16 +23,16 @@
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:light_missile_rack",
-        "param": "agm114k"
+        "param": "agm114k",
+        "part": "light_missile_rack"
       },
       "name": "left_wing_1"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:light_missile_rack",
-        "param": "agm114k"
+        "param": "agm114k",
+        "part": "light_missile_rack"
       },
       "name": "right_wing_1"
     }

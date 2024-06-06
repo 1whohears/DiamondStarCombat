@@ -38,63 +38,63 @@
   "slots": [
     {
       "data": {
-        "itemid": "dscombat:wr1k"
+        "part": "wr1k"
       },
       "name": "internal_4"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:xm12",
-        "param": "20mm"
+        "param": "20mm",
+        "part": "xm12"
       },
       "name": "nose_1"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_missile_rack",
-        "param": "mk13"
+        "param": "mk13",
+        "part": "heavy_missile_rack"
       },
       "name": "frame_1"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_missile_rack",
-        "param": "mk13"
+        "param": "mk13",
+        "part": "heavy_missile_rack"
       },
       "name": "frame_2"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_missile_rack",
-        "param": "mk13"
+        "param": "mk13",
+        "part": "heavy_missile_rack"
       },
       "name": "frame_3"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_missile_rack",
-        "param": "mk13"
+        "param": "mk13",
+        "part": "heavy_missile_rack"
       },
       "name": "frame_4"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_missile_rack",
-        "param": "mk13"
+        "param": "mk13",
+        "part": "heavy_missile_rack"
       },
       "name": "frame_5"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_missile_rack",
-        "param": "mk13"
+        "param": "mk13",
+        "part": "heavy_missile_rack"
       },
       "name": "frame_6"
     }

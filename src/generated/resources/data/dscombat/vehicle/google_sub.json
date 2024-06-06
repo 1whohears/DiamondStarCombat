@@ -38,69 +38,69 @@
   "slots": [
     {
       "data": {
-        "itemid": "dscombat:wr1k"
+        "part": "wr1k"
       },
       "name": "internal_4"
     },
     {
       "data": {
-        "itemid": "dscombat:ar1k"
+        "part": "ar1k"
       },
       "name": "internal_5"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_missile_rack",
-        "param": "mk13"
+        "param": "mk13",
+        "part": "heavy_missile_rack"
       },
       "name": "frame_1"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_missile_rack",
-        "param": "mk13"
+        "param": "mk13",
+        "part": "heavy_missile_rack"
       },
       "name": "frame_2"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_missile_rack",
-        "param": "mk13"
+        "param": "mk13",
+        "part": "heavy_missile_rack"
       },
       "name": "frame_3"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_missile_rack",
-        "param": "mk13"
+        "param": "mk13",
+        "part": "heavy_missile_rack"
       },
       "name": "frame_4"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:vls",
-        "param": "bgm109"
+        "param": "bgm109",
+        "part": "vls"
       },
       "name": "frame_5"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:vls",
-        "param": "bgm109"
+        "param": "bgm109",
+        "part": "vls"
       },
       "name": "frame_6"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:vls",
-        "param": "bgm109"
+        "param": "bgm109",
+        "part": "vls"
       },
       "name": "frame_7"
     }

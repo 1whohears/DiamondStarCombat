@@ -312,6 +312,11 @@ public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
 				.setExternalWeaponStats(16, 90)
 				.build());
 		// INTERNAL WEAPONS
+		addPresetToGenerate(PartBuilder.create(ModItems.INTERNAL_GUN.getId(), PartType.INTERNAL_WEAPON)
+				.setCompatibleSlotType(SlotType.INTERNAL_GUN)
+				.setWeight(1000)
+				.setWeaponStats(1000)
+				.build());
 		addPresetToGenerate(PartBuilder.create(DSCombatMod.MODID,"gau_avenger", ModItems.INTERNAL_GUN.getId(), PartType.INTERNAL_WEAPON)
 				.setCompatibleSlotType(SlotType.INTERNAL_GUN)
 				.setWeight(1250)
@@ -326,6 +331,11 @@ public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
 				.setCompatibleSlotType(SlotType.INTERNAL_GUN)
 				.setWeight(200)
 				.setWeaponStats(200)
+				.build());
+		addPresetToGenerate(PartBuilder.create(DSCombatMod.MODID,"m2_browning", ModItems.INTERNAL_GUN.getId(), PartType.INTERNAL_WEAPON)
+				.setCompatibleSlotType(SlotType.INTERNAL_GUN)
+				.setWeight(300)
+				.setWeaponStats(300)
 				.build());
 	}
 	

@@ -18,14 +18,14 @@
   "slots": [
     {
       "data": {
-        "itemid": "dscombat:turbofan_f145"
+        "part": "turbofan_f145"
       },
       "name": "internal_1"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:light_fuel_tank"
+        "part": "light_fuel_tank"
       },
       "name": "internal_2"
     }

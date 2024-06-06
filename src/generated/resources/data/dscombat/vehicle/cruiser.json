@@ -39,77 +39,77 @@
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:vls",
-        "param": "bgm109"
+        "param": "bgm109",
+        "part": "vls"
       },
       "name": "seat5"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:mls"
+        "part": "mls"
       },
       "name": "seat6"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:vls",
-        "param": "bgm109"
+        "param": "bgm109",
+        "part": "vls"
       },
       "name": "seat7"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:aa_turret"
+        "part": "aa_turret"
       },
       "name": "seat8"
     },
     {
       "data": {
-        "itemid": "dscombat:air_scan_b"
+        "part": "air_scan_b"
       },
       "name": "frame_1"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:ciws"
+        "part": "ciws"
       },
       "name": "frame_2"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:aa_turret"
+        "part": "aa_turret"
       },
       "name": "frame_3"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:aa_turret"
+        "part": "aa_turret"
       },
       "name": "frame_4"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:torpedo_tubes"
+        "part": "torpedo_tubes"
       },
       "name": "frame_5"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:torpedo_tubes"
+        "part": "torpedo_tubes"
       },
       "name": "frame_6"
     },
     {
       "data": {
-        "itemid": "dscombat:wr1k"
+        "part": "wr1k"
       },
       "name": "internal_7"
     }

@@ -35,23 +35,23 @@
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:minigun_turret"
+        "part": "minigun_turret"
       },
       "name": "seat1"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_missile_rack",
-        "param": "torpedo1"
+        "param": "torpedo1",
+        "part": "heavy_missile_rack"
       },
       "name": "frame_1"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_missile_rack",
-        "param": "torpedo1"
+        "param": "torpedo1",
+        "part": "heavy_missile_rack"
       },
       "name": "frame_2"
     }

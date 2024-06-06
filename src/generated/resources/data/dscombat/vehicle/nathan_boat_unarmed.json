@@ -18,20 +18,20 @@
   "slots": [
     {
       "data": {
-        "itemid": "dscombat:cm_manly_52"
+        "part": "cm_manly_52"
       },
       "name": "internal_1"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_fuel_tank"
+        "part": "heavy_fuel_tank"
       },
       "name": "internal_2"
     },
     {
       "data": {
-        "itemid": "dscombat:wr400"
+        "part": "wr400"
       },
       "name": "internal_4"
     }

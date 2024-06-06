@@ -5,14 +5,15 @@
     "dscombat:ciws"
   ],
   "compatibleWeaponPart": [
-    "dscombat:xm12"
+    "dscombat:xm12",
+    "dscombat:internal_gun"
   ],
   "craftNum": 32,
   "damage": 12.0,
   "destroyTerrain": true,
   "displayName": "preset.dscombat.20mmhe",
   "entityTypeKey": "dscombat:bullet",
-  "explosionRadius": 0.5,
+  "explosionRadius": 1.0,
   "explosive": true,
   "fireRate": 1,
   "ingredients": [

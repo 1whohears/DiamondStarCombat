@@ -5,7 +5,8 @@
     "dscombat:aa_turret"
   ],
   "compatibleWeaponPart": [
-    "dscombat:xm12"
+    "dscombat:xm12",
+    "dscombat:internal_gun"
   ],
   "craftNum": 48,
   "damage": 9.0,

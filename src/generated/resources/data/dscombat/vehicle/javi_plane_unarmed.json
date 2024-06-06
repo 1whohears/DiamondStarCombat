@@ -22,27 +22,27 @@
   "slots": [
     {
       "data": {
-        "itemid": "dscombat:turbofan_f25"
+        "part": "turbofan_f25"
       },
       "name": "internal_1"
     },
     {
       "data": {
-        "itemid": "dscombat:turbofan_f25"
+        "part": "turbofan_f25"
       },
       "name": "internal_2"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_fuel_tank"
+        "part": "heavy_fuel_tank"
       },
       "name": "internal_3"
     },
     {
       "data": {
-        "itemid": "dscombat:internal_gun",
-        "param": "30mmhe"
+        "param": "30mmhe",
+        "part": "gau_avenger"
       },
       "locked": true,
       "name": "internal_gun"

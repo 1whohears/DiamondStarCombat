@@ -31,42 +31,42 @@
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:mls"
+        "part": "mls"
       },
       "name": "seat9"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:vls",
-        "param": "bgm109"
+        "param": "bgm109",
+        "part": "vls"
       },
       "name": "seat10"
     },
     {
       "data": {
-        "itemid": "dscombat:survey_all_b"
+        "part": "survey_all_b"
       },
       "name": "frame_1"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:aa_turret"
+        "part": "aa_turret"
       },
       "name": "frame_2"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:ciws"
+        "part": "ciws"
       },
       "name": "frame_3"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:aa_turret"
+        "part": "aa_turret"
       },
       "name": "frame_4"
     }

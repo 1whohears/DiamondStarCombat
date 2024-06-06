@@ -31,53 +31,53 @@
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_missile_rack",
-        "param": "aim7f"
+        "param": "aim7f",
+        "part": "heavy_missile_rack"
       },
       "name": "left_wing_1"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:light_missile_rack",
-        "param": "aim9l"
+        "param": "aim9l",
+        "part": "light_missile_rack"
       },
       "name": "left_wing_2"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_missile_rack",
-        "param": "aim7mh"
+        "param": "aim7mh",
+        "part": "heavy_missile_rack"
       },
       "name": "right_wing_1"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:light_missile_rack",
-        "param": "aim9l"
+        "param": "aim9l",
+        "part": "light_missile_rack"
       },
       "name": "right_wing_2"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:xm12",
-        "param": "15mm"
+        "param": "15mm",
+        "part": "xm12"
       },
       "name": "nose_1"
     },
     {
       "data": {
-        "itemid": "dscombat:ar500"
+        "part": "ar500"
       },
       "name": "internal_4"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:basic_flare_dispenser"
+        "part": "basic_flare_dispenser"
       },
       "name": "internal_3"
     }

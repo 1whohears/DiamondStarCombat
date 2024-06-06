@@ -3,6 +3,10 @@
   "displayName": "preset.dscombat.eden_plane_unarmed",
   "ingredients": [
     {
+      "item": "dscombat:internal_gun",
+      "num": 1
+    },
+    {
       "item": "dscombat:klimov_rd33",
       "num": 2
     },
@@ -18,22 +22,30 @@
   "slots": [
     {
       "data": {
-        "itemid": "dscombat:klimov_rd33"
+        "part": "klimov_rd33"
       },
       "name": "internal_1"
     },
     {
       "data": {
-        "itemid": "dscombat:klimov_rd33"
+        "part": "klimov_rd33"
       },
       "name": "internal_2"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_fuel_tank"
+        "part": "heavy_fuel_tank"
       },
       "name": "internal_3"
+    },
+    {
+      "data": {
+        "param": "20mm",
+        "part": "gsh_30_1"
+      },
+      "locked": true,
+      "name": "internal_gun"
     }
   ]
 }

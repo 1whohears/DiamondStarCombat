@@ -19,10 +19,6 @@
       "num": 1
     },
     {
-      "item": "dscombat:xm12",
-      "num": 1
-    },
-    {
       "item": "dscombat:basic_flare_dispenser",
       "num": 1
     },
@@ -51,73 +47,73 @@
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_missile_rack",
-        "param": "agm84e"
+        "param": "agm84e",
+        "part": "heavy_missile_rack"
       },
       "name": "left_wing_1"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_missile_rack",
-        "param": "agm65l"
+        "param": "agm65l",
+        "part": "heavy_missile_rack"
       },
       "name": "left_wing_2"
     },
     {
       "data": {
-        "itemid": "dscombat:gimbal_camera"
+        "part": "gimbal_camera"
       },
       "name": "left_wing_3"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_missile_rack",
-        "param": "agm88g"
+        "param": "agm88g",
+        "part": "heavy_missile_rack"
       },
       "name": "right_wing_1"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_missile_rack",
-        "param": "agm65g"
+        "param": "agm65g",
+        "part": "heavy_missile_rack"
       },
       "name": "right_wing_2"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_missile_rack",
-        "param": "aim9x"
+        "param": "aim9x",
+        "part": "heavy_missile_rack"
       },
       "name": "right_wing_3"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:xm12",
-        "param": "20mmhe"
+        "param": "20mmhe",
+        "part": "gsh_30_1"
       },
-      "name": "frame_1"
+      "name": "internal_gun"
     },
     {
       "data": {
-        "itemid": "dscombat:ar1k"
+        "part": "ar1k"
       },
       "name": "internal_5"
     },
     {
       "data": {
-        "itemid": "dscombat:gr400"
+        "part": "gr400"
       },
       "name": "internal_6"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:basic_flare_dispenser"
+        "part": "basic_flare_dispenser"
       },
       "name": "internal_4"
     }

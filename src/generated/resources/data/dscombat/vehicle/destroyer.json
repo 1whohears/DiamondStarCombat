@@ -35,62 +35,62 @@
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:adl",
-        "param": "rgm84"
+        "param": "rgm84",
+        "part": "adl"
       },
       "name": "seat5"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:mls"
+        "part": "mls"
       },
       "name": "seat6"
     },
     {
       "data": {
-        "itemid": "dscombat:survey_all_b"
+        "part": "survey_all_b"
       },
       "name": "frame_1"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:aa_turret"
+        "part": "aa_turret"
       },
       "name": "frame_2"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:aa_turret"
+        "part": "aa_turret"
       },
       "name": "frame_3"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:aa_turret"
+        "part": "aa_turret"
       },
       "name": "frame_4"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:torpedo_tubes"
+        "part": "torpedo_tubes"
       },
       "name": "frame_5"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:torpedo_tubes"
+        "part": "torpedo_tubes"
       },
       "name": "frame_6"
     },
     {
       "data": {
-        "itemid": "dscombat:wr1k"
+        "part": "wr1k"
       },
       "name": "internal_7"
     }

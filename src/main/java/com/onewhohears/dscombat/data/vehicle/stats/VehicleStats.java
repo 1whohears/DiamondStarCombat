@@ -320,16 +320,27 @@ public abstract class VehicleStats extends JsonPresetStats {
 		 * @param param some part items accept a setting
 		 * @param filled if the item is filled by default
 		 */
-		public Builder setSlotItem(String name, @Nullable ResourceLocation item, @Nullable String param, boolean filled) {
-			if (item == null) return setSlotEmpty(name);
+		public Builder setSlotItem(String name, @Nullable String part, @Nullable String param, boolean filled) {
+			if (part == null) return setSlotEmpty(name);
 			JsonObject slot = getSlot(name, true);
 			if (slot == null) return this;
 			JsonObject d = new JsonObject();
-			d.addProperty("itemid", item.toString());
+			d.addProperty("part", part);
 			if (param != null) d.addProperty("param", param);
 			if (filled) d.addProperty("filled", filled);
 			slot.add("data", d);
 			return this;
+		}
+		/**
+		 * sets item data of slot
+		 * @param name slot that already exists
+		 * @param item resource location of item to get part data from
+		 * @param param some part items accept a setting
+		 * @param filled if the item is filled by default
+		 */
+		public Builder setSlotItem(String name, @Nullable ResourceLocation item, @Nullable String param, boolean filled) {
+			if (item == null) return setSlotEmpty(name);
+			return setSlotItem(name, item.getPath(), param, filled);
 		}
 		/**
 		 * sets item data of slot

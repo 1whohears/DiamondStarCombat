@@ -18,20 +18,20 @@
   "slots": [
     {
       "data": {
-        "itemid": "dscombat:c12_engine"
+        "part": "c12_engine"
       },
       "name": "internal_1"
     },
     {
       "data": {
-        "itemid": "dscombat:c12_engine"
+        "part": "c12_engine"
       },
       "name": "internal_2"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_fuel_tank"
+        "part": "heavy_fuel_tank"
       },
       "name": "internal_3"
     }

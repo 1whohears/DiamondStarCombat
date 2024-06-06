@@ -9,18 +9,18 @@
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:xm12",
-        "param": "10mm"
+        "param": "10mm",
+        "part": "m2_browning"
       },
-      "name": "left_wing_1"
+      "name": "left_wing_gun"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:xm12",
-        "param": "10mm"
+        "param": "10mm",
+        "part": "m2_browning"
       },
-      "name": "right_wing_1"
+      "name": "right_wing_gun"
     }
   ]
 }

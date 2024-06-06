@@ -44,6 +44,8 @@ public class JasonPresets {
 			.addEmptySlot("frame_1", SlotType.PYLON_LIGHT, 0, -0.45, 1.9, 180)
 			.addEmptySlot("left_wing_1", SlotType.PYLON_LIGHT, 3.4, -0.4, 1.1, 180)
 			.addEmptySlot("right_wing_1", SlotType.PYLON_LIGHT, -3.4, -0.4, 1.1, 180)
+			.addEmptySlot("left_wing_gun", SlotType.INTERNAL_GUN, 3.4, -0.4, 1.1, 0)
+			.addEmptySlot("right_wing_gun", SlotType.INTERNAL_GUN, -3.4, -0.4, 1.1, 0)
 			.addEmptySlot("internal_1", SlotType.RADIAL_ENGINE)
 			.addEmptySlot("internal_2", SlotType.INTERNAL)
 			.addEmptySlot("internal_3", SlotType.INTERNAL)
@@ -54,14 +56,19 @@ public class JasonPresets {
 			.setCraftable()
 			.setSlotItem("internal_1", ModItems.ALLISON_V_1710.getId())
 			.setSlotItem("internal_2", ModItems.LIGHT_FUEL_TANK.getId(), true)
+			.setSlotItem("left_wing_gun", "m2_browning", "10mm", false)
+			.lockSlot("left_wing_gun")
+			.setSlotItem("right_wing_gun", "m2_browning", "10mm", false)
+			.lockSlot("right_wing_gun")
+			.addIngredient(ModItems.INTERNAL_GUN.getId(), 2)
 			.addIngredient(ModItems.ALLISON_V_1710.getId())
 			.addIngredient(ModItems.LIGHT_FUEL_TANK.getId())
 			.build();
 	
 	public static final VehicleStats DEFAULT_JASON_PLANE = VehicleStats.Builder
 			.createFromCopy(DSCombatMod.MODID, "jason_plane", UNARMED_JASON_PLANE)
-			.setSlotItem("left_wing_1", ModItems.XM12.getId(), "10mm", true)
-			.setSlotItem("right_wing_1", ModItems.XM12.getId(), "10mm", true)
+			.setSlotItem("left_wing_gun", "m2_browning", "10mm", true)
+			.setSlotItem("right_wing_gun", "m2_browning", "10mm", true)
 			.build();
 	
 }

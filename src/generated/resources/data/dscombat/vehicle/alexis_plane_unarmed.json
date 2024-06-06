@@ -3,6 +3,10 @@
   "displayName": "preset.dscombat.alexis_plane_unarmed",
   "ingredients": [
     {
+      "item": "dscombat:internal_gun",
+      "num": 1
+    },
+    {
       "item": "dscombat:turbofan_f145",
       "num": 1
     },
@@ -18,16 +22,24 @@
   "slots": [
     {
       "data": {
-        "itemid": "dscombat:turbofan_f145"
+        "part": "turbofan_f145"
       },
       "name": "internal_1"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_fuel_tank"
+        "part": "heavy_fuel_tank"
       },
       "name": "internal_2"
+    },
+    {
+      "data": {
+        "param": "20mm",
+        "part": "m61a1_vulcan"
+      },
+      "locked": true,
+      "name": "internal_gun"
     }
   ]
 }

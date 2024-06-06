@@ -15,10 +15,6 @@
       "num": 2
     },
     {
-      "item": "dscombat:xm12",
-      "num": 1
-    },
-    {
       "item": "dscombat:basic_flare_dispenser",
       "num": 1
     },
@@ -47,53 +43,53 @@
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_missile_rack",
-        "param": "aim120b"
+        "param": "aim120b",
+        "part": "heavy_missile_rack"
       },
       "name": "left_wing_1"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:light_missile_rack",
-        "param": "aim9x"
+        "param": "aim9x",
+        "part": "light_missile_rack"
       },
       "name": "left_wing_2"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_missile_rack",
-        "param": "aim120c"
+        "param": "aim120c",
+        "part": "heavy_missile_rack"
       },
       "name": "right_wing_1"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:light_missile_rack",
-        "param": "aim9x"
+        "param": "aim9x",
+        "part": "light_missile_rack"
       },
       "name": "right_wing_2"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:xm12",
-        "param": "20mm"
+        "param": "20mm",
+        "part": "gsh_30_1"
       },
-      "name": "frame_1"
+      "name": "internal_gun"
     },
     {
       "data": {
-        "itemid": "dscombat:ar2k"
+        "part": "ar2k"
       },
       "name": "internal_5"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:basic_flare_dispenser"
+        "part": "basic_flare_dispenser"
       },
       "name": "internal_4"
     }

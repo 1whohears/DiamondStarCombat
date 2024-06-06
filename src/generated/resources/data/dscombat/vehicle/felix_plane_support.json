@@ -9,61 +9,61 @@
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_missile_rack",
-        "param": "agm65l"
+        "param": "agm65l",
+        "part": "heavy_missile_rack"
       },
       "name": "left_wing_1"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:light_missile_rack",
-        "param": "aim9l"
+        "param": "aim9l",
+        "part": "light_missile_rack"
       },
       "name": "left_wing_2"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_missile_rack",
-        "param": "agm65g"
+        "param": "agm65g",
+        "part": "heavy_missile_rack"
       },
       "name": "right_wing_1"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:light_missile_rack",
-        "param": "agm114k"
+        "param": "agm114k",
+        "part": "light_missile_rack"
       },
       "name": "right_wing_2"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_missile_rack",
-        "param": "agm65g"
+        "param": "agm65g",
+        "part": "heavy_missile_rack"
       },
       "name": "frame_1"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:xm12",
-        "param": "15mm"
+        "param": "15mm",
+        "part": "xm12"
       },
       "name": "nose_1"
     },
     {
       "data": {
-        "itemid": "dscombat:gr200"
+        "part": "gr200"
       },
       "name": "internal_4"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:basic_flare_dispenser"
+        "part": "basic_flare_dispenser"
       },
       "name": "internal_3"
     }

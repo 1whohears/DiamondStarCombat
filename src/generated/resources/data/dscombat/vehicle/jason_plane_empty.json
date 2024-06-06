@@ -69,6 +69,22 @@
       "zRot": 180.0
     },
     {
+      "name": "left_wing_gun",
+      "slot_posx": 3.4,
+      "slot_posy": -0.4,
+      "slot_posz": 1.1,
+      "slot_type": "internal_gun",
+      "zRot": 0.0
+    },
+    {
+      "name": "right_wing_gun",
+      "slot_posx": -3.4,
+      "slot_posy": -0.4,
+      "slot_posz": 1.1,
+      "slot_type": "internal_gun",
+      "zRot": 0.0
+    },
+    {
       "name": "internal_1",
       "slot_posx": 0.0,
       "slot_posy": 0.0,

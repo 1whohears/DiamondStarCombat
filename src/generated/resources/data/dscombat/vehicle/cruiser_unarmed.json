@@ -18,27 +18,27 @@
   "slots": [
     {
       "data": {
-        "itemid": "dscombat:compound_turbine"
+        "part": "compound_turbine"
       },
       "name": "internal_1"
     },
     {
       "data": {
-        "itemid": "dscombat:compound_turbine"
+        "part": "compound_turbine"
       },
       "name": "internal_2"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_fuel_tank"
+        "part": "heavy_fuel_tank"
       },
       "name": "internal_3"
     },
     {
       "data": {
         "filled": true,
-        "itemid": "dscombat:heavy_fuel_tank"
+        "part": "heavy_fuel_tank"
       },
       "name": "internal_4"
     }

@@ -58,6 +58,7 @@ public class BroncoPresets {
 			.addEmptySlot("internal_3", SlotType.INTERNAL)
 			.addEmptySlot("internal_4", SlotType.INTERNAL)
 			.addEmptySlot("internal_5", SlotType.MOUNT_TECH)
+			.setEntityMainHitboxSize(4, 4)
 			.build();
 	
 	public static final VehicleStats UNARMED_BRONCO_PLANE = VehicleStats.Builder

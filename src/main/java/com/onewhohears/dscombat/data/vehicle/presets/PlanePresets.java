@@ -44,6 +44,7 @@ public class PlanePresets {
 			.addEmptySlot("internal_1", SlotType.RADIAL_ENGINE)
 			.addEmptySlot("internal_2", SlotType.INTERNAL)
 			.addEmptySlot("internal_3", SlotType.INTERNAL)
+			.setEntityMainHitboxSize(1.7f, 1.7f)
 			.build();
 	
 	public static final VehicleStats DEFAULT_WOODEN_PLANE = VehicleStats.Builder
@@ -131,6 +132,7 @@ public class PlanePresets {
 			.addEntityScreen(EntityScreenIds.AIR_RADAR_SCREEN, 0, -0.85, 5.49, 0.7, 0.7)
 			.addEntityScreen(EntityScreenIds.FUEL_SCREEN, 0.59, -0.59, 5.49, 0.15, 0.15)
 			.addEntityScreen(EntityScreenIds.RWR_SCREEN, 0.83, -0.66, 5.49, 0.3, 0.3)
+			.setEntityMainHitboxSize(4, 4)
 			.build();
 	
 	public static final VehicleStats DEFAULT_E3SENTRY_PLANE = VehicleStats.Builder

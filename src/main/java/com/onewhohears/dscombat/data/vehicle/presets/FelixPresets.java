@@ -61,6 +61,7 @@ public class FelixPresets {
 			.addEntityScreen(EntityScreenIds.RWR_SCREEN,0.0775,0.505,5.44,0.11,0.11,10)
 			.addHUDScreen(0, -0.3, 4.7)
 			.addAfterBurnerSmokePos(0,-0.1,-6)
+			.setEntityMainHitboxSize(4, 4)
 			.build();
 	
 	public static final VehicleStats UNARMED_FELIX_PLANE = VehicleStats.Builder

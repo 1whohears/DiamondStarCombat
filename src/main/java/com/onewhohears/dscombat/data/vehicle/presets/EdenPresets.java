@@ -73,6 +73,7 @@ public class EdenPresets {
 			.addEntityScreen(EntityScreenIds.GROUND_RADAR_SCREEN, -0.3, 1.185, 7.475, 0.22, 0.28, 5)
 			.addEntityScreen(EntityScreenIds.RWR_SCREEN, 0, 1.225, 7.478, 0.2, 0.2, 5)
 			.addEntityScreen(EntityScreenIds.FUEL_SCREEN, -0.505, 0.985, 7.205, 0.11, 0.11, 90)
+			.setEntityMainHitboxSize(4, 4)
 			.build();
 	
 	public static final VehicleStats UNARMED_EDEN_PLANE = VehicleStats.Builder

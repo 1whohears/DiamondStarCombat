@@ -52,6 +52,7 @@ public class SubPresets {
 			.addEmptySlot("internal_4", SlotType.TECH_INTERNAL)
 			.addEmptySlot("internal_5", SlotType.TECH_INTERNAL)
 			.addEmptySlot("internal_6", SlotType.TECH_INTERNAL)
+			.setEntityMainHitboxSize(4.5f, 4)
 			.build();
 			
 	public static final VehicleStats UNARMED_ANDOLF_SUB = VehicleStats.Builder
@@ -131,6 +132,7 @@ public class SubPresets {
 			.addEmptySlot("internal_7", SlotType.TECH_INTERNAL)
 			.addEmptySlot("internal_8", SlotType.TECH_INTERNAL)
 			.setBaseTextureNum(2)
+			.setEntityMainHitboxSize(8, 8)
 			.build();
 			
 	public static final VehicleStats UNARMED_GOOGLE_SUB = VehicleStats.Builder

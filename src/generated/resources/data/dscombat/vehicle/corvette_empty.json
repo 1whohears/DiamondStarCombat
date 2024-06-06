@@ -1,5 +1,7 @@
 {
   "displayName": "preset.dscombat.corvette_empty",
+  "entity_size_xz": 7.0,
+  "entity_size_y": 3.0,
   "health": 250.0,
   "hitboxes": [
     {

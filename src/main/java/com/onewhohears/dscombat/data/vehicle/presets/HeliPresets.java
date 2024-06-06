@@ -69,6 +69,7 @@ public class HeliPresets {
 			.addEntityScreen(EntityScreenIds.RWR_SCREEN,0.5,-0.12,1.825,0.3,0.3,20)
 			.addEntityScreen(EntityScreenIds.GROUND_RADAR_SCREEN,0.5,0.18,1.934,0.3,0.3,20)
 			.addHUDScreen(0.4, -0.65, 1.5)
+			.setEntityMainHitboxSize(2.8f, 2.8f)
 			.build();
 	
 	public static final VehicleStats UNARMED_NOAH_CHOPPER = VehicleStats.Builder

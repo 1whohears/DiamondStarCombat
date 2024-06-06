@@ -27,6 +27,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.phys.Vec3;
@@ -51,6 +52,7 @@ public abstract class VehicleStats extends JsonPresetStats {
 	public final int baseTextureVariants, textureLayers;
 	public final Vec3[] afterBurnerSmokePos;
 	public final MastType mastType;
+	public final EntityDimensions dimensions;
 	
 	private final boolean isCraftable;
 	private final int defaultPaintJob;
@@ -89,6 +91,9 @@ public abstract class VehicleStats extends JsonPresetStats {
 		cameraDistance = UtilParse.getFloatSafe(stats, "cameraDistance", 4);
 		if (stats.has("mastType")) mastType = MastType.valueOf(stats.get("mastType").getAsString());
 		else mastType = MastType.NONE;
+		float entity_size_xz = UtilParse.getFloatSafe(json, "entity_size_xz", 4);
+		float entity_size_y = UtilParse.getFloatSafe(json, "entity_size_y", 4);
+		dimensions = EntityDimensions.fixed(entity_size_xz, entity_size_y);
 		if (json.has("textures")) {
 			JsonObject textures = json.get("textures").getAsJsonObject();
 			baseTextureVariants = UtilParse.getIntSafe(textures, "baseTextureVariants", 1);
@@ -107,6 +112,7 @@ public abstract class VehicleStats extends JsonPresetStats {
 		} else afterBurnerSmokePos = new Vec3[0];
 		isCraftable = UtilParse.getBooleanSafe(json, "is_craftable", false);
 		defaultPaintJob = UtilParse.getIntSafe(json, "paintjob_color", 0);
+		
 	}
 	
 	public CompoundTag getDataAsNBT() {
@@ -808,6 +814,14 @@ public abstract class VehicleStats extends JsonPresetStats {
 		 */
 		public Builder setDefultPassengerSoundPack(PassengerSoundPack passengerSoundPack) {
 			getSounds().addProperty("passengerSoundPack", passengerSoundPack.id);
+			return this;
+		}
+		/**
+		 * all vehicles 
+		 */
+		public Builder setEntityMainHitboxSize(float width, float height) {
+			setFloat("entity_size_xz", width);
+			setFloat("entity_size_y", height);
 			return this;
 		}
 		/**

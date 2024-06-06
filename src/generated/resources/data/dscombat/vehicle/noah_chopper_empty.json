@@ -1,5 +1,7 @@
 {
   "displayName": "preset.dscombat.noah_chopper_empty",
+  "entity_size_xz": 2.8,
+  "entity_size_y": 2.8,
   "health": 200.0,
   "ingredients": [
     {

@@ -45,6 +45,7 @@ public class BoatPresets {
 			.addEmptySlot("internal_2", SlotType.INTERNAL)
 			.addEmptySlot("internal_3", SlotType.INTERNAL)
 			.addEmptySlot("internal_4", SlotType.TECH_INTERNAL)
+			.setEntityMainHitboxSize(3, 1.5f)
 			.build();
 	
 	public static final VehicleStats UNARMED_NATHAN_BOAT = VehicleStats.Builder
@@ -126,6 +127,7 @@ public class BoatPresets {
 			.addRotableHitbox("front", 8, 2.02, 8, 0, 3, 20.5)
 			.addRotableHitbox("back", 8, 2.02, 8, 0, 3, -21.5)
 			.setMastType(MastType.NORMAL)
+			.setEntityMainHitboxSize(14, 4)
 			.build();
 	
 	public static final VehicleStats UNARMED_GRONK_BATTLESHIP = VehicleStats.Builder
@@ -209,6 +211,7 @@ public class BoatPresets {
 			.addEmptySlot("internal_10", SlotType.INTERNAL)
 			.addRotableHitbox("plat0", 10, 4.02, 27.6, 0, 2, 0)
 			.setMastType(MastType.NORMAL)
+			.setEntityMainHitboxSize(10, 4)
 			.build();
 	
 	public static final VehicleStats UNARMED_DESTROYER = VehicleStats.Builder
@@ -292,6 +295,7 @@ public class BoatPresets {
 			.addRotableHitbox("plat0", 12, 4.02, 35.6f, 0, 2, -2)
 			.addRotableHitbox("plat1", 7, 1.02, 21, 0, 4.5, 0.8)
 			.setMastType(MastType.LARGE)
+			.setEntityMainHitboxSize(12, 4)
 			.build();
 	
 	public static final VehicleStats UNARMED_CRUISER = VehicleStats.Builder
@@ -369,6 +373,7 @@ public class BoatPresets {
 			.addEmptySlot("internal_9", SlotType.TECH_INTERNAL)
 			.addRotableHitbox("plat0", 7, 3.02, 16, 0, 1.5, -2)
 			.setMastType(MastType.THIN)
+			.setEntityMainHitboxSize(7, 3)
 			.build();
 	
 	public static final VehicleStats UNARMED_CORVETTE = VehicleStats.Builder
@@ -445,6 +450,7 @@ public class BoatPresets {
 			.addRotableHitbox("runway", 16, 6.06, 50, 0, 3, 0)
 			.addRotableHitbox("side_plat", 25, 3.06, 24, 0, 4.5, 0)
 			.setMastType(MastType.LARGE)
+			.setEntityMainHitboxSize(25, 6)
 			.build();
 	
 	public static final VehicleStats UNARMED_AIRCRAFT_CARRIER = VehicleStats.Builder

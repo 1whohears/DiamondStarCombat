@@ -2203,6 +2203,12 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     }
     
     @Override
+    public EntityDimensions getDimensions(Pose pose) {
+    	if (vehicleStats == null) return super.getDimensions(pose);
+    	return vehicleStats.dimensions;
+    }
+    
+    @Override
     protected AABB makeBoundingBox() {
     	if (isCustomBoundingBox()) return makeCustomBoundingBox();
      	return super.makeBoundingBox();

@@ -67,6 +67,7 @@ public class AlexisPresets {
 			.addEntityScreen(EntityScreenIds.GROUND_RADAR_SCREEN, -0.225, 0.798, 7.195, 0.15, 0.15)
 			.addHUDScreen(0, 0.1, 6.5)
 			.addAfterBurnerSmokePos(0,0.3,-6.5)
+			.setEntityMainHitboxSize(4, 4)
 			.build();
 	
 	public static final VehicleStats UNARMED_ALEXIS_PLANE = VehicleStats.Builder

@@ -1,5 +1,7 @@
 {
   "displayName": "preset.dscombat.mrbudger_tank_empty",
+  "entity_size_xz": 3.0,
+  "entity_size_y": 2.5,
   "health": 500.0,
   "ingredients": [
     {

@@ -1,5 +1,7 @@
 {
   "displayName": "preset.dscombat.wooden_plane_empty",
+  "entity_size_xz": 1.7,
+  "entity_size_y": 1.7,
   "health": 40.0,
   "ingredients": [
     {

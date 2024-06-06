@@ -1,5 +1,7 @@
 {
   "displayName": "preset.dscombat.small_roller_empty",
+  "entity_size_xz": 1.5,
+  "entity_size_y": 0.8,
   "health": 30.0,
   "ingredients": [
     {

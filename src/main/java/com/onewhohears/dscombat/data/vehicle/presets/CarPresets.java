@@ -42,6 +42,7 @@ public class CarPresets {
 			.addIngredient(ModItems.WHEEL.getId(), 4)
 			.addIngredientTag("dscombat:aluminum_ingot", 10)
 			.addIngredient("minecraft:orange_dye", 4)
+			.setEntityMainHitboxSize(2.5f, 2.15f)
 			.build();
 	
 	public static final VehicleStats EMPTY_AXCEL_TRUCK = VehicleStats.Builder
@@ -77,6 +78,7 @@ public class CarPresets {
 			.addEmptySlot("internal_3", SlotType.TECH_INTERNAL)
 			.addEmptySlot("internal_4", SlotType.TECH_INTERNAL)
 			.addEntityScreen(EntityScreenIds.AIR_RADAR_SCREEN, 0, 1.35, 1.6, 0.6, 0.6)
+			.setEntityMainHitboxSize(2.5f, 3)
 			.build();
 	
 	public static final VehicleStats UNARMED_AXCEL_TRUCK = VehicleStats.Builder

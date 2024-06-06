@@ -63,6 +63,7 @@ public class JaviPresets {
 			.addEmptySlot("internal_6", SlotType.TECH_INTERNAL)
 			.addAfterBurnerSmokePos(1.85,1.4,-4.4)
 			.addAfterBurnerSmokePos(-1.85,1.4,-4.4)
+			.setEntityMainHitboxSize(4, 4)
 			.build();
 	
 	public static final VehicleStats UNARMED_JAVI_PLANE = VehicleStats.Builder

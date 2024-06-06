@@ -1,5 +1,7 @@
 {
   "displayName": "preset.dscombat.axcel_truck_empty",
+  "entity_size_xz": 2.5,
+  "entity_size_y": 3.0,
   "health": 80.0,
   "ingredients": [
     {

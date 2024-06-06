@@ -1,5 +1,7 @@
 {
   "displayName": "preset.dscombat.google_sub_empty",
+  "entity_size_xz": 8.0,
+  "entity_size_y": 8.0,
   "health": 1000.0,
   "ingredients": [
     {

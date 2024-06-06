@@ -1,5 +1,7 @@
 {
   "displayName": "preset.dscombat.aircraft_carrier_empty",
+  "entity_size_xz": 25.0,
+  "entity_size_y": 6.0,
   "health": 900.0,
   "hitboxes": [
     {

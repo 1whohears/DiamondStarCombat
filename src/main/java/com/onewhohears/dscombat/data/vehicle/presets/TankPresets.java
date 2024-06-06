@@ -43,6 +43,7 @@ public class TankPresets {
 			.addEmptySlot("internal_2", SlotType.SPIN_ENGINE)
 			.addEmptySlot("internal_3", SlotType.INTERNAL)
 			.addEmptySlot("internal_4", SlotType.INTERNAL)
+			.setEntityMainHitboxSize(3, 2.5f)
 			.build();
 	
 	public static final VehicleStats UNARMED_MRBUDGER_TANK = VehicleStats.Builder
@@ -89,6 +90,7 @@ public class TankPresets {
 			.addSeatSlot(PartSlot.PILOT_SLOT_NAME, SlotType.MOUNT_MED, 0, 0.6, 0)
 			.addEmptySlot("internal_1", SlotType.SPIN_ENGINE)
 			.addEmptySlot("internal_2", SlotType.INTERNAL)
+			.setEntityMainHitboxSize(1.5f, 0.8f)
 			.build();
 	
 	public static final VehicleStats UNARMED_SMALL_ROLLER = VehicleStats.Builder

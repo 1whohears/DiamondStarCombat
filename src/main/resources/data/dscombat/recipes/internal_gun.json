@@ -9,11 +9,10 @@
 		}
 	},
 	"pattern": [
-		"IID",
-		"I  "
+		"IID"
 	],
 	"result": {
 		"count": 1,
-		"item": "dscombat:xm12"
+		"item": "dscombat:internal_gun"
 	}
 }

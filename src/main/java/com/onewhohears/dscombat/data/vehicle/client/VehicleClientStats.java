@@ -1,18 +1,22 @@
 package com.onewhohears.dscombat.data.vehicle.client;
 
 import java.util.HashMap;
+import java.util.List;
 
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.onewhohears.dscombat.client.entityscreen.VehicleScreenMapReader;
 import com.onewhohears.dscombat.client.model.obj.HardCodedModelAnims;
 import com.onewhohears.dscombat.client.model.obj.ObjVehicleModel;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPresetInstance;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPresetStats;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPresetType;
 import com.onewhohears.dscombat.data.jsonpreset.PresetBuilder;
+import com.onewhohears.dscombat.data.vehicle.EntityScreenData;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.resources.ResourceLocation;
 
@@ -21,6 +25,7 @@ public class VehicleClientStats extends JsonPresetStats {
 	private ResourceLocation background;
 	private HashMap<String, UIPos> slotsPos;
 	private ObjVehicleModel<EntityVehicle> model;
+	private List<EntityScreenData> screens;
 	
 	public VehicleClientStats(ResourceLocation key, JsonObject json) {
 		super(key, json);
@@ -38,6 +43,15 @@ public class VehicleClientStats extends JsonPresetStats {
 		else if (model_data.has("simple_model_id")) 
 			model = new ObjVehicleModel<>(model_data.get("simple_model_id").getAsString());
 		return model;
+	}
+	
+	public List<EntityScreenData> getScreens() {
+		if (screens == null) {
+			ResourceLocation screenMap = new ResourceLocation(getNameSpace()+":textures/entity/vehicle/"+getId()+"/screens.png");
+			screens = VehicleScreenMapReader.generateScreens(screenMap, getModel().modelId, 
+					UtilGeometry.convertVector(getModel().getGlobalPivot()));
+		}
+		return screens;
 	}
 	
 	@Nullable

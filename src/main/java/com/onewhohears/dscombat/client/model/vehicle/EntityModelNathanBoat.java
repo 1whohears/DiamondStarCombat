@@ -17,6 +17,7 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
+@Deprecated
 public class EntityModelNathanBoat extends EntityControllableModel<EntityBoat> {
 	
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(DSCombatMod.MODID, "nathan_boat"), "main");

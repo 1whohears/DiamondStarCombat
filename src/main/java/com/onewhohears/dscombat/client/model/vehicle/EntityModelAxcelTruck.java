@@ -17,6 +17,7 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
+@Deprecated
 public class EntityModelAxcelTruck extends EntityControllableModel<EntityGroundVehicle> {
 	
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(DSCombatMod.MODID, "axcel_truck"), "main");

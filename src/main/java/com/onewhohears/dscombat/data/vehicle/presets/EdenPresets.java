@@ -14,6 +14,7 @@ public class EdenPresets {
 	
 	public static final VehicleStats EMPTY_EDEN_PLANE = VehicleStats.Builder
 			.createPlane(DSCombatMod.MODID, "eden_plane_empty")
+			.setAssetId("eden_plane")
 			.setSortFactor(9)
 			.setItem(ModItems.EDEN_PLANE.getId())
 			.setMaxHealth(160f)

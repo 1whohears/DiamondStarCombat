@@ -116,6 +116,7 @@
     "passengerEngine": "dscombat:biplane_1"
   },
   "stats": {
+    "assetId": "jason_plane",
     "base_armor": 0.0,
     "cameraDistance": 8.0,
     "crashExplosionRadius": 3.0,

@@ -188,6 +188,7 @@
     "passengerEngine": "dscombat:boat_1"
   },
   "stats": {
+    "assetId": "corvette",
     "base_armor": 8.0,
     "cameraDistance": 13.0,
     "crashExplosionRadius": 7.0,

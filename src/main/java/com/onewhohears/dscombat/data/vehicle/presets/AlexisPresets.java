@@ -13,6 +13,7 @@ public class AlexisPresets {
 	
 	public static final VehicleStats EMPTY_ALEXIS_PLANE = VehicleStats.Builder
 			.createPlane(DSCombatMod.MODID, "alexis_plane_empty")
+			.setAssetId("alexis_plane")
 			.setSortFactor(10)
 			.setItem(ModItems.ALEXIS_PLANE.getId())
 			.setMaxHealth(140f)

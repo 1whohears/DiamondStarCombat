@@ -321,6 +321,7 @@
     "passengerSoundPack": "eng_non_binary_goober"
   },
   "stats": {
+    "assetId": "eden_plane",
     "base_armor": 3.0,
     "cameraDistance": 19.0,
     "crashExplosionRadius": 5.5,

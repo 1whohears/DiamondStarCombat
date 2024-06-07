@@ -164,6 +164,7 @@
     "passengerSoundPack": "eng_non_binary_goober"
   },
   "stats": {
+    "assetId": "bronco_plane",
     "base_armor": 1.0,
     "cameraDistance": 14.0,
     "crashExplosionRadius": 4.0,

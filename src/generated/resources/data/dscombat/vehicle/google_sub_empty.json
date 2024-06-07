@@ -241,6 +241,7 @@
     "passengerEngine": "dscombat:sub_1"
   },
   "stats": {
+    "assetId": "google_sub",
     "base_armor": 20.0,
     "cameraDistance": 30.0,
     "crashExplosionRadius": 6.0,

@@ -323,6 +323,7 @@
     "passengerSoundPack": "eng_non_binary_goober"
   },
   "stats": {
+    "assetId": "noah_chopper",
     "base_armor": 5.0,
     "cameraDistance": 6.0,
     "crashExplosionRadius": 4.0,

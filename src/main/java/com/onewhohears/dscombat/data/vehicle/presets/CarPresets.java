@@ -11,6 +11,7 @@ public class CarPresets {
 	
 	public static final VehicleStats DEFAULT_ORANGE_TESLA = VehicleStats.Builder
 			.createCar(DSCombatMod.MODID, "orange_tesla")
+			.setAssetId("orange_tesla")
 			.setSortFactor(10)
 			.setItem(ModItems.ORANGE_TESLA.getId())
 			.setCraftable()
@@ -47,6 +48,7 @@ public class CarPresets {
 	
 	public static final VehicleStats EMPTY_AXCEL_TRUCK = VehicleStats.Builder
 			.createCar(DSCombatMod.MODID, "axcel_truck_empty")
+			.setAssetId("axcel_truck")
 			.setSortFactor(5)
 			.setItem(ModItems.AXCEL_TRUCK.getId())
 			.setMaxHealth(80f)

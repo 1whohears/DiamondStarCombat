@@ -265,6 +265,7 @@
     "passengerEngine": "dscombat:boat_1"
   },
   "stats": {
+    "assetId": "cruiser",
     "base_armor": 12.0,
     "cameraDistance": 26.0,
     "crashExplosionRadius": 8.0,

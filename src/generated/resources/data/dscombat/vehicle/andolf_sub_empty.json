@@ -207,6 +207,7 @@
     "passengerEngine": "dscombat:sub_1"
   },
   "stats": {
+    "assetId": "andolf_sub",
     "base_armor": 20.0,
     "cameraDistance": 12.0,
     "crashExplosionRadius": 6.0,

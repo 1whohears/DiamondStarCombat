@@ -11,6 +11,7 @@ public class JasonPresets {
 	
 	public static final VehicleStats EMPTY_JASON_PLANE = VehicleStats.Builder
 			.createPlane(DSCombatMod.MODID, "jason_plane_empty")
+			.setAssetId("jason_plane")
 			.setSortFactor(2)
 			.setItem(ModItems.JASON_PLANE.getId())
 			.setMaxHealth(60f)

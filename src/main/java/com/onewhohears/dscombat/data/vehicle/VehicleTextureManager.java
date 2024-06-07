@@ -19,8 +19,8 @@ import net.minecraft.resources.ResourceLocation;
 public class VehicleTextureManager {
 	
 	public final EntityVehicle parent;
-	private final ResourceLocation[] baseTextures;
-	private final TextureLayer[] textureLayers;
+	private ResourceLocation[] baseTextures;
+	private TextureLayer[] textureLayers;
 	private int baseTextureIndex = 0;
 	private boolean changed;
 	private ResourceLocation dynamicTexture;
@@ -28,20 +28,20 @@ public class VehicleTextureManager {
 	
 	public VehicleTextureManager(EntityVehicle parent) {
 		this.parent = parent;
-		this.baseTextures = new ResourceLocation[parent.getStats().baseTextureVariants];
-		this.textureLayers = new TextureLayer[parent.getStats().textureLayers];
 		setupTextureLocations();
 		dynamicTexture = getBaseTexture();
 	}
 	
 	private void setupTextureLocations() {
-		String modId = UtilEntity.getEntityModId(parent), entityId = UtilEntity.getEntityIdName(parent);;
+		baseTextures = new ResourceLocation[parent.getStats().baseTextureVariants];
+		textureLayers = new TextureLayer[parent.getStats().textureLayers];
+		String modId = UtilEntity.getEntityModId(parent);
 		for (int i = 0; i < baseTextures.length; ++i) 
-			baseTextures[i] = new ResourceLocation(modId+":textures/entity/vehicle/"+entityId+"/base"+i+".png");
+			baseTextures[i] = new ResourceLocation(modId+":textures/entity/vehicle/"+parent.getClientStatsId()+"/base"+i+".png");
 		for (int i = 0; i < textureLayers.length; ++i) {
-			textureLayers[i] = new TextureLayer(modId+":textures/entity/vehicle/"+entityId+"/layer"+i+".png");
+			textureLayers[i] = new TextureLayer(modId+":textures/entity/vehicle/"+parent.getClientStatsId()+"/layer"+i+".png");
 		}
-		screenMap = new ResourceLocation(modId+":textures/entity/vehicle/"+entityId+"/screens.png");
+		screenMap = new ResourceLocation(modId+":textures/entity/vehicle/"+parent.getClientStatsId()+"/screens.png");
 	}
 	/**
 	 * CLIENT ONLY

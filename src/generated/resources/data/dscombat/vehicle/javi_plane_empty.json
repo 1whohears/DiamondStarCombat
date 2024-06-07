@@ -200,6 +200,7 @@
     "passengerSoundPack": "eng_non_binary_goober"
   },
   "stats": {
+    "assetId": "javi_plane",
     "base_armor": 9.0,
     "cameraDistance": 16.0,
     "crashExplosionRadius": 5.0,

@@ -312,6 +312,7 @@
     "passengerEngine": "dscombat:boat_1"
   },
   "stats": {
+    "assetId": "gronk_battleship",
     "base_armor": 15.0,
     "cameraDistance": 30.0,
     "crashExplosionRadius": 8.0,

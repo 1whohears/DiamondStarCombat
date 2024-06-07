@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.data.vehicle.client;
 
+import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPresetAssetReader;
 
 public class VehicleClientPresets extends JsonPresetAssetReader<VehicleClientStats> {
@@ -16,6 +17,19 @@ public class VehicleClientPresets extends JsonPresetAssetReader<VehicleClientSta
 	}
 	
 	private VehicleClientStats[] presets;
+	
+	@Override
+	public VehicleClientStats get(String id) {
+		VehicleClientStats stats = super.get(id);
+		if (stats != null) return stats;
+		return addNew(id);
+	}
+	
+	protected VehicleClientStats addNew(String id) {
+		VehicleClientStats stats = VehicleClientStats.Builder.create(DSCombatMod.MODID, id).build();
+		presetMap.put(id, stats);
+		return stats;
+	}
 	
 	public VehicleClientPresets() {
 		super("aircraft_client");

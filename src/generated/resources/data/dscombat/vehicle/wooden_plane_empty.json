@@ -84,6 +84,7 @@
     "passengerEngine": "dscombat:biplane_1"
   },
   "stats": {
+    "assetId": "wooden_plane",
     "base_armor": 0.0,
     "cameraDistance": 4.0,
     "crashExplosionRadius": 3.0,

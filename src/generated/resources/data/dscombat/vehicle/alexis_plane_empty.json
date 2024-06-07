@@ -262,6 +262,7 @@
     "passengerSoundPack": "eng_non_binary_goober"
   },
   "stats": {
+    "assetId": "alexis_plane",
     "base_armor": 2.0,
     "cameraDistance": 17.0,
     "crashExplosionRadius": 5.0,

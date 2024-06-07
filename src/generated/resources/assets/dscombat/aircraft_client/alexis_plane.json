@@ -3,7 +3,7 @@
   "inventory_background": "dscombat:textures/ui/vehicle_inventory_backgrounds/alexis_plane.png",
   "inventory_slots_pos": [
     {
-      "slot_name": "frame_1",
+      "slot_name": "internal_gun",
       "slot_ui_x": 120,
       "slot_ui_y": 2
     },

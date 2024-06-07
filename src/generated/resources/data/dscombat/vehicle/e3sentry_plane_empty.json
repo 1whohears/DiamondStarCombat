@@ -329,6 +329,7 @@
     "passengerSoundPack": "eng_male_1"
   },
   "stats": {
+    "assetId": "e3sentry_plane",
     "base_armor": 4.0,
     "cameraDistance": 12.0,
     "crashExplosionRadius": 8.0,

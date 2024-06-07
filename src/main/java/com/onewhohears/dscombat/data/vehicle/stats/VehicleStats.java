@@ -57,6 +57,7 @@ public abstract class VehicleStats extends JsonPresetStats {
 	
 	private final boolean isCraftable;
 	private final int defaultPaintJob;
+	private final String assetId;
 	
 	private CompoundTag dataNBT;
 	private NonNullList<Ingredient> ingredients;
@@ -94,11 +95,13 @@ public abstract class VehicleStats extends JsonPresetStats {
 		else mastType = MastType.NONE;
 		float entity_size_xz = UtilParse.getFloatSafe(stats, "entity_size_xz", 4);
 		float entity_size_y = UtilParse.getFloatSafe(stats, "entity_size_y", 4);
+		assetId = UtilParse.getStringSafe(stats, "assetId", key.getPath());
 		dimensions = EntityDimensions.fixed(entity_size_xz, entity_size_y);
 		if (json.has("textures")) {
 			JsonObject textures = json.get("textures").getAsJsonObject();
 			baseTextureVariants = UtilParse.getIntSafe(textures, "baseTextureVariants", 1);
 			textureLayers = UtilParse.getIntSafe(textures, "textureLayers", 0);
+			System.out.println("base texts: "+baseTextureVariants+" layer texts: "+textureLayers);
 		} else {
 			baseTextureVariants = 1;
 			textureLayers = 0;
@@ -178,6 +181,10 @@ public abstract class VehicleStats extends JsonPresetStats {
 			}
 		}
 		return screens;
+	}
+	
+	public String getAssetId() {
+		return assetId;
 	}
 	
 	@Override
@@ -633,6 +640,9 @@ public abstract class VehicleStats extends JsonPresetStats {
 		public Builder setTypedStatBoolean(String key, boolean value, String vehicleType) {
 			getStatsByType(vehicleType).addProperty(key, value);
 			return this;
+		}
+		public Builder setAssetId(String assetId) {
+			return setStatString("assetId", assetId);
 		}
 		/**
 		 * all vehicles

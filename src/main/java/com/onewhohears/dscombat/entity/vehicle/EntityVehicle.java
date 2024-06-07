@@ -40,6 +40,8 @@ import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
 import com.onewhohears.dscombat.data.vehicle.VehicleSoundManager;
 import com.onewhohears.dscombat.data.vehicle.VehicleTextureManager;
 import com.onewhohears.dscombat.data.vehicle.VehicleType;
+import com.onewhohears.dscombat.data.vehicle.client.VehicleClientPresets;
+import com.onewhohears.dscombat.data.vehicle.client.VehicleClientStats;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.data.weapon.WeaponSystem;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
@@ -127,7 +129,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public static final EntityDataAccessor<Boolean> ENGINE_FIRE = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<RadarMode> RADAR_MODE = SynchedEntityData.defineId(EntityVehicle.class, DataSerializers.RADAR_MODE);
 	
-	public final String defaultPreset, clientPresetId;
+	public final String defaultPreset;
 	public final VehicleInputManager inputs;
 	public final VehicleSoundManager soundManager;
 	public final VehicleTextureManager textureManager;
@@ -140,7 +142,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	protected final EntityScreenData[] screens;
 	
 	private final Map<Integer, Integer> formerPassengersServer = new HashMap<>();
-	
+	/**
+	 * CLIENT ONLY
+	 */
+	private VehicleClientStats vehicleClientStats;
 	private VehicleStats vehicleStats;
 	
 	/**
@@ -149,6 +154,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 * synched with client.  
 	 */
 	public String preset;
+	private String assetId;
 	protected ItemStack item;
 	
 	/**
@@ -192,11 +198,13 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public EntityVehicle(EntityType<? extends EntityVehicle> entityType, Level level, String defaultPreset) {
 		super(entityType, level);
 		this.defaultPreset = defaultPreset;
-		this.clientPresetId = UtilEntity.getEntityIdName(this);
-		this.preset = defaultPreset;
-		this.vehicleStats = VehiclePresets.get().get(defaultPreset);
-		this.item = vehicleStats.getItem();
-		this.blocksBuilding = true;
+		preset = defaultPreset;
+		vehicleStats = VehiclePresets.get().get(defaultPreset);
+		assetId = vehicleStats.getAssetId();
+		if (level.isClientSide) vehicleClientStats = VehicleClientPresets.get().get(assetId);
+		else vehicleClientStats = null;
+		item = vehicleStats.getItem();
+		blocksBuilding = true;
 		inputs = new VehicleInputManager();
 		soundManager = new VehicleSoundManager(this);
 		textureManager = new VehicleTextureManager(this);
@@ -288,6 +296,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		}
 		// get the preset data
 		vehicleStats = VehiclePresets.get().get(preset);
+		assetId = vehicleStats.getAssetId();
 		item = vehicleStats.getItem();
 		soundManager.loadSounds(vehicleStats);
 		CompoundTag presetNbt = vehicleStats.getDataAsNBT();
@@ -348,17 +357,21 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		boolean freeLook = buffer.readBoolean();
 		float throttle = buffer.readFloat();
 		List<PartSlot> slots = PartsManager.readSlotsFromBuffer(buffer);
+		// ORDER MATTERS
+		// PRESET STUFF
+		if (VehiclePresets.get().has(preset)) {
+			vehicleStats = VehiclePresets.get().get(preset);
+			soundManager.loadSounds(vehicleStats);
+			item = vehicleStats.getItem();
+			assetId = vehicleStats.getAssetId();
+			vehicleClientStats = VehicleClientPresets.get().get(assetId);
+		}
 		textureManager.read(buffer);
 		soundManager.write(buffer);
 		// ORDER MATTERS
 		weaponSystem.setSelected(weaponIndex);
 		partsManager.setPartSlots(slots);
 		partsManager.clientPartsSetup();
-		// PRESET STUFF
-		if (!VehiclePresets.get().has(preset)) return;
-		vehicleStats = VehiclePresets.get().get(preset);
-		soundManager.loadSounds(vehicleStats);
-		item = vehicleStats.getItem();
 		// OTHER
 		setLandingGear(gear);
 		setDriverCameraLocked(freeLook);
@@ -2633,6 +2646,19 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     
     public boolean isAircraft() {
     	return getStats().isAircraft();
+    }
+    
+    /**
+     * CLIENT ONLY
+     * @return null if server side
+     */
+    @Nullable
+    public VehicleClientStats getClientStats() {
+    	return vehicleClientStats;
+    }
+    
+    public String getClientStatsId() {
+    	return assetId;
     }
     
 }

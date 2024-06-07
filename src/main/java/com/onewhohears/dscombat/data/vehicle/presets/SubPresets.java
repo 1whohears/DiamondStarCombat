@@ -10,6 +10,7 @@ public class SubPresets {
 	
 	public static final VehicleStats EMPTY_ANDOLF_SUB = VehicleStats.Builder
 			.createSubmarine(DSCombatMod.MODID, "andolf_sub_empty")
+			.setAssetId("andolf_sub")
 			.setSortFactor(5)
 			.setItem(ModItems.ANDOLF_SUB.getId())
 			.setMaxHealth(600f)
@@ -86,6 +87,7 @@ public class SubPresets {
 	
 	public static final VehicleStats EMPTY_GOOGLE_SUB = VehicleStats.Builder
 			.createSubmarine(DSCombatMod.MODID, "google_sub_empty")
+			.setAssetId("google_sub")
 			.setSortFactor(6)
 			.setItem(ModItems.GOOGLE_SUB.getId())
 			.setMaxHealth(1000f)

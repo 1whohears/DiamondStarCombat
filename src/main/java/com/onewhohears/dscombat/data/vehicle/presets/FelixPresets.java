@@ -13,6 +13,7 @@ public class FelixPresets {
 	
 	public static final VehicleStats EMPTY_FELIX_PLANE = VehicleStats.Builder
 			.createPlane(DSCombatMod.MODID, "felix_plane_empty")
+			.setAssetId("felix_plane")
 			.setSortFactor(7)
 			.setItem(ModItems.FELIX_PLANE.getId())
 			.setMaxHealth(120f)

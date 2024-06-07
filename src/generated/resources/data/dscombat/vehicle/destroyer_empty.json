@@ -236,6 +236,7 @@
     "passengerEngine": "dscombat:boat_1"
   },
   "stats": {
+    "assetId": "destroyer",
     "base_armor": 17.0,
     "cameraDistance": 22.0,
     "crashExplosionRadius": 8.0,

@@ -13,6 +13,7 @@ public class PlanePresets {
 	
 	public static final VehicleStats EMPTY_WOODEN_PLANE = VehicleStats.Builder
 			.createPlane(DSCombatMod.MODID, "wooden_plane_empty")
+			.setAssetId("wooden_plane")
 			.setSortFactor(0)
 			.setItem(ModItems.WOODEN_PLANE.getId())
 			.setMaxHealth(40f)
@@ -75,6 +76,7 @@ public class PlanePresets {
 	
 	public static final VehicleStats EMPTY_E3SENTRY_PLANE = VehicleStats.Builder
 			.createPlane(DSCombatMod.MODID, "e3sentry_plane_empty")
+			.setAssetId("e3sentry_plane")
 			.setSortFactor(15)
 			.setItem(ModItems.E3SENTRY_PLANE.getId())
 			.setMaxHealth(400f)

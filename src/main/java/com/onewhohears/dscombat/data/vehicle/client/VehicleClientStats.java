@@ -15,8 +15,6 @@ import net.minecraft.resources.ResourceLocation;
 
 public class VehicleClientStats extends JsonPresetStats {
 	
-	private static final UIPos defaultPos = new UIPos(0, 0);
-	
 	private ResourceLocation background;
 	private HashMap<String, UIPos> slotsPos;
 	
@@ -45,9 +43,18 @@ public class VehicleClientStats extends JsonPresetStats {
 		return slotsPos;
 	}
 	
-	public UIPos getSlotPos(String slotId) {
-		if (!getSlotsPos().containsKey(slotId)) return defaultPos;
+	public UIPos getSlotPos(String slotId, int i, int x_start, int y_start) {
+		if (!getSlotsPos().containsKey(slotId)) return getUIPosByIndex(i, x_start, y_start);
 		return getSlotsPos().get(slotId);
+	}
+	
+	public static UIPos getUIPosByIndex(int i, int x_start, int y_start) {
+		int x = x_start, y = y_start;
+		if (i != 0 && i % 9 == 0) {
+			y += 18;
+			x = x_start;
+		} else if (i != 0) x += 18;
+		return new UIPos(x, y);
 	}
 	
 	public static class Builder extends PresetBuilder<Builder> {

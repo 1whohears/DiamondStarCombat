@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.onewhohears.dscombat.common.container.slot.PartItemSlot;
 import com.onewhohears.dscombat.data.parts.PartSlot;
-import com.onewhohears.dscombat.data.vehicle.client.VehicleClientPresets;
 import com.onewhohears.dscombat.data.vehicle.client.VehicleClientStats;
 import com.onewhohears.dscombat.data.vehicle.client.VehicleClientStats.UIPos;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
@@ -31,22 +30,17 @@ public class VehicleContainerMenu extends AbstractContainerMenu {
 		if (playerInv.player.getRootVehicle() instanceof EntityVehicle plane) {
 			this.planeInv = plane.partsManager.getInventory();
 			List<PartSlot> slots = plane.partsManager.getSlots();
-			clientData = VehicleClientPresets.get().get(plane.clientPresetId);
+			clientData = plane.getClientStats();
 			//System.out.println("client preset = "+clientData);
 			// create plane menu container
 			int x_start = 48, y_start = 15;
 			int x = x_start, y = y_start;
 			for (int i = 0; i < planeInv.getContainerSize(); ++i) {
 				if (clientData != null) {
-					UIPos uip = clientData.getSlotPos(slots.get(i).getSlotId());
+					UIPos uip = clientData.getSlotPos(slots.get(i).getSlotId(), i, x_start, y_start);
 					x = uip.getX();
 					y = uip.getY();
-				} else {
-					if (i != 0 && i % 9 == 0) {
-						y += 18;
-						x = x_start;
-					} else if (i != 0) x += 18;
-				}
+				} else x = y = 0;
 				//System.out.println("partsInv i = "+i+" x = "+x+" y = "+y);
 				//System.out.println("slot "+i+" "+slots.get(i));
 				this.addSlot(new PartItemSlot(this, i, slots.get(i), x, y));

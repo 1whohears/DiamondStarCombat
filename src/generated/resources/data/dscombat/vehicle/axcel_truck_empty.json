@@ -116,6 +116,7 @@
     "passengerEngine": "dscombat:tank_1"
   },
   "stats": {
+    "assetId": "axcel_truck",
     "base_armor": 8.0,
     "cameraDistance": 7.0,
     "car": {

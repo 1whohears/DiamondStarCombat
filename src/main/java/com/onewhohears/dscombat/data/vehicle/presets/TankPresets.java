@@ -11,6 +11,7 @@ public class TankPresets {
 	
 	public static final VehicleStats EMPTY_MRBUDGER_TANK = VehicleStats.Builder
 			.createCar(DSCombatMod.MODID, "mrbudger_tank_empty")
+			.setAssetId("mrbudger_tank")
 			.setSortFactor(4)
 			.setItem(ModItems.MRBUDGER_TANK.getId())
 			.setMaxHealth(500f)
@@ -65,6 +66,7 @@ public class TankPresets {
 	
 	public static final VehicleStats EMPTY_SMALL_ROLLER = VehicleStats.Builder
 			.createCar(DSCombatMod.MODID, "small_roller_empty")
+			.setAssetId("small_roller")
 			.setSortFactor(1)
 			.setItem(ModItems.SMALL_ROLLER.getId())
 			.setMaxHealth(30f)

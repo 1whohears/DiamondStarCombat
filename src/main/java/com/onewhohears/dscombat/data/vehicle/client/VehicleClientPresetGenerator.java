@@ -13,7 +13,7 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 		int alexis_middle_x = 120, alexis_wing_y = 57;
 		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "alexis_plane")
 				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/alexis_plane.png")
-				.addUIPos("frame_1", alexis_middle_x, 2)
+				.addUIPos("internal_gun", alexis_middle_x, 2)
 				.addUIPos(PartSlot.PILOT_SLOT_NAME, alexis_middle_x, 21)
 				.addUIPos("internal_4", alexis_middle_x-9, 40)
 				.addUIPos("internal_5", alexis_middle_x+9, 40)
@@ -33,7 +33,7 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 		int javi_middle_x = 124, javi_wing_y = 50;
 		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "javi_plane")
 				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/javi_plane.png")
-				.addUIPos("frame_1", javi_middle_x+18, 0)
+				.addUIPos("internal_gun", javi_middle_x+18, 0)
 				.addUIPos(PartSlot.PILOT_SLOT_NAME, javi_middle_x, 9)
 				.addUIPos("seat2", javi_middle_x, 27)
 				.addUIPos("internal_4", javi_middle_x+9, 70)

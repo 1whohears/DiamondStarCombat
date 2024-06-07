@@ -12,6 +12,7 @@ public class HeliPresets {
 	
 	public static final VehicleStats EMPTY_NOAH_CHOPPER = VehicleStats.Builder
 			.createHelicopter(DSCombatMod.MODID, "noah_chopper_empty")
+			.setAssetId("noah_chopper")
 			.setSortFactor(4)
 			.setItem(ModItems.NOAH_CHOPPER.getId())
 			.setMaxHealth(200f)

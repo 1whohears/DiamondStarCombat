@@ -13,6 +13,7 @@ public class BroncoPresets {
 	
 	public static final VehicleStats EMPTY_BRONCO_PLANE = VehicleStats.Builder
 			.createPlane(DSCombatMod.MODID, "bronco_plane_empty")
+			.setAssetId("bronco_plane")
 			.setSortFactor(4)
 			.setItem(ModItems.BRONCO_PLANE.getId())
 			.setMaxHealth(90f)

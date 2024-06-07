@@ -82,7 +82,7 @@ public class VehicleScreen extends AbstractContainerScreen<VehicleContainerMenu>
 		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
 		RenderSystem.setShaderTexture(0, BG_TEXTURE);
 		blit(stack, leftPos, topPos, 0, 0, imageWidth, imageHeight);
-		if (menu.getClientData() != null) {
+		if (menu.getClientData() != null && menu.getClientData().getBackground() != null) {
 			RenderSystem.setShaderTexture(0, menu.getClientData().getBackground());
 			blit(stack, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 		}

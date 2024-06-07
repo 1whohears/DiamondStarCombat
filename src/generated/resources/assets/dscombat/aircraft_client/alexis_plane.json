@@ -83,6 +83,9 @@
       "slot_ui_y": 57
     }
   ],
+  "model_data": {
+    "hard_coded_model_anims": "alexis_plane"
+  },
   "presetId": "alexis_plane",
   "presetType": "standard"
 }

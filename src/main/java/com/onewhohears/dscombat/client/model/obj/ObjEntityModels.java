@@ -86,6 +86,7 @@ public class ObjEntityModels implements ResourceManagerReloadListener {
 		readModelOverrides(manager);
 		bakeModels();
 		EntityScreenRenderer.clearCache();
+		HardCodedModelAnims.reload();
 	}
 	
 	public void readUnbakedModels(ResourceManager manager) {

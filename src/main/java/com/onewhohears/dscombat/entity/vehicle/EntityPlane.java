@@ -85,6 +85,7 @@ public class EntityPlane extends EntityVehicle {
 		return inputs.special2 && isOnGround();
 	}
 	
+	@Override
 	public boolean isFlapsDown() {
 		return inputs.special;
 	}

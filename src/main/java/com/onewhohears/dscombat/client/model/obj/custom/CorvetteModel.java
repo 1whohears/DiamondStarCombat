@@ -2,9 +2,9 @@ package com.onewhohears.dscombat.client.model.obj.custom;
 
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.model.obj.ObjVehicleModel;
-import com.onewhohears.dscombat.entity.vehicle.EntityBoat;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 
-public class CorvetteModel extends ObjVehicleModel<EntityBoat> {
+public class CorvetteModel extends ObjVehicleModel<EntityVehicle> {
 
 	public CorvetteModel() {
 		super("corvette");

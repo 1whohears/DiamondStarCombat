@@ -5,19 +5,19 @@ import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.model.obj.ObjVehicleModel;
-import com.onewhohears.dscombat.entity.vehicle.EntityPlane;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraftforge.client.model.renderable.CompositeRenderable.Transforms;
 
-public class JaviPlaneModel extends ObjVehicleModel<EntityPlane> {
+public class JaviPlaneModel extends ObjVehicleModel<EntityVehicle> {
 
 	public JaviPlaneModel() {
 		super("javi_plane");
 	}
 	
 	@Override
-	protected Transforms getComponentTransforms(EntityPlane entity, float partialTicks) {
+	protected Transforms getComponentTransforms(EntityVehicle entity, float partialTicks) {
 		// landing gear
 		float gearpos = entity.getLandingGearPos(partialTicks);
 		Matrix4f lg0_mat, lg1_mat, lg2_mat;

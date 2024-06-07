@@ -93,6 +93,9 @@
       "slot_ui_y": 50
     }
   ],
+  "model_data": {
+    "hard_coded_model_anims": "javi_plane"
+  },
   "presetId": "javi_plane",
   "presetType": "standard"
 }

@@ -1,0 +1,8 @@
+{
+  "displayName": "preset.dscombat.felix_plane",
+  "model_data": {
+    "hard_coded_model_anims": "felix_plane"
+  },
+  "presetId": "felix_plane",
+  "presetType": "standard"
+}

@@ -2463,6 +2463,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     	return false;
     }
     
+    public boolean isFlapsDown() {
+    	return false;
+    }
+    
     public boolean canHover() {
     	return false;
     }

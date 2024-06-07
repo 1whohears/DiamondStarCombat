@@ -6,10 +6,13 @@ import javax.annotation.Nullable;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.onewhohears.dscombat.client.model.obj.HardCodedModelAnims;
+import com.onewhohears.dscombat.client.model.obj.ObjVehicleModel;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPresetInstance;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPresetStats;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPresetType;
 import com.onewhohears.dscombat.data.jsonpreset.PresetBuilder;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 
 import net.minecraft.resources.ResourceLocation;
 
@@ -17,9 +20,24 @@ public class VehicleClientStats extends JsonPresetStats {
 	
 	private ResourceLocation background;
 	private HashMap<String, UIPos> slotsPos;
+	private ObjVehicleModel<EntityVehicle> model;
 	
 	public VehicleClientStats(ResourceLocation key, JsonObject json) {
 		super(key, json);
+	}
+	
+	public ObjVehicleModel<EntityVehicle> getModel() {
+		if (model != null) return model;
+		if (!getJsonData().has("model_data")) {
+			model = new ObjVehicleModel<>(getId());
+			return model;
+		}
+		JsonObject model_data = getJsonData().get("model_data").getAsJsonObject();
+		if (model_data.has("hard_coded_model_anims")) 
+			model = HardCodedModelAnims.get(model_data.get("hard_coded_model_anims").getAsString());
+		else if (model_data.has("simple_model_id")) 
+			model = new ObjVehicleModel<>(model_data.get("simple_model_id").getAsString());
+		return model;
 	}
 	
 	@Nullable
@@ -58,6 +76,23 @@ public class VehicleClientStats extends JsonPresetStats {
 	}
 	
 	public static class Builder extends PresetBuilder<Builder> {
+		protected JsonObject getModelData() {
+			if (!getData().has("model_data")) {
+				getData().add("model_data", new JsonObject());
+			}
+			return getData().get("model_data").getAsJsonObject();
+		}
+		public Builder setHardCodedModelAnims(String hard_coded_model_anims) {
+			getModelData().addProperty("hard_coded_model_anims", hard_coded_model_anims);
+			return this;
+		}
+		public Builder setSimpleModelId(String simple_model_id) {
+			getModelData().addProperty("simple_model_id", simple_model_id);
+			return this;
+		}
+		public Builder setHardCodedModelAnims() {
+			return setHardCodedModelAnims(getPresetId());
+		}
 		public Builder setBackground(String background) {
 			return setString("inventory_background", background);
 		}

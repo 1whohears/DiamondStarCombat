@@ -1,0 +1,8 @@
+{
+  "displayName": "preset.dscombat.jason_plane",
+  "model_data": {
+    "hard_coded_model_anims": "jason_plane"
+  },
+  "presetId": "jason_plane",
+  "presetType": "standard"
+}

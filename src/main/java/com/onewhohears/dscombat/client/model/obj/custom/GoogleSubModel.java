@@ -2,9 +2,9 @@ package com.onewhohears.dscombat.client.model.obj.custom;
 
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.model.obj.ObjVehicleModel;
-import com.onewhohears.dscombat.entity.vehicle.EntitySubmarine;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 
-public class GoogleSubModel extends ObjVehicleModel<EntitySubmarine> {
+public class GoogleSubModel extends ObjVehicleModel<EntityVehicle> {
 	
 	public GoogleSubModel() {
 		super("google_sub");

@@ -101,7 +101,6 @@ public abstract class VehicleStats extends JsonPresetStats {
 			JsonObject textures = json.get("textures").getAsJsonObject();
 			baseTextureVariants = UtilParse.getIntSafe(textures, "baseTextureVariants", 1);
 			textureLayers = UtilParse.getIntSafe(textures, "textureLayers", 0);
-			System.out.println("base texts: "+baseTextureVariants+" layer texts: "+textureLayers);
 		} else {
 			baseTextureVariants = 1;
 			textureLayers = 0;

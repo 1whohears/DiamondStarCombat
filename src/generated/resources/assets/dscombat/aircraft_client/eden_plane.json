@@ -1,0 +1,8 @@
+{
+  "displayName": "preset.dscombat.eden_plane",
+  "model_data": {
+    "hard_coded_model_anims": "eden_plane"
+  },
+  "presetId": "eden_plane",
+  "presetType": "standard"
+}

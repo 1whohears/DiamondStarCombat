@@ -12,6 +12,7 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 	protected void registerPresets() {
 		int alexis_middle_x = 120, alexis_wing_y = 57;
 		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "alexis_plane")
+				.setHardCodedModelAnims()
 				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/alexis_plane.png")
 				.addUIPos("internal_gun", alexis_middle_x, 2)
 				.addUIPos(PartSlot.PILOT_SLOT_NAME, alexis_middle_x, 21)
@@ -32,6 +33,7 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 				.build());
 		int javi_middle_x = 124, javi_wing_y = 50;
 		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "javi_plane")
+				.setHardCodedModelAnims()
 				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/javi_plane.png")
 				.addUIPos("internal_gun", javi_middle_x+18, 0)
 				.addUIPos(PartSlot.PILOT_SLOT_NAME, javi_middle_x, 9)
@@ -203,6 +205,7 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 				.build());
 		int gronk_middle_x = 120;
 		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "gronk_battleship")
+				.setHardCodedModelAnims()
 				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/gronk_battleship.png")
 				.addUIPos(PartSlot.PILOT_SLOT_NAME, gronk_middle_x-9, 40)
 				.addUIPos("seat2", gronk_middle_x+9, 40)
@@ -229,6 +232,24 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 				.addUIPos("internal_8", gronk_middle_x-18, 40+18)
 				.addUIPos("internal_9", gronk_middle_x+18, 40+18)
 				.addUIPos("internal_10", gronk_middle_x+18*2, 40+18)
+				.build());
+		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "bronco_plane")
+				.setHardCodedModelAnims()
+				.build());
+		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "corvette")
+				.setHardCodedModelAnims()
+				.build());
+		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "eden_plane")
+				.setHardCodedModelAnims()
+				.build());
+		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "felix_plane")
+				.setHardCodedModelAnims()
+				.build());
+		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "google_sub")
+				.setHardCodedModelAnims()
+				.build());
+		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "jason_plane")
+				.setHardCodedModelAnims()
 				.build());
 	}
 	

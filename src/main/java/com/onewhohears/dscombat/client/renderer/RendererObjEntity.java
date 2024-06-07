@@ -20,15 +20,19 @@ public class RendererObjEntity<T extends Entity> extends EntityRenderer<T> {
 		this.model = model;
 	}
 	
+	protected RendererObjEntity(Context ctx) {
+		this(ctx, null);
+	}
+	
 	@Override
 	public void render(T entity, float yaw, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int lightmap) {
 		poseStack.pushPose();
-		getModel().render(entity, poseStack, bufferSource, lightmap, partialTicks);
+		getModel(entity).render(entity, poseStack, bufferSource, lightmap, partialTicks);
 		poseStack.popPose();
 		super.render(entity, yaw, partialTicks, poseStack, bufferSource, lightmap);
 	}
 	
-	protected ObjEntityModel<T> getModel() {
+	protected ObjEntityModel<T> getModel(T entity) {
 		return model;
 	}
 	

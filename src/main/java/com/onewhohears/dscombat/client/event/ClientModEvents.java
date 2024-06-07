@@ -5,16 +5,12 @@ import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.client.model.EntityModelParachute;
 import com.onewhohears.dscombat.client.model.obj.ObjEntityModels;
 import com.onewhohears.dscombat.client.model.obj.ObjPartModel;
-import com.onewhohears.dscombat.client.model.obj.ObjVehicleModel;
 import com.onewhohears.dscombat.client.model.obj.custom.AATurretModel;
-import com.onewhohears.dscombat.client.model.obj.custom.AlexisPlaneModel;
 import com.onewhohears.dscombat.client.model.obj.custom.BallRadarModel;
 import com.onewhohears.dscombat.client.model.obj.custom.BombRackModel;
 import com.onewhohears.dscombat.client.model.obj.custom.CIWSModel;
 import com.onewhohears.dscombat.client.model.obj.custom.ChainHookModel;
-import com.onewhohears.dscombat.client.model.obj.custom.CorvetteModel;
 import com.onewhohears.dscombat.client.model.obj.custom.GimbalCameraModel;
-import com.onewhohears.dscombat.client.model.obj.custom.GoogleSubModel;
 import com.onewhohears.dscombat.client.model.obj.custom.HeavyMissileRackModel;
 import com.onewhohears.dscombat.client.model.obj.custom.LightMissileRackModel;
 import com.onewhohears.dscombat.client.model.obj.custom.MLSModel;
@@ -118,20 +114,15 @@ public final class ClientModEvents {
 	public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
 		EntityModelSet models = Minecraft.getInstance().getEntityModels();
 		event.registerEntityRenderer(ModEntities.PLANE.get(), 
-				(context) -> new RendererObjVehicle<>(context,
-                        new AlexisPlaneModel()));
+				(context) -> new RendererObjVehicle(context));
 		event.registerEntityRenderer(ModEntities.HELICOPTER.get(), 
-				(context) -> new RendererObjVehicle<>(context,
-                        new ObjVehicleModel<>("javi_plane")));
+				(context) -> new RendererObjVehicle(context));
 		event.registerEntityRenderer(ModEntities.CAR.get(), 
-				(context) -> new RendererObjVehicle<>(context,
-                        new ObjVehicleModel<>("felix_plane")));
+				(context) -> new RendererObjVehicle(context));
 		event.registerEntityRenderer(ModEntities.BOAT.get(), 
-				(context) -> new RendererObjVehicle<>(context,
-						new CorvetteModel()));
+				(context) -> new RendererObjVehicle(context));
 		event.registerEntityRenderer(ModEntities.SUBMARINE.get(), 
-				(context) -> new RendererObjVehicle<>(context,
-						new GoogleSubModel()));
+				(context) -> new RendererObjVehicle(context));
 		// BULLETS
 		event.registerEntityRenderer(ModEntities.BULLET.get(), 
 				(context) -> new RendererEntityWeapon<>(context,
@@ -248,8 +239,8 @@ public final class ClientModEvents {
 	
 	@SubscribeEvent
 	public static void registerClientReloadListener(RegisterClientReloadListenersEvent event) {
-		event.registerReloadListener(VehicleClientPresets.get());
 		event.registerReloadListener(ObjEntityModels.get());
+		event.registerReloadListener(VehicleClientPresets.get());
 	}
 	
 	@SubscribeEvent

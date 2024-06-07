@@ -1,0 +1,8 @@
+{
+  "displayName": "preset.dscombat.bronco_plane",
+  "model_data": {
+    "hard_coded_model_anims": "bronco_plane"
+  },
+  "presetId": "bronco_plane",
+  "presetType": "standard"
+}

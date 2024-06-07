@@ -44,6 +44,7 @@ public abstract class VehicleStats extends JsonPresetStats {
 	public final float maxroll, maxpitch, maxyaw;
 	public final float torqueroll, torquepitch, torqueyaw;
 	public final float Ix, Iy, Iz;
+	public final float groundXTilt;
 	// control
 	public final float throttleup, throttledown;
 	public final boolean negativeThrottle;
@@ -97,6 +98,7 @@ public abstract class VehicleStats extends JsonPresetStats {
 		float entity_size_y = UtilParse.getFloatSafe(stats, "entity_size_y", 4);
 		assetId = UtilParse.getStringSafe(stats, "assetId", key.getPath());
 		dimensions = EntityDimensions.fixed(entity_size_xz, entity_size_y);
+		groundXTilt = UtilParse.getIntSafe(stats, "groundXTilt", 0);
 		if (json.has("textures")) {
 			JsonObject textures = json.get("textures").getAsJsonObject();
 			baseTextureVariants = UtilParse.getIntSafe(textures, "baseTextureVariants", 1);
@@ -840,6 +842,9 @@ public abstract class VehicleStats extends JsonPresetStats {
 			setStatFloat("entity_size_xz", width);
 			setStatFloat("entity_size_y", height);
 			return this;
+		}
+		public Builder setGroundXTilt(float groundXTilt) {
+			return setStatFloat("groundXTilt", groundXTilt);
 		}
 		/**
 		 * used by planes

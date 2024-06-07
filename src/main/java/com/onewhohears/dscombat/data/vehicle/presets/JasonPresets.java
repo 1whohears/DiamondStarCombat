@@ -50,7 +50,8 @@ public class JasonPresets {
 			.addEmptySlot("internal_1", SlotType.RADIAL_ENGINE)
 			.addEmptySlot("internal_2", SlotType.INTERNAL)
 			.addEmptySlot("internal_3", SlotType.INTERNAL)
-			.setEntityMainHitboxSize(4, 4)
+			.setEntityMainHitboxSize(3.25f, 3.25f)
+			.setGroundXTilt(13f)
 			.build();
 	
 	public static final VehicleStats UNARMED_JASON_PLANE = VehicleStats.Builder

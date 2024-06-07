@@ -178,7 +178,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	protected float xzSpeed, totalMass, xzYaw, slideAngle, slideAngleCos, maxPushThrust, maxSpinThrust, currentFuel, maxFuel;
 	protected double staticFric, kineticFric, airPressure;
 	
-	private int lerpSteps, deadTicks, stallWarnTicks, stallTicks, engineFireTicks, fuelLeakTicks, bingoTicks;
+	private int lerpSteps, deadTicks, stallWarnTicks, stallTicks, engineFireTicks, fuelLeakTicks, bingoTicks, groundTicks;
 	private double lerpX, lerpY, lerpZ;
 	private float landingGearPos, landingGearPosOld, motorRot, wheelRot;
 	
@@ -830,8 +830,11 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			z += roll;
 		}
 		if (dPitch != 0) {
-			if (Math.abs(angles.pitch) < dPitch) pitch = (float) angles.pitch;
-			else pitch = (float)Math.signum(angles.pitch) * dPitch;
+			float goalPitch = 0;
+			if (isOnGround()) goalPitch = -vehicleStats.groundXTilt;
+			float diff = (float)angles.pitch - goalPitch;
+			if (Math.abs(diff) < dPitch) pitch = diff;
+			else pitch = Math.signum(diff) * dPitch;
 			x += pitch;
 		}
 		setAngularVel(new Vec3(x, av.y, z));
@@ -898,6 +901,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		maxFuel = partsManager.getMaxFuel();
 		hasFlares = partsManager.getFlares().size() > 0;
 		airPressure = UtilEntity.getAirPressure(this);
+		if (isOnGround()) ++groundTicks;
+		else groundTicks = 0;
 	}
 	
 	/**
@@ -2663,6 +2668,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     
     public String getClientStatsId() {
     	return assetId;
+    }
+    
+    public int getGroundTicks() {
+    	return groundTicks;
     }
     
 }

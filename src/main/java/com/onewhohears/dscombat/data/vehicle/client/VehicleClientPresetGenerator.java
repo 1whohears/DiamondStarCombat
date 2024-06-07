@@ -251,6 +251,9 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "jason_plane")
 				.setHardCodedModelAnims()
 				.build());
+		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "aircraft_carrier")
+				.setSimpleModelId("carrier")
+				.build());
 	}
 	
 	public VehicleClientPresetGenerator(DataGenerator output) {

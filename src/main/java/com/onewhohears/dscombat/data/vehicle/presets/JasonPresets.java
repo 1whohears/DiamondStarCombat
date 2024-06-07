@@ -50,7 +50,7 @@ public class JasonPresets {
 			.addEmptySlot("internal_1", SlotType.RADIAL_ENGINE)
 			.addEmptySlot("internal_2", SlotType.INTERNAL)
 			.addEmptySlot("internal_3", SlotType.INTERNAL)
-			.setEntityMainHitboxSize(3.25f, 3.25f)
+			.setEntityMainHitboxSize(3.2f, 3.2f)
 			.setGroundXTilt(13f)
 			.build();
 	

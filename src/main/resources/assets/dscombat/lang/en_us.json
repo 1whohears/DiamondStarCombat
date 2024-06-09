@@ -24,6 +24,17 @@
 	"error.dscombat.cant_item_yet": "Can't become an item yet! Wait for cooldown.",
 	"error.dscombat.no_storage_boxes": "This Vehicle has No Storage Boxes",
 	
+	"weapon_code.dscombat.gun": "GUN",
+	"weapon_code.dscombat.fox1": "FOX1",
+	"weapon_code.dscombat.fox2": "FOX2",
+	"weapon_code.dscombat.fox3": "FOX3",
+	"weapon_code.dscombat.greyhound": "GREYHOUND",
+	"weapon_code.dscombat.rifel": "RIFEL",
+	"weapon_code.dscombat.bruiser": "BRUISER",
+	"weapon_code.dscombat.magnum": "MAGNUM",
+	"weapon_code.dscombat.pickle": "PICKLE",
+	"weapon_code.dscombat.drill": "DRILL",
+	
 	"slottype.dscombat.frame": "Frame",
 	"slottype.dscombat.internal": "Internal",
 	"slottype.dscombat.seat": "Seat",
@@ -162,6 +173,7 @@
 	"itemGroup.items": "DSCombat Items",
 	"itemGroup.parts": "DSCombat Parts",
 	"itemGroup.weapons": "DSCombat Weapons",
+	"itemGroup.weapon_parts": "DSCombat Weapon Parts",
 	"itemGroup.vehicle": "DSCombat Vehicles",
 	
 	"item.dscombat.raw_aluminum": "Raw Aluminum",

@@ -73,22 +73,16 @@ public class TrackMissileStats extends MissileStats {
 	
 	@Override
 	public String getWeaponTypeCode() {
-		String code = "";
 		switch(getTargetType()) {
 		case AIR:
-			code = "AA";
-			break;
+			if (active) return UtilMCText.transString("weapon_code.dscombat.fox3");
+			else return UtilMCText.transString("weapon_code.dscombat.fox1");
 		case GROUND:
-			code = "AG";
-			break;
+			return UtilMCText.transString("weapon_code.dscombat.rifel");
 		case WATER:
-			code = "AW";
-			break;
+			return UtilMCText.transString("weapon_code.dscombat.bruiser");
 		}
-		code += "R";
-		if (active) code += "AT";
-		else code += "SA";
-		return code;
+		return "";
 	}
 	
 	@Override

@@ -51,9 +51,7 @@ public class BunkerBusterStats extends BombStats {
 	
 	@Override
 	public String getWeaponTypeCode() {
-		String code = "BB";
-		if (isCausesFire()) code += "I";
-		return code;
+		return UtilMCText.transString("weapon_code.dscombat.drill");
 	}
 	
 	@Override

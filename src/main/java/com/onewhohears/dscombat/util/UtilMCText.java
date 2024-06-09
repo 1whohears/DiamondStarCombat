@@ -33,4 +33,8 @@ public class UtilMCText {
 		return translatable(item.getDescriptionId());
 	}
 	
+	public static String transString(String id) {
+		return translatable(id).getString();
+	}
+	
 }

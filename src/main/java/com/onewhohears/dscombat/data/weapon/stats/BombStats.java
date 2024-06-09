@@ -8,6 +8,7 @@ import com.onewhohears.dscombat.data.jsonpreset.JsonPresetType;
 import com.onewhohears.dscombat.data.weapon.AbstractWeaponBuilders;
 import com.onewhohears.dscombat.data.weapon.WeaponType;
 import com.onewhohears.dscombat.data.weapon.instance.BombInstance;
+import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.resources.ResourceLocation;
 
@@ -39,9 +40,7 @@ public class BombStats extends BulletStats {
 	
 	@Override
 	public String getWeaponTypeCode() {
-		String code = "B";
-		if (isCausesFire()) code += "I";
-		return code;
+		return UtilMCText.transString("weapon_code.dscombat.pickle");
 	}
 	
 	@Override

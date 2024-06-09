@@ -103,10 +103,7 @@ public class BulletStats extends WeaponStats {
 
 	@Override
 	public String getWeaponTypeCode() {
-		String code = "S";
-		if (isExplosive()) code += "E";
-		if (isCausesFire()) code += "I";
-		return code;
+		return UtilMCText.transString("weapon_code.dscombat.gun");
 	}
 	
 	@Override

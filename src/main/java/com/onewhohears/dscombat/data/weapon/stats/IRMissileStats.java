@@ -54,7 +54,7 @@ public class IRMissileStats extends MissileStats {
 	
 	@Override
 	public String getWeaponTypeCode() {
-		return "AAIR";
+		return UtilMCText.transString("weapon_code.dscombat.fox2");
 	}
 	
 	@Override

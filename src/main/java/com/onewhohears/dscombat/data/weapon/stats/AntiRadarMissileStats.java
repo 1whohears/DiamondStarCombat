@@ -47,7 +47,7 @@ public class AntiRadarMissileStats extends MissileStats {
 	
 	@Override
 	public String getWeaponTypeCode() {
-		return "AGAR";
+		return UtilMCText.transString("weapon_code.dscombat.magnum");
 	}
 	
 	@Override

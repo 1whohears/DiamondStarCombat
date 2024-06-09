@@ -7,6 +7,7 @@ import com.onewhohears.dscombat.data.jsonpreset.JsonPresetInstance;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPresetType;
 import com.onewhohears.dscombat.data.weapon.WeaponType;
 import com.onewhohears.dscombat.data.weapon.instance.PosMissileInstance;
+import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.resources.ResourceLocation;
 
@@ -28,7 +29,7 @@ public class PosMissileStats extends MissileStats {
 	
 	@Override
 	public String getWeaponTypeCode() {
-		return "AGP";
+		return UtilMCText.transString("weapon_code.dscombat.greyhound");
 	}
 	
 	@Override

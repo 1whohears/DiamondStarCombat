@@ -51,8 +51,8 @@ public class VehicleClientStats extends JsonPresetStats {
 		}
 		if (model_data.has("custom_anims")) 
 			model = new CustomAnimsVehicleModel(model_id, model_data.get("custom_anims").getAsJsonArray());
-		else 
-			model = new ObjVehicleModel<>(model_id);
+		else model = new ObjVehicleModel<>(model_id);
+		System.out.println("MODEL ID = "+model_id);
 		return model;
 	}
 	
@@ -110,6 +110,9 @@ public class VehicleClientStats extends JsonPresetStats {
 		public Builder setCustomAnims(String model_id, JsonArray anims) {
 			getModelData().add("custom_anims", anims);
 			return setSimpleModelId(model_id);
+		}
+		public Builder setCustomAnims(JsonArray anims) {
+			return setCustomAnims(getPresetId(), anims);
 		}
 		public Builder setHardCodedModelAnims(String hard_coded_model_anims) {
 			getModelData().addProperty("hard_coded_model_anims", hard_coded_model_anims);

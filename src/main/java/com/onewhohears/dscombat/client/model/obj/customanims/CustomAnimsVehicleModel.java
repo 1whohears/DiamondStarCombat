@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.mojang.math.Matrix4f;
 import com.onewhohears.dscombat.client.model.obj.ObjVehicleModel;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
@@ -17,7 +18,12 @@ public class CustomAnimsVehicleModel extends ObjVehicleModel<EntityVehicle> {
 	
 	public CustomAnimsVehicleModel(String model_id, JsonArray anims) {
 		super(model_id);
-		
+		for (int i = 0; i < anims.size(); ++i) {
+			JsonObject anim = anims.get(i).getAsJsonObject();
+			VehicleModelTransform t = VehicleModelTransforms.get(anim);
+			if (t == null) continue;
+			transforms.add(t);
+		}
 	}
 	
 	@Override

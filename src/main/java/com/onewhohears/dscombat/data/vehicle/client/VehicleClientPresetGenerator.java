@@ -1,6 +1,8 @@
 package com.onewhohears.dscombat.data.vehicle.client;
 
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.client.model.obj.customanims.CustomAnimsBuilder;
+import com.onewhohears.dscombat.client.model.obj.customanims.VehicleModelTransform.RotationAxis;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPresetGenerator;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 
@@ -56,6 +58,10 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 				.build());
 		int noah_middle_x = 120, noah_seat1_y = 14;
 		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "noah_chopper")
+				.setCustomAnims("noah_chopper", CustomAnimsBuilder.create()
+						.addMotorRotAnim("blade_main", 0, 23, 12, RotationAxis.Y, 50)
+						.addMotorRotAnim("blade_back", 3, 7, -59, RotationAxis.X, 31)
+						.build())
 				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/noah_chopper.png")
 				.addUIPos(PartSlot.PILOT_SLOT_NAME, noah_middle_x-18, noah_seat1_y)
 				.addUIPos("seat2", noah_middle_x+18, noah_seat1_y)

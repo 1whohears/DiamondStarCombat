@@ -260,6 +260,10 @@ public class UtilParse {
 		return enums[0];
 	}
 	
+	public static void writeEnum(JsonObject json, String name, Enum<?> value) {
+		json.addProperty(name, value.name());
+	}
+	
 	public static String[] getStringArraySafe(JsonObject json, String name) {
 		if (!json.has(name)) return new String[0];
 		JsonArray ja = json.get(name).getAsJsonArray();

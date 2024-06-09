@@ -12,14 +12,14 @@ import net.minecraft.util.Mth;
 public abstract class VehicleModelTransform {
 	
 	public static final Matrix4f INVISIBLE = Matrix4f.createScaleMatrix(0, 0, 0);
-	public static final Matrix4f NOTHING = Matrix4f.createScaleMatrix(0, 0, 0);
+	public static final Matrix4f NOTHING = Matrix4f.createScaleMatrix(1, 1, 1);
 	
-	private final String modelPartKey;
+	private final String model_part_key;
 	public VehicleModelTransform(JsonObject data) {
-		this.modelPartKey = data.get("modelPartKey").getAsString();
+		this.model_part_key = data.get("model_part_key").getAsString();
 	}
 	public String getKey() {
-		return modelPartKey;
+		return model_part_key;
 	}
 	public abstract Matrix4f getTransform(EntityVehicle entity, float partialTicks);
 	

@@ -116,6 +116,12 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 				.build());
 		int roller_middle_x = 120;
 		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "small_roller")
+				.setCustomAnims(CustomAnimsBuilder.create()
+						.addWheelRotAnim("wl0", 0, 6.5f, 6.5f, RotationAxis.X, wheel_rot_rate)
+						.addWheelRotAnim("wl1", 0, 6.5f, -6.5f, RotationAxis.X, wheel_rot_rate)
+						.addWheelRotAnim("wr0", 0, 6.5f, 6.5f, RotationAxis.X, wheel_rot_rate)
+						.addWheelRotAnim("wr1", 0, 6.5f, -6.5f, RotationAxis.X, wheel_rot_rate)
+						.build())
 				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/small_roller.png")
 				.addUIPos(PartSlot.PILOT_SLOT_NAME, roller_middle_x, 50)
 				.addUIPos("internal_1", roller_middle_x-9, 70)

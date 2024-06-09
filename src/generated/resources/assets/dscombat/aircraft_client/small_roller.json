@@ -18,6 +18,55 @@
       "slot_ui_y": 70
     }
   ],
+  "model_data": {
+    "custom_anims": [
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wl0",
+        "pivot": {
+          "x": 0.0,
+          "y": 6.5,
+          "z": 6.5
+        },
+        "rot_axis": "X",
+        "rot_rate": 120.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wl1",
+        "pivot": {
+          "x": 0.0,
+          "y": 6.5,
+          "z": -6.5
+        },
+        "rot_axis": "X",
+        "rot_rate": 120.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wr0",
+        "pivot": {
+          "x": 0.0,
+          "y": 6.5,
+          "z": 6.5
+        },
+        "rot_axis": "X",
+        "rot_rate": 120.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wr1",
+        "pivot": {
+          "x": 0.0,
+          "y": 6.5,
+          "z": -6.5
+        },
+        "rot_axis": "X",
+        "rot_rate": 120.0
+      }
+    ],
+    "model_id": "small_roller"
+  },
   "presetId": "small_roller",
   "presetType": "standard"
 }

@@ -48,6 +48,121 @@
       "slot_ui_y": 70
     }
   ],
+  "model_data": {
+    "custom_anims": [
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wl0",
+        "pivot": {
+          "x": 0.0,
+          "y": 8.0,
+          "z": 30.0
+        },
+        "rot_axis": "X",
+        "rot_rate": 120.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wl1",
+        "pivot": {
+          "x": 0.0,
+          "y": 8.0,
+          "z": 15.0
+        },
+        "rot_axis": "X",
+        "rot_rate": 120.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wl2",
+        "pivot": {
+          "x": 0.0,
+          "y": 8.0,
+          "z": 0.0
+        },
+        "rot_axis": "X",
+        "rot_rate": 120.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wl3",
+        "pivot": {
+          "x": 0.0,
+          "y": 8.0,
+          "z": -15.0
+        },
+        "rot_axis": "X",
+        "rot_rate": 120.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wl4",
+        "pivot": {
+          "x": 0.0,
+          "y": 8.0,
+          "z": -30.0
+        },
+        "rot_axis": "X",
+        "rot_rate": 120.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wr0",
+        "pivot": {
+          "x": 0.0,
+          "y": 8.0,
+          "z": 30.0
+        },
+        "rot_axis": "X",
+        "rot_rate": 120.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wr1",
+        "pivot": {
+          "x": 0.0,
+          "y": 8.0,
+          "z": 15.0
+        },
+        "rot_axis": "X",
+        "rot_rate": 120.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wr2",
+        "pivot": {
+          "x": 0.0,
+          "y": 8.0,
+          "z": 0.0
+        },
+        "rot_axis": "X",
+        "rot_rate": 120.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wr3",
+        "pivot": {
+          "x": 0.0,
+          "y": 8.0,
+          "z": -15.0
+        },
+        "rot_axis": "X",
+        "rot_rate": 120.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wr4",
+        "pivot": {
+          "x": 0.0,
+          "y": 8.0,
+          "z": -30.0
+        },
+        "rot_axis": "X",
+        "rot_rate": 120.0
+      }
+    ],
+    "model_id": "mrbudger_tank"
+  },
   "presetId": "mrbudger_tank",
   "presetType": "standard"
 }

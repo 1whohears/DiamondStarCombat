@@ -89,8 +89,21 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 				.addUIPos("internal_8", noah_middle_x+9, noah_seat1_y+18*5)
 				.build());
 		int bud_middle_x = 120;
+		float wheel_rot_rate = 120;
 		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "mrbudger_tank")
 				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/mrbudger_tank.png")
+				.setCustomAnims(CustomAnimsBuilder.create()
+						.addWheelRotAnim("wl0", 0, 8, 30, RotationAxis.X, wheel_rot_rate)
+						.addWheelRotAnim("wl1", 0, 8, 15, RotationAxis.X, wheel_rot_rate)
+						.addWheelRotAnim("wl2", 0, 8, 0, RotationAxis.X, wheel_rot_rate)
+						.addWheelRotAnim("wl3", 0, 8, -15, RotationAxis.X, wheel_rot_rate)
+						.addWheelRotAnim("wl4", 0, 8, -30, RotationAxis.X, wheel_rot_rate)
+						.addWheelRotAnim("wr0", 0, 8, 30, RotationAxis.X, wheel_rot_rate)
+						.addWheelRotAnim("wr1", 0, 8, 15, RotationAxis.X, wheel_rot_rate)
+						.addWheelRotAnim("wr2", 0, 8, 0, RotationAxis.X, wheel_rot_rate)
+						.addWheelRotAnim("wr3", 0, 8, -15, RotationAxis.X, wheel_rot_rate)
+						.addWheelRotAnim("wr4", 0, 8, -30, RotationAxis.X, wheel_rot_rate)
+						.build())
 				.addUIPos(PartSlot.PILOT_SLOT_NAME, bud_middle_x, 50)
 				.addUIPos("seat1", bud_middle_x+20, 12)
 				.addUIPos("seat2", bud_middle_x-20, 12)

@@ -92,7 +92,7 @@ public abstract class VehicleModelTransform {
 		}
 		@Override
 		public float getRotDeg(EntityVehicle entity, float partialTicks) {
-			return -entity.getWheelRotation(partialTicks, getRotRate());
+			return entity.getWheelRotation(partialTicks, getRotRate());
 		}
 	}
 	

@@ -1,5 +1,7 @@
 package com.onewhohears.dscombat.data.parts.instance;
 
+import java.util.List;
+
 import com.onewhohears.dscombat.data.parts.LoadableRecipePartInstance;
 import com.onewhohears.dscombat.data.parts.stats.WeaponPartStats;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
@@ -22,6 +24,10 @@ public class WeaponPartInstance<T extends WeaponPartStats> extends PartInstance<
 	@Override
 	public void setFilled(String param) {
 		super.setFilled(param);
+		if (param.isEmpty()) {
+			List<String> list = WeaponPresets.get().getCompatibleWeapons(getStatsId());
+			if (list.size() > 0) param = list.get(0);
+		}
 		weapon = param;
 		ammo = getStats().getMaxAmmo();
 	}

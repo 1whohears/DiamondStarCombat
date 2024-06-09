@@ -1,5 +1,7 @@
 package com.onewhohears.dscombat.data.parts.instance;
 
+import java.util.List;
+
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.data.parts.LoadableRecipePartInstance;
@@ -25,6 +27,10 @@ public class TurretInstance<T extends TurretStats> extends SeatInstance<T> imple
 	@Override
 	public void setFilled(String param) {
 		super.setFilled(param);
+		if (param.isEmpty()) {
+			List<String> list = WeaponPresets.get().getCompatibleWeapons(getStatsId());
+			if (list.size() > 0) param = list.get(0);
+		}
 		weapon = param;
 		ammo = getStats().getMaxAmmo();
 	}

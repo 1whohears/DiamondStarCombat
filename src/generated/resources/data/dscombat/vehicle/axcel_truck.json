@@ -25,6 +25,7 @@
     {
       "data": {
         "filled": true,
+        "param": "pac3",
         "part": "sam_launcher"
       },
       "name": "cargo_bed_1"

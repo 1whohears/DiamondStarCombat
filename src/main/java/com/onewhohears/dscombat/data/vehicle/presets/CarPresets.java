@@ -97,7 +97,7 @@ public class CarPresets {
 			.addIngredient(ModItems.SAM_LAUNCHER.getId())
 			.addIngredient(ModItems.AIR_SCAN_A.getId())
 			.setSlotItem("frame_1", ModItems.AXCEL_TRUCK_RADAR.getId())
-			.setSlotItem("cargo_bed_1", ModItems.SAM_LAUNCHER.getId(), true)
+			.setSlotItem("cargo_bed_1", ModItems.SAM_LAUNCHER.getId(), "pac3", true)
 			.build();
 	
 }

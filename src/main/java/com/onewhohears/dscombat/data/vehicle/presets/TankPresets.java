@@ -106,7 +106,7 @@ public class TankPresets {
 	
 	public static final VehicleStats DEFAULT_SMALL_ROLLER = VehicleStats.Builder
 			.createFromCopy(DSCombatMod.MODID, "small_roller", UNARMED_SMALL_ROLLER)
-			.setSlotItem(PartSlot.PILOT_SLOT_NAME, ModItems.STEVE_UP_SMASH.getId(), true)
+			.setSlotItem(PartSlot.PILOT_SLOT_NAME, ModItems.STEVE_UP_SMASH.getId(), "aim9p5", true)
 			.addIngredient(ModItems.STEVE_UP_SMASH.getId())
 			.addIngredient(ModItems.AIM9P5.getId(), 4)
 			.build();

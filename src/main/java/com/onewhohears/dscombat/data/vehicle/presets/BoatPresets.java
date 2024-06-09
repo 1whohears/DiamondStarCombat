@@ -231,7 +231,7 @@ public class BoatPresets {
 	public static final VehicleStats DEFAULT_DESTROYER = VehicleStats.Builder
 			.createFromCopy(DSCombatMod.MODID, "destroyer", UNARMED_DESTROYER)
 			.setSlotItem("seat5", ModItems.ADL.getId(), "rgm84", true)
-			.setSlotItem("seat6", ModItems.MLS.getId(), true)
+			.setSlotItem("seat6", ModItems.MLS.getId(), "agm64g", true)
 			.setSlotItem("frame_1", ModItems.SURVEY_ALL_B.getId())
 			.setSlotItem("frame_2", ModItems.AA_TURRET.getId(), true)
 			.setSlotItem("frame_3", ModItems.AA_TURRET.getId(), true)
@@ -316,7 +316,7 @@ public class BoatPresets {
 	public static final VehicleStats DEFAULT_CRUISER = VehicleStats.Builder
 			.createFromCopy(DSCombatMod.MODID, "cruiser", UNARMED_CRUISER)
 			.setSlotItem("seat5", ModItems.VLS.getId(), "bgm109", true)
-			.setSlotItem("seat6", ModItems.MLS.getId(), true)
+			.setSlotItem("seat6", ModItems.MLS.getId(), "rgm84", true)
 			.setSlotItem("seat7", ModItems.VLS.getId(), "bgm109", true)
 			.setSlotItem("seat8", ModItems.AA_TURRET.getId(), true)
 			.setSlotItem("frame_1", ModItems.AIR_SCAN_B.getId())
@@ -472,7 +472,7 @@ public class BoatPresets {
 	
 	public static final VehicleStats DEFAULT_AIRCRAFT_CARRIER = VehicleStats.Builder
 			.createFromCopy(DSCombatMod.MODID, "aircraft_carrier", UNARMED_AIRCRAFT_CARRIER)
-			.setSlotItem("seat9", ModItems.MLS.getId(), true)
+			.setSlotItem("seat9", ModItems.MLS.getId(), "rgm84", true)
 			.setSlotItem("seat10", ModItems.VLS.getId(), "bgm109", true)
 			.setSlotItem("frame_1", ModItems.SURVEY_ALL_B.getId())
 			.setSlotItem("frame_2", ModItems.AA_TURRET.getId(), true)

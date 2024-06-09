@@ -13,7 +13,6 @@ import com.onewhohears.dscombat.data.jsonpreset.JsonPresetReloadListener;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeManager;
 
 public class WeaponPresets extends JsonPresetReloadListener<WeaponStats> {
@@ -30,7 +29,6 @@ public class WeaponPresets extends JsonPresetReloadListener<WeaponStats> {
 	}
 	
 	private Map<String, List<String>> compatiblePartMap = new HashMap<>();
-	private Map<String, List<String>> compatibleTurretMap = new HashMap<>();
 	private WeaponStats[] weaponList;
 	private WeaponRecipe[] weaponRecipes;
 	
@@ -113,14 +111,8 @@ public class WeaponPresets extends JsonPresetReloadListener<WeaponStats> {
 		return weaponRecipes.length;
 	}
 	
-	public List<String> getCompatibleWeapons(ResourceLocation weaponPartItemId) {
-		List<String> list = compatiblePartMap.get(weaponPartItemId.toString());
-		if (list == null) return new ArrayList<>();
-		return list;
-	}
-	
-	public List<String> getTurretWeapons(ResourceLocation turretItemId) {
-		List<String> list = compatibleTurretMap.get(turretItemId.toString());
+	public List<String> getCompatibleWeapons(String weaponPartId) {
+		List<String> list = compatiblePartMap.get(weaponPartId);
 		if (list == null) return new ArrayList<>();
 		return list;
 	}
@@ -147,20 +139,6 @@ public class WeaponPresets extends JsonPresetReloadListener<WeaponStats> {
 			}
 		}
 		LOGGER.debug("WEAPON CAPATIBILITY: "+compatiblePartMap.toString());
-		compatibleTurretMap.clear();
-		for (int i = 0; i < getAll().length; ++i) {
-			String[] turretIds = getAll()[i].getCompatibleTurrets();
-			if (turretIds.length == 0) continue;
-			for (int j = 0; j < turretIds.length; ++j) {
-				List<String> list = compatibleTurretMap.get(turretIds[j]);
-				if (list == null) {
-					list = new ArrayList<String>();
-					compatibleTurretMap.put(turretIds[j], list);
-				}
-				list.add(getAll()[i].getId());
-			}
-		}
-		LOGGER.debug("TURRET CAPATIBILITY: "+compatibleTurretMap.toString());
 	}
 	
 }

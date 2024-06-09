@@ -56,7 +56,7 @@ public class ModItems {
 	public static final CreativeModeTab PARTS = new CreativeModeTab("parts") {
 		@Override
 		public ItemStack makeIcon() {
-			return new ItemStack(ModItems.CIWS.get());
+			return new ItemStack(ModItems.C12_ENGINE.get());
 		}
 	};
 	
@@ -64,6 +64,13 @@ public class ModItems {
 		@Override
 		public ItemStack makeIcon() {
 			return new ItemStack(ModItems.AIM9X.get());
+		}
+	};
+	
+	public static final CreativeModeTab WEAPON_PARTS = new CreativeModeTab("weapon_parts") {
+		@Override
+		public ItemStack makeIcon() {
+			return new ItemStack(ModItems.CIWS.get());
 		}
 	};
 	
@@ -265,13 +272,13 @@ public class ModItems {
 	public static final RegistryObject<ItemPart> MARK7_CANNON = ITEMS.register("mark7_cannon", 
 			() -> new ItemTurret(16));
 	public static final RegistryObject<ItemPart> STEVE_UP_SMASH = ITEMS.register("steve_up_smash", 
-			() -> new ItemTurret(16, "aim9p5"));
+			() -> new ItemTurret(16));
 	public static final RegistryObject<ItemPart> SAM_LAUNCHER = ITEMS.register("sam_launcher", 
-			() -> new ItemTurret(16, "pac3"));
+			() -> new ItemTurret(16));
 	public static final RegistryObject<ItemPart> TORPEDO_TUBES = ITEMS.register("torpedo_tubes", 
 			() -> new ItemTurret(16));
 	public static final RegistryObject<ItemPart> MLS = ITEMS.register("mls", 
-			() -> new ItemTurret(16, "rgm84"));
+			() -> new ItemTurret(16));
 	
 	// FLARE DISPENSERS
 	public static final RegistryObject<ItemPart> BASIC_FLARE_DISPENSER = ITEMS.register("basic_flare_dispenser", 

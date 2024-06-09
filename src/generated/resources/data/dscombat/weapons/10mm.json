@@ -1,12 +1,10 @@
 {
   "canShootOnGround": true,
   "causesFire": false,
-  "compatibleTurret": [
-    "dscombat:minigun_turret"
-  ],
   "compatibleWeaponPart": [
-    "dscombat:xm12",
-    "dscombat:internal_gun"
+    "xm12",
+    "m2_browning",
+    "minigun_turret"
   ],
   "craftNum": 64,
   "damage": 6.0,

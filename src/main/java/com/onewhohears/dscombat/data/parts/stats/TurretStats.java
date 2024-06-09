@@ -9,7 +9,6 @@ import com.onewhohears.dscombat.data.parts.PartType;
 import com.onewhohears.dscombat.data.parts.instance.TurretInstance;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.init.ModEntities;
-import com.onewhohears.dscombat.util.UtilItem;
 import com.onewhohears.minigames.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
@@ -26,8 +25,7 @@ public class TurretStats extends SeatStats {
 	
 	public TurretStats(ResourceLocation key, JsonObject json) {
 		super(key, json);
-		ResourceLocation itemid = UtilItem.getItemKey(getItem());
-		List<String> list = WeaponPresets.get().getTurretWeapons(itemid);
+		List<String> list = WeaponPresets.get().getCompatibleWeapons(getId());
 		compatible = list.toArray(new String[list.size()]);
 		maxHealth = UtilParse.getFloatSafe(json, "maxHealth", 0);
 		maxAmmo = UtilParse.getIntSafe(json, "maxAmmo", 0);

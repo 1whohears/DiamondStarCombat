@@ -1,8 +1,8 @@
 {
   "canShootOnGround": true,
   "causesFire": false,
-  "compatibleTurret": [
-    "dscombat:mark45_cannon"
+  "compatibleWeaponPart": [
+    "mark45_cannon"
   ],
   "craftNum": 1,
   "damage": 50.0,

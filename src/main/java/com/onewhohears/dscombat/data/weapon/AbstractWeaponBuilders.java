@@ -47,14 +47,13 @@ public class AbstractWeaponBuilders {
 			return setString("rackTypeKey", "");
 		}
 		
-		public C setCompatibleWeaponPart(ResourceLocation... compatibleWeaponPart) {
-			getData().add("compatibleWeaponPart", UtilParse.resLocArrayToJsonArray(compatibleWeaponPart));
+		public C setCompatibleWeaponPart(String... compatibleWeaponPart) {
+			getData().add("compatibleWeaponPart", UtilParse.stringArrayToJsonArray(compatibleWeaponPart));
 			return (C) this;
 		}
 		
-		public C setCompatibleTurret(ResourceLocation... compatibleTurret) {
-			getData().add("compatibleTurret", UtilParse.resLocArrayToJsonArray(compatibleTurret));
-			return (C) this;
+		public C setCompatibleWeaponPart(ResourceLocation compatibleWeaponPart) {
+			return setCompatibleWeaponPart(compatibleWeaponPart.getPath());
 		}
 		
 		public C setItem(ResourceLocation itemKey) {

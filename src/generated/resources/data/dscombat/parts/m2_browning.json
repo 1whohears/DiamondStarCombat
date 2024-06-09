@@ -1,5 +1,5 @@
 {
-  "displayName": "preset.dscombat.m2_browning",
+  "displayName": "item.dscombat.m2_browning",
   "item": "dscombat:internal_gun",
   "max": 300,
   "presetId": "m2_browning",

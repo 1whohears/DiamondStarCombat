@@ -5,7 +5,7 @@
   "canShootOnGround": true,
   "causesFire": true,
   "compatibleWeaponPart": [
-    "dscombat:vls"
+    "vls"
   ],
   "craftNum": 1,
   "damage": 45.0,

@@ -17,6 +17,7 @@ public class PartBuilder extends PresetBuilder<PartBuilder> {
 	public static PartBuilder create(String namespace, String name, ResourceLocation item, PartType type) {
 		PartBuilder builder = new PartBuilder(namespace, name, type);
 		builder.setItem(item);
+		builder.setDisplayName("item."+namespace+"."+name);
 		return builder;
 	}
 	

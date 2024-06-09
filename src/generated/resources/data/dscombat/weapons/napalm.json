@@ -2,7 +2,7 @@
   "canShootOnGround": false,
   "causesFire": true,
   "compatibleWeaponPart": [
-    "dscombat:bomb_rack"
+    "bomb_rack"
   ],
   "craftNum": 3,
   "damage": 20.0,

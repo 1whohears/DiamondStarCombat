@@ -2,7 +2,7 @@
   "canShootOnGround": true,
   "causesFire": false,
   "compatibleWeaponPart": [
-    "dscombat:internal_gun"
+    "gau_avenger"
   ],
   "craftNum": 20,
   "damage": 16.0,

@@ -1,12 +1,11 @@
 {
   "canShootOnGround": true,
   "causesFire": false,
-  "compatibleTurret": [
-    "dscombat:ciws"
-  ],
   "compatibleWeaponPart": [
-    "dscombat:xm12",
-    "dscombat:internal_gun"
+    "xm12",
+    "m61a1_vulcan",
+    "gsh_30_1",
+    "ciws"
   ],
   "craftNum": 32,
   "damage": 12.0,

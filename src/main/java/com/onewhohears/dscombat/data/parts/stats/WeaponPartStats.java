@@ -8,7 +8,6 @@ import com.onewhohears.dscombat.data.jsonpreset.JsonPresetType;
 import com.onewhohears.dscombat.data.parts.PartType;
 import com.onewhohears.dscombat.data.parts.instance.WeaponPartInstance;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
-import com.onewhohears.dscombat.util.UtilItem;
 import com.onewhohears.minigames.util.UtilParse;
 
 import net.minecraft.resources.ResourceLocation;
@@ -20,8 +19,7 @@ public class WeaponPartStats extends PartStats {
 	
 	public WeaponPartStats(ResourceLocation key, JsonObject json) {
 		super(key, json);
-		ResourceLocation itemid = UtilItem.getItemKey(getItem());
-		List<String> list = WeaponPresets.get().getCompatibleWeapons(itemid);
+		List<String> list = WeaponPresets.get().getCompatibleWeapons(getId());
 		compatible = list.toArray(new String[list.size()]);
 		max = UtilParse.getIntSafe(json, "max", 0);
 	}

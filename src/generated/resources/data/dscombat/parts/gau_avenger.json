@@ -1,5 +1,5 @@
 {
-  "displayName": "preset.dscombat.gau_avenger",
+  "displayName": "item.dscombat.gau_avenger",
   "item": "dscombat:internal_gun",
   "max": 1000,
   "presetId": "gau_avenger",

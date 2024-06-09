@@ -5,9 +5,9 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.data.parts.PartPresets;
-import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 import com.onewhohears.dscombat.data.parts.stats.PartStats;
 import com.onewhohears.dscombat.init.ModItems;
+import com.onewhohears.dscombat.util.UtilItem;
 import com.onewhohears.dscombat.util.UtilMCText;
 import com.onewhohears.dscombat.util.UtilParse;
 
@@ -40,11 +40,21 @@ public class ItemPart extends Item {
 	
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-		if (group.getId() == ModItems.PARTS.getId()) {
-			ItemStack test = new ItemStack(this);
-			test.setTag(getDefaultPartStats().createFilledPartInstance("").writeNBT());
-			items.add(test);
+		if (group.getId() != getCreativeTab().getId() && group.getId() != CreativeModeTab.TAB_SEARCH.getId()) return;
+		String itemId = UtilItem.getItemKeyString(this);
+		for (int i = 0; i < PartPresets.get().getNum(); ++i) {
+			PartStats stats = PartPresets.get().getAll()[i];
+			if (!stats.getItemId().equals(itemId)) continue;
+			fillItemCategory(stats, items);
 		}
+	}
+	
+	protected void fillItemCategory(PartStats stats, NonNullList<ItemStack> items) {
+		items.add(stats.createFilledPartInstance("").getNewItemStack());
+	}
+	
+	public CreativeModeTab getCreativeTab() {
+		return ModItems.PARTS;
 	}
 	
 	public PartStats getDefaultPartStats() {
@@ -64,15 +74,20 @@ public class ItemPart extends Item {
 	
 	@Override
 	public Component getName(ItemStack stack) {
-		PartInstance<?> data = UtilParse.parsePartFromItem(stack);
-		if (data != null) return data.getStats().getDisplayNameComponent().setStyle(Style.EMPTY.withColor(0x55FF55));
+		PartStats data = getPartStats(stack);
+		if (data != null) return data.getDisplayNameComponent().setStyle(Style.EMPTY.withColor(0x55FF55));
 		return UtilMCText.translatable(getDescriptionId()).setStyle(Style.EMPTY.withColor(0x55FF55));
 	}
 	
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tips, TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tips, isAdvanced);
-		getDefaultPartStats().addToolTips(tips, isAdvanced);
+		getPartStats(stack).addToolTips(tips, isAdvanced);
+	}
+	
+	public PartStats getPartStats(ItemStack stack) {
+		if (stack.hasTag()) return UtilParse.getPartStatsFromCompound(stack.getTag());
+		return PartPresets.get().get(getDefaultPartPresetId());
 	}
 
 }

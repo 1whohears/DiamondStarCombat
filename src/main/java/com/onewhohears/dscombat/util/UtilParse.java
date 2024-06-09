@@ -109,6 +109,28 @@ public class UtilParse {
 	}
 	
 	@Nullable
+	public static PartStats getPartStatsFromItem(ItemStack stack) {
+		if (stack.hasTag()) return getPartStatsFromCompound(stack.getTag());
+		if (!(stack.getItem() instanceof ItemPart part)) return null;
+		String presetId = part.getDefaultPartPresetId();
+		return PartPresets.get().get(presetId);
+	}
+	
+	@Nullable
+	public static PartStats getPartStatsFromCompound(CompoundTag tag) {
+		if (tag == null) return null;
+		if (tag.isEmpty()) return null;
+		String presetId = "";
+		if (tag.contains("part")) presetId = tag.getString("part");
+		else if (tag.contains("itemid")) {
+			presetId = tag.getString("itemid");
+			presetId = presetId.split(":")[1];
+		}
+		if (presetId.isEmpty()) return null;
+		return PartPresets.get().get(presetId);
+	}
+	
+	@Nullable
 	public static PartInstance<?> parsePartFromItem(ItemStack stack) {
 		//System.out.println("parsePartFromItem = "+stack+" "+stack.getTag());
 		if (stack.hasTag()) return parsePartFromCompound(stack.getTag());
@@ -122,16 +144,7 @@ public class UtilParse {
 	@Nullable
 	public static PartInstance<?> parsePartFromCompound(CompoundTag tag) {
 		//System.out.println("parsePartFromCompound tag = "+tag);
-		if (tag == null) return null;
-		if (tag.isEmpty()) return null;
-		String presetId = "";
-		if (tag.contains("part")) presetId = tag.getString("part");
-		else if (tag.contains("itemid")) {
-			presetId = tag.getString("itemid");
-			presetId = presetId.split(":")[1];
-		}
-		if (presetId.isEmpty()) return null;
-		PartStats stats = PartPresets.get().get(presetId);
+		PartStats stats = getPartStatsFromCompound(tag);
 		if (stats == null) return null;
 		if (tag.getBoolean("filled")) return stats.createFilledPartInstance(tag.getString("param"));
 		PartInstance<?> data = stats.createPartInstance();

@@ -9,6 +9,8 @@ import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPresetStats;
+import com.onewhohears.dscombat.data.parts.PartPresets;
+import com.onewhohears.dscombat.data.parts.stats.PartStats;
 import com.onewhohears.dscombat.data.recipe.DSCIngredientBuilder;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.init.ModEntities;
@@ -46,7 +48,6 @@ public abstract class WeaponStats extends JsonPresetStats {
 	private final String shootSoundKey;
 	private final String rackTypeKey;
 	private final String[] compatibleWeaponPart;
-	private final String[] compatibleTurret;
 	private final String itemKey;
 	private final String modelId;
 	private final ResourceLocation icon;
@@ -66,7 +67,6 @@ public abstract class WeaponStats extends JsonPresetStats {
 		this.shootSoundKey = UtilParse.getStringSafe(json, "shootSoundKey", "");
 		this.rackTypeKey = UtilParse.getStringSafe(json, "rackTypeKey", "");
 		this.compatibleWeaponPart = UtilParse.getStringArraySafe(json, "compatibleWeaponPart");
-		this.compatibleTurret = UtilParse.getStringArraySafe(json, "compatibleTurret");
 		this.itemKey = UtilParse.getStringSafe(json, "itemKey", "");
 		this.modelId = UtilParse.getStringSafe(json, "modelId", getId());
 		this.icon = new ResourceLocation(UtilParse.getStringSafe(json, "icon", getDefaultIconLocation()));
@@ -164,10 +164,6 @@ public abstract class WeaponStats extends JsonPresetStats {
 		return compatibleWeaponPart;
 	}
 	
-	public String[] getCompatibleTurrets() {
-		return compatibleTurret;
-	}
-	
 	public String getModelId() {
 		return modelId;
 	}
@@ -185,20 +181,14 @@ public abstract class WeaponStats extends JsonPresetStats {
 	public void addToolTips(List<Component> tips, boolean advanced) {
 		tips.add(getType().getDisplayNameComponent().setStyle(Style.EMPTY.withColor(TYPE_COLOR)));
 		if (compatibleWeaponPart.length > 0) {
-			MutableComponent weapons = UtilMCText.literal("Weapon Part: ").setStyle(Style.EMPTY.withColor(COMPAT_COLOR));
+			MutableComponent weapons = UtilMCText.literal("Compatible: ").setStyle(Style.EMPTY.withColor(COMPAT_COLOR));
 			for (int i = 0; i < compatibleWeaponPart.length; ++i) {
+				PartStats stats = PartPresets.get().get(compatibleWeaponPart[i]);
+				if (stats == null) continue;
 				if (i != 0) weapons.append(UtilMCText.literal(", "));
-				weapons.append(UtilMCText.getItemName(compatibleWeaponPart[i]));
+				weapons.append(stats.getDisplayNameComponent());
 			}
 			tips.add(weapons);
-		}
-		if (compatibleTurret.length > 0) {
-			MutableComponent turrets = UtilMCText.literal("Turret: ").setStyle(Style.EMPTY.withColor(COMPAT_COLOR));
-			for (int i = 0; i < compatibleTurret.length; ++i) {
-				if (i != 0) turrets.append(UtilMCText.literal(", "));
-				turrets.append(UtilMCText.getItemName(compatibleTurret[i]));
-			}
-			tips.add(turrets);
 		}
 		tips.add(UtilMCText.literal("Fire Rate: ").append(getFireRate()+"").setStyle(Style.EMPTY.withColor(INFO_COLOR)));
 		if (advanced) {

@@ -1,12 +1,9 @@
 {
   "canShootOnGround": true,
   "causesFire": false,
-  "compatibleTurret": [
-    "dscombat:aa_turret"
-  ],
   "compatibleWeaponPart": [
-    "dscombat:xm12",
-    "dscombat:internal_gun"
+    "xm12",
+    "aa_turret"
   ],
   "craftNum": 48,
   "damage": 9.0,

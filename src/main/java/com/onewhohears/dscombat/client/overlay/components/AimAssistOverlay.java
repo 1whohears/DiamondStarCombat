@@ -43,7 +43,7 @@ public class AimAssistOverlay extends VehicleOverlayComponent {
         WeaponInstance<?> data = vehicle.weaponSystem.getSelected();
         if (data == null) return false;
 
-        return (!data.getStats().isAimAssist());
+        return data.getStats().isAimAssist();
     }
 
     @Override

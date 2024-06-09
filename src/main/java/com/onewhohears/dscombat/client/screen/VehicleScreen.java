@@ -73,6 +73,10 @@ public class VehicleScreen extends AbstractContainerScreen<VehicleContainerMenu>
 			c.add(UtilMCText.translatable(slot.data.getTranslatableName()).setStyle(Style.EMPTY.withColor(0xFF55FF)));
 			c.add(UtilMCText.translatable(slot.data.getSlotType().getTranslatableName()).setStyle(Style.EMPTY.withColor(0xFFAA00)));
 			if (slot.data.isLocked()) c.add(UtilMCText.translatable("info.dscombat.locked").setStyle(Style.EMPTY.withColor(0xAA0000)));
+			if (slot.data.isOnlyCompatWithOnePart()) 
+				c.add(UtilMCText.translatable("info.dscombat.only_compatible").append(" ")
+						.append(UtilMCText.translatable("preset.dscombat."+slot.data.getOnlyCompatPartId()))
+						.setStyle(Style.EMPTY.withColor(0x0000AA)));
 		}
 		return c;
 	}

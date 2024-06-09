@@ -192,6 +192,7 @@
     },
     {
       "name": "internal_gun",
+      "onlyCompatPart": "m61a1_vulcan",
       "slot_posx": 0.0,
       "slot_posy": -0.15,
       "slot_posz": 8.0,

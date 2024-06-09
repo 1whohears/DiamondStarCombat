@@ -243,6 +243,7 @@
     },
     {
       "name": "internal_gun",
+      "onlyCompatPart": "gsh_30_1",
       "slot_posx": 0.0,
       "slot_posy": -0.14,
       "slot_posz": 9.6,

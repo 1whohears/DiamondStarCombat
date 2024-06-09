@@ -70,6 +70,7 @@
     },
     {
       "name": "left_wing_gun",
+      "onlyCompatPart": "m2_browning",
       "slot_posx": 3.4,
       "slot_posy": -0.4,
       "slot_posz": 1.1,
@@ -78,6 +79,7 @@
     },
     {
       "name": "right_wing_gun",
+      "onlyCompatPart": "m2_browning",
       "slot_posx": -3.4,
       "slot_posy": -0.4,
       "slot_posz": 1.1,

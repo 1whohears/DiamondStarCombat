@@ -122,6 +122,7 @@
     },
     {
       "name": "internal_gun",
+      "onlyCompatPart": "gau_avenger",
       "slot_posx": 0.0,
       "slot_posy": -0.34375,
       "slot_posz": 8.65625,

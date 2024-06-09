@@ -2,6 +2,7 @@
 	"info.dscombat.ammo": "Ammo",
 	"info.dscombat.locked": "Locked",
 	"info.dscombat.not_radar_controller": "Another Player Controls the Vehicle's Radar Mode",
+	"info.dscombat.only_compatible": "Only Compatible With: ",
 	
 	"ui.dscombat.shrink_plane_button": "Get Item",
 	"ui.dscombat.craft_button": "Assemble",

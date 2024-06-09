@@ -387,6 +387,12 @@ public abstract class VehicleStats extends JsonPresetStats {
 			slot.addProperty("locked", true);
 			return this;
 		}
+		public Builder setSlotOnlyCompatible(String slotName, String partId) {
+			JsonObject slot = getSlot(slotName, false);
+			if (slot == null) return this;
+			slot.addProperty("onlyCompatPart", partId);
+			return this;
+		}
 		protected JsonArray getSlots() {
 			if (!getData().has("slots")) {
 				getData().add("slots", new JsonArray());

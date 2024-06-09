@@ -25,6 +25,7 @@ public class PartSlot {
 	private final Vec3 pos;
 	private final float zRot;
 	private final boolean locked;
+	private final String onlyCompatPart;
 	private PartInstance<?> data;
 	
 	public PartSlot(CompoundTag entityNbt, @Nullable CompoundTag presetNbt) {
@@ -35,6 +36,7 @@ public class PartSlot {
 		type = SlotType.getByName(presetNbt.getString("slot_type"));
 		pos = UtilParse.readVec3(presetNbt, "slot_pos");
 		zRot = presetNbt.getFloat("zRot");
+		onlyCompatPart = presetNbt.getString("onlyCompatPart");
 	}
 	
 	public CompoundTag write() {
@@ -44,6 +46,7 @@ public class PartSlot {
 		UtilParse.writeVec3(tag, pos, "slot_pos");
 		tag.putFloat("zRot", zRot);
 		tag.putBoolean("locked", locked);
+		tag.putString("onlyCompatPart", onlyCompatPart);
 		if (filled()) tag.put("data", data.writeNBT());
 		return tag;
 	}
@@ -54,6 +57,7 @@ public class PartSlot {
 		pos = DataSerializers.VEC3.read(buffer);
 		zRot = buffer.readFloat();
 		locked = buffer.readBoolean();
+		onlyCompatPart = buffer.readUtf();
 		boolean notNull = buffer.readBoolean();
 		if (notNull) data = DataSerializers.PART_DATA.read(buffer);
 	}
@@ -64,6 +68,7 @@ public class PartSlot {
 		DataSerializers.VEC3.write(buffer, pos);
 		buffer.writeFloat(zRot);
 		buffer.writeBoolean(locked);
+		buffer.writeUtf(onlyCompatPart);
 		buffer.writeBoolean(filled());
 		if (filled()) DataSerializers.PART_DATA.write(buffer, data);
 	}
@@ -145,9 +150,18 @@ public class PartSlot {
 		return false;
 	}
 	
+	public boolean isOnlyCompatWithOnePart() {
+		return !onlyCompatPart.isEmpty();
+	}
+	
+	public String getOnlyCompatPartId() {
+		return onlyCompatPart;
+	}
+	
 	public boolean isCompatible(PartInstance<?> data) {
 		//System.out.println("is "+data+" compatible with "+this);
 		if (data == null) return false;
+		if (isOnlyCompatWithOnePart()) return data.getStatsId().equals(getOnlyCompatPartId());
 		// HOW 3 check for duplicates
 		return data.isCompatible(getSlotType());
 	}

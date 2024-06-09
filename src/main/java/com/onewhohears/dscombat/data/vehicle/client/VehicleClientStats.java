@@ -52,7 +52,6 @@ public class VehicleClientStats extends JsonPresetStats {
 		if (model_data.has("custom_anims")) 
 			model = new CustomAnimsVehicleModel(model_id, model_data.get("custom_anims").getAsJsonArray());
 		else model = new ObjVehicleModel<>(model_id);
-		System.out.println("MODEL ID = "+model_id);
 		return model;
 	}
 	

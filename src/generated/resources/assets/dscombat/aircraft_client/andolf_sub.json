@@ -98,6 +98,22 @@
       "slot_ui_y": 98
     }
   ],
+  "model_data": {
+    "custom_anims": [
+      {
+        "anim_id": "motor_rotation",
+        "model_part_key": "propellor",
+        "pivot": {
+          "x": 0.0,
+          "y": -1.0,
+          "z": -58.0
+        },
+        "rot_axis": "Z",
+        "rot_rate": 19.0
+      }
+    ],
+    "model_id": "andolf_sub"
+  },
   "presetId": "andolf_sub",
   "presetType": "standard"
 }

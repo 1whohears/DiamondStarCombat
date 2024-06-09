@@ -127,6 +127,9 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 				.build());
 		int andolf_middle_x = 117;
 		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "andolf_sub")
+				.setCustomAnims(CustomAnimsBuilder.create()
+						.addMotorRotAnim("propellor", 0, -1, -58, RotationAxis.Z, 19)
+						.build())
 				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/andolf_sub.png")
 				.addUIPos(PartSlot.PILOT_SLOT_NAME, andolf_middle_x-9, 25)
 				.addUIPos("seat1", andolf_middle_x+9, 25)

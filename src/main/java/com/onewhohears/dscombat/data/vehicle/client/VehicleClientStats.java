@@ -10,6 +10,7 @@ import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.client.entityscreen.VehicleScreenMapReader;
 import com.onewhohears.dscombat.client.model.obj.HardCodedModelAnims;
 import com.onewhohears.dscombat.client.model.obj.ObjVehicleModel;
+import com.onewhohears.dscombat.client.model.obj.customanims.CustomAnimsVehicleModel;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPresetInstance;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPresetStats;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPresetType;
@@ -38,10 +39,20 @@ public class VehicleClientStats extends JsonPresetStats {
 			return model;
 		}
 		JsonObject model_data = getJsonData().get("model_data").getAsJsonObject();
-		if (model_data.has("hard_coded_model_anims")) 
+		if (model_data.has("hard_coded_model_anims")) {
 			model = HardCodedModelAnims.get(model_data.get("hard_coded_model_anims").getAsString());
-		else if (model_data.has("simple_model_id")) 
-			model = new ObjVehicleModel<>(model_data.get("simple_model_id").getAsString());
+			return model;
+		}
+		String model_id = "";
+		if (model_data.has("model_id")) model_id = model_data.get("model_id").getAsString(); 
+		else {
+			model = new ObjVehicleModel<>(getId());
+			return model;
+		}
+		if (model_data.has("custom_anims")) 
+			model = new CustomAnimsVehicleModel(model_id, model_data.get("custom_anims").getAsJsonArray());
+		else 
+			model = new ObjVehicleModel<>(model_id);
 		return model;
 	}
 	
@@ -96,12 +107,16 @@ public class VehicleClientStats extends JsonPresetStats {
 			}
 			return getData().get("model_data").getAsJsonObject();
 		}
+		public Builder setCustomAnims(String model_id, JsonArray anims) {
+			getModelData().add("custom_anims", anims);
+			return setSimpleModelId(model_id);
+		}
 		public Builder setHardCodedModelAnims(String hard_coded_model_anims) {
 			getModelData().addProperty("hard_coded_model_anims", hard_coded_model_anims);
 			return this;
 		}
-		public Builder setSimpleModelId(String simple_model_id) {
-			getModelData().addProperty("simple_model_id", simple_model_id);
+		public Builder setSimpleModelId(String model_id) {
+			getModelData().addProperty("model_id", model_id);
 			return this;
 		}
 		public Builder setHardCodedModelAnims() {

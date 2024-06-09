@@ -16,6 +16,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.mojang.logging.LogUtils;
 import com.mojang.math.Quaternion;
+import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.data.parts.PartPresets;
 import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 import com.onewhohears.dscombat.data.parts.stats.PartStats;
@@ -305,6 +306,24 @@ public class UtilParse {
 		String r = "";
 		for (int i = 0; i < v.length; ++i) r += "["+v[i].x+","+v[i].y+"]";
 		return r;
+	}
+	
+	public static Vector3f readVec3f(JsonObject json, String name) {
+		if (!json.has(name)) return Vector3f.ZERO;
+		JsonObject vec = json.get(name).getAsJsonObject();
+		float x = 0, y = 0, z = 0;
+		if (vec.has("x")) x = vec.get("x").getAsFloat();
+		if (vec.has("y")) y = vec.get("y").getAsFloat();
+		if (vec.has("z")) z = vec.get("z").getAsFloat();
+		return new Vector3f(x, y, z);
+	}
+	
+	public static void writeVec3f(JsonObject json, String name, Vector3f vec) {
+		JsonObject v = new JsonObject();
+		v.addProperty("x", vec.x());
+		v.addProperty("y", vec.y());
+		v.addProperty("z", vec.z());
+		json.add(name, v);
 	}
 	
 }

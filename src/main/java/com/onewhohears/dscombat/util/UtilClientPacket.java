@@ -9,7 +9,6 @@ import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 import com.onewhohears.dscombat.data.radar.RadarStats.RadarPing;
 import com.onewhohears.dscombat.data.radar.RadarSystem.RWRWarning;
 import com.onewhohears.dscombat.data.vehicle.DSCPhyCons;
-import com.onewhohears.dscombat.data.vehicle.EntityScreenData;
 import com.onewhohears.dscombat.data.vehicle.VehicleInputManager;
 import com.onewhohears.dscombat.data.vehicle.VehicleTextureManager;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
@@ -117,19 +116,6 @@ public class UtilClientPacket {
 		if (world.getEntity(vehicle_id) instanceof EntityVehicle plane) {
 			plane.textureManager.read(buffer);
 		}
-	}
-	
-	public static void vehicleScreenDebug(int type, Vec3 rel_pos, float width, float height, float rel_x_rot, float rel_y_rot, float rel_z_rot) {
-		Minecraft m = Minecraft.getInstance();
-		if (!(m.player.getRootVehicle() instanceof EntityVehicle vehicle)) return;
-		EntityScreenData screenData = vehicle.getScreenByTypeId(type);
-		if (screenData == null) return;
-		screenData.rel_pos = rel_pos;
-		screenData.width = width;
-		screenData.height = height;
-		screenData.xRot = rel_x_rot;
-		screenData.yRot = rel_y_rot;
-		screenData.zRot = rel_z_rot;
 	}
 	
 	public static void openVehicleTextureScreen(VehicleTextureManager textures) {

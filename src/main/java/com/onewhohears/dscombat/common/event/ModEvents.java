@@ -2,7 +2,6 @@ package com.onewhohears.dscombat.common.event;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.command.DSCParticleDebugCommand;
-import com.onewhohears.dscombat.command.DebugScreenPosCommand;
 import com.onewhohears.dscombat.command.DebugSlotPosCommand;
 import com.onewhohears.dscombat.command.MissileCommand;
 import com.onewhohears.dscombat.command.VehicleCommand;
@@ -22,7 +21,6 @@ public final class ModEvents {
 	public static void registerCommands(RegisterCommandsEvent event) {
 		new MissileCommand(event.getDispatcher());
 		new VehicleCommand(event.getDispatcher());
-		new DebugScreenPosCommand(event.getDispatcher());
 		new DSCParticleDebugCommand(event.getDispatcher());
 		new DebugSlotPosCommand(event.getDispatcher());
 		ConfigCommand.register(event.getDispatcher());

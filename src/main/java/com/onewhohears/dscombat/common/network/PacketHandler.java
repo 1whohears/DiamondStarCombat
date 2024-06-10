@@ -3,8 +3,6 @@ package com.onewhohears.dscombat.common.network;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddForceMoment;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddPart;
-import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleControl;
-import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleFuel;
 import com.onewhohears.dscombat.common.network.toclient.ToClientDataPackSynch;
 import com.onewhohears.dscombat.common.network.toclient.ToClientDelayedSound;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRWRWarning;
@@ -12,15 +10,12 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientRadarPings;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRemovePart;
 import com.onewhohears.dscombat.common.network.toclient.ToClientSynchGameRules;
 import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleChainUpdate;
+import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleControl;
 import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleExplode;
-import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleScreenDebug;
+import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleFuel;
 import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleTexture;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponAmmo;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponImpact;
-import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleCollide;
-import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleControl;
-import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleMoveRot;
-import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleToItem;
 import com.onewhohears.dscombat.common.network.toserver.ToServerCraftPlane;
 import com.onewhohears.dscombat.common.network.toserver.ToServerCraftWeapon;
 import com.onewhohears.dscombat.common.network.toserver.ToServerDismount;
@@ -30,8 +25,12 @@ import com.onewhohears.dscombat.common.network.toserver.ToServerPingSelect;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSeatPos;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSetRadarMode;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSwitchSeat;
+import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleCollide;
+import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleControl;
+import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleMoveRot;
 import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleShoot;
 import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleTexture;
+import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleToItem;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkDirection;
@@ -165,11 +164,6 @@ public final class PacketHandler {
 			.encoder(ToClientVehicleTexture::encode)
 			.decoder(ToClientVehicleTexture::new)
 			.consumerMainThread(ToClientVehicleTexture::handle)
-			.add();
-		net.messageBuilder(ToClientVehicleScreenDebug.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ToClientVehicleScreenDebug::encode)
-			.decoder(ToClientVehicleScreenDebug::new)
-			.consumerMainThread(ToClientVehicleScreenDebug::handle)
 			.add();
 		net.messageBuilder(ToClientVehicleExplode.class, index++, NetworkDirection.PLAY_TO_CLIENT)
 			.encoder(ToClientVehicleExplode::encode)

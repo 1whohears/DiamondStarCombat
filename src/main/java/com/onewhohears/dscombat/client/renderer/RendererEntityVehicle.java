@@ -67,5 +67,14 @@ public class RendererEntityVehicle<T extends EntityVehicle> extends EntityRender
 	public ResourceLocation getTextureLocation(T entity) {
 		return entity.textureManager.getDynamicTexture();
 	}
+
+	@Override
+	public boolean shouldRenderScreens(T vehicle) {
+		return false;
+	}
+
+	@Override
+	public void renderVehicleScreens(T vehicle, PoseStack poseStack, MultiBufferSource buffer, int packedLight, float partialTicks) {
+	}
 	
 }

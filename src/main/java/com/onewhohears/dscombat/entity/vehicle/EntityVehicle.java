@@ -137,7 +137,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public final WeaponSystem weaponSystem;
 	public final RadarSystem radarSystem;
 	
-	protected final EntityScreenData[] screens;
 	protected final Set<Integer> hitboxCollidedIds = new HashSet<>();
 	protected RotableHitbox[] hitboxes = new RotableHitbox[0];
 	
@@ -211,7 +210,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		partsManager = new PartsManager(this);
 		weaponSystem = new WeaponSystem(this);
 		radarSystem = new RadarSystem(this);
-		screens = createEntityScreens(vehicleStats);
 	}
 	
 	public RotableHitbox[] createRotableHitboxes(VehicleStats ap) {
@@ -223,14 +221,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 	
 	public void addVehicleScreens() {
-	}
-	
-	@Nullable
-	public EntityScreenData getScreenByTypeId(int type) {
-		for (int i = 0; i < screens.length; ++i) 
-			if (screens[i].type == type) 
-				return screens[i];
-		return null;
 	}
 	
 	@Override
@@ -2513,10 +2503,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	public RotableHitbox[] getHitboxes() {
 		return hitboxes;
-	}
-	
-	public EntityScreenData[] getVehicleScreens() {
-		return screens;
 	}
 	
 	public MastType getMastType() {

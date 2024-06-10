@@ -213,13 +213,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		radarSystem = new RadarSystem(this);
 		hitboxes = createRotableHitboxes(vehicleStats);
 		screens = createEntityScreens(vehicleStats);
-		setId(ENTITY_COUNTER.getAndAdd(hitboxes.length+1)+1);
-	}
-	
-	@Override
-	public void setId(int id) {
-		super.setId(id);
-		for (int i = 0; i < hitboxes.length; i++) hitboxes[i].setId(id+i+1);
 	}
 	
 	public RotableHitbox[] createRotableHitboxes(VehicleStats ap) {

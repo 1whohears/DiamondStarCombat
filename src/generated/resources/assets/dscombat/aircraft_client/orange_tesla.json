@@ -33,6 +33,91 @@
       "slot_ui_y": 45
     }
   ],
+  "model_data": {
+    "custom_anims": [
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": 40.0,
+        "input_axis": "YAW",
+        "model_part_key": "wheel",
+        "pivot": {
+          "x": 8.0,
+          "y": 19.0,
+          "z": 13.0
+        },
+        "rot_axis": "Z"
+      },
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": -40.0,
+        "input_axis": "YAW",
+        "model_part_key": "wl0",
+        "pivot": {
+          "x": 16.0,
+          "y": 6.0,
+          "z": 21.0
+        },
+        "rot_axis": "Y"
+      },
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": -40.0,
+        "input_axis": "YAW",
+        "model_part_key": "wr0",
+        "pivot": {
+          "x": -16.0,
+          "y": 6.0,
+          "z": 21.0
+        },
+        "rot_axis": "Y"
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wl0",
+        "pivot": {
+          "x": 16.0,
+          "y": 6.0,
+          "z": 21.0
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wl1",
+        "pivot": {
+          "x": 16.0,
+          "y": 6.0,
+          "z": -19.0
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wr0",
+        "pivot": {
+          "x": -16.0,
+          "y": 6.0,
+          "z": 21.0
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wr1",
+        "pivot": {
+          "x": -16.0,
+          "y": 6.0,
+          "z": -19.0
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      }
+    ],
+    "model_id": "orange_tesla"
+  },
   "presetId": "orange_tesla",
   "presetType": "standard"
 }

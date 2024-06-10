@@ -16,12 +16,19 @@ public abstract class VehicleModelTransform {
 	
 	private final String model_part_key;
 	public VehicleModelTransform(JsonObject data) {
-		this.model_part_key = data.get("model_part_key").getAsString();
+		this(data.get("model_part_key").getAsString());
+	}
+	protected VehicleModelTransform(String model_part_key) {
+		this.model_part_key = model_part_key;
 	}
 	public String getKey() {
 		return model_part_key;
 	}
 	public abstract Matrix4f getTransform(EntityVehicle entity, float partialTicks);
+	public void addTransform(VehicleModelTransform transform) {}
+	public boolean isGroup() {
+		return false;
+	}
 	
 	public static abstract class Pivot extends VehicleModelTransform {
 		private final Vector3f pivot;

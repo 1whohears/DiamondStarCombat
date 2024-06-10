@@ -29,7 +29,7 @@
           "z": 6.5
         },
         "rot_axis": "X",
-        "rot_rate": 120.0
+        "rot_rate": 160.0
       },
       {
         "anim_id": "wheel_rotation",
@@ -40,7 +40,7 @@
           "z": -6.5
         },
         "rot_axis": "X",
-        "rot_rate": 120.0
+        "rot_rate": 160.0
       },
       {
         "anim_id": "wheel_rotation",
@@ -51,7 +51,7 @@
           "z": 6.5
         },
         "rot_axis": "X",
-        "rot_rate": 120.0
+        "rot_rate": 160.0
       },
       {
         "anim_id": "wheel_rotation",
@@ -62,7 +62,7 @@
           "z": -6.5
         },
         "rot_axis": "X",
-        "rot_rate": 120.0
+        "rot_rate": 160.0
       }
     ],
     "model_id": "small_roller"

@@ -59,7 +59,7 @@
           "z": 30.0
         },
         "rot_axis": "X",
-        "rot_rate": 120.0
+        "rot_rate": 160.0
       },
       {
         "anim_id": "wheel_rotation",
@@ -70,7 +70,7 @@
           "z": 15.0
         },
         "rot_axis": "X",
-        "rot_rate": 120.0
+        "rot_rate": 160.0
       },
       {
         "anim_id": "wheel_rotation",
@@ -81,7 +81,7 @@
           "z": 0.0
         },
         "rot_axis": "X",
-        "rot_rate": 120.0
+        "rot_rate": 160.0
       },
       {
         "anim_id": "wheel_rotation",
@@ -92,7 +92,7 @@
           "z": -15.0
         },
         "rot_axis": "X",
-        "rot_rate": 120.0
+        "rot_rate": 160.0
       },
       {
         "anim_id": "wheel_rotation",
@@ -103,7 +103,7 @@
           "z": -30.0
         },
         "rot_axis": "X",
-        "rot_rate": 120.0
+        "rot_rate": 160.0
       },
       {
         "anim_id": "wheel_rotation",
@@ -114,7 +114,7 @@
           "z": 30.0
         },
         "rot_axis": "X",
-        "rot_rate": 120.0
+        "rot_rate": 160.0
       },
       {
         "anim_id": "wheel_rotation",
@@ -125,7 +125,7 @@
           "z": 15.0
         },
         "rot_axis": "X",
-        "rot_rate": 120.0
+        "rot_rate": 160.0
       },
       {
         "anim_id": "wheel_rotation",
@@ -136,7 +136,7 @@
           "z": 0.0
         },
         "rot_axis": "X",
-        "rot_rate": 120.0
+        "rot_rate": 160.0
       },
       {
         "anim_id": "wheel_rotation",
@@ -147,7 +147,7 @@
           "z": -15.0
         },
         "rot_axis": "X",
-        "rot_rate": 120.0
+        "rot_rate": 160.0
       },
       {
         "anim_id": "wheel_rotation",
@@ -158,7 +158,7 @@
           "z": -30.0
         },
         "rot_axis": "X",
-        "rot_rate": 120.0
+        "rot_rate": 160.0
       }
     ],
     "model_id": "mrbudger_tank"

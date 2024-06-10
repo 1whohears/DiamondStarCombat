@@ -128,6 +128,80 @@
       "slot_ui_y": 95
     }
   ],
+  "model_data": {
+    "custom_anims": [
+      {
+        "anim_id": "landing_gear",
+        "fold_angle": 90.0,
+        "model_part_key": "gear_front",
+        "pivot": {
+          "x": 0.0,
+          "y": -21.0,
+          "z": 56.0
+        },
+        "rot_axis": "X"
+      },
+      {
+        "anim_id": "landing_gear",
+        "fold_angle": -90.0,
+        "model_part_key": "gear_left",
+        "pivot": {
+          "x": 32.0,
+          "y": -10.0,
+          "z": 11.0
+        },
+        "rot_axis": "Z"
+      },
+      {
+        "anim_id": "landing_gear",
+        "fold_angle": 90.0,
+        "model_part_key": "gear_right",
+        "pivot": {
+          "x": -32.0,
+          "y": -10.0,
+          "z": 11.0
+        },
+        "rot_axis": "Z"
+      },
+      {
+        "anim_id": "spinning_radar",
+        "model_part_key": "radar",
+        "pivot": {
+          "x": 0.0,
+          "y": 21.0,
+          "z": -24.0
+        },
+        "radar_id": "ar20k",
+        "rot_axis": "Y",
+        "rot_rate": 2.0
+      },
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": 23.0,
+        "input_axis": "ROLL",
+        "model_part_key": "stick",
+        "pivot": {
+          "x": 8.0,
+          "y": -20.0,
+          "z": 83.5
+        },
+        "rot_axis": "Z"
+      },
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": -15.0,
+        "input_axis": "PITCH",
+        "model_part_key": "stick",
+        "pivot": {
+          "x": 8.0,
+          "y": -20.0,
+          "z": 83.5
+        },
+        "rot_axis": "X"
+      }
+    ],
+    "model_id": "e3sentry_plane"
+  },
   "presetId": "e3sentry_plane",
   "presetType": "standard"
 }

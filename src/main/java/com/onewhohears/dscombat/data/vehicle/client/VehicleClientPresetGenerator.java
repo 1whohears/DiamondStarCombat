@@ -211,6 +211,14 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 				.build());
 		int e3sentry_middle_x = 120;
 		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "e3sentry_plane")
+				.setCustomAnims(CustomAnimsBuilder.create()
+					.addLandingGearAnim("gear_front", 0, -21, 56, RotationAxis.X, 90)
+					.addLandingGearAnim("gear_left", 32, -10, 11, RotationAxis.Z, -90)
+					.addLandingGearAnim("gear_right", -32, -10, 11, RotationAxis.Z, 90)
+					.addSpinningRadarAnim("radar", 0, 21, -24, RotationAxis.Y, 2, "ar20k")
+					.addInputBoundRotAnim("stick", 8, -20, 83.5f, RotationAxis.Z, InputAxis.ROLL, 23)
+					.addInputBoundRotAnim("stick", 8, -20, 83.5f, RotationAxis.X, InputAxis.PITCH, -15)
+					.build())
 				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/e3sentry_plane.png")
 				.addUIPos(PartSlot.PILOT_SLOT_NAME, e3sentry_middle_x-18, 5)
 				.addUIPos("seat2", e3sentry_middle_x-18, 5+18)

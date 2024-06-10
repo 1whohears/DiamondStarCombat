@@ -196,6 +196,11 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 				.build());
 		int wood_middle_x = 118;
 		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "wooden_plane")
+				.setCustomAnims(CustomAnimsBuilder.create()
+						.addMotorRotAnim("blade", 0, 0, 20, RotationAxis.Z, 30)
+						.addLandingGearAnim("gear_front", 0, -6.5f, 4.5f, RotationAxis.X, 90)
+						.addLandingGearAnim("gear_back", 0, -6f, -26.5f, RotationAxis.X, -90)
+						.build())
 				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/wooden_plane.png")
 				.addUIPos(PartSlot.PILOT_SLOT_NAME, wood_middle_x, 43)
 				.addUIPos("left_wing_1", wood_middle_x-30, 43)

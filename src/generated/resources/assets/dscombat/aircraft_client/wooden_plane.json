@@ -33,6 +33,44 @@
       "slot_ui_y": 79
     }
   ],
+  "model_data": {
+    "custom_anims": [
+      {
+        "anim_id": "motor_rotation",
+        "model_part_key": "blade",
+        "pivot": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 20.0
+        },
+        "rot_axis": "Z",
+        "rot_rate": 30.0
+      },
+      {
+        "anim_id": "landing_gear",
+        "fold_angle": 90.0,
+        "model_part_key": "gear_front",
+        "pivot": {
+          "x": 0.0,
+          "y": -6.5,
+          "z": 4.5
+        },
+        "rot_axis": "X"
+      },
+      {
+        "anim_id": "landing_gear",
+        "fold_angle": -90.0,
+        "model_part_key": "gear_back",
+        "pivot": {
+          "x": 0.0,
+          "y": -6.0,
+          "z": -26.5
+        },
+        "rot_axis": "X"
+      }
+    ],
+    "model_id": "wooden_plane"
+  },
   "presetId": "wooden_plane",
   "presetType": "standard"
 }

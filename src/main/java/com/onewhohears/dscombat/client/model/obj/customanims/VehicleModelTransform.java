@@ -167,7 +167,7 @@ public abstract class VehicleModelTransform {
 		}
 		@Override
 		public Matrix4f getTransform(EntityVehicle entity, float partialTicks) {
-			if (!entity.isLandingGear()) return INVISIBLE;
+			if (entity.getLandingGearPos(partialTicks) == 1) return INVISIBLE;
 			return super.getTransform(entity, partialTicks);
 		}
 	}

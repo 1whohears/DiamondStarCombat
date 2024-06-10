@@ -8,7 +8,7 @@ import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModSounds;
 
-public class HeliPresets {
+public class NoahChopperPresets {
 	
 	public static final VehicleStats EMPTY_NOAH_CHOPPER = VehicleStats.Builder
 			.createHelicopter(DSCombatMod.MODID, "noah_chopper_empty")

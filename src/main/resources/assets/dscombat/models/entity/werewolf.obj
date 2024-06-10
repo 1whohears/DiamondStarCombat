@@ -1,6 +1,6 @@
 # Blender 4.1.0 Alpha
 # www.blender.org
-mtllib werewolf_done.mtl
+mtllib werewolf.mtl
 usemtl Material
 g body_Cube.006
 v 0.328016 1.052519 7.148799

@@ -7,7 +7,7 @@ import com.onewhohears.dscombat.data.vehicle.presets.BroncoPresets;
 import com.onewhohears.dscombat.data.vehicle.presets.CarPresets;
 import com.onewhohears.dscombat.data.vehicle.presets.EdenPresets;
 import com.onewhohears.dscombat.data.vehicle.presets.FelixPresets;
-import com.onewhohears.dscombat.data.vehicle.presets.HeliPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.NoahChopperPresets;
 import com.onewhohears.dscombat.data.vehicle.presets.JasonPresets;
 import com.onewhohears.dscombat.data.vehicle.presets.JaviPresets;
 import com.onewhohears.dscombat.data.vehicle.presets.PlanePresets;
@@ -383,7 +383,7 @@ public class ModItems {
 	
 	// HELICOPTERS
 	public static final RegistryObject<Item> NOAH_CHOPPER = ITEMS.register("noah_chopper", 
-			() -> new ItemVehicle(HeliPresets.DEFAULT_NOAH_CHOPPER.getId()));
+			() -> new ItemVehicle(NoahChopperPresets.DEFAULT_NOAH_CHOPPER.getId()));
 	
 	// CARS
 	public static final RegistryObject<Item> ORANGE_TESLA = ITEMS.register("orange_tesla", 

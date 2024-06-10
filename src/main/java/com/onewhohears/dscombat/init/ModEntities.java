@@ -5,7 +5,7 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.stats.TurretStats.RotBounds;
 import com.onewhohears.dscombat.data.vehicle.presets.BoatPresets;
 import com.onewhohears.dscombat.data.vehicle.presets.CarPresets;
-import com.onewhohears.dscombat.data.vehicle.presets.HeliPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.NoahChopperPresets;
 import com.onewhohears.dscombat.data.vehicle.presets.PlanePresets;
 import com.onewhohears.dscombat.data.vehicle.presets.SubPresets;
 import com.onewhohears.dscombat.entity.EntityParachute;
@@ -57,7 +57,7 @@ public class ModEntities {
 					PlanePresets.DEFAULT_WOODEN_PLANE.getId())));
 	public static final RegistryObject<EntityType<EntityHelicopter>> HELICOPTER = ENTITIES.register("helicopter", 
 			() -> createVehicleType((type, level) -> new EntityHelicopter(type, level, 
-					HeliPresets.DEFAULT_NOAH_CHOPPER.getId())));
+					NoahChopperPresets.DEFAULT_NOAH_CHOPPER.getId())));
 	public static final RegistryObject<EntityType<EntityGroundVehicle>> CAR = ENTITIES.register("car", 
 			() -> createVehicleType((type, level) -> new EntityGroundVehicle(type, level, 
 					CarPresets.DEFAULT_AXCEL_TRUCK.getId())));

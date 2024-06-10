@@ -8,12 +8,13 @@ import com.onewhohears.dscombat.data.vehicle.presets.BroncoPresets;
 import com.onewhohears.dscombat.data.vehicle.presets.CarPresets;
 import com.onewhohears.dscombat.data.vehicle.presets.EdenPresets;
 import com.onewhohears.dscombat.data.vehicle.presets.FelixPresets;
-import com.onewhohears.dscombat.data.vehicle.presets.HeliPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.NoahChopperPresets;
 import com.onewhohears.dscombat.data.vehicle.presets.JasonPresets;
 import com.onewhohears.dscombat.data.vehicle.presets.JaviPresets;
 import com.onewhohears.dscombat.data.vehicle.presets.PlanePresets;
 import com.onewhohears.dscombat.data.vehicle.presets.SubPresets;
 import com.onewhohears.dscombat.data.vehicle.presets.TankPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.WerewolfPresets;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 
 import net.minecraft.data.DataGenerator;
@@ -36,9 +37,9 @@ public class VehiclePresetGenerator extends JsonPresetGenerator<VehicleStats> {
 		addPresetToGenerate(JaviPresets.BOMBER_JAVI_PLANE);
 		addPresetToGenerate(JaviPresets.TRUCK_JAVI_PLANE);
 		
-		addPresetToGenerate(HeliPresets.EMPTY_NOAH_CHOPPER);
-		addPresetToGenerate(HeliPresets.UNARMED_NOAH_CHOPPER);
-		addPresetToGenerate(HeliPresets.DEFAULT_NOAH_CHOPPER);
+		addPresetToGenerate(NoahChopperPresets.EMPTY_NOAH_CHOPPER);
+		addPresetToGenerate(NoahChopperPresets.UNARMED_NOAH_CHOPPER);
+		addPresetToGenerate(NoahChopperPresets.DEFAULT_NOAH_CHOPPER);
 		
 		addPresetToGenerate(TankPresets.EMPTY_MRBUDGER_TANK);
 		addPresetToGenerate(TankPresets.UNARMED_MRBUDGER_TANK);
@@ -112,6 +113,8 @@ public class VehiclePresetGenerator extends JsonPresetGenerator<VehicleStats> {
 		addPresetToGenerate(SubPresets.EMPTY_GOOGLE_SUB);
 		addPresetToGenerate(SubPresets.UNARMED_GOOGLE_SUB);
 		addPresetToGenerate(SubPresets.DEFAULT_GOOGLE_SUB);
+		
+		addPresetToGenerate(WerewolfPresets.EMPTY_WEREWOLF);
 	}
     
     public VehiclePresetGenerator(DataGenerator output) {

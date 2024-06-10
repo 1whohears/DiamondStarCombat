@@ -9,6 +9,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.vehicle.RotableHitbox;
 
 import net.minecraft.world.entity.Entity;
@@ -30,19 +31,23 @@ public abstract class EntityMixin {
 		// Mojang decided to make this a ImmutableCollections so list.add throws an exception
 		List<VoxelShape> colliders = new ArrayList<>(list); 
 		Entity entity = (Entity)(Object)this;
+		if (entity.noPhysics) return colliders;
 		Vec3 move = pVec.get();
 		AABB entityBox = entity.getBoundingBox().expandTowards(move);
-		for (PartEntity<?> part : entity.level.getPartEntities()) {
-			if (entity.equals(part)) continue;
-			if (part.getParent().equals(entity)) continue;
-			if (part.distanceToSqr(entity) > 262144) continue;
-			if (!(part instanceof RotableHitbox hitbox)) continue;
-			boolean stuck = hitbox.handlePosibleCollision(colliders, entity, entityBox, move);
-			if (stuck) {
-				pVec.set(move.multiply(1, 0, 1));
-				entity.setPos(entity.position().add(0, 1E-7, 0));
-				entity.setOnGround(true);
-				entity.resetFallDistance();
+		AABB searchBox = entity.getBoundingBox().inflate(64);
+		List<EntityVehicle> vehicles = entity.level.getEntitiesOfClass(EntityVehicle.class, searchBox);
+		for (EntityVehicle vehicle : vehicles) {
+			for (PartEntity<?> part : vehicle.getHitboxes()) {
+				if (entity.equals(part)) continue;
+				if (part.getParent().equals(entity)) continue;
+				if (!(part instanceof RotableHitbox hitbox)) continue;
+				boolean stuck = hitbox.handlePosibleCollision(colliders, entity, entityBox, move);
+				/*if (stuck) {
+					pVec.set(move.multiply(1, 0, 1));
+					entity.setPos(entity.position().add(0, 1E-7, 0));
+					entity.setOnGround(true);
+					entity.resetFallDistance();
+				}*/
 			}
 		}
 		return colliders;

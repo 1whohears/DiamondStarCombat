@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.data.vehicle.client;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.model.obj.customanims.CustomAnimsBuilder;
+import com.onewhohears.dscombat.client.model.obj.customanims.VehicleModelTransform.InputAxis;
 import com.onewhohears.dscombat.client.model.obj.customanims.VehicleModelTransform.RotationAxis;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPresetGenerator;
 import com.onewhohears.dscombat.data.parts.PartSlot;
@@ -129,6 +130,10 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 				.build());
 		int nathan_middle_x = 120;
 		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "nathan_boat")
+				.setCustomAnims(CustomAnimsBuilder.create()
+					.addMotorRotAnim("engine/blade", 0, -4, -36, RotationAxis.Z, 43)
+					.addInputBoundRotAnim("engine", 0, 11, -20, RotationAxis.Y, InputAxis.YAW, 15)
+					.build())
 				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/nathan_boat.png")
 				.addUIPos(PartSlot.PILOT_SLOT_NAME, nathan_middle_x-18, 42+18*3)
 				.addUIPos("seat1", nathan_middle_x-18, 42)

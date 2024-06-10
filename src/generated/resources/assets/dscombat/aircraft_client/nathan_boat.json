@@ -72,7 +72,7 @@
     "custom_anims": [
       {
         "anim_id": "motor_rotation",
-        "model_part_key": "blade",
+        "model_part_key": "rudder/blade",
         "pivot": {
           "x": 0.0,
           "y": -4.0,
@@ -85,19 +85,7 @@
         "anim_id": "input_bound_rotation",
         "bound": 15.0,
         "input_axis": "YAW",
-        "model_part_key": "engine",
-        "pivot": {
-          "x": 0.0,
-          "y": 11.0,
-          "z": -20.0
-        },
-        "rot_axis": "Y"
-      },
-      {
-        "anim_id": "input_bound_rotation",
-        "bound": 15.0,
-        "input_axis": "YAW",
-        "model_part_key": "blade",
+        "model_part_key": "rudder",
         "pivot": {
           "x": 0.0,
           "y": 11.0,

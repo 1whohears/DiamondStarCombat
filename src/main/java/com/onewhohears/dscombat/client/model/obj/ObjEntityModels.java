@@ -75,7 +75,7 @@ public class ObjEntityModels implements ResourceManagerReloadListener {
 			StandaloneGeometryBakingContext ctx = StandaloneGeometryBakingContext.create(obj.modelLocation);
 			CompositeRenderable comp = obj.bakeRenderable(ctx);
 			models.put(key, comp);
-			LOGGER.debug("BAKED "+key+" "+obj.getRootComponentNames().size()+" "+obj.getConfigurableComponentNames().size());
+			LOGGER.debug("BAKED "+key+" "+obj.getRootComponentNames().size()+" "+obj.getConfigurableComponentNames());
 		});
 	}
 	

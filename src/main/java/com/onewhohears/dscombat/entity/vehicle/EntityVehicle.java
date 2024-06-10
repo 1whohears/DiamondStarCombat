@@ -34,7 +34,6 @@ import com.onewhohears.dscombat.data.parts.instance.StorageInstance;
 import com.onewhohears.dscombat.data.radar.RadarStats.RadarMode;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.vehicle.DSCPhyCons;
-import com.onewhohears.dscombat.data.vehicle.EntityScreenData;
 import com.onewhohears.dscombat.data.vehicle.VehicleInputManager;
 import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
 import com.onewhohears.dscombat.data.vehicle.VehicleSoundManager;
@@ -154,7 +153,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 */
 	public String preset;
 	private String assetId;
-	protected ItemStack item;
 	
 	/**
 	 * SERVER ONLY
@@ -202,7 +200,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		assetId = vehicleStats.getAssetId();
 		if (level.isClientSide) vehicleClientStats = VehicleClientPresets.get().get(assetId);
 		else vehicleClientStats = null;
-		item = vehicleStats.getItem();
 		blocksBuilding = true;
 		inputs = new VehicleInputManager();
 		soundManager = new VehicleSoundManager(this);
@@ -210,17 +207,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		partsManager = new PartsManager(this);
 		weaponSystem = new WeaponSystem(this);
 		radarSystem = new RadarSystem(this);
-	}
-	
-	public RotableHitbox[] createRotableHitboxes(VehicleStats ap) {
-		return ap.getRotableHitboxes(this);
-	}
-	
-	public EntityScreenData[] createEntityScreens(VehicleStats ap) {
-		return ap.getEntityScreens();
-	}
-	
-	public void addVehicleScreens() {
 	}
 	
 	@Override
@@ -279,9 +265,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		// get the preset data
 		vehicleStats = VehiclePresets.get().get(preset);
 		assetId = vehicleStats.getAssetId();
-		item = vehicleStats.getItem();
-		soundManager.loadSounds(vehicleStats);
-		hitboxes = createRotableHitboxes(vehicleStats);
 		CompoundTag presetNbt = vehicleStats.getDataAsNBT();
 		// merge if this entity hasn't merged yet
 		if (!nbt.getBoolean("merged_preset")) nbt.merge(presetNbt);
@@ -344,9 +327,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		// PRESET STUFF
 		if (VehiclePresets.get().has(preset)) {
 			vehicleStats = VehiclePresets.get().get(preset);
-			soundManager.loadSounds(vehicleStats);
-			hitboxes = createRotableHitboxes(vehicleStats);
-			item = vehicleStats.getItem();
 			assetId = vehicleStats.getAssetId();
 			vehicleClientStats = VehicleClientPresets.get().get(assetId);
 		}
@@ -377,13 +357,11 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	@Override
 	public void onRemovedFromWorld() {
 		super.onRemovedFromWorld();
-		
 	}
 	
 	@Override
 	public void onAddedToWorld() {
 		super.onAddedToWorld();
-		
 	}
 	
 	public VehicleStats getStats() {
@@ -398,6 +376,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public void init() {
 		if (!level.isClientSide) serverSetup();
 		else clientSetup();
+		soundManager.loadSounds(vehicleStats);
+		hitboxes = createRotableHitboxes(vehicleStats);
 	}
 	
 	/**
@@ -2004,7 +1984,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
      * @return the item stack with all of this plane's data 
      */
     public ItemStack getItem() {
-    	ItemStack stack = item.copy();
+    	ItemStack stack = vehicleStats.getItem();
     	CompoundTag tag = new CompoundTag();
     	addAdditionalSaveData(tag);
     	CompoundTag eTag = new CompoundTag();
@@ -2503,6 +2483,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	public RotableHitbox[] getHitboxes() {
 		return hitboxes;
+	}
+	
+	public RotableHitbox[] createRotableHitboxes(VehicleStats ap) {
+		return ap.getRotableHitboxes(this);
 	}
 	
 	public MastType getMastType() {

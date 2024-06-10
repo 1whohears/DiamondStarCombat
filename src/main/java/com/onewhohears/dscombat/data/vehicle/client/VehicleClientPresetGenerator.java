@@ -248,6 +248,18 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 				.build());
 		int axcel_middle_x = 120;
 		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "axcel_truck")
+				.setCustomAnims(CustomAnimsBuilder.create()
+					.addSpinningRadarAnim("radar", 1, 46, 15, RotationAxis.Y, 4.8f, "axcel_truck_radar")
+					.addInputBoundRotAnim("wheel", 7, 27, 26, RotationAxis.Z, InputAxis.YAW, 40)
+					.addInputBoundRotAnim("wl0", 15.875f, 6.0082f, 13.985f, RotationAxis.Y, InputAxis.YAW, -40)
+					.addInputBoundRotAnim("wr0", -15.875f, 6.0082f, 13.985f, RotationAxis.Y, InputAxis.YAW, -40)
+					.addWheelRotAnim("wl0", 15.875f, 6.0082f, 13.985f, RotationAxis.X, wheel_rot_rate)
+					.addWheelRotAnim("wr0", -15.875f, 6.0082f, 13.985f, RotationAxis.X, wheel_rot_rate)
+					.addWheelRotAnim("wl1", 15.875f, 6.0082f, -35.015f, RotationAxis.X, wheel_rot_rate)
+					.addWheelRotAnim("wr1", -15.875f, 6.0082f, -35.015f, RotationAxis.X, wheel_rot_rate)
+					.addWheelRotAnim("wl2", 15.875f, 6.0082f, -50.015f, RotationAxis.X, wheel_rot_rate)
+					.addWheelRotAnim("wr2", -15.875f, 6.0082f, -50.015f, RotationAxis.X, wheel_rot_rate)
+					.build())
 				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/axcel_truck.png")
 				.addUIPos(PartSlot.PILOT_SLOT_NAME, axcel_middle_x-9, 20)
 				.addUIPos("seat2", axcel_middle_x+9, 20)

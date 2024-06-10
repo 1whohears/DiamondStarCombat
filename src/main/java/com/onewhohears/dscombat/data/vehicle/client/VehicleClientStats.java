@@ -91,11 +91,8 @@ public class VehicleClientStats extends JsonPresetStats {
 	}
 	
 	public static UIPos getUIPosByIndex(int i, int x_start, int y_start) {
-		int x = x_start, y = y_start;
-		if (i != 0 && i % 9 == 0) {
-			y += 18;
-			x = x_start;
-		} else if (i != 0) x += 18;
+		int x = x_start + i % 9 * 18;
+		int y = y_start + (int)(i / 9) * 18;
 		return new UIPos(x, y);
 	}
 	

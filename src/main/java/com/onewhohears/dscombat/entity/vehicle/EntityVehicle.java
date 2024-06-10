@@ -137,9 +137,9 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public final WeaponSystem weaponSystem;
 	public final RadarSystem radarSystem;
 	
-	protected final RotableHitbox[] hitboxes;
-	protected final Set<Integer> hitboxCollidedIds = new HashSet<>();
 	protected final EntityScreenData[] screens;
+	protected final Set<Integer> hitboxCollidedIds = new HashSet<>();
+	protected RotableHitbox[] hitboxes = new RotableHitbox[0];
 	
 	private final Map<Integer, Integer> formerPassengersServer = new HashMap<>();
 	/**
@@ -211,7 +211,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		partsManager = new PartsManager(this);
 		weaponSystem = new WeaponSystem(this);
 		radarSystem = new RadarSystem(this);
-		hitboxes = createRotableHitboxes(vehicleStats);
 		screens = createEntityScreens(vehicleStats);
 	}
 	
@@ -292,6 +291,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		assetId = vehicleStats.getAssetId();
 		item = vehicleStats.getItem();
 		soundManager.loadSounds(vehicleStats);
+		hitboxes = createRotableHitboxes(vehicleStats);
 		CompoundTag presetNbt = vehicleStats.getDataAsNBT();
 		// merge if this entity hasn't merged yet
 		if (!nbt.getBoolean("merged_preset")) nbt.merge(presetNbt);
@@ -355,6 +355,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		if (VehiclePresets.get().has(preset)) {
 			vehicleStats = VehiclePresets.get().get(preset);
 			soundManager.loadSounds(vehicleStats);
+			hitboxes = createRotableHitboxes(vehicleStats);
 			item = vehicleStats.getItem();
 			assetId = vehicleStats.getAssetId();
 			vehicleClientStats = VehicleClientPresets.get().get(assetId);

@@ -58,13 +58,24 @@ public class RotableHitbox extends PartEntity<EntityVehicle> {
 	}
 	
 	public boolean handlePosibleCollision(List<VoxelShape> colliders, Entity entity, AABB aabb, Vec3 move) {
-		if (getParent().didEntityAlreadyCollide(entity) || !couldCollide(entity) || !hitbox.isInside(aabb, RotableAABB.SUB_COL_SKIN)) return false;
-		//System.out.println("HANDLE COLLISION "+entity+" "+move);
+		//System.out.println("==========");
+		//System.out.println("HANDLE COLLISION "+entity+" "+move+" "+this);
+		if (getParent().didEntityAlreadyCollide(entity)) {
+			//System.out.println("Already Collided");
+			return false;
+		}
+		if (!couldCollide(entity)) {
+			//System.out.println("Can't Collide");
+			return false;
+		}
+		if (!hitbox.isInside(aabb, RotableAABB.SUB_COL_SKIN)) {
+			//System.out.println("Not Inside");
+			return false;
+		}
 		// FIXME 4.1 walking on hitbox is sometimes doesn't allow sneaking
 		// FIXME 4.2 sometimes can't open vehicle inventories when the vehicle is on a boat hitbox
 		// FIXME 4.6 prevent entities from falling off when the chunks load
 		getParent().addHitboxCollider(entity);
-		//System.out.println("==========");
 		//System.out.println("PRE COLLISION "+entity.level.isClientSide+" "+entity.tickCount+" "+entity.position()+" "+move+" "+position());
 		boolean stuck = false;
 		if (isInside(entity)) {

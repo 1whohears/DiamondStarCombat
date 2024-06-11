@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.entity.vehicle;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -265,9 +264,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		}
 		// get the preset data
 		vehicleStats = VehiclePresets.get().get(preset);
-		soundManager.loadSounds(vehicleStats);
-		hitboxes = createRotableHitboxes(vehicleStats);
 		assetId = vehicleStats.getAssetId();
+		createRotableHitboxes();
 		CompoundTag presetNbt = vehicleStats.getDataAsNBT();
 		// merge if this entity hasn't merged yet
 		if (!nbt.getBoolean("merged_preset")) nbt.merge(presetNbt);
@@ -330,8 +328,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		// PRESET STUFF
 		if (VehiclePresets.get().has(preset)) {
 			vehicleStats = VehiclePresets.get().get(preset);
-			soundManager.loadSounds(vehicleStats);
-			hitboxes = createRotableHitboxes(vehicleStats);
+			createRotableHitboxes();
 			assetId = vehicleStats.getAssetId();
 			vehicleClientStats = VehicleClientPresets.get().get(assetId);
 		}
@@ -381,6 +378,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public void init() {
 		if (!level.isClientSide) serverSetup();
 		else clientSetup();
+		soundManager.loadSounds(vehicleStats);
 	}
 	
 	/**
@@ -2488,8 +2486,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		return hitboxes;
 	}
 	
-	public RotableHitbox[] createRotableHitboxes(VehicleStats ap) {
-		return ap.getRotableHitboxes(this);
+	public void createRotableHitboxes() {
+		hitboxes = vehicleStats.getRotableHitboxes(this);
 	}
 	
 	public MastType getMastType() {

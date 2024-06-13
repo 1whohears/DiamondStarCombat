@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.common.event;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.command.DSCGameRules;
+import com.onewhohears.dscombat.common.event.custom.RegisterPresetTypesEvent;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientDataPackSynch;
 import com.onewhohears.dscombat.common.network.toclient.ToClientSynchGameRules;
@@ -13,6 +14,7 @@ import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.vehicle.RotableHitboxes;
 
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.TickEvent;
@@ -88,10 +90,19 @@ public final class CommonForgeEvents {
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void addReloadListener(AddReloadListenerEvent event) {
+		MinecraftForge.EVENT_BUS.post(new RegisterPresetTypesEvent());
 		event.addListener(VehiclePresets.get());
 		event.addListener(WeaponPresets.get());
 		event.addListener(RadarPresets.get());
 		event.addListener(PartPresets.get());
+	}
+	
+	@SubscribeEvent(priority = EventPriority.NORMAL)
+	public static void registerPresetTypes(RegisterPresetTypesEvent event) {
+		VehiclePresets.get().registerDefaultPresetTypes();
+		WeaponPresets.get().registerDefaultPresetTypes();
+		RadarPresets.get().registerDefaultPresetTypes();
+		PartPresets.get().registerDefaultPresetTypes();
 	}
 	
 	/*@SubscribeEvent(priority = EventPriority.NORMAL)

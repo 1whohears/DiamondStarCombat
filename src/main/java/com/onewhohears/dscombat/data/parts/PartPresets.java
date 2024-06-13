@@ -21,7 +21,7 @@ public class PartPresets extends JsonPresetReloadListener<PartStats> {
 	private PartStats[] allPresets;
 	
 	@Override
-	protected void registerPresetTypes() {
+	public void registerDefaultPresetTypes() {
 		addPresetType(PartType.BUFF);
 		addPresetType(PartType.CHAFF_DISPENSER);
 		addPresetType(PartType.CHAIN_HOOK);

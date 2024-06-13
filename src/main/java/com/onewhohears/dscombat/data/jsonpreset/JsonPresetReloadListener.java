@@ -99,7 +99,6 @@ public abstract class JsonPresetReloadListener<T extends JsonPresetStats> extend
 		LOGGER.info("APPLYING PRESETS TO COMMON CACHE "+getName());
 		setup = false;
 		presetMap.clear();
-		registerPresetTypes();
 		map.forEach((key, je) -> { try {
 			LOGGER.info("ADD: "+key.toString()/*+" "+je.toString()*/);
 			JsonObject json = UtilParse.GSON.fromJson(je, JsonObject.class);
@@ -170,9 +169,11 @@ public abstract class JsonPresetReloadListener<T extends JsonPresetStats> extend
 	
 	/**
 	 * used to add a bunch of default preset types. 
-	 * see {@link #addPresetType(JsonPresetType)} for adding custom preset types. 
+	 * call {@link #addPresetType(JsonPresetType)} 
+	 * in the event {@link com.onewhohears.dscombat.common.event.custom.RegisterPresetTypesEvent}
+	 * to add custom preset types. 
 	 */
-	protected abstract void registerPresetTypes();
+	public abstract void registerDefaultPresetTypes();
 	
 	public void writeToBuffer(FriendlyByteBuf buffer) {
 		buffer.writeInt(getNum());

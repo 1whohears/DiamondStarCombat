@@ -24,7 +24,7 @@ public class RadarPresets extends JsonPresetReloadListener<RadarStats> {
 	}
 	
 	@Override
-	protected void registerPresetTypes() {
+	public void registerDefaultPresetTypes() {
 		addPresetType(RadarType.STANDARD);
 	}
 	

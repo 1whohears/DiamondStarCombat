@@ -31,7 +31,7 @@ public class VehiclePresets extends JsonPresetReloadListener<VehicleStats> {
 	}
 	
 	@Override
-	protected void registerPresetTypes() {
+	public void registerDefaultPresetTypes() {
 		addPresetType(VehicleType.PLANE);
 		addPresetType(VehicleType.HELICOPTER);
 		addPresetType(VehicleType.CAR);

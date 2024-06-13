@@ -37,7 +37,7 @@ public class WeaponPresets extends JsonPresetReloadListener<WeaponStats> {
 	}
 	
 	@Override
-	protected void registerPresetTypes() {
+	public void registerDefaultPresetTypes() {
 		addPresetType(WeaponType.NONE);
 		addPresetType(WeaponType.BOMB);
 		addPresetType(WeaponType.BUNKER_BUSTER);

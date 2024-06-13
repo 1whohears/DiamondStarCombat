@@ -6,7 +6,8 @@
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
 		"EntityMixin",
-		"EntityTypeMixin"
+		"EntityTypeMixin",
+		"LevelMixin"
 	],
 	"client": [
 		"ObjModelAccess",

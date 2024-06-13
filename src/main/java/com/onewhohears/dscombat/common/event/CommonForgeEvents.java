@@ -11,6 +11,7 @@ import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
 import com.onewhohears.dscombat.data.weapon.NonTickingMissileManager;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.dscombat.entity.vehicle.RotableHitboxes;
 
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
@@ -82,6 +83,7 @@ public final class CommonForgeEvents {
 		WeaponPresets.close();
 		RadarPresets.close();
 		PartPresets.close();
+		RotableHitboxes.onServerStop();
 	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)

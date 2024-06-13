@@ -102,7 +102,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.scores.Team;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
-import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
@@ -136,8 +135,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public final WeaponSystem weaponSystem;
 	public final RadarSystem radarSystem;
 	
+	protected final List<RotableHitbox> hitboxes = new ArrayList<>();
 	protected final Set<Integer> hitboxCollidedIds = new HashSet<>();
-	protected RotableHitbox[] hitboxes = new RotableHitbox[0];
 	
 	private final Map<Integer, Integer> formerPassengersServer = new HashMap<>();
 	/**
@@ -265,7 +264,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		// get the preset data
 		vehicleStats = VehiclePresets.get().get(preset);
 		assetId = vehicleStats.getAssetId();
-		createRotableHitboxes();
 		CompoundTag presetNbt = vehicleStats.getDataAsNBT();
 		// merge if this entity hasn't merged yet
 		if (!nbt.getBoolean("merged_preset")) nbt.merge(presetNbt);
@@ -328,7 +326,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		// PRESET STUFF
 		if (VehiclePresets.get().has(preset)) {
 			vehicleStats = VehiclePresets.get().get(preset);
-			createRotableHitboxes();
 			assetId = vehicleStats.getAssetId();
 			vehicleClientStats = VehicleClientPresets.get().get(assetId);
 		}
@@ -376,6 +373,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 * called on this entities first tick on client and server side
 	 */
 	public void init() {
+		refreshDimensions();
 		if (!level.isClientSide) serverSetup();
 		else clientSetup();
 		soundManager.loadSounds(vehicleStats);
@@ -1331,6 +1329,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
      */
 	public void serverSetup() {
 		partsManager.setupParts();
+		createRotableHitboxes();
 	}
 	
 	/**
@@ -2471,23 +2470,20 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		if (c != null) return team.isAlliedTo(c.getTeam());
     	return super.isAlliedTo(team);
     }
-    
-    @Override
-	public boolean isMultipartEntity() {
-		return getParts().length > 0;
-	}
 	
-	@Override
-	public PartEntity<?>[] getParts() {
-		return getHitboxes();
-	}
-	
-	public RotableHitbox[] getHitboxes() {
+	public List<RotableHitbox> getHitboxes() {
 		return hitboxes;
 	}
 	
 	public void createRotableHitboxes() {
-		hitboxes = vehicleStats.getRotableHitboxes(this);
+		if (level.isClientSide) return;
+		hitboxes.addAll(vehicleStats.createRotableHitboxes(this));
+		for (int i = 0; i < hitboxes.size(); ++i) level.addFreshEntity(hitboxes.get(i));
+	}
+	
+	public void addRotableHitboxForClient(RotableHitbox hitbox) {
+		if (!level.isClientSide) return;
+		hitboxes.add(hitbox);
 	}
 	
 	public MastType getMastType() {

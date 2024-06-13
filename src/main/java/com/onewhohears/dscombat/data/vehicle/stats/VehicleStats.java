@@ -1,5 +1,8 @@
 package com.onewhohears.dscombat.data.vehicle.stats;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonArray;
@@ -63,7 +66,6 @@ public abstract class VehicleStats extends JsonPresetStats {
 	private CompoundTag dataNBT;
 	private NonNullList<Ingredient> ingredients;
 	private ItemStack item;
-	private RotableHitbox[] hitboxes;
 	private EntityScreenData[] screens;
 	
 	public VehicleStats(ResourceLocation key, JsonObject json) {
@@ -154,17 +156,14 @@ public abstract class VehicleStats extends JsonPresetStats {
 		return defaultPaintJob;
 	}
 	
-	public RotableHitbox[] getRotableHitboxes(EntityVehicle parent) {
-		if (hitboxes == null) {
-			if (!getJsonData().has("hitboxes")) hitboxes = new RotableHitbox[0];
-			else {
-				JsonArray hba = getJsonData().get("hitboxes").getAsJsonArray();
-				hitboxes = new RotableHitbox[hba.size()];
-				for (int i = 0; i < hitboxes.length; ++i) {
-					JsonObject json = hba.get(i).getAsJsonObject();
-					hitboxes[i] = RotableHitbox.getFromJson(json, parent);
-				}
-			}
+	public List<RotableHitbox> createRotableHitboxes(EntityVehicle parent) {
+		if (!getJsonData().has("hitboxes")) return new ArrayList<>();
+		JsonArray hba = getJsonData().get("hitboxes").getAsJsonArray();
+		List<RotableHitbox> hitboxes = new ArrayList<>();
+		for (int i = 0; i < hba.size(); ++i) {
+			JsonObject json = hba.get(i).getAsJsonObject();
+			
+			hitboxes.add(RotableHitbox.getFromJson(json, parent));
 		}
 		return hitboxes;
 	}

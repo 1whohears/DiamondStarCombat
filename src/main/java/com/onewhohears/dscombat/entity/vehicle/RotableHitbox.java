@@ -4,22 +4,26 @@ import java.util.List;
 
 import com.google.gson.JsonObject;
 import com.mojang.math.Quaternion;
+import com.onewhohears.dscombat.init.DataSerializers;
+import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.math.RotableAABB;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityDimensions;
-import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.entity.PartEntity;
+import net.minecraftforge.entity.IEntityAdditionalSpawnData;
+import net.minecraftforge.network.NetworkHooks;
 
-public class RotableHitbox extends PartEntity<EntityVehicle> {
+public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData {
 	
 	public static RotableHitbox getFromJson(JsonObject json, EntityVehicle parent) {
 		String name = json.get("name").getAsString();
@@ -28,29 +32,62 @@ public class RotableHitbox extends PartEntity<EntityVehicle> {
 		return new RotableHitbox(parent, name, size, rel_pos);
 	}
 	
-	private final String name;
-	private final RotableAABB hitbox;
-	private final EntityDimensions size;
-	private final Vec3 rel_pos;
+	private EntityVehicle parent;
+	private String name;
+	private RotableAABB hitbox;
+	private Vec3 size, rel_pos;
 	
 	public RotableHitbox(EntityVehicle parent, String name, Vec3 size, Vec3 rel_pos) {
-		super(parent);
+		this(ModEntities.ROTABLE_HITBOX.get(), parent.level);
+		this.parent = parent;
 		this.name = name;
-		this.hitbox = new RotableAABB(size.x(), size.y(), size.z());
-		this.size = EntityDimensions.scalable(1f, 1f);
+		this.size = size;
 		this.rel_pos = rel_pos;
 		this.noPhysics = true;
+		initStats();
+	}
+	
+	public RotableHitbox(EntityType<?> type, Level level) {
+		super(type, level);
+	}
+	
+	@Override
+	public void writeSpawnData(FriendlyByteBuf buffer) {
+		buffer.writeInt(parent.getId());
+		buffer.writeUtf(name);
+		DataSerializers.VEC3.write(buffer, size);
+		DataSerializers.VEC3.write(buffer, rel_pos);
+	}
+
+	@Override
+	public void readSpawnData(FriendlyByteBuf buffer) {
+		int parentId = buffer.readInt();
+		parent = (EntityVehicle) level.getEntity(parentId);
+		parent.addRotableHitboxForClient(this);
+		name = buffer.readUtf();
+		size = DataSerializers.VEC3.read(buffer);
+		rel_pos = DataSerializers.VEC3.read(buffer);
+		initStats();
+	}
+	
+	protected void initStats() {
+		hitbox = new RotableAABB(size.x(), size.y(), size.z());
 		refreshDimensions();
 	}
 	
 	@Override
 	public void tick() {
+		if (parent == null || parent.isRemoved()) {
+			discard();
+			return;
+		}
 		positionSelf();
 		firstTick = false;
 	}
 	
 	protected void positionSelf() {
 		setOldPosAndRot();
+		if (hitbox == null) return;
 		Quaternion q = getParent().getQBySide();
 		Vec3 pos = getParent().position().add(UtilAngles.rotateVector(getRelPos(), q));
 		hitbox.setCenterAndRot(pos, q);
@@ -58,6 +95,7 @@ public class RotableHitbox extends PartEntity<EntityVehicle> {
 	}
 	
 	public boolean handlePosibleCollision(List<VoxelShape> colliders, Entity entity, AABB aabb, Vec3 move) {
+		if (hitbox == null) return false;
 		//System.out.println("==========");
 		//System.out.println("HANDLE COLLISION "+entity+" "+move+" "+this);
 		if (getParent().didEntityAlreadyCollide(entity)) {
@@ -173,19 +211,26 @@ public class RotableHitbox extends PartEntity<EntityVehicle> {
     	return couldCollide(entity);
     }
 	
-    @Override
-	public EntityDimensions getDimensions(Pose pPose) {
-		return size;
-	}
-	
 	@Override
 	public Packet<?> getAddEntityPacket() {
-		throw new UnsupportedOperationException();
+		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 	
 	@Override
 	public boolean shouldBeSaved() {
 		return false;
+	}
+	
+	@Override
+	public void onRemovedFromWorld() {
+		super.onRemovedFromWorld();
+		RotableHitboxes.removeHitbox(this);
+	}
+	
+	@Override
+	public void onAddedToWorld() {
+		super.onAddedToWorld();
+		RotableHitboxes.addHitbox(this);
 	}
 
 	@Override
@@ -199,5 +244,19 @@ public class RotableHitbox extends PartEntity<EntityVehicle> {
 	@Override
 	protected void addAdditionalSaveData(CompoundTag nbt) {
 	}
+	
+	public EntityVehicle getParent() {
+		return parent;
+	}
 
+	@Override
+	public boolean shouldRender(double pX, double pY, double pZ) {
+		return false;
+	}
+
+	@Override
+	public boolean shouldRenderAtSqrDistance(double pDistance) {
+		return false;
+	}
+	
 }

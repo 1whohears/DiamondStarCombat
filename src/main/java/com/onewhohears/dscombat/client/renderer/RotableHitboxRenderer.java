@@ -19,7 +19,7 @@ import net.minecraft.world.phys.Vec3;
 public interface RotableHitboxRenderer {
 	
 	public default boolean shouldDrawRotableHitboxes(EntityVehicle entity) {
-		if (entity.isInvisible() || !entity.isMultipartEntity()) return false;
+		if (entity.isInvisible() || entity.getHitboxes().size() == 0) return false;
 		Minecraft m = Minecraft.getInstance();
 		return !m.showOnlyReducedInfo() && m.getEntityRenderDispatcher().shouldRenderHitBoxes();
 	}

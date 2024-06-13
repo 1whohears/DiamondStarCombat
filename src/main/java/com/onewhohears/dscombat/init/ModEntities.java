@@ -22,6 +22,7 @@ import com.onewhohears.dscombat.entity.vehicle.EntityGroundVehicle;
 import com.onewhohears.dscombat.entity.vehicle.EntityHelicopter;
 import com.onewhohears.dscombat.entity.vehicle.EntityPlane;
 import com.onewhohears.dscombat.entity.vehicle.EntitySubmarine;
+import com.onewhohears.dscombat.entity.vehicle.RotableHitbox;
 import com.onewhohears.dscombat.entity.weapon.AntiRadarMissile;
 import com.onewhohears.dscombat.entity.weapon.EntityBomb;
 import com.onewhohears.dscombat.entity.weapon.EntityBullet;
@@ -67,6 +68,10 @@ public class ModEntities {
 	public static final RegistryObject<EntityType<EntitySubmarine>> SUBMARINE = ENTITIES.register("submarine", 
 			() -> createVehicleType((type, level) -> new EntitySubmarine(type, level, 
 					SubPresets.DEFAULT_ANDOLF_SUB.getId())));
+	
+	public static final RegistryObject<EntityType<RotableHitbox>> ROTABLE_HITBOX = ENTITIES.register("rotable_hitbox", 
+			() -> createEntityTypeFar((type, level) -> new RotableHitbox(type, level), 
+					EntityDimensions.scalable(0.1f, 0.1f)));
 	
 	/* 
 	 * IDEA 5 more vehicles

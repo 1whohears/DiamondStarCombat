@@ -210,6 +210,7 @@ public final class ClientModEvents {
 		// OTHER
 		event.registerEntityRenderer(ModEntities.SEAT.get(), RendererEntityInvisible::new);
 		event.registerEntityRenderer(ModEntities.FLARE.get(), RendererEntityInvisible::new);
+		event.registerEntityRenderer(ModEntities.ROTABLE_HITBOX.get(), RendererEntityInvisible::new);
 		event.registerEntityRenderer(ModEntities.CHAIN_HOOK.get(), 
 				(context) -> new RendererObjEntity<>(context,
                         new ChainHookModel("chain_hook")));

@@ -12,11 +12,9 @@ import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import com.onewhohears.dscombat.entity.vehicle.RotableHitbox;
 
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.entity.PartEntity;
 
 @Mixin(Entity.class)
 public abstract class EntityMixin {
@@ -32,13 +30,19 @@ public abstract class EntityMixin {
 		List<VoxelShape> colliders = new ArrayList<>(list); 
 		Entity entity = (Entity)(Object)this;
 		if (entity.noPhysics) return colliders;
-		if (!entity.getType().getDescriptionId().equals(EntityType.PLAYER.getDescriptionId())) return colliders;
+		//if (!entity.getType().getDescriptionId().equals(EntityType.PLAYER.getDescriptionId())) return colliders;
 		Vec3 move = pVec.get();
 		AABB entityBox = entity.getBoundingBox().expandTowards(move);
+		AABB searchBox = entity.getBoundingBox().inflate(64);
+		//List<EntityVehicle> vehicles = entity.level.getEntitiesOfClass(EntityVehicle.class, searchBox);
+		List<RotableHitbox> hitboxes = entity.level.getEntitiesOfClass(RotableHitbox.class, searchBox);
 		//System.out.println("++++++++++++++++++");
-		for (PartEntity<?> part : entity.level.getPartEntities()) {
-			if (part.getParent().equals(entity)) continue;
-			if (!(part instanceof RotableHitbox hitbox)) continue;
+		//for (PartEntity<?> part : entity.level.getPartEntities()) {
+		//for (EntityVehicle vehicle: vehicles)
+		for (RotableHitbox hitbox: hitboxes) {
+		//for (RotableHitbox hitbox: vehicle.getHitboxes()) {
+			if (entity.equals(hitbox.getParent())) continue;
+			//if (!(part instanceof RotableHitbox hitbox)) continue;
 			boolean stuck = hitbox.handlePosibleCollision(colliders, entity, entityBox, move);
 			if (stuck) {
 				pVec.set(move.multiply(1, 0, 1));

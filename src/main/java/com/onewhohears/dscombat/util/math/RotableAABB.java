@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import com.mojang.math.Quaternion;
 
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -21,6 +20,7 @@ public class RotableAABB {
 	public static final double SUB_COL_SKIN = 0;
 	
 	private Vec3 center, extents;
+	private double maxRadius;
 	private Quaternion rot = Quaternion.ONE.copy(), roti = Quaternion.ONE.copy();
 	private final List<VoxelShape> subColliders = new ArrayList<>();
 	
@@ -39,6 +39,7 @@ public class RotableAABB {
 	public RotableAABB(Vec3 center, Vec3 extents) {
 		this.center = center;
 		this.extents = extents;
+		this.maxRadius = extents.length();
 	}
 	
 	public RotableAABB copy() {
@@ -117,7 +118,9 @@ public class RotableAABB {
 	}
 	
 	public boolean isInside(AABB aabb) {
-		return isInside(aabb, 0);
+		boolean inside = isInside(aabb, 0);
+		//System.out.println("INTERSECT CHECK "+inside+" "+aabb+" "+this);
+		return inside;
 	}
 	
 	public boolean isInside(Vec3 pos, double skin) {
@@ -345,23 +348,31 @@ public class RotableAABB {
 		roti.conj();
 	}
 	
+	public double getMaxRadius() {
+		return maxRadius;
+	}
+	
 	public EntityDimensions getMaxDimensions() {
-		float x = (float) extents.x(), y = (float) extents.y(), z = (float) extents.z();
-		float max = Mth.sqrt(x*x+y*y+z*z);
+		float max = (float) getMaxRadius();
 		return EntityDimensions.scalable(max*2, max*2);
 	}
 	
 	public DisguisedAABB getDisguisedAABB(Vec3 pos) {
-		return new DisguisedAABB(this, pos, 0.5);
+		return new DisguisedAABB(this, pos, getMaxRadius());
 	}
 	
-	public AABB getMaxDimBox() {
+	public AABB makeMaxDimBox() {
 		EntityDimensions d = getMaxDimensions();
     	double pX = center.x, pY = center.y, pZ = center.z;
     	double f = d.width / 2.0F;
         double f1 = d.height / 2.0F;
         return new AABB(pX-f, pY-f1, pZ-f, 
         		pX+f, pY+f1, pZ+f);
+	}
+	
+	@Override
+	public String toString() {
+		return "RotableAABB:"+getCenter()+":"+getExtents();
 	}
 	
 }

@@ -7,16 +7,14 @@ import com.onewhohears.dscombat.data.vehicle.presets.BroncoPresets;
 import com.onewhohears.dscombat.data.vehicle.presets.CarPresets;
 import com.onewhohears.dscombat.data.vehicle.presets.EdenPresets;
 import com.onewhohears.dscombat.data.vehicle.presets.FelixPresets;
-import com.onewhohears.dscombat.data.vehicle.presets.NoahChopperPresets;
 import com.onewhohears.dscombat.data.vehicle.presets.JasonPresets;
 import com.onewhohears.dscombat.data.vehicle.presets.JaviPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.NoahChopperPresets;
 import com.onewhohears.dscombat.data.vehicle.presets.PlanePresets;
 import com.onewhohears.dscombat.data.vehicle.presets.SubPresets;
 import com.onewhohears.dscombat.data.vehicle.presets.TankPresets;
 import com.onewhohears.dscombat.item.ItemAmmo;
 import com.onewhohears.dscombat.item.ItemCreativeWand;
-import com.onewhohears.dscombat.item.ItemFlareDispenser;
-import com.onewhohears.dscombat.item.ItemFuelTank;
 import com.onewhohears.dscombat.item.ItemGasCan;
 import com.onewhohears.dscombat.item.ItemParachute;
 import com.onewhohears.dscombat.item.ItemPart;
@@ -195,9 +193,9 @@ public class ModItems {
 	
 	// FUEL TANKS
 	public static final RegistryObject<ItemPart> LIGHT_FUEL_TANK = ITEMS.register("light_fuel_tank", 
-			() -> new ItemFuelTank(16));
+			() -> new ItemPart(16));
 	public static final RegistryObject<ItemPart> HEAVY_FUEL_TANK = ITEMS.register("heavy_fuel_tank", 
-			() -> new ItemFuelTank(16));
+			() -> new ItemPart(16));
 	
 	// ENGINES
 	public static final RegistryObject<ItemPart> C6_ENGINE = ITEMS.register("c6_engine", 
@@ -282,7 +280,7 @@ public class ModItems {
 	
 	// FLARE DISPENSERS
 	public static final RegistryObject<ItemPart> BASIC_FLARE_DISPENSER = ITEMS.register("basic_flare_dispenser", 
-			() -> new ItemFlareDispenser(16));
+			() -> new ItemPart(16));
 	
 	// WEAPON PARTS
 	public static final RegistryObject<ItemPart> XM12 = ITEMS.register("xm12", 

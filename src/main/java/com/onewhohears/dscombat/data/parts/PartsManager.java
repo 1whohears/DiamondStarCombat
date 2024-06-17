@@ -219,7 +219,7 @@ public class PartsManager {
 		if (slot == null) return false;
 		Entity pilot = null;
 		if (slot.isPilotSlot()) pilot = parent.getControllingPassenger();
-		slot.removePartData(parent);
+		slot.setPartDamaged(parent);
 		if (pilot != null && pilot.getVehicle() == null) {
 			SeatInstance<?> seatdata = getDefaultSeat();
 			slot.addPartData(seatdata, parent);

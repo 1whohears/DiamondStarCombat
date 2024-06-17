@@ -1,11 +1,16 @@
 package com.onewhohears.dscombat.data.parts.instance;
 
+import java.util.List;
+
 import com.onewhohears.dscombat.data.parts.LoadableRecipePartInstance;
 import com.onewhohears.dscombat.data.parts.stats.FuelTankStats;
-import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.world.item.TooltipFlag;
 
 public class FuelTankInstance<T extends FuelTankStats> extends PartInstance<T> implements LoadableRecipePartInstance {
 	
@@ -19,11 +24,6 @@ public class FuelTankInstance<T extends FuelTankStats> extends PartInstance<T> i
 	public void setFilled(String param) {
 		super.setFilled(param);
 		fuel = getStats().getMaxFuel();
-	}
-
-	@Override
-	public boolean isSetup(String slotId, EntityVehicle craft) {
-		return false;
 	}
 	
 	@Override
@@ -124,6 +124,12 @@ public class FuelTankInstance<T extends FuelTankStats> extends PartInstance<T> i
 	@Override
 	public String getContinuity() {
 		return "";
+	}
+
+	@Override
+	public void addToolTips(List<Component> tips, TooltipFlag isAdvanced) {
+		tips.add(UtilMCText.literal("Fuel: "+fuel+"/"+getStats().getMaxFuel()).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		super.addToolTips(tips, isAdvanced);
 	}
 
 }

@@ -5,15 +5,14 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.data.parts.PartPresets;
+import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 import com.onewhohears.dscombat.data.parts.stats.PartStats;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.util.UtilItem;
-import com.onewhohears.dscombat.util.UtilMCText;
 import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -74,20 +73,17 @@ public class ItemPart extends Item {
 	
 	@Override
 	public Component getName(ItemStack stack) {
-		PartStats data = getPartStats(stack);
-		if (data != null) return data.getDisplayNameComponent().setStyle(Style.EMPTY.withColor(0x55FF55));
-		return UtilMCText.translatable(getDescriptionId()).setStyle(Style.EMPTY.withColor(0x55FF55));
+		return getPartInstance(stack).getItemName();
 	}
 	
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tips, TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tips, isAdvanced);
-		getPartStats(stack).addToolTips(tips, isAdvanced);
+		getPartInstance(stack).addToolTips(tips, isAdvanced);
 	}
 	
-	public PartStats getPartStats(ItemStack stack) {
-		if (stack.hasTag()) return UtilParse.getPartStatsFromCompound(stack.getTag());
-		return PartPresets.get().get(getDefaultPartPresetId());
+	public PartInstance<?> getPartInstance(ItemStack stack) {
+		return UtilParse.parsePartFromItem(stack, getDefaultPartPresetId());
 	}
 
 }

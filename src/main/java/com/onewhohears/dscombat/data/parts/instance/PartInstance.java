@@ -1,14 +1,23 @@
 package com.onewhohears.dscombat.data.parts.instance;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.onewhohears.dscombat.data.jsonpreset.JsonPresetInstance;
 import com.onewhohears.dscombat.data.parts.SlotType;
 import com.onewhohears.dscombat.data.parts.stats.PartStats;
 import com.onewhohears.dscombat.entity.parts.EntityPart;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.dscombat.util.UtilMCText;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.phys.Vec3;
 
 public abstract class PartInstance<T extends PartStats> extends JsonPresetInstance<T> {
@@ -78,38 +87,41 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 		this.relPos = pos;
 	}
 	
-	public void serverSetup(EntityVehicle craft, String slotId, Vec3 pos) {
-		if (getStats().hasExternalEntity() && !isEntitySetup(slotId, craft)) {
-			EntityPart part = (EntityPart) getStats().getExernalEntityType().create(craft.level);
-			setUpPartEntity(part, craft, slotId, pos, getStats().getExternalEntityDefaultHealth());
-			craft.level.addFreshEntity(part);
-		}
+	protected void serverSetup(EntityVehicle craft, String slotId, Vec3 pos) {
+		if (hasExternalEntity() && !isDamaged()) addEntity(craft, slotId, pos);
 	}
 	
-	public void clientSetup(EntityVehicle craft, String slotId, Vec3 pos) {
+	protected void clientSetup(EntityVehicle craft, String slotId, Vec3 pos) {
 		
+	}
+	
+	public boolean canSetup() {
+		return !(isDamagedPreventsSetup() && isDamaged());
+	}
+	
+	public boolean isDamagedPreventsSetup() {
+		return true;
 	}
 	
 	public void setup(EntityVehicle craft, String slotId, Vec3 pos) {
 		//System.out.println("setting up part "+this+" client side "+craft.level.isClientSide+" slot "+slotId);
 		setParent(craft);
 		setRelPos(pos);
+		if (craft.level.isClientSide) clientSetup(craft, slotId, pos);
+		else serverSetup(craft, slotId, pos);
 	}
 	
-	public abstract boolean isSetup(String slotId, EntityVehicle craft);
-	
-	public void serverRemove(String slotId) {
-		if (getStats().hasExternalEntity()) {
-			removeEntity(slotId);
-		}
+	protected void serverRemove(String slotId) {
+		if (hasExternalEntity()) removeEntity(slotId);
 	}
 	
-	public void clientRemove(String slotId) {
+	protected void clientRemove(String slotId) {
 		
 	}
 	
-	public void remove(String slotId) {
-		
+	public void remove(EntityVehicle parent, String slotId) {
+		if (parent.level.isClientSide) clientRemove(slotId);
+		else serverRemove(slotId);
 	}
 	
 	public void tick(String slotId) {
@@ -140,6 +152,19 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 				part.discard();
 	}
 	
+	public void addEntity(EntityVehicle craft, String slotId, Vec3 pos) {
+		if (isEntitySetup(slotId, craft)) return;
+		EntityPart part = createEntity(craft, slotId);
+		if (part == null) return;
+		setUpPartEntity(part, craft, slotId, pos, getStats().getExternalEntityDefaultHealth());
+		craft.level.addFreshEntity(part);
+	}
+	
+	@Nullable
+	protected EntityPart createEntity(EntityVehicle vehicle, String slotId) {
+		return (EntityPart) getStats().getExernalEntityType().create(vehicle.level);
+	}
+	
 	public void setUpPartEntity(EntityPart part, EntityVehicle craft, String slotId, Vec3 pos, float health) {
 		part.setSlotId(slotId);
 		part.setRelativePos(pos);
@@ -162,12 +187,25 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 	
 	public void onDamaged(EntityVehicle parent, String slotId) {
 		setDamaged(true);
-		if (parent.level.isClientSide) return;
-		if (getStats().hasExternalEntity()) removeEntity(slotId);
+		remove(parent, slotId);
 	}
 	
-	public void onRepaired(EntityVehicle parent, String slotId) {
+	public void onRepaired(EntityVehicle parent, String slotId, Vec3 pos) {
 		setDamaged(false);
+		if (canSetup()) setup(parent, slotId, pos);
+	}
+	
+	public void addToolTips(List<Component> tips, TooltipFlag isAdvanced) {
+		if (isDamaged()) tips.add(UtilMCText.translatable("info.dscombat.damaged").setStyle(Style.EMPTY.withColor(0xCC0000)));
+		getStats().addToolTips(tips, isAdvanced);
+	}
+	
+	public MutableComponent getItemName() {
+		return getStats().getDisplayNameComponent().setStyle(Style.EMPTY.withColor(0x55FF55));
+	}
+	
+	public boolean hasExternalEntity() {
+		return getStats().hasExternalEntity();
 	}
 	
 }

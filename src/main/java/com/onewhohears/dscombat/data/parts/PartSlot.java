@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddPart;
+import com.onewhohears.dscombat.common.network.toclient.ToClientDamagePart;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRemovePart;
 import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
@@ -91,17 +92,11 @@ public class PartSlot {
 	}
 	
 	public void serverSetup(EntityVehicle plane) {
-		if (filled()) {
-			data.setup(plane, slotId, pos);
-			data.serverSetup(plane, slotId, pos);
-		}
+		if (filled() && data.canSetup()) data.setup(plane, slotId, pos);
 	}
 	
 	public void clientSetup(EntityVehicle plane) {
-		if (filled()) {
-			data.setup(plane, slotId, pos);
-			data.clientSetup(plane, slotId, pos);
-		}
+		if (filled() && data.canSetup()) data.setup(plane, slotId, pos);
 	}
 	
 	protected void tick() {
@@ -117,10 +112,8 @@ public class PartSlot {
 		if (!isCompatible(data)) return false;
 		this.data = data;
 		if (plane == null) return true;
-		data.setup(plane, slotId, pos);
-		if (plane.level.isClientSide) data.clientSetup(plane, slotId, pos);
-		else {
-			data.serverSetup(plane, slotId, pos);
+		if (data.canSetup()) data.setup(plane, slotId, pos);
+		if (!plane.level.isClientSide) {
 			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> plane), 
 					new ToClientAddPart(plane.getId(), slotId, data));
 		}
@@ -129,10 +122,8 @@ public class PartSlot {
 	
 	public boolean removePartData(EntityVehicle plane) {
 		if (!filled()) return false;
-		data.remove(slotId);
-		if (plane.level.isClientSide) data.clientRemove(slotId);
-		else {
-			data.serverRemove(slotId);
+		data.remove(plane, slotId);
+		if (!plane.level.isClientSide) {
 			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> plane), 
 					new ToClientRemovePart(plane.getId(), slotId));
 		}
@@ -142,7 +133,21 @@ public class PartSlot {
 	
 	public boolean setPartDamaged(EntityVehicle vehicle) {
 		if (!filled()) return false;
-		
+		data.onDamaged(vehicle, slotId);
+		if (!vehicle.level.isClientSide) {
+			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> vehicle), 
+					new ToClientDamagePart(vehicle.getId(), slotId, true));
+		}
+		return true;
+	}
+	
+	public boolean setPartRepaired(EntityVehicle vehicle) {
+		if (!filled()) return false;
+		data.onRepaired(vehicle, slotId, pos);
+		if (!vehicle.level.isClientSide) {
+			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> vehicle), 
+					new ToClientDamagePart(vehicle.getId(), slotId, false));
+		}
 		return true;
 	}
 	

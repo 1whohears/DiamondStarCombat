@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.crafting;
 
 import com.onewhohears.dscombat.data.parts.instance.FuelTankInstance;
 import com.onewhohears.dscombat.init.ModRecipes;
-import com.onewhohears.dscombat.item.ItemFuelTank;
+import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.dscombat.item.ItemGasCan;
 
 import net.minecraft.resources.ResourceLocation;
@@ -27,7 +27,7 @@ public class FuelTankLoadRecipe extends PartItemLoadRecipe<FuelTankInstance<?>> 
 
 	@Override
 	public boolean isLoadablePartItem(ItemStack stack) {
-		return stack.getItem() instanceof ItemFuelTank;
+		return stack.is(ModTags.Items.VEHICLE_PART_FUEL_TANK);
 	}
 
 	@Override

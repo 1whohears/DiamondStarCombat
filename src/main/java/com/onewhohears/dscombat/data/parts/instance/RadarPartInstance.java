@@ -27,17 +27,9 @@ public class RadarPartInstance<T extends RadarPartStats> extends PartInstance<T>
 	}
 	
 	@Override
-	public boolean isSetup(String slotId, EntityVehicle craft) {
-		RadarInstance<?> data = craft.radarSystem.get(getStats().getRadarId(), slotId);
-		if (data == null) return false;
-		return true;
-	}
-	
-	@Override
-	public void remove(String slotId) {
-		super.serverRemove(slotId);
-		if (getParent() == null) return;
-		getParent().radarSystem.removeRadar(getStats().getRadarId(), slotId);
+	public void remove(EntityVehicle parent, String slotId) {
+		super.remove(parent, slotId);
+		parent.radarSystem.removeRadar(getStats().getRadarId(), slotId);
 	}
 
 }

@@ -83,6 +83,18 @@ public class UtilClientPacket {
 		}
 	}
 	
+	public static void damagePartPacket(int id, String slotId, boolean damaged) {
+		Minecraft m = Minecraft.getInstance();
+		Level world = m.level;
+		if (world.getEntity(id) instanceof EntityVehicle plane) {
+			PartSlot slot = plane.partsManager.getSlot(slotId);
+			if (slot != null) {
+				if (damaged) slot.setPartDamaged(plane);
+				else slot.setPartRepaired(plane);
+			}
+		}
+	}
+	
 	public static void setAircraftFuel(int id, float[] fuels) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;

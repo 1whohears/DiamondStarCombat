@@ -12,11 +12,6 @@ public class BuffInstance<T extends BuffStats> extends PartInstance<T> {
 	}
 	
 	@Override
-	public boolean isSetup(String slotId, EntityVehicle craft) {
-		return false;
-	}
-	
-	@Override
 	public void serverSetup(EntityVehicle craft, String slotId, Vec3 pos) {
 		super.serverSetup(craft, slotId, pos);
 		switch (getStats().getBuffType()) {

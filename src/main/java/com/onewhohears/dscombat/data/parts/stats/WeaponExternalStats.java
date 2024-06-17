@@ -32,4 +32,9 @@ public class WeaponExternalStats extends WeaponPartStats {
 		return changeLaunchPitch;
 	}
 
+	@Override
+	public boolean hasExternalEntity() {
+		return true;
+	}
+
 }

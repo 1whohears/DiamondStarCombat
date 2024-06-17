@@ -132,6 +132,15 @@ public class UtilParse {
 	}
 	
 	@Nullable
+	public static PartInstance<?> parsePartFromItem(ItemStack stack, String defaultPartPresetId) {
+		//System.out.println("parsePartFromItem = "+stack+" "+stack.getTag());
+		if (stack.hasTag()) return parsePartFromCompound(stack.getTag());
+		PartStats stats = PartPresets.get().get(defaultPartPresetId);
+		if (stats == null) return null;
+		return stats.createPartInstance();
+	}
+	
+	@Nullable
 	public static PartInstance<?> parsePartFromItem(ItemStack stack) {
 		//System.out.println("parsePartFromItem = "+stack+" "+stack.getTag());
 		if (stack.hasTag()) return parsePartFromCompound(stack.getTag());

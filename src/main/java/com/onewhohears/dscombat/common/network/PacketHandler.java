@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.common.network;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddForceMoment;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddPart;
+import com.onewhohears.dscombat.common.network.toclient.ToClientDamagePart;
 import com.onewhohears.dscombat.common.network.toclient.ToClientDataPackSynch;
 import com.onewhohears.dscombat.common.network.toclient.ToClientDelayedSound;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRWRWarning;
@@ -204,6 +205,11 @@ public final class PacketHandler {
 			.encoder(ToServerSetRadarMode::encode)
 			.decoder(ToServerSetRadarMode::new)
 			.consumerMainThread(ToServerSetRadarMode::handle)
+			.add();
+		net.messageBuilder(ToClientDamagePart.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ToClientDamagePart::encode)
+			.decoder(ToClientDamagePart::new)
+			.consumerMainThread(ToClientDamagePart::handle)
 			.add();
 	}
 	

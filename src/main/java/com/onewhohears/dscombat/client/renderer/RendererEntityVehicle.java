@@ -30,7 +30,7 @@ public class RendererEntityVehicle<T extends EntityVehicle> extends EntityRender
 		//return RenderType.entityTranslucent(texture);
 		return RenderType.armorCutoutNoCull(texture); // is this faster?
 	}
-	// FIXME 9 need to eventually turn all vehicles into obj models and update their screens
+	
 	protected final EntityControllableModel<T> model;
 	
 	public RendererEntityVehicle(Context context, EntityControllableModel<T> model) {

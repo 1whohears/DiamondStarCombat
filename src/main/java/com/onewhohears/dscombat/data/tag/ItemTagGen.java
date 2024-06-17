@@ -55,6 +55,8 @@ public class ItemTagGen extends ItemTagsProvider {
 		tag(ModTags.Items.VEHICLE_PART)
 			.addTag(ModTags.Items.VEHICLE_PART_WEAPON)
 			.addTag(ModTags.Items.VEHICLE_PART_ENGINE)
+			.addTag(ModTags.Items.VEHICLE_PART_FUEL_TANK)
+			.addTag(ModTags.Items.VEHICLE_PART_FLARES)
 			.add(ModItems.DATA_LINK.get(), ModItems.NIGHT_VISION_HUD.get(), ModItems.RADIO.get(), ModItems.ARMOR_PIECE.get())
 			.add(ModItems.GIMBAL_CAMERA.get(), ModItems.SMALL_STORAGE_BOX.get(), ModItems.MED_STORAGE_BOX.get(), ModItems.LARGE_STORAGE_BOX.get())
 			.add(ModItems.AR500.get(), ModItems.AR1K.get(), ModItems.AR2K.get(), ModItems.GR200.get())
@@ -64,7 +66,7 @@ public class ItemTagGen extends ItemTagsProvider {
 		tag(ModTags.Items.VEHICLE_PART_WEAPON)
 			.addTag(ModTags.Items.VEHICLE_TURRET)
 			.add(ModItems.XM12.get(), ModItems.LIGHT_MISSILE_RACK.get(), ModItems.HEAVY_MISSILE_RACK.get(), ModItems.BOMB_RACK.get())
-			.add(ModItems.ADL.get(), ModItems.VLS.get(), ModItems.BASIC_FLARE_DISPENSER.get());
+			.add(ModItems.ADL.get(), ModItems.VLS.get());
 		tag(ModTags.Items.VEHICLE_TURRET)
 			.add(ModItems.AA_TURRET.get(), ModItems.MINIGUN_TURRET.get(), ModItems.CIWS.get(), ModItems.MARK45_CANNON.get())
 			.add(ModItems.HEAVY_TANK_TURRET.get(), ModItems.MARK7_CANNON.get(), ModItems.STEVE_UP_SMASH.get(), ModItems.SAM_LAUNCHER.get())
@@ -84,6 +86,8 @@ public class ItemTagGen extends ItemTagsProvider {
 			.add(ModItems.C6_ENGINE.get(), ModItems.C12_ENGINE.get());
 		tag(ModTags.Items.VEHICLE_PART_FUEL_TANK)
 			.add(ModItems.LIGHT_FUEL_TANK.get(), ModItems.HEAVY_FUEL_TANK.get());
+		tag(ModTags.Items.VEHICLE_PART_FLARES)
+			.add(ModItems.BASIC_FLARE_DISPENSER.get());
 	}
 	
 }

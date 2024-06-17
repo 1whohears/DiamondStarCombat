@@ -3,7 +3,6 @@ package com.onewhohears.dscombat.data.parts.instance;
 import com.onewhohears.dscombat.common.container.StorageBoxContainer;
 import com.onewhohears.dscombat.common.container.menu.StorageBoxContainerMenu;
 import com.onewhohears.dscombat.data.parts.stats.StorageStats;
-import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.util.UtilItem;
 
 import net.minecraft.nbt.CompoundTag;
@@ -40,11 +39,6 @@ public class StorageInstance<T extends StorageStats> extends PartInstance<T> {
 	
 	public StorageBoxContainer getItems() {
 		return container;
-	}
-
-	@Override
-	public boolean isSetup(String slotId, EntityVehicle craft) {
-		return false;
 	}
 
 }

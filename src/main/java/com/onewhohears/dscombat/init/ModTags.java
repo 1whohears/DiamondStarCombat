@@ -73,6 +73,7 @@ public class ModTags {
 		public static final TagKey<Item> VEHICLE_ENGINE_INTERNAL_SPIN = tag("vehicle_part/engine/internal_spin");
 		public static final TagKey<Item> VEHICLE_ENGINE_INTERNAL_RADIAL = tag("vehicle_part/engine/internal_radial");
 		public static final TagKey<Item> VEHICLE_ENGINE_EXTERNAL_PUSH = tag("vehicle_part/engine/external_push");
+		public static final TagKey<Item> VEHICLE_PART_FLARES = tag("vehicle_part/flares");
 		public static final TagKey<Item> VEHICLE_PART_WEAPON = tag("vehicle_part/weapon");
 		public static final TagKey<Item> VEHICLE_TURRET = tag("vehicle_part/weapon/turret");
 		public static final TagKey<Item> VEHICLE = tag("vehicle");

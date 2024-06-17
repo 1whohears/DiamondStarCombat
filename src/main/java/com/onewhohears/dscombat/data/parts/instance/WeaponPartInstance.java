@@ -71,7 +71,6 @@ public class WeaponPartInstance<T extends WeaponPartStats> extends PartInstance<
 	
 	@Override
 	public void setup(EntityVehicle craft, String slotId, Vec3 pos) {
-		super.setup(craft, slotId, pos);
 		WeaponInstance<?> data = craft.weaponSystem.get(weapon, slotId);
 		if (data == null) {
 			if (!WeaponPresets.get().has(weapon)) return;
@@ -83,20 +82,13 @@ public class WeaponPartInstance<T extends WeaponPartStats> extends PartInstance<
 		data.setCurrentAmmo(ammo);
 		data.setLaunchPos(pos);
 		if (!craft.level.isClientSide) data.updateClientAmmo(craft);
+		super.setup(craft, slotId, pos);
 	}
 	
 	@Override
-	public boolean isSetup(String slotId, EntityVehicle craft) {
-		WeaponInstance<?> data = craft.weaponSystem.get(weapon, slotId);
-		if (data == null) return false;
-		return data.getCurrentAmmo() == ammo;
-	}
-	
-	@Override
-	public void remove(String slotId) {
-		super.remove(slotId);
-		if (getParent() == null) return;
-		getParent().weaponSystem.removeWeapon(weapon, slotId);
+	public void remove(EntityVehicle parent, String slotId) {
+		super.remove(parent, slotId);
+		parent.weaponSystem.removeWeapon(weapon, slotId);
 	}
 	
 	@Override

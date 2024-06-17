@@ -2,11 +2,11 @@ package com.onewhohears.dscombat.data.parts.instance;
 
 import com.onewhohears.dscombat.data.parts.LoadableRecipePartInstance;
 import com.onewhohears.dscombat.data.parts.stats.FlareDispenserStats;
-import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.weapon.EntityFlare;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.level.Level;
 
 public class FlareDispenserInstance<T extends FlareDispenserStats> extends PartInstance<T> implements LoadableRecipePartInstance {
@@ -46,11 +46,6 @@ public class FlareDispenserInstance<T extends FlareDispenserStats> extends PartI
 	public void writeBuffer(FriendlyByteBuf buffer) {
 		super.writeBuffer(buffer);
 		buffer.writeInt(flares);
-	}
-	
-	@Override
-	public boolean isSetup(String slotId, EntityVehicle craft) {
-		return false;
 	}
 	
 	/**
@@ -133,6 +128,11 @@ public class FlareDispenserInstance<T extends FlareDispenserStats> extends PartI
 	@Override
 	public String getContinuity() {
 		return "";
+	}
+
+	@Override
+	public MutableComponent getItemName() {
+		return super.getItemName().append(" "+flares+"/"+getStats().getMaxFlares());
 	}
 
 }

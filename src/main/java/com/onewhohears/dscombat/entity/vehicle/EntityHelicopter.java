@@ -41,7 +41,6 @@ public class EntityHelicopter extends EntityVehicle {
 			setDeltaMovement(getDeltaMovement().multiply(0.95, 0.95, 0.95));
 		}
 		super.tickAir(q);
-		// IDEA 4 helicopter hover auto pilot mode with inputSpecial2
 	}
 	
 	@Override

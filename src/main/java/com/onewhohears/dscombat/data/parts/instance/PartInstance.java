@@ -17,6 +17,7 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 	
 	private Vec3 relPos = Vec3.ZERO;
 	private EntityVehicle parent;
+	private boolean damaged;
 	
 	public PartInstance(T stats) {
 		super(stats);
@@ -31,6 +32,7 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 	@Override
 	public void readNBT(CompoundTag tag) {
 		super.readNBT(tag);
+		damaged = tag.getBoolean("damaged");
 	}
 	
 	public CompoundTag writeNBT() {
@@ -38,15 +40,18 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 		tag.putBoolean("readnbt", true);
 		tag.putInt("parse_version", PARSE_VERSION);
 		tag.putString("part", getStatsId());
+		tag.putBoolean("damaged", damaged);
 		return tag;
 	}
 	
 	public void readBuffer(FriendlyByteBuf buffer) {
 		// preset id is read in data serializer
+		damaged = buffer.readBoolean();
 	}
 	
 	public void writeBuffer(FriendlyByteBuf buffer) {
 		buffer.writeUtf(getStats().getId());
+		buffer.writeBoolean(damaged);
 	}
 	
 	public int getFlares() {
@@ -146,5 +151,23 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 	public boolean isCompatible(SlotType type) {
 		return getStats().isCompatible(type);
 	}
-
+	
+	public boolean isDamaged() {
+		return damaged;
+	}
+	
+	protected void setDamaged(boolean damaged) {
+		this.damaged = damaged;
+	}
+	
+	public void onDamaged(EntityVehicle parent, String slotId) {
+		setDamaged(true);
+		if (parent.level.isClientSide) return;
+		if (getStats().hasExternalEntity()) removeEntity(slotId);
+	}
+	
+	public void onRepaired(EntityVehicle parent, String slotId) {
+		setDamaged(false);
+	}
+	
 }

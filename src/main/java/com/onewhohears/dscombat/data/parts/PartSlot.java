@@ -140,6 +140,12 @@ public class PartSlot {
 		return true;
 	}
 	
+	public boolean setPartDamaged(EntityVehicle vehicle) {
+		if (!filled()) return false;
+		
+		return true;
+	}
+	
 	public boolean isSeat() {
 		if (data != null) return data.getStats().isSeat();
 		return false;

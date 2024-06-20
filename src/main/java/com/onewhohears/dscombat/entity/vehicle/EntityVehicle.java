@@ -1697,6 +1697,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		return true;
 	}
 	
+	public boolean hurtHitbox(DamageSource source, float amount, RotableHitbox hitbox) {
+		return hurt(source, amount);
+	}
+	
 	public void damageSystem(DamageSource source, float amount) {
 		float healthPercent = getHealth() / getMaxHealth();
 		if (healthPercent > 0.5f) return;

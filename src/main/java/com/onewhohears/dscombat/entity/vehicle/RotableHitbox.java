@@ -2,11 +2,9 @@ package com.onewhohears.dscombat.entity.vehicle;
 
 import java.util.List;
 
-import com.google.gson.JsonObject;
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.init.DataSerializers;
+import com.onewhohears.dscombat.data.vehicle.RotableHitboxData;
 import com.onewhohears.dscombat.init.ModEntities;
-import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.math.RotableAABB;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
@@ -25,24 +23,14 @@ import net.minecraftforge.network.NetworkHooks;
 
 public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData {
 	
-	public static RotableHitbox getFromJson(JsonObject json, EntityVehicle parent) {
-		String name = json.get("name").getAsString();
-		Vec3 size = UtilParse.readVec3(json, "size");
-		Vec3 rel_pos = UtilParse.readVec3(json, "rel_pos");
-		return new RotableHitbox(parent, name, size, rel_pos);
-	}
-	
 	private EntityVehicle parent;
-	private String name;
+	private RotableHitboxData data;
 	private RotableAABB hitbox;
-	private Vec3 size, rel_pos;
 	
-	public RotableHitbox(EntityVehicle parent, String name, Vec3 size, Vec3 rel_pos) {
+	public RotableHitbox(EntityVehicle parent, RotableHitboxData data) {
 		this(ModEntities.ROTABLE_HITBOX.get(), parent.level);
 		this.parent = parent;
-		this.name = name;
-		this.size = size;
-		this.rel_pos = rel_pos;
+		this.data = data;
 		this.noPhysics = true;
 		initStats();
 	}
@@ -54,9 +42,7 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData 
 	@Override
 	public void writeSpawnData(FriendlyByteBuf buffer) {
 		buffer.writeInt(parent.getId());
-		buffer.writeUtf(name);
-		DataSerializers.VEC3.write(buffer, size);
-		DataSerializers.VEC3.write(buffer, rel_pos);
+		buffer.writeUtf(getHitboxName());
 	}
 
 	@Override
@@ -64,14 +50,14 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData 
 		int parentId = buffer.readInt();
 		parent = (EntityVehicle) level.getEntity(parentId);
 		parent.addRotableHitboxForClient(this);
-		name = buffer.readUtf();
-		size = DataSerializers.VEC3.read(buffer);
-		rel_pos = DataSerializers.VEC3.read(buffer);
+		String name = buffer.readUtf();
+		data = parent.getStats().getHitboxDataByName(name);
 		initStats();
 	}
 	
 	protected void initStats() {
-		hitbox = new RotableAABB(size.x(), size.y(), size.z());
+		if (data == null) return;
+		hitbox = new RotableAABB(getHitboxSize().x(), getHitboxSize().y(), getHitboxSize().z());
 		refreshDimensions();
 	}
 	
@@ -81,13 +67,16 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData 
 			discard();
 			return;
 		}
+		if (data == null || hitbox == null) {
+			discard();
+			return;
+		}
 		positionSelf();
 		firstTick = false;
 	}
 	
 	protected void positionSelf() {
 		setOldPosAndRot();
-		if (hitbox == null) return;
 		Quaternion q = getParent().getQBySide();
 		Vec3 pos = getParent().position().add(UtilAngles.rotateVector(getRelPos(), q));
 		hitbox.setCenterAndRot(pos, q);
@@ -165,7 +154,7 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData 
 	
 	@Override
     public boolean hurt(DamageSource source, float amount) {
-    	return getParent().hurt(source, amount);
+    	return getParent().hurtHitbox(source, amount, this);
     }
 	
 	@Override
@@ -174,8 +163,12 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData 
 		return hitbox.getDisguisedAABB(position());
     }
 	
+	public RotableHitboxData getHitboxData() {
+		return data;
+	}
+	
 	public String getHitboxName() {
-		return name;
+		return getHitboxData().getName();
 	}
 	
 	public RotableAABB getHitbox() {
@@ -183,7 +176,11 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData 
 	}
 	
 	public Vec3 getRelPos() {
-		return rel_pos;
+		return getHitboxData().getRelPos();
+	}
+	
+	public Vec3 getHitboxSize() {
+		return getHitboxData().getSize();
 	}
 	
 	@Override

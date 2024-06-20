@@ -16,6 +16,7 @@ import com.onewhohears.dscombat.data.parts.SlotType;
 import com.onewhohears.dscombat.data.recipe.DSCIngredientBuilder;
 import com.onewhohears.dscombat.data.vehicle.EntityScreenData;
 import com.onewhohears.dscombat.data.vehicle.LiftKGraph;
+import com.onewhohears.dscombat.data.vehicle.RotableHitboxData;
 import com.onewhohears.dscombat.data.vehicle.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.data.vehicle.VehicleType;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
@@ -67,6 +68,7 @@ public abstract class VehicleStats extends JsonPresetStats {
 	private NonNullList<Ingredient> ingredients;
 	private ItemStack item;
 	private EntityScreenData[] screens;
+	private RotableHitboxData[] hitboxes;
 	
 	public VehicleStats(ResourceLocation key, JsonObject json) {
 		super(key, json);
@@ -156,16 +158,35 @@ public abstract class VehicleStats extends JsonPresetStats {
 		return defaultPaintJob;
 	}
 	
-	public List<RotableHitbox> createRotableHitboxes(EntityVehicle parent) {
-		if (!getJsonData().has("hitboxes")) return new ArrayList<>();
-		JsonArray hba = getJsonData().get("hitboxes").getAsJsonArray();
-		List<RotableHitbox> hitboxes = new ArrayList<>();
-		for (int i = 0; i < hba.size(); ++i) {
-			JsonObject json = hba.get(i).getAsJsonObject();
-			
-			hitboxes.add(RotableHitbox.getFromJson(json, parent));
+	public RotableHitboxData[] getHitboxData() {
+		if (hitboxes == null) {
+			if (!getJsonData().has("hitboxes")) {
+				hitboxes = new RotableHitboxData[0];
+				return hitboxes;
+			}
+			JsonArray hba = getJsonData().get("hitboxes").getAsJsonArray();
+			hitboxes = new RotableHitboxData[hba.size()];
+			for (int i = 0; i < hba.size(); ++i) {
+				JsonObject json = hba.get(i).getAsJsonObject();
+				hitboxes[i] = new RotableHitboxData(json);
+			}
 		}
 		return hitboxes;
+	}
+	
+	@Nullable
+	public RotableHitboxData getHitboxDataByName(String name) {
+		for (int i = 0; i < getHitboxData().length; ++i) 
+			if (getHitboxData()[i].getName().equals(name))
+				return getHitboxData()[i];
+		return null;
+	}
+	
+	public List<RotableHitbox> createRotableHitboxes(EntityVehicle parent) {
+		List<RotableHitbox> entities = new ArrayList<>();
+		for (int i = 0; i < getHitboxData().length; ++i) 
+			entities.add(new RotableHitbox(parent, getHitboxData()[i]));
+		return entities;
 	}
 	
 	public EntityScreenData[] getEntityScreens() {
@@ -543,11 +564,7 @@ public abstract class VehicleStats extends JsonPresetStats {
 		 */
 		public Builder addRotableHitbox(String name, double sizeX, double sizeY, double sizeZ, 
 				double posX, double posY, double posZ) {
-			JsonObject hitbox = new JsonObject();
-			hitbox.addProperty("name", name);
-			UtilParse.writeVec3(hitbox, "size", new Vec3(sizeX, sizeY, sizeZ));
-			UtilParse.writeVec3(hitbox, "rel_pos", new Vec3(posX, posY, posZ));
-			getHitboxes().add(hitbox);
+			getHitboxes().add(RotableHitboxData.createHitboxJson(name, sizeX, sizeY, sizeZ, posX, posY, posZ));
 			return this;
 		}
 		

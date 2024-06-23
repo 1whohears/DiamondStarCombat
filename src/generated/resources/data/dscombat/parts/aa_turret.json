@@ -6,6 +6,12 @@
   "maxHealth": 40.0,
   "presetId": "aa_turret",
   "presetType": "turret",
+  "repair_cost": [
+    {
+      "item": "minecraft:iron_ingot",
+      "num": 3
+    }
+  ],
   "slotType": "mount_light",
   "weight": 1000.0
 }

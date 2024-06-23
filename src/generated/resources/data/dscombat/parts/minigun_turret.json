@@ -6,6 +6,12 @@
   "maxHealth": 40.0,
   "presetId": "minigun_turret",
   "presetType": "turret",
+  "repair_cost": [
+    {
+      "item": "minecraft:iron_ingot",
+      "num": 4
+    }
+  ],
   "slotType": "mount_light",
   "weight": 1500.0
 }

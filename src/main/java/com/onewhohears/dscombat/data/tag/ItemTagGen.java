@@ -88,6 +88,8 @@ public class ItemTagGen extends ItemTagsProvider {
 			.add(ModItems.LIGHT_FUEL_TANK.get(), ModItems.HEAVY_FUEL_TANK.get());
 		tag(ModTags.Items.VEHICLE_PART_FLARES)
 			.add(ModItems.BASIC_FLARE_DISPENSER.get());
+		tag(ModTags.Items.VEHICLE_REPAIR_TOOL)
+			.add(ModItems.WRENCH.get(), ModItems.THICK_WRENCH.get());
 	}
 	
 }

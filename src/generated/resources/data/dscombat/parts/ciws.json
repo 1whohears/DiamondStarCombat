@@ -6,6 +6,12 @@
   "maxHealth": 80.0,
   "presetId": "ciws",
   "presetType": "turret",
+  "repair_cost": [
+    {
+      "item": "minecraft:iron_ingot",
+      "num": 5
+    }
+  ],
   "slotType": "mount_light",
   "weight": 2500.0
 }

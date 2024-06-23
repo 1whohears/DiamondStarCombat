@@ -21,7 +21,10 @@ public abstract class PartItemUnloadRecipe<I extends LoadableRecipePartInstance>
 	
 	@Override
 	public boolean matches(CraftingContainer container, Level level) {
-		return !hasOutlier(container);
+		if (hasOutlier(container)) return false;
+		ItemStack part = getPartItem(container);
+		if (part == null) return false;
+		return part.getCount() == 1;
 	}
 	
 	@Override

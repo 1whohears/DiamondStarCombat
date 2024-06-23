@@ -14,10 +14,10 @@ import net.minecraft.world.item.crafting.Ingredient;
 
 public abstract class DSCIngredientBuilder<C extends DSCIngredientBuilder<C>> extends PresetBuilder<C> {
 	
-	public static NonNullList<Ingredient> getIngredients(JsonObject jsonPresetData) {
+	public static NonNullList<Ingredient> getIngredients(JsonObject jsonPresetData, String listName) {
 		NonNullList<Ingredient> ingredients = NonNullList.create();
-		if (!jsonPresetData.has("ingredients")) return ingredients;
-		JsonArray ja = jsonPresetData.get("ingredients").getAsJsonArray();
+		if (!jsonPresetData.has(listName)) return ingredients;
+		JsonArray ja = jsonPresetData.get(listName).getAsJsonArray();
 		for (int i = 0; i < ja.size(); ++i) {
 			JsonObject jo = ja.get(i).getAsJsonObject();
 			int cost = jo.get("num").getAsInt();
@@ -25,6 +25,14 @@ public abstract class DSCIngredientBuilder<C extends DSCIngredientBuilder<C>> ex
 			else if (jo.has("item")) ingredients.add(IngredientStack.fromItem(jo.get("item").getAsString(), cost));
 		}
 		return ingredients;
+	}
+	
+	public static NonNullList<Ingredient> getIngredients(JsonObject jsonPresetData) {
+		return getIngredients(jsonPresetData, "ingredients");
+	}
+	
+	public String getIngredientListName() {
+		return "ingredients";
 	}
 	
 	protected DSCIngredientBuilder(String namespace, String name, JsonPresetType type) {
@@ -36,14 +44,14 @@ public abstract class DSCIngredientBuilder<C extends DSCIngredientBuilder<C>> ex
 	}
 	
 	protected C addIngredient(@Nullable String itemId, @Nullable String tagId, int num) {
-		if (!getData().has("ingredients")) {
-			getData().add("ingredients", new JsonArray());
+		if (!getData().has(getIngredientListName())) {
+			getData().add(getIngredientListName(), new JsonArray());
 		}
 		JsonObject i = new JsonObject();
 		if (itemId != null) i.addProperty("item", itemId);
 		if (tagId != null) i.addProperty("tag", tagId);
 		i.addProperty("num", num);
-		getData().get("ingredients").getAsJsonArray().add(i);
+		getData().get(getIngredientListName()).getAsJsonArray().add(i);
 		return (C) this;
 	}
 	

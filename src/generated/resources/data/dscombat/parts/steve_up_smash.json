@@ -6,6 +6,12 @@
   "maxHealth": 40.0,
   "presetId": "steve_up_smash",
   "presetType": "turret",
+  "repair_cost": [
+    {
+      "item": "minecraft:iron_ingot",
+      "num": 8
+    }
+  ],
   "slotType": "mount_med",
   "weight": 5000.0
 }

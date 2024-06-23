@@ -6,6 +6,12 @@
   "maxHealth": 120.0,
   "presetId": "mark45_cannon",
   "presetType": "turret",
+  "repair_cost": [
+    {
+      "item": "minecraft:iron_ingot",
+      "num": 6
+    }
+  ],
   "slotType": "mount_light",
   "weight": 3000.0
 }

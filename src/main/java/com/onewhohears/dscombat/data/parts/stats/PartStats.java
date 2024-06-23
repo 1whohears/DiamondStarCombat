@@ -9,17 +9,20 @@ import com.onewhohears.dscombat.data.jsonpreset.JsonPresetStats;
 import com.onewhohears.dscombat.data.parts.PartType;
 import com.onewhohears.dscombat.data.parts.SlotType;
 import com.onewhohears.dscombat.data.parts.instance.PartInstance;
+import com.onewhohears.dscombat.data.recipe.DSCIngredientBuilder;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.UtilItem;
 import com.onewhohears.dscombat.util.UtilMCText;
 import com.onewhohears.minigames.util.UtilParse;
 
+import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.crafting.Ingredient;
 
 public abstract class PartStats extends JsonPresetStats {
 	
@@ -29,6 +32,7 @@ public abstract class PartStats extends JsonPresetStats {
 	
 	private Item item;
 	private EntityType<?> externalEntityType;
+	private NonNullList<Ingredient> repair_cost;
 	
 	public PartStats(ResourceLocation key, JsonObject json) {
 		super(key, json);
@@ -62,10 +66,14 @@ public abstract class PartStats extends JsonPresetStats {
 	}
 	
 	public Item getItem() {
-		if (item == null) {
-			item = UtilItem.getItem(itemId);
-		}
+		if (item == null) item = UtilItem.getItem(itemId);
 		return item;
+	}
+	
+	public NonNullList<Ingredient> getRepairCost() {
+		if (repair_cost == null) repair_cost = DSCIngredientBuilder.getIngredients(
+				getJsonData(), "repair_cost");
+		return repair_cost;
 	}
 	
 	public boolean hasExternalEntity() {

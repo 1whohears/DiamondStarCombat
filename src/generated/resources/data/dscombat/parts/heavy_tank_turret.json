@@ -6,6 +6,12 @@
   "maxHealth": 120.0,
   "presetId": "heavy_tank_turret",
   "presetType": "turret",
+  "repair_cost": [
+    {
+      "item": "minecraft:iron_ingot",
+      "num": 7
+    }
+  ],
   "slotType": "mount_med",
   "weight": 4000.0
 }

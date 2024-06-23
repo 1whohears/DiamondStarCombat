@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.onewhohears.dscombat.crafting.IngredientStack;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPresetInstance;
 import com.onewhohears.dscombat.data.parts.SlotType;
 import com.onewhohears.dscombat.data.parts.stats.PartStats;
@@ -18,6 +19,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.phys.Vec3;
 
 public abstract class PartInstance<T extends PartStats> extends JsonPresetInstance<T> {
@@ -181,7 +183,7 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 		return damaged;
 	}
 	
-	protected void setDamaged(boolean damaged) {
+	public void setDamaged(boolean damaged) {
 		this.damaged = damaged;
 	}
 	
@@ -196,7 +198,19 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 	}
 	
 	public void addToolTips(List<Component> tips, TooltipFlag isAdvanced) {
-		if (isDamaged()) tips.add(UtilMCText.translatable("info.dscombat.damaged").setStyle(Style.EMPTY.withColor(0xCC0000)));
+		if (isDamaged()) {
+			tips.add(UtilMCText.translatable("info.dscombat.damaged").setStyle(Style.EMPTY.withColor(0xCC0000)));
+			if (getStats().getRepairCost().size() > 0) {
+				Style repairStyle = Style.EMPTY.withColor(0xE88888);
+				MutableComponent repairCost = UtilMCText.literal("Repair Cost: ").setStyle(repairStyle);
+				for (Ingredient cost: getStats().getRepairCost()) {
+					int num = 1;
+					if (cost instanceof IngredientStack is) num = is.cost;
+					repairCost.append(cost.getItems()[0].getDisplayName()).append("("+num+")");
+				}
+				tips.add(repairCost);
+			}
+		}
 		getStats().addToolTips(tips, isAdvanced);
 	}
 	

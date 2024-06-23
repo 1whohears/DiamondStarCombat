@@ -1,12 +1,12 @@
 package com.onewhohears.dscombat.data.parts;
 
-import com.onewhohears.dscombat.data.jsonpreset.PresetBuilder;
 import com.onewhohears.dscombat.data.parts.stats.BuffStats;
 import com.onewhohears.dscombat.data.parts.stats.EngineStats;
+import com.onewhohears.dscombat.data.recipe.DSCIngredientBuilder;
 
 import net.minecraft.resources.ResourceLocation;
 
-public class PartBuilder extends PresetBuilder<PartBuilder> {
+public class PartBuilder extends DSCIngredientBuilder<PartBuilder> {
 	
 	public static PartBuilder create(ResourceLocation item, PartType type) {
 		PartBuilder builder = create(item.getNamespace(), item.getPath(), item, type);
@@ -19,6 +19,11 @@ public class PartBuilder extends PresetBuilder<PartBuilder> {
 		builder.setItem(item);
 		builder.setDisplayName("item."+namespace+"."+name);
 		return builder;
+	}
+	
+	@Override
+	public String getIngredientListName() {
+		return "repair_cost";
 	}
 	
 	protected PartBuilder(String namespace, String name, PartType type) {

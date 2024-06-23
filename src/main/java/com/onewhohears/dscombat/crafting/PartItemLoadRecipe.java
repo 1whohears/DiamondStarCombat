@@ -28,6 +28,8 @@ public abstract class PartItemLoadRecipe<I extends LoadableRecipePartInstance> e
 	public boolean matches(CraftingContainer container, Level level) {
 		if (hasOutlier(container)) return false;
 		ItemStack part = getPartItem(container);
+		if (part == null) return false;
+		if (part.getCount() > 1) return false;
 		List<ItemStack> ammo = getAmmoItems(container);
 		I lpd = getLoadablePartDataFromItem(part);
 		return canItemsCombine(lpd, ammo);

@@ -46,7 +46,7 @@ public abstract class EntityMixin {
 			boolean stuck = hitbox.handlePosibleCollision(colliders, entity, entityBox, move);
 			if (stuck) {
 				pVec.set(move.multiply(1, 0, 1));
-				entity.setPos(entity.position().add(0, 1E-7, 0));
+				//entity.setPos(entity.position().add(0, 1E-7, 0));
 				entity.setOnGround(true);
 				entity.resetFallDistance();
 			}

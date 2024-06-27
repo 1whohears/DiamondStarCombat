@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.entity.vehicle;
 
 import java.util.List;
 
+import com.google.common.util.concurrent.AtomicDouble;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.data.vehicle.RotableHitboxData;
 import com.onewhohears.dscombat.init.ModEntities;
@@ -95,19 +96,20 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData 
 			//System.out.println("Can't Collide");
 			return false;
 		}
-		if (!hitbox.isInside(aabb, RotableAABB.SUB_COL_SKIN)) {
+		if (!hitbox.isInside(aabb, RotableAABB.COLLIDE_CHECK_SKIN)) {
 			//System.out.println("Not Inside");
 			return false;
 		}
 		// FIXME 4.1 walking on hitbox is sometimes doesn't allow sneaking
 		// FIXME 4.2 sometimes can't open vehicle inventories when the vehicle is on a boat hitbox
 		// FIXME 4.6 prevent entities from falling off when the chunks load
+		System.out.println("==========");
+		System.out.println("PRE COLLISION "+entity.level.isClientSide+" "+entity.tickCount+" "+entity.position()+" "+move+" "+position());
 		getParent().addHitboxCollider(entity);
-		//System.out.println("PRE COLLISION "+entity.level.isClientSide+" "+entity.tickCount+" "+entity.position()+" "+move+" "+position());
 		boolean stuck = false;
 		if (isInside(entity)) {
-			//System.out.println("INSIDE");
-			Vec3 push = hitbox.getPushOutPos(entity.position(), entity.getBoundingBox(), 0.1);
+			System.out.println("INSIDE");
+			Vec3 push = hitbox.getPushOutPos(entity.position(), entity.getBoundingBox(), RotableAABB.INSIDE_PUSH_OUT_SKIN);
 			entity.moveTo(push);
 			//entity.setDeltaMovement(Vec3.ZERO);
 			stuck = true;
@@ -115,10 +117,14 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData 
 		//System.out.println("OUTSIDE");
 		Vec3 entityMoveByParent = moveEntityFromParent(entity);
 		//System.out.println("entityMoveByParent = "+entityMoveByParent);
-		if (hitbox.updateColliders(colliders, entity.position(), entity.getBoundingBox(), entityMoveByParent)) {
-			stuck = true;
+		AtomicDouble yPosAdjust = new AtomicDouble();
+		if (hitbox.updateColliders(colliders, entity.position(), entity.getBoundingBox(), entityMoveByParent, yPosAdjust)) {
+			System.out.println("PROBLEM");
+			//entity.moveTo(entity.position().add(0, -1E-7, 0));
+			//entity.moveTo(entity.position().add(0, -0.1, 0));
+			entity.moveTo(entity.position().add(0, yPosAdjust.get(), 0));
 		}
-		//System.out.println("POST COLLISION "+entity.level.isClientSide+" "+entity.tickCount+" "+entity.position());
+		System.out.println("POST COLLISION "+entity.level.isClientSide+" "+entity.tickCount+" "+entity.position());
 		return stuck;
 	}
 	
@@ -140,7 +146,7 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData 
 	}
 	
 	public boolean isInside(Entity entity) {
-		return hitbox.isInside(entity.getBoundingBox(), -0.1);
+		return hitbox.isInside(entity.getBoundingBox(), RotableAABB.IS_INSIDE_CHECK_SKIN);
 	}
 	
 	public boolean couldCollide(Entity entity) {

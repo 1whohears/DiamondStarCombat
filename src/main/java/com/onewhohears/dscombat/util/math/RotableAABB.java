@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.google.common.util.concurrent.AtomicDouble;
 import com.mojang.math.Quaternion;
 
 import net.minecraft.world.entity.EntityDimensions;
@@ -18,6 +19,11 @@ public class RotableAABB {
 	public static final double SUBSIZEHALF = SUBSIZE*0.5;
 	//public static final double SUB_COL_SKIN = 1E-7;
 	public static final double SUB_COL_SKIN = 0;
+	public static final double COLLIDE_CHECK_SKIN = 0.01;
+	public static final double PUSH_OUT_SKIN = 0;
+	public static final double INSIDE_PUSH_OUT_SKIN = -1E-7;
+	public static final double IS_INSIDE_CHECK_SKIN = -0.01;
+	public static final double PROBLEM_Y_ADJUST = -1E-7;
 	
 	private Vec3 center, extents;
 	private double maxRadius;
@@ -51,26 +57,32 @@ public class RotableAABB {
 		setRot(q);
 	}
 	
-	public boolean updateColliders(List<VoxelShape> colliders, Vec3 pos, AABB aabb, Vec3 entityMoveByParent) {
+	public boolean updateColliders(List<VoxelShape> colliders, Vec3 pos, AABB aabb, Vec3 entityMoveByParent, AtomicDouble yPosAdjust) {
 		//System.out.println("ADDING SUB COLLIDERS "+getSubColliders().size());
 		subColliders.clear();
-		boolean stuck = addSubColliders(pos, aabb);
+		boolean problem = addSubColliders(pos, aabb, yPosAdjust);
 		//if (!UtilGeometry.isZero(entityMoveByParent)) 
 		//	stuck = addSubColliders(pos.add(entityMoveByParent), aabb.move(entityMoveByParent));
 		colliders.addAll(subColliders);
-		return stuck;
+		return problem;
 	}
 	
-	public boolean addSubColliders(Vec3 pos, AABB aabb) {
-		boolean stuck = false;
-		Vec3 clip = getPushOutPos(pos, aabb, SUB_COL_SKIN);
+	public boolean addSubColliders(Vec3 pos, AABB aabb, AtomicDouble yPosAdjust) {
+		boolean problem = false;
+		Vec3 clip = getPushOutPos(pos, aabb, PUSH_OUT_SKIN);
 		Vec3 clipPosDiff = clip.subtract(pos);
-		//System.out.println("clip pos diff = "+clipPosDiff);
-		if (clipPosDiff.y < 1E-6 && clipPosDiff.y > 0) {
+		System.out.println("clip pos diff = "+clipPosDiff.y);
+		/*if (clipPosDiff.y < 1E-6 && clipPosDiff.y > 0) {
 			clip = clip.subtract(0, clipPosDiff.y, 0);
 			stuck = true;
+		}*/
+		if (clipPosDiff.y <= 0 || clipPosDiff.y > 1.1E-7) {
+			//clip = clip.add(0, -clipPosDiff.y+2E-7, 0);
+			yPosAdjust.set(clipPosDiff.y+PROBLEM_Y_ADJUST);
+			//System.out.println("clip pos diff 2 = "+clip.subtract(pos).y);
+			problem = true;
 		}
-		//System.out.println("push clip = "+clip);
+		System.out.println("push clip = "+clip);
 		Vec3 clipRelRot = toRelRotPos(clip);
 		for (int i = 1; i <= 4; ++i) {
 			double radius = SUBSIZEHALF * i;
@@ -82,7 +94,7 @@ public class RotableAABB {
 			//System.out.println("shape = "+shape);
 			addShape(shape, radius);
 		}
-		return stuck;
+		return problem;
 	}
 	
 	private double shapePosComponent(double clipRelRot, double ext, double radius) {
@@ -161,7 +173,7 @@ public class RotableAABB {
 	public Optional<Vec3> clip(Vec3 from, Vec3 to, boolean push) {
 		Vec3 fromRelRot = toRelRotPos(from);
 		if (isInsideRelPos(fromRelRot)) {
-			if (push) return Optional.of(getPushOutPos(from, SUB_COL_SKIN));
+			if (push) return Optional.of(getPushOutPos(from, PUSH_OUT_SKIN));
 			else return Optional.of(from);
 		}
 		Vec3 toRelRot = toRelRotPos(to);

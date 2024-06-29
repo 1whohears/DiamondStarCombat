@@ -1,23 +1,17 @@
 package com.onewhohears.dscombat.util.math;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
-import com.google.common.util.concurrent.AtomicDouble;
 import com.mojang.math.Quaternion;
 
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class RotableAABB {
 	
 	public static final double SUBSIZE = 0.5;
 	public static final double SUBSIZEHALF = SUBSIZE*0.5;
-	//public static final double SUB_COL_SKIN = 1E-7;
 	public static final double SUB_COL_SKIN = 0;
 	public static final double COLLIDE_CHECK_SKIN = 0;
 	public static final double PUSH_OUT_SKIN = 0;
@@ -28,7 +22,6 @@ public class RotableAABB {
 	private Vec3 center, extents;
 	private double maxRadius;
 	private Quaternion rot = Quaternion.ONE.copy(), roti = Quaternion.ONE.copy();
-	private final List<VoxelShape> subColliders = new ArrayList<>();
 	
 	public RotableAABB(AABB bb) {
 		this(bb.getCenter(), extentsFromBB(bb));
@@ -74,81 +67,6 @@ public class RotableAABB {
 		else if (move.z < 0 && clip.z > getCenter().z && aabb.minZ + move.z < clip.z) 
 			move = new Vec3(move.x, move.y, clip.z - aabb.minZ);*/
 		return move;
-	}
-	
-	public boolean addTestCollider(List<VoxelShape> colliders, Vec3 pos, AABB aabb, Vec3 entityMoveByParent) {
-		subColliders.clear();
-		Vec3 clip = getPushOutPos(pos, aabb, PUSH_OUT_SKIN);
-		Vec3 clipPosDiff = clip.subtract(pos);
-		System.out.println("clip pos diff = "+clipPosDiff.y);
-		Vec3 clipRelRot = toRelRotPos(clip);
-		double radius = 0.5;
-		Vec3 shapeRelRot = new Vec3(
-				shapePosComponent(clipRelRot.x, extents.x+SUB_COL_SKIN, radius), 
-				shapePosComponent(clipRelRot.y, extents.y+SUB_COL_SKIN, radius), 
-				shapePosComponent(clipRelRot.z, extents.z+SUB_COL_SKIN, radius));
-		Vec3 shape = toWorldPos(shapeRelRot);//.add(0, -1.19E-7, 0);
-		double shapePosDiff = shape.y + radius - pos.y;
-		System.out.println("shape pos diff "+shapePosDiff);
-		//if (shapePosDiff > 0) shape = shape.add(0, -shapePosDiff, 0);
-		addShape(shape, radius);
-		//double shapePosDiff = subColliders.get(0).bounds().maxY - pos.y;
-		colliders.clear();
-		colliders.addAll(subColliders);
-		return false;
-	}
-	
-	public boolean updateColliders(List<VoxelShape> colliders, Vec3 pos, AABB aabb, Vec3 entityMoveByParent, AtomicDouble yPosAdjust) {
-		//System.out.println("ADDING SUB COLLIDERS "+getSubColliders().size());
-		subColliders.clear();
-		boolean problem = addSubColliders(pos, aabb, yPosAdjust);
-		//if (!UtilGeometry.isZero(entityMoveByParent)) 
-		//	stuck = addSubColliders(pos.add(entityMoveByParent), aabb.move(entityMoveByParent));
-		colliders.addAll(subColliders);
-		return problem;
-	}
-	
-	public boolean addSubColliders(Vec3 pos, AABB aabb, AtomicDouble yPosAdjust) {
-		boolean problem = false;
-		Vec3 clip = getPushOutPos(pos, aabb, PUSH_OUT_SKIN);
-		Vec3 clipPosDiff = clip.subtract(pos);
-		System.out.println("clip pos diff = "+clipPosDiff.y);
-		/*if (clipPosDiff.y < 1E-6 && clipPosDiff.y > 0) {
-			clip = clip.subtract(0, clipPosDiff.y, 0);
-			stuck = true;
-		}*/
-		if (clipPosDiff.y <= 0 || clipPosDiff.y > 1.1E-7) {
-			//clip = clip.add(0, -clipPosDiff.y+2E-7, 0);
-			yPosAdjust.set(clipPosDiff.y+PROBLEM_Y_ADJUST);
-			//System.out.println("clip pos diff 2 = "+clip.subtract(pos).y);
-			problem = true;
-		}
-		System.out.println("push clip = "+clip);
-		Vec3 clipRelRot = toRelRotPos(clip);
-		for (int i = 1; i <= 4; ++i) {
-			double radius = SUBSIZEHALF * i;
-			Vec3 shapeRelRot = new Vec3(
-					shapePosComponent(clipRelRot.x, extents.x+SUB_COL_SKIN, radius), 
-					shapePosComponent(clipRelRot.y, extents.y+SUB_COL_SKIN, radius), 
-					shapePosComponent(clipRelRot.z, extents.z+SUB_COL_SKIN, radius));
-			Vec3 shape = toWorldPos(shapeRelRot);
-			//System.out.println("shape = "+shape);
-			addShape(shape, radius);
-		}
-		return problem;
-	}
-	
-	private double shapePosComponent(double clipRelRot, double ext, double radius) {
-		double max = ext - radius;
-		return Math.signum(clipRelRot) * Math.min(Math.abs(clipRelRot), max);
-	}
-	
-	private void addShape(Vec3 pos, double radius) {
-		//System.out.println("shape pos = "+pos);
-		VoxelShape shape = Shapes.create(
-			pos.x-radius, pos.y-radius, pos.z-radius, 
-			pos.x+radius, pos.y+radius, pos.z+radius);
-		subColliders.add(shape);
 	}
 	
 	public boolean contains(AABB aabb) {

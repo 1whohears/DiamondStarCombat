@@ -1,7 +1,5 @@
 package com.onewhohears.dscombat.entity.vehicle;
 
-import java.util.List;
-
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.data.vehicle.RotableHitboxData;
 import com.onewhohears.dscombat.init.ModEntities;
@@ -18,7 +16,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.network.NetworkHooks;
 
@@ -100,6 +97,9 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData 
 			//System.out.println("Not Inside");
 			return move;
 		}
+		// FIXME 4.1 walking on hitbox is sometimes doesn't allow sneaking
+		// FIXME 4.2 sometimes can't open vehicle inventories when the vehicle is on a boat hitbox
+		// FIXME 4.6 prevent entities from falling off when the chunks load
 		System.out.println("==========");
 		System.out.println("PRE COLLISION "+entity.level.isClientSide+" "+entity.tickCount+" "+entity.position()+" "+move+" "+entity.isOnGround()+" "+entity.getPose());
 		getParent().addHitboxCollider(entity);
@@ -120,62 +120,6 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData 
 		move = hitbox.collide(entity.position(), entity.getBoundingBox(), move);
 		System.out.println("POST COLLISION "+entity.level.isClientSide+" "+entity.tickCount+" "+entity.position()+" "+move);
 		return move;
-	}
-	
-	public static enum RotCollideResult {
-		NONE, COLLIDE, STUCK;
-		public boolean isCollide() {
-			return this == COLLIDE || this == STUCK;
-		}
-	}
-	
-	public RotCollideResult handlePosibleCollision(List<VoxelShape> colliders, Entity entity, AABB aabb, Vec3 move) {
-		if (hitbox == null) return RotCollideResult.NONE;
-		//System.out.println("==========");
-		//System.out.println("HANDLE COLLISION "+entity+" "+move+" "+this);
-		if (getParent().didEntityAlreadyCollide(entity)) {
-			//System.out.println("Already Collided");
-			return RotCollideResult.NONE;
-		}
-		if (!couldCollide(entity)) {
-			//System.out.println("Can't Collide");
-			return RotCollideResult.NONE;
-		}
-		if (!hitbox.isInside(aabb, RotableAABB.COLLIDE_CHECK_SKIN)) {
-			//System.out.println("Not Inside");
-			return RotCollideResult.NONE;
-		}
-		// FIXME 4.1 walking on hitbox is sometimes doesn't allow sneaking
-		// FIXME 4.2 sometimes can't open vehicle inventories when the vehicle is on a boat hitbox
-		// FIXME 4.6 prevent entities from falling off when the chunks load
-		System.out.println("==========");
-		System.out.println("PRE COLLISION "+entity.level.isClientSide+" "+entity.tickCount+" "+entity.position()+" "+move+" "+entity.isOnGround()+" "+entity.getPose());
-		getParent().addHitboxCollider(entity);
-		boolean stuck = false;
-		if (isInside(entity)) {
-			System.out.println("INSIDE");
-			Vec3 push = hitbox.getPushOutPos(entity.position(), entity.getBoundingBox(), RotableAABB.INSIDE_PUSH_OUT_SKIN);
-			entity.moveTo(push);
-			//entity.setDeltaMovement(Vec3.ZERO);
-			stuck = true;
-		}
-		//System.out.println("OUTSIDE");
-		Vec3 entityMoveByParent = moveEntityFromParent(entity);
-		if (!UtilGeometry.isZero(entityMoveByParent)) {
-			entity.moveTo(entity.position().add(entityMoveByParent));
-			System.out.println("entityMoveByParent = "+entityMoveByParent);
-		}
-		/*AtomicDouble yPosAdjust = new AtomicDouble();
-		if (hitbox.updateColliders(colliders, entity.position(), entity.getBoundingBox(), entityMoveByParent, yPosAdjust)) {
-			System.out.println("PROBLEM");
-			//entity.moveTo(entity.position().add(0, -1E-7, 0));
-			//entity.moveTo(entity.position().add(0, -0.1, 0));
-			entity.moveTo(entity.position().add(0, yPosAdjust.get(), 0));
-		}*/
-		hitbox.addTestCollider(colliders, entity.position(), entity.getBoundingBox(), entityMoveByParent);
-		System.out.println("POST COLLISION "+entity.level.isClientSide+" "+entity.tickCount+" "+entity.position());
-		if (stuck) return RotCollideResult.STUCK;
-		return RotCollideResult.COLLIDE;
 	}
 	
 	public Vec3 moveEntityFromParent(Entity entity) {

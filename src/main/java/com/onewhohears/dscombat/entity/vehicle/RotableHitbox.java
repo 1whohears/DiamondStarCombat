@@ -99,6 +99,7 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData 
 		}
 		// FIXME 4.1 walking on hitbox is sometimes doesn't allow sneaking
 		// FIXME 4.2 sometimes can't open vehicle inventories when the vehicle is on a boat hitbox
+		// FIXME 4.5 fix non player entity bizarre collision behavior
 		// FIXME 4.6 prevent entities from falling off when the chunks load
 		System.out.println("==========");
 		System.out.println("PRE COLLISION "+entity.level.isClientSide+" "+entity.tickCount+" "+entity.position()+" "+move+" "+entity.isOnGround()+" "+entity.getPose());
@@ -254,6 +255,11 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData 
 	@Override
 	public boolean shouldRenderAtSqrDistance(double pDistance) {
 		return false;
+	}
+
+	@Override
+	public void push(Entity pEntity) {
+		// FIXME 4.4 apparently this override fixes the client sliding off the boat hitbox when playing on a server
 	}
 	
 }

@@ -12,7 +12,6 @@ import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import com.onewhohears.dscombat.entity.vehicle.RotableHitbox;
 
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
@@ -29,7 +28,6 @@ public abstract class EntityMixin {
 	private void dscombat_EntityCollideVec(CallbackInfoReturnable<Vec3> cir, @Local LocalRef<Vec3> vec3) {
 		Entity entity = (Entity)(Object)this;
 		if (entity.noPhysics) return;
-		if (!entity.getType().getDescriptionId().equals(EntityType.PLAYER.getDescriptionId())) return;
 		Vec3 move = vec3.get();
 		AABB entityBox = entity.getBoundingBox().expandTowards(move);
 		AABB searchBox = entity.getBoundingBox().inflate(64);

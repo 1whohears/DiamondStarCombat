@@ -2,12 +2,12 @@ package com.onewhohears.dscombat.entity.vehicle;
 
 import java.util.List;
 
-import com.google.common.util.concurrent.AtomicDouble;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.data.vehicle.RotableHitboxData;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.util.math.RotableAABB;
 import com.onewhohears.dscombat.util.math.UtilAngles;
+import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -84,27 +84,72 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData 
 		setPos(pos);
 	}
 	
-	public boolean handlePosibleCollision(List<VoxelShape> colliders, Entity entity, AABB aabb, Vec3 move) {
-		if (hitbox == null) return false;
+	public Vec3 collide(Entity entity, AABB aabb, Vec3 move) {
+		if (hitbox == null) return move;
 		//System.out.println("==========");
 		//System.out.println("HANDLE COLLISION "+entity+" "+move+" "+this);
 		if (getParent().didEntityAlreadyCollide(entity)) {
 			//System.out.println("Already Collided");
-			return false;
+			return move;
 		}
 		if (!couldCollide(entity)) {
 			//System.out.println("Can't Collide");
-			return false;
+			return move;
 		}
 		if (!hitbox.isInside(aabb, RotableAABB.COLLIDE_CHECK_SKIN)) {
 			//System.out.println("Not Inside");
-			return false;
+			return move;
+		}
+		System.out.println("==========");
+		System.out.println("PRE COLLISION "+entity.level.isClientSide+" "+entity.tickCount+" "+entity.position()+" "+move+" "+entity.isOnGround()+" "+entity.getPose());
+		getParent().addHitboxCollider(entity);
+		if (isInside(entity)) {
+			System.out.println("INSIDE");
+			Vec3 push = hitbox.getPushOutPos(entity.position(), entity.getBoundingBox(), RotableAABB.INSIDE_PUSH_OUT_SKIN);
+			entity.moveTo(push);
+			entity.setOnGround(true);
+			entity.resetFallDistance();
+			move = move.multiply(1, 0, 1);
+		}
+		//System.out.println("OUTSIDE");
+		Vec3 entityMoveByParent = moveEntityFromParent(entity);
+		if (!UtilGeometry.isZero(entityMoveByParent)) {
+			move = move.add(entityMoveByParent);
+			System.out.println("entityMoveByParent = "+entityMoveByParent);
+		}
+		move = hitbox.collide(entity.position(), entity.getBoundingBox(), move);
+		System.out.println("POST COLLISION "+entity.level.isClientSide+" "+entity.tickCount+" "+entity.position()+" "+move);
+		return move;
+	}
+	
+	public static enum RotCollideResult {
+		NONE, COLLIDE, STUCK;
+		public boolean isCollide() {
+			return this == COLLIDE || this == STUCK;
+		}
+	}
+	
+	public RotCollideResult handlePosibleCollision(List<VoxelShape> colliders, Entity entity, AABB aabb, Vec3 move) {
+		if (hitbox == null) return RotCollideResult.NONE;
+		//System.out.println("==========");
+		//System.out.println("HANDLE COLLISION "+entity+" "+move+" "+this);
+		if (getParent().didEntityAlreadyCollide(entity)) {
+			//System.out.println("Already Collided");
+			return RotCollideResult.NONE;
+		}
+		if (!couldCollide(entity)) {
+			//System.out.println("Can't Collide");
+			return RotCollideResult.NONE;
+		}
+		if (!hitbox.isInside(aabb, RotableAABB.COLLIDE_CHECK_SKIN)) {
+			//System.out.println("Not Inside");
+			return RotCollideResult.NONE;
 		}
 		// FIXME 4.1 walking on hitbox is sometimes doesn't allow sneaking
 		// FIXME 4.2 sometimes can't open vehicle inventories when the vehicle is on a boat hitbox
 		// FIXME 4.6 prevent entities from falling off when the chunks load
 		System.out.println("==========");
-		System.out.println("PRE COLLISION "+entity.level.isClientSide+" "+entity.tickCount+" "+entity.position()+" "+move+" "+position());
+		System.out.println("PRE COLLISION "+entity.level.isClientSide+" "+entity.tickCount+" "+entity.position()+" "+move+" "+entity.isOnGround()+" "+entity.getPose());
 		getParent().addHitboxCollider(entity);
 		boolean stuck = false;
 		if (isInside(entity)) {
@@ -116,16 +161,21 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData 
 		}
 		//System.out.println("OUTSIDE");
 		Vec3 entityMoveByParent = moveEntityFromParent(entity);
-		//System.out.println("entityMoveByParent = "+entityMoveByParent);
-		AtomicDouble yPosAdjust = new AtomicDouble();
+		if (!UtilGeometry.isZero(entityMoveByParent)) {
+			entity.moveTo(entity.position().add(entityMoveByParent));
+			System.out.println("entityMoveByParent = "+entityMoveByParent);
+		}
+		/*AtomicDouble yPosAdjust = new AtomicDouble();
 		if (hitbox.updateColliders(colliders, entity.position(), entity.getBoundingBox(), entityMoveByParent, yPosAdjust)) {
 			System.out.println("PROBLEM");
 			//entity.moveTo(entity.position().add(0, -1E-7, 0));
 			//entity.moveTo(entity.position().add(0, -0.1, 0));
 			entity.moveTo(entity.position().add(0, yPosAdjust.get(), 0));
-		}
+		}*/
+		hitbox.addTestCollider(colliders, entity.position(), entity.getBoundingBox(), entityMoveByParent);
 		System.out.println("POST COLLISION "+entity.level.isClientSide+" "+entity.tickCount+" "+entity.position());
-		return stuck;
+		if (stuck) return RotCollideResult.STUCK;
+		return RotCollideResult.COLLIDE;
 	}
 	
 	public Vec3 moveEntityFromParent(Entity entity) {

@@ -19,11 +19,11 @@ public class RotableAABB {
 	public static final double SUBSIZEHALF = SUBSIZE*0.5;
 	//public static final double SUB_COL_SKIN = 1E-7;
 	public static final double SUB_COL_SKIN = 0;
-	public static final double COLLIDE_CHECK_SKIN = 0.01;
+	public static final double COLLIDE_CHECK_SKIN = 0;
 	public static final double PUSH_OUT_SKIN = 0;
-	public static final double INSIDE_PUSH_OUT_SKIN = -1E-7;
+	public static final double INSIDE_PUSH_OUT_SKIN = 0;
 	public static final double IS_INSIDE_CHECK_SKIN = -0.01;
-	public static final double PROBLEM_Y_ADJUST = -1E-7;
+	public static final double PROBLEM_Y_ADJUST = 0;
 	
 	private Vec3 center, extents;
 	private double maxRadius;
@@ -55,6 +55,47 @@ public class RotableAABB {
 	public void setCenterAndRot(Vec3 center, Quaternion q) {
 		setCenter(center);
 		setRot(q);
+	}
+	
+	public Vec3 collide(Vec3 pos, AABB aabb, Vec3 move) {
+		Vec3 clip = getPushOutPos(pos, aabb, PUSH_OUT_SKIN);
+		/*if (move.x > 0 && clip.x < getCenter().x && aabb.maxX + move.x > clip.x) 
+			move = new Vec3(clip.x - aabb.maxX, move.y, move.z);
+		else if (move.x < 0 && clip.x > getCenter().x && aabb.minX + move.x < clip.x) 
+			move = new Vec3(clip.x - aabb.minX, move.y, move.z);*/
+		
+		if (move.y > 0 && clip.y < getCenter().y && aabb.maxY + move.y > clip.y) 
+			move = new Vec3(move.x, clip.y - aabb.maxY, move.z);
+		else if (move.y < 0 && clip.y > getCenter().y && aabb.minY + move.y < clip.y) 
+			move = new Vec3(move.x, clip.y - aabb.minY, move.z);
+		
+		/*if (move.z > 0 && clip.z < getCenter().z && aabb.maxZ + move.z > clip.z) 
+			move = new Vec3(move.x, move.y, clip.z - aabb.maxZ);
+		else if (move.z < 0 && clip.z > getCenter().z && aabb.minZ + move.z < clip.z) 
+			move = new Vec3(move.x, move.y, clip.z - aabb.minZ);*/
+		return move;
+	}
+	
+	public boolean addTestCollider(List<VoxelShape> colliders, Vec3 pos, AABB aabb, Vec3 entityMoveByParent) {
+		subColliders.clear();
+		Vec3 clip = getPushOutPos(pos, aabb, PUSH_OUT_SKIN);
+		Vec3 clipPosDiff = clip.subtract(pos);
+		System.out.println("clip pos diff = "+clipPosDiff.y);
+		Vec3 clipRelRot = toRelRotPos(clip);
+		double radius = 0.5;
+		Vec3 shapeRelRot = new Vec3(
+				shapePosComponent(clipRelRot.x, extents.x+SUB_COL_SKIN, radius), 
+				shapePosComponent(clipRelRot.y, extents.y+SUB_COL_SKIN, radius), 
+				shapePosComponent(clipRelRot.z, extents.z+SUB_COL_SKIN, radius));
+		Vec3 shape = toWorldPos(shapeRelRot);//.add(0, -1.19E-7, 0);
+		double shapePosDiff = shape.y + radius - pos.y;
+		System.out.println("shape pos diff "+shapePosDiff);
+		//if (shapePosDiff > 0) shape = shape.add(0, -shapePosDiff, 0);
+		addShape(shape, radius);
+		//double shapePosDiff = subColliders.get(0).bounds().maxY - pos.y;
+		colliders.clear();
+		colliders.addAll(subColliders);
+		return false;
 	}
 	
 	public boolean updateColliders(List<VoxelShape> colliders, Vec3 pos, AABB aabb, Vec3 entityMoveByParent, AtomicDouble yPosAdjust) {
@@ -370,7 +411,8 @@ public class RotableAABB {
 	}
 	
 	public DisguisedAABB getDisguisedAABB(Vec3 pos) {
-		return new DisguisedAABB(this, pos, getMaxRadius());
+		//return new DisguisedAABB(this, pos, getMaxRadius());
+		return new DisguisedAABB(this, pos, 0.5);
 	}
 	
 	public AABB makeMaxDimBox() {

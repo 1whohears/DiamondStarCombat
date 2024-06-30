@@ -96,8 +96,6 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData 
 			//System.out.println("Not Inside");
 			return move;
 		}
-		// FIXME 4.1 walking on hitbox sometimes doesn't allow sneaking
-		// FIXME 4.2 sometimes can't open vehicle inventories when the vehicle is on a boat hitbox
 		// FIXME 4.6 prevent entities from falling off when the chunks load
 		System.out.println("==========");
 		System.out.println("PRE COLLISION "+entity.level.isClientSide+" "+entity.tickCount+" "+entity.position()+" "+move+" "+entity.isOnGround()+" "+entity.getPose());
@@ -135,6 +133,7 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData 
 				.multiply(-1d,-1d,1d).cross(rel_pos);
 		Vec3 tan_vel = UtilAngles.rotateVector(rel_tan_vel, q);
 		Vec3 entityMoveByParent = parent_move.add(tan_vel);
+		// FIXME 4.2 server client desyncs from tan_vel cause the entity to slowly fall off
 		entity.setPos(entity.position().add(entityMoveByParent));
 		entity.setYRot(entity.getYRot()+(float)parent_rot_rate.y);
 		return entityMoveByParent;

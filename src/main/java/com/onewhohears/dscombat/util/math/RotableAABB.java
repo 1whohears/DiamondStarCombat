@@ -52,20 +52,21 @@ public class RotableAABB {
 	
 	public Vec3 collide(Vec3 pos, AABB aabb, Vec3 move) {
 		Vec3 clip = getPushOutPos(pos, aabb, PUSH_OUT_SKIN);
-		/*if (move.x > 0 && clip.x < getCenter().x && aabb.maxX + move.x > clip.x) 
-			move = new Vec3(clip.x - aabb.maxX, move.y, move.z);
-		else if (move.x < 0 && clip.x > getCenter().x && aabb.minX + move.x < clip.x) 
-			move = new Vec3(clip.x - aabb.minX, move.y, move.z);*/
+		System.out.println("clip = "+clip);
+		/*if (move.x > 0 && clip.x < getCenter().x && pos.x + move.x > clip.x) 
+			move = new Vec3(clip.x - pos.x, move.y, move.z);
+		else if (move.x < 0 && clip.x > getCenter().x && pos.x + move.x < clip.x) 
+			move = new Vec3(clip.x - pos.x, move.y, move.z);*/
 		
-		if (move.y > 0 && clip.y < getCenter().y && aabb.maxY + move.y > clip.y) 
-			move = new Vec3(move.x, clip.y - aabb.maxY, move.z);
-		else if (move.y < 0 && clip.y > getCenter().y && aabb.minY + move.y < clip.y) 
-			move = new Vec3(move.x, clip.y - aabb.minY, move.z);
+		if (move.y > 0 && clip.y < getCenter().y && pos.y + move.y > clip.y) 
+			move = new Vec3(move.x, clip.y - pos.y, move.z);
+		else if (move.y < 0 && clip.y > getCenter().y && pos.y + move.y < clip.y) 
+			move = new Vec3(move.x, clip.y - pos.y, move.z);
 		
-		/*if (move.z > 0 && clip.z < getCenter().z && aabb.maxZ + move.z > clip.z) 
-			move = new Vec3(move.x, move.y, clip.z - aabb.maxZ);
-		else if (move.z < 0 && clip.z > getCenter().z && aabb.minZ + move.z < clip.z) 
-			move = new Vec3(move.x, move.y, clip.z - aabb.minZ);*/
+		/*if (move.z > 0 && clip.z < getCenter().z && pos.z + move.z > clip.z) 
+			move = new Vec3(move.x, move.y, clip.z - pos.z);
+		else if (move.z < 0 && clip.z > getCenter().z && pos.z + move.z < clip.z) 
+			move = new Vec3(move.x, move.y, clip.z - pos.z);*/
 		return move;
 	}
 	

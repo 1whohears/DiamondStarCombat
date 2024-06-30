@@ -5,7 +5,6 @@ import com.onewhohears.dscombat.data.vehicle.RotableHitboxData;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.util.math.RotableAABB;
 import com.onewhohears.dscombat.util.math.UtilAngles;
-import com.onewhohears.dscombat.util.math.UtilGeometry;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -97,9 +96,8 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData 
 			//System.out.println("Not Inside");
 			return move;
 		}
-		// FIXME 4.1 walking on hitbox is sometimes doesn't allow sneaking
+		// FIXME 4.1 walking on hitbox sometimes doesn't allow sneaking
 		// FIXME 4.2 sometimes can't open vehicle inventories when the vehicle is on a boat hitbox
-		// FIXME 4.5 fix hitbox movement not moving other entities correctly
 		// FIXME 4.6 prevent entities from falling off when the chunks load
 		System.out.println("==========");
 		System.out.println("PRE COLLISION "+entity.level.isClientSide+" "+entity.tickCount+" "+entity.position()+" "+move+" "+entity.isOnGround()+" "+entity.getPose());
@@ -113,11 +111,13 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData 
 			move = move.multiply(1, 0, 1);
 		}
 		//System.out.println("OUTSIDE");
-		Vec3 entityMoveByParent = moveEntityFromParent(entity);
-		if (!UtilGeometry.isZero(entityMoveByParent)) {
-			move = move.add(entityMoveByParent);
+		moveEntityFromParent(entity);
+		//Vec3 entityMoveByParent = moveEntityFromParent(entity);
+		/*if (!UtilGeometry.isZero(entityMoveByParent)) {
+			//move = move.add(entityMoveByParent);
+			System.out.println("parent move = "+getParent().getDeltaMovement());
 			System.out.println("entityMoveByParent = "+entityMoveByParent);
-		}
+		}*/
 		move = hitbox.collide(entity.position(), entity.getBoundingBox(), move);
 		System.out.println("POST COLLISION "+entity.level.isClientSide+" "+entity.tickCount+" "+entity.position()+" "+move);
 		return move;

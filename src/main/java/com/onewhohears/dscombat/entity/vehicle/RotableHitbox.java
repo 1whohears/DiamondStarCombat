@@ -97,11 +97,11 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData 
 			return move;
 		}
 		// FIXME 4.6 prevent entities from falling off when the chunks load
-		System.out.println("==========");
-		System.out.println("PRE COLLISION "+entity.level.isClientSide+" "+entity.tickCount+" "+entity.position()+" "+move+" "+entity.isOnGround()+" "+entity.getPose());
+		//System.out.println("==========");
+		//System.out.println("PRE COLLISION "+entity.level.isClientSide+" "+entity.tickCount+" "+entity.position()+" "+move+" "+entity.isOnGround()+" "+entity.getPose());
 		getParent().addHitboxCollider(entity);
 		if (isInside(entity)) {
-			System.out.println("INSIDE");
+			//System.out.println("INSIDE");
 			Vec3 push = hitbox.getPushOutPos(entity.position(), entity.getBoundingBox(), RotableAABB.INSIDE_PUSH_OUT_SKIN);
 			entity.moveTo(push);
 			entity.setOnGround(true);
@@ -117,7 +117,7 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData 
 			System.out.println("entityMoveByParent = "+entityMoveByParent);
 		}*/
 		move = hitbox.collide(entity.position(), entity.getBoundingBox(), move);
-		System.out.println("POST COLLISION "+entity.level.isClientSide+" "+entity.tickCount+" "+entity.position()+" "+move);
+		//System.out.println("POST COLLISION "+entity.level.isClientSide+" "+entity.tickCount+" "+entity.position()+" "+move);
 		return move;
 	}
 	
@@ -135,6 +135,7 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData 
 		Vec3 entityMoveByParent = parent_move.add(tan_vel);
 		// FIXME 4.2 server client desyncs from tan_vel cause the entity to slowly fall off
 		entity.setPos(entity.position().add(entityMoveByParent));
+		//entity.moveTo(entity.position().add(entityMoveByParent));
 		entity.setYRot(entity.getYRot()+(float)parent_rot_rate.y);
 		return entityMoveByParent;
 	}

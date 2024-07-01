@@ -52,7 +52,7 @@ public class RotableAABB {
 	
 	public Vec3 collide(Vec3 pos, AABB aabb, Vec3 move) {
 		Vec3 clip = getPushOutPos(pos, aabb, PUSH_OUT_SKIN);
-		System.out.println("clip = "+clip);
+		//System.out.println("clip = "+clip);
 		/*if (move.x > 0 && clip.x < getCenter().x && pos.x + move.x > clip.x) 
 			move = new Vec3(clip.x - pos.x, move.y, move.z);
 		else if (move.x < 0 && clip.x > getCenter().x && pos.x + move.x < clip.x) 

@@ -266,4 +266,9 @@ public class UtilEntity {
 		}
 	}
 	
+	public static boolean isPlayer(Entity entity) {
+		if (entity == null) return false;
+		return entity.getType().getDescriptionId().equals(EntityType.PLAYER.getDescriptionId());
+	}
+	
 }

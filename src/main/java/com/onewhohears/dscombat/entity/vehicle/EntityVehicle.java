@@ -25,6 +25,7 @@ import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddForceMoment;
 import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleControl;
 import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleExplode;
+import com.onewhohears.dscombat.common.network.toserver.ToServerSyncRotBoxPassengerPos;
 import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleCollide;
 import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleControl;
 import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleMoveRot;
@@ -429,8 +430,24 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 	
 	public void tickHitboxes() {
-		hitboxCollidedIds.clear();
 		for (RotableHitbox box : hitboxes) box.tick();
+		//syncHitboxCollidePositions();
+		hitboxCollidedIds.clear();
+	}
+	
+	private void syncHitboxCollidePositions() {
+		if (!level.isClientSide || hitboxCollidedIds.size() == 0 || !isControlledByLocalInstance()) return;
+		int[] ids = new int[hitboxCollidedIds.size()];
+		Vec3[] pos = new Vec3[hitboxCollidedIds.size()];
+		int i = 0;
+		for (Integer id : hitboxCollidedIds) {
+			ids[i] = id;
+			Entity entity = level.getEntity(id);
+			if (entity != null) pos[i] = entity.position();
+			else pos[i] = new Vec3(0, -1000, 0);
+			++i;
+		}
+		PacketHandler.INSTANCE.sendToServer(new ToServerSyncRotBoxPassengerPos(ids, pos));
 	}
 	
 	public void addHitboxCollider(Entity entity) {

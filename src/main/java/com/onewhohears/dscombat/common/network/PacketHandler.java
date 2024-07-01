@@ -26,6 +26,7 @@ import com.onewhohears.dscombat.common.network.toserver.ToServerPingSelect;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSeatPos;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSetRadarMode;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSwitchSeat;
+import com.onewhohears.dscombat.common.network.toserver.ToServerSyncRotBoxPassengerPos;
 import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleCollide;
 import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleControl;
 import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleMoveRot;
@@ -210,6 +211,11 @@ public final class PacketHandler {
 			.encoder(ToClientDamagePart::encode)
 			.decoder(ToClientDamagePart::new)
 			.consumerMainThread(ToClientDamagePart::handle)
+			.add();
+		net.messageBuilder(ToServerSyncRotBoxPassengerPos.class, index++, NetworkDirection.PLAY_TO_SERVER)
+			.encoder(ToServerSyncRotBoxPassengerPos::encode)
+			.decoder(ToServerSyncRotBoxPassengerPos::new)
+			.consumerMainThread(ToServerSyncRotBoxPassengerPos::handle)
 			.add();
 	}
 	

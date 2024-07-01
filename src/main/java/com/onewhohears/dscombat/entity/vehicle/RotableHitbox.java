@@ -81,7 +81,7 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData 
 	}
 	
 	public Vec3 collide(Entity entity, AABB aabb, Vec3 move) {
-		if (hitbox == null) return move;
+		if (hitbox == null || getParent() == null) return move;
 		//System.out.println("==========");
 		//System.out.println("HANDLE COLLISION "+entity+" "+move+" "+this);
 		if (getParent().didEntityAlreadyCollide(entity)) {

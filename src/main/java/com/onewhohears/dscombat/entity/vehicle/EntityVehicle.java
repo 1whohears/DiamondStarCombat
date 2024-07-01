@@ -534,8 +534,9 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	protected Predicate<? super Entity> getKnockbackPredicate() {
 		return ((entity) -> {
-			if (this.equals(entity.getRootVehicle())) return false;
+			if (entity.noPhysics) return false;
 			if (entity.isSpectator()) return false;
+			if (this.equals(entity.getRootVehicle())) return false;
 			if (!(entity instanceof LivingEntity)) return false;
 			if (entity instanceof Player p && p.isCreative()) return false;
 			if (isFormerPassenger(entity)) return false;
@@ -561,6 +562,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		double d0 = getBoundingBox().getCenter().x;
 		double d1 = getBoundingBox().getCenter().z;
 		for(Entity entity : entities) {
+			if (entity.noPhysics) continue;
 			double d2 = entity.getX() - d0;
 			double d3 = entity.getZ() - d1;
 			double d4 = Math.max(d2 * d2 + d3 * d3, 0.1);

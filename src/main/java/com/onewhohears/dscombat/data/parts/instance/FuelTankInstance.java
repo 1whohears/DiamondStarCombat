@@ -95,7 +95,7 @@ public class FuelTankInstance<T extends FuelTankStats> extends PartInstance<T> i
 
 	@Override
 	public float getMaxAmmo() {
-		return getStats().getMaxFuel();
+		return getMaxFuel();
 	}
 
 	@Override
@@ -128,8 +128,24 @@ public class FuelTankInstance<T extends FuelTankStats> extends PartInstance<T> i
 
 	@Override
 	public void addToolTips(List<Component> tips, TooltipFlag isAdvanced) {
-		tips.add(UtilMCText.literal("Fuel: "+fuel+"/"+getStats().getMaxFuel()).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		tips.add(UtilMCText.literal("Fuel: "+(int)fuel+"/"+getStats().getMaxFuel()).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 		super.addToolTips(tips, isAdvanced);
+	}
+	
+	@Override
+	public float getCurrentFuel() {
+		return getFuel();
+	}
+	
+	@Override
+	public float getMaxFuel() {
+		return getStats().getMaxFuel();
+	}
+
+	@Override
+	public void tick(String slotId) {
+		super.tick(slotId);
+		if (isDamaged()) addFuel(-0.06f);
 	}
 
 }

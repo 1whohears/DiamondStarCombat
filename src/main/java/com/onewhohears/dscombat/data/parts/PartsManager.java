@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.data.parts;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -15,10 +16,8 @@ import com.onewhohears.dscombat.data.parts.instance.FuelTankInstance;
 import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 import com.onewhohears.dscombat.data.parts.instance.SeatInstance;
 import com.onewhohears.dscombat.data.parts.instance.StorageInstance;
-import com.onewhohears.dscombat.data.parts.stats.EngineStats;
-import com.onewhohears.dscombat.data.parts.stats.EngineStats.EngineType;
-import com.onewhohears.dscombat.data.parts.stats.FuelTankStats;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
@@ -228,6 +227,10 @@ public class PartsManager {
 		return true;
 	}
 	
+	public void repairAllParts() {
+		for (PartSlot p : slots) p.setPartRepaired(parent);
+	}
+	
 	@Override
 	public String toString() {
 		String s = "Parts:";
@@ -254,47 +257,43 @@ public class PartsManager {
 	
 	public float getTotalPushThrust() {
 		float total = 0;
-		for (PartSlot p : slots) if (p.filled() && p.getPartData().getStats().isEngine()) {
-			EngineStats engine = ((EngineStats)p.getPartData().getStats());
-			if (engine.getEngineType() == EngineType.PUSH) total += engine.getThrust();
-		}
+		for (PartSlot p : slots) if (p.filled()) 
+			total += p.getPartData().getPushThrust();
 		return total;
 	}
 	
 	public float getTotalSpinThrust() {
 		float total = 0;
-		for (PartSlot p : slots) if (p.filled() && p.getPartData().getStats().isEngine()) {
-			EngineStats engine = ((EngineStats)p.getPartData().getStats());
-			if (engine.getEngineType() == EngineType.SPIN) total += engine.getThrust();
-		}
+		for (PartSlot p : slots) if (p.filled()) 
+			total += p.getPartData().getSpinThrust();
 		return total;
 	}
 	
 	public float getTotalEngineHeat() {
 		float total = 0;
-		for (PartSlot p : slots) if (p.filled() && p.getPartData().getStats().isEngine()) 
-			total += ((EngineStats)p.getPartData().getStats()).getHeat();
+		for (PartSlot p : slots) if (p.filled()) 
+			total += p.getPartData().getEngineHeat();
 		return total;
 	}
 	
 	public float getTotalEngineFuelConsume() {
 		float total = 0;
-		for (PartSlot p : slots) if (p.filled() && p.getPartData().getStats().isEngine()) 
-			total += ((EngineStats)p.getPartData().getStats()).getFuelPerTick();
+		for (PartSlot p : slots) if (p.filled()) 
+			total += p.getPartData().getFuelPerTick();
 		return total;
 	}
 	
 	public float getCurrentFuel() {
 		float total = 0;
-		for (PartSlot p : slots) if (p.filled() && p.getPartData().getStats().isFuelTank()) 
-			total += ((FuelTankInstance<?>)p.getPartData()).getFuel();
+		for (PartSlot p : slots) if (p.filled()) 
+			total += p.getPartData().getCurrentFuel();
 		return total;
 	}
 	
 	public float getMaxFuel() {
 		float total = 0;
-		for (PartSlot p : slots) if (p.filled() && p.getPartData().getStats().isFuelTank()) 
-			total += ((FuelTankStats)p.getPartData().getStats()).getMaxFuel();
+		for (PartSlot p : slots) if (p.filled()) 
+			total += p.getPartData().getMaxFuel();
 		return total;
 	}
 	
@@ -307,9 +306,22 @@ public class PartsManager {
 		return fuel;
 	}
 	
+	public boolean isFuelTankDamaged() {
+		for (PartSlot p : slots) 
+			if (p.filled() && p.getPartData().getStats().isFuelTank() && p.getPartData().isDamaged()) 
+				return true;
+		return false;
+	}
+	
+	public boolean isEngineDamaged() {
+		for (PartSlot p : slots) 
+			if (p.filled() && p.getPartData().getStats().isEngine() && p.getPartData().isDamaged()) 
+				return true;
+		return false;
+	}
+	
 	public void tickFuel(boolean updateClient) {
 		float amount = -getTotalEngineFuelConsume() * Math.abs(parent.getCurrentThrottle());
-		if (parent.isFuelLeak()) amount -= 0.06f;
 		addFuel(amount);
 		if (updateClient && parent.tickCount % 100 == 0) {
 			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
@@ -429,6 +441,65 @@ public class PartsManager {
 			return boxes.get(storageIndex);
 		} 
 		return boxes.get(++storageIndex);
+	}
+	
+	public List<PartSlot> getPartsLinkedToVehicleRoot() {
+		List<PartSlot> parts = new ArrayList<>();
+		for (PartSlot p : slots) 
+			if (p.isLinkedWithVehicleRoot())
+				parts.add(p);
+		return parts;
+	}
+	
+	public List<PartSlot> getPartsLinkedToHitbox(String hitboxName) {
+		List<PartSlot> parts = new ArrayList<>();
+		for (PartSlot p : slots) 
+			if (p.isLinkedToHitbox(hitboxName))
+				parts.add(p);
+		return parts;
+	}
+	
+	public void damageRootPart() {
+		for (PartSlot p : getSlotsRandomOrder()) {
+			if (p.isLinkedWithVehicleRoot() && p.canGetDamaged()) {
+				p.setPartDamaged(parent);
+				return;
+			}
+		}
+	}
+	
+	public void damageAllRootParts() {
+		for (PartSlot p : slots) 
+			if (p.isLinkedWithVehicleRoot() && p.canGetDamaged()) 
+				p.setPartDamaged(parent);
+	}
+	
+	public void damageHitboxPart(String hitboxName) {
+		for (PartSlot p : getSlotsRandomOrder()) {
+			if (p.isLinkedToHitbox(hitboxName) && p.canGetDamaged()) {
+				p.setPartDamaged(parent);
+				return;
+			}
+		}
+	}
+	
+	public void damageAllHitboxParts(String hitboxName) {
+		for (PartSlot p : slots) 
+			if (p.isLinkedToHitbox(hitboxName) && p.canGetDamaged()) 
+				p.setPartDamaged(parent);
+	}
+	
+	public void damageAllParts() {
+		for (PartSlot p : slots) 
+			if (p.canGetDamaged()) 
+				p.setPartDamaged(parent);
+	}
+	
+	public List<PartSlot> getSlotsRandomOrder() {
+		List<PartSlot> random = new ArrayList<>();
+		for (PartSlot p : slots) random.add(p);
+		Collections.shuffle(random, UtilEntity.random);
+		return random;
 	}
 	
 }

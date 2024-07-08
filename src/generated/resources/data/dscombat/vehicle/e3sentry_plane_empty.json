@@ -1,6 +1,7 @@
 {
+  "armor": 100.0,
   "displayName": "preset.dscombat.e3sentry_plane_empty",
-  "health": 400.0,
+  "health": 200.0,
   "ingredients": [
     {
       "item": "dscombat:advanced_cockpit",
@@ -329,8 +330,10 @@
     "passengerSoundPack": "eng_male_1"
   },
   "stats": {
+    "armor_damage_absorbtion": 0.05,
+    "armor_damage_threshold": 3.0,
     "assetId": "e3sentry_plane",
-    "base_armor": 4.0,
+    "base_armor": 100.0,
     "cameraDistance": 12.0,
     "crashExplosionRadius": 8.0,
     "cross_sec_area": 16.0,
@@ -341,7 +344,7 @@
     "inertiaroll": 10.0,
     "inertiayaw": 8.0,
     "mass": 83900.0,
-    "max_health": 400.0,
+    "max_health": 200.0,
     "max_speed": 1.0,
     "maxpitch": 2.0,
     "maxroll": 3.0,

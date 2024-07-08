@@ -15,8 +15,9 @@
       }
     }
   ],
+  "armor": 100.0,
   "displayName": "preset.dscombat.javi_plane_empty",
-  "health": 200.0,
+  "health": 150.0,
   "ingredients": [
     {
       "item": "dscombat:fuselage",
@@ -201,8 +202,10 @@
     "passengerSoundPack": "eng_non_binary_goober"
   },
   "stats": {
+    "armor_damage_absorbtion": 0.4,
+    "armor_damage_threshold": 8.0,
     "assetId": "javi_plane",
-    "base_armor": 9.0,
+    "base_armor": 100.0,
     "cameraDistance": 16.0,
     "crashExplosionRadius": 5.0,
     "cross_sec_area": 7.0,
@@ -213,7 +216,7 @@
     "inertiaroll": 6.0,
     "inertiayaw": 4.0,
     "mass": 11300.0,
-    "max_health": 200.0,
+    "max_health": 150.0,
     "max_speed": 1.05,
     "maxpitch": 2.1,
     "maxroll": 4.0,

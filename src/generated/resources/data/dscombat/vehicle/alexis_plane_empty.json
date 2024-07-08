@@ -8,8 +8,9 @@
       }
     }
   ],
+  "armor": 40.0,
   "displayName": "preset.dscombat.alexis_plane_empty",
-  "health": 140.0,
+  "health": 100.0,
   "ingredients": [
     {
       "item": "dscombat:fuselage",
@@ -263,8 +264,10 @@
     "passengerSoundPack": "eng_non_binary_goober"
   },
   "stats": {
+    "armor_damage_absorbtion": 0.12,
+    "armor_damage_threshold": 2.5,
     "assetId": "alexis_plane",
-    "base_armor": 2.0,
+    "base_armor": 40.0,
     "cameraDistance": 17.0,
     "crashExplosionRadius": 5.0,
     "cross_sec_area": 4.0,
@@ -275,7 +278,7 @@
     "inertiaroll": 4.0,
     "inertiayaw": 2.0,
     "mass": 8500.0,
-    "max_health": 140.0,
+    "max_health": 100.0,
     "max_speed": 1.4,
     "maxpitch": 2.5,
     "maxroll": 6.0,

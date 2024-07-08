@@ -183,7 +183,7 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 		return damaged;
 	}
 	
-	public void setDamaged(boolean damaged) {
+	protected void setDamaged(boolean damaged) {
 		this.damaged = damaged;
 	}
 	
@@ -220,6 +220,30 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 	
 	public boolean hasExternalEntity() {
 		return getStats().hasExternalEntity();
+	}
+	
+	public float getPushThrust() {
+		return 0;
+	}
+	
+	public float getSpinThrust() {
+		return 0;
+	}
+	
+	public float getEngineHeat() {
+		return 0;
+	}
+	
+	public float getFuelPerTick() {
+		return 0;
+	}
+	
+	public float getCurrentFuel() {
+		return 0;
+	}
+	
+	public float getMaxFuel() {
+		return 0;
 	}
 	
 }

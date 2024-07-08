@@ -42,7 +42,8 @@ public abstract class VehicleStats extends JsonPresetStats {
 	// basic
 	public final float max_health, max_speed, mass;
 	// defense
-	public final float stealth, cross_sec_area, idleheat, base_armor;
+	public final float stealth, cross_sec_area, idleheat;
+	public final float base_armor, armor_damage_threshold, armor_damage_absorbtion;
 	// turn
 	public final float turn_radius;
 	public final float maxroll, maxpitch, maxyaw;
@@ -81,6 +82,8 @@ public abstract class VehicleStats extends JsonPresetStats {
 		cross_sec_area = UtilParse.getFloatSafe(stats, "cross_sec_area", 10);
 		idleheat = UtilParse.getFloatSafe(stats, "idleheat", 10);
 		base_armor = UtilParse.getFloatSafe(stats, "base_armor", 0);
+		armor_damage_threshold = UtilParse.getFloatSafe(stats, "armor_damage_threshold", 0);
+		armor_damage_absorbtion = UtilParse.getFloatSafe(stats, "armor_damage_absorbtion", 0);
 		throttleup = UtilParse.getFloatSafe(stats, "throttleup", 0.01f);
 		throttledown = UtilParse.getFloatSafe(stats, "throttledown", 0.01f);
 		negativeThrottle = UtilParse.getBooleanSafe(stats, "negativeThrottle", false);
@@ -564,7 +567,17 @@ public abstract class VehicleStats extends JsonPresetStats {
 		 */
 		public Builder addRotableHitbox(String name, double sizeX, double sizeY, double sizeZ, 
 				double posX, double posY, double posZ) {
-			getHitboxes().add(RotableHitboxData.createHitboxJson(name, sizeX, sizeY, sizeZ, posX, posY, posZ));
+			return addRotableHitbox(name, sizeX, sizeY, sizeZ, posX, posY, posZ, 
+					0, 0, false, false);
+		}
+		/**
+		 * all vehicles
+		 */
+		public Builder addRotableHitbox(String name, double sizeX, double sizeY, double sizeZ, 
+				double posX, double posY, double posZ, float max_health, float max_armor, 
+				boolean remove_on_destroy, boolean damage_parts) {
+			getHitboxes().add(RotableHitboxData.createHitboxJson(name, sizeX, sizeY, sizeZ, posX, posY, posZ, 
+					max_health, max_armor, remove_on_destroy, damage_parts));
 			return this;
 		}
 		
@@ -691,7 +704,20 @@ public abstract class VehicleStats extends JsonPresetStats {
 		 * all vehicles
 		 */
 		public Builder setBaseArmor(float armor) {
+			setFloat("armor", armor);
 			return setStatFloat("base_armor", armor);
+		}
+		/**
+		 * all vehicles
+		 */
+		public Builder setArmorDamageThreshold(float armor_damage_threshold) {
+			return setStatFloat("armor_damage_threshold", armor_damage_threshold);
+		}
+		/**
+		 * all vehicles
+		 */
+		public Builder setArmorAbsorbtionPercent(float armor_damage_absorbtion) {
+			return setStatFloat("armor_damage_absorbtion", armor_damage_absorbtion);
 		}
 		/**
 		 * all vehicles

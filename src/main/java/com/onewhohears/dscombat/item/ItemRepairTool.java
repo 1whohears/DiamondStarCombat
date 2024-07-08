@@ -21,25 +21,9 @@ public class ItemRepairTool extends Item implements VehicleInteractItem {
 
 	@Override
 	public InteractionResult onServerInteract(EntityVehicle vehicle, ItemStack stack, Player player, InteractionHand hand) {
-		boolean playRepairSound = true;
-		int damage = 0;
-		if (vehicle.isEngineFire()) {
-			vehicle.setEngineFire(false);
-			damage = 40;
-		} else if (vehicle.isFuelLeak()) {
-			vehicle.setFuelLeak(false);
-			damage = 15;
-		} else if (!vehicle.isMaxHealth()) {
-			vehicle.addHealth(repair);
-			damage = 1;
-			if (!vehicle.isMaxHealth()) playRepairSound = false;
- 		} else {
-			vehicle.playRepairSound();
-			return InteractionResult.PASS;
-		}
+		int damage = vehicle.onRepairTool(repair);
 		stack.hurtAndBreak(damage, player, p -> p.broadcastBreakEvent(hand));
 		player.awardStat(Stats.ITEM_USED.get(this));
-		if (playRepairSound) vehicle.playRepairSound();
 		return InteractionResult.SUCCESS;
 	}
 

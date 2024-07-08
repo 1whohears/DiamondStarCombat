@@ -1,14 +1,19 @@
 {
+  "armor": 400.0,
   "displayName": "preset.dscombat.gronk_battleship_empty",
-  "health": 600.0,
+  "health": 200.0,
   "hitboxes": [
     {
+      "damage_parts": false,
+      "max_armor": 0.0,
+      "max_health": 0.0,
       "name": "plat0",
       "rel_pos": {
         "x": 0.0,
         "y": 2.0,
         "z": -0.5
       },
+      "remove_on_destroy": false,
       "size": {
         "x": 14.0,
         "y": 4.02,
@@ -16,12 +21,16 @@
       }
     },
     {
+      "damage_parts": false,
+      "max_armor": 0.0,
+      "max_health": 0.0,
       "name": "plat1",
       "rel_pos": {
         "x": 0.0,
         "y": 4.5,
         "z": -0.5
       },
+      "remove_on_destroy": false,
       "size": {
         "x": 9.0,
         "y": 1.02,
@@ -29,12 +38,16 @@
       }
     },
     {
+      "damage_parts": false,
+      "max_armor": 0.0,
+      "max_health": 0.0,
       "name": "plat2",
       "rel_pos": {
         "x": 0.0,
         "y": 5.5,
         "z": -0.5
       },
+      "remove_on_destroy": false,
       "size": {
         "x": 6.0,
         "y": 1.02,
@@ -42,12 +55,16 @@
       }
     },
     {
+      "damage_parts": false,
+      "max_armor": 0.0,
+      "max_health": 0.0,
       "name": "front",
       "rel_pos": {
         "x": 0.0,
         "y": 3.0,
         "z": 20.5
       },
+      "remove_on_destroy": false,
       "size": {
         "x": 8.0,
         "y": 2.02,
@@ -55,12 +72,16 @@
       }
     },
     {
+      "damage_parts": false,
+      "max_armor": 0.0,
+      "max_health": 0.0,
       "name": "back",
       "rel_pos": {
         "x": 0.0,
         "y": 3.0,
         "z": -21.5
       },
+      "remove_on_destroy": false,
       "size": {
         "x": 8.0,
         "y": 2.02,
@@ -312,8 +333,10 @@
     "passengerEngine": "dscombat:boat_1"
   },
   "stats": {
+    "armor_damage_absorbtion": 0.6,
+    "armor_damage_threshold": 12.0,
     "assetId": "gronk_battleship",
-    "base_armor": 15.0,
+    "base_armor": 400.0,
     "cameraDistance": 30.0,
     "crashExplosionRadius": 8.0,
     "cross_sec_area": 7.5,
@@ -325,7 +348,7 @@
     "inertiayaw": 4.0,
     "mass": 450000.0,
     "mastType": "NORMAL",
-    "max_health": 600.0,
+    "max_health": 200.0,
     "max_speed": 0.6,
     "maxpitch": 0.0,
     "maxroll": 0.0,

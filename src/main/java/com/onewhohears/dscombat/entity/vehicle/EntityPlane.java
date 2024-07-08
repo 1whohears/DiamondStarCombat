@@ -4,7 +4,6 @@ import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.vehicle.DSCPhyCons;
 import com.onewhohears.dscombat.data.vehicle.VehicleType;
-import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource.WeaponDamageType;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
 
@@ -217,13 +216,6 @@ public class EntityPlane extends EntityVehicle {
 	}
 	
 	@Override
-	public float calcProjDamageBySource(DamageSource source, float amount) {
-		WeaponDamageType wdt = WeaponDamageType.byId(source.getMsgId());
-		if (wdt != null && wdt.isContact()) return amount*DSCGameRules.getBulletDamagePlaneFactor(level);
-		return super.calcProjDamageBySource(source, amount);
-	}
-	
-	@Override
 	public boolean isStalling() {
 		return Math.abs(getAOA()) >= getStats().asPlane().liftKGraph.getCriticalAOA() || liftLost();
 	}
@@ -236,6 +228,11 @@ public class EntityPlane extends EntityVehicle {
 	@Override
 	public boolean liftLost() {
 		return !isOnGround() && getForces().y < -10 && getDeltaMovement().y < -0.1 && Math.abs(zRot) > 15;
+	}
+	
+	@Override
+	protected float calcDamageFromBullet(DamageSource source, float amount) {
+		return amount * DSCGameRules.getBulletDamagePlaneFactor(level);
 	}
 
 }

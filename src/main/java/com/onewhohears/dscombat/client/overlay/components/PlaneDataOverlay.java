@@ -31,7 +31,7 @@ public class PlaneDataOverlay extends VehicleOverlayComponent {
         drawString(poseStack, FONT,
                 String.format("AOA: %3.1f", plane.getAOA()),
                 screenWidth - STICK_BASE_SIZE - PADDING,
-                screenHeight - STICK_BASE_SIZE - PEDAL_HEIGHT - FUEL_GAUGE_HEIGHT - PADDING *3-40,
+                screenHeight - STICK_BASE_SIZE - PEDAL_HEIGHT - FUEL_GAUGE_HEIGHT - PADDING *3-50,
                 color);
     }
 

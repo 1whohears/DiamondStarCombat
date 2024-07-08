@@ -1,6 +1,7 @@
 {
+  "armor": 100.0,
   "displayName": "preset.dscombat.werewolf_empty",
-  "health": 200.0,
+  "health": 100.0,
   "ingredients": [
     {
       "item": "dscombat:fuselage",
@@ -173,8 +174,10 @@
     "passengerSoundPack": "eng_non_binary_goober"
   },
   "stats": {
+    "armor_damage_absorbtion": 0.4,
+    "armor_damage_threshold": 6.0,
     "assetId": "werewolf",
-    "base_armor": 5.0,
+    "base_armor": 100.0,
     "cameraDistance": 6.0,
     "crashExplosionRadius": 4.0,
     "cross_sec_area": 8.0,
@@ -191,7 +194,7 @@
     "inertiaroll": 8.0,
     "inertiayaw": 4.0,
     "mass": 6000.0,
-    "max_health": 200.0,
+    "max_health": 100.0,
     "max_speed": 0.7,
     "maxpitch": 2.0,
     "maxroll": 4.0,

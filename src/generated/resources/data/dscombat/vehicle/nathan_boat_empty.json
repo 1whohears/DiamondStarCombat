@@ -1,6 +1,7 @@
 {
+  "armor": 20.0,
   "displayName": "preset.dscombat.nathan_boat_empty",
-  "health": 100.0,
+  "health": 80.0,
   "ingredients": [
     {
       "num": 10,
@@ -154,8 +155,10 @@
     "passengerEngine": "dscombat:boat_1"
   },
   "stats": {
+    "armor_damage_absorbtion": 0.05,
+    "armor_damage_threshold": 1.0,
     "assetId": "nathan_boat",
-    "base_armor": 1.0,
+    "base_armor": 20.0,
     "cameraDistance": 4.0,
     "crashExplosionRadius": 2.0,
     "cross_sec_area": 4.5,
@@ -166,7 +169,7 @@
     "inertiaroll": 6.0,
     "inertiayaw": 4.0,
     "mass": 1000.0,
-    "max_health": 100.0,
+    "max_health": 80.0,
     "max_speed": 0.85,
     "maxpitch": 0.0,
     "maxroll": 0.0,

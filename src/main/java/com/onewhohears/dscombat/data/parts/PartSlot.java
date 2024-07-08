@@ -27,6 +27,7 @@ public class PartSlot {
 	private final float zRot;
 	private final boolean locked;
 	private final String onlyCompatPart;
+	private final String linkedHitbox;
 	private PartInstance<?> data;
 	
 	public PartSlot(CompoundTag entityNbt, @Nullable CompoundTag presetNbt) {
@@ -38,6 +39,7 @@ public class PartSlot {
 		pos = UtilParse.readVec3(presetNbt, "slot_pos");
 		zRot = presetNbt.getFloat("zRot");
 		onlyCompatPart = presetNbt.getString("onlyCompatPart");
+		linkedHitbox = presetNbt.getString("linkedHitbox");
 	}
 	
 	public CompoundTag write() {
@@ -48,6 +50,7 @@ public class PartSlot {
 		tag.putFloat("zRot", zRot);
 		tag.putBoolean("locked", locked);
 		tag.putString("onlyCompatPart", onlyCompatPart);
+		tag.putString("linkedHitbox", linkedHitbox);
 		if (filled()) tag.put("data", data.writeNBT());
 		return tag;
 	}
@@ -59,6 +62,7 @@ public class PartSlot {
 		zRot = buffer.readFloat();
 		locked = buffer.readBoolean();
 		onlyCompatPart = buffer.readUtf();
+		linkedHitbox = buffer.readUtf();
 		boolean notNull = buffer.readBoolean();
 		if (notNull) data = DataSerializers.PART_DATA.read(buffer);
 	}
@@ -70,6 +74,7 @@ public class PartSlot {
 		buffer.writeFloat(zRot);
 		buffer.writeBoolean(locked);
 		buffer.writeUtf(onlyCompatPart);
+		buffer.writeUtf(linkedHitbox);
 		buffer.writeBoolean(filled());
 		if (filled()) DataSerializers.PART_DATA.write(buffer, data);
 	}
@@ -133,6 +138,7 @@ public class PartSlot {
 	
 	public boolean setPartDamaged(EntityVehicle vehicle) {
 		if (!filled()) return false;
+		if (data.isDamaged()) return true;
 		data.onDamaged(vehicle, slotId);
 		if (!vehicle.level.isClientSide) {
 			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> vehicle), 
@@ -141,8 +147,13 @@ public class PartSlot {
 		return true;
 	}
 	
+	public boolean canGetDamaged() {
+		return filled() && !isNormalSeat() && !getPartData().isDamaged();
+	}
+	
 	public boolean setPartRepaired(EntityVehicle vehicle) {
 		if (!filled()) return false;
+		if (!data.isDamaged()) return true;
 		data.onRepaired(vehicle, slotId, pos);
 		if (!vehicle.level.isClientSide) {
 			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> vehicle), 
@@ -220,6 +231,18 @@ public class PartSlot {
 	
 	public static boolean isCoPilotSeat(String slotId) {
 		return slotId.equals(COPILOT_SLOT_NAME);
+	}
+	
+	public String getLinkedHitbox() {
+		return linkedHitbox;
+	}
+	
+	public boolean isLinkedWithVehicleRoot() {
+		return linkedHitbox.isEmpty();
+	}
+	
+	public boolean isLinkedToHitbox(String hitboxName) {
+		return linkedHitbox.equals(hitboxName);
 	}
 	
 }

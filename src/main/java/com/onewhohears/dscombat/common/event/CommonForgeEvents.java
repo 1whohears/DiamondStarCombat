@@ -38,7 +38,7 @@ public final class CommonForgeEvents {
 		if (!event.getEntity().isPassenger() || !(event.getEntity().getRootVehicle() instanceof EntityVehicle plane)) return;
 		float a = event.getAmount();
 		//System.out.println("PLAYER HURT "+event.getEntity()+" "+a);
-		event.setAmount(Math.max(0, a-a*plane.getTotalArmor()*DSCGameRules.getVehicleArmorStrengthFactor(plane.level)));
+		event.setAmount(Math.max(0, a-a*plane.getMaxTotalArmor()*DSCGameRules.getVehicleArmorStrengthFactor(plane.level)));
 	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)

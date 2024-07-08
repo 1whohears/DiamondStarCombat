@@ -3,7 +3,6 @@ package com.onewhohears.dscombat.entity.vehicle;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.vehicle.VehicleType;
-import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource.WeaponDamageType;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.world.damagesource.DamageSource;
@@ -113,10 +112,8 @@ public class EntityHelicopter extends EntityVehicle {
 	}
 	
 	@Override
-	public float calcProjDamageBySource(DamageSource source, float amount) {
-		WeaponDamageType wdt = WeaponDamageType.byId(source.getMsgId());
-		if (wdt != null && wdt.isContact()) return amount*DSCGameRules.getBulletDamageHeliFactor(level);
-		return super.calcProjDamageBySource(source, amount);
+	protected float calcDamageFromBullet(DamageSource source, float amount) {
+		return amount * DSCGameRules.getBulletDamageHeliFactor(level);
 	}
 
 }

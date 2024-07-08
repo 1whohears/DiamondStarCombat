@@ -65,6 +65,11 @@ public class VehicleStatsOverlay extends VehicleOverlayComponent {
                 "H: "+(int)health+"/"+(int)maxHealth,
                 xOrigin, yOrigin-20,
                 getHealthColor(health, maxHealth));
+        float armor = vehicle.getArmor(), maxArmor = vehicle.getMaxTotalArmor();
+        drawString(poseStack, FONT,
+                "S: "+(int)armor+"/"+(int)maxArmor,
+                xOrigin, yOrigin-30,
+                getHealthColor(armor, maxArmor));
         drawCenteredString(poseStack, FONT,
                 "["+vehicle.getBlockX()+","+vehicle.getBlockY()+","+vehicle.getBlockZ()+"]",
                 screenWidth / 2, 0, 0x00ff00);

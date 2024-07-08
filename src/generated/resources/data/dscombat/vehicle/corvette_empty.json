@@ -1,14 +1,19 @@
 {
+  "armor": 150.0,
   "displayName": "preset.dscombat.corvette_empty",
-  "health": 250.0,
+  "health": 100.0,
   "hitboxes": [
     {
+      "damage_parts": false,
+      "max_armor": 0.0,
+      "max_health": 0.0,
       "name": "plat0",
       "rel_pos": {
         "x": 0.0,
         "y": 1.5,
         "z": -2.0
       },
+      "remove_on_destroy": false,
       "size": {
         "x": 7.0,
         "y": 3.02,
@@ -188,8 +193,10 @@
     "passengerEngine": "dscombat:boat_1"
   },
   "stats": {
+    "armor_damage_absorbtion": 0.3,
+    "armor_damage_threshold": 12.0,
     "assetId": "corvette",
-    "base_armor": 8.0,
+    "base_armor": 150.0,
     "cameraDistance": 13.0,
     "crashExplosionRadius": 7.0,
     "cross_sec_area": 4.5,
@@ -201,7 +208,7 @@
     "inertiayaw": 4.0,
     "mass": 50000.0,
     "mastType": "THIN",
-    "max_health": 250.0,
+    "max_health": 100.0,
     "max_speed": 0.95,
     "maxpitch": 0.0,
     "maxroll": 0.0,

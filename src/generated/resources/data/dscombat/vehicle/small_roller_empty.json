@@ -1,4 +1,5 @@
 {
+  "armor": 0.0,
   "displayName": "preset.dscombat.small_roller_empty",
   "health": 30.0,
   "ingredients": [
@@ -56,6 +57,8 @@
     "passengerEngine": "dscombat:tank_1"
   },
   "stats": {
+    "armor_damage_absorbtion": 0.0,
+    "armor_damage_threshold": 1.0,
     "assetId": "small_roller",
     "base_armor": 0.0,
     "cameraDistance": 4.0,

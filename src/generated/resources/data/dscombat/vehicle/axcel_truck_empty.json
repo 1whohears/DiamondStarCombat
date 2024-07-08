@@ -1,6 +1,7 @@
 {
+  "armor": 40.0,
   "displayName": "preset.dscombat.axcel_truck_empty",
-  "health": 80.0,
+  "health": 40.0,
   "ingredients": [
     {
       "item": "dscombat:seat",
@@ -116,8 +117,10 @@
     "passengerEngine": "dscombat:tank_1"
   },
   "stats": {
+    "armor_damage_absorbtion": 0.2,
+    "armor_damage_threshold": 4.0,
     "assetId": "axcel_truck",
-    "base_armor": 8.0,
+    "base_armor": 40.0,
     "cameraDistance": 7.0,
     "car": {
       "isTank": false
@@ -131,7 +134,7 @@
     "inertiaroll": 8.0,
     "inertiayaw": 8.0,
     "mass": 6500.0,
-    "max_health": 80.0,
+    "max_health": 40.0,
     "max_speed": 0.5,
     "maxpitch": 0.0,
     "maxroll": 0.0,

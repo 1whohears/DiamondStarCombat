@@ -1,14 +1,19 @@
 {
+  "armor": 600.0,
   "displayName": "preset.dscombat.aircraft_carrier_empty",
-  "health": 900.0,
+  "health": 200.0,
   "hitboxes": [
     {
+      "damage_parts": false,
+      "max_armor": 0.0,
+      "max_health": 0.0,
       "name": "runway",
       "rel_pos": {
         "x": 0.0,
         "y": 3.0,
         "z": 0.0
       },
+      "remove_on_destroy": false,
       "size": {
         "x": 16.0,
         "y": 6.06,
@@ -16,12 +21,16 @@
       }
     },
     {
+      "damage_parts": false,
+      "max_armor": 0.0,
+      "max_health": 0.0,
       "name": "side_plat",
       "rel_pos": {
         "x": 0.0,
         "y": 4.5,
         "z": 0.0
       },
+      "remove_on_destroy": false,
       "size": {
         "x": 25.0,
         "y": 3.06,
@@ -277,8 +286,10 @@
     "passengerEngine": "dscombat:boat_1"
   },
   "stats": {
+    "armor_damage_absorbtion": 0.7,
+    "armor_damage_threshold": 12.0,
     "assetId": "aircraft_carrier",
-    "base_armor": 18.0,
+    "base_armor": 600.0,
     "cameraDistance": 34.0,
     "crashExplosionRadius": 10.0,
     "cross_sec_area": 10.5,
@@ -290,7 +301,7 @@
     "inertiayaw": 4.0,
     "mass": 800000.0,
     "mastType": "LARGE",
-    "max_health": 900.0,
+    "max_health": 200.0,
     "max_speed": 0.25,
     "maxpitch": 0.0,
     "maxroll": 0.0,

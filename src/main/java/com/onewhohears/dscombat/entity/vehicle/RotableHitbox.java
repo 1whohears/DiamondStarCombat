@@ -9,6 +9,9 @@ import com.onewhohears.dscombat.util.math.UtilAngles;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -20,6 +23,9 @@ import net.minecraftforge.network.NetworkHooks;
 
 public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData {
 	
+	public static final EntityDataAccessor<Float> HEALTH = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> ARMOR = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
+	
 	private EntityVehicle parent;
 	private RotableHitboxData data;
 	private RotableAABB hitbox;
@@ -30,6 +36,22 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData 
 		this.data = data;
 		this.noPhysics = true;
 		initStats();
+		setHealth(data.getMaxHealth());
+		setArmor(data.getMaxArmor());
+	}
+	
+	public void readNbt(CompoundTag nbt) {
+		CompoundTag tag = nbt.getCompound(getHitboxName());
+		if (tag == null || tag.isEmpty()) return;
+		if (tag.contains("health")) setHealth(tag.getFloat("health"));
+		if (tag.contains("armor")) setArmor(tag.getFloat("armor"));
+	}
+	
+	public void writeNbt(CompoundTag nbt) {
+		CompoundTag tag = new CompoundTag();
+		tag.putFloat("health", getHealth());
+		tag.putFloat("armor", getArmor());
+		nbt.put(getHitboxName(), tag);
 	}
 	
 	public RotableHitbox(EntityType<?> type, Level level) {
@@ -66,6 +88,10 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData 
 		}
 		if (data == null || hitbox == null) {
 			discard();
+			return;
+		}
+		if (!level.isClientSide && data.isRemoveOnDestroy() && isDestroyed()) {
+			kill();
 			return;
 		}
 		positionSelf();
@@ -145,6 +171,7 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData 
 	}
 	
 	public boolean couldCollide(Entity entity) {
+		if (isDestroyed()) return false;
 		if (entity.noPhysics) return false;
 		if (entity.isRemoved()) return false;
 		if (!entity.canCollideWith(getParent())) return false;
@@ -233,6 +260,8 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData 
 
 	@Override
 	protected void defineSynchedData() {
+		entityData.define(HEALTH, 10f);
+        entityData.define(ARMOR, 10f);
 	}
 
 	@Override
@@ -260,6 +289,66 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData 
 	@Override
 	public void push(Entity pEntity) {
 		// FIXME 4.4 apparently this override fixes the client sliding off the boat hitbox when playing on a server
+	}
+	
+	public float getHealth() {
+		return entityData.get(HEALTH);
+	}
+	
+	public float getMaxHealth() {
+		if (data == null) return 0;
+		return data.getMaxHealth();
+	}
+	
+	public float getArmor() {
+		return entityData.get(ARMOR);
+	}
+	
+	public float getMaxArmor() {
+		if (data == null) return 0;
+		return data.getMaxArmor();
+	}
+	
+	public void setHealth(float health) {
+		if (health < 0) health = 0;
+		else if (health > data.getMaxHealth()) health = getMaxHealth();
+		entityData.set(HEALTH, health);
+	}
+	
+	public void setArmor(float armor) {
+		if (armor < 0) armor = 0;
+		else if (armor > data.getMaxArmor()) armor = getMaxArmor();
+		entityData.set(ARMOR, armor);
+	}
+	
+	public void addHealth(float health) {
+		setHealth(getHealth()+health);
+	}
+	
+	public void addArmor(float armor) {
+		setArmor(getArmor()+armor);
+	}
+	
+	public void fullyRepair() {
+		addHealth(100000);
+		addArmor(100000);
+	}
+	
+	public void repair(float repair) {
+		if (!level.isClientSide && isRemoved()) {
+			revive();
+			level.addFreshEntity(this);
+		}
+		if (getHealth() < getMaxHealth()) addHealth(repair);
+		else if (getArmor() < getMaxArmor()) addArmor(repair);
+	}
+	
+	public boolean isDamaged() {
+		return getHealth() < getMaxHealth() || getArmor() < getMaxArmor();
+	}
+	
+	public boolean isDestroyed() {
+		return getHealth() <= 0;
 	}
 	
 }

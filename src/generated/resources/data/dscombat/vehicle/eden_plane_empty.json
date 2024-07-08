@@ -15,8 +15,9 @@
       }
     }
   ],
+  "armor": 60.0,
   "displayName": "preset.dscombat.eden_plane_empty",
-  "health": 160.0,
+  "health": 100.0,
   "ingredients": [
     {
       "item": "dscombat:fuselage",
@@ -322,8 +323,10 @@
     "passengerSoundPack": "eng_non_binary_goober"
   },
   "stats": {
+    "armor_damage_absorbtion": 0.15,
+    "armor_damage_threshold": 3.0,
     "assetId": "eden_plane",
-    "base_armor": 3.0,
+    "base_armor": 60.0,
     "cameraDistance": 19.0,
     "crashExplosionRadius": 5.5,
     "cross_sec_area": 4.5,
@@ -334,7 +337,7 @@
     "inertiaroll": 4.5,
     "inertiayaw": 2.5,
     "mass": 11000.0,
-    "max_health": 160.0,
+    "max_health": 100.0,
     "max_speed": 1.5,
     "maxpitch": 2.25,
     "maxroll": 5.5,

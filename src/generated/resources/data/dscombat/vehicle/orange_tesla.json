@@ -1,4 +1,5 @@
 {
+  "armor": 0.0,
   "displayName": "preset.dscombat.orange_tesla",
   "health": 40.0,
   "ingredients": [
@@ -108,8 +109,10 @@
     "passengerEngine": "dscombat:orange_tesla"
   },
   "stats": {
+    "armor_damage_absorbtion": 0.01,
+    "armor_damage_threshold": 1.0,
     "assetId": "orange_tesla",
-    "base_armor": 1.0,
+    "base_armor": 0.0,
     "cameraDistance": 4.0,
     "crashExplosionRadius": 2.0,
     "cross_sec_area": 5.375,

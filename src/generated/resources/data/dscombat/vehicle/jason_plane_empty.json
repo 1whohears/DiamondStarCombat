@@ -1,4 +1,5 @@
 {
+  "armor": 10.0,
   "displayName": "preset.dscombat.jason_plane_empty",
   "health": 60.0,
   "ingredients": [
@@ -118,8 +119,10 @@
     "passengerEngine": "dscombat:biplane_1"
   },
   "stats": {
+    "armor_damage_absorbtion": 0.04,
+    "armor_damage_threshold": 1.0,
     "assetId": "jason_plane",
-    "base_armor": 0.0,
+    "base_armor": 10.0,
     "cameraDistance": 8.0,
     "crashExplosionRadius": 3.0,
     "cross_sec_area": 3.0,

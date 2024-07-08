@@ -1,14 +1,19 @@
 {
+  "armor": 300.0,
   "displayName": "preset.dscombat.destroyer_empty",
-  "health": 400.0,
+  "health": 200.0,
   "hitboxes": [
     {
+      "damage_parts": false,
+      "max_armor": 0.0,
+      "max_health": 0.0,
       "name": "plat0",
       "rel_pos": {
         "x": 0.0,
         "y": 2.0,
         "z": 0.0
       },
+      "remove_on_destroy": false,
       "size": {
         "x": 10.0,
         "y": 4.02,
@@ -236,8 +241,10 @@
     "passengerEngine": "dscombat:boat_1"
   },
   "stats": {
+    "armor_damage_absorbtion": 0.75,
+    "armor_damage_threshold": 12.0,
     "assetId": "destroyer",
-    "base_armor": 17.0,
+    "base_armor": 300.0,
     "cameraDistance": 22.0,
     "crashExplosionRadius": 8.0,
     "cross_sec_area": 6.5,
@@ -249,7 +256,7 @@
     "inertiayaw": 4.0,
     "mass": 300000.0,
     "mastType": "NORMAL",
-    "max_health": 400.0,
+    "max_health": 200.0,
     "max_speed": 0.8,
     "maxpitch": 0.0,
     "maxroll": 0.0,

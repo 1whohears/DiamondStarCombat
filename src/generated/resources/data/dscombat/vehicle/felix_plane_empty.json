@@ -8,8 +8,9 @@
       }
     }
   ],
+  "armor": 20.0,
   "displayName": "preset.dscombat.felix_plane_empty",
-  "health": 120.0,
+  "health": 100.0,
   "ingredients": [
     {
       "item": "dscombat:fuselage",
@@ -218,8 +219,10 @@
     "passengerSoundPack": "eng_non_binary_goober"
   },
   "stats": {
+    "armor_damage_absorbtion": 0.08,
+    "armor_damage_threshold": 2.0,
     "assetId": "felix_plane",
-    "base_armor": 2.0,
+    "base_armor": 20.0,
     "cameraDistance": 17.0,
     "crashExplosionRadius": 5.0,
     "cross_sec_area": 4.0,
@@ -230,7 +233,7 @@
     "inertiaroll": 4.5,
     "inertiayaw": 3.0,
     "mass": 5200.0,
-    "max_health": 120.0,
+    "max_health": 100.0,
     "max_speed": 1.25,
     "maxpitch": 2.15,
     "maxroll": 5.0,

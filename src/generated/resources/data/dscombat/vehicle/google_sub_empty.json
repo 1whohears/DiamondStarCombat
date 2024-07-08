@@ -1,6 +1,7 @@
 {
+  "armor": 800.0,
   "displayName": "preset.dscombat.google_sub_empty",
-  "health": 1000.0,
+  "health": 200.0,
   "ingredients": [
     {
       "item": "dscombat:large_propeller",
@@ -241,8 +242,10 @@
     "passengerEngine": "dscombat:sub_1"
   },
   "stats": {
+    "armor_damage_absorbtion": 0.7,
+    "armor_damage_threshold": 10.0,
     "assetId": "google_sub",
-    "base_armor": 20.0,
+    "base_armor": 800.0,
     "cameraDistance": 30.0,
     "crashExplosionRadius": 6.0,
     "cross_sec_area": 18.0,
@@ -253,7 +256,7 @@
     "inertiaroll": 6.0,
     "inertiayaw": 3.0,
     "mass": 180000.0,
-    "max_health": 1000.0,
+    "max_health": 200.0,
     "max_speed": 0.4,
     "maxpitch": 2.0,
     "maxroll": 2.0,

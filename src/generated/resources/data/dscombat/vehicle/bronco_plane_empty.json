@@ -1,6 +1,7 @@
 {
+  "armor": 10.0,
   "displayName": "preset.dscombat.bronco_plane_empty",
-  "health": 90.0,
+  "health": 80.0,
   "ingredients": [
     {
       "num": 40,
@@ -164,8 +165,10 @@
     "passengerSoundPack": "eng_non_binary_goober"
   },
   "stats": {
+    "armor_damage_absorbtion": 0.02,
+    "armor_damage_threshold": 1.0,
     "assetId": "bronco_plane",
-    "base_armor": 1.0,
+    "base_armor": 10.0,
     "cameraDistance": 14.0,
     "crashExplosionRadius": 4.0,
     "cross_sec_area": 5.0,
@@ -176,7 +179,7 @@
     "inertiaroll": 6.0,
     "inertiayaw": 5.0,
     "mass": 3100.0,
-    "max_health": 90.0,
+    "max_health": 80.0,
     "max_speed": 0.85,
     "maxpitch": 1.2,
     "maxroll": 2.5,

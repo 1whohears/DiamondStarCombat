@@ -117,6 +117,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	protected static final Logger LOGGER = LogUtils.getLogger();
 	
 	public static final EntityDataAccessor<Float> HEALTH = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> ARMOR = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Quaternion> Q = SynchedEntityData.defineId(EntityVehicle.class, DataSerializers.QUATERNION);
 	public static final EntityDataAccessor<Vec3> AV = SynchedEntityData.defineId(EntityVehicle.class, DataSerializers.VEC3);
 	public static final EntityDataAccessor<Boolean> TEST_MODE = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
@@ -124,8 +125,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public static final EntityDataAccessor<Integer> FLARE_NUM = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<String> RADIO_SONG = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.STRING);
 	public static final EntityDataAccessor<Boolean> PLAY_IR_TONE = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<Boolean> FUEL_LEAK = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<Boolean> ENGINE_FIRE = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<RadarMode> RADAR_MODE = SynchedEntityData.defineId(EntityVehicle.class, DataSerializers.RADAR_MODE);
 	
 	public final String defaultPreset;
@@ -212,6 +211,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	@Override
 	protected void defineSynchedData() {
         entityData.define(HEALTH, 100f);
+        entityData.define(ARMOR, 100f);
 		entityData.define(Q, Quaternion.ONE);
 		entityData.define(AV, Vec3.ZERO);
 		entityData.define(TEST_MODE, false);
@@ -219,8 +219,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		entityData.define(FLARE_NUM, 0);
 		entityData.define(RADIO_SONG, "");
 		entityData.define(PLAY_IR_TONE, false);
-		entityData.define(FUEL_LEAK, false);
-		entityData.define(ENGINE_FIRE, false);
 		entityData.define(RADAR_MODE, RadarMode.ALL);
 	}
 	
@@ -272,10 +270,9 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		textureManager.read(nbt);
 		soundManager.read(nbt);
 		setHealth(nbt.getFloat("health"));
+		setArmor(nbt.getFloat("armor"));
 		setLandingGear(nbt.getBoolean("landing_gear"));
 		setCurrentThrottle(nbt.getFloat("current_throttle"));
-		setFuelLeak(nbt.getBoolean("fuel_leak"));
-		setEngineFire(nbt.getBoolean("engine_fire"));
 		setXRotNoQ(nbt.getFloat("xRot"));
 		setYRotNoQ(nbt.getFloat("yRot"));
 		zRot = nbt.getFloat("zRot");
@@ -285,6 +282,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		setClientQ(q);
 		setRadarMode(RadarMode.values()[nbt.getInt("radar_mode")]);
 		setRadioSong(nbt.getString("radio_song"));
+		createRotableHitboxes(nbt);
 	}
 
 	@Override
@@ -297,10 +295,9 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		textureManager.write(nbt);
 		soundManager.write(nbt);
 		nbt.putFloat("health", getHealth());
+		nbt.putFloat("armor", getArmor());
 		nbt.putBoolean("landing_gear", isLandingGear());
 		nbt.putFloat("current_throttle", getCurrentThrottle());
-		nbt.putBoolean("fuel_leak", isFuelLeak());
-		nbt.putBoolean("engine_fire", isEngineFire());
 		nbt.putFloat("xRot", getXRot());
 		nbt.putFloat("yRot", getYRot());
 		nbt.putFloat("zRot", zRot);
@@ -313,6 +310,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
         if (isCustomNameVisible()) nbt.putBoolean("CustomNameVisible", isCustomNameVisible());
         nbt.putFloat("fuel", getCurrentFuel());
         nbt.putFloat("flares", getFlareNum());
+        saveRotableHitboxes(nbt);
 	}
 	
 	@Override
@@ -1348,7 +1346,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
      */
 	public void serverSetup() {
 		partsManager.setupParts();
-		createRotableHitboxes();
 	}
 	
 	/**
@@ -1693,51 +1690,100 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     	if (entity.isPushable()) return false;
     	return true;
     }
-	
-    @Override
-    public boolean isInvulnerableTo(DamageSource source) {
-    	if (isTestMode()) return true;
-    	if (super.isInvulnerableTo(source)) return true;
-    	if (source.isFire() && (tickCount-hurtByFireTime) < 10) return true;
-    	if (isVehicleOf(source.getEntity())) return true;
-    	return false;
-    }
     
 	@Override
     public boolean hurt(DamageSource source, float amount) {
+		return hurtLogic(source, amount, null);
+	}
+	
+	public boolean hurtHitbox(DamageSource source, float amount, RotableHitbox hitbox) {
+		return hurtLogic(source, amount, hitbox);
+	}
+	
+	public boolean hurtLogic(DamageSource source, float amount, @Nullable RotableHitbox hitbox) {
 		if (isInvulnerableTo(source)) return false;
 		if (source.isFire()) hurtByFireTime = tickCount;
-		addHealth(-calcDamageBySource(source, amount));
 		soundManager.onHurt(source, amount);
+		damage(source, amount, hitbox);
 		if (!level.isClientSide) {
-			damageSystem(source, amount);
-			if (!isOperational()) checkExplodeWhenKilled(source);
+			damageParts(source, amount, hitbox);
+			if (!isOperational()) {
+				checkExplodeWhenKilled(source);
+				partsManager.damageAllParts();
+			}
 		}
 		return true;
 	}
 	
-	public boolean hurtHitbox(DamageSource source, float amount, RotableHitbox hitbox) {
-		return hurt(source, amount);
+	protected void damage(DamageSource source, float amount, @Nullable RotableHitbox hitbox) {
+		float healthDamageNoArmorPercent = 1, healthDamageWithArmorPercent = 0;
+		if (source.isExplosion()) {
+			healthDamageWithArmorPercent = 0.2f;
+		} else if (source.isBypassArmor()) {
+			healthDamageWithArmorPercent = 0.8f;
+		} 
+		if (source.getDirectEntity() != null && source.getDirectEntity().getType().is(ModTags.EntityTypes.PROJECTILE)) 
+			amount = calcDamageFromBullet(source, amount);
+		float healthDamage = amount;
+		float armorDamage = reduceByPercent(amount, vehicleStats.armor_damage_absorbtion * DSCGameRules.getVehicleArmorStrengthFactor(level));
+		armorDamage = Math.max(0, armorDamage - vehicleStats.armor_damage_threshold);
+		armorDamage *= (1 - healthDamageWithArmorPercent);
+		// damage root
+		if (getArmor() > 0) {
+			float remainingArmor = Math.min(getArmor() - armorDamage, 0);
+			addHealth(-healthDamage * healthDamageWithArmorPercent + remainingArmor * healthDamageNoArmorPercent);
+			addArmor(-armorDamage);
+		} else {
+			addHealth(-healthDamage * healthDamageNoArmorPercent);
+		}
+		// damage hitbox
+		if (hitbox != null) {
+			if (hitbox.getArmor() > 0) {
+				float remainingArmor = Math.min(hitbox.getArmor() - armorDamage, 0);
+				hitbox.addHealth(-healthDamage * healthDamageWithArmorPercent + remainingArmor * healthDamageNoArmorPercent);
+				hitbox.addArmor(-armorDamage);
+			} else {
+				hitbox.addHealth(-healthDamage * healthDamageNoArmorPercent);
+			}
+		}
+		//System.out.println("vehicle "+level.isClientSide+" health: "+getHealth()+" armor "+getArmor());
+		//if (hitbox != null) System.out.println("hitbox health: "+hitbox.getHealth()+" armor "+hitbox.getArmor());
 	}
 	
-	public void damageSystem(DamageSource source, float amount) {
-		float healthPercent = getHealth() / getMaxHealth();
+	protected float calcDamageFromBullet(DamageSource source, float amount) {
+		return amount * DSCGameRules.getBulletDamageVehicleFactor(level);
+	}
+	
+	private static float reduceByPercent(float amount, float percent) {
+		return Math.max(amount - amount * percent, 0);
+	}
+	
+	@Override
+	public boolean isInvulnerableTo(DamageSource source) {
+		if (isTestMode()) return true;
+		if (super.isInvulnerableTo(source)) return true;
+		if (source.isFire() && (tickCount-hurtByFireTime) < 10) return true;
+		if (isVehicleOf(source.getEntity())) return true;
+		return false;
+	}
+	
+	public void damageParts(DamageSource source, float amount, @Nullable RotableHitbox hitbox) {
+		boolean damageRoot = shouldDamageRoot(hitbox);
+		float healthPercent;
+		if (damageRoot) healthPercent = getHealth() / getMaxHealth();
+		else {
+			if (hitbox.getHitboxData().isDamageParts()) return;
+			healthPercent = hitbox.getHealth() / hitbox.getMaxHealth();
+		}
 		if (healthPercent > 0.5f) return;
 		float damagePercent = (1f-healthPercent*2f)*amount*0.1f;
-		if (random.nextFloat() < damagePercent*0.5f) setEngineFire(true);
-		if (random.nextFloat() < damagePercent) setFuelLeak(true);
+		if (random.nextFloat() > damagePercent) return;
+		if (damageRoot) partsManager.damageRootPart();
+		else partsManager.damageHitboxPart(hitbox.getHitboxName());
 	}
 	
-	public float calcDamageBySource(DamageSource source, float amount) {
-		if (source.isProjectile()) amount = calcProjDamageBySource(source, amount);
-		if (!source.isBypassArmor()) amount -= amount*getTotalArmor()*DSCGameRules.getVehicleArmorStrengthFactor(level);
-		if (amount < 0) amount = 0;
-		return amount;
-	}
-	
-	public float calcProjDamageBySource(DamageSource source, float amount) {
-		if (!source.isExplosion()) amount *= DSCGameRules.getBulletDamageVehicleFactor(level);
-		return amount;
+	private boolean shouldDamageRoot(@Nullable RotableHitbox hitbox) {
+		return hitbox == null || hitbox.isDestroyed();
 	}
 	
 	protected boolean checkExplodeWhenKilled(DamageSource source) {
@@ -2051,6 +2097,21 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		return dist < 102400;
 	}
     
+    public final float getArmor() {
+    	return entityData.get(ARMOR);
+    }
+    
+    public final void setArmor(float armor) {
+    	float max = getMaxTotalArmor();
+    	if (armor > max) armor = max;
+    	else if (armor < 0) armor = 0;
+    	entityData.set(ARMOR, armor);
+    }
+    
+    public final void addArmor(float armor) {
+    	setArmor(getArmor()+armor);
+    }
+    
     public final float getMaxHealth() {
     	return vehicleStats.max_health;
     }
@@ -2076,10 +2137,48 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     
     public void repairAll() {
     	if (level.isClientSide) return;
-    	setEngineFire(false);
-		setFuelLeak(false);
-		addHealth(100000);
+    	addHealth(100000);
+		addArmor(100000);
+		reapairAllHitboxes();
+    	repairAllParts();
 		playRepairSound();
+    }
+    
+    public int onRepairTool(float repair) {
+    	if (level.isClientSide) return 0;
+    	int damage = 0;
+    	if (getHealth() < getMaxHealth()) {
+    		addHealth(repair);
+    		damage = 1;
+    	} else if (repairOneHitbox(repair)) {
+    		damage = 1;
+    	} else if (getArmor() < getMaxTotalArmor()) {
+    		addArmor(repair);
+    		damage = 1;
+    	}
+    	else return 0;
+    	playRepairSound();
+    	return damage;
+    }
+    
+    public void repairAllParts() {
+    	if (level.isClientSide) return;
+    	partsManager.repairAllParts();
+    }
+    
+    public void reapairAllHitboxes() {
+    	if (level.isClientSide) return;
+    	for (RotableHitbox h : hitboxes) h.fullyRepair();
+    }
+    
+    public boolean repairOneHitbox(float repair) {
+    	for (RotableHitbox h : hitboxes) {
+    		if (h.isDamaged()) {
+    			h.repair(repair);
+    			return true;
+    		}
+    	}
+    	return false;
     }
     
     /**
@@ -2108,7 +2207,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     	return vehicleStats.base_armor;
     }
     
-    public float getTotalArmor() {
+    public float getMaxTotalArmor() {
     	return getBaseArmor() + partsManager.getTotalExtraArmor();
     }
     
@@ -2498,10 +2597,22 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		return hitboxes;
 	}
 	
-	public void createRotableHitboxes() {
-		if (level.isClientSide) return;
+	protected void createRotableHitboxes(CompoundTag nbt) {
+		CompoundTag hitbox_data = nbt.getCompound("hitbox_data");
+		hitboxes.clear();
 		hitboxes.addAll(vehicleStats.createRotableHitboxes(this));
-		for (int i = 0; i < hitboxes.size(); ++i) level.addFreshEntity(hitboxes.get(i));
+		for (int i = 0; i < hitboxes.size(); ++i) {
+			hitboxes.get(i).readNbt(hitbox_data);
+			level.addFreshEntity(hitboxes.get(i));
+		}
+	}
+	
+	protected void saveRotableHitboxes(CompoundTag nbt) {
+		CompoundTag hitbox_data = new CompoundTag();
+		for (int i = 0; i < hitboxes.size(); ++i) {
+			hitboxes.get(i).writeNbt(hitbox_data);
+		}
+		nbt.put("hitbox_data", hitbox_data);
 	}
 	
 	public void addRotableHitboxForClient(RotableHitbox hitbox) {
@@ -2514,19 +2625,11 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 	
 	public boolean isFuelLeak() {
-    	return entityData.get(FUEL_LEAK);
-    }
-    
-    public void setFuelLeak(boolean bool) {
-    	entityData.set(FUEL_LEAK, bool);
+    	return partsManager.isFuelTankDamaged();
     }
     
     public boolean isEngineFire() {
-    	return entityData.get(ENGINE_FIRE);
-    }
-    
-    public void setEngineFire(boolean bool) {
-    	entityData.set(ENGINE_FIRE, bool);
+    	return partsManager.isEngineDamaged();
     }
     
     public boolean showAfterBurnerParticles() {

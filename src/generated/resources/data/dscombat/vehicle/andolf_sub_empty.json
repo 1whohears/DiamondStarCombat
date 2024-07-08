@@ -1,6 +1,7 @@
 {
+  "armor": 400.0,
   "displayName": "preset.dscombat.andolf_sub_empty",
-  "health": 600.0,
+  "health": 100.0,
   "ingredients": [
     {
       "item": "dscombat:large_propeller",
@@ -207,8 +208,10 @@
     "passengerEngine": "dscombat:sub_1"
   },
   "stats": {
+    "armor_damage_absorbtion": 0.6,
+    "armor_damage_threshold": 10.0,
     "assetId": "andolf_sub",
-    "base_armor": 20.0,
+    "base_armor": 400.0,
     "cameraDistance": 12.0,
     "crashExplosionRadius": 6.0,
     "cross_sec_area": 18.0,
@@ -219,7 +222,7 @@
     "inertiaroll": 6.0,
     "inertiayaw": 3.0,
     "mass": 90000.0,
-    "max_health": 600.0,
+    "max_health": 100.0,
     "max_speed": 0.6,
     "maxpitch": 2.0,
     "maxroll": 2.0,

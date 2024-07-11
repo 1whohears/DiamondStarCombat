@@ -30,6 +30,9 @@ public interface RotableHitboxRenderer {
 		for (RotableHitbox hitbox : entity.getHitboxes()) drawRotableHitboxOutline(hitbox, poseStack, buff, q);
 	}
 	
+	static final int[] DEFAULT_COLOR = new int[] {188, 85, 41, 255};
+	static final int[] DESTROYED_COLOR = new int[] {120, 0, 0, 255};
+	
 	private void drawRotableHitboxOutline(RotableHitbox hitbox, PoseStack poseStack, VertexConsumer buff, Quaternion q) {
 		poseStack.pushPose();
 		Vec3 trans = UtilAngles.rotateVector(hitbox.getRelPos(), q);
@@ -45,31 +48,34 @@ public interface RotableHitboxRenderer {
 		Vector3f c5 = c2.copy(); c5.mul(-1);
 		Vector3f c6 = c1.copy(); c6.mul(-1);
 		Vector3f c7 = c0.copy(); c7.mul(-1);
-		addLine(c0, c1, buff, m4, m3);
-		addLine(c0, c2, buff, m4, m3);
-		addLine(c0, c3, buff, m4, m3);
-		addLine(c1, c5, buff, m4, m3);
-		addLine(c1, c4, buff, m4, m3);
-		addLine(c2, c4, buff, m4, m3);
-		addLine(c2, c6, buff, m4, m3);
-		addLine(c3, c5, buff, m4, m3);
-		addLine(c3, c6, buff, m4, m3);
-		addLine(c4, c7, buff, m4, m3);
-		addLine(c5, c7, buff, m4, m3);
-		addLine(c6, c7, buff, m4, m3);
+		int[] color;
+		if (hitbox.isDestroyed()) color = DESTROYED_COLOR;
+		else color = DEFAULT_COLOR;
+		addLine(c0, c1, buff, m4, m3, color);
+		addLine(c0, c2, buff, m4, m3, color);
+		addLine(c0, c3, buff, m4, m3, color);
+		addLine(c1, c5, buff, m4, m3, color);
+		addLine(c1, c4, buff, m4, m3, color);
+		addLine(c2, c4, buff, m4, m3, color);
+		addLine(c2, c6, buff, m4, m3, color);
+		addLine(c3, c5, buff, m4, m3, color);
+		addLine(c3, c6, buff, m4, m3, color);
+		addLine(c4, c7, buff, m4, m3, color);
+		addLine(c5, c7, buff, m4, m3, color);
+		addLine(c6, c7, buff, m4, m3, color);
 		poseStack.popPose();
 	}
 	
-	private void addLine(Vector3f start, Vector3f end, VertexConsumer buff, Matrix4f m4, Matrix3f m3) {
+	private void addLine(Vector3f start, Vector3f end, VertexConsumer buff, Matrix4f m4, Matrix3f m3, int[] color) {
 		Vector3f n = end.copy();
 		n.sub(start);
 		n.normalize();
 		buff.vertex(m4,start.x(),start.y(),start.z())
-			.color(188,85,41,255)
+			.color(color[0],color[1],color[2],color[3])
 			.normal(m3,n.x(),n.y(),n.z())
 			.endVertex();
 		buff.vertex(m4,end.x(),end.y(),end.z())
-			.color(188,85,41,255)
+			.color(color[0],color[1],color[2],color[3])
 			.normal(m3,n.x(),n.y(),n.z())
 			.endVertex();
 	}

@@ -331,8 +331,8 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData 
 	}
 	
 	public void fullyRepair() {
-		addHealth(100000);
-		addArmor(100000);
+		repair(100000); // repair function revives hitbox if needed
+		repair(100000); // repair twice to fix armor and health
 	}
 	
 	public void repair(float repair) {

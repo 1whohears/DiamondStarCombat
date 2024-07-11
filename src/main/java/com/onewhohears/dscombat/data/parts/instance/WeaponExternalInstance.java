@@ -26,7 +26,6 @@ public class WeaponExternalInstance<T extends WeaponExternalStats> extends Weapo
 	@Override @Nullable
 	protected EntityPart createEntity(EntityVehicle vehicle, String slotId) {
 		WeaponInstance<?> data = vehicle.weaponSystem.get(weapon, slotId);
-		System.out.println("weapon data "+data);
 		if (data == null) return null;
 		return (EntityPart) data.getStats().getRackEntityType().create(vehicle.level);
 	}

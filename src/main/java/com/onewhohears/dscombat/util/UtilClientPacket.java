@@ -16,6 +16,7 @@ import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.entity.parts.EntityChainHook;
 import com.onewhohears.dscombat.entity.parts.EntityChainHook.ChainUpdateType;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.dscombat.entity.vehicle.RotableHitbox;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
@@ -196,6 +197,16 @@ public class UtilClientPacket {
 			vehicle.chainToPlayer(player);
 			return;		
 		}
+	}
+	
+	public static void debugHitboxPos(int id, String hitbox_name, Vec3 pos, Vec3 size) {
+		Minecraft m = Minecraft.getInstance();
+		Level world = m.level;
+		if (!(world.getEntity(id) instanceof EntityVehicle vehicle)) return;
+		RotableHitbox hitbox = vehicle.getHitboxByName(hitbox_name);
+		if (hitbox == null) return;
+		hitbox.setTestPos(pos);
+		hitbox.setTestSize(size);
 	}
 	
 }

@@ -5,6 +5,7 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientAddForceMoment;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddPart;
 import com.onewhohears.dscombat.common.network.toclient.ToClientDamagePart;
 import com.onewhohears.dscombat.common.network.toclient.ToClientDataPackSynch;
+import com.onewhohears.dscombat.common.network.toclient.ToClientDebugHitboxPos;
 import com.onewhohears.dscombat.common.network.toclient.ToClientDelayedSound;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRWRWarning;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRadarPings;
@@ -216,6 +217,11 @@ public final class PacketHandler {
 			.encoder(ToServerSyncRotBoxPassengerPos::encode)
 			.decoder(ToServerSyncRotBoxPassengerPos::new)
 			.consumerMainThread(ToServerSyncRotBoxPassengerPos::handle)
+			.add();
+		net.messageBuilder(ToClientDebugHitboxPos.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ToClientDebugHitboxPos::encode)
+			.decoder(ToClientDebugHitboxPos::new)
+			.consumerMainThread(ToClientDebugHitboxPos::handle)
 			.add();
 	}
 	

@@ -2612,6 +2612,14 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		return hitboxes;
 	}
 	
+	@Nullable
+	public RotableHitbox getHitboxByName(String name) {
+		for (int i = 0; i < hitboxes.size(); ++i) 
+			if (hitboxes.get(i).getHitboxName().equals(name)) 
+				return hitboxes.get(i);
+		return null;
+	}
+	
 	public boolean isHitboxParent(Entity hitbox) {
 		for (int i = 0; i < hitboxes.size(); ++i) 
 			if (hitboxes.get(i).equals(hitbox)) 

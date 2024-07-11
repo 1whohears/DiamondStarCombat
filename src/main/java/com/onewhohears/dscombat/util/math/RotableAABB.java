@@ -309,6 +309,10 @@ public class RotableAABB {
 		return extents;
 	}
 	
+	public void setExtents(Vec3 extents) {
+		this.extents = extents;
+	}
+	
 	public Quaternion getRot() {
 		return rot.copy();
 	}

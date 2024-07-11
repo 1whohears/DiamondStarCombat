@@ -30,6 +30,8 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData 
 	private RotableHitboxData data;
 	private RotableAABB hitbox;
 	
+	private Vec3 test_pos, test_size;
+	
 	public RotableHitbox(EntityVehicle parent, RotableHitboxData data) {
 		this(ModEntities.ROTABLE_HITBOX.get(), parent.level);
 		this.parent = parent;
@@ -205,10 +207,12 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData 
 	}
 	
 	public Vec3 getRelPos() {
+		if (test_pos != null) return test_pos;
 		return getHitboxData().getRelPos();
 	}
 	
 	public Vec3 getHitboxSize() {
+		if (test_size != null) return test_size;
 		return getHitboxData().getSize();
 	}
 	
@@ -356,6 +360,15 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData 
 	public String toString() {
 		if (getParent() == null) return super.toString() + "{NO_PARENT}";
 		return super.toString() + "{PID:"+getParent().getId()+"}";
+	}
+
+	public void setTestPos(Vec3 test_pos) {
+		this.test_pos = test_pos;
+	}
+
+	public void setTestSize(Vec3 test_size) {
+		this.test_size = test_size;
+		getHitbox().setExtents(test_size.scale(0.5));
 	}
 	
 }

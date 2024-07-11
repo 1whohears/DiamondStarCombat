@@ -174,6 +174,10 @@ public class UtilGeometry {
 		return targetPos.add((RANDOM.nextDouble()-0.5)*i, (RANDOM.nextDouble()-0.5)*i, (RANDOM.nextDouble()-0.5)*i);
 	}
 	
+	public static boolean isEqual(Vec3 v1, Vec3 v2) {
+		return v1.x == v2.x && v1.y == v2.y && v1.z == v2.z;
+	}
+	
 	/**
 	 * @return double array size 4 of roots. root 1 real, root 1 imaginary, root2 real, root2 imaginary
 	 */

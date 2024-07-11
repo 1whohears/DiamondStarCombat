@@ -90,7 +90,7 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData 
 			discard();
 			return;
 		}
-		if (!level.isClientSide && data.isRemoveOnDestroy() && isDestroyed()) {
+		if (!level.isClientSide && tickCount > 20 && data.isRemoveOnDestroy() && isDestroyed()) {
 			kill();
 			return;
 		}
@@ -171,11 +171,12 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData 
 	}
 	
 	public boolean couldCollide(Entity entity) {
+		if (getParent() == null) return false;
 		if (isDestroyed()) return false;
 		if (entity.noPhysics) return false;
 		if (entity.isRemoved()) return false;
-		if (!entity.canCollideWith(getParent())) return false;
 		if (entity.isPassenger()) return false;
+		if (!entity.canCollideWith(getParent())) return false;
 		if (entity.getRootVehicle().equals(getParent())) return false;
 		return true;
 	}
@@ -349,6 +350,12 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData 
 	
 	public boolean isDestroyed() {
 		return getHealth() <= 0 && getMaxHealth() > 0;
+	}
+	
+	@Override
+	public String toString() {
+		if (getParent() == null) return super.toString() + "{NO_PARENT}";
+		return super.toString() + "{PID:"+getParent().getId()+"}";
 	}
 	
 }

@@ -499,13 +499,15 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	protected void wallCollisions() {
 		if (verticalCollision) verticalCollision();
-		if (horizontalCollision && !minorHorizontalCollision) {
-			double speed = prevMotion.horizontalDistance();
-			double th = DSCPhyCons.COLLIDE_SPEED;
-			if (speed > th) {
-				float amount = (float)((speed-th)*DSCPhyCons.COLLIDE_DAMAGE_RATE);
-				collideHurt(amount, false);
-			}
+		if (horizontalCollision && !minorHorizontalCollision) horizontalCollision();
+	}
+	
+	protected void horizontalCollision() {
+		double speed = prevMotion.horizontalDistance();
+		double th = DSCPhyCons.COLLIDE_SPEED;
+		if (speed > th) {
+			float amount = (float)((speed-th)*DSCPhyCons.COLLIDE_DAMAGE_RATE);
+			collideHurt(amount, false);
 		}
 	}
 	
@@ -542,8 +544,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			if (isFall) hurt(DamageSource.FALL, amount);
 			else hurt(DamageSource.FLY_INTO_WALL, amount);
 		} else if (level.isClientSide && isControlledByLocalInstance()) {
-			PacketHandler.INSTANCE.sendToServer(
-				new ToServerVehicleCollide(getId(), amount, isFall));
+			PacketHandler.INSTANCE.sendToServer(new ToServerVehicleCollide(getId(), amount, isFall));
 		}
 	}
 	
@@ -1688,7 +1689,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     public boolean canCollideWith(Entity entity) {
     	if (!super.canCollideWith(entity)) return false;
     	if (entity.isPushable()) return false;
-    	//if (hitboxes.contains(entity)) return false;
+    	if (isHitboxParent(entity)) return false;
     	return true;
     }
     
@@ -1717,7 +1718,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 	
 	protected void damage(DamageSource source, float amount, @Nullable RotableHitbox hitbox) {
-		System.out.println("attacked by "+source.getDirectEntity()+" as "+source+" amount "+amount+" "+level.isClientSide+" hitbox "+hitbox);
+		if (shouldDebug(source)) 
+			System.out.println("attacked by "+source.getDirectEntity()+" as "+source+" amount "+amount+" "+level.isClientSide+" hitbox "+hitbox);
 		float healthDamageNoArmorPercent = 1, healthDamageWithArmorPercent = 0;
 		if (source.isExplosion()) {
 			healthDamageWithArmorPercent = 0.2f;
@@ -1726,30 +1728,37 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		} 
 		if (source.getDirectEntity() != null && source.getDirectEntity().getType().is(ModTags.EntityTypes.PROJECTILE)) 
 			amount = calcDamageFromBullet(source, amount);
-		float healthDamage = amount;
 		float armorDamage = reduceByPercent(amount, vehicleStats.armor_damage_absorbtion * DSCGameRules.getVehicleArmorStrengthFactor(level));
 		armorDamage = Math.max(0, armorDamage - vehicleStats.armor_damage_threshold);
+		float healthDamage = armorDamage * healthDamageWithArmorPercent;
 		armorDamage *= (1 - healthDamageWithArmorPercent);
 		// damage root
 		if (getArmor() > 0) {
 			float remainingArmor = Math.min(getArmor() - armorDamage, 0);
-			addHealth(-healthDamage * healthDamageWithArmorPercent + remainingArmor * healthDamageNoArmorPercent);
 			addArmor(-armorDamage);
+			addHealth(-healthDamage + remainingArmor * healthDamageNoArmorPercent);
 		} else {
-			addHealth(-healthDamage * healthDamageNoArmorPercent);
+			addHealth(-amount * healthDamageNoArmorPercent);
 		}
 		// damage hitbox
 		if (hitbox != null) {
 			if (hitbox.getArmor() > 0) {
 				float remainingArmor = Math.min(hitbox.getArmor() - armorDamage, 0);
-				hitbox.addHealth(-healthDamage * healthDamageWithArmorPercent + remainingArmor * healthDamageNoArmorPercent);
 				hitbox.addArmor(-armorDamage);
+				hitbox.addHealth(-healthDamage + remainingArmor * healthDamageNoArmorPercent);
 			} else {
-				hitbox.addHealth(-healthDamage * healthDamageNoArmorPercent);
+				hitbox.addHealth(-amount * healthDamageNoArmorPercent);
 			}
 		}
-		System.out.println("vehicle health: "+getHealth()+" armor "+getArmor());
-		if (hitbox != null) System.out.println("hitbox health: "+hitbox.getHealth()+" armor "+hitbox.getArmor());
+		if (shouldDebug(source)) {
+			System.out.println("vehicle health: "+getHealth()+" armor "+getArmor());
+			if (hitbox != null) System.out.println("hitbox health: "+hitbox.getHealth()+" armor "+hitbox.getArmor());
+		}
+	}
+	
+	private boolean shouldDebug(DamageSource source) {
+		//return source.getMsgId().equals("flyIntoWall");
+		return !source.isFire();
 	}
 	
 	protected float calcDamageFromBullet(DamageSource source, float amount) {
@@ -2603,12 +2612,20 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		return hitboxes;
 	}
 	
+	public boolean isHitboxParent(Entity hitbox) {
+		for (int i = 0; i < hitboxes.size(); ++i) 
+			if (hitboxes.get(i).equals(hitbox)) 
+				return true;
+		return false;
+	}
+	
 	protected void createRotableHitboxes(CompoundTag nbt) {
 		CompoundTag hitbox_data = nbt.getCompound("hitbox_data");
 		hitboxes.clear();
 		hitboxes.addAll(vehicleStats.createRotableHitboxes(this));
 		for (int i = 0; i < hitboxes.size(); ++i) {
 			hitboxes.get(i).readNbt(hitbox_data);
+			hitboxes.get(i).setId(ENTITY_COUNTER.incrementAndGet());
 			level.addFreshEntity(hitboxes.get(i));
 		}
 	}

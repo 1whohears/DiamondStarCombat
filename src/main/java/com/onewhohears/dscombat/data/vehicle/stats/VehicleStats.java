@@ -330,9 +330,10 @@ public abstract class VehicleStats extends JsonPresetStats {
 		 * @param item resource location of item to get part data from
 		 * @param param some part items accept a setting
 		 * @param filled if the item is filled by default
+		 * @param linkedHitbox if this rotable hitbox is destroyed, parts in this slot get damaged
 		 */
 		public Builder addItemSlot(String name, SlotType type, double x, double y, double z, float zRot,  
-				@Nullable ResourceLocation item, @Nullable String param, boolean filled) {
+				@Nullable ResourceLocation item, @Nullable String param, boolean filled, @Nullable String linkedHitbox) {
 			JsonObject slot = getSlot(name, true);
 			slot.addProperty("name", name);
 			slot.addProperty("slot_type", type.getSlotTypeName());
@@ -340,6 +341,7 @@ public abstract class VehicleStats extends JsonPresetStats {
 			slot.addProperty("slot_posy", y);
 			slot.addProperty("slot_posz", z);
 			slot.addProperty("zRot", zRot);
+			if (linkedHitbox != null) slot.addProperty("linkedHitbox", linkedHitbox);
 			if (item != null) {
 				JsonObject d = new JsonObject();
 				d.addProperty("itemid", item.toString());
@@ -348,6 +350,22 @@ public abstract class VehicleStats extends JsonPresetStats {
 				slot.add("data", d);
 			}
 			return this;
+		}
+		/**
+		 * used by all vehicles to add a slot that has an item by default
+		 * @param name a translatable string 
+		 * @param type the type of slot
+		 * @param x the x position of the part relative to the vehicle at 0 rotation
+		 * @param y the y position of the part relative to the vehicle at 0 rotation
+		 * @param z the z position of the part relative to the vehicle at 0 rotation
+		 * @param zRot used to make an external part rotate in degrees to visually connect to the surface
+		 * @param item resource location of item to get part data from
+		 * @param param some part items accept a setting
+		 * @param filled if the item is filled by default
+		 */
+		public Builder addItemSlot(String name, SlotType type, double x, double y, double z, float zRot,  
+				@Nullable ResourceLocation item, @Nullable String param, boolean filled) {
+			return addItemSlot(name, type, x, y, z, zRot, item, param, filled, null);
 		}
 		/**
 		 * removes item data
@@ -511,6 +529,19 @@ public abstract class VehicleStats extends JsonPresetStats {
 			return addItemSlot(name, type, x, y, z, zRot, null, null, false);
 		}
 		/**
+		 * used by all vehicles to add a slot that is empty by default
+		 * @param name a translatable string
+		 * @param type the type of slot
+		 * @param x the x position of the part relative to the vehicle at 0 rotation
+		 * @param y the y position of the part relative to the vehicle at 0 rotation
+		 * @param z the z position of the part relative to the vehicle at 0 rotation
+		 * @param zRot used to make an external part rotate in degrees to visually connect to the surface
+		 * @param linkedHitbox if this rotable hitbox is destroyed, parts in this slot get damaged
+		 */
+		public Builder addEmptySlot(String name, SlotType type, double x, double y, double z, float zRot, String linkedHitbox) {
+			return addItemSlot(name, type, x, y, z, zRot, null, null, false, linkedHitbox);
+		}
+		/**
 		 * used by all vehicles to add a slot that is empty by default.
 		 * meant for internal parts.
 		 * @param name a translatable string 
@@ -518,6 +549,16 @@ public abstract class VehicleStats extends JsonPresetStats {
 		 */
 		public Builder addEmptySlot(String name, SlotType type) {
 			return addItemSlot(name, type, 0, 0, 0, 0, null, null, false);
+		}
+		/**
+		 * used by all vehicles to add a slot that is empty by default.
+		 * meant for internal parts.
+		 * @param name a translatable string 
+		 * @param type the type of slot
+		 * @param linkedHitbox if this rotable hitbox is destroyed, parts in this slot get damaged
+		 */
+		public Builder addEmptySlot(String name, SlotType type, String linkedHitbox) {
+			return addItemSlot(name, type, 0, 0, 0, 0, null, null, false, linkedHitbox);
 		}
 		/**
 		 * used by all vehicles to add a slot that has a seat by default

@@ -1688,6 +1688,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     public boolean canCollideWith(Entity entity) {
     	if (!super.canCollideWith(entity)) return false;
     	if (entity.isPushable()) return false;
+    	//if (hitboxes.contains(entity)) return false;
     	return true;
     }
     
@@ -1716,6 +1717,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 	
 	protected void damage(DamageSource source, float amount, @Nullable RotableHitbox hitbox) {
+		System.out.println("attacked by "+source.getDirectEntity()+" as "+source+" amount "+amount+" "+level.isClientSide+" hitbox "+hitbox);
 		float healthDamageNoArmorPercent = 1, healthDamageWithArmorPercent = 0;
 		if (source.isExplosion()) {
 			healthDamageWithArmorPercent = 0.2f;
@@ -1746,8 +1748,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 				hitbox.addHealth(-healthDamage * healthDamageNoArmorPercent);
 			}
 		}
-		//System.out.println("vehicle "+level.isClientSide+" health: "+getHealth()+" armor "+getArmor());
-		//if (hitbox != null) System.out.println("hitbox health: "+hitbox.getHealth()+" armor "+hitbox.getArmor());
+		System.out.println("vehicle health: "+getHealth()+" armor "+getArmor());
+		if (hitbox != null) System.out.println("hitbox health: "+hitbox.getHealth()+" armor "+hitbox.getArmor());
 	}
 	
 	protected float calcDamageFromBullet(DamageSource source, float amount) {
@@ -1768,11 +1770,15 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 	
 	public void damageParts(DamageSource source, float amount, @Nullable RotableHitbox hitbox) {
+		if (hitbox != null && hitbox.getHitboxData().isDamageParts() && hitbox.isDestroyed()) {
+			partsManager.damageAllHitboxParts(hitbox.getHitboxName());
+			return;
+		}
 		boolean damageRoot = shouldDamageRoot(hitbox);
 		float healthPercent;
 		if (damageRoot) healthPercent = getHealth() / getMaxHealth();
 		else {
-			if (hitbox.getHitboxData().isDamageParts()) return;
+			if (!hitbox.getHitboxData().isDamageParts()) return;
 			healthPercent = hitbox.getHealth() / hitbox.getMaxHealth();
 		}
 		if (healthPercent > 0.5f) return;

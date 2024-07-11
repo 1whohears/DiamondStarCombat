@@ -25,11 +25,11 @@ public abstract class LevelMixin {
 		Level level = (Level)(Object)this;
 		List<Entity> entities = cir.getReturnValue();
 		List<RotableHitbox> hitboxes = RotableHitboxes.getHitboxes(level.dimension());
-		for (RotableHitbox hitbox: hitboxes) {
-			if (!hitbox.getBoundingBox().intersects(pBoundingBox)) continue;
-			entities.add(hitbox);
+		for (int i = 0; i < hitboxes.size(); ++i) {
+			if (!hitboxes.get(i).getBoundingBox().intersects(pBoundingBox)) continue;
+			entities.add(hitboxes.get(i));
 		}
-		cir.setReturnValue(entities);
+		//cir.setReturnValue(entities);
 	}
 	
 }

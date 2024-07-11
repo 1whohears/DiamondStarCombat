@@ -18,6 +18,110 @@
   "armor": 100.0,
   "displayName": "preset.dscombat.javi_plane_empty",
   "health": 150.0,
+  "hitboxes": [
+    {
+      "damage_parts": false,
+      "max_armor": 0.0,
+      "max_health": 0.0,
+      "name": "fuselage",
+      "rel_pos": {
+        "x": 0.0,
+        "y": 0.5,
+        "z": 0.0
+      },
+      "remove_on_destroy": false,
+      "size": {
+        "x": 1.5,
+        "y": 1.5,
+        "z": 16.0
+      }
+    },
+    {
+      "damage_parts": true,
+      "max_armor": 25.0,
+      "max_health": 25.0,
+      "name": "left_wing",
+      "rel_pos": {
+        "x": 4.0,
+        "y": 0.35,
+        "z": 0.0
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 10.0,
+        "y": 0.3,
+        "z": 2.0
+      }
+    },
+    {
+      "damage_parts": true,
+      "max_armor": 25.0,
+      "max_health": 25.0,
+      "name": "right_wing",
+      "rel_pos": {
+        "x": -4.0,
+        "y": 0.35,
+        "z": 0.0
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 10.0,
+        "y": 0.3,
+        "z": 2.0
+      }
+    },
+    {
+      "damage_parts": true,
+      "max_armor": 10.0,
+      "max_health": 10.0,
+      "name": "tail",
+      "rel_pos": {
+        "x": 0.0,
+        "y": 0.6,
+        "z": -7.0
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 7.0,
+        "y": 0.2,
+        "z": 1.5
+      }
+    },
+    {
+      "damage_parts": true,
+      "max_armor": 20.0,
+      "max_health": 20.0,
+      "name": "left_engine",
+      "rel_pos": {
+        "x": 1.85,
+        "y": 1.4,
+        "z": -3.0
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 1.5,
+        "y": 1.5,
+        "z": 2.5
+      }
+    },
+    {
+      "damage_parts": true,
+      "max_armor": 20.0,
+      "max_health": 20.0,
+      "name": "right_engine",
+      "rel_pos": {
+        "x": -1.85,
+        "y": 1.4,
+        "z": -3.0
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 1.5,
+        "y": 1.5,
+        "z": 2.5
+      }
+    }
+  ],
   "ingredients": [
     {
       "item": "dscombat:fuselage",
@@ -58,6 +162,7 @@
       "zRot": 0.0
     },
     {
+      "linkedHitbox": "left_wing",
       "name": "left_wing_1",
       "slot_posx": 1.96875,
       "slot_posy": -0.28125,
@@ -66,6 +171,7 @@
       "zRot": 180.0
     },
     {
+      "linkedHitbox": "left_wing",
       "name": "left_wing_2",
       "slot_posx": 4.25,
       "slot_posy": -0.28125,
@@ -74,6 +180,7 @@
       "zRot": 180.0
     },
     {
+      "linkedHitbox": "left_wing",
       "name": "left_wing_3",
       "slot_posx": 5.625,
       "slot_posy": -0.28125,
@@ -82,6 +189,7 @@
       "zRot": 180.0
     },
     {
+      "linkedHitbox": "left_wing",
       "name": "left_wing_4",
       "slot_posx": 6.96875,
       "slot_posy": -0.28125,
@@ -90,6 +198,7 @@
       "zRot": 180.0
     },
     {
+      "linkedHitbox": "right_wing",
       "name": "right_wing_1",
       "slot_posx": -1.96875,
       "slot_posy": -0.28125,
@@ -98,6 +207,7 @@
       "zRot": 180.0
     },
     {
+      "linkedHitbox": "right_wing",
       "name": "right_wing_2",
       "slot_posx": -4.25,
       "slot_posy": -0.28125,
@@ -106,6 +216,7 @@
       "zRot": 180.0
     },
     {
+      "linkedHitbox": "right_wing",
       "name": "right_wing_3",
       "slot_posx": -5.625,
       "slot_posy": -0.28125,
@@ -114,6 +225,7 @@
       "zRot": 180.0
     },
     {
+      "linkedHitbox": "right_wing",
       "name": "right_wing_4",
       "slot_posx": -6.96875,
       "slot_posy": -0.28125,
@@ -139,6 +251,7 @@
       "zRot": 180.0
     },
     {
+      "linkedHitbox": "left_engine",
       "name": "internal_1",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
@@ -147,6 +260,7 @@
       "zRot": 0.0
     },
     {
+      "linkedHitbox": "right_engine",
       "name": "internal_2",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
@@ -202,8 +316,8 @@
     "passengerSoundPack": "eng_non_binary_goober"
   },
   "stats": {
-    "armor_damage_absorbtion": 0.4,
-    "armor_damage_threshold": 8.0,
+    "armor_damage_absorbtion": 0.3,
+    "armor_damage_threshold": 7.0,
     "assetId": "javi_plane",
     "base_armor": 100.0,
     "cameraDistance": 16.0,

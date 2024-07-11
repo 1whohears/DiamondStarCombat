@@ -17,8 +17,8 @@ public class JaviPresets {
 			.setItem(ModItems.JAVI_PLANE.getId())
 			.setMaxHealth(150f)
 			.setBaseArmor(100f)
-			.setArmorDamageThreshold(8f)
-			.setArmorAbsorbtionPercent(0.40f)
+			.setArmorDamageThreshold(7f)
+			.setArmorAbsorbtionPercent(0.30f)
 			.setMass(11300f)
 			.setMaxSpeed(1.05f)
 			.setStealth(1.0f)
@@ -48,19 +48,19 @@ public class JaviPresets {
 			.addIngredient(ModItems.WHEEL.getId(), 3)
 			.addIngredient("minecraft:gold_ingot", 10)
 			.addPilotSeatSlot(0, 0.5, 6.34375)
-			.addEmptySlot("left_wing_1", SlotType.PYLON_HEAVY, 1.96875, -0.28125, 1, 180)
-			.addEmptySlot("left_wing_2", SlotType.PYLON_HEAVY, 4.25, -0.28125, 1, 180)
-			.addEmptySlot("left_wing_3", SlotType.PYLON_MED, 5.625, -0.28125, 1, 180) 
-			.addEmptySlot("left_wing_4", SlotType.PYLON_MED, 6.96875, -0.28125, 1, 180) 
-			.addEmptySlot("right_wing_1", SlotType.PYLON_HEAVY, -1.96875, -0.28125, 1, 180)
-			.addEmptySlot("right_wing_2", SlotType.PYLON_HEAVY, -4.25, -0.28125, 1, 180)
-			.addEmptySlot("right_wing_3", SlotType.PYLON_MED, -5.625, -0.28125, 1, 180) 
-			.addEmptySlot("right_wing_4", SlotType.PYLON_MED, -6.96875, -0.28125, 1, 180) 
+			.addEmptySlot("left_wing_1", SlotType.PYLON_HEAVY, 1.96875, -0.28125, 1, 180, "left_wing")
+			.addEmptySlot("left_wing_2", SlotType.PYLON_HEAVY, 4.25, -0.28125, 1, 180, "left_wing")
+			.addEmptySlot("left_wing_3", SlotType.PYLON_MED, 5.625, -0.28125, 1, 180, "left_wing") 
+			.addEmptySlot("left_wing_4", SlotType.PYLON_MED, 6.96875, -0.28125, 1, 180, "left_wing") 
+			.addEmptySlot("right_wing_1", SlotType.PYLON_HEAVY, -1.96875, -0.28125, 1, 180, "right_wing")
+			.addEmptySlot("right_wing_2", SlotType.PYLON_HEAVY, -4.25, -0.28125, 1, 180, "right_wing")
+			.addEmptySlot("right_wing_3", SlotType.PYLON_MED, -5.625, -0.28125, 1, 180, "right_wing") 
+			.addEmptySlot("right_wing_4", SlotType.PYLON_MED, -6.96875, -0.28125, 1, 180, "right_wing") 
 			.addEmptySlot("internal_gun", SlotType.INTERNAL_GUN, 0, -0.34375, 8.65625, 180)
 			.setSlotOnlyCompatible("internal_gun", "gau_avenger")
 			.addEmptySlot("frame_1", SlotType.PYLON_HEAVY, 0, -0.71875, 1.03125, 180)
-			.addEmptySlot("internal_1", SlotType.PUSH_ENGINE)
-			.addEmptySlot("internal_2", SlotType.PUSH_ENGINE)
+			.addEmptySlot("internal_1", SlotType.PUSH_ENGINE, "left_engine")
+			.addEmptySlot("internal_2", SlotType.PUSH_ENGINE, "right_engine")
 			.addEmptySlot("internal_3", SlotType.INTERNAL)
 			.addEmptySlot("internal_4", SlotType.TECH_INTERNAL)
 			.addEmptySlot("internal_5", SlotType.TECH_INTERNAL)
@@ -68,6 +68,18 @@ public class JaviPresets {
 			.addAfterBurnerSmokePos(1.85,1.4,-4.4)
 			.addAfterBurnerSmokePos(-1.85,1.4,-4.4)
 			.setEntityMainHitboxSize(4, 4)
+			.addRotableHitbox("fuselage", 1.5, 1.5, 16, 0, 0.5, 0, 
+					0, 0, false, false)
+			.addRotableHitbox("left_wing", 10, 0.3, 2, 4, 0.35, 0, 
+					25, 25, true, true)
+			.addRotableHitbox("right_wing", 10, 0.3, 2, -4, 0.35, 0, 
+					25, 25, true, true)
+			.addRotableHitbox("tail", 7, 0.2, 1.5, 0, 0.6, -7, 
+					10, 10, true, true)
+			.addRotableHitbox("left_engine", 1.5, 1.5, 2.5, 1.85, 1.4, -3, 
+					20, 20, true, true)
+			.addRotableHitbox("right_engine", 1.5, 1.5, 2.5, -1.85, 1.4, -3, 
+					20, 20, true, true)
 			.build();
 	
 	public static final VehicleStats UNARMED_JAVI_PLANE = VehicleStats.Builder

@@ -348,7 +348,7 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData 
 	}
 	
 	public boolean isDestroyed() {
-		return getHealth() <= 0;
+		return getHealth() <= 0 && getMaxHealth() > 0;
 	}
 	
 }

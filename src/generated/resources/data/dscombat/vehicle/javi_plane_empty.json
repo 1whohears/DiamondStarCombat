@@ -27,13 +27,13 @@
       "rel_pos": {
         "x": 0.0,
         "y": 0.5,
-        "z": 0.0
+        "z": 1.0
       },
       "remove_on_destroy": false,
       "size": {
         "x": 1.5,
         "y": 1.5,
-        "z": 16.0
+        "z": 14.0
       }
     },
     {
@@ -42,15 +42,15 @@
       "max_health": 25.0,
       "name": "left_wing",
       "rel_pos": {
-        "x": 4.0,
+        "x": 5.3,
         "y": 0.35,
-        "z": 0.0
+        "z": 0.25
       },
       "remove_on_destroy": true,
       "size": {
-        "x": 10.0,
+        "x": 8.8,
         "y": 0.3,
-        "z": 2.0
+        "z": 2.5
       }
     },
     {
@@ -59,15 +59,15 @@
       "max_health": 25.0,
       "name": "right_wing",
       "rel_pos": {
-        "x": -4.0,
+        "x": -5.3,
         "y": 0.35,
-        "z": 0.0
+        "z": 0.25
       },
       "remove_on_destroy": true,
       "size": {
-        "x": 10.0,
+        "x": 8.8,
         "y": 0.3,
-        "z": 2.0
+        "z": 2.5
       }
     },
     {
@@ -78,13 +78,13 @@
       "rel_pos": {
         "x": 0.0,
         "y": 0.6,
-        "z": -7.0
+        "z": -6.85
       },
       "remove_on_destroy": true,
       "size": {
-        "x": 7.0,
+        "x": 6.9,
         "y": 0.2,
-        "z": 1.5
+        "z": 1.9
       }
     },
     {
@@ -94,14 +94,14 @@
       "name": "left_engine",
       "rel_pos": {
         "x": 1.85,
-        "y": 1.4,
+        "y": 1.25,
         "z": -3.0
       },
       "remove_on_destroy": true,
       "size": {
         "x": 1.5,
         "y": 1.5,
-        "z": 2.5
+        "z": 3.2
       }
     },
     {
@@ -111,14 +111,14 @@
       "name": "right_engine",
       "rel_pos": {
         "x": -1.85,
-        "y": 1.4,
+        "y": 1.25,
         "z": -3.0
       },
       "remove_on_destroy": true,
       "size": {
         "x": 1.5,
         "y": 1.5,
-        "z": 2.5
+        "z": 3.2
       }
     }
   ],

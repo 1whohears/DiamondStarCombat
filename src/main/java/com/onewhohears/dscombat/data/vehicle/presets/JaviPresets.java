@@ -68,17 +68,17 @@ public class JaviPresets {
 			.addAfterBurnerSmokePos(1.85,1.4,-4.4)
 			.addAfterBurnerSmokePos(-1.85,1.4,-4.4)
 			.setEntityMainHitboxSize(4, 4)
-			.addRotableHitbox("fuselage", 1.5, 1.5, 16, 0, 0.5, 0, 
+			.addRotableHitbox("fuselage", 1.5, 1.5, 14, 0, 0.5, 1, 
 					0, 0, false, false)
-			.addRotableHitbox("left_wing", 10, 0.3, 2, 4, 0.35, 0, 
+			.addRotableHitbox("left_wing", 8.8, 0.3, 2.5, 5.3, 0.35, 0.25, 
 					25, 25, true, true)
-			.addRotableHitbox("right_wing", 10, 0.3, 2, -4, 0.35, 0, 
+			.addRotableHitbox("right_wing", 8.8, 0.3, 2.5, -5.3, 0.35, 0.25, 
 					25, 25, true, true)
-			.addRotableHitbox("tail", 7, 0.2, 1.5, 0, 0.6, -7, 
+			.addRotableHitbox("tail", 6.9, 0.2, 1.9, 0, 0.6, -6.85, 
 					10, 10, true, true)
-			.addRotableHitbox("left_engine", 1.5, 1.5, 2.5, 1.85, 1.4, -3, 
+			.addRotableHitbox("left_engine", 1.5, 1.5, 3.2, 1.85, 1.25, -3, 
 					20, 20, true, true)
-			.addRotableHitbox("right_engine", 1.5, 1.5, 2.5, -1.85, 1.4, -3, 
+			.addRotableHitbox("right_engine", 1.5, 1.5, 3.2, -1.85, 1.25, -3, 
 					20, 20, true, true)
 			.build();
 	

@@ -1,5 +1,7 @@
 package com.onewhohears.dscombat.common.container;
 
+import com.onewhohears.dscombat.data.parts.instance.StorageInstance;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.world.SimpleContainer;
@@ -7,8 +9,11 @@ import net.minecraft.world.item.ItemStack;
 
 public class StorageBoxContainer extends SimpleContainer {
 	
-	public StorageBoxContainer(int size) {
-		super(size);
+	public final StorageInstance<?> storagePart;
+	
+	public StorageBoxContainer(StorageInstance<?> storagePart) {
+		super(storagePart.getStats().getSize());
+		this.storagePart = storagePart;
 	}
 	
 	@Override
@@ -19,6 +24,7 @@ public class StorageBoxContainer extends SimpleContainer {
 	@Override
 	public boolean canAddItem(ItemStack stack) {
 		if (!super.canAddItem(stack)) return false;
+		if (storagePart.isDamaged()) return false;
 		return stack.getItem().canFitInsideContainerItems();
 	}
 	

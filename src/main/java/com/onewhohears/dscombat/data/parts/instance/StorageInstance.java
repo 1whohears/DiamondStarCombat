@@ -15,7 +15,7 @@ public class StorageInstance<T extends StorageStats> extends PartInstance<T> {
 	
 	public StorageInstance(T stats) {
 		super(stats);
-		this.container = new StorageBoxContainer(stats.getSize());
+		this.container = new StorageBoxContainer(this);
 	}
 	
 	public AbstractContainerMenu createMenu(int id, Inventory playerInventory) {

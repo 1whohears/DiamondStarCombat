@@ -81,6 +81,7 @@ public class FlareDispenserInstance<T extends FlareDispenserStats> extends PartI
 	}
 	
 	public boolean flare(boolean consume) {
+		if (isDamaged()) return false;
 		if (getParent() == null) return false;
 		if (getFlares() <= 0) return false;
 		Level level = getParent().level;

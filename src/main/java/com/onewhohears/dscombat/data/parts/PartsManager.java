@@ -352,6 +352,22 @@ public class PartsManager {
 		return slots;
 	}
 	
+	public boolean isEmpty() {
+		for (int i = 0; i < slots.size(); ++i) 
+			if (slots.get(i).filled()) 
+				return false;
+		return true;
+	}
+	
+	public boolean dropPartItem() {
+		if (parent.level.isClientSide) return false;
+		if (slots.size() == 0) return false;
+		for (int i = 0; i < slots.size(); ++i) 
+			if (slots.get(i).dropPartItem(parent)) 
+				return true;
+		return false;
+	}
+	
 	public void dropAllItems() {
 		if (parent.level.isClientSide) return;
 		Containers.dropContents(parent.level, parent.blockPosition().above(1), getInventory());

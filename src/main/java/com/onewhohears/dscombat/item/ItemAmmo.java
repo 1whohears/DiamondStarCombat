@@ -83,6 +83,7 @@ public class ItemAmmo extends Item implements VehicleInteractItem {
 
 	@Override
 	public InteractionResult onServerInteract(EntityVehicle vehicle, ItemStack stack, Player player, InteractionHand hand) {
+		if (!vehicle.isOperational()) return InteractionResult.FAIL;
 		String ammoId = ItemAmmo.getWeaponId(stack);
 		for (EntityTurret t : vehicle.getTurrets()) {
 			WeaponInstance<?> wd = t.getWeaponData();

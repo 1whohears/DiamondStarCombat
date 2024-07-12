@@ -14,10 +14,12 @@ import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Containers;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -269,6 +271,14 @@ public class UtilEntity {
 	public static boolean isPlayer(Entity entity) {
 		if (entity == null) return false;
 		return entity.getType().getDescriptionId().equals(EntityType.PLAYER.getDescriptionId());
+	}
+	
+	public static void dropItemStack(Level level, ItemStack stack, Vec3 pos) {
+		Containers.dropItemStack(level, pos.x, pos.y, pos.z, stack);
+	}
+	
+	public static void dropItemStack(Entity entity, ItemStack stack) {
+		dropItemStack(entity.level, stack, entity.position());
 	}
 	
 }

@@ -9,6 +9,7 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientRemovePart;
 import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.DataSerializers;
+import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
@@ -110,6 +111,13 @@ public class PartSlot {
 	
 	protected void clientTick() {
 		if (filled()) data.clientTick(slotId);
+	}
+	
+	public boolean dropPartItem(EntityVehicle parent) {
+		if (parent.level.isClientSide) return false;
+		if (!filled()) return false;
+		UtilEntity.dropItemStack(parent.level, getPartData().getNewItemStack(), parent.convertRelPos(getRelPos()));
+		return removePartData(parent);
 	}
 	
 	public boolean addPartData(PartInstance<?> data, EntityVehicle plane) {

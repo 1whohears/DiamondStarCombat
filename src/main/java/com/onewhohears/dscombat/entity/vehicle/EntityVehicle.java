@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
+import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.model.obj.ObjRadarModel.MastType;
 import com.onewhohears.dscombat.command.DSCGameRules;
@@ -63,6 +64,7 @@ import com.onewhohears.dscombat.util.UtilServerPacket;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
 import com.onewhohears.dscombat.util.math.UtilGeometry;
+import com.onewhohears.dscombat.util.math.UtilRandom;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -94,6 +96,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.NameTagItem;
 import net.minecraft.world.item.RecordItem;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -156,7 +159,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	/**
 	 * SERVER ONLY
 	 */
-	public int lastShootTime = -1;
+	public int lastShootTime = -1, ingredientDropIndex = -1;
 	
 	public Quaternion prevQ = Quaternion.ONE.copy();
 	public Quaternion clientQ = Quaternion.ONE.copy();
@@ -283,6 +286,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		setRadarMode(RadarMode.values()[nbt.getInt("radar_mode")]);
 		setRadioSong(nbt.getString("radio_song"));
 		createRotableHitboxes(nbt);
+		if (nbt.contains("ingredientDropIndex")) ingredientDropIndex = nbt.getInt("ingredientDropIndex");
 	}
 
 	@Override
@@ -311,6 +315,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
         nbt.putFloat("fuel", getCurrentFuel());
         nbt.putFloat("flares", getFlareNum());
         saveRotableHitboxes(nbt);
+        nbt.putInt("ingredientDropIndex", ingredientDropIndex);
 	}
 	
 	@Override
@@ -600,14 +605,16 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	/**
 	 * called on server tick if health = 0.
-	 * removed the entity if the vehicle has no health for 500 ticks or 25 seconds
 	 */
 	public void tickNoHealth() {
-		if (deadTicks++ > 400) {
-			dropInventory();
+		++deadTicks;
+		if (isFullyLooted()) {
 			kill();
-			return;
 		}
+	}
+	
+	public boolean isFullyLooted() {
+		return !isOperational() && partsManager.isEmpty() && !canDropIngredients();
 	}
 	
 	@Override
@@ -1365,13 +1372,13 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public InteractionResult interact(Player player, InteractionHand hand) {
 		if (xzSpeed > 0.2) return InteractionResult.PASS;
 		if (player.isSecondaryUseActive()) return InteractionResult.PASS;
-		if (!isOperational()) return InteractionResult.PASS;
 		if (player.getRootVehicle() != null && player.getRootVehicle().equals(this)) return InteractionResult.PASS;
 		ItemStack stack = player.getInventory().getSelected();
 		if (!stack.isEmpty()) {
 			InteractionResult result = onItemInteract(player, hand, stack);
 			if (result != InteractionResult.FAIL) return result;
 		}
+		if (!isOperational()) return onDestroyedInteract(player, hand);
 		if (!level.isClientSide) return rideAvailableSeat(player) ? InteractionResult.CONSUME : InteractionResult.PASS;
 		else {
 			Minecraft m = Minecraft.getInstance();
@@ -1380,12 +1387,17 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		return InteractionResult.SUCCESS;
 	}
 	
-	public InteractionResult onItemInteract(Player player, InteractionHand hand, ItemStack stack) {
+	protected InteractionResult onItemInteract(Player player, InteractionHand hand, ItemStack stack) {
 		if (stack.is(ModTags.Items.SPRAY_CAN)) return onSprayCanInteract(player, hand, stack);
 		if (!level.isClientSide) {
 			Item item = stack.getItem();
+			// INTERACT ITEMS
+			if (item instanceof VehicleInteractItem vii) 
+				return vii.onServerInteract(this, stack, player, hand);
+			// CHECK OPERATIONAL
+			else if (!isOperational()) return InteractionResult.FAIL;
 			// GAS CAN
-			if (stack.is(ModTags.Items.GAS_CAN)) 
+			else if (stack.is(ModTags.Items.GAS_CAN)) 
 				return onGasCanInteract(player, hand, stack);
 			// OIL BUCKET
 			else if (stack.is(ModTags.Items.FORGE_OIL_BUCKET)) 
@@ -1393,9 +1405,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			// VEHICLE CHAIN
 			else if (stack.is(ModTags.Items.VEHICLE_CHAIN)) 
 				return onChainInteract(player, hand, stack);
-			// INTERACT ITEMS
-			else if (item instanceof VehicleInteractItem vii) 
-				return vii.onServerInteract(this, stack, player, hand);
 			// RADIO
 			else if (item instanceof RecordItem disk) {
 				if (!hasRadio) return InteractionResult.PASS;
@@ -1415,7 +1424,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		return InteractionResult.FAIL;
 	}
 	
-	public InteractionResult onGasCanInteract(Player player, InteractionHand hand, ItemStack stack) {
+	protected InteractionResult onGasCanInteract(Player player, InteractionHand hand, ItemStack stack) {
 		int md = stack.getMaxDamage();
 		int d = stack.getDamageValue();
 		int r = (int)addFuel(md-d);
@@ -1423,7 +1432,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		return InteractionResult.sidedSuccess(level.isClientSide);
 	}
 	
-	public InteractionResult onOilBucketInteract(Player player, InteractionHand hand, ItemStack stack) {
+	protected InteractionResult onOilBucketInteract(Player player, InteractionHand hand, ItemStack stack) {
 		float fuelPerBucket = (float)DSCGameRules.getFuelPerOilBlock(level);
 		if (addFuel(fuelPerBucket) == fuelPerBucket) return InteractionResult.PASS;
 		ItemStack remain = stack.getCraftingRemainingItem();
@@ -1431,12 +1440,12 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		return InteractionResult.sidedSuccess(level.isClientSide);
 	}
 	
-	public InteractionResult onSprayCanInteract(Player player, InteractionHand hand, ItemStack stack) {
+	protected InteractionResult onSprayCanInteract(Player player, InteractionHand hand, ItemStack stack) {
 		if (level.isClientSide) UtilClientPacket.openVehicleTextureScreen(textureManager);
 		return InteractionResult.sidedSuccess(level.isClientSide);
 	}
 	
-	public InteractionResult onChainInteract(Player player, InteractionHand hand, ItemStack stack) {
+	protected InteractionResult onChainInteract(Player player, InteractionHand hand, ItemStack stack) {
 		List<EntityChainHook> hooks = level.getEntitiesOfClass(EntityChainHook.class, 
 				getBoundingBox().inflate(EntityChainHook.CHAIN_LENGTH), hook -> hook.isPlayerConnected(player));
 		/*if (hooks.size() == 0) {
@@ -1451,6 +1460,44 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			}
 		}
 		return InteractionResult.sidedSuccess(level.isClientSide);
+	}
+	
+	protected InteractionResult onDestroyedInteract(Player player, InteractionHand hand) {
+		if (partsManager.dropPartItem()) {
+			playTheftSound();
+			return InteractionResult.sidedSuccess(level.isClientSide);
+		}
+		if (dropIngredient()) {
+			playTheftSound();
+			return InteractionResult.sidedSuccess(level.isClientSide);
+		}
+		return InteractionResult.PASS;
+	}
+	
+	public boolean dropIngredient() {
+		if (level.isClientSide) return false;
+		while (canDropIngredients()) {
+			++ingredientDropIndex;
+			Ingredient ing = getStats().getIngredients().get(ingredientDropIndex);
+			for (int i = 0; i < ing.getItems().length; ++i) {
+				if (ing.getItems()[i].is(ModTags.Items.RECOVERABLE)) {
+					ItemStack stack = ing.getItems()[i].copy();
+					stack.setCount(UtilRandom.weightedRandomInt(stack.getCount(), Config.COMMON.recoverPartWeight.get()));
+					UtilEntity.dropItemStack(this, stack);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public boolean canDropIngredients() {
+		return ingredientDropIndex < getStats().getIngredients().size() - 1;
+	}
+	
+	public void playTheftSound() {
+		level.playSound(null, this, SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, 
+				getSoundSource(), 0.5f, 1.0f);
 	}
 	
 	@Nullable
@@ -1552,11 +1599,13 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	@Override
     public void positionRider(Entity passenger) {
 		if (passenger instanceof EntityPart part) {
-			Quaternion q = getQBySide();
- 			Vec3 seatPos = UtilAngles.rotateVector(part.getRelativePos(), q);
-			passenger.setPos(position().add(seatPos));
+			passenger.setPos(convertRelPos(part.getRelativePos()));
 			return;
 		}
+	}
+	
+	public Vec3 convertRelPos(Vec3 rel_pos) {
+		return UtilAngles.rotateVector(rel_pos, getQBySide()).add(position());
 	}
 	
 	@Nullable
@@ -1708,10 +1757,11 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		soundManager.onHurt(source, amount);
 		damage(source, amount, hitbox);
 		if (!level.isClientSide) {
-			damageParts(source, amount, hitbox);
 			if (!isOperational()) {
-				checkExplodeWhenKilled(source);
 				partsManager.damageAllParts();
+				checkExplodeWhenKilled(source);
+			} else {
+				damageParts(source, amount, hitbox);
 			}
 		}
 		return true;
@@ -2139,6 +2189,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     	float max = getMaxHealth();
     	if (h > max) h = max;
     	else if (h < 0) h = 0;
+    	if (h > 0) {
+    		deadTicks = 0;
+    		ingredientDropIndex = -1;
+    	}
     	entityData.set(HEALTH, h);
     }
     

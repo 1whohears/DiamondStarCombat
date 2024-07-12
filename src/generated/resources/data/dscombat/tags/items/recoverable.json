@@ -1,0 +1,18 @@
+{
+  "values": [
+    "minecraft:iron_ingot",
+    "minecraft:gold_ingot",
+    "minecraft:copper_ingot",
+    "dscombat:wing",
+    "dscombat:large_wing",
+    "dscombat:fuselage",
+    "dscombat:large_fuselage",
+    "dscombat:propeller",
+    "dscombat:large_propeller",
+    "dscombat:wheel",
+    "dscombat:large_wheel",
+    "dscombat:cockpit",
+    "dscombat:advanced_cockpit",
+    "#forge:ingots/aluminum"
+  ]
+}

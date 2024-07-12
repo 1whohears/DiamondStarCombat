@@ -90,6 +90,12 @@ public class ItemTagGen extends ItemTagsProvider {
 			.add(ModItems.BASIC_FLARE_DISPENSER.get());
 		tag(ModTags.Items.VEHICLE_REPAIR_TOOL)
 			.add(ModItems.WRENCH.get(), ModItems.THICK_WRENCH.get());
+		tag(ModTags.Items.RECOVERABLE)
+			.add(Items.IRON_INGOT, Items.GOLD_INGOT, Items.COPPER_INGOT)
+			.add(ModItems.WING.get(), ModItems.LARGE_WING.get(), ModItems.FUSELAGE.get(), ModItems.LARGE_FUSELAGE.get())
+			.add(ModItems.PROPELLER.get(), ModItems.LARGE_PROPELLER.get(), ModItems.WHEEL.get(), ModItems.LARGE_WHEEL.get())
+			.add(ModItems.COCKPIT.get(), ModItems.ADVANCED_COCKPIT.get())
+			.addTag(ModTags.Items.FORGE_ALUMINUM_INGOT);
 	}
 	
 }

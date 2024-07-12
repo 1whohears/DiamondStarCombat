@@ -111,6 +111,7 @@ public class Config {
 		
 		public final ForgeConfigSpec.IntValue maxBlockCheckDepth;
 		public final ForgeConfigSpec.DoubleValue gasCanXpRepairRate;
+		public final ForgeConfigSpec.DoubleValue recoverPartWeight;
 		/**
 		 * classname
 		 */
@@ -123,6 +124,9 @@ public class Config {
 			gasCanXpRepairRate = builder
 					.comment("The average durability repaired by mending per xp point.")
 					.defineInRange("gasCanXpRepairRate", 2.0, 2.0, 1000.0);
+			recoverPartWeight = builder
+					.comment("Roughly the randomly weighted percentage of vehicle recipe items recovered from crash site.")
+					.defineInRange("recoverPartWeight", 0.7, 0.0, 1.0);
 			radarMobs = builder.defineList("radarMobs", 
 					Arrays.asList(
 							"net.minecraft.world.entity.Mob"), 

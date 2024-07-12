@@ -15,13 +15,14 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.network.NetworkHooks;
 
-public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData {
+public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData, CustomExplosion {
 	
 	public static final EntityDataAccessor<Float> HEALTH = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> ARMOR = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
@@ -358,8 +359,8 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData 
 	
 	@Override
 	public String toString() {
-		if (getParent() == null) return super.toString() + "{NO_PARENT}";
-		return super.toString() + "{PID:"+getParent().getId()+"}";
+		if (getParent() == null) return super.toString() + "{"+getHitboxName()+",NO_PARENT}";
+		return super.toString() + "{"+getHitboxName()+",PID:"+getParent().getId()+"}";
 	}
 
 	public void setTestPos(Vec3 test_pos) {
@@ -369,6 +370,21 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData 
 	public void setTestSize(Vec3 test_size) {
 		this.test_size = test_size;
 		getHitbox().setExtents(test_size.scale(0.5));
+	}
+	
+	/**
+	 * ignoring vanilla explosion effects.
+	 * see {@link RotableHitbox#customExplosionHandler(Explosion)}
+	 * for custom explosion handling.
+	 */
+	@Override
+	public boolean ignoreExplosion() {
+		return true;
+	}
+	
+	@Override
+	public void customExplosionHandler(Explosion exp) {
+		if (getParent() != null) getParent().customExplosionHandler(exp, this);
 	}
 	
 }

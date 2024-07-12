@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 
@@ -115,7 +116,7 @@ import net.minecraftforge.network.PacketDistributor;
  * @author 1whohears
  */
 // TODO: mouse mode handling has configurable sensitivity; higher by default. inputs have 'inertia'
-public abstract class EntityVehicle extends Entity implements IEntityAdditionalSpawnData, IREmitter {
+public abstract class EntityVehicle extends Entity implements IEntityAdditionalSpawnData, IREmitter, CustomExplosion {
 	
 	protected static final Logger LOGGER = LogUtils.getLogger();
 	
@@ -1751,25 +1752,33 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		return hurtLogic(source, amount, hitbox);
 	}
 	
-	public boolean hurtLogic(DamageSource source, float amount, @Nullable RotableHitbox hitbox) {
+	public boolean hurtLogic(DamageSource source, float amount, @Nullable RotableHitbox hitbox, boolean hurtRoot) {
 		if (isInvulnerableTo(source)) return false;
 		if (source.isFire()) hurtByFireTime = tickCount;
 		soundManager.onHurt(source, amount);
-		damage(source, amount, hitbox);
+		damage(source, amount, hitbox, hurtRoot);
 		if (!level.isClientSide) {
 			if (!isOperational()) {
 				partsManager.damageAllParts();
 				checkExplodeWhenKilled(source);
 			} else {
-				damageParts(source, amount, hitbox);
+				damageParts(source, amount, hitbox, hurtRoot);
 			}
 		}
 		return true;
 	}
 	
+	public boolean hurtLogic(DamageSource source, float amount, @Nullable RotableHitbox hitbox) {
+		return hurtLogic(source, amount, hitbox, true);
+	}
+	
 	protected void damage(DamageSource source, float amount, @Nullable RotableHitbox hitbox) {
+		damage(source, amount, hitbox, true);
+	}
+	
+	protected void damage(DamageSource source, float amount, @Nullable RotableHitbox hitbox, boolean hurtRoot) {
 		if (shouldDebug(source)) 
-			System.out.println("attacked by "+source.getDirectEntity()+" as "+source+" amount "+amount+" "+level.isClientSide+" hitbox "+hitbox);
+			System.out.println("amount "+amount+" "+level.isClientSide+" attacked by "+source.getDirectEntity()+" as "+source+" hitbox "+hitbox);
 		if (source.getDirectEntity() != null && source.getDirectEntity().getType().is(ModTags.EntityTypes.PROJECTILE)) 
 			amount = calcDamageFromBullet(source, amount);
 		float armorDamage = calcDamageToArmor(amount);
@@ -1777,12 +1786,14 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		float healthDamage = armorDamage * healthDamageWithArmorPercent;
 		armorDamage *= (1 - healthDamageWithArmorPercent);
 		// damage root
-		if (getArmor() > 0) {
-			float remainingArmor = Math.min(getArmor() - armorDamage, 0);
-			addArmor(-armorDamage);
-			addHealth(-healthDamage + remainingArmor);
-		} else {
-			addHealth(-amount);
+		if (hurtRoot) { 
+			if (getArmor() > 0) {
+				float remainingArmor = Math.min(getArmor() - armorDamage, 0);
+				addArmor(-armorDamage);
+				addHealth(-healthDamage + remainingArmor);
+			} else {
+				addHealth(-amount);
+			}
 		}
 		// damage hitbox
 		if (hitbox != null) {
@@ -1838,12 +1849,12 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		return false;
 	}
 	
-	public void damageParts(DamageSource source, float amount, @Nullable RotableHitbox hitbox) {
+	public void damageParts(DamageSource source, float amount, @Nullable RotableHitbox hitbox, boolean hurtRoot) {
 		if (hitbox != null && hitbox.getHitboxData().isDamageParts() && hitbox.isDestroyed()) {
 			partsManager.damageAllHitboxParts(hitbox.getHitboxName());
 			return;
 		}
-		boolean damageRoot = shouldDamageRoot(hitbox);
+		boolean damageRoot = shouldDamageRoot(hitbox, hurtRoot);
 		float healthPercent;
 		if (damageRoot) healthPercent = getHealth() / getMaxHealth();
 		else {
@@ -1857,8 +1868,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		else partsManager.damageHitboxPart(hitbox.getHitboxName());
 	}
 	
-	private boolean shouldDamageRoot(@Nullable RotableHitbox hitbox) {
-		return hitbox == null || hitbox.isDestroyed();
+	private boolean shouldDamageRoot(@Nullable RotableHitbox hitbox, boolean hurtRoot) {
+		return hurtRoot && (hitbox == null || hitbox.isDestroyed());
 	}
 	
 	protected boolean checkExplodeWhenKilled(DamageSource source) {
@@ -1906,23 +1917,20 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		return true;
 	}
 	
-	public static final double EXP_FORCE_FACTOR = 100;
-	public static final double EXP_MOMENT_FACTOR = 100;
-	
-	public void customExplosionHandler(Explosion exp) {
-		// FIXME 4.3 explosions don't effect RotableHitbox
+	public void customExplosionHandler(Explosion exp, @Nullable RotableHitbox hitbox) {
+		Entity entity = (hitbox == null) ? this : hitbox;
 		Vec3 s = exp.getPosition();
-		Vec3 b = UtilGeometry.getClosestPointOnAABB(s, getBoundingBox());
-		Vec3 r = b.subtract(position());
+		Vec3 b = getClosest(s, hitbox);
+		Vec3 r = b.subtract(entity.position());
 		
 		float diameter = exp.radius * 2f;
-		double dist_check = Math.sqrt(this.distanceToSqr(s)) / (double)diameter;
+		double dist_check = Math.sqrt(b.distanceToSqr(s)) / (double)diameter;
 		if (dist_check > 1.0d) return;
 		
 		Entity exp_entity = exp.getDamageSource().getDirectEntity();
-		double dx = getX() - s.x;
-        double dy = getY() - s.y;
-        double dz = getZ() - s.z;
+		double dx = b.x - s.x;
+        double dy = b.y - s.y;
+        double dz = b.z - s.z;
         double d = Math.sqrt(dx*dx + dy*dy + dz*dz);
         if (Double.isNaN(d) || Double.isInfinite(d)) return;
         if (d == 0) {
@@ -1932,21 +1940,35 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
         	} else { dx = 0; dy = 1; dz = 0; }
         } else { dx /= d; dy /= d; dz /= d; }
         
-        double seen_percent = Explosion.getSeenPercent(s, this);
+        double seen_percent = Explosion.getSeenPercent(s, entity);
         double exp_factor = (1.0D - dist_check) * seen_percent;
         
-        float amount = (float)((int)((exp_factor*exp_factor+exp_factor)/2d*7d*(double)diameter+1d));
-        hurt(exp.getDamageSource(), amount*DSCGameRules.getExplodeDamagerVehicleFactor(level));
+        float amount = (float)((int)((exp_factor*exp_factor+exp_factor)*3.5d*(double)diameter+1d));
+        amount *= DSCGameRules.getExplodeDamagerVehicleFactor(level);
         
-        Vec3 force = new Vec3(dx*exp_factor, dy*exp_factor, dz*exp_factor).scale(EXP_FORCE_FACTOR);
+        if (hitbox != null) hurtLogic(exp.getDamageSource(), amount, hitbox, false);
+        else hurtLogic(exp.getDamageSource(), amount, null);
+        
+        Vec3 force = new Vec3(dx*exp_factor, dy*exp_factor, dz*exp_factor).scale(DSCPhyCons.EXP_FORCE_FACTOR);
         
 		Vec3 f;
 		if (s.equals(b) && exp_entity != null) 
-			f = exp_entity.getDeltaMovement().normalize().scale(exp_factor*EXP_MOMENT_FACTOR);
-		else f = s.subtract(b).normalize().scale(exp_factor*EXP_MOMENT_FACTOR);
+			f = exp_entity.getDeltaMovement().normalize().scale(exp_factor*DSCPhyCons.EXP_MOMENT_FACTOR);
+		else f = s.subtract(b).normalize().scale(exp_factor*DSCPhyCons.EXP_MOMENT_FACTOR);
 		Vec3 moment = r.cross(f);
 		
 		addForceMomentToClient(force, moment);
+	}
+	
+	@Override
+	public void customExplosionHandler(Explosion exp) {
+		customExplosionHandler(exp, null);
+	}
+	
+	private Vec3 getClosest(Vec3 pos, @Nullable RotableHitbox hitbox) {
+		if (hitbox == null) return UtilGeometry.getClosestPointOnAABB(pos, getBoundingBox());
+		Optional<Vec3> clip = hitbox.getHitbox().clip(pos, hitbox.position());
+		return clip.orElseGet(() -> hitbox.position());
 	}
 	
 	/**

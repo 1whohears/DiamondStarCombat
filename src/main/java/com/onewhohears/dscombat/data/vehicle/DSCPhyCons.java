@@ -25,4 +25,7 @@ public class DSCPhyCons {
 	
 	public static final int EJECT_SAFETY_COOLDOWN = 100;
 	
+	public static final double EXP_FORCE_FACTOR = 100;
+	public static final double EXP_MOMENT_FACTOR = 100;
+	
 }

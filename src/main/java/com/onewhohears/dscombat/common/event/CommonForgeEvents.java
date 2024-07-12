@@ -1,5 +1,8 @@
 package com.onewhohears.dscombat.common.event;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.common.event.custom.RegisterPresetTypesEvent;
@@ -11,9 +14,11 @@ import com.onewhohears.dscombat.data.radar.RadarPresets;
 import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
 import com.onewhohears.dscombat.data.weapon.NonTickingMissileManager;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
+import com.onewhohears.dscombat.entity.vehicle.CustomExplosion;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.vehicle.RotableHitboxes;
 
+import net.minecraft.world.entity.Entity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
@@ -39,11 +44,18 @@ public final class CommonForgeEvents {
 		event.setAmount(Math.max(0, plane.calcDamageToInside(event.getSource(), event.getAmount())));
 	}
 	
+	private static Set<Integer> explodeRepeatCheck = new HashSet<>();
+	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void explosionEvent(ExplosionEvent.Detonate event) {
+		explodeRepeatCheck.clear();
 		for (int i = 0; i < event.getAffectedEntities().size(); ++i) {
-			if (!(event.getAffectedEntities().get(i) instanceof EntityVehicle plane)) continue;
-			plane.customExplosionHandler(event.getExplosion());
+			Entity e = event.getAffectedEntities().get(i);
+			if (!e.ignoreExplosion()) continue;
+			if (explodeRepeatCheck.contains(e.getId())) continue;
+			if (!(e instanceof CustomExplosion entity)) continue;
+			entity.customExplosionHandler(event.getExplosion());
+			explodeRepeatCheck.add(e.getId());
 		}
 	}
 	

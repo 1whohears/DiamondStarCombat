@@ -1770,40 +1770,50 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	protected void damage(DamageSource source, float amount, @Nullable RotableHitbox hitbox) {
 		if (shouldDebug(source)) 
 			System.out.println("attacked by "+source.getDirectEntity()+" as "+source+" amount "+amount+" "+level.isClientSide+" hitbox "+hitbox);
-		float healthDamageNoArmorPercent = 1, healthDamageWithArmorPercent = 0;
-		if (source.isExplosion()) {
-			healthDamageWithArmorPercent = 0.2f;
-		} else if (source.isBypassArmor()) {
-			healthDamageWithArmorPercent = 0.8f;
-		} 
 		if (source.getDirectEntity() != null && source.getDirectEntity().getType().is(ModTags.EntityTypes.PROJECTILE)) 
 			amount = calcDamageFromBullet(source, amount);
-		float armorDamage = reduceByPercent(amount, vehicleStats.armor_damage_absorbtion * DSCGameRules.getVehicleArmorStrengthFactor(level));
-		armorDamage = Math.max(0, armorDamage - vehicleStats.armor_damage_threshold);
+		float armorDamage = calcDamageToArmor(amount);
+		float healthDamageWithArmorPercent = getHealthDamageWithArmorPercent(source);
 		float healthDamage = armorDamage * healthDamageWithArmorPercent;
 		armorDamage *= (1 - healthDamageWithArmorPercent);
 		// damage root
 		if (getArmor() > 0) {
 			float remainingArmor = Math.min(getArmor() - armorDamage, 0);
 			addArmor(-armorDamage);
-			addHealth(-healthDamage + remainingArmor * healthDamageNoArmorPercent);
+			addHealth(-healthDamage + remainingArmor);
 		} else {
-			addHealth(-amount * healthDamageNoArmorPercent);
+			addHealth(-amount);
 		}
 		// damage hitbox
 		if (hitbox != null) {
 			if (hitbox.getArmor() > 0) {
 				float remainingArmor = Math.min(hitbox.getArmor() - armorDamage, 0);
 				hitbox.addArmor(-armorDamage);
-				hitbox.addHealth(-healthDamage + remainingArmor * healthDamageNoArmorPercent);
+				hitbox.addHealth(-healthDamage + remainingArmor);
 			} else {
-				hitbox.addHealth(-amount * healthDamageNoArmorPercent);
+				hitbox.addHealth(-amount);
 			}
 		}
 		if (shouldDebug(source)) {
 			System.out.println("vehicle health: "+getHealth()+" armor "+getArmor());
 			if (hitbox != null) System.out.println("hitbox health: "+hitbox.getHealth()+" armor "+hitbox.getArmor());
 		}
+	}
+	
+	public static float getHealthDamageWithArmorPercent(DamageSource source) {
+		if (source.isExplosion()) return 0.2f;
+		else if (source.isBypassArmor()) return 0.8f;
+		return 0; 
+	}
+	
+	public float calcDamageToArmor(float amount) {
+		return Math.max(0, reduceByPercent(amount, 
+				vehicleStats.armor_damage_absorbtion * DSCGameRules.getVehicleArmorStrengthFactor(level)) 
+				- vehicleStats.armor_damage_threshold);
+	}
+	
+	public float calcDamageToInside(DamageSource source, float amount) {
+		return calcDamageToArmor(amount) * getHealthDamageWithArmorPercent(source);
 	}
 	
 	private boolean shouldDebug(DamageSource source) {

@@ -34,11 +34,9 @@ public final class CommonForgeEvents {
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void livingHurtEvent(LivingHurtEvent event) {
-		if (event.getSource().isBypassArmor() || event.getSource().isMagic()) return;
+		if (event.getSource().isMagic()) return;
 		if (!event.getEntity().isPassenger() || !(event.getEntity().getRootVehicle() instanceof EntityVehicle plane)) return;
-		float a = event.getAmount();
-		//System.out.println("PLAYER HURT "+event.getEntity()+" "+a);
-		event.setAmount(Math.max(0, a-a*plane.getMaxTotalArmor()*DSCGameRules.getVehicleArmorStrengthFactor(plane.level)));
+		event.setAmount(Math.max(0, plane.calcDamageToInside(event.getSource(), event.getAmount())));
 	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)

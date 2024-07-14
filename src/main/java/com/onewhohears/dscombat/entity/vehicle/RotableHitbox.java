@@ -294,7 +294,7 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData,
 
 	@Override
 	public void push(Entity pEntity) {
-		// FIXME 4.4 apparently this override fixes the client sliding off the boat hitbox when playing on a server
+		// HOW 2.1 apparently this override fixes the client sliding off the boat hitbox when playing on a server
 	}
 	
 	public float getHealth() {

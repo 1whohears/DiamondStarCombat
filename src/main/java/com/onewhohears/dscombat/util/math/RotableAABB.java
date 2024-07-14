@@ -62,7 +62,7 @@ public class RotableAABB {
 			move = new Vec3(move.x, clip.y - pos.y, move.z);
 		else if (move.y < 0 && clip.y > getCenter().y && pos.y + move.y < clip.y) 
 			move = new Vec3(move.x, clip.y - pos.y, move.z);
-		// FIXME 4.1 if the boat rotates too much, the player starts to vibrate up and down. this fixes it...
+		// HOW 2.2 if the boat rotates too much, the player starts to vibrate up and down. this fixes it...
 		// but the player gets stuck briefly when landing. 
 		if (move.y > -0.08 && move.y < 0) move = move.multiply(1, 0, 1);
 		

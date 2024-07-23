@@ -40,9 +40,8 @@ public class VehiclePresets extends JsonPresetReloadListener<VehicleStats> {
 	}
 	
 	public VehicleStats[] getAll() {
-		if (allPresets == null) {
+		if (allPresets == null) 
 			allPresets = presetMap.values().toArray(new VehicleStats[presetMap.size()]);
-		}
 		return allPresets;
 	}
 	

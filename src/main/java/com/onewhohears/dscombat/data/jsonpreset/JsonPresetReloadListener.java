@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.data.jsonpreset;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -206,6 +207,16 @@ public abstract class JsonPresetReloadListener<T extends JsonPresetStats> extend
 	
 	public void sort(T[] presets) {
 		Arrays.sort(presets, (a, b) -> a.compare(b));
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <K extends T> List<K> getPresetsOfType(JsonPresetType type) {
+		List<K> presets = new ArrayList<>();
+		presetMap.forEach((id, preset) -> {
+			if (preset.getType().is(type)) 
+				presets.add((K) preset);
+		});
+		return presets;
 	}
 
 }

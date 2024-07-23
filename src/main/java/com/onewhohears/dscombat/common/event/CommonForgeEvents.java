@@ -9,6 +9,7 @@ import com.onewhohears.dscombat.common.event.custom.RegisterPresetTypesEvent;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientDataPackSynch;
 import com.onewhohears.dscombat.common.network.toclient.ToClientSynchGameRules;
+import com.onewhohears.dscombat.data.graph.StatGraphs;
 import com.onewhohears.dscombat.data.parts.PartPresets;
 import com.onewhohears.dscombat.data.radar.RadarPresets;
 import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
@@ -95,12 +96,14 @@ public final class CommonForgeEvents {
 		WeaponPresets.close();
 		RadarPresets.close();
 		PartPresets.close();
+		StatGraphs.close();
 		RotableHitboxes.onServerStop();
 	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void addReloadListener(AddReloadListenerEvent event) {
 		MinecraftForge.EVENT_BUS.post(new RegisterPresetTypesEvent());
+		event.addListener(StatGraphs.get());
 		event.addListener(VehiclePresets.get());
 		event.addListener(WeaponPresets.get());
 		event.addListener(RadarPresets.get());
@@ -109,6 +112,7 @@ public final class CommonForgeEvents {
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void registerPresetTypes(RegisterPresetTypesEvent event) {
+		StatGraphs.get().registerDefaultPresetTypes();
 		VehiclePresets.get().registerDefaultPresetTypes();
 		WeaponPresets.get().registerDefaultPresetTypes();
 		RadarPresets.get().registerDefaultPresetTypes();

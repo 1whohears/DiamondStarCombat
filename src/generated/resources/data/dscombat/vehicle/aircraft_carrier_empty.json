@@ -5,6 +5,7 @@
   "hitboxes": [
     {
       "damage_parts": false,
+      "damage_root": false,
       "max_armor": 0.0,
       "max_health": 0.0,
       "name": "runway",
@@ -22,6 +23,7 @@
     },
     {
       "damage_parts": false,
+      "damage_root": false,
       "max_armor": 0.0,
       "max_health": 0.0,
       "name": "side_plat",

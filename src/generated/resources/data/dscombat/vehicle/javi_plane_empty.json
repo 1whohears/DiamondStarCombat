@@ -21,6 +21,7 @@
   "hitboxes": [
     {
       "damage_parts": false,
+      "damage_root": true,
       "max_armor": 0.0,
       "max_health": 0.0,
       "name": "fuselage",
@@ -38,6 +39,7 @@
     },
     {
       "damage_parts": true,
+      "damage_root": false,
       "max_armor": 25.0,
       "max_health": 25.0,
       "name": "left_wing",
@@ -55,6 +57,7 @@
     },
     {
       "damage_parts": true,
+      "damage_root": false,
       "max_armor": 25.0,
       "max_health": 25.0,
       "name": "right_wing",
@@ -72,6 +75,7 @@
     },
     {
       "damage_parts": true,
+      "damage_root": false,
       "max_armor": 10.0,
       "max_health": 10.0,
       "name": "tail",
@@ -89,6 +93,7 @@
     },
     {
       "damage_parts": true,
+      "damage_root": false,
       "max_armor": 20.0,
       "max_health": 20.0,
       "name": "left_engine",
@@ -106,6 +111,7 @@
     },
     {
       "damage_parts": true,
+      "damage_root": false,
       "max_armor": 20.0,
       "max_health": 20.0,
       "name": "right_engine",

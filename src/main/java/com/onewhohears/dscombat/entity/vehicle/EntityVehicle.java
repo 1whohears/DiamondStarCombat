@@ -1749,7 +1749,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 	
 	public boolean hurtHitbox(DamageSource source, float amount, RotableHitbox hitbox) {
-		return hurtLogic(source, amount, hitbox);
+		return hurtLogic(source, amount, hitbox, hitbox.getHitboxData().isDamageRoot());
 	}
 	
 	public boolean hurtLogic(DamageSource source, float amount, @Nullable RotableHitbox hitbox, boolean hurtRoot) {

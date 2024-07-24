@@ -69,17 +69,17 @@ public class JaviPresets {
 			.addAfterBurnerSmokePos(-1.85,1.4,-4.4)
 			.setEntityMainHitboxSize(4, 4)
 			.addRotableHitbox("fuselage", 1.5, 1.5, 14, 0, 0.5, 1, 
-					0, 0, false, false)
+					0, 0, false, false, true)
 			.addRotableHitbox("left_wing", 8.8, 0.3, 2.5, 5.3, 0.35, 0.25, 
-					25, 25, true, true)
+					25, 25, true, true, false)
 			.addRotableHitbox("right_wing", 8.8, 0.3, 2.5, -5.3, 0.35, 0.25, 
-					25, 25, true, true)
+					25, 25, true, true, false)
 			.addRotableHitbox("tail", 6.9, 0.2, 1.9, 0, 0.6, -6.85, 
-					10, 10, true, true)
+					10, 10, true, true, false)
 			.addRotableHitbox("left_engine", 1.5, 1.5, 3.2, 1.85, 1.25, -3, 
-					20, 20, true, true)
+					20, 20, true, true, false)
 			.addRotableHitbox("right_engine", 1.5, 1.5, 3.2, -1.85, 1.25, -3, 
-					20, 20, true, true)
+					20, 20, true, true, false)
 			.build();
 	
 	public static final VehicleStats UNARMED_JAVI_PLANE = VehicleStats.Builder

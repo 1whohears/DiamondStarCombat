@@ -218,5 +218,5 @@ public class EntitySeat extends EntityPart {
 	public boolean isSeat() {
 		return true;
 	}
-
+	
 }

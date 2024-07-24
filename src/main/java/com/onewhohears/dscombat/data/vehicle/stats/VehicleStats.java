@@ -609,16 +609,16 @@ public abstract class VehicleStats extends JsonPresetStats {
 		public Builder addRotableHitbox(String name, double sizeX, double sizeY, double sizeZ, 
 				double posX, double posY, double posZ) {
 			return addRotableHitbox(name, sizeX, sizeY, sizeZ, posX, posY, posZ, 
-					0, 0, false, false);
+					0, 0, false, false, false);
 		}
 		/**
 		 * all vehicles
 		 */
 		public Builder addRotableHitbox(String name, double sizeX, double sizeY, double sizeZ, 
 				double posX, double posY, double posZ, float max_health, float max_armor, 
-				boolean remove_on_destroy, boolean damage_parts) {
+				boolean remove_on_destroy, boolean damage_parts, boolean damage_root) {
 			getHitboxes().add(RotableHitboxData.createHitboxJson(name, sizeX, sizeY, sizeZ, posX, posY, posZ, 
-					max_health, max_armor, remove_on_destroy, damage_parts));
+					max_health, max_armor, remove_on_destroy, damage_parts, damage_root));
 			return this;
 		}
 		

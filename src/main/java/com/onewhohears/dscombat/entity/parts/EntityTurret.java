@@ -410,14 +410,17 @@ public class EntityTurret extends EntitySeat {
 	}
 	
 	@Override
-    public boolean hurt(DamageSource source, float amount) {
-		addHealth(-amount);
-		if (getHealth() <= 0) kill();
+	public boolean isTurret() {
 		return true;
 	}
 	
 	@Override
-	public boolean isTurret() {
+	public boolean isAttackable() {
+		return true;
+	}
+
+	@Override
+	public boolean isAlive() {
 		return true;
 	}
 

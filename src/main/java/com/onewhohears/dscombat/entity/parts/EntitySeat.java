@@ -13,7 +13,6 @@ import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -184,15 +183,6 @@ public class EntitySeat extends EntityPart {
 	public boolean shouldRender() {
 		return false;
 	}
-	
-	@Override
-    public boolean hurt(DamageSource source, float amount) {
-		if (source.isExplosion() || source.isMagic()) return true;
-		Entity v = getVehicle();
-		if (v == null) return false;
-		v.hurt(source, amount);
-		return true;
-	}
 
 	@Override
 	public PartType getPartType() {
@@ -217,6 +207,16 @@ public class EntitySeat extends EntityPart {
 	@Override
 	public boolean isSeat() {
 		return true;
+	}
+	// set to false so players can't melee attack the seats
+	@Override
+	public boolean isAttackable() {
+		return false;
+	}
+	// set to false so projectiles go through seat hitboxes
+	@Override
+	public boolean isAlive() {
+		return false;
 	}
 	
 }

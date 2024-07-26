@@ -2739,6 +2739,13 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	public void addRotableHitboxForClient(RotableHitbox hitbox) {
 		if (!level.isClientSide) return;
+		String name = hitbox.getHitboxName();
+		for (int i = 0; i < hitboxes.size(); ++i) {
+			if (hitboxes.get(i).getHitboxName().equals(name)) {
+				hitboxes.remove(i);
+				break;
+			}
+		}
 		hitboxes.add(hitbox);
 	}
 	

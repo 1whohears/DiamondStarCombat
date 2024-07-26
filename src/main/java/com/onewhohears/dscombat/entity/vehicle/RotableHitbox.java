@@ -74,10 +74,10 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData,
 	public void readSpawnData(FriendlyByteBuf buffer) {
 		int parentId = buffer.readInt();
 		parent = (EntityVehicle) level.getEntity(parentId);
-		parent.addRotableHitboxForClient(this);
 		String name = buffer.readUtf();
 		data = parent.getStats().getHitboxDataByName(name);
 		initStats();
+		parent.addRotableHitboxForClient(this);
 	}
 	
 	protected void initStats() {

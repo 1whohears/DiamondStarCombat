@@ -26,8 +26,9 @@ public class RotableHitboxData {
 	private final Vec3 size, rel_pos;
 	private final float max_health, max_armor;
 	private final boolean remove_on_destroy, damage_parts, damage_root;
+	private final int index;
 	
-	public RotableHitboxData(JsonObject json) {
+	public RotableHitboxData(JsonObject json, int index) {
 		name = json.get("name").getAsString();
 		size = UtilParse.readVec3(json, "size");
 		rel_pos = UtilParse.readVec3(json, "rel_pos");
@@ -36,6 +37,7 @@ public class RotableHitboxData {
 		remove_on_destroy = UtilParse.getBooleanSafe(json, "remove_on_destroy", false);
 		damage_parts = UtilParse.getBooleanSafe(json, "damage_parts", false);
 		damage_root = UtilParse.getBooleanSafe(json, "damage_root", false);
+		this.index = index;
 	}
 	
 	public String getName() {
@@ -68,6 +70,10 @@ public class RotableHitboxData {
 
 	public boolean isDamageRoot() {
 		return damage_root;
+	}
+
+	public int getIndex() {
+		return index;
 	}
 	
 }

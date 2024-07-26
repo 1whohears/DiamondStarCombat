@@ -618,11 +618,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		return !isOperational() && partsManager.isEmpty() && !canDropIngredients();
 	}
 	
-	@Override
-	public boolean isAlive() {
-		return !isRemoved() && isOperational();
-	}
-	
 	/**
 	 * @return if health is greater than 0
 	 */
@@ -1659,12 +1654,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 				return true;
 		return false;
 	}
-	
-	@Override
-	public boolean isPickable() {
-		return !isRemoved();
-	}
-	
+
 	@Override
     protected void addPassenger(Entity passenger) {
         super.addPassenger(passenger);
@@ -1729,10 +1719,25 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     public boolean isPushedByFluid() {
     	return true;
     }
+    
+    @Override
+	public boolean isPickable() {
+		return rootHitboxEntityInteract();
+	}
+	
+	@Override
+	public boolean isAttackable() {
+		return rootHitboxEntityInteract();
+	}
+
+	@Override
+	public boolean isAlive() {
+		return rootHitboxEntityInteract();
+	}
 
     @Override
     public boolean canBeCollidedWith() {
-        return true;
+    	return rootHitboxEntityInteract();
     }
     
     @Override
@@ -2876,6 +2881,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     
     public int getGroundTicks() {
     	return groundTicks;
+    }
+    
+    public boolean rootHitboxEntityInteract() {
+    	return !vehicleStats.rootHitboxNoCollide;
     }
     
 }

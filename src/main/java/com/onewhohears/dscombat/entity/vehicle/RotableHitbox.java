@@ -12,9 +12,12 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
@@ -175,11 +178,11 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData,
 	
 	public boolean couldCollide(Entity entity) {
 		if (getParent() == null) return false;
+		if (isRemoved()) return false;
 		if (isDestroyed()) return false;
 		if (entity.noPhysics) return false;
 		if (entity.isRemoved()) return false;
 		if (entity.isPassenger()) return false;
-		if (!entity.canCollideWith(getParent())) return false;
 		if (entity.getRootVehicle().equals(getParent())) return false;
 		return true;
 	}
@@ -360,7 +363,7 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData,
 	@Override
 	public String toString() {
 		if (getParent() == null) return super.toString() + "{"+getHitboxName()+",NO_PARENT}";
-		return super.toString() + "{"+getHitboxName()+",PID:"+getParent().getId()+"}";
+		return super.toString() + "{"+getHitboxName()+",HI:"+getHitboxIndex()+",PID:"+getParent().getId()+"}";
 	}
 
 	public void setTestPos(Vec3 test_pos) {
@@ -385,6 +388,21 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData,
 	@Override
 	public void customExplosionHandler(Explosion exp) {
 		if (getParent() != null) getParent().customExplosionHandler(exp, this);
+	}
+	
+	public int getHitboxIndex() {
+		if (data == null) return -1;
+		return data.getIndex();
+	}
+	
+	public boolean canHandleInteract() {
+		return getHitboxIndex() == 0 && getParent() != null && !getParent().rootHitboxEntityInteract();
+	}
+
+	@Override
+	public InteractionResult interact(Player player, InteractionHand hand) {
+		if (canHandleInteract()) return getParent().interact(player, hand);
+		return InteractionResult.PASS;
 	}
 	
 }

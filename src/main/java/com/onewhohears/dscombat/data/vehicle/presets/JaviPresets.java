@@ -68,6 +68,7 @@ public class JaviPresets {
 			.addAfterBurnerSmokePos(1.85,1.4,-4.4)
 			.addAfterBurnerSmokePos(-1.85,1.4,-4.4)
 			.setEntityMainHitboxSize(4, 4)
+			.setRootHitboxNoCollide(true)
 			.addRotableHitbox("fuselage", 1.5, 1.5, 14, 0, 0.5, 1, 
 					0, 0, false, false, true)
 			.addRotableHitbox("left_wing", 8.8, 0.3, 2.5, 5.3, 0.35, 0.25, 

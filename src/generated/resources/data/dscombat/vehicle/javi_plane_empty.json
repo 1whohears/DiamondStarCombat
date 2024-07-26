@@ -347,6 +347,7 @@
       "liftKGraph": "javi_plane",
       "wing_area": 47.0
     },
+    "rootHitboxNoCollide": true,
     "stealth": 1.0,
     "throttledown": 0.08,
     "throttleup": 0.04,

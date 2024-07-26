@@ -60,6 +60,7 @@ public abstract class VehicleStats extends JsonPresetStats {
 	public final Vec3[] afterBurnerSmokePos;
 	public final MastType mastType;
 	public final EntityDimensions dimensions;
+	public final boolean rootHitboxNoCollide;
 	
 	private final boolean isCraftable;
 	private final int defaultPaintJob;
@@ -99,6 +100,7 @@ public abstract class VehicleStats extends JsonPresetStats {
 		Iy = UtilParse.getFloatSafe(stats, "inertiayaw", 4);
 		crashExplosionRadius = UtilParse.getFloatSafe(stats, "crashExplosionRadius", 0);
 		cameraDistance = UtilParse.getFloatSafe(stats, "cameraDistance", 4);
+		rootHitboxNoCollide = UtilParse.getBooleanSafe(stats, "rootHitboxNoCollide", false);
 		if (stats.has("mastType")) mastType = MastType.valueOf(stats.get("mastType").getAsString());
 		else mastType = MastType.NONE;
 		float entity_size_xz = UtilParse.getFloatSafe(stats, "entity_size_xz", 4);
@@ -171,7 +173,7 @@ public abstract class VehicleStats extends JsonPresetStats {
 			hitboxes = new RotableHitboxData[hba.size()];
 			for (int i = 0; i < hba.size(); ++i) {
 				JsonObject json = hba.get(i).getAsJsonObject();
-				hitboxes[i] = new RotableHitboxData(json);
+				hitboxes[i] = new RotableHitboxData(json, i);
 			}
 		}
 		return hitboxes;
@@ -934,6 +936,9 @@ public abstract class VehicleStats extends JsonPresetStats {
 		}
 		public Builder setGroundXTilt(float groundXTilt) {
 			return setStatFloat("groundXTilt", groundXTilt);
+		}
+		public Builder setRootHitboxNoCollide(boolean rootHitboxNoCollide) {
+			return setStatBoolean("rootHitboxNoCollide", rootHitboxNoCollide);
 		}
 		/**
 		 * used by planes

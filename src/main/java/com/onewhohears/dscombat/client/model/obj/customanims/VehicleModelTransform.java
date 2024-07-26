@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.dscombat.entity.vehicle.RotableHitbox;
 import com.onewhohears.dscombat.util.UtilParse;
 import com.onewhohears.dscombat.util.math.UtilAngles;
 
@@ -28,6 +29,56 @@ public abstract class VehicleModelTransform {
 	public void addTransform(VehicleModelTransform transform) {}
 	public boolean isGroup() {
 		return false;
+	}
+	
+	public static abstract class Translation extends VehicleModelTransform {
+		private final Vector3f bounds;
+		public Translation(JsonObject data) {
+			super(data);
+			bounds = UtilParse.readVec3f(data, "bounds");
+		}
+		public Vector3f getBounds() {
+			return bounds;
+		}
+		public abstract float getTranslationProgress(EntityVehicle entity, float partialTicks);
+		@Override
+		public Matrix4f getTransform(EntityVehicle entity, float partialTicks) {
+			float p = getTranslationProgress(entity, partialTicks);
+			if (p == 0) return NOTHING;
+			return Matrix4f.createTranslateMatrix(bounds.x()*p, bounds.y()*p, bounds.z()*p);
+		}
+	}
+	
+	public static class InputBoundTranslation extends Translation {
+		private final InputAxis input_axis;
+		public InputBoundTranslation(JsonObject data) {
+			super(data);
+			input_axis = UtilParse.getEnumSafe(data, "input_axis", InputAxis.class);
+		}
+		public InputAxis getInputAxis() {
+			return input_axis;
+		}
+		@Override
+		public float getTranslationProgress(EntityVehicle entity, float partialTicks) {
+			return getInputAxis().getVehicleInput(entity);
+		}
+	}
+	
+	public static class HitboxDestroyPart extends VehicleModelTransform {
+		private final String hitbox_name;
+		public HitboxDestroyPart(JsonObject data) {
+			super(data);
+			hitbox_name = UtilParse.getStringSafe(data, "hitbox_name", "");
+		}
+		public String getHitboxName() {
+			return hitbox_name;
+		}
+		@Override
+		public Matrix4f getTransform(EntityVehicle entity, float partialTicks) {
+			RotableHitbox hitbox = entity.getHitboxByName(getHitboxName());
+			if (hitbox == null) return NOTHING;
+			return hitbox.isDestroyed() ? INVISIBLE : NOTHING;
+		}
 	}
 	
 	public static abstract class Pivot extends VehicleModelTransform {
@@ -103,8 +154,22 @@ public abstract class VehicleModelTransform {
 		}
 	}
 	
+	private static interface InputFactory {
+		float get(EntityVehicle entity);
+	}
+	
 	public static enum InputAxis {
-		PITCH, YAW, ROLL
+		PITCH((entity) -> entity.inputs.pitch), 
+		YAW((entity) -> entity.inputs.yaw), 
+		ROLL((entity) -> entity.inputs.roll), 
+		THROTTLE((entity) -> entity.getCurrentThrottle());
+		private final InputFactory input;
+		private InputAxis(InputFactory input) {
+			this.input = input;
+		}
+		public float getVehicleInput(EntityVehicle entity) {
+			return input.get(entity);
+		}
 	}
 	
 	public static class InputBoundRotation extends AxisRotation {
@@ -122,16 +187,22 @@ public abstract class VehicleModelTransform {
 			return bound;
 		}
 		public float getInput(EntityVehicle entity) {
-			switch (input_axis) {
-			case PITCH: return entity.inputs.pitch;
-			case ROLL: return entity.inputs.roll;
-			case YAW: return entity.inputs.yaw;		
-			}
-			return 0;
+			return getInputAxis().getVehicleInput(entity);
 		}
 		@Override
 		public float getRotDeg(EntityVehicle entity, float partialTicks) {
 			return getInput(entity) * getBound();
+		}
+	}
+	
+	public static class PlaneFlapRotation extends InputBoundRotation {
+		public PlaneFlapRotation(JsonObject data) {
+			super(data);
+		}
+		@Override
+		public float getInput(EntityVehicle entity) {
+			if (entity.isFlapsDown()) return -1;
+			return getInputAxis().getVehicleInput(entity);
 		}
 	}
 	

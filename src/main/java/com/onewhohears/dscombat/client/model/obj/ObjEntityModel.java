@@ -53,7 +53,7 @@ public class ObjEntityModel<T extends Entity> {
 	protected void handleGlobalOverrides(T entity, float partialTicks, PoseStack poseStack) {
 		Vector3f pivot = getGlobalPivot();
 		if (!UtilGeometry.isZero(pivot)) poseStack.translate(pivot.x(), pivot.y(), pivot.z());
-		getModelOverride().apply(poseStack);
+		getModelOverride().applyNoTranslate(poseStack);
 	}
 	
 	public CompositeRenderable getModel() {
@@ -83,7 +83,7 @@ public class ObjEntityModel<T extends Entity> {
 	}
 	
 	public Vector3f getGlobalPivot() {
-		return Vector3f.ZERO;
+		return getModelOverride().translate;
 	}
 	
 }

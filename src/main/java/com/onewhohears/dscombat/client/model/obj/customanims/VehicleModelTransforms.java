@@ -19,6 +19,9 @@ public class VehicleModelTransforms {
 		map.put("input_bound_rotation", (json) -> new VehicleModelTransform.InputBoundRotation(json));
 		map.put("spinning_radar", (json) -> new VehicleModelTransform.SpinningRadar(json));
 		map.put("landing_gear", (json) -> new VehicleModelTransform.LandingGear(json));
+		map.put("hitbox_destroy_part", (json) -> new VehicleModelTransform.HitboxDestroyPart(json));
+		map.put("input_bound_translation", (json) -> new VehicleModelTransform.InputBoundTranslation(json));
+		map.put("plane_flap_rotation", (json) -> new VehicleModelTransform.PlaneFlapRotation(json));
 	}
 	
 	@Nullable

@@ -139,7 +139,7 @@ public class ObjEntityModels implements ResourceManagerReloadListener {
 	public static class ModelOverrides {
 		public float scale = 1;
 		public float[] scale3d = {1, 1, 1};
-		public double[] translate = {0, 0, 0};
+		public Vector3f translate = new Vector3f();
 		public float[] rotation = {0, 0, 0};
 		private boolean none = false;
 		public ModelOverrides(JsonObject json) {
@@ -147,9 +147,9 @@ public class ObjEntityModels implements ResourceManagerReloadListener {
 			if (json.has("scalex")) scale3d[0] = json.get("scalex").getAsFloat();
 			if (json.has("scaley")) scale3d[1] = json.get("scaley").getAsFloat(); 
 			if (json.has("scalez")) scale3d[2] = json.get("scalez").getAsFloat();
-			if (json.has("translatex")) translate[0] = json.get("translatex").getAsDouble();
-			if (json.has("translatey")) translate[1] = json.get("translatey").getAsDouble(); 
-			if (json.has("translatez")) translate[2] = json.get("translatez").getAsDouble();
+			if (json.has("translatex")) translate.add(json.get("translatex").getAsFloat(), 0, 0);
+			if (json.has("translatey")) translate.add(0, json.get("translatey").getAsFloat(), 0); 
+			if (json.has("translatez")) translate.add(0, 0, json.get("translatez").getAsFloat());
 			if (json.has("rotationx")) rotation[0] = json.get("rotationx").getAsFloat();
 			if (json.has("rotationy")) rotation[1] = json.get("rotationy").getAsFloat(); 
 			if (json.has("rotationz")) rotation[2] = json.get("rotationz").getAsFloat();
@@ -165,7 +165,14 @@ public class ObjEntityModels implements ResourceManagerReloadListener {
 			if (rotation[0] != 0) poseStack.mulPose(Vector3f.XP.rotationDegrees(rotation[0]));
 			if (rotation[1] != 0) poseStack.mulPose(Vector3f.YN.rotationDegrees(rotation[1]));
 			if (rotation[2] != 0) poseStack.mulPose(Vector3f.ZP.rotationDegrees(rotation[2]));
-			poseStack.translate(translate[0], translate[1], translate[2]);
+			poseStack.translate(translate.x(), translate.y(), translate.z());
+			poseStack.scale(scale * scale3d[0], scale * scale3d[1], scale * scale3d[2]);
+		}
+		public void applyNoTranslate(PoseStack poseStack) {
+			if (isNone()) return;
+			if (rotation[0] != 0) poseStack.mulPose(Vector3f.XP.rotationDegrees(rotation[0]));
+			if (rotation[1] != 0) poseStack.mulPose(Vector3f.YN.rotationDegrees(rotation[1]));
+			if (rotation[2] != 0) poseStack.mulPose(Vector3f.ZP.rotationDegrees(rotation[2]));
 			poseStack.scale(scale * scale3d[0], scale * scale3d[1], scale * scale3d[2]);
 		}
 	}

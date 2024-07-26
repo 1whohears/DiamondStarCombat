@@ -68,6 +68,22 @@ public class CustomAnimsBuilder {
 		return this;
 	}
 	
+	public CustomAnimsBuilder addPlaneFlapRotAnim(String model_part_key, float pivotX, float pivotY, float pivotZ, RotationAxis rot_axis, 
+			InputAxis input_axis, float bound) {
+		JsonObject anim = createAnimJson(model_part_key);
+		anim.addProperty("anim_id", "plane_flap_rotation");
+		fillAxisRotationParams(anim, pivotX, pivotY, pivotZ, rot_axis);
+		UtilParse.writeEnum(anim, "input_axis", input_axis);
+		anim.addProperty("bound", bound);
+		return this;
+	}
+	
+	public CustomAnimsBuilder addJoystickAnim(String model_part_key, float pivotX, float pivotY, float pivotZ, float boundX, float boundZ) {
+		addInputBoundRotAnim(model_part_key, pivotX, pivotY, pivotZ, RotationAxis.X, InputAxis.PITCH, -boundX);
+		addInputBoundRotAnim(model_part_key, pivotX, pivotY, pivotZ, RotationAxis.Z, InputAxis.ROLL, boundZ);
+		return this;
+	}
+	
 	public CustomAnimsBuilder addSpinningRadarAnim(String model_part_key, float pivotX, float pivotY, float pivotZ, RotationAxis rot_axis, 
 			float rot_rate, String radar_id) {
 		JsonObject anim = createAnimJson(model_part_key);
@@ -83,6 +99,27 @@ public class CustomAnimsBuilder {
 		anim.addProperty("anim_id", "landing_gear");
 		fillAxisRotationParams(anim, pivotX, pivotY, pivotZ, rot_axis);
 		anim.addProperty("fold_angle", fold_angle);
+		return this;
+	}
+	
+	public CustomAnimsBuilder addHitboxDestroyPartAnim(String model_part_key, String hitbox_name) {
+		JsonObject anim = createAnimJson(model_part_key);
+		anim.addProperty("anim_id", "hitbox_destroy_part");
+		anim.addProperty("hitbox_name", hitbox_name);
+		return this;
+	}
+	
+	public CustomAnimsBuilder addHitboxDestroyPartsAnim(String hitbox_name, String... model_part_keys) {
+		for (int i = 0; i < model_part_keys.length; ++i) 
+			addHitboxDestroyPartAnim(model_part_keys[i], hitbox_name);
+		return this;
+	}
+	
+	public CustomAnimsBuilder addInputBoundTransAnim(String model_part_key, float boundX, float boundY, float boundZ, InputAxis input_axis) {
+		JsonObject anim = createAnimJson(model_part_key);
+		anim.addProperty("anim_id", "input_bound_translation");
+		UtilParse.writeEnum(anim, "input_axis", input_axis);
+		UtilParse.writeVec3f(anim, "bounds", new Vector3f(boundX, boundY, boundZ));
 		return this;
 	}
 	

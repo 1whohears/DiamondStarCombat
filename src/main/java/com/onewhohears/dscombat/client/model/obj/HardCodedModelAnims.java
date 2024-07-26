@@ -10,7 +10,6 @@ import com.onewhohears.dscombat.client.model.obj.custom.EdenPlaneModel;
 import com.onewhohears.dscombat.client.model.obj.custom.FelixPlaneModel;
 import com.onewhohears.dscombat.client.model.obj.custom.GoogleSubModel;
 import com.onewhohears.dscombat.client.model.obj.custom.JasonPlaneModel;
-import com.onewhohears.dscombat.client.model.obj.custom.JaviPlaneModel;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 
 public class HardCodedModelAnims {
@@ -26,7 +25,6 @@ public class HardCodedModelAnims {
 		models.put("felix_plane", new FelixPlaneModel());
 		models.put("google_sub", new GoogleSubModel());
 		models.put("jason_plane", new JasonPlaneModel());
-		models.put("javi_plane", new JaviPlaneModel());
 		models.put("gronk_battleship", new ObjVehicleModel<>("battleship"));
 	}
 	

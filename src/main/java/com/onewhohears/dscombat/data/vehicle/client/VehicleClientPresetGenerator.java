@@ -36,7 +36,6 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 				.build());
 		int javi_middle_x = 124, javi_wing_y = 50;
 		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "javi_plane")
-				.setHardCodedModelAnims()
 				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/javi_plane.png")
 				.addUIPos("internal_gun", javi_middle_x+18, 0)
 				.addUIPos(PartSlot.PILOT_SLOT_NAME, javi_middle_x, 9)
@@ -47,7 +46,7 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 				.addUIPos("internal_3", javi_middle_x-9, 106)
 				.addUIPos("internal_1", javi_middle_x+12, 88)
 				.addUIPos("internal_2", javi_middle_x-12, 88)
-				.addUIPos("frame_2", javi_middle_x, javi_wing_y)
+				.addUIPos("frame_1", javi_middle_x, javi_wing_y)
 				.addUIPos("left_wing_1", javi_middle_x-18, javi_wing_y)
 				.addUIPos("left_wing_2", javi_middle_x-36, javi_wing_y)
 				.addUIPos("left_wing_3", javi_middle_x-54, javi_wing_y)
@@ -56,6 +55,30 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 				.addUIPos("right_wing_2", javi_middle_x+36, javi_wing_y)
 				.addUIPos("right_wing_3", javi_middle_x+54, javi_wing_y)
 				.addUIPos("right_wing_4", javi_middle_x+72, javi_wing_y)
+				.setCustomAnims(CustomAnimsBuilder.create()
+						.addLandingGearAnim("lg0", 0, 25.5f, 85.5f, RotationAxis.X, -90)
+						.addLandingGearAnim("lg1", 46.5f, 26f, -8.5f, RotationAxis.X, -90)
+						.addLandingGearAnim("lg2", -47.5f, 26f, -8.5f, RotationAxis.X, -90)
+						.addInputBoundRotAnim("surface2", 54.2496f, 52.5873f, -129.8593f, 
+								RotationAxis.Y, InputAxis.YAW, 15)
+						.addInputBoundRotAnim("surface3", -54.2496f, 52.5873f, -129.8593f, 
+								RotationAxis.Y, InputAxis.YAW, 15)
+						.addInputBoundRotAnim("surface4", 0, 41.3725f, -130.5063f, 
+								RotationAxis.X, InputAxis.PITCH, 22)
+						.addPlaneFlapRotAnim("surface0", 116.5282f, 37.3854f, -14.9395f, 
+								RotationAxis.X, InputAxis.ROLL, -22)
+						.addPlaneFlapRotAnim("surface1", -116.5282f, 37.3854f, -14.9395f, 
+								RotationAxis.X, InputAxis.ROLL, 22)
+						.addHitboxDestroyPartsAnim("left_wing", "wing0","surface0","lg1")
+						.addHitboxDestroyPartsAnim("right_wing", "wing1","surface1","lg2")
+						.addHitboxDestroyPartAnim("engine0", "left_engine")
+						.addHitboxDestroyPartAnim("engine1", "right_engine")
+						.addHitboxDestroyPartsAnim("tail", "surface2","surface3","surface4","surface5","wing2","wing3","wing4","wing5")
+						.addJoystickAnim("stick", 0, 42.1418f, 94.8353f, 25, 25)
+						.addInputBoundTransAnim("pedal0", 0, 0, -0.0625f, InputAxis.YAW)
+						.addInputBoundTransAnim("pedal1", 0, 0, 0.0625f, InputAxis.YAW)
+						.addInputBoundTransAnim("throttle", 0, 0, 0.125f, InputAxis.THROTTLE)
+						.build())
 				.build());
 		int noah_middle_x = 120, noah_seat1_y = 14;
 		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "noah_chopper")

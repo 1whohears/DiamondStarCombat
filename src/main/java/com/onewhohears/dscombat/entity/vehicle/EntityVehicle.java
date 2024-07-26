@@ -2245,7 +2245,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     	if (level.isClientSide) return;
     	addHealth(100000);
 		addArmor(100000);
-		reapairAllHitboxes();
+		repairAllHitboxes();
     	repairAllParts();
 		playRepairSound();
     }
@@ -2272,7 +2272,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     	partsManager.repairAllParts();
     }
     
-    public void reapairAllHitboxes() {
+    public void repairAllHitboxes() {
     	if (level.isClientSide) return;
     	for (RotableHitbox h : hitboxes) h.fullyRepair();
     }

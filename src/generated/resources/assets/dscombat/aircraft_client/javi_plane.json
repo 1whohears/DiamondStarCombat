@@ -165,6 +165,18 @@
         "rot_axis": "X"
       },
       {
+        "anim_id": "input_bound_rotation",
+        "bound": 22.0,
+        "input_axis": "PITCH",
+        "model_part_key": "surface5",
+        "pivot": {
+          "x": 0.0,
+          "y": -41.3725,
+          "z": -130.5063
+        },
+        "rot_axis": "X"
+      },
+      {
         "anim_id": "plane_flap_rotation",
         "bound": -22.0,
         "input_axis": "ROLL",

@@ -171,7 +171,7 @@
         "model_part_key": "surface5",
         "pivot": {
           "x": 0.0,
-          "y": -41.3725,
+          "y": 41.3725,
           "z": -130.5063
         },
         "rot_axis": "X"

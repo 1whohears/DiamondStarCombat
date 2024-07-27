@@ -65,7 +65,7 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 								RotationAxis.Y, InputAxis.YAW, 15)
 						.addInputBoundRotAnim("surface4", 0, 41.3725f, -130.5063f, 
 								RotationAxis.X, InputAxis.PITCH, 22)
-						.addInputBoundRotAnim("surface5", 0, -41.3725f, -130.5063f, 
+						.addInputBoundRotAnim("surface5", 0, 41.3725f, -130.5063f, 
 								RotationAxis.X, InputAxis.PITCH, 22)
 						.addPlaneFlapRotAnim("surface0", 116.5282f, 37.3854f, -14.9395f, 
 								RotationAxis.X, InputAxis.ROLL, -22)

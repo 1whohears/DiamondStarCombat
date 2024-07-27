@@ -953,6 +953,12 @@ public abstract class VehicleStats extends JsonPresetStats {
 		/**
 		 * used by planes
 		 */
+		public Builder setFuselageLiftArea(float fuselage_lift_area) {
+			return setTypedStatFloat("fuselage_lift_area", fuselage_lift_area, "plane");
+		}
+		/**
+		 * used by planes
+		 */
 		public Builder setPlaneFlapDownAOABias(float flapsAOABias) {
 			return setTypedStatFloat("flapsAOABias", flapsAOABias, "plane");
 		}

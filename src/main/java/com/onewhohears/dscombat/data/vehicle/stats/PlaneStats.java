@@ -10,7 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class PlaneStats extends VehicleStats {
 	
-	public final float wing_area, flapsAOABias;
+	public final float wing_area, flapsAOABias, fuselage_lift_area;
 	public final LiftKGraph liftKGraph;
 	public final boolean canAimDown;
 	
@@ -21,6 +21,7 @@ public class PlaneStats extends VehicleStats {
 		flapsAOABias = UtilParse.getFloatSafe(plane, "flapsAOABias", 8);
 		canAimDown = UtilParse.getBooleanSafe(plane, "canAimDown", false);
 		liftKGraph = LiftKGraph.getGraphById(UtilParse.getStringSafe(plane, "liftKGraph", LiftKGraph.WOODEN_PLANE_GRAPH.id));
+		fuselage_lift_area = UtilParse.getFloatSafe(plane, "fuselage_lift_area", 0);
 	}
 
 	@Override

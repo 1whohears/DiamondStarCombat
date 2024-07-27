@@ -286,6 +286,7 @@
     "plane": {
       "canAimDown": false,
       "flapsAOABias": 8.0,
+      "fuselage_lift_area": 16.0,
       "liftKGraph": "alexis_plane",
       "wing_area": 28.0
     },

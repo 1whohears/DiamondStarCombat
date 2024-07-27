@@ -15,9 +15,9 @@ import net.minecraft.world.phys.Vec3;
 
 public class EntityPlane extends EntityVehicle {
 	
-	private float aoa = 0, liftK = 0, airFoilSpeedSqr = 0;
+	private float aoa, liftK, airFoilSpeedSqr, fuselageAoa, fuselageLiftK;
 	private float centripetalForce, centrifugalForce; 
-	private double liftMag, prevMaxSpeedMod = 1;
+	private double wingLiftMag, fuselageLift, prevMaxSpeedMod = 1;
 	private Vec3 liftDir = Vec3.ZERO, airFoilAxes = Vec3.ZERO;
 	
 	public EntityPlane(EntityType<? extends EntityPlane> entity, Level level, String defaultPreset) {
@@ -106,13 +106,20 @@ public class EntityPlane extends EntityVehicle {
 		//System.out.println("airFoilSpeedSqr = "+airFoilSpeedSqr);
 		if (isOnGround() || UtilGeometry.isZero(u)) {
 			aoa = 0;
+			fuselageAoa = 0;
 		} else {
 			Vec3 planeNormal = UtilAngles.getYawAxis(q).scale(-1);
 			aoa = (float)UtilGeometry.angleBetweenVecPlaneDegrees(u, planeNormal);
+			Vec3 fuselageNormal = UtilAngles.rotationToVector(getYRot(), getXRot()+90);
+			//debug("fuselageNormal = "+fuselageNormal);
+			fuselageAoa = (float)UtilGeometry.angleBetweenVecPlaneDegrees(u, fuselageNormal);
 		}
 		if (isFlapsDown()) aoa += getStats().asPlane().flapsAOABias;
 		liftK = (float) getLiftK();
+		fuselageLiftK = getStats().asPlane().liftKGraph.getLift(fuselageAoa);
 		//System.out.println("liftK = "+liftK);
+		//debug("aoa = "+aoa+" liftK = "+liftK);
+		//debug("aoa2 = "+fuselageAoa+" liftK2 = "+fuselageLiftK);
 	}
 	
 	public float getYawRate() {
@@ -121,8 +128,8 @@ public class EntityPlane extends EntityVehicle {
 	
 	protected void calculateLift(Quaternion q) {
 		// Lift = (angle of attack coefficient) * (air density) * (speed)^2 * (wing surface area) / 2
-		double wing = getWingSurfaceArea();
-		liftMag = liftK * airPressure * airFoilSpeedSqr * wing * DSCPhyCons.LIFT;
+		wingLiftMag = liftK * airPressure * airFoilSpeedSqr * getWingSurfaceArea() * DSCPhyCons.LIFT;
+		fuselageLift = fuselageLiftK * airPressure * airFoilSpeedSqr * getFuselageLiftArea() * DSCPhyCons.LIFT;
 		Vec3 lift = getLiftForce(q);
 		Vec3 cenAxis = UtilAngles.getRollAxis(0, (getYRot()+90)*Mth.DEG_TO_RAD);
 		centripetalForce = (float) UtilGeometry.vecCompMagDirByNormAxis(lift, cenAxis);
@@ -137,13 +144,13 @@ public class EntityPlane extends EntityVehicle {
 	
 	public Vec3 getLiftForce(Quaternion q) {
 		double cenScale = DSCPhyCons.CENTRIPETAL_SCALE;
-		Vec3 liftForce = liftDir.scale(getLiftMag())
-			.multiply(cenScale, 1, cenScale);
+		Vec3 liftForce = liftDir.scale(getLiftMag()).multiply(cenScale, 1, cenScale);
+		liftForce = liftForce.add(0, fuselageLift, 0);
 		return liftForce;
 	}
 	
 	public double getLiftMag() {
-		return liftMag;
+		return wingLiftMag;
 	}
 	
 	public double getLiftK() {
@@ -180,6 +187,10 @@ public class EntityPlane extends EntityVehicle {
 	 */
 	public final float getWingSurfaceArea() {
 		return getStats().asPlane().wing_area;
+	}
+	
+	public float getFuselageLiftArea() {
+		return getStats().asPlane().fuselage_lift_area;
 	}
 	
 	@Override

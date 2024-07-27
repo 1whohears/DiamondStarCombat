@@ -242,7 +242,7 @@
     "passengerEngine": "dscombat:sub_1"
   },
   "stats": {
-    "armor_damage_absorbtion": 0.7,
+    "armor_damage_absorbtion": 0.6,
     "armor_damage_threshold": 10.0,
     "assetId": "google_sub",
     "base_armor": 800.0,

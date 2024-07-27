@@ -194,8 +194,8 @@
     "passengerEngine": "dscombat:boat_1"
   },
   "stats": {
-    "armor_damage_absorbtion": 0.3,
-    "armor_damage_threshold": 12.0,
+    "armor_damage_absorbtion": 0.35,
+    "armor_damage_threshold": 8.0,
     "assetId": "corvette",
     "base_armor": 150.0,
     "cameraDistance": 13.0,

@@ -323,7 +323,7 @@
   },
   "stats": {
     "armor_damage_absorbtion": 0.3,
-    "armor_damage_threshold": 7.0,
+    "armor_damage_threshold": 5.0,
     "assetId": "javi_plane",
     "base_armor": 100.0,
     "cameraDistance": 16.0,

@@ -53,7 +53,7 @@ public class DSCGameRules {
 		PLANE_SPEED_PERCENT = registerInteger("planeSpeedPercent", 100, GameRules.Category.PLAYER);
 		VEHICLE_ARMOR_PERCENT = registerInteger("vehicleArmorStrengthPercent", 100, GameRules.Category.PLAYER);
 		BULLET_DAMAGE_VEHICLE_PER = registerInteger("bulletDamageVehiclePercent", 100, GameRules.Category.PLAYER);
-		EXPLO_DAMAGE_VEHICLE_PER = registerInteger("explosionDamageVehiclePercent", 400, GameRules.Category.PLAYER);
+		EXPLO_DAMAGE_VEHICLE_PER = registerInteger("explosionDamageVehiclePercent", 300, GameRules.Category.PLAYER);
 		BULLET_DAMAGE_PLANE_PER = registerInteger("bulletDamagePlanePercent", 100, GameRules.Category.PLAYER);
 		BULLET_DAMAGE_HELI_PER = registerInteger("bulletDamageHeliPercent", 100, GameRules.Category.PLAYER);
 		DISABLE_3RD_PERSON_VEHICLE = registerBoolean("disable3rdPersonVehicle", false, GameRules.Category.PLAYER, clientSyncListener());

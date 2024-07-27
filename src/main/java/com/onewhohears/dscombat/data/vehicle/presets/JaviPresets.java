@@ -16,7 +16,7 @@ public class JaviPresets {
 			.setItem(ModItems.JAVI_PLANE.getId())
 			.setMaxHealth(150f)
 			.setBaseArmor(100f)
-			.setArmorDamageThreshold(7f)
+			.setArmorDamageThreshold(5f)
 			.setArmorAbsorbtionPercent(0.30f)
 			.setMass(11300f)
 			.setMaxSpeed(1.05f)

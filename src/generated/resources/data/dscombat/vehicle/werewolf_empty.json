@@ -174,8 +174,8 @@
     "passengerSoundPack": "eng_non_binary_goober"
   },
   "stats": {
-    "armor_damage_absorbtion": 0.4,
-    "armor_damage_threshold": 6.0,
+    "armor_damage_absorbtion": 0.275,
+    "armor_damage_threshold": 5.0,
     "assetId": "werewolf",
     "base_armor": 100.0,
     "cameraDistance": 6.0,

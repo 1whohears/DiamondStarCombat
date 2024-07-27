@@ -276,8 +276,8 @@
     "passengerEngine": "dscombat:boat_1"
   },
   "stats": {
-    "armor_damage_absorbtion": 0.5,
-    "armor_damage_threshold": 12.0,
+    "armor_damage_absorbtion": 0.4,
+    "armor_damage_threshold": 10.0,
     "assetId": "cruiser",
     "base_armor": 300.0,
     "cameraDistance": 26.0,

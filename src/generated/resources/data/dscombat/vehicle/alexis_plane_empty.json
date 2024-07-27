@@ -264,8 +264,8 @@
     "passengerSoundPack": "eng_non_binary_goober"
   },
   "stats": {
-    "armor_damage_absorbtion": 0.12,
-    "armor_damage_threshold": 2.5,
+    "armor_damage_absorbtion": 0.135,
+    "armor_damage_threshold": 2.0,
     "assetId": "alexis_plane",
     "base_armor": 40.0,
     "cameraDistance": 17.0,

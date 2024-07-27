@@ -18,7 +18,7 @@ public class BroncoPresets {
 			.setMaxHealth(80f)
 			.setBaseArmor(10f)
 			.setArmorDamageThreshold(1f)
-			.setArmorAbsorbtionPercent(0.02f)
+			.setArmorAbsorbtionPercent(0.05f)
 			.setMass(3100f)
 			.setMaxSpeed(0.85f)
 			.setStealth(1f)

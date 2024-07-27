@@ -338,8 +338,8 @@
     "passengerEngine": "dscombat:boat_1"
   },
   "stats": {
-    "armor_damage_absorbtion": 0.6,
-    "armor_damage_threshold": 12.0,
+    "armor_damage_absorbtion": 0.5,
+    "armor_damage_threshold": 10.0,
     "assetId": "gronk_battleship",
     "base_armor": 400.0,
     "cameraDistance": 30.0,

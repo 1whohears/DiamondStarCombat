@@ -165,7 +165,7 @@
     "passengerSoundPack": "eng_non_binary_goober"
   },
   "stats": {
-    "armor_damage_absorbtion": 0.02,
+    "armor_damage_absorbtion": 0.05,
     "armor_damage_threshold": 1.0,
     "assetId": "bronco_plane",
     "base_armor": 10.0,

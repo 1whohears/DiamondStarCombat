@@ -658,7 +658,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 				resetControls();
 				return;
 			}
-			if (currentFuel <= 0 || isEngineFire()) {
+			if (currentFuel <= 0 || isAllEnginesDamaged()) {
 				throttleToZero();
 				return;
 			}
@@ -2777,6 +2777,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     	return partsManager.isEngineDamaged();
     }
     
+    public boolean isAllEnginesDamaged() {
+    	return partsManager.isAllEnginesDamaged();
+    }
+    
     public boolean showAfterBurnerParticles() {
     	return getCurrentThrottle() > 0.5;
     }
@@ -2805,6 +2809,21 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
      */
     public Vec3[] getAfterBurnerSmokePos() {
     	return vehicleStats.afterBurnerSmokePos;
+    }
+    
+    public List<Vec3> getEngineFirePos() {
+    	Set<String> hitboxNames = partsManager.getEngineFireHitboxNames();
+    	List<Vec3> pos = new ArrayList<>();
+    	for (String name : hitboxNames) {
+    		if (name.isEmpty()) {
+    			pos.add(position());
+    			continue;
+    		}
+    		RotableHitbox hitbox = getHitboxByName(name);
+    		if (hitbox == null) continue;
+    		pos.add(hitbox.position());
+    	}
+    	return pos;
     }
     
     public boolean liftLost() {

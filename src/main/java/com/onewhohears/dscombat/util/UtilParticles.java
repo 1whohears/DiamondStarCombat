@@ -113,9 +113,7 @@ public class UtilParticles {
 	
 	public static void engineFireSmoke(EntityVehicle vehicle) {
 		if (!vehicle.isEngineFire()) return;
-		Quaternion q = vehicle.getClientQ();
-		for (Vec3 relPos : vehicle.getAfterBurnerSmokePos()) {
-			Vec3 pos = UtilAngles.rotateVector(relPos, q).add(vehicle.position());
+		for (Vec3 pos : vehicle.getEngineFirePos()) {
 			for (int i = 0; i < 2; ++i) flame(vehicle.level, pos);
 			for (int i = 0; i < 10; ++i) smoke(vehicle.level, pos);
 			for (int i = 0; i < 2; ++i) bigSmoke(vehicle.level, pos);

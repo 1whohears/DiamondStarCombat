@@ -2,7 +2,9 @@ package com.onewhohears.dscombat.data.parts;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Nullable;
 
@@ -318,6 +320,25 @@ public class PartsManager {
 			if (p.filled() && p.getPartData().getStats().isEngine() && p.getPartData().isDamaged()) 
 				return true;
 		return false;
+	}
+	
+	public boolean isAllEnginesDamaged() {
+		boolean hasAnEngine = false;
+		for (PartSlot p : slots) {
+			if (!p.filled()) continue;
+			if (!p.getPartData().getStats().isEngine()) continue;
+			hasAnEngine = true;
+			if (!p.getPartData().isDamaged()) return false;
+		}
+		return hasAnEngine;
+	}
+	
+	public Set<String> getEngineFireHitboxNames() {
+		Set<String> names = new HashSet<>();
+		for (PartSlot p : slots) 
+			if (p.filled() && p.getPartData().getStats().isEngine() && p.getPartData().isDamaged()) 
+				names.add(p.getLinkedHitbox());
+		return names;
 	}
 	
 	public void tickFuel(boolean updateClient) {

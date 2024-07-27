@@ -179,6 +179,10 @@ public abstract class VehicleStats extends JsonPresetStats {
 		return hitboxes;
 	}
 	
+	public int getHitboxNum() {
+		return getHitboxData().length;
+	}
+	
 	@Nullable
 	public RotableHitboxData getHitboxDataByName(String name) {
 		for (int i = 0; i < getHitboxData().length; ++i) 

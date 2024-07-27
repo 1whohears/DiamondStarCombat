@@ -21,6 +21,7 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponImpact;
 import com.onewhohears.dscombat.common.network.toserver.ToServerCraftPlane;
 import com.onewhohears.dscombat.common.network.toserver.ToServerCraftWeapon;
 import com.onewhohears.dscombat.common.network.toserver.ToServerDismount;
+import com.onewhohears.dscombat.common.network.toserver.ToServerFixHitboxes;
 import com.onewhohears.dscombat.common.network.toserver.ToServerGetHookChains;
 import com.onewhohears.dscombat.common.network.toserver.ToServerOpenStorage;
 import com.onewhohears.dscombat.common.network.toserver.ToServerPingSelect;
@@ -222,6 +223,11 @@ public final class PacketHandler {
 			.encoder(ToClientDebugHitboxPos::encode)
 			.decoder(ToClientDebugHitboxPos::new)
 			.consumerMainThread(ToClientDebugHitboxPos::handle)
+			.add();
+		net.messageBuilder(ToServerFixHitboxes.class, index++, NetworkDirection.PLAY_TO_SERVER)
+			.encoder(ToServerFixHitboxes::encode)
+			.decoder(ToServerFixHitboxes::new)
+			.consumerMainThread(ToServerFixHitboxes::handle)
 			.add();
 	}
 	

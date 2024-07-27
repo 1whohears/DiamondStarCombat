@@ -34,7 +34,6 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Team;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
-import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
@@ -309,9 +308,6 @@ public abstract class EntityWeapon<T extends WeaponStats> extends Projectile imp
 		if (entity == null) return false;
     	Entity o = getOwner();
     	if (entity.equals(o)) return true;
-    	if (entity instanceof PartEntity<?> p) {
-    		return isAlliedTo(p.getParent());
-    	}
     	if (entity instanceof Projectile p) {
     		Entity po = p.getOwner();
     		if (po != null && po.equals(o)) return true;

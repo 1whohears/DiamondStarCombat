@@ -22,6 +22,7 @@ import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.scores.Team;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.network.NetworkHooks;
 
@@ -403,6 +404,21 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData,
 	public InteractionResult interact(Player player, InteractionHand hand) {
 		if (canHandleInteract()) return getParent().interact(player, hand);
 		return InteractionResult.PASS;
+	}
+	
+	@Override
+	public Entity getRootVehicle() {
+		return getParent() != null ? getParent() : this;
+	}
+
+	@Override
+	public boolean isAlliedTo(Entity entity) {
+		return getRootVehicle().isAlliedTo(entity);
+	}
+
+	@Override
+	public boolean isAlliedTo(Team team) {
+		return getRootVehicle().isAlliedTo(team);
 	}
 	
 }

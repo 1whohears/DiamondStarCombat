@@ -198,9 +198,9 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setCanShootOnGround(true)
 				.setDamage(50f)
 				.setSpeed(7f)
-				.setExplosionRadius(0)
-				.setExplosive(false)
-				.setDestoryTerrain(false)
+				.setExplosionRadius(1.5f)
+				.setExplosive(true)
+				.setDestoryTerrain(true)
 				.setCausesFire(false)
 				.setMaxAge(40)
 				.setItem(ModItems.BULLET.getId())
@@ -210,6 +210,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setCompatibleWeaponPart(ModItems.MARK45_CANNON.getId())
 				.setCraftNum(1)
 				.addIngredient("minecraft:copper_ingot", 5)
+				.addIngredient("minecraft:gunpowder", 2)
 				.build());
 	}
 	

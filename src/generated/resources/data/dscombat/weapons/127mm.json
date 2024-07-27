@@ -6,16 +6,20 @@
   ],
   "craftNum": 1,
   "damage": 50.0,
-  "destroyTerrain": false,
+  "destroyTerrain": true,
   "displayName": "preset.dscombat.127mm",
   "entityTypeKey": "dscombat:bullet",
-  "explosionRadius": 0.0,
-  "explosive": false,
+  "explosionRadius": 1.5,
+  "explosive": true,
   "fireRate": 12,
   "ingredients": [
     {
       "item": "minecraft:copper_ingot",
       "num": 5
+    },
+    {
+      "item": "minecraft:gunpowder",
+      "num": 2
     }
   ],
   "innacuracy": 0.3,

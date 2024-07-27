@@ -201,7 +201,7 @@ public abstract class VehicleModelTransform {
 		}
 		@Override
 		public float getInput(EntityVehicle entity) {
-			if (entity.isFlapsDown()) return -1;
+			if (entity.isFlapsDown()) return -1 * Math.signum(getBound());
 			return getInputAxis().getVehicleInput(entity);
 		}
 	}

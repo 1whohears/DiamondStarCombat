@@ -3,7 +3,6 @@ package com.onewhohears.dscombat.data.vehicle.presets;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.SlotType;
-import com.onewhohears.dscombat.data.vehicle.LiftKGraph;
 import com.onewhohears.dscombat.data.vehicle.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.init.ModItems;
@@ -30,11 +29,12 @@ public class BroncoPresets {
 			.setTurnTorques(1.5f, 2f, 3f)
 			.setThrottleRate(0.03f, 0.07f)
 			.setPlaneWingArea(27f)
+			.setFuselageLiftArea(9)
 			.setBasicEngineSounds(ModSounds.BIPLANE_1, ModSounds.BIPLANE_1)
 			.setRotationalInertia(6, 10, 5)
 			.setCrashExplosionRadius(4)
 			.set3rdPersonCamDist(14)
-			.setPlaneLiftAOAGraph(LiftKGraph.JAVI_PLANE_GRAPH)
+			.setPlaneLiftAOAGraph("javi_plane")
 			.setPlaneFlapDownAOABias(9)
 			.setPlaneNoseCanAimDown(false)
 			.setBaseTextureNum(2)

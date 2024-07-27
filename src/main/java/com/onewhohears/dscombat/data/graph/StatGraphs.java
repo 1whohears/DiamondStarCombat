@@ -46,12 +46,11 @@ public class StatGraphs extends JsonPresetReloadListener<Graph<?,?>> {
 		return turnRateGraphs;
 	}
 	
-	@Nullable
 	public AoaLiftKGraph getAoaLiftKGraph(String id) {
 		for (AoaLiftKGraph g : getAoaLiftKGraphs()) 
 			if (g.getId().equals(id)) 
 				return g;
-		return null;
+		return getAoaLiftKGraph("fuselage");
 	}
 	
 	@Nullable

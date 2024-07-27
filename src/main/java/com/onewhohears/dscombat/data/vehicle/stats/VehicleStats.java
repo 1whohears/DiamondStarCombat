@@ -15,7 +15,6 @@ import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.SlotType;
 import com.onewhohears.dscombat.data.recipe.DSCIngredientBuilder;
 import com.onewhohears.dscombat.data.vehicle.EntityScreenData;
-import com.onewhohears.dscombat.data.vehicle.LiftKGraph;
 import com.onewhohears.dscombat.data.vehicle.RotableHitboxData;
 import com.onewhohears.dscombat.data.vehicle.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.data.vehicle.VehicleType;
@@ -971,8 +970,15 @@ public abstract class VehicleStats extends JsonPresetStats {
 		/**
 		 * used by planes
 		 */
-		public Builder setPlaneLiftAOAGraph(LiftKGraph liftKGraph) {
-			return setTypedStatString("liftKGraph", liftKGraph.id, "plane");
+		public Builder setPlaneLiftAOAGraph(String wing_lift_k_graph, String fuselage_lift_k_graph) {
+			setTypedStatString("fuselage_lift_k_graph", fuselage_lift_k_graph, "plane");
+			return setTypedStatString("wing_lift_k_graph", wing_lift_k_graph, "plane");
+		}
+		/**
+		 * used by planes
+		 */
+		public Builder setPlaneLiftAOAGraph(String wing_lift_k_graph) {
+			return setPlaneLiftAOAGraph(wing_lift_k_graph, "fuselage");
 		}
 		/**
 		 * helicopters only

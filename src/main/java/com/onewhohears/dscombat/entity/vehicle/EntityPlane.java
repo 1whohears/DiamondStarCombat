@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.entity.vehicle;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.command.DSCGameRules;
+import com.onewhohears.dscombat.data.graph.AoaLiftKGraph;
 import com.onewhohears.dscombat.data.vehicle.DSCPhyCons;
 import com.onewhohears.dscombat.data.vehicle.VehicleType;
 import com.onewhohears.dscombat.util.math.UtilAngles;
@@ -115,8 +116,8 @@ public class EntityPlane extends EntityVehicle {
 			fuselageAoa = (float)UtilGeometry.angleBetweenVecPlaneDegrees(u, fuselageNormal);
 		}
 		if (isFlapsDown()) aoa += getStats().asPlane().flapsAOABias;
-		liftK = (float) getLiftK();
-		fuselageLiftK = getStats().asPlane().liftKGraph.getLift(fuselageAoa);
+		liftK = getWingLiftKGraph().getLerpFloat(aoa);
+		fuselageLiftK = getFuselageLiftKGraph().getLerpFloat(fuselageAoa);
 		//System.out.println("liftK = "+liftK);
 		//debug("aoa = "+aoa+" liftK = "+liftK);
 		//debug("aoa2 = "+fuselageAoa+" liftK2 = "+fuselageLiftK);
@@ -151,10 +152,6 @@ public class EntityPlane extends EntityVehicle {
 	
 	public double getLiftMag() {
 		return wingLiftMag;
-	}
-	
-	public double getLiftK() {
-		return getStats().asPlane().liftKGraph.getLift(aoa);
 	}
 	
 	@Override
@@ -202,6 +199,14 @@ public class EntityPlane extends EntityVehicle {
 	public boolean canAngleWeaponDown() {
     	return getStats().asPlane().canAimDown;
     }
+	
+	public AoaLiftKGraph getWingLiftKGraph() {
+		return getStats().asPlane().getWingLiftKGraph();
+	}
+	
+	public AoaLiftKGraph getFuselageLiftKGraph() {
+		return getStats().asPlane().getFuselageLiftKGraph();
+	}
 
 	@Override
 	public boolean canBrake() {
@@ -228,12 +233,12 @@ public class EntityPlane extends EntityVehicle {
 	
 	@Override
 	public boolean isStalling() {
-		return Math.abs(getAOA()) >= getStats().asPlane().liftKGraph.getCriticalAOA() || liftLost();
+		return Math.abs(getAOA()) >= getWingLiftKGraph().getCriticalAOA() || liftLost();
 	}
 	
 	@Override
 	public boolean isAboutToStall() {
-		return Math.abs(getAOA()) >= getStats().asPlane().liftKGraph.getWarnAOA() && !isFlapsDown();
+		return Math.abs(getAOA()) >= getWingLiftKGraph().getWarnAOA() && !isFlapsDown();
 	}
 	
 	@Override

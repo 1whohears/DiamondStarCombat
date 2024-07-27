@@ -2,7 +2,6 @@ package com.onewhohears.dscombat.data.vehicle.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.SlotType;
-import com.onewhohears.dscombat.data.vehicle.LiftKGraph;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModSounds;
@@ -28,11 +27,12 @@ public class JasonPresets {
 			.setTurnTorques(2f, 2f, 3f)
 			.setThrottleRate(0.04f, 0.07f)
 			.setPlaneWingArea(12f)
+			.setFuselageLiftArea(6)
 			.setBasicEngineSounds(ModSounds.BIPLANE_1, ModSounds.BIPLANE_1)
 			.setRotationalInertia(5, 9, 3)
 			.setCrashExplosionRadius(3)
 			.set3rdPersonCamDist(8)
-			.setPlaneLiftAOAGraph(LiftKGraph.WOODEN_PLANE_GRAPH)
+			.setPlaneLiftAOAGraph("wooden_plane")
 			.setPlaneFlapDownAOABias(8)
 			.setPlaneNoseCanAimDown(false)
 			.setBaseTextureNum(3)

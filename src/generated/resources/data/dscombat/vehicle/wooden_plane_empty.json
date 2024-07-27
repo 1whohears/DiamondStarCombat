@@ -107,8 +107,10 @@
     "plane": {
       "canAimDown": false,
       "flapsAOABias": 8.0,
-      "liftKGraph": "wooden_plane",
-      "wing_area": 8.0
+      "fuselage_lift_area": 4.0,
+      "fuselage_lift_k_graph": "fuselage",
+      "wing_area": 8.0,
+      "wing_lift_k_graph": "wooden_plane"
     },
     "stealth": 1.0,
     "throttledown": 0.06,

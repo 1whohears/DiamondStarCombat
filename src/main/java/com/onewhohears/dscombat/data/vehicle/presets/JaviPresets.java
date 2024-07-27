@@ -2,7 +2,6 @@ package com.onewhohears.dscombat.data.vehicle.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.SlotType;
-import com.onewhohears.dscombat.data.vehicle.LiftKGraph;
 import com.onewhohears.dscombat.data.vehicle.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.init.ModItems;
@@ -37,7 +36,7 @@ public class JaviPresets {
 			.setRotationalInertia(6, 10, 4)
 			.setCrashExplosionRadius(5)
 			.set3rdPersonCamDist(16)
-			.setPlaneLiftAOAGraph(LiftKGraph.JAVI_PLANE_GRAPH)
+			.setPlaneLiftAOAGraph("javi_plane")
 			.setPlaneFlapDownAOABias(10)
 			.setPlaneNoseCanAimDown(true)
 			.setBaseTextureNum(2)

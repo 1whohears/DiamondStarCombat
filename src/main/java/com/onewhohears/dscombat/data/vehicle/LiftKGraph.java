@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.data.vehicle;
 import java.util.HashMap;
 import java.util.Map;
 
+@Deprecated
 public class LiftKGraph {
 	
 	private static final int[] ALEXIS_PLANE_DEGRESS = {-36,  -34,   -32,   -30,   -28,  -26,   -24,   -22,   -20,   -18,   -16,   -14,   -12,   -10,    -8,    -6,    -4,   -2,0,   2,    4,    6,    8,   10,   12,   14,   16,   18,   20,   22,   24,  26,   28,   30,   32,  34,36};

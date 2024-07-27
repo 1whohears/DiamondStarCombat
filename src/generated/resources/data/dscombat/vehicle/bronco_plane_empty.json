@@ -187,8 +187,10 @@
     "plane": {
       "canAimDown": false,
       "flapsAOABias": 9.0,
-      "liftKGraph": "javi_plane",
-      "wing_area": 27.0
+      "fuselage_lift_area": 9.0,
+      "fuselage_lift_k_graph": "fuselage",
+      "wing_area": 27.0,
+      "wing_lift_k_graph": "javi_plane"
     },
     "stealth": 1.0,
     "throttledown": 0.07,

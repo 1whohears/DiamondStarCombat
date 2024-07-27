@@ -241,8 +241,10 @@
     "plane": {
       "canAimDown": false,
       "flapsAOABias": 8.0,
-      "liftKGraph": "alexis_plane",
-      "wing_area": 23.0
+      "fuselage_lift_area": 14.0,
+      "fuselage_lift_k_graph": "fuselage",
+      "wing_area": 23.0,
+      "wing_lift_k_graph": "alexis_plane"
     },
     "stealth": 0.95,
     "throttledown": 0.08,

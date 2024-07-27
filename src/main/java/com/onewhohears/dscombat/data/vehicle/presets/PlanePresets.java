@@ -3,7 +3,6 @@ package com.onewhohears.dscombat.data.vehicle.presets;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
 import com.onewhohears.dscombat.data.parts.SlotType;
-import com.onewhohears.dscombat.data.vehicle.LiftKGraph;
 import com.onewhohears.dscombat.data.vehicle.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.init.ModItems;
@@ -30,11 +29,12 @@ public class PlanePresets {
 			.setTurnTorques(1.5f, 2.5f, 4.5f)
 			.setThrottleRate(0.02f, 0.06f)
 			.setPlaneWingArea(8f)
+			.setFuselageLiftArea(4)
 			.setBasicEngineSounds(ModSounds.BIPLANE_1, ModSounds.BIPLANE_1)
 			.setRotationalInertia(4, 7, 3)
 			.setCrashExplosionRadius(3)
 			.set3rdPersonCamDist(4)
-			.setPlaneLiftAOAGraph(LiftKGraph.WOODEN_PLANE_GRAPH)
+			.setPlaneLiftAOAGraph("wooden_plane")
 			.setPlaneFlapDownAOABias(8)
 			.setPlaneNoseCanAimDown(false)
 			.addIngredientTag("minecraft:planks", 20)
@@ -95,11 +95,12 @@ public class PlanePresets {
 			.setTurnTorques(2.0f, 2.0f, 2.0f)
 			.setThrottleRate(0.01f, 0.04f)
 			.setPlaneWingArea(283f)
+			.setFuselageLiftArea(80)
 			.setBasicEngineSounds(ModSounds.JET_1, ModSounds.JET_1)
 			.setRotationalInertia(10, 12, 8)
 			.setCrashExplosionRadius(8)
 			.set3rdPersonCamDist(12)
-			.setPlaneLiftAOAGraph(LiftKGraph.E3SENTRY_PLANE_GRAPH)
+			.setPlaneLiftAOAGraph("e3sentry_plane")
 			.setPlaneFlapDownAOABias(10)
 			.setPlaneNoseCanAimDown(false)
 			.setDefultPassengerSoundPack(PassengerSoundPack.ENG_MALE_1)

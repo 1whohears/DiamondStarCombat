@@ -4,7 +4,6 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.SlotType;
-import com.onewhohears.dscombat.data.vehicle.LiftKGraph;
 import com.onewhohears.dscombat.data.vehicle.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.init.ModItems;
@@ -31,6 +30,7 @@ public class EdenPresets {
 			.setTurnTorques(1.5f, 2f, 4f)
 			.setThrottleRate(0.04f, 0.08f)
 			.setPlaneWingArea(38f)
+			.setFuselageLiftArea(22)
 			.setFighterJetSounds(ModSounds.ALEXIS_EXT_AFTERBURNER_CLOSE, ModSounds.ALEXIS_EXT_AFTERBURNER_FAR,
 					ModSounds.ALEXIS_EXT_RPM, ModSounds.ALEXIS_EXT_WIND_CLOSE, ModSounds.ALEXIS_EXT_WIND_FAR,
 					ModSounds.ALEXIS_CP_RPM, ModSounds.ALEXIS_CP_AFTERBURNER, ModSounds.ALEXIS_CP_WIND_SLOW, 
@@ -38,7 +38,7 @@ public class EdenPresets {
 			.setRotationalInertia(4.5f, 8.5f, 2.5f)
 			.setCrashExplosionRadius(5.5f)
 			.set3rdPersonCamDist(19)
-			.setPlaneLiftAOAGraph(LiftKGraph.ALEXIS_PLANE_GRAPH)
+			.setPlaneLiftAOAGraph("alexis_plane")
 			.setPlaneFlapDownAOABias(9)
 			.setPlaneNoseCanAimDown(false)
 			.setBaseTextureNum(3)

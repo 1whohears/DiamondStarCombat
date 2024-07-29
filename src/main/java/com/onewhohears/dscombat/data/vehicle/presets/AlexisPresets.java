@@ -86,7 +86,7 @@ public class AlexisPresets {
 			.setHitboxesControlPitch("left_elevator", "right_elevator")
 			.setHitboxesControlRoll("left_wing", "right_wing")
 			.setHitboxesControlYaw("tail")
-			.setWingLiftHitboxNames("left_wing", "right_wing", "left_elevator", "right_elevator")
+			.setWingLiftHitboxNames("left_wing", "right_wing")
 			.build();
 	
 	public static final VehicleStats UNARMED_ALEXIS_PLANE = VehicleStats.Builder

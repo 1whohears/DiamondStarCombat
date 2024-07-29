@@ -234,13 +234,13 @@
       },
       {
         "anim_id": "hitbox_destroy_part",
-        "hitbox_name": "surface3",
-        "model_part_key": "left_elevator"
+        "hitbox_name": "left_elevator",
+        "model_part_key": "surface3"
       },
       {
         "anim_id": "hitbox_destroy_part",
-        "hitbox_name": "surface4",
-        "model_part_key": "right_elevator"
+        "hitbox_name": "right_elevator",
+        "model_part_key": "surface4"
       },
       {
         "anim_id": "hitbox_destroy_part",

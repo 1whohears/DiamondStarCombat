@@ -381,9 +381,7 @@
       "wing_area": 28.0,
       "wing_lift_hitbox_names": [
         "left_wing",
-        "right_wing",
-        "left_elevator",
-        "right_elevator"
+        "right_wing"
       ],
       "wing_lift_k_graph": "alexis_plane"
     },

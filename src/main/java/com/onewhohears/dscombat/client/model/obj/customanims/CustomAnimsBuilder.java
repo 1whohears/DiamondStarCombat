@@ -102,7 +102,7 @@ public class CustomAnimsBuilder {
 		return this;
 	}
 	
-	public CustomAnimsBuilder addHitboxDestroyPartAnim(String model_part_key, String hitbox_name) {
+	public CustomAnimsBuilder addHitboxDestroyPartAnim(String hitbox_name, String model_part_key) {
 		JsonObject anim = createAnimJson(model_part_key);
 		anim.addProperty("anim_id", "hitbox_destroy_part");
 		anim.addProperty("hitbox_name", hitbox_name);
@@ -111,7 +111,7 @@ public class CustomAnimsBuilder {
 	
 	public CustomAnimsBuilder addHitboxDestroyPartsAnim(String hitbox_name, String... model_part_keys) {
 		for (int i = 0; i < model_part_keys.length; ++i) 
-			addHitboxDestroyPartAnim(model_part_keys[i], hitbox_name);
+			addHitboxDestroyPartAnim(hitbox_name, model_part_keys[i]);
 		return this;
 	}
 	

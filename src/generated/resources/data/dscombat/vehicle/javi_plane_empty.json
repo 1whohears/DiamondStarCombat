@@ -350,6 +350,16 @@
     "cross_sec_area": 7.0,
     "entity_size_xz": 4.0,
     "entity_size_y": 4.0,
+    "hitboxes_control_pitch": [
+      "tail"
+    ],
+    "hitboxes_control_roll": [
+      "left_wing",
+      "right_wing"
+    ],
+    "hitboxes_control_yaw": [
+      "tail"
+    ],
     "idleheat": 5.0,
     "inertiapitch": 10.0,
     "inertiaroll": 6.0,
@@ -366,6 +376,11 @@
       "fuselage_lift_area": 20.0,
       "fuselage_lift_k_graph": "fuselage",
       "wing_area": 47.0,
+      "wing_lift_hitbox_names": [
+        "left_wing",
+        "right_wing",
+        "tail"
+      ],
       "wing_lift_k_graph": "javi_plane"
     },
     "rootHitboxNoCollide": true,

@@ -83,6 +83,10 @@ public class JaviPresets {
 					20, 20, true, true, false)
 			.addRotableHitbox("nose", 1.1, 1.1, 1.9, 0, 0.3, 9, 
 					10, 10, true, true, false)
+			.setHitboxesControlPitch("tail")
+			.setHitboxesControlRoll("left_wing", "right_wing")
+			.setHitboxesControlYaw("tail")
+			.setWingLiftHitboxNames("left_wing", "right_wing", "tail")
 			.build();
 	
 	public static final VehicleStats UNARMED_JAVI_PLANE = VehicleStats.Builder

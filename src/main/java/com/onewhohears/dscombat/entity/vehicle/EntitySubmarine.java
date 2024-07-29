@@ -26,7 +26,7 @@ public class EntitySubmarine extends EntityBoat {
 			addMomentX(inputs.pitch * getPitchTorque(), true);
 			addMomentZ(inputs.roll * getRollTorque(), true);
 		}
-		addMomentY(inputs.yaw * getYawTorque(), true);
+		if (canControlYaw()) addMomentY(inputs.yaw * getYawTorque(), true);
 	}
 	
 	@Override

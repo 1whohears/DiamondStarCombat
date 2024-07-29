@@ -52,7 +52,7 @@ public class EntityHelicopter extends EntityVehicle {
 	public void directionAir(Quaternion q) {
 		super.directionAir(q);
 		if (!isOperational()) return;
-		addMomentY(inputs.yaw * getYawTorque(), true);
+		if (canControlYaw()) addMomentY(inputs.yaw * getYawTorque(), true);
 		if (inputs.special) flatten(q, getMaxDeltaPitch(), getMaxDeltaRoll(), false);
 		else {
 			addMomentX(inputs.pitch * getPitchTorque(), true);

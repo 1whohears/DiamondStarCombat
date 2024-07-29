@@ -31,14 +31,14 @@ public class EntityBoat extends EntityVehicle {
 	public void directionGround(Quaternion q) {
 		flatten(q, 4f, 4f, true);
 		if (!isOperational()) return;
-		addMomentY(inputs.yaw * getYawTorque() * 0.1f, true);
+		if (canControlYaw()) addMomentY(inputs.yaw * getYawTorque() * 0.1f, true);
 	}
 	
 	@Override
 	public void directionWater(Quaternion q) {
 		if (!isOperational()) return;
 		flatten(q, 2f, 2f, true);
-		addMomentY(inputs.yaw * getYawTorque(), true);
+		if (canControlYaw()) addMomentY(inputs.yaw * getYawTorque(), true);
 	}
 	
 	@Override

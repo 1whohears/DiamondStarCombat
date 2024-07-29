@@ -83,6 +83,10 @@ public class AlexisPresets {
 					10, 10, true, true, false)
 			.addRotableHitbox("nose", 1.2, 1, 2, 0, 0.3, 8.8, 
 					10, 10, true, true, false)
+			.setHitboxesControlPitch("left_elevator", "right_elevator")
+			.setHitboxesControlRoll("left_wing", "right_wing")
+			.setHitboxesControlYaw("tail")
+			.setWingLiftHitboxNames("left_wing", "right_wing", "left_elevator", "right_elevator")
 			.build();
 	
 	public static final VehicleStats UNARMED_ALEXIS_PLANE = VehicleStats.Builder

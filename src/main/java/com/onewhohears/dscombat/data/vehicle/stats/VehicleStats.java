@@ -60,6 +60,7 @@ public abstract class VehicleStats extends JsonPresetStats {
 	public final MastType mastType;
 	public final EntityDimensions dimensions;
 	public final boolean rootHitboxNoCollide;
+	public final String[] controllPitchHitboxNames, controllYawHitboxNames, controllRollHitboxNames;
 	
 	private final boolean isCraftable;
 	private final int defaultPaintJob;
@@ -125,6 +126,9 @@ public abstract class VehicleStats extends JsonPresetStats {
 		} else afterBurnerSmokePos = new Vec3[0];
 		isCraftable = UtilParse.getBooleanSafe(json, "is_craftable", false);
 		defaultPaintJob = UtilParse.getIntSafe(json, "paintjob_color", 0);
+		controllPitchHitboxNames = UtilParse.getStringArraySafe(stats, "hitboxes_control_pitch");
+		controllYawHitboxNames = UtilParse.getStringArraySafe(stats, "hitboxes_control_yaw");
+		controllRollHitboxNames = UtilParse.getStringArraySafe(stats, "hitboxes_control_roll");
 	}
 	
 	public CompoundTag getDataAsNBT() {
@@ -844,6 +848,27 @@ public abstract class VehicleStats extends JsonPresetStats {
 		public Builder setMastType(MastType mastType) {
 			return setStatString("mastType", mastType.toString());
 		}
+		/**
+		 * all vehicles 
+		 */
+		public Builder setHitboxesControlPitch(String... hitboxes_control_pitch) {
+			getStats().add("hitboxes_control_pitch", UtilParse.stringArrayToJsonArray(hitboxes_control_pitch));
+			return this;
+		}
+		/**
+		 * all vehicles 
+		 */
+		public Builder setHitboxesControlYaw(String... hitboxes_control_yaw) {
+			getStats().add("hitboxes_control_yaw", UtilParse.stringArrayToJsonArray(hitboxes_control_yaw));
+			return this;
+		}
+		/**
+		 * all vehicles 
+		 */
+		public Builder setHitboxesControlRoll(String... hitboxes_control_roll) {
+			getStats().add("hitboxes_control_roll", UtilParse.stringArrayToJsonArray(hitboxes_control_roll));
+			return this;
+		}
 		
 		public JsonObject getTextures() {
 			if (!getData().has("textures")) 
@@ -979,6 +1004,13 @@ public abstract class VehicleStats extends JsonPresetStats {
 		 */
 		public Builder setPlaneLiftAOAGraph(String wing_lift_k_graph) {
 			return setPlaneLiftAOAGraph(wing_lift_k_graph, "fuselage");
+		}
+		/**
+		 * used by planes
+		 */
+		public Builder setWingLiftHitboxNames(String... wing_lift_hitbox_names) {
+			getStatsByType("plane").add("wing_lift_hitbox_names", UtilParse.stringArrayToJsonArray(wing_lift_hitbox_names));
+			return this;
 		}
 		/**
 		 * helicopters only

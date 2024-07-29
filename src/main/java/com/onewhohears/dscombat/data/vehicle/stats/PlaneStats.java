@@ -13,6 +13,7 @@ public class PlaneStats extends VehicleStats {
 	
 	public final float wing_area, flapsAOABias, fuselage_lift_area;
 	public final boolean canAimDown;
+	public final String[] wingLiftHitboxNames;
 	private final String wing_lift_k_graph_key, fuselage_lift_k_graph_key;
 	private AoaLiftKGraph wing_lift_k_graph, fuselage_lift_k_graph;
 	
@@ -25,6 +26,7 @@ public class PlaneStats extends VehicleStats {
 		fuselage_lift_area = UtilParse.getFloatSafe(plane, "fuselage_lift_area", 0);
 		wing_lift_k_graph_key = UtilParse.getStringSafe(plane, "wing_lift_k_graph", "fuselage");
 		fuselage_lift_k_graph_key = UtilParse.getStringSafe(plane, "fuselage_lift_k_graph", "fuselage");
+		wingLiftHitboxNames = UtilParse.getStringArraySafe(plane, "wing_lift_hitbox_names");
 	}
 
 	@Override

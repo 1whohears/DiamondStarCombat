@@ -34,10 +34,12 @@ public class EntityPlane extends EntityVehicle {
 	public void directionAir(Quaternion q) {
 		super.directionAir(q);
 		if (!isOperational()) return;
-		addMomentX(inputs.pitch * getPitchTorque(), true);
-		addMomentY(inputs.yaw * getYawTorque(), true);
-		if (inputs.bothRoll) flatten(q, 0, getRollTorque(), false);
-		else addMomentZ(inputs.roll * getRollTorque(), true);
+		if (canControlPitch()) addMomentX(inputs.pitch * getPitchTorque(), true);
+		if (canControlYaw()) addMomentY(inputs.yaw * getYawTorque(), true);
+		if (canControlRoll()) {
+			if (inputs.bothRoll) flatten(q, 0, getRollTorque(), false);
+			else addMomentZ(inputs.roll * getRollTorque(), true);
+		}
 	}
 	
 	@Override
@@ -129,7 +131,7 @@ public class EntityPlane extends EntityVehicle {
 	
 	protected void calculateLift(Quaternion q) {
 		// Lift = (angle of attack coefficient) * (air density) * (speed)^2 * (wing surface area) / 2
-		wingLiftMag = liftK * airPressure * airFoilSpeedSqr * getWingSurfaceArea() * DSCPhyCons.LIFT;
+		wingLiftMag = liftK * airPressure * airFoilSpeedSqr * getWingSurfaceArea() * DSCPhyCons.LIFT * getWingLiftPercent();
 		fuselageLift = fuselageLiftK * airPressure * airFoilSpeedSqr * getFuselageLiftArea() * DSCPhyCons.LIFT;
 		Vec3 lift = getLiftForce(q);
 		Vec3 cenAxis = UtilAngles.getRollAxis(0, (getYRot()+90)*Mth.DEG_TO_RAD);
@@ -249,6 +251,13 @@ public class EntityPlane extends EntityVehicle {
 	@Override
 	protected float calcDamageFromBullet(DamageSource source, float amount) {
 		return amount * DSCGameRules.getBulletDamagePlaneFactor(level);
+	}
+	
+	public float getWingLiftPercent() {
+		float total = getStats().asPlane().wingLiftHitboxNames.length;
+		if (total == 0) return 1;
+		float num = getNumberOfAliveHitboxes(getStats().asPlane().wingLiftHitboxNames);
+		return num / total;
 	}
 
 }

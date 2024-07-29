@@ -2766,6 +2766,25 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		return hitboxCollidedIds.contains(entity.getId());
 	}
 	
+	public boolean areAllHitboxesAlive(String... hitbox_names) {
+		for (int i = 0; i < hitbox_names.length; ++i) {
+			RotableHitbox box = getHitboxByName(hitbox_names[i]);
+			if (box == null) continue;
+			if (box.isDestroyed()) return false;
+		}
+		return true;
+	}
+	
+	public int getNumberOfAliveHitboxes(String... hitbox_names) {
+		int num = 0;
+		for (int i = 0; i < hitbox_names.length; ++i) {
+			RotableHitbox box = getHitboxByName(hitbox_names[i]);
+			if (box == null) continue;
+			if (!box.isDestroyed()) ++num;
+		}
+		return num;
+	}
+	
 	public MastType getMastType() {
 		return vehicleStats.mastType;
 	}
@@ -2929,5 +2948,17 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     public boolean rootHitboxEntityInteract() {
     	return !vehicleStats.rootHitboxNoCollide;
     }
+    
+    public boolean canControlPitch() {
+		return areAllHitboxesAlive(vehicleStats.controllPitchHitboxNames);
+	}
+	
+	public boolean canControlYaw() {
+		return areAllHitboxesAlive(vehicleStats.controllYawHitboxNames);
+	}
+	
+	public boolean canControlRoll() {
+		return areAllHitboxesAlive(vehicleStats.controllRollHitboxNames);
+	}
     
 }

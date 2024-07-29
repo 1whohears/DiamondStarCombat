@@ -359,7 +359,33 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 				.setHardCodedModelAnims()
 				.build());
 		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "eden_plane")
-				.setHardCodedModelAnims()
+				.setCustomAnims(CustomAnimsBuilder.create()
+						.addLandingGearAnim("lg0", 0, 31.4916f, 29.602f, RotationAxis.X, 90)
+						.addLandingGearAnim("lg1", 27.3165f, 35.4232f, -55.991f, RotationAxis.X, -90)
+						.addLandingGearAnim("lg2", -27.3165f, 35.4232f, -55.991f, RotationAxis.X, -90)
+						.addInputBoundRotAnim("surface0", 34.24f, 62.9607f, -139.2688f, 
+								RotationAxis.Y, InputAxis.YAW, 15)
+						.addInputBoundRotAnim("surface1", -34.24f, 62.9607f, -139.2688f, 
+								RotationAxis.Y, InputAxis.YAW, 15)
+						.addPlaneFlapRotAnim("surface2", 85.8748f, 39.8619f, -94.692f, 
+								RotationAxis.X, InputAxis.ROLL, -22)
+						.addPlaneFlapRotAnim("surface3", -85.8748f, 39.8619f, -94.692f, 
+								RotationAxis.X, InputAxis.ROLL, 22)
+						.addInputBoundRotAnim("surface4", 35.5916f, 40.1339f, -140.6252f, 
+								RotationAxis.X, InputAxis.PITCH, 22)
+						.addInputBoundRotAnim("surface5", -35.5916f, 40.1339f, -140.6252f, 
+								RotationAxis.X, InputAxis.PITCH, 22)
+						.addHitboxDestroyPartsAnim("left_wing", "wing0","surface2","lg1")
+						.addHitboxDestroyPartsAnim("right_wing", "wing1","surface3","lg2")
+						.addHitboxDestroyPartsAnim("left_elevator", "surface4")
+						.addHitboxDestroyPartsAnim("right_elevator", "surface5")
+						.addHitboxDestroyPartsAnim("left_tail", "surface0","wing2")
+						.addHitboxDestroyPartsAnim("right_tail", "surface1","wing3")
+						.addJoystickAnim("stick", 0, 35.9965f, 89.1234f, 25, 25)
+						.addInputBoundTransAnim("pedal0", 0, 0, -0.0625f, InputAxis.YAW)
+						.addInputBoundTransAnim("pedal1", 0, 0, 0.0625f, InputAxis.YAW)
+						.addInputBoundTransAnim("throttle", 0, 0, 0.1875f, InputAxis.THROTTLE)
+						.build())
 				.build());
 		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "felix_plane")
 				.setCustomAnims(CustomAnimsBuilder.create()

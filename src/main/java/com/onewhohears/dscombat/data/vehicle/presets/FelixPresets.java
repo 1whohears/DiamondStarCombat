@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.data.vehicle.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
 import com.onewhohears.dscombat.data.parts.SlotType;
 import com.onewhohears.dscombat.data.vehicle.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
@@ -58,10 +57,6 @@ public class FelixPresets {
 			.addEmptySlot("internal_2", SlotType.INTERNAL)
 			.addEmptySlot("internal_3", SlotType.INTERNAL)
 			.addEmptySlot("internal_4", SlotType.TECH_INTERNAL)
-			.addEntityScreen(EntityScreenIds.AIR_RADAR_SCREEN,0.294,0.434,5.425,0.195,0.195,10)
-			.addEntityScreen(EntityScreenIds.FUEL_SCREEN,-0.39,0.135,5.155,0.1,0.1,10)
-			.addEntityScreen(EntityScreenIds.GROUND_RADAR_SCREEN,-0.31,0.434,5.425,0.195,0.195,10)
-			.addEntityScreen(EntityScreenIds.RWR_SCREEN,0.0775,0.505,5.44,0.11,0.11,10)
 			.addHUDScreen(0, -0.3, 4.7)
 			.addAfterBurnerSmokePos(0,-0.1,-6)
 			.setEntityMainHitboxSize(4, 4)

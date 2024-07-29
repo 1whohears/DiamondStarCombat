@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.data.vehicle.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.SlotType;
 import com.onewhohears.dscombat.data.vehicle.VehicleSoundManager.PassengerSoundPack;
@@ -52,16 +51,16 @@ public class EdenPresets {
 			.addIngredient("minecraft:gold_ingot", 20)
 			.addPilotSeatSlot(0, 0.3, 8.5)
 			.addSeatSlot(PartSlot.COPILOT_SLOT_NAME, 0, 0.4, 6.8)
-			.addEmptySlot("left_wing_1", SlotType.PYLON_MED, 3, 0.05, 0.4, 180)
-			.addEmptySlot("left_wing_2", SlotType.PYLON_LIGHT, 4, 0.05, -0.4, 180)
-			.addEmptySlot("left_wing_3", SlotType.PYLON_LIGHT, 5, 0.05, -1.2, 180)
-			.addEmptySlot("right_wing_1", SlotType.PYLON_LIGHT, -3, 0.05, 0.4, 180)
-			.addEmptySlot("right_wing_2", SlotType.PYLON_LIGHT, -4, 0.05, -0.4, 180)
-			.addEmptySlot("right_wing_3", SlotType.PYLON_LIGHT, -5, 0.05, -1.2, 180)
-			.addEmptySlot("internal_gun", SlotType.INTERNAL_GUN, 0, -0.14, 9.6, 180)
+			.addEmptySlot("left_wing_1", SlotType.PYLON_MED, 3, 0.05, 0.4, 180, "left_wing")
+			.addEmptySlot("left_wing_2", SlotType.PYLON_LIGHT, 4, 0.05, -0.4, 180, "left_wing")
+			.addEmptySlot("left_wing_3", SlotType.PYLON_LIGHT, 5, 0.05, -1.2, 180, "left_wing")
+			.addEmptySlot("right_wing_1", SlotType.PYLON_LIGHT, -3, 0.05, 0.4, 180, "right_wing")
+			.addEmptySlot("right_wing_2", SlotType.PYLON_LIGHT, -4, 0.05, -0.4, 180, "right_wing")
+			.addEmptySlot("right_wing_3", SlotType.PYLON_LIGHT, -5, 0.05, -1.2, 180, "right_wing")
+			.addEmptySlot("internal_gun", SlotType.INTERNAL_GUN, 0, -0.14, 9.6, 180,"nose")
 			.setSlotOnlyCompatible("internal_gun", "gsh_30_1")
-			.addEmptySlot("internal_1", SlotType.PUSH_ENGINE)
-			.addEmptySlot("internal_2", SlotType.PUSH_ENGINE)
+			.addEmptySlot("internal_1", SlotType.PUSH_ENGINE, "left_engine")
+			.addEmptySlot("internal_2", SlotType.PUSH_ENGINE, "right_engine")
 			.addEmptySlot("internal_3", SlotType.INTERNAL)
 			.addEmptySlot("internal_4", SlotType.INTERNAL)
 			.addEmptySlot("internal_5", SlotType.TECH_INTERNAL)
@@ -69,15 +68,32 @@ public class EdenPresets {
 			.addEmptySlot("internal_7", SlotType.TECH_INTERNAL)
 			.addAfterBurnerSmokePos(-1,0.1,-5)
 			.addAfterBurnerSmokePos(1,0.1,-5)
-			.addEntityScreen(EntityScreenIds.AIR_RADAR_SCREEN, 0.3, 0.9, 9.242, 0.22, 0.28, 5)
-			.addEntityScreen(EntityScreenIds.GROUND_RADAR_SCREEN, -0.3, 0.9, 9.242, 0.22, 0.28, 5)
-			.addEntityScreen(EntityScreenIds.RWR_SCREEN, 0, 0.94, 9.245, 0.2, 0.2, 5)
-			.addEntityScreen(EntityScreenIds.FUEL_SCREEN, -0.505, 0.702, 8.93, 0.11, 0.11, 90)
-			.addEntityScreen(EntityScreenIds.AIR_RADAR_SCREEN, 0.3, 1.185, 7.475, 0.22, 0.28, 5)
-			.addEntityScreen(EntityScreenIds.GROUND_RADAR_SCREEN, -0.3, 1.185, 7.475, 0.22, 0.28, 5)
-			.addEntityScreen(EntityScreenIds.RWR_SCREEN, 0, 1.225, 7.478, 0.2, 0.2, 5)
-			.addEntityScreen(EntityScreenIds.FUEL_SCREEN, -0.505, 0.985, 7.205, 0.11, 0.11, 90)
 			.setEntityMainHitboxSize(4, 4)
+			.setRootHitboxNoCollide(true)
+			.addRotableHitbox("fuselage", 2.8, 1.5, 9, 0, 0.3, 1.5, 
+					0, 0, false, false, true)
+			.addRotableHitbox("nose", 1.2, 1, 5, 0, 0.3, 8.35, 
+					20, 20, true, true, false)
+			.addRotableHitbox("left_wing", 4.6, 0.3, 4, 3.9, 0.5, -0.9, 
+					20, 20, true, true, false)
+			.addRotableHitbox("right_wing", 4.6, 0.3, 4, -3.9, 0.5, -0.9, 
+					20, 20, true, true, false)
+			.addRotableHitbox("left_elevator", 2.5, 0.3, 2, 3.4, 0.5, -6, 
+					10, 10, true, true, false)
+			.addRotableHitbox("right_elevator", 2.5, 0.3, 2, -3.4, 0.5, -6, 
+					10, 10, true, true, false)
+			.addRotableHitbox("left_tail", 0.3, 3, 2, 2.1, 2.1, -4.8, 
+					10, 10, true, true, false)
+			.addRotableHitbox("right_tail", 0.3, 3, 2, -2.1, 2.1, -4.8, 
+					10, 10, true, true, false)
+			.addRotableHitbox("left_engine", 1.2, 1.2, 2.5, 1.1, 0.1, -4.4, 
+					15, 15, true, true, false)
+			.addRotableHitbox("right_engine", 1.2, 1.2, 2.5, -1.1, 0.1, -4.4, 
+					15, 15, true, true, false)
+			.setHitboxesControlPitch("left_elevator", "right_elevator")
+			.setHitboxesControlRoll("left_wing", "right_wing")
+			.setHitboxesControlYaw("left_tail", "right_tail")
+			.setWingLiftHitboxNames("left_wing", "right_wing")
 			.build();
 	
 	public static final VehicleStats UNARMED_EDEN_PLANE = VehicleStats.Builder

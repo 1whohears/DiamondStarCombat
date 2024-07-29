@@ -18,6 +18,188 @@
   "armor": 60.0,
   "displayName": "preset.dscombat.eden_plane_empty",
   "health": 100.0,
+  "hitboxes": [
+    {
+      "damage_parts": false,
+      "damage_root": true,
+      "max_armor": 0.0,
+      "max_health": 0.0,
+      "name": "fuselage",
+      "rel_pos": {
+        "x": 0.0,
+        "y": 0.3,
+        "z": 1.5
+      },
+      "remove_on_destroy": false,
+      "size": {
+        "x": 2.8,
+        "y": 1.5,
+        "z": 9.0
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 20.0,
+      "max_health": 20.0,
+      "name": "nose",
+      "rel_pos": {
+        "x": 0.0,
+        "y": 0.3,
+        "z": 8.35
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 1.2,
+        "y": 1.0,
+        "z": 5.0
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 20.0,
+      "max_health": 20.0,
+      "name": "left_wing",
+      "rel_pos": {
+        "x": 3.9,
+        "y": 0.5,
+        "z": -0.9
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 4.6,
+        "y": 0.3,
+        "z": 4.0
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 20.0,
+      "max_health": 20.0,
+      "name": "right_wing",
+      "rel_pos": {
+        "x": -3.9,
+        "y": 0.5,
+        "z": -0.9
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 4.6,
+        "y": 0.3,
+        "z": 4.0
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 10.0,
+      "max_health": 10.0,
+      "name": "left_elevator",
+      "rel_pos": {
+        "x": 3.4,
+        "y": 0.5,
+        "z": -6.0
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 2.5,
+        "y": 0.3,
+        "z": 2.0
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 10.0,
+      "max_health": 10.0,
+      "name": "right_elevator",
+      "rel_pos": {
+        "x": -3.4,
+        "y": 0.5,
+        "z": -6.0
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 2.5,
+        "y": 0.3,
+        "z": 2.0
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 10.0,
+      "max_health": 10.0,
+      "name": "left_tail",
+      "rel_pos": {
+        "x": 2.1,
+        "y": 2.1,
+        "z": -4.8
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 0.3,
+        "y": 3.0,
+        "z": 2.0
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 10.0,
+      "max_health": 10.0,
+      "name": "right_tail",
+      "rel_pos": {
+        "x": -2.1,
+        "y": 2.1,
+        "z": -4.8
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 0.3,
+        "y": 3.0,
+        "z": 2.0
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 15.0,
+      "max_health": 15.0,
+      "name": "left_engine",
+      "rel_pos": {
+        "x": 1.1,
+        "y": 0.1,
+        "z": -4.4
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 1.2,
+        "y": 1.2,
+        "z": 2.5
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 15.0,
+      "max_health": 15.0,
+      "name": "right_engine",
+      "rel_pos": {
+        "x": -1.1,
+        "y": 0.1,
+        "z": -4.4
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 1.2,
+        "y": 1.2,
+        "z": 2.5
+      }
+    }
+  ],
   "ingredients": [
     {
       "item": "dscombat:fuselage",
@@ -49,128 +231,6 @@
   "landing_gear": true,
   "presetId": "eden_plane_empty",
   "presetType": "plane",
-  "screens": [
-    {
-      "height": 0.28,
-      "id": 0,
-      "pos": {
-        "x": 0.3,
-        "y": 0.9,
-        "z": 9.242
-      },
-      "rot": {
-        "x": 5.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "width": 0.22
-    },
-    {
-      "height": 0.28,
-      "id": 4,
-      "pos": {
-        "x": -0.3,
-        "y": 0.9,
-        "z": 9.242
-      },
-      "rot": {
-        "x": 5.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "width": 0.22
-    },
-    {
-      "height": 0.2,
-      "id": 3,
-      "pos": {
-        "x": 0.0,
-        "y": 0.94,
-        "z": 9.245
-      },
-      "rot": {
-        "x": 5.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "width": 0.2
-    },
-    {
-      "height": 0.11,
-      "id": 1,
-      "pos": {
-        "x": -0.505,
-        "y": 0.702,
-        "z": 8.93
-      },
-      "rot": {
-        "x": 90.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "width": 0.11
-    },
-    {
-      "height": 0.28,
-      "id": 0,
-      "pos": {
-        "x": 0.3,
-        "y": 1.185,
-        "z": 7.475
-      },
-      "rot": {
-        "x": 5.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "width": 0.22
-    },
-    {
-      "height": 0.28,
-      "id": 4,
-      "pos": {
-        "x": -0.3,
-        "y": 1.185,
-        "z": 7.475
-      },
-      "rot": {
-        "x": 5.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "width": 0.22
-    },
-    {
-      "height": 0.2,
-      "id": 3,
-      "pos": {
-        "x": 0.0,
-        "y": 1.225,
-        "z": 7.478
-      },
-      "rot": {
-        "x": 5.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "width": 0.2
-    },
-    {
-      "height": 0.11,
-      "id": 1,
-      "pos": {
-        "x": -0.505,
-        "y": 0.985,
-        "z": 7.205
-      },
-      "rot": {
-        "x": 90.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "width": 0.11
-    }
-  ],
   "slots": [
     {
       "data": {
@@ -195,6 +255,7 @@
       "zRot": 0.0
     },
     {
+      "linkedHitbox": "left_wing",
       "name": "left_wing_1",
       "slot_posx": 3.0,
       "slot_posy": 0.05,
@@ -203,6 +264,7 @@
       "zRot": 180.0
     },
     {
+      "linkedHitbox": "left_wing",
       "name": "left_wing_2",
       "slot_posx": 4.0,
       "slot_posy": 0.05,
@@ -211,6 +273,7 @@
       "zRot": 180.0
     },
     {
+      "linkedHitbox": "left_wing",
       "name": "left_wing_3",
       "slot_posx": 5.0,
       "slot_posy": 0.05,
@@ -219,6 +282,7 @@
       "zRot": 180.0
     },
     {
+      "linkedHitbox": "right_wing",
       "name": "right_wing_1",
       "slot_posx": -3.0,
       "slot_posy": 0.05,
@@ -227,6 +291,7 @@
       "zRot": 180.0
     },
     {
+      "linkedHitbox": "right_wing",
       "name": "right_wing_2",
       "slot_posx": -4.0,
       "slot_posy": 0.05,
@@ -235,6 +300,7 @@
       "zRot": 180.0
     },
     {
+      "linkedHitbox": "right_wing",
       "name": "right_wing_3",
       "slot_posx": -5.0,
       "slot_posy": 0.05,
@@ -243,6 +309,7 @@
       "zRot": 180.0
     },
     {
+      "linkedHitbox": "nose",
       "name": "internal_gun",
       "onlyCompatPart": "gsh_30_1",
       "slot_posx": 0.0,
@@ -252,6 +319,7 @@
       "zRot": 180.0
     },
     {
+      "linkedHitbox": "left_engine",
       "name": "internal_1",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
@@ -260,6 +328,7 @@
       "zRot": 0.0
     },
     {
+      "linkedHitbox": "right_engine",
       "name": "internal_2",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
@@ -332,6 +401,18 @@
     "cross_sec_area": 4.5,
     "entity_size_xz": 4.0,
     "entity_size_y": 4.0,
+    "hitboxes_control_pitch": [
+      "left_elevator",
+      "right_elevator"
+    ],
+    "hitboxes_control_roll": [
+      "left_wing",
+      "right_wing"
+    ],
+    "hitboxes_control_yaw": [
+      "left_tail",
+      "right_tail"
+    ],
     "idleheat": 5.0,
     "inertiapitch": 8.5,
     "inertiaroll": 4.5,
@@ -348,8 +429,13 @@
       "fuselage_lift_area": 22.0,
       "fuselage_lift_k_graph": "fuselage",
       "wing_area": 38.0,
+      "wing_lift_hitbox_names": [
+        "left_wing",
+        "right_wing"
+      ],
       "wing_lift_k_graph": "alexis_plane"
     },
+    "rootHitboxNoCollide": true,
     "stealth": 0.95,
     "throttledown": 0.08,
     "throttleup": 0.04,

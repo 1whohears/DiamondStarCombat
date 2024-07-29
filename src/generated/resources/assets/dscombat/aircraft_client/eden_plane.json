@@ -1,7 +1,228 @@
 {
   "displayName": "preset.dscombat.eden_plane",
   "model_data": {
-    "hard_coded_model_anims": "eden_plane"
+    "custom_anims": [
+      {
+        "anim_id": "landing_gear",
+        "fold_angle": 90.0,
+        "model_part_key": "lg0",
+        "pivot": {
+          "x": 0.0,
+          "y": 31.4916,
+          "z": 29.602
+        },
+        "rot_axis": "X"
+      },
+      {
+        "anim_id": "landing_gear",
+        "fold_angle": -90.0,
+        "model_part_key": "lg1",
+        "pivot": {
+          "x": 27.3165,
+          "y": 35.4232,
+          "z": -55.991
+        },
+        "rot_axis": "X"
+      },
+      {
+        "anim_id": "landing_gear",
+        "fold_angle": -90.0,
+        "model_part_key": "lg2",
+        "pivot": {
+          "x": -27.3165,
+          "y": 35.4232,
+          "z": -55.991
+        },
+        "rot_axis": "X"
+      },
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": 15.0,
+        "input_axis": "YAW",
+        "model_part_key": "surface0",
+        "pivot": {
+          "x": 34.24,
+          "y": 62.9607,
+          "z": -139.2688
+        },
+        "rot_axis": "Y"
+      },
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": 15.0,
+        "input_axis": "YAW",
+        "model_part_key": "surface1",
+        "pivot": {
+          "x": -34.24,
+          "y": 62.9607,
+          "z": -139.2688
+        },
+        "rot_axis": "Y"
+      },
+      {
+        "anim_id": "plane_flap_rotation",
+        "bound": -22.0,
+        "input_axis": "ROLL",
+        "model_part_key": "surface2",
+        "pivot": {
+          "x": 85.8748,
+          "y": 39.8619,
+          "z": -94.692
+        },
+        "rot_axis": "X"
+      },
+      {
+        "anim_id": "plane_flap_rotation",
+        "bound": 22.0,
+        "input_axis": "ROLL",
+        "model_part_key": "surface3",
+        "pivot": {
+          "x": -85.8748,
+          "y": 39.8619,
+          "z": -94.692
+        },
+        "rot_axis": "X"
+      },
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": 22.0,
+        "input_axis": "PITCH",
+        "model_part_key": "surface4",
+        "pivot": {
+          "x": 35.5916,
+          "y": 40.1339,
+          "z": -140.6252
+        },
+        "rot_axis": "X"
+      },
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": 22.0,
+        "input_axis": "PITCH",
+        "model_part_key": "surface5",
+        "pivot": {
+          "x": -35.5916,
+          "y": 40.1339,
+          "z": -140.6252
+        },
+        "rot_axis": "X"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "left_wing",
+        "model_part_key": "wing0"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "left_wing",
+        "model_part_key": "surface2"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "left_wing",
+        "model_part_key": "lg1"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "right_wing",
+        "model_part_key": "wing1"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "right_wing",
+        "model_part_key": "surface3"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "right_wing",
+        "model_part_key": "lg2"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "left_elevator",
+        "model_part_key": "surface4"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "right_elevator",
+        "model_part_key": "surface5"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "left_tail",
+        "model_part_key": "surface0"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "left_tail",
+        "model_part_key": "wing2"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "right_tail",
+        "model_part_key": "surface1"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "right_tail",
+        "model_part_key": "wing3"
+      },
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": -25.0,
+        "input_axis": "PITCH",
+        "model_part_key": "stick",
+        "pivot": {
+          "x": 0.0,
+          "y": 35.9965,
+          "z": 89.1234
+        },
+        "rot_axis": "X"
+      },
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": 25.0,
+        "input_axis": "ROLL",
+        "model_part_key": "stick",
+        "pivot": {
+          "x": 0.0,
+          "y": 35.9965,
+          "z": 89.1234
+        },
+        "rot_axis": "Z"
+      },
+      {
+        "anim_id": "input_bound_translation",
+        "bounds": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -0.0625
+        },
+        "input_axis": "YAW",
+        "model_part_key": "pedal0"
+      },
+      {
+        "anim_id": "input_bound_translation",
+        "bounds": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0625
+        },
+        "input_axis": "YAW",
+        "model_part_key": "pedal1"
+      },
+      {
+        "anim_id": "input_bound_translation",
+        "bounds": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.1875
+        },
+        "input_axis": "THROTTLE",
+        "model_part_key": "throttle"
+      }
+    ],
+    "model_id": "eden_plane"
   },
   "presetId": "eden_plane",
   "presetType": "standard"

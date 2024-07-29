@@ -56,7 +56,7 @@ public class JaviPresets {
 			.addEmptySlot("right_wing_2", SlotType.PYLON_HEAVY, -4.25, -0.28125, 1, 180, "right_wing")
 			.addEmptySlot("right_wing_3", SlotType.PYLON_MED, -5.625, -0.28125, 1, 180, "right_wing") 
 			.addEmptySlot("right_wing_4", SlotType.PYLON_MED, -6.96875, -0.28125, 1, 180, "right_wing") 
-			.addEmptySlot("internal_gun", SlotType.INTERNAL_GUN, 0, -0.34375, 8.65625, 180)
+			.addEmptySlot("internal_gun", SlotType.INTERNAL_GUN, 0, -0.34375, 8.65625, 180, "nose")
 			.setSlotOnlyCompatible("internal_gun", "gau_avenger")
 			.addEmptySlot("frame_1", SlotType.PYLON_HEAVY, 0, -0.71875, 1.03125, 180)
 			.addEmptySlot("internal_1", SlotType.PUSH_ENGINE, "left_engine")
@@ -81,6 +81,8 @@ public class JaviPresets {
 					20, 20, true, true, false)
 			.addRotableHitbox("right_engine", 1.5, 1.5, 3.2, -1.85, 1.25, -3, 
 					20, 20, true, true, false)
+			.addRotableHitbox("nose", 1.1, 1.1, 1.9, 0, 0.3, 9, 
+					10, 10, true, true, false)
 			.build();
 	
 	public static final VehicleStats UNARMED_JAVI_PLANE = VehicleStats.Builder

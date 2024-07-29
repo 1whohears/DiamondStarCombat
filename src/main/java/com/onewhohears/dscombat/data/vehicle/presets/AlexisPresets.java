@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.data.vehicle.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
 import com.onewhohears.dscombat.data.parts.SlotType;
 import com.onewhohears.dscombat.data.vehicle.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
@@ -49,29 +48,41 @@ public class AlexisPresets {
 			.addIngredient(ModItems.WHEEL.getId(), 3)
 			.addIngredient("minecraft:gold_ingot", 24)
 			.addPilotSeatSlot(0, 0.1, 6.5)
-			.addEmptySlot("left_wing_1", SlotType.PYLON_MED, 2.3, -0.08, -0.1, 180)
-			.addEmptySlot("left_wing_2", SlotType.PYLON_MED, 3.6, -0.08, -0.7, 180)
-			.addEmptySlot("left_wing_3", SlotType.PYLON_LIGHT, 4.95, -0.08, -1.1, 180)
-			.addEmptySlot("left_wing_4", SlotType.PYLON_LIGHT, 6.05, 0.4, -1.5, -90)
-			.addEmptySlot("right_wing_1", SlotType.PYLON_MED, -2.3, -0.08, -0.1, 180)
-			.addEmptySlot("right_wing_2", SlotType.PYLON_MED, -3.6, -0.08, -0.7, 180)
-			.addEmptySlot("right_wing_3", SlotType.PYLON_LIGHT, -4.95, -0.08, -1.1, 180)
-			.addEmptySlot("right_wing_4", SlotType.PYLON_LIGHT, -6.05, 0.4, -1.5, 90)
-			.addEmptySlot("internal_gun", SlotType.INTERNAL_GUN, 0, -0.15, 8, 180)
+			.addEmptySlot("left_wing_1", SlotType.PYLON_MED, 2.3, -0.08, -0.1, 180, "left_wing")
+			.addEmptySlot("left_wing_2", SlotType.PYLON_MED, 3.6, -0.08, -0.7, 180, "left_wing")
+			.addEmptySlot("left_wing_3", SlotType.PYLON_LIGHT, 4.95, -0.08, -1.1, 180, "left_wing")
+			.addEmptySlot("left_wing_4", SlotType.PYLON_LIGHT, 6.05, 0.4, -1.5, -90, "left_wing")
+			.addEmptySlot("right_wing_1", SlotType.PYLON_MED, -2.3, -0.08, -0.1, 180, "right_wing")
+			.addEmptySlot("right_wing_2", SlotType.PYLON_MED, -3.6, -0.08, -0.7, 180, "right_wing")
+			.addEmptySlot("right_wing_3", SlotType.PYLON_LIGHT, -4.95, -0.08, -1.1, 180, "right_wing")
+			.addEmptySlot("right_wing_4", SlotType.PYLON_LIGHT, -6.05, 0.4, -1.5, 90, "right_wing")
+			.addEmptySlot("internal_gun", SlotType.INTERNAL_GUN, 0, -0.15, 8, 180, "nose")
 			.setSlotOnlyCompatible("internal_gun", "m61a1_vulcan")
-			.addEmptySlot("internal_1", SlotType.PUSH_ENGINE)
+			.addEmptySlot("internal_1", SlotType.PUSH_ENGINE, "engine")
 			.addEmptySlot("internal_2", SlotType.INTERNAL)
 			.addEmptySlot("internal_3", SlotType.INTERNAL)
 			.addEmptySlot("internal_4", SlotType.HIGH_TECH_INTERNAL)
 			.addEmptySlot("internal_5", SlotType.TECH_INTERNAL)
 			.addEmptySlot("internal_6", SlotType.TECH_INTERNAL)
-			.addEntityScreen(EntityScreenIds.AIR_RADAR_SCREEN, 0.225, 0.798, 7.195, 0.15, 0.15)
-			.addEntityScreen(EntityScreenIds.FUEL_SCREEN, -0.265, 0.948, 7.195, 0.07, 0.07)
-			.addEntityScreen(EntityScreenIds.RWR_SCREEN, 0.19, 0.974, 7.195, 0.13, 0.13)
-			.addEntityScreen(EntityScreenIds.GROUND_RADAR_SCREEN, -0.225, 0.798, 7.195, 0.15, 0.15)
-			.addHUDScreen(0, 0.1, 6.5)
 			.addAfterBurnerSmokePos(0,0.3,-6.5)
 			.setEntityMainHitboxSize(4, 4)
+			.setRootHitboxNoCollide(true)
+			.addRotableHitbox("fuselage", 1.7, 2, 11, 0, 0.5, 2, 
+					0, 0, false, false, true)
+			.addRotableHitbox("left_wing", 4.9, 0.3, 3.5, 3.5, 0.35, -0.7, 
+					20, 20, true, true, false)
+			.addRotableHitbox("right_wing", 4.9, 0.3, 3.5, -3.5, 0.35, -0.7, 
+					20, 20, true, true, false)
+			.addRotableHitbox("tail", 0.3, 3, 2, 0, 2.7, -5.3, 
+					10, 10, true, true, false)
+			.addRotableHitbox("left_elevator", 2.5, 0.3, 1.7, 2, 0.35, -6, 
+					10, 10, true, true, false)
+			.addRotableHitbox("right_elevator", 2.5, 0.3, 1.7, -2, 0.35, -6, 
+					10, 10, true, true, false)
+			.addRotableHitbox("engine", 1.4, 1.4, 2.9, 0, 0.3, -5.1, 
+					10, 10, true, true, false)
+			.addRotableHitbox("nose", 1.2, 1, 2, 0, 0.3, 8.8, 
+					10, 10, true, true, false)
 			.build();
 	
 	public static final VehicleStats UNARMED_ALEXIS_PLANE = VehicleStats.Builder

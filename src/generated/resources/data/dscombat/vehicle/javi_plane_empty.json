@@ -126,6 +126,24 @@
         "y": 1.5,
         "z": 3.2
       }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 10.0,
+      "max_health": 10.0,
+      "name": "nose",
+      "rel_pos": {
+        "x": 0.0,
+        "y": 0.3,
+        "z": 9.0
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 1.1,
+        "y": 1.1,
+        "z": 1.9
+      }
     }
   ],
   "ingredients": [
@@ -240,6 +258,7 @@
       "zRot": 180.0
     },
     {
+      "linkedHitbox": "nose",
       "name": "internal_gun",
       "onlyCompatPart": "gau_avenger",
       "slot_posx": 0.0,

@@ -20,7 +20,6 @@ public class HardCodedModelAnims {
 		models.put("bronco_plane", new BroncoPlaneModel());
 		models.put("corvette", new CorvetteModel());
 		models.put("eden_plane", new EdenPlaneModel());
-		models.put("felix_plane", new FelixPlaneModel());
 		models.put("google_sub", new GoogleSubModel());
 		models.put("jason_plane", new JasonPlaneModel());
 		models.put("gronk_battleship", new ObjVehicleModel<>("battleship"));

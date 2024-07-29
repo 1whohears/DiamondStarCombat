@@ -11,6 +11,134 @@
   "armor": 20.0,
   "displayName": "preset.dscombat.felix_plane_empty",
   "health": 100.0,
+  "hitboxes": [
+    {
+      "damage_parts": false,
+      "damage_root": true,
+      "max_armor": 0.0,
+      "max_health": 0.0,
+      "name": "fuselage",
+      "rel_pos": {
+        "x": 0.0,
+        "y": 0.1,
+        "z": 2.5
+      },
+      "remove_on_destroy": false,
+      "size": {
+        "x": 1.3,
+        "y": 1.5,
+        "z": 11.0
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 20.0,
+      "max_health": 20.0,
+      "name": "left_wing",
+      "rel_pos": {
+        "x": 2.5,
+        "y": -0.25,
+        "z": -0.7
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 3.5,
+        "y": 0.3,
+        "z": 3.5
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 20.0,
+      "max_health": 20.0,
+      "name": "right_wing",
+      "rel_pos": {
+        "x": -2.5,
+        "y": -0.25,
+        "z": -0.7
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 3.5,
+        "y": 0.3,
+        "z": 3.5
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 10.0,
+      "max_health": 10.0,
+      "name": "tail",
+      "rel_pos": {
+        "x": 0.0,
+        "y": 1.8,
+        "z": -5.3
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 0.3,
+        "y": 2.5,
+        "z": 2.0
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 10.0,
+      "max_health": 10.0,
+      "name": "left_elevator",
+      "rel_pos": {
+        "x": 1.5,
+        "y": 0.0,
+        "z": -6.0
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 1.5,
+        "y": 0.3,
+        "z": 1.7
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 10.0,
+      "max_health": 10.0,
+      "name": "right_elevator",
+      "rel_pos": {
+        "x": -1.5,
+        "y": 0.0,
+        "z": -6.0
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 1.5,
+        "y": 0.3,
+        "z": 1.7
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 10.0,
+      "max_health": 10.0,
+      "name": "engine",
+      "rel_pos": {
+        "x": 0.0,
+        "y": -0.1,
+        "z": -4.7
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 1.1,
+        "y": 1.1,
+        "z": 2.8
+      }
+    }
+  ],
   "ingredients": [
     {
       "item": "dscombat:fuselage",
@@ -124,6 +252,7 @@
       "zRot": 0.0
     },
     {
+      "linkedHitbox": "left_wing",
       "name": "left_wing_1",
       "slot_posx": 2.4,
       "slot_posy": -0.64,
@@ -132,6 +261,7 @@
       "zRot": 180.0
     },
     {
+      "linkedHitbox": "left_wing",
       "name": "left_wing_2",
       "slot_posx": 3.4,
       "slot_posy": -0.64,
@@ -140,6 +270,7 @@
       "zRot": 180.0
     },
     {
+      "linkedHitbox": "right_wing",
       "name": "right_wing_1",
       "slot_posx": -2.4,
       "slot_posy": -0.64,
@@ -148,6 +279,7 @@
       "zRot": 180.0
     },
     {
+      "linkedHitbox": "right_wing",
       "name": "right_wing_2",
       "slot_posx": -3.4,
       "slot_posy": -0.64,
@@ -172,6 +304,7 @@
       "zRot": 180.0
     },
     {
+      "linkedHitbox": "engine",
       "name": "internal_1",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
@@ -228,6 +361,17 @@
     "cross_sec_area": 4.0,
     "entity_size_xz": 4.0,
     "entity_size_y": 4.0,
+    "hitboxes_control_pitch": [
+      "left_elevator",
+      "right_elevator"
+    ],
+    "hitboxes_control_roll": [
+      "left_wing",
+      "right_wing"
+    ],
+    "hitboxes_control_yaw": [
+      "tail"
+    ],
     "idleheat": 6.0,
     "inertiapitch": 9.0,
     "inertiaroll": 4.5,
@@ -244,8 +388,13 @@
       "fuselage_lift_area": 14.0,
       "fuselage_lift_k_graph": "fuselage",
       "wing_area": 23.0,
+      "wing_lift_hitbox_names": [
+        "left_wing",
+        "right_wing"
+      ],
       "wing_lift_k_graph": "alexis_plane"
     },
+    "rootHitboxNoCollide": true,
     "stealth": 0.95,
     "throttledown": 0.08,
     "throttleup": 0.04,

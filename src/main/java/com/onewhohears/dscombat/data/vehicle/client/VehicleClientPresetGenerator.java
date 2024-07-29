@@ -47,7 +47,7 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 						.addPlaneFlapRotAnim("surface2", -49.8276f, 38.2332f, -58.5647f, 
 								RotationAxis.X, InputAxis.ROLL, 22)
 						.addInputBoundRotAnim("surface3", 21.7721f, 38.2332f, -119.5741f, 
-								RotationAxis.X, InputAxis.PITCH, 15)
+								RotationAxis.X, InputAxis.PITCH, 22)
 						.addInputBoundRotAnim("surface4", -21.7721f, 38.2332f, -119.5741f, 
 								RotationAxis.X, InputAxis.PITCH, 22)
 						.addHitboxDestroyPartsAnim("left_wing", "wing2","surface1")
@@ -362,7 +362,40 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 				.setHardCodedModelAnims()
 				.build());
 		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "felix_plane")
-				.setHardCodedModelAnims()
+				.setCustomAnims(CustomAnimsBuilder.create()
+						.addLandingGearAnim("lg0", 0, 19.2001f, 44.0178f, RotationAxis.X, 90)
+						.addLandingGearAnim("lg1", 27.9838f, 26.168f, -47.1885f, RotationAxis.Z, -90)
+						.addLandingGearAnim("lg2", -27.9838f, 26.168f, -47.1885f, RotationAxis.Z, 90)
+						.addInputBoundRotAnim("surface0", 0, 59.4055f, -145.1443f, 
+								RotationAxis.Y, InputAxis.YAW, 15)
+						.addInputBoundRotAnim("surface0", 0, 59.4055f, -145.1443f, 
+								RotationAxis.Z, InputAxis.YAW, -15)
+						.addPlaneFlapRotAnim("surface1", 53.4288f, 27.5388f, -77.9424f, 
+								RotationAxis.X, InputAxis.ROLL, -22)
+						.addPlaneFlapRotAnim("surface2", -53.4288f, 27.5388f, -77.9424f, 
+								RotationAxis.X, InputAxis.ROLL, 22)
+						.addInputBoundRotAnim("surface3", 21.9134f, 31.5469f, -151.6768f, 
+								RotationAxis.X, InputAxis.PITCH, 22)
+						.addInputBoundRotAnim("surface3", 21.9134f, 31.5469f, -151.6768f, 
+								RotationAxis.Z, InputAxis.PITCH, -16)
+						.addInputBoundRotAnim("surface3", 21.9134f, 31.5469f, -151.6768f, 
+								RotationAxis.Y, InputAxis.PITCH, -2.5f)
+						.addInputBoundRotAnim("surface4", -21.9134f, 31.5469f, -151.6768f, 
+								RotationAxis.X, InputAxis.PITCH, 22)
+						.addInputBoundRotAnim("surface4", -21.9134f, 31.5469f, -151.6768f, 
+								RotationAxis.Z, InputAxis.PITCH, 16)
+						.addInputBoundRotAnim("surface4", -21.9134f, 31.5469f, -151.6768f, 
+								RotationAxis.Y, InputAxis.PITCH, 2.5f)
+						.addHitboxDestroyPartsAnim("left_wing", "wing1","surface1","lg1")
+						.addHitboxDestroyPartsAnim("right_wing", "wing2","surface2","lg2")
+						.addHitboxDestroyPartsAnim("left_elevator", "wing3","surface3")
+						.addHitboxDestroyPartsAnim("right_elevator", "wing4","surface4")
+						.addHitboxDestroyPartsAnim("tail", "surface0","wing0")
+						.addJoystickAnim("stick", 0, 24.1638f, 35.2462f, 25, 25)
+						.addInputBoundTransAnim("pedal0", 0, 0, -0.0625f, InputAxis.YAW)
+						.addInputBoundTransAnim("pedal1", 0, 0, 0.0625f, InputAxis.YAW)
+						.addInputBoundTransAnim("throttle", 0, 0, 0.1875f, InputAxis.THROTTLE)
+						.build())
 				.build());
 		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "google_sub")
 				.setHardCodedModelAnims()

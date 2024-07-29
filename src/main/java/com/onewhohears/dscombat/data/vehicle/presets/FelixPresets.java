@@ -48,13 +48,13 @@ public class FelixPresets {
 			.addIngredient(ModItems.ADVANCED_COCKPIT.getId())
 			.addIngredient(ModItems.WHEEL.getId(), 3)
 			.addPilotSeatSlot(0, -0.3, 4.7)
-			.addEmptySlot("left_wing_1", SlotType.PYLON_LIGHT, 2.4, -0.64, -0.05, 180)
-			.addEmptySlot("left_wing_2", SlotType.PYLON_LIGHT, 3.4, -0.64, -1.3, 180)
-			.addEmptySlot("right_wing_1", SlotType.PYLON_LIGHT, -2.4, -0.64, -0.05, 180)
-			.addEmptySlot("right_wing_2", SlotType.PYLON_LIGHT, -3.4, -0.64, -1.3, 180)
+			.addEmptySlot("left_wing_1", SlotType.PYLON_LIGHT, 2.4, -0.64, -0.05, 180, "left_wing")
+			.addEmptySlot("left_wing_2", SlotType.PYLON_LIGHT, 3.4, -0.64, -1.3, 180, "left_wing")
+			.addEmptySlot("right_wing_1", SlotType.PYLON_LIGHT, -2.4, -0.64, -0.05, 180, "right_wing")
+			.addEmptySlot("right_wing_2", SlotType.PYLON_LIGHT, -3.4, -0.64, -1.3, 180, "right_wing")
 			.addEmptySlot("frame_1", SlotType.PYLON_MED, 0, -1.07, 1.2, 180)
 			.addEmptySlot("nose_1", SlotType.PYLON_LIGHT, 0, -0.8, 3.6, 180)
-			.addEmptySlot("internal_1", SlotType.PUSH_ENGINE)
+			.addEmptySlot("internal_1", SlotType.PUSH_ENGINE, "engine")
 			.addEmptySlot("internal_2", SlotType.INTERNAL)
 			.addEmptySlot("internal_3", SlotType.INTERNAL)
 			.addEmptySlot("internal_4", SlotType.TECH_INTERNAL)
@@ -65,6 +65,25 @@ public class FelixPresets {
 			.addHUDScreen(0, -0.3, 4.7)
 			.addAfterBurnerSmokePos(0,-0.1,-6)
 			.setEntityMainHitboxSize(4, 4)
+			.setRootHitboxNoCollide(true)
+			.addRotableHitbox("fuselage", 1.3, 1.5, 11, 0, 0.1, 2.5, 
+					0, 0, false, false, true)
+			.addRotableHitbox("left_wing", 3.5, 0.3, 3.5, 2.5, -0.25, -0.7, 
+					20, 20, true, true, false)
+			.addRotableHitbox("right_wing", 3.5, 0.3, 3.5, -2.5, -0.25, -0.7, 
+					20, 20, true, true, false)
+			.addRotableHitbox("tail", 0.3, 2.5, 2, 0, 1.8, -5.3, 
+					10, 10, true, true, false)
+			.addRotableHitbox("left_elevator", 1.5, 0.3, 1.7, 1.5, 0, -6, 
+					10, 10, true, true, false)
+			.addRotableHitbox("right_elevator", 1.5, 0.3, 1.7, -1.5, 0, -6, 
+					10, 10, true, true, false)
+			.addRotableHitbox("engine", 1.1, 1.1, 2.8, 0, -0.1, -4.7, 
+					10, 10, true, true, false)
+			.setHitboxesControlPitch("left_elevator", "right_elevator")
+			.setHitboxesControlRoll("left_wing", "right_wing")
+			.setHitboxesControlYaw("tail")
+			.setWingLiftHitboxNames("left_wing", "right_wing")
 			.build();
 	
 	public static final VehicleStats UNARMED_FELIX_PLANE = VehicleStats.Builder

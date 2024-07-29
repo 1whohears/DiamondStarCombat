@@ -10,6 +10,7 @@ import com.onewhohears.dscombat.util.math.UtilAngles;
 
 import net.minecraftforge.client.model.renderable.CompositeRenderable.Transforms;
 
+@Deprecated
 public class FelixPlaneModel extends ObjVehicleModel<EntityVehicle> {
 
 	public FelixPlaneModel() {

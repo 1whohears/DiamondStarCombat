@@ -378,8 +378,7 @@
       "wing_area": 47.0,
       "wing_lift_hitbox_names": [
         "left_wing",
-        "right_wing",
-        "tail"
+        "right_wing"
       ],
       "wing_lift_k_graph": "javi_plane"
     },

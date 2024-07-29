@@ -190,7 +190,7 @@
       },
       {
         "anim_id": "input_bound_rotation",
-        "bound": 15.0,
+        "bound": 22.0,
         "input_axis": "PITCH",
         "model_part_key": "surface3",
         "pivot": {

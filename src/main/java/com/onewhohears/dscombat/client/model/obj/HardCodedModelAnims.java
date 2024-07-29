@@ -3,7 +3,6 @@ package com.onewhohears.dscombat.client.model.obj;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.onewhohears.dscombat.client.model.obj.custom.AlexisPlaneModel;
 import com.onewhohears.dscombat.client.model.obj.custom.BroncoPlaneModel;
 import com.onewhohears.dscombat.client.model.obj.custom.CorvetteModel;
 import com.onewhohears.dscombat.client.model.obj.custom.EdenPlaneModel;
@@ -18,7 +17,6 @@ public class HardCodedModelAnims {
 	
 	public static void reload() {
 		models.clear();
-		models.put("alexis_plane", new AlexisPlaneModel());
 		models.put("bronco_plane", new BroncoPlaneModel());
 		models.put("corvette", new CorvetteModel());
 		models.put("eden_plane", new EdenPlaneModel());

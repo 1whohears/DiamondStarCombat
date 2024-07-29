@@ -15,7 +15,6 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 	protected void registerPresets() {
 		int alexis_middle_x = 120, alexis_wing_y = 57;
 		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "alexis_plane")
-				.setHardCodedModelAnims()
 				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/alexis_plane.png")
 				.addUIPos("internal_gun", alexis_middle_x, 2)
 				.addUIPos(PartSlot.PILOT_SLOT_NAME, alexis_middle_x, 21)
@@ -33,6 +32,34 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 				.addUIPos("right_wing_2", alexis_middle_x+45, alexis_wing_y)
 				.addUIPos("right_wing_3", alexis_middle_x+63, alexis_wing_y)
 				.addUIPos("right_wing_4", alexis_middle_x+81, alexis_wing_y)
+				.setCustomAnims(CustomAnimsBuilder.create()
+						.addLandingGearAnim("lg0", 0, 17.9256f, 45.5465f, RotationAxis.X, 90)
+						.addLandingGearAnim("lg1", 10.4f, 23.4316f, -34.5632f, RotationAxis.X, -90)
+						.addLandingGearAnim("lg2", -10.4f, 23.4316f, -34.5632f, RotationAxis.X, -90)
+						.addLandingGearAnim("lg1", 10.4f, 23.4316f, -34.5632f, RotationAxis.Z, -50)
+						.addLandingGearAnim("lg2", -10.4f, 23.4316f, -34.5632f, RotationAxis.Z, 50)
+						.addInputBoundRotAnim("surface0", 0, 81.0642f, -125.9015f, 
+								RotationAxis.Y, InputAxis.YAW, 15)
+						.addInputBoundRotAnim("surface0", 0, 81.0642f, -125.9015f, 
+								RotationAxis.Z, InputAxis.YAW, -15)
+						.addPlaneFlapRotAnim("surface1", 49.8276f, 38.2332f, -58.5647f, 
+								RotationAxis.X, InputAxis.ROLL, -22)
+						.addPlaneFlapRotAnim("surface2", -49.8276f, 38.2332f, -58.5647f, 
+								RotationAxis.X, InputAxis.ROLL, 22)
+						.addInputBoundRotAnim("surface3", 21.7721f, 38.2332f, -119.5741f, 
+								RotationAxis.X, InputAxis.PITCH, 15)
+						.addInputBoundRotAnim("surface4", -21.7721f, 38.2332f, -119.5741f, 
+								RotationAxis.X, InputAxis.PITCH, 22)
+						.addHitboxDestroyPartsAnim("left_wing", "wing2","surface1")
+						.addHitboxDestroyPartsAnim("right_wing", "wing1","surface2")
+						.addHitboxDestroyPartAnim("left_elevator", "surface3")
+						.addHitboxDestroyPartAnim("right_elevator", "surface4")
+						.addHitboxDestroyPartsAnim("tail", "surface0","wing0")
+						.addJoystickAnim("stick", -7.1778f, 40.7333f, 78.8995f, 25, 25)
+						.addInputBoundTransAnim("pedal0", 0, 0, -0.0625f, InputAxis.YAW)
+						.addInputBoundTransAnim("pedal1", 0, 0, 0.0625f, InputAxis.YAW)
+						.addInputBoundTransAnim("throttle", 0, 0, 0.1875f, InputAxis.THROTTLE)
+						.build())
 				.build());
 		int javi_middle_x = 124, javi_wing_y = 50;
 		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "javi_plane")

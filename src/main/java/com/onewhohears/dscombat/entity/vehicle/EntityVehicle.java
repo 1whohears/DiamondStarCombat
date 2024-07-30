@@ -1754,8 +1754,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 	
 	protected void damage(DamageSource source, float amount, @Nullable RotableHitbox hitbox, boolean hurtRoot) {
-		if (shouldDebug(source)) 
-			System.out.println("D="+amount+" C?"+level.isClientSide+" R?"+hurtRoot+" H="+hitbox+" source "+source);
+		/*if (shouldDebug(source)) 
+			System.out.println("D="+amount+" C?"+level.isClientSide+" R?"+hurtRoot+" H="+hitbox+" source "+source);*/
 		if (source.getDirectEntity() != null && source.getDirectEntity().getType().is(ModTags.EntityTypes.PROJECTILE)) 
 			amount = calcDamageFromBullet(source, amount);
 		float armorDamage = calcDamageToArmor(amount);
@@ -1782,10 +1782,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 				hitbox.addHealth(-amount);
 			}
 		}
-		if (shouldDebug(source)) {
+		/*if (shouldDebug(source)) {
 			System.out.println("vehicle health: "+getHealth()+" armor "+getArmor());
 			if (hitbox != null) System.out.println("hitbox health: "+hitbox.getHealth()+" armor "+hitbox.getArmor());
-		}
+		}*/
 	}
 	
 	public static float getHealthDamageWithArmorPercent(DamageSource source) {

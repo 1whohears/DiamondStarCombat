@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.common.event.custom.RegisterPresetTypesEvent;
 import com.onewhohears.dscombat.common.network.IPacket;
+import com.onewhohears.dscombat.data.graph.StatGraphs;
 import com.onewhohears.dscombat.data.parts.PartPresets;
 import com.onewhohears.dscombat.data.radar.RadarPresets;
 import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
@@ -25,6 +26,7 @@ public class ToClientDataPackSynch extends IPacket {
 	public ToClientDataPackSynch(FriendlyByteBuf buffer) {
 		super(buffer);
 		MinecraftForge.EVENT_BUS.post(new RegisterPresetTypesEvent());
+		StatGraphs.get().readBuffer(buffer);
 		PartPresets.get().readBuffer(buffer);
 		WeaponPresets.get().readBuffer(buffer);
 		RadarPresets.get().readBuffer(buffer);
@@ -33,6 +35,7 @@ public class ToClientDataPackSynch extends IPacket {
 	
 	@Override
 	public void encode(FriendlyByteBuf buffer) {
+		StatGraphs.get().writeToBuffer(buffer);
 		PartPresets.get().writeToBuffer(buffer);
 		WeaponPresets.get().writeToBuffer(buffer);
 		RadarPresets.get().writeToBuffer(buffer);

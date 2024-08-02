@@ -132,6 +132,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public static final EntityDataAccessor<Boolean> PLAY_IR_TONE = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<RadarMode> RADAR_MODE = SynchedEntityData.defineId(EntityVehicle.class, DataSerializers.RADAR_MODE);
 	
+	public static final int HITBOX_PUSH_COOLDOWN = 40;
+	
 	public final String defaultPreset;
 	public final VehicleInputManager inputs;
 	public final VehicleSoundManager soundManager;
@@ -141,7 +143,9 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public final RadarSystem radarSystem;
 	
 	protected final List<RotableHitbox> hitboxes = new ArrayList<>();
-	protected final Set<Integer> hitboxCollidedIds = new HashSet<>();
+	private final Set<Integer> collidedEntityIds = new HashSet<>();
+	private final Map<Integer, Integer> hitboxEntityCoolDown = new HashMap<>();
+	private final Map<Integer, EntityPushInfo> entityPushInfo = new HashMap<>();
 	
 	private final Map<Integer, Integer> formerPassengersServer = new HashMap<>();
 	/**
@@ -2740,15 +2744,69 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		}
 		for (RotableHitbox box : hitboxes) box.tick();
 		//syncHitboxCollidePositions();
-		hitboxCollidedIds.clear();
+		collidedEntityIds.clear();
+		hitboxEntityCoolDown.forEach((id, time) -> {
+			if (time > 0) hitboxEntityCoolDown.put(id, --time);
+		});
+	}
+	
+	public boolean isEntityHitboxCooldown(Entity entity) {
+		return hitboxEntityCoolDown.containsKey(entity.getId()) && hitboxEntityCoolDown.get(entity.getId()) > 0;
+	}
+	
+	public void addEntityToHitboxCooldown(Entity entity) {
+		hitboxEntityCoolDown.put(entity.getId(), HITBOX_PUSH_COOLDOWN);
+	}
+	
+	public void addEntityPushInfo(Entity entity, RotableHitbox hitbox, Vec3 pos) {
+		EntityPushInfo info = entityPushInfo.get(entity.getId());
+		if (info == null) {
+			info = new EntityPushInfo();
+			entityPushInfo.put(entity.getId(), info);
+		}
+		info.addPush(hitbox.getId(), tickCount, pos);
+	}
+	
+	public boolean isPushRepeat(Entity entity) {
+		EntityPushInfo info = entityPushInfo.get(entity.getId());
+		if (info == null || info.pushes.size() == 0) return false;
+		PushInfo currentPush = info.pushes.get(0);
+		if (currentPush.time != tickCount) return false;
+		for (int i = 1; i < info.pushes.size(); ++i) {
+			PushInfo push = info.pushes.get(i);
+			if (push.hitboxId != currentPush.hitboxId) continue;
+			if (push.time != currentPush.time+1) continue;
+			if (push.pos.equals(currentPush.pos)) return true;
+			else return false;
+		}
+		return false;
+	}
+	
+	private static class EntityPushInfo {
+		private final List<PushInfo> pushes = new ArrayList<>();
+		EntityPushInfo() {}
+		private void addPush(int hitboxId, int time, Vec3 pos) {
+			pushes.add(0, new PushInfo(hitboxId, time, pos));
+			while (pushes.size() > 10) pushes.remove(pushes.size()-1);
+		}
+	}
+	
+	private static class PushInfo {
+		private final int hitboxId, time;
+		private final Vec3 pos;
+		PushInfo(int hitboxId, int time, Vec3 pos) {
+			this.hitboxId = hitboxId;
+			this.time = time;
+			this.pos = pos;
+		}
 	}
 	
 	private void syncHitboxCollidePositions() {
-		if (!level.isClientSide || hitboxCollidedIds.size() == 0 || !isControlledByLocalInstance()) return;
-		int[] ids = new int[hitboxCollidedIds.size()];
-		Vec3[] pos = new Vec3[hitboxCollidedIds.size()];
+		if (!level.isClientSide || collidedEntityIds.size() == 0 || !isControlledByLocalInstance()) return;
+		int[] ids = new int[collidedEntityIds.size()];
+		Vec3[] pos = new Vec3[collidedEntityIds.size()];
 		int i = 0;
-		for (Integer id : hitboxCollidedIds) {
+		for (Integer id : collidedEntityIds) {
 			ids[i] = id;
 			Entity entity = level.getEntity(id);
 			if (entity != null) pos[i] = entity.position();
@@ -2758,12 +2816,12 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		PacketHandler.INSTANCE.sendToServer(new ToServerSyncRotBoxPassengerPos(ids, pos));
 	}
 	
-	public void addHitboxCollider(Entity entity) {
-		hitboxCollidedIds.add(entity.getId());
+	public void addEntityCollidedHitbox(Entity entity) {
+		collidedEntityIds.add(entity.getId());
 	}
 	
 	public boolean didEntityAlreadyCollide(Entity entity) {
-		return hitboxCollidedIds.contains(entity.getId());
+		return collidedEntityIds.contains(entity.getId());
 	}
 	
 	public boolean areAllHitboxesDead(String... hitbox_names) {

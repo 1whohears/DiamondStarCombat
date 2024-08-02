@@ -27,11 +27,19 @@ public abstract class LevelMixin {
 		List<RotableHitbox> hitboxes = RotableHitboxes.getHitboxes(level.dimension());
 		for (int i = 0; i < hitboxes.size(); ++i) {
 			RotableHitbox hitbox = hitboxes.get(i);
+			if (containsEntity(entities, hitbox)) continue;
 			if (!pPredicate.test(hitbox)) continue;
 			if (!hitbox.getBoundingBox().intersects(pBoundingBox)) continue;
 			entities.add(hitbox);
 		}
 		//cir.setReturnValue(entities);
+	}
+	
+	private static boolean containsEntity(List<Entity> entities, Entity entity) {
+		for (Entity e : entities) 
+			if (e.getId() == entity.getId())
+				return true;
+		return false;
 	}
 	
 }

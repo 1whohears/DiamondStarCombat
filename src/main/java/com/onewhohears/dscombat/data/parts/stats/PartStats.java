@@ -13,7 +13,7 @@ import com.onewhohears.dscombat.data.recipe.DSCIngredientBuilder;
 import com.onewhohears.dscombat.util.UtilEntity;
 import com.onewhohears.dscombat.util.UtilItem;
 import com.onewhohears.dscombat.util.UtilMCText;
-import com.onewhohears.minigames.util.UtilParse;
+import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;

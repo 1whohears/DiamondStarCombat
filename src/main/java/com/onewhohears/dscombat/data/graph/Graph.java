@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.data.graph;
 
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPresetStats;
-import com.onewhohears.minigames.util.UtilParse;
+import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.resources.ResourceLocation;
 

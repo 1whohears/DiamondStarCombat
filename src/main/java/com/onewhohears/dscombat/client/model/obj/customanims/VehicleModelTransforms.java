@@ -6,7 +6,7 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
-import com.onewhohears.minigames.util.UtilParse;
+import com.onewhohears.dscombat.util.UtilParse;
 
 public class VehicleModelTransforms {
 	

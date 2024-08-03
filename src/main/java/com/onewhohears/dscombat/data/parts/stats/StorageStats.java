@@ -8,7 +8,7 @@ import com.onewhohears.dscombat.data.jsonpreset.JsonPresetType;
 import com.onewhohears.dscombat.data.parts.PartType;
 import com.onewhohears.dscombat.data.parts.instance.StorageInstance;
 import com.onewhohears.dscombat.util.UtilMCText;
-import com.onewhohears.minigames.util.UtilParse;
+import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;

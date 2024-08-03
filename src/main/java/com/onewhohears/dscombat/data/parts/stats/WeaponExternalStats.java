@@ -5,7 +5,7 @@ import com.onewhohears.dscombat.data.jsonpreset.JsonPresetInstance;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPresetType;
 import com.onewhohears.dscombat.data.parts.PartType;
 import com.onewhohears.dscombat.data.parts.instance.WeaponExternalInstance;
-import com.onewhohears.minigames.util.UtilParse;
+import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.resources.ResourceLocation;
 

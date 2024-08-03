@@ -9,7 +9,7 @@ import com.onewhohears.dscombat.data.parts.PartType;
 import com.onewhohears.dscombat.data.parts.instance.TurretInstance;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.init.ModEntities;
-import com.onewhohears.minigames.util.UtilParse;
+import com.onewhohears.dscombat.util.UtilParse;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;

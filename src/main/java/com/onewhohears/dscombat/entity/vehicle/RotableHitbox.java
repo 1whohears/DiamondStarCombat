@@ -1,10 +1,5 @@
 package com.onewhohears.dscombat.entity.vehicle;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.data.vehicle.RotableHitboxData;
 import com.onewhohears.dscombat.init.ModEntities;
@@ -127,7 +122,7 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData,
 			return move;
 		}*/
 		if (getParent().isEntityHitboxCooldown(entity)) {
-			System.out.println("Hitbox Cooldown");
+			//System.out.println("Hitbox Cooldown "+entity.level.isClientSide);
 			return move;
 		}
 		if (!couldCollide(entity)) {
@@ -139,18 +134,16 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData,
 			return move;
 		}
 		// FIXME 4.6 prevent entities from falling off when the chunks load
-		System.out.println("==========");
-		System.out.println("PRE COLLISION "+getHitboxName()+" "+entity.level.isClientSide+" "+entity.tickCount+" "+entity.position()+" "+move+" "+entity.isOnGround());
+		//System.out.println("==========");
+		//System.out.println("PRE COLLISION "+getHitboxName()+" "+getId()+" "+entity.level.isClientSide+" "+getParent().tickCount+" "+entity.position()+" "+move+" "+entity.isOnGround());
 		//getParent().addEntityCollidedHitbox(entity);
 		if (isInside(entity)) {
-			System.out.println("INSIDE");
+			//System.out.println("INSIDE");
 			Vec3 push = hitbox.getPushOutPos(entity.position(), entity.getBoundingBox(), RotableAABB.INSIDE_PUSH_OUT_SKIN);
 			entity.moveTo(push);
 			entity.setOnGround(true);
 			entity.resetFallDistance();
 			move = move.multiply(1, 0, 1);
-			getParent().addEntityPushInfo(entity, this, push);
-			if (getParent().isPushRepeat(entity)) getParent().addEntityToHitboxCooldown(entity);
 		}
 		//System.out.println("OUTSIDE");
 		moveEntityFromParent(entity);
@@ -162,7 +155,12 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData,
 		}*/
 		move = hitbox.collide(entity.position(), entity.getBoundingBox(), move);
 		//if (entity.level.isClientSide) ClientSideHitboxStuckFixer.onCollide(entity, isInside);
-		System.out.println("POST COLLISION "+entity.level.isClientSide+" "+entity.tickCount+" "+entity.position()+" "+move);
+		getParent().addEntityCollideInfo(entity, this, entity.position());
+		if (getParent().isStuckInHitbox(entity)) {
+			getParent().addEntityToHitboxCooldown(entity);
+			entity.moveTo(new Vec3(entity.getX(), getParent().getMaxHitboxY(), entity.getZ()));
+		}
+		//System.out.println("POST COLLISION "+entity.position()+" "+move);
 		return move;
 	}
 	
@@ -431,6 +429,10 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData,
 	@Override
 	public boolean isAlliedTo(Team team) {
 		return getRootVehicle().isAlliedTo(team);
+	}
+	
+	public double getMaxY() {
+		return hitbox.getMaxY();
 	}
 	
 }

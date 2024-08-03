@@ -132,7 +132,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public static final EntityDataAccessor<Boolean> PLAY_IR_TONE = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<RadarMode> RADAR_MODE = SynchedEntityData.defineId(EntityVehicle.class, DataSerializers.RADAR_MODE);
 	
-	public static final int HITBOX_PUSH_COOLDOWN = 40;
+	public static final int HITBOX_PUSH_COOLDOWN = 4;
 	
 	public final String defaultPreset;
 	public final VehicleInputManager inputs;
@@ -145,7 +145,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	protected final List<RotableHitbox> hitboxes = new ArrayList<>();
 	private final Set<Integer> collidedEntityIds = new HashSet<>();
 	private final Map<Integer, Integer> hitboxEntityCoolDown = new HashMap<>();
-	private final Map<Integer, EntityPushInfo> entityPushInfo = new HashMap<>();
+	private final Map<Integer, EntityCollideInfo> entityCollideInfo = new HashMap<>();
 	
 	private final Map<Integer, Integer> formerPassengersServer = new HashMap<>();
 	/**
@@ -2688,6 +2688,14 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		return null;
 	}
 	
+	@Nullable
+	public RotableHitbox getHitboxById(int id) {
+		for (int i = 0; i < hitboxes.size(); ++i) 
+			if (hitboxes.get(i).getId() == id) 
+				return hitboxes.get(i);
+		return null;
+	}
+	
 	public boolean isHitboxParent(Entity hitbox) {
 		for (int i = 0; i < hitboxes.size(); ++i) 
 			if (hitboxes.get(i).equals(hitbox)) 
@@ -2756,48 +2764,75 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	public void addEntityToHitboxCooldown(Entity entity) {
 		hitboxEntityCoolDown.put(entity.getId(), HITBOX_PUSH_COOLDOWN);
+		//System.out.println("adding to hitbox cooldown "+entity);
 	}
 	
-	public void addEntityPushInfo(Entity entity, RotableHitbox hitbox, Vec3 pos) {
-		EntityPushInfo info = entityPushInfo.get(entity.getId());
+	public void addEntityCollideInfo(Entity entity, RotableHitbox hitbox, Vec3 pos) {
+		EntityCollideInfo info = entityCollideInfo.get(entity.getId());
 		if (info == null) {
-			info = new EntityPushInfo();
-			entityPushInfo.put(entity.getId(), info);
+			info = new EntityCollideInfo();
+			entityCollideInfo.put(entity.getId(), info);
 		}
 		info.addPush(hitbox.getId(), tickCount, pos);
 	}
 	
-	public boolean isPushRepeat(Entity entity) {
-		EntityPushInfo info = entityPushInfo.get(entity.getId());
-		if (info == null || info.pushes.size() == 0) return false;
-		PushInfo currentPush = info.pushes.get(0);
+	public boolean isStuckInHitbox(Entity entity) {
+		EntityCollideInfo info = entityCollideInfo.get(entity.getId());
+		if (info == null || info.collides.size() == 0) return false;
+		//System.out.println("entity collide info: "+info);
+		CollideInfo currentPush = info.collides.get(0);
 		if (currentPush.time != tickCount) return false;
-		for (int i = 1; i < info.pushes.size(); ++i) {
-			PushInfo push = info.pushes.get(i);
-			if (push.hitboxId != currentPush.hitboxId) continue;
-			if (push.time != currentPush.time+1) continue;
-			if (push.pos.equals(currentPush.pos)) return true;
-			else return false;
+		int prevTime = tickCount - 1;
+		boolean multiCollideSameTick = false;
+		for (int i = 1; i < info.collides.size(); ++i) {
+			CollideInfo push = info.collides.get(i);
+			if (!multiCollideSameTick) {
+				if (push.time == tickCount && push.hitboxId != currentPush.hitboxId) multiCollideSameTick = true;
+				else return false;
+			} 
+			if (multiCollideSameTick) {
+				if (push.time == prevTime && push.hitboxId == currentPush.hitboxId) {
+					if (UtilGeometry.isEqual(push.pos,  currentPush.pos, 0.001)) return true;
+					else return false;
+				}
+			}
 		}
 		return false;
 	}
 	
-	private static class EntityPushInfo {
-		private final List<PushInfo> pushes = new ArrayList<>();
-		EntityPushInfo() {}
+	public double getMaxHitboxY() {
+		double max = getY();
+		for (int i = 0; i < hitboxes.size(); ++i) {
+			double y = hitboxes.get(i).getMaxY();
+			if (y > max) max = y;
+		}
+		return max;
+	}
+	
+	private static class EntityCollideInfo {
+		private final List<CollideInfo> collides = new ArrayList<>();
+		EntityCollideInfo() {}
 		private void addPush(int hitboxId, int time, Vec3 pos) {
-			pushes.add(0, new PushInfo(hitboxId, time, pos));
-			while (pushes.size() > 10) pushes.remove(pushes.size()-1);
+			collides.add(0, new CollideInfo(hitboxId, time, pos));
+			while (collides.size() > 10) collides.remove(collides.size()-1);
+		}
+		@Override
+		public String toString() {
+			return collides.toString();
 		}
 	}
 	
-	private static class PushInfo {
+	private static class CollideInfo {
 		private final int hitboxId, time;
 		private final Vec3 pos;
-		PushInfo(int hitboxId, int time, Vec3 pos) {
+		CollideInfo(int hitboxId, int time, Vec3 pos) {
 			this.hitboxId = hitboxId;
 			this.time = time;
 			this.pos = pos;
+		}
+		@Override
+		public String toString() {
+			return hitboxId+","+time+","+pos;
 		}
 	}
 	

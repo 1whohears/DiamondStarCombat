@@ -355,4 +355,8 @@ public class RotableAABB {
 		return "RotableAABB:"+getCenter()+":"+getExtents();
 	}
 	
+	public double getMaxY() {
+		return UtilAngles.rotateVector(getExtents(), rot).y + getCenter().y;
+	}
+	
 }

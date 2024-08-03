@@ -178,6 +178,10 @@ public class UtilGeometry {
 		return v1.x == v2.x && v1.y == v2.y && v1.z == v2.z;
 	}
 	
+	public static boolean isEqual(Vec3 a, Vec3 b, double maxDiff) {
+		return Math.abs(a.x-b.x) <= maxDiff && Math.abs(a.y-b.y) <= maxDiff && Math.abs(a.z-b.z) <= maxDiff;
+	}
+	
 	/**
 	 * @return double array size 4 of roots. root 1 real, root 1 imaginary, root2 real, root2 imaginary
 	 */

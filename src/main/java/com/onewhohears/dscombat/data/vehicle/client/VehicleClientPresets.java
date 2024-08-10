@@ -32,7 +32,7 @@ public class VehicleClientPresets extends JsonPresetAssetReader<VehicleClientSta
 	}
 	
 	public VehicleClientPresets() {
-		super("aircraft_client");
+		super("vehicle_client");
 	}
 	
 	@Override

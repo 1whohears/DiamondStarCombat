@@ -435,7 +435,7 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 	}
 	
 	public VehicleClientPresetGenerator(DataGenerator output) {
-		super(output, "aircraft_client", DataGenerator.Target.RESOURCE_PACK);
+		super(output, "vehicle_client", DataGenerator.Target.RESOURCE_PACK);
 	}
 
 	@Override

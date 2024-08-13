@@ -445,7 +445,7 @@
     "turn_radius": 11.0
   },
   "textures": {
-    "baseTextureVariants": 3,
+    "baseTextureVariants": 8,
     "textureLayers": 3
   }
 }

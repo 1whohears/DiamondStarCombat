@@ -103,8 +103,7 @@
   },
   "bomb_shoot_1": {
     "sounds": [
-      "dscombat:weapon/bomb_shoot_1",
-      "dscombat:weapon/bomb_shoot_2"
+      "dscombat:weapon/bomb_shoot_1"
     ],
     "subtitle": "sounds.dscombat.bomb_shoot_1"
   },

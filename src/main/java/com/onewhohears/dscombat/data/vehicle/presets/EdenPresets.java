@@ -40,7 +40,7 @@ public class EdenPresets {
 			.setPlaneLiftAOAGraph("alexis_plane")
 			.setPlaneFlapDownAOABias(9)
 			.setPlaneNoseCanAimDown(false)
-			.setBaseTextureNum(3)
+			.setBaseTextureNum(8)
 			.setLayerTextureNum(3)
 			.setDefultPassengerSoundPack(PassengerSoundPack.ENG_NON_BINARY_GOOBER)
 			.addIngredient(ModItems.FUSELAGE.getId(), 1)

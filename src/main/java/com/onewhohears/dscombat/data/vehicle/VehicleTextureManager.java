@@ -34,11 +34,11 @@ public class VehicleTextureManager {
 	private void setupTextureLocations() {
 		baseTextures = new ResourceLocation[parent.getStats().baseTextureVariants];
 		textureLayers = new TextureLayer[parent.getStats().textureLayers];
-		String modId = UtilEntity.getEntityModId(parent);
+		String namespace = parent.getStats().getNameSpace();
 		for (int i = 0; i < baseTextures.length; ++i) 
-			baseTextures[i] = new ResourceLocation(modId+":textures/entity/vehicle/"+parent.getClientStatsId()+"/base"+i+".png");
+			baseTextures[i] = new ResourceLocation(namespace+":textures/entity/vehicle/"+parent.getClientStatsId()+"/base"+i+".png");
 		for (int i = 0; i < textureLayers.length; ++i) {
-			textureLayers[i] = new TextureLayer(modId+":textures/entity/vehicle/"+parent.getClientStatsId()+"/layer"+i+".png");
+			textureLayers[i] = new TextureLayer(namespace+":textures/entity/vehicle/"+parent.getClientStatsId()+"/layer"+i+".png");
 		}
 	}
 	/**

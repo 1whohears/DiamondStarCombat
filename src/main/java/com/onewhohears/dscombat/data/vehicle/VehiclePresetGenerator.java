@@ -2,19 +2,7 @@ package com.onewhohears.dscombat.data.vehicle;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.jsonpreset.JsonPresetGenerator;
-import com.onewhohears.dscombat.data.vehicle.presets.AlexisPresets;
-import com.onewhohears.dscombat.data.vehicle.presets.BoatPresets;
-import com.onewhohears.dscombat.data.vehicle.presets.BroncoPresets;
-import com.onewhohears.dscombat.data.vehicle.presets.CarPresets;
-import com.onewhohears.dscombat.data.vehicle.presets.EdenPresets;
-import com.onewhohears.dscombat.data.vehicle.presets.FelixPresets;
-import com.onewhohears.dscombat.data.vehicle.presets.NoahChopperPresets;
-import com.onewhohears.dscombat.data.vehicle.presets.JasonPresets;
-import com.onewhohears.dscombat.data.vehicle.presets.JaviPresets;
-import com.onewhohears.dscombat.data.vehicle.presets.PlanePresets;
-import com.onewhohears.dscombat.data.vehicle.presets.SubPresets;
-import com.onewhohears.dscombat.data.vehicle.presets.TankPresets;
-import com.onewhohears.dscombat.data.vehicle.presets.WerewolfPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.*;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 
 import net.minecraft.data.DataGenerator;
@@ -115,6 +103,10 @@ public class VehiclePresetGenerator extends JsonPresetGenerator<VehicleStats> {
 		addPresetToGenerate(SubPresets.DEFAULT_GOOGLE_SUB);
 		
 		addPresetToGenerate(WerewolfPresets.EMPTY_WEREWOLF);
+
+		addPresetToGenerate(KraitChopperPresets.EMPTY_KRAIT_CHOPPER);
+		addPresetToGenerate(KraitChopperPresets.UNARMED_KRAIT_CHOPPER);
+		addPresetToGenerate(KraitChopperPresets.DEFAULT_KRAIT_CHOPPER);
 	}
     
     public VehiclePresetGenerator(DataGenerator output) {

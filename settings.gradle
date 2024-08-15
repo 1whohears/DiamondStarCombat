@@ -1,0 +1,21 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        maven {
+            name = 'MinecraftForge'
+            url = 'https://maven.minecraftforge.net/'
+        }
+        maven { url = 'https://maven.parchmentmc.org' }
+    }
+}
+
+plugins {
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.7.0'
+}
+
+rootProject.name = 'DiamondStarCombat'
+
+include ':1wholibs'
+// D:\Users\1whoh\intellij\1wholibs
+//project(':1wholibs').projectDir = new File(settingsDir, '../1wholibs')
+project(':1wholibs').projectDir = new File('D:\\Users\\1whoh\\intellij\\1wholibs')

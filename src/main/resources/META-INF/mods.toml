@@ -36,6 +36,13 @@ showAsResourcePack=false
     versionRange="[5.8.0,)"
     ordering="NONE"
     side="BOTH"
+	
+[[dependencies.dscombat]]
+    modId="onewholibs"
+    mandatory=true
+    versionRange="[1.0.0,)"
+    ordering="AFTER"
+    side="BOTH"
     
 [[dependencies.dscombat]]
     modId="minigames"

@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.data.weapon;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.jsonpreset.JsonPresetGenerator;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetGenerator;
 import com.onewhohears.dscombat.data.weapon.stats.BombStats;
 import com.onewhohears.dscombat.data.weapon.stats.BulletStats;
 import com.onewhohears.dscombat.data.weapon.stats.BunkerBusterStats;

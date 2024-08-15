@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.data.parts.instance;
 import com.onewhohears.dscombat.common.container.StorageBoxContainer;
 import com.onewhohears.dscombat.common.container.menu.StorageBoxContainerMenu;
 import com.onewhohears.dscombat.data.parts.stats.StorageStats;
-import com.onewhohears.dscombat.util.UtilItem;
+import com.onewhohears.onewholibs.util.UtilItem;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Inventory;

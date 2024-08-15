@@ -41,7 +41,7 @@
         "pivot": {
           "x": 0.0,
           "y": 0.0,
-          "z": 20.0
+          "z": 1.25
         },
         "rot_axis": "Z",
         "rot_rate": 30.0
@@ -52,8 +52,8 @@
         "model_part_key": "gear_front",
         "pivot": {
           "x": 0.0,
-          "y": -6.5,
-          "z": 4.5
+          "y": -0.40625,
+          "z": 0.28125
         },
         "rot_axis": "X"
       },
@@ -63,8 +63,8 @@
         "model_part_key": "gear_back",
         "pivot": {
           "x": 0.0,
-          "y": -6.0,
-          "z": -26.5
+          "y": -0.375,
+          "z": -1.65625
         },
         "rot_axis": "X"
       }

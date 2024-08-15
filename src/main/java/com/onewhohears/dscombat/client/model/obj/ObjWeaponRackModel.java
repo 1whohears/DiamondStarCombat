@@ -2,9 +2,10 @@ package com.onewhohears.dscombat.client.model.obj;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.Config;
-import com.onewhohears.dscombat.client.model.obj.ObjEntityModels.ModelOverrides;
+import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels.ModelOverrides;
 import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
 
+import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;

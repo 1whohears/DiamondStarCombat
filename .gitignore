@@ -2,6 +2,7 @@
 **/build/
 !src/**/build/
 **/src/generated/resources/.cache
+**/libs/
 
 # Ignore Gradle GUI config
 gradle-app.setting
@@ -25,6 +26,7 @@ build
 *.bak
 *.launch
 **/run/
+run-data
 aoa_graphs/~$aoa_graphs.xlsx
 /.idea/.gitignore
 /.idea/gradle.xml

@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.data.radar;
 
-import com.onewhohears.dscombat.data.jsonpreset.JsonPresetReloadListener;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetReloadListener;
 
 import net.minecraft.nbt.CompoundTag;
 

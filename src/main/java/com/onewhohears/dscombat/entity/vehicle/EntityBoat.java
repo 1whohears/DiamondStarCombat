@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.entity.vehicle;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.data.vehicle.DSCPhyCons;
 import com.onewhohears.dscombat.data.vehicle.VehicleType;
-import com.onewhohears.dscombat.util.math.UtilAngles;
+import com.onewhohears.onewholibs.util.math.UtilAngles;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;

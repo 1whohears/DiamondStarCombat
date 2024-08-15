@@ -22,7 +22,7 @@ group = mod_group_id
 version = mod_version
 
 base {
-    archivesName = mod_id-minecraft_version
+    archivesName = mod_id+'-'+minecraft_version
 }
 
 java {
@@ -136,7 +136,6 @@ minecraft {
 
 mixin {
     add sourceSets.main, "${mod_id}.refmap.json"
-
     config "${mod_id}.mixins.json"
 }
 
@@ -150,6 +149,9 @@ repositories {
     maven {
         name = "Jared's maven"
         url = "https://maven.blamejared.com/"
+    }
+    flatDir {
+        dir 'libs'
     }
 }
 
@@ -166,7 +168,8 @@ dependencies {
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
-    implementation project(':1wholibs')
+    //implementation project(':1wholibs')
+    implementation fg.deobf("blank:onewholibs-${minecraft_version}:${onewholibs_version}")
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }

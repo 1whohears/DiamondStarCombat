@@ -4,13 +4,11 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddForceMoment;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddPart;
 import com.onewhohears.dscombat.common.network.toclient.ToClientDamagePart;
-import com.onewhohears.dscombat.common.network.toclient.ToClientDataPackSynch;
 import com.onewhohears.dscombat.common.network.toclient.ToClientDebugHitboxPos;
 import com.onewhohears.dscombat.common.network.toclient.ToClientDelayedSound;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRWRWarning;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRadarPings;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRemovePart;
-import com.onewhohears.dscombat.common.network.toclient.ToClientSynchGameRules;
 import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleChainUpdate;
 import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleControl;
 import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleExplode;
@@ -134,11 +132,6 @@ public final class PacketHandler {
 			.decoder(ToClientAddForceMoment::new)
 			.consumerMainThread(ToClientAddForceMoment::handle)
 			.add();
-		net.messageBuilder(ToClientDataPackSynch.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ToClientDataPackSynch::encode)
-			.decoder(ToClientDataPackSynch::new)
-			.consumerMainThread(ToClientDataPackSynch::handle)
-			.add();
 		net.messageBuilder(ToServerDismount.class, index++, NetworkDirection.PLAY_TO_SERVER)
 			.encoder(ToServerDismount::encode)
 			.decoder(ToServerDismount::new)
@@ -178,11 +171,6 @@ public final class PacketHandler {
 			.encoder(ToClientWeaponImpact::encode)
 			.decoder(ToClientWeaponImpact::new)
 			.consumerMainThread(ToClientWeaponImpact::handle)
-			.add();
-		net.messageBuilder(ToClientSynchGameRules.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ToClientSynchGameRules::encode)
-			.decoder(ToClientSynchGameRules::new)
-			.consumerMainThread(ToClientSynchGameRules::handle)
 			.add();
 		net.messageBuilder(ToClientDelayedSound.class, index++, NetworkDirection.PLAY_TO_CLIENT)
 			.encoder(ToClientDelayedSound::encode)

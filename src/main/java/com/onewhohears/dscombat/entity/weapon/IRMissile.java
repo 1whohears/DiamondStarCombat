@@ -9,7 +9,7 @@ import com.onewhohears.dscombat.data.weapon.stats.IRMissileStats;
 import com.onewhohears.dscombat.entity.IREmitter;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.init.ModTags;
-import com.onewhohears.dscombat.util.UtilEntity;
+import com.onewhohears.onewholibs.util.UtilEntity;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;

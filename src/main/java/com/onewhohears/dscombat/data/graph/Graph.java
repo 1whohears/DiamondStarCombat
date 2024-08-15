@@ -1,9 +1,9 @@
 package com.onewhohears.dscombat.data.graph;
 
 import com.google.gson.JsonObject;
-import com.onewhohears.dscombat.data.jsonpreset.JsonPresetStats;
-import com.onewhohears.dscombat.util.UtilParse;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetStats;
 
+import com.onewhohears.onewholibs.util.UtilParse;
 import net.minecraft.resources.ResourceLocation;
 
 public abstract class Graph<K extends Number, V extends Number> extends JsonPresetStats {

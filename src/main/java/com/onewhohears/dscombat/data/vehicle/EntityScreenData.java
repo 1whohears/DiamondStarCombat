@@ -2,8 +2,8 @@ package com.onewhohears.dscombat.data.vehicle;
 
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.client.renderer.EntityScreenRenderer;
-import com.onewhohears.dscombat.util.UtilParse;
 
+import com.onewhohears.onewholibs.util.UtilParse;
 import net.minecraft.world.phys.Vec3;
 
 public class EntityScreenData {

@@ -10,14 +10,13 @@ import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.client.entityscreen.VehicleScreenMapReader;
 import com.onewhohears.dscombat.client.model.obj.HardCodedModelAnims;
 import com.onewhohears.dscombat.client.model.obj.ObjVehicleModel;
-import com.onewhohears.dscombat.client.model.obj.customanims.CustomAnimsVehicleModel;
-import com.onewhohears.dscombat.data.jsonpreset.JsonPresetInstance;
-import com.onewhohears.dscombat.data.jsonpreset.JsonPresetStats;
-import com.onewhohears.dscombat.data.jsonpreset.JsonPresetType;
-import com.onewhohears.dscombat.data.jsonpreset.PresetBuilder;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetInstance;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetStats;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetType;
+import com.onewhohears.onewholibs.data.jsonpreset.PresetBuilder;
 import com.onewhohears.dscombat.data.vehicle.EntityScreenData;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.dscombat.util.math.UtilGeometry;
+import com.onewhohears.onewholibs.util.math.UtilGeometry;
 
 import net.minecraft.resources.ResourceLocation;
 
@@ -46,7 +45,7 @@ public class VehicleClientStats extends JsonPresetStats {
 		String model_id = getId();
 		if (model_data.has("model_id")) model_id = model_data.get("model_id").getAsString();
 		if (model_data.has("custom_anims")) 
-			model = new CustomAnimsVehicleModel(model_id, model_data.get("custom_anims").getAsJsonArray());
+			model = new ObjVehicleModel<>(model_id, model_data.get("custom_anims").getAsJsonArray());
 		else model = new ObjVehicleModel<>(model_id);
 		return model;
 	}

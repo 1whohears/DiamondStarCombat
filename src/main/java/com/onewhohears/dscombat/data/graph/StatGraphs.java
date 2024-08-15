@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.onewhohears.dscombat.data.jsonpreset.JsonPresetReloadListener;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetReloadListener;
 
 public class StatGraphs extends JsonPresetReloadListener<Graph<?,?>> {
 	

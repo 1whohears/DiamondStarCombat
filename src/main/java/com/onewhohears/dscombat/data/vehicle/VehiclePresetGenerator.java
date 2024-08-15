@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.data.vehicle;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.jsonpreset.JsonPresetGenerator;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetGenerator;
 import com.onewhohears.dscombat.data.vehicle.presets.*;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 

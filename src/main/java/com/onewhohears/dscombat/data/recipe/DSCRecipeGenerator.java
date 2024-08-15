@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.crafting.VehicleRecipe;
 import com.onewhohears.dscombat.crafting.WeaponRecipe;
-import com.onewhohears.dscombat.data.jsonpreset.JsonPresetStats;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetStats;
 import com.onewhohears.dscombat.data.vehicle.VehiclePresetGenerator;
 import com.onewhohears.dscombat.data.weapon.WeaponPresetGenerator;
 

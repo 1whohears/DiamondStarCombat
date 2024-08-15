@@ -1,20 +1,29 @@
 package com.onewhohears.dscombat.client.model.obj;
 
+import com.google.gson.JsonArray;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.renderer.RendererEntityVehicle;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.dscombat.util.math.UtilAngles;
-import com.onewhohears.dscombat.util.math.UtilGeometry;
+import com.onewhohears.onewholibs.client.model.obj.ObjEntityModel;
+import com.onewhohears.onewholibs.client.model.obj.customanims.CustomAnimsEntityModel;
+import com.onewhohears.onewholibs.util.math.UtilAngles;
+import com.onewhohears.onewholibs.util.math.UtilGeometry;
 
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraftforge.client.model.renderable.ITextureRenderTypeLookup;
 
-public class ObjVehicleModel<T extends EntityVehicle> extends ObjEntityModel<T> {
+import javax.json.Json;
+
+public class ObjVehicleModel<T extends EntityVehicle> extends CustomAnimsEntityModel<T> {
 	
 	public ObjVehicleModel(String modelId) {
-		super(modelId);
+		this(modelId, new JsonArray());
+	}
+
+	public ObjVehicleModel(String modelId, JsonArray anims) {
+		super(modelId, anims);
 	}
 	
 	@Override

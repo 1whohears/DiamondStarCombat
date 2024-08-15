@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.data.vehicle.stats;
 
 import com.google.gson.JsonObject;
-import com.onewhohears.dscombat.data.jsonpreset.JsonPresetType;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetType;
 import com.onewhohears.dscombat.data.vehicle.VehicleType;
 
 import net.minecraft.resources.ResourceLocation;

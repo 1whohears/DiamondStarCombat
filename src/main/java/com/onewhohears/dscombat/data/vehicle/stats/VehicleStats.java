@@ -9,11 +9,11 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
 import com.onewhohears.dscombat.client.model.obj.ObjRadarModel.MastType;
-import com.onewhohears.dscombat.data.jsonpreset.JsonPresetInstance;
-import com.onewhohears.dscombat.data.jsonpreset.JsonPresetStats;
+import com.onewhohears.onewholibs.data.crafting.IngredientStackBuilder;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetInstance;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetStats;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.SlotType;
-import com.onewhohears.dscombat.data.recipe.DSCIngredientBuilder;
 import com.onewhohears.dscombat.data.vehicle.EntityScreenData;
 import com.onewhohears.dscombat.data.vehicle.RotableHitboxData;
 import com.onewhohears.dscombat.data.vehicle.VehicleSoundManager.PassengerSoundPack;
@@ -21,11 +21,11 @@ import com.onewhohears.dscombat.data.vehicle.VehicleType;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.vehicle.RotableHitbox;
 import com.onewhohears.dscombat.init.ModItems;
-import com.onewhohears.dscombat.util.UtilGsonMerge;
-import com.onewhohears.dscombat.util.UtilGsonMerge.ConflictStrategy;
-import com.onewhohears.dscombat.util.UtilItem;
-import com.onewhohears.dscombat.util.UtilParse;
+import com.onewhohears.onewholibs.util.UtilGsonMerge;
+import com.onewhohears.onewholibs.util.UtilGsonMerge.ConflictStrategy;
+import com.onewhohears.onewholibs.util.UtilItem;
 
+import com.onewhohears.onewholibs.util.UtilParse;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -149,7 +149,7 @@ public abstract class VehicleStats extends JsonPresetStats {
 	
 	public NonNullList<Ingredient> getIngredients() {
 		if (ingredients == null) {
-			ingredients = DSCIngredientBuilder.getIngredients(getJsonData());
+			ingredients = IngredientStackBuilder.getIngredients(getJsonData());
 		}
 		return ingredients;
 	}
@@ -287,7 +287,7 @@ public abstract class VehicleStats extends JsonPresetStats {
 		return false;
 	}
 	
-	public static class Builder extends DSCIngredientBuilder<Builder> {
+	public static class Builder extends IngredientStackBuilder<Builder> {
 		private boolean is_craftable = false;
 		protected Builder(String namespace, String name, VehicleType type) {
 			super(namespace, name, type);
@@ -388,7 +388,7 @@ public abstract class VehicleStats extends JsonPresetStats {
 		/**
 		 * sets item data of slot
 		 * @param name slot that already exists
-		 * @param item resource location of item to get part data from
+		 * @param part presetId of the part to get part data from
 		 * @param param some part items accept a setting
 		 * @param filled if the item is filled by default
 		 */

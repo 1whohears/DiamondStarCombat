@@ -7,7 +7,8 @@ import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.dscombat.util.UtilEntity;
+import com.onewhohears.dscombat.util.UtilVehicleEntity;
+import com.onewhohears.onewholibs.util.UtilEntity;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
@@ -53,7 +54,7 @@ public class TurretTargetGoal<T extends LivingEntity> extends NearestAttackableT
 				if (!(entity instanceof Enemy)) return false;
 			}
 			if (wd.getStats().isIRMissile()) {
-				if (UtilEntity.isOnGroundOrWater(entity)) return false;
+				if (UtilVehicleEntity.isOnGroundOrWater(entity)) return false;
 			} else if (wd.getStats().requiresRadar()) {
 				EntityVehicle vehicle = turret.getParentVehicle();
 				if (vehicle == null) return false;

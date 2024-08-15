@@ -1,7 +1,7 @@
 {
 	"required": true,
 	"minVersion": "0.8",
-	"refmap": "mixins.dscombat.refmap.json",
+	"refmap": "dscombat.refmap.json",
 	"package": "com.onewhohears.dscombat.mixin",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [

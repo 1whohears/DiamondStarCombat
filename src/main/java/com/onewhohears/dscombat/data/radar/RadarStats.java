@@ -1,12 +1,12 @@
 package com.onewhohears.dscombat.data.radar;
 
 import com.google.gson.JsonObject;
-import com.onewhohears.dscombat.data.jsonpreset.JsonPresetInstance;
-import com.onewhohears.dscombat.data.jsonpreset.JsonPresetStats;
-import com.onewhohears.dscombat.data.jsonpreset.JsonPresetType;
-import com.onewhohears.dscombat.data.jsonpreset.PresetBuilder;
+import com.onewhohears.dscombat.util.UtilVehicleEntity;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetInstance;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetStats;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetType;
+import com.onewhohears.onewholibs.data.jsonpreset.PresetBuilder;
 import com.onewhohears.dscombat.init.DataSerializers;
-import com.onewhohears.dscombat.util.UtilEntity;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -209,7 +209,7 @@ public class RadarStats extends JsonPresetStats {
 		}
 		public static PingTerrainType getByEntity(Entity e) {
 			if (e.isInWater()) return WATER;
-			if (UtilEntity.isOnGroundOrWater(e)) return GROUND;
+			if (UtilVehicleEntity.isOnGroundOrWater(e)) return GROUND;
 			return AIR;
 		}
 	}

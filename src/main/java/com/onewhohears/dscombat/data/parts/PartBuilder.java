@@ -2,11 +2,11 @@ package com.onewhohears.dscombat.data.parts;
 
 import com.onewhohears.dscombat.data.parts.stats.BuffStats;
 import com.onewhohears.dscombat.data.parts.stats.EngineStats;
-import com.onewhohears.dscombat.data.recipe.DSCIngredientBuilder;
 
+import com.onewhohears.onewholibs.data.crafting.IngredientStackBuilder;
 import net.minecraft.resources.ResourceLocation;
 
-public class PartBuilder extends DSCIngredientBuilder<PartBuilder> {
+public class PartBuilder extends IngredientStackBuilder<PartBuilder> {
 	
 	public static PartBuilder create(ResourceLocation item, PartType type) {
 		PartBuilder builder = create(item.getNamespace(), item.getPath(), item, type);

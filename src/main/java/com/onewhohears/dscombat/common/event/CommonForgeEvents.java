@@ -5,10 +5,9 @@ import java.util.Set;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.command.DSCGameRules;
-import com.onewhohears.dscombat.common.event.custom.RegisterPresetTypesEvent;
+import com.onewhohears.onewholibs.common.event.GetJsonPresetListenersEvent;
+import com.onewhohears.onewholibs.common.event.RegisterPresetTypesEvent;
 import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.common.network.toclient.ToClientDataPackSynch;
-import com.onewhohears.dscombat.common.network.toclient.ToClientSynchGameRules;
 import com.onewhohears.dscombat.data.graph.StatGraphs;
 import com.onewhohears.dscombat.data.parts.PartPresets;
 import com.onewhohears.dscombat.data.radar.RadarPresets;
@@ -19,6 +18,7 @@ import com.onewhohears.dscombat.entity.vehicle.CustomExplosion;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.vehicle.RotableHitboxes;
 
+import com.onewhohears.onewholibs.common.event.GetGameRulesToSyncEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
@@ -78,16 +78,10 @@ public final class CommonForgeEvents {
 		if (event.phase != Phase.END) return;
 		NonTickingMissileManager.serverTick(event.getServer());
 	}
-	
-	@SubscribeEvent(priority = EventPriority.NORMAL)
-	public static void onDatapackSync(OnDatapackSyncEvent event) {
-		PacketTarget target;
-		if (event.getPlayer() == null) target = PacketDistributor.ALL.noArg();
-		else {
-			target = PacketDistributor.PLAYER.with(() -> event.getPlayer());
-			PacketHandler.INSTANCE.send(target, new ToClientSynchGameRules(event.getPlayer().getServer()));
-		}
-		PacketHandler.INSTANCE.send(target, new ToClientDataPackSynch());
+
+	@SubscribeEvent
+	public static void sendSyncGameRules(GetGameRulesToSyncEvent event) {
+		event.addBool(DSCGameRules.DISABLE_ELYTRA_FLYING);
 	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
@@ -101,22 +95,12 @@ public final class CommonForgeEvents {
 	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
-	public static void addReloadListener(AddReloadListenerEvent event) {
-		MinecraftForge.EVENT_BUS.post(new RegisterPresetTypesEvent());
+	public static void addJsonPresetListener(GetJsonPresetListenersEvent event) {
 		event.addListener(StatGraphs.get());
 		event.addListener(VehiclePresets.get());
 		event.addListener(WeaponPresets.get());
 		event.addListener(RadarPresets.get());
 		event.addListener(PartPresets.get());
-	}
-	
-	@SubscribeEvent(priority = EventPriority.NORMAL)
-	public static void registerPresetTypes(RegisterPresetTypesEvent event) {
-		StatGraphs.get().registerDefaultPresetTypes();
-		VehiclePresets.get().registerDefaultPresetTypes();
-		WeaponPresets.get().registerDefaultPresetTypes();
-		RadarPresets.get().registerDefaultPresetTypes();
-		PartPresets.get().registerDefaultPresetTypes();
 	}
 	
 	/*@SubscribeEvent(priority = EventPriority.NORMAL)

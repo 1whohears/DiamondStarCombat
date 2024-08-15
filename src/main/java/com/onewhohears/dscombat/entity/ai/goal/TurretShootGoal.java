@@ -12,8 +12,9 @@ import com.onewhohears.dscombat.data.weapon.stats.BulletStats;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModTags;
-import com.onewhohears.dscombat.util.UtilEntity;
-import com.onewhohears.dscombat.util.math.UtilGeometry;
+import com.onewhohears.dscombat.util.UtilVehicleEntity;
+import com.onewhohears.onewholibs.util.UtilEntity;
+import com.onewhohears.onewholibs.util.math.UtilGeometry;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -112,7 +113,7 @@ public class TurretShootGoal extends Goal {
 		if (!wd.checkRecoil() || wd.getCurrentAmmo() <= 0) return false;
 		if (useIRMis && wd.getStats().isIRMissile()) {
 			if (turret.tickCount-turret.getLastShootTime() < wd.getStats().getMaxAge()*0.5) return false;
-			if (UtilEntity.isOnGroundOrWater(target)) return false;
+			if (UtilVehicleEntity.isOnGroundOrWater(target)) return false;
 			aimError += 6;
 		} else if (useTrackMis && wd.getStats().requiresRadar()) {
 			if (turret.tickCount-turret.getLastShootTime() < wd.getStats().getMaxAge()*0.5) return false;

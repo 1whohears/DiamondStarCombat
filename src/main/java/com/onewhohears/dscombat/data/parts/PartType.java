@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.data.parts;
 
-import com.onewhohears.dscombat.data.jsonpreset.JsonPresetStats;
-import com.onewhohears.dscombat.data.jsonpreset.JsonPresetType;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetStats;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetType;
 import com.onewhohears.dscombat.data.parts.stats.BuffStats;
 import com.onewhohears.dscombat.data.parts.stats.ChaffDispenserStats;
 import com.onewhohears.dscombat.data.parts.stats.ChainHookStats;

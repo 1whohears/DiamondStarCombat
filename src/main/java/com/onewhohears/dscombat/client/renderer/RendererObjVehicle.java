@@ -23,7 +23,7 @@ public class RendererObjVehicle extends RendererObjEntity<EntityVehicle> impleme
 	
 	@Override
 	protected ObjVehicleModel<EntityVehicle> getModel(EntityVehicle entity) {
-		return entity.getClientStats().getModel();
+        return entity.getClientStats().getModel();
 	}
 
 	@Override

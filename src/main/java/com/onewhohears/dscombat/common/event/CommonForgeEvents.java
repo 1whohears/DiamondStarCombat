@@ -6,8 +6,6 @@ import java.util.Set;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.onewholibs.common.event.GetJsonPresetListenersEvent;
-import com.onewhohears.onewholibs.common.event.RegisterPresetTypesEvent;
-import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.data.graph.StatGraphs;
 import com.onewhohears.dscombat.data.parts.PartPresets;
 import com.onewhohears.dscombat.data.radar.RadarPresets;
@@ -18,11 +16,7 @@ import com.onewhohears.dscombat.entity.vehicle.CustomExplosion;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.vehicle.RotableHitboxes;
 
-import com.onewhohears.onewholibs.common.event.GetGameRulesToSyncEvent;
 import net.minecraft.world.entity.Entity;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.AddReloadListenerEvent;
-import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -32,8 +26,6 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.network.PacketDistributor.PacketTarget;
 
 @Mod.EventBusSubscriber(modid = DSCombatMod.MODID, bus = Bus.FORGE)
 public final class CommonForgeEvents {
@@ -77,11 +69,6 @@ public final class CommonForgeEvents {
 	public static void serverTickEvent(TickEvent.ServerTickEvent event) {
 		if (event.phase != Phase.END) return;
 		NonTickingMissileManager.serverTick(event.getServer());
-	}
-
-	@SubscribeEvent
-	public static void sendSyncGameRules(GetGameRulesToSyncEvent event) {
-		event.addBool(DSCGameRules.DISABLE_ELYTRA_FLYING);
 	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)

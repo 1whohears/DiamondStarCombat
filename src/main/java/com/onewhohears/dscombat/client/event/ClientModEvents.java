@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.client.event;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.client.model.EntityModelParachute;
+import com.onewhohears.dscombat.client.model.obj.HardCodedModelAnims;
 import com.onewhohears.dscombat.client.model.obj.ObjPartModel;
 import com.onewhohears.dscombat.client.model.obj.custom.AATurretModel;
 import com.onewhohears.dscombat.client.model.obj.custom.BallRadarModel;
@@ -102,40 +103,29 @@ public final class ClientModEvents {
 	@SubscribeEvent
 	public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
 		EntityModelSet models = Minecraft.getInstance().getEntityModels();
-		event.registerEntityRenderer(ModEntities.PLANE.get(), 
-				(context) -> new RendererObjVehicle(context));
-		event.registerEntityRenderer(ModEntities.HELICOPTER.get(), 
-				(context) -> new RendererObjVehicle(context));
-		event.registerEntityRenderer(ModEntities.CAR.get(), 
-				(context) -> new RendererObjVehicle(context));
-		event.registerEntityRenderer(ModEntities.BOAT.get(), 
-				(context) -> new RendererObjVehicle(context));
-		event.registerEntityRenderer(ModEntities.SUBMARINE.get(), 
-				(context) -> new RendererObjVehicle(context));
+		event.registerEntityRenderer(ModEntities.PLANE.get(), RendererObjVehicle::new);
+		event.registerEntityRenderer(ModEntities.HELICOPTER.get(), RendererObjVehicle::new);
+		event.registerEntityRenderer(ModEntities.CAR.get(), RendererObjVehicle::new);
+		event.registerEntityRenderer(ModEntities.BOAT.get(), RendererObjVehicle::new);
+		event.registerEntityRenderer(ModEntities.SUBMARINE.get(), RendererObjVehicle::new);
 		// BULLETS
 		event.registerEntityRenderer(ModEntities.BULLET.get(), 
 				(context) -> new RendererEntityWeapon<>(context,
                         new EntityModelBullet1(models.bakeLayer(EntityModelBullet1.LAYER_LOCATION)),
                         new ResourceLocation(DSCombatMod.MODID, "textures/entities/bullet1.png")));
 		// BOMBS
-		event.registerEntityRenderer(ModEntities.BOMB.get(), 
-				(context) -> new RendererObjWeapon<>(context));
+		event.registerEntityRenderer(ModEntities.BOMB.get(), RendererObjWeapon::new);
 		// BUNKER BUSTERS
 		event.registerEntityRenderer(ModEntities.BUNKER_BUSTER.get(), 
 				(context) -> new RendererEntityWeapon<>(context,
                         new EntityModelGruetzBB(models.bakeLayer(EntityModelGruetzBB.LAYER_LOCATION)),
                         new ResourceLocation(DSCombatMod.MODID, "textures/entity/weapon/gruetz_bunker_buster.png")));
 		// MISSILES
-		event.registerEntityRenderer(ModEntities.POS_MISSILE.get(), 
-				(context) -> new RendererObjWeapon<>(context));
-		event.registerEntityRenderer(ModEntities.IR_MISSILE.get(), 
-				(context) -> new RendererObjWeapon<>(context));
-		event.registerEntityRenderer(ModEntities.TRACK_MISSILE.get(), 
-				(context) -> new RendererObjWeapon<>(context));
-		event.registerEntityRenderer(ModEntities.ANTI_RADAR_MISSILE.get(), 
-				(context) -> new RendererObjWeapon<>(context));
-		event.registerEntityRenderer(ModEntities.TORPEDO_MISSILE.get(), 
-				(context) -> new RendererObjWeapon<>(context));
+		event.registerEntityRenderer(ModEntities.POS_MISSILE.get(), RendererObjWeapon::new);
+		event.registerEntityRenderer(ModEntities.IR_MISSILE.get(), RendererObjWeapon::new);
+		event.registerEntityRenderer(ModEntities.TRACK_MISSILE.get(), RendererObjWeapon::new);
+		event.registerEntityRenderer(ModEntities.ANTI_RADAR_MISSILE.get(), RendererObjWeapon::new);
+		event.registerEntityRenderer(ModEntities.TORPEDO_MISSILE.get(), RendererObjWeapon::new);
 		// TURRETS
 		event.registerEntityRenderer(ModEntities.MINIGUN_TURRET.get(), 
 				(context) -> new RendererEntityTurret<>(context,
@@ -229,6 +219,7 @@ public final class ClientModEvents {
 	
 	@SubscribeEvent
 	public static void registerClientReloadListener(RegisterClientReloadListenersEvent event) {
+		HardCodedModelAnims.reload();
 		event.registerReloadListener(VehicleClientPresets.get());
 	}
 	

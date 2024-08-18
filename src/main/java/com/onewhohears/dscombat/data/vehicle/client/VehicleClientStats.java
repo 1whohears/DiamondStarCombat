@@ -40,7 +40,7 @@ public class VehicleClientStats extends JsonPresetStats {
 		JsonObject model_data = getJsonData().get("model_data").getAsJsonObject();
 		if (model_data.has("hard_coded_model_anims")) {
 			model = HardCodedModelAnims.get(model_data.get("hard_coded_model_anims").getAsString());
-			return model;
+			if (model != null) return model;
 		}
 		String model_id = getId();
 		if (model_data.has("model_id")) model_id = model_data.get("model_id").getAsString();

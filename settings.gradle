@@ -14,8 +14,3 @@ plugins {
 }
 
 rootProject.name = 'DiamondStarCombat'
-
-include ':1wholibs'
-// D:\Users\1whoh\intellij\1wholibs
-//project(':1wholibs').projectDir = new File(settingsDir, '../1wholibs')
-project(':1wholibs').projectDir = new File('D:\\Users\\1whoh\\intellij\\1wholibs')

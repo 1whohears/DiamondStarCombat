@@ -13,7 +13,7 @@ public class ClientForgeEvents {
 
     @SubscribeEvent
     public static void onSyncBoolGameRuleEvent(OnSyncBoolGameRuleEvent event) {
-        if (event.getId().equals(DSCGameRules.DISABLE_ELYTRA_FLYING.getId())) {
+        if (event.getId().equals(DSCGameRules.DISABLE_3RD_PERSON_VEHICLE.getId())) {
             DSCClientInputs.disable3rdPersonVehicle = event.getBool();
         }
     }

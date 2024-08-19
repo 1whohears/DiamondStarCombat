@@ -22,6 +22,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		// max ammo cost: 63 copper
 		addPresetToGenerate(BulletStats.Builder
 				.bulletBuilder(DSCombatMod.MODID, "10mm")
+				.setModelId("12.7mm")
 				.setFireRate(1)
 				.setInnacuracy(2.2f)
 				.setCanShootOnGround(true)
@@ -43,6 +44,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.build());
 		addPresetToGenerate(BulletStats.Builder
 				.bulletBuilder(DSCombatMod.MODID, "15mm")
+				.setModelId("20mm")
 				.setFireRate(2)
 				.setInnacuracy(1.8f)
 				.setCanShootOnGround(true)
@@ -65,6 +67,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		// max ammo cost: 63 copper
 		addPresetToGenerate(BulletStats.Builder
 				.bulletBuilder(DSCombatMod.MODID, "20mm")
+				.setModelId("20mm")
 				.setFireRate(1)
 				.setInnacuracy(1.1f)
 				.setCanShootOnGround(true)
@@ -86,6 +89,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.build());
 		addPresetToGenerate(BulletStats.Builder
 				.bulletBuilder(DSCombatMod.MODID, "20mmhe")
+				.setModelId("20mm")
 				.setFireRate(1)
 				.setInnacuracy(1.2f)
 				.setCanShootOnGround(true)
@@ -108,6 +112,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.build());
 		addPresetToGenerate(BulletStats.Builder
 				.bulletBuilder(DSCombatMod.MODID, "30mmhe")
+				.setModelId("20mm")
 				.setFireRate(2)
 				.setInnacuracy(1.1f)
 				.setCanShootOnGround(true)
@@ -129,6 +134,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		// max ammo cost: 125 copper, 78 gun powder
 		addPresetToGenerate(BulletStats.Builder
 				.bulletBuilder(DSCombatMod.MODID, "50mmhe")
+				.setModelId("50mmhe")
 				.setFireRate(5)
 				.setInnacuracy(1.0f)
 				.setCanShootOnGround(true)
@@ -151,6 +157,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		// max ammo cost: 64 copper, 80 gunpowder
 		addPresetToGenerate(BulletStats.Builder
 				.bulletBuilder(DSCombatMod.MODID, "120mmhe")
+				.setModelId("120mmhe")
 				.setFireRate(30)
 				.setInnacuracy(0.4f)
 				.setCanShootOnGround(true)
@@ -172,6 +179,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.build());
 		addPresetToGenerate(BulletStats.Builder
 				.bulletBuilder(DSCombatMod.MODID, "406mmhe")
+				.setModelId("406mmhe")
 				.setFireRate(60)
 				.setInnacuracy(1.1f)
 				.setCanShootOnGround(true)
@@ -193,6 +201,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.build());
 		addPresetToGenerate(BulletStats.Builder
 				.bulletBuilder(DSCombatMod.MODID, "127mm")
+				.setModelId("120mmhe")
 				.setFireRate(12)
 				.setInnacuracy(0.3f)
 				.setCanShootOnGround(true)

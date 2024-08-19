@@ -109,10 +109,7 @@ public final class ClientModEvents {
 		event.registerEntityRenderer(ModEntities.BOAT.get(), RendererObjVehicle::new);
 		event.registerEntityRenderer(ModEntities.SUBMARINE.get(), RendererObjVehicle::new);
 		// BULLETS
-		event.registerEntityRenderer(ModEntities.BULLET.get(), 
-				(context) -> new RendererEntityWeapon<>(context,
-                        new EntityModelBullet1(models.bakeLayer(EntityModelBullet1.LAYER_LOCATION)),
-                        new ResourceLocation(DSCombatMod.MODID, "textures/entities/bullet1.png")));
+		event.registerEntityRenderer(ModEntities.BULLET.get(), RendererObjWeapon::new);
 		// BOMBS
 		event.registerEntityRenderer(ModEntities.BOMB.get(), RendererObjWeapon::new);
 		// BUNKER BUSTERS

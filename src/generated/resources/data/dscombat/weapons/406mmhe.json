@@ -25,6 +25,7 @@
   "innacuracy": 1.1,
   "itemKey": "dscombat:120mmhe",
   "maxAge": 40,
+  "modelId": "406mmhe",
   "presetId": "406mmhe",
   "presetType": "bullet",
   "rackTypeKey": "",

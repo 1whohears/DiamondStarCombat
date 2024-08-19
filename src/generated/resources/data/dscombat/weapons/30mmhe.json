@@ -25,6 +25,7 @@
   "innacuracy": 1.1,
   "itemKey": "dscombat:20mm",
   "maxAge": 40,
+  "modelId": "20mm",
   "presetId": "30mmhe",
   "presetType": "bullet",
   "shootSoundKey": "dscombat:bullet_shoot_1",

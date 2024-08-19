@@ -25,6 +25,7 @@
   "innacuracy": 1.0,
   "itemKey": "dscombat:50mmhe",
   "maxAge": 40,
+  "modelId": "50mmhe",
   "presetId": "50mmhe",
   "presetType": "bullet",
   "rackTypeKey": "dscombat:xm12",

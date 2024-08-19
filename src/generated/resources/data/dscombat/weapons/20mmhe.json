@@ -28,6 +28,7 @@
   "innacuracy": 1.2,
   "itemKey": "dscombat:20mm",
   "maxAge": 40,
+  "modelId": "20mm",
   "presetId": "20mmhe",
   "presetType": "bullet",
   "rackTypeKey": "dscombat:xm12",

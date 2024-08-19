@@ -92,7 +92,7 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 repositories {
     maven { url "https://cursemaven.com" }
     maven { url "https://repo.repsy.io/mvn/1whohears/minigames" }
-    maven { url "https://repo.repsy.io/mvn/1whohears/onewholibs" }
+    maven { url "https://repo.repsy.io/mvn/1whohears/1wholibs" }
     maven {
         name = "Jared's maven"
         url = "https://maven.blamejared.com/"

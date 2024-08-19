@@ -37,9 +37,9 @@ import com.onewhohears.dscombat.client.particle.FlareParticle;
 import com.onewhohears.dscombat.client.particle.LargeSmokeCloudParticle;
 import com.onewhohears.dscombat.client.particle.ShrapnelParticle;
 import com.onewhohears.dscombat.client.renderer.RendererEntityInvisible;
-import com.onewhohears.dscombat.client.renderer.RendererEntityParachute;
 import com.onewhohears.dscombat.client.renderer.RendererEntityTurret;
 import com.onewhohears.dscombat.client.renderer.RendererEntityWeapon;
+import com.onewhohears.onewholibs.client.model.obj.ObjEntityModel;
 import com.onewhohears.onewholibs.client.renderer.RendererObjEntity;
 import com.onewhohears.dscombat.client.renderer.RendererObjVehicle;
 import com.onewhohears.dscombat.client.renderer.RendererObjWeapon;
@@ -96,7 +96,7 @@ public final class ClientModEvents {
 		//event.registerLayerDefinition(EntityModelSAMLauncher.LAYER_LOCATION, EntityModelSAMLauncher::createBodyLayer);
 		//event.registerLayerDefinition(EntityModelCFM56.LAYER_LOCATION, EntityModelCFM56::createBodyLayer);
 		event.registerLayerDefinition(EntityModelGruetzBB.LAYER_LOCATION, EntityModelGruetzBB::createBodyLayer);
-		event.registerLayerDefinition(EntityModelParachute.LAYER_LOCATION, EntityModelParachute::createBodyLayer);
+		//event.registerLayerDefinition(EntityModelParachute.LAYER_LOCATION, EntityModelParachute::createBodyLayer);
 		//event.registerLayerDefinition(InWorldScreenModel.LAYER_LOCATION, InWorldScreenModel::createBodyLayer);
 	}
 	
@@ -201,15 +201,11 @@ public final class ClientModEvents {
 		event.registerEntityRenderer(ModEntities.FLARE.get(), RendererEntityInvisible::new);
 		event.registerEntityRenderer(ModEntities.ROTABLE_HITBOX.get(), RendererEntityInvisible::new);
 		event.registerEntityRenderer(ModEntities.CHAIN_HOOK.get(), 
-				(context) -> new RendererObjEntity<>(context,
-                        new ChainHookModel("chain_hook")));
+				(context) -> new RendererObjEntity<>(context, new ChainHookModel("chain_hook")));
 		event.registerEntityRenderer(ModEntities.GIMBAL_CAMERA.get(), 
-				(context) -> new RendererObjEntity<>(context,
-                        new GimbalCameraModel()));
+				(context) -> new RendererObjEntity<>(context, new GimbalCameraModel()));
 		event.registerEntityRenderer(ModEntities.PARACHUTE.get(), 
-				(context) -> new RendererEntityParachute(context, 
-						new EntityModelParachute(models.bakeLayer(EntityModelParachute.LAYER_LOCATION)), 
-						new ResourceLocation(DSCombatMod.MODID, "textures/entity/part/parachute.png")));
+				(context) -> new RendererObjEntity<>(context, new ObjEntityModel<>("parachute")));
 	}
 	
 	@SubscribeEvent

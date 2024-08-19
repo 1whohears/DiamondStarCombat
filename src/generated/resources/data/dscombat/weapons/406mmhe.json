@@ -29,6 +29,6 @@
   "presetId": "406mmhe",
   "presetType": "bullet",
   "rackTypeKey": "",
-  "shootSoundKey": "dscombat:bullet_shoot_1",
+  "shootSoundKey": "dscombat:cannon_shoot_1",
   "speed": 5.0
 }

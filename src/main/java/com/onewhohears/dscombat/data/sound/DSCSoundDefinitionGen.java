@@ -22,7 +22,7 @@ public class DSCSoundDefinitionGen extends SoundDefinitionsProvider {
 
 	@Override
 	public void registerSounds() {
-		soundsFromRegistry.forEach((soundEvent, definition) -> add(soundEvent, definition));
+		soundsFromRegistry.forEach(this::add);
 	}
 	
 	public static void registerSound(SoundEvent soundEvent, String path, String subtitle, float volume) {
@@ -33,6 +33,13 @@ public class DSCSoundDefinitionGen extends SoundDefinitionsProvider {
 	public static void registerStreamSound(SoundEvent soundEvent, String path, String subtitle, float volume) {
 		soundsFromRegistry.put(soundEvent.getLocation().getPath(), definition().subtitle(subtitle).with(
 				sound(new ResourceLocation(DSCombatMod.MODID, path)).stream().volume(volume)));
+	}
+
+	public static void registerSound(SoundEvent soundEvent, String subtitle, float volume, String... paths) {
+		SoundDefinition def = definition().subtitle(subtitle);
+		for (String path : paths)
+			def.with(sound(new ResourceLocation(DSCombatMod.MODID, path)).volume(volume));
+		soundsFromRegistry.put(soundEvent.getLocation().getPath(), def);
 	}
 
 }

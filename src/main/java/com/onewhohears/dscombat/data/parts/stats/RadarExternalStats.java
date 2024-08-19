@@ -1,8 +1,8 @@
 package com.onewhohears.dscombat.data.parts.stats;
 
 import com.google.gson.JsonObject;
-import com.onewhohears.dscombat.data.jsonpreset.JsonPresetInstance;
-import com.onewhohears.dscombat.data.jsonpreset.JsonPresetType;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetInstance;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetType;
 import com.onewhohears.dscombat.data.parts.PartType;
 import com.onewhohears.dscombat.data.parts.instance.RadarExternalInstance;
 import com.onewhohears.dscombat.init.ModEntities;

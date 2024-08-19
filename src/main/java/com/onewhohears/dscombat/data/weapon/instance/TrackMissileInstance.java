@@ -6,7 +6,7 @@ import com.onewhohears.dscombat.data.weapon.stats.TrackMissileStats;
 import com.onewhohears.dscombat.data.weapon.stats.TrackMissileStats.TargetType;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.entity.weapon.TrackEntityMissile;
-import com.onewhohears.dscombat.util.UtilEntity;
+import com.onewhohears.dscombat.util.UtilVehicleEntity;
 
 import net.minecraft.world.entity.Entity;
 
@@ -19,7 +19,7 @@ public class TrackMissileInstance<T extends TrackMissileStats> extends MissileIn
 	@Override
 	public boolean couldRadarWeaponTargetEntity(Entity entity, Entity radar) {
 		if (!super.couldRadarWeaponTargetEntity(entity, radar)) return false;
-		boolean groundWater = UtilEntity.isOnGroundOrWater(entity);
+		boolean groundWater = UtilVehicleEntity.isOnGroundOrWater(entity);
 		TargetType targetType = getStats().getTargetType();
 		if (targetType == TargetType.AIR && groundWater) return false;
 		else if (targetType == TargetType.GROUND && !groundWater) return false;
@@ -42,7 +42,7 @@ public class TrackMissileInstance<T extends TrackMissileStats> extends MissileIn
 			setLaunchFail("error.dscombat.no_target_selected");
 			return null;
 		}
-		boolean groundWater = UtilEntity.isOnGroundOrWater(target);
+		boolean groundWater = UtilVehicleEntity.isOnGroundOrWater(target);
 		TargetType targetType = getStats().getTargetType();
 		if (targetType == TargetType.AIR && groundWater) {
 			setLaunchFail("error.dscombat.air_target_only");

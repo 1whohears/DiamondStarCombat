@@ -4,6 +4,8 @@ import java.util.Optional;
 
 import com.mojang.math.Quaternion;
 
+import com.onewhohears.onewholibs.util.math.UtilAngles;
+import com.onewhohears.onewholibs.util.math.UtilGeometry;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;

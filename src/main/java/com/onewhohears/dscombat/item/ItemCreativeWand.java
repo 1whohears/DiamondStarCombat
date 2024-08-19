@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModItems;
-import com.onewhohears.dscombat.util.UtilMCText;
+import com.onewhohears.onewholibs.util.UtilMCText;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.stats.Stats;

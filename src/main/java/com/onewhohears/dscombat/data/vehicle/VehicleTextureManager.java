@@ -8,7 +8,7 @@ import com.onewhohears.dscombat.client.texture.VehicleDynamicTextures;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleTexture;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.dscombat.util.UtilEntity;
+import com.onewhohears.onewholibs.util.UtilEntity;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.CompoundTag;

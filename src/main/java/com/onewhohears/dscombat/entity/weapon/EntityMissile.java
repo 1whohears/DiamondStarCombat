@@ -13,11 +13,12 @@ import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.util.UtilClientSafeSounds;
-import com.onewhohears.dscombat.util.UtilEntity;
-import com.onewhohears.dscombat.util.UtilMCText;
+import com.onewhohears.dscombat.util.UtilVehicleEntity;
+import com.onewhohears.onewholibs.util.UtilEntity;
+import com.onewhohears.onewholibs.util.UtilMCText;
 import com.onewhohears.dscombat.util.UtilParticles;
-import com.onewhohears.dscombat.util.math.UtilAngles;
-import com.onewhohears.dscombat.util.math.UtilGeometry;
+import com.onewhohears.onewholibs.util.math.UtilAngles;
+import com.onewhohears.onewholibs.util.math.UtilGeometry;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.MutableComponent;
@@ -149,7 +150,7 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 		}
 		//System.out.println("intercept math");
 		Vec3 tVel = target.getDeltaMovement();
-		if (UtilEntity.isOnGroundOrWater(target)) 
+		if (UtilVehicleEntity.isOnGroundOrWater(target))
 			tVel = tVel.multiply(1, 0, 1);
 		Vec3 pos = UtilGeometry.interceptPos( 
 			position(), getDeltaMovement(), 

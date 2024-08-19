@@ -8,9 +8,9 @@ import com.onewhohears.dscombat.data.parts.PartPresets;
 import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 import com.onewhohears.dscombat.data.parts.stats.PartStats;
 import com.onewhohears.dscombat.init.ModItems;
-import com.onewhohears.dscombat.util.UtilItem;
-import com.onewhohears.dscombat.util.UtilParse;
+import com.onewhohears.onewholibs.util.UtilItem;
 
+import com.onewhohears.dscombat.util.UtilPresetParse;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -83,7 +83,7 @@ public class ItemPart extends Item {
 	}
 	
 	public PartInstance<?> getPartInstance(ItemStack stack) {
-		return UtilParse.parsePartFromItem(stack, getDefaultPartPresetId());
+		return UtilPresetParse.parsePartFromItem(stack, getDefaultPartPresetId());
 	}
 
 }

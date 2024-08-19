@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
 import com.onewhohears.dscombat.Config;
-import com.onewhohears.dscombat.util.UtilEntity;
+import com.onewhohears.onewholibs.util.UtilEntity;
 
 import net.minecraft.world.entity.Entity;
 

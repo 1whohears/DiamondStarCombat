@@ -9,7 +9,7 @@ import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModItems;
-import com.onewhohears.dscombat.util.UtilMCText;
+import com.onewhohears.onewholibs.util.UtilMCText;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;

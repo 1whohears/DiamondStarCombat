@@ -9,7 +9,7 @@ import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.parts.PartType;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.dscombat.util.math.UtilAngles;
+import com.onewhohears.onewholibs.util.math.UtilAngles;
 
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;

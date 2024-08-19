@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat;
 
+import com.onewhohears.dscombat.client.model.obj.customanims.VehicleModelTransforms;
 import com.onewhohears.dscombat.client.screen.VehicleBlockScreen;
 import com.onewhohears.dscombat.client.screen.VehicleScreen;
 import com.onewhohears.dscombat.client.screen.WeaponsBlockScreen;
@@ -31,6 +32,7 @@ import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.dscombat.init.ModVillagers;
 
+import com.onewhohears.onewholibs.client.model.obj.customanims.CustomAnims;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -49,11 +51,9 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
  * This is the main class of the Diamond Star Combat mod.
  * Some events are registered here but most are subscribed via Annotation. 
  * Here are some of the event classes and other possibly relevant Entry Points:
- * 
  * {@link com.onewhohears.dscombat.client.event.forgebus.ClientCameraEvents}
  * {@link com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents}
  * {@link com.onewhohears.dscombat.client.event.forgebus.ClientRenderEvents}
- * {@link com.onewhohears.dscombat.client.event.forgebus.ClientRenderRadarEvents}
  * {@link com.onewhohears.dscombat.client.event.ClientModEvents}
  * {@link com.onewhohears.dscombat.common.event.CommonForgeEvents}
  * {@link EntityVehicle}
@@ -98,9 +98,7 @@ public class DSCombatMod {
 		PacketHandler.register();
 		DSCGameRules.registerAll();
 		DependencySafety.fmlCommonSetup();
-		event.enqueueWork(() -> {
-			ModVillagers.registerPOIs();
-		});
+		event.enqueueWork(ModVillagers::registerPOIs);
 	}
     
     private void clientSetup(FMLClientSetupEvent event) {
@@ -109,6 +107,14 @@ public class DSCombatMod {
     	MenuScreens.register(ModContainers.AIRCRAFT_BLOCK_MENU.get(), VehicleBlockScreen::new);
     	ItemBlockRenderTypes.setRenderLayer(ModFluids.OIL_FLUID_SOURCE.get(), RenderType.translucent());
     	ItemBlockRenderTypes.setRenderLayer(ModFluids.OIL_FLUID_FLOWING.get(), RenderType.translucent());
+		CustomAnims.addAnim("input_bound_translation", VehicleModelTransforms.InputBoundTranslation::new);
+		CustomAnims.addAnim("motor_rotation", VehicleModelTransforms.MotorRotation::new);
+		CustomAnims.addAnim("wheel_rotation", VehicleModelTransforms.WheelRotation::new);
+		CustomAnims.addAnim("input_bound_rotation", VehicleModelTransforms.InputBoundRotation::new);
+		CustomAnims.addAnim("spinning_radar", VehicleModelTransforms.SpinningRadar::new);
+		CustomAnims.addAnim("landing_gear", VehicleModelTransforms.LandingGear::new);
+		CustomAnims.addAnim("hitbox_destroy_part", VehicleModelTransforms.HitboxDestroyPart::new);
+		CustomAnims.addAnim("plane_flap_rotation", VehicleModelTransforms.PlaneFlapRotation::new);
     }
     
     private void onGatherData(GatherDataEvent event) {

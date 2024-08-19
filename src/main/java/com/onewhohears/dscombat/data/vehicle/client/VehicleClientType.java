@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.data.vehicle.client;
 
-import com.onewhohears.dscombat.data.jsonpreset.JsonPresetStats;
-import com.onewhohears.dscombat.data.jsonpreset.JsonPresetType;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetStats;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetType;
 
 public abstract class VehicleClientType extends JsonPresetType {
 	public static final Standard STANDARD = Standard.INSTANCE;

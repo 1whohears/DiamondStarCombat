@@ -75,8 +75,8 @@
         "model_part_key": "rudder/blade",
         "pivot": {
           "x": 0.0,
-          "y": -4.0,
-          "z": -36.0
+          "y": -0.25,
+          "z": -2.25
         },
         "rot_axis": "Z",
         "rot_rate": 43.0
@@ -88,8 +88,8 @@
         "model_part_key": "rudder",
         "pivot": {
           "x": 0.0,
-          "y": 11.0,
-          "z": -20.0
+          "y": 0.6875,
+          "z": -1.25
         },
         "rot_axis": "Y"
       }

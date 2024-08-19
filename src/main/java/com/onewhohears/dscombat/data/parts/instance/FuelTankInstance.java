@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.onewhohears.dscombat.data.parts.LoadableRecipePartInstance;
 import com.onewhohears.dscombat.data.parts.stats.FuelTankStats;
-import com.onewhohears.dscombat.util.UtilMCText;
+import com.onewhohears.onewholibs.util.UtilMCText;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;

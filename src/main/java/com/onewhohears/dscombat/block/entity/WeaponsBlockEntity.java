@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.block.entity;
 
 import com.onewhohears.dscombat.common.container.menu.WeaponsBlockContainerMenu;
 import com.onewhohears.dscombat.init.ModBlockEntities;
-import com.onewhohears.dscombat.util.UtilMCText;
+import com.onewhohears.onewholibs.util.UtilMCText;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;

@@ -41,9 +41,9 @@
         "input_axis": "YAW",
         "model_part_key": "wheel",
         "pivot": {
-          "x": 8.0,
-          "y": 19.0,
-          "z": 13.0
+          "x": 0.5,
+          "y": 1.1875,
+          "z": 0.8125
         },
         "rot_axis": "Z"
       },
@@ -53,9 +53,9 @@
         "input_axis": "YAW",
         "model_part_key": "wl0",
         "pivot": {
-          "x": 16.0,
-          "y": 6.0,
-          "z": 21.0
+          "x": 1.0,
+          "y": 0.375,
+          "z": 1.3125
         },
         "rot_axis": "Y"
       },
@@ -65,9 +65,9 @@
         "input_axis": "YAW",
         "model_part_key": "wr0",
         "pivot": {
-          "x": -16.0,
-          "y": 6.0,
-          "z": 21.0
+          "x": -1.0,
+          "y": 0.375,
+          "z": 1.3125
         },
         "rot_axis": "Y"
       },
@@ -75,9 +75,9 @@
         "anim_id": "wheel_rotation",
         "model_part_key": "wl0",
         "pivot": {
-          "x": 16.0,
-          "y": 6.0,
-          "z": 21.0
+          "x": 1.0,
+          "y": 0.375,
+          "z": 1.3125
         },
         "rot_axis": "X",
         "rot_rate": 160.0
@@ -86,9 +86,9 @@
         "anim_id": "wheel_rotation",
         "model_part_key": "wl1",
         "pivot": {
-          "x": 16.0,
-          "y": 6.0,
-          "z": -19.0
+          "x": 1.0,
+          "y": 0.375,
+          "z": -1.1875
         },
         "rot_axis": "X",
         "rot_rate": 160.0
@@ -97,9 +97,9 @@
         "anim_id": "wheel_rotation",
         "model_part_key": "wr0",
         "pivot": {
-          "x": -16.0,
-          "y": 6.0,
-          "z": 21.0
+          "x": -1.0,
+          "y": 0.375,
+          "z": 1.3125
         },
         "rot_axis": "X",
         "rot_rate": 160.0
@@ -108,9 +108,9 @@
         "anim_id": "wheel_rotation",
         "model_part_key": "wr1",
         "pivot": {
-          "x": -16.0,
-          "y": 6.0,
-          "z": -19.0
+          "x": -1.0,
+          "y": 0.375,
+          "z": -1.1875
         },
         "rot_axis": "X",
         "rot_rate": 160.0

@@ -5,9 +5,9 @@ import javax.annotation.Nullable;
 import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 import com.onewhohears.dscombat.init.ModRecipes;
 import com.onewhohears.dscombat.init.ModTags;
-import com.onewhohears.dscombat.util.UtilItem;
-import com.onewhohears.dscombat.util.UtilParse;
+import com.onewhohears.onewholibs.util.UtilItem;
 
+import com.onewhohears.dscombat.util.UtilPresetParse;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
@@ -92,7 +92,7 @@ public class VehiclePartRepairRecipe extends CustomRecipe {
 	
 	@Nullable
 	public PartInstance<?> getPart(ItemStack stack) {
-		return UtilParse.parsePartFromItem(stack);
+		return UtilPresetParse.parsePartFromItem(stack);
 	}
 
 	@Override

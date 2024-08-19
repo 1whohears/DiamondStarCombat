@@ -3,14 +3,14 @@ package com.onewhohears.dscombat.data.parts.stats;
 import java.util.List;
 
 import com.google.gson.JsonObject;
-import com.onewhohears.dscombat.data.jsonpreset.JsonPresetInstance;
-import com.onewhohears.dscombat.data.jsonpreset.JsonPresetType;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetInstance;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetType;
 import com.onewhohears.dscombat.data.parts.PartType;
 import com.onewhohears.dscombat.data.parts.instance.TurretInstance;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.init.ModEntities;
-import com.onewhohears.dscombat.util.UtilParse;
 
+import com.onewhohears.onewholibs.util.UtilParse;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;

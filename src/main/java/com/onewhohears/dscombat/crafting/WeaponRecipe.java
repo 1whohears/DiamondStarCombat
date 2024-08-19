@@ -7,7 +7,7 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.init.ModBlocks;
-import com.onewhohears.dscombat.util.UtilItem;
+import com.onewhohears.onewholibs.util.UtilItem;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;

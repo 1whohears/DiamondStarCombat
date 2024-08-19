@@ -5,16 +5,16 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
-import com.onewhohears.dscombat.data.jsonpreset.JsonPresetStats;
+import com.onewhohears.onewholibs.data.crafting.IngredientStackBuilder;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetStats;
 import com.onewhohears.dscombat.data.parts.PartType;
 import com.onewhohears.dscombat.data.parts.SlotType;
 import com.onewhohears.dscombat.data.parts.instance.PartInstance;
-import com.onewhohears.dscombat.data.recipe.DSCIngredientBuilder;
-import com.onewhohears.dscombat.util.UtilEntity;
-import com.onewhohears.dscombat.util.UtilItem;
-import com.onewhohears.dscombat.util.UtilMCText;
-import com.onewhohears.dscombat.util.UtilParse;
+import com.onewhohears.onewholibs.util.UtilEntity;
+import com.onewhohears.onewholibs.util.UtilItem;
+import com.onewhohears.onewholibs.util.UtilMCText;
 
+import com.onewhohears.onewholibs.util.UtilParse;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
@@ -71,7 +71,7 @@ public abstract class PartStats extends JsonPresetStats {
 	}
 	
 	public NonNullList<Ingredient> getRepairCost() {
-		if (repair_cost == null) repair_cost = DSCIngredientBuilder.getIngredients(
+		if (repair_cost == null) repair_cost = IngredientStackBuilder.getIngredients(
 				getJsonData(), "repair_cost");
 		return repair_cost;
 	}

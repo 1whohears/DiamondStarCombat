@@ -5,11 +5,11 @@ import static com.onewhohears.dscombat.DSCombatMod.MODID;
 import java.util.List;
 
 import com.google.gson.JsonObject;
-import com.onewhohears.dscombat.data.jsonpreset.JsonPresetInstance;
-import com.onewhohears.dscombat.data.jsonpreset.JsonPresetType;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetInstance;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetType;
 import com.onewhohears.dscombat.data.weapon.WeaponType;
 import com.onewhohears.dscombat.data.weapon.instance.IRMissileInstance;
-import com.onewhohears.dscombat.util.UtilMCText;
+import com.onewhohears.onewholibs.util.UtilMCText;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;

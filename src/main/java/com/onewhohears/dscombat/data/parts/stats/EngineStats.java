@@ -3,13 +3,13 @@ package com.onewhohears.dscombat.data.parts.stats;
 import java.util.List;
 
 import com.google.gson.JsonObject;
-import com.onewhohears.dscombat.data.jsonpreset.JsonPresetInstance;
-import com.onewhohears.dscombat.data.jsonpreset.JsonPresetType;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetInstance;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetType;
 import com.onewhohears.dscombat.data.parts.PartType;
 import com.onewhohears.dscombat.data.parts.instance.EngineInstance;
-import com.onewhohears.dscombat.util.UtilMCText;
-import com.onewhohears.dscombat.util.UtilParse;
+import com.onewhohears.onewholibs.util.UtilMCText;
 
+import com.onewhohears.onewholibs.util.UtilParse;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;

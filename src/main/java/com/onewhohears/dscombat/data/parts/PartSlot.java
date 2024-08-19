@@ -9,9 +9,10 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientRemovePart;
 import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.DataSerializers;
-import com.onewhohears.dscombat.util.UtilEntity;
-import com.onewhohears.dscombat.util.UtilParse;
+import com.onewhohears.onewholibs.util.UtilEntity;
 
+import com.onewhohears.dscombat.util.UtilPresetParse;
+import com.onewhohears.onewholibs.util.UtilParse;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.phys.Vec3;
@@ -34,7 +35,7 @@ public class PartSlot {
 	public PartSlot(CompoundTag entityNbt, @Nullable CompoundTag presetNbt) {
 		slotId = entityNbt.getString("name");
 		locked = entityNbt.getBoolean("locked");
-		if (entityNbt.contains("data")) data = UtilParse.parsePartFromCompound(entityNbt.getCompound("data"));
+		if (entityNbt.contains("data")) data = UtilPresetParse.parsePartFromCompound(entityNbt.getCompound("data"));
 		if (presetNbt == null) presetNbt = entityNbt;
 		type = SlotType.getByName(presetNbt.getString("slot_type"));
 		pos = UtilParse.readVec3(presetNbt, "slot_pos");

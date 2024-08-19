@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.data.vehicle.client;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.jsonpreset.JsonPresetAssetReader;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetAssetReader;
 
 public class VehicleClientPresets extends JsonPresetAssetReader<VehicleClientStats> {
 	

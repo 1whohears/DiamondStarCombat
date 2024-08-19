@@ -8,20 +8,20 @@ import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
-import com.onewhohears.dscombat.data.jsonpreset.JsonPresetStats;
+import com.onewhohears.onewholibs.data.crafting.IngredientStackBuilder;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetStats;
 import com.onewhohears.dscombat.data.parts.PartPresets;
 import com.onewhohears.dscombat.data.parts.stats.PartStats;
-import com.onewhohears.dscombat.data.recipe.DSCIngredientBuilder;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.init.ModSounds;
-import com.onewhohears.dscombat.util.UtilEntity;
-import com.onewhohears.dscombat.util.UtilItem;
-import com.onewhohears.dscombat.util.UtilMCText;
-import com.onewhohears.dscombat.util.UtilParse;
+import com.onewhohears.onewholibs.util.UtilEntity;
+import com.onewhohears.onewholibs.util.UtilItem;
+import com.onewhohears.onewholibs.util.UtilMCText;
 import com.onewhohears.dscombat.util.UtilParticles;
 import com.onewhohears.dscombat.util.UtilSound;
 
+import com.onewhohears.onewholibs.util.UtilParse;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -78,7 +78,7 @@ public abstract class WeaponStats extends JsonPresetStats {
 	
 	public NonNullList<Ingredient> getIngredients() {
 		if (ingredients == null) {
-			ingredients = DSCIngredientBuilder.getIngredients(getJsonData());
+			ingredients = IngredientStackBuilder.getIngredients(getJsonData());
 		}
 		return ingredients;
 	}

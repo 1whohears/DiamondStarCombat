@@ -5,9 +5,9 @@ import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
-import com.onewhohears.dscombat.util.UtilMCText;
-import com.onewhohears.dscombat.util.UtilParse;
+import com.onewhohears.onewholibs.util.UtilMCText;
 
+import com.onewhohears.onewholibs.util.UtilParse;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.Entity;

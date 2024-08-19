@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.data.weapon;
 
-import com.onewhohears.dscombat.data.jsonpreset.JsonPresetStats;
-import com.onewhohears.dscombat.data.jsonpreset.JsonPresetType;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetStats;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetType;
 import com.onewhohears.dscombat.data.weapon.stats.AntiRadarMissileStats;
 import com.onewhohears.dscombat.data.weapon.stats.BombStats;
 import com.onewhohears.dscombat.data.weapon.stats.BulletStats;

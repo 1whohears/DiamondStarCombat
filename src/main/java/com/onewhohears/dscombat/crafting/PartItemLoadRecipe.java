@@ -8,8 +8,8 @@ import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.data.parts.LoadableRecipePartInstance;
 import com.onewhohears.dscombat.data.parts.instance.PartInstance;
-import com.onewhohears.dscombat.util.UtilParse;
 
+import com.onewhohears.dscombat.util.UtilPresetParse;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
@@ -163,7 +163,7 @@ public abstract class PartItemLoadRecipe<I extends LoadableRecipePartInstance> e
 	@Nullable
 	protected I getLoadablePartDataFromItem(ItemStack part) {
 		if (part == null) return null;
-		PartInstance<?> pd = UtilParse.parsePartFromItem(part);
+		PartInstance<?> pd = UtilPresetParse.parsePartFromItem(part);
 		if (pd == null) return null;
 		return (I) pd;
 	}

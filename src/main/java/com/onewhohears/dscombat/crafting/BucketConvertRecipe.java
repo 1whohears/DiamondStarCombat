@@ -5,7 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.util.UtilItem;
+import com.onewhohears.onewholibs.util.UtilItem;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;

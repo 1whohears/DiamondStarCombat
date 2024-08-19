@@ -136,8 +136,8 @@
         "model_part_key": "gear_front",
         "pivot": {
           "x": 0.0,
-          "y": -21.0,
-          "z": 56.0
+          "y": -1.3125,
+          "z": 3.5
         },
         "rot_axis": "X"
       },
@@ -146,9 +146,9 @@
         "fold_angle": -90.0,
         "model_part_key": "gear_left",
         "pivot": {
-          "x": 32.0,
-          "y": -10.0,
-          "z": 11.0
+          "x": 2.0,
+          "y": -0.625,
+          "z": 0.6875
         },
         "rot_axis": "Z"
       },
@@ -157,9 +157,9 @@
         "fold_angle": 90.0,
         "model_part_key": "gear_right",
         "pivot": {
-          "x": -32.0,
-          "y": -10.0,
-          "z": 11.0
+          "x": -2.0,
+          "y": -0.625,
+          "z": 0.6875
         },
         "rot_axis": "Z"
       },
@@ -168,8 +168,8 @@
         "model_part_key": "radar",
         "pivot": {
           "x": 0.0,
-          "y": 21.0,
-          "z": -24.0
+          "y": 1.3125,
+          "z": -1.5
         },
         "radar_id": "ar20k",
         "rot_axis": "Y",
@@ -181,9 +181,9 @@
         "input_axis": "ROLL",
         "model_part_key": "stick",
         "pivot": {
-          "x": 8.0,
-          "y": -20.0,
-          "z": 83.5
+          "x": 0.5,
+          "y": -1.25,
+          "z": 5.21875
         },
         "rot_axis": "Z"
       },
@@ -193,9 +193,9 @@
         "input_axis": "PITCH",
         "model_part_key": "stick",
         "pivot": {
-          "x": 8.0,
-          "y": -20.0,
-          "z": 83.5
+          "x": 0.5,
+          "y": -1.25,
+          "z": 5.21875
         },
         "rot_axis": "X"
       }

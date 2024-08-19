@@ -5,10 +5,7 @@ import java.util.Set;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.command.DSCGameRules;
-import com.onewhohears.dscombat.common.event.custom.RegisterPresetTypesEvent;
-import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.common.network.toclient.ToClientDataPackSynch;
-import com.onewhohears.dscombat.common.network.toclient.ToClientSynchGameRules;
+import com.onewhohears.onewholibs.common.event.GetJsonPresetListenersEvent;
 import com.onewhohears.dscombat.data.graph.StatGraphs;
 import com.onewhohears.dscombat.data.parts.PartPresets;
 import com.onewhohears.dscombat.data.radar.RadarPresets;
@@ -20,9 +17,6 @@ import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.vehicle.RotableHitboxes;
 
 import net.minecraft.world.entity.Entity;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.AddReloadListenerEvent;
-import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -32,8 +26,6 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.network.PacketDistributor.PacketTarget;
 
 @Mod.EventBusSubscriber(modid = DSCombatMod.MODID, bus = Bus.FORGE)
 public final class CommonForgeEvents {
@@ -80,17 +72,6 @@ public final class CommonForgeEvents {
 	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
-	public static void onDatapackSync(OnDatapackSyncEvent event) {
-		PacketTarget target;
-		if (event.getPlayer() == null) target = PacketDistributor.ALL.noArg();
-		else {
-			target = PacketDistributor.PLAYER.with(() -> event.getPlayer());
-			PacketHandler.INSTANCE.send(target, new ToClientSynchGameRules(event.getPlayer().getServer()));
-		}
-		PacketHandler.INSTANCE.send(target, new ToClientDataPackSynch());
-	}
-	
-	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void serverStoppingEvent(ServerStoppingEvent event) {
 		VehiclePresets.close();
 		WeaponPresets.close();
@@ -101,22 +82,12 @@ public final class CommonForgeEvents {
 	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
-	public static void addReloadListener(AddReloadListenerEvent event) {
-		MinecraftForge.EVENT_BUS.post(new RegisterPresetTypesEvent());
+	public static void addJsonPresetListener(GetJsonPresetListenersEvent event) {
 		event.addListener(StatGraphs.get());
 		event.addListener(VehiclePresets.get());
 		event.addListener(WeaponPresets.get());
 		event.addListener(RadarPresets.get());
 		event.addListener(PartPresets.get());
-	}
-	
-	@SubscribeEvent(priority = EventPriority.NORMAL)
-	public static void registerPresetTypes(RegisterPresetTypesEvent event) {
-		StatGraphs.get().registerDefaultPresetTypes();
-		VehiclePresets.get().registerDefaultPresetTypes();
-		WeaponPresets.get().registerDefaultPresetTypes();
-		RadarPresets.get().registerDefaultPresetTypes();
-		PartPresets.get().registerDefaultPresetTypes();
 	}
 	
 	/*@SubscribeEvent(priority = EventPriority.NORMAL)

@@ -7,7 +7,7 @@ import java.util.function.Supplier;
 import com.mojang.datafixers.util.Pair;
 import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.crafting.WeaponRecipe;
-import com.onewhohears.dscombat.util.UtilItem;
+import com.onewhohears.onewholibs.util.UtilItem;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;

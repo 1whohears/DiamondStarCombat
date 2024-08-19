@@ -9,9 +9,9 @@ import com.onewhohears.dscombat.data.parts.stats.PartStats;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.init.ModItems;
-import com.onewhohears.dscombat.util.UtilMCText;
-import com.onewhohears.dscombat.util.UtilParse;
+import com.onewhohears.onewholibs.util.UtilMCText;
 
+import com.onewhohears.dscombat.util.UtilPresetParse;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -49,7 +49,7 @@ public class ItemWeaponPart extends ItemPart {
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tips, TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tips, isAdvanced);
-		WeaponPartInstance<?> data = (WeaponPartInstance<?>) UtilParse.parsePartFromItem(stack);
+		WeaponPartInstance<?> data = (WeaponPartInstance<?>) UtilPresetParse.parsePartFromItem(stack);
 		String id = data.getWeaponId();
 		if (id.isEmpty()) return;
 		tips.add(UtilMCText.literal("Ammo: "+(int)data.getCurrentAmmo()+"/"+data.getStats().getMaxAmmo()).setStyle(Style.EMPTY.withColor(0xAAAAAA)));

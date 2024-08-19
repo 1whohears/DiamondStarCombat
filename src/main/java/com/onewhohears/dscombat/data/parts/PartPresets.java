@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.data.parts;
 
 import java.util.Arrays;
 
-import com.onewhohears.dscombat.data.jsonpreset.JsonPresetReloadListener;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetReloadListener;
 import com.onewhohears.dscombat.data.parts.stats.PartStats;
 
 public class PartPresets extends JsonPresetReloadListener<PartStats> {

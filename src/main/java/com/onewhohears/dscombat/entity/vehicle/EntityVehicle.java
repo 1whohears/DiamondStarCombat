@@ -11,6 +11,7 @@ import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
+import com.onewhohears.dscombat.util.UtilVehicleEntity;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
@@ -59,13 +60,13 @@ import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.dscombat.item.VehicleInteractItem;
 import com.onewhohears.dscombat.util.UtilClientPacket;
-import com.onewhohears.dscombat.util.UtilEntity;
-import com.onewhohears.dscombat.util.UtilMCText;
+import com.onewhohears.onewholibs.util.UtilEntity;
+import com.onewhohears.onewholibs.util.UtilMCText;
 import com.onewhohears.dscombat.util.UtilParticles;
 import com.onewhohears.dscombat.util.UtilServerPacket;
-import com.onewhohears.dscombat.util.math.UtilAngles;
-import com.onewhohears.dscombat.util.math.UtilAngles.EulerAngles;
-import com.onewhohears.dscombat.util.math.UtilGeometry;
+import com.onewhohears.onewholibs.util.math.UtilAngles;
+import com.onewhohears.onewholibs.util.math.UtilAngles.EulerAngles;
+import com.onewhohears.onewholibs.util.math.UtilGeometry;
 import com.onewhohears.dscombat.util.math.UtilRandom;
 
 import net.minecraft.client.Minecraft;
@@ -156,7 +157,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	/**
 	 * this vehicle's original preset. 
-	 * will be {@link defaultPreset} if it's not defined in its NBT.
+	 * will be {@link #defaultPreset} if it's not defined in its NBT.
 	 * synched with client.  
 	 */
 	public String preset;
@@ -2360,7 +2361,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     
     /**
      * entity tracking missile calls this server side when tracking this plane
-     * @param pos the position of the missile
+     * @param missile the missile this vehicle is being tracked by
      */
     public void trackedByMissile(Entity missile) {
     	if (hasControllingPassenger()) radarSystem.addRWRWarning(
@@ -2369,12 +2370,12 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     
     /**
      * another radar system calls this server side when tracking this craft
-     * @param pos the position of the radar
+     * @param radar the entity that is tracking this vehicle with radar
      */
     public void lockedOnto(Entity radar) {
     	if (hasControllingPassenger()) radarSystem.addRWRWarning(
-    			radar.getId(), radar.position(), false, 
-    			UtilEntity.isOnGroundOrWater(radar));
+    			radar.getId(), radar.position(), false,
+				UtilVehicleEntity.isOnGroundOrWater(radar));
     }
     
     public void playIRTone() {

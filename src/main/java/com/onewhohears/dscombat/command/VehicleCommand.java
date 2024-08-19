@@ -6,7 +6,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.onewhohears.dscombat.command.argument.VehiclePresetArgument;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
-import com.onewhohears.dscombat.util.UtilMCText;
+import com.onewhohears.onewholibs.util.UtilMCText;
 
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;

@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.client.model.obj;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
-import com.onewhohears.dscombat.util.math.UtilAngles;
+import com.onewhohears.onewholibs.util.math.UtilAngles;
 
 public class ObjTurretModel<T extends EntityTurret> extends ObjPartModel<T> {
 	

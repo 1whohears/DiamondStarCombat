@@ -15,8 +15,8 @@ import com.onewhohears.dscombat.common.network.toserver.ToServerCraftPlane;
 import com.onewhohears.dscombat.crafting.VehicleRecipe;
 import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
-import com.onewhohears.dscombat.util.UtilItem;
-import com.onewhohears.dscombat.util.UtilMCText;
+import com.onewhohears.onewholibs.util.UtilItem;
+import com.onewhohears.onewholibs.util.UtilMCText;
 
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;

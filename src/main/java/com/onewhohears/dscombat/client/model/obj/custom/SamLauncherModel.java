@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.math.Matrix4f;
 import com.onewhohears.dscombat.client.model.obj.ObjTurretModel;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
-import com.onewhohears.dscombat.util.math.UtilAngles;
+import com.onewhohears.onewholibs.util.math.UtilAngles;
 
 import net.minecraftforge.client.model.renderable.CompositeRenderable.Transforms;
 

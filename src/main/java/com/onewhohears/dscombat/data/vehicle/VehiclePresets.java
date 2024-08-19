@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.onewhohears.dscombat.crafting.VehicleRecipe;
-import com.onewhohears.dscombat.data.jsonpreset.JsonPresetReloadListener;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetReloadListener;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 
 import net.minecraft.world.item.crafting.RecipeManager;

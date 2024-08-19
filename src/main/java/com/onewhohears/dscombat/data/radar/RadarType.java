@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.data.radar;
 
-import com.onewhohears.dscombat.data.jsonpreset.JsonPresetStats;
-import com.onewhohears.dscombat.data.jsonpreset.JsonPresetType;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetStats;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetType;
 
 public abstract class RadarType extends JsonPresetType {
 	public static final Standard STANDARD = Standard.INSTANCE;

@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.integration.jei;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.crafting.VehicleRecipe;
 import com.onewhohears.dscombat.init.ModBlocks;
-import com.onewhohears.dscombat.util.UtilMCText;
+import com.onewhohears.onewholibs.util.UtilMCText;
 
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;

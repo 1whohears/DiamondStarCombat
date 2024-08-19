@@ -4,15 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.onewhohears.dscombat.Config;
-import com.onewhohears.dscombat.data.jsonpreset.JsonPresetInstance;
+import com.onewhohears.dscombat.util.UtilVehicleEntity;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetInstance;
 import com.onewhohears.dscombat.data.radar.RadarStats.PingEntityType;
 import com.onewhohears.dscombat.data.radar.RadarStats.RadarMode;
 import com.onewhohears.dscombat.data.radar.RadarStats.RadarPing;
 import com.onewhohears.dscombat.data.weapon.RadarTargetTypes;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModTags;
-import com.onewhohears.dscombat.util.UtilEntity;
-import com.onewhohears.dscombat.util.math.UtilGeometry;
+import com.onewhohears.onewholibs.util.UtilEntity;
+import com.onewhohears.onewholibs.util.math.UtilGeometry;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
@@ -163,7 +164,7 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 	
 	private boolean groundCheck(Entity ping) {
 		if (getStats().getThroWaterRange() > 0 && ping.isInWater()) return true;
-		boolean groundWater = UtilEntity.isOnGroundOrWater(ping);
+		boolean groundWater = UtilVehicleEntity.isOnGroundOrWater(ping);
 		if (getStats().isScanGround() && groundWater) return true;
 		if (getStats().isScanAir() && !groundWater) return true;
 		return false;
@@ -185,7 +186,7 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 			//System.out.println("not in cone");
 			return false;
 		}
-		double area = UtilEntity.getCrossSectionalArea(target) * stealth;
+		double area = UtilVehicleEntity.getCrossSectionalArea(target) * stealth;
 		double areaMin = (1-Math.pow(getStats().getRange(),-2)*Math.pow(dist-getStats().getRange(),2))*getStats().getSensitivity();
 		//System.out.println("area = "+area+" min = "+areaMin);
 		return area >= areaMin;

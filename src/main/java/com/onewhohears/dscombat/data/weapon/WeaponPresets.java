@@ -9,7 +9,7 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.crafting.WeaponRecipe;
-import com.onewhohears.dscombat.data.jsonpreset.JsonPresetReloadListener;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetReloadListener;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 
 import net.minecraft.nbt.CompoundTag;

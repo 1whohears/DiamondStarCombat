@@ -1,15 +1,15 @@
 package com.onewhohears.dscombat.data.weapon;
 
-import com.onewhohears.dscombat.data.recipe.DSCIngredientBuilder;
 import com.onewhohears.dscombat.data.weapon.stats.TrackMissileStats.TargetType;
 import com.onewhohears.dscombat.init.ModEntities;
-import com.onewhohears.dscombat.util.UtilParse;
 
+import com.onewhohears.onewholibs.data.crafting.IngredientStackBuilder;
+import com.onewhohears.onewholibs.util.UtilParse;
 import net.minecraft.resources.ResourceLocation;
 
 public class AbstractWeaponBuilders {
 	
-	public static abstract class WeaponBuilder<C extends WeaponBuilder<C>> extends DSCIngredientBuilder<C> {
+	public static abstract class WeaponBuilder<C extends WeaponBuilder<C>> extends IngredientStackBuilder<C> {
 		
 		protected WeaponBuilder(String namespace, String name, WeaponType type) {
 			super(namespace, name, type);

@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
+import com.onewhohears.dscombat.util.UtilPresetParse;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -19,8 +20,7 @@ import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 import com.onewhohears.dscombat.data.parts.instance.SeatInstance;
 import com.onewhohears.dscombat.data.parts.instance.StorageInstance;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.dscombat.util.UtilEntity;
-import com.onewhohears.dscombat.util.UtilParse;
+import com.onewhohears.onewholibs.util.UtilEntity;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -35,13 +35,13 @@ import net.minecraftforge.network.PacketDistributor;
 /**
  * manages the parts/inventory system for {@link EntityVehicle}.
  * reads the entity's nbt to load the saved parts.
- * communicates with {@link com.onewhohears.dscombat.data.radar.WeaponSystem} 
+ * communicates with {@link com.onewhohears.dscombat.data.weapon.WeaponSystem}
  * and {@link com.onewhohears.dscombat.data.radar.RadarSystem} to update a vehicle's 
  * available weapons/radars based on parts. 
  * used to add/update/remove parts.
  * used to access various information about the parts in a vehicle.
  * this part manager has a list of {@link PartSlot}.
- * each {@link PartSlot} is either empty or has {@link PartData}.
+ * each {@link PartSlot} is either empty or has {@link com.onewhohears.dscombat.data.parts.instance.PartInstance}.
  * will synch part data with client.
  * @author 1whohears
  */
@@ -136,7 +136,7 @@ public class PartsManager {
 				parent.rideAvailableSeat(pilot);
 			}
 		} else {
-			PartInstance<?> data = UtilParse.parsePartFromItem(stack);
+			PartInstance<?> data = UtilPresetParse.parsePartFromItem(stack);
 			if (data == null) {
 				LOGGER.warn("ERROR! COULD NOT GET PART DATA FROM "+stack+" "+stack.getTag());
 				return;

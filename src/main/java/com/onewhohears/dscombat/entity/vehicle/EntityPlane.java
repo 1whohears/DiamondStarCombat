@@ -5,8 +5,8 @@ import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.graph.AoaLiftKGraph;
 import com.onewhohears.dscombat.data.vehicle.DSCPhyCons;
 import com.onewhohears.dscombat.data.vehicle.VehicleType;
-import com.onewhohears.dscombat.util.math.UtilAngles;
-import com.onewhohears.dscombat.util.math.UtilGeometry;
+import com.onewhohears.onewholibs.util.math.UtilAngles;
+import com.onewhohears.onewholibs.util.math.UtilGeometry;
 
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;

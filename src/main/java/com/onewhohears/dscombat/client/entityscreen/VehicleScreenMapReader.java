@@ -10,13 +10,13 @@ import org.slf4j.Logger;
 
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.logging.LogUtils;
-import com.onewhohears.dscombat.client.model.obj.ObjEntityModels;
+import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels;
 import com.onewhohears.dscombat.data.vehicle.EntityScreenData;
 import com.onewhohears.dscombat.mixin.CompositeRenderableAccess;
 import com.onewhohears.dscombat.mixin.CompositeRenderableComponentAccess;
 import com.onewhohears.dscombat.mixin.CompositeRenderableMeshAccess;
-import com.onewhohears.dscombat.util.math.UtilAngles;
-import com.onewhohears.dscombat.util.math.UtilGeometry;
+import com.onewhohears.onewholibs.util.math.UtilAngles;
+import com.onewhohears.onewholibs.util.math.UtilGeometry;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;

@@ -12,7 +12,7 @@ import com.onewhohears.dscombat.common.container.slot.PartItemSlot;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleToItem;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.dscombat.util.UtilMCText;
+import com.onewhohears.onewholibs.util.UtilMCText;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;

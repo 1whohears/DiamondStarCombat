@@ -10,8 +10,8 @@ import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModItems;
-import com.onewhohears.dscombat.util.UtilItem;
-import com.onewhohears.dscombat.util.UtilMCText;
+import com.onewhohears.onewholibs.util.UtilItem;
+import com.onewhohears.onewholibs.util.UtilMCText;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;

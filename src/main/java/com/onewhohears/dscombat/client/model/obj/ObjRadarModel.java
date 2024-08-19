@@ -3,7 +3,8 @@ package com.onewhohears.dscombat.client.model.obj;
 import javax.annotation.Nullable;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.onewhohears.dscombat.client.model.obj.ObjEntityModels.ModelOverrides;
+import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels;
+import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels.ModelOverrides;
 import com.onewhohears.dscombat.entity.parts.EntityRadar;
 
 import net.minecraft.client.renderer.MultiBufferSource;

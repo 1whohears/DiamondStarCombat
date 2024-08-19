@@ -55,8 +55,8 @@
         "model_part_key": "wl0",
         "pivot": {
           "x": 0.0,
-          "y": 8.0,
-          "z": 30.0
+          "y": 0.5,
+          "z": 1.875
         },
         "rot_axis": "X",
         "rot_rate": 160.0
@@ -66,8 +66,8 @@
         "model_part_key": "wl1",
         "pivot": {
           "x": 0.0,
-          "y": 8.0,
-          "z": 15.0
+          "y": 0.5,
+          "z": 0.9375
         },
         "rot_axis": "X",
         "rot_rate": 160.0
@@ -77,7 +77,7 @@
         "model_part_key": "wl2",
         "pivot": {
           "x": 0.0,
-          "y": 8.0,
+          "y": 0.5,
           "z": 0.0
         },
         "rot_axis": "X",
@@ -88,8 +88,8 @@
         "model_part_key": "wl3",
         "pivot": {
           "x": 0.0,
-          "y": 8.0,
-          "z": -15.0
+          "y": 0.5,
+          "z": -0.9375
         },
         "rot_axis": "X",
         "rot_rate": 160.0
@@ -99,8 +99,8 @@
         "model_part_key": "wl4",
         "pivot": {
           "x": 0.0,
-          "y": 8.0,
-          "z": -30.0
+          "y": 0.5,
+          "z": -1.875
         },
         "rot_axis": "X",
         "rot_rate": 160.0
@@ -110,8 +110,8 @@
         "model_part_key": "wr0",
         "pivot": {
           "x": 0.0,
-          "y": 8.0,
-          "z": 30.0
+          "y": 0.5,
+          "z": 1.875
         },
         "rot_axis": "X",
         "rot_rate": 160.0
@@ -121,8 +121,8 @@
         "model_part_key": "wr1",
         "pivot": {
           "x": 0.0,
-          "y": 8.0,
-          "z": 15.0
+          "y": 0.5,
+          "z": 0.9375
         },
         "rot_axis": "X",
         "rot_rate": 160.0
@@ -132,7 +132,7 @@
         "model_part_key": "wr2",
         "pivot": {
           "x": 0.0,
-          "y": 8.0,
+          "y": 0.5,
           "z": 0.0
         },
         "rot_axis": "X",
@@ -143,8 +143,8 @@
         "model_part_key": "wr3",
         "pivot": {
           "x": 0.0,
-          "y": 8.0,
-          "z": -15.0
+          "y": 0.5,
+          "z": -0.9375
         },
         "rot_axis": "X",
         "rot_rate": 160.0
@@ -154,8 +154,8 @@
         "model_part_key": "wr4",
         "pivot": {
           "x": 0.0,
-          "y": 8.0,
-          "z": -30.0
+          "y": 0.5,
+          "z": -1.875
         },
         "rot_axis": "X",
         "rot_rate": 160.0

@@ -8,7 +8,7 @@ import com.onewhohears.dscombat.integration.minigame.phase.villagedefense.Villag
 import com.onewhohears.dscombat.integration.minigame.phase.villagedefense.VillageDefenseBuyPhase;
 import com.onewhohears.dscombat.integration.minigame.phase.villagedefense.VillageDefenseEndPhase;
 import com.onewhohears.dscombat.integration.minigame.phase.villagedefense.VillageDefenseSetupPhase;
-import com.onewhohears.dscombat.util.UtilMCText;
+import com.onewhohears.onewholibs.util.UtilMCText;
 import com.onewhohears.minigames.minigame.agent.TeamAgent;
 import com.onewhohears.minigames.minigame.data.DeathMatchData;
 import com.onewhohears.minigames.minigame.data.MiniGameData;

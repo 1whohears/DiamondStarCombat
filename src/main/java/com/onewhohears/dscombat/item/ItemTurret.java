@@ -7,9 +7,9 @@ import com.onewhohears.dscombat.data.parts.stats.PartStats;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.init.ModItems;
-import com.onewhohears.dscombat.util.UtilMCText;
-import com.onewhohears.dscombat.util.UtilParse;
+import com.onewhohears.onewholibs.util.UtilMCText;
 
+import com.onewhohears.dscombat.util.UtilPresetParse;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -24,7 +24,7 @@ public class ItemTurret extends ItemPart {
 	
 	@Override
 	public Component getName(ItemStack stack) {
-		TurretInstance<?> data = (TurretInstance<?>) UtilParse.parsePartFromItem(stack);
+		TurretInstance<?> data = (TurretInstance<?>) UtilPresetParse.parsePartFromItem(stack);
 		MutableComponent name = ((MutableComponent)super.getName(stack)).append(" ");
 		WeaponStats wd = WeaponPresets.get().get(data.getWeaponId());
 		if (wd != null) {

@@ -47,7 +47,7 @@ public class PartSlot {
 	public CompoundTag write() {
 		CompoundTag tag = new CompoundTag();
 		tag.putString("name", slotId);
-		tag.putString("slot_type",type.getSlotTypeName());
+		tag.putString("slot_type", type.getSlotTypeName());
 		UtilParse.writeVec3(tag, pos, "slot_pos");
 		tag.putFloat("zRot", zRot);
 		tag.putBoolean("locked", locked);

@@ -1,7 +1,7 @@
 {
-  "armor": 50.0,
+  "armor": 20.0,
   "displayName": "preset.dscombat.noah_chopper_empty",
-  "health": 100.0,
+  "health": 80.0,
   "ingredients": [
     {
       "item": "dscombat:fuselage",
@@ -25,7 +25,7 @@
     },
     {
       "item": "minecraft:gold_ingot",
-      "num": 8
+      "num": 4
     }
   ],
   "is_craftable": false,
@@ -33,83 +33,6 @@
   "landing_gear": true,
   "presetId": "noah_chopper_empty",
   "presetType": "helicopter",
-  "screens": [
-    {
-      "height": 0.3,
-      "id": 0,
-      "pos": {
-        "x": 0.19,
-        "y": 0.18,
-        "z": 1.934
-      },
-      "rot": {
-        "x": 20.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "width": 0.3
-    },
-    {
-      "height": 0.3,
-      "id": 1,
-      "pos": {
-        "x": 0.19,
-        "y": -0.12,
-        "z": 1.825
-      },
-      "rot": {
-        "x": 20.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "width": 0.3
-    },
-    {
-      "height": 0.3,
-      "id": 3,
-      "pos": {
-        "x": 0.5,
-        "y": -0.12,
-        "z": 1.825
-      },
-      "rot": {
-        "x": 20.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "width": 0.3
-    },
-    {
-      "height": 0.3,
-      "id": 4,
-      "pos": {
-        "x": 0.5,
-        "y": 0.18,
-        "z": 1.934
-      },
-      "rot": {
-        "x": 20.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "width": 0.3
-    },
-    {
-      "height": 0.1,
-      "id": 2,
-      "pos": {
-        "x": 0.4,
-        "y": 0.62,
-        "z": 1.63
-      },
-      "rot": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "width": 0.1
-    }
-  ],
   "slots": [
     {
       "data": {
@@ -159,96 +82,24 @@
       "name": "left_wing_1",
       "slot_posx": 0.75,
       "slot_posy": -0.5,
-      "slot_posz": 1.8,
-      "slot_type": "pylon_light",
-      "zRot": -90.0
-    },
-    {
-      "name": "left_wing_2",
-      "slot_posx": 0.75,
-      "slot_posy": -0.5,
-      "slot_posz": 0.9,
-      "slot_type": "pylon_light",
-      "zRot": -90.0
-    },
-    {
-      "name": "left_wing_3",
-      "slot_posx": 0.75,
-      "slot_posy": -0.5,
-      "slot_posz": 0.0,
-      "slot_type": "pylon_light",
-      "zRot": -90.0
-    },
-    {
-      "name": "left_wing_4",
-      "slot_posx": 0.65,
-      "slot_posy": 0.5,
-      "slot_posz": 0.0,
-      "slot_type": "pylon_light",
+      "slot_posz": 1.5,
+      "slot_type": "pylon_med",
       "zRot": -90.0
     },
     {
       "name": "right_wing_1",
       "slot_posx": -0.75,
       "slot_posy": -0.5,
-      "slot_posz": 1.8,
-      "slot_type": "pylon_light",
-      "zRot": 90.0
-    },
-    {
-      "name": "right_wing_2",
-      "slot_posx": -0.75,
-      "slot_posy": -0.5,
-      "slot_posz": 0.9,
-      "slot_type": "pylon_light",
-      "zRot": 90.0
-    },
-    {
-      "name": "right_wing_3",
-      "slot_posx": -0.75,
-      "slot_posy": -0.5,
-      "slot_posz": 0.0,
-      "slot_type": "pylon_light",
-      "zRot": 90.0
-    },
-    {
-      "name": "right_wing_4",
-      "slot_posx": -0.65,
-      "slot_posy": 0.5,
-      "slot_posz": 0.0,
-      "slot_type": "pylon_light",
+      "slot_posz": 1.5,
+      "slot_type": "pylon_med",
       "zRot": 90.0
     },
     {
       "name": "frame_1",
       "slot_posx": 0.0,
       "slot_posy": -0.67,
-      "slot_posz": 1.9,
+      "slot_posz": 1.5,
       "slot_type": "pylon_heavy",
-      "zRot": 180.0
-    },
-    {
-      "name": "frame_2",
-      "slot_posx": 0.0,
-      "slot_posy": -0.67,
-      "slot_posz": 1.1,
-      "slot_type": "pylon_med",
-      "zRot": 180.0
-    },
-    {
-      "name": "frame_3",
-      "slot_posx": 0.0,
-      "slot_posy": -0.67,
-      "slot_posz": 0.3,
-      "slot_type": "pylon_med",
-      "zRot": 180.0
-    },
-    {
-      "name": "frame_4",
-      "slot_posx": 0.0,
-      "slot_posy": -0.67,
-      "slot_posz": -0.5,
-      "slot_type": "pylon_med",
       "zRot": 180.0
     },
     {
@@ -288,27 +139,11 @@
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": "tech_internal",
+      "slot_type": "internal",
       "zRot": 0.0
     },
     {
       "name": "internal_6",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "tech_internal",
-      "zRot": 0.0
-    },
-    {
-      "name": "internal_7",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "tech_internal",
-      "zRot": 0.0
-    },
-    {
-      "name": "internal_8",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
@@ -324,10 +159,10 @@
     "passengerSoundPack": "eng_non_binary_goober"
   },
   "stats": {
-    "armor_damage_absorbtion": 0.25,
-    "armor_damage_threshold": 4.0,
+    "armor_damage_absorbtion": 0.15,
+    "armor_damage_threshold": 2.0,
     "assetId": "noah_chopper",
-    "base_armor": 50.0,
+    "base_armor": 20.0,
     "cameraDistance": 6.0,
     "crashExplosionRadius": 4.0,
     "cross_sec_area": 8.0,
@@ -344,11 +179,11 @@
     "inertiaroll": 8.0,
     "inertiayaw": 4.0,
     "mass": 6000.0,
-    "max_health": 100.0,
-    "max_speed": 0.7,
-    "maxpitch": 2.0,
-    "maxroll": 4.0,
-    "maxyaw": 4.0,
+    "max_health": 80.0,
+    "max_speed": 0.65,
+    "maxpitch": 1.5,
+    "maxroll": 2.0,
+    "maxyaw": 3.0,
     "stealth": 1.2,
     "throttledown": 0.02,
     "throttleup": 0.01,

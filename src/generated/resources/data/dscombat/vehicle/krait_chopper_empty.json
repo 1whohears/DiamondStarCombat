@@ -1,7 +1,81 @@
 {
-  "armor": 50.0,
+  "armor": 60.0,
   "displayName": "preset.dscombat.krait_chopper_empty",
-  "health": 100.0,
+  "health": 120.0,
+  "hitboxes": [
+    {
+      "damage_parts": false,
+      "damage_root": true,
+      "max_armor": 0.0,
+      "max_health": 0.0,
+      "name": "base",
+      "rel_pos": {
+        "x": 0.0,
+        "y": -0.05,
+        "z": -0.6
+      },
+      "remove_on_destroy": false,
+      "size": {
+        "x": 1.1,
+        "y": 1.5,
+        "z": 4.0
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 20.0,
+      "max_health": 20.0,
+      "name": "tail",
+      "rel_pos": {
+        "x": 0.0,
+        "y": 0.08,
+        "z": -5.75
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 0.7,
+        "y": 0.7,
+        "z": 6.5
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 30.0,
+      "max_health": 30.0,
+      "name": "engine",
+      "rel_pos": {
+        "x": 0.0,
+        "y": 1.2,
+        "z": -0.6
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 1.1,
+        "y": 1.0,
+        "z": 4.0
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 20.0,
+      "max_health": 20.0,
+      "name": "nose",
+      "rel_pos": {
+        "x": 0.0,
+        "y": -0.2,
+        "z": 2.9
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 1.0,
+        "y": 1.3,
+        "z": 3.0
+      }
+    }
+  ],
   "ingredients": [
     {
       "item": "dscombat:fuselage",
@@ -9,27 +83,23 @@
     },
     {
       "item": "dscombat:large_propeller",
-      "num": 2
+      "num": 1
     },
     {
       "item": "dscombat:propeller",
       "num": 1
     },
     {
-      "item": "dscombat:cockpit",
-      "num": 1
-    },
-    {
-      "item": "dscombat:seat",
-      "num": 3
+      "item": "dscombat:advanced_cockpit",
+      "num": 2
     },
     {
       "item": "minecraft:gold_ingot",
-      "num": 8
+      "num": 12
     }
   ],
   "is_craftable": false,
-  "item": "dscombat:noah_chopper",
+  "item": "dscombat:krait_chopper",
   "landing_gear": true,
   "presetId": "krait_chopper_empty",
   "presetType": "helicopter",
@@ -39,9 +109,9 @@
         "itemid": "dscombat:seat"
       },
       "name": "pilot_seat",
-      "slot_posx": 0.4,
-      "slot_posy": -0.65,
-      "slot_posz": 1.5,
+      "slot_posx": 0.0,
+      "slot_posy": -0.05,
+      "slot_posz": 2.0,
       "slot_type": "seat",
       "zRot": 0.0
     },
@@ -49,132 +119,55 @@
       "data": {
         "itemid": "dscombat:seat"
       },
-      "name": "seat2",
-      "slot_posx": -0.4,
-      "slot_posy": -0.65,
-      "slot_posz": 1.5,
-      "slot_type": "mount_med",
+      "name": "copilot_seat",
+      "slot_posx": 0.0,
+      "slot_posy": -0.4,
+      "slot_posz": 3.5,
+      "slot_type": "seat",
       "zRot": 0.0
     },
     {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
-      "name": "seat3",
-      "slot_posx": 0.4,
-      "slot_posy": -0.65,
-      "slot_posz": 0.3,
-      "slot_type": "mount_med",
-      "zRot": 0.0
-    },
-    {
-      "data": {
-        "itemid": "dscombat:seat"
-      },
-      "name": "seat4",
-      "slot_posx": -0.4,
-      "slot_posy": -0.65,
-      "slot_posz": 0.3,
-      "slot_type": "mount_med",
-      "zRot": 0.0
+      "name": "nose_gun",
+      "slot_posx": 0.0,
+      "slot_posy": -0.5,
+      "slot_posz": 3.75,
+      "slot_type": "pylon_light",
+      "zRot": 180.0
     },
     {
       "name": "left_wing_1",
-      "slot_posx": 0.75,
-      "slot_posy": -0.5,
-      "slot_posz": 1.8,
-      "slot_type": "pylon_light",
-      "zRot": -90.0
-    },
-    {
-      "name": "left_wing_2",
-      "slot_posx": 0.75,
-      "slot_posy": -0.5,
-      "slot_posz": 0.9,
-      "slot_type": "pylon_light",
-      "zRot": -90.0
-    },
-    {
-      "name": "left_wing_3",
-      "slot_posx": 0.75,
-      "slot_posy": -0.5,
+      "slot_posx": 1.15,
+      "slot_posy": -0.15,
       "slot_posz": 0.0,
-      "slot_type": "pylon_light",
-      "zRot": -90.0
-    },
-    {
-      "name": "left_wing_4",
-      "slot_posx": 0.65,
-      "slot_posy": 0.5,
-      "slot_posz": 0.0,
-      "slot_type": "pylon_light",
-      "zRot": -90.0
-    },
-    {
-      "name": "right_wing_1",
-      "slot_posx": -0.75,
-      "slot_posy": -0.5,
-      "slot_posz": 1.8,
-      "slot_type": "pylon_light",
-      "zRot": 90.0
-    },
-    {
-      "name": "right_wing_2",
-      "slot_posx": -0.75,
-      "slot_posy": -0.5,
-      "slot_posz": 0.9,
-      "slot_type": "pylon_light",
-      "zRot": 90.0
-    },
-    {
-      "name": "right_wing_3",
-      "slot_posx": -0.75,
-      "slot_posy": -0.5,
-      "slot_posz": 0.0,
-      "slot_type": "pylon_light",
-      "zRot": 90.0
-    },
-    {
-      "name": "right_wing_4",
-      "slot_posx": -0.65,
-      "slot_posy": 0.5,
-      "slot_posz": 0.0,
-      "slot_type": "pylon_light",
-      "zRot": 90.0
-    },
-    {
-      "name": "frame_1",
-      "slot_posx": 0.0,
-      "slot_posy": -0.67,
-      "slot_posz": 1.9,
       "slot_type": "pylon_heavy",
       "zRot": 180.0
     },
     {
-      "name": "frame_2",
-      "slot_posx": 0.0,
-      "slot_posy": -0.67,
-      "slot_posz": 1.1,
+      "name": "left_wing_2",
+      "slot_posx": 2.08,
+      "slot_posy": 0.15,
+      "slot_posz": 0.0,
       "slot_type": "pylon_med",
+      "zRot": -90.0
+    },
+    {
+      "name": "right_wing_1",
+      "slot_posx": -1.15,
+      "slot_posy": -0.15,
+      "slot_posz": 0.0,
+      "slot_type": "pylon_heavy",
       "zRot": 180.0
     },
     {
-      "name": "frame_3",
-      "slot_posx": 0.0,
-      "slot_posy": -0.67,
-      "slot_posz": 0.3,
+      "name": "right_wing_2",
+      "slot_posx": -2.08,
+      "slot_posy": 0.15,
+      "slot_posz": 0.0,
       "slot_type": "pylon_med",
-      "zRot": 180.0
+      "zRot": 90.0
     },
     {
-      "name": "frame_4",
-      "slot_posx": 0.0,
-      "slot_posy": -0.67,
-      "slot_posz": -0.5,
-      "slot_type": "pylon_med",
-      "zRot": 180.0
-    },
-    {
+      "linkedHitbox": "engine",
       "name": "internal_1",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
@@ -183,6 +176,7 @@
       "zRot": 0.0
     },
     {
+      "linkedHitbox": "engine",
       "name": "internal_2",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
@@ -207,6 +201,7 @@
       "zRot": 0.0
     },
     {
+      "linkedHitbox": "nose",
       "name": "internal_5",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
@@ -215,6 +210,7 @@
       "zRot": 0.0
     },
     {
+      "linkedHitbox": "nose",
       "name": "internal_6",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
@@ -223,6 +219,7 @@
       "zRot": 0.0
     },
     {
+      "linkedHitbox": "nose",
       "name": "internal_7",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
@@ -231,6 +228,7 @@
       "zRot": 0.0
     },
     {
+      "linkedHitbox": "nose",
       "name": "internal_8",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
@@ -250,7 +248,7 @@
     "armor_damage_absorbtion": 0.25,
     "armor_damage_threshold": 4.0,
     "assetId": "krait_chopper",
-    "base_armor": 50.0,
+    "base_armor": 60.0,
     "cameraDistance": 6.0,
     "crashExplosionRadius": 4.0,
     "cross_sec_area": 8.0,
@@ -260,18 +258,28 @@
       "accForward": 0.04,
       "accSide": 0.02,
       "alwaysLandingGear": true,
-      "heliLiftFactor": 10.0
+      "heliLiftFactor": 15.0
     },
+    "hitboxes_control_pitch": [
+      "tail"
+    ],
+    "hitboxes_control_roll": [
+      "tail"
+    ],
+    "hitboxes_control_yaw": [
+      "tail"
+    ],
     "idleheat": 8.0,
     "inertiapitch": 6.0,
     "inertiaroll": 8.0,
     "inertiayaw": 4.0,
-    "mass": 6000.0,
-    "max_health": 100.0,
-    "max_speed": 0.7,
+    "mass": 8000.0,
+    "max_health": 120.0,
+    "max_speed": 0.85,
     "maxpitch": 2.0,
     "maxroll": 4.0,
     "maxyaw": 4.0,
+    "rootHitboxNoCollide": true,
     "stealth": 1.2,
     "throttledown": 0.02,
     "throttleup": 0.01,
@@ -281,6 +289,7 @@
     "turn_radius": 0.0
   },
   "textures": {
-    "textureLayers": 1
+    "baseTextureVariants": 4,
+    "textureLayers": 4
   }
 }

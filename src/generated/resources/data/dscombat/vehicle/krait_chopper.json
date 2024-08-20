@@ -3,7 +3,7 @@
   "displayName": "preset.dscombat.krait_chopper",
   "ingredients": [
     {
-      "item": "dscombat:ar500",
+      "item": "dscombat:ar1k",
       "num": 1
     },
     {
@@ -16,11 +16,11 @@
     },
     {
       "item": "dscombat:heavy_missile_rack",
-      "num": 5
+      "num": 3
     },
     {
       "item": "dscombat:light_missile_rack",
-      "num": 2
+      "num": 1
     },
     {
       "item": "dscombat:basic_flare_dispenser",
@@ -51,14 +51,7 @@
     {
       "data": {
         "filled": true,
-        "part": "minigun_turret"
-      },
-      "name": "seat2"
-    },
-    {
-      "data": {
-        "filled": true,
-        "param": "aim7f",
+        "param": "aim120b",
         "part": "heavy_missile_rack"
       },
       "name": "left_wing_1"
@@ -66,7 +59,7 @@
     {
       "data": {
         "filled": true,
-        "param": "agm65g",
+        "param": "agm84e",
         "part": "heavy_missile_rack"
       },
       "name": "left_wing_2"
@@ -74,15 +67,7 @@
     {
       "data": {
         "filled": true,
-        "param": "agm114k",
-        "part": "light_missile_rack"
-      },
-      "name": "left_wing_3"
-    },
-    {
-      "data": {
-        "filled": true,
-        "param": "agm65l",
+        "param": "aim120b",
         "part": "heavy_missile_rack"
       },
       "name": "right_wing_1"
@@ -90,36 +75,14 @@
     {
       "data": {
         "filled": true,
-        "param": "agm84e",
-        "part": "heavy_missile_rack"
+        "param": "aim9p5",
+        "part": "light_missile_rack"
       },
       "name": "right_wing_2"
     },
     {
       "data": {
-        "filled": true,
-        "param": "aim9l",
-        "part": "light_missile_rack"
-      },
-      "name": "right_wing_3"
-    },
-    {
-      "data": {
-        "part": "gimbal_camera"
-      },
-      "name": "frame_1"
-    },
-    {
-      "data": {
-        "filled": true,
-        "param": "agm88g",
-        "part": "heavy_missile_rack"
-      },
-      "name": "frame_2"
-    },
-    {
-      "data": {
-        "part": "ar500"
+        "part": "ar1k"
       },
       "name": "internal_5"
     },

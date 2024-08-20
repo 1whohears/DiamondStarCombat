@@ -373,9 +373,9 @@
     "plane": {
       "canAimDown": true,
       "flapsAOABias": 10.0,
-      "fuselage_lift_area": 20.0,
+      "fuselage_lift_area": 30.0,
       "fuselage_lift_k_graph": "fuselage",
-      "wing_area": 47.0,
+      "wing_area": 50.0,
       "wing_lift_hitbox_names": [
         "left_wing",
         "right_wing"

@@ -48,6 +48,14 @@
         "anim_id": "hitbox_destroy_part",
         "hitbox_name": "engine",
         "model_part_key": "engine"
+      },
+      {
+        "anim_id": "always_hide",
+        "model_part_key": "turret0"
+      },
+      {
+        "anim_id": "always_hide",
+        "model_part_key": "turret1"
       }
     ],
     "model_id": "krait_chopper"

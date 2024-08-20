@@ -438,6 +438,7 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 						.addMotorRotPixelAnim("blade1", -5.2876f, 50.56f, -154.08f, RotationAxis.X, 31)
 						.addHitboxDestroyPartsAnim("tail", "blade1", "wing4", "wing3", "wing2")
 						.addHitboxDestroyPartsAnim("engine", "engine")
+						.addAlwaysHideAnims("turret0", "turret1")
 						.build())
 				.build());
 	}

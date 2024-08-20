@@ -97,6 +97,7 @@
 	"slotname.dscombat.internal_9": "Internal 9",
 	"slotname.dscombat.internal_10": "Internal 10",
 	"slotname.dscombat.cargo_bed_1": "Cargo Bed 1",
+	"slotname.dscombat.nose_gun": "Nose Gun",
 	
 	"entity.dscombat.test_plane": "Test Plane",
 	"entity.dscombat.javi_plane": "Javi Plane",
@@ -457,6 +458,12 @@
 	"preset.dscombat.werewolf_empty": "Empty Werewolf Heli",
 	"preset.dscombat.werewolf_unarmed": "Unarmed Werewolf Heli",
 	"preset.dscombat.werewolf": "Default Werewolf Heli",
+	"preset.dscombat.james_wooden_plane_empty": "Empty James Wooden Plane",
+	"preset.dscombat.james_wooden_plane": "Default James Wooden Plane",
+	"preset.dscombat.krait_chopper_empty": "Empty Krait Heli",
+	"preset.dscombat.krait_chopper_unarmed": "Unarmed Krait Heli",
+	"preset.dscombat.krait_chopper": "Default Krait Heli",
+	"preset.dscombat.krait_chopper_dog_fighter": "Dog Fighter Krait Heli",
 	
 	"key.categories.vehicle_move_control": "Diamond Star Combat Vehicle Move Controls",
 	"key.categories.vehicle_control_util": "Diamond Star Combat Vehicle Control Utility",

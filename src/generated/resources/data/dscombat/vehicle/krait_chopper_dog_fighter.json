@@ -1,9 +1,9 @@
 {
   "copyId": "krait_chopper_unarmed",
-  "displayName": "preset.dscombat.krait_chopper",
+  "displayName": "preset.dscombat.krait_chopper_dog_fighter",
   "ingredients": [
     {
-      "item": "dscombat:ar500",
+      "item": "dscombat:ar1k",
       "num": 1
     },
     {
@@ -41,7 +41,7 @@
   ],
   "is_craftable": false,
   "landing_gear": true,
-  "presetId": "krait_chopper",
+  "presetId": "krait_chopper_dog_fighter",
   "presetType": "helicopter",
   "slots": [
     {
@@ -55,7 +55,7 @@
     {
       "data": {
         "filled": true,
-        "param": "agm84e",
+        "param": "aim120b",
         "part": "heavy_missile_rack"
       },
       "name": "left_wing_1"
@@ -63,7 +63,7 @@
     {
       "data": {
         "filled": true,
-        "param": "agm114k",
+        "param": "aim9p5",
         "part": "light_missile_rack"
       },
       "name": "left_wing_2"
@@ -71,7 +71,7 @@
     {
       "data": {
         "filled": true,
-        "param": "agm65l",
+        "param": "aim120b",
         "part": "heavy_missile_rack"
       },
       "name": "right_wing_1"
@@ -79,14 +79,14 @@
     {
       "data": {
         "filled": true,
-        "param": "aim9l",
+        "param": "aim9p5",
         "part": "light_missile_rack"
       },
       "name": "right_wing_2"
     },
     {
       "data": {
-        "part": "ar500"
+        "part": "ar1k"
       },
       "name": "internal_5"
     },

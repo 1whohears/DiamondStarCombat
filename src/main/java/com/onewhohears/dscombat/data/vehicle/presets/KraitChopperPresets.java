@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.data.vehicle.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
 import com.onewhohears.dscombat.data.parts.SlotType;
 import com.onewhohears.dscombat.data.vehicle.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
@@ -85,8 +84,30 @@ public class KraitChopperPresets {
 	
 	public static final VehicleStats DEFAULT_KRAIT_CHOPPER = VehicleStats.Builder
 			.createFromCopy(DSCombatMod.MODID, "krait_chopper", UNARMED_KRAIT_CHOPPER)
+			.setSlotItem("nose_gun", ModItems.XM12.getId(), "20mmhe", true)
+			.setSlotItem("left_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "agm84e", true)
+			.setSlotItem("left_wing_2", ModItems.LIGHT_MISSILE_RACK.getId(), "agm114k", true)
+			.setSlotItem("right_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "agm65l", true)
+			.setSlotItem("right_wing_2", ModItems.LIGHT_MISSILE_RACK.getId(), "aim9l", true)
+			.setSlotItem("internal_5", ModItems.AR500.getId())
+			.setSlotItem("internal_6", ModItems.GR400.getId())
+			.setSlotItem("internal_4", ModItems.BASIC_FLARE_DISPENSER.getId(), true)
+			.addIngredient(ModItems.AR500.getId())
+			.addIngredient(ModItems.GR400.getId())
+			.addIngredient(ModItems.HEAVY_MISSILE_RACK.getId(), 2)
+			.addIngredient(ModItems.LIGHT_MISSILE_RACK.getId(), 2)
+			.addIngredient(ModItems.BASIC_FLARE_DISPENSER.getId())
+			.addIngredient("minecraft:copper_ingot", 64)
+			.addIngredient("dscombat:aluminum_ingot", 64)
+			.addIngredient("minecraft:redstone", 64)
+			.addIngredient("minecraft:gunpowder", 64)
+			.build();
+
+	public static final VehicleStats DOG_FIGHT_KRAIT_CHOPPER = VehicleStats.Builder
+			.createFromCopy(DSCombatMod.MODID, "krait_chopper_dog_fighter", UNARMED_KRAIT_CHOPPER)
+			.setSlotItem("nose_gun", ModItems.XM12.getId(), "20mmhe", true)
 			.setSlotItem("left_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "aim120b", true)
-			.setSlotItem("left_wing_2", ModItems.HEAVY_MISSILE_RACK.getId(), "agm84e", true)
+			.setSlotItem("left_wing_2", ModItems.LIGHT_MISSILE_RACK.getId(), "aim9p5", true)
 			.setSlotItem("right_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "aim120b", true)
 			.setSlotItem("right_wing_2", ModItems.LIGHT_MISSILE_RACK.getId(), "aim9p5", true)
 			.setSlotItem("internal_5", ModItems.AR1K.getId())
@@ -94,14 +115,12 @@ public class KraitChopperPresets {
 			.setSlotItem("internal_4", ModItems.BASIC_FLARE_DISPENSER.getId(), true)
 			.addIngredient(ModItems.AR1K.getId())
 			.addIngredient(ModItems.GR400.getId())
-			.addIngredient(ModItems.MINIGUN_TURRET.getId())
-			.addIngredient(ModItems.HEAVY_MISSILE_RACK.getId(), 3)
-			.addIngredient(ModItems.LIGHT_MISSILE_RACK.getId(), 1)
+			.addIngredient(ModItems.HEAVY_MISSILE_RACK.getId(), 2)
+			.addIngredient(ModItems.LIGHT_MISSILE_RACK.getId(), 2)
 			.addIngredient(ModItems.BASIC_FLARE_DISPENSER.getId())
 			.addIngredient("minecraft:copper_ingot", 64)
 			.addIngredient("dscombat:aluminum_ingot", 64)
 			.addIngredient("minecraft:redstone", 64)
 			.addIngredient("minecraft:gunpowder", 64)
 			.build();
-	
 }

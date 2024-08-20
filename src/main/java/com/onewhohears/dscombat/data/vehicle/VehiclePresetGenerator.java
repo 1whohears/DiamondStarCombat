@@ -107,6 +107,7 @@ public class VehiclePresetGenerator extends JsonPresetGenerator<VehicleStats> {
 		addPresetToGenerate(KraitChopperPresets.EMPTY_KRAIT_CHOPPER);
 		addPresetToGenerate(KraitChopperPresets.UNARMED_KRAIT_CHOPPER);
 		addPresetToGenerate(KraitChopperPresets.DEFAULT_KRAIT_CHOPPER);
+		addPresetToGenerate(KraitChopperPresets.DOG_FIGHT_KRAIT_CHOPPER);
 
 		addPresetToGenerate(JamesPresets.EMPTY_JAMES_PLANE);
 		addPresetToGenerate(JamesPresets.DEFAULT_JAMES_PLANE);

@@ -11,8 +11,8 @@ public class JamesPresets {
     public static final VehicleStats EMPTY_JAMES_PLANE = VehicleStats.Builder
             .createPlane(DSCombatMod.MODID, "james_wooden_plane_empty")
             .setAssetId("james_wooden_plane")
-            .setSortFactor(0)
-            .setItem(ModItems.WOODEN_PLANE.getId())
+            .setSortFactor(1)
+            .setItem(ModItems.JAMES_WOODEN_PLANE.getId())
             .setMaxHealth(40f)
             .setBaseArmor(0f)
             .setArmorDamageThreshold(0.5f)

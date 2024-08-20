@@ -367,6 +367,8 @@ public class ModItems {
 			() -> new ItemVehicle(JasonPresets.DEFAULT_JASON_PLANE.getId()));
 	public static final RegistryObject<Item> EDEN_PLANE = ITEMS.register("eden_plane", 
 			() -> new ItemVehicle(EdenPresets.DEFAULT_EDEN_PLANE.getId()));
+	public static final RegistryObject<Item> JAMES_WOODEN_PLANE = ITEMS.register("james_wooden_plane",
+			() -> new ItemVehicle(JamesPresets.DEFAULT_JAMES_PLANE.getId()));
 	
 	// HELICOPTERS
 	public static final RegistryObject<Item> NOAH_CHOPPER = ITEMS.register("noah_chopper", 

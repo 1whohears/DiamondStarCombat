@@ -21,7 +21,7 @@
     }
   ],
   "is_craftable": false,
-  "item": "dscombat:wooden_plane",
+  "item": "dscombat:james_wooden_plane",
   "landing_gear": true,
   "presetId": "james_wooden_plane_empty",
   "presetType": "plane",
@@ -78,7 +78,7 @@
       "zRot": 0.0
     }
   ],
-  "sort_factor": 0,
+  "sort_factor": 1,
   "sounds": {
     "loopSoundType": "basic",
     "nonPassengerEngine": "dscombat:biplane_1",

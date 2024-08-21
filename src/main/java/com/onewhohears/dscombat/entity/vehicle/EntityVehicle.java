@@ -2618,12 +2618,11 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
     
     public void toClientPassengers(IPacket packet) {
-    	if (level.isClientSide) return;
-    	for (Player p : getRidingPlayers()) {
-    		PacketHandler.INSTANCE.send(
-    			PacketDistributor.PLAYER.with(() -> (ServerPlayer)p),
-    			packet);
-    	}
+    	if (level.isClientSide()) return;
+		// somehow class cast exception happened here while playing single player on a modded v0.10 client?
+		// LocalPlayer cannot be cast to ServerPlayer
+    	for (Player p : getRidingPlayers()) if (!p.level.isClientSide()) // this additional client side check should fix?
+    		PacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer)p), packet);
     }
     
     public boolean isWeaponAngledDown() {

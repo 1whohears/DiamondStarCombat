@@ -129,7 +129,7 @@
       "rel_pos": {
         "x": 0.0,
         "y": 0.3,
-        "z": -5.1
+        "z": -4.9
       },
       "remove_on_destroy": true,
       "size": {
@@ -147,13 +147,13 @@
       "rel_pos": {
         "x": 0.0,
         "y": 0.3,
-        "z": 8.8
+        "z": 8.6
       },
       "remove_on_destroy": true,
       "size": {
         "x": 1.2,
         "y": 1.0,
-        "z": 2.0
+        "z": 2.1
       }
     }
   ],

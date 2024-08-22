@@ -79,9 +79,9 @@ public class AlexisPresets {
 					10, 10, true, true, false)
 			.addRotableHitbox("right_elevator", 2.5, 0.3, 1.7, -2, 0.35, -6, 
 					10, 10, true, true, false)
-			.addRotableHitbox("engine", 1.4, 1.4, 2.9, 0, 0.3, -5.1, 
+			.addRotableHitbox("engine", 1.4, 1.4, 2.9, 0, 0.3, -4.9,
 					10, 10, true, true, false)
-			.addRotableHitbox("nose", 1.2, 1, 2, 0, 0.3, 8.8, 
+			.addRotableHitbox("nose", 1.2, 1, 2.1, 0, 0.3, 8.6,
 					10, 10, true, true, false)
 			.setHitboxesControlPitch("left_elevator", "right_elevator")
 			.setHitboxesControlRoll("left_wing", "right_wing")
